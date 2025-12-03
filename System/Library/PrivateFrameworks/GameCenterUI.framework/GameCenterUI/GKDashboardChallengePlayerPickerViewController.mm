@@ -1,48 +1,48 @@
 @interface GKDashboardChallengePlayerPickerViewController
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (GKDashboardChallengePlayerPickerViewController)initWithChallenge:(id)a3 initiallySelectedPlayers:(id)a4;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (GKDashboardChallengePlayerPickerViewController)initWithChallenge:(id)challenge initiallySelectedPlayers:(id)players;
 - (UIEdgeInsets)initialInsets;
 - (id)preferredFocusEnvironments;
 - (void)_updateButtonEnableState;
-- (void)addMessage:(id)a3;
+- (void)addMessage:(id)message;
 - (void)adjustCustomizeMessageConstraint;
 - (void)applyInitialContentOffset;
-- (void)cancel:(id)a3;
+- (void)cancel:(id)cancel;
 - (void)clearSelection;
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)dataUpdated:(BOOL)a3 withError:(id)a4;
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)dataUpdated:(BOOL)updated withError:(id)error;
 - (void)loadData;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)selectPlayersAtIndexPaths:(id)a3;
-- (void)send:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setSearchText:(id)a3;
-- (void)setupNoContentView:(id)a3 withError:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)selectPlayersAtIndexPaths:(id)paths;
+- (void)send:(id)send;
+- (void)setMessage:(id)message;
+- (void)setSearchText:(id)text;
+- (void)setupNoContentView:(id)view withError:(id)error;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation GKDashboardChallengePlayerPickerViewController
 
-- (GKDashboardChallengePlayerPickerViewController)initWithChallenge:(id)a3 initiallySelectedPlayers:(id)a4
+- (GKDashboardChallengePlayerPickerViewController)initWithChallenge:(id)challenge initiallySelectedPlayers:(id)players
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() _gkPlatformNibName];
+  challengeCopy = challenge;
+  playersCopy = players;
+  _gkPlatformNibName = [objc_opt_class() _gkPlatformNibName];
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v15.receiver = self;
   v15.super_class = GKDashboardChallengePlayerPickerViewController;
-  v10 = [(GKDashboardCollectionViewController *)&v15 initWithNibName:v8 bundle:v9];
+  v10 = [(GKDashboardCollectionViewController *)&v15 initWithNibName:_gkPlatformNibName bundle:v9];
 
   if (v10)
   {
-    [(GKDashboardChallengePlayerPickerViewController *)v10 setChallenge:v6];
-    [(GKDashboardChallengePlayerPickerViewController *)v10 setInitiallySelectedPlayers:v7];
-    v11 = [[GKDashboardChallengePlayerPickerDataSource alloc] initWithChallenge:v6];
+    [(GKDashboardChallengePlayerPickerViewController *)v10 setChallenge:challengeCopy];
+    [(GKDashboardChallengePlayerPickerViewController *)v10 setInitiallySelectedPlayers:playersCopy];
+    v11 = [[GKDashboardChallengePlayerPickerDataSource alloc] initWithChallenge:challengeCopy];
     [(GKDashboardCollectionViewController *)v10 setDataSource:v11];
     v12 = GKGameCenterUIFrameworkBundle();
     v13 = GKGetLocalizedStringFromTableInBundle();
@@ -59,28 +59,28 @@
   v17.receiver = self;
   v17.super_class = GKDashboardChallengePlayerPickerViewController;
   [(GKDashboardCollectionViewController *)&v17 viewDidLoad];
-  v3 = [(GKChallenge *)self->_challenge detailGoalText];
-  [(UILabel *)self->_descriptionLabel setText:v3];
+  detailGoalText = [(GKChallenge *)self->_challenge detailGoalText];
+  [(UILabel *)self->_descriptionLabel setText:detailGoalText];
 
-  v4 = [(GKDashboardCollectionViewController *)self collectionView];
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
   [(GKDashboardCollectionViewController *)self setToHorizontalLayout:0];
   [(GKDashboardCollectionViewController *)self setAutoWidthUsesTwoColumnsWhenSpace:1];
-  v5 = [v4 collectionViewLayout];
+  collectionViewLayout = [collectionView collectionViewLayout];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 setCentersItemsInExcessSpace:1];
-    [v5 setFocusScaleFactor:1.0];
+    [collectionViewLayout setCentersItemsInExcessSpace:1];
+    [collectionViewLayout setFocusScaleFactor:1.0];
   }
 
-  [v4 setDelegate:self];
-  [v4 setClipsToBounds:0];
+  [collectionView setDelegate:self];
+  [collectionView setClipsToBounds:0];
   scrollingHeaderTopConstraint = self->_scrollingHeaderTopConstraint;
   if (scrollingHeaderTopConstraint)
   {
     [(NSLayoutConstraint *)scrollingHeaderTopConstraint constant];
     [(GKDashboardChallengePlayerPickerViewController *)self setScrollingHeaderTopConstraintConstant:?];
-    [v5 sectionInset];
+    [collectionViewLayout sectionInset];
     [(GKDashboardChallengePlayerPickerViewController *)self setInitialInsets:?];
     [(GKDashboardChallengePlayerPickerViewController *)self setShouldApplyInitialOffset:1];
     [(UIView *)self->_scrollingHeader layoutIfNeeded];
@@ -88,7 +88,7 @@
     bottom = self->_initialInsets.bottom;
     right = self->_initialInsets.right;
     [(UIView *)self->_scrollingHeader bounds];
-    [v5 setSectionInset:{self->_initialInsets.top + v10, left, bottom, right}];
+    [collectionViewLayout setSectionInset:{self->_initialInsets.top + v10, left, bottom, right}];
   }
 
   if (!self->_sendButton)
@@ -97,8 +97,8 @@
     v12 = GKGameCenterUIFrameworkBundle();
     v13 = GKGetLocalizedStringFromTableInBundle();
     v14 = [v11 initWithTitle:v13 style:2 target:self action:sel_send_];
-    v15 = [(GKDashboardChallengePlayerPickerViewController *)self navigationItem];
-    [v15 setRightBarButtonItem:v14];
+    navigationItem = [(GKDashboardChallengePlayerPickerViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v14];
   }
 
   [(NSLayoutConstraint *)self->_customizeMessageBottomConstraint constant];
@@ -107,42 +107,42 @@
   [(GKDashboardChallengePlayerPickerViewController *)self _updateButtonEnableState];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v14.receiver = self;
   v14.super_class = GKDashboardChallengePlayerPickerViewController;
-  [(GKDashboardCollectionViewController *)&v14 viewWillAppear:a3];
-  v4 = [(GKDashboardChallengePlayerPickerViewController *)self navigationController];
-  v5 = [v4 viewControllers];
-  v6 = [v5 count];
+  [(GKDashboardCollectionViewController *)&v14 viewWillAppear:appear];
+  navigationController = [(GKDashboardChallengePlayerPickerViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  v6 = [viewControllers count];
 
   if (v6 == 1)
   {
-    v7 = [(GKDashboardChallengePlayerPickerViewController *)self navigationItem];
-    v8 = [v7 leftBarButtonItem];
+    navigationItem = [(GKDashboardChallengePlayerPickerViewController *)self navigationItem];
+    leftBarButtonItem = [navigationItem leftBarButtonItem];
 
-    if (!v8)
+    if (!leftBarButtonItem)
     {
       v9 = objc_alloc(MEMORY[0x277D751E0]);
       v10 = GKGameCenterUIFrameworkBundle();
       v11 = GKGetLocalizedStringFromTableInBundle();
       v12 = [v9 initWithTitle:v11 style:0 target:self action:sel_cancel_];
-      v13 = [(GKDashboardChallengePlayerPickerViewController *)self navigationItem];
-      [v13 setLeftBarButtonItem:v12];
+      navigationItem2 = [(GKDashboardChallengePlayerPickerViewController *)self navigationItem];
+      [navigationItem2 setLeftBarButtonItem:v12];
     }
   }
 
   [(GKDashboardChallengePlayerPickerViewController *)self applyInitialContentOffset];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(GKDashboardChallengePlayerPickerViewController *)self applyInitialContentOffset];
   [(GKDashboardChallengePlayerPickerViewController *)self setShouldIgnoreClearSelection:1];
   v5.receiver = self;
   v5.super_class = GKDashboardChallengePlayerPickerViewController;
-  [(GKDashboardCollectionViewController *)&v5 viewDidAppear:v3];
+  [(GKDashboardCollectionViewController *)&v5 viewDidAppear:appearCopy];
   [(GKDashboardChallengePlayerPickerViewController *)self setShouldIgnoreClearSelection:0];
   [(GKDashboardChallengePlayerPickerViewController *)self setShouldApplyInitialOffset:0];
 }
@@ -153,22 +153,22 @@
   {
     if ((*MEMORY[0x277D0C258] & 1) == 0)
     {
-      v3 = [MEMORY[0x277D75418] currentDevice];
-      v4 = [v3 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v4 == 1)
+      if (userInterfaceIdiom == 1)
       {
-        v8 = [(GKDashboardChallengePlayerPickerViewController *)self presentingViewController];
-        if (v8)
+        presentingViewController = [(GKDashboardChallengePlayerPickerViewController *)self presentingViewController];
+        if (presentingViewController)
         {
           [(NSLayoutConstraint *)self->_customizeMessageBottomConstraint setConstant:self->_initialCustomizeMessageBottomConstraintConstant];
         }
 
         else
         {
-          v5 = [(GKDashboardChallengePlayerPickerViewController *)self tabBarController];
-          v6 = [v5 tabBar];
-          [v6 bounds];
+          tabBarController = [(GKDashboardChallengePlayerPickerViewController *)self tabBarController];
+          tabBar = [tabBarController tabBar];
+          [tabBar bounds];
           [(NSLayoutConstraint *)self->_customizeMessageBottomConstraint setConstant:v7 + self->_initialCustomizeMessageBottomConstraintConstant];
         }
       }
@@ -176,53 +176,53 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = GKDashboardChallengePlayerPickerViewController;
-  v7 = a4;
-  [(GKDashboardChallengePlayerPickerViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(GKDashboardChallengePlayerPickerViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __101__GKDashboardChallengePlayerPickerViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_27966A690;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:&__block_literal_global_3];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:&__block_literal_global_3];
 }
 
 - (void)applyInitialContentOffset
 {
   if (self->_shouldApplyInitialOffset)
   {
-    v3 = [(GKDashboardCollectionViewController *)self dataSource];
-    v4 = [v3 selectedPlayers];
-    v5 = [v4 count];
+    dataSource = [(GKDashboardCollectionViewController *)self dataSource];
+    selectedPlayers = [dataSource selectedPlayers];
+    v5 = [selectedPlayers count];
 
     if (!v5)
     {
-      v11 = [(GKDashboardCollectionViewController *)self collectionView];
-      [v11 contentOffset];
+      collectionView = [(GKDashboardCollectionViewController *)self collectionView];
+      [collectionView contentOffset];
       v7 = v6;
       [(UIView *)self->_scrollingHeader bounds];
       v9 = v8;
-      [v11 contentInset];
-      [v11 setContentOffset:0 animated:{v7, v9 - v10}];
+      [collectionView contentInset];
+      [collectionView setContentOffset:0 animated:{v7, v9 - v10}];
     }
   }
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v6 = a3;
+  messageCopy = message;
   if (![(NSString *)self->_message isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [messageCopy copy];
     message = self->_message;
     self->_message = v4;
 
-    [(UITextField *)self->_messageField setText:v6];
+    [(UITextField *)self->_messageField setText:messageCopy];
   }
 }
 
@@ -254,13 +254,13 @@ id __58__GKDashboardChallengePlayerPickerViewController_loadData__block_invoke(u
   return objc_msgSendSuper2(&v2, sel_loadData);
 }
 
-- (void)dataUpdated:(BOOL)a3 withError:(id)a4
+- (void)dataUpdated:(BOOL)updated withError:(id)error
 {
   v25 = *MEMORY[0x277D85DE8];
   v23.receiver = self;
   v23.super_class = GKDashboardChallengePlayerPickerViewController;
-  [(GKDashboardCollectionViewController *)&v23 dataUpdated:a3 withError:a4];
-  v5 = [(GKDashboardCollectionViewController *)self dataSource];
+  [(GKDashboardCollectionViewController *)&v23 dataUpdated:updated withError:error];
+  dataSource = [(GKDashboardCollectionViewController *)self dataSource];
   v6 = MEMORY[0x277CBEB18];
   v7 = [(NSArray *)self->_initiallySelectedPlayers count];
   if (v7 <= 1)
@@ -296,7 +296,7 @@ id __58__GKDashboardChallengePlayerPickerViewController_loadData__block_invoke(u
             objc_enumerationMutation(v10);
           }
 
-          v15 = [v5 indexPathForPlayer:{*(*(&v19 + 1) + 8 * v14), v19}];
+          v15 = [dataSource indexPathForPlayer:{*(*(&v19 + 1) + 8 * v14), v19}];
           if (v15)
           {
             [v9 addObject:v15];
@@ -315,10 +315,10 @@ id __58__GKDashboardChallengePlayerPickerViewController_loadData__block_invoke(u
     [(GKDashboardChallengePlayerPickerViewController *)self setInitiallySelectedPlayers:0];
   }
 
-  else if ([v5 itemCount] == 1)
+  else if ([dataSource itemCount] == 1)
   {
-    v16 = [v5 searchText];
-    v17 = [v16 length];
+    searchText = [dataSource searchText];
+    v17 = [searchText length];
 
     if (!v17)
     {
@@ -335,17 +335,17 @@ id __58__GKDashboardChallengePlayerPickerViewController_loadData__block_invoke(u
   [(GKDashboardChallengePlayerPickerViewController *)self _updateButtonEnableState];
 }
 
-- (void)selectPlayersAtIndexPaths:(id)a3
+- (void)selectPlayersAtIndexPaths:(id)paths
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(GKDashboardCollectionViewController *)self dataSource];
-  v6 = [(GKDashboardCollectionViewController *)self collectionView];
+  pathsCopy = paths;
+  dataSource = [(GKDashboardCollectionViewController *)self dataSource];
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v4;
+  v7 = pathsCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -362,10 +362,10 @@ id __58__GKDashboardChallengePlayerPickerViewController_loadData__block_invoke(u
         }
 
         v13 = *(*(&v14 + 1) + 8 * i);
-        if ([v5 collectionView:v6 shouldSelectItemAtIndexPath:{v13, v14}])
+        if ([dataSource collectionView:collectionView shouldSelectItemAtIndexPath:{v13, v14}])
         {
-          [v6 selectItemAtIndexPath:v13 animated:0 scrollPosition:18];
-          [(GKDashboardChallengePlayerPickerViewController *)self collectionView:v6 didSelectItemAtIndexPath:v13];
+          [collectionView selectItemAtIndexPath:v13 animated:0 scrollPosition:18];
+          [(GKDashboardChallengePlayerPickerViewController *)self collectionView:collectionView didSelectItemAtIndexPath:v13];
           v10 = 1;
         }
       }
@@ -386,26 +386,26 @@ id __58__GKDashboardChallengePlayerPickerViewController_loadData__block_invoke(u
   }
 }
 
-- (void)setupNoContentView:(id)a3 withError:(id)a4
+- (void)setupNoContentView:(id)view withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GKDashboardCollectionViewController *)self dataSource];
-  v9 = [v8 searchText];
-  v10 = [v9 length];
+  viewCopy = view;
+  errorCopy = error;
+  dataSource = [(GKDashboardCollectionViewController *)self dataSource];
+  searchText = [dataSource searchText];
+  v10 = [searchText length];
 
   if (v10)
   {
     v11 = GKGameCenterUIFrameworkBundle();
     v12 = GKGetLocalizedStringFromTableInBundle();
-    [v6 setMessage:v12];
+    [viewCopy setMessage:v12];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = GKDashboardChallengePlayerPickerViewController;
-    [(GKDashboardCollectionViewController *)&v13 setupNoContentView:v6 withError:v7];
+    [(GKDashboardCollectionViewController *)&v13 setupNoContentView:viewCopy withError:errorCopy];
   }
 }
 
@@ -416,17 +416,17 @@ id __58__GKDashboardChallengePlayerPickerViewController_loadData__block_invoke(u
   {
     v4 = v3;
     v8[0] = v3;
-    v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
+    preferredFocusEnvironments = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = GKDashboardChallengePlayerPickerViewController;
-    v5 = [(GKDashboardCollectionViewController *)&v7 preferredFocusEnvironments];
+    preferredFocusEnvironments = [(GKDashboardCollectionViewController *)&v7 preferredFocusEnvironments];
   }
 
-  return v5;
+  return preferredFocusEnvironments;
 }
 
 - (void)clearSelection
@@ -436,26 +436,26 @@ id __58__GKDashboardChallengePlayerPickerViewController_loadData__block_invoke(u
     v4.receiver = self;
     v4.super_class = GKDashboardChallengePlayerPickerViewController;
     [(GKDashboardCollectionViewController *)&v4 clearSelection];
-    v3 = [(GKDashboardCollectionViewController *)self dataSource];
-    [v3 clearSelection];
+    dataSource = [(GKDashboardCollectionViewController *)self dataSource];
+    [dataSource clearSelection];
 
     [(GKDashboardChallengePlayerPickerViewController *)self _updateButtonEnableState];
   }
 }
 
-- (void)send:(id)a3
+- (void)send:(id)send
 {
-  v7 = [(GKDashboardCollectionViewController *)self dataSource];
-  v4 = [v7 selectedPlayers];
-  if ([v4 count] < 0xB)
+  dataSource = [(GKDashboardCollectionViewController *)self dataSource];
+  selectedPlayers = [dataSource selectedPlayers];
+  if ([selectedPlayers count] < 0xB)
   {
-    if ([v4 count])
+    if ([selectedPlayers count])
     {
-      [(GKChallenge *)self->_challenge issueToPlayers:v4 message:self->_message];
+      [(GKChallenge *)self->_challenge issueToPlayers:selectedPlayers message:self->_message];
       completionHandler = self->_completionHandler;
       if (completionHandler)
       {
-        completionHandler[2](completionHandler, v4, self->_message);
+        completionHandler[2](completionHandler, selectedPlayers, self->_message);
       }
 
       [(UIViewController *)self _gkRemoveViewController:self animated:1];
@@ -464,20 +464,20 @@ id __58__GKDashboardChallengePlayerPickerViewController_loadData__block_invoke(u
 
   else
   {
-    v5 = [MEMORY[0x277D0BFF0] tooManyPlayersAlertController];
-    [(GKDashboardChallengePlayerPickerViewController *)self presentViewController:v5 animated:1 completion:0];
+    tooManyPlayersAlertController = [MEMORY[0x277D0BFF0] tooManyPlayersAlertController];
+    [(GKDashboardChallengePlayerPickerViewController *)self presentViewController:tooManyPlayersAlertController animated:1 completion:0];
   }
 }
 
-- (void)addMessage:(id)a3
+- (void)addMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(GKDashboardCollectionViewController *)self dataSource];
+  messageCopy = message;
+  dataSource = [(GKDashboardCollectionViewController *)self dataSource];
   v6 = [GKChallengeComposeController alloc];
   challenge = self->_challenge;
   message = self->_message;
-  v9 = [v5 selectedPlayers];
-  v10 = [(GKChallengeComposeController *)v6 initWithChallenge:challenge defaultMessage:message players:v9];
+  selectedPlayers = [dataSource selectedPlayers];
+  v10 = [(GKChallengeComposeController *)v6 initWithChallenge:challenge defaultMessage:message players:selectedPlayers];
 
   from = 0;
   v11[0] = MEMORY[0x277D85DD0];
@@ -523,7 +523,7 @@ uint64_t __61__GKDashboardChallengePlayerPickerViewController_addMessage___block
   return [v2 send:v2];
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
   completionHandler = self->_completionHandler;
   if (completionHandler)
@@ -534,13 +534,13 @@ uint64_t __61__GKDashboardChallengePlayerPickerViewController_addMessage___block
   [(UIViewController *)self _gkRemoveViewController:self animated:1];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
   messageField = self->_messageField;
-  if (messageField == a3)
+  if (messageField == return)
   {
-    v6 = [(UITextField *)self->_messageField text];
-    [(GKDashboardChallengePlayerPickerViewController *)self setMessage:v6];
+    text = [(UITextField *)self->_messageField text];
+    [(GKDashboardChallengePlayerPickerViewController *)self setMessage:text];
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -550,20 +550,20 @@ uint64_t __61__GKDashboardChallengePlayerPickerViewController_addMessage___block
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
-  return messageField != a3;
+  return messageField != return;
 }
 
 - (void)_updateButtonEnableState
 {
-  v8 = [(GKDashboardCollectionViewController *)self dataSource];
-  v3 = [v8 selectedPlayers];
-  v4 = [v3 count];
+  dataSource = [(GKDashboardCollectionViewController *)self dataSource];
+  selectedPlayers = [dataSource selectedPlayers];
+  v4 = [selectedPlayers count];
 
   [(UIButton *)self->_sendButton setEnabled:v4 != 0];
   if (v4)
   {
-    v5 = [MEMORY[0x277D0C1D8] shared];
-    -[UIBarButtonItem setEnabled:](self->_customizeMessageButton, "setEnabled:", [v5 shouldAllowCustomCommunication]);
+    mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+    -[UIBarButtonItem setEnabled:](self->_customizeMessageButton, "setEnabled:", [mEMORY[0x277D0C1D8] shouldAllowCustomCommunication]);
   }
 
   else
@@ -573,35 +573,35 @@ uint64_t __61__GKDashboardChallengePlayerPickerViewController_addMessage___block
 
   if (!self->_sendButton)
   {
-    v6 = [(GKDashboardChallengePlayerPickerViewController *)self navigationItem];
-    v7 = [v6 rightBarButtonItem];
-    [v7 setEnabled:v4 != 0];
+    navigationItem = [(GKDashboardChallengePlayerPickerViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:v4 != 0];
   }
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = a3;
-  [v4 setText:0];
-  [v4 resignFirstResponder];
+  clickedCopy = clicked;
+  [clickedCopy setText:0];
+  [clickedCopy resignFirstResponder];
 
   [(GKDashboardChallengePlayerPickerViewController *)self setSearchText:0];
 }
 
-- (void)setSearchText:(id)a3
+- (void)setSearchText:(id)text
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(GKDashboardCollectionViewController *)self dataSource];
-  [v5 setSearchText:v4];
+  textCopy = text;
+  dataSource = [(GKDashboardCollectionViewController *)self dataSource];
+  [dataSource setSearchText:textCopy];
   [(GKDashboardChallengePlayerPickerViewController *)self dataUpdated:1 withError:0];
-  v6 = [(GKDashboardCollectionViewController *)self collectionView];
-  v7 = [v5 selectedPlayers];
+  collectionView = [(GKDashboardCollectionViewController *)self collectionView];
+  selectedPlayers = [dataSource selectedPlayers];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [selectedPlayers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -613,45 +613,45 @@ uint64_t __61__GKDashboardChallengePlayerPickerViewController_addMessage___block
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(selectedPlayers);
         }
 
-        v12 = [v5 indexPathForPlayer:*(*(&v13 + 1) + 8 * v11)];
-        [v6 selectItemAtIndexPath:v12 animated:0 scrollPosition:0];
+        v12 = [dataSource indexPathForPlayer:*(*(&v13 + 1) + 8 * v11)];
+        [collectionView selectItemAtIndexPath:v12 animated:0 scrollPosition:0];
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [selectedPlayers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v5.receiver = self;
   v5.super_class = GKDashboardChallengePlayerPickerViewController;
-  [(GKDashboardCollectionViewController *)&v5 collectionView:a3 didSelectItemAtIndexPath:a4];
+  [(GKDashboardCollectionViewController *)&v5 collectionView:view didSelectItemAtIndexPath:path];
   [(GKDashboardChallengePlayerPickerViewController *)self _updateButtonEnableState];
 }
 
-- (void)collectionView:(id)a3 didDeselectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didDeselectItemAtIndexPath:(id)path
 {
   v5.receiver = self;
   v5.super_class = GKDashboardChallengePlayerPickerViewController;
-  [(GKDashboardCollectionViewController *)&v5 collectionView:a3 didDeselectItemAtIndexPath:a4];
+  [(GKDashboardCollectionViewController *)&v5 collectionView:view didDeselectItemAtIndexPath:path];
   [(GKDashboardChallengePlayerPickerViewController *)self _updateButtonEnableState];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   if (self->_scrollingHeaderTopConstraint)
   {
     scrollingHeaderTopConstraintConstant = self->_scrollingHeaderTopConstraintConstant;
-    [a3 contentOffset];
+    [scroll contentOffset];
     [(NSLayoutConstraint *)self->_scrollingHeaderTopConstraint setConstant:scrollingHeaderTopConstraintConstant - v5];
 
     [(GKDashboardChallengePlayerPickerViewController *)self applyInitialContentOffset];

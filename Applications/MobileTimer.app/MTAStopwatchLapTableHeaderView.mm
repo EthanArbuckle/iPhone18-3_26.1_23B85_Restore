@@ -1,5 +1,5 @@
 @interface MTAStopwatchLapTableHeaderView
-- (MTAStopwatchLapTableHeaderView)initWithFrame:(CGRect)a3;
+- (MTAStopwatchLapTableHeaderView)initWithFrame:(CGRect)frame;
 - (id)labelFont;
 - (void)_updateForContentSizeChange;
 - (void)setupConstraints;
@@ -7,17 +7,17 @@
 
 @implementation MTAStopwatchLapTableHeaderView
 
-- (MTAStopwatchLapTableHeaderView)initWithFrame:(CGRect)a3
+- (MTAStopwatchLapTableHeaderView)initWithFrame:(CGRect)frame
 {
   v40.receiver = self;
   v40.super_class = MTAStopwatchLapTableHeaderView;
-  v3 = [(MTAStopwatchLapTableHeaderView *)&v40 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTAStopwatchLapTableHeaderView *)&v40 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor mtui_backgroundColor];
     [(MTAStopwatchLapTableHeaderView *)v3 setBackgroundColor:v4];
 
-    v5 = [(MTAStopwatchLapTableHeaderView *)v3 labelFont];
+    labelFont = [(MTAStopwatchLapTableHeaderView *)v3 labelFont];
     v6 = [UILabel alloc];
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
@@ -25,66 +25,66 @@
     v10 = [v6 initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [(MTAStopwatchLapTableHeaderView *)v3 setLapNumberLabel:v10];
 
-    v11 = [(MTAStopwatchLapTableHeaderView *)v3 lapNumberLabel];
-    [v11 setFont:v5];
+    lapNumberLabel = [(MTAStopwatchLapTableHeaderView *)v3 lapNumberLabel];
+    [lapNumberLabel setFont:labelFont];
 
     v12 = +[NSBundle mainBundle];
     v13 = [v12 localizedStringForKey:@"STOPWATCH_LAP_HEADER" value:&stru_1000AEF10 table:0];
-    v14 = [(MTAStopwatchLapTableHeaderView *)v3 lapNumberLabel];
-    [v14 setText:v13];
+    lapNumberLabel2 = [(MTAStopwatchLapTableHeaderView *)v3 lapNumberLabel];
+    [lapNumberLabel2 setText:v13];
 
     v15 = +[UIColor mtui_secondaryTextColor];
-    v16 = [(MTAStopwatchLapTableHeaderView *)v3 lapNumberLabel];
-    [v16 setTextColor:v15];
+    lapNumberLabel3 = [(MTAStopwatchLapTableHeaderView *)v3 lapNumberLabel];
+    [lapNumberLabel3 setTextColor:v15];
 
-    v17 = [(MTAStopwatchLapTableHeaderView *)v3 lapNumberLabel];
-    [(MTAStopwatchLapTableHeaderView *)v3 addSubview:v17];
+    lapNumberLabel4 = [(MTAStopwatchLapTableHeaderView *)v3 lapNumberLabel];
+    [(MTAStopwatchLapTableHeaderView *)v3 addSubview:lapNumberLabel4];
 
     v18 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [(MTAStopwatchLapTableHeaderView *)v3 setSplitLabel:v18];
 
-    v19 = [(MTAStopwatchLapTableHeaderView *)v3 splitLabel];
-    [v19 setFont:v5];
+    splitLabel = [(MTAStopwatchLapTableHeaderView *)v3 splitLabel];
+    [splitLabel setFont:labelFont];
 
     v20 = +[NSBundle mainBundle];
     v21 = [v20 localizedStringForKey:@"STOPWATCH_SPLIT_HEADER" value:&stru_1000AEF10 table:0];
-    v22 = [(MTAStopwatchLapTableHeaderView *)v3 splitLabel];
-    [v22 setText:v21];
+    splitLabel2 = [(MTAStopwatchLapTableHeaderView *)v3 splitLabel];
+    [splitLabel2 setText:v21];
 
     v23 = +[UIColor mtui_secondaryTextColor];
-    v24 = [(MTAStopwatchLapTableHeaderView *)v3 splitLabel];
-    [v24 setTextColor:v23];
+    splitLabel3 = [(MTAStopwatchLapTableHeaderView *)v3 splitLabel];
+    [splitLabel3 setTextColor:v23];
 
-    v25 = [(MTAStopwatchLapTableHeaderView *)v3 splitLabel];
-    [(MTAStopwatchLapTableHeaderView *)v3 addSubview:v25];
+    splitLabel4 = [(MTAStopwatchLapTableHeaderView *)v3 splitLabel];
+    [(MTAStopwatchLapTableHeaderView *)v3 addSubview:splitLabel4];
 
     v26 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [(MTAStopwatchLapTableHeaderView *)v3 setTotalLabel:v26];
 
-    v27 = [(MTAStopwatchLapTableHeaderView *)v3 totalLabel];
-    [v27 setFont:v5];
+    totalLabel = [(MTAStopwatchLapTableHeaderView *)v3 totalLabel];
+    [totalLabel setFont:labelFont];
 
     v28 = +[NSBundle mainBundle];
     v29 = [v28 localizedStringForKey:@"STOPWATCH_TOTAL_HEADER" value:&stru_1000AEF10 table:0];
-    v30 = [(MTAStopwatchLapTableHeaderView *)v3 totalLabel];
-    [v30 setText:v29];
+    totalLabel2 = [(MTAStopwatchLapTableHeaderView *)v3 totalLabel];
+    [totalLabel2 setText:v29];
 
     v31 = +[UIColor mtui_secondaryTextColor];
-    v32 = [(MTAStopwatchLapTableHeaderView *)v3 totalLabel];
-    [v32 setTextColor:v31];
+    totalLabel3 = [(MTAStopwatchLapTableHeaderView *)v3 totalLabel];
+    [totalLabel3 setTextColor:v31];
 
-    v33 = [(MTAStopwatchLapTableHeaderView *)v3 totalLabel];
-    [(MTAStopwatchLapTableHeaderView *)v3 addSubview:v33];
+    totalLabel4 = [(MTAStopwatchLapTableHeaderView *)v3 totalLabel];
+    [(MTAStopwatchLapTableHeaderView *)v3 addSubview:totalLabel4];
 
     v34 = objc_opt_new();
     [(MTAStopwatchLapTableHeaderView *)v3 setBottomKeylineView:v34];
 
     v35 = +[UIColor mtui_cellSeparatorColor];
-    v36 = [(MTAStopwatchLapTableHeaderView *)v3 bottomKeylineView];
-    [v36 setBackgroundColor:v35];
+    bottomKeylineView = [(MTAStopwatchLapTableHeaderView *)v3 bottomKeylineView];
+    [bottomKeylineView setBackgroundColor:v35];
 
-    v37 = [(MTAStopwatchLapTableHeaderView *)v3 bottomKeylineView];
-    [(MTAStopwatchLapTableHeaderView *)v3 addSubview:v37];
+    bottomKeylineView2 = [(MTAStopwatchLapTableHeaderView *)v3 bottomKeylineView];
+    [(MTAStopwatchLapTableHeaderView *)v3 addSubview:bottomKeylineView2];
 
     v38 = +[NSNotificationCenter defaultCenter];
     [v38 addObserver:v3 selector:"_updateForContentSizeChange" name:UIContentSizeCategoryDidChangeNotification object:0];
@@ -97,33 +97,33 @@
 
 - (void)_updateForContentSizeChange
 {
-  v12 = [(MTAStopwatchLapTableHeaderView *)self labelFont];
-  v3 = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabel];
-  [v3 setFont:v12];
+  labelFont = [(MTAStopwatchLapTableHeaderView *)self labelFont];
+  lapNumberLabel = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabel];
+  [lapNumberLabel setFont:labelFont];
 
-  v4 = [(MTAStopwatchLapTableHeaderView *)self splitLabel];
-  [v4 setFont:v12];
+  splitLabel = [(MTAStopwatchLapTableHeaderView *)self splitLabel];
+  [splitLabel setFont:labelFont];
 
-  v5 = [(MTAStopwatchLapTableHeaderView *)self totalLabel];
-  [v5 setFont:v12];
+  totalLabel = [(MTAStopwatchLapTableHeaderView *)self totalLabel];
+  [totalLabel setFont:labelFont];
 
-  [v12 _scaledValueForValue:24.0];
+  [labelFont _scaledValueForValue:24.0];
   v7 = v6;
-  v8 = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabelBaselineTopOffsetConstraint];
-  [v8 setConstant:v7];
+  lapNumberLabelBaselineTopOffsetConstraint = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabelBaselineTopOffsetConstraint];
+  [lapNumberLabelBaselineTopOffsetConstraint setConstant:v7];
 
-  [v12 _scaledValueForValue:15.0];
+  [labelFont _scaledValueForValue:15.0];
   v10 = v9;
-  v11 = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabelBaselineBottomOffsetConstraint];
-  [v11 setConstant:v10];
+  lapNumberLabelBaselineBottomOffsetConstraint = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabelBaselineBottomOffsetConstraint];
+  [lapNumberLabelBaselineBottomOffsetConstraint setConstant:v10];
 }
 
 - (id)labelFont
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v2 preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryCompareToCategory(v3, UIContentSizeCategoryAccessibilityExtraLarge) == NSOrderedDescending)
+  if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, UIContentSizeCategoryAccessibilityExtraLarge) == NSOrderedDescending)
   {
     v4 = [UITraitCollection traitCollectionWithPreferredContentSizeCategory:UIContentSizeCategoryAccessibilityExtraLarge];
   }
@@ -140,94 +140,94 @@
 
 - (void)setupConstraints
 {
-  v3 = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabel];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  lapNumberLabel = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabel];
+  [lapNumberLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(MTAStopwatchLapTableHeaderView *)self splitLabel];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  splitLabel = [(MTAStopwatchLapTableHeaderView *)self splitLabel];
+  [splitLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(MTAStopwatchLapTableHeaderView *)self totalLabel];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  totalLabel = [(MTAStopwatchLapTableHeaderView *)self totalLabel];
+  [totalLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(MTAStopwatchLapTableHeaderView *)self bottomKeylineView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bottomKeylineView = [(MTAStopwatchLapTableHeaderView *)self bottomKeylineView];
+  [bottomKeylineView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v56 = objc_opt_new();
-  v7 = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabel];
-  v8 = [v7 leadingAnchor];
-  v9 = [(MTAStopwatchLapTableHeaderView *)self leadingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  lapNumberLabel2 = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabel];
+  leadingAnchor = [lapNumberLabel2 leadingAnchor];
+  leadingAnchor2 = [(MTAStopwatchLapTableHeaderView *)self leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v56 addObject:v10];
 
-  v11 = [(MTAStopwatchLapTableHeaderView *)self labelFont];
-  v12 = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabel];
-  v13 = [v12 lastBaselineAnchor];
-  v14 = [(MTAStopwatchLapTableHeaderView *)self topAnchor];
-  [v11 _scaledValueForValue:24.0];
-  v15 = [v13 constraintEqualToAnchor:v14 constant:?];
+  labelFont = [(MTAStopwatchLapTableHeaderView *)self labelFont];
+  lapNumberLabel3 = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabel];
+  lastBaselineAnchor = [lapNumberLabel3 lastBaselineAnchor];
+  topAnchor = [(MTAStopwatchLapTableHeaderView *)self topAnchor];
+  [labelFont _scaledValueForValue:24.0];
+  v15 = [lastBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
   [(MTAStopwatchLapTableHeaderView *)self setLapNumberLabelBaselineTopOffsetConstraint:v15];
 
-  v16 = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabelBaselineTopOffsetConstraint];
-  [v56 addObject:v16];
+  lapNumberLabelBaselineTopOffsetConstraint = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabelBaselineTopOffsetConstraint];
+  [v56 addObject:lapNumberLabelBaselineTopOffsetConstraint];
 
-  v17 = [(MTAStopwatchLapTableHeaderView *)self bottomAnchor];
-  v18 = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabel];
-  v19 = [v18 lastBaselineAnchor];
-  [v11 _scaledValueForValue:15.0];
-  v20 = [v17 constraintEqualToAnchor:v19 constant:?];
+  bottomAnchor = [(MTAStopwatchLapTableHeaderView *)self bottomAnchor];
+  lapNumberLabel4 = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabel];
+  lastBaselineAnchor2 = [lapNumberLabel4 lastBaselineAnchor];
+  [labelFont _scaledValueForValue:15.0];
+  v20 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor2 constant:?];
   [(MTAStopwatchLapTableHeaderView *)self setLapNumberLabelBaselineBottomOffsetConstraint:v20];
 
-  v21 = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabelBaselineBottomOffsetConstraint];
-  [v56 addObject:v21];
+  lapNumberLabelBaselineBottomOffsetConstraint = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabelBaselineBottomOffsetConstraint];
+  [v56 addObject:lapNumberLabelBaselineBottomOffsetConstraint];
 
-  v22 = [(MTAStopwatchLapTableHeaderView *)self splitLabel];
-  v23 = [v22 centerXAnchor];
-  v24 = [(MTAStopwatchLapTableHeaderView *)self centerXAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  splitLabel2 = [(MTAStopwatchLapTableHeaderView *)self splitLabel];
+  centerXAnchor = [splitLabel2 centerXAnchor];
+  centerXAnchor2 = [(MTAStopwatchLapTableHeaderView *)self centerXAnchor];
+  v25 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v56 addObject:v25];
 
-  v26 = [(MTAStopwatchLapTableHeaderView *)self splitLabel];
-  v27 = [v26 lastBaselineAnchor];
-  v28 = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabel];
-  v29 = [v28 lastBaselineAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29];
+  splitLabel3 = [(MTAStopwatchLapTableHeaderView *)self splitLabel];
+  lastBaselineAnchor3 = [splitLabel3 lastBaselineAnchor];
+  lapNumberLabel5 = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabel];
+  lastBaselineAnchor4 = [lapNumberLabel5 lastBaselineAnchor];
+  v30 = [lastBaselineAnchor3 constraintEqualToAnchor:lastBaselineAnchor4];
   [v56 addObject:v30];
 
-  v31 = [(MTAStopwatchLapTableHeaderView *)self totalLabel];
-  v32 = [v31 trailingAnchor];
-  v33 = [(MTAStopwatchLapTableHeaderView *)self trailingAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33];
+  totalLabel2 = [(MTAStopwatchLapTableHeaderView *)self totalLabel];
+  trailingAnchor = [totalLabel2 trailingAnchor];
+  trailingAnchor2 = [(MTAStopwatchLapTableHeaderView *)self trailingAnchor];
+  v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v56 addObject:v34];
 
-  v35 = [(MTAStopwatchLapTableHeaderView *)self totalLabel];
-  v36 = [v35 lastBaselineAnchor];
-  v37 = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabel];
-  v38 = [v37 lastBaselineAnchor];
-  v39 = [v36 constraintEqualToAnchor:v38];
+  totalLabel3 = [(MTAStopwatchLapTableHeaderView *)self totalLabel];
+  lastBaselineAnchor5 = [totalLabel3 lastBaselineAnchor];
+  lapNumberLabel6 = [(MTAStopwatchLapTableHeaderView *)self lapNumberLabel];
+  lastBaselineAnchor6 = [lapNumberLabel6 lastBaselineAnchor];
+  v39 = [lastBaselineAnchor5 constraintEqualToAnchor:lastBaselineAnchor6];
   [v56 addObject:v39];
 
-  v40 = [(MTAStopwatchLapTableHeaderView *)self bottomKeylineView];
-  v41 = [v40 leadingAnchor];
-  v42 = [(MTAStopwatchLapTableHeaderView *)self leadingAnchor];
-  v43 = [v41 constraintEqualToAnchor:v42];
+  bottomKeylineView2 = [(MTAStopwatchLapTableHeaderView *)self bottomKeylineView];
+  leadingAnchor3 = [bottomKeylineView2 leadingAnchor];
+  leadingAnchor4 = [(MTAStopwatchLapTableHeaderView *)self leadingAnchor];
+  v43 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v56 addObject:v43];
 
-  v44 = [(MTAStopwatchLapTableHeaderView *)self bottomKeylineView];
-  v45 = [v44 trailingAnchor];
-  v46 = [(MTAStopwatchLapTableHeaderView *)self trailingAnchor];
-  v47 = [v45 constraintEqualToAnchor:v46];
+  bottomKeylineView3 = [(MTAStopwatchLapTableHeaderView *)self bottomKeylineView];
+  trailingAnchor3 = [bottomKeylineView3 trailingAnchor];
+  trailingAnchor4 = [(MTAStopwatchLapTableHeaderView *)self trailingAnchor];
+  v47 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v56 addObject:v47];
 
-  v48 = [(MTAStopwatchLapTableHeaderView *)self bottomKeylineView];
-  v49 = [v48 bottomAnchor];
-  v50 = [(MTAStopwatchLapTableHeaderView *)self bottomAnchor];
-  v51 = [v49 constraintEqualToAnchor:v50];
+  bottomKeylineView4 = [(MTAStopwatchLapTableHeaderView *)self bottomKeylineView];
+  bottomAnchor2 = [bottomKeylineView4 bottomAnchor];
+  bottomAnchor3 = [(MTAStopwatchLapTableHeaderView *)self bottomAnchor];
+  v51 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   [v56 addObject:v51];
 
-  v52 = [(MTAStopwatchLapTableHeaderView *)self bottomKeylineView];
-  v53 = [v52 heightAnchor];
+  bottomKeylineView5 = [(MTAStopwatchLapTableHeaderView *)self bottomKeylineView];
+  heightAnchor = [bottomKeylineView5 heightAnchor];
   MTUIMainScreenScale();
-  v55 = [v53 constraintEqualToConstant:1.0 / v54];
+  v55 = [heightAnchor constraintEqualToConstant:1.0 / v54];
   [v56 addObject:v55];
 
   [NSLayoutConstraint activateConstraints:v56];

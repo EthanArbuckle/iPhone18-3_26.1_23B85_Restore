@@ -1,6 +1,6 @@
 @interface IdsDeviceMutationWithExt
-+ (id)parseFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)parseFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (IdsDeviceMutationWithExt)init;
 - (id)data;
 @end
@@ -23,16 +23,16 @@
 
 - (id)data
 {
-  v2 = self;
+  selfCopy = self;
   v8.receiver = self;
   v8.super_class = IdsDeviceMutationWithExt;
-  v3 = [(IdsDeviceMutation *)&v8 data];
-  v4 = [v3 mutableCopy];
+  data = [(IdsDeviceMutation *)&v8 data];
+  v4 = [data mutableCopy];
 
-  v5 = [(IdsDeviceMutationWithExt *)v2 extensions];
-  LODWORD(v2) = [(TLSMessageClass *)v2 encodeExtensions:v5 buffer:v4];
+  extensions = [(IdsDeviceMutationWithExt *)selfCopy extensions];
+  LODWORD(selfCopy) = [(TLSMessageClass *)selfCopy encodeExtensions:extensions buffer:v4];
 
-  if (v2)
+  if (selfCopy)
   {
     v6 = v4;
   }
@@ -45,30 +45,30 @@
   return v6;
 }
 
-+ (id)parseFromData:(id)a3 error:(id *)a4
++ (id)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v14.receiver = a1;
+  dataCopy = data;
+  v14.receiver = self;
   v14.super_class = &OBJC_METACLASS___IdsDeviceMutationWithExt;
-  v7 = objc_msgSendSuper2(&v14, "parseFromData:error:", v6, a4);
+  v7 = objc_msgSendSuper2(&v14, "parseFromData:error:", dataCopy, error);
   if (v7)
   {
     v13 = 0;
-    v8 = [v7 parseExtensions:objc_msgSend(v7 end:"parsedLength") + objc_msgSend(v6 result:{"bytes"), objc_msgSend(v6, "length") + objc_msgSend(v6, "bytes"), &v13}];
+    v8 = [v7 parseExtensions:objc_msgSend(v7 end:"parsedLength") + objc_msgSend(dataCopy result:{"bytes"), objc_msgSend(dataCopy, "length") + objc_msgSend(dataCopy, "bytes"), &v13}];
     v9 = v13;
     if (v8)
     {
       v10 = [NSMutableArray arrayWithArray:v9];
       [v7 setExtensions:v10];
 
-      [v7 setParsedLength:{v8 - objc_msgSend(v6, "bytes")}];
+      [v7 setParsedLength:{v8 - objc_msgSend(dataCopy, "bytes")}];
       v11 = v7;
     }
 
-    else if (a4)
+    else if (error)
     {
       [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-248 description:@"failed to parse extensions from Mutation"];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
     }
 
     else
@@ -85,10 +85,10 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -98,11 +98,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(IdsDeviceMutationWithExt *)self data];
-      v7 = [(IdsDeviceMutationWithExt *)v5 data];
+      v5 = equalCopy;
+      data = [(IdsDeviceMutationWithExt *)self data];
+      data2 = [(IdsDeviceMutationWithExt *)v5 data];
 
-      v8 = [v6 isEqualToData:v7];
+      v8 = [data isEqualToData:data2];
     }
 
     else

@@ -1,10 +1,10 @@
 @interface _MPCProtoRadioContentReferenceLibraryAlbumContentReference
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MPCProtoRadioContentReferenceLibraryAlbumContentReference
@@ -36,16 +36,16 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   albumName = self->_albumName;
-  if (albumName | *(v4 + 3))
+  if (albumName | *(equalCopy + 3))
   {
     if (![(NSString *)albumName isEqual:?])
     {
@@ -55,23 +55,23 @@ LABEL_3:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_representativeItemCloudID != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_representativeItemCloudID != *(equalCopy + 1))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_13:
     v6 = 0;
     goto LABEL_14;
   }
 
-  v6 = (*(v4 + 32) & 2) == 0;
+  v6 = (*(equalCopy + 32) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_storeAdamID != *(v4 + 2))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_storeAdamID != *(equalCopy + 2))
     {
       goto LABEL_13;
     }
@@ -84,10 +84,10 @@ LABEL_14:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_albumName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_albumName copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -108,39 +108,39 @@ LABEL_14:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_albumName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   albumName = self->_albumName;
   if (albumName)
   {
-    [v3 setObject:albumName forKey:@"albumName"];
+    [dictionary setObject:albumName forKey:@"albumName"];
   }
 
   has = self->_has;
@@ -167,8 +167,8 @@ LABEL_14:
   v8.receiver = self;
   v8.super_class = _MPCProtoRadioContentReferenceLibraryAlbumContentReference;
   v4 = [(_MPCProtoRadioContentReferenceLibraryAlbumContentReference *)&v8 description];
-  v5 = [(_MPCProtoRadioContentReferenceLibraryAlbumContentReference *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MPCProtoRadioContentReferenceLibraryAlbumContentReference *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

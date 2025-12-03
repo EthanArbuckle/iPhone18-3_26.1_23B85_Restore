@@ -1,34 +1,34 @@
 @interface MUPDFContentViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axAKOverlayView;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axHighlightPopoverDismissed;
-- (void)_axHighlightPopoverPresentedForAnnotation:(id)a3 withHighlightController:(id)a4 pullFocus:(BOOL)a5;
-- (void)loadContentWithCompletionBlock:(id)a3;
+- (void)_axHighlightPopoverPresentedForAnnotation:(id)annotation withHighlightController:(id)controller pullFocus:(BOOL)focus;
+- (void)loadContentWithCompletionBlock:(id)block;
 @end
 
 @implementation MUPDFContentViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AKOverlayView"];
-  [v3 validateClass:@"AKHighlightColorEditorController"];
-  [v3 validateClass:@"AKAnnotationLayer"];
-  [v3 validateClass:@"MUPDFContentViewController" isKindOfClass:@"MUContentViewController"];
-  [v3 validateClass:@"AKHighlightColorEditorController" isKindOfClass:@"AKAnnotationPopoverViewController"];
-  [v3 validateClass:@"MUPDFContentViewController" hasInstanceMethod:@"pdfView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MUContentViewController" hasInstanceMethod:@"annotationController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKController" hasInstanceMethod:@"pageControllers" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKController" hasInstanceMethod:@"currentPageIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"AKPageController" hasInstanceMethod:@"overlayView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKOverlayView" hasInstanceMethod:@"pageController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKPageController" hasInstanceMethod:@"highlightColorEditorController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKHighlightColorEditorController" hasInstanceMethod:@"calloutBar" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKAnnotationLayer" hasInstanceMethod:@"annotation" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKAnnotationPopoverViewController" hasInstanceVariable:@"mAnnotation" withType:"AKAnnotation"];
-  [v3 validateClass:@"MUPDFContentViewController" hasInstanceMethod:@"loadContentWithCompletionBlock:" withFullSignature:{"v", "@?", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AKOverlayView"];
+  [validationsCopy validateClass:@"AKHighlightColorEditorController"];
+  [validationsCopy validateClass:@"AKAnnotationLayer"];
+  [validationsCopy validateClass:@"MUPDFContentViewController" isKindOfClass:@"MUContentViewController"];
+  [validationsCopy validateClass:@"AKHighlightColorEditorController" isKindOfClass:@"AKAnnotationPopoverViewController"];
+  [validationsCopy validateClass:@"MUPDFContentViewController" hasInstanceMethod:@"pdfView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MUContentViewController" hasInstanceMethod:@"annotationController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKController" hasInstanceMethod:@"pageControllers" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKController" hasInstanceMethod:@"currentPageIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"AKPageController" hasInstanceMethod:@"overlayView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKOverlayView" hasInstanceMethod:@"pageController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKPageController" hasInstanceMethod:@"highlightColorEditorController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKHighlightColorEditorController" hasInstanceMethod:@"calloutBar" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKAnnotationLayer" hasInstanceMethod:@"annotation" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKAnnotationPopoverViewController" hasInstanceVariable:@"mAnnotation" withType:"AKAnnotation"];
+  [validationsCopy validateClass:@"MUPDFContentViewController" hasInstanceMethod:@"loadContentWithCompletionBlock:" withFullSignature:{"v", "@?", 0}];
 }
 
 - (id)_axAKOverlayView
@@ -53,11 +53,11 @@
   return v7;
 }
 
-- (void)loadContentWithCompletionBlock:(id)a3
+- (void)loadContentWithCompletionBlock:(id)block
 {
   v4.receiver = self;
   v4.super_class = MUPDFContentViewControllerAccessibility;
-  [(MUPDFContentViewControllerAccessibility *)&v4 loadContentWithCompletionBlock:a3];
+  [(MUPDFContentViewControllerAccessibility *)&v4 loadContentWithCompletionBlock:block];
   [(MUPDFContentViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
@@ -66,39 +66,39 @@
   v6.receiver = self;
   v6.super_class = MUPDFContentViewControllerAccessibility;
   [(MUPDFContentViewControllerAccessibility *)&v6 _accessibilityLoadAccessibilityInformation];
-  v3 = [(MUPDFContentViewControllerAccessibility *)self _axAKOverlayView];
+  _axAKOverlayView = [(MUPDFContentViewControllerAccessibility *)self _axAKOverlayView];
   MEMORY[0x29C2DD430](@"AKOverlayView");
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 safeValueForKeyPath:@"pageController.highlightColorEditorController"];
+    v4 = [_axAKOverlayView safeValueForKeyPath:@"pageController.highlightColorEditorController"];
     v5 = [v4 safeValueForKey:@"mAnnotation"];
     [(MUPDFContentViewControllerAccessibility *)self _axHighlightPopoverPresentedForAnnotation:v5 withHighlightController:v4 pullFocus:0];
   }
 }
 
-- (void)_axHighlightPopoverPresentedForAnnotation:(id)a3 withHighlightController:(id)a4 pullFocus:(BOOL)a5
+- (void)_axHighlightPopoverPresentedForAnnotation:(id)annotation withHighlightController:(id)controller pullFocus:(BOOL)focus
 {
-  v5 = a5;
+  focusCopy = focus;
   v32 = *MEMORY[0x29EDCA608];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MUPDFContentViewControllerAccessibility *)self _axAKOverlayView];
+  annotationCopy = annotation;
+  controllerCopy = controller;
+  _axAKOverlayView = [(MUPDFContentViewControllerAccessibility *)self _axAKOverlayView];
   MEMORY[0x29C2DD430](@"AKOverlayView");
   if (objc_opt_isKindOfClass())
   {
     MEMORY[0x29C2DD430](@"AKHighlightColorEditorController");
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v9 safeValueForKey:@"calloutBar"];
+      v11 = [controllerCopy safeValueForKey:@"calloutBar"];
       v12 = v11;
       if (v11)
       {
-        v25 = v9;
+        v25 = controllerCopy;
         argument = v11;
-        v23 = self;
-        v24 = v5;
-        v13 = [v10 accessibilityElements];
-        v14 = [v13 mutableCopy];
+        selfCopy = self;
+        v24 = focusCopy;
+        accessibilityElements = [_axAKOverlayView accessibilityElements];
+        v14 = [accessibilityElements mutableCopy];
 
         v29 = 0u;
         v30 = 0u;
@@ -124,7 +124,7 @@
               if (objc_opt_isKindOfClass())
               {
                 v21 = [v20 safeValueForKey:@"annotation"];
-                if ([v21 isEqual:v8])
+                if ([v21 isEqual:annotationCopy])
                 {
                   [v15 insertObject:argument atIndex:{objc_msgSend(v15, "indexOfObject:", v20)}];
 
@@ -145,9 +145,9 @@
 
 LABEL_16:
 
-        [v10 setAccessibilityElements:v15];
-        v9 = v25;
-        [v25 _accessibilitySetAssignedValue:v23 forKey:@"AXCalloutBarDelegate"];
+        [_axAKOverlayView setAccessibilityElements:v15];
+        controllerCopy = v25;
+        [v25 _accessibilitySetAssignedValue:selfCopy forKey:@"AXCalloutBarDelegate"];
         v12 = argument;
         if (v24)
         {
@@ -162,8 +162,8 @@ LABEL_16:
 
 - (void)_axHighlightPopoverDismissed
 {
-  v2 = [(MUPDFContentViewControllerAccessibility *)self _axAKOverlayView];
-  [v2 _accessibilitySetRetainedValue:0 forKey:@"AXAKRetainedElements"];
+  _axAKOverlayView = [(MUPDFContentViewControllerAccessibility *)self _axAKOverlayView];
+  [_axAKOverlayView _accessibilitySetRetainedValue:0 forKey:@"AXAKRetainedElements"];
 
   v3 = *MEMORY[0x29EDC7ED8];
 

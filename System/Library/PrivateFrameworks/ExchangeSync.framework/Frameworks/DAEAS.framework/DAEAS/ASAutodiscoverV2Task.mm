@@ -1,26 +1,26 @@
 @interface ASAutodiscoverV2Task
-- (ASAutodiscoverV2Task)initWithEmailAddress:(id)a3;
-- (id)_OAuthURLFromResponseData:(id)a3;
+- (ASAutodiscoverV2Task)initWithEmailAddress:(id)address;
+- (id)_OAuthURLFromResponseData:(id)data;
 - (id)_url;
-- (id)localizedErrorStringForCertificateErrorCode:(int)a3 host:(id)a4;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)didProcessContext:(id)a3;
-- (void)finishWithError:(id)a3;
-- (void)loadRequest:(id)a3;
+- (id)localizedErrorStringForCertificateErrorCode:(int)code host:(id)host;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)didProcessContext:(id)context;
+- (void)finishWithError:(id)error;
+- (void)loadRequest:(id)request;
 @end
 
 @implementation ASAutodiscoverV2Task
 
-- (ASAutodiscoverV2Task)initWithEmailAddress:(id)a3
+- (ASAutodiscoverV2Task)initWithEmailAddress:(id)address
 {
-  v5 = a3;
+  addressCopy = address;
   v9.receiver = self;
   v9.super_class = ASAutodiscoverV2Task;
   v6 = [(ASTask *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_emailAddress, a3);
+    objc_storeStrong(&v6->_emailAddress, address);
     v7->_addEmptyBearer = 0;
     v7->_discoverOAuthEndpoint = 0;
   }
@@ -53,43 +53,43 @@
   return v6;
 }
 
-- (id)localizedErrorStringForCertificateErrorCode:(int)a3 host:(id)a4
+- (id)localizedErrorStringForCertificateErrorCode:(int)code host:(id)host
 {
-  if ((a3 & 0xFFFFFFFC) == 0xFFFFFB4C)
+  if ((code & 0xFFFFFFFC) == 0xFFFFFB4C)
   {
     v4 = MEMORY[0x277CCACA8];
     v5 = MEMORY[0x277CCA8D8];
-    v6 = a4;
+    hostCopy = host;
     v7 = [v5 bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"SERVER_CERTIFICATE_UNVERIFIED_AUTODISCOVERY" value:&stru_285D39BD0 table:@"DataAccess"];
-    v9 = [v4 stringWithFormat:v8, v6];
+    hostCopy = [v4 stringWithFormat:v8, hostCopy];
   }
 
   else
   {
-    v9 = 0;
+    hostCopy = 0;
   }
 
-  return v9;
+  return hostCopy;
 }
 
-- (id)_OAuthURLFromResponseData:(id)a3
+- (id)_OAuthURLFromResponseData:(id)data
 {
-  v3 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:0 error:0];
+  v3 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:0 error:0];
   v4 = [v3 objectForKeyedSubscript:@"Url"];
   v5 = [MEMORY[0x277CBEBC0] URLWithString:v4];
 
   return v5;
 }
 
-- (void)loadRequest:(id)a3
+- (void)loadRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  requestCopy = request;
+  v5 = [requestCopy mutableCopy];
   if ([MEMORY[0x277D03910] customAutoDV2UserAgentEnabled])
   {
-    v6 = [v4 allHTTPHeaderFields];
-    v7 = [v6 objectForKeyedSubscript:@"User-Agent"];
+    allHTTPHeaderFields = [requestCopy allHTTPHeaderFields];
+    v7 = [allHTTPHeaderFields objectForKeyedSubscript:@"User-Agent"];
     v8 = [v7 stringByReplacingOccurrencesOfString:@"Apple-" withString:@"AppleTest-"];
 
     [v5 setValue:v8 forHTTPHeaderField:@"User-Agent"];
@@ -101,17 +101,17 @@
   [(ASTask *)&v9 loadRequest:v5];
 }
 
-- (void)didProcessContext:(id)a3
+- (void)didProcessContext:(id)context
 {
   if (!self->_discoverOAuthEndpoint)
   {
-    v4 = [a3 bufferWithAllData];
-    v8 = [(ASAutodiscoverV2Task *)self _OAuthURLFromResponseData:v4];
+    bufferWithAllData = [context bufferWithAllData];
+    v8 = [(ASAutodiscoverV2Task *)self _OAuthURLFromResponseData:bufferWithAllData];
 
     v5 = [MEMORY[0x277CBAB50] requestWithURL:v8];
-    v6 = [v8 absoluteString];
+    absoluteString = [v8 absoluteString];
     easEndPoint = self->_easEndPoint;
-    self->_easEndPoint = v6;
+    self->_easEndPoint = absoluteString;
 
     [v5 setValue:@"Bearer" forHTTPHeaderField:@"Authorization"];
     [v5 setValue:self->_emailAddress forHTTPHeaderField:@"X-User-Identity"];
@@ -120,34 +120,34 @@
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  sessionCopy = session;
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
   if (self->_discoverOAuthEndpoint)
   {
-    v14 = [v12 allHeaderFields];
-    v15 = [v14 copy];
+    allHeaderFields = [responseCopy allHeaderFields];
+    v15 = [allHeaderFields copy];
     accountInfo = self->_accountInfo;
     self->_accountInfo = v15;
   }
 
   v17.receiver = self;
   v17.super_class = ASAutodiscoverV2Task;
-  [(ASTask *)&v17 URLSession:v10 dataTask:v11 didReceiveResponse:v12 completionHandler:v13];
+  [(ASTask *)&v17 URLSession:sessionCopy dataTask:taskCopy didReceiveResponse:responseCopy completionHandler:handlerCopy];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASTask *)self taskStatusForError:v4];
+  errorCopy = error;
+  v5 = [(ASTask *)self taskStatusForError:errorCopy];
   if (v5 == 79)
   {
-    v26 = self;
-    v27 = v4;
+    selfCopy = self;
+    v27 = errorCopy;
     [(NSMutableDictionary *)self->_accountInfo objectForKeyedSubscript:@"WWW-Authenticate"];
     v36 = 0u;
     v37 = 0u;
@@ -176,8 +176,8 @@
         }
 
         v12 = *(*(&v36 + 1) + 8 * i);
-        v13 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-        v14 = [v12 stringByTrimmingCharactersInSet:v13];
+        whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+        v14 = [v12 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
         if ([v14 hasPrefix:@"authorization_uri"])
         {
@@ -216,14 +216,14 @@ LABEL_17:
         v32[1] = 3221225472;
         v32[2] = __40__ASAutodiscoverV2Task_finishWithError___block_invoke;
         v32[3] = &unk_278FC7E48;
-        v4 = v27;
-        v32[4] = v26;
+        errorCopy = v27;
+        v32[4] = selfCopy;
         v33 = v9;
         v34 = v28;
         v35 = v27;
         v22 = v28;
         v23 = v9;
-        [(ASTask *)v26 finishWithError:v35 afterDelegateCallout:v32];
+        [(ASTask *)selfCopy finishWithError:v35 afterDelegateCallout:v32];
 
         v21 = v25;
         goto LABEL_18;
@@ -237,7 +237,7 @@ LABEL_17:
   v29[3] = &unk_278FC7B68;
   v29[4] = self;
   v31 = v5;
-  v30 = v4;
+  v30 = errorCopy;
   [(ASTask *)self finishWithError:v30 afterDelegateCallout:v29];
   v21 = v30;
 LABEL_18:

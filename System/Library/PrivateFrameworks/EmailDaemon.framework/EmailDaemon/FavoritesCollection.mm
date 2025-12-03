@@ -2,14 +2,14 @@
 + (id)accountsCollection;
 + (id)mailboxesCollection;
 + (id)outboxCollection;
-- (BOOL)addExpandedItem:(id)a3;
-- (BOOL)addItem:(id)a3 ordered:(BOOL)a4;
-- (BOOL)addOrUpdateItem:(id)a3 replacedItem:(id *)a4;
+- (BOOL)addExpandedItem:(id)item;
+- (BOOL)addItem:(id)item ordered:(BOOL)ordered;
+- (BOOL)addOrUpdateItem:(id)item replacedItem:(id *)replacedItem;
 - (BOOL)hidesHeader;
 - (BOOL)isEditing;
 - (BOOL)isShowingAllInboxes;
-- (BOOL)isShowingSharedMailboxOfType:(unint64_t)a3;
-- (FavoritesCollection)initWithDictionary:(id)a3;
+- (BOOL)isShowingSharedMailboxOfType:(unint64_t)type;
+- (FavoritesCollection)initWithDictionary:(id)dictionary;
 - (NSArray)expandedItems;
 - (NSArray)items;
 - (NSArray)itemsIncludingSubItems;
@@ -18,29 +18,29 @@
 - (NSString)displayName;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)itemWithSyncKey:(id)a3;
-- (id)itemsContainingName:(id)a3;
-- (id)itemsMatchingItemURLStrings:(id)a3;
-- (id)itemsMatchingName:(id)a3;
-- (id)itemsOfType:(int64_t)a3;
-- (id)removeExpandedItem:(id)a3;
-- (id)removeItem:(id)a3;
-- (id)removeItemWithSyncKey:(id)a3;
-- (id)visibleItemsOfType:(int64_t)a3;
-- (void)addExpandedItemsFromDictionaryRepresentations:(id)a3;
-- (void)addOrUpdateExpandedItem:(id)a3 replacedItem:(id *)a4;
+- (id)itemWithSyncKey:(id)key;
+- (id)itemsContainingName:(id)name;
+- (id)itemsMatchingItemURLStrings:(id)strings;
+- (id)itemsMatchingName:(id)name;
+- (id)itemsOfType:(int64_t)type;
+- (id)removeExpandedItem:(id)item;
+- (id)removeItem:(id)item;
+- (id)removeItemWithSyncKey:(id)key;
+- (id)visibleItemsOfType:(int64_t)type;
+- (void)addExpandedItemsFromDictionaryRepresentations:(id)representations;
+- (void)addOrUpdateExpandedItem:(id)item replacedItem:(id *)replacedItem;
 - (void)invalidateVisibleItems;
 - (void)persistAllInboxesStateToMaild;
 - (void)prepareForWriting;
-- (void)setEditing:(BOOL)a3;
-- (void)setItems:(id)a3;
+- (void)setEditing:(BOOL)editing;
+- (void)setItems:(id)items;
 @end
 
 @implementation FavoritesCollection
 
-- (FavoritesCollection)initWithDictionary:(id)a3
+- (FavoritesCollection)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = FavoritesCollection;
   v5 = [(FavoritesCollection *)&v24 init];
@@ -49,11 +49,11 @@
     goto LABEL_20;
   }
 
-  v6 = [v4 objectForKey:@"type"];
-  v23 = v4;
+  v6 = [dictionaryCopy objectForKey:@"type"];
+  v23 = dictionaryCopy;
   v5->_type = [v6 integerValue];
 
-  v7 = [v4 objectForKey:@"displayName"];
+  v7 = [dictionaryCopy objectForKey:@"displayName"];
   v8 = v7;
   type = v5->_type;
   if (type)
@@ -94,7 +94,7 @@ LABEL_11:
 
 LABEL_12:
   sub_100019EE0(v5, type);
-  v11 = [v4 objectForKey:@"items"];
+  v11 = [dictionaryCopy objectForKey:@"items"];
   v12 = objc_alloc_init(NSMutableArray);
   v13 = objc_opt_new();
   invalidItemDicts = v5->_invalidItemDicts;
@@ -124,7 +124,7 @@ LABEL_12:
 
   [(FavoritesCollection *)v5 setItems:v12];
 
-  v4 = v23;
+  dictionaryCopy = v23;
 LABEL_20:
 
   return v5;
@@ -175,8 +175,8 @@ LABEL_20:
   if ([(NSMutableDictionary *)self->_invalidItemDicts count])
   {
     v6 = self->_invalidItemDicts;
-    v7 = [(NSMutableDictionary *)v6 allKeys];
-    v8 = [v7 sortedArrayUsingSelector:"compare:"];
+    allKeys = [(NSMutableDictionary *)v6 allKeys];
+    v8 = [allKeys sortedArrayUsingSelector:"compare:"];
 
     v25 = 0u;
     v26 = 0u;
@@ -200,10 +200,10 @@ LABEL_20:
           v14 = self->_invalidItemDicts;
           v15 = [(NSMutableDictionary *)v14 objectForKeyedSubscript:v13, v23];
 
-          v16 = [v13 unsignedIntegerValue];
+          unsignedIntegerValue = [v13 unsignedIntegerValue];
           v17 = [v29[5] count];
           v18 = v29[5];
-          if (v16 >= v17)
+          if (unsignedIntegerValue >= v17)
           {
             v19 = [v18 objectForKeyedSubscript:@"items"];
             [v19 addObject:v15];
@@ -212,7 +212,7 @@ LABEL_20:
           else
           {
             v19 = [v18 objectForKeyedSubscript:@"items"];
-            [v19 insertObject:v15 atIndex:v16];
+            [v19 insertObject:v15 atIndex:unsignedIntegerValue];
           }
         }
 
@@ -273,14 +273,14 @@ LABEL_20:
   }
 }
 
-- (void)addExpandedItemsFromDictionaryRepresentations:(id)a3
+- (void)addExpandedItemsFromDictionaryRepresentations:(id)representations
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  representationsCopy = representations;
+  v5 = [representationsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -291,7 +291,7 @@ LABEL_20:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(representationsCopy);
         }
 
         v8 = [FavoriteItem itemFromDictionary:*(*(&v10 + 1) + 8 * v7), v10];
@@ -309,71 +309,71 @@ LABEL_20:
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [representationsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)itemsOfType:(int64_t)a3
+- (id)itemsOfType:(int64_t)type
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001B398;
   v5[3] = &unk_100156DE8;
-  v5[4] = a3;
+  v5[4] = type;
   v3 = sub_10001B3CC(&self->super.isa, v5);
 
   return v3;
 }
 
-- (id)visibleItemsOfType:(int64_t)a3
+- (id)visibleItemsOfType:(int64_t)type
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10001B5A8;
   v5[3] = &unk_100156DE8;
-  v5[4] = a3;
+  v5[4] = type;
   v3 = sub_10001B3CC(&self->super.isa, v5);
 
   return v3;
 }
 
-- (id)itemsMatchingName:(id)a3
+- (id)itemsMatchingName:(id)name
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001B6D4;
   v7[3] = &unk_100156E10;
-  v8 = a3;
-  v4 = v8;
+  nameCopy = name;
+  v4 = nameCopy;
   v5 = sub_10001B7C0(&self->super.isa, v7);
 
   return v5;
 }
 
-- (id)itemsContainingName:(id)a3
+- (id)itemsContainingName:(id)name
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001B9F4;
   v7[3] = &unk_100156E10;
-  v8 = a3;
-  v4 = v8;
+  nameCopy = name;
+  v4 = nameCopy;
   v5 = sub_10001B7C0(&self->super.isa, v7);
 
   return v5;
 }
 
-- (id)itemsMatchingItemURLStrings:(id)a3
+- (id)itemsMatchingItemURLStrings:(id)strings
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001BBA0;
   v7[3] = &unk_100156E10;
-  v8 = a3;
-  v4 = v8;
+  stringsCopy = strings;
+  v4 = stringsCopy;
   v5 = sub_10001B7C0(&self->super.isa, v7);
 
   return v5;
@@ -383,15 +383,15 @@ LABEL_20:
 {
   v3 = sub_10001C098(self, self->_type);
   v4 = sub_100027C70();
-  v5 = [v4 accountsProvider];
-  v6 = [v5 displayedAccounts];
+  accountsProvider = [v4 accountsProvider];
+  displayedAccounts = [accountsProvider displayedAccounts];
 
-  if (-[FavoritesCollection isMailboxesCollection](self, "isMailboxesCollection") && [v6 count] == 1)
+  if (-[FavoritesCollection isMailboxesCollection](self, "isMailboxesCollection") && [displayedAccounts count] == 1)
   {
-    v7 = [v6 anyObject];
-    v8 = [v7 displayName];
+    anyObject = [displayedAccounts anyObject];
+    displayName = [anyObject displayName];
 
-    v3 = v8;
+    v3 = displayName;
   }
 
   else if ([(FavoritesCollection *)self isAccountsCollection])
@@ -421,20 +421,20 @@ LABEL_20:
   return v3;
 }
 
-- (BOOL)isShowingSharedMailboxOfType:(unint64_t)a3
+- (BOOL)isShowingSharedMailboxOfType:(unint64_t)type
 {
-  v4 = [(FavoritesCollection *)self visibleItems];
-  v5 = [FavoriteItem itemForSharedMailboxWithType:a3 selected:0];
-  v6 = [v4 containsObject:v5];
+  visibleItems = [(FavoritesCollection *)self visibleItems];
+  v5 = [FavoriteItem itemForSharedMailboxWithType:type selected:0];
+  v6 = [visibleItems containsObject:v5];
 
   return v6;
 }
 
 - (BOOL)isShowingAllInboxes
 {
-  v2 = [(FavoritesCollection *)self visibleItems];
+  visibleItems = [(FavoritesCollection *)self visibleItems];
   v3 = [FavoriteItem itemForUnifiedMailboxWithType:7 selected:0];
-  v4 = [v2 containsObject:v3];
+  v4 = [visibleItems containsObject:v3];
 
   return v4;
 }
@@ -460,8 +460,8 @@ LABEL_20:
 {
   v3 = sub_10001C098(self, self->_type);
   v4 = objc_opt_class();
-  v5 = [(FavoritesCollection *)self items];
-  v6 = [NSString stringWithFormat:@"<%@: %p type = %@; items = %@>", v4, self, v3, v5];;
+  items = [(FavoritesCollection *)self items];
+  v6 = [NSString stringWithFormat:@"<%@: %p type = %@; items = %@>", v4, self, v3, items];;
 
   return v6;
 }
@@ -487,7 +487,7 @@ LABEL_20:
   return v7;
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
   if (self)
   {
@@ -502,9 +502,9 @@ LABEL_20:
   [v5 performWhileLocked:v6];
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   if (self)
   {
     state = self->_state;
@@ -520,7 +520,7 @@ LABEL_20:
   sub_10001C920();
   v9 = sub_10001AAE4;
   v10 = &unk_100156D10;
-  v7 = v4;
+  v7 = itemsCopy;
   v11 = v7;
   [(EFLocked *)v6 performWhileLocked:v8];
 
@@ -538,9 +538,9 @@ LABEL_20:
   [(FavoritesCollection *)self performWhileLocked:&stru_100156D50];
 }
 
-- (BOOL)addItem:(id)a3 ordered:(BOOL)a4
+- (BOOL)addItem:(id)item ordered:(BOOL)ordered
 {
-  v6 = a3;
+  itemCopy = item;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -561,9 +561,9 @@ LABEL_20:
   v21 = sub_10001AB00;
   v22 = &unk_100156D78;
   v24 = &v26;
-  v9 = v6;
+  v9 = itemCopy;
   v23 = v9;
-  v25 = a4;
+  orderedCopy = ordered;
   [(EFLocked *)v8 performWhileLocked:v20];
 
   if (*(v27 + 24) == 1)
@@ -581,9 +581,9 @@ LABEL_20:
   return v10 & 1;
 }
 
-- (BOOL)addExpandedItem:(id)a3
+- (BOOL)addExpandedItem:(id)item
 {
-  v6 = a3;
+  itemCopy = item;
   sub_10001C8C8();
   v21 = 0x2020000000;
   v22 = 0;
@@ -612,9 +612,9 @@ LABEL_20:
   return v8;
 }
 
-- (BOOL)addOrUpdateItem:(id)a3 replacedItem:(id *)a4
+- (BOOL)addOrUpdateItem:(id)item replacedItem:(id *)replacedItem
 {
-  v6 = a3;
+  itemCopy = item;
   v43 = 0;
   v44 = &v43;
   v45 = 0x2020000000;
@@ -644,15 +644,15 @@ LABEL_20:
   v29 = sub_10001AC4C;
   v30 = &unk_100156DC8;
   v32 = &v35;
-  v9 = v6;
+  v9 = itemCopy;
   v31 = v9;
   v33 = &v39;
   v34 = &v43;
   [(EFLocked *)v8 performWhileLocked:v28];
 
-  if (a4)
+  if (replacedItem)
   {
-    *a4 = v36[5];
+    *replacedItem = v36[5];
   }
 
   if (*(v44 + 24) == 1)
@@ -682,9 +682,9 @@ LABEL_20:
   return v10 & 1;
 }
 
-- (void)addOrUpdateExpandedItem:(id)a3 replacedItem:(id *)a4
+- (void)addOrUpdateExpandedItem:(id)item replacedItem:(id *)replacedItem
 {
-  v6 = a3;
+  itemCopy = item;
   v39[0] = 0;
   v39[1] = v39;
   v39[2] = 0x2020000000;
@@ -714,15 +714,15 @@ LABEL_20:
   v27 = sub_10001ACD8;
   v28 = &unk_100156DC8;
   v30 = &v33;
-  v9 = v6;
+  v9 = itemCopy;
   v29 = v9;
   v31 = v37;
   v32 = v39;
   [(EFLocked *)v8 performWhileLocked:v26];
 
-  if (a4)
+  if (replacedItem)
   {
-    *a4 = v34[5];
+    *replacedItem = v34[5];
   }
 
   sub_10001C908(v10, v11, v12, v13, v14, v15, v16, v17);
@@ -730,9 +730,9 @@ LABEL_20:
   _Block_object_dispose(v39, 8);
 }
 
-- (id)removeItem:(id)a3
+- (id)removeItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v46 = 0;
   v47 = &v46;
   v48 = 0x3032000000;
@@ -754,7 +754,7 @@ LABEL_20:
   v42 = sub_10001AEC8;
   v43 = &unk_100156DA0;
   v45 = &v46;
-  v7 = v4;
+  v7 = itemCopy;
   v44 = v7;
   [(EFLocked *)v6 performWhileLocked:&v40];
 
@@ -772,9 +772,9 @@ LABEL_20:
   return self;
 }
 
-- (id)removeExpandedItem:(id)a3
+- (id)removeExpandedItem:(id)item
 {
-  v6 = a3;
+  itemCopy = item;
   sub_10001C8C8();
   v42 = 0x3032000000;
   sub_10001C80C();
@@ -807,9 +807,9 @@ LABEL_20:
   return v8;
 }
 
-- (id)removeItemWithSyncKey:(id)a3
+- (id)removeItemWithSyncKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
@@ -831,7 +831,7 @@ LABEL_20:
   v35 = sub_10001B028;
   v36 = &unk_100156DA0;
   v38 = &v39;
-  v7 = v4;
+  v7 = keyCopy;
   v37 = v7;
   [(EFLocked *)v6 performWhileLocked:&v33];
 
@@ -854,9 +854,9 @@ LABEL_20:
   return self;
 }
 
-- (id)itemWithSyncKey:(id)a3
+- (id)itemWithSyncKey:(id)key
 {
-  v6 = a3;
+  keyCopy = key;
   sub_10001C8C8();
   v42 = 0x3032000000;
   sub_10001C80C();

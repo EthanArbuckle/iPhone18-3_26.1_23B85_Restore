@@ -1,11 +1,11 @@
 @interface ICQAppLaunchLinkTracker
 + (ICQAppLaunchLinkTracker)shared;
-- (BOOL)osUpgradeSinceLastShownForBundleID:(id)a3;
+- (BOOL)osUpgradeSinceLastShownForBundleID:(id)d;
 - (ICQAppLaunchLinkTracker)init;
 - (id)allDaysSinceLastShown;
-- (id)lastShownDateForBundleID:(id)a3;
-- (int64_t)daysSinceLastShownForBundleID:(id)a3;
-- (void)setLastShownDate:(id)a3 forBundleID:(id)a4;
+- (id)lastShownDateForBundleID:(id)d;
+- (int64_t)daysSinceLastShownForBundleID:(id)d;
+- (void)setLastShownDate:(id)date forBundleID:(id)d;
 @end
 
 @implementation ICQAppLaunchLinkTracker
@@ -22,7 +22,7 @@
   return v3;
 }
 
-- (id)lastShownDateForBundleID:(id)a3
+- (id)lastShownDateForBundleID:(id)d
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_2809F9D78, &qword_2755F3850);
   v5 = *(*(v4 - 8) + 64);
@@ -30,7 +30,7 @@
   v7 = &v18 - v6;
   v8 = sub_2755EC98C();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   sub_2755DEF5C(v8, v10, v7);
 
   v12 = sub_2755EC61C();
@@ -47,11 +47,11 @@
   return v15;
 }
 
-- (int64_t)daysSinceLastShownForBundleID:(id)a3
+- (int64_t)daysSinceLastShownForBundleID:(id)d
 {
   v4 = sub_2755EC98C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_2755DF698(v4, v6);
 
   return v8;
@@ -59,7 +59,7 @@
 
 - (id)allDaysSinceLastShown
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2755DFDDC();
 
   if (v3)
@@ -76,17 +76,17 @@
   return v4;
 }
 
-- (BOOL)osUpgradeSinceLastShownForBundleID:(id)a3
+- (BOOL)osUpgradeSinceLastShownForBundleID:(id)d
 {
   v4 = sub_2755EC98C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   LOBYTE(v4) = sub_2755E0BB8(v4, v6);
 
   return v4 & 1;
 }
 
-- (void)setLastShownDate:(id)a3 forBundleID:(id)a4
+- (void)setLastShownDate:(id)date forBundleID:(id)d
 {
   v5 = sub_2755EC61C();
   v6 = *(v5 - 8);
@@ -96,7 +96,7 @@
   sub_2755EC5EC();
   v10 = sub_2755EC98C();
   v12 = v11;
-  v13 = self;
+  selfCopy = self;
   sub_2755E0F94(v9, v10, v12);
 
   (*(v6 + 8))(v9, v5);

@@ -1,27 +1,27 @@
 @interface TSIDSSimTransferringViewController
-- (TSIDSSimTransferringViewController)initWithTitle:(id)a3 subtitle:(id)a4;
+- (TSIDSSimTransferringViewController)initWithTitle:(id)title subtitle:(id)subtitle;
 - (TSSIMSetupFlowDelegate)delegate;
 - (void)dealloc;
 @end
 
 @implementation TSIDSSimTransferringViewController
 
-- (TSIDSSimTransferringViewController)initWithTitle:(id)a3 subtitle:(id)a4
+- (TSIDSSimTransferringViewController)initWithTitle:(id)title subtitle:(id)subtitle
 {
   v47[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  subtitleCopy = subtitle;
   v45.receiver = self;
   v45.super_class = TSIDSSimTransferringViewController;
   v8 = [(TSIDSSimTransferringViewController *)&v45 init];
   v9 = v8;
   if (v8)
   {
-    [(TSIDSSimTransferringViewController *)v8 setTitle:v6];
-    [(TSIDSSimTransferringViewController *)v9 setSubtitle:v7];
+    [(TSIDSSimTransferringViewController *)v8 setTitle:titleCopy];
+    [(TSIDSSimTransferringViewController *)v9 setSubtitle:subtitleCopy];
     v10 = objc_alloc(MEMORY[0x277D756B8]);
     v11 = [v10 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-    v42 = v6;
+    v42 = titleCopy;
     placeHolderLabel = v9->_placeHolderLabel;
     v9->_placeHolderLabel = v11;
 
@@ -40,7 +40,7 @@
     v43 = v44;
     [(UIActivityIndicatorView *)v15 setTransform:&v43];
     [(UIActivityIndicatorView *)v9->_indicatorView startAnimating];
-    v41 = v7;
+    v41 = subtitleCopy;
     v16 = objc_alloc(MEMORY[0x277D75A68]);
     v47[0] = v9->_placeHolderLabel;
     v47[1] = v9->_indicatorView;
@@ -53,34 +53,34 @@
     [(UIStackView *)v9->_stackView setAxis:1];
     [(UIStackView *)v9->_stackView setSpacing:16.0];
     [(UIStackView *)v9->_stackView setAlignment:3];
-    v20 = [(TSIDSSimTransferringViewController *)v9 contentView];
-    [v20 addSubview:v9->_stackView];
+    contentView = [(TSIDSSimTransferringViewController *)v9 contentView];
+    [contentView addSubview:v9->_stackView];
 
     [(TSIDSSimTransferringViewController *)v9 setDismissalType:0];
     v34 = MEMORY[0x277CCAAD0];
-    v39 = [(UIStackView *)v9->_stackView topAnchor];
-    v40 = [(TSIDSSimTransferringViewController *)v9 contentView];
-    v38 = [v40 mainContentGuide];
-    v37 = [v38 topAnchor];
-    v36 = [v39 constraintGreaterThanOrEqualToAnchor:v37];
+    topAnchor = [(UIStackView *)v9->_stackView topAnchor];
+    contentView2 = [(TSIDSSimTransferringViewController *)v9 contentView];
+    mainContentGuide = [contentView2 mainContentGuide];
+    topAnchor2 = [mainContentGuide topAnchor];
+    v36 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     v46[0] = v36;
-    v33 = [(UIStackView *)v9->_stackView centerXAnchor];
-    v35 = [(TSIDSSimTransferringViewController *)v9 contentView];
-    v21 = [v35 mainContentGuide];
-    v22 = [v21 centerXAnchor];
-    v23 = [v33 constraintEqualToAnchor:v22];
+    centerXAnchor = [(UIStackView *)v9->_stackView centerXAnchor];
+    contentView3 = [(TSIDSSimTransferringViewController *)v9 contentView];
+    mainContentGuide2 = [contentView3 mainContentGuide];
+    centerXAnchor2 = [mainContentGuide2 centerXAnchor];
+    v23 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v46[1] = v23;
-    v24 = [(UIStackView *)v9->_stackView centerYAnchor];
-    v25 = [(TSIDSSimTransferringViewController *)v9 contentView];
-    v26 = [v25 mainContentGuide];
-    v27 = [v26 centerYAnchor];
-    v28 = [v24 constraintEqualToAnchor:v27];
+    centerYAnchor = [(UIStackView *)v9->_stackView centerYAnchor];
+    contentView4 = [(TSIDSSimTransferringViewController *)v9 contentView];
+    mainContentGuide3 = [contentView4 mainContentGuide];
+    centerYAnchor2 = [mainContentGuide3 centerYAnchor];
+    v28 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v46[2] = v28;
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:3];
     [v34 activateConstraints:v29];
 
-    v7 = v41;
-    v6 = v42;
+    subtitleCopy = v41;
+    titleCopy = v42;
 
     v30 = v9;
   }

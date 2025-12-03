@@ -1,28 +1,28 @@
 @interface PKAccountTaxForm
-- (BOOL)isEqual:(id)a3;
-- (PKAccountTaxForm)initWithCoder:(id)a3;
-- (PKAccountTaxForm)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKAccountTaxForm)initWithCoder:(id)coder;
+- (PKAccountTaxForm)initWithDictionary:(id)dictionary;
 - (id)description;
 - (id)displayableTaxFormString;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountTaxForm
 
-- (PKAccountTaxForm)initWithDictionary:(id)a3
+- (PKAccountTaxForm)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = PKAccountTaxForm;
   v5 = [(PKAccountTaxForm *)&v29 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"identifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 PKStringForKey:@"taxFormType"];
+    v8 = [dictionaryCopy PKStringForKey:@"taxFormType"];
     v9 = v8;
     if (v8 != @"1099-int")
     {
@@ -73,11 +73,11 @@ LABEL_5:
 LABEL_19:
 
     v5->_type = v11;
-    v24 = [v4 PKDateForKey:@"openingDate"];
+    v24 = [dictionaryCopy PKDateForKey:@"openingDate"];
     openingDate = v5->_openingDate;
     v5->_openingDate = v24;
 
-    v26 = [v4 PKDateForKey:@"closingDate"];
+    v26 = [dictionaryCopy PKDateForKey:@"closingDate"];
     closingDate = v5->_closingDate;
     v5->_closingDate = v26;
   }
@@ -101,24 +101,24 @@ LABEL_19:
   return v10;
 }
 
-- (PKAccountTaxForm)initWithCoder:(id)a3
+- (PKAccountTaxForm)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKAccountTaxForm;
   v5 = [(PKAccountTaxForm *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_type = [v4 decodeIntegerForKey:@"taxFormType"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"openingDate"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"taxFormType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"openingDate"];
     openingDate = v5->_openingDate;
     v5->_openingDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"closingDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"closingDate"];
     closingDate = v5->_closingDate;
     v5->_closingDate = v10;
   }
@@ -126,19 +126,19 @@ LABEL_19:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeInteger:self->_type forKey:@"taxFormType"];
-  [v5 encodeObject:self->_openingDate forKey:@"openingDate"];
-  [v5 encodeObject:self->_closingDate forKey:@"closingDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeInteger:self->_type forKey:@"taxFormType"];
+  [coderCopy encodeObject:self->_openingDate forKey:@"openingDate"];
+  [coderCopy encodeObject:self->_closingDate forKey:@"closingDate"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -146,7 +146,7 @@ LABEL_19:
   }
 
   identifier = self->_identifier;
-  v6 = v4[1];
+  v6 = equalCopy[1];
   if (identifier && v6)
   {
     if (([(NSString *)identifier isEqual:?]& 1) == 0)
@@ -160,13 +160,13 @@ LABEL_19:
     goto LABEL_15;
   }
 
-  if (self->_type != v4[2])
+  if (self->_type != equalCopy[2])
   {
     goto LABEL_15;
   }
 
   openingDate = self->_openingDate;
-  v8 = v4[3];
+  v8 = equalCopy[3];
   if (!openingDate || !v8)
   {
     if (openingDate == v8)
@@ -186,7 +186,7 @@ LABEL_15:
 
 LABEL_11:
   closingDate = self->_closingDate;
-  v10 = v4[4];
+  v10 = equalCopy[4];
   if (closingDate && v10)
   {
     v11 = [(NSDate *)closingDate isEqual:?];
@@ -205,11 +205,11 @@ LABEL_16:
 - (unint64_t)hash
 {
   type = self->_type;
-  v4 = [MEMORY[0x1E695DF70] array];
-  [v4 safelyAddObject:self->_identifier];
-  [v4 safelyAddObject:self->_openingDate];
-  [v4 safelyAddObject:self->_closingDate];
-  v5 = PKCombinedHash(type + 527, v4);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_identifier];
+  [array safelyAddObject:self->_openingDate];
+  [array safelyAddObject:self->_closingDate];
+  v5 = PKCombinedHash(type + 527, array);
 
   return v5;
 }

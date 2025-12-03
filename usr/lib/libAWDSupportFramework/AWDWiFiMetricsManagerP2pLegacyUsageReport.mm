@@ -1,23 +1,23 @@
 @interface AWDWiFiMetricsManagerP2pLegacyUsageReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasActivationsSinceLastReport:(BOOL)a3;
-- (void)setHasShortestActiveDurationSinceLastReport:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasTotalActiveDurationSinceLastReport:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasActivationsSinceLastReport:(BOOL)report;
+- (void)setHasShortestActiveDurationSinceLastReport:(BOOL)report;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasTotalActiveDurationSinceLastReport:(BOOL)report;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricsManagerP2pLegacyUsageReport
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 4;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasActivationsSinceLastReport:(BOOL)a3
+- (void)setHasActivationsSinceLastReport:(BOOL)report
 {
-  if (a3)
+  if (report)
   {
     v3 = 16;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasTotalActiveDurationSinceLastReport:(BOOL)a3
+- (void)setHasTotalActiveDurationSinceLastReport:(BOOL)report
 {
-  if (a3)
+  if (report)
   {
     v3 = 8;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasShortestActiveDurationSinceLastReport:(BOOL)a3
+- (void)setHasShortestActiveDurationSinceLastReport:(BOOL)report
 {
-  if (a3)
+  if (report)
   {
     v3 = 2;
   }
@@ -84,11 +84,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -107,7 +107,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_activationsSinceLastReport), @"activationsSinceLastReport"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_activationsSinceLastReport), @"activationsSinceLastReport"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -118,17 +118,17 @@ LABEL_4:
     }
 
 LABEL_11:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_longestActiveDurationSinceLastReport), @"longestActiveDurationSinceLastReport"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_longestActiveDurationSinceLastReport), @"longestActiveDurationSinceLastReport"}];
     if ((*&self->_has & 2) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_6;
   }
 
 LABEL_10:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_totalActiveDurationSinceLastReport), @"totalActiveDurationSinceLastReport"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_totalActiveDurationSinceLastReport), @"totalActiveDurationSinceLastReport"}];
   has = self->_has;
   if (has)
   {
@@ -139,13 +139,13 @@ LABEL_5:
   if ((has & 2) != 0)
   {
 LABEL_6:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_shortestActiveDurationSinceLastReport), @"shortestActiveDurationSinceLastReport"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_shortestActiveDurationSinceLastReport), @"shortestActiveDurationSinceLastReport"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
@@ -213,13 +213,13 @@ LABEL_11:
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 3) = self->_timestamp;
-    *(a3 + 44) |= 4u;
+    *(to + 3) = self->_timestamp;
+    *(to + 44) |= 4u;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -238,8 +238,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 10) = self->_activationsSinceLastReport;
-  *(a3 + 44) |= 0x10u;
+  *(to + 10) = self->_activationsSinceLastReport;
+  *(to + 44) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -253,8 +253,8 @@ LABEL_4:
   }
 
 LABEL_9:
-  *(a3 + 4) = self->_totalActiveDurationSinceLastReport;
-  *(a3 + 44) |= 8u;
+  *(to + 4) = self->_totalActiveDurationSinceLastReport;
+  *(to + 44) |= 8u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -265,23 +265,23 @@ LABEL_5:
     }
 
 LABEL_11:
-    *(a3 + 2) = self->_shortestActiveDurationSinceLastReport;
-    *(a3 + 44) |= 2u;
+    *(to + 2) = self->_shortestActiveDurationSinceLastReport;
+    *(to + 44) |= 2u;
     return;
   }
 
 LABEL_10:
-  *(a3 + 1) = self->_longestActiveDurationSinceLastReport;
-  *(a3 + 44) |= 1u;
+  *(to + 1) = self->_longestActiveDurationSinceLastReport;
+  *(to + 44) |= 1u;
   if ((*&self->_has & 2) != 0)
   {
     goto LABEL_11;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -348,20 +348,20 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 44) & 4) == 0 || self->_timestamp != *(a3 + 3))
+      if ((*(equal + 44) & 4) == 0 || self->_timestamp != *(equal + 3))
       {
         goto LABEL_26;
       }
     }
 
-    else if ((*(a3 + 44) & 4) != 0)
+    else if ((*(equal + 44) & 4) != 0)
     {
 LABEL_26:
       LOBYTE(v5) = 0;
@@ -370,47 +370,47 @@ LABEL_26:
 
     if ((*&self->_has & 0x10) != 0)
     {
-      if ((*(a3 + 44) & 0x10) == 0 || self->_activationsSinceLastReport != *(a3 + 10))
+      if ((*(equal + 44) & 0x10) == 0 || self->_activationsSinceLastReport != *(equal + 10))
       {
         goto LABEL_26;
       }
     }
 
-    else if ((*(a3 + 44) & 0x10) != 0)
+    else if ((*(equal + 44) & 0x10) != 0)
     {
       goto LABEL_26;
     }
 
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 44) & 8) == 0 || self->_totalActiveDurationSinceLastReport != *(a3 + 4))
+      if ((*(equal + 44) & 8) == 0 || self->_totalActiveDurationSinceLastReport != *(equal + 4))
       {
         goto LABEL_26;
       }
     }
 
-    else if ((*(a3 + 44) & 8) != 0)
+    else if ((*(equal + 44) & 8) != 0)
     {
       goto LABEL_26;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 44) & 1) == 0 || self->_longestActiveDurationSinceLastReport != *(a3 + 1))
+      if ((*(equal + 44) & 1) == 0 || self->_longestActiveDurationSinceLastReport != *(equal + 1))
       {
         goto LABEL_26;
       }
     }
 
-    else if (*(a3 + 44))
+    else if (*(equal + 44))
     {
       goto LABEL_26;
     }
 
-    LOBYTE(v5) = (*(a3 + 44) & 2) == 0;
+    LOBYTE(v5) = (*(equal + 44) & 2) == 0;
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 44) & 2) == 0 || self->_shortestActiveDurationSinceLastReport != *(a3 + 2))
+      if ((*(equal + 44) & 2) == 0 || self->_shortestActiveDurationSinceLastReport != *(equal + 2))
       {
         goto LABEL_26;
       }
@@ -490,14 +490,14 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 44);
+  v3 = *(from + 44);
   if ((v3 & 4) != 0)
   {
-    self->_timestamp = *(a3 + 3);
+    self->_timestamp = *(from + 3);
     *&self->_has |= 4u;
-    v3 = *(a3 + 44);
+    v3 = *(from + 44);
     if ((v3 & 0x10) == 0)
     {
 LABEL_3:
@@ -510,14 +510,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 44) & 0x10) == 0)
+  else if ((*(from + 44) & 0x10) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_activationsSinceLastReport = *(a3 + 10);
+  self->_activationsSinceLastReport = *(from + 10);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 44);
+  v3 = *(from + 44);
   if ((v3 & 8) == 0)
   {
 LABEL_4:
@@ -530,9 +530,9 @@ LABEL_4:
   }
 
 LABEL_9:
-  self->_totalActiveDurationSinceLastReport = *(a3 + 4);
+  self->_totalActiveDurationSinceLastReport = *(from + 4);
   *&self->_has |= 8u;
-  v3 = *(a3 + 44);
+  v3 = *(from + 44);
   if ((v3 & 1) == 0)
   {
 LABEL_5:
@@ -542,15 +542,15 @@ LABEL_5:
     }
 
 LABEL_11:
-    self->_shortestActiveDurationSinceLastReport = *(a3 + 2);
+    self->_shortestActiveDurationSinceLastReport = *(from + 2);
     *&self->_has |= 2u;
     return;
   }
 
 LABEL_10:
-  self->_longestActiveDurationSinceLastReport = *(a3 + 1);
+  self->_longestActiveDurationSinceLastReport = *(from + 1);
   *&self->_has |= 1u;
-  if ((*(a3 + 44) & 2) != 0)
+  if ((*(from + 44) & 2) != 0)
   {
     goto LABEL_11;
   }

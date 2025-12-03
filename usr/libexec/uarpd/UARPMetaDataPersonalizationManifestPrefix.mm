@@ -1,7 +1,7 @@
 @interface UARPMetaDataPersonalizationManifestPrefix
 - (UARPMetaDataPersonalizationManifestPrefix)init;
-- (UARPMetaDataPersonalizationManifestPrefix)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataPersonalizationManifestPrefix)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataPersonalizationManifestPrefix)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataPersonalizationManifestPrefix)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -24,16 +24,16 @@
   return v3;
 }
 
-- (UARPMetaDataPersonalizationManifestPrefix)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataPersonalizationManifestPrefix)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataPersonalizationManifestPrefix *)self init];
   v7 = v6;
   if (v6)
   {
     v12.receiver = v6;
     v12.super_class = UARPMetaDataPersonalizationManifestPrefix;
-    v8 = [(UARPMetaData *)&v12 stringFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v12 stringFromPlistValue:valueCopy];
     ticketPrefix = v7->_ticketPrefix;
     v7->_ticketPrefix = v8;
 
@@ -53,12 +53,12 @@
   return v10;
 }
 
-- (UARPMetaDataPersonalizationManifestPrefix)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataPersonalizationManifestPrefix)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataPersonalizationManifestPrefix *)self init];
   if (v6)
   {
-    v7 = [[NSString alloc] initWithBytes:a4 length:a3 encoding:4];
+    v7 = [[NSString alloc] initWithBytes:value length:length encoding:4];
     ticketPrefix = v6->_ticketPrefix;
     v6->_ticketPrefix = v7;
 
@@ -70,19 +70,19 @@
 
 - (id)tlvValue
 {
-  v3 = [(UARPMetaDataPersonalizationManifestPrefix *)self ticketPrefix];
+  ticketPrefix = [(UARPMetaDataPersonalizationManifestPrefix *)self ticketPrefix];
   v6.receiver = self;
   v6.super_class = UARPMetaDataPersonalizationManifestPrefix;
-  v4 = [(UARPMetaData *)&v6 tlvValueWithString:v3];
+  v4 = [(UARPMetaData *)&v6 tlvValueWithString:ticketPrefix];
 
   return v4;
 }
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataPersonalizationManifestPrefix *)self ticketPrefix];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  ticketPrefix = [(UARPMetaDataPersonalizationManifestPrefix *)self ticketPrefix];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, ticketPrefix];
 
   return v5;
 }

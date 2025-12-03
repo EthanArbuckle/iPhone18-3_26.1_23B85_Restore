@@ -1,22 +1,22 @@
 @interface ETVideoController
-- (ETVideoController)initWithMessageIdentifier:(id)a3;
+- (ETVideoController)initWithMessageIdentifier:(id)identifier;
 - (ETVideoControllerDelegate)delegate;
 - (double)currentFrameIntervalSinceFirstFrame;
 - (double)timeSinceStartOfPreview;
-- (id)_urlWithFormat:(id)a3;
-- (id)_videoCaptureDeviceAtPosition:(int64_t)a3;
+- (id)_urlWithFormat:(id)format;
+- (id)_videoCaptureDeviceAtPosition:(int64_t)position;
 - (void)_addCaptureSessionObservers;
 - (void)_createWriter;
-- (void)_deleteAssetWithFormat:(id)a3;
-- (void)_didReceiveCaptureSessionErrorNotification:(id)a3;
-- (void)_previewInterruptedNotification:(id)a3;
-- (void)_previewStartedNotification:(id)a3;
-- (void)_setVideoState:(unint64_t)a3;
-- (void)_toggleCameraToPosition:(int64_t)a3;
-- (void)_updatePreviewOrientationWithSize:(CGSize)a3;
-- (void)captureOutput:(id)a3 didFinishCaptureForResolvedSettings:(id)a4 error:(id)a5;
-- (void)captureOutput:(id)a3 didFinishProcessingPhotoSampleBuffer:(opaqueCMSampleBuffer *)a4 previewPhotoSampleBuffer:(opaqueCMSampleBuffer *)a5 resolvedSettings:(id)a6 bracketSettings:(id)a7 error:(id)a8;
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
+- (void)_deleteAssetWithFormat:(id)format;
+- (void)_didReceiveCaptureSessionErrorNotification:(id)notification;
+- (void)_previewInterruptedNotification:(id)notification;
+- (void)_previewStartedNotification:(id)notification;
+- (void)_setVideoState:(unint64_t)state;
+- (void)_toggleCameraToPosition:(int64_t)position;
+- (void)_updatePreviewOrientationWithSize:(CGSize)size;
+- (void)captureOutput:(id)output didFinishCaptureForResolvedSettings:(id)settings error:(id)error;
+- (void)captureOutput:(id)output didFinishProcessingPhotoSampleBuffer:(opaqueCMSampleBuffer *)buffer previewPhotoSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer resolvedSettings:(id)settings bracketSettings:(id)bracketSettings error:(id)error;
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
 - (void)dealloc;
 - (void)deleteWrittenAssets;
 - (void)finishRecording;
@@ -26,15 +26,15 @@
 - (void)toggleCamera;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)writePhotoDataWithCompletion:(id)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)writePhotoDataWithCompletion:(id)completion;
 @end
 
 @implementation ETVideoController
 
-- (ETVideoController)initWithMessageIdentifier:(id)a3
+- (ETVideoController)initWithMessageIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = ETVideoController;
   v6 = [(ETVideoController *)&v19 init];
@@ -52,13 +52,13 @@
     writerQueue = v7->_writerQueue;
     v7->_writerQueue = v12;
 
-    objc_storeStrong(&v7->_fileUUID, a3);
+    objc_storeStrong(&v7->_fileUUID, identifier);
     v14 = [(ETVideoController *)v7 _urlWithFormat:@"DigitalTouch-%@.m4v"];
     fileURL = v7->_fileURL;
     v7->_fileURL = v14;
 
-    v16 = [(ETVideoController *)v7 view];
-    [v16 setUserInteractionEnabled:0];
+    view = [(ETVideoController *)v7 view];
+    [view setUserInteractionEnabled:0];
 
     v17 = v7;
   }
@@ -66,9 +66,9 @@
   return v7;
 }
 
-- (id)_urlWithFormat:(id)a3
+- (id)_urlWithFormat:(id)format
 {
-  v3 = [NSString stringWithValidatedFormat:a3 validFormatSpecifiers:@"%@" error:0, self->_fileUUID];
+  v3 = [NSString stringWithValidatedFormat:format validFormatSpecifiers:@"%@" error:0, self->_fileUUID];
   v4 = NSTemporaryDirectory();
   v5 = [v4 stringByAppendingPathComponent:v3];
   v6 = [NSURL fileURLWithPath:v5];
@@ -76,11 +76,11 @@
   return v6;
 }
 
-- (void)_didReceiveCaptureSessionErrorNotification:(id)a3
+- (void)_didReceiveCaptureSessionErrorNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:AVCaptureSessionErrorKey];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:AVCaptureSessionErrorKey];
 
   if (IMOSLoggingEnabled())
   {
@@ -88,7 +88,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v9 = 138412546;
-      v10 = v4;
+      v10 = notificationCopy;
       v11 = 2112;
       v12 = v6;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "Received capture session error notification: %@, with error: %@", &v9, 0x16u);
@@ -191,7 +191,7 @@
   [(ETVideoController *)&v4 dealloc];
 }
 
-- (void)_previewStartedNotification:(id)a3
+- (void)_previewStartedNotification:(id)notification
 {
   time1 = self->_writeStartTime;
   v4 = kCMTimeZero;
@@ -202,12 +202,12 @@
   }
 }
 
-- (void)_previewInterruptedNotification:(id)a3
+- (void)_previewInterruptedNotification:(id)notification
 {
   if (self->_videoState - 1 <= 1)
   {
-    v5 = [a3 userInfo];
-    v7 = [v5 objectForKey:AVCaptureSessionInterruptionReasonKey];
+    userInfo = [notification userInfo];
+    v7 = [userInfo objectForKey:AVCaptureSessionInterruptionReasonKey];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained videoControllerDidInterruptPreview:self withInterruptionReason:{objc_msgSend(v7, "intValue")}];
@@ -219,12 +219,12 @@
   v12.receiver = self;
   v12.super_class = ETVideoController;
   [(ETVideoController *)&v12 viewDidLoad];
-  v3 = [(ETVideoController *)self view];
+  view = [(ETVideoController *)self view];
   v4 = +[UIColor blackColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
-  v5 = [v3 layer];
-  [v5 setMasksToBounds:1];
+  layer = [view layer];
+  [layer setMasksToBounds:1];
   v6 = objc_opt_new();
   captureSession = self->_captureSession;
   self->_captureSession = v6;
@@ -252,15 +252,15 @@
   [v3 addObserver:self selector:"_didReceiveCaptureSessionErrorNotification:" name:AVCaptureSessionRuntimeErrorNotification object:self->_captureSession];
 }
 
-- (void)_updatePreviewOrientationWithSize:(CGSize)a3
+- (void)_updatePreviewOrientationWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = +[UIApplication sharedApplication];
-  v7 = [v6 statusBarOrientation];
+  statusBarOrientation = [v6 statusBarOrientation];
 
   v8 = 1;
-  if (v7 == (&dword_0 + 3))
+  if (statusBarOrientation == (&dword_0 + 3))
   {
     v9 = 3;
   }
@@ -270,7 +270,7 @@
     v9 = 1;
   }
 
-  if (v7 == &dword_4)
+  if (statusBarOrientation == &dword_4)
   {
     v9 = 4;
   }
@@ -281,17 +281,17 @@
     v10 = 1;
   }
 
-  if (v7 == (&dword_0 + 2))
+  if (statusBarOrientation == (&dword_0 + 2))
   {
     v8 = 2;
   }
 
-  if (!v7)
+  if (!statusBarOrientation)
   {
     v8 = v10;
   }
 
-  if (v7 <= 2)
+  if (statusBarOrientation <= 2)
   {
     v11 = v8;
   }
@@ -307,22 +307,22 @@
   v12 = [(AVCaptureVideoDataOutput *)self->_videoDataOutput connectionWithMediaType:AVMediaTypeVideo];
   [v12 setVideoOrientation:v11];
 
-  v13 = [(AVCaptureVideoPreviewLayer *)self->_previewLayer connection];
-  [v13 setVideoOrientation:v11];
+  connection = [(AVCaptureVideoPreviewLayer *)self->_previewLayer connection];
+  [connection setVideoOrientation:v11];
 }
 
-- (id)_videoCaptureDeviceAtPosition:(int64_t)a3
+- (id)_videoCaptureDeviceAtPosition:(int64_t)position
 {
-  v4 = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInDualCamera mediaType:AVMediaTypeVideo position:a3];
+  v4 = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInDualCamera mediaType:AVMediaTypeVideo position:position];
   if (!v4)
   {
-    v4 = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:a3];
+    v4 = [AVCaptureDevice defaultDeviceWithDeviceType:AVCaptureDeviceTypeBuiltInWideAngleCamera mediaType:AVMediaTypeVideo position:position];
   }
 
   return v4;
 }
 
-- (void)_toggleCameraToPosition:(int64_t)a3
+- (void)_toggleCameraToPosition:(int64_t)position
 {
   writerQueue = self->_writerQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -330,7 +330,7 @@
   v4[2] = sub_B57C;
   v4[3] = &unk_24948;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = position;
   dispatch_async(writerQueue, v4);
 }
 
@@ -345,19 +345,19 @@
   dispatch_async(previewQueue, block);
 }
 
-- (void)_setVideoState:(unint64_t)a3
+- (void)_setVideoState:(unint64_t)state
 {
-  if (self->_videoState == a3)
+  if (self->_videoState == state)
   {
     return;
   }
 
-  self->_videoState = a3;
-  if (a3 <= 2)
+  self->_videoState = state;
+  if (state <= 2)
   {
-    if (a3)
+    if (state)
     {
-      if (a3 == 1)
+      if (state == 1)
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         [WeakRetained videoControllerDidStartPreview:self];
@@ -365,7 +365,7 @@
 
       else
       {
-        if (a3 != 2)
+        if (state != 2)
         {
           return;
         }
@@ -384,9 +384,9 @@
 
   else
   {
-    if (a3 <= 4)
+    if (state <= 4)
     {
-      if (a3 == 3)
+      if (state == 3)
       {
         v8 = objc_loadWeakRetained(&self->_delegate);
         [v8 videoControllerWillCancelRecording:self];
@@ -418,7 +418,7 @@
       return;
     }
 
-    if (a3 == 5)
+    if (state == 5)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained videoControllerDidEndPhotoCapture:self photoImage:self->_photoImage];
@@ -426,7 +426,7 @@
 
     else
     {
-      if (a3 != 6)
+      if (state != 6)
       {
         return;
       }
@@ -443,8 +443,8 @@
 
       v9 = fileURL;
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v10 = [(AVAssetWriter *)self->_writer error];
-      [WeakRetained videoControllerDidEndRecording:self mediaURL:v9 withError:v10];
+      error = [(AVAssetWriter *)self->_writer error];
+      [WeakRetained videoControllerDidEndRecording:self mediaURL:v9 withError:error];
     }
   }
 }
@@ -470,10 +470,10 @@
   AudioServicesPlaySystemSoundWithCompletion(0x45Du, inCompletionBlock);
 }
 
-- (void)_deleteAssetWithFormat:(id)a3
+- (void)_deleteAssetWithFormat:(id)format
 {
-  v4 = a3;
-  v5 = [(ETVideoController *)self _urlWithFormat:v4];
+  formatCopy = format;
+  v5 = [(ETVideoController *)self _urlWithFormat:formatCopy];
   v6 = +[NSFileManager defaultManager];
   v10 = 0;
   v7 = [v6 removeItemAtURL:v5 error:&v10];
@@ -521,8 +521,8 @@
   v5.super_class = ETVideoController;
   [(ETVideoController *)&v5 viewWillLayoutSubviews];
   previewLayer = self->_previewLayer;
-  v4 = [(ETVideoController *)self view];
-  [v4 bounds];
+  view = [(ETVideoController *)self view];
+  [view bounds];
   [(AVCaptureVideoPreviewLayer *)previewLayer setFrame:?];
 }
 
@@ -576,9 +576,9 @@
   return CMTimeGetSeconds(&time1);
 }
 
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
-  v7 = a3;
+  outputCopy = output;
   if (self->_canWrite)
   {
     p_writeStartTime = &self->_writeStartTime;
@@ -586,10 +586,10 @@
     time2 = kCMTimeZero;
     v9 = CMTimeCompare(&time1, &time2);
     v10 = v9;
-    if (self->_videoDataOutput == v7)
+    if (self->_videoDataOutput == outputCopy)
     {
       memset(&time1, 0, sizeof(time1));
-      CMSampleBufferGetPresentationTimeStamp(&time1, a4);
+      CMSampleBufferGetPresentationTimeStamp(&time1, buffer);
       if (!v10)
       {
         v11 = *&time1.value;
@@ -610,7 +610,7 @@
 
       if ([(AVAssetWriterInput *)self->_videoWriterInput isReadyForMoreMediaData])
       {
-        [(AVAssetWriterInput *)self->_videoWriterInput appendSampleBuffer:a4];
+        [(AVAssetWriterInput *)self->_videoWriterInput appendSampleBuffer:buffer];
       }
 
       lhs = time1;
@@ -623,33 +623,33 @@
       }
     }
 
-    else if (v9 && self->_audioDataOutput == v7 && [(AVAssetWriterInput *)self->_audioWriterInput isReadyForMoreMediaData])
+    else if (v9 && self->_audioDataOutput == outputCopy && [(AVAssetWriterInput *)self->_audioWriterInput isReadyForMoreMediaData])
     {
-      [(AVAssetWriterInput *)self->_audioWriterInput appendSampleBuffer:a4];
+      [(AVAssetWriterInput *)self->_audioWriterInput appendSampleBuffer:buffer];
     }
   }
 }
 
-- (void)captureOutput:(id)a3 didFinishProcessingPhotoSampleBuffer:(opaqueCMSampleBuffer *)a4 previewPhotoSampleBuffer:(opaqueCMSampleBuffer *)a5 resolvedSettings:(id)a6 bracketSettings:(id)a7 error:(id)a8
+- (void)captureOutput:(id)output didFinishProcessingPhotoSampleBuffer:(opaqueCMSampleBuffer *)buffer previewPhotoSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer resolvedSettings:(id)settings bracketSettings:(id)bracketSettings error:(id)error
 {
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  if (self->_photoOutput == v14)
+  outputCopy = output;
+  settingsCopy = settings;
+  bracketSettingsCopy = bracketSettings;
+  errorCopy = error;
+  if (self->_photoOutput == outputCopy)
   {
-    if (a4)
+    if (buffer)
     {
-      v18 = [AVCapturePhotoOutput JPEGPhotoDataRepresentationForJPEGSampleBuffer:a4 previewPhotoSampleBuffer:a5];
+      v18 = [AVCapturePhotoOutput JPEGPhotoDataRepresentationForJPEGSampleBuffer:buffer previewPhotoSampleBuffer:sampleBuffer];
       photoData = self->_photoData;
       self->_photoData = v18;
 
-      v20 = [[CIImage alloc] initWithCVPixelBuffer:CMSampleBufferGetImageBuffer(a5)];
+      v20 = [[CIImage alloc] initWithCVPixelBuffer:CMSampleBufferGetImageBuffer(sampleBuffer)];
       v21 = [UIImage imageWithCIImage:v20];
       photoImage = self->_photoImage;
       self->_photoImage = v21;
 
-      CMSampleBufferGetPresentationTimeStamp(&v25, a4);
+      CMSampleBufferGetPresentationTimeStamp(&v25, buffer);
       self->_writeStartTime = v25;
     }
 
@@ -672,7 +672,7 @@
   }
 }
 
-- (void)captureOutput:(id)a3 didFinishCaptureForResolvedSettings:(id)a4 error:(id)a5
+- (void)captureOutput:(id)output didFinishCaptureForResolvedSettings:(id)settings error:(id)error
 {
   previewQueue = self->_previewQueue;
   block[0] = _NSConcreteStackBlock;
@@ -683,21 +683,21 @@
   dispatch_async(previewQueue, block);
 }
 
-- (void)writePhotoDataWithCompletion:(id)a3
+- (void)writePhotoDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   writerQueue = self->_writerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_D374;
   v7[3] = &unk_24A50;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(writerQueue, v7);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   writerQueue = self->_writerQueue;
   block[0] = _NSConcreteStackBlock;
@@ -705,7 +705,7 @@
   block[2] = sub_D500;
   block[3] = &unk_24A78;
   block[4] = self;
-  v6 = a3;
+  sizeCopy = size;
   dispatch_async(writerQueue, block);
 }
 

@@ -1,15 +1,15 @@
 @interface NLDataSet
-+ (id)dataSetWithDataSet:(id)a3 constraintParameters:(_NLConstraintParameters *)a4 modelTrainer:(id)a5;
-- (NLDataSet)initWithConfiguration:(id)a3 dataProvider:(id)a4 validationSplit:(double)a5 testingSplit:(double)a6;
-- (NLDataSet)initWithConfiguration:(id)a3 trainingDataProvider:(id)a4 validationDataProvider:(id)a5 testDataProvider:(id)a6;
-- (NLDataSet)initWithConfiguration:(id)a3 trainingDataURL:(id)a4 validationDataURL:(id)a5 testDataURL:(id)a6;
-- (id)dataProviderOfType:(int64_t)a3;
++ (id)dataSetWithDataSet:(id)set constraintParameters:(_NLConstraintParameters *)parameters modelTrainer:(id)trainer;
+- (NLDataSet)initWithConfiguration:(id)configuration dataProvider:(id)provider validationSplit:(double)split testingSplit:(double)testingSplit;
+- (NLDataSet)initWithConfiguration:(id)configuration trainingDataProvider:(id)provider validationDataProvider:(id)dataProvider testDataProvider:(id)testDataProvider;
+- (NLDataSet)initWithConfiguration:(id)configuration trainingDataURL:(id)l validationDataURL:(id)rL testDataURL:(id)uRL;
+- (id)dataProviderOfType:(int64_t)type;
 - (id)documentFrequencyMap;
 - (id)inverseLabelMap;
 - (id)labelMap;
-- (id)testInstanceAtIndex:(unint64_t)a3;
-- (id)trainingInstanceAtIndex:(unint64_t)a3;
-- (id)validationInstanceAtIndex:(unint64_t)a3;
+- (id)testInstanceAtIndex:(unint64_t)index;
+- (id)trainingInstanceAtIndex:(unint64_t)index;
+- (id)validationInstanceAtIndex:(unint64_t)index;
 - (id)vocabularyMap;
 - (unint64_t)numberOfLabels;
 - (unint64_t)numberOfTestInstances;
@@ -20,92 +20,92 @@
 
 @implementation NLDataSet
 
-- (NLDataSet)initWithConfiguration:(id)a3 trainingDataProvider:(id)a4 validationDataProvider:(id)a5 testDataProvider:(id)a6
+- (NLDataSet)initWithConfiguration:(id)configuration trainingDataProvider:(id)provider validationDataProvider:(id)dataProvider testDataProvider:(id)testDataProvider
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  configurationCopy = configuration;
+  providerCopy = provider;
+  dataProviderCopy = dataProvider;
+  testDataProviderCopy = testDataProvider;
   v18.receiver = self;
   v18.super_class = NLDataSet;
   v14 = [(NLDataSet *)&v18 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [configurationCopy copy];
     configuration = v14->_configuration;
     v14->_configuration = v15;
 
-    objc_storeStrong(&v14->_trainingDataProvider, a4);
-    objc_storeStrong(&v14->_validationDataProvider, a5);
-    objc_storeStrong(&v14->_testDataProvider, a6);
+    objc_storeStrong(&v14->_trainingDataProvider, provider);
+    objc_storeStrong(&v14->_validationDataProvider, dataProvider);
+    objc_storeStrong(&v14->_testDataProvider, testDataProvider);
   }
 
   return v14;
 }
 
-- (NLDataSet)initWithConfiguration:(id)a3 trainingDataURL:(id)a4 validationDataURL:(id)a5 testDataURL:(id)a6
+- (NLDataSet)initWithConfiguration:(id)configuration trainingDataURL:(id)l validationDataURL:(id)rL testDataURL:(id)uRL
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[NLDataProvider alloc] initWithConfiguration:v13 dataURL:v12];
+  uRLCopy = uRL;
+  rLCopy = rL;
+  lCopy = l;
+  configurationCopy = configuration;
+  v14 = [[NLDataProvider alloc] initWithConfiguration:configurationCopy dataURL:lCopy];
 
-  v15 = [[NLDataProvider alloc] initWithConfiguration:v13 dataURL:v11];
-  v16 = [[NLDataProvider alloc] initWithConfiguration:v13 dataURL:v10];
+  v15 = [[NLDataProvider alloc] initWithConfiguration:configurationCopy dataURL:rLCopy];
+  v16 = [[NLDataProvider alloc] initWithConfiguration:configurationCopy dataURL:uRLCopy];
 
-  v17 = [(NLDataSet *)self initWithConfiguration:v13 trainingDataProvider:v14 validationDataProvider:v15 testDataProvider:v16];
+  v17 = [(NLDataSet *)self initWithConfiguration:configurationCopy trainingDataProvider:v14 validationDataProvider:v15 testDataProvider:v16];
   return v17;
 }
 
-- (NLDataSet)initWithConfiguration:(id)a3 dataProvider:(id)a4 validationSplit:(double)a5 testingSplit:(double)a6
+- (NLDataSet)initWithConfiguration:(id)configuration dataProvider:(id)provider validationSplit:(double)split testingSplit:(double)testingSplit
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = splitIndexes([v10 numberOfInstances], a5, a6);
+  providerCopy = provider;
+  configurationCopy = configuration;
+  v12 = splitIndexes([providerCopy numberOfInstances], split, testingSplit);
   v13 = [NLSplitDataProvider alloc];
   v14 = [v12 objectAtIndex:0];
-  v15 = [(NLSplitDataProvider *)v13 initWithDataProvider:v10 indexes:v14];
+  v15 = [(NLSplitDataProvider *)v13 initWithDataProvider:providerCopy indexes:v14];
 
   v16 = [NLSplitDataProvider alloc];
   v17 = [v12 objectAtIndex:1];
-  v18 = [(NLSplitDataProvider *)v16 initWithDataProvider:v10 indexes:v17];
+  v18 = [(NLSplitDataProvider *)v16 initWithDataProvider:providerCopy indexes:v17];
 
   v19 = [NLSplitDataProvider alloc];
   v20 = [v12 objectAtIndex:2];
-  v21 = [(NLSplitDataProvider *)v19 initWithDataProvider:v10 indexes:v20];
+  v21 = [(NLSplitDataProvider *)v19 initWithDataProvider:providerCopy indexes:v20];
 
-  v22 = [(NLDataSet *)self initWithConfiguration:v11 trainingDataProvider:v15 validationDataProvider:v18 testDataProvider:v21];
+  v22 = [(NLDataSet *)self initWithConfiguration:configurationCopy trainingDataProvider:v15 validationDataProvider:v18 testDataProvider:v21];
   return v22;
 }
 
-+ (id)dataSetWithDataSet:(id)a3 constraintParameters:(_NLConstraintParameters *)a4 modelTrainer:(id)a5
++ (id)dataSetWithDataSet:(id)set constraintParameters:(_NLConstraintParameters *)parameters modelTrainer:(id)trainer
 {
-  v7 = a5;
-  v8 = a3;
+  trainerCopy = trainer;
+  setCopy = set;
   v9 = [NLConstrainedDataProvider alloc];
-  v10 = [v8 dataProviderOfType:0];
-  v11 = *&a4->maxSplitTokens;
-  v19[0] = *&a4->splitSentences;
+  v10 = [setCopy dataProviderOfType:0];
+  v11 = *&parameters->maxSplitTokens;
+  v19[0] = *&parameters->splitSentences;
   v19[1] = v11;
-  v19[2] = *&a4->maxLabels;
-  v12 = [(NLConstrainedDataProvider *)v9 initWithDataProvider:v10 parameters:v19 modelTrainer:v7];
+  v19[2] = *&parameters->maxLabels;
+  v12 = [(NLConstrainedDataProvider *)v9 initWithDataProvider:v10 parameters:v19 modelTrainer:trainerCopy];
 
-  v13 = [v8 dataProviderOfType:1];
-  v14 = [v8 dataProviderOfType:2];
+  v13 = [setCopy dataProviderOfType:1];
+  v14 = [setCopy dataProviderOfType:2];
   v15 = [NLDataSet alloc];
-  v16 = [v8 configuration];
+  configuration = [setCopy configuration];
 
-  v17 = [(NLDataSet *)v15 initWithConfiguration:v16 trainingDataProvider:v12 validationDataProvider:v13 testDataProvider:v14];
+  v17 = [(NLDataSet *)v15 initWithConfiguration:configuration trainingDataProvider:v12 validationDataProvider:v13 testDataProvider:v14];
 
   return v17;
 }
 
-- (id)dataProviderOfType:(int64_t)a3
+- (id)dataProviderOfType:(int64_t)type
 {
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    self = *(&self->_trainingDataProvider + a3);
+    self = *(&self->_trainingDataProvider + type);
   }
 
   return self;
@@ -114,47 +114,47 @@
 - (unint64_t)numberOfTrainingInstances
 {
   v2 = [(NLDataSet *)self dataProviderOfType:0];
-  v3 = [v2 numberOfInstances];
+  numberOfInstances = [v2 numberOfInstances];
 
-  return v3;
+  return numberOfInstances;
 }
 
 - (unint64_t)numberOfValidationInstances
 {
   v2 = [(NLDataSet *)self dataProviderOfType:1];
-  v3 = [v2 numberOfInstances];
+  numberOfInstances = [v2 numberOfInstances];
 
-  return v3;
+  return numberOfInstances;
 }
 
 - (unint64_t)numberOfTestInstances
 {
   v2 = [(NLDataSet *)self dataProviderOfType:2];
-  v3 = [v2 numberOfInstances];
+  numberOfInstances = [v2 numberOfInstances];
 
-  return v3;
+  return numberOfInstances;
 }
 
-- (id)trainingInstanceAtIndex:(unint64_t)a3
+- (id)trainingInstanceAtIndex:(unint64_t)index
 {
   v4 = [(NLDataSet *)self dataProviderOfType:0];
-  v5 = [v4 instanceAtIndex:a3];
+  v5 = [v4 instanceAtIndex:index];
 
   return v5;
 }
 
-- (id)validationInstanceAtIndex:(unint64_t)a3
+- (id)validationInstanceAtIndex:(unint64_t)index
 {
   v4 = [(NLDataSet *)self dataProviderOfType:1];
-  v5 = [v4 instanceAtIndex:a3];
+  v5 = [v4 instanceAtIndex:index];
 
   return v5;
 }
 
-- (id)testInstanceAtIndex:(unint64_t)a3
+- (id)testInstanceAtIndex:(unint64_t)index
 {
   v4 = [(NLDataSet *)self dataProviderOfType:2];
-  v5 = [v4 instanceAtIndex:a3];
+  v5 = [v4 instanceAtIndex:index];
 
   return v5;
 }
@@ -162,49 +162,49 @@
 - (id)labelMap
 {
   v2 = [(NLDataSet *)self dataProviderOfType:0];
-  v3 = [v2 labelMap];
+  labelMap = [v2 labelMap];
 
-  return v3;
+  return labelMap;
 }
 
 - (id)inverseLabelMap
 {
   v2 = [(NLDataSet *)self dataProviderOfType:0];
-  v3 = [v2 inverseLabelMap];
+  inverseLabelMap = [v2 inverseLabelMap];
 
-  return v3;
+  return inverseLabelMap;
 }
 
 - (id)vocabularyMap
 {
   v2 = [(NLDataSet *)self dataProviderOfType:0];
-  v3 = [v2 vocabularyMap];
+  vocabularyMap = [v2 vocabularyMap];
 
-  return v3;
+  return vocabularyMap;
 }
 
 - (id)documentFrequencyMap
 {
   v2 = [(NLDataSet *)self dataProviderOfType:0];
-  v3 = [v2 documentFrequencyMap];
+  documentFrequencyMap = [v2 documentFrequencyMap];
 
-  return v3;
+  return documentFrequencyMap;
 }
 
 - (unint64_t)numberOfLabels
 {
   v2 = [(NLDataSet *)self dataProviderOfType:0];
-  v3 = [v2 numberOfLabels];
+  numberOfLabels = [v2 numberOfLabels];
 
-  return v3;
+  return numberOfLabels;
 }
 
 - (unint64_t)numberOfVocabularyEntries
 {
   v2 = [(NLDataSet *)self dataProviderOfType:0];
-  v3 = [v2 numberOfVocabularyEntries];
+  numberOfVocabularyEntries = [v2 numberOfVocabularyEntries];
 
-  return v3;
+  return numberOfVocabularyEntries;
 }
 
 @end

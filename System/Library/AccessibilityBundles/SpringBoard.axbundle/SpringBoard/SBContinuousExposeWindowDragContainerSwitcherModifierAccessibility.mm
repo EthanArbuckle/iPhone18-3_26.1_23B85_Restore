@@ -1,30 +1,30 @@
 @interface SBContinuousExposeWindowDragContainerSwitcherModifierAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)handleGestureEvent:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)handleGestureEvent:(id)event;
 @end
 
 @implementation SBContinuousExposeWindowDragContainerSwitcherModifierAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBContinuousExposeWindowDragContainerSwitcherModifier" hasInstanceVariable:@"_selectedDisplayItem" withType:"SBDisplayItem"];
-  [v3 validateClass:@"SBContinuousExposeWindowDragContainerSwitcherModifier" hasInstanceMethod:@"appLayoutOnStage" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBGestureSwitcherModifierEvent" hasInstanceMethod:@"phase" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"SBContinuousExposeWindowDragDestinationSwitcherModifier" hasInstanceMethod:@"proposedAppLayout" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBAppLayout" hasInstanceMethod:@"allItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBContinuousExposeWindowDragContainerSwitcherModifier" hasInstanceMethod:@"handleGestureEvent:" withFullSignature:{"@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBContinuousExposeWindowDragContainerSwitcherModifier" hasInstanceVariable:@"_selectedDisplayItem" withType:"SBDisplayItem"];
+  [validationsCopy validateClass:@"SBContinuousExposeWindowDragContainerSwitcherModifier" hasInstanceMethod:@"appLayoutOnStage" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBGestureSwitcherModifierEvent" hasInstanceMethod:@"phase" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"SBContinuousExposeWindowDragDestinationSwitcherModifier" hasInstanceMethod:@"proposedAppLayout" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBAppLayout" hasInstanceMethod:@"allItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBContinuousExposeWindowDragContainerSwitcherModifier" hasInstanceMethod:@"handleGestureEvent:" withFullSignature:{"@", "@", 0}];
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
   v24 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  eventCopy = event;
   v22.receiver = self;
   v22.super_class = SBContinuousExposeWindowDragContainerSwitcherModifierAccessibility;
-  v5 = [(SBContinuousExposeWindowDragContainerSwitcherModifierAccessibility *)&v22 handleGestureEvent:v4];
+  v5 = [(SBContinuousExposeWindowDragContainerSwitcherModifierAccessibility *)&v22 handleGestureEvent:eventCopy];
   v6 = [(SBContinuousExposeWindowDragContainerSwitcherModifierAccessibility *)self safeValueForKey:@"_selectedDisplayItem"];
-  if ([v4 safeIntegerForKey:@"phase"] == 3)
+  if ([eventCopy safeIntegerForKey:@"phase"] == 3)
   {
     v20 = 0u;
     v21 = 0u;
@@ -65,9 +65,9 @@
 
 LABEL_12:
 
-    v12 = [v6 accessibilityLabel];
-    v13 = v12;
-    if (v9 && v12)
+    accessibilityLabel = [v6 accessibilityLabel];
+    v13 = accessibilityLabel;
+    if (v9 && accessibilityLabel)
     {
       v14 = accessibilityLocalizedString(@"continuous.expose.window.drag.switcher.modifier.added.to.stage");
       v15 = AXCFormattedString();

@@ -1,5 +1,5 @@
 @interface PXUISnappingController
-- (PXUISnappingController)initWithSnappingTarget:(double)a3;
+- (PXUISnappingController)initWithSnappingTarget:(double)target;
 - (void)didSnapByAttraction;
 - (void)interactionBegan;
 @end
@@ -11,8 +11,8 @@
   v4.receiver = self;
   v4.super_class = PXUISnappingController;
   [(PXSnappingController *)&v4 didSnapByAttraction];
-  v3 = [(PXUISnappingController *)self _selectionBehavior];
-  [v3 selectionChanged];
+  _selectionBehavior = [(PXUISnappingController *)self _selectionBehavior];
+  [_selectionBehavior selectionChanged];
 }
 
 - (void)interactionBegan
@@ -20,15 +20,15 @@
   v4.receiver = self;
   v4.super_class = PXUISnappingController;
   [(PXSnappingController *)&v4 interactionBegan];
-  v3 = [(PXUISnappingController *)self _selectionBehavior];
-  [v3 prepare];
+  _selectionBehavior = [(PXUISnappingController *)self _selectionBehavior];
+  [_selectionBehavior prepare];
 }
 
-- (PXUISnappingController)initWithSnappingTarget:(double)a3
+- (PXUISnappingController)initWithSnappingTarget:(double)target
 {
   v7.receiver = self;
   v7.super_class = PXUISnappingController;
-  v3 = [(PXSnappingController *)&v7 initWithSnappingTarget:a3];
+  v3 = [(PXSnappingController *)&v7 initWithSnappingTarget:target];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCF40]);

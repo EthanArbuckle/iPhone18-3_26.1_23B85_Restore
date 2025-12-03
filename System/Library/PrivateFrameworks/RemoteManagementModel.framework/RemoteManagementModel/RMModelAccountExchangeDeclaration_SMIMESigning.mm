@@ -1,10 +1,10 @@
 @interface RMModelAccountExchangeDeclaration_SMIMESigning
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithEnabled:(id)a3;
-+ (id)buildWithEnabled:(id)a3 identityAssetReference:(id)a4 userOverrideable:(id)a5 identityUserOverrideable:(id)a6;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
++ (id)buildRequiredOnlyWithEnabled:(id)enabled;
++ (id)buildWithEnabled:(id)enabled identityAssetReference:(id)reference userOverrideable:(id)overrideable identityUserOverrideable:(id)userOverrideable;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
 @end
 
 @implementation RMModelAccountExchangeDeclaration_SMIMESigning
@@ -25,20 +25,20 @@
   return v4;
 }
 
-+ (id)buildWithEnabled:(id)a3 identityAssetReference:(id)a4 userOverrideable:(id)a5 identityUserOverrideable:(id)a6
++ (id)buildWithEnabled:(id)enabled identityAssetReference:(id)reference userOverrideable:(id)overrideable identityUserOverrideable:(id)userOverrideable
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  userOverrideableCopy = userOverrideable;
+  overrideableCopy = overrideable;
+  referenceCopy = reference;
+  enabledCopy = enabled;
   v13 = objc_opt_new();
-  [v13 setPayloadEnabled:v12];
+  [v13 setPayloadEnabled:enabledCopy];
 
-  [v13 setPayloadIdentityAssetReference:v11];
+  [v13 setPayloadIdentityAssetReference:referenceCopy];
   v14 = MEMORY[0x277CBEC28];
-  if (v10)
+  if (overrideableCopy)
   {
-    v15 = v10;
+    v15 = overrideableCopy;
   }
 
   else
@@ -48,9 +48,9 @@
 
   [v13 setPayloadUserOverrideable:v15];
 
-  if (v9)
+  if (userOverrideableCopy)
   {
-    v16 = v9;
+    v16 = userOverrideableCopy;
   }
 
   else
@@ -63,21 +63,21 @@
   return v13;
 }
 
-+ (id)buildRequiredOnlyWithEnabled:(id)a3
++ (id)buildRequiredOnlyWithEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = objc_opt_new();
-  [v4 setPayloadEnabled:v3];
+  [v4 setPayloadEnabled:enabledCopy];
 
   return v4;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelAccountExchangeDeclaration_SMIMESigning allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -85,36 +85,36 @@
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"Enabled" forKeyPath:@"payloadEnabled" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"IdentityAssetReference" forKeyPath:@"payloadIdentityAssetReference" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"UserOverrideable" forKeyPath:@"payloadUserOverrideable" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"IdentityUserOverrideable" forKeyPath:@"payloadIdentityUserOverrideable" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5];
+  v13 = [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"Enabled" forKeyPath:@"payloadEnabled" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"IdentityAssetReference" forKeyPath:@"payloadIdentityAssetReference" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"UserOverrideable" forKeyPath:@"payloadUserOverrideable" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"IdentityUserOverrideable" forKeyPath:@"payloadIdentityUserOverrideable" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error];
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelAccountExchangeDeclaration_SMIMESigning *)self payloadEnabled];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"Enabled" value:v5 isRequired:1 defaultValue:0];
+  payloadEnabled = [(RMModelAccountExchangeDeclaration_SMIMESigning *)self payloadEnabled];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"Enabled" value:payloadEnabled isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelAccountExchangeDeclaration_SMIMESigning *)self payloadIdentityAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"IdentityAssetReference" value:v6 isRequired:0 defaultValue:0];
+  payloadIdentityAssetReference = [(RMModelAccountExchangeDeclaration_SMIMESigning *)self payloadIdentityAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"IdentityAssetReference" value:payloadIdentityAssetReference isRequired:0 defaultValue:0];
 
-  v7 = [(RMModelAccountExchangeDeclaration_SMIMESigning *)self payloadUserOverrideable];
+  payloadUserOverrideable = [(RMModelAccountExchangeDeclaration_SMIMESigning *)self payloadUserOverrideable];
   v8 = MEMORY[0x277CBEC28];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"UserOverrideable" value:v7 isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"UserOverrideable" value:payloadUserOverrideable isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
 
-  v9 = [(RMModelAccountExchangeDeclaration_SMIMESigning *)self payloadIdentityUserOverrideable];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"IdentityUserOverrideable" value:v9 isRequired:0 defaultValue:v8];
+  payloadIdentityUserOverrideable = [(RMModelAccountExchangeDeclaration_SMIMESigning *)self payloadIdentityUserOverrideable];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"IdentityUserOverrideable" value:payloadIdentityUserOverrideable isRequired:0 defaultValue:v8];
 
   v10 = [v4 copy];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = RMModelAccountExchangeDeclaration_SMIMESigning;
-  v4 = [(RMModelPayloadBase *)&v14 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v14 copyWithZone:zone];
   v5 = [(NSNumber *)self->_payloadEnabled copy];
   v6 = v4[2];
   v4[2] = v5;

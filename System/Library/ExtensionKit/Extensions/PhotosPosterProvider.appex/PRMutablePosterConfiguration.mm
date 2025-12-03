@@ -1,13 +1,13 @@
 @interface PRMutablePosterConfiguration
 - (NSString)pu_displayNameLocalizationKey;
-- (void)setPu_displayNameLocalizationKey:(id)a3;
+- (void)setPu_displayNameLocalizationKey:(id)key;
 @end
 
 @implementation PRMutablePosterConfiguration
 
 - (NSString)pu_displayNameLocalizationKey
 {
-  v2 = self;
+  selfCopy = self;
   PRMutablePosterConfiguration.pu_displayNameLocalizationKey.getter();
   v4 = v3;
 
@@ -24,9 +24,9 @@
   return v5;
 }
 
-- (void)setPu_displayNameLocalizationKey:(id)a3
+- (void)setPu_displayNameLocalizationKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v4 = sub_10002F404();
     v6 = v5;
@@ -38,7 +38,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   PRMutablePosterConfiguration.pu_displayNameLocalizationKey.setter(v4, v6);
 }
 

@@ -1,24 +1,24 @@
 @interface PKPaymentOfferMerchandisingOfferDetails
-+ (id)combineOfferDetails:(id)a3 withOtherDetails:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOfferMerchandisingOfferDetails)initWithCoder:(id)a3;
-- (PKPaymentOfferMerchandisingOfferDetails)initWithDictionary:(id)a3;
-- (PKPaymentOfferMerchandisingOfferDetails)initWithOffersByMerchandisingIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)combineOfferDetails:(id)details withOtherDetails:(id)otherDetails;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOfferMerchandisingOfferDetails)initWithCoder:(id)coder;
+- (PKPaymentOfferMerchandisingOfferDetails)initWithDictionary:(id)dictionary;
+- (PKPaymentOfferMerchandisingOfferDetails)initWithOffersByMerchandisingIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)offerForMerchandisingIdentifier:(id)a3;
+- (id)offerForMerchandisingIdentifier:(id)identifier;
 - (unint64_t)hash;
 @end
 
 @implementation PKPaymentOfferMerchandisingOfferDetails
 
-- (PKPaymentOfferMerchandisingOfferDetails)initWithDictionary:(id)a3
+- (PKPaymentOfferMerchandisingOfferDetails)initWithDictionary:(id)dictionary
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_class();
-  v5 = [v3 PKDictionaryOfKeyClass:v4 valueClass:objc_opt_class() ForKey:@"merchandisingOffers"];
+  v5 = [dictionaryCopy PKDictionaryOfKeyClass:v4 valueClass:objc_opt_class() ForKey:@"merchandisingOffers"];
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v18 = 0u;
   v19 = 0u;
@@ -55,18 +55,18 @@
   return v15;
 }
 
-- (PKPaymentOfferMerchandisingOfferDetails)initWithOffersByMerchandisingIdentifier:(id)a3
+- (PKPaymentOfferMerchandisingOfferDetails)initWithOffersByMerchandisingIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = PKPaymentOfferMerchandisingOfferDetails;
   v5 = [(PKPaymentOfferMerchandisingOfferDetails *)&v9 init];
   if (v5)
   {
-    v6 = [v4 count];
+    v6 = [identifierCopy count];
     if (v6)
     {
-      v6 = [v4 copy];
+      v6 = [identifierCopy copy];
     }
 
     offersByMerchandisingIdentifier = v5->_offersByMerchandisingIdentifier;
@@ -102,8 +102,8 @@
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [(NSDictionary *)self->_offersByMerchandisingIdentifier objectForKeyedSubscript:v10, v15];
-        v12 = [v11 dictionaryRepresentation];
-        [v4 setObject:v12 forKeyedSubscript:v10];
+        dictionaryRepresentation = [v11 dictionaryRepresentation];
+        [v4 setObject:dictionaryRepresentation forKeyedSubscript:v10];
       }
 
       v7 = [(NSDictionary *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -118,9 +118,9 @@
   return v13;
 }
 
-- (id)offerForMerchandisingIdentifier:(id)a3
+- (id)offerForMerchandisingIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = [(NSDictionary *)self->_offersByMerchandisingIdentifier objectForKeyedSubscript:?];
   }
@@ -133,44 +133,44 @@
   return v4;
 }
 
-+ (id)combineOfferDetails:(id)a3 withOtherDetails:(id)a4
++ (id)combineOfferDetails:(id)details withOtherDetails:(id)otherDetails
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  detailsCopy = details;
+  otherDetailsCopy = otherDetails;
+  v7 = otherDetailsCopy;
+  if (!detailsCopy)
   {
     goto LABEL_5;
   }
 
-  if (!v6 || [v5 isEqual:v6])
+  if (!otherDetailsCopy || [detailsCopy isEqual:otherDetailsCopy])
   {
-    v6 = v5;
+    otherDetailsCopy = detailsCopy;
 LABEL_5:
-    v8 = [v6 copy];
+    v8 = [otherDetailsCopy copy];
     goto LABEL_6;
   }
 
-  v10 = [v5 offersByMerchandisingIdentifier];
-  v11 = [v7 offersByMerchandisingIdentifier];
+  offersByMerchandisingIdentifier = [detailsCopy offersByMerchandisingIdentifier];
+  offersByMerchandisingIdentifier2 = [v7 offersByMerchandisingIdentifier];
   v12 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v13 = MEMORY[0x1E695DFD8];
-  v14 = [v10 allKeys];
-  v15 = [v13 setWithArray:v14];
+  allKeys = [offersByMerchandisingIdentifier allKeys];
+  v15 = [v13 setWithArray:allKeys];
   [v12 unionSet:v15];
 
   v16 = MEMORY[0x1E695DFD8];
-  v17 = v11;
-  v18 = [v11 allKeys];
-  v19 = [v16 setWithArray:v18];
+  v17 = offersByMerchandisingIdentifier2;
+  allKeys2 = [offersByMerchandisingIdentifier2 allKeys];
+  v19 = [v16 setWithArray:allKeys2];
   [v12 unionSet:v19];
 
   v20 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if ([v12 count])
   {
     v38 = v7;
-    v39 = v5;
+    v39 = detailsCopy;
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
@@ -198,7 +198,7 @@ LABEL_5:
         }
 
         v25 = *(*(&v43 + 1) + 8 * v24);
-        v26 = [v10 objectForKeyedSubscript:{v25, v37, v38, v39}];
+        v26 = [offersByMerchandisingIdentifier objectForKeyedSubscript:{v25, v37, v38, v39}];
         v27 = [v17 objectForKeyedSubscript:v25];
         v28 = v27;
         if (v26)
@@ -213,19 +213,19 @@ LABEL_5:
 
         if (!v29)
         {
-          v31 = [v26 lastUpdated];
+          lastUpdated = [v26 lastUpdated];
           [v28 lastUpdated];
           v33 = v32 = v17;
           v34 = v20;
-          v35 = v10;
-          v36 = [v31 compare:v33];
+          v35 = offersByMerchandisingIdentifier;
+          v36 = [lastUpdated compare:v33];
 
           v17 = v32;
           v22 = v41;
 
           v23 = v40;
           v29 = v36 == -1;
-          v10 = v35;
+          offersByMerchandisingIdentifier = v35;
           v20 = v34;
           if (v29)
           {
@@ -270,7 +270,7 @@ LABEL_31:
 
         v8 = [[PKPaymentOfferMerchandisingOfferDetails alloc] initWithOffersByMerchandisingIdentifier:v20];
         v7 = v38;
-        v5 = v39;
+        detailsCopy = v39;
         v12 = v37;
         goto LABEL_33;
       }
@@ -285,16 +285,16 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     offersByMerchandisingIdentifier = self->_offersByMerchandisingIdentifier;
     v7 = v5->_offersByMerchandisingIdentifier;
@@ -336,9 +336,9 @@ LABEL_6:
   return v3;
 }
 
-- (PKPaymentOfferMerchandisingOfferDetails)initWithCoder:(id)a3
+- (PKPaymentOfferMerchandisingOfferDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKPaymentOfferMerchandisingOfferDetails;
   v5 = [(PKPaymentOfferMerchandisingOfferDetails *)&v13 init];
@@ -348,7 +348,7 @@ LABEL_6:
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"merchandisingOffers"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"merchandisingOffers"];
     offersByMerchandisingIdentifier = v5->_offersByMerchandisingIdentifier;
     v5->_offersByMerchandisingIdentifier = v10;
   }
@@ -356,10 +356,10 @@ LABEL_6:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentOfferMerchandisingOfferDetails allocWithZone:](PKPaymentOfferMerchandisingOfferDetails init];
-  v6 = [(NSDictionary *)self->_offersByMerchandisingIdentifier copyWithZone:a3];
+  v6 = [(NSDictionary *)self->_offersByMerchandisingIdentifier copyWithZone:zone];
   offersByMerchandisingIdentifier = v5->_offersByMerchandisingIdentifier;
   v5->_offersByMerchandisingIdentifier = v6;
 

@@ -1,26 +1,26 @@
 @interface COMTTimerNotificationAction
-- (BOOL)isEqual:(id)a3;
-- (COMTTimerNotificationAction)initWithCoder:(id)a3;
-- (COMTTimerNotificationAction)initWithReason:(id)a3 timers:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (COMTTimerNotificationAction)initWithCoder:(id)coder;
+- (COMTTimerNotificationAction)initWithReason:(id)reason timers:(id)timers;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation COMTTimerNotificationAction
 
-- (COMTTimerNotificationAction)initWithReason:(id)a3 timers:(id)a4
+- (COMTTimerNotificationAction)initWithReason:(id)reason timers:(id)timers
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  timersCopy = timers;
   v14.receiver = self;
   v14.super_class = COMTTimerNotificationAction;
   v8 = [(COMTAction *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [reasonCopy copy];
     reason = v8->_reason;
     v8->_reason = v9;
 
-    v11 = [v7 copy];
+    v11 = [timersCopy copy];
     timers = v8->_timers;
     v8->_timers = v11;
   }
@@ -28,16 +28,16 @@
   return v8;
 }
 
-- (COMTTimerNotificationAction)initWithCoder:(id)a3
+- (COMTTimerNotificationAction)initWithCoder:(id)coder
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = COMTTimerNotificationAction;
-  v5 = [(COMTAction *)&v26 initWithCoder:v4];
+  v5 = [(COMTAction *)&v26 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reason"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reason"];
     reason = v5->_reason;
     v5->_reason = v6;
 
@@ -51,7 +51,7 @@ LABEL_14:
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"timers"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"timers"];
 
     v24 = 0u;
     v25 = 0u;
@@ -106,25 +106,25 @@ LABEL_15:
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = COMTTimerNotificationAction;
-  v4 = a3;
-  [(COMTAction *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(COMTAction *)&v7 encodeWithCoder:coderCopy];
   v5 = [(COMTTimerNotificationAction *)self reason:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"reason"];
+  [coderCopy encodeObject:v5 forKey:@"reason"];
 
-  v6 = [(COMTTimerNotificationAction *)self timers];
-  [v4 encodeObject:v6 forKey:@"timers"];
+  timers = [(COMTTimerNotificationAction *)self timers];
+  [coderCopy encodeObject:timers forKey:@"timers"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = COMTTimerNotificationAction;
-  if ([(COMTAction *)&v11 isEqual:v4])
+  if ([(COMTAction *)&v11 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -134,13 +134,13 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(COMTTimerNotificationAction *)self reason];
-      v7 = [v4 reason];
-      if ([v6 isEqual:v7])
+      reason = [(COMTTimerNotificationAction *)self reason];
+      reason2 = [equalCopy reason];
+      if ([reason isEqual:reason2])
       {
-        v8 = [(COMTTimerNotificationAction *)self timers];
-        v9 = [v4 timers];
-        v5 = [v8 isEqual:v9];
+        timers = [(COMTTimerNotificationAction *)self timers];
+        timers2 = [equalCopy timers];
+        v5 = [timers isEqual:timers2];
       }
 
       else

@@ -1,14 +1,14 @@
 @interface CRLDragAndDropInfo
 - (CGPoint)targetPreviewCenter;
-- (CRLDragAndDropInfo)initWithPlatformDraggingInfo:(id)a3;
+- (CRLDragAndDropInfo)initWithPlatformDraggingInfo:(id)info;
 - (UIDropSession)platformDraggingInfo;
 @end
 
 @implementation CRLDragAndDropInfo
 
-- (CRLDragAndDropInfo)initWithPlatformDraggingInfo:(id)a3
+- (CRLDragAndDropInfo)initWithPlatformDraggingInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if ([(CRLDragAndDropInfo *)self isMemberOfClass:objc_opt_class()])
   {
     v5 = objc_alloc(objc_opt_class());
@@ -22,14 +22,14 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_platformDraggingInfo, v4);
+    objc_storeWeak(&v6->_platformDraggingInfo, infoCopy);
     v8 = +[NSMutableArray array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v9 = [v4 items];
-    v10 = [v9 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    items = [infoCopy items];
+    v10 = [items countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v10)
     {
       v11 = v10;
@@ -40,14 +40,14 @@
         {
           if (*v24 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(items);
           }
 
-          v14 = [*(*(&v23 + 1) + 8 * i) itemProvider];
-          [v8 addObject:v14];
+          itemProvider = [*(*(&v23 + 1) + 8 * i) itemProvider];
+          [v8 addObject:itemProvider];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        v11 = [items countByEnumeratingWithState:&v23 objects:v28 count:16];
       }
 
       while (v11);

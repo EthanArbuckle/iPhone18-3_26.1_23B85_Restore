@@ -22,9 +22,9 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AXEventTapPair *)self priority];
-  v5 = [(AXEventTapPair *)self identifier];
-  v6 = [v3 stringWithFormat:@"EventTap: %d - %@", v4, v5];
+  priority = [(AXEventTapPair *)self priority];
+  identifier = [(AXEventTapPair *)self identifier];
+  v6 = [v3 stringWithFormat:@"EventTap: %d - %@", priority, identifier];
 
   return v6;
 }

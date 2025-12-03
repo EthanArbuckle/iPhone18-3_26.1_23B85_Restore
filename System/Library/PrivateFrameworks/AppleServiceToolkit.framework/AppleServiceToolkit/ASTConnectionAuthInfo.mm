@@ -1,26 +1,26 @@
 @interface ASTConnectionAuthInfo
-- (ASTConnectionAuthInfo)initWithAuthInfo:(id)a3;
+- (ASTConnectionAuthInfo)initWithAuthInfo:(id)info;
 @end
 
 @implementation ASTConnectionAuthInfo
 
-- (ASTConnectionAuthInfo)initWithAuthInfo:(id)a3
+- (ASTConnectionAuthInfo)initWithAuthInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v10.receiver = self;
   v10.super_class = ASTConnectionAuthInfo;
   v5 = [(ASTMaterializedConnection *)&v10 init];
   if (v5)
   {
-    v6 = [v4 payload];
+    payload = [infoCopy payload];
 
-    if (v6)
+    if (payload)
     {
-      v7 = [v4 payload];
-      [(ASTMaterializedConnection *)v5 addBody:v7 gzip:+[ASTConnectionUtilities isGzipEnabled]];
+      payload2 = [infoCopy payload];
+      [(ASTMaterializedConnection *)v5 addBody:payload2 gzip:+[ASTConnectionUtilities isGzipEnabled]];
 
-      v8 = [v4 base64Signature];
-      [(ASTMaterializedConnection *)v5 setSignature:v8];
+      base64Signature = [infoCopy base64Signature];
+      [(ASTMaterializedConnection *)v5 setSignature:base64Signature];
     }
   }
 

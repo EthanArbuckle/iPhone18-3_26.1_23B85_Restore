@@ -1,61 +1,61 @@
 @interface TLAlert
 + (BOOL)_stopAllAlerts;
 + (BOOL)_watchPrefersSalientToneAndVibration;
-+ (TLAlert)alertWithConfiguration:(id)a3;
-+ (int64_t)_currentOverridePolicyForType:(int64_t)a3;
-+ (void)_setCurrentOverridePolicy:(int64_t)a3 forType:(int64_t)a4;
-+ (void)playAlertForType:(int64_t)a3;
-- (BOOL)playWithCompletionHandler:(id)a3 targetQueue:(id)a4;
-- (TLAlert)initWithType:(int64_t)a3;
-- (TLAlert)initWithType:(int64_t)a3 accountIdentifier:(id)a4;
-- (TLAlert)initWithType:(int64_t)a3 toneIdentifier:(id)a4 vibrationIdentifier:(id)a5;
++ (TLAlert)alertWithConfiguration:(id)configuration;
++ (int64_t)_currentOverridePolicyForType:(int64_t)type;
++ (void)_setCurrentOverridePolicy:(int64_t)policy forType:(int64_t)type;
++ (void)playAlertForType:(int64_t)type;
+- (BOOL)playWithCompletionHandler:(id)handler targetQueue:(id)queue;
+- (TLAlert)initWithType:(int64_t)type;
+- (TLAlert)initWithType:(int64_t)type accountIdentifier:(id)identifier;
+- (TLAlert)initWithType:(int64_t)type toneIdentifier:(id)identifier vibrationIdentifier:(id)vibrationIdentifier;
 - (TLAlertPlaybackObserver)playbackObserver;
-- (id)_descriptionForDebugging:(BOOL)a3;
-- (id)_initWithConfiguration:(id)a3 toneIdentifier:(id)a4 vibrationIdentifier:(id)a5 hasSynchronizedVibrationUnmatchedWithTone:(BOOL)a6;
-- (void)_updateAudioVolumeDynamicallyToValue:(float)a3;
-- (void)playWithCompletionHandler:(id)a3;
-- (void)preheatWithCompletionHandler:(id)a3;
-- (void)stopWithOptions:(id)a3;
+- (id)_descriptionForDebugging:(BOOL)debugging;
+- (id)_initWithConfiguration:(id)configuration toneIdentifier:(id)identifier vibrationIdentifier:(id)vibrationIdentifier hasSynchronizedVibrationUnmatchedWithTone:(BOOL)tone;
+- (void)_updateAudioVolumeDynamicallyToValue:(float)value;
+- (void)playWithCompletionHandler:(id)handler;
+- (void)preheatWithCompletionHandler:(id)handler;
+- (void)stopWithOptions:(id)options;
 @end
 
 @implementation TLAlert
 
-- (TLAlert)initWithType:(int64_t)a3
+- (TLAlert)initWithType:(int64_t)type
 {
-  v4 = [[TLAlertConfiguration alloc] initWithType:a3];
+  v4 = [[TLAlertConfiguration alloc] initWithType:type];
   v5 = [TLAlert alertWithConfiguration:v4];
 
   return v5;
 }
 
-- (TLAlert)initWithType:(int64_t)a3 accountIdentifier:(id)a4
+- (TLAlert)initWithType:(int64_t)type accountIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [[TLAlertConfiguration alloc] initWithType:a3];
-  [(TLAlertConfiguration *)v7 setTopic:v6];
+  identifierCopy = identifier;
+  v7 = [[TLAlertConfiguration alloc] initWithType:type];
+  [(TLAlertConfiguration *)v7 setTopic:identifierCopy];
 
   v8 = [TLAlert alertWithConfiguration:v7];
 
   return v8;
 }
 
-- (TLAlert)initWithType:(int64_t)a3 toneIdentifier:(id)a4 vibrationIdentifier:(id)a5
+- (TLAlert)initWithType:(int64_t)type toneIdentifier:(id)identifier vibrationIdentifier:(id)vibrationIdentifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [[TLAlertConfiguration alloc] initWithType:a3];
-  [(TLAlertConfiguration *)v10 setToneIdentifier:v9];
+  vibrationIdentifierCopy = vibrationIdentifier;
+  identifierCopy = identifier;
+  v10 = [[TLAlertConfiguration alloc] initWithType:type];
+  [(TLAlertConfiguration *)v10 setToneIdentifier:identifierCopy];
 
-  [(TLAlertConfiguration *)v10 setVibrationIdentifier:v8];
+  [(TLAlertConfiguration *)v10 setVibrationIdentifier:vibrationIdentifierCopy];
   v11 = [TLAlert alertWithConfiguration:v10];
 
   return v11;
 }
 
-- (BOOL)playWithCompletionHandler:(id)a3 targetQueue:(id)a4
+- (BOOL)playWithCompletionHandler:(id)handler targetQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  queueCopy = queue;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -70,9 +70,9 @@
   v11[3] = &unk_1E8578F30;
   v14 = &v16;
   v15 = &v20;
-  v8 = v6;
+  v8 = handlerCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = queueCopy;
   v12 = v9;
   [(TLAlert *)self playWithCompletionHandler:v11];
   *(v17 + 24) = 0;
@@ -117,121 +117,121 @@ void __61__TLAlert_Deprecated__playWithCompletionHandler_targetQueue___block_inv
   }
 }
 
-+ (void)playAlertForType:(int64_t)a3
++ (void)playAlertForType:(int64_t)type
 {
-  v4 = [[TLAlertConfiguration alloc] initWithType:a3];
+  v4 = [[TLAlertConfiguration alloc] initWithType:type];
   v3 = [TLAlert alertWithConfiguration:v4];
   [v3 playWithCompletionHandler:0];
 }
 
-+ (TLAlert)alertWithConfiguration:(id)a3
++ (TLAlert)alertWithConfiguration:(id)configuration
 {
   v61 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 type];
-  if ((v5 - 1) > 0x1C)
+  configurationCopy = configuration;
+  type = [configurationCopy type];
+  if ((type - 1) > 0x1C)
   {
     v20 = 0;
     goto LABEL_43;
   }
 
-  v6 = v5;
-  v48 = a1;
-  v7 = [v4 toneIdentifier];
-  v8 = [v4 externalToneFileURL];
-  v9 = [v4 externalToneMediaLibraryItemIdentifier];
-  v10 = [v4 vibrationIdentifier];
-  v11 = [v4 externalVibrationPattern];
-  v12 = [v4 externalVibrationPatternFileURL];
-  v50 = [v4 topic];
-  v47 = [v4 targetDevice];
+  v6 = type;
+  selfCopy = self;
+  toneIdentifier = [configurationCopy toneIdentifier];
+  externalToneFileURL = [configurationCopy externalToneFileURL];
+  externalToneMediaLibraryItemIdentifier = [configurationCopy externalToneMediaLibraryItemIdentifier];
+  vibrationIdentifier = [configurationCopy vibrationIdentifier];
+  externalVibrationPattern = [configurationCopy externalVibrationPattern];
+  externalVibrationPatternFileURL = [configurationCopy externalVibrationPatternFileURL];
+  topic = [configurationCopy topic];
+  targetDevice = [configurationCopy targetDevice];
   v13 = +[TLToneManager sharedToneManager];
-  v49 = v8;
+  v49 = externalToneFileURL;
   v51 = v13;
-  if (v8)
+  if (externalToneFileURL)
   {
     v14 = MEMORY[0x1E696AEC0];
-    v15 = [v8 path];
-    v16 = [MEMORY[0x1E696AFB0] UUID];
-    [v16 UUIDString];
-    v18 = v17 = v11;
-    v19 = [v14 stringWithFormat:@"externalTone:%@-%@", v15, v18];
+    path = [externalToneFileURL path];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    [uUID UUIDString];
+    v18 = v17 = externalVibrationPattern;
+    v19 = [v14 stringWithFormat:@"externalTone:%@-%@", path, v18];
 
-    v11 = v17;
-    v7 = v15;
+    externalVibrationPattern = v17;
+    toneIdentifier = path;
 LABEL_12:
 
-    v7 = v19;
+    toneIdentifier = v19;
     goto LABEL_13;
   }
 
-  if (v9)
+  if (externalToneMediaLibraryItemIdentifier)
   {
-    v21 = [v13 _toneIdentifierForMediaLibraryItemIdentifier:v9];
+    v21 = [v13 _toneIdentifierForMediaLibraryItemIdentifier:externalToneMediaLibraryItemIdentifier];
 LABEL_11:
     v19 = v21;
     goto LABEL_12;
   }
 
-  if (![v7 length] || !v47 && (objc_msgSend(v51, "toneWithIdentifierIsValid:", v7) & 1) == 0)
+  if (![toneIdentifier length] || !targetDevice && (objc_msgSend(v51, "toneWithIdentifierIsValid:", toneIdentifier) & 1) == 0)
   {
-    v21 = [v51 currentToneIdentifierForAlertType:v6 topic:v50];
+    v21 = [v51 currentToneIdentifierForAlertType:v6 topic:topic];
     goto LABEL_11;
   }
 
 LABEL_13:
   v22 = +[TLCapabilitiesManager sharedCapabilitiesManager];
-  v23 = [v22 hasVibratorCapability];
+  hasVibratorCapability = [v22 hasVibratorCapability];
 
-  if (!v23)
+  if (!hasVibratorCapability)
   {
-    [v7 isEqualToString:@"<none>"];
+    [toneIdentifier isEqualToString:@"<none>"];
     v24 = 0;
     v30 = 0;
-    v31 = v12;
+    v31 = externalVibrationPatternFileURL;
     goto LABEL_17;
   }
 
   v24 = +[TLVibrationManager sharedVibrationManager];
-  if (!v11)
+  if (!externalVibrationPattern)
   {
-    v31 = v12;
-    if (v12)
+    v31 = externalVibrationPatternFileURL;
+    if (externalVibrationPatternFileURL)
     {
       v32 = MEMORY[0x1E696AEC0];
-      v33 = [v12 path];
-      v34 = [MEMORY[0x1E696AFB0] UUID];
-      v35 = [v34 UUIDString];
-      v36 = [v32 stringWithFormat:@"externalVibration:%@-%@", v33, v35];
+      path2 = [externalVibrationPatternFileURL path];
+      uUID2 = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID2 UUIDString];
+      v36 = [v32 stringWithFormat:@"externalVibration:%@-%@", path2, uUIDString];
 
-      v31 = v12;
+      v31 = externalVibrationPatternFileURL;
       v30 = 0;
-      v10 = v36;
+      vibrationIdentifier = v36;
       goto LABEL_37;
     }
 
-    if (!-[NSObject length](v10, "length") || ([v24 vibrationWithIdentifierIsValid:v10] & 1) == 0)
+    if (!-[NSObject length](vibrationIdentifier, "length") || ([v24 vibrationWithIdentifierIsValid:vibrationIdentifier] & 1) == 0)
     {
-      if (v47 == 1)
+      if (targetDevice == 1)
       {
-        [v24 _synchronizedVibrationIdentifierForToneIdentifier:v7 targetDevice:1];
+        [v24 _synchronizedVibrationIdentifierForToneIdentifier:toneIdentifier targetDevice:1];
       }
 
       else
       {
-        [v24 currentVibrationIdentifierForAlertType:v6 topic:v50];
+        [v24 currentVibrationIdentifierForAlertType:v6 topic:topic];
       }
       v37 = ;
 
-      v10 = v37;
+      vibrationIdentifier = v37;
     }
 
     v52 = 1;
-    v38 = [v24 _sanitizeVibrationIdentifier:v10 forAlertType:v6 topic:0 targetDevice:v47 correspondingToneIdentifier:v7 didFallbackToCurrentVibrationIdentifier:&v52];
-    v30 = [v38 isEqualToString:v10];
+    v38 = [v24 _sanitizeVibrationIdentifier:vibrationIdentifier forAlertType:v6 topic:0 targetDevice:targetDevice correspondingToneIdentifier:toneIdentifier didFallbackToCurrentVibrationIdentifier:&v52];
+    v30 = [v38 isEqualToString:vibrationIdentifier];
     if (v30)
     {
-      if (![v10 hasPrefix:@"synchronizedvibration:"]|| v52 != 1)
+      if (![vibrationIdentifier hasPrefix:@"synchronizedvibration:"]|| v52 != 1)
       {
         v30 = 0;
         goto LABEL_36;
@@ -241,9 +241,9 @@ LABEL_13:
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v54 = v10;
+        v54 = vibrationIdentifier;
         v55 = 2114;
-        v56 = v7;
+        v56 = toneIdentifier;
         _os_log_impl(&dword_1D9356000, v39, OS_LOG_TYPE_DEFAULT, "Instantiating alert with synchronized vibration (%{public}@), which does not match the associated tone (%{public}@).", buf, 0x16u);
       }
     }
@@ -256,11 +256,11 @@ LABEL_13:
         NSStringFromTLAlertType(v6);
         v42 = v41 = v40;
         *buf = 138544130;
-        v54 = v10;
+        v54 = vibrationIdentifier;
         v55 = 2114;
         v56 = v42;
         v57 = 2114;
-        v58 = v7;
+        v58 = toneIdentifier;
         v59 = 2114;
         v60 = v38;
         _os_log_impl(&dword_1D9356000, v41, OS_LOG_TYPE_DEFAULT, "Sanitizing vibrationIdentifier: %{public}@, for alert type: %{public}@, toneIdentifier: %{public}@. Using instead vibrationIdentifier: %{public}@.", buf, 0x2Au);
@@ -268,8 +268,8 @@ LABEL_13:
         v40 = v41;
       }
 
-      v39 = v10;
-      v10 = v38;
+      v39 = vibrationIdentifier;
+      vibrationIdentifier = v38;
     }
 
 LABEL_36:
@@ -277,23 +277,23 @@ LABEL_36:
   }
 
   v25 = MEMORY[0x1E696AEC0];
-  v26 = [v11 hash];
-  v27 = [MEMORY[0x1E696AFB0] UUID];
-  v28 = [v27 UUIDString];
-  v29 = [v25 stringWithFormat:@"externalVibration:%llu-%@", v26, v28];
+  v26 = [externalVibrationPattern hash];
+  uUID3 = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString2 = [uUID3 UUIDString];
+  v29 = [v25 stringWithFormat:@"externalVibration:%llu-%@", v26, uUIDString2];
 
   v30 = 0;
-  v10 = v29;
-  v31 = v12;
+  vibrationIdentifier = v29;
+  v31 = externalVibrationPatternFileURL;
 LABEL_37:
-  v43 = [v10 isEqualToString:@"<none>"];
-  if ([v7 isEqualToString:@"<none>"] && v43)
+  v43 = [vibrationIdentifier isEqualToString:@"<none>"];
+  if ([toneIdentifier isEqualToString:@"<none>"] && v43)
   {
     v44 = TLLogPlayback();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v54 = v4;
+      v54 = configurationCopy;
       _os_log_impl(&dword_1D9356000, v44, OS_LOG_TYPE_DEFAULT, "Nothing to be played for alert configuration: %{public}@. Returning a nil alert.", buf, 0xCu);
     }
 
@@ -302,7 +302,7 @@ LABEL_37:
   }
 
 LABEL_17:
-  v20 = [[v48 alloc] _initWithConfiguration:v4 toneIdentifier:v7 vibrationIdentifier:v10 hasSynchronizedVibrationUnmatchedWithTone:v30];
+  v20 = [[selfCopy alloc] _initWithConfiguration:configurationCopy toneIdentifier:toneIdentifier vibrationIdentifier:vibrationIdentifier hasSynchronizedVibrationUnmatchedWithTone:v30];
 LABEL_42:
 
 LABEL_43:
@@ -311,52 +311,52 @@ LABEL_43:
   return v20;
 }
 
-- (id)_initWithConfiguration:(id)a3 toneIdentifier:(id)a4 vibrationIdentifier:(id)a5 hasSynchronizedVibrationUnmatchedWithTone:(BOOL)a6
+- (id)_initWithConfiguration:(id)configuration toneIdentifier:(id)identifier vibrationIdentifier:(id)vibrationIdentifier hasSynchronizedVibrationUnmatchedWithTone:(BOOL)tone
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
+  vibrationIdentifierCopy = vibrationIdentifier;
   v22.receiver = self;
   v22.super_class = TLAlert;
   v14 = [(TLAlert *)&v22 init];
   if (v14)
   {
     v15 = +[TLCapabilitiesManager sharedCapabilitiesManager];
-    v16 = [v15 isInternalInstall];
+    isInternalInstall = [v15 isInternalInstall];
 
-    if (v16)
+    if (isInternalInstall)
     {
       v14->_instanceIndex = atomic_fetch_add(&_initWithConfiguration_toneIdentifier_vibrationIdentifier_hasSynchronizedVibrationUnmatchedWithTone___TLAlertLastAllocatedInstanceIndex, 1uLL) + 1;
     }
 
-    [v11 _freeze];
-    objc_storeStrong(&v14->_configuration, a3);
-    v14->_type = [v11 type];
-    v17 = [v12 copy];
+    [configurationCopy _freeze];
+    objc_storeStrong(&v14->_configuration, configuration);
+    v14->_type = [configurationCopy type];
+    v17 = [identifierCopy copy];
     toneIdentifier = v14->_toneIdentifier;
     v14->_toneIdentifier = v17;
 
-    v19 = [v13 copy];
+    v19 = [vibrationIdentifierCopy copy];
     vibrationIdentifier = v14->_vibrationIdentifier;
     v14->_vibrationIdentifier = v19;
 
-    v14->_hasSynchronizedVibrationUnmatchedWithTone = a6;
+    v14->_hasSynchronizedVibrationUnmatchedWithTone = tone;
   }
 
   return v14;
 }
 
-- (void)playWithCompletionHandler:(id)a3
+- (void)playWithCompletionHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = TLLogPlayback();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = [(TLAlert *)self debugDescription];
     v7 = v6;
     v8 = "!= NULL";
-    if (!v4)
+    if (!handlerCopy)
     {
       v8 = "== NULL";
     }
@@ -369,61 +369,61 @@ LABEL_43:
   }
 
   v9 = +[TLAlertController sharedAlertController];
-  [v9 playAlert:self withCompletionHandler:v4];
+  [v9 playAlert:self withCompletionHandler:handlerCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopWithOptions:(id)a3
+- (void)stopWithOptions:(id)options
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  optionsCopy = options;
   v5 = TLLogPlayback();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v4;
+    v14 = optionsCopy;
     _os_log_impl(&dword_1D9356000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: -stop…: options = %{public}@.", buf, 0x16u);
   }
 
-  v6 = [v4 copy];
+  v6 = [optionsCopy copy];
   v7 = +[TLAlertController sharedAlertController];
-  v10 = self;
-  v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v10 count:1];
+  selfCopy2 = self;
+  v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&selfCopy2 count:1];
   [v7 stopPlayingAlerts:v8 withOptions:v6 playbackCompletionType:2];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)preheatWithCompletionHandler:(id)a3
+- (void)preheatWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[TLAlertController sharedAlertController];
-  [v5 preheatForAlert:self completionHandler:v4];
+  [v5 preheatForAlert:self completionHandler:handlerCopy];
 }
 
 + (BOOL)_watchPrefersSalientToneAndVibration
 {
   v2 = +[TLToneManager sharedToneManager];
-  v3 = [v2 _watchPrefersSalientNotifications];
+  _watchPrefersSalientNotifications = [v2 _watchPrefersSalientNotifications];
 
-  return v3;
+  return _watchPrefersSalientNotifications;
 }
 
-+ (int64_t)_currentOverridePolicyForType:(int64_t)a3
++ (int64_t)_currentOverridePolicyForType:(int64_t)type
 {
   v4 = +[TLToneManager sharedToneManager];
-  v5 = [v4 _currentOverridePolicyForAlertType:a3];
+  v5 = [v4 _currentOverridePolicyForAlertType:type];
 
   return v5;
 }
 
-+ (void)_setCurrentOverridePolicy:(int64_t)a3 forType:(int64_t)a4
++ (void)_setCurrentOverridePolicy:(int64_t)policy forType:(int64_t)type
 {
   v6 = +[TLToneManager sharedToneManager];
-  [v6 _setCurrentOverridePolicy:a3 forAlertType:a4];
+  [v6 _setCurrentOverridePolicy:policy forAlertType:type];
 }
 
 + (BOOL)_stopAllAlerts
@@ -436,21 +436,21 @@ LABEL_43:
   }
 
   v3 = +[TLAlertController sharedAlertController];
-  v4 = [v3 stopAllAlerts];
+  stopAllAlerts = [v3 stopAllAlerts];
 
-  return v4;
+  return stopAllAlerts;
 }
 
-- (void)_updateAudioVolumeDynamicallyToValue:(float)a3
+- (void)_updateAudioVolumeDynamicallyToValue:(float)value
 {
   v6 = +[TLAlertController sharedAlertController];
-  *&v5 = a3;
+  *&v5 = value;
   [v6 updateAudioVolumeDynamicallyForAlert:self toValue:v5];
 }
 
-- (id)_descriptionForDebugging:(BOOL)a3
+- (id)_descriptionForDebugging:(BOOL)debugging
 {
-  v3 = a3;
+  debuggingCopy = debugging;
   v5 = objc_alloc(MEMORY[0x1E696AD60]);
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
@@ -461,7 +461,7 @@ LABEL_43:
     [v8 appendFormat:@" [%ld]", self->_instanceIndex];
   }
 
-  if (v3)
+  if (debuggingCopy)
   {
     v9 = [(TLAlertConfiguration *)self->_configuration description];
   }

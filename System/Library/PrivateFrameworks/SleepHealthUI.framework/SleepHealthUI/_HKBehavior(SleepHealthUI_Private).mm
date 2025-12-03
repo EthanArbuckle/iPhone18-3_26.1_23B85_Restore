@@ -6,11 +6,11 @@
 
 - (uint64_t)hksp_activeCompanionVariant
 {
-  v1 = [a1 hksp_systemImageNameForActivePairedDevice];
-  v2 = v1;
-  if (v1)
+  hksp_systemImageNameForActivePairedDevice = [self hksp_systemImageNameForActivePairedDevice];
+  v2 = hksp_systemImageNameForActivePairedDevice;
+  if (hksp_systemImageNameForActivePairedDevice)
   {
-    if ([v1 isEqualToString:@"iphone.gen1"])
+    if ([hksp_systemImageNameForActivePairedDevice isEqualToString:@"iphone.gen1"])
     {
       v3 = 0;
     }

@@ -1,19 +1,19 @@
 @interface TSTTableRep
-- (BOOL)canDrawTilingLayerInBackground:(id)a3;
+- (BOOL)canDrawTilingLayerInBackground:(id)background;
 - (BOOL)handlesEditMenu;
 - (BOOL)isDraggable;
-- (BOOL)isFullyVisibleWithBorder:(int)a3;
+- (BOOL)isFullyVisibleWithBorder:(int)border;
 - (BOOL)mustDrawOnMainThreadForInteractiveCanvas;
 - (CALayer)layerForRep;
 - (CGAffineTransform)transformFromCanvas;
 - (CGAffineTransform)transformToCanvas;
-- (CGRect)boundsForCellSelection:(id)a3;
+- (CGRect)boundsForCellSelection:(id)selection;
 - (CGRect)boundsForResizeGuideUI;
-- (CGRect)canvasBoundsForCellRange:(id)a3;
+- (CGRect)canvasBoundsForCellRange:(id)range;
 - (CGRect)canvasVisibleRect;
-- (CGRect)deviceBoundsForCellRange:(id)a3;
+- (CGRect)deviceBoundsForCellRange:(id)range;
 - (CGRect)layerFrameInScaledCanvas;
-- (CGRect)p_alignedLayerFrameForLayoutSpace:(id)a3 transform:(CGAffineTransform *)a4;
+- (CGRect)p_alignedLayerFrameForLayoutSpace:(id)space transform:(CGAffineTransform *)transform;
 - (NSString)description;
 - (TSDCanvasView)canvasView;
 - (TSDEditorController)editorController;
@@ -21,35 +21,35 @@
 - (TSTEditingState)editingState;
 - (TSTMasterLayout)masterLayout;
 - (TSTTableModel)tableModel;
-- (TSTTableRep)initWithLayout:(id)a3 canvas:(id)a4;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
+- (TSTTableRep)initWithLayout:(id)layout canvas:(id)canvas;
+- (id)actionForLayer:(id)layer forKey:(id)key;
 - (id)additionalLayersOverLayer;
 - (id)p_frozenHeaderOverlayLayers;
 - (id)p_tableNameOverlayLayers;
-- (id)p_textImageForPath:(CGPath *)a3 shouldPulsate:(BOOL)a4;
+- (id)p_textImageForPath:(CGPath *)path shouldPulsate:(BOOL)pulsate;
 - (id)repForDragging;
-- (void)addAdditionalChildLayersToArray:(id)a3;
+- (void)addAdditionalChildLayersToArray:(id)array;
 - (void)beginDragInsertFromPalette;
-- (void)contentsRectForCellRangeAcrossSpaces:(id)a3 contentsCenterInfo:(id *)a4 canvasFrame:(CGRect *)a5 contentsRect:(CGRect *)a6;
+- (void)contentsRectForCellRangeAcrossSpaces:(id)spaces contentsCenterInfo:(id *)info canvasFrame:(CGRect *)frame contentsRect:(CGRect *)rect;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)drawInContext:(CGContext *)context;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
 - (void)endDragInsertFromPalette;
 - (void)invalidateAnnotationColor;
-- (void)invalidateCellRange:(id)a3 fittingRange:(id)a4 invalidateSize:(BOOL)a5;
+- (void)invalidateCellRange:(id)range fittingRange:(id)fittingRange invalidateSize:(BOOL)size;
 - (void)invalidateComments;
 - (void)invalidateFrozenHeaders;
 - (void)invalidateSelection;
-- (void)layoutInRootChangedFrom:(id)a3 to:(id)a4 translatedOnly:(BOOL)a5;
-- (void)orientationDidChange:(id)a3;
+- (void)layoutInRootChangedFrom:(id)from to:(id)to translatedOnly:(BOOL)only;
+- (void)orientationDidChange:(id)change;
 - (void)p_editingDidEnd;
 - (void)p_hideSelectionLayers;
 - (void)p_invalidateCellCommentBadges;
-- (void)recursivelyDrawInContext:(CGContext *)a3;
+- (void)recursivelyDrawInContext:(CGContext *)context;
 - (void)screenScaleDidChange;
 - (void)setNeedsDisplay;
-- (void)setNeedsDisplayInCellRange:(id)a3;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
+- (void)setNeedsDisplayInCellRange:(id)range;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
 - (void)updateChildrenFromLayout;
 - (void)updateFromLayout;
 - (void)validateFrozenHeaderColumns;
@@ -66,23 +66,23 @@
 
 - (TSTTableModel)tableModel
 {
-  v2 = [(TSTTableRep *)self tableInfo];
+  tableInfo = [(TSTTableRep *)self tableInfo];
 
-  return [(TSTTableInfo *)v2 tableModel];
+  return [(TSTTableInfo *)tableInfo tableModel];
 }
 
 - (TSTEditingState)editingState
 {
-  v2 = [(TSTTableRep *)self tableInfo];
+  tableInfo = [(TSTTableRep *)self tableInfo];
 
-  return [(TSTTableInfo *)v2 editingState];
+  return [(TSTTableInfo *)tableInfo editingState];
 }
 
 - (TSTMasterLayout)masterLayout
 {
-  v2 = [(TSTTableRep *)self tableInfo];
+  tableInfo = [(TSTTableRep *)self tableInfo];
 
-  return [(TSTTableInfo *)v2 masterLayout];
+  return [(TSTTableInfo *)tableInfo masterLayout];
 }
 
 - (TSDCanvasView)canvasView
@@ -92,9 +92,9 @@
     return 0;
   }
 
-  v3 = [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] layerHost];
+  layerHost = [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] layerHost];
 
-  return [(TSDCanvasLayerHosting *)v3 canvasView];
+  return [(TSDCanvasLayerHosting *)layerHost canvasView];
 }
 
 - (TSDEditorController)editorController
@@ -104,9 +104,9 @@
     return 0;
   }
 
-  v3 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-  return [(TSDInteractiveCanvasController *)v3 editorController];
+  return [(TSDInteractiveCanvasController *)interactiveCanvasController editorController];
 }
 
 - (CGAffineTransform)transformToCanvas
@@ -133,9 +133,9 @@
 
 - (CGRect)canvasVisibleRect
 {
-  v2 = [(TSDRep *)self canvas];
+  canvas = [(TSDRep *)self canvas];
 
-  [(TSDCanvas *)v2 visibleUnscaledRectForClippingReps];
+  [(TSDCanvas *)canvas visibleUnscaledRectForClippingReps];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -145,25 +145,25 @@
 
 - (CALayer)layerForRep
 {
-  v3 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-  return [(TSDInteractiveCanvasController *)v3 layerForRep:self];
+  return [(TSDInteractiveCanvasController *)interactiveCanvasController layerForRep:self];
 }
 
 - (TSTCellRegion)selectionRegion
 {
   if ([(TSTMasterLayout *)[(TSTTableRep *)self masterLayout] isDynamicallyChangingSelection])
   {
-    v3 = [(TSTTableRep *)self masterLayout];
+    masterLayout = [(TSTTableRep *)self masterLayout];
 
-    return [(TSTMasterLayout *)v3 dynamicSelectionRegion];
+    return [(TSTMasterLayout *)masterLayout dynamicSelectionRegion];
   }
 
   else
   {
-    v5 = [(TSTTableRep *)self editorSelection];
+    editorSelection = [(TSTTableRep *)self editorSelection];
 
-    return [v5 cellRegion];
+    return [editorSelection cellRegion];
   }
 }
 
@@ -260,11 +260,11 @@
   [(TSWPTextHostRep *)&v5 dealloc];
 }
 
-- (TSTTableRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TSTTableRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v9.receiver = self;
   v9.super_class = TSTTableRep;
-  v4 = [(TSWPTextHostRep *)&v9 initWithLayout:a3 canvas:a4];
+  v4 = [(TSWPTextHostRep *)&v9 initWithLayout:layout canvas:canvas];
   if (v4)
   {
     v5 = +[TSTConfiguration sharedTableConfiguration];
@@ -293,13 +293,13 @@
 
 - (BOOL)handlesEditMenu
 {
-  v3 = [(TSTEditingState *)[(TSTTableRep *)self editingState] editingMode];
+  editingMode = [(TSTEditingState *)[(TSTTableRep *)self editingState] editingMode];
   if ([(TSDRep *)self isLocked])
   {
     return 0;
   }
 
-  if (v3)
+  if (editingMode)
   {
     return 1;
   }
@@ -321,33 +321,33 @@
     return 1;
   }
 
-  v3 = [(TSTTableRep *)self tableLayout];
+  tableLayout = [(TSTTableRep *)self tableLayout];
 
-  return TSTLayoutIsPartitionAlongTop(v3);
+  return TSTLayoutIsPartitionAlongTop(tableLayout);
 }
 
-- (CGRect)deviceBoundsForCellRange:(id)a3
+- (CGRect)deviceBoundsForCellRange:(id)range
 {
   v22 = TSDRectUnit;
   v23 = *&qword_26CA652A0;
-  v5 = [(TSTTableRep *)self tableLayout];
-  TSTLayoutGetViewScale(v5);
+  tableLayout = [(TSTTableRep *)self tableLayout];
+  TSTLayoutGetViewScale(tableLayout);
   memset(&v21, 0, sizeof(v21));
   CGAffineTransformMakeScale(&v21, v6, v6);
-  v24.origin.x = TSTLayoutGetAlignedStrokeFrameForRange(v5, *&a3);
+  v24.origin.x = TSTLayoutGetAlignedStrokeFrameForRange(tableLayout, *&range);
   x = v24.origin.x;
   y = v24.origin.y;
   width = v24.size.width;
   height = v24.size.height;
   v19 = v21;
   v20 = CGRectApplyAffineTransform(v24, &v19);
-  CanvasRectForRect = TSTLayoutGetCanvasRectForRect(v5, x, y, width, height);
+  CanvasRectForRect = TSTLayoutGetCanvasRectForRect(tableLayout, x, y, width, height);
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  [(TSTTableRep *)self contentsRectForCellRangeAcrossSpaces:a3 contentsCenterInfo:0 canvasFrame:&v20 contentsRect:&v22];
+  [(TSTTableRep *)self contentsRectForCellRangeAcrossSpaces:range contentsCenterInfo:0 canvasFrame:&v20 contentsRect:&v22];
   memset(&v19, 0, sizeof(v19));
-  TSTLayoutGetTransformToDevice(v5, &v19);
+  TSTLayoutGetTransformToDevice(tableLayout, &v19);
   v18 = v19;
   v25.origin.x = CanvasRectForRect;
   v25.origin.y = v13;
@@ -369,11 +369,11 @@
   return result;
 }
 
-- (CGRect)canvasBoundsForCellRange:(id)a3
+- (CGRect)canvasBoundsForCellRange:(id)range
 {
   [(TSDCanvas *)[(TSDRep *)self canvas] contentsScale];
   v6 = 1.0 / v5;
-  [(TSTTableRep *)self deviceBoundsForCellRange:a3];
+  [(TSTTableRep *)self deviceBoundsForCellRange:range];
 
   v11 = TSDMultiplyRectScalar(v7, v8, v9, v10, v6);
   result.size.height = v14;
@@ -383,34 +383,34 @@
   return result;
 }
 
-- (CGRect)boundsForCellSelection:(id)a3
+- (CGRect)boundsForCellSelection:(id)selection
 {
   [(TSDLayoutGeometry *)[(TSDAbstractLayout *)[(TSDRep *)self layout] geometry] size];
-  if (a3.var1 == 255)
+  if (selection.var1 == 255)
   {
     var1 = 0xFFFFFFFFLL;
   }
 
   else
   {
-    var1 = a3.var1;
+    var1 = selection.var1;
   }
 
-  if (a3.var0 == 0xFFFF)
+  if (selection.var0 == 0xFFFF)
   {
     var0 = 0xFFFFFFFFLL;
   }
 
   else
   {
-    var0 = a3.var0;
+    var0 = selection.var0;
   }
 
   v7 = ((var0 << 32) + 0x100010000) & 0xFFFFFFFF00000000 | var1;
   v8 = var1 | (var0 << 32);
-  v9 = [(TSTTableRep *)self tableLayout];
+  tableLayout = [(TSTTableRep *)self tableLayout];
 
-  FrameForGridRange = TSTLayoutGetFrameForGridRange(v9, v8, v7 - 0x100000000);
+  FrameForGridRange = TSTLayoutGetFrameForGridRange(tableLayout, v8, v7 - 0x100000000);
   result.size.height = v13;
   result.size.width = v12;
   result.origin.y = v11;
@@ -418,28 +418,28 @@
   return result;
 }
 
-- (void)contentsRectForCellRangeAcrossSpaces:(id)a3 contentsCenterInfo:(id *)a4 canvasFrame:(CGRect *)a5 contentsRect:(CGRect *)a6
+- (void)contentsRectForCellRangeAcrossSpaces:(id)spaces contentsCenterInfo:(id *)info canvasFrame:(CGRect *)frame contentsRect:(CGRect *)rect
 {
-  v11 = ~a3.var0.var0;
-  x = a5->origin.x;
-  y = a5->origin.y;
-  width = a5->size.width;
-  height = a5->size.height;
+  v11 = ~spaces.var0.var0;
+  x = frame->origin.x;
+  y = frame->origin.y;
+  width = frame->size.width;
+  height = frame->size.height;
   v17 = 0.0;
   v16 = 0.0;
   v18 = 1.0;
   v19 = 1.0;
-  v20 = [(TSTTableRep *)self tableLayout];
+  tableLayout = [(TSTTableRep *)self tableLayout];
   Space = TSTLayoutGetSpace([(TSTTableRep *)self tableLayout]);
-  FrozenHeaderRowsSpace = TSTLayoutGetFrozenHeaderRowsSpace(v20);
-  FrozenHeaderColumnsSpace = TSTLayoutGetFrozenHeaderColumnsSpace(v20);
+  FrozenHeaderRowsSpace = TSTLayoutGetFrozenHeaderRowsSpace(tableLayout);
+  FrozenHeaderColumnsSpace = TSTLayoutGetFrozenHeaderColumnsSpace(tableLayout);
   if (v11)
   {
-    if ((*&a3 & 0xFF0000) != 0xFF0000)
+    if ((*&spaces & 0xFF0000) != 0xFF0000)
     {
-      if (HIWORD(*&a3))
+      if (HIWORD(*&spaces))
       {
-        if ((*&a3 & 0xFFFF00000000) != 0)
+        if ((*&spaces & 0xFFFF00000000) != 0)
         {
           v24 = FrozenHeaderColumnsSpace;
           if (FrozenHeaderRowsSpace | FrozenHeaderColumnsSpace)
@@ -447,7 +447,7 @@
             [(TSDCanvas *)[(TSDRep *)self canvas] viewScale];
             memset(&v64, 0, sizeof(v64));
             CGAffineTransformMakeScale(&v64, v25, v25);
-            v65.origin.x = TSTLayoutGetAlignedMaskRectForSpace(v20, Space);
+            v65.origin.x = TSTLayoutGetAlignedMaskRectForSpace(tableLayout, Space);
             v63 = v64;
             v66 = CGRectApplyAffineTransform(v65, &v63);
             v67 = CGRectIntegral(v66);
@@ -455,20 +455,20 @@
             v60 = v67.size.width;
             v61 = v67.size.height;
             v62 = v67.origin.y;
-            if (!v24 || !TSTLayoutGetFrozenHeaderColumnsFloating(v20) || a4 && a4->var1 <= 0.0)
+            if (!v24 || !TSTLayoutGetFrozenHeaderColumnsFloating(tableLayout) || info && info->var1 <= 0.0)
             {
 LABEL_37:
               if (!FrozenHeaderRowsSpace)
               {
 LABEL_74:
-                a5->origin.x = x;
-                a5->origin.y = y;
-                a5->size.width = width;
-                a5->size.height = height;
-                a6->origin.x = v17;
-                a6->origin.y = v16;
-                a6->size.width = v18;
-                a6->size.height = v19;
+                frame->origin.x = x;
+                frame->origin.y = y;
+                frame->size.width = width;
+                frame->size.height = height;
+                rect->origin.x = v17;
+                rect->origin.y = v16;
+                rect->size.width = v18;
+                rect->size.height = v19;
                 return;
               }
 
@@ -512,10 +512,10 @@ LABEL_36:
                 if ((Range & 0xFFFF00000000) != 0)
                 {
                   v30 = 0;
-                  v32 = BYTE2(Range) <= a3.var0.var1 ? a3.var0.var1 : BYTE2(Range);
-                  v33 = Range <= a3.var0.var0 ? a3.var0.var0 : Range;
-                  v34 = (BYTE4(Range) + BYTE2(Range) - 1) >= (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1) ? (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1) : (BYTE4(Range) + BYTE2(Range) - 1);
-                  v35 = (Range + HIWORD(Range) - 1) >= (a3.var0.var0 + a3.var1.var1 - 1) ? (a3.var0.var0 + a3.var1.var1 - 1) : (Range + HIWORD(Range) - 1);
+                  v32 = BYTE2(Range) <= spaces.var0.var1 ? spaces.var0.var1 : BYTE2(Range);
+                  v33 = Range <= spaces.var0.var0 ? spaces.var0.var0 : Range;
+                  v34 = (BYTE4(Range) + BYTE2(Range) - 1) >= (LOBYTE(spaces.var1.var0) + spaces.var0.var1 - 1) ? (LOBYTE(spaces.var1.var0) + spaces.var0.var1 - 1) : (BYTE4(Range) + BYTE2(Range) - 1);
+                  v35 = (Range + HIWORD(Range) - 1) >= (spaces.var0.var0 + spaces.var1.var1 - 1) ? (spaces.var0.var0 + spaces.var1.var1 - 1) : (Range + HIWORD(Range) - 1);
                   v29 = 0;
                   v28 = 0;
                   v31 = 0;
@@ -550,20 +550,20 @@ LABEL_31:
                 goto LABEL_77;
               }
 
-              if (a4 && a4->var0)
+              if (info && info->var0)
               {
                 v48 = v59 - x;
-                var2 = a4->var2;
+                var2 = info->var2;
                 v16 = 0.0;
                 if (v59 - x <= var2)
                 {
-                  v17 = v48 / a4->var1;
+                  v17 = v48 / info->var1;
                 }
 
                 else
                 {
-                  var1 = a4->var1;
-                  if (width - v48 <= var2 + a4->var3)
+                  var1 = info->var1;
+                  if (width - v48 <= var2 + info->var3)
                   {
                     v17 = 1.0 - (width - v48) / var1;
                   }
@@ -591,7 +591,7 @@ LABEL_31:
               }
 
 LABEL_38:
-              if (!TSTLayoutGetFrozenHeaderRowsFloating(v20) || a4 && a4->var4 <= 0.0)
+              if (!TSTLayoutGetFrozenHeaderRowsFloating(tableLayout) || info && info->var4 <= 0.0)
               {
                 goto LABEL_74;
               }
@@ -631,10 +631,10 @@ LABEL_38:
                   if ((v38 & 0xFFFF00000000) != 0)
                   {
                     v41 = 0;
-                    v43 = BYTE2(v38) <= a3.var0.var1 ? a3.var0.var1 : BYTE2(v38);
-                    v44 = v38 <= a3.var0.var0 ? a3.var0.var0 : v38;
-                    v45 = (BYTE4(v38) + BYTE2(v38) - 1) >= (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1) ? (LOBYTE(a3.var1.var0) + a3.var0.var1 - 1) : (BYTE4(v38) + BYTE2(v38) - 1);
-                    v46 = (v38 + HIWORD(v38) - 1) >= (a3.var0.var0 + a3.var1.var1 - 1) ? (a3.var0.var0 + a3.var1.var1 - 1) : (v38 + HIWORD(v38) - 1);
+                    v43 = BYTE2(v38) <= spaces.var0.var1 ? spaces.var0.var1 : BYTE2(v38);
+                    v44 = v38 <= spaces.var0.var0 ? spaces.var0.var0 : v38;
+                    v45 = (BYTE4(v38) + BYTE2(v38) - 1) >= (LOBYTE(spaces.var1.var0) + spaces.var0.var1 - 1) ? (LOBYTE(spaces.var1.var0) + spaces.var0.var1 - 1) : (BYTE4(v38) + BYTE2(v38) - 1);
+                    v46 = (v38 + HIWORD(v38) - 1) >= (spaces.var0.var0 + spaces.var1.var1 - 1) ? (spaces.var0.var0 + spaces.var1.var1 - 1) : (v38 + HIWORD(v38) - 1);
                     v40 = 0;
                     v39 = 0;
                     v42 = 0;
@@ -658,7 +658,7 @@ LABEL_68:
                 v51 = v40 | v41 | v39 | v42;
                 if ((v51 & 0xFFFF00000000) != 0)
                 {
-                  if (((v51 ^ *&a3) & 0xFFFFFFFF00FFFFFFLL) != 0)
+                  if (((v51 ^ *&spaces) & 0xFFFFFFFF00FFFFFFLL) != 0)
                   {
                     v76.origin.x = x;
                     v76.origin.y = y;
@@ -693,20 +693,20 @@ LABEL_73:
               v79.origin.y = v62;
               if (v52 >= CGRectGetMinY(v79))
               {
-                if (a4 && a4->var0)
+                if (info && info->var0)
                 {
                   v54 = v62 - y;
                   y = v62;
-                  var5 = a4->var5;
+                  var5 = info->var5;
                   if (v54 <= var5)
                   {
-                    v16 = v54 / a4->var4;
+                    v16 = v54 / info->var4;
                   }
 
                   else
                   {
-                    var4 = a4->var4;
-                    if (height - v54 <= var5 + a4->var6)
+                    var4 = info->var4;
+                    if (height - v54 <= var5 + info->var6)
                     {
                       v16 = 1.0 - (height - v54) / var4;
                     }
@@ -732,14 +732,14 @@ LABEL_73:
 
 LABEL_77:
               v53 = *(MEMORY[0x277CBF3A0] + 16);
-              a5->origin = *MEMORY[0x277CBF3A0];
-              a5->size = v53;
-              a6->origin = CGRectEmptyUnitSquare;
-              a6->size = unk_26CA67CA0;
+              frame->origin = *MEMORY[0x277CBF3A0];
+              frame->size = v53;
+              rect->origin = CGRectEmptyUnitSquare;
+              rect->size = unk_26CA67CA0;
               return;
             }
 
-            if (((v36 ^ *&a3) & 0xFFFFFFFF00FFFFFFLL) != 0)
+            if (((v36 ^ *&spaces) & 0xFFFFFFFF00FFFFFFLL) != 0)
             {
               v70.origin.x = x;
               v70.origin.y = y;
@@ -767,10 +767,10 @@ LABEL_77:
 
 - (void)updateFromLayout
 {
-  v3 = [(TSTTableRep *)self tableLayout];
+  tableLayout = [(TSTTableRep *)self tableLayout];
   [(TSDCanvas *)[(TSDRep *)self canvas] viewScale];
   v5 = v4;
-  TSTLayoutSetViewScale(v3, v4);
+  TSTLayoutSetViewScale(tableLayout, v4);
   [(TSDCanvas *)[(TSDRep *)self canvas] contentsScale];
   TSTTableRepSetupUserSpaceToDeviceSpaceTransform(self, v5, v6);
   if (TSTLayoutSetTabsVisible([(TSTTableRep *)self tableLayout], 0))
@@ -784,17 +784,17 @@ LABEL_77:
     [(TSTTableChromeProvider *)[(TSTTableRep *)self tableChrome] selectionHighlightLayerInvalidateLayout];
   }
 
-  v7 = [(TSTLayout *)[(TSTTableRep *)self tableLayout] editingSpillingTextRange];
-  if (v7.var0.var0 != 0xFFFF && (*&v7 & 0xFF0000) != 0xFF0000 && HIWORD(*&v7) && (*&v7 & 0xFFFF00000000) != 0)
+  editingSpillingTextRange = [(TSTLayout *)[(TSTTableRep *)self tableLayout] editingSpillingTextRange];
+  if (editingSpillingTextRange.var0.var0 != 0xFFFF && (*&editingSpillingTextRange & 0xFF0000) != 0xFF0000 && HIWORD(*&editingSpillingTextRange) && (*&editingSpillingTextRange & 0xFFFF00000000) != 0)
   {
     [(TSTTableRep *)self dirtyCellRange:[(TSTLayout *)[(TSTTableRep *)self tableLayout] editingSpillingTextRange]];
   }
 
-  Range = TSTMasterLayoutGetRange([(TSTLayout *)v3 masterLayout]);
+  Range = TSTMasterLayoutGetRange([(TSTLayout *)tableLayout masterLayout]);
   v9 = TSTMasterLayoutExpandCellRangeToCoverMergedCells([(TSTTableRep *)self masterLayout], *&self->mDirtyCellRange);
-  v10 = [(TSTMasterLayout *)[(TSTTableRep *)self masterLayout] emptyFilteredTable];
+  emptyFilteredTable = [(TSTMasterLayout *)[(TSTTableRep *)self masterLayout] emptyFilteredTable];
   v11 = v9 & 0xFF0000;
-  if (!v10 || v9 == 0xFFFFLL || v11 == 16711680 || !HIWORD(v9) || (v9 & 0xFFFF00000000) == 0)
+  if (!emptyFilteredTable || v9 == 0xFFFFLL || v11 == 16711680 || !HIWORD(v9) || (v9 & 0xFFFF00000000) == 0)
   {
     v12 = 0;
     v13 = 16711680;
@@ -913,26 +913,26 @@ LABEL_39:
   [(TSDRep *)&v20 updateFromLayout];
 }
 
-- (void)layoutInRootChangedFrom:(id)a3 to:(id)a4 translatedOnly:(BOOL)a5
+- (void)layoutInRootChangedFrom:(id)from to:(id)to translatedOnly:(BOOL)only
 {
   v6.receiver = self;
   v6.super_class = TSTTableRep;
-  [(TSDRep *)&v6 layoutInRootChangedFrom:a3 to:a4 translatedOnly:a5];
+  [(TSDRep *)&v6 layoutInRootChangedFrom:from to:to translatedOnly:only];
   [(TSTTableChromeProvider *)[(TSTTableRep *)self tableChrome] invalidateAllChrome];
 }
 
 - (void)validateStrokesInEditingSpillingTextRange
 {
-  v13 = [(TSTLayout *)[(TSTTableRep *)self tableLayout] editingSpillingTextRange];
+  editingSpillingTextRange = [(TSTLayout *)[(TSTTableRep *)self tableLayout] editingSpillingTextRange];
   v4 = [TSTLayoutCellIterator alloc];
-  v5 = [(TSTTableRep *)self masterLayout];
-  v14 = [(TSTLayoutCellIterator *)v4 initWithMasterLayout:v5 range:[(TSTLayout *)[(TSTTableRep *)self tableLayout] editingSpillingTextRange] flags:128];
+  masterLayout = [(TSTTableRep *)self masterLayout];
+  v14 = [(TSTLayoutCellIterator *)v4 initWithMasterLayout:masterLayout range:[(TSTLayout *)[(TSTTableRep *)self tableLayout] editingSpillingTextRange] flags:128];
   while (TSTLayoutCellIteratorGetNextCell(v14, v19))
   {
-    v6 = [MEMORY[0x277CBEB68] null];
-    v7 = [MEMORY[0x277CBEB68] null];
-    v8 = [MEMORY[0x277CBEB68] null];
-    v9 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
+    null4 = [MEMORY[0x277CBEB68] null];
     v10 = WORD2(v19[0]);
     v11 = BYTE6(v19[0]);
     v17 = 0;
@@ -942,39 +942,39 @@ LABEL_39:
     v12 = WORD2(v19[0]) | (BYTE6(v19[0]) << 16) | (HIBYTE(v19[0]) << 24);
     v2 = v12 | v2 & 0xFFFFFFFF00000000;
     TSTMasterLayoutGetStrokesForCellID([(TSTTableRep *)self masterLayout], v2, &v18, &v17, &v16, &v15);
-    if (v18 && v10 != v13.var0.var0)
+    if (v18 && v10 != editingSpillingTextRange.var0.var0)
     {
-      v6 = [v18 mutableCopy];
-      [(TSDStroke *)v6 setColor:[(TSUColor *)[(TSDStroke *)v6 color] colorWithAlphaComponent:0.100000001]];
-      [(TSDStroke *)v6 setDontClearBackground:1];
+      null = [v18 mutableCopy];
+      [(TSDStroke *)null setColor:[(TSUColor *)[(TSDStroke *)null color] colorWithAlphaComponent:0.100000001]];
+      [(TSDStroke *)null setDontClearBackground:1];
     }
 
-    if (v16 && v10 != (v13.var0.var0 + v13.var1.var1 - 1))
+    if (v16 && v10 != (editingSpillingTextRange.var0.var0 + editingSpillingTextRange.var1.var1 - 1))
     {
-      v7 = [v16 mutableCopy];
-      [(TSDStroke *)v7 setColor:[(TSUColor *)[(TSDStroke *)v7 color] colorWithAlphaComponent:0.100000001]];
-      [(TSDStroke *)v7 setDontClearBackground:1];
+      null2 = [v16 mutableCopy];
+      [(TSDStroke *)null2 setColor:[(TSUColor *)[(TSDStroke *)null2 color] colorWithAlphaComponent:0.100000001]];
+      [(TSDStroke *)null2 setDontClearBackground:1];
     }
 
-    if (v17 && v11 != v13.var0.var1)
+    if (v17 && v11 != editingSpillingTextRange.var0.var1)
     {
-      v8 = [v17 mutableCopy];
-      [(TSDStroke *)v8 setColor:[(TSUColor *)[(TSDStroke *)v8 color] colorWithAlphaComponent:0.100000001]];
-      [(TSDStroke *)v8 setDontClearBackground:1];
+      null3 = [v17 mutableCopy];
+      [(TSDStroke *)null3 setColor:[(TSUColor *)[(TSDStroke *)null3 color] colorWithAlphaComponent:0.100000001]];
+      [(TSDStroke *)null3 setDontClearBackground:1];
     }
 
-    if (v15 && v11 != (LOBYTE(v13.var1.var0) + v13.var0.var1 - 1))
+    if (v15 && v11 != (LOBYTE(editingSpillingTextRange.var1.var0) + editingSpillingTextRange.var0.var1 - 1))
     {
-      v9 = [v15 mutableCopy];
-      [(TSDStroke *)v9 setColor:[(TSUColor *)[(TSDStroke *)v9 color] colorWithAlphaComponent:0.100000001]];
-      [(TSDStroke *)v9 setDontClearBackground:1];
+      null4 = [v15 mutableCopy];
+      [(TSDStroke *)null4 setColor:[(TSUColor *)[(TSDStroke *)null4 color] colorWithAlphaComponent:0.100000001]];
+      [(TSDStroke *)null4 setDontClearBackground:1];
     }
 
-    v5 = v12 | v5 & 0xFFFFFFFF00000000;
-    TSTMasterLayoutSetStrokesForCellID([(TSTTableRep *)self masterLayout], v5, v6, v7, v9, v8);
+    masterLayout = v12 | masterLayout & 0xFFFFFFFF00000000;
+    TSTMasterLayoutSetStrokesForCellID([(TSTTableRep *)self masterLayout], masterLayout, null, null2, null4, null3);
   }
 
-  TSTMasterLayoutSetStrokesValidForRange([(TSTTableRep *)self masterLayout], *&v13);
+  TSTMasterLayoutSetStrokesValidForRange([(TSTTableRep *)self masterLayout], *&editingSpillingTextRange);
 }
 
 - (void)validateVisibleRect
@@ -985,9 +985,9 @@ LABEL_39:
     [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] animatingViewScale];
   }
 
-  v3 = [(TSTTableRep *)self tableLayout];
+  tableLayout = [(TSTTableRep *)self tableLayout];
   [(TSTTableRep *)self canvasVisibleRect];
-  TSTLayoutSetCanvasVisibleRect(v3, v4, v5, v6, v7);
+  TSTLayoutSetCanvasVisibleRect(tableLayout, v4, v5, v6, v7);
   [(TSTTableRep *)self p_frozenHeaderOverlayLayers];
   if (self->mOverlayTableName)
   {
@@ -1016,7 +1016,7 @@ LABEL_39:
   }
 }
 
-- (BOOL)isFullyVisibleWithBorder:(int)a3
+- (BOOL)isFullyVisibleWithBorder:(int)border
 {
   [(TSTTableRep *)self canvasVisibleRect];
   v6 = v5;
@@ -1024,7 +1024,7 @@ LABEL_39:
   v10 = v9;
   v12 = v11;
   v23.origin.x = TSTLayoutGetCanvasStrokeFrame([(TSTTableRep *)self tableLayout]);
-  v24 = CGRectInset(v23, -a3, -a3);
+  v24 = CGRectInset(v23, -border, -border);
   x = v24.origin.x;
   y = v24.origin.y;
   width = v24.size.width;
@@ -1064,20 +1064,20 @@ LABEL_39:
   }
 
   [(TSTTableChromeProvider *)[(TSTTableRep *)self tableChrome] invalidateAddressBarSelection];
-  v4 = [(TSTTableRep *)self tableChrome];
+  tableChrome = [(TSTTableRep *)self tableChrome];
 
-  [(TSTTableChromeProvider *)v4 selectionHighlightLayerInvalidateDisplay];
+  [(TSTTableChromeProvider *)tableChrome selectionHighlightLayerInvalidateDisplay];
 }
 
-- (void)invalidateCellRange:(id)a3 fittingRange:(id)a4 invalidateSize:(BOOL)a5
+- (void)invalidateCellRange:(id)range fittingRange:(id)fittingRange invalidateSize:(BOOL)size
 {
-  v5 = a5;
-  v8 = [(TSTTableRep *)self tableLayout];
-  TSTLayoutInvalidateCellRangeAndFittingRange(v8);
-  [(TSTTableRep *)self dirtyCellRange:a3];
-  if (v5)
+  sizeCopy = size;
+  tableLayout = [(TSTTableRep *)self tableLayout];
+  TSTLayoutInvalidateCellRangeAndFittingRange(tableLayout);
+  [(TSTTableRep *)self dirtyCellRange:range];
+  if (sizeCopy)
   {
-    [(TSTLayout *)v8 invalidateSize];
+    [(TSTLayout *)tableLayout invalidateSize];
     [(TSTTableChromeProvider *)[(TSTTableRep *)self tableChrome] invalidateAllChrome];
   }
 
@@ -1099,25 +1099,25 @@ LABEL_39:
   [(TSDTilingLayer *)self->mOverlayTableName setNeedsDisplay];
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectIsEmpty(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectIsEmpty(rect))
   {
     v62.receiver = self;
     v62.super_class = TSTTableRep;
     [(TSDRep *)&v62 setNeedsDisplayInRect:x, y, width, height];
-    v8 = [(TSTTableRep *)self tableLayout];
-    FrozenHeaderRowsSpace = TSTLayoutGetFrozenHeaderRowsSpace(v8);
-    FrozenHeaderColumnsSpace = TSTLayoutGetFrozenHeaderColumnsSpace(v8);
-    FrozenHeaderCornerSpace = TSTLayoutGetFrozenHeaderCornerSpace(v8);
-    v12 = [(TSTLayout *)v8 newCanvasRevealedVertically];
-    [(TSTLayout *)v8 setNewCanvasRevealedVertically:0];
-    v13 = [(TSTLayout *)v8 newCanvasRevealedHorizontally];
-    [(TSTLayout *)v8 setNewCanvasRevealedHorizontally:0];
+    tableLayout = [(TSTTableRep *)self tableLayout];
+    FrozenHeaderRowsSpace = TSTLayoutGetFrozenHeaderRowsSpace(tableLayout);
+    FrozenHeaderColumnsSpace = TSTLayoutGetFrozenHeaderColumnsSpace(tableLayout);
+    FrozenHeaderCornerSpace = TSTLayoutGetFrozenHeaderCornerSpace(tableLayout);
+    newCanvasRevealedVertically = [(TSTLayout *)tableLayout newCanvasRevealedVertically];
+    [(TSTLayout *)tableLayout setNewCanvasRevealedVertically:0];
+    newCanvasRevealedHorizontally = [(TSTLayout *)tableLayout newCanvasRevealedHorizontally];
+    [(TSTLayout *)tableLayout setNewCanvasRevealedHorizontally:0];
     [(TSDRep *)self convertNaturalRectToLayerRelative:x, y, width, height];
     v15 = v14;
     v17 = v16;
@@ -1197,7 +1197,7 @@ LABEL_39:
       v26 = &OBJC_IVAR___TSDButtonKnob_mEnabled;
     }
 
-    if ((v12 | v42))
+    if ((newCanvasRevealedVertically | v42))
     {
       v51 = v19 + v15;
     }
@@ -1207,7 +1207,7 @@ LABEL_39:
       v51 = v19;
     }
 
-    if ((v12 | v42))
+    if ((newCanvasRevealedVertically | v42))
     {
       v52 = 0.0;
     }
@@ -1217,7 +1217,7 @@ LABEL_39:
       v52 = v15;
     }
 
-    if ((v13 | v34))
+    if ((newCanvasRevealedHorizontally | v34))
     {
       v53 = v21 + v17;
     }
@@ -1227,7 +1227,7 @@ LABEL_39:
       v53 = v21;
     }
 
-    if ((v13 | v34))
+    if ((newCanvasRevealedHorizontally | v34))
     {
       v54 = 0.0;
     }
@@ -1275,16 +1275,16 @@ LABEL_39:
   }
 }
 
-- (void)setNeedsDisplayInCellRange:(id)a3
+- (void)setNeedsDisplayInCellRange:(id)range
 {
-  v5 = [(TSTLayout *)[(TSTTableRep *)self tableLayout] spaceBundle];
+  spaceBundle = [(TSTLayout *)[(TSTTableRep *)self tableLayout] spaceBundle];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke;
   v6[3] = &unk_279D4A300;
   v6[4] = self;
-  v6[5] = a3;
-  [(TSTLayoutSpaceBundle *)v5 performActionOnEachLayoutSpace:v6];
+  v6[5] = range;
+  [(TSTLayoutSpaceBundle *)spaceBundle performActionOnEachLayoutSpace:v6];
 }
 
 uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1, TSTLayoutSpace *a2)
@@ -1427,37 +1427,37 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
   [(TSTTableRep *)self p_invalidateCellCommentBadges];
 }
 
-- (void)orientationDidChange:(id)a3
+- (void)orientationDidChange:(id)change
 {
   [(TSDCanvas *)[(TSDRep *)self canvas] layoutInvalidated];
-  v4 = [(TSTTableRep *)self tableChrome];
+  tableChrome = [(TSTTableRep *)self tableChrome];
 
-  [(TSTTableChromeProvider *)v4 invalidateAllChrome];
+  [(TSTTableChromeProvider *)tableChrome invalidateAllChrome];
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
-  if (self->mOverlayTableName == a3)
+  if (self->mOverlayTableName == layer)
   {
 
-    TSTTableRepDrawTableName(self, a4, 0);
+    TSTTableRepDrawTableName(self, context, 0);
   }
 
   else
   {
-    if (self->mOverlayFrozenHeaderCorner == a3)
+    if (self->mOverlayFrozenHeaderCorner == layer)
     {
       FrozenHeaderCornerSpace = TSTLayoutGetFrozenHeaderCornerSpace([(TSTTableRep *)self tableLayout]);
     }
 
-    else if (self->mOverlayFrozenHeaderColumns == a3)
+    else if (self->mOverlayFrozenHeaderColumns == layer)
     {
       FrozenHeaderCornerSpace = TSTLayoutGetFrozenHeaderColumnsSpace([(TSTTableRep *)self tableLayout]);
     }
 
     else
     {
-      if (self->mOverlayFrozenHeaderRows != a3)
+      if (self->mOverlayFrozenHeaderRows != layer)
       {
         return;
       }
@@ -1465,13 +1465,13 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
       FrozenHeaderCornerSpace = TSTLayoutGetFrozenHeaderRowsSpace([(TSTTableRep *)self tableLayout]);
     }
 
-    TSTTableRepDrawFrozenHeaderRegion(self, FrozenHeaderCornerSpace, a3, a4);
+    TSTTableRepDrawFrozenHeaderRegion(self, FrozenHeaderCornerSpace, layer, context);
   }
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
-  if ([a4 isEqualToString:@"delegate"])
+  if ([key isEqualToString:@"delegate"])
   {
     return 0;
   }
@@ -1484,15 +1484,15 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
 - (id)additionalLayersOverLayer
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(TSKHighlightArrayController *)[(TSWPTextHostRep *)self highlightArrayController] layers];
-  if ([(NSArray *)v4 count])
+  array = [MEMORY[0x277CBEB18] array];
+  layers = [(TSKHighlightArrayController *)[(TSWPTextHostRep *)self highlightArrayController] layers];
+  if ([(NSArray *)layers count])
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v5 = [(NSArray *)v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    v5 = [(NSArray *)layers countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1504,7 +1504,7 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
         {
           if (*v22 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(layers);
           }
 
           v9 = *(*(&v21 + 1) + 8 * v8);
@@ -1514,23 +1514,23 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
         }
 
         while (v6 != v8);
-        v6 = [(NSArray *)v4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v6 = [(NSArray *)layers countByEnumeratingWithState:&v21 objects:v26 count:16];
       }
 
       while (v6);
     }
 
-    [v3 addObjectsFromArray:v4];
+    [array addObjectsFromArray:layers];
   }
 
-  v10 = [(TSKHighlightArrayController *)[(TSWPTextHostRep *)self pulseArrayController] layers];
-  if ([(NSArray *)v10 count])
+  layers2 = [(TSKHighlightArrayController *)[(TSWPTextHostRep *)self pulseArrayController] layers];
+  if ([(NSArray *)layers2 count])
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v11 = [(NSArray *)v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+    v11 = [(NSArray *)layers2 countByEnumeratingWithState:&v17 objects:v25 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1542,7 +1542,7 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(layers2);
           }
 
           v15 = *(*(&v17 + 1) + 8 * v14);
@@ -1552,29 +1552,29 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
         }
 
         while (v12 != v14);
-        v12 = [(NSArray *)v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        v12 = [(NSArray *)layers2 countByEnumeratingWithState:&v17 objects:v25 count:16];
       }
 
       while (v12);
     }
 
-    [v3 addObjectsFromArray:v10];
+    [array addObjectsFromArray:layers2];
   }
 
-  [v3 addObjectsFromArray:{-[TSTTableRep p_tableNameOverlayLayers](self, "p_tableNameOverlayLayers")}];
-  [v3 addObjectsFromArray:{-[TSTTableRep p_frozenHeaderOverlayLayers](self, "p_frozenHeaderOverlayLayers")}];
-  return v3;
+  [array addObjectsFromArray:{-[TSTTableRep p_tableNameOverlayLayers](self, "p_tableNameOverlayLayers")}];
+  [array addObjectsFromArray:{-[TSTTableRep p_frozenHeaderOverlayLayers](self, "p_frozenHeaderOverlayLayers")}];
+  return array;
 }
 
 - (id)p_tableNameOverlayLayers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(TSTTableRep *)self tableLayout];
-  if (TSTLayoutGetTableNameVisible(v4) && TSTLayoutIsPartitionAlongLeft(v4) && ![(TSTLayout *)v4 inPrintPreviewMode])
+  array = [MEMORY[0x277CBEB18] array];
+  tableLayout = [(TSTTableRep *)self tableLayout];
+  if (TSTLayoutGetTableNameVisible(tableLayout) && TSTLayoutIsPartitionAlongLeft(tableLayout) && ![(TSTLayout *)tableLayout inPrintPreviewMode])
   {
     if (self->mOverlayTableName || (v7 = objc_alloc_init(TSDTilingLayer), self->mOverlayTableName = v7, [(TSDTilingLayer *)v7 setName:@"mOverlayTableName"], [(TSDCanvas *)[(TSDRep *)self canvas] contentsScale], [(TSDTilingLayer *)self->mOverlayTableName setContentsScale:?], [(TSDTilingLayer *)self->mOverlayTableName setDrawsInBackground:[(TSTTableRep *)self canDrawInBackgroundDuringScroll]], [(TSDTilingLayer *)self->mOverlayTableName setDelegate:self], [(TSTTableRep *)self invalidateTableName], [(TSTTableRep *)self validateTableName], self->mOverlayTableName))
     {
-      [v3 addObject:?];
+      [array addObject:?];
     }
   }
 
@@ -1589,37 +1589,37 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (void)validateTableName
 {
-  v3 = [(TSTTableRep *)self tableLayout];
+  tableLayout = [(TSTTableRep *)self tableLayout];
   mOverlayTableName = self->mOverlayTableName;
   [(TSDTilingLayer *)mOverlayTableName bounds];
   rect1[0] = v5;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  TSTLayoutGetFrame(v3);
+  TSTLayoutGetFrame(tableLayout);
   height = v12;
   if (self->mOverlayFrozenHeaderRows)
   {
-    FrozenHeaderRowsSpace = TSTLayoutGetFrozenHeaderRowsSpace(v3);
+    FrozenHeaderRowsSpace = TSTLayoutGetFrozenHeaderRowsSpace(tableLayout);
   }
 
   else
   {
-    FrozenHeaderRowsSpace = TSTLayoutGetSpace(v3);
+    FrozenHeaderRowsSpace = TSTLayoutGetSpace(tableLayout);
   }
 
-  RenderingFrame = TSTLayoutGetRenderingFrame(v3, FrozenHeaderRowsSpace);
+  RenderingFrame = TSTLayoutGetRenderingFrame(tableLayout, FrozenHeaderRowsSpace);
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  if (v3)
+  if (tableLayout)
   {
-    [(TSDAbstractLayout *)v3 transform];
+    [(TSDAbstractLayout *)tableLayout transform];
   }
 
   else
@@ -1635,10 +1635,10 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
   x = v47.origin.x;
   y = v47.origin.y;
   width = v47.size.width;
-  if (self->mOverlayFrozenHeaderRows && TSTLayoutGetFrozenHeaderRowsFloating(v3))
+  if (self->mOverlayFrozenHeaderRows && TSTLayoutGetFrozenHeaderRowsFloating(tableLayout))
   {
     memset(&v45, 0, sizeof(v45));
-    TSTLayoutGetFrozenTableNameTransformToLayout(v3, &v45);
+    TSTLayoutGetFrozenTableNameTransformToLayout(tableLayout, &v45);
     *&rect1[1] = v45;
     v48.origin.x = x;
     v48.origin.y = y;
@@ -1678,12 +1678,12 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
 
 - (id)p_frozenHeaderOverlayLayers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(TSTTableRep *)self tableLayout];
-  FrozenHeaderColumnsSpace = TSTLayoutGetFrozenHeaderColumnsSpace(v4);
-  FrozenHeaderRowsSpace = TSTLayoutGetFrozenHeaderRowsSpace(v4);
-  FrozenHeaderCornerSpace = TSTLayoutGetFrozenHeaderCornerSpace(v4);
-  if (FrozenHeaderRowsSpace && [(TSTTableModel *)[(TSTLayout *)v4 tableModel] numberOfHeaderRows])
+  array = [MEMORY[0x277CBEB18] array];
+  tableLayout = [(TSTTableRep *)self tableLayout];
+  FrozenHeaderColumnsSpace = TSTLayoutGetFrozenHeaderColumnsSpace(tableLayout);
+  FrozenHeaderRowsSpace = TSTLayoutGetFrozenHeaderRowsSpace(tableLayout);
+  FrozenHeaderCornerSpace = TSTLayoutGetFrozenHeaderCornerSpace(tableLayout);
+  if (FrozenHeaderRowsSpace && [(TSTTableModel *)[(TSTLayout *)tableLayout tableModel] numberOfHeaderRows])
   {
     if (!self->mOverlayFrozenHeaderRows)
     {
@@ -1698,7 +1698,7 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
       [(TSDTilingLayer *)self->mOverlayFrozenHeaderRows setNeedsDisplayInRect:*MEMORY[0x277CBF390], *(MEMORY[0x277CBF390] + 8), *(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)];
     }
 
-    FrozenHeaderRowsFloating = TSTLayoutGetFrozenHeaderRowsFloating(v4);
+    FrozenHeaderRowsFloating = TSTLayoutGetFrozenHeaderRowsFloating(tableLayout);
     mOverlayFrozenHeaderRows = self->mOverlayFrozenHeaderRows;
     if (FrozenHeaderRowsFloating)
     {
@@ -1725,7 +1725,7 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
       [(TSDTilingLayer *)self->mOverlayFrozenHeaderRows setMask:0];
     }
 
-    [v3 addObject:self->mOverlayFrozenHeaderRows];
+    [array addObject:self->mOverlayFrozenHeaderRows];
   }
 
   else
@@ -1746,7 +1746,7 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
     }
   }
 
-  if (FrozenHeaderColumnsSpace && [(TSTTableModel *)[(TSTLayout *)v4 tableModel] numberOfHeaderColumns])
+  if (FrozenHeaderColumnsSpace && [(TSTTableModel *)[(TSTLayout *)tableLayout tableModel] numberOfHeaderColumns])
   {
     if (!self->mOverlayFrozenHeaderColumns)
     {
@@ -1761,7 +1761,7 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
       [(TSDTilingLayer *)self->mOverlayFrozenHeaderColumns setNeedsDisplay];
     }
 
-    FrozenHeaderColumnsFloating = TSTLayoutGetFrozenHeaderColumnsFloating(v4);
+    FrozenHeaderColumnsFloating = TSTLayoutGetFrozenHeaderColumnsFloating(tableLayout);
     mOverlayFrozenHeaderColumns = self->mOverlayFrozenHeaderColumns;
     if (FrozenHeaderColumnsFloating)
     {
@@ -1790,7 +1790,7 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
 
     if (self->mOverlayFrozenHeaderColumns)
     {
-      [v3 addObject:?];
+      [array addObject:?];
     }
   }
 
@@ -1813,13 +1813,13 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
     }
   }
 
-  if (FrozenHeaderRowsSpace && (TSTLayoutGetFrozenHeaderRowsFloating(v4) & 1) != 0 || FrozenHeaderColumnsSpace && TSTLayoutGetFrozenHeaderColumnsFloating(v4))
+  if (FrozenHeaderRowsSpace && (TSTLayoutGetFrozenHeaderRowsFloating(tableLayout) & 1) != 0 || FrozenHeaderColumnsSpace && TSTLayoutGetFrozenHeaderColumnsFloating(tableLayout))
   {
-    v16 = [(TSTTableRep *)self layerForRep];
-    v17 = v16;
+    layerForRep = [(TSTTableRep *)self layerForRep];
+    v17 = layerForRep;
     if (self->mOverlayFrozenHeaderTableBodyMask)
     {
-      if (v16 && [(TSDCanvas *)[(TSDRep *)self canvas] isCanvasInteractive])
+      if (layerForRep && [(TSDCanvas *)[(TSDRep *)self canvas] isCanvasInteractive])
       {
         [(CALayer *)v17 setMask:self->mOverlayFrozenHeaderTableBodyMask];
       }
@@ -1878,9 +1878,9 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
       [(TSDTilingLayer *)self->mOverlayFrozenHeaderCorner setNeedsDisplay];
     }
 
-    v24 = !TSTLayoutGetFrozenHeaderRowsFloating(v4) || (TSTLayoutGetFrozenHeaderColumnsFloating(v4) & 1) == 0;
+    v24 = !TSTLayoutGetFrozenHeaderRowsFloating(tableLayout) || (TSTLayoutGetFrozenHeaderColumnsFloating(tableLayout) & 1) == 0;
     [(TSDTilingLayer *)self->mOverlayFrozenHeaderCorner setHidden:v24];
-    [v3 addObject:self->mOverlayFrozenHeaderCorner];
+    [array addObject:self->mOverlayFrozenHeaderCorner];
   }
 
   else if (mOverlayFrozenHeaderCorner)
@@ -1890,13 +1890,13 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
     self->mOverlayFrozenHeaderCorner = 0;
   }
 
-  return v3;
+  return array;
 }
 
-- (CGRect)p_alignedLayerFrameForLayoutSpace:(id)a3 transform:(CGAffineTransform *)a4
+- (CGRect)p_alignedLayerFrameForLayoutSpace:(id)space transform:(CGAffineTransform *)transform
 {
-  RenderingFrame = TSTLayoutGetRenderingFrame([(TSTTableRep *)self tableLayout], a3);
-  CanvasRectForLayoutRect = TSTLayoutSpaceGetCanvasRectForLayoutRect(a3, RenderingFrame, v8, v9, v10);
+  RenderingFrame = TSTLayoutGetRenderingFrame([(TSTTableRep *)self tableLayout], space);
+  CanvasRectForLayoutRect = TSTLayoutSpaceGetCanvasRectForLayoutRect(space, RenderingFrame, v8, v9, v10);
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -1909,10 +1909,10 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
   TSDRoundedRectForScale(v19, v21, v23, v25, v26);
   v28 = TSDCeilSize(v27);
   v30 = v29;
-  v31 = *&a4->c;
-  *&v48.a = *&a4->a;
+  v31 = *&transform->c;
+  *&v48.a = *&transform->a;
   *&v48.c = v31;
-  *&v48.tx = *&a4->tx;
+  *&v48.tx = *&transform->tx;
   v32 = CanvasRectForLayoutRect;
   *&v31 = v13;
   v33 = v15;
@@ -1936,9 +1936,9 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
 
 - (void)validateFrozenHeaderCorner
 {
-  v3 = [(TSTTableRep *)self tableLayout];
+  tableLayout = [(TSTTableRep *)self tableLayout];
   mOverlayFrozenHeaderCorner = self->mOverlayFrozenHeaderCorner;
-  FrozenHeaderCornerSpace = TSTLayoutGetFrozenHeaderCornerSpace(v3);
+  FrozenHeaderCornerSpace = TSTLayoutGetFrozenHeaderCornerSpace(tableLayout);
   if (FrozenHeaderCornerSpace)
   {
     if (mOverlayFrozenHeaderCorner)
@@ -1947,7 +1947,7 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
       GridRange = TSTLayoutSpaceGetGridRange(FrozenHeaderCornerSpace);
       if (GridRange != -1 && v8 != -1 && GridRange <= v8 && HIDWORD(GridRange) != 0xFFFFFFFF && HIDWORD(v8) != 0xFFFFFFFF && HIDWORD(GridRange) <= HIDWORD(v8))
       {
-        TSTLayoutGetFrozenHeaderCornerTransformToLayout(v3, v9);
+        TSTLayoutGetFrozenHeaderCornerTransformToLayout(tableLayout, v9);
         [(TSTTableRep *)self p_alignedLayerFrameForLayoutSpace:v6 transform:v9];
         [(TSDTilingLayer *)mOverlayFrozenHeaderCorner setFrame:?];
       }
@@ -1957,10 +1957,10 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
 
 - (void)validateFrozenHeaderRows
 {
-  v3 = [(TSTTableRep *)self tableLayout];
+  tableLayout = [(TSTTableRep *)self tableLayout];
   mOverlayFrozenHeaderRows = self->mOverlayFrozenHeaderRows;
   mOverlayFrozenHeaderRowsMask = self->mOverlayFrozenHeaderRowsMask;
-  FrozenHeaderRowsSpace = TSTLayoutGetFrozenHeaderRowsSpace(v3);
+  FrozenHeaderRowsSpace = TSTLayoutGetFrozenHeaderRowsSpace(tableLayout);
   if (FrozenHeaderRowsSpace)
   {
     if (mOverlayFrozenHeaderRows)
@@ -1969,7 +1969,7 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
       GridRange = TSTLayoutSpaceGetGridRange(FrozenHeaderRowsSpace);
       if (GridRange != -1 && v9 != -1 && GridRange <= v9 && HIDWORD(GridRange) != 0xFFFFFFFF && HIDWORD(v9) != 0xFFFFFFFF && HIDWORD(GridRange) <= HIDWORD(v9))
       {
-        TSTLayoutGetFrozenHeaderRowsTransformToLayout(v3, &v17);
+        TSTLayoutGetFrozenHeaderRowsTransformToLayout(tableLayout, &v17);
         [(TSTTableRep *)self p_alignedLayerFrameForLayoutSpace:v7 transform:&v17];
         [(TSDTilingLayer *)mOverlayFrozenHeaderRows setFrame:?];
         if (mOverlayFrozenHeaderRowsMask)
@@ -1978,7 +1978,7 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
           v11 = v10;
           memset(&v17, 0, sizeof(v17));
           [v7 transformToDevice];
-          v18.origin.x = TSTLayoutGetAlignedMaskRectForSpace(v3, v7);
+          v18.origin.x = TSTLayoutGetAlignedMaskRectForSpace(tableLayout, v7);
           v16 = v17;
           v19 = CGRectApplyAffineTransform(v18, &v16);
           v12 = TSDMultiplyRectScalar(v19.origin.x, v19.origin.y, v19.size.width, v19.size.height, 1.0 / v11);
@@ -1991,10 +1991,10 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
 
 - (void)validateFrozenHeaderColumns
 {
-  v3 = [(TSTTableRep *)self tableLayout];
+  tableLayout = [(TSTTableRep *)self tableLayout];
   mOverlayFrozenHeaderColumns = self->mOverlayFrozenHeaderColumns;
   mOverlayFrozenHeaderColumnsMask = self->mOverlayFrozenHeaderColumnsMask;
-  FrozenHeaderColumnsSpace = TSTLayoutGetFrozenHeaderColumnsSpace(v3);
+  FrozenHeaderColumnsSpace = TSTLayoutGetFrozenHeaderColumnsSpace(tableLayout);
   if (FrozenHeaderColumnsSpace)
   {
     if (mOverlayFrozenHeaderColumns)
@@ -2003,7 +2003,7 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
       GridRange = TSTLayoutSpaceGetGridRange(FrozenHeaderColumnsSpace);
       if (GridRange != -1 && v9 != -1 && GridRange <= v9 && HIDWORD(GridRange) != 0xFFFFFFFF && HIDWORD(v9) != 0xFFFFFFFF && HIDWORD(GridRange) <= HIDWORD(v9))
       {
-        TSTLayoutGetFrozenHeaderColumnsTransformToLayout(v3, &v17);
+        TSTLayoutGetFrozenHeaderColumnsTransformToLayout(tableLayout, &v17);
         [(TSTTableRep *)self p_alignedLayerFrameForLayoutSpace:v7 transform:&v17];
         [(TSDTilingLayer *)mOverlayFrozenHeaderColumns setFrame:?];
         if (mOverlayFrozenHeaderColumnsMask)
@@ -2012,7 +2012,7 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
           v11 = v10;
           memset(&v17, 0, sizeof(v17));
           [v7 transformToDevice];
-          v18.origin.x = TSTLayoutGetAlignedMaskRectForSpace(v3, v7);
+          v18.origin.x = TSTLayoutGetAlignedMaskRectForSpace(tableLayout, v7);
           v16 = v17;
           v19 = CGRectApplyAffineTransform(v18, &v16);
           v12 = TSDMultiplyRectScalar(v19.origin.x, v19.origin.y, v19.size.width, v19.size.height, 1.0 / v11);
@@ -2023,17 +2023,17 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
   }
 }
 
-- (void)addAdditionalChildLayersToArray:(id)a3
+- (void)addAdditionalChildLayersToArray:(id)array
 {
   v3.receiver = self;
   v3.super_class = TSTTableRep;
-  [(TSWPTextHostRep *)&v3 addAdditionalChildLayersToArray:a3];
+  [(TSWPTextHostRep *)&v3 addAdditionalChildLayersToArray:array];
 }
 
 - (void)validateFrozenHeaderTableBodyMask
 {
-  v3 = [(TSTTableRep *)self tableLayout];
-  Space = TSTLayoutGetSpace(v3);
+  tableLayout = [(TSTTableRep *)self tableLayout];
+  Space = TSTLayoutGetSpace(tableLayout);
   if (Space && self->mOverlayFrozenHeaderTableBodyMask)
   {
     v5 = Space;
@@ -2041,7 +2041,7 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
     v7 = v6;
     memset(&v32[1], 0, sizeof(CGAffineTransform));
     [v5 transformToDevice];
-    v33.origin.x = TSTLayoutGetAlignedMaskRectForSpace(v3, v5);
+    v33.origin.x = TSTLayoutGetAlignedMaskRectForSpace(tableLayout, v5);
     v32[0] = v32[1];
     v34 = CGRectApplyAffineTransform(v33, v32);
     v8 = TSDMultiplyRectScalar(v34.origin.x, v34.origin.y, v34.size.width, v34.size.height, 1.0 / v7);
@@ -2053,8 +2053,8 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
     v15 = v36.origin.y;
     width = v36.size.width;
     height = v36.size.height;
-    FrozenHeaderRowsSpace = TSTLayoutGetFrozenHeaderRowsSpace(v3);
-    FrozenHeaderColumnsSpace = TSTLayoutGetFrozenHeaderColumnsSpace(v3);
+    FrozenHeaderRowsSpace = TSTLayoutGetFrozenHeaderRowsSpace(tableLayout);
+    FrozenHeaderColumnsSpace = TSTLayoutGetFrozenHeaderColumnsSpace(tableLayout);
     if (FrozenHeaderColumnsSpace)
     {
       v20 = FrozenHeaderRowsSpace == 0;
@@ -2086,9 +2086,9 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
     }
 
     [(CALayer *)self->mOverlayFrozenHeaderTableBodyMask setFrame:x, y, width, height];
-    if (TSTLayoutGetTableNameVisible(v3) && [(TSTEditingState *)[(TSTTableRep *)self editingState] editingMode]== 7)
+    if (TSTLayoutGetTableNameVisible(tableLayout) && [(TSTEditingState *)[(TSTTableRep *)self editingState] editingMode]== 7)
     {
-      v37.origin.x = TSTLayoutGetAlignedStrokeFrame(v3);
+      v37.origin.x = TSTLayoutGetAlignedStrokeFrame(tableLayout);
       v37.size.height = v22;
       v32[0] = v32[1];
       v37.origin.y = 0.0;
@@ -2112,10 +2112,10 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
 
 - (void)invalidateFrozenHeaders
 {
-  v3 = [(TSTTableRep *)self tableLayout];
-  FrozenHeaderRowsSpace = TSTLayoutGetFrozenHeaderRowsSpace(v3);
-  FrozenHeaderColumnsSpace = TSTLayoutGetFrozenHeaderColumnsSpace(v3);
-  FrozenHeaderCornerSpace = TSTLayoutGetFrozenHeaderCornerSpace(v3);
+  tableLayout = [(TSTTableRep *)self tableLayout];
+  FrozenHeaderRowsSpace = TSTLayoutGetFrozenHeaderRowsSpace(tableLayout);
+  FrozenHeaderColumnsSpace = TSTLayoutGetFrozenHeaderColumnsSpace(tableLayout);
+  FrozenHeaderCornerSpace = TSTLayoutGetFrozenHeaderCornerSpace(tableLayout);
   if (FrozenHeaderRowsSpace)
   {
     mOverlayFrozenHeaderRows = self->mOverlayFrozenHeaderRows;
@@ -2149,11 +2149,11 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
   }
 }
 
-- (BOOL)canDrawTilingLayerInBackground:(id)a3
+- (BOOL)canDrawTilingLayerInBackground:(id)background
 {
   v6.receiver = self;
   v6.super_class = TSTTableRep;
-  v4 = [(TSDRep *)&v6 canDrawTilingLayerInBackground:a3];
+  v4 = [(TSDRep *)&v6 canDrawTilingLayerInBackground:background];
   if (v4)
   {
     LOBYTE(v4) = ![(TSTTableRep *)self mustDrawOnMainThreadForInteractiveCanvas];
@@ -2165,57 +2165,57 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
 - (void)beginDragInsertFromPalette
 {
   [(TSTMasterLayout *)[(TSTTableRep *)self masterLayout] beginDynamicMode:[(TSTTableRep *)self tableLayout]];
-  v3 = [(TSTTableRep *)self masterLayout];
+  masterLayout = [(TSTTableRep *)self masterLayout];
 
-  [(TSTMasterLayout *)v3 updateDynamicRepressFrozenHeader:1];
+  [(TSTMasterLayout *)masterLayout updateDynamicRepressFrozenHeader:1];
 }
 
 - (void)endDragInsertFromPalette
 {
-  v2 = [(TSTTableRep *)self masterLayout];
+  masterLayout = [(TSTTableRep *)self masterLayout];
 
-  [(TSTMasterLayout *)v2 endDynamicMode];
+  [(TSTMasterLayout *)masterLayout endDynamicMode];
 }
 
 - (BOOL)mustDrawOnMainThreadForInteractiveCanvas
 {
-  v2 = [(TSTTableRep *)self masterLayout];
-  v3 = [(TSTMasterLayout *)v2 dynamicContentDelegate];
-  if ([(TSTMasterLayout *)v2 isDynamicallyResizingTableName])
+  masterLayout = [(TSTTableRep *)self masterLayout];
+  dynamicContentDelegate = [(TSTMasterLayout *)masterLayout dynamicContentDelegate];
+  if ([(TSTMasterLayout *)masterLayout isDynamicallyResizingTableName])
   {
     return 1;
   }
 
-  if (!v3)
+  if (!dynamicContentDelegate)
   {
     return 0;
   }
 
-  return [(TSTLayoutDynamicContentProtocol *)v3 dynamicContentMustDrawOnMainThread];
+  return [(TSTLayoutDynamicContentProtocol *)dynamicContentDelegate dynamicContentMustDrawOnMainThread];
 }
 
-- (void)recursivelyDrawInContext:(CGContext *)a3
+- (void)recursivelyDrawInContext:(CGContext *)context
 {
   TSTMasterLayoutLock([(TSTTableRep *)self masterLayout]);
   self->mRecursivelyDrawingInContext = 1;
   [(TSDCanvas *)[(TSDRep *)self canvas] viewScale];
   v6 = v5;
-  v7 = TSDCGContextAssociatedScreenScale(a3);
+  v7 = TSDCGContextAssociatedScreenScale(context);
   TSTTableRepSetupUserSpaceToDeviceSpaceTransform(self, v6, v7);
   v8.receiver = self;
   v8.super_class = TSTTableRep;
-  [(TSDRep *)&v8 recursivelyDrawInContext:a3];
+  [(TSDRep *)&v8 recursivelyDrawInContext:context];
   self->mRecursivelyDrawingInContext = 0;
   TSTMasterLayoutUnlock([(TSTTableRep *)self masterLayout]);
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v5 = [(TSTTableRep *)self tableLayout];
+  tableLayout = [(TSTTableRep *)self tableLayout];
   mAnimationController = self->mAnimationController;
   if (!mAnimationController || [(TSTTableAnimationController *)mAnimationController shouldRenderTableRep])
   {
-    if (self->mRecursivelyDrawingInContext || [(TSTLayout *)v5 inPrintPreviewMode])
+    if (self->mRecursivelyDrawingInContext || [(TSTLayout *)tableLayout inPrintPreviewMode])
     {
       mOverlayTableName = self->mOverlayTableName;
       if (mOverlayTableName)
@@ -2225,27 +2225,27 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
         self->mOverlayTableName = 0;
       }
 
-      TSTTableRepDrawTableName(self, a3, 0);
+      TSTTableRepDrawTableName(self, context, 0);
     }
 
-    ClipBoundingBox = CGContextGetClipBoundingBox(a3);
+    ClipBoundingBox = CGContextGetClipBoundingBox(context);
     x = ClipBoundingBox.origin.x;
     y = ClipBoundingBox.origin.y;
     width = ClipBoundingBox.size.width;
     height = ClipBoundingBox.size.height;
     [(TSTTableRep *)self transformFromCanvas];
-    CGContextConcatCTM(a3, &v19);
-    Space = TSTLayoutGetSpace(v5);
+    CGContextConcatCTM(context, &v19);
+    Space = TSTLayoutGetSpace(tableLayout);
     [(TSTLayoutSpace *)Space lockForRead];
     v21.origin.x = x;
     v21.origin.y = y;
     v21.size.width = width;
     v21.size.height = height;
-    TSTTableRepDrawSpaceInContext(self, Space, v21, a3);
+    TSTTableRepDrawSpaceInContext(self, Space, v21, context);
     [(TSTLayoutSpace *)Space unlock];
-    if (TSTLayoutIsPartitionPaginated(v5))
+    if (TSTLayoutIsPartitionPaginated(tableLayout))
     {
-      RepeatHeaderRowsSpace = TSTLayoutGetRepeatHeaderRowsSpace(v5);
+      RepeatHeaderRowsSpace = TSTLayoutGetRepeatHeaderRowsSpace(tableLayout);
       if (RepeatHeaderRowsSpace)
       {
         v14 = RepeatHeaderRowsSpace;
@@ -2254,11 +2254,11 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
         v22.origin.y = y;
         v22.size.width = width;
         v22.size.height = height;
-        TSTTableRepDrawSpaceInContext(self, v14, v22, a3);
+        TSTTableRepDrawSpaceInContext(self, v14, v22, context);
         [(TSTLayoutSpace *)v14 unlock];
       }
 
-      RepeatHeaderColumnsSpace = TSTLayoutGetRepeatHeaderColumnsSpace(v5);
+      RepeatHeaderColumnsSpace = TSTLayoutGetRepeatHeaderColumnsSpace(tableLayout);
       if (RepeatHeaderColumnsSpace)
       {
         v16 = RepeatHeaderColumnsSpace;
@@ -2267,11 +2267,11 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
         v23.origin.y = y;
         v23.size.width = width;
         v23.size.height = height;
-        TSTTableRepDrawSpaceInContext(self, v16, v23, a3);
+        TSTTableRepDrawSpaceInContext(self, v16, v23, context);
         [(TSTLayoutSpace *)v16 unlock];
       }
 
-      RepeatHeaderCornerSpace = TSTLayoutGetRepeatHeaderCornerSpace(v5);
+      RepeatHeaderCornerSpace = TSTLayoutGetRepeatHeaderCornerSpace(tableLayout);
       if (RepeatHeaderCornerSpace)
       {
         v18 = RepeatHeaderCornerSpace;
@@ -2280,28 +2280,28 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
         v24.origin.y = y;
         v24.size.width = width;
         v24.size.height = height;
-        TSTTableRepDrawSpaceInContext(self, v18, v24, a3);
+        TSTTableRepDrawSpaceInContext(self, v18, v24, context);
         [(TSTLayoutSpace *)v18 unlock];
       }
     }
   }
 }
 
-- (id)p_textImageForPath:(CGPath *)a3 shouldPulsate:(BOOL)a4
+- (id)p_textImageForPath:(CGPath *)path shouldPulsate:(BOOL)pulsate
 {
-  v4 = a4;
+  pulsateCopy = pulsate;
   [(TSDCanvas *)[(TSDRep *)self canvas] contentsScale];
   v8 = v7;
   [(TSDCanvas *)self->super.super.mCanvas viewScale];
   v10 = v9;
   v11 = &kFindSelectionPulseInset;
-  if (!v4)
+  if (!pulsateCopy)
   {
     v11 = &kFindSelectionInset;
   }
 
   v12 = *v11;
-  BoundingBox = CGPathGetBoundingBox(a3);
+  BoundingBox = CGPathGetBoundingBox(path);
   y = BoundingBox.origin.y;
   x = BoundingBox.origin.x;
   height = BoundingBox.size.height;
@@ -2337,7 +2337,7 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
     v53.size.height = v44;
     v54 = CGRectInset(v53, -2.0, -2.0);
     CGContextClipToRect(v20, v54);
-    [(TSWPTextHostRep *)self drawTextBackground:v20 insetRect:v4 pulsating:v43, v13, v14, v44];
+    [(TSWPTextHostRep *)self drawTextBackground:v20 insetRect:pulsateCopy pulsating:v43, v13, v14, v44];
     v46.width = 0.0;
     v46.height = -2.0;
     CGContextSetShadow(v20, v46, 2.0);
@@ -2438,9 +2438,9 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
 - (void)p_hideSelectionLayers
 {
   [(CAShapeLayer *)self->mFindSelectionHighlightLayer setHidden:1];
-  v3 = [(TSWPTextHostRep *)self pulseArrayController];
+  pulseArrayController = [(TSWPTextHostRep *)self pulseArrayController];
 
-  [(TSKHighlightArrayController *)v3 stop];
+  [(TSKHighlightArrayController *)pulseArrayController stop];
 }
 
 - (void)p_editingDidEnd
@@ -2448,17 +2448,17 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
   [(CAShapeLayer *)self->mFindSelectionHighlightLayer setHidden:1];
   if ([(TSWPTextHostRep *)self pulseArrayController])
   {
-    v3 = [(TSWPTextHostRep *)self pulseArrayController];
+    pulseArrayController = [(TSWPTextHostRep *)self pulseArrayController];
 
-    [(TSKHighlightArrayController *)v3 stop];
+    [(TSKHighlightArrayController *)pulseArrayController stop];
   }
 }
 
 - (CGRect)boundsForResizeGuideUI
 {
-  v2 = [(TSTTableRep *)self tableLayout];
+  tableLayout = [(TSTTableRep *)self tableLayout];
 
-  RenderingFrame = TSTLayoutGetRenderingFrame(v2, 0);
+  RenderingFrame = TSTLayoutGetRenderingFrame(tableLayout, 0);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -2474,21 +2474,21 @@ uint64_t __42__TSTTableRep_setNeedsDisplayInCellRange___block_invoke(uint64_t a1
   [(TSDRep *)self info];
   v4 = objc_opt_class();
   v17 = NSStringFromClass(v4);
-  v5 = [(TSDRep *)self info];
+  info = [(TSDRep *)self info];
   [(TSDRep *)self layout];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(TSDRep *)self layout];
+  layout = [(TSDRep *)self layout];
   [(TSTLayout *)[(TSTTableRep *)self tableLayout] layoutHint];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  v11 = [(TSTLayout *)[(TSTTableRep *)self tableLayout] layoutHint];
-  v12 = [(TSTLayoutHint *)[(TSTLayout *)[(TSTTableRep *)self tableLayout] layoutHint] cellRange];
+  layoutHint = [(TSTLayout *)[(TSTTableRep *)self tableLayout] layoutHint];
+  cellRange = [(TSTLayoutHint *)[(TSTLayout *)[(TSTTableRep *)self tableLayout] layoutHint] cellRange];
   v13 = MEMORY[0x277CCACA8];
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%hu, %hu)", v12.var0.var1, v12.var0.var0];
-  v15 = [v13 stringWithFormat:@"(%@, %@)", v14, objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%hux%hu", v12.var1.var0, HIWORD(*&v12))];
+  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%hu, %hu)", cellRange.var0.var1, cellRange.var0.var0];
+  v15 = [v13 stringWithFormat:@"(%@, %@)", v14, objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%hux%hu", cellRange.var1.var0, HIWORD(*&cellRange))];
   [(TSDRep *)self frameInUnscaledCanvas];
-  return [v19 stringWithFormat:@"<%@ %p info=<%@ %p> layout=<%@ %p> layoutHint=<%@ %p %@> frameInUnscaledCanvas=%@>", v18, self, v17, v5, v7, v8, v10, v11, v15, NSStringFromCGRect(v20)];
+  return [v19 stringWithFormat:@"<%@ %p info=<%@ %p> layout=<%@ %p> layoutHint=<%@ %p %@> frameInUnscaledCanvas=%@>", v18, self, v17, info, v7, layout, v10, layoutHint, v15, NSStringFromCGRect(v20)];
 }
 
 @end

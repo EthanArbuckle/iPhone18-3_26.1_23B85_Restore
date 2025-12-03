@@ -1,18 +1,18 @@
 @interface SUUIImageDeckView
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (SUUIImageDeckView)init;
 - (UIEdgeInsets)contentInset;
-- (id)viewForElementIdentifier:(id)a3;
+- (id)viewForElementIdentifier:(id)identifier;
 - (void)_layoutImages;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setImageViews:(id)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setImageViews:(id)views;
 @end
 
 @implementation SUUIImageDeckView
@@ -36,10 +36,10 @@
   return v2;
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -48,15 +48,15 @@
   v11[1] = 3221225472;
   v11[2] = __68__SUUIImageDeckView_prefetchResourcesForViewElement_reason_context___block_invoke;
   v11[3] = &unk_2798F5E50;
-  v9 = v8;
+  v9 = contextCopy;
   v13 = &v15;
-  v14 = a4;
+  reasonCopy = reason;
   v12 = v9;
-  [v7 enumerateChildrenUsingBlock:v11];
-  LOBYTE(a4) = *(v16 + 24);
+  [elementCopy enumerateChildrenUsingBlock:v11];
+  LOBYTE(reason) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return a4;
+  return reason;
 }
 
 void __68__SUUIImageDeckView_prefetchResourcesForViewElement_reason_context___block_invoke(uint64_t a1, void *a2)
@@ -76,10 +76,10 @@ void __68__SUUIImageDeckView_prefetchResourcesForViewElement_reason_context___bl
   *(*(*(a1 + 40) + 8) + 24) = (*(*(*(a1 + 40) + 8) + 24) | [*(a1 + 32) prefetchResourcesForViewElement:v6 reason:*(a1 + 48)]) & 1;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3010000000;
@@ -89,10 +89,10 @@ void __68__SUUIImageDeckView_prefetchResourcesForViewElement_reason_context___bl
   v12[1] = 3221225472;
   v12[2] = __57__SUUIImageDeckView_preferredSizeForViewElement_context___block_invoke;
   v12[3] = &unk_2798F91F8;
-  v7 = v6;
+  v7 = contextCopy;
   v13 = v7;
   v14 = &v15;
-  [v5 enumerateChildrenUsingBlock:v12];
+  [elementCopy enumerateChildrenUsingBlock:v12];
   v8 = v16[4];
   v9 = v16[5];
 
@@ -132,17 +132,17 @@ uint64_t __57__SUUIImageDeckView_preferredSizeForViewElement_context___block_inv
   return MEMORY[0x2821F9730](v3);
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v7 = a5;
+  contextCopy = context;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __63__SUUIImageDeckView_requestLayoutForViewElement_width_context___block_invoke;
   v9[3] = &unk_2798FA8F8;
-  v11 = a4;
-  v10 = v7;
-  v8 = v7;
-  [a3 enumerateChildrenUsingBlock:v9];
+  widthCopy = width;
+  v10 = contextCopy;
+  v8 = contextCopy;
+  [element enumerateChildrenUsingBlock:v9];
 }
 
 void __63__SUUIImageDeckView_requestLayoutForViewElement_width_context___block_invoke(uint64_t a1, void *a2)
@@ -154,24 +154,24 @@ void __63__SUUIImageDeckView_requestLayoutForViewElement_width_context___block_i
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3010000000;
   v20 = "";
   v22 = *(MEMORY[0x277CBF3A8] + 8);
-  v21 = a3;
+  widthCopy = width;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __59__SUUIImageDeckView_sizeThatFitsWidth_viewElement_context___block_invoke;
   v14[3] = &unk_2798F91F8;
-  v9 = v8;
+  v9 = contextCopy;
   v15 = v9;
   v16 = &v17;
-  [v7 enumerateChildrenUsingBlock:v14];
+  [elementCopy enumerateChildrenUsingBlock:v14];
   v10 = v18[4];
   v11 = v18[5];
 
@@ -200,12 +200,12 @@ void __59__SUUIImageDeckView_sizeThatFitsWidth_viewElement_context___block_invok
   }
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v9 = a3;
-  v10 = a5;
-  objc_storeStrong(&self->_imageDeckViewElement, a3);
-  self->_fitWidth = a4;
+  elementCopy = element;
+  contextCopy = context;
+  objc_storeStrong(&self->_imageDeckViewElement, element);
+  self->_fitWidth = width;
   [(NSMapTable *)self->_viewElementViews removeAllObjects];
   [(NSMapTable *)self->_imageViewToImageResourceCacheKey removeAllObjects];
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -213,13 +213,13 @@ void __59__SUUIImageDeckView_sizeThatFitsWidth_viewElement_context___block_invok
   v16 = 3221225472;
   v17 = __57__SUUIImageDeckView_reloadWithViewElement_width_context___block_invoke;
   v18 = &unk_2798FB240;
-  v19 = v9;
-  v20 = v10;
-  v21 = self;
+  v19 = elementCopy;
+  v20 = contextCopy;
+  selfCopy = self;
   v22 = v11;
   v12 = v11;
-  v13 = v10;
-  v14 = v9;
+  v13 = contextCopy;
+  v14 = elementCopy;
   [(SUUIViewReuseView *)self modifyUsingBlock:&v15];
   [(SUUIImageDeckView *)self setImageViews:v12, v15, v16, v17, v18];
 }
@@ -284,38 +284,38 @@ uint64_t __57__SUUIImageDeckView_reloadWithViewElement_width_context___block_inv
   return MEMORY[0x2821F9730](isKindOfClass);
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SUUIImageDeckView *)self _layoutImages];
 
     [(SUUIImageDeckView *)self setNeedsLayout];
   }
 }
 
-- (void)setImageViews:(id)a3
+- (void)setImageViews:(id)views
 {
-  v5 = a3;
+  viewsCopy = views;
   if (![(NSArray *)self->_imageViews isEqualToArray:?])
   {
-    objc_storeStrong(&self->_imageViews, a3);
+    objc_storeStrong(&self->_imageViews, views);
     [(SUUIImageDeckView *)self _layoutImages];
     [(SUUIImageDeckView *)self setNeedsLayout];
   }
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   v28 = *MEMORY[0x277D85DE8];
-  v21 = a3;
-  v8 = a5;
-  v9 = [a4 requestIdentifier];
+  imageCopy = image;
+  contextCopy = context;
+  requestIdentifier = [request requestIdentifier];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -338,15 +338,15 @@ uint64_t __57__SUUIImageDeckView_reloadWithViewElement_width_context___block_inv
 
         v14 = *(*(&v23 + 1) + 8 * i);
         v15 = [(NSMapTable *)self->_imageViewToImageResourceCacheKey objectForKey:v14];
-        v16 = [v8 requestIdentifierForResourceCacheKey:v15];
+        v16 = [contextCopy requestIdentifierForResourceCacheKey:v15];
         v17 = v16;
-        if (v16 && [v16 unsignedIntegerValue] == v9)
+        if (v16 && [v16 unsignedIntegerValue] == requestIdentifier)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v18 = [v14 imageView];
-            [v18 setImage:v21];
+            imageView = [v14 imageView];
+            [imageView setImage:imageCopy];
           }
 
           else
@@ -354,12 +354,12 @@ uint64_t __57__SUUIImageDeckView_reloadWithViewElement_width_context___block_inv
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [v14 setImage:v21 cacheKey:v15 context:v8];
+              [v14 setImage:imageCopy cacheKey:v15 context:contextCopy];
             }
 
             else
             {
-              [v14 setImage:v21];
+              [v14 setImage:imageCopy];
             }
           }
 
@@ -381,27 +381,27 @@ uint64_t __57__SUUIImageDeckView_reloadWithViewElement_width_context___block_inv
   return v20 & 1;
 }
 
-- (id)viewForElementIdentifier:(id)a3
+- (id)viewForElementIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__101;
   v19 = __Block_byref_object_dispose__101;
   v20 = 0;
-  v5 = [(SUUIViewReuseView *)self allExistingViews];
-  v6 = [(SUUIViewElement *)self->_imageDeckViewElement flattenedChildren];
+  allExistingViews = [(SUUIViewReuseView *)self allExistingViews];
+  flattenedChildren = [(SUUIViewElement *)self->_imageDeckViewElement flattenedChildren];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __46__SUUIImageDeckView_viewForElementIdentifier___block_invoke;
   v11[3] = &unk_2798F6E20;
-  v7 = v4;
+  v7 = identifierCopy;
   v12 = v7;
-  v8 = v5;
+  v8 = allExistingViews;
   v13 = v8;
   v14 = &v15;
-  [v6 enumerateObjectsUsingBlock:v11];
+  [flattenedChildren enumerateObjectsUsingBlock:v11];
 
   v9 = v16[5];
   _Block_object_dispose(&v15, 8);
@@ -428,7 +428,7 @@ void __46__SUUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBF3A8];
@@ -438,8 +438,8 @@ void __46__SUUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(SUUIImageDeckView *)self imageViews];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  imageViews = [(SUUIImageDeckView *)self imageViews];
+  v7 = [imageViews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -452,7 +452,7 @@ void __46__SUUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(imageViews);
         }
 
         [*(*(&v16 + 1) + 8 * i) sizeThatFits:{v10, v5}];
@@ -462,7 +462,7 @@ void __46__SUUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [imageViews countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -490,8 +490,8 @@ void __46__SUUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(SUUIImageDeckView *)self imageViews];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+  imageViews = [(SUUIImageDeckView *)self imageViews];
+  v4 = [imageViews countByEnumeratingWithState:&v8 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -503,14 +503,14 @@ void __46__SUUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(imageViews);
         }
 
         [(SUUIImageDeckView *)self sendSubviewToBack:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+      v5 = [imageViews countByEnumeratingWithState:&v8 objects:v13 count:16];
     }
 
     while (v5);
@@ -524,8 +524,8 @@ void __46__SUUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v3 = [(SUUIImageDeckView *)self imageViews];
-  v4 = [v3 countByEnumeratingWithState:&v61 objects:v67 count:16];
+  imageViews = [(SUUIImageDeckView *)self imageViews];
+  v4 = [imageViews countByEnumeratingWithState:&v61 objects:v67 count:16];
   v52 = 0.0;
   v5 = MEMORY[0x277CBF3A8];
   v6 = 0.0;
@@ -541,14 +541,14 @@ void __46__SUUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
       {
         if (*v62 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(imageViews);
         }
 
         [*(*(&v61 + 1) + 8 * i) sizeThatFits:{v9, v10}];
         v6 = v6 + v12;
       }
 
-      v7 = [v3 countByEnumeratingWithState:&v61 objects:v67 count:16];
+      v7 = [imageViews countByEnumeratingWithState:&v61 objects:v67 count:16];
     }
 
     while (v7);
@@ -559,13 +559,13 @@ void __46__SUUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
   v15 = v14;
   [(SUUIImageDeckView *)self contentInset];
   v17 = v16;
-  v18 = [(SUUIImageDeckView *)self imageViews];
-  v19 = [v18 count];
+  imageViews2 = [(SUUIImageDeckView *)self imageViews];
+  v19 = [imageViews2 count];
 
   if (v19 >= 2)
   {
-    v20 = [(SUUIImageDeckView *)self imageViews];
-    v52 = (v6 - (fitWidth - (v15 + v17))) / ([v20 count] - 1);
+    imageViews3 = [(SUUIImageDeckView *)self imageViews];
+    v52 = (v6 - (fitWidth - (v15 + v17))) / ([imageViews3 count] - 1);
   }
 
   [(SUUIImageDeckView *)self contentInset];
@@ -574,8 +574,8 @@ void __46__SUUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v23 = [(SUUIImageDeckView *)self imageViews];
-  v24 = [v23 countByEnumeratingWithState:&v57 objects:v66 count:16];
+  imageViews4 = [(SUUIImageDeckView *)self imageViews];
+  v24 = [imageViews4 countByEnumeratingWithState:&v57 objects:v66 count:16];
   if (v24)
   {
     v25 = v24;
@@ -589,7 +589,7 @@ void __46__SUUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
       {
         if (*v58 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(imageViews4);
         }
 
         [*(*(&v57 + 1) + 8 * j) sizeThatFits:{v28, v27}];
@@ -599,7 +599,7 @@ void __46__SUUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
         }
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v57 objects:v66 count:16];
+      v25 = [imageViews4 countByEnumeratingWithState:&v57 objects:v66 count:16];
     }
 
     while (v25);
@@ -614,8 +614,8 @@ void __46__SUUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v32 = [(SUUIImageDeckView *)self imageViews];
-  v33 = [v32 countByEnumeratingWithState:&v53 objects:v65 count:16];
+  imageViews5 = [(SUUIImageDeckView *)self imageViews];
+  v33 = [imageViews5 countByEnumeratingWithState:&v53 objects:v65 count:16];
   if (v33)
   {
     v34 = v33;
@@ -628,7 +628,7 @@ void __46__SUUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
       {
         if (*v54 != v35)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(imageViews5);
         }
 
         v38 = *(*(&v53 + 1) + 8 * k);
@@ -655,7 +655,7 @@ void __46__SUUIImageDeckView_viewForElementIdentifier___block_invoke(uint64_t a1
         v22 = floorf(v50);
       }
 
-      v34 = [v32 countByEnumeratingWithState:&v53 objects:v65 count:16];
+      v34 = [imageViews5 countByEnumeratingWithState:&v53 objects:v65 count:16];
     }
 
     while (v34);

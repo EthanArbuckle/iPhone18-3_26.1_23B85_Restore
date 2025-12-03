@@ -1,14 +1,14 @@
 @interface NDOFollowUpPost
-+ (id)nextFollowUpPostDateWithDevicesInfo:(id)a3;
-- (void)performActivityForScheduler:(id)a3 withCompletionHandler:(id)a4;
++ (id)nextFollowUpPostDateWithDevicesInfo:(id)info;
+- (void)performActivityForScheduler:(id)scheduler withCompletionHandler:(id)handler;
 @end
 
 @implementation NDOFollowUpPost
 
-- (void)performActivityForScheduler:(id)a3 withCompletionHandler:(id)a4
+- (void)performActivityForScheduler:(id)scheduler withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  schedulerCopy = scheduler;
+  handlerCopy = handler;
   [(NDOFollowUpPost *)self setFollowUpPostInProgress:1];
   objc_initWeak(&location, self);
   v18[0] = _NSConcreteStackBlock;
@@ -16,16 +16,16 @@
   v18[2] = sub_100011B38;
   v18[3] = &unk_10009A978;
   objc_copyWeak(&v21, &location);
-  v8 = v6;
+  v8 = schedulerCopy;
   v19 = v8;
-  v9 = v7;
+  v9 = handlerCopy;
   v20 = v9;
   v10 = [NSTimer timerWithTimeInterval:1 repeats:v18 block:2000000000.0];
   [(NDOFollowUpPost *)self setFollowUpPostTimer:v10];
 
   v11 = +[NSRunLoop mainRunLoop];
-  v12 = [(NDOFollowUpPost *)self followUpPostTimer];
-  [v11 addTimer:v12 forMode:NSDefaultRunLoopMode];
+  followUpPostTimer = [(NDOFollowUpPost *)self followUpPostTimer];
+  [v11 addTimer:followUpPostTimer forMode:NSDefaultRunLoopMode];
 
   v13 = [[NDOAgent alloc] initWithCallingProcessBundleID:@"com.apple.ndoagent.followuppost"];
   v15[0] = _NSConcreteStackBlock;
@@ -43,9 +43,9 @@
   objc_destroyWeak(&location);
 }
 
-+ (id)nextFollowUpPostDateWithDevicesInfo:(id)a3
++ (id)nextFollowUpPostDateWithDevicesInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -57,7 +57,7 @@
   v6[2] = sub_100012008;
   v6[3] = &unk_10009ABE8;
   v6[4] = &v7;
-  [v3 enumerateObjectsUsingBlock:v6];
+  [infoCopy enumerateObjectsUsingBlock:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
 

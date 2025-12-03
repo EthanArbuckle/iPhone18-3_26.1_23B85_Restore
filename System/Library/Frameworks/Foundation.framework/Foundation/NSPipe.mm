@@ -1,5 +1,5 @@
 @interface NSPipe
-+ (NSPipe)allocWithZone:(_NSZone *)a3;
++ (NSPipe)allocWithZone:(_NSZone *)zone;
 + (NSPipe)pipe;
 - (NSPipe)init;
 @end
@@ -21,14 +21,14 @@
   return [(NSPipe *)&v3 init];
 }
 
-+ (NSPipe)allocWithZone:(_NSZone *)a3
++ (NSPipe)allocWithZone:(_NSZone *)zone
 {
-  if (NSPipe == a1)
+  if (NSPipe == self)
   {
-    a1 = objc_opt_self();
+    self = objc_opt_self();
   }
 
-  return NSAllocateObject(a1, 0, a3);
+  return NSAllocateObject(self, 0, zone);
 }
 
 @end

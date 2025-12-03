@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __28__MGWrapper_sharedMGWrapper__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedMGWrapper_onceToken[0] != -1)
   {
     dispatch_once(sharedMGWrapper_onceToken, block);
@@ -40,16 +40,16 @@ void __28__MGWrapper_sharedMGWrapper__block_invoke(uint64_t a1)
 
 - (BOOL)isDeviceIPad
 {
-  v2 = [(MGWrapper *)self deviceClass];
-  v3 = [v2 isEqualToString:@"iPad"];
+  deviceClass = [(MGWrapper *)self deviceClass];
+  v3 = [deviceClass isEqualToString:@"iPad"];
 
   return v3;
 }
 
 - (BOOL)isDeviceIPhone
 {
-  v2 = [(MGWrapper *)self deviceClass];
-  v3 = [v2 isEqualToString:@"iPhone"];
+  deviceClass = [(MGWrapper *)self deviceClass];
+  v3 = [deviceClass isEqualToString:@"iPhone"];
 
   return v3;
 }

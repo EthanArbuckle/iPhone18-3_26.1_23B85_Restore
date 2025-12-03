@@ -1,22 +1,22 @@
 @interface MIHelperServiceFrameworkClient
 + (id)sharedInstance;
-- (BOOL)purgeInstallCoordinationPromiseStagingDirectoryForUUID:(id)a3 keepStagingDirectory:(BOOL)a4 error:(id *)a5;
-- (BOOL)removeDeveloperAppAtURL:(id)a3 error:(id *)a4;
-- (BOOL)removeMacAppWithBundleID:(id)a3 atURL:(id)a4 error:(id *)a5;
-- (BOOL)setTestModeForIdentifierPrefix:(id)a3 testMode:(unint64_t)a4 error:(id *)a5;
-- (BOOL)setTestModeForIdentifierPrefix:(id)a3 testMode:(unint64_t)a4 validationData:(id)a5 error:(id *)a6;
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3;
+- (BOOL)purgeInstallCoordinationPromiseStagingDirectoryForUUID:(id)d keepStagingDirectory:(BOOL)directory error:(id *)error;
+- (BOOL)removeDeveloperAppAtURL:(id)l error:(id *)error;
+- (BOOL)removeMacAppWithBundleID:(id)d atURL:(id)l error:(id *)error;
+- (BOOL)setTestModeForIdentifierPrefix:(id)prefix testMode:(unint64_t)mode error:(id *)error;
+- (BOOL)setTestModeForIdentifierPrefix:(id)prefix testMode:(unint64_t)mode validationData:(id)data error:(id *)error;
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler;
 - (id)_sharedConnection;
-- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (id)allStagingLocationsWithinSubsystem:(unint64_t)a3 error:(id *)a4;
-- (id)createWrappedAppForInstalledBundleIdentifier:(id)a3 containerURL:(id)a4 atTargetURL:(id)a5 installationRecords:(id)a6 onBehalfOf:(id *)a7 error:(id *)a8;
-- (id)createWrappedAppForInstalledBundleIdentifier:(id)a3 containerURL:(id)a4 inTargetDirectory:(id)a5 installationRecords:(id)a6 bundleDirectoryName:(id)a7 onBehalfOf:(id *)a8 error:(id *)a9;
-- (id)installMacDeveloperAppAtURL:(id)a3 toURL:(id)a4 targetURLType:(unint64_t)a5 error:(id *)a6;
-- (id)stagingLocationForInstallLocation:(id)a3 withinStagingSubsytem:(unint64_t)a4 usingUniqueName:(id)a5 error:(id *)a6;
-- (id)stagingLocationForSystemContentWithinSubsystem:(unint64_t)a3 error:(id *)a4;
-- (id)stagingLocationForURL:(id)a3 withinStagingSubsytem:(unint64_t)a4 usingUniqueName:(id)a5 error:(id *)a6;
-- (id)stagingLocationForUserContentWithinSubsystem:(unint64_t)a3 error:(id *)a4;
-- (id)updateWrappedAppAt:(id)a3 forInstalledBundleIdentifier:(id)a4 containerURL:(id)a5 installationRecords:(id)a6 onBehalfOf:(id *)a7 error:(id *)a8;
+- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (id)allStagingLocationsWithinSubsystem:(unint64_t)subsystem error:(id *)error;
+- (id)createWrappedAppForInstalledBundleIdentifier:(id)identifier containerURL:(id)l atTargetURL:(id)rL installationRecords:(id)records onBehalfOf:(id *)of error:(id *)error;
+- (id)createWrappedAppForInstalledBundleIdentifier:(id)identifier containerURL:(id)l inTargetDirectory:(id)directory installationRecords:(id)records bundleDirectoryName:(id)name onBehalfOf:(id *)of error:(id *)error;
+- (id)installMacDeveloperAppAtURL:(id)l toURL:(id)rL targetURLType:(unint64_t)type error:(id *)error;
+- (id)stagingLocationForInstallLocation:(id)location withinStagingSubsytem:(unint64_t)subsytem usingUniqueName:(id)name error:(id *)error;
+- (id)stagingLocationForSystemContentWithinSubsystem:(unint64_t)subsystem error:(id *)error;
+- (id)stagingLocationForURL:(id)l withinStagingSubsytem:(unint64_t)subsytem usingUniqueName:(id)name error:(id *)error;
+- (id)stagingLocationForUserContentWithinSubsystem:(unint64_t)subsystem error:(id *)error;
+- (id)updateWrappedAppAt:(id)at forInstalledBundleIdentifier:(id)identifier containerURL:(id)l installationRecords:(id)records onBehalfOf:(id *)of error:(id *)error;
 - (void)_invalidateObject;
 - (void)dealloc;
 @end
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = __48__MIHelperServiceFrameworkClient_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -52,8 +52,8 @@ uint64_t __48__MIHelperServiceFrameworkClient_sharedInstance__block_invoke(uint6
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(MIHelperServiceFrameworkClient *)obj xpcConnection];
-  [v2 invalidate];
+  xpcConnection = [(MIHelperServiceFrameworkClient *)obj xpcConnection];
+  [xpcConnection invalidate];
 
   [(MIHelperServiceFrameworkClient *)obj setXpcConnection:0];
   objc_sync_exit(obj);
@@ -69,56 +69,56 @@ uint64_t __48__MIHelperServiceFrameworkClient_sharedInstance__block_invoke(uint6
 
 - (id)_sharedConnection
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MIHelperServiceFrameworkClient *)v2 xpcConnection];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  xpcConnection = [(MIHelperServiceFrameworkClient *)selfCopy xpcConnection];
 
-  if (!v3)
+  if (!xpcConnection)
   {
     v4 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithServiceName:@"com.apple.MobileInstallationHelperService"];
-    [(MIHelperServiceFrameworkClient *)v2 setXpcConnection:v4];
+    [(MIHelperServiceFrameworkClient *)selfCopy setXpcConnection:v4];
 
-    v5 = [(MIHelperServiceFrameworkClient *)v2 xpcConnection];
+    xpcConnection2 = [(MIHelperServiceFrameworkClient *)selfCopy xpcConnection];
 
-    if (!v5)
+    if (!xpcConnection2)
     {
       goto LABEL_5;
     }
 
     v6 = MobileInstallationHelperServiceProtocolInterface();
-    v7 = [(MIHelperServiceFrameworkClient *)v2 xpcConnection];
-    [v7 setRemoteObjectInterface:v6];
+    xpcConnection3 = [(MIHelperServiceFrameworkClient *)selfCopy xpcConnection];
+    [xpcConnection3 setRemoteObjectInterface:v6];
 
-    objc_initWeak(&location, v2);
+    objc_initWeak(&location, selfCopy);
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __51__MIHelperServiceFrameworkClient__sharedConnection__block_invoke;
     v14[3] = &unk_1E80B9D60;
     objc_copyWeak(&v15, &location);
-    v8 = [(MIHelperServiceFrameworkClient *)v2 xpcConnection];
-    [v8 setInterruptionHandler:v14];
+    xpcConnection4 = [(MIHelperServiceFrameworkClient *)selfCopy xpcConnection];
+    [xpcConnection4 setInterruptionHandler:v14];
 
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __51__MIHelperServiceFrameworkClient__sharedConnection__block_invoke_2;
     v12[3] = &unk_1E80B9D60;
     objc_copyWeak(&v13, &location);
-    v9 = [(MIHelperServiceFrameworkClient *)v2 xpcConnection];
-    [v9 setInvalidationHandler:v12];
+    xpcConnection5 = [(MIHelperServiceFrameworkClient *)selfCopy xpcConnection];
+    [xpcConnection5 setInvalidationHandler:v12];
 
-    v10 = [(MIHelperServiceFrameworkClient *)v2 xpcConnection];
-    [v10 resume];
+    xpcConnection6 = [(MIHelperServiceFrameworkClient *)selfCopy xpcConnection];
+    [xpcConnection6 resume];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
   }
 
-  v5 = [(MIHelperServiceFrameworkClient *)v2 xpcConnection];
+  xpcConnection2 = [(MIHelperServiceFrameworkClient *)selfCopy xpcConnection];
 LABEL_5:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return xpcConnection2;
 }
 
 void __51__MIHelperServiceFrameworkClient__sharedConnection__block_invoke(uint64_t a1)
@@ -133,20 +133,20 @@ void __51__MIHelperServiceFrameworkClient__sharedConnection__block_invoke_2(uint
   [WeakRetained _invalidateObject];
 }
 
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MIHelperServiceFrameworkClient *)self _sharedConnection];
-  v7 = v5;
-  if (v5)
+  handlerCopy = handler;
+  _sharedConnection = [(MIHelperServiceFrameworkClient *)self _sharedConnection];
+  v7 = _sharedConnection;
+  if (_sharedConnection)
   {
-    v8 = [v5 remoteObjectProxyWithErrorHandler:v4];
+    v8 = [_sharedConnection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
     v9 = _CreateAndLogError("[MIHelperServiceFrameworkClient _remoteObjectProxyWithErrorHandler:]", 83, *MEMORY[0x1E69A8D00], 4, 0, 0, @"Failed to get XPC connection", v6, v11);
-    v4[2](v4, v9);
+    handlerCopy[2](handlerCopy, v9);
 
     v8 = 0;
   }
@@ -154,20 +154,20 @@ void __51__MIHelperServiceFrameworkClient__sharedConnection__block_invoke_2(uint
   return v8;
 }
 
-- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)_synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MIHelperServiceFrameworkClient *)self _sharedConnection];
-  v7 = v5;
-  if (v5)
+  handlerCopy = handler;
+  _sharedConnection = [(MIHelperServiceFrameworkClient *)self _sharedConnection];
+  v7 = _sharedConnection;
+  if (_sharedConnection)
   {
-    v8 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+    v8 = [_sharedConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   else
   {
     v9 = _CreateAndLogError("[MIHelperServiceFrameworkClient _synchronousRemoteObjectProxyWithErrorHandler:]", 94, *MEMORY[0x1E69A8D00], 4, 0, 0, @"Failed to get XPC connection", v6, v11);
-    v4[2](v4, v9);
+    handlerCopy[2](handlerCopy, v9);
 
     v8 = 0;
   }
@@ -175,91 +175,91 @@ void __51__MIHelperServiceFrameworkClient__sharedConnection__block_invoke_2(uint
   return v8;
 }
 
-- (BOOL)purgeInstallCoordinationPromiseStagingDirectoryForUUID:(id)a3 keepStagingDirectory:(BOOL)a4 error:(id *)a5
+- (BOOL)purgeInstallCoordinationPromiseStagingDirectoryForUUID:(id)d keepStagingDirectory:(BOOL)directory error:(id *)error
 {
   v7 = _CreateAndLogError("[MIHelperServiceFrameworkClient purgeInstallCoordinationPromiseStagingDirectoryForUUID:keepStagingDirectory:error:]", 122, *MEMORY[0x1E69A8D00], 4, 0, 0, @"%s is not available on this platform!", v5, "[MIHelperServiceFrameworkClient purgeInstallCoordinationPromiseStagingDirectoryForUUID:keepStagingDirectory:error:]");
-  if (a5)
+  if (error)
   {
     v7 = v7;
-    *a5 = v7;
+    *error = v7;
   }
 
   return 0;
 }
 
-- (id)createWrappedAppForInstalledBundleIdentifier:(id)a3 containerURL:(id)a4 inTargetDirectory:(id)a5 installationRecords:(id)a6 bundleDirectoryName:(id)a7 onBehalfOf:(id *)a8 error:(id *)a9
+- (id)createWrappedAppForInstalledBundleIdentifier:(id)identifier containerURL:(id)l inTargetDirectory:(id)directory installationRecords:(id)records bundleDirectoryName:(id)name onBehalfOf:(id *)of error:(id *)error
 {
-  v9 = _CreateAndLogError("[MIHelperServiceFrameworkClient createWrappedAppForInstalledBundleIdentifier:containerURL:inTargetDirectory:installationRecords:bundleDirectoryName:onBehalfOf:error:]", 151, *MEMORY[0x1E69A8D00], 4, 0, 0, @"%s is not available on this platform!", a8, "[MIHelperServiceFrameworkClient createWrappedAppForInstalledBundleIdentifier:containerURL:inTargetDirectory:installationRecords:bundleDirectoryName:onBehalfOf:error:]");
-  if (a9)
+  v9 = _CreateAndLogError("[MIHelperServiceFrameworkClient createWrappedAppForInstalledBundleIdentifier:containerURL:inTargetDirectory:installationRecords:bundleDirectoryName:onBehalfOf:error:]", 151, *MEMORY[0x1E69A8D00], 4, 0, 0, @"%s is not available on this platform!", of, "[MIHelperServiceFrameworkClient createWrappedAppForInstalledBundleIdentifier:containerURL:inTargetDirectory:installationRecords:bundleDirectoryName:onBehalfOf:error:]");
+  if (error)
   {
     v9 = v9;
-    *a9 = v9;
+    *error = v9;
   }
 
   return 0;
 }
 
-- (id)createWrappedAppForInstalledBundleIdentifier:(id)a3 containerURL:(id)a4 atTargetURL:(id)a5 installationRecords:(id)a6 onBehalfOf:(id *)a7 error:(id *)a8
+- (id)createWrappedAppForInstalledBundleIdentifier:(id)identifier containerURL:(id)l atTargetURL:(id)rL installationRecords:(id)records onBehalfOf:(id *)of error:(id *)error
 {
-  v9 = _CreateAndLogError("[MIHelperServiceFrameworkClient createWrappedAppForInstalledBundleIdentifier:containerURL:atTargetURL:installationRecords:onBehalfOf:error:]", 180, *MEMORY[0x1E69A8D00], 4, 0, 0, @"%s is not available on this platform!", a8, "[MIHelperServiceFrameworkClient createWrappedAppForInstalledBundleIdentifier:containerURL:atTargetURL:installationRecords:onBehalfOf:error:]");
-  if (a8)
+  v9 = _CreateAndLogError("[MIHelperServiceFrameworkClient createWrappedAppForInstalledBundleIdentifier:containerURL:atTargetURL:installationRecords:onBehalfOf:error:]", 180, *MEMORY[0x1E69A8D00], 4, 0, 0, @"%s is not available on this platform!", error, "[MIHelperServiceFrameworkClient createWrappedAppForInstalledBundleIdentifier:containerURL:atTargetURL:installationRecords:onBehalfOf:error:]");
+  if (error)
   {
     v9 = v9;
-    *a8 = v9;
+    *error = v9;
   }
 
   return 0;
 }
 
-- (id)updateWrappedAppAt:(id)a3 forInstalledBundleIdentifier:(id)a4 containerURL:(id)a5 installationRecords:(id)a6 onBehalfOf:(id *)a7 error:(id *)a8
+- (id)updateWrappedAppAt:(id)at forInstalledBundleIdentifier:(id)identifier containerURL:(id)l installationRecords:(id)records onBehalfOf:(id *)of error:(id *)error
 {
-  v9 = _CreateAndLogError("[MIHelperServiceFrameworkClient updateWrappedAppAt:forInstalledBundleIdentifier:containerURL:installationRecords:onBehalfOf:error:]", 209, *MEMORY[0x1E69A8D00], 4, 0, 0, @"%s is not available on this platform!", a8, "[MIHelperServiceFrameworkClient updateWrappedAppAt:forInstalledBundleIdentifier:containerURL:installationRecords:onBehalfOf:error:]");
-  if (a8)
+  v9 = _CreateAndLogError("[MIHelperServiceFrameworkClient updateWrappedAppAt:forInstalledBundleIdentifier:containerURL:installationRecords:onBehalfOf:error:]", 209, *MEMORY[0x1E69A8D00], 4, 0, 0, @"%s is not available on this platform!", error, "[MIHelperServiceFrameworkClient updateWrappedAppAt:forInstalledBundleIdentifier:containerURL:installationRecords:onBehalfOf:error:]");
+  if (error)
   {
     v9 = v9;
-    *a8 = v9;
+    *error = v9;
   }
 
   return 0;
 }
 
-- (BOOL)removeMacAppWithBundleID:(id)a3 atURL:(id)a4 error:(id *)a5
+- (BOOL)removeMacAppWithBundleID:(id)d atURL:(id)l error:(id *)error
 {
   v7 = _CreateAndLogError("[MIHelperServiceFrameworkClient removeMacAppWithBundleID:atURL:error:]", 233, *MEMORY[0x1E69A8D00], 4, 0, 0, @"%s is not available on this platform!", v5, "[MIHelperServiceFrameworkClient removeMacAppWithBundleID:atURL:error:]");
-  if (a5 && v7)
+  if (error && v7)
   {
     v7 = v7;
-    *a5 = v7;
+    *error = v7;
   }
 
   return 0;
 }
 
-- (id)installMacDeveloperAppAtURL:(id)a3 toURL:(id)a4 targetURLType:(unint64_t)a5 error:(id *)a6
+- (id)installMacDeveloperAppAtURL:(id)l toURL:(id)rL targetURLType:(unint64_t)type error:(id *)error
 {
   v8 = _CreateAndLogError("[MIHelperServiceFrameworkClient installMacDeveloperAppAtURL:toURL:targetURLType:error:]", 257, *MEMORY[0x1E69A8D00], 4, 0, 0, @"%s is not available on this platform!", v6, "[MIHelperServiceFrameworkClient installMacDeveloperAppAtURL:toURL:targetURLType:error:]");
-  if (a6)
+  if (error)
   {
     v8 = v8;
-    *a6 = v8;
+    *error = v8;
   }
 
   return 0;
 }
 
-- (BOOL)removeDeveloperAppAtURL:(id)a3 error:(id *)a4
+- (BOOL)removeDeveloperAppAtURL:(id)l error:(id *)error
 {
   v6 = _CreateAndLogError("[MIHelperServiceFrameworkClient removeDeveloperAppAtURL:error:]", 281, *MEMORY[0x1E69A8D00], 4, 0, 0, @"%s is not available on this platform!", v4, "[MIHelperServiceFrameworkClient removeDeveloperAppAtURL:error:]");
-  if (a4)
+  if (error)
   {
     v6 = v6;
-    *a4 = v6;
+    *error = v6;
   }
 
   return 0;
 }
 
-- (id)stagingLocationForSystemContentWithinSubsystem:(unint64_t)a3 error:(id *)a4
+- (id)stagingLocationForSystemContentWithinSubsystem:(unint64_t)subsystem error:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -285,12 +285,12 @@ void __51__MIHelperServiceFrameworkClient__sharedConnection__block_invoke_2(uint
   v10[3] = &unk_1E80B9DB0;
   v10[4] = &v12;
   v10[5] = &v18;
-  [v6 stagingLocationForSystemContentWithinSubsystem:a3 completion:v10];
+  [v6 stagingLocationForSystemContentWithinSubsystem:subsystem completion:v10];
 
   v7 = v19[5];
-  if (a4 && !v7)
+  if (error && !v7)
   {
-    *a4 = v13[5];
+    *error = v13[5];
     v7 = v19[5];
   }
 
@@ -337,7 +337,7 @@ void __87__MIHelperServiceFrameworkClient_stagingLocationForSystemContentWithinS
   *(v8 + 40) = v9;
 }
 
-- (id)stagingLocationForUserContentWithinSubsystem:(unint64_t)a3 error:(id *)a4
+- (id)stagingLocationForUserContentWithinSubsystem:(unint64_t)subsystem error:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -363,12 +363,12 @@ void __87__MIHelperServiceFrameworkClient_stagingLocationForSystemContentWithinS
   v10[3] = &unk_1E80B9DB0;
   v10[4] = &v12;
   v10[5] = &v18;
-  [v6 stagingLocationForUserContentWithinSubsystem:a3 completion:v10];
+  [v6 stagingLocationForUserContentWithinSubsystem:subsystem completion:v10];
 
   v7 = v19[5];
-  if (a4 && !v7)
+  if (error && !v7)
   {
-    *a4 = v13[5];
+    *error = v13[5];
     v7 = v19[5];
   }
 
@@ -415,7 +415,7 @@ void __85__MIHelperServiceFrameworkClient_stagingLocationForUserContentWithinSub
   *(v8 + 40) = v9;
 }
 
-- (id)allStagingLocationsWithinSubsystem:(unint64_t)a3 error:(id *)a4
+- (id)allStagingLocationsWithinSubsystem:(unint64_t)subsystem error:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -441,12 +441,12 @@ void __85__MIHelperServiceFrameworkClient_stagingLocationForUserContentWithinSub
   v10[3] = &unk_1E80B9DD8;
   v10[4] = &v12;
   v10[5] = &v18;
-  [v6 allStagingLocationsWithinSubsystem:a3 completion:v10];
+  [v6 allStagingLocationsWithinSubsystem:subsystem completion:v10];
 
   v7 = v19[5];
-  if (a4 && !v7)
+  if (error && !v7)
   {
-    *a4 = v13[5];
+    *error = v13[5];
     v7 = v19[5];
   }
 
@@ -493,10 +493,10 @@ void __75__MIHelperServiceFrameworkClient_allStagingLocationsWithinSubsystem_err
   *(v8 + 40) = v9;
 }
 
-- (id)stagingLocationForURL:(id)a3 withinStagingSubsytem:(unint64_t)a4 usingUniqueName:(id)a5 error:(id *)a6
+- (id)stagingLocationForURL:(id)l withinStagingSubsytem:(unint64_t)subsytem usingUniqueName:(id)name error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  lCopy = l;
+  nameCopy = name;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -521,12 +521,12 @@ void __75__MIHelperServiceFrameworkClient_allStagingLocationsWithinSubsystem_err
   v16[3] = &unk_1E80B9DB0;
   v16[4] = &v18;
   v16[5] = &v24;
-  [v12 stagingLocationForURL:v10 withinStagingSubsytem:a4 usingUniqueName:v11 completion:v16];
+  [v12 stagingLocationForURL:lCopy withinStagingSubsytem:subsytem usingUniqueName:nameCopy completion:v16];
 
   v13 = v25[5];
-  if (a6 && !v13)
+  if (error && !v13)
   {
-    *a6 = v19[5];
+    *error = v19[5];
     v13 = v25[5];
   }
 
@@ -573,10 +573,10 @@ void __100__MIHelperServiceFrameworkClient_stagingLocationForURL_withinStagingSu
   *(v8 + 40) = v9;
 }
 
-- (id)stagingLocationForInstallLocation:(id)a3 withinStagingSubsytem:(unint64_t)a4 usingUniqueName:(id)a5 error:(id *)a6
+- (id)stagingLocationForInstallLocation:(id)location withinStagingSubsytem:(unint64_t)subsytem usingUniqueName:(id)name error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  locationCopy = location;
+  nameCopy = name;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -601,12 +601,12 @@ void __100__MIHelperServiceFrameworkClient_stagingLocationForURL_withinStagingSu
   v16[3] = &unk_1E80B9DB0;
   v16[4] = &v18;
   v16[5] = &v24;
-  [v12 stagingLocationForInstallLocation:v10 withinStagingSubsytem:a4 usingUniqueName:v11 completion:v16];
+  [v12 stagingLocationForInstallLocation:locationCopy withinStagingSubsytem:subsytem usingUniqueName:nameCopy completion:v16];
 
   v13 = v25[5];
-  if (a6 && !v13)
+  if (error && !v13)
   {
-    *a6 = v19[5];
+    *error = v19[5];
     v13 = v25[5];
   }
 
@@ -666,10 +666,10 @@ void __58__MIHelperServiceFrameworkClient_setTestingEnabled_error___block_invoke
   *(v4 + 40) = v3;
 }
 
-- (BOOL)setTestModeForIdentifierPrefix:(id)a3 testMode:(unint64_t)a4 validationData:(id)a5 error:(id *)a6
+- (BOOL)setTestModeForIdentifierPrefix:(id)prefix testMode:(unint64_t)mode validationData:(id)data error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  prefixCopy = prefix;
+  dataCopy = data;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -686,16 +686,16 @@ void __58__MIHelperServiceFrameworkClient_setTestingEnabled_error___block_invoke
   v14 = v19[5];
   if (v14)
   {
-    if (a6)
+    if (error)
     {
       v15 = v14;
-      *a6 = v14;
+      *error = v14;
     }
   }
 
   else
   {
-    [v12 setTestModeForIdentifierPrefix:v10 testMode:a4 validationData:v11];
+    [v12 setTestModeForIdentifierPrefix:prefixCopy testMode:mode validationData:dataCopy];
   }
 
   _Block_object_dispose(&v18, 8);
@@ -715,9 +715,9 @@ void __95__MIHelperServiceFrameworkClient_setTestModeForIdentifierPrefix_testMod
   *(v4 + 40) = v3;
 }
 
-- (BOOL)setTestModeForIdentifierPrefix:(id)a3 testMode:(unint64_t)a4 error:(id *)a5
+- (BOOL)setTestModeForIdentifierPrefix:(id)prefix testMode:(unint64_t)mode error:(id *)error
 {
-  v8 = a3;
+  prefixCopy = prefix;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -734,16 +734,16 @@ void __95__MIHelperServiceFrameworkClient_setTestModeForIdentifierPrefix_testMod
   v11 = v16[5];
   if (v11)
   {
-    if (a5)
+    if (error)
     {
       v12 = v11;
-      *a5 = v11;
+      *error = v11;
     }
   }
 
   else
   {
-    [v9 setTestModeForIdentifierPrefix:v8 testMode:a4 validationData:0];
+    [v9 setTestModeForIdentifierPrefix:prefixCopy testMode:mode validationData:0];
   }
 
   _Block_object_dispose(&v15, 8);

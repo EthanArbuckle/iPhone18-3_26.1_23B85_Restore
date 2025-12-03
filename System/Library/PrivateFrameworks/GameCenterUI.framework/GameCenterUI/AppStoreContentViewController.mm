@@ -1,12 +1,12 @@
 @interface AppStoreContentViewController
 - (UIScrollView)scrollView;
 - (_TtC12GameCenterUI18BootstrapPresenter)bootstrapPresenter;
-- (void)setBootstrapPresenter:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setBootstrapPresenter:(id)presenter;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation AppStoreContentViewController
@@ -18,11 +18,11 @@
   return v2;
 }
 
-- (void)setBootstrapPresenter:(id)a3
+- (void)setBootstrapPresenter:(id)presenter
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E122D74(a3);
+  presenterCopy = presenter;
+  selfCopy = self;
+  sub_24E122D74(presenter);
 }
 
 - (UIScrollView)scrollView
@@ -34,33 +34,33 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E122FDC();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_24E1232FC(a3);
+  selfCopy = self;
+  sub_24E1232FC(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_24E1233F0(a3);
+  selfCopy = self;
+  sub_24E1233F0(disappear);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E12358C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E123690(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_24E123690(change);
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface AXMOscillatorADSREnvelope
-- (AXMOscillatorADSREnvelope)initWithParameters:(id)a3 parentSynth:(id)a4;
+- (AXMOscillatorADSREnvelope)initWithParameters:(id)parameters parentSynth:(id)synth;
 - (AXMSynth)parentSynth;
 - (double)getNextSample;
 - (double)sampleRate;
@@ -11,32 +11,32 @@
 - (void)activate;
 - (void)deactivate;
 - (void)dealloc;
-- (void)setAttackLevel:(float)a3;
-- (void)setAttackTime:(float)a3;
-- (void)setDecayTime:(float)a3;
-- (void)setReleaseTime:(float)a3;
-- (void)setSustainLevel:(float)a3;
+- (void)setAttackLevel:(float)level;
+- (void)setAttackTime:(float)time;
+- (void)setDecayTime:(float)time;
+- (void)setReleaseTime:(float)time;
+- (void)setSustainLevel:(float)level;
 @end
 
 @implementation AXMOscillatorADSREnvelope
 
-- (AXMOscillatorADSREnvelope)initWithParameters:(id)a3 parentSynth:(id)a4
+- (AXMOscillatorADSREnvelope)initWithParameters:(id)parameters parentSynth:(id)synth
 {
-  v7 = a3;
-  v8 = a4;
+  parametersCopy = parameters;
+  synthCopy = synth;
   v13.receiver = self;
   v13.super_class = AXMOscillatorADSREnvelope;
   v9 = [(AXMOscillatorADSREnvelope *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_parentSynth, v8);
-    objc_storeStrong(&v10->_parameters, a3);
+    objc_storeWeak(&v9->_parentSynth, synthCopy);
+    objc_storeStrong(&v10->_parameters, parameters);
     v10->_currentSampleIndex = 0;
     v10->_sampleBuffer = malloc_type_malloc(0x8000uLL, 0x100004000313F17uLL);
-    objc_storeStrong(&v10->_parameters, a3);
-    v11 = [v8 parameters];
-    [(AXMSynthEnvelopeParameters *)v10->_parameters setMainParameters:v11];
+    objc_storeStrong(&v10->_parameters, parameters);
+    parameters = [synthCopy parameters];
+    [(AXMSynthEnvelopeParameters *)v10->_parameters setMainParameters:parameters];
   }
 
   return v10;
@@ -131,8 +131,8 @@ LABEL_10:
 
 - (double)sampleRate
 {
-  v2 = [(AXMOscillatorADSREnvelope *)self parameters];
-  [v2 sampleRate];
+  parameters = [(AXMOscillatorADSREnvelope *)self parameters];
+  [parameters sampleRate];
   v4 = v3;
 
   return v4;
@@ -140,82 +140,82 @@ LABEL_10:
 
 - (float)attackMS
 {
-  v2 = [(AXMOscillatorADSREnvelope *)self parameters];
-  [v2 attackMS];
+  parameters = [(AXMOscillatorADSREnvelope *)self parameters];
+  [parameters attackMS];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setAttackTime:(float)a3
+- (void)setAttackTime:(float)time
 {
-  v5 = [(AXMOscillatorADSREnvelope *)self parameters];
-  *&v4 = a3;
-  [v5 setAttackMS:v4];
+  parameters = [(AXMOscillatorADSREnvelope *)self parameters];
+  *&v4 = time;
+  [parameters setAttackMS:v4];
 }
 
 - (float)attackLevel
 {
-  v2 = [(AXMOscillatorADSREnvelope *)self parameters];
-  [v2 attackLevel];
+  parameters = [(AXMOscillatorADSREnvelope *)self parameters];
+  [parameters attackLevel];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setAttackLevel:(float)a3
+- (void)setAttackLevel:(float)level
 {
-  v5 = [(AXMOscillatorADSREnvelope *)self parameters];
-  *&v4 = a3;
-  [v5 setAttackLevel:v4];
+  parameters = [(AXMOscillatorADSREnvelope *)self parameters];
+  *&v4 = level;
+  [parameters setAttackLevel:v4];
 }
 
 - (float)decayMS
 {
-  v2 = [(AXMOscillatorADSREnvelope *)self parameters];
-  [v2 decayMS];
+  parameters = [(AXMOscillatorADSREnvelope *)self parameters];
+  [parameters decayMS];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setDecayTime:(float)a3
+- (void)setDecayTime:(float)time
 {
-  v5 = [(AXMOscillatorADSREnvelope *)self parameters];
-  *&v4 = a3;
-  [v5 setDecayMS:v4];
+  parameters = [(AXMOscillatorADSREnvelope *)self parameters];
+  *&v4 = time;
+  [parameters setDecayMS:v4];
 }
 
 - (float)sustainLevel
 {
-  v2 = [(AXMOscillatorADSREnvelope *)self parameters];
-  [v2 sustainLevel];
+  parameters = [(AXMOscillatorADSREnvelope *)self parameters];
+  [parameters sustainLevel];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setSustainLevel:(float)a3
+- (void)setSustainLevel:(float)level
 {
-  v5 = [(AXMOscillatorADSREnvelope *)self parameters];
-  *&v4 = a3;
-  [v5 setSustainLevel:v4];
+  parameters = [(AXMOscillatorADSREnvelope *)self parameters];
+  *&v4 = level;
+  [parameters setSustainLevel:v4];
 }
 
 - (float)releaseMS
 {
-  v2 = [(AXMOscillatorADSREnvelope *)self parameters];
-  [v2 releaseMS];
+  parameters = [(AXMOscillatorADSREnvelope *)self parameters];
+  [parameters releaseMS];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setReleaseTime:(float)a3
+- (void)setReleaseTime:(float)time
 {
-  v5 = [(AXMOscillatorADSREnvelope *)self parameters];
-  *&v4 = a3;
-  [v5 setReleaseMS:v4];
+  parameters = [(AXMOscillatorADSREnvelope *)self parameters];
+  *&v4 = time;
+  [parameters setReleaseMS:v4];
 }
 
 - (AXMSynth)parentSynth

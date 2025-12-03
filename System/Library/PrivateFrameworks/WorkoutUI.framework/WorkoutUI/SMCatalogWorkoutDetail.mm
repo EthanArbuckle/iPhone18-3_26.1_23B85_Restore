@@ -11,7 +11,7 @@
 
 - (int64_t)assetLoadStatus
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CatalogWorkoutDetailBridge.assetLoadStatus.getter();
 
   return v3;
@@ -23,7 +23,7 @@
   v4 = *(v3 - 8);
   MEMORY[0x28223BE20](v3);
   v6 = &v12 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   CatalogWorkoutDetail.workout.getter();
   v8 = type metadata accessor for CatalogWorkoutBridge();
   v9 = objc_allocWithZone(v8);
@@ -40,7 +40,7 @@
 
 - (int64_t)completedCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CatalogWorkoutDetail.completedCount.getter();
 
   return v3;
@@ -48,7 +48,7 @@
 
 - (NSNumber)mediaTypeRawValue
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CatalogWorkoutDetailBridge.mediaTypeRawValue.getter();
 
   return v3;

@@ -1,22 +1,22 @@
 @interface _EAROnDeviceEndpointerInfo
-- (_EAROnDeviceEndpointerInfo)initWithConfig:(id)a3;
+- (_EAROnDeviceEndpointerInfo)initWithConfig:(id)config;
 - (id).cxx_construct;
-- (id)getEndpointerExtraDelayFrequencyForTask:(id)a3;
-- (id)getEndpointerThresholdForClientModelVersion:(unsigned int)a3 task:(id)a4;
+- (id)getEndpointerExtraDelayFrequencyForTask:(id)task;
+- (id)getEndpointerThresholdForClientModelVersion:(unsigned int)version task:(id)task;
 @end
 
 @implementation _EAROnDeviceEndpointerInfo
 
-- (_EAROnDeviceEndpointerInfo)initWithConfig:(id)a3
+- (_EAROnDeviceEndpointerInfo)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v13.receiver = self;
   v13.super_class = _EAROnDeviceEndpointerInfo;
   v5 = [(_EAROnDeviceEndpointerInfo *)&v13 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    v7 = [v6 fileExistsAtPath:v4];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v7 = [defaultManager fileExistsAtPath:configCopy];
 
     if (v7)
     {
@@ -26,7 +26,7 @@
     v9 = EARLogger::QuasarOSLogger(v8);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(_EAROnDeviceEndpointerInfo *)v4 initWithConfig:v9];
+      [(_EAROnDeviceEndpointerInfo *)configCopy initWithConfig:v9];
     }
 
     v10 = 0;
@@ -40,10 +40,10 @@
   return v10;
 }
 
-- (id)getEndpointerThresholdForClientModelVersion:(unsigned int)a3 task:(id)a4
+- (id)getEndpointerThresholdForClientModelVersion:(unsigned int)version task:(id)task
 {
-  v6 = a4;
-  v7 = v6;
+  taskCopy = task;
+  v7 = taskCopy;
   left = self->_hybridClientConfigs.hybridEndpointerThresholds.__tree_.__end_node_.__left_;
   p_end_node = &self->_hybridClientConfigs.hybridEndpointerThresholds.__tree_.__end_node_;
   v8 = left;
@@ -55,23 +55,23 @@
   v11 = p_end_node;
   do
   {
-    if (SLODWORD(v8[4].__left_) >= a3)
+    if (SLODWORD(v8[4].__left_) >= version)
     {
       v11 = v8;
     }
 
-    v8 = v8[SLODWORD(v8[4].__left_) < a3].__left_;
+    v8 = v8[SLODWORD(v8[4].__left_) < version].__left_;
   }
 
   while (v8);
-  if (v11 == p_end_node || SLODWORD(v11[4].__left_) > a3)
+  if (v11 == p_end_node || SLODWORD(v11[4].__left_) > version)
   {
     goto LABEL_8;
   }
 
-  if (v6)
+  if (taskCopy)
   {
-    [v6 ear_toString];
+    [taskCopy ear_toString];
   }
 
   else
@@ -95,8 +95,8 @@ LABEL_24:
   }
 
   std::string::basic_string[abi:ne200100]<0>(__p, "*");
-  v6 = std::__tree<std::__value_type<std::string,double>,std::__map_value_compare<std::string,std::__value_type<std::string,double>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,double>>>::find<std::string>(&v11[5], __p);
-  v16 = v6;
+  taskCopy = std::__tree<std::__value_type<std::string,double>,std::__map_value_compare<std::string,std::__value_type<std::string,double>,std::less<std::string>,true>,std::allocator<std::__value_type<std::string,double>>>::find<std::string>(&v11[5], __p);
+  v16 = taskCopy;
   if (SHIBYTE(v18) < 0)
   {
     operator delete(__p[0]);
@@ -109,10 +109,10 @@ LABEL_24:
   }
 
 LABEL_8:
-  v12 = EARLogger::QuasarOSLogger(v6);
+  v12 = EARLogger::QuasarOSLogger(taskCopy);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    [_EAROnDeviceEndpointerInfo getEndpointerThresholdForClientModelVersion:a3 task:v12];
+    [_EAROnDeviceEndpointerInfo getEndpointerThresholdForClientModelVersion:version task:v12];
   }
 
   v13 = 0;
@@ -121,13 +121,13 @@ LABEL_11:
   return v13;
 }
 
-- (id)getEndpointerExtraDelayFrequencyForTask:(id)a3
+- (id)getEndpointerExtraDelayFrequencyForTask:(id)task
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  taskCopy = task;
+  v5 = taskCopy;
+  if (taskCopy)
   {
-    [v4 ear_toString];
+    [taskCopy ear_toString];
   }
 
   else

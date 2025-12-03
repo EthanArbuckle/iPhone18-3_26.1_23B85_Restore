@@ -7,11 +7,11 @@
 - (_TtC10nwswifttls17STLSRecordHandler)init;
 - (id)getNegotiatedGroup;
 - (id)getOutput;
-- (id)init:(id)a3 alpn:(id)a4 pakeContext:(id)a5 pakeClientIdentity:(id)a6 pakeServerIdentity:(id)a7 pakePasswordVerifier:(id)a8 logStr:(id)a9;
-- (id)init:(id)a3 alpn:(id)a4 sessionState:(id)a5 ticketRequest:(id)a6 pakeContext:(id)a7 pakeClientIdentity:(id)a8 pakeServerIdentity:(id)a9 pakeClientPasswordVerifier:(id)a10 logStr:(id)a11;
-- (id)init:(id)a3 serverKey:(__SecKey *)a4 alpn:(id)a5 EPSKs:(id)a6 epskSelectionBlock:(id)a7 rawEPSKsEnabled:(BOOL)a8 enableEarlyData:(BOOL)a9 logStr:(id)a10;
-- (id)init:(id)a3 serverName:(id)a4 alpn:(id)a5 sessionState:(id)a6 ticketRequest:(id)a7 keyExchangeGroup:(unsigned __int16)a8 enableEarlyData:(BOOL)a9 logStr:(id)a10;
-- (id)init:(id)a3 serverName:(id)a4 alpn:(id)a5 sessionState:(id)a6 ticketRequest:(id)a7 keyExchangeGroup:(unsigned __int16)a8 externalPreSharedKey:(id)a9 rawEPSKsEnabled:(BOOL)a10 enableEarlyData:(BOOL)a11 logStr:(id)a12;
+- (id)init:(id)init alpn:(id)alpn pakeContext:(id)context pakeClientIdentity:(id)identity pakeServerIdentity:(id)serverIdentity pakePasswordVerifier:(id)verifier logStr:(id)str;
+- (id)init:(id)init alpn:(id)alpn sessionState:(id)state ticketRequest:(id)request pakeContext:(id)context pakeClientIdentity:(id)identity pakeServerIdentity:(id)serverIdentity pakeClientPasswordVerifier:(id)self0 logStr:(id)self1;
+- (id)init:(id)init serverKey:(__SecKey *)key alpn:(id)alpn EPSKs:(id)ks epskSelectionBlock:(id)block rawEPSKsEnabled:(BOOL)enabled enableEarlyData:(BOOL)data logStr:(id)self0;
+- (id)init:(id)init serverName:(id)name alpn:(id)alpn sessionState:(id)state ticketRequest:(id)request keyExchangeGroup:(unsigned __int16)group enableEarlyData:(BOOL)data logStr:(id)self0;
+- (id)init:(id)init serverName:(id)name alpn:(id)alpn sessionState:(id)state ticketRequest:(id)request keyExchangeGroup:(unsigned __int16)group externalPreSharedKey:(id)key rawEPSKsEnabled:(BOOL)self0 enableEarlyData:(BOOL)self1 logStr:(id)self2;
 - (int)getErrorCode;
 - (int64_t)getAvailableApplicationDataLength;
 - (int64_t)getNegotiatedCiphersuite;
@@ -24,11 +24,11 @@
 
 @implementation STLSRecordHandler
 
-- (id)init:(id)a3 serverName:(id)a4 alpn:(id)a5 sessionState:(id)a6 ticketRequest:(id)a7 keyExchangeGroup:(unsigned __int16)a8 externalPreSharedKey:(id)a9 rawEPSKsEnabled:(BOOL)a10 enableEarlyData:(BOOL)a11 logStr:(id)a12
+- (id)init:(id)init serverName:(id)name alpn:(id)alpn sessionState:(id)state ticketRequest:(id)request keyExchangeGroup:(unsigned __int16)group externalPreSharedKey:(id)key rawEPSKsEnabled:(BOOL)self0 enableEarlyData:(BOOL)self1 logStr:(id)self2
 {
-  v32 = a8;
+  groupCopy = group;
   ObjectType = swift_getObjectType();
-  if (a7)
+  if (request)
   {
     v31 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -48,15 +48,15 @@
   v35[2] = v33[2];
   v35[3] = v33[3];
   objc_allocWithZone(ObjectType);
-  v19 = a12;
-  v30 = a3;
-  v29 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a9;
-  v23 = a5;
-  v24 = v22;
-  v25 = specialized STLSRecordHandler.init(_:serverName:alpn:sessionState:ticketRequest:keyExchangeGroup:externalPreSharedKey:rawEPSKsEnabled:enableEarlyData:pakeClientConfiguration:logStr:)(a3, a4, v23, a6, v31, v32, a9, a10, a11, v35, v19);
+  strCopy = str;
+  initCopy = init;
+  nameCopy = name;
+  alpnCopy = alpn;
+  stateCopy = state;
+  keyCopy = key;
+  alpnCopy2 = alpn;
+  v24 = keyCopy;
+  v25 = specialized STLSRecordHandler.init(_:serverName:alpn:sessionState:ticketRequest:keyExchangeGroup:externalPreSharedKey:rawEPSKsEnabled:enableEarlyData:pakeClientConfiguration:logStr:)(init, name, alpnCopy2, state, v31, groupCopy, key, enabled, data, v35, strCopy);
 
   swift_getObjectType();
   v26 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x30);
@@ -65,11 +65,11 @@
   return v25;
 }
 
-- (id)init:(id)a3 serverName:(id)a4 alpn:(id)a5 sessionState:(id)a6 ticketRequest:(id)a7 keyExchangeGroup:(unsigned __int16)a8 enableEarlyData:(BOOL)a9 logStr:(id)a10
+- (id)init:(id)init serverName:(id)name alpn:(id)alpn sessionState:(id)state ticketRequest:(id)request keyExchangeGroup:(unsigned __int16)group enableEarlyData:(BOOL)data logStr:(id)self0
 {
-  v29 = a8;
+  groupCopy = group;
   ObjectType = swift_getObjectType();
-  if (a7)
+  if (request)
   {
     v27 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -89,14 +89,14 @@
   v32[2] = v30[2];
   v32[3] = v30[3];
   objc_allocWithZone(ObjectType);
-  v16 = a10;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a6;
-  v22 = v20;
-  v23 = specialized STLSRecordHandler.init(_:serverName:alpn:sessionState:ticketRequest:keyExchangeGroup:externalPreSharedKey:rawEPSKsEnabled:enableEarlyData:pakeClientConfiguration:logStr:)(a3, a4, a5, v21, v27, v29, 0, 0, a9, v32, v16);
+  strCopy = str;
+  initCopy = init;
+  nameCopy = name;
+  alpnCopy = alpn;
+  stateCopy = state;
+  stateCopy2 = state;
+  v22 = stateCopy;
+  v23 = specialized STLSRecordHandler.init(_:serverName:alpn:sessionState:ticketRequest:keyExchangeGroup:externalPreSharedKey:rawEPSKsEnabled:enableEarlyData:pakeClientConfiguration:logStr:)(init, name, alpn, stateCopy2, v27, groupCopy, 0, 0, data, v32, strCopy);
 
   swift_getObjectType();
   v24 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x30);
@@ -105,9 +105,9 @@
   return v23;
 }
 
-- (id)init:(id)a3 alpn:(id)a4 sessionState:(id)a5 ticketRequest:(id)a6 pakeContext:(id)a7 pakeClientIdentity:(id)a8 pakeServerIdentity:(id)a9 pakeClientPasswordVerifier:(id)a10 logStr:(id)a11
+- (id)init:(id)init alpn:(id)alpn sessionState:(id)state ticketRequest:(id)request pakeContext:(id)context pakeClientIdentity:(id)identity pakeServerIdentity:(id)serverIdentity pakeClientPasswordVerifier:(id)self0 logStr:(id)self1
 {
-  if (a6)
+  if (request)
   {
     v16 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -117,26 +117,26 @@
     v16 = 0;
   }
 
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  return STLSRecordHandler.init(_:alpn:sessionState:ticketRequest:pakeContext:pakeClientIdentity:pakeServerIdentity:pakeClientPasswordVerifier:logStr:)(a3, a4, a5, v16, a7, a8, a9, a10, a11);
+  initCopy = init;
+  alpnCopy = alpn;
+  stateCopy = state;
+  return STLSRecordHandler.init(_:alpn:sessionState:ticketRequest:pakeContext:pakeClientIdentity:pakeServerIdentity:pakeClientPasswordVerifier:logStr:)(init, alpn, state, v16, context, identity, serverIdentity, verifier, str);
 }
 
-- (id)init:(id)a3 alpn:(id)a4 pakeContext:(id)a5 pakeClientIdentity:(id)a6 pakeServerIdentity:(id)a7 pakePasswordVerifier:(id)a8 logStr:(id)a9
+- (id)init:(id)init alpn:(id)alpn pakeContext:(id)context pakeClientIdentity:(id)identity pakeServerIdentity:(id)serverIdentity pakePasswordVerifier:(id)verifier logStr:(id)str
 {
-  v15 = a3;
-  v16 = a4;
-  return STLSRecordHandler.init(_:alpn:pakeContext:pakeClientIdentity:pakeServerIdentity:pakePasswordVerifier:logStr:)(a3, a4, a5, a6, a7, a8, a9);
+  initCopy = init;
+  alpnCopy = alpn;
+  return STLSRecordHandler.init(_:alpn:pakeContext:pakeClientIdentity:pakeServerIdentity:pakePasswordVerifier:logStr:)(init, alpn, context, identity, serverIdentity, verifier, str);
 }
 
-- (id)init:(id)a3 serverKey:(__SecKey *)a4 alpn:(id)a5 EPSKs:(id)a6 epskSelectionBlock:(id)a7 rawEPSKsEnabled:(BOOL)a8 enableEarlyData:(BOOL)a9 logStr:(id)a10
+- (id)init:(id)init serverKey:(__SecKey *)key alpn:(id)alpn EPSKs:(id)ks epskSelectionBlock:(id)block rawEPSKsEnabled:(BOOL)enabled enableEarlyData:(BOOL)data logStr:(id)self0
 {
-  v32 = a8;
+  enabledCopy = enabled;
   ObjectType = swift_getObjectType();
-  v17 = _Block_copy(a7);
+  v17 = _Block_copy(block);
   v18 = v17;
-  if (!a6)
+  if (!ks)
   {
     v31 = 0;
     if (v17)
@@ -162,13 +162,13 @@ LABEL_3:
   v18 = partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned NSArray, @unowned @escaping @callee_unowned @convention(block) (@unowned SecExternalPreSharedKey?) -> ()) -> ();
 LABEL_6:
   v20 = objc_allocWithZone(ObjectType);
-  v21 = a10;
-  v22 = a3;
-  v23 = a4;
-  v24 = a5;
-  v25 = a5;
-  v26 = v24;
-  v27 = specialized STLSRecordHandler.init(_:serverKey:alpn:EPSKs:epskSelectionBlock:rawEPSKsEnabled:pakeServerConfiguration:enableEarlyData:logStr:)(a3, a4, v25, v31, v18, v19, v32, 0, 0, v21);
+  strCopy = str;
+  initCopy = init;
+  keyCopy = key;
+  alpnCopy = alpn;
+  alpnCopy2 = alpn;
+  v26 = alpnCopy;
+  v27 = specialized STLSRecordHandler.init(_:serverKey:alpn:EPSKs:epskSelectionBlock:rawEPSKsEnabled:pakeServerConfiguration:enableEarlyData:logStr:)(init, key, alpnCopy2, v31, v18, v19, enabledCopy, 0, 0, strCopy);
 
   outlined consume of (@escaping @callee_guaranteed (@guaranteed [SwiftOfferedEPSK], @guaranteed @escaping @callee_guaranteed (@unowned Int, @in_guaranteed EPSK?) -> ()) -> ())?(v18);
   swift_getObjectType();
@@ -180,13 +180,13 @@ LABEL_6:
 
 - (void)startHandshake
 {
-  v2 = self;
+  selfCopy = self;
   STLSRecordHandler.startHandshake()();
 }
 
 - (BOOL)alertSentOrReceived
 {
-  v2 = self;
+  selfCopy = self;
   v3 = STLSRecordHandler.alertSentOrReceived()();
 
   return v3;
@@ -194,13 +194,13 @@ LABEL_6:
 
 - (void)sendCloseNotify
 {
-  v2 = self;
+  selfCopy = self;
   STLSRecordHandler.sendCloseNotify()();
 }
 
 - (unsigned)getBytesToReadCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = STLSRecordHandler.getBytesToReadCount()();
 
   return v3;
@@ -238,7 +238,7 @@ LABEL_6:
 
 - (int64_t)getAvailableApplicationDataLength
 {
-  v2 = self;
+  selfCopy = self;
   v3 = STLSRecordHandler.getAvailableApplicationDataLength()();
 
   return v3;
@@ -246,7 +246,7 @@ LABEL_6:
 
 - (id)getOutput
 {
-  v2 = self;
+  selfCopy = self;
   v3 = STLSRecordHandler.getOutput()();
   v5 = v4;
 
@@ -267,7 +267,7 @@ LABEL_6:
 
 - (unsigned)getOutgoingBytesCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = STLSRecordHandler.getOutgoingBytesCount()();
 
   return v3;
@@ -304,7 +304,7 @@ LABEL_6:
 
 - (int64_t)getNegotiatedPAKE
 {
-  v2 = self;
+  selfCopy = self;
   v3 = STLSRecordHandler.getNegotiatedPAKE()();
 
   return v3;
@@ -336,7 +336,7 @@ LABEL_6:
 
 - (BOOL)getEPSKOffered
 {
-  v2 = self;
+  selfCopy = self;
   v3 = STLSRecordHandler.getEPSKOffered()(HandshakeStateMachine.epskOffered.getter, ServerHandshakeStateMachine.epskOffered.getter);
 
   return v3 & 1;
@@ -344,7 +344,7 @@ LABEL_6:
 
 - (BOOL)getPAKEOffered
 {
-  v2 = self;
+  selfCopy = self;
   v3 = STLSRecordHandler.getEPSKOffered()(HandshakeStateMachine.pakeOffered.getter, ServerHandshakeStateMachine.pakeOffered.getter);
 
   return v3 & 1;
@@ -352,7 +352,7 @@ LABEL_6:
 
 - (int)getErrorCode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = STLSRecordHandler.getErrorCode()();
 
   return v3;
@@ -360,7 +360,7 @@ LABEL_6:
 
 - (id)getNegotiatedGroup
 {
-  v2 = self;
+  selfCopy = self;
   v3 = STLSRecordHandler.getNegotiatedGroup()();
 
   v4 = MEMORY[0x1B274D5C0](v3._countAndFlagsBits, v3._object);

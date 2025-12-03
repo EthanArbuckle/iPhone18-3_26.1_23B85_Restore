@@ -29,13 +29,13 @@
   }
 
   v5 = v4;
-  v6 = [v4 calendar];
-  v7 = v6;
+  calendar = [v4 calendar];
+  v7 = calendar;
   v8 = MEMORY[0x1E695D850];
-  if (v6)
+  if (calendar)
   {
-    v9 = [v6 calendarIdentifier];
-    v10 = [v9 isEqualToString:*v8];
+    calendarIdentifier = [calendar calendarIdentifier];
+    v10 = [calendarIdentifier isEqualToString:*v8];
 
     if ((v10 & 1) == 0)
     {
@@ -68,30 +68,30 @@ LABEL_20:
   }
 
   v12 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*v8];
-  v13 = [v25 calendar];
+  calendar2 = [v25 calendar];
 
-  if (!v13)
+  if (!calendar2)
   {
     [v25 setCalendar:v12];
   }
 
-  v14 = [v25 date];
-  v15 = [v25 timeZone];
-  [(EKReminder *)self setTimeZone:v15];
+  date = [v25 date];
+  timeZone = [v25 timeZone];
+  [(EKReminder *)self setTimeZone:timeZone];
 
-  v16 = [v25 timeZone];
-  [(EKObject *)self setSingleChangedValue:v16 forKey:@"timeZone"];
+  timeZone2 = [v25 timeZone];
+  [(EKObject *)self setSingleChangedValue:timeZone2 forKey:@"timeZone"];
 
-  v17 = [(EKReminder *)self dueDateTimeZone];
-  if (v17)
+  dueDateTimeZone = [(EKReminder *)self dueDateTimeZone];
+  if (dueDateTimeZone)
   {
     v18 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:0];
-    v19 = [v12 componentsInTimeZone:v18 fromDate:v14];
+    v19 = [v12 componentsInTimeZone:v18 fromDate:date];
   }
 
   else
   {
-    v19 = [v12 components:1048830 fromDate:v14];
+    v19 = [v12 components:1048830 fromDate:date];
   }
 
   v20 = v25;
@@ -112,13 +112,13 @@ LABEL_16:
   }
 
   v5 = v4;
-  v6 = [v4 calendar];
-  v7 = v6;
+  calendar = [v4 calendar];
+  v7 = calendar;
   v8 = MEMORY[0x1E695D850];
-  if (v6)
+  if (calendar)
   {
-    v9 = [v6 calendarIdentifier];
-    v10 = [v9 isEqualToString:*v8];
+    calendarIdentifier = [calendar calendarIdentifier];
+    v10 = [calendarIdentifier isEqualToString:*v8];
 
     if ((v10 & 1) == 0)
     {
@@ -133,23 +133,23 @@ LABEL_33:
 
   v11 = [v5 copy];
 
-  v12 = [v11 hour];
-  if (v12 == 0x7FFFFFFFFFFFFFFFLL)
+  hour = [v11 hour];
+  if (hour == 0x7FFFFFFFFFFFFFFFLL)
   {
     [v11 setTimeZone:0];
   }
 
   if (!v7)
   {
-    v13 = [v11 timeZone];
-    if (!v13)
+    timeZone = [v11 timeZone];
+    if (!timeZone)
     {
-      v14 = [(EKObject *)self eventStore];
-      v13 = [v14 timeZone];
+      eventStore = [(EKObject *)self eventStore];
+      timeZone = [eventStore timeZone];
     }
 
     v7 = [objc_alloc(MEMORY[0x1E695DEE8]) initWithCalendarIdentifier:*v8];
-    [v7 setTimeZone:v13];
+    [v7 setTimeZone:timeZone];
     [v11 setCalendar:v7];
   }
 
@@ -169,9 +169,9 @@ LABEL_33:
     v11 = v15;
   }
 
-  v16 = [(EKReminder(Shared) *)self startDateComponents];
+  startDateComponents = [(EKReminder(Shared) *)self startDateComponents];
 
-  if (v12 == 0x7FFFFFFFFFFFFFFFLL || !v16)
+  if (hour == 0x7FFFFFFFFFFFFFFFLL || !startDateComponents)
   {
     v19 = v7;
     v29 = v11;
@@ -179,32 +179,32 @@ LABEL_33:
 
   else
   {
-    v17 = [(EKReminder *)self timeZone];
-    v18 = [v11 date];
+    timeZone2 = [(EKReminder *)self timeZone];
+    date = [v11 date];
     v19 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*v8];
 
-    if (v17)
+    if (timeZone2)
     {
-      [v19 setTimeZone:v17];
-      v20 = [v19 components:1048830 fromDate:v18];
+      [v19 setTimeZone:timeZone2];
+      v20 = [v19 components:1048830 fromDate:date];
       v29 = v20;
-      v21 = v17;
+      v21 = timeZone2;
     }
 
     else
     {
-      v20 = [v19 components:1048830 fromDate:v18];
+      v20 = [v19 components:1048830 fromDate:date];
       v29 = v20;
       v21 = 0;
     }
 
     [v20 setTimeZone:v21];
 
-    v23 = [(EKReminder(Shared) *)self dueDateComponents];
+    dueDateComponents = [(EKReminder(Shared) *)self dueDateComponents];
 
-    if (!v23)
+    if (!dueDateComponents)
     {
-      [(EKReminder *)self _adjustPersistedStartDateComponentsForNewTimeZone:v17];
+      [(EKReminder *)self _adjustPersistedStartDateComponentsForNewTimeZone:timeZone2];
     }
   }
 
@@ -212,9 +212,9 @@ LABEL_33:
   v22 = v29;
   if (v29)
   {
-    v24 = [(EKReminder(Shared) *)self startDateComponents];
+    startDateComponents2 = [(EKReminder(Shared) *)self startDateComponents];
 
-    if (!v24)
+    if (!startDateComponents2)
     {
       [(EKReminder(Shared) *)self setStartDateComponents:v29];
     }

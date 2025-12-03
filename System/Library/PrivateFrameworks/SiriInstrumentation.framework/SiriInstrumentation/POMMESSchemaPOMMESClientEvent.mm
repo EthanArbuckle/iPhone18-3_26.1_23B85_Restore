@@ -1,13 +1,13 @@
 @interface POMMESSchemaPOMMESClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (POMMESSchemaPOMMESCacheInvalidationContext)cacheInvalidationContext;
 - (POMMESSchemaPOMMESCacheLookupContext)cacheLookupContext;
 - (POMMESSchemaPOMMESCacheMaintenanceContext)cacheMaintenanceContext;
 - (POMMESSchemaPOMMESCacheStoringContext)cacheStoringContext;
-- (POMMESSchemaPOMMESClientEvent)initWithDictionary:(id)a3;
-- (POMMESSchemaPOMMESClientEvent)initWithJSON:(id)a3;
+- (POMMESSchemaPOMMESClientEvent)initWithDictionary:(id)dictionary;
+- (POMMESSchemaPOMMESClientEvent)initWithJSON:(id)n;
 - (POMMESSchemaPOMMESDebugPerformanceReported)performanceReported;
 - (POMMESSchemaPOMMESKnowledgeFallbackConfirmationOutcomeReceived)pommesKnowledgeFallbackConfirmationOutcomeReceived;
 - (POMMESSchemaPOMMESKnowledgeFallbackContext)pommesKnowledgeFallbackContext;
@@ -24,7 +24,7 @@
 - (POMMESSchemaPOMMESSearchRequestClassifierExecuted)pommesSearchRequestClassifierExecuted;
 - (POMMESSchemaPOMMESServiceClassifierScoreReported)pommesServiceClassifierScoreReported;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -51,39 +51,39 @@
 - (void)deletePommesServiceClassifierScoreReported;
 - (void)deleteProfileResolutionRequestContext;
 - (void)deleteResourceDownloadContext;
-- (void)setCacheInvalidationContext:(id)a3;
-- (void)setCacheLookupContext:(id)a3;
-- (void)setCacheMaintenanceContext:(id)a3;
-- (void)setCacheStoringContext:(id)a3;
-- (void)setOnDeviceIndexSearchContext:(id)a3;
-- (void)setPegasusKitRequestContext:(id)a3;
-- (void)setPegasusRequestContext:(id)a3;
-- (void)setPerformanceReported:(id)a3;
-- (void)setPommesKnowledgeFallbackConfirmationOutcomeReceived:(id)a3;
-- (void)setPommesKnowledgeFallbackContext:(id)a3;
-- (void)setPommesKnowledgeFallbackOffered:(id)a3;
-- (void)setPommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown:(id)a3;
-- (void)setPommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived:(id)a3;
-- (void)setPommesPegasusRequestGeoAppResolutionReported:(id)a3;
-- (void)setPommesRequestContext:(id)a3;
-- (void)setPommesSearchRequestClassifierExecuted:(id)a3;
-- (void)setPommesServiceClassifierScoreReported:(id)a3;
-- (void)setProfileResolutionRequestContext:(id)a3;
-- (void)setResourceDownloadContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCacheInvalidationContext:(id)context;
+- (void)setCacheLookupContext:(id)context;
+- (void)setCacheMaintenanceContext:(id)context;
+- (void)setCacheStoringContext:(id)context;
+- (void)setOnDeviceIndexSearchContext:(id)context;
+- (void)setPegasusKitRequestContext:(id)context;
+- (void)setPegasusRequestContext:(id)context;
+- (void)setPerformanceReported:(id)reported;
+- (void)setPommesKnowledgeFallbackConfirmationOutcomeReceived:(id)received;
+- (void)setPommesKnowledgeFallbackContext:(id)context;
+- (void)setPommesKnowledgeFallbackOffered:(id)offered;
+- (void)setPommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown:(id)shown;
+- (void)setPommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived:(id)received;
+- (void)setPommesPegasusRequestGeoAppResolutionReported:(id)reported;
+- (void)setPommesRequestContext:(id)context;
+- (void)setPommesSearchRequestClassifierExecuted:(id)executed;
+- (void)setPommesServiceClassifierScoreReported:(id)reported;
+- (void)setProfileResolutionRequestContext:(id)context;
+- (void)setResourceDownloadContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POMMESSchemaPOMMESClientEvent
 
-- (POMMESSchemaPOMMESClientEvent)initWithDictionary:(id)a3
+- (POMMESSchemaPOMMESClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v61.receiver = self;
   v61.super_class = POMMESSchemaPOMMESClientEvent;
   v5 = [(POMMESSchemaPOMMESClientEvent *)&v61 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,7 +91,7 @@
       [(POMMESSchemaPOMMESClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"pegasusRequestContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"pegasusRequestContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -99,7 +99,7 @@
       [(POMMESSchemaPOMMESClientEvent *)v5 setPegasusRequestContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"onDeviceIndexSearchContext"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"onDeviceIndexSearchContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -107,7 +107,7 @@
       [(POMMESSchemaPOMMESClientEvent *)v5 setOnDeviceIndexSearchContext:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"pommesServiceClassifierScoreReported"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"pommesServiceClassifierScoreReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -115,7 +115,7 @@
       [(POMMESSchemaPOMMESClientEvent *)v5 setPommesServiceClassifierScoreReported:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"pommesRequestContext"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"pommesRequestContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -123,7 +123,7 @@
       [(POMMESSchemaPOMMESClientEvent *)v5 setPommesRequestContext:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"performanceReported"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"performanceReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -131,7 +131,7 @@
       [(POMMESSchemaPOMMESClientEvent *)v5 setPerformanceReported:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"profileResolutionRequestContext"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"profileResolutionRequestContext"];
     objc_opt_class();
     v60 = v18;
     if (objc_opt_isKindOfClass())
@@ -140,7 +140,7 @@
       [(POMMESSchemaPOMMESClientEvent *)v5 setProfileResolutionRequestContext:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"pegasusKitRequestContext"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"pegasusKitRequestContext"];
     objc_opt_class();
     v59 = v20;
     if (objc_opt_isKindOfClass())
@@ -149,7 +149,7 @@
       [(POMMESSchemaPOMMESClientEvent *)v5 setPegasusKitRequestContext:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"resourceDownloadContext"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"resourceDownloadContext"];
     objc_opt_class();
     v58 = v22;
     if (objc_opt_isKindOfClass())
@@ -158,7 +158,7 @@
       [(POMMESSchemaPOMMESClientEvent *)v5 setResourceDownloadContext:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"cacheLookupContext"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"cacheLookupContext"];
     objc_opt_class();
     v57 = v24;
     if (objc_opt_isKindOfClass())
@@ -167,7 +167,7 @@
       [(POMMESSchemaPOMMESClientEvent *)v5 setCacheLookupContext:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"cacheStoringContext"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"cacheStoringContext"];
     objc_opt_class();
     v56 = v26;
     if (objc_opt_isKindOfClass())
@@ -176,7 +176,7 @@
       [(POMMESSchemaPOMMESClientEvent *)v5 setCacheStoringContext:v27];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"cacheInvalidationContext"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"cacheInvalidationContext"];
     objc_opt_class();
     v55 = v28;
     if (objc_opt_isKindOfClass())
@@ -186,7 +186,7 @@
     }
 
     v51 = v12;
-    v30 = [v4 objectForKeyedSubscript:@"cacheMaintenanceContext"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"cacheMaintenanceContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -196,7 +196,7 @@
 
     v48 = v30;
     v50 = v14;
-    v32 = [v4 objectForKeyedSubscript:@"pommesPegasusRequestGeoAppResolutionReported"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"pommesPegasusRequestGeoAppResolutionReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -205,7 +205,7 @@
     }
 
     v49 = v16;
-    v34 = [v4 objectForKeyedSubscript:@"pommesSearchRequestClassifierExecuted"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"pommesSearchRequestClassifierExecuted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -214,7 +214,7 @@
     }
 
     v54 = v6;
-    v36 = [v4 objectForKeyedSubscript:@"pommesKnowledgeFallbackContext"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"pommesKnowledgeFallbackContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -223,7 +223,7 @@
     }
 
     v53 = v8;
-    v38 = [v4 objectForKeyedSubscript:@"pommesKnowledgeFallbackOffered"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"pommesKnowledgeFallbackOffered"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -232,7 +232,7 @@
     }
 
     v52 = v10;
-    v40 = [v4 objectForKeyedSubscript:@"pommesKnowledgeFallbackConfirmationOutcomeReceived"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"pommesKnowledgeFallbackConfirmationOutcomeReceived"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -240,7 +240,7 @@
       [(POMMESSchemaPOMMESClientEvent *)v5 setPommesKnowledgeFallbackConfirmationOutcomeReceived:v41];
     }
 
-    v42 = [v4 objectForKeyedSubscript:@"pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -248,7 +248,7 @@
       [(POMMESSchemaPOMMESClientEvent *)v5 setPommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown:v43];
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -262,30 +262,30 @@
   return v5;
 }
 
-- (POMMESSchemaPOMMESClientEvent)initWithJSON:(id)a3
+- (POMMESSchemaPOMMESClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POMMESSchemaPOMMESClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POMMESSchemaPOMMESClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POMMESSchemaPOMMESClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -298,330 +298,330 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_cacheInvalidationContext)
   {
-    v4 = [(POMMESSchemaPOMMESClientEvent *)self cacheInvalidationContext];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    cacheInvalidationContext = [(POMMESSchemaPOMMESClientEvent *)self cacheInvalidationContext];
+    dictionaryRepresentation = [cacheInvalidationContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"cacheInvalidationContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"cacheInvalidationContext"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"cacheInvalidationContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"cacheInvalidationContext"];
     }
   }
 
   if (self->_cacheLookupContext)
   {
-    v7 = [(POMMESSchemaPOMMESClientEvent *)self cacheLookupContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    cacheLookupContext = [(POMMESSchemaPOMMESClientEvent *)self cacheLookupContext];
+    dictionaryRepresentation2 = [cacheLookupContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"cacheLookupContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"cacheLookupContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"cacheLookupContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"cacheLookupContext"];
     }
   }
 
   if (self->_cacheMaintenanceContext)
   {
-    v10 = [(POMMESSchemaPOMMESClientEvent *)self cacheMaintenanceContext];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    cacheMaintenanceContext = [(POMMESSchemaPOMMESClientEvent *)self cacheMaintenanceContext];
+    dictionaryRepresentation3 = [cacheMaintenanceContext dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"cacheMaintenanceContext"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"cacheMaintenanceContext"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"cacheMaintenanceContext"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"cacheMaintenanceContext"];
     }
   }
 
   if (self->_cacheStoringContext)
   {
-    v13 = [(POMMESSchemaPOMMESClientEvent *)self cacheStoringContext];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    cacheStoringContext = [(POMMESSchemaPOMMESClientEvent *)self cacheStoringContext];
+    dictionaryRepresentation4 = [cacheStoringContext dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"cacheStoringContext"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"cacheStoringContext"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"cacheStoringContext"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"cacheStoringContext"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v16 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
+    dictionaryRepresentation5 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"eventMetadata"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_onDeviceIndexSearchContext)
   {
-    v19 = [(POMMESSchemaPOMMESClientEvent *)self onDeviceIndexSearchContext];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    onDeviceIndexSearchContext = [(POMMESSchemaPOMMESClientEvent *)self onDeviceIndexSearchContext];
+    dictionaryRepresentation6 = [onDeviceIndexSearchContext dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"onDeviceIndexSearchContext"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"onDeviceIndexSearchContext"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"onDeviceIndexSearchContext"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"onDeviceIndexSearchContext"];
     }
   }
 
   if (self->_pegasusKitRequestContext)
   {
-    v22 = [(POMMESSchemaPOMMESClientEvent *)self pegasusKitRequestContext];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    pegasusKitRequestContext = [(POMMESSchemaPOMMESClientEvent *)self pegasusKitRequestContext];
+    dictionaryRepresentation7 = [pegasusKitRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"pegasusKitRequestContext"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"pegasusKitRequestContext"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"pegasusKitRequestContext"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"pegasusKitRequestContext"];
     }
   }
 
   if (self->_pegasusRequestContext)
   {
-    v25 = [(POMMESSchemaPOMMESClientEvent *)self pegasusRequestContext];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    pegasusRequestContext = [(POMMESSchemaPOMMESClientEvent *)self pegasusRequestContext];
+    dictionaryRepresentation8 = [pegasusRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"pegasusRequestContext"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"pegasusRequestContext"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"pegasusRequestContext"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"pegasusRequestContext"];
     }
   }
 
   if (self->_performanceReported)
   {
-    v28 = [(POMMESSchemaPOMMESClientEvent *)self performanceReported];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    performanceReported = [(POMMESSchemaPOMMESClientEvent *)self performanceReported];
+    dictionaryRepresentation9 = [performanceReported dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"performanceReported"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"performanceReported"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"performanceReported"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"performanceReported"];
     }
   }
 
   if (self->_pommesKnowledgeFallbackConfirmationOutcomeReceived)
   {
-    v31 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackConfirmationOutcomeReceived];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    pommesKnowledgeFallbackConfirmationOutcomeReceived = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackConfirmationOutcomeReceived];
+    dictionaryRepresentation10 = [pommesKnowledgeFallbackConfirmationOutcomeReceived dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"pommesKnowledgeFallbackConfirmationOutcomeReceived"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"pommesKnowledgeFallbackConfirmationOutcomeReceived"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"pommesKnowledgeFallbackConfirmationOutcomeReceived"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"pommesKnowledgeFallbackConfirmationOutcomeReceived"];
     }
   }
 
   if (self->_pommesKnowledgeFallbackContext)
   {
-    v34 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackContext];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    pommesKnowledgeFallbackContext = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackContext];
+    dictionaryRepresentation11 = [pommesKnowledgeFallbackContext dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"pommesKnowledgeFallbackContext"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"pommesKnowledgeFallbackContext"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"pommesKnowledgeFallbackContext"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"pommesKnowledgeFallbackContext"];
     }
   }
 
   if (self->_pommesKnowledgeFallbackOffered)
   {
-    v37 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackOffered];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    pommesKnowledgeFallbackOffered = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackOffered];
+    dictionaryRepresentation12 = [pommesKnowledgeFallbackOffered dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"pommesKnowledgeFallbackOffered"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"pommesKnowledgeFallbackOffered"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"pommesKnowledgeFallbackOffered"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"pommesKnowledgeFallbackOffered"];
     }
   }
 
   if (self->_pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown)
   {
-    v40 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown];
+    dictionaryRepresentation13 = [pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown"];
     }
 
     else
     {
-      v42 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v42 forKeyedSubscript:@"pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown"];
     }
   }
 
   if (self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived)
   {
-    v43 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived];
-    v44 = [v43 dictionaryRepresentation];
-    if (v44)
+    pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived];
+    dictionaryRepresentation14 = [pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived dictionaryRepresentation];
+    if (dictionaryRepresentation14)
     {
-      [v3 setObject:v44 forKeyedSubscript:@"pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived"];
+      [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived"];
     }
 
     else
     {
-      v45 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v45 forKeyedSubscript:@"pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived"];
+      null14 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null14 forKeyedSubscript:@"pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived"];
     }
   }
 
   if (self->_pommesPegasusRequestGeoAppResolutionReported)
   {
-    v46 = [(POMMESSchemaPOMMESClientEvent *)self pommesPegasusRequestGeoAppResolutionReported];
-    v47 = [v46 dictionaryRepresentation];
-    if (v47)
+    pommesPegasusRequestGeoAppResolutionReported = [(POMMESSchemaPOMMESClientEvent *)self pommesPegasusRequestGeoAppResolutionReported];
+    dictionaryRepresentation15 = [pommesPegasusRequestGeoAppResolutionReported dictionaryRepresentation];
+    if (dictionaryRepresentation15)
     {
-      [v3 setObject:v47 forKeyedSubscript:@"pommesPegasusRequestGeoAppResolutionReported"];
+      [dictionary setObject:dictionaryRepresentation15 forKeyedSubscript:@"pommesPegasusRequestGeoAppResolutionReported"];
     }
 
     else
     {
-      v48 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v48 forKeyedSubscript:@"pommesPegasusRequestGeoAppResolutionReported"];
+      null15 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null15 forKeyedSubscript:@"pommesPegasusRequestGeoAppResolutionReported"];
     }
   }
 
   if (self->_pommesRequestContext)
   {
-    v49 = [(POMMESSchemaPOMMESClientEvent *)self pommesRequestContext];
-    v50 = [v49 dictionaryRepresentation];
-    if (v50)
+    pommesRequestContext = [(POMMESSchemaPOMMESClientEvent *)self pommesRequestContext];
+    dictionaryRepresentation16 = [pommesRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation16)
     {
-      [v3 setObject:v50 forKeyedSubscript:@"pommesRequestContext"];
+      [dictionary setObject:dictionaryRepresentation16 forKeyedSubscript:@"pommesRequestContext"];
     }
 
     else
     {
-      v51 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v51 forKeyedSubscript:@"pommesRequestContext"];
+      null16 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null16 forKeyedSubscript:@"pommesRequestContext"];
     }
   }
 
   if (self->_pommesSearchRequestClassifierExecuted)
   {
-    v52 = [(POMMESSchemaPOMMESClientEvent *)self pommesSearchRequestClassifierExecuted];
-    v53 = [v52 dictionaryRepresentation];
-    if (v53)
+    pommesSearchRequestClassifierExecuted = [(POMMESSchemaPOMMESClientEvent *)self pommesSearchRequestClassifierExecuted];
+    dictionaryRepresentation17 = [pommesSearchRequestClassifierExecuted dictionaryRepresentation];
+    if (dictionaryRepresentation17)
     {
-      [v3 setObject:v53 forKeyedSubscript:@"pommesSearchRequestClassifierExecuted"];
+      [dictionary setObject:dictionaryRepresentation17 forKeyedSubscript:@"pommesSearchRequestClassifierExecuted"];
     }
 
     else
     {
-      v54 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v54 forKeyedSubscript:@"pommesSearchRequestClassifierExecuted"];
+      null17 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null17 forKeyedSubscript:@"pommesSearchRequestClassifierExecuted"];
     }
   }
 
   if (self->_pommesServiceClassifierScoreReported)
   {
-    v55 = [(POMMESSchemaPOMMESClientEvent *)self pommesServiceClassifierScoreReported];
-    v56 = [v55 dictionaryRepresentation];
-    if (v56)
+    pommesServiceClassifierScoreReported = [(POMMESSchemaPOMMESClientEvent *)self pommesServiceClassifierScoreReported];
+    dictionaryRepresentation18 = [pommesServiceClassifierScoreReported dictionaryRepresentation];
+    if (dictionaryRepresentation18)
     {
-      [v3 setObject:v56 forKeyedSubscript:@"pommesServiceClassifierScoreReported"];
+      [dictionary setObject:dictionaryRepresentation18 forKeyedSubscript:@"pommesServiceClassifierScoreReported"];
     }
 
     else
     {
-      v57 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v57 forKeyedSubscript:@"pommesServiceClassifierScoreReported"];
+      null18 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null18 forKeyedSubscript:@"pommesServiceClassifierScoreReported"];
     }
   }
 
   if (self->_profileResolutionRequestContext)
   {
-    v58 = [(POMMESSchemaPOMMESClientEvent *)self profileResolutionRequestContext];
-    v59 = [v58 dictionaryRepresentation];
-    if (v59)
+    profileResolutionRequestContext = [(POMMESSchemaPOMMESClientEvent *)self profileResolutionRequestContext];
+    dictionaryRepresentation19 = [profileResolutionRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation19)
     {
-      [v3 setObject:v59 forKeyedSubscript:@"profileResolutionRequestContext"];
+      [dictionary setObject:dictionaryRepresentation19 forKeyedSubscript:@"profileResolutionRequestContext"];
     }
 
     else
     {
-      v60 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v60 forKeyedSubscript:@"profileResolutionRequestContext"];
+      null19 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null19 forKeyedSubscript:@"profileResolutionRequestContext"];
     }
   }
 
   if (self->_resourceDownloadContext)
   {
-    v61 = [(POMMESSchemaPOMMESClientEvent *)self resourceDownloadContext];
-    v62 = [v61 dictionaryRepresentation];
-    if (v62)
+    resourceDownloadContext = [(POMMESSchemaPOMMESClientEvent *)self resourceDownloadContext];
+    dictionaryRepresentation20 = [resourceDownloadContext dictionaryRepresentation];
+    if (dictionaryRepresentation20)
     {
-      [v3 setObject:v62 forKeyedSubscript:@"resourceDownloadContext"];
+      [dictionary setObject:dictionaryRepresentation20 forKeyedSubscript:@"resourceDownloadContext"];
     }
 
     else
     {
-      v63 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v63 forKeyedSubscript:@"resourceDownloadContext"];
+      null20 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null20 forKeyedSubscript:@"resourceDownloadContext"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -648,34 +648,34 @@
   return v18 ^ v21 ^ [(POMMESSchemaPOMMESKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived *)self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_103;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_103;
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_102;
   }
 
-  v8 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -687,20 +687,20 @@
   {
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self pegasusRequestContext];
-  v7 = [v4 pegasusRequestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self pegasusRequestContext];
+  eventMetadata2 = [equalCopy pegasusRequestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_102;
   }
 
-  v13 = [(POMMESSchemaPOMMESClientEvent *)self pegasusRequestContext];
-  if (v13)
+  pegasusRequestContext = [(POMMESSchemaPOMMESClientEvent *)self pegasusRequestContext];
+  if (pegasusRequestContext)
   {
-    v14 = v13;
-    v15 = [(POMMESSchemaPOMMESClientEvent *)self pegasusRequestContext];
-    v16 = [v4 pegasusRequestContext];
-    v17 = [v15 isEqual:v16];
+    v14 = pegasusRequestContext;
+    pegasusRequestContext2 = [(POMMESSchemaPOMMESClientEvent *)self pegasusRequestContext];
+    pegasusRequestContext3 = [equalCopy pegasusRequestContext];
+    v17 = [pegasusRequestContext2 isEqual:pegasusRequestContext3];
 
     if (!v17)
     {
@@ -712,20 +712,20 @@
   {
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self onDeviceIndexSearchContext];
-  v7 = [v4 onDeviceIndexSearchContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self onDeviceIndexSearchContext];
+  eventMetadata2 = [equalCopy onDeviceIndexSearchContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_102;
   }
 
-  v18 = [(POMMESSchemaPOMMESClientEvent *)self onDeviceIndexSearchContext];
-  if (v18)
+  onDeviceIndexSearchContext = [(POMMESSchemaPOMMESClientEvent *)self onDeviceIndexSearchContext];
+  if (onDeviceIndexSearchContext)
   {
-    v19 = v18;
-    v20 = [(POMMESSchemaPOMMESClientEvent *)self onDeviceIndexSearchContext];
-    v21 = [v4 onDeviceIndexSearchContext];
-    v22 = [v20 isEqual:v21];
+    v19 = onDeviceIndexSearchContext;
+    onDeviceIndexSearchContext2 = [(POMMESSchemaPOMMESClientEvent *)self onDeviceIndexSearchContext];
+    onDeviceIndexSearchContext3 = [equalCopy onDeviceIndexSearchContext];
+    v22 = [onDeviceIndexSearchContext2 isEqual:onDeviceIndexSearchContext3];
 
     if (!v22)
     {
@@ -737,20 +737,20 @@
   {
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self pommesServiceClassifierScoreReported];
-  v7 = [v4 pommesServiceClassifierScoreReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self pommesServiceClassifierScoreReported];
+  eventMetadata2 = [equalCopy pommesServiceClassifierScoreReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_102;
   }
 
-  v23 = [(POMMESSchemaPOMMESClientEvent *)self pommesServiceClassifierScoreReported];
-  if (v23)
+  pommesServiceClassifierScoreReported = [(POMMESSchemaPOMMESClientEvent *)self pommesServiceClassifierScoreReported];
+  if (pommesServiceClassifierScoreReported)
   {
-    v24 = v23;
-    v25 = [(POMMESSchemaPOMMESClientEvent *)self pommesServiceClassifierScoreReported];
-    v26 = [v4 pommesServiceClassifierScoreReported];
-    v27 = [v25 isEqual:v26];
+    v24 = pommesServiceClassifierScoreReported;
+    pommesServiceClassifierScoreReported2 = [(POMMESSchemaPOMMESClientEvent *)self pommesServiceClassifierScoreReported];
+    pommesServiceClassifierScoreReported3 = [equalCopy pommesServiceClassifierScoreReported];
+    v27 = [pommesServiceClassifierScoreReported2 isEqual:pommesServiceClassifierScoreReported3];
 
     if (!v27)
     {
@@ -762,20 +762,20 @@
   {
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self pommesRequestContext];
-  v7 = [v4 pommesRequestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self pommesRequestContext];
+  eventMetadata2 = [equalCopy pommesRequestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_102;
   }
 
-  v28 = [(POMMESSchemaPOMMESClientEvent *)self pommesRequestContext];
-  if (v28)
+  pommesRequestContext = [(POMMESSchemaPOMMESClientEvent *)self pommesRequestContext];
+  if (pommesRequestContext)
   {
-    v29 = v28;
-    v30 = [(POMMESSchemaPOMMESClientEvent *)self pommesRequestContext];
-    v31 = [v4 pommesRequestContext];
-    v32 = [v30 isEqual:v31];
+    v29 = pommesRequestContext;
+    pommesRequestContext2 = [(POMMESSchemaPOMMESClientEvent *)self pommesRequestContext];
+    pommesRequestContext3 = [equalCopy pommesRequestContext];
+    v32 = [pommesRequestContext2 isEqual:pommesRequestContext3];
 
     if (!v32)
     {
@@ -787,20 +787,20 @@
   {
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self performanceReported];
-  v7 = [v4 performanceReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self performanceReported];
+  eventMetadata2 = [equalCopy performanceReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_102;
   }
 
-  v33 = [(POMMESSchemaPOMMESClientEvent *)self performanceReported];
-  if (v33)
+  performanceReported = [(POMMESSchemaPOMMESClientEvent *)self performanceReported];
+  if (performanceReported)
   {
-    v34 = v33;
-    v35 = [(POMMESSchemaPOMMESClientEvent *)self performanceReported];
-    v36 = [v4 performanceReported];
-    v37 = [v35 isEqual:v36];
+    v34 = performanceReported;
+    performanceReported2 = [(POMMESSchemaPOMMESClientEvent *)self performanceReported];
+    performanceReported3 = [equalCopy performanceReported];
+    v37 = [performanceReported2 isEqual:performanceReported3];
 
     if (!v37)
     {
@@ -812,20 +812,20 @@
   {
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self profileResolutionRequestContext];
-  v7 = [v4 profileResolutionRequestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self profileResolutionRequestContext];
+  eventMetadata2 = [equalCopy profileResolutionRequestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_102;
   }
 
-  v38 = [(POMMESSchemaPOMMESClientEvent *)self profileResolutionRequestContext];
-  if (v38)
+  profileResolutionRequestContext = [(POMMESSchemaPOMMESClientEvent *)self profileResolutionRequestContext];
+  if (profileResolutionRequestContext)
   {
-    v39 = v38;
-    v40 = [(POMMESSchemaPOMMESClientEvent *)self profileResolutionRequestContext];
-    v41 = [v4 profileResolutionRequestContext];
-    v42 = [v40 isEqual:v41];
+    v39 = profileResolutionRequestContext;
+    profileResolutionRequestContext2 = [(POMMESSchemaPOMMESClientEvent *)self profileResolutionRequestContext];
+    profileResolutionRequestContext3 = [equalCopy profileResolutionRequestContext];
+    v42 = [profileResolutionRequestContext2 isEqual:profileResolutionRequestContext3];
 
     if (!v42)
     {
@@ -837,20 +837,20 @@
   {
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self pegasusKitRequestContext];
-  v7 = [v4 pegasusKitRequestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self pegasusKitRequestContext];
+  eventMetadata2 = [equalCopy pegasusKitRequestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_102;
   }
 
-  v43 = [(POMMESSchemaPOMMESClientEvent *)self pegasusKitRequestContext];
-  if (v43)
+  pegasusKitRequestContext = [(POMMESSchemaPOMMESClientEvent *)self pegasusKitRequestContext];
+  if (pegasusKitRequestContext)
   {
-    v44 = v43;
-    v45 = [(POMMESSchemaPOMMESClientEvent *)self pegasusKitRequestContext];
-    v46 = [v4 pegasusKitRequestContext];
-    v47 = [v45 isEqual:v46];
+    v44 = pegasusKitRequestContext;
+    pegasusKitRequestContext2 = [(POMMESSchemaPOMMESClientEvent *)self pegasusKitRequestContext];
+    pegasusKitRequestContext3 = [equalCopy pegasusKitRequestContext];
+    v47 = [pegasusKitRequestContext2 isEqual:pegasusKitRequestContext3];
 
     if (!v47)
     {
@@ -862,20 +862,20 @@
   {
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self resourceDownloadContext];
-  v7 = [v4 resourceDownloadContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self resourceDownloadContext];
+  eventMetadata2 = [equalCopy resourceDownloadContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_102;
   }
 
-  v48 = [(POMMESSchemaPOMMESClientEvent *)self resourceDownloadContext];
-  if (v48)
+  resourceDownloadContext = [(POMMESSchemaPOMMESClientEvent *)self resourceDownloadContext];
+  if (resourceDownloadContext)
   {
-    v49 = v48;
-    v50 = [(POMMESSchemaPOMMESClientEvent *)self resourceDownloadContext];
-    v51 = [v4 resourceDownloadContext];
-    v52 = [v50 isEqual:v51];
+    v49 = resourceDownloadContext;
+    resourceDownloadContext2 = [(POMMESSchemaPOMMESClientEvent *)self resourceDownloadContext];
+    resourceDownloadContext3 = [equalCopy resourceDownloadContext];
+    v52 = [resourceDownloadContext2 isEqual:resourceDownloadContext3];
 
     if (!v52)
     {
@@ -887,20 +887,20 @@
   {
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self cacheLookupContext];
-  v7 = [v4 cacheLookupContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self cacheLookupContext];
+  eventMetadata2 = [equalCopy cacheLookupContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_102;
   }
 
-  v53 = [(POMMESSchemaPOMMESClientEvent *)self cacheLookupContext];
-  if (v53)
+  cacheLookupContext = [(POMMESSchemaPOMMESClientEvent *)self cacheLookupContext];
+  if (cacheLookupContext)
   {
-    v54 = v53;
-    v55 = [(POMMESSchemaPOMMESClientEvent *)self cacheLookupContext];
-    v56 = [v4 cacheLookupContext];
-    v57 = [v55 isEqual:v56];
+    v54 = cacheLookupContext;
+    cacheLookupContext2 = [(POMMESSchemaPOMMESClientEvent *)self cacheLookupContext];
+    cacheLookupContext3 = [equalCopy cacheLookupContext];
+    v57 = [cacheLookupContext2 isEqual:cacheLookupContext3];
 
     if (!v57)
     {
@@ -912,20 +912,20 @@
   {
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self cacheStoringContext];
-  v7 = [v4 cacheStoringContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self cacheStoringContext];
+  eventMetadata2 = [equalCopy cacheStoringContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_102;
   }
 
-  v58 = [(POMMESSchemaPOMMESClientEvent *)self cacheStoringContext];
-  if (v58)
+  cacheStoringContext = [(POMMESSchemaPOMMESClientEvent *)self cacheStoringContext];
+  if (cacheStoringContext)
   {
-    v59 = v58;
-    v60 = [(POMMESSchemaPOMMESClientEvent *)self cacheStoringContext];
-    v61 = [v4 cacheStoringContext];
-    v62 = [v60 isEqual:v61];
+    v59 = cacheStoringContext;
+    cacheStoringContext2 = [(POMMESSchemaPOMMESClientEvent *)self cacheStoringContext];
+    cacheStoringContext3 = [equalCopy cacheStoringContext];
+    v62 = [cacheStoringContext2 isEqual:cacheStoringContext3];
 
     if (!v62)
     {
@@ -937,20 +937,20 @@
   {
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self cacheInvalidationContext];
-  v7 = [v4 cacheInvalidationContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self cacheInvalidationContext];
+  eventMetadata2 = [equalCopy cacheInvalidationContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_102;
   }
 
-  v63 = [(POMMESSchemaPOMMESClientEvent *)self cacheInvalidationContext];
-  if (v63)
+  cacheInvalidationContext = [(POMMESSchemaPOMMESClientEvent *)self cacheInvalidationContext];
+  if (cacheInvalidationContext)
   {
-    v64 = v63;
-    v65 = [(POMMESSchemaPOMMESClientEvent *)self cacheInvalidationContext];
-    v66 = [v4 cacheInvalidationContext];
-    v67 = [v65 isEqual:v66];
+    v64 = cacheInvalidationContext;
+    cacheInvalidationContext2 = [(POMMESSchemaPOMMESClientEvent *)self cacheInvalidationContext];
+    cacheInvalidationContext3 = [equalCopy cacheInvalidationContext];
+    v67 = [cacheInvalidationContext2 isEqual:cacheInvalidationContext3];
 
     if (!v67)
     {
@@ -962,20 +962,20 @@
   {
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self cacheMaintenanceContext];
-  v7 = [v4 cacheMaintenanceContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self cacheMaintenanceContext];
+  eventMetadata2 = [equalCopy cacheMaintenanceContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_102;
   }
 
-  v68 = [(POMMESSchemaPOMMESClientEvent *)self cacheMaintenanceContext];
-  if (v68)
+  cacheMaintenanceContext = [(POMMESSchemaPOMMESClientEvent *)self cacheMaintenanceContext];
+  if (cacheMaintenanceContext)
   {
-    v69 = v68;
-    v70 = [(POMMESSchemaPOMMESClientEvent *)self cacheMaintenanceContext];
-    v71 = [v4 cacheMaintenanceContext];
-    v72 = [v70 isEqual:v71];
+    v69 = cacheMaintenanceContext;
+    cacheMaintenanceContext2 = [(POMMESSchemaPOMMESClientEvent *)self cacheMaintenanceContext];
+    cacheMaintenanceContext3 = [equalCopy cacheMaintenanceContext];
+    v72 = [cacheMaintenanceContext2 isEqual:cacheMaintenanceContext3];
 
     if (!v72)
     {
@@ -987,20 +987,20 @@
   {
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self pommesPegasusRequestGeoAppResolutionReported];
-  v7 = [v4 pommesPegasusRequestGeoAppResolutionReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self pommesPegasusRequestGeoAppResolutionReported];
+  eventMetadata2 = [equalCopy pommesPegasusRequestGeoAppResolutionReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_102;
   }
 
-  v73 = [(POMMESSchemaPOMMESClientEvent *)self pommesPegasusRequestGeoAppResolutionReported];
-  if (v73)
+  pommesPegasusRequestGeoAppResolutionReported = [(POMMESSchemaPOMMESClientEvent *)self pommesPegasusRequestGeoAppResolutionReported];
+  if (pommesPegasusRequestGeoAppResolutionReported)
   {
-    v74 = v73;
-    v75 = [(POMMESSchemaPOMMESClientEvent *)self pommesPegasusRequestGeoAppResolutionReported];
-    v76 = [v4 pommesPegasusRequestGeoAppResolutionReported];
-    v77 = [v75 isEqual:v76];
+    v74 = pommesPegasusRequestGeoAppResolutionReported;
+    pommesPegasusRequestGeoAppResolutionReported2 = [(POMMESSchemaPOMMESClientEvent *)self pommesPegasusRequestGeoAppResolutionReported];
+    pommesPegasusRequestGeoAppResolutionReported3 = [equalCopy pommesPegasusRequestGeoAppResolutionReported];
+    v77 = [pommesPegasusRequestGeoAppResolutionReported2 isEqual:pommesPegasusRequestGeoAppResolutionReported3];
 
     if (!v77)
     {
@@ -1012,20 +1012,20 @@
   {
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self pommesSearchRequestClassifierExecuted];
-  v7 = [v4 pommesSearchRequestClassifierExecuted];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self pommesSearchRequestClassifierExecuted];
+  eventMetadata2 = [equalCopy pommesSearchRequestClassifierExecuted];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_102;
   }
 
-  v78 = [(POMMESSchemaPOMMESClientEvent *)self pommesSearchRequestClassifierExecuted];
-  if (v78)
+  pommesSearchRequestClassifierExecuted = [(POMMESSchemaPOMMESClientEvent *)self pommesSearchRequestClassifierExecuted];
+  if (pommesSearchRequestClassifierExecuted)
   {
-    v79 = v78;
-    v80 = [(POMMESSchemaPOMMESClientEvent *)self pommesSearchRequestClassifierExecuted];
-    v81 = [v4 pommesSearchRequestClassifierExecuted];
-    v82 = [v80 isEqual:v81];
+    v79 = pommesSearchRequestClassifierExecuted;
+    pommesSearchRequestClassifierExecuted2 = [(POMMESSchemaPOMMESClientEvent *)self pommesSearchRequestClassifierExecuted];
+    pommesSearchRequestClassifierExecuted3 = [equalCopy pommesSearchRequestClassifierExecuted];
+    v82 = [pommesSearchRequestClassifierExecuted2 isEqual:pommesSearchRequestClassifierExecuted3];
 
     if (!v82)
     {
@@ -1037,20 +1037,20 @@
   {
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackContext];
-  v7 = [v4 pommesKnowledgeFallbackContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackContext];
+  eventMetadata2 = [equalCopy pommesKnowledgeFallbackContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_102;
   }
 
-  v83 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackContext];
-  if (v83)
+  pommesKnowledgeFallbackContext = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackContext];
+  if (pommesKnowledgeFallbackContext)
   {
-    v84 = v83;
-    v85 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackContext];
-    v86 = [v4 pommesKnowledgeFallbackContext];
-    v87 = [v85 isEqual:v86];
+    v84 = pommesKnowledgeFallbackContext;
+    pommesKnowledgeFallbackContext2 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackContext];
+    pommesKnowledgeFallbackContext3 = [equalCopy pommesKnowledgeFallbackContext];
+    v87 = [pommesKnowledgeFallbackContext2 isEqual:pommesKnowledgeFallbackContext3];
 
     if (!v87)
     {
@@ -1062,20 +1062,20 @@
   {
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackOffered];
-  v7 = [v4 pommesKnowledgeFallbackOffered];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackOffered];
+  eventMetadata2 = [equalCopy pommesKnowledgeFallbackOffered];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_102;
   }
 
-  v88 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackOffered];
-  if (v88)
+  pommesKnowledgeFallbackOffered = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackOffered];
+  if (pommesKnowledgeFallbackOffered)
   {
-    v89 = v88;
-    v90 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackOffered];
-    v91 = [v4 pommesKnowledgeFallbackOffered];
-    v92 = [v90 isEqual:v91];
+    v89 = pommesKnowledgeFallbackOffered;
+    pommesKnowledgeFallbackOffered2 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackOffered];
+    pommesKnowledgeFallbackOffered3 = [equalCopy pommesKnowledgeFallbackOffered];
+    v92 = [pommesKnowledgeFallbackOffered2 isEqual:pommesKnowledgeFallbackOffered3];
 
     if (!v92)
     {
@@ -1087,20 +1087,20 @@
   {
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackConfirmationOutcomeReceived];
-  v7 = [v4 pommesKnowledgeFallbackConfirmationOutcomeReceived];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackConfirmationOutcomeReceived];
+  eventMetadata2 = [equalCopy pommesKnowledgeFallbackConfirmationOutcomeReceived];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_102;
   }
 
-  v93 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackConfirmationOutcomeReceived];
-  if (v93)
+  pommesKnowledgeFallbackConfirmationOutcomeReceived = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackConfirmationOutcomeReceived];
+  if (pommesKnowledgeFallbackConfirmationOutcomeReceived)
   {
-    v94 = v93;
-    v95 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackConfirmationOutcomeReceived];
-    v96 = [v4 pommesKnowledgeFallbackConfirmationOutcomeReceived];
-    v97 = [v95 isEqual:v96];
+    v94 = pommesKnowledgeFallbackConfirmationOutcomeReceived;
+    pommesKnowledgeFallbackConfirmationOutcomeReceived2 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackConfirmationOutcomeReceived];
+    pommesKnowledgeFallbackConfirmationOutcomeReceived3 = [equalCopy pommesKnowledgeFallbackConfirmationOutcomeReceived];
+    v97 = [pommesKnowledgeFallbackConfirmationOutcomeReceived2 isEqual:pommesKnowledgeFallbackConfirmationOutcomeReceived3];
 
     if (!v97)
     {
@@ -1112,20 +1112,20 @@
   {
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown];
-  v7 = [v4 pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown];
+  eventMetadata2 = [equalCopy pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_102;
   }
 
-  v98 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown];
-  if (v98)
+  pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown];
+  if (pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown)
   {
-    v99 = v98;
-    v100 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown];
-    v101 = [v4 pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown];
-    v102 = [v100 isEqual:v101];
+    v99 = pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown;
+    pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown2 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown];
+    pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown3 = [equalCopy pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown];
+    v102 = [pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown2 isEqual:pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown3];
 
     if (!v102)
     {
@@ -1137,12 +1137,12 @@
   {
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived];
-  v7 = [v4 pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived];
+  eventMetadata2 = [equalCopy pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v103 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived];
-    if (!v103)
+    pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived];
+    if (!pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived)
     {
 
 LABEL_106:
@@ -1150,10 +1150,10 @@ LABEL_106:
       goto LABEL_104;
     }
 
-    v104 = v103;
-    v105 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived];
-    v106 = [v4 pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived];
-    v107 = [v105 isEqual:v106];
+    v104 = pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived;
+    pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived2 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived];
+    pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived3 = [equalCopy pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived];
+    v107 = [pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived2 isEqual:pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived3];
 
     if (v107)
     {
@@ -1173,170 +1173,170 @@ LABEL_104:
   return v108;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v45 = a3;
-  v4 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
+    eventMetadata2 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self pegasusRequestContext];
+  pegasusRequestContext = [(POMMESSchemaPOMMESClientEvent *)self pegasusRequestContext];
 
-  if (v6)
+  if (pegasusRequestContext)
   {
-    v7 = [(POMMESSchemaPOMMESClientEvent *)self pegasusRequestContext];
+    pegasusRequestContext2 = [(POMMESSchemaPOMMESClientEvent *)self pegasusRequestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(POMMESSchemaPOMMESClientEvent *)self onDeviceIndexSearchContext];
+  onDeviceIndexSearchContext = [(POMMESSchemaPOMMESClientEvent *)self onDeviceIndexSearchContext];
 
-  if (v8)
+  if (onDeviceIndexSearchContext)
   {
-    v9 = [(POMMESSchemaPOMMESClientEvent *)self onDeviceIndexSearchContext];
+    onDeviceIndexSearchContext2 = [(POMMESSchemaPOMMESClientEvent *)self onDeviceIndexSearchContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(POMMESSchemaPOMMESClientEvent *)self pommesServiceClassifierScoreReported];
+  pommesServiceClassifierScoreReported = [(POMMESSchemaPOMMESClientEvent *)self pommesServiceClassifierScoreReported];
 
-  if (v10)
+  if (pommesServiceClassifierScoreReported)
   {
-    v11 = [(POMMESSchemaPOMMESClientEvent *)self pommesServiceClassifierScoreReported];
+    pommesServiceClassifierScoreReported2 = [(POMMESSchemaPOMMESClientEvent *)self pommesServiceClassifierScoreReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(POMMESSchemaPOMMESClientEvent *)self pommesRequestContext];
+  pommesRequestContext = [(POMMESSchemaPOMMESClientEvent *)self pommesRequestContext];
 
-  if (v12)
+  if (pommesRequestContext)
   {
-    v13 = [(POMMESSchemaPOMMESClientEvent *)self pommesRequestContext];
+    pommesRequestContext2 = [(POMMESSchemaPOMMESClientEvent *)self pommesRequestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(POMMESSchemaPOMMESClientEvent *)self performanceReported];
+  performanceReported = [(POMMESSchemaPOMMESClientEvent *)self performanceReported];
 
-  if (v14)
+  if (performanceReported)
   {
-    v15 = [(POMMESSchemaPOMMESClientEvent *)self performanceReported];
+    performanceReported2 = [(POMMESSchemaPOMMESClientEvent *)self performanceReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(POMMESSchemaPOMMESClientEvent *)self profileResolutionRequestContext];
+  profileResolutionRequestContext = [(POMMESSchemaPOMMESClientEvent *)self profileResolutionRequestContext];
 
-  if (v16)
+  if (profileResolutionRequestContext)
   {
-    v17 = [(POMMESSchemaPOMMESClientEvent *)self profileResolutionRequestContext];
+    profileResolutionRequestContext2 = [(POMMESSchemaPOMMESClientEvent *)self profileResolutionRequestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(POMMESSchemaPOMMESClientEvent *)self pegasusKitRequestContext];
+  pegasusKitRequestContext = [(POMMESSchemaPOMMESClientEvent *)self pegasusKitRequestContext];
 
-  if (v18)
+  if (pegasusKitRequestContext)
   {
-    v19 = [(POMMESSchemaPOMMESClientEvent *)self pegasusKitRequestContext];
+    pegasusKitRequestContext2 = [(POMMESSchemaPOMMESClientEvent *)self pegasusKitRequestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(POMMESSchemaPOMMESClientEvent *)self resourceDownloadContext];
+  resourceDownloadContext = [(POMMESSchemaPOMMESClientEvent *)self resourceDownloadContext];
 
-  if (v20)
+  if (resourceDownloadContext)
   {
-    v21 = [(POMMESSchemaPOMMESClientEvent *)self resourceDownloadContext];
+    resourceDownloadContext2 = [(POMMESSchemaPOMMESClientEvent *)self resourceDownloadContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(POMMESSchemaPOMMESClientEvent *)self cacheLookupContext];
+  cacheLookupContext = [(POMMESSchemaPOMMESClientEvent *)self cacheLookupContext];
 
-  if (v22)
+  if (cacheLookupContext)
   {
-    v23 = [(POMMESSchemaPOMMESClientEvent *)self cacheLookupContext];
+    cacheLookupContext2 = [(POMMESSchemaPOMMESClientEvent *)self cacheLookupContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(POMMESSchemaPOMMESClientEvent *)self cacheStoringContext];
+  cacheStoringContext = [(POMMESSchemaPOMMESClientEvent *)self cacheStoringContext];
 
-  if (v24)
+  if (cacheStoringContext)
   {
-    v25 = [(POMMESSchemaPOMMESClientEvent *)self cacheStoringContext];
+    cacheStoringContext2 = [(POMMESSchemaPOMMESClientEvent *)self cacheStoringContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(POMMESSchemaPOMMESClientEvent *)self cacheInvalidationContext];
+  cacheInvalidationContext = [(POMMESSchemaPOMMESClientEvent *)self cacheInvalidationContext];
 
-  if (v26)
+  if (cacheInvalidationContext)
   {
-    v27 = [(POMMESSchemaPOMMESClientEvent *)self cacheInvalidationContext];
+    cacheInvalidationContext2 = [(POMMESSchemaPOMMESClientEvent *)self cacheInvalidationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(POMMESSchemaPOMMESClientEvent *)self cacheMaintenanceContext];
+  cacheMaintenanceContext = [(POMMESSchemaPOMMESClientEvent *)self cacheMaintenanceContext];
 
-  if (v28)
+  if (cacheMaintenanceContext)
   {
-    v29 = [(POMMESSchemaPOMMESClientEvent *)self cacheMaintenanceContext];
+    cacheMaintenanceContext2 = [(POMMESSchemaPOMMESClientEvent *)self cacheMaintenanceContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(POMMESSchemaPOMMESClientEvent *)self pommesPegasusRequestGeoAppResolutionReported];
+  pommesPegasusRequestGeoAppResolutionReported = [(POMMESSchemaPOMMESClientEvent *)self pommesPegasusRequestGeoAppResolutionReported];
 
-  if (v30)
+  if (pommesPegasusRequestGeoAppResolutionReported)
   {
-    v31 = [(POMMESSchemaPOMMESClientEvent *)self pommesPegasusRequestGeoAppResolutionReported];
+    pommesPegasusRequestGeoAppResolutionReported2 = [(POMMESSchemaPOMMESClientEvent *)self pommesPegasusRequestGeoAppResolutionReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v32 = [(POMMESSchemaPOMMESClientEvent *)self pommesSearchRequestClassifierExecuted];
+  pommesSearchRequestClassifierExecuted = [(POMMESSchemaPOMMESClientEvent *)self pommesSearchRequestClassifierExecuted];
 
-  if (v32)
+  if (pommesSearchRequestClassifierExecuted)
   {
-    v33 = [(POMMESSchemaPOMMESClientEvent *)self pommesSearchRequestClassifierExecuted];
+    pommesSearchRequestClassifierExecuted2 = [(POMMESSchemaPOMMESClientEvent *)self pommesSearchRequestClassifierExecuted];
     PBDataWriterWriteSubmessage();
   }
 
-  v34 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackContext];
+  pommesKnowledgeFallbackContext = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackContext];
 
-  if (v34)
+  if (pommesKnowledgeFallbackContext)
   {
-    v35 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackContext];
+    pommesKnowledgeFallbackContext2 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v36 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackOffered];
+  pommesKnowledgeFallbackOffered = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackOffered];
 
-  if (v36)
+  if (pommesKnowledgeFallbackOffered)
   {
-    v37 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackOffered];
+    pommesKnowledgeFallbackOffered2 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackOffered];
     PBDataWriterWriteSubmessage();
   }
 
-  v38 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackConfirmationOutcomeReceived];
+  pommesKnowledgeFallbackConfirmationOutcomeReceived = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackConfirmationOutcomeReceived];
 
-  if (v38)
+  if (pommesKnowledgeFallbackConfirmationOutcomeReceived)
   {
-    v39 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackConfirmationOutcomeReceived];
+    pommesKnowledgeFallbackConfirmationOutcomeReceived2 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackConfirmationOutcomeReceived];
     PBDataWriterWriteSubmessage();
   }
 
-  v40 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown];
+  pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown];
 
-  if (v40)
+  if (pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown)
   {
-    v41 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown];
+    pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown2 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown];
     PBDataWriterWriteSubmessage();
   }
 
-  v42 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived];
+  pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived];
 
-  v43 = v45;
-  if (v42)
+  v43 = toCopy;
+  if (pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived)
   {
-    v44 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived];
+    pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived2 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived];
     PBDataWriterWriteSubmessage();
 
-    v43 = v45;
+    v43 = toCopy;
   }
 }
 
@@ -1365,9 +1365,9 @@ LABEL_104:
   return v3;
 }
 
-- (void)setPommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived:(id)a3
+- (void)setPommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -1423,14 +1423,14 @@ LABEL_104:
   self->_pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown = 0;
 
   v23 = 119;
-  if (!v4)
+  if (!receivedCopy)
   {
     v23 = 0;
   }
 
   self->_whichEvent_Type = v23;
   pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived;
-  self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = v4;
+  self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = receivedCopy;
 }
 
 - (void)deletePommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown
@@ -1458,9 +1458,9 @@ LABEL_104:
   return v3;
 }
 
-- (void)setPommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown:(id)a3
+- (void)setPommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown:(id)shown
 {
-  v4 = a3;
+  shownCopy = shown;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -1516,14 +1516,14 @@ LABEL_104:
   self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = 0;
 
   v23 = 118;
-  if (!v4)
+  if (!shownCopy)
   {
     v23 = 0;
   }
 
   self->_whichEvent_Type = v23;
   pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown = self->_pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown;
-  self->_pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown = v4;
+  self->_pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown = shownCopy;
 }
 
 - (void)deletePommesKnowledgeFallbackConfirmationOutcomeReceived
@@ -1551,9 +1551,9 @@ LABEL_104:
   return v3;
 }
 
-- (void)setPommesKnowledgeFallbackConfirmationOutcomeReceived:(id)a3
+- (void)setPommesKnowledgeFallbackConfirmationOutcomeReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -1609,14 +1609,14 @@ LABEL_104:
   self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = 0;
 
   v23 = 117;
-  if (!v4)
+  if (!receivedCopy)
   {
     v23 = 0;
   }
 
   self->_whichEvent_Type = v23;
   pommesKnowledgeFallbackConfirmationOutcomeReceived = self->_pommesKnowledgeFallbackConfirmationOutcomeReceived;
-  self->_pommesKnowledgeFallbackConfirmationOutcomeReceived = v4;
+  self->_pommesKnowledgeFallbackConfirmationOutcomeReceived = receivedCopy;
 }
 
 - (void)deletePommesKnowledgeFallbackOffered
@@ -1644,9 +1644,9 @@ LABEL_104:
   return v3;
 }
 
-- (void)setPommesKnowledgeFallbackOffered:(id)a3
+- (void)setPommesKnowledgeFallbackOffered:(id)offered
 {
-  v4 = a3;
+  offeredCopy = offered;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -1702,14 +1702,14 @@ LABEL_104:
   self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = 0;
 
   v23 = 116;
-  if (!v4)
+  if (!offeredCopy)
   {
     v23 = 0;
   }
 
   self->_whichEvent_Type = v23;
   pommesKnowledgeFallbackOffered = self->_pommesKnowledgeFallbackOffered;
-  self->_pommesKnowledgeFallbackOffered = v4;
+  self->_pommesKnowledgeFallbackOffered = offeredCopy;
 }
 
 - (void)deletePommesKnowledgeFallbackContext
@@ -1737,9 +1737,9 @@ LABEL_104:
   return v3;
 }
 
-- (void)setPommesKnowledgeFallbackContext:(id)a3
+- (void)setPommesKnowledgeFallbackContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -1795,14 +1795,14 @@ LABEL_104:
   self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = 0;
 
   v23 = 115;
-  if (!v4)
+  if (!contextCopy)
   {
     v23 = 0;
   }
 
   self->_whichEvent_Type = v23;
   pommesKnowledgeFallbackContext = self->_pommesKnowledgeFallbackContext;
-  self->_pommesKnowledgeFallbackContext = v4;
+  self->_pommesKnowledgeFallbackContext = contextCopy;
 }
 
 - (void)deletePommesSearchRequestClassifierExecuted
@@ -1830,9 +1830,9 @@ LABEL_104:
   return v3;
 }
 
-- (void)setPommesSearchRequestClassifierExecuted:(id)a3
+- (void)setPommesSearchRequestClassifierExecuted:(id)executed
 {
-  v4 = a3;
+  executedCopy = executed;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -1888,14 +1888,14 @@ LABEL_104:
   self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = 0;
 
   v23 = 114;
-  if (!v4)
+  if (!executedCopy)
   {
     v23 = 0;
   }
 
   self->_whichEvent_Type = v23;
   pommesSearchRequestClassifierExecuted = self->_pommesSearchRequestClassifierExecuted;
-  self->_pommesSearchRequestClassifierExecuted = v4;
+  self->_pommesSearchRequestClassifierExecuted = executedCopy;
 }
 
 - (void)deletePommesPegasusRequestGeoAppResolutionReported
@@ -1923,9 +1923,9 @@ LABEL_104:
   return v3;
 }
 
-- (void)setPommesPegasusRequestGeoAppResolutionReported:(id)a3
+- (void)setPommesPegasusRequestGeoAppResolutionReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -1981,14 +1981,14 @@ LABEL_104:
   self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = 0;
 
   v23 = 113;
-  if (!v4)
+  if (!reportedCopy)
   {
     v23 = 0;
   }
 
   self->_whichEvent_Type = v23;
   pommesPegasusRequestGeoAppResolutionReported = self->_pommesPegasusRequestGeoAppResolutionReported;
-  self->_pommesPegasusRequestGeoAppResolutionReported = v4;
+  self->_pommesPegasusRequestGeoAppResolutionReported = reportedCopy;
 }
 
 - (void)deleteCacheMaintenanceContext
@@ -2016,9 +2016,9 @@ LABEL_104:
   return v3;
 }
 
-- (void)setCacheMaintenanceContext:(id)a3
+- (void)setCacheMaintenanceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -2074,14 +2074,14 @@ LABEL_104:
   self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = 0;
 
   v23 = 112;
-  if (!v4)
+  if (!contextCopy)
   {
     v23 = 0;
   }
 
   self->_whichEvent_Type = v23;
   cacheMaintenanceContext = self->_cacheMaintenanceContext;
-  self->_cacheMaintenanceContext = v4;
+  self->_cacheMaintenanceContext = contextCopy;
 }
 
 - (void)deleteCacheInvalidationContext
@@ -2109,9 +2109,9 @@ LABEL_104:
   return v3;
 }
 
-- (void)setCacheInvalidationContext:(id)a3
+- (void)setCacheInvalidationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -2167,14 +2167,14 @@ LABEL_104:
   self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = 0;
 
   v23 = 111;
-  if (!v4)
+  if (!contextCopy)
   {
     v23 = 0;
   }
 
   self->_whichEvent_Type = v23;
   cacheInvalidationContext = self->_cacheInvalidationContext;
-  self->_cacheInvalidationContext = v4;
+  self->_cacheInvalidationContext = contextCopy;
 }
 
 - (void)deleteCacheStoringContext
@@ -2202,9 +2202,9 @@ LABEL_104:
   return v3;
 }
 
-- (void)setCacheStoringContext:(id)a3
+- (void)setCacheStoringContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -2260,14 +2260,14 @@ LABEL_104:
   self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = 0;
 
   v23 = 110;
-  if (!v4)
+  if (!contextCopy)
   {
     v23 = 0;
   }
 
   self->_whichEvent_Type = v23;
   cacheStoringContext = self->_cacheStoringContext;
-  self->_cacheStoringContext = v4;
+  self->_cacheStoringContext = contextCopy;
 }
 
 - (void)deleteCacheLookupContext
@@ -2295,9 +2295,9 @@ LABEL_104:
   return v3;
 }
 
-- (void)setCacheLookupContext:(id)a3
+- (void)setCacheLookupContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -2353,14 +2353,14 @@ LABEL_104:
   self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = 0;
 
   v23 = 109;
-  if (!v4)
+  if (!contextCopy)
   {
     v23 = 0;
   }
 
   self->_whichEvent_Type = v23;
   cacheLookupContext = self->_cacheLookupContext;
-  self->_cacheLookupContext = v4;
+  self->_cacheLookupContext = contextCopy;
 }
 
 - (void)deleteResourceDownloadContext
@@ -2388,9 +2388,9 @@ LABEL_104:
   return v3;
 }
 
-- (void)setResourceDownloadContext:(id)a3
+- (void)setResourceDownloadContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -2446,14 +2446,14 @@ LABEL_104:
   self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = 0;
 
   v23 = 108;
-  if (!v4)
+  if (!contextCopy)
   {
     v23 = 0;
   }
 
   self->_whichEvent_Type = v23;
   resourceDownloadContext = self->_resourceDownloadContext;
-  self->_resourceDownloadContext = v4;
+  self->_resourceDownloadContext = contextCopy;
 }
 
 - (void)deletePegasusKitRequestContext
@@ -2481,9 +2481,9 @@ LABEL_104:
   return v3;
 }
 
-- (void)setPegasusKitRequestContext:(id)a3
+- (void)setPegasusKitRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -2539,14 +2539,14 @@ LABEL_104:
   self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = 0;
 
   v23 = 107;
-  if (!v4)
+  if (!contextCopy)
   {
     v23 = 0;
   }
 
   self->_whichEvent_Type = v23;
   pegasusKitRequestContext = self->_pegasusKitRequestContext;
-  self->_pegasusKitRequestContext = v4;
+  self->_pegasusKitRequestContext = contextCopy;
 }
 
 - (void)deleteProfileResolutionRequestContext
@@ -2574,9 +2574,9 @@ LABEL_104:
   return v3;
 }
 
-- (void)setProfileResolutionRequestContext:(id)a3
+- (void)setProfileResolutionRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -2632,14 +2632,14 @@ LABEL_104:
   self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = 0;
 
   v23 = 106;
-  if (!v4)
+  if (!contextCopy)
   {
     v23 = 0;
   }
 
   self->_whichEvent_Type = v23;
   profileResolutionRequestContext = self->_profileResolutionRequestContext;
-  self->_profileResolutionRequestContext = v4;
+  self->_profileResolutionRequestContext = contextCopy;
 }
 
 - (void)deletePerformanceReported
@@ -2667,9 +2667,9 @@ LABEL_104:
   return v3;
 }
 
-- (void)setPerformanceReported:(id)a3
+- (void)setPerformanceReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -2725,14 +2725,14 @@ LABEL_104:
   self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = 0;
 
   v23 = 105;
-  if (!v4)
+  if (!reportedCopy)
   {
     v23 = 0;
   }
 
   self->_whichEvent_Type = v23;
   performanceReported = self->_performanceReported;
-  self->_performanceReported = v4;
+  self->_performanceReported = reportedCopy;
 }
 
 - (void)deletePommesRequestContext
@@ -2760,9 +2760,9 @@ LABEL_104:
   return v3;
 }
 
-- (void)setPommesRequestContext:(id)a3
+- (void)setPommesRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -2818,14 +2818,14 @@ LABEL_104:
   self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = 0;
 
   v23 = 104;
-  if (!v4)
+  if (!contextCopy)
   {
     v23 = 0;
   }
 
   self->_whichEvent_Type = v23;
   pommesRequestContext = self->_pommesRequestContext;
-  self->_pommesRequestContext = v4;
+  self->_pommesRequestContext = contextCopy;
 }
 
 - (void)deletePommesServiceClassifierScoreReported
@@ -2853,9 +2853,9 @@ LABEL_104:
   return v3;
 }
 
-- (void)setPommesServiceClassifierScoreReported:(id)a3
+- (void)setPommesServiceClassifierScoreReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -2911,14 +2911,14 @@ LABEL_104:
   self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = 0;
 
   v23 = 103;
-  if (!v4)
+  if (!reportedCopy)
   {
     v23 = 0;
   }
 
   self->_whichEvent_Type = v23;
   pommesServiceClassifierScoreReported = self->_pommesServiceClassifierScoreReported;
-  self->_pommesServiceClassifierScoreReported = v4;
+  self->_pommesServiceClassifierScoreReported = reportedCopy;
 }
 
 - (void)deleteOnDeviceIndexSearchContext
@@ -2946,9 +2946,9 @@ LABEL_104:
   return v3;
 }
 
-- (void)setOnDeviceIndexSearchContext:(id)a3
+- (void)setOnDeviceIndexSearchContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   pegasusRequestContext = self->_pegasusRequestContext;
   self->_pegasusRequestContext = 0;
 
@@ -3004,14 +3004,14 @@ LABEL_104:
   self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = 0;
 
   v23 = 102;
-  if (!v4)
+  if (!contextCopy)
   {
     v23 = 0;
   }
 
   self->_whichEvent_Type = v23;
   onDeviceIndexSearchContext = self->_onDeviceIndexSearchContext;
-  self->_onDeviceIndexSearchContext = v4;
+  self->_onDeviceIndexSearchContext = contextCopy;
 }
 
 - (void)deletePegasusRequestContext
@@ -3039,9 +3039,9 @@ LABEL_104:
   return v3;
 }
 
-- (void)setPegasusRequestContext:(id)a3
+- (void)setPegasusRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   onDeviceIndexSearchContext = self->_onDeviceIndexSearchContext;
   self->_onDeviceIndexSearchContext = 0;
 
@@ -3097,212 +3097,212 @@ LABEL_104:
   self->_pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = 0;
 
   v23 = 101;
-  if (!v4)
+  if (!contextCopy)
   {
     v23 = 0;
   }
 
   self->_whichEvent_Type = v23;
   pegasusRequestContext = self->_pegasusRequestContext;
-  self->_pegasusRequestContext = v4;
+  self->_pegasusRequestContext = contextCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(POMMESSchemaPOMMESClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 0x12)
+  whichEvent_Type = [(POMMESSchemaPOMMESClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 0x12)
   {
     return @"com.apple.aiml.siri.pommes.POMMESClientEvent";
   }
 
   else
   {
-    return off_1E78E0DD0[v2 - 101];
+    return off_1E78E0DD0[whichEvent_Type - 101];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v67.receiver = self;
   v67.super_class = POMMESSchemaPOMMESClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v67 applySensitiveConditionsPolicy:v4];
-  v6 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v67 applySensitiveConditionsPolicy:policyCopy];
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(POMMESSchemaPOMMESClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(POMMESSchemaPOMMESClientEvent *)self pegasusRequestContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  pegasusRequestContext = [(POMMESSchemaPOMMESClientEvent *)self pegasusRequestContext];
+  v10 = [pegasusRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(POMMESSchemaPOMMESClientEvent *)self deletePegasusRequestContext];
   }
 
-  v12 = [(POMMESSchemaPOMMESClientEvent *)self onDeviceIndexSearchContext];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  onDeviceIndexSearchContext = [(POMMESSchemaPOMMESClientEvent *)self onDeviceIndexSearchContext];
+  v13 = [onDeviceIndexSearchContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(POMMESSchemaPOMMESClientEvent *)self deleteOnDeviceIndexSearchContext];
   }
 
-  v15 = [(POMMESSchemaPOMMESClientEvent *)self pommesServiceClassifierScoreReported];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  pommesServiceClassifierScoreReported = [(POMMESSchemaPOMMESClientEvent *)self pommesServiceClassifierScoreReported];
+  v16 = [pommesServiceClassifierScoreReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(POMMESSchemaPOMMESClientEvent *)self deletePommesServiceClassifierScoreReported];
   }
 
-  v18 = [(POMMESSchemaPOMMESClientEvent *)self pommesRequestContext];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  pommesRequestContext = [(POMMESSchemaPOMMESClientEvent *)self pommesRequestContext];
+  v19 = [pommesRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(POMMESSchemaPOMMESClientEvent *)self deletePommesRequestContext];
   }
 
-  v21 = [(POMMESSchemaPOMMESClientEvent *)self performanceReported];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  performanceReported = [(POMMESSchemaPOMMESClientEvent *)self performanceReported];
+  v22 = [performanceReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(POMMESSchemaPOMMESClientEvent *)self deletePerformanceReported];
   }
 
-  v24 = [(POMMESSchemaPOMMESClientEvent *)self profileResolutionRequestContext];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  profileResolutionRequestContext = [(POMMESSchemaPOMMESClientEvent *)self profileResolutionRequestContext];
+  v25 = [profileResolutionRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(POMMESSchemaPOMMESClientEvent *)self deleteProfileResolutionRequestContext];
   }
 
-  v27 = [(POMMESSchemaPOMMESClientEvent *)self pegasusKitRequestContext];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  pegasusKitRequestContext = [(POMMESSchemaPOMMESClientEvent *)self pegasusKitRequestContext];
+  v28 = [pegasusKitRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(POMMESSchemaPOMMESClientEvent *)self deletePegasusKitRequestContext];
   }
 
-  v30 = [(POMMESSchemaPOMMESClientEvent *)self resourceDownloadContext];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  resourceDownloadContext = [(POMMESSchemaPOMMESClientEvent *)self resourceDownloadContext];
+  v31 = [resourceDownloadContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(POMMESSchemaPOMMESClientEvent *)self deleteResourceDownloadContext];
   }
 
-  v33 = [(POMMESSchemaPOMMESClientEvent *)self cacheLookupContext];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  cacheLookupContext = [(POMMESSchemaPOMMESClientEvent *)self cacheLookupContext];
+  v34 = [cacheLookupContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(POMMESSchemaPOMMESClientEvent *)self deleteCacheLookupContext];
   }
 
-  v36 = [(POMMESSchemaPOMMESClientEvent *)self cacheStoringContext];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  cacheStoringContext = [(POMMESSchemaPOMMESClientEvent *)self cacheStoringContext];
+  v37 = [cacheStoringContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(POMMESSchemaPOMMESClientEvent *)self deleteCacheStoringContext];
   }
 
-  v39 = [(POMMESSchemaPOMMESClientEvent *)self cacheInvalidationContext];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  cacheInvalidationContext = [(POMMESSchemaPOMMESClientEvent *)self cacheInvalidationContext];
+  v40 = [cacheInvalidationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(POMMESSchemaPOMMESClientEvent *)self deleteCacheInvalidationContext];
   }
 
-  v42 = [(POMMESSchemaPOMMESClientEvent *)self cacheMaintenanceContext];
-  v43 = [v42 applySensitiveConditionsPolicy:v4];
-  v44 = [v43 suppressMessage];
+  cacheMaintenanceContext = [(POMMESSchemaPOMMESClientEvent *)self cacheMaintenanceContext];
+  v43 = [cacheMaintenanceContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage13 = [v43 suppressMessage];
 
-  if (v44)
+  if (suppressMessage13)
   {
     [(POMMESSchemaPOMMESClientEvent *)self deleteCacheMaintenanceContext];
   }
 
-  v45 = [(POMMESSchemaPOMMESClientEvent *)self pommesPegasusRequestGeoAppResolutionReported];
-  v46 = [v45 applySensitiveConditionsPolicy:v4];
-  v47 = [v46 suppressMessage];
+  pommesPegasusRequestGeoAppResolutionReported = [(POMMESSchemaPOMMESClientEvent *)self pommesPegasusRequestGeoAppResolutionReported];
+  v46 = [pommesPegasusRequestGeoAppResolutionReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage14 = [v46 suppressMessage];
 
-  if (v47)
+  if (suppressMessage14)
   {
     [(POMMESSchemaPOMMESClientEvent *)self deletePommesPegasusRequestGeoAppResolutionReported];
   }
 
-  v48 = [(POMMESSchemaPOMMESClientEvent *)self pommesSearchRequestClassifierExecuted];
-  v49 = [v48 applySensitiveConditionsPolicy:v4];
-  v50 = [v49 suppressMessage];
+  pommesSearchRequestClassifierExecuted = [(POMMESSchemaPOMMESClientEvent *)self pommesSearchRequestClassifierExecuted];
+  v49 = [pommesSearchRequestClassifierExecuted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage15 = [v49 suppressMessage];
 
-  if (v50)
+  if (suppressMessage15)
   {
     [(POMMESSchemaPOMMESClientEvent *)self deletePommesSearchRequestClassifierExecuted];
   }
 
-  v51 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackContext];
-  v52 = [v51 applySensitiveConditionsPolicy:v4];
-  v53 = [v52 suppressMessage];
+  pommesKnowledgeFallbackContext = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackContext];
+  v52 = [pommesKnowledgeFallbackContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage16 = [v52 suppressMessage];
 
-  if (v53)
+  if (suppressMessage16)
   {
     [(POMMESSchemaPOMMESClientEvent *)self deletePommesKnowledgeFallbackContext];
   }
 
-  v54 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackOffered];
-  v55 = [v54 applySensitiveConditionsPolicy:v4];
-  v56 = [v55 suppressMessage];
+  pommesKnowledgeFallbackOffered = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackOffered];
+  v55 = [pommesKnowledgeFallbackOffered applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage17 = [v55 suppressMessage];
 
-  if (v56)
+  if (suppressMessage17)
   {
     [(POMMESSchemaPOMMESClientEvent *)self deletePommesKnowledgeFallbackOffered];
   }
 
-  v57 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackConfirmationOutcomeReceived];
-  v58 = [v57 applySensitiveConditionsPolicy:v4];
-  v59 = [v58 suppressMessage];
+  pommesKnowledgeFallbackConfirmationOutcomeReceived = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackConfirmationOutcomeReceived];
+  v58 = [pommesKnowledgeFallbackConfirmationOutcomeReceived applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage18 = [v58 suppressMessage];
 
-  if (v59)
+  if (suppressMessage18)
   {
     [(POMMESSchemaPOMMESClientEvent *)self deletePommesKnowledgeFallbackConfirmationOutcomeReceived];
   }
 
-  v60 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown];
-  v61 = [v60 applySensitiveConditionsPolicy:v4];
-  v62 = [v61 suppressMessage];
+  pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown];
+  v61 = [pommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage19 = [v61 suppressMessage];
 
-  if (v62)
+  if (suppressMessage19)
   {
     [(POMMESSchemaPOMMESClientEvent *)self deletePommesKnowledgeFallbackTurnOffAlwaysPromptConfirmationShown];
   }
 
-  v63 = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived];
-  v64 = [v63 applySensitiveConditionsPolicy:v4];
-  v65 = [v64 suppressMessage];
+  pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived = [(POMMESSchemaPOMMESClientEvent *)self pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived];
+  v64 = [pommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage20 = [v64 suppressMessage];
 
-  if (v65)
+  if (suppressMessage20)
   {
     [(POMMESSchemaPOMMESClientEvent *)self deletePommesKnowledgeFallbackTurnOffAlwaysPromptOutcomeReceived];
   }
@@ -3320,48 +3320,48 @@ LABEL_104:
 
 - (int)componentName
 {
-  v3 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
-  v4 = [v3 pommesId];
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
+  pommesId = [eventMetadata pommesId];
 
-  if (v4 && ([v4 value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(v4, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
+  if (pommesId && ([pommesId value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(pommesId, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
   {
     v9 = 21;
   }
 
   else
   {
-    v10 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
-    v11 = [v10 requestId];
+    eventMetadata2 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
+    requestId = [eventMetadata2 requestId];
 
-    if (v11 && ([v11 value], (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, objc_msgSend(v11, "value"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v13, v15))
+    if (requestId && ([requestId value], (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, objc_msgSend(requestId, "value"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v13, v15))
     {
       v9 = 1;
-      v4 = v11;
+      pommesId = requestId;
     }
 
     else
     {
-      v16 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
-      v4 = [v16 subRequestId];
+      eventMetadata3 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
+      pommesId = [eventMetadata3 subRequestId];
 
-      if (v4 && ([v4 value], (v17 = objc_claimAutoreleasedReturnValue()) != 0) && (v18 = v17, objc_msgSend(v4, "value"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "length"), v19, v18, v20))
+      if (pommesId && ([pommesId value], (v17 = objc_claimAutoreleasedReturnValue()) != 0) && (v18 = v17, objc_msgSend(pommesId, "value"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "length"), v19, v18, v20))
       {
         v9 = 43;
       }
 
       else
       {
-        v21 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
-        v22 = [v21 searchToolId];
+        eventMetadata4 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
+        searchToolId = [eventMetadata4 searchToolId];
 
-        if (v22)
+        if (searchToolId)
         {
-          v23 = [v22 value];
-          if (v23)
+          value = [searchToolId value];
+          if (value)
           {
-            v24 = v23;
-            v25 = [v22 value];
-            v26 = [v25 length];
+            v24 = value;
+            value2 = [searchToolId value];
+            v26 = [value2 length];
 
             if (v26)
             {
@@ -3379,13 +3379,13 @@ LABEL_104:
             v9 = 0;
           }
 
-          v4 = v22;
+          pommesId = searchToolId;
         }
 
         else
         {
           v9 = 0;
-          v4 = 0;
+          pommesId = 0;
         }
       }
     }
@@ -3396,17 +3396,17 @@ LABEL_104:
 
 - (id)getComponentId
 {
-  v3 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
-  v4 = [v3 pommesId];
+  eventMetadata = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
+  pommesId = [eventMetadata pommesId];
 
-  if (v4)
+  if (pommesId)
   {
-    v5 = [v4 value];
-    if (v5)
+    value = [pommesId value];
+    if (value)
     {
-      v6 = v5;
-      v7 = [v4 value];
-      v8 = [v7 length];
+      v6 = value;
+      value2 = [pommesId value];
+      v8 = [value2 length];
 
       if (v8)
       {
@@ -3415,40 +3415,40 @@ LABEL_104:
     }
   }
 
-  v9 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
-  v10 = [v9 requestId];
+  eventMetadata2 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
+  requestId = [eventMetadata2 requestId];
 
-  if (v10)
+  if (requestId)
   {
-    v11 = [v10 value];
-    if (v11)
+    value3 = [requestId value];
+    if (value3)
     {
-      v12 = v11;
-      v13 = [v10 value];
-      v14 = [v13 length];
+      v12 = value3;
+      value4 = [requestId value];
+      v14 = [value4 length];
 
       if (v14)
       {
-        v4 = v10;
+        pommesId = requestId;
 LABEL_15:
-        v22 = v4;
-        v21 = v22;
+        value7 = pommesId;
+        searchToolId = value7;
         goto LABEL_17;
       }
     }
   }
 
-  v15 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
-  v4 = [v15 subRequestId];
+  eventMetadata3 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
+  pommesId = [eventMetadata3 subRequestId];
 
-  if (v4)
+  if (pommesId)
   {
-    v16 = [v4 value];
-    if (v16)
+    value5 = [pommesId value];
+    if (value5)
     {
-      v17 = v16;
-      v18 = [v4 value];
-      v19 = [v18 length];
+      v17 = value5;
+      value6 = [pommesId value];
+      v19 = [value6 length];
 
       if (v19)
       {
@@ -3457,59 +3457,59 @@ LABEL_15:
     }
   }
 
-  v20 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
-  v21 = [v20 searchToolId];
+  eventMetadata4 = [(POMMESSchemaPOMMESClientEvent *)self eventMetadata];
+  searchToolId = [eventMetadata4 searchToolId];
 
-  if (v21)
+  if (searchToolId)
   {
-    v22 = [v21 value];
-    if (!v22)
+    value7 = [searchToolId value];
+    if (!value7)
     {
       goto LABEL_17;
     }
 
-    v23 = [v21 value];
-    v24 = [v23 length];
+    value8 = [searchToolId value];
+    v24 = [value8 length];
 
     if (v24)
     {
-      v4 = v21;
+      pommesId = searchToolId;
       goto LABEL_15;
     }
   }
 
-  v22 = 0;
+  value7 = 0;
 LABEL_17:
 
-  return v22;
+  return value7;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(POMMESSchemaPOMMESClientEvent *)self whichEvent_Type];
-  if (v3 - 101 > 0x12)
+  whichEvent_Type = [(POMMESSchemaPOMMESClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 0x12)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78EABD8[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78EABD8[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 0x12)
+  if (tag - 101 > 0x12)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78EAC70[a3 - 101];
+    return off_1E78EAC70[tag - 101];
   }
 }
 

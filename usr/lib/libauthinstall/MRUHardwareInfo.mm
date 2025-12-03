@@ -1,37 +1,37 @@
 @interface MRUHardwareInfo
-- (MRUHardwareInfo)initWithChipID:(unsigned int)a3 chipRev:(unsigned int)a4 boardID:(unsigned int)a5 securityEpoch:(unsigned int)a6 productionStatus:(BOOL)a7 securityMode:(BOOL)a8 securityDomain:(unsigned int)a9 ecid:(unint64_t)a10;
-- (MRUHardwareInfo)initWithCoder:(id)a3;
-- (MRUHardwareInfo)initWithOptions:(id)a3 error:(id *)a4;
+- (MRUHardwareInfo)initWithChipID:(unsigned int)d chipRev:(unsigned int)rev boardID:(unsigned int)iD securityEpoch:(unsigned int)epoch productionStatus:(BOOL)status securityMode:(BOOL)mode securityDomain:(unsigned int)domain ecid:(unint64_t)self0;
+- (MRUHardwareInfo)initWithCoder:(id)coder;
+- (MRUHardwareInfo)initWithOptions:(id)options error:(id *)error;
 - (NSDictionary)asDictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MRUHardwareInfo
 
-- (MRUHardwareInfo)initWithChipID:(unsigned int)a3 chipRev:(unsigned int)a4 boardID:(unsigned int)a5 securityEpoch:(unsigned int)a6 productionStatus:(BOOL)a7 securityMode:(BOOL)a8 securityDomain:(unsigned int)a9 ecid:(unint64_t)a10
+- (MRUHardwareInfo)initWithChipID:(unsigned int)d chipRev:(unsigned int)rev boardID:(unsigned int)iD securityEpoch:(unsigned int)epoch productionStatus:(BOOL)status securityMode:(BOOL)mode securityDomain:(unsigned int)domain ecid:(unint64_t)self0
 {
   v17.receiver = self;
   v17.super_class = MRUHardwareInfo;
   result = [(MRUHardwareInfo *)&v17 init];
   if (result)
   {
-    result->_chipID = a3;
-    result->_chipRev = a4;
-    result->_boardID = a5;
-    result->_securityEpoch = a6;
-    result->_productionStatus = a7;
-    result->_securityMode = a8;
-    result->_securityDomain = a9;
-    result->_ecid = a10;
+    result->_chipID = d;
+    result->_chipRev = rev;
+    result->_boardID = iD;
+    result->_securityEpoch = epoch;
+    result->_productionStatus = status;
+    result->_securityMode = mode;
+    result->_securityDomain = domain;
+    result->_ecid = ecid;
   }
 
   return result;
 }
 
-- (MRUHardwareInfo)initWithCoder:(id)a3
+- (MRUHardwareInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = MRUHardwareInfo;
   v5 = [(MRUHardwareInfo *)&v23 init];
@@ -40,42 +40,42 @@
     goto LABEL_11;
   }
 
-  v6 = [v4 decodeObjectForKey:@"chipID"];
+  v6 = [coderCopy decodeObjectForKey:@"chipID"];
   v7 = v6;
   if (v6)
   {
     v5->_chipID = [(MRUHardwareInfo *)v6 unsignedIntValue];
-    v8 = [v4 decodeObjectForKey:@"chipRev"];
+    v8 = [coderCopy decodeObjectForKey:@"chipRev"];
     if (v8)
     {
       v9 = v8;
       v5->_chipRev = [v8 unsignedIntValue];
-      v10 = [v4 decodeObjectForKey:@"boardID"];
+      v10 = [coderCopy decodeObjectForKey:@"boardID"];
       if (v10)
       {
         v11 = v10;
         v5->_boardID = [v10 unsignedIntValue];
-        v12 = [v4 decodeObjectForKey:@"securityEpoch"];
+        v12 = [coderCopy decodeObjectForKey:@"securityEpoch"];
         if (v12)
         {
           v13 = v12;
           v5->_securityEpoch = [v12 unsignedIntValue];
-          v14 = [v4 decodeObjectForKey:@"productionStatus"];
+          v14 = [coderCopy decodeObjectForKey:@"productionStatus"];
           if (v14)
           {
             v15 = v14;
             v5->_productionStatus = [v14 unsignedIntValue] != 0;
-            v16 = [v4 decodeObjectForKey:@"securityMode"];
+            v16 = [coderCopy decodeObjectForKey:@"securityMode"];
             if (v16)
             {
               v17 = v16;
               v5->_securityMode = [v16 unsignedIntValue] != 0;
-              v18 = [v4 decodeObjectForKey:@"securityDomain"];
+              v18 = [coderCopy decodeObjectForKey:@"securityDomain"];
               if (v18)
               {
                 v19 = v18;
                 v5->_securityDomain = [v18 unsignedIntValue];
-                v20 = [v4 decodeObjectForKey:@"ecid"];
+                v20 = [coderCopy decodeObjectForKey:@"ecid"];
                 if (v20)
                 {
                   v21 = v20;
@@ -100,10 +100,10 @@ LABEL_19:
   return v7;
 }
 
-- (MRUHardwareInfo)initWithOptions:(id)a3 error:(id *)a4
+- (MRUHardwareInfo)initWithOptions:(id)options error:(id *)error
 {
   v67[1] = *MEMORY[0x29EDCA608];
-  v6 = a3;
+  optionsCopy = options;
   v51.receiver = self;
   v51.super_class = MRUHardwareInfo;
   v7 = [(MRUHardwareInfo *)&v51 init];
@@ -114,17 +114,17 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"chipID"];
+  v8 = [optionsCopy objectForKeyedSubscript:@"chipID"];
   if (!v8)
   {
-    if (*a4)
+    if (*error)
     {
       v24 = MEMORY[0x29EDB9FA0];
       v66 = *MEMORY[0x29EDB9ED8];
       v25 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"No chipID in options dict"];
       v67[0] = v25;
       v26 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v67 forKeys:&v66 count:1];
-      *a4 = [v24 errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:1 userInfo:v26];
+      *error = [v24 errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:1 userInfo:v26];
     }
 
     goto LABEL_31;
@@ -132,17 +132,17 @@ LABEL_35:
 
   v9 = v8;
   v7->_chipID = [v8 unsignedIntValue];
-  v10 = [v6 objectForKeyedSubscript:@"bundlePath"];
+  v10 = [optionsCopy objectForKeyedSubscript:@"bundlePath"];
   if (!v10)
   {
-    if (*a4)
+    if (*error)
     {
       v27 = MEMORY[0x29EDB9FA0];
       v64 = *MEMORY[0x29EDB9ED8];
       v28 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"No chipRev in options dict"];
       v65 = v28;
       v29 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:&v65 forKeys:&v64 count:1];
-      *a4 = [v27 errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:1 userInfo:v29];
+      *error = [v27 errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:1 userInfo:v29];
     }
 
     goto LABEL_30;
@@ -150,17 +150,17 @@ LABEL_35:
 
   v11 = v10;
   v7->_chipRev = [v10 unsignedIntValue];
-  v12 = [v6 objectForKeyedSubscript:@"boardID"];
+  v12 = [optionsCopy objectForKeyedSubscript:@"boardID"];
   if (!v12)
   {
-    if (*a4)
+    if (*error)
     {
       v30 = MEMORY[0x29EDB9FA0];
       v62 = *MEMORY[0x29EDB9ED8];
       v31 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"No boardID in options dict"];
       v63 = v31;
       v32 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:&v63 forKeys:&v62 count:1];
-      *a4 = [v30 errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:1 userInfo:v32];
+      *error = [v30 errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:1 userInfo:v32];
     }
 
     goto LABEL_29;
@@ -168,17 +168,17 @@ LABEL_35:
 
   v13 = v12;
   v7->_boardID = [v12 unsignedIntValue];
-  v14 = [v6 objectForKeyedSubscript:@"securityEpoch"];
+  v14 = [optionsCopy objectForKeyedSubscript:@"securityEpoch"];
   if (!v14)
   {
-    if (*a4)
+    if (*error)
     {
       v33 = MEMORY[0x29EDB9FA0];
       v60 = *MEMORY[0x29EDB9ED8];
       v34 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"No securityEpoch in options dict"];
       v61 = v34;
       v35 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:&v61 forKeys:&v60 count:1];
-      *a4 = [v33 errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:1 userInfo:v35];
+      *error = [v33 errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:1 userInfo:v35];
     }
 
     goto LABEL_28;
@@ -186,17 +186,17 @@ LABEL_35:
 
   v15 = v14;
   v7->_securityEpoch = [v14 unsignedIntValue];
-  v16 = [v6 objectForKeyedSubscript:@"productionStatus"];
+  v16 = [optionsCopy objectForKeyedSubscript:@"productionStatus"];
   if (!v16)
   {
-    if (*a4)
+    if (*error)
     {
       v48 = MEMORY[0x29EDB9FA0];
       v58 = *MEMORY[0x29EDB9ED8];
       v36 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"No productionStatus in options dict"];
       v59 = v36;
       v37 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
-      *a4 = [v48 errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:1 userInfo:v37];
+      *error = [v48 errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:1 userInfo:v37];
     }
 
     goto LABEL_27;
@@ -204,10 +204,10 @@ LABEL_35:
 
   v17 = v16;
   v7->_productionStatus = [v16 BOOLValue];
-  v18 = [v6 objectForKeyedSubscript:@"securityMode"];
+  v18 = [optionsCopy objectForKeyedSubscript:@"securityMode"];
   if (!v18)
   {
-    if (!*a4)
+    if (!*error)
     {
 LABEL_26:
 
@@ -225,7 +225,7 @@ LABEL_30:
     v19 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"No securityMode in options dict"];
     v57 = v19;
     v38 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
-    *a4 = [v49 errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:1 userInfo:v38];
+    *error = [v49 errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:1 userInfo:v38];
 
 LABEL_25:
     goto LABEL_26;
@@ -233,17 +233,17 @@ LABEL_25:
 
   v19 = v18;
   v7->_securityMode = [v18 BOOLValue];
-  v20 = [v6 objectForKeyedSubscript:@"securityDomain"];
+  v20 = [optionsCopy objectForKeyedSubscript:@"securityDomain"];
   if (!v20)
   {
-    if (*a4)
+    if (*error)
     {
       v46 = MEMORY[0x29EDB9FA0];
       v54 = *MEMORY[0x29EDB9ED8];
       v50 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"No securityDomain in options dict"];
       v55 = v50;
       v39 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
-      *a4 = [v46 errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:1 userInfo:v39];
+      *error = [v46 errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:1 userInfo:v39];
     }
 
     goto LABEL_25;
@@ -251,7 +251,7 @@ LABEL_25:
 
   v21 = v20;
   v7->_securityDomain = [v20 unsignedIntValue];
-  v22 = [v6 objectForKeyedSubscript:@"ecid"];
+  v22 = [optionsCopy objectForKeyedSubscript:@"ecid"];
   if (v22)
   {
     v23 = v22;
@@ -259,14 +259,14 @@ LABEL_25:
     v22 = v23;
   }
 
-  else if (*a4)
+  else if (*error)
   {
     v45 = MEMORY[0x29EDB9FA0];
     v52 = *MEMORY[0x29EDB9ED8];
     v47 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"No ecid in options dict"];
     v53 = v47;
     v44 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:&v53 forKeys:&v52 count:1];
-    *a4 = [v45 errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:1 userInfo:v44];
+    *error = [v45 errorWithDomain:@"com.apple.Manta.MantaRestoreUtils" code:1 userInfo:v44];
 
     v22 = 0;
   }
@@ -286,34 +286,34 @@ LABEL_36:
   return v40;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x29EDBA070];
   chipID = self->_chipID;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithUnsignedInt:chipID];
-  [v6 encodeObject:v7 forKey:@"chipID"];
+  [coderCopy encodeObject:v7 forKey:@"chipID"];
 
   v8 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_chipRev];
-  [v6 encodeObject:v8 forKey:@"chipRev"];
+  [coderCopy encodeObject:v8 forKey:@"chipRev"];
 
   v9 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_boardID];
-  [v6 encodeObject:v9 forKey:@"boardID"];
+  [coderCopy encodeObject:v9 forKey:@"boardID"];
 
   v10 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_securityEpoch];
-  [v6 encodeObject:v10 forKey:@"securityEpoch"];
+  [coderCopy encodeObject:v10 forKey:@"securityEpoch"];
 
   v11 = [MEMORY[0x29EDBA070] numberWithBool:self->_productionStatus];
-  [v6 encodeObject:v11 forKey:@"productionStatus"];
+  [coderCopy encodeObject:v11 forKey:@"productionStatus"];
 
   v12 = [MEMORY[0x29EDBA070] numberWithBool:self->_securityMode];
-  [v6 encodeObject:v12 forKey:@"securityMode"];
+  [coderCopy encodeObject:v12 forKey:@"securityMode"];
 
   v13 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:self->_securityDomain];
-  [v6 encodeObject:v13 forKey:@"securityDomain"];
+  [coderCopy encodeObject:v13 forKey:@"securityDomain"];
 
   v14 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:self->_ecid];
-  [v6 encodeObject:v14 forKey:@"ecid"];
+  [coderCopy encodeObject:v14 forKey:@"ecid"];
 }
 
 - (NSDictionary)asDictionary

@@ -1,8 +1,8 @@
 @interface PKTextureLoadDescriptor
-- (id)createLoaderForCGImage:(CGImage *)a3;
-- (id)initForDevice:(id)a3;
+- (id)createLoaderForCGImage:(CGImage *)image;
+- (id)initForDevice:(id)device;
 - (void)dealloc;
-- (void)setColorSpace:(CGColorSpace *)a3 renderingIntent:(int)a4;
+- (void)setColorSpace:(CGColorSpace *)space renderingIntent:(int)intent;
 @end
 
 @implementation PKTextureLoadDescriptor
@@ -15,10 +15,10 @@
   [(PKTextureLoadDescriptor *)&v3 dealloc];
 }
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v5 = a3;
-  if (v5)
+  deviceCopy = device;
+  if (deviceCopy)
   {
     v10.receiver = self;
     v10.super_class = PKTextureLoadDescriptor;
@@ -26,26 +26,26 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_device, a3);
+      objc_storeStrong(&v6->_device, device);
       v7->_premultiplyAlpha = 1;
       v7->_storageMode = 0;
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)createLoaderForCGImage:(CGImage *)a3
+- (id)createLoaderForCGImage:(CGImage *)image
 {
-  if (!a3)
+  if (!image)
   {
     return 0;
   }
@@ -62,13 +62,13 @@
 
   else
   {
-    renderingIntent = CGImageGetRenderingIntent(a3);
+    renderingIntent = CGImageGetRenderingIntent(image);
   }
 
-  return [(PKTextureLoader *)&v5->super.isa initForDevice:a3 image:storageMode withStorageMode:premultiplyAlpha premultiplyAlpha:colorSpace colorSpace:renderingIntent renderingIntent:?];
+  return [(PKTextureLoader *)&v5->super.isa initForDevice:image image:storageMode withStorageMode:premultiplyAlpha premultiplyAlpha:colorSpace colorSpace:renderingIntent renderingIntent:?];
 }
 
-- (void)setColorSpace:(CGColorSpace *)a3 renderingIntent:(int)a4
+- (void)setColorSpace:(CGColorSpace *)space renderingIntent:(int)intent
 {
   colorSpace = self->_colorSpace;
   if (colorSpace)
@@ -76,8 +76,8 @@
     CFRelease(colorSpace);
   }
 
-  self->_colorSpace = CGColorSpaceRetain(a3);
-  self->_renderingIntent = a4;
+  self->_colorSpace = CGColorSpaceRetain(space);
+  self->_renderingIntent = intent;
 }
 
 @end

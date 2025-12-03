@@ -1,30 +1,30 @@
 @interface FMNoveltyViewController
 - (NSArray)keyCommands;
-- (_TtC6FindMy23FMNoveltyViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC6FindMy23FMNoveltyViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC6FindMy23FMNoveltyViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC6FindMy23FMNoveltyViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)continue;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation FMNoveltyViewController
 
 - (void)continue
 {
-  v1 = a1;
+  selfCopy = self;
   sub_1004FF0FC();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  [(FMNoveltyViewController *)&v8 viewWillAppear:v3];
-  v5 = [v4 parentViewController];
-  if (v5)
+  [(FMNoveltyViewController *)&v8 viewWillAppear:appearCopy];
+  parentViewController = [v4 parentViewController];
+  if (parentViewController)
   {
-    v6 = v5;
+    v6 = parentViewController;
     objc_opt_self();
     if (swift_dynamicCastObjCClass())
     {
@@ -55,14 +55,14 @@
   return v5.super.isa;
 }
 
-- (_TtC6FindMy23FMNoveltyViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC6FindMy23FMNoveltyViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  if (!a4)
+  if (!text)
   {
     v13 = 0;
-    if (a5)
+    if (name)
     {
       goto LABEL_3;
     }
@@ -70,12 +70,12 @@
 LABEL_5:
     v14 = 0;
     v16 = 0;
-    return sub_1004FF454(v9, v11, a4, v13, v14, v16, a6);
+    return sub_1004FF454(v9, v11, text, v13, v14, v16, layout);
   }
 
-  a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+  text = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
-  if (!a5)
+  if (!name)
   {
     goto LABEL_5;
   }
@@ -83,16 +83,16 @@ LABEL_5:
 LABEL_3:
   v14 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
-  return sub_1004FF454(v9, v11, a4, v13, v14, v16, a6);
+  return sub_1004FF454(v9, v11, text, v13, v14, v16, layout);
 }
 
-- (_TtC6FindMy23FMNoveltyViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC6FindMy23FMNoveltyViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  if (a4)
+  if (text)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    text = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = v12;
   }
 
@@ -101,8 +101,8 @@ LABEL_3:
     v13 = 0;
   }
 
-  v14 = a5;
-  return sub_1004FF6A0(v9, v11, a4, v13, a5, a6);
+  iconCopy = icon;
+  return sub_1004FF6A0(v9, v11, text, v13, icon, layout);
 }
 
 @end

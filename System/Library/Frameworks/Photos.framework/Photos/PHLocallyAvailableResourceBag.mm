@@ -1,6 +1,6 @@
 @interface PHLocallyAvailableResourceBag
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)prepareForReuse;
 @end
 
@@ -19,17 +19,17 @@
   self->_keyIsHintBased = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PHLocallyAvailableResourceBag);
-  v5 = [(PHLocallyAvailableResourceBag *)self assetID];
-  [(PHLocallyAvailableResourceBag *)v4 setAssetID:v5];
+  assetID = [(PHLocallyAvailableResourceBag *)self assetID];
+  [(PHLocallyAvailableResourceBag *)v4 setAssetID:assetID];
 
-  v6 = [(PHLocallyAvailableResourceBag *)self dataStore];
-  [(PHLocallyAvailableResourceBag *)v4 setDataStore:v6];
+  dataStore = [(PHLocallyAvailableResourceBag *)self dataStore];
+  [(PHLocallyAvailableResourceBag *)v4 setDataStore:dataStore];
 
-  v7 = [(PHLocallyAvailableResourceBag *)self dataStoreKey];
-  [(PHLocallyAvailableResourceBag *)v4 setDataStoreKey:v7];
+  dataStoreKey = [(PHLocallyAvailableResourceBag *)self dataStoreKey];
+  [(PHLocallyAvailableResourceBag *)v4 setDataStoreKey:dataStoreKey];
 
   [(PHLocallyAvailableResourceBag *)v4 setKeyIsHintBased:[(PHLocallyAvailableResourceBag *)self keyIsHintBased]];
   [(PHLocallyAvailableResourceBag *)v4 setIsDegraded:[(PHLocallyAvailableResourceBag *)self isDegraded]];
@@ -42,12 +42,12 @@
 {
   if ([objc_opt_class() storeClassID] == 1)
   {
-    v3 = 0;
+    resourceURL = 0;
   }
 
   else
   {
-    v3 = [(PHLocallyAvailableResourceBag *)self resourceURL];
+    resourceURL = [(PHLocallyAvailableResourceBag *)self resourceURL];
   }
 
   v4 = MEMORY[0x1E696AEC0];
@@ -83,7 +83,7 @@
     v9 = @"N";
   }
 
-  v10 = [v4 stringWithFormat:@"<%@ %p> url: %@, hint-based: %@, degraded: %@, primary: %@", v6, self, v3, v7, v8, v9];
+  v10 = [v4 stringWithFormat:@"<%@ %p> url: %@, hint-based: %@, degraded: %@, primary: %@", v6, self, resourceURL, v7, v8, v9];
 
   if (self->_isDerivedFromDeferredPreview)
   {

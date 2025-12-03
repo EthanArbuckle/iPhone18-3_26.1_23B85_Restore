@@ -1,10 +1,10 @@
 @interface CHBReaderState
-- (CHBReaderState)initWithEBReaderSheetState:(id)a3;
+- (CHBReaderState)initWithEBReaderSheetState:(id)state;
 - (OADColorScheme)colorScheme;
-- (const)defaultFormatForXlSeries:(const void *)a3;
+- (const)defaultFormatForXlSeries:(const void *)series;
 - (const)xlCurrentDefaultSeriesFormat;
 - (void)readAndCacheXlChartDataSeries;
-- (void)setChart:(id)a3;
+- (void)setChart:(id)chart;
 @end
 
 @implementation CHBReaderState
@@ -42,50 +42,50 @@
 
 - (OADColorScheme)colorScheme
 {
-  v2 = [self->mEBReaderSheetState workbook];
-  v3 = [v2 theme];
-  v4 = [v3 baseStyles];
-  v5 = [v4 colorScheme];
+  workbook = [self->mEBReaderSheetState workbook];
+  theme = [workbook theme];
+  baseStyles = [theme baseStyles];
+  colorScheme = [baseStyles colorScheme];
 
-  return v5;
+  return colorScheme;
 }
 
-- (CHBReaderState)initWithEBReaderSheetState:(id)a3
+- (CHBReaderState)initWithEBReaderSheetState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   v9.receiver = self;
   v9.super_class = CHBReaderState;
   v6 = [(CHBState *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mEBReaderSheetState, a3);
-    v7->mXlReader = [v5 xlReader];
+    objc_storeStrong(&v6->mEBReaderSheetState, state);
+    v7->mXlReader = [stateCopy xlReader];
     v7->mXlCurrentPlot = 0;
   }
 
   return v7;
 }
 
-- (void)setChart:(id)a3
+- (void)setChart:(id)chart
 {
-  v4 = a3;
+  chartCopy = chart;
   v7.receiver = self;
   v7.super_class = CHBReaderState;
-  [(CHBState *)&v7 setChart:v4];
-  v5 = [CHAutoStyling autoStylingWithChart:v4 drawingTheme:0];
+  [(CHBState *)&v7 setChart:chartCopy];
+  v5 = [CHAutoStyling autoStylingWithChart:chartCopy drawingTheme:0];
   mAutoStyling = self->mAutoStyling;
   self->mAutoStyling = v5;
 }
 
-- (const)defaultFormatForXlSeries:(const void *)a3
+- (const)defaultFormatForXlSeries:(const void *)series
 {
-  if (!a3 || ((*(a3 + 8) - *(a3 + 6)) & 0x7FFF8) == 0)
+  if (!series || ((*(series + 8) - *(series + 6)) & 0x7FFF8) == 0)
   {
     return 0;
   }
 
-  result = XlChartDataSeries::getDefaultFormat(a3, 0);
+  result = XlChartDataSeries::getDefaultFormat(series, 0);
   if (result)
   {
     if (result->var9 >= 0)

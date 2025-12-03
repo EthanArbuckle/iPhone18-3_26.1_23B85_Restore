@@ -1,47 +1,47 @@
 @interface SBAmbientAuthenticationIdleTimer
 - (SBAmbientAuthenticationIdleTimer)init;
-- (id)_initWithKeyBag:(id)a3 attentionAwarenessClient:(id)a4;
-- (void)_handleAttentionLost:(id)a3;
+- (id)_initWithKeyBag:(id)bag attentionAwarenessClient:(id)client;
+- (void)_handleAttentionLost:(id)lost;
 - (void)_recomputeAuthenticationLimitTimer;
 - (void)_reconfigureAttentionClient;
-- (void)_setAttentionClientActive:(BOOL)a3;
-- (void)_setAuthenticated:(BOOL)a3;
+- (void)_setAttentionClientActive:(BOOL)active;
+- (void)_setAuthenticated:(BOOL)authenticated;
 - (void)_updateAttentionClientActive;
 - (void)dealloc;
-- (void)keybag:(id)a3 extendedStateDidChange:(id)a4;
-- (void)setEnabled:(BOOL)a3;
-- (void)setIdleTimerDuration:(double)a3;
-- (void)setMaximumAuthenticatedInterval:(double)a3;
+- (void)keybag:(id)keybag extendedStateDidChange:(id)change;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setIdleTimerDuration:(double)duration;
+- (void)setMaximumAuthenticatedInterval:(double)interval;
 @end
 
 @implementation SBAmbientAuthenticationIdleTimer
 
 - (SBAmbientAuthenticationIdleTimer)init
 {
-  v3 = [MEMORY[0x277D65ED8] sharedInstance];
+  mEMORY[0x277D65ED8] = [MEMORY[0x277D65ED8] sharedInstance];
   v4 = objc_opt_new();
-  v5 = [(SBAmbientAuthenticationIdleTimer *)self _initWithKeyBag:v3 attentionAwarenessClient:v4];
+  v5 = [(SBAmbientAuthenticationIdleTimer *)self _initWithKeyBag:mEMORY[0x277D65ED8] attentionAwarenessClient:v4];
 
   return v5;
 }
 
-- (id)_initWithKeyBag:(id)a3 attentionAwarenessClient:(id)a4
+- (id)_initWithKeyBag:(id)bag attentionAwarenessClient:(id)client
 {
-  v7 = a3;
-  v8 = a4;
+  bagCopy = bag;
+  clientCopy = client;
   v19.receiver = self;
   v19.super_class = SBAmbientAuthenticationIdleTimer;
   v9 = [(SBAmbientAuthenticationIdleTimer *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_keybag, a3);
+    objc_storeStrong(&v9->_keybag, bag);
     *&v10->_maximumAuthenticatedInterval = xmmword_21F8A5E50;
     v10->_authenticated = 0x7FFFFFFFFFFFFFFFLL;
-    objc_storeStrong(&v10->_attentionClient, a4);
+    objc_storeStrong(&v10->_attentionClient, client);
     [(SBAmbientAuthenticationIdleTimer *)v10 _reconfigureAttentionClient];
-    v11 = [(SBFMobileKeyBag *)v10->_keybag state];
-    -[SBAmbientAuthenticationIdleTimer _setAuthenticated:](v10, "_setAuthenticated:", [v11 isEffectivelyLocked] ^ 1);
+    state = [(SBFMobileKeyBag *)v10->_keybag state];
+    -[SBAmbientAuthenticationIdleTimer _setAuthenticated:](v10, "_setAuthenticated:", [state isEffectivelyLocked] ^ 1);
 
     objc_initWeak(&location, v10);
     attentionClient = v10->_attentionClient;
@@ -104,12 +104,12 @@ void __77__SBAmbientAuthenticationIdleTimer__initWithKeyBag_attentionAwarenessCl
   [(SBAmbientAuthenticationIdleTimer *)&v3 dealloc];
 }
 
-- (void)setMaximumAuthenticatedInterval:(double)a3
+- (void)setMaximumAuthenticatedInterval:(double)interval
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (self->_maximumAuthenticatedInterval != a3)
+  if (self->_maximumAuthenticatedInterval != interval)
   {
-    self->_maximumAuthenticatedInterval = a3;
+    self->_maximumAuthenticatedInterval = interval;
     v4 = SBLogAmbientAuthentication();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -123,12 +123,12 @@ void __77__SBAmbientAuthenticationIdleTimer__initWithKeyBag_attentionAwarenessCl
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     v4 = SBLogAmbientAuthentication();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -142,8 +142,8 @@ void __77__SBAmbientAuthenticationIdleTimer__initWithKeyBag_attentionAwarenessCl
     if (self->_enabled)
     {
       [(SBFMobileKeyBag *)keybag addObserver:self];
-      v7 = [(SBFMobileKeyBag *)self->_keybag state];
-      -[SBAmbientAuthenticationIdleTimer _setAuthenticated:](self, "_setAuthenticated:", [v7 isEffectivelyLocked] ^ 1);
+      state = [(SBFMobileKeyBag *)self->_keybag state];
+      -[SBAmbientAuthenticationIdleTimer _setAuthenticated:](self, "_setAuthenticated:", [state isEffectivelyLocked] ^ 1);
     }
 
     else
@@ -156,12 +156,12 @@ void __77__SBAmbientAuthenticationIdleTimer__initWithKeyBag_attentionAwarenessCl
   }
 }
 
-- (void)setIdleTimerDuration:(double)a3
+- (void)setIdleTimerDuration:(double)duration
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (self->_idleTimerDuration != a3)
+  if (self->_idleTimerDuration != duration)
   {
-    self->_idleTimerDuration = a3;
+    self->_idleTimerDuration = duration;
     v4 = SBLogAmbientAuthentication();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -175,16 +175,16 @@ void __77__SBAmbientAuthenticationIdleTimer__initWithKeyBag_attentionAwarenessCl
   }
 }
 
-- (void)keybag:(id)a3 extendedStateDidChange:(id)a4
+- (void)keybag:(id)keybag extendedStateDidChange:(id)change
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  v5 = [v4 isEffectivelyLocked] ^ 1;
+  changeCopy = change;
+  v5 = [changeCopy isEffectivelyLocked] ^ 1;
   v6 = SBLogAmbientAuthentication();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v8 = v4;
+    v8 = changeCopy;
     v9 = 1024;
     v10 = v5;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Extended keybag state did change to %@ isAuthenticated = %{BOOL}u", buf, 0x12u);
@@ -193,9 +193,9 @@ void __77__SBAmbientAuthenticationIdleTimer__initWithKeyBag_attentionAwarenessCl
   BSDispatchMain();
 }
 
-- (void)_setAuthenticated:(BOOL)a3
+- (void)_setAuthenticated:(BOOL)authenticated
 {
-  v3 = a3;
+  authenticatedCopy = authenticated;
   v9 = *MEMORY[0x277D85DE8];
   v5 = BSSettingFlagForBool();
   if (self->_authenticated != v5)
@@ -205,7 +205,7 @@ void __77__SBAmbientAuthenticationIdleTimer__initWithKeyBag_attentionAwarenessCl
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8[0] = 67109120;
-      v8[1] = v3;
+      v8[1] = authenticatedCopy;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Authentication state changed to %{BOOL}u", v8, 8u);
     }
 
@@ -227,17 +227,17 @@ void __77__SBAmbientAuthenticationIdleTimer__initWithKeyBag_attentionAwarenessCl
   [(SBAmbientAuthenticationIdleTimer *)self _setAttentionClientActive:v3];
 }
 
-- (void)_setAttentionClientActive:(BOOL)a3
+- (void)_setAttentionClientActive:(BOOL)active
 {
-  if (self->_attentionClientActive != a3)
+  if (self->_attentionClientActive != active)
   {
     v11 = v3;
     v12 = v4;
-    v5 = a3;
-    self->_attentionClientActive = a3;
+    activeCopy = active;
+    self->_attentionClientActive = active;
     v7 = SBLogAmbientAuthentication();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (activeCopy)
     {
       if (v8)
       {
@@ -386,7 +386,7 @@ uint64_t __70__SBAmbientAuthenticationIdleTimer__recomputeAuthenticationLimitTim
   [(AWAttentionAwarenessClient *)self->_attentionClient setConfiguration:v3];
 }
 
-- (void)_handleAttentionLost:(id)a3
+- (void)_handleAttentionLost:(id)lost
 {
   v7 = *MEMORY[0x277D85DE8];
   v4 = SBLogAmbientAuthentication();

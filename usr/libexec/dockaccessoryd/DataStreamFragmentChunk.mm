@@ -1,7 +1,7 @@
 @interface DataStreamFragmentChunk
-- (BOOL)isEqual:(id)a3;
-- (DataStreamFragmentChunk)initWithData:(id)a3 sequenceNumber:(id)a4 fragmentSequenceNumber:(id)a5 type:(id)a6 isLast:(BOOL)a7;
-- (DataStreamFragmentChunk)initWithDictionaryRepresentation:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DataStreamFragmentChunk)initWithData:(id)data sequenceNumber:(id)number fragmentSequenceNumber:(id)sequenceNumber type:(id)type isLast:(BOOL)last;
+- (DataStreamFragmentChunk)initWithDictionaryRepresentation:(id)representation;
 - (NSDictionary)dictionaryRepresentation;
 - (id)attributeDescriptions;
 - (unint64_t)hash;
@@ -9,34 +9,34 @@
 
 @implementation DataStreamFragmentChunk
 
-- (DataStreamFragmentChunk)initWithData:(id)a3 sequenceNumber:(id)a4 fragmentSequenceNumber:(id)a5 type:(id)a6 isLast:(BOOL)a7
+- (DataStreamFragmentChunk)initWithData:(id)data sequenceNumber:(id)number fragmentSequenceNumber:(id)sequenceNumber type:(id)type isLast:(BOOL)last
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  if (!v13)
+  dataCopy = data;
+  numberCopy = number;
+  sequenceNumberCopy = sequenceNumber;
+  typeCopy = type;
+  if (!dataCopy)
   {
     sub_1001F7A6C();
     goto LABEL_9;
   }
 
-  if (!v14)
+  if (!numberCopy)
   {
 LABEL_9:
     sub_1001F7A54();
     goto LABEL_10;
   }
 
-  if (!v15)
+  if (!sequenceNumberCopy)
   {
 LABEL_10:
     sub_1001F7EA4();
     goto LABEL_11;
   }
 
-  v17 = v16;
-  if (!v16)
+  v17 = typeCopy;
+  if (!typeCopy)
   {
 LABEL_11:
     v27 = sub_1001F7A3C();
@@ -49,12 +49,12 @@ LABEL_11:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_data, a3);
-    v20 = [v14 copy];
+    objc_storeStrong(&v18->_data, data);
+    v20 = [numberCopy copy];
     sequenceNumber = v19->_sequenceNumber;
     v19->_sequenceNumber = v20;
 
-    v22 = [v15 copy];
+    v22 = [sequenceNumberCopy copy];
     fragmentSequenceNumber = v19->_fragmentSequenceNumber;
     v19->_fragmentSequenceNumber = v22;
 
@@ -62,52 +62,52 @@ LABEL_11:
     type = v19->_type;
     v19->_type = v24;
 
-    v19->_last = a7;
+    v19->_last = last;
   }
 
   return v19;
 }
 
-- (DataStreamFragmentChunk)initWithDictionaryRepresentation:(id)a3
+- (DataStreamFragmentChunk)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 hmf_dataForKey:@"data"];
+  representationCopy = representation;
+  v5 = [representationCopy hmf_dataForKey:@"data"];
   if (v5)
   {
-    v6 = [v4 hmf_dictionaryForKey:@"metadata"];
-    v7 = v6;
+    v6 = [representationCopy hmf_dictionaryForKey:@"metadata"];
+    selfCopy6 = v6;
     if (v6)
     {
-      v8 = [(DataStreamFragmentChunk *)v6 hmf_numberForKey:@"dataChunkSequenceNumber"];
-      if (v8)
+      selfCopy5 = [(DataStreamFragmentChunk *)v6 hmf_numberForKey:@"dataChunkSequenceNumber"];
+      if (selfCopy5)
       {
-        v9 = [(DataStreamFragmentChunk *)v7 hmf_numberForKey:@"dataSequenceNumber"];
-        if (v9)
+        selfCopy4 = [(DataStreamFragmentChunk *)selfCopy6 hmf_numberForKey:@"dataSequenceNumber"];
+        if (selfCopy4)
         {
-          v10 = [(DataStreamFragmentChunk *)v7 hmf_stringForKey:@"dataType"];
-          if (v10)
+          selfCopy3 = [(DataStreamFragmentChunk *)selfCopy6 hmf_stringForKey:@"dataType"];
+          if (selfCopy3)
           {
-            v11 = [(DataStreamFragmentChunk *)v7 hmf_numberForKey:@"isLastDataChunk"];
-            v12 = v11;
+            v11 = [(DataStreamFragmentChunk *)selfCopy6 hmf_numberForKey:@"isLastDataChunk"];
+            selfCopy2 = v11;
             if (v11)
             {
-              v13 = [(DataStreamFragmentChunk *)self initWithData:v5 sequenceNumber:v8 fragmentSequenceNumber:v9 type:v10 isLast:[(DataStreamFragmentChunk *)v11 BOOLValue]];
-              v14 = v13;
+              selfCopy = [(DataStreamFragmentChunk *)self initWithData:v5 sequenceNumber:selfCopy5 fragmentSequenceNumber:selfCopy4 type:selfCopy3 isLast:[(DataStreamFragmentChunk *)v11 BOOLValue]];
+              v14 = selfCopy;
             }
 
             else
             {
-              v13 = self;
+              selfCopy = self;
               v21 = sub_10007FAA0();
               if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
               {
-                v23 = sub_10007FAFC(v13);
+                v23 = sub_10007FAFC(selfCopy);
                 *buf = 138543874;
                 v25 = v23;
                 v26 = 2112;
                 v27 = @"isLastDataChunk";
                 v28 = 2112;
-                v29 = v4;
+                v29 = representationCopy;
                 _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "%{public}@Could not determine isLast (key=%@) from stream data dictionary: %@", buf, 0x20u);
               }
 
@@ -117,106 +117,106 @@ LABEL_11:
 
           else
           {
-            v12 = self;
+            selfCopy2 = self;
             v19 = sub_10007FAA0();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
             {
-              v20 = sub_10007FAFC(v12);
+              v20 = sub_10007FAFC(selfCopy2);
               *buf = 138543874;
               v25 = v20;
               v26 = 2112;
               v27 = @"dataType";
               v28 = 2112;
-              v29 = v4;
+              v29 = representationCopy;
               _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%{public}@Could not determine type (key=%@) from stream data dictionary: %@", buf, 0x20u);
             }
 
             v14 = 0;
-            v13 = v12;
+            selfCopy = selfCopy2;
           }
         }
 
         else
         {
-          v10 = self;
-          v12 = sub_10007FAA0();
-          if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+          selfCopy3 = self;
+          selfCopy2 = sub_10007FAA0();
+          if (os_log_type_enabled(selfCopy2, OS_LOG_TYPE_ERROR))
           {
-            v18 = sub_10007FAFC(v10);
+            v18 = sub_10007FAFC(selfCopy3);
             *buf = 138543874;
             v25 = v18;
             v26 = 2112;
             v27 = @"dataSequenceNumber";
             v28 = 2112;
-            v29 = v4;
-            _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%{public}@Could not determine fragment sequence number (key=%@) from stream data dictionary: %@", buf, 0x20u);
+            v29 = representationCopy;
+            _os_log_impl(&_mh_execute_header, selfCopy2, OS_LOG_TYPE_ERROR, "%{public}@Could not determine fragment sequence number (key=%@) from stream data dictionary: %@", buf, 0x20u);
           }
 
           v14 = 0;
-          v13 = v10;
+          selfCopy = selfCopy3;
         }
       }
 
       else
       {
-        v9 = self;
-        v10 = sub_10007FAA0();
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+        selfCopy4 = self;
+        selfCopy3 = sub_10007FAA0();
+        if (os_log_type_enabled(selfCopy3, OS_LOG_TYPE_ERROR))
         {
-          v17 = sub_10007FAFC(v9);
+          v17 = sub_10007FAFC(selfCopy4);
           *buf = 138543874;
           v25 = v17;
           v26 = 2112;
           v27 = @"dataChunkSequenceNumber";
           v28 = 2112;
-          v29 = v4;
-          _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%{public}@Could not determine sequence number (key=%@) from stream data dictionary: %@", buf, 0x20u);
+          v29 = representationCopy;
+          _os_log_impl(&_mh_execute_header, selfCopy3, OS_LOG_TYPE_ERROR, "%{public}@Could not determine sequence number (key=%@) from stream data dictionary: %@", buf, 0x20u);
         }
 
         v14 = 0;
-        v13 = v9;
+        selfCopy = selfCopy4;
       }
     }
 
     else
     {
-      v8 = self;
-      v9 = sub_10007FAA0();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      selfCopy5 = self;
+      selfCopy4 = sub_10007FAA0();
+      if (os_log_type_enabled(selfCopy4, OS_LOG_TYPE_ERROR))
       {
-        v16 = sub_10007FAFC(v8);
+        v16 = sub_10007FAFC(selfCopy5);
         *buf = 138543874;
         v25 = v16;
         v26 = 2112;
         v27 = @"metadata";
         v28 = 2112;
-        v29 = v4;
-        _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%{public}@Could not determine metadata (key=%@) from stream data dictionary: %@", buf, 0x20u);
+        v29 = representationCopy;
+        _os_log_impl(&_mh_execute_header, selfCopy4, OS_LOG_TYPE_ERROR, "%{public}@Could not determine metadata (key=%@) from stream data dictionary: %@", buf, 0x20u);
       }
 
       v14 = 0;
-      v13 = v8;
+      selfCopy = selfCopy5;
     }
   }
 
   else
   {
-    v7 = self;
-    v8 = sub_10007FAA0();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    selfCopy6 = self;
+    selfCopy5 = sub_10007FAA0();
+    if (os_log_type_enabled(selfCopy5, OS_LOG_TYPE_ERROR))
     {
-      v15 = sub_10007FAFC(v7);
+      v15 = sub_10007FAFC(selfCopy6);
       *buf = 138543874;
       v25 = v15;
       v26 = 2112;
       v27 = @"data";
       v28 = 2112;
-      v29 = v4;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%{public}@Could not determine data (key=%@) from stream data dictionary: %@", buf, 0x20u);
+      v29 = representationCopy;
+      _os_log_impl(&_mh_execute_header, selfCopy5, OS_LOG_TYPE_ERROR, "%{public}@Could not determine data (key=%@) from stream data dictionary: %@", buf, 0x20u);
     }
 
     v14 = 0;
-    v13 = v7;
+    selfCopy = selfCopy6;
   }
 
   return v14;
@@ -226,22 +226,22 @@ LABEL_11:
 {
   v13[0] = @"metadata";
   v11[0] = @"dataChunkSequenceNumber";
-  v3 = [(DataStreamFragmentChunk *)self sequenceNumber];
-  v12[0] = v3;
+  sequenceNumber = [(DataStreamFragmentChunk *)self sequenceNumber];
+  v12[0] = sequenceNumber;
   v11[1] = @"dataSequenceNumber";
-  v4 = [(DataStreamFragmentChunk *)self fragmentSequenceNumber];
-  v12[1] = v4;
+  fragmentSequenceNumber = [(DataStreamFragmentChunk *)self fragmentSequenceNumber];
+  v12[1] = fragmentSequenceNumber;
   v11[2] = @"dataType";
-  v5 = [(DataStreamFragmentChunk *)self type];
-  v12[2] = v5;
+  type = [(DataStreamFragmentChunk *)self type];
+  v12[2] = type;
   v11[3] = @"isLastDataChunk";
   v6 = [NSNumber numberWithBool:[(DataStreamFragmentChunk *)self isLast]];
   v12[3] = v6;
   v7 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:4];
   v13[1] = @"data";
   v14[0] = v7;
-  v8 = [(DataStreamFragmentChunk *)self data];
-  v14[1] = v8;
+  data = [(DataStreamFragmentChunk *)self data];
+  v14[1] = data;
   v9 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:2];
 
   return v9;
@@ -250,21 +250,21 @@ LABEL_11:
 - (id)attributeDescriptions
 {
   v3 = [HMFAttributeDescription alloc];
-  v20 = [(DataStreamFragmentChunk *)self data];
-  v19 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v20 length]);
+  data = [(DataStreamFragmentChunk *)self data];
+  v19 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [data length]);
   v4 = [v3 initWithName:@"Data Length" value:v19];
   v21[0] = v4;
   v5 = [HMFAttributeDescription alloc];
-  v6 = [(DataStreamFragmentChunk *)self sequenceNumber];
-  v7 = [v5 initWithName:@"Sequence Number" value:v6];
+  sequenceNumber = [(DataStreamFragmentChunk *)self sequenceNumber];
+  v7 = [v5 initWithName:@"Sequence Number" value:sequenceNumber];
   v21[1] = v7;
   v8 = [HMFAttributeDescription alloc];
-  v9 = [(DataStreamFragmentChunk *)self fragmentSequenceNumber];
-  v10 = [v8 initWithName:@"Fragment Sequence Number" value:v9];
+  fragmentSequenceNumber = [(DataStreamFragmentChunk *)self fragmentSequenceNumber];
+  v10 = [v8 initWithName:@"Fragment Sequence Number" value:fragmentSequenceNumber];
   v21[2] = v10;
   v11 = [HMFAttributeDescription alloc];
-  v12 = [(DataStreamFragmentChunk *)self type];
-  v13 = [v11 initWithName:@"Type" value:v12];
+  type = [(DataStreamFragmentChunk *)self type];
+  v13 = [v11 initWithName:@"Type" value:type];
   v21[3] = v13;
   v14 = [HMFAttributeDescription alloc];
   [(DataStreamFragmentChunk *)self isLast];
@@ -276,13 +276,13 @@ LABEL_11:
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -294,27 +294,27 @@ LABEL_11:
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 data];
-    v9 = [(DataStreamFragmentChunk *)self data];
-    if ([v8 isEqualToData:v9])
+    data = [v6 data];
+    data2 = [(DataStreamFragmentChunk *)self data];
+    if ([data isEqualToData:data2])
     {
-      v10 = [v7 sequenceNumber];
-      v11 = [(DataStreamFragmentChunk *)self sequenceNumber];
-      if ([v10 isEqualToNumber:v11])
+      sequenceNumber = [v7 sequenceNumber];
+      sequenceNumber2 = [(DataStreamFragmentChunk *)self sequenceNumber];
+      if ([sequenceNumber isEqualToNumber:sequenceNumber2])
       {
-        v12 = [v7 fragmentSequenceNumber];
-        v13 = [(DataStreamFragmentChunk *)self fragmentSequenceNumber];
-        if ([v12 isEqualToNumber:v13])
+        fragmentSequenceNumber = [v7 fragmentSequenceNumber];
+        fragmentSequenceNumber2 = [(DataStreamFragmentChunk *)self fragmentSequenceNumber];
+        if ([fragmentSequenceNumber isEqualToNumber:fragmentSequenceNumber2])
         {
-          v14 = [v7 type];
-          v15 = [(DataStreamFragmentChunk *)self type];
-          v21 = v14;
-          v16 = v14;
-          v17 = v15;
-          if ([v16 isEqualToString:v15])
+          type = [v7 type];
+          type2 = [(DataStreamFragmentChunk *)self type];
+          v21 = type;
+          v16 = type;
+          v17 = type2;
+          if ([v16 isEqualToString:type2])
           {
-            v20 = [v7 isLast];
-            v18 = v20 ^ [(DataStreamFragmentChunk *)self isLast]^ 1;
+            isLast = [v7 isLast];
+            v18 = isLast ^ [(DataStreamFragmentChunk *)self isLast]^ 1;
           }
 
           else
@@ -351,17 +351,17 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v3 = [(DataStreamFragmentChunk *)self data];
-  v4 = [v3 hash];
+  data = [(DataStreamFragmentChunk *)self data];
+  v4 = [data hash];
 
-  v5 = [(DataStreamFragmentChunk *)self sequenceNumber];
-  v6 = [v5 hash] ^ v4;
+  sequenceNumber = [(DataStreamFragmentChunk *)self sequenceNumber];
+  v6 = [sequenceNumber hash] ^ v4;
 
-  v7 = [(DataStreamFragmentChunk *)self fragmentSequenceNumber];
-  v8 = [v7 hash];
+  fragmentSequenceNumber = [(DataStreamFragmentChunk *)self fragmentSequenceNumber];
+  v8 = [fragmentSequenceNumber hash];
 
-  v9 = [(DataStreamFragmentChunk *)self type];
-  v10 = v6 ^ v8 ^ [v9 hash];
+  type = [(DataStreamFragmentChunk *)self type];
+  v10 = v6 ^ v8 ^ [type hash];
 
   return v10 ^ [(DataStreamFragmentChunk *)self isLast];
 }

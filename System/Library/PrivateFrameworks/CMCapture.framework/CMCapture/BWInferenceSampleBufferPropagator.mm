@@ -1,22 +1,22 @@
 @interface BWInferenceSampleBufferPropagator
-- (BWInferenceSampleBufferPropagator)initWithVideoRequirements:(id)a3 cloneRequirements:(id)a4 metadataRequirements:(id)a5 updateMetadataWithCropRect:(BOOL)a6;
+- (BWInferenceSampleBufferPropagator)initWithVideoRequirements:(id)requirements cloneRequirements:(id)cloneRequirements metadataRequirements:(id)metadataRequirements updateMetadataWithCropRect:(BOOL)rect;
 - (void)dealloc;
-- (void)propagateInferenceResultsToInferenceDictionary:(id)a3 usingStorage:(id)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 propagationSampleBuffer:(opaqueCMSampleBuffer *)a6;
+- (void)propagateInferenceResultsToInferenceDictionary:(id)dictionary usingStorage:(id)storage inputSampleBuffer:(opaqueCMSampleBuffer *)buffer propagationSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer;
 @end
 
 @implementation BWInferenceSampleBufferPropagator
 
-- (BWInferenceSampleBufferPropagator)initWithVideoRequirements:(id)a3 cloneRequirements:(id)a4 metadataRequirements:(id)a5 updateMetadataWithCropRect:(BOOL)a6
+- (BWInferenceSampleBufferPropagator)initWithVideoRequirements:(id)requirements cloneRequirements:(id)cloneRequirements metadataRequirements:(id)metadataRequirements updateMetadataWithCropRect:(BOOL)rect
 {
   v12.receiver = self;
   v12.super_class = BWInferenceSampleBufferPropagator;
   v10 = [(BWInferenceSampleBufferPropagator *)&v12 init];
   if (v10)
   {
-    v10->_videoRequirements = [a3 copy];
-    v10->_cloneVideoRequirements = [a4 copy];
-    v10->_metadataRequirements = [a5 copy];
-    v10->_updateMetadataWithCropRect = a6;
+    v10->_videoRequirements = [requirements copy];
+    v10->_cloneVideoRequirements = [cloneRequirements copy];
+    v10->_metadataRequirements = [metadataRequirements copy];
+    v10->_updateMetadataWithCropRect = rect;
   }
 
   return v10;
@@ -29,7 +29,7 @@
   [(BWInferenceSampleBufferPropagator *)&v3 dealloc];
 }
 
-- (void)propagateInferenceResultsToInferenceDictionary:(id)a3 usingStorage:(id)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 propagationSampleBuffer:(opaqueCMSampleBuffer *)a6
+- (void)propagateInferenceResultsToInferenceDictionary:(id)dictionary usingStorage:(id)storage inputSampleBuffer:(opaqueCMSampleBuffer *)buffer propagationSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer
 {
   if (*MEMORY[0x1E695FF58] == 1)
   {
@@ -41,10 +41,10 @@
   v62 = 0u;
   v63 = 0u;
   obj = self->_videoRequirements;
-  v9 = [(NSArray *)obj countByEnumeratingWithState:&v62 objects:v61 count:16, a3];
-  if (v9)
+  dictionary = [(NSArray *)obj countByEnumeratingWithState:&v62 objects:v61 count:16, dictionary];
+  if (dictionary)
   {
-    v10 = v9;
+    v10 = dictionary;
     v11 = *v63;
     key = *off_1E798A3C8;
     v12 = *MEMORY[0x1E695F050];
@@ -61,13 +61,13 @@
         }
 
         v17 = *(*(&v62 + 1) + 8 * i);
-        v18 = [a4 newSampleBufferSatisfyingRequirement:v17 withPropagationSampleBuffer:a6];
+        v18 = [storage newSampleBufferSatisfyingRequirement:v17 withPropagationSampleBuffer:sampleBuffer];
         v19 = BWCMSampleBufferCopyReattachAndReturnMutableMetadata(v18);
         if (self->_updateMetadataWithCropRect)
         {
           v20 = v19;
-          v21 = BWPixelBufferDimensionsFromSampleBuffer(a6);
-          CMGetAttachment(a6, key, 0);
+          v21 = BWPixelBufferDimensionsFromSampleBuffer(sampleBuffer);
+          CMGetAttachment(sampleBuffer, key, 0);
           v22 = *(MEMORY[0x1E695F050] + 16);
           v59 = *MEMORY[0x1E695F050];
           v60 = v22;
@@ -88,7 +88,7 @@
           FigCaptureMetadataUtilitiesUpdateMetadataForStillImageCrop(v20, v21, v31, v23, v24, v25, v26, v12, v13, v14, v15);
         }
 
-        BWSampleBufferSetAttachedMedia(a6, [v17 attachedMediaKey], v18);
+        BWSampleBufferSetAttachedMedia(sampleBuffer, [v17 attachedMediaKey], v18);
         if (v18)
         {
           CFRelease(v18);
@@ -121,8 +121,8 @@
         }
 
         v37 = *(*(&v55 + 1) + 8 * j);
-        v38 = [a4 newSampleBufferSatisfyingCloneRequirement:v37];
-        BWSampleBufferSetAttachedMedia(a6, [v37 attachedMediaKey], v38);
+        v38 = [storage newSampleBufferSatisfyingCloneRequirement:v37];
+        BWSampleBufferSetAttachedMedia(sampleBuffer, [v37 attachedMediaKey], v38);
         if (v38)
         {
           CFRelease(v38);
@@ -154,7 +154,7 @@
           objc_enumerationMutation(metadataRequirements);
         }
 
-        v44 = [a4 newMetadataDictionarySatisfyingRequirement:*(*(&v50 + 1) + 8 * k)];
+        v44 = [storage newMetadataDictionarySatisfyingRequirement:*(*(&v50 + 1) + 8 * k)];
         [v46 addEntriesFromDictionary:v44];
       }
 

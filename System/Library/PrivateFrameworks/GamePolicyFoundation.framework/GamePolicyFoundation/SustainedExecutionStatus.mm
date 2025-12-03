@@ -1,22 +1,22 @@
 @interface SustainedExecutionStatus
 - (_TtC20GamePolicyFoundation24SustainedExecutionStatus)init;
-- (_TtC20GamePolicyFoundation24SustainedExecutionStatus)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC20GamePolicyFoundation24SustainedExecutionStatus)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SustainedExecutionStatus
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_29EB4270C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_29EB4270C(coderCopy);
 }
 
-- (_TtC20GamePolicyFoundation24SustainedExecutionStatus)initWithCoder:(id)a3
+- (_TtC20GamePolicyFoundation24SustainedExecutionStatus)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_29EB431C0(v3);
+  coderCopy = coder;
+  v4 = sub_29EB431C0(coderCopy);
 
   return v4;
 }

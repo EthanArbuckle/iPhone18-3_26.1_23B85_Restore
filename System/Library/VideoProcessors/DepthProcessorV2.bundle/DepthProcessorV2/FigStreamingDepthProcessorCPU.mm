@@ -1,32 +1,32 @@
 @interface FigStreamingDepthProcessorCPU
 - (BOOL)allocateResources;
-- (FigStreamingDepthProcessorCPU)initWithParameters:(depthProcessorParameters *)a3 commandQueue:(id)a4;
-- (int)_copyToDepthImage:(__CVBuffer *)a3 disparityIn:(float *)a4 resX:(int)a5 resY:(int)a6 extendedWidth:(int)a7;
-- (int)_performGDRFilterOnDisparity:(float *)a3 yuvBuffer:(__CVBuffer *)a4 disparityOut:(float *)a5;
-- (int)_performSMPFilterOnDisparity:(float *)a3 depthBuffer:(__CVBuffer *)a4 inputInvalidDisparityValue:(float)a5 outputInvalidDisparityValue:(float)a6 disparityOut:(float *)a7;
-- (int)_performSMPFilterOnDisparity:(float *)a3 inputInvalidDisparityValue:(float)a4 outputInvalidDisparityValue:(float)a5 disparityOut:(float *)a6;
-- (int)processDepthBuffer:(__CVBuffer *)a3 yuvBuffer:(__CVBuffer *)a4 parametersDictionary:(id)a5 outputDisparityBuffer:(__CVBuffer *)a6;
+- (FigStreamingDepthProcessorCPU)initWithParameters:(depthProcessorParameters *)parameters commandQueue:(id)queue;
+- (int)_copyToDepthImage:(__CVBuffer *)image disparityIn:(float *)in resX:(int)x resY:(int)y extendedWidth:(int)width;
+- (int)_performGDRFilterOnDisparity:(float *)disparity yuvBuffer:(__CVBuffer *)buffer disparityOut:(float *)out;
+- (int)_performSMPFilterOnDisparity:(float *)disparity depthBuffer:(__CVBuffer *)buffer inputInvalidDisparityValue:(float)value outputInvalidDisparityValue:(float)disparityValue disparityOut:(float *)out;
+- (int)_performSMPFilterOnDisparity:(float *)disparity inputInvalidDisparityValue:(float)value outputInvalidDisparityValue:(float)disparityValue disparityOut:(float *)out;
+- (int)processDepthBuffer:(__CVBuffer *)buffer yuvBuffer:(__CVBuffer *)yuvBuffer parametersDictionary:(id)dictionary outputDisparityBuffer:(__CVBuffer *)disparityBuffer;
 - (void)_endSMPFilteringTrace;
 - (void)_startSMPFilteringTrace;
 - (void)dealloc;
 - (void)releaseResources;
-- (void)setCameraInfoByPortType:(id)a3;
+- (void)setCameraInfoByPortType:(id)type;
 @end
 
 @implementation FigStreamingDepthProcessorCPU
 
-- (FigStreamingDepthProcessorCPU)initWithParameters:(depthProcessorParameters *)a3 commandQueue:(id)a4
+- (FigStreamingDepthProcessorCPU)initWithParameters:(depthProcessorParameters *)parameters commandQueue:(id)queue
 {
   v8.receiver = self;
   v8.super_class = FigStreamingDepthProcessorCPU;
-  result = [(FigStreamingDepthProcessorCPU *)&v8 init:a3];
+  result = [(FigStreamingDepthProcessorCPU *)&v8 init:parameters];
   if (result)
   {
     *&result->_resourcesAllocated = 0;
     result->_streamingGDRFilterEnabled = 1;
-    v6 = vmovn_s64(*&a3->var0);
+    v6 = vmovn_s64(*&parameters->var0);
     *&result->_resX = v6;
-    v7 = a3->var2 >> 2;
+    v7 = parameters->var2 >> 2;
     if (!v7)
     {
       LODWORD(v7) = v6.i32[0];
@@ -124,25 +124,25 @@
   return result;
 }
 
-- (void)setCameraInfoByPortType:(id)a3
+- (void)setCameraInfoByPortType:(id)type
 {
-  v7 = objc_msgSend_objectForKeyedSubscript_(a3, a2, *MEMORY[0x29EDBFF58], v3, v4, v5);
+  v7 = objc_msgSend_objectForKeyedSubscript_(type, a2, *MEMORY[0x29EDBFF58], v3, v4, v5);
   self->_isFrontFacing = v7 != 0;
 }
 
-- (int)_performSMPFilterOnDisparity:(float *)a3 inputInvalidDisparityValue:(float)a4 outputInvalidDisparityValue:(float)a5 disparityOut:(float *)a6
+- (int)_performSMPFilterOnDisparity:(float *)disparity inputInvalidDisparityValue:(float)value outputInvalidDisparityValue:(float)disparityValue disparityOut:(float *)out
 {
-  objc_msgSend__startSMPFilteringTrace(self, a2, a3, a6, v6, v7);
-  *&v13 = a4;
-  sub_29571AB8C(self->_smpFilter, a3, 0, v20, v13, a5);
+  objc_msgSend__startSMPFilteringTrace(self, a2, disparity, out, v6, v7);
+  *&v13 = value;
+  sub_29571AB8C(self->_smpFilter, disparity, 0, v20, v13, disparityValue);
   objc_msgSend__endSMPFilteringTrace(self, v14, v15, v16, v17, v18);
-  sub_29572D568(v20, a6, &v21);
+  sub_29572D568(v20, out, &v21);
   return v21;
 }
 
-- (int)processDepthBuffer:(__CVBuffer *)a3 yuvBuffer:(__CVBuffer *)a4 parametersDictionary:(id)a5 outputDisparityBuffer:(__CVBuffer *)a6
+- (int)processDepthBuffer:(__CVBuffer *)buffer yuvBuffer:(__CVBuffer *)yuvBuffer parametersDictionary:(id)dictionary outputDisparityBuffer:(__CVBuffer *)disparityBuffer
 {
-  v12 = a5;
+  dictionaryCopy = dictionary;
   v19 = 0;
   if (!self->_resourcesAllocated)
   {
@@ -159,7 +159,7 @@
   v15 = 1;
   if (self->_streamingSMPFilterEnabled)
   {
-    if (!a4 || !a3 || !self->_smpFilter)
+    if (!yuvBuffer || !buffer || !self->_smpFilter)
     {
       goto LABEL_24;
     }
@@ -169,7 +169,7 @@ LABEL_11:
     {
       LODWORD(v14) = 1036831949;
       LODWORD(v13) = -1.0;
-      v15 = objc_msgSend__convertInputShifts_disparityOut_resX_resY_extendedWidth_inputInvalidDisparityValue_outputDisparitySaturationValue_(self, v10, a3, self->_disparity, self->_resX, self->_resY, self->_extendedWidth, v13, v14);
+      v15 = objc_msgSend__convertInputShifts_disparityOut_resX_resY_extendedWidth_inputInvalidDisparityValue_outputDisparitySaturationValue_(self, v10, buffer, self->_disparity, self->_resX, self->_resY, self->_extendedWidth, v13, v14);
       if (v15)
       {
         goto LABEL_24;
@@ -197,7 +197,7 @@ LABEL_11:
     }
 
     LODWORD(v14) = LODWORD(v13);
-    v15 = objc_msgSend__performSMPFilterOnDisparity_depthBuffer_inputInvalidDisparityValue_outputInvalidDisparityValue_disparityOut_(self, v10, disparity, a3, &v19, v11, v13, v14);
+    v15 = objc_msgSend__performSMPFilterOnDisparity_depthBuffer_inputInvalidDisparityValue_outputInvalidDisparityValue_disparityOut_(self, v10, disparity, buffer, &v19, v11, v13, v14);
     if (v15)
     {
       goto LABEL_24;
@@ -208,7 +208,7 @@ LABEL_11:
 LABEL_20:
     if (self->_streamingGDRFilterEnabled)
     {
-      v15 = objc_msgSend__performGDRFilterOnDisparity_yuvBuffer_disparityOut_(self, v10, disparity, a4, &v19, v11, v13);
+      v15 = objc_msgSend__performGDRFilterOnDisparity_yuvBuffer_disparityOut_(self, v10, disparity, yuvBuffer, &v19, v11, v13);
       if (v15)
       {
         goto LABEL_24;
@@ -217,11 +217,11 @@ LABEL_20:
       v17 = v19;
     }
 
-    v15 = objc_msgSend__copyToDepthImage_disparityIn_resX_resY_extendedWidth_(self, v10, a6, v17, self->_resX, self->_resY, self->_extendedWidth);
+    v15 = objc_msgSend__copyToDepthImage_disparityIn_resX_resY_extendedWidth_(self, v10, disparityBuffer, v17, self->_resX, self->_resY, self->_extendedWidth);
     goto LABEL_24;
   }
 
-  if (a3 && a4)
+  if (buffer && yuvBuffer)
   {
     goto LABEL_11;
   }
@@ -303,9 +303,9 @@ LABEL_13:
   }
 }
 
-- (int)_copyToDepthImage:(__CVBuffer *)a3 disparityIn:(float *)a4 resX:(int)a5 resY:(int)a6 extendedWidth:(int)a7
+- (int)_copyToDepthImage:(__CVBuffer *)image disparityIn:(float *)in resX:(int)x resY:(int)y extendedWidth:(int)width
 {
-  v12 = sub_2957195E8(self, a2, a3);
+  v12 = sub_2957195E8(self, a2, image);
   if (CVPixelBufferLockBaseAddress(v7, 0))
   {
     return 5;
@@ -370,33 +370,33 @@ LABEL_13:
   return v21;
 }
 
-- (int)_performSMPFilterOnDisparity:(float *)a3 depthBuffer:(__CVBuffer *)a4 inputInvalidDisparityValue:(float)a5 outputInvalidDisparityValue:(float)a6 disparityOut:(float *)a7
+- (int)_performSMPFilterOnDisparity:(float *)disparity depthBuffer:(__CVBuffer *)buffer inputInvalidDisparityValue:(float)value outputInvalidDisparityValue:(float)disparityValue disparityOut:(float *)out
 {
-  if (a3)
+  if (disparity)
   {
     *&v13 = sub_29571962C();
 
     return objc_msgSend__performSMPFilterOnDisparity_inputInvalidDisparityValue_outputInvalidDisparityValue_disparityOut_(v7, v8, v9, v10, v11, v12, v13);
   }
 
-  else if (CVPixelBufferLockBaseAddress(a4, 1uLL))
+  else if (CVPixelBufferLockBaseAddress(buffer, 1uLL))
   {
     return 3;
   }
 
   else
   {
-    CVPixelBufferGetBaseAddress(a4);
+    CVPixelBufferGetBaseAddress(buffer);
     *&v16 = sub_29571962C();
     v23 = objc_msgSend__performSMPFilterOnDisparity_inputInvalidDisparityValue_outputInvalidDisparityValue_disparityOut_(v17, v18, v19, v20, v21, v22, v16);
-    CVPixelBufferUnlockBaseAddress(a4, 1uLL);
+    CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
     return v23;
   }
 }
 
-- (int)_performGDRFilterOnDisparity:(float *)a3 yuvBuffer:(__CVBuffer *)a4 disparityOut:(float *)a5
+- (int)_performGDRFilterOnDisparity:(float *)disparity yuvBuffer:(__CVBuffer *)buffer disparityOut:(float *)out
 {
-  v9 = objc_msgSend__convertInputYUV_(self, a2, a4, a4, a5, v5);
+  v9 = objc_msgSend__convertInputYUV_(self, a2, buffer, buffer, out, v5);
   if (!v9)
   {
     v10 = MEMORY[0x29EDB9270];
@@ -405,13 +405,13 @@ LABEL_13:
       sub_295719610();
     }
 
-    sub_295728094(self->_gdr, self->_image, a3);
+    sub_295728094(self->_gdr, self->_image, disparity);
     if (*v10 == 1)
     {
       sub_295719610();
     }
 
-    *a5 = a3;
+    *out = disparity;
   }
 
   return v9;

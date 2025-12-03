@@ -1,24 +1,24 @@
 @interface VCPProtoVideoSegmentCaptionResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoVideoSegmentCaptionResult
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   memset(&v13, 0, sizeof(v13));
-  CMTimeRangeMakeFromDictionary(&v13, v3);
-  v4 = [(__CFDictionary *)v3 objectForKeyedSubscript:@"attributes"];
+  CMTimeRangeMakeFromDictionary(&v13, dictionaryCopy);
+  v4 = [(__CFDictionary *)dictionaryCopy objectForKeyedSubscript:@"attributes"];
   v5 = v4;
   if ((v13.start.flags & 1) != 0 && (v13.duration.flags & 1) != 0 && !v13.duration.epoch && (v13.duration.value & 0x8000000000000000) == 0 && v4)
   {
@@ -65,11 +65,11 @@
 
 - (id)exportToLegacyDictionary
 {
-  v3 = [(VCPProtoVideoSegmentCaptionResult *)self timeRange];
-  v4 = v3;
-  if (v3)
+  timeRange = [(VCPProtoVideoSegmentCaptionResult *)self timeRange];
+  v4 = timeRange;
+  if (timeRange)
   {
-    [v3 timeRangeValue];
+    [timeRange timeRangeValue];
   }
 
   else
@@ -81,16 +81,16 @@
   v5 = CMTimeRangeCopyAsDictionary(&range, 0);
   v6 = [(__CFDictionary *)v5 mutableCopy];
 
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v8 = MEMORY[0x1E696AD98];
   [(VCPProtoVideoSegmentCaptionResult *)self confidence];
   v9 = [v8 numberWithFloat:?];
-  [v7 setObject:v9 forKeyedSubscript:@"videoCaptionConfidence"];
+  [dictionary setObject:v9 forKeyedSubscript:@"videoCaptionConfidence"];
 
-  v10 = [(VCPProtoVideoSegmentCaptionResult *)self text];
-  [v7 setObject:v10 forKeyedSubscript:@"videoCaptionText"];
+  text = [(VCPProtoVideoSegmentCaptionResult *)self text];
+  [dictionary setObject:text forKeyedSubscript:@"videoCaptionText"];
 
-  [v6 setObject:v7 forKeyedSubscript:@"attributes"];
+  [v6 setObject:dictionary forKeyedSubscript:@"attributes"];
 
   return v6;
 }
@@ -101,74 +101,74 @@
   v8.receiver = self;
   v8.super_class = VCPProtoVideoSegmentCaptionResult;
   v4 = [(VCPProtoVideoSegmentCaptionResult *)&v8 description];
-  v5 = [(VCPProtoVideoSegmentCaptionResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoVideoSegmentCaptionResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   timeRange = self->_timeRange;
   if (timeRange)
   {
-    v6 = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"timeRange"];
+    dictionaryRepresentation = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"timeRange"];
   }
 
   *&v4 = self->_confidence;
   v7 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v7 forKey:@"confidence"];
+  [dictionary setObject:v7 forKey:@"confidence"];
 
   text = self->_text;
   if (text)
   {
-    [v3 setObject:text forKey:@"text"];
+    [dictionary setObject:text forKey:@"text"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteFloatField();
   PBDataWriterWriteStringField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   timeRange = self->_timeRange;
-  v5 = a3;
-  [v5 setTimeRange:timeRange];
-  v5[2] = self->_confidence;
-  [v5 setText:self->_text];
+  toCopy = to;
+  [toCopy setTimeRange:timeRange];
+  toCopy[2] = self->_confidence;
+  [toCopy setText:self->_text];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
   *(v5 + 8) = self->_confidence;
-  v8 = [(NSString *)self->_text copyWithZone:a3];
+  v8 = [(NSString *)self->_text copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | v4[3])) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && self->_confidence == *(v4 + 2))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | equalCopy[3])) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && self->_confidence == *(equalCopy + 2))
   {
     text = self->_text;
-    if (text | v4[2])
+    if (text | equalCopy[2])
     {
       v7 = [(NSString *)text isEqual:?];
     }
@@ -223,12 +223,12 @@
   return v12 ^ v3 ^ [(NSString *)self->_text hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   timeRange = self->_timeRange;
-  v6 = *(v4 + 3);
-  v7 = v4;
+  v6 = *(fromCopy + 3);
+  v7 = fromCopy;
   if (timeRange)
   {
     if (!v6)
@@ -249,13 +249,13 @@
     [(VCPProtoVideoSegmentCaptionResult *)self setTimeRange:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  self->_confidence = *(v4 + 2);
-  if (*(v4 + 2))
+  self->_confidence = *(fromCopy + 2);
+  if (*(fromCopy + 2))
   {
     [(VCPProtoVideoSegmentCaptionResult *)self setText:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 }
 

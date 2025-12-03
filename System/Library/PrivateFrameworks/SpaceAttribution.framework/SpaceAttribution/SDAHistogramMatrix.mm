@@ -1,6 +1,6 @@
 @interface SDAHistogramMatrix
 - (SDAHistogramMatrix)init;
-- (void)enumerateBundleHistogram:(id)a3;
+- (void)enumerateBundleHistogram:(id)histogram;
 - (void)print;
 @end
 
@@ -20,16 +20,16 @@
   return v2;
 }
 
-- (void)enumerateBundleHistogram:(id)a3
+- (void)enumerateBundleHistogram:(id)histogram
 {
-  v4 = a3;
+  histogramCopy = histogram;
   histogram = self->_histogram;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100027168;
   v7[3] = &unk_100065710;
-  v8 = v4;
-  v6 = v4;
+  v8 = histogramCopy;
+  v6 = histogramCopy;
   [(NSMutableDictionary *)histogram enumerateKeysAndObjectsUsingBlock:v7];
 }
 

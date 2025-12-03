@@ -1,12 +1,12 @@
 @interface LACCachedExternalizedContext
-- (LACCachedExternalizedContext)externalizedContextWithError:(id *)a3;
-- (LACCachedExternalizedContext)externalizedContextWithReply:(id)a3;
-- (LACCachedExternalizedContext)initWithExternalizationDelegate:(id)a3;
-- (LACCachedExternalizedContext)initWithExternalizedContext:(id)a3;
+- (LACCachedExternalizedContext)externalizedContextWithError:(id *)error;
+- (LACCachedExternalizedContext)externalizedContextWithReply:(id)reply;
+- (LACCachedExternalizedContext)initWithExternalizationDelegate:(id)delegate;
+- (LACCachedExternalizedContext)initWithExternalizedContext:(id)context;
 - (LACContextExternalizationObserving)externalizationObserver;
 - (NSData)externalizedContext;
 - (void)externalizedContext;
-- (void)invalidateBecauseOfInvalidConnection:(BOOL)a3;
+- (void)invalidateBecauseOfInvalidConnection:(BOOL)connection;
 @end
 
 @implementation LACCachedExternalizedContext
@@ -33,45 +33,45 @@
   return v2;
 }
 
-- (LACCachedExternalizedContext)initWithExternalizationDelegate:(id)a3
+- (LACCachedExternalizedContext)initWithExternalizationDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = LACCachedExternalizedContext;
   v5 = [(LACCachedExternalizedContext *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_externalizationDelegate, v4);
+    objc_storeWeak(&v5->_externalizationDelegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (LACCachedExternalizedContext)initWithExternalizedContext:(id)a3
+- (LACCachedExternalizedContext)initWithExternalizedContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = LACCachedExternalizedContext;
   v6 = [(LACCachedExternalizedContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cachedExternalizedContext, a3);
+    objc_storeStrong(&v6->_cachedExternalizedContext, context);
   }
 
   return v7;
 }
 
-- (LACCachedExternalizedContext)externalizedContextWithReply:(id)a3
+- (LACCachedExternalizedContext)externalizedContextWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(LACCachedExternalizedContext *)self cachedExternalizedContext];
+  replyCopy = reply;
+  cachedExternalizedContext = [(LACCachedExternalizedContext *)self cachedExternalizedContext];
 
-  if (v5)
+  if (cachedExternalizedContext)
   {
-    v6 = [(LACCachedExternalizedContext *)self cachedExternalizedContext];
-    v4[2](v4, v6, 0);
+    cachedExternalizedContext2 = [(LACCachedExternalizedContext *)self cachedExternalizedContext];
+    replyCopy[2](replyCopy, cachedExternalizedContext2, 0);
   }
 
   else
@@ -86,14 +86,14 @@
       v10[2] = __61__LACCachedExternalizedContext_externalizedContextWithReply___block_invoke;
       v10[3] = &unk_1E7A96060;
       v10[4] = self;
-      v11 = v4;
+      v11 = replyCopy;
       [v8 externalizedContextWithReply:v10];
 
       goto LABEL_6;
     }
 
-    v6 = [LACError errorWithCode:-1000 debugDescription:@"Missing externalizationDelegate"];
-    (v4)[2](v4, 0, v6);
+    cachedExternalizedContext2 = [LACError errorWithCode:-1000 debugDescription:@"Missing externalizationDelegate"];
+    (replyCopy)[2](replyCopy, 0, cachedExternalizedContext2);
   }
 
 LABEL_6:
@@ -114,15 +114,15 @@ void __61__LACCachedExternalizedContext_externalizedContextWithReply___block_inv
   (*(*(a1 + 40) + 16))();
 }
 
-- (LACCachedExternalizedContext)externalizedContextWithError:(id *)a3
+- (LACCachedExternalizedContext)externalizedContextWithError:(id *)error
 {
-  v5 = [(LACCachedExternalizedContext *)self cachedExternalizedContext];
+  cachedExternalizedContext = [(LACCachedExternalizedContext *)self cachedExternalizedContext];
 
-  if (v5)
+  if (cachedExternalizedContext)
   {
-    if (a3)
+    if (error)
     {
-      *a3 = 0;
+      *error = 0;
     }
 
     goto LABEL_13;
@@ -137,7 +137,7 @@ void __61__LACCachedExternalizedContext_externalizedContextWithReply___block_inv
     if ((v8 & 1) == 0)
     {
       v9 = objc_loadWeakRetained(&self->_externalizationDelegate);
-      v10 = [v9 synchronousExternalizedContextWithError:a3];
+      v10 = [v9 synchronousExternalizedContextWithError:error];
 
       if (v10)
       {
@@ -170,9 +170,9 @@ void __61__LACCachedExternalizedContext_externalizedContextWithReply___block_inv
   v20 = v13;
   [(LACCachedExternalizedContext *)self externalizedContextWithReply:&v16];
   dispatch_semaphore_wait(v13, 0xFFFFFFFFFFFFFFFFLL);
-  if (a3)
+  if (error)
   {
-    *a3 = v23[5];
+    *error = v23[5];
   }
 
   _Block_object_dispose(&v22, 8);
@@ -189,10 +189,10 @@ void __61__LACCachedExternalizedContext_externalizedContextWithError___block_inv
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)invalidateBecauseOfInvalidConnection:(BOOL)a3
+- (void)invalidateBecauseOfInvalidConnection:(BOOL)connection
 {
   cachedExternalizedContext = self->_cachedExternalizedContext;
-  if (a3)
+  if (connection)
   {
     if (cachedExternalizedContext)
     {
@@ -228,7 +228,7 @@ void __61__LACCachedExternalizedContext_externalizedContextWithError___block_inv
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B0233000, a2, OS_LOG_TYPE_ERROR, "Failed to get externalized context: %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

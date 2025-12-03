@@ -1,9 +1,9 @@
 @interface SUScriptTextFieldDelegate
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (SUScriptTextFieldDelegate)init;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation SUScriptTextFieldDelegate
@@ -28,11 +28,11 @@
   [(SUScriptTextFieldDelegate *)&v3 dealloc];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   v21 = *MEMORY[0x1E69E9840];
   v19 = 1;
-  v5 = [objc_msgSend(a3 "methodSignature")];
+  v5 = [objc_msgSend(invocation "methodSignature")];
   v6 = *v5 == 66 && v5[1] == 0;
   v17 = 0u;
   v18 = 0u;
@@ -55,14 +55,14 @@
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
-        [a3 selector];
+        [invocation selector];
         if (objc_opt_respondsToSelector())
         {
-          [a3 invokeWithTarget:v13];
+          [invocation invokeWithTarget:v13];
           if (v6)
           {
             v14 = 0;
-            [a3 getReturnValue:&v14];
+            [invocation getReturnValue:&v14];
             v11 &= v14;
             v19 = v11;
           }
@@ -77,18 +77,18 @@
 
   if (v6)
   {
-    [a3 setReturnValue:&v19];
+    [invocation setReturnValue:&v19];
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v6.receiver = self;
   v6.super_class = SUScriptTextFieldDelegate;
   result = [(SUScriptTextFieldDelegate *)&v6 methodSignatureForSelector:?];
   if (!result)
   {
-    MethodDescription = protocol_getMethodDescription(&unk_1F4245908, a3, 0, 1);
+    MethodDescription = protocol_getMethodDescription(&unk_1F4245908, selector, 0, 1);
     result = MethodDescription.name;
     if (MethodDescription.name)
     {
@@ -99,7 +99,7 @@
   return result;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v17 = *MEMORY[0x1E69E9840];
   v15.receiver = self;

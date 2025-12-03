@@ -1,15 +1,15 @@
 @interface SBDragAndDropGestureSwitcherModifierEvent
 - (CGRect)platterViewFrame;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBDragAndDropGestureSwitcherModifierEvent
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = SBDragAndDropGestureSwitcherModifierEvent;
-  v4 = [(SBGestureSwitcherModifierEvent *)&v9 copyWithZone:a3];
+  v4 = [(SBGestureSwitcherModifierEvent *)&v9 copyWithZone:zone];
   *(v4 + 22) = self->_dropAction;
   v5 = [(NSString *)self->_draggedSceneIdentifier copy];
   v6 = *(v4 + 23);

@@ -3,45 +3,45 @@
 + (BOOL)debugDumpIntermediateImages;
 + (void)initialize;
 + (void)loadFusionTuningParameters;
-- (id)_computeNCCMapFromImage:(id)a3 toImage:(id)a4 scale:(double)a5;
-- (id)_fuseImage:(id)a3 withGuideImage:(id)a4 weightImage:(id)a5 maskImage:(id)a6;
-- (id)_refineMaskImage:(id)a3 guideImage:(id)a4 scale:(double)a5;
-- (id)alignImage:(__n128)a3 transform:(double)a4 extent:(double)a5;
+- (id)_computeNCCMapFromImage:(id)image toImage:(id)toImage scale:(double)scale;
+- (id)_fuseImage:(id)image withGuideImage:(id)guideImage weightImage:(id)weightImage maskImage:(id)maskImage;
+- (id)_refineMaskImage:(id)image guideImage:(id)guideImage scale:(double)scale;
+- (id)alignImage:(__n128)image transform:(double)transform extent:(double)extent;
 - (id)outputImage;
 @end
 
 @implementation PILongExposureFusion
 
-- (id)_fuseImage:(id)a3 withGuideImage:(id)a4 weightImage:(id)a5 maskImage:(id)a6
+- (id)_fuseImage:(id)image withGuideImage:(id)guideImage weightImage:(id)weightImage maskImage:(id)maskImage
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  maskImageCopy = maskImage;
+  weightImageCopy = weightImage;
+  guideImageCopy = guideImage;
+  imageCopy = image;
   v13 = +[PIAutoLoopKernels blur7x7Kernel];
-  [v11 extent];
+  [guideImageCopy extent];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  v22 = [v11 imageByClampingToExtent];
-  v39[0] = v22;
+  imageByClampingToExtent = [guideImageCopy imageByClampingToExtent];
+  v39[0] = imageByClampingToExtent;
   v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:1];
   v24 = [v13 applyWithExtent:&__block_literal_global_60 roiCallback:v23 arguments:{v15, v17, v19, v21}];
 
   v25 = [MEMORY[0x1E695F688] vectorWithX:*&kBlendMaskThreshold0 Y:*&kBlendMaskThreshold1];
   v26 = +[PIAutoLoopKernels fusionKernel];
-  [v11 extent];
+  [guideImageCopy extent];
   v28 = v27;
   v30 = v29;
   v32 = v31;
   v34 = v33;
-  v38[0] = v12;
-  v38[1] = v11;
+  v38[0] = imageCopy;
+  v38[1] = guideImageCopy;
   v38[2] = v24;
-  v38[3] = v10;
-  v38[4] = v9;
+  v38[3] = weightImageCopy;
+  v38[4] = maskImageCopy;
   v38[5] = v25;
   v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:6];
 
@@ -50,17 +50,17 @@
   return v36;
 }
 
-- (id)_refineMaskImage:(id)a3 guideImage:(id)a4 scale:(double)a5
+- (id)_refineMaskImage:(id)image guideImage:(id)guideImage scale:(double)scale
 {
   v34[4] = *MEMORY[0x1E69E9840];
-  v6 = fmin(1.0 / (a5 * 8.0), 1.0);
+  v6 = fmin(1.0 / (scale * 8.0), 1.0);
   v7 = MEMORY[0x1E695F688];
-  v8 = a4;
-  v9 = a3;
+  guideImageCopy = guideImage;
+  imageCopy = image;
   v10 = [v7 vectorWithX:v6 * 15.0 Y:v6 * 15.0];
   v11 = v6;
   v12 = [MEMORY[0x1E695F688] vectorWithX:(-0.5 / ((v11 * 7.0) * (v11 * 7.0))) Y:-0.00499999989 Z:-49.9999962];
-  [v9 extent];
+  [imageCopy extent];
   NUScaleRect();
   v14 = v13;
   v16 = v15;
@@ -68,15 +68,15 @@
   v20 = v19;
   memset(&v33, 0, sizeof(v33));
   CGAffineTransformMakeScale(&v33, v6, v6);
-  v21 = [v9 imageByClampingToExtent];
+  imageByClampingToExtent = [imageCopy imageByClampingToExtent];
 
   v32 = v33;
-  v22 = [v21 imageByApplyingTransform:&v32 highQualityDownsample:1];
+  v22 = [imageByClampingToExtent imageByApplyingTransform:&v32 highQualityDownsample:1];
 
-  v23 = [v8 imageByClampingToExtent];
+  imageByClampingToExtent2 = [guideImageCopy imageByClampingToExtent];
 
   v32 = v33;
-  v24 = [v23 imageByApplyingTransform:&v32 highQualityDownsample:1];
+  v24 = [imageByClampingToExtent2 imageByApplyingTransform:&v32 highQualityDownsample:1];
 
   v25 = +[PIAutoLoopKernels dynamismMapRefineKernel];
   v34[0] = v22;
@@ -89,20 +89,20 @@
   v31 = v33;
   memset(&v32, 0, sizeof(v32));
   CGAffineTransformInvert(&v32, &v31);
-  v28 = [v27 imageByClampingToExtent];
+  imageByClampingToExtent3 = [v27 imageByClampingToExtent];
   v31 = v32;
-  v29 = [v28 imageByApplyingTransform:&v31 highQualityDownsample:1];
+  v29 = [imageByClampingToExtent3 imageByApplyingTransform:&v31 highQualityDownsample:1];
 
   return v29;
 }
 
-- (id)_computeNCCMapFromImage:(id)a3 toImage:(id)a4 scale:(double)a5
+- (id)_computeNCCMapFromImage:(id)image toImage:(id)toImage scale:(double)scale
 {
   v41[2] = *MEMORY[0x1E69E9840];
-  v6 = fmin(1.0 / (a5 * 8.0), 1.0);
-  v7 = a4;
-  v8 = a3;
-  [v8 extent];
+  v6 = fmin(1.0 / (scale * 8.0), 1.0);
+  toImageCopy = toImage;
+  imageCopy = image;
+  [imageCopy extent];
   NUScaleRect();
   v10 = v9;
   v12 = v11;
@@ -110,15 +110,15 @@
   v16 = v15;
   memset(&v38, 0, sizeof(v38));
   CGAffineTransformMakeScale(&v38, v6, v6);
-  v17 = [v8 imageByClampingToExtent];
+  imageByClampingToExtent = [imageCopy imageByClampingToExtent];
 
   v37 = v38;
-  v18 = [v17 imageByApplyingTransform:&v37 highQualityDownsample:1];
+  v18 = [imageByClampingToExtent imageByApplyingTransform:&v37 highQualityDownsample:1];
 
-  v19 = [v7 imageByClampingToExtent];
+  imageByClampingToExtent2 = [toImageCopy imageByClampingToExtent];
 
   v37 = v38;
-  v20 = [v19 imageByApplyingTransform:&v37 highQualityDownsample:1];
+  v20 = [imageByClampingToExtent2 imageByApplyingTransform:&v37 highQualityDownsample:1];
 
   v21 = +[PIAutoLoopKernels nccKernel];
   v41[0] = v18;
@@ -150,44 +150,44 @@ LABEL_7:
 
   v29 = 0;
 LABEL_9:
-  v30 = [v27 imageByClampingToExtent];
-  v39 = v30;
+  imageByClampingToExtent3 = [v27 imageByClampingToExtent];
+  v39 = imageByClampingToExtent3;
   v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v39 count:1];
   v32 = [v29 applyWithExtent:&__block_literal_global_56_22983 roiCallback:v31 arguments:{v10, v12, v14, v16}];
 
   v36 = v38;
   memset(&v37, 0, sizeof(v37));
   CGAffineTransformInvert(&v37, &v36);
-  v33 = [v32 imageByClampingToExtent];
+  imageByClampingToExtent4 = [v32 imageByClampingToExtent];
   v36 = v37;
-  v34 = [v33 imageByApplyingTransform:&v36 highQualityDownsample:1];
+  v34 = [imageByClampingToExtent4 imageByApplyingTransform:&v36 highQualityDownsample:1];
 
   return v34;
 }
 
-- (id)alignImage:(__n128)a3 transform:(double)a4 extent:(double)a5
+- (id)alignImage:(__n128)image transform:(double)transform extent:(double)extent
 {
   v28[3] = *MEMORY[0x1E69E9840];
   v27[0] = 0x3FF0000000000000;
   v27[1] = 0;
   v27[2] = 0;
   v27[3] = 0x3FF0000000000000;
-  *&v27[4] = -a4;
-  *&v27[5] = -a5;
+  *&v27[4] = -transform;
+  *&v27[5] = -extent;
   v12 = [a10 imageByApplyingTransform:v27 highQualityDownsample:1];
   v13 = +[PIAutoLoopKernels homographyKernel];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __52__PILongExposureFusion_alignImage_transform_extent___block_invoke;
   v23[3] = &__block_descriptor_80_e73__CGRect__CGPoint_dd__CGSize_dd__44__0i8_CGRect__CGPoint_dd__CGSize_dd__12l;
-  v24 = a1;
+  selfCopy = self;
   v25 = a2;
-  v26 = a3;
-  v14 = [MEMORY[0x1E695F688] vectorWithX:a1.n128_f32[0] Y:a2.n128_f32[0] Z:a3.n128_f32[0]];
+  imageCopy = image;
+  v14 = [MEMORY[0x1E695F688] vectorWithX:self.n128_f32[0] Y:a2.n128_f32[0] Z:image.n128_f32[0]];
   v28[0] = v14;
-  v15 = [MEMORY[0x1E695F688] vectorWithX:a1.n128_f32[1] Y:a2.n128_f32[1] Z:a3.n128_f32[1]];
+  v15 = [MEMORY[0x1E695F688] vectorWithX:self.n128_f32[1] Y:a2.n128_f32[1] Z:image.n128_f32[1]];
   v28[1] = v15;
-  v16 = [MEMORY[0x1E695F688] vectorWithX:a1.n128_f32[2] Y:a2.n128_f32[2] Z:a3.n128_f32[2]];
+  v16 = [MEMORY[0x1E695F688] vectorWithX:self.n128_f32[2] Y:a2.n128_f32[2] Z:image.n128_f32[2]];
   v28[2] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:3];
   v18 = [v13 applyWithExtent:v23 roiCallback:v12 inputImage:v17 arguments:{0.0, 0.0, a6, a7}];
@@ -238,11 +238,11 @@ void __52__PILongExposureFusion_alignImage_transform_extent___block_invoke(CGFlo
 - (id)outputImage
 {
   v67 = *MEMORY[0x1E69E9840];
-  v3 = [(PILongExposureFusion *)self inputImage];
-  if (v3)
+  inputImage = [(PILongExposureFusion *)self inputImage];
+  if (inputImage)
   {
-    v4 = [(PILongExposureFusion *)self inputMaskImage];
-    if (!v4)
+    inputMaskImage = [(PILongExposureFusion *)self inputMaskImage];
+    if (!inputMaskImage)
     {
       if (*MEMORY[0x1E69B3D78] != -1)
       {
@@ -260,8 +260,8 @@ void __52__PILongExposureFusion_alignImage_transform_extent___block_invoke(CGFlo
       goto LABEL_64;
     }
 
-    v5 = [(PILongExposureFusion *)self inputStillImage];
-    if (!v5)
+    inputStillImage = [(PILongExposureFusion *)self inputStillImage];
+    if (!inputStillImage)
     {
       if (*MEMORY[0x1E69B3D78] != -1)
       {
@@ -279,9 +279,9 @@ void __52__PILongExposureFusion_alignImage_transform_extent___block_invoke(CGFlo
       goto LABEL_63;
     }
 
-    v6 = [(PILongExposureFusion *)self inputRenderScale];
-    v7 = v6;
-    if (!v6)
+    inputRenderScale = [(PILongExposureFusion *)self inputRenderScale];
+    v7 = inputRenderScale;
+    if (!inputRenderScale)
     {
       if (*MEMORY[0x1E69B3D78] != -1)
       {
@@ -299,11 +299,11 @@ void __52__PILongExposureFusion_alignImage_transform_extent___block_invoke(CGFlo
       goto LABEL_62;
     }
 
-    [v6 doubleValue];
+    [inputRenderScale doubleValue];
     v9 = v8;
-    v10 = [(PILongExposureFusion *)self inputVideoScale];
-    v11 = v10;
-    if (!v10)
+    inputVideoScale = [(PILongExposureFusion *)self inputVideoScale];
+    v11 = inputVideoScale;
+    if (!inputVideoScale)
     {
       if (*MEMORY[0x1E69B3D78] != -1)
       {
@@ -321,25 +321,25 @@ void __52__PILongExposureFusion_alignImage_transform_extent___block_invoke(CGFlo
       goto LABEL_61;
     }
 
-    [v10 doubleValue];
+    [inputVideoScale doubleValue];
     v13 = v12;
-    v14 = [(PILongExposureFusion *)self inputAlignmentExtent];
-    v15 = v14;
-    if (v14)
+    inputAlignmentExtent = [(PILongExposureFusion *)self inputAlignmentExtent];
+    v15 = inputAlignmentExtent;
+    if (inputAlignmentExtent)
     {
-      if ([v14 count] == 4)
+      if ([inputAlignmentExtent count] == 4)
       {
         [v15 CGRectValue];
-        v16 = [(PILongExposureFusion *)self inputAlignmentTransform];
-        v17 = v16;
-        if (v16)
+        inputAlignmentTransform = [(PILongExposureFusion *)self inputAlignmentTransform];
+        v17 = inputAlignmentTransform;
+        if (inputAlignmentTransform)
         {
-          if ([v16 count] == 9)
+          if ([inputAlignmentTransform count] == 9)
           {
             v56 = v15;
             v57 = v11;
             v58 = v7;
-            v59 = v5;
+            v59 = inputStillImage;
             v18 = 0;
             v19 = 0;
             v20 = *(MEMORY[0x1E69E9B10] + 16);
@@ -378,16 +378,16 @@ void __52__PILongExposureFusion_alignImage_transform_extent___block_invoke(CGFlo
             NUScaleRect();
             v27 = v26;
             *&v26 = v9;
-            v5 = v59;
+            inputStillImage = v59;
             v31 = [(PILongExposureFusion *)self alignImage:v59 transform:*buf extent:*&v64, COERCE_DOUBLE(vmul_n_f32(*&v65, *&v26)), v27, v28, v29, v30];
             memset(&v62, 0, sizeof(v62));
             CGAffineTransformMakeScale(&v62, v9 / v13, v9 / v13);
-            v32 = [v3 imageByClampingToExtent];
+            imageByClampingToExtent = [inputImage imageByClampingToExtent];
             v66 = v62;
-            v33 = [v32 imageByApplyingTransform:&v66 highQualityDownsample:1];
+            v33 = [imageByClampingToExtent imageByApplyingTransform:&v66 highQualityDownsample:1];
 
             v34 = [(PILongExposureFusion *)self _computeNCCMapFromImage:v33 toImage:v31 scale:v9];
-            v35 = [(PILongExposureFusion *)self _refineMaskImage:v4 guideImage:v3 scale:v9];
+            v35 = [(PILongExposureFusion *)self _refineMaskImage:inputMaskImage guideImage:inputImage scale:v9];
             v66 = v62;
             [v35 imageByApplyingTransform:&v66 highQualityDownsample:1];
             v60 = v31;
@@ -400,18 +400,18 @@ void __52__PILongExposureFusion_alignImage_transform_extent___block_invoke(CGFlo
             {
               v52 = v35;
               v53 = v33;
-              v54 = [MEMORY[0x1E696AC08] defaultManager];
+              defaultManager = [MEMORY[0x1E696AC08] defaultManager];
               v37 = NURenderLogger_22995();
               if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
               {
-                v51 = [v54 currentDirectoryPath];
+                currentDirectoryPath = [defaultManager currentDirectoryPath];
                 LODWORD(v66.a) = 138412290;
-                *(&v66.a + 4) = v51;
+                *(&v66.a + 4) = currentDirectoryPath;
                 _os_log_debug_impl(&dword_1C7694000, v37, OS_LOG_TYPE_DEBUG, "Writing intermediate long exposure fusion images to : %@", &v66, 0xCu);
               }
 
-              [v3 writeToTIFF:@"long-exp-input-image.tiff"];
-              [v4 writeToTIFF:@"long-exp-mask-image.tiff"];
+              [inputImage writeToTIFF:@"long-exp-input-image.tiff"];
+              [inputMaskImage writeToTIFF:@"long-exp-mask-image.tiff"];
               [v59 writeToTIFF:@"long-exp-still-image.tiff"];
               [v36 extent];
               v38 = [v60 imageByCroppingToRect:?];
@@ -421,7 +421,7 @@ void __52__PILongExposureFusion_alignImage_transform_extent___block_invoke(CGFlo
               v39 = [v61 imageByCroppingToRect:?];
               [v39 writeToTIFF:@"long-exp-ncc-map-image.tiff"];
 
-              [v4 extent];
+              [inputMaskImage extent];
               v35 = v52;
               v40 = [v52 imageByCroppingToRect:?];
               [v40 writeToTIFF:@"long-exp-refined-mask-image.tiff"];
@@ -530,8 +530,8 @@ LABEL_65:
 
 + (BOOL)_debugDumpIntermediateImages
 {
-  v2 = [MEMORY[0x1E69B3AB0] globalSettings];
-  v3 = [v2 BOOLSettingForKey:@"PI_LONG_EXPOSURE_DUMP_INTERMEDIATES" defaultValue:&__block_literal_global_24];
+  globalSettings = [MEMORY[0x1E69B3AB0] globalSettings];
+  v3 = [globalSettings BOOLSettingForKey:@"PI_LONG_EXPOSURE_DUMP_INTERMEDIATES" defaultValue:&__block_literal_global_24];
 
   return v3;
 }
@@ -542,7 +542,7 @@ LABEL_65:
   block[1] = 3221225472;
   block[2] = __51__PILongExposureFusion_debugDumpIntermediateImages__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (debugDumpIntermediateImages_onceToken != -1)
   {
     dispatch_once(&debugDumpIntermediateImages_onceToken, block);
@@ -561,8 +561,8 @@ uint64_t __51__PILongExposureFusion_debugDumpIntermediateImages__block_invoke(ui
 + (void)loadFusionTuningParameters
 {
   v33 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69B3AB0] globalSettings];
-  v3 = [v2 stringSettingForKey:@"PI_LONG_EXPOSURE_FUSION_PARAMS" defaultValue:&__block_literal_global_23037];
+  globalSettings = [MEMORY[0x1E69B3AB0] globalSettings];
+  v3 = [globalSettings stringSettingForKey:@"PI_LONG_EXPOSURE_FUSION_PARAMS" defaultValue:&__block_literal_global_23037];
 
   if (v3)
   {
@@ -674,7 +674,7 @@ uint64_t __51__PILongExposureFusion_debugDumpIntermediateImages__block_invoke(ui
   block[1] = 3221225472;
   block[2] = __34__PILongExposureFusion_initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initialize_onceToken_23061 != -1)
   {
     dispatch_once(&initialize_onceToken_23061, block);

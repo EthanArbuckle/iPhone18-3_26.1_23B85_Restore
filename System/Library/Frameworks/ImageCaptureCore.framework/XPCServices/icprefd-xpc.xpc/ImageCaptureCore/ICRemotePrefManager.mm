@@ -1,14 +1,14 @@
 @interface ICRemotePrefManager
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (ICRemotePrefManager)init;
-- (int)checkFilesAndFoldersAccess:(id)a3 shouldPrompt:(BOOL)a4;
-- (int)checkTetheringAccess:(id)a3 shouldPrompt:(BOOL)a4;
-- (void)addRemoteManagerConnection:(id)a3;
+- (int)checkFilesAndFoldersAccess:(id)access shouldPrompt:(BOOL)prompt;
+- (int)checkTetheringAccess:(id)access shouldPrompt:(BOOL)prompt;
+- (void)addRemoteManagerConnection:(id)connection;
 - (void)dealloc;
-- (void)removeRemoteManagerConnectionWithProcessIdentifier:(int)a3;
-- (void)requestGoodNewsStatusWithReply:(id)a3;
-- (void)resetContentsAuthorizationStatusWithReply:(id)a3;
-- (void)resetControlAuthorizationStatusWithReply:(id)a3;
+- (void)removeRemoteManagerConnectionWithProcessIdentifier:(int)identifier;
+- (void)requestGoodNewsStatusWithReply:(id)reply;
+- (void)resetContentsAuthorizationStatusWithReply:(id)reply;
+- (void)resetControlAuthorizationStatusWithReply:(id)reply;
 @end
 
 @implementation ICRemotePrefManager
@@ -49,7 +49,7 @@
   [(ICRemotePrefManager *)&v4 dealloc];
 }
 
-- (void)addRemoteManagerConnection:(id)a3
+- (void)addRemoteManagerConnection:(id)connection
 {
   v12[0] = 0;
   v12[1] = v12;
@@ -61,12 +61,12 @@
   v11[1] = 3221225472;
   v11[2] = __50__ICRemotePrefManager_addRemoteManagerConnection___block_invoke;
   v11[3] = &unk_1000082A0;
-  v11[4] = a3;
+  v11[4] = connection;
   v11[5] = v12;
-  [a3 setInvalidationHandler:v11];
-  [a3 setInterruptionHandler:{objc_msgSend(a3, "invalidationHandler")}];
+  [connection setInvalidationHandler:v11];
+  [connection setInterruptionHandler:{objc_msgSend(connection, "invalidationHandler")}];
   os_unfair_lock_lock(&self->_remoteManagerConnectionsLock);
-  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%05d", [a3 processIdentifier]);
+  v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%05d", [connection processIdentifier]);
   [(NSString *)v5 UTF8String];
   v6 = os_transaction_create();
   [(NSMutableDictionary *)self->_osTransactions setObject:v6 forKeyedSubscript:v5];
@@ -85,15 +85,15 @@
   v9 = _gICOSLog;
   if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(__CFString *)v7 UTF8String];
+    uTF8String = [(__CFString *)v7 UTF8String];
     *buf = 136446466;
-    v14 = v10;
+    v14 = uTF8String;
     v15 = 2114;
     v16 = v8;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
   }
 
-  [(NSMutableArray *)self->_remoteManagerConnections addObject:a3];
+  [(NSMutableArray *)self->_remoteManagerConnections addObject:connection];
   os_unfair_lock_unlock(&self->_remoteManagerConnectionsLock);
   _Block_object_dispose(v12, 8);
 }
@@ -111,7 +111,7 @@ id __50__ICRemotePrefManager_addRemoteManagerConnection___block_invoke(id result
   return result;
 }
 
-- (void)removeRemoteManagerConnectionWithProcessIdentifier:(int)a3
+- (void)removeRemoteManagerConnectionWithProcessIdentifier:(int)identifier
 {
   os_unfair_lock_lock(&self->_remoteManagerConnectionsLock);
   v5 = [(NSMutableArray *)self->_remoteManagerConnections copy];
@@ -136,8 +136,8 @@ id __50__ICRemotePrefManager_addRemoteManagerConnection___block_invoke(id result
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 processIdentifier];
-        if (a3 == -1 || v12 == a3)
+        processIdentifier = [v11 processIdentifier];
+        if (identifier == -1 || processIdentifier == identifier)
         {
           -[NSMutableDictionary removeObjectForKey:](-[ICRemotePrefManager osTransactions](self, "osTransactions"), "removeObjectForKey:", [v9[54] stringWithFormat:@"%05d", objc_msgSend(v11, "processIdentifier")]);
           __ICOSLogCreate();
@@ -152,9 +152,9 @@ id __50__ICRemotePrefManager_addRemoteManagerConnection___block_invoke(id result
           v16 = _gICOSLog;
           if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
           {
-            v17 = [(__CFString *)v13 UTF8String];
+            uTF8String = [(__CFString *)v13 UTF8String];
             *buf = 136446466;
-            v24 = v17;
+            v24 = uTF8String;
             v25 = 2114;
             v26 = v15;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -193,7 +193,7 @@ void __68__ICRemotePrefManager_addSelectorToInterface_selectorString_origin___bl
   addSelectorToInterface_selectorString_origin__incomingClasses = [v11 initWithObjects:{v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, objc_opt_class(), 0}];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   __ICOSLogCreate();
   v6 = @"remoteManager";
@@ -202,12 +202,12 @@ void __68__ICRemotePrefManager_addSelectorToInterface_selectorString_origin___bl
     v6 = [objc_msgSend(@"remoteManager" substringWithRange:{0, 18), "stringByAppendingString:", @".."}];
   }
 
-  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"New Connection: %d", [a4 processIdentifier]);
+  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"New Connection: %d", [connection processIdentifier]);
   v8 = _gICOSLog;
   if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
-    v13 = [(__CFString *)v6 UTF8String];
+    uTF8String = [(__CFString *)v6 UTF8String];
     v14 = 2114;
     v15 = v7;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -220,22 +220,22 @@ void __68__ICRemotePrefManager_addSelectorToInterface_selectorString_origin___bl
   [(ICRemotePrefManager *)self addSelectorToInterface:v9 selectorString:@"requestGoodNewsStatusWithReply:" origin:1];
   [(ICRemotePrefManager *)self addSelectorToInterface:v9 selectorString:@"resetContentsAuthorizationStatusWithReply:" origin:1];
   [(ICRemotePrefManager *)self addSelectorToInterface:v9 selectorString:@"resetControlAuthorizationStatusWithReply:" origin:1];
-  [a4 setExportedInterface:v9];
-  [a4 setRemoteObjectInterface:v10];
-  [a4 setExportedObject:self];
-  [(ICRemotePrefManager *)self addRemoteManagerConnection:a4];
-  [a4 resume];
+  [connection setExportedInterface:v9];
+  [connection setRemoteObjectInterface:v10];
+  [connection setExportedObject:self];
+  [(ICRemotePrefManager *)self addRemoteManagerConnection:connection];
+  [connection resume];
   return 1;
 }
 
-- (int)checkFilesAndFoldersAccess:(id)a3 shouldPrompt:(BOOL)a4
+- (int)checkFilesAndFoldersAccess:(id)access shouldPrompt:(BOOL)prompt
 {
-  v4 = a4;
+  promptCopy = prompt;
   v72 = 0;
   v73 = &v72;
   v74 = 0x2020000000;
   v75 = 1;
-  if (ICRemotePrefManagerEvaluatePrivateEntitlement(a3))
+  if (ICRemotePrefManagerEvaluatePrivateEntitlement(access))
   {
 LABEL_2:
     *(v73 + 6) = 0;
@@ -259,18 +259,18 @@ LABEL_2:
     v14 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(__CFString *)v6 UTF8String];
+      uTF8String = [(__CFString *)v6 UTF8String];
       buf.val[0] = 136446466;
-      *&buf.val[1] = v15;
+      *&buf.val[1] = uTF8String;
       LOWORD(buf.val[3]) = 2114;
       *(&buf.val[3] + 2) = v13;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &buf, 0x16u);
     }
 
     memset(&buf, 0, sizeof(buf));
-    if (a3)
+    if (access)
     {
-      [a3 auditToken];
+      [access auditToken];
     }
 
     token = buf;
@@ -282,9 +282,9 @@ LABEL_2:
     }
 
     tcc_service_singleton_for_name();
-    if (a3)
+    if (access)
     {
-      [a3 auditToken];
+      [access auditToken];
     }
 
     else
@@ -326,9 +326,9 @@ LABEL_2:
       v25 = 0;
       if (v24)
       {
-        v26 = [(__CFString *)v20 UTF8String];
+        uTF8String2 = [(__CFString *)v20 UTF8String];
         *v78 = 136446466;
-        *&v78[4] = v26;
+        *&v78[4] = uTF8String2;
         v79 = 2114;
         v80 = v22;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", v78, 0x16u);
@@ -353,9 +353,9 @@ LABEL_2:
       v31 = _gICOSLog;
       if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
       {
-        v32 = [(__CFString *)v21 UTF8String];
+        uTF8String3 = [(__CFString *)v21 UTF8String];
         *v78 = 136446466;
-        *&v78[4] = v32;
+        *&v78[4] = uTF8String3;
         v79 = 2114;
         v80 = v30;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", v78, 0x16u);
@@ -366,7 +366,7 @@ LABEL_2:
 
     *(v73 + 6) = v25;
 LABEL_47:
-    if (*(*&token.val[2] + 24) == 1 && v4)
+    if (*(*&token.val[2] + 24) == 1 && promptCopy)
     {
       __ICOSLogCreate();
       if ([@"☀️ TCC" length] < 0x15)
@@ -383,9 +383,9 @@ LABEL_47:
       v35 = _gICOSLog;
       if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
       {
-        v36 = [(__CFString *)v33 UTF8String];
+        uTF8String4 = [(__CFString *)v33 UTF8String];
         *v78 = 136446466;
-        *&v78[4] = v36;
+        *&v78[4] = uTF8String4;
         v79 = 2114;
         v80 = v34;
         _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", v78, 0x16u);
@@ -401,9 +401,9 @@ LABEL_47:
   }
 
   memset(&buf, 0, sizeof(buf));
-  if (a3)
+  if (access)
   {
-    [a3 auditToken];
+    [access auditToken];
   }
 
   token = buf;
@@ -436,9 +436,9 @@ LABEL_47:
     }
 
 LABEL_77:
-    v47 = [(__CFString *)v18 UTF8String];
+    uTF8String5 = [(__CFString *)v18 UTF8String];
     token.val[0] = 136446466;
-    *&token.val[1] = v47;
+    *&token.val[1] = uTF8String5;
     LOWORD(token.val[3]) = 2114;
     *(&token.val[3] + 2) = v27;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &token, 0x16u);
@@ -446,7 +446,7 @@ LABEL_77:
   }
 
   *v78 = 0;
-  v10 = v8;
+  localizedName = v8;
   if (([(__CFString *)v8 containsString:@"com.apple"]& 1) == 0)
   {
     v11 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v8 allowPlaceholder:0 error:v78];
@@ -468,9 +468,9 @@ LABEL_77:
       v38 = _gICOSLog;
       if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
       {
-        v39 = [(__CFString *)v29 UTF8String];
+        uTF8String6 = [(__CFString *)v29 UTF8String];
         token.val[0] = 136446466;
-        *&token.val[1] = v39;
+        *&token.val[1] = uTF8String6;
         LOWORD(token.val[3]) = 2114;
         *(&token.val[3] + 2) = v37;
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &token, 0x16u);
@@ -500,16 +500,16 @@ LABEL_65:
         goto LABEL_77;
       }
 
-      v10 = 0;
+      localizedName = 0;
     }
 
     else
     {
-      v10 = [v11 localizedName];
+      localizedName = [v11 localizedName];
     }
   }
 
-  if (!v10)
+  if (!localizedName)
   {
     goto LABEL_65;
   }
@@ -525,13 +525,13 @@ LABEL_65:
     v40 = [objc_msgSend(@"TCC" substringWithRange:{0, 18), "stringByAppendingString:", @".."}];
   }
 
-  v41 = [NSString stringWithFormat:@"%@ is checking access to *contents* on external device", v10];
+  v41 = [NSString stringWithFormat:@"%@ is checking access to *contents* on external device", localizedName];
   v42 = _gICOSLog;
   if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
   {
-    v43 = [(__CFString *)v40 UTF8String];
+    uTF8String7 = [(__CFString *)v40 UTF8String];
     token.val[0] = 136446466;
-    *&token.val[1] = v43;
+    *&token.val[1] = uTF8String7;
     LOWORD(token.val[3]) = 2114;
     *(&token.val[3] + 2) = v41;
     _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &token, 0x16u);
@@ -559,13 +559,13 @@ LABEL_65:
         v46 = [objc_msgSend(@"TCC" substringWithRange:{0, 18), "stringByAppendingString:", @".."}];
       }
 
-      v57 = [NSString stringWithFormat:@"Granted %@ access to *contents* on external device", v10];
+      v57 = [NSString stringWithFormat:@"Granted %@ access to *contents* on external device", localizedName];
       v58 = _gICOSLog;
       if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
       {
-        v59 = [(__CFString *)v46 UTF8String];
+        uTF8String8 = [(__CFString *)v46 UTF8String];
         token.val[0] = 136446466;
-        *&token.val[1] = v59;
+        *&token.val[1] = uTF8String8;
         LOWORD(token.val[3]) = 2114;
         *(&token.val[3] + 2) = v57;
         _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &token, 0x16u);
@@ -585,13 +585,13 @@ LABEL_65:
       v48 = [objc_msgSend(@"TCC" substringWithRange:{0, 18), "stringByAppendingString:", @".."}];
     }
 
-    v52 = [NSString stringWithFormat:@"User denied or disabled %@ access to *contents* on external device", v10];
+    v52 = [NSString stringWithFormat:@"User denied or disabled %@ access to *contents* on external device", localizedName];
     v53 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
     {
-      v54 = [(__CFString *)v48 UTF8String];
+      uTF8String9 = [(__CFString *)v48 UTF8String];
       token.val[0] = 136446466;
-      *&token.val[1] = v54;
+      *&token.val[1] = uTF8String9;
       LOWORD(token.val[3]) = 2114;
       *(&token.val[3] + 2) = v52;
       _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &token, 0x16u);
@@ -604,7 +604,7 @@ LABEL_88:
     goto LABEL_89;
   }
 
-  if (!v4)
+  if (!promptCopy)
   {
     v50 = v73;
     v51 = 2;
@@ -622,22 +622,22 @@ LABEL_88:
     v49 = [objc_msgSend(@"TCC" substringWithRange:{0, 18), "stringByAppendingString:", @".."}];
   }
 
-  v60 = [NSString stringWithFormat:@"%@ is requesting a prompt to access to *contents* on external device", v10];
+  v60 = [NSString stringWithFormat:@"%@ is requesting a prompt to access to *contents* on external device", localizedName];
   v61 = _gICOSLog;
   if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
   {
-    v62 = [(__CFString *)v49 UTF8String];
+    uTF8String10 = [(__CFString *)v49 UTF8String];
     token.val[0] = 136446466;
-    *&token.val[1] = v62;
+    *&token.val[1] = uTF8String10;
     LOWORD(token.val[3]) = 2114;
     *(&token.val[3] + 2) = v60;
     _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &token, 0x16u);
   }
 
   v76[0] = kCFUserNotificationAlertHeaderKey;
-  v77[0] = [NSString stringWithFormat:ICLocalizedString(), v10];
+  v77[0] = [NSString stringWithFormat:ICLocalizedString(), localizedName];
   v76[1] = kCFUserNotificationAlertMessageKey;
-  v77[1] = [NSString stringWithFormat:ICLocalizedString(), v10];
+  v77[1] = [NSString stringWithFormat:ICLocalizedString(), localizedName];
   v76[2] = kCFUserNotificationDefaultButtonTitleKey;
   v77[2] = ICLocalizedString();
   v76[3] = kCFUserNotificationAlternateButtonTitleKey;
@@ -661,13 +661,13 @@ LABEL_88:
       v64 = [objc_msgSend(@"TCC" substringWithRange:{0, 18), "stringByAppendingString:", @".."}];
     }
 
-    v66 = [NSString stringWithFormat:@"User allowed %@ access to *contents* on external device", v10];
+    v66 = [NSString stringWithFormat:@"User allowed %@ access to *contents* on external device", localizedName];
     v67 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
     {
-      v68 = [(__CFString *)v64 UTF8String];
+      uTF8String11 = [(__CFString *)v64 UTF8String];
       token.val[0] = 136446466;
-      *&token.val[1] = v68;
+      *&token.val[1] = uTF8String11;
       LOWORD(token.val[3]) = 2114;
       *(&token.val[3] + 2) = v66;
       _os_log_impl(&_mh_execute_header, v67, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &token, 0x16u);
@@ -688,13 +688,13 @@ LABEL_88:
     v65 = [objc_msgSend(@"TCC" substringWithRange:{0, 18), "stringByAppendingString:", @".."}];
   }
 
-  v69 = [NSString stringWithFormat:@"User denied %@ access to *contents* on external device", v10];
+  v69 = [NSString stringWithFormat:@"User denied %@ access to *contents* on external device", localizedName];
   v70 = _gICOSLog;
   if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
   {
-    v71 = [(__CFString *)v65 UTF8String];
+    uTF8String12 = [(__CFString *)v65 UTF8String];
     token.val[0] = 136446466;
-    *&token.val[1] = v71;
+    *&token.val[1] = uTF8String12;
     LOWORD(token.val[3]) = 2114;
     *(&token.val[3] + 2) = v69;
     _os_log_impl(&_mh_execute_header, v70, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &token, 0x16u);
@@ -783,19 +783,19 @@ void __63__ICRemotePrefManager_checkFilesAndFoldersAccess_shouldPrompt___block_i
   *(*(*(a1 + 40) + 8) + 24) = v7;
 }
 
-- (int)checkTetheringAccess:(id)a3 shouldPrompt:(BOOL)a4
+- (int)checkTetheringAccess:(id)access shouldPrompt:(BOOL)prompt
 {
-  v4 = a4;
-  if (a3)
+  promptCopy = prompt;
+  if (access)
   {
-    [a3 auditToken];
+    [access auditToken];
   }
 
   memset(buf, 0, 32);
   v5 = TCCAccessPreflightWithAuditToken();
   __ICOSLogCreate();
   v6 = [@"TCC Prompt" length];
-  if (v4)
+  if (promptCopy)
   {
     if (v6 >= 0x15)
     {
@@ -811,9 +811,9 @@ void __63__ICRemotePrefManager_checkFilesAndFoldersAccess_shouldPrompt___block_i
     v9 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(__CFString *)v7 UTF8String];
+      uTF8String = [(__CFString *)v7 UTF8String];
       *buf = 136446466;
-      *&buf[4] = v10;
+      *&buf[4] = uTF8String;
       *&buf[12] = 2114;
       *&buf[14] = v8;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -839,9 +839,9 @@ void __63__ICRemotePrefManager_checkFilesAndFoldersAccess_shouldPrompt___block_i
       v5 = 0;
       if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [(__CFString *)v12 UTF8String];
+        uTF8String2 = [(__CFString *)v12 UTF8String];
         *buf = 136446466;
-        *&buf[4] = v15;
+        *&buf[4] = uTF8String2;
         *&buf[12] = 2114;
         *&buf[14] = v13;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -861,9 +861,9 @@ void __63__ICRemotePrefManager_checkFilesAndFoldersAccess_shouldPrompt___block_i
       v22 = _gICOSLog;
       if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [(__CFString *)v20 UTF8String];
+        uTF8String3 = [(__CFString *)v20 UTF8String];
         *buf = 136446466;
-        *&buf[4] = v23;
+        *&buf[4] = uTF8String3;
         *&buf[12] = 2114;
         *&buf[14] = v21;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -889,9 +889,9 @@ void __63__ICRemotePrefManager_checkFilesAndFoldersAccess_shouldPrompt___block_i
     v18 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(__CFString *)v16 UTF8String];
+      uTF8String4 = [(__CFString *)v16 UTF8String];
       *buf = 136446466;
-      *&buf[4] = v19;
+      *&buf[4] = uTF8String4;
       *&buf[12] = 2114;
       *&buf[14] = v17;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", buf, 0x16u);
@@ -927,7 +927,7 @@ intptr_t __79__ICRemotePrefManager_requestControlAuthorizationStatusShouldPrompt
   return dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)requestGoodNewsStatusWithReply:(id)a3
+- (void)requestGoodNewsStatusWithReply:(id)reply
 {
   v4 = +[NSXPCConnection currentConnection];
   v5 = +[NSMutableDictionary dictionary];
@@ -968,10 +968,10 @@ intptr_t __79__ICRemotePrefManager_requestControlAuthorizationStatusShouldPrompt
     }
   }
 
-  (*(a3 + 2))(a3, v5);
+  (*(reply + 2))(reply, v5);
 }
 
-- (void)resetContentsAuthorizationStatusWithReply:(id)a3
+- (void)resetContentsAuthorizationStatusWithReply:(id)reply
 {
   v4 = +[NSXPCConnection currentConnection];
   v5 = +[NSMutableDictionary dictionary];
@@ -1003,9 +1003,9 @@ intptr_t __79__ICRemotePrefManager_requestControlAuthorizationStatusShouldPrompt
     v10 = _gICOSLog;
     if (os_log_type_enabled(_gICOSLog, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(__CFString *)v8 UTF8String];
+      uTF8String = [(__CFString *)v8 UTF8String];
       token.val[0] = 136446466;
-      *&token.val[1] = v11;
+      *&token.val[1] = uTF8String;
       LOWORD(token.val[3]) = 2114;
       *(&token.val[3] + 2) = v9;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}20s | %{public}@", &token, 0x16u);
@@ -1028,10 +1028,10 @@ intptr_t __79__ICRemotePrefManager_requestControlAuthorizationStatusShouldPrompt
   }
 
   [v5 setObject:@"ICAuthorizationStatusNotDetermined" forKeyedSubscript:{@"ICAuthorizationStatus", v13, v14}];
-  (*(a3 + 2))(a3, v5);
+  (*(reply + 2))(reply, v5);
 }
 
-- (void)resetControlAuthorizationStatusWithReply:(id)a3
+- (void)resetControlAuthorizationStatusWithReply:(id)reply
 {
   v4 = +[NSXPCConnection currentConnection];
   v5 = +[NSMutableDictionary dictionary];
@@ -1060,7 +1060,7 @@ intptr_t __79__ICRemotePrefManager_requestControlAuthorizationStatusShouldPrompt
   }
 
   [v5 setObject:@"ICAuthorizationStatusNotDetermined" forKeyedSubscript:@"ICAuthorizationStatus"];
-  (*(a3 + 2))(a3, v5);
+  (*(reply + 2))(reply, v5);
 }
 
 @end

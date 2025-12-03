@@ -1,18 +1,18 @@
 @interface RPSession
 - (RPSession)init;
-- (RPSession)initWithCoder:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (void)_activateWithCompletion:(id)a3 reactivate:(BOOL)a4;
+- (RPSession)initWithCoder:(id)coder;
+- (id)descriptionWithLevel:(int)level;
+- (void)_activateWithCompletion:(id)completion reactivate:(BOOL)reactivate;
 - (void)_ensureXPCStarted;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)sendEventID:(id)a3 event:(id)a4 destinationID:(id)a5 options:(id)a6 completion:(id)a7;
-- (void)sendEventID:(id)a3 event:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)setLabel:(id)a3;
+- (void)sendEventID:(id)d event:(id)event destinationID:(id)iD options:(id)options completion:(id)completion;
+- (void)sendEventID:(id)d event:(id)event options:(id)options completion:(id)completion;
+- (void)setLabel:(id)label;
 @end
 
 @implementation RPSession
@@ -26,9 +26,9 @@
   if (v2)
   {
     objc_storeStrong(&v2->_dispatchQueue, MEMORY[0x1E69E96A0]);
-    v4 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     localIdentifier = v3->_localIdentifier;
-    v3->_localIdentifier = v4;
+    v3->_localIdentifier = uUID;
 
     v3->_ucat = &gLogCategory_RPSession;
     v6 = v3;
@@ -37,9 +37,9 @@
   return v3;
 }
 
-- (RPSession)initWithCoder:(id)a3
+- (RPSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = RPSession;
   v5 = [(RPSession *)&v13 init];
@@ -48,7 +48,7 @@
   {
     objc_storeStrong(&v5->_dispatchQueue, MEMORY[0x1E69E96A0]);
     v6->_ucat = &gLogCategory_RPSession;
-    v7 = v4;
+    v7 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -70,22 +70,22 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   label = self->_label;
-  v7 = v4;
+  v7 = coderCopy;
   if (label)
   {
-    [v4 encodeObject:label forKey:@"label"];
-    v4 = v7;
+    [coderCopy encodeObject:label forKey:@"label"];
+    coderCopy = v7;
   }
 
   serviceType = self->_serviceType;
   if (serviceType)
   {
     [v7 encodeObject:serviceType forKey:@"st"];
-    v4 = v7;
+    coderCopy = v7;
   }
 }
 
@@ -103,7 +103,7 @@
   [(RPSession *)&v4 dealloc];
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   serviceType = self->_serviceType;
   sessionID = self->_sessionID;
@@ -124,34 +124,34 @@
   return v5;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v5 = a3;
-  v4 = v5;
-  [v5 UTF8String];
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
+  v4 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF();
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  activateCalled = v5->_activateCalled;
-  v5->_activateCalled = 1;
-  dispatchQueue = v5->_dispatchQueue;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activateCalled = selfCopy->_activateCalled;
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __36__RPSession_activateWithCompletion___block_invoke;
   block[3] = &unk_1E7C92F60;
-  block[4] = v5;
-  v10 = v4;
+  block[4] = selfCopy;
+  v10 = completionCopy;
   v11 = activateCalled;
-  v8 = v4;
+  v8 = completionCopy;
   dispatch_async(dispatchQueue, block);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 void __36__RPSession_activateWithCompletion___block_invoke(uint64_t a1)
@@ -227,12 +227,12 @@ LABEL_19:
   [v2 _activateWithCompletion:v6 reactivate:0];
 }
 
-- (void)_activateWithCompletion:(id)a3 reactivate:(BOOL)a4
+- (void)_activateWithCompletion:(id)completion reactivate:(BOOL)reactivate
 {
-  v4 = a4;
-  v6 = a3;
+  reactivateCopy = reactivate;
+  completionCopy = completion;
   var0 = self->_ucat->var0;
-  if (v4)
+  if (reactivateCopy)
   {
     if (var0 <= 30)
     {
@@ -273,16 +273,16 @@ LABEL_11:
   v17[1] = 3221225472;
   v17[2] = __48__RPSession__activateWithCompletion_reactivate___block_invoke;
   v17[3] = &unk_1E7C93500;
-  v19 = v4;
+  v19 = reactivateCopy;
   v17[4] = self;
-  v10 = v6;
+  v10 = completionCopy;
   v18 = v10;
   v11 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v17];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __48__RPSession__activateWithCompletion_reactivate___block_invoke_2;
   v14[3] = &unk_1E7C93500;
-  v16 = v4;
+  v16 = reactivateCopy;
   v14[4] = self;
   v15 = v10;
   v12 = v10;
@@ -619,19 +619,19 @@ LABEL_6:
   }
 }
 
-- (void)sendEventID:(id)a3 event:(id)a4 options:(id)a5 completion:(id)a6
+- (void)sendEventID:(id)d event:(id)event options:(id)options completion:(id)completion
 {
-  if (a6)
+  if (completion)
   {
-    (*(a6 + 2))(a6, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (void)sendEventID:(id)a3 event:(id)a4 destinationID:(id)a5 options:(id)a6 completion:(id)a7
+- (void)sendEventID:(id)d event:(id)event destinationID:(id)iD options:(id)options completion:(id)completion
 {
-  if (a7)
+  if (completion)
   {
-    (*(a7 + 2))(a7, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 

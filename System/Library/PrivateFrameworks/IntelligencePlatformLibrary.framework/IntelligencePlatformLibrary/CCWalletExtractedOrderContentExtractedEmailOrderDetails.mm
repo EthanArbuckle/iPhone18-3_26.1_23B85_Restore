@@ -1,27 +1,27 @@
 @interface CCWalletExtractedOrderContentExtractedEmailOrderDetails
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCWalletExtractedOrderContentExtractedEmailOrderDetails)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCWalletExtractedOrderContentExtractedEmailOrderDetails)initWithOrderNumber:(id)a3 merchant:(id)a4 shippingDetails:(id)a5 orderContentType:(unsigned int)a6 error:(id *)a7;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCWalletExtractedOrderContentExtractedEmailOrderDetails)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCWalletExtractedOrderContentExtractedEmailOrderDetails)initWithOrderNumber:(id)number merchant:(id)merchant shippingDetails:(id)details orderContentType:(unsigned int)type error:(id *)error;
 - (CCWalletExtractedOrderContentExtractedEmailShippingDetails)shippingDetails;
 - (CCWalletPaymentsCommerceOrderEmailMerchant)merchant;
 - (NSString)orderNumber;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCWalletExtractedOrderContentExtractedEmailOrderDetails
 
-- (CCWalletExtractedOrderContentExtractedEmailOrderDetails)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCWalletExtractedOrderContentExtractedEmailOrderDetails)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v21[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"orderNumber"];
-    v10 = [v6 objectForKeyedSubscript:@"merchant"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"orderNumber"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"merchant"];
     if (v10)
     {
       v21[0] = 0;
@@ -37,23 +37,23 @@
       v10 = v11;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"shippingDetails"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"shippingDetails"];
     if (!v13)
     {
 LABEL_10:
-      v16 = [v6 objectForKeyedSubscript:@"orderContentType"];
+      v16 = [dictionaryCopy objectForKeyedSubscript:@"orderContentType"];
       v11 = v16;
       if (v16)
       {
-        v17 = [(CCWalletPaymentsCommerceOrderEmailMerchant *)v16 unsignedIntegerValue];
+        unsignedIntegerValue = [(CCWalletPaymentsCommerceOrderEmailMerchant *)v16 unsignedIntegerValue];
       }
 
       else
       {
-        v17 = 0;
+        unsignedIntegerValue = 0;
       }
 
-      v18 = [[CCWalletExtractedOrderContentExtractedEmailOrderDetails alloc] initWithOrderNumber:v9 merchant:v10 shippingDetails:v13 orderContentType:v17 error:a4];
+      v18 = [[CCWalletExtractedOrderContentExtractedEmailOrderDetails alloc] initWithOrderNumber:v9 merchant:v10 shippingDetails:v13 orderContentType:unsignedIntegerValue error:error];
       goto LABEL_18;
     }
 
@@ -89,22 +89,22 @@ LABEL_19:
   v3 = objc_opt_new();
   if (self->_orderNumber)
   {
-    v4 = [(CCWalletExtractedOrderContentExtractedEmailOrderDetails *)self orderNumber];
-    [v3 setObject:v4 forKeyedSubscript:@"orderNumber"];
+    orderNumber = [(CCWalletExtractedOrderContentExtractedEmailOrderDetails *)self orderNumber];
+    [v3 setObject:orderNumber forKeyedSubscript:@"orderNumber"];
   }
 
   if (self->_merchant)
   {
-    v5 = [(CCWalletExtractedOrderContentExtractedEmailOrderDetails *)self merchant];
-    v6 = [v5 jsonDictionary];
-    [v3 setObject:v6 forKeyedSubscript:@"merchant"];
+    merchant = [(CCWalletExtractedOrderContentExtractedEmailOrderDetails *)self merchant];
+    jsonDictionary = [merchant jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"merchant"];
   }
 
   if (self->_shippingDetails)
   {
-    v7 = [(CCWalletExtractedOrderContentExtractedEmailOrderDetails *)self shippingDetails];
-    v8 = [v7 jsonDictionary];
-    [v3 setObject:v8 forKeyedSubscript:@"shippingDetails"];
+    shippingDetails = [(CCWalletExtractedOrderContentExtractedEmailOrderDetails *)self shippingDetails];
+    jsonDictionary2 = [shippingDetails jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"shippingDetails"];
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CCWalletExtractedOrderContentExtractedEmailOrderDetails orderContentType](self, "orderContentType")}];
@@ -115,29 +115,29 @@ LABEL_19:
   return v10;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v9 = a3;
+  blockCopy = block;
   if (self->_orderNumber)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:8023 stringValue:self->_orderNumber];
-    v9[2](v9, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_merchant)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:8024 subMessageValue:self->_merchant];
-    v9[2](v9, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_shippingDetails)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:8026 subMessageValue:self->_shippingDetails];
-    v9[2](v9, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:8037 enumValue:self->_orderContentType];
-  v9[2](v9, v8);
+  blockCopy[2](blockCopy, v8);
 }
 
 - (CCWalletExtractedOrderContentExtractedEmailShippingDetails)shippingDetails
@@ -161,10 +161,10 @@ LABEL_19:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -384,13 +384,13 @@ LABEL_52:
   return v45;
 }
 
-- (CCWalletExtractedOrderContentExtractedEmailOrderDetails)initWithOrderNumber:(id)a3 merchant:(id)a4 shippingDetails:(id)a5 orderContentType:(unsigned int)a6 error:(id *)a7
+- (CCWalletExtractedOrderContentExtractedEmailOrderDetails)initWithOrderNumber:(id)number merchant:(id)merchant shippingDetails:(id)details orderContentType:(unsigned int)type error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  numberCopy = number;
+  merchantCopy = merchant;
+  detailsCopy = details;
   v15 = objc_opt_new();
-  if (v12)
+  if (numberCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -401,24 +401,24 @@ LABEL_52:
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v13)
+    if (!merchantCopy)
     {
 LABEL_4:
       v18 = v17;
-      if (v14)
+      if (detailsCopy)
       {
         goto LABEL_5;
       }
 
 LABEL_12:
       v17 = v18;
-      if (!a6)
+      if (!type)
       {
 LABEL_15:
-        v25 = [v15 immutableData];
-        self = [(CCItemMessage *)self initWithData:v25 error:a7];
+        immutableData = [v15 immutableData];
+        self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-        v21 = self;
+        selfCopy = self;
         goto LABEL_17;
       }
 
@@ -429,7 +429,7 @@ LABEL_15:
   else
   {
     v17 = 0;
-    if (!v13)
+    if (!merchantCopy)
     {
       goto LABEL_4;
     }
@@ -444,10 +444,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v23 = [v13 data];
+  data = [merchantCopy data];
   CCPBDataWriterWriteDataField();
 
-  if (!v14)
+  if (!detailsCopy)
   {
     goto LABEL_12;
   }
@@ -459,10 +459,10 @@ LABEL_5:
 
   if (v19)
   {
-    v20 = [v14 data];
+    data2 = [detailsCopy data];
     CCPBDataWriterWriteDataField();
 
-    if (!a6)
+    if (!type)
     {
       goto LABEL_15;
     }
@@ -481,17 +481,17 @@ LABEL_13:
 
 LABEL_16:
     CCSetError();
-    v21 = 0;
+    selfCopy = 0;
     v17 = v18;
     goto LABEL_17;
   }
 
 LABEL_8:
   CCSetError();
-  v21 = 0;
+  selfCopy = 0;
 LABEL_17:
 
-  return v21;
+  return selfCopy;
 }
 
 @end

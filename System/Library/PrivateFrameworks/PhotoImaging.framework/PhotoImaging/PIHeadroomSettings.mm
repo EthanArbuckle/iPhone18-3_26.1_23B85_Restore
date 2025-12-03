@@ -22,198 +22,198 @@
 - (double)vignetteIntensity;
 - (double)vignetteRad;
 - (void)_setDefaultValues;
-- (void)setAperture:(double)a3;
-- (void)setBlurRadius:(double)a3;
-- (void)setBottomGradientAlpha:(double)a3;
-- (void)setBottomGradientBottomLocation:(double)a3;
-- (void)setBottomGradientTopLocation:(double)a3;
-- (void)setCenter:(double)a3;
-- (void)setDepthBottom:(double)a3;
-- (void)setDepthTop:(double)a3;
-- (void)setFalloffHeight:(double)a3;
-- (void)setGradientHeight:(double)a3;
-- (void)setGradientWhite:(double)a3;
-- (void)setHighKeyGradientWhite:(double)a3;
-- (void)setNoise:(double)a3;
-- (void)setTopGradientAlpha:(double)a3;
-- (void)setTopGradientBottomLocation:(double)a3;
-- (void)setTopGradientTopLocation:(double)a3;
-- (void)setUseLinearBlur:(BOOL)a3;
-- (void)setVignetteFalloff:(double)a3;
-- (void)setVignetteIntensity:(double)a3;
-- (void)setVignetteRad:(double)a3;
+- (void)setAperture:(double)aperture;
+- (void)setBlurRadius:(double)radius;
+- (void)setBottomGradientAlpha:(double)alpha;
+- (void)setBottomGradientBottomLocation:(double)location;
+- (void)setBottomGradientTopLocation:(double)location;
+- (void)setCenter:(double)center;
+- (void)setDepthBottom:(double)bottom;
+- (void)setDepthTop:(double)top;
+- (void)setFalloffHeight:(double)height;
+- (void)setGradientHeight:(double)height;
+- (void)setGradientWhite:(double)white;
+- (void)setHighKeyGradientWhite:(double)white;
+- (void)setNoise:(double)noise;
+- (void)setTopGradientAlpha:(double)alpha;
+- (void)setTopGradientBottomLocation:(double)location;
+- (void)setTopGradientTopLocation:(double)location;
+- (void)setUseLinearBlur:(BOOL)blur;
+- (void)setVignetteFalloff:(double)falloff;
+- (void)setVignetteIntensity:(double)intensity;
+- (void)setVignetteRad:(double)rad;
 @end
 
 @implementation PIHeadroomSettings
 
-- (void)setUseLinearBlur:(BOOL)a3
+- (void)setUseLinearBlur:(BOOL)blur
 {
-  v3 = a3;
-  v8 = [MEMORY[0x1E695E000] standardUserDefaults];
+  blurCopy = blur;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = MEMORY[0x1E696AEC0];
   v5 = NSStringFromSelector(sel_useLinearBlur);
-  v6 = [v5 uppercaseString];
-  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", v6];
-  [v8 setBool:v3 forKey:v7];
+  uppercaseString = [v5 uppercaseString];
+  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  [standardUserDefaults setBool:blurCopy forKey:v7];
 }
 
 - (BOOL)useLinearBlur
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSStringFromSelector(sel_useLinearBlur);
-  v5 = [v4 uppercaseString];
-  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", v5];
-  v7 = [v2 BOOLForKey:v6];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  v7 = [standardUserDefaults BOOLForKey:v6];
 
   return v7;
 }
 
-- (void)setCenter:(double)a3
+- (void)setCenter:(double)center
 {
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = MEMORY[0x1E696AEC0];
   v5 = NSStringFromSelector(sel_center);
-  v6 = [v5 uppercaseString];
-  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", v6];
-  *&a3 = a3;
-  LODWORD(v8) = LODWORD(a3);
-  [v9 setFloat:v7 forKey:v8];
+  uppercaseString = [v5 uppercaseString];
+  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  *&center = center;
+  LODWORD(v8) = LODWORD(center);
+  [standardUserDefaults setFloat:v7 forKey:v8];
 }
 
 - (double)center
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSStringFromSelector(sel_center);
-  v5 = [v4 uppercaseString];
-  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", v5];
-  [v2 floatForKey:v6];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  [standardUserDefaults floatForKey:v6];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setNoise:(double)a3
+- (void)setNoise:(double)noise
 {
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = MEMORY[0x1E696AEC0];
   v5 = NSStringFromSelector(sel_noise);
-  v6 = [v5 uppercaseString];
-  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", v6];
-  *&a3 = a3;
-  LODWORD(v8) = LODWORD(a3);
-  [v9 setFloat:v7 forKey:v8];
+  uppercaseString = [v5 uppercaseString];
+  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  *&noise = noise;
+  LODWORD(v8) = LODWORD(noise);
+  [standardUserDefaults setFloat:v7 forKey:v8];
 }
 
 - (double)noise
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSStringFromSelector(sel_noise);
-  v5 = [v4 uppercaseString];
-  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", v5];
-  [v2 floatForKey:v6];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  [standardUserDefaults floatForKey:v6];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setAperture:(double)a3
+- (void)setAperture:(double)aperture
 {
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = MEMORY[0x1E696AEC0];
   v5 = NSStringFromSelector(sel_aperture);
-  v6 = [v5 uppercaseString];
-  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", v6];
-  *&a3 = a3;
-  LODWORD(v8) = LODWORD(a3);
-  [v9 setFloat:v7 forKey:v8];
+  uppercaseString = [v5 uppercaseString];
+  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  *&aperture = aperture;
+  LODWORD(v8) = LODWORD(aperture);
+  [standardUserDefaults setFloat:v7 forKey:v8];
 }
 
 - (double)aperture
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSStringFromSelector(sel_aperture);
-  v5 = [v4 uppercaseString];
-  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", v5];
-  [v2 floatForKey:v6];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  [standardUserDefaults floatForKey:v6];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setVignetteFalloff:(double)a3
+- (void)setVignetteFalloff:(double)falloff
 {
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = MEMORY[0x1E696AEC0];
   v5 = NSStringFromSelector(sel_vignetteFalloff);
-  v6 = [v5 uppercaseString];
-  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", v6];
-  *&a3 = a3;
-  LODWORD(v8) = LODWORD(a3);
-  [v9 setFloat:v7 forKey:v8];
+  uppercaseString = [v5 uppercaseString];
+  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  *&falloff = falloff;
+  LODWORD(v8) = LODWORD(falloff);
+  [standardUserDefaults setFloat:v7 forKey:v8];
 }
 
 - (double)vignetteFalloff
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSStringFromSelector(sel_vignetteFalloff);
-  v5 = [v4 uppercaseString];
-  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", v5];
-  [v2 floatForKey:v6];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  [standardUserDefaults floatForKey:v6];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setVignetteIntensity:(double)a3
+- (void)setVignetteIntensity:(double)intensity
 {
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = MEMORY[0x1E696AEC0];
   v5 = NSStringFromSelector(sel_vignetteIntensity);
-  v6 = [v5 uppercaseString];
-  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", v6];
-  *&a3 = a3;
-  LODWORD(v8) = LODWORD(a3);
-  [v9 setFloat:v7 forKey:v8];
+  uppercaseString = [v5 uppercaseString];
+  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  *&intensity = intensity;
+  LODWORD(v8) = LODWORD(intensity);
+  [standardUserDefaults setFloat:v7 forKey:v8];
 }
 
 - (double)vignetteIntensity
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSStringFromSelector(sel_vignetteIntensity);
-  v5 = [v4 uppercaseString];
-  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", v5];
-  [v2 floatForKey:v6];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  [standardUserDefaults floatForKey:v6];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setVignetteRad:(double)a3
+- (void)setVignetteRad:(double)rad
 {
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = MEMORY[0x1E696AEC0];
   v5 = NSStringFromSelector(sel_vignetteRad);
-  v6 = [v5 uppercaseString];
-  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", v6];
-  *&a3 = a3;
-  LODWORD(v8) = LODWORD(a3);
-  [v9 setFloat:v7 forKey:v8];
+  uppercaseString = [v5 uppercaseString];
+  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  *&rad = rad;
+  LODWORD(v8) = LODWORD(rad);
+  [standardUserDefaults setFloat:v7 forKey:v8];
 }
 
 - (double)vignetteRad
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSStringFromSelector(sel_vignetteRad);
-  v5 = [v4 uppercaseString];
-  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", v5];
-  [v2 floatForKey:v6];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  [standardUserDefaults floatForKey:v6];
   v8 = v7;
 
   return v8;
@@ -221,324 +221,324 @@
 
 - (double)depthBottom
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSStringFromSelector(sel_depthBottom);
-  v5 = [v4 uppercaseString];
-  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", v5];
-  [v2 floatForKey:v6];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  [standardUserDefaults floatForKey:v6];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setDepthBottom:(double)a3
+- (void)setDepthBottom:(double)bottom
 {
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = MEMORY[0x1E696AEC0];
   v5 = NSStringFromSelector(sel_depthBottom);
-  v6 = [v5 uppercaseString];
-  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", v6];
-  *&a3 = a3;
-  LODWORD(v8) = LODWORD(a3);
-  [v9 setFloat:v7 forKey:v8];
+  uppercaseString = [v5 uppercaseString];
+  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  *&bottom = bottom;
+  LODWORD(v8) = LODWORD(bottom);
+  [standardUserDefaults setFloat:v7 forKey:v8];
 }
 
 - (double)depthTop
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSStringFromSelector(sel_depthTop);
-  v5 = [v4 uppercaseString];
-  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", v5];
-  [v2 floatForKey:v6];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  [standardUserDefaults floatForKey:v6];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setDepthTop:(double)a3
+- (void)setDepthTop:(double)top
 {
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = MEMORY[0x1E696AEC0];
   v5 = NSStringFromSelector(sel_depthTop);
-  v6 = [v5 uppercaseString];
-  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", v6];
-  *&a3 = a3;
-  LODWORD(v8) = LODWORD(a3);
-  [v9 setFloat:v7 forKey:v8];
+  uppercaseString = [v5 uppercaseString];
+  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  *&top = top;
+  LODWORD(v8) = LODWORD(top);
+  [standardUserDefaults setFloat:v7 forKey:v8];
 }
 
-- (void)setTopGradientBottomLocation:(double)a3
+- (void)setTopGradientBottomLocation:(double)location
 {
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = MEMORY[0x1E696AEC0];
   v5 = NSStringFromSelector(sel_topGradientBottomLocation);
-  v6 = [v5 uppercaseString];
-  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", v6];
-  *&a3 = a3;
-  LODWORD(v8) = LODWORD(a3);
-  [v9 setFloat:v7 forKey:v8];
+  uppercaseString = [v5 uppercaseString];
+  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  *&location = location;
+  LODWORD(v8) = LODWORD(location);
+  [standardUserDefaults setFloat:v7 forKey:v8];
 }
 
 - (double)topGradientBottomLocation
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSStringFromSelector(sel_topGradientBottomLocation);
-  v5 = [v4 uppercaseString];
-  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", v5];
-  [v2 floatForKey:v6];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  [standardUserDefaults floatForKey:v6];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setTopGradientTopLocation:(double)a3
+- (void)setTopGradientTopLocation:(double)location
 {
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = MEMORY[0x1E696AEC0];
   v5 = NSStringFromSelector(sel_topGradientTopLocation);
-  v6 = [v5 uppercaseString];
-  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", v6];
-  *&a3 = a3;
-  LODWORD(v8) = LODWORD(a3);
-  [v9 setFloat:v7 forKey:v8];
+  uppercaseString = [v5 uppercaseString];
+  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  *&location = location;
+  LODWORD(v8) = LODWORD(location);
+  [standardUserDefaults setFloat:v7 forKey:v8];
 }
 
 - (double)topGradientTopLocation
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSStringFromSelector(sel_topGradientTopLocation);
-  v5 = [v4 uppercaseString];
-  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", v5];
-  [v2 floatForKey:v6];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  [standardUserDefaults floatForKey:v6];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setTopGradientAlpha:(double)a3
+- (void)setTopGradientAlpha:(double)alpha
 {
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = MEMORY[0x1E696AEC0];
   v5 = NSStringFromSelector(sel_topGradientAlpha);
-  v6 = [v5 uppercaseString];
-  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", v6];
-  *&a3 = a3;
-  LODWORD(v8) = LODWORD(a3);
-  [v9 setFloat:v7 forKey:v8];
+  uppercaseString = [v5 uppercaseString];
+  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  *&alpha = alpha;
+  LODWORD(v8) = LODWORD(alpha);
+  [standardUserDefaults setFloat:v7 forKey:v8];
 }
 
 - (double)topGradientAlpha
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSStringFromSelector(sel_topGradientAlpha);
-  v5 = [v4 uppercaseString];
-  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", v5];
-  [v2 floatForKey:v6];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  [standardUserDefaults floatForKey:v6];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setBottomGradientBottomLocation:(double)a3
+- (void)setBottomGradientBottomLocation:(double)location
 {
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = MEMORY[0x1E696AEC0];
   v5 = NSStringFromSelector(sel_bottomGradientBottomLocation);
-  v6 = [v5 uppercaseString];
-  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", v6];
-  *&a3 = a3;
-  LODWORD(v8) = LODWORD(a3);
-  [v9 setFloat:v7 forKey:v8];
+  uppercaseString = [v5 uppercaseString];
+  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  *&location = location;
+  LODWORD(v8) = LODWORD(location);
+  [standardUserDefaults setFloat:v7 forKey:v8];
 }
 
 - (double)bottomGradientBottomLocation
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSStringFromSelector(sel_bottomGradientBottomLocation);
-  v5 = [v4 uppercaseString];
-  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", v5];
-  [v2 floatForKey:v6];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  [standardUserDefaults floatForKey:v6];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setBottomGradientTopLocation:(double)a3
+- (void)setBottomGradientTopLocation:(double)location
 {
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = MEMORY[0x1E696AEC0];
   v5 = NSStringFromSelector(sel_bottomGradientTopLocation);
-  v6 = [v5 uppercaseString];
-  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", v6];
-  *&a3 = a3;
-  LODWORD(v8) = LODWORD(a3);
-  [v9 setFloat:v7 forKey:v8];
+  uppercaseString = [v5 uppercaseString];
+  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  *&location = location;
+  LODWORD(v8) = LODWORD(location);
+  [standardUserDefaults setFloat:v7 forKey:v8];
 }
 
 - (double)bottomGradientTopLocation
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSStringFromSelector(sel_bottomGradientTopLocation);
-  v5 = [v4 uppercaseString];
-  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", v5];
-  [v2 floatForKey:v6];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  [standardUserDefaults floatForKey:v6];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setBottomGradientAlpha:(double)a3
+- (void)setBottomGradientAlpha:(double)alpha
 {
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = MEMORY[0x1E696AEC0];
   v5 = NSStringFromSelector(sel_bottomGradientAlpha);
-  v6 = [v5 uppercaseString];
-  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", v6];
-  *&a3 = a3;
-  LODWORD(v8) = LODWORD(a3);
-  [v9 setFloat:v7 forKey:v8];
+  uppercaseString = [v5 uppercaseString];
+  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  *&alpha = alpha;
+  LODWORD(v8) = LODWORD(alpha);
+  [standardUserDefaults setFloat:v7 forKey:v8];
 }
 
 - (double)bottomGradientAlpha
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSStringFromSelector(sel_bottomGradientAlpha);
-  v5 = [v4 uppercaseString];
-  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", v5];
-  [v2 floatForKey:v6];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  [standardUserDefaults floatForKey:v6];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setHighKeyGradientWhite:(double)a3
+- (void)setHighKeyGradientWhite:(double)white
 {
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = MEMORY[0x1E696AEC0];
   v5 = NSStringFromSelector(sel_highKeyGradientWhite);
-  v6 = [v5 uppercaseString];
-  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", v6];
-  *&a3 = a3;
-  LODWORD(v8) = LODWORD(a3);
-  [v9 setFloat:v7 forKey:v8];
+  uppercaseString = [v5 uppercaseString];
+  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  *&white = white;
+  LODWORD(v8) = LODWORD(white);
+  [standardUserDefaults setFloat:v7 forKey:v8];
 }
 
 - (double)highKeyGradientWhite
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSStringFromSelector(sel_highKeyGradientWhite);
-  v5 = [v4 uppercaseString];
-  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", v5];
-  [v2 floatForKey:v6];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  [standardUserDefaults floatForKey:v6];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setGradientWhite:(double)a3
+- (void)setGradientWhite:(double)white
 {
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = MEMORY[0x1E696AEC0];
   v5 = NSStringFromSelector(sel_gradientWhite);
-  v6 = [v5 uppercaseString];
-  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", v6];
-  *&a3 = a3;
-  LODWORD(v8) = LODWORD(a3);
-  [v9 setFloat:v7 forKey:v8];
+  uppercaseString = [v5 uppercaseString];
+  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  *&white = white;
+  LODWORD(v8) = LODWORD(white);
+  [standardUserDefaults setFloat:v7 forKey:v8];
 }
 
 - (double)gradientWhite
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSStringFromSelector(sel_gradientWhite);
-  v5 = [v4 uppercaseString];
-  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", v5];
-  [v2 floatForKey:v6];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  [standardUserDefaults floatForKey:v6];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setGradientHeight:(double)a3
+- (void)setGradientHeight:(double)height
 {
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = MEMORY[0x1E696AEC0];
   v5 = NSStringFromSelector(sel_gradientHeight);
-  v6 = [v5 uppercaseString];
-  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", v6];
-  *&a3 = a3;
-  LODWORD(v8) = LODWORD(a3);
-  [v9 setFloat:v7 forKey:v8];
+  uppercaseString = [v5 uppercaseString];
+  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  *&height = height;
+  LODWORD(v8) = LODWORD(height);
+  [standardUserDefaults setFloat:v7 forKey:v8];
 }
 
 - (double)gradientHeight
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSStringFromSelector(sel_gradientHeight);
-  v5 = [v4 uppercaseString];
-  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", v5];
-  [v2 floatForKey:v6];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  [standardUserDefaults floatForKey:v6];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setFalloffHeight:(double)a3
+- (void)setFalloffHeight:(double)height
 {
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = MEMORY[0x1E696AEC0];
   v5 = NSStringFromSelector(sel_falloffHeight);
-  v6 = [v5 uppercaseString];
-  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", v6];
-  *&a3 = a3;
-  LODWORD(v8) = LODWORD(a3);
-  [v9 setFloat:v7 forKey:v8];
+  uppercaseString = [v5 uppercaseString];
+  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  *&height = height;
+  LODWORD(v8) = LODWORD(height);
+  [standardUserDefaults setFloat:v7 forKey:v8];
 }
 
 - (double)falloffHeight
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSStringFromSelector(sel_falloffHeight);
-  v5 = [v4 uppercaseString];
-  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", v5];
-  [v2 floatForKey:v6];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  [standardUserDefaults floatForKey:v6];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = MEMORY[0x1E696AEC0];
   v5 = NSStringFromSelector(sel_blurRadius);
-  v6 = [v5 uppercaseString];
-  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", v6];
-  *&a3 = a3;
-  LODWORD(v8) = LODWORD(a3);
-  [v9 setFloat:v7 forKey:v8];
+  uppercaseString = [v5 uppercaseString];
+  v7 = [v4 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  *&radius = radius;
+  LODWORD(v8) = LODWORD(radius);
+  [standardUserDefaults setFloat:v7 forKey:v8];
 }
 
 - (double)blurRadius
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = MEMORY[0x1E696AEC0];
   v4 = NSStringFromSelector(sel_blurRadius);
-  v5 = [v4 uppercaseString];
-  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", v5];
-  [v2 floatForKey:v6];
+  uppercaseString = [v4 uppercaseString];
+  v6 = [v3 stringWithFormat:@"PI_HEADROOM_%@", uppercaseString];
+  [standardUserDefaults floatForKey:v6];
   v8 = v7;
 
   return v8;

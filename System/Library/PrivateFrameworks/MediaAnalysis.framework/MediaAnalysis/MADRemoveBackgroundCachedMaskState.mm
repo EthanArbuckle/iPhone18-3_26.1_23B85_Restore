@@ -1,29 +1,29 @@
 @interface MADRemoveBackgroundCachedMaskState
-- (BOOL)matchesImageAsset:(id)a3;
+- (BOOL)matchesImageAsset:(id)asset;
 - (CGRect)regionOfInterest;
-- (MADRemoveBackgroundCachedMaskState)initWithImageAsset:(id)a3 instanceMaskObservation:(id)a4 regionOfInterest:(CGRect)a5;
+- (MADRemoveBackgroundCachedMaskState)initWithImageAsset:(id)asset instanceMaskObservation:(id)observation regionOfInterest:(CGRect)interest;
 @end
 
 @implementation MADRemoveBackgroundCachedMaskState
 
-- (MADRemoveBackgroundCachedMaskState)initWithImageAsset:(id)a3 instanceMaskObservation:(id)a4 regionOfInterest:(CGRect)a5
+- (MADRemoveBackgroundCachedMaskState)initWithImageAsset:(id)asset instanceMaskObservation:(id)observation regionOfInterest:(CGRect)interest
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  v12 = a4;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  assetCopy = asset;
+  observationCopy = observation;
   v17.receiver = self;
   v17.super_class = MADRemoveBackgroundCachedMaskState;
   v13 = [(MADRemoveBackgroundCachedMaskState *)&v17 init];
   if (v13)
   {
-    v14 = [v11 identifier];
+    identifier = [assetCopy identifier];
     identifier = v13->_identifier;
-    v13->_identifier = v14;
+    v13->_identifier = identifier;
 
-    objc_storeStrong(&v13->_instanceMaskObservation, a4);
+    objc_storeStrong(&v13->_instanceMaskObservation, observation);
     v13->_regionOfInterest.origin.x = x;
     v13->_regionOfInterest.origin.y = y;
     v13->_regionOfInterest.size.width = width;
@@ -33,11 +33,11 @@
   return v13;
 }
 
-- (BOOL)matchesImageAsset:(id)a3
+- (BOOL)matchesImageAsset:(id)asset
 {
   identifier = self->_identifier;
-  v4 = [a3 identifier];
-  LOBYTE(identifier) = [(NSString *)identifier isEqualToString:v4];
+  identifier = [asset identifier];
+  LOBYTE(identifier) = [(NSString *)identifier isEqualToString:identifier];
 
   return identifier;
 }

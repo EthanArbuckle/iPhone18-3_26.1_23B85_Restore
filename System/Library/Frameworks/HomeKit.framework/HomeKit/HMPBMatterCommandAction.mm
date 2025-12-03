@@ -1,22 +1,22 @@
 @interface HMPBMatterCommandAction
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCommands:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCommands:(id)commands;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMPBMatterCommandAction
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(HMPBMatterCommandAction *)self setActionUUID:?];
   }
@@ -25,7 +25,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -49,9 +49,9 @@
     while (v7);
   }
 
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
-    self->_enforceExecutionOrder = *(v4 + 24);
+    self->_enforceExecutionOrder = *(fromCopy + 24);
     *&self->_has |= 1u;
   }
 
@@ -75,16 +75,16 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   actionUUID = self->_actionUUID;
-  if (actionUUID | *(v4 + 1))
+  if (actionUUID | *(equalCopy + 1))
   {
     if (![(NSData *)actionUUID isEqual:?])
     {
@@ -93,7 +93,7 @@
   }
 
   commands = self->_commands;
-  if (commands | *(v4 + 2))
+  if (commands | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)commands isEqual:?])
     {
@@ -101,10 +101,10 @@
     }
   }
 
-  v7 = (*(v4 + 28) & 1) == 0;
+  v7 = (*(equalCopy + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0)
+    if ((*(equalCopy + 28) & 1) == 0)
     {
 LABEL_8:
       v7 = 0;
@@ -113,13 +113,13 @@ LABEL_8:
 
     if (self->_enforceExecutionOrder)
     {
-      if ((*(v4 + 24) & 1) == 0)
+      if ((*(equalCopy + 24) & 1) == 0)
       {
         goto LABEL_8;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_8;
     }
@@ -132,11 +132,11 @@ LABEL_9:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_actionUUID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_actionUUID copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -160,7 +160,7 @@ LABEL_9:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addCommands:v13];
 
         ++v12;
@@ -183,40 +183,40 @@ LABEL_9:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_actionUUID)
   {
-    [v8 setActionUUID:?];
+    [toCopy setActionUUID:?];
   }
 
   if ([(HMPBMatterCommandAction *)self commandsCount])
   {
-    [v8 clearCommands];
-    v4 = [(HMPBMatterCommandAction *)self commandsCount];
-    if (v4)
+    [toCopy clearCommands];
+    commandsCount = [(HMPBMatterCommandAction *)self commandsCount];
+    if (commandsCount)
     {
-      v5 = v4;
+      v5 = commandsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HMPBMatterCommandAction *)self commandsAtIndex:i];
-        [v8 addCommands:v7];
+        [toCopy addCommands:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    v8[24] = self->_enforceExecutionOrder;
-    v8[28] |= 1u;
+    toCopy[24] = self->_enforceExecutionOrder;
+    toCopy[28] |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_actionUUID)
   {
     PBDataWriterWriteDataField();
@@ -266,12 +266,12 @@ LABEL_9:
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   actionUUID = self->_actionUUID;
   if (actionUUID)
   {
-    [v3 setObject:actionUUID forKey:@"actionUUID"];
+    [dictionary setObject:actionUUID forKey:@"actionUUID"];
   }
 
   if ([(NSMutableArray *)self->_commands count])
@@ -296,8 +296,8 @@ LABEL_9:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -326,28 +326,28 @@ LABEL_9:
   v8.receiver = self;
   v8.super_class = HMPBMatterCommandAction;
   v4 = [(HMPBMatterCommandAction *)&v8 description];
-  v5 = [(HMPBMatterCommandAction *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMPBMatterCommandAction *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addCommands:(id)a3
+- (void)addCommands:(id)commands
 {
-  v4 = a3;
+  commandsCopy = commands;
   commands = self->_commands;
-  v8 = v4;
+  v8 = commandsCopy;
   if (!commands)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_commands;
     self->_commands = v6;
 
-    v4 = v8;
+    commandsCopy = v8;
     commands = self->_commands;
   }
 
-  [(NSMutableArray *)commands addObject:v4];
+  [(NSMutableArray *)commands addObject:commandsCopy];
 }
 
 @end

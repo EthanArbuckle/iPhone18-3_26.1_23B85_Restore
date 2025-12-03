@@ -1,47 +1,47 @@
 @interface DragSurrogate_iOS
-- (void)dragRelaySession:(id)a3 didEndDragWithDrop:(BOOL)a4;
-- (void)dragRelaySession:(id)a3 didUpdateDragPresentation:(id)a4;
-- (void)dragRelaySessionDidBegin:(id)a3;
-- (void)dragRelaySessionDidEndDataTransfer:(id)a3;
-- (void)dragRelaySessionDidFail:(id)a3;
+- (void)dragRelaySession:(id)session didEndDragWithDrop:(BOOL)drop;
+- (void)dragRelaySession:(id)session didUpdateDragPresentation:(id)presentation;
+- (void)dragRelaySessionDidBegin:(id)begin;
+- (void)dragRelaySessionDidEndDataTransfer:(id)transfer;
+- (void)dragRelaySessionDidFail:(id)fail;
 @end
 
 @implementation DragSurrogate_iOS
 
-- (void)dragRelaySessionDidBegin:(id)a3
+- (void)dragRelaySessionDidBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
+  beginCopy = begin;
+  selfCopy = self;
   sub_27068C850();
 }
 
-- (void)dragRelaySession:(id)a3 didEndDragWithDrop:(BOOL)a4
+- (void)dragRelaySession:(id)session didEndDragWithDrop:(BOOL)drop
 {
-  v6 = a3;
-  v7 = self;
-  sub_27068C93C(v7, a4);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_27068C93C(selfCopy, drop);
 }
 
-- (void)dragRelaySessionDidFail:(id)a3
+- (void)dragRelaySessionDidFail:(id)fail
 {
-  v4 = a3;
-  v5 = self;
+  failCopy = fail;
+  selfCopy = self;
   sub_27068CE40();
 }
 
-- (void)dragRelaySessionDidEndDataTransfer:(id)a3
+- (void)dragRelaySessionDidEndDataTransfer:(id)transfer
 {
-  v4 = a3;
-  v5 = self;
+  transferCopy = transfer;
+  selfCopy = self;
   sub_27068D04C();
 }
 
-- (void)dragRelaySession:(id)a3 didUpdateDragPresentation:(id)a4
+- (void)dragRelaySession:(id)session didUpdateDragPresentation:(id)presentation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_27068D164(v8, v7);
+  sessionCopy = session;
+  presentationCopy = presentation;
+  selfCopy = self;
+  sub_27068D164(selfCopy, presentationCopy);
 }
 
 @end

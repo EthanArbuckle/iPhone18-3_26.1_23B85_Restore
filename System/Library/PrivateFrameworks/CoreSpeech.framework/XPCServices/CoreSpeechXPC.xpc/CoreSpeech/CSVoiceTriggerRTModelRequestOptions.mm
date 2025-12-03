@@ -1,38 +1,38 @@
 @interface CSVoiceTriggerRTModelRequestOptions
-- (CSVoiceTriggerRTModelRequestOptions)initWithCSRTModelRequestOptions:(id)a3 builder:(id)a4;
-- (CSVoiceTriggerRTModelRequestOptions)initWithCoder:(id)a3;
-- (CSVoiceTriggerRTModelRequestOptions)initWithMutableBuilder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CSVoiceTriggerRTModelRequestOptions)initWithCSRTModelRequestOptions:(id)options builder:(id)builder;
+- (CSVoiceTriggerRTModelRequestOptions)initWithCoder:(id)coder;
+- (CSVoiceTriggerRTModelRequestOptions)initWithMutableBuilder:(id)builder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CSVoiceTriggerRTModelRequestOptions
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   siriLocale = self->_siriLocale;
-  v5 = a3;
-  [v5 encodeObject:siriLocale forKey:@"CSRTModelRequestOptionsSiriLocale"];
-  [v5 encodeBool:self->_allowMph forKey:@"CSRTModelRequestOptionsAllowMph"];
-  [v5 encodeObject:self->_userSelectedPhraseType forKey:@"CSRTModelRequestOptionsUserSelectedPhraseType"];
-  [v5 encodeObject:self->_endpointId forKey:@"CSRTModelRequestOptionsEndpointId"];
-  [v5 encodeObject:self->_engineMajorVersion forKey:@"CSRTModelRequestOptionsngineMajorVersion"];
-  [v5 encodeObject:self->_engineMinorVersion forKey:@"CSRTModelRequestOptionsEngineMinorVersion"];
-  [v5 encodeObject:self->_accessoryModelType forKey:@"CSRTModelRequestOptionsAccessoryModelType"];
-  [v5 encodeObject:self->_accessoryInfo forKey:@"CSRTModelRequestOptionsAccessoryInfo"];
+  coderCopy = coder;
+  [coderCopy encodeObject:siriLocale forKey:@"CSRTModelRequestOptionsSiriLocale"];
+  [coderCopy encodeBool:self->_allowMph forKey:@"CSRTModelRequestOptionsAllowMph"];
+  [coderCopy encodeObject:self->_userSelectedPhraseType forKey:@"CSRTModelRequestOptionsUserSelectedPhraseType"];
+  [coderCopy encodeObject:self->_endpointId forKey:@"CSRTModelRequestOptionsEndpointId"];
+  [coderCopy encodeObject:self->_engineMajorVersion forKey:@"CSRTModelRequestOptionsngineMajorVersion"];
+  [coderCopy encodeObject:self->_engineMinorVersion forKey:@"CSRTModelRequestOptionsEngineMinorVersion"];
+  [coderCopy encodeObject:self->_accessoryModelType forKey:@"CSRTModelRequestOptionsAccessoryModelType"];
+  [coderCopy encodeObject:self->_accessoryInfo forKey:@"CSRTModelRequestOptionsAccessoryInfo"];
 }
 
-- (CSVoiceTriggerRTModelRequestOptions)initWithCoder:(id)a3
+- (CSVoiceTriggerRTModelRequestOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CSRTModelRequestOptionsSiriLocale"];
-  v6 = [v4 decodeBoolForKey:@"CSRTModelRequestOptionsAllowMph"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CSRTModelRequestOptionsUserSelectedPhraseType"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CSRTModelRequestOptionsEndpointId"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CSRTModelRequestOptionsngineMajorVersion"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CSRTModelRequestOptionsEngineMinorVersion"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CSRTModelRequestOptionsAccessoryModelType"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CSRTModelRequestOptionsAccessoryInfo"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSRTModelRequestOptionsSiriLocale"];
+  v6 = [coderCopy decodeBoolForKey:@"CSRTModelRequestOptionsAllowMph"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSRTModelRequestOptionsUserSelectedPhraseType"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSRTModelRequestOptionsEndpointId"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSRTModelRequestOptionsngineMajorVersion"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSRTModelRequestOptionsEngineMinorVersion"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSRTModelRequestOptionsAccessoryModelType"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CSRTModelRequestOptionsAccessoryInfo"];
 
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
@@ -58,74 +58,74 @@
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_initWeak(&location, self);
-  v4 = self;
+  selfCopy = self;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000070F0;
   v7[3] = &unk_10001C688;
   objc_copyWeak(&v8, &location);
-  v5 = [(CSVoiceTriggerRTModelRequestOptions *)v4 initWithMutableBuilder:v7];
+  v5 = [(CSVoiceTriggerRTModelRequestOptions *)selfCopy initWithMutableBuilder:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
   return v5;
 }
 
-- (CSVoiceTriggerRTModelRequestOptions)initWithCSRTModelRequestOptions:(id)a3 builder:(id)a4
+- (CSVoiceTriggerRTModelRequestOptions)initWithCSRTModelRequestOptions:(id)options builder:(id)builder
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100007360;
   v10[3] = &unk_10001C660;
-  v11 = a3;
-  v12 = a4;
-  v6 = v12;
-  v7 = v11;
+  optionsCopy = options;
+  builderCopy = builder;
+  v6 = builderCopy;
+  v7 = optionsCopy;
   v8 = [(CSVoiceTriggerRTModelRequestOptions *)self initWithMutableBuilder:v10];
 
   return v8;
 }
 
-- (CSVoiceTriggerRTModelRequestOptions)initWithMutableBuilder:(id)a3
+- (CSVoiceTriggerRTModelRequestOptions)initWithMutableBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v21.receiver = self;
   v21.super_class = CSVoiceTriggerRTModelRequestOptions;
   v5 = [(CSVoiceTriggerRTModelRequestOptions *)&v21 init];
   v6 = objc_alloc_init(CSVoiceTriggerRTModelRequestOptionsMutable);
   if (v5)
   {
-    if (v4)
+    if (builderCopy)
     {
-      v4[2](v4, v6);
+      builderCopy[2](builderCopy, v6);
     }
 
-    v7 = [(CSVoiceTriggerRTModelRequestOptionsMutable *)v6 mSiriLocale];
+    mSiriLocale = [(CSVoiceTriggerRTModelRequestOptionsMutable *)v6 mSiriLocale];
     siriLocale = v5->_siriLocale;
-    v5->_siriLocale = v7;
+    v5->_siriLocale = mSiriLocale;
 
     v5->_allowMph = [(CSVoiceTriggerRTModelRequestOptionsMutable *)v6 mAllowMph];
     v5->_userSelectedPhraseType = [(CSVoiceTriggerRTModelRequestOptionsMutable *)v6 mUserSelectedPhrasetype];
-    v9 = [(CSVoiceTriggerRTModelRequestOptionsMutable *)v6 mEndpointId];
+    mEndpointId = [(CSVoiceTriggerRTModelRequestOptionsMutable *)v6 mEndpointId];
     endpointId = v5->_endpointId;
-    v5->_endpointId = v9;
+    v5->_endpointId = mEndpointId;
 
-    v11 = [(CSVoiceTriggerRTModelRequestOptionsMutable *)v6 mEngineMajorVersion];
+    mEngineMajorVersion = [(CSVoiceTriggerRTModelRequestOptionsMutable *)v6 mEngineMajorVersion];
     engineMajorVersion = v5->_engineMajorVersion;
-    v5->_engineMajorVersion = v11;
+    v5->_engineMajorVersion = mEngineMajorVersion;
 
-    v13 = [(CSVoiceTriggerRTModelRequestOptionsMutable *)v6 mEngineMinorVersion];
+    mEngineMinorVersion = [(CSVoiceTriggerRTModelRequestOptionsMutable *)v6 mEngineMinorVersion];
     engineMinorVersion = v5->_engineMinorVersion;
-    v5->_engineMinorVersion = v13;
+    v5->_engineMinorVersion = mEngineMinorVersion;
 
-    v15 = [(CSVoiceTriggerRTModelRequestOptionsMutable *)v6 mAccessoryModelType];
+    mAccessoryModelType = [(CSVoiceTriggerRTModelRequestOptionsMutable *)v6 mAccessoryModelType];
     accessoryModelType = v5->_accessoryModelType;
-    v5->_accessoryModelType = v15;
+    v5->_accessoryModelType = mAccessoryModelType;
 
-    v17 = [(CSVoiceTriggerRTModelRequestOptionsMutable *)v6 mAccessoryInfo];
-    v18 = [v17 copy];
+    mAccessoryInfo = [(CSVoiceTriggerRTModelRequestOptionsMutable *)v6 mAccessoryInfo];
+    v18 = [mAccessoryInfo copy];
     accessoryInfo = v5->_accessoryInfo;
     v5->_accessoryInfo = v18;
   }

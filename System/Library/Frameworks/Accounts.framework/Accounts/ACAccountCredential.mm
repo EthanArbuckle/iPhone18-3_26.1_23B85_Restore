@@ -1,36 +1,36 @@
 @interface ACAccountCredential
-+ (ACAccountCredential)credentialWithOAuthToken:(id)a3 tokenSecret:(id)a4;
-+ (ACAccountCredential)credentialWithPassword:(id)a3;
-+ (BOOL)credentialPolicyIsMixedForAccountTypeIdentifier:(id)a3;
++ (ACAccountCredential)credentialWithOAuthToken:(id)token tokenSecret:(id)secret;
++ (ACAccountCredential)credentialWithPassword:(id)password;
++ (BOOL)credentialPolicyIsMixedForAccountTypeIdentifier:(id)identifier;
 + (NSSet)allSupportedKeys;
-+ (id)additionalServiceSegmentForAccountTypeIdentifier:(id)a3;
-+ (id)credentialPolicyForAccountTypeIdentifier:(id)a3 key:(id)a4 clientID:(id)a5;
-+ (id)nonPersistentKeysForAccountTypeIdentifier:(id)a3 credentialType:(id)a4;
-+ (id)supportedKeysForAccountTypeIdentifier:(id)a3 credentialType:(id)a4;
++ (id)additionalServiceSegmentForAccountTypeIdentifier:(id)identifier;
++ (id)credentialPolicyForAccountTypeIdentifier:(id)identifier key:(id)key clientID:(id)d;
++ (id)nonPersistentKeysForAccountTypeIdentifier:(id)identifier credentialType:(id)type;
++ (id)supportedKeysForAccountTypeIdentifier:(id)identifier credentialType:(id)type;
 - (ACAccountCredential)init;
-- (ACAccountCredential)initWithCoder:(id)a3;
+- (ACAccountCredential)initWithCoder:(id)coder;
 - (ACAccountCredential)initWithOAuth2Token:(NSString *)token refreshToken:(NSString *)refreshToken expiryDate:(NSDate *)expiryDate;
 - (ACAccountCredential)initWithOAuthToken:(NSString *)token tokenSecret:(NSString *)secret;
-- (ACAccountCredential)initWithPassword:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ACAccountCredential)initWithPassword:(id)password;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)expiryDate;
 - (NSDate)tokenExpiryDate;
 - (NSSet)dirtyProperties;
 - (NSString)description;
 - (id)_encodeProtobuf;
 - (id)_encodeProtobufData;
-- (id)_initWithProtobuf:(id)a3;
-- (id)_initWithProtobufData:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)credentialItemForKey:(id)a3;
+- (id)_initWithProtobuf:(id)protobuf;
+- (id)_initWithProtobufData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)credentialItemForKey:(id)key;
 - (unint64_t)hash;
 - (void)_clearDirtyProperties;
-- (void)_markPropertyDirty:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCredentialItem:(id)a3 forKey:(id)a4;
-- (void)setCredentialType:(id)a3;
-- (void)setExpiryDate:(id)a3;
-- (void)setTokenExpiryDate:(id)a3;
+- (void)_markPropertyDirty:(id)dirty;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCredentialItem:(id)item forKey:(id)key;
+- (void)setCredentialType:(id)type;
+- (void)setExpiryDate:(id)date;
+- (void)setTokenExpiryDate:(id)date;
 @end
 
 @implementation ACAccountCredential
@@ -54,17 +54,17 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   credentialType = self->_credentialType;
-  v5 = [(NSDictionary *)self->_credentialItems allKeys];
-  v6 = [v5 componentsJoinedByString:{@", "}];
+  allKeys = [(NSDictionary *)self->_credentialItems allKeys];
+  v6 = [allKeys componentsJoinedByString:{@", "}];
   v7 = [v3 stringWithFormat:@"<ACAccountCredential:'%@'-(%@)(TouchID:%d)>", credentialType, v6, self->_requiresTouchID];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -74,19 +74,19 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       credentialType = self->_credentialType;
-      v7 = [(ACAccountCredential *)v5 credentialType];
-      v8 = v7;
-      if (credentialType == v7)
+      credentialType = [(ACAccountCredential *)v5 credentialType];
+      v8 = credentialType;
+      if (credentialType == credentialType)
       {
       }
 
       else
       {
         v9 = self->_credentialType;
-        v10 = [(ACAccountCredential *)v5 credentialType];
-        LODWORD(v9) = [(NSString *)v9 isEqual:v10];
+        credentialType2 = [(ACAccountCredential *)v5 credentialType];
+        LODWORD(v9) = [(NSString *)v9 isEqual:credentialType2];
 
         if (!v9)
         {
@@ -98,8 +98,8 @@ LABEL_13:
       }
 
       credentialItems = self->_credentialItems;
-      v13 = [(ACAccountCredential *)v5 credentialItems];
-      if (credentialItems == v13)
+      credentialItems = [(ACAccountCredential *)v5 credentialItems];
+      if (credentialItems == credentialItems)
       {
         v11 = 1;
       }
@@ -107,8 +107,8 @@ LABEL_13:
       else
       {
         v14 = self->_credentialItems;
-        v15 = [(ACAccountCredential *)v5 credentialItems];
-        v11 = [(NSDictionary *)v14 isEqual:v15];
+        credentialItems2 = [(ACAccountCredential *)v5 credentialItems];
+        v11 = [(NSDictionary *)v14 isEqual:credentialItems2];
       }
 
       goto LABEL_13;
@@ -131,18 +131,18 @@ LABEL_14:
   return v3 + v4 + [(NSString *)self->_credentialType hash];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSDictionary *)self->_credentialItems copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSDictionary *)self->_credentialItems copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(NSString *)self->_credentialType copyWithZone:a3];
+  v8 = [(NSString *)self->_credentialType copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(NSMutableSet *)self->_dirtyProperties mutableCopyWithZone:a3];
+  v10 = [(NSMutableSet *)self->_dirtyProperties mutableCopyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
@@ -201,9 +201,9 @@ LABEL_14:
   return v9;
 }
 
-- (ACAccountCredential)initWithPassword:(id)a3
+- (ACAccountCredential)initWithPassword:(id)password
 {
-  v4 = a3;
+  passwordCopy = password;
   v11.receiver = self;
   v11.super_class = ACAccountCredential;
   v5 = [(ACAccountCredential *)&v11 init];
@@ -213,7 +213,7 @@ LABEL_14:
     credentialItems = v5->_credentialItems;
     v5->_credentialItems = MEMORY[0x1E695E0F8];
 
-    [(ACAccountCredential *)v6 setPassword:v4];
+    [(ACAccountCredential *)v6 setPassword:passwordCopy];
     v8 = [@"password" copy];
     credentialType = v6->_credentialType;
     v6->_credentialType = v8;
@@ -222,19 +222,19 @@ LABEL_14:
   return v6;
 }
 
-+ (ACAccountCredential)credentialWithOAuthToken:(id)a3 tokenSecret:(id)a4
++ (ACAccountCredential)credentialWithOAuthToken:(id)token tokenSecret:(id)secret
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithOAuthToken:v6 tokenSecret:v5];
+  secretCopy = secret;
+  tokenCopy = token;
+  v7 = [objc_alloc(objc_opt_class()) initWithOAuthToken:tokenCopy tokenSecret:secretCopy];
 
   return v7;
 }
 
-+ (ACAccountCredential)credentialWithPassword:(id)a3
++ (ACAccountCredential)credentialWithPassword:(id)password
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithPassword:v3];
+  passwordCopy = password;
+  v4 = [objc_alloc(objc_opt_class()) initWithPassword:passwordCopy];
 
   return v4;
 }
@@ -299,12 +299,12 @@ void __39__ACAccountCredential_allSupportedKeys__block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)supportedKeysForAccountTypeIdentifier:(id)a3 credentialType:(id)a4
++ (id)supportedKeysForAccountTypeIdentifier:(id)identifier credentialType:(id)type
 {
   v40[8] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"com.apple.account.idms"])
+  identifierCopy = identifier;
+  typeCopy = type;
+  if ([identifierCopy isEqualToString:@"com.apple.account.idms"])
   {
     v40[0] = @"token";
     v40[1] = @"heartbeat-token";
@@ -320,7 +320,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v5 isEqualToString:@"com.apple.account.FaceTime"] || objc_msgSend(v5, "isEqualToString:", @"com.apple.account.Madrid"))
+  if ([identifierCopy isEqualToString:@"com.apple.account.FaceTime"] || objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.account.Madrid"))
   {
     v8 = MEMORY[0x1E695DEC8];
     v9 = @"password";
@@ -335,7 +335,7 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  if ([v5 isEqualToString:@"com.apple.account.GameCenter"] || objc_msgSend(v5, "isEqualToString:", @"com.apple.account.IdentityServices"))
+  if ([identifierCopy isEqualToString:@"com.apple.account.GameCenter"] || objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.account.IdentityServices"))
   {
     v8 = MEMORY[0x1E695DEC8];
     v25 = 0;
@@ -348,7 +348,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v5 isEqualToString:@"com.apple.account.DeviceLocator"])
+  if ([identifierCopy isEqualToString:@"com.apple.account.DeviceLocator"])
   {
     v8 = MEMORY[0x1E695DEC8];
     v25 = 0;
@@ -357,13 +357,13 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if ([v5 isEqualToString:@"com.apple.account.FindMyFriends"])
+  if ([identifierCopy isEqualToString:@"com.apple.account.FindMyFriends"])
   {
     [MEMORY[0x1E695DEC8] arrayWithObjects:{@"find-my-friends-app-token", @"find-my-friends-token", 0, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, v37}];
     goto LABEL_14;
   }
 
-  if ([v5 isEqualToString:@"com.apple.account.AppleAccount"])
+  if ([identifierCopy isEqualToString:@"com.apple.account.AppleAccount"])
   {
     v8 = MEMORY[0x1E695DEC8];
     v36 = @"key-transparency-token";
@@ -382,7 +382,7 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  if (([v5 isEqualToString:@"com.apple.account.iTunesStore"] & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"com.apple.account.iTunesStore.sandbox"))
+  if (([identifierCopy isEqualToString:@"com.apple.account.iTunesStore"] & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.account.iTunesStore.sandbox"))
   {
     v8 = MEMORY[0x1E695DEC8];
     v23 = @"rpassword";
@@ -392,7 +392,7 @@ LABEL_28:
     goto LABEL_13;
   }
 
-  if ([v5 isEqualToString:@"com.apple.account.tencentweibo"])
+  if ([identifierCopy isEqualToString:@"com.apple.account.tencentweibo"])
   {
     v8 = MEMORY[0x1E695DEC8];
     v27 = @"oauth-token-nosync";
@@ -412,7 +412,7 @@ LABEL_37:
     goto LABEL_13;
   }
 
-  if ([v5 isEqualToString:@"com.apple.account.Google"])
+  if ([identifierCopy isEqualToString:@"com.apple.account.Google"])
   {
     v8 = MEMORY[0x1E695DEC8];
     v26 = @"oauth-token-nosync";
@@ -423,7 +423,7 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if ([v5 isEqualToString:@"com.apple.account.Yahoo"])
+  if ([identifierCopy isEqualToString:@"com.apple.account.Yahoo"])
   {
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:{@"oauth-token", @"oath-refresh-token", @"oauth-token-nosync", @"password", @"oauth-expiry-date", 0}];
     v39[0] = @"yahoo-xympki-token";
@@ -439,7 +439,7 @@ LABEL_42:
     goto LABEL_16;
   }
 
-  if ([v5 isEqualToString:@"com.apple.account.aol"])
+  if ([identifierCopy isEqualToString:@"com.apple.account.aol"])
   {
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:{@"oauth-token", @"oath-refresh-token", @"oauth-token-nosync", @"password", @"oauth-expiry-date", 0}];
     v38[0] = @"yahoo-xympki-token";
@@ -451,7 +451,7 @@ LABEL_42:
     goto LABEL_42;
   }
 
-  if ([v5 isEqualToString:@"com.apple.account.Hotmail"])
+  if ([identifierCopy isEqualToString:@"com.apple.account.Hotmail"])
   {
     v8 = MEMORY[0x1E695DEC8];
     v25 = @"oauth-graphAPI-token";
@@ -459,7 +459,7 @@ LABEL_42:
     goto LABEL_34;
   }
 
-  if ([v5 isEqualToString:@"com.apple.account.Exchange"])
+  if ([identifierCopy isEqualToString:@"com.apple.account.Exchange"])
   {
     v8 = MEMORY[0x1E695DEC8];
     v28 = @"oauth-graphAPI-token";
@@ -470,7 +470,7 @@ LABEL_47:
     goto LABEL_31;
   }
 
-  if ([v6 isEqualToString:@"oauth"])
+  if ([typeCopy isEqualToString:@"oauth"])
   {
     v8 = MEMORY[0x1E695DEC8];
     v25 = 0;
@@ -479,32 +479,32 @@ LABEL_47:
     goto LABEL_36;
   }
 
-  if ([v6 isEqualToString:@"password"])
+  if ([typeCopy isEqualToString:@"password"])
   {
     v8 = MEMORY[0x1E695DEC8];
     v23 = 0;
     goto LABEL_28;
   }
 
-  if ([v6 isEqualToString:@"oauth2"])
+  if ([typeCopy isEqualToString:@"oauth2"])
   {
     v8 = MEMORY[0x1E695DEC8];
     v27 = 0;
     goto LABEL_47;
   }
 
-  if ([v6 isEqualToString:@"Kerberos"])
+  if ([typeCopy isEqualToString:@"Kerberos"])
   {
     goto LABEL_55;
   }
 
-  if ([v6 isEqualToString:@"yahoo-xympki-tokens"])
+  if ([typeCopy isEqualToString:@"yahoo-xympki-tokens"])
   {
     [MEMORY[0x1E695DEC8] arrayWithObjects:{@"yahoo-xympki-token", @"yahoo-xympki-cookie-y", @"yahoo-xympki-cookie-t", @"yahoo-xympki-cookie-crumb", 0, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, v37}];
     goto LABEL_14;
   }
 
-  if ([v6 isEqualToString:@"token"])
+  if ([typeCopy isEqualToString:@"token"])
   {
 LABEL_55:
     v8 = MEMORY[0x1E695DEC8];
@@ -512,7 +512,7 @@ LABEL_55:
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:@"hybrid"])
+  if ([typeCopy isEqualToString:@"hybrid"])
   {
     v8 = MEMORY[0x1E695DEC8];
     v26 = @"password";
@@ -523,7 +523,7 @@ LABEL_55:
     goto LABEL_37;
   }
 
-  if ([v6 isEqualToString:@"appleid-authentication"])
+  if ([typeCopy isEqualToString:@"appleid-authentication"])
   {
     v8 = MEMORY[0x1E695DEC8];
     v9 = @"token-expiry-date";
@@ -538,28 +538,28 @@ LABEL_16:
   return v13;
 }
 
-+ (id)nonPersistentKeysForAccountTypeIdentifier:(id)a3 credentialType:(id)a4
++ (id)nonPersistentKeysForAccountTypeIdentifier:(id)identifier credentialType:(id)type
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"com.apple.account.FaceTime"] || objc_msgSend(v4, "isEqualToString:", @"com.apple.account.Madrid"))
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.account.FaceTime"] || objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.account.Madrid"))
   {
     [MEMORY[0x1E695DEC8] arrayWithObjects:{@"password", 0, v7, v8, v9, v10}];
     v5 = LABEL_7:;
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"com.apple.account.IdentityServices"] || objc_msgSend(v4, "isEqualToString:", @"com.apple.account.GameCenter"))
+  if ([identifierCopy isEqualToString:@"com.apple.account.IdentityServices"] || objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.account.GameCenter"))
   {
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:@"com.apple.account.AppleAccount"])
+  if ([identifierCopy isEqualToString:@"com.apple.account.AppleAccount"])
   {
     [MEMORY[0x1E695DEC8] arrayWithObjects:{@"password", @"rpassword", @"old-password", @"find-my-iphone-token", @"hsa-token", 0}];
     goto LABEL_7;
   }
 
-  if (([v4 isEqualToString:@"com.apple.account.iTunesStore"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"com.apple.account.iTunesStore.sandbox"))
+  if (([identifierCopy isEqualToString:@"com.apple.account.iTunesStore"] & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.account.iTunesStore.sandbox"))
   {
 LABEL_6:
     [MEMORY[0x1E695DEC8] arrayWithObjects:{@"password", @"rpassword", 0, v8, v9, v10}];
@@ -572,9 +572,9 @@ LABEL_8:
   return v5;
 }
 
-- (ACAccountCredential)initWithCoder:(id)a3
+- (ACAccountCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = ACAccountCredential;
   v5 = [(ACAccountCredential *)&v23 init];
@@ -584,12 +584,12 @@ LABEL_8:
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"credentialItems"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"credentialItems"];
     v11 = [v10 copy];
     credentialItems = v5->_credentialItems;
     v5->_credentialItems = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"credentialType"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"credentialType"];
     v14 = [v13 copy];
     credentialType = v5->_credentialType;
     v5->_credentialType = v14;
@@ -597,64 +597,64 @@ LABEL_8:
     v16 = MEMORY[0x1E695DFD8];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"dirtyProperties"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"dirtyProperties"];
     dirtyProperties = v5->_dirtyProperties;
     v5->_dirtyProperties = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_requiresTouchID"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_requiresTouchID"];
     v5->_requiresTouchID = [v21 BOOLValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   credentialItems = self->_credentialItems;
-  v5 = a3;
-  [v5 encodeObject:credentialItems forKey:@"credentialItems"];
-  [v5 encodeObject:self->_credentialType forKey:@"credentialType"];
-  [v5 encodeObject:self->_dirtyProperties forKey:@"dirtyProperties"];
+  coderCopy = coder;
+  [coderCopy encodeObject:credentialItems forKey:@"credentialItems"];
+  [coderCopy encodeObject:self->_credentialType forKey:@"credentialType"];
+  [coderCopy encodeObject:self->_dirtyProperties forKey:@"dirtyProperties"];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_requiresTouchID];
-  [v5 encodeObject:v6 forKey:@"_requiresTouchID"];
+  [coderCopy encodeObject:v6 forKey:@"_requiresTouchID"];
 }
 
-- (id)_initWithProtobuf:(id)a3
+- (id)_initWithProtobuf:(id)protobuf
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v5 = [(ACAccountCredential *)self init];
   if (v5)
   {
-    v32 = v4;
-    v6 = v4;
-    v7 = [v6 credentialType];
-    v8 = [v7 copy];
+    v32 = protobufCopy;
+    v6 = protobufCopy;
+    credentialType = [v6 credentialType];
+    v8 = [credentialType copy];
     credentialType = v5->_credentialType;
     v5->_credentialType = v8;
 
     v5->_requiresTouchID = [v6 requiresTouchID];
-    v10 = [v6 dirtyProperties];
+    dirtyProperties = [v6 dirtyProperties];
 
-    if (v10)
+    if (dirtyProperties)
     {
       v11 = objc_alloc(MEMORY[0x1E695DFA8]);
-      v12 = [v6 dirtyProperties];
-      v13 = [v11 initWithArray:v12];
+      dirtyProperties2 = [v6 dirtyProperties];
+      v13 = [v11 initWithArray:dirtyProperties2];
       dirtyProperties = v5->_dirtyProperties;
       v5->_dirtyProperties = v13;
     }
 
     v15 = objc_alloc(MEMORY[0x1E695DF90]);
-    v16 = [v6 credentialItems];
-    v17 = [v15 initWithCapacity:{objc_msgSend(v16, "count")}];
+    credentialItems = [v6 credentialItems];
+    v17 = [v15 initWithCapacity:{objc_msgSend(credentialItems, "count")}];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v18 = [v6 credentialItems];
-    v19 = [v18 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    credentialItems2 = [v6 credentialItems];
+    v19 = [credentialItems2 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v19)
     {
       v20 = v19;
@@ -665,17 +665,17 @@ LABEL_8:
         {
           if (*v34 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(credentialItems2);
           }
 
           v23 = *(*(&v33 + 1) + 8 * i);
-          v24 = [v23 value];
-          v25 = [ACZeroingString stringWithString:v24];
+          value = [v23 value];
+          v25 = [ACZeroingString stringWithString:value];
           v26 = [v23 key];
           [v17 setObject:v25 forKeyedSubscript:v26];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v20 = [credentialItems2 countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v20);
@@ -686,42 +686,42 @@ LABEL_8:
     v5->_credentialItems = v27;
 
     v29 = v5;
-    v4 = v32;
+    protobufCopy = v32;
   }
 
   v30 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (id)_initWithProtobufData:(id)a3
+- (id)_initWithProtobufData:(id)data
 {
-  v5 = a3;
-  if (![v5 length])
+  dataCopy = data;
+  if (![dataCopy length])
   {
     [(ACAccountCredential *)a2 _initWithProtobufData:?];
   }
 
-  if ([v5 length])
+  if ([dataCopy length])
   {
-    v6 = [[ACProtobufAccountCredential alloc] initWithData:v5];
+    v6 = [[ACProtobufAccountCredential alloc] initWithData:dataCopy];
     if (v6)
     {
       self = [(ACAccountCredential *)self _initWithProtobuf:v6];
-      v7 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v7 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)_encodeProtobuf
@@ -729,8 +729,8 @@ LABEL_8:
   v3 = objc_opt_new();
   [v3 setCredentialType:self->_credentialType];
   [v3 setRequiresTouchID:self->_requiresTouchID];
-  v4 = [(NSMutableSet *)self->_dirtyProperties allObjects];
-  v5 = [v4 mutableCopy];
+  allObjects = [(NSMutableSet *)self->_dirtyProperties allObjects];
+  v5 = [allObjects mutableCopy];
   [v3 setDirtyProperties:v5];
 
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSDictionary count](self->_credentialItems, "count")}];
@@ -759,10 +759,10 @@ void __38__ACAccountCredential__encodeProtobuf__block_invoke(uint64_t a1, void *
 
 - (id)_encodeProtobufData
 {
-  v2 = [(ACAccountCredential *)self _encodeProtobuf];
-  v3 = [v2 data];
+  _encodeProtobuf = [(ACAccountCredential *)self _encodeProtobuf];
+  data = [_encodeProtobuf data];
 
-  return v3;
+  return data;
 }
 
 - (NSSet)dirtyProperties
@@ -772,22 +772,22 @@ void __38__ACAccountCredential__encodeProtobuf__block_invoke(uint64_t a1, void *
   return v2;
 }
 
-- (void)_markPropertyDirty:(id)a3
+- (void)_markPropertyDirty:(id)dirty
 {
-  v4 = a3;
+  dirtyCopy = dirty;
   dirtyProperties = self->_dirtyProperties;
-  v10 = v4;
+  v10 = dirtyCopy;
   if (!dirtyProperties)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:1];
     v7 = self->_dirtyProperties;
     self->_dirtyProperties = v6;
 
-    v4 = v10;
+    dirtyCopy = v10;
     dirtyProperties = self->_dirtyProperties;
   }
 
-  [(NSMutableSet *)dirtyProperties addObject:v4];
+  [(NSMutableSet *)dirtyProperties addObject:dirtyCopy];
   WeakRetained = objc_loadWeakRetained(&self->_owningAccount);
 
   if (WeakRetained)
@@ -804,9 +804,9 @@ void __38__ACAccountCredential__encodeProtobuf__block_invoke(uint64_t a1, void *
   MEMORY[0x1EEE66BB8]();
 }
 
-- (id)credentialItemForKey:(id)a3
+- (id)credentialItemForKey:(id)key
 {
-  v3 = [(NSDictionary *)self->_credentialItems objectForKey:a3];
+  v3 = [(NSDictionary *)self->_credentialItems objectForKey:key];
   if (v3)
   {
     v4 = [MEMORY[0x1E696AEC0] _newZStringWithString:v3];
@@ -820,30 +820,30 @@ void __38__ACAccountCredential__encodeProtobuf__block_invoke(uint64_t a1, void *
   return v4;
 }
 
-- (void)setCredentialItem:(id)a3 forKey:(id)a4
+- (void)setCredentialItem:(id)item forKey:(id)key
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(NSDictionary *)v7->_credentialItems mutableCopy];
-  if (v12)
+  itemCopy = item;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(NSDictionary *)selfCopy->_credentialItems mutableCopy];
+  if (itemCopy)
   {
-    v9 = [[ACZeroingString alloc] initWithString:v12];
-    [v8 setObject:v9 forKey:v6];
+    v9 = [[ACZeroingString alloc] initWithString:itemCopy];
+    [v8 setObject:v9 forKey:keyCopy];
   }
 
   else
   {
-    [v8 removeObjectForKey:v6];
+    [v8 removeObjectForKey:keyCopy];
   }
 
   v10 = [v8 copy];
-  credentialItems = v7->_credentialItems;
-  v7->_credentialItems = v10;
+  credentialItems = selfCopy->_credentialItems;
+  selfCopy->_credentialItems = v10;
 
-  objc_sync_exit(v7);
-  [(ACAccountCredential *)v7 _markPropertyDirty:@"credentialItems"];
+  objc_sync_exit(selfCopy);
+  [(ACAccountCredential *)selfCopy _markPropertyDirty:@"credentialItems"];
 }
 
 - (NSDate)expiryDate
@@ -864,9 +864,9 @@ void __38__ACAccountCredential__encodeProtobuf__block_invoke(uint64_t a1, void *
   return v4;
 }
 
-- (void)setExpiryDate:(id)a3
+- (void)setExpiryDate:(id)date
 {
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%f", v4];
   [(ACAccountCredential *)self setCredentialItem:v5 forKey:@"oauth-expiry-date"];
 }
@@ -889,30 +889,30 @@ void __38__ACAccountCredential__encodeProtobuf__block_invoke(uint64_t a1, void *
   return v4;
 }
 
-- (void)setTokenExpiryDate:(id)a3
+- (void)setTokenExpiryDate:(id)date
 {
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%f", v4];
   [(ACAccountCredential *)self setCredentialItem:v5 forKey:@"token-expiry-date"];
 }
 
-- (void)setCredentialType:(id)a3
+- (void)setCredentialType:(id)type
 {
-  v4 = [a3 copy];
+  v4 = [type copy];
   credentialType = self->_credentialType;
   self->_credentialType = v4;
 
   [(ACAccountCredential *)self _markPropertyDirty:@"credentialType"];
 }
 
-+ (id)credentialPolicyForAccountTypeIdentifier:(id)a3 key:(id)a4 clientID:(id)a5
++ (id)credentialPolicyForAccountTypeIdentifier:(id)identifier key:(id)key clientID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 isEqualToString:@"com.apple.account.AppleIDAuthentication"])
+  identifierCopy = identifier;
+  keyCopy = key;
+  dCopy = d;
+  if ([identifierCopy isEqualToString:@"com.apple.account.AppleIDAuthentication"])
   {
-    if ([v10 isEqualToString:@"com.apple.gs.idms.pet"])
+    if ([dCopy isEqualToString:@"com.apple.gs.idms.pet"])
     {
 LABEL_3:
       v11 = MEMORY[0x1E697ABE8];
@@ -926,22 +926,22 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  if ([v8 isEqualToString:@"com.apple.account.FindMyFriends"])
+  if ([identifierCopy isEqualToString:@"com.apple.account.FindMyFriends"])
   {
-    if ([v9 isEqualToString:@"find-my-friends-token"])
+    if ([keyCopy isEqualToString:@"find-my-friends-token"])
     {
       goto LABEL_12;
     }
 
-    if ([v9 isEqualToString:@"find-my-friends-app-token"])
+    if ([keyCopy isEqualToString:@"find-my-friends-app-token"])
     {
       goto LABEL_10;
     }
   }
 
-  if ([v8 isEqualToString:@"com.apple.account.DeviceLocator"])
+  if ([identifierCopy isEqualToString:@"com.apple.account.DeviceLocator"])
   {
-    if ([v9 isEqualToString:@"find-my-iphone-siri-token"] || objc_msgSend(v9, "isEqualToString:", @"find-my-iphone-app-token"))
+    if ([keyCopy isEqualToString:@"find-my-iphone-siri-token"] || objc_msgSend(keyCopy, "isEqualToString:", @"find-my-iphone-app-token"))
     {
       goto LABEL_10;
     }
@@ -951,18 +951,18 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([v8 isEqualToString:@"com.apple.account.HolidayCalendar"])
+  if ([identifierCopy isEqualToString:@"com.apple.account.HolidayCalendar"])
   {
     goto LABEL_12;
   }
 
-  if (([v8 isEqualToString:@"com.apple.account.Exchange"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"com.apple.account.Hotmail"))
+  if (([identifierCopy isEqualToString:@"com.apple.account.Exchange"] & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.account.Hotmail"))
   {
     goto LABEL_3;
   }
 
-  v14 = [a1 nonPersistentKeysForAccountTypeIdentifier:v8 credentialType:0];
-  v15 = [v14 containsObject:v9];
+  v14 = [self nonPersistentKeysForAccountTypeIdentifier:identifierCopy credentialType:0];
+  v15 = [v14 containsObject:keyCopy];
   v16 = MEMORY[0x1E697ABE8];
   if (!v15)
   {
@@ -976,26 +976,26 @@ LABEL_14:
   return v12;
 }
 
-+ (BOOL)credentialPolicyIsMixedForAccountTypeIdentifier:(id)a3
++ (BOOL)credentialPolicyIsMixedForAccountTypeIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.account.FindMyFriends"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.account.FindMyFriends"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"com.apple.account.DeviceLocator"];
+    v4 = [identifierCopy isEqualToString:@"com.apple.account.DeviceLocator"];
   }
 
   return v4;
 }
 
-+ (id)additionalServiceSegmentForAccountTypeIdentifier:(id)a3
++ (id)additionalServiceSegmentForAccountTypeIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (([v3 isEqualToString:@"com.apple.account.Yahoo"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.twitter") & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"com.apple.account.aol"))
+  identifierCopy = identifier;
+  if (([identifierCopy isEqualToString:@"com.apple.account.Yahoo"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.twitter") & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.account.aol"))
   {
     v4 = @"com.apple.iOS";
   }

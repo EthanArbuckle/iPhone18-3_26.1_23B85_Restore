@@ -1,26 +1,26 @@
 @interface CKTranscriptReportSpamCell
 + (NSAttributedString)internalPhishingWarning;
 + (id)internalPhishingWarningLabel;
-- (CGSize)layoutSizeForWidth:(double)a3 applyLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKTranscriptReportSpamCell)initWithFrame:(CGRect)a3;
+- (CGSize)layoutSizeForWidth:(double)width applyLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKTranscriptReportSpamCell)initWithFrame:(CGRect)frame;
 - (NSAttributedString)attributedButtonText;
-- (void)addFilter:(id)a3;
+- (void)addFilter:(id)filter;
 - (void)clearFilters;
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7;
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve;
 - (void)layoutSubviewsForAlignmentContents;
 - (void)prepareForReuse;
-- (void)setAttributedButtonText:(id)a3;
+- (void)setAttributedButtonText:(id)text;
 @end
 
 @implementation CKTranscriptReportSpamCell
 
-- (void)configureForChatItem:(id)a3 context:(id)a4 animated:(BOOL)a5 animationDuration:(double)a6 animationCurve:(int64_t)a7
+- (void)configureForChatItem:(id)item context:(id)context animated:(BOOL)animated animationDuration:(double)duration animationCurve:(int64_t)curve
 {
-  v9 = a5;
+  animatedCopy = animated;
   v29[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
+  itemCopy = item;
+  contextCopy = context;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -38,12 +38,12 @@
     v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:&v28 count:1];
     v19 = [v15 errorWithDomain:v16 code:0 userInfo:v18];
 
-    v20 = [MEMORY[0x1E69A8168] sharedInstance];
-    [v20 forceAutoBugCaptureWithSubType:@"WrongChatItemForCKTranscriptCell" errorPayload:v19 type:@"CKTranscriptReportSpamCell" context:0];
+    mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
+    [mEMORY[0x1E69A8168] forceAutoBugCaptureWithSubType:@"WrongChatItemForCKTranscriptCell" errorPayload:v19 type:@"CKTranscriptReportSpamCell" context:0];
   }
 
-  v21 = [MEMORY[0x1E69A8070] sharedInstance];
-  if ([v21 isReportJunkEverywhereEnabled])
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedInstance];
+  if ([mEMORY[0x1E69A8070] isReportJunkEverywhereEnabled])
   {
   }
 
@@ -59,14 +59,14 @@
 
   v27.receiver = self;
   v27.super_class = CKTranscriptReportSpamCell;
-  [(CKTranscriptStampCell *)&v27 configureForChatItem:v12 context:v13 animated:v9 animationDuration:a7 animationCurve:a6];
-  v23 = [v12 transcriptText];
-  [(CKTranscriptLabelCell *)self setAttributedText:v23];
+  [(CKTranscriptStampCell *)&v27 configureForChatItem:itemCopy context:contextCopy animated:animatedCopy animationDuration:curve animationCurve:duration];
+  transcriptText = [itemCopy transcriptText];
+  [(CKTranscriptLabelCell *)self setAttributedText:transcriptText];
 
   if (CKIsRunningInMessagesNotificationExtension() || ([MEMORY[0x1E69A5B00] sharedInstance], v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "isSatelliteConnectionActive"), v24, v25))
   {
-    v26 = [(CKTranscriptReportSpamCell *)self reportSpamButton];
-    [v26 setHidden:1];
+    reportSpamButton = [(CKTranscriptReportSpamCell *)self reportSpamButton];
+    [reportSpamButton setHidden:1];
 LABEL_11:
 
     goto LABEL_12;
@@ -74,43 +74,43 @@ LABEL_11:
 
   if (objc_opt_respondsToSelector())
   {
-    v26 = [v12 transcriptButtonText];
-    [(CKTranscriptReportSpamCell *)self setAttributedButtonText:v26];
+    reportSpamButton = [itemCopy transcriptButtonText];
+    [(CKTranscriptReportSpamCell *)self setAttributedButtonText:reportSpamButton];
     goto LABEL_11;
   }
 
 LABEL_12:
   if (objc_opt_respondsToSelector())
   {
-    -[CKTranscriptReportSpamCell setShowReportSMSSpam:](self, "setShowReportSMSSpam:", [v12 showReportSMSSpam]);
+    -[CKTranscriptReportSpamCell setShowReportSMSSpam:](self, "setShowReportSMSSpam:", [itemCopy showReportSMSSpam]);
   }
 
 LABEL_14:
 }
 
-- (CKTranscriptReportSpamCell)initWithFrame:(CGRect)a3
+- (CKTranscriptReportSpamCell)initWithFrame:(CGRect)frame
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = CKTranscriptReportSpamCell;
-  v3 = [(CKTranscriptLabelCell *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKTranscriptLabelCell *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (!v3)
   {
     return v3;
   }
 
-  v4 = [MEMORY[0x1E69A8070] sharedInstance];
-  if ([v4 isReportJunkEverywhereEnabled])
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedInstance];
+  if ([mEMORY[0x1E69A8070] isReportJunkEverywhereEnabled])
   {
 
 LABEL_5:
     v6 = [MEMORY[0x1E69DC738] buttonWithType:CKIsRunningInMacCatalyst() == 0];
     v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v7 transcriptLabelAccessoryButtonConfiguration];
-    [v6 setConfiguration:v8];
+    transcriptLabelAccessoryButtonConfiguration = [v7 transcriptLabelAccessoryButtonConfiguration];
+    [v6 setConfiguration:transcriptLabelAccessoryButtonConfiguration];
 
-    v9 = [(CKEditableCollectionViewCell *)v3 contentView];
-    [v9 addSubview:v6];
+    contentView = [(CKEditableCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v6];
 
     [(CKTranscriptReportSpamCell *)v3 setReportSpamButton:v6];
     goto LABEL_6;
@@ -126,12 +126,12 @@ LABEL_5:
 LABEL_6:
   if (IMShouldHandleInternalPhishingAttempts())
   {
-    v10 = [objc_opt_class() internalPhishingWarningLabel];
+    internalPhishingWarningLabel = [objc_opt_class() internalPhishingWarningLabel];
     internalPhishingWarningLabel = v3->_internalPhishingWarningLabel;
-    v3->_internalPhishingWarningLabel = v10;
+    v3->_internalPhishingWarningLabel = internalPhishingWarningLabel;
 
-    v12 = [(CKEditableCollectionViewCell *)v3 contentView];
-    [v12 addSubview:v3->_internalPhishingWarningLabel];
+    contentView2 = [(CKEditableCollectionViewCell *)v3 contentView];
+    [contentView2 addSubview:v3->_internalPhishingWarningLabel];
   }
 
   v17[0] = objc_opt_class();
@@ -141,9 +141,9 @@ LABEL_6:
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(CKTranscriptReportSpamCell *)self layoutSizeForWidth:0 applyLayout:a3.width, a3.height];
+  [(CKTranscriptReportSpamCell *)self layoutSizeForWidth:0 applyLayout:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -158,7 +158,7 @@ LABEL_6:
   [(CKTranscriptReportSpamCell *)self layoutSizeForWidth:1 applyLayout:v3];
 }
 
-- (CGSize)layoutSizeForWidth:(double)a3 applyLayout:(BOOL)a4
+- (CGSize)layoutSizeForWidth:(double)width applyLayout:(BOOL)layout
 {
   v7 = +[CKUIBehavior sharedBehaviors];
   [(CKTranscriptStampCell *)self contentAlignmentRect];
@@ -174,8 +174,8 @@ LABEL_6:
   {
     v17 = v13;
     v18 = v14;
-    v19 = [(UILabel *)internalPhishingWarningLabel attributedText];
-    [v19 boundingRectWithSize:1 options:0 context:{a3 - (v17 + v18), 1.79769313e308}];
+    attributedText = [(UILabel *)internalPhishingWarningLabel attributedText];
+    [attributedText boundingRectWithSize:1 options:0 context:{width - (v17 + v18), 1.79769313e308}];
     v21 = v20;
     v23 = v22;
 
@@ -202,19 +202,19 @@ LABEL_6:
     v21 = v12;
   }
 
-  v27 = [(CKTranscriptLabelCell *)self label];
-  v28 = [(CKTranscriptLabelCell *)self label];
-  if (v28)
+  label = [(CKTranscriptLabelCell *)self label];
+  label2 = [(CKTranscriptLabelCell *)self label];
+  if (label2)
   {
-    v29 = v28;
-    v30 = [(CKTranscriptLabelCell *)self label];
-    v31 = [v30 attributedText];
+    v29 = label2;
+    label3 = [(CKTranscriptLabelCell *)self label];
+    attributedText2 = [label3 attributedText];
 
-    if (v31)
+    if (attributedText2)
     {
-      v32 = [(CKTranscriptLabelCell *)self label];
-      v33 = [v32 attributedText];
-      [v33 boundingRectWithSize:1 options:0 context:{a3, 1.79769313e308}];
+      label4 = [(CKTranscriptLabelCell *)self label];
+      attributedText3 = [label4 attributedText];
+      [attributedText3 boundingRectWithSize:1 options:0 context:{width, 1.79769313e308}];
       v12 = v34;
       v11 = v35;
     }
@@ -253,12 +253,12 @@ LABEL_6:
   v40 = v12;
   v41 = v70;
   v42 = floor((v70 + (v72 - v12) * 0.5) * v39) / v39;
-  [v27 setNumberOfLines:{0, *&v62}];
-  v43 = [(CKTranscriptReportSpamCell *)self reportSpamButton];
+  [label setNumberOfLines:{0, *&v62}];
+  reportSpamButton = [(CKTranscriptReportSpamCell *)self reportSpamButton];
   [v7 mediumTranscriptSpace];
   v45 = v44;
-  v67 = a3;
-  [v43 sizeThatFits:{a3, 1.79769313e308}];
+  widthCopy = width;
+  [reportSpamButton sizeThatFits:{width, 1.79769313e308}];
   v47 = v46;
   v69 = v23;
   v64 = v48;
@@ -281,20 +281,20 @@ LABEL_6:
   v50 = v11;
   v76.size.height = v11;
   v51 = v45 + CGRectGetMaxY(v76);
-  v52 = [v43 configuration];
-  v53 = [v52 background];
-  [v53 cornerRadius];
+  configuration = [reportSpamButton configuration];
+  background = [configuration background];
+  [background cornerRadius];
   v55 = v51 + v54 * 0.5;
 
-  if (a4)
+  if (layout)
   {
     v56 = v65;
     v57 = v63;
     [(UILabel *)self->_internalPhishingWarningLabel setFrame:v65, v63, v68, v69];
-    [v27 setFrame:{v42, v38, v40, v50}];
+    [label setFrame:{v42, v38, v40, v50}];
     v58 = v64;
-    [v43 setFrame:{v73, v55, v71, v64}];
-    [v43 __ck_ensureMinimumTouchInsets];
+    [reportSpamButton setFrame:{v73, v55, v71, v64}];
+    [reportSpamButton __ck_ensureMinimumTouchInsets];
   }
 
   else
@@ -320,26 +320,26 @@ LABEL_6:
   v79 = CGRectUnion(v78, v81);
   v59 = v79.size.height + fmax(44.0 - v58, 0.0) * 0.5;
 
-  v60 = v67;
+  v60 = widthCopy;
   v61 = v59;
   result.height = v61;
   result.width = v60;
   return result;
 }
 
-- (void)addFilter:(id)a3
+- (void)addFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   v7.receiver = self;
   v7.super_class = CKTranscriptReportSpamCell;
-  [(CKTranscriptStampCell *)&v7 addFilter:v4];
-  v5 = [(CKTranscriptReportSpamCell *)self reportSpamButton];
-  [v4 contentAlpha];
-  [v5 setAlpha:?];
+  [(CKTranscriptStampCell *)&v7 addFilter:filterCopy];
+  reportSpamButton = [(CKTranscriptReportSpamCell *)self reportSpamButton];
+  [filterCopy contentAlpha];
+  [reportSpamButton setAlpha:?];
   internalPhishingWarningLabel = self->_internalPhishingWarningLabel;
   if (internalPhishingWarningLabel)
   {
-    [v4 contentAlpha];
+    [filterCopy contentAlpha];
     [(UILabel *)internalPhishingWarningLabel setAlpha:?];
   }
 }
@@ -349,8 +349,8 @@ LABEL_6:
   v5.receiver = self;
   v5.super_class = CKTranscriptReportSpamCell;
   [(CKTranscriptStampCell *)&v5 clearFilters];
-  v3 = [(CKTranscriptReportSpamCell *)self reportSpamButton];
-  [v3 setAlpha:1.0];
+  reportSpamButton = [(CKTranscriptReportSpamCell *)self reportSpamButton];
+  [reportSpamButton setAlpha:1.0];
   internalPhishingWarningLabel = self->_internalPhishingWarningLabel;
   if (internalPhishingWarningLabel)
   {
@@ -358,15 +358,15 @@ LABEL_6:
   }
 }
 
-- (void)setAttributedButtonText:(id)a3
+- (void)setAttributedButtonText:(id)text
 {
-  v6 = a3;
-  v4 = [(CKTranscriptReportSpamCell *)self attributedButtonText];
+  textCopy = text;
+  attributedButtonText = [(CKTranscriptReportSpamCell *)self attributedButtonText];
 
-  if (v4 != v6)
+  if (attributedButtonText != textCopy)
   {
-    v5 = [(CKTranscriptReportSpamCell *)self reportSpamButton];
-    [v5 setAttributedTitle:v6 forState:0];
+    reportSpamButton = [(CKTranscriptReportSpamCell *)self reportSpamButton];
+    [reportSpamButton setAttributedTitle:textCopy forState:0];
 
     [(CKTranscriptReportSpamCell *)self setNeedsLayout];
   }
@@ -374,8 +374,8 @@ LABEL_6:
 
 - (NSAttributedString)attributedButtonText
 {
-  v2 = [(CKTranscriptReportSpamCell *)self reportSpamButton];
-  v3 = [v2 attributedTitleForState:0];
+  reportSpamButton = [(CKTranscriptReportSpamCell *)self reportSpamButton];
+  v3 = [reportSpamButton attributedTitleForState:0];
 
   return v3;
 }
@@ -386,8 +386,8 @@ LABEL_6:
   v4 = [v3 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [v4 setNumberOfLines:0];
   [v4 setTextAlignment:1];
-  v5 = [a1 internalPhishingWarning];
-  [v4 setAttributedText:v5];
+  internalPhishingWarning = [self internalPhishingWarning];
+  [v4 setAttributedText:internalPhishingWarning];
 
   return v4;
 }
@@ -395,15 +395,15 @@ LABEL_6:
 + (NSAttributedString)internalPhishingWarning
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 phishingWarningTextAttributes];
+  phishingWarningTextAttributes = [v2 phishingWarningTextAttributes];
 
-  v4 = [MEMORY[0x1E69DCAD8] configurationPreferringMulticolor];
-  v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"exclamationmark.triangle.fill" withConfiguration:v4];
+  configurationPreferringMulticolor = [MEMORY[0x1E69DCAD8] configurationPreferringMulticolor];
+  v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"exclamationmark.triangle.fill" withConfiguration:configurationPreferringMulticolor];
   v6 = [MEMORY[0x1E69DB7F0] textAttachmentWithImage:v5];
-  v7 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttachment:v6 attributes:v3];
+  v7 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttachment:v6 attributes:phishingWarningTextAttributes];
   v8 = objc_alloc(MEMORY[0x1E696AAB0]);
   v9 = [@" " stringByAppendingString:*MEMORY[0x1E69A7DC8]];
-  v10 = [v8 initWithString:v9 attributes:v3];
+  v10 = [v8 initWithString:v9 attributes:phishingWarningTextAttributes];
 
   [v7 appendAttributedString:v10];
 
@@ -424,18 +424,18 @@ LABEL_6:
       return;
     }
 
-    v6 = [objc_opt_class() internalPhishingWarningLabel];
+    internalPhishingWarningLabel = [objc_opt_class() internalPhishingWarningLabel];
     v7 = self->_internalPhishingWarningLabel;
-    self->_internalPhishingWarningLabel = v6;
+    self->_internalPhishingWarningLabel = internalPhishingWarningLabel;
 
-    v5 = [(CKEditableCollectionViewCell *)self contentView];
-    [v5 addSubview:self->_internalPhishingWarningLabel];
+    contentView = [(CKEditableCollectionViewCell *)self contentView];
+    [contentView addSubview:self->_internalPhishingWarningLabel];
   }
 
   else
   {
     [(UILabel *)self->_internalPhishingWarningLabel removeFromSuperview];
-    v5 = self->_internalPhishingWarningLabel;
+    contentView = self->_internalPhishingWarningLabel;
     self->_internalPhishingWarningLabel = 0;
   }
 

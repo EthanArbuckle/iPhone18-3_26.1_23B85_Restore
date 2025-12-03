@@ -1,5 +1,5 @@
 @interface PSKeychainSyncSecurityCodeControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_configureTextEntryCell;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityMarkupTable;
@@ -8,12 +8,12 @@
 
 @implementation PSKeychainSyncSecurityCodeControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PSKeychainSyncSecurityCodeController" hasInstanceVariable:@"_footerButton" withType:"UIButton"];
-  [v3 validateClass:@"PSKeychainSyncSecurityCodeController" hasInstanceMethod:@"_configureTextEntryCell" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PSKeychainSyncSecurityCodeController" hasInstanceMethod:@"textEntryCell" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PSKeychainSyncSecurityCodeController" hasInstanceVariable:@"_footerButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"PSKeychainSyncSecurityCodeController" hasInstanceMethod:@"_configureTextEntryCell" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PSKeychainSyncSecurityCodeController" hasInstanceMethod:@"textEntryCell" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityMarkupTable
@@ -49,10 +49,10 @@
 {
   v4.receiver = self;
   v4.super_class = PSKeychainSyncSecurityCodeControllerAccessibility;
-  v2 = [(PSKeychainSyncSecurityCodeControllerAccessibility *)&v4 _configureTextEntryCell];
-  [v2 setAccessibilityIdentifier:@"SecurityTextEntryCell"];
+  _configureTextEntryCell = [(PSKeychainSyncSecurityCodeControllerAccessibility *)&v4 _configureTextEntryCell];
+  [_configureTextEntryCell setAccessibilityIdentifier:@"SecurityTextEntryCell"];
 
-  return v2;
+  return _configureTextEntryCell;
 }
 
 @end

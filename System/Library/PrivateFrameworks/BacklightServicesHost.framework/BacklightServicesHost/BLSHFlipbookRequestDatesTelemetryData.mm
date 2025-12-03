@@ -1,27 +1,27 @@
 @interface BLSHFlipbookRequestDatesTelemetryData
-- (BLSHFlipbookRequestDatesTelemetryData)initWithTimestamp:(double)a3 environmentIdentifiers:(id)a4 shortestInterval:(double)a5 averageInterval:(double)a6 longestInterval:(double)a7 completionDuration:(double)a8 didReset:(BOOL)a9 timedOutCount:(unsigned int)a10;
+- (BLSHFlipbookRequestDatesTelemetryData)initWithTimestamp:(double)timestamp environmentIdentifiers:(id)identifiers shortestInterval:(double)interval averageInterval:(double)averageInterval longestInterval:(double)longestInterval completionDuration:(double)duration didReset:(BOOL)reset timedOutCount:(unsigned int)self0;
 - (id)description;
 @end
 
 @implementation BLSHFlipbookRequestDatesTelemetryData
 
-- (BLSHFlipbookRequestDatesTelemetryData)initWithTimestamp:(double)a3 environmentIdentifiers:(id)a4 shortestInterval:(double)a5 averageInterval:(double)a6 longestInterval:(double)a7 completionDuration:(double)a8 didReset:(BOOL)a9 timedOutCount:(unsigned int)a10
+- (BLSHFlipbookRequestDatesTelemetryData)initWithTimestamp:(double)timestamp environmentIdentifiers:(id)identifiers shortestInterval:(double)interval averageInterval:(double)averageInterval longestInterval:(double)longestInterval completionDuration:(double)duration didReset:(BOOL)reset timedOutCount:(unsigned int)self0
 {
-  v19 = a4;
+  identifiersCopy = identifiers;
   v23.receiver = self;
   v23.super_class = BLSHFlipbookRequestDatesTelemetryData;
   v20 = [(BLSHFlipbookRequestDatesTelemetryData *)&v23 init];
   v21 = v20;
   if (v20)
   {
-    v20->_timestamp = a3;
-    objc_storeStrong(&v20->_environmentIdentifiers, a4);
-    v21->_shortestInterval = a5;
-    v21->_averageInterval = a6;
-    v21->_longestInterval = a7;
-    v21->_completionDuration = a8;
-    v21->_didReset = a9;
-    v21->_timedOutCount = a10;
+    v20->_timestamp = timestamp;
+    objc_storeStrong(&v20->_environmentIdentifiers, identifiers);
+    v21->_shortestInterval = interval;
+    v21->_averageInterval = averageInterval;
+    v21->_longestInterval = longestInterval;
+    v21->_completionDuration = duration;
+    v21->_didReset = reset;
+    v21->_timedOutCount = count;
   }
 
   return v21;
@@ -41,9 +41,9 @@
   v11 = [v3 appendBool:self->_didReset withName:@"didReset"];
   v12 = [v3 appendUnsignedInteger:self->_timedOutCount withName:@"timedOutCount"];
   [v3 appendArraySection:self->_environmentIdentifiers withName:@"environments" skipIfEmpty:1];
-  v13 = [v3 build];
+  build = [v3 build];
 
-  return v13;
+  return build;
 }
 
 @end

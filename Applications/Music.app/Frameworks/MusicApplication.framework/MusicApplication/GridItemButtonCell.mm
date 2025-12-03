@@ -1,16 +1,16 @@
 @interface GridItemButtonCell
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setButtonSubtitle:(id)a3;
-- (void)setButtonTitle:(id)a3;
+- (void)setButtonSubtitle:(id)subtitle;
+- (void)setButtonTitle:(id)title;
 - (void)tintColorDidChange;
 @end
 
 @implementation GridItemButtonCell
 
-- (void)setButtonTitle:(id)a3
+- (void)setButtonTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = sub_AB92A0();
   }
@@ -26,13 +26,13 @@
   v8 = *(self + OBJC_IVAR____TtC16MusicApplication18GridItemButtonCell_buttonTitle + 8);
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_262F1C(v7, v8);
 }
 
-- (void)setButtonSubtitle:(id)a3
+- (void)setButtonSubtitle:(id)subtitle
 {
-  if (a3)
+  if (subtitle)
   {
     v4 = sub_AB92A0();
     v6 = v5;
@@ -44,7 +44,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_263108(v4, v6);
 }
 
@@ -59,14 +59,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_263434();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v9.receiver = *(self + OBJC_IVAR____TtC16MusicApplication18GridItemButtonCell_actionButton);
   v9.super_class = type metadata accessor for SubtitledButton();
   [(GridItemButtonCell *)&v9 sizeThatFits:width, height];

@@ -1,15 +1,15 @@
 @interface HDQuantitySeriesDataEntity
-+ (BOOL)deleteAllSeriesWithDatabase:(id)a3 error:(id *)a4;
-+ (BOOL)deleteSeriesDataWithIdentifier:(int64_t)a3 database:(id)a4 error:(id *)a5;
-+ (BOOL)deleteSeriesDataWithIdentifier:(int64_t)a3 timestamps:(id)a4 database:(id)a5 error:(id *)a6;
-+ (BOOL)enumerateSeries:(int64_t)a3 after:(double)a4 inclusive:(BOOL)a5 transaction:(id)a6 error:(id *)a7 handler:(id)a8;
-+ (BOOL)enumerateSeries:(int64_t)a3 transaction:(id)a4 error:(id *)a5 handler:(id)a6;
-+ (BOOL)enumerateWithDatabase:(id)a3 predicate:(id)a4 error:(id *)a5 handler:(id)a6;
-+ (BOOL)enumerateWithTransaction:(id)a3 predicate:(id)a4 error:(id *)a5 handler:(id)a6;
-+ (BOOL)getRangeAndCountForSeriesIdentifier:(int64_t)a3 transaction:(id)a4 error:(id *)a5 handler:(id)a6;
-+ (BOOL)insertOrReplaceEntity:(BOOL)a3 database:(id)a4 value:(double)a5 duration:(double)a6 timestamp:(double)a7 identifier:(int64_t)a8 error:(id *)a9;
++ (BOOL)deleteAllSeriesWithDatabase:(id)database error:(id *)error;
++ (BOOL)deleteSeriesDataWithIdentifier:(int64_t)identifier database:(id)database error:(id *)error;
++ (BOOL)deleteSeriesDataWithIdentifier:(int64_t)identifier timestamps:(id)timestamps database:(id)database error:(id *)error;
++ (BOOL)enumerateSeries:(int64_t)series after:(double)after inclusive:(BOOL)inclusive transaction:(id)transaction error:(id *)error handler:(id)handler;
++ (BOOL)enumerateSeries:(int64_t)series transaction:(id)transaction error:(id *)error handler:(id)handler;
++ (BOOL)enumerateWithDatabase:(id)database predicate:(id)predicate error:(id *)error handler:(id)handler;
++ (BOOL)enumerateWithTransaction:(id)transaction predicate:(id)predicate error:(id *)error handler:(id)handler;
++ (BOOL)getRangeAndCountForSeriesIdentifier:(int64_t)identifier transaction:(id)transaction error:(id *)error handler:(id)handler;
++ (BOOL)insertOrReplaceEntity:(BOOL)entity database:(id)database value:(double)value duration:(double)duration timestamp:(double)timestamp identifier:(int64_t)identifier error:(id *)error;
 + (id)foreignKeys;
-+ (id)predicateForSeriesIdentifier:(int64_t)a3;
++ (id)predicateForSeriesIdentifier:(int64_t)identifier;
 + (id)primaryKeyColumns;
 @end
 
@@ -39,25 +39,25 @@
   return v3;
 }
 
-+ (BOOL)insertOrReplaceEntity:(BOOL)a3 database:(id)a4 value:(double)a5 duration:(double)a6 timestamp:(double)a7 identifier:(int64_t)a8 error:(id *)a9
++ (BOOL)insertOrReplaceEntity:(BOOL)entity database:(id)database value:(double)value duration:(double)duration timestamp:(double)timestamp identifier:(int64_t)identifier error:(id *)error
 {
-  v14 = a3;
+  entityCopy = entity;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __103__HDQuantitySeriesDataEntity_insertOrReplaceEntity_database_value_duration_timestamp_identifier_error___block_invoke;
   aBlock[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  aBlock[4] = a1;
-  v16 = a4;
+  aBlock[4] = self;
+  databaseCopy = database;
   v17 = _Block_copy(aBlock);
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __103__HDQuantitySeriesDataEntity_insertOrReplaceEntity_database_value_duration_timestamp_identifier_error___block_invoke_2;
   v26[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v26[4] = a1;
+  v26[4] = self;
   v18 = _Block_copy(v26);
   v19 = v18;
-  v20 = !v14;
-  if (v14)
+  v20 = !entityCopy;
+  if (entityCopy)
   {
     v21 = &insertOrReplaceEntity_database_value_duration_timestamp_identifier_error__replaceSQLKey;
   }
@@ -77,11 +77,11 @@
   v25[1] = 3221225472;
   v25[2] = __103__HDQuantitySeriesDataEntity_insertOrReplaceEntity_database_value_duration_timestamp_identifier_error___block_invoke_3;
   v25[3] = &__block_descriptor_64_e23_v16__0__sqlite3_stmt__8l;
-  v25[4] = a8;
-  *&v25[5] = a7;
-  *&v25[6] = a5;
-  *&v25[7] = a6;
-  v23 = [v16 executeCachedStatementForKey:v21 error:a9 SQLGenerator:v22 bindingHandler:v25 enumerationHandler:0];
+  v25[4] = identifier;
+  *&v25[5] = timestamp;
+  *&v25[6] = value;
+  *&v25[7] = duration;
+  v23 = [databaseCopy executeCachedStatementForKey:v21 error:error SQLGenerator:v22 bindingHandler:v25 enumerationHandler:0];
 
   return v23;
 }
@@ -114,23 +114,23 @@ uint64_t __103__HDQuantitySeriesDataEntity_insertOrReplaceEntity_database_value_
   return sqlite3_bind_double(a2, 4, v4);
 }
 
-+ (BOOL)deleteSeriesDataWithIdentifier:(int64_t)a3 database:(id)a4 error:(id *)a5
++ (BOOL)deleteSeriesDataWithIdentifier:(int64_t)identifier database:(id)database error:(id *)error
 {
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __76__HDQuantitySeriesDataEntity_deleteSeriesDataWithIdentifier_database_error___block_invoke;
   aBlock[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  aBlock[4] = a1;
-  v7 = a4;
+  aBlock[4] = self;
+  databaseCopy = database;
   v8 = _Block_copy(aBlock);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __76__HDQuantitySeriesDataEntity_deleteSeriesDataWithIdentifier_database_error___block_invoke_2;
   v10[3] = &__block_descriptor_40_e23_v16__0__sqlite3_stmt__8l;
-  v10[4] = a3;
-  LOBYTE(a5) = [v7 executeCachedStatementForKey:&deleteSeriesDataWithIdentifier_database_error__deleteSQLKey error:a5 SQLGenerator:v8 bindingHandler:v10 enumerationHandler:0];
+  v10[4] = identifier;
+  LOBYTE(error) = [databaseCopy executeCachedStatementForKey:&deleteSeriesDataWithIdentifier_database_error__deleteSQLKey error:error SQLGenerator:v8 bindingHandler:v10 enumerationHandler:0];
 
-  return a5;
+  return error;
 }
 
 id __76__HDQuantitySeriesDataEntity_deleteSeriesDataWithIdentifier_database_error___block_invoke(uint64_t a1)
@@ -142,22 +142,22 @@ id __76__HDQuantitySeriesDataEntity_deleteSeriesDataWithIdentifier_database_erro
   return v3;
 }
 
-+ (BOOL)deleteSeriesDataWithIdentifier:(int64_t)a3 timestamps:(id)a4 database:(id)a5 error:(id *)a6
++ (BOOL)deleteSeriesDataWithIdentifier:(int64_t)identifier timestamps:(id)timestamps database:(id)database error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
+  timestampsCopy = timestamps;
+  databaseCopy = database;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __87__HDQuantitySeriesDataEntity_deleteSeriesDataWithIdentifier_timestamps_database_error___block_invoke;
   aBlock[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v12 = _Block_copy(aBlock);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v10;
+  obj = timestampsCopy;
   v13 = [obj countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v13)
   {
@@ -178,8 +178,8 @@ id __76__HDQuantitySeriesDataEntity_deleteSeriesDataWithIdentifier_database_erro
         v22[2] = __87__HDQuantitySeriesDataEntity_deleteSeriesDataWithIdentifier_timestamps_database_error___block_invoke_2;
         v22[3] = &unk_278613B58;
         v22[4] = v17;
-        v22[5] = a3;
-        if (![v11 executeCachedStatementForKey:&deleteSeriesDataWithIdentifier_timestamps_database_error__deleteSeriesSQLKey error:a6 SQLGenerator:v12 bindingHandler:v22 enumerationHandler:0])
+        v22[5] = identifier;
+        if (![databaseCopy executeCachedStatementForKey:&deleteSeriesDataWithIdentifier_timestamps_database_error__deleteSeriesSQLKey error:error SQLGenerator:v12 bindingHandler:v22 enumerationHandler:0])
         {
           v18 = 0;
           goto LABEL_11;
@@ -220,64 +220,64 @@ uint64_t __87__HDQuantitySeriesDataEntity_deleteSeriesDataWithIdentifier_timesta
   return sqlite3_bind_double(a2, 2, v4);
 }
 
-+ (BOOL)deleteAllSeriesWithDatabase:(id)a3 error:(id *)a4
++ (BOOL)deleteAllSeriesWithDatabase:(id)database error:(id *)error
 {
   v6 = MEMORY[0x277CCACA8];
-  v7 = a3;
-  v8 = [a1 disambiguatedDatabaseTable];
-  v9 = [v6 stringWithFormat:@"DELETE FROM %@", v8];
+  databaseCopy = database;
+  disambiguatedDatabaseTable = [self disambiguatedDatabaseTable];
+  v9 = [v6 stringWithFormat:@"DELETE FROM %@", disambiguatedDatabaseTable];
 
-  LOBYTE(a4) = [v7 executeUncachedSQL:v9 error:a4];
-  return a4;
+  LOBYTE(error) = [databaseCopy executeUncachedSQL:v9 error:error];
+  return error;
 }
 
-+ (BOOL)enumerateWithTransaction:(id)a3 predicate:(id)a4 error:(id *)a5 handler:(id)a6
++ (BOOL)enumerateWithTransaction:(id)transaction predicate:(id)predicate error:(id *)error handler:(id)handler
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [a3 protectedDatabase];
-  LOBYTE(a5) = [a1 enumerateWithDatabase:v12 predicate:v11 error:a5 handler:v10];
+  handlerCopy = handler;
+  predicateCopy = predicate;
+  protectedDatabase = [transaction protectedDatabase];
+  LOBYTE(error) = [self enumerateWithDatabase:protectedDatabase predicate:predicateCopy error:error handler:handlerCopy];
 
-  return a5;
+  return error;
 }
 
-+ (BOOL)enumerateWithDatabase:(id)a3 predicate:(id)a4 error:(id *)a5 handler:(id)a6
++ (BOOL)enumerateWithDatabase:(id)database predicate:(id)predicate error:(id *)error handler:(id)handler
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
+  predicateCopy = predicate;
+  handlerCopy = handler;
   v12 = MEMORY[0x277D10B80];
-  v13 = a3;
+  databaseCopy = database;
   v14 = objc_alloc_init(v12);
-  [v14 setEntityClass:a1];
+  [v14 setEntityClass:self];
   [v14 setLimitCount:0];
-  v15 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"series_identifier" entityClass:a1 ascending:1];
+  v15 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"series_identifier" entityClass:self ascending:1];
   v28[0] = v15;
-  v16 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"timestamp" entityClass:a1 ascending:1];
+  v16 = [MEMORY[0x277D10B68] orderingTermWithProperty:@"timestamp" entityClass:self ascending:1];
   v28[1] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
   [v14 setOrderingTerms:v17];
 
-  [v14 setPredicate:v10];
+  [v14 setPredicate:predicateCopy];
   v18 = HDQuantitySeriesDataEntityAllProperties();
   v19 = [v14 selectSQLForProperties:v18];
 
-  v25 = v11;
+  v25 = handlerCopy;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __76__HDQuantitySeriesDataEntity_enumerateWithDatabase_predicate_error_handler___block_invoke;
   v26[3] = &unk_278614860;
-  v27 = v10;
+  v27 = predicateCopy;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __76__HDQuantitySeriesDataEntity_enumerateWithDatabase_predicate_error_handler___block_invoke_2;
   v24[3] = &unk_278613B30;
-  v20 = v11;
-  v21 = v10;
-  LOBYTE(a5) = [v13 executeSQL:v19 error:a5 bindingHandler:v26 enumerationHandler:v24];
+  v20 = handlerCopy;
+  v21 = predicateCopy;
+  LOBYTE(error) = [databaseCopy executeSQL:v19 error:error bindingHandler:v26 enumerationHandler:v24];
 
   v22 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
 void *__76__HDQuantitySeriesDataEntity_enumerateWithDatabase_predicate_error_handler___block_invoke(uint64_t a1, uint64_t a2)
@@ -307,27 +307,27 @@ uint64_t __76__HDQuantitySeriesDataEntity_enumerateWithDatabase_predicate_error_
   return v7(v3, v4, v9, v10, v8);
 }
 
-+ (BOOL)enumerateSeries:(int64_t)a3 transaction:(id)a4 error:(id *)a5 handler:(id)a6
++ (BOOL)enumerateSeries:(int64_t)series transaction:(id)transaction error:(id *)error handler:(id)handler
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [a1 predicateForSeriesIdentifier:a3];
-  v13 = [v11 protectedDatabase];
+  handlerCopy = handler;
+  transactionCopy = transaction;
+  v12 = [self predicateForSeriesIdentifier:series];
+  protectedDatabase = [transactionCopy protectedDatabase];
 
-  LOBYTE(a5) = [a1 enumerateWithDatabase:v13 predicate:v12 error:a5 handler:v10];
-  return a5;
+  LOBYTE(error) = [self enumerateWithDatabase:protectedDatabase predicate:v12 error:error handler:handlerCopy];
+  return error;
 }
 
-+ (BOOL)enumerateSeries:(int64_t)a3 after:(double)a4 inclusive:(BOOL)a5 transaction:(id)a6 error:(id *)a7 handler:(id)a8
++ (BOOL)enumerateSeries:(int64_t)series after:(double)after inclusive:(BOOL)inclusive transaction:(id)transaction error:(id *)error handler:(id)handler
 {
-  v10 = a5;
+  inclusiveCopy = inclusive;
   v28[2] = *MEMORY[0x277D85DE8];
-  v14 = a8;
-  v15 = a6;
-  v16 = [a1 predicateForSeriesIdentifier:a3];
+  handlerCopy = handler;
+  transactionCopy = transaction;
+  v16 = [self predicateForSeriesIdentifier:series];
   v17 = MEMORY[0x277D10B18];
-  v18 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
-  if (v10)
+  v18 = [MEMORY[0x277CCABB0] numberWithDouble:after];
+  if (inclusiveCopy)
   {
     v19 = 6;
   }
@@ -345,40 +345,40 @@ uint64_t __76__HDQuantitySeriesDataEntity_enumerateWithDatabase_predicate_error_
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:2];
   v23 = [v21 predicateMatchingAllPredicates:v22];
 
-  v24 = [v15 protectedDatabase];
+  protectedDatabase = [transactionCopy protectedDatabase];
 
-  v25 = [a1 enumerateWithDatabase:v24 predicate:v23 error:a7 handler:v14];
+  v25 = [self enumerateWithDatabase:protectedDatabase predicate:v23 error:error handler:handlerCopy];
   v26 = *MEMORY[0x277D85DE8];
   return v25;
 }
 
-+ (BOOL)getRangeAndCountForSeriesIdentifier:(int64_t)a3 transaction:(id)a4 error:(id *)a5 handler:(id)a6
++ (BOOL)getRangeAndCountForSeriesIdentifier:(int64_t)identifier transaction:(id)transaction error:(id *)error handler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __92__HDQuantitySeriesDataEntity_getRangeAndCountForSeriesIdentifier_transaction_error_handler___block_invoke;
   aBlock[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  aBlock[4] = a1;
-  v11 = a4;
+  aBlock[4] = self;
+  transactionCopy = transaction;
   v12 = _Block_copy(aBlock);
-  v13 = [v11 protectedDatabase];
+  protectedDatabase = [transactionCopy protectedDatabase];
 
-  v18 = a3;
+  identifierCopy = identifier;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __92__HDQuantitySeriesDataEntity_getRangeAndCountForSeriesIdentifier_transaction_error_handler___block_invoke_2;
   v19[3] = &__block_descriptor_40_e23_v16__0__sqlite3_stmt__8l;
-  v19[4] = a3;
+  v19[4] = identifier;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __92__HDQuantitySeriesDataEntity_getRangeAndCountForSeriesIdentifier_transaction_error_handler___block_invoke_3;
   v16[3] = &unk_278618B70;
-  v17 = v10;
-  v14 = v10;
-  LOBYTE(a5) = [v13 executeCachedStatementForKey:&getRangeAndCountForSeriesIdentifier_transaction_error_handler__getSeriesRangeSQLKey error:a5 SQLGenerator:v12 bindingHandler:v19 enumerationHandler:v16];
+  v17 = handlerCopy;
+  v14 = handlerCopy;
+  LOBYTE(error) = [protectedDatabase executeCachedStatementForKey:&getRangeAndCountForSeriesIdentifier_transaction_error_handler__getSeriesRangeSQLKey error:error SQLGenerator:v12 bindingHandler:v19 enumerationHandler:v16];
 
-  return a5;
+  return error;
 }
 
 id __92__HDQuantitySeriesDataEntity_getRangeAndCountForSeriesIdentifier_transaction_error_handler___block_invoke(uint64_t a1)
@@ -427,10 +427,10 @@ BOOL __92__HDQuantitySeriesDataEntity_getRangeAndCountForSeriesIdentifier_transa
   return v6 != 0;
 }
 
-+ (id)predicateForSeriesIdentifier:(int64_t)a3
++ (id)predicateForSeriesIdentifier:(int64_t)identifier
 {
   v3 = MEMORY[0x277D10B18];
-  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithLongLong:identifier];
   v5 = [v3 predicateWithProperty:@"series_identifier" equalToValue:v4];
 
   return v5;

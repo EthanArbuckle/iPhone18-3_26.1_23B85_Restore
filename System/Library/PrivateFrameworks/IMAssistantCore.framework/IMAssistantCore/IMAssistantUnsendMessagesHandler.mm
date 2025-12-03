@@ -1,35 +1,35 @@
 @interface IMAssistantUnsendMessagesHandler
-+ (id)makeRetractedMessageItem:(id)a3;
-- (void)chatsForMessageIdentifiers:(id)a3 completion:(id)a4;
-- (void)handleUnsendMessages:(id)a3 completion:(id)a4;
-- (void)retractPartIndex:(int64_t)a3 fromMessageItem:(id)a4 chat:(id)a5 backwardCompatabilityText:(id)a6;
++ (id)makeRetractedMessageItem:(id)item;
+- (void)chatsForMessageIdentifiers:(id)identifiers completion:(id)completion;
+- (void)handleUnsendMessages:(id)messages completion:(id)completion;
+- (void)retractPartIndex:(int64_t)index fromMessageItem:(id)item chat:(id)chat backwardCompatabilityText:(id)text;
 @end
 
 @implementation IMAssistantUnsendMessagesHandler
 
-- (void)handleUnsendMessages:(id)a3 completion:(id)a4
+- (void)handleUnsendMessages:(id)messages completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messagesCopy = messages;
+  completionCopy = completion;
   v8 = IMLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v20 = v6;
+    v20 = messagesCopy;
     _os_log_impl(&dword_25479E000, v8, OS_LOG_TYPE_INFO, "Handling INUnsendMessagesIntent: %@", buf, 0xCu);
   }
 
-  v9 = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
-  v10 = [v9 accountDataSource];
-  v11 = [v10 hasMessagingAccount];
+  messageHandlerDataSource = [(IMAssistantMessageHandler *)self messageHandlerDataSource];
+  accountDataSource = [messageHandlerDataSource accountDataSource];
+  hasMessagingAccount = [accountDataSource hasMessagingAccount];
 
-  if (v11)
+  if (hasMessagingAccount)
   {
-    v12 = [v6 messageIdentifiers];
+    messageIdentifiers = [messagesCopy messageIdentifiers];
     v13 = +[IMAssistantMessageQueryHandler IMAssistantIMSPIQueue];
-    v17 = v6;
-    v18 = v7;
+    v17 = messagesCopy;
+    v18 = completionCopy;
     IMSPIQueryIMMessageItemsWithGUIDsAndQOS();
 
     v14 = v17;
@@ -45,73 +45,73 @@
     }
 
     v14 = [objc_alloc(MEMORY[0x277CD4298]) initWithCode:10 userActivity:0];
-    (*(v7 + 2))(v7, v14);
+    (*(completionCopy + 2))(completionCopy, v14);
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)chatsForMessageIdentifiers:(id)a3 completion:(id)a4
+- (void)chatsForMessageIdentifiers:(id)identifiers completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v7 = +[IMAssistantMessageQueryHandler IMAssistantIMSPIQueue];
-  v10 = v6;
-  v8 = v6;
-  v9 = v5;
+  v10 = completionCopy;
+  v8 = completionCopy;
+  v9 = identifiersCopy;
   IMSPIQueryMessagesWithGUIDsAndQOS();
 }
 
-+ (id)makeRetractedMessageItem:(id)a3
++ (id)makeRetractedMessageItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 body];
-  if (!v4)
+  itemCopy = item;
+  body = [itemCopy body];
+  if (!body)
   {
-    v5 = [v3 plainBody];
-    v6 = v5;
+    plainBody = [itemCopy plainBody];
+    v6 = plainBody;
     v7 = &stru_286693278;
-    if (v5)
+    if (plainBody)
     {
-      v7 = v5;
+      v7 = plainBody;
     }
 
     v8 = v7;
 
-    v4 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v8];
+    body = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v8];
   }
 
-  v9 = [v4 __im_messageTextByRemovingMessagePartIndex:0];
+  v9 = [body __im_messageTextByRemovingMessagePartIndex:0];
   v10 = MEMORY[0x277D1AA70];
-  v11 = [v3 fileTransferGUIDs];
-  v12 = [v10 newMessageItemFrom:v3 withText:v9 deleteSubject:1 withFileTransferGUIDs:v11];
+  fileTransferGUIDs = [itemCopy fileTransferGUIDs];
+  v12 = [v10 newMessageItemFrom:itemCopy withText:v9 deleteSubject:1 withFileTransferGUIDs:fileTransferGUIDs];
 
-  v13 = [MEMORY[0x277CBEAA8] __im_dateWithCurrentServerTime];
-  [v12 setDateEdited:v13];
+  __im_dateWithCurrentServerTime = [MEMORY[0x277CBEAA8] __im_dateWithCurrentServerTime];
+  [v12 setDateEdited:__im_dateWithCurrentServerTime];
 
   [v12 addRetractedPartIndex:0];
 
   return v12;
 }
 
-- (void)retractPartIndex:(int64_t)a3 fromMessageItem:(id)a4 chat:(id)a5 backwardCompatabilityText:(id)a6
+- (void)retractPartIndex:(int64_t)index fromMessageItem:(id)item chat:(id)chat backwardCompatabilityText:(id)text
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v9 account];
+  textCopy = text;
+  chatCopy = chat;
+  itemCopy = item;
+  account = [chatCopy account];
   v12 = IMCopyGUIDForChatOnAccount();
 
   IMComponentsFromChatGUID();
   v13 = 0;
-  v14 = [IMAssistantUnsendMessagesHandler makeRetractedMessageItem:v10];
-  v15 = [MEMORY[0x277D18D68] sharedController];
-  v16 = [v15 remoteDaemon];
-  v17 = [v9 chatStyle];
-  v18 = [v9 account];
+  v14 = [IMAssistantUnsendMessagesHandler makeRetractedMessageItem:itemCopy];
+  mEMORY[0x277D18D68] = [MEMORY[0x277D18D68] sharedController];
+  remoteDaemon = [mEMORY[0x277D18D68] remoteDaemon];
+  chatStyle = [chatCopy chatStyle];
+  account2 = [chatCopy account];
 
-  v19 = [v18 uniqueID];
-  [v16 sendEditedMessage:v14 previousMessage:v10 partIndex:a3 editType:2 toChatIdentifier:v13 style:v17 account:v19 backwardCompatabilityText:v8];
+  uniqueID = [account2 uniqueID];
+  [remoteDaemon sendEditedMessage:v14 previousMessage:itemCopy partIndex:index editType:2 toChatIdentifier:v13 style:chatStyle account:uniqueID backwardCompatabilityText:textCopy];
 }
 
 @end

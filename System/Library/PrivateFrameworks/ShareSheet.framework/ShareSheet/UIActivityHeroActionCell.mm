@@ -1,21 +1,21 @@
 @interface UIActivityHeroActionCell
-+ (double)heightForNumberOfLines:(double)a3;
-+ (int64_t)numberOfLinesForTitle:(id)a3 itemWidth:(double)a4;
-- (UIActivityHeroActionCell)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
++ (double)heightForNumberOfLines:(double)lines;
++ (int64_t)numberOfLinesForTitle:(id)title itemWidth:(double)width;
+- (UIActivityHeroActionCell)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)prepareForReuse;
-- (void)setDisabled:(BOOL)a3;
+- (void)setDisabled:(BOOL)disabled;
 - (void)updateConstraints;
 @end
 
 @implementation UIActivityHeroActionCell
 
-- (UIActivityHeroActionCell)initWithFrame:(CGRect)a3
+- (UIActivityHeroActionCell)initWithFrame:(CGRect)frame
 {
   v49[2] = *MEMORY[0x1E69E9840];
   v48.receiver = self;
   v48.super_class = UIActivityHeroActionCell;
-  v3 = [(UIActivityActionCell *)&v48 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIActivityActionCell *)&v48 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -35,8 +35,8 @@
     v9 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDCF8] scale:3];
     [v8 setPreferredSymbolConfiguration:v9];
 
-    v10 = [MEMORY[0x1E69DC888] labelColor];
-    [v8 setTintColor:v10];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [v8 setTintColor:labelColor];
 
     [v8 setContentMode:4];
     [v8 setAccessibilityIdentifier:@"imageView"];
@@ -44,10 +44,10 @@
     [v8 setContentHuggingPriority:1 forAxis:v11];
     [(UIActivityHeroActionCell *)v3 setActivityImageView:v8];
     v12 = objc_alloc(MEMORY[0x1E69DCF90]);
-    v13 = [(UIActivityHeroActionCell *)v3 activityImageView];
-    v49[0] = v13;
-    v14 = [(UIActivityHeroActionCell *)v3 titleLabel];
-    v49[1] = v14;
+    activityImageView = [(UIActivityHeroActionCell *)v3 activityImageView];
+    v49[0] = activityImageView;
+    titleLabel = [(UIActivityHeroActionCell *)v3 titleLabel];
+    v49[1] = titleLabel;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:2];
     v16 = [v12 initWithArrangedSubviews:v15];
 
@@ -58,54 +58,54 @@
     [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v16 setAccessibilityIdentifier:@"stackView"];
     [(UIActivityHeroActionCell *)v3 setStackView:v16];
-    v17 = [(UIActivityHeroActionCell *)v3 contentView];
-    v18 = [(UIActivityHeroActionCell *)v3 stackView];
-    [v17 addSubview:v18];
+    contentView = [(UIActivityHeroActionCell *)v3 contentView];
+    stackView = [(UIActivityHeroActionCell *)v3 stackView];
+    [contentView addSubview:stackView];
 
-    v19 = [MEMORY[0x1E695DF70] array];
-    v20 = [(UIActivityHeroActionCell *)v3 stackView];
-    v21 = [v20 topAnchor];
-    v22 = [v17 topAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22 constant:18.0];
-    [v19 addObject:v23];
+    array = [MEMORY[0x1E695DF70] array];
+    stackView2 = [(UIActivityHeroActionCell *)v3 stackView];
+    topAnchor = [stackView2 topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v23 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:18.0];
+    [array addObject:v23];
 
-    v24 = [(UIActivityHeroActionCell *)v3 stackView];
-    v25 = [v24 leadingAnchor];
-    v26 = [v17 leadingAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26 constant:4.0];
-    [v19 addObject:v27];
+    stackView3 = [(UIActivityHeroActionCell *)v3 stackView];
+    leadingAnchor = [stackView3 leadingAnchor];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v27 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:4.0];
+    [array addObject:v27];
 
-    v28 = [v17 trailingAnchor];
-    v29 = [(UIActivityHeroActionCell *)v3 stackView];
-    v30 = [v29 trailingAnchor];
-    v31 = [v28 constraintEqualToAnchor:v30 constant:4.0];
-    [v19 addObject:v31];
+    trailingAnchor = [contentView trailingAnchor];
+    stackView4 = [(UIActivityHeroActionCell *)v3 stackView];
+    trailingAnchor2 = [stackView4 trailingAnchor];
+    v31 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:4.0];
+    [array addObject:v31];
 
-    v32 = [v17 bottomAnchor];
-    v33 = [(UIActivityHeroActionCell *)v3 stackView];
-    v34 = [v33 lastBaselineAnchor];
-    v35 = [v32 constraintGreaterThanOrEqualToAnchor:v34 constant:14.0];
-    [v19 addObject:v35];
+    bottomAnchor = [contentView bottomAnchor];
+    stackView5 = [(UIActivityHeroActionCell *)v3 stackView];
+    lastBaselineAnchor = [stackView5 lastBaselineAnchor];
+    v35 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:lastBaselineAnchor constant:14.0];
+    [array addObject:v35];
 
-    v36 = [v17 heightAnchor];
-    v37 = [v36 constraintGreaterThanOrEqualToConstant:80.0];
-    [v19 addObject:v37];
+    heightAnchor = [contentView heightAnchor];
+    v37 = [heightAnchor constraintGreaterThanOrEqualToConstant:80.0];
+    [array addObject:v37];
 
-    [MEMORY[0x1E696ACD8] activateConstraints:v19];
-    v38 = [v17 bottomAnchor];
-    v39 = [(UIActivityHeroActionCell *)v3 stackView];
-    v40 = [v39 lastBaselineAnchor];
-    v41 = [v38 constraintEqualToAnchor:v40 constant:18.0];
+    [MEMORY[0x1E696ACD8] activateConstraints:array];
+    bottomAnchor2 = [contentView bottomAnchor];
+    stackView6 = [(UIActivityHeroActionCell *)v3 stackView];
+    lastBaselineAnchor2 = [stackView6 lastBaselineAnchor];
+    v41 = [bottomAnchor2 constraintEqualToAnchor:lastBaselineAnchor2 constant:18.0];
     [(UIActivityHeroActionCell *)v3 setBottomInsetConstraint:v41];
 
-    v42 = [v17 bottomAnchor];
-    v43 = [(UIActivityHeroActionCell *)v3 stackView];
-    v44 = [v43 lastBaselineAnchor];
-    v45 = [v42 constraintEqualToAnchor:v44 constant:14.0];
+    bottomAnchor3 = [contentView bottomAnchor];
+    stackView7 = [(UIActivityHeroActionCell *)v3 stackView];
+    lastBaselineAnchor3 = [stackView7 lastBaselineAnchor];
+    v45 = [bottomAnchor3 constraintEqualToAnchor:lastBaselineAnchor3 constant:14.0];
     [(UIActivityHeroActionCell *)v3 setTallBottomInsetConstraint:v45];
 
-    v46 = [MEMORY[0x1E69DC6E8] listGroupedCellConfiguration];
-    [(UIActivityHeroActionCell *)v3 setBackgroundConfiguration:v46];
+    listGroupedCellConfiguration = [MEMORY[0x1E69DC6E8] listGroupedCellConfiguration];
+    [(UIActivityHeroActionCell *)v3 setBackgroundConfiguration:listGroupedCellConfiguration];
   }
 
   return v3;
@@ -120,11 +120,11 @@
   Height = CGRectGetHeight(v9);
   v4 = Height > 80.0;
   v5 = Height <= 80.0;
-  v6 = [(UIActivityHeroActionCell *)self bottomInsetConstraint];
-  [v6 setActive:v5];
+  bottomInsetConstraint = [(UIActivityHeroActionCell *)self bottomInsetConstraint];
+  [bottomInsetConstraint setActive:v5];
 
-  v7 = [(UIActivityHeroActionCell *)self tallBottomInsetConstraint];
-  [v7 setActive:v4];
+  tallBottomInsetConstraint = [(UIActivityHeroActionCell *)self tallBottomInsetConstraint];
+  [tallBottomInsetConstraint setActive:v4];
 }
 
 - (void)prepareForReuse
@@ -132,32 +132,32 @@
   v6.receiver = self;
   v6.super_class = UIActivityHeroActionCell;
   [(UIActivityActionCell *)&v6 prepareForReuse];
-  v3 = [(UIActivityHeroActionCell *)self titleLabel];
-  [v3 setText:0];
+  titleLabel = [(UIActivityHeroActionCell *)self titleLabel];
+  [titleLabel setText:0];
 
-  v4 = [(UIActivityHeroActionCell *)self activityImageView];
-  [v4 setImage:0];
+  activityImageView = [(UIActivityHeroActionCell *)self activityImageView];
+  [activityImageView setImage:0];
 
-  v5 = [(UIActivityHeroActionCell *)self stackView];
-  [v5 setNeedsLayout];
+  stackView = [(UIActivityHeroActionCell *)self stackView];
+  [stackView setNeedsLayout];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v4.receiver = self;
   v4.super_class = UIActivityHeroActionCell;
-  [(UIActivityHeroActionCell *)&v4 applyLayoutAttributes:a3];
+  [(UIActivityHeroActionCell *)&v4 applyLayoutAttributes:attributes];
   [(UIActivityHeroActionCell *)self setClipsToBounds:1];
   [(UIActivityHeroActionCell *)self _setContinuousCornerRadius:12.0];
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  v3 = a3;
+  disabledCopy = disabled;
   v7.receiver = self;
   v7.super_class = UIActivityHeroActionCell;
   [(UIActivityActionCell *)&v7 setDisabled:?];
-  if (v3)
+  if (disabledCopy)
   {
     v5 = 0.4;
   }
@@ -167,16 +167,16 @@
     v5 = 1.0;
   }
 
-  v6 = [(UIActivityHeroActionCell *)self stackView];
-  [v6 setAlpha:v5];
+  stackView = [(UIActivityHeroActionCell *)self stackView];
+  [stackView setAlpha:v5];
 }
 
-+ (int64_t)numberOfLinesForTitle:(id)a3 itemWidth:(double)a4
++ (int64_t)numberOfLinesForTitle:(id)title itemWidth:(double)width
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v4 = a4 + -8.0;
+  v4 = width + -8.0;
   v5 = MEMORY[0x1E69DB7C8];
-  v6 = a3;
+  titleCopy = title;
   v7 = objc_alloc_init(v5);
   LODWORD(v8) = 1036831949;
   [v7 setHyphenationFactor:v8];
@@ -187,10 +187,10 @@
   v21[0] = v10;
   v21[1] = v7;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
-  v12 = [v9 initWithString:v6 attributes:v11];
+  v12 = [v9 initWithString:titleCopy attributes:v11];
 
   v13 = CTLineCreateWithAttributedString(v12);
-  v14 = [v6 length];
+  v14 = [titleCopy length];
 
   OffsetForStringIndex = CTLineGetOffsetForStringIndex(v13, v14, 0);
   CFRelease(v13);
@@ -200,23 +200,23 @@
     [v17 setAttributedText:v12];
     [v17 setBounds:{0.0, 0.0, v4, 1.79769313e308}];
     v18 = [MEMORY[0x1E69DD5A8] metricsWithConfiguration:v17];
-    v16 = [v18 numberOfLines];
+    numberOfLines = [v18 numberOfLines];
   }
 
   else
   {
-    v16 = 1;
+    numberOfLines = 1;
   }
 
-  return v16;
+  return numberOfLines;
 }
 
-+ (double)heightForNumberOfLines:(double)a3
++ (double)heightForNumberOfLines:(double)lines
 {
   v4 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
   [v4 lineHeight];
   v6 = v5 + 64.0;
-  if (a3 > 1.0)
+  if (lines > 1.0)
   {
     [v4 lineHeight];
     v8 = v7;

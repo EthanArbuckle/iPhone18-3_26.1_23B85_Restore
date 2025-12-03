@@ -5,13 +5,13 @@
 - (id)fetchLastHourFaults;
 - (id)fetchLastHourLinkTests;
 - (id)fetchLastHourRecoveries;
-- (id)performFetch:(id)a3;
+- (id)performFetch:(id)fetch;
 - (void)dealloc;
-- (void)performFetchAndReply:(id)a3 reply:(id)a4;
-- (void)remoteStoreUpdate:(id)a3;
-- (void)setUpdatedFaultsCallback:(id)a3;
-- (void)setUpdatedLinkTestsCallback:(id)a3;
-- (void)setUpdatedRecoveriesCallback:(id)a3;
+- (void)performFetchAndReply:(id)reply reply:(id)a4;
+- (void)remoteStoreUpdate:(id)update;
+- (void)setUpdatedFaultsCallback:(id)callback;
+- (void)setUpdatedLinkTestsCallback:(id)callback;
+- (void)setUpdatedRecoveriesCallback:(id)callback;
 - (void)startEventMonitoring;
 - (void)stopEventMonitoring;
 @end
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = sub_10008376C;
   block[3] = &unk_1000E13E8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100106C78 != -1)
   {
     dispatch_once(&qword_100106C78, block);
@@ -72,9 +72,9 @@
 {
   if (!self->_deviceAnalyticsClient && sub_100083904())
   {
-    v3 = [sub_100083904() sharedDeviceAnalyticsClient];
+    sharedDeviceAnalyticsClient = [sub_100083904() sharedDeviceAnalyticsClient];
     deviceAnalyticsClient = self->_deviceAnalyticsClient;
-    self->_deviceAnalyticsClient = v3;
+    self->_deviceAnalyticsClient = sharedDeviceAnalyticsClient;
   }
 
   v5 = self->_deviceAnalyticsClient;
@@ -96,10 +96,10 @@
   [(W5DatabaseManager *)&v5 dealloc];
 }
 
-- (void)remoteStoreUpdate:(id)a3
+- (void)remoteStoreUpdate:(id)update
 {
-  v4 = a3;
-  NSLog(@"Got NSNotification %@", v4);
+  updateCopy = update;
+  NSLog(@"Got NSNotification %@", updateCopy);
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -118,17 +118,17 @@
   v20 = sub_100083D80;
   v21 = sub_100083D90;
   v22 = 0;
-  v5 = [(W5DatabaseManager *)self fetchLastHourFaults];
+  fetchLastHourFaults = [(W5DatabaseManager *)self fetchLastHourFaults];
   v6 = v30[5];
-  v30[5] = v5;
+  v30[5] = fetchLastHourFaults;
 
-  v7 = [(W5DatabaseManager *)self fetchLastHourLinkTests];
+  fetchLastHourLinkTests = [(W5DatabaseManager *)self fetchLastHourLinkTests];
   v8 = v24[5];
-  v24[5] = v7;
+  v24[5] = fetchLastHourLinkTests;
 
-  v9 = [(W5DatabaseManager *)self fetchLastHourRecoveries];
+  fetchLastHourRecoveries = [(W5DatabaseManager *)self fetchLastHourRecoveries];
   v10 = v18[5];
-  v18[5] = v9;
+  v18[5] = fetchLastHourRecoveries;
 
   [(WADeviceAnalyticsClient *)self->_deviceAnalyticsClient managedObjectContextResetAndRelease:1];
   if (v30[5])
@@ -173,12 +173,12 @@
   _Block_object_dispose(&v29, 8);
 }
 
-- (id)performFetch:(id)a3
+- (id)performFetch:(id)fetch
 {
-  v4 = a3;
-  v5 = [(W5DatabaseManager *)self _getWADeviceAnalyticsClient];
+  fetchCopy = fetch;
+  _getWADeviceAnalyticsClient = [(W5DatabaseManager *)self _getWADeviceAnalyticsClient];
   v11 = 0;
-  v6 = [v5 performFetch:v4 error:&v11];
+  v6 = [_getWADeviceAnalyticsClient performFetch:fetchCopy error:&v11];
   v7 = v11;
 
   if (v7)
@@ -186,7 +186,7 @@
     v9 = sub_100098A04();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v4 description];
+      v10 = [fetchCopy description];
       v12 = 136315650;
       v13 = "[W5DatabaseManager performFetch:]";
       v14 = 2112;
@@ -230,25 +230,25 @@
   return v5;
 }
 
-- (void)performFetchAndReply:(id)a3 reply:(id)a4
+- (void)performFetchAndReply:(id)reply reply:(id)a4
 {
   v7 = a4;
-  v6 = [(W5DatabaseManager *)self performFetch:a3];
+  v6 = [(W5DatabaseManager *)self performFetch:reply];
   if (v7)
   {
     v7[2](v7, 0, v6);
   }
 }
 
-- (void)setUpdatedFaultsCallback:(id)a3
+- (void)setUpdatedFaultsCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   if (dispatch_get_specific(&self->_queue))
   {
     updatedFaultsCallback = self->_updatedFaultsCallback;
     self->_updatedFaultsCallback = 0;
 
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(callbackCopy);
     v7 = self->_updatedFaultsCallback;
     self->_updatedFaultsCallback = v6;
   }
@@ -261,21 +261,21 @@
     v9[2] = sub_100084540;
     v9[3] = &unk_1000E31B0;
     v9[4] = self;
-    v10 = v4;
+    v10 = callbackCopy;
     dispatch_sync(queue, v9);
     v7 = v10;
   }
 }
 
-- (void)setUpdatedLinkTestsCallback:(id)a3
+- (void)setUpdatedLinkTestsCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   if (dispatch_get_specific(&self->_queue))
   {
     updatedLinkTestsCallback = self->_updatedLinkTestsCallback;
     self->_updatedLinkTestsCallback = 0;
 
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(callbackCopy);
     v7 = self->_updatedLinkTestsCallback;
     self->_updatedLinkTestsCallback = v6;
   }
@@ -288,21 +288,21 @@
     v9[2] = sub_100084674;
     v9[3] = &unk_1000E31B0;
     v9[4] = self;
-    v10 = v4;
+    v10 = callbackCopy;
     dispatch_sync(queue, v9);
     v7 = v10;
   }
 }
 
-- (void)setUpdatedRecoveriesCallback:(id)a3
+- (void)setUpdatedRecoveriesCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   if (dispatch_get_specific(&self->_queue))
   {
     updatedRecoveriesCallback = self->_updatedRecoveriesCallback;
     self->_updatedRecoveriesCallback = 0;
 
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(callbackCopy);
     v7 = self->_updatedRecoveriesCallback;
     self->_updatedRecoveriesCallback = v6;
   }
@@ -315,7 +315,7 @@
     v9[2] = sub_1000847A8;
     v9[3] = &unk_1000E31B0;
     v9[4] = self;
-    v10 = v4;
+    v10 = callbackCopy;
     dispatch_sync(queue, v9);
     v7 = v10;
   }

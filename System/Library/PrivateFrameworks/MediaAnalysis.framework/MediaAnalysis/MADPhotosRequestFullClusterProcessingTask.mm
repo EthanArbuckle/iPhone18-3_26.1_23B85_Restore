@@ -1,32 +1,32 @@
 @interface MADPhotosRequestFullClusterProcessingTask
-+ (id)taskWithPhotoLibraries:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6;
-- (BOOL)run:(id *)a3;
-- (MADPhotosRequestFullClusterProcessingTask)initWithPhotoLibraries:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6;
++ (id)taskWithPhotoLibraries:(id)libraries cancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (BOOL)run:(id *)run;
+- (MADPhotosRequestFullClusterProcessingTask)initWithPhotoLibraries:(id)libraries cancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation MADPhotosRequestFullClusterProcessingTask
 
-- (MADPhotosRequestFullClusterProcessingTask)initWithPhotoLibraries:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6
+- (MADPhotosRequestFullClusterProcessingTask)initWithPhotoLibraries:(id)libraries cancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  librariesCopy = libraries;
+  blockCopy = block;
+  handlerCopy = handler;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100117604;
   v23[3] = &unk_100284038;
-  v14 = a6;
-  v24 = v14;
+  completionHandlerCopy = completionHandler;
+  v24 = completionHandlerCopy;
   v22.receiver = self;
   v22.super_class = MADPhotosRequestFullClusterProcessingTask;
   v15 = [(MADPhotosRequestFullClusterProcessingTask *)&v22 initWithCompletionHandler:v23];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_photoLibraries, a3);
-    if (v13)
+    objc_storeStrong(&v15->_photoLibraries, libraries);
+    if (handlerCopy)
     {
-      v17 = v13;
+      v17 = handlerCopy;
     }
 
     else
@@ -38,9 +38,9 @@
     progressHandler = v16->_progressHandler;
     v16->_progressHandler = v18;
 
-    if (v12)
+    if (blockCopy)
     {
-      v20 = v12;
+      v20 = blockCopy;
     }
 
     else
@@ -54,25 +54,25 @@
   return v16;
 }
 
-+ (id)taskWithPhotoLibraries:(id)a3 cancelBlock:(id)a4 progressHandler:(id)a5 completionHandler:(id)a6
++ (id)taskWithPhotoLibraries:(id)libraries cancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [objc_alloc(objc_opt_class()) initWithPhotoLibraries:v9 cancelBlock:v10 progressHandler:v11 completionHandler:v12];
+  librariesCopy = libraries;
+  blockCopy = block;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v13 = [objc_alloc(objc_opt_class()) initWithPhotoLibraries:librariesCopy cancelBlock:blockCopy progressHandler:handlerCopy completionHandler:completionHandlerCopy];
 
   return v13;
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   if (![(NSArray *)self->_photoLibraries count])
   {
     v4 = +[VCPPhotoLibraryManager sharedManager];
-    v5 = [v4 allPhotoLibraries];
+    allPhotoLibraries = [v4 allPhotoLibraries];
     photoLibraries = self->_photoLibraries;
-    self->_photoLibraries = v5;
+    self->_photoLibraries = allPhotoLibraries;
   }
 
   if (MediaAnalysisLogLevel() >= 6)
@@ -97,8 +97,8 @@
     {
       v10 = objc_autoreleasePoolPush();
       v11 = [(NSArray *)self->_photoLibraries objectAtIndexedSubscript:v9];
-      v12 = [v11 vcp_description];
-      v39 = [NSString stringWithFormat:@"[MADPhotosRequestFullClusterProcessingTask][%@]", v12];
+      vcp_description = [v11 vcp_description];
+      v39 = [NSString stringWithFormat:@"[MADPhotosRequestFullClusterProcessingTask][%@]", vcp_description];
 
       if ([(MADPhotosRequestFullClusterProcessingTask *)self isCanceled])
       {
@@ -118,8 +118,8 @@
       v15 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v11];
       if (+[MADManagedKeyValueStore isMACDReadEnabled])
       {
-        v16 = [v11 mad_fetchRequest];
-        v17 = [v16 dataStoreValueForKey:v37];
+        mad_fetchRequest = [v11 mad_fetchRequest];
+        v17 = [mad_fetchRequest dataStoreValueForKey:v37];
       }
 
       else
@@ -155,9 +155,9 @@
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v23, OS_SIGNPOST_INTERVAL_END, v19, "MADPhotosFullClusterProcessingTask_process", "", buf, 2u);
       }
 
-      v24 = [(MADPhotosRequestFullClusterProcessingTask *)self isCanceled];
-      v25 = v24;
-      if (v24)
+      isCanceled = [(MADPhotosRequestFullClusterProcessingTask *)self isCanceled];
+      v25 = isCanceled;
+      if (isCanceled)
       {
         if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, type))
         {
@@ -166,15 +166,15 @@
           _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ User cancelled", buf, 0xCu);
         }
 
-        if (a3)
+        if (run)
         {
           v41 = NSLocalizedDescriptionKey;
           v26 = [NSString stringWithFormat:@"[MADPhotosRequestFullClusterProcessingTask] User cancelled"];
           v42 = v26;
           v27 = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1];
           v28 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v27];
-          v29 = *a3;
-          *a3 = v28;
+          v29 = *run;
+          *run = v28;
         }
       }
 
@@ -217,15 +217,15 @@
       _os_log_impl(&_mh_execute_header, &_os_log_default, type, "%@ User cancelled", buf, 0xCu);
     }
 
-    if (a3)
+    if (run)
     {
       v43 = NSLocalizedDescriptionKey;
       v32 = [NSString stringWithFormat:@"%@ User cancelled", v39];
       v44 = v32;
       v33 = [NSDictionary dictionaryWithObjects:&v44 forKeys:&v43 count:1];
       v34 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-128 userInfo:v33];
-      v35 = *a3;
-      *a3 = v34;
+      v35 = *run;
+      *run = v34;
     }
 
     objc_autoreleasePoolPop(v10);
@@ -235,8 +235,8 @@
   else
   {
 LABEL_35:
-    v30 = [(MADPhotosRequestFullClusterProcessingTask *)self completionHandler];
-    v30[2](v30, 0, 0);
+    completionHandler = [(MADPhotosRequestFullClusterProcessingTask *)self completionHandler];
+    completionHandler[2](completionHandler, 0, 0);
 
     return 1;
   }

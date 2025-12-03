@@ -3,17 +3,17 @@
 + (void)currentWorkspaceConnection;
 - (BOOL)isOutgoing;
 - (const)_workspaceLock_connection;
-- (id)_acquireAssertionForWorkspaceScene:(unsigned int)a3 withState:;
-- (id)_initWithWorkspace:(id *)a1;
+- (id)_acquireAssertionForWorkspaceScene:(unsigned int)scene withState:;
+- (id)_initWithWorkspace:(id *)workspace;
 - (id)_workspace;
 - (id)queue;
 - (id)remoteProcess;
 - (id)workspaceLock_invalidate;
 - (uint64_t)workspaceLock_isValid;
-- (void)_flushConnectBlocksWithProxy:(uint64_t)a1;
-- (void)_workspaceLock_setConnection:(void *)a3 withInterface:(void *)a4 activationHandler:(void *)a5 invalidationHandler:;
-- (void)_workspaceScene:(void *)a3 enqueueConnectBlock:;
-- (void)workspaceLock_enqueueConnectBlock:(uint64_t)a1;
+- (void)_flushConnectBlocksWithProxy:(uint64_t)proxy;
+- (void)_workspaceLock_setConnection:(void *)connection withInterface:(void *)interface activationHandler:(void *)handler invalidationHandler:;
+- (void)_workspaceScene:(void *)scene enqueueConnectBlock:;
+- (void)workspaceLock_enqueueConnectBlock:(uint64_t)block;
 - (void)workspaceLock_invalidate;
 @end
 
@@ -21,43 +21,43 @@
 
 - (const)_workspaceLock_connection
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    [(FBWorkspace *)a1[1] _assertLocked];
-    a1 = v2[2];
+    selfCopy = self;
+    [(FBWorkspace *)self[1] _assertLocked];
+    self = selfCopy[2];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)queue
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(FBWorkspace *)*(a1 + 8) _synchronizer];
-    v2 = [(FBSceneSynchronizer *)v1 _workspaceQueue];
+    _synchronizer = [(FBWorkspace *)*(self + 8) _synchronizer];
+    _workspaceQueue = [(FBSceneSynchronizer *)_synchronizer _workspaceQueue];
   }
 
   else
   {
-    v2 = 0;
+    _workspaceQueue = 0;
   }
 
-  return v2;
+  return _workspaceQueue;
 }
 
 + (id)currentWorkspaceConnection
 {
   objc_opt_self();
-  v0 = [MEMORY[0x1E698F490] currentContext];
-  if (!v0)
+  currentContext = [MEMORY[0x1E698F490] currentContext];
+  if (!currentContext)
   {
     +[(FBWorkspaceConnection *)sel_currentWorkspaceConnection];
   }
 
-  v1 = v0;
+  v1 = currentContext;
   os_unfair_lock_lock(&_connectionsLock);
   v2 = [_connectionsLock_connectionByConnection objectForKey:v1];
   os_unfair_lock_unlock(&_connectionsLock);
@@ -80,10 +80,10 @@
 
 - (uint64_t)workspaceLock_isValid
 {
-  if (a1)
+  if (self)
   {
-    [(FBWorkspace *)*(a1 + 8) _assertLocked];
-    v2 = *(a1 + 32);
+    [(FBWorkspace *)*(self + 8) _assertLocked];
+    v2 = *(self + 32);
   }
 
   else
@@ -107,20 +107,20 @@
 
 - (id)workspaceLock_invalidate
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    [(FBWorkspace *)a1[1] _assertLocked];
-    v2 = v1[3];
-    v3 = v1[3];
-    v1[3] = 0;
+    [(FBWorkspace *)self[1] _assertLocked];
+    v2 = selfCopy[3];
+    v3 = selfCopy[3];
+    selfCopy[3] = 0;
 
     os_unfair_lock_lock(&_connectionsLock);
-    v4 = [_connectionsLock_connectionByConnection objectForKey:v1[2]];
+    v4 = [_connectionsLock_connectionByConnection objectForKey:selfCopy[2]];
     v5 = v4;
     if (v4)
     {
-      v6 = v4 == v1;
+      v6 = v4 == selfCopy;
     }
 
     else
@@ -130,7 +130,7 @@
 
     if (!v6)
     {
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"should not be possible to map to something other than connection=%p for connection=%@ : existing=%@", v1, v1[2], v4];
+      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"should not be possible to map to something other than connection=%p for connection=%@ : existing=%@", selfCopy, selfCopy[2], v4];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         [(FBWorkspaceConnection *)sel_workspaceLock_invalidate workspaceLock_invalidate];
@@ -142,10 +142,10 @@
       return result;
     }
 
-    [_connectionsLock_connectionByConnection removeObjectForKey:v1[2]];
+    [_connectionsLock_connectionByConnection removeObjectForKey:selfCopy[2]];
     os_unfair_lock_unlock(&_connectionsLock);
-    [v1[2] invalidate];
-    *(v1 + 32) = 0;
+    [selfCopy[2] invalidate];
+    *(selfCopy + 32) = 0;
     if ([v2 count])
     {
       v7 = v2;
@@ -156,27 +156,27 @@
       v7 = 0;
     }
 
-    v1 = v7;
+    selfCopy = v7;
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)_workspaceLock_setConnection:(void *)a3 withInterface:(void *)a4 activationHandler:(void *)a5 invalidationHandler:
+- (void)_workspaceLock_setConnection:(void *)connection withInterface:(void *)interface activationHandler:(void *)handler invalidationHandler:
 {
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (a1)
+  connectionCopy = connection;
+  interfaceCopy = interface;
+  handlerCopy = handler;
+  if (self)
   {
-    [(FBWorkspace *)*(a1 + 8) _assertLocked];
-    if (!*(a1 + 24))
+    [(FBWorkspace *)*(self + 8) _assertLocked];
+    if (!*(self + 24))
     {
       [FBWorkspaceConnection _workspaceLock_setConnection:v10 withInterface:sel__workspaceLock_setConnection_withInterface_activationHandler_invalidationHandler_ activationHandler:? invalidationHandler:?];
     }
 
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((self + 16), a2);
     os_unfair_lock_lock(&_connectionsLock);
     v14 = _connectionsLock_connectionByConnection;
     if (!_connectionsLock_connectionByConnection)
@@ -195,19 +195,19 @@
       [FBWorkspaceConnection _workspaceLock_setConnection:v10 withInterface:sel__workspaceLock_setConnection_withInterface_activationHandler_invalidationHandler_ activationHandler:? invalidationHandler:?];
     }
 
-    [_connectionsLock_connectionByConnection setObject:a1 forKey:v10];
+    [_connectionsLock_connectionByConnection setObject:self forKey:v10];
     os_unfair_lock_unlock(&_connectionsLock);
-    v18 = *(a1 + 16);
+    v18 = *(self + 16);
     v19 = MEMORY[0x1E69E9820];
     v20 = 3221225472;
     v21 = __106__FBWorkspaceConnection__workspaceLock_setConnection_withInterface_activationHandler_invalidationHandler___block_invoke;
     v22 = &unk_1E783D5F8;
-    v23 = a1;
-    v24 = v11;
-    v25 = v12;
-    v26 = v13;
+    selfCopy = self;
+    v24 = connectionCopy;
+    v25 = interfaceCopy;
+    v26 = handlerCopy;
     [v18 configureConnection:&v19];
-    [*(a1 + 16) activate];
+    [*(self + 16) activate];
   }
 }
 
@@ -228,98 +228,98 @@ void __106__FBWorkspaceConnection__workspaceLock_setConnection_withInterface_act
   [v5 setInvalidationHandler:a1[7]];
 }
 
-- (void)_workspaceScene:(void *)a3 enqueueConnectBlock:
+- (void)_workspaceScene:(void *)scene enqueueConnectBlock:
 {
   v7 = a2;
-  v5 = a3;
-  v6 = v5;
-  if (a1)
+  sceneCopy = scene;
+  v6 = sceneCopy;
+  if (self)
   {
-    if (!v5)
+    if (!sceneCopy)
     {
       [FBWorkspaceConnection _workspaceScene:? enqueueConnectBlock:?];
     }
 
-    [FBWorkspaceConnection _workspaceScene:a1 enqueueConnectBlock:v5];
+    [FBWorkspaceConnection _workspaceScene:self enqueueConnectBlock:sceneCopy];
   }
 }
 
-- (void)workspaceLock_enqueueConnectBlock:(uint64_t)a1
+- (void)workspaceLock_enqueueConnectBlock:(uint64_t)block
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (block)
   {
     if (!v3)
     {
       [FBWorkspaceConnection workspaceLock_enqueueConnectBlock:?];
     }
 
-    [(FBWorkspace *)*(a1 + 8) _assertLocked];
-    v5 = *(a1 + 24);
+    [(FBWorkspace *)*(block + 8) _assertLocked];
+    v5 = *(block + 24);
     if (v5)
     {
       v6 = [v4 copy];
       v7 = MEMORY[0x1AC572E40]();
       [v5 addObject:v7];
 
-      v8 = [(FBWorkspace *)*(a1 + 8) _synchronizer];
-      [(FBSceneSynchronizer *)v8 _setWaitingForConnect];
+      _synchronizer = [(FBWorkspace *)*(block + 8) _synchronizer];
+      [(FBSceneSynchronizer *)_synchronizer _setWaitingForConnect];
     }
 
     else
     {
-      [(FBWorkspaceConnection *)a1 workspaceLock_enqueueConnectBlock:v4];
+      [(FBWorkspaceConnection *)block workspaceLock_enqueueConnectBlock:v4];
     }
   }
 }
 
-- (id)_initWithWorkspace:(id *)a1
+- (id)_initWithWorkspace:(id *)workspace
 {
   v4 = a2;
-  if (a1)
+  if (workspace)
   {
-    v9.receiver = a1;
+    v9.receiver = workspace;
     v9.super_class = FBWorkspaceConnection;
     v5 = objc_msgSendSuper2(&v9, sel_init);
-    a1 = v5;
+    workspace = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
       v6 = objc_opt_new();
-      v7 = a1[3];
-      a1[3] = v6;
+      v7 = workspace[3];
+      workspace[3] = v6;
 
-      *(a1 + 32) = 1;
+      *(workspace + 32) = 1;
     }
   }
 
-  return a1;
+  return workspace;
 }
 
 - (id)_workspace
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[1];
+    self = self[1];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_flushConnectBlocksWithProxy:(uint64_t)a1
+- (void)_flushConnectBlocksWithProxy:(uint64_t)proxy
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (proxy)
   {
-    [(FBWorkspace *)*(a1 + 8) _lock];
-    v4 = *(a1 + 24);
-    v5 = *(a1 + 24);
-    *(a1 + 24) = 0;
+    [(FBWorkspace *)*(proxy + 8) _lock];
+    v4 = *(proxy + 24);
+    v5 = *(proxy + 24);
+    *(proxy + 24) = 0;
 
-    [(FBWorkspace *)*(a1 + 8) _unlock];
+    [(FBWorkspace *)*(proxy + 8) _unlock];
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
@@ -357,23 +357,23 @@ void __106__FBWorkspaceConnection__workspaceLock_setConnection_withInterface_act
 
 - (id)remoteProcess
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[1] process];
+    self = [self[1] process];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)_acquireAssertionForWorkspaceScene:(unsigned int)a3 withState:
+- (id)_acquireAssertionForWorkspaceScene:(unsigned int)scene withState:
 {
-  if (a1)
+  if (self)
   {
-    v4 = *(a1 + 8);
-    v5 = [a2 identity];
-    v6 = [v5 description];
-    v7 = [(FBWorkspace *)v4 _acquireAssertionForReason:v6 withState:a3];
+    v4 = *(self + 8);
+    identity = [a2 identity];
+    v6 = [identity description];
+    v7 = [(FBWorkspace *)v4 _acquireAssertionForReason:v6 withState:scene];
   }
 
   else
@@ -482,7 +482,7 @@ void __106__FBWorkspaceConnection__workspaceLock_setConnection_withInterface_act
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"if we're asking for the currentContext and we don't have it then something must have gone seriously wrong"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -540,7 +540,7 @@ void __106__FBWorkspaceConnection__workspaceLock_setConnection_withInterface_act
 - (void)workspaceLock_invalidate
 {
   v10 = *MEMORY[0x1E69E9840];
-  v1 = NSStringFromSelector(a1);
+  v1 = NSStringFromSelector(self);
   v2 = objc_opt_class();
   v3 = NSStringFromClass(v2);
   OUTLINED_FUNCTION_0_0();

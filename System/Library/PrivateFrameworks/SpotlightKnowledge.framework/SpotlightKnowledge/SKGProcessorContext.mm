@@ -6,9 +6,9 @@
 - (BOOL)enableExtractions;
 - (BOOL)enableKeyphrases;
 - (BOOL)enableReceiverDebugging;
-- (BOOL)keyphrasesSupportsBundle:(id)a3 domainID:(id)a4;
+- (BOOL)keyphrasesSupportsBundle:(id)bundle domainID:(id)d;
 - (SKGProcessorContext)init;
-- (SKGProcessorContext)initWithPreferredLanguages:(id)a3 locale:(id)a4;
+- (SKGProcessorContext)initWithPreferredLanguages:(id)languages locale:(id)locale;
 - (id)cleanupAttributes;
 - (id)docUnderstandingFetchAttributes;
 - (id)docUnderstandingIncludeBundles;
@@ -30,10 +30,10 @@
 
 - (BOOL)enableDocumentUnderstanding
 {
-  v2 = [MEMORY[0x1E6964E20] sharedInstance];
-  v3 = [v2 isTextPersonExtractionAvailable];
+  mEMORY[0x1E6964E20] = [MEMORY[0x1E6964E20] sharedInstance];
+  isTextPersonExtractionAvailable = [mEMORY[0x1E6964E20] isTextPersonExtractionAvailable];
 
-  if (!v3)
+  if (!isTextPersonExtractionAvailable)
   {
     return 0;
   }
@@ -93,10 +93,10 @@ uint64_t __36__SKGProcessorContext_sharedContext__block_invoke()
   {
     if (_os_feature_enabled_impl())
     {
-      v2 = [MEMORY[0x1E69D3DC8] sharedInstance];
-      v3 = [v2 deviceCanGenerateEmbeddings];
+      mEMORY[0x1E69D3DC8] = [MEMORY[0x1E69D3DC8] sharedInstance];
+      deviceCanGenerateEmbeddings = [mEMORY[0x1E69D3DC8] deviceCanGenerateEmbeddings];
 
-      if (v3)
+      if (deviceCanGenerateEmbeddings)
       {
         return 1;
       }
@@ -264,11 +264,11 @@ void __55__SKGProcessorContext_embeddingExcludeDomainIdentifier__block_invoke()
   return keyphraseExcludeBundles_gKeyphraseExcludeBundles;
 }
 
-- (SKGProcessorContext)initWithPreferredLanguages:(id)a3 locale:(id)a4
+- (SKGProcessorContext)initWithPreferredLanguages:(id)languages locale:(id)locale
 {
   v7.receiver = self;
   v7.super_class = SKGProcessorContext;
-  v4 = [(SKGProcessorContext *)&v7 init:a3];
+  v4 = [(SKGProcessorContext *)&v7 init:languages];
   v5 = v4;
   if (v4)
   {
@@ -316,11 +316,11 @@ uint64_t __46__SKGProcessorContext_enableReceiverDebugging__block_invoke()
 {
   v2 = _os_feature_enabled_impl();
   v3 = +[SKGProcessorContext sharedContext];
-  v4 = [v3 excludeBundles];
-  v5 = v4;
+  excludeBundles = [v3 excludeBundles];
+  v5 = excludeBundles;
   if ((v2 & 1) == 0)
   {
-    v6 = [v4 arrayByAddingObject:@"com.apple.mobilephone"];
+    v6 = [excludeBundles arrayByAddingObject:@"com.apple.mobilephone"];
 
     v5 = v6;
   }
@@ -516,21 +516,21 @@ void __46__SKGProcessorContext_keyphraseExcludeBundles__block_invoke(uint64_t a1
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)keyphrasesSupportsBundle:(id)a3 domainID:(id)a4
+- (BOOL)keyphrasesSupportsBundle:(id)bundle domainID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  bundleCopy = bundle;
+  dCopy = d;
+  v8 = dCopy;
+  if (bundleCopy)
   {
-    v9 = [(SKGProcessorContext *)self keyphraseIncludeBundles];
-    v10 = [v9 containsObject:v6];
+    keyphraseIncludeBundles = [(SKGProcessorContext *)self keyphraseIncludeBundles];
+    v10 = [keyphraseIncludeBundles containsObject:bundleCopy];
 
     if ((v10 & 1) == 0)
     {
-      v11 = [(SKGProcessorContext *)self keyphraseExcludeBundles];
-      v12 = v11;
-      v13 = v6;
+      keyphraseExcludeBundles = [(SKGProcessorContext *)self keyphraseExcludeBundles];
+      v12 = keyphraseExcludeBundles;
+      v13 = bundleCopy;
       goto LABEL_6;
     }
 
@@ -539,16 +539,16 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!dCopy)
   {
     goto LABEL_8;
   }
 
-  v11 = [(SKGProcessorContext *)self keyphraseExcludeDomains];
-  v12 = v11;
+  keyphraseExcludeBundles = [(SKGProcessorContext *)self keyphraseExcludeDomains];
+  v12 = keyphraseExcludeBundles;
   v13 = v8;
 LABEL_6:
-  v14 = [v11 containsObject:v13];
+  v14 = [keyphraseExcludeBundles containsObject:v13];
 
   if ((v14 & 1) == 0)
   {

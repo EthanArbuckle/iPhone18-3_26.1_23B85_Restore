@@ -3,9 +3,9 @@
 - (double)defaultRowHeight;
 - (double)topPadding;
 - (id)addressFont;
-- (id)backgroundColorForSelectedState:(unint64_t)a3 disclosureEnabled:(BOOL)a4;
+- (id)backgroundColorForSelectedState:(unint64_t)state disclosureEnabled:(BOOL)enabled;
 - (id)subjectFont;
-- (int64_t)linesOfSummaryForCompactHeight:(BOOL)a3;
+- (int64_t)linesOfSummaryForCompactHeight:(BOOL)height;
 @end
 
 @implementation _DefaultMessageListCellLayoutValues
@@ -33,8 +33,8 @@
   {
     v4 = *MEMORY[0x277D769D8];
     v5 = [(_DefaultMessageListCellLayoutValues *)self linesOfSummaryForCompactHeight:0];
-    v6 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-    if (!v5 && (([*MEMORY[0x277D76858] isEqualToString:v6] & 1) != 0 || objc_msgSend(*MEMORY[0x277D76830], "isEqualToString:", v6)))
+    preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+    if (!v5 && (([*MEMORY[0x277D76858] isEqualToString:preferredContentSizeCategory] & 1) != 0 || objc_msgSend(*MEMORY[0x277D76830], "isEqualToString:", preferredContentSizeCategory)))
     {
       v7 = *MEMORY[0x277D769E0];
 
@@ -64,8 +64,8 @@
 
     else
     {
-      v4 = [(MessageListCellLayoutValues *)self summaryFont];
-      [v4 _bodyLeading];
+      summaryFont = [(MessageListCellLayoutValues *)self summaryFont];
+      [summaryFont _bodyLeading];
       UIRoundToViewScale();
       self->super._topPadding = v5;
 
@@ -88,44 +88,44 @@
   return result;
 }
 
-- (id)backgroundColorForSelectedState:(unint64_t)a3 disclosureEnabled:(BOOL)a4
+- (id)backgroundColorForSelectedState:(unint64_t)state disclosureEnabled:(BOOL)enabled
 {
-  if (a4)
+  if (enabled)
   {
     v4 = MEMORY[0x277D75348];
-    if (a3 != 1)
+    if (state != 1)
     {
-      v5 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+      secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
 LABEL_12:
-      a2 = v5;
+      a2 = secondarySystemBackgroundColor;
       goto LABEL_13;
     }
 
 LABEL_10:
-    v5 = [v4 mailCellSelectionStateColorForInterfaceLevel:{-[UITraitCollection userInterfaceLevel](self->super._traitCollection, "userInterfaceLevel")}];
+    secondarySystemBackgroundColor = [v4 mailCellSelectionStateColorForInterfaceLevel:{-[UITraitCollection userInterfaceLevel](self->super._traitCollection, "userInterfaceLevel")}];
     goto LABEL_12;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
-    v5 = [MEMORY[0x277D75348] quaternaryLabelColor];
+    secondarySystemBackgroundColor = [MEMORY[0x277D75348] quaternaryLabelColor];
     goto LABEL_12;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     v4 = MEMORY[0x277D75348];
     goto LABEL_10;
   }
 
-  if (a3)
+  if (state)
   {
     goto LABEL_13;
   }
 
   if ([(MessageListCellLayoutValues *)self supportsPopover])
   {
-    v5 = [MEMORY[0x277D75348] mailPopoverBackgroundCellColor];
+    secondarySystemBackgroundColor = [MEMORY[0x277D75348] mailPopoverBackgroundCellColor];
     goto LABEL_12;
   }
 
@@ -147,9 +147,9 @@ LABEL_13:
   return result;
 }
 
-- (int64_t)linesOfSummaryForCompactHeight:(BOOL)a3
+- (int64_t)linesOfSummaryForCompactHeight:(BOOL)height
 {
-  if (a3)
+  if (height)
   {
     return 0;
   }

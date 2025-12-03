@@ -1,13 +1,13 @@
 @interface VCPGaborFilter
-- (VCPGaborFilter)initWithNumberOfScales:(int)numScales numOfOrientations:(int)numOrientations width:(unint64_t)a5 height:(unint64_t)a6;
-- (int)createGaborFilterKernel:(Kernel *)a3 sigmaX:(float)a4 sigmaY:(float)a5 lambda:(float)a6 thetaInDegree:(float)a7 phaseInDegree:(float)a8;
-- (int)processWithFilterScaleIdx:(int)a3 orientIdx:(int)a4 srcImage:(const float *)a5 outImage:(float *)a6 width:(unint64_t)a7 height:(unint64_t)a8;
+- (VCPGaborFilter)initWithNumberOfScales:(int)numScales numOfOrientations:(int)numOrientations width:(unint64_t)width height:(unint64_t)height;
+- (int)createGaborFilterKernel:(Kernel *)kernel sigmaX:(float)x sigmaY:(float)y lambda:(float)lambda thetaInDegree:(float)degree phaseInDegree:(float)inDegree;
+- (int)processWithFilterScaleIdx:(int)idx orientIdx:(int)orientIdx srcImage:(const float *)image outImage:(float *)outImage width:(unint64_t)width height:(unint64_t)height;
 - (void)dealloc;
 @end
 
 @implementation VCPGaborFilter
 
-- (VCPGaborFilter)initWithNumberOfScales:(int)numScales numOfOrientations:(int)numOrientations width:(unint64_t)a5 height:(unint64_t)a6
+- (VCPGaborFilter)initWithNumberOfScales:(int)numScales numOfOrientations:(int)numOrientations width:(unint64_t)width height:(unint64_t)height
 {
   v34.receiver = self;
   v34.super_class = VCPGaborFilter;
@@ -16,7 +16,7 @@
   if (v10)
   {
     v12 = 0;
-    if ((a5 & a6 & 1) != 0 && (a6 | a5) >= 2)
+    if ((width & height & 1) != 0 && (height | width) >= 2)
     {
       v10->_numScales = numScales;
       v10->_numOrientations = numOrientations;
@@ -40,14 +40,14 @@
         {
           v15 = 0;
           v16 = 180.0 / numOrientations;
-          if ((a6 * a5) >> 62)
+          if ((height * width) >> 62)
           {
             v17 = -1;
           }
 
           else
           {
-            v17 = 4 * a6 * a5;
+            v17 = 4 * height * width;
           }
 
           v18 = MEMORY[0x1E69E5398];
@@ -70,8 +70,8 @@
               {
                 filterBanks = v11->_filterBanks;
                 v24 = &filterBanks[v15][v21];
-                v24->var1 = a5;
-                v24->var2 = a6;
+                v24->var1 = width;
+                v24->var2 = height;
                 filterBanks[v15][v21].var0 = operator new[](v17, v18);
                 v28 = &v11->_filterBanks[v15][v21];
                 if (!v28->var0)
@@ -176,30 +176,30 @@ LABEL_26:
   [(VCPGaborFilter *)&v10 dealloc];
 }
 
-- (int)processWithFilterScaleIdx:(int)a3 orientIdx:(int)a4 srcImage:(const float *)a5 outImage:(float *)a6 width:(unint64_t)a7 height:(unint64_t)a8
+- (int)processWithFilterScaleIdx:(int)idx orientIdx:(int)orientIdx srcImage:(const float *)image outImage:(float *)outImage width:(unint64_t)width height:(unint64_t)height
 {
-  v11 = &self->_filterBanks[a3][a4];
-  vDSP_imgfir(a5, a8, a7, v11->var0, a6, v11->var2, v11->var1);
-  vDSP_vabs(a6, 1, a6, 1, a8 * a7);
+  v11 = &self->_filterBanks[idx][orientIdx];
+  vDSP_imgfir(image, height, width, v11->var0, outImage, v11->var2, v11->var1);
+  vDSP_vabs(outImage, 1, outImage, 1, height * width);
   return 0;
 }
 
-- (int)createGaborFilterKernel:(Kernel *)a3 sigmaX:(float)a4 sigmaY:(float)a5 lambda:(float)a6 thetaInDegree:(float)a7 phaseInDegree:(float)a8
+- (int)createGaborFilterKernel:(Kernel *)kernel sigmaX:(float)x sigmaY:(float)y lambda:(float)lambda thetaInDegree:(float)degree phaseInDegree:(float)inDegree
 {
   result = -50;
-  if (a5 > 0.0 && a4 > 0.0 && a6 > 0.0)
+  if (y > 0.0 && x > 0.0 && lambda > 0.0)
   {
-    v13 = a3;
-    v14 = a3->var2 >> 1;
-    v15 = __sincosf_stret(a7 * 0.017453);
+    kernelCopy = kernel;
+    v14 = kernel->var2 >> 1;
+    v15 = __sincosf_stret(degree * 0.017453);
     if ((v14 & 0x80000000) == 0)
     {
       v16 = 0;
-      v17 = a8 * 0.017453;
-      v18 = a4 * a4;
-      v19 = a5 * a5;
-      v20 = 1.0 / (a4 * 6.28318531 * a5);
-      v21 = v13->var1 >> 1;
+      v17 = inDegree * 0.017453;
+      v18 = x * x;
+      v19 = y * y;
+      v20 = 1.0 / (x * 6.28318531 * y);
+      v21 = kernelCopy->var1 >> 1;
       v22 = -v14;
       if ((v21 & 0x80000000) == 0)
       {
@@ -213,13 +213,13 @@ LABEL_26:
 
       v24 = v23 + 1;
       v25 = v23 + 1 + v21;
-      v38 = 6.28318531 / a6;
+      v38 = 6.28318531 / lambda;
       do
       {
         if ((v21 & 0x80000000) == 0)
         {
-          v26 = v13;
-          v27 = &v13->var0[v16];
+          v26 = kernelCopy;
+          v27 = &kernelCopy->var0[v16];
           v16 += v25;
           v28 = v21;
           v29 = -v21;
@@ -241,7 +241,7 @@ LABEL_26:
           }
 
           while (v24 != v29);
-          v13 = v26;
+          kernelCopy = v26;
         }
       }
 

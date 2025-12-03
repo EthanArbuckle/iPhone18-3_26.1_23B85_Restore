@@ -1,5 +1,5 @@
 @interface CarAddressWaypointsController
-- (CarAddressWaypointsController)initWithAddress:(id)a3 overridingTitle:(id)a4;
+- (CarAddressWaypointsController)initWithAddress:(id)address overridingTitle:(id)title;
 - (id)subtitleForCurrentDestination;
 - (id)titleForCurrentDestination;
 @end
@@ -8,45 +8,45 @@
 
 - (id)subtitleForCurrentDestination
 {
-  v2 = [(CarAddressWaypointsController *)self address];
-  v3 = [v2 singleLineAddress];
+  address = [(CarAddressWaypointsController *)self address];
+  singleLineAddress = [address singleLineAddress];
 
-  return v3;
+  return singleLineAddress;
 }
 
 - (id)titleForCurrentDestination
 {
-  v3 = [(CarAddressWaypointsController *)self titleOverride];
-  v4 = v3;
-  if (v3)
+  titleOverride = [(CarAddressWaypointsController *)self titleOverride];
+  v4 = titleOverride;
+  if (titleOverride)
   {
-    v5 = v3;
+    compositeName = titleOverride;
   }
 
   else
   {
-    v6 = [(CarAddressWaypointsController *)self address];
-    v5 = [v6 compositeName];
+    address = [(CarAddressWaypointsController *)self address];
+    compositeName = [address compositeName];
   }
 
-  return v5;
+  return compositeName;
 }
 
-- (CarAddressWaypointsController)initWithAddress:(id)a3 overridingTitle:(id)a4
+- (CarAddressWaypointsController)initWithAddress:(id)address overridingTitle:(id)title
 {
-  v7 = a3;
-  v8 = a4;
+  addressCopy = address;
+  titleCopy = title;
   v16.receiver = self;
   v16.super_class = CarAddressWaypointsController;
   v9 = [(CarAddressWaypointsController *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_address, a3);
-    objc_storeStrong(&v10->_titleOverride, a4);
+    objc_storeStrong(&v9->_address, address);
+    objc_storeStrong(&v10->_titleOverride, title);
     v11 = [SearchResult alloc];
-    v12 = [(CarAddressWaypointsController *)v10 address];
-    v13 = [(SearchResult *)v11 initWithSearchResult:0 address:v12];
+    address = [(CarAddressWaypointsController *)v10 address];
+    v13 = [(SearchResult *)v11 initWithSearchResult:0 address:address];
     searchResult = v10->_searchResult;
     v10->_searchResult = v13;
   }

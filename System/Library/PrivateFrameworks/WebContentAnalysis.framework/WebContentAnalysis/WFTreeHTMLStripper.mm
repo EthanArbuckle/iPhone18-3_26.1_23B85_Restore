@@ -1,35 +1,35 @@
 @interface WFTreeHTMLStripper
-+ (id)treeStripperWithData:(id)a3;
-+ (id)treeStripperWithString:(id)a3;
-- (WFTreeHTMLStripper)initWithData:(id)a3;
-- (WFTreeHTMLStripper)initWithString:(id)a3;
++ (id)treeStripperWithData:(id)data;
++ (id)treeStripperWithString:(id)string;
+- (WFTreeHTMLStripper)initWithData:(id)data;
+- (WFTreeHTMLStripper)initWithString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation WFTreeHTMLStripper
 
-+ (id)treeStripperWithData:(id)a3
++ (id)treeStripperWithData:(id)data
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithData:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithData:data];
 
   return v3;
 }
 
-+ (id)treeStripperWithString:(id)a3
++ (id)treeStripperWithString:(id)string
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithString:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithString:string];
 
   return v3;
 }
 
-- (WFTreeHTMLStripper)initWithData:(id)a3
+- (WFTreeHTMLStripper)initWithData:(id)data
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (data)
   {
-    v5 = [a3 bytes];
-    v6 = [a3 length];
-    v7 = _NSHTMLEncoding([a3 bytes], objc_msgSend(a3, "length"));
+    bytes = [data bytes];
+    v6 = [data length];
+    v7 = _NSHTMLEncoding([data bytes], objc_msgSend(data, "length"));
     if (v7)
     {
       v8 = CFStringConvertNSStringEncodingToEncoding(v7);
@@ -50,7 +50,7 @@
       v10 = 0;
     }
 
-    Memory = htmlReadMemory(v5, v6, 0, v10, 97);
+    Memory = htmlReadMemory(bytes, v6, 0, v10, 97);
     if (!Memory)
     {
       v12 = __WFDefaultLog();
@@ -73,9 +73,9 @@
   return result;
 }
 
-- (WFTreeHTMLStripper)initWithString:(id)a3
+- (WFTreeHTMLStripper)initWithString:(id)string
 {
-  v4 = [a3 dataUsingEncoding:4];
+  v4 = [string dataUsingEncoding:4];
 
   return [(WFTreeHTMLStripper *)self initWithData:v4];
 }

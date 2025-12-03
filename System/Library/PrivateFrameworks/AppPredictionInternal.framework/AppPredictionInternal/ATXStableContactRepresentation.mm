@@ -1,28 +1,28 @@
 @interface ATXStableContactRepresentation
-- (ATXStableContactRepresentation)initWithStableContactIdentifier:(id)a3 cnContactId:(id)a4 rawIdentifier:(id)a5;
+- (ATXStableContactRepresentation)initWithStableContactIdentifier:(id)identifier cnContactId:(id)id rawIdentifier:(id)rawIdentifier;
 @end
 
 @implementation ATXStableContactRepresentation
 
-- (ATXStableContactRepresentation)initWithStableContactIdentifier:(id)a3 cnContactId:(id)a4 rawIdentifier:(id)a5
+- (ATXStableContactRepresentation)initWithStableContactIdentifier:(id)identifier cnContactId:(id)id rawIdentifier:(id)rawIdentifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  idCopy = id;
+  rawIdentifierCopy = rawIdentifier;
   v19.receiver = self;
   v19.super_class = ATXStableContactRepresentation;
   v11 = [(ATXStableContactRepresentation *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     stableContactIdentifier = v11->_stableContactIdentifier;
     v11->_stableContactIdentifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [idCopy copy];
     cnContactId = v11->_cnContactId;
     v11->_cnContactId = v14;
 
-    v16 = [v10 copy];
+    v16 = [rawIdentifierCopy copy];
     rawIdentifier = v11->_rawIdentifier;
     v11->_rawIdentifier = v16;
   }

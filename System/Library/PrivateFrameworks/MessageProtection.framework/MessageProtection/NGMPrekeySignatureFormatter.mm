@@ -1,14 +1,14 @@
 @interface NGMPrekeySignatureFormatter
-- (NGMPrekeySignatureFormatter)initWithPublicPrekey:(id)a3;
-- (id)initToSignKey:(id)a3;
+- (NGMPrekeySignatureFormatter)initWithPublicPrekey:(id)prekey;
+- (id)initToSignKey:(id)key;
 - (id)signedData;
 @end
 
 @implementation NGMPrekeySignatureFormatter
 
-- (id)initToSignKey:(id)a3
+- (id)initToSignKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12.receiver = self;
   v12.super_class = NGMPrekeySignatureFormatter;
   v5 = [(NGMPrekeySignatureFormatter *)&v12 init];
@@ -23,9 +23,9 @@
 
   if (v5->_timestamp >= 1680101200.0)
   {
-    v9 = [v4 dataRepresentation];
+    dataRepresentation = [keyCopy dataRepresentation];
     prekeyPublic = v5->_prekeyPublic;
-    v5->_prekeyPublic = v9;
+    v5->_prekeyPublic = dataRepresentation;
 
 LABEL_5:
     v8 = v5;
@@ -38,20 +38,20 @@ LABEL_6:
   return v8;
 }
 
-- (NGMPrekeySignatureFormatter)initWithPublicPrekey:(id)a3
+- (NGMPrekeySignatureFormatter)initWithPublicPrekey:(id)prekey
 {
-  v4 = a3;
+  prekeyCopy = prekey;
   v11.receiver = self;
   v11.super_class = NGMPrekeySignatureFormatter;
   v5 = [(NGMPrekeySignatureFormatter *)&v11 init];
   if (v5)
   {
-    [v4 timestamp];
+    [prekeyCopy timestamp];
     v5->_timestamp = v6;
-    v7 = [v4 dhKey];
-    v8 = [v7 dataRepresentation];
+    dhKey = [prekeyCopy dhKey];
+    dataRepresentation = [dhKey dataRepresentation];
     prekeyPublic = v5->_prekeyPublic;
-    v5->_prekeyPublic = v8;
+    v5->_prekeyPublic = dataRepresentation;
   }
 
   return v5;
@@ -65,8 +65,8 @@ LABEL_6:
   v5 = [@"NGMPrekeySignature" dataUsingEncoding:4];
   v6 = [v4 dataWithData:v5];
 
-  v7 = [(NGMPrekeySignatureFormatter *)self prekeyPublic];
-  [v6 appendData:v7];
+  prekeyPublic = [(NGMPrekeySignatureFormatter *)self prekeyPublic];
+  [v6 appendData:prekeyPublic];
 
   v8 = [MEMORY[0x277CBEB28] dataWithBytes:&v10 length:8];
   [v6 appendData:v8];

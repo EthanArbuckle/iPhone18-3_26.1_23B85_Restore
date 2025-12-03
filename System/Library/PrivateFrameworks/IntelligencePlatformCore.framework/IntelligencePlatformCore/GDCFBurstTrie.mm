@@ -1,16 +1,16 @@
 @interface GDCFBurstTrie
-- (GDCFBurstTrie)initWithPath:(id)a3;
-- (unsigned)payloadForString:(id)a3;
-- (unsigned)payloadForString:(id)a3 range:(_NSRange)a4;
-- (unsigned)payloadForUTF8String:(const char *)a3 length:(unint64_t)a4;
+- (GDCFBurstTrie)initWithPath:(id)path;
+- (unsigned)payloadForString:(id)string;
+- (unsigned)payloadForString:(id)string range:(_NSRange)range;
+- (unsigned)payloadForUTF8String:(const char *)string length:(unint64_t)length;
 - (void)dealloc;
 @end
 
 @implementation GDCFBurstTrie
 
-- (unsigned)payloadForUTF8String:(const char *)a3 length:(unint64_t)a4
+- (unsigned)payloadForUTF8String:(const char *)string length:(unint64_t)length
 {
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
@@ -27,20 +27,20 @@
   }
 }
 
-- (unsigned)payloadForString:(id)a3 range:(_NSRange)a4
+- (unsigned)payloadForString:(id)string range:(_NSRange)range
 {
-  v5 = objc_msgSend_substringWithRange_(a3, a2, a4.location, a4.length);
+  v5 = objc_msgSend_substringWithRange_(string, a2, range.location, range.length);
   LODWORD(self) = objc_msgSend_payloadForString_(self, v6, v5, v7);
 
   return self;
 }
 
-- (unsigned)payloadForString:(id)a3
+- (unsigned)payloadForString:(id)string
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v8 = objc_msgSend_length(v4, v5, v6, v7);
-  if (CFStringGetCStringPtr(v4, 0x600u))
+  stringCopy = string;
+  v8 = objc_msgSend_length(stringCopy, v5, v6, v7);
+  if (CFStringGetCStringPtr(stringCopy, 0x600u))
   {
     trie = self->_trie;
 LABEL_3:
@@ -75,7 +75,7 @@ LABEL_3:
     v18 = 0u;
     *__s = 0u;
     v16 = 0u;
-    if (objc_msgSend_getCString_maxLength_encoding_(v4, v9, __s, 385, 4))
+    if (objc_msgSend_getCString_maxLength_encoding_(stringCopy, v9, __s, 385, 4))
     {
       v13 = self->_trie;
       strlen(__s);
@@ -83,7 +83,7 @@ LABEL_3:
     }
   }
 
-  if (v4)
+  if (stringCopy)
   {
     v14 = self->_trie;
     CFBurstTrieContains();
@@ -107,11 +107,11 @@ LABEL_4:
   [(GDCFBurstTrie *)&v3 dealloc];
 }
 
-- (GDCFBurstTrie)initWithPath:(id)a3
+- (GDCFBurstTrie)initWithPath:(id)path
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!v8)
+  pathCopy = path;
+  if (!pathCopy)
   {
     v14 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v5, v6, v7);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v14, v15, a2, self, @"GDCFBurstTrie.m", 32, @"Invalid parameter not satisfying: %@", @"path");
@@ -125,7 +125,7 @@ LABEL_4:
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v18 = v8;
+      v18 = pathCopy;
       _os_log_error_impl(&dword_1C43F8000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Could not open trie: %@", buf, 0xCu);
     }
 

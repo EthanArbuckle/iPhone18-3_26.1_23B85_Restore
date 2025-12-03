@@ -1,5 +1,5 @@
 @interface VMPlayerTimelineSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
@@ -27,21 +27,21 @@
   AXPerformSafeBlock();
 }
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VMPlayerTimelineSlider" hasInstanceVariable:@"_slider" withType:"VMDetailSlider"];
-  [v3 validateClass:@"VMDetailSlider" hasInstanceMethod:@"maximumTime" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"VMDetailSlider" hasInstanceMethod:@"elapsedTime" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"VMPlayerTimelineSlider" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"VMPlayerTimelineSliderDelegate" hasOptionalInstanceMethod:@"playerTimelineSlider:didChangeElapsedTime:"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VMPlayerTimelineSlider" hasInstanceVariable:@"_slider" withType:"VMDetailSlider"];
+  [validationsCopy validateClass:@"VMDetailSlider" hasInstanceMethod:@"maximumTime" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"VMDetailSlider" hasInstanceMethod:@"elapsedTime" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"VMPlayerTimelineSlider" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"VMPlayerTimelineSliderDelegate" hasOptionalInstanceMethod:@"playerTimelineSlider:didChangeElapsedTime:"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = accessibilityLocalizedString(@"voicemail.playback.slider");
-  v4 = [(VMPlayerTimelineSliderAccessibility *)self accessibilityIdentification];
-  v5 = [v4 isEqualToString:@"GreetingSlider"];
+  accessibilityIdentification = [(VMPlayerTimelineSliderAccessibility *)self accessibilityIdentification];
+  v5 = [accessibilityIdentification isEqualToString:@"GreetingSlider"];
 
   if (v5)
   {
@@ -63,7 +63,7 @@
   v6 = [(VMPlayerTimelineSliderAccessibility *)self safeValueForKey:@"elapsedTimeLabel"];
   v7 = __UIAccessibilitySafeClass();
 
-  v8 = [v7 text];
+  text = [v7 text];
   AXDurationForDurationString();
   v10 = v9;
 
@@ -83,10 +83,10 @@
 
   v8.receiver = self;
   v8.super_class = VMPlayerTimelineSliderAccessibility;
-  v5 = [(VMPlayerTimelineSliderAccessibility *)&v8 accessibilityTraits];
-  v6 = [v4 accessibilityTraits];
+  accessibilityTraits = [(VMPlayerTimelineSliderAccessibility *)&v8 accessibilityTraits];
+  accessibilityTraits2 = [v4 accessibilityTraits];
 
-  return v6 | v5;
+  return accessibilityTraits2 | accessibilityTraits;
 }
 
 - (void)accessibilityIncrement

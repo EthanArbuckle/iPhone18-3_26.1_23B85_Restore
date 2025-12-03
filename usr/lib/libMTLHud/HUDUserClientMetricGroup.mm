@@ -1,10 +1,10 @@
 @interface HUDUserClientMetricGroup
-- (HUDUserClientMetricGroup)initWithCategory:(unsigned int)a3;
+- (HUDUserClientMetricGroup)initWithCategory:(unsigned int)category;
 @end
 
 @implementation HUDUserClientMetricGroup
 
-- (HUDUserClientMetricGroup)initWithCategory:(unsigned int)a3
+- (HUDUserClientMetricGroup)initWithCategory:(unsigned int)category
 {
   v9.receiver = self;
   v9.super_class = HUDUserClientMetricGroup;
@@ -12,7 +12,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_category = a3;
+    v4->_category = category;
     v6 = objc_opt_new();
     metrics = v5->_metrics;
     v5->_metrics = v6;

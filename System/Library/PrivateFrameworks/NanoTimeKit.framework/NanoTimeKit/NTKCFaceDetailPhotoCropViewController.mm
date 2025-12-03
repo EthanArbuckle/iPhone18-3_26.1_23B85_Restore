@@ -1,17 +1,17 @@
 @interface NTKCFaceDetailPhotoCropViewController
-- (NTKCFaceDetailPhotoCropViewController)initWithIndex:(unint64_t)a3 inPhotosEditor:(id)a4 forFace:(id)a5 timeStyle:(id)a6 completionHandler:(id)a7;
+- (NTKCFaceDetailPhotoCropViewController)initWithIndex:(unint64_t)index inPhotosEditor:(id)editor forFace:(id)face timeStyle:(id)style completionHandler:(id)handler;
 - (void)viewDidLoad;
 @end
 
 @implementation NTKCFaceDetailPhotoCropViewController
 
-- (NTKCFaceDetailPhotoCropViewController)initWithIndex:(unint64_t)a3 inPhotosEditor:(id)a4 forFace:(id)a5 timeStyle:(id)a6 completionHandler:(id)a7
+- (NTKCFaceDetailPhotoCropViewController)initWithIndex:(unint64_t)index inPhotosEditor:(id)editor forFace:(id)face timeStyle:(id)style completionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = [[_NTKCFaceDetailPhotoCropViewController alloc] initWithIndex:a3 inPhotosEditor:v15 forFace:v14 timeStyle:v13 completionHandler:v12];
+  handlerCopy = handler;
+  styleCopy = style;
+  faceCopy = face;
+  editorCopy = editor;
+  v16 = [[_NTKCFaceDetailPhotoCropViewController alloc] initWithIndex:index inPhotosEditor:editorCopy forFace:faceCopy timeStyle:styleCopy completionHandler:handlerCopy];
 
   v25.receiver = self;
   v25.super_class = NTKCFaceDetailPhotoCropViewController;
@@ -22,17 +22,17 @@
     objc_storeStrong(&v17->_implementationVC, v16);
     v19 = objc_alloc_init(MEMORY[0x277D75788]);
     [v19 configureWithOpaqueBackground];
-    v20 = [(NTKCFaceDetailPhotoCropViewController *)v18 navigationBar];
-    [v20 setStandardAppearance:v19];
+    navigationBar = [(NTKCFaceDetailPhotoCropViewController *)v18 navigationBar];
+    [navigationBar setStandardAppearance:v19];
 
-    v21 = [(NTKCFaceDetailPhotoCropViewController *)v18 navigationBar];
-    [v21 setScrollEdgeAppearance:v19];
+    navigationBar2 = [(NTKCFaceDetailPhotoCropViewController *)v18 navigationBar];
+    [navigationBar2 setScrollEdgeAppearance:v19];
 
-    v22 = [(NTKCFaceDetailPhotoCropViewController *)v18 navigationItem];
-    [v22 setLargeTitleDisplayMode:2];
+    navigationItem = [(NTKCFaceDetailPhotoCropViewController *)v18 navigationItem];
+    [navigationItem setLargeTitleDisplayMode:2];
 
-    v23 = [(NTKCFaceDetailPhotoCropViewController *)v18 navigationBar];
-    [v23 setPrefersLargeTitles:0];
+    navigationBar3 = [(NTKCFaceDetailPhotoCropViewController *)v18 navigationBar];
+    [navigationBar3 setPrefersLargeTitles:0];
   }
 
   return v18;

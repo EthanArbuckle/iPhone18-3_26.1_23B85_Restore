@@ -1,11 +1,11 @@
 @interface WBSPasswordImportCSVColumnIndices
-- (WBSPasswordImportCSVColumnIndices)initWithURLIndex:(unint64_t)a3 usernameIndex:(unint64_t)a4 passwordIndex:(unint64_t)a5;
-- (WBSPasswordImportCSVColumnIndices)initWithURLIndex:(unint64_t)a3 usernameIndex:(unint64_t)a4 passwordIndex:(unint64_t)a5 sidecarDataIndices:(id)a6;
+- (WBSPasswordImportCSVColumnIndices)initWithURLIndex:(unint64_t)index usernameIndex:(unint64_t)usernameIndex passwordIndex:(unint64_t)passwordIndex;
+- (WBSPasswordImportCSVColumnIndices)initWithURLIndex:(unint64_t)index usernameIndex:(unint64_t)usernameIndex passwordIndex:(unint64_t)passwordIndex sidecarDataIndices:(id)indices;
 @end
 
 @implementation WBSPasswordImportCSVColumnIndices
 
-- (WBSPasswordImportCSVColumnIndices)initWithURLIndex:(unint64_t)a3 usernameIndex:(unint64_t)a4 passwordIndex:(unint64_t)a5
+- (WBSPasswordImportCSVColumnIndices)initWithURLIndex:(unint64_t)index usernameIndex:(unint64_t)usernameIndex passwordIndex:(unint64_t)passwordIndex
 {
   v13.receiver = self;
   v13.super_class = WBSPasswordImportCSVColumnIndices;
@@ -13,9 +13,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_urlIndex = a3;
-    v8->_usernameIndex = a4;
-    v8->_passwordIndex = a5;
+    v8->_urlIndex = index;
+    v8->_usernameIndex = usernameIndex;
+    v8->_passwordIndex = passwordIndex;
     v10.f64[0] = NAN;
     v10.f64[1] = NAN;
     *&v8->_otpAuthURLIndex = vnegq_f64(v10);
@@ -26,51 +26,51 @@
   return v9;
 }
 
-- (WBSPasswordImportCSVColumnIndices)initWithURLIndex:(unint64_t)a3 usernameIndex:(unint64_t)a4 passwordIndex:(unint64_t)a5 sidecarDataIndices:(id)a6
+- (WBSPasswordImportCSVColumnIndices)initWithURLIndex:(unint64_t)index usernameIndex:(unint64_t)usernameIndex passwordIndex:(unint64_t)passwordIndex sidecarDataIndices:(id)indices
 {
-  v10 = a6;
-  v11 = [(WBSPasswordImportCSVColumnIndices *)self initWithURLIndex:a3 usernameIndex:a4 passwordIndex:a5];
+  indicesCopy = indices;
+  v11 = [(WBSPasswordImportCSVColumnIndices *)self initWithURLIndex:index usernameIndex:usernameIndex passwordIndex:passwordIndex];
   if (v11)
   {
-    v12 = [v10 objectForKeyedSubscript:@"otpAuthURLIndex"];
+    v12 = [indicesCopy objectForKeyedSubscript:@"otpAuthURLIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [v12 unsignedIntegerValue];
+      unsignedIntegerValue = [v12 unsignedIntegerValue];
     }
 
     else
     {
-      v13 = 0x7FFFFFFFFFFFFFFFLL;
+      unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v11->_otpAuthURLIndex = v13;
-    v14 = [v10 objectForKeyedSubscript:@"notesEntryIndex"];
+    v11->_otpAuthURLIndex = unsignedIntegerValue;
+    v14 = [indicesCopy objectForKeyedSubscript:@"notesEntryIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v14 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v14 unsignedIntegerValue];
     }
 
     else
     {
-      v15 = 0x7FFFFFFFFFFFFFFFLL;
+      unsignedIntegerValue2 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v11->_notesEntryIndex = v15;
-    v16 = [v10 objectForKeyedSubscript:@"titleIndex"];
+    v11->_notesEntryIndex = unsignedIntegerValue2;
+    v16 = [indicesCopy objectForKeyedSubscript:@"titleIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [v16 unsignedIntegerValue];
+      unsignedIntegerValue3 = [v16 unsignedIntegerValue];
     }
 
     else
     {
-      v17 = 0x7FFFFFFFFFFFFFFFLL;
+      unsignedIntegerValue3 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v11->_titleIndex = v17;
+    v11->_titleIndex = unsignedIntegerValue3;
     v18 = v11;
   }
 

@@ -1,14 +1,14 @@
 @interface MFConversationHandoffCoordinator
 + (OS_os_log)log;
-- (MFConversationHandoffCoordinator)initWithUserActivityProvider:(id)a3 currentVisibleMessageStrategy:(id)a4;
+- (MFConversationHandoffCoordinator)initWithUserActivityProvider:(id)provider currentVisibleMessageStrategy:(id)strategy;
 - (MFUserActivityProvider)userActivityProvider;
 - (id)_createUserActivity;
-- (void)_updateUserActivity:(id)a3 withHandoffAvailabilityForContentRepresentation:(id)a4 message:(id)a5;
-- (void)_updateUserActivity:(id)a3 withPersistentIDForMessage:(id)a4 completion:(id)a5;
-- (void)_updateUserActivity:(id)a3 withSearchableItemAttributeSetForMessage:(id)a4;
-- (void)setHandoffMessageRequest:(id)a3;
+- (void)_updateUserActivity:(id)activity withHandoffAvailabilityForContentRepresentation:(id)representation message:(id)message;
+- (void)_updateUserActivity:(id)activity withPersistentIDForMessage:(id)message completion:(id)completion;
+- (void)_updateUserActivity:(id)activity withSearchableItemAttributeSetForMessage:(id)message;
+- (void)setHandoffMessageRequest:(id)request;
 - (void)updateHandoffMessageBasedOnMessageVisibility;
-- (void)updateUserActivityState:(BOOL)a3;
+- (void)updateUserActivityState:(BOOL)state;
 @end
 
 @implementation MFConversationHandoffCoordinator
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001BAC2C;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD488 != -1)
   {
     dispatch_once(&qword_1006DD488, block);
@@ -30,50 +30,50 @@
   return v2;
 }
 
-- (MFConversationHandoffCoordinator)initWithUserActivityProvider:(id)a3 currentVisibleMessageStrategy:(id)a4
+- (MFConversationHandoffCoordinator)initWithUserActivityProvider:(id)provider currentVisibleMessageStrategy:(id)strategy
 {
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  strategyCopy = strategy;
   v11.receiver = self;
   v11.super_class = MFConversationHandoffCoordinator;
   v8 = [(MFConversationHandoffCoordinator *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_userActivityProvider, v6);
-    objc_storeStrong(&v9->_currentVisibleMessageStrategy, a4);
+    objc_storeWeak(&v8->_userActivityProvider, providerCopy);
+    objc_storeStrong(&v9->_currentVisibleMessageStrategy, strategy);
   }
 
   return v9;
 }
 
-- (void)updateUserActivityState:(BOOL)a3
+- (void)updateUserActivityState:(BOOL)state
 {
-  v5 = [(MFConversationHandoffCoordinator *)self handoffMessageRequest];
-  v6 = [(MFConversationHandoffCoordinator *)self userActivityProvider];
-  v7 = [v6 userActivity];
-  if (!v7)
+  handoffMessageRequest = [(MFConversationHandoffCoordinator *)self handoffMessageRequest];
+  userActivityProvider = [(MFConversationHandoffCoordinator *)self userActivityProvider];
+  userActivity = [userActivityProvider userActivity];
+  if (!userActivity)
   {
-    v7 = [(MFConversationHandoffCoordinator *)self _createUserActivity];
+    userActivity = [(MFConversationHandoffCoordinator *)self _createUserActivity];
   }
 
-  [v7 setPersistentIdentifier:0];
+  [userActivity setPersistentIdentifier:0];
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v6);
-  v8 = [v5 messageFuture];
+  objc_initWeak(&from, userActivityProvider);
+  messageFuture = [handoffMessageRequest messageFuture];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1001BAF50;
   v11[3] = &unk_100653BB0;
-  v9 = v5;
+  v9 = handoffMessageRequest;
   v12 = v9;
   objc_copyWeak(&v14, &location);
-  v10 = v7;
+  v10 = userActivity;
   v13 = v10;
   objc_copyWeak(&v15, &from);
-  v16 = a3;
-  [v8 addSuccessBlock:v11];
-  [v8 addFailureBlock:&stru_100653BD0];
+  stateCopy = state;
+  [messageFuture addSuccessBlock:v11];
+  [messageFuture addFailureBlock:&stru_100653BD0];
   objc_destroyWeak(&v15);
 
   objc_destroyWeak(&v14);
@@ -81,21 +81,21 @@
   objc_destroyWeak(&location);
 }
 
-- (void)setHandoffMessageRequest:(id)a3
+- (void)setHandoffMessageRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   if (([(MessageContentRepresentationRequest *)self->_handoffMessageRequest isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_handoffMessageRequest, a3);
+    objc_storeStrong(&self->_handoffMessageRequest, request);
     [(MFConversationHandoffCoordinator *)self updateUserActivityState:1];
   }
 }
 
 - (void)updateHandoffMessageBasedOnMessageVisibility
 {
-  v4 = [(MFConversationHandoffCoordinator *)self currentVisibleMessageStrategy];
-  v3 = [v4 currentVisibleMessageContentRequest];
-  [(MFConversationHandoffCoordinator *)self setHandoffMessageRequest:v3];
+  currentVisibleMessageStrategy = [(MFConversationHandoffCoordinator *)self currentVisibleMessageStrategy];
+  currentVisibleMessageContentRequest = [currentVisibleMessageStrategy currentVisibleMessageContentRequest];
+  [(MFConversationHandoffCoordinator *)self setHandoffMessageRequest:currentVisibleMessageContentRequest];
 }
 
 - (id)_createUserActivity
@@ -106,61 +106,61 @@
   return v3;
 }
 
-- (void)_updateUserActivity:(id)a3 withSearchableItemAttributeSetForMessage:(id)a4
+- (void)_updateUserActivity:(id)activity withSearchableItemAttributeSetForMessage:(id)message
 {
-  v10 = a3;
-  v5 = a4;
+  activityCopy = activity;
+  messageCopy = message;
   v6 = [CSSearchableItemAttributeSet alloc];
-  v7 = [v10 activityType];
-  v8 = [v6 initWithItemContentType:v7];
+  activityType = [activityCopy activityType];
+  v8 = [v6 initWithItemContentType:activityType];
 
-  v9 = [v5 contentID];
-  if (v9)
+  contentID = [messageCopy contentID];
+  if (contentID)
   {
-    [v8 setRelatedUniqueIdentifier:v9];
-    [v10 setEligibleForSearch:1];
+    [v8 setRelatedUniqueIdentifier:contentID];
+    [activityCopy setEligibleForSearch:1];
   }
 
   else
   {
 
     v8 = 0;
-    [v10 setEligibleForSearch:0];
+    [activityCopy setEligibleForSearch:0];
   }
 
-  [v10 setContentAttributeSet:v8];
+  [activityCopy setContentAttributeSet:v8];
 }
 
-- (void)_updateUserActivity:(id)a3 withHandoffAvailabilityForContentRepresentation:(id)a4 message:(id)a5
+- (void)_updateUserActivity:(id)activity withHandoffAvailabilityForContentRepresentation:(id)representation message:(id)message
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  activityCopy = activity;
+  representationCopy = representation;
+  messageCopy = message;
   v10 = +[UIApplication sharedApplication];
-  v11 = [v10 accountsProvider];
-  v12 = [v9 mailboxes];
-  v13 = [v12 firstObject];
-  v14 = [v13 account];
-  v15 = [v14 objectID];
-  v16 = [v11 legacyMailAccountForObjectID:v15];
+  accountsProvider = [v10 accountsProvider];
+  mailboxes = [messageCopy mailboxes];
+  firstObject = [mailboxes firstObject];
+  account = [firstObject account];
+  objectID = [account objectID];
+  v16 = [accountsProvider legacyMailAccountForObjectID:objectID];
 
   v17 = MSMailActivityHandoffTypeDisplayMessage;
   v18 = [v16 supportsHandoffType:MSMailActivityHandoffTypeDisplayMessage];
-  v19 = [v8 publicMessageURL];
-  v20 = [v19 absoluteString];
-  v21 = v20;
-  if (v19)
+  publicMessageURL = [representationCopy publicMessageURL];
+  absoluteString = [publicMessageURL absoluteString];
+  v21 = absoluteString;
+  if (publicMessageURL)
   {
     v25[0] = MSMailActivityHandoffTypeKey;
     v25[1] = MSMailActivityHandoffDisplayMessageKeyURL;
     v26[0] = v17;
-    v26[1] = v20;
+    v26[1] = absoluteString;
     v22 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:2];
-    [v7 setUserInfo:v22];
+    [activityCopy setUserInfo:v22];
 
     if (objc_opt_respondsToSelector())
     {
-      [v7 set_canonicalURL:v19];
+      [activityCopy set_canonicalURL:publicMessageURL];
     }
   }
 
@@ -169,30 +169,30 @@
     v18 = 0;
   }
 
-  [v7 setEligibleForHandoff:v18];
-  [v7 setPersistentIdentifier:v21];
-  v23 = [v9 subject];
-  v24 = [ECSubjectFormatter subjectStringForDisplayForSubject:v23];
-  [v7 setTitle:v24];
+  [activityCopy setEligibleForHandoff:v18];
+  [activityCopy setPersistentIdentifier:v21];
+  subject = [messageCopy subject];
+  v24 = [ECSubjectFormatter subjectStringForDisplayForSubject:subject];
+  [activityCopy setTitle:v24];
 }
 
-- (void)_updateUserActivity:(id)a3 withPersistentIDForMessage:(id)a4 completion:(id)a5
+- (void)_updateUserActivity:(id)activity withPersistentIDForMessage:(id)message completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MFConversationHandoffCoordinator *)self currentVisibleMessageStrategy];
-  v12 = [v9 objectID];
-  v13 = [v11 persistentIDForEMMessageObjectID:v12];
+  activityCopy = activity;
+  messageCopy = message;
+  completionCopy = completion;
+  currentVisibleMessageStrategy = [(MFConversationHandoffCoordinator *)self currentVisibleMessageStrategy];
+  objectID = [messageCopy objectID];
+  v13 = [currentVisibleMessageStrategy persistentIDForEMMessageObjectID:objectID];
 
   v14 = +[EFScheduler mainThreadScheduler];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_1001BBB90;
   v23[3] = &unk_100653BF8;
-  v15 = v8;
+  v15 = activityCopy;
   v24 = v15;
-  v16 = v10;
+  v16 = completionCopy;
   v25 = v16;
   [v13 onScheduler:v14 addSuccessBlock:v23];
 
@@ -201,7 +201,7 @@
   v20[1] = 3221225472;
   v20[2] = sub_1001BBC20;
   v20[3] = &unk_10064DB90;
-  v18 = v9;
+  v18 = messageCopy;
   v21 = v18;
   v19 = v16;
   v22 = v19;

@@ -1,89 +1,89 @@
 @interface MOGlobalTrait
-- (BOOL)isEqual:(id)a3;
-- (MOGlobalTrait)initWithCoder:(id)a3;
-- (MOGlobalTrait)initWithGlobalTraitMO:(id)a3;
-- (MOGlobalTrait)initWithTitle:(id)a3;
-- (MOGlobalTrait)initWithTitle:(id)a3 queries:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MOGlobalTrait)initWithCoder:(id)coder;
+- (MOGlobalTrait)initWithGlobalTraitMO:(id)o;
+- (MOGlobalTrait)initWithTitle:(id)title;
+- (MOGlobalTrait)initWithTitle:(id)title queries:(id)queries;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOGlobalTrait
 
-- (MOGlobalTrait)initWithGlobalTraitMO:(id)a3
+- (MOGlobalTrait)initWithGlobalTraitMO:(id)o
 {
-  if (a3)
+  if (o)
   {
-    v4 = [a3 title];
-    self = [(MOGlobalTrait *)self initWithTitle:v4];
+    title = [o title];
+    self = [(MOGlobalTrait *)self initWithTitle:title];
 
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (MOGlobalTrait)initWithTitle:(id)a3
+- (MOGlobalTrait)initWithTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   v9.receiver = self;
   v9.super_class = MOGlobalTrait;
   v6 = [(MOGlobalTrait *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_title, a3);
+    objc_storeStrong(&v6->_title, title);
   }
 
   return v7;
 }
 
-- (MOGlobalTrait)initWithTitle:(id)a3 queries:(id)a4
+- (MOGlobalTrait)initWithTitle:(id)title queries:(id)queries
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  queriesCopy = queries;
   v12.receiver = self;
   v12.super_class = MOGlobalTrait;
   v9 = [(MOGlobalTrait *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_title, a3);
-    objc_storeStrong(&v10->_queries, a4);
+    objc_storeStrong(&v9->_title, title);
+    objc_storeStrong(&v10->_queries, queries);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeObject:self->_queries forKey:@"queries"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeObject:self->_queries forKey:@"queries"];
 }
 
-- (MOGlobalTrait)initWithCoder:(id)a3
+- (MOGlobalTrait)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MOGlobalTrait;
   v5 = [(MOGlobalTrait *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
     v8 = objc_opt_class();
     v9 = [NSSet setWithObjects:v8, objc_opt_class(), 0];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"queries"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"queries"];
     queries = v5->_queries;
     v5->_queries = v10;
   }
@@ -91,7 +91,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MOGlobalTrait);
   objc_storeStrong(&v4->_title, self->_title);
@@ -106,42 +106,42 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v5)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v7 = v6;
-        v8 = [(MOGlobalTrait *)self title];
-        if (v8 || ([(MOGlobalTrait *)v7 title], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        title = [(MOGlobalTrait *)self title];
+        if (title || ([(MOGlobalTrait *)v7 title], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v9 = [(MOGlobalTrait *)self title];
-          v10 = [(MOGlobalTrait *)v7 title];
-          v11 = [v9 isEqual:v10];
+          title2 = [(MOGlobalTrait *)self title];
+          title3 = [(MOGlobalTrait *)v7 title];
+          v11 = [title2 isEqual:title3];
 
-          if (v8)
+          if (title)
           {
 LABEL_12:
 
-            v13 = [(MOGlobalTrait *)self queries];
-            if (v13 || ([(MOGlobalTrait *)v7 queries], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+            queries = [(MOGlobalTrait *)self queries];
+            if (queries || ([(MOGlobalTrait *)v7 queries], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
             {
-              v14 = [(MOGlobalTrait *)self queries];
-              v15 = [(MOGlobalTrait *)v7 queries];
-              v16 = [v14 isEqual:v15];
+              queries2 = [(MOGlobalTrait *)self queries];
+              queries3 = [(MOGlobalTrait *)v7 queries];
+              v16 = [queries2 isEqual:queries3];
 
-              if (v13)
+              if (queries)
               {
 LABEL_18:
 

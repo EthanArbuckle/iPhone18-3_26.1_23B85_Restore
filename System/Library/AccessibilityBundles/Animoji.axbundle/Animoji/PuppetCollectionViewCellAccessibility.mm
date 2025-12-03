@@ -1,17 +1,17 @@
 @interface PuppetCollectionViewCellAccessibility
-- (void)displaySelection:(BOOL)a3;
+- (void)displaySelection:(BOOL)selection;
 @end
 
 @implementation PuppetCollectionViewCellAccessibility
 
-- (void)displaySelection:(BOOL)a3
+- (void)displaySelection:(BOOL)selection
 {
-  v3 = a3;
+  selectionCopy = selection;
   v6.receiver = self;
   v6.super_class = PuppetCollectionViewCellAccessibility;
   [(PuppetCollectionViewCellAccessibility *)&v6 displaySelection:?];
   v5 = *MEMORY[0x29EDC7FC0];
-  if (!v3)
+  if (!selectionCopy)
   {
     v5 = 0;
   }

@@ -1,68 +1,68 @@
 @interface NCNotificationAction
 - (BOOL)isSystemAction;
-- (NCNotificationAction)initWithNotificationAction:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (NCNotificationAction)initWithNotificationAction:(id)action;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation NCNotificationAction
 
-- (NCNotificationAction)initWithNotificationAction:(id)a3
+- (NCNotificationAction)initWithNotificationAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v30.receiver = self;
   v30.super_class = NCNotificationAction;
   v5 = [(NCNotificationAction *)&v30 init];
   if (v5)
   {
-    v6 = [v4 identifier];
-    v7 = [v6 copy];
+    identifier = [actionCopy identifier];
+    v7 = [identifier copy];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v9 = [v4 title];
-    v10 = [v9 copy];
+    title = [actionCopy title];
+    v10 = [title copy];
     title = v5->_title;
     v5->_title = v10;
 
-    v5->_activationMode = [v4 activationMode];
-    v5->_requiresAuthentication = [v4 requiresAuthentication];
-    v12 = [v4 launchURL];
-    v13 = [v12 copy];
+    v5->_activationMode = [actionCopy activationMode];
+    v5->_requiresAuthentication = [actionCopy requiresAuthentication];
+    launchURL = [actionCopy launchURL];
+    v13 = [launchURL copy];
     launchURL = v5->_launchURL;
     v5->_launchURL = v13;
 
-    v15 = [v4 launchBundleID];
-    v16 = [v15 copy];
+    launchBundleID = [actionCopy launchBundleID];
+    v16 = [launchBundleID copy];
     launchBundleID = v5->_launchBundleID;
     v5->_launchBundleID = v16;
 
-    v5->_behavior = [v4 behavior];
-    v18 = [v4 behaviorParameters];
-    v19 = [v18 copy];
+    v5->_behavior = [actionCopy behavior];
+    behaviorParameters = [actionCopy behaviorParameters];
+    v19 = [behaviorParameters copy];
     behaviorParameters = v5->_behaviorParameters;
     v5->_behaviorParameters = v19;
 
-    v21 = [v4 actionRunner];
+    actionRunner = [actionCopy actionRunner];
     actionRunner = v5->_actionRunner;
-    v5->_actionRunner = v21;
+    v5->_actionRunner = actionRunner;
 
-    v5->_destructiveAction = [v4 isDestructiveAction];
-    v5->_shouldDismissNotification = [v4 shouldDismissNotification];
-    v23 = [v4 iconImageName];
-    v24 = [v23 copy];
+    v5->_destructiveAction = [actionCopy isDestructiveAction];
+    v5->_shouldDismissNotification = [actionCopy shouldDismissNotification];
+    iconImageName = [actionCopy iconImageName];
+    v24 = [iconImageName copy];
     iconImageName = v5->_iconImageName;
     v5->_iconImageName = v24;
 
-    v26 = [v4 iconImageBundlePath];
-    v27 = [v26 copy];
+    iconImageBundlePath = [actionCopy iconImageBundlePath];
+    v27 = [iconImageBundlePath copy];
     iconImageBundlePath = v5->_iconImageBundlePath;
     v5->_iconImageBundlePath = v27;
 
-    v5->_isSiriActionCandidate = [v4 isSiriActionCandidate];
+    v5->_isSiriActionCandidate = [actionCopy isSiriActionCandidate];
   }
 
   return v5;
@@ -70,40 +70,40 @@
 
 - (BOOL)isSystemAction
 {
-  v3 = [(NCNotificationAction *)self identifier];
-  if ([v3 isEqual:*MEMORY[0x277CE20E8]])
+  identifier = [(NCNotificationAction *)self identifier];
+  if ([identifier isEqual:*MEMORY[0x277CE20E8]])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(NCNotificationAction *)self identifier];
-    v4 = [v5 isEqual:*MEMORY[0x277CE20F0]];
+    identifier2 = [(NCNotificationAction *)self identifier];
+    v4 = [identifier2 isEqual:*MEMORY[0x277CE20F0]];
   }
 
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [NCMutableNotificationAction alloc];
 
   return [(NCNotificationAction *)v4 initWithNotificationAction:self];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(NCNotificationAction *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(NCNotificationAction *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -111,8 +111,8 @@
   v10[3] = &unk_279E0D9F0;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;
@@ -173,17 +173,17 @@ id __62__NCNotificationAction_descriptionBuilderWithMultilinePrefix___block_invo
 
 - (id)succinctDescription
 {
-  v2 = [(NCNotificationAction *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(NCNotificationAction *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(NCNotificationAction *)self identifier];
-  v5 = [v3 appendObject:v4 withName:@"identifier"];
+  identifier = [(NCNotificationAction *)self identifier];
+  v5 = [v3 appendObject:identifier withName:@"identifier"];
 
   return v3;
 }

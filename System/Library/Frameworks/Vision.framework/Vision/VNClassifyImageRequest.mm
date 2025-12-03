@@ -1,54 +1,54 @@
 @interface VNClassifyImageRequest
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4;
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision;
 + (NSArray)knownClassificationsForRevision:(NSUInteger)requestRevision error:(NSError *)error;
-+ (id)descriptionForPrivateRevision:(unint64_t)a3;
++ (id)descriptionForPrivateRevision:(unint64_t)revision;
 + (id)privateRevisionsSet;
-- (BOOL)defineCustomHierarchy:(id)a3 error:(id *)a4;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
+- (BOOL)defineCustomHierarchy:(id)hierarchy error:(id *)error;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
 - (NSArray)supportedIdentifiersAndReturnError:(NSError *)error;
 - (VNClassificationCustomHierarchy)customHierarchy;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
-- (id)defineCustomHierarchyWithRelationships:(id)a3 error:(id *)a4;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
+- (id)defineCustomHierarchyWithRelationships:(id)relationships error:(id *)error;
 - (id)description;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
 - (unint64_t)imageCropAndScaleOption;
 - (unint64_t)maximumHierarchicalObservations;
 - (unint64_t)maximumLeafObservations;
-- (void)_setCustomHierarchy:(id)a3;
-- (void)applyConfigurationOfRequest:(id)a3;
-- (void)resolvedRevisionDidChangeFromRevision:(unint64_t)a3;
-- (void)setImageCropAndScaleOption:(unint64_t)a3;
-- (void)setMaximumHierarchicalObservations:(unint64_t)a3;
-- (void)setMaximumLeafObservations:(unint64_t)a3;
+- (void)_setCustomHierarchy:(id)hierarchy;
+- (void)applyConfigurationOfRequest:(id)request;
+- (void)resolvedRevisionDidChangeFromRevision:(unint64_t)revision;
+- (void)setImageCropAndScaleOption:(unint64_t)option;
+- (void)setMaximumHierarchicalObservations:(unint64_t)observations;
+- (void)setMaximumLeafObservations:(unint64_t)observations;
 @end
 
 @implementation VNClassifyImageRequest
 
-- (void)setImageCropAndScaleOption:(unint64_t)a3
+- (void)setImageCropAndScaleOption:(unint64_t)option
 {
-  v4 = [(VNRequest *)self configuration];
-  [v4 setImageCropAndScaleOption:a3];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setImageCropAndScaleOption:option];
 }
 
 - (unint64_t)imageCropAndScaleOption
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 imageCropAndScaleOption];
+  configuration = [(VNRequest *)self configuration];
+  imageCropAndScaleOption = [configuration imageCropAndScaleOption];
 
-  return v3;
+  return imageCropAndScaleOption;
 }
 
-- (id)defineCustomHierarchyWithRelationships:(id)a3 error:(id *)a4
+- (id)defineCustomHierarchyWithRelationships:(id)relationships error:(id *)error
 {
-  v6 = a3;
-  v7 = [VNClassificationCustomHierarchy customHierarchyForRequest:self error:a4];
+  relationshipsCopy = relationships;
+  v7 = [VNClassificationCustomHierarchy customHierarchyForRequest:self error:error];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 customHierarchyWithAdditionalRelationships:v6 error:a4];
+    v9 = [v7 customHierarchyWithAdditionalRelationships:relationshipsCopy error:error];
 
-    if (v9 && [(VNClassifyImageRequest *)self defineCustomHierarchy:v9 error:a4])
+    if (v9 && [(VNClassifyImageRequest *)self defineCustomHierarchy:v9 error:error])
     {
       v10 = v9;
       v9 = v10;
@@ -69,79 +69,79 @@
   return v10;
 }
 
-- (BOOL)defineCustomHierarchy:(id)a3 error:(id *)a4
+- (BOOL)defineCustomHierarchy:(id)hierarchy error:(id *)error
 {
-  v6 = a3;
-  if (!v6)
+  hierarchyCopy = hierarchy;
+  if (!hierarchyCopy)
   {
     [(VNClassifyImageRequest *)self _setCustomHierarchy:0];
     goto LABEL_5;
   }
 
-  v7 = [(VNRequest *)self resolvedRevision];
-  v8 = [v6 requestRevision];
-  if (v7 == v8)
+  resolvedRevision = [(VNRequest *)self resolvedRevision];
+  requestRevision = [hierarchyCopy requestRevision];
+  if (resolvedRevision == requestRevision)
   {
-    [(VNClassifyImageRequest *)self _setCustomHierarchy:v6];
+    [(VNClassifyImageRequest *)self _setCustomHierarchy:hierarchyCopy];
 LABEL_5:
-    LOBYTE(a4) = 1;
+    LOBYTE(error) = 1;
     goto LABEL_8;
   }
 
-  if (a4)
+  if (error)
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"the custom hierarchy is for request revision %lu, not %lu", v8, v7];
-    *a4 = [VNError errorForInvalidOperationWithLocalizedDescription:v9];
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"the custom hierarchy is for request revision %lu, not %lu", requestRevision, resolvedRevision];
+    *error = [VNError errorForInvalidOperationWithLocalizedDescription:v9];
 
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
   }
 
 LABEL_8:
 
-  return a4;
+  return error;
 }
 
 - (VNClassificationCustomHierarchy)customHierarchy
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 customHierarchy];
+  configuration = [(VNRequest *)self configuration];
+  customHierarchy = [configuration customHierarchy];
 
-  return v3;
+  return customHierarchy;
 }
 
-- (void)setMaximumHierarchicalObservations:(unint64_t)a3
+- (void)setMaximumHierarchicalObservations:(unint64_t)observations
 {
-  v4 = [(VNRequest *)self configuration];
-  [v4 setMaximumHierarchicalObservations:a3];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setMaximumHierarchicalObservations:observations];
 }
 
 - (unint64_t)maximumHierarchicalObservations
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 maximumHierarchicalObservations];
+  configuration = [(VNRequest *)self configuration];
+  maximumHierarchicalObservations = [configuration maximumHierarchicalObservations];
 
-  return v3;
+  return maximumHierarchicalObservations;
 }
 
-- (void)setMaximumLeafObservations:(unint64_t)a3
+- (void)setMaximumLeafObservations:(unint64_t)observations
 {
-  v4 = [(VNRequest *)self configuration];
-  [v4 setMaximumLeafObservations:a3];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setMaximumLeafObservations:observations];
 }
 
 - (unint64_t)maximumLeafObservations
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 maximumLeafObservations];
+  configuration = [(VNRequest *)self configuration];
+  maximumLeafObservations = [configuration maximumLeafObservations];
 
-  return v3;
+  return maximumLeafObservations;
 }
 
 - (NSArray)supportedIdentifiersAndReturnError:(NSError *)error
 {
-  v5 = [(VNRequest *)self resolvedRevision];
+  resolvedRevision = [(VNRequest *)self resolvedRevision];
   v15 = 0;
-  v6 = [(VNRequest *)self applicableDetectorClassAndOptions:&v15 forRevision:v5 error:error];
+  v6 = [(VNRequest *)self applicableDetectorClassAndOptions:&v15 forRevision:resolvedRevision error:error];
   v7 = v15;
   if (!v6)
   {
@@ -159,7 +159,7 @@ LABEL_5:
 
   v10 = objc_alloc_init(VNSession);
   v14 = v7;
-  v11 = [(VNRequest *)self applicableDetectorAndOptions:&v14 forRevision:v5 loadedInSession:v10 error:error];
+  v11 = [(VNRequest *)self applicableDetectorAndOptions:&v14 forRevision:resolvedRevision loadedInSession:v10 error:error];
   v9 = v14;
 
   if (!v11)
@@ -179,7 +179,7 @@ LABEL_5:
 
     if (error)
     {
-      [VNError errorForUnsupportedRevision:v5 ofRequest:self];
+      [VNError errorForUnsupportedRevision:resolvedRevision ofRequest:self];
       *error = v8 = 0;
       goto LABEL_15;
     }
@@ -199,81 +199,81 @@ LABEL_16:
   return v8;
 }
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
-  v8 = a4;
-  if (a3 == 1)
+  contextCopy = context;
+  if (revision == 1)
   {
-    if (a5)
+    if (error)
     {
       v9 = [VNError errorForUnsupportedConfigurationOfRequest:self];
 LABEL_6:
-      *a5 = v9;
+      *error = v9;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
-    v9 = [VNError errorForInvalidOperationForRequestClass:objc_opt_class() revision:a3];
+    v9 = [VNError errorForInvalidOperationForRequestClass:objc_opt_class() revision:revision];
     goto LABEL_6;
   }
 
   return 0;
 }
 
-- (void)applyConfigurationOfRequest:(id)a3
+- (void)applyConfigurationOfRequest:(id)request
 {
-  v4 = a3;
-  if (self != v4)
+  requestCopy = request;
+  if (self != requestCopy)
   {
     v6.receiver = self;
     v6.super_class = VNClassifyImageRequest;
-    [(VNImageBasedRequest *)&v6 applyConfigurationOfRequest:v4];
+    [(VNImageBasedRequest *)&v6 applyConfigurationOfRequest:requestCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(VNClassifyImageRequest *)v4 customHierarchy];
-      [(VNClassifyImageRequest *)self _setCustomHierarchy:v5];
+      customHierarchy = [(VNClassifyImageRequest *)requestCopy customHierarchy];
+      [(VNClassifyImageRequest *)self _setCustomHierarchy:customHierarchy];
 
-      [(VNClassifyImageRequest *)self setMaximumLeafObservations:[(VNClassifyImageRequest *)v4 maximumLeafObservations]];
-      [(VNClassifyImageRequest *)self setMaximumHierarchicalObservations:[(VNClassifyImageRequest *)v4 maximumHierarchicalObservations]];
-      [(VNClassifyImageRequest *)self setImageCropAndScaleOption:[(VNClassifyImageRequest *)v4 imageCropAndScaleOption]];
+      [(VNClassifyImageRequest *)self setMaximumLeafObservations:[(VNClassifyImageRequest *)requestCopy maximumLeafObservations]];
+      [(VNClassifyImageRequest *)self setMaximumHierarchicalObservations:[(VNClassifyImageRequest *)requestCopy maximumHierarchicalObservations]];
+      [(VNClassifyImageRequest *)self setImageCropAndScaleOption:[(VNClassifyImageRequest *)requestCopy imageCropAndScaleOption]];
     }
   }
 }
 
-- (void)resolvedRevisionDidChangeFromRevision:(unint64_t)a3
+- (void)resolvedRevisionDidChangeFromRevision:(unint64_t)revision
 {
   v7.receiver = self;
   v7.super_class = VNClassifyImageRequest;
-  [(VNRequest *)&v7 resolvedRevisionDidChangeFromRevision:a3];
-  v4 = [(VNRequest *)self resolvedRevision];
-  v5 = [(VNClassifyImageRequest *)self customHierarchy];
-  v6 = v5;
-  if (v5 && [v5 requestRevision] != v4)
+  [(VNRequest *)&v7 resolvedRevisionDidChangeFromRevision:revision];
+  resolvedRevision = [(VNRequest *)self resolvedRevision];
+  customHierarchy = [(VNClassifyImageRequest *)self customHierarchy];
+  v6 = customHierarchy;
+  if (customHierarchy && [customHierarchy requestRevision] != resolvedRevision)
   {
     [(VNClassifyImageRequest *)self _setCustomHierarchy:0];
   }
 
-  if (v4 == 3737841665)
+  if (resolvedRevision == 3737841665)
   {
     [(VNClassifyImageRequest *)self setMaximumLeafObservations:0x7FFFFFFFFFFFFFFFLL];
     [(VNClassifyImageRequest *)self setMaximumHierarchicalObservations:0x7FFFFFFFFFFFFFFFLL];
   }
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(VNClassifyImageRequest *)self customHierarchy];
-  v6 = [v4 customHierarchy];
+  configurationCopy = configuration;
+  customHierarchy = [(VNClassifyImageRequest *)self customHierarchy];
+  customHierarchy2 = [configurationCopy customHierarchy];
   v7 = VisionCoreEqualOrNilObjects();
 
-  if ((v7 & 1) != 0 && (v8 = -[VNClassifyImageRequest maximumLeafObservations](self, "maximumLeafObservations"), v8 == [v4 maximumLeafObservations]) && (v9 = -[VNClassifyImageRequest maximumHierarchicalObservations](self, "maximumHierarchicalObservations"), v9 == objc_msgSend(v4, "maximumHierarchicalObservations")))
+  if ((v7 & 1) != 0 && (v8 = -[VNClassifyImageRequest maximumLeafObservations](self, "maximumLeafObservations"), v8 == [configurationCopy maximumLeafObservations]) && (v9 = -[VNClassifyImageRequest maximumHierarchicalObservations](self, "maximumHierarchicalObservations"), v9 == objc_msgSend(configurationCopy, "maximumHierarchicalObservations")))
   {
     v12.receiver = self;
     v12.super_class = VNClassifyImageRequest;
-    v10 = [(VNImageBasedRequest *)&v12 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+    v10 = [(VNImageBasedRequest *)&v12 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
   }
 
   else
@@ -284,16 +284,16 @@ LABEL_6:
   return v10;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = VNClassifyImageRequest;
-  v6 = [(VNRequest *)&v13 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
-  v7 = [(VNRequest *)self frameworkClass];
-  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:v7 revision:a3])
+  v6 = [(VNRequest *)&v13 newDefaultDetectorOptionsForRequestRevision:revision session:session];
+  frameworkClass = [(VNRequest *)self frameworkClass];
+  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:frameworkClass revision:revision])
   {
-    if (a3 == 3737841667)
+    if (revision == 3737841667)
     {
       v8 = [[VNCoreSceneUnderstandingDetectorEntityNetClassificationConfiguration alloc] initWithObservationsRecipient:self];
       v16[0] = v8;
@@ -312,13 +312,13 @@ LABEL_6:
     goto LABEL_11;
   }
 
-  v10 = [VNImageAnalyzerMultiDetector modelForRequestClass:v7 revision:a3];
+  v10 = [VNImageAnalyzerMultiDetector modelForRequestClass:frameworkClass revision:revision];
   if (v10)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v10];
     [v6 setObject:v11 forKeyedSubscript:@"VNImageAnalyzerMultiDetectorInitializationOption_Model"];
 
-    if (a3 != 3737841667)
+    if (revision != 3737841667)
     {
       v8 = [[VNImageAnalyzerMultiDetectorSceneClassificationConfiguration alloc] initWithObservationsRecipient:self];
       v14 = v8;
@@ -336,7 +336,7 @@ LABEL_12:
     return v6;
   }
 
-  if (a3 == 3737841665)
+  if (revision == 3737841665)
   {
     [v6 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNSmartCam5GatingDetectorProcessingOption_ClassificationEnabled"];
     v8 = [v6 objectForKeyedSubscript:@"VNDetectorOption_OriginatingRequestSpecifier"];
@@ -347,10 +347,10 @@ LABEL_12:
   return v6;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  v7 = [(VNRequest *)self frameworkClass];
-  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:v7 revision:a3])
+  frameworkClass = [(VNRequest *)self frameworkClass];
+  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:frameworkClass revision:revision])
   {
     v8 = @"VNCoreSceneUnderstandingDetectorType";
 LABEL_7:
@@ -358,22 +358,22 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([VNImageAnalyzerMultiDetector modelForRequestClass:v7 revision:a3])
+  if ([VNImageAnalyzerMultiDetector modelForRequestClass:frameworkClass revision:revision])
   {
     v8 = @"VNImageAnalyzerMultiDetectorType";
     goto LABEL_7;
   }
 
-  if (a3 == 3737841665)
+  if (revision == 3737841665)
   {
     v8 = @"VNSmartCam5GatingDetectorType";
     goto LABEL_7;
   }
 
-  if (a4)
+  if (error)
   {
-    [VNError errorForUnsupportedRevision:a3 ofRequest:self];
-    *a4 = v8 = 0;
+    [VNError errorForUnsupportedRevision:revision ofRequest:self];
+    *error = v8 = 0;
   }
 
   else
@@ -395,33 +395,33 @@ LABEL_8:
   v5 = VNImageCropAndScaleOptionToString([(VNClassifyImageRequest *)self imageCropAndScaleOption]);
   [v3 appendFormat:@"%@ %@", v4, v5];
 
-  v6 = [(VNClassifyImageRequest *)self customHierarchy];
-  v7 = v6;
-  if (v6)
+  customHierarchy = [(VNClassifyImageRequest *)self customHierarchy];
+  v7 = customHierarchy;
+  if (customHierarchy)
   {
-    [v3 appendFormat:@" %@", v6];
+    [v3 appendFormat:@" %@", customHierarchy];
   }
 
   return v3;
 }
 
-- (void)_setCustomHierarchy:(id)a3
+- (void)_setCustomHierarchy:(id)hierarchy
 {
-  v5 = a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setCustomHierarchy:v5];
+  hierarchyCopy = hierarchy;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setCustomHierarchy:hierarchyCopy];
 }
 
 + (NSArray)knownClassificationsForRevision:(NSUInteger)requestRevision error:(NSError *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = objc_alloc_init(a1);
+  v6 = objc_alloc_init(self);
   if ([v6 setRevision:requestRevision error:error])
   {
     v7 = [v6 supportedIdentifiersAndReturnError:error];
     if (v7)
     {
-      v8 = [v6 specifier];
+      specifier = [v6 specifier];
       v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v7, "count")}];
       v21 = 0u;
       v22 = 0u;
@@ -444,7 +444,7 @@ LABEL_8:
             v14 = *(*(&v19 + 1) + 8 * i);
             v15 = [VNClassificationObservation alloc];
             LODWORD(v16) = 1.0;
-            v17 = [(VNClassificationObservation *)v15 initWithOriginatingRequestSpecifier:v8 identifier:v14 confidence:v16, v19];
+            v17 = [(VNClassificationObservation *)v15 initWithOriginatingRequestSpecifier:specifier identifier:v14 confidence:v16, v19];
             [v9 addObject:v17];
           }
 
@@ -469,20 +469,20 @@ LABEL_8:
   return v9;
 }
 
-+ (id)descriptionForPrivateRevision:(unint64_t)a3
++ (id)descriptionForPrivateRevision:(unint64_t)revision
 {
-  if (a3 - 3737841664u >= 4)
+  if (revision - 3737841664u >= 4)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___VNClassifyImageRequest;
     v5 = objc_msgSendSuper2(&v7, sel_descriptionForPrivateRevision_);
   }
 
   else
   {
-    v5 = off_1E77B3358[a3 - 3737841664u];
+    v5 = off_1E77B3358[revision - 3737841664u];
   }
 
   return v5;
@@ -507,17 +507,17 @@ uint64_t __45__VNClassifyImageRequest_privateRevisionsSet__block_invoke(uint64_t
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision
 {
-  v7 = [VNImageAnalyzerMultiDetector modelForRequestClass:a1 revision:a3];
-  if (v7 != [VNImageAnalyzerMultiDetector modelForRequestClass:a1 revision:a4])
+  v7 = [VNImageAnalyzerMultiDetector modelForRequestClass:self revision:revision];
+  if (v7 != [VNImageAnalyzerMultiDetector modelForRequestClass:self revision:byRevision])
   {
     return 0;
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___VNClassifyImageRequest;
-  return objc_msgSendSuper2(&v9, sel_revision_mayAcceptResultsProducedByRevision_, a3, a4);
+  return objc_msgSendSuper2(&v9, sel_revision_mayAcceptResultsProducedByRevision_, revision, byRevision);
 }
 
 @end

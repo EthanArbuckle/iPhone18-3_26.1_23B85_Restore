@@ -1,5 +1,5 @@
 @interface SigningStatusCache
-+ (id)getValue:(id)a3;
++ (id)getValue:(id)value;
 + (id)sharedInstance;
 + (void)reset;
 @end
@@ -18,11 +18,11 @@
   return v3;
 }
 
-+ (id)getValue:(id)a3
++ (id)getValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = +[SigningStatusCache sharedInstance];
-  v5 = [v4 getValueForKey:v3];
+  v5 = [v4 getValueForKey:valueCopy];
 
   return v5;
 }

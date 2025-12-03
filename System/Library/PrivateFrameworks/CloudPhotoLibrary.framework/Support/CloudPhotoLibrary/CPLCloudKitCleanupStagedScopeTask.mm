@@ -1,44 +1,44 @@
 @interface CPLCloudKitCleanupStagedScopeTask
 - (BOOL)shouldLaunchAuxiliaryOperation;
-- (CPLCloudKitCleanupStagedScopeTask)initWithController:(id)a3 stagedScope:(id)a4 stagingScope:(id)a5 destinationScope:(id)a6 transportScopeMapping:(id)a7 progressHandler:(id)a8 completionHandler:(id)a9;
-- (id)auxiliaryOperationDidFinishWithError:(id)a3;
-- (id)operationDidFinish:(id)a3 error:(id)a4;
-- (id)operationDidFinishWithError:(id)a3;
-- (void)_fetchAndMoveNextBatchWithUserRecordID:(id)a3;
-- (void)_moveBatchRecordWithNames:(id)a3 userRecordID:(id)a4 operationID:(id)a5 moveBatchID:(id)a6 hasMore:(BOOL)a7;
-- (void)_sendExitFeedbackWithSourceRecordIDs:(id)a3 destinationRecordIDs:(id)a4 moveError:(id)a5 operationID:(id)a6 moveBatchID:(id)a7;
-- (void)dispatchAsync:(id)a3;
-- (void)launchAuxiliaryOperation:(id)a3 type:(int64_t)a4 withContext:(id)a5;
-- (void)launchOperation:(id)a3 type:(int64_t)a4 withContext:(id)a5 sourceBundleIdentifiers:(id)a6;
+- (CPLCloudKitCleanupStagedScopeTask)initWithController:(id)controller stagedScope:(id)scope stagingScope:(id)stagingScope destinationScope:(id)destinationScope transportScopeMapping:(id)mapping progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (id)auxiliaryOperationDidFinishWithError:(id)error;
+- (id)operationDidFinish:(id)finish error:(id)error;
+- (id)operationDidFinishWithError:(id)error;
+- (void)_fetchAndMoveNextBatchWithUserRecordID:(id)d;
+- (void)_moveBatchRecordWithNames:(id)names userRecordID:(id)d operationID:(id)iD moveBatchID:(id)batchID hasMore:(BOOL)more;
+- (void)_sendExitFeedbackWithSourceRecordIDs:(id)ds destinationRecordIDs:(id)iDs moveError:(id)error operationID:(id)d moveBatchID:(id)iD;
+- (void)dispatchAsync:(id)async;
+- (void)launchAuxiliaryOperation:(id)operation type:(int64_t)type withContext:(id)context;
+- (void)launchOperation:(id)operation type:(int64_t)type withContext:(id)context sourceBundleIdentifiers:(id)identifiers;
 - (void)runAuxiliaryOperation;
 - (void)runOperations;
-- (void)updateContextWithBlock:(id)a3;
+- (void)updateContextWithBlock:(id)block;
 - (void)updateOneBatch;
-- (void)updateProgress:(double)a3;
+- (void)updateProgress:(double)progress;
 @end
 
 @implementation CPLCloudKitCleanupStagedScopeTask
 
-- (CPLCloudKitCleanupStagedScopeTask)initWithController:(id)a3 stagedScope:(id)a4 stagingScope:(id)a5 destinationScope:(id)a6 transportScopeMapping:(id)a7 progressHandler:(id)a8 completionHandler:(id)a9
+- (CPLCloudKitCleanupStagedScopeTask)initWithController:(id)controller stagedScope:(id)scope stagingScope:(id)stagingScope destinationScope:(id)destinationScope transportScopeMapping:(id)mapping progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v15 = a3;
-  v28 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  controllerCopy = controller;
+  scopeCopy = scope;
+  stagingScopeCopy = stagingScope;
+  destinationScopeCopy = destinationScope;
+  mappingCopy = mapping;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v34.receiver = self;
   v34.super_class = CPLCloudKitCleanupStagedScopeTask;
-  v21 = [(CPLCloudKitTransportTask *)&v34 initWithController:v15];
+  v21 = [(CPLCloudKitTransportTask *)&v34 initWithController:controllerCopy];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_stagedScope, a4);
-    objc_storeStrong(&v22->_stagingScope, a5);
-    objc_storeStrong(&v22->_destinationScope, a6);
-    [(CPLCloudKitTransportTask *)v22 setTransportScopeMapping:v18];
-    v23 = [v19 copy];
+    objc_storeStrong(&v21->_stagedScope, scope);
+    objc_storeStrong(&v22->_stagingScope, stagingScope);
+    objc_storeStrong(&v22->_destinationScope, destinationScope);
+    [(CPLCloudKitTransportTask *)v22 setTransportScopeMapping:mappingCopy];
+    v23 = [handlerCopy copy];
     progressHandler = v22->_progressHandler;
     v22->_progressHandler = v23;
 
@@ -48,8 +48,8 @@
     v29[2] = sub_1000A957C;
     v29[3] = &unk_100276C28;
     objc_copyWeak(&v32, &from);
-    v30 = v19;
-    v31 = v20;
+    v30 = handlerCopy;
+    v31 = completionHandlerCopy;
     v25 = [v29 copy];
     completionHandler = v22->_completionHandler;
     v22->_completionHandler = v25;
@@ -61,29 +61,29 @@
   return v22;
 }
 
-- (void)_sendExitFeedbackWithSourceRecordIDs:(id)a3 destinationRecordIDs:(id)a4 moveError:(id)a5 operationID:(id)a6 moveBatchID:(id)a7
+- (void)_sendExitFeedbackWithSourceRecordIDs:(id)ds destinationRecordIDs:(id)iDs moveError:(id)error operationID:(id)d moveBatchID:(id)iD
 {
-  v12 = a6;
-  v13 = a7;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  dCopy = d;
+  iDCopy = iD;
+  errorCopy = error;
+  iDsCopy = iDs;
+  dsCopy = ds;
   v28 = [CPLCloudKitSendSharedLibraryExitFeedbackTask alloc];
-  v17 = [(CPLCloudKitTransportTask *)self controller];
-  v18 = [(CPLCloudKitScope *)self->_stagingCloudKitScope zoneID];
+  controller = [(CPLCloudKitTransportTask *)self controller];
+  zoneID = [(CPLCloudKitScope *)self->_stagingCloudKitScope zoneID];
   destinationCloudKitScope = self->_destinationCloudKitScope;
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_1001AD640;
   v31[3] = &unk_100276C50;
-  v32 = v13;
-  v33 = v12;
-  v20 = v12;
-  v21 = v13;
-  v22 = [(CPLCloudKitSendSharedLibraryExitFeedbackTask *)v28 initWithController:v17 sourceRecordIDs:v16 destinationRecordIDs:v15 moveError:v14 operationID:v20 moveBatchID:v21 exitZoneID:v18 scope:destinationCloudKitScope completionHandler:v31];
+  v32 = iDCopy;
+  v33 = dCopy;
+  v20 = dCopy;
+  v21 = iDCopy;
+  v22 = [(CPLCloudKitSendSharedLibraryExitFeedbackTask *)v28 initWithController:controller sourceRecordIDs:dsCopy destinationRecordIDs:iDsCopy moveError:errorCopy operationID:v20 moveBatchID:v21 exitZoneID:zoneID scope:destinationCloudKitScope completionHandler:v31];
 
-  v23 = [(CPLCloudKitTransportTask *)self transportGroup];
-  [(CPLCloudKitTransportTask *)v22 setTransportGroup:v23];
+  transportGroup = [(CPLCloudKitTransportTask *)self transportGroup];
+  [(CPLCloudKitTransportTask *)v22 setTransportGroup:transportGroup];
 
   v24 = dispatch_get_global_queue(0, 0);
   v29[0] = _NSConcreteStackBlock;
@@ -102,21 +102,21 @@
   dispatch_async(v24, v27);
 }
 
-- (void)_moveBatchRecordWithNames:(id)a3 userRecordID:(id)a4 operationID:(id)a5 moveBatchID:(id)a6 hasMore:(BOOL)a7
+- (void)_moveBatchRecordWithNames:(id)names userRecordID:(id)d operationID:(id)iD moveBatchID:(id)batchID hasMore:(BOOL)more
 {
-  v11 = a3;
-  v12 = a4;
-  v33 = a5;
-  v31 = a6;
-  v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v11, "count")}];
-  v14 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v11, "count")}];
-  v32 = v12;
-  v35 = [[CPLCloudKitMoveBackCopyHelper alloc] initWithUserRecordID:v12 scopeProvider:self];
+  namesCopy = names;
+  dCopy = d;
+  iDCopy = iD;
+  batchIDCopy = batchID;
+  v13 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(namesCopy, "count")}];
+  v14 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(namesCopy, "count")}];
+  v32 = dCopy;
+  v35 = [[CPLCloudKitMoveBackCopyHelper alloc] initWithUserRecordID:dCopy scopeProvider:self];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v15 = v11;
+  v15 = namesCopy;
   v16 = [v15 countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v16)
   {
@@ -155,35 +155,35 @@
   v36[4] = self;
   v37 = v13;
   v38 = v14;
-  v39 = v33;
-  v42 = a7;
-  v40 = v31;
+  v39 = iDCopy;
+  moreCopy = more;
+  v40 = batchIDCopy;
   v41 = v32;
   v25 = v32;
-  v26 = v31;
-  v27 = v33;
+  v26 = batchIDCopy;
+  v27 = iDCopy;
   v28 = v14;
   v29 = v13;
   [(CPLCloudKitTransportTask *)self moveRecordsWithIDs:v29 followRemapping:0 sourceType:v23 destinationRecordIDs:v28 destinationType:v24 helper:v35 completionHandler:v36];
 }
 
-- (void)_fetchAndMoveNextBatchWithUserRecordID:(id)a3
+- (void)_fetchAndMoveNextBatchWithUserRecordID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v5 = [(CPLCloudKitTransportTask *)self shouldRunOperationsWithError:&v12];
   v6 = v12;
   if (v5)
   {
-    v7 = [(CPLCloudKitScope *)self->_stagingCloudKitScope zoneID];
+    zoneID = [(CPLCloudKitScope *)self->_stagingCloudKitScope zoneID];
     batchSize = self->_batchSize;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000A9DB8;
     v10[3] = &unk_100276CA0;
     v10[4] = self;
-    v11 = v4;
-    v9 = [CPLCKPhotosSharedLibraryOperation getNextBatchToMoveOperationWithZoneID:v7 batchSize:batchSize completionHandler:v10];
+    v11 = dCopy;
+    v9 = [CPLCKPhotosSharedLibraryOperation getNextBatchToMoveOperationWithZoneID:zoneID batchSize:batchSize completionHandler:v10];
 
     [(CPLCloudKitTransportTask *)self launchOperation:v9 type:CPLCloudKitOperationTypeForScope(self->_stagingCloudKitScope) withContext:0];
   }
@@ -201,10 +201,10 @@
     sub_1001ADEA8();
   }
 
-  v3 = [(CPLCloudKitZoneIdentification *)self->_stagingZoneIdentification libraryInfoRecordName];
-  if (v3)
+  libraryInfoRecordName = [(CPLCloudKitZoneIdentification *)self->_stagingZoneIdentification libraryInfoRecordName];
+  if (libraryInfoRecordName)
   {
-    v4 = [(CPLCloudKitZoneIdentification *)self->_stagingZoneIdentification recordIDWithRecordName:v3];
+    v4 = [(CPLCloudKitZoneIdentification *)self->_stagingZoneIdentification recordIDWithRecordName:libraryInfoRecordName];
     v5 = [CKFetchRecordsOperation alloc];
     v17 = v4;
     v6 = [NSArray arrayWithObjects:&v17 count:1];
@@ -215,7 +215,7 @@
     v12 = 3221225472;
     v13 = sub_1000AA154;
     v14 = &unk_100275080;
-    v15 = self;
+    selfCopy = self;
     v16 = v4;
     v8 = v4;
     [v7 setFetchRecordsCompletionBlock:&v11];
@@ -241,22 +241,22 @@
     sub_1001ADF70(v4, &self->_batchSize);
   }
 
-  v5 = [(CPLEngineScope *)self->_stagingScope scopeIdentifier];
-  v6 = [(CPLCloudKitTransportTask *)self cloudKitScopeForScopeIdentifier:v5];
+  scopeIdentifier = [(CPLEngineScope *)self->_stagingScope scopeIdentifier];
+  v6 = [(CPLCloudKitTransportTask *)self cloudKitScopeForScopeIdentifier:scopeIdentifier];
   stagingCloudKitScope = self->_stagingCloudKitScope;
   self->_stagingCloudKitScope = v6;
 
   if (self->_stagingCloudKitScope)
   {
-    v8 = [(CPLEngineScope *)self->_destinationScope scopeIdentifier];
-    v9 = [(CPLCloudKitTransportTask *)self cloudKitScopeForScopeIdentifier:v8];
+    scopeIdentifier2 = [(CPLEngineScope *)self->_destinationScope scopeIdentifier];
+    v9 = [(CPLCloudKitTransportTask *)self cloudKitScopeForScopeIdentifier:scopeIdentifier2];
     destinationCloudKitScope = self->_destinationCloudKitScope;
     self->_destinationCloudKitScope = v9;
 
     if (self->_destinationCloudKitScope)
     {
-      v11 = [(CPLCloudKitTransportTask *)self controller];
-      v12 = [v11 zoneIdentificationForCloudKitScope:self->_stagingCloudKitScope engineScope:self->_stagingScope];
+      controller = [(CPLCloudKitTransportTask *)self controller];
+      v12 = [controller zoneIdentificationForCloudKitScope:self->_stagingCloudKitScope engineScope:self->_stagingScope];
       stagingZoneIdentification = self->_stagingZoneIdentification;
       self->_stagingZoneIdentification = v12;
 
@@ -279,55 +279,55 @@
     destinationScope = self->_stagingScope;
   }
 
-  v16 = [(CPLEngineScope *)destinationScope scopeIdentifier];
-  v17 = [CPLErrors cplErrorWithCode:32 description:@"Missing transport scope for %@", v16];
+  scopeIdentifier3 = [(CPLEngineScope *)destinationScope scopeIdentifier];
+  v17 = [CPLErrors cplErrorWithCode:32 description:@"Missing transport scope for %@", scopeIdentifier3];
   completionHandler[2](completionHandler, v17);
 }
 
-- (void)dispatchAsync:(id)a3
+- (void)dispatchAsync:(id)async
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000AA6FC;
   v5[3] = &unk_100272350;
-  v6 = self;
-  v7 = a3;
-  v4.receiver = v6;
+  selfCopy = self;
+  asyncCopy = async;
+  v4.receiver = selfCopy;
   v4.super_class = CPLCloudKitCleanupStagedScopeTask;
-  v3 = v7;
+  v3 = asyncCopy;
   [(CPLCloudKitTransportTask *)&v4 dispatchAsync:v5];
 }
 
-- (void)launchOperation:(id)a3 type:(int64_t)a4 withContext:(id)a5 sourceBundleIdentifiers:(id)a6
+- (void)launchOperation:(id)operation type:(int64_t)type withContext:(id)context sourceBundleIdentifiers:(id)identifiers
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  operationCopy = operation;
+  contextCopy = context;
+  identifiersCopy = identifiers;
   if (self->_mainOperation)
   {
     sub_1001AE0EC(&self->_mainOperation, a2, self, v15, v16, v17, v18, v19, v21[0].receiver, v21[0].super_class, *&v21[1], v22, v23, v24, v25, v26, v27, vars0, vars8);
   }
 
-  v20 = v14;
-  objc_storeStrong(&self->_mainOperation, a3);
+  v20 = identifiersCopy;
+  objc_storeStrong(&self->_mainOperation, operation);
   v21[0].receiver = self;
   v21[0].super_class = CPLCloudKitCleanupStagedScopeTask;
-  [(objc_super *)v21 launchOperation:v12 type:a4 withContext:v13 sourceBundleIdentifiers:v20];
+  [(objc_super *)v21 launchOperation:operationCopy type:type withContext:contextCopy sourceBundleIdentifiers:v20];
   if ([(CPLCloudKitCleanupStagedScopeTask *)self shouldLaunchAuxiliaryOperation])
   {
     [(CPLCloudKitCleanupStagedScopeTask *)self runAuxiliaryOperation];
   }
 }
 
-- (id)operationDidFinish:(id)a3 error:(id)a4
+- (id)operationDidFinish:(id)finish error:(id)error
 {
   v10.receiver = self;
   v10.super_class = CPLCloudKitCleanupStagedScopeTask;
-  v6 = a3;
-  v7 = [(CPLCloudKitTransportTask *)&v10 operationDidFinish:v6 error:a4];
+  finishCopy = finish;
+  v7 = [(CPLCloudKitTransportTask *)&v10 operationDidFinish:finishCopy error:error];
   mainOperation = self->_mainOperation;
 
-  if (mainOperation == v6)
+  if (mainOperation == finishCopy)
   {
     self->_mainOperation = 0;
   }
@@ -345,88 +345,88 @@
   [(CPLCloudKitTransportTask *)self updateOneBatchForOperation:?];
 }
 
-- (void)updateContextWithBlock:(id)a3
+- (void)updateContextWithBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   if (!self->_mainOperation)
   {
     sub_1001AE2CC(a2, self);
   }
 
-  v6 = v5;
-  [(CPLCloudKitTransportTask *)self updateContextWithBlock:v5 forOperation:?];
+  v6 = blockCopy;
+  [(CPLCloudKitTransportTask *)self updateContextWithBlock:blockCopy forOperation:?];
 }
 
-- (void)updateProgress:(double)a3
+- (void)updateProgress:(double)progress
 {
   if (!self->_mainOperation)
   {
-    sub_1001AE3BC(a2, self, a3);
+    sub_1001AE3BC(a2, self, progress);
   }
 
-  [(CPLCloudKitTransportTask *)self updateProgress:a3 forOperation:?];
+  [(CPLCloudKitTransportTask *)self updateProgress:progress forOperation:?];
 }
 
-- (id)operationDidFinishWithError:(id)a3
+- (id)operationDidFinishWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   mainOperation = self->_mainOperation;
   if (!mainOperation)
   {
     sub_1001AE4AC(a2, self);
   }
 
-  v7 = v5;
-  v8 = [(CPLCloudKitCleanupStagedScopeTask *)self operationDidFinish:mainOperation error:v5];
+  v7 = errorCopy;
+  v8 = [(CPLCloudKitCleanupStagedScopeTask *)self operationDidFinish:mainOperation error:errorCopy];
 
   return v8;
 }
 
-- (void)launchAuxiliaryOperation:(id)a3 type:(int64_t)a4 withContext:(id)a5
+- (void)launchAuxiliaryOperation:(id)operation type:(int64_t)type withContext:(id)context
 {
-  v10 = a3;
-  v11 = a5;
+  operationCopy = operation;
+  contextCopy = context;
   if (self->_auxiliaryOperation)
   {
     sub_1001AE59C(self, a2);
   }
 
-  v12 = v11;
-  objc_storeStrong(&self->_auxiliaryOperation, a3);
+  v12 = contextCopy;
+  objc_storeStrong(&self->_auxiliaryOperation, operation);
   v13 = +[NSDate date];
   dateSinceLastAuxiliaryOperation = self->_dateSinceLastAuxiliaryOperation;
   self->_dateSinceLastAuxiliaryOperation = v13;
 
-  v15 = [(CPLCloudKitTransportTask *)self sourceBundleIdentifier];
-  v16 = v15;
-  if (!v15)
+  sourceBundleIdentifier = [(CPLCloudKitTransportTask *)self sourceBundleIdentifier];
+  defaultSourceBundleIdentifier = sourceBundleIdentifier;
+  if (!sourceBundleIdentifier)
   {
     a2 = [(CPLCloudKitTransportTask *)self controller];
-    v16 = [a2 defaultSourceBundleIdentifier];
+    defaultSourceBundleIdentifier = [a2 defaultSourceBundleIdentifier];
   }
 
-  v19 = v16;
+  v19 = defaultSourceBundleIdentifier;
   v17 = [NSArray arrayWithObjects:&v19 count:1];
   v18.receiver = self;
   v18.super_class = CPLCloudKitCleanupStagedScopeTask;
-  [(CPLCloudKitTransportTask *)&v18 launchOperation:v10 type:a4 withContext:v12 sourceBundleIdentifiers:v17];
+  [(CPLCloudKitTransportTask *)&v18 launchOperation:operationCopy type:type withContext:v12 sourceBundleIdentifiers:v17];
 
-  if (!v15)
+  if (!sourceBundleIdentifier)
   {
   }
 }
 
-- (id)auxiliaryOperationDidFinishWithError:(id)a3
+- (id)auxiliaryOperationDidFinishWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   auxiliaryOperation = self->_auxiliaryOperation;
   if (!auxiliaryOperation)
   {
     sub_1001AE678(a2, self);
   }
 
-  v7 = v5;
-  v8 = [(CPLCloudKitCleanupStagedScopeTask *)self operationDidFinish:auxiliaryOperation error:v5];
+  v7 = errorCopy;
+  v8 = [(CPLCloudKitCleanupStagedScopeTask *)self operationDidFinish:auxiliaryOperation error:errorCopy];
   v9 = self->_auxiliaryOperation;
   self->_auxiliaryOperation = 0;
 

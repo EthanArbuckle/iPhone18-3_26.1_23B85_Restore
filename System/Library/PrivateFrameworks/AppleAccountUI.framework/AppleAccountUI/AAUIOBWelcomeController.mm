@@ -1,16 +1,16 @@
 @interface AAUIOBWelcomeController
 + (id)shieldView;
-- (AAUIOBWelcomeController)initWithViewModel:(id)a3;
+- (AAUIOBWelcomeController)initWithViewModel:(id)model;
 - (AAUIOBWelcomeControllerDelegate)delegate;
-- (void)_addBulletedListItems:(id)a3;
-- (void)_addContentViewWithViewModel:(id)a3;
-- (void)_addHelpLinkButtonWithViewModel:(id)a3;
-- (void)_addPrimaryButtonWithViewModel:(id)a3;
-- (void)_addSecondaryButtonWithViewModel:(id)a3;
-- (void)_addSecondaryViewWithViewModel:(id)a3;
-- (void)_delegate_welcomeViewControllerDidCompleteWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)_addBulletedListItems:(id)items;
+- (void)_addContentViewWithViewModel:(id)model;
+- (void)_addHelpLinkButtonWithViewModel:(id)model;
+- (void)_addPrimaryButtonWithViewModel:(id)model;
+- (void)_addSecondaryButtonWithViewModel:(id)model;
+- (void)_addSecondaryViewWithViewModel:(id)model;
+- (void)_delegate_welcomeViewControllerDidCompleteWithSuccess:(BOOL)success error:(id)error;
 - (void)_openHelpLink;
-- (void)_setSymbolNameInHeaderViewWithModel:(id)a3;
+- (void)_setSymbolNameInHeaderViewWithModel:(id)model;
 @end
 
 @implementation AAUIOBWelcomeController
@@ -26,44 +26,44 @@
   v7 = [v5 imageNamed:@"OBShieldUI" inBundle:v6];
 
   v8 = objc_alloc(MEMORY[0x1E69DCAE0]);
-  v9 = [(AAUIOBWelcomeController *)v4 contentView];
-  [v9 bounds];
+  contentView = [(AAUIOBWelcomeController *)v4 contentView];
+  [contentView bounds];
   v10 = [v8 initWithFrame:?];
 
   [v10 setImage:v7];
   [v10 setContentMode:2];
   [v10 setAutoresizingMask:18];
-  v11 = [(AAUIOBWelcomeController *)v4 contentView];
-  [v11 addSubview:v10];
+  contentView2 = [(AAUIOBWelcomeController *)v4 contentView];
+  [contentView2 addSubview:v10];
 
   return v4;
 }
 
-- (AAUIOBWelcomeController)initWithViewModel:(id)a3
+- (AAUIOBWelcomeController)initWithViewModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 title];
-  v6 = [v4 detailText];
-  v7 = [v4 image];
+  modelCopy = model;
+  title = [modelCopy title];
+  detailText = [modelCopy detailText];
+  image = [modelCopy image];
   v11.receiver = self;
   v11.super_class = AAUIOBWelcomeController;
-  v8 = -[AAUIOBWelcomeController initWithTitle:detailText:icon:contentLayout:](&v11, sel_initWithTitle_detailText_icon_contentLayout_, v5, v6, v7, [v4 contentViewLayout]);
+  v8 = -[AAUIOBWelcomeController initWithTitle:detailText:icon:contentLayout:](&v11, sel_initWithTitle_detailText_icon_contentLayout_, title, detailText, image, [modelCopy contentViewLayout]);
 
   if (v8)
   {
-    if ([v4 conformsToProtocol:&unk_1F44E6680])
+    if ([modelCopy conformsToProtocol:&unk_1F44E6680])
     {
-      [(AAUIOBWelcomeController *)v8 _addBulletedListItems:v4];
+      [(AAUIOBWelcomeController *)v8 _addBulletedListItems:modelCopy];
     }
 
-    [(AAUIOBWelcomeController *)v8 _addContentViewWithViewModel:v4];
-    [(AAUIOBWelcomeController *)v8 _setSymbolNameInHeaderViewWithModel:v4];
-    [(AAUIOBWelcomeController *)v8 _addSecondaryViewWithViewModel:v4];
-    [(AAUIOBWelcomeController *)v8 _addPrimaryButtonWithViewModel:v4];
-    [(AAUIOBWelcomeController *)v8 _addSecondaryButtonWithViewModel:v4];
-    [(AAUIOBWelcomeController *)v8 _addHelpLinkButtonWithViewModel:v4];
-    v9 = [v4 accessibilityIdentifier];
-    [(AAUIOBWelcomeController *)v8 setAccessibilityIdentifier:v9];
+    [(AAUIOBWelcomeController *)v8 _addContentViewWithViewModel:modelCopy];
+    [(AAUIOBWelcomeController *)v8 _setSymbolNameInHeaderViewWithModel:modelCopy];
+    [(AAUIOBWelcomeController *)v8 _addSecondaryViewWithViewModel:modelCopy];
+    [(AAUIOBWelcomeController *)v8 _addPrimaryButtonWithViewModel:modelCopy];
+    [(AAUIOBWelcomeController *)v8 _addSecondaryButtonWithViewModel:modelCopy];
+    [(AAUIOBWelcomeController *)v8 _addHelpLinkButtonWithViewModel:modelCopy];
+    accessibilityIdentifier = [modelCopy accessibilityIdentifier];
+    [(AAUIOBWelcomeController *)v8 setAccessibilityIdentifier:accessibilityIdentifier];
   }
 
   [(AAUIOBWelcomeController *)v8 setModalInPresentation:1];
@@ -71,15 +71,15 @@
   return v8;
 }
 
-- (void)_addBulletedListItems:(id)a3
+- (void)_addBulletedListItems:(id)items
 {
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [a3 bullets];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  bullets = [items bullets];
+  v5 = [bullets countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -90,174 +90,174 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(bullets);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 title];
+        title = [v9 title];
         v11 = [v9 description];
         v12 = MEMORY[0x1E69DCAB8];
-        v13 = [v9 symbolName];
-        v14 = [v12 systemImageNamed:v13];
-        [(AAUIOBWelcomeController *)self addBulletedListItemWithTitle:v10 description:v11 image:v14];
+        symbolName = [v9 symbolName];
+        v14 = [v12 systemImageNamed:symbolName];
+        [(AAUIOBWelcomeController *)self addBulletedListItemWithTitle:title description:v11 image:v14];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [bullets countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_setSymbolNameInHeaderViewWithModel:(id)a3
+- (void)_setSymbolNameInHeaderViewWithModel:(id)model
 {
-  v9 = a3;
+  modelCopy = model;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v9 symbolName];
-    v5 = [v4 length];
+    symbolName = [modelCopy symbolName];
+    v5 = [symbolName length];
 
     if (v5)
     {
-      v6 = [(AAUIOBWelcomeController *)self headerView];
-      v7 = [v9 symbolName];
-      v8 = [v9 symbolAccessibilityLabel];
-      [v6 setSymbol:v7 accessibilityLabel:v8];
+      headerView = [(AAUIOBWelcomeController *)self headerView];
+      symbolName2 = [modelCopy symbolName];
+      symbolAccessibilityLabel = [modelCopy symbolAccessibilityLabel];
+      [headerView setSymbol:symbolName2 accessibilityLabel:symbolAccessibilityLabel];
     }
   }
 }
 
-- (void)_addContentViewWithViewModel:(id)a3
+- (void)_addContentViewWithViewModel:(id)model
 {
   v26[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 contentView];
+  modelCopy = model;
+  contentView = [modelCopy contentView];
 
-  if (v5)
+  if (contentView)
   {
-    v6 = [v4 contentView];
-    v7 = [(AAUIOBWelcomeController *)self contentView];
-    [v7 addSubview:v6];
+    contentView2 = [modelCopy contentView];
+    contentView3 = [(AAUIOBWelcomeController *)self contentView];
+    [contentView3 addSubview:contentView2];
 
     v18 = MEMORY[0x1E696ACD8];
-    v24 = [v6 leadingAnchor];
-    v25 = [(AAUIOBWelcomeController *)self contentView];
-    v23 = [v25 leadingAnchor];
-    v22 = [v24 constraintEqualToAnchor:v23];
+    leadingAnchor = [contentView2 leadingAnchor];
+    contentView4 = [(AAUIOBWelcomeController *)self contentView];
+    leadingAnchor2 = [contentView4 leadingAnchor];
+    v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v26[0] = v22;
-    v20 = [v6 trailingAnchor];
-    v21 = [(AAUIOBWelcomeController *)self contentView];
-    v19 = [v21 trailingAnchor];
-    v17 = [v20 constraintEqualToAnchor:v19];
+    trailingAnchor = [contentView2 trailingAnchor];
+    contentView5 = [(AAUIOBWelcomeController *)self contentView];
+    trailingAnchor2 = [contentView5 trailingAnchor];
+    v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v26[1] = v17;
-    v16 = [v6 topAnchor];
-    v8 = [(AAUIOBWelcomeController *)self contentView];
-    v9 = [v8 topAnchor];
-    v10 = [v16 constraintEqualToAnchor:v9 constant:-10.0];
+    topAnchor = [contentView2 topAnchor];
+    contentView6 = [(AAUIOBWelcomeController *)self contentView];
+    topAnchor2 = [contentView6 topAnchor];
+    v10 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:-10.0];
     v26[2] = v10;
-    v11 = [v6 bottomAnchor];
-    v12 = [(AAUIOBWelcomeController *)self contentView];
-    v13 = [v12 bottomAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13];
+    bottomAnchor = [contentView2 bottomAnchor];
+    contentView7 = [(AAUIOBWelcomeController *)self contentView];
+    bottomAnchor2 = [contentView7 bottomAnchor];
+    v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v26[3] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:4];
     [v18 activateConstraints:v15];
   }
 }
 
-- (void)_addSecondaryViewWithViewModel:(id)a3
+- (void)_addSecondaryViewWithViewModel:(id)model
 {
   v22[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 secondaryView];
+  modelCopy = model;
+  secondaryView = [modelCopy secondaryView];
 
-  if (v5)
+  if (secondaryView)
   {
-    v6 = [v4 secondaryView];
-    v7 = [(AAUIOBWelcomeController *)self secondaryContentView];
-    [v7 addSubview:v6];
+    secondaryView2 = [modelCopy secondaryView];
+    secondaryContentView = [(AAUIOBWelcomeController *)self secondaryContentView];
+    [secondaryContentView addSubview:secondaryView2];
 
     v17 = MEMORY[0x1E696ACD8];
-    v20 = [v6 leadingAnchor];
-    v21 = [(AAUIOBWelcomeController *)self secondaryContentView];
-    v19 = [v21 leadingAnchor];
-    v18 = [v20 constraintEqualToAnchor:v19];
+    leadingAnchor = [secondaryView2 leadingAnchor];
+    secondaryContentView2 = [(AAUIOBWelcomeController *)self secondaryContentView];
+    leadingAnchor2 = [secondaryContentView2 leadingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v22[0] = v18;
-    v16 = [v6 trailingAnchor];
-    v8 = [(AAUIOBWelcomeController *)self secondaryContentView];
-    v9 = [v8 trailingAnchor];
-    v10 = [v16 constraintEqualToAnchor:v9];
+    trailingAnchor = [secondaryView2 trailingAnchor];
+    secondaryContentView3 = [(AAUIOBWelcomeController *)self secondaryContentView];
+    trailingAnchor2 = [secondaryContentView3 trailingAnchor];
+    v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v22[1] = v10;
-    v11 = [v6 topAnchor];
-    v12 = [(AAUIOBWelcomeController *)self secondaryContentView];
-    v13 = [v12 topAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13 constant:-10.0];
+    topAnchor = [secondaryView2 topAnchor];
+    secondaryContentView4 = [(AAUIOBWelcomeController *)self secondaryContentView];
+    topAnchor2 = [secondaryContentView4 topAnchor];
+    v14 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:-10.0];
     v22[2] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:3];
     [v17 activateConstraints:v15];
   }
 }
 
-- (void)_addPrimaryButtonWithViewModel:(id)a3
+- (void)_addPrimaryButtonWithViewModel:(id)model
 {
-  v10 = a3;
-  v4 = [v10 primaryButton];
+  modelCopy = model;
+  primaryButton = [modelCopy primaryButton];
 
-  if (v4)
+  if (primaryButton)
   {
-    v5 = [MEMORY[0x1E69B7D00] boldButton];
+    boldButton = [MEMORY[0x1E69B7D00] boldButton];
     primaryButton = self->_primaryButton;
-    self->_primaryButton = v5;
+    self->_primaryButton = boldButton;
 
     v7 = self->_primaryButton;
-    v8 = [v10 primaryButton];
-    [(OBTrayButton *)v7 setTitle:v8 forState:0];
+    primaryButton2 = [modelCopy primaryButton];
+    [(OBTrayButton *)v7 setTitle:primaryButton2 forState:0];
 
     [(OBTrayButton *)self->_primaryButton addTarget:self action:sel__delegate_welcomeViewControllerDidCompleteWithSuccess_error_ forControlEvents:64];
-    v9 = [(AAUIOBWelcomeController *)self buttonTray];
-    [v9 addButton:self->_primaryButton];
+    buttonTray = [(AAUIOBWelcomeController *)self buttonTray];
+    [buttonTray addButton:self->_primaryButton];
   }
 }
 
-- (void)_addSecondaryButtonWithViewModel:(id)a3
+- (void)_addSecondaryButtonWithViewModel:(id)model
 {
-  v10 = a3;
-  v4 = [v10 secondaryButton];
+  modelCopy = model;
+  secondaryButton = [modelCopy secondaryButton];
 
-  if (v4)
+  if (secondaryButton)
   {
-    v5 = [MEMORY[0x1E69B7D38] linkButton];
+    linkButton = [MEMORY[0x1E69B7D38] linkButton];
     secondaryButton = self->_secondaryButton;
-    self->_secondaryButton = v5;
+    self->_secondaryButton = linkButton;
 
     v7 = self->_secondaryButton;
-    v8 = [v10 secondaryButton];
-    [(OBTrayButton *)v7 setTitle:v8 forState:0];
+    secondaryButton2 = [modelCopy secondaryButton];
+    [(OBTrayButton *)v7 setTitle:secondaryButton2 forState:0];
 
     [(OBTrayButton *)self->_secondaryButton addTarget:self action:sel__delegate_welcomeViewControllerDidCompleteWithSuccess_error_ forControlEvents:64];
-    v9 = [(AAUIOBWelcomeController *)self buttonTray];
-    [v9 addButton:self->_secondaryButton];
+    buttonTray = [(AAUIOBWelcomeController *)self buttonTray];
+    [buttonTray addButton:self->_secondaryButton];
   }
 }
 
-- (void)_addHelpLinkButtonWithViewModel:(id)a3
+- (void)_addHelpLinkButtonWithViewModel:(id)model
 {
-  v10 = a3;
-  v4 = [v10 helpLinkTitle];
+  modelCopy = model;
+  helpLinkTitle = [modelCopy helpLinkTitle];
 
-  if (v4)
+  if (helpLinkTitle)
   {
-    v5 = [v10 helpLinkURL];
+    helpLinkURL = [modelCopy helpLinkURL];
     helpLinkURL = self->_helpLinkURL;
-    self->_helpLinkURL = v5;
+    self->_helpLinkURL = helpLinkURL;
 
-    v7 = [MEMORY[0x1E69B7D20] accessoryButton];
-    v8 = [v10 helpLinkTitle];
-    [v7 setTitle:v8 forState:0];
+    accessoryButton = [MEMORY[0x1E69B7D20] accessoryButton];
+    helpLinkTitle2 = [modelCopy helpLinkTitle];
+    [accessoryButton setTitle:helpLinkTitle2 forState:0];
 
-    [v7 addTarget:self action:sel__openHelpLink forControlEvents:64];
-    v9 = [(AAUIOBWelcomeController *)self headerView];
-    [v9 addAccessoryButton:v7];
+    [accessoryButton addTarget:self action:sel__openHelpLink forControlEvents:64];
+    headerView = [(AAUIOBWelcomeController *)self headerView];
+    [headerView addAccessoryButton:accessoryButton];
   }
 }
 
@@ -267,13 +267,13 @@
   [*MEMORY[0x1E69DDA98] openURL:v2 options:MEMORY[0x1E695E0F8] completionHandler:0];
 }
 
-- (void)_delegate_welcomeViewControllerDidCompleteWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_delegate_welcomeViewControllerDidCompleteWithSuccess:(BOOL)success error:(id)error
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(AAUIOBWelcomeController *)self delegate];
+  delegate = [(AAUIOBWelcomeController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 welcomeViewController:self didCompleteWithSuccess:1 error:0];
+    [delegate welcomeViewController:self didCompleteWithSuccess:1 error:0];
   }
 }
 

@@ -1,9 +1,9 @@
 @interface NPHCall
-+ (id)_errorAlertMessageForDisconnectedReason:(int)a3;
-+ (id)callsFromTUCalls:(id)a3;
-+ (id)descriptionForCallStatus:(int)a3;
-+ (id)descriptionForCallSupport:(int)a3;
-+ (int)callSupportForProvider:(id)a3 isVideo:(BOOL)a4;
++ (id)_errorAlertMessageForDisconnectedReason:(int)reason;
++ (id)callsFromTUCalls:(id)calls;
++ (id)descriptionForCallStatus:(int)status;
++ (id)descriptionForCallSupport:(int)support;
++ (int)callSupportForProvider:(id)provider isVideo:(BOOL)video;
 - (BOOL)canSendLiveReply;
 - (BOOL)hasFailed;
 - (BOOL)hasRelaySupport;
@@ -12,7 +12,7 @@
 - (BOOL)isConnected;
 - (BOOL)isEmergencyCall;
 - (BOOL)isEndpointOnCurrentDevice;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFaceTimeVideoCall;
 - (BOOL)isHostedOnCurrentDevice;
 - (BOOL)isKappaOriginatedCall;
@@ -28,8 +28,8 @@
 - (BOOL)isTinCanCall;
 - (BOOL)wantsHoldMusic;
 - (BOOL)wasDeclined;
-- (NPHCall)initWithTUCall:(id)a3;
-- (NPHCall)initWithTUCalls:(id)a3;
+- (NPHCall)initWithTUCall:(id)call;
+- (NPHCall)initWithTUCalls:(id)calls;
 - (NSString)callDurationString;
 - (NSString)displayName;
 - (NSString)localizedProviderName;
@@ -39,36 +39,36 @@
 - (TUDialRequest)redialPrompt;
 - (TUJoinConversationRequest)rejoinPrompt;
 - (id)_firstTUCall;
-- (id)_outgoingStatusStringWithLabel:(id)a3;
+- (id)_outgoingStatusStringWithLabel:(id)label;
 - (id)description;
 - (int)disconnectedReason;
 - (int)service;
 - (int)status;
-- (void)logWithReason:(id)a3 indented:(BOOL)a4;
-- (void)resumeCallFromSource:(id)a3;
+- (void)logWithReason:(id)reason indented:(BOOL)indented;
+- (void)resumeCallFromSource:(id)source;
 @end
 
 @implementation NPHCall
 
-- (NPHCall)initWithTUCall:(id)a3
+- (NPHCall)initWithTUCall:(id)call
 {
-  v8 = a3;
-  v4 = a3;
-  v5 = [NSArray arrayWithObjects:&v8 count:1];
+  callCopy = call;
+  callCopy2 = call;
+  v5 = [NSArray arrayWithObjects:&callCopy count:1];
 
-  v6 = [(NPHCall *)self initWithTUCalls:v5, v8];
-  return v6;
+  callCopy = [(NPHCall *)self initWithTUCalls:v5, callCopy];
+  return callCopy;
 }
 
-- (NPHCall)initWithTUCalls:(id)a3
+- (NPHCall)initWithTUCalls:(id)calls
 {
-  v4 = a3;
+  callsCopy = calls;
   v9.receiver = self;
   v9.super_class = NPHCall;
   v5 = [(NPHCall *)&v9 init];
   if (v5)
   {
-    v6 = [v4 sortedArrayUsingComparator:&stru_100014658];
+    v6 = [callsCopy sortedArrayUsingComparator:&stru_100014658];
     TUCalls = v5->_TUCalls;
     v5->_TUCalls = v6;
   }
@@ -76,20 +76,20 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(NPHCall *)self TUCalls];
-  v6 = [v4 TUCalls];
+  equalCopy = equal;
+  tUCalls = [(NPHCall *)self TUCalls];
+  tUCalls2 = [equalCopy TUCalls];
 
-  LOBYTE(v4) = [v5 isEqualToArray:v6];
-  return v4;
+  LOBYTE(equalCopy) = [tUCalls isEqualToArray:tUCalls2];
+  return equalCopy;
 }
 
-+ (id)callsFromTUCalls:(id)a3
++ (id)callsFromTUCalls:(id)calls
 {
-  v3 = a3;
-  v4 = [v3 objectsPassingTest:&stru_100014698];
+  callsCopy = calls;
+  v4 = [callsCopy objectsPassingTest:&stru_100014698];
   if ([v4 count])
   {
     v5 = [[NPHCall alloc] initWithTUCalls:v4];
@@ -100,7 +100,7 @@
     v5 = 0;
   }
 
-  v6 = [v3 objectsPassingTest:&stru_1000146B8];
+  v6 = [callsCopy objectsPassingTest:&stru_1000146B8];
   v7 = [v6 nph_map:&stru_1000146F8];
   v8 = v7;
   if (v5)
@@ -128,15 +128,15 @@
       sub_1000099F0(v6);
     }
 
-    v5 = 0;
+    _firstTUCall = 0;
   }
 
   else
   {
-    v5 = [(NPHCall *)self _firstTUCall];
+    _firstTUCall = [(NPHCall *)self _firstTUCall];
   }
 
-  return v5;
+  return _firstTUCall;
 }
 
 - (BOOL)isConnected
@@ -145,34 +145,34 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(NPHCall *)self TUCalls];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  tUCalls = [(NPHCall *)self TUCalls];
+  v3 = [tUCalls countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
     v5 = *v10;
-    v6 = 1;
+    isConnected = 1;
     do
     {
       for (i = 0; i != v4; i = i + 1)
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(tUCalls);
         }
 
-        if (v6)
+        if (isConnected)
         {
-          v6 = [*(*(&v9 + 1) + 8 * i) isConnected];
+          isConnected = [*(*(&v9 + 1) + 8 * i) isConnected];
         }
 
         else
         {
-          v6 = 0;
+          isConnected = 0;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [tUCalls countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -180,10 +180,10 @@
 
   else
   {
-    v6 = 1;
+    isConnected = 1;
   }
 
-  return v6;
+  return isConnected;
 }
 
 - (BOOL)isHostedOnCurrentDevice
@@ -192,34 +192,34 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(NPHCall *)self TUCalls];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  tUCalls = [(NPHCall *)self TUCalls];
+  v3 = [tUCalls countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
     v5 = *v10;
-    v6 = 1;
+    isHostedOnCurrentDevice = 1;
     do
     {
       for (i = 0; i != v4; i = i + 1)
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(tUCalls);
         }
 
-        if (v6)
+        if (isHostedOnCurrentDevice)
         {
-          v6 = [*(*(&v9 + 1) + 8 * i) isHostedOnCurrentDevice];
+          isHostedOnCurrentDevice = [*(*(&v9 + 1) + 8 * i) isHostedOnCurrentDevice];
         }
 
         else
         {
-          v6 = 0;
+          isHostedOnCurrentDevice = 0;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [tUCalls countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -227,10 +227,10 @@
 
   else
   {
-    v6 = 1;
+    isHostedOnCurrentDevice = 1;
   }
 
-  return v6;
+  return isHostedOnCurrentDevice;
 }
 
 - (BOOL)isEmergencyCall
@@ -239,14 +239,14 @@
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 stringForKey:@"CSLEmergencyPhoneNumber"];
 
-  v6 = [(NPHCall *)self TUCalls];
+  tUCalls = [(NPHCall *)self TUCalls];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000295C;
   v9[3] = &unk_100014760;
   v10 = v3;
   v9[4] = v5;
-  v7 = [v6 hasObjectPassingTest:v9];
+  v7 = [tUCalls hasObjectPassingTest:v9];
 
   return v7;
 }
@@ -257,38 +257,38 @@
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 stringForKey:@"CSLEmergencyPhoneNumber"];
 
-  v6 = [(NPHCall *)self TUCalls];
+  tUCalls = [(NPHCall *)self TUCalls];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100002AC8;
   v9[3] = &unk_100014760;
   v10 = v3;
   v9[4] = v5;
-  v7 = [v6 hasObjectPassingTest:v9];
+  v7 = [tUCalls hasObjectPassingTest:v9];
 
   return v7;
 }
 
 - (BOOL)isTinCanCall
 {
-  v2 = [(NPHCall *)self TUCalls];
-  v3 = [v2 hasObjectPassingTest:&stru_100014780];
+  tUCalls = [(NPHCall *)self TUCalls];
+  v3 = [tUCalls hasObjectPassingTest:&stru_100014780];
 
   return v3;
 }
 
 - (BOOL)isNewtonOriginatedCall
 {
-  v2 = [(NPHCall *)self TUCalls];
-  v3 = [v2 hasObjectPassingTest:&stru_1000147A0];
+  tUCalls = [(NPHCall *)self TUCalls];
+  v3 = [tUCalls hasObjectPassingTest:&stru_1000147A0];
 
   return v3;
 }
 
 - (BOOL)isKappaOriginatedCall
 {
-  v2 = [(NPHCall *)self TUCalls];
-  v3 = [v2 hasObjectPassingTest:&stru_1000147C0];
+  tUCalls = [(NPHCall *)self TUCalls];
+  v3 = [tUCalls hasObjectPassingTest:&stru_1000147C0];
 
   return v3;
 }
@@ -305,24 +305,24 @@
 
 - (BOOL)isAutoDialedSOSCall
 {
-  v2 = [(NPHCall *)self TUCalls];
-  v3 = [v2 hasObjectPassingTest:&stru_1000147E0];
+  tUCalls = [(NPHCall *)self TUCalls];
+  v3 = [tUCalls hasObjectPassingTest:&stru_1000147E0];
 
   return v3;
 }
 
 - (BOOL)isFaceTimeVideoCall
 {
-  v2 = [(NPHCall *)self onlyTUCall];
-  v3 = [v2 service] == 3;
+  onlyTUCall = [(NPHCall *)self onlyTUCall];
+  v3 = [onlyTUCall service] == 3;
 
   return v3;
 }
 
 - (BOOL)isConferenced
 {
-  v2 = [(NPHCall *)self TUCalls];
-  v3 = [v2 count] > 1;
+  tUCalls = [(NPHCall *)self TUCalls];
+  v3 = [tUCalls count] > 1;
 
   return v3;
 }
@@ -333,8 +333,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NPHCall *)self TUCalls];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  tUCalls = [(NPHCall *)self TUCalls];
+  v3 = [tUCalls countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -344,7 +344,7 @@
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(tUCalls);
         }
 
         if (![*(*(&v7 + 1) + 8 * i) hasRelaySupport:2])
@@ -354,7 +354,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [tUCalls countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -373,18 +373,18 @@ LABEL_11:
 
 - (BOOL)isSupported
 {
-  v3 = [(NPHCall *)self onlyTUCall];
-  v4 = [v3 nph_isSuppressed];
+  onlyTUCall = [(NPHCall *)self onlyTUCall];
+  nph_isSuppressed = [onlyTUCall nph_isSuppressed];
 
-  if (v4)
+  if (nph_isSuppressed)
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v6 = [(NPHCall *)self TUCalls];
-    v5 = [v6 hasObjectPassingTest:&stru_100014800] ^ 1;
+    tUCalls = [(NPHCall *)self TUCalls];
+    v5 = [tUCalls hasObjectPassingTest:&stru_100014800] ^ 1;
   }
 
   return v5;
@@ -394,14 +394,14 @@ LABEL_11:
 {
   if ([(NPHCall *)self isConferenced])
   {
-    v3 = [NSBundle bundleForClass:objc_opt_class()];
-    [v3 localizedStringForKey:@"CONFERENCE_CALL" value:&stru_100014D40 table:0];
+    onlyTUCall = [NSBundle bundleForClass:objc_opt_class()];
+    [onlyTUCall localizedStringForKey:@"CONFERENCE_CALL" value:&stru_100014D40 table:0];
   }
 
   else
   {
-    v3 = [(NPHCall *)self onlyTUCall];
-    [v3 nph_displayName];
+    onlyTUCall = [(NPHCall *)self onlyTUCall];
+    [onlyTUCall nph_displayName];
   }
   v4 = ;
 
@@ -410,80 +410,80 @@ LABEL_11:
 
 - (TUConversation)conversation
 {
-  v2 = [(NPHCall *)self onlyTUCall];
-  v3 = [v2 nph_conversation];
+  onlyTUCall = [(NPHCall *)self onlyTUCall];
+  nph_conversation = [onlyTUCall nph_conversation];
 
-  return v3;
+  return nph_conversation;
 }
 
 - (NSString)callDurationString
 {
   if ([(NPHCall *)self isConnected])
   {
-    v3 = [(NPHCall *)self TUCalls];
-    v4 = [v3 max:&stru_100014840];
+    tUCalls = [(NPHCall *)self TUCalls];
+    v4 = [tUCalls max:&stru_100014840];
 
-    v5 = [v4 callDurationString];
+    callDurationString = [v4 callDurationString];
   }
 
   else
   {
-    v5 = 0;
+    callDurationString = 0;
   }
 
-  return v5;
+  return callDurationString;
 }
 
 - (int)status
 {
-  v2 = [(NPHCall *)self _firstTUCall];
-  v3 = [v2 status];
+  _firstTUCall = [(NPHCall *)self _firstTUCall];
+  status = [_firstTUCall status];
 
-  return v3;
+  return status;
 }
 
 - (int)disconnectedReason
 {
-  v2 = [(NPHCall *)self _firstTUCall];
-  v3 = [v2 disconnectedReason];
+  _firstTUCall = [(NPHCall *)self _firstTUCall];
+  disconnectedReason = [_firstTUCall disconnectedReason];
 
-  return v3;
+  return disconnectedReason;
 }
 
 - (BOOL)isEndpointOnCurrentDevice
 {
-  v2 = [(NPHCall *)self _firstTUCall];
-  v3 = [v2 isEndpointOnCurrentDevice];
+  _firstTUCall = [(NPHCall *)self _firstTUCall];
+  isEndpointOnCurrentDevice = [_firstTUCall isEndpointOnCurrentDevice];
 
-  return v3;
+  return isEndpointOnCurrentDevice;
 }
 
 - (int)service
 {
-  v2 = [(NPHCall *)self _firstTUCall];
-  v3 = [v2 service];
+  _firstTUCall = [(NPHCall *)self _firstTUCall];
+  service = [_firstTUCall service];
 
-  return v3;
+  return service;
 }
 
 - (NSString)statusString
 {
-  v3 = [(NPHCall *)self TUCalls];
-  if ([v3 count] == 1)
+  tUCalls = [(NPHCall *)self TUCalls];
+  if ([tUCalls count] == 1)
   {
-    v4 = [(NPHCall *)self _firstTUCall];
-    v5 = [v4 localizedLabel];
+    _firstTUCall = [(NPHCall *)self _firstTUCall];
+    localizedLabel = [_firstTUCall localizedLabel];
   }
 
   else
   {
-    v5 = 0;
+    localizedLabel = 0;
   }
 
-  v6 = [(NPHCall *)self status];
-  if (v6 <= 2)
+  status = [(NPHCall *)self status];
+  if (status <= 2)
   {
-    switch(v6)
+    switch(status)
     {
       case 0:
         v7 = [NSBundle bundleForClass:objc_opt_class()];
@@ -491,14 +491,14 @@ LABEL_11:
         v9 = @"CALL_STATUS_IDLE";
         goto LABEL_24;
       case 1:
-        v12 = [(NPHCall *)self callDurationString];
-        v8 = v12;
-        if (!v12)
+        callDurationString = [(NPHCall *)self callDurationString];
+        v8 = callDurationString;
+        if (!callDurationString)
         {
-          v17 = [(NPHCall *)self _firstTUCall];
-          if ([v17 isOutgoing])
+          _firstTUCall2 = [(NPHCall *)self _firstTUCall];
+          if ([_firstTUCall2 isOutgoing])
           {
-            v15 = [(NPHCall *)self _outgoingStatusStringWithLabel:v5];
+            v15 = [(NPHCall *)self _outgoingStatusStringWithLabel:localizedLabel];
           }
 
           else
@@ -510,7 +510,7 @@ LABEL_11:
           goto LABEL_26;
         }
 
-        v13 = v12;
+        v13 = callDurationString;
 LABEL_25:
         v15 = v13;
 LABEL_26:
@@ -528,13 +528,13 @@ LABEL_24:
     goto LABEL_16;
   }
 
-  if (v6 != 3)
+  if (status != 3)
   {
-    if (v6 == 5)
+    if (status == 5)
     {
-      v14 = [(NPHCall *)self wasDeclined];
+      wasDeclined = [(NPHCall *)self wasDeclined];
       v8 = [NSBundle bundleForClass:objc_opt_class()];
-      if ((v14 & 1) == 0)
+      if ((wasDeclined & 1) == 0)
       {
         v9 = @"CALL_STATUS_CALL_ENDING";
         goto LABEL_23;
@@ -543,25 +543,25 @@ LABEL_24:
 
     else
     {
-      if (v6 != 6)
+      if (status != 6)
       {
 LABEL_16:
-        if (v5)
+        if (localizedLabel)
         {
-          v11 = v5;
+          localizedProviderName = localizedLabel;
         }
 
         else
         {
-          v11 = [(NPHCall *)self localizedProviderName];
+          localizedProviderName = [(NPHCall *)self localizedProviderName];
         }
 
         goto LABEL_28;
       }
 
-      v10 = [(NPHCall *)self wasDeclined];
+      wasDeclined2 = [(NPHCall *)self wasDeclined];
       v8 = [NSBundle bundleForClass:objc_opt_class()];
-      if ((v10 & 1) == 0)
+      if ((wasDeclined2 & 1) == 0)
       {
         v9 = @"CALL_STATUS_CALL_ENDED";
 LABEL_23:
@@ -574,9 +574,9 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v11 = [(NPHCall *)self _outgoingStatusStringWithLabel:v5];
+  localizedProviderName = [(NPHCall *)self _outgoingStatusStringWithLabel:localizedLabel];
 LABEL_28:
-  v15 = v11;
+  v15 = localizedProviderName;
 LABEL_29:
 
   return v15;
@@ -588,34 +588,34 @@ LABEL_29:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(NPHCall *)self TUCalls];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  tUCalls = [(NPHCall *)self TUCalls];
+  v3 = [tUCalls countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
     v5 = *v10;
-    v6 = 1;
+    wantsHoldMusic = 1;
     do
     {
       for (i = 0; i != v4; i = i + 1)
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(tUCalls);
         }
 
-        if (v6)
+        if (wantsHoldMusic)
         {
-          v6 = [*(*(&v9 + 1) + 8 * i) wantsHoldMusic];
+          wantsHoldMusic = [*(*(&v9 + 1) + 8 * i) wantsHoldMusic];
         }
 
         else
         {
-          v6 = 0;
+          wantsHoldMusic = 0;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [tUCalls countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -623,54 +623,54 @@ LABEL_29:
 
   else
   {
-    v6 = 1;
+    wantsHoldMusic = 1;
   }
 
-  return v6;
+  return wantsHoldMusic;
 }
 
 - (TUDialRequest)redialPrompt
 {
-  v3 = [(NPHCall *)self TUCalls];
-  v4 = [v3 count];
+  tUCalls = [(NPHCall *)self TUCalls];
+  v4 = [tUCalls count];
 
   if (v4 == 1)
   {
-    v5 = [(NPHCall *)self onlyTUCall];
-    v6 = [v5 dialRequestForRedial];
-    v7 = +[NPHCall _errorAlertMessageForDisconnectedReason:](NPHCall, "_errorAlertMessageForDisconnectedReason:", [v5 disconnectedReason]);
-    [v6 setNph_errorAlertMessage:v7];
+    onlyTUCall = [(NPHCall *)self onlyTUCall];
+    dialRequestForRedial = [onlyTUCall dialRequestForRedial];
+    v7 = +[NPHCall _errorAlertMessageForDisconnectedReason:](NPHCall, "_errorAlertMessageForDisconnectedReason:", [onlyTUCall disconnectedReason]);
+    [dialRequestForRedial setNph_errorAlertMessage:v7];
   }
 
   else
   {
-    v6 = 0;
+    dialRequestForRedial = 0;
   }
 
-  return v6;
+  return dialRequestForRedial;
 }
 
 - (TUJoinConversationRequest)rejoinPrompt
 {
-  v3 = [(NPHCall *)self TUCalls];
-  v4 = [v3 count];
+  tUCalls = [(NPHCall *)self TUCalls];
+  v4 = [tUCalls count];
 
   if (v4 == 1)
   {
-    v5 = [(NPHCall *)self conversation];
-    if (v5)
+    conversation = [(NPHCall *)self conversation];
+    if (conversation)
     {
-      v6 = v5;
+      nph_lastAssociatedConversation = conversation;
 LABEL_5:
-      v8 = [[TUJoinConversationRequest alloc] initWithConversation:v6];
+      v8 = [[TUJoinConversationRequest alloc] initWithConversation:nph_lastAssociatedConversation];
 
       goto LABEL_7;
     }
 
-    v7 = [(NPHCall *)self onlyTUCall];
-    v6 = [v7 nph_lastAssociatedConversation];
+    onlyTUCall = [(NPHCall *)self onlyTUCall];
+    nph_lastAssociatedConversation = [onlyTUCall nph_lastAssociatedConversation];
 
-    if (v6)
+    if (nph_lastAssociatedConversation)
     {
       goto LABEL_5;
     }
@@ -684,15 +684,15 @@ LABEL_7:
 
 - (BOOL)wasDeclined
 {
-  v2 = [(NPHCall *)self _firstTUCall];
-  if ([v2 status] == 5 && objc_msgSend(v2, "isIncoming"))
+  _firstTUCall = [(NPHCall *)self _firstTUCall];
+  if ([_firstTUCall status] == 5 && objc_msgSend(_firstTUCall, "isIncoming"))
   {
-    v3 = [v2 isConnecting] ^ 1;
+    v3 = [_firstTUCall isConnecting] ^ 1;
   }
 
   else
   {
-    LOBYTE(v3) = [v2 wasDeclined];
+    LOBYTE(v3) = [_firstTUCall wasDeclined];
   }
 
   return v3;
@@ -704,12 +704,12 @@ LABEL_7:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(NPHCall *)self TUCalls];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  tUCalls = [(NPHCall *)self TUCalls];
+  v3 = [tUCalls countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
-    v5 = 0;
+    nph_hasFailed = 0;
     v6 = *v10;
     do
     {
@@ -717,21 +717,21 @@ LABEL_7:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(tUCalls);
         }
 
-        if (v5)
+        if (nph_hasFailed)
         {
-          v5 = 1;
+          nph_hasFailed = 1;
         }
 
         else
         {
-          v5 = [*(*(&v9 + 1) + 8 * i) nph_hasFailed];
+          nph_hasFailed = [*(*(&v9 + 1) + 8 * i) nph_hasFailed];
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [tUCalls countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -739,21 +739,21 @@ LABEL_7:
 
   else
   {
-    v5 = 0;
+    nph_hasFailed = 0;
   }
 
-  return v5;
+  return nph_hasFailed;
 }
 
-- (void)resumeCallFromSource:(id)a3
+- (void)resumeCallFromSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NPHCall *)self TUCalls];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v21 count:16];
+  tUCalls = [(NPHCall *)self TUCalls];
+  v6 = [tUCalls countByEnumeratingWithState:&v13 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -764,7 +764,7 @@ LABEL_7:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(tUCalls);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -772,7 +772,7 @@ LABEL_7:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v18 = v4;
+          v18 = sourceCopy;
           v19 = 2112;
           v20 = v10;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%@: [TUCallCenter.sharedInstance unholdCall:] to %@", buf, 0x16u);
@@ -782,17 +782,17 @@ LABEL_7:
         [v12 unholdCall:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v21 count:16];
+      v7 = [tUCalls countByEnumeratingWithState:&v13 objects:v21 count:16];
     }
 
     while (v7);
   }
 }
 
-+ (int)callSupportForProvider:(id)a3 isVideo:(BOOL)a4
++ (int)callSupportForProvider:(id)provider isVideo:(BOOL)video
 {
-  v4 = a3;
-  if ([v4 isTelephonyProvider])
+  providerCopy = provider;
+  if ([providerCopy isTelephonyProvider])
   {
     v5 = +[TUCallCapabilities telephonyCallSupport];
 LABEL_5:
@@ -800,13 +800,13 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  if ([v4 isFaceTimeProvider])
+  if ([providerCopy isFaceTimeProvider])
   {
     v5 = +[TUCallCapabilities faceTimeAudioCallSupport];
     goto LABEL_5;
   }
 
-  if ([v4 isSystemProvider])
+  if ([providerCopy isSystemProvider])
   {
     v6 = 0;
   }
@@ -823,23 +823,23 @@ LABEL_9:
 
 - (NSString)localizedProviderName
 {
-  v2 = [(NPHCall *)self _firstTUCall];
-  v3 = [v2 provider];
-  if ([v3 isTelephonyProvider])
+  _firstTUCall = [(NPHCall *)self _firstTUCall];
+  provider = [_firstTUCall provider];
+  if ([provider isTelephonyProvider])
   {
     v4 = 0;
   }
 
   else
   {
-    if ([v3 isFaceTimeProvider])
+    if ([provider isFaceTimeProvider])
     {
-      [v2 serviceDisplayString];
+      [_firstTUCall serviceDisplayString];
     }
 
     else
     {
-      [v3 localizedName];
+      [provider localizedName];
     }
     v4 = ;
   }
@@ -847,38 +847,38 @@ LABEL_9:
   return v4;
 }
 
-+ (id)descriptionForCallStatus:(int)a3
++ (id)descriptionForCallStatus:(int)status
 {
-  if (a3 > 6)
+  if (status > 6)
   {
     return @"TUCallStatusSending";
   }
 
   else
   {
-    return *(&off_100014860 + a3);
+    return *(&off_100014860 + status);
   }
 }
 
-+ (id)descriptionForCallSupport:(int)a3
++ (id)descriptionForCallSupport:(int)support
 {
-  if ((a3 - 1) > 2)
+  if ((support - 1) > 2)
   {
     return @"TUCallSupportNone";
   }
 
   else
   {
-    return *(&off_100014898 + (a3 - 1));
+    return *(&off_100014898 + (support - 1));
   }
 }
 
-- (void)logWithReason:(id)a3 indented:(BOOL)a4
+- (void)logWithReason:(id)reason indented:(BOOL)indented
 {
-  v4 = a4;
-  v6 = a3;
+  indentedCopy = indented;
+  reasonCopy = reason;
   v7 = &stru_100014D40;
-  if (v4)
+  if (indentedCopy)
   {
     v7 = @"\t";
   }
@@ -891,23 +891,23 @@ LABEL_9:
     *buf = 138413058;
     v27 = v8;
     v28 = 2112;
-    v29 = v6;
+    v29 = reasonCopy;
     v30 = 2048;
-    v31 = self;
+    selfCopy = self;
     v32 = 2112;
     v33 = v9;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@%@ NPHCall %p status: %@", buf, 0x2Au);
   }
 
   v19 = v9;
-  v20 = v6;
+  v20 = reasonCopy;
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = [(NPHCall *)self TUCalls];
-  v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  tUCalls = [(NPHCall *)self TUCalls];
+  v12 = [tUCalls countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
     v13 = v12;
@@ -918,23 +918,23 @@ LABEL_9:
       {
         if (*v22 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(tUCalls);
         }
 
         v16 = *(*(&v21 + 1) + 8 * i);
         v17 = sub_100001C24();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [v16 nph_description];
+          nph_description = [v16 nph_description];
           *buf = 138412546;
           v27 = v8;
           v28 = 2112;
-          v29 = v18;
+          v29 = nph_description;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%@\t%@", buf, 0x16u);
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v13 = [tUCalls countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v13);
@@ -949,8 +949,8 @@ LABEL_9:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NPHCall *)self TUCalls];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  tUCalls = [(NPHCall *)self TUCalls];
+  v6 = [tUCalls countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -961,14 +961,14 @@ LABEL_9:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(tUCalls);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) nph_description];
-        [v4 appendFormat:@"\t%@\n", v10];
+        nph_description = [*(*(&v12 + 1) + 8 * i) nph_description];
+        [v4 appendFormat:@"\t%@\n", nph_description];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [tUCalls countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -977,13 +977,13 @@ LABEL_9:
   return v4;
 }
 
-- (id)_outgoingStatusStringWithLabel:(id)a3
+- (id)_outgoingStatusStringWithLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(NPHCall *)self service];
-  if (v5 < 2)
+  labelCopy = label;
+  service = [(NPHCall *)self service];
+  if (service < 2)
   {
-    if (!v4)
+    if (!labelCopy)
     {
       v6 = [NSBundle bundleForClass:objc_opt_class()];
       self = [v6 localizedStringForKey:@"CALL_STATUS_CALLING" value:&stru_100014D40 table:0];
@@ -992,19 +992,19 @@ LABEL_9:
 
     v6 = [NSBundle bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"CALL_STATUS_CALLING_WITH_LABEL" value:&stru_100014D40 table:0];
-    self = [NSString stringWithFormat:v7, v4];
+    self = [NSString stringWithFormat:v7, labelCopy];
 LABEL_6:
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  if (v5 - 2 <= 1)
+  if (service - 2 <= 1)
   {
     v6 = [NSBundle bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"CALL_STATUS_NONTELEPHONY_CALLING" value:&stru_100014D40 table:0];
-    v8 = [(NPHCall *)self localizedProviderName];
-    self = [NSString stringWithFormat:v7, v8];
+    localizedProviderName = [(NPHCall *)self localizedProviderName];
+    self = [NSString stringWithFormat:v7, localizedProviderName];
 
     goto LABEL_6;
   }
@@ -1016,15 +1016,15 @@ LABEL_8:
 
 - (id)_firstTUCall
 {
-  v2 = [(NPHCall *)self TUCalls];
-  v3 = [v2 firstObject];
+  tUCalls = [(NPHCall *)self TUCalls];
+  firstObject = [tUCalls firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-+ (id)_errorAlertMessageForDisconnectedReason:(int)a3
++ (id)_errorAlertMessageForDisconnectedReason:(int)reason
 {
-  if (a3 == 16)
+  if (reason == 16)
   {
     v3 = [NSBundle bundleForClass:objc_opt_class()];
     v4 = [v3 localizedStringForKey:@"CALL_FAILED_CLIENT_DEVICE_BUSY" value:&stru_100014D40 table:0];
@@ -1040,20 +1040,20 @@ LABEL_8:
 
 - (BOOL)isSmartHoldingActive
 {
-  v3 = [(NPHCall *)self onlyTUCall];
-  if ([v3 status] == 1)
+  onlyTUCall = [(NPHCall *)self onlyTUCall];
+  if ([onlyTUCall status] == 1)
   {
-    v4 = [(NPHCall *)self onlyTUCall];
-    v5 = [v4 smartHoldingSession];
-    if (v5)
+    onlyTUCall2 = [(NPHCall *)self onlyTUCall];
+    smartHoldingSession = [onlyTUCall2 smartHoldingSession];
+    if (smartHoldingSession)
     {
-      v6 = [(NPHCall *)self onlyTUCall];
-      v7 = [v6 smartHoldingSession];
-      if ([v7 state])
+      onlyTUCall3 = [(NPHCall *)self onlyTUCall];
+      smartHoldingSession2 = [onlyTUCall3 smartHoldingSession];
+      if ([smartHoldingSession2 state])
       {
-        v8 = [(NPHCall *)self onlyTUCall];
-        v9 = [v8 smartHoldingSession];
-        v10 = [v9 state] == 3;
+        onlyTUCall4 = [(NPHCall *)self onlyTUCall];
+        smartHoldingSession3 = [onlyTUCall4 smartHoldingSession];
+        v10 = [smartHoldingSession3 state] == 3;
       }
 
       else
@@ -1078,19 +1078,19 @@ LABEL_8:
 
 - (BOOL)isScreeningActive
 {
-  v3 = [(NPHCall *)self onlyTUCall];
-  if ([v3 status] == 1)
+  onlyTUCall = [(NPHCall *)self onlyTUCall];
+  if ([onlyTUCall status] == 1)
   {
-    v4 = [(NPHCall *)self onlyTUCall];
-    v5 = [v4 isScreening];
+    onlyTUCall2 = [(NPHCall *)self onlyTUCall];
+    isScreening = [onlyTUCall2 isScreening];
   }
 
   else
   {
-    v5 = 0;
+    isScreening = 0;
   }
 
-  return v5;
+  return isScreening;
 }
 
 - (BOOL)isReceptionistDisclosedRemoteCall
@@ -1105,20 +1105,20 @@ LABEL_8:
     v3 = +[NPHFeatureFlags isLiveRepliesEnabled];
   }
 
-  v4 = [(NPHCall *)self onlyTUCall];
-  v5 = [v4 isReceptionistCapable];
+  onlyTUCall = [(NPHCall *)self onlyTUCall];
+  isReceptionistCapable = [onlyTUCall isReceptionistCapable];
 
-  return v3 & v5;
+  return v3 & isReceptionistCapable;
 }
 
 - (BOOL)isScreeningSupported
 {
   if (+[NPHFeatureFlags isLiveVoicemailEnabled](NPHFeatureFlags, "isLiveVoicemailEnabled") || (v3 = +[NPHFeatureFlags isLiveRepliesEnabled]))
   {
-    v4 = [(NPHCall *)self onlyTUCall];
-    v5 = [v4 isEligibleForManualScreening];
+    onlyTUCall = [(NPHCall *)self onlyTUCall];
+    isEligibleForManualScreening = [onlyTUCall isEligibleForManualScreening];
 
-    LOBYTE(v3) = v5 & ![(NPHCall *)self isHostedOnCurrentDevice];
+    LOBYTE(v3) = isEligibleForManualScreening & ![(NPHCall *)self isHostedOnCurrentDevice];
   }
 
   return v3;
@@ -1126,53 +1126,53 @@ LABEL_8:
 
 - (BOOL)isLiveReplyCapable
 {
-  v3 = [(NPHCall *)self isReceptionistDisclosedRemoteCall];
-  if (v3)
+  isReceptionistDisclosedRemoteCall = [(NPHCall *)self isReceptionistDisclosedRemoteCall];
+  if (isReceptionistDisclosedRemoteCall)
   {
-    v4 = [(NPHCall *)self onlyTUCall];
-    v5 = [v4 isHostedOnCurrentDevice];
+    onlyTUCall = [(NPHCall *)self onlyTUCall];
+    isHostedOnCurrentDevice = [onlyTUCall isHostedOnCurrentDevice];
 
-    v6 = [(NPHCall *)self status];
-    v7 = [(NPHCall *)self onlyTUCall];
-    v8 = [v7 contactIdentifiers];
+    status = [(NPHCall *)self status];
+    onlyTUCall2 = [(NPHCall *)self onlyTUCall];
+    contactIdentifiers = [onlyTUCall2 contactIdentifiers];
 
-    if (v8)
+    if (contactIdentifiers)
     {
-      LOBYTE(v3) = (v6 == 4) & ~v5;
+      LOBYTE(isReceptionistDisclosedRemoteCall) = (status == 4) & ~isHostedOnCurrentDevice;
     }
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(isReceptionistDisclosedRemoteCall) = 0;
     }
   }
 
-  return v3;
+  return isReceptionistDisclosedRemoteCall;
 }
 
 - (BOOL)canSendLiveReply
 {
-  v3 = [(NPHCall *)self isReceptionistDisclosedRemoteCall];
-  if (v3)
+  isReceptionistDisclosedRemoteCall = [(NPHCall *)self isReceptionistDisclosedRemoteCall];
+  if (isReceptionistDisclosedRemoteCall)
   {
-    v4 = [(NPHCall *)self onlyTUCall];
-    v5 = [v4 isKnownCaller];
+    onlyTUCall = [(NPHCall *)self onlyTUCall];
+    isKnownCaller = [onlyTUCall isKnownCaller];
 
-    v6 = [(NPHCall *)self onlyTUCall];
-    v7 = [v6 receptionistState];
+    onlyTUCall2 = [(NPHCall *)self onlyTUCall];
+    receptionistState = [onlyTUCall2 receptionistState];
 
-    if (v5)
+    if (isKnownCaller)
     {
-      LOBYTE(v3) = v7 == 1;
+      LOBYTE(isReceptionistDisclosedRemoteCall) = receptionistState == 1;
     }
 
     else
     {
-      LOBYTE(v3) = v7 == 3;
+      LOBYTE(isReceptionistDisclosedRemoteCall) = receptionistState == 3;
     }
   }
 
-  return v3;
+  return isReceptionistDisclosedRemoteCall;
 }
 
 @end

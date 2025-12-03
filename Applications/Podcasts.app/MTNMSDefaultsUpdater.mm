@@ -60,13 +60,13 @@
 - (void)_onWorkQueueUpdatePodcastSizeEstimation
 {
   dispatch_assert_queue_V2(self->_workQueue);
-  v3 = [(MTNMSDefaultsUpdater *)self downloadedQueryObserver];
+  downloadedQueryObserver = [(MTNMSDefaultsUpdater *)self downloadedQueryObserver];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100101B78;
   v4[3] = &unk_1004DAFB0;
   v4[4] = self;
-  [v3 results:v4];
+  [downloadedQueryObserver results:v4];
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface ReviewPregnancyInMedicalIDTileDismissalInputSignal
-- (void)didUpdateKeyValueDomain:(id)a3;
+- (void)didUpdateKeyValueDomain:(id)domain;
 @end
 
 @implementation ReviewPregnancyInMedicalIDTileDismissalInputSignal
 
-- (void)didUpdateKeyValueDomain:(id)a3
+- (void)didUpdateKeyValueDomain:(id)domain
 {
-  v3 = a3;
+  domainCopy = domain;
 
   sub_29DF4065C();
 }

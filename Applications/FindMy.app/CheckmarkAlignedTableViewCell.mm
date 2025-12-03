@@ -1,8 +1,8 @@
 @interface CheckmarkAlignedTableViewCell
-- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F29CheckmarkAlignedTableViewCell)initWithCoder:(id)a3;
-- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F29CheckmarkAlignedTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F29CheckmarkAlignedTableViewCell)initWithCoder:(id)coder;
+- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F29CheckmarkAlignedTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (int64_t)accessoryType;
-- (void)setAccessoryType:(int64_t)a3;
+- (void)setAccessoryType:(int64_t)type;
 @end
 
 @implementation CheckmarkAlignedTableViewCell
@@ -14,13 +14,13 @@
   return [(CheckmarkAlignedTableViewCell *)&v3 accessoryType];
 }
 
-- (void)setAccessoryType:(int64_t)a3
+- (void)setAccessoryType:(int64_t)type
 {
-  v4 = self;
-  v5 = v4;
-  if (a3 == 3)
+  selfCopy = self;
+  v5 = selfCopy;
+  if (type == 3)
   {
-    [(CheckmarkAlignedTableViewCell *)v4 setAccessoryView:0];
+    [(CheckmarkAlignedTableViewCell *)selfCopy setAccessoryView:0];
   }
 
   else
@@ -32,12 +32,12 @@
 
   v9.receiver = v5;
   v9.super_class = type metadata accessor for CheckmarkAlignedTableViewCell();
-  [(CheckmarkAlignedTableViewCell *)&v9 setAccessoryType:a3];
+  [(CheckmarkAlignedTableViewCell *)&v9 setAccessoryType:type];
 }
 
-- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F29CheckmarkAlignedTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F29CheckmarkAlignedTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = self + OBJC_IVAR____TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F29CheckmarkAlignedTableViewCell____lazy_storage___checkmarkSpacingSize;
@@ -58,12 +58,12 @@
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for CheckmarkAlignedTableViewCell();
-  v9 = [(CheckmarkAlignedTableViewCell *)&v11 initWithStyle:a3 reuseIdentifier:v7];
+  v9 = [(CheckmarkAlignedTableViewCell *)&v11 initWithStyle:style reuseIdentifier:v7];
 
   return v9;
 }
 
-- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F29CheckmarkAlignedTableViewCell)initWithCoder:(id)a3
+- (_TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F29CheckmarkAlignedTableViewCell)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC6FindMyP33_E1D0B8A6ADDE9504767060C8F9C7ED2F29CheckmarkAlignedTableViewCell____lazy_storage___checkmarkSpacingSize;
   *v4 = 0;
@@ -71,8 +71,8 @@
   v4[16] = 1;
   v8.receiver = self;
   v8.super_class = type metadata accessor for CheckmarkAlignedTableViewCell();
-  v5 = a3;
-  v6 = [(CheckmarkAlignedTableViewCell *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(CheckmarkAlignedTableViewCell *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

@@ -1,6 +1,6 @@
 @interface CheckoutContainerView
-- (_TtC11AssetViewer21CheckoutContainerView)initWithFrame:(CGRect)a3;
-- (void)contentSizeCategoryDidChangeWithNotification:(id)a3;
+- (_TtC11AssetViewer21CheckoutContainerView)initWithFrame:(CGRect)frame;
+- (void)contentSizeCategoryDidChangeWithNotification:(id)notification;
 - (void)layoutSubviews;
 @end
 
@@ -15,7 +15,7 @@
   sub_24134123C();
 }
 
-- (void)contentSizeCategoryDidChangeWithNotification:(id)a3
+- (void)contentSizeCategoryDidChangeWithNotification:(id)notification
 {
   v4 = sub_24135125C();
   v5 = *(v4 - 8);
@@ -24,18 +24,18 @@
   sub_24135123C();
   v8 = *(&self->super.super.super.isa + OBJC_IVAR____TtC11AssetViewer21CheckoutContainerView_traitManager);
   v9 = objc_opt_self();
-  v10 = self;
-  v11 = [v9 currentTraitCollection];
-  v12 = [v11 preferredContentSizeCategory];
+  selfCopy = self;
+  currentTraitCollection = [v9 currentTraitCollection];
+  preferredContentSizeCategory = [currentTraitCollection preferredContentSizeCategory];
 
   v13 = *(v8 + 24);
-  *(v8 + 24) = v12;
+  *(v8 + 24) = preferredContentSizeCategory;
 
   sub_24134123C();
   (*(v5 + 8))(v7, v4);
 }
 
-- (_TtC11AssetViewer21CheckoutContainerView)initWithFrame:(CGRect)a3
+- (_TtC11AssetViewer21CheckoutContainerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

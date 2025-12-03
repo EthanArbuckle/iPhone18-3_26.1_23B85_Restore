@@ -1,23 +1,23 @@
 @interface SBSceneSnapshotRequest
-- (BOOL)isEqual:(id)a3;
-- (SBSceneSnapshotRequest)initWithSize:(unint64_t)a3 orientation:(unint64_t)a4 userInterfaceStyle:(unint64_t)a5;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SBSceneSnapshotRequest)initWithSize:(unint64_t)size orientation:(unint64_t)orientation userInterfaceStyle:(unint64_t)style;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation SBSceneSnapshotRequest
 
-- (SBSceneSnapshotRequest)initWithSize:(unint64_t)a3 orientation:(unint64_t)a4 userInterfaceStyle:(unint64_t)a5
+- (SBSceneSnapshotRequest)initWithSize:(unint64_t)size orientation:(unint64_t)orientation userInterfaceStyle:(unint64_t)style
 {
   v9.receiver = self;
   v9.super_class = SBSceneSnapshotRequest;
   result = [(SBSceneSnapshotRequest *)&v9 init];
   if (result)
   {
-    result->_size = a3;
-    result->_orientation = a4;
-    result->_userInterfaceStyle = a5;
+    result->_size = size;
+    result->_orientation = orientation;
+    result->_userInterfaceStyle = style;
   }
 
   return result;
@@ -25,10 +25,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBSceneSnapshotRequest *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSceneSnapshotRequest *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -60,18 +60,18 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSceneSnapshotRequest *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSceneSnapshotRequest *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -81,7 +81,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       size = self->_size;
       if (size == [(SBSceneSnapshotRequest *)v5 size]&& (orientation = self->_orientation, orientation == [(SBSceneSnapshotRequest *)v5 orientation]))
       {

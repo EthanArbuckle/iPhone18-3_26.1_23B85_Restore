@@ -1,40 +1,40 @@
 @interface MIPPlaybackInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBeatsPerMinute:(BOOL)a3;
-- (void)setHasBitRate:(BOOL)a3;
-- (void)setHasCodecSubType:(BOOL)a3;
-- (void)setHasCodecType:(BOOL)a3;
-- (void)setHasDataKind:(BOOL)a3;
-- (void)setHasGaplessEncodingDrainCode:(BOOL)a3;
-- (void)setHasGaplessFrameResyncCode:(BOOL)a3;
-- (void)setHasGaplessHeuristicCode:(BOOL)a3;
-- (void)setHasGaplessHeuristicDelayCode:(BOOL)a3;
-- (void)setHasProgressionDirection:(BOOL)a3;
-- (void)setHasRelativeVolume:(BOOL)a3;
-- (void)setHasSampleRate:(BOOL)a3;
-- (void)setHasStartTime:(BOOL)a3;
-- (void)setHasStopTime:(BOOL)a3;
-- (void)setHasVolumeNormalizationEnergy:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBeatsPerMinute:(BOOL)minute;
+- (void)setHasBitRate:(BOOL)rate;
+- (void)setHasCodecSubType:(BOOL)type;
+- (void)setHasCodecType:(BOOL)type;
+- (void)setHasDataKind:(BOOL)kind;
+- (void)setHasGaplessEncodingDrainCode:(BOOL)code;
+- (void)setHasGaplessFrameResyncCode:(BOOL)code;
+- (void)setHasGaplessHeuristicCode:(BOOL)code;
+- (void)setHasGaplessHeuristicDelayCode:(BOOL)code;
+- (void)setHasProgressionDirection:(BOOL)direction;
+- (void)setHasRelativeVolume:(BOOL)volume;
+- (void)setHasSampleRate:(BOOL)rate;
+- (void)setHasStartTime:(BOOL)time;
+- (void)setHasStopTime:(BOOL)time;
+- (void)setHasVolumeNormalizationEnergy:(BOOL)energy;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MIPPlaybackInfo
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 66);
+  fromCopy = from;
+  v5 = *(fromCopy + 66);
   if ((v5 & 0x200) != 0)
   {
-    self->_bitRate = *(v4 + 19);
+    self->_bitRate = *(fromCopy + 19);
     *&self->_has |= 0x200u;
-    v5 = *(v4 + 66);
+    v5 = *(fromCopy + 66);
     if ((v5 & 0x800) == 0)
     {
 LABEL_3:
@@ -47,14 +47,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 66) & 0x800) == 0)
+  else if ((*(fromCopy + 66) & 0x800) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_codecType = *(v4 + 21);
+  self->_codecType = *(fromCopy + 21);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 66);
+  v5 = *(fromCopy + 66);
   if ((v5 & 0x400) == 0)
   {
 LABEL_4:
@@ -67,41 +67,41 @@ LABEL_4:
   }
 
 LABEL_30:
-  self->_codecSubType = *(v4 + 20);
+  self->_codecSubType = *(fromCopy + 20);
   *&self->_has |= 0x400u;
-  if ((*(v4 + 66) & 0x1000) != 0)
+  if ((*(fromCopy + 66) & 0x1000) != 0)
   {
 LABEL_5:
-    self->_dataKind = *(v4 + 22);
+    self->_dataKind = *(fromCopy + 22);
     *&self->_has |= 0x1000u;
   }
 
 LABEL_6:
-  v7 = v4;
-  if (*(v4 + 12))
+  v7 = fromCopy;
+  if (*(fromCopy + 12))
   {
     [(MIPPlaybackInfo *)self setDataUrl:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(MIPPlaybackInfo *)self setEqPreset:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(MIPPlaybackInfo *)self setPlaybackFormat:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 66);
+  v6 = *(fromCopy + 66);
   if ((v6 & 8) != 0)
   {
-    self->_gaplessHeuristicCode = *(v4 + 4);
+    self->_gaplessHeuristicCode = *(fromCopy + 4);
     *&self->_has |= 8u;
-    v6 = *(v4 + 66);
+    v6 = *(fromCopy + 66);
     if ((v6 & 0x10) == 0)
     {
 LABEL_14:
@@ -119,9 +119,9 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  self->_gaplessHeuristicDelayCode = *(v4 + 5);
+  self->_gaplessHeuristicDelayCode = *(fromCopy + 5);
   *&self->_has |= 0x10u;
-  v6 = *(v4 + 66);
+  v6 = *(fromCopy + 66);
   if ((v6 & 2) == 0)
   {
 LABEL_15:
@@ -134,9 +134,9 @@ LABEL_15:
   }
 
 LABEL_34:
-  self->_gaplessEncodingDrainCode = *(v4 + 2);
+  self->_gaplessEncodingDrainCode = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v6 = *(v4 + 66);
+  v6 = *(fromCopy + 66);
   if ((v6 & 4) == 0)
   {
 LABEL_16:
@@ -149,9 +149,9 @@ LABEL_16:
   }
 
 LABEL_35:
-  self->_gaplessFrameResyncCode = *(v4 + 3);
+  self->_gaplessFrameResyncCode = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v6 = *(v4 + 66);
+  v6 = *(fromCopy + 66);
   if ((v6 & 0x4000) == 0)
   {
 LABEL_17:
@@ -164,9 +164,9 @@ LABEL_17:
   }
 
 LABEL_36:
-  self->_relativeVolume = *(v4 + 31);
+  self->_relativeVolume = *(fromCopy + 31);
   *&self->_has |= 0x4000u;
-  v6 = *(v4 + 66);
+  v6 = *(fromCopy + 66);
   if ((v6 & 0x8000) == 0)
   {
 LABEL_18:
@@ -179,9 +179,9 @@ LABEL_18:
   }
 
 LABEL_37:
-  self->_sampleRate = *(v4 + 32);
+  self->_sampleRate = *(fromCopy + 32);
   *&self->_has |= 0x8000u;
-  v6 = *(v4 + 66);
+  v6 = *(fromCopy + 66);
   if ((v6 & 0x20) == 0)
   {
 LABEL_19:
@@ -194,9 +194,9 @@ LABEL_19:
   }
 
 LABEL_38:
-  self->_startTime = *(v4 + 6);
+  self->_startTime = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v6 = *(v4 + 66);
+  v6 = *(fromCopy + 66);
   if ((v6 & 0x40) == 0)
   {
 LABEL_20:
@@ -209,9 +209,9 @@ LABEL_20:
   }
 
 LABEL_39:
-  self->_stopTime = *(v4 + 7);
+  self->_stopTime = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  v6 = *(v4 + 66);
+  v6 = *(fromCopy + 66);
   if ((v6 & 0x80) == 0)
   {
 LABEL_21:
@@ -224,9 +224,9 @@ LABEL_21:
   }
 
 LABEL_40:
-  self->_volumeNormalizationEnergy = *(v4 + 8);
+  self->_volumeNormalizationEnergy = *(fromCopy + 8);
   *&self->_has |= 0x80u;
-  v6 = *(v4 + 66);
+  v6 = *(fromCopy + 66);
   if ((v6 & 0x100) == 0)
   {
 LABEL_22:
@@ -239,9 +239,9 @@ LABEL_22:
   }
 
 LABEL_41:
-  self->_beatsPerMinute = *(v4 + 18);
+  self->_beatsPerMinute = *(fromCopy + 18);
   *&self->_has |= 0x100u;
-  v6 = *(v4 + 66);
+  v6 = *(fromCopy + 66);
   if ((v6 & 0x2000) == 0)
   {
 LABEL_23:
@@ -254,12 +254,12 @@ LABEL_23:
   }
 
 LABEL_42:
-  self->_progressionDirection = *(v4 + 30);
+  self->_progressionDirection = *(fromCopy + 30);
   *&self->_has |= 0x2000u;
-  if (*(v4 + 66))
+  if (*(fromCopy + 66))
   {
 LABEL_24:
-    self->_durationInSamples = *(v4 + 1);
+    self->_durationInSamples = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -486,74 +486,74 @@ LABEL_22:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_88;
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 66) & 0x200) == 0 || self->_bitRate != *(v4 + 19))
+    if ((*(equalCopy + 66) & 0x200) == 0 || self->_bitRate != *(equalCopy + 19))
     {
       goto LABEL_88;
     }
   }
 
-  else if ((*(v4 + 66) & 0x200) != 0)
+  else if ((*(equalCopy + 66) & 0x200) != 0)
   {
     goto LABEL_88;
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 66) & 0x800) == 0 || self->_codecType != *(v4 + 21))
+    if ((*(equalCopy + 66) & 0x800) == 0 || self->_codecType != *(equalCopy + 21))
     {
       goto LABEL_88;
     }
   }
 
-  else if ((*(v4 + 66) & 0x800) != 0)
+  else if ((*(equalCopy + 66) & 0x800) != 0)
   {
     goto LABEL_88;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 66) & 0x400) == 0 || self->_codecSubType != *(v4 + 20))
+    if ((*(equalCopy + 66) & 0x400) == 0 || self->_codecSubType != *(equalCopy + 20))
     {
       goto LABEL_88;
     }
   }
 
-  else if ((*(v4 + 66) & 0x400) != 0)
+  else if ((*(equalCopy + 66) & 0x400) != 0)
   {
     goto LABEL_88;
   }
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(v4 + 66) & 0x1000) == 0 || self->_dataKind != *(v4 + 22))
+    if ((*(equalCopy + 66) & 0x1000) == 0 || self->_dataKind != *(equalCopy + 22))
     {
       goto LABEL_88;
     }
   }
 
-  else if ((*(v4 + 66) & 0x1000) != 0)
+  else if ((*(equalCopy + 66) & 0x1000) != 0)
   {
     goto LABEL_88;
   }
 
   dataUrl = self->_dataUrl;
-  if (dataUrl | *(v4 + 12) && ![(NSString *)dataUrl isEqual:?])
+  if (dataUrl | *(equalCopy + 12) && ![(NSString *)dataUrl isEqual:?])
   {
     goto LABEL_88;
   }
 
   eqPreset = self->_eqPreset;
-  if (eqPreset | *(v4 + 13))
+  if (eqPreset | *(equalCopy + 13))
   {
     if (![(NSString *)eqPreset isEqual:?])
     {
@@ -562,7 +562,7 @@ LABEL_22:
   }
 
   playbackFormat = self->_playbackFormat;
-  if (playbackFormat | *(v4 + 14))
+  if (playbackFormat | *(equalCopy + 14))
   {
     if (![(NSString *)playbackFormat isEqual:?])
     {
@@ -571,10 +571,10 @@ LABEL_22:
   }
 
   has = self->_has;
-  v9 = *(v4 + 66);
+  v9 = *(equalCopy + 66);
   if ((has & 8) != 0)
   {
-    if ((v9 & 8) == 0 || self->_gaplessHeuristicCode != *(v4 + 4))
+    if ((v9 & 8) == 0 || self->_gaplessHeuristicCode != *(equalCopy + 4))
     {
       goto LABEL_88;
     }
@@ -587,7 +587,7 @@ LABEL_22:
 
   if ((has & 0x10) != 0)
   {
-    if ((v9 & 0x10) == 0 || self->_gaplessHeuristicDelayCode != *(v4 + 5))
+    if ((v9 & 0x10) == 0 || self->_gaplessHeuristicDelayCode != *(equalCopy + 5))
     {
       goto LABEL_88;
     }
@@ -600,7 +600,7 @@ LABEL_22:
 
   if ((has & 2) != 0)
   {
-    if ((v9 & 2) == 0 || self->_gaplessEncodingDrainCode != *(v4 + 2))
+    if ((v9 & 2) == 0 || self->_gaplessEncodingDrainCode != *(equalCopy + 2))
     {
       goto LABEL_88;
     }
@@ -613,7 +613,7 @@ LABEL_22:
 
   if ((has & 4) != 0)
   {
-    if ((v9 & 4) == 0 || self->_gaplessFrameResyncCode != *(v4 + 3))
+    if ((v9 & 4) == 0 || self->_gaplessFrameResyncCode != *(equalCopy + 3))
     {
       goto LABEL_88;
     }
@@ -626,26 +626,26 @@ LABEL_22:
 
   if ((*&self->_has & 0x4000) != 0)
   {
-    if ((*(v4 + 66) & 0x4000) == 0 || self->_relativeVolume != *(v4 + 31))
+    if ((*(equalCopy + 66) & 0x4000) == 0 || self->_relativeVolume != *(equalCopy + 31))
     {
       goto LABEL_88;
     }
   }
 
-  else if ((*(v4 + 66) & 0x4000) != 0)
+  else if ((*(equalCopy + 66) & 0x4000) != 0)
   {
     goto LABEL_88;
   }
 
   if ((*&self->_has & 0x8000) != 0)
   {
-    if ((*(v4 + 66) & 0x8000) == 0 || self->_sampleRate != *(v4 + 32))
+    if ((*(equalCopy + 66) & 0x8000) == 0 || self->_sampleRate != *(equalCopy + 32))
     {
       goto LABEL_88;
     }
   }
 
-  else if ((*(v4 + 66) & 0x8000) != 0)
+  else if ((*(equalCopy + 66) & 0x8000) != 0)
   {
 LABEL_88:
     v10 = 0;
@@ -654,7 +654,7 @@ LABEL_88:
 
   if ((has & 0x20) != 0)
   {
-    if ((v9 & 0x20) == 0 || self->_startTime != *(v4 + 6))
+    if ((v9 & 0x20) == 0 || self->_startTime != *(equalCopy + 6))
     {
       goto LABEL_88;
     }
@@ -667,7 +667,7 @@ LABEL_88:
 
   if ((has & 0x40) != 0)
   {
-    if ((v9 & 0x40) == 0 || self->_stopTime != *(v4 + 7))
+    if ((v9 & 0x40) == 0 || self->_stopTime != *(equalCopy + 7))
     {
       goto LABEL_88;
     }
@@ -680,7 +680,7 @@ LABEL_88:
 
   if ((has & 0x80) != 0)
   {
-    if ((v9 & 0x80) == 0 || self->_volumeNormalizationEnergy != *(v4 + 8))
+    if ((v9 & 0x80) == 0 || self->_volumeNormalizationEnergy != *(equalCopy + 8))
     {
       goto LABEL_88;
     }
@@ -693,33 +693,33 @@ LABEL_88:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 66) & 0x100) == 0 || self->_beatsPerMinute != *(v4 + 18))
+    if ((*(equalCopy + 66) & 0x100) == 0 || self->_beatsPerMinute != *(equalCopy + 18))
     {
       goto LABEL_88;
     }
   }
 
-  else if ((*(v4 + 66) & 0x100) != 0)
+  else if ((*(equalCopy + 66) & 0x100) != 0)
   {
     goto LABEL_88;
   }
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(v4 + 66) & 0x2000) == 0 || self->_progressionDirection != *(v4 + 30))
+    if ((*(equalCopy + 66) & 0x2000) == 0 || self->_progressionDirection != *(equalCopy + 30))
     {
       goto LABEL_88;
     }
   }
 
-  else if ((*(v4 + 66) & 0x2000) != 0)
+  else if ((*(equalCopy + 66) & 0x2000) != 0)
   {
     goto LABEL_88;
   }
 
   if (has)
   {
-    if ((v9 & 1) == 0 || self->_durationInSamples != *(v4 + 1))
+    if ((v9 & 1) == 0 || self->_durationInSamples != *(equalCopy + 1))
     {
       goto LABEL_88;
     }
@@ -737,9 +737,9 @@ LABEL_89:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x200) != 0)
@@ -789,15 +789,15 @@ LABEL_5:
   }
 
 LABEL_6:
-  v8 = [(NSString *)self->_dataUrl copyWithZone:a3];
+  v8 = [(NSString *)self->_dataUrl copyWithZone:zone];
   v9 = *(v6 + 96);
   *(v6 + 96) = v8;
 
-  v10 = [(NSString *)self->_eqPreset copyWithZone:a3];
+  v10 = [(NSString *)self->_eqPreset copyWithZone:zone];
   v11 = *(v6 + 104);
   *(v6 + 104) = v10;
 
-  v12 = [(NSString *)self->_playbackFormat copyWithZone:a3];
+  v12 = [(NSString *)self->_playbackFormat copyWithZone:zone];
   v13 = *(v6 + 112);
   *(v6 + 112) = v12;
 
@@ -971,14 +971,14 @@ LABEL_18:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x200) != 0)
   {
-    v4[19] = self->_bitRate;
-    *(v4 + 66) |= 0x200u;
+    toCopy[19] = self->_bitRate;
+    *(toCopy + 66) |= 0x200u;
     has = self->_has;
     if ((has & 0x800) == 0)
     {
@@ -997,8 +997,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[21] = self->_codecType;
-  *(v4 + 66) |= 0x800u;
+  toCopy[21] = self->_codecType;
+  *(toCopy + 66) |= 0x800u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -1012,40 +1012,40 @@ LABEL_4:
   }
 
 LABEL_30:
-  v4[20] = self->_codecSubType;
-  *(v4 + 66) |= 0x400u;
+  toCopy[20] = self->_codecSubType;
+  *(toCopy + 66) |= 0x400u;
   if ((*&self->_has & 0x1000) != 0)
   {
 LABEL_5:
-    v4[22] = self->_dataKind;
-    *(v4 + 66) |= 0x1000u;
+    toCopy[22] = self->_dataKind;
+    *(toCopy + 66) |= 0x1000u;
   }
 
 LABEL_6:
-  v7 = v4;
+  v7 = toCopy;
   if (self->_dataUrl)
   {
-    [v4 setDataUrl:?];
-    v4 = v7;
+    [toCopy setDataUrl:?];
+    toCopy = v7;
   }
 
   if (self->_eqPreset)
   {
     [v7 setEqPreset:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_playbackFormat)
   {
     [v7 setPlaybackFormat:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 8) != 0)
   {
-    *(v4 + 4) = self->_gaplessHeuristicCode;
-    *(v4 + 66) |= 8u;
+    *(toCopy + 4) = self->_gaplessHeuristicCode;
+    *(toCopy + 66) |= 8u;
     v6 = self->_has;
     if ((v6 & 0x10) == 0)
     {
@@ -1064,8 +1064,8 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  *(v4 + 5) = self->_gaplessHeuristicDelayCode;
-  *(v4 + 66) |= 0x10u;
+  *(toCopy + 5) = self->_gaplessHeuristicDelayCode;
+  *(toCopy + 66) |= 0x10u;
   v6 = self->_has;
   if ((v6 & 2) == 0)
   {
@@ -1079,8 +1079,8 @@ LABEL_15:
   }
 
 LABEL_34:
-  *(v4 + 2) = self->_gaplessEncodingDrainCode;
-  *(v4 + 66) |= 2u;
+  *(toCopy + 2) = self->_gaplessEncodingDrainCode;
+  *(toCopy + 66) |= 2u;
   v6 = self->_has;
   if ((v6 & 4) == 0)
   {
@@ -1094,8 +1094,8 @@ LABEL_16:
   }
 
 LABEL_35:
-  *(v4 + 3) = self->_gaplessFrameResyncCode;
-  *(v4 + 66) |= 4u;
+  *(toCopy + 3) = self->_gaplessFrameResyncCode;
+  *(toCopy + 66) |= 4u;
   v6 = self->_has;
   if ((v6 & 0x4000) == 0)
   {
@@ -1109,8 +1109,8 @@ LABEL_17:
   }
 
 LABEL_36:
-  v4[31] = self->_relativeVolume;
-  *(v4 + 66) |= 0x4000u;
+  toCopy[31] = self->_relativeVolume;
+  *(toCopy + 66) |= 0x4000u;
   v6 = self->_has;
   if ((v6 & 0x8000) == 0)
   {
@@ -1124,8 +1124,8 @@ LABEL_18:
   }
 
 LABEL_37:
-  v4[32] = self->_sampleRate;
-  *(v4 + 66) |= 0x8000u;
+  toCopy[32] = self->_sampleRate;
+  *(toCopy + 66) |= 0x8000u;
   v6 = self->_has;
   if ((v6 & 0x20) == 0)
   {
@@ -1139,8 +1139,8 @@ LABEL_19:
   }
 
 LABEL_38:
-  *(v4 + 6) = self->_startTime;
-  *(v4 + 66) |= 0x20u;
+  *(toCopy + 6) = self->_startTime;
+  *(toCopy + 66) |= 0x20u;
   v6 = self->_has;
   if ((v6 & 0x40) == 0)
   {
@@ -1154,8 +1154,8 @@ LABEL_20:
   }
 
 LABEL_39:
-  *(v4 + 7) = self->_stopTime;
-  *(v4 + 66) |= 0x40u;
+  *(toCopy + 7) = self->_stopTime;
+  *(toCopy + 66) |= 0x40u;
   v6 = self->_has;
   if ((v6 & 0x80) == 0)
   {
@@ -1169,8 +1169,8 @@ LABEL_21:
   }
 
 LABEL_40:
-  *(v4 + 8) = self->_volumeNormalizationEnergy;
-  *(v4 + 66) |= 0x80u;
+  *(toCopy + 8) = self->_volumeNormalizationEnergy;
+  *(toCopy + 66) |= 0x80u;
   v6 = self->_has;
   if ((v6 & 0x100) == 0)
   {
@@ -1184,8 +1184,8 @@ LABEL_22:
   }
 
 LABEL_41:
-  v4[18] = self->_beatsPerMinute;
-  *(v4 + 66) |= 0x100u;
+  toCopy[18] = self->_beatsPerMinute;
+  *(toCopy + 66) |= 0x100u;
   v6 = self->_has;
   if ((v6 & 0x2000) == 0)
   {
@@ -1199,21 +1199,21 @@ LABEL_23:
   }
 
 LABEL_42:
-  v4[30] = self->_progressionDirection;
-  *(v4 + 66) |= 0x2000u;
+  toCopy[30] = self->_progressionDirection;
+  *(toCopy + 66) |= 0x2000u;
   if (*&self->_has)
   {
 LABEL_24:
-    *(v4 + 1) = self->_durationInSamples;
-    *(v4 + 66) |= 1u;
+    *(toCopy + 1) = self->_durationInSamples;
+    *(toCopy + 66) |= 1u;
   }
 
 LABEL_25:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x200) != 0)
   {
@@ -1433,12 +1433,12 @@ LABEL_25:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 0x200) != 0)
   {
     v12 = [MEMORY[0x277CCABB0] numberWithInt:self->_bitRate];
-    [v3 setObject:v12 forKey:@"bitRate"];
+    [dictionary setObject:v12 forKey:@"bitRate"];
 
     has = self->_has;
     if ((has & 0x800) == 0)
@@ -1459,7 +1459,7 @@ LABEL_3:
   }
 
   v13 = [MEMORY[0x277CCABB0] numberWithInt:self->_codecType];
-  [v3 setObject:v13 forKey:@"codecType"];
+  [dictionary setObject:v13 forKey:@"codecType"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -1475,39 +1475,39 @@ LABEL_4:
 
 LABEL_30:
   v14 = [MEMORY[0x277CCABB0] numberWithInt:self->_codecSubType];
-  [v3 setObject:v14 forKey:@"codecSubType"];
+  [dictionary setObject:v14 forKey:@"codecSubType"];
 
   if ((*&self->_has & 0x1000) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x277CCABB0] numberWithInt:self->_dataKind];
-    [v3 setObject:v5 forKey:@"dataKind"];
+    [dictionary setObject:v5 forKey:@"dataKind"];
   }
 
 LABEL_6:
   dataUrl = self->_dataUrl;
   if (dataUrl)
   {
-    [v3 setObject:dataUrl forKey:@"dataUrl"];
+    [dictionary setObject:dataUrl forKey:@"dataUrl"];
   }
 
   eqPreset = self->_eqPreset;
   if (eqPreset)
   {
-    [v3 setObject:eqPreset forKey:@"eqPreset"];
+    [dictionary setObject:eqPreset forKey:@"eqPreset"];
   }
 
   playbackFormat = self->_playbackFormat;
   if (playbackFormat)
   {
-    [v3 setObject:playbackFormat forKey:@"playbackFormat"];
+    [dictionary setObject:playbackFormat forKey:@"playbackFormat"];
   }
 
   v9 = self->_has;
   if ((v9 & 8) != 0)
   {
     v15 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_gaplessHeuristicCode];
-    [v3 setObject:v15 forKey:@"gaplessHeuristicCode"];
+    [dictionary setObject:v15 forKey:@"gaplessHeuristicCode"];
 
     v9 = self->_has;
     if ((v9 & 0x10) == 0)
@@ -1528,7 +1528,7 @@ LABEL_14:
   }
 
   v16 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_gaplessHeuristicDelayCode];
-  [v3 setObject:v16 forKey:@"gaplessHeuristicDelayCode"];
+  [dictionary setObject:v16 forKey:@"gaplessHeuristicDelayCode"];
 
   v9 = self->_has;
   if ((v9 & 2) == 0)
@@ -1544,7 +1544,7 @@ LABEL_15:
 
 LABEL_34:
   v17 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_gaplessEncodingDrainCode];
-  [v3 setObject:v17 forKey:@"gaplessEncodingDrainCode"];
+  [dictionary setObject:v17 forKey:@"gaplessEncodingDrainCode"];
 
   v9 = self->_has;
   if ((v9 & 4) == 0)
@@ -1560,7 +1560,7 @@ LABEL_16:
 
 LABEL_35:
   v18 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_gaplessFrameResyncCode];
-  [v3 setObject:v18 forKey:@"gaplessFrameResyncCode"];
+  [dictionary setObject:v18 forKey:@"gaplessFrameResyncCode"];
 
   v9 = self->_has;
   if ((v9 & 0x4000) == 0)
@@ -1576,7 +1576,7 @@ LABEL_17:
 
 LABEL_36:
   v19 = [MEMORY[0x277CCABB0] numberWithInt:self->_relativeVolume];
-  [v3 setObject:v19 forKey:@"relativeVolume"];
+  [dictionary setObject:v19 forKey:@"relativeVolume"];
 
   v9 = self->_has;
   if ((v9 & 0x8000) == 0)
@@ -1592,7 +1592,7 @@ LABEL_18:
 
 LABEL_37:
   v20 = [MEMORY[0x277CCABB0] numberWithInt:self->_sampleRate];
-  [v3 setObject:v20 forKey:@"sampleRate"];
+  [dictionary setObject:v20 forKey:@"sampleRate"];
 
   v9 = self->_has;
   if ((v9 & 0x20) == 0)
@@ -1608,7 +1608,7 @@ LABEL_19:
 
 LABEL_38:
   v21 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_startTime];
-  [v3 setObject:v21 forKey:@"startTime"];
+  [dictionary setObject:v21 forKey:@"startTime"];
 
   v9 = self->_has;
   if ((v9 & 0x40) == 0)
@@ -1624,7 +1624,7 @@ LABEL_20:
 
 LABEL_39:
   v22 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_stopTime];
-  [v3 setObject:v22 forKey:@"stopTime"];
+  [dictionary setObject:v22 forKey:@"stopTime"];
 
   v9 = self->_has;
   if ((v9 & 0x80) == 0)
@@ -1640,7 +1640,7 @@ LABEL_21:
 
 LABEL_40:
   v23 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_volumeNormalizationEnergy];
-  [v3 setObject:v23 forKey:@"volumeNormalizationEnergy"];
+  [dictionary setObject:v23 forKey:@"volumeNormalizationEnergy"];
 
   v9 = self->_has;
   if ((v9 & 0x100) == 0)
@@ -1656,7 +1656,7 @@ LABEL_22:
 
 LABEL_41:
   v24 = [MEMORY[0x277CCABB0] numberWithInt:self->_beatsPerMinute];
-  [v3 setObject:v24 forKey:@"beatsPerMinute"];
+  [dictionary setObject:v24 forKey:@"beatsPerMinute"];
 
   v9 = self->_has;
   if ((v9 & 0x2000) == 0)
@@ -1672,18 +1672,18 @@ LABEL_23:
 
 LABEL_42:
   v25 = [MEMORY[0x277CCABB0] numberWithInt:self->_progressionDirection];
-  [v3 setObject:v25 forKey:@"progressionDirection"];
+  [dictionary setObject:v25 forKey:@"progressionDirection"];
 
   if (*&self->_has)
   {
 LABEL_24:
     v10 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_durationInSamples];
-    [v3 setObject:v10 forKey:@"durationInSamples"];
+    [dictionary setObject:v10 forKey:@"durationInSamples"];
   }
 
 LABEL_25:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -1692,15 +1692,15 @@ LABEL_25:
   v8.receiver = self;
   v8.super_class = MIPPlaybackInfo;
   v4 = [(MIPPlaybackInfo *)&v8 description];
-  v5 = [(MIPPlaybackInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MIPPlaybackInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasProgressionDirection:(BOOL)a3
+- (void)setHasProgressionDirection:(BOOL)direction
 {
-  if (a3)
+  if (direction)
   {
     v3 = 0x2000;
   }
@@ -1713,9 +1713,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasBeatsPerMinute:(BOOL)a3
+- (void)setHasBeatsPerMinute:(BOOL)minute
 {
-  if (a3)
+  if (minute)
   {
     v3 = 256;
   }
@@ -1728,9 +1728,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasVolumeNormalizationEnergy:(BOOL)a3
+- (void)setHasVolumeNormalizationEnergy:(BOOL)energy
 {
-  if (a3)
+  if (energy)
   {
     v3 = 128;
   }
@@ -1743,9 +1743,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasStopTime:(BOOL)a3
+- (void)setHasStopTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 64;
   }
@@ -1758,9 +1758,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasStartTime:(BOOL)a3
+- (void)setHasStartTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 32;
   }
@@ -1773,9 +1773,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasSampleRate:(BOOL)a3
+- (void)setHasSampleRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 0x8000;
   }
@@ -1788,9 +1788,9 @@ LABEL_25:
   *&self->_has = v3 & 0x8000 | *&self->_has & 0x7FFF;
 }
 
-- (void)setHasRelativeVolume:(BOOL)a3
+- (void)setHasRelativeVolume:(BOOL)volume
 {
-  if (a3)
+  if (volume)
   {
     v3 = 0x4000;
   }
@@ -1803,9 +1803,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasGaplessFrameResyncCode:(BOOL)a3
+- (void)setHasGaplessFrameResyncCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 4;
   }
@@ -1818,9 +1818,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasGaplessEncodingDrainCode:(BOOL)a3
+- (void)setHasGaplessEncodingDrainCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2;
   }
@@ -1833,9 +1833,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasGaplessHeuristicDelayCode:(BOOL)a3
+- (void)setHasGaplessHeuristicDelayCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 16;
   }
@@ -1848,9 +1848,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasGaplessHeuristicCode:(BOOL)a3
+- (void)setHasGaplessHeuristicCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 8;
   }
@@ -1863,9 +1863,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasDataKind:(BOOL)a3
+- (void)setHasDataKind:(BOOL)kind
 {
-  if (a3)
+  if (kind)
   {
     v3 = 4096;
   }
@@ -1878,9 +1878,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasCodecSubType:(BOOL)a3
+- (void)setHasCodecSubType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 1024;
   }
@@ -1893,9 +1893,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasCodecType:(BOOL)a3
+- (void)setHasCodecType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2048;
   }
@@ -1908,9 +1908,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasBitRate:(BOOL)a3
+- (void)setHasBitRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 512;
   }

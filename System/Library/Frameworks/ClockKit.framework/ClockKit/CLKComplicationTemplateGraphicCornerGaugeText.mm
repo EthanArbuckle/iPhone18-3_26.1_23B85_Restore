@@ -2,7 +2,7 @@
 + (CLKComplicationTemplateGraphicCornerGaugeText)templateWithGaugeProvider:(CLKGaugeProvider *)gaugeProvider leadingTextProvider:(CLKTextProvider *)leadingTextProvider trailingTextProvider:(CLKTextProvider *)trailingTextProvider outerTextProvider:(CLKTextProvider *)outerTextProvider;
 + (CLKComplicationTemplateGraphicCornerGaugeText)templateWithGaugeProvider:(CLKGaugeProvider *)gaugeProvider outerTextProvider:(CLKTextProvider *)outerTextProvider;
 - (CLKComplicationTemplateGraphicCornerGaugeText)initWithGaugeProvider:(CLKGaugeProvider *)gaugeProvider leadingTextProvider:(CLKTextProvider *)leadingTextProvider trailingTextProvider:(CLKTextProvider *)trailingTextProvider outerTextProvider:(CLKTextProvider *)outerTextProvider;
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3;
+- (void)_enumerateTextProviderKeysWithBlock:(id)block;
 @end
 
 @implementation CLKComplicationTemplateGraphicCornerGaugeText
@@ -15,11 +15,11 @@
   v13 = outerTextProvider;
   v17.receiver = self;
   v17.super_class = CLKComplicationTemplateGraphicCornerGaugeText;
-  v14 = [(CLKComplicationTemplate *)&v17 initPrivate];
-  v15 = v14;
-  if (v14)
+  initPrivate = [(CLKComplicationTemplate *)&v17 initPrivate];
+  v15 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKComplicationTemplateGraphicCornerGaugeText *)v14 setGaugeProvider:v10];
+    [(CLKComplicationTemplateGraphicCornerGaugeText *)initPrivate setGaugeProvider:v10];
     [(CLKComplicationTemplateGraphicCornerGaugeText *)v15 setLeadingTextProvider:v11];
     [(CLKComplicationTemplateGraphicCornerGaugeText *)v15 setTrailingTextProvider:v12];
     [(CLKComplicationTemplateGraphicCornerGaugeText *)v15 setOuterTextProvider:v13];
@@ -32,7 +32,7 @@
 {
   v6 = outerTextProvider;
   v7 = gaugeProvider;
-  v8 = [[a1 alloc] initWithGaugeProvider:v7 outerTextProvider:v6];
+  v8 = [[self alloc] initWithGaugeProvider:v7 outerTextProvider:v6];
 
   return v8;
 }
@@ -43,22 +43,22 @@
   v11 = trailingTextProvider;
   v12 = leadingTextProvider;
   v13 = gaugeProvider;
-  v14 = [[a1 alloc] initWithGaugeProvider:v13 leadingTextProvider:v12 trailingTextProvider:v11 outerTextProvider:v10];
+  v14 = [[self alloc] initWithGaugeProvider:v13 leadingTextProvider:v12 trailingTextProvider:v11 outerTextProvider:v10];
 
   return v14;
 }
 
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3
+- (void)_enumerateTextProviderKeysWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = 0;
-  v3[2](v3, @"leadingTextProvider", 1, 1, &v4);
+  blockCopy[2](blockCopy, @"leadingTextProvider", 1, 1, &v4);
   if ((v4 & 1) == 0)
   {
-    v3[2](v3, @"trailingTextProvider", 1, 1, &v4);
+    blockCopy[2](blockCopy, @"trailingTextProvider", 1, 1, &v4);
     if ((v4 & 1) == 0)
     {
-      v3[2](v3, @"outerTextProvider", 0, 1, &v4);
+      blockCopy[2](blockCopy, @"outerTextProvider", 0, 1, &v4);
     }
   }
 }

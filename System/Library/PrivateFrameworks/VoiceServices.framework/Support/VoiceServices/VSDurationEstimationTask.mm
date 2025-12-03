@@ -1,8 +1,7 @@
 @interface VSDurationEstimationTask
-+ (id)shortTermCachedEngineForVoice:(id)a3 voiceResource:(id)a4;
++ (id)shortTermCachedEngineForVoice:(id)voice voiceResource:(id)resource;
 + (id)shortTermCachedEngines;
-- (VSDurationEstimationTask)init;
-- (VSDurationEstimationTask)initWithRequest:(id)a3;
+- (VSDurationEstimationTask)initWithRequest:(id)request;
 - (void)cancel;
 - (void)main;
 @end
@@ -11,8 +10,8 @@
 
 - (void)cancel
 {
-  v3 = [(VSDurationEstimationTask *)self deviceCore];
-  [v3 cancel];
+  deviceCore = [(VSDurationEstimationTask *)self deviceCore];
+  [deviceCore cancel];
 
   v4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"VoiceServicesErrorDomain" code:400 userInfo:MEMORY[0x277CBEC10]];
   [(VSDurationEstimationTask *)self setError:v4];
@@ -21,37 +20,37 @@
 - (void)main
 {
   v57 = *MEMORY[0x277D85DE8];
-  v3 = [(VSDurationEstimationTask *)self deviceCore];
-  v4 = [v3 selectedVoice];
-  v5 = [(VSDurationEstimationTask *)self deviceCore];
-  v6 = [v5 selectedVoiceResource];
-  v7 = [VSDurationEstimationTask shortTermCachedEngineForVoice:v4 voiceResource:v6];
-  v8 = [(VSDurationEstimationTask *)self deviceCore];
-  [v8 setEngine:v7];
+  deviceCore = [(VSDurationEstimationTask *)self deviceCore];
+  selectedVoice = [deviceCore selectedVoice];
+  deviceCore2 = [(VSDurationEstimationTask *)self deviceCore];
+  selectedVoiceResource = [deviceCore2 selectedVoiceResource];
+  v7 = [VSDurationEstimationTask shortTermCachedEngineForVoice:selectedVoice voiceResource:selectedVoiceResource];
+  deviceCore3 = [(VSDurationEstimationTask *)self deviceCore];
+  [deviceCore3 setEngine:v7];
 
-  v9 = [(VSDurationEstimationTask *)self deviceCore];
-  v10 = [v9 engine];
+  deviceCore4 = [(VSDurationEstimationTask *)self deviceCore];
+  engine = [deviceCore4 engine];
 
-  if (!v10)
+  if (!engine)
   {
-    v11 = [MEMORY[0x277D79950] sharedManager];
-    v12 = [(VSDurationEstimationTask *)self request];
-    v13 = [v12 languageCode];
-    v14 = [(VSDurationEstimationTask *)self request];
-    v15 = [v14 voiceName];
-    v16 = [v11 selectVoiceForLang:v13 name:v15 type:1 gender:0 footprint:1];
+    mEMORY[0x277D79950] = [MEMORY[0x277D79950] sharedManager];
+    request = [(VSDurationEstimationTask *)self request];
+    languageCode = [request languageCode];
+    request2 = [(VSDurationEstimationTask *)self request];
+    voiceName = [request2 voiceName];
+    v16 = [mEMORY[0x277D79950] selectVoiceForLang:languageCode name:voiceName type:1 gender:0 footprint:1];
 
     v17 = objc_alloc(MEMORY[0x277D79990]);
-    v18 = [v16 voicePath];
-    v19 = [v17 initWithVoicePath:v18 resourcePath:0];
-    v20 = [(VSDurationEstimationTask *)self deviceCore];
-    [v20 setEngine:v19];
+    voicePath = [v16 voicePath];
+    v19 = [v17 initWithVoicePath:voicePath resourcePath:0];
+    deviceCore5 = [(VSDurationEstimationTask *)self deviceCore];
+    [deviceCore5 setEngine:v19];
   }
 
-  v21 = [(VSDurationEstimationTask *)self deviceCore];
-  v22 = [v21 engine];
+  deviceCore6 = [(VSDurationEstimationTask *)self deviceCore];
+  engine2 = [deviceCore6 engine];
 
-  if (!v22)
+  if (!engine2)
   {
     v28 = VSGetLogDefault();
     if (!os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -61,17 +60,17 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v50 = [(VSDurationEstimationTask *)self request];
+    request3 = [(VSDurationEstimationTask *)self request];
     *buf = 138412290;
-    v54 = *&v50;
+    v54 = *&request3;
     _os_log_error_impl(&dword_2727E4000, v28, OS_LOG_TYPE_ERROR, "Unable to create engine for request %@", buf, 0xCu);
 LABEL_20:
 
     goto LABEL_10;
   }
 
-  v23 = [(VSDurationEstimationTask *)self deviceCore];
-  [v23 start];
+  deviceCore7 = [(VSDurationEstimationTask *)self deviceCore];
+  [deviceCore7 start];
 
   if (([(VSDurationEstimationTask *)self isCancelled]& 1) != 0)
   {
@@ -80,43 +79,43 @@ LABEL_11:
     return;
   }
 
-  v24 = [(VSDurationEstimationTask *)self deviceCore];
-  v25 = [v24 error];
+  deviceCore8 = [(VSDurationEstimationTask *)self deviceCore];
+  error = [deviceCore8 error];
 
-  if (!v25)
+  if (!error)
   {
-    v30 = [(VSDurationEstimationTask *)self deviceCore];
-    v31 = [v30 engine];
+    deviceCore9 = [(VSDurationEstimationTask *)self deviceCore];
+    engine3 = [deviceCore9 engine];
 
-    if (v31)
+    if (engine3)
     {
       v32 = MEMORY[0x277CCACA8];
-      v33 = [(VSDurationEstimationTask *)self deviceCore];
-      v34 = [v33 selectedVoice];
-      v35 = [v34 key];
-      v36 = [(VSDurationEstimationTask *)self deviceCore];
-      v37 = [v36 selectedVoiceResource];
-      v38 = [v37 key];
+      deviceCore10 = [(VSDurationEstimationTask *)self deviceCore];
+      selectedVoice2 = [deviceCore10 selectedVoice];
+      v35 = [selectedVoice2 key];
+      deviceCore11 = [(VSDurationEstimationTask *)self deviceCore];
+      selectedVoiceResource2 = [deviceCore11 selectedVoiceResource];
+      v38 = [selectedVoiceResource2 key];
       v39 = [v32 stringWithFormat:@"cached_engine_%@_%@", v35, v38];
 
       v40 = +[VSDurationEstimationTask shortTermCachedEngines];
-      v41 = [(VSDurationEstimationTask *)self deviceCore];
-      v42 = [v41 engine];
-      [v40 setObject:v42 forKey:v39 timeToLive:30.0];
+      deviceCore12 = [(VSDurationEstimationTask *)self deviceCore];
+      engine4 = [deviceCore12 engine];
+      [v40 setObject:engine4 forKey:v39 timeToLive:30.0];
     }
 
-    v43 = [(VSDurationEstimationTask *)self deviceCore];
-    v44 = [v43 streamAudio];
-    v45 = [(VSDurationEstimationTask *)self deviceCore];
-    v46 = v45;
-    if (v44)
+    deviceCore13 = [(VSDurationEstimationTask *)self deviceCore];
+    streamAudio = [deviceCore13 streamAudio];
+    deviceCore14 = [(VSDurationEstimationTask *)self deviceCore];
+    v46 = deviceCore14;
+    if (streamAudio)
     {
-      [v45 streamAudio];
+      [deviceCore14 streamAudio];
     }
 
     else
     {
-      [v45 compressedAudio];
+      [deviceCore14 compressedAudio];
     }
     v47 = ;
     [v47 duration];
@@ -129,43 +128,43 @@ LABEL_11:
     }
 
     estimatedDuration = self->_estimatedDuration;
-    v50 = [(VSDurationEstimationTask *)self request];
-    v51 = [v50 utterance];
+    request3 = [(VSDurationEstimationTask *)self request];
+    utterance = [request3 utterance];
     *buf = 134218242;
     v54 = estimatedDuration;
     v55 = 2112;
-    v56 = v51;
+    v56 = utterance;
     _os_log_impl(&dword_2727E4000, v28, OS_LOG_TYPE_INFO, "Estimated duration: %.2f, for utterance: %@", buf, 0x16u);
 
     goto LABEL_20;
   }
 
   self->_estimatedDuration = 0.0;
-  v52 = [(VSDurationEstimationTask *)self deviceCore];
-  v26 = [v52 error];
-  [(VSDurationEstimationTask *)self setError:v26];
+  deviceCore15 = [(VSDurationEstimationTask *)self deviceCore];
+  error2 = [deviceCore15 error];
+  [(VSDurationEstimationTask *)self setError:error2];
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (VSDurationEstimationTask)initWithRequest:(id)a3
+- (VSDurationEstimationTask)initWithRequest:(id)request
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  requestCopy = request;
   v19.receiver = self;
   v19.super_class = VSDurationEstimationTask;
   v6 = [(VSDurationEstimationTask *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_request, a3);
+    objc_storeStrong(&v6->_request, request);
     v8 = objc_alloc_init(MEMORY[0x277D79938]);
     instrumentMetrics = v7->_instrumentMetrics;
     v7->_instrumentMetrics = v8;
 
-    if ([v5 requestCreatedTimestamp])
+    if ([requestCopy requestCreatedTimestamp])
     {
-      v10 = [v5 requestCreatedTimestamp];
+      requestCreatedTimestamp = [requestCopy requestCreatedTimestamp];
     }
 
     else
@@ -177,21 +176,21 @@ LABEL_11:
         _os_log_impl(&dword_2727E4000, v11, OS_LOG_TYPE_INFO, "Using timestamp inside voiced for Estimation task", buf, 2u);
       }
 
-      v10 = mach_absolute_time();
+      requestCreatedTimestamp = mach_absolute_time();
     }
 
-    [(VSInstrumentMetrics *)v7->_instrumentMetrics setRequestCreatedTimestamp:v10];
+    [(VSInstrumentMetrics *)v7->_instrumentMetrics setRequestCreatedTimestamp:requestCreatedTimestamp];
     v12 = VSGetLogDefault();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [(VSDurationEstimationTask *)v7 instrumentMetrics];
-      v14 = [v13 requestCreatedTimestamp];
+      instrumentMetrics = [(VSDurationEstimationTask *)v7 instrumentMetrics];
+      requestCreatedTimestamp2 = [instrumentMetrics requestCreatedTimestamp];
       *buf = 134217984;
-      v21 = v14;
+      v21 = requestCreatedTimestamp2;
       _os_log_impl(&dword_2727E4000, v12, OS_LOG_TYPE_INFO, "Created Estimation task %llu", buf, 0xCu);
     }
 
-    v15 = [[VSDeviceTTSCore alloc] initWithRequest:v5];
+    v15 = [[VSDeviceTTSCore alloc] initWithRequest:requestCopy];
     deviceCore = v7->_deviceCore;
     v7->_deviceCore = v15;
   }
@@ -200,20 +199,15 @@ LABEL_11:
   return v7;
 }
 
-- (VSDurationEstimationTask)init
-  v2 = {;
-  objc_exception_throw(v2);
-}
-
-+ (id)shortTermCachedEngineForVoice:(id)a3 voiceResource:(id)a4
++ (id)shortTermCachedEngineForVoice:(id)voice voiceResource:(id)resource
 {
-  v5 = a4;
-  v6 = a3;
+  resourceCopy = resource;
+  voiceCopy = voice;
   v7 = +[VSDurationEstimationTask shortTermCachedEngines];
   v8 = MEMORY[0x277CCACA8];
-  v9 = [v6 key];
+  v9 = [voiceCopy key];
 
-  v10 = [v5 key];
+  v10 = [resourceCopy key];
 
   v11 = [v8 stringWithFormat:@"cached_engine_%@_%@", v9, v10];
 

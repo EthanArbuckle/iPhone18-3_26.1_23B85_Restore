@@ -1,31 +1,31 @@
 @interface GCMotionXPCProxyServerEndpoint
-- (BOOL)acceptClient:(id)a3 onConnection:(id)a4 error:(id *)a5;
-- (GCMotionXPCProxyServerEndpoint)initWithIdentifier:(id)a3 initialValue:(BOOL)a4;
+- (BOOL)acceptClient:(id)client onConnection:(id)connection error:(id *)error;
+- (GCMotionXPCProxyServerEndpoint)initWithIdentifier:(id)identifier initialValue:(BOOL)value;
 - (GCMotionXPCProxyServerEndpointDelegate)delegate;
 - (_GCControllerComponentDescription)receiverDescription;
-- (void)fetchObjectIdentifierWithReply:(id)a3;
-- (void)fetchSensorsActiveWithReply:(id)a3;
+- (void)fetchObjectIdentifierWithReply:(id)reply;
+- (void)fetchSensorsActiveWithReply:(id)reply;
 - (void)invalidateClient;
 - (void)invalidateConnection;
-- (void)newSensorsActive:(BOOL)a3;
-- (void)setSensorsActive:(BOOL)a3;
+- (void)newSensorsActive:(BOOL)active;
+- (void)setSensorsActive:(BOOL)active;
 @end
 
 @implementation GCMotionXPCProxyServerEndpoint
 
-- (GCMotionXPCProxyServerEndpoint)initWithIdentifier:(id)a3 initialValue:(BOOL)a4
+- (GCMotionXPCProxyServerEndpoint)initWithIdentifier:(id)identifier initialValue:(BOOL)value
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = GCMotionXPCProxyServerEndpoint;
   v7 = [(GCMotionXPCProxyServerEndpoint *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copyWithZone:0];
+    v8 = [identifierCopy copyWithZone:0];
     identifier = v7->_identifier;
     v7->_identifier = v8;
 
-    v7->_sensorsActive = a4;
+    v7->_sensorsActive = value;
   }
 
   return v7;
@@ -62,10 +62,10 @@
   [(GCMotionXPCProxyRemoteClientEndpointInterface *)v5 invalidateConnection];
 }
 
-- (BOOL)acceptClient:(id)a3 onConnection:(id)a4 error:(id *)a5
+- (BOOL)acceptClient:(id)client onConnection:(id)connection error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  clientCopy = client;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   connectionInterruptionRegistration = self->_connectionInterruptionRegistration;
   self->_connectionInterruptionRegistration = 0;
@@ -85,16 +85,16 @@
   v24 = &unk_1E8418D18;
   objc_copyWeak(&v25, &location);
   v14 = _Block_copy(&v21);
-  v15 = [v9 addInterruptionHandler:{v14, v21, v22, v23, v24}];
+  v15 = [connectionCopy addInterruptionHandler:{v14, v21, v22, v23, v24}];
   v16 = self->_connectionInterruptionRegistration;
   self->_connectionInterruptionRegistration = v15;
 
-  v17 = [v9 addInvalidationHandler:v14];
+  v17 = [connectionCopy addInvalidationHandler:v14];
   v18 = self->_connectionInvalidationRegistration;
   self->_connectionInvalidationRegistration = v17;
 
-  objc_storeStrong(&self->_connection, a4);
-  objc_storeStrong(&self->_clientEndpoint, a3);
+  objc_storeStrong(&self->_connection, connection);
+  objc_storeStrong(&self->_clientEndpoint, client);
   self->_pendingUpdates = 0;
   if (gc_isInternalBuild())
   {
@@ -129,13 +129,13 @@ void __66__GCMotionXPCProxyServerEndpoint_acceptClient_onConnection_error___bloc
   }
 }
 
-- (void)setSensorsActive:(BOOL)a3
+- (void)setSensorsActive:(BOOL)active
 {
-  if (self->_sensorsActive != a3)
+  if (self->_sensorsActive != active)
   {
     v10[9] = v3;
     v10[10] = v4;
-    self->_sensorsActive = a3;
+    self->_sensorsActive = active;
     v6 = self->_clientEndpoint;
     if (v6)
     {
@@ -178,13 +178,13 @@ void __66__GCMotionXPCProxyServerEndpoint_acceptClient_onConnection_error___bloc
   }
 }
 
-- (void)newSensorsActive:(BOOL)a3
+- (void)newSensorsActive:(BOOL)active
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __51__GCMotionXPCProxyServerEndpoint_newSensorsActive___block_invoke;
   v3[3] = &unk_1E8419650;
-  v4 = a3;
+  activeCopy = active;
   v3[4] = self;
   _os_activity_initiate(&dword_1D2CD5000, "(Motion XPC Proxy Server Endpoint) New Sensors Active", OS_ACTIVITY_FLAG_DEFAULT, v3);
 }
@@ -201,16 +201,16 @@ void __51__GCMotionXPCProxyServerEndpoint_newSensorsActive___block_invoke(uint64
   }
 }
 
-- (void)fetchSensorsActiveWithReply:(id)a3
+- (void)fetchSensorsActiveWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __62__GCMotionXPCProxyServerEndpoint_fetchSensorsActiveWithReply___block_invoke;
   v6[3] = &unk_1E8418D68;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = replyCopy;
+  v5 = replyCopy;
   _os_activity_initiate(&dword_1D2CD5000, "(Motion XPC Proxy Server Endpoint) Fetch Sensors Active", OS_ACTIVITY_FLAG_DEFAULT, v6);
 }
 
@@ -243,11 +243,11 @@ void __54__GCMotionXPCProxyServerEndpoint_invalidateConnection__block_invoke(uin
   *(v8 + 8) = 0;
 }
 
-- (void)fetchObjectIdentifierWithReply:(id)a3
+- (void)fetchObjectIdentifierWithReply:(id)reply
 {
-  v5 = a3;
-  v6 = [(GCMotionXPCProxyServerEndpoint *)self identifier];
-  (*(a3 + 2))(v5, v6);
+  replyCopy = reply;
+  identifier = [(GCMotionXPCProxyServerEndpoint *)self identifier];
+  (*(reply + 2))(replyCopy, identifier);
 }
 
 - (GCMotionXPCProxyServerEndpointDelegate)delegate

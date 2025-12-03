@@ -1,15 +1,15 @@
 @interface CKQuerySubscription
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CKQuerySubscription)initWithCoder:(NSCoder *)aDecoder;
 - (CKQuerySubscription)initWithRecordType:(CKRecordType)recordType predicate:(NSPredicate *)predicate options:(CKQuerySubscriptionOptions)querySubscriptionOptions;
 - (CKQuerySubscription)initWithRecordType:(CKRecordType)recordType predicate:(NSPredicate *)predicate subscriptionID:(CKSubscriptionID)subscriptionID options:(CKQuerySubscriptionOptions)querySubscriptionOptions;
 - (id)CKPropertiesDescription;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_validateQuerySubscriptionOptions:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPredicate_modelMutation:(id)a3;
-- (void)setRecordType:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_validateQuerySubscriptionOptions:(unint64_t)options;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPredicate_modelMutation:(id)mutation;
+- (void)setRecordType:(id)type;
 @end
 
 @implementation CKQuerySubscription
@@ -96,9 +96,9 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_autoreleasePoolPush();
   v8 = objc_msgSend_recordType(self, v6, v7);
   v11 = objc_msgSend_length(v8, v9, v10);
@@ -112,21 +112,21 @@
 
   v27.receiver = self;
   v27.super_class = CKQuerySubscription;
-  [(CKSubscription *)&v27 encodeWithCoder:v4];
+  [(CKSubscription *)&v27 encodeWithCoder:coderCopy];
   v14 = objc_msgSend__predicateWithoutCopy(self, v12, v13);
-  objc_msgSend_encodeObject_forKey_(v4, v15, v14, @"predicate");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v15, v14, @"predicate");
 
   SubscriptionOptions = objc_msgSend_querySubscriptionOptions(self, v16, v17);
-  objc_msgSend_encodeInt64_forKey_(v4, v19, SubscriptionOptions, @"options");
+  objc_msgSend_encodeInt64_forKey_(coderCopy, v19, SubscriptionOptions, @"options");
   v22 = objc_msgSend_zoneID(self, v20, v21);
-  objc_msgSend_encodeObject_forKey_(v4, v23, v22, @"ZoneID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v23, v22, @"ZoneID");
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)_validateQuerySubscriptionOptions:(unint64_t)a3
+- (void)_validateQuerySubscriptionOptions:(unint64_t)options
 {
-  if ((a3 & 7) == 0)
+  if ((options & 7) == 0)
   {
     v3 = [CKException alloc];
     v5 = objc_msgSend_initWithName_format_(v3, v4, *MEMORY[0x1E695D940], @"Query subscriptions options must include at least one firing behavior");
@@ -134,10 +134,10 @@
   }
 }
 
-- (void)setRecordType:(id)a3
+- (void)setRecordType:(id)type
 {
-  v4 = a3;
-  if (!objc_msgSend_length(v4, v5, v6))
+  typeCopy = type;
+  if (!objc_msgSend_length(typeCopy, v5, v6))
   {
     v7 = [CKException alloc];
     v9 = objc_msgSend_initWithName_format_(v7, v8, *MEMORY[0x1E695D940], @"Query subscriptions must have a valid record type");
@@ -146,7 +146,7 @@
 
   v10.receiver = self;
   v10.super_class = CKQuerySubscription;
-  [(CKSubscription *)&v10 setRecordType:v4];
+  [(CKSubscription *)&v10 setRecordType:typeCopy];
 }
 
 - (id)CKPropertiesDescription
@@ -162,11 +162,11 @@
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = CKQuerySubscription;
-  v4 = [(CKSubscription *)&v12 copyWithZone:a3];
+  v4 = [(CKSubscription *)&v12 copyWithZone:zone];
   v7 = objc_msgSend__predicateWithoutCopy(self, v5, v6);
   v8 = v4[6];
   v4[6] = v7;
@@ -175,10 +175,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v24 = 1;
   }
@@ -187,9 +187,9 @@
   {
     v26.receiver = self;
     v26.super_class = CKQuerySubscription;
-    if ([(CKSubscription *)&v26 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(CKSubscription *)&v26 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend__predicateWithoutCopy(self, v6, v7);
       v11 = objc_msgSend__predicateWithoutCopy(v5, v9, v10);
       v12 = CKObjectsAreBothNilOrEqual(v8, v11);
@@ -216,9 +216,9 @@
   return v24;
 }
 
-- (void)setPredicate_modelMutation:(id)a3
+- (void)setPredicate_modelMutation:(id)mutation
 {
-  v4 = objc_msgSend_CKDeepCopy(a3, a2, a3);
+  v4 = objc_msgSend_CKDeepCopy(mutation, a2, mutation);
   predicate = self->_predicate;
   self->_predicate = v4;
 

@@ -1,7 +1,7 @@
 @interface DPAnalytics
 - (BOOL)_startEventMonitoring;
 - (DPAnalytics)init;
-- (void)_handleServiceMatched:(unsigned int)a3;
+- (void)_handleServiceMatched:(unsigned int)matched;
 - (void)_startEventMonitoring;
 - (void)_stopEventMonitoring;
 - (void)start;
@@ -47,13 +47,13 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Starting %@...", buf, 0xCu);
   }
 
-  v6 = [(DPAnalytics *)self queue];
+  queue = [(DPAnalytics *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __20__DPAnalytics_start__block_invoke;
   block[3] = &unk_20408;
   block[4] = self;
-  dispatch_sync(v6, block);
+  dispatch_sync(queue, block);
 }
 
 void __20__DPAnalytics_start__block_invoke(uint64_t a1)
@@ -90,13 +90,13 @@ void __20__DPAnalytics_start__block_invoke(uint64_t a1)
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Stopping %@...", buf, 0xCu);
   }
 
-  v6 = [(DPAnalytics *)self queue];
+  queue = [(DPAnalytics *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __19__DPAnalytics_stop__block_invoke;
   block[3] = &unk_20408;
   block[4] = self;
-  dispatch_sync(v6, block);
+  dispatch_sync(queue, block);
 }
 
 void __19__DPAnalytics_stop__block_invoke(uint64_t a1)
@@ -141,9 +141,9 @@ void __19__DPAnalytics_stop__block_invoke(uint64_t a1)
 
     [(DPAnalytics *)self setMonitoring:1];
     [(DPAnalytics *)self setIoNotificationPort:IONotificationPortCreate(kIOMainPortDefault)];
-    v5 = [(DPAnalytics *)self ioNotificationPort];
-    v6 = [(DPAnalytics *)self queue];
-    IONotificationPortSetDispatchQueue(v5, v6);
+    ioNotificationPort = [(DPAnalytics *)self ioNotificationPort];
+    queue = [(DPAnalytics *)self queue];
+    IONotificationPortSetDispatchQueue(ioNotificationPort, queue);
 
     v7 = IOServiceMatching("IOPortTransportStateDisplayPort");
     v8 = v7;
@@ -207,12 +207,12 @@ LABEL_12:
   }
 }
 
-- (void)_handleServiceMatched:(unsigned int)a3
+- (void)_handleServiceMatched:(unsigned int)matched
 {
-  if (a3)
+  if (matched)
   {
     memset(name, 0, sizeof(name));
-    IORegistryEntryGetName(a3, name);
+    IORegistryEntryGetName(matched, name);
     v5 = [(DPAnalytics *)self log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -234,7 +234,7 @@ LABEL_12:
       goto LABEL_156;
     }
 
-    if (!IOObjectConformsTo(a3, "IOPortTransportStateDisplayPort"))
+    if (!IOObjectConformsTo(matched, "IOPortTransportStateDisplayPort"))
     {
       v22 = [(DPAnalytics *)self log];
       if (OUTLINED_FUNCTION_18(v22))
@@ -304,7 +304,7 @@ LABEL_12:
           objc_opt_class();
           v48 = castNSObjectToType(v47);
 
-          v49 = self;
+          selfCopy = self;
           if (v48)
           {
             v50 = v17;
@@ -347,7 +347,7 @@ LABEL_12:
           v17 = v50;
           IOObjectRelease(v46);
 
-          self = v49;
+          self = selfCopy;
         }
 
         else
@@ -394,7 +394,7 @@ LABEL_40:
     v79 = castNSObjectToType(v78);
 
     v336 = v79;
-    v338 = self;
+    selfCopy2 = self;
     if (v79)
     {
       v80 = v10;
@@ -426,10 +426,10 @@ LABEL_40:
 
     else
     {
-      v96 = [(DPAnalytics *)v338 log];
+      v96 = [(DPAnalytics *)selfCopy2 log];
       if (OUTLINED_FUNCTION_5_0(v96))
       {
-        OUTLINED_FUNCTION_4_3(&dword_0, v97, v98, "Could not find role!", v99, v100, v101, v102, v309, v310, v311, v312, v313, v315, v317, v318, v322, v324, v326, v328, v330, v332, v336, v338, v339, v340, v341, v342, v343, cf, 0);
+        OUTLINED_FUNCTION_4_3(&dword_0, v97, v98, "Could not find role!", v99, v100, v101, v102, v309, v310, v311, v312, v313, v315, v317, v318, v322, v324, v326, v328, v330, v332, v336, selfCopy2, v339, v340, v341, v342, v343, cf, 0);
       }
 
       v95 = v17;
@@ -450,10 +450,10 @@ LABEL_40:
 
     else
     {
-      v109 = [(DPAnalytics *)v338 log];
+      v109 = [(DPAnalytics *)selfCopy2 log];
       if (OUTLINED_FUNCTION_5_0(v109))
       {
-        OUTLINED_FUNCTION_4_3(&dword_0, v110, v111, "Could not find maxLaneCount!", v112, v113, v114, v115, v309, v310, v311, v312, v313, v315, v317, v318, v322, v324, v95, v328, 0, v332, v336, v338, v339, v340, v341, v342, v343, cf, 0);
+        OUTLINED_FUNCTION_4_3(&dword_0, v110, v111, "Could not find maxLaneCount!", v112, v113, v114, v115, v309, v310, v311, v312, v313, v315, v317, v318, v322, v324, v95, v328, 0, v332, v336, selfCopy2, v339, v340, v341, v342, v343, cf, 0);
       }
     }
 
@@ -472,11 +472,11 @@ LABEL_40:
 
     else
     {
-      v123 = [(DPAnalytics *)v338 log];
+      v123 = [(DPAnalytics *)selfCopy2 log];
       v122 = v88;
       if (OUTLINED_FUNCTION_5_0(v123))
       {
-        OUTLINED_FUNCTION_4_3(&dword_0, v124, v125, "Could not find laneCount!", v126, v127, v128, v129, v309, v310, v311, v312, v313, v315, v317, v318, v322, v324, v327, 0, v331, v332, v336, v338, v339, v340, v341, v342, v343, cf, 0);
+        OUTLINED_FUNCTION_4_3(&dword_0, v124, v125, "Could not find laneCount!", v126, v127, v128, v129, v309, v310, v311, v312, v313, v315, v317, v318, v322, v324, v327, 0, v331, v332, v336, selfCopy2, v339, v340, v341, v342, v343, cf, 0);
       }
     }
 
@@ -486,7 +486,7 @@ LABEL_40:
     v134 = OUTLINED_FUNCTION_1_5();
     v135 = castNSObjectToType(v134);
 
-    v136 = v338;
+    v136 = selfCopy2;
     v325 = v135;
     if (v135)
     {
@@ -495,10 +495,10 @@ LABEL_40:
 
     else
     {
-      v137 = [(DPAnalytics *)v338 log];
+      v137 = [(DPAnalytics *)selfCopy2 log];
       if (OUTLINED_FUNCTION_5_0(v137))
       {
-        OUTLINED_FUNCTION_4_3(&dword_0, v138, v139, "Could not find sinkCount!", v140, v141, v142, v143, v309, v310, v311, v312, v313, v315, v317, v318, v322, 0, v327, v329, v331, v332, v336, v338, v339, v340, v341, v342, v343, cf, 0);
+        OUTLINED_FUNCTION_4_3(&dword_0, v138, v139, "Could not find sinkCount!", v140, v141, v142, v143, v309, v310, v311, v312, v313, v315, v317, v318, v322, 0, v327, v329, v331, v332, v336, selfCopy2, v339, v340, v341, v342, v343, cf, 0);
       }
     }
 
@@ -520,7 +520,7 @@ LABEL_40:
       v151 = [(DPAnalytics *)v136 log];
       if (OUTLINED_FUNCTION_5_0(v151))
       {
-        OUTLINED_FUNCTION_4_3(&dword_0, v152, v153, "Could not find link rate!", v154, v155, v156, v157, v309, v310, v311, v312, v313, v315, v317, v318, v322, v325, v327, v329, v331, v94, v336, v338, v339, v340, v341, v342, v343, cf, 0);
+        OUTLINED_FUNCTION_4_3(&dword_0, v152, v153, "Could not find link rate!", v154, v155, v156, v157, v309, v310, v311, v312, v313, v315, v317, v318, v322, v325, v327, v329, v331, v94, v336, selfCopy2, v339, v340, v341, v342, v343, cf, 0);
       }
 
       v150 = 0;
@@ -921,7 +921,7 @@ LABEL_156:
 
 - (void)_startEventMonitoring
 {
-  v1 = [a1 log];
+  v1 = [self log];
   if (os_log_type_enabled(v1, OS_LOG_TYPE_ERROR))
   {
     OUTLINED_FUNCTION_5_4();

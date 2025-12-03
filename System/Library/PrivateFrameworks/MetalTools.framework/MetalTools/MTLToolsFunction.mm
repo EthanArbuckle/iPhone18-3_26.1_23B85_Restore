@@ -1,7 +1,7 @@
 @interface MTLToolsFunction
 - (MTLDebugInstrumentationData)debugInstrumentationData;
 - (MTLFunctionHandle)functionHandle;
-- (MTLToolsFunction)initWithFunction:(id)a3 library:(id)a4;
+- (MTLToolsFunction)initWithFunction:(id)function library:(id)library;
 - (MTLType)returnType;
 - (NSArray)arguments;
 - (NSArray)bindings;
@@ -18,15 +18,15 @@
 - (id)bitcodeData;
 - (id)functionConstants;
 - (id)functionInputs;
-- (id)newArgumentEncoderWithBufferIndex:(unint64_t)a3;
-- (id)newArgumentEncoderWithBufferIndex:(unint64_t)a3 pipelineLibrary:(id)a4;
-- (id)newArgumentEncoderWithBufferIndex:(unint64_t)a3 reflection:(id *)a4;
-- (id)newArgumentEncoderWithBufferIndex:(unint64_t)a3 reflection:(id *)a4 binaryArchives:(id)a5;
-- (id)newArgumentEncoderWithBufferIndex:(unint64_t)a3 reflection:(id *)a4 pipelineLibrary:(id)a5;
+- (id)newArgumentEncoderWithBufferIndex:(unint64_t)index;
+- (id)newArgumentEncoderWithBufferIndex:(unint64_t)index pipelineLibrary:(id)library;
+- (id)newArgumentEncoderWithBufferIndex:(unint64_t)index reflection:(id *)reflection;
+- (id)newArgumentEncoderWithBufferIndex:(unint64_t)index reflection:(id *)reflection binaryArchives:(id)archives;
+- (id)newArgumentEncoderWithBufferIndex:(unint64_t)index reflection:(id *)reflection pipelineLibrary:(id)library;
 - (id)precompiledOutput;
-- (id)reflectionWithOptions:(unint64_t)a3;
-- (id)reflectionWithOptions:(unint64_t)a3 binaryArchives:(id)a4;
-- (id)reflectionWithOptions:(unint64_t)a3 pipelineLibrary:(id)a4;
+- (id)reflectionWithOptions:(unint64_t)options;
+- (id)reflectionWithOptions:(unint64_t)options binaryArchives:(id)archives;
+- (id)reflectionWithOptions:(unint64_t)options pipelineLibrary:(id)library;
 - (int64_t)lineNumber;
 - (int64_t)patchControlPointCount;
 - (unint64_t)functionType;
@@ -34,175 +34,175 @@
 - (unint64_t)patchType;
 - (unint64_t)renderTargetArrayIndexType;
 - (void)dealloc;
-- (void)reflectionWithOptions:(unint64_t)a3 completionHandler:(id)a4;
-- (void)setLabel:(id)a3;
-- (void)setRelocations:(id)a3;
+- (void)reflectionWithOptions:(unint64_t)options completionHandler:(id)handler;
+- (void)setLabel:(id)label;
+- (void)setRelocations:(id)relocations;
 @end
 
 @implementation MTLToolsFunction
 
-- (MTLToolsFunction)initWithFunction:(id)a3 library:(id)a4
+- (MTLToolsFunction)initWithFunction:(id)function library:(id)library
 {
   v5.receiver = self;
   v5.super_class = MTLToolsFunction;
-  return [(MTLToolsObject *)&v5 initWithBaseObject:a3 parent:a4];
+  return [(MTLToolsObject *)&v5 initWithBaseObject:function parent:library];
 }
 
 - (unint64_t)functionType
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 functionType];
+  return [baseObject functionType];
 }
 
 - (NSArray)vertexAttributes
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 vertexAttributes];
+  return [baseObject vertexAttributes];
 }
 
 - (MTLType)returnType
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 returnType];
+  return [baseObject returnType];
 }
 
 - (NSArray)arguments
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 arguments];
+  return [baseObject arguments];
 }
 
 - (NSArray)bindings
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 bindings];
+  return [baseObject bindings];
 }
 
 - (NSArray)importedSymbols
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 importedSymbols];
+  return [baseObject importedSymbols];
 }
 
 - (NSArray)importedLibraries
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 importedLibraries];
+  return [baseObject importedLibraries];
 }
 
 - (NSArray)stageInputAttributes
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 stageInputAttributes];
+  return [baseObject stageInputAttributes];
 }
 
 - (NSString)name
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 name];
+  return [baseObject name];
 }
 
 - (NSString)filePath
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 filePath];
+  return [baseObject filePath];
 }
 
 - (int64_t)lineNumber
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 lineNumber];
+  return [baseObject lineNumber];
 }
 
 - (NSString)unpackedFilePath
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 unpackedFilePath];
+  return [baseObject unpackedFilePath];
 }
 
 - (id)functionInputs
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 functionInputs];
+  return [baseObject functionInputs];
 }
 
 - (id)functionConstants
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 functionConstants];
+  return [baseObject functionConstants];
 }
 
 - (MTLDebugInstrumentationData)debugInstrumentationData
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 debugInstrumentationData];
+  return [baseObject debugInstrumentationData];
 }
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setLabel:a3];
+  [baseObject setLabel:label];
 }
 
 - (unint64_t)renderTargetArrayIndexType
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 renderTargetArrayIndexType];
+  return [baseObject renderTargetArrayIndexType];
 }
 
 - (NSDictionary)functionConstantsDictionary
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 functionConstantsDictionary];
+  return [baseObject functionConstantsDictionary];
 }
 
 - (unint64_t)patchType
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 patchType];
+  return [baseObject patchType];
 }
 
 - (int64_t)patchControlPointCount
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 patchControlPointCount];
+  return [baseObject patchControlPointCount];
 }
 
 - (unint64_t)options
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 options];
+  return [baseObject options];
 }
 
-- (id)newArgumentEncoderWithBufferIndex:(unint64_t)a3
+- (id)newArgumentEncoderWithBufferIndex:(unint64_t)index
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -216,7 +216,7 @@
   return result;
 }
 
-- (id)newArgumentEncoderWithBufferIndex:(unint64_t)a3 reflection:(id *)a4
+- (id)newArgumentEncoderWithBufferIndex:(unint64_t)index reflection:(id *)reflection
 {
   result = [-[MTLToolsObject baseObject](self "baseObject")];
   if (result)
@@ -230,7 +230,7 @@
   return result;
 }
 
-- (id)newArgumentEncoderWithBufferIndex:(unint64_t)a3 pipelineLibrary:(id)a4
+- (id)newArgumentEncoderWithBufferIndex:(unint64_t)index pipelineLibrary:(id)library
 {
   v7 = objc_autoreleasePoolPush();
   v8 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -248,7 +248,7 @@
   return v9;
 }
 
-- (id)newArgumentEncoderWithBufferIndex:(unint64_t)a3 reflection:(id *)a4 pipelineLibrary:(id)a5
+- (id)newArgumentEncoderWithBufferIndex:(unint64_t)index reflection:(id *)reflection pipelineLibrary:(id)library
 {
   v9 = objc_autoreleasePoolPush();
   v10 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -266,21 +266,21 @@
   return v11;
 }
 
-- (id)newArgumentEncoderWithBufferIndex:(unint64_t)a3 reflection:(id *)a4 binaryArchives:(id)a5
+- (id)newArgumentEncoderWithBufferIndex:(unint64_t)index reflection:(id *)reflection binaryArchives:(id)archives
 {
   v9 = objc_autoreleasePoolPush();
-  if (a5)
+  if (archives)
   {
-    v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a5, "count")}];
-    if ([a5 count])
+    v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(archives, "count")}];
+    if ([archives count])
     {
       v11 = 0;
       do
       {
-        [v10 addObject:{objc_msgSend(objc_msgSend(a5, "objectAtIndexedSubscript:", v11++), "baseObject")}];
+        [v10 addObject:{objc_msgSend(objc_msgSend(archives, "objectAtIndexedSubscript:", v11++), "baseObject")}];
       }
 
-      while (v11 < [a5 count]);
+      while (v11 < [archives count]);
     }
   }
 
@@ -305,55 +305,55 @@
   return v14;
 }
 
-- (void)setRelocations:(id)a3
+- (void)setRelocations:(id)relocations
 {
   relocations = self->_relocations;
-  if (relocations != a3)
+  if (relocations != relocations)
   {
 
-    self->_relocations = [a3 copy];
-    v6 = [MTLToolsDevice newUnwrappedMTLRelocations:a3];
+    self->_relocations = [relocations copy];
+    v6 = [MTLToolsDevice newUnwrappedMTLRelocations:relocations];
     [-[MTLToolsObject baseObject](self "baseObject")];
   }
 }
 
 - (id)bitcodeData
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 bitcodeData];
+  return [baseObject bitcodeData];
 }
 
-- (id)reflectionWithOptions:(unint64_t)a3
+- (id)reflectionWithOptions:(unint64_t)options
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 reflectionWithOptions:a3];
+  return [baseObject reflectionWithOptions:options];
 }
 
-- (id)reflectionWithOptions:(unint64_t)a3 pipelineLibrary:(id)a4
+- (id)reflectionWithOptions:(unint64_t)options pipelineLibrary:(id)library
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a4 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [library baseObject];
 
-  return [v6 reflectionWithOptions:a3 pipelineLibrary:v7];
+  return [baseObject reflectionWithOptions:options pipelineLibrary:baseObject2];
 }
 
-- (id)reflectionWithOptions:(unint64_t)a3 binaryArchives:(id)a4
+- (id)reflectionWithOptions:(unint64_t)options binaryArchives:(id)archives
 {
   v7 = objc_autoreleasePoolPush();
-  if (a4)
+  if (archives)
   {
-    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a4, "count")}];
-    if ([a4 count])
+    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(archives, "count")}];
+    if ([archives count])
     {
       v9 = 0;
       do
       {
-        [v8 addObject:{objc_msgSend(objc_msgSend(a4, "objectAtIndexedSubscript:", v9++), "baseObject")}];
+        [v8 addObject:{objc_msgSend(objc_msgSend(archives, "objectAtIndexedSubscript:", v9++), "baseObject")}];
       }
 
-      while (v9 < [a4 count]);
+      while (v9 < [archives count]);
     }
   }
 
@@ -369,18 +369,18 @@
   return v10;
 }
 
-- (void)reflectionWithOptions:(unint64_t)a3 completionHandler:(id)a4
+- (void)reflectionWithOptions:(unint64_t)options completionHandler:(id)handler
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 reflectionWithOptions:a3 completionHandler:a4];
+  [baseObject reflectionWithOptions:options completionHandler:handler];
 }
 
 - (const)bitCodeHash
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 bitCodeHash];
+  return [baseObject bitCodeHash];
 }
 
 - (MTLFunctionHandle)functionHandle
@@ -404,9 +404,9 @@
 
 - (id)precompiledOutput
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 precompiledOutput];
+  return [baseObject precompiledOutput];
 }
 
 - (void)dealloc

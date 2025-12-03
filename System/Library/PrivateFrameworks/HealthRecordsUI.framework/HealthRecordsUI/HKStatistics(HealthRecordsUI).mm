@@ -7,35 +7,35 @@
 - (void)updateMinMaxWithChartableCodedQuantity:()HealthRecordsUI
 {
   v16 = a3;
-  v4 = [a1 minimumQuantity];
+  minimumQuantity = [self minimumQuantity];
 
-  if (v4 && ([a1 minimumQuantity], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "quantity"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "compare:", v6), v6, v5, v7 != 1))
+  if (minimumQuantity && ([self minimumQuantity], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "quantity"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "compare:", v6), v6, v5, v7 != 1))
   {
-    v8 = [a1 minimumQuantity];
+    minimumQuantity2 = [self minimumQuantity];
   }
 
   else
   {
-    v8 = [v16 quantity];
+    minimumQuantity2 = [v16 quantity];
   }
 
-  v9 = v8;
-  [a1 setMinimumQuantity:v8];
+  v9 = minimumQuantity2;
+  [self setMinimumQuantity:minimumQuantity2];
 
-  v10 = [a1 maximumQuantity];
+  maximumQuantity = [self maximumQuantity];
 
-  if (!v10 || ([a1 maximumQuantity], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "quantity"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "compare:", v12), v12, v11, v13 == -1))
+  if (!maximumQuantity || ([self maximumQuantity], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "quantity"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "compare:", v12), v12, v11, v13 == -1))
   {
-    v14 = [v16 quantity];
+    quantity = [v16 quantity];
   }
 
   else
   {
-    v14 = [a1 maximumQuantity];
+    quantity = [self maximumQuantity];
   }
 
-  v15 = v14;
-  [a1 setMaximumQuantity:v14];
+  v15 = quantity;
+  [self setMaximumQuantity:quantity];
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface BioLogDiagnosticExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation BioLogDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v3 = +[NSMutableArray array];
   v4 = +[BiometricKit manager];

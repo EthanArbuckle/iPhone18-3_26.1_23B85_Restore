@@ -1,23 +1,23 @@
 @interface SBUIActionViewLabel
-- (SBUIActionViewLabel)initWithFrame:(CGRect)a3;
+- (SBUIActionViewLabel)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)alignmentRectInsets;
 - (void)mt_removeAllVisualStyling;
-- (void)setFont:(id)a3;
-- (void)setLineBreakMode:(int64_t)a3;
-- (void)setNumberOfLines:(int64_t)a3;
-- (void)setText:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTextColor:(id)a3;
+- (void)setFont:(id)font;
+- (void)setLineBreakMode:(int64_t)mode;
+- (void)setNumberOfLines:(int64_t)lines;
+- (void)setText:(id)text;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation SBUIActionViewLabel
 
-- (SBUIActionViewLabel)initWithFrame:(CGRect)a3
+- (SBUIActionViewLabel)initWithFrame:(CGRect)frame
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v15.receiver = self;
   v15.super_class = SBUIActionViewLabel;
-  v3 = [(SBUIActionViewLabel *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBUIActionViewLabel *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D756B8]);
@@ -56,15 +56,15 @@
   return result;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (![(NSString *)self->_text isEqualToString:v5])
+  textCopy = text;
+  if (![(NSString *)self->_text isEqualToString:textCopy])
   {
-    objc_storeStrong(&self->_text, a3);
+    objc_storeStrong(&self->_text, text);
     v31 = 0;
-    v6 = [v5 sbui_rangesOfEmojiTokens:&v31];
+    v6 = [textCopy sbui_rangesOfEmojiTokens:&v31];
     v7 = v31;
     if ([v6 count])
     {
@@ -72,7 +72,7 @@
       v29[1] = 3221225472;
       v29[2] = __31__SBUIActionViewLabel_setText___block_invoke;
       v29[3] = &unk_27836B4F8;
-      v30 = v5;
+      v30 = textCopy;
       v8 = MEMORY[0x223D63700](v29);
       label = self->_label;
       v10 = (v8)[2](v8, v6);
@@ -87,8 +87,8 @@
         self->_emojiLabel = v13;
 
         v15 = self->_emojiLabel;
-        v16 = [(SBUIActionViewLabel *)self font];
-        [(UILabel *)v15 setFont:v16];
+        font = [(SBUIActionViewLabel *)self font];
+        [(UILabel *)v15 setFont:font];
 
         [(UILabel *)self->_emojiLabel setLineBreakMode:[(SBUIActionViewLabel *)self lineBreakMode]];
         [(UILabel *)self->_emojiLabel setNumberOfLines:[(SBUIActionViewLabel *)self numberOfLines]];
@@ -122,7 +122,7 @@
 
     else
     {
-      [(UILabel *)self->_label setText:v5];
+      [(UILabel *)self->_label setText:textCopy];
       v27 = self->_emojiLabel;
       if (!v27)
       {
@@ -190,48 +190,48 @@ id __31__SBUIActionViewLabel_setText___block_invoke(uint64_t a1, void *a2)
   return v14;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   label = self->_label;
-  v5 = a3;
-  [(UILabel *)label setFont:v5];
-  [(UILabel *)self->_emojiLabel setFont:v5];
+  fontCopy = font;
+  [(UILabel *)label setFont:fontCopy];
+  [(UILabel *)self->_emojiLabel setFont:fontCopy];
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_textColor != v5)
+  colorCopy = color;
+  if (self->_textColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_textColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_textColor, color);
     [(UILabel *)self->_label setTextColor:v6];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
   [(UILabel *)self->_label setTextAlignment:?];
   emojiLabel = self->_emojiLabel;
 
-  [(UILabel *)emojiLabel setTextAlignment:a3];
+  [(UILabel *)emojiLabel setTextAlignment:alignment];
 }
 
-- (void)setLineBreakMode:(int64_t)a3
+- (void)setLineBreakMode:(int64_t)mode
 {
   [(UILabel *)self->_label setLineBreakMode:?];
   emojiLabel = self->_emojiLabel;
 
-  [(UILabel *)emojiLabel setLineBreakMode:a3];
+  [(UILabel *)emojiLabel setLineBreakMode:mode];
 }
 
-- (void)setNumberOfLines:(int64_t)a3
+- (void)setNumberOfLines:(int64_t)lines
 {
   [(UILabel *)self->_label setNumberOfLines:?];
   emojiLabel = self->_emojiLabel;
 
-  [(UILabel *)emojiLabel setNumberOfLines:a3];
+  [(UILabel *)emojiLabel setNumberOfLines:lines];
 }
 
 - (void)mt_removeAllVisualStyling
@@ -239,8 +239,8 @@ id __31__SBUIActionViewLabel_setText___block_invoke(uint64_t a1, void *a2)
   [(UILabel *)self->_label mt_removeAllVisualStyling];
   [(UILabel *)self->_label setAlpha:1.0];
   label = self->_label;
-  v4 = [(SBUIActionViewLabel *)self textColor];
-  [(UILabel *)label setTextColor:v4];
+  textColor = [(SBUIActionViewLabel *)self textColor];
+  [(UILabel *)label setTextColor:textColor];
 }
 
 @end

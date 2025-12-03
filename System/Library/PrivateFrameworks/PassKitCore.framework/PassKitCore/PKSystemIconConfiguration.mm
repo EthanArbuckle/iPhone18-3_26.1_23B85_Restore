@@ -1,13 +1,13 @@
 @interface PKSystemIconConfiguration
-- (BOOL)isEqual:(id)a3;
-- (PKSystemIconConfiguration)initWithCoder:(id)a3;
-- (PKSystemIconConfiguration)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKSystemIconConfiguration)initWithCoder:(id)coder;
+- (PKSystemIconConfiguration)initWithDictionary:(id)dictionary;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSystemIconConfiguration
@@ -19,22 +19,22 @@
   return [(PKSystemIconConfiguration *)&v3 init];
 }
 
-- (PKSystemIconConfiguration)initWithDictionary:(id)a3
+- (PKSystemIconConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = PKSystemIconConfiguration;
   v5 = [(PKSystemIconConfiguration *)&v19 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"imageName"];
+    v6 = [dictionaryCopy PKStringForKey:@"imageName"];
     imageName = v5->_imageName;
     v5->_imageName = v6;
 
-    v8 = [v4 PKStringForKey:@"style"];
+    v8 = [dictionaryCopy PKStringForKey:@"style"];
     v5->_style = PKSystemIconConfigurationColorStyleFromString(v8);
 
-    v9 = [v4 PKDictionaryForKey:@"color1"];
+    v9 = [dictionaryCopy PKDictionaryForKey:@"color1"];
     if ([v9 count])
     {
       v10 = [[PKSystemIconConfigurationColor alloc] initWithDictionary:v9];
@@ -42,7 +42,7 @@
       v5->_color1 = v10;
     }
 
-    v12 = [v4 PKDictionaryForKey:@"color2"];
+    v12 = [dictionaryCopy PKDictionaryForKey:@"color2"];
     if ([v12 count])
     {
       v13 = [[PKSystemIconConfigurationColor alloc] initWithDictionary:v12];
@@ -50,7 +50,7 @@
       v5->_color2 = v13;
     }
 
-    v15 = [v4 PKDictionaryForKey:@"color3"];
+    v15 = [dictionaryCopy PKDictionaryForKey:@"color3"];
     if ([v15 count])
     {
       v16 = [[PKSystemIconConfigurationColor alloc] initWithDictionary:v15];
@@ -78,32 +78,32 @@
   }
 
   [v3 setObject:v5 forKeyedSubscript:@"style"];
-  v6 = [(PKSystemIconConfigurationColor *)self->_color1 dictionaryRepresentation];
-  [v3 setObject:v6 forKeyedSubscript:@"color1"];
+  dictionaryRepresentation = [(PKSystemIconConfigurationColor *)self->_color1 dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"color1"];
 
-  v7 = [(PKSystemIconConfigurationColor *)self->_color2 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"color2"];
+  dictionaryRepresentation2 = [(PKSystemIconConfigurationColor *)self->_color2 dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation2 forKeyedSubscript:@"color2"];
 
-  v8 = [(PKSystemIconConfigurationColor *)self->_color3 dictionaryRepresentation];
-  [v3 setObject:v8 forKeyedSubscript:@"color3"];
+  dictionaryRepresentation3 = [(PKSystemIconConfigurationColor *)self->_color3 dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation3 forKeyedSubscript:@"color3"];
 
   v9 = [v3 copy];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -234,28 +234,28 @@ LABEL_30:
   return v3;
 }
 
-- (PKSystemIconConfiguration)initWithCoder:(id)a3
+- (PKSystemIconConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKSystemIconConfiguration;
   v5 = [(PKSystemIconConfiguration *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageName"];
     imageName = v5->_imageName;
     v5->_imageName = v6;
 
-    v5->_style = [v4 decodeIntegerForKey:@"style"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"color1"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"style"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"color1"];
     color1 = v5->_color1;
     v5->_color1 = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"color2"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"color2"];
     color2 = v5->_color2;
     v5->_color2 = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"color3"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"color3"];
     color3 = v5->_color3;
     v5->_color3 = v12;
   }
@@ -263,34 +263,34 @@ LABEL_30:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   imageName = self->_imageName;
-  v5 = a3;
-  [v5 encodeObject:imageName forKey:@"imageName"];
-  [v5 encodeInteger:self->_style forKey:@"style"];
-  [v5 encodeObject:self->_color1 forKey:@"color1"];
-  [v5 encodeObject:self->_color2 forKey:@"color2"];
-  [v5 encodeObject:self->_color3 forKey:@"color3"];
+  coderCopy = coder;
+  [coderCopy encodeObject:imageName forKey:@"imageName"];
+  [coderCopy encodeInteger:self->_style forKey:@"style"];
+  [coderCopy encodeObject:self->_color1 forKey:@"color1"];
+  [coderCopy encodeObject:self->_color2 forKey:@"color2"];
+  [coderCopy encodeObject:self->_color3 forKey:@"color3"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKSystemIconConfiguration allocWithZone:](PKSystemIconConfiguration init];
-  v6 = [(NSString *)self->_imageName copyWithZone:a3];
+  v6 = [(NSString *)self->_imageName copyWithZone:zone];
   imageName = v5->_imageName;
   v5->_imageName = v6;
 
   v5->_style = self->_style;
-  v8 = [(PKSystemIconConfigurationColor *)self->_color1 copyWithZone:a3];
+  v8 = [(PKSystemIconConfigurationColor *)self->_color1 copyWithZone:zone];
   color1 = v5->_color1;
   v5->_color1 = v8;
 
-  v10 = [(PKSystemIconConfigurationColor *)self->_color2 copyWithZone:a3];
+  v10 = [(PKSystemIconConfigurationColor *)self->_color2 copyWithZone:zone];
   color2 = v5->_color2;
   v5->_color2 = v10;
 
-  v12 = [(PKSystemIconConfigurationColor *)self->_color3 copyWithZone:a3];
+  v12 = [(PKSystemIconConfigurationColor *)self->_color3 copyWithZone:zone];
   color3 = v5->_color3;
   v5->_color3 = v12;
 

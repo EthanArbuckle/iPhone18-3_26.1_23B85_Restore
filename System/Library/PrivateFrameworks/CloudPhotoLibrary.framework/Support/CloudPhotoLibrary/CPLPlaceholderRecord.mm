@@ -1,30 +1,30 @@
 @interface CPLPlaceholderRecord
-- (CPLPlaceholderRecord)initWithCKRecord:(id)a3 scopedIdentifier:(id)a4;
-- (id)allRelatedCKRecordsInZoneID:(id)a3 identifier:(id)a4;
+- (CPLPlaceholderRecord)initWithCKRecord:(id)record scopedIdentifier:(id)identifier;
+- (id)allRelatedCKRecordsInZoneID:(id)d identifier:(id)identifier;
 @end
 
 @implementation CPLPlaceholderRecord
 
-- (CPLPlaceholderRecord)initWithCKRecord:(id)a3 scopedIdentifier:(id)a4
+- (CPLPlaceholderRecord)initWithCKRecord:(id)record scopedIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 recordType];
-  v9 = CPLRecordChangeClassForCKRecordType(v8);
+  recordCopy = record;
+  identifierCopy = identifier;
+  recordType = [recordCopy recordType];
+  v9 = CPLRecordChangeClassForCKRecordType(recordType);
 
   if (v9)
   {
-    v10 = [v9 ckPropertyForRelatedIdentifier];
-    if (v10)
+    ckPropertyForRelatedIdentifier = [v9 ckPropertyForRelatedIdentifier];
+    if (ckPropertyForRelatedIdentifier)
     {
-      v11 = [v6 objectForKeyedSubscript:v10];
+      v11 = [recordCopy objectForKeyedSubscript:ckPropertyForRelatedIdentifier];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v12 = [v11 recordID];
-        v13 = [v12 recordName];
+        recordID = [v11 recordID];
+        recordName = [recordID recordName];
 
-        v11 = v13;
+        v11 = recordName;
         goto LABEL_7;
       }
 
@@ -34,45 +34,45 @@
 LABEL_7:
         if (v11)
         {
-          v15 = [v9 relatedRecordClass];
+          relatedRecordClass = [v9 relatedRecordClass];
         }
 
         else
         {
-          v15 = 0;
+          relatedRecordClass = 0;
         }
 
         goto LABEL_12;
       }
     }
 
-    v15 = 0;
+    relatedRecordClass = 0;
     v11 = 0;
 LABEL_12:
-    self = [(CPLPlaceholderRecord *)self initWithRecordClass:v9 scopedIdentifier:v7 relatedRecordClass:v15 relatedIdentifier:v11];
+    self = [(CPLPlaceholderRecord *)self initWithRecordClass:v9 scopedIdentifier:identifierCopy relatedRecordClass:relatedRecordClass relatedIdentifier:v11];
 
-    v14 = self;
+    selfCopy = self;
     goto LABEL_13;
   }
 
-  v14 = 0;
+  selfCopy = 0;
 LABEL_13:
 
-  return v14;
+  return selfCopy;
 }
 
-- (id)allRelatedCKRecordsInZoneID:(id)a3 identifier:(id)a4
+- (id)allRelatedCKRecordsInZoneID:(id)d identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPLPlaceholderRecord *)self recordClass];
-  v9 = CKRecordTypeForCPLRecordChangeClass(v8);
+  dCopy = d;
+  identifierCopy = identifier;
+  recordClass = [(CPLPlaceholderRecord *)self recordClass];
+  v9 = CKRecordTypeForCPLRecordChangeClass(recordClass);
   if (v9)
   {
-    v10 = [[CKRecordID alloc] initWithRecordName:v7 zoneID:v6];
+    v10 = [[CKRecordID alloc] initWithRecordName:identifierCopy zoneID:dCopy];
     v11 = [[CKRecord alloc] initWithRecordType:v9 recordID:v10];
-    v12 = [(CPLPlaceholderRecord *)self relatedIdentifier];
-    if (!v12)
+    relatedIdentifier = [(CPLPlaceholderRecord *)self relatedIdentifier];
+    if (!relatedIdentifier)
     {
       goto LABEL_6;
     }
@@ -84,9 +84,9 @@ LABEL_13:
     }
 
     v14 = v13;
-    v15 = [[CKRecordID alloc] initWithRecordName:v12 zoneID:v6];
+    v15 = [[CKRecordID alloc] initWithRecordName:relatedIdentifier zoneID:dCopy];
     v16 = [[CKRecord alloc] initWithRecordType:v14 recordID:v15];
-    [v8 setRelatedValueOnRecord:v11 fromRelatedRecord:v16];
+    [recordClass setRelatedValueOnRecord:v11 fromRelatedRecord:v16];
 
     if (v16)
     {

@@ -1,6 +1,6 @@
 @interface MPRatingCommand
 - (id)_mediaRemoteCommandInfoOptions;
-- (id)newCommandEventWithRating:(float)a3;
+- (id)newCommandEventWithRating:(float)rating;
 - (void)setMaximumRating:(float)maximumRating;
 - (void)setMinimumRating:(float)minimumRating;
 @end
@@ -23,16 +23,16 @@
   return v7;
 }
 
-- (id)newCommandEventWithRating:(float)a3
+- (id)newCommandEventWithRating:(float)rating
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v5 = [(MPRemoteCommand *)self mediaRemoteCommandType];
+  mediaRemoteCommandType = [(MPRemoteCommand *)self mediaRemoteCommandType];
   v11 = *MEMORY[0x1E69B11F0];
-  *&v6 = a3;
+  *&v6 = rating;
   v7 = [MEMORY[0x1E696AD98] numberWithFloat:v6];
   v12[0] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-  v9 = [(MPRemoteCommand *)self newCommandEventWithCommandType:v5 options:v8];
+  v9 = [(MPRemoteCommand *)self newCommandEventWithCommandType:mediaRemoteCommandType options:v8];
 
   return v9;
 }

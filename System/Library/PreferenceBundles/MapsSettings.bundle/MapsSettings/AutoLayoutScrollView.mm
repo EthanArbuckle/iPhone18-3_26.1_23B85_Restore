@@ -1,12 +1,12 @@
 @interface AutoLayoutScrollView
 - (AutoLayoutScrollView)init;
-- (AutoLayoutScrollView)initWithCoder:(id)a3;
-- (AutoLayoutScrollView)initWithFrame:(CGRect)a3;
-- (float)contentOverflowCompressionPriorityForAxis:(int64_t)a3;
+- (AutoLayoutScrollView)initWithCoder:(id)coder;
+- (AutoLayoutScrollView)initWithFrame:(CGRect)frame;
+- (float)contentOverflowCompressionPriorityForAxis:(int64_t)axis;
 - (void)_commonInit;
 - (void)_updateConstraintConstants;
 - (void)layoutSubviews;
-- (void)setContentOverflowCompressionPriority:(float)a3 forAxis:(int64_t)a4;
+- (void)setContentOverflowCompressionPriority:(float)priority forAxis:(int64_t)axis;
 - (void)updateConstraints;
 @end
 
@@ -40,11 +40,11 @@
   return v3;
 }
 
-- (AutoLayoutScrollView)initWithFrame:(CGRect)a3
+- (AutoLayoutScrollView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AutoLayoutScrollView;
-  v3 = [(AutoLayoutScrollView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AutoLayoutScrollView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -54,11 +54,11 @@
   return v4;
 }
 
-- (AutoLayoutScrollView)initWithCoder:(id)a3
+- (AutoLayoutScrollView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AutoLayoutScrollView;
-  v3 = [(AutoLayoutScrollView *)&v6 initWithCoder:a3];
+  v3 = [(AutoLayoutScrollView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -76,21 +76,21 @@
   v3 = +[NSMutableArray array];
   if (!self->_edgeConstraints)
   {
-    v33 = [(UIView *)self->_contentView topAnchor];
-    v32 = [(AutoLayoutScrollView *)self topAnchor];
-    v31 = [v33 constraintEqualToAnchor:v32];
+    topAnchor = [(UIView *)self->_contentView topAnchor];
+    topAnchor2 = [(AutoLayoutScrollView *)self topAnchor];
+    v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v35[0] = v31;
-    v30 = [(UIView *)self->_contentView leadingAnchor];
-    v29 = [(AutoLayoutScrollView *)self leadingAnchor];
-    v4 = [v30 constraintEqualToAnchor:v29];
+    leadingAnchor = [(UIView *)self->_contentView leadingAnchor];
+    leadingAnchor2 = [(AutoLayoutScrollView *)self leadingAnchor];
+    v4 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v35[1] = v4;
-    v5 = [(UIView *)self->_contentView trailingAnchor];
-    v6 = [(AutoLayoutScrollView *)self trailingAnchor];
-    v7 = [v5 constraintEqualToAnchor:v6];
+    trailingAnchor = [(UIView *)self->_contentView trailingAnchor];
+    trailingAnchor2 = [(AutoLayoutScrollView *)self trailingAnchor];
+    v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v35[2] = v7;
-    v8 = [(UIView *)self->_contentView bottomAnchor];
-    v9 = [(AutoLayoutScrollView *)self bottomAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    bottomAnchor = [(UIView *)self->_contentView bottomAnchor];
+    bottomAnchor2 = [(AutoLayoutScrollView *)self bottomAnchor];
+    v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v35[3] = v10;
     v11 = [NSArray arrayWithObjects:v35 count:4];
     edgeConstraints = self->_edgeConstraints;
@@ -101,9 +101,9 @@
 
   if (!self->_minimumWidthConstraint)
   {
-    v13 = [(UIView *)self->_contentView widthAnchor];
-    v14 = [(AutoLayoutScrollView *)self widthAnchor];
-    v15 = [v13 constraintGreaterThanOrEqualToAnchor:v14];
+    widthAnchor = [(UIView *)self->_contentView widthAnchor];
+    widthAnchor2 = [(AutoLayoutScrollView *)self widthAnchor];
+    v15 = [widthAnchor constraintGreaterThanOrEqualToAnchor:widthAnchor2];
     minimumWidthConstraint = self->_minimumWidthConstraint;
     self->_minimumWidthConstraint = v15;
 
@@ -112,9 +112,9 @@
 
   if (!self->_minimumHeightConstraint)
   {
-    v17 = [(UIView *)self->_contentView heightAnchor];
-    v18 = [(AutoLayoutScrollView *)self heightAnchor];
-    v19 = [v17 constraintGreaterThanOrEqualToAnchor:v18];
+    heightAnchor = [(UIView *)self->_contentView heightAnchor];
+    heightAnchor2 = [(AutoLayoutScrollView *)self heightAnchor];
+    v19 = [heightAnchor constraintGreaterThanOrEqualToAnchor:heightAnchor2];
     minimumHeightConstraint = self->_minimumHeightConstraint;
     self->_minimumHeightConstraint = v19;
 
@@ -123,9 +123,9 @@
 
   if (!self->_horizontalCompressionConstraint)
   {
-    v21 = [(UIView *)self->_contentView widthAnchor];
-    v22 = [(AutoLayoutScrollView *)self widthAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    widthAnchor3 = [(UIView *)self->_contentView widthAnchor];
+    widthAnchor4 = [(AutoLayoutScrollView *)self widthAnchor];
+    v23 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
     horizontalCompressionConstraint = self->_horizontalCompressionConstraint;
     self->_horizontalCompressionConstraint = v23;
 
@@ -136,9 +136,9 @@
 
   if (!self->_verticalCompressionConstraint)
   {
-    v25 = [(UIView *)self->_contentView heightAnchor];
-    v26 = [(AutoLayoutScrollView *)self widthAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
+    heightAnchor3 = [(UIView *)self->_contentView heightAnchor];
+    widthAnchor5 = [(AutoLayoutScrollView *)self widthAnchor];
+    v27 = [heightAnchor3 constraintEqualToAnchor:widthAnchor5];
     verticalCompressionConstraint = self->_verticalCompressionConstraint;
     self->_verticalCompressionConstraint = v27;
 
@@ -174,11 +174,11 @@
   [(AutoLayoutScrollView *)&v3 layoutSubviews];
 }
 
-- (float)contentOverflowCompressionPriorityForAxis:(int64_t)a3
+- (float)contentOverflowCompressionPriorityForAxis:(int64_t)axis
 {
-  if (a3)
+  if (axis)
   {
-    if (a3 != 1)
+    if (axis != 1)
     {
       return result;
     }
@@ -194,27 +194,27 @@
   return *(&self->super.super.super.super.isa + *v3);
 }
 
-- (void)setContentOverflowCompressionPriority:(float)a3 forAxis:(int64_t)a4
+- (void)setContentOverflowCompressionPriority:(float)priority forAxis:(int64_t)axis
 {
   [(AutoLayoutScrollView *)self contentOverflowCompressionPriorityForAxis:?];
-  if (v7 == a3)
+  if (v7 == priority)
   {
     return;
   }
 
-  if (!a4)
+  if (!axis)
   {
     v8 = &OBJC_IVAR___AutoLayoutScrollView__horizontalCompressionConstraint;
     v9 = &OBJC_IVAR___AutoLayoutScrollView__horizontalCompressionPriority;
     goto LABEL_7;
   }
 
-  if (a4 == 1)
+  if (axis == 1)
   {
     v8 = &OBJC_IVAR___AutoLayoutScrollView__verticalCompressionConstraint;
     v9 = &OBJC_IVAR___AutoLayoutScrollView__verticalCompressionPriority;
 LABEL_7:
-    *(&self->super.super.super.super.isa + *v9) = a3;
+    *(&self->super.super.super.super.isa + *v9) = priority;
     v10 = *v8;
     [*(&self->super.super.super.super.isa + v10) setActive:0];
     v11 = *(&self->super.super.super.super.isa + v10);

@@ -1,27 +1,27 @@
 @interface _PIParallaxColorAnalysisJob
 - ($721907E0E1CDE8B6CD3FA271A8B25860)imageRect;
-- (BOOL)_computeAllHistograms:(id *)a3;
-- (BOOL)_waitForRenderResources:(id *)a3;
-- (BOOL)complete:(id *)a3;
-- (BOOL)prepare:(id *)a3;
-- (BOOL)render:(id *)a3;
-- (_PIParallaxColorAnalysisJob)initWithParallaxColorAnalysisRequest:(id)a3;
-- (_PIParallaxColorAnalysisJob)initWithRequest:(id)a3;
-- (id)_beginRenderNormalizedHueChromaImage:(id)a3 targetGray:(double)a4 grayRange:(double)a5 chromaMax:(double)a6 error:(id *)a7;
-- (id)_beginRenderNormalizedHueChromaImage:(id)a3 targetHue:(double)a4 hueRange:(double)a5 chromaMin:(double)a6 error:(id *)a7;
-- (id)_beginRenderingImage:(id)a3 colorSpace:(id)a4 format:(id)a5 error:(id *)a6;
+- (BOOL)_computeAllHistograms:(id *)histograms;
+- (BOOL)_waitForRenderResources:(id *)resources;
+- (BOOL)complete:(id *)complete;
+- (BOOL)prepare:(id *)prepare;
+- (BOOL)render:(id *)render;
+- (_PIParallaxColorAnalysisJob)initWithParallaxColorAnalysisRequest:(id)request;
+- (_PIParallaxColorAnalysisJob)initWithRequest:(id)request;
+- (id)_beginRenderNormalizedHueChromaImage:(id)image targetGray:(double)gray grayRange:(double)range chromaMax:(double)max error:(id *)error;
+- (id)_beginRenderNormalizedHueChromaImage:(id)image targetHue:(double)hue hueRange:(double)range chromaMin:(double)min error:(id *)error;
+- (id)_beginRenderingImage:(id)image colorSpace:(id)space format:(id)format error:(id *)error;
 - (id)result;
 - (id)scalePolicy;
 - (void)_purgeRenderResources;
-- (void)setImageRect:(id *)a3;
+- (void)setImageRect:(id *)rect;
 @end
 
 @implementation _PIParallaxColorAnalysisJob
 
-- (void)setImageRect:(id *)a3
+- (void)setImageRect:(id *)rect
 {
-  var1 = a3->var1;
-  self->_imageRect.origin = a3->var0;
+  var1 = rect->var1;
+  self->_imageRect.origin = rect->var0;
   self->_imageRect.size = var1;
 }
 
@@ -56,13 +56,13 @@
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 destination];
+        destination = [v8 destination];
 
-        if (v9)
+        if (destination)
         {
           storagePool = self->_storagePool;
-          v11 = [v8 destination];
-          [(NUPurgeableStoragePool *)storagePool returnStorage:v11];
+          destination2 = [v8 destination];
+          [(NUPurgeableStoragePool *)storagePool returnStorage:destination2];
         }
       }
 
@@ -80,16 +80,16 @@
   v3 = objc_alloc_init(_PIParallaxColorAnalysisResult);
   [(_PIParallaxColorAnalysisJob *)self medianLuminance];
   [(_PIParallaxColorAnalysisResult *)v3 setMedianLuminance:?];
-  v4 = [(_PIParallaxColorAnalysisJob *)self dominantColors];
-  [(_PIParallaxColorAnalysisResult *)v3 setDominantColors:v4];
+  dominantColors = [(_PIParallaxColorAnalysisJob *)self dominantColors];
+  [(_PIParallaxColorAnalysisResult *)v3 setDominantColors:dominantColors];
 
   return v3;
 }
 
-- (BOOL)complete:(id *)a3
+- (BOOL)complete:(id *)complete
 {
   v46 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!complete)
   {
     v21 = NUAssertLogger_5351();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -111,8 +111,8 @@
         v29 = dispatch_get_specific(*v23);
         v30 = MEMORY[0x1E696AF00];
         v31 = v29;
-        v32 = [v30 callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v30 callStackSymbols];
+        v33 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v43 = v29;
         v44 = 2114;
@@ -123,8 +123,8 @@
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v43 = v28;
       _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -136,17 +136,17 @@
   v5 = [(_PIParallaxColorAnalysisJob *)self _waitForRenderResources:?];
   if (v5)
   {
-    v5 = [(_PIParallaxColorAnalysisJob *)self _computeAllHistograms:a3];
+    v5 = [(_PIParallaxColorAnalysisJob *)self _computeAllHistograms:complete];
     if (v5)
     {
-      v6 = [(_PIParallaxColorAnalysisJob *)self colorAnalysisRequest];
+      colorAnalysisRequest = [(_PIParallaxColorAnalysisJob *)self colorAnalysisRequest];
       [(NSMutableArray *)self->_renderResources sortUsingComparator:&__block_literal_global_5358];
-      v7 = [v6 maxDominantColors];
-      v8 = [(_PIParallaxColorAnalysisJob *)self alphaCount];
-      v35 = v6;
-      [v6 dominanceThreshold];
+      maxDominantColors = [colorAnalysisRequest maxDominantColors];
+      alphaCount = [(_PIParallaxColorAnalysisJob *)self alphaCount];
+      v35 = colorAnalysisRequest;
+      [colorAnalysisRequest dominanceThreshold];
       v10 = v9;
-      v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v7];
+      v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:maxDominantColors];
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
@@ -156,7 +156,7 @@
       if (v12)
       {
         v13 = v12;
-        v14 = (v10 * v8);
+        v14 = (v10 * alphaCount);
         v15 = *v38;
 LABEL_6:
         v16 = 0;
@@ -168,18 +168,18 @@ LABEL_6:
           }
 
           v17 = *(*(&v37 + 1) + 8 * v16);
-          v18 = [v17 imageHistogram];
-          v19 = [v18 sampleCount];
+          imageHistogram = [v17 imageHistogram];
+          sampleCount = [imageHistogram sampleCount];
 
-          if (v19 < v14)
+          if (sampleCount < v14)
           {
             break;
           }
 
-          v20 = [v17 medianColor];
-          [v11 addObject:v20];
+          medianColor = [v17 medianColor];
+          [v11 addObject:medianColor];
 
-          if ([v11 count] == v7)
+          if ([v11 count] == maxDominantColors)
           {
             break;
           }
@@ -205,7 +205,7 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)_computeAllHistograms:(id *)a3
+- (BOOL)_computeAllHistograms:(id *)histograms
 {
   v43 = *MEMORY[0x1E69E9840];
   v36 = 0;
@@ -244,11 +244,11 @@ LABEL_6:
         [v8 setLuminanceWeights:?];
         [v7 luminanceThresholds];
         [v8 setLuminanceThresholds:?];
-        v9 = [v7 destination];
-        v10 = [v9 size];
+        destination = [v7 destination];
+        v10 = [destination size];
         v12 = v11;
 
-        v13 = [v7 destination];
+        destination2 = [v7 destination];
         v25[0] = 0;
         v25[1] = 0;
         v25[2] = v10;
@@ -262,13 +262,13 @@ LABEL_6:
         v15 = v8;
         v22 = v15;
         v24 = &v36;
-        [v13 readBufferInRegion:v14 block:v21];
+        [destination2 readBufferInRegion:v14 block:v21];
 
         if (!v31[5])
         {
           v17 = MEMORY[0x1E69B3A48];
-          v18 = [v7 identifier];
-          *a3 = [v17 errorWithCode:1 reason:@"Failed to compute histogram" object:v18 underlyingError:v37[5]];
+          identifier = [v7 identifier];
+          *histograms = [v17 errorWithCode:1 reason:@"Failed to compute histogram" object:identifier underlyingError:v37[5]];
 
           v16 = 0;
           goto LABEL_11;
@@ -296,10 +296,10 @@ LABEL_11:
   return v16;
 }
 
-- (BOOL)_waitForRenderResources:(id *)a3
+- (BOOL)_waitForRenderResources:(id *)resources
 {
   v40 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!resources)
   {
     v17 = NUAssertLogger_5351();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -321,8 +321,8 @@ LABEL_11:
         v25 = dispatch_get_specific(*v19);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v37 = v25;
         v38 = 2114;
@@ -333,8 +333,8 @@ LABEL_11:
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v37 = v24;
       _os_log_error_impl(&dword_1C7694000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -363,16 +363,16 @@ LABEL_11:
         }
 
         v9 = *(*(&v31 + 1) + 8 * i);
-        v10 = [v9 task];
+        task = [v9 task];
         v30 = 0;
-        v11 = [v10 waitUntilCompletedAndReturnError:&v30];
+        v11 = [task waitUntilCompletedAndReturnError:&v30];
         v12 = v30;
 
         if (!v11)
         {
           v14 = MEMORY[0x1E69B3A48];
-          v15 = [v9 identifier];
-          *a3 = [v14 errorWithCode:1 reason:@"Failed to render image" object:v15 underlyingError:v12];
+          identifier = [v9 identifier];
+          *resources = [v14 errorWithCode:1 reason:@"Failed to render image" object:identifier underlyingError:v12];
 
           v13 = 0;
           goto LABEL_12;
@@ -395,11 +395,11 @@ LABEL_12:
   return v13;
 }
 
-- (id)_beginRenderNormalizedHueChromaImage:(id)a3 targetGray:(double)a4 grayRange:(double)a5 chromaMax:(double)a6 error:(id *)a7
+- (id)_beginRenderNormalizedHueChromaImage:(id)image targetGray:(double)gray grayRange:(double)range chromaMax:(double)max error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  if (!v12)
+  imageCopy = image;
+  if (!imageCopy)
   {
     v25 = NUAssertLogger_5351();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -410,7 +410,7 @@ LABEL_12:
       _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v27 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v29 = NUAssertLogger_5351();
     v30 = os_log_type_enabled(v29, OS_LOG_TYPE_ERROR);
@@ -418,11 +418,11 @@ LABEL_12:
     {
       if (v30)
       {
-        v38 = dispatch_get_specific(*v27);
+        v38 = dispatch_get_specific(*callStackSymbols);
         v39 = MEMORY[0x1E696AF00];
         v40 = v38;
-        v27 = [v39 callStackSymbols];
-        v41 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v39 callStackSymbols];
+        v41 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = v38;
         v51 = 2114;
@@ -433,10 +433,10 @@ LABEL_12:
 
     else if (v30)
     {
-      v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v50 = v27;
+      v50 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -444,7 +444,7 @@ LABEL_12:
     goto LABEL_22;
   }
 
-  if (!a7)
+  if (!error)
   {
     v32 = NUAssertLogger_5351();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -455,7 +455,7 @@ LABEL_12:
       _os_log_error_impl(&dword_1C7694000, v32, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v27 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v34 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v29 = NUAssertLogger_5351();
     v35 = os_log_type_enabled(v29, OS_LOG_TYPE_ERROR);
@@ -463,8 +463,8 @@ LABEL_12:
     {
       if (v35)
       {
-        v36 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v37 = [v36 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v37 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v50 = v37;
         _os_log_error_impl(&dword_1C7694000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -476,11 +476,11 @@ LABEL_12:
 LABEL_22:
     if (v35)
     {
-      v42 = dispatch_get_specific(*v27);
+      v42 = dispatch_get_specific(*callStackSymbols);
       v43 = MEMORY[0x1E696AF00];
       v44 = v42;
-      v45 = [v43 callStackSymbols];
-      v46 = [v45 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v43 callStackSymbols];
+      v46 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v50 = v42;
       v51 = 2114;
@@ -493,15 +493,15 @@ LABEL_24:
     _NUAssertFailHandler();
   }
 
-  v13 = v12;
+  v13 = imageCopy;
   v47[0] = @"inputLumaTarget";
-  v14 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v14 = [MEMORY[0x1E696AD98] numberWithDouble:gray];
   v48[0] = v14;
   v47[1] = @"inputLumaRange";
-  v15 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+  v15 = [MEMORY[0x1E696AD98] numberWithDouble:range];
   v48[1] = v15;
   v47[2] = @"inputChromaMax";
-  v16 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
+  v16 = [MEMORY[0x1E696AD98] numberWithDouble:max];
   v48[2] = v16;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v47 count:3];
   v18 = [v13 imageByApplyingFilter:@"PIIPTHueChromaGrayFilter" withInputParameters:v17];
@@ -511,25 +511,25 @@ LABEL_24:
     v19 = [PIIPTHueChromaFilter denormalizeHueChromaImage:v18];
 
     v20 = [PIIPTHueChromaFilter convertHueChromaImageToRGB:v19];
-    v21 = [MEMORY[0x1E69B3A10] sRGBColorSpace];
-    v22 = [MEMORY[0x1E69B3BF0] BGRA8];
-    v23 = [(_PIParallaxColorAnalysisJob *)self _beginRenderingImage:v20 colorSpace:v21 format:v22 error:a7];
+    sRGBColorSpace = [MEMORY[0x1E69B3A10] sRGBColorSpace];
+    bGRA8 = [MEMORY[0x1E69B3BF0] BGRA8];
+    v23 = [(_PIParallaxColorAnalysisJob *)self _beginRenderingImage:v20 colorSpace:sRGBColorSpace format:bGRA8 error:error];
   }
 
   else
   {
     [MEMORY[0x1E69B3A48] failureError:@"Failed to produce filtered Hue/Chroma image" object:0];
-    *a7 = v23 = 0;
+    *error = v23 = 0;
   }
 
   return v23;
 }
 
-- (id)_beginRenderNormalizedHueChromaImage:(id)a3 targetHue:(double)a4 hueRange:(double)a5 chromaMin:(double)a6 error:(id *)a7
+- (id)_beginRenderNormalizedHueChromaImage:(id)image targetHue:(double)hue hueRange:(double)range chromaMin:(double)min error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  if (!v12)
+  imageCopy = image;
+  if (!imageCopy)
   {
     v25 = NUAssertLogger_5351();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -540,7 +540,7 @@ LABEL_24:
       _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v27 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v29 = NUAssertLogger_5351();
     v30 = os_log_type_enabled(v29, OS_LOG_TYPE_ERROR);
@@ -548,11 +548,11 @@ LABEL_24:
     {
       if (v30)
       {
-        v38 = dispatch_get_specific(*v27);
+        v38 = dispatch_get_specific(*callStackSymbols);
         v39 = MEMORY[0x1E696AF00];
         v40 = v38;
-        v27 = [v39 callStackSymbols];
-        v41 = [v27 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v39 callStackSymbols];
+        v41 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v50 = v38;
         v51 = 2114;
@@ -563,10 +563,10 @@ LABEL_24:
 
     else if (v30)
     {
-      v31 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v50 = v27;
+      v50 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -574,7 +574,7 @@ LABEL_24:
     goto LABEL_22;
   }
 
-  if (!a7)
+  if (!error)
   {
     v32 = NUAssertLogger_5351();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -585,7 +585,7 @@ LABEL_24:
       _os_log_error_impl(&dword_1C7694000, v32, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v27 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v34 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v29 = NUAssertLogger_5351();
     v35 = os_log_type_enabled(v29, OS_LOG_TYPE_ERROR);
@@ -593,8 +593,8 @@ LABEL_24:
     {
       if (v35)
       {
-        v36 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v37 = [v36 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v37 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v50 = v37;
         _os_log_error_impl(&dword_1C7694000, v29, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -606,11 +606,11 @@ LABEL_24:
 LABEL_22:
     if (v35)
     {
-      v42 = dispatch_get_specific(*v27);
+      v42 = dispatch_get_specific(*callStackSymbols);
       v43 = MEMORY[0x1E696AF00];
       v44 = v42;
-      v45 = [v43 callStackSymbols];
-      v46 = [v45 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v43 callStackSymbols];
+      v46 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v50 = v42;
       v51 = 2114;
@@ -623,15 +623,15 @@ LABEL_24:
     _NUAssertFailHandler();
   }
 
-  v13 = v12;
+  v13 = imageCopy;
   v47[0] = @"inputHueTarget";
-  v14 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v14 = [MEMORY[0x1E696AD98] numberWithDouble:hue];
   v48[0] = v14;
   v47[1] = @"inputHueRange";
-  v15 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+  v15 = [MEMORY[0x1E696AD98] numberWithDouble:range];
   v48[1] = v15;
   v47[2] = @"inputChromaMin";
-  v16 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
+  v16 = [MEMORY[0x1E696AD98] numberWithDouble:min];
   v47[3] = @"inputHueIsNormalized";
   v48[2] = v16;
   v48[3] = MEMORY[0x1E695E118];
@@ -643,27 +643,27 @@ LABEL_24:
     v19 = [PIIPTHueChromaFilter denormalizeHueChromaImage:v18];
 
     v20 = [PIIPTHueChromaFilter convertHueChromaImageToRGB:v19];
-    v21 = [MEMORY[0x1E69B3A10] sRGBColorSpace];
-    v22 = [MEMORY[0x1E69B3BF0] BGRA8];
-    v23 = [(_PIParallaxColorAnalysisJob *)self _beginRenderingImage:v20 colorSpace:v21 format:v22 error:a7];
+    sRGBColorSpace = [MEMORY[0x1E69B3A10] sRGBColorSpace];
+    bGRA8 = [MEMORY[0x1E69B3BF0] BGRA8];
+    v23 = [(_PIParallaxColorAnalysisJob *)self _beginRenderingImage:v20 colorSpace:sRGBColorSpace format:bGRA8 error:error];
   }
 
   else
   {
     [MEMORY[0x1E69B3A48] failureError:@"Failed to produce filtered Hue/Chroma image" object:0];
-    *a7 = v23 = 0;
+    *error = v23 = 0;
   }
 
   return v23;
 }
 
-- (id)_beginRenderingImage:(id)a3 colorSpace:(id)a4 format:(id)a5 error:(id *)a6
+- (id)_beginRenderingImage:(id)image colorSpace:(id)space format:(id)format error:(id *)error
 {
   v49 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!a6)
+  imageCopy = image;
+  spaceCopy = space;
+  formatCopy = format;
+  if (!error)
   {
     v24 = NUAssertLogger_5351();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -674,7 +674,7 @@ LABEL_24:
       _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v26 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v28 = NUAssertLogger_5351();
     v29 = os_log_type_enabled(v28, OS_LOG_TYPE_ERROR);
@@ -682,11 +682,11 @@ LABEL_24:
     {
       if (v29)
       {
-        v37 = dispatch_get_specific(*v26);
+        v37 = dispatch_get_specific(*callStackSymbols);
         v38 = MEMORY[0x1E696AF00];
         v39 = v37;
-        v26 = [v38 callStackSymbols];
-        v40 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v38 callStackSymbols];
+        v40 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v37;
         *&buf[12] = 2114;
@@ -697,10 +697,10 @@ LABEL_24:
 
     else if (v29)
     {
-      v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      *&buf[4] = v26;
+      *&buf[4] = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -708,7 +708,7 @@ LABEL_24:
     goto LABEL_22;
   }
 
-  v13 = v12;
+  v13 = formatCopy;
   memset(buf, 0, 32);
   [(_PIParallaxColorAnalysisJob *)self imageRect];
   v46[0] = 0;
@@ -728,7 +728,7 @@ LABEL_24:
       _os_log_error_impl(&dword_1C7694000, v31, OS_LOG_TYPE_ERROR, "Fail: %{public}@", v47, 0xCu);
     }
 
-    v26 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v33 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v28 = NUAssertLogger_5351();
     v34 = os_log_type_enabled(v28, OS_LOG_TYPE_ERROR);
@@ -736,8 +736,8 @@ LABEL_24:
     {
       if (v34)
       {
-        v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v36 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *v47 = 138543362;
         *&v47[4] = v36;
         _os_log_error_impl(&dword_1C7694000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v47, 0xCu);
@@ -749,11 +749,11 @@ LABEL_24:
 LABEL_22:
     if (v34)
     {
-      v41 = dispatch_get_specific(*v26);
+      v41 = dispatch_get_specific(*callStackSymbols);
       v42 = MEMORY[0x1E696AF00];
       v43 = v41;
-      v44 = [v42 callStackSymbols];
-      v45 = [v44 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v42 callStackSymbols];
+      v45 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *v47 = 138543618;
       *&v47[4] = v41;
       *&v47[12] = 2114;
@@ -767,20 +767,20 @@ LABEL_24:
   }
 
   v16 = v15;
-  v17 = [v10 imageByPremultiplyingAlpha];
+  imageByPremultiplyingAlpha = [imageCopy imageByPremultiplyingAlpha];
   v46[0] = 2;
   *v47 = *buf;
   *&v47[16] = *&buf[16];
   v18 = [MEMORY[0x1E69B3C10] regionWithRect:v47];
-  v19 = [(NURenderJob *)self imageSize];
-  v21 = [(NURenderJob *)self renderImage:v17 into:v16 colorSpace:v11 roi:v18 imageSize:v19 alpha:v20 error:v46, a6];
+  imageSize = [(NURenderJob *)self imageSize];
+  error = [(NURenderJob *)self renderImage:imageByPremultiplyingAlpha into:v16 colorSpace:spaceCopy roi:v18 imageSize:imageSize alpha:v20 error:v46, error];
 
-  if (v21)
+  if (error)
   {
     v22 = objc_alloc_init(_PIParallaxRenderResource);
     [(_PIParallaxRenderResource *)v22 setDestination:v16];
-    [(_PIParallaxRenderResource *)v22 setTask:v21];
-    [(_PIParallaxRenderResource *)v22 setImage:v10];
+    [(_PIParallaxRenderResource *)v22 setTask:error];
+    [(_PIParallaxRenderResource *)v22 setImage:imageCopy];
   }
 
   else
@@ -791,10 +791,10 @@ LABEL_24:
   return v22;
 }
 
-- (BOOL)render:(id *)a3
+- (BOOL)render:(id *)render
 {
   v120 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!render)
   {
     v100 = NUAssertLogger_5351();
     if (os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
@@ -828,14 +828,14 @@ LABEL_24:
     {
       v23 = COERCE_DOUBLE(dispatch_get_specific(*v13));
       v106 = MEMORY[0x1E696AF00];
-      v3 = *&v23;
+      renderCopy = *&v23;
       [v106 callStackSymbols];
       *&v13 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-      v4 = [v13 componentsJoinedByString:@"\n"];
+      selfCopy = [v13 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v117 = v23;
       v118 = 2114;
-      v119 = v4;
+      v119 = selfCopy;
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
     }
 
@@ -844,20 +844,20 @@ LABEL_24:
     goto LABEL_55;
   }
 
-  v3 = a3;
-  v4 = self;
-  v5 = [(_PIParallaxColorAnalysisJob *)self colorAnalysisRequest];
-  v8 = [MEMORY[0x1E69B3BF0] BGRA8];
-  v7 = [MEMORY[0x1E69B3A10] sRGBLinearColorSpace];
-  v9 = [MEMORY[0x1E69B3A58] sharedFactory];
-  v10 = [v9 surfaceStoragePool];
-  v11 = *(v4 + 240);
-  *(v4 + 240) = v10;
+  renderCopy = render;
+  selfCopy = self;
+  colorAnalysisRequest = [(_PIParallaxColorAnalysisJob *)self colorAnalysisRequest];
+  bGRA8 = [MEMORY[0x1E69B3BF0] BGRA8];
+  sRGBLinearColorSpace = [MEMORY[0x1E69B3A10] sRGBLinearColorSpace];
+  mEMORY[0x1E69B3A58] = [MEMORY[0x1E69B3A58] sharedFactory];
+  surfaceStoragePool = [mEMORY[0x1E69B3A58] surfaceStoragePool];
+  v11 = *(selfCopy + 240);
+  *(selfCopy + 240) = surfaceStoragePool;
 
-  if (!*(v4 + 240))
+  if (!*(selfCopy + 240))
   {
     v103 = NUAssertLogger_5351();
-    v3 = &qword_1C7845000;
+    renderCopy = &qword_1C7845000;
     if (os_log_type_enabled(v103, OS_LOG_TYPE_ERROR))
     {
       [MEMORY[0x1E696AEC0] stringWithFormat:@"No storage pool"];
@@ -890,23 +890,23 @@ LABEL_57:
 LABEL_58:
       dispatch_once(MEMORY[0x1E69B3D78], &__block_literal_global_326_5436);
 LABEL_7:
-      v110 = v7;
+      v110 = sRGBLinearColorSpace;
       v24 = *MEMORY[0x1E69B3D80];
       if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_DEFAULT))
       {
         v25 = v24;
-        [v4 medianLuminance];
+        [selfCopy medianLuminance];
         *buf = 134217984;
         v117 = v26;
         _os_log_impl(&dword_1C7694000, v25, OS_LOG_TYPE_DEFAULT, "Median luminance: %f", buf, 0xCu);
       }
 
-      v27 = [v5 maxDominantColors];
-      v28 = [v6 imageHistogram];
-      v29 = [v28 blue];
+      maxDominantColors = [colorAnalysisRequest maxDominantColors];
+      imageHistogram = [v6 imageHistogram];
+      blue = [imageHistogram blue];
 
-      v109 = v29;
-      [v29 threshold:?];
+      v109 = blue;
+      [blue threshold:?];
       v31 = v30;
       if (**&v23 != -1)
       {
@@ -919,20 +919,20 @@ LABEL_7:
         *buf = 134218240;
         v117 = v31 * 100.0;
         v118 = 2048;
-        v119 = v27;
+        v119 = maxDominantColors;
         _os_log_impl(&dword_1C7694000, v32, OS_LOG_TYPE_DEFAULT, "Percent above chroma min: %0.0f%%, max hues: %ld", buf, 0x16u);
       }
 
-      v112 = v5;
-      if (v31 >= 0.25 && v27 >= 1)
+      v112 = colorAnalysisRequest;
+      if (v31 >= 0.25 && maxDominantColors >= 1)
       {
-        v33 = [v6 imageHistogram];
-        v34 = [v33 luminance];
-        v35 = [v34 mutableCopy];
+        imageHistogram2 = [v6 imageHistogram];
+        luminance = [imageHistogram2 luminance];
+        v35 = [luminance mutableCopy];
 
         [v35 smoothWithFunction:1 windowSize:11 sampleMode:3];
-        v36 = [v35 modalityAnalysisWithLimit:v27 sampleMode:3];
-        [v4 setDominantHues:v36];
+        v36 = [v35 modalityAnalysisWithLimit:maxDominantColors sampleMode:3];
+        [selfCopy setDominantHues:v36];
 
         if (**&v23 != -1)
         {
@@ -943,25 +943,25 @@ LABEL_7:
         if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_DEFAULT))
         {
           v38 = v37;
-          v113 = [v4 dominantHues];
-          *&v39 = COERCE_DOUBLE([v113 count]);
-          v40 = [v4 dominantHues];
+          dominantHues = [selfCopy dominantHues];
+          *&v39 = COERCE_DOUBLE([dominantHues count]);
+          dominantHues2 = [selfCopy dominantHues];
           *buf = 134218242;
           v117 = *&v39;
           v118 = 2112;
-          v119 = v40;
+          v119 = dominantHues2;
           v41 = v38;
           v23 = MEMORY[0x1E69B3D78];
           _os_log_impl(&dword_1C7694000, v41, OS_LOG_TYPE_DEFAULT, "Found %ld dominant hues: %@", buf, 0x16u);
         }
       }
 
-      if (v31 <= 0.75 && v27 >= 1)
+      if (v31 <= 0.75 && maxDominantColors >= 1)
       {
         v42 = [v22 mutableCopy];
         [v42 smoothWithFunction:1 windowSize:13 sampleMode:1];
-        v43 = [v42 modalityAnalysisWithLimit:v27 sampleMode:1];
-        [v4 setDominantGrays:v43];
+        v43 = [v42 modalityAnalysisWithLimit:maxDominantColors sampleMode:1];
+        [selfCopy setDominantGrays:v43];
 
         if (**&v23 != -1)
         {
@@ -972,20 +972,20 @@ LABEL_7:
         if (os_log_type_enabled(*MEMORY[0x1E69B3D80], OS_LOG_TYPE_DEFAULT))
         {
           v45 = v44;
-          v46 = [v4 dominantGrays];
-          *&v47 = COERCE_DOUBLE([v46 count]);
-          v48 = [v4 dominantGrays];
+          dominantGrays = [selfCopy dominantGrays];
+          *&v47 = COERCE_DOUBLE([dominantGrays count]);
+          dominantGrays2 = [selfCopy dominantGrays];
           *buf = 134218242;
           v117 = *&v47;
           v118 = 2112;
-          v119 = v48;
+          v119 = dominantGrays2;
           _os_log_impl(&dword_1C7694000, v45, OS_LOG_TYPE_DEFAULT, "Found %ld dominant grays: %@", buf, 0x16u);
         }
       }
 
-      [v4 _purgeRenderResources];
-      v49 = [v4 dominantHues];
-      v50 = [v49 count];
+      [selfCopy _purgeRenderResources];
+      dominantHues3 = [selfCopy dominantHues];
+      v50 = [dominantHues3 count];
 
       if (v50)
       {
@@ -1000,12 +1000,12 @@ LABEL_7:
         v58 = *(MEMORY[0x1E69B3948] + 12);
         while (1)
         {
-          v59 = [v4 dominantHues];
-          v60 = [v59 objectAtIndexedSubscript:v51];
+          dominantHues4 = [selfCopy dominantHues];
+          v60 = [dominantHues4 objectAtIndexedSubscript:v51];
 
-          v61 = [v4 hueChromaImage];
+          hueChromaImage = [selfCopy hueChromaImage];
           [v60 doubleValue];
-          v62 = [v4 _beginRenderNormalizedHueChromaImage:v61 targetHue:v3 hueRange:? chromaMin:? error:?];
+          v62 = [selfCopy _beginRenderNormalizedHueChromaImage:hueChromaImage targetHue:renderCopy hueRange:? chromaMin:? error:?];
 
           if (!v62)
           {
@@ -1025,10 +1025,10 @@ LABEL_7:
           LODWORD(v70) = v57;
           LODWORD(v71) = v58;
           [v62 setLuminanceThresholds:{v68, v69, v70, v71}];
-          [*(v4 + v13) addObject:v62];
+          [*(selfCopy + v13) addObject:v62];
 
-          v72 = [v4 dominantHues];
-          v73 = [v72 count];
+          dominantHues5 = [selfCopy dominantHues];
+          v73 = [dominantHues5 count];
 
           v6 = v62;
           if (v51 >= v73)
@@ -1042,19 +1042,19 @@ LABEL_7:
       {
         v62 = v6;
 LABEL_35:
-        v76 = [v4 dominantGrays];
-        v77 = [v76 count];
+        dominantGrays3 = [selfCopy dominantGrays];
+        v77 = [dominantGrays3 count];
 
         if (!v77)
         {
 LABEL_39:
           v74 = 1;
 LABEL_41:
-          v8 = v111;
-          v5 = v112;
+          bGRA8 = v111;
+          colorAnalysisRequest = v112;
 
           v6 = v62;
-          v7 = v110;
+          sRGBLinearColorSpace = v110;
           goto LABEL_33;
         }
 
@@ -1070,12 +1070,12 @@ LABEL_41:
         while (1)
         {
           v86 = v62;
-          v87 = [v4 dominantGrays];
-          v60 = [v87 objectAtIndexedSubscript:v78];
+          dominantGrays4 = [selfCopy dominantGrays];
+          v60 = [dominantGrays4 objectAtIndexedSubscript:v78];
 
-          v88 = [v4 hueChromaImage];
+          hueChromaImage2 = [selfCopy hueChromaImage];
           [v60 doubleValue];
-          v62 = [v4 _beginRenderNormalizedHueChromaImage:v88 targetGray:v3 grayRange:? chromaMax:? error:?];
+          v62 = [selfCopy _beginRenderNormalizedHueChromaImage:hueChromaImage2 targetGray:renderCopy grayRange:? chromaMax:? error:?];
 
           if (!v62)
           {
@@ -1095,10 +1095,10 @@ LABEL_41:
           LODWORD(v96) = v85;
           LODWORD(v97) = v84;
           [v62 setLuminanceThresholds:{v94, v95, v96, v97}];
-          [*(v4 + v13) addObject:v62];
+          [*(selfCopy + v13) addObject:v62];
 
-          v98 = [v4 dominantGrays];
-          v99 = [v98 count];
+          dominantGrays5 = [selfCopy dominantGrays];
+          v99 = [dominantGrays5 count];
 
           if (v78 >= v99)
           {
@@ -1117,14 +1117,14 @@ LABEL_55:
     {
       v23 = COERCE_DOUBLE(dispatch_get_specific(*v13));
       v107 = MEMORY[0x1E696AF00];
-      v3 = *&v23;
+      renderCopy = *&v23;
       [v107 callStackSymbols];
       *&v13 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-      v4 = [v13 componentsJoinedByString:@"\n"];
+      selfCopy = [v13 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v117 = v23;
       v118 = 2114;
-      v119 = v4;
+      v119 = selfCopy;
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
     }
 
@@ -1133,13 +1133,13 @@ LABEL_55:
 
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = 248;
-  v14 = *(v4 + 248);
-  *(v4 + 248) = v12;
+  v14 = *(selfCopy + 248);
+  *(selfCopy + 248) = v12;
 
-  [v5 chromaThreshold];
+  [colorAnalysisRequest chromaThreshold];
   v16 = v15;
-  v17 = [v4 hueChromaImage];
-  v6 = [v4 _beginRenderingImage:v17 colorSpace:v7 format:v8 error:v3];
+  hueChromaImage3 = [selfCopy hueChromaImage];
+  v6 = [selfCopy _beginRenderingImage:hueChromaImage3 colorSpace:sRGBLinearColorSpace format:bGRA8 error:renderCopy];
 
   if (v6)
   {
@@ -1148,18 +1148,18 @@ LABEL_55:
     [v6 setLuminanceWeights:{0.0, v18, 0.0, 0.0}];
     *&v20 = v19;
     [v6 setLuminanceThresholds:{0.0, 0.0, v20, 0.0}];
-    [*(v4 + 248) addObject:v6];
-    if ([v4 _waitForRenderResources:v3])
+    [*(selfCopy + 248) addObject:v6];
+    if ([selfCopy _waitForRenderResources:renderCopy])
     {
-      if ([v4 _computeAllHistograms:v3])
+      if ([selfCopy _computeAllHistograms:renderCopy])
       {
-        v111 = v8;
-        v21 = [v6 imageHistogram];
-        v22 = [v21 red];
+        v111 = bGRA8;
+        imageHistogram3 = [v6 imageHistogram];
+        v22 = [imageHistogram3 red];
 
-        [v4 setAlphaCount:{-[NSObject sampleCount](v22, "sampleCount")}];
+        [selfCopy setAlphaCount:{-[NSObject sampleCount](v22, "sampleCount")}];
         [v22 median];
-        [v4 setMedianLuminance:?];
+        [selfCopy setMedianLuminance:?];
         v23 = MEMORY[0x1E69B3D78];
         if (*MEMORY[0x1E69B3D78] == -1)
         {
@@ -1177,10 +1177,10 @@ LABEL_33:
   return v74;
 }
 
-- (BOOL)prepare:(id *)a3
+- (BOOL)prepare:(id *)prepare
 {
   v43 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!prepare)
   {
     v27 = NUAssertLogger_5351();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -1202,8 +1202,8 @@ LABEL_33:
         v35 = dispatch_get_specific(*v29);
         v36 = MEMORY[0x1E696AF00];
         v37 = v35;
-        v38 = [v36 callStackSymbols];
-        v39 = [v38 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v36 callStackSymbols];
+        v39 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v35;
         *&buf[12] = 2114;
@@ -1214,8 +1214,8 @@ LABEL_33:
 
     else if (v32)
     {
-      v33 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v34 = [v33 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v34 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v34;
       _os_log_error_impl(&dword_1C7694000, v31, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1231,45 +1231,45 @@ LABEL_33:
     return 0;
   }
 
-  v5 = [(NURenderJob *)self outputImage];
-  v6 = [(_PIParallaxColorAnalysisJob *)self colorAnalysisRequest];
-  v7 = [v6 segmentationMatte];
-  if (v7)
+  outputImage = [(NURenderJob *)self outputImage];
+  colorAnalysisRequest = [(_PIParallaxColorAnalysisJob *)self colorAnalysisRequest];
+  segmentationMatte = [colorAnalysisRequest segmentationMatte];
+  if (segmentationMatte)
   {
-    v8 = [MEMORY[0x1E695F658] imageWithNUImageBuffer:v7];
-    if ([v6 analyzeBackground])
+    v8 = [MEMORY[0x1E695F658] imageWithNUImageBuffer:segmentationMatte];
+    if ([colorAnalysisRequest analyzeBackground])
     {
-      [PISegmentationHelper backgroundForImage:v5 matte:v8];
+      [PISegmentationHelper backgroundForImage:outputImage matte:v8];
     }
 
     else
     {
-      [PISegmentationHelper foregroundForImage:v5 matte:v8];
+      [PISegmentationHelper foregroundForImage:outputImage matte:v8];
     }
     v10 = ;
 
-    v5 = v10;
+    outputImage = v10;
   }
 
-  if ([v6 analyzeHeadroom])
+  if ([colorAnalysisRequest analyzeHeadroom])
   {
-    [v5 extent];
+    [outputImage extent];
     v12 = v11;
-    [v5 extent];
+    [outputImage extent];
     v14 = *MEMORY[0x1E69C0C68] * v13;
     v15 = objc_alloc_init(PIPortraitHeadroomFilter);
-    [(PIPortraitHeadroomFilter *)v15 setInputImage:v5];
+    [(PIPortraitHeadroomFilter *)v15 setInputImage:outputImage];
     [(PIPortraitHeadroomFilter *)v15 setExtendedRect:0.0, 0.0, v12, v14];
     [(PIPortraitHeadroomFilter *)v15 setIsInactive:0];
     [(PIPortraitHeadroomFilter *)v15 setColorAnalysisOnly:1];
-    v16 = [(PIPortraitHeadroomFilter *)v15 outputImage];
+    outputImage2 = [(PIPortraitHeadroomFilter *)v15 outputImage];
 
-    v5 = v16;
+    outputImage = outputImage2;
   }
 
-  v17 = [(NURenderJob *)self imageSize];
+  imageSize = [(NURenderJob *)self imageSize];
   v19 = v18;
-  [v6 normalizedClipRect];
+  [colorAnalysisRequest normalizedClipRect];
   if (CGRectIsEmpty(v44))
   {
     v20 = 0;
@@ -1278,26 +1278,26 @@ LABEL_33:
 
   else
   {
-    [v5 extent];
+    [outputImage extent];
     NURectDenormalize();
     NUPixelRectFromCGRect();
     v20 = *buf;
     v21 = *&buf[8];
-    v17 = *&buf[16];
+    imageSize = *&buf[16];
     v19 = v42;
     NUPixelRectToCGRect();
-    v22 = [v5 imageByCroppingToRect:?];
+    v22 = [outputImage imageByCroppingToRect:?];
 
-    v5 = v22;
+    outputImage = v22;
   }
 
   *buf = v20;
   *&buf[8] = v21;
-  *&buf[16] = v17;
+  *&buf[16] = imageSize;
   v42 = v19;
   [(_PIParallaxColorAnalysisJob *)self setImageRect:buf];
-  v23 = [v5 imageByUnpremultiplyingAlpha];
-  v24 = [PIIPTHueChromaFilter convertRGBImageToHueChroma:v23];
+  imageByUnpremultiplyingAlpha = [outputImage imageByUnpremultiplyingAlpha];
+  v24 = [PIIPTHueChromaFilter convertRGBImageToHueChroma:imageByUnpremultiplyingAlpha];
 
   v9 = v24 != 0;
   if (v24)
@@ -1308,7 +1308,7 @@ LABEL_33:
 
   else
   {
-    *a3 = [MEMORY[0x1E69B3A48] failureError:@"Hue/chroma conversion failed" object:v5];
+    *prepare = [MEMORY[0x1E69B3A48] failureError:@"Hue/chroma conversion failed" object:outputImage];
   }
 
   return v9;
@@ -1321,10 +1321,10 @@ LABEL_33:
   return v2;
 }
 
-- (_PIParallaxColorAnalysisJob)initWithRequest:(id)a3
+- (_PIParallaxColorAnalysisJob)initWithRequest:(id)request
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -1363,8 +1363,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -1391,8 +1391,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1410,11 +1410,11 @@ LABEL_14:
   }
 }
 
-- (_PIParallaxColorAnalysisJob)initWithParallaxColorAnalysisRequest:(id)a3
+- (_PIParallaxColorAnalysisJob)initWithParallaxColorAnalysisRequest:(id)request
 {
   v4.receiver = self;
   v4.super_class = _PIParallaxColorAnalysisJob;
-  return [(NURenderJob *)&v4 initWithRequest:a3];
+  return [(NURenderJob *)&v4 initWithRequest:request];
 }
 
 @end

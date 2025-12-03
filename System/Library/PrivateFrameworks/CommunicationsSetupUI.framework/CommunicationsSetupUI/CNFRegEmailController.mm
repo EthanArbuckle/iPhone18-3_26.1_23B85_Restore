@@ -1,21 +1,21 @@
 @interface CNFRegEmailController
-- (BOOL)_phoneNumberInAliases:(id)a3;
+- (BOOL)_phoneNumberInAliases:(id)aliases;
 - (BOOL)emailFieldIsEmpty;
 - (BOOL)onlyLocalPhoneNumberSentinelAliasIsSelected;
 - (BOOL)shouldShowAllVettedAliases;
 - (double)timeoutDuration;
-- (id)_createSpecifierForAlias:(id)a3;
+- (id)_createSpecifierForAlias:(id)alias;
 - (id)_rightButtonItem;
 - (id)aliasSpecifiers;
 - (id)emailTextField;
 - (id)selectedAliases;
 - (id)specifierList;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_buildActionGroupSpecifierCache:(id)a3;
-- (void)_buildCheckMailSpecifierCache:(id)a3;
-- (void)_buildEmailSpecifierCache:(id)a3;
-- (void)_buildSpecifierCache:(id)a3;
-- (void)_failValidationWithError:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_buildActionGroupSpecifierCache:(id)cache;
+- (void)_buildCheckMailSpecifierCache:(id)cache;
+- (void)_buildEmailSpecifierCache:(id)cache;
+- (void)_buildSpecifierCache:(id)cache;
+- (void)_failValidationWithError:(id)error;
 - (void)_finishValidation;
 - (void)_handleValidationModeCancelled;
 - (void)_refreshEnabledStateOfAliasSpecifiers;
@@ -23,16 +23,16 @@
 - (void)_setupEventHandlers;
 - (void)_updateControllerState;
 - (void)_updateUI;
-- (void)checkMailTapped:(id)a3;
+- (void)checkMailTapped:(id)tapped;
 - (void)dealloc;
-- (void)emailFieldEmptyStateChanged:(id)a3 forSpecifier:(id)a4;
+- (void)emailFieldEmptyStateChanged:(id)changed forSpecifier:(id)specifier;
 - (void)nextTapped;
-- (void)setAliasSelected:(id)a3;
+- (void)setAliasSelected:(id)selected;
 - (void)startValidationTimeoutTimer;
 - (void)stopValidationTimeoutTimer;
 - (void)systemApplicationDidEnterBackground;
 - (void)systemApplicationWillEnterForeground;
-- (void)validationTimeout:(id)a3;
+- (void)validationTimeout:(id)timeout;
 - (void)viewDidLoad;
 @end
 
@@ -40,8 +40,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(CNFRegEmailController *)self stopValidationTimeoutTimer];
   [(NSTimer *)self->_validationTimeoutTimer invalidate];
@@ -58,16 +58,16 @@
   if (CNFRegGlobalAppearanceStyle() == 6)
   {
     v3 = *(&self->super.super.super.super.super.super.super.isa + *MEMORY[0x277D3FC60]);
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v3 setBackgroundColor:clearColor];
   }
 
   else if (CNFRegGlobalAppearanceStyle() == 5)
   {
     v5 = *MEMORY[0x277D3FC60];
     v6 = *(&self->super.super.super.super.super.super.super.isa + v5);
-    v7 = [MEMORY[0x277D75348] clearColor];
-    [v6 setBackgroundColor:v7];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [v6 setBackgroundColor:clearColor2];
 
     [*(&self->super.super.super.super.super.super.super.isa + v5) _setSeparatorsDrawAsOverlay:1];
   }
@@ -84,15 +84,15 @@
 
   v41 = *MEMORY[0x277D3FC48];
   v4 = CNFRegLoadSpecifiersFromPlist(self, @"CNFRegEmail", self);
-  v5 = [(CNFRegEmailController *)self shouldShowAllVettedAliases];
-  v6 = [(CNFRegListController *)self regController];
+  shouldShowAllVettedAliases = [(CNFRegEmailController *)self shouldShowAllVettedAliases];
+  regController = [(CNFRegListController *)self regController];
   v7 = MEMORY[0x277CBEA60];
-  v8 = [(CNFRegFirstRunController *)self account];
-  v9 = [v7 arrayWithObject:v8];
-  v10 = [v6 vettedAliasesForAccounts:v9];
+  account = [(CNFRegFirstRunController *)self account];
+  v9 = [v7 arrayWithObject:account];
+  v10 = [regController vettedAliasesForAccounts:v9];
 
   v11 = [v4 specifierForID:@"FACETIME_EMAIL_DESCRIPTION_GROUP_ID"];
-  if (v5 && [v10 count] > 1)
+  if (shouldShowAllVettedAliases && [v10 count] > 1)
   {
     v12 = [(CNFRegEmailController *)self _phoneNumberInAliases:v10];
     v13 = CNFRegGlobalAppearanceStyle();
@@ -173,7 +173,7 @@ LABEL_12:
     }
 
     v27 = v25 + 1;
-    if (v5 && [v10 count])
+    if (shouldShowAllVettedAliases && [v10 count])
     {
       v28 = [v4 specifierForID:@"FACETIME_EMAIL_ID"];
       [v4 removeObject:v28];
@@ -182,19 +182,19 @@ LABEL_12:
       v42[2] = __38__CNFRegEmailController_specifierList__block_invoke;
       v42[3] = &unk_278DE83B0;
       v43 = v4;
-      v44 = self;
+      selfCopy = self;
       v45 = v27;
       [v10 enumerateObjectsWithOptions:2 usingBlock:v42];
     }
 
     if (CNFRegSupportsLocalPhoneNumberSentinelAlias())
     {
-      v29 = [(CNFRegListController *)self regController];
-      v30 = [v29 localPhoneNumberSentinelAlias];
+      regController2 = [(CNFRegListController *)self regController];
+      localPhoneNumberSentinelAlias = [regController2 localPhoneNumberSentinelAlias];
 
-      if (v30)
+      if (localPhoneNumberSentinelAlias)
       {
-        v31 = [(CNFRegEmailController *)self _createSpecifierForAlias:v30];
+        v31 = [(CNFRegEmailController *)self _createSpecifierForAlias:localPhoneNumberSentinelAlias];
         [v4 insertObject:v31 atIndex:v27];
       }
     }
@@ -210,9 +210,9 @@ LABEL_12:
   *(&self->super.super.super.super.super.super.super.isa + v41) = v34;
 
   [*(&self->super.super.super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) reloadData];
-  v36 = [(CNFRegEmailController *)self navigationItem];
-  v37 = [v36 rightBarButtonItem];
-  [v37 setEnabled:0];
+  navigationItem = [(CNFRegEmailController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:0];
 
   v3 = *(&self->super.super.super.super.super.super.super.isa + v41);
 LABEL_29:
@@ -241,25 +241,25 @@ void __38__CNFRegEmailController_specifierList__block_invoke(uint64_t a1, uint64
 
 - (BOOL)shouldShowAllVettedAliases
 {
-  v3 = [(CNFRegListController *)self regController];
+  regController = [(CNFRegListController *)self regController];
   v4 = MEMORY[0x277CBEA60];
-  v5 = [(CNFRegFirstRunController *)self account];
-  v6 = [v4 arrayWithObject:v5];
-  v7 = [v3 vettedAliasesForAccounts:v6];
+  account = [(CNFRegFirstRunController *)self account];
+  v6 = [v4 arrayWithObject:account];
+  v7 = [regController vettedAliasesForAccounts:v6];
   v8 = [v7 count] != 0;
 
   return v8;
 }
 
-- (BOOL)_phoneNumberInAliases:(id)a3
+- (BOOL)_phoneNumberInAliases:(id)aliases
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  aliasesCopy = aliases;
+  v4 = [aliasesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -269,7 +269,7 @@ void __38__CNFRegEmailController_specifierList__block_invoke(uint64_t a1, uint64
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(aliasesCopy);
         }
 
         if ([*(*(&v9 + 1) + 8 * i) type] == 2)
@@ -279,7 +279,7 @@ void __38__CNFRegEmailController_specifierList__block_invoke(uint64_t a1, uint64
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [aliasesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -339,46 +339,46 @@ LABEL_11:
   return v5;
 }
 
-- (id)_createSpecifierForAlias:(id)a3
+- (id)_createSpecifierForAlias:(id)alias
 {
-  v4 = a3;
-  v5 = [v4 displayName];
-  v6 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v5 target:self set:0 get:0 detail:0 cell:13 edit:0];
+  aliasCopy = alias;
+  displayName = [aliasCopy displayName];
+  v6 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:displayName target:self set:0 get:0 detail:0 cell:13 edit:0];
   [v6 setButtonAction:sel_setAliasSelected_];
   v7 = NSStringFromSelector(sel_setAliasSelected_);
   [v6 setProperty:v7 forKey:*MEMORY[0x277D3FE10]];
 
-  v8 = [v4 isLocalPhoneNumberAlias];
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:v8 ^ 1u];
+  isLocalPhoneNumberAlias = [aliasCopy isLocalPhoneNumberAlias];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:isLocalPhoneNumberAlias ^ 1u];
   [v6 setProperty:v9 forKey:*MEMORY[0x277D3FF38]];
 
   [v6 setProperty:objc_opt_class() forKey:*MEMORY[0x277D3FE58]];
-  v10 = [v4 identifier];
-  [v6 setProperty:v10 forKey:*MEMORY[0x277D3FFB8]];
+  identifier = [aliasCopy identifier];
+  [v6 setProperty:identifier forKey:*MEMORY[0x277D3FFB8]];
 
-  [v6 setProperty:v5 forKey:*MEMORY[0x277D40170]];
+  [v6 setProperty:displayName forKey:*MEMORY[0x277D40170]];
   v11 = [MEMORY[0x277CCABB0] numberWithInt:0];
   [v6 setProperty:v11 forKey:*MEMORY[0x277D3FD78]];
 
-  [v6 setProperty:v4 forKey:@"cnfreg-alias"];
+  [v6 setProperty:aliasCopy forKey:@"cnfreg-alias"];
   v12 = [MEMORY[0x277CCABB0] numberWithBool:1];
   [v6 setProperty:v12 forKey:@"cnfreg-alias-checked"];
 
   return v6;
 }
 
-- (void)setAliasSelected:(id)a3
+- (void)setAliasSelected:(id)selected
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"cnfreg-alias-checked"];
-  v6 = [v5 BOOLValue];
+  selectedCopy = selected;
+  v5 = [selectedCopy propertyForKey:@"cnfreg-alias-checked"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [MEMORY[0x277CCABB0] numberWithBool:v6 ^ 1u];
-  [v4 setProperty:v7 forKey:@"cnfreg-alias-checked"];
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue ^ 1u];
+  [selectedCopy setProperty:v7 forKey:@"cnfreg-alias-checked"];
 
-  v8 = [(CNFRegEmailController *)self cachedCellForSpecifier:v4];
+  v8 = [(CNFRegEmailController *)self cachedCellForSpecifier:selectedCopy];
 
-  [v8 setChecked:v6 ^ 1u];
+  [v8 setChecked:bOOLValue ^ 1u];
 
   [(CNFRegEmailController *)self _updateUI];
 }
@@ -390,8 +390,8 @@ LABEL_11:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = [(CNFRegEmailController *)self aliasSpecifiers];
-  v3 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  aliasSpecifiers = [(CNFRegEmailController *)self aliasSpecifiers];
+  v3 = [aliasSpecifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v3)
   {
     v4 = v3;
@@ -403,7 +403,7 @@ LABEL_11:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(aliasSpecifiers);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
@@ -411,9 +411,9 @@ LABEL_11:
         if (v9)
         {
           v10 = [v8 propertyForKey:@"cnfreg-alias-checked"];
-          v11 = [v10 BOOLValue];
+          bOOLValue = [v10 BOOLValue];
 
-          if (v11)
+          if (bOOLValue)
           {
             if (!v5)
             {
@@ -425,7 +425,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v4 = [aliasSpecifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v4);
@@ -448,8 +448,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(CNFRegEmailController *)self selectedAliases];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  selectedAliases = [(CNFRegEmailController *)self selectedAliases];
+  v3 = [selectedAliases countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -459,7 +459,7 @@ LABEL_11:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(selectedAliases);
         }
 
         if (![*(*(&v8 + 1) + 8 * i) isLocalPhoneNumberAlias])
@@ -469,7 +469,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [selectedAliases countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -502,24 +502,24 @@ LABEL_11:
     [(CNFRegEmailController *)self performSelector:sel__updateControllerState withObject:0 afterDelay:1.0];
   }
 
-  v3 = [(CNFRegEmailController *)self navigationItem];
-  [v3 setRightBarButtonItem:0];
+  navigationItem = [(CNFRegEmailController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:0];
 
-  v4 = [(CNFRegEmailController *)self navigationItem];
-  [v4 setHidesBackButton:1];
+  navigationItem2 = [(CNFRegEmailController *)self navigationItem];
+  [navigationItem2 setHidesBackButton:1];
 }
 
-- (void)_failValidationWithError:(id)a3
+- (void)_failValidationWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(CNFRegEmailController *)self _stopValidationModeAnimated:1];
   [(CNFRegEmailController *)self stopValidationTimeoutTimer];
-  v5 = [(CNFRegEmailController *)self navigationItem];
-  v6 = [v5 rightBarButtonItem];
-  [v6 setEnabled:1];
+  navigationItem = [(CNFRegEmailController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:1];
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKey:@"cnf-customTitle"];
+  userInfo = [errorCopy userInfo];
+  v8 = [userInfo objectForKey:@"cnf-customTitle"];
   v9 = v8;
   if (v8)
   {
@@ -533,11 +533,11 @@ LABEL_11:
     v10 = [v11 localizedStringForKey:@"FACETIME_ACTIVATION_ERROR_TITLE" value:&stru_2856D3978 table:v12];
   }
 
-  v13 = [v4 localizedDescription];
-  v14 = v13;
-  if (v13)
+  localizedDescription = [errorCopy localizedDescription];
+  v14 = localizedDescription;
+  if (localizedDescription)
   {
-    v15 = v13;
+    v15 = localizedDescription;
   }
 
   else
@@ -547,8 +547,8 @@ LABEL_11:
     v15 = [v16 localizedStringForKey:@"FACETIME_SIGNIN_ERROR_GENERIC" value:&stru_2856D3978 table:v17];
   }
 
-  v18 = [v4 userInfo];
-  v19 = [v18 objectForKey:@"cnf-customButton"];
+  userInfo2 = [errorCopy userInfo];
+  v19 = [userInfo2 objectForKey:@"cnf-customButton"];
   v20 = v19;
   if (v19)
   {
@@ -566,20 +566,20 @@ LABEL_11:
   v25 = [MEMORY[0x277D750F8] actionWithTitle:v21 style:0 handler:0];
   [v24 addAction:v25];
 
-  v26 = [v4 userInfo];
-  v27 = [v26 objectForKey:@"cnf-customActionTitle"];
+  userInfo3 = [errorCopy userInfo];
+  v27 = [userInfo3 objectForKey:@"cnf-customActionTitle"];
 
   if (v27)
   {
     v28 = MEMORY[0x277D750F8];
-    v29 = [v4 userInfo];
-    v30 = [v29 objectForKey:@"cnf-customActionTitle"];
+    userInfo4 = [errorCopy userInfo];
+    v30 = [userInfo4 objectForKey:@"cnf-customActionTitle"];
     v32 = MEMORY[0x277D85DD0];
     v33 = 3221225472;
     v34 = __50__CNFRegEmailController__failValidationWithError___block_invoke;
     v35 = &unk_278DE8420;
-    v36 = v4;
-    v37 = self;
+    v36 = errorCopy;
+    selfCopy = self;
     v31 = [v28 actionWithTitle:v30 style:0 handler:&v32];
     [v24 addAction:{v31, v32, v33, v34, v35}];
   }
@@ -637,14 +637,14 @@ void __50__CNFRegEmailController__failValidationWithError___block_invoke(uint64_
   }
 
   self->_validating = 1;
-  v3 = [(CNFRegListController *)self regController];
+  regController = [(CNFRegListController *)self regController];
   if (![(CNFRegEmailController *)self shouldShowAllVettedAliases])
   {
-    v18 = [(CNFRegEmailController *)self emailTextField];
-    v4 = [v18 text];
+    emailTextField = [(CNFRegEmailController *)self emailTextField];
+    text = [emailTextField text];
 
-    v19 = [v3 aliases];
-    v20 = [v19 copy];
+    aliases = [regController aliases];
+    v20 = [aliases copy];
 
     v59 = 0u;
     v60 = 0u;
@@ -668,14 +668,14 @@ void __50__CNFRegEmailController__failValidationWithError___block_invoke(uint64_
           v25 = *(*(&v57 + 1) + 8 * i);
           if ([v25 type] != 2)
           {
-            v26 = [v25 alias];
-            v27 = [v26 isEqualToString:v4];
+            alias = [v25 alias];
+            v27 = [alias isEqualToString:text];
 
             if ((v27 & 1) == 0)
             {
-              v28 = [v25 alias];
-              v29 = [v25 account];
-              v30 = [v3 removeAlias:v28 fromAccount:v29];
+              alias2 = [v25 alias];
+              account = [v25 account];
+              v30 = [regController removeAlias:alias2 fromAccount:account];
 
               v23 &= v30;
             }
@@ -697,16 +697,16 @@ void __50__CNFRegEmailController__failValidationWithError___block_invoke(uint64_
     {
     }
 
-    v31 = [v3 aliasNamed:v4];
+    v31 = [regController aliasNamed:text];
     v32 = v31;
     if (v31)
     {
       if ([v31 validationStatus] == 3)
       {
-        v33 = [v32 account];
-        v34 = [v33 CNFRegSignInComplete];
+        account2 = [v32 account];
+        cNFRegSignInComplete = [account2 CNFRegSignInComplete];
 
-        if (v34)
+        if (cNFRegSignInComplete)
         {
           [(CNFRegEmailController *)self _finishValidation];
 
@@ -725,32 +725,32 @@ void __50__CNFRegEmailController__failValidationWithError___block_invoke(uint64_
           IMLogString();
         }
 
-        v50 = [v32 account];
-        [v50 registerAccount];
+        account3 = [v32 account];
+        [account3 registerAccount];
 
         goto LABEL_57;
       }
 
-      v35 = [v32 validate];
+      validate = [v32 validate];
 
-      if ((v35 & 1) == 0)
+      if ((validate & 1) == 0)
       {
 LABEL_50:
         v36 = CommunicationsSetupUIBundle();
         v37 = CNFRegStringTableName();
-        v38 = [v36 localizedStringForKey:@"FACETIME_ACTIVATION_ERROR_TITLE" value:&stru_2856D3978 table:v37];
+        editableTextField = [v36 localizedStringForKey:@"FACETIME_ACTIVATION_ERROR_TITLE" value:&stru_2856D3978 table:v37];
 
         v39 = MEMORY[0x277CCACA8];
         v40 = CommunicationsSetupUIBundle();
         v41 = CNFRegStringTableName();
         v42 = [v40 localizedStringForKey:@"FACETIME_EMAIL_UNABLE_TO_ADD_ALIAS_%@" value:&stru_2856D3978 table:v41];
-        v43 = [v39 stringWithFormat:v42, v4];
+        v43 = [v39 stringWithFormat:v42, text];
 
         v44 = CommunicationsSetupUIBundle();
         v45 = CNFRegStringTableName();
         v46 = [v44 localizedStringForKey:@"FACETIME_ALERT_OK" value:&stru_2856D3978 table:v45];
 
-        v47 = [MEMORY[0x277D75110] alertControllerWithTitle:v38 message:v43 preferredStyle:1];
+        v47 = [MEMORY[0x277D75110] alertControllerWithTitle:editableTextField message:v43 preferredStyle:1];
         v48 = [MEMORY[0x277D750F8] actionWithTitle:v46 style:0 handler:0];
         [v47 addAction:v48];
 
@@ -761,19 +761,19 @@ LABEL_60:
       }
     }
 
-    else if (![v3 addAlias:v4])
+    else if (![regController addAlias:text])
     {
       goto LABEL_50;
     }
 
 LABEL_57:
-    [(CNFRegEmailController *)self setPendingAlias:v4];
+    [(CNFRegEmailController *)self setPendingAlias:text];
     v51 = [(CNFRegEmailController *)self cachedCellForSpecifier:self->_emailSpecifier];
-    v38 = [v51 editableTextField];
+    editableTextField = [v51 editableTextField];
 
     if (objc_opt_respondsToSelector())
     {
-      [v38 resignFirstResponder];
+      [editableTextField resignFirstResponder];
     }
 
     [(CNFRegFirstRunController *)self _startValidationModeAnimated:0 allowCancel:1];
@@ -782,19 +782,19 @@ LABEL_57:
     goto LABEL_60;
   }
 
-  v4 = [(CNFRegEmailController *)self selectedAliases];
-  v5 = [v4 arrayByApplyingSelector:sel_alias];
+  text = [(CNFRegEmailController *)self selectedAliases];
+  v5 = [text arrayByApplyingSelector:sel_alias];
   v6 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v63 = v4;
+    v63 = text;
     _os_log_impl(&dword_243BE5000, v6, OS_LOG_TYPE_DEFAULT, "  => Selected aliases: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
   {
-    v53 = v4;
+    v53 = text;
     IMLogString();
   }
 
@@ -812,35 +812,35 @@ LABEL_57:
     IMLogString();
   }
 
-  v8 = [(CNFRegFirstRunController *)self account];
-  [v3 setAliases:v5 onAccount:v8];
+  account4 = [(CNFRegFirstRunController *)self account];
+  [regController setAliases:v5 onAccount:account4];
 
   v9 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(CNFRegFirstRunController *)self account];
-    v11 = [v10 aliases];
-    v12 = [(CNFRegFirstRunController *)self account];
+    account5 = [(CNFRegFirstRunController *)self account];
+    aliases2 = [account5 aliases];
+    account6 = [(CNFRegFirstRunController *)self account];
     *buf = 138412546;
-    v63 = v11;
+    v63 = aliases2;
     v64 = 2112;
-    v65 = v12;
+    v65 = account6;
     _os_log_impl(&dword_243BE5000, v9, OS_LOG_TYPE_DEFAULT, "Set aliases %@ on account %@", buf, 0x16u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && IMShouldLog())
   {
-    v13 = [(CNFRegFirstRunController *)self account];
-    v14 = [v13 aliases];
+    account7 = [(CNFRegFirstRunController *)self account];
+    aliases3 = [account7 aliases];
     [(CNFRegFirstRunController *)self account];
-    v55 = v54 = v14;
+    v55 = v54 = aliases3;
     IMLogString();
   }
 
   v15 = [(CNFRegFirstRunController *)self account:v54];
-  v16 = [v15 CNFRegSignInComplete];
+  cNFRegSignInComplete2 = [v15 CNFRegSignInComplete];
 
-  if (v16)
+  if (cNFRegSignInComplete2)
   {
     v17 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -873,8 +873,8 @@ LABEL_61:
 {
   if ([(CNFRegEmailController *)self shouldShowAllVettedAliases])
   {
-    v3 = [(CNFRegEmailController *)self selectedAliases];
-    v4 = [v3 count] != 0;
+    selectedAliases = [(CNFRegEmailController *)self selectedAliases];
+    v4 = [selectedAliases count] != 0;
   }
 
   else
@@ -899,7 +899,7 @@ LABEL_61:
   }
 }
 
-- (void)checkMailTapped:(id)a3
+- (void)checkMailTapped:(id)tapped
 {
   if (SBSLaunchApplicationWithIdentifier())
   {
@@ -928,17 +928,17 @@ LABEL_61:
   v10.receiver = self;
   v10.super_class = CNFRegEmailController;
   [(CNFRegFirstRunController *)&v10 _handleValidationModeCancelled];
-  v3 = [(CNFRegEmailController *)self pendingAlias];
-  v4 = v3;
-  if (v3 && [v3 length])
+  pendingAlias = [(CNFRegEmailController *)self pendingAlias];
+  v4 = pendingAlias;
+  if (pendingAlias && [pendingAlias length])
   {
-    v5 = [(CNFRegListController *)self regController];
-    v6 = [v5 aliasNamed:v4];
+    regController = [(CNFRegListController *)self regController];
+    v6 = [regController aliasNamed:v4];
 
-    v7 = [(CNFRegListController *)self regController];
-    v8 = [v6 alias];
-    v9 = [v6 account];
-    [v7 removeAlias:v8 fromAccount:v9];
+    regController2 = [(CNFRegListController *)self regController];
+    alias = [v6 alias];
+    account = [v6 account];
+    [regController2 removeAlias:alias fromAccount:account];
   }
 
   [(CNFRegEmailController *)self _stopValidationModeAnimated:0];
@@ -976,16 +976,16 @@ LABEL_61:
 
 - (void)_refreshEnabledStateOfAliasSpecifiers
 {
-  v2 = self;
+  selfCopy = self;
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(CNFRegEmailController *)self selectedAliases];
-  v4 = [v3 count];
+  selectedAliases = [(CNFRegEmailController *)self selectedAliases];
+  v4 = [selectedAliases count];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = [(CNFRegEmailController *)v2 aliasSpecifiers];
+  obj = [(CNFRegEmailController *)selfCopy aliasSpecifiers];
   v5 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
@@ -1010,13 +1010,13 @@ LABEL_61:
           if (v4 == 1)
           {
             [v10 propertyForKey:@"cnfreg-alias-checked"];
-            v13 = v12 = v2;
-            v14 = [v13 BOOLValue];
+            v13 = v12 = selfCopy;
+            bOOLValue = [v13 BOOLValue];
 
-            v2 = v12;
+            selfCopy = v12;
             v4 = 1;
             v6 = v18;
-            v15 = v14 ^ 1;
+            v15 = bOOLValue ^ 1;
           }
 
           else
@@ -1032,7 +1032,7 @@ LABEL_61:
           v16 = [MEMORY[0x277CCABB0] numberWithBool:v15 & 1];
           [v10 setProperty:v16 forKey:v8];
 
-          [(CNFRegEmailController *)v2 reloadSpecifier:v10];
+          [(CNFRegEmailController *)selfCopy reloadSpecifier:v10];
         }
 
         ++v9;
@@ -1050,9 +1050,9 @@ LABEL_61:
 
 - (void)_updateUI
 {
-  v3 = [(CNFRegListController *)self regController];
-  v4 = [(CNFRegEmailController *)self pendingAlias];
-  v5 = [v3 aliasNamed:v4];
+  regController = [(CNFRegListController *)self regController];
+  pendingAlias = [(CNFRegEmailController *)self pendingAlias];
+  v5 = [regController aliasNamed:pendingAlias];
 
   if (v5 && [v5 validationStatus] == 2)
   {
@@ -1080,28 +1080,28 @@ LABEL_61:
     [(CNFRegEmailController *)self _stopValidationModeAnimated:1];
     if ([(CNFRegEmailController *)self shouldShowAllVettedAliases])
     {
-      v7 = [(CNFRegEmailController *)self selectedAliases];
-      LOBYTE(v8) = [v7 count] != 0;
+      selectedAliases = [(CNFRegEmailController *)self selectedAliases];
+      LOBYTE(v8) = [selectedAliases count] != 0;
 
       [(CNFRegEmailController *)self _refreshEnabledStateOfAliasSpecifiers];
     }
 
     else
     {
-      v9 = [(CNFRegEmailController *)self pendingAlias];
+      pendingAlias2 = [(CNFRegEmailController *)self pendingAlias];
 
-      if (!v9)
+      if (!pendingAlias2)
       {
-        v10 = [v3 guessedAlias];
-        [(CNFRegEmailController *)self setPendingAlias:v10];
+        guessedAlias = [regController guessedAlias];
+        [(CNFRegEmailController *)self setPendingAlias:guessedAlias];
       }
 
       v8 = ![(CNFRegEmailController *)self emailFieldIsEmpty];
-      v11 = [(CNFRegEmailController *)self pendingAlias];
-      if (v11)
+      pendingAlias3 = [(CNFRegEmailController *)self pendingAlias];
+      if (pendingAlias3)
       {
-        v12 = [(CNFRegEmailController *)self pendingAlias];
-        v13 = [v12 length] != 0;
+        pendingAlias4 = [(CNFRegEmailController *)self pendingAlias];
+        v13 = [pendingAlias4 length] != 0;
 
         LOBYTE(v8) = v13 | v8;
       }
@@ -1109,9 +1109,9 @@ LABEL_61:
       [(CNFRegEmailController *)self reloadSpecifier:self->_emailSpecifier animated:1];
     }
 
-    v14 = [(CNFRegEmailController *)self navigationItem];
-    v15 = [v14 rightBarButtonItem];
-    [v15 setEnabled:v8 & 1];
+    navigationItem = [(CNFRegEmailController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:v8 & 1];
   }
 }
 
@@ -1122,9 +1122,9 @@ LABEL_61:
   v17.super_class = CNFRegEmailController;
   [(CNFRegFirstRunController *)&v17 _updateControllerState];
   [(CNFRegEmailController *)self _updateUI];
-  v3 = [(CNFRegListController *)self regController];
-  v4 = [(CNFRegFirstRunController *)self account];
-  v5 = [v3 accountStateForAccount:v4];
+  regController = [(CNFRegListController *)self regController];
+  account = [(CNFRegFirstRunController *)self account];
+  v5 = [regController accountStateForAccount:account];
 
   v6 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1212,8 +1212,8 @@ LABEL_61:
 
   else
   {
-    v11 = [(CNFRegEmailController *)self navigationController];
-    [v11 popToSigninControllerAnimated:1];
+    navigationController = [(CNFRegEmailController *)self navigationController];
+    [navigationController popToSigninControllerAnimated:1];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -1222,21 +1222,21 @@ LABEL_61:
 - (id)emailTextField
 {
   v2 = [(CNFRegEmailController *)self cachedCellForSpecifier:self->_emailSpecifier];
-  v3 = [v2 editableTextField];
+  editableTextField = [v2 editableTextField];
   v4 = CNFRegGlobalAppearanceController();
-  [v3 setKeyboardAppearance:{objc_msgSend(v4, "keyboardAppearance")}];
+  [editableTextField setKeyboardAppearance:{objc_msgSend(v4, "keyboardAppearance")}];
 
-  return v3;
+  return editableTextField;
 }
 
 - (BOOL)emailFieldIsEmpty
 {
-  v2 = [(CNFRegEmailController *)self emailTextField];
-  v3 = [v2 text];
+  emailTextField = [(CNFRegEmailController *)self emailTextField];
+  text = [emailTextField text];
 
-  if (v3)
+  if (text)
   {
-    v4 = [v3 length] == 0;
+    v4 = [text length] == 0;
   }
 
   else
@@ -1247,21 +1247,21 @@ LABEL_61:
   return v4;
 }
 
-- (void)emailFieldEmptyStateChanged:(id)a3 forSpecifier:(id)a4
+- (void)emailFieldEmptyStateChanged:(id)changed forSpecifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  v7 = [(CNFRegEmailController *)self navigationItem];
-  v6 = [v7 rightBarButtonItem];
-  [v6 setEnabled:v5 ^ 1u];
+  bOOLValue = [changed BOOLValue];
+  navigationItem = [(CNFRegEmailController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:bOOLValue ^ 1u];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v21.receiver = self;
   v21.super_class = CNFRegEmailController;
-  v6 = a4;
-  v7 = [(CNFRegEmailController *)&v21 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(CNFRegEmailController *)self indexForIndexPath:v6, v21.receiver, v21.super_class];
+  pathCopy = path;
+  v7 = [(CNFRegEmailController *)&v21 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(CNFRegEmailController *)self indexForIndexPath:pathCopy, v21.receiver, v21.super_class];
 
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1276,8 +1276,8 @@ LABEL_61:
 
   if (CNFRegGlobalAppearanceStyle() == 6 || CNFRegGlobalAppearanceStyle() == 5)
   {
-    v11 = [MEMORY[0x277D75348] clearColor];
-    [v7 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v7 setBackgroundColor:clearColor];
   }
 
   v12 = [(CNFRegEmailController *)self cachedCellForSpecifierID:@"FACETIME_EMAIL_ID"];
@@ -1287,18 +1287,18 @@ LABEL_61:
     v13 = +[CNFRegAppearanceController globalAppearanceController];
     if ([v13 styleUsesCustomTableStyle])
     {
-      v14 = [v13 tableCellTextLabelColor];
+      tableCellTextLabelColor = [v13 tableCellTextLabelColor];
 
-      if (v14)
+      if (tableCellTextLabelColor)
       {
-        v15 = [v13 tableCellTextLabelColor];
-        v16 = [v7 editableTextField];
-        v17 = [v16 _placeholderLabel];
-        [v17 setTextColor:v15];
+        tableCellTextLabelColor2 = [v13 tableCellTextLabelColor];
+        editableTextField = [v7 editableTextField];
+        _placeholderLabel = [editableTextField _placeholderLabel];
+        [_placeholderLabel setTextColor:tableCellTextLabelColor2];
 
-        v18 = [v13 tableCellTextLabelColor];
-        v19 = [v7 editableTextField];
-        [v19 setTextColor:v18];
+        tableCellTextLabelColor3 = [v13 tableCellTextLabelColor];
+        editableTextField2 = [v7 editableTextField];
+        [editableTextField2 setTextColor:tableCellTextLabelColor3];
       }
     }
   }
@@ -1314,9 +1314,9 @@ LABEL_61:
     v4 = 75.0;
   }
 
-  v5 = [MEMORY[0x277CBEBD0] CNFRegEmailValidationTimeout];
-  result = v5;
-  if (!v5)
+  cNFRegEmailValidationTimeout = [MEMORY[0x277CBEBD0] CNFRegEmailValidationTimeout];
+  result = cNFRegEmailValidationTimeout;
+  if (!cNFRegEmailValidationTimeout)
   {
     return v4;
   }
@@ -1380,9 +1380,9 @@ LABEL_61:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)validationTimeout:(id)a3
+- (void)validationTimeout:(id)timeout
 {
-  v4 = a3;
+  timeoutCopy = timeout;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1397,9 +1397,9 @@ LABEL_61:
 
   [(CNFRegEmailController *)self _stopValidationModeAnimated:1];
   [(CNFRegEmailController *)self stopValidationTimeoutTimer];
-  v6 = [(CNFRegEmailController *)self navigationItem];
-  v7 = [v6 rightBarButtonItem];
-  [v7 setEnabled:1];
+  navigationItem = [(CNFRegEmailController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:1];
 
   if ([(CNFRegEmailController *)self shouldShowAllVettedAliases])
   {
@@ -1428,29 +1428,29 @@ LABEL_61:
   }
 }
 
-- (void)_buildEmailSpecifierCache:(id)a3
+- (void)_buildEmailSpecifierCache:(id)cache
 {
-  v4 = [a3 specifierForID:@"FACETIME_EMAIL_ID"];
+  v4 = [cache specifierForID:@"FACETIME_EMAIL_ID"];
   emailSpecifier = self->_emailSpecifier;
   self->_emailSpecifier = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_buildActionGroupSpecifierCache:(id)a3
+- (void)_buildActionGroupSpecifierCache:(id)cache
 {
-  v4 = [a3 specifierForID:@"FACETIME_EMAIL_BUTTON_GROUP_ID"];
+  v4 = [cache specifierForID:@"FACETIME_EMAIL_BUTTON_GROUP_ID"];
   actionGroupSpecifier = self->_actionGroupSpecifier;
   self->_actionGroupSpecifier = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_buildCheckMailSpecifierCache:(id)a3
+- (void)_buildCheckMailSpecifierCache:(id)cache
 {
-  v5 = a3;
-  v9 = [v5 specifierForID:@"FACETIME_EMAIL_CHECK_MAIL_GROUP_ID"];
-  v6 = [v5 specifierForID:@"FACETIME_EMAIL_CHECK_MAIL_ID"];
+  cacheCopy = cache;
+  v9 = [cacheCopy specifierForID:@"FACETIME_EMAIL_CHECK_MAIL_GROUP_ID"];
+  v6 = [cacheCopy specifierForID:@"FACETIME_EMAIL_CHECK_MAIL_ID"];
 
   if (!v9 || !v6)
   {
@@ -1462,12 +1462,12 @@ LABEL_61:
   self->_checkMailSpecifiers = v7;
 }
 
-- (void)_buildSpecifierCache:(id)a3
+- (void)_buildSpecifierCache:(id)cache
 {
-  v4 = a3;
-  [(CNFRegEmailController *)self _buildEmailSpecifierCache:v4];
-  [(CNFRegEmailController *)self _buildCheckMailSpecifierCache:v4];
-  [(CNFRegEmailController *)self _buildActionGroupSpecifierCache:v4];
+  cacheCopy = cache;
+  [(CNFRegEmailController *)self _buildEmailSpecifierCache:cacheCopy];
+  [(CNFRegEmailController *)self _buildCheckMailSpecifierCache:cacheCopy];
+  [(CNFRegEmailController *)self _buildActionGroupSpecifierCache:cacheCopy];
 }
 
 - (void)_setupEventHandlers
@@ -1475,31 +1475,31 @@ LABEL_61:
   v8.receiver = self;
   v8.super_class = CNFRegEmailController;
   [(CNFRegFirstRunController *)&v8 _setupEventHandlers];
-  v3 = [(CNFRegListController *)self regController];
+  regController = [(CNFRegListController *)self regController];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__CNFRegEmailController__setupEventHandlers__block_invoke;
   v7[3] = &unk_278DE85A8;
   v7[4] = self;
-  [v3 setAccountRegistrationBlock:v7];
+  [regController setAccountRegistrationBlock:v7];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__CNFRegEmailController__setupEventHandlers__block_invoke_2;
   v6[3] = &unk_278DE85D0;
   v6[4] = self;
-  [v3 setAliasAddedBlock:v6];
+  [regController setAliasAddedBlock:v6];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __44__CNFRegEmailController__setupEventHandlers__block_invoke_243;
   v5[3] = &unk_278DE85F8;
   v5[4] = self;
-  [v3 setAliasStatusChangedBlock:v5];
+  [regController setAliasStatusChangedBlock:v5];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __44__CNFRegEmailController__setupEventHandlers__block_invoke_248;
   v4[3] = &unk_278DE8580;
   v4[4] = self;
-  [v3 setVettedAliasesChangedBlock:v4];
+  [regController setVettedAliasesChangedBlock:v4];
 }
 
 void __44__CNFRegEmailController__setupEventHandlers__block_invoke(uint64_t a1, void *a2)

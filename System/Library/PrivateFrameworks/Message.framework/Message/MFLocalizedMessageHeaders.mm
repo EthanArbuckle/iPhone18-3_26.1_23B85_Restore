@@ -1,17 +1,17 @@
 @interface MFLocalizedMessageHeaders
 + (id)localizedHeaders;
-- (id)copyFormattedHeaderValueFromAddressList:(id)a3;
+- (id)copyFormattedHeaderValueFromAddressList:(id)list;
 - (id)markupString;
-- (void)appendHeaderMarkupForKey:(id)a3 value:(id)a4 toString:(id)a5;
+- (void)appendHeaderMarkupForKey:(id)key value:(id)value toString:(id)string;
 @end
 
 @implementation MFLocalizedMessageHeaders
 
-- (id)copyFormattedHeaderValueFromAddressList:(id)a3
+- (id)copyFormattedHeaderValueFromAddressList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v5 = [v3 componentsJoinedByString:{@", "}];
+  v5 = [listCopy componentsJoinedByString:{@", "}];
   [v4 appendString:v5];
 
   if ([v4 length])
@@ -23,12 +23,12 @@
   return v4;
 }
 
-- (void)appendHeaderMarkupForKey:(id)a3 value:(id)a4 toString:(id)a5
+- (void)appendHeaderMarkupForKey:(id)key value:(id)value toString:(id)string
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v26 = v8;
+  keyCopy = key;
+  valueCopy = value;
+  stringCopy = string;
+  v26 = keyCopy;
   v11 = +[MFLocalizedMessageHeaders localizedHeaders];
   v12 = [v11 objectForKey:v26];
 
@@ -41,15 +41,15 @@
   sanitizeStringForMarkup(v13);
   v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"<B>%@:</B> ", v13];
 
-  [v10 appendString:v14];
+  [stringCopy appendString:v14];
   if (v26)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = v9;
-      v16 = [v26 lowercaseString];
-      if ([v16 isEqualToString:*MEMORY[0x1E699B178]])
+      v15 = valueCopy;
+      lowercaseString = [v26 lowercaseString];
+      if ([lowercaseString isEqualToString:*MEMORY[0x1E699B178]])
       {
         v17 = [MEMORY[0x1E699B330] subjectStringForDisplayForSubjectString:v15];
         v18 = [v17 mutableCopy];
@@ -58,7 +58,7 @@
         v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"<B>%@</B><BR>", v18];
       }
 
-      else if ([v16 isEqualToString:*MEMORY[0x1E699B0D8]])
+      else if ([lowercaseString isEqualToString:*MEMORY[0x1E699B0D8]])
       {
         v20 = [MEMORY[0x1E695DF00] mf_copyDateInCommonFormatsWithString:v15];
         if (v20)
@@ -104,7 +104,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = [(MFLocalizedMessageHeaders *)self copyFormattedHeaderValueFromAddressList:v9];
+        v19 = [(MFLocalizedMessageHeaders *)self copyFormattedHeaderValueFromAddressList:valueCopy];
         if (!v19)
         {
 LABEL_19:
@@ -113,7 +113,7 @@ LABEL_19:
         }
 
 LABEL_18:
-        [v10 appendString:v19];
+        [stringCopy appendString:v19];
         goto LABEL_19;
       }
     }
@@ -125,16 +125,16 @@ LABEL_20:
 - (id)markupString
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69AD6F8] basicHeaders];
-  v19 = [v3 mutableCopy];
+  basicHeaders = [MEMORY[0x1E69AD6F8] basicHeaders];
+  v19 = [basicHeaders mutableCopy];
 
   v4 = [(MFMessageHeaders *)self headersForKey:*MEMORY[0x1E699B0E8]];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  v18 = v5;
-  if (v5)
+  v18 = firstObject;
+  if (firstObject)
   {
-    [v19 removeObject:{*MEMORY[0x1E699B180], v5}];
+    [v19 removeObject:{*MEMORY[0x1E699B180], firstObject}];
     [v19 removeObject:*MEMORY[0x1E699B0E0]];
   }
 

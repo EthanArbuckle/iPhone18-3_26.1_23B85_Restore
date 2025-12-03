@@ -1,5 +1,5 @@
 @interface AVOutputDeviceGroupMembershipChangeResult
-- (AVOutputDeviceGroupMembershipChangeResult)initWithStatus:(int64_t)a3 cancellationReason:(id)a4;
+- (AVOutputDeviceGroupMembershipChangeResult)initWithStatus:(int64_t)status cancellationReason:(id)reason;
 - (void)dealloc;
 @end
 
@@ -12,7 +12,7 @@
   [(AVOutputDeviceGroupMembershipChangeResult *)&v3 dealloc];
 }
 
-- (AVOutputDeviceGroupMembershipChangeResult)initWithStatus:(int64_t)a3 cancellationReason:(id)a4
+- (AVOutputDeviceGroupMembershipChangeResult)initWithStatus:(int64_t)status cancellationReason:(id)reason
 {
   v10.receiver = self;
   v10.super_class = AVOutputDeviceGroupMembershipChangeResult;
@@ -20,8 +20,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_status = a3;
-    v6->_cancellationReason = [a4 copy];
+    v6->_status = status;
+    v6->_cancellationReason = [reason copy];
     v8 = v7;
   }
 

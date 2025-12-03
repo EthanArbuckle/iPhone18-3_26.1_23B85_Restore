@@ -1,14 +1,14 @@
 @interface SKUIDividerPageComponent
-- (SKUIDividerPageComponent)initWithCustomPageContext:(id)a3;
-- (SKUIDividerPageComponent)initWithDividerTitle:(id)a3;
-- (SKUIDividerPageComponent)initWithViewElement:(id)a3;
+- (SKUIDividerPageComponent)initWithCustomPageContext:(id)context;
+- (SKUIDividerPageComponent)initWithDividerTitle:(id)title;
+- (SKUIDividerPageComponent)initWithViewElement:(id)element;
 @end
 
 @implementation SKUIDividerPageComponent
 
-- (SKUIDividerPageComponent)initWithCustomPageContext:(id)a3
+- (SKUIDividerPageComponent)initWithCustomPageContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIDividerPageComponent initWithCustomPageContext:];
@@ -16,11 +16,11 @@
 
   v11.receiver = self;
   v11.super_class = SKUIDividerPageComponent;
-  v5 = [(SKUIPageComponent *)&v11 initWithCustomPageContext:v4];
+  v5 = [(SKUIPageComponent *)&v11 initWithCustomPageContext:contextCopy];
   if (v5)
   {
-    v6 = [v4 componentDictionary];
-    v7 = [v6 objectForKey:@"title"];
+    componentDictionary = [contextCopy componentDictionary];
+    v7 = [componentDictionary objectForKey:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,9 +33,9 @@
   return v5;
 }
 
-- (SKUIDividerPageComponent)initWithDividerTitle:(id)a3
+- (SKUIDividerPageComponent)initWithDividerTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIDividerPageComponent initWithDividerTitle:];
@@ -46,7 +46,7 @@
   v5 = [(SKUIDividerPageComponent *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [titleCopy copy];
     title = v5->_title;
     v5->_title = v6;
   }
@@ -54,9 +54,9 @@
   return v5;
 }
 
-- (SKUIDividerPageComponent)initWithViewElement:(id)a3
+- (SKUIDividerPageComponent)initWithViewElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIDividerPageComponent initWithViewElement:];
@@ -64,7 +64,7 @@
 
   v7.receiver = self;
   v7.super_class = SKUIDividerPageComponent;
-  v5 = [(SKUIPageComponent *)&v7 initWithViewElement:v4];
+  v5 = [(SKUIPageComponent *)&v7 initWithViewElement:elementCopy];
 
   return v5;
 }

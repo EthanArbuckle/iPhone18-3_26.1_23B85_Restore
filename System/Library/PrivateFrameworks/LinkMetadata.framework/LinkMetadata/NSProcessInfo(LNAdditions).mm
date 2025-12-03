@@ -10,7 +10,7 @@
   block[1] = 3221225472;
   block[2] = __42__NSProcessInfo_LNAdditions__ln_isTesting__block_invoke;
   block[3] = &unk_1E72B1260;
-  block[4] = a1;
+  block[4] = self;
   if (ln_isTesting_onceToken != -1)
   {
     dispatch_once(&ln_isTesting_onceToken, block);

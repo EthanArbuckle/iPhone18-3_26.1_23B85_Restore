@@ -1,14 +1,14 @@
 @interface SRAppHelperService
 + (void)initialize;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)validateConnection:(id)a3 accessCategory:(id)a4;
-- (BOOL)validateEntitlment:(id)a3 accessCategory:(id)a4;
-- (SRAppHelperService)initWithQueue:(id)a3;
-- (SRAppHelperService)initWithQueue:(id)a3 listener:(id)a4 authStore:(id)a5;
-- (void)authorizationRequestStatusForBundleId:(id)a3 sensors:(id)a4 reply:(id)a5;
-- (void)authorizationSnapshotWithReply:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)validateConnection:(id)connection accessCategory:(id)category;
+- (BOOL)validateEntitlment:(id)entitlment accessCategory:(id)category;
+- (SRAppHelperService)initWithQueue:(id)queue;
+- (SRAppHelperService)initWithQueue:(id)queue listener:(id)listener authStore:(id)store;
+- (void)authorizationRequestStatusForBundleId:(id)id sensors:(id)sensors reply:(id)reply;
+- (void)authorizationSnapshotWithReply:(id)reply;
 - (void)dealloc;
-- (void)resetAuthorizationsForBundleId:(id)a3 reply:(id)a4;
+- (void)resetAuthorizationsForBundleId:(id)id reply:(id)reply;
 - (void)resume;
 @end
 
@@ -16,22 +16,22 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_1000086C0 = os_log_create("com.apple.SensorKit", "AppHelper");
   }
 }
 
-- (SRAppHelperService)initWithQueue:(id)a3
+- (SRAppHelperService)initWithQueue:(id)queue
 {
   v5 = +[NSXPCListener serviceListener];
-  [(NSXPCListener *)v5 _setQueue:a3];
+  [(NSXPCListener *)v5 _setQueue:queue];
   v6 = +[SRAuthorizationStore allSensorsStore];
 
-  return [(SRAppHelperService *)self initWithQueue:a3 listener:v5 authStore:v6];
+  return [(SRAppHelperService *)self initWithQueue:queue listener:v5 authStore:v6];
 }
 
-- (SRAppHelperService)initWithQueue:(id)a3 listener:(id)a4 authStore:(id)a5
+- (SRAppHelperService)initWithQueue:(id)queue listener:(id)listener authStore:(id)store
 {
   v12.receiver = self;
   v12.super_class = SRAppHelperService;
@@ -39,12 +39,12 @@
   v9 = v8;
   if (v8)
   {
-    v8->_q = a3;
-    dispatch_retain(a3);
-    v10 = a4;
-    v9->_listener = v10;
-    [(NSXPCListener *)v10 setDelegate:v9];
-    v9->_authStore = a5;
+    v8->_q = queue;
+    dispatch_retain(queue);
+    listenerCopy = listener;
+    v9->_listener = listenerCopy;
+    [(NSXPCListener *)listenerCopy setDelegate:v9];
+    v9->_authStore = store;
   }
 
   return v9;
@@ -62,33 +62,33 @@
 
 - (void)resume
 {
-  v2 = [(SRAppHelperService *)self listener];
+  listener = [(SRAppHelperService *)self listener];
 
-  [(NSXPCListener *)v2 resume];
+  [(NSXPCListener *)listener resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v6 = qword_1000086C0;
   if (os_log_type_enabled(qword_1000086C0, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = [a4 serviceName];
+    serviceName = [connection serviceName];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Got a connection attempt on %@", &v8, 0xCu);
   }
 
-  [a4 _setQueue:self->_q];
-  [a4 setExportedInterface:{+[NSXPCInterface interfaceWithProtocol:](NSXPCInterface, "interfaceWithProtocol:", &OBJC_PROTOCOL___SRAppHelperProtocol)}];
-  [a4 setExportedObject:self];
-  [a4 resume];
+  [connection _setQueue:self->_q];
+  [connection setExportedInterface:{+[NSXPCInterface interfaceWithProtocol:](NSXPCInterface, "interfaceWithProtocol:", &OBJC_PROTOCOL___SRAppHelperProtocol)}];
+  [connection setExportedObject:self];
+  [connection resume];
   return 1;
 }
 
-- (void)resetAuthorizationsForBundleId:(id)a3 reply:(id)a4
+- (void)resetAuthorizationsForBundleId:(id)id reply:(id)reply
 {
   if ([(SRAppHelperService *)self validateConnection:+[NSXPCConnection accessCategory:"currentConnection"], @"reset"])
   {
-    [(SRAuthorizationStore *)[(SRAppHelperService *)self authStore] resetAllAuthorizationsForBundleId:a3];
+    [(SRAuthorizationStore *)[(SRAppHelperService *)self authStore] resetAllAuthorizationsForBundleId:id];
     v7 = 0;
   }
 
@@ -97,27 +97,27 @@
     v7 = [SRError errorWithCode:0];
   }
 
-  v8 = *(a4 + 2);
+  v8 = *(reply + 2);
 
-  v8(a4, v7);
+  v8(reply, v7);
 }
 
-- (void)authorizationRequestStatusForBundleId:(id)a3 sensors:(id)a4 reply:(id)a5
+- (void)authorizationRequestStatusForBundleId:(id)id sensors:(id)sensors reply:(id)reply
 {
   if ([(SRAppHelperService *)self validateConnection:+[NSXPCConnection accessCategory:"currentConnection"], @"read"])
   {
     v9 = [-[SRAuthorizationStore readerAuthorizationValues](-[SRAppHelperService authStore](self "authStore")];
     v10 = +[NSSet setWithArray:](NSSet, "setWithArray:", [v9 allKeys]);
-    v11 = [[NSMutableSet alloc] initWithSet:a4];
+    v11 = [[NSMutableSet alloc] initWithSet:sensors];
     [v11 minusSet:v10];
     v12 = [v11 count];
     v13 = qword_1000086C0;
     if (os_log_type_enabled(qword_1000086C0, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543874;
-      v17 = a3;
+      idCopy = id;
       v18 = 2114;
-      v19 = a4;
+      sensorsCopy = sensors;
       v20 = 1024;
       v21 = v12 != 0;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Should request for %{public}@ for %{public}@: %{BOOL}d", &v16, 0x1Cu);
@@ -127,35 +127,35 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138543362;
-      v17 = v9;
+      idCopy = v9;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "auth values: %{public}@", &v16, 0xCu);
     }
 
-    (*(a5 + 2))(a5, v12 != 0, 0);
+    (*(reply + 2))(reply, v12 != 0, 0);
   }
 
   else
   {
     v14 = [SRError errorWithCode:0];
-    v15 = *(a5 + 2);
+    v15 = *(reply + 2);
 
-    v15(a5, 1, v14);
+    v15(reply, 1, v14);
   }
 }
 
-- (BOOL)validateConnection:(id)a3 accessCategory:(id)a4
+- (BOOL)validateConnection:(id)connection accessCategory:(id)category
 {
-  v6 = [a3 valueForEntitlement:@"com.apple.SensorKitAppHelper.allow"];
+  v6 = [connection valueForEntitlement:@"com.apple.SensorKitAppHelper.allow"];
 
-  return [(SRAppHelperService *)self validateEntitlment:v6 accessCategory:a4];
+  return [(SRAppHelperService *)self validateEntitlment:v6 accessCategory:category];
 }
 
-- (BOOL)validateEntitlment:(id)a3 accessCategory:(id)a4
+- (BOOL)validateEntitlment:(id)entitlment accessCategory:(id)category
 {
-  if (a3)
+  if (entitlment)
   {
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) != 0 && ([a3 containsObject:a4])
+    if (objc_opt_isKindOfClass() & 1) != 0 && ([entitlment containsObject:category])
     {
       return 1;
     }
@@ -174,23 +174,23 @@
   return result;
 }
 
-- (void)authorizationSnapshotWithReply:(id)a3
+- (void)authorizationSnapshotWithReply:(id)reply
 {
-  v4 = self;
+  selfCopy = self;
   if ([(SRAppHelperService *)self validateConnection:+[NSXPCConnection accessCategory:"currentConnection"], @"read"])
   {
-    v17 = a3;
+    replyCopy = reply;
     v21 = +[NSMutableDictionary dictionary];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    obj = [(SRAuthorizationStore *)[(SRAppHelperService *)v4 authStore] readerAuthorizationBundleIdValues];
+    obj = [(SRAuthorizationStore *)[(SRAppHelperService *)selfCopy authStore] readerAuthorizationBundleIdValues];
     v22 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v22)
     {
       v19 = *v29;
-      v20 = v4;
+      v20 = selfCopy;
       do
       {
         for (i = 0; i != v22; i = i + 1)
@@ -201,7 +201,7 @@
           }
 
           v23 = *(*(&v28 + 1) + 8 * i);
-          v6 = [-[SRAuthorizationStore readerAuthorizationValues](-[SRAppHelperService authStore](v4 "authStore")];
+          v6 = [-[SRAuthorizationStore readerAuthorizationValues](-[SRAppHelperService authStore](selfCopy "authStore")];
           v7 = [[NSMutableDictionary alloc] initWithDictionary:v6];
           v24 = 0u;
           v25 = 0u;
@@ -240,7 +240,7 @@
 
           [v21 setObject:v7 forKeyedSubscript:v23];
 
-          v4 = v20;
+          selfCopy = v20;
         }
 
         v22 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -249,15 +249,15 @@
       while (v22);
     }
 
-    v17[2](v17, [NSDictionary dictionaryWithDictionary:v21], 0);
+    replyCopy[2](replyCopy, [NSDictionary dictionaryWithDictionary:v21], 0);
   }
 
   else
   {
     v15 = [SRError errorWithCode:0];
-    v16 = *(a3 + 2);
+    v16 = *(reply + 2);
 
-    v16(a3, &__NSDictionary0__struct, v15);
+    v16(reply, &__NSDictionary0__struct, v15);
   }
 }
 

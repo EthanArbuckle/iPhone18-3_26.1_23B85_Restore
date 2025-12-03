@@ -1,34 +1,34 @@
 @interface PUILocationServicesAuthLevelCell
-- (PUILocationServicesAuthLevelCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (PUILocationServicesAuthLevelCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)getLazyIcon;
 - (id)getLazyIconID;
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PUILocationServicesAuthLevelCell
 
-- (PUILocationServicesAuthLevelCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (PUILocationServicesAuthLevelCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v14.receiver = self;
   v14.super_class = PUILocationServicesAuthLevelCell;
-  v5 = [(PSTableCell *)&v14 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(PSTableCell *)&v14 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   if (v5)
   {
     v6 = objc_alloc_init(PUILocationUsageMixin);
     location = v5->_location;
     v5->_location = v6;
 
-    v8 = [(PUILocationServicesAuthLevelCell *)v5 detailTextLabel];
-    v9 = [MEMORY[0x277D75348] lightGrayColor];
-    [v8 setTextColor:v9];
+    detailTextLabel = [(PUILocationServicesAuthLevelCell *)v5 detailTextLabel];
+    lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+    [detailTextLabel setTextColor:lightGrayColor];
 
-    v10 = [(PUILocationUsageMixin *)v5->_location authLevelString];
-    [v8 setText:v10];
+    authLevelString = [(PUILocationUsageMixin *)v5->_location authLevelString];
+    [detailTextLabel setText:authLevelString];
 
-    v11 = [(PUILocationServicesAuthLevelCell *)v5 contentView];
-    v12 = [(PUILocationUsageMixin *)v5->_location usageIndicator];
-    [v11 addSubview:v12];
+    contentView = [(PUILocationServicesAuthLevelCell *)v5 contentView];
+    usageIndicator = [(PUILocationUsageMixin *)v5->_location usageIndicator];
+    [contentView addSubview:usageIndicator];
   }
 
   return v5;
@@ -39,96 +39,96 @@
   v70.receiver = self;
   v70.super_class = PUILocationServicesAuthLevelCell;
   [(PSTableCell *)&v70 layoutSubviews];
-  v3 = [(PUILocationServicesAuthLevelCell *)self detailTextLabel];
-  v4 = [(PUILocationUsageMixin *)self->_location authLevelString];
-  if (v4)
+  detailTextLabel = [(PUILocationServicesAuthLevelCell *)self detailTextLabel];
+  authLevelString = [(PUILocationUsageMixin *)self->_location authLevelString];
+  if (authLevelString)
   {
-    [v3 setText:v4];
+    [detailTextLabel setText:authLevelString];
   }
 
-  v5 = [(PUILocationUsageMixin *)self->_location usageIndicator];
-  if (([v5 isHidden] & 1) == 0)
+  usageIndicator = [(PUILocationUsageMixin *)self->_location usageIndicator];
+  if (([usageIndicator isHidden] & 1) == 0)
   {
-    [v3 frame];
+    [detailTextLabel frame];
     v7 = v6;
     v9 = v8;
-    v10 = [(PUILocationServicesAuthLevelCell *)self traitCollection];
-    v11 = [v10 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v11);
+    traitCollection = [(PUILocationServicesAuthLevelCell *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
-      [v3 frame];
+      [detailTextLabel frame];
       v14 = v13;
       v68 = v15;
       v17 = v16;
       v19 = v18;
-      v20 = [(PUILocationServicesAuthLevelCell *)self _shouldReverseLayoutDirection];
-      [v5 frame];
+      _shouldReverseLayoutDirection = [(PUILocationServicesAuthLevelCell *)self _shouldReverseLayoutDirection];
+      [usageIndicator frame];
       v22 = v21;
       v24 = v23;
-      [v3 frame];
+      [detailTextLabel frame];
       Height = CGRectGetHeight(v71);
-      [v5 frame];
+      [usageIndicator frame];
       v26 = v9 + (Height - CGRectGetHeight(v72)) * 0.5;
-      if (v20)
+      if (_shouldReverseLayoutDirection)
       {
-        [v3 frame];
+        [detailTextLabel frame];
         Width = CGRectGetWidth(v73);
-        [v5 frame];
-        [v5 setFrame:{v7 + Width - CGRectGetWidth(v74), v26, v22, v24}];
-        [v5 frame];
+        [usageIndicator frame];
+        [usageIndicator setFrame:{v7 + Width - CGRectGetWidth(v74), v26, v22, v24}];
+        [usageIndicator frame];
         v28 = v14 - (CGRectGetWidth(v75) + 6.0);
       }
 
       else
       {
-        [v5 setFrame:{v7, v26, v22, v24}];
-        [v5 frame];
+        [usageIndicator setFrame:{v7, v26, v22, v24}];
+        [usageIndicator frame];
         v28 = v14 + CGRectGetWidth(v81) + 6.0;
       }
 
-      [v3 setFrame:{v28, v68, v17, v19}];
-      v49 = [v3 text];
-      v50 = [v49 length];
+      [detailTextLabel setFrame:{v28, v68, v17, v19}];
+      text = [detailTextLabel text];
+      v50 = [text length];
 
       if (!v50)
       {
         v51 = 6.0;
         if (([(PUILocationServicesAuthLevelCell *)self _shouldReverseLayoutDirection]& 1) == 0)
         {
-          v52 = [(PUILocationServicesAuthLevelCell *)self contentView];
-          [v52 bounds];
+          contentView = [(PUILocationServicesAuthLevelCell *)self contentView];
+          [contentView bounds];
           v53 = CGRectGetWidth(v82) + -6.0;
-          [v5 frame];
+          [usageIndicator frame];
           v51 = v53 - CGRectGetWidth(v83);
         }
 
-        [v5 setFrame:{v51, v26, v22, v24}];
+        [usageIndicator setFrame:{v51, v26, v22, v24}];
       }
 
       goto LABEL_19;
     }
 
-    v29 = [(PUILocationServicesAuthLevelCell *)self textLabel];
-    [v29 frame];
+    textLabel = [(PUILocationServicesAuthLevelCell *)self textLabel];
+    [textLabel frame];
     v69 = v30;
     v32 = v31;
     v34 = v33;
     v36 = v35;
-    v37 = [(PUILocationServicesAuthLevelCell *)self _shouldReverseLayoutDirection];
-    [v5 frame];
+    _shouldReverseLayoutDirection2 = [(PUILocationServicesAuthLevelCell *)self _shouldReverseLayoutDirection];
+    [usageIndicator frame];
     v39 = v38;
     v41 = v40;
-    [v3 frame];
+    [detailTextLabel frame];
     v42 = CGRectGetHeight(v76);
-    [v5 frame];
+    [usageIndicator frame];
     v43 = v9 + (v42 - CGRectGetHeight(v77)) * 0.5;
-    if (v37)
+    if (_shouldReverseLayoutDirection2)
     {
-      [v3 frame];
+      [detailTextLabel frame];
       v44 = v7 + CGRectGetWidth(v78) + 6.0;
-      [v5 setFrame:{v44, v43, v39, v41}];
+      [usageIndicator setFrame:{v44, v43, v39, v41}];
       v79.origin.x = v44;
       v79.origin.y = v43;
       v79.size.width = v39;
@@ -144,15 +144,15 @@
         v47 = MaxX - MinX + 6.0;
         v48 = v69 + v47;
 LABEL_17:
-        [v29 setFrame:{v48, v32, v34 - v47, v36}];
+        [textLabel setFrame:{v48, v32, v34 - v47, v36}];
       }
     }
 
     else
     {
-      [v5 frame];
+      [usageIndicator frame];
       v54 = v7 - (CGRectGetWidth(v84) + 6.0);
-      [v5 setFrame:{v54, v43, v39, v41}];
+      [usageIndicator setFrame:{v54, v43, v39, v41}];
       v85.origin.x = v54;
       v85.origin.y = v43;
       v85.size.width = v39;
@@ -172,22 +172,22 @@ LABEL_17:
     }
 
 LABEL_19:
-    v57 = [v3 text];
-    v58 = [v57 length];
+    text2 = [detailTextLabel text];
+    v58 = [text2 length];
 
     if (!v58)
     {
-      [v5 frame];
+      [usageIndicator frame];
       v60 = v59;
       v62 = v61;
       v64 = v63;
-      v65 = [(PUILocationServicesAuthLevelCell *)self contentView];
-      [v65 bounds];
+      contentView2 = [(PUILocationServicesAuthLevelCell *)self contentView];
+      [contentView2 bounds];
       v66 = CGRectGetHeight(v87);
-      [v5 bounds];
+      [usageIndicator bounds];
       v67 = (v66 - CGRectGetHeight(v88)) * 0.5;
 
-      [v5 setFrame:{v60, v67, v62, v64}];
+      [usageIndicator setFrame:{v60, v67, v62, v64}];
     }
   }
 }
@@ -197,8 +197,8 @@ LABEL_19:
   v3 = *MEMORY[0x277D3FCD8];
   if (!*(&self->super.super.super.super.super.isa + v3))
   {
-    v4 = [(PSTableCell *)self specifier];
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3FFD8]];
+    specifier = [(PSTableCell *)self specifier];
+    v5 = [specifier objectForKeyedSubscript:*MEMORY[0x277D3FFD8]];
     if (v5)
     {
       isWebApp = self->_isWebApp;
@@ -223,7 +223,7 @@ LABEL_8:
     {
       [(NSURL *)self->_bundleURL absoluteString];
     }
-    v7 = ;
+    getLazyIconID = ;
     goto LABEL_12;
   }
 
@@ -235,10 +235,10 @@ LABEL_8:
 LABEL_6:
   v9.receiver = self;
   v9.super_class = PUILocationServicesAuthLevelCell;
-  v7 = [(PSTableCell *)&v9 getLazyIconID];
+  getLazyIconID = [(PSTableCell *)&v9 getLazyIconID];
 LABEL_12:
 
-  return v7;
+  return getLazyIconID;
 }
 
 - (id)getLazyIcon
@@ -246,8 +246,8 @@ LABEL_12:
   v3 = *MEMORY[0x277D3FCD8];
   if (!*(&self->super.super.super.super.super.isa + v3))
   {
-    v4 = [(PSTableCell *)self specifier];
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3FFD8]];
+    specifier = [(PSTableCell *)self specifier];
+    v5 = [specifier objectForKeyedSubscript:*MEMORY[0x277D3FFD8]];
     if (!v5)
     {
 
@@ -264,7 +264,7 @@ LABEL_12:
 LABEL_6:
     v18.receiver = self;
     v18.super_class = PUILocationServicesAuthLevelCell;
-    v7 = [(PSTableCell *)&v18 getLazyIcon];
+    getLazyIcon = [(PSTableCell *)&v18 getLazyIcon];
     goto LABEL_24;
   }
 
@@ -283,13 +283,13 @@ LABEL_8:
   {
     v8 = [MEMORY[0x277D75D70] webClipIdentifierFromBundleIdentifier:*(&self->super.super.super.super.super.isa + v3)];
     v9 = [MEMORY[0x277D75D70] webClipWithIdentifier:v8];
-    v7 = [v9 generateIconImageForFormat:0 scale:*&getLazyIcon_screenScale];
+    getLazyIcon = [v9 generateIconImageForFormat:0 scale:*&getLazyIcon_screenScale];
 
-    if (!v7)
+    if (!getLazyIcon)
     {
       v17.receiver = self;
       v17.super_class = PUILocationServicesAuthLevelCell;
-      v7 = [(PSTableCell *)&v17 getLazyIcon];
+      getLazyIcon = [(PSTableCell *)&v17 getLazyIcon];
     }
   }
 
@@ -298,7 +298,7 @@ LABEL_8:
     v10 = CFBundleCreate(*MEMORY[0x277CBECE8], self->_bundleURL);
     if (!v10)
     {
-      v7 = 0;
+      getLazyIcon = 0;
       goto LABEL_24;
     }
 
@@ -307,12 +307,12 @@ LABEL_8:
     if ([v8 isEqualToString:@"com.apple.weather-framework"])
     {
       v12 = [MEMORY[0x277CCA8D8] bundleWithPath:@"/System/Library/PrivateFrameworks/Weather.framework"];
-      v7 = [MEMORY[0x277D755B8] imageNamed:@"IconMasked-table" inBundle:v12];
+      getLazyIcon = [MEMORY[0x277D755B8] imageNamed:@"IconMasked-table" inBundle:v12];
     }
 
     else if ([v8 isEqualToString:@"com.apple.PassKitCore"])
     {
-      v7 = PSPassbookImage();
+      getLazyIcon = PSPassbookImage();
     }
 
     else
@@ -323,13 +323,13 @@ LABEL_8:
       if (v13)
       {
         v14 = v13;
-        v7 = [MEMORY[0x277D755B8] imageWithCGImage:v13 scale:0 orientation:v16];
+        getLazyIcon = [MEMORY[0x277D755B8] imageWithCGImage:v13 scale:0 orientation:v16];
         CFRelease(v14);
       }
 
       else
       {
-        v7 = 0;
+        getLazyIcon = 0;
       }
     }
 
@@ -338,7 +338,7 @@ LABEL_8:
 
 LABEL_24:
 
-  return v7;
+  return getLazyIcon;
 }
 
 void __47__PUILocationServicesAuthLevelCell_getLazyIcon__block_invoke()
@@ -348,16 +348,16 @@ void __47__PUILocationServicesAuthLevelCell_getLazyIcon__block_invoke()
   getLazyIcon_screenScale = v0;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"_BundleUrl_"];
+  specifierCopy = specifier;
+  v5 = [specifierCopy propertyForKey:@"_BundleUrl_"];
   bundleURL = self->_bundleURL;
   self->_bundleURL = v5;
 
   v7.receiver = self;
   v7.super_class = PUILocationServicesAuthLevelCell;
-  [(PSTableCell *)&v7 refreshCellContentsWithSpecifier:v4];
+  [(PSTableCell *)&v7 refreshCellContentsWithSpecifier:specifierCopy];
 }
 
 @end

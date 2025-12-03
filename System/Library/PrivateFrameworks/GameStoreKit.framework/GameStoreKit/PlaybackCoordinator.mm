@@ -7,13 +7,13 @@
 
 - (void)didEnterBackground
 {
-  v2 = self;
+  selfCopy = self;
   sub_24ECD7B64();
 }
 
 - (void)willEnterForeground
 {
-  v2 = self;
+  selfCopy = self;
   sub_24ECD8DA8();
 }
 

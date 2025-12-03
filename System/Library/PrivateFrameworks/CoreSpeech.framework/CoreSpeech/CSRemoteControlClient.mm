@@ -1,60 +1,60 @@
 @interface CSRemoteControlClient
-- (BOOL)createRemoteVoiceProfileWithAudioFiles:(id)a3 aesKey:(id)a4 encryptedAudioSampleBypeDepth:(unint64_t)a5 languageCode:(id)a6 completion:(id)a7;
+- (BOOL)createRemoteVoiceProfileWithAudioFiles:(id)files aesKey:(id)key encryptedAudioSampleBypeDepth:(unint64_t)depth languageCode:(id)code completion:(id)completion;
 - (BOOL)isConnected;
-- (BOOL)transferInterstitialAudioFiles:(id)a3 interstitialLevel:(int64_t)a4 completion:(id)a5;
-- (BOOL)transferVoiceTriggerSpeakerModel:(id)a3 forAsset:(id)a4;
-- (BOOL)waitingForConnection:(double)a3 error:(id *)a4;
-- (CSRemoteControlClient)initWithRemoteDevice:(id)a3;
+- (BOOL)transferInterstitialAudioFiles:(id)files interstitialLevel:(int64_t)level completion:(id)completion;
+- (BOOL)transferVoiceTriggerSpeakerModel:(id)model forAsset:(id)asset;
+- (BOOL)waitingForConnection:(double)connection error:(id *)error;
+- (CSRemoteControlClient)initWithRemoteDevice:(id)device;
 - (NSString)description;
-- (id)_dictionaryWithContentsOfXPCObject:(id)a3;
-- (id)_getMyriadInfoFromServerMessage:(id)a3;
-- (void)_fetchDataFromAudioFileUrl:(id)a3 aesKey:(id)a4 encryptedAudioSampleBypeDepth:(unint64_t)a5 completion:(id)a6;
-- (void)_handleServerError:(id)a3;
-- (void)_handleServerEvent:(id)a3;
-- (void)_handleServerMessage:(id)a3;
+- (id)_dictionaryWithContentsOfXPCObject:(id)object;
+- (id)_getMyriadInfoFromServerMessage:(id)message;
+- (void)_fetchDataFromAudioFileUrl:(id)url aesKey:(id)key encryptedAudioSampleBypeDepth:(unint64_t)depth completion:(id)completion;
+- (void)_handleServerError:(id)error;
+- (void)_handleServerEvent:(id)event;
+- (void)_handleServerMessage:(id)message;
 - (void)_invalidate;
-- (void)_transferAudioData:(id)a3 numSamples:(unint64_t)a4 remoteWavFilePath:(id)a5 completion:(id)a6;
-- (void)_transferFile:(id)a3 at:(id)a4 completion:(id)a5;
-- (void)addObserver:(id)a3;
-- (void)clearTriggerCount:(id)a3;
+- (void)_transferAudioData:(id)data numSamples:(unint64_t)samples remoteWavFilePath:(id)path completion:(id)completion;
+- (void)_transferFile:(id)file at:(id)at completion:(id)completion;
+- (void)addObserver:(id)observer;
+- (void)clearTriggerCount:(id)count;
 - (void)dealloc;
-- (void)didDeviceConnect:(id)a3;
-- (void)didDeviceDisconnect:(id)a3;
-- (void)exchangeRemoteDeviceProtocolInfo:(id)a3;
-- (void)fetchAndClearCachedVoiceTriggerEventsWithCompletion:(id)a3;
-- (void)getFirstPassRunningMode:(id)a3;
-- (void)getTriggerCount:(id)a3;
+- (void)didDeviceConnect:(id)connect;
+- (void)didDeviceDisconnect:(id)disconnect;
+- (void)exchangeRemoteDeviceProtocolInfo:(id)info;
+- (void)fetchAndClearCachedVoiceTriggerEventsWithCompletion:(id)completion;
+- (void)getFirstPassRunningMode:(id)mode;
+- (void)getTriggerCount:(id)count;
 - (void)invalidate;
-- (void)invalidateInterstitialWithLevel:(int64_t)a3;
-- (void)notifyBluetoothWirelessSplitterStateChanged:(unint64_t)a3 shouldDisableSpeakerVerificationInSplitterMode:(BOOL)a4;
-- (void)notifyVoiceTriggerAssetChangeWithSiriLanguageCode:(id)a3;
-- (void)readAndClearVoiceTriggeredTokenWithCompletion:(id)a3;
-- (void)readVoiceTriggeredTokenWithCompletion:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setSelfTriggerEnable:(BOOL)a3 withCompletion:(id)a4;
-- (void)setUserSelectedVoiceTriggerPhraseType:(unint64_t)a3;
-- (void)setVoiceTriggerEnable:(BOOL)a3 withCompletion:(id)a4;
-- (void)transferVoiceTriggerAsset:(id)a3 forLanguageCode:(id)a4 completion:(id)a5;
-- (void)voiceTriggerEnabledWithCompletion:(id)a3;
+- (void)invalidateInterstitialWithLevel:(int64_t)level;
+- (void)notifyBluetoothWirelessSplitterStateChanged:(unint64_t)changed shouldDisableSpeakerVerificationInSplitterMode:(BOOL)mode;
+- (void)notifyVoiceTriggerAssetChangeWithSiriLanguageCode:(id)code;
+- (void)readAndClearVoiceTriggeredTokenWithCompletion:(id)completion;
+- (void)readVoiceTriggeredTokenWithCompletion:(id)completion;
+- (void)removeObserver:(id)observer;
+- (void)setSelfTriggerEnable:(BOOL)enable withCompletion:(id)completion;
+- (void)setUserSelectedVoiceTriggerPhraseType:(unint64_t)type;
+- (void)setVoiceTriggerEnable:(BOOL)enable withCompletion:(id)completion;
+- (void)transferVoiceTriggerAsset:(id)asset forLanguageCode:(id)code completion:(id)completion;
+- (void)voiceTriggerEnabledWithCompletion:(id)completion;
 @end
 
 @implementation CSRemoteControlClient
 
-- (void)setSelfTriggerEnable:(BOOL)a3 withCompletion:(id)a4
+- (void)setSelfTriggerEnable:(BOOL)enable withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  enableCopy = enable;
+  completionCopy = completion;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v22 = "[CSRemoteControlClient setSelfTriggerEnable:withCompletion:]";
     v23 = 1026;
-    v24 = v4;
+    v24 = enableCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s setting remote SelfTrigger enable : %{public}d", buf, 0x12u);
   }
 
-  if (v4)
+  if (enableCopy)
   {
     v19 = @"COMMAND";
     v20 = @"enableSelfTrigger";
@@ -78,29 +78,29 @@
   block[3] = &unk_1002533A0;
   block[4] = self;
   v15 = v10;
-  v16 = v6;
-  v12 = v6;
+  v16 = completionCopy;
+  v12 = completionCopy;
   v13 = v10;
   dispatch_async(queue, block);
 }
 
-- (void)_transferAudioData:(id)a3 numSamples:(unint64_t)a4 remoteWavFilePath:(id)a5 completion:(id)a6
+- (void)_transferAudioData:(id)data numSamples:(unint64_t)samples remoteWavFilePath:(id)path completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dataCopy = data;
+  pathCopy = path;
+  completionCopy = completion;
   v13 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v13, "COMMAND", "writeFileFromAudioData");
-  xpc_dictionary_set_uint64(v13, "numberOfSamples", a4);
-  if (v11)
+  xpc_dictionary_set_uint64(v13, "numberOfSamples", samples);
+  if (pathCopy)
   {
-    xpc_dictionary_set_string(v13, "filePath", [v11 UTF8String]);
+    xpc_dictionary_set_string(v13, "filePath", [pathCopy UTF8String]);
   }
 
-  if (v10)
+  if (dataCopy)
   {
-    v14 = [v10 _cs_xpcObject];
-    xpc_dictionary_set_value(v13, "audioData", v14);
+    _cs_xpcObject = [dataCopy _cs_xpcObject];
+    xpc_dictionary_set_value(v13, "audioData", _cs_xpcObject);
   }
 
   queue = self->_queue;
@@ -110,24 +110,24 @@
   block[3] = &unk_1002533A0;
   block[4] = self;
   v19 = v13;
-  v20 = v12;
-  v16 = v12;
+  v20 = completionCopy;
+  v16 = completionCopy;
   v17 = v13;
   dispatch_async(queue, block);
 }
 
-- (void)_fetchDataFromAudioFileUrl:(id)a3 aesKey:(id)a4 encryptedAudioSampleBypeDepth:(unint64_t)a5 completion:(id)a6
+- (void)_fetchDataFromAudioFileUrl:(id)url aesKey:(id)key encryptedAudioSampleBypeDepth:(unint64_t)depth completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a6;
+  urlCopy = url;
+  keyCopy = key;
+  completionCopy = completion;
   v37[0] = _NSConcreteStackBlock;
   v37[1] = 3221225472;
   v37[2] = sub_100086210;
   v37[3] = &unk_10024FED8;
-  v11 = v8;
+  v11 = urlCopy;
   v38 = v11;
-  v12 = v10;
+  v12 = completionCopy;
   v39 = v12;
   v13 = objc_retainBlock(v37);
   v33 = 0;
@@ -165,7 +165,7 @@
   _Block_object_dispose(&v33, 8);
 }
 
-- (void)setUserSelectedVoiceTriggerPhraseType:(unint64_t)a3
+- (void)setUserSelectedVoiceTriggerPhraseType:(unint64_t)type
 {
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -177,7 +177,7 @@
 
   v6 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v6, "COMMAND", "userSelectedVoiceTriggerPhraseType");
-  xpc_dictionary_set_uint64(v6, "userSelectedVoiceTriggerPhraseTypeOption", a3);
+  xpc_dictionary_set_uint64(v6, "userSelectedVoiceTriggerPhraseTypeOption", type);
   v7 = self->_connection;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
@@ -191,9 +191,9 @@
   dispatch_async(queue, v11);
 }
 
-- (void)fetchAndClearCachedVoiceTriggerEventsWithCompletion:(id)a3
+- (void)fetchAndClearCachedVoiceTriggerEventsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -212,28 +212,28 @@
   block[3] = &unk_1002533A0;
   block[4] = self;
   v11 = v6;
-  v12 = v4;
-  v8 = v4;
+  v12 = completionCopy;
+  v8 = completionCopy;
   v9 = v6;
   dispatch_async(queue, block);
 }
 
-- (void)notifyBluetoothWirelessSplitterStateChanged:(unint64_t)a3 shouldDisableSpeakerVerificationInSplitterMode:(BOOL)a4
+- (void)notifyBluetoothWirelessSplitterStateChanged:(unint64_t)changed shouldDisableSpeakerVerificationInSplitterMode:(BOOL)mode
 {
-  v4 = a4;
+  modeCopy = mode;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v8 = @"NO";
     v15 = "[CSRemoteControlClient notifyBluetoothWirelessSplitterStateChanged:shouldDisableSpeakerVerificationInSplitterMode:]";
     *buf = 136315650;
-    if (v4)
+    if (modeCopy)
     {
       v8 = @"YES";
     }
 
     v16 = 2050;
-    v17 = a3;
+    changedCopy = changed;
     v18 = 2114;
     v19 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s splitterState : %{public}lu, shouldDisableSpeakerVerification : %{public}@", buf, 0x20u);
@@ -241,8 +241,8 @@
 
   v9 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v9, "COMMAND", "notifySplitterStateChange");
-  xpc_dictionary_set_uint64(v9, "splitterState", a3);
-  xpc_dictionary_set_BOOL(v9, "shouldDisableSpeakerVerification", v4);
+  xpc_dictionary_set_uint64(v9, "splitterState", changed);
+  xpc_dictionary_set_BOOL(v9, "shouldDisableSpeakerVerification", modeCopy);
   queue = self->_queue;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -254,12 +254,12 @@
   dispatch_async(queue, v12);
 }
 
-- (BOOL)createRemoteVoiceProfileWithAudioFiles:(id)a3 aesKey:(id)a4 encryptedAudioSampleBypeDepth:(unint64_t)a5 languageCode:(id)a6 completion:(id)a7
+- (BOOL)createRemoteVoiceProfileWithAudioFiles:(id)files aesKey:(id)key encryptedAudioSampleBypeDepth:(unint64_t)depth languageCode:(id)code completion:(id)completion
 {
-  v40 = a3;
-  v44 = a4;
-  v37 = a6;
-  v39 = a7;
+  filesCopy = files;
+  keyCopy = key;
+  codeCopy = code;
+  completionCopy = completion;
   v11 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -270,13 +270,13 @@
 
   v41 = +[NSFileManager defaultManager];
   group = dispatch_group_create();
-  if ([v40 count])
+  if ([filesCopy count])
   {
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v12 = v40;
+    v12 = filesCopy;
     v13 = [v12 countByEnumeratingWithState:&v57 objects:v69 count:16];
     if (v13)
     {
@@ -290,15 +290,15 @@
             objc_enumerationMutation(v12);
           }
 
-          v16 = [*(*(&v57 + 1) + 8 * i) path];
-          v17 = [v41 fileExistsAtPath:v16];
+          path = [*(*(&v57 + 1) + 8 * i) path];
+          v17 = [v41 fileExistsAtPath:path];
 
           if ((v17 & 1) == 0)
           {
-            if (v39)
+            if (completionCopy)
             {
               v29 = [NSError errorWithDomain:CSErrorDomain code:117 userInfo:&off_10025F098];
-              v39[2](v39, v29);
+              completionCopy[2](completionCopy, v29);
             }
 
             goto LABEL_29;
@@ -340,8 +340,8 @@
           }
 
           v21 = *(*(&v53 + 1) + 8 * j);
-          v22 = [v21 lastPathComponent];
-          v23 = [@"VoiceTrigger/SAT/audio/" stringByAppendingPathComponent:v22];
+          lastPathComponent = [v21 lastPathComponent];
+          v23 = [@"VoiceTrigger/SAT/audio/" stringByAppendingPathComponent:lastPathComponent];
 
           dispatch_group_enter(group);
           v49[0] = _NSConcreteStackBlock;
@@ -354,7 +354,7 @@
           v50 = v24;
           p_buf = &buf;
           v51 = group;
-          [(CSRemoteControlClient *)self _fetchDataFromAudioFileUrl:v21 aesKey:v44 encryptedAudioSampleBypeDepth:a5 completion:v49];
+          [(CSRemoteControlClient *)self _fetchDataFromAudioFileUrl:v21 aesKey:keyCopy encryptedAudioSampleBypeDepth:depth completion:v49];
         }
 
         v18 = [obj countByEnumeratingWithState:&v53 objects:v63 count:16];
@@ -376,9 +376,9 @@
         _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%s ERR: training data transfer timed out", v61, 0xCu);
       }
 
-      if (v39)
+      if (completionCopy)
       {
-        v39[2](v39, 0);
+        completionCopy[2](completionCopy, 0);
       }
     }
 
@@ -388,8 +388,8 @@
       xpc_dictionary_set_string(v31, "COMMAND", "createRemoteVoiceProfile");
       v32 = v38;
       xpc_dictionary_set_string(v31, "languageCode", [v38 UTF8String]);
-      v33 = [*(*(&buf + 1) + 40) _cs_xpcObject];
-      xpc_dictionary_set_value(v31, "explicitTrainingAudioFiles", v33);
+      _cs_xpcObject = [*(*(&buf + 1) + 40) _cs_xpcObject];
+      xpc_dictionary_set_value(v31, "explicitTrainingAudioFiles", _cs_xpcObject);
 
       queue = self->_queue;
       block[0] = _NSConcreteStackBlock;
@@ -398,7 +398,7 @@
       block[3] = &unk_1002533A0;
       block[4] = self;
       v47 = v31;
-      v48 = v39;
+      v48 = completionCopy;
       v35 = v31;
       dispatch_async(queue, block);
     }
@@ -408,10 +408,10 @@
 
   else
   {
-    if (v39)
+    if (completionCopy)
     {
       v30 = [NSError errorWithDomain:CSErrorDomain code:114 userInfo:&off_10025F070];
-      v39[2](v39, v30);
+      completionCopy[2](completionCopy, v30);
     }
 
 LABEL_29:
@@ -421,14 +421,14 @@ LABEL_29:
   return v27;
 }
 
-- (void)exchangeRemoteDeviceProtocolInfo:(id)a3
+- (void)exchangeRemoteDeviceProtocolInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 description];
+    v7 = [infoCopy description];
     *buf = 136315394;
     v16 = "[CSRemoteControlClient exchangeRemoteDeviceProtocolInfo:]";
     v17 = 2114;
@@ -438,10 +438,10 @@ LABEL_29:
 
   v8 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v8, "COMMAND", "exchangeProtocolInfo");
-  if (v4)
+  if (infoCopy)
   {
-    v9 = [v4 xpcObject];
-    xpc_dictionary_set_value(v8, "hostProtocolInfo", v9);
+    xpcObject = [infoCopy xpcObject];
+    xpc_dictionary_set_value(v8, "hostProtocolInfo", xpcObject);
   }
 
   else
@@ -466,23 +466,23 @@ LABEL_29:
   dispatch_async(queue, v13);
 }
 
-- (void)notifyVoiceTriggerAssetChangeWithSiriLanguageCode:(id)a3
+- (void)notifyVoiceTriggerAssetChangeWithSiriLanguageCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v14 = "[CSRemoteControlClient notifyVoiceTriggerAssetChangeWithSiriLanguageCode:]";
     v15 = 2114;
-    v16 = v4;
+    v16 = codeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s languageCode : %{public}@", buf, 0x16u);
   }
 
   v11[0] = @"COMMAND";
   v11[1] = @"languageCode";
   v12[0] = @"NotifyVTAssetChange";
-  v12[1] = v4;
+  v12[1] = codeCopy;
   v6 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:2];
   queue = self->_queue;
   v9[0] = _NSConcreteStackBlock;
@@ -495,20 +495,20 @@ LABEL_29:
   dispatch_async(queue, v9);
 }
 
-- (id)_getMyriadInfoFromServerMessage:(id)a3
+- (id)_getMyriadInfoFromServerMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = [NSData alloc];
-  v5 = xpc_dictionary_get_value(v3, "myriadHash");
+  v5 = xpc_dictionary_get_value(messageCopy, "myriadHash");
 
   v6 = [v4 _cs_initWithXPCObject:v5];
 
   return v6;
 }
 
-- (id)_dictionaryWithContentsOfXPCObject:(id)a3
+- (id)_dictionaryWithContentsOfXPCObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   v4 = objc_alloc_init(NSMutableDictionary);
   v5 = v4;
   if (v4)
@@ -518,15 +518,15 @@ LABEL_29:
     applier[2] = sub_1000881E4;
     applier[3] = &unk_100251E38;
     v8 = v4;
-    xpc_dictionary_apply(v3, applier);
+    xpc_dictionary_apply(objectCopy, applier);
   }
 
   return v5;
 }
 
-- (void)getFirstPassRunningMode:(id)a3
+- (void)getFirstPassRunningMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -545,15 +545,15 @@ LABEL_29:
   block[3] = &unk_1002533A0;
   block[4] = self;
   v11 = v6;
-  v12 = v4;
-  v8 = v4;
+  v12 = modeCopy;
+  v8 = modeCopy;
   v9 = v6;
   dispatch_async(queue, block);
 }
 
-- (void)clearTriggerCount:(id)a3
+- (void)clearTriggerCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -572,15 +572,15 @@ LABEL_29:
   block[3] = &unk_1002533A0;
   block[4] = self;
   v11 = v6;
-  v12 = v4;
-  v8 = v4;
+  v12 = countCopy;
+  v8 = countCopy;
   v9 = v6;
   dispatch_async(queue, block);
 }
 
-- (void)getTriggerCount:(id)a3
+- (void)getTriggerCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -599,16 +599,16 @@ LABEL_29:
   block[3] = &unk_1002533A0;
   block[4] = self;
   v11 = v6;
-  v12 = v4;
-  v8 = v4;
+  v12 = countCopy;
+  v8 = countCopy;
   v9 = v6;
   dispatch_async(queue, block);
 }
 
-- (BOOL)transferInterstitialAudioFiles:(id)a3 interstitialLevel:(int64_t)a4 completion:(id)a5
+- (BOOL)transferInterstitialAudioFiles:(id)files interstitialLevel:(int64_t)level completion:(id)completion
 {
-  v32 = a3;
-  v33 = a5;
+  filesCopy = files;
+  completionCopy = completion;
   v6 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -626,13 +626,13 @@ LABEL_29:
   v62 = sub_10008633C;
   v63 = sub_10008634C;
   v64 = 0;
-  if ([v32 count])
+  if ([filesCopy count])
   {
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v7 = v32;
+    v7 = filesCopy;
     v8 = [v7 countByEnumeratingWithState:&v50 objects:v59 count:16];
     if (v8)
     {
@@ -646,8 +646,8 @@ LABEL_6:
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v50 + 1) + 8 * v10) path];
-        v12 = [v34 fileExistsAtPath:v11];
+        path = [*(*(&v50 + 1) + 8 * v10) path];
+        v12 = [v34 fileExistsAtPath:path];
 
         if ((v12 & 1) == 0)
         {
@@ -666,13 +666,13 @@ LABEL_6:
         }
       }
 
-      if (!v33)
+      if (!completionCopy)
       {
         goto LABEL_28;
       }
 
       v23 = [NSError errorWithDomain:CSErrorDomain code:117 userInfo:&off_10025EFF8];
-      v33[2](v33, v23);
+      completionCopy[2](completionCopy, v23);
       v24 = 0;
       goto LABEL_38;
     }
@@ -702,18 +702,18 @@ LABEL_12:
 
           v17 = *(*(&v46 + 1) + 8 * i);
           dispatch_group_enter(group);
-          v18 = [v17 lastPathComponent];
-          v19 = [v36 stringByAppendingPathComponent:v18];
+          lastPathComponent = [v17 lastPathComponent];
+          v19 = [v36 stringByAppendingPathComponent:lastPathComponent];
 
           [v38 addObject:v19];
-          v20 = [v17 path];
+          path2 = [v17 path];
           v43[0] = _NSConcreteStackBlock;
           v43[1] = 3221225472;
           v43[2] = sub_1000894D4;
           v43[3] = &unk_100251750;
           p_buf = &buf;
           v44 = group;
-          [(CSRemoteControlClient *)self _transferFile:v20 at:v19 completion:v43];
+          [(CSRemoteControlClient *)self _transferFile:path2 at:v19 completion:v43];
         }
 
         v14 = [obj countByEnumeratingWithState:&v46 objects:v58 count:16];
@@ -733,10 +733,10 @@ LABEL_12:
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%s Interstitial file transmission timed out", v56, 0xCu);
       }
 
-      if (v33)
+      if (completionCopy)
       {
         v23 = [NSError errorWithDomain:CSErrorDomain code:301 userInfo:&off_10025F020];
-        v33[2](v33, v23);
+        completionCopy[2](completionCopy, v23);
         v24 = 0;
 LABEL_37:
         v7 = v36;
@@ -765,7 +765,7 @@ LABEL_38:
         block[4] = self;
         v23 = v26;
         v41 = v23;
-        v28 = v33;
+        v28 = completionCopy;
         v42 = v28;
         dispatch_async(queue, block);
         if (v28)
@@ -777,9 +777,9 @@ LABEL_38:
         goto LABEL_37;
       }
 
-      if (v33)
+      if (completionCopy)
       {
-        (v33[2])();
+        (completionCopy[2])();
       }
     }
 
@@ -790,10 +790,10 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  if (v33)
+  if (completionCopy)
   {
     v7 = [NSError errorWithDomain:CSErrorDomain code:114 userInfo:&off_10025EFD0];
-    v33[2](v33, v7);
+    completionCopy[2](completionCopy, v7);
 LABEL_28:
     v24 = 0;
     goto LABEL_39;
@@ -806,7 +806,7 @@ LABEL_40:
   return v24;
 }
 
-- (void)invalidateInterstitialWithLevel:(int64_t)a3
+- (void)invalidateInterstitialWithLevel:(int64_t)level
 {
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -819,7 +819,7 @@ LABEL_40:
   v12[0] = @"COMMAND";
   v12[1] = @"interstitialLevel";
   v13[0] = @"invalidateInterstitialAudio";
-  v6 = [NSNumber numberWithInteger:a3];
+  v6 = [NSNumber numberWithInteger:level];
   v13[1] = v6;
   v7 = [NSDictionary dictionaryWithObjects:v13 forKeys:v12 count:2];
 
@@ -834,9 +834,9 @@ LABEL_40:
   dispatch_async(queue, v10);
 }
 
-- (void)voiceTriggerEnabledWithCompletion:(id)a3
+- (void)voiceTriggerEnabledWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -855,27 +855,27 @@ LABEL_40:
   block[3] = &unk_1002533A0;
   block[4] = self;
   v11 = v6;
-  v12 = v4;
-  v8 = v4;
+  v12 = completionCopy;
+  v8 = completionCopy;
   v9 = v6;
   dispatch_async(queue, block);
 }
 
-- (void)setVoiceTriggerEnable:(BOOL)a3 withCompletion:(id)a4
+- (void)setVoiceTriggerEnable:(BOOL)enable withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  enableCopy = enable;
+  completionCopy = completion;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v22 = "[CSRemoteControlClient setVoiceTriggerEnable:withCompletion:]";
     v23 = 1026;
-    v24 = v4;
+    v24 = enableCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s set enable : %{public}d", buf, 0x12u);
   }
 
-  if (v4)
+  if (enableCopy)
   {
     v19 = @"COMMAND";
     v20 = @"enableVoiceTrigger";
@@ -899,17 +899,17 @@ LABEL_40:
   block[3] = &unk_1002533A0;
   block[4] = self;
   v15 = v10;
-  v16 = v6;
-  v12 = v6;
+  v16 = completionCopy;
+  v12 = completionCopy;
   v13 = v10;
   dispatch_async(queue, block);
 }
 
-- (void)transferVoiceTriggerAsset:(id)a3 forLanguageCode:(id)a4 completion:(id)a5
+- (void)transferVoiceTriggerAsset:(id)asset forLanguageCode:(id)code completion:(id)completion
 {
-  v38 = a3;
-  v31 = a4;
-  v35 = a5;
+  assetCopy = asset;
+  codeCopy = code;
+  completionCopy = completion;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -918,9 +918,9 @@ LABEL_40:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s ", &buf, 0xCu);
   }
 
-  v34 = [v38 hashFromResourcePath];
-  v33 = [v38 configVersion];
-  v8 = [@"VoiceTrigger/asset" stringByAppendingPathComponent:v34];
+  hashFromResourcePath = [assetCopy hashFromResourcePath];
+  configVersion = [assetCopy configVersion];
+  v8 = [@"VoiceTrigger/asset" stringByAppendingPathComponent:hashFromResourcePath];
   v37 = [v8 stringByAppendingString:@".asset"];
 
   *&buf = 0;
@@ -935,8 +935,8 @@ LABEL_40:
   v47 = 0u;
   v48 = 0u;
   v10 = +[NSFileManager defaultManager];
-  v11 = [v38 resourcePath];
-  v12 = [v10 enumeratorAtPath:v11];
+  resourcePath = [assetCopy resourcePath];
+  v12 = [v10 enumeratorAtPath:resourcePath];
 
   v13 = [v12 countByEnumeratingWithState:&v45 objects:v57 count:16];
   if (v13)
@@ -953,8 +953,8 @@ LABEL_40:
         }
 
         v16 = *(*(&v45 + 1) + 8 * v15);
-        v17 = [v38 resourcePath];
-        v18 = [v17 stringByAppendingPathComponent:v16];
+        resourcePath2 = [assetCopy resourcePath];
+        v18 = [resourcePath2 stringByAppendingPathComponent:v16];
 
         v53[0] = 0;
         v19 = +[NSFileManager defaultManager];
@@ -994,10 +994,10 @@ LABEL_40:
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%s VoiceTrigger asset file transmission timed out", v53, 0xCu);
     }
 
-    if (v35)
+    if (completionCopy)
     {
-      v23 = [NSError errorWithDomain:CSErrorDomain code:304 userInfo:&off_10025EF80];
-      v35[2](v35, 0, v23);
+      localizedDescription2 = [NSError errorWithDomain:CSErrorDomain code:304 userInfo:&off_10025EF80];
+      completionCopy[2](completionCopy, 0, localizedDescription2);
 LABEL_23:
     }
   }
@@ -1010,13 +1010,13 @@ LABEL_23:
       v49[0] = @"COMMAND";
       v49[1] = @"voiceTriggerAssetHash";
       v50[0] = @"setVoiceTriggerAsset";
-      v50[1] = v34;
+      v50[1] = hashFromResourcePath;
       v49[2] = @"voiceTriggerAssetLanguageCode";
       v49[3] = @"voiceTriggerAssetPath";
       v50[2] = v32;
       v50[3] = v37;
       v49[4] = @"voiceTriggerAssetConfigVersion";
-      v50[4] = v33;
+      v50[4] = configVersion;
       v28 = [NSDictionary dictionaryWithObjects:v50 forKeys:v49 count:5];
       queue = self->_queue;
       block[0] = _NSConcreteStackBlock;
@@ -1025,8 +1025,8 @@ LABEL_23:
       block[3] = &unk_1002533A0;
       block[4] = self;
       v40 = v28;
-      v41 = v35;
-      v23 = v28;
+      v41 = completionCopy;
+      localizedDescription2 = v28;
       dispatch_async(queue, block);
 
       goto LABEL_23;
@@ -1035,22 +1035,22 @@ LABEL_23:
     v25 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v30 = [*(v24 + 40) localizedDescription];
+      localizedDescription = [*(v24 + 40) localizedDescription];
       *v53 = 136315394;
       v54 = "[CSRemoteControlClient transferVoiceTriggerAsset:forLanguageCode:completion:]";
       v55 = 2114;
-      v56 = v30;
+      v56 = localizedDescription;
       _os_log_error_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%s Cannot transfer VoiceTrigger asset %{public}@", v53, 0x16u);
     }
 
-    if (v35)
+    if (completionCopy)
     {
       v51 = @"reason";
-      v23 = [*(*(&buf + 1) + 40) localizedDescription];
-      v52 = v23;
+      localizedDescription2 = [*(*(&buf + 1) + 40) localizedDescription];
+      v52 = localizedDescription2;
       v26 = [NSDictionary dictionaryWithObjects:&v52 forKeys:&v51 count:1];
       v27 = [NSError errorWithDomain:CSErrorDomain code:304 userInfo:v26];
-      v35[2](v35, 0, v27);
+      completionCopy[2](completionCopy, 0, v27);
 
       goto LABEL_23;
     }
@@ -1059,19 +1059,19 @@ LABEL_23:
   _Block_object_dispose(&buf, 8);
 }
 
-- (BOOL)transferVoiceTriggerSpeakerModel:(id)a3 forAsset:(id)a4
+- (BOOL)transferVoiceTriggerSpeakerModel:(id)model forAsset:(id)asset
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  modelCopy = model;
+  assetCopy = asset;
+  if (modelCopy)
   {
     v8 = +[SSRVoiceProfileManager sharedInstance];
-    v26 = [v8 modelDirectoryPathForProfile:v6];
-    v9 = [v7 hashFromResourcePath];
-    v10 = [v26 URLByAppendingPathComponent:v9];
+    v26 = [v8 modelDirectoryPathForProfile:modelCopy];
+    hashFromResourcePath = [assetCopy hashFromResourcePath];
+    v10 = [v26 URLByAppendingPathComponent:hashFromResourcePath];
 
-    v11 = [v7 hashFromResourcePath];
-    v12 = [@"VoiceTrigger/SAT/model/" stringByAppendingPathComponent:v11];
+    hashFromResourcePath2 = [assetCopy hashFromResourcePath];
+    v12 = [@"VoiceTrigger/SAT/model/" stringByAppendingPathComponent:hashFromResourcePath2];
 
     v13 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -1093,7 +1093,7 @@ LABEL_23:
     v37 = 0;
     v14 = dispatch_group_create();
     dispatch_group_enter(v14);
-    v15 = [v10 path];
+    path = [v10 path];
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_10008AD4C;
@@ -1101,7 +1101,7 @@ LABEL_23:
     v29 = buf;
     v16 = v14;
     v28 = v16;
-    [(CSRemoteControlClient *)self _transferFile:v15 at:v12 completion:v27];
+    [(CSRemoteControlClient *)self _transferFile:path at:v12 completion:v27];
 
     v17 = v8;
     v18 = dispatch_time(0, 10000000000);
@@ -1129,11 +1129,11 @@ LABEL_23:
       v23 = CSLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v25 = [*(v22 + 40) localizedDescription];
+        localizedDescription = [*(v22 + 40) localizedDescription];
         *v30 = 136315394;
         v31 = "[CSRemoteControlClient transferVoiceTriggerSpeakerModel:forAsset:]";
         v32 = 2114;
-        v33 = v25;
+        v33 = localizedDescription;
         _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%s ERR: %{public}@", v30, 0x16u);
       }
 
@@ -1161,36 +1161,36 @@ LABEL_16:
   return v21;
 }
 
-- (void)_transferFile:(id)a3 at:(id)a4 completion:(id)a5
+- (void)_transferFile:(id)file at:(id)at completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fileCopy = file;
+  atCopy = at;
+  completionCopy = completion;
   v11 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v30 = "[CSRemoteControlClient _transferFile:at:completion:]";
     v31 = 2114;
-    v32 = v8;
+    v32 = fileCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s %{public}@", buf, 0x16u);
   }
 
-  if (v8 && v9)
+  if (fileCopy && atCopy)
   {
     v12 = +[NSFileManager defaultManager];
-    if ([v12 fileExistsAtPath:v8])
+    if ([v12 fileExistsAtPath:fileCopy])
     {
       v13 = xpc_dictionary_create(0, 0, 0);
       xpc_dictionary_set_string(v13, "COMMAND", "writeFile");
-      xpc_dictionary_set_string(v13, "filePath", [v9 UTF8String]);
-      [v8 UTF8String];
+      xpc_dictionary_set_string(v13, "filePath", [atCopy UTF8String]);
+      [fileCopy UTF8String];
       v23 = _NSConcreteStackBlock;
       v24 = 3221225472;
       v25 = sub_10008B1E4;
       v26 = &unk_10024FE60;
-      v27 = v8;
-      v14 = v10;
+      v27 = fileCopy;
+      v14 = completionCopy;
       v28 = v14;
       v15 = xpc_file_transfer_create_with_path();
       if (v15)
@@ -1239,9 +1239,9 @@ LABEL_16:
       *buf = 136315394;
       v30 = "[CSRemoteControlClient _transferFile:at:completion:]";
       v31 = 2114;
-      v32 = v8;
+      v32 = fileCopy;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%s File does not exists : %{public}@", buf, 0x16u);
-      if (!v10)
+      if (!completionCopy)
       {
         goto LABEL_18;
       }
@@ -1249,11 +1249,11 @@ LABEL_16:
       goto LABEL_12;
     }
 
-    if (v10)
+    if (completionCopy)
     {
 LABEL_12:
       v13 = [NSError errorWithDomain:CSErrorDomain code:117 userInfo:&off_10025EF08];
-      (*(v10 + 2))(v10, v13);
+      (*(completionCopy + 2))(completionCopy, v13);
 LABEL_17:
     }
 
@@ -1262,19 +1262,19 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v12 = [NSError errorWithDomain:CSErrorDomain code:114 userInfo:&off_10025EEE0];
-    (*(v10 + 2))(v10, v12);
+    (*(completionCopy + 2))(completionCopy, v12);
     goto LABEL_18;
   }
 
 LABEL_19:
 }
 
-- (void)readAndClearVoiceTriggeredTokenWithCompletion:(id)a3
+- (void)readAndClearVoiceTriggeredTokenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -1293,15 +1293,15 @@ LABEL_19:
   block[3] = &unk_1002533A0;
   block[4] = self;
   v11 = v6;
-  v12 = v4;
-  v8 = v4;
+  v12 = completionCopy;
+  v8 = completionCopy;
   v9 = v6;
   dispatch_async(queue, block);
 }
 
-- (void)readVoiceTriggeredTokenWithCompletion:(id)a3
+- (void)readVoiceTriggeredTokenWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -1320,17 +1320,17 @@ LABEL_19:
   block[3] = &unk_1002533A0;
   block[4] = self;
   v11 = v6;
-  v12 = v4;
-  v8 = v4;
+  v12 = completionCopy;
+  v8 = completionCopy;
   v9 = v6;
   dispatch_async(queue, block);
 }
 
-- (void)_handleServerMessage:(id)a3
+- (void)_handleServerMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [NSString stringWithFormat:@"%s", xpc_dictionary_get_string(v4, "COMMAND")];
+  v5 = [NSString stringWithFormat:@"%s", xpc_dictionary_get_string(messageCopy, "COMMAND")];
   v6 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -1408,7 +1408,7 @@ LABEL_56:
         v17 = *(*(&v43 + 1) + 8 * j);
         if (objc_opt_respondsToSelector())
         {
-          v18 = [(CSRemoteControlClient *)self _getMyriadInfoFromServerMessage:v4];
+          v18 = [(CSRemoteControlClient *)self _getMyriadInfoFromServerMessage:messageCopy];
           [v17 didReceiveSelfTriggerDetected:self myriadHash:v18];
         }
       }
@@ -1461,7 +1461,7 @@ LABEL_55:
 
   if ([(NSHashTable *)v5 isEqualToString:@"requestAssetDownload"])
   {
-    string = xpc_dictionary_get_string(v4, "voiceTriggerAssetConfigVersion");
+    string = xpc_dictionary_get_string(messageCopy, "voiceTriggerAssetConfigVersion");
     if (string)
     {
       v7 = [NSString stringWithUTF8String:string];
@@ -1472,7 +1472,7 @@ LABEL_55:
       v7 = 0;
     }
 
-    v25 = xpc_dictionary_get_string(v4, "languageCode");
+    v25 = xpc_dictionary_get_string(messageCopy, "languageCode");
     v34 = v5;
     if (v25)
     {
@@ -1534,13 +1534,13 @@ LABEL_55:
 LABEL_57:
 }
 
-- (void)_handleServerError:(id)a3
+- (void)_handleServerError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (errorCopy)
   {
-    if (v4 == &_xpc_error_connection_invalid || v4 == &_xpc_error_connection_interrupted)
+    if (errorCopy == &_xpc_error_connection_invalid || errorCopy == &_xpc_error_connection_interrupted)
     {
       v6 = CSLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -1589,7 +1589,7 @@ LABEL_57:
 
     else
     {
-      string = xpc_dictionary_get_string(v4, _xpc_error_key_description);
+      string = xpc_dictionary_get_string(errorCopy, _xpc_error_key_description);
       v14 = CSLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
       {
@@ -1603,14 +1603,14 @@ LABEL_57:
   }
 }
 
-- (void)_handleServerEvent:(id)a3
+- (void)_handleServerEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (eventCopy)
   {
-    type = xpc_get_type(v4);
-    if (xpc_get_type(v4) == &_xpc_type_error)
+    type = xpc_get_type(eventCopy);
+    if (xpc_get_type(eventCopy) == &_xpc_type_error)
     {
       v8 = CSLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -1620,14 +1620,14 @@ LABEL_57:
         _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%s remoteXPC connection get failed", &v9, 0xCu);
       }
 
-      [(CSRemoteControlClient *)self _handleServerError:v4];
+      [(CSRemoteControlClient *)self _handleServerError:eventCopy];
     }
 
     else
     {
       if (type == &_xpc_type_dictionary)
       {
-        [(CSRemoteControlClient *)self _handleServerMessage:v4];
+        [(CSRemoteControlClient *)self _handleServerMessage:eventCopy];
         goto LABEL_13;
       }
 
@@ -1688,9 +1688,9 @@ LABEL_13:
   return v3;
 }
 
-- (BOOL)waitingForConnection:(double)a3 error:(id *)a4
+- (BOOL)waitingForConnection:(double)connection error:(id *)error
 {
-  if ([(CSDispatchGroup *)self->_deviceWaitingGroup waitWithTimeout:dispatch_time(0, (a3 * 1000000000.0))])
+  if ([(CSDispatchGroup *)self->_deviceWaitingGroup waitWithTimeout:dispatch_time(0, (connection * 1000000000.0))])
   {
     v7 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_FAULT))
@@ -1698,15 +1698,15 @@ LABEL_13:
       *buf = 136315394;
       v26 = "[CSRemoteControlClient waitingForConnection:error:]";
       v27 = 2050;
-      v28 = a3;
+      connectionCopy = connection;
       _os_log_fault_impl(&_mh_execute_header, v7, OS_LOG_TYPE_FAULT, "%s Device connection waiting %{public}.3f seconds timed out", buf, 0x16u);
-      if (a4)
+      if (error)
       {
         goto LABEL_4;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_4:
       v8 = CSErrorDomain;
@@ -1715,7 +1715,7 @@ LABEL_19:
       v18 = [NSError errorWithDomain:v8 code:v9 userInfo:0];
       v19 = v18;
       result = 0;
-      *a4 = v18;
+      *error = v18;
       return result;
     }
 
@@ -1730,13 +1730,13 @@ LABEL_19:
       *buf = 136315138;
       v26 = "[CSRemoteControlClient waitingForConnection:error:]";
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%s Device is connected but RemoteXPC service is not connected", buf, 0xCu);
-      if (a4)
+      if (error)
       {
         goto LABEL_18;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_18:
       v8 = CSErrorDomain;
@@ -1782,7 +1782,7 @@ LABEL_18:
   return 1;
 }
 
-- (void)didDeviceDisconnect:(id)a3
+- (void)didDeviceDisconnect:(id)disconnect
 {
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -1801,9 +1801,9 @@ LABEL_18:
   dispatch_async(queue, block);
 }
 
-- (void)didDeviceConnect:(id)a3
+- (void)didDeviceConnect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -1817,9 +1817,9 @@ LABEL_18:
   v8[1] = 3221225472;
   v8[2] = sub_10008CF28;
   v8[3] = &unk_100253C48;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = connectCopy;
+  selfCopy = self;
+  v7 = connectCopy;
   dispatch_async(queue, v8);
 }
 
@@ -1888,24 +1888,24 @@ LABEL_18:
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10008D580;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&OBJC_PROTOCOL___CSRemoteControlClientDelegateV1] & 1) != 0 || (objc_msgSend(v4, "conformsToProtocol:", &OBJC_PROTOCOL___CSRemoteControlClientDelegateV2))
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&OBJC_PROTOCOL___CSRemoteControlClientDelegateV1] & 1) != 0 || (objc_msgSend(observerCopy, "conformsToProtocol:", &OBJC_PROTOCOL___CSRemoteControlClientDelegateV2))
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -1913,7 +1913,7 @@ LABEL_18:
     v7[2] = sub_10008D6F0;
     v7[3] = &unk_100253C48;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(queue, v7);
   }
 
@@ -1929,9 +1929,9 @@ LABEL_18:
   }
 }
 
-- (CSRemoteControlClient)initWithRemoteDevice:(id)a3
+- (CSRemoteControlClient)initWithRemoteDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   if ((+[CSUtils isDarwinOS]& 1) == 0)
   {
     v22.receiver = self;
@@ -1939,7 +1939,7 @@ LABEL_18:
     self = [(CSRemoteControlClient *)&v22 init];
     if (self)
     {
-      if (!v5)
+      if (!deviceCopy)
       {
         v19 = CSLogContextFacilityCoreSpeech;
         if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -1966,7 +1966,7 @@ LABEL_18:
 
       objc_initWeak(location, self);
       v13 = self->_queue;
-      objc_storeStrong(&self->_device, a3);
+      objc_storeStrong(&self->_device, device);
       self->_deviceType = remote_device_get_type();
       v14 = +[CSRemoteDeviceProtocolInfo defaultProtocolInfo];
       deviceProtocolInfo = self->_deviceProtocolInfo;
@@ -1990,15 +1990,15 @@ LABEL_18:
     }
 
     self = self;
-    v6 = self;
+    selfCopy = self;
     goto LABEL_7;
   }
 
 LABEL_2:
-  v6 = 0;
+  selfCopy = 0;
 LABEL_7:
 
-  return v6;
+  return selfCopy;
 }
 
 @end

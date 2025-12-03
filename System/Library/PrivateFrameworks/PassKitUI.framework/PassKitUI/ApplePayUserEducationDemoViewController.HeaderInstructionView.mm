@@ -1,13 +1,13 @@
 @interface ApplePayUserEducationDemoViewController.HeaderInstructionView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtCC9PassKitUI39ApplePayUserEducationDemoViewControllerP33_722E2528CE6F81F660593DCAA893F90F21HeaderInstructionView)initWithCoder:(id)a3;
-- (_TtCC9PassKitUI39ApplePayUserEducationDemoViewControllerP33_722E2528CE6F81F660593DCAA893F90F21HeaderInstructionView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtCC9PassKitUI39ApplePayUserEducationDemoViewControllerP33_722E2528CE6F81F660593DCAA893F90F21HeaderInstructionView)initWithCoder:(id)coder;
+- (_TtCC9PassKitUI39ApplePayUserEducationDemoViewControllerP33_722E2528CE6F81F660593DCAA893F90F21HeaderInstructionView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation ApplePayUserEducationDemoViewController.HeaderInstructionView
 
-- (_TtCC9PassKitUI39ApplePayUserEducationDemoViewControllerP33_722E2528CE6F81F660593DCAA893F90F21HeaderInstructionView)initWithCoder:(id)a3
+- (_TtCC9PassKitUI39ApplePayUserEducationDemoViewControllerP33_722E2528CE6F81F660593DCAA893F90F21HeaderInstructionView)initWithCoder:(id)coder
 {
   result = sub_1BE053994();
   __break(1u);
@@ -24,11 +24,11 @@
   sub_1BD565D58(0, v3, v4, v5, v6);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_1BD565D58(1, 0.0, 0.0, width, height);
   v8 = v7;
 
@@ -39,7 +39,7 @@
   return result;
 }
 
-- (_TtCC9PassKitUI39ApplePayUserEducationDemoViewControllerP33_722E2528CE6F81F660593DCAA893F90F21HeaderInstructionView)initWithFrame:(CGRect)a3
+- (_TtCC9PassKitUI39ApplePayUserEducationDemoViewControllerP33_722E2528CE6F81F660593DCAA893F90F21HeaderInstructionView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

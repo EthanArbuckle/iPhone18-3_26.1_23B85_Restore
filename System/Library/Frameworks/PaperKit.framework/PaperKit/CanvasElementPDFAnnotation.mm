@@ -1,23 +1,23 @@
 @interface CanvasElementPDFAnnotation
 - (Class)annotationSubclassForPopup;
-- (_TtC8PaperKit26CanvasElementPDFAnnotation)initWithBounds:(CGRect)a3 forType:(id)a4 withProperties:(id)a5;
-- (_TtC8PaperKit26CanvasElementPDFAnnotation)initWithCGPDFAnnotation:(CGPDFAnnotation *)a3 forPage:(id)a4;
-- (id)copyWithZone:(void *)a3;
-- (void)_addAKAnnotationToDictionary:(__CFDictionary *)a3;
+- (_TtC8PaperKit26CanvasElementPDFAnnotation)initWithBounds:(CGRect)bounds forType:(id)type withProperties:(id)properties;
+- (_TtC8PaperKit26CanvasElementPDFAnnotation)initWithCGPDFAnnotation:(CGPDFAnnotation *)annotation forPage:(id)page;
+- (id)copyWithZone:(void *)zone;
+- (void)_addAKAnnotationToDictionary:(__CFDictionary *)dictionary;
 - (void)addControl;
-- (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)a4;
-- (void)setIsFullyConstructed:(BOOL)a3;
+- (void)drawWithBox:(int64_t)box inContext:(CGContext *)context;
+- (void)setIsFullyConstructed:(BOOL)constructed;
 @end
 
 @implementation CanvasElementPDFAnnotation
 
-- (_TtC8PaperKit26CanvasElementPDFAnnotation)initWithBounds:(CGRect)a3 forType:(id)a4 withProperties:(id)a5
+- (_TtC8PaperKit26CanvasElementPDFAnnotation)initWithBounds:(CGRect)bounds forType:(id)type withProperties:(id)properties
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a5)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (properties)
   {
     v10 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -27,20 +27,20 @@
     v10 = 0;
   }
 
-  return CanvasElementPDFAnnotation.init(bounds:forType:withProperties:)(a4, v10, x, y, width, height);
+  return CanvasElementPDFAnnotation.init(bounds:forType:withProperties:)(type, v10, x, y, width, height);
 }
 
-- (_TtC8PaperKit26CanvasElementPDFAnnotation)initWithCGPDFAnnotation:(CGPDFAnnotation *)a3 forPage:(id)a4
+- (_TtC8PaperKit26CanvasElementPDFAnnotation)initWithCGPDFAnnotation:(CGPDFAnnotation *)annotation forPage:(id)page
 {
-  v6 = a3;
-  v7 = a4;
-  return CanvasElementPDFAnnotation.init(cgpdfAnnotation:for:)(a3, a4);
+  annotationCopy = annotation;
+  pageCopy = page;
+  return CanvasElementPDFAnnotation.init(cgpdfAnnotation:for:)(annotation, page);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v4 = self;
-  CanvasElementPDFAnnotation.copy(with:)(a3, v7);
+  selfCopy = self;
+  CanvasElementPDFAnnotation.copy(with:)(zone, v7);
 
   __swift_project_boxed_opaque_existential_1(v7, v7[3]);
   v5 = _bridgeAnythingToObjectiveC<A>(_:)();
@@ -48,35 +48,35 @@
   return v5;
 }
 
-- (void)setIsFullyConstructed:(BOOL)a3
+- (void)setIsFullyConstructed:(BOOL)constructed
 {
-  v3 = a3;
-  v4 = self;
-  v5 = v4;
-  if (v3)
+  constructedCopy = constructed;
+  selfCopy = self;
+  v5 = selfCopy;
+  if (constructedCopy)
   {
-    v6 = [(PDFAnnotation *)v4 createAKAnnotation];
+    createAKAnnotation = [(PDFAnnotation *)selfCopy createAKAnnotation];
     v7 = *(&v5->super.super.isa + OBJC_IVAR____TtC8PaperKit26CanvasElementPDFAnnotation__akAnnotation);
-    *(&v5->super.super.isa + OBJC_IVAR____TtC8PaperKit26CanvasElementPDFAnnotation__akAnnotation) = v6;
+    *(&v5->super.super.isa + OBJC_IVAR____TtC8PaperKit26CanvasElementPDFAnnotation__akAnnotation) = createAKAnnotation;
   }
 
   v8.receiver = v5;
   v8.super_class = type metadata accessor for CanvasElementPDFAnnotation();
-  [(PDFAnnotation *)&v8 setIsFullyConstructed:v3];
+  [(PDFAnnotation *)&v8 setIsFullyConstructed:constructedCopy];
 }
 
-- (void)drawWithBox:(int64_t)a3 inContext:(CGContext *)a4
+- (void)drawWithBox:(int64_t)box inContext:(CGContext *)context
 {
-  v6 = a4;
-  v7 = self;
-  CanvasElementPDFAnnotation.draw(with:in:)(a3, v6);
+  contextCopy = context;
+  selfCopy = self;
+  CanvasElementPDFAnnotation.draw(with:in:)(box, contextCopy);
 }
 
-- (void)_addAKAnnotationToDictionary:(__CFDictionary *)a3
+- (void)_addAKAnnotationToDictionary:(__CFDictionary *)dictionary
 {
-  v5 = a3;
-  v6 = self;
-  CanvasElementPDFAnnotation._addAKAnnotation(to:)(a3);
+  dictionaryCopy = dictionary;
+  selfCopy = self;
+  CanvasElementPDFAnnotation._addAKAnnotation(to:)(dictionary);
 }
 
 - (Class)annotationSubclassForPopup
@@ -88,7 +88,7 @@
 
 - (void)addControl
 {
-  v2 = self;
+  selfCopy = self;
   CanvasElementPDFAnnotation.addControl()();
 }
 

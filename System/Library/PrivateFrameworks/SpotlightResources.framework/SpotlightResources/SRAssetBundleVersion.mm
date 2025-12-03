@@ -1,32 +1,32 @@
 @interface SRAssetBundleVersion
-- (SRAssetBundleVersion)initWithBundleVersion:(id)a3;
-- (int64_t)compare:(id)a3;
+- (SRAssetBundleVersion)initWithBundleVersion:(id)version;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation SRAssetBundleVersion
 
-- (SRAssetBundleVersion)initWithBundleVersion:(id)a3
+- (SRAssetBundleVersion)initWithBundleVersion:(id)version
 {
-  v5 = a3;
+  versionCopy = version;
   v9.receiver = self;
   v9.super_class = SRAssetBundleVersion;
   v6 = [(SRAssetBundleVersion *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_version, a3);
+    objc_storeStrong(&v6->_version, version);
   }
 
   return v7;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = [a3 version];
+  version = [compare version];
   version = self->_version;
   p_version = &self->_version;
   v7 = [(NSString *)version componentsSeparatedByString:@"."];
-  v8 = [v4 componentsSeparatedByString:@"."];
+  v8 = [version componentsSeparatedByString:@"."];
   v9 = objc_alloc_init(MEMORY[0x1E696ADA0]);
   [v9 setNumberStyle:1];
   v10 = [v7 count];

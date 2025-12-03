@@ -2,7 +2,7 @@
 - (TSCH3DGetBoundsRenderProcessor)init;
 - (id).cxx_construct;
 - (void)resetBounds;
-- (void)submit:(id)a3;
+- (void)submit:(id)submit;
 @end
 
 @implementation TSCH3DGetBoundsRenderProcessor
@@ -24,9 +24,9 @@
   self->_bounds._boxes.__end_ = self->_bounds._boxes.__begin_;
 }
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
-  v6 = a3;
+  submitCopy = submit;
   buffer = self->super._buffer;
   if (!buffer)
   {
@@ -50,9 +50,9 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v46, v47, v48, v49);
   }
 
-  if (objc_msgSend_hasOffset(v6, v26, v27, v28, v29))
+  if (objc_msgSend_hasOffset(submitCopy, v26, v27, v28, v29))
   {
-    v191 = objc_msgSend_offset(v6, v50, v51, v52, v53);
+    v191 = objc_msgSend_offset(submitCopy, v50, v51, v52, v53);
   }
 
   else
@@ -60,9 +60,9 @@
     v191 = 0;
   }
 
-  if (objc_msgSend_hasCount(v6, v50, v51, v52, v53))
+  if (objc_msgSend_hasCount(submitCopy, v50, v51, v52, v53))
   {
-    v192 = objc_msgSend_count(v6, v54, v55, v56, v57);
+    v192 = objc_msgSend_count(submitCopy, v54, v55, v56, v57);
   }
 
   else

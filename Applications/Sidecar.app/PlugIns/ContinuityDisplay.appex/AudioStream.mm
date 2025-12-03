@@ -1,45 +1,45 @@
 @interface AudioStream
-- (void)stream:(id)a3 didPause:(BOOL)a4 error:(id)a5;
-- (void)stream:(id)a3 didResume:(BOOL)a4 error:(id)a5;
-- (void)stream:(id)a3 didStart:(BOOL)a4 error:(id)a5;
-- (void)stream:(id)a3 didStartSynchronizer:(BOOL)a4 error:(id)a5;
+- (void)stream:(id)stream didPause:(BOOL)pause error:(id)error;
+- (void)stream:(id)stream didResume:(BOOL)resume error:(id)error;
+- (void)stream:(id)stream didStart:(BOOL)start error:(id)error;
+- (void)stream:(id)stream didStartSynchronizer:(BOOL)synchronizer error:(id)error;
 @end
 
 @implementation AudioStream
 
-- (void)stream:(id)a3 didStart:(BOOL)a4 error:(id)a5
+- (void)stream:(id)stream didStart:(BOOL)start error:(id)error
 {
-  v9 = a3;
-  v10 = self;
-  v11 = a5;
-  AudioStream.stream(_:didStart:error:)(a3, a4);
+  streamCopy = stream;
+  selfCopy = self;
+  errorCopy = error;
+  AudioStream.stream(_:didStart:error:)(stream, start);
 }
 
-- (void)stream:(id)a3 didPause:(BOOL)a4 error:(id)a5
+- (void)stream:(id)stream didPause:(BOOL)pause error:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = self;
-  v10 = a5;
-  AudioStream.stream(_:didPause:error:)(v10, v6, a5);
+  pauseCopy = pause;
+  streamCopy = stream;
+  selfCopy = self;
+  errorCopy = error;
+  AudioStream.stream(_:didPause:error:)(errorCopy, pauseCopy, error);
 }
 
-- (void)stream:(id)a3 didResume:(BOOL)a4 error:(id)a5
+- (void)stream:(id)stream didResume:(BOOL)resume error:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = self;
-  v10 = a5;
-  AudioStream.stream(_:didResume:error:)(v10, v6, a5);
+  resumeCopy = resume;
+  streamCopy = stream;
+  selfCopy = self;
+  errorCopy = error;
+  AudioStream.stream(_:didResume:error:)(errorCopy, resumeCopy, error);
 }
 
-- (void)stream:(id)a3 didStartSynchronizer:(BOOL)a4 error:(id)a5
+- (void)stream:(id)stream didStartSynchronizer:(BOOL)synchronizer error:(id)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = self;
-  v10 = a5;
-  AudioStream.stream(_:didStartSynchronizer:error:)(v10, v6, a5);
+  synchronizerCopy = synchronizer;
+  streamCopy = stream;
+  selfCopy = self;
+  errorCopy = error;
+  AudioStream.stream(_:didStartSynchronizer:error:)(errorCopy, synchronizerCopy, error);
 }
 
 @end

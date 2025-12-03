@@ -6,7 +6,7 @@
 
 - (void)placesSnapshotCountDidChange
 {
-  v1 = a1;
+  selfCopy = self;
   sub_1000046D0();
 }
 

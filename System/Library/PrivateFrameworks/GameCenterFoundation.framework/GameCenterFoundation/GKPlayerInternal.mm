@@ -1,31 +1,31 @@
 @interface GKPlayerInternal
-+ (Class)classForFamiliarity:(int)a3;
-+ (id)compositeNameForFirstName:(id)a3 lastName:(id)a4;
-+ (id)displayNameWithOptions:(unsigned __int8)a3 alias:(id)a4 composite:(id)a5;
++ (Class)classForFamiliarity:(int)familiarity;
++ (id)compositeNameForFirstName:(id)name lastName:(id)lastName;
++ (id)displayNameWithOptions:(unsigned __int8)options alias:(id)alias composite:(id)composite;
 + (id)secureCodedPropertyKeys;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFriendInvitationInContacts;
 - (BOOL)isLoaded;
-- (GKPlayerInternal)initWithSanitizeBeforeEncodingBlock:(id)a3;
+- (GKPlayerInternal)initWithSanitizeBeforeEncodingBlock:(id)block;
 - (id)conciseDescription;
 - (id)debugDescription;
 - (id)minimalInternal;
 - (id)serverRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)sanitize;
-- (void)setMessagesID:(id)a3;
+- (void)setMessagesID:(id)d;
 @end
 
 @implementation GKPlayerInternal
 
-- (GKPlayerInternal)initWithSanitizeBeforeEncodingBlock:(id)a3
+- (GKPlayerInternal)initWithSanitizeBeforeEncodingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(GKPlayerInternal *)self init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(blockCopy);
     sanitizeBeforeEncoding = v5->_sanitizeBeforeEncoding;
     v5->_sanitizeBeforeEncoding = v6;
   }
@@ -117,15 +117,15 @@ void __43__GKPlayerInternal_secureCodedPropertyKeys__block_invoke()
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(GKPlayerInternal *)self sanitizeBeforeEncoding];
-  if (v5)
+  coderCopy = coder;
+  sanitizeBeforeEncoding = [(GKPlayerInternal *)self sanitizeBeforeEncoding];
+  if (sanitizeBeforeEncoding)
   {
-    v6 = v5;
-    v7 = [(GKPlayerInternal *)self sanitizeBeforeEncoding];
-    v8 = v7[2]();
+    v6 = sanitizeBeforeEncoding;
+    sanitizeBeforeEncoding2 = [(GKPlayerInternal *)self sanitizeBeforeEncoding];
+    v8 = sanitizeBeforeEncoding2[2]();
 
     if (v8)
     {
@@ -135,16 +135,16 @@ void __43__GKPlayerInternal_secureCodedPropertyKeys__block_invoke()
 
   v9.receiver = self;
   v9.super_class = GKPlayerInternal;
-  [(GKInternalRepresentation *)&v9 encodeWithCoder:v4];
+  [(GKInternalRepresentation *)&v9 encodeWithCoder:coderCopy];
 }
 
 - (id)conciseDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(GKPlayerInternal *)self playerID];
-  v5 = [(GKPlayerInternal *)self alias];
-  v6 = [(GKPlayerInternal *)self friendLevel];
-  v7 = [v3 stringWithFormat:@"playerID:%@ alias:%@ FL%@", v4, v5, v6];
+  playerID = [(GKPlayerInternal *)self playerID];
+  alias = [(GKPlayerInternal *)self alias];
+  friendLevel = [(GKPlayerInternal *)self friendLevel];
+  v7 = [v3 stringWithFormat:@"playerID:%@ alias:%@ FL%@", playerID, alias, friendLevel];
 
   return v7;
 }
@@ -166,13 +166,13 @@ void __43__GKPlayerInternal_secureCodedPropertyKeys__block_invoke()
   return MEMORY[0x277CBEC10];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self == v5)
     {
       v8 = 1;
@@ -180,9 +180,9 @@ void __43__GKPlayerInternal_secureCodedPropertyKeys__block_invoke()
 
     else
     {
-      v6 = [(GKPlayerInternal *)self playerID];
-      v7 = [(GKPlayerInternal *)v5 playerID];
-      v8 = [v6 isEqualToString:v7];
+      playerID = [(GKPlayerInternal *)self playerID];
+      playerID2 = [(GKPlayerInternal *)v5 playerID];
+      v8 = [playerID isEqualToString:playerID2];
     }
   }
 
@@ -196,77 +196,77 @@ void __43__GKPlayerInternal_secureCodedPropertyKeys__block_invoke()
 
 - (unint64_t)hash
 {
-  v2 = [(GKPlayerInternal *)self playerID];
-  v3 = [v2 hash];
+  playerID = [(GKPlayerInternal *)self playerID];
+  v3 = [playerID hash];
 
   return v3;
 }
 
 - (id)minimalInternal
 {
-  v3 = [objc_opt_class() internalRepresentation];
-  v4 = [(GKPlayerInternal *)self playerID];
-  [v3 setPlayerID:v4];
+  internalRepresentation = [objc_opt_class() internalRepresentation];
+  playerID = [(GKPlayerInternal *)self playerID];
+  [internalRepresentation setPlayerID:playerID];
 
-  v5 = [(GKPlayerInternal *)self scopedIDs];
-  [v3 setScopedIDs:v5];
+  scopedIDs = [(GKPlayerInternal *)self scopedIDs];
+  [internalRepresentation setScopedIDs:scopedIDs];
 
-  v6 = [(GKPlayerInternal *)self alias];
-  [v3 setAlias:v6];
+  alias = [(GKPlayerInternal *)self alias];
+  [internalRepresentation setAlias:alias];
 
-  v7 = [(GKPlayerInternal *)self firstName];
-  [v3 setFirstName:v7];
+  firstName = [(GKPlayerInternal *)self firstName];
+  [internalRepresentation setFirstName:firstName];
 
-  v8 = [(GKPlayerInternal *)self lastName];
-  [v3 setLastName:v8];
+  lastName = [(GKPlayerInternal *)self lastName];
+  [internalRepresentation setLastName:lastName];
 
-  v9 = [(GKPlayerInternal *)self friendLevel];
-  [v3 setFriendLevel:v9];
+  friendLevel = [(GKPlayerInternal *)self friendLevel];
+  [internalRepresentation setFriendLevel:friendLevel];
 
-  v10 = [(GKPlayerInternal *)self friendBiDirectional];
-  [v3 setFriendBiDirectional:v10];
+  friendBiDirectional = [(GKPlayerInternal *)self friendBiDirectional];
+  [internalRepresentation setFriendBiDirectional:friendBiDirectional];
 
-  v11 = [(GKPlayerInternal *)self friendPlayedWith];
-  [v3 setFriendPlayedWith:v11];
+  friendPlayedWith = [(GKPlayerInternal *)self friendPlayedWith];
+  [internalRepresentation setFriendPlayedWith:friendPlayedWith];
 
-  v12 = [(GKPlayerInternal *)self friendPlayedNearby];
-  [v3 setFriendPlayedNearby:v12];
+  friendPlayedNearby = [(GKPlayerInternal *)self friendPlayedNearby];
+  [internalRepresentation setFriendPlayedNearby:friendPlayedNearby];
 
-  v13 = [(GKPlayerInternal *)self acceptedGameInviteFromThisFriend];
-  [v3 setAcceptedGameInviteFromThisFriend:v13];
+  acceptedGameInviteFromThisFriend = [(GKPlayerInternal *)self acceptedGameInviteFromThisFriend];
+  [internalRepresentation setAcceptedGameInviteFromThisFriend:acceptedGameInviteFromThisFriend];
 
-  v14 = [(GKPlayerInternal *)self initiatedGameInviteToThisFriend];
-  [v3 setInitiatedGameInviteToThisFriend:v14];
+  initiatedGameInviteToThisFriend = [(GKPlayerInternal *)self initiatedGameInviteToThisFriend];
+  [internalRepresentation setInitiatedGameInviteToThisFriend:initiatedGameInviteToThisFriend];
 
-  v15 = [(GKPlayerInternal *)self automatchedTogether];
-  [v3 setAutomatchedTogether:v15];
+  automatchedTogether = [(GKPlayerInternal *)self automatchedTogether];
+  [internalRepresentation setAutomatchedTogether:automatchedTogether];
 
-  v16 = [(GKPlayerInternal *)self compositeName];
-  [v3 setCompositeName:v16];
+  compositeName = [(GKPlayerInternal *)self compositeName];
+  [internalRepresentation setCompositeName:compositeName];
 
-  [v3 setAchievementsVisibility:{-[GKPlayerInternal achievementsVisibility](self, "achievementsVisibility")}];
-  [v3 setFriendsVisibility:{-[GKPlayerInternal friendsVisibility](self, "friendsVisibility")}];
-  [v3 setGamesPlayedVisibility:{-[GKPlayerInternal gamesPlayedVisibility](self, "gamesPlayedVisibility")}];
-  [v3 setGlobalFriendListAccess:{-[GKPlayerInternal globalFriendListAccess](self, "globalFriendListAccess")}];
-  [v3 setIsArcadeSubscriber:{-[GKPlayerInternal isArcadeSubscriber](self, "isArcadeSubscriber")}];
-  [v3 setIsChallengeable:{-[GKPlayerInternal isChallengeable](self, "isChallengeable")}];
-  [v3 setSupportsMultiplayerActivities:{-[GKPlayerInternal supportsMultiplayerActivities](self, "supportsMultiplayerActivities")}];
+  [internalRepresentation setAchievementsVisibility:{-[GKPlayerInternal achievementsVisibility](self, "achievementsVisibility")}];
+  [internalRepresentation setFriendsVisibility:{-[GKPlayerInternal friendsVisibility](self, "friendsVisibility")}];
+  [internalRepresentation setGamesPlayedVisibility:{-[GKPlayerInternal gamesPlayedVisibility](self, "gamesPlayedVisibility")}];
+  [internalRepresentation setGlobalFriendListAccess:{-[GKPlayerInternal globalFriendListAccess](self, "globalFriendListAccess")}];
+  [internalRepresentation setIsArcadeSubscriber:{-[GKPlayerInternal isArcadeSubscriber](self, "isArcadeSubscriber")}];
+  [internalRepresentation setIsChallengeable:{-[GKPlayerInternal isChallengeable](self, "isChallengeable")}];
+  [internalRepresentation setSupportsMultiplayerActivities:{-[GKPlayerInternal supportsMultiplayerActivities](self, "supportsMultiplayerActivities")}];
 
-  return v3;
+  return internalRepresentation;
 }
 
-+ (id)compositeNameForFirstName:(id)a3 lastName:(id)a4
++ (id)compositeNameForFirstName:(id)name lastName:(id)lastName
 {
-  if (a3 | a4)
+  if (name | lastName)
   {
     v5 = MEMORY[0x277CBDB38];
-    v6 = a4;
-    v7 = a3;
+    lastNameCopy = lastName;
+    nameCopy = name;
     v8 = objc_alloc_init(v5);
     [v8 setContactType:0];
-    [v8 setGivenName:v7];
+    [v8 setGivenName:nameCopy];
 
-    [v8 setFamilyName:v6];
+    [v8 setFamilyName:lastNameCopy];
     v9 = [MEMORY[0x277CBDA78] stringFromContact:v8 style:0];
   }
 
@@ -278,14 +278,14 @@ void __43__GKPlayerInternal_secureCodedPropertyKeys__block_invoke()
   return v9;
 }
 
-+ (id)displayNameWithOptions:(unsigned __int8)a3 alias:(id)a4 composite:(id)a5
++ (id)displayNameWithOptions:(unsigned __int8)options alias:(id)alias composite:(id)composite
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  aliasCopy = alias;
+  compositeCopy = composite;
+  v9 = compositeCopy;
+  if (compositeCopy)
   {
-    v10 = v7 == 0;
+    v10 = aliasCopy == 0;
   }
 
   else
@@ -293,14 +293,14 @@ void __43__GKPlayerInternal_secureCodedPropertyKeys__block_invoke()
     v10 = 0;
   }
 
-  if (v10 && (a3 & 1) == 0)
+  if (v10 && (options & 1) == 0)
   {
-    v12 = v8;
+    v12 = compositeCopy;
   }
 
   else
   {
-    v12 = v7;
+    v12 = aliasCopy;
   }
 
   v13 = v12;
@@ -308,16 +308,16 @@ void __43__GKPlayerInternal_secureCodedPropertyKeys__block_invoke()
   return v13;
 }
 
-+ (Class)classForFamiliarity:(int)a3
++ (Class)classForFamiliarity:(int)familiarity
 {
-  if ((a3 - 1) > 3)
+  if ((familiarity - 1) > 3)
   {
     v4 = off_2785DBC78;
   }
 
   else
   {
-    v4 = off_2785E2660[a3 - 1];
+    v4 = off_2785E2660[familiarity - 1];
   }
 
   v5 = *v4;
@@ -337,15 +337,15 @@ void __43__GKPlayerInternal_secureCodedPropertyKeys__block_invoke()
   return v3;
 }
 
-- (void)setMessagesID:(id)a3
+- (void)setMessagesID:(id)d
 {
-  if (self->_messagesID != a3)
+  if (self->_messagesID != d)
   {
-    v4 = [a3 lowercaseString];
+    lowercaseString = [d lowercaseString];
     messagesID = self->_messagesID;
-    self->_messagesID = v4;
+    self->_messagesID = lowercaseString;
 
-    MEMORY[0x2821F96F8](v4, messagesID);
+    MEMORY[0x2821F96F8](lowercaseString, messagesID);
   }
 }
 
@@ -356,19 +356,19 @@ void __43__GKPlayerInternal_secureCodedPropertyKeys__block_invoke()
     return 1;
   }
 
-  v4 = [(GKPlayerInternal *)self contact];
-  v3 = v4 != 0;
+  contact = [(GKPlayerInternal *)self contact];
+  v3 = contact != 0;
 
   return v3;
 }
 
 - (id)debugDescription
 {
-  v3 = [(GKPlayerInternal *)self playerID];
-  v4 = v3;
-  if (v3)
+  playerID = [(GKPlayerInternal *)self playerID];
+  v4 = playerID;
+  if (playerID)
   {
-    v5 = v3;
+    v5 = playerID;
   }
 
   else
@@ -378,11 +378,11 @@ void __43__GKPlayerInternal_secureCodedPropertyKeys__block_invoke()
 
   v6 = v5;
 
-  v7 = [(GKPlayerInternal *)self alias];
-  v8 = v7;
-  if (v7)
+  alias = [(GKPlayerInternal *)self alias];
+  v8 = alias;
+  if (alias)
   {
-    v9 = v7;
+    v9 = alias;
   }
 
   else
@@ -392,11 +392,11 @@ void __43__GKPlayerInternal_secureCodedPropertyKeys__block_invoke()
 
   v10 = v9;
 
-  v11 = [(GKPlayerInternal *)self accountName];
-  v12 = v11;
-  if (v11)
+  accountName = [(GKPlayerInternal *)self accountName];
+  v12 = accountName;
+  if (accountName)
   {
-    v13 = v11;
+    v13 = accountName;
   }
 
   else
@@ -409,8 +409,8 @@ void __43__GKPlayerInternal_secureCodedPropertyKeys__block_invoke()
   v15 = MEMORY[0x277CCACA8];
   v16 = objc_opt_class();
   v17 = [MEMORY[0x277CCABB0] numberWithInt:self->_achievementsVisibility];
-  v18 = [(GKPlayerInternal *)self scopedIDs];
-  v19 = [v15 stringWithFormat:@"%@(%p)(playerID:%@, alias:%@, accountName: %@, _achievementsVisibility:%@, scopedIDs: %@)", v16, self, v6, v10, v14, v17, v18];
+  scopedIDs = [(GKPlayerInternal *)self scopedIDs];
+  v19 = [v15 stringWithFormat:@"%@(%p)(playerID:%@, alias:%@, accountName: %@, _achievementsVisibility:%@, scopedIDs: %@)", v16, self, v6, v10, v14, v17, scopedIDs];
 
   return v19;
 }

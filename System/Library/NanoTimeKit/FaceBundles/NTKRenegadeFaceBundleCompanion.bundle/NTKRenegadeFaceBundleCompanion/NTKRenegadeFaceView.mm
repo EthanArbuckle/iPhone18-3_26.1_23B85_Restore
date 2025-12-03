@@ -1,26 +1,26 @@
 @interface NTKRenegadeFaceView
 - (BOOL)_areComplicationsEnabled;
 - (CGRect)_dateComplicationFrame;
-- (CGRect)_keylineFrameForComplicationSlot:(id)a3 selected:(BOOL)a4;
-- (NTKRenegadeFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_complicationsAlphaForEditMode:(int64_t)a3;
-- (double)_timeViewAlphaForEditMode:(int64_t)a3;
+- (CGRect)_keylineFrameForComplicationSlot:(id)slot selected:(BOOL)selected;
+- (NTKRenegadeFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_complicationsAlphaForEditMode:(int64_t)mode;
+- (double)_timeViewAlphaForEditMode:(int64_t)mode;
 - (id)_bottomComplicationFont;
 - (id)_dateComplicationFont;
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
 - (id)_snapshotConfiguration;
-- (id)_swatchImageForColorOption:(id)a3 size:(CGSize)a4;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyComplicationStyleToView:(id)a3 forComplication:(id)a4 slot:(id)a5;
-- (void)_applyComplicationStyleToView:(id)a3 forSlot:(id)a4;
+- (id)_swatchImageForColorOption:(id)option size:(CGSize)size;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyComplicationStyleToView:(id)view forComplication:(id)complication slot:(id)slot;
+- (void)_applyComplicationStyleToView:(id)view forSlot:(id)slot;
 - (void)_applyDataMode;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyPaletteFraction:(double)a3 fromPalette:(id)a4 toPalette:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_cleanupAfterTransitionComplicationSlot:(id)a3 selectedComplication:(id)a4;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyPaletteFraction:(double)fraction fromPalette:(id)palette toPalette:(id)toPalette;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_cleanupAfterTransitionComplicationSlot:(id)slot selectedComplication:(id)complication;
 - (void)_cleanupAfterZoom;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
 - (void)_loadLayoutRules;
 - (void)_loadSnapshotContentViews;
 - (void)_prepareForSnapshotting;
@@ -33,19 +33,19 @@
 
 @implementation NTKRenegadeFaceView
 
-- (NTKRenegadeFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKRenegadeFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v16.receiver = self;
   v16.super_class = NTKRenegadeFaceView;
-  v9 = [(NTKRenegadeFaceView *)&v16 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKRenegadeFaceView *)&v16 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   if (v9)
   {
     v10 = [NTKRenegadeColorPalette paletteForColor:0 flipped:0];
     palette = v9->_palette;
     v9->_palette = v10;
 
-    v12 = [[NTKUtilityComplicationFactory alloc] initForDevice:v8];
+    v12 = [[NTKUtilityComplicationFactory alloc] initForDevice:deviceCopy];
     [v12 setDelegate:v9];
     [v12 setFaceView:v9];
     complicationFactory = v9->_complicationFactory;
@@ -84,32 +84,32 @@
   }
 
   v4 = [NTKRenegadeTimeView alloc];
-  v5 = [(NTKRenegadeFaceView *)self device];
-  v6 = [(NTKRenegadeTimeView *)v4 initWithDevice:v5];
+  device = [(NTKRenegadeFaceView *)self device];
+  v6 = [(NTKRenegadeTimeView *)v4 initWithDevice:device];
 
-  v7 = [(NTKRenegadeFaceView *)self _snapshotConfiguration];
-  [(NTKRenegadeTimeView *)v6 setConfiguration:v7];
+  _snapshotConfiguration = [(NTKRenegadeFaceView *)self _snapshotConfiguration];
+  [(NTKRenegadeTimeView *)v6 setConfiguration:_snapshotConfiguration];
 
   [(NTKRenegadeTimeView *)v6 setComplicationsEdgeInsets:self->_complicationsEdgeInsets.top, self->_complicationsEdgeInsets.left, self->_complicationsEdgeInsets.bottom, self->_complicationsEdgeInsets.right];
   [(NTKRenegadeTimeView *)v6 setPalette:self->_palette];
   [(NTKRenegadeTimeView *)v6 setNeedsLayout];
   [(NTKRenegadeTimeView *)v6 layoutIfNeeded];
-  v23 = [(NTKRenegadeFaceView *)self contentView];
-  [v23 addSubview:v6];
+  contentView = [(NTKRenegadeFaceView *)self contentView];
+  [contentView addSubview:v6];
   [(NTKRenegadeFaceView *)self setTimeView:v6];
   v8 = self->_quiltTimeView;
   self->_quiltTimeView = v6;
   v9 = v6;
 
   v10 = [NTKRoundedCornerOverlayView alloc];
-  v11 = [(NTKRenegadeFaceView *)self device];
-  [v11 screenBounds];
+  device2 = [(NTKRenegadeFaceView *)self device];
+  [device2 screenBounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(NTKRenegadeFaceView *)self device];
-  v21 = [v10 initWithFrame:v20 forDeviceCornerRadius:{v13, v15, v17, v19}];
+  device3 = [(NTKRenegadeFaceView *)self device];
+  v21 = [v10 initWithFrame:device3 forDeviceCornerRadius:{v13, v15, v17, v19}];
   cornerOverlay = self->_cornerOverlay;
   self->_cornerOverlay = v21;
 
@@ -132,8 +132,8 @@
   v12.receiver = self;
   v12.super_class = NTKRenegadeFaceView;
   [(NTKRenegadeFaceView *)&v12 layoutSubviews];
-  v3 = [(NTKRenegadeFaceView *)self device];
-  [v3 screenBounds];
+  device = [(NTKRenegadeFaceView *)self device];
+  [device screenBounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -146,8 +146,8 @@
 {
   v6 = 0;
   memset(v5, 0, sizeof(v5));
-  v2 = [(NTKRenegadeFaceView *)self device];
-  sub_543C(v2, v5);
+  device = [(NTKRenegadeFaceView *)self device];
+  sub_543C(device, v5);
 
   v3 = *v5;
 
@@ -158,13 +158,13 @@
 {
   v7 = 0;
   memset(v6, 0, sizeof(v6));
-  v2 = [(NTKRenegadeFaceView *)self device];
-  sub_543C(v2, v6);
+  device = [(NTKRenegadeFaceView *)self device];
+  sub_543C(device, v6);
 
   v3 = [CLKFont systemFontOfSize:*(v6 + 1) weight:UIFontWeightSemibold];
-  v4 = [v3 CLKFontWithAlternativePunctuation];
+  cLKFontWithAlternativePunctuation = [v3 CLKFontWithAlternativePunctuation];
 
-  return v4;
+  return cLKFontWithAlternativePunctuation;
 }
 
 - (CGRect)_dateComplicationFrame
@@ -172,23 +172,23 @@
   v3 = [(NTKRenegadeFaceView *)self device:0];
   sub_543C(v3, &v21);
 
-  v4 = [(NTKRenegadeFaceView *)self _dateComplicationFont];
-  [v4 ascender];
-  [v4 descender];
-  v5 = [(NTKRenegadeFaceView *)self device];
+  _dateComplicationFont = [(NTKRenegadeFaceView *)self _dateComplicationFont];
+  [_dateComplicationFont ascender];
+  [_dateComplicationFont descender];
+  device = [(NTKRenegadeFaceView *)self device];
   CLKRoundForDevice();
   v7 = v6;
 
-  v8 = [(NTKRenegadeFaceView *)self device];
+  device2 = [(NTKRenegadeFaceView *)self device];
   CLKRoundForDevice();
   v10 = v9;
 
-  v11 = [(NTKRenegadeFaceView *)self device];
+  device3 = [(NTKRenegadeFaceView *)self device];
   CLKRoundForDevice();
   v13 = v12;
 
   [(NTKRenegadeFaceView *)self bounds];
-  v14 = [(NTKRenegadeFaceView *)self device];
+  device4 = [(NTKRenegadeFaceView *)self device];
   CLKRoundForDevice();
   v16 = v15;
 
@@ -203,17 +203,17 @@
   return result;
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a3;
+  optionCopy = option;
   v14.receiver = self;
   v14.super_class = NTKRenegadeFaceView;
-  [(NTKRenegadeFaceView *)&v14 _applyOption:v8 forCustomEditMode:a4 slot:a5];
-  if (a4 == 10)
+  [(NTKRenegadeFaceView *)&v14 _applyOption:optionCopy forCustomEditMode:mode slot:slot];
+  if (mode == 10)
   {
-    v9 = [v8 color];
-    v10 = [NTKRenegadeColorPalette paletteForColor:v9 flipped:0];
-    self->_color = v9;
+    color = [optionCopy color];
+    v10 = [NTKRenegadeColorPalette paletteForColor:color flipped:0];
+    self->_color = color;
     palette = self->_palette;
     self->_palette = v10;
     v12 = v10;
@@ -228,44 +228,44 @@
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v12 = a4;
-  v13 = a5;
+  optionCopy = option;
+  toOptionCopy = toOption;
   v16.receiver = self;
   v16.super_class = NTKRenegadeFaceView;
-  [(NTKRenegadeFaceView *)&v16 _applyTransitionFraction:v12 fromOption:v13 toOption:a6 forCustomEditMode:a7 slot:a3];
-  if (a6 == 10)
+  [(NTKRenegadeFaceView *)&v16 _applyTransitionFraction:optionCopy fromOption:toOptionCopy toOption:mode forCustomEditMode:slot slot:fraction];
+  if (mode == 10)
   {
-    v14 = +[NTKRenegadeColorPalette paletteForColor:flipped:](NTKRenegadeColorPalette, "paletteForColor:flipped:", [v12 color], 0);
-    v15 = +[NTKRenegadeColorPalette paletteForColor:flipped:](NTKRenegadeColorPalette, "paletteForColor:flipped:", [v13 color], 0);
-    [(NTKRenegadeFaceView *)self _applyPaletteFraction:v14 fromPalette:v15 toPalette:a3];
+    v14 = +[NTKRenegadeColorPalette paletteForColor:flipped:](NTKRenegadeColorPalette, "paletteForColor:flipped:", [optionCopy color], 0);
+    v15 = +[NTKRenegadeColorPalette paletteForColor:flipped:](NTKRenegadeColorPalette, "paletteForColor:flipped:", [toOptionCopy color], 0);
+    [(NTKRenegadeFaceView *)self _applyPaletteFraction:v14 fromPalette:v15 toPalette:fraction];
   }
 }
 
-- (void)_applyPaletteFraction:(double)a3 fromPalette:(id)a4 toPalette:(id)a5
+- (void)_applyPaletteFraction:(double)fraction fromPalette:(id)palette toPalette:(id)toPalette
 {
-  v8 = a4;
-  v9 = a5;
-  [(NTKRenegadeTimeView *)self->_quiltTimeView applyTransitionFraction:v8 fromPalette:v9 toPalette:a3];
+  paletteCopy = palette;
+  toPaletteCopy = toPalette;
+  [(NTKRenegadeTimeView *)self->_quiltTimeView applyTransitionFraction:paletteCopy fromPalette:toPaletteCopy toPalette:fraction];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_444C;
   v12[3] = &unk_105A8;
-  v13 = v8;
-  v14 = v9;
-  v15 = a3;
-  v10 = v9;
-  v11 = v8;
+  v13 = paletteCopy;
+  v14 = toPaletteCopy;
+  fractionCopy = fraction;
+  v10 = toPaletteCopy;
+  v11 = paletteCopy;
   [(NTKRenegadeFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v12];
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v10.receiver = self;
   v10.super_class = NTKRenegadeFaceView;
-  [(NTKRenegadeFaceView *)&v10 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 10)
+  [(NTKRenegadeFaceView *)&v10 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 10)
   {
     NTKLargeElementScaleForBreathingFraction();
     memset(&v9, 0, sizeof(v9));
@@ -276,12 +276,12 @@
   }
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v9.receiver = self;
   v9.super_class = NTKRenegadeFaceView;
-  [(NTKRenegadeFaceView *)&v9 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4 == 10)
+  [(NTKRenegadeFaceView *)&v9 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode == 10)
   {
     NTKScaleForRubberBandingFraction();
     CGAffineTransformMakeScale(&v8, v7, v7);
@@ -291,10 +291,10 @@
   }
 }
 
-- (double)_complicationsAlphaForEditMode:(int64_t)a3
+- (double)_complicationsAlphaForEditMode:(int64_t)mode
 {
   result = 1.0;
-  if (a3 != 1)
+  if (mode != 1)
   {
     v6 = [(NTKRenegadeFaceView *)self _areComplicationsEnabled:1.0];
     result = 0.0;
@@ -312,23 +312,23 @@
   v5.receiver = self;
   v5.super_class = NTKRenegadeFaceView;
   [(NTKRenegadeFaceView *)&v5 _applyDataMode];
-  v3 = [(NTKRenegadeFaceView *)self dataMode];
-  if ((v3 - 1) < 2)
+  dataMode = [(NTKRenegadeFaceView *)self dataMode];
+  if ((dataMode - 1) < 2)
   {
     goto LABEL_4;
   }
 
-  if (v3 == &dword_0 + 3)
+  if (dataMode == &dword_0 + 3)
   {
     [(NTKRenegadeTimeView *)self->_quiltTimeView setPaused:1];
     if (([(NTKRenegadeFaceView *)self editing]& 1) == 0)
     {
-      v4 = [(NTKRenegadeFaceView *)self _snapshotConfiguration];
-      [(NTKRenegadeTimeView *)self->_quiltTimeView setConfiguration:v4];
+      _snapshotConfiguration = [(NTKRenegadeFaceView *)self _snapshotConfiguration];
+      [(NTKRenegadeTimeView *)self->_quiltTimeView setConfiguration:_snapshotConfiguration];
     }
   }
 
-  else if (v3 == &dword_4 + 1)
+  else if (dataMode == &dword_4 + 1)
   {
 LABEL_4:
     [(NTKRenegadeTimeView *)self->_quiltTimeView setPaused:1];
@@ -369,25 +369,25 @@ LABEL_4:
 {
   v3 = self->_quiltTimeView;
   [(NTKRenegadeTimeView *)v3 setComplicationsEnabled:[(NTKRenegadeFaceView *)self _areComplicationsEnabled]];
-  v4 = [(NTKRenegadeFaceView *)self _snapshotConfiguration];
-  [(NTKRenegadeTimeView *)v3 setConfiguration:v4];
+  _snapshotConfiguration = [(NTKRenegadeFaceView *)self _snapshotConfiguration];
+  [(NTKRenegadeTimeView *)v3 setConfiguration:_snapshotConfiguration];
 }
 
 - (BOOL)_areComplicationsEnabled
 {
-  v3 = [(NTKRenegadeFaceView *)self delegate];
-  v4 = [v3 faceViewComplicationIsEmptyForSlot:NTKComplicationSlotDate];
+  delegate = [(NTKRenegadeFaceView *)self delegate];
+  v4 = [delegate faceViewComplicationIsEmptyForSlot:NTKComplicationSlotDate];
 
-  v5 = [(NTKRenegadeFaceView *)self delegate];
-  LOBYTE(v3) = [v5 faceViewComplicationIsEmptyForSlot:NTKComplicationSlotBottom];
+  delegate2 = [(NTKRenegadeFaceView *)self delegate];
+  LOBYTE(delegate) = [delegate2 faceViewComplicationIsEmptyForSlot:NTKComplicationSlotBottom];
 
-  return v4 & v3 ^ 1;
+  return v4 & delegate ^ 1;
 }
 
-- (double)_timeViewAlphaForEditMode:(int64_t)a3
+- (double)_timeViewAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -408,8 +408,8 @@ LABEL_4:
   v44 = v10;
   v45 = v8;
   v11 = v10;
-  v12 = [(NTKRenegadeFaceView *)self device];
-  [NTKComplicationLayoutRule layoutRuleForDevice:v12 withReferenceFrame:3 horizontalLayout:3 verticalLayout:v5, v7, v9, v11];
+  device = [(NTKRenegadeFaceView *)self device];
+  [NTKComplicationLayoutRule layoutRuleForDevice:device withReferenceFrame:3 horizontalLayout:3 verticalLayout:v5, v7, v9, v11];
   v49 = _NSConcreteStackBlock;
   v50 = 3221225472;
   v51 = sub_4D4C;
@@ -420,7 +420,7 @@ LABEL_4:
   NTKEnumerateComplicationStates();
 
   v15 = NTKComplicationSlotBottom;
-  [v12 screenBounds];
+  [device screenBounds];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -430,10 +430,10 @@ LABEL_4:
   v43 = v19;
   rect = v21;
   [(NTKUtilityComplicationFactory *)self->_complicationFactory configureComplicationLayout:v24 forSlot:9 withBounds:v17, v19, v21, v23];
-  sub_543C(v12, v48);
+  sub_543C(device, v48);
   v46 = v24;
-  v47 = v12;
-  v25 = v12;
+  v47 = device;
+  v25 = device;
   v26 = v24;
   NTKEnumerateComplicationStates();
   left = UIEdgeInsetsZero.left;
@@ -468,11 +468,11 @@ LABEL_4:
   [(NTKRenegadeFaceView *)self _updateComplicationsEnabled];
 }
 
-- (CGRect)_keylineFrameForComplicationSlot:(id)a3 selected:(BOOL)a4
+- (CGRect)_keylineFrameForComplicationSlot:(id)slot selected:(BOOL)selected
 {
   v8.receiver = self;
   v8.super_class = NTKRenegadeFaceView;
-  [(NTKRenegadeFaceView *)&v8 _keylineFrameForComplicationSlot:a3 selected:a4];
+  [(NTKRenegadeFaceView *)&v8 _keylineFrameForComplicationSlot:slot selected:selected];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -480,60 +480,60 @@ LABEL_4:
   return result;
 }
 
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
   v12.receiver = self;
   v12.super_class = NTKRenegadeFaceView;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(NTKRenegadeFaceView *)&v12 _newLegacyViewForComplication:v9 family:a4 slot:v8];
-  [(NTKRenegadeFaceView *)self _applyComplicationStyleToView:v10 forComplication:v9 slot:v8, v12.receiver, v12.super_class];
+  slotCopy = slot;
+  complicationCopy = complication;
+  v10 = [(NTKRenegadeFaceView *)&v12 _newLegacyViewForComplication:complicationCopy family:family slot:slotCopy];
+  [(NTKRenegadeFaceView *)self _applyComplicationStyleToView:v10 forComplication:complicationCopy slot:slotCopy, v12.receiver, v12.super_class];
 
   return v10;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
   v8.receiver = self;
   v8.super_class = NTKRenegadeFaceView;
-  v6 = a4;
-  v7 = a3;
-  [(NTKRenegadeFaceView *)&v8 _configureComplicationView:v7 forSlot:v6];
-  [(NTKRenegadeFaceView *)self _applyComplicationStyleToView:v7 forSlot:v6, v8.receiver, v8.super_class];
+  slotCopy = slot;
+  viewCopy = view;
+  [(NTKRenegadeFaceView *)&v8 _configureComplicationView:viewCopy forSlot:slotCopy];
+  [(NTKRenegadeFaceView *)self _applyComplicationStyleToView:viewCopy forSlot:slotCopy, v8.receiver, v8.super_class];
 }
 
-- (void)_applyComplicationStyleToView:(id)a3 forSlot:(id)a4
+- (void)_applyComplicationStyleToView:(id)view forSlot:(id)slot
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NTKRenegadeFaceView *)self delegate];
-  v9 = [v8 faceViewComplicationForSlot:NTKComplicationSlotBottom];
+  slotCopy = slot;
+  viewCopy = view;
+  delegate = [(NTKRenegadeFaceView *)self delegate];
+  v9 = [delegate faceViewComplicationForSlot:NTKComplicationSlotBottom];
 
-  [(NTKRenegadeFaceView *)self _applyComplicationStyleToView:v7 forComplication:v9 slot:v6];
+  [(NTKRenegadeFaceView *)self _applyComplicationStyleToView:viewCopy forComplication:v9 slot:slotCopy];
 }
 
-- (void)_applyComplicationStyleToView:(id)a3 forComplication:(id)a4 slot:(id)a5
+- (void)_applyComplicationStyleToView:(id)view forComplication:(id)complication slot:(id)slot
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityComplicationView])
+  viewCopy = view;
+  complicationCopy = complication;
+  slotCopy = slot;
+  if ([viewCopy conformsToProtocol:&OBJC_PROTOCOL___NTKUtilityComplicationView])
   {
-    v11 = v8;
-    if ([v10 isEqualToString:NTKComplicationSlotDate])
+    v11 = viewCopy;
+    if ([slotCopy isEqualToString:NTKComplicationSlotDate])
     {
-      v12 = [(NTKRenegadeFaceView *)self _dateComplicationFont];
+      _dateComplicationFont = [(NTKRenegadeFaceView *)self _dateComplicationFont];
       [v11 setFontWeight:UIFontWeightBold];
-      [v12 pointSize];
+      [_dateComplicationFont pointSize];
       [v11 setFontSize:?];
-      v13 = [(NTKRenegadeColorPalette *)self->_palette dateComplicationLabelColor];
-      [v11 setAccentColor:v13];
-      [v11 setForegroundColor:v13];
+      dateComplicationLabelColor = [(NTKRenegadeColorPalette *)self->_palette dateComplicationLabelColor];
+      [v11 setAccentColor:dateComplicationLabelColor];
+      [v11 setForegroundColor:dateComplicationLabelColor];
     }
 
     else
     {
-      if (![v10 isEqualToString:NTKComplicationSlotBottom])
+      if (![slotCopy isEqualToString:NTKComplicationSlotBottom])
       {
 LABEL_7:
         [v11 setForegroundAlpha:1.0];
@@ -543,13 +543,13 @@ LABEL_7:
         goto LABEL_8;
       }
 
-      v12 = [(NTKRenegadeFaceView *)self _bottomComplicationFont];
+      _dateComplicationFont = [(NTKRenegadeFaceView *)self _bottomComplicationFont];
       [v11 setFontWeight:UIFontWeightSemibold];
-      [v12 pointSize];
+      [_dateComplicationFont pointSize];
       [v11 setFontSize:?];
-      v13 = [(NTKRenegadeColorPalette *)self->_palette bottomComplicationLabelColor];
-      [v11 setAccentColor:v13];
-      [v11 setForegroundColor:v13];
+      dateComplicationLabelColor = [(NTKRenegadeColorPalette *)self->_palette bottomComplicationLabelColor];
+      [v11 setAccentColor:dateComplicationLabelColor];
+      [v11 setForegroundColor:dateComplicationLabelColor];
       [v11 setPlacement:4];
     }
 
@@ -557,45 +557,45 @@ LABEL_7:
   }
 
 LABEL_8:
-  if ([v10 isEqualToString:NTKComplicationSlotBottom])
+  if ([slotCopy isEqualToString:NTKComplicationSlotBottom])
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 complicationType] == &dword_10 + 2)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [complicationCopy complicationType] == &dword_10 + 2)
     {
-      v14 = v8;
-      v15 = [v14 imageView];
+      v14 = viewCopy;
+      imageView = [v14 imageView];
       CGAffineTransformMakeScale(&v19, 1.15, 1.15);
       v18 = v19;
-      [v15 setTransform:&v18];
-      [v15 setAlpha:1.0];
-      v16 = [v14 label];
+      [imageView setTransform:&v18];
+      [imageView setAlpha:1.0];
+      label = [v14 label];
 
-      v17 = [v16 textColor];
-      [v15 setTintColor:v17];
+      textColor = [label textColor];
+      [imageView setTintColor:textColor];
     }
   }
 }
 
-- (void)_cleanupAfterTransitionComplicationSlot:(id)a3 selectedComplication:(id)a4
+- (void)_cleanupAfterTransitionComplicationSlot:(id)slot selectedComplication:(id)complication
 {
   v10.receiver = self;
   v10.super_class = NTKRenegadeFaceView;
-  v6 = a4;
-  v7 = a3;
-  [(NTKRenegadeFaceView *)&v10 _cleanupAfterTransitionComplicationSlot:v7 selectedComplication:v6];
+  complicationCopy = complication;
+  slotCopy = slot;
+  [(NTKRenegadeFaceView *)&v10 _cleanupAfterTransitionComplicationSlot:slotCopy selectedComplication:complicationCopy];
   [(NTKRenegadeFaceView *)self _updateComplicationsEnabled:v10.receiver];
-  v8 = [(NTKRenegadeFaceView *)self normalComplicationDisplayWrapperForSlot:v7];
-  v9 = [v8 display];
-  [(NTKRenegadeFaceView *)self _applyComplicationStyleToView:v9 forComplication:v6 slot:v7];
+  v8 = [(NTKRenegadeFaceView *)self normalComplicationDisplayWrapperForSlot:slotCopy];
+  display = [v8 display];
+  [(NTKRenegadeFaceView *)self _applyComplicationStyleToView:display forComplication:complicationCopy slot:slotCopy];
 }
 
-- (id)_swatchImageForColorOption:(id)a3 size:(CGSize)a4
+- (id)_swatchImageForColorOption:(id)option size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = [a3 color];
+  height = size.height;
+  width = size.width;
+  color = [option color];
 
-  return [NTKRenegadeColorPalette swatchImageForColor:v6 size:width, height];
+  return [NTKRenegadeColorPalette swatchImageForColor:color size:width, height];
 }
 
 @end

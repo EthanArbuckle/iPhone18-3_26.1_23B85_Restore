@@ -1,10 +1,10 @@
 @interface CloudRemoteStore
 - (CloudRemoteStore)init;
-- (void)_addDependenciesForModifyRecordsOperation:(id)a3 operationQueue:(id)a4;
-- (void)_addModifyRecordsOperations:(id)a3 inOperationGroup:(id)a4 operationQueue:(id)a5;
-- (void)_fetchRecordsOnInternalQueueWithServerChangeToken:(id)a3 recordChangedBlock:(id)a4 recordWithIDWasDeletedBlock:(id)a5 inOperationGroup:(id)a6 completionHandler:(id)a7;
-- (void)_saveRecordZoneSubscriptionForZoneID:(id)a3 subscriptionID:(id)a4 inOperationGroup:(id)a5 operationQueue:(id)a6 completionHandler:(id)a7;
-- (void)_scheduleOperation:(id)a3 inOperationGroup:(id)a4 operationQueue:(id)a5;
+- (void)_addDependenciesForModifyRecordsOperation:(id)operation operationQueue:(id)queue;
+- (void)_addModifyRecordsOperations:(id)operations inOperationGroup:(id)group operationQueue:(id)queue;
+- (void)_fetchRecordsOnInternalQueueWithServerChangeToken:(id)token recordChangedBlock:(id)block recordWithIDWasDeletedBlock:(id)deletedBlock inOperationGroup:(id)group completionHandler:(id)handler;
+- (void)_saveRecordZoneSubscriptionForZoneID:(id)d subscriptionID:(id)iD inOperationGroup:(id)group operationQueue:(id)queue completionHandler:(id)handler;
+- (void)_scheduleOperation:(id)operation inOperationGroup:(id)group operationQueue:(id)queue;
 @end
 
 @implementation CloudRemoteStore
@@ -32,13 +32,13 @@
   return v2;
 }
 
-- (void)_saveRecordZoneSubscriptionForZoneID:(id)a3 subscriptionID:(id)a4 inOperationGroup:(id)a5 operationQueue:(id)a6 completionHandler:(id)a7
+- (void)_saveRecordZoneSubscriptionForZoneID:(id)d subscriptionID:(id)iD inOperationGroup:(id)group operationQueue:(id)queue completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  groupCopy = group;
+  queueCopy = queue;
+  handlerCopy = handler;
   v17 = objc_alloc_init(CKNotificationInfo);
   [v17 setShouldSendContentAvailable:1];
   internalQueue = self->_internalQueue;
@@ -46,49 +46,49 @@
   block[1] = 3221225472;
   block[2] = sub_1000D0F74;
   block[3] = &unk_100136FE8;
-  v26 = v12;
-  v27 = v13;
-  v31 = v15;
-  v32 = v16;
+  v26 = dCopy;
+  v27 = iDCopy;
+  v31 = queueCopy;
+  v32 = handlerCopy;
   v28 = v17;
-  v29 = self;
-  v30 = v14;
-  v19 = v15;
-  v20 = v14;
-  v21 = v16;
+  selfCopy = self;
+  v30 = groupCopy;
+  v19 = queueCopy;
+  v20 = groupCopy;
+  v21 = handlerCopy;
   v22 = v17;
-  v23 = v13;
-  v24 = v12;
+  v23 = iDCopy;
+  v24 = dCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)_fetchRecordsOnInternalQueueWithServerChangeToken:(id)a3 recordChangedBlock:(id)a4 recordWithIDWasDeletedBlock:(id)a5 inOperationGroup:(id)a6 completionHandler:(id)a7
+- (void)_fetchRecordsOnInternalQueueWithServerChangeToken:(id)token recordChangedBlock:(id)block recordWithIDWasDeletedBlock:(id)deletedBlock inOperationGroup:(id)group completionHandler:(id)handler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  v15 = a6;
-  v16 = a3;
-  v17 = [(CloudRemoteStore *)self _zoneID];
-  v18 = [v14 copy];
+  blockCopy = block;
+  deletedBlockCopy = deletedBlock;
+  handlerCopy = handler;
+  groupCopy = group;
+  tokenCopy = token;
+  _zoneID = [(CloudRemoteStore *)self _zoneID];
+  v18 = [handlerCopy copy];
 
   v19 = objc_alloc_init(CKFetchRecordZoneChangesConfiguration);
-  [v19 setPreviousServerChangeToken:v16];
+  [v19 setPreviousServerChangeToken:tokenCopy];
 
   v20 = [[WBSRetryableCKFetchRecordZoneChangesOperation alloc] initWithOwner:self handlingQueue:self->_internalQueue];
   [v20 setLog:-[CloudTabGroupSyncCoordinator _bookmarksLog]_0()];
-  v21 = [(CloudRemoteStore *)self operationConfiguration];
-  [v20 setConfiguration:v21];
+  operationConfiguration = [(CloudRemoteStore *)self operationConfiguration];
+  [v20 setConfiguration:operationConfiguration];
 
-  [v20 setGroup:v15];
-  v22 = [(CloudRemoteStore *)self _database];
-  [v20 setDatabase:v22];
+  [v20 setGroup:groupCopy];
+  _database = [(CloudRemoteStore *)self _database];
+  [v20 setDatabase:_database];
 
-  v53 = v17;
+  v53 = _zoneID;
   v23 = [NSArray arrayWithObjects:&v53 count:1];
   [v20 setRecordZoneIDs:v23];
 
-  v51 = v17;
+  v51 = _zoneID;
   v52 = v19;
   v24 = [NSDictionary dictionaryWithObjects:&v52 forKeys:&v51 count:1];
   [v20 setConfigurationsByRecordZoneID:v24];
@@ -97,21 +97,21 @@
   v47[1] = 3221225472;
   v47[2] = sub_1000D15B4;
   v47[3] = &unk_100137010;
-  v48 = v12;
-  v25 = v12;
+  v48 = blockCopy;
+  v25 = blockCopy;
   [v20 setRecordWasChangedBlock:v47];
   v45[0] = _NSConcreteStackBlock;
   v45[1] = 3221225472;
   v45[2] = sub_1000D1628;
   v45[3] = &unk_100137038;
-  v46 = v13;
-  v26 = v13;
+  v46 = deletedBlockCopy;
+  v26 = deletedBlockCopy;
   [v20 setRecordWithIDWasDeletedBlock:v45];
   v39 = _NSConcreteStackBlock;
   v40 = 3221225472;
   v41 = sub_1000D16A8;
   v42 = &unk_100137060;
-  v43 = self;
+  selfCopy = self;
   v27 = v18;
   v44 = v27;
   [v20 setRecordZoneFetchCompletionBlock:&v39];
@@ -119,7 +119,7 @@
   v34 = 3221225472;
   v35 = sub_1000D19FC;
   v36 = &unk_100137088;
-  v37 = self;
+  selfCopy2 = self;
   v38 = v27;
   v28 = v27;
   [v20 setFetchRecordZoneChangesCompletionBlock:&v33];
@@ -137,15 +137,15 @@
   [v32 addOperation:v20];
 }
 
-- (void)_addDependenciesForModifyRecordsOperation:(id)a3 operationQueue:(id)a4
+- (void)_addDependenciesForModifyRecordsOperation:(id)operation operationQueue:(id)queue
 {
-  v5 = a3;
+  operationCopy = operation;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a4 operations];
-  v7 = [v6 copy];
+  operations = [queue operations];
+  v7 = [operations copy];
 
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
@@ -166,7 +166,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
         {
-          [v5 addDependency:v12];
+          [operationCopy addDependency:v12];
         }
 
         v11 = v11 + 1;
@@ -180,17 +180,17 @@
   }
 }
 
-- (void)_addModifyRecordsOperations:(id)a3 inOperationGroup:(id)a4 operationQueue:(id)a5
+- (void)_addModifyRecordsOperations:(id)operations inOperationGroup:(id)group operationQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationsCopy = operations;
+  groupCopy = group;
+  queueCopy = queue;
   v11 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = v11;
     *buf = 134217984;
-    v25 = [v8 count];
+    v25 = [operationsCopy count];
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Enqueuing %lu modify records operations", buf, 0xCu);
   }
 
@@ -198,7 +198,7 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v13 = v8;
+  v13 = operationsCopy;
   v14 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v14)
   {
@@ -214,8 +214,8 @@
         }
 
         v18 = *(*(&v19 + 1) + 8 * i);
-        [(CloudRemoteStore *)self _addDependenciesForModifyRecordsOperation:v18 operationQueue:v10, v19];
-        [(CloudRemoteStore *)self _scheduleOperation:v18 inOperationGroup:v9 operationQueue:v10];
+        [(CloudRemoteStore *)self _addDependenciesForModifyRecordsOperation:v18 operationQueue:queueCopy, v19];
+        [(CloudRemoteStore *)self _scheduleOperation:v18 inOperationGroup:groupCopy operationQueue:queueCopy];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -225,23 +225,23 @@
   }
 }
 
-- (void)_scheduleOperation:(id)a3 inOperationGroup:(id)a4 operationQueue:(id)a5
+- (void)_scheduleOperation:(id)operation inOperationGroup:(id)group operationQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  operationCopy = operation;
+  groupCopy = group;
+  queueCopy = queue;
   internalQueue = self->_internalQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000D2008;
   v15[3] = &unk_1001311E8;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = operationCopy;
+  selfCopy = self;
+  v18 = groupCopy;
+  v19 = queueCopy;
+  v12 = queueCopy;
+  v13 = groupCopy;
+  v14 = operationCopy;
   dispatch_async(internalQueue, v15);
 }
 

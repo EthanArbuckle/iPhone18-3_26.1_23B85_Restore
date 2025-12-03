@@ -1,15 +1,15 @@
 @interface MCDSiriActionCell
 - (void)_updateSiriImageViewTintColor;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation MCDSiriActionCell
 
 - (void)_updateSiriImageViewTintColor
 {
-  v5 = [(MCDSiriActionCell *)self siriImageView];
+  siriImageView = [(MCDSiriActionCell *)self siriImageView];
   if (([(MCDSiriActionCell *)self isHighlighted]& 1) != 0 || ([(MCDSiriActionCell *)self isSelected]& 1) != 0)
   {
     v3 = +[UIColor _carSystemFocusLabelColor];
@@ -21,7 +21,7 @@
   }
 
   v4 = v3;
-  [v5 setTintColor:v3];
+  [siriImageView setTintColor:v3];
 }
 
 - (void)layoutSubviews
@@ -31,23 +31,23 @@
   [(MCDSiriActionCell *)&v17 layoutSubviews];
   v3 = MCDCarDisplayBundle();
   v4 = [v3 localizedStringForKey:@"SIRI_ACTION_CELL_TITLE" value:&stru_101107168 table:@"MusicCarDisplayUI"];
-  v5 = [(MCDSiriActionCell *)self textLabel];
-  [v5 setText:v4];
+  textLabel = [(MCDSiriActionCell *)self textLabel];
+  [textLabel setText:v4];
 
   v6 = +[UIColor tintColor];
-  v7 = [(MCDSiriActionCell *)self textLabel];
-  [v7 setTextColor:v6];
+  textLabel2 = [(MCDSiriActionCell *)self textLabel];
+  [textLabel2 setTextColor:v6];
 
   v8 = +[UIColor _carSystemFocusLabelColor];
-  v9 = [(MCDSiriActionCell *)self textLabel];
-  [v9 setHighlightedTextColor:v8];
+  textLabel3 = [(MCDSiriActionCell *)self textLabel];
+  [textLabel3 setHighlightedTextColor:v8];
 
-  v10 = [(MCDSiriActionCell *)self textLabel];
-  [v10 setAdjustsFontSizeToFitWidth:1];
+  textLabel4 = [(MCDSiriActionCell *)self textLabel];
+  [textLabel4 setAdjustsFontSizeToFitWidth:1];
 
-  v11 = [(MCDSiriActionCell *)self siriImageView];
+  siriImageView = [(MCDSiriActionCell *)self siriImageView];
 
-  if (!v11)
+  if (!siriImageView)
   {
     v12 = [UIImageView alloc];
     v13 = [UIImage _systemImageNamed:@"siri"];
@@ -60,23 +60,23 @@
     [(MCDSiriActionCell *)self setSiriImageView:v14];
   }
 
-  v16 = [(MCDSiriActionCell *)self siriImageView];
-  [(MCDSiriActionCell *)self setAccessoryView:v16];
+  siriImageView2 = [(MCDSiriActionCell *)self siriImageView];
+  [(MCDSiriActionCell *)self setAccessoryView:siriImageView2];
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = MCDSiriActionCell;
-  [(_MCDReusableCell *)&v5 setHighlighted:a3 animated:a4];
+  [(_MCDReusableCell *)&v5 setHighlighted:highlighted animated:animated];
   [(MCDSiriActionCell *)self _updateSiriImageViewTintColor];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = MCDSiriActionCell;
-  [(_MCDReusableCell *)&v5 setSelected:a3 animated:a4];
+  [(_MCDReusableCell *)&v5 setSelected:selected animated:animated];
   [(MCDSiriActionCell *)self _updateSiriImageViewTintColor];
 }
 

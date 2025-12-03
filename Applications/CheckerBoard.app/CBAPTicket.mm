@@ -1,8 +1,8 @@
 @interface CBAPTicket
 + (id)sharedInstance;
-- (BOOL)_hasEntitlementBoolForTag:(unint64_t)a3;
-- (BOOL)_verifyAPTicketDigest:(id)a3;
-- (BOOL)isEntitledForTag:(unint64_t)a3;
+- (BOOL)_hasEntitlementBoolForTag:(unint64_t)tag;
+- (BOOL)_verifyAPTicketDigest:(id)digest;
+- (BOOL)isEntitledForTag:(unint64_t)tag;
 - (CBAPTicket)init;
 - (id)_loadAPTicket;
 @end
@@ -35,9 +35,9 @@
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Loading APTicket...", buf, 2u);
     }
 
-    v4 = [(CBAPTicket *)v2 _loadAPTicket];
+    _loadAPTicket = [(CBAPTicket *)v2 _loadAPTicket];
     apTicket = v2->_apTicket;
-    v2->_apTicket = v4;
+    v2->_apTicket = _loadAPTicket;
 
     if (v2->_apTicket)
     {
@@ -66,12 +66,12 @@
   return v2;
 }
 
-- (BOOL)isEntitledForTag:(unint64_t)a3
+- (BOOL)isEntitledForTag:(unint64_t)tag
 {
   if ([(CBAPTicket *)self isValid])
   {
 
-    return [(CBAPTicket *)self _hasEntitlementBoolForTag:a3];
+    return [(CBAPTicket *)self _hasEntitlementBoolForTag:tag];
   }
 
   else
@@ -134,9 +134,9 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)_verifyAPTicketDigest:(id)a3
+- (BOOL)_verifyAPTicketDigest:(id)digest
 {
-  v3 = a3;
+  digestCopy = digest;
   v4 = MGCopyAnswer();
   if (!v4)
   {
@@ -173,8 +173,8 @@ LABEL_11:
   }
 
   v6 = CFStringCompare(v5, @"sha2-384", 1uLL);
-  [v3 bytes];
-  [v3 length];
+  [digestCopy bytes];
+  [digestCopy length];
   if (v6)
   {
     v7 = AMSupportDigestSha1();
@@ -256,7 +256,7 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)_hasEntitlementBoolForTag:(unint64_t)a3
+- (BOOL)_hasEntitlementBoolForTag:(unint64_t)tag
 {
   v43 = 0;
   v41 = 0u;
@@ -287,9 +287,9 @@ LABEL_13:
   v16 = 0u;
   v17 = 0u;
   v15 = 0u;
-  v4 = [(CBAPTicket *)self apTicket];
+  apTicket = [(CBAPTicket *)self apTicket];
 
-  if (!v4)
+  if (!apTicket)
   {
     v8 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -304,10 +304,10 @@ LABEL_12:
     return 0;
   }
 
-  v5 = [(CBAPTicket *)self apTicket];
-  [v5 bytes];
-  v6 = [(CBAPTicket *)self apTicket];
-  [v6 length];
+  apTicket2 = [(CBAPTicket *)self apTicket];
+  [apTicket2 bytes];
+  apTicket3 = [(CBAPTicket *)self apTicket];
+  [apTicket3 length];
   inited = Img4DecodeInitManifest();
 
   if (inited)

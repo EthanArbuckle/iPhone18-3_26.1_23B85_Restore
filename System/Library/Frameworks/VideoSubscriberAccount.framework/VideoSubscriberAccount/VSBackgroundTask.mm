@@ -26,13 +26,13 @@
 - (BOOL)begin
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D47008] currentProcess];
+  currentProcess = [MEMORY[0x277D47008] currentProcess];
   v4 = [MEMORY[0x277D46E38] attributeWithDomain:@"com.apple.common" name:@"FinishTaskUninterruptable"];
   v5 = objc_alloc(MEMORY[0x277D46DB8]);
-  v6 = [(VSBackgroundTask *)self name];
+  name = [(VSBackgroundTask *)self name];
   v14[0] = v4;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-  v8 = [v5 initWithExplanation:v6 target:v3 attributes:v7];
+  v8 = [v5 initWithExplanation:name target:currentProcess attributes:v7];
 
   v13 = 0;
   LOBYTE(v7) = [v8 acquireWithError:&v13];
@@ -45,8 +45,8 @@
       [(VSBackgroundTask *)v9 begin];
     }
 
-    v11 = [(VSBackgroundTask *)self delegate];
-    [v11 backgroundTaskExpired:self];
+    delegate = [(VSBackgroundTask *)self delegate];
+    [delegate backgroundTaskExpired:self];
   }
 
   [(VSBackgroundTask *)self setAssertion:v8];
@@ -56,8 +56,8 @@
 
 - (void)end
 {
-  v3 = [(VSBackgroundTask *)self assertion];
-  [v3 invalidate];
+  assertion = [(VSBackgroundTask *)self assertion];
+  [assertion invalidate];
 
   [(VSBackgroundTask *)self setAssertion:0];
 }
@@ -73,7 +73,7 @@
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_23AB8E000, a2, OS_LOG_TYPE_ERROR, "Failed to acquire assertion: %@", &v2, 0xCu);
 }
 

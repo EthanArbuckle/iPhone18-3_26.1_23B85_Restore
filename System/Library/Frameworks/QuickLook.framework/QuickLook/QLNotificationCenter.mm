@@ -1,14 +1,14 @@
 @interface QLNotificationCenter
 + (id)sharedInstance;
-- (BOOL)_tryPostingNotificationName:(id)a3 userInfo:(id)a4;
+- (BOOL)_tryPostingNotificationName:(id)name userInfo:(id)info;
 - (QLNotificationCenter)init;
-- (int64_t)_indexOfObserver:(id)a3;
-- (void)_bufferNotificationName:(id)a3 userInfo:(id)a4;
+- (int64_t)_indexOfObserver:(id)observer;
+- (void)_bufferNotificationName:(id)name userInfo:(id)info;
 - (void)_sendEnqueuedNotifications;
-- (void)postNotificationName:(id)a3 userInfo:(id)a4;
-- (void)registerObserver:(id)a3;
-- (void)setRemoteNotificationCenter:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)postNotificationName:(id)name userInfo:(id)info;
+- (void)registerObserver:(id)observer;
+- (void)setRemoteNotificationCenter:(id)center;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation QLNotificationCenter
@@ -24,9 +24,9 @@
     bufferedNotifications = v2->_bufferedNotifications;
     v2->_bufferedNotifications = v3;
 
-    v5 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
     observers = v2->_observers;
-    v2->_observers = v5;
+    v2->_observers = weakObjectsPointerArray;
   }
 
   return v2;
@@ -41,7 +41,7 @@
     block[1] = 3221225472;
     block[2] = __38__QLNotificationCenter_sharedInstance__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (sharedInstance_onceToken != -1)
     {
       dispatch_once(&sharedInstance_onceToken, block);
@@ -62,31 +62,31 @@ uint64_t __38__QLNotificationCenter_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (void)postNotificationName:(id)a3 userInfo:(id)a4
+- (void)postNotificationName:(id)name userInfo:(id)info
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  if (![(QLNotificationCenter *)v7 _tryPostingNotificationName:v10 userInfo:v6])
+  nameCopy = name;
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(QLNotificationCenter *)selfCopy _tryPostingNotificationName:nameCopy userInfo:infoCopy])
   {
-    v8 = [v10 copy];
-    v9 = [v6 copy];
-    [(QLNotificationCenter *)v7 _bufferNotificationName:v8 userInfo:v9];
+    v8 = [nameCopy copy];
+    v9 = [infoCopy copy];
+    [(QLNotificationCenter *)selfCopy _bufferNotificationName:v8 userInfo:v9];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (BOOL)_tryPostingNotificationName:(id)a3 userInfo:(id)a4
+- (BOOL)_tryPostingNotificationName:(id)name userInfo:(id)info
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(NSPointerArray *)v8->_observers count];
-  remoteNotificationCenter = v8->_remoteNotificationCenter;
+  nameCopy = name;
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v9 = [(NSPointerArray *)selfCopy->_observers count];
+  remoteNotificationCenter = selfCopy->_remoteNotificationCenter;
   if (v9)
   {
     if (!remoteNotificationCenter)
@@ -95,7 +95,7 @@ uint64_t __38__QLNotificationCenter_sharedInstance__block_invoke(uint64_t a1)
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v11 = v8->_observers;
+      v11 = selfCopy->_observers;
       v12 = [(NSPointerArray *)v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v12)
       {
@@ -109,7 +109,7 @@ uint64_t __38__QLNotificationCenter_sharedInstance__block_invoke(uint64_t a1)
               objc_enumerationMutation(v11);
             }
 
-            [*(*(&v18 + 1) + 8 * i) notification:v6 userInfo:{v7, v18}];
+            [*(*(&v18 + 1) + 8 * i) notification:nameCopy userInfo:{infoCopy, v18}];
           }
 
           v12 = [(NSPointerArray *)v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -128,100 +128,100 @@ uint64_t __38__QLNotificationCenter_sharedInstance__block_invoke(uint64_t a1)
     goto LABEL_14;
   }
 
-  [(QLNotificationCenterProtocol *)remoteNotificationCenter postNotificationName:v6 userInfo:v7];
+  [(QLNotificationCenterProtocol *)remoteNotificationCenter postNotificationName:nameCopy userInfo:infoCopy];
 LABEL_13:
   v15 = 1;
 LABEL_14:
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   v16 = *MEMORY[0x277D85DE8];
   return v15;
 }
 
-- (void)_bufferNotificationName:(id)a3 userInfo:(id)a4
+- (void)_bufferNotificationName:(id)name userInfo:(id)info
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  bufferedNotifications = v8->_bufferedNotifications;
+  nameCopy = name;
+  infoCopy = info;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  bufferedNotifications = selfCopy->_bufferedNotifications;
   v13[0] = @"_notificationName";
   v13[1] = @"_userInfo";
-  v14[0] = v6;
-  v10 = v7;
-  if (!v7)
+  v14[0] = nameCopy;
+  null = infoCopy;
+  if (!infoCopy)
   {
-    v10 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v14[1] = v10;
+  v14[1] = null;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
   [(NSMutableArray *)bufferedNotifications addObject:v11];
 
-  if (!v7)
+  if (!infoCopy)
   {
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if ([(QLNotificationCenter *)v4 _indexOfObserver:v5]== 0x7FFFFFFFFFFFFFFFLL)
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(QLNotificationCenter *)selfCopy _indexOfObserver:observerCopy]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(NSPointerArray *)v4->_observers addPointer:v5];
-    [(QLNotificationCenter *)v4 _sendEnqueuedNotifications];
+    [(NSPointerArray *)selfCopy->_observers addPointer:observerCopy];
+    [(QLNotificationCenter *)selfCopy _sendEnqueuedNotifications];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(QLNotificationCenter *)v4 _indexOfObserver:v6];
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(QLNotificationCenter *)selfCopy _indexOfObserver:observerCopy];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(NSPointerArray *)v4->_observers removePointerAtIndex:v5];
-    [(NSPointerArray *)v4->_observers compact];
+    [(NSPointerArray *)selfCopy->_observers removePointerAtIndex:v5];
+    [(NSPointerArray *)selfCopy->_observers compact];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setRemoteNotificationCenter:(id)a3
+- (void)setRemoteNotificationCenter:(id)center
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  objc_storeStrong(&v5->_remoteNotificationCenter, a3);
-  if (v5->_remoteNotificationCenter)
+  centerCopy = center;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_remoteNotificationCenter, center);
+  if (selfCopy->_remoteNotificationCenter)
   {
-    [(QLNotificationCenter *)v5 _sendEnqueuedNotifications];
+    [(QLNotificationCenter *)selfCopy _sendEnqueuedNotifications];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (int64_t)_indexOfObserver:(id)a3
+- (int64_t)_indexOfObserver:(id)observer
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(NSPointerArray *)v5->_observers copy];
+  v6 = [(NSPointerArray *)selfCopy->_observers copy];
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -238,7 +238,7 @@ LABEL_3:
         objc_enumerationMutation(v6);
       }
 
-      if (*(*(&v14 + 1) + 8 * v10) == v4)
+      if (*(*(&v14 + 1) + 8 * v10) == observerCopy)
       {
         break;
       }
@@ -263,7 +263,7 @@ LABEL_9:
     v11 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v12 = *MEMORY[0x277D85DE8];
   return v11;
 }
@@ -271,15 +271,15 @@ LABEL_9:
 - (void)_sendEnqueuedNotifications
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(NSMutableArray *)v2->_bufferedNotifications count])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NSMutableArray *)selfCopy->_bufferedNotifications count])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v3 = [(NSMutableArray *)v2->_bufferedNotifications copy];
+    v3 = [(NSMutableArray *)selfCopy->_bufferedNotifications copy];
     v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v4)
     {
@@ -296,11 +296,11 @@ LABEL_9:
           v7 = *(*(&v12 + 1) + 8 * i);
           v8 = [v7 objectForKeyedSubscript:@"_notificationName"];
           v9 = [v7 objectForKeyedSubscript:@"_userInfo"];
-          v10 = [(QLNotificationCenter *)v2 _tryPostingNotificationName:v8 userInfo:v9];
+          v10 = [(QLNotificationCenter *)selfCopy _tryPostingNotificationName:v8 userInfo:v9];
 
           if (v10)
           {
-            [(NSMutableArray *)v2->_bufferedNotifications removeObject:v7];
+            [(NSMutableArray *)selfCopy->_bufferedNotifications removeObject:v7];
           }
         }
 
@@ -311,7 +311,7 @@ LABEL_9:
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v11 = *MEMORY[0x277D85DE8];
 }

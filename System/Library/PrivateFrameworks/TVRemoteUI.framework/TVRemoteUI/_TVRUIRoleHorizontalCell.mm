@@ -1,22 +1,22 @@
 @interface _TVRUIRoleHorizontalCell
 + (CGSize)preferredImageSize;
-- (_TVRUIRoleHorizontalCell)initWithFrame:(CGRect)a3;
+- (_TVRUIRoleHorizontalCell)initWithFrame:(CGRect)frame;
 - (_TVRUITemplateImageProviding)imageProvider;
 - (void)_configureHierarchy;
-- (void)_updateFallbackImageForRole:(id)a3;
-- (void)_updateUIWithRole:(id)a3;
+- (void)_updateFallbackImageForRole:(id)role;
+- (void)_updateUIWithRole:(id)role;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setRole:(id)a3;
+- (void)setRole:(id)role;
 @end
 
 @implementation _TVRUIRoleHorizontalCell
 
-- (_TVRUIRoleHorizontalCell)initWithFrame:(CGRect)a3
+- (_TVRUIRoleHorizontalCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _TVRUIRoleHorizontalCell;
-  v3 = [(_TVRUIRoleHorizontalCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_TVRUIRoleHorizontalCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -48,60 +48,60 @@
   v8.receiver = self;
   v8.super_class = _TVRUIRoleHorizontalCell;
   [(_TVRUIRoleHorizontalCell *)&v8 layoutSubviews];
-  v3 = [(_TVRUIRoleHorizontalCell *)self imageView];
-  [v3 bounds];
+  imageView = [(_TVRUIRoleHorizontalCell *)self imageView];
+  [imageView bounds];
   v5 = v4;
 
   if (v5 > 0.0)
   {
-    v6 = [(_TVRUIRoleHorizontalCell *)self imageView];
-    v7 = [v6 layer];
-    [v7 setCornerRadius:v5 * 0.5];
+    imageView2 = [(_TVRUIRoleHorizontalCell *)self imageView];
+    layer = [imageView2 layer];
+    [layer setCornerRadius:v5 * 0.5];
   }
 }
 
-- (void)setRole:(id)a3
+- (void)setRole:(id)role
 {
-  objc_storeStrong(&self->_role, a3);
-  v5 = a3;
-  [(_TVRUIRoleHorizontalCell *)self _updateUIWithRole:v5];
+  objc_storeStrong(&self->_role, role);
+  roleCopy = role;
+  [(_TVRUIRoleHorizontalCell *)self _updateUIWithRole:roleCopy];
 
   [(_TVRUIRoleHorizontalCell *)self setNeedsLayout];
 
   [(_TVRUIRoleHorizontalCell *)self layoutIfNeeded];
 }
 
-- (void)_updateUIWithRole:(id)a3
+- (void)_updateUIWithRole:(id)role
 {
-  v4 = a3;
-  v5 = [(_TVRUIRoleHorizontalCell *)self imageView];
-  [v5 setImage:0];
+  roleCopy = role;
+  imageView = [(_TVRUIRoleHorizontalCell *)self imageView];
+  [imageView setImage:0];
 
-  v6 = [v4 actorName];
-  v7 = [(_TVRUIRoleHorizontalCell *)self nameLabel];
-  [v7 setText:v6];
+  actorName = [roleCopy actorName];
+  nameLabel = [(_TVRUIRoleHorizontalCell *)self nameLabel];
+  [nameLabel setText:actorName];
 
-  v8 = [v4 characterName];
-  v9 = [(_TVRUIRoleHorizontalCell *)self characterNameLabel];
-  [v9 setText:v8];
+  characterName = [roleCopy characterName];
+  characterNameLabel = [(_TVRUIRoleHorizontalCell *)self characterNameLabel];
+  [characterNameLabel setText:characterName];
 
-  v10 = [v4 imageURLTemplate];
-  if ([v10 length])
+  imageURLTemplate = [roleCopy imageURLTemplate];
+  if ([imageURLTemplate length])
   {
     objc_initWeak(&location, self);
-    v11 = [(_TVRUIRoleHorizontalCell *)self imageProvider];
-    v12 = [v4 imageURLTemplate];
+    imageProvider = [(_TVRUIRoleHorizontalCell *)self imageProvider];
+    imageURLTemplate2 = [roleCopy imageURLTemplate];
     [objc_opt_class() preferredImageSize];
     v14 = v13;
     v16 = v15;
-    v17 = [v4 canonicalID];
+    canonicalID = [roleCopy canonicalID];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __46___TVRUIRoleHorizontalCell__updateUIWithRole___block_invoke;
     v18[3] = &unk_279D882C8;
     objc_copyWeak(&v20, &location);
-    v19 = v4;
-    [v11 requestImageForTemplate:v12 size:v17 identifier:v18 completion:{v14, v16}];
+    v19 = roleCopy;
+    [imageProvider requestImageForTemplate:imageURLTemplate2 size:canonicalID identifier:v18 completion:{v14, v16}];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(&location);
@@ -109,7 +109,7 @@
 
   else
   {
-    [(_TVRUIRoleHorizontalCell *)self _updateFallbackImageForRole:v4];
+    [(_TVRUIRoleHorizontalCell *)self _updateFallbackImageForRole:roleCopy];
   }
 }
 
@@ -127,25 +127,25 @@
   v11 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v4, v5, v6, v7}];
   [(UIImageView *)v8 setContentMode:2];
   v12 = [MEMORY[0x277D75348] colorWithWhite:0.2 alpha:1.0];
-  v13 = [v12 CGColor];
-  v14 = [(UIImageView *)v8 layer];
-  [v14 setBorderColor:v13];
+  cGColor = [v12 CGColor];
+  layer = [(UIImageView *)v8 layer];
+  [layer setBorderColor:cGColor];
 
-  v15 = [(UIImageView *)v8 layer];
-  [v15 setBorderWidth:1.0];
+  layer2 = [(UIImageView *)v8 layer];
+  [layer2 setBorderWidth:1.0];
 
   [(UIImageView *)v8 setClipsToBounds:1];
   v16 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76938] variant:1024];
   [(UILabel *)v10 setFont:v16];
 
-  v17 = [MEMORY[0x277D75348] whiteColor];
-  [(UILabel *)v10 setTextColor:v17];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(UILabel *)v10 setTextColor:whiteColor];
 
   v18 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76940]];
   [(UILabel *)v11 setFont:v18];
 
-  v19 = [MEMORY[0x277D75348] lightGrayColor];
-  [(UILabel *)v11 setTextColor:v19];
+  lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+  [(UILabel *)v11 setTextColor:lightGrayColor];
 
   v100 = 0u;
   v101 = 0u;
@@ -181,8 +181,8 @@
     while (v23);
   }
 
-  v93 = self;
-  v27 = [(_TVRUIRoleHorizontalCell *)self contentView];
+  selfCopy = self;
+  contentView = [(_TVRUIRoleHorizontalCell *)self contentView];
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
@@ -206,7 +206,7 @@
 
         v33 = *(*(&v94 + 1) + 8 * j);
         [v33 setTranslatesAutoresizingMaskIntoConstraints:0];
-        [v27 addSubview:v33];
+        [contentView addSubview:v33];
       }
 
       v30 = [v28 countByEnumeratingWithState:&v94 objects:v104 count:16];
@@ -216,68 +216,68 @@
   }
 
   v71 = MEMORY[0x277CCAAD0];
-  v92 = [(UIImageView *)v8 topAnchor];
-  v91 = [v27 topAnchor];
-  v90 = [v92 constraintEqualToAnchor:v91 constant:2.0];
+  topAnchor = [(UIImageView *)v8 topAnchor];
+  topAnchor2 = [contentView topAnchor];
+  v90 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:2.0];
   v102[0] = v90;
-  v89 = [(UIImageView *)v8 centerXAnchor];
-  v88 = [v27 centerXAnchor];
-  v87 = [v89 constraintEqualToAnchor:v88];
+  centerXAnchor = [(UIImageView *)v8 centerXAnchor];
+  centerXAnchor2 = [contentView centerXAnchor];
+  v87 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v102[1] = v87;
-  v86 = [(UIImageView *)v8 widthAnchor];
-  v85 = [(UIImageView *)v8 heightAnchor];
-  v84 = [v86 constraintEqualToAnchor:v85];
+  widthAnchor = [(UIImageView *)v8 widthAnchor];
+  heightAnchor = [(UIImageView *)v8 heightAnchor];
+  v84 = [widthAnchor constraintEqualToAnchor:heightAnchor];
   v102[2] = v84;
-  v83 = [(UIImageView *)v8 heightAnchor];
-  v82 = [v27 heightAnchor];
-  v81 = [v83 constraintEqualToAnchor:v82 multiplier:0.65];
+  heightAnchor2 = [(UIImageView *)v8 heightAnchor];
+  heightAnchor3 = [contentView heightAnchor];
+  v81 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3 multiplier:0.65];
   v102[3] = v81;
-  v79 = [v9 leadingAnchor];
-  v77 = [v27 leadingAnchor];
-  v75 = [v79 constraintEqualToAnchor:v77];
+  leadingAnchor = [v9 leadingAnchor];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v75 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v102[4] = v75;
-  v74 = [v9 trailingAnchor];
-  v73 = [v27 trailingAnchor];
-  v72 = [v74 constraintEqualToAnchor:v73];
+  trailingAnchor = [v9 trailingAnchor];
+  trailingAnchor2 = [contentView trailingAnchor];
+  v72 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v102[5] = v72;
-  v70 = [v9 topAnchor];
-  v69 = [(UIImageView *)v8 bottomAnchor];
-  v68 = [v70 constraintEqualToAnchor:v69 constant:1.0];
+  topAnchor3 = [v9 topAnchor];
+  bottomAnchor = [(UIImageView *)v8 bottomAnchor];
+  v68 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:1.0];
   v102[6] = v68;
-  v67 = [v9 bottomAnchor];
-  v66 = [v27 bottomAnchor];
-  v65 = [v67 constraintEqualToAnchor:v66 constant:-3.0];
+  bottomAnchor2 = [v9 bottomAnchor];
+  bottomAnchor3 = [contentView bottomAnchor];
+  v65 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-3.0];
   v102[7] = v65;
-  v64 = [(UILabel *)v10 topAnchor];
-  v63 = [v9 topAnchor];
-  v62 = [v64 constraintEqualToAnchor:v63];
+  topAnchor4 = [(UILabel *)v10 topAnchor];
+  topAnchor5 = [v9 topAnchor];
+  v62 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   v102[8] = v62;
-  v61 = [(UILabel *)v10 leadingAnchor];
-  v60 = [v9 leadingAnchor];
-  v59 = [v61 constraintEqualToAnchor:v60];
+  leadingAnchor3 = [(UILabel *)v10 leadingAnchor];
+  leadingAnchor4 = [v9 leadingAnchor];
+  v59 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v102[9] = v59;
-  v58 = [(UILabel *)v10 trailingAnchor];
-  v57 = [v9 trailingAnchor];
-  v56 = [v58 constraintEqualToAnchor:v57];
+  trailingAnchor3 = [(UILabel *)v10 trailingAnchor];
+  trailingAnchor4 = [v9 trailingAnchor];
+  v56 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v102[10] = v56;
-  v55 = [(UILabel *)v20 topAnchor];
-  v54 = [(UILabel *)v10 bottomAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  topAnchor6 = [(UILabel *)v20 topAnchor];
+  bottomAnchor4 = [(UILabel *)v10 bottomAnchor];
+  v53 = [topAnchor6 constraintEqualToAnchor:bottomAnchor4];
   v102[11] = v53;
-  v52 = [(UILabel *)v20 leadingAnchor];
-  v51 = [v9 leadingAnchor];
-  [v52 constraintEqualToAnchor:v51];
+  leadingAnchor5 = [(UILabel *)v20 leadingAnchor];
+  leadingAnchor6 = [v9 leadingAnchor];
+  [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v34 = v76 = v8;
   v102[12] = v34;
   v78 = v20;
   [(UILabel *)v20 trailingAnchor];
   v35 = v80 = v10;
-  v36 = [v9 trailingAnchor];
-  v37 = [v35 constraintEqualToAnchor:v36];
+  trailingAnchor5 = [v9 trailingAnchor];
+  v37 = [v35 constraintEqualToAnchor:trailingAnchor5];
   v102[13] = v37;
-  v38 = [(UILabel *)v20 bottomAnchor];
-  v39 = [v9 bottomAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39];
+  bottomAnchor5 = [(UILabel *)v20 bottomAnchor];
+  bottomAnchor6 = [v9 bottomAnchor];
+  v40 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v102[14] = v40;
   v41 = [MEMORY[0x277CBEA60] arrayWithObjects:v102 count:15];
   [v71 activateConstraints:v41];
@@ -288,50 +288,50 @@
   v43 = [MEMORY[0x277D75348] colorWithWhite:0.18 alpha:1.0];
   [v42 setBackgroundColor:v43];
 
-  [(_TVRUIRoleHorizontalCell *)v93 setBackgroundView:v42];
+  [(_TVRUIRoleHorizontalCell *)selfCopy setBackgroundView:v42];
   v44 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v44 setClipsToBounds:1];
   [v44 _setContinuousCornerRadius:12.0];
   v45 = [MEMORY[0x277D75348] colorWithWhite:0.35 alpha:1.0];
   [v44 setBackgroundColor:v45];
 
-  [(_TVRUIRoleHorizontalCell *)v93 setSelectedBackgroundView:v44];
-  imageView = v93->_imageView;
-  v93->_imageView = v76;
+  [(_TVRUIRoleHorizontalCell *)selfCopy setSelectedBackgroundView:v44];
+  imageView = selfCopy->_imageView;
+  selfCopy->_imageView = v76;
   v47 = v76;
 
-  nameLabel = v93->_nameLabel;
-  v93->_nameLabel = v80;
+  nameLabel = selfCopy->_nameLabel;
+  selfCopy->_nameLabel = v80;
   v49 = v80;
 
-  characterNameLabel = v93->_characterNameLabel;
-  v93->_characterNameLabel = v78;
+  characterNameLabel = selfCopy->_characterNameLabel;
+  selfCopy->_characterNameLabel = v78;
 
-  [(_TVRUIRoleHorizontalCell *)v93 setNeedsLayout];
+  [(_TVRUIRoleHorizontalCell *)selfCopy setNeedsLayout];
 }
 
-- (void)_updateFallbackImageForRole:(id)a3
+- (void)_updateFallbackImageForRole:(id)role
 {
-  v4 = a3;
-  v5 = [(_TVRUIRoleHorizontalCell *)self avatarGenerator];
+  roleCopy = role;
+  avatarGenerator = [(_TVRUIRoleHorizontalCell *)self avatarGenerator];
 
-  if (v5)
+  if (avatarGenerator)
   {
-    v6 = [v4 actorName];
-    v7 = [v6 length];
+    actorName = [roleCopy actorName];
+    v7 = [actorName length];
 
     if (v7)
     {
       objc_initWeak(&location, self);
-      v8 = [(_TVRUIRoleHorizontalCell *)self avatarGenerator];
-      v9 = [v4 actorName];
-      v10 = [v4 canonicalID];
+      avatarGenerator2 = [(_TVRUIRoleHorizontalCell *)self avatarGenerator];
+      actorName2 = [roleCopy actorName];
+      canonicalID = [roleCopy canonicalID];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __56___TVRUIRoleHorizontalCell__updateFallbackImageForRole___block_invoke;
       v11[3] = &unk_279D87EC8;
       objc_copyWeak(&v12, &location);
-      [v8 generateAvatarForName:v9 size:v10 identifier:v11 completion:{32.0, 32.0}];
+      [avatarGenerator2 generateAvatarForName:actorName2 size:canonicalID identifier:v11 completion:{32.0, 32.0}];
 
       objc_destroyWeak(&v12);
       objc_destroyWeak(&location);

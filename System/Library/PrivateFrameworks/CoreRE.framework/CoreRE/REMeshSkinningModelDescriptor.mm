@@ -1,31 +1,31 @@
 @interface REMeshSkinningModelDescriptor
-- (BOOL)validateWithPayloadSize:(const void *)a3 partsOnResource:(id)a4 modelPartIndexToResourcePartIndex:(id)a5 skeletonCount:(unint64_t)a6 error:(id *)a7;
-- (REMeshSkinningModelDescriptor)initWithCoder:(id)a3;
-- (REMeshSkinningModelDescriptor)initWithInverseBindPoseAttributes:(id)a3 skinningParts:(id)a4;
-- (REMeshSkinningModelDescriptor)initWithMeshSkinningData:(const void *)a3 meshParts:(Slice<re:(id)a5 :(void *)a6 MeshAssetPart>)a4 inverseBindPoseAttributes:(void *)a7 deformerBuilders:payloadBuilder:;
-- (REMeshSkinningModelDescriptor)initWithSkinningAttributeDescriptor:(const void *)a3 inverseBindPoseAttributes:(id)a4 payloadBuilder:(void *)a5;
-- (REMeshSkinningModelDescriptor)initWithSkinningData:(const void *)a3 inverseBindPoseAttributes:(id)a4 deformerBuilders:(void *)a5 payloadBuilder:(void *)a6;
+- (BOOL)validateWithPayloadSize:(const void *)size partsOnResource:(id)resource modelPartIndexToResourcePartIndex:(id)index skeletonCount:(unint64_t)count error:(id *)error;
+- (REMeshSkinningModelDescriptor)initWithCoder:(id)coder;
+- (REMeshSkinningModelDescriptor)initWithInverseBindPoseAttributes:(id)attributes skinningParts:(id)parts;
+- (REMeshSkinningModelDescriptor)initWithMeshSkinningData:(const void *)data meshParts:(Slice<re:(id)parts :(void *)a6 MeshAssetPart>)a4 inverseBindPoseAttributes:(void *)attributes deformerBuilders:payloadBuilder:;
+- (REMeshSkinningModelDescriptor)initWithSkinningAttributeDescriptor:(const void *)descriptor inverseBindPoseAttributes:(id)attributes payloadBuilder:(void *)builder;
+- (REMeshSkinningModelDescriptor)initWithSkinningData:(const void *)data inverseBindPoseAttributes:(id)attributes deformerBuilders:(void *)builders payloadBuilder:(void *)builder;
 - (unint64_t)estimateContainerSize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMeshSkinningModelDescriptor
 
-- (REMeshSkinningModelDescriptor)initWithMeshSkinningData:(const void *)a3 meshParts:(Slice<re:(id)a5 :(void *)a6 MeshAssetPart>)a4 inverseBindPoseAttributes:(void *)a7 deformerBuilders:payloadBuilder:
+- (REMeshSkinningModelDescriptor)initWithMeshSkinningData:(const void *)data meshParts:(Slice<re:(id)parts :(void *)a6 MeshAssetPart>)a4 inverseBindPoseAttributes:(void *)attributes deformerBuilders:payloadBuilder:
 {
   v32 = *MEMORY[0x1E69E9840];
-  v23 = a5;
+  partsCopy = parts;
   *(a6 + 1) = 0;
   *(a6 + 2) = 0;
   v26 = a6;
-  v25 = *(a3 + 2);
+  v25 = *(data + 2);
   if (v25)
   {
     v9 = 0;
     v10 = 0;
     do
     {
-      if (*(a3 + 2) <= v10)
+      if (*(data + 2) <= v10)
       {
         v30 = 0u;
         v31 = 0u;
@@ -38,7 +38,7 @@
         __break(1u);
       }
 
-      v11 = (*(a3 + 4) + v9);
+      v11 = (*(data + 4) + v9);
       v12 = *v11;
       v13 = *(v11 + 2);
       v14 = *(v11 + 3);
@@ -65,21 +65,21 @@
   v27 = 0u;
   v28 = 0u;
   re::SkinningModelBuilder::buildAttributeDescriptor(v26, &v27);
-  v20 = [(REMeshSkinningModelDescriptor *)self initWithSkinningAttributeDescriptor:&v27 inverseBindPoseAttributes:v23 payloadBuilder:a7];
+  v20 = [(REMeshSkinningModelDescriptor *)self initWithSkinningAttributeDescriptor:&v27 inverseBindPoseAttributes:partsCopy payloadBuilder:attributes];
   re::FixedArray<re::SkinningModelBuilder::AttributeDescriptor::SkinnedPartAttribute>::deinit(&v28);
 
   return v20;
 }
 
-- (REMeshSkinningModelDescriptor)initWithSkinningData:(const void *)a3 inverseBindPoseAttributes:(id)a4 deformerBuilders:(void *)a5 payloadBuilder:(void *)a6
+- (REMeshSkinningModelDescriptor)initWithSkinningData:(const void *)data inverseBindPoseAttributes:(id)attributes deformerBuilders:(void *)builders payloadBuilder:(void *)builder
 {
-  v10 = a4;
-  *(a5 + 1) = 0;
-  *(a5 + 2) = 0;
-  v11 = *(a3 + 2);
+  attributesCopy = attributes;
+  *(builders + 1) = 0;
+  *(builders + 2) = 0;
+  v11 = *(data + 2);
   if (v11)
   {
-    v12 = *(a3 + 4);
+    v12 = *(data + 4);
     v13 = &v12[14 * v11];
     do
     {
@@ -88,7 +88,7 @@
       v16 = *(v12 + 6);
       v20 = *(v12 + 6);
       v21 = *(v12 + 2);
-      v17 = re::BucketArray<re::SkinningModelBuilder::RawSkinnedMeshPartData,4ul>::addUninitialized(a5 + 24);
+      v17 = re::BucketArray<re::SkinningModelBuilder::RawSkinnedMeshPartData,4ul>::addUninitialized(builders + 24);
       *v17 = v14;
       *(v17 + 24) = v20;
       *(v17 + 8) = v21;
@@ -103,25 +103,25 @@
   v24 = 0;
   v22 = 0u;
   v23 = 0u;
-  re::SkinningModelBuilder::buildAttributeDescriptor(a5, &v22);
-  v18 = [(REMeshSkinningModelDescriptor *)self initWithSkinningAttributeDescriptor:&v22 inverseBindPoseAttributes:v10 payloadBuilder:a6];
+  re::SkinningModelBuilder::buildAttributeDescriptor(builders, &v22);
+  v18 = [(REMeshSkinningModelDescriptor *)self initWithSkinningAttributeDescriptor:&v22 inverseBindPoseAttributes:attributesCopy payloadBuilder:builder];
   re::FixedArray<re::SkinningModelBuilder::AttributeDescriptor::SkinnedPartAttribute>::deinit(&v23);
 
   return v18;
 }
 
-- (REMeshSkinningModelDescriptor)initWithSkinningAttributeDescriptor:(const void *)a3 inverseBindPoseAttributes:(id)a4 payloadBuilder:(void *)a5
+- (REMeshSkinningModelDescriptor)initWithSkinningAttributeDescriptor:(const void *)descriptor inverseBindPoseAttributes:(id)attributes payloadBuilder:(void *)builder
 {
-  v8 = a4;
+  attributesCopy = attributes;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v10 = *(a3 + 3);
+  v10 = *(descriptor + 3);
   if (v10)
   {
-    v11 = *(a3 + 4);
+    v11 = *(descriptor + 4);
     v12 = 56 * v10;
     do
     {
-      v13 = [[REMeshSkinningPartDescriptor alloc] initWithAttributeDescriptor:v11 payloadBuilder:a5];
+      v13 = [[REMeshSkinningPartDescriptor alloc] initWithAttributeDescriptor:v11 payloadBuilder:builder];
       [v9 addObject:v13];
 
       v11 += 56;
@@ -131,25 +131,25 @@
     while (v12);
   }
 
-  v14 = [(REMeshSkinningModelDescriptor *)self initWithInverseBindPoseAttributes:v8 skinningParts:v9];
+  v14 = [(REMeshSkinningModelDescriptor *)self initWithInverseBindPoseAttributes:attributesCopy skinningParts:v9];
 
   return v14;
 }
 
-- (REMeshSkinningModelDescriptor)initWithInverseBindPoseAttributes:(id)a3 skinningParts:(id)a4
+- (REMeshSkinningModelDescriptor)initWithInverseBindPoseAttributes:(id)attributes skinningParts:(id)parts
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  partsCopy = parts;
   v14.receiver = self;
   v14.super_class = REMeshSkinningModelDescriptor;
   v8 = [(REMeshSkinningModelDescriptor *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [attributesCopy copy];
     inverseBindPoseAttributes = v8->_inverseBindPoseAttributes;
     v8->_inverseBindPoseAttributes = v9;
 
-    v11 = [v7 copy];
+    v11 = [partsCopy copy];
     skinningParts = v8->_skinningParts;
     v8->_skinningParts = v11;
   }
@@ -157,39 +157,39 @@
   return v8;
 }
 
-- (REMeshSkinningModelDescriptor)initWithCoder:(id)a3
+- (REMeshSkinningModelDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"inverseBindPoseAttributes"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"inverseBindPoseAttributes"];
   inverseBindPoseAttributes = self->_inverseBindPoseAttributes;
   self->_inverseBindPoseAttributes = v8;
 
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"skinningParts"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"skinningParts"];
   skinningParts = self->_skinningParts;
   self->_skinningParts = v13;
 
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_inverseBindPoseAttributes forKey:@"inverseBindPoseAttributes"];
-  [v4 encodeObject:self->_skinningParts forKey:@"skinningParts"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_inverseBindPoseAttributes forKey:@"inverseBindPoseAttributes"];
+  [coderCopy encodeObject:self->_skinningParts forKey:@"skinningParts"];
 }
 
-- (BOOL)validateWithPayloadSize:(const void *)a3 partsOnResource:(id)a4 modelPartIndexToResourcePartIndex:(id)a5 skeletonCount:(unint64_t)a6 error:(id *)a7
+- (BOOL)validateWithPayloadSize:(const void *)size partsOnResource:(id)resource modelPartIndexToResourcePartIndex:(id)index skeletonCount:(unint64_t)count error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v28 = a4;
-  v12 = a5;
-  if ([(NSArray *)self->_inverseBindPoseAttributes count]> a6)
+  resourceCopy = resource;
+  indexCopy = index;
+  if ([(NSArray *)self->_inverseBindPoseAttributes count]> count)
   {
 LABEL_14:
     v18 = 0;
@@ -214,7 +214,7 @@ LABEL_14:
           objc_enumerationMutation(v13);
         }
 
-        if (([*(*(&v29 + 1) + 8 * i) validateWithPayloadSize:*a3 error:a7] & 1) == 0)
+        if (([*(*(&v29 + 1) + 8 * i) validateWithPayloadSize:*size error:error] & 1) == 0)
         {
 
           goto LABEL_14;
@@ -232,7 +232,7 @@ LABEL_14:
   }
 
   v17 = [(NSArray *)self->_skinningParts count];
-  if (v17 > [v12 count])
+  if (v17 > [indexCopy count])
   {
     goto LABEL_14;
   }
@@ -245,9 +245,9 @@ LABEL_14:
     do
     {
       v23 = [(NSArray *)self->_skinningParts objectAtIndexedSubscript:v21];
-      v24 = [v12 objectAtIndexedSubscript:v21];
-      v25 = [v28 objectAtIndexedSubscript:{objc_msgSend(v24, "unsignedLongLongValue")}];
-      v18 = [v23 validateWithPayloadSize:a3 skeletonCount:-[NSArray count](self->_inverseBindPoseAttributes vertexCount:"count") error:{objc_msgSend(v25, "vertexCount"), a7}];
+      v24 = [indexCopy objectAtIndexedSubscript:v21];
+      v25 = [resourceCopy objectAtIndexedSubscript:{objc_msgSend(v24, "unsignedLongLongValue")}];
+      v18 = [v23 validateWithPayloadSize:size skeletonCount:-[NSArray count](self->_inverseBindPoseAttributes vertexCount:"count") error:{objc_msgSend(v25, "vertexCount"), error}];
 
       if (v22 == v21++)
       {

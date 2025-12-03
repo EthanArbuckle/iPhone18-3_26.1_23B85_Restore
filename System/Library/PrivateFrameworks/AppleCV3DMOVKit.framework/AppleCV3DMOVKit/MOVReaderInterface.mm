@@ -1,85 +1,85 @@
 @interface MOVReaderInterface
-+ (BOOL)grabSWToWExtrinsics:(id *)a3 summary:(id)a4 backExtrinsics:(id)a5;
-+ (BOOL)isSuperWideStream:(id)a3;
-+ (id)grabCMSessionID:(id)a3;
-+ (id)grabJasperExtrinsics:(id)a3 backExtrinsics:(id)a4;
-- (BOOL)grabSWToWExtrinsics:(id *)a3;
-- (BOOL)resetReaderTo:(id *)a3 error:(id *)a4;
-- (MOVReaderInterface)initWithFileURL:(id)a3 delegate:(id)a4 error:(id *)a5;
-- (MOVReaderInterface)initWithFileURL:(id)a3 enforcedVideoTrackFormat:(id)a4 error:(id *)a5;
++ (BOOL)grabSWToWExtrinsics:(id *)extrinsics summary:(id)summary backExtrinsics:(id)backExtrinsics;
++ (BOOL)isSuperWideStream:(id)stream;
++ (id)grabCMSessionID:(id)d;
++ (id)grabJasperExtrinsics:(id)extrinsics backExtrinsics:(id)backExtrinsics;
+- (BOOL)grabSWToWExtrinsics:(id *)extrinsics;
+- (BOOL)resetReaderTo:(id *)to error:(id *)error;
+- (MOVReaderInterface)initWithFileURL:(id)l delegate:(id)delegate error:(id *)error;
+- (MOVReaderInterface)initWithFileURL:(id)l enforcedVideoTrackFormat:(id)format error:(id *)error;
 - (NSNumber)depthSourceFrameRate;
 - (NSNumber)depthSourceMaxPoints;
-- (__CVBuffer)copyNextFrameForStream:(id)a3 timestamp:(id *)a4 error:(id *)a5;
-- (id)applyFlip:(id)a3 f:(id)a4;
-- (id)deviceStringFromPlatformID:(id)a3;
-- (id)grabCalibration:(int64_t *)a3;
+- (__CVBuffer)copyNextFrameForStream:(id)stream timestamp:(id *)timestamp error:(id *)error;
+- (id)applyFlip:(id)flip f:(id)f;
+- (id)deviceStringFromPlatformID:(id)d;
+- (id)grabCalibration:(int64_t *)calibration;
 - (id)grabJasperExtrinsics;
-- (id)grabMovieMetadataForKey:(id)a3;
-- (id)grabMovieMetadataItem:(id)a3;
-- (id)grabMovieMetadataRawForKey:(id)a3;
-- (id)grabNextBarometerData:(id *)a3;
-- (id)grabNextCLLocation:(id *)a3 location:(int64_t *)a4 timestamps:(id *)a5;
-- (id)grabNextCMData:(id *)a3;
-- (id)grabNextCMDeviceMotion:(id *)a3;
-- (id)grabNextCVACameraCalibrationData:(id *)a3;
-- (id)grabNextClass:(id)a3 class:(Class)a4 timeRange:(id *)a5;
-- (id)grabNextDepthIR:(id)a3 timeRange:(id *)a4;
-- (id)grabNextDepthTOF:(id *)a3 sampleDropped:(BOOL *)a4;
-- (id)grabNextDeviceMotionData:(id *)a3 location:(int64_t *)a4;
-- (id)grabNextDictionary:(id)a3 timeRange:(id *)a4;
-- (id)grabNextFastPathMUData:(int64_t *)a3;
-- (id)grabNextFastPathMUData:(int64_t *)a3 metadataID:(id)a4;
+- (id)grabMovieMetadataForKey:(id)key;
+- (id)grabMovieMetadataItem:(id)item;
+- (id)grabMovieMetadataRawForKey:(id)key;
+- (id)grabNextBarometerData:(id *)data;
+- (id)grabNextCLLocation:(id *)location location:(int64_t *)a4 timestamps:(id *)timestamps;
+- (id)grabNextCMData:(id *)data;
+- (id)grabNextCMDeviceMotion:(id *)motion;
+- (id)grabNextCVACameraCalibrationData:(id *)data;
+- (id)grabNextClass:(id)class class:(Class)a4 timeRange:(id *)range;
+- (id)grabNextDepthIR:(id)r timeRange:(id *)range;
+- (id)grabNextDepthTOF:(id *)f sampleDropped:(BOOL *)dropped;
+- (id)grabNextDeviceMotionData:(id *)data location:(int64_t *)location;
+- (id)grabNextDictionary:(id)dictionary timeRange:(id *)range;
+- (id)grabNextFastPathMUData:(int64_t *)data;
+- (id)grabNextFastPathMUData:(int64_t *)data metadataID:(id)d;
 - (id)grabNextFeatureBuffer;
-- (id)grabNextFeatureBuffer:(id *)a3 streamName:(id)a4;
-- (id)grabNextMotionData:(id *)a3 location:(int64_t *)a4;
-- (id)grabNextNSCoderObject:(id)a3 class:(Class)a4;
-- (id)grabNextNSCoderObject:(id)a3 class:(Class)a4 timeRange:(id *)a5;
-- (id)grabNextNSCoderObject:(id)a3 classes:(id)a4 timeRange:(id *)a5;
-- (id)grabNextPRDevice:(id *)a3;
-- (id)grabNextRawALSData:(id *)a3 location:(int64_t *)a4;
-- (id)grabNextRawAccelData:(id *)a3 location:(int64_t *)a4;
-- (id)grabNextRawBLEData:(id *)a3 location:(int64_t *)a4;
-- (id)grabNextRawCompassData:(id *)a3 location:(int64_t *)a4;
-- (id)grabNextRawGyroData:(id *)a3 location:(int64_t *)a4;
-- (id)grabNextRawUWBData:(id *)a3 location:(int64_t *)a4;
-- (id)grabNextRawWiFiData:(id *)a3 location:(int64_t *)a4;
-- (id)grabNextSpuIMUData:(id *)a3 location:(int64_t *)a4;
-- (id)grabNextStreamData:(id)a3 timeRange:(id *)a4;
-- (id)grabNextTimedValue:(id *)a3;
-- (id)grabNextUserEvent:(id *)a3;
+- (id)grabNextFeatureBuffer:(id *)buffer streamName:(id)name;
+- (id)grabNextMotionData:(id *)data location:(int64_t *)location;
+- (id)grabNextNSCoderObject:(id)object class:(Class)class;
+- (id)grabNextNSCoderObject:(id)object class:(Class)class timeRange:(id *)range;
+- (id)grabNextNSCoderObject:(id)object classes:(id)classes timeRange:(id *)range;
+- (id)grabNextPRDevice:(id *)device;
+- (id)grabNextRawALSData:(id *)data location:(int64_t *)location;
+- (id)grabNextRawAccelData:(id *)data location:(int64_t *)location;
+- (id)grabNextRawBLEData:(id *)data location:(int64_t *)location;
+- (id)grabNextRawCompassData:(id *)data location:(int64_t *)location;
+- (id)grabNextRawGyroData:(id *)data location:(int64_t *)location;
+- (id)grabNextRawUWBData:(id *)data location:(int64_t *)location;
+- (id)grabNextRawWiFiData:(id *)data location:(int64_t *)location;
+- (id)grabNextSpuIMUData:(id *)data location:(int64_t *)location;
+- (id)grabNextStreamData:(id)data timeRange:(id *)range;
+- (id)grabNextTimedValue:(id *)value;
+- (id)grabNextUserEvent:(id *)event;
 - (id)grabSummary;
-- (id)resolvedAccelStreamName:(int64_t *)a3;
-- (id)resolvedCalibration:(int64_t *)a3;
-- (id)resolvedCompassStreamName:(int64_t *)a3;
-- (id)resolvedDeviceMotionStreamName:(int64_t *)a3;
-- (id)resolvedGyroStreamName:(int64_t *)a3;
-- (id)resolvedIMUStreamName:(int64_t *)a3 metadataID:(id)a4;
-- (id)resolvedLocationStreamName:(int64_t *)a3;
-- (id)resolvedMotionStreamName:(int64_t *)a3;
-- (unsigned)reader:(id)a3 pixelFormatForStream:(id)a4 suggestedFormat:(unsigned int)a5;
-- (void)addStreamFilter:(id)a3 obj:(id)a4;
-- (void)addStreamFilters:(id)a3;
-- (void)setDepthOutputFrameRate:(id)a3;
+- (id)resolvedAccelStreamName:(int64_t *)name;
+- (id)resolvedCalibration:(int64_t *)calibration;
+- (id)resolvedCompassStreamName:(int64_t *)name;
+- (id)resolvedDeviceMotionStreamName:(int64_t *)name;
+- (id)resolvedGyroStreamName:(int64_t *)name;
+- (id)resolvedIMUStreamName:(int64_t *)name metadataID:(id)d;
+- (id)resolvedLocationStreamName:(int64_t *)name;
+- (id)resolvedMotionStreamName:(int64_t *)name;
+- (unsigned)reader:(id)reader pixelFormatForStream:(id)stream suggestedFormat:(unsigned int)format;
+- (void)addStreamFilter:(id)filter obj:(id)obj;
+- (void)addStreamFilters:(id)filters;
+- (void)setDepthOutputFrameRate:(id)rate;
 @end
 
 @implementation MOVReaderInterface
 
-- (id)deviceStringFromPlatformID:(id)a3
+- (id)deviceStringFromPlatformID:(id)d
 {
-  v3 = [a3 intValue];
+  intValue = [d intValue];
   v4 = @"J420";
   v5 = @"ST2";
-  if (v3 != 178)
+  if (intValue != 178)
   {
     v5 = 0;
   }
 
-  if ((v3 - 82) >= 2)
+  if ((intValue - 82) >= 2)
   {
     v4 = v5;
   }
 
-  if ((v3 - 80) >= 2)
+  if ((intValue - 80) >= 2)
   {
     v6 = v4;
   }
@@ -91,33 +91,33 @@
 
   v7 = @"D93";
   v8 = @"D94";
-  if (v3 != 70)
+  if (intValue != 70)
   {
     v8 = 0;
   }
 
-  if (v3 != 69)
+  if (intValue != 69)
   {
     v7 = v8;
   }
 
   v9 = @"D84";
-  if (v3 != 67)
+  if (intValue != 67)
   {
     v9 = 0;
   }
 
-  if (v3 == 66)
+  if (intValue == 66)
   {
     v9 = @"D83";
   }
 
-  if (v3 <= 68)
+  if (intValue <= 68)
   {
     v7 = v9;
   }
 
-  if (v3 <= 79)
+  if (intValue <= 79)
   {
     return v7;
   }
@@ -128,21 +128,21 @@
   }
 }
 
-- (BOOL)resetReaderTo:(id *)a3 error:(id *)a4
+- (BOOL)resetReaderTo:(id *)to error:(id *)error
 {
   self->_lastDepthTOFTimestamp = 0.0;
   v6.receiver = self;
   v6.super_class = MOVReaderInterface;
-  v5 = *a3;
-  return [(MOVStreamReader *)&v6 resetReaderTo:&v5 error:a4];
+  v5 = *to;
+  return [(MOVStreamReader *)&v6 resetReaderTo:&v5 error:error];
 }
 
-- (MOVReaderInterface)initWithFileURL:(id)a3 delegate:(id)a4 error:(id *)a5
+- (MOVReaderInterface)initWithFileURL:(id)l delegate:(id)delegate error:(id *)error
 {
   v182[20] = *MEMORY[0x277D85DE8];
   v177.receiver = self;
   v177.super_class = MOVReaderInterface;
-  v5 = [(MOVStreamReader *)&v177 initWithURL:a3 delegate:a4 error:a5];
+  v5 = [(MOVStreamReader *)&v177 initWithURL:l delegate:delegate error:error];
   v6 = v5;
   if (!v5)
   {
@@ -156,44 +156,44 @@
   streamFilters = v6->_streamFilters;
   v6->_streamFilters = v8;
 
-  v10 = [(MOVReaderInterface *)v6 grabSummary];
-  v11 = [v10 objectForKeyedSubscript:@"deviceName"];
+  grabSummary = [(MOVReaderInterface *)v6 grabSummary];
+  v11 = [grabSummary objectForKeyedSubscript:@"deviceName"];
   deviceName = v6->_deviceName;
   v6->_deviceName = v11;
 
-  v13 = [v10 objectForKeyedSubscript:@"CFBundleIdentifier"];
+  v13 = [grabSummary objectForKeyedSubscript:@"CFBundleIdentifier"];
   bundleID = v6->_bundleID;
   v6->_bundleID = v13;
 
-  v15 = [v10 objectForKeyedSubscript:@"version"];
+  v15 = [grabSummary objectForKeyedSubscript:@"version"];
   version = v6->_version;
   v6->_version = v15;
 
-  v17 = [v10 objectForKeyedSubscript:@"SerialNumber"];
+  v17 = [grabSummary objectForKeyedSubscript:@"SerialNumber"];
   serialNumber = v6->_serialNumber;
   v6->_serialNumber = v17;
 
-  v19 = [v10 objectForKeyedSubscript:@"ProductConfig"];
+  v19 = [grabSummary objectForKeyedSubscript:@"ProductConfig"];
   productConfig = v6->_productConfig;
   v6->_productConfig = v19;
 
-  v21 = [v10 objectForKeyedSubscript:@"ProductVersion"];
+  v21 = [grabSummary objectForKeyedSubscript:@"ProductVersion"];
   productVersion = v6->_productVersion;
   v6->_productVersion = v21;
 
-  v23 = [v10 objectForKeyedSubscript:@"OSBuildVersion"];
+  v23 = [grabSummary objectForKeyedSubscript:@"OSBuildVersion"];
   osVersion = v6->_osVersion;
   v6->_osVersion = v23;
 
   if (!v6->_osVersion)
   {
-    v25 = [v10 objectForKeyedSubscript:@"mdta/com.apple.arkit.osversion"];
+    v25 = [grabSummary objectForKeyedSubscript:@"mdta/com.apple.arkit.osversion"];
     v26 = v6->_osVersion;
     v6->_osVersion = v25;
   }
 
-  v152 = v10;
-  v27 = [v10 objectForKeyedSubscript:@"machTimeSince1970"];
+  v152 = grabSummary;
+  v27 = [grabSummary objectForKeyedSubscript:@"machTimeSince1970"];
   [v27 doubleValue];
   v6->_machTimeSince1970 = v28;
 
@@ -241,7 +241,7 @@
 
         v33 = *(*(&v173 + 1) + 8 * i);
         v34 = [(MOVStreamReader *)v6 metadataTrackForStream:v33];
-        v35 = [v34 totalSampleDataLength];
+        totalSampleDataLength = [v34 totalSampleDataLength];
         v169 = 0u;
         v170 = 0u;
         v171 = 0u;
@@ -264,7 +264,7 @@
               v41 = *(*(&v169 + 1) + 8 * j);
               if ([v33 hasPrefix:v41])
               {
-                v32 = [MEMORY[0x277CCABB0] numberWithBool:v35 > 0];
+                v32 = [MEMORY[0x277CCABB0] numberWithBool:totalSampleDataLength > 0];
                 [v155 setObject:v32 forKeyedSubscript:v41];
 
                 goto LABEL_9;
@@ -292,9 +292,9 @@ LABEL_9:
   v6->_spuIMUTrackName = 0;
 
   v43 = [v155 objectForKeyedSubscript:@"com.apple.reality.kind.data.imu800"];
-  v44 = [v43 BOOLValue];
+  bOOLValue = [v43 BOOLValue];
 
-  if (v44)
+  if (bOOLValue)
   {
     objc_storeStrong(&v6->_spuIMUTrackName, @"com.apple.reality.kind.data.imu800");
   }
@@ -376,9 +376,9 @@ LABEL_9:
 
   v60 = @"com.apple.reality.kind.data.accelerometer";
   v61 = [v155 objectForKeyedSubscript:@"com.apple.reality.kind.data.accelerometer"];
-  v62 = [v61 BOOLValue];
+  bOOLValue2 = [v61 BOOLValue];
 
-  if ((v62 & 1) != 0 || (v60 = @"RawAccelerometer", [v155 objectForKeyedSubscript:@"RawAccelerometer"], v63 = objc_claimAutoreleasedReturnValue(), v64 = objc_msgSend(v63, "BOOLValue"), v63, v64))
+  if ((bOOLValue2 & 1) != 0 || (v60 = @"RawAccelerometer", [v155 objectForKeyedSubscript:@"RawAccelerometer"], v63 = objc_claimAutoreleasedReturnValue(), v64 = objc_msgSend(v63, "BOOLValue"), v63, v64))
   {
     objc_storeStrong(&v6->_accelTrackName, v60);
   }
@@ -392,9 +392,9 @@ LABEL_9:
 
   v66 = @"com.apple.reality.kind.data.gyroscope";
   v67 = [v155 objectForKeyedSubscript:@"com.apple.reality.kind.data.gyroscope"];
-  v68 = [v67 BOOLValue];
+  bOOLValue3 = [v67 BOOLValue];
 
-  if ((v68 & 1) != 0 || (v66 = @"RawGyroscope", [v155 objectForKeyedSubscript:@"RawGyroscope"], v69 = objc_claimAutoreleasedReturnValue(), v70 = objc_msgSend(v69, "BOOLValue"), v69, v70))
+  if ((bOOLValue3 & 1) != 0 || (v66 = @"RawGyroscope", [v155 objectForKeyedSubscript:@"RawGyroscope"], v69 = objc_claimAutoreleasedReturnValue(), v70 = objc_msgSend(v69, "BOOLValue"), v69, v70))
   {
     objc_storeStrong(&v6->_gyroTrackName, v66);
   }
@@ -407,10 +407,10 @@ LABEL_9:
   v6->_motionTrackName = 0;
 
   v72 = [v155 objectForKeyedSubscript:@"com.apple.reality.kind.data.motion"];
-  v73 = [v72 BOOLValue];
+  bOOLValue4 = [v72 BOOLValue];
 
   v74 = @"com.apple.reality.kind.data.als";
-  if (v73)
+  if (bOOLValue4)
   {
     objc_storeStrong(&v6->_motionTrackName, @"com.apple.reality.kind.data.motion");
   }
@@ -424,9 +424,9 @@ LABEL_9:
 
   v76 = @"com.apple.reality.kind.data.devicemotion";
   v77 = [v155 objectForKeyedSubscript:@"com.apple.reality.kind.data.devicemotion"];
-  v78 = [v77 BOOLValue];
+  bOOLValue5 = [v77 BOOLValue];
 
-  if ((v78 & 1) != 0 || (v76 = @"Motion", [v155 objectForKeyedSubscript:@"Motion"], v79 = objc_claimAutoreleasedReturnValue(), v80 = objc_msgSend(v79, "BOOLValue"), v79, v80))
+  if ((bOOLValue5 & 1) != 0 || (v76 = @"Motion", [v155 objectForKeyedSubscript:@"Motion"], v79 = objc_claimAutoreleasedReturnValue(), v80 = objc_msgSend(v79, "BOOLValue"), v79, v80))
   {
     objc_storeStrong(&v6->_deviceMotionTrackName, v76);
   }
@@ -439,9 +439,9 @@ LABEL_9:
   v6->_locationTrackName = 0;
 
   v82 = [v155 objectForKeyedSubscript:@"Location"];
-  v83 = [v82 BOOLValue];
+  bOOLValue6 = [v82 BOOLValue];
 
-  if (v83)
+  if (bOOLValue6)
   {
     objc_storeStrong(&v6->_locationTrackName, @"Location");
   }
@@ -456,9 +456,9 @@ LABEL_9:
 
   v85 = @"com.apple.reality.kind.data.compass";
   v86 = [v155 objectForKeyedSubscript:@"com.apple.reality.kind.data.compass"];
-  v87 = [v86 BOOLValue];
+  bOOLValue7 = [v86 BOOLValue];
 
-  if ((v87 & 1) != 0 || (v85 = @"Compass", [v155 objectForKeyedSubscript:@"Compass"], v88 = objc_claimAutoreleasedReturnValue(), v89 = objc_msgSend(v88, "BOOLValue"), v88, v89))
+  if ((bOOLValue7 & 1) != 0 || (v85 = @"Compass", [v155 objectForKeyedSubscript:@"Compass"], v88 = objc_claimAutoreleasedReturnValue(), v89 = objc_msgSend(v88, "BOOLValue"), v88, v89))
   {
     objc_storeStrong(&v6->_compassTrackName, v85);
   }
@@ -471,10 +471,10 @@ LABEL_9:
   v6->_alsTrackName = 0;
 
   v92 = [v155 objectForKeyedSubscript:@"com.apple.reality.kind.data.als"];
-  v93 = [v92 BOOLValue];
+  bOOLValue8 = [v92 BOOLValue];
 
   v94 = @"com.apple.reality.kind.camera.xcam.pointcloud";
-  if ((v93 & 1) != 0 || (v74 = @"ALS", [v155 objectForKeyedSubscript:@"ALS"], v95 = objc_claimAutoreleasedReturnValue(), v96 = objc_msgSend(v95, "BOOLValue"), v95, v96))
+  if ((bOOLValue8 & 1) != 0 || (v74 = @"ALS", [v155 objectForKeyedSubscript:@"ALS"], v95 = objc_claimAutoreleasedReturnValue(), v96 = objc_msgSend(v95, "BOOLValue"), v95, v96))
   {
     objc_storeStrong(&v6->_alsTrackName, v74);
   }
@@ -483,9 +483,9 @@ LABEL_9:
   v6->_wifiTrackName = 0;
 
   v98 = [v155 objectForKeyedSubscript:@"com.apple.reality.kind.data.wifi"];
-  v99 = [v98 BOOLValue];
+  bOOLValue9 = [v98 BOOLValue];
 
-  if (v99)
+  if (bOOLValue9)
   {
     objc_storeStrong(&v6->_wifiTrackName, @"com.apple.reality.kind.data.wifi");
   }
@@ -494,9 +494,9 @@ LABEL_9:
   v6->_uwbTrackName = 0;
 
   v101 = [v155 objectForKeyedSubscript:@"com.apple.reality.kind.data.uwb"];
-  v102 = [v101 BOOLValue];
+  bOOLValue10 = [v101 BOOLValue];
 
-  if (v102)
+  if (bOOLValue10)
   {
     objc_storeStrong(&v6->_uwbTrackName, @"com.apple.reality.kind.data.uwb");
   }
@@ -505,9 +505,9 @@ LABEL_9:
   v6->_bleTrackName = 0;
 
   v104 = [v155 objectForKeyedSubscript:@"com.apple.reality.kind.data.ble"];
-  v105 = [v104 BOOLValue];
+  bOOLValue11 = [v104 BOOLValue];
 
-  if (v105)
+  if (bOOLValue11)
   {
     objc_storeStrong(&v6->_bleTrackName, @"com.apple.reality.kind.data.ble");
   }
@@ -516,18 +516,18 @@ LABEL_9:
   v6->_depthTOFTrackName = 0;
 
   v107 = [v155 objectForKeyedSubscript:@"com.apple.reality.kind.camera.xcam.pointcloud"];
-  v108 = [v107 BOOLValue];
+  bOOLValue12 = [v107 BOOLValue];
 
-  if (v108)
+  if (bOOLValue12)
   {
     goto LABEL_66;
   }
 
   v94 = @"com.apple.reality.kind.data.zcam_tof_pc";
   v109 = [v155 objectForKeyedSubscript:@"com.apple.reality.kind.data.zcam_tof_pc"];
-  v110 = [v109 BOOLValue];
+  bOOLValue13 = [v109 BOOLValue];
 
-  if ((v110 & 1) != 0 || (v94 = @"CVADepthTOF", [v155 objectForKeyedSubscript:@"CVADepthTOF"], v111 = objc_claimAutoreleasedReturnValue(), v112 = objc_msgSend(v111, "BOOLValue"), v111, v112))
+  if ((bOOLValue13 & 1) != 0 || (v94 = @"CVADepthTOF", [v155 objectForKeyedSubscript:@"CVADepthTOF"], v111 = objc_claimAutoreleasedReturnValue(), v112 = objc_msgSend(v111, "BOOLValue"), v111, v112))
   {
 LABEL_66:
     objc_storeStrong(&v6->_depthTOFTrackName, v94);
@@ -580,8 +580,8 @@ LABEL_66:
   v163 = 0u;
   v160 = 0u;
   v161 = 0u;
-  v120 = [(MOVStreamReader *)v6 getAllStreams];
-  v121 = [v120 countByEnumeratingWithState:&v160 objects:v178 count:16];
+  getAllStreams = [(MOVStreamReader *)v6 getAllStreams];
+  v121 = [getAllStreams countByEnumeratingWithState:&v160 objects:v178 count:16];
   if (!v121)
   {
     goto LABEL_99;
@@ -596,7 +596,7 @@ LABEL_66:
     {
       if (*v161 != v123)
       {
-        objc_enumerationMutation(v120);
+        objc_enumerationMutation(getAllStreams);
       }
 
       v126 = *(*(&v160 + 1) + 8 * m);
@@ -664,7 +664,7 @@ LABEL_98:
       }
     }
 
-    v122 = [v120 countByEnumeratingWithState:&v160 objects:v178 count:16];
+    v122 = [getAllStreams countByEnumeratingWithState:&v160 objects:v178 count:16];
     v6 = v159;
     if (v122)
     {
@@ -745,22 +745,22 @@ LABEL_100:
   return v5;
 }
 
-- (void)setDepthOutputFrameRate:(id)a3
+- (void)setDepthOutputFrameRate:(id)rate
 {
-  v12 = a3;
+  rateCopy = rate;
   lastError = self->_lastError;
   self->_lastError = 0;
 
-  objc_storeStrong(&self->_depthOutputFrameRate, a3);
-  v6 = [(MOVReaderInterface *)self depthSourceMaxPoints];
-  v7 = [v6 isEqualToNumber:&unk_2852252F0];
+  objc_storeStrong(&self->_depthOutputFrameRate, rate);
+  depthSourceMaxPoints = [(MOVReaderInterface *)self depthSourceMaxPoints];
+  v7 = [depthSourceMaxPoints isEqualToNumber:&unk_2852252F0];
 
   if (v7)
   {
-    v8 = [(MOVReaderInterface *)self depthSourceFrameRate];
-    if ([v8 compare:self->_depthOutputFrameRate] == 1)
+    depthSourceFrameRate = [(MOVReaderInterface *)self depthSourceFrameRate];
+    if ([depthSourceFrameRate compare:self->_depthOutputFrameRate] == 1)
     {
-      if ([v8 isEqualToNumber:&unk_2852252C0] && -[NSNumber isEqualToNumber:](self->_depthOutputFrameRate, "isEqualToNumber:", &unk_2852252D8) || objc_msgSend(v8, "isEqualToNumber:", &unk_2852252D8) && -[NSNumber isEqualToNumber:](self->_depthOutputFrameRate, "isEqualToNumber:", &unk_285225320))
+      if ([depthSourceFrameRate isEqualToNumber:&unk_2852252C0] && -[NSNumber isEqualToNumber:](self->_depthOutputFrameRate, "isEqualToNumber:", &unk_2852252D8) || objc_msgSend(depthSourceFrameRate, "isEqualToNumber:", &unk_2852252D8) && -[NSNumber isEqualToNumber:](self->_depthOutputFrameRate, "isEqualToNumber:", &unk_285225320))
       {
         *&self->_jasperEnabled[1] = 0;
         *&self->_jasperEnabled[7] = 0;
@@ -776,7 +776,7 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      if ([v8 isEqualToNumber:&unk_2852252C0] && -[NSNumber isEqualToNumber:](self->_depthOutputFrameRate, "isEqualToNumber:", &unk_285225320))
+      if ([depthSourceFrameRate isEqualToNumber:&unk_2852252C0] && -[NSNumber isEqualToNumber:](self->_depthOutputFrameRate, "isEqualToNumber:", &unk_285225320))
       {
         *&self->_jasperEnabled[1] = 0;
         *&self->_jasperEnabled[7] = 0;
@@ -793,7 +793,7 @@ LABEL_14:
 
     else
     {
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Requested depth rate %ld >= source rate %ld", -[NSNumber longValue](self->_depthOutputFrameRate, "longValue"), objc_msgSend(v8, "longValue")];
+      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Requested depth rate %ld >= source rate %ld", -[NSNumber longValue](self->_depthOutputFrameRate, "longValue"), objc_msgSend(depthSourceFrameRate, "longValue")];
       v10 = [MEMORY[0x277CCA9B8] movReaderInterfaceWarningWithMessage:v9 code:0];
     }
 
@@ -806,19 +806,19 @@ LABEL_14:
 LABEL_15:
 }
 
-- (MOVReaderInterface)initWithFileURL:(id)a3 enforcedVideoTrackFormat:(id)a4 error:(id *)a5
+- (MOVReaderInterface)initWithFileURL:(id)l enforcedVideoTrackFormat:(id)format error:(id *)error
 {
-  objc_storeStrong(&self->_enforcedVideoTrackFormat, a4);
-  v8 = a3;
-  v9 = [(MOVReaderInterface *)self initWithFileURL:v8 delegate:self error:a5];
+  objc_storeStrong(&self->_enforcedVideoTrackFormat, format);
+  lCopy = l;
+  v9 = [(MOVReaderInterface *)self initWithFileURL:lCopy delegate:self error:error];
 
   return v9;
 }
 
-- (id)grabMovieMetadataForKey:(id)a3
+- (id)grabMovieMetadataForKey:(id)key
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   lastError = self->_lastError;
   self->_lastError = 0;
 
@@ -832,7 +832,7 @@ LABEL_15:
   {
     v8 = v7;
     v28 = 432;
-    v29 = self;
+    selfCopy = self;
     v9 = *v33;
     while (2)
     {
@@ -844,16 +844,16 @@ LABEL_15:
         }
 
         v11 = *(*(&v32 + 1) + 8 * i);
-        v12 = [v11 identifier];
-        v13 = [v4 isEqualToString:v12];
+        identifier = [v11 identifier];
+        v13 = [keyCopy isEqualToString:identifier];
 
         if (v13)
         {
-          v14 = [v11 value];
+          value = [v11 value];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
-          v16 = [v11 value];
+          value2 = [v11 value];
           if (isKindOfClass)
           {
             goto LABEL_17;
@@ -864,10 +864,10 @@ LABEL_15:
 
           if (v17)
           {
-            v18 = [v11 value];
+            value3 = [v11 value];
             v30 = 0;
             v31 = 0;
-            v19 = [MEMORY[0x277CCAC58] propertyListWithData:v18 options:0 format:&v31 error:&v30];
+            v19 = [MEMORY[0x277CCAC58] propertyListWithData:value3 options:0 format:&v31 error:&v30];
             v20 = v19;
             if (v30)
             {
@@ -875,15 +875,15 @@ LABEL_15:
               v22 = v30;
               v23 = [v22 description];
               v24 = [v21 movReaderInterfaceErrorWithMessage:v23 code:8];
-              v25 = *(&v29->super.super.isa + v28);
-              *(&v29->super.super.isa + v28) = v24;
+              v25 = *(&selfCopy->super.super.isa + v28);
+              *(&selfCopy->super.super.isa + v28) = v24;
 
-              v16 = 0;
+              value2 = 0;
             }
 
             else
             {
-              v16 = v19;
+              value2 = v19;
             }
 
             goto LABEL_17;
@@ -901,18 +901,18 @@ LABEL_15:
     }
   }
 
-  v16 = 0;
+  value2 = 0;
 LABEL_17:
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return value2;
 }
 
-- (id)grabMovieMetadataRawForKey:(id)a3
+- (id)grabMovieMetadataRawForKey:(id)key
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   lastError = self->_lastError;
   self->_lastError = 0;
 
@@ -938,21 +938,21 @@ LABEL_4:
       }
 
       v12 = *(*(&v25 + 1) + 8 * v11);
-      v13 = [v12 identifier];
-      if (![v4 isEqualToString:v13])
+      identifier = [v12 identifier];
+      if (![keyCopy isEqualToString:identifier])
       {
         goto LABEL_6;
       }
 
-      v14 = [v12 dataType];
-      if (([v14 isEqual:v10] & 1) == 0)
+      dataType = [v12 dataType];
+      if (([dataType isEqual:v10] & 1) == 0)
       {
         break;
       }
 
       [v12 value];
       v15 = v9;
-      v16 = v4;
+      v16 = keyCopy;
       v17 = v10;
       v19 = v18 = v6;
       objc_opt_class();
@@ -960,13 +960,13 @@ LABEL_4:
 
       v6 = v18;
       v10 = v17;
-      v4 = v16;
+      keyCopy = v16;
       v9 = v15;
       v8 = v24;
 
       if (isKindOfClass)
       {
-        v21 = [v12 value];
+        value = [v12 value];
         goto LABEL_15;
       }
 
@@ -988,18 +988,18 @@ LABEL_6:
   }
 
 LABEL_14:
-  v21 = 0;
+  value = 0;
 LABEL_15:
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v21;
+  return value;
 }
 
-- (id)grabMovieMetadataItem:(id)a3
+- (id)grabMovieMetadataItem:(id)item
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   lastError = self->_lastError;
   self->_lastError = 0;
 
@@ -1022,8 +1022,8 @@ LABEL_15:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v4 isEqualToString:v11];
+        identifier = [v10 identifier];
+        v12 = [itemCopy isEqualToString:identifier];
 
         if (v12)
         {
@@ -1217,35 +1217,35 @@ LABEL_31:
   return v6;
 }
 
-- (void)addStreamFilter:(id)a3 obj:(id)a4
+- (void)addStreamFilter:(id)filter obj:(id)obj
 {
-  v11 = a3;
+  filterCopy = filter;
   streamFilters = self->_streamFilters;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)streamFilters objectForKeyedSubscript:v11];
+  objCopy = obj;
+  v8 = [(NSMutableDictionary *)streamFilters objectForKeyedSubscript:filterCopy];
   v9 = v8;
   if (v8)
   {
-    [v8 addObject:v7];
+    [v8 addObject:objCopy];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CBEB18] arrayWithObject:v7];
+    v10 = [MEMORY[0x277CBEB18] arrayWithObject:objCopy];
 
-    [(NSMutableDictionary *)self->_streamFilters setObject:v10 forKeyedSubscript:v11];
-    v7 = v10;
+    [(NSMutableDictionary *)self->_streamFilters setObject:v10 forKeyedSubscript:filterCopy];
+    objCopy = v10;
   }
 }
 
-- (id)applyFlip:(id)a3 f:(id)a4
+- (id)applyFlip:(id)flip f:(id)f
 {
-  v5 = a3;
-  v6 = [a4 objectForKeyedSubscript:@"flip"];
-  v7 = v5;
+  flipCopy = flip;
+  v6 = [f objectForKeyedSubscript:@"flip"];
+  v7 = flipCopy;
   if ([v6 containsString:@"H"])
   {
-    v7 = [v5 imageByApplyingCGOrientation:2];
+    v7 = [flipCopy imageByApplyingCGOrientation:2];
   }
 
   if ([v6 containsString:@"V"])
@@ -1258,16 +1258,16 @@ LABEL_31:
   return v7;
 }
 
-- (void)addStreamFilters:(id)a3
+- (void)addStreamFilters:(id)filters
 {
   v135 = *MEMORY[0x277D85DE8];
-  v93 = a3;
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 fileExistsAtPath:v93];
+  filtersCopy = filters;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:filtersCopy];
 
   if (v4)
   {
-    v92 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v93];
+    v92 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:filtersCopy];
     v130 = 0;
     v90 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v92 options:1 error:&v130];
     v5 = v130;
@@ -1342,14 +1342,14 @@ LABEL_31:
                   if (!v16)
                   {
                     v58 = MEMORY[0x277CCA9B8];
-                    v59 = [MEMORY[0x277CCACA8] stringWithFormat:@"Filter name not found: %@", v102];
-                    v60 = [v58 movReaderInterfaceErrorWithMessage:v59 code:13];
+                    v102 = [MEMORY[0x277CCACA8] stringWithFormat:@"Filter name not found: %@", v102];
+                    v60 = [v58 movReaderInterfaceErrorWithMessage:v102 code:13];
                     v61 = self->_lastError;
                     self->_lastError = v60;
 
                     v62 = MEMORY[0x277CBEAD8];
-                    v63 = [(NSError *)self->_lastError localizedDescription];
-                    v64 = [v62 exceptionWithName:@"AppleCV3DMOVKitErrorFilterFileFailed" reason:v63 userInfo:0];
+                    localizedDescription = [(NSError *)self->_lastError localizedDescription];
+                    v64 = [v62 exceptionWithName:@"AppleCV3DMOVKitErrorFilterFileFailed" reason:localizedDescription userInfo:0];
 
                     v65 = v64;
                     objc_exception_throw(v64);
@@ -1396,14 +1396,14 @@ LABEL_31:
                   if (!v24)
                   {
                     v78 = MEMORY[0x277CCA9B8];
-                    v79 = [MEMORY[0x277CCACA8] stringWithFormat:@"Filter image not found: %@", v101];
-                    v80 = [v78 movReaderInterfaceErrorWithMessage:v79 code:13];
+                    v101 = [MEMORY[0x277CCACA8] stringWithFormat:@"Filter image not found: %@", v101];
+                    v80 = [v78 movReaderInterfaceErrorWithMessage:v101 code:13];
                     v81 = self->_lastError;
                     self->_lastError = v80;
 
                     v82 = MEMORY[0x277CBEAD8];
-                    v83 = [(NSError *)self->_lastError localizedDescription];
-                    v84 = [v82 exceptionWithName:@"AppleCV3DMOVKitErrorFilterFileFailed" reason:v83 userInfo:0];
+                    localizedDescription2 = [(NSError *)self->_lastError localizedDescription];
+                    v84 = [v82 exceptionWithName:@"AppleCV3DMOVKitErrorFilterFileFailed" reason:localizedDescription2 userInfo:0];
 
                     v85 = v84;
                     objc_exception_throw(v84);
@@ -1440,15 +1440,15 @@ LABEL_31:
                     v67 = MEMORY[0x277CCACA8];
                     v68 = [v100 objectForKeyedSubscript:@"path"];
                     v69 = [v100 objectForKeyedSubscript:@"name"];
-                    v70 = [v34 localizedDescription];
-                    v71 = [v67 stringWithFormat:@"Filter Kernel failed: %@, %@, %@", v68, v69, v70];
+                    localizedDescription3 = [v34 localizedDescription];
+                    v71 = [v67 stringWithFormat:@"Filter Kernel failed: %@, %@, %@", v68, v69, localizedDescription3];
                     v72 = [v66 movReaderInterfaceErrorWithMessage:v71 code:13];
                     v73 = self->_lastError;
                     self->_lastError = v72;
 
                     v74 = MEMORY[0x277CBEAD8];
-                    v75 = [(NSError *)self->_lastError localizedDescription];
-                    v76 = [v74 exceptionWithName:@"AppleCV3DMOVKitErrorFilterFileFailed" reason:v75 userInfo:0];
+                    localizedDescription4 = [(NSError *)self->_lastError localizedDescription];
+                    v76 = [v74 exceptionWithName:@"AppleCV3DMOVKitErrorFilterFileFailed" reason:localizedDescription4 userInfo:0];
 
                     v77 = v76;
                     objc_exception_throw(v76);
@@ -1489,7 +1489,7 @@ LABEL_31:
                             if (v43)
                             {
                               v44 = [v41 objectForKeyedSubscript:@"dim"];
-                              v45 = [v44 longValue];
+                              longValue = [v44 longValue];
 
                               if ([v42 hasSuffix:@"png"])
                               {
@@ -1516,7 +1516,7 @@ LABEL_31:
                                   v49 = v108;
                                 }
 
-                                v50 = [MEMORY[0x277CBF758] imageWithBitmapData:v43 bytesPerRow:v45 << v48 size:v49 format:0 colorSpace:{v45, v45}];
+                                v50 = [MEMORY[0x277CBF758] imageWithBitmapData:v43 bytesPerRow:longValue << v48 size:v49 format:0 colorSpace:{longValue, longValue}];
 
                                 v46 = v50;
                               }
@@ -1527,18 +1527,18 @@ LABEL_31:
 
                                 [(MOVStreamReader *)self getOutputSizeForStream:v109];
                                 v53 = v52;
-                                if (v45 != v52)
+                                if (longValue != v52)
                                 {
                                   v54 = [MEMORY[0x277CBF750] filterWithName:@"CILanczosScaleTransform"];
                                   [v54 setValue:v51 forKey:v106];
-                                  *&v55 = v53 / v45;
+                                  *&v55 = v53 / longValue;
                                   v56 = [MEMORY[0x277CCABB0] numberWithFloat:v55];
                                   [v54 setValue:v56 forKey:v105];
 
                                   [v54 setValue:&unk_285225380 forKey:v104];
-                                  v57 = [v54 outputImage];
+                                  outputImage = [v54 outputImage];
 
-                                  v51 = v57;
+                                  v51 = outputImage;
                                 }
 
                                 if (v51)
@@ -1605,17 +1605,17 @@ LABEL_4:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (__CVBuffer)copyNextFrameForStream:(id)a3 timestamp:(id *)a4 error:(id *)a5
+- (__CVBuffer)copyNextFrameForStream:(id)stream timestamp:(id *)timestamp error:(id *)error
 {
   v90 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  streamCopy = stream;
   lastError = self->_lastError;
   self->_lastError = 0;
 
   v87.receiver = self;
   v87.super_class = MOVReaderInterface;
-  v10 = [(MOVStreamReader *)&v87 copyNextFrameForStream:v8 timestamp:a4 error:a5];
-  v11 = [(NSMutableDictionary *)self->_streamFilters objectForKeyedSubscript:v8];
+  v10 = [(MOVStreamReader *)&v87 copyNextFrameForStream:streamCopy timestamp:timestamp error:error];
+  v11 = [(NSMutableDictionary *)self->_streamFilters objectForKeyedSubscript:streamCopy];
   v12 = v11;
   if (v10)
   {
@@ -1629,14 +1629,14 @@ LABEL_4:
 
   if (!v13)
   {
-    v65 = v8;
-    v14 = [(MOVReaderInterface *)self filterContext];
+    v65 = streamCopy;
+    filterContext = [(MOVReaderInterface *)self filterContext];
 
-    if (!v14)
+    if (!filterContext)
     {
-      v15 = [MEMORY[0x277CBF740] context];
+      context = [MEMORY[0x277CBF740] context];
       filterContext = self->_filterContext;
-      self->_filterContext = v15;
+      self->_filterContext = context;
     }
 
     v17 = objc_opt_new();
@@ -1660,7 +1660,7 @@ LABEL_4:
       v71 = *v84;
       v23 = @"mult";
       v66 = v18;
-      v67 = self;
+      selfCopy = self;
       do
       {
         v24 = 0;
@@ -1692,14 +1692,14 @@ LABEL_4:
             if ([&unk_285225338 isEqual:&unk_285225338])
             {
 LABEL_19:
-              v33 = [v75 lastObject];
+              lastObject = [v75 lastObject];
               goto LABEL_22;
             }
           }
 
-          v33 = [v75 objectAtIndexedSubscript:{objc_msgSend(v29, "intValue")}];
+          lastObject = [v75 objectAtIndexedSubscript:{objc_msgSend(v29, "intValue")}];
 LABEL_22:
-          v74 = v33;
+          v74 = lastObject;
           v34 = [v30 objectForKeyedSubscript:@"filter"];
           objc_opt_class();
           v76 = v34;
@@ -1710,9 +1710,9 @@ LABEL_22:
             v25 = v34;
             v26 = [(MOVReaderInterface *)self applyFlip:v74 f:v30];
             [v25 setValue:v26 forKey:v70];
-            v27 = [v25 outputImage];
+            outputImage = [v25 outputImage];
 LABEL_12:
-            v28 = v27;
+            v28 = outputImage;
 
             [v75 addObject:v28];
 LABEL_13:
@@ -1729,7 +1729,7 @@ LABEL_13:
             v73 = v24;
             v25 = v34;
             v26 = [v30 objectForKeyedSubscript:@"background_img"];
-            v27 = [v25 applyWithForeground:v74 background:v26];
+            outputImage = [v25 applyWithForeground:v74 background:v26];
             goto LABEL_12;
           }
 
@@ -1856,7 +1856,7 @@ LABEL_31:
 
             [v75 addObject:v57];
             v18 = v66;
-            self = v67;
+            self = selfCopy;
             v20 = v68;
             v28 = v69;
             goto LABEL_13;
@@ -1875,11 +1875,11 @@ LABEL_14:
     }
 
     v58 = self->_filterContext;
-    v59 = [v75 lastObject];
+    lastObject2 = [v75 lastObject];
     v10 = v64;
-    [(CIContext *)v58 render:v59 toCVPixelBuffer:v64];
+    [(CIContext *)v58 render:lastObject2 toCVPixelBuffer:v64];
 
-    v8 = v65;
+    streamCopy = v65;
     v12 = v63;
   }
 
@@ -1887,7 +1887,7 @@ LABEL_14:
   return v10;
 }
 
-- (id)resolvedCalibration:(int64_t *)a3
+- (id)resolvedCalibration:(int64_t *)calibration
 {
   v34 = *MEMORY[0x277D85DE8];
   lastError = self->_lastError;
@@ -1904,13 +1904,13 @@ LABEL_14:
   v9 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (!v9)
   {
-    if (!a3)
+    if (!calibration)
     {
       goto LABEL_19;
     }
 
-    v21 = *a3;
-    if (!*a3)
+    v21 = *calibration;
+    if (!*calibration)
     {
       goto LABEL_19;
     }
@@ -1919,8 +1919,8 @@ LABEL_14:
   }
 
   v10 = v9;
-  v26 = self;
-  v27 = a3;
+  selfCopy = self;
+  calibrationCopy = calibration;
   v11 = 0;
   v12 = 0;
   v13 = *v30;
@@ -1934,14 +1934,14 @@ LABEL_14:
       }
 
       v15 = *(*(&v29 + 1) + 8 * i);
-      v16 = [v15 identifier];
-      v17 = [(__CFString *)v6 isEqualToString:v16];
+      identifier = [v15 identifier];
+      v17 = [(__CFString *)v6 isEqualToString:identifier];
 
       v11 |= v17;
-      v18 = [v15 identifier];
-      LODWORD(v16) = [v8 isEqualToString:v18];
+      identifier2 = [v15 identifier];
+      LODWORD(identifier) = [v8 isEqualToString:identifier2];
 
-      v12 |= v16;
+      v12 |= identifier;
     }
 
     v10 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -1951,11 +1951,11 @@ LABEL_14:
   if (v11 & v12)
   {
     v19 = [MEMORY[0x277CCA9B8] movReaderInterfaceWarningWithMessage:@"Location nil and 0 are both present. This is unexpected!!" code:2];
-    v20 = v26->_lastError;
-    v26->_lastError = v19;
+    v20 = selfCopy->_lastError;
+    selfCopy->_lastError = v19;
   }
 
-  if (!v27)
+  if (!calibrationCopy)
   {
     if (v11)
     {
@@ -1965,9 +1965,9 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  v21 = *v27;
+  v21 = *calibrationCopy;
   v7 = 0x277CCA000;
-  if (*v27)
+  if (*calibrationCopy)
   {
 LABEL_15:
     v22 = [*(v7 + 3240) stringWithFormat:@"%@.%ld", v6, v21];
@@ -1991,10 +1991,10 @@ LABEL_20:
   return v23;
 }
 
-- (id)grabCalibration:(int64_t *)a3
+- (id)grabCalibration:(int64_t *)calibration
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [(MOVReaderInterface *)self resolvedCalibration:a3];
+  v4 = [(MOVReaderInterface *)self resolvedCalibration:calibration];
   [(MOVStreamReader *)self metadataForMovie];
   v15 = 0u;
   v16 = 0u;
@@ -2014,13 +2014,13 @@ LABEL_20:
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v4 isEqualToString:v10];
+        identifier = [v9 identifier];
+        v11 = [v4 isEqualToString:identifier];
 
         if (v11)
         {
-          v12 = [v9 value];
-          v6 = [CVACalibration withData:v12];
+          value = [v9 value];
+          v6 = [CVACalibration withData:value];
 
           goto LABEL_11;
         }
@@ -2043,83 +2043,83 @@ LABEL_11:
   return v6;
 }
 
-+ (BOOL)grabSWToWExtrinsics:(id *)a3 summary:(id)a4 backExtrinsics:(id)a5
++ (BOOL)grabSWToWExtrinsics:(id *)extrinsics summary:(id)summary backExtrinsics:(id)backExtrinsics
 {
-  v7 = a5;
-  v8 = [a4 objectForKeyedSubscript:@"extrinsicsSWToW"];
+  backExtrinsicsCopy = backExtrinsics;
+  v8 = [summary objectForKeyedSubscript:@"extrinsicsSWToW"];
   v9 = v8;
   if (v8)
   {
     v10 = [v8 objectAtIndexedSubscript:0];
     [v10 floatValue];
-    *a3 = v11;
+    *extrinsics = v11;
 
     v12 = [v9 objectAtIndexedSubscript:1];
     [v12 floatValue];
-    *(a3 + 4) = v13;
+    *(extrinsics + 4) = v13;
 
     v14 = [v9 objectAtIndexedSubscript:2];
     [v14 floatValue];
-    *(a3 + 8) = v15;
+    *(extrinsics + 8) = v15;
 
     v16 = [v9 objectAtIndexedSubscript:3];
     [v16 floatValue];
-    *(a3 + 12) = v17;
+    *(extrinsics + 12) = v17;
 
     v18 = [v9 objectAtIndexedSubscript:4];
     [v18 floatValue];
-    *(a3 + 1) = v19;
+    *(extrinsics + 1) = v19;
 
     v20 = [v9 objectAtIndexedSubscript:5];
     [v20 floatValue];
-    *(a3 + 5) = v21;
+    *(extrinsics + 5) = v21;
 
     v22 = [v9 objectAtIndexedSubscript:6];
     [v22 floatValue];
-    *(a3 + 9) = v23;
+    *(extrinsics + 9) = v23;
 
     v24 = [v9 objectAtIndexedSubscript:7];
     [v24 floatValue];
-    *(a3 + 13) = v25;
+    *(extrinsics + 13) = v25;
 
     v26 = [v9 objectAtIndexedSubscript:8];
     [v26 floatValue];
-    *(a3 + 2) = v27;
+    *(extrinsics + 2) = v27;
 
     v28 = [v9 objectAtIndexedSubscript:9];
     [v28 floatValue];
-    *(a3 + 6) = v29;
+    *(extrinsics + 6) = v29;
 
     v30 = [v9 objectAtIndexedSubscript:10];
     [v30 floatValue];
-    *(a3 + 10) = v31;
+    *(extrinsics + 10) = v31;
 
     v32 = [v9 objectAtIndexedSubscript:11];
     [v32 floatValue];
-    *(a3 + 14) = v33;
+    *(extrinsics + 14) = v33;
   }
 
   else
   {
-    if (!v7 || ([v7 objectForKeyedSubscript:*MEMORY[0x277CF3CF0]], v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v35, "objectForKeyedSubscript:", *MEMORY[0x277CF3CD0]), v32 = objc_claimAutoreleasedReturnValue(), v35, !v32))
+    if (!backExtrinsicsCopy || ([backExtrinsicsCopy objectForKeyedSubscript:*MEMORY[0x277CF3CF0]], v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v35, "objectForKeyedSubscript:", *MEMORY[0x277CF3CD0]), v32 = objc_claimAutoreleasedReturnValue(), v35, !v32))
     {
       v34 = 0;
       goto LABEL_8;
     }
 
-    v36 = [v32 bytes];
-    v37 = *v36[2].f32;
-    v38 = *v36[4].f32;
+    bytes = [v32 bytes];
+    v37 = *bytes[2].f32;
+    v38 = *bytes[4].f32;
     v39 = *(MEMORY[0x277D860B8] + 32);
     v40 = *(MEMORY[0x277D860B8] + 48);
     v41 = *(MEMORY[0x277D860B8] + 16);
     v41.i32[1] = -1.0;
     v42 = *MEMORY[0x277D860B8];
     v42.i32[0] = -1.0;
-    v43 = vmlaq_f32(vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(v42, COERCE_FLOAT(*v36->f32)), v41, v37.f32[0]), v39, v38.f32[0]), 0, v40);
-    v44 = vmlaq_f32(vmlaq_lane_f32(vmlaq_lane_f32(vmulq_lane_f32(v42, *v36, 1), v41, *v37.f32, 1), v39, *v38.f32, 1), 0, v40);
-    v45 = vmlaq_f32(vmlaq_laneq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(v42, *v36->f32, 2), v41, v37, 2), v39, v38, 2), 0, v40);
-    v46 = vaddq_f32(v40, vmlaq_laneq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(v42, *v36->f32, 3), v41, v37, 3), v39, v38, 3));
+    v43 = vmlaq_f32(vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(v42, COERCE_FLOAT(*bytes->f32)), v41, v37.f32[0]), v39, v38.f32[0]), 0, v40);
+    v44 = vmlaq_f32(vmlaq_lane_f32(vmlaq_lane_f32(vmulq_lane_f32(v42, *bytes, 1), v41, *v37.f32, 1), v39, *v38.f32, 1), 0, v40);
+    v45 = vmlaq_f32(vmlaq_laneq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(v42, *bytes->f32, 2), v41, v37, 2), v39, v38, 2), 0, v40);
+    v46 = vaddq_f32(v40, vmlaq_laneq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(v42, *bytes->f32, 3), v41, v37, 3), v39, v38, 3));
     v53.columns[0] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vnegq_f32(v43), v44, *MEMORY[0x277D860B8], 1), v45, *MEMORY[0x277D860B8], 2), v46, *MEMORY[0x277D860B8], 3);
     __asm { FMOV            V2.4S, #-1.0 }
 
@@ -2127,14 +2127,14 @@ LABEL_11:
     v53.columns[2] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v43, v39.f32[0]), v44, *v39.f32, 1), v45, v39, 2), v46, v39, 3);
     v53.columns[3] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v43, v40.f32[0]), v44, *v40.f32, 1), v45, v40, 2), v46, v40, 3);
     v54 = __invert_f4(v53);
-    *(a3 + 2) = v54.columns[0].i32[2];
-    *a3 = v54.columns[0].i64[0];
-    *(a3 + 6) = v54.columns[1].i32[2];
-    *(a3 + 10) = v54.columns[2].i32[2];
-    *(a3 + 2) = v54.columns[1].i64[0];
-    *(a3 + 4) = v54.columns[2].i64[0];
-    *(a3 + 14) = v54.columns[3].i32[2];
-    *(a3 + 6) = v54.columns[3].i64[0];
+    *(extrinsics + 2) = v54.columns[0].i32[2];
+    *extrinsics = v54.columns[0].i64[0];
+    *(extrinsics + 6) = v54.columns[1].i32[2];
+    *(extrinsics + 10) = v54.columns[2].i32[2];
+    *(extrinsics + 2) = v54.columns[1].i64[0];
+    *(extrinsics + 4) = v54.columns[2].i64[0];
+    *(extrinsics + 14) = v54.columns[3].i32[2];
+    *(extrinsics + 6) = v54.columns[3].i64[0];
   }
 
   v34 = 1;
@@ -2143,20 +2143,20 @@ LABEL_8:
   return v34;
 }
 
-- (BOOL)grabSWToWExtrinsics:(id *)a3
+- (BOOL)grabSWToWExtrinsics:(id *)extrinsics
 {
-  v5 = [(MOVReaderInterface *)self grabSummary];
+  grabSummary = [(MOVReaderInterface *)self grabSummary];
   v6 = [(MOVReaderInterface *)self grabMovieMetadataForKey:@"mdta/com.apple.isp.BackExtrinsics"];
-  LOBYTE(a3) = [MOVReaderInterface grabSWToWExtrinsics:a3 summary:v5 backExtrinsics:v6];
+  LOBYTE(extrinsics) = [MOVReaderInterface grabSWToWExtrinsics:extrinsics summary:grabSummary backExtrinsics:v6];
 
-  return a3;
+  return extrinsics;
 }
 
-+ (id)grabJasperExtrinsics:(id)a3 backExtrinsics:(id)a4
++ (id)grabJasperExtrinsics:(id)extrinsics backExtrinsics:(id)backExtrinsics
 {
   v95 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [a3 objectForKeyedSubscript:@"extrinsicsToJasper"];
+  backExtrinsicsCopy = backExtrinsics;
+  v6 = [extrinsics objectForKeyedSubscript:@"extrinsicsToJasper"];
   if (v6)
   {
     v7 = objc_opt_new();
@@ -2164,12 +2164,12 @@ LABEL_8:
     v91 = 0u;
     v92 = 0u;
     v93 = 0u;
-    v8 = [v6 allKeys];
-    v9 = [v8 countByEnumeratingWithState:&v90 objects:v94 count:16];
+    allKeys = [v6 allKeys];
+    v9 = [allKeys countByEnumeratingWithState:&v90 objects:v94 count:16];
     if (v9)
     {
       v10 = v9;
-      v83 = v5;
+      v83 = backExtrinsicsCopy;
       v11 = *v91;
       do
       {
@@ -2177,7 +2177,7 @@ LABEL_8:
         {
           if (*v91 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allKeys);
           }
 
           v13 = *(*(&v90 + 1) + 8 * i);
@@ -2238,31 +2238,31 @@ LABEL_8:
           [v7 setObject:v39 forKeyedSubscript:v13];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v90 objects:v94 count:16];
+        v10 = [allKeys countByEnumeratingWithState:&v90 objects:v94 count:16];
       }
 
       while (v10);
-      v5 = v83;
+      backExtrinsicsCopy = v83;
     }
   }
 
   else
   {
-    if (!v5)
+    if (!backExtrinsicsCopy)
     {
       v7 = 0;
       goto LABEL_20;
     }
 
-    v40 = [v5 objectForKeyedSubscript:*MEMORY[0x277CF3CE0]];
+    v40 = [backExtrinsicsCopy objectForKeyedSubscript:*MEMORY[0x277CF3CE0]];
     v41 = *MEMORY[0x277CF3CD0];
-    v8 = [v40 objectForKeyedSubscript:*MEMORY[0x277CF3CD0]];
+    allKeys = [v40 objectForKeyedSubscript:*MEMORY[0x277CF3CD0]];
 
     v42 = *MEMORY[0x277CF3CF0];
-    v43 = [v5 objectForKeyedSubscript:*MEMORY[0x277CF3CF0]];
+    v43 = [backExtrinsicsCopy objectForKeyedSubscript:*MEMORY[0x277CF3CF0]];
     v44 = [v43 objectForKeyedSubscript:v41];
 
-    if (v8)
+    if (allKeys)
     {
       _ZF = v44 == 0;
     }
@@ -2280,9 +2280,9 @@ LABEL_8:
     else
     {
       v7 = objc_opt_new();
-      v46 = [v8 bytes];
-      v47 = *v46[2].f32;
-      v48 = *v46[4].f32;
+      bytes = [allKeys bytes];
+      v47 = *bytes[2].f32;
+      v48 = *bytes[4].f32;
       v50 = *(MEMORY[0x277D860B8] + 32);
       v49 = *(MEMORY[0x277D860B8] + 48);
       v51 = *(MEMORY[0x277D860B8] + 16);
@@ -2291,10 +2291,10 @@ LABEL_8:
       v52.i32[0] = -1.0;
       v75 = v52;
       v76 = v51;
-      v53 = vmlaq_f32(vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(v52, COERCE_FLOAT(*v46->f32)), v51, v47.f32[0]), v50, v48.f32[0]), 0, v49);
-      v54 = vmlaq_f32(vmlaq_lane_f32(vmlaq_lane_f32(vmulq_lane_f32(v52, *v46, 1), v51, *v47.f32, 1), v50, *v48.f32, 1), 0, v49);
-      v55 = vmlaq_f32(vmlaq_laneq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(v52, *v46->f32, 2), v51, v47, 2), v50, v48, 2), 0, v49);
-      v56 = vaddq_f32(v49, vmlaq_laneq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(v52, *v46->f32, 3), v51, v47, 3), v50, v48, 3));
+      v53 = vmlaq_f32(vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(v52, COERCE_FLOAT(*bytes->f32)), v51, v47.f32[0]), v50, v48.f32[0]), 0, v49);
+      v54 = vmlaq_f32(vmlaq_lane_f32(vmlaq_lane_f32(vmulq_lane_f32(v52, *bytes, 1), v51, *v47.f32, 1), v50, *v48.f32, 1), 0, v49);
+      v55 = vmlaq_f32(vmlaq_laneq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(v52, *bytes->f32, 2), v51, v47, 2), v50, v48, 2), 0, v49);
+      v56 = vaddq_f32(v49, vmlaq_laneq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(v52, *bytes->f32, 3), v51, v47, 3), v50, v48, 3));
       v82 = *MEMORY[0x277D860B8];
       v79 = *(MEMORY[0x277D860B8] + 16);
       __asm { FMOV            V2.4S, #-1.0 }
@@ -2317,13 +2317,13 @@ LABEL_8:
       v61 = [MEMORY[0x277CBEA90] dataWithBytes:&v86 length:64];
       [v7 setObject:v61 forKeyedSubscript:v41];
       [v7 setObject:v61 forKeyedSubscript:@"AVCaptureDeviceTypeBuiltInWideAngleCamera.1"];
-      v62 = [v44 bytes];
-      v63 = *v62[2].f32;
-      v64 = *v62[4].f32;
-      v65 = vmlaq_f32(vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(v75, COERCE_FLOAT(*v62->f32)), v76, v63.f32[0]), v74, v64.f32[0]), 0, v73);
-      v66 = vmlaq_f32(vmlaq_lane_f32(vmlaq_lane_f32(vmulq_lane_f32(v75, *v62, 1), v76, *v63.f32, 1), v74, *v64.f32, 1), 0, v73);
-      v67 = vmlaq_f32(vmlaq_laneq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(v75, *v62->f32, 2), v76, v63, 2), v74, v64, 2), 0, v73);
-      v68 = vaddq_f32(v73, vmlaq_laneq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(v75, *v62->f32, 3), v76, v63, 3), v74, v64, 3));
+      bytes2 = [v44 bytes];
+      v63 = *bytes2[2].f32;
+      v64 = *bytes2[4].f32;
+      v65 = vmlaq_f32(vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(v75, COERCE_FLOAT(*bytes2->f32)), v76, v63.f32[0]), v74, v64.f32[0]), 0, v73);
+      v66 = vmlaq_f32(vmlaq_lane_f32(vmlaq_lane_f32(vmulq_lane_f32(v75, *bytes2, 1), v76, *v63.f32, 1), v74, *v64.f32, 1), 0, v73);
+      v67 = vmlaq_f32(vmlaq_laneq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(v75, *bytes2->f32, 2), v76, v63, 2), v74, v64, 2), 0, v73);
+      v68 = vaddq_f32(v73, vmlaq_laneq_f32(vmlaq_laneq_f32(vmulq_laneq_f32(v75, *bytes2->f32, 3), v76, v63, 3), v74, v64, 3));
       v97.columns[0] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vnegq_f32(v65), v66, *v82.f32, 1), v67, v82, 2), v68, v82, 3);
       v97.columns[1] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_f32(vmulq_n_f32(v65, v79.f32[0]), v84, v66), v67, v79, 2), v68, v79, 3);
       v97.columns[2] = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v65, v74.f32[0]), v66, *v74.f32, 1), v67, v74, 2), v68, v74, 3);
@@ -2355,28 +2355,28 @@ LABEL_20:
 
 - (id)grabJasperExtrinsics
 {
-  v3 = [(MOVReaderInterface *)self grabSummary];
+  grabSummary = [(MOVReaderInterface *)self grabSummary];
   v4 = [(MOVReaderInterface *)self grabMovieMetadataForKey:@"mdta/com.apple.isp.BackExtrinsics"];
-  v5 = [MOVReaderInterface grabJasperExtrinsics:v3 backExtrinsics:v4];
+  v5 = [MOVReaderInterface grabJasperExtrinsics:grabSummary backExtrinsics:v4];
 
   return v5;
 }
 
-- (id)grabNextStreamData:(id)a3 timeRange:(id *)a4
+- (id)grabNextStreamData:(id)data timeRange:(id *)range
 {
-  v6 = a3;
+  dataCopy = data;
   lastError = self->_lastError;
   self->_lastError = 0;
 
   v18 = 0;
-  v8 = [(MOVStreamReader *)self grabNextMetadataOfStream:v6 timeRange:a4 error:&v18];
+  v8 = [(MOVStreamReader *)self grabNextMetadataOfStream:dataCopy timeRange:range error:&v18];
   v9 = v18;
   v10 = v9;
   if (v9)
   {
     v11 = MEMORY[0x277CCACA8];
     v12 = [v9 description];
-    v13 = [v11 stringWithFormat:@"%@: %@", v6, v12];
+    v13 = [v11 stringWithFormat:@"%@: %@", dataCopy, v12];
 
     v14 = [MEMORY[0x277CCA9B8] movReaderInterfaceErrorWithMessage:v13 code:9];
     v15 = self->_lastError;
@@ -2393,11 +2393,11 @@ LABEL_20:
   return v16;
 }
 
-- (id)resolvedIMUStreamName:(int64_t *)a3 metadataID:(id)a4
+- (id)resolvedIMUStreamName:(int64_t *)name metadataID:(id)d
 {
-  if (a3)
+  if (name)
   {
-    if (!*a3)
+    if (!*name)
     {
       self->_imuLocationNil;
     }
@@ -2411,31 +2411,31 @@ LABEL_20:
   return [CVAMetadataWrapperTracks imuTrackName:"imuTrackName:prefix:" prefix:?];
 }
 
-- (id)grabNextFastPathMUData:(int64_t *)a3 metadataID:(id)a4
+- (id)grabNextFastPathMUData:(int64_t *)data metadataID:(id)d
 {
-  v5 = [(MOVReaderInterface *)self resolvedIMUStreamName:a3 metadataID:a4];
+  v5 = [(MOVReaderInterface *)self resolvedIMUStreamName:data metadataID:d];
   v6 = [(MOVReaderInterface *)self grabNextStreamData:v5 timeRange:0];
 
   return v6;
 }
 
-- (id)grabNextFastPathMUData:(int64_t *)a3
+- (id)grabNextFastPathMUData:(int64_t *)data
 {
-  v4 = [(MOVReaderInterface *)self resolvedSpuIMUStreamName:a3];
+  v4 = [(MOVReaderInterface *)self resolvedSpuIMUStreamName:data];
   v5 = [(MOVReaderInterface *)self grabNextStreamData:v4 timeRange:0];
 
   return v5;
 }
 
-- (id)grabNextSpuIMUData:(id *)a3 location:(int64_t *)a4
+- (id)grabNextSpuIMUData:(id *)data location:(int64_t *)location
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = [(MOVReaderInterface *)self resolvedSpuIMUStreamName:a4];
-  v8 = [(MOVReaderInterface *)self grabNextStreamData:v7 timeRange:a3];
+  v7 = [(MOVReaderInterface *)self resolvedSpuIMUStreamName:location];
+  v8 = [(MOVReaderInterface *)self grabNextStreamData:v7 timeRange:data];
   v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
-  if (a4)
+  if (location)
   {
-    v10 = *a4;
+    v10 = *location;
   }
 
   else
@@ -2445,7 +2445,7 @@ LABEL_20:
 
   v11 = [MEMORY[0x277CCABB0] numberWithInteger:v10];
   v12 = [(NSMutableDictionary *)self->_spuVersions objectForKeyedSubscript:v11];
-  v13 = [v12 unsignedIntValue];
+  unsignedIntValue = [v12 unsignedIntValue];
 
   v28 = 0u;
   v29 = 0u;
@@ -2457,7 +2457,7 @@ LABEL_20:
   {
     v16 = v15;
     v17 = *v27;
-    if (v13)
+    if (unsignedIntValue)
     {
       do
       {
@@ -2513,29 +2513,29 @@ LABEL_20:
   return v9;
 }
 
-- (id)resolvedAccelStreamName:(int64_t *)a3
+- (id)resolvedAccelStreamName:(int64_t *)name
 {
-  if (a3)
+  if (name)
   {
-    if (!*a3 && self->_accelLocationNil)
+    if (!*name && self->_accelLocationNil)
     {
-      a3 = 0;
+      name = 0;
     }
   }
 
   else if (self->_accelLocation0)
   {
-    a3 = &unk_27E3C8650;
+    name = &unk_27E3C8650;
   }
 
-  return [CVAMetadataWrapperTracks accelerometerTrackName:a3 prefix:self->_accelTrackName];
+  return [CVAMetadataWrapperTracks accelerometerTrackName:name prefix:self->_accelTrackName];
 }
 
-- (id)grabNextRawAccelData:(id *)a3 location:(int64_t *)a4
+- (id)grabNextRawAccelData:(id *)data location:(int64_t *)location
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = [(MOVReaderInterface *)self resolvedAccelStreamName:a4];
-  v7 = [(MOVReaderInterface *)self grabNextStreamData:v6 timeRange:a3];
+  v6 = [(MOVReaderInterface *)self resolvedAccelStreamName:location];
+  v7 = [(MOVReaderInterface *)self grabNextStreamData:v6 timeRange:data];
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
   v17 = 0u;
   v18 = 0u;
@@ -2574,29 +2574,29 @@ LABEL_20:
   return v8;
 }
 
-- (id)resolvedGyroStreamName:(int64_t *)a3
+- (id)resolvedGyroStreamName:(int64_t *)name
 {
-  if (a3)
+  if (name)
   {
-    if (!*a3 && self->_gyroLocationNil)
+    if (!*name && self->_gyroLocationNil)
     {
-      a3 = 0;
+      name = 0;
     }
   }
 
   else if (self->_gyroLocation0)
   {
-    a3 = &unk_27E3C8650;
+    name = &unk_27E3C8650;
   }
 
-  return [CVAMetadataWrapperTracks gyroTrackName:a3 prefix:self->_gyroTrackName];
+  return [CVAMetadataWrapperTracks gyroTrackName:name prefix:self->_gyroTrackName];
 }
 
-- (id)grabNextRawGyroData:(id *)a3 location:(int64_t *)a4
+- (id)grabNextRawGyroData:(id *)data location:(int64_t *)location
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = [(MOVReaderInterface *)self resolvedGyroStreamName:a4];
-  v7 = [(MOVReaderInterface *)self grabNextStreamData:v6 timeRange:a3];
+  v6 = [(MOVReaderInterface *)self resolvedGyroStreamName:location];
+  v7 = [(MOVReaderInterface *)self grabNextStreamData:v6 timeRange:data];
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
   v17 = 0u;
   v18 = 0u;
@@ -2635,29 +2635,29 @@ LABEL_20:
   return v8;
 }
 
-- (id)resolvedMotionStreamName:(int64_t *)a3
+- (id)resolvedMotionStreamName:(int64_t *)name
 {
-  if (a3)
+  if (name)
   {
-    if (!*a3 && self->_motionLocationNil)
+    if (!*name && self->_motionLocationNil)
     {
-      a3 = 0;
+      name = 0;
     }
   }
 
   else if (self->_motionLocation0)
   {
-    a3 = &unk_27E3C8650;
+    name = &unk_27E3C8650;
   }
 
-  return [CVAMetadataWrapperTracks motionTrackName:a3 prefix:self->_motionTrackName];
+  return [CVAMetadataWrapperTracks motionTrackName:name prefix:self->_motionTrackName];
 }
 
-- (id)grabNextMotionData:(id *)a3 location:(int64_t *)a4
+- (id)grabNextMotionData:(id *)data location:(int64_t *)location
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = [(MOVReaderInterface *)self resolvedMotionStreamName:a4];
-  v7 = [(MOVReaderInterface *)self grabNextStreamData:v6 timeRange:a3];
+  v6 = [(MOVReaderInterface *)self resolvedMotionStreamName:location];
+  v7 = [(MOVReaderInterface *)self grabNextStreamData:v6 timeRange:data];
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
   v17 = 0u;
   v18 = 0u;
@@ -2696,11 +2696,11 @@ LABEL_20:
   return v8;
 }
 
-- (id)grabNextBarometerData:(id *)a3
+- (id)grabNextBarometerData:(id *)data
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = self->_barometerTrackName;
-  v6 = [(MOVReaderInterface *)self grabNextStreamData:v5 timeRange:a3];
+  v6 = [(MOVReaderInterface *)self grabNextStreamData:v5 timeRange:data];
   v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
   v16 = 0u;
   v17 = 0u;
@@ -2739,29 +2739,29 @@ LABEL_20:
   return v7;
 }
 
-- (id)resolvedCompassStreamName:(int64_t *)a3
+- (id)resolvedCompassStreamName:(int64_t *)name
 {
-  if (a3)
+  if (name)
   {
-    if (!*a3 && self->_compassLocationNil)
+    if (!*name && self->_compassLocationNil)
     {
-      a3 = 0;
+      name = 0;
     }
   }
 
   else if (self->_compassLocation0)
   {
-    a3 = &unk_27E3C8650;
+    name = &unk_27E3C8650;
   }
 
-  return [CVAMetadataWrapperTracks compassTrackName:a3 prefix:self->_compassTrackName];
+  return [CVAMetadataWrapperTracks compassTrackName:name prefix:self->_compassTrackName];
 }
 
-- (id)grabNextRawCompassData:(id *)a3 location:(int64_t *)a4
+- (id)grabNextRawCompassData:(id *)data location:(int64_t *)location
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = [(MOVReaderInterface *)self resolvedCompassStreamName:a4];
-  v7 = [(MOVReaderInterface *)self grabNextStreamData:v6 timeRange:a3];
+  v6 = [(MOVReaderInterface *)self resolvedCompassStreamName:location];
+  v7 = [(MOVReaderInterface *)self grabNextStreamData:v6 timeRange:data];
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
   v17 = 0u;
   v18 = 0u;
@@ -2800,11 +2800,11 @@ LABEL_20:
   return v8;
 }
 
-- (id)grabNextRawALSData:(id *)a3 location:(int64_t *)a4
+- (id)grabNextRawALSData:(id *)data location:(int64_t *)location
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = [CVAMetadataWrapperTracks alsTrackName:a4 prefix:self->_alsTrackName];
-  v7 = [(MOVReaderInterface *)self grabNextStreamData:v6 timeRange:a3];
+  v6 = [CVAMetadataWrapperTracks alsTrackName:location prefix:self->_alsTrackName];
+  v7 = [(MOVReaderInterface *)self grabNextStreamData:v6 timeRange:data];
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
   v17 = 0u;
   v18 = 0u;
@@ -2843,11 +2843,11 @@ LABEL_20:
   return v8;
 }
 
-- (id)grabNextRawWiFiData:(id *)a3 location:(int64_t *)a4
+- (id)grabNextRawWiFiData:(id *)data location:(int64_t *)location
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = [CVAMetadataWrapperTracks wifiTrackName:a4 prefix:self->_wifiTrackName];
-  v7 = [(MOVReaderInterface *)self grabNextStreamData:v6 timeRange:a3];
+  v6 = [CVAMetadataWrapperTracks wifiTrackName:location prefix:self->_wifiTrackName];
+  v7 = [(MOVReaderInterface *)self grabNextStreamData:v6 timeRange:data];
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
   v17 = 0u;
   v18 = 0u;
@@ -2886,11 +2886,11 @@ LABEL_20:
   return v8;
 }
 
-- (id)grabNextRawUWBData:(id *)a3 location:(int64_t *)a4
+- (id)grabNextRawUWBData:(id *)data location:(int64_t *)location
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = [CVAMetadataWrapperTracks uwbTrackName:a4 prefix:self->_uwbTrackName];
-  v7 = [(MOVReaderInterface *)self grabNextStreamData:v6 timeRange:a3];
+  v6 = [CVAMetadataWrapperTracks uwbTrackName:location prefix:self->_uwbTrackName];
+  v7 = [(MOVReaderInterface *)self grabNextStreamData:v6 timeRange:data];
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
   v17 = 0u;
   v18 = 0u;
@@ -2929,11 +2929,11 @@ LABEL_20:
   return v8;
 }
 
-- (id)grabNextRawBLEData:(id *)a3 location:(int64_t *)a4
+- (id)grabNextRawBLEData:(id *)data location:(int64_t *)location
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = [CVAMetadataWrapperTracks bleTrackName:a4 prefix:self->_bleTrackName];
-  v7 = [(MOVReaderInterface *)self grabNextStreamData:v6 timeRange:a3];
+  v6 = [CVAMetadataWrapperTracks bleTrackName:location prefix:self->_bleTrackName];
+  v7 = [(MOVReaderInterface *)self grabNextStreamData:v6 timeRange:data];
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
   v17 = 0u;
   v18 = 0u;
@@ -2972,29 +2972,29 @@ LABEL_20:
   return v8;
 }
 
-- (id)resolvedDeviceMotionStreamName:(int64_t *)a3
+- (id)resolvedDeviceMotionStreamName:(int64_t *)name
 {
-  if (a3)
+  if (name)
   {
-    if (!*a3 && self->_deviceMotionLocationNil)
+    if (!*name && self->_deviceMotionLocationNil)
     {
-      a3 = 0;
+      name = 0;
     }
   }
 
   else if (self->_deviceMotionLocation0)
   {
-    a3 = &unk_27E3C8650;
+    name = &unk_27E3C8650;
   }
 
-  return [CVAMetadataWrapperTracks deviceMotionTrackName:a3 prefix:self->_deviceMotionTrackName];
+  return [CVAMetadataWrapperTracks deviceMotionTrackName:name prefix:self->_deviceMotionTrackName];
 }
 
-- (id)grabNextDeviceMotionData:(id *)a3 location:(int64_t *)a4
+- (id)grabNextDeviceMotionData:(id *)data location:(int64_t *)location
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = [(MOVReaderInterface *)self resolvedDeviceMotionStreamName:a4];
-  v7 = [(MOVReaderInterface *)self grabNextStreamData:v6 timeRange:a3];
+  v6 = [(MOVReaderInterface *)self resolvedDeviceMotionStreamName:location];
+  v7 = [(MOVReaderInterface *)self grabNextStreamData:v6 timeRange:data];
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
   v17 = 0u;
   v18 = 0u;
@@ -3033,33 +3033,33 @@ LABEL_20:
   return v8;
 }
 
-- (id)resolvedLocationStreamName:(int64_t *)a3
+- (id)resolvedLocationStreamName:(int64_t *)name
 {
-  if (a3)
+  if (name)
   {
-    if (!*a3 && self->_locationLocationNil)
+    if (!*name && self->_locationLocationNil)
     {
-      a3 = 0;
+      name = 0;
     }
   }
 
   else if (self->_locationLocation0)
   {
-    a3 = &unk_27E3C8650;
+    name = &unk_27E3C8650;
   }
 
-  return [CVAMetadataWrapperTracks locationTrackName:a3 prefix:self->_locationTrackName];
+  return [CVAMetadataWrapperTracks locationTrackName:name prefix:self->_locationTrackName];
 }
 
-- (id)grabNextCLLocation:(id *)a3 location:(int64_t *)a4 timestamps:(id *)a5
+- (id)grabNextCLLocation:(id *)location location:(int64_t *)a4 timestamps:(id *)timestamps
 {
   v41 = *MEMORY[0x277D85DE8];
   v8 = [(MOVReaderInterface *)self resolvedLocationStreamName:a4];
-  v9 = [(MOVReaderInterface *)self grabNextStreamData:v8 timeRange:a3];
+  v9 = [(MOVReaderInterface *)self grabNextStreamData:v8 timeRange:location];
   v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
-  if (a5)
+  if (timestamps)
   {
-    v27 = a5;
+    timestampsCopy = timestamps;
     v29 = v8;
     v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
     v38 = 0.0;
@@ -3100,7 +3100,7 @@ LABEL_20:
 
     v19 = v11;
     v9 = v28;
-    *v27 = v11;
+    *timestampsCopy = v11;
     v8 = v29;
   }
 
@@ -3144,11 +3144,11 @@ LABEL_20:
   return v10;
 }
 
-- (id)grabNextCMDeviceMotion:(id *)a3
+- (id)grabNextCMDeviceMotion:(id *)motion
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = [(MOVReaderInterface *)self resolvedDeviceMotionStreamName:0];
-  v6 = [(MOVReaderInterface *)self grabNextStreamData:v5 timeRange:a3];
+  v6 = [(MOVReaderInterface *)self grabNextStreamData:v5 timeRange:motion];
   v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
   v16 = 0u;
   v17 = 0u;
@@ -3187,10 +3187,10 @@ LABEL_20:
   return v7;
 }
 
-- (id)grabNextCMData:(id *)a3
+- (id)grabNextCMData:(id *)data
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(MOVReaderInterface *)self grabNextStreamData:@"CMData" timeRange:a3];
+  v3 = [(MOVReaderInterface *)self grabNextStreamData:@"CMData" timeRange:data];
   v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
   v13 = 0u;
   v14 = 0u;
@@ -3229,13 +3229,13 @@ LABEL_20:
   return v4;
 }
 
-- (id)grabNextUserEvent:(id *)a3
+- (id)grabNextUserEvent:(id *)event
 {
   v21 = *MEMORY[0x277D85DE8];
   userEventTrackName = self->_userEventTrackName;
   if (userEventTrackName)
   {
-    v5 = [(MOVReaderInterface *)self grabNextStreamData:userEventTrackName timeRange:a3];
+    v5 = [(MOVReaderInterface *)self grabNextStreamData:userEventTrackName timeRange:event];
     v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
     v16 = 0u;
     v17 = 0u;
@@ -3281,10 +3281,10 @@ LABEL_20:
   return v6;
 }
 
-- (id)grabNextTimedValue:(id *)a3
+- (id)grabNextTimedValue:(id *)value
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(MOVReaderInterface *)self grabNextStreamData:@"CVATimedValue" timeRange:a3];
+  v3 = [(MOVReaderInterface *)self grabNextStreamData:@"CVATimedValue" timeRange:value];
   v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
   v13 = 0u;
   v14 = 0u;
@@ -3323,13 +3323,13 @@ LABEL_20:
   return v4;
 }
 
-- (id)grabNextPRDevice:(id *)a3
+- (id)grabNextPRDevice:(id *)device
 {
   v21 = *MEMORY[0x277D85DE8];
   prDeviceTrackName = self->_prDeviceTrackName;
   if (prDeviceTrackName)
   {
-    v5 = [(MOVReaderInterface *)self grabNextStreamData:prDeviceTrackName timeRange:a3];
+    v5 = [(MOVReaderInterface *)self grabNextStreamData:prDeviceTrackName timeRange:device];
     v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
     v16 = 0u;
     v17 = 0u;
@@ -3383,10 +3383,10 @@ LABEL_20:
   return v4;
 }
 
-- (id)grabNextFeatureBuffer:(id *)a3 streamName:(id)a4
+- (id)grabNextFeatureBuffer:(id *)buffer streamName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [(MOVReaderInterface *)self grabNextStreamData:a4 timeRange:a3];
+  v4 = [(MOVReaderInterface *)self grabNextStreamData:name timeRange:buffer];
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
   v14 = 0u;
   v15 = 0u;
@@ -3425,13 +3425,13 @@ LABEL_20:
   return v5;
 }
 
-- (id)grabNextDepthTOF:(id *)a3 sampleDropped:(BOOL *)a4
+- (id)grabNextDepthTOF:(id *)f sampleDropped:(BOOL *)dropped
 {
   v115 = *MEMORY[0x277D85DE8];
   v6 = objc_opt_new();
-  if (a4)
+  if (dropped)
   {
-    *a4 = 0;
+    *dropped = 0;
   }
 
   lastError = self->_lastError;
@@ -3455,7 +3455,7 @@ LABEL_20:
     if (v16)
     {
       v17 = v16;
-      v95 = a4;
+      droppedCopy = dropped;
       v18 = 0;
       v19 = *v104;
       do
@@ -3518,9 +3518,9 @@ LABEL_20:
             }
           }
 
-          else if (v95)
+          else if (droppedCopy)
           {
-            *v95 = 1;
+            *droppedCopy = 1;
           }
 
           v37 = self->_jasperCounter + 1;
@@ -3597,7 +3597,7 @@ LABEL_11:
     }
 
     v46 = v45;
-    v96 = a4;
+    droppedCopy2 = dropped;
     CMTimeMakeFromDictionary(&time, v45);
     Seconds = CMTimeGetSeconds(&time);
     v48 = [(CVAJasperDepthFrameProcessor *)self->_jdfp process:v8];
@@ -3616,7 +3616,7 @@ LABEL_11:
 
       if (!v51)
       {
-        v55 = 0;
+        integerValue = 0;
         v48 = v53;
         goto LABEL_38;
       }
@@ -3624,10 +3624,10 @@ LABEL_11:
       v48 = v53;
     }
 
-    v55 = [v51 integerValue];
+    integerValue = [v51 integerValue];
 
 LABEL_38:
-    v56 = [[CVADepthTOF alloc] initWithJasperDepth:v48 timestamp:v55 projectorMode:Seconds];
+    v56 = [[CVADepthTOF alloc] initWithJasperDepth:v48 timestamp:integerValue projectorMode:Seconds];
     CVPixelBufferRelease(v8);
     jasperCounter = self->_jasperCounter;
     if (self->_jasperEnabled[jasperCounter])
@@ -3636,9 +3636,9 @@ LABEL_38:
       LODWORD(jasperCounter) = self->_jasperCounter;
     }
 
-    else if (v96)
+    else if (droppedCopy2)
     {
-      *v96 = 1;
+      *droppedCopy2 = 1;
     }
 
     v58 = jasperCounter + 1;
@@ -3730,12 +3730,12 @@ LABEL_52:
         v81 = *(*(&v98 + 1) + 8 * i);
         if (![v81 projectorMode])
         {
-          v82 = [v81 pointCloud];
+          pointCloud = [v81 pointCloud];
 
-          if (v82)
+          if (pointCloud)
           {
-            v83 = [v81 pointCloud];
-            v84 = *[v83 bankIds];
+            pointCloud2 = [v81 pointCloud];
+            v84 = *[pointCloud2 bankIds];
 
             if (self->_jdfp)
             {
@@ -3785,21 +3785,21 @@ LABEL_71:
   return v6;
 }
 
-- (id)grabNextDepthIR:(id)a3 timeRange:(id *)a4
+- (id)grabNextDepthIR:(id)r timeRange:(id *)range
 {
-  v5 = a3;
+  rCopy = r;
   v6 = objc_opt_new();
   lastError = self->_lastError;
   self->_lastError = 0;
 
   memset(v24, 0, sizeof(v24));
   v23 = 0;
-  v8 = [(MOVReaderInterface *)self copyNextFrameForStream:v5 timestamp:v24 error:&v23];
+  v8 = [(MOVReaderInterface *)self copyNextFrameForStream:rCopy timestamp:v24 error:&v23];
   v9 = v23;
   if (v9)
   {
     CVPixelBufferRelease(v8);
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: %@", v5, v9];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: %@", rCopy, v9];
     v11 = [MEMORY[0x277CCA9B8] movReaderInterfaceErrorWithMessage:v10 code:10];
     v12 = self->_lastError;
     self->_lastError = v11;
@@ -3841,10 +3841,10 @@ LABEL_71:
   return v6;
 }
 
-- (id)grabNextCVACameraCalibrationData:(id *)a3
+- (id)grabNextCVACameraCalibrationData:(id *)data
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(MOVReaderInterface *)self grabNextStreamData:@"CVACameraCalibration" timeRange:a3];
+  v3 = [(MOVReaderInterface *)self grabNextStreamData:@"CVACameraCalibration" timeRange:data];
   v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
   v13 = 0u;
   v14 = 0u;
@@ -3883,10 +3883,10 @@ LABEL_71:
   return v4;
 }
 
-- (id)grabNextDictionary:(id)a3 timeRange:(id *)a4
+- (id)grabNextDictionary:(id)dictionary timeRange:(id *)range
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = [(MOVReaderInterface *)self grabNextStreamData:a3 timeRange:a4];
+  v4 = [(MOVReaderInterface *)self grabNextStreamData:dictionary timeRange:range];
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
   v29 = 0u;
   v30 = 0u;
@@ -3975,10 +3975,10 @@ LABEL_71:
   return v5;
 }
 
-- (id)grabNextClass:(id)a3 class:(Class)a4 timeRange:(id *)a5
+- (id)grabNextClass:(id)class class:(Class)a4 timeRange:(id *)range
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = [(MOVReaderInterface *)self grabNextStreamData:a3 timeRange:a5];
+  v6 = [(MOVReaderInterface *)self grabNextStreamData:class timeRange:range];
   v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
   v16 = 0u;
   v17 = 0u;
@@ -4017,43 +4017,43 @@ LABEL_71:
   return v7;
 }
 
-- (id)grabNextNSCoderObject:(id)a3 class:(Class)a4
+- (id)grabNextNSCoderObject:(id)object class:(Class)class
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CBEB98];
-  v13 = a4;
+  classCopy = class;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a3;
-  v8 = [v6 arrayWithObjects:&v13 count:1];
-  v9 = [v5 setWithArray:{v8, v13, v14}];
-  v10 = [(MOVReaderInterface *)self grabNextNSCoderObject:v7 classes:v9 timeRange:0];
+  objectCopy = object;
+  v8 = [v6 arrayWithObjects:&classCopy count:1];
+  v9 = [v5 setWithArray:{v8, classCopy, v14}];
+  v10 = [(MOVReaderInterface *)self grabNextNSCoderObject:objectCopy classes:v9 timeRange:0];
 
   v11 = *MEMORY[0x277D85DE8];
 
   return v10;
 }
 
-- (id)grabNextNSCoderObject:(id)a3 class:(Class)a4 timeRange:(id *)a5
+- (id)grabNextNSCoderObject:(id)object class:(Class)class timeRange:(id *)range
 {
   v16 = *MEMORY[0x277D85DE8];
   v7 = MEMORY[0x277CBEB98];
-  v15 = a4;
+  classCopy = class;
   v8 = MEMORY[0x277CBEA60];
-  v9 = a3;
-  v10 = [v8 arrayWithObjects:&v15 count:1];
-  v11 = [v7 setWithArray:{v10, v15, v16}];
-  v12 = [(MOVReaderInterface *)self grabNextNSCoderObject:v9 classes:v11 timeRange:a5];
+  objectCopy = object;
+  v10 = [v8 arrayWithObjects:&classCopy count:1];
+  v11 = [v7 setWithArray:{v10, classCopy, v16}];
+  v12 = [(MOVReaderInterface *)self grabNextNSCoderObject:objectCopy classes:v11 timeRange:range];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-- (id)grabNextNSCoderObject:(id)a3 classes:(id)a4 timeRange:(id *)a5
+- (id)grabNextNSCoderObject:(id)object classes:(id)classes timeRange:(id *)range
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [(MOVReaderInterface *)self grabNextStreamData:a3 timeRange:a5];
+  classesCopy = classes;
+  v9 = [(MOVReaderInterface *)self grabNextStreamData:object timeRange:range];
   v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
   v19 = 0u;
   v20 = 0u;
@@ -4074,7 +4074,7 @@ LABEL_71:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [CVAMetadataWrapper decodeNSCoderObject:*(*(&v19 + 1) + 8 * i) classes:v8, v19];
+        v16 = [CVAMetadataWrapper decodeNSCoderObject:*(*(&v19 + 1) + 8 * i) classes:classesCopy, v19];
         if (v16)
         {
           [v10 addObject:v16];
@@ -4092,10 +4092,10 @@ LABEL_71:
   return v10;
 }
 
-+ (BOOL)isSuperWideStream:(id)a3
++ (BOOL)isSuperWideStream:(id)stream
 {
   v3 = *MEMORY[0x277CE5870];
-  v4 = [a3 componentsSeparatedByString:@"."];
+  v4 = [stream componentsSeparatedByString:@"."];
   v5 = [v4 objectAtIndexedSubscript:0];
 
   if ([v5 isEqualToString:v3] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"AVCaptureDeviceTypeBuiltInSuperWideAngleCamera") & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"BackColorSuperWide"))
@@ -4112,50 +4112,50 @@ LABEL_71:
   }
 }
 
-- (unsigned)reader:(id)a3 pixelFormatForStream:(id)a4 suggestedFormat:(unsigned int)a5
+- (unsigned)reader:(id)reader pixelFormatForStream:(id)stream suggestedFormat:(unsigned int)format
 {
   enforcedVideoTrackFormat = self->_enforcedVideoTrackFormat;
   if (enforcedVideoTrackFormat)
   {
-    v7 = [(NSDictionary *)enforcedVideoTrackFormat objectForKeyedSubscript:a4];
+    v7 = [(NSDictionary *)enforcedVideoTrackFormat objectForKeyedSubscript:stream];
     v8 = v7;
     if (v7)
     {
-      a5 = [v7 unsignedIntValue];
+      format = [v7 unsignedIntValue];
     }
   }
 
-  return a5;
+  return format;
 }
 
-+ (id)grabCMSessionID:(id)a3
++ (id)grabCMSessionID:(id)d
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dCopy = d;
   v4 = objc_autoreleasePoolPush();
   v27 = 0;
-  v5 = [[MOVReaderInterface alloc] initWithFileURL:v3 delegate:0 error:&v27];
+  v5 = [[MOVReaderInterface alloc] initWithFileURL:dCopy delegate:0 error:&v27];
   v6 = v27;
   v7 = v6;
   if (v6)
   {
     v8 = MEMORY[0x277CCA9B8];
-    v9 = [v6 description];
-    v10 = [v8 movReaderInterfaceErrorWithMessage:v9 code:12];
+    grabNextUserEvent2 = [v6 description];
+    v10 = [v8 movReaderInterfaceErrorWithMessage:grabNextUserEvent2 code:12];
     v11 = 0;
 LABEL_3:
 
     goto LABEL_4;
   }
 
-  v14 = [(MOVReaderInterface *)v5 grabNextUserEvent];
-  if (v14)
+  grabNextUserEvent = [(MOVReaderInterface *)v5 grabNextUserEvent];
+  if (grabNextUserEvent)
   {
-    v9 = v14;
+    grabNextUserEvent2 = grabNextUserEvent;
     v11 = 0;
     do
     {
-      if (![v9 count])
+      if (![grabNextUserEvent2 count])
       {
         break;
       }
@@ -4164,7 +4164,7 @@ LABEL_3:
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v17 = v9;
+      v17 = grabNextUserEvent2;
       v18 = [v17 countByEnumeratingWithState:&v23 objects:v28 count:16];
       if (v18)
       {
@@ -4182,8 +4182,8 @@ LABEL_3:
             v22 = *(*(&v23 + 1) + 8 * i);
             if ([v22 eventType] == 7)
             {
-              v15 = [v22 sessionID];
-              v16 = [v15 copy];
+              sessionID = [v22 sessionID];
+              v16 = [sessionID copy];
 
               v11 = v16;
               goto LABEL_10;
@@ -4198,10 +4198,10 @@ LABEL_3:
 
 LABEL_10:
 
-      v9 = [(MOVReaderInterface *)v5 grabNextUserEvent];
+      grabNextUserEvent2 = [(MOVReaderInterface *)v5 grabNextUserEvent];
     }
 
-    while (v9);
+    while (grabNextUserEvent2);
     goto LABEL_3;
   }
 

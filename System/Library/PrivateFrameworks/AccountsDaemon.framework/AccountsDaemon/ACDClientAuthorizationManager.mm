@@ -1,57 +1,57 @@
 @interface ACDClientAuthorizationManager
-- (ACDClientAuthorizationManager)initWithDatabaseConnection:(id)a3;
-- (id)_csvStringFromSet:(id)a3;
-- (id)_setFromCSVString:(id)a3;
-- (id)allAuthorizationsForAccountType:(id)a3;
-- (id)allAuthorizationsForAccountTypeWithIdentifier:(id)a3;
-- (id)authorizationForClient:(id)a3 accountType:(id)a4;
-- (id)authorizationForClient:(id)a3 accountTypeWithIdentifier:(id)a4;
-- (id)removeAllClientAuthorizationsForAccountType:(id)a3;
-- (id)removeAllClientAuthorizationsForAccountTypeWithIdentifier:(id)a3;
-- (id)removeAuthorizationForClient:(id)a3 accountType:(id)a4;
-- (id)removeAuthorizationForClient:(id)a3 accountTypeWithIdentifier:(id)a4;
-- (id)setAuthorization:(id)a3 forClient:(id)a4 onAccountType:(id)a5;
+- (ACDClientAuthorizationManager)initWithDatabaseConnection:(id)connection;
+- (id)_csvStringFromSet:(id)set;
+- (id)_setFromCSVString:(id)string;
+- (id)allAuthorizationsForAccountType:(id)type;
+- (id)allAuthorizationsForAccountTypeWithIdentifier:(id)identifier;
+- (id)authorizationForClient:(id)client accountType:(id)type;
+- (id)authorizationForClient:(id)client accountTypeWithIdentifier:(id)identifier;
+- (id)removeAllClientAuthorizationsForAccountType:(id)type;
+- (id)removeAllClientAuthorizationsForAccountTypeWithIdentifier:(id)identifier;
+- (id)removeAuthorizationForClient:(id)client accountType:(id)type;
+- (id)removeAuthorizationForClient:(id)client accountTypeWithIdentifier:(id)identifier;
+- (id)setAuthorization:(id)authorization forClient:(id)client onAccountType:(id)type;
 @end
 
 @implementation ACDClientAuthorizationManager
 
-- (ACDClientAuthorizationManager)initWithDatabaseConnection:(id)a3
+- (ACDClientAuthorizationManager)initWithDatabaseConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = ACDClientAuthorizationManager;
   v5 = [(ACDClientAuthorizationManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_databaseConnection, v4);
+    objc_storeWeak(&v5->_databaseConnection, connectionCopy);
   }
 
   return v6;
 }
 
-- (id)authorizationForClient:(id)a3 accountType:(id)a4
+- (id)authorizationForClient:(id)client accountType:(id)type
 {
-  v6 = a3;
-  v7 = [a4 identifier];
-  v8 = [(ACDClientAuthorizationManager *)self authorizationForClient:v6 accountTypeWithIdentifier:v7];
+  clientCopy = client;
+  identifier = [type identifier];
+  v8 = [(ACDClientAuthorizationManager *)self authorizationForClient:clientCopy accountTypeWithIdentifier:identifier];
 
   return v8;
 }
 
-- (id)authorizationForClient:(id)a3 accountTypeWithIdentifier:(id)a4
+- (id)authorizationForClient:(id)client accountTypeWithIdentifier:(id)identifier
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  identifierCopy = identifier;
   v8 = _ACDLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [ACDClientAuthorizationManager authorizationForClient:accountTypeWithIdentifier:];
   }
 
-  v9 = [v6 bundleID];
-  v10 = v9 == 0;
+  bundleID = [clientCopy bundleID];
+  v10 = bundleID == 0;
 
   if (v10)
   {
@@ -59,7 +59,7 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v6;
+      *&buf[4] = clientCopy;
       _os_log_impl(&dword_221D2F000, v14, OS_LOG_TYPE_DEFAULT, "%@ has a nil bundle ID. Will not try to find ClientAuthorization.", buf, 0xCu);
     }
 
@@ -68,7 +68,7 @@
 
   else
   {
-    v11 = [ACDTCCUtilities TCCStateForClient:v6 accountTypeID:v7];
+    v11 = [ACDTCCUtilities TCCStateForClient:clientCopy accountTypeID:identifierCopy];
     v12 = v11;
     if (v11)
     {
@@ -81,9 +81,9 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        *&buf[4] = v6;
+        *&buf[4] = clientCopy;
         *&buf[12] = 2112;
-        *&buf[14] = v7;
+        *&buf[14] = identifierCopy;
         _os_log_impl(&dword_221D2F000, v16, OS_LOG_TYPE_DEFAULT, "No TCC state found: %@, %@", buf, 0x16u);
       }
 
@@ -97,18 +97,18 @@
     v30 = __Block_byref_object_dispose__6;
     v31 = 0;
     WeakRetained = objc_loadWeakRetained(&self->_databaseConnection);
-    v18 = [WeakRetained managedObjectContext];
+    managedObjectContext = [WeakRetained managedObjectContext];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __82__ACDClientAuthorizationManager_authorizationForClient_accountTypeWithIdentifier___block_invoke;
     v21[3] = &unk_27848CDE8;
-    v22 = v6;
-    v23 = v7;
-    v24 = self;
+    v22 = clientCopy;
+    v23 = identifierCopy;
+    selfCopy = self;
     v26 = v12 != 0;
     v25 = buf;
     v27 = v13;
-    [v18 performBlockAndWait:v21];
+    [managedObjectContext performBlockAndWait:v21];
 
     v15 = *(*&buf[8] + 40);
     _Block_object_dispose(buf, 8);
@@ -183,13 +183,13 @@ LABEL_9:
 LABEL_12:
 }
 
-- (id)setAuthorization:(id)a3 forClient:(id)a4 onAccountType:(id)a5
+- (id)setAuthorization:(id)authorization forClient:(id)client onAccountType:(id)type
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 identifier];
+  authorizationCopy = authorization;
+  clientCopy = client;
+  typeCopy = type;
+  identifier = [typeCopy identifier];
   v12 = _ACDLogSystem();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -198,11 +198,11 @@ LABEL_12:
     *&buf[12] = 1026;
     *&buf[14] = 102;
     *&buf[18] = 2112;
-    *&buf[20] = v8;
+    *&buf[20] = authorizationCopy;
     *&buf[28] = 2112;
-    *&buf[30] = v9;
+    *&buf[30] = clientCopy;
     *&buf[38] = 2112;
-    v43 = v11;
+    v43 = identifier;
     _os_log_debug_impl(&dword_221D2F000, v12, OS_LOG_TYPE_DEBUG, "%{private}s:%{public}d called (%@, %@, %@)", buf, 0x30u);
   }
 
@@ -212,8 +212,8 @@ LABEL_12:
   *&buf[24] = __Block_byref_object_copy__6;
   *&buf[32] = __Block_byref_object_dispose__6;
   v43 = 0;
-  v13 = [v9 bundleID];
-  v14 = v13 == 0;
+  bundleID = [clientCopy bundleID];
+  v14 = bundleID == 0;
 
   if (v14)
   {
@@ -228,7 +228,7 @@ LABEL_12:
 
   else
   {
-    if (+[ACDTCCUtilities TCCSupportedForAccountTypeID:](ACDTCCUtilities, "TCCSupportedForAccountTypeID:", v11) && !+[ACDTCCUtilities setTCCStateForClient:accountTypeID:toGranted:](ACDTCCUtilities, "setTCCStateForClient:accountTypeID:toGranted:", v9, v11, [v8 isGranted]))
+    if (+[ACDTCCUtilities TCCSupportedForAccountTypeID:](ACDTCCUtilities, "TCCSupportedForAccountTypeID:", identifier) && !+[ACDTCCUtilities setTCCStateForClient:accountTypeID:toGranted:](ACDTCCUtilities, "setTCCStateForClient:accountTypeID:toGranted:", clientCopy, identifier, [authorizationCopy isGranted]))
     {
       v15 = _ACDLogSystem();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -252,29 +252,29 @@ LABEL_12:
       v38[2] = 0x3032000000;
       v38[3] = __Block_byref_object_copy__6;
       v38[4] = __Block_byref_object_dispose__6;
-      v39 = [v8 options];
+      options = [authorizationCopy options];
       v36[0] = 0;
       v36[1] = v36;
       v36[2] = 0x3032000000;
       v36[3] = __Block_byref_object_copy__6;
       v36[4] = __Block_byref_object_dispose__6;
-      v20 = [v8 grantedPermissions];
-      v37 = [(ACDClientAuthorizationManager *)self _csvStringFromSet:v20];
+      grantedPermissions = [authorizationCopy grantedPermissions];
+      v37 = [(ACDClientAuthorizationManager *)self _csvStringFromSet:grantedPermissions];
 
       WeakRetained = objc_loadWeakRetained(&self->_databaseConnection);
-      v22 = [WeakRetained managedObjectContext];
+      managedObjectContext = [WeakRetained managedObjectContext];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __74__ACDClientAuthorizationManager_setAuthorization_forClient_onAccountType___block_invoke;
       v28[3] = &unk_27848CE10;
-      v29 = v9;
-      v30 = v11;
-      v31 = self;
-      v32 = v10;
+      v29 = clientCopy;
+      v30 = identifier;
+      selfCopy = self;
+      v32 = typeCopy;
       v33 = v36;
       v34 = v38;
       v35 = buf;
-      [v22 performBlockAndWait:v28];
+      [managedObjectContext performBlockAndWait:v28];
 
       _Block_object_dispose(v36, 8);
       _Block_object_dispose(v38, 8);
@@ -344,20 +344,20 @@ void __74__ACDClientAuthorizationManager_setAuthorization_forClient_onAccountTyp
   }
 }
 
-- (id)removeAuthorizationForClient:(id)a3 accountType:(id)a4
+- (id)removeAuthorizationForClient:(id)client accountType:(id)type
 {
-  v6 = a3;
-  v7 = [a4 identifier];
-  v8 = [(ACDClientAuthorizationManager *)self removeAuthorizationForClient:v6 accountTypeWithIdentifier:v7];
+  clientCopy = client;
+  identifier = [type identifier];
+  v8 = [(ACDClientAuthorizationManager *)self removeAuthorizationForClient:clientCopy accountTypeWithIdentifier:identifier];
 
   return v8;
 }
 
-- (id)removeAuthorizationForClient:(id)a3 accountTypeWithIdentifier:(id)a4
+- (id)removeAuthorizationForClient:(id)client accountTypeWithIdentifier:(id)identifier
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  identifierCopy = identifier;
   v8 = _ACDLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -370,7 +370,7 @@ void __74__ACDClientAuthorizationManager_setAuthorization_forClient_onAccountTyp
   v28 = __Block_byref_object_copy__6;
   v29 = __Block_byref_object_dispose__6;
   v30 = 0;
-  if ([ACDTCCUtilities TCCSupportedForAccountTypeID:v7]&& ![ACDTCCUtilities clearTCCStateForClient:v6 accountTypeID:v7])
+  if ([ACDTCCUtilities TCCSupportedForAccountTypeID:identifierCopy]&& ![ACDTCCUtilities clearTCCStateForClient:clientCopy accountTypeID:identifierCopy])
   {
     v9 = _ACDLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -390,16 +390,16 @@ void __74__ACDClientAuthorizationManager_setAuthorization_forClient_onAccountTyp
   if (!v26[5])
   {
     WeakRetained = objc_loadWeakRetained(&self->_databaseConnection);
-    v15 = [WeakRetained managedObjectContext];
+    managedObjectContext = [WeakRetained managedObjectContext];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __88__ACDClientAuthorizationManager_removeAuthorizationForClient_accountTypeWithIdentifier___block_invoke;
     v20[3] = &unk_27848C3F8;
-    v21 = v6;
-    v22 = v7;
-    v23 = self;
+    v21 = clientCopy;
+    v22 = identifierCopy;
+    selfCopy = self;
     v24 = &v25;
-    [v15 performBlockAndWait:v20];
+    [managedObjectContext performBlockAndWait:v20];
   }
 
   v16 = _ACDLogSystem();
@@ -480,18 +480,18 @@ void __88__ACDClientAuthorizationManager_removeAuthorizationForClient_accountTyp
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)allAuthorizationsForAccountType:(id)a3
+- (id)allAuthorizationsForAccountType:(id)type
 {
-  v4 = [a3 identifier];
-  v5 = [(ACDClientAuthorizationManager *)self allAuthorizationsForAccountTypeWithIdentifier:v4];
+  identifier = [type identifier];
+  v5 = [(ACDClientAuthorizationManager *)self allAuthorizationsForAccountTypeWithIdentifier:identifier];
 
   return v5;
 }
 
-- (id)allAuthorizationsForAccountTypeWithIdentifier:(id)a3
+- (id)allAuthorizationsForAccountTypeWithIdentifier:(id)identifier
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _ACDLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -505,22 +505,22 @@ void __88__ACDClientAuthorizationManager_removeAuthorizationForClient_accountTyp
   v25[3] = __Block_byref_object_copy__6;
   v25[4] = __Block_byref_object_dispose__6;
   v26 = 0;
-  v7 = [ACDTCCUtilities allTCCStatesForAccountTypeID:v4];
+  v7 = [ACDTCCUtilities allTCCStatesForAccountTypeID:identifierCopy];
   WeakRetained = objc_loadWeakRetained(&self->_databaseConnection);
-  v9 = [WeakRetained managedObjectContext];
+  managedObjectContext = [WeakRetained managedObjectContext];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __79__ACDClientAuthorizationManager_allAuthorizationsForAccountTypeWithIdentifier___block_invoke;
   v19[3] = &unk_27848CE38;
-  v10 = v4;
+  v10 = identifierCopy;
   v24 = v25;
   v20 = v10;
-  v21 = self;
+  selfCopy = self;
   v11 = v7;
   v22 = v11;
   v12 = v6;
   v23 = v12;
-  [v9 performBlockAndWait:v19];
+  [managedObjectContext performBlockAndWait:v19];
 
   v13 = _ACDLogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -615,24 +615,24 @@ void __79__ACDClientAuthorizationManager_allAuthorizationsForAccountTypeWithIden
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)removeAllClientAuthorizationsForAccountType:(id)a3
+- (id)removeAllClientAuthorizationsForAccountType:(id)type
 {
-  v4 = [a3 identifier];
-  v5 = [(ACDClientAuthorizationManager *)self removeAllClientAuthorizationsForAccountTypeWithIdentifier:v4];
+  identifier = [type identifier];
+  v5 = [(ACDClientAuthorizationManager *)self removeAllClientAuthorizationsForAccountTypeWithIdentifier:identifier];
 
   return v5;
 }
 
-- (id)removeAllClientAuthorizationsForAccountTypeWithIdentifier:(id)a3
+- (id)removeAllClientAuthorizationsForAccountTypeWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _ACDLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ACDClientAuthorizationManager removeAllClientAuthorizationsForAccountTypeWithIdentifier:];
   }
 
-  [ACDTCCUtilities clearAllTCCStatesForAccountTypeID:v4];
+  [ACDTCCUtilities clearAllTCCStatesForAccountTypeID:identifierCopy];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -640,16 +640,16 @@ void __79__ACDClientAuthorizationManager_allAuthorizationsForAccountTypeWithIden
   v20 = __Block_byref_object_dispose__6;
   v21 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_databaseConnection);
-  v7 = [WeakRetained managedObjectContext];
+  managedObjectContext = [WeakRetained managedObjectContext];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __91__ACDClientAuthorizationManager_removeAllClientAuthorizationsForAccountTypeWithIdentifier___block_invoke;
   v12[3] = &unk_27848BF28;
-  v8 = v4;
+  v8 = identifierCopy;
   v13 = v8;
-  v14 = self;
+  selfCopy = self;
   v15 = &v16;
-  [v7 performBlockAndWait:v12];
+  [managedObjectContext performBlockAndWait:v12];
 
   v9 = _ACDLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -724,13 +724,13 @@ void __91__ACDClientAuthorizationManager_removeAllClientAuthorizationsForAccount
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_csvStringFromSet:(id)a3
+- (id)_csvStringFromSet:(id)set
 {
-  v3 = a3;
-  if ([v3 count])
+  setCopy = set;
+  if ([setCopy count])
   {
-    v4 = [v3 allObjects];
-    v5 = [v4 componentsJoinedByString:{@", "}];
+    allObjects = [setCopy allObjects];
+    v5 = [allObjects componentsJoinedByString:{@", "}];
   }
 
   else
@@ -741,12 +741,12 @@ void __91__ACDClientAuthorizationManager_removeAllClientAuthorizationsForAccount
   return v5;
 }
 
-- (id)_setFromCSVString:(id)a3
+- (id)_setFromCSVString:(id)string
 {
-  v3 = a3;
-  if ([v3 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v4 = [v3 componentsSeparatedByString:{@", "}];
+    v4 = [stringCopy componentsSeparatedByString:{@", "}];
     v5 = [MEMORY[0x277CBEB98] setWithArray:v4];
   }
 

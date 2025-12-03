@@ -1,20 +1,20 @@
 @interface ML3SearchStringPredicate
-+ (id)predicateWithConcatenatedProperties:(id)a3 searchString:(id)a4;
-- (BOOL)isDynamicForEntityClass:(Class)a3;
-- (BOOL)isEqual:(id)a3;
-- (ML3SearchStringPredicate)initWithCoder:(id)a3;
-- (ML3SearchStringPredicate)initWithConcatenatedProperties:(id)a3 searchString:(id)a4;
-- (id)SQLJoinClausesForClass:(Class)a3;
++ (id)predicateWithConcatenatedProperties:(id)properties searchString:(id)string;
+- (BOOL)isDynamicForEntityClass:(Class)class;
+- (BOOL)isEqual:(id)equal;
+- (ML3SearchStringPredicate)initWithCoder:(id)coder;
+- (ML3SearchStringPredicate)initWithConcatenatedProperties:(id)properties searchString:(id)string;
+- (id)SQLJoinClausesForClass:(Class)class;
 - (id)databaseStatementParameters;
 - (id)description;
 - (unint64_t)hash;
-- (void)appendSQLToMutableString:(id)a3 entityClass:(Class)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendSQLToMutableString:(id)string entityClass:(Class)class;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ML3SearchStringPredicate
 
-- (BOOL)isDynamicForEntityClass:(Class)a3
+- (BOOL)isDynamicForEntityClass:(Class)class
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
@@ -36,7 +36,7 @@
           objc_enumerationMutation(v4);
         }
 
-        if (![(objc_class *)a3 libraryContentsChangeForProperty:*(*(&v11 + 1) + 8 * i), v11])
+        if (![(objc_class *)class libraryContentsChangeForProperty:*(*(&v11 + 1) + 8 * i), v11])
         {
           v9 = 1;
           goto LABEL_11;
@@ -74,14 +74,14 @@ LABEL_11:
   return v3;
 }
 
-- (void)appendSQLToMutableString:(id)a3 entityClass:(Class)a4
+- (void)appendSQLToMutableString:(id)string entityClass:(Class)class
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  stringCopy = string;
   if ([(NSArray *)self->_properties count])
   {
-    [v6 appendString:@"ML3SearchStringMatch"];
-    objc_msgSend(v6, "appendString:", @"(?, ");
+    [stringCopy appendString:@"ML3SearchStringMatch"];
+    objc_msgSend(stringCopy, "appendString:", @"(?, ");
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
@@ -106,12 +106,12 @@ LABEL_11:
           v13 = *(*(&v17 + 1) + 8 * v12);
           if (v10)
           {
-            [v6 appendString:@" || ' ' || "];
+            [stringCopy appendString:@" || ' ' || "];
           }
 
-          v14 = [(objc_class *)a4 disambiguatedSQLForProperty:v13];
+          v14 = [(objc_class *)class disambiguatedSQLForProperty:v13];
           v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"coalesce(%@, '')", v14];
-          [v6 appendString:v15];
+          [stringCopy appendString:v15];
 
           ++v12;
           v10 = 1;
@@ -132,10 +132,10 @@ LABEL_11:
     v16 = @"0";
   }
 
-  [v6 appendString:v16];
+  [stringCopy appendString:v16];
 }
 
-- (id)SQLJoinClausesForClass:(Class)a3
+- (id)SQLJoinClausesForClass:(Class)class
 {
   v27 = *MEMORY[0x277D85DE8];
   v21 = 0u;
@@ -147,7 +147,7 @@ LABEL_11:
   if (v3)
   {
     v4 = v3;
-    v5 = 0;
+    orderedSet = 0;
     v6 = *v22;
     do
     {
@@ -158,7 +158,7 @@ LABEL_11:
           objc_enumerationMutation(obj);
         }
 
-        v8 = [(objc_class *)a3 joinClausesForProperty:*(*(&v21 + 1) + 8 * i)];
+        v8 = [(objc_class *)class joinClausesForProperty:*(*(&v21 + 1) + 8 * i)];
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
@@ -178,12 +178,12 @@ LABEL_11:
               }
 
               v13 = *(*(&v17 + 1) + 8 * j);
-              if (!v5)
+              if (!orderedSet)
               {
-                v5 = [MEMORY[0x277CBEB40] orderedSet];
+                orderedSet = [MEMORY[0x277CBEB40] orderedSet];
               }
 
-              [v5 addObject:v13];
+              [orderedSet addObject:v13];
             }
 
             v10 = [v8 countByEnumeratingWithState:&v17 objects:v25 count:16];
@@ -201,10 +201,10 @@ LABEL_11:
 
   else
   {
-    v5 = 0;
+    orderedSet = 0;
   }
 
-  return v5;
+  return orderedSet;
 }
 
 - (id)description
@@ -224,16 +224,16 @@ LABEL_11:
   v7.receiver = self;
   v7.super_class = ML3SearchStringPredicate;
   v3 = [(ML3Predicate *)&v7 hash];
-  v4 = [(ML3SearchStringPredicate *)self searchString];
-  v5 = [v4 hash];
+  searchString = [(ML3SearchStringPredicate *)self searchString];
+  v5 = [searchString hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -242,22 +242,22 @@ LABEL_11:
   {
     v11.receiver = self;
     v11.super_class = ML3SearchStringPredicate;
-    if ([(ML3Predicate *)&v11 isEqual:v4])
+    if ([(ML3Predicate *)&v11 isEqual:equalCopy])
     {
-      v5 = [(ML3SearchStringPredicate *)self properties];
-      v6 = [(ML3SearchStringPredicate *)v4 properties];
-      if (v5 == v6 || [v5 isEqual:v6])
+      properties = [(ML3SearchStringPredicate *)self properties];
+      properties2 = [(ML3SearchStringPredicate *)equalCopy properties];
+      if (properties == properties2 || [properties isEqual:properties2])
       {
-        v7 = [(ML3SearchStringPredicate *)self searchString];
-        v8 = [(ML3SearchStringPredicate *)v4 searchString];
-        if (v7 == v8)
+        searchString = [(ML3SearchStringPredicate *)self searchString];
+        searchString2 = [(ML3SearchStringPredicate *)equalCopy searchString];
+        if (searchString == searchString2)
         {
           v9 = 1;
         }
 
         else
         {
-          v9 = [v7 isEqual:v8];
+          v9 = [searchString isEqual:searchString2];
         }
       }
 
@@ -276,62 +276,62 @@ LABEL_11:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = ML3SearchStringPredicate;
-  v4 = a3;
-  [(ML3Predicate *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ML3Predicate *)&v7 encodeWithCoder:coderCopy];
   v5 = [(ML3SearchStringPredicate *)self properties:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"properties"];
+  [coderCopy encodeObject:v5 forKey:@"properties"];
 
-  v6 = [(ML3SearchStringPredicate *)self searchString];
-  [v4 encodeObject:v6 forKey:@"searchString"];
+  searchString = [(ML3SearchStringPredicate *)self searchString];
+  [coderCopy encodeObject:searchString forKey:@"searchString"];
 }
 
-- (ML3SearchStringPredicate)initWithCoder:(id)a3
+- (ML3SearchStringPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = ML3SearchStringPredicate;
-  v5 = [(ML3Predicate *)&v12 initWithCoder:v4];
+  v5 = [(ML3Predicate *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"properties"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"properties"];
     [(ML3SearchStringPredicate *)v5 setProperties:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"searchString"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"searchString"];
     [(ML3SearchStringPredicate *)v5 setSearchString:v10];
   }
 
   return v5;
 }
 
-- (ML3SearchStringPredicate)initWithConcatenatedProperties:(id)a3 searchString:(id)a4
+- (ML3SearchStringPredicate)initWithConcatenatedProperties:(id)properties searchString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  stringCopy = string;
   v11.receiver = self;
   v11.super_class = ML3SearchStringPredicate;
   v8 = [(ML3SearchStringPredicate *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(ML3SearchStringPredicate *)v8 setProperties:v6];
-    [(ML3SearchStringPredicate *)v9 setSearchString:v7];
+    [(ML3SearchStringPredicate *)v8 setProperties:propertiesCopy];
+    [(ML3SearchStringPredicate *)v9 setSearchString:stringCopy];
   }
 
   return v9;
 }
 
-+ (id)predicateWithConcatenatedProperties:(id)a3 searchString:(id)a4
++ (id)predicateWithConcatenatedProperties:(id)properties searchString:(id)string
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithConcatenatedProperties:v6 searchString:v5];
+  stringCopy = string;
+  propertiesCopy = properties;
+  v7 = [objc_alloc(objc_opt_class()) initWithConcatenatedProperties:propertiesCopy searchString:stringCopy];
 
   return v7;
 }

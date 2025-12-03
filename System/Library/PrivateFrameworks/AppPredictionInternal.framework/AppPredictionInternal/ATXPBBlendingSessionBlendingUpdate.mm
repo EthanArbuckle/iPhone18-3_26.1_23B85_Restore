@@ -1,33 +1,33 @@
 @interface ATXPBBlendingSessionBlendingUpdate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addClientModelUpdate:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addClientModelUpdate:(id)update;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBBlendingSessionBlendingUpdate
 
-- (void)addClientModelUpdate:(id)a3
+- (void)addClientModelUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   clientModelUpdates = self->_clientModelUpdates;
-  v8 = v4;
+  v8 = updateCopy;
   if (!clientModelUpdates)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_clientModelUpdates;
     self->_clientModelUpdates = v6;
 
-    v4 = v8;
+    updateCopy = v8;
     clientModelUpdates = self->_clientModelUpdates;
   }
 
-  [(NSMutableArray *)clientModelUpdates addObject:v4];
+  [(NSMutableArray *)clientModelUpdates addObject:updateCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = ATXPBBlendingSessionBlendingUpdate;
   v4 = [(ATXPBBlendingSessionBlendingUpdate *)&v8 description];
-  v5 = [(ATXPBBlendingSessionBlendingUpdate *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBBlendingSessionBlendingUpdate *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   blendingUpdateUUID = self->_blendingUpdateUUID;
   if (blendingUpdateUUID)
   {
-    [v3 setObject:blendingUpdateUUID forKey:@"blendingUpdateUUID"];
+    [dictionary setObject:blendingUpdateUUID forKey:@"blendingUpdateUUID"];
   }
 
   blendingABGroup = self->_blendingABGroup;
@@ -68,8 +68,8 @@
   deviceContext = self->_deviceContext;
   if (deviceContext)
   {
-    v9 = [(ATXPBBlendingSessionDeviceContext *)deviceContext dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"deviceContext"];
+    dictionaryRepresentation = [(ATXPBBlendingSessionDeviceContext *)deviceContext dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"deviceContext"];
   }
 
   if ([(NSMutableArray *)self->_clientModelUpdates count])
@@ -94,8 +94,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation2 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation2];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -110,8 +110,8 @@
   uiCache = self->_uiCache;
   if (uiCache)
   {
-    v18 = [(ATXPBBlendingSessionUICache *)uiCache dictionaryRepresentation];
-    [v4 setObject:v18 forKey:@"uiCache"];
+    dictionaryRepresentation3 = [(ATXPBBlendingSessionUICache *)uiCache dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"uiCache"];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -119,10 +119,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_blendingUpdateUUID)
   {
     PBDataWriterWriteStringField();
@@ -183,67 +183,67 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_blendingUpdateUUID)
   {
-    [v8 setBlendingUpdateUUID:?];
+    [toCopy setBlendingUpdateUUID:?];
   }
 
   if (self->_blendingABGroup)
   {
-    [v8 setBlendingABGroup:?];
+    [toCopy setBlendingABGroup:?];
   }
 
   if (self->_consumerSubType)
   {
-    [v8 setConsumerSubType:?];
+    [toCopy setConsumerSubType:?];
   }
 
   if (self->_deviceContext)
   {
-    [v8 setDeviceContext:?];
+    [toCopy setDeviceContext:?];
   }
 
   if ([(ATXPBBlendingSessionBlendingUpdate *)self clientModelUpdatesCount])
   {
-    [v8 clearClientModelUpdates];
-    v4 = [(ATXPBBlendingSessionBlendingUpdate *)self clientModelUpdatesCount];
-    if (v4)
+    [toCopy clearClientModelUpdates];
+    clientModelUpdatesCount = [(ATXPBBlendingSessionBlendingUpdate *)self clientModelUpdatesCount];
+    if (clientModelUpdatesCount)
     {
-      v5 = v4;
+      v5 = clientModelUpdatesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ATXPBBlendingSessionBlendingUpdate *)self clientModelUpdateAtIndex:i];
-        [v8 addClientModelUpdate:v7];
+        [toCopy addClientModelUpdate:v7];
       }
     }
   }
 
   if (self->_uiCache)
   {
-    [v8 setUiCache:?];
+    [toCopy setUiCache:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_blendingUpdateUUID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_blendingUpdateUUID copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_blendingABGroup copyWithZone:a3];
+  v8 = [(NSString *)self->_blendingABGroup copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSString *)self->_consumerSubType copyWithZone:a3];
+  v10 = [(NSString *)self->_consumerSubType copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
-  v12 = [(ATXPBBlendingSessionDeviceContext *)self->_deviceContext copyWithZone:a3];
+  v12 = [(ATXPBBlendingSessionDeviceContext *)self->_deviceContext copyWithZone:zone];
   v13 = v5[5];
   v5[5] = v12;
 
@@ -267,7 +267,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v24 + 1) + 8 * v18) copyWithZone:{a3, v24}];
+        v19 = [*(*(&v24 + 1) + 8 * v18) copyWithZone:{zone, v24}];
         [v5 addClientModelUpdate:v19];
 
         ++v18;
@@ -280,7 +280,7 @@
     while (v16);
   }
 
-  v20 = [(ATXPBBlendingSessionUICache *)self->_uiCache copyWithZone:a3];
+  v20 = [(ATXPBBlendingSessionUICache *)self->_uiCache copyWithZone:zone];
   v21 = v5[6];
   v5[6] = v20;
 
@@ -288,13 +288,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((blendingUpdateUUID = self->_blendingUpdateUUID, !(blendingUpdateUUID | v4[2])) || -[NSString isEqual:](blendingUpdateUUID, "isEqual:")) && ((blendingABGroup = self->_blendingABGroup, !(blendingABGroup | v4[1])) || -[NSString isEqual:](blendingABGroup, "isEqual:")) && ((consumerSubType = self->_consumerSubType, !(consumerSubType | v4[4])) || -[NSString isEqual:](consumerSubType, "isEqual:")) && ((deviceContext = self->_deviceContext, !(deviceContext | v4[5])) || -[ATXPBBlendingSessionDeviceContext isEqual:](deviceContext, "isEqual:")) && ((clientModelUpdates = self->_clientModelUpdates, !(clientModelUpdates | v4[3])) || -[NSMutableArray isEqual:](clientModelUpdates, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((blendingUpdateUUID = self->_blendingUpdateUUID, !(blendingUpdateUUID | equalCopy[2])) || -[NSString isEqual:](blendingUpdateUUID, "isEqual:")) && ((blendingABGroup = self->_blendingABGroup, !(blendingABGroup | equalCopy[1])) || -[NSString isEqual:](blendingABGroup, "isEqual:")) && ((consumerSubType = self->_consumerSubType, !(consumerSubType | equalCopy[4])) || -[NSString isEqual:](consumerSubType, "isEqual:")) && ((deviceContext = self->_deviceContext, !(deviceContext | equalCopy[5])) || -[ATXPBBlendingSessionDeviceContext isEqual:](deviceContext, "isEqual:")) && ((clientModelUpdates = self->_clientModelUpdates, !(clientModelUpdates | equalCopy[3])) || -[NSMutableArray isEqual:](clientModelUpdates, "isEqual:")))
   {
     uiCache = self->_uiCache;
-    if (uiCache | v4[6])
+    if (uiCache | equalCopy[6])
     {
       v11 = [(ATXPBBlendingSessionUICache *)uiCache isEqual:?];
     }
@@ -323,27 +323,27 @@
   return v6 ^ v7 ^ [(ATXPBBlendingSessionUICache *)self->_uiCache hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(ATXPBBlendingSessionBlendingUpdate *)self setBlendingUpdateUUID:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(ATXPBBlendingSessionBlendingUpdate *)self setBlendingABGroup:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ATXPBBlendingSessionBlendingUpdate *)self setConsumerSubType:?];
   }
 
   deviceContext = self->_deviceContext;
-  v6 = *(v4 + 5);
+  v6 = *(fromCopy + 5);
   if (deviceContext)
   {
     if (v6)
@@ -361,7 +361,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = *(v4 + 3);
+  v7 = *(fromCopy + 3);
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -386,7 +386,7 @@
   }
 
   uiCache = self->_uiCache;
-  v13 = *(v4 + 6);
+  v13 = *(fromCopy + 6);
   if (uiCache)
   {
     if (v13)

@@ -14,11 +14,11 @@
   v2 = [(TLKAsyncCache *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel_updateNowPlayingItem name:*MEMORY[0x1E6970260] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_updateNowPlayingItem name:*MEMORY[0x1E6970260] object:0];
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v2 selector:sel_updatePlaybackState name:*MEMORY[0x1E6970268] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_updatePlaybackState name:*MEMORY[0x1E6970268] object:0];
 
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -95,11 +95,11 @@ void __47__SearchUIMusicStatusCache_updatePlaybackState__block_invoke(uint64_t a
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [MEMORY[0x1E69707E8] systemMusicPlayer];
-  [v4 endGeneratingPlaybackNotifications];
+  systemMusicPlayer = [MEMORY[0x1E69707E8] systemMusicPlayer];
+  [systemMusicPlayer endGeneratingPlaybackNotifications];
 
   v5.receiver = self;
   v5.super_class = SearchUIMusicStatusCache;

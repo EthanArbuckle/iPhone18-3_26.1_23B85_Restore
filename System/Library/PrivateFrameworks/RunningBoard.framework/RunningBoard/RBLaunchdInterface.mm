@@ -1,10 +1,10 @@
 @interface RBLaunchdInterface
 + (id)interface;
-- (id)instancePropertiesFromJobProperties:(id)a3;
-- (id)instancePropertiesFromOverlay:(id)a3;
-- (id)jobWithPlist:(id)a3;
-- (id)jobWithPlist:(id)a3 domain:(id)a4;
-- (id)submitExtensionWithExecutableURL:(id)a3 properties:(id)a4 domain:(id)a5 error:(id *)a6;
+- (id)instancePropertiesFromJobProperties:(id)properties;
+- (id)instancePropertiesFromOverlay:(id)overlay;
+- (id)jobWithPlist:(id)plist;
+- (id)jobWithPlist:(id)plist domain:(id)domain;
+- (id)submitExtensionWithExecutableURL:(id)l properties:(id)properties domain:(id)domain error:(id *)error;
 @end
 
 @implementation RBLaunchdInterface
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __31__RBLaunchdInterface_interface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (interface_onceToken != -1)
   {
     dispatch_once(&interface_onceToken, block);
@@ -35,61 +35,61 @@ void __31__RBLaunchdInterface_interface__block_invoke(uint64_t a1)
   interface_singleton = v1;
 }
 
-- (id)submitExtensionWithExecutableURL:(id)a3 properties:(id)a4 domain:(id)a5 error:(id *)a6
+- (id)submitExtensionWithExecutableURL:(id)l properties:(id)properties domain:(id)domain error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  lCopy = l;
+  propertiesCopy = properties;
+  domainCopy = domain;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     [RBLaunchdInterface submitExtensionWithExecutableURL:a2 properties:self domain:? error:?];
   }
 
   v17 = 0;
-  v14 = [MEMORY[0x277CEBF28] submitExtensionAtURL:v11 properties:v12 domain:v13 error:&v17];
+  v14 = [MEMORY[0x277CEBF28] submitExtensionAtURL:lCopy properties:propertiesCopy domain:domainCopy error:&v17];
   v15 = v17;
   if (!(v14 | v15))
   {
     v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"OSLaunchdErrorDomain" code:45 userInfo:0];
   }
 
-  if (a6 && !v14)
+  if (error && !v14)
   {
     v15 = v15;
-    *a6 = v15;
+    *error = v15;
   }
 
   return v14;
 }
 
-- (id)jobWithPlist:(id)a3
+- (id)jobWithPlist:(id)plist
 {
   v3 = MEMORY[0x277CEBF28];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithPlist:v4];
+  plistCopy = plist;
+  v5 = [[v3 alloc] initWithPlist:plistCopy];
 
   return v5;
 }
 
-- (id)jobWithPlist:(id)a3 domain:(id)a4
+- (id)jobWithPlist:(id)plist domain:(id)domain
 {
   v5 = MEMORY[0x277CEBF28];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithPlist:v7 domain:v6];
+  domainCopy = domain;
+  plistCopy = plist;
+  v8 = [[v5 alloc] initWithPlist:plistCopy domain:domainCopy];
 
   return v8;
 }
 
-- (id)instancePropertiesFromOverlay:(id)a3
+- (id)instancePropertiesFromOverlay:(id)overlay
 {
-  v3 = a3;
+  overlayCopy = overlay;
   v4 = objc_opt_new();
-  v5 = [v3 objectForKeyedSubscript:@"XPCService"];
+  v5 = [overlayCopy objectForKeyedSubscript:@"XPCService"];
   v6 = [v5 objectForKeyedSubscript:@"_SandboxProfile"];
   [v4 setSandboxProfile:v6];
 
-  v7 = [v3 objectForKeyedSubscript:@"XPCService"];
+  v7 = [overlayCopy objectForKeyedSubscript:@"XPCService"];
 
   v8 = [v7 objectForKeyedSubscript:@"EnvironmentVariables"];
   [v4 setEnvironmentVariables:v8];
@@ -97,16 +97,16 @@ void __31__RBLaunchdInterface_interface__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (id)instancePropertiesFromJobProperties:(id)a3
+- (id)instancePropertiesFromJobProperties:(id)properties
 {
-  v3 = a3;
+  propertiesCopy = properties;
   v4 = objc_opt_new();
-  v5 = [v3 sandboxProfile];
-  [v4 setSandboxProfile:v5];
+  sandboxProfile = [propertiesCopy sandboxProfile];
+  [v4 setSandboxProfile:sandboxProfile];
 
-  v6 = [v3 environmentVariables];
+  environmentVariables = [propertiesCopy environmentVariables];
 
-  [v4 setEnvironmentVariables:v6];
+  [v4 setEnvironmentVariables:environmentVariables];
 
   return v4;
 }

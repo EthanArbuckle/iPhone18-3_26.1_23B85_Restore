@@ -1,5 +1,5 @@
 @interface SBButtonConsumerRegistration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SBButtonConsumerClient)client;
 - (id)description;
 - (unint64_t)hash;
@@ -18,9 +18,9 @@
 
   v8 = [v3 appendUInt64:self->_eventMask withName:@"eventMask"];
   v9 = [v3 appendInteger:self->_eventPriority withName:@"eventPriority"];
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 - (unint64_t)hash
@@ -38,10 +38,10 @@
   return WeakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -51,10 +51,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       WeakRetained = objc_loadWeakRetained(&self->_client);
-      v7 = [(SBButtonConsumerRegistration *)v5 client];
-      if (WeakRetained == v7 && (buttonKind = self->_buttonKind, buttonKind == [(SBButtonConsumerRegistration *)v5 buttonKind]) && (eventMask = self->_eventMask, eventMask == [(SBButtonConsumerRegistration *)v5 eventMask]))
+      client = [(SBButtonConsumerRegistration *)v5 client];
+      if (WeakRetained == client && (buttonKind = self->_buttonKind, buttonKind == [(SBButtonConsumerRegistration *)v5 buttonKind]) && (eventMask = self->_eventMask, eventMask == [(SBButtonConsumerRegistration *)v5 eventMask]))
       {
         eventPriority = self->_eventPriority;
         v11 = eventPriority == [(SBButtonConsumerRegistration *)v5 eventPriority];

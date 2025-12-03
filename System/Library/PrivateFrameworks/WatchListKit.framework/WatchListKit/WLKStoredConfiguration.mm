@@ -11,7 +11,7 @@
   v10.receiver = self;
   v10.super_class = WLKStoredConfiguration;
   v4 = [(WLKStoredConfiguration *)&v10 description];
-  v5 = [(WLKStoredConfiguration *)self requiredRequestKeyValuePairs];
+  requiredRequestKeyValuePairs = [(WLKStoredConfiguration *)self requiredRequestKeyValuePairs];
   if ([(WLKStoredConfiguration *)self activeUser])
   {
     v6 = @"YES";
@@ -22,16 +22,16 @@
     v6 = @"NO";
   }
 
-  v7 = [(WLKStoredConfiguration *)self timestamp];
-  v8 = [v3 stringWithFormat:@"%@ {rrkvp:%@ activeUser:%@ timestamp:%@}", v4, v5, v6, v7];
+  timestamp = [(WLKStoredConfiguration *)self timestamp];
+  v8 = [v3 stringWithFormat:@"%@ {rrkvp:%@ activeUser:%@ timestamp:%@}", v4, requiredRequestKeyValuePairs, v6, timestamp];
 
   return v8;
 }
 
 - (NSString)utsk
 {
-  v2 = [(WLKStoredConfiguration *)self requiredRequestKeyValuePairs];
-  v3 = [v2 objectForKeyedSubscript:@"utsk"];
+  requiredRequestKeyValuePairs = [(WLKStoredConfiguration *)self requiredRequestKeyValuePairs];
+  v3 = [requiredRequestKeyValuePairs objectForKeyedSubscript:@"utsk"];
   v4 = [v3 copy];
 
   return v4;

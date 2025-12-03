@@ -1,50 +1,50 @@
 @interface VUIViewControllerContentPresenter
-- (id)_createAlertViewWithTitle:(id)a3 description:(id)a4;
-- (id)_logNameForContentViewType:(unint64_t)a3;
-- (void)configureCurrentViewFrameForBounds:(CGRect)a3;
+- (id)_createAlertViewWithTitle:(id)title description:(id)description;
+- (id)_logNameForContentViewType:(unint64_t)type;
+- (void)configureCurrentViewFrameForBounds:(CGRect)bounds;
 - (void)refreshNoContentViewIfNeeded;
-- (void)setCurrentContentViewType:(unint64_t)a3;
-- (void)setRootView:(id)a3;
-- (void)setRootViewForViewController:(id)a3;
+- (void)setCurrentContentViewType:(unint64_t)type;
+- (void)setRootView:(id)view;
+- (void)setRootViewForViewController:(id)controller;
 @end
 
 @implementation VUIViewControllerContentPresenter
 
-- (void)setRootViewForViewController:(id)a3
+- (void)setRootViewForViewController:(id)controller
 {
   v4 = MEMORY[0x1E69DD250];
-  v9 = a3;
+  controllerCopy = controller;
   v5 = objc_alloc_init(v4);
   rootView = self->_rootView;
   self->_rootView = v5;
 
   v7 = self->_rootView;
-  v8 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-  [(UIView *)v7 setBackgroundColor:v8];
+  vui_primaryDynamicBackgroundColor = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+  [(UIView *)v7 setBackgroundColor:vui_primaryDynamicBackgroundColor];
 
-  [v9 setView:self->_rootView];
+  [controllerCopy setView:self->_rootView];
 }
 
-- (void)setRootView:(id)a3
+- (void)setRootView:(id)view
 {
-  objc_storeStrong(&self->_rootView, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_rootView, view);
+  viewCopy = view;
   rootView = self->_rootView;
-  v7 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-  [(UIView *)rootView setBackgroundColor:v7];
+  vui_primaryDynamicBackgroundColor = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+  [(UIView *)rootView setBackgroundColor:vui_primaryDynamicBackgroundColor];
 }
 
-- (void)configureCurrentViewFrameForBounds:(CGRect)a3
+- (void)configureCurrentViewFrameForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(VUIViewControllerContentPresenter *)self currentView];
-  [v7 setFrame:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  currentView = [(VUIViewControllerContentPresenter *)self currentView];
+  [currentView setFrame:{x, y, width, height}];
 }
 
-- (void)setCurrentContentViewType:(unint64_t)a3
+- (void)setCurrentContentViewType:(unint64_t)type
 {
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x1E69E9820];
@@ -52,7 +52,7 @@
   v6 = __63__VUIViewControllerContentPresenter_setCurrentContentViewType___block_invoke;
   v7 = &unk_1E8730340;
   objc_copyWeak(v8, &location);
-  v8[1] = a3;
+  v8[1] = type;
   v4 = v5;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
@@ -214,12 +214,12 @@ LABEL_37:
 
 - (void)refreshNoContentViewIfNeeded
 {
-  v3 = [(VUIViewControllerContentPresenter *)self currentContentViewType];
-  v4 = [(VUIViewControllerContentPresenter *)self currentView];
+  currentContentViewType = [(VUIViewControllerContentPresenter *)self currentContentViewType];
+  currentView = [(VUIViewControllerContentPresenter *)self currentView];
 
-  v5 = [(VUIViewControllerContentPresenter *)self noContentErrorTitle];
-  v6 = [(VUIViewControllerContentPresenter *)self noContentErrorMessage];
-  if (v3 == 2 && !v4 && v5 | v6)
+  noContentErrorTitle = [(VUIViewControllerContentPresenter *)self noContentErrorTitle];
+  noContentErrorMessage = [(VUIViewControllerContentPresenter *)self noContentErrorMessage];
+  if (currentContentViewType == 2 && !currentView && noContentErrorTitle | noContentErrorMessage)
   {
     objc_initWeak(&location, self);
     v8 = MEMORY[0x1E69E9820];
@@ -227,8 +227,8 @@ LABEL_37:
     v10 = __65__VUIViewControllerContentPresenter_refreshNoContentViewIfNeeded__block_invoke;
     v11 = &unk_1E872D9B8;
     objc_copyWeak(&v14, &location);
-    v12 = v5;
-    v13 = v6;
+    v12 = noContentErrorTitle;
+    v13 = noContentErrorMessage;
     v7 = &v8;
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
@@ -265,34 +265,34 @@ void __65__VUIViewControllerContentPresenter_refreshNoContentViewIfNeeded__block
   }
 }
 
-- (id)_createAlertViewWithTitle:(id)a3 description:(id)a4
+- (id)_createAlertViewWithTitle:(id)title description:(id)description
 {
-  v5 = a3;
-  v6 = a4;
+  titleCopy = title;
+  descriptionCopy = description;
   v7 = objc_alloc_init(VUILibraryAlertView);
-  v8 = [(VUILibraryAlertView *)v7 titleLabel];
-  v9 = [v8 textLayout];
-  v10 = [(VUILibraryAlertView *)v7 titleLabel];
-  v11 = [VUILabel labelWithString:v5 textLayout:v9 existingLabel:v10];
+  titleLabel = [(VUILibraryAlertView *)v7 titleLabel];
+  textLayout = [titleLabel textLayout];
+  titleLabel2 = [(VUILibraryAlertView *)v7 titleLabel];
+  v11 = [VUILabel labelWithString:titleCopy textLayout:textLayout existingLabel:titleLabel2];
 
-  v12 = [(VUILibraryAlertView *)v7 subtitleLabel];
-  v13 = [v12 textLayout];
-  v14 = [(VUILibraryAlertView *)v7 subtitleLabel];
-  v15 = [VUILabel labelWithString:v6 textLayout:v13 existingLabel:v14];
+  subtitleLabel = [(VUILibraryAlertView *)v7 subtitleLabel];
+  textLayout2 = [subtitleLabel textLayout];
+  subtitleLabel2 = [(VUILibraryAlertView *)v7 subtitleLabel];
+  v15 = [VUILabel labelWithString:descriptionCopy textLayout:textLayout2 existingLabel:subtitleLabel2];
 
   return v7;
 }
 
-- (id)_logNameForContentViewType:(unint64_t)a3
+- (id)_logNameForContentViewType:(unint64_t)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return &stru_1F5DB25C0;
   }
 
   else
   {
-    return off_1E8730360[a3];
+    return off_1E8730360[type];
   }
 }
 

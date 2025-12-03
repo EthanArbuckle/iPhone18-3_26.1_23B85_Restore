@@ -1,12 +1,12 @@
 @interface SRAudioLevel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CMTimeRange)timeRange;
 - (SRAudioLevel)init;
-- (SRAudioLevel)initWithCoder:(id)a3;
-- (SRAudioLevel)initWithTimeRange:(id *)a3 loudness:(double)a4;
+- (SRAudioLevel)initWithCoder:(id)coder;
+- (SRAudioLevel)initWithTimeRange:(id *)range loudness:(double)loudness;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRAudioLevel
@@ -18,27 +18,27 @@
   return 0;
 }
 
-- (SRAudioLevel)initWithTimeRange:(id *)a3 loudness:(double)a4
+- (SRAudioLevel)initWithTimeRange:(id *)range loudness:(double)loudness
 {
   v9.receiver = self;
   v9.super_class = SRAudioLevel;
   result = [(SRAudioLevel *)&v9 init];
   if (result)
   {
-    v7 = *&a3->var0.var0;
-    v8 = *&a3->var1.var1;
-    *&result->_timeRange.start.epoch = *&a3->var0.var3;
+    v7 = *&range->var0.var0;
+    v8 = *&range->var1.var1;
+    *&result->_timeRange.start.epoch = *&range->var0.var3;
     *&result->_timeRange.duration.timescale = v8;
     *&result->_timeRange.start.value = v7;
-    result->_loudness = a4;
+    result->_loudness = loudness;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v10) = 1;
   }
@@ -58,9 +58,9 @@
       [(SRAudioLevel *)self timeRange];
       v12 = [v11 valueWithCMTimeRange:v17];
       v13 = MEMORY[0x1E696B098];
-      if (a3)
+      if (equal)
       {
-        [a3 timeRange];
+        [equal timeRange];
       }
 
       else
@@ -72,7 +72,7 @@
       if (v10)
       {
         loudness = self->_loudness;
-        [a3 loudness];
+        [equal loudness];
         LOBYTE(v10) = loudness == v15;
       }
     }
@@ -113,9 +113,9 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
@@ -131,19 +131,19 @@
     memset(v7, 0, sizeof(v7));
   }
 
-  [a3 encodeObject:objc_msgSend(v6 forKey:{"valueWithCMTimeRange:", v7), @"timeRange"}];
-  [a3 encodeDouble:@"loudness" forKey:self->_loudness];
+  [coder encodeObject:objc_msgSend(v6 forKey:{"valueWithCMTimeRange:", v7), @"timeRange"}];
+  [coder encodeDouble:@"loudness" forKey:self->_loudness];
 }
 
-- (SRAudioLevel)initWithCoder:(id)a3
+- (SRAudioLevel)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"timeRange"];
-  [a3 decodeDoubleForKey:@"loudness"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"timeRange"];
+  [coder decodeDoubleForKey:@"loudness"];
   v8 = v7;
   if (v6)
   {

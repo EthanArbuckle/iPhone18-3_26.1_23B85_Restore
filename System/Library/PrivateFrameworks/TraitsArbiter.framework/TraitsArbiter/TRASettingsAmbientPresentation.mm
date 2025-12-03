@@ -1,43 +1,43 @@
 @interface TRASettingsAmbientPresentation
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAmbientPresentationSettings:(id)a3;
-- (TRASettingsAmbientPresentation)initWithAmbientPresentationInputs:(id)a3;
-- (TRASettingsAmbientPresentation)initWithAmbientPresentationSettings:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAmbientPresentationSettings:(id)settings;
+- (TRASettingsAmbientPresentation)initWithAmbientPresentationInputs:(id)inputs;
+- (TRASettingsAmbientPresentation)initWithAmbientPresentationSettings:(id)settings;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation TRASettingsAmbientPresentation
 
-- (TRASettingsAmbientPresentation)initWithAmbientPresentationInputs:(id)a3
+- (TRASettingsAmbientPresentation)initWithAmbientPresentationInputs:(id)inputs
 {
-  v5 = a3;
+  inputsCopy = inputs;
   v9.receiver = self;
   v9.super_class = TRASettingsAmbientPresentation;
   v6 = [(TRASettingsAmbientPresentation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_ambientPresentationInputs, a3);
+    objc_storeStrong(&v6->_ambientPresentationInputs, inputs);
   }
 
   return v7;
 }
 
-- (TRASettingsAmbientPresentation)initWithAmbientPresentationSettings:(id)a3
+- (TRASettingsAmbientPresentation)initWithAmbientPresentationSettings:(id)settings
 {
-  v4 = [a3 ambientPresentationInputs];
-  v5 = [(TRASettingsAmbientPresentation *)self initWithAmbientPresentationInputs:v4];
+  ambientPresentationInputs = [settings ambientPresentationInputs];
+  v5 = [(TRASettingsAmbientPresentation *)self initWithAmbientPresentationInputs:ambientPresentationInputs];
 
   return v5;
 }
 
-- (BOOL)isEqualToAmbientPresentationSettings:(id)a3
+- (BOOL)isEqualToAmbientPresentationSettings:(id)settings
 {
-  v4 = a3;
-  if (v4)
+  settingsCopy = settings;
+  if (settingsCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -45,7 +45,7 @@
       [TRASettingsAmbientPresentation isEqualToAmbientPresentationSettings:];
     }
 
-    if (self == v4)
+    if (self == settingsCopy)
     {
       v7 = 1;
     }
@@ -53,8 +53,8 @@
     else
     {
       ambientPresentationInputs = self->_ambientPresentationInputs;
-      v6 = [(TRASettingsAmbientPresentation *)v4 ambientPresentationInputs];
-      v7 = [(TRAArbitrationAmbientPresentationInputs *)ambientPresentationInputs isEqual:v6];
+      ambientPresentationInputs = [(TRASettingsAmbientPresentation *)settingsCopy ambientPresentationInputs];
+      v7 = [(TRAArbitrationAmbientPresentationInputs *)ambientPresentationInputs isEqual:ambientPresentationInputs];
     }
   }
 
@@ -66,17 +66,17 @@
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TRAMutableSettingsAmbientPresentation allocWithZone:a3];
+  v4 = [TRAMutableSettingsAmbientPresentation allocWithZone:zone];
 
   return [(TRASettingsAmbientPresentation *)v4 initWithAmbientPresentationSettings:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -84,7 +84,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRASettingsAmbientPresentation *)self isEqualToAmbientPresentationSettings:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRASettingsAmbientPresentation *)self isEqualToAmbientPresentationSettings:equalCopy];
   }
 
   return v5;
@@ -92,10 +92,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(TRASettingsAmbientPresentation *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(TRASettingsAmbientPresentation *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -107,12 +107,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(TRASettingsAmbientPresentation *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(TRASettingsAmbientPresentation *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (void)isEqualToAmbientPresentationSettings:.cold.1()

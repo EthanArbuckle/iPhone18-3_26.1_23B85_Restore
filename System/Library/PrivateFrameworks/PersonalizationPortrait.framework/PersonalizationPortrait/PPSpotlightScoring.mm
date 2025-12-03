@@ -1,26 +1,26 @@
 @interface PPSpotlightScoring
 + (id)defaultInstance;
-- (PPSpotlightScoring)initWithTopicStore:(id)a3;
-- (id)spotlightQueryScore:(id)a3 error:(id *)a4;
+- (PPSpotlightScoring)initWithTopicStore:(id)store;
+- (id)spotlightQueryScore:(id)score error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation PPSpotlightScoring
 
-- (id)spotlightQueryScore:(id)a3 error:(id *)a4
+- (id)spotlightQueryScore:(id)score error:(id *)error
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PPTopicStore *)self->_topicStore cachedTopicScores];
-  if (!v7)
+  scoreCopy = score;
+  cachedTopicScores = [(PPTopicStore *)self->_topicStore cachedTopicScores];
+  if (!cachedTopicScores)
   {
-    if (a4)
+    if (error)
     {
       v17 = MEMORY[0x1E696ABC0];
       v42 = *MEMORY[0x1E696A578];
       v43[0] = @"Topic stored did not return scores";
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v43 forKeys:&v42 count:1];
-      *a4 = [v17 errorWithDomain:@"PPErrorDomain" code:1 userInfo:v18];
+      *error = [v17 errorWithDomain:@"PPErrorDomain" code:1 userInfo:v18];
     }
 
     v13 = pp_universal_search_log_handle();
@@ -34,7 +34,7 @@
     goto LABEL_21;
   }
 
-  if (!v6)
+  if (!scoreCopy)
   {
     v13 = pp_universal_search_log_handle();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -51,12 +51,12 @@ LABEL_21:
     goto LABEL_12;
   }
 
-  v8 = [v6 portraitFeatureVector];
-  v9 = [v6 portraitFeatureVectorVersion];
-  v10 = [PPSpotlightScoringFeatureVector decodeFeatureVectorFromData:v8 version:v9];
+  portraitFeatureVector = [scoreCopy portraitFeatureVector];
+  portraitFeatureVectorVersion = [scoreCopy portraitFeatureVectorVersion];
+  v10 = [PPSpotlightScoringFeatureVector decodeFeatureVectorFromData:portraitFeatureVector version:portraitFeatureVectorVersion];
 
-  v11 = [v10 qidStrings];
-  v12 = [v11 count];
+  qidStrings = [v10 qidStrings];
+  v12 = [qidStrings count];
 
   *v36 = 0;
   v37 = v36;
@@ -74,7 +74,7 @@ LABEL_21:
   v13 = v10;
   v28 = v13;
   v31 = v36;
-  v29 = v7;
+  v29 = cachedTopicScores;
   [v29 enumerateKeysAndObjectsUsingBlock:&v24];
   v14 = sqrt(v12) * sqrt(v33[3]);
   if (v14 == 0.0)
@@ -151,10 +151,10 @@ void __48__PPSpotlightScoring_spotlightQueryScore_error___block_invoke(uint64_t 
   [(PPSpotlightScoring *)&v5 dealloc];
 }
 
-- (PPSpotlightScoring)initWithTopicStore:(id)a3
+- (PPSpotlightScoring)initWithTopicStore:(id)store
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  storeCopy = store;
   v17.receiver = self;
   v17.super_class = PPSpotlightScoring;
   v6 = [(PPSpotlightScoring *)&v17 init];
@@ -164,7 +164,7 @@ void __48__PPSpotlightScoring_spotlightQueryScore_error___block_invoke(uint64_t 
     goto LABEL_5;
   }
 
-  objc_storeStrong(&v6->_topicStore, a3);
+  objc_storeStrong(&v6->_topicStore, store);
   topicStore = v7->_topicStore;
   v16 = 0;
   v9 = [(PPTopicStore *)topicStore topicCacheSandboxExtensionToken:&v16];

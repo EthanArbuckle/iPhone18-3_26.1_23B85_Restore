@@ -1,17 +1,17 @@
 @interface CVNLPVideoCaptioningModel
-- (CVNLPVideoCaptioningModel)initWithOptions:(id)a3 error:(id *)a4;
+- (CVNLPVideoCaptioningModel)initWithOptions:(id)options error:(id *)error;
 - (id).cxx_construct;
-- (id)generateCaption:(id)a3 error:(id *)a4;
+- (id)generateCaption:(id)caption error:(id *)error;
 - (shared_ptr<cvnlp::vidcap::VideoCaptioningModel>)model;
 @end
 
 @implementation CVNLPVideoCaptioningModel
 
-- (CVNLPVideoCaptioningModel)initWithOptions:(id)a3 error:(id *)a4
+- (CVNLPVideoCaptioningModel)initWithOptions:(id)options error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v9 = objc_msgSend_objectForKeyedSubscript_(v6, v7, CVNLPVideoCaptioningModelURL, v8);
+  optionsCopy = options;
+  v9 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v7, CVNLPVideoCaptioningModelURL, v8);
   v10 = v9;
   if (v9)
   {
@@ -56,12 +56,12 @@
 
   if (sub_1D9D54A80(v27))
   {
-    v15 = objc_msgSend_objectForKey_(v6, v13, CVNLPVideoCaptioningModelEspressoEngine, v14);
+    v15 = objc_msgSend_objectForKey_(optionsCopy, v13, CVNLPVideoCaptioningModelEspressoEngine, v14);
     v16 = v15 == 0;
 
     if (!v16)
     {
-      v19 = objc_msgSend_objectForKey_(v6, v17, CVNLPVideoCaptioningModelEspressoEngine, v18);
+      v19 = objc_msgSend_objectForKey_(optionsCopy, v17, CVNLPVideoCaptioningModelEspressoEngine, v18);
       sub_1D9D87968(v19, &v25);
 
       sub_1D9D87A5C(&v25);
@@ -71,7 +71,7 @@
       }
     }
 
-    objc_storeStrong(&self->_options, a3);
+    objc_storeStrong(&self->_options, options);
     operator new();
   }
 
@@ -80,10 +80,10 @@
   __cxa_throw(v20, &unk_1F554F2D0, sub_1D9D87920);
 }
 
-- (id)generateCaption:(id)a3 error:(id *)a4
+- (id)generateCaption:(id)caption error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  captionCopy = caption;
   objc_msgSend_model(self, v6, v7, v8);
   v9 = __p;
   if (*(__p + 23) < 0)

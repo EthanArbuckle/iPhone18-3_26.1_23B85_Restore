@@ -1,15 +1,15 @@
 @interface CKDPRecordRetrieveChangesResponseShareChange
-- (BOOL)isEqual:(id)a3;
-- (id)changeTypeAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)changeTypeAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsChangeType:(id)a3;
+- (int)StringAsChangeType:(id)type;
 - (int)changeType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPRecordRetrieveChangesResponseShareChange
@@ -27,35 +27,35 @@
   }
 }
 
-- (id)changeTypeAsString:(int)a3
+- (id)changeTypeAsString:(int)string
 {
-  if ((a3 - 1) >= 3)
+  if ((string - 1) >= 3)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854CB80[a3 - 1];
+    v4 = off_27854CB80[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsChangeType:(id)a3
+- (int)StringAsChangeType:(id)type
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"idAndEtag"))
+  typeCopy = type;
+  if (objc_msgSend_isEqualToString_(typeCopy, v4, @"idAndEtag"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"fullRecord"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v5, @"fullRecord"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"recordDeleted"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v7, @"recordDeleted"))
   {
     v6 = 3;
   }
@@ -116,61 +116,61 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_shareIdentifier)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     changeType = self->_changeType;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_share)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   shareIdentifier = self->_shareIdentifier;
-  v8 = v4;
+  v8 = toCopy;
   if (shareIdentifier)
   {
-    objc_msgSend_setShareIdentifier_(v4, v5, shareIdentifier);
-    v4 = v8;
+    objc_msgSend_setShareIdentifier_(toCopy, v5, shareIdentifier);
+    toCopy = v8;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 2) = self->_changeType;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 2) = self->_changeType;
+    *(toCopy + 32) |= 1u;
   }
 
   share = self->_share;
   if (share)
   {
     objc_msgSend_setShare_(v8, v5, share);
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_shareIdentifier, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_shareIdentifier, v11, zone);
   v13 = *(v10 + 24);
   *(v10 + 24) = v12;
 
@@ -180,24 +180,24 @@
     *(v10 + 32) |= 1u;
   }
 
-  v15 = objc_msgSend_copyWithZone_(self->_share, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_share, v14, zone);
   v16 = *(v10 + 16);
   *(v10 + 16) = v15;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_11;
   }
 
   shareIdentifier = self->_shareIdentifier;
-  v9 = v4[3];
+  v9 = equalCopy[3];
   if (shareIdentifier | v9)
   {
     if (!objc_msgSend_isEqual_(shareIdentifier, v7, v9))
@@ -206,16 +206,16 @@
     }
   }
 
-  v10 = *(v4 + 32);
+  v10 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((v4[4] & 1) == 0 || self->_changeType != *(v4 + 2))
+    if ((equalCopy[4] & 1) == 0 || self->_changeType != *(equalCopy + 2))
     {
       goto LABEL_11;
     }
   }
 
-  else if (v4[4])
+  else if (equalCopy[4])
   {
 LABEL_11:
     isEqual = 0;
@@ -223,7 +223,7 @@ LABEL_11:
   }
 
   share = self->_share;
-  v12 = v4[2];
+  v12 = equalCopy[2];
   if (share | v12)
   {
     isEqual = objc_msgSend_isEqual_(share, v7, v12);
@@ -255,12 +255,12 @@ LABEL_12:
   return v7 ^ objc_msgSend_hash(self->_share, v4, v5) ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   shareIdentifier = self->_shareIdentifier;
-  v6 = *(v4 + 3);
-  v9 = v4;
+  v6 = *(fromCopy + 3);
+  v9 = fromCopy;
   if (shareIdentifier)
   {
     if (!v6)
@@ -268,7 +268,7 @@ LABEL_12:
       goto LABEL_7;
     }
 
-    objc_msgSend_mergeFrom_(shareIdentifier, v4, v6);
+    objc_msgSend_mergeFrom_(shareIdentifier, fromCopy, v6);
   }
 
   else
@@ -278,30 +278,30 @@ LABEL_12:
       goto LABEL_7;
     }
 
-    objc_msgSend_setShareIdentifier_(self, v4, v6);
+    objc_msgSend_setShareIdentifier_(self, fromCopy, v6);
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
-    self->_changeType = *(v4 + 2);
+    self->_changeType = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
   share = self->_share;
-  v8 = *(v4 + 2);
+  v8 = *(fromCopy + 2);
   if (share)
   {
     if (v8)
     {
-      objc_msgSend_mergeFrom_(share, v4, v8);
+      objc_msgSend_mergeFrom_(share, fromCopy, v8);
     }
   }
 
   else if (v8)
   {
-    objc_msgSend_setShare_(self, v4, v8);
+    objc_msgSend_setShare_(self, fromCopy, v8);
   }
 
   MEMORY[0x2821F96F8]();

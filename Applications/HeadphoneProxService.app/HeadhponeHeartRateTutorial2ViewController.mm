@@ -1,6 +1,6 @@
 @interface HeadhponeHeartRateTutorial2ViewController
-- (_TtC20HeadphoneProxService41HeadhponeHeartRateTutorial2ViewController)initWithContentView:(id)a3;
-- (void)handleTapOnLabel:(id)a3;
+- (_TtC20HeadphoneProxService41HeadhponeHeartRateTutorial2ViewController)initWithContentView:(id)view;
+- (void)handleTapOnLabel:(id)label;
 - (void)viewDidLoad;
 @end
 
@@ -8,21 +8,21 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100052588();
 }
 
-- (void)handleTapOnLabel:(id)a3
+- (void)handleTapOnLabel:(id)label
 {
-  v4 = a3;
-  v5 = self;
-  sub_100052A94(v4);
+  labelCopy = label;
+  selfCopy = self;
+  sub_100052A94(labelCopy);
 }
 
-- (_TtC20HeadphoneProxService41HeadhponeHeartRateTutorial2ViewController)initWithContentView:(id)a3
+- (_TtC20HeadphoneProxService41HeadhponeHeartRateTutorial2ViewController)initWithContentView:(id)view
 {
-  v4 = a3;
-  v5 = sub_100053100(a3);
+  viewCopy = view;
+  v5 = sub_100053100(view);
 
   return v5;
 }

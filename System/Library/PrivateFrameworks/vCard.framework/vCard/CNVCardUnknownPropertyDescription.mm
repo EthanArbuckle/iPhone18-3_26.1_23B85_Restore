@@ -1,5 +1,5 @@
 @interface CNVCardUnknownPropertyDescription
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
@@ -9,21 +9,21 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CNVCardUnknownPropertyDescription *)self propertyName];
-  v6 = [(CNVCardUnknownPropertyDescription *)self originalLine];
-  v7 = [v3 stringWithFormat:@"<%@: %p %@='%@'>", v4, self, v5, v6];
+  propertyName = [(CNVCardUnknownPropertyDescription *)self propertyName];
+  originalLine = [(CNVCardUnknownPropertyDescription *)self originalLine];
+  v7 = [v3 stringWithFormat:@"<%@: %p %@='%@'>", v4, self, propertyName, originalLine];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v6 = v5;
+    v6 = equalCopy;
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
@@ -36,14 +36,14 @@
 
     v8 = v7;
 
-    v9 = [(CNVCardUnknownPropertyDescription *)self propertyName];
-    if (v9 || ([v8 propertyName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    propertyName = [(CNVCardUnknownPropertyDescription *)self propertyName];
+    if (propertyName || ([v8 propertyName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v10 = [(CNVCardUnknownPropertyDescription *)self propertyName];
-      v11 = [v8 propertyName];
-      v12 = [v10 isEqual:v11];
+      propertyName2 = [(CNVCardUnknownPropertyDescription *)self propertyName];
+      propertyName3 = [v8 propertyName];
+      v12 = [propertyName2 isEqual:propertyName3];
 
-      if (v9)
+      if (propertyName)
       {
 
         if (v12)
@@ -68,14 +68,14 @@ LABEL_19:
     }
 
 LABEL_9:
-    v13 = [(CNVCardUnknownPropertyDescription *)self originalLine];
-    if (v13 || ([v8 originalLine], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    originalLine = [(CNVCardUnknownPropertyDescription *)self originalLine];
+    if (originalLine || ([v8 originalLine], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v14 = [(CNVCardUnknownPropertyDescription *)self originalLine];
-      v15 = [v8 originalLine];
-      v16 = [v14 isEqual:v15];
+      originalLine2 = [(CNVCardUnknownPropertyDescription *)self originalLine];
+      originalLine3 = [v8 originalLine];
+      v16 = [originalLine2 isEqual:originalLine3];
 
-      if (v13)
+      if (originalLine)
       {
 LABEL_18:
 

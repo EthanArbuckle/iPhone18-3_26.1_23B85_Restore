@@ -1,21 +1,21 @@
 @interface VLFSessionLocationOutdoorMonitor
 + (BOOL)affectsBannerVisibility;
 + (BOOL)affectsPuckVisibility;
-- (BOOL)_satisfiesConsecutiveProbabilitiesForOutdoor:(BOOL)a3;
+- (BOOL)_satisfiesConsecutiveProbabilitiesForOutdoor:(BOOL)outdoor;
 - (NSString)debugDescription;
-- (VLFSessionLocationOutdoorMonitor)initWithObserver:(id)a3 locationManager:(id)a4;
+- (VLFSessionLocationOutdoorMonitor)initWithObserver:(id)observer locationManager:(id)manager;
 - (void)_flipState;
-- (void)_updateStateWithLocation:(id)a3;
+- (void)_updateStateWithLocation:(id)location;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didUpdateLocation:(id)a4;
+- (void)locationManager:(id)manager didUpdateLocation:(id)location;
 @end
 
 @implementation VLFSessionLocationOutdoorMonitor
 
-- (void)locationManager:(id)a3 didUpdateLocation:(id)a4
+- (void)locationManager:(id)manager didUpdateLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationCopy = location;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v9 = dispatch_queue_get_label(0);
   if (label != v9)
@@ -55,7 +55,7 @@
     }
   }
 
-  [(VLFSessionLocationOutdoorMonitor *)self _updateStateWithLocation:v7];
+  [(VLFSessionLocationOutdoorMonitor *)self _updateStateWithLocation:locationCopy];
 }
 
 - (NSString)debugDescription
@@ -95,14 +95,14 @@
   }
 
   v9 = v8;
-  v10 = [(VLFSessionMonitor *)self state];
+  state = [(VLFSessionMonitor *)self state];
   v11 = @"Hide";
-  if (v10 == 1)
+  if (state == 1)
   {
     v11 = @"EnablePuck";
   }
 
-  if (v10 == 2)
+  if (state == 2)
   {
     v12 = @"EnablePuckAndBanner";
   }
@@ -114,20 +114,20 @@
 
   [(VLFSessionLocationOutdoorMonitor *)self confidenceThreshold];
   v14 = v13;
-  v15 = [(VLFSessionLocationOutdoorMonitor *)self consecutiveOutdoorCount];
-  v16 = [(VLFSessionLocationOutdoorMonitor *)self consecutiveIndoorCount];
-  v17 = [(VLFSessionLocationOutdoorMonitor *)self historicalLocations];
-  v18 = sub_100021DB0(v17, &stru_10164CA98);
-  v19 = [v18 reverseObjectEnumerator];
-  v20 = [v19 allObjects];
-  v21 = [NSString stringWithFormat:@"<%@\nisEnabled: %@, \naffectsPuckVisibility: %@, \naffectsBannerVisibility: %@, \ncurrentState: %@, \nthreshold: %f, \noutdoor consecutive: %lu, \nindoor consecutive: %lu, \nlocations: %@>", v23, v5, v7, v9, v12, v14, v15, v16, v20];
+  consecutiveOutdoorCount = [(VLFSessionLocationOutdoorMonitor *)self consecutiveOutdoorCount];
+  consecutiveIndoorCount = [(VLFSessionLocationOutdoorMonitor *)self consecutiveIndoorCount];
+  historicalLocations = [(VLFSessionLocationOutdoorMonitor *)self historicalLocations];
+  v18 = sub_100021DB0(historicalLocations, &stru_10164CA98);
+  reverseObjectEnumerator = [v18 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
+  v21 = [NSString stringWithFormat:@"<%@\nisEnabled: %@, \naffectsPuckVisibility: %@, \naffectsBannerVisibility: %@, \ncurrentState: %@, \nthreshold: %f, \noutdoor consecutive: %lu, \nindoor consecutive: %lu, \nlocations: %@>", v23, v5, v7, v9, v12, v14, consecutiveOutdoorCount, consecutiveIndoorCount, allObjects];
 
   return v21;
 }
 
-- (void)_updateStateWithLocation:(id)a3
+- (void)_updateStateWithLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -167,7 +167,7 @@
     }
   }
 
-  if (!v4)
+  if (!locationCopy)
   {
     v13 = sub_100BC3A6C();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -185,25 +185,25 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v8 = [(VLFSessionLocationOutdoorMonitor *)self historicalLocations];
-  [v8 push:v4];
+  historicalLocations = [(VLFSessionLocationOutdoorMonitor *)self historicalLocations];
+  [historicalLocations push:locationCopy];
 
-  v9 = [(VLFSessionLocationOutdoorMonitor *)self historicalLocations];
-  v10 = [v9 count];
+  historicalLocations2 = [(VLFSessionLocationOutdoorMonitor *)self historicalLocations];
+  v10 = [historicalLocations2 count];
 
-  v11 = [(VLFSessionLocationOutdoorMonitor *)self consecutiveOutdoorCount];
-  if (v11 >= [(VLFSessionLocationOutdoorMonitor *)self consecutiveIndoorCount])
+  consecutiveOutdoorCount = [(VLFSessionLocationOutdoorMonitor *)self consecutiveOutdoorCount];
+  if (consecutiveOutdoorCount >= [(VLFSessionLocationOutdoorMonitor *)self consecutiveIndoorCount])
   {
-    v12 = [(VLFSessionLocationOutdoorMonitor *)self consecutiveIndoorCount];
+    consecutiveIndoorCount = [(VLFSessionLocationOutdoorMonitor *)self consecutiveIndoorCount];
   }
 
   else
   {
-    v12 = [(VLFSessionLocationOutdoorMonitor *)self consecutiveOutdoorCount];
+    consecutiveIndoorCount = [(VLFSessionLocationOutdoorMonitor *)self consecutiveOutdoorCount];
   }
 
-  v17 = v12;
-  if (v10 < v12)
+  v17 = consecutiveIndoorCount;
+  if (v10 < consecutiveIndoorCount)
   {
     v13 = sub_100BC3A6C();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -221,14 +221,14 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v18 = [(VLFSessionMonitor *)self state];
-  if ([(VLFSessionLocationOutdoorMonitor *)self _satisfiesConsecutiveProbabilitiesForOutdoor:v18 == 0])
+  state = [(VLFSessionMonitor *)self state];
+  if ([(VLFSessionLocationOutdoorMonitor *)self _satisfiesConsecutiveProbabilitiesForOutdoor:state == 0])
   {
     v19 = sub_100BC3A6C();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       v20 = @"indoor";
-      if (!v18)
+      if (!state)
       {
         v20 = @"outdoor";
       }
@@ -249,14 +249,14 @@ LABEL_18:
   v3 = sub_100BC3A6C();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(VLFSessionMonitor *)self state];
+    state = [(VLFSessionMonitor *)self state];
     v5 = @"Hide";
-    if (v4 == 1)
+    if (state == 1)
     {
       v5 = @"EnablePuck";
     }
 
-    if (v4 == 2)
+    if (state == 2)
     {
       v5 = @"EnablePuckAndBanner";
     }
@@ -269,26 +269,26 @@ LABEL_18:
   [(VLFSessionMonitor *)self setState:2 * ([(VLFSessionMonitor *)self state]== 0)];
 }
 
-- (BOOL)_satisfiesConsecutiveProbabilitiesForOutdoor:(BOOL)a3
+- (BOOL)_satisfiesConsecutiveProbabilitiesForOutdoor:(BOOL)outdoor
 {
-  v3 = a3;
-  if (a3)
+  outdoorCopy = outdoor;
+  if (outdoor)
   {
-    v5 = [(VLFSessionLocationOutdoorMonitor *)self consecutiveOutdoorCount];
+    consecutiveOutdoorCount = [(VLFSessionLocationOutdoorMonitor *)self consecutiveOutdoorCount];
   }
 
   else
   {
-    v5 = [(VLFSessionLocationOutdoorMonitor *)self consecutiveIndoorCount];
+    consecutiveOutdoorCount = [(VLFSessionLocationOutdoorMonitor *)self consecutiveIndoorCount];
   }
 
-  v6 = v5;
+  v6 = consecutiveOutdoorCount;
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [(VLFSessionLocationOutdoorMonitor *)self historicalLocations];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  historicalLocations = [(VLFSessionLocationOutdoorMonitor *)self historicalLocations];
+  v8 = [historicalLocations countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -300,11 +300,11 @@ LABEL_18:
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(historicalLocations);
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        if (v3)
+        if (outdoorCopy)
         {
           [v13 probabilityPositionContextStateOutdoor];
           v15 = v14;
@@ -345,7 +345,7 @@ LABEL_18:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v9 = [historicalLocations countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v9)
       {
         continue;
@@ -369,11 +369,11 @@ LABEL_23:
   [(VLFSessionLocationOutdoorMonitor *)&v3 dealloc];
 }
 
-- (VLFSessionLocationOutdoorMonitor)initWithObserver:(id)a3 locationManager:(id)a4
+- (VLFSessionLocationOutdoorMonitor)initWithObserver:(id)observer locationManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  observerCopy = observer;
+  managerCopy = manager;
+  if (!observerCopy)
   {
     v17 = sub_10006D178();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -402,7 +402,7 @@ LABEL_23:
     }
   }
 
-  if (!v7)
+  if (!managerCopy)
   {
     v20 = sub_10006D178();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -433,30 +433,30 @@ LABEL_23:
 
   v23.receiver = self;
   v23.super_class = VLFSessionLocationOutdoorMonitor;
-  v8 = [(VLFSessionMonitor *)&v23 initWithObserver:v6];
+  v8 = [(VLFSessionMonitor *)&v23 initWithObserver:observerCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_locationManager, a4);
+    objc_storeStrong(&v8->_locationManager, manager);
     [(VLFLocationManager *)v9->_locationManager addObserver:v9];
     v10 = [MapsRingBuffer alloc];
-    v11 = [(VLFSessionLocationOutdoorMonitor *)v9 consecutiveOutdoorCount];
-    if (v11 <= [(VLFSessionLocationOutdoorMonitor *)v9 consecutiveIndoorCount])
+    consecutiveOutdoorCount = [(VLFSessionLocationOutdoorMonitor *)v9 consecutiveOutdoorCount];
+    if (consecutiveOutdoorCount <= [(VLFSessionLocationOutdoorMonitor *)v9 consecutiveIndoorCount])
     {
-      v12 = [(VLFSessionLocationOutdoorMonitor *)v9 consecutiveIndoorCount];
+      consecutiveIndoorCount = [(VLFSessionLocationOutdoorMonitor *)v9 consecutiveIndoorCount];
     }
 
     else
     {
-      v12 = [(VLFSessionLocationOutdoorMonitor *)v9 consecutiveOutdoorCount];
+      consecutiveIndoorCount = [(VLFSessionLocationOutdoorMonitor *)v9 consecutiveOutdoorCount];
     }
 
-    v13 = [(MapsRingBuffer *)v10 initWithLength:v12];
+    v13 = [(MapsRingBuffer *)v10 initWithLength:consecutiveIndoorCount];
     historicalLocations = v9->_historicalLocations;
     v9->_historicalLocations = v13;
 
-    v15 = [(VLFLocationManager *)v9->_locationManager lastLocation];
-    [(VLFSessionLocationOutdoorMonitor *)v9 _updateStateWithLocation:v15];
+    lastLocation = [(VLFLocationManager *)v9->_locationManager lastLocation];
+    [(VLFSessionLocationOutdoorMonitor *)v9 _updateStateWithLocation:lastLocation];
   }
 
   return v9;

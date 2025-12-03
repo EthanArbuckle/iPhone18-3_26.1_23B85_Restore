@@ -1,46 +1,46 @@
 @interface HMMutableMediaPlaybackAction
-- (void)setMediaProfiles:(id)a3;
-- (void)setPlaybackArchive:(id)a3;
-- (void)setState:(int64_t)a3;
-- (void)setVolume:(id)a3;
+- (void)setMediaProfiles:(id)profiles;
+- (void)setPlaybackArchive:(id)archive;
+- (void)setState:(int64_t)state;
+- (void)setVolume:(id)volume;
 @end
 
 @implementation HMMutableMediaPlaybackAction
 
-- (void)setPlaybackArchive:(id)a3
+- (void)setPlaybackArchive:(id)archive
 {
-  v4 = a3;
+  archiveCopy = archive;
   os_unfair_lock_lock_with_options();
   playbackArchive = self->super._playbackArchive;
-  self->super._playbackArchive = v4;
+  self->super._playbackArchive = archiveCopy;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setVolume:(id)a3
+- (void)setVolume:(id)volume
 {
-  v6 = a3;
+  volumeCopy = volume;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [volumeCopy copy];
   volume = self->super._volume;
   self->super._volume = v4;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   os_unfair_lock_lock_with_options();
-  self->super._state = a3;
+  self->super._state = state;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
 
-- (void)setMediaProfiles:(id)a3
+- (void)setMediaProfiles:(id)profiles
 {
-  v6 = a3;
+  profilesCopy = profiles;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [profilesCopy copy];
   mediaProfiles = self->super._mediaProfiles;
   self->super._mediaProfiles = v4;
 

@@ -2,7 +2,7 @@
 + (id)sharedManager;
 - (NEHotspotConfigurationHelper)init;
 - (id)helper;
-- (void)sendRequest:(uint64_t)a3 requestType:(void *)a4 resultHandler:;
+- (void)sendRequest:(uint64_t)request requestType:(void *)type resultHandler:;
 @end
 
 @implementation NEHotspotConfigurationHelper
@@ -45,36 +45,36 @@ uint64_t __45__NEHotspotConfigurationHelper_sharedManager__block_invoke()
 
 - (id)helper
 {
-  v1 = a1;
-  objc_sync_enter(v1);
-  v2 = v1[1];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v2 = selfCopy[1];
   if (!v2)
   {
-    v3 = [[NEHelper alloc] initWithDelegateClassID:9 queue:v1[2]];
-    v4 = v1[1];
-    v1[1] = v3;
+    v3 = [[NEHelper alloc] initWithDelegateClassID:9 queue:selfCopy[2]];
+    v4 = selfCopy[1];
+    selfCopy[1] = v3;
 
-    v2 = v1[1];
+    v2 = selfCopy[1];
   }
 
   v5 = v2;
-  objc_sync_exit(v1);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (void)sendRequest:(uint64_t)a3 requestType:(void *)a4 resultHandler:
+- (void)sendRequest:(uint64_t)request requestType:(void *)type resultHandler:
 {
-  v7 = a4;
+  typeCopy = type;
   v8 = a2;
   v9 = xpc_dictionary_create(0, 0, 0);
   v10 = v9;
-  if (a3 == 2)
+  if (request == 2)
   {
     xpc_dictionary_set_uint64(v9, "MessageType", 0x3EBuLL);
   }
 
-  else if (a3 == 1)
+  else if (request == 1)
   {
     if (v8)
     {
@@ -105,24 +105,24 @@ uint64_t __45__NEHotspotConfigurationHelper_sharedManager__block_invoke()
 
   if (v10)
   {
-    if (v7)
+    if (typeCopy)
     {
       xpc_dictionary_set_BOOL(v10, "IsResponseExpected", 1);
-      v13 = [(NEHotspotConfigurationHelper *)a1 helper];
+      helper = [(NEHotspotConfigurationHelper *)self helper];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __70__NEHotspotConfigurationHelper_sendRequest_requestType_resultHandler___block_invoke;
       v15[3] = &unk_1E7F07AA0;
-      v15[4] = a1;
-      v16 = v7;
-      [v13 sendRequest:v10 responseHandler:v15];
+      v15[4] = self;
+      v16 = typeCopy;
+      [helper sendRequest:v10 responseHandler:v15];
     }
 
     else
     {
       xpc_dictionary_set_BOOL(v10, "IsResponseExpected", 0);
-      v14 = [(NEHotspotConfigurationHelper *)a1 helper];
-      [v14 sendRequest:v10 responseHandler:0];
+      helper2 = [(NEHotspotConfigurationHelper *)self helper];
+      [helper2 sendRequest:v10 responseHandler:0];
     }
   }
 

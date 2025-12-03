@@ -1,12 +1,12 @@
 @interface CNQuickActionButton
-- (CNQuickActionButton)initWithFrame:(CGRect)a3;
+- (CNQuickActionButton)initWithFrame:(CGRect)frame;
 - (CNQuickActionButtonDelegate)delegate;
 - (UIButton)button;
 - (UILabel)label;
-- (void)onLongPress:(id)a3;
+- (void)onLongPress:(id)press;
 - (void)performAction;
-- (void)setAction:(id)a3;
-- (void)setShowBackgroundPlatter:(BOOL)a3;
+- (void)setAction:(id)action;
+- (void)setShowBackgroundPlatter:(BOOL)platter;
 - (void)updateConstraints;
 @end
 
@@ -34,15 +34,15 @@
     [(UILabel *)self->_label setFont:v7];
 
     [(UILabel *)self->_label setNumberOfLines:1];
-    v8 = [(CNQuickActionButton *)self tintColor];
-    [(UILabel *)self->_label setTextColor:v8];
+    tintColor = [(CNQuickActionButton *)self tintColor];
+    [(UILabel *)self->_label setTextColor:tintColor];
 
     label = self->_label;
   }
 
   [(CNQuickActionButton *)self addSubview:label];
-  v9 = [(CNQuickActionButton *)self action];
-  v10 = [v9 titleForContext:0];
+  action = [(CNQuickActionButton *)self action];
+  v10 = [action titleForContext:0];
   [(UILabel *)self->_label setText:v10];
 
   [(UILabel *)self->_label sizeToFit];
@@ -70,29 +70,29 @@
   return v6;
 }
 
-- (void)onLongPress:(id)a3
+- (void)onLongPress:(id)press
 {
-  if ([a3 state] == 1)
+  if ([press state] == 1)
   {
-    v4 = [(CNQuickActionButton *)self action];
-    [v4 setIsLongPress:1];
+    action = [(CNQuickActionButton *)self action];
+    [action setIsLongPress:1];
 
     [(CNQuickActionButton *)self performAction];
-    v5 = [(CNQuickActionButton *)self action];
-    [v5 setIsLongPress:0];
+    action2 = [(CNQuickActionButton *)self action];
+    [action2 setIsLongPress:0];
   }
 }
 
 - (void)performAction
 {
-  v3 = [(CNQuickActionButton *)self action];
-  if (v3)
+  action = [(CNQuickActionButton *)self action];
+  if (action)
   {
-    v7 = v3;
-    [v3 setSourceView:self];
-    v4 = [(CNQuickActionButton *)self delegate];
-    v5 = [(CNQuickActionButton *)self action];
-    v6 = [v4 quickActionButton:self performAction:v5];
+    v7 = action;
+    [action setSourceView:self];
+    delegate = [(CNQuickActionButton *)self delegate];
+    action2 = [(CNQuickActionButton *)self action];
+    v6 = [delegate quickActionButton:self performAction:action2];
 
     if ((v6 & 1) == 0)
     {
@@ -100,7 +100,7 @@
     }
 
     [v7 setSourceView:0];
-    v3 = v7;
+    action = v7;
   }
 }
 
@@ -111,66 +111,66 @@
   v23.super_class = CNQuickActionButton;
   [(CNQuickActionButton *)&v23 updateConstraints];
   v3 = MEMORY[0x1E696ACD8];
-  v4 = [(CNQuickActionButton *)self activatedConstraints];
-  [v3 deactivateConstraints:v4];
+  activatedConstraints = [(CNQuickActionButton *)self activatedConstraints];
+  [v3 deactivateConstraints:activatedConstraints];
 
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v6 = MEMORY[0x1E695DF90];
   v24 = @"button";
-  v7 = [(CNQuickActionButton *)self button];
-  v25[0] = v7;
+  button = [(CNQuickActionButton *)self button];
+  v25[0] = button;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
   v9 = [v6 dictionaryWithDictionary:v8];
 
   v10 = MEMORY[0x1E696ACD8];
-  v11 = [(CNQuickActionButton *)self button];
-  v12 = [v10 constraintWithItem:v11 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:37.0];
-  [v5 addObject:v12];
+  button2 = [(CNQuickActionButton *)self button];
+  v12 = [v10 constraintWithItem:button2 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:37.0];
+  [array addObject:v12];
 
   v13 = MEMORY[0x1E696ACD8];
-  v14 = [(CNQuickActionButton *)self button];
-  v15 = [v13 constraintWithItem:v14 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:37.0];
-  [v5 addObject:v15];
+  button3 = [(CNQuickActionButton *)self button];
+  v15 = [v13 constraintWithItem:button3 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:37.0];
+  [array addObject:v15];
 
   if ([(CNQuickActionButton *)self showTitle])
   {
-    v16 = [(CNQuickActionButton *)self label];
-    [v9 setObject:v16 forKey:@"label"];
+    label = [(CNQuickActionButton *)self label];
+    [v9 setObject:label forKey:@"label"];
 
-    v17 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|[button]-[label]|" options:512 metrics:0 views:v9];
-    [v5 addObjectsFromArray:v17];
+    button5 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|[button]-[label]|" options:512 metrics:0 views:v9];
+    [array addObjectsFromArray:button5];
   }
 
   else
   {
     v18 = MEMORY[0x1E696ACD8];
-    v19 = [(CNQuickActionButton *)self button];
-    v20 = [v18 constraintWithItem:v19 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
-    [v5 addObject:v20];
+    button4 = [(CNQuickActionButton *)self button];
+    v20 = [v18 constraintWithItem:button4 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
+    [array addObject:v20];
 
     v21 = MEMORY[0x1E696ACD8];
-    v17 = [(CNQuickActionButton *)self button];
-    v22 = [v21 constraintWithItem:v17 attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
-    [v5 addObject:v22];
+    button5 = [(CNQuickActionButton *)self button];
+    v22 = [v21 constraintWithItem:button5 attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
+    [array addObject:v22];
   }
 
-  [(CNQuickActionButton *)self setActivatedConstraints:v5];
-  [MEMORY[0x1E696ACD8] activateConstraints:v5];
+  [(CNQuickActionButton *)self setActivatedConstraints:array];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
 }
 
-- (void)setShowBackgroundPlatter:(BOOL)a3
+- (void)setShowBackgroundPlatter:(BOOL)platter
 {
-  if (self->_showBackgroundPlatter != a3)
+  if (self->_showBackgroundPlatter != platter)
   {
-    self->_showBackgroundPlatter = a3;
+    self->_showBackgroundPlatter = platter;
     v5 = +[CNContactStyle currentStyle];
-    v6 = [v5 transportBackgroundColor];
-    v7 = [(CNQuickActionButton *)self button];
-    [v7 setBackgroundColor:v6];
+    transportBackgroundColor = [v5 transportBackgroundColor];
+    button = [(CNQuickActionButton *)self button];
+    [button setBackgroundColor:transportBackgroundColor];
 
-    v8 = [(CNQuickActionButton *)self button];
-    v9 = [v8 _screen];
-    [v9 scale];
+    button2 = [(CNQuickActionButton *)self button];
+    _screen = [button2 _screen];
+    [_screen scale];
     if (v10 == 0.0)
     {
       if (RoundToScale_onceToken != -1)
@@ -187,61 +187,61 @@
       v11 = round(v10 * 18.5) / v10;
     }
 
-    v12 = [(CNQuickActionButton *)self button];
-    v13 = [v12 layer];
-    [v13 setCornerRadius:v11];
+    button3 = [(CNQuickActionButton *)self button];
+    layer = [button3 layer];
+    [layer setCornerRadius:v11];
 
-    v14 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v14 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v16 = 1.0 / v15;
-    v17 = [(CNQuickActionButton *)self button];
-    v18 = [v17 layer];
-    [v18 setBorderWidth:v16];
+    button4 = [(CNQuickActionButton *)self button];
+    layer2 = [button4 layer];
+    [layer2 setBorderWidth:v16];
 
     v23 = +[CNContactStyle currentStyle];
-    v19 = [v23 transportBorderColor];
-    v20 = [v19 CGColor];
-    v21 = [(CNQuickActionButton *)self button];
-    v22 = [v21 layer];
-    [v22 setBorderColor:v20];
+    transportBorderColor = [v23 transportBorderColor];
+    cGColor = [transportBorderColor CGColor];
+    button5 = [(CNQuickActionButton *)self button];
+    layer3 = [button5 layer];
+    [layer3 setBorderColor:cGColor];
   }
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  v5 = a3;
-  if (self->_action != v5)
+  actionCopy = action;
+  if (self->_action != actionCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_action, a3);
+    v8 = actionCopy;
+    objc_storeStrong(&self->_action, action);
     v6 = [(CNQuickAction *)v8 imageForContext:5];
-    v7 = [(CNQuickActionButton *)self button];
-    [v7 setImage:v6 forState:0];
+    button = [(CNQuickActionButton *)self button];
+    [button setImage:v6 forState:0];
 
-    v5 = v8;
+    actionCopy = v8;
   }
 }
 
-- (CNQuickActionButton)initWithFrame:(CGRect)a3
+- (CNQuickActionButton)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = CNQuickActionButton;
-  v3 = [(CNQuickActionButton *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(CNQuickActionButton *)v3 button];
-  [v4 addTarget:v3 action:sel_performAction forControlEvents:64];
+  v3 = [(CNQuickActionButton *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  button = [(CNQuickActionButton *)v3 button];
+  [button addTarget:v3 action:sel_performAction forControlEvents:64];
 
-  v5 = [(CNQuickActionButton *)v3 button];
+  button2 = [(CNQuickActionButton *)v3 button];
   v6 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:v3 action:sel_onLongPress_];
-  [v5 addGestureRecognizer:v6];
+  [button2 addGestureRecognizer:v6];
 
-  v7 = [(CNQuickActionButton *)v3 button];
-  v8 = [v7 imageView];
-  [v8 setContentMode:1];
+  button3 = [(CNQuickActionButton *)v3 button];
+  imageView = [button3 imageView];
+  [imageView setContentMode:1];
 
   v9 = +[CNUIColorRepository quickActionButtonTintColor];
-  v10 = [(CNQuickActionButton *)v3 button];
-  v11 = [v10 imageView];
-  [v11 setTintColor:v9];
+  button4 = [(CNQuickActionButton *)v3 button];
+  imageView2 = [button4 imageView];
+  [imageView2 setTintColor:v9];
 
   return v3;
 }

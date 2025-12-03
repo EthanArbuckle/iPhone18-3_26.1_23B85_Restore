@@ -1,11 +1,11 @@
 @interface ActivityIndicatorView
-- (_TtC13FitnessCoreUI21ActivityIndicatorView)initWithCoder:(id)a3;
-- (_TtC13FitnessCoreUI21ActivityIndicatorView)initWithFrame:(CGRect)a3;
+- (_TtC13FitnessCoreUI21ActivityIndicatorView)initWithCoder:(id)coder;
+- (_TtC13FitnessCoreUI21ActivityIndicatorView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ActivityIndicatorView
 
-- (_TtC13FitnessCoreUI21ActivityIndicatorView)initWithCoder:(id)a3
+- (_TtC13FitnessCoreUI21ActivityIndicatorView)initWithCoder:(id)coder
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -20,7 +20,7 @@
   return result;
 }
 
-- (_TtC13FitnessCoreUI21ActivityIndicatorView)initWithFrame:(CGRect)a3
+- (_TtC13FitnessCoreUI21ActivityIndicatorView)initWithFrame:(CGRect)frame
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();

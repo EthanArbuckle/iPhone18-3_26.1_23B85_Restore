@@ -1,26 +1,26 @@
 @interface TUMomentsCapabilities
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCapabilities:(id)a3;
-- (TUMomentsCapabilities)initWithAvailability:(int)a3 supportedMediaTypes:(id)a4;
-- (TUMomentsCapabilities)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCapabilities:(id)capabilities;
+- (TUMomentsCapabilities)initWithAvailability:(int)availability supportedMediaTypes:(id)types;
+- (TUMomentsCapabilities)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUMomentsCapabilities
 
-- (TUMomentsCapabilities)initWithAvailability:(int)a3 supportedMediaTypes:(id)a4
+- (TUMomentsCapabilities)initWithAvailability:(int)availability supportedMediaTypes:(id)types
 {
-  v6 = a4;
+  typesCopy = types;
   v12.receiver = self;
   v12.super_class = TUMomentsCapabilities;
   v7 = [(TUMomentsCapabilities *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_availability = a3;
-    v9 = [v6 copy];
+    v7->_availability = availability;
+    v9 = [typesCopy copy];
     supportedMediaTypes = v8->_supportedMediaTypes;
     v8->_supportedMediaTypes = v9;
   }
@@ -32,42 +32,42 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(TUMomentsCapabilities *)self availability];
-  v6 = [(TUMomentsCapabilities *)self supportedMediaTypes];
-  v7 = [v6 allObjects];
-  v8 = [v7 componentsJoinedByString:{@", "}];
-  v9 = [v3 stringWithFormat:@"<%@ %p availability=%d supportedMediaTypes=%@>", v4, self, v5, v8];
+  availability = [(TUMomentsCapabilities *)self availability];
+  supportedMediaTypes = [(TUMomentsCapabilities *)self supportedMediaTypes];
+  allObjects = [supportedMediaTypes allObjects];
+  v8 = [allObjects componentsJoinedByString:{@", "}];
+  v9 = [v3 stringWithFormat:@"<%@ %p availability=%d supportedMediaTypes=%@>", v4, self, availability, v8];
 
   return v9;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(TUMomentsCapabilities *)self availability];
-  v4 = [(TUMomentsCapabilities *)self supportedMediaTypes];
-  v5 = [v4 hash];
+  availability = [(TUMomentsCapabilities *)self availability];
+  supportedMediaTypes = [(TUMomentsCapabilities *)self supportedMediaTypes];
+  v5 = [supportedMediaTypes hash];
 
-  return v5 ^ v3;
+  return v5 ^ availability;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUMomentsCapabilities *)self isEqualToCapabilities:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUMomentsCapabilities *)self isEqualToCapabilities:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToCapabilities:(id)a3
+- (BOOL)isEqualToCapabilities:(id)capabilities
 {
-  v4 = a3;
-  v5 = [(TUMomentsCapabilities *)self availability];
-  if (v5 == [v4 availability])
+  capabilitiesCopy = capabilities;
+  availability = [(TUMomentsCapabilities *)self availability];
+  if (availability == [capabilitiesCopy availability])
   {
-    v6 = [(TUMomentsCapabilities *)self supportedMediaTypes];
-    v7 = [v4 supportedMediaTypes];
-    v8 = [v6 isEqualToSet:v7];
+    supportedMediaTypes = [(TUMomentsCapabilities *)self supportedMediaTypes];
+    supportedMediaTypes2 = [capabilitiesCopy supportedMediaTypes];
+    v8 = [supportedMediaTypes isEqualToSet:supportedMediaTypes2];
   }
 
   else
@@ -78,32 +78,32 @@
   return v8;
 }
 
-- (TUMomentsCapabilities)initWithCoder:(id)a3
+- (TUMomentsCapabilities)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_availability);
-  v6 = [v4 decodeIntForKey:v5];
+  v6 = [coderCopy decodeIntForKey:v5];
 
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
   v10 = NSStringFromSelector(sel_supportedMediaTypes);
-  v11 = [v4 decodeObjectOfClasses:v9 forKey:v10];
+  v11 = [coderCopy decodeObjectOfClasses:v9 forKey:v10];
 
   v12 = [(TUMomentsCapabilities *)self initWithAvailability:v6 supportedMediaTypes:v11];
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUMomentsCapabilities *)self availability];
+  coderCopy = coder;
+  availability = [(TUMomentsCapabilities *)self availability];
   v6 = NSStringFromSelector(sel_availability);
-  [v4 encodeInt:v5 forKey:v6];
+  [coderCopy encodeInt:availability forKey:v6];
 
-  v8 = [(TUMomentsCapabilities *)self supportedMediaTypes];
+  supportedMediaTypes = [(TUMomentsCapabilities *)self supportedMediaTypes];
   v7 = NSStringFromSelector(sel_supportedMediaTypes);
-  [v4 encodeObject:v8 forKey:v7];
+  [coderCopy encodeObject:supportedMediaTypes forKey:v7];
 }
 
 @end

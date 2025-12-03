@@ -1,13 +1,13 @@
 @interface LibraryTabGroupManager
-- (BOOL)tabBarController:(id)a3 shouldSelectTab:(id)a4;
+- (BOOL)tabBarController:(id)controller shouldSelectTab:(id)tab;
 - (_TtC8ShelfKit22LibraryTabGroupManager)init;
-- (id)tabBarController:(id)a3 displayedViewControllersForTab:(id)a4 proposedViewControllers:(id)a5;
-- (id)tabBarController:(id)a3 sidebar:(id)a4 itemForRequest:(id)a5;
+- (id)tabBarController:(id)controller displayedViewControllersForTab:(id)tab proposedViewControllers:(id)controllers;
+- (id)tabBarController:(id)controller sidebar:(id)sidebar itemForRequest:(id)request;
 - (void)dealloc;
-- (void)tabBarController:(id)a3 didSelectTab:(id)a4 previousTab:(id)a5;
-- (void)tabBarController:(id)a3 displayOrderDidChangeForGroup:(id)a4;
-- (void)tabBarController:(id)a3 sidebar:(id)a4 updateItem:(id)a5;
-- (void)tabBarController:(id)a3 visibilityDidChangeForTabs:(id)a4;
+- (void)tabBarController:(id)controller didSelectTab:(id)tab previousTab:(id)previousTab;
+- (void)tabBarController:(id)controller displayOrderDidChangeForGroup:(id)group;
+- (void)tabBarController:(id)controller sidebar:(id)sidebar updateItem:(id)item;
+- (void)tabBarController:(id)controller visibilityDidChangeForTabs:(id)tabs;
 @end
 
 @implementation LibraryTabGroupManager
@@ -19,11 +19,11 @@
   v5 = __chkstk_darwin(v3);
   v7 = &v10 - v6;
   (*(v4 + 16))(&v10 - v6, self + OBJC_IVAR____TtC8ShelfKit22LibraryTabGroupManager_tabsContinuation, v3, v5);
-  v8 = self;
+  selfCopy = self;
   sub_3ED724();
   (*(v4 + 8))(v7, v3);
   v9 = type metadata accessor for LibraryTabGroupManager();
-  v10.receiver = v8;
+  v10.receiver = selfCopy;
   v10.super_class = v9;
   [(LibraryTabGroupManager *)&v10 dealloc];
 }
@@ -35,93 +35,93 @@
   return result;
 }
 
-- (BOOL)tabBarController:(id)a3 shouldSelectTab:(id)a4
+- (BOOL)tabBarController:(id)controller shouldSelectTab:(id)tab
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  tabCopy = tab;
+  selfCopy = self;
   v9 = sub_2FD3EC();
 
   return v9 & 1;
 }
 
-- (void)tabBarController:(id)a3 didSelectTab:(id)a4 previousTab:(id)a5
+- (void)tabBarController:(id)controller didSelectTab:(id)tab previousTab:(id)previousTab
 {
-  v8 = a3;
-  v14 = a4;
-  v9 = self;
-  v10 = a5;
-  v11 = [v14 managingTabGroup];
-  if (v11)
+  controllerCopy = controller;
+  tabCopy = tab;
+  selfCopy = self;
+  previousTabCopy = previousTab;
+  managingTabGroup = [tabCopy managingTabGroup];
+  if (managingTabGroup)
   {
-    v12 = v11;
-    v13 = [v14 identifier];
-    if (!v13)
+    v12 = managingTabGroup;
+    identifier = [tabCopy identifier];
+    if (!identifier)
     {
       sub_3ED244();
-      v13 = sub_3ED204();
+      identifier = sub_3ED204();
     }
 
-    [v12 setDefaultChildIdentifier:v13];
+    [v12 setDefaultChildIdentifier:identifier];
 
-    v9 = v13;
+    selfCopy = identifier;
   }
 
   else
   {
-    v12 = v10;
+    v12 = previousTabCopy;
   }
 }
 
-- (id)tabBarController:(id)a3 displayedViewControllersForTab:(id)a4 proposedViewControllers:(id)a5
+- (id)tabBarController:(id)controller displayedViewControllersForTab:(id)tab proposedViewControllers:(id)controllers
 {
   sub_36174(0, &qword_502180);
   v8 = sub_3ED584();
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  _s8ShelfKit22LibraryTabGroupManagerC16tabBarController_27displayedViewControllersFor08proposedkL0SaySo06UIViewI0CGSo05UITabhI0C_So0P0CAItF_0(v9, v10, v8);
+  controllerCopy = controller;
+  tabCopy = tab;
+  selfCopy = self;
+  _s8ShelfKit22LibraryTabGroupManagerC16tabBarController_27displayedViewControllersFor08proposedkL0SaySo06UIViewI0CGSo05UITabhI0C_So0P0CAItF_0(controllerCopy, tabCopy, v8);
 
   v12.super.isa = sub_3ED574().super.isa;
 
   return v12.super.isa;
 }
 
-- (void)tabBarController:(id)a3 visibilityDidChangeForTabs:(id)a4
+- (void)tabBarController:(id)controller visibilityDidChangeForTabs:(id)tabs
 {
   sub_36174(0, &qword_4EA748);
   v6 = sub_3ED584();
-  v7 = a3;
-  v8 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_2FDB6C(v6);
 }
 
-- (void)tabBarController:(id)a3 displayOrderDidChangeForGroup:(id)a4
+- (void)tabBarController:(id)controller displayOrderDidChangeForGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2FEF60(v7);
+  controllerCopy = controller;
+  groupCopy = group;
+  selfCopy = self;
+  sub_2FEF60(groupCopy);
 }
 
-- (id)tabBarController:(id)a3 sidebar:(id)a4 itemForRequest:(id)a5
+- (id)tabBarController:(id)controller sidebar:(id)sidebar itemForRequest:(id)request
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_2FFA8C(v10);
+  controllerCopy = controller;
+  sidebarCopy = sidebar;
+  requestCopy = request;
+  selfCopy = self;
+  v12 = sub_2FFA8C(requestCopy);
 
   return v12;
 }
 
-- (void)tabBarController:(id)a3 sidebar:(id)a4 updateItem:(id)a5
+- (void)tabBarController:(id)controller sidebar:(id)sidebar updateItem:(id)item
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_2FFFB8(v10);
+  controllerCopy = controller;
+  sidebarCopy = sidebar;
+  itemCopy = item;
+  selfCopy = self;
+  sub_2FFFB8(itemCopy);
 }
 
 @end

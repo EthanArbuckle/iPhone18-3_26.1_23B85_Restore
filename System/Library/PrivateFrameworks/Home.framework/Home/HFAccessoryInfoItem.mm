@@ -1,17 +1,17 @@
 @interface HFAccessoryInfoItem
-+ (id)accessibilityStringForCharacteristic:(id)a3;
-+ (id)localizedStringForCharacteristic:(id)a3;
++ (id)accessibilityStringForCharacteristic:(id)characteristic;
++ (id)localizedStringForCharacteristic:(id)characteristic;
 - (HFAccessoryInfoItem)init;
-- (HFAccessoryInfoItem)initWithAccessory:(id)a3 infoType:(unint64_t)a4 home:(id)a5;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HFAccessoryInfoItem)initWithAccessory:(id)accessory infoType:(unint64_t)type home:(id)home;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFAccessoryInfoItem
 
-+ (id)localizedStringForCharacteristic:(id)a3
++ (id)localizedStringForCharacteristic:(id)characteristic
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277CCF968]])
+  characteristicCopy = characteristic;
+  if ([characteristicCopy isEqualToString:*MEMORY[0x277CCF968]])
   {
     v4 = @"HFAccessoryInfoDetailsManufacturer";
 LABEL_11:
@@ -19,25 +19,25 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277CCF970]])
+  if ([characteristicCopy isEqualToString:*MEMORY[0x277CCF970]])
   {
     v4 = @"HFAccessoryInfoDetailsModel";
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277CCFA58]])
+  if ([characteristicCopy isEqualToString:*MEMORY[0x277CCFA58]])
   {
     v4 = @"HFAccessoryInfoDetailsSerialNumber";
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277CCF8B8]])
+  if ([characteristicCopy isEqualToString:*MEMORY[0x277CCF8B8]])
   {
     v4 = @"HFAccessoryInfoDetailsFirmwareVersion";
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x277CCFA88]])
+  if ([characteristicCopy isEqualToString:*MEMORY[0x277CCFA88]])
   {
     v4 = @"HFAccessoryInfoDetailsSoftwareVersion";
     goto LABEL_11;
@@ -49,30 +49,30 @@ LABEL_12:
   return v5;
 }
 
-+ (id)accessibilityStringForCharacteristic:(id)a3
++ (id)accessibilityStringForCharacteristic:(id)characteristic
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277CCF968]])
+  characteristicCopy = characteristic;
+  if ([characteristicCopy isEqualToString:*MEMORY[0x277CCF968]])
   {
     v4 = @"AccessoryDetails.Manufacturer";
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CCF970]])
+  else if ([characteristicCopy isEqualToString:*MEMORY[0x277CCF970]])
   {
     v4 = @"AccessoryDetails.Model";
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CCFA58]])
+  else if ([characteristicCopy isEqualToString:*MEMORY[0x277CCFA58]])
   {
     v4 = @"AccessoryDetails.SerialNumber";
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CCF8B8]])
+  else if ([characteristicCopy isEqualToString:*MEMORY[0x277CCF8B8]])
   {
     v4 = @"AccessoryDetails.FirmwareVersion";
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CCFA88]])
+  else if ([characteristicCopy isEqualToString:*MEMORY[0x277CCFA88]])
   {
     v4 = @"AccessoryDetails.SoftwareVersion";
   }
@@ -87,73 +87,73 @@ LABEL_12:
 
 - (HFAccessoryInfoItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithAccessory_infoType_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAccessoryInfoItem.m" lineNumber:69 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryInfoItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessoryInfoItem.m" lineNumber:69 description:{@"%s is unavailable; use %@ instead", "-[HFAccessoryInfoItem init]", v5}];
 
   return 0;
 }
 
-- (HFAccessoryInfoItem)initWithAccessory:(id)a3 infoType:(unint64_t)a4 home:(id)a5
+- (HFAccessoryInfoItem)initWithAccessory:(id)accessory infoType:(unint64_t)type home:(id)home
 {
-  v9 = a3;
-  v10 = a5;
+  accessoryCopy = accessory;
+  homeCopy = home;
   v14.receiver = self;
   v14.super_class = HFAccessoryInfoItem;
   v11 = [(HFAccessoryInfoItem *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_accessory, a3);
-    v12->_infoType = a4;
-    objc_storeStrong(&v12->_home, a5);
+    objc_storeStrong(&v11->_accessory, accessory);
+    v12->_infoType = type;
+    objc_storeStrong(&v12->_home, home);
   }
 
   return v12;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v5 = MEMORY[0x277CBEB98];
-  v6 = [(HFAccessoryInfoItem *)self accessory];
-  v7 = [v5 setWithObject:v6];
-  [v4 setObject:v7 forKeyedSubscript:@"dependentHomeKitObjects"];
+  accessory = [(HFAccessoryInfoItem *)self accessory];
+  v7 = [v5 setWithObject:accessory];
+  [dictionary setObject:v7 forKeyedSubscript:@"dependentHomeKitObjects"];
 
   v8 = +[HFAccessoryInfoDetailsItemProvider preferredCharacteristicOrderArray];
   v9 = +[HFHomeKitDispatcher sharedDispatcher];
-  v10 = [v9 diagnosticInfoManager];
-  v11 = [(HFAccessoryInfoItem *)self accessory];
-  v12 = [v10 softwareVersionForAccessory:v11];
+  diagnosticInfoManager = [v9 diagnosticInfoManager];
+  accessory2 = [(HFAccessoryInfoItem *)self accessory];
+  v12 = [diagnosticInfoManager softwareVersionForAccessory:accessory2];
 
-  v13 = [(HFAccessoryInfoItem *)self infoType];
+  infoType = [(HFAccessoryInfoItem *)self infoType];
   v14 = 0;
   LOBYTE(v15) = 0;
   v16 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v13 <= 1)
+  if (infoType <= 1)
   {
-    if (!v13)
+    if (!infoType)
     {
       v14 = 0;
-      v17 = 0;
+      firmwareVersion = 0;
       LOBYTE(v15) = 1;
       goto LABEL_19;
     }
 
-    v17 = 0;
-    if (v13 != 1)
+    firmwareVersion = 0;
+    if (infoType != 1)
     {
       goto LABEL_19;
     }
 
-    v18 = [(HFAccessoryInfoItem *)self accessory];
-    v17 = [v18 firmwareVersion];
+    accessory3 = [(HFAccessoryInfoItem *)self accessory];
+    firmwareVersion = [accessory3 firmwareVersion];
 
     v19 = *MEMORY[0x277CCF8B8];
     v16 = [v8 indexOfObject:*MEMORY[0x277CCF8B8]];
     v14 = [HFAccessoryInfoItem localizedStringForCharacteristic:v19];
-    v20 = [(HFAccessoryInfoItem *)self accessory];
-    if ([v20 hf_isHomePod])
+    accessory4 = [(HFAccessoryInfoItem *)self accessory];
+    if ([accessory4 hf_isHomePod])
     {
       LOBYTE(v15) = 1;
 LABEL_18:
@@ -161,60 +161,60 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v21 = [(HFAccessoryInfoItem *)self accessory];
-    LOBYTE(v15) = [v21 hf_isAppleTV];
+    accessory5 = [(HFAccessoryInfoItem *)self accessory];
+    LOBYTE(v15) = [accessory5 hf_isAppleTV];
     goto LABEL_17;
   }
 
-  if (v13 == 2)
+  if (infoType == 2)
   {
     if (v12)
     {
-      v17 = [v12 localizedDescription];
+      firmwareVersion = [v12 localizedDescription];
     }
 
     else
     {
-      v22 = [(HFAccessoryInfoItem *)self accessory];
-      v23 = [v22 softwareVersion];
-      v17 = [v23 localizedDescription];
+      accessory6 = [(HFAccessoryInfoItem *)self accessory];
+      softwareVersion = [accessory6 softwareVersion];
+      firmwareVersion = [softwareVersion localizedDescription];
     }
 
     v24 = *MEMORY[0x277CCFA88];
     v16 = [v8 indexOfObject:*MEMORY[0x277CCFA88]];
     v14 = [HFAccessoryInfoItem localizedStringForCharacteristic:v24];
-    v20 = [(HFAccessoryInfoItem *)self accessory];
-    if ([v20 hf_isHomePod])
+    accessory4 = [(HFAccessoryInfoItem *)self accessory];
+    if ([accessory4 hf_isHomePod])
     {
       LOBYTE(v15) = 0;
       goto LABEL_18;
     }
 
-    v21 = [(HFAccessoryInfoItem *)self accessory];
-    v15 = [v21 hf_isAppleTV] ^ 1;
+    accessory5 = [(HFAccessoryInfoItem *)self accessory];
+    v15 = [accessory5 hf_isAppleTV] ^ 1;
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v17 = 0;
-  if (v13 == 3)
+  firmwareVersion = 0;
+  if (infoType == 3)
   {
     v16 = [v8 indexOfObject:@"HFAccessoryInfoTypeNetworkPreferredOrderKey"];
     LOBYTE(v15) = 0;
     v14 = 0;
-    v17 = 0;
+    firmwareVersion = 0;
   }
 
 LABEL_19:
-  [v4 setObject:v14 forKeyedSubscript:@"title"];
-  [v4 setObject:v17 forKeyedSubscript:@"description"];
-  v25 = [v17 length];
-  v26 = [(HFAccessoryInfoItem *)self home];
-  v27 = [v26 hf_currentUserIsRestrictedGuest];
+  [dictionary setObject:v14 forKeyedSubscript:@"title"];
+  [dictionary setObject:firmwareVersion forKeyedSubscript:@"description"];
+  v25 = [firmwareVersion length];
+  home = [(HFAccessoryInfoItem *)self home];
+  hf_currentUserIsRestrictedGuest = [home hf_currentUserIsRestrictedGuest];
   if (v25)
   {
-    v28 = v27;
+    v28 = hf_currentUserIsRestrictedGuest;
   }
 
   else
@@ -225,7 +225,7 @@ LABEL_19:
   v29 = v28 | v15;
 
   v30 = [MEMORY[0x277CCABB0] numberWithBool:v29 & 1];
-  [v4 setObject:v30 forKeyedSubscript:@"hidden"];
+  [dictionary setObject:v30 forKeyedSubscript:@"hidden"];
 
   if (v16 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -233,9 +233,9 @@ LABEL_19:
   }
 
   v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v16];
-  [v4 setObject:v31 forKeyedSubscript:@"accessoryInfoDetailPreferredOrder"];
+  [dictionary setObject:v31 forKeyedSubscript:@"accessoryInfoDetailPreferredOrder"];
 
-  v32 = [[HFItemUpdateOutcome alloc] initWithResults:v4];
+  v32 = [[HFItemUpdateOutcome alloc] initWithResults:dictionary];
   v33 = [MEMORY[0x277D2C900] futureWithResult:v32];
 
   return v33;

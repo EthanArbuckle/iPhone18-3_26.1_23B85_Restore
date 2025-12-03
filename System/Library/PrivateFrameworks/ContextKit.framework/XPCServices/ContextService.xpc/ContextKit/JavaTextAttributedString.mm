@@ -1,17 +1,17 @@
 @interface JavaTextAttributedString
 - (id)getIterator;
-- (id)getIteratorWithJavaTextAttributedCharacterIterator_AttributeArray:(id)a3;
-- (id)getIteratorWithJavaTextAttributedCharacterIterator_AttributeArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (void)addAttributeWithJavaTextAttributedCharacterIterator_Attribute:(id)a3 withId:(id)a4;
-- (void)addAttributeWithJavaTextAttributedCharacterIterator_Attribute:(id)a3 withId:(id)a4 withInt:(int)a5 withInt:(int)a6;
+- (id)getIteratorWithJavaTextAttributedCharacterIterator_AttributeArray:(id)array;
+- (id)getIteratorWithJavaTextAttributedCharacterIterator_AttributeArray:(id)array withInt:(int)int withInt:(int)withInt;
+- (void)addAttributeWithJavaTextAttributedCharacterIterator_Attribute:(id)attribute withId:(id)id;
+- (void)addAttributeWithJavaTextAttributedCharacterIterator_Attribute:(id)attribute withId:(id)id withInt:(int)int withInt:(int)withInt;
 - (void)dealloc;
 @end
 
 @implementation JavaTextAttributedString
 
-- (void)addAttributeWithJavaTextAttributedCharacterIterator_Attribute:(id)a3 withId:(id)a4
+- (void)addAttributeWithJavaTextAttributedCharacterIterator_Attribute:(id)attribute withId:(id)id
 {
-  if (!a3)
+  if (!attribute)
   {
     v14 = new_JavaLangNullPointerException_initWithNSString_(@"attribute == null");
     goto LABEL_14;
@@ -36,7 +36,7 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  v9 = [(JavaUtilMap *)attributeMap getWithId:a3];
+  v9 = [(JavaUtilMap *)attributeMap getWithId:attribute];
   if (v9)
   {
     v10 = v9;
@@ -45,7 +45,7 @@ LABEL_14:
   }
 
   v10 = new_JavaUtilArrayList_initWithInt_(1);
-  [(JavaUtilMap *)self->attributeMap_ putWithId:a3 withId:v10];
+  [(JavaUtilMap *)self->attributeMap_ putWithId:attribute withId:v10];
   if (!v10)
   {
 LABEL_11:
@@ -57,22 +57,22 @@ LABEL_8:
   v12 = [JavaTextAttributedString_Range alloc];
   v12->start_ = 0;
   v12->end_ = v11;
-  JreStrongAssign(&v12->value_, a4);
+  JreStrongAssign(&v12->value_, id);
   v13 = v12;
 
   [(JavaUtilArrayList *)v10 addWithId:v13];
 }
 
-- (void)addAttributeWithJavaTextAttributedCharacterIterator_Attribute:(id)a3 withId:(id)a4 withInt:(int)a5 withInt:(int)a6
+- (void)addAttributeWithJavaTextAttributedCharacterIterator_Attribute:(id)attribute withId:(id)id withInt:(int)int withInt:(int)withInt
 {
-  if (!a3)
+  if (!attribute)
   {
     v55 = new_JavaLangNullPointerException_initWithNSString_(@"attribute == null");
 LABEL_63:
     objc_exception_throw(v55);
   }
 
-  if (a5 < 0)
+  if (int < 0)
   {
     goto LABEL_61;
   }
@@ -84,14 +84,14 @@ LABEL_63:
   }
 
   v12 = [(NSString *)text length];
-  if (a5 >= a6 || v12 < a6)
+  if (int >= withInt || v12 < withInt)
   {
 LABEL_61:
     v55 = new_JavaLangIllegalArgumentException_init();
     goto LABEL_63;
   }
 
-  if (!a4)
+  if (!id)
   {
     return;
   }
@@ -102,32 +102,32 @@ LABEL_61:
     goto LABEL_60;
   }
 
-  v14 = [(JavaUtilMap *)attributeMap getWithId:a3];
+  v14 = [(JavaUtilMap *)attributeMap getWithId:attribute];
   if (v14)
   {
-    v15 = [v14 listIterator];
-    if (v15)
+    listIterator = [v14 listIterator];
+    if (listIterator)
     {
-      v16 = v15;
-      if ([v15 hasNext])
+      v16 = listIterator;
+      if ([listIterator hasNext])
       {
         while (1)
         {
-          v17 = [v16 next];
-          if (!v17)
+          next = [v16 next];
+          if (!next)
           {
             goto LABEL_60;
           }
 
-          v18 = v17;
-          if (v17[2] >= a6)
+          v18 = next;
+          if (next[2] >= withInt)
           {
             [v16 previous];
             goto LABEL_41;
           }
 
-          v19 = v17[3];
-          if (v19 > a5 || v19 == a5 && [a4 isEqual:*(v17 + 2)])
+          v19 = next[3];
+          if (v19 > int || v19 == int && [id isEqual:*(next + 2)])
           {
             break;
           }
@@ -143,35 +143,35 @@ LABEL_61:
         v24 = *(v18 + 2);
         v25 = [JavaTextAttributedString_Range alloc];
         v25->start_ = v23;
-        v25->end_ = a5;
+        v25->end_ = int;
         JreStrongAssign(&v25->value_, v24);
         v26 = v25;
         v27 = v18[3];
         v28 = *(v18 + 2);
         v29 = [JavaTextAttributedString_Range alloc];
-        v29->start_ = a6;
+        v29->start_ = withInt;
         v29->end_ = v27;
         JreStrongAssign(&v29->value_, v28);
         v30 = v29;
-        while (v18[3] < a6 && [v16 hasNext])
+        while (v18[3] < withInt && [v16 hasNext])
         {
-          v31 = [v16 next];
-          if (!v31)
+          next2 = [v16 next];
+          if (!next2)
           {
             goto LABEL_60;
           }
 
-          v18 = v31;
-          if (v31[3] >= a6)
+          v18 = next2;
+          if (next2[3] >= withInt)
           {
-            v32 = v31[2];
-            if (v32 < a6 || v32 == a6 && [a4 isEqual:*(v31 + 2)])
+            v32 = next2[2];
+            if (v32 < withInt || v32 == withInt && [id isEqual:*(next2 + 2)])
             {
               [v16 remove];
               v33 = v18[3];
               v34 = *(v18 + 2);
               v35 = [JavaTextAttributedString_Range alloc];
-              v35->start_ = a6;
+              v35->start_ = withInt;
               v35->end_ = v33;
               JreStrongAssign(&v35->value_, v34);
               v30 = v35;
@@ -185,26 +185,26 @@ LABEL_61:
           }
         }
 
-        v36 = [a4 isEqual:v26->value_];
-        v37 = [a4 isEqual:v30->value_];
+        v36 = [id isEqual:v26->value_];
+        v37 = [id isEqual:v30->value_];
         start = v26->start_;
         if (v36)
         {
-          if (start >= a5)
+          if (start >= int)
           {
-            v39 = a5;
+            intCopy = int;
           }
 
           else
           {
-            v39 = v26->start_;
+            intCopy = v26->start_;
           }
 
           if (v37)
           {
-            if (v30->end_ <= a6)
+            if (v30->end_ <= withInt)
             {
-              end = a6;
+              end = withInt;
             }
 
             else
@@ -214,7 +214,7 @@ LABEL_61:
 
             value = v26->value_;
             v42 = [JavaTextAttributedString_Range alloc];
-            v42->start_ = v39;
+            v42->start_ = intCopy;
             v42->end_ = end;
             JreStrongAssign(&v42->value_, value);
             v43 = v42;
@@ -223,8 +223,8 @@ LABEL_61:
 
           v51 = v26->value_;
           v52 = [JavaTextAttributedString_Range alloc];
-          v52->start_ = v39;
-          v52->end_ = a6;
+          v52->start_ = intCopy;
+          v52->end_ = withInt;
           JreStrongAssign(&v52->value_, v51);
           v53 = v52;
         }
@@ -239,20 +239,20 @@ LABEL_61:
               [v16 addWithId:v26];
             }
 
-            if (v30->end_ <= a6)
+            if (v30->end_ <= withInt)
             {
-              v48 = a6;
+              withIntCopy = withInt;
             }
 
             else
             {
-              v48 = v30->end_;
+              withIntCopy = v30->end_;
             }
 
             v49 = v30->value_;
             v50 = [JavaTextAttributedString_Range alloc];
-            v50->start_ = a5;
-            v50->end_ = v48;
+            v50->start_ = int;
+            v50->end_ = withIntCopy;
             JreStrongAssign(&v50->value_, v49);
             v43 = v50;
             goto LABEL_42;
@@ -264,9 +264,9 @@ LABEL_61:
           }
 
           v54 = [JavaTextAttributedString_Range alloc];
-          v54->start_ = a5;
-          v54->end_ = a6;
-          JreStrongAssign(&v54->value_, a4);
+          v54->start_ = int;
+          v54->end_ = withInt;
+          JreStrongAssign(&v54->value_, id);
           v53 = v54;
         }
 
@@ -283,9 +283,9 @@ LABEL_61:
 
 LABEL_41:
       v44 = [JavaTextAttributedString_Range alloc];
-      v44->start_ = a5;
-      v44->end_ = a6;
-      JreStrongAssign(&v44->value_, a4);
+      v44->start_ = int;
+      v44->end_ = withInt;
+      JreStrongAssign(&v44->value_, id);
       v43 = v44;
 LABEL_42:
       v45 = v43;
@@ -302,13 +302,13 @@ LABEL_60:
 
   v20 = new_JavaUtilArrayList_initWithInt_(1);
   v21 = [JavaTextAttributedString_Range alloc];
-  v21->start_ = a5;
-  v21->end_ = a6;
-  JreStrongAssign(&v21->value_, a4);
+  v21->start_ = int;
+  v21->end_ = withInt;
+  JreStrongAssign(&v21->value_, id);
   [(JavaUtilArrayList *)v20 addWithId:v21];
   v22 = self->attributeMap_;
 
-  [(JavaUtilMap *)v22 putWithId:a3 withId:v20];
+  [(JavaUtilMap *)v22 putWithId:attribute withId:v20];
 }
 
 - (id)getIterator
@@ -319,7 +319,7 @@ LABEL_60:
   return v3;
 }
 
-- (id)getIteratorWithJavaTextAttributedCharacterIterator_AttributeArray:(id)a3
+- (id)getIteratorWithJavaTextAttributedCharacterIterator_AttributeArray:(id)array
 {
   text = self->text_;
   if (!text)
@@ -329,15 +329,15 @@ LABEL_60:
 
   v6 = [(NSString *)text length];
   v7 = [JavaTextAttributedString_AttributedIterator alloc];
-  JavaTextAttributedString_AttributedIterator_initWithJavaTextAttributedString_withJavaTextAttributedCharacterIterator_AttributeArray_withInt_withInt_(v7, self, a3, 0, v6);
+  JavaTextAttributedString_AttributedIterator_initWithJavaTextAttributedString_withJavaTextAttributedCharacterIterator_AttributeArray_withInt_withInt_(v7, self, array, 0, v6);
 
   return v7;
 }
 
-- (id)getIteratorWithJavaTextAttributedCharacterIterator_AttributeArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (id)getIteratorWithJavaTextAttributedCharacterIterator_AttributeArray:(id)array withInt:(int)int withInt:(int)withInt
 {
   v9 = [JavaTextAttributedString_AttributedIterator alloc];
-  JavaTextAttributedString_AttributedIterator_initWithJavaTextAttributedString_withJavaTextAttributedCharacterIterator_AttributeArray_withInt_withInt_(v9, self, a3, a4, a5);
+  JavaTextAttributedString_AttributedIterator_initWithJavaTextAttributedString_withJavaTextAttributedCharacterIterator_AttributeArray_withInt_withInt_(v9, self, array, int, withInt);
 
   return v9;
 }

@@ -1,52 +1,52 @@
 @interface PLRapidController
-+ (BOOL)deferActivity:(id)a3;
++ (BOOL)deferActivity:(id)activity;
 + (BOOL)diagnosticLogSubmissionEnabled;
-+ (BOOL)finishActivity:(id)a3 withStatus:(int64_t)a4;
-+ (BOOL)randomBoolWithYesPercentage:(double)a3;
-+ (id)allTablesInDB:(id)a3;
-+ (id)appsToKeep:(id)a3;
++ (BOOL)finishActivity:(id)activity withStatus:(int64_t)status;
++ (BOOL)randomBoolWithYesPercentage:(double)percentage;
++ (id)allTablesInDB:(id)b;
++ (id)appsToKeep:(id)keep;
 + (id)dataCollectionCriterion;
 + (id)sharedInstance;
-+ (id)trimConditionsForTables:(id)a3 trimDate:(id)a4;
-+ (int)hangTypeFromStr:(id)a3;
++ (id)trimConditionsForTables:(id)tables trimDate:(id)date;
++ (int)hangTypeFromStr:(id)str;
 + (void)cleanup;
-+ (void)dropDataFromDB:(id)a3 withConfig:(id)a4;
-+ (void)dropTablesFromDB:(id)a3 withConfig:(id)a4;
-+ (void)offsetTimestampsInDB:(id)a3 withConfig:(id)a4 withBaseTimestamp:(double)a5;
-+ (void)roundDataInDB:(id)a3 withConfig:(id)a4;
++ (void)dropDataFromDB:(id)b withConfig:(id)config;
++ (void)dropTablesFromDB:(id)b withConfig:(id)config;
++ (void)offsetTimestampsInDB:(id)b withConfig:(id)config withBaseTimestamp:(double)timestamp;
++ (void)roundDataInDB:(id)b withConfig:(id)config;
 - (BOOL)copyDB;
-- (BOOL)packageDB:(id)a3;
+- (BOOL)packageDB:(id)b;
 - (BOOL)prepareMSSLog;
-- (BOOL)preparePerfPowerlog:(id)a3 shouldDefer:(BOOL *)a4;
+- (BOOL)preparePerfPowerlog:(id)powerlog shouldDefer:(BOOL *)defer;
 - (BOOL)shouldDoRapidCollection;
 - (PLRapidController)init;
-- (id)configFromMonitor:(id)a3;
-- (id)generateContextDictionary:(id)a3;
+- (id)configFromMonitor:(id)monitor;
+- (id)generateContextDictionary:(id)dictionary;
 - (id)generateDummyPayload;
 - (id)logGenerationStats;
 - (id)packageAllLogs;
 - (id)setupConnection;
 - (id)topAppsRunTime;
-- (id)uploadLog:(id)a3;
-- (void)addMDLogContext:(id)a3;
-- (void)addMSSContext:(id)a3;
-- (void)completeTaskingConfig:(id)a3;
-- (void)dropAppVersions:(id)a3;
-- (void)dropDuplicateRows:(id)a3;
+- (id)uploadLog:(id)log;
+- (void)addMDLogContext:(id)context;
+- (void)addMSSContext:(id)context;
+- (void)completeTaskingConfig:(id)config;
+- (void)dropAppVersions:(id)versions;
+- (void)dropDuplicateRows:(id)rows;
 - (void)generateDummyPayload;
-- (void)handleDRConfigUpdate:(id)a3 error:(id)a4;
-- (void)handleXPCActivityCallback:(id)a3;
+- (void)handleDRConfigUpdate:(id)update error:(id)error;
+- (void)handleXPCActivityCallback:(id)callback;
 - (void)initializeSamplingPercentage;
 - (void)initializeTaskingParams;
-- (void)logHangSignposts:(id)a3 toDB:(id)a4;
-- (void)logSignpostDataToDB:(id)a3;
-- (void)logToCADataUploadState:(id)a3;
-- (void)logToCALogGenerationStats:(id)a3;
+- (void)logHangSignposts:(id)signposts toDB:(id)b;
+- (void)logSignpostDataToDB:(id)b;
+- (void)logToCADataUploadState:(id)state;
+- (void)logToCALogGenerationStats:(id)stats;
 - (void)persistActivityState;
 - (void)prepareMSSLog;
-- (void)pruneDB:(id)a3 withConfig:(id)a4;
+- (void)pruneDB:(id)b withConfig:(id)config;
 - (void)registerDataCollectionActivity;
-- (void)rejectTaskingConfig:(id)a3;
+- (void)rejectTaskingConfig:(id)config;
 - (void)resetActivity;
 - (void)setLogCreationStartDate;
 - (void)setMDLogCompressedFilePath;
@@ -55,7 +55,7 @@
 - (void)setMSSFilePath;
 - (void)setupDRTasking;
 - (void)stopDRTasking;
-- (void)trimAndFilterDB:(id)a3 withConfig:(id)a4;
+- (void)trimAndFilterDB:(id)b withConfig:(id)config;
 @end
 
 @implementation PLRapidController
@@ -66,7 +66,7 @@
   block[1] = 3221225472;
   block[2] = __35__PLRapidController_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_3 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_3, block);
@@ -89,7 +89,7 @@ uint64_t __35__PLRapidController_sharedInstance__block_invoke(uint64_t a1)
 {
   if (+[PLUtilities isPowerlogHelperd](PLUtilities, "isPowerlogHelperd") || +[PLUtilities isPerfPowerMetricd])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -104,10 +104,10 @@ uint64_t __35__PLRapidController_sharedInstance__block_invoke(uint64_t a1)
     }
 
     self = v5;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)initializeSamplingPercentage
@@ -190,15 +190,15 @@ LABEL_13:
   v3 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PLRapidController stage](self, "stage")}];
   [PLDefaults setObject:v3 forKey:@"RapidStage" saveToDisk:1];
 
-  v4 = [(PLRapidController *)self logCreationStartDate];
-  [PLDefaults setObject:v4 forKey:@"RapidStartDate" saveToDisk:1];
+  logCreationStartDate = [(PLRapidController *)self logCreationStartDate];
+  [PLDefaults setObject:logCreationStartDate forKey:@"RapidStartDate" saveToDisk:1];
 
   [PLDefaults doubleForKey:@"RapidDeferralCount" ifNotSet:0.0];
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:v5 + 1.0];
   [PLDefaults setObject:v6 forKey:@"RapidDeferralCount" saveToDisk:1];
 
-  v7 = [(PLRapidController *)self logCreationResumeDate];
-  [v7 timeIntervalSinceNow];
+  logCreationResumeDate = [(PLRapidController *)self logCreationResumeDate];
+  [logCreationResumeDate timeIntervalSinceNow];
   v9 = v8;
 
   [PLDefaults doubleForKey:@"RapidProcessingTime" ifNotSet:0.0];
@@ -275,10 +275,10 @@ void __51__PLRapidController_registerDataCollectionActivity__block_invoke(uint64
   }
 }
 
-- (void)handleXPCActivityCallback:(id)a3
+- (void)handleXPCActivityCallback:(id)callback
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  callbackCopy = callback;
   [PLDefaults doubleForKey:@"RapidStage" ifNotSet:-1.0];
   [(PLRapidController *)self setStage:v5];
   [(PLRapidController *)self initializeSamplingPercentage];
@@ -298,18 +298,18 @@ LABEL_4:
     v6 = RapidLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(PLRapidController *)self logCreationStartDate];
+      logCreationStartDate = [(PLRapidController *)self logCreationStartDate];
       *buf = 138412290;
-      v21 = v7;
+      v21 = logCreationStartDate;
       _os_log_impl(&dword_1D8611000, v6, OS_LOG_TYPE_DEFAULT, "Log generation started at %@", buf, 0xCu);
     }
 
     v19 = 0;
-    v8 = [(PLRapidController *)self preparePerfPowerlog:v4 shouldDefer:&v19];
+    v8 = [(PLRapidController *)self preparePerfPowerlog:callbackCopy shouldDefer:&v19];
     if (v19 == 1)
     {
       [(PLRapidController *)self persistActivityState];
-      [PLRapidController deferActivity:v4];
+      [PLRapidController deferActivity:callbackCopy];
     }
 
     else
@@ -317,15 +317,15 @@ LABEL_4:
       v9 = v8;
       [(PLRapidController *)self prepareMSSLog];
       [(PLRapidController *)self setStage:6];
-      v10 = [MEMORY[0x1E695DF00] date];
-      [(PLRapidController *)self setLogCreationEndDate:v10];
+      date = [MEMORY[0x1E695DF00] date];
+      [(PLRapidController *)self setLogCreationEndDate:date];
 
       v11 = RapidLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(PLRapidController *)self logCreationEndDate];
+        logCreationEndDate = [(PLRapidController *)self logCreationEndDate];
         *buf = 138412546;
-        v21 = v12;
+        v21 = logCreationEndDate;
         v22 = 1024;
         v23 = v9;
         _os_log_impl(&dword_1D8611000, v11, OS_LOG_TYPE_DEFAULT, "Log generation ended at %@ success: %d", buf, 0x12u);
@@ -333,8 +333,8 @@ LABEL_4:
 
       if (v9)
       {
-        v13 = [(PLRapidController *)self packageAllLogs];
-        if (v13)
+        packageAllLogs = [(PLRapidController *)self packageAllLogs];
+        if (packageAllLogs)
         {
           [(PLRapidController *)self logToCADataUploadState:@"LogGenerationComplete"];
         }
@@ -342,11 +342,11 @@ LABEL_4:
 
       else
       {
-        v13 = 0;
+        packageAllLogs = 0;
       }
 
       [(PLRapidController *)self logToCADataUploadState:@"LogSubmitToDPAttempt"];
-      v14 = [(PLRapidController *)self uploadLog:v13];
+      v14 = [(PLRapidController *)self uploadLog:packageAllLogs];
       [(PLRapidController *)self resetActivity];
       if (v14)
       {
@@ -362,7 +362,7 @@ LABEL_4:
       else
       {
         [(PLRapidController *)self logToCADataUploadState:@"LogSubmitToDPSuccess"];
-        if (v13)
+        if (packageAllLogs)
         {
           v16 = 0;
         }
@@ -373,7 +373,7 @@ LABEL_4:
         }
       }
 
-      [PLRapidController finishActivity:v4 withStatus:v16];
+      [PLRapidController finishActivity:callbackCopy withStatus:v16];
     }
 
     goto LABEL_25;
@@ -386,7 +386,7 @@ LABEL_4:
     _os_log_impl(&dword_1D8611000, v17, OS_LOG_TYPE_DEFAULT, "Device should not upload today!", buf, 2u);
   }
 
-  [PLRapidController finishActivity:v4 withStatus:2];
+  [PLRapidController finishActivity:callbackCopy withStatus:2];
 LABEL_25:
 
   v18 = *MEMORY[0x1E69E9840];
@@ -420,7 +420,7 @@ LABEL_25:
     }
 
     v6 = *MEMORY[0x1E69E9CB0];
-    v7 = [v4 unsignedIntValue];
+    unsignedIntValue = [v4 unsignedIntValue];
     v8 = v3;
     v9 = v6;
   }
@@ -429,11 +429,11 @@ LABEL_25:
   {
     xpc_dictionary_set_int64(v3, *MEMORY[0x1E69E9CB0], *MEMORY[0x1E69E9CC0]);
     v9 = *MEMORY[0x1E69E9C98];
-    v7 = *MEMORY[0x1E69E9CE0];
+    unsignedIntValue = *MEMORY[0x1E69E9CE0];
     v8 = v3;
   }
 
-  xpc_dictionary_set_int64(v8, v9, v7);
+  xpc_dictionary_set_int64(v8, v9, unsignedIntValue);
   xpc_dictionary_set_string(v3, *MEMORY[0x1E69E9D68], *MEMORY[0x1E69E9D70]);
 
   v10 = *MEMORY[0x1E69E9840];
@@ -441,17 +441,17 @@ LABEL_25:
   return v3;
 }
 
-+ (BOOL)finishActivity:(id)a3 withStatus:(int64_t)a4
++ (BOOL)finishActivity:(id)activity withStatus:(int64_t)status
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (activity)
   {
     v5 = xpc_activity_set_completion_status();
     v6 = RapidLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134218240;
-      v10 = a4;
+      statusCopy = status;
       v11 = 1024;
       v12 = v5;
       _os_log_impl(&dword_1D8611000, v6, OS_LOG_TYPE_DEFAULT, "XPC activity set state to DONE, status: %ld success: %d", &v9, 0x12u);
@@ -469,12 +469,12 @@ LABEL_25:
   return v5;
 }
 
-+ (BOOL)deferActivity:(id)a3
++ (BOOL)deferActivity:(id)activity
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (activity)
   {
-    v3 = xpc_activity_set_state(a3, 3);
+    v3 = xpc_activity_set_state(activity, 3);
     v4 = RapidLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -528,7 +528,7 @@ LABEL_25:
   return v2;
 }
 
-+ (BOOL)randomBoolWithYesPercentage:(double)a3
++ (BOOL)randomBoolWithYesPercentage:(double)percentage
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = arc4random() * 100.0 * 2.32830644e-10;
@@ -536,18 +536,18 @@ LABEL_25:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = v4 < a3;
+    v8[1] = v4 < percentage;
     _os_log_impl(&dword_1D8611000, v5, OS_LOG_TYPE_DEFAULT, "Coin toss upload: %d", v8, 8u);
   }
 
   v6 = *MEMORY[0x1E69E9840];
-  return v4 < a3;
+  return v4 < percentage;
 }
 
-- (BOOL)preparePerfPowerlog:(id)a3 shouldDefer:(BOOL *)a4
+- (BOOL)preparePerfPowerlog:(id)powerlog shouldDefer:(BOOL *)defer
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  powerlogCopy = powerlog;
   if ([(PLRapidController *)self stage]<= 4)
   {
     v8 = RapidLog();
@@ -564,39 +564,39 @@ LABEL_25:
     v9 = getRapidAllowblocklist();
     if ([(PLRapidController *)self stage]> 4)
     {
-      v10 = 0;
+      setupConnection = 0;
     }
 
     else
     {
-      v10 = 0;
-      while (!*a4)
+      setupConnection = 0;
+      while (!*defer)
       {
-        if (!v10)
+        if (!setupConnection)
         {
           if ([(PLRapidController *)self stage]< 1)
           {
-            v10 = 0;
+            setupConnection = 0;
           }
 
           else
           {
-            v10 = [(PLRapidController *)self setupConnection];
-            if (!v10)
+            setupConnection = [(PLRapidController *)self setupConnection];
+            if (!setupConnection)
             {
               goto LABEL_36;
             }
           }
         }
 
-        v11 = [(PLRapidController *)self stage];
-        if (v11 <= 1)
+        stage = [(PLRapidController *)self stage];
+        if (stage <= 1)
         {
-          if (v11)
+          if (stage)
           {
-            if (v11 == 1)
+            if (stage == 1)
             {
-              [(PLRapidController *)self pruneDB:v10 withConfig:v9];
+              [(PLRapidController *)self pruneDB:setupConnection withConfig:v9];
             }
           }
 
@@ -606,17 +606,17 @@ LABEL_25:
           }
         }
 
-        else if (v11 == 2)
+        else if (stage == 2)
         {
-          [(PLRapidController *)self logSignpostDataToDB:v10];
+          [(PLRapidController *)self logSignpostDataToDB:setupConnection];
         }
 
-        else if (v11 == 3)
+        else if (stage == 3)
         {
-          [(PLRapidController *)self trimAndFilterDB:v10 withConfig:v9];
+          [(PLRapidController *)self trimAndFilterDB:setupConnection withConfig:v9];
         }
 
-        else if (v11 == 4 && ![(PLRapidController *)self packageDB:v10])
+        else if (stage == 4 && ![(PLRapidController *)self packageDB:setupConnection])
         {
 LABEL_36:
           v7 = 0;
@@ -624,7 +624,7 @@ LABEL_36:
         }
 
         [(PLRapidController *)self setStage:[(PLRapidController *)self stage]+ 1];
-        *a4 = xpc_activity_should_defer(v6);
+        *defer = xpc_activity_should_defer(powerlogCopy);
         if ([(PLRapidController *)self stage]>= 5)
         {
           break;
@@ -634,8 +634,8 @@ LABEL_36:
 
     if ([(PLRapidController *)self stage]== 5)
     {
-      v12 = [(PLRapidController *)self mdLogCompressedFilePath];
-      v13 = [PLFileStats fileSizeAtPath:v12];
+      mdLogCompressedFilePath = [(PLRapidController *)self mdLogCompressedFilePath];
+      v13 = [PLFileStats fileSizeAtPath:mdLogCompressedFilePath];
 
       if (v13 > ([PLDefaults longForKey:@"RapidTaskedUploadSizeLimit" ifNotSet:2048000]* 0.7))
       {
@@ -647,7 +647,7 @@ LABEL_36:
           _os_log_impl(&dword_1D8611000, v14, OS_LOG_TYPE_DEFAULT, "MDLog size = %lld, skipping MSS upload", &v17, 0xCu);
         }
 
-        *a4 = 0;
+        *defer = 0;
         [(PLRapidController *)self setStage:6];
       }
     }
@@ -668,15 +668,15 @@ LABEL_34:
 - (id)setupConnection
 {
   v12 = 0;
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(PLRapidController *)self mdLogFilePath];
-  v5 = [v3 fileExistsAtPath:v4 isDirectory:&v12];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  mdLogFilePath = [(PLRapidController *)self mdLogFilePath];
+  v5 = [defaultManager fileExistsAtPath:mdLogFilePath isDirectory:&v12];
 
   if (v5 && v12 != 1)
   {
     v8 = [PLSQLiteConnection alloc];
-    v9 = [(PLRapidController *)self mdLogFilePath];
-    v7 = [(PLSQLiteConnection *)v8 initWithFilePath:v9];
+    mdLogFilePath2 = [(PLRapidController *)self mdLogFilePath];
+    v7 = [(PLSQLiteConnection *)v8 initWithFilePath:mdLogFilePath2];
   }
 
   else
@@ -705,11 +705,11 @@ LABEL_34:
   }
 
   v4 = +[PowerlogCore sharedCore];
-  v5 = [v4 storage];
-  v6 = [v5 connection];
+  storage = [v4 storage];
+  connection = [storage connection];
 
-  v7 = [(PLRapidController *)self mdLogFilePath];
-  v8 = [v6 copyDatabaseToPath:v7];
+  mdLogFilePath = [(PLRapidController *)self mdLogFilePath];
+  v8 = [connection copyDatabaseToPath:mdLogFilePath];
 
   if ((v8 & 1) == 0)
   {
@@ -719,10 +719,10 @@ LABEL_34:
   return v8;
 }
 
-- (void)pruneDB:(id)a3 withConfig:(id)a4
+- (void)pruneDB:(id)b withConfig:(id)config
 {
-  v6 = a4;
-  v7 = a3;
+  configCopy = config;
+  bCopy = b;
   v8 = RapidLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -730,18 +730,18 @@ LABEL_34:
     _os_log_impl(&dword_1D8611000, v8, OS_LOG_TYPE_DEFAULT, "Prune DB", v9, 2u);
   }
 
-  [v7 beginTransaction];
-  [PLRapidController dropTablesFromDB:v7 withConfig:v6];
-  [PLRapidController dropDataFromDB:v7 withConfig:v6];
+  [bCopy beginTransaction];
+  [PLRapidController dropTablesFromDB:bCopy withConfig:configCopy];
+  [PLRapidController dropDataFromDB:bCopy withConfig:configCopy];
 
-  [(PLRapidController *)self dropAppVersions:v7];
-  [v7 endTransaction];
+  [(PLRapidController *)self dropAppVersions:bCopy];
+  [bCopy endTransaction];
 }
 
-- (void)trimAndFilterDB:(id)a3 withConfig:(id)a4
+- (void)trimAndFilterDB:(id)b withConfig:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  bCopy = b;
+  configCopy = config;
   v8 = RapidLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -749,17 +749,17 @@ LABEL_34:
     _os_log_impl(&dword_1D8611000, v8, OS_LOG_TYPE_DEFAULT, "Trim DB", buf, 2u);
   }
 
-  [v6 beginTransaction];
-  v9 = [(PLRapidController *)self logCreationStartDate];
-  v10 = [v9 convertFromSystemToMonotonic];
+  [bCopy beginTransaction];
+  logCreationStartDate = [(PLRapidController *)self logCreationStartDate];
+  convertFromSystemToMonotonic = [logCreationStartDate convertFromSystemToMonotonic];
 
-  v11 = [v10 dateByAddingTimeInterval:-86400.0];
+  v11 = [convertFromSystemToMonotonic dateByAddingTimeInterval:-86400.0];
   v12 = MEMORY[0x1E695DFD8];
-  v13 = [v7 allKeys];
-  v14 = [v12 setWithArray:v13];
+  allKeys = [configCopy allKeys];
+  v14 = [v12 setWithArray:allKeys];
 
   v15 = [PLRapidController trimConditionsForTables:v14 trimDate:v11];
-  [v6 trimAllTablesFromDate:v11 toDate:v10 withTableFilters:v15];
+  [bCopy trimAllTablesFromDate:v11 toDate:convertFromSystemToMonotonic withTableFilters:v15];
   v16 = RapidLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -768,7 +768,7 @@ LABEL_34:
   }
 
   [v11 timeIntervalSince1970];
-  [PLRapidController offsetTimestampsInDB:v6 withConfig:v7 withBaseTimestamp:?];
+  [PLRapidController offsetTimestampsInDB:bCopy withConfig:configCopy withBaseTimestamp:?];
   v17 = RapidLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -776,14 +776,14 @@ LABEL_34:
     _os_log_impl(&dword_1D8611000, v17, OS_LOG_TYPE_DEFAULT, "Rounding", v18, 2u);
   }
 
-  [PLRapidController roundDataInDB:v6 withConfig:v7];
-  [(PLRapidController *)self dropDuplicateRows:v6];
-  [v6 endTransaction];
+  [PLRapidController roundDataInDB:bCopy withConfig:configCopy];
+  [(PLRapidController *)self dropDuplicateRows:bCopy];
+  [bCopy endTransaction];
 }
 
-- (BOOL)packageDB:(id)a3
+- (BOOL)packageDB:(id)b
 {
-  v4 = a3;
+  bCopy = b;
   v5 = RapidLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -791,8 +791,8 @@ LABEL_34:
     _os_log_impl(&dword_1D8611000, v5, OS_LOG_TYPE_DEFAULT, "Attribute", buf, 2u);
   }
 
-  v6 = [v4 performQuery:{@"CREATE TABLE attributes(name TEXT PRIMARY KEY, value) WITHOUT ROWID"}];
-  v7 = [v4 performQuery:{@"INSERT INTO attributes (name, value) VALUES (LogType, RAPID);"}];
+  v6 = [bCopy performQuery:{@"CREATE TABLE attributes(name TEXT PRIMARY KEY, value) WITHOUT ROWID"}];
+  v7 = [bCopy performQuery:{@"INSERT INTO attributes (name, value) VALUES (LogType, RAPID);"}];
   v8 = RapidLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -800,8 +800,8 @@ LABEL_34:
     _os_log_impl(&dword_1D8611000, v8, OS_LOG_TYPE_DEFAULT, "Vacuum", v15, 2u);
   }
 
-  [v4 fullVacuum];
-  [v4 closeConnection];
+  [bCopy fullVacuum];
+  [bCopy closeConnection];
   v9 = RapidLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -809,9 +809,9 @@ LABEL_34:
     _os_log_impl(&dword_1D8611000, v9, OS_LOG_TYPE_DEFAULT, "Compress DB", v14, 2u);
   }
 
-  v10 = [(PLRapidController *)self mdLogFilePath];
-  v11 = [(PLRapidController *)self mdLogCompressedFilePath];
-  v12 = [PLUtilities compressWithSource:v10 withDestination:v11 withLevel:6];
+  mdLogFilePath = [(PLRapidController *)self mdLogFilePath];
+  mdLogCompressedFilePath = [(PLRapidController *)self mdLogCompressedFilePath];
+  v12 = [PLUtilities compressWithSource:mdLogFilePath withDestination:mdLogCompressedFilePath withLevel:6];
 
   if (!v12)
   {
@@ -821,24 +821,24 @@ LABEL_34:
   return v12;
 }
 
-+ (void)dropTablesFromDB:(id)a3 withConfig:(id)a4
++ (void)dropTablesFromDB:(id)b withConfig:(id)config
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [PLRapidController allTablesInDB:v5];
+  bCopy = b;
+  configCopy = config;
+  v7 = [PLRapidController allTablesInDB:bCopy];
   v8 = MEMORY[0x1E695DFD8];
-  v9 = [v6 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [configCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __49__PLRapidController_dropTablesFromDB_withConfig___block_invoke;
   v14[3] = &unk_1E851AD90;
   v15 = v10;
-  v16 = v6;
-  v17 = v5;
-  v11 = v5;
-  v12 = v6;
+  v16 = configCopy;
+  v17 = bCopy;
+  v11 = bCopy;
+  v12 = configCopy;
   v13 = v10;
   [v7 enumerateObjectsUsingBlock:v14];
 }
@@ -869,16 +869,16 @@ void __49__PLRapidController_dropTablesFromDB_withConfig___block_invoke(id *a1, 
   }
 }
 
-+ (void)dropDataFromDB:(id)a3 withConfig:(id)a4
++ (void)dropDataFromDB:(id)b withConfig:(id)config
 {
-  v5 = a3;
+  bCopy = b;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__PLRapidController_dropDataFromDB_withConfig___block_invoke;
   v7[3] = &unk_1E851ADE0;
-  v8 = v5;
-  v6 = v5;
-  [a4 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = bCopy;
+  v6 = bCopy;
+  [config enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 void __47__PLRapidController_dropDataFromDB_withConfig___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -916,41 +916,41 @@ void __47__PLRapidController_dropDataFromDB_withConfig___block_invoke_2(uint64_t
   v7 = [*(a1 + 40) performQuery:v6];
 }
 
-- (void)dropAppVersions:(id)a3
+- (void)dropAppVersions:(id)versions
 {
-  v8 = a3;
-  v4 = [(PLRapidController *)self topAppsRunTime];
+  versionsCopy = versions;
+  topAppsRunTime = [(PLRapidController *)self topAppsRunTime];
   v5 = [MEMORY[0x1E696AD60] stringWithFormat:@"delete from PLApplicationAgent_EventNone_AllApps"];
-  v6 = [PLRapidController appsToKeep:v4];
+  v6 = [PLRapidController appsToKeep:topAppsRunTime];
   [v5 appendString:v6];
 
-  v7 = [v8 performQuery:v5];
+  v7 = [versionsCopy performQuery:v5];
 }
 
-+ (id)appsToKeep:(id)a3
++ (id)appsToKeep:(id)keep
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (![v3 count])
+  keepCopy = keep;
+  if (![keepCopy count])
   {
     v5 = &stru_1F539D228;
     goto LABEL_13;
   }
 
-  v4 = [MEMORY[0x1E698B570] defaultService];
-  if ([v4 autoUpdateEnabled])
+  defaultService = [MEMORY[0x1E698B570] defaultService];
+  if ([defaultService autoUpdateEnabled])
   {
   }
 
   else
   {
-    v6 = [v3 count];
+    v6 = [keepCopy count];
 
     if (v6 >= 3)
     {
-      v11 = [v3 count];
-      v9 = [v3 objectAtIndexedSubscript:arc4random_uniform(v11)];
-      v12 = [v3 objectAtIndexedSubscript:arc4random_uniform(v11)];
+      v11 = [keepCopy count];
+      v9 = [keepCopy objectAtIndexedSubscript:arc4random_uniform(v11)];
+      v12 = [keepCopy objectAtIndexedSubscript:arc4random_uniform(v11)];
       v13 = RapidLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
@@ -971,12 +971,12 @@ void __47__PLRapidController_dropDataFromDB_withConfig___block_invoke_2(uint64_t
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v3;
+    v17 = keepCopy;
     _os_log_impl(&dword_1D8611000, v7, OS_LOG_TYPE_DEFAULT, "Report app version data for all top 3rd party apps: %@", buf, 0xCu);
   }
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [v3 componentsJoinedByString:{@"', '"}];
+  v9 = [keepCopy componentsJoinedByString:{@"', '"}];
   v10 = [v8 stringWithFormat:@" where AppBundleId not in ('%@')", v9];
 LABEL_12:
 
@@ -991,22 +991,22 @@ LABEL_13:
 - (id)topAppsRunTime
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = +[PowerlogCore sharedCore];
-  v5 = [v4 storage];
-  v6 = [v5 connection];
+  storage = [v4 storage];
+  connection = [storage connection];
 
-  v7 = [(PLRapidController *)self logCreationStartDate];
-  v8 = [v7 convertFromSystemToMonotonic];
+  logCreationStartDate = [(PLRapidController *)self logCreationStartDate];
+  convertFromSystemToMonotonic = [logCreationStartDate convertFromSystemToMonotonic];
 
-  v9 = [v8 dateByAddingTimeInterval:-86400.0];
+  v9 = [convertFromSystemToMonotonic dateByAddingTimeInterval:-86400.0];
   v10 = MEMORY[0x1E696AEC0];
   [v9 timeIntervalSince1970];
   v12 = v11;
-  [v8 timeIntervalSince1970];
+  [convertFromSystemToMonotonic timeIntervalSince1970];
   v14 = [v10 stringWithFormat:@"select distinct AppBundleId as app from PLApplicationAgent_EventNone_AllApps                              where AppIs3rdParty = 1 OR AppBundleId NOT like '%%com.apple.%%' AND AppBundleId in                              (select BundleID from PLAppTimeService_Aggregate_AppRunTime where timestamp >= %f AND timestamp < %f                               group by BundleID having SUM(ScreenOnTime) > %d                             )", v12, v13, 60];;
-  v23 = v6;
-  v15 = [v6 performQuery:v14];
+  v23 = connection;
+  v15 = [connection performQuery:v14];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -1026,7 +1026,7 @@ LABEL_13:
         }
 
         v20 = [*(*(&v24 + 1) + 8 * i) objectForKeyedSubscript:@"app"];
-        [v3 addObject:v20];
+        [array addObject:v20];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -1037,12 +1037,12 @@ LABEL_13:
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return array;
 }
 
-- (void)dropDuplicateRows:(id)a3
+- (void)dropDuplicateRows:(id)rows
 {
-  v3 = a3;
+  rowsCopy = rows;
   v4 = RapidLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1050,21 +1050,21 @@ LABEL_13:
     _os_log_impl(&dword_1D8611000, v4, OS_LOG_TYPE_DEFAULT, "Drop Duplicate Rows", v6, 2u);
   }
 
-  v5 = [v3 performQuery:@"DELETE from PLBBAgent_EventPoint_TelephonyActivity where ID in (SELECT ID FROM PLBBAgent_EventPoint_TelephonyActivity t1 WHERE EXISTS (SELECT * FROM PLBBAgent_EventPoint_TelephonyActivity t2 WHERE t2.airplaneMode IS t1.airplaneMode and t2.callStatus IS t1.callStatus and t2.campedRat IS t1.campedRat and t2.signalBars IS t1.signalBars and t2.subsId IS t1.subsId AND t2.ID = (SELECT MAX(ID) FROM PLBBAgent_EventPoint_TelephonyActivity t3 WHERE t3.ID < t1.ID)));"];
+  v5 = [rowsCopy performQuery:@"DELETE from PLBBAgent_EventPoint_TelephonyActivity where ID in (SELECT ID FROM PLBBAgent_EventPoint_TelephonyActivity t1 WHERE EXISTS (SELECT * FROM PLBBAgent_EventPoint_TelephonyActivity t2 WHERE t2.airplaneMode IS t1.airplaneMode and t2.callStatus IS t1.callStatus and t2.campedRat IS t1.campedRat and t2.signalBars IS t1.signalBars and t2.subsId IS t1.subsId AND t2.ID = (SELECT MAX(ID) FROM PLBBAgent_EventPoint_TelephonyActivity t3 WHERE t3.ID < t1.ID)));"];
 }
 
-+ (void)offsetTimestampsInDB:(id)a3 withConfig:(id)a4 withBaseTimestamp:(double)a5
++ (void)offsetTimestampsInDB:(id)b withConfig:(id)config withBaseTimestamp:(double)timestamp
 {
-  v7 = a3;
+  bCopy = b;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __71__PLRapidController_offsetTimestampsInDB_withConfig_withBaseTimestamp___block_invoke;
   v9[3] = &unk_1E851AE30;
-  v12 = a5;
+  timestampCopy = timestamp;
   v10 = @"UPDATE %@ SET timestamp = timestamp - %f, ";
-  v11 = v7;
-  v8 = v7;
-  [a4 enumerateKeysAndObjectsUsingBlock:v9];
+  v11 = bCopy;
+  v8 = bCopy;
+  [config enumerateKeysAndObjectsUsingBlock:v9];
 }
 
 void __71__PLRapidController_offsetTimestampsInDB_withConfig_withBaseTimestamp___block_invoke(void *a1, void *a2, void *a3)
@@ -1086,16 +1086,16 @@ void __71__PLRapidController_offsetTimestampsInDB_withConfig_withBaseTimestamp__
   v11 = [v9 performQuery:v10];
 }
 
-+ (void)roundDataInDB:(id)a3 withConfig:(id)a4
++ (void)roundDataInDB:(id)b withConfig:(id)config
 {
-  v5 = a3;
+  bCopy = b;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__PLRapidController_roundDataInDB_withConfig___block_invoke;
   v7[3] = &unk_1E851ADE0;
-  v8 = v5;
-  v6 = v5;
-  [a4 enumerateKeysAndObjectsUsingBlock:v7];
+  v8 = bCopy;
+  v6 = bCopy;
+  [config enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 void __46__PLRapidController_roundDataInDB_withConfig___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1165,12 +1165,12 @@ void __46__PLRapidController_roundDataInDB_withConfig___block_invoke_3(uint64_t 
   }
 }
 
-+ (id)trimConditionsForTables:(id)a3 trimDate:(id)a4
++ (id)trimConditionsForTables:(id)tables trimDate:(id)date
 {
-  v5 = a3;
-  [a4 timeIntervalSince1970];
+  tablesCopy = tables;
+  [date timeIntervalSince1970];
   v7 = v6;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __54__PLRapidController_trimConditionsForTables_trimDate___block_invoke;
@@ -1178,9 +1178,9 @@ void __46__PLRapidController_roundDataInDB_withConfig___block_invoke_3(uint64_t 
   v17 = v7;
   v14 = @"timestamp is NULL OR timestamp < (SELECT max(timestamp) FROM '%@' WHERE timestamp < %f)";
   v15 = @"(timestampEnd < %f) OR ((timestamp is NULL OR timestamp < %f) AND (timestampEnd is NULL OR timestampEnd < %f))";
-  v9 = v8;
+  v9 = dictionary;
   v16 = v9;
-  [v5 enumerateObjectsUsingBlock:v13];
+  [tablesCopy enumerateObjectsUsingBlock:v13];
 
   v10 = v16;
   v11 = v9;
@@ -1249,12 +1249,12 @@ LABEL_8:
   return MEMORY[0x1EEE66BE0]();
 }
 
-+ (id)allTablesInDB:(id)a3
++ (id)allTablesInDB:(id)b
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
+  bCopy = b;
   v5 = [v3 stringWithFormat:@"SELECT name FROM sqlite_master WHERE type=table"];;
-  v6 = [v4 performQuery:v5];
+  v6 = [bCopy performQuery:v5];
 
   v7 = [v6 mutableCopy];
   [v7 removeObject:&unk_1F540D058];
@@ -1265,7 +1265,7 @@ LABEL_8:
 - (void)setLogCreationStartDate
 {
   v7 = *MEMORY[0x1E69E9840];
-  [a1 stage];
+  [self stage];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_8();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
@@ -1280,17 +1280,17 @@ LABEL_8:
 
 - (void)setMDLogCompressedFilePath
 {
-  v3 = [(PLRapidController *)self mdLogFilePath];
+  mdLogFilePath = [(PLRapidController *)self mdLogFilePath];
 
-  if (v3)
+  if (mdLogFilePath)
   {
-    v4 = [(PLRapidController *)self mdLogFilePath];
-    v5 = [v4 lastPathComponent];
-    v6 = [@"/tmp/rapid/rapid_archive" stringByAppendingPathComponent:v5];
+    mdLogFilePath2 = [(PLRapidController *)self mdLogFilePath];
+    lastPathComponent = [mdLogFilePath2 lastPathComponent];
+    v6 = [@"/tmp/rapid/rapid_archive" stringByAppendingPathComponent:lastPathComponent];
     [(PLRapidController *)self setMdLogCompressedFilePath:v6];
 
-    v9 = [(PLRapidController *)self mdLogCompressedFilePath];
-    v7 = [v9 stringByAppendingString:@".gz"];
+    mdLogCompressedFilePath = [(PLRapidController *)self mdLogCompressedFilePath];
+    v7 = [mdLogCompressedFilePath stringByAppendingString:@".gz"];
     [(PLRapidController *)self setMdLogCompressedFilePath:v7];
   }
 
@@ -1332,10 +1332,10 @@ LABEL_8:
     v13 = __Block_byref_object_copy__14;
     v14 = __Block_byref_object_dispose__14;
     v15 = 0;
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v6 = (v11 + 40);
     obj = *(v11 + 5);
-    v7 = [v5 contentsOfDirectoryAtPath:@"/tmp/rapid/" error:&obj];
+    v7 = [defaultManager contentsOfDirectoryAtPath:@"/tmp/rapid/" error:&obj];
     objc_storeStrong(v6, obj);
 
     v8[0] = MEMORY[0x1E69E9820];
@@ -1373,10 +1373,10 @@ void __28__PLRapidController_cleanup__block_invoke(uint64_t a1, uint64_t a2)
   }
 }
 
-- (void)logSignpostDataToDB:(id)a3
+- (void)logSignpostDataToDB:(id)b
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bCopy = b;
   v5 = RapidLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1385,43 +1385,43 @@ void __28__PLRapidController_cleanup__block_invoke(uint64_t a1, uint64_t a2)
   }
 
   v6 = objc_alloc_init(SignpostReaderHelper);
-  v7 = [(PLRapidController *)self logCreationStartDate];
-  v8 = [v7 dateByAddingTimeInterval:-86400.0];
+  logCreationStartDate = [(PLRapidController *)self logCreationStartDate];
+  v8 = [logCreationStartDate dateByAddingTimeInterval:-86400.0];
 
-  v9 = [(PLRapidController *)self logCreationStartDate];
-  v10 = [(SignpostReaderHelper *)v6 generateRapidSignpostSummaryWithStartDate:v8 endDate:v9];
+  logCreationStartDate2 = [(PLRapidController *)self logCreationStartDate];
+  v10 = [(SignpostReaderHelper *)v6 generateRapidSignpostSummaryWithStartDate:v8 endDate:logCreationStartDate2];
 
   v11 = RapidLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v10 allKeys];
+    allKeys = [v10 allKeys];
     v15 = 138412290;
-    v16 = v12;
+    v16 = allKeys;
     _os_log_impl(&dword_1D8611000, v11, OS_LOG_TYPE_DEFAULT, "Signpost result %@", &v15, 0xCu);
   }
 
   v13 = [v10 objectForKeyedSubscript:@"hangDurations"];
-  [(PLRapidController *)self logHangSignposts:v13 toDB:v4];
+  [(PLRapidController *)self logHangSignposts:v13 toDB:bCopy];
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logHangSignposts:(id)a3 toDB:(id)a4
+- (void)logHangSignposts:(id)signposts toDB:(id)b
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  signpostsCopy = signposts;
+  bCopy = b;
   v8 = RapidLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = [v6 count];
+    *(&buf + 4) = [signpostsCopy count];
     _os_log_impl(&dword_1D8611000, v8, OS_LOG_TYPE_DEFAULT, "Hangs count %lu", &buf, 0xCu);
   }
 
-  if (v6 && [v6 count])
+  if (signpostsCopy && [signpostsCopy count])
   {
-    [(PLRapidController *)self createHangTableInDB:v7];
+    [(PLRapidController *)self createHangTableInDB:bCopy];
     *&buf = 0;
     *(&buf + 1) = &buf;
     v15 = 0x2020000000;
@@ -1432,8 +1432,8 @@ void __28__PLRapidController_cleanup__block_invoke(uint64_t a1, uint64_t a2)
     v10[3] = &unk_1E851AEF8;
     v11 = @"INSERT INTO %@ (ID, timestamp, BundleID, HangDuration, HangType) VALUES (%@, %f, '%@', %@, '%@')";
     p_buf = &buf;
-    v12 = v7;
-    [v6 enumerateObjectsUsingBlock:v10];
+    v12 = bCopy;
+    [signpostsCopy enumerateObjectsUsingBlock:v10];
 
     _Block_object_dispose(&buf, 8);
   }
@@ -1467,10 +1467,10 @@ void __43__PLRapidController_logHangSignposts_toDB___block_invoke(uint64_t a1, v
   objc_autoreleasePoolPop(v3);
 }
 
-+ (int)hangTypeFromStr:(id)a3
++ (int)hangTypeFromStr:(id)str
 {
   v14[7] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  strCopy = str;
   v4 = objc_alloc(MEMORY[0x1E695DFD8]);
   v14[0] = @"Completed Runloop Hang";
   v14[1] = @"Timed Out Runloop Hang";
@@ -1489,7 +1489,7 @@ void __43__PLRapidController_logHangSignposts_toDB___block_invoke(uint64_t a1, v
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:3];
   v9 = [v7 initWithArray:v8];
 
-  if ([v3 isEqualToString:@"UIKit-runloop"] & 1) != 0 || (objc_msgSend(v6, "containsObject:", v3))
+  if ([strCopy isEqualToString:@"UIKit-runloop"] & 1) != 0 || (objc_msgSend(v6, "containsObject:", strCopy))
   {
     v10 = 1;
   }
@@ -1497,9 +1497,9 @@ void __43__PLRapidController_logHangSignposts_toDB___block_invoke(uint64_t a1, v
   else
   {
     v10 = 2;
-    if (([v3 isEqualToString:@"Fence-hang"] & 1) == 0)
+    if (([strCopy isEqualToString:@"Fence-hang"] & 1) == 0)
     {
-      if ([v9 containsObject:v3])
+      if ([v9 containsObject:strCopy])
       {
         v10 = 2;
       }
@@ -1518,10 +1518,10 @@ void __43__PLRapidController_logHangSignposts_toDB___block_invoke(uint64_t a1, v
 - (BOOL)prepareMSSLog
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [(PLRapidController *)self stage];
+  stage = [(PLRapidController *)self stage];
   v4 = RapidLog();
   v5 = os_log_type_enabled(&v4->super, OS_LOG_TYPE_DEFAULT);
-  if (v3 == 5)
+  if (stage == 5)
   {
     if (v5)
     {
@@ -1533,17 +1533,17 @@ void __43__PLRapidController_logHangSignposts_toDB___block_invoke(uint64_t a1, v
     [(PLRapidController *)self setMSSCompressedFilePath];
     [PLUtilities createAndChownDirectoryIfDirectoryDoesNotExist:@"/tmp/rapid/rapid_archive/mss"];
     v4 = objc_alloc_init(SignpostReaderHelper);
-    v6 = [(PLRapidController *)self logCreationStartDate];
-    v7 = [v6 dateByAddingTimeInterval:-86400.0];
-    v8 = [(PLRapidController *)self logCreationStartDate];
-    v9 = [(PLRapidController *)self mssFilePath];
-    v10 = [(SignpostReaderHelper *)v4 generateRapidMSSWithStartDate:v7 endDate:v8 atPath:v9];
+    logCreationStartDate = [(PLRapidController *)self logCreationStartDate];
+    v7 = [logCreationStartDate dateByAddingTimeInterval:-86400.0];
+    logCreationStartDate2 = [(PLRapidController *)self logCreationStartDate];
+    mssFilePath = [(PLRapidController *)self mssFilePath];
+    v10 = [(SignpostReaderHelper *)v4 generateRapidMSSWithStartDate:v7 endDate:logCreationStartDate2 atPath:mssFilePath];
 
     v11 = RapidLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v22 = 138412290;
-      v23 = v10;
+      stage2 = v10;
       _os_log_impl(&dword_1D8611000, v11, OS_LOG_TYPE_INFO, "generateMSS result: %@", &v22, 0xCu);
     }
 
@@ -1551,9 +1551,9 @@ void __43__PLRapidController_logHangSignposts_toDB___block_invoke(uint64_t a1, v
 
     if (v12)
     {
-      v13 = [(PLRapidController *)self mssFilePath];
-      v14 = [(PLRapidController *)self mssCompressedFilePath];
-      v15 = [PLUtilities compressWithSource:v13 withDestination:v14 withLevel:6];
+      mssFilePath2 = [(PLRapidController *)self mssFilePath];
+      mssCompressedFilePath = [(PLRapidController *)self mssCompressedFilePath];
+      v15 = [PLUtilities compressWithSource:mssFilePath2 withDestination:mssCompressedFilePath withLevel:6];
 
       if (v15)
       {
@@ -1591,7 +1591,7 @@ LABEL_19:
   if (v5)
   {
     v22 = 134217984;
-    v23 = [(PLRapidController *)self stage];
+    stage2 = [(PLRapidController *)self stage];
     _os_log_impl(&dword_1D8611000, &v4->super, OS_LOG_TYPE_DEFAULT, "Skipping MSS preparation, stage = %ld", &v22, 0xCu);
   }
 
@@ -1610,17 +1610,17 @@ LABEL_20:
 
 - (void)setMSSCompressedFilePath
 {
-  v3 = [(PLRapidController *)self mssFilePath];
+  mssFilePath = [(PLRapidController *)self mssFilePath];
 
-  if (v3)
+  if (mssFilePath)
   {
-    v4 = [(PLRapidController *)self mssFilePath];
-    v5 = [v4 lastPathComponent];
-    v6 = [@"/tmp/rapid/rapid_archive/mss" stringByAppendingPathComponent:v5];
+    mssFilePath2 = [(PLRapidController *)self mssFilePath];
+    lastPathComponent = [mssFilePath2 lastPathComponent];
+    v6 = [@"/tmp/rapid/rapid_archive/mss" stringByAppendingPathComponent:lastPathComponent];
     [(PLRapidController *)self setMssCompressedFilePath:v6];
 
-    v9 = [(PLRapidController *)self mssCompressedFilePath];
-    v7 = [v9 stringByAppendingString:@".gz"];
+    mssCompressedFilePath = [(PLRapidController *)self mssCompressedFilePath];
+    v7 = [mssCompressedFilePath stringByAppendingString:@".gz"];
     [(PLRapidController *)self setMssCompressedFilePath:v7];
   }
 
@@ -1642,8 +1642,8 @@ LABEL_20:
 
   if (v5)
   {
-    v6 = [v5 path];
-    [PLUtilities setMobileOwnerForFile:v6];
+    path = [v5 path];
+    [PLUtilities setMobileOwnerForFile:path];
   }
 
   else
@@ -1651,17 +1651,17 @@ LABEL_20:
     [(PLRapidController *)self setFailureReason:@"DEArchiverFailure"];
   }
 
-  v7 = [v5 path];
+  path2 = [v5 path];
 
-  return v7;
+  return path2;
 }
 
-- (id)generateContextDictionary:(id)a3
+- (id)generateContextDictionary:(id)dictionary
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = [(PLRapidController *)self logGenerationStats];
-  [(PLRapidController *)self logToCALogGenerationStats:v5];
-  v6 = [v5 mutableCopy];
+  logGenerationStats = [(PLRapidController *)self logGenerationStats];
+  [(PLRapidController *)self logToCALogGenerationStats:logGenerationStats];
+  v6 = [logGenerationStats mutableCopy];
   v7 = +[PLUtilities supplementalBuildVersion];
   if (v7)
   {
@@ -1670,12 +1670,12 @@ LABEL_20:
 
   else
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
-    [v6 setObject:v8 forKeyedSubscript:@"SupplementalBuild"];
+    null = [MEMORY[0x1E695DFB0] null];
+    [v6 setObject:null forKeyedSubscript:@"SupplementalBuild"];
   }
 
-  v9 = [MEMORY[0x1E695DF58] currentLocale];
-  v10 = [v9 objectForKey:*MEMORY[0x1E695D978]];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v10 = [currentLocale objectForKey:*MEMORY[0x1E695D978]];
   v11 = v10;
   if (v10)
   {
@@ -1710,39 +1710,39 @@ LABEL_20:
   [v6 setObject:v16 forKeyedSubscript:@"SamplingPercentage"];
 
   v17 = [v6 objectForKeyedSubscript:@"AutomatedDeviceGroup"];
-  v18 = [v17 BOOLValue];
+  bOOLValue = [v17 BOOLValue];
 
-  if (v18)
+  if (bOOLValue)
   {
     v19 = +[PLUtilities automatedDeviceGroup];
     [v6 setObject:v19 forKeyedSubscript:@"AutomatedDeviceGroupRawValue"];
   }
 
-  v20 = [(PLRapidController *)self configUUID];
+  configUUID = [(PLRapidController *)self configUUID];
 
-  if (v20)
+  if (configUUID)
   {
-    v21 = [(PLRapidController *)self configUUID];
-    [v6 setObject:v21 forKeyedSubscript:@"TaskingConfigUUID"];
+    configUUID2 = [(PLRapidController *)self configUUID];
+    [v6 setObject:configUUID2 forKeyedSubscript:@"TaskingConfigUUID"];
   }
 
-  v22 = [(PLRapidController *)self taskingRequestReason];
+  taskingRequestReason = [(PLRapidController *)self taskingRequestReason];
 
-  if (v22)
+  if (taskingRequestReason)
   {
-    v23 = [(PLRapidController *)self taskingRequestReason];
-    [v6 setObject:v23 forKeyedSubscript:@"TaskingRequest"];
+    taskingRequestReason2 = [(PLRapidController *)self taskingRequestReason];
+    [v6 setObject:taskingRequestReason2 forKeyedSubscript:@"TaskingRequest"];
   }
 
   [v6 setObject:MEMORY[0x1E695E110] forKeyedSubscript:@"IsValidPayload"];
-  if (a3)
+  if (dictionary)
   {
-    v24 = [v5 objectForKeyedSubscript:@"AllowedUpload"];
-    v25 = [v24 BOOLValue];
+    v24 = [logGenerationStats objectForKeyedSubscript:@"AllowedUpload"];
+    bOOLValue2 = [v24 BOOLValue];
 
     v26 = RapidLog();
     v27 = os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT);
-    if (v25)
+    if (bOOLValue2)
     {
       if (v27)
       {
@@ -1796,46 +1796,46 @@ LABEL_20:
   return v6;
 }
 
-- (void)addMDLogContext:(id)a3
+- (void)addMDLogContext:(id)context
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [(PLRapidController *)self mdLogCompressedFilePath];
-  v7 = [v5 fileExistsAtPath:v6];
+  contextCopy = context;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  mdLogCompressedFilePath = [(PLRapidController *)self mdLogCompressedFilePath];
+  v7 = [defaultManager fileExistsAtPath:mdLogCompressedFilePath];
 
   if (v7)
   {
     v14 = @"paths";
     v8 = MEMORY[0x1E695DEC8];
-    v9 = [(PLRapidController *)self mdLogCompressedFilePath];
-    v10 = [v9 lastPathComponent];
-    v11 = [v8 arrayWithObjects:{v10, 0}];
+    mdLogCompressedFilePath2 = [(PLRapidController *)self mdLogCompressedFilePath];
+    lastPathComponent = [mdLogCompressedFilePath2 lastPathComponent];
+    v11 = [v8 arrayWithObjects:{lastPathComponent, 0}];
     v15[0] = v11;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-    [v4 setObject:v12 forKeyedSubscript:@"perfpowerlog"];
+    [contextCopy setObject:v12 forKeyedSubscript:@"perfpowerlog"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addMSSContext:(id)a3
+- (void)addMSSContext:(id)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:@"/tmp/rapid/rapid_archive/mss"];
+  contextCopy = context;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:@"/tmp/rapid/rapid_archive/mss"];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v23 = 0;
-    v7 = [v6 contentsOfDirectoryAtPath:@"/tmp/rapid/rapid_archive/mss" error:&v23];
+    v7 = [defaultManager2 contentsOfDirectoryAtPath:@"/tmp/rapid/rapid_archive/mss" error:&v23];
     v8 = v23;
 
     if ([v7 count])
     {
-      v9 = [@"/tmp/rapid/rapid_archive/mss" lastPathComponent];
+      lastPathComponent = [@"/tmp/rapid/rapid_archive/mss" lastPathComponent];
       v10 = objc_opt_new();
       v19 = 0u;
       v20 = 0u;
@@ -1857,7 +1857,7 @@ LABEL_20:
               objc_enumerationMutation(v11);
             }
 
-            v16 = [v9 stringByAppendingPathComponent:{*(*(&v19 + 1) + 8 * v15), v19}];
+            v16 = [lastPathComponent stringByAppendingPathComponent:{*(*(&v19 + 1) + 8 * v15), v19}];
             [v10 addObject:v16];
 
             ++v15;
@@ -1873,16 +1873,16 @@ LABEL_20:
       v24 = @"paths";
       v25 = v10;
       v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-      [v3 setObject:v17 forKeyedSubscript:@"mss"];
+      [contextCopy setObject:v17 forKeyedSubscript:@"mss"];
     }
   }
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (id)uploadLog:(id)a3
+- (id)uploadLog:(id)log
 {
-  v4 = a3;
+  logCopy = log;
   v5 = RapidLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1898,15 +1898,15 @@ LABEL_20:
   }
 
   v8 = v7;
-  v9 = [(PLRapidController *)self generateContextDictionary:v4];
+  v9 = [(PLRapidController *)self generateContextDictionary:logCopy];
   v10 = [v9 objectForKeyedSubscript:@"IsValidPayload"];
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
 
-  if ((v11 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    v12 = [(PLRapidController *)self generateDummyPayload];
+    generateDummyPayload = [(PLRapidController *)self generateDummyPayload];
 
-    v4 = v12;
+    logCopy = generateDummyPayload;
   }
 
   DRSubmitRapidLog();
@@ -1917,17 +1917,17 @@ LABEL_20:
 
 - (id)generateDummyPayload
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 fileExistsAtPath:@"/tmp/rapid/rapid_archive.tar.gz"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v3 = [defaultManager fileExistsAtPath:@"/tmp/rapid/rapid_archive.tar.gz"];
 
   if (!v3)
   {
     goto LABEL_4;
   }
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v10 = 0;
-  v5 = [v4 removeItemAtPath:@"/tmp/rapid/rapid_archive.tar.gz" error:&v10];
+  v5 = [defaultManager2 removeItemAtPath:@"/tmp/rapid/rapid_archive.tar.gz" error:&v10];
   v6 = v10;
 
   if (v5)
@@ -1953,22 +1953,22 @@ LABEL_8:
   return v7;
 }
 
-- (void)logToCADataUploadState:(id)a3
+- (void)logToCADataUploadState:(id)state
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  stateCopy = state;
   v4 = RapidLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v9 = @"com.apple.rapid.dataUploadStats";
     v10 = 2112;
-    v11 = v3;
+    v11 = stateCopy;
     _os_log_impl(&dword_1D8611000, v4, OS_LOG_TYPE_DEFAULT, "CA Event: %@ Payload: %@", buf, 0x16u);
   }
 
-  v7 = v3;
-  v5 = v3;
+  v7 = stateCopy;
+  v5 = stateCopy;
   AnalyticsSendEventLazy();
 
   v6 = *MEMORY[0x1E69E9840];
@@ -1994,11 +1994,11 @@ id __44__PLRapidController_logToCADataUploadState___block_invoke(uint64_t a1)
   v5 = [v4 numberWithDouble:?];
   [v3 setObject:v5 forKeyedSubscript:@"DeferralCount"];
 
-  v6 = [(PLRapidController *)self failureReason];
-  v7 = v6;
-  if (v6)
+  failureReason = [(PLRapidController *)self failureReason];
+  v7 = failureReason;
+  if (failureReason)
   {
-    v8 = v6;
+    v8 = failureReason;
   }
 
   else
@@ -2008,11 +2008,11 @@ id __44__PLRapidController_logToCADataUploadState___block_invoke(uint64_t a1)
 
   [v3 setObject:v8 forKeyedSubscript:@"FailureReason"];
 
-  v9 = [(PLRapidController *)self mdLogCompressedFilePath];
-  v10 = [PLFileStats fileSizeAtPath:v9];
+  mdLogCompressedFilePath = [(PLRapidController *)self mdLogCompressedFilePath];
+  v10 = [PLFileStats fileSizeAtPath:mdLogCompressedFilePath];
 
-  v11 = [(PLRapidController *)self mssCompressedFilePath];
-  v12 = [PLFileStats fileSizeAtPath:v11];
+  mssCompressedFilePath = [(PLRapidController *)self mssCompressedFilePath];
+  v12 = [PLFileStats fileSizeAtPath:mssCompressedFilePath];
 
   v13 = [PLFileStats fileSizeAtPath:@"/tmp/rapid/rapid_archive.tar.gz"];
   v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[PLRapidController isUploadSizeWithinLimit:](self, "isUploadSizeWithinLimit:", @"/tmp/rapid/rapid_archive.tar.gz"}];
@@ -2030,9 +2030,9 @@ id __44__PLRapidController_logToCADataUploadState___block_invoke(uint64_t a1)
   v18 = [MEMORY[0x1E696AD98] numberWithLong:{+[PLDefaults longForKey:ifNotSet:](PLDefaults, "longForKey:ifNotSet:", @"RapidTaskedUploadSizeLimit", 2048000)}];
   [v3 setObject:v18 forKeyedSubscript:@"UploadSizeLimit"];
 
-  v19 = [(PLRapidController *)self logCreationEndDate];
-  v20 = [(PLRapidController *)self logCreationResumeDate];
-  [v19 timeIntervalSinceDate:v20];
+  logCreationEndDate = [(PLRapidController *)self logCreationEndDate];
+  logCreationResumeDate = [(PLRapidController *)self logCreationResumeDate];
+  [logCreationEndDate timeIntervalSinceDate:logCreationResumeDate];
   v22 = v21;
 
   [PLDefaults doubleForKey:@"RapidProcessingTime" ifNotSet:0.0];
@@ -2040,9 +2040,9 @@ id __44__PLRapidController_logToCADataUploadState___block_invoke(uint64_t a1)
   [v3 setObject:v24 forKeyedSubscript:@"ProcessingTime"];
 
   v25 = MEMORY[0x1E696AD98];
-  v26 = [(PLRapidController *)self logCreationEndDate];
-  v27 = [(PLRapidController *)self logCreationStartDate];
-  [v26 timeIntervalSinceDate:v27];
+  logCreationEndDate2 = [(PLRapidController *)self logCreationEndDate];
+  logCreationStartDate = [(PLRapidController *)self logCreationStartDate];
+  [logCreationEndDate2 timeIntervalSinceDate:logCreationStartDate];
   v28 = [v25 numberWithDouble:?];
 
   [v3 setObject:v28 forKeyedSubscript:@"StartToEndTime"];
@@ -2050,22 +2050,22 @@ id __44__PLRapidController_logToCADataUploadState___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)logToCALogGenerationStats:(id)a3
+- (void)logToCALogGenerationStats:(id)stats
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  statsCopy = stats;
   v4 = RapidLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v9 = @"com.apple.rapid.logGenerationStats";
     v10 = 2112;
-    v11 = v3;
+    v11 = statsCopy;
     _os_log_impl(&dword_1D8611000, v4, OS_LOG_TYPE_DEFAULT, "CA Event: %@ Payload: %@", buf, 0x16u);
   }
 
-  v7 = v3;
-  v5 = v3;
+  v7 = statsCopy;
+  v5 = statsCopy;
   AnalyticsSendEventLazy();
 
   v6 = *MEMORY[0x1E69E9840];
@@ -2090,22 +2090,22 @@ id __44__PLRapidController_logToCADataUploadState___block_invoke(uint64_t a1)
   v6 = [v4 initWithTeamID:@"perfpowerservices.rapid.config" targetQueue:v5 configProcessingBlock:v8];
   [(PLRapidController *)self setTaskingMonitor:v6];
 
-  v7 = [(PLRapidController *)self taskingMonitor];
-  [v7 startMonitoring];
+  taskingMonitor = [(PLRapidController *)self taskingMonitor];
+  [taskingMonitor startMonitoring];
 }
 
-- (id)configFromMonitor:(id)a3
+- (id)configFromMonitor:(id)monitor
 {
-  v3 = a3;
+  monitorCopy = monitor;
   v9 = 0;
-  v4 = [v3 currentConfigSnapshotWithErrorOut:&v9];
+  v4 = [monitorCopy currentConfigSnapshotWithErrorOut:&v9];
   v5 = v9;
   if (v5)
   {
     v6 = RapidLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [PLRapidController configFromMonitor:v3];
+      [PLRapidController configFromMonitor:monitorCopy];
     }
 
     v7 = 0;
@@ -2119,18 +2119,18 @@ id __44__PLRapidController_logToCADataUploadState___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)handleDRConfigUpdate:(id)a3 error:(id)a4
+- (void)handleDRConfigUpdate:(id)update error:(id)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  updateCopy = update;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (updateCopy)
   {
-    if (v7)
+    if (errorCopy)
     {
-      v9 = PLLogSubmission();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      payloadDictionaryRepresentation = PLLogSubmission();
+      if (os_log_type_enabled(payloadDictionaryRepresentation, OS_LOG_TYPE_ERROR))
       {
         [PLRapidController handleDRConfigUpdate:error:];
       }
@@ -2141,20 +2141,20 @@ id __44__PLRapidController_logToCADataUploadState___block_invoke(uint64_t a1)
     v10 = RapidLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 teamID];
-      v12 = [v6 configUUID];
-      v13 = [v6 receivedDate];
+      teamID = [updateCopy teamID];
+      configUUID = [updateCopy configUUID];
+      receivedDate = [updateCopy receivedDate];
       v37 = 138412802;
-      v38 = v11;
+      v38 = teamID;
       v39 = 2112;
-      v40 = v12;
+      v40 = configUUID;
       v41 = 2112;
-      v42 = v13;
+      v42 = receivedDate;
       _os_log_impl(&dword_1D8611000, v10, OS_LOG_TYPE_DEFAULT, "DRConfig for teamID <%@> received: %@, receive time: %@", &v37, 0x20u);
     }
 
-    v9 = [v6 payloadDictionaryRepresentation];
-    v14 = [v9 objectForKeyedSubscript:@"RAPIDTaskingRequest"];
+    payloadDictionaryRepresentation = [updateCopy payloadDictionaryRepresentation];
+    v14 = [payloadDictionaryRepresentation objectForKeyedSubscript:@"RAPIDTaskingRequest"];
     v15 = RapidLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
@@ -2165,7 +2165,7 @@ id __44__PLRapidController_logToCADataUploadState___block_invoke(uint64_t a1)
 
     if (!v14)
     {
-      [(PLRapidController *)self rejectTaskingConfig:v6];
+      [(PLRapidController *)self rejectTaskingConfig:updateCopy];
 LABEL_32:
 
 LABEL_33:
@@ -2173,12 +2173,12 @@ LABEL_33:
     }
 
     v16 = 0x1E8518000uLL;
-    v17 = [v6 configUUID];
-    v18 = [v17 UUIDString];
-    [PLDefaults setObject:v18 forKey:@"RapidTaskingConfigUUID" saveToDisk:1];
+    configUUID2 = [updateCopy configUUID];
+    uUIDString = [configUUID2 UUIDString];
+    [PLDefaults setObject:uUIDString forKey:@"RapidTaskingConfigUUID" saveToDisk:1];
 
     [PLDefaults setObject:v14 forKey:@"RapidTaskingRequest" saveToDisk:1];
-    v19 = [v9 objectForKeyedSubscript:@"RAPIDSamplingPercentage"];
+    v19 = [payloadDictionaryRepresentation objectForKeyedSubscript:@"RAPIDSamplingPercentage"];
     v20 = RapidLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
@@ -2196,7 +2196,7 @@ LABEL_33:
 LABEL_22:
         [PLDefaults setObject:v22 forKey:@"RapidTaskedSamplingPercentage" saveToDisk:1];
 LABEL_23:
-        v29 = [v9 objectForKeyedSubscript:@"RAPIDUploadSizeLimit"];
+        v29 = [payloadDictionaryRepresentation objectForKeyedSubscript:@"RAPIDUploadSizeLimit"];
         v30 = RapidLog();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
@@ -2226,7 +2226,7 @@ LABEL_23:
         }
 
         [v32 setObject:v33 forKey:@"RapidTaskedUploadSizeLimit" saveToDisk:1];
-        [(PLRapidController *)self completeTaskingConfig:v6];
+        [(PLRapidController *)self completeTaskingConfig:updateCopy];
 
         goto LABEL_32;
       }
@@ -2283,23 +2283,23 @@ LABEL_34:
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (void)completeTaskingConfig:(id)a3
+- (void)completeTaskingConfig:(id)config
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configCopy = config;
   v5 = RapidLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 configUUID];
+    configUUID = [configCopy configUUID];
     *buf = 138412290;
-    v14 = v6;
+    v14 = configUUID;
     _os_log_impl(&dword_1D8611000, v5, OS_LOG_TYPE_DEFAULT, "Attempting to mark DRConfig %@ as completed", buf, 0xCu);
   }
 
-  v7 = [(PLRapidController *)self taskingMonitor];
-  v8 = [v4 configUUID];
+  taskingMonitor = [(PLRapidController *)self taskingMonitor];
+  configUUID2 = [configCopy configUUID];
   v12 = 0;
-  [v7 markCompletedConfigUUID:v8 errorOut:&v12];
+  [taskingMonitor markCompletedConfigUUID:configUUID2 errorOut:&v12];
   v9 = v12;
 
   if (v9)
@@ -2314,23 +2314,23 @@ LABEL_34:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)rejectTaskingConfig:(id)a3
+- (void)rejectTaskingConfig:(id)config
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configCopy = config;
   v5 = RapidLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 configUUID];
+    configUUID = [configCopy configUUID];
     *buf = 138412290;
-    v14 = v6;
+    v14 = configUUID;
     _os_log_impl(&dword_1D8611000, v5, OS_LOG_TYPE_DEFAULT, "Rejecting DRConfig %@", buf, 0xCu);
   }
 
-  v7 = [(PLRapidController *)self taskingMonitor];
-  v8 = [v4 configUUID];
+  taskingMonitor = [(PLRapidController *)self taskingMonitor];
+  configUUID2 = [configCopy configUUID];
   v12 = 0;
-  [v7 rejectConfigUUID:v8 errorOut:&v12];
+  [taskingMonitor rejectConfigUUID:configUUID2 errorOut:&v12];
   v9 = v12;
 
   if (v9)
@@ -2354,8 +2354,8 @@ LABEL_34:
     _os_log_impl(&dword_1D8611000, v3, OS_LOG_TYPE_DEFAULT, "Stop monitoring DRConfig", v5, 2u);
   }
 
-  v4 = [(PLRapidController *)self taskingMonitor];
-  [v4 stopMonitoring];
+  taskingMonitor = [(PLRapidController *)self taskingMonitor];
+  [taskingMonitor stopMonitoring];
 }
 
 - (void)handleXPCActivityCallback:.cold.1()
@@ -2389,7 +2389,7 @@ void __28__PLRapidController_cleanup__block_invoke_cold_1(uint64_t a1)
 - (void)prepareMSSLog
 {
   v8 = *MEMORY[0x1E69E9840];
-  v1 = [a1 mssFilePath];
+  mssFilePath = [self mssFilePath];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_8();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);

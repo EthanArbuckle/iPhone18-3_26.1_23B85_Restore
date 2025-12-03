@@ -1,36 +1,36 @@
 @interface CRKSecureCodedUserDefaultsObject
-- (BOOL)setValue:(id)a3 error:(id *)a4;
-- (CRKSecureCodedUserDefaultsObject)initWithKey:(id)a3 classes:(id)a4;
-- (CRKSecureCodedUserDefaultsObject)initWithStore:(id)a3 key:(id)a4 classes:(id)a5;
+- (BOOL)setValue:(id)value error:(id *)error;
+- (CRKSecureCodedUserDefaultsObject)initWithKey:(id)key classes:(id)classes;
+- (CRKSecureCodedUserDefaultsObject)initWithStore:(id)store key:(id)key classes:(id)classes;
 - (id)value;
-- (id)valueWithError:(id *)a3;
-- (void)registerDefaultValue:(id)a3;
-- (void)setValue:(id)a3;
+- (id)valueWithError:(id *)error;
+- (void)registerDefaultValue:(id)value;
+- (void)setValue:(id)value;
 - (void)value;
 @end
 
 @implementation CRKSecureCodedUserDefaultsObject
 
-- (CRKSecureCodedUserDefaultsObject)initWithKey:(id)a3 classes:(id)a4
+- (CRKSecureCodedUserDefaultsObject)initWithKey:(id)key classes:(id)classes
 {
   v6 = MEMORY[0x277CBEBD0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 standardUserDefaults];
-  v10 = [(CRKSecureCodedUserDefaultsObject *)self initWithStore:v9 key:v8 classes:v7];
+  classesCopy = classes;
+  keyCopy = key;
+  standardUserDefaults = [v6 standardUserDefaults];
+  v10 = [(CRKSecureCodedUserDefaultsObject *)self initWithStore:standardUserDefaults key:keyCopy classes:classesCopy];
 
   return v10;
 }
 
-- (CRKSecureCodedUserDefaultsObject)initWithStore:(id)a3 key:(id)a4 classes:(id)a5
+- (CRKSecureCodedUserDefaultsObject)initWithStore:(id)store key:(id)key classes:(id)classes
 {
-  v8 = a5;
+  classesCopy = classes;
   v13.receiver = self;
   v13.super_class = CRKSecureCodedUserDefaultsObject;
-  v9 = [(CRKUserDefaultsObject *)&v13 initWithStore:a3 key:a4];
+  v9 = [(CRKUserDefaultsObject *)&v13 initWithStore:store key:key];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [classesCopy copy];
     classes = v9->_classes;
     v9->_classes = v10;
   }
@@ -38,16 +38,16 @@
   return v9;
 }
 
-- (id)valueWithError:(id *)a3
+- (id)valueWithError:(id *)error
 {
   v10.receiver = self;
   v10.super_class = CRKSecureCodedUserDefaultsObject;
-  v5 = [(CRKUserDefaultsObject *)&v10 value];
-  if (v5)
+  value = [(CRKUserDefaultsObject *)&v10 value];
+  if (value)
   {
     v6 = MEMORY[0x277CCAAC8];
-    v7 = [(CRKSecureCodedUserDefaultsObject *)self classes];
-    v8 = [v6 cat_unarchiveObjectOfClasses:v7 withData:v5 error:a3];
+    classes = [(CRKSecureCodedUserDefaultsObject *)self classes];
+    v8 = [v6 cat_unarchiveObjectOfClasses:classes withData:value error:error];
   }
 
   else
@@ -58,12 +58,12 @@
   return v8;
 }
 
-- (BOOL)setValue:(id)a3 error:(id *)a4
+- (BOOL)setValue:(id)value error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  valueCopy = value;
+  if (valueCopy)
   {
-    v7 = [MEMORY[0x277CCAAB0] cat_archivedDataWithRootObject:v6 error:a4];
+    v7 = [MEMORY[0x277CCAAB0] cat_archivedDataWithRootObject:valueCopy error:error];
     if (!v7)
     {
       v9 = 0;
@@ -107,10 +107,10 @@ LABEL_7:
   return v3;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   v7 = 0;
-  v4 = [(CRKSecureCodedUserDefaultsObject *)self setValue:a3 error:&v7];
+  v4 = [(CRKSecureCodedUserDefaultsObject *)self setValue:value error:&v7];
   v5 = v7;
   if (!v4)
   {
@@ -122,10 +122,10 @@ LABEL_7:
   }
 }
 
-- (void)registerDefaultValue:(id)a3
+- (void)registerDefaultValue:(id)value
 {
   v8 = 0;
-  v4 = [MEMORY[0x277CCAAB0] cat_archivedDataWithRootObject:a3 error:&v8];
+  v4 = [MEMORY[0x277CCAAB0] cat_archivedDataWithRootObject:value error:&v8];
   v5 = v8;
   if (v4)
   {
@@ -146,8 +146,8 @@ LABEL_7:
 
 - (void)value
 {
-  v3 = [a1 key];
-  v4 = [a2 verboseDescription];
+  v3 = [self key];
+  verboseDescription = [a2 verboseDescription];
   OUTLINED_FUNCTION_0_9();
   OUTLINED_FUNCTION_1_2(&dword_243550000, v5, v6, "Failed to deserialize value for key %{public}@: %{public}@", v7, v8, v9, v10, v11);
 }

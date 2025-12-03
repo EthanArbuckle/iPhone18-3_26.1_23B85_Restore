@@ -1,13 +1,13 @@
 @interface VCEmulatedNetworkDoubleQueueReorder
 - (BOOL)shouldSendPacketImmediatelyMM;
-- (VCEmulatedNetworkDoubleQueueReorder)initWithPolicies:(id)a3;
+- (VCEmulatedNetworkDoubleQueueReorder)initWithPolicies:(id)policies;
 - (void)dealloc;
-- (void)push:(id)a3;
+- (void)push:(id)push;
 @end
 
 @implementation VCEmulatedNetworkDoubleQueueReorder
 
-- (VCEmulatedNetworkDoubleQueueReorder)initWithPolicies:(id)a3
+- (VCEmulatedNetworkDoubleQueueReorder)initWithPolicies:(id)policies
 {
   v27 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
@@ -15,7 +15,7 @@
   v4 = [(VCEmulatedNetworkDoubleQueue *)&v14 initWithPolicies:?];
   if (v4)
   {
-    v5 = [a3 objectForKeyedSubscript:@"DoubleQueueImpairments"];
+    v5 = [policies objectForKeyedSubscript:@"DoubleQueueImpairments"];
     [objc_msgSend(v5 objectForKeyedSubscript:{@"ReorderProbability", "doubleValue"}];
     v4->_probability = v6;
     if ([v5 objectForKeyedSubscript:@"ReorderCorrelation"] && objc_msgSend(v5, "objectForKeyedSubscript:", @"ReorderGap"))
@@ -144,7 +144,7 @@
   return result;
 }
 
-- (void)push:(id)a3
+- (void)push:(id)push
 {
   if (!self->_useMarkovModel)
   {
@@ -167,7 +167,7 @@ LABEL_6:
 LABEL_7:
   v6 = &OBJC_IVAR___VCEmulatedNetworkDoubleQueue__networkQueueB;
 LABEL_8:
-  if ([*(&self->super.super.super.isa + *v6) write:a3])
+  if ([*(&self->super.super.super.isa + *v6) write:push])
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -175,7 +175,7 @@ LABEL_8:
       v8 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
       {
-        [(VCEmulatedNetworkDoubleQueueReorder *)v7 push:a3, v8];
+        [(VCEmulatedNetworkDoubleQueueReorder *)v7 push:push, v8];
       }
     }
   }

@@ -1,23 +1,23 @@
 @interface WLDPlaybackNowPlayingObserver
 - (BOOL)_isAnyAppPlaying;
-- (BOOL)_isPlayerPathPlaying:(id)a3;
-- (BOOL)_isSummary:(id)a3 signifantChangeFromSummary:(id)a4;
-- (BOOL)_nowPlayingAppIsPlayingForPlayerPath:(id)a3;
-- (BOOL)_shouldPlayerPathBeConsidered:(id)a3;
-- (WLDPlaybackNowPlayingObserver)initWithUpdateHandler:(id)a3;
+- (BOOL)_isPlayerPathPlaying:(id)playing;
+- (BOOL)_isSummary:(id)summary signifantChangeFromSummary:(id)fromSummary;
+- (BOOL)_nowPlayingAppIsPlayingForPlayerPath:(id)path;
+- (BOOL)_shouldPlayerPathBeConsidered:(id)considered;
+- (WLDPlaybackNowPlayingObserver)initWithUpdateHandler:(id)handler;
 - (id)_fetchActivePlayerPaths;
 - (id)_getActivePlayerPaths;
-- (id)_nowPlayingInfoForPlayerPath:(id)a3;
+- (id)_nowPlayingInfoForPlayerPath:(id)path;
 - (id)_unsupportedMediaTypes;
 - (id)nowPlayingSummaries;
-- (void)_activePlayerPathsDidChangeNotification:(id)a3;
-- (void)_fetchNowPlayingInfo:(id)a3;
+- (void)_activePlayerPathsDidChangeNotification:(id)notification;
+- (void)_fetchNowPlayingInfo:(id)info;
 - (void)_forceFetchNowPlayingInfofromActivePlayers;
-- (void)_isPlayingDidChangeNotification:(id)a3;
-- (void)_nowPlayingInfoDidChangeNotification:(id)a3;
-- (void)_processLastSummary:(id)a3;
-- (void)_setActivePlayerPaths:(id)a3;
-- (void)_updateWithInfo:(id)a3 sessionID:(id)a4;
+- (void)_isPlayingDidChangeNotification:(id)notification;
+- (void)_nowPlayingInfoDidChangeNotification:(id)notification;
+- (void)_processLastSummary:(id)summary;
+- (void)_setActivePlayerPaths:(id)paths;
+- (void)_updateWithInfo:(id)info sessionID:(id)d;
 - (void)dealloc;
 - (void)startObserving;
 - (void)stopObserving;
@@ -25,15 +25,15 @@
 
 @implementation WLDPlaybackNowPlayingObserver
 
-- (WLDPlaybackNowPlayingObserver)initWithUpdateHandler:(id)a3
+- (WLDPlaybackNowPlayingObserver)initWithUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = WLDPlaybackNowPlayingObserver;
   v5 = [(WLDPlaybackNowPlayingObserver *)&v17 init];
   if (v5)
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(handlerCopy);
     updateHandler = v5->_updateHandler;
     v5->_updateHandler = v6;
 
@@ -50,9 +50,9 @@
     lastSummaryDict = v5->_lastSummaryDict;
     v5->_lastSummaryDict = v12;
 
-    v14 = [(WLDPlaybackNowPlayingObserver *)v5 _fetchActivePlayerPaths];
+    _fetchActivePlayerPaths = [(WLDPlaybackNowPlayingObserver *)v5 _fetchActivePlayerPaths];
     activePlayerPaths = v5->_activePlayerPaths;
-    v5->_activePlayerPaths = v14;
+    v5->_activePlayerPaths = _fetchActivePlayerPaths;
 
     [(WLDPlaybackNowPlayingObserver *)v5 startObserving];
   }
@@ -124,8 +124,8 @@
 - (id)nowPlayingSummaries
 {
   v3 = +[TVAppAccountStoreObjC activeAccount];
-  v4 = [v3 ams_DSID];
-  v5 = [v4 stringValue];
+  ams_DSID = [v3 ams_DSID];
+  stringValue = [ams_DSID stringValue];
 
   v6 = dispatch_semaphore_create(0);
   v22 = 0;
@@ -154,7 +154,7 @@
 
         lookupQueue = self->_lookupQueue;
         v15 = *(*(&v18 + 1) + 8 * i);
-        v16 = v5;
+        v16 = stringValue;
         v17 = v6;
         MRMediaRemoteGetNowPlayingInfoForPlayer();
         v11 = dispatch_time(0, 2000000000);
@@ -200,16 +200,16 @@ intptr_t __52__WLDPlaybackNowPlayingObserver_nowPlayingSummaries__block_invoke(u
   return dispatch_semaphore_signal(v11);
 }
 
-- (void)_isPlayingDidChangeNotification:(id)a3
+- (void)_isPlayingDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v8 = [v4 objectForKey:kMRNowPlayingPlayerPathUserInfoKey];
+  userInfo = [notification userInfo];
+  v8 = [userInfo objectForKey:kMRNowPlayingPlayerPathUserInfoKey];
 
   if ([(WLDPlaybackNowPlayingObserver *)self _shouldPlayerPathBeConsidered:v8])
   {
-    v5 = [(WLDPlaybackNowPlayingObserver *)self _isAnyAppPlaying];
+    _isAnyAppPlaying = [(WLDPlaybackNowPlayingObserver *)self _isAnyAppPlaying];
     transaction = self->_transaction;
-    if (v5)
+    if (_isAnyAppPlaying)
     {
       if (transaction)
       {
@@ -234,15 +234,15 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_activePlayerPathsDidChangeNotification:(id)a3
+- (void)_activePlayerPathsDidChangeNotification:(id)notification
 {
-  v4 = [(WLDPlaybackNowPlayingObserver *)self _fetchActivePlayerPaths];
-  v5 = [(WLDPlaybackNowPlayingObserver *)self _getActivePlayerPaths];
+  _fetchActivePlayerPaths = [(WLDPlaybackNowPlayingObserver *)self _fetchActivePlayerPaths];
+  _getActivePlayerPaths = [(WLDPlaybackNowPlayingObserver *)self _getActivePlayerPaths];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v4;
+  v6 = _fetchActivePlayerPaths;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v7)
   {
@@ -258,7 +258,7 @@ LABEL_9:
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        if (([v5 containsObject:v11] & 1) == 0)
+        if (([_getActivePlayerPaths containsObject:v11] & 1) == 0)
         {
           [(WLDPlaybackNowPlayingObserver *)self _fetchNowPlayingInfo:v11];
         }
@@ -274,7 +274,7 @@ LABEL_9:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = v5;
+  v12 = _getActivePlayerPaths;
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v13)
   {
@@ -305,10 +305,10 @@ LABEL_9:
   [(WLDPlaybackNowPlayingObserver *)self _setActivePlayerPaths:v6];
 }
 
-- (void)_nowPlayingInfoDidChangeNotification:(id)a3
+- (void)_nowPlayingInfoDidChangeNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:kMRNowPlayingPlayerPathUserInfoKey];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:kMRNowPlayingPlayerPathUserInfoKey];
 
   if ([(WLDPlaybackNowPlayingObserver *)self _shouldPlayerPathBeConsidered:v5])
   {
@@ -316,21 +316,21 @@ LABEL_9:
   }
 }
 
-- (void)_fetchNowPlayingInfo:(id)a3
+- (void)_fetchNowPlayingInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(WLDPlaybackNowPlayingObserver *)self _nowPlayingInfoForPlayerPath:v4];
-  v6 = [v4 client];
-  v7 = [v6 bundleIdentifier];
-  v8 = [v4 player];
-  v9 = [v8 identifier];
-  v10 = [NSString stringWithFormat:@"%@-%@", v7, v9];
+  infoCopy = info;
+  v5 = [(WLDPlaybackNowPlayingObserver *)self _nowPlayingInfoForPlayerPath:infoCopy];
+  client = [infoCopy client];
+  bundleIdentifier = [client bundleIdentifier];
+  player = [infoCopy player];
+  identifier = [player identifier];
+  v10 = [NSString stringWithFormat:@"%@-%@", bundleIdentifier, identifier];
 
   v11 = [v5 objectForKey:v10];
-  v12 = self;
-  objc_sync_enter(v12);
-  v13 = [(NSMutableDictionary *)v12->_lastSummaryDict objectForKey:v10];
-  objc_sync_exit(v12);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v13 = [(NSMutableDictionary *)selfCopy->_lastSummaryDict objectForKey:v10];
+  objc_sync_exit(selfCopy);
 
   if ([v11 isEquivalentToSummaryExcludingTimestamp:v13])
   {
@@ -346,15 +346,15 @@ LABEL_9:
 
   if (v11)
   {
-    if ([(WLDPlaybackNowPlayingObserver *)v12 _isSummary:v11 signifantChangeFromSummary:v13])
+    if ([(WLDPlaybackNowPlayingObserver *)selfCopy _isSummary:v11 signifantChangeFromSummary:v13])
     {
-      [(WLDPlaybackNowPlayingObserver *)v12 _updateWithInfo:v11 sessionID:v10];
+      [(WLDPlaybackNowPlayingObserver *)selfCopy _updateWithInfo:v11 sessionID:v10];
     }
 
 LABEL_7:
-    v14 = v12;
+    v14 = selfCopy;
     objc_sync_enter(v14);
-    [(NSMutableDictionary *)v12->_lastSummaryDict setObject:v11 forKey:v10];
+    [(NSMutableDictionary *)selfCopy->_lastSummaryDict setObject:v11 forKey:v10];
     objc_sync_exit(v14);
 LABEL_8:
 
@@ -371,7 +371,7 @@ LABEL_8:
     }
 
     v11 = [v13 elapsedTimeSummaryWithPlaybackState:0 timerDerived:0];
-    [(WLDPlaybackNowPlayingObserver *)v12 _updateWithInfo:v11 sessionID:v10];
+    [(WLDPlaybackNowPlayingObserver *)selfCopy _updateWithInfo:v11 sessionID:v10];
     if (v11)
     {
       goto LABEL_7;
@@ -381,9 +381,9 @@ LABEL_8:
 LABEL_9:
 }
 
-- (BOOL)_isPlayerPathPlaying:(id)a3
+- (BOOL)_isPlayerPathPlaying:(id)playing
 {
-  v4 = a3;
+  playingCopy = playing;
   v5 = dispatch_semaphore_create(0);
   v10 = 0;
   v11 = &v10;
@@ -410,21 +410,21 @@ intptr_t __54__WLDPlaybackNowPlayingObserver__isPlayerPathPlaying___block_invoke
   return dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_shouldPlayerPathBeConsidered:(id)a3
+- (BOOL)_shouldPlayerPathBeConsidered:(id)considered
 {
-  v3 = a3;
-  v4 = [v3 origin];
-  v5 = [v4 isLocal];
+  consideredCopy = considered;
+  origin = [consideredCopy origin];
+  isLocal = [origin isLocal];
 
-  if (v5)
+  if (isLocal)
   {
-    v6 = [v3 client];
-    v7 = [v6 bundleIdentifier];
+    client = [consideredCopy client];
+    bundleIdentifier = [client bundleIdentifier];
 
     v8 = +[WLKAppLibrary defaultAppLibrary];
-    v9 = [v8 allAppBundleIdentifiers];
+    allAppBundleIdentifiers = [v8 allAppBundleIdentifiers];
 
-    v10 = (+[WLKChannelUtilities isItunesBundleID:](WLKChannelUtilities, "isItunesBundleID:", v7) & 1) != 0 || [v9 containsObject:v7];
+    v10 = (+[WLKChannelUtilities isItunesBundleID:](WLKChannelUtilities, "isItunesBundleID:", bundleIdentifier) & 1) != 0 || [allAppBundleIdentifiers containsObject:bundleIdentifier];
   }
 
   else
@@ -437,23 +437,23 @@ intptr_t __54__WLDPlaybackNowPlayingObserver__isPlayerPathPlaying___block_invoke
 
 - (id)_getActivePlayerPaths
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_activePlayerPaths;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_activePlayerPaths;
+  objc_sync_exit(selfCopy);
 
   v4 = [(NSArray *)v3 copy];
 
   return v4;
 }
 
-- (void)_setActivePlayerPaths:(id)a3
+- (void)_setActivePlayerPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   obj = self;
   objc_sync_enter(obj);
   activePlayerPaths = obj->_activePlayerPaths;
-  obj->_activePlayerPaths = v4;
+  obj->_activePlayerPaths = pathsCopy;
 
   objc_sync_exit(obj);
 }
@@ -479,7 +479,7 @@ intptr_t __54__WLDPlaybackNowPlayingObserver__isPlayerPathPlaying___block_invoke
   v6 = dispatch_time(0, 2000000000);
   dispatch_semaphore_wait(v5, v6);
   v7 = +[WLKAppLibrary defaultAppLibrary];
-  v8 = [v7 allAppBundleIdentifiers];
+  allAppBundleIdentifiers = [v7 allAppBundleIdentifiers];
 
   v9 = objc_alloc_init(NSMutableArray);
   v10 = v30[5];
@@ -487,7 +487,7 @@ intptr_t __54__WLDPlaybackNowPlayingObserver__isPlayerPathPlaying___block_invoke
   v18 = 3221225472;
   v19 = __56__WLDPlaybackNowPlayingObserver__fetchActivePlayerPaths__block_invoke_2;
   v20 = &unk_100045C40;
-  v11 = v8;
+  v11 = allAppBundleIdentifiers;
   v21 = v11;
   v12 = v9;
   v22 = v12;
@@ -531,10 +531,10 @@ void __56__WLDPlaybackNowPlayingObserver__fetchActivePlayerPaths__block_invoke_2
   }
 }
 
-- (id)_nowPlayingInfoForPlayerPath:(id)a3
+- (id)_nowPlayingInfoForPlayerPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
     *buf = 0;
     v14 = buf;
@@ -544,7 +544,7 @@ void __56__WLDPlaybackNowPlayingObserver__fetchActivePlayerPaths__block_invoke_2
     v18 = objc_opt_new();
     v5 = dispatch_semaphore_create(0);
     lookupQueue = self->_lookupQueue;
-    v11 = v4;
+    v11 = pathCopy;
     v12 = v5;
     MRMediaRemoteGetNowPlayingInfoForPlayer();
     v7 = dispatch_time(0, 2000000000);
@@ -623,8 +623,8 @@ void __62__WLDPlaybackNowPlayingObserver__nowPlayingInfoForPlayerPath___block_in
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(WLDPlaybackNowPlayingObserver *)self _getActivePlayerPaths];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v22 count:16];
+  _getActivePlayerPaths = [(WLDPlaybackNowPlayingObserver *)self _getActivePlayerPaths];
+  v5 = [_getActivePlayerPaths countByEnumeratingWithState:&v14 objects:v22 count:16];
   if (v5)
   {
     v6 = *v15;
@@ -634,7 +634,7 @@ void __62__WLDPlaybackNowPlayingObserver__nowPlayingInfoForPlayerPath___block_in
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_getActivePlayerPaths);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
@@ -645,7 +645,7 @@ void __62__WLDPlaybackNowPlayingObserver__nowPlayingInfoForPlayerPath___block_in
         dispatch_semaphore_wait(v13, v10);
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v14 objects:v22 count:{16, _NSConcreteStackBlock, 3221225472, __49__WLDPlaybackNowPlayingObserver__isAnyAppPlaying__block_invoke, &unk_100045BF0}];
+      v5 = [_getActivePlayerPaths countByEnumeratingWithState:&v14 objects:v22 count:{16, _NSConcreteStackBlock, 3221225472, __49__WLDPlaybackNowPlayingObserver__isAnyAppPlaying__block_invoke, &unk_100045BF0}];
     }
 
     while (v5);
@@ -667,9 +667,9 @@ intptr_t __49__WLDPlaybackNowPlayingObserver__isAnyAppPlaying__block_invoke(uint
   return dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_nowPlayingAppIsPlayingForPlayerPath:(id)a3
+- (BOOL)_nowPlayingAppIsPlayingForPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = dispatch_semaphore_create(0);
   v10 = 0;
   v11 = &v10;
@@ -696,18 +696,18 @@ intptr_t __70__WLDPlaybackNowPlayingObserver__nowPlayingAppIsPlayingForPlayerPat
   return dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_processLastSummary:(id)a3
+- (void)_processLastSummary:(id)summary
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 client];
-  v7 = [v6 bundleIdentifier];
-  v8 = [v4 player];
-  v9 = [v8 identifier];
-  v10 = [NSString stringWithFormat:@"%@-%@", v7, v9];
+  summaryCopy = summary;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  client = [summaryCopy client];
+  bundleIdentifier = [client bundleIdentifier];
+  player = [summaryCopy player];
+  identifier = [player identifier];
+  v10 = [NSString stringWithFormat:@"%@-%@", bundleIdentifier, identifier];
 
-  v11 = [(NSMutableDictionary *)v5->_lastSummaryDict objectForKey:v10];
+  v11 = [(NSMutableDictionary *)selfCopy->_lastSummaryDict objectForKey:v10];
   v12 = v11;
   if (v11 && [v11 playbackState] == 1)
   {
@@ -719,25 +719,25 @@ intptr_t __70__WLDPlaybackNowPlayingObserver__nowPlayingAppIsPlayingForPlayerPat
     }
 
     v14 = [v12 elapsedTimeSummaryWithPlaybackState:0 timerDerived:0];
-    [(WLDPlaybackNowPlayingObserver *)v5 _updateWithInfo:v14 sessionID:v10];
+    [(WLDPlaybackNowPlayingObserver *)selfCopy _updateWithInfo:v14 sessionID:v10];
   }
 
-  lastSummaryDict = v5->_lastSummaryDict;
+  lastSummaryDict = selfCopy->_lastSummaryDict;
   v18 = v10;
   v16 = [NSArray arrayWithObjects:&v18 count:1];
   [(NSMutableDictionary *)lastSummaryDict removeObjectsForKeys:v16];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_forceFetchNowPlayingInfofromActivePlayers
 {
-  v3 = [(WLDPlaybackNowPlayingObserver *)self _getActivePlayerPaths];
+  _getActivePlayerPaths = [(WLDPlaybackNowPlayingObserver *)self _getActivePlayerPaths];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [_getActivePlayerPaths countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -749,7 +749,7 @@ intptr_t __70__WLDPlaybackNowPlayingObserver__nowPlayingAppIsPlayingForPlayerPat
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_getActivePlayerPaths);
         }
 
         [(WLDPlaybackNowPlayingObserver *)self _fetchNowPlayingInfo:*(*(&v8 + 1) + 8 * v7)];
@@ -757,7 +757,7 @@ intptr_t __70__WLDPlaybackNowPlayingObserver__nowPlayingAppIsPlayingForPlayerPat
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [_getActivePlayerPaths countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -786,10 +786,10 @@ void __55__WLDPlaybackNowPlayingObserver__unsupportedMediaTypes__block_invoke(id
   _unsupportedMediaTypes___unsupportedTypes = v1;
 }
 
-- (void)_updateWithInfo:(id)a3 sessionID:(id)a4
+- (void)_updateWithInfo:(id)info sessionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  dCopy = d;
   if (self->_updateHandler)
   {
     notificationQueue = self->_notificationQueue;
@@ -797,9 +797,9 @@ void __55__WLDPlaybackNowPlayingObserver__unsupportedMediaTypes__block_invoke(id
     block[1] = 3221225472;
     block[2] = __59__WLDPlaybackNowPlayingObserver__updateWithInfo_sessionID___block_invoke;
     block[3] = &unk_1000458B8;
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
+    v10 = infoCopy;
+    selfCopy = self;
+    v12 = dCopy;
     dispatch_async(notificationQueue, block);
   }
 }
@@ -820,47 +820,47 @@ uint64_t __59__WLDPlaybackNowPlayingObserver__updateWithInfo_sessionID___block_i
   return (*(*(a1[5] + 56) + 16))();
 }
 
-- (BOOL)_isSummary:(id)a3 signifantChangeFromSummary:(id)a4
+- (BOOL)_isSummary:(id)summary signifantChangeFromSummary:(id)fromSummary
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v5 isSameContent:v6])
+  summaryCopy = summary;
+  fromSummaryCopy = fromSummary;
+  if (![summaryCopy isSameContent:fromSummaryCopy])
   {
     LOBYTE(v25) = 1;
     v24 = @"content changed";
     goto LABEL_19;
   }
 
-  v7 = [v6 playbackState];
-  if (v7 != [v5 playbackState] || (v8 = objc_msgSend(v6, "completionState"), v8 != objc_msgSend(v5, "completionState")) || objc_msgSend(v6, "playbackState") != 1)
+  playbackState = [fromSummaryCopy playbackState];
+  if (playbackState != [summaryCopy playbackState] || (v8 = objc_msgSend(fromSummaryCopy, "completionState"), v8 != objc_msgSend(summaryCopy, "completionState")) || objc_msgSend(fromSummaryCopy, "playbackState") != 1)
   {
     v24 = @"significant change";
     goto LABEL_11;
   }
 
-  v9 = [v5 elapsedTime];
-  [v9 doubleValue];
+  elapsedTime = [summaryCopy elapsedTime];
+  [elapsedTime doubleValue];
   v11 = v10;
 
   v12 = +[NSDate date];
-  v13 = [v6 timestamp];
-  [v12 timeIntervalSinceDate:v13];
+  timestamp = [fromSummaryCopy timestamp];
+  [v12 timeIntervalSinceDate:timestamp];
   v15 = v14;
 
-  v16 = [v6 playbackRate];
+  playbackRate = [fromSummaryCopy playbackRate];
   objc_opt_class();
-  LOBYTE(v13) = objc_opt_isKindOfClass();
+  LOBYTE(timestamp) = objc_opt_isKindOfClass();
 
   v17 = 1.0;
-  if (v13)
+  if (timestamp)
   {
-    v18 = [v6 playbackRate];
-    [v18 doubleValue];
+    playbackRate2 = [fromSummaryCopy playbackRate];
+    [playbackRate2 doubleValue];
     v17 = v19;
   }
 
-  v20 = [v6 elapsedTime];
-  [v20 doubleValue];
+  elapsedTime2 = [fromSummaryCopy elapsedTime];
+  [elapsedTime2 doubleValue];
   v22 = v21 + v15 * v17;
 
   v23 = vabdd_f64(v11, v22);
@@ -872,7 +872,7 @@ LABEL_11:
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31[0] = v6;
+      v31[0] = fromSummaryCopy;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "WLDPlaybackNowPlayingObserver - -SigEval- update %@ ->", buf, 0xCu);
     }
 
@@ -880,7 +880,7 @@ LABEL_11:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31[0] = v5;
+      v31[0] = summaryCopy;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "WLDPlaybackNowPlayingObserver - -SigEval- %@", buf, 0xCu);
     }
 

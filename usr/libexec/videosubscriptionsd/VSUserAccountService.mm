@@ -1,7 +1,7 @@
 @interface VSUserAccountService
 - (VSUserAccountService)init;
-- (void)userAccountRegistry:(id)a3 didFinishUpdatingUserAccountsWithManager:(id)a4;
-- (void)userAccountRegistry:(id)a3 willPerformMigrationIfRequiredWithBlock:(id)a4;
+- (void)userAccountRegistry:(id)registry didFinishUpdatingUserAccountsWithManager:(id)manager;
+- (void)userAccountRegistry:(id)registry willPerformMigrationIfRequiredWithBlock:(id)block;
 @end
 
 @implementation VSUserAccountService
@@ -42,9 +42,9 @@
   return v11;
 }
 
-- (void)userAccountRegistry:(id)a3 willPerformMigrationIfRequiredWithBlock:(id)a4
+- (void)userAccountRegistry:(id)registry willPerformMigrationIfRequiredWithBlock:(id)block
 {
-  v4 = a4;
+  blockCopy = block;
   v5 = VSDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -61,12 +61,12 @@
   v9[1] = 3221225472;
   v9[2] = sub_10000AEE0;
   v9[3] = &unk_100014808;
-  v10 = v4;
-  v8 = v4;
+  v10 = blockCopy;
+  v8 = blockCopy;
   [v6 fetchActiveSubscriptionsWithOptions:v7 completionHandler:v9];
 }
 
-- (void)userAccountRegistry:(id)a3 didFinishUpdatingUserAccountsWithManager:(id)a4
+- (void)userAccountRegistry:(id)registry didFinishUpdatingUserAccountsWithManager:(id)manager
 {
   v4 = VSDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

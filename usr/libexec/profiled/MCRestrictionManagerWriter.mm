@@ -1,26 +1,26 @@
 @interface MCRestrictionManagerWriter
-+ (BOOL)restrictionsAlreadyInstalledFromPayload:(id)a3;
++ (BOOL)restrictionsAlreadyInstalledFromPayload:(id)payload;
 + (id)enforcedAppWhitelistRestrictions;
 + (id)sharedManager;
 - (BOOL)memberQueueCheckPasscodeCompliesWithCurrentRestrictions;
 - (BOOL)memberQueueCheckPasscodeCompliesWithProfileRestrictions;
-- (BOOL)memberQueueIsPasscodeComplianceMandatoryWithOutLocalizedWarning:(id *)a3;
-- (BOOL)memberQueueRecomputeEffectiveUserSettingsWithCredentialSet:(id)a3;
-- (BOOL)memberQueueSetAllClientRestrictions:(id)a3 sender:(id)a4 outRestrictionsChanged:(BOOL *)a5 outEffectiveSettingsChanged:(BOOL *)a6 outError:(id *)a7;
-- (BOOL)memberQueueSetParametersForSettingsByType:(id)a3 configurationUUID:(id)a4 toSystem:(BOOL)a5 user:(BOOL)a6 credentialSet:(id)a7 sender:(id)a8;
-- (BOOL)memberQueueSetSystemClientRestrictions:(id)a3 userClientRestrictions:(id)a4 sender:(id)a5 outRestrictionsChanged:(BOOL *)a6 outEffectiveSettingsChanged:(BOOL *)a7 outError:(id *)a8;
-- (BOOL)recomputeNagMetadata:(BOOL *)a3;
+- (BOOL)memberQueueIsPasscodeComplianceMandatoryWithOutLocalizedWarning:(id *)warning;
+- (BOOL)memberQueueRecomputeEffectiveUserSettingsWithCredentialSet:(id)set;
+- (BOOL)memberQueueSetAllClientRestrictions:(id)restrictions sender:(id)sender outRestrictionsChanged:(BOOL *)changed outEffectiveSettingsChanged:(BOOL *)settingsChanged outError:(id *)error;
+- (BOOL)memberQueueSetParametersForSettingsByType:(id)type configurationUUID:(id)d toSystem:(BOOL)system user:(BOOL)user credentialSet:(id)set sender:(id)sender;
+- (BOOL)memberQueueSetSystemClientRestrictions:(id)restrictions userClientRestrictions:(id)clientRestrictions sender:(id)sender outRestrictionsChanged:(BOOL *)changed outEffectiveSettingsChanged:(BOOL *)settingsChanged outError:(id *)error;
+- (BOOL)recomputeNagMetadata:(BOOL *)metadata;
 - (BOOL)removeOrphanedClientRestrictions;
-- (BOOL)setAllClientRestrictions:(id)a3 sender:(id)a4 outRestrictionsChanged:(BOOL *)a5 outEffectiveSettingsChanged:(BOOL *)a6 outRecomputedNag:(BOOL *)a7 outError:(id *)a8;
-- (BOOL)setClientRestrictions:(id)a3 overrideRestrictions:(BOOL)a4 appsAndOptions:(id)a5 system:(BOOL)a6 clientType:(id)a7 clientUUID:(id)a8 sender:(id)a9 localizedClientDescription:(id)a10 localizedWarning:(id)a11 shouldRecomputeNag:(BOOL)a12 outRestrictionsChanged:(BOOL *)a13 outEffectiveSettingsChanged:(BOOL *)a14 outRecomputedNag:(BOOL *)a15 outError:(id *)a16;
-- (BOOL)setParametersForSettingsByType:(id)a3 configurationUUID:(id)a4 toSystem:(BOOL)a5 user:(BOOL)a6 credentialSet:(id)a7 sender:(id)a8;
-- (BOOL)setSystemProfileRestrictions:(id)a3 userProfileRestrictions:(id)a4 sender:(id)a5 outRestrictionsChanged:(BOOL *)a6 outEffectiveSettingsChanged:(BOOL *)a7 outAppWhitelistSettingsChanged:(BOOL *)a8 outRecomputedNag:(BOOL *)a9 outError:(id *)a10;
+- (BOOL)setAllClientRestrictions:(id)restrictions sender:(id)sender outRestrictionsChanged:(BOOL *)changed outEffectiveSettingsChanged:(BOOL *)settingsChanged outRecomputedNag:(BOOL *)nag outError:(id *)error;
+- (BOOL)setClientRestrictions:(id)restrictions overrideRestrictions:(BOOL)overrideRestrictions appsAndOptions:(id)options system:(BOOL)system clientType:(id)type clientUUID:(id)d sender:(id)sender localizedClientDescription:(id)self0 localizedWarning:(id)self1 shouldRecomputeNag:(BOOL)self2 outRestrictionsChanged:(BOOL *)self3 outEffectiveSettingsChanged:(BOOL *)self4 outRecomputedNag:(BOOL *)self5 outError:(id *)self6;
+- (BOOL)setParametersForSettingsByType:(id)type configurationUUID:(id)d toSystem:(BOOL)system user:(BOOL)user credentialSet:(id)set sender:(id)sender;
+- (BOOL)setSystemProfileRestrictions:(id)restrictions userProfileRestrictions:(id)profileRestrictions sender:(id)sender outRestrictionsChanged:(BOOL *)changed outEffectiveSettingsChanged:(BOOL *)settingsChanged outAppWhitelistSettingsChanged:(BOOL *)whitelistSettingsChanged outRecomputedNag:(BOOL *)nag outError:(id *)self0;
 - (id)_init;
-- (id)_liveClientUUIDsForClientType:(id)a3 outLoaderMissing:(BOOL *)a4;
-- (id)_memberQueueNewUserSettingsWithParametersForSettingsByType:(id)a3 currentUserSettings:(id)a4;
+- (id)_liveClientUUIDsForClientType:(id)type outLoaderMissing:(BOOL *)missing;
+- (id)_memberQueueNewUserSettingsWithParametersForSettingsByType:(id)type currentUserSettings:(id)settings;
 - (id)orphanCheckExemptClientTypes;
 - (id)orphanCheckUnexemptClientTypes;
-- (id)orphanedClientUUIDsForClientRestrictionDictionary:(id)a3;
+- (id)orphanedClientUUIDsForClientRestrictionDictionary:(id)dictionary;
 - (void)clearAllPasscodeComplianceCaches;
 - (void)memberQueueCacheClientRestrictionPasscodeCompliance;
 - (void)memberQueueClearAllPasscodeComplianceCaches;
@@ -28,22 +28,22 @@
 - (void)memberQueueClearProfileRestrictionPasscodeComplianceCache;
 - (void)memberQueueClearRestrictionPasscodeComplianceCache;
 - (void)memberQueueCommitClientRestrictionsToDisk;
-- (void)memberQueueCommitEffectiveUserSettingsToDiskOldEffectiveUserSettings:(id)a3;
+- (void)memberQueueCommitEffectiveUserSettingsToDiskOldEffectiveUserSettings:(id)settings;
 - (void)memberQueueCommitRestrictionsToDisk;
 - (void)memberQueueCommitUserSettingsToDisk;
-- (void)memberQueueMarkToClearPasscodeComplianceCacheWithOldSystemClientRestrictions:(id)a3 newSystemClientRestrictions:(id)a4;
+- (void)memberQueueMarkToClearPasscodeComplianceCacheWithOldSystemClientRestrictions:(id)restrictions newSystemClientRestrictions:(id)clientRestrictions;
 - (void)notifyClientsToRecomputeCompliance;
-- (void)notifyHaveSeenComplianceMessageWithLastLockDate:(id)a3;
+- (void)notifyHaveSeenComplianceMessageWithLastLockDate:(id)date;
 - (void)recomputeEffectiveUserSettings;
 - (void)recomputeUserRestrictionsAndEffectiveUserSettings;
-- (void)removeBoolSetting:(id)a3 sender:(id)a4;
-- (void)removeValueSetting:(id)a3 sender:(id)a4;
-- (void)resetAllSettingsToDefaultsSender:(id)a3;
-- (void)setIntersectionValues:(id)a3 forSetting:(id)a4 sender:(id)a5;
+- (void)removeBoolSetting:(id)setting sender:(id)sender;
+- (void)removeValueSetting:(id)setting sender:(id)sender;
+- (void)resetAllSettingsToDefaultsSender:(id)sender;
+- (void)setIntersectionValues:(id)values forSetting:(id)setting sender:(id)sender;
 - (void)setShowNagMessage;
-- (void)setUnionValues:(id)a3 forSetting:(id)a4 sender:(id)a5;
-- (void)setUserInfo:(id)a3 forClientUUID:(id)a4 sender:(id)a5;
-- (void)setValue:(id)a3 forSetting:(id)a4 sender:(id)a5;
+- (void)setUnionValues:(id)values forSetting:(id)setting sender:(id)sender;
+- (void)setUserInfo:(id)info forClientUUID:(id)d sender:(id)sender;
+- (void)setValue:(id)value forSetting:(id)setting sender:(id)sender;
 @end
 
 @implementation MCRestrictionManagerWriter
@@ -57,32 +57,32 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Committing user settings.", v14, 2u);
   }
 
-  v4 = [(MCRestrictionManagerWriter *)self memberQueueSystemUserSettings];
+  memberQueueSystemUserSettings = [(MCRestrictionManagerWriter *)self memberQueueSystemUserSettings];
   v5 = MCSystemUserSettingsFilePath();
-  [v4 MCWriteToBinaryFile:v5];
+  [memberQueueSystemUserSettings MCWriteToBinaryFile:v5];
 
-  v6 = [(MCRestrictionManagerWriter *)self memberQueueSystemNamespacedUserSettings];
+  memberQueueSystemNamespacedUserSettings = [(MCRestrictionManagerWriter *)self memberQueueSystemNamespacedUserSettings];
   v7 = MCSystemNamespacedUserSettingsFilePath();
-  [v6 MCWriteToBinaryFile:v7];
+  [memberQueueSystemNamespacedUserSettings MCWriteToBinaryFile:v7];
 
-  v8 = [(MCRestrictionManagerWriter *)self memberQueueUserUserSettings];
+  memberQueueUserUserSettings = [(MCRestrictionManagerWriter *)self memberQueueUserUserSettings];
   v9 = MCUserUserSettingsFilePath();
-  [v8 MCWriteToBinaryFile:v9];
+  [memberQueueUserUserSettings MCWriteToBinaryFile:v9];
 
-  v10 = [(MCRestrictionManagerWriter *)self memberQueueUserNamespacedUserSettings];
+  memberQueueUserNamespacedUserSettings = [(MCRestrictionManagerWriter *)self memberQueueUserNamespacedUserSettings];
   v11 = MCUserNamespacedUserSettingsFilePath();
-  [v10 MCWriteToBinaryFile:v11];
+  [memberQueueUserNamespacedUserSettings MCWriteToBinaryFile:v11];
 
-  v12 = [(MCRestrictionManagerWriter *)self memberQueueSettingsEvents];
+  memberQueueSettingsEvents = [(MCRestrictionManagerWriter *)self memberQueueSettingsEvents];
   v13 = MCSettingsEventsFilePath();
-  [v12 MCWriteToBinaryFile:v13];
+  [memberQueueSettingsEvents MCWriteToBinaryFile:v13];
 
   MCSendSettingsChangedNotification();
 }
 
 + (id)sharedManager
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___MCRestrictionManagerWriter;
   v2 = objc_msgSendSuper2(&v4, "sharedManager");
 
@@ -123,20 +123,20 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Committing restrictions.", v8, 2u);
   }
 
-  v4 = [(MCRestrictionManagerWriter *)self memberQueueRestrictions];
+  memberQueueRestrictions = [(MCRestrictionManagerWriter *)self memberQueueRestrictions];
   v5 = MCRestrictionsFilePath();
-  [v4 MCWriteToBinaryFile:v5];
+  [memberQueueRestrictions MCWriteToBinaryFile:v5];
 
-  v6 = [(MCRestrictionManagerWriter *)self memberQueueSettingsEvents];
+  memberQueueSettingsEvents = [(MCRestrictionManagerWriter *)self memberQueueSettingsEvents];
   v7 = MCSettingsEventsFilePath();
-  [v6 MCWriteToBinaryFile:v7];
+  [memberQueueSettingsEvents MCWriteToBinaryFile:v7];
 }
 
-- (BOOL)setSystemProfileRestrictions:(id)a3 userProfileRestrictions:(id)a4 sender:(id)a5 outRestrictionsChanged:(BOOL *)a6 outEffectiveSettingsChanged:(BOOL *)a7 outAppWhitelistSettingsChanged:(BOOL *)a8 outRecomputedNag:(BOOL *)a9 outError:(id *)a10
+- (BOOL)setSystemProfileRestrictions:(id)restrictions userProfileRestrictions:(id)profileRestrictions sender:(id)sender outRestrictionsChanged:(BOOL *)changed outEffectiveSettingsChanged:(BOOL *)settingsChanged outAppWhitelistSettingsChanged:(BOOL *)whitelistSettingsChanged outRecomputedNag:(BOOL *)nag outError:(id *)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
+  restrictionsCopy = restrictions;
+  profileRestrictionsCopy = profileRestrictions;
+  senderCopy = sender;
   v45 = 0;
   v46 = &v45;
   v47 = 0x2020000000;
@@ -147,35 +147,35 @@
   v42 = sub_10007937C;
   v43 = sub_10007938C;
   v44 = 0;
-  v19 = [(MCRestrictionManagerWriter *)self memberQueue];
+  memberQueue = [(MCRestrictionManagerWriter *)self memberQueue];
   v26 = _NSConcreteStackBlock;
   v27 = 3221225472;
   v28 = sub_100079394;
   v29 = &unk_10011CB80;
-  v30 = self;
-  v20 = v16;
+  selfCopy = self;
+  v20 = restrictionsCopy;
   v31 = v20;
-  v21 = v17;
+  v21 = profileRestrictionsCopy;
   v32 = v21;
-  v22 = v18;
-  v37 = a6;
-  v38 = a7;
+  v22 = senderCopy;
+  changedCopy = changed;
+  settingsChangedCopy = settingsChanged;
   v33 = v22;
   v34 = &v45;
   v35 = &v39;
-  v36 = a8;
-  dispatch_sync(v19, &v26);
+  whitelistSettingsChangedCopy = whitelistSettingsChanged;
+  dispatch_sync(memberQueue, &v26);
 
   v23 = [(MCRestrictionManagerWriter *)self recomputeNagMetadata:v26];
-  if (a9)
+  if (nag)
   {
-    *a9 = v23;
+    *nag = v23;
   }
 
   v24 = *(v46 + 24);
-  if (a10 && (v46[3] & 1) == 0)
+  if (error && (v46[3] & 1) == 0)
   {
-    *a10 = v40[5];
+    *error = v40[5];
     v24 = *(v46 + 24);
   }
 
@@ -194,94 +194,94 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Committing client restrictions.", v10, 2u);
   }
 
-  v4 = [(MCRestrictionManagerWriter *)self memberQueueSystemClientRestrictions];
+  memberQueueSystemClientRestrictions = [(MCRestrictionManagerWriter *)self memberQueueSystemClientRestrictions];
   v5 = MCSystemClientRestrictionsFilePath();
-  [v4 MCWriteToBinaryFile:v5];
+  [memberQueueSystemClientRestrictions MCWriteToBinaryFile:v5];
 
-  v6 = [(MCRestrictionManagerWriter *)self memberQueueUserClientRestrictions];
+  memberQueueUserClientRestrictions = [(MCRestrictionManagerWriter *)self memberQueueUserClientRestrictions];
   v7 = MCUserClientRestrictionsFilePath();
-  [v6 MCWriteToBinaryFile:v7];
+  [memberQueueUserClientRestrictions MCWriteToBinaryFile:v7];
 
-  v8 = [(MCRestrictionManagerWriter *)self memberQueueSettingsEvents];
+  memberQueueSettingsEvents = [(MCRestrictionManagerWriter *)self memberQueueSettingsEvents];
   v9 = MCSettingsEventsFilePath();
-  [v8 MCWriteToBinaryFile:v9];
+  [memberQueueSettingsEvents MCWriteToBinaryFile:v9];
 }
 
-- (void)setUserInfo:(id)a3 forClientUUID:(id)a4 sender:(id)a5
+- (void)setUserInfo:(id)info forClientUUID:(id)d sender:(id)sender
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  infoCopy = info;
+  dCopy = d;
+  senderCopy = sender;
   v11 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543618;
-    v18 = v8;
+    v18 = infoCopy;
     v19 = 2114;
-    v20 = v9;
+    v20 = dCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Setting user info %{public}@ for client uuid %{public}@", buf, 0x16u);
   }
 
-  if (v9)
+  if (dCopy)
   {
-    v12 = [(MCRestrictionManagerWriter *)self memberQueue];
+    memberQueue = [(MCRestrictionManagerWriter *)self memberQueue];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100079B60;
     v13[3] = &unk_10011CBA8;
     v13[4] = self;
-    v14 = v9;
-    v15 = v8;
-    v16 = v10;
-    dispatch_sync(v12, v13);
+    v14 = dCopy;
+    v15 = infoCopy;
+    v16 = senderCopy;
+    dispatch_sync(memberQueue, v13);
   }
 }
 
-- (BOOL)memberQueueSetAllClientRestrictions:(id)a3 sender:(id)a4 outRestrictionsChanged:(BOOL *)a5 outEffectiveSettingsChanged:(BOOL *)a6 outError:(id *)a7
+- (BOOL)memberQueueSetAllClientRestrictions:(id)restrictions sender:(id)sender outRestrictionsChanged:(BOOL *)changed outEffectiveSettingsChanged:(BOOL *)settingsChanged outError:(id *)error
 {
-  v12 = a4;
-  v13 = a3;
-  v14 = [(MCRestrictionManagerWriter *)self memberQueueUserClientRestrictions];
-  LOBYTE(a7) = [(MCRestrictionManagerWriter *)self memberQueueSetSystemClientRestrictions:v13 userClientRestrictions:v14 sender:v12 outRestrictionsChanged:a5 outEffectiveSettingsChanged:a6 outError:a7];
+  senderCopy = sender;
+  restrictionsCopy = restrictions;
+  memberQueueUserClientRestrictions = [(MCRestrictionManagerWriter *)self memberQueueUserClientRestrictions];
+  LOBYTE(error) = [(MCRestrictionManagerWriter *)self memberQueueSetSystemClientRestrictions:restrictionsCopy userClientRestrictions:memberQueueUserClientRestrictions sender:senderCopy outRestrictionsChanged:changed outEffectiveSettingsChanged:settingsChanged outError:error];
 
-  return a7;
+  return error;
 }
 
-- (BOOL)memberQueueSetSystemClientRestrictions:(id)a3 userClientRestrictions:(id)a4 sender:(id)a5 outRestrictionsChanged:(BOOL *)a6 outEffectiveSettingsChanged:(BOOL *)a7 outError:(id *)a8
+- (BOOL)memberQueueSetSystemClientRestrictions:(id)restrictions userClientRestrictions:(id)clientRestrictions sender:(id)sender outRestrictionsChanged:(BOOL *)changed outEffectiveSettingsChanged:(BOOL *)settingsChanged outError:(id *)error
 {
-  v12 = a3;
-  v39 = a4;
-  v37 = a5;
+  restrictionsCopy = restrictions;
+  clientRestrictionsCopy = clientRestrictions;
+  senderCopy = sender;
   v40 = 0;
-  v13 = [(MCRestrictionManagerWriter *)self memberQueueRestrictions];
-  v14 = [v13 copy];
+  memberQueueRestrictions = [(MCRestrictionManagerWriter *)self memberQueueRestrictions];
+  v14 = [memberQueueRestrictions copy];
 
-  v15 = [(MCRestrictionManagerWriter *)self memberQueueSystemClientRestrictions];
-  v38 = [v15 copy];
+  memberQueueSystemClientRestrictions = [(MCRestrictionManagerWriter *)self memberQueueSystemClientRestrictions];
+  v38 = [memberQueueSystemClientRestrictions copy];
 
-  v16 = [(MCRestrictionManagerWriter *)self memberQueueRestrictions];
-  v17 = [(MCRestrictionManagerWriter *)self defaultRestrictions];
-  v18 = [(MCRestrictionManagerWriter *)self memberQueueSystemProfileRestrictions];
-  v19 = [(MCRestrictionManagerWriter *)self memberQueueUserProfileRestrictions];
-  v20 = [MCRestrictionManagerWriter restrictionsWithCurrentRestrictions:v16 defaultRestrictions:v17 systemProfileRestrictions:v18 userProfileRestrictions:v19 systemClientRestrictions:v12 userClientRestrictions:v39 outRestrictionsChanged:&v40 outError:a8];
+  memberQueueRestrictions2 = [(MCRestrictionManagerWriter *)self memberQueueRestrictions];
+  defaultRestrictions = [(MCRestrictionManagerWriter *)self defaultRestrictions];
+  memberQueueSystemProfileRestrictions = [(MCRestrictionManagerWriter *)self memberQueueSystemProfileRestrictions];
+  memberQueueUserProfileRestrictions = [(MCRestrictionManagerWriter *)self memberQueueUserProfileRestrictions];
+  v20 = [MCRestrictionManagerWriter restrictionsWithCurrentRestrictions:memberQueueRestrictions2 defaultRestrictions:defaultRestrictions systemProfileRestrictions:memberQueueSystemProfileRestrictions userProfileRestrictions:memberQueueUserProfileRestrictions systemClientRestrictions:restrictionsCopy userClientRestrictions:clientRestrictionsCopy outRestrictionsChanged:&v40 outError:error];
 
-  v21 = v37;
-  v22 = v12;
+  v21 = senderCopy;
+  v22 = restrictionsCopy;
 
   if (v20)
   {
-    v23 = [(MCRestrictionManagerWriter *)self applyConfiguration:v12 toDomain:8 inNamespace:0 fromSender:v37];
-    v24 = [(MCRestrictionManagerWriter *)self applyConfiguration:v39 toDomain:9 inNamespace:0 fromSender:v37];
-    [(MCRestrictionManagerWriter *)self applyConfiguration:v20 toDomain:5 inNamespace:0 fromSender:v37];
+    v23 = [(MCRestrictionManagerWriter *)self applyConfiguration:restrictionsCopy toDomain:8 inNamespace:0 fromSender:senderCopy];
+    v24 = [(MCRestrictionManagerWriter *)self applyConfiguration:clientRestrictionsCopy toDomain:9 inNamespace:0 fromSender:senderCopy];
+    [(MCRestrictionManagerWriter *)self applyConfiguration:v20 toDomain:5 inNamespace:0 fromSender:senderCopy];
     [(MCRestrictionManagerWriter *)self memberQueueCommitClientRestrictionsToDisk];
     [(MCRestrictionManagerWriter *)self memberQueueCommitRestrictionsToDisk];
-    v25 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
-    v26 = [v25 MCDeepCopy];
+    memberQueueEffectiveUserSettings = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
+    mCDeepCopy = [memberQueueEffectiveUserSettings MCDeepCopy];
 
     v34 = [(MCRestrictionManagerWriter *)self memberQueueRecomputeEffectiveUserSettingsWithCredentialSet:0];
     v27 = +[MCHacks sharedHacks];
-    v28 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
-    [v27 _applyServerSideChangesWithOldRestrictions:v14 newRestrictions:v20 oldEffectiveUserSettings:v26 newEffectiveUserSettings:v28];
+    memberQueueEffectiveUserSettings2 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
+    [v27 _applyServerSideChangesWithOldRestrictions:v14 newRestrictions:v20 oldEffectiveUserSettings:mCDeepCopy newEffectiveUserSettings:memberQueueEffectiveUserSettings2];
 
     if ((v23 & 1) != 0 || v24)
     {
@@ -289,7 +289,7 @@
       MCSendClientTruthChangedNotification();
     }
 
-    v21 = v37;
+    v21 = senderCopy;
     if (v40)
     {
       MCSendRestrictionChangedNotification();
@@ -311,24 +311,24 @@
       }
     }
 
-    if (a6)
+    if (changed)
     {
-      *a6 = v40;
+      *changed = v40;
     }
 
-    if (a7)
+    if (settingsChanged)
     {
-      *a7 = v34;
+      *settingsChanged = v34;
     }
   }
 
   return v20 != 0;
 }
 
-- (BOOL)setAllClientRestrictions:(id)a3 sender:(id)a4 outRestrictionsChanged:(BOOL *)a5 outEffectiveSettingsChanged:(BOOL *)a6 outRecomputedNag:(BOOL *)a7 outError:(id *)a8
+- (BOOL)setAllClientRestrictions:(id)restrictions sender:(id)sender outRestrictionsChanged:(BOOL *)changed outEffectiveSettingsChanged:(BOOL *)settingsChanged outRecomputedNag:(BOOL *)nag outError:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
+  restrictionsCopy = restrictions;
+  senderCopy = sender;
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
@@ -339,32 +339,32 @@
   v36 = sub_10007937C;
   v37 = sub_10007938C;
   v38 = 0;
-  v16 = [(MCRestrictionManagerWriter *)self memberQueue];
+  memberQueue = [(MCRestrictionManagerWriter *)self memberQueue];
   v22 = _NSConcreteStackBlock;
   v23 = 3221225472;
   v24 = sub_10007A268;
   v25 = &unk_10011CBD0;
   v29 = &v39;
-  v26 = self;
-  v17 = v14;
+  selfCopy = self;
+  v17 = restrictionsCopy;
   v27 = v17;
-  v18 = v15;
-  v31 = a5;
-  v32 = a6;
+  v18 = senderCopy;
+  changedCopy = changed;
+  settingsChangedCopy = settingsChanged;
   v28 = v18;
   v30 = &v33;
-  dispatch_sync(v16, &v22);
+  dispatch_sync(memberQueue, &v22);
 
   v19 = [(MCRestrictionManagerWriter *)self recomputeNagMetadata:v22];
-  if (a7)
+  if (nag)
   {
-    *a7 = v19;
+    *nag = v19;
   }
 
   v20 = *(v40 + 24);
-  if (a8 && (v40[3] & 1) == 0)
+  if (error && (v40[3] & 1) == 0)
   {
-    *a8 = v34[5];
+    *error = v34[5];
     v20 = *(v40 + 24);
   }
 
@@ -374,23 +374,23 @@
   return v20 & 1;
 }
 
-- (BOOL)setClientRestrictions:(id)a3 overrideRestrictions:(BOOL)a4 appsAndOptions:(id)a5 system:(BOOL)a6 clientType:(id)a7 clientUUID:(id)a8 sender:(id)a9 localizedClientDescription:(id)a10 localizedWarning:(id)a11 shouldRecomputeNag:(BOOL)a12 outRestrictionsChanged:(BOOL *)a13 outEffectiveSettingsChanged:(BOOL *)a14 outRecomputedNag:(BOOL *)a15 outError:(id *)a16
+- (BOOL)setClientRestrictions:(id)restrictions overrideRestrictions:(BOOL)overrideRestrictions appsAndOptions:(id)options system:(BOOL)system clientType:(id)type clientUUID:(id)d sender:(id)sender localizedClientDescription:(id)self0 localizedWarning:(id)self1 shouldRecomputeNag:(BOOL)self2 outRestrictionsChanged:(BOOL *)self3 outEffectiveSettingsChanged:(BOOL *)self4 outRecomputedNag:(BOOL *)self5 outError:(id *)self6
 {
-  v21 = a3;
-  v35 = a5;
-  v36 = a7;
-  v22 = a8;
-  v23 = v21;
-  v24 = a9;
-  v25 = a10;
-  v26 = a11;
+  restrictionsCopy = restrictions;
+  optionsCopy = options;
+  typeCopy = type;
+  dCopy = d;
+  v23 = restrictionsCopy;
+  senderCopy = sender;
+  descriptionCopy = description;
+  warningCopy = warning;
   v27 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     *&buf[4] = v23;
     *&buf[12] = 2114;
-    *&buf[14] = v22;
+    *&buf[14] = dCopy;
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Setting client truth %{public}@ for client %{public}@", buf, 0x16u);
   }
 
@@ -404,38 +404,38 @@
   v57 = sub_10007937C;
   v58 = sub_10007938C;
   v59 = 0;
-  if (v22)
+  if (dCopy)
   {
-    v28 = [(MCRestrictionManagerWriter *)self memberQueue];
+    memberQueue = [(MCRestrictionManagerWriter *)self memberQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10007A688;
     block[3] = &unk_10011CBF8;
-    v50 = a4;
-    v38 = v36;
-    v39 = self;
-    v40 = v22;
+    overrideRestrictionsCopy = overrideRestrictions;
+    v38 = typeCopy;
+    selfCopy = self;
+    v40 = dCopy;
     v41 = v23;
-    v42 = v25;
+    v42 = descriptionCopy;
     v46 = &v52;
-    v51 = a6;
-    v43 = v26;
-    v44 = v35;
-    v48 = a13;
-    v49 = a14;
-    v45 = v24;
+    systemCopy = system;
+    v43 = warningCopy;
+    v44 = optionsCopy;
+    changedCopy = changed;
+    settingsChangedCopy = settingsChanged;
+    v45 = senderCopy;
     v47 = buf;
-    v29 = v24;
+    v29 = senderCopy;
     v30 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, block);
-    dispatch_sync(v28, v30);
+    dispatch_sync(memberQueue, v30);
 
-    v24 = v29;
-    if (a12)
+    senderCopy = v29;
+    if (nag)
     {
-      v31 = [(MCRestrictionManagerWriter *)self recomputeNagMetadata];
-      if (a15)
+      recomputeNagMetadata = [(MCRestrictionManagerWriter *)self recomputeNagMetadata];
+      if (recomputedNag)
       {
-        *a15 = v31;
+        *recomputedNag = recomputeNagMetadata;
       }
     }
 
@@ -447,9 +447,9 @@
     v32 = 0;
   }
 
-  if (a16 && !v32)
+  if (error && !v32)
   {
-    *a16 = *(*&buf[8] + 40);
+    *error = *(*&buf[8] + 40);
     v32 = *(v53 + 24);
   }
 
@@ -478,8 +478,8 @@
     sub_1000C2CC4();
   }
 
-  v2 = [qword_100136BD8 allKeys];
-  v3 = [NSMutableSet setWithArray:v2];
+  allKeys = [qword_100136BD8 allKeys];
+  v3 = [NSMutableSet setWithArray:allKeys];
   v4 = v3;
   if (qword_100136BE0)
   {
@@ -491,19 +491,19 @@
   return v5;
 }
 
-- (id)_liveClientUUIDsForClientType:(id)a3 outLoaderMissing:(BOOL *)a4
+- (id)_liveClientUUIDsForClientType:(id)type outLoaderMissing:(BOOL *)missing
 {
-  v5 = a3;
+  typeCopy = type;
   if (qword_100136C08 != -1)
   {
     sub_1000C2CC4();
   }
 
-  Value = CFDictionaryGetValue(qword_100136BE8, v5);
-  v7 = CFDictionaryGetValue(qword_100136BF0, v5);
+  Value = CFDictionaryGetValue(qword_100136BE8, typeCopy);
+  v7 = CFDictionaryGetValue(qword_100136BF0, typeCopy);
   if (Value)
   {
-    v8 = ([Value methodForSelector:v7])(Value, v7, v5);
+    v8 = ([Value methodForSelector:v7])(Value, v7, typeCopy);
     v9 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEBUG))
     {
@@ -511,10 +511,10 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Called plugin to get UUIDs", &v12, 2u);
     }
 
-    if (a4)
+    if (missing)
     {
 LABEL_7:
-      *a4 = Value == 0;
+      *missing = Value == 0;
     }
   }
 
@@ -524,12 +524,12 @@ LABEL_7:
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       v12 = 138543362;
-      v13 = v5;
+      v13 = typeCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "No loader was found for client type %{public}@", &v12, 0xCu);
     }
 
     v8 = 0;
-    if (a4)
+    if (missing)
     {
       goto LABEL_7;
     }
@@ -596,9 +596,9 @@ LABEL_7:
   }
 }
 
-- (id)orphanedClientUUIDsForClientRestrictionDictionary:(id)a3
+- (id)orphanedClientUUIDsForClientRestrictionDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   if (qword_100136C08 != -1)
   {
     sub_1000C2CC4();
@@ -609,7 +609,7 @@ LABEL_7:
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v5 = v3;
+  v5 = dictionaryCopy;
   v6 = [v5 countByEnumeratingWithState:&v50 objects:v58 count:16];
   if (v6)
   {
@@ -674,8 +674,8 @@ LABEL_7:
         if ([qword_100136BE0 containsObject:{v22, v39}])
         {
           v23 = [v16 objectForKey:v22];
-          v24 = [v23 allObjects];
-          [v15 addObjectsFromArray:v24];
+          allObjects = [v23 allObjects];
+          [v15 addObjectsFromArray:allObjects];
 
           continue;
         }
@@ -698,8 +698,8 @@ LABEL_7:
 
         if (v25)
         {
-          v28 = [v25 allObjects];
-          [v15 addObjectsFromArray:v28];
+          allObjects2 = [v25 allObjects];
+          [v15 addObjectsFromArray:allObjects2];
 LABEL_30:
 
           goto LABEL_31;
@@ -715,9 +715,9 @@ LABEL_30:
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Loader for client type %@ didn't return an answer. Preserving its client restrictions.", buf, 0xCu);
           }
 
-          v28 = [v16 objectForKey:v22];
-          v30 = [v28 allObjects];
-          [v15 addObjectsFromArray:v30];
+          allObjects2 = [v16 objectForKey:v22];
+          v28AllObjects = [allObjects2 allObjects];
+          [v15 addObjectsFromArray:v28AllObjects];
 
           goto LABEL_30;
         }
@@ -776,22 +776,22 @@ LABEL_31:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Removing orphaned client restrictions...", buf, 2u);
   }
 
-  v4 = [(MCRestrictionManagerWriter *)self memberQueue];
+  memberQueue = [(MCRestrictionManagerWriter *)self memberQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007B53C;
   block[3] = &unk_10011B688;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(memberQueue, block);
 
   return [(MCRestrictionManagerWriter *)self recomputeNagMetadata];
 }
 
-- (BOOL)recomputeNagMetadata:(BOOL *)a3
+- (BOOL)recomputeNagMetadata:(BOOL *)metadata
 {
   v5 = +[MCPasscodeManagerWriter sharedManager];
-  v6 = [v5 isDeviceLocked];
-  if (v6)
+  isDeviceLocked = [v5 isDeviceLocked];
+  if (isDeviceLocked)
   {
     v7 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
@@ -803,24 +803,24 @@ LABEL_31:
 
   else
   {
-    v8 = [(MCRestrictionManagerWriter *)self memberQueue];
+    memberQueue = [(MCRestrictionManagerWriter *)self memberQueue];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10007BB30;
     v10[3] = &unk_10011BD90;
     v10[4] = self;
-    v10[5] = a3;
-    dispatch_sync(v8, v10);
+    v10[5] = metadata;
+    dispatch_sync(memberQueue, v10);
   }
 
-  return v6 ^ 1;
+  return isDeviceLocked ^ 1;
 }
 
 - (BOOL)memberQueueCheckPasscodeCompliesWithCurrentRestrictions
 {
-  v3 = [(MCRestrictionManagerWriter *)self memberQueuePasscodeCompliesWithRestrictions];
+  memberQueuePasscodeCompliesWithRestrictions = [(MCRestrictionManagerWriter *)self memberQueuePasscodeCompliesWithRestrictions];
 
-  if (v3)
+  if (memberQueuePasscodeCompliesWithRestrictions)
   {
     v4 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
@@ -829,11 +829,11 @@ LABEL_31:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Using cached passcode compliance with restrictions", buf, 2u);
     }
 
-    v5 = [(MCRestrictionManagerWriter *)self memberQueuePasscodeCompliesWithRestrictions];
-    v6 = [v5 BOOLValue];
+    memberQueuePasscodeCompliesWithRestrictions2 = [(MCRestrictionManagerWriter *)self memberQueuePasscodeCompliesWithRestrictions];
+    bOOLValue = [memberQueuePasscodeCompliesWithRestrictions2 BOOLValue];
 
     v7 = 0;
-    if (v6)
+    if (bOOLValue)
     {
 LABEL_5:
       v8 = 1;
@@ -844,9 +844,9 @@ LABEL_5:
   else
   {
     v9 = +[MCPasscodeManagerWriter sharedManager];
-    v10 = [(MCRestrictionManagerWriter *)self memberQueueRestrictions];
+    memberQueueRestrictions = [(MCRestrictionManagerWriter *)self memberQueueRestrictions];
     v16 = 0;
-    v11 = [v9 currentPasscodeCompliesWithPolicyFromRestrictions:v10 outError:&v16];
+    v11 = [v9 currentPasscodeCompliesWithPolicyFromRestrictions:memberQueueRestrictions outError:&v16];
     v7 = v16;
 
     v12 = _MCLogObjects[0];
@@ -881,9 +881,9 @@ LABEL_12:
 
 - (BOOL)memberQueueCheckPasscodeCompliesWithProfileRestrictions
 {
-  v3 = [(MCRestrictionManagerWriter *)self memberQueuePasscodeCompliesWithProfileRestrictions];
+  memberQueuePasscodeCompliesWithProfileRestrictions = [(MCRestrictionManagerWriter *)self memberQueuePasscodeCompliesWithProfileRestrictions];
 
-  if (v3)
+  if (memberQueuePasscodeCompliesWithProfileRestrictions)
   {
     v4 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
@@ -892,11 +892,11 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Using cached passcode compliance with profile restrictions", buf, 2u);
     }
 
-    v5 = [(MCRestrictionManagerWriter *)self memberQueuePasscodeCompliesWithProfileRestrictions];
-    v6 = [v5 BOOLValue];
+    memberQueuePasscodeCompliesWithProfileRestrictions2 = [(MCRestrictionManagerWriter *)self memberQueuePasscodeCompliesWithProfileRestrictions];
+    bOOLValue = [memberQueuePasscodeCompliesWithProfileRestrictions2 BOOLValue];
 
     v7 = 0;
-    if (v6)
+    if (bOOLValue)
     {
 LABEL_5:
       v8 = 1;
@@ -907,9 +907,9 @@ LABEL_5:
   else
   {
     v9 = +[MCPasscodeManagerWriter sharedManager];
-    v10 = [(MCRestrictionManagerWriter *)self memberQueueCombinedSystemProfileRestrictions];
+    memberQueueCombinedSystemProfileRestrictions = [(MCRestrictionManagerWriter *)self memberQueueCombinedSystemProfileRestrictions];
     v16 = 0;
-    v11 = [v9 currentPasscodeCompliesWithPolicyFromRestrictions:v10 outError:&v16];
+    v11 = [v9 currentPasscodeCompliesWithPolicyFromRestrictions:memberQueueCombinedSystemProfileRestrictions outError:&v16];
     v7 = v16;
 
     v12 = _MCLogObjects[0];
@@ -942,16 +942,16 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)memberQueueIsPasscodeComplianceMandatoryWithOutLocalizedWarning:(id *)a3
+- (BOOL)memberQueueIsPasscodeComplianceMandatoryWithOutLocalizedWarning:(id *)warning
 {
   if (![(MCRestrictionManagerWriter *)self memberQueueCheckPasscodeCompliesWithProfileRestrictions])
   {
     return 1;
   }
 
-  v31 = a3;
+  warningCopy = warning;
   v36 = +[NSMutableArray array];
-  v33 = self;
+  selfCopy = self;
   [(MCRestrictionManagerWriter *)self memberQueueSystemClientRestrictions];
   v37 = 0u;
   v38 = 0u;
@@ -1000,8 +1000,8 @@ LABEL_12:
             _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Client restriction passcode compliance for client of type “%{public}@” was not cached when it should be. Recalculating.", buf, 0xCu);
           }
 
-          v18 = [(MCRestrictionManagerWriter *)v33 memberQueueRecomputePasscodeComplianceForClientUUID];
-          [v18 addObject:v12];
+          memberQueueRecomputePasscodeComplianceForClientUUID = [(MCRestrictionManagerWriter *)selfCopy memberQueueRecomputePasscodeComplianceForClientUUID];
+          [memberQueueRecomputePasscodeComplianceForClientUUID addObject:v12];
 
           v19 = [v13 objectForKey:v32];
           if (v19)
@@ -1077,11 +1077,11 @@ LABEL_12:
     v26 = MCLocalizedStringByDevice();
   }
 
-  if (v31)
+  if (warningCopy)
   {
     v28 = v26;
     v27 = 0;
-    *v31 = v26;
+    *warningCopy = v26;
   }
 
   else
@@ -1094,10 +1094,10 @@ LABEL_35:
   return v27;
 }
 
-- (void)memberQueueMarkToClearPasscodeComplianceCacheWithOldSystemClientRestrictions:(id)a3 newSystemClientRestrictions:(id)a4
+- (void)memberQueueMarkToClearPasscodeComplianceCacheWithOldSystemClientRestrictions:(id)restrictions newSystemClientRestrictions:(id)clientRestrictions
 {
-  v6 = a3;
-  v7 = a4;
+  restrictionsCopy = restrictions;
+  clientRestrictionsCopy = clientRestrictions;
   v8 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
   {
@@ -1105,16 +1105,16 @@ LABEL_35:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Checking if we need to clear client restriction passcode compliance caches", buf, 2u);
   }
 
-  v9 = [(MCRestrictionManagerWriter *)self memberQueueRecomputePasscodeComplianceForClientUUID];
+  memberQueueRecomputePasscodeComplianceForClientUUID = [(MCRestrictionManagerWriter *)self memberQueueRecomputePasscodeComplianceForClientUUID];
 
-  if (v9)
+  if (memberQueueRecomputePasscodeComplianceForClientUUID)
   {
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v32 = v7;
-    v10 = v7;
+    v32 = clientRestrictionsCopy;
+    v10 = clientRestrictionsCopy;
     v11 = [v10 countByEnumeratingWithState:&v40 objects:v46 count:16];
     if (v11)
     {
@@ -1123,8 +1123,8 @@ LABEL_35:
       v37 = kMCClientRestrictionsType;
       v34 = kMCClientRestrictionsCompliant;
       v35 = kMCClientRestrictionsTruth;
-      v36 = self;
-      v33 = v6;
+      selfCopy = self;
+      v33 = restrictionsCopy;
       v38 = *v41;
       do
       {
@@ -1138,8 +1138,8 @@ LABEL_35:
           }
 
           v15 = *(*(&v40 + 1) + 8 * v14);
-          v16 = [(MCRestrictionManagerWriter *)self memberQueueRecomputePasscodeComplianceForClientUUID];
-          v17 = [v16 containsObject:v15];
+          memberQueueRecomputePasscodeComplianceForClientUUID2 = [(MCRestrictionManagerWriter *)self memberQueueRecomputePasscodeComplianceForClientUUID];
+          v17 = [memberQueueRecomputePasscodeComplianceForClientUUID2 containsObject:v15];
 
           if ((v17 & 1) == 0)
           {
@@ -1156,18 +1156,18 @@ LABEL_35:
               v21 = @"Unknown";
             }
 
-            v22 = [v6 objectForKey:v15];
+            v22 = [restrictionsCopy objectForKey:v15];
             v23 = v22;
             if (v22)
             {
-              v24 = [v22 objectForKeyedSubscript:v34];
-              if (v24)
+              memberQueueRecomputePasscodeComplianceForClientUUID5 = [v22 objectForKeyedSubscript:v34];
+              if (memberQueueRecomputePasscodeComplianceForClientUUID5)
               {
-                v25 = [v19 objectForKey:v35];
-                if (v25 || ![v24 BOOLValue])
+                memberQueueRecomputePasscodeComplianceForClientUUID4 = [v19 objectForKey:v35];
+                if (memberQueueRecomputePasscodeComplianceForClientUUID4 || ![memberQueueRecomputePasscodeComplianceForClientUUID5 BOOLValue])
                 {
                   v28 = [v23 objectForKey:v35];
-                  if ([MCPasscodeManagerWriter didPasscodePolicyChangeWithOldRestrictions:v28 newRestrictions:v25])
+                  if ([MCPasscodeManagerWriter didPasscodePolicyChangeWithOldRestrictions:v28 newRestrictions:memberQueueRecomputePasscodeComplianceForClientUUID4])
                   {
                     v29 = _MCLogObjects[0];
                     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
@@ -1177,10 +1177,10 @@ LABEL_35:
                       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Passcode policy changed for client of type “%{public}@”. Clearing passcode compliance cache.", buf, 0xCu);
                     }
 
-                    v30 = [(MCRestrictionManagerWriter *)v36 memberQueueRecomputePasscodeComplianceForClientUUID];
-                    [v30 addObject:v15];
+                    memberQueueRecomputePasscodeComplianceForClientUUID3 = [(MCRestrictionManagerWriter *)selfCopy memberQueueRecomputePasscodeComplianceForClientUUID];
+                    [memberQueueRecomputePasscodeComplianceForClientUUID3 addObject:v15];
 
-                    v6 = v33;
+                    restrictionsCopy = v33;
                   }
                 }
 
@@ -1206,11 +1206,11 @@ LABEL_35:
                   _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Client of type “%{public}@” has no previous cached compliance; marking it to recalculate compliance.", buf, 0xCu);
                 }
 
-                v25 = [(MCRestrictionManagerWriter *)self memberQueueRecomputePasscodeComplianceForClientUUID];
-                [v25 addObject:v15];
+                memberQueueRecomputePasscodeComplianceForClientUUID4 = [(MCRestrictionManagerWriter *)self memberQueueRecomputePasscodeComplianceForClientUUID];
+                [memberQueueRecomputePasscodeComplianceForClientUUID4 addObject:v15];
               }
 
-              self = v36;
+              self = selfCopy;
             }
 
             else
@@ -1223,8 +1223,8 @@ LABEL_35:
                 _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Client of type “%{public}@” is a new client; marking it to calculate compliance.", buf, 0xCu);
               }
 
-              v24 = [(MCRestrictionManagerWriter *)self memberQueueRecomputePasscodeComplianceForClientUUID];
-              [v24 addObject:v15];
+              memberQueueRecomputePasscodeComplianceForClientUUID5 = [(MCRestrictionManagerWriter *)self memberQueueRecomputePasscodeComplianceForClientUUID];
+              [memberQueueRecomputePasscodeComplianceForClientUUID5 addObject:v15];
             }
 
             v10 = v18;
@@ -1242,20 +1242,20 @@ LABEL_35:
       while (v12);
     }
 
-    v7 = v32;
+    clientRestrictionsCopy = v32;
   }
 }
 
 - (void)memberQueueCacheClientRestrictionPasscodeCompliance
 {
   v35 = +[MCPasscodeManagerWriter sharedManager];
-  v3 = [(MCRestrictionManagerWriter *)self memberQueueSystemClientRestrictions];
-  v38 = [v3 MCMutableDeepCopy];
+  memberQueueSystemClientRestrictions = [(MCRestrictionManagerWriter *)self memberQueueSystemClientRestrictions];
+  mCMutableDeepCopy = [memberQueueSystemClientRestrictions MCMutableDeepCopy];
 
-  v4 = [(MCRestrictionManagerWriter *)self memberQueueRecomputePasscodeComplianceForClientUUID];
+  memberQueueRecomputePasscodeComplianceForClientUUID = [(MCRestrictionManagerWriter *)self memberQueueRecomputePasscodeComplianceForClientUUID];
 
-  v33 = self;
-  if (!v4)
+  selfCopy = self;
+  if (!memberQueueRecomputePasscodeComplianceForClientUUID)
   {
     v9 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
@@ -1264,21 +1264,21 @@ LABEL_35:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Recomputing passcode compliance for all client restrictions", buf, 2u);
     }
 
-    v6 = [v38 allKeys];
+    allKeys = [mCMutableDeepCopy allKeys];
     v8 = objc_opt_new();
     [(MCRestrictionManagerWriter *)self setMemberQueueRecomputePasscodeComplianceForClientUUID:v8];
     goto LABEL_7;
   }
 
-  v5 = [(MCRestrictionManagerWriter *)self memberQueueRecomputePasscodeComplianceForClientUUID];
-  v6 = [v5 allObjects];
+  memberQueueRecomputePasscodeComplianceForClientUUID2 = [(MCRestrictionManagerWriter *)self memberQueueRecomputePasscodeComplianceForClientUUID];
+  allKeys = [memberQueueRecomputePasscodeComplianceForClientUUID2 allObjects];
 
   v7 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
     *buf = 134217984;
-    v45 = [v6 count];
+    v45 = [allKeys count];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Recomputing passcode compliance for %lu clients", buf, 0xCu);
 LABEL_7:
   }
@@ -1287,7 +1287,7 @@ LABEL_7:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v6;
+  obj = allKeys;
   v10 = [obj countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (!v10)
   {
@@ -1309,7 +1309,7 @@ LABEL_7:
         objc_enumerationMutation(obj);
       }
 
-      v16 = [v38 objectForKey:{*(*(&v39 + 1) + 8 * i), v33}];
+      v16 = [mCMutableDeepCopy objectForKey:{*(*(&v39 + 1) + 8 * i), selfCopy}];
       v17 = v16;
       if (v16)
       {
@@ -1383,20 +1383,20 @@ LABEL_24:
   while (v11);
 LABEL_31:
 
-  v29 = v33;
-  if ([(MCRestrictionManagerWriter *)v33 applyConfiguration:v38 toDomain:8 inNamespace:0 fromSender:@"MCRestrictionManagerWriter.memberQueueCacheClientRestrictionPasscodeCompliance"])
+  v29 = selfCopy;
+  if ([(MCRestrictionManagerWriter *)selfCopy applyConfiguration:mCMutableDeepCopy toDomain:8 inNamespace:0 fromSender:@"MCRestrictionManagerWriter.memberQueueCacheClientRestrictionPasscodeCompliance"])
   {
-    [(MCRestrictionManagerWriter *)v33 memberQueueCommitClientRestrictionsToDisk];
+    [(MCRestrictionManagerWriter *)selfCopy memberQueueCommitClientRestrictionsToDisk];
     MCSendClientTruthChangedNotification();
   }
 
-  v30 = [(MCRestrictionManagerWriter *)v33 memberQueueRecomputePasscodeComplianceForClientUUID];
-  v31 = [v30 count];
+  memberQueueRecomputePasscodeComplianceForClientUUID3 = [(MCRestrictionManagerWriter *)selfCopy memberQueueRecomputePasscodeComplianceForClientUUID];
+  v31 = [memberQueueRecomputePasscodeComplianceForClientUUID3 count];
 
   if (v31)
   {
-    v32 = [(MCRestrictionManagerWriter *)v29 memberQueueRecomputePasscodeComplianceForClientUUID];
-    [v32 removeAllObjects];
+    memberQueueRecomputePasscodeComplianceForClientUUID4 = [(MCRestrictionManagerWriter *)v29 memberQueueRecomputePasscodeComplianceForClientUUID];
+    [memberQueueRecomputePasscodeComplianceForClientUUID4 removeAllObjects];
   }
 }
 
@@ -1440,19 +1440,19 @@ LABEL_31:
 
 - (void)clearAllPasscodeComplianceCaches
 {
-  v3 = [(MCRestrictionManagerWriter *)self memberQueue];
+  memberQueue = [(MCRestrictionManagerWriter *)self memberQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007D1B0;
   block[3] = &unk_10011B688;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(memberQueue, block);
 }
 
 - (void)memberQueueClearPasscodeHistoryIfNecessary
 {
-  v2 = [(MCRestrictionManagerWriter *)self memberQueueRestrictions];
-  v3 = [v2 objectForKeyedSubscript:MCRestrictedValueKey];
+  memberQueueRestrictions = [(MCRestrictionManagerWriter *)self memberQueueRestrictions];
+  v3 = [memberQueueRestrictions objectForKeyedSubscript:MCRestrictedValueKey];
   v4 = [v3 objectForKeyedSubscript:MCFeaturePasscodeHistoryCount];
   v6 = [v4 objectForKeyedSubscript:MCRestrictedValueValueKey];
 
@@ -1465,26 +1465,26 @@ LABEL_31:
 
 - (void)setShowNagMessage
 {
-  v2 = [(MCRestrictionManagerWriter *)self memberQueue];
-  dispatch_sync(v2, &stru_10011CC18);
+  memberQueue = [(MCRestrictionManagerWriter *)self memberQueue];
+  dispatch_sync(memberQueue, &stru_10011CC18);
 }
 
-- (void)notifyHaveSeenComplianceMessageWithLastLockDate:(id)a3
+- (void)notifyHaveSeenComplianceMessageWithLastLockDate:(id)date
 {
-  v4 = a3;
-  v5 = [(MCRestrictionManagerWriter *)self memberQueue];
+  dateCopy = date;
+  memberQueue = [(MCRestrictionManagerWriter *)self memberQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007D410;
   block[3] = &unk_10011B688;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v8 = dateCopy;
+  v6 = dateCopy;
+  dispatch_sync(memberQueue, block);
 }
 
-- (void)memberQueueCommitEffectiveUserSettingsToDiskOldEffectiveUserSettings:(id)a3
+- (void)memberQueueCommitEffectiveUserSettingsToDiskOldEffectiveUserSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v5 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
   {
@@ -1492,38 +1492,38 @@ LABEL_31:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Committing effective user settings.", v17, 2u);
   }
 
-  v6 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
+  memberQueueEffectiveUserSettings = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
   v7 = MCEffectiveUserSettingsFilePath();
-  [v6 MCWriteToBinaryFile:v7];
+  [memberQueueEffectiveUserSettings MCWriteToBinaryFile:v7];
 
-  v8 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
-  v9 = [MCRestrictionManagerWriter filterUserSettingsForPublicUse:v8];
+  memberQueueEffectiveUserSettings2 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
+  v9 = [MCRestrictionManagerWriter filterUserSettingsForPublicUse:memberQueueEffectiveUserSettings2];
 
   v10 = MCPublicEffectiveUserSettingsFilePath();
   [v9 MCWriteToBinaryFile:v10];
 
-  v11 = [(MCRestrictionManagerWriter *)self memberQueueSettingsEvents];
+  memberQueueSettingsEvents = [(MCRestrictionManagerWriter *)self memberQueueSettingsEvents];
   v12 = MCSettingsEventsFilePath();
-  [v11 MCWriteToBinaryFile:v12];
+  [memberQueueSettingsEvents MCWriteToBinaryFile:v12];
 
   v13 = +[MCHacks sharedHacks];
-  v14 = [(MCRestrictionManagerWriter *)self memberQueueRestrictions];
-  v15 = [(MCRestrictionManagerWriter *)self memberQueueRestrictions];
-  v16 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
-  [v13 _applyServerSideChangesWithOldRestrictions:v14 newRestrictions:v15 oldEffectiveUserSettings:v4 newEffectiveUserSettings:v16];
+  memberQueueRestrictions = [(MCRestrictionManagerWriter *)self memberQueueRestrictions];
+  memberQueueRestrictions2 = [(MCRestrictionManagerWriter *)self memberQueueRestrictions];
+  memberQueueEffectiveUserSettings3 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
+  [v13 _applyServerSideChangesWithOldRestrictions:memberQueueRestrictions newRestrictions:memberQueueRestrictions2 oldEffectiveUserSettings:settingsCopy newEffectiveUserSettings:memberQueueEffectiveUserSettings3];
 }
 
-- (BOOL)memberQueueRecomputeEffectiveUserSettingsWithCredentialSet:(id)a3
+- (BOOL)memberQueueRecomputeEffectiveUserSettingsWithCredentialSet:(id)set
 {
-  v4 = a3;
-  v5 = [(MCRestrictionManagerWriter *)self memberQueueSystemUserSettings];
-  v6 = [v5 MCMutableDeepCopy];
+  setCopy = set;
+  memberQueueSystemUserSettings = [(MCRestrictionManagerWriter *)self memberQueueSystemUserSettings];
+  mCMutableDeepCopy = [memberQueueSystemUserSettings MCMutableDeepCopy];
 
-  v7 = [(MCRestrictionManagerWriter *)self memberQueueUserUserSettings];
-  [v6 MCDeepCopyEntriesFromDictionary:v7];
+  memberQueueUserUserSettings = [(MCRestrictionManagerWriter *)self memberQueueUserUserSettings];
+  [mCMutableDeepCopy MCDeepCopyEntriesFromDictionary:memberQueueUserUserSettings];
 
-  v8 = [(MCRestrictionManagerWriter *)self memberQueueRestrictions];
-  v9 = [MCRestrictionManager newEffectiveSettingsByApplyingRestrictions:v8 toSettings:v6];
+  memberQueueRestrictions = [(MCRestrictionManagerWriter *)self memberQueueRestrictions];
+  v9 = [MCRestrictionManager newEffectiveSettingsByApplyingRestrictions:memberQueueRestrictions toSettings:mCMutableDeepCopy];
 
   v10 = +[MCHacks sharedHacks];
   [v10 _applyHeuristicsToEffectiveUserSettings:v9];
@@ -1531,8 +1531,8 @@ LABEL_31:
   v11 = +[MCHacks sharedHacks];
   [v11 _applyMandatorySettingsToEffectiveUserSettings:v9];
 
-  v12 = [(MCRestrictionManagerWriter *)self memberQueueRestrictions];
-  v13 = [MCRestrictionManager appWhitelistStateWithSettingsDictionary:v9 restrictionsDictionary:v12];
+  memberQueueRestrictions2 = [(MCRestrictionManagerWriter *)self memberQueueRestrictions];
+  v13 = [MCRestrictionManager appWhitelistStateWithSettingsDictionary:v9 restrictionsDictionary:memberQueueRestrictions2];
 
   if (v13 <= 5 && ((1 << v13) & 0x34) != 0)
   {
@@ -1550,16 +1550,16 @@ LABEL_31:
   }
 
   v17 = +[MCServerSideHacks sharedHacks];
-  [v17 applyEffectiveSettings:v9 toOtherSubsystemsWithCredentialSet:v4];
+  [v17 applyEffectiveSettings:v9 toOtherSubsystemsWithCredentialSet:setCopy];
 
-  v18 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
-  v19 = [v18 isEqualToDictionary:v9];
+  memberQueueEffectiveUserSettings = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
+  v19 = [memberQueueEffectiveUserSettings isEqualToDictionary:v9];
 
   if ((v19 & 1) == 0)
   {
     v60 = v19;
-    v20 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
-    v21 = [v20 copy];
+    memberQueueEffectiveUserSettings2 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
+    v21 = [memberQueueEffectiveUserSettings2 copy];
 
     [(MCRestrictionManagerWriter *)self applyConfiguration:v9 toDomain:4 inNamespace:0 fromSender:@"MCRestrictionManagerWriter.RecomputeEffectiveUserSettings"];
     [(MCRestrictionManagerWriter *)self memberQueueCommitEffectiveUserSettingsToDiskOldEffectiveUserSettings:v21];
@@ -1574,8 +1574,8 @@ LABEL_31:
     {
       buf[0] = 0;
       v23 = +[MCServerSideHacks sharedHacks];
-      v24 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
-      [v23 recomputeAppOptionsEffectiveUserSettings:v24 outEffectiveChangeDetected:buf];
+      memberQueueEffectiveUserSettings3 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
+      [v23 recomputeAppOptionsEffectiveUserSettings:memberQueueEffectiveUserSettings3 outEffectiveChangeDetected:buf];
 
       if (buf[0] == 1)
       {
@@ -1585,7 +1585,7 @@ LABEL_31:
       }
     }
 
-    v61 = v6;
+    v61 = mCMutableDeepCopy;
     v26 = [MCRestrictionManager isWebContentFilterUIActiveWithRestrictionDictionary:v21];
     v27 = v26 ^ [MCRestrictionManager isWebContentFilterUIActiveWithRestrictionDictionary:v9];
     if ((v27 & 1) != 0 || ([MCRestrictionManager intersectedValuesSetting:MCFeatureWebContentFilterAutoPermittedURLs valueChangedBetweenOldSettings:v21 andNewSettings:v9]& 1) != 0 || ([MCRestrictionManager intersectedValuesSetting:MCFeatureWebContentFilterWhitelistedURLs valueChangedBetweenOldSettings:v21 andNewSettings:v9]& 1) != 0 || ([MCRestrictionManager unionValuesSetting:MCFeatureWebContentFilterBlacklistedURLs valueChangedBetweenOldSettings:v21 andNewSettings:v9]& 1) != 0 || [MCRestrictionManager BOOLSetting:MCFeatureWebContentFilterAutoForced valueChangedBetweenOldSettings:v21 andNewSettings:v9])
@@ -1593,8 +1593,8 @@ LABEL_31:
       buf[0] = 0;
       v62 = 0;
       v28 = +[MCServerSideHacks sharedHacks];
-      v29 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
-      [v28 recomputeWebContentFilterEffectiveUserSettings:v29 outEffectiveChangeDetected:buf outMechanismChangedDetected:&v62];
+      memberQueueEffectiveUserSettings4 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
+      [v28 recomputeWebContentFilterEffectiveUserSettings:memberQueueEffectiveUserSettings4 outEffectiveChangeDetected:buf outMechanismChangedDetected:&v62];
 
       if (v62 == 1)
       {
@@ -1638,32 +1638,32 @@ LABEL_31:
     }
 
     v30 = MCFeatureBookstoreEroticaAllowed;
-    v31 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
-    v59 = [MCRestrictionManager BOOLSettingForFeature:v30 withUserSettingDictionary:v31]!= 2;
+    memberQueueEffectiveUserSettings5 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
+    v59 = [MCRestrictionManager BOOLSettingForFeature:v30 withUserSettingDictionary:memberQueueEffectiveUserSettings5]!= 2;
 
     v32 = MCFeatureExplicitContentAllowed;
-    v33 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
-    v58 = [MCRestrictionManager BOOLSettingForFeature:v32 withUserSettingDictionary:v33]!= 2;
+    memberQueueEffectiveUserSettings6 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
+    v58 = [MCRestrictionManager BOOLSettingForFeature:v32 withUserSettingDictionary:memberQueueEffectiveUserSettings6]!= 2;
 
     v34 = MCFeatureSpellCheckAllowed;
-    v35 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
-    v36 = [MCRestrictionManager BOOLSettingForFeature:v34 withUserSettingDictionary:v35]!= 2;
+    memberQueueEffectiveUserSettings7 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
+    v36 = [MCRestrictionManager BOOLSettingForFeature:v34 withUserSettingDictionary:memberQueueEffectiveUserSettings7]!= 2;
 
     v37 = MCFeatureAutoCorrectionAllowed;
-    v38 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
-    v39 = [MCRestrictionManager BOOLSettingForFeature:v37 withUserSettingDictionary:v38]!= 2;
+    memberQueueEffectiveUserSettings8 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
+    v39 = [MCRestrictionManager BOOLSettingForFeature:v37 withUserSettingDictionary:memberQueueEffectiveUserSettings8]!= 2;
 
     v40 = MCFeatureMaximumAppsRating;
-    v41 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
-    v42 = [MCRestrictionManager valueSettingForFeature:v40 withUserSettingDictionary:v41];
+    memberQueueEffectiveUserSettings9 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
+    v42 = [MCRestrictionManager valueSettingForFeature:v40 withUserSettingDictionary:memberQueueEffectiveUserSettings9];
 
     v43 = MCFeatureMaximumMoviesRating;
-    v44 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
-    v45 = [MCRestrictionManager valueSettingForFeature:v43 withUserSettingDictionary:v44];
+    memberQueueEffectiveUserSettings10 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
+    v45 = [MCRestrictionManager valueSettingForFeature:v43 withUserSettingDictionary:memberQueueEffectiveUserSettings10];
 
     v46 = MCFeatureMaximumTVShowsRating;
-    v47 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
-    v48 = [MCRestrictionManager valueSettingForFeature:v46 withUserSettingDictionary:v47];
+    memberQueueEffectiveUserSettings11 = [(MCRestrictionManagerWriter *)self memberQueueEffectiveUserSettings];
+    v48 = [MCRestrictionManager valueSettingForFeature:v46 withUserSettingDictionary:memberQueueEffectiveUserSettings11];
 
     v64[0] = MCExplicitBooksAllowedThirdPartyQuery;
     v49 = [NSNumber numberWithBool:v59];
@@ -1714,27 +1714,27 @@ LABEL_31:
 
     [MCManagedPreferencesManager updateGlobalManagedPreferencesByAddingPreferences:v54 removingPreferences:v56];
 
-    v6 = v61;
+    mCMutableDeepCopy = v61;
     v19 = v60;
   }
 
   return v19 ^ 1;
 }
 
-- (id)_memberQueueNewUserSettingsWithParametersForSettingsByType:(id)a3 currentUserSettings:(id)a4
+- (id)_memberQueueNewUserSettingsWithParametersForSettingsByType:(id)type currentUserSettings:(id)settings
 {
-  v6 = a4;
-  v7 = [a3 MCMutableDeepCopy];
+  settingsCopy = settings;
+  mCMutableDeepCopy = [type MCMutableDeepCopy];
   v8 = +[MCHacks sharedHacks];
-  v9 = [(MCRestrictionManagerWriter *)self memberQueueRestrictions];
-  [v8 _applyImpliedSettingsToSettingsDictionary:v7 currentSettings:v6 restrictions:v9];
+  memberQueueRestrictions = [(MCRestrictionManagerWriter *)self memberQueueRestrictions];
+  [v8 _applyImpliedSettingsToSettingsDictionary:mCMutableDeepCopy currentSettings:settingsCopy restrictions:memberQueueRestrictions];
 
-  v36 = v6;
-  v10 = [v6 MCMutableDeepCopy];
-  [v10 MCDeepCopyEntriesFromDictionary:v7];
+  v36 = settingsCopy;
+  mCMutableDeepCopy2 = [settingsCopy MCMutableDeepCopy];
+  [mCMutableDeepCopy2 MCDeepCopyEntriesFromDictionary:mCMutableDeepCopy];
   v11 = MCIntersectionKey;
-  v12 = [v10 objectForKey:MCIntersectionKey];
-  v13 = [v7 objectForKey:v11];
+  v12 = [mCMutableDeepCopy2 objectForKey:MCIntersectionKey];
+  v13 = [mCMutableDeepCopy objectForKey:v11];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
@@ -1767,10 +1767,10 @@ LABEL_31:
   }
 
   v22 = MCUnionKey;
-  v34 = v10;
-  v23 = [v10 objectForKey:MCUnionKey];
-  v35 = v7;
-  v24 = [v7 objectForKey:v22];
+  v34 = mCMutableDeepCopy2;
+  v23 = [mCMutableDeepCopy2 objectForKey:MCUnionKey];
+  v35 = mCMutableDeepCopy;
+  v24 = [mCMutableDeepCopy objectForKey:v22];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -1805,21 +1805,21 @@ LABEL_31:
   return v34;
 }
 
-- (BOOL)memberQueueSetParametersForSettingsByType:(id)a3 configurationUUID:(id)a4 toSystem:(BOOL)a5 user:(BOOL)a6 credentialSet:(id)a7 sender:(id)a8
+- (BOOL)memberQueueSetParametersForSettingsByType:(id)type configurationUUID:(id)d toSystem:(BOOL)system user:(BOOL)user credentialSet:(id)set sender:(id)sender
 {
-  v10 = a6;
-  v11 = a5;
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
-  if (v11)
+  userCopy = user;
+  systemCopy = system;
+  typeCopy = type;
+  dCopy = d;
+  setCopy = set;
+  senderCopy = sender;
+  if (systemCopy)
   {
-    v18 = [(MCRestrictionManagerWriter *)self memberQueueSystemUserSettings];
-    if (v15)
+    memberQueueSystemUserSettings = [(MCRestrictionManagerWriter *)self memberQueueSystemUserSettings];
+    if (dCopy)
     {
-      v19 = [(MCRestrictionManagerWriter *)self memberQueueSystemNamespacedUserSettings];
-      v20 = [v19 objectForKeyedSubscript:v15];
+      memberQueueSystemNamespacedUserSettings = [(MCRestrictionManagerWriter *)self memberQueueSystemNamespacedUserSettings];
+      v20 = [memberQueueSystemNamespacedUserSettings objectForKeyedSubscript:dCopy];
       v21 = v20;
       if (v20)
       {
@@ -1833,25 +1833,25 @@ LABEL_31:
 
       v24 = v22;
 
-      v23 = [(MCRestrictionManagerWriter *)self _memberQueueNewUserSettingsWithParametersForSettingsByType:v14 currentUserSettings:v24];
-      [(MCRestrictionManagerWriter *)self applyConfiguration:v23 toDomain:1 inNamespace:v15 fromSender:v17];
-      v18 = v24;
+      v23 = [(MCRestrictionManagerWriter *)self _memberQueueNewUserSettingsWithParametersForSettingsByType:typeCopy currentUserSettings:v24];
+      [(MCRestrictionManagerWriter *)self applyConfiguration:v23 toDomain:1 inNamespace:dCopy fromSender:senderCopy];
+      memberQueueSystemUserSettings = v24;
     }
 
     else
     {
-      v23 = [(MCRestrictionManagerWriter *)self _memberQueueNewUserSettingsWithParametersForSettingsByType:v14 currentUserSettings:v18];
-      [(MCRestrictionManagerWriter *)self applyConfiguration:v23 toDomain:0 inNamespace:0 fromSender:v17];
+      v23 = [(MCRestrictionManagerWriter *)self _memberQueueNewUserSettingsWithParametersForSettingsByType:typeCopy currentUserSettings:memberQueueSystemUserSettings];
+      [(MCRestrictionManagerWriter *)self applyConfiguration:v23 toDomain:0 inNamespace:0 fromSender:senderCopy];
     }
   }
 
-  if (v10)
+  if (userCopy)
   {
-    v25 = [(MCRestrictionManagerWriter *)self memberQueueUserUserSettings];
-    if (v15)
+    memberQueueUserUserSettings = [(MCRestrictionManagerWriter *)self memberQueueUserUserSettings];
+    if (dCopy)
     {
-      v26 = [(MCRestrictionManagerWriter *)self memberQueueUserNamespacedUserSettings];
-      v27 = [v26 objectForKeyedSubscript:v15];
+      memberQueueUserNamespacedUserSettings = [(MCRestrictionManagerWriter *)self memberQueueUserNamespacedUserSettings];
+      v27 = [memberQueueUserNamespacedUserSettings objectForKeyedSubscript:dCopy];
       v28 = v27;
       if (v27)
       {
@@ -1865,91 +1865,91 @@ LABEL_31:
 
       v31 = v29;
 
-      v30 = [(MCRestrictionManagerWriter *)self _memberQueueNewUserSettingsWithParametersForSettingsByType:v14 currentUserSettings:v31];
-      [(MCRestrictionManagerWriter *)self applyConfiguration:v30 toDomain:3 inNamespace:v15 fromSender:v17];
-      v25 = v31;
+      v30 = [(MCRestrictionManagerWriter *)self _memberQueueNewUserSettingsWithParametersForSettingsByType:typeCopy currentUserSettings:v31];
+      [(MCRestrictionManagerWriter *)self applyConfiguration:v30 toDomain:3 inNamespace:dCopy fromSender:senderCopy];
+      memberQueueUserUserSettings = v31;
     }
 
     else
     {
-      v30 = [(MCRestrictionManagerWriter *)self _memberQueueNewUserSettingsWithParametersForSettingsByType:v14 currentUserSettings:v25];
-      [(MCRestrictionManagerWriter *)self applyConfiguration:v30 toDomain:2 inNamespace:0 fromSender:v17];
+      v30 = [(MCRestrictionManagerWriter *)self _memberQueueNewUserSettingsWithParametersForSettingsByType:typeCopy currentUserSettings:memberQueueUserUserSettings];
+      [(MCRestrictionManagerWriter *)self applyConfiguration:v30 toDomain:2 inNamespace:0 fromSender:senderCopy];
     }
   }
 
   [(MCRestrictionManagerWriter *)self memberQueueCommitUserSettingsToDisk];
-  v32 = [(MCRestrictionManagerWriter *)self memberQueueRecomputeEffectiveUserSettingsWithCredentialSet:v16];
+  v32 = [(MCRestrictionManagerWriter *)self memberQueueRecomputeEffectiveUserSettingsWithCredentialSet:setCopy];
 
   return v32;
 }
 
-- (BOOL)setParametersForSettingsByType:(id)a3 configurationUUID:(id)a4 toSystem:(BOOL)a5 user:(BOOL)a6 credentialSet:(id)a7 sender:(id)a8
+- (BOOL)setParametersForSettingsByType:(id)type configurationUUID:(id)d toSystem:(BOOL)system user:(BOOL)user credentialSet:(id)set sender:(id)sender
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
+  typeCopy = type;
+  dCopy = d;
+  setCopy = set;
+  senderCopy = sender;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 0;
-  v18 = [(MCRestrictionManagerWriter *)self memberQueue];
+  memberQueue = [(MCRestrictionManagerWriter *)self memberQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007E734;
   block[3] = &unk_10011CC40;
   block[4] = self;
-  v26 = v14;
-  v31 = a5;
-  v32 = a6;
-  v27 = v15;
-  v28 = v16;
-  v29 = v17;
+  v26 = typeCopy;
+  systemCopy = system;
+  userCopy = user;
+  v27 = dCopy;
+  v28 = setCopy;
+  v29 = senderCopy;
   v30 = &v33;
-  v19 = v17;
-  v20 = v16;
-  v21 = v15;
-  v22 = v14;
+  v19 = senderCopy;
+  v20 = setCopy;
+  v21 = dCopy;
+  v22 = typeCopy;
   v23 = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, block);
-  dispatch_sync(v18, v23);
+  dispatch_sync(memberQueue, v23);
 
-  LOBYTE(v18) = *(v34 + 24);
+  LOBYTE(memberQueue) = *(v34 + 24);
   _Block_object_dispose(&v33, 8);
-  return v18;
+  return memberQueue;
 }
 
-- (void)setValue:(id)a3 forSetting:(id)a4 sender:(id)a5
+- (void)setValue:(id)value forSetting:(id)setting sender:(id)sender
 {
   v18 = MCRestrictedValueKey;
-  v15 = a3;
-  v16 = a4;
+  valueCopy = value;
+  settingCopy = setting;
   v14 = MCRestrictedValueValueKey;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
+  senderCopy = sender;
+  settingCopy2 = setting;
+  valueCopy2 = value;
+  v11 = [NSDictionary dictionaryWithObjects:&valueCopy forKeys:&v14 count:1];
   v17 = v11;
-  v12 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
+  v12 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&settingCopy count:1];
   v19 = v12;
   v13 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
 
-  [(MCRestrictionManagerWriter *)self setParametersForSettingsByType:v13 sender:v8];
+  [(MCRestrictionManagerWriter *)self setParametersForSettingsByType:v13 sender:senderCopy];
 }
 
-- (void)setIntersectionValues:(id)a3 forSetting:(id)a4 sender:(id)a5
+- (void)setIntersectionValues:(id)values forSetting:(id)setting sender:(id)sender
 {
-  if (a3)
+  if (values)
   {
     v24 = MCIntersectionKey;
-    v22 = a4;
+    settingCopy = setting;
     v20 = MCSettingParameterValuesKey;
-    v9 = a5;
-    v10 = a4;
-    v11 = [a3 copy];
+    senderCopy = sender;
+    settingCopy2 = setting;
+    v11 = [values copy];
     v21 = v11;
-    v12 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-    v23 = v12;
-    v13 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
+    settingCopy4 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
+    v23 = settingCopy4;
+    v13 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&settingCopy count:1];
     v25 = v13;
     v14 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
   }
@@ -1957,32 +1957,32 @@ LABEL_31:
   else
   {
     v18 = MCIntersectionKey;
-    v16 = a4;
+    settingCopy3 = setting;
     v17 = &__NSDictionary0__struct;
-    v15 = a5;
-    v12 = a4;
-    v11 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
+    senderCopy2 = sender;
+    settingCopy4 = setting;
+    v11 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&settingCopy3 count:1];
     v19 = v11;
     v14 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
   }
 
-  [(MCRestrictionManagerWriter *)self setParametersForSettingsByType:v14 sender:a5];
+  [(MCRestrictionManagerWriter *)self setParametersForSettingsByType:v14 sender:sender];
 }
 
-- (void)setUnionValues:(id)a3 forSetting:(id)a4 sender:(id)a5
+- (void)setUnionValues:(id)values forSetting:(id)setting sender:(id)sender
 {
-  if (a3)
+  if (values)
   {
     v24 = MCUnionKey;
-    v22 = a4;
+    settingCopy = setting;
     v20 = MCSettingParameterValuesKey;
-    v9 = a5;
-    v10 = a4;
-    v11 = [a3 copy];
+    senderCopy = sender;
+    settingCopy2 = setting;
+    v11 = [values copy];
     v21 = v11;
-    v12 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-    v23 = v12;
-    v13 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
+    settingCopy4 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
+    v23 = settingCopy4;
+    v13 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&settingCopy count:1];
     v25 = v13;
     v14 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
   }
@@ -1990,95 +1990,95 @@ LABEL_31:
   else
   {
     v18 = MCUnionKey;
-    v16 = a4;
+    settingCopy3 = setting;
     v17 = &__NSDictionary0__struct;
-    v15 = a5;
-    v12 = a4;
-    v11 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
+    senderCopy2 = sender;
+    settingCopy4 = setting;
+    v11 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&settingCopy3 count:1];
     v19 = v11;
     v14 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
   }
 
-  [(MCRestrictionManagerWriter *)self setParametersForSettingsByType:v14 sender:a5];
+  [(MCRestrictionManagerWriter *)self setParametersForSettingsByType:v14 sender:sender];
 }
 
-- (void)removeBoolSetting:(id)a3 sender:(id)a4
+- (void)removeBoolSetting:(id)setting sender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MCRestrictionManagerWriter *)self memberQueue];
+  settingCopy = setting;
+  senderCopy = sender;
+  memberQueue = [(MCRestrictionManagerWriter *)self memberQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007EE94;
   block[3] = &unk_10011CC68;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = settingCopy;
+  v13 = senderCopy;
+  v9 = senderCopy;
+  v10 = settingCopy;
+  dispatch_async(memberQueue, block);
 }
 
-- (void)removeValueSetting:(id)a3 sender:(id)a4
+- (void)removeValueSetting:(id)setting sender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MCRestrictionManagerWriter *)self memberQueue];
+  settingCopy = setting;
+  senderCopy = sender;
+  memberQueue = [(MCRestrictionManagerWriter *)self memberQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007F048;
   block[3] = &unk_10011CC68;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = settingCopy;
+  v13 = senderCopy;
+  v9 = senderCopy;
+  v10 = settingCopy;
+  dispatch_async(memberQueue, block);
 }
 
-- (void)resetAllSettingsToDefaultsSender:(id)a3
+- (void)resetAllSettingsToDefaultsSender:(id)sender
 {
-  v4 = a3;
-  v5 = [(MCRestrictionManagerWriter *)self memberQueue];
+  senderCopy = sender;
+  memberQueue = [(MCRestrictionManagerWriter *)self memberQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10007F1D8;
   v7[3] = &unk_10011B798;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = senderCopy;
+  v6 = senderCopy;
+  dispatch_async(memberQueue, v7);
 }
 
 - (void)recomputeEffectiveUserSettings
 {
-  v3 = [(MCRestrictionManagerWriter *)self memberQueue];
+  memberQueue = [(MCRestrictionManagerWriter *)self memberQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007F2D8;
   block[3] = &unk_10011B688;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(memberQueue, block);
 }
 
 - (void)recomputeUserRestrictionsAndEffectiveUserSettings
 {
-  v3 = [(MCRestrictionManagerWriter *)self memberQueue];
+  memberQueue = [(MCRestrictionManagerWriter *)self memberQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007F36C;
   block[3] = &unk_10011B688;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(memberQueue, block);
 }
 
-+ (BOOL)restrictionsAlreadyInstalledFromPayload:(id)a3
++ (BOOL)restrictionsAlreadyInstalledFromPayload:(id)payload
 {
   v9 = 0;
-  v4 = [a3 restrictions];
-  v5 = [a1 sharedManager];
-  v6 = [v5 currentRestrictions];
-  v7 = [a1 restrictionsAfterApplyingRestrictionsDictionary:v4 toRestrictionsDictionary:v6 outChangeDetected:&v9 outError:0];
+  restrictions = [payload restrictions];
+  sharedManager = [self sharedManager];
+  currentRestrictions = [sharedManager currentRestrictions];
+  v7 = [self restrictionsAfterApplyingRestrictionsDictionary:restrictions toRestrictionsDictionary:currentRestrictions outChangeDetected:&v9 outError:0];
 
   return (v9 & 1) == 0;
 }

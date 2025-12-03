@@ -2,7 +2,7 @@
 + (id)sharedController;
 - (LaunchStateController)init;
 - (void)applicationUIDidBecomeActive;
-- (void)doAfterUIBecomesActive:(id)a3;
+- (void)doAfterUIBecomesActive:(id)active;
 - (void)forceMarkUIBecomeActiveForTesting;
 @end
 
@@ -34,9 +34,9 @@ void __41__LaunchStateController_sharedController__block_invoke()
   v2 = [(LaunchStateController *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     actionBlocks = v2->_actionBlocks;
-    v2->_actionBlocks = v3;
+    v2->_actionBlocks = array;
 
     v5 = v2;
   }
@@ -66,19 +66,19 @@ uint64_t __53__LaunchStateController_applicationUIDidBecomeActive__block_invoke(
   return [v2 removeAllObjects];
 }
 
-- (void)doAfterUIBecomesActive:(id)a3
+- (void)doAfterUIBecomesActive:(id)active
 {
   if (self->_hasCompletedLaunch)
   {
-    v4 = *(a3 + 2);
+    v4 = *(active + 2);
 
-    v4(a3);
+    v4(active);
   }
 
   else
   {
     actionBlocks = self->_actionBlocks;
-    v6 = _Block_copy(a3);
+    v6 = _Block_copy(active);
     [(NSMutableArray *)actionBlocks addObject:v6];
   }
 }

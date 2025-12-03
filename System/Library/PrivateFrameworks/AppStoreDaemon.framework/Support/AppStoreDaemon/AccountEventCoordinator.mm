@@ -1,7 +1,7 @@
 @interface AccountEventCoordinator
 - (AccountEventCoordinator)init;
 - (id)description;
-- (void)_handleAppleIDDidChangeNotification:(id)a3;
+- (void)_handleAppleIDDidChangeNotification:(id)notification;
 @end
 
 @implementation AccountEventCoordinator
@@ -35,16 +35,16 @@
   return v3;
 }
 
-- (void)_handleAppleIDDidChangeNotification:(id)a3
+- (void)_handleAppleIDDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001E6930;
   block[3] = &unk_10051AF98;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_async(dispatchQueue, block);
 }
 

@@ -1,15 +1,15 @@
 @interface VCPHandGestureVideoRequest
-- (VCPHandGestureVideoRequest)initWithOptions:(id)a3;
-- (id)processBuffer:(__CVBuffer *)a3 timestamp:(id *)a4 withOptions:(id)a5 error:(id *)a6;
-- (void)processBuffer:(__CVBuffer *)a3 timestamp:(id *)a4 withOptions:(id)a5 completion:(id)a6;
-- (void)updateWithOptions:(id)a3 completion:(id)a4;
+- (VCPHandGestureVideoRequest)initWithOptions:(id)options;
+- (id)processBuffer:(__CVBuffer *)buffer timestamp:(id *)timestamp withOptions:(id)options error:(id *)error;
+- (void)processBuffer:(__CVBuffer *)buffer timestamp:(id *)timestamp withOptions:(id)options completion:(id)completion;
+- (void)updateWithOptions:(id)options completion:(id)completion;
 @end
 
 @implementation VCPHandGestureVideoRequest
 
-- (VCPHandGestureVideoRequest)initWithOptions:(id)a3
+- (VCPHandGestureVideoRequest)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = VCPSignPostLog();
   v6 = os_signpost_id_generate(v5);
 
@@ -23,11 +23,11 @@
 
   v26.receiver = self;
   v26.super_class = VCPHandGestureVideoRequest;
-  v9 = [(VCPRequest *)&v26 initWithOptions:v4];
+  v9 = [(VCPRequest *)&v26 initWithOptions:optionsCopy];
   if (v9)
   {
-    v10 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v4];
-    v11 = [v4 objectForKeyedSubscript:@"handPoseLite"];
+    v10 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:optionsCopy];
+    v11 = [optionsCopy objectForKeyedSubscript:@"handPoseLite"];
 
     if (!v11)
     {
@@ -41,7 +41,7 @@
 
     v14 = [VCPHandGestureClassifier alloc];
     *&v15 = v9->super._minHandSize;
-    v16 = [(VCPHandGestureClassifier *)v14 initWithMinHandSize:v4 options:v15];
+    v16 = [(VCPHandGestureClassifier *)v14 initWithMinHandSize:optionsCopy options:v15];
     handGestureClassifier = v9->_handGestureClassifier;
     v9->_handGestureClassifier = v16;
 
@@ -71,10 +71,10 @@ LABEL_17:
   return v24;
 }
 
-- (id)processBuffer:(__CVBuffer *)a3 timestamp:(id *)a4 withOptions:(id)a5 error:(id *)a6
+- (id)processBuffer:(__CVBuffer *)buffer timestamp:(id *)timestamp withOptions:(id)options error:(id *)error
 {
   v111 = *MEMORY[0x1E69E9840];
-  v77 = a5;
+  optionsCopy = options;
   v8 = VCPSignPostLog();
   v9 = os_signpost_id_generate(v8);
 
@@ -88,15 +88,15 @@ LABEL_17:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "VCPHandGestureVideoRequest_processBuffer", "", &buf, 2u);
   }
 
-  v80 = [(NSDictionary *)v77 objectForKeyedSubscript:@"faceRects"];
-  v76 = [(NSDictionary *)v77 objectForKeyedSubscript:@"faceYaws"];
+  v80 = [(NSDictionary *)optionsCopy objectForKeyedSubscript:@"faceRects"];
+  v76 = [(NSDictionary *)optionsCopy objectForKeyedSubscript:@"faceYaws"];
   if ([v80 count])
   {
-    v12 = [v80 firstObject];
-    NSRectFromString(v12);
+    firstObject = [v80 firstObject];
+    NSRectFromString(firstObject);
   }
 
-  v13 = [(VCPHandPoseImageRequest *)self->_poseImageRequest processImage:a3 withOptions:v77 error:a6];
+  v13 = [(VCPHandPoseImageRequest *)self->_poseImageRequest processImage:buffer withOptions:optionsCopy error:error];
   maxNumOfPersons = self->super._maxNumOfPersons;
   if (maxNumOfPersons >= 3)
   {
@@ -109,8 +109,8 @@ LABEL_17:
   }
 
   v75 = maxNumOfPersons;
-  v78 = [MEMORY[0x1E695DF70] array];
-  v86 = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v102 = 0u;
   v103 = 0u;
   v100 = 0u;
@@ -131,7 +131,7 @@ LABEL_17:
 
         v18 = *(*(&v100 + 1) + 8 * i);
         v19 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v18, "groupID")}];
-        v20 = [v86 objectForKeyedSubscript:v19];
+        v20 = [dictionary objectForKeyedSubscript:v19];
         v21 = v20 == 0;
 
         if (v21)
@@ -141,13 +141,13 @@ LABEL_17:
           v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v108 count:1];
           v23 = [v24 arrayWithArray:v22];
           v25 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v18, "groupID")}];
-          [v86 setObject:v23 forKeyedSubscript:v25];
+          [dictionary setObject:v23 forKeyedSubscript:v25];
         }
 
         else
         {
           v22 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v18, "groupID")}];
-          v23 = [v86 objectForKeyedSubscript:v22];
+          v23 = [dictionary objectForKeyedSubscript:v22];
           [v23 addObject:v18];
         }
       }
@@ -158,8 +158,8 @@ LABEL_17:
     while (v15);
   }
 
-  v26 = [v86 allKeys];
-  v27 = [v26 count];
+  allKeys = [dictionary allKeys];
+  v27 = [allKeys count];
   v28 = v75;
   if (v75 >= v27)
   {
@@ -168,13 +168,13 @@ LABEL_17:
 
   v79 = v28;
 
-  v83 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v98 = 0u;
   v99 = 0u;
   v96 = 0u;
   v97 = 0u;
-  v82 = [v86 allKeys];
-  v29 = [v82 countByEnumeratingWithState:&v96 objects:v107 count:16];
+  allKeys2 = [dictionary allKeys];
+  v29 = [allKeys2 countByEnumeratingWithState:&v96 objects:v107 count:16];
   if (v29)
   {
     v84 = *v97;
@@ -184,11 +184,11 @@ LABEL_17:
       {
         if (*v97 != v84)
         {
-          objc_enumerationMutation(v82);
+          objc_enumerationMutation(allKeys2);
         }
 
         v31 = *(*(&v96 + 1) + 8 * j);
-        v32 = [v86 objectForKeyedSubscript:v31];
+        v32 = [dictionary objectForKeyedSubscript:v31];
         if ([v32 count])
         {
           v94 = 0u;
@@ -233,17 +233,17 @@ LABEL_17:
 
           *&v44 = v36 / [v33 count];
           v45 = [MEMORY[0x1E696AD98] numberWithFloat:v44];
-          [v83 setObject:v45 forKeyedSubscript:v31];
+          [dictionary2 setObject:v45 forKeyedSubscript:v31];
         }
       }
 
-      v29 = [v82 countByEnumeratingWithState:&v96 objects:v107 count:16];
+      v29 = [allKeys2 countByEnumeratingWithState:&v96 objects:v107 count:16];
     }
 
     while (v29);
   }
 
-  v46 = [v83 keysSortedByValueUsingComparator:&__block_literal_global_31];
+  v46 = [dictionary2 keysSortedByValueUsingComparator:&__block_literal_global_31];
   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
   {
     LODWORD(buf.var0) = 138412802;
@@ -258,26 +258,26 @@ LABEL_17:
   p_previousTime = &self->_previousTime;
   if (self->_previousTime.flags)
   {
-    buf = *a4;
+    buf = *timestamp;
     *&rhs.value = *&p_previousTime->value;
     rhs.epoch = self->_previousTime.epoch;
     CMTimeSubtract(&time, &buf, &rhs);
     if (CMTimeGetSeconds(&time) > self->_minTimeInterval)
     {
-      v48 = [(NSDictionary *)v77 objectForKeyedSubscript:@"rotationInDegrees"];
+      v48 = [(NSDictionary *)optionsCopy objectForKeyedSubscript:@"rotationInDegrees"];
       v49 = v48 == 0;
 
       if (!v49)
       {
-        RotationInDegrees = getRotationInDegrees(v77);
+        RotationInDegrees = getRotationInDegrees(optionsCopy);
         if ([(VCPHandGestureClassifier *)self->_handGestureClassifier rotationInDegrees]!= RotationInDegrees)
         {
           [(VCPHandGestureClassifier *)self->_handGestureClassifier reset];
           if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
           {
-            v51 = [(VCPHandGestureClassifier *)self->_handGestureClassifier rotationInDegrees];
+            rotationInDegrees = [(VCPHandGestureClassifier *)self->_handGestureClassifier rotationInDegrees];
             LODWORD(buf.var0) = 67109376;
-            HIDWORD(buf.var0) = v51;
+            HIDWORD(buf.var0) = rotationInDegrees;
             LOWORD(buf.var1) = 1024;
             *(&buf.var1 + 2) = RotationInDegrees;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "gesture rotation updated from %d to %d", &buf, 0xEu);
@@ -287,10 +287,10 @@ LABEL_17:
         [(VCPHandGestureClassifier *)self->_handGestureClassifier setRotationInDegrees:RotationInDegrees];
       }
 
-      v52 = *&a4->var0;
-      self->_previousTime.epoch = a4->var3;
+      v52 = *&timestamp->var0;
+      self->_previousTime.epoch = timestamp->var3;
       *&p_previousTime->value = v52;
-      v53 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       for (m = 0; ; ++m)
       {
         v55 = [v46 count];
@@ -301,7 +301,7 @@ LABEL_17:
         }
 
         v57 = [v46 objectAtIndexedSubscript:m];
-        v58 = [v86 objectForKeyedSubscript:v57];
+        v58 = [dictionary objectForKeyedSubscript:v57];
 
         if ([v58 count])
         {
@@ -317,9 +317,9 @@ LABEL_77:
             goto LABEL_74;
           }
 
-          [v78 addObjectsFromArray:v58];
+          [array addObjectsFromArray:v58];
           v61 = [v46 objectAtIndexedSubscript:m];
-          [v53 addObject:v61];
+          [array2 addObject:v61];
         }
       }
 
@@ -327,8 +327,8 @@ LABEL_77:
       v90 = 0u;
       v87 = 0u;
       v88 = 0u;
-      v62 = [(VCPHandGestureClassifier *)self->_handGestureClassifier existingGroupIDs];
-      v63 = [v62 countByEnumeratingWithState:&v87 objects:v105 count:16];
+      existingGroupIDs = [(VCPHandGestureClassifier *)self->_handGestureClassifier existingGroupIDs];
+      v63 = [existingGroupIDs countByEnumeratingWithState:&v87 objects:v105 count:16];
       if (v63)
       {
         v64 = *v88;
@@ -339,18 +339,18 @@ LABEL_77:
           {
             if (*v88 != v64)
             {
-              objc_enumerationMutation(v62);
+              objc_enumerationMutation(existingGroupIDs);
             }
 
             v67 = *(*(&v87 + 1) + 8 * n);
-            if ((-[NSObject containsObject:](v53, "containsObject:", v67) & 1) == 0 && -[VCPHandGestureClassifier processPerson:withObservations:andFaceRects:faceYaws:](self->_handGestureClassifier, "processPerson:withObservations:andFaceRects:faceYaws:", [v67 intValue], v65, v65, v65))
+            if ((-[NSObject containsObject:](array2, "containsObject:", v67) & 1) == 0 && -[VCPHandGestureClassifier processPerson:withObservations:andFaceRects:faceYaws:](self->_handGestureClassifier, "processPerson:withObservations:andFaceRects:faceYaws:", [v67 intValue], v65, v65, v65))
             {
 
               goto LABEL_77;
             }
           }
 
-          v63 = [v62 countByEnumeratingWithState:&v87 objects:v105 count:16];
+          v63 = [existingGroupIDs countByEnumeratingWithState:&v87 objects:v105 count:16];
           if (v63)
           {
             continue;
@@ -363,24 +363,24 @@ LABEL_77:
   }
 
   v68 = VCPSignPostLog();
-  v53 = v68;
+  array2 = v68;
   if (v73 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v68))
   {
     LOWORD(buf.var0) = 0;
-    _os_signpost_emit_with_name_impl(&dword_1C9B70000, v53, OS_SIGNPOST_INTERVAL_END, spid, "VCPHandGestureVideoRequest_processBuffer", "", &buf, 2u);
+    _os_signpost_emit_with_name_impl(&dword_1C9B70000, array2, OS_SIGNPOST_INTERVAL_END, spid, "VCPHandGestureVideoRequest_processBuffer", "", &buf, 2u);
   }
 
-  v69 = v78;
+  v69 = array;
 LABEL_74:
 
   v70 = v69;
   return v69;
 }
 
-- (void)updateWithOptions:(id)a3 completion:(id)a4
+- (void)updateWithOptions:(id)options completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   queue = self->_queue;
   if (queue)
   {
@@ -389,8 +389,8 @@ LABEL_74:
     block[2] = __59__VCPHandGestureVideoRequest_updateWithOptions_completion___block_invoke;
     block[3] = &unk_1E834DBD8;
     block[4] = self;
-    v12 = v6;
-    v13 = v7;
+    v12 = optionsCopy;
+    v13 = completionCopy;
     dispatch_async(queue, block);
   }
 
@@ -403,7 +403,7 @@ LABEL_74:
     }
 
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:0];
-    (*(v7 + 2))(v7, v9);
+    (*(completionCopy + 2))(completionCopy, v9);
   }
 }
 
@@ -427,16 +427,16 @@ void __59__VCPHandGestureVideoRequest_updateWithOptions_completion___block_invok
   }
 }
 
-- (void)processBuffer:(__CVBuffer *)a3 timestamp:(id *)a4 withOptions:(id)a5 completion:(id)a6
+- (void)processBuffer:(__CVBuffer *)buffer timestamp:(id *)timestamp withOptions:(id)options completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
+  optionsCopy = options;
+  completionCopy = completion;
   if (self->_queue)
   {
     *buf = 0;
     v21 = buf;
     v22 = 0x2020000000;
-    v23 = CFRetain(a3);
+    v23 = CFRetain(buffer);
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -444,10 +444,10 @@ void __59__VCPHandGestureVideoRequest_updateWithOptions_completion___block_invok
     block[3] = &unk_1E834DC00;
     block[4] = self;
     v17 = buf;
-    v18 = *&a4->var0;
-    var3 = a4->var3;
-    v15 = v10;
-    v16 = v11;
+    v18 = *&timestamp->var0;
+    var3 = timestamp->var3;
+    v15 = optionsCopy;
+    v16 = completionCopy;
     dispatch_async(queue, block);
 
     _Block_object_dispose(buf, 8);
@@ -462,7 +462,7 @@ void __59__VCPHandGestureVideoRequest_updateWithOptions_completion___block_invok
     }
 
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:0];
-    (*(v11 + 2))(v11, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, v13);
   }
 }
 

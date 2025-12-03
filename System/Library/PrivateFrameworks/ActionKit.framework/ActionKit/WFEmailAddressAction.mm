@@ -1,15 +1,15 @@
 @interface WFEmailAddressAction
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFEmailAddressAction
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v4 = [(WFEmailAddressAction *)self parameterValueForKey:@"WFEmailAddress" ofClass:objc_opt_class()];
-  v5 = [v4 contentCollection];
+  contentCollection = [v4 contentCollection];
 
-  if (v5)
+  if (contentCollection)
   {
     v6 = objc_opt_class();
     v7[0] = MEMORY[0x277D85DD0];
@@ -17,7 +17,7 @@
     v7[2] = __51__WFEmailAddressAction_runAsynchronouslyWithInput___block_invoke;
     v7[3] = &unk_278C211D0;
     v7[4] = self;
-    [v5 generateCollectionByCoercingToItemClass:v6 completionHandler:v7];
+    [contentCollection generateCollectionByCoercingToItemClass:v6 completionHandler:v7];
   }
 
   else

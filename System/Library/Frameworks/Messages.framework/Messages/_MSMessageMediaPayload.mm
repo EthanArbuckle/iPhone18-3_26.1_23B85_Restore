@@ -1,63 +1,63 @@
 @interface _MSMessageMediaPayload
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
 - (BOOL)uriIsUltraExtension;
 - (CGRect)sourceFrame;
 - (NSURL)mediaURL;
 - (UIImage)image;
 - (_MSMessageMediaPayload)init;
-- (_MSMessageMediaPayload)initWithCoder:(id)a3;
-- (_MSMessageMediaPayload)initWithIMSticker:(id)a3;
-- (_MSMessageMediaPayload)initWithSticker:(id)a3;
-- (id)convertToStickerWithExtensionIdentifier:(id)a3;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setMediaURL:(id)a3;
+- (_MSMessageMediaPayload)initWithCoder:(id)coder;
+- (_MSMessageMediaPayload)initWithIMSticker:(id)sticker;
+- (_MSMessageMediaPayload)initWithSticker:(id)sticker;
+- (id)convertToStickerWithExtensionIdentifier:(id)identifier;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
+- (void)setImage:(id)image;
+- (void)setMediaURL:(id)l;
 @end
 
 @implementation _MSMessageMediaPayload
 
-- (id)convertToStickerWithExtensionIdentifier:(id)a3
+- (id)convertToStickerWithExtensionIdentifier:(id)identifier
 {
   v79 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if (![(_MSMessageMediaPayload *)self isSticker])
   {
     v10 = 0;
     goto LABEL_49;
   }
 
-  v5 = [(_MSMessageMediaPayload *)self stickerRepresentations];
-  v71 = v4;
-  if (!v5 || (v6 = v5, [(_MSMessageMediaPayload *)self stickerStoreIdentifier], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
+  stickerRepresentations = [(_MSMessageMediaPayload *)self stickerRepresentations];
+  v71 = identifierCopy;
+  if (!stickerRepresentations || (v6 = stickerRepresentations, [(_MSMessageMediaPayload *)self stickerStoreIdentifier], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
   {
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [(_MSMessageMediaPayload *)self mediaURL];
-    v13 = [v12 path];
+    mediaURL = [(_MSMessageMediaPayload *)self mediaURL];
+    path = [mediaURL path];
     v14 = IMSharedHelperMD5HashOfFileAtPath();
     v15 = [v11 stringWithFormat:@"%@-sticker", v14];
 
-    v16 = [(_MSMessageMediaPayload *)self mediaURL];
-    v17 = [v16 pathExtension];
+    mediaURL2 = [(_MSMessageMediaPayload *)self mediaURL];
+    pathExtension = [mediaURL2 pathExtension];
 
-    v70 = v17;
-    if (v17)
+    v70 = pathExtension;
+    if (pathExtension)
     {
-      v18 = [v15 stringByAppendingPathExtension:v17];
+      v18 = [v15 stringByAppendingPathExtension:pathExtension];
 
       v15 = v18;
     }
 
-    v19 = [MEMORY[0x1E696AC08] defaultManager];
-    v20 = [v19 im_randomTemporaryFileURLWithFileName:v15];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v20 = [defaultManager im_randomTemporaryFileURLWithFileName:v15];
 
     v72 = v20;
     if (v20 && ([(_MSMessageMediaPayload *)self mediaURL], v21 = objc_claimAutoreleasedReturnValue(), v21, v21))
     {
-      v22 = [MEMORY[0x1E696AC08] defaultManager];
-      v23 = [(_MSMessageMediaPayload *)self mediaURL];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      mediaURL3 = [(_MSMessageMediaPayload *)self mediaURL];
       v74 = 0;
-      v24 = [v22 copyItemAtURL:v23 toURL:v20 error:&v74];
+      v24 = [defaultManager2 copyItemAtURL:mediaURL3 toURL:v20 error:&v74];
       v25 = v74;
 
       if (!v24 || !v25)
@@ -77,11 +77,11 @@
       v26 = ms_defaultLog();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [(_MSMessageMediaPayload *)self mediaURL];
+        mediaURL4 = [(_MSMessageMediaPayload *)self mediaURL];
         *buf = 138412546;
         v76 = v20;
         v77 = 2112;
-        v78 = v27;
+        v78 = mediaURL4;
         _os_log_impl(&dword_1CADE6000, v26, OS_LOG_TYPE_DEFAULT, "_MSMessageMediaPayload: Cannot copy sticker file: %@ to %@, because either the source or destination file URL is nil. This may be expected if the original sticker did not have a file URL", buf, 0x16u);
       }
 
@@ -90,101 +90,101 @@
 
 LABEL_19:
     v28 = v15;
-    v29 = v4;
+    v29 = identifierCopy;
     v67 = v25;
     if (+[_MSPresentationState isRunningInCameraContext])
     {
-      v30 = [(_MSMessageMediaPayload *)self mediaFilename];
-      if (!v30)
+      mediaFilename = [(_MSMessageMediaPayload *)self mediaFilename];
+      if (!mediaFilename)
       {
-        v31 = [(_MSMessageMediaPayload *)self mediaURL];
-        v30 = [v31 lastPathComponent];
+        mediaURL5 = [(_MSMessageMediaPayload *)self mediaURL];
+        mediaFilename = [mediaURL5 lastPathComponent];
       }
     }
 
     else
     {
-      v30 = 0;
+      mediaFilename = 0;
     }
 
     v32 = objc_alloc(MEMORY[0x1E69A82C0]);
-    v33 = [(_MSMessageMediaPayload *)self accessibilityLabel];
-    v34 = [(_MSMessageMediaPayload *)self accessibilityName];
-    v35 = [(_MSMessageMediaPayload *)self searchText];
-    v36 = [(_MSMessageMediaPayload *)self sanitizedPrompt];
-    v10 = [v32 initWithStickerID:v28 stickerPackID:v29 fileURL:v72 accessibilityLabel:v33 accessibilityName:v34 searchText:v35 sanitizedPrompt:v36 moodCategory:0 stickerName:v30];
+    accessibilityLabel = [(_MSMessageMediaPayload *)self accessibilityLabel];
+    accessibilityName = [(_MSMessageMediaPayload *)self accessibilityName];
+    searchText = [(_MSMessageMediaPayload *)self searchText];
+    sanitizedPrompt = [(_MSMessageMediaPayload *)self sanitizedPrompt];
+    v10 = [v32 initWithStickerID:v28 stickerPackID:v29 fileURL:v72 accessibilityLabel:accessibilityLabel accessibilityName:accessibilityName searchText:searchText sanitizedPrompt:sanitizedPrompt moodCategory:0 stickerName:mediaFilename];
 
-    v37 = [(_MSMessageMediaPayload *)self stickerRepresentations];
+    stickerRepresentations2 = [(_MSMessageMediaPayload *)self stickerRepresentations];
 
-    if (v37)
+    if (stickerRepresentations2)
     {
-      v38 = [(_MSMessageMediaPayload *)self stickerRepresentations];
-      [v10 setRepresentations:v38];
+      stickerRepresentations3 = [(_MSMessageMediaPayload *)self stickerRepresentations];
+      [v10 setRepresentations:stickerRepresentations3];
     }
 
-    v39 = [(_MSMessageMediaPayload *)self externalURI];
+    externalURI = [(_MSMessageMediaPayload *)self externalURI];
 
-    if (v39)
+    if (externalURI)
     {
-      v40 = [(_MSMessageMediaPayload *)self externalURI];
-      [v10 setExternalURI:v40];
+      externalURI2 = [(_MSMessageMediaPayload *)self externalURI];
+      [v10 setExternalURI:externalURI2];
     }
 
-    v41 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v42 = [v41 isStickersAppEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isStickersAppEnabled = [mEMORY[0x1E69A8070] isStickersAppEnabled];
 
-    if (v42 && [(_MSMessageMediaPayload *)self stickerEffectType])
+    if (isStickersAppEnabled && [(_MSMessageMediaPayload *)self stickerEffectType])
     {
       [v10 setStickerEffectType:{-[_MSMessageMediaPayload stickerEffectType](self, "stickerEffectType")}];
     }
 
-    v4 = v71;
+    identifierCopy = v71;
     goto LABEL_33;
   }
 
-  v8 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v9 = [v8 isClingEnabled];
+  mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isClingEnabled = [mEMORY[0x1E69A8070]2 isClingEnabled];
 
-  if (v9)
+  if (isClingEnabled)
   {
-    v69 = [(_MSMessageMediaPayload *)self stickerEffectType];
+    stickerEffectType = [(_MSMessageMediaPayload *)self stickerEffectType];
   }
 
   else
   {
-    v69 = -1;
+    stickerEffectType = -1;
   }
 
   v68 = objc_alloc(MEMORY[0x1E69A82C0]);
-  v73 = [(_MSMessageMediaPayload *)self stickerStoreIdentifier];
-  v65 = [v73 UUIDString];
-  v43 = [(_MSMessageMediaPayload *)self stickerRepresentations];
-  v66 = [(_MSMessageMediaPayload *)self initialFrameIndex];
-  v44 = [(_MSMessageMediaPayload *)self externalURI];
-  v45 = [(_MSMessageMediaPayload *)self stickerName];
-  v64 = [(_MSMessageMediaPayload *)self accessibilityLabel];
-  v46 = [(_MSMessageMediaPayload *)self accessibilityName];
-  v47 = [(_MSMessageMediaPayload *)self searchText];
-  v48 = [(_MSMessageMediaPayload *)self sanitizedPrompt];
-  v49 = [(_MSMessageMediaPayload *)self stickerMetadata];
-  v10 = [v68 initWithStickerIdentifier:v65 stickerPackID:v4 representations:v43 effectType:v69 initialFrameIndex:v66 externalURI:v44 stickerName:v45 accessibilityLabel:v64 accessibilityName:v46 searchText:v47 sanitizedPrompt:v48 metadata:v49];
+  stickerStoreIdentifier = [(_MSMessageMediaPayload *)self stickerStoreIdentifier];
+  uUIDString = [stickerStoreIdentifier UUIDString];
+  stickerRepresentations4 = [(_MSMessageMediaPayload *)self stickerRepresentations];
+  initialFrameIndex = [(_MSMessageMediaPayload *)self initialFrameIndex];
+  externalURI3 = [(_MSMessageMediaPayload *)self externalURI];
+  stickerName = [(_MSMessageMediaPayload *)self stickerName];
+  accessibilityLabel2 = [(_MSMessageMediaPayload *)self accessibilityLabel];
+  accessibilityName2 = [(_MSMessageMediaPayload *)self accessibilityName];
+  searchText2 = [(_MSMessageMediaPayload *)self searchText];
+  sanitizedPrompt2 = [(_MSMessageMediaPayload *)self sanitizedPrompt];
+  stickerMetadata = [(_MSMessageMediaPayload *)self stickerMetadata];
+  v10 = [v68 initWithStickerIdentifier:uUIDString stickerPackID:identifierCopy representations:stickerRepresentations4 effectType:stickerEffectType initialFrameIndex:initialFrameIndex externalURI:externalURI3 stickerName:stickerName accessibilityLabel:accessibilityLabel2 accessibilityName:accessibilityName2 searchText:searchText2 sanitizedPrompt:sanitizedPrompt2 metadata:stickerMetadata];
 
 LABEL_33:
   v50 = IMBalloonExtensionIDWithSuffix();
-  v51 = [v4 isEqualToString:v50];
+  v51 = [identifierCopy isEqualToString:v50];
 
   if (v51)
   {
-    v52 = [(_MSMessageMediaPayload *)self animatedImageCacheURL];
-    [v10 setAnimatedImageCacheURLFromExtension:v52];
+    animatedImageCacheURL = [(_MSMessageMediaPayload *)self animatedImageCacheURL];
+    [v10 setAnimatedImageCacheURLFromExtension:animatedImageCacheURL];
   }
 
-  v53 = [MEMORY[0x1E69A5AD0] sharedInstance];
-  v54 = [v53 balloonPluginForBundleID:v4];
+  mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+  v54 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:identifierCopy];
 
   if (v54)
   {
-    v55 = v54;
+    selfCopy = v54;
   }
 
   else
@@ -195,11 +195,11 @@ LABEL_33:
       [_MSMessageMediaPayload convertToStickerWithExtensionIdentifier:];
     }
 
-    v55 = self;
+    selfCopy = self;
   }
 
-  v57 = [(_MSMessageMediaPayload *)v55 attributionInfo];
-  v58 = [v57 mutableCopy];
+  attributionInfo = [(_MSMessageMediaPayload *)selfCopy attributionInfo];
+  v58 = [attributionInfo mutableCopy];
 
   if (!v58)
   {
@@ -218,10 +218,10 @@ LABEL_33:
     v58 = Mutable;
   }
 
-  v61 = [v10 accessibilityLabel];
-  if (v61)
+  accessibilityLabel3 = [v10 accessibilityLabel];
+  if (accessibilityLabel3)
   {
-    CFDictionarySetValue(v58, *MEMORY[0x1E69A6F98], v61);
+    CFDictionarySetValue(v58, *MEMORY[0x1E69A6F98], accessibilityLabel3);
   }
 
   v62 = [(__CFDictionary *)v58 copy];
@@ -232,51 +232,51 @@ LABEL_49:
   return v10;
 }
 
-- (_MSMessageMediaPayload)initWithSticker:(id)a3
+- (_MSMessageMediaPayload)initWithSticker:(id)sticker
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stickerCopy = sticker;
   v40.receiver = self;
   v40.super_class = _MSMessageMediaPayload;
   v5 = [(_MSMessageMediaPayload *)&v40 init];
   if (v5)
   {
-    v6 = [v4 imageFileURL];
+    imageFileURL = [stickerCopy imageFileURL];
     mediaURL = v5->_mediaURL;
-    v5->_mediaURL = v6;
+    v5->_mediaURL = imageFileURL;
 
-    v8 = [v4 localizedDescription];
+    localizedDescription = [stickerCopy localizedDescription];
     accessibilityLabel = v5->_accessibilityLabel;
-    v5->_accessibilityLabel = v8;
+    v5->_accessibilityLabel = localizedDescription;
 
     v5->_isSticker = 1;
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v4 data];
+      data = [stickerCopy data];
       data = v5->_data;
-      v5->_data = v10;
+      v5->_data = data;
     }
 
-    v12 = [v4 stickerPackGUID];
+    stickerPackGUID = [stickerCopy stickerPackGUID];
     stickerPackGUID = v5->_stickerPackGUID;
-    v5->_stickerPackGUID = v12;
+    v5->_stickerPackGUID = stickerPackGUID;
 
-    v14 = [v4 representations];
+    representations = [stickerCopy representations];
     stickerRepresentations = v5->_stickerRepresentations;
-    v5->_stickerRepresentations = v14;
+    v5->_stickerRepresentations = representations;
 
-    v16 = [v4 externalURI];
+    externalURI = [stickerCopy externalURI];
     externalURI = v5->_externalURI;
-    v5->_externalURI = v16;
+    v5->_externalURI = externalURI;
 
-    v18 = [v4 stickerIdentifier];
+    stickerIdentifier = [stickerCopy stickerIdentifier];
     stickerStoreIdentifier = v5->_stickerStoreIdentifier;
-    v5->_stickerStoreIdentifier = v18;
+    v5->_stickerStoreIdentifier = stickerIdentifier;
 
-    v5->_stickerEffectType = [v4 stickerEffectType];
-    v20 = [v4 attributionInfo];
+    v5->_stickerEffectType = [stickerCopy stickerEffectType];
+    attributionInfo = [stickerCopy attributionInfo];
     attributionInfo = v5->_attributionInfo;
-    v5->_attributionInfo = v20;
+    v5->_attributionInfo = attributionInfo;
 
     if (!v5->_attributionInfo)
     {
@@ -287,9 +287,9 @@ LABEL_49:
       }
     }
 
-    v23 = [v4 animatedImageCacheURL];
+    animatedImageCacheURL = [stickerCopy animatedImageCacheURL];
     animatedImageCacheURL = v5->_animatedImageCacheURL;
-    v5->_animatedImageCacheURL = v23;
+    v5->_animatedImageCacheURL = animatedImageCacheURL;
 
     v25 = *MEMORY[0x1E69A6FB0];
     v26 = [(NSDictionary *)v5->_attributionInfo objectForKey:*MEMORY[0x1E69A6FB0]];
@@ -307,8 +307,8 @@ LABEL_49:
 
         v28 = MEMORY[0x1E69A6980];
 LABEL_13:
-        v29 = *v28;
-        if (!v29)
+        bundleIdentifier = *v28;
+        if (!bundleIdentifier)
         {
           goto LABEL_25;
         }
@@ -334,37 +334,37 @@ LABEL_13:
         goto LABEL_13;
       }
 
-      v30 = [MEMORY[0x1E696AAE8] mainBundle];
-      v29 = [v30 bundleIdentifier];
-      if (v29)
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      if (bundleIdentifier)
       {
         v31 = ms_defaultLog();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v42 = v29;
+          v42 = bundleIdentifier;
           _os_log_impl(&dword_1CADE6000, v31, OS_LOG_TYPE_DEFAULT, "MSMessageMediaPayload: No bundle ID in attribution info, but inferred the bundle ID from 3rd party extension: %@", buf, 0xCu);
         }
 
-        v32 = v29;
+        v32 = bundleIdentifier;
       }
 
-      if (v29)
+      if (bundleIdentifier)
       {
 LABEL_21:
         v33 = v5->_attributionInfo;
         if (v33)
         {
-          v34 = [(NSDictionary *)v33 mutableCopy];
+          dictionary = [(NSDictionary *)v33 mutableCopy];
         }
 
         else
         {
-          v34 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
         }
 
-        v35 = v34;
-        [v34 setObject:v29 forKey:v25];
+        v35 = dictionary;
+        [dictionary setObject:bundleIdentifier forKey:v25];
         v36 = [v35 copy];
         v37 = v5->_attributionInfo;
         v5->_attributionInfo = v36;
@@ -377,57 +377,57 @@ LABEL_25:
   return v5;
 }
 
-- (_MSMessageMediaPayload)initWithIMSticker:(id)a3
+- (_MSMessageMediaPayload)initWithIMSticker:(id)sticker
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stickerCopy = sticker;
   v49.receiver = self;
   v49.super_class = _MSMessageMediaPayload;
   v5 = [(_MSMessageMediaPayload *)&v49 init];
   if (v5)
   {
-    v6 = [v4 fileURL];
+    fileURL = [stickerCopy fileURL];
     mediaURL = v5->_mediaURL;
-    v5->_mediaURL = v6;
+    v5->_mediaURL = fileURL;
 
-    v8 = [v4 accessibilityLabel];
+    accessibilityLabel = [stickerCopy accessibilityLabel];
     accessibilityLabel = v5->_accessibilityLabel;
-    v5->_accessibilityLabel = v8;
+    v5->_accessibilityLabel = accessibilityLabel;
 
-    v10 = [v4 accessibilityName];
+    accessibilityName = [stickerCopy accessibilityName];
     accessibilityName = v5->_accessibilityName;
-    v5->_accessibilityName = v10;
+    v5->_accessibilityName = accessibilityName;
 
-    v12 = [v4 searchText];
+    searchText = [stickerCopy searchText];
     searchText = v5->_searchText;
-    v5->_searchText = v12;
+    v5->_searchText = searchText;
 
-    v14 = [v4 sanitizedPrompt];
+    sanitizedPrompt = [stickerCopy sanitizedPrompt];
     sanitizedPrompt = v5->_sanitizedPrompt;
-    v5->_sanitizedPrompt = v14;
+    v5->_sanitizedPrompt = sanitizedPrompt;
 
     v5->_isSticker = 1;
-    v16 = [v4 stickerPackGUID];
+    stickerPackGUID = [stickerCopy stickerPackGUID];
     stickerPackGUID = v5->_stickerPackGUID;
-    v5->_stickerPackGUID = v16;
+    v5->_stickerPackGUID = stickerPackGUID;
 
-    v18 = [v4 representations];
+    representations = [stickerCopy representations];
     stickerRepresentations = v5->_stickerRepresentations;
-    v5->_stickerRepresentations = v18;
+    v5->_stickerRepresentations = representations;
 
-    v20 = [v4 externalURI];
+    externalURI = [stickerCopy externalURI];
     externalURI = v5->_externalURI;
-    v5->_externalURI = v20;
+    v5->_externalURI = externalURI;
 
     v22 = objc_alloc(MEMORY[0x1E696AFB0]);
-    v23 = [v4 uniqueID];
-    v24 = [v22 initWithUUIDString:v23];
+    uniqueID = [stickerCopy uniqueID];
+    v24 = [v22 initWithUUIDString:uniqueID];
     stickerStoreIdentifier = v5->_stickerStoreIdentifier;
     v5->_stickerStoreIdentifier = v24;
 
-    v5->_stickerEffectType = [v4 stickerEffectType];
-    v26 = [v4 attributionInfo];
-    v27 = [v26 copy];
+    v5->_stickerEffectType = [stickerCopy stickerEffectType];
+    attributionInfo = [stickerCopy attributionInfo];
+    v27 = [attributionInfo copy];
     attributionInfo = v5->_attributionInfo;
     v5->_attributionInfo = v27;
 
@@ -440,14 +440,14 @@ LABEL_25:
       }
     }
 
-    v30 = [v4 ballonBundleID];
-    v31 = [v30 containsString:*MEMORY[0x1E69A69F0]];
+    ballonBundleID = [stickerCopy ballonBundleID];
+    v31 = [ballonBundleID containsString:*MEMORY[0x1E69A69F0]];
 
     if ((v31 & 1) == 0)
     {
-      v32 = [v4 animatedImageCacheURLFromExtension];
+      animatedImageCacheURLFromExtension = [stickerCopy animatedImageCacheURLFromExtension];
       animatedImageCacheURL = v5->_animatedImageCacheURL;
-      v5->_animatedImageCacheURL = v32;
+      v5->_animatedImageCacheURL = animatedImageCacheURLFromExtension;
     }
 
     v34 = *MEMORY[0x1E69A6FB0];
@@ -466,8 +466,8 @@ LABEL_25:
 
         v37 = MEMORY[0x1E69A6980];
 LABEL_13:
-        v38 = *v37;
-        if (!v38)
+        bundleIdentifier = *v37;
+        if (!bundleIdentifier)
         {
           goto LABEL_25;
         }
@@ -493,37 +493,37 @@ LABEL_13:
         goto LABEL_13;
       }
 
-      v39 = [MEMORY[0x1E696AAE8] mainBundle];
-      v38 = [v39 bundleIdentifier];
-      if (v38)
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      if (bundleIdentifier)
       {
         v40 = ms_defaultLog();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v51 = v38;
+          v51 = bundleIdentifier;
           _os_log_impl(&dword_1CADE6000, v40, OS_LOG_TYPE_DEFAULT, "MSMessageMediaPayload: No bundle ID in attribution info, but inferred the bundle ID from 3rd party extension: %@", buf, 0xCu);
         }
 
-        v41 = v38;
+        v41 = bundleIdentifier;
       }
 
-      if (v38)
+      if (bundleIdentifier)
       {
 LABEL_21:
         v42 = v5->_attributionInfo;
         if (v42)
         {
-          v43 = [(NSDictionary *)v42 mutableCopy];
+          dictionary = [(NSDictionary *)v42 mutableCopy];
         }
 
         else
         {
-          v43 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
         }
 
-        v44 = v43;
-        [v43 setObject:v38 forKey:v34];
+        v44 = dictionary;
+        [dictionary setObject:bundleIdentifier forKey:v34];
         v45 = [v44 copy];
         v46 = v5->_attributionInfo;
         v5->_attributionInfo = v45;
@@ -586,61 +586,61 @@ LABEL_25:
   return v3;
 }
 
-- (_MSMessageMediaPayload)initWithCoder:(id)a3
+- (_MSMessageMediaPayload)initWithCoder:(id)coder
 {
   v60[6] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v57.receiver = self;
   v57.super_class = _MSMessageMediaPayload;
   v5 = [(_MSMessageMediaPayload *)&v57 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mediaType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mediaType"];
     v7 = *(v5 + 4);
     *(v5 + 4) = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mediaData"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mediaData"];
     v9 = *(v5 + 7);
     *(v5 + 7) = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mediaFilename"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mediaFilename"];
     v11 = *(v5 + 8);
     *(v5 + 8) = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     v13 = *(v5 + 6);
     *(v5 + 6) = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
     v15 = *(v5 + 9);
     *(v5 + 9) = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gpRecipeData"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gpRecipeData"];
     v17 = *(v5 + 17);
     *(v5 + 17) = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityLabel"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityLabel"];
     v19 = *(v5 + 10);
     *(v5 + 10) = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityName"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityName"];
     v21 = *(v5 + 11);
     *(v5 + 11) = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"searchText"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"searchText"];
     v23 = *(v5 + 12);
     *(v5 + 12) = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sanitizedPrompt"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sanitizedPrompt"];
     v25 = *(v5 + 13);
     *(v5 + 13) = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stickerPackGUID"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stickerPackGUID"];
     v27 = *(v5 + 15);
     *(v5 + 15) = v26;
 
-    v5[8] = [v4 decodeBoolForKey:@"isSticker"];
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceFrame"];
+    v5[8] = [coderCopy decodeBoolForKey:@"isSticker"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceFrame"];
     v29 = v28;
     if (v28)
     {
@@ -658,30 +658,30 @@ LABEL_25:
       *(v5 + 216) = v34;
     }
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"initialFrameIndex"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"initialFrameIndex"];
     *(v5 + 18) = [v35 unsignedIntegerValue];
     v36 = NSClassFromString(&cfstr_Uistickerrepre.isa);
     if (v36)
     {
-      v37 = [v4 decodeArrayOfObjectsOfClass:v36 forKey:@"stickerRepresentations"];
+      v37 = [coderCopy decodeArrayOfObjectsOfClass:v36 forKey:@"stickerRepresentations"];
       v38 = *(v5 + 19);
       *(v5 + 19) = v37;
     }
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalURI"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalURI"];
     v40 = *(v5 + 20);
     *(v5 + 20) = v39;
 
-    v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stickerStoreIdentifier"];
+    v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stickerStoreIdentifier"];
     v42 = *(v5 + 21);
     *(v5 + 21) = v41;
 
-    v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stickerName"];
+    v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stickerName"];
     v44 = *(v5 + 22);
     *(v5 + 22) = v43;
 
-    v45 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attributionInfoData"];
-    *(v5 + 5) = [v4 decodeIntForKey:@"stickerEffectType"];
+    v45 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attributionInfoData"];
+    *(v5 + 5) = [coderCopy decodeIntForKey:@"stickerEffectType"];
     v46 = MEMORY[0x1E695DFD8];
     v60[0] = objc_opt_class();
     v60[1] = objc_opt_class();
@@ -708,7 +708,7 @@ LABEL_25:
     v51 = *(v5 + 14);
     *(v5 + 14) = v49;
 
-    v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"animatedImageCacheURL"];
+    v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"animatedImageCacheURL"];
     v53 = *(v5 + 24);
     *(v5 + 24) = v52;
 
@@ -727,12 +727,12 @@ LABEL_25:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v15 = a3;
+  coderCopy = coder;
   v4 = self->_mediaData;
   v5 = self->_mediaType;
-  v6 = self->_mediaFilename;
+  lastPathComponent = self->_mediaFilename;
   if (v4)
   {
     v7 = v5 == 0;
@@ -751,60 +751,60 @@ LABEL_25:
   image = self->_image;
   if (image)
   {
-    v9 = [(UIImage *)image __ms_PNGData];
+    __ms_PNGData = [(UIImage *)image __ms_PNGData];
 
-    v10 = *MEMORY[0x1E6963860];
+    __ms_UTI = *MEMORY[0x1E6963860];
     goto LABEL_12;
   }
 
   mediaURL = self->_mediaURL;
   if (mediaURL)
   {
-    v9 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:mediaURL options:8 error:0];
+    __ms_PNGData = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:mediaURL options:8 error:0];
 
-    v10 = [(NSURL *)self->_mediaURL __ms_UTI];
+    __ms_UTI = [(NSURL *)self->_mediaURL __ms_UTI];
 
-    if (!v6)
+    if (!lastPathComponent)
     {
-      v6 = [(NSURL *)self->_mediaURL lastPathComponent];
+      lastPathComponent = [(NSURL *)self->_mediaURL lastPathComponent];
     }
   }
 
   else
   {
 LABEL_11:
-    v9 = v4;
-    v10 = v5;
+    __ms_PNGData = v4;
+    __ms_UTI = v5;
   }
 
 LABEL_12:
-  [v15 encodeObject:v10 forKey:@"mediaType"];
-  [v15 encodeObject:v9 forKey:@"mediaData"];
-  [v15 encodeObject:v6 forKey:@"mediaFilename"];
-  [v15 encodeObject:self->_text forKey:@"text"];
-  [v15 encodeObject:self->_data forKey:@"data"];
-  [v15 encodeObject:self->_generativePlaygroundRecipeData forKey:@"gpRecipeData"];
-  [v15 encodeObject:self->_accessibilityLabel forKey:@"accessibilityLabel"];
-  [v15 encodeObject:self->_accessibilityName forKey:@"accessibilityName"];
-  [v15 encodeObject:self->_searchText forKey:@"searchText"];
-  [v15 encodeObject:self->_sanitizedPrompt forKey:@"sanitizedPrompt"];
-  [v15 encodeObject:self->_stickerPackGUID forKey:@"stickerPackGUID"];
-  [v15 encodeBool:self->_isSticker forKey:@"isSticker"];
+  [coderCopy encodeObject:__ms_UTI forKey:@"mediaType"];
+  [coderCopy encodeObject:__ms_PNGData forKey:@"mediaData"];
+  [coderCopy encodeObject:lastPathComponent forKey:@"mediaFilename"];
+  [coderCopy encodeObject:self->_text forKey:@"text"];
+  [coderCopy encodeObject:self->_data forKey:@"data"];
+  [coderCopy encodeObject:self->_generativePlaygroundRecipeData forKey:@"gpRecipeData"];
+  [coderCopy encodeObject:self->_accessibilityLabel forKey:@"accessibilityLabel"];
+  [coderCopy encodeObject:self->_accessibilityName forKey:@"accessibilityName"];
+  [coderCopy encodeObject:self->_searchText forKey:@"searchText"];
+  [coderCopy encodeObject:self->_sanitizedPrompt forKey:@"sanitizedPrompt"];
+  [coderCopy encodeObject:self->_stickerPackGUID forKey:@"stickerPackGUID"];
+  [coderCopy encodeBool:self->_isSticker forKey:@"isSticker"];
   v12 = [MEMORY[0x1E696B098] valueWithCGRect:{self->_sourceFrame.origin.x, self->_sourceFrame.origin.y, self->_sourceFrame.size.width, self->_sourceFrame.size.height}];
-  [v15 encodeObject:v12 forKey:@"sourceFrame"];
+  [coderCopy encodeObject:v12 forKey:@"sourceFrame"];
 
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_initialFrameIndex];
-  [v15 encodeObject:v13 forKey:@"initialFrameIndex"];
+  [coderCopy encodeObject:v13 forKey:@"initialFrameIndex"];
 
-  [v15 encodeObject:self->_stickerRepresentations forKey:@"stickerRepresentations"];
-  [v15 encodeObject:self->_externalURI forKey:@"externalURI"];
-  [v15 encodeObject:self->_stickerStoreIdentifier forKey:@"stickerStoreIdentifier"];
-  [v15 encodeObject:self->_stickerName forKey:@"stickerName"];
-  [v15 encodeObject:self->_animatedImageCacheURL forKey:@"animatedImageCacheURL"];
+  [coderCopy encodeObject:self->_stickerRepresentations forKey:@"stickerRepresentations"];
+  [coderCopy encodeObject:self->_externalURI forKey:@"externalURI"];
+  [coderCopy encodeObject:self->_stickerStoreIdentifier forKey:@"stickerStoreIdentifier"];
+  [coderCopy encodeObject:self->_stickerName forKey:@"stickerName"];
+  [coderCopy encodeObject:self->_animatedImageCacheURL forKey:@"animatedImageCacheURL"];
   v14 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self->_attributionInfo requiringSecureCoding:1 error:0];
-  [v15 encodeObject:v14 forKey:@"attributionInfoData"];
+  [coderCopy encodeObject:v14 forKey:@"attributionInfoData"];
 
-  [v15 encodeInteger:self->_stickerEffectType forKey:@"stickerEffectType"];
+  [coderCopy encodeInteger:self->_stickerEffectType forKey:@"stickerEffectType"];
 }
 
 - (_MSMessageMediaPayload)init
@@ -814,9 +814,9 @@ LABEL_12:
   return [(_MSMessageMediaPayload *)&v3 init];
 }
 
-- (void)setMediaURL:(id)a3
+- (void)setMediaURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   mediaType = self->_mediaType;
   self->_mediaType = 0;
 
@@ -824,7 +824,7 @@ LABEL_12:
   self->_mediaData = 0;
 
   mediaURL = self->_mediaURL;
-  self->_mediaURL = v4;
+  self->_mediaURL = lCopy;
 }
 
 - (NSURL)mediaURL
@@ -851,9 +851,9 @@ LABEL_12:
   return mediaURL;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   mediaType = self->_mediaType;
   self->_mediaType = 0;
 
@@ -861,7 +861,7 @@ LABEL_12:
   self->_mediaData = 0;
 
   image = self->_image;
-  self->_image = v4;
+  self->_image = imageCopy;
 }
 
 - (UIImage)image
@@ -888,34 +888,34 @@ LABEL_12:
   return v3;
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
-  v6 = a4;
-  if ([a3 isEqualToString:@"com.apple.sticker.mediaPayload"])
+  handlerCopy = handler;
+  if ([identifier isEqualToString:@"com.apple.sticker.mediaPayload"])
   {
     v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
-    v6[2](v6, v7, 0);
+    handlerCopy[2](handlerCopy, v7, 0);
   }
 
   else
   {
     v7 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:8675309 userInfo:0];
-    (v6)[2](v6, 0, v7);
+    (handlerCopy)[2](handlerCopy, 0, v7);
   }
 
   return 0;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
   v12 = 0;
-  v6 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:a1 fromData:a3 error:&v12];
+  v6 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:self fromData:data error:&v12];
   v7 = v12;
   v8 = v7;
-  if (a5 && !v6)
+  if (error && !v6)
   {
     v9 = v7;
-    *a5 = v8;
+    *error = v8;
     v10 = ms_defaultLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {

@@ -1,13 +1,13 @@
 @interface AVInterstitialDateRange
 - ($DAC8C9F726BD0D1F2E1B8C1A0D399779)timeRange;
-- (AVInterstitialDateRange)initWithStart:(id)a3 end:(id)a4;
-- (AVInterstitialDateRange)initWithTimeRange:(id *)a3;
-- (BOOL)isEqualToInterstitialTimeRange:(id)a3;
-- (id)_initWithTimeRange:(id *)a3;
+- (AVInterstitialDateRange)initWithStart:(id)start end:(id)end;
+- (AVInterstitialDateRange)initWithTimeRange:(id *)range;
+- (BOOL)isEqualToInterstitialTimeRange:(id)range;
+- (id)_initWithTimeRange:(id *)range;
 - (id)description;
-- (void)_setPlayerInterstitialEvent:(id)a3;
+- (void)_setPlayerInterstitialEvent:(id)event;
 - (void)_updateMappedStartTime;
-- (void)setEndDate:(id)a3;
+- (void)setEndDate:(id)date;
 @end
 
 @implementation AVInterstitialDateRange
@@ -18,27 +18,27 @@
   v9.super_class = AVInterstitialDateRange;
   v3 = [(AVInterstitialTimeRange *)&v9 description];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(AVInterstitialDateRange *)self startDate];
-  v6 = [(AVInterstitialDateRange *)self endDate];
-  v7 = [v4 stringWithFormat:@"[%@...%@] %@", v5, v6, v3];;
+  startDate = [(AVInterstitialDateRange *)self startDate];
+  endDate = [(AVInterstitialDateRange *)self endDate];
+  v7 = [v4 stringWithFormat:@"[%@...%@] %@", startDate, endDate, v3];;
 
   return v7;
 }
 
-- (BOOL)isEqualToInterstitialTimeRange:(id)a3
+- (BOOL)isEqualToInterstitialTimeRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(AVInterstitialDateRange *)self startDate];
-    v7 = [v5 startDate];
-    if ([v6 isEqualToDate:v7])
+    v5 = rangeCopy;
+    startDate = [(AVInterstitialDateRange *)self startDate];
+    startDate2 = [v5 startDate];
+    if ([startDate isEqualToDate:startDate2])
     {
-      v8 = [(AVInterstitialDateRange *)self endDate];
-      v9 = [v5 endDate];
-      if ([v8 isEqualToDate:v9])
+      endDate = [(AVInterstitialDateRange *)self endDate];
+      endDate2 = [v5 endDate];
+      if ([endDate isEqualToDate:endDate2])
       {
         v12.receiver = self;
         v12.super_class = AVInterstitialDateRange;
@@ -88,38 +88,38 @@
   return result;
 }
 
-- (void)_setPlayerInterstitialEvent:(id)a3
+- (void)_setPlayerInterstitialEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = AVInterstitialDateRange;
-  [(AVInterstitialTimeRange *)&v4 _setPlayerInterstitialEvent:a3];
+  [(AVInterstitialTimeRange *)&v4 _setPlayerInterstitialEvent:event];
   [(AVInterstitialDateRange *)self _updateMappedStartTime];
 }
 
 - (void)_updateMappedStartTime
 {
-  v3 = [(AVInterstitialTimeRange *)self playerInterstitialEvent];
-  v4 = [v3 primaryItem];
+  playerInterstitialEvent = [(AVInterstitialTimeRange *)self playerInterstitialEvent];
+  primaryItem = [playerInterstitialEvent primaryItem];
 
-  if ([v4 status] == 1)
+  if ([primaryItem status] == 1)
   {
-    v5 = [v4 currentDate];
-    v6 = v5;
-    if (v5)
+    currentDate = [primaryItem currentDate];
+    v6 = currentDate;
+    if (currentDate)
     {
-      v7 = v5;
+      currentEstimatedDate = currentDate;
     }
 
     else
     {
-      v7 = [v4 currentEstimatedDate];
+      currentEstimatedDate = [primaryItem currentEstimatedDate];
     }
 
-    v8 = v7;
+    v8 = currentEstimatedDate;
 
-    if (v4)
+    if (primaryItem)
     {
-      [v4 currentTime];
+      [primaryItem currentTime];
     }
 
     else
@@ -139,12 +139,12 @@
       v14 = MEMORY[0x1E6960CC0];
       *&self->_mappedTimeRange.duration.value = *MEMORY[0x1E6960CC0];
       self->_mappedTimeRange.duration.epoch = *(v14 + 16);
-      if (v4)
+      if (primaryItem)
       {
-        [v4 duration];
+        [primaryItem duration];
         if (v17)
         {
-          [v4 duration];
+          [primaryItem duration];
           v15 = (v16 & 0x10) == 0;
         }
 
@@ -164,37 +164,37 @@
   }
 }
 
-- (void)setEndDate:(id)a3
+- (void)setEndDate:(id)date
 {
-  v5 = a3;
-  if (v5)
+  dateCopy = date;
+  if (dateCopy)
   {
     if (!self->_endDate)
     {
-      v7 = v5;
-      [v5 timeIntervalSinceDate:self->_startDate];
-      v5 = v7;
+      v7 = dateCopy;
+      [dateCopy timeIntervalSinceDate:self->_startDate];
+      dateCopy = v7;
       if (v6 > 0.0)
       {
-        objc_storeStrong(&self->_endDate, a3);
+        objc_storeStrong(&self->_endDate, date);
         [v7 timeIntervalSinceDate:self->_startDate];
         [(AVInterstitialTimeRange *)self _setDurationTimeInterval:?];
-        v5 = v7;
+        dateCopy = v7;
       }
     }
   }
 }
 
-- (AVInterstitialDateRange)initWithStart:(id)a3 end:(id)a4
+- (AVInterstitialDateRange)initWithStart:(id)start end:(id)end
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  startCopy = start;
+  endCopy = end;
+  v9 = endCopy;
   memset(&v24, 0, sizeof(v24));
   v10 = MEMORY[0x1E6960C68];
-  if (v8)
+  if (endCopy)
   {
-    [v8 timeIntervalSinceDate:v7];
+    [endCopy timeIntervalSinceDate:startCopy];
     CMTimeMakeWithSeconds(&start.start, v11, 1000);
     duration = **&MEMORY[0x1E6960CC0];
     p_duration = &duration;
@@ -218,8 +218,8 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(v14 + 21, a3);
-    objc_storeStrong(v15 + 22, a4);
+    objc_storeStrong(v14 + 21, start);
+    objc_storeStrong(v15 + 22, end);
     duration = **&MEMORY[0x1E6960C70];
     v20 = *v10;
     CMTimeRangeMake(&start, &duration, &v20);
@@ -230,7 +230,7 @@
     *(v15 + 15) = v16;
     if (v9)
     {
-      v18 = [v9 isEqualToDate:v7];
+      v18 = [v9 isEqualToDate:startCopy];
     }
 
     else
@@ -244,27 +244,27 @@
   return v15;
 }
 
-- (id)_initWithTimeRange:(id *)a3
+- (id)_initWithTimeRange:(id *)range
 {
-  time1 = a3->var1;
+  time1 = range->var1;
   v7 = **&MEMORY[0x1E6960CC0];
   if (CMTimeCompare(&time1, &v7) >= 1)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"cannot specify duration of AVInterstitialDateRange except by providing dates"];
   }
 
-  v4 = [MEMORY[0x1E695DF00] distantPast];
-  v5 = [(AVInterstitialDateRange *)self initWithStart:v4 end:0];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  v5 = [(AVInterstitialDateRange *)self initWithStart:distantPast end:0];
 
   return v5;
 }
 
-- (AVInterstitialDateRange)initWithTimeRange:(id *)a3
+- (AVInterstitialDateRange)initWithTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var3;
-  v5[0] = *&a3->var0.var0;
+  v3 = *&range->var0.var3;
+  v5[0] = *&range->var0.var0;
   v5[1] = v3;
-  v5[2] = *&a3->var1.var1;
+  v5[2] = *&range->var1.var1;
   return [(AVInterstitialDateRange *)self _initWithTimeRange:v5];
 }
 

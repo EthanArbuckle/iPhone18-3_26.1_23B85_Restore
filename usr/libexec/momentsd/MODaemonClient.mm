@@ -1,87 +1,87 @@
 @interface MODaemonClient
-+ (id)getRefreshVariantName:(unint64_t)a3;
++ (id)getRefreshVariantName:(unint64_t)name;
 - (BOOL)acquireRefreshLock;
-- (BOOL)validateIfActiveClientHasAnyEntitlementInArray:(id)a3 withErrorHandler:(id)a4;
-- (MODaemonClient)initWithUniverse:(id)a3;
+- (BOOL)validateIfActiveClientHasAnyEntitlementInArray:(id)array withErrorHandler:(id)handler;
+- (MODaemonClient)initWithUniverse:(id)universe;
 - (MODaemonClientConnectionEntitlementDelegate)entitlementDelegate;
-- (id)_createWatchDogWithName:(id)a3;
-- (void)_abortIfNeeded:(id)a3;
-- (void)_analyzeTrendsInEvents:(id)a3 withContext:(id)a4 andRefreshVariant:(unint64_t)a5 andHandler:(id)a6;
-- (void)_bundleEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5;
-- (void)_checkUIActiveStatusWithHandler:(id)a3;
-- (void)_clearEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5;
-- (void)_collectEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5;
-- (void)_fetchEventBundlesWithOptions:(id)a3 withContext:(id)a4 andHandler:(id)a5;
-- (void)_fetchEventBundlesWithPredicate:(id)a3 withContext:(id)a4 andHandler:(id)a5;
-- (void)_fetchEventsWithOptions:(id)a3 withContext:(id)a4 andHandler:(id)a5;
-- (void)_getApplicationsWithDataAccess:(id)a3;
-- (void)_getClientsWithDataAccess:(id)a3;
-- (void)_getDiagnosticReporterConfiguration:(id)a3;
-- (void)_getSnapshotDictionaryForAnalyticsWithHandler:(id)a3;
-- (void)_isAllowedToPromptEventCategory:(unint64_t)a3 withReply:(id)a4;
-- (void)_isAllowedToPromptResourceType:(unint64_t)a3 withReply:(id)a4;
-- (void)_logEngagementEvent:(id)a3 timestamp:(id)a4 withContext:(id)a5;
-- (void)_printOnboardingStatusAnalytics:(id)a3;
-- (void)_printSettingValue:(id)a3 withType:(id)a4 handler:(id)a5;
-- (void)_purgeEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5;
-- (void)_refreshEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andSoftKindFlag:(BOOL)a5 andHandler:(id)a6;
-- (void)_registerClientsForDataAccess:(id)a3;
-- (void)_runAnalyticsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5;
-- (void)_scheduleDatabaseUpgradeWithContext:(id)a3 andHandler:(id)a4;
-- (void)_scheduleMomentsUICloudSync:(id)a3;
-- (void)_scheduleMomentsUIFullProcessing:(id)a3;
-- (void)_scheduleSendBarrierBlock:(id)a3;
-- (void)_storeEvents:(id)a3 withContext:(id)a4 andHandler:(id)a5;
-- (void)_testNotificationAnalyticsWithContext:(id)a3 andHandler:(id)a4;
-- (void)acquireBackgroundProcessingPermissionsForMomentsWithHander:(id)a3;
-- (void)analyzeTrendsInEvents:(id)a3 withContext:(id)a4 andRefreshVariant:(unint64_t)a5 andHandler:(id)a6;
-- (void)bundleEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5;
-- (void)checkElegibilityAndRequestDataExportForTrigger:(unint64_t)a3 withFeedback:(id)a4 requestUpload:(BOOL)a5 reply:(id)a6;
-- (void)checkUIActiveStatusWithHandler:(id)a3;
-- (void)clearEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5;
-- (void)collectEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5;
-- (void)didAppEntryUpdateUsingSuggestions:(id)a3 onEvent:(unint64_t)a4 duringInterval:(id)a5 withInfo:(id)a6;
-- (void)fetchEligiblePOICategoriesWithHandler:(id)a3;
-- (void)fetchEventBundlesWithOptions:(id)a3 withContext:(id)a4 andHandler:(id)a5;
-- (void)fetchEventBundlesWithPredicate:(id)a3 withContext:(id)a4 andHandler:(id)a5;
-- (void)fetchEventsWithOptions:(id)a3 withContext:(id)a4 andHandler:(id)a5;
-- (void)fetchPhotoAnalyticsMetricsWithContext:(id)a3 andHandler:(id)a4;
-- (void)finalizeClientTaskWithName:(id)a3;
-- (void)generateAvailabilityPredictionsAndRegisterTimerWithHandler:(id)a3;
-- (void)generateAvailabilityPredictionsWithHandler:(id)a3;
-- (void)getApplicationsWithDataAccess:(id)a3;
-- (void)getClientsWithDataAccess:(id)a3;
-- (void)getDiagnosticReporterConfiguration:(id)a3;
-- (void)getOnboardingFlowCompletionStatusWithHandler:(id)a3;
-- (void)getOnboardingFlowRefreshCompletionStatusWithHandler:(id)a3;
-- (void)getSnapshotDictionaryForAnalyticsWithHandler:(id)a3;
-- (void)getStateForSetting:(unint64_t)a3 withHandler:(id)a4;
-- (void)getStateForSettingFast:(unint64_t)a3 withHandler:(id)a4;
-- (void)isAllowedToPromptEventCategory:(unint64_t)a3 withReply:(id)a4;
-- (void)isAllowedToPromptResourceType:(unint64_t)a3 withReply:(id)a4;
-- (void)logEngagementEvent:(id)a3 timestamp:(id)a4 withContext:(id)a5;
-- (void)logPerformanceEvent:(id)a3 timestamp:(id)a4 withContext:(id)a5;
-- (void)logUsageEvent:(id)a3 timestamp:(id)a4 withContext:(id)a5;
-- (void)printEvergreenBundlesWithSeed:(unint64_t)a3 handler:(id)a4;
-- (void)printOnboardingStatusAnalytics:(id)a3;
-- (void)printSettingValue:(id)a3 withType:(id)a4 handler:(id)a5;
-- (void)purgeEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5;
-- (void)refreshEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5;
-- (void)registerClientsForDataAccess:(id)a3;
+- (id)_createWatchDogWithName:(id)name;
+- (void)_abortIfNeeded:(id)needed;
+- (void)_analyzeTrendsInEvents:(id)events withContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (void)_bundleEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (void)_checkUIActiveStatusWithHandler:(id)handler;
+- (void)_clearEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (void)_collectEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (void)_fetchEventBundlesWithOptions:(id)options withContext:(id)context andHandler:(id)handler;
+- (void)_fetchEventBundlesWithPredicate:(id)predicate withContext:(id)context andHandler:(id)handler;
+- (void)_fetchEventsWithOptions:(id)options withContext:(id)context andHandler:(id)handler;
+- (void)_getApplicationsWithDataAccess:(id)access;
+- (void)_getClientsWithDataAccess:(id)access;
+- (void)_getDiagnosticReporterConfiguration:(id)configuration;
+- (void)_getSnapshotDictionaryForAnalyticsWithHandler:(id)handler;
+- (void)_isAllowedToPromptEventCategory:(unint64_t)category withReply:(id)reply;
+- (void)_isAllowedToPromptResourceType:(unint64_t)type withReply:(id)reply;
+- (void)_logEngagementEvent:(id)event timestamp:(id)timestamp withContext:(id)context;
+- (void)_printOnboardingStatusAnalytics:(id)analytics;
+- (void)_printSettingValue:(id)value withType:(id)type handler:(id)handler;
+- (void)_purgeEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (void)_refreshEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andSoftKindFlag:(BOOL)flag andHandler:(id)handler;
+- (void)_registerClientsForDataAccess:(id)access;
+- (void)_runAnalyticsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (void)_scheduleDatabaseUpgradeWithContext:(id)context andHandler:(id)handler;
+- (void)_scheduleMomentsUICloudSync:(id)sync;
+- (void)_scheduleMomentsUIFullProcessing:(id)processing;
+- (void)_scheduleSendBarrierBlock:(id)block;
+- (void)_storeEvents:(id)events withContext:(id)context andHandler:(id)handler;
+- (void)_testNotificationAnalyticsWithContext:(id)context andHandler:(id)handler;
+- (void)acquireBackgroundProcessingPermissionsForMomentsWithHander:(id)hander;
+- (void)analyzeTrendsInEvents:(id)events withContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (void)bundleEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (void)checkElegibilityAndRequestDataExportForTrigger:(unint64_t)trigger withFeedback:(id)feedback requestUpload:(BOOL)upload reply:(id)reply;
+- (void)checkUIActiveStatusWithHandler:(id)handler;
+- (void)clearEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (void)collectEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (void)didAppEntryUpdateUsingSuggestions:(id)suggestions onEvent:(unint64_t)event duringInterval:(id)interval withInfo:(id)info;
+- (void)fetchEligiblePOICategoriesWithHandler:(id)handler;
+- (void)fetchEventBundlesWithOptions:(id)options withContext:(id)context andHandler:(id)handler;
+- (void)fetchEventBundlesWithPredicate:(id)predicate withContext:(id)context andHandler:(id)handler;
+- (void)fetchEventsWithOptions:(id)options withContext:(id)context andHandler:(id)handler;
+- (void)fetchPhotoAnalyticsMetricsWithContext:(id)context andHandler:(id)handler;
+- (void)finalizeClientTaskWithName:(id)name;
+- (void)generateAvailabilityPredictionsAndRegisterTimerWithHandler:(id)handler;
+- (void)generateAvailabilityPredictionsWithHandler:(id)handler;
+- (void)getApplicationsWithDataAccess:(id)access;
+- (void)getClientsWithDataAccess:(id)access;
+- (void)getDiagnosticReporterConfiguration:(id)configuration;
+- (void)getOnboardingFlowCompletionStatusWithHandler:(id)handler;
+- (void)getOnboardingFlowRefreshCompletionStatusWithHandler:(id)handler;
+- (void)getSnapshotDictionaryForAnalyticsWithHandler:(id)handler;
+- (void)getStateForSetting:(unint64_t)setting withHandler:(id)handler;
+- (void)getStateForSettingFast:(unint64_t)fast withHandler:(id)handler;
+- (void)isAllowedToPromptEventCategory:(unint64_t)category withReply:(id)reply;
+- (void)isAllowedToPromptResourceType:(unint64_t)type withReply:(id)reply;
+- (void)logEngagementEvent:(id)event timestamp:(id)timestamp withContext:(id)context;
+- (void)logPerformanceEvent:(id)event timestamp:(id)timestamp withContext:(id)context;
+- (void)logUsageEvent:(id)event timestamp:(id)timestamp withContext:(id)context;
+- (void)printEvergreenBundlesWithSeed:(unint64_t)seed handler:(id)handler;
+- (void)printOnboardingStatusAnalytics:(id)analytics;
+- (void)printSettingValue:(id)value withType:(id)type handler:(id)handler;
+- (void)purgeEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (void)refreshEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (void)registerClientsForDataAccess:(id)access;
 - (void)releaseRefreshLock;
-- (void)runAnalyticsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5;
-- (void)scheduleClientTask:(id)a3 withName:(id)a4;
-- (void)scheduleDatabaseUpgradeWithContext:(id)a3 andDelegate:(id)a4;
-- (void)scheduleInternalClientTask:(id)a3 withName:(id)a4 andAllowHandoffReplayQueue:(BOOL)a5;
+- (void)runAnalyticsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler;
+- (void)scheduleClientTask:(id)task withName:(id)name;
+- (void)scheduleDatabaseUpgradeWithContext:(id)context andDelegate:(id)delegate;
+- (void)scheduleInternalClientTask:(id)task withName:(id)name andAllowHandoffReplayQueue:(BOOL)queue;
 - (void)scheduleMomentsUICloudSync;
 - (void)scheduleMomentsUIFullProcessing;
-- (void)scheduleNonSerializedClientTask:(id)a3 withName:(id)a4;
-- (void)setOnboardingFlowCompletionStatus:(unint64_t)a3;
-- (void)softRefreshEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andIgnoreLastTrigger:(BOOL)a5 andHandler:(id)a6;
-- (void)storeEvents:(id)a3 withContext:(id)a4 andHandler:(id)a5;
-- (void)testNotificationAnalyticsWithContext:(id)a3 andHandler:(id)a4;
-- (void)triggerFeedbackAssistantFlow:(id)a3 handler:(id)a4;
-- (void)updateEngagementLightStreamWithRefreshVariant:(unint64_t)a3 handler:(id)a4;
+- (void)scheduleNonSerializedClientTask:(id)task withName:(id)name;
+- (void)setOnboardingFlowCompletionStatus:(unint64_t)status;
+- (void)softRefreshEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andIgnoreLastTrigger:(BOOL)trigger andHandler:(id)handler;
+- (void)storeEvents:(id)events withContext:(id)context andHandler:(id)handler;
+- (void)testNotificationAnalyticsWithContext:(id)context andHandler:(id)handler;
+- (void)triggerFeedbackAssistantFlow:(id)flow handler:(id)handler;
+- (void)updateEngagementLightStreamWithRefreshVariant:(unint64_t)variant handler:(id)handler;
 @end
 
 @implementation MODaemonClient
@@ -93,65 +93,65 @@
   return WeakRetained;
 }
 
-+ (id)getRefreshVariantName:(unint64_t)a3
++ (id)getRefreshVariantName:(unint64_t)name
 {
   v3 = @"Soft";
   v4 = @"Reset";
-  if (a3 != 0xFFFF)
+  if (name != 0xFFFF)
   {
     v4 = 0;
   }
 
-  if (a3 != 1536)
+  if (name != 1536)
   {
     v3 = v4;
   }
 
   v5 = @"Full";
-  if (a3 != 1280)
+  if (name != 1280)
   {
     v5 = 0;
   }
 
-  if (a3 == 768)
+  if (name == 768)
   {
     v5 = @"Default";
   }
 
-  if (a3 <= 1535)
+  if (name <= 1535)
   {
     v3 = v5;
   }
 
   v6 = @"SettingsChange";
   v7 = @"Light";
-  if (a3 != 512)
+  if (name != 512)
   {
     v7 = 0;
   }
 
-  if (a3 != 336)
+  if (name != 336)
   {
     v6 = v7;
   }
 
   v8 = @"Onboarding";
-  if (a3 != 256)
+  if (name != 256)
   {
     v8 = 0;
   }
 
-  if (!a3)
+  if (!name)
   {
     v8 = @"Unknown";
   }
 
-  if (a3 <= 335)
+  if (name <= 335)
   {
     v6 = v8;
   }
 
-  if (a3 <= 767)
+  if (name <= 767)
   {
     return v6;
   }
@@ -162,48 +162,48 @@
   }
 }
 
-- (MODaemonClient)initWithUniverse:(id)a3
+- (MODaemonClient)initWithUniverse:(id)universe
 {
-  v4 = a3;
+  universeCopy = universe;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v4 getService:v6];
+  v7 = [universeCopy getService:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  v10 = [v4 getService:v9];
+  v10 = [universeCopy getService:v9];
 
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
-  obj = [v4 getService:v12];
+  obj = [universeCopy getService:v12];
 
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
-  v60 = [v4 getService:v14];
+  v60 = [universeCopy getService:v14];
 
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
-  v59 = [v4 getService:v16];
+  v59 = [universeCopy getService:v16];
 
   v17 = objc_opt_class();
   v18 = NSStringFromClass(v17);
-  v19 = [v4 getService:v18];
+  v19 = [universeCopy getService:v18];
 
   v20 = objc_opt_class();
   v21 = NSStringFromClass(v20);
-  v22 = [v4 getService:v21];
+  v22 = [universeCopy getService:v21];
 
   v23 = objc_opt_class();
   v24 = NSStringFromClass(v23);
-  v25 = [v4 getService:v24];
+  v25 = [universeCopy getService:v24];
 
   v26 = objc_opt_class();
   v27 = NSStringFromClass(v26);
-  v28 = [v4 getService:v27];
+  v28 = [universeCopy getService:v27];
 
   v29 = objc_opt_class();
   v30 = NSStringFromClass(v29);
-  v31 = [v4 getService:v30];
+  v31 = [universeCopy getService:v30];
 
   if (!v7)
   {
@@ -217,7 +217,7 @@
     v51 = v50;
     v52 = @"Invalid parameter not satisfying: eventManager";
     v53 = a2;
-    v54 = self;
+    selfCopy2 = self;
     v55 = 142;
     goto LABEL_12;
   }
@@ -234,12 +234,12 @@
     v51 = v50;
     v52 = @"Invalid parameter not satisfying: eventBundleManager";
     v53 = a2;
-    v54 = self;
+    selfCopy2 = self;
     v55 = 143;
 LABEL_12:
-    [v50 handleFailureInMethod:v53 object:v54 file:@"MODaemonClient.m" lineNumber:v55 description:{v52, a2, v59, v60, obj}];
+    [v50 handleFailureInMethod:v53 object:selfCopy2 file:@"MODaemonClient.m" lineNumber:v55 description:{v52, a2, v59, v60, obj}];
 
-    v48 = 0;
+    selfCopy3 = 0;
     goto LABEL_13;
   }
 
@@ -268,7 +268,7 @@ LABEL_12:
     objc_storeStrong(&v32->_dataAccessManager, v60);
     objc_storeStrong(&v32->_defaultsManager, v59);
     objc_storeStrong(&v32->_eventBundleManager, v10);
-    v41 = [[MOEvergreenAnnotationManager alloc] initWithUniverse:v4];
+    v41 = [[MOEvergreenAnnotationManager alloc] initWithUniverse:universeCopy];
     evergreenManager = v32->_evergreenManager;
     v32->_evergreenManager = v41;
 
@@ -289,42 +289,42 @@ LABEL_12:
   }
 
   self = v32;
-  v48 = self;
+  selfCopy3 = self;
 LABEL_13:
 
-  return v48;
+  return selfCopy3;
 }
 
-- (void)_scheduleSendBarrierBlock:(id)a3
+- (void)_scheduleSendBarrierBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = +[NSXPCConnection currentConnection];
   v5 = v4;
   if (v4)
   {
-    [v4 scheduleSendBarrierBlock:v3];
+    [v4 scheduleSendBarrierBlock:blockCopy];
   }
 
   else
   {
-    v3[2](v3);
+    blockCopy[2](blockCopy);
   }
 }
 
-- (void)scheduleClientTask:(id)a3 withName:(id)a4
+- (void)scheduleClientTask:(id)task withName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  nameCopy = name;
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v14 = 138412290;
-    v15 = v7;
+    v15 = nameCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Client Task Scheduled [%@]", &v14, 0xCu);
   }
 
-  v9 = [(MODaemonClient *)self configManager];
-  v10 = [v9 getBoolSettingForKey:@"ClientOverrideAvoidQuerySerialization" withFallback:0];
+  configManager = [(MODaemonClient *)self configManager];
+  v10 = [configManager getBoolSettingForKey:@"ClientOverrideAvoidQuerySerialization" withFallback:0];
 
   if ((v10 & 1) == 0)
   {
@@ -335,38 +335,38 @@ LABEL_13:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v14 = 138412290;
-    v15 = v7;
+    v15 = nameCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Client Task Started [%@]", &v14, 0xCu);
   }
 
   v12 = +[NSXPCConnection currentConnection];
-  v13 = [(MODaemonClient *)self externalQueue];
+  externalQueue = [(MODaemonClient *)self externalQueue];
   if (v12)
   {
-    [NSXPCConnection _handoffCurrentReplyToQueue:v13 block:v6];
+    [NSXPCConnection _handoffCurrentReplyToQueue:externalQueue block:taskCopy];
   }
 
   else
   {
-    dispatch_async(v13, v6);
+    dispatch_async(externalQueue, taskCopy);
   }
 }
 
-- (void)scheduleInternalClientTask:(id)a3 withName:(id)a4 andAllowHandoffReplayQueue:(BOOL)a5
+- (void)scheduleInternalClientTask:(id)task withName:(id)name andAllowHandoffReplayQueue:(BOOL)queue
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  queueCopy = queue;
+  taskCopy = task;
+  nameCopy = name;
   v10 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v9;
+    v17 = nameCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Internal Client Task Scheduled [%@]", &v16, 0xCu);
   }
 
-  v11 = [(MODaemonClient *)self configManager];
-  v12 = [v11 getBoolSettingForKey:@"ClientOverrideAvoidQuerySerialization" withFallback:0];
+  configManager = [(MODaemonClient *)self configManager];
+  v12 = [configManager getBoolSettingForKey:@"ClientOverrideAvoidQuerySerialization" withFallback:0];
 
   if ((v12 & 1) == 0)
   {
@@ -377,45 +377,45 @@ LABEL_13:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v16 = 138412290;
-    v17 = v9;
+    v17 = nameCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Internal Client Task Started [%@]", &v16, 0xCu);
   }
 
   v14 = +[NSXPCConnection currentConnection];
-  if (v14 && v5)
+  if (v14 && queueCopy)
   {
-    v15 = [(MODaemonClient *)self internalQueue];
-    [NSXPCConnection _handoffCurrentReplyToQueue:v15 block:v8];
+    internalQueue = [(MODaemonClient *)self internalQueue];
+    [NSXPCConnection _handoffCurrentReplyToQueue:internalQueue block:taskCopy];
   }
 
   else
   {
-    v15 = [(MODaemonClient *)self internalQueue];
-    dispatch_async(v15, v8);
+    internalQueue = [(MODaemonClient *)self internalQueue];
+    dispatch_async(internalQueue, taskCopy);
   }
 }
 
-- (void)scheduleNonSerializedClientTask:(id)a3 withName:(id)a4
+- (void)scheduleNonSerializedClientTask:(id)task withName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  taskCopy = task;
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = nameCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "NonSerialized Client Task Scheduled [%@]", &v10, 0xCu);
   }
 
-  v9 = [(MODaemonClient *)self internalQueue];
-  dispatch_async(v9, v7);
+  internalQueue = [(MODaemonClient *)self internalQueue];
+  dispatch_async(internalQueue, taskCopy);
 }
 
-- (void)finalizeClientTaskWithName:(id)a3
+- (void)finalizeClientTaskWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(MODaemonClient *)self configManager];
-  v6 = [v5 getBoolSettingForKey:@"ClientOverrideAvoidQuerySerialization" withFallback:0];
+  nameCopy = name;
+  configManager = [(MODaemonClient *)self configManager];
+  v6 = [configManager getBoolSettingForKey:@"ClientOverrideAvoidQuerySerialization" withFallback:0];
 
   if ((v6 & 1) == 0)
   {
@@ -426,20 +426,20 @@ LABEL_13:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = nameCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Client Task Completed [%@]", &v8, 0xCu);
   }
 }
 
-- (BOOL)validateIfActiveClientHasAnyEntitlementInArray:(id)a3 withErrorHandler:(id)a4
+- (BOOL)validateIfActiveClientHasAnyEntitlementInArray:(id)array withErrorHandler:(id)handler
 {
-  v6 = a3;
-  v21 = a4;
+  arrayCopy = array;
+  handlerCopy = handler;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v6;
+  v7 = arrayCopy;
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v8)
   {
@@ -456,9 +456,9 @@ LABEL_13:
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [(MODaemonClient *)self entitlementDelegate];
+        entitlementDelegate = [(MODaemonClient *)self entitlementDelegate];
         v15 = +[NSXPCConnection currentConnection];
-        LODWORD(v10) = v10 | [v14 clientConnection:v15 hasInternalEntitlement:v13];
+        LODWORD(v10) = v10 | [entitlementDelegate clientConnection:v15 hasInternalEntitlement:v13];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
@@ -472,7 +472,7 @@ LABEL_13:
     LOBYTE(v10) = 0;
   }
 
-  if (v21 && (v10 & 1) == 0)
+  if (handlerCopy && (v10 & 1) == 0)
   {
     v16 = objc_autoreleasePoolPush();
     v17 = [(MODaemonClient *)self _createWatchDogWithName:@"entitlementErrorResponse"];
@@ -483,7 +483,7 @@ LABEL_13:
     v19 = [NSError errorWithDomain:NSPOSIXErrorDomain code:1 userInfo:v10];
 
     [v17 pet];
-    v21[2](v21, v19);
+    handlerCopy[2](handlerCopy, v19);
     [v17 cancel];
 
     objc_autoreleasePoolPop(v16);
@@ -493,11 +493,11 @@ LABEL_13:
   return v10 & 1;
 }
 
-- (void)_abortIfNeeded:(id)a3
+- (void)_abortIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(MODaemonClient *)self configManager];
-  v6 = [v5 getIntegerSettingForKey:v4 withFallback:0];
+  neededCopy = needed;
+  configManager = [(MODaemonClient *)self configManager];
+  v6 = [configManager getIntegerSettingForKey:neededCopy withFallback:0];
 
   if (v6)
   {
@@ -505,7 +505,7 @@ LABEL_13:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412546;
-      v10 = v4;
+      v10 = neededCopy;
       v11 = 1024;
       v12 = v6;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "interrupBehavior for '%@' = %d", &v9, 0x12u);
@@ -531,11 +531,11 @@ LABEL_13:
   }
 }
 
-- (void)storeEvents:(id)a3 withContext:(id)a4 andHandler:(id)a5
+- (void)storeEvents:(id)events withContext:(id)context andHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  eventsCopy = events;
+  contextCopy = context;
+  handlerCopy = handler;
   v12 = NSStringFromSelector(a2);
   v13 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v14 = [v12 stringByTrimmingCharactersInSet:v13];
@@ -544,7 +544,7 @@ LABEL_13:
   [(MODaemonClient *)self _abortIfNeeded:v15];
   v22 = @"MOStoreEvents";
   v16 = [NSArray arrayWithObjects:&v22 count:1];
-  v17 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v16 withErrorHandler:v11];
+  v17 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v16 withErrorHandler:handlerCopy];
 
   if (v17)
   {
@@ -553,9 +553,9 @@ LABEL_13:
     v18[2] = __53__MODaemonClient_storeEvents_withContext_andHandler___block_invoke;
     v18[3] = &unk_1003361C0;
     v18[4] = self;
-    v19 = v9;
-    v20 = v10;
-    v21 = v11;
+    v19 = eventsCopy;
+    v20 = contextCopy;
+    v21 = handlerCopy;
     [(MODaemonClient *)self scheduleInternalClientTask:v18 withName:@"storeEvents"];
   }
 }
@@ -583,11 +583,11 @@ id __53__MODaemonClient_storeEvents_withContext_andHandler___block_invoke_2(uint
   return [v2 finalizeClientTaskWithName:@"storeEvents"];
 }
 
-- (void)_storeEvents:(id)a3 withContext:(id)a4 andHandler:(id)a5
+- (void)_storeEvents:(id)events withContext:(id)context andHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventsCopy = events;
+  contextCopy = context;
+  handlerCopy = handler;
   v11 = objc_autoreleasePoolPush();
   v23[0] = 0;
   v23[1] = v23;
@@ -610,11 +610,11 @@ id __53__MODaemonClient_storeEvents_withContext_andHandler___block_invoke_2(uint
   v17[3] = &unk_10033B238;
   v15 = v12;
   v18 = v15;
-  v16 = v10;
+  v16 = handlerCopy;
   v20 = v16;
   v21 = v23;
-  v19 = self;
-  [(MOEventManager *)eventManager storeEvents:v8 handler:v17];
+  selfCopy = self;
+  [(MOEventManager *)eventManager storeEvents:eventsCopy handler:v17];
 
   _Block_object_dispose(v23, 8);
   objc_autoreleasePoolPop(v11);
@@ -650,10 +650,10 @@ void __54__MODaemonClient__storeEvents_withContext_andHandler___block_invoke_2(u
   *(v2 + 40) = 0;
 }
 
-- (void)scheduleDatabaseUpgradeWithContext:(id)a3 andDelegate:(id)a4
+- (void)scheduleDatabaseUpgradeWithContext:(id)context andDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  delegateCopy = delegate;
   v9 = NSStringFromSelector(a2);
   v10 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v11 = [v9 stringByTrimmingCharactersInSet:v10];
@@ -666,7 +666,7 @@ void __54__MODaemonClient__storeEvents_withContext_andHandler___block_invoke_2(u
   v24[1] = 3221225472;
   v24[2] = __65__MODaemonClient_scheduleDatabaseUpgradeWithContext_andDelegate___block_invoke;
   v24[3] = &unk_10033B260;
-  v14 = v8;
+  v14 = delegateCopy;
   v25 = v14;
   v15 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v13 withErrorHandler:v24];
 
@@ -679,7 +679,7 @@ void __54__MODaemonClient__storeEvents_withContext_andHandler___block_invoke_2(u
       v20[2] = __65__MODaemonClient_scheduleDatabaseUpgradeWithContext_andDelegate___block_invoke_261;
       v20[3] = &unk_10033B2B0;
       v20[4] = self;
-      v21 = v7;
+      v21 = contextCopy;
       v22 = v14;
       [(MODaemonClient *)self scheduleInternalClientTask:v20 withName:@"scheduleDatabaseUpgradeWithContext" andAllowHandoffReplayQueue:0];
     }
@@ -755,23 +755,23 @@ void __65__MODaemonClient_scheduleDatabaseUpgradeWithContext_andDelegate___block
 LABEL_9:
 }
 
-- (void)_scheduleDatabaseUpgradeWithContext:(id)a3 andHandler:(id)a4
+- (void)_scheduleDatabaseUpgradeWithContext:(id)context andHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MODaemonClient *)self onboardingAndSettingsPersistence];
-  v9 = [v8 isAllowedToCollectAndCompute];
+  contextCopy = context;
+  handlerCopy = handler;
+  onboardingAndSettingsPersistence = [(MODaemonClient *)self onboardingAndSettingsPersistence];
+  isAllowedToCollectAndCompute = [onboardingAndSettingsPersistence isAllowedToCollectAndCompute];
 
-  v10 = [(MODaemonClient *)self configManager];
-  v11 = [v10 getBoolSettingForKey:@"EventRefreshSchedulerOverrideForceFullRefreshAtBoot" withFallback:0];
+  configManager = [(MODaemonClient *)self configManager];
+  v11 = [configManager getBoolSettingForKey:@"EventRefreshSchedulerOverrideForceFullRefreshAtBoot" withFallback:0];
 
-  v12 = [(MODaemonClient *)self configManager];
-  v13 = [v12 getBoolSettingForKey:@"EventRefreshSchedulerOverrideAvoidFullRefreshAtBoot" withFallback:0];
+  configManager2 = [(MODaemonClient *)self configManager];
+  v13 = [configManager2 getBoolSettingForKey:@"EventRefreshSchedulerOverrideAvoidFullRefreshAtBoot" withFallback:0];
 
-  v14 = [(MODaemonClient *)self configManager];
-  v15 = [v14 getBoolSettingForKey:@"EventRefreshSchedulerOverrideAllowFullRefreshAtBoot" withFallback:1];
+  configManager3 = [(MODaemonClient *)self configManager];
+  v15 = [configManager3 getBoolSettingForKey:@"EventRefreshSchedulerOverrideAllowFullRefreshAtBoot" withFallback:1];
 
-  if (!v9)
+  if (!isAllowedToCollectAndCompute)
   {
     goto LABEL_15;
   }
@@ -800,7 +800,7 @@ LABEL_13:
     }
 
 LABEL_15:
-    v7[2](v7, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
     goto LABEL_16;
   }
 
@@ -813,7 +813,7 @@ LABEL_15:
 
   v17 = [[MOPerformanceMeasurement alloc] initWithName:@"ScheduledRefreshFirstWrapper" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v17 startSession];
-  v7[2](v7, 2, 0);
+  handlerCopy[2](handlerCopy, 2, 0);
   v18 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
@@ -827,9 +827,9 @@ LABEL_15:
   v24[2] = __65__MODaemonClient__scheduleDatabaseUpgradeWithContext_andHandler___block_invoke;
   v24[3] = &unk_10033B210;
   v25 = v17;
-  v26 = v7;
+  v26 = handlerCopy;
   v19 = v17;
-  [(MODaemonClient *)self _refreshEventsWithContext:v6 andRefreshVariant:1280 andSoftKindFlag:0 andHandler:v24];
+  [(MODaemonClient *)self _refreshEventsWithContext:contextCopy andRefreshVariant:1280 andSoftKindFlag:0 andHandler:v24];
 
 LABEL_16:
 }
@@ -853,11 +853,11 @@ void __65__MODaemonClient__scheduleDatabaseUpgradeWithContext_andHandler___block
   [*(a1 + 32) endSession];
 }
 
-- (void)fetchEventsWithOptions:(id)a3 withContext:(id)a4 andHandler:(id)a5
+- (void)fetchEventsWithOptions:(id)options withContext:(id)context andHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  optionsCopy = options;
+  contextCopy = context;
+  handlerCopy = handler;
   v12 = NSStringFromSelector(a2);
   v13 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v14 = [v12 stringByTrimmingCharactersInSet:v13];
@@ -870,7 +870,7 @@ void __65__MODaemonClient__scheduleDatabaseUpgradeWithContext_andHandler___block
   v23[1] = 3221225472;
   v23[2] = __64__MODaemonClient_fetchEventsWithOptions_withContext_andHandler___block_invoke;
   v23[3] = &unk_10033B2D8;
-  v17 = v11;
+  v17 = handlerCopy;
   v24 = v17;
   v18 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v16 withErrorHandler:v23];
 
@@ -881,8 +881,8 @@ void __65__MODaemonClient__scheduleDatabaseUpgradeWithContext_andHandler___block
     v19[2] = __64__MODaemonClient_fetchEventsWithOptions_withContext_andHandler___block_invoke_2;
     v19[3] = &unk_1003361C0;
     v19[4] = self;
-    v20 = v9;
-    v21 = v10;
+    v20 = optionsCopy;
+    v21 = contextCopy;
     v22 = v17;
     [(MODaemonClient *)self scheduleInternalClientTask:v19 withName:@"fetchEventsWithOptions"];
   }
@@ -911,11 +911,11 @@ id __64__MODaemonClient_fetchEventsWithOptions_withContext_andHandler___block_in
   return [v2 finalizeClientTaskWithName:@"fetchEventsWithOptions"];
 }
 
-- (void)_fetchEventsWithOptions:(id)a3 withContext:(id)a4 andHandler:(id)a5
+- (void)_fetchEventsWithOptions:(id)options withContext:(id)context andHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  contextCopy = context;
+  handlerCopy = handler;
   v11 = objc_autoreleasePoolPush();
   v30[0] = 0;
   v30[1] = v30;
@@ -943,9 +943,9 @@ id __64__MODaemonClient_fetchEventsWithOptions_withContext_andHandler___block_in
   v16 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v9 xpcProcessName];
+    xpcProcessName = [contextCopy xpcProcessName];
     *buf = 138412290;
-    v33 = v17;
+    v33 = xpcProcessName;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "fetch XPC context [%@]", buf, 0xCu);
   }
 
@@ -956,15 +956,15 @@ id __64__MODaemonClient_fetchEventsWithOptions_withContext_andHandler___block_in
   v23[3] = &unk_10033B368;
   v19 = v14;
   v24 = v19;
-  v20 = v9;
+  v20 = contextCopy;
   v25 = v20;
-  v26 = self;
-  v21 = v10;
+  selfCopy = self;
+  v21 = handlerCopy;
   v28 = v21;
   v29 = v30;
   v22 = v13;
   v27 = v22;
-  [(MOEventManager *)eventManager fetchEventsWithOptions:v8 CompletionHandler:v23];
+  [(MOEventManager *)eventManager fetchEventsWithOptions:optionsCopy CompletionHandler:v23];
 
   _Block_object_dispose(v30, 8);
   objc_autoreleasePoolPop(v11);
@@ -1134,10 +1134,10 @@ void __65__MODaemonClient__fetchEventsWithOptions_withContext_andHandler___block
   *(v3 + 40) = 0;
 }
 
-- (void)clearEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5
+- (void)clearEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
   v11 = NSStringFromSelector(a2);
   v12 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v13 = [v11 stringByTrimmingCharactersInSet:v12];
@@ -1146,7 +1146,7 @@ void __65__MODaemonClient__fetchEventsWithOptions_withContext_andHandler___block
   [(MODaemonClient *)self _abortIfNeeded:v14];
   v21 = @"MOPromptManagerTest";
   v15 = [NSArray arrayWithObjects:&v21 count:1];
-  v16 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v15 withErrorHandler:v10];
+  v16 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v15 withErrorHandler:handlerCopy];
 
   if (v16)
   {
@@ -1155,9 +1155,9 @@ void __65__MODaemonClient__fetchEventsWithOptions_withContext_andHandler___block
     v17[2] = __70__MODaemonClient_clearEventsWithContext_andRefreshVariant_andHandler___block_invoke;
     v17[3] = &unk_10033B390;
     v17[4] = self;
-    v18 = v9;
-    v20 = a4;
-    v19 = v10;
+    v18 = contextCopy;
+    variantCopy = variant;
+    v19 = handlerCopy;
     [(MODaemonClient *)self scheduleInternalClientTask:v17 withName:@"clearEventsWithContext"];
   }
 }
@@ -1185,10 +1185,10 @@ id __70__MODaemonClient_clearEventsWithContext_andRefreshVariant_andHandler___bl
   return [v2 finalizeClientTaskWithName:@"clearEventsWithContext"];
 }
 
-- (void)_clearEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5
+- (void)_clearEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
   v10 = objc_autoreleasePoolPush();
   v27[0] = 0;
   v27[1] = v27;
@@ -1200,16 +1200,16 @@ id __70__MODaemonClient_clearEventsWithContext_andRefreshVariant_andHandler___bl
   v12 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v8 xpcProcessName];
-    v14 = [MODaemonClient getRefreshVariantName:a4];
+    xpcProcessName = [contextCopy xpcProcessName];
+    v14 = [MODaemonClient getRefreshVariantName:variant];
     *buf = 138412546;
-    v30 = v13;
+    v30 = xpcProcessName;
     v31 = 2112;
     v32 = v14;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "clear XPC context [%@] variant [%@]", buf, 0x16u);
   }
 
-  if (a4 == 0xFFFF)
+  if (variant == 0xFFFF)
   {
     eventManager = self->_eventManager;
     v23[0] = _NSConcreteStackBlock;
@@ -1217,7 +1217,7 @@ id __70__MODaemonClient_clearEventsWithContext_andRefreshVariant_andHandler___bl
     v23[2] = __71__MODaemonClient__clearEventsWithContext_andRefreshVariant_andHandler___block_invoke;
     v23[3] = &unk_10033B238;
     v24[0] = v11;
-    v25 = v9;
+    v25 = handlerCopy;
     v26 = v27;
     v24[1] = self;
     [(MOEventManager *)eventManager clearEventsWithRefreshVariant:0xFFFFLL andHandler:v23];
@@ -1228,9 +1228,9 @@ id __70__MODaemonClient_clearEventsWithContext_andRefreshVariant_andHandler___bl
   else
   {
     [v11 pet];
-    if (v9)
+    if (handlerCopy)
     {
-      (*(v9 + 2))(v9, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
 
     v18 = _NSConcreteStackBlock;
@@ -1286,11 +1286,11 @@ void __71__MODaemonClient__clearEventsWithContext_andRefreshVariant_andHandler__
   *(v2 + 40) = 0;
 }
 
-- (void)fetchEventBundlesWithOptions:(id)a3 withContext:(id)a4 andHandler:(id)a5
+- (void)fetchEventBundlesWithOptions:(id)options withContext:(id)context andHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  optionsCopy = options;
+  contextCopy = context;
+  handlerCopy = handler;
   v12 = NSStringFromSelector(a2);
   v13 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v14 = [v12 stringByTrimmingCharactersInSet:v13];
@@ -1303,7 +1303,7 @@ void __71__MODaemonClient__clearEventsWithContext_andRefreshVariant_andHandler__
   v23[1] = 3221225472;
   v23[2] = __70__MODaemonClient_fetchEventBundlesWithOptions_withContext_andHandler___block_invoke;
   v23[3] = &unk_10033B2D8;
-  v17 = v11;
+  v17 = handlerCopy;
   v24 = v17;
   v18 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v16 withErrorHandler:v23];
 
@@ -1314,8 +1314,8 @@ void __71__MODaemonClient__clearEventsWithContext_andRefreshVariant_andHandler__
     v19[2] = __70__MODaemonClient_fetchEventBundlesWithOptions_withContext_andHandler___block_invoke_2;
     v19[3] = &unk_1003361C0;
     v19[4] = self;
-    v20 = v9;
-    v21 = v10;
+    v20 = optionsCopy;
+    v21 = contextCopy;
     v22 = v17;
     [(MODaemonClient *)self scheduleClientTask:v19 withName:@"fetchEventBundlesWithOptions"];
   }
@@ -1344,11 +1344,11 @@ id __70__MODaemonClient_fetchEventBundlesWithOptions_withContext_andHandler___bl
   return [v2 finalizeClientTaskWithName:@"fetchEventBundlesWithOptions"];
 }
 
-- (void)_fetchEventBundlesWithOptions:(id)a3 withContext:(id)a4 andHandler:(id)a5
+- (void)_fetchEventBundlesWithOptions:(id)options withContext:(id)context andHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  optionsCopy = options;
+  contextCopy = context;
+  handlerCopy = handler;
   v11 = objc_autoreleasePoolPush();
   v32[0] = 0;
   v32[1] = v32;
@@ -1370,16 +1370,16 @@ id __70__MODaemonClient_fetchEventBundlesWithOptions_withContext_andHandler___bl
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v35 = v8;
+    v35 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "fetch event bundles with options, %@", buf, 0xCu);
   }
 
   v16 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v9 xpcProcessName];
+    xpcProcessName = [contextCopy xpcProcessName];
     *buf = 138412290;
-    v35 = v17;
+    v35 = xpcProcessName;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "fetch XPC context [%@]", buf, 0xCu);
   }
 
@@ -1390,12 +1390,12 @@ id __70__MODaemonClient_fetchEventBundlesWithOptions_withContext_andHandler___bl
   v24[3] = &unk_10033B3B8;
   v19 = v14;
   v25 = v19;
-  v20 = v9;
+  v20 = contextCopy;
   v26 = v20;
-  v27 = self;
-  v21 = v8;
+  selfCopy = self;
+  v21 = optionsCopy;
   v28 = v21;
-  v22 = v10;
+  v22 = handlerCopy;
   v30 = v22;
   v31 = v32;
   v23 = v13;
@@ -1529,11 +1529,11 @@ void __71__MODaemonClient__fetchEventBundlesWithOptions_withContext_andHandler__
   *(v2 + 40) = 0;
 }
 
-- (void)fetchEventBundlesWithPredicate:(id)a3 withContext:(id)a4 andHandler:(id)a5
+- (void)fetchEventBundlesWithPredicate:(id)predicate withContext:(id)context andHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  predicateCopy = predicate;
+  contextCopy = context;
+  handlerCopy = handler;
   v12 = NSStringFromSelector(a2);
   v13 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v14 = [v12 stringByTrimmingCharactersInSet:v13];
@@ -1546,7 +1546,7 @@ void __71__MODaemonClient__fetchEventBundlesWithOptions_withContext_andHandler__
   v23[1] = 3221225472;
   v23[2] = __72__MODaemonClient_fetchEventBundlesWithPredicate_withContext_andHandler___block_invoke;
   v23[3] = &unk_10033B2D8;
-  v17 = v11;
+  v17 = handlerCopy;
   v24 = v17;
   v18 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v16 withErrorHandler:v23];
 
@@ -1557,8 +1557,8 @@ void __71__MODaemonClient__fetchEventBundlesWithOptions_withContext_andHandler__
     v19[2] = __72__MODaemonClient_fetchEventBundlesWithPredicate_withContext_andHandler___block_invoke_2;
     v19[3] = &unk_1003361C0;
     v19[4] = self;
-    v20 = v9;
-    v21 = v10;
+    v20 = predicateCopy;
+    v21 = contextCopy;
     v22 = v17;
     [(MODaemonClient *)self scheduleClientTask:v19 withName:@"fetchEventBundlesWithPredicate"];
   }
@@ -1587,11 +1587,11 @@ id __72__MODaemonClient_fetchEventBundlesWithPredicate_withContext_andHandler___
   return [v2 finalizeClientTaskWithName:@"fetchEventBundlesWithPredicate"];
 }
 
-- (void)_fetchEventBundlesWithPredicate:(id)a3 withContext:(id)a4 andHandler:(id)a5
+- (void)_fetchEventBundlesWithPredicate:(id)predicate withContext:(id)context andHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  predicateCopy = predicate;
+  contextCopy = context;
+  handlerCopy = handler;
   context = objc_autoreleasePoolPush();
   v34[0] = 0;
   v34[1] = v34;
@@ -1609,7 +1609,7 @@ id __72__MODaemonClient_fetchEventBundlesWithPredicate_withContext_andHandler___
   v12 = [[MOPerformanceMeasurement alloc] initWithName:@"XPCFetchEventBundles" measureRecentPeak:0];
   [(MOPerformanceMeasurement *)v12 startSession];
   v13 = [(MODaemonClient *)self _createWatchDogWithName:@"FetchEventBundles"];
-  v14 = v8;
+  v14 = predicateCopy;
   v33 = 0;
   v15 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v14 error:&v33];
   v16 = v33;
@@ -1637,18 +1637,18 @@ id __72__MODaemonClient_fetchEventBundlesWithPredicate_withContext_andHandler___
     v19 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleStore);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v15 predicateFormat];
+      predicateFormat = [v15 predicateFormat];
       *buf = 138412290;
-      v37 = v20;
+      v37 = predicateFormat;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "deserializedfetchRequestPredicate, %@", buf, 0xCu);
     }
 
     v21 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v22 = [v9 xpcProcessName];
+      xpcProcessName = [contextCopy xpcProcessName];
       *buf = 138412290;
-      v37 = v22;
+      v37 = xpcProcessName;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "fetch XPC context [%@]", buf, 0xCu);
     }
 
@@ -1658,9 +1658,9 @@ id __72__MODaemonClient_fetchEventBundlesWithPredicate_withContext_andHandler___
     v26[2] = __73__MODaemonClient__fetchEventBundlesWithPredicate_withContext_andHandler___block_invoke;
     v26[3] = &unk_10033B3E0;
     v27 = v13;
-    v28 = v9;
-    v29 = self;
-    v31 = v10;
+    v28 = contextCopy;
+    selfCopy = self;
+    v31 = handlerCopy;
     v32 = v34;
     v30 = v12;
     [(MOEventBundleManager *)eventBundleManager fetchEventBundlesWithPredicate:v15 completionHandler:v26];
@@ -1786,10 +1786,10 @@ void __73__MODaemonClient__fetchEventBundlesWithPredicate_withContext_andHandler
   *(v2 + 40) = 0;
 }
 
-- (void)collectEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5
+- (void)collectEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
   v11 = NSStringFromSelector(a2);
   v12 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v13 = [v11 stringByTrimmingCharactersInSet:v12];
@@ -1798,7 +1798,7 @@ void __73__MODaemonClient__fetchEventBundlesWithPredicate_withContext_andHandler
   [(MODaemonClient *)self _abortIfNeeded:v14];
   v21 = @"MOPromptManagerTest";
   v15 = [NSArray arrayWithObjects:&v21 count:1];
-  v16 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v15 withErrorHandler:v10];
+  v16 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v15 withErrorHandler:handlerCopy];
 
   if (v16)
   {
@@ -1807,9 +1807,9 @@ void __73__MODaemonClient__fetchEventBundlesWithPredicate_withContext_andHandler
     v17[2] = __72__MODaemonClient_collectEventsWithContext_andRefreshVariant_andHandler___block_invoke;
     v17[3] = &unk_10033B390;
     v17[4] = self;
-    v18 = v9;
-    v20 = a4;
-    v19 = v10;
+    v18 = contextCopy;
+    variantCopy = variant;
+    v19 = handlerCopy;
     [(MODaemonClient *)self scheduleInternalClientTask:v17 withName:@"collectEventsWithContext"];
   }
 }
@@ -1837,10 +1837,10 @@ id __72__MODaemonClient_collectEventsWithContext_andRefreshVariant_andHandler___
   return [v2 finalizeClientTaskWithName:@"collectEventsWithContext"];
 }
 
-- (void)_collectEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5
+- (void)_collectEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
   v10 = objc_autoreleasePoolPush();
   v25[0] = 0;
   v25[1] = v25;
@@ -1852,10 +1852,10 @@ id __72__MODaemonClient_collectEventsWithContext_andRefreshVariant_andHandler___
   v12 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v8 xpcProcessName];
-    v14 = [MODaemonClient getRefreshVariantName:a4];
+    xpcProcessName = [contextCopy xpcProcessName];
+    v14 = [MODaemonClient getRefreshVariantName:variant];
     *buf = 138412546;
-    v28 = v13;
+    v28 = xpcProcessName;
     v29 = 2112;
     v30 = v14;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "collect XPC context [%@] variant [%@]", buf, 0x16u);
@@ -1868,13 +1868,13 @@ id __72__MODaemonClient_collectEventsWithContext_andRefreshVariant_andHandler___
   v19[3] = &unk_10033B408;
   v16 = v11;
   v20 = v16;
-  v17 = v8;
+  v17 = contextCopy;
   v21 = v17;
-  v22 = self;
-  v18 = v9;
+  selfCopy = self;
+  v18 = handlerCopy;
   v23 = v18;
   v24 = v25;
-  [(MOEventManager *)eventManager collectEventsWithRefreshVariant:a4 andHandler:v19];
+  [(MOEventManager *)eventManager collectEventsWithRefreshVariant:variant andHandler:v19];
 
   _Block_object_dispose(v25, 8);
   objc_autoreleasePoolPop(v10);
@@ -1925,10 +1925,10 @@ void __73__MODaemonClient__collectEventsWithContext_andRefreshVariant_andHandler
   *(v2 + 40) = 0;
 }
 
-- (void)bundleEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5
+- (void)bundleEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
   v11 = NSStringFromSelector(a2);
   v12 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v13 = [v11 stringByTrimmingCharactersInSet:v12];
@@ -1937,7 +1937,7 @@ void __73__MODaemonClient__collectEventsWithContext_andRefreshVariant_andHandler
   [(MODaemonClient *)self _abortIfNeeded:v14];
   v21 = @"MOPromptManagerTest";
   v15 = [NSArray arrayWithObjects:&v21 count:1];
-  v16 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v15 withErrorHandler:v10];
+  v16 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v15 withErrorHandler:handlerCopy];
 
   if (v16)
   {
@@ -1946,9 +1946,9 @@ void __73__MODaemonClient__collectEventsWithContext_andRefreshVariant_andHandler
     v17[2] = __71__MODaemonClient_bundleEventsWithContext_andRefreshVariant_andHandler___block_invoke;
     v17[3] = &unk_10033B390;
     v17[4] = self;
-    v18 = v9;
-    v20 = a4;
-    v19 = v10;
+    v18 = contextCopy;
+    variantCopy = variant;
+    v19 = handlerCopy;
     [(MODaemonClient *)self scheduleInternalClientTask:v17 withName:@"bundleEventsWithContext"];
   }
 }
@@ -1999,9 +1999,9 @@ void __44__MODaemonClient_scheduleMomentsUICloudSync__block_invoke_2(id a1, NSEr
   }
 }
 
-- (void)_scheduleMomentsUICloudSync:(id)a3
+- (void)_scheduleMomentsUICloudSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   v5 = objc_autoreleasePoolPush();
   v14[0] = 0;
   v14[1] = v14;
@@ -2018,7 +2018,7 @@ void __44__MODaemonClient_scheduleMomentsUICloudSync__block_invoke_2(id a1, NSEr
   v8 = v6;
   v11 = v8;
   v13 = v14;
-  v9 = v4;
+  v9 = syncCopy;
   v12 = v9;
   [(ProcessingServerCoreConnection *)v7 cloudSyncWithCompletionHandler:v10];
 
@@ -2060,21 +2060,21 @@ void __49__MODaemonClient_scheduleMomentsUIFullProcessing__block_invoke_2(id a1,
   }
 }
 
-- (void)checkUIActiveStatusWithHandler:(id)a3
+- (void)checkUIActiveStatusWithHandler:(id)handler
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = __49__MODaemonClient_checkUIActiveStatusWithHandler___block_invoke;
   v4[3] = &unk_100337B48;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(MODaemonClient *)v5 scheduleNonSerializedClientTask:v4 withName:@"checkUIActiveStatus"];
+  selfCopy = self;
+  handlerCopy = handler;
+  v3 = handlerCopy;
+  [(MODaemonClient *)selfCopy scheduleNonSerializedClientTask:v4 withName:@"checkUIActiveStatus"];
 }
 
-- (void)_checkUIActiveStatusWithHandler:(id)a3
+- (void)_checkUIActiveStatusWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_autoreleasePoolPush();
   v14[0] = 0;
   v14[1] = v14;
@@ -2091,7 +2091,7 @@ void __49__MODaemonClient_scheduleMomentsUIFullProcessing__block_invoke_2(id a1,
   v8 = v6;
   v11 = v8;
   v13 = v14;
-  v9 = v4;
+  v9 = handlerCopy;
   v12 = v9;
   [(ProcessingServerCoreConnection *)v7 isUIActiveWithCompletionHandler:v10];
 
@@ -2112,9 +2112,9 @@ void __50__MODaemonClient__checkUIActiveStatusWithHandler___block_invoke(void *a
   (*(a1[5] + 16))();
 }
 
-- (void)_scheduleMomentsUIFullProcessing:(id)a3
+- (void)_scheduleMomentsUIFullProcessing:(id)processing
 {
-  v4 = a3;
+  processingCopy = processing;
   v5 = objc_autoreleasePoolPush();
   v14[0] = 0;
   v14[1] = v14;
@@ -2131,7 +2131,7 @@ void __50__MODaemonClient__checkUIActiveStatusWithHandler___block_invoke(void *a
   v8 = v6;
   v11 = v8;
   v13 = v14;
-  v9 = v4;
+  v9 = processingCopy;
   v12 = v9;
   [(ProcessingServerCoreConnection *)v7 runFullProcessingWithCompletionHandler:v10];
 
@@ -2151,10 +2151,10 @@ void __51__MODaemonClient__scheduleMomentsUIFullProcessing___block_invoke(void *
   (*(a1[5] + 16))();
 }
 
-- (void)_bundleEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5
+- (void)_bundleEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
   v10 = objc_autoreleasePoolPush();
   v25[0] = 0;
   v25[1] = v25;
@@ -2166,10 +2166,10 @@ void __51__MODaemonClient__scheduleMomentsUIFullProcessing___block_invoke(void *
   v12 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v8 xpcProcessName];
-    v14 = [MODaemonClient getRefreshVariantName:a4];
+    xpcProcessName = [contextCopy xpcProcessName];
+    v14 = [MODaemonClient getRefreshVariantName:variant];
     *buf = 138412546;
-    v28 = v13;
+    v28 = xpcProcessName;
     v29 = 2112;
     v30 = v14;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "bundle XPC context [%@] variant [%@]", buf, 0x16u);
@@ -2182,13 +2182,13 @@ void __51__MODaemonClient__scheduleMomentsUIFullProcessing___block_invoke(void *
   v19[3] = &unk_10033B408;
   v16 = v11;
   v20 = v16;
-  v17 = v8;
+  v17 = contextCopy;
   v21 = v17;
-  v22 = self;
-  v18 = v9;
+  selfCopy = self;
+  v18 = handlerCopy;
   v23 = v18;
   v24 = v25;
-  [(MOEventBundleManager *)eventBundleManager bundleEventsWithRefreshVariant:a4 andHandler:v19];
+  [(MOEventBundleManager *)eventBundleManager bundleEventsWithRefreshVariant:variant andHandler:v19];
 
   _Block_object_dispose(v25, 8);
   objc_autoreleasePoolPop(v10);
@@ -2239,10 +2239,10 @@ void __72__MODaemonClient__bundleEventsWithContext_andRefreshVariant_andHandler_
   *(v2 + 40) = 0;
 }
 
-- (void)purgeEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5
+- (void)purgeEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
   v11 = NSStringFromSelector(a2);
   v12 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v13 = [v11 stringByTrimmingCharactersInSet:v12];
@@ -2251,7 +2251,7 @@ void __72__MODaemonClient__bundleEventsWithContext_andRefreshVariant_andHandler_
   [(MODaemonClient *)self _abortIfNeeded:v14];
   v21 = @"MOPromptManagerTest";
   v15 = [NSArray arrayWithObjects:&v21 count:1];
-  v16 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v15 withErrorHandler:v10];
+  v16 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v15 withErrorHandler:handlerCopy];
 
   if (v16)
   {
@@ -2260,9 +2260,9 @@ void __72__MODaemonClient__bundleEventsWithContext_andRefreshVariant_andHandler_
     v17[2] = __70__MODaemonClient_purgeEventsWithContext_andRefreshVariant_andHandler___block_invoke;
     v17[3] = &unk_10033B390;
     v17[4] = self;
-    v18 = v9;
-    v20 = a4;
-    v19 = v10;
+    v18 = contextCopy;
+    variantCopy = variant;
+    v19 = handlerCopy;
     [(MODaemonClient *)self scheduleInternalClientTask:v17 withName:@"purgeEventsWithContext"];
   }
 }
@@ -2290,10 +2290,10 @@ id __70__MODaemonClient_purgeEventsWithContext_andRefreshVariant_andHandler___bl
   return [v2 finalizeClientTaskWithName:@"purgeEventsWithContext"];
 }
 
-- (void)_purgeEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5
+- (void)_purgeEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
   v10 = objc_autoreleasePoolPush();
   v32[0] = 0;
   v32[1] = v32;
@@ -2311,10 +2311,10 @@ id __70__MODaemonClient_purgeEventsWithContext_andRefreshVariant_andHandler___bl
   v12 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v8 xpcProcessName];
-    v14 = [MODaemonClient getRefreshVariantName:a4];
+    xpcProcessName = [contextCopy xpcProcessName];
+    v14 = [MODaemonClient getRefreshVariantName:variant];
     *buf = 138412546;
-    v35 = v13;
+    v35 = xpcProcessName;
     v36 = 2112;
     v37 = v14;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "purge XPC context [%@] variant [%@]", buf, 0x16u);
@@ -2330,15 +2330,15 @@ id __70__MODaemonClient_purgeEventsWithContext_andRefreshVariant_andHandler___bl
   v22 = v17;
   v18 = v15;
   v23 = v18;
-  v24 = self;
+  selfCopy = self;
   v27 = v30;
-  v29 = a4;
-  v19 = v8;
+  variantCopy = variant;
+  v19 = contextCopy;
   v25 = v19;
-  v20 = v9;
+  v20 = handlerCopy;
   v26 = v20;
   v28 = v32;
-  [(MOEventManager *)eventManager cleanUpEventsWithRefreshVariant:a4 andHandler:v21];
+  [(MOEventManager *)eventManager cleanUpEventsWithRefreshVariant:variant andHandler:v21];
 
   _Block_object_dispose(v30, 8);
   _Block_object_dispose(v32, 8);
@@ -2452,10 +2452,10 @@ void __71__MODaemonClient__purgeEventsWithContext_andRefreshVariant_andHandler__
   *(v2 + 40) = 0;
 }
 
-- (void)runAnalyticsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5
+- (void)runAnalyticsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
   v11 = NSStringFromSelector(a2);
   v12 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v13 = [v11 stringByTrimmingCharactersInSet:v12];
@@ -2464,7 +2464,7 @@ void __71__MODaemonClient__purgeEventsWithContext_andRefreshVariant_andHandler__
   [(MODaemonClient *)self _abortIfNeeded:v14];
   v21 = @"MOPromptManagerTest";
   v15 = [NSArray arrayWithObjects:&v21 count:1];
-  v16 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v15 withErrorHandler:v10];
+  v16 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v15 withErrorHandler:handlerCopy];
 
   if (v16)
   {
@@ -2473,9 +2473,9 @@ void __71__MODaemonClient__purgeEventsWithContext_andRefreshVariant_andHandler__
     v17[2] = __71__MODaemonClient_runAnalyticsWithContext_andRefreshVariant_andHandler___block_invoke;
     v17[3] = &unk_10033B390;
     v17[4] = self;
-    v18 = v9;
-    v20 = a4;
-    v19 = v10;
+    v18 = contextCopy;
+    variantCopy = variant;
+    v19 = handlerCopy;
     [(MODaemonClient *)self scheduleInternalClientTask:v17 withName:@"runAnalyticsWithContext"];
   }
 }
@@ -2503,10 +2503,10 @@ id __71__MODaemonClient_runAnalyticsWithContext_andRefreshVariant_andHandler___b
   return [v2 finalizeClientTaskWithName:@"runAnalyticsWithContext"];
 }
 
-- (void)_runAnalyticsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5
+- (void)_runAnalyticsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
   v10 = objc_autoreleasePoolPush();
   v25[0] = 0;
   v25[1] = v25;
@@ -2518,10 +2518,10 @@ id __71__MODaemonClient_runAnalyticsWithContext_andRefreshVariant_andHandler___b
   v12 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v8 xpcProcessName];
-    v14 = [MODaemonClient getRefreshVariantName:a4];
+    xpcProcessName = [contextCopy xpcProcessName];
+    v14 = [MODaemonClient getRefreshVariantName:variant];
     *buf = 138412546;
-    v28 = v13;
+    v28 = xpcProcessName;
     v29 = 2112;
     v30 = v14;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "analytics XPC context [%@] variant [%@]", buf, 0x16u);
@@ -2534,13 +2534,13 @@ id __71__MODaemonClient_runAnalyticsWithContext_andRefreshVariant_andHandler___b
   v19[3] = &unk_10033B408;
   v16 = v11;
   v20 = v16;
-  v17 = v8;
+  v17 = contextCopy;
   v21 = v17;
-  v22 = self;
-  v18 = v9;
+  selfCopy = self;
+  v18 = handlerCopy;
   v23 = v18;
   v24 = v25;
-  [(MOEventManager *)eventManager runAnalyticsWithRefreshVariant:a4 andHandler:v19];
+  [(MOEventManager *)eventManager runAnalyticsWithRefreshVariant:variant andHandler:v19];
 
   _Block_object_dispose(v25, 8);
   objc_autoreleasePoolPop(v10);
@@ -2591,11 +2591,11 @@ void __72__MODaemonClient__runAnalyticsWithContext_andRefreshVariant_andHandler_
   *(v2 + 40) = 0;
 }
 
-- (void)analyzeTrendsInEvents:(id)a3 withContext:(id)a4 andRefreshVariant:(unint64_t)a5 andHandler:(id)a6
+- (void)analyzeTrendsInEvents:(id)events withContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  eventsCopy = events;
+  contextCopy = context;
+  handlerCopy = handler;
   v14 = NSStringFromSelector(a2);
   v15 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v16 = [v14 stringByTrimmingCharactersInSet:v15];
@@ -2608,7 +2608,7 @@ void __72__MODaemonClient__runAnalyticsWithContext_andRefreshVariant_andHandler_
   v26[1] = 3221225472;
   v26[2] = __81__MODaemonClient_analyzeTrendsInEvents_withContext_andRefreshVariant_andHandler___block_invoke;
   v26[3] = &unk_10033B2D8;
-  v19 = v13;
+  v19 = handlerCopy;
   v27 = v19;
   v20 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v18 withErrorHandler:v26];
 
@@ -2619,9 +2619,9 @@ void __72__MODaemonClient__runAnalyticsWithContext_andRefreshVariant_andHandler_
     v21[2] = __81__MODaemonClient_analyzeTrendsInEvents_withContext_andRefreshVariant_andHandler___block_invoke_2;
     v21[3] = &unk_1003376B8;
     v21[4] = self;
-    v22 = v11;
-    v23 = v12;
-    v25 = a5;
+    v22 = eventsCopy;
+    v23 = contextCopy;
+    variantCopy = variant;
     v24 = v19;
     [(MODaemonClient *)self scheduleInternalClientTask:v21 withName:@"analyzeTrendsInEvents"];
   }
@@ -2651,11 +2651,11 @@ id __81__MODaemonClient_analyzeTrendsInEvents_withContext_andRefreshVariant_andH
   return [v2 finalizeClientTaskWithName:@"analyzeTrendsInEvents"];
 }
 
-- (void)_analyzeTrendsInEvents:(id)a3 withContext:(id)a4 andRefreshVariant:(unint64_t)a5 andHandler:(id)a6
+- (void)_analyzeTrendsInEvents:(id)events withContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  eventsCopy = events;
+  contextCopy = context;
+  handlerCopy = handler;
   v13 = objc_autoreleasePoolPush();
   v28[0] = 0;
   v28[1] = v28;
@@ -2674,28 +2674,28 @@ id __81__MODaemonClient_analyzeTrendsInEvents_withContext_andRefreshVariant_andH
   v16 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [v11 xpcProcessName];
-    v18 = [MODaemonClient getRefreshVariantName:a5];
+    xpcProcessName = [contextCopy xpcProcessName];
+    v18 = [MODaemonClient getRefreshVariantName:variant];
     *buf = 138412546;
-    v31 = v17;
+    v31 = xpcProcessName;
     v32 = 2112;
     v33 = v18;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "trends XPC context [%@] variant [%@]", buf, 0x16u);
   }
 
   v19 = objc_opt_new();
-  v20 = [v19 buildAnalyticsPlans];
+  buildAnalyticsPlans = [v19 buildAnalyticsPlans];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = __82__MODaemonClient__analyzeTrendsInEvents_withContext_andRefreshVariant_andHandler___block_invoke;
   v23[3] = &unk_10033B538;
   v21 = v14;
   v24 = v21;
-  v22 = v12;
+  v22 = handlerCopy;
   v26 = v22;
   v27 = v28;
-  v25 = self;
-  [v19 analyzeEvents:v10 analyticsPlans:v20 handler:v23];
+  selfCopy = self;
+  [v19 analyzeEvents:eventsCopy analyticsPlans:buildAnalyticsPlans handler:v23];
 
   _Block_object_dispose(v28, 8);
   objc_autoreleasePoolPop(v13);
@@ -2791,10 +2791,10 @@ void __82__MODaemonClient__analyzeTrendsInEvents_withContext_andRefreshVariant_a
   *(v2 + 40) = 0;
 }
 
-- (void)softRefreshEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andIgnoreLastTrigger:(BOOL)a5 andHandler:(id)a6
+- (void)softRefreshEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andIgnoreLastTrigger:(BOOL)trigger andHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a6;
+  contextCopy = context;
+  handlerCopy = handler;
   v13 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -2808,12 +2808,12 @@ void __82__MODaemonClient__analyzeTrendsInEvents_withContext_andRefreshVariant_a
 
   v17 = [NSString stringWithFormat:@"InterruptMethod_%@", v16];
   [(MODaemonClient *)self _abortIfNeeded:v17];
-  if (a4 == 1536)
+  if (variant == 1536)
   {
     v47[0] = @"MORefreshSoft";
     v47[1] = @"MOPromptManagerTest";
     v18 = [NSArray arrayWithObjects:v47 count:2];
-    v19 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v18 withErrorHandler:v12];
+    v19 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v18 withErrorHandler:handlerCopy];
 
     if ((v19 & 1) == 0)
     {
@@ -2822,8 +2822,8 @@ void __82__MODaemonClient__analyzeTrendsInEvents_withContext_andRefreshVariant_a
 
 LABEL_7:
     v22 = +[NSDate distantPast];
-    v23 = [(MODaemonClient *)self defaultsManager];
-    v24 = [v23 objectForKey:@"EventRefreshSchedulerLastSuccessfulTrigger"];
+    defaultsManager = [(MODaemonClient *)self defaultsManager];
+    v24 = [defaultsManager objectForKey:@"EventRefreshSchedulerLastSuccessfulTrigger"];
 
     if (v24)
     {
@@ -2836,21 +2836,21 @@ LABEL_7:
       }
     }
 
-    v26 = [(MODaemonClient *)self configManager];
+    configManager = [(MODaemonClient *)self configManager];
     LODWORD(v27) = 1155596288;
-    [v26 getFloatSettingForKey:@"EventRefreshSchedulerBlackoutTimeWindowForSoftRefresh" withFallback:v27];
+    [configManager getFloatSettingForKey:@"EventRefreshSchedulerBlackoutTimeWindowForSoftRefresh" withFallback:v27];
     v29 = v28;
 
     v30 = +[NSDate now];
     [v30 timeIntervalSinceDate:v22];
     v32 = v31;
 
-    if (!v22 || (v33 = v32, v33 <= 0.0) || v29 <= v33 || a5)
+    if (!v22 || (v33 = v32, v33 <= 0.0) || v29 <= v33 || trigger)
     {
-      v37 = [(MODaemonClient *)self acquireRefreshLock];
+      acquireRefreshLock = [(MODaemonClient *)self acquireRefreshLock];
       v38 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
       v39 = os_log_type_enabled(v38, OS_LOG_TYPE_INFO);
-      if (v37)
+      if (acquireRefreshLock)
       {
         if (v39)
         {
@@ -2863,9 +2863,9 @@ LABEL_7:
         v40[2] = __97__MODaemonClient_softRefreshEventsWithContext_andRefreshVariant_andIgnoreLastTrigger_andHandler___block_invoke;
         v40[3] = &unk_10033B390;
         v40[4] = self;
-        v41 = v11;
-        v43 = a4;
-        v42 = v12;
+        v41 = contextCopy;
+        variantCopy = variant;
+        v42 = handlerCopy;
         [(MODaemonClient *)self scheduleInternalClientTask:v40 withName:@"softRefreshEventsWithContext"];
 
         goto LABEL_26;
@@ -2877,7 +2877,7 @@ LABEL_7:
         _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "RefreshLock is in use. Drop the soft refresh.", buf, 2u);
       }
 
-      if (!v12)
+      if (!handlerCopy)
       {
         goto LABEL_26;
       }
@@ -2895,13 +2895,13 @@ LABEL_7:
         _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "softRefreshEventsWithContext had nothing to do because we refreshed %@ seconds ago", buf, 0xCu);
       }
 
-      if (!v12)
+      if (!handlerCopy)
       {
         goto LABEL_26;
       }
     }
 
-    (*(v12 + 2))(v12, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
 LABEL_26:
 
     goto LABEL_27;
@@ -2909,7 +2909,7 @@ LABEL_26:
 
   v46 = @"MOPromptManagerTest";
   v20 = [NSArray arrayWithObjects:&v46 count:1];
-  v21 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v20 withErrorHandler:v12];
+  v21 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v20 withErrorHandler:handlerCopy];
 
   if (v21)
   {
@@ -2952,26 +2952,26 @@ id __97__MODaemonClient_softRefreshEventsWithContext_andRefreshVariant_andIgnore
 
 - (BOOL)acquireRefreshLock
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  refreshLock = v2->_refreshLock;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  refreshLock = selfCopy->_refreshLock;
   if (!refreshLock)
   {
-    v2->_refreshLock = 1;
+    selfCopy->_refreshLock = 1;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return !refreshLock;
 }
 
 - (void)releaseRefreshLock
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_refreshLock)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_refreshLock)
   {
-    v2->_refreshLock = 0;
+    selfCopy->_refreshLock = 0;
   }
 
   else
@@ -2983,25 +2983,25 @@ id __97__MODaemonClient_softRefreshEventsWithContext_andRefreshVariant_andIgnore
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)refreshEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andHandler:(id)a5
+- (void)refreshEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
   v11 = NSStringFromSelector(a2);
   v12 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v13 = [v11 stringByTrimmingCharactersInSet:v12];
 
   v14 = [NSString stringWithFormat:@"InterruptMethod_%@", v13];
   [(MODaemonClient *)self _abortIfNeeded:v14];
-  if (a4 == 512)
+  if (variant == 512)
   {
     v31[0] = @"MORefreshLight";
     v31[1] = @"MOPromptManagerTest";
     v15 = [NSArray arrayWithObjects:v31 count:2];
-    v16 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v15 withErrorHandler:v10];
+    v16 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v15 withErrorHandler:handlerCopy];
 
     if ((v16 & 1) == 0)
     {
@@ -3013,7 +3013,7 @@ id __97__MODaemonClient_softRefreshEventsWithContext_andRefreshVariant_andIgnore
   {
     v30 = @"MOPromptManagerTest";
     v17 = [NSArray arrayWithObjects:&v30 count:1];
-    v18 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v17 withErrorHandler:v10];
+    v18 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v17 withErrorHandler:handlerCopy];
 
     if (!v18)
     {
@@ -3028,9 +3028,9 @@ id __97__MODaemonClient_softRefreshEventsWithContext_andRefreshVariant_andIgnore
     v23[2] = __72__MODaemonClient_refreshEventsWithContext_andRefreshVariant_andHandler___block_invoke;
     v23[3] = &unk_10033B390;
     v23[4] = self;
-    v24 = v9;
-    v26 = a4;
-    v25 = v10;
+    v24 = contextCopy;
+    variantCopy = variant;
+    v25 = handlerCopy;
     [(MODaemonClient *)self scheduleInternalClientTask:v23 withName:@"refreshEventsWithContext"];
   }
 
@@ -3043,7 +3043,7 @@ id __97__MODaemonClient_softRefreshEventsWithContext_andRefreshVariant_andIgnore
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "RefreshLock is in use. Drop the refresh.", buf, 2u);
     }
 
-    if (v10)
+    if (handlerCopy)
     {
       v20 = [NSError alloc];
       v28 = NSLocalizedDescriptionKey;
@@ -3051,7 +3051,7 @@ id __97__MODaemonClient_softRefreshEventsWithContext_andRefreshVariant_andIgnore
       v21 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
       v22 = [v20 initWithDomain:@"MODaemonClient" code:0 userInfo:v21];
 
-      (*(v10 + 2))(v10, v22);
+      (*(handlerCopy + 2))(handlerCopy, v22);
     }
   }
 
@@ -3089,20 +3089,20 @@ id __72__MODaemonClient_refreshEventsWithContext_andRefreshVariant_andHandler___
   return [*(a1 + 32) scheduleMomentsUIFullProcessing];
 }
 
-- (void)_refreshEventsWithContext:(id)a3 andRefreshVariant:(unint64_t)a4 andSoftKindFlag:(BOOL)a5 andHandler:(id)a6
+- (void)_refreshEventsWithContext:(id)context andRefreshVariant:(unint64_t)variant andSoftKindFlag:(BOOL)flag andHandler:(id)handler
 {
-  v55 = a5;
-  v9 = a3;
-  v10 = a6;
+  flagCopy = flag;
+  contextCopy = context;
+  handlerCopy = handler;
   v11 = [(MODaemonClient *)self _createWatchDogWithName:@"refreshEvents"];
   v12 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v9 xpcProcessName];
-    v14 = [NSNumber numberWithBool:v55];
-    v15 = [MODaemonClient getRefreshVariantName:a4];
+    xpcProcessName = [contextCopy xpcProcessName];
+    v14 = [NSNumber numberWithBool:flagCopy];
+    v15 = [MODaemonClient getRefreshVariantName:variant];
     *buf = 138412802;
-    *&buf[4] = v13;
+    *&buf[4] = xpcProcessName;
     *&buf[12] = 2112;
     *&buf[14] = v14;
     *&buf[22] = 2112;
@@ -3124,11 +3124,11 @@ id __72__MODaemonClient_refreshEventsWithContext_andRefreshVariant_andHandler___
   v117 = os_transaction_create();
   v16 = _mo_log_facility_get_os_log(&MOLogFacilityPerformance);
   v17 = v16;
-  if (a4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
+  if (variant - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
     *v118 = 134349056;
-    v119 = a4;
-    _os_signpost_emit_with_name_impl(&_mh_execute_header, v17, OS_SIGNPOST_INTERVAL_BEGIN, a4, "momentsd_XPCRefresh", " variant=%{signpost.telemetry:number1,public}lu  enableTelemetry=YES ", v118, 0xCu);
+    variantCopy = variant;
+    _os_signpost_emit_with_name_impl(&_mh_execute_header, v17, OS_SIGNPOST_INTERVAL_BEGIN, variant, "momentsd_XPCRefresh", " variant=%{signpost.telemetry:number1,public}lu  enableTelemetry=YES ", v118, 0xCu);
   }
 
   v18 = [[MOPerformanceMeasurement alloc] initWithName:@"XPCRefresh" measureRecentPeak:0];
@@ -3137,12 +3137,12 @@ id __72__MODaemonClient_refreshEventsWithContext_andRefreshVariant_andHandler___
   v108[1] = 3221225472;
   v108[2] = __89__MODaemonClient__refreshEventsWithContext_andRefreshVariant_andSoftKindFlag_andHandler___block_invoke;
   v108[3] = &unk_10033B588;
-  v115 = a4;
+  variantCopy2 = variant;
   v19 = v11;
   v109 = v19;
-  v51 = v10;
+  v51 = handlerCopy;
   v112 = v51;
-  v110 = self;
+  selfCopy = self;
   v113 = buf;
   v114 = v116;
   v52 = v18;
@@ -3152,10 +3152,10 @@ id __72__MODaemonClient_refreshEventsWithContext_andRefreshVariant_andHandler___
   v103[1] = 3221225472;
   v103[2] = __89__MODaemonClient__refreshEventsWithContext_andRefreshVariant_andSoftKindFlag_andHandler___block_invoke_428;
   v103[3] = &unk_10033B390;
-  v107 = a4;
+  variantCopy3 = variant;
   v21 = v19;
   v104 = v21;
-  v105 = self;
+  selfCopy2 = self;
   v22 = v20;
   v106 = v22;
   v23 = objc_retainBlock(v103);
@@ -3163,11 +3163,11 @@ id __72__MODaemonClient_refreshEventsWithContext_andRefreshVariant_andHandler___
   v97[1] = 3221225472;
   v97[2] = __89__MODaemonClient__refreshEventsWithContext_andRefreshVariant_andSoftKindFlag_andHandler___block_invoke_433;
   v97[3] = &unk_1003376B8;
-  v102 = a4;
+  variantCopy4 = variant;
   v24 = v21;
   v98 = v24;
-  v99 = self;
-  v25 = v9;
+  selfCopy3 = self;
+  v25 = contextCopy;
   v100 = v25;
   v26 = v23;
   v101 = v26;
@@ -3176,14 +3176,14 @@ id __72__MODaemonClient_refreshEventsWithContext_andRefreshVariant_andHandler___
   v87[1] = 3221225472;
   v87[2] = __89__MODaemonClient__refreshEventsWithContext_andRefreshVariant_andSoftKindFlag_andHandler___block_invoke_439;
   v87[3] = &unk_10033B628;
-  v95 = a4;
+  variantCopy5 = variant;
   v28 = v24;
   v88 = v28;
-  v89 = self;
+  selfCopy4 = self;
   v29 = v25;
   v90 = v29;
   v94 = buf;
-  v96 = v55;
+  v96 = flagCopy;
   v53 = v26;
   v91 = v53;
   v54 = v27;
@@ -3195,10 +3195,10 @@ id __72__MODaemonClient_refreshEventsWithContext_andRefreshVariant_andHandler___
   v80[1] = 3221225472;
   v80[2] = __89__MODaemonClient__refreshEventsWithContext_andRefreshVariant_andSoftKindFlag_andHandler___block_invoke_444;
   v80[3] = &unk_10033B678;
-  v86 = a4;
+  variantCopy6 = variant;
   v32 = v28;
   v81 = v32;
-  v82 = self;
+  selfCopy5 = self;
   v33 = v29;
   v83 = v33;
   v85 = buf;
@@ -3209,16 +3209,16 @@ id __72__MODaemonClient_refreshEventsWithContext_andRefreshVariant_andHandler___
   v70[1] = 3221225472;
   v70[2] = __89__MODaemonClient__refreshEventsWithContext_andRefreshVariant_andSoftKindFlag_andHandler___block_invoke_449;
   v70[3] = &unk_10033B628;
-  v78 = a4;
+  variantCopy7 = variant;
   v36 = v32;
   v71 = v36;
-  v72 = self;
+  selfCopy6 = self;
   v37 = v33;
   v73 = v37;
   v77 = buf;
   v38 = v30;
   v74 = v38;
-  v79 = v55;
+  v79 = flagCopy;
   v39 = v34;
   v75 = v39;
   v40 = v35;
@@ -3228,10 +3228,10 @@ id __72__MODaemonClient_refreshEventsWithContext_andRefreshVariant_andHandler___
   v63[1] = 3221225472;
   v63[2] = __89__MODaemonClient__refreshEventsWithContext_andRefreshVariant_andSoftKindFlag_andHandler___block_invoke_454;
   v63[3] = &unk_10033B678;
-  v69 = a4;
+  variantCopy8 = variant;
   v42 = v36;
   v64 = v42;
-  v65 = self;
+  selfCopy7 = self;
   v43 = v37;
   v66 = v43;
   v68 = buf;
@@ -3242,18 +3242,18 @@ id __72__MODaemonClient_refreshEventsWithContext_andRefreshVariant_andHandler___
   v56[1] = 3221225472;
   v56[2] = __89__MODaemonClient__refreshEventsWithContext_andRefreshVariant_andSoftKindFlag_andHandler___block_invoke_459;
   v56[3] = &unk_10033B678;
-  v62 = a4;
+  variantCopy9 = variant;
   v46 = v42;
   v57 = v46;
-  v58 = self;
+  selfCopy8 = self;
   v47 = v43;
   v59 = v47;
   v61 = buf;
   v48 = v45;
   v60 = v48;
   v49 = objc_retainBlock(v56);
-  v50 = [(MODaemonClient *)self internalQueue];
-  dispatch_async(v50, v49);
+  internalQueue = [(MODaemonClient *)self internalQueue];
+  dispatch_async(internalQueue, v49);
 
   _Block_object_dispose(v116, 8);
   _Block_object_dispose(buf, 8);
@@ -3840,10 +3840,10 @@ void __89__MODaemonClient__refreshEventsWithContext_andRefreshVariant_andSoftKin
   dispatch_async(v12, *(a1 + 56));
 }
 
-- (void)checkElegibilityAndRequestDataExportForTrigger:(unint64_t)a3 withFeedback:(id)a4 requestUpload:(BOOL)a5 reply:(id)a6
+- (void)checkElegibilityAndRequestDataExportForTrigger:(unint64_t)trigger withFeedback:(id)feedback requestUpload:(BOOL)upload reply:(id)reply
 {
-  v11 = a4;
-  v12 = a6;
+  feedbackCopy = feedback;
+  replyCopy = reply;
   v13 = NSStringFromSelector(a2);
   v14 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v15 = [v13 stringByTrimmingCharactersInSet:v14];
@@ -3856,7 +3856,7 @@ void __89__MODaemonClient__refreshEventsWithContext_andRefreshVariant_andSoftKin
   v25[1] = 3221225472;
   v25[2] = __98__MODaemonClient_checkElegibilityAndRequestDataExportForTrigger_withFeedback_requestUpload_reply___block_invoke;
   v25[3] = &unk_10033B2D8;
-  v18 = v12;
+  v18 = replyCopy;
   v26 = v18;
   v19 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v17 withErrorHandler:v25];
 
@@ -3867,9 +3867,9 @@ void __89__MODaemonClient__refreshEventsWithContext_andRefreshVariant_andSoftKin
     v20[2] = __98__MODaemonClient_checkElegibilityAndRequestDataExportForTrigger_withFeedback_requestUpload_reply___block_invoke_2;
     v20[3] = &unk_10033B6C8;
     v20[4] = self;
-    v23 = a3;
-    v21 = v11;
-    v24 = a5;
+    triggerCopy = trigger;
+    v21 = feedbackCopy;
+    uploadCopy = upload;
     v22 = v18;
     [(MODaemonClient *)self scheduleInternalClientTask:v20 withName:@"dataDumpWithFeedback"];
   }
@@ -3944,9 +3944,9 @@ void __122__MODaemonClient__checkElegibilityAndRequestDataExportForTrigger_withF
   *(v2 + 40) = 0;
 }
 
-- (void)getSnapshotDictionaryForAnalyticsWithHandler:(id)a3
+- (void)getSnapshotDictionaryForAnalyticsWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = NSStringFromSelector(a2);
   v7 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v8 = [v6 stringByTrimmingCharactersInSet:v7];
@@ -3959,7 +3959,7 @@ void __122__MODaemonClient__checkElegibilityAndRequestDataExportForTrigger_withF
   v15[1] = 3221225472;
   v15[2] = __63__MODaemonClient_getSnapshotDictionaryForAnalyticsWithHandler___block_invoke;
   v15[3] = &unk_10033B2D8;
-  v11 = v5;
+  v11 = handlerCopy;
   v16 = v11;
   v12 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v10 withErrorHandler:v15];
 
@@ -3996,19 +3996,19 @@ id __63__MODaemonClient_getSnapshotDictionaryForAnalyticsWithHandler___block_inv
   return [v2 finalizeClientTaskWithName:@"getSnapshotDictionaryForAnalyticsWithHandler"];
 }
 
-- (void)_getSnapshotDictionaryForAnalyticsWithHandler:(id)a3
+- (void)_getSnapshotDictionaryForAnalyticsWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MODaemonClient *)self onboardingAndSettingsPersistence];
-  v6 = [v5 getSnapshotDictionaryForAnalytics];
+  handlerCopy = handler;
+  onboardingAndSettingsPersistence = [(MODaemonClient *)self onboardingAndSettingsPersistence];
+  getSnapshotDictionaryForAnalytics = [onboardingAndSettingsPersistence getSnapshotDictionaryForAnalytics];
 
-  v4[2](v4, v6, 0);
+  handlerCopy[2](handlerCopy, getSnapshotDictionaryForAnalytics, 0);
 }
 
-- (void)testNotificationAnalyticsWithContext:(id)a3 andHandler:(id)a4
+- (void)testNotificationAnalyticsWithContext:(id)context andHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   v9 = NSStringFromSelector(a2);
   v10 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v11 = [v9 stringByTrimmingCharactersInSet:v10];
@@ -4017,7 +4017,7 @@ id __63__MODaemonClient_getSnapshotDictionaryForAnalyticsWithHandler___block_inv
   [(MODaemonClient *)self _abortIfNeeded:v12];
   v18 = @"MOPromptManagerTest";
   v13 = [NSArray arrayWithObjects:&v18 count:1];
-  v14 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v13 withErrorHandler:v8];
+  v14 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v13 withErrorHandler:handlerCopy];
 
   if (v14)
   {
@@ -4026,8 +4026,8 @@ id __63__MODaemonClient_getSnapshotDictionaryForAnalyticsWithHandler___block_inv
     v15[2] = __66__MODaemonClient_testNotificationAnalyticsWithContext_andHandler___block_invoke;
     v15[3] = &unk_100336A58;
     v15[4] = self;
-    v16 = v7;
-    v17 = v8;
+    v16 = contextCopy;
+    v17 = handlerCopy;
     [(MODaemonClient *)self scheduleInternalClientTask:v15 withName:@"testNotificationAnalyticsWithContext"];
   }
 }
@@ -4054,15 +4054,15 @@ id __66__MODaemonClient_testNotificationAnalyticsWithContext_andHandler___block_
   return [v2 finalizeClientTaskWithName:@"testNotificationAnalyticsWithContext"];
 }
 
-- (void)_testNotificationAnalyticsWithContext:(id)a3 andHandler:(id)a4
+- (void)_testNotificationAnalyticsWithContext:(id)context andHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
   v9 = os_transaction_create();
-  v10 = [(MODaemonClient *)self notificationAnalyticsManager];
+  notificationAnalyticsManager = [(MODaemonClient *)self notificationAnalyticsManager];
   v15 = 0;
-  v11 = [v10 submitAggregatedNotificationAnalytics:&v15];
+  v11 = [notificationAnalyticsManager submitAggregatedNotificationAnalytics:&v15];
   v12 = v15;
 
   v13 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
@@ -4081,17 +4081,17 @@ id __66__MODaemonClient_testNotificationAnalyticsWithContext_andHandler___block_
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Test notification analytics submission %@, error: %@", buf, 0x16u);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, v12);
+    handlerCopy[2](handlerCopy, v12);
   }
 
   objc_autoreleasePoolPop(v8);
 }
 
-- (void)generateAvailabilityPredictionsWithHandler:(id)a3
+- (void)generateAvailabilityPredictionsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_autoreleasePoolPush();
   v15[0] = 0;
   v15[1] = v15;
@@ -4107,10 +4107,10 @@ id __66__MODaemonClient_testNotificationAnalyticsWithContext_andHandler___block_
   v10[3] = &unk_10033B6F0;
   v8 = v6;
   v11 = v8;
-  v9 = v4;
+  v9 = handlerCopy;
   v13 = v9;
   v14 = v15;
-  v12 = self;
+  selfCopy = self;
   [(MONotificationsManager *)notificationsManager generateAvailabilityPredictionsWithHandler:v10];
 
   _Block_object_dispose(v15, 8);
@@ -4147,9 +4147,9 @@ void __61__MODaemonClient_generateAvailabilityPredictionsWithHandler___block_inv
   *(v2 + 40) = 0;
 }
 
-- (void)generateAvailabilityPredictionsAndRegisterTimerWithHandler:(id)a3
+- (void)generateAvailabilityPredictionsAndRegisterTimerWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_autoreleasePoolPush();
   v15[0] = 0;
   v15[1] = v15;
@@ -4165,10 +4165,10 @@ void __61__MODaemonClient_generateAvailabilityPredictionsWithHandler___block_inv
   v10[3] = &unk_10033B6F0;
   v8 = v6;
   v11 = v8;
-  v9 = v4;
+  v9 = handlerCopy;
   v13 = v9;
   v14 = v15;
-  v12 = self;
+  selfCopy = self;
   [(MONotificationsManager *)notificationsManager generateAvailabilityPredictionsAndRegisterTimerWithHandler:v10];
 
   _Block_object_dispose(v15, 8);
@@ -4205,9 +4205,9 @@ void __77__MODaemonClient_generateAvailabilityPredictionsAndRegisterTimerWithHan
   *(v2 + 40) = 0;
 }
 
-- (void)updateEngagementLightStreamWithRefreshVariant:(unint64_t)a3 handler:(id)a4
+- (void)updateEngagementLightStreamWithRefreshVariant:(unint64_t)variant handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = objc_autoreleasePoolPush();
   v17[0] = 0;
   v17[1] = v17;
@@ -4223,11 +4223,11 @@ void __77__MODaemonClient_generateAvailabilityPredictionsAndRegisterTimerWithHan
   v12[3] = &unk_10033B6F0;
   v10 = v8;
   v13 = v10;
-  v11 = v6;
+  v11 = handlerCopy;
   v15 = v11;
   v16 = v17;
-  v14 = self;
-  [(MOEngagementHistoryManager *)engagementHistoryManager updateEngagementLightStreamWithRefreshVariant:a3 handler:v12];
+  selfCopy = self;
+  [(MOEngagementHistoryManager *)engagementHistoryManager updateEngagementLightStreamWithRefreshVariant:variant handler:v12];
 
   _Block_object_dispose(v17, 8);
   objc_autoreleasePoolPop(v7);
@@ -4263,9 +4263,9 @@ void __72__MODaemonClient_updateEngagementLightStreamWithRefreshVariant_handler_
   *(v2 + 40) = 0;
 }
 
-- (void)fetchEligiblePOICategoriesWithHandler:(id)a3
+- (void)fetchEligiblePOICategoriesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_autoreleasePoolPush();
   v15[0] = 0;
   v15[1] = v15;
@@ -4281,10 +4281,10 @@ void __72__MODaemonClient_updateEngagementLightStreamWithRefreshVariant_handler_
   v10[3] = &unk_10033B718;
   v8 = v6;
   v11 = v8;
-  v9 = v4;
+  v9 = handlerCopy;
   v13 = v9;
   v14 = v15;
-  v12 = self;
+  selfCopy = self;
   [(MONotificationsManager *)notificationsManager fetchEligiblePOICategoriesForNotificationsWithHandler:v10];
 
   _Block_object_dispose(v15, 8);
@@ -4322,10 +4322,10 @@ void __56__MODaemonClient_fetchEligiblePOICategoriesWithHandler___block_invoke_2
   *(v2 + 40) = 0;
 }
 
-- (void)fetchPhotoAnalyticsMetricsWithContext:(id)a3 andHandler:(id)a4
+- (void)fetchPhotoAnalyticsMetricsWithContext:(id)context andHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
   v9 = [(MODaemonClient *)self _createWatchDogWithName:@"FetchPhotoAnlytics"];
   v10 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
@@ -4338,9 +4338,9 @@ void __56__MODaemonClient_fetchEligiblePOICategoriesWithHandler___block_invoke_2
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v6 xpcProcessName];
+    xpcProcessName = [contextCopy xpcProcessName];
     v15 = 138412290;
-    v16 = v12;
+    v16 = xpcProcessName;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "photo analytics XPC context [%@]", &v15, 0xCu);
   }
 
@@ -4349,15 +4349,15 @@ void __56__MODaemonClient_fetchEligiblePOICategoriesWithHandler___block_invoke_2
   v14 = [NSNumber numberWithInt:arc4random_uniform(0x4Au)];
   [v13 setValue:v14 forKey:@"seed"];
 
-  v7[2](v7, v13, 0);
+  handlerCopy[2](handlerCopy, v13, 0);
   [v9 cancel];
 
   objc_autoreleasePoolPop(v8);
 }
 
-- (void)isAllowedToPromptResourceType:(unint64_t)a3 withReply:(id)a4
+- (void)isAllowedToPromptResourceType:(unint64_t)type withReply:(id)reply
 {
-  v7 = a4;
+  replyCopy = reply;
   v8 = NSStringFromSelector(a2);
   v9 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v10 = [v8 stringByTrimmingCharactersInSet:v9];
@@ -4370,19 +4370,19 @@ void __56__MODaemonClient_fetchEligiblePOICategoriesWithHandler___block_invoke_2
   v15[1] = 3221225472;
   v15[2] = __58__MODaemonClient_isAllowedToPromptResourceType_withReply___block_invoke;
   v15[3] = &unk_10033B2D8;
-  v13 = v7;
+  v13 = replyCopy;
   v16 = v13;
   v14 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v12 withErrorHandler:v15];
 
   if (v14)
   {
-    [(MODaemonClient *)self _isAllowedToPromptResourceType:a3 withReply:v13];
+    [(MODaemonClient *)self _isAllowedToPromptResourceType:type withReply:v13];
   }
 }
 
-- (void)_isAllowedToPromptResourceType:(unint64_t)a3 withReply:(id)a4
+- (void)_isAllowedToPromptResourceType:(unint64_t)type withReply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = objc_autoreleasePoolPush();
   v22[0] = 0;
   v22[1] = v22;
@@ -4394,13 +4394,13 @@ void __56__MODaemonClient_fetchEligiblePOICategoriesWithHandler___block_invoke_2
   v9 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [NSNumber numberWithUnsignedInteger:a3];
+    v10 = [NSNumber numberWithUnsignedInteger:type];
     *buf = 138412290;
     v25 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "isAllowedToPrompt resource category %@", buf, 0xCu);
   }
 
-  v11 = [(MOConfigurationManager *)self->_configManager isAllowedToPromptResourceType:a3];
+  v11 = [(MOConfigurationManager *)self->_configManager isAllowedToPromptResourceType:type];
   v12 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -4410,7 +4410,7 @@ void __56__MODaemonClient_fetchEligiblePOICategoriesWithHandler___block_invoke_2
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "isAllowedToPrompt result: %@", buf, 0xCu);
   }
 
-  v6[2](v6, v11, 0);
+  replyCopy[2](replyCopy, v11, 0);
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = __59__MODaemonClient__isAllowedToPromptResourceType_withReply___block_invoke;
@@ -4433,9 +4433,9 @@ void __59__MODaemonClient__isAllowedToPromptResourceType_withReply___block_invok
   *(v2 + 40) = 0;
 }
 
-- (void)isAllowedToPromptEventCategory:(unint64_t)a3 withReply:(id)a4
+- (void)isAllowedToPromptEventCategory:(unint64_t)category withReply:(id)reply
 {
-  v7 = a4;
+  replyCopy = reply;
   v8 = NSStringFromSelector(a2);
   v9 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v10 = [v8 stringByTrimmingCharactersInSet:v9];
@@ -4448,19 +4448,19 @@ void __59__MODaemonClient__isAllowedToPromptResourceType_withReply___block_invok
   v15[1] = 3221225472;
   v15[2] = __59__MODaemonClient_isAllowedToPromptEventCategory_withReply___block_invoke;
   v15[3] = &unk_10033B2D8;
-  v13 = v7;
+  v13 = replyCopy;
   v16 = v13;
   v14 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v12 withErrorHandler:v15];
 
   if (v14)
   {
-    [(MODaemonClient *)self _isAllowedToPromptEventCategory:a3 withReply:v13];
+    [(MODaemonClient *)self _isAllowedToPromptEventCategory:category withReply:v13];
   }
 }
 
-- (void)_isAllowedToPromptEventCategory:(unint64_t)a3 withReply:(id)a4
+- (void)_isAllowedToPromptEventCategory:(unint64_t)category withReply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = objc_autoreleasePoolPush();
   v22[0] = 0;
   v22[1] = v22;
@@ -4472,13 +4472,13 @@ void __59__MODaemonClient__isAllowedToPromptResourceType_withReply___block_invok
   v9 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [NSNumber numberWithUnsignedInteger:a3];
+    v10 = [NSNumber numberWithUnsignedInteger:category];
     *buf = 138412290;
     v25 = v10;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "isAllowedToPrompt event category %@", buf, 0xCu);
   }
 
-  v11 = [(MOConfigurationManager *)self->_configManager isAllowedToPromptEventCategory:a3];
+  v11 = [(MOConfigurationManager *)self->_configManager isAllowedToPromptEventCategory:category];
   v12 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -4488,7 +4488,7 @@ void __59__MODaemonClient__isAllowedToPromptResourceType_withReply___block_invok
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "isAllowedToPrompt result: %@", buf, 0xCu);
   }
 
-  v6[2](v6, v11, 0);
+  replyCopy[2](replyCopy, v11, 0);
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = __60__MODaemonClient__isAllowedToPromptEventCategory_withReply___block_invoke;
@@ -4511,11 +4511,11 @@ void __60__MODaemonClient__isAllowedToPromptEventCategory_withReply___block_invo
   *(v2 + 40) = 0;
 }
 
-- (void)logEngagementEvent:(id)a3 timestamp:(id)a4 withContext:(id)a5
+- (void)logEngagementEvent:(id)event timestamp:(id)timestamp withContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  eventCopy = event;
+  timestampCopy = timestamp;
+  contextCopy = context;
   v12 = NSStringFromSelector(a2);
   v13 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v14 = [v12 stringByTrimmingCharactersInSet:v13];
@@ -4528,7 +4528,7 @@ void __60__MODaemonClient__isAllowedToPromptEventCategory_withReply___block_invo
 
   if (v17)
   {
-    [(MODaemonClient *)self _logEngagementEvent:v9 timestamp:v10 withContext:v11];
+    [(MODaemonClient *)self _logEngagementEvent:eventCopy timestamp:timestampCopy withContext:contextCopy];
   }
 }
 
@@ -4542,16 +4542,16 @@ void __59__MODaemonClient_logEngagementEvent_timestamp_withContext___block_invok
   }
 }
 
-- (void)_logEngagementEvent:(id)a3 timestamp:(id)a4 withContext:(id)a5
+- (void)_logEngagementEvent:(id)event timestamp:(id)timestamp withContext:(id)context
 {
-  v8 = a3;
-  v24 = a4;
-  v9 = a5;
-  v10 = [(MODaemonClient *)self configManager];
-  v11 = [v10 getTrialExperimentIdentifiers];
+  eventCopy = event;
+  timestampCopy = timestamp;
+  contextCopy = context;
+  configManager = [(MODaemonClient *)self configManager];
+  getTrialExperimentIdentifiers = [configManager getTrialExperimentIdentifiers];
 
-  v12 = [(MODaemonClient *)self onboardingAndSettingsPersistence];
-  v13 = [v12 getSnapshotDictionaryForAnalytics];
+  onboardingAndSettingsPersistence = [(MODaemonClient *)self onboardingAndSettingsPersistence];
+  getSnapshotDictionaryForAnalytics = [onboardingAndSettingsPersistence getSnapshotDictionaryForAnalytics];
 
   context = objc_autoreleasePoolPush();
   v43[0] = 0;
@@ -4561,13 +4561,13 @@ void __59__MODaemonClient_logEngagementEvent_timestamp_withContext___block_invok
   v43[4] = __Block_byref_object_dispose__23;
   v44 = os_transaction_create();
   v14 = [(MODaemonClient *)self _createWatchDogWithName:@"logEngagementEvent"];
-  v15 = [v9 objectForKeyedSubscript:@"eventBundles"];
+  v15 = [contextCopy objectForKeyedSubscript:@"eventBundles"];
   v16 = self->_engagementHistoryManager;
   v17 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v46 = v11;
+    v46 = getTrialExperimentIdentifiers;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Trial id: %@", buf, 0xCu);
   }
 
@@ -4575,7 +4575,7 @@ void __59__MODaemonClient_logEngagementEvent_timestamp_withContext___block_invok
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v46 = v8;
+    v46 = eventCopy;
     v47 = 2112;
     v48 = v15;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "logEngagementEvent %@ for bundles: '%@'", buf, 0x16u);
@@ -4583,7 +4583,7 @@ void __59__MODaemonClient_logEngagementEvent_timestamp_withContext___block_invok
 
   if (v15)
   {
-    v19 = [[MOEventBundleFetchOptions alloc] initWithIdentifiers:v15 ascending:0 filterBundle:0, context];
+    context = [[MOEventBundleFetchOptions alloc] initWithIdentifiers:v15 ascending:0 filterBundle:0, context];
     eventBundleManager = self->_eventBundleManager;
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
@@ -4591,33 +4591,33 @@ void __59__MODaemonClient_logEngagementEvent_timestamp_withContext___block_invok
     v34[3] = &unk_10033B760;
     v35 = v14;
     v36 = v16;
-    v37 = v8;
-    v38 = v24;
-    v39 = v9;
-    v40 = v11;
-    v41 = v13;
+    v37 = eventCopy;
+    v38 = timestampCopy;
+    v39 = contextCopy;
+    v40 = getTrialExperimentIdentifiers;
+    v41 = getSnapshotDictionaryForAnalytics;
     v42 = v43;
-    [(MOEventBundleManager *)eventBundleManager fetchEventBundlesWithOptions:v19 CompletionHandler:v34];
+    [(MOEventBundleManager *)eventBundleManager fetchEventBundlesWithOptions:context CompletionHandler:v34];
   }
 
   else
   {
-    v21 = [(MODaemonClient *)self internalQueue];
+    internalQueue = [(MODaemonClient *)self internalQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __60__MODaemonClient__logEngagementEvent_timestamp_withContext___block_invoke_524;
     block[3] = &unk_10033B788;
     v26 = v14;
     v27 = v16;
-    v28 = v8;
-    v29 = v24;
-    v30 = v9;
-    v31 = v11;
-    v32 = v13;
+    v28 = eventCopy;
+    v29 = timestampCopy;
+    v30 = contextCopy;
+    v31 = getTrialExperimentIdentifiers;
+    v32 = getSnapshotDictionaryForAnalytics;
     v33 = v43;
-    dispatch_async(v21, block);
+    dispatch_async(internalQueue, block);
 
-    v19 = v26;
+    context = v26;
   }
 
   _Block_object_dispose(v43, 8);
@@ -4663,7 +4663,7 @@ void __60__MODaemonClient__logEngagementEvent_timestamp_withContext___block_invo
   *(v2 + 40) = 0;
 }
 
-- (void)logPerformanceEvent:(id)a3 timestamp:(id)a4 withContext:(id)a5
+- (void)logPerformanceEvent:(id)event timestamp:(id)timestamp withContext:(id)context
 {
   v6 = NSStringFromSelector(a2);
   v7 = [NSCharacterSet characterSetWithCharactersInString:@":"];
@@ -4695,7 +4695,7 @@ void __60__MODaemonClient_logPerformanceEvent_timestamp_withContext___block_invo
   }
 }
 
-- (void)logUsageEvent:(id)a3 timestamp:(id)a4 withContext:(id)a5
+- (void)logUsageEvent:(id)event timestamp:(id)timestamp withContext:(id)context
 {
   v6 = NSStringFromSelector(a2);
   v7 = [NSCharacterSet characterSetWithCharactersInString:@":"];
@@ -4727,11 +4727,11 @@ void __54__MODaemonClient_logUsageEvent_timestamp_withContext___block_invoke(id 
   }
 }
 
-- (void)didAppEntryUpdateUsingSuggestions:(id)a3 onEvent:(unint64_t)a4 duringInterval:(id)a5 withInfo:(id)a6
+- (void)didAppEntryUpdateUsingSuggestions:(id)suggestions onEvent:(unint64_t)event duringInterval:(id)interval withInfo:(id)info
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  suggestionsCopy = suggestions;
+  intervalCopy = interval;
+  infoCopy = info;
   v14 = NSStringFromSelector(a2);
   v15 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v16 = [v14 stringByTrimmingCharactersInSet:v15];
@@ -4744,11 +4744,11 @@ void __54__MODaemonClient_logUsageEvent_timestamp_withContext___block_invoke(id 
 
   if (v15)
   {
-    v19 = [(MODaemonClient *)self configManager];
-    v31 = [v19 getTrialExperimentIdentifiers];
+    configManager = [(MODaemonClient *)self configManager];
+    getTrialExperimentIdentifiers = [configManager getTrialExperimentIdentifiers];
 
-    v20 = [(MODaemonClient *)self onboardingAndSettingsPersistence];
-    v21 = [v20 getSnapshotDictionaryForAnalytics];
+    onboardingAndSettingsPersistence = [(MODaemonClient *)self onboardingAndSettingsPersistence];
+    getSnapshotDictionaryForAnalytics = [onboardingAndSettingsPersistence getSnapshotDictionaryForAnalytics];
 
     context = objc_autoreleasePoolPush();
     v41 = 0;
@@ -4757,12 +4757,12 @@ void __54__MODaemonClient_logUsageEvent_timestamp_withContext___block_invoke(id 
     v44 = __Block_byref_object_copy__23;
     v45 = __Block_byref_object_dispose__23;
     v46 = os_transaction_create();
-    v22 = v11;
+    v22 = suggestionsCopy;
     v23 = self->_engagementHistoryManager;
     v24 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      [MODaemonClient didAppEntryUpdateUsingSuggestions:v22 onEvent:a4 duringInterval:v24 withInfo:?];
+      [MODaemonClient didAppEntryUpdateUsingSuggestions:v22 onEvent:event duringInterval:v24 withInfo:?];
     }
 
     v25 = [(MODaemonClient *)self _createWatchDogWithName:@"didAppEntryUpdateUsingSuggestions"];
@@ -4777,11 +4777,11 @@ void __54__MODaemonClient_logUsageEvent_timestamp_withContext___block_invoke(id 
       v32[3] = &unk_10033B810;
       v33 = v26;
       v34 = v23;
-      v40 = a4;
-      v35 = v12;
-      v36 = v13;
-      v37 = v31;
-      v38 = v21;
+      eventCopy = event;
+      v35 = intervalCopy;
+      v36 = infoCopy;
+      v37 = getTrialExperimentIdentifiers;
+      v38 = getSnapshotDictionaryForAnalytics;
       v39 = &v41;
       [(MOEventBundleManager *)eventBundleManager fetchEventBundlesWithOptions:v27 CompletionHandler:v32];
     }
@@ -4790,7 +4790,7 @@ void __54__MODaemonClient_logUsageEvent_timestamp_withContext___block_invoke(id 
     {
       [v25 pet];
       v29 = +[NSDate now];
-      [(MOEngagementHistoryManager *)v23 didAppEntryEventPosted:a4 withBundles:0 timestamp:v29 duringInterval:v12 withInfo:v13 withTrialExperimentIDs:v31 withOnboardingStatus:v21, context];
+      [(MOEngagementHistoryManager *)v23 didAppEntryEventPosted:event withBundles:0 timestamp:v29 duringInterval:intervalCopy withInfo:infoCopy withTrialExperimentIDs:getTrialExperimentIdentifiers withOnboardingStatus:getSnapshotDictionaryForAnalytics, context];
 
       [v26 cancel];
       v27 = v42[5];
@@ -4828,9 +4828,9 @@ void __84__MODaemonClient_didAppEntryUpdateUsingSuggestions_onEvent_duringInterv
   *(v8 + 40) = 0;
 }
 
-- (void)getDiagnosticReporterConfiguration:(id)a3
+- (void)getDiagnosticReporterConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v6 = NSStringFromSelector(a2);
   v7 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v8 = [v6 stringByTrimmingCharactersInSet:v7];
@@ -4844,7 +4844,7 @@ void __84__MODaemonClient_didAppEntryUpdateUsingSuggestions_onEvent_duringInterv
   v13[1] = 3221225472;
   v13[2] = __53__MODaemonClient_getDiagnosticReporterConfiguration___block_invoke;
   v13[3] = &unk_10033B2D8;
-  v11 = v5;
+  v11 = configurationCopy;
   v14 = v11;
   v12 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v10 withErrorHandler:v13];
 
@@ -4870,9 +4870,9 @@ void __53__MODaemonClient_getDiagnosticReporterConfiguration___block_invoke(uint
   }
 }
 
-- (void)_getDiagnosticReporterConfiguration:(id)a3
+- (void)_getDiagnosticReporterConfiguration:(id)configuration
 {
-  v30 = a3;
+  configurationCopy = configuration;
   context = objc_autoreleasePoolPush();
   v35[0] = 0;
   v35[1] = v35;
@@ -4889,49 +4889,49 @@ void __53__MODaemonClient_getDiagnosticReporterConfiguration___block_invoke(uint
 
   v21 = [(MODaemonClient *)self _createWatchDogWithName:@"GetDiagnosticReporterConfiguration"];
   v37[0] = @"DiagnosticReporterRefractoryPeriodAfterAcceptance";
-  v29 = [(MODaemonClient *)self configManager];
+  configManager = [(MODaemonClient *)self configManager];
   LODWORD(v5) = 1202241536;
-  [v29 getFloatSettingForKey:@"DiagnosticReporterOverrideRefractoryPeriodAfterAcceptance" withFallback:v5];
+  [configManager getFloatSettingForKey:@"DiagnosticReporterOverrideRefractoryPeriodAfterAcceptance" withFallback:v5];
   v28 = [NSNumber numberWithFloat:?];
   v38[0] = v28;
   v37[1] = @"DiagnosticReporterRefractoryPeriodAfterRejection";
-  v27 = [(MODaemonClient *)self configManager];
+  configManager2 = [(MODaemonClient *)self configManager];
   LODWORD(v6) = 1185464320;
-  [v27 getFloatSettingForKey:@"DiagnosticReporterOverrideRefractoryPeriodAfterRejection" withFallback:v6];
+  [configManager2 getFloatSettingForKey:@"DiagnosticReporterOverrideRefractoryPeriodAfterRejection" withFallback:v6];
   v26 = [NSNumber numberWithFloat:?];
   v38[1] = v26;
   v37[2] = @"DiagnosticReporterAvoidNotification";
-  v25 = [(MODaemonClient *)self configManager];
-  v24 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v25 getBoolSettingForKey:@"DiagnosticReporterOverrideAvoidNotification" withFallback:0]);
+  configManager3 = [(MODaemonClient *)self configManager];
+  v24 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [configManager3 getBoolSettingForKey:@"DiagnosticReporterOverrideAvoidNotification" withFallback:0]);
   v38[2] = v24;
   v37[3] = @"DiagnosticReporterForceNotification";
-  v23 = [(MODaemonClient *)self configManager];
-  v22 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v23 getBoolSettingForKey:@"DiagnosticReporterOverrideForceNotification" withFallback:0]);
+  configManager4 = [(MODaemonClient *)self configManager];
+  v22 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [configManager4 getBoolSettingForKey:@"DiagnosticReporterOverrideForceNotification" withFallback:0]);
   v38[3] = v22;
   v37[4] = @"DiagnosticReporterTimeOfLastNotification";
-  v7 = [(MODaemonClient *)self configManager];
-  [v7 getDoubleSettingForKey:@"DiagnosticReporterLastIncidentTime" withFallback:0.0];
+  configManager5 = [(MODaemonClient *)self configManager];
+  [configManager5 getDoubleSettingForKey:@"DiagnosticReporterLastIncidentTime" withFallback:0.0];
   v8 = [NSNumber numberWithDouble:?];
   v38[4] = v8;
   v37[5] = @"DiagnosticReporterIsInternalBuild";
   v9 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", +[MOPlatformInfo isInternalBuild]);
   v38[5] = v9;
   v37[6] = @"DiagnosticReporterOnboardingStatus";
-  v10 = [(MODaemonClient *)self onboardingAndSettingsPersistence];
-  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 getOnboardingFlowCompletionStatus]);
+  onboardingAndSettingsPersistence = [(MODaemonClient *)self onboardingAndSettingsPersistence];
+  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [onboardingAndSettingsPersistence getOnboardingFlowCompletionStatus]);
   v38[6] = v11;
   v37[7] = @"DiagnosticReporterMaxTimeout";
-  v12 = [(MODaemonClient *)self configManager];
-  v13 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v12 getIntegerSettingForKey:@"DiagnosticReporterOverrideMaxTimeout" withFallback:10]);
+  configManager6 = [(MODaemonClient *)self configManager];
+  v13 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [configManager6 getIntegerSettingForKey:@"DiagnosticReporterOverrideMaxTimeout" withFallback:10]);
   v38[7] = v13;
   v37[8] = @"DiagnosticReporterIsOnboardedOnDiagnosticReporter";
-  v14 = [(MODaemonClient *)self configManager];
-  v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v14 getBoolSettingForKey:@"DiagnosticReporterOverrideIsOnboardedOnDiagnosticReporter" withFallback:0]);
+  configManager7 = [(MODaemonClient *)self configManager];
+  v15 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [configManager7 getBoolSettingForKey:@"DiagnosticReporterOverrideIsOnboardedOnDiagnosticReporter" withFallback:0]);
   v38[8] = v15;
   v20 = [NSDictionary dictionaryWithObjects:v38 forKeys:v37 count:9];
 
   [v21 pet];
-  if (v30)
+  if (configurationCopy)
   {
     v16 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -4939,7 +4939,7 @@ void __53__MODaemonClient_getDiagnosticReporterConfiguration___block_invoke(uint
       [MODaemonClient _getDiagnosticReporterConfiguration:];
     }
 
-    v30[2](v30, v20, 0);
+    configurationCopy[2](configurationCopy, v20, 0);
   }
 
   v31[0] = _NSConcreteStackBlock;
@@ -4964,9 +4964,9 @@ void __54__MODaemonClient__getDiagnosticReporterConfiguration___block_invoke(uin
   *(v2 + 40) = 0;
 }
 
-- (void)getApplicationsWithDataAccess:(id)a3
+- (void)getApplicationsWithDataAccess:(id)access
 {
-  v5 = a3;
+  accessCopy = access;
   v6 = NSStringFromSelector(a2);
   v7 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v8 = [v6 stringByTrimmingCharactersInSet:v7];
@@ -4980,7 +4980,7 @@ void __54__MODaemonClient__getDiagnosticReporterConfiguration___block_invoke(uin
   v13[1] = 3221225472;
   v13[2] = __48__MODaemonClient_getApplicationsWithDataAccess___block_invoke;
   v13[3] = &unk_10033B2D8;
-  v11 = v5;
+  v11 = accessCopy;
   v14 = v11;
   v12 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v10 withErrorHandler:v13];
 
@@ -5006,16 +5006,16 @@ void __48__MODaemonClient_getApplicationsWithDataAccess___block_invoke(uint64_t 
   }
 }
 
-- (void)_getApplicationsWithDataAccess:(id)a3
+- (void)_getApplicationsWithDataAccess:(id)access
 {
-  v4 = a3;
-  v5 = [(MODaemonClient *)self dataAccessManager];
-  [v5 getApplicationsWithDataAccess:v4];
+  accessCopy = access;
+  dataAccessManager = [(MODaemonClient *)self dataAccessManager];
+  [dataAccessManager getApplicationsWithDataAccess:accessCopy];
 }
 
-- (void)getClientsWithDataAccess:(id)a3
+- (void)getClientsWithDataAccess:(id)access
 {
-  v5 = a3;
+  accessCopy = access;
   v6 = NSStringFromSelector(a2);
   v7 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v8 = [v6 stringByTrimmingCharactersInSet:v7];
@@ -5029,7 +5029,7 @@ void __48__MODaemonClient_getApplicationsWithDataAccess___block_invoke(uint64_t 
   v13[1] = 3221225472;
   v13[2] = __43__MODaemonClient_getClientsWithDataAccess___block_invoke;
   v13[3] = &unk_10033B2D8;
-  v11 = v5;
+  v11 = accessCopy;
   v14 = v11;
   v12 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v10 withErrorHandler:v13];
 
@@ -5055,16 +5055,16 @@ void __43__MODaemonClient_getClientsWithDataAccess___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)_getClientsWithDataAccess:(id)a3
+- (void)_getClientsWithDataAccess:(id)access
 {
-  v4 = a3;
-  v5 = [(MODaemonClient *)self dataAccessManager];
-  [v5 getClientsWithDataAccess:v4];
+  accessCopy = access;
+  dataAccessManager = [(MODaemonClient *)self dataAccessManager];
+  [dataAccessManager getClientsWithDataAccess:accessCopy];
 }
 
-- (void)registerClientsForDataAccess:(id)a3
+- (void)registerClientsForDataAccess:(id)access
 {
-  v5 = a3;
+  accessCopy = access;
   v6 = NSStringFromSelector(a2);
   v7 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v8 = [v6 stringByTrimmingCharactersInSet:v7];
@@ -5078,7 +5078,7 @@ void __43__MODaemonClient_getClientsWithDataAccess___block_invoke(uint64_t a1, v
 
   if (v11)
   {
-    [(MODaemonClient *)self _registerClientsForDataAccess:v5];
+    [(MODaemonClient *)self _registerClientsForDataAccess:accessCopy];
   }
 }
 
@@ -5092,18 +5092,18 @@ void __47__MODaemonClient_registerClientsForDataAccess___block_invoke(id a1, NSE
   }
 }
 
-- (void)_registerClientsForDataAccess:(id)a3
+- (void)_registerClientsForDataAccess:(id)access
 {
-  v4 = a3;
-  v5 = [(MODaemonClient *)self dataAccessManager];
-  [v5 registerClientsForDataAccess:v4];
+  accessCopy = access;
+  dataAccessManager = [(MODaemonClient *)self dataAccessManager];
+  [dataAccessManager registerClientsForDataAccess:accessCopy];
 }
 
-- (void)printSettingValue:(id)a3 withType:(id)a4 handler:(id)a5
+- (void)printSettingValue:(id)value withType:(id)type handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  valueCopy = value;
+  typeCopy = type;
+  handlerCopy = handler;
   v12 = NSStringFromSelector(a2);
   v13 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v14 = [v12 stringByTrimmingCharactersInSet:v13];
@@ -5112,19 +5112,19 @@ void __47__MODaemonClient_registerClientsForDataAccess___block_invoke(id a1, NSE
   [(MODaemonClient *)self _abortIfNeeded:v15];
   v18 = @"MOPromptManagerTest";
   v16 = [NSArray arrayWithObjects:&v18 count:1];
-  v17 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v16 withErrorHandler:v11];
+  v17 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v16 withErrorHandler:handlerCopy];
 
   if (v17)
   {
-    [(MODaemonClient *)self _printSettingValue:v9 withType:v10 handler:v11];
+    [(MODaemonClient *)self _printSettingValue:valueCopy withType:typeCopy handler:handlerCopy];
   }
 }
 
-- (void)_printSettingValue:(id)a3 withType:(id)a4 handler:(id)a5
+- (void)_printSettingValue:(id)value withType:(id)type handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  valueCopy = value;
+  typeCopy = type;
+  handlerCopy = handler;
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -5133,26 +5133,26 @@ void __47__MODaemonClient_registerClientsForDataAccess___block_invoke(id a1, NSE
   }
 
   v12 = [(MODaemonClient *)self _createWatchDogWithName:@"PrintSettingValue"];
-  if (([v9 isEqual:@"string"] & 1) != 0 || objc_msgSend(v9, "isEqual:", @"str"))
+  if (([typeCopy isEqual:@"string"] & 1) != 0 || objc_msgSend(typeCopy, "isEqual:", @"str"))
   {
     v13 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [(MODaemonClient *)self configManager];
-      v15 = [v14 getStringSettingForKey:v8 withFallback:&stru_1003416B0];
+      configManager = [(MODaemonClient *)self configManager];
+      v15 = [configManager getStringSettingForKey:valueCopy withFallback:&stru_1003416B0];
       v20 = 138412802;
-      v21 = v8;
+      v21 = valueCopy;
       v22 = 2112;
       v23 = v15;
       v24 = 2112;
-      v25 = v9;
+      v25 = typeCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "printSettingValue: name=%@, value=%@, type=%@", &v20, 0x20u);
     }
 
     goto LABEL_12;
   }
 
-  if (([v9 isEqual:@"integer"] & 1) != 0 || objc_msgSend(v9, "isEqual:", @"int"))
+  if (([typeCopy isEqual:@"integer"] & 1) != 0 || objc_msgSend(typeCopy, "isEqual:", @"int"))
   {
     v13 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -5160,21 +5160,21 @@ void __47__MODaemonClient_registerClientsForDataAccess___block_invoke(id a1, NSE
       goto LABEL_12;
     }
 
-    v16 = [(MODaemonClient *)self configManager];
-    v17 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v16 getIntegerSettingForKey:v8 withFallback:0]);
+    configManager2 = [(MODaemonClient *)self configManager];
+    v17 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [configManager2 getIntegerSettingForKey:valueCopy withFallback:0]);
     v20 = 138412802;
-    v21 = v8;
+    v21 = valueCopy;
     v22 = 2112;
     v23 = v17;
     v24 = 2112;
-    v25 = v9;
+    v25 = typeCopy;
 LABEL_11:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "printSettingValue: name=%@, value=%@, type=%@", &v20, 0x20u);
 
     goto LABEL_12;
   }
 
-  if (([v9 isEqual:@"BOOLean"] & 1) != 0 || objc_msgSend(v9, "isEqual:", @"BOOL"))
+  if (([typeCopy isEqual:@"BOOLean"] & 1) != 0 || objc_msgSend(typeCopy, "isEqual:", @"BOOL"))
   {
     v13 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -5182,18 +5182,18 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v16 = [(MODaemonClient *)self configManager];
-    v17 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v16 getBoolSettingForKey:v8 withFallback:0]);
+    configManager2 = [(MODaemonClient *)self configManager];
+    v17 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [configManager2 getBoolSettingForKey:valueCopy withFallback:0]);
     v20 = 138412802;
-    v21 = v8;
+    v21 = valueCopy;
     v22 = 2112;
     v23 = v17;
     v24 = 2112;
-    v25 = v9;
+    v25 = typeCopy;
     goto LABEL_11;
   }
 
-  if ([v9 isEqual:@"float"])
+  if ([typeCopy isEqual:@"float"])
   {
     v13 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
@@ -5201,19 +5201,19 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v16 = [(MODaemonClient *)self configManager];
-    [v16 getFloatSettingForKey:v8 withFallback:0.0];
+    configManager2 = [(MODaemonClient *)self configManager];
+    [configManager2 getFloatSettingForKey:valueCopy withFallback:0.0];
     v17 = [NSNumber numberWithFloat:?];
     v20 = 138412802;
-    v21 = v8;
+    v21 = valueCopy;
     v22 = 2112;
     v23 = v17;
     v24 = 2112;
-    v25 = v9;
+    v25 = typeCopy;
     goto LABEL_11;
   }
 
-  v18 = [v9 isEqual:@"double"];
+  v18 = [typeCopy isEqual:@"double"];
   v19 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   v13 = v19;
   if (v18)
@@ -5223,15 +5223,15 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v16 = [(MODaemonClient *)self configManager];
-    [v16 getDoubleSettingForKey:v8 withFallback:0.0];
+    configManager2 = [(MODaemonClient *)self configManager];
+    [configManager2 getDoubleSettingForKey:valueCopy withFallback:0.0];
     v17 = [NSNumber numberWithDouble:?];
     v20 = 138412802;
-    v21 = v8;
+    v21 = valueCopy;
     v22 = 2112;
     v23 = v17;
     v24 = 2112;
-    v25 = v9;
+    v25 = typeCopy;
     goto LABEL_11;
   }
 
@@ -5243,14 +5243,14 @@ LABEL_11:
 LABEL_12:
 
   [v12 pet];
-  v10[2](v10, 0);
+  handlerCopy[2](handlerCopy, 0);
 
   [v12 cancel];
 }
 
-- (void)printOnboardingStatusAnalytics:(id)a3
+- (void)printOnboardingStatusAnalytics:(id)analytics
 {
-  v5 = a3;
+  analyticsCopy = analytics;
   v6 = NSStringFromSelector(a2);
   v7 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v8 = [v6 stringByTrimmingCharactersInSet:v7];
@@ -5259,17 +5259,17 @@ LABEL_12:
   [(MODaemonClient *)self _abortIfNeeded:v9];
   v12 = @"MOPromptManagerTest";
   v10 = [NSArray arrayWithObjects:&v12 count:1];
-  v11 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v10 withErrorHandler:v5];
+  v11 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v10 withErrorHandler:analyticsCopy];
 
   if (v11)
   {
-    [(MODaemonClient *)self _printOnboardingStatusAnalytics:v5];
+    [(MODaemonClient *)self _printOnboardingStatusAnalytics:analyticsCopy];
   }
 }
 
-- (void)_printOnboardingStatusAnalytics:(id)a3
+- (void)_printOnboardingStatusAnalytics:(id)analytics
 {
-  v4 = a3;
+  analyticsCopy = analytics;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityDaemonClient);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -5278,18 +5278,18 @@ LABEL_12:
   }
 
   v6 = [(MODaemonClient *)self _createWatchDogWithName:@"PrintOnboardingStatusAnalytics"];
-  v7 = [(MODaemonClient *)self onboardingAndSettingsPersistence];
-  [v7 publishOnboardingStatusAnalytics];
+  onboardingAndSettingsPersistence = [(MODaemonClient *)self onboardingAndSettingsPersistence];
+  [onboardingAndSettingsPersistence publishOnboardingStatusAnalytics];
 
   [v6 pet];
-  v4[2](v4, 0);
+  analyticsCopy[2](analyticsCopy, 0);
 
   [v6 cancel];
 }
 
-- (void)printEvergreenBundlesWithSeed:(unint64_t)a3 handler:(id)a4
+- (void)printEvergreenBundlesWithSeed:(unint64_t)seed handler:(id)handler
 {
-  v7 = a4;
+  handlerCopy = handler;
   v8 = NSStringFromSelector(a2);
   v9 = [NSCharacterSet characterSetWithCharactersInString:@":"];
   v10 = [v8 stringByTrimmingCharactersInSet:v9];
@@ -5302,7 +5302,7 @@ LABEL_12:
   v24[1] = 3221225472;
   v24[2] = __56__MODaemonClient_printEvergreenBundlesWithSeed_handler___block_invoke;
   v24[3] = &unk_10033B2D8;
-  v13 = v7;
+  v13 = handlerCopy;
   v25 = v13;
   v14 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v12 withErrorHandler:v24];
 
@@ -5320,7 +5320,7 @@ LABEL_12:
       [MODaemonClient printEvergreenBundlesWithSeed:handler:];
     }
 
-    v16 = [(MODaemonClient *)self evergreenManager];
+    evergreenManager = [(MODaemonClient *)self evergreenManager];
     v17 = +[NSDate now];
     v18 = +[NSDate now];
     v19[0] = _NSConcreteStackBlock;
@@ -5329,7 +5329,7 @@ LABEL_12:
     v19[3] = &unk_10033B858;
     v20 = v13;
     v21 = v22;
-    [v16 performAnnotationWithSeed:a3 startDate:v17 endDate:v18 handler:v19];
+    [evergreenManager performAnnotationWithSeed:seed startDate:v17 endDate:v18 handler:v19];
 
     _Block_object_dispose(v22, 8);
   }
@@ -5355,16 +5355,16 @@ void __56__MODaemonClient_printEvergreenBundlesWithSeed_handler___block_invoke_5
   *(v8 + 40) = 0;
 }
 
-- (void)triggerFeedbackAssistantFlow:(id)a3 handler:(id)a4
+- (void)triggerFeedbackAssistantFlow:(id)flow handler:(id)handler
 {
-  v5 = a4;
-  [_TtC8momentsd19MOFeedbackAssistant triggerFeedbackAssistantFlowWithFlowIdentifier:a3];
-  v5[2](v5, 0);
+  handlerCopy = handler;
+  [_TtC8momentsd19MOFeedbackAssistant triggerFeedbackAssistantFlowWithFlowIdentifier:flow];
+  handlerCopy[2](handlerCopy, 0);
 }
 
-- (void)getOnboardingFlowCompletionStatusWithHandler:(id)a3
+- (void)getOnboardingFlowCompletionStatusWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;
@@ -5383,14 +5383,14 @@ void __56__MODaemonClient_printEvergreenBundlesWithSeed_handler___block_invoke_5
   v16[1] = 3221225472;
   v16[2] = __63__MODaemonClient_getOnboardingFlowCompletionStatusWithHandler___block_invoke;
   v16[3] = &unk_10033B2D8;
-  v11 = v5;
+  v11 = handlerCopy;
   v17 = v11;
   v12 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v10 withErrorHandler:v16];
 
   if (v12)
   {
-    v13 = [(MODaemonClient *)self onboardingAndSettingsPersistence];
-    (*(v11 + 2))(v11, [v13 getOnboardingFlowCompletionStatus]);
+    onboardingAndSettingsPersistence = [(MODaemonClient *)self onboardingAndSettingsPersistence];
+    (*(v11 + 2))(v11, [onboardingAndSettingsPersistence getOnboardingFlowCompletionStatus]);
 
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
@@ -5411,7 +5411,7 @@ void __63__MODaemonClient_getOnboardingFlowCompletionStatusWithHandler___block_i
   *(v1 + 40) = 0;
 }
 
-- (void)setOnboardingFlowCompletionStatus:(unint64_t)a3
+- (void)setOnboardingFlowCompletionStatus:(unint64_t)status
 {
   v14[0] = 0;
   v14[1] = v14;
@@ -5431,8 +5431,8 @@ void __63__MODaemonClient_getOnboardingFlowCompletionStatusWithHandler___block_i
 
   if (v7)
   {
-    v11 = [(MODaemonClient *)self onboardingAndSettingsPersistence];
-    [v11 setOnboardingFlowCompletionStatus:a3];
+    onboardingAndSettingsPersistence = [(MODaemonClient *)self onboardingAndSettingsPersistence];
+    [onboardingAndSettingsPersistence setOnboardingFlowCompletionStatus:status];
 
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
@@ -5453,9 +5453,9 @@ void __52__MODaemonClient_setOnboardingFlowCompletionStatus___block_invoke_2(uin
   *(v1 + 40) = 0;
 }
 
-- (void)getOnboardingFlowRefreshCompletionStatusWithHandler:(id)a3
+- (void)getOnboardingFlowRefreshCompletionStatusWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;
@@ -5474,14 +5474,14 @@ void __52__MODaemonClient_setOnboardingFlowCompletionStatus___block_invoke_2(uin
   v16[1] = 3221225472;
   v16[2] = __70__MODaemonClient_getOnboardingFlowRefreshCompletionStatusWithHandler___block_invoke;
   v16[3] = &unk_10033B2D8;
-  v11 = v5;
+  v11 = handlerCopy;
   v17 = v11;
   v12 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v10 withErrorHandler:v16];
 
   if (v12)
   {
-    v13 = [(MODaemonClient *)self onboardingAndSettingsPersistence];
-    (*(v11 + 2))(v11, [v13 getOnboardingFlowRefreshCompletionStatus]);
+    onboardingAndSettingsPersistence = [(MODaemonClient *)self onboardingAndSettingsPersistence];
+    (*(v11 + 2))(v11, [onboardingAndSettingsPersistence getOnboardingFlowRefreshCompletionStatus]);
 
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
@@ -5502,9 +5502,9 @@ void __70__MODaemonClient_getOnboardingFlowRefreshCompletionStatusWithHandler___
   *(v1 + 40) = 0;
 }
 
-- (void)getStateForSetting:(unint64_t)a3 withHandler:(id)a4
+- (void)getStateForSetting:(unint64_t)setting withHandler:(id)handler
 {
-  v7 = a4;
+  handlerCopy = handler;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
@@ -5523,14 +5523,14 @@ void __70__MODaemonClient_getOnboardingFlowRefreshCompletionStatusWithHandler___
   v18[1] = 3221225472;
   v18[2] = __49__MODaemonClient_getStateForSetting_withHandler___block_invoke;
   v18[3] = &unk_10033B2D8;
-  v13 = v7;
+  v13 = handlerCopy;
   v19 = v13;
   v14 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v12 withErrorHandler:v18];
 
   if (v14)
   {
-    v15 = [(MODaemonClient *)self onboardingAndSettingsPersistence];
-    (*(v13 + 2))(v13, [v15 getStateForSetting:a3]);
+    onboardingAndSettingsPersistence = [(MODaemonClient *)self onboardingAndSettingsPersistence];
+    (*(v13 + 2))(v13, [onboardingAndSettingsPersistence getStateForSetting:setting]);
 
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -5551,9 +5551,9 @@ void __49__MODaemonClient_getStateForSetting_withHandler___block_invoke_2(uint64
   *(v1 + 40) = 0;
 }
 
-- (void)getStateForSettingFast:(unint64_t)a3 withHandler:(id)a4
+- (void)getStateForSettingFast:(unint64_t)fast withHandler:(id)handler
 {
-  v7 = a4;
+  handlerCopy = handler;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
@@ -5572,14 +5572,14 @@ void __49__MODaemonClient_getStateForSetting_withHandler___block_invoke_2(uint64
   v18[1] = 3221225472;
   v18[2] = __53__MODaemonClient_getStateForSettingFast_withHandler___block_invoke;
   v18[3] = &unk_10033B2D8;
-  v13 = v7;
+  v13 = handlerCopy;
   v19 = v13;
   v14 = [(MODaemonClient *)self validateIfActiveClientHasAnyEntitlementInArray:v12 withErrorHandler:v18];
 
   if (v14)
   {
-    v15 = [(MODaemonClient *)self onboardingAndSettingsPersistence];
-    (*(v13 + 2))(v13, [v15 getStateForSettingFast:a3]);
+    onboardingAndSettingsPersistence = [(MODaemonClient *)self onboardingAndSettingsPersistence];
+    (*(v13 + 2))(v13, [onboardingAndSettingsPersistence getStateForSettingFast:fast]);
 
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -5607,33 +5607,33 @@ void __38__MODaemonClient_setState_forSetting___block_invoke_2(uint64_t a1)
   *(v1 + 40) = 0;
 }
 
-- (id)_createWatchDogWithName:(id)a3
+- (id)_createWatchDogWithName:(id)name
 {
   configManager = self->_configManager;
-  v5 = a3;
-  v6 = [NSString stringWithFormat:@"%@_%@", @"WatchdogOverrideDefaultCadenceInSeconds", v5];
+  nameCopy = name;
+  nameCopy = [NSString stringWithFormat:@"%@_%@", @"WatchdogOverrideDefaultCadenceInSeconds", nameCopy];
   *&v7 = self->_watchdogCadence;
-  [(MOConfigurationManagerBase *)configManager getFloatSettingForKey:v6 withFallback:v7];
+  [(MOConfigurationManagerBase *)configManager getFloatSettingForKey:nameCopy withFallback:v7];
   v9 = v8;
 
   v10 = [MOWatchDog alloc];
   LODWORD(v11) = v9;
-  v12 = [(MOWatchDog *)v10 initWithName:v5 cadenceInSeconds:0 andHandler:v11];
+  v12 = [(MOWatchDog *)v10 initWithName:nameCopy cadenceInSeconds:0 andHandler:v11];
 
   return v12;
 }
 
-- (void)acquireBackgroundProcessingPermissionsForMomentsWithHander:(id)a3
+- (void)acquireBackgroundProcessingPermissionsForMomentsWithHander:(id)hander
 {
-  v4 = a3;
-  v5 = [(MODaemonClient *)self persistenceManager];
-  v6 = [v5 acquireBackgroundProcessingPermissions];
+  handerCopy = hander;
+  persistenceManager = [(MODaemonClient *)self persistenceManager];
+  acquireBackgroundProcessingPermissions = [persistenceManager acquireBackgroundProcessingPermissions];
 
   v7 = _mo_log_facility_get_os_log(&MOLogFacilityPersistenceManager);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = @"fail";
-    if (v6)
+    if (acquireBackgroundProcessingPermissions)
     {
       v8 = @"success";
     }
@@ -5643,7 +5643,7 @@ void __38__MODaemonClient_setState_forSetting___block_invoke_2(uint64_t a1)
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "acquireBackgroundProcessingPermissionsForDB, result, %@", &v9, 0xCu);
   }
 
-  v4[2](v4, v6);
+  handerCopy[2](handerCopy, acquireBackgroundProcessingPermissions);
 }
 
 void __89__MODaemonClient__refreshEventsWithContext_andRefreshVariant_andSoftKindFlag_andHandler___block_invoke_437_cold_1()

@@ -1,23 +1,23 @@
 @interface CPSWebClipService
-+ (void)fetchWebClipsURLForClientBundleID:(id)a3 completion:(id)a4;
-+ (void)fetchWebClipsUUIDForClientBundleID:(id)a3 completion:(id)a4;
-+ (void)getWebClipDictionaryWithIdentifier:(id)a3 completion:(id)a4;
++ (void)fetchWebClipsURLForClientBundleID:(id)d completion:(id)completion;
++ (void)fetchWebClipsUUIDForClientBundleID:(id)d completion:(id)completion;
++ (void)getWebClipDictionaryWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation CPSWebClipService
 
-+ (void)fetchWebClipsUUIDForClientBundleID:(id)a3 completion:(id)a4
++ (void)fetchWebClipsUUIDForClientBundleID:(id)d completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v7 = +[CPSDaemonConnection sharedConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __67__CPSWebClipService_fetchWebClipsUUIDForClientBundleID_completion___block_invoke;
   v9[3] = &unk_278DCDAC8;
-  v10 = v5;
-  v8 = v5;
-  [v7 fetchWebClipsUUIDStringForClientBundleID:v6 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [v7 fetchWebClipsUUIDStringForClientBundleID:dCopy completion:v9];
 }
 
 void __67__CPSWebClipService_fetchWebClipsUUIDForClientBundleID_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -46,18 +46,18 @@ id __67__CPSWebClipService_fetchWebClipsUUIDForClientBundleID_completion___block
   return v4;
 }
 
-+ (void)fetchWebClipsURLForClientBundleID:(id)a3 completion:(id)a4
++ (void)fetchWebClipsURLForClientBundleID:(id)d completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v7 = +[CPSDaemonConnection sharedConnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__CPSWebClipService_fetchWebClipsURLForClientBundleID_completion___block_invoke;
   v9[3] = &unk_278DCDAC8;
-  v10 = v5;
-  v8 = v5;
-  [v7 fetchWebClipsURLStringForClientBundleID:v6 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [v7 fetchWebClipsURLStringForClientBundleID:dCopy completion:v9];
 }
 
 void __66__CPSWebClipService_fetchWebClipsURLForClientBundleID_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -86,12 +86,12 @@ id __66__CPSWebClipService_fetchWebClipsURLForClientBundleID_completion___block_
   return v4;
 }
 
-+ (void)getWebClipDictionaryWithIdentifier:(id)a3 completion:(id)a4
++ (void)getWebClipDictionaryWithIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v7 = +[CPSDaemonConnection sharedConnection];
-  [v7 getWebClipDictionaryWithIdentifier:v6 completion:v5];
+  [v7 getWebClipDictionaryWithIdentifier:identifierCopy completion:completionCopy];
 }
 
 @end

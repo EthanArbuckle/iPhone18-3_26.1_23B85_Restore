@@ -1,17 +1,17 @@
 @interface FullscreenImageViewControllerZoomAnimationController
-- (FullscreenImageViewControllerZoomAnimationController)initWithOriginalImageView:(id)a3;
-- (void)animateTransition:(id)a3;
+- (FullscreenImageViewControllerZoomAnimationController)initWithOriginalImageView:(id)view;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation FullscreenImageViewControllerZoomAnimationController
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v6 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v7 = [v6 isBeingPresented];
-  if (v7)
+  transitionCopy = transition;
+  v5 = [transitionCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  v6 = [transitionCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  isBeingPresented = [v6 isBeingPresented];
+  if (isBeingPresented)
   {
     v8 = v6;
   }
@@ -25,42 +25,42 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v9 contentView];
-    [v10 setAlpha:0.0];
+    contentView = [v9 contentView];
+    [contentView setAlpha:0.0];
 
     [(UIImageView *)self->_originalImageView setAlpha:0.0];
-    v11 = [v4 containerView];
-    v12 = [v6 view];
-    if (v7)
+    containerView = [transitionCopy containerView];
+    view = [v6 view];
+    if (isBeingPresented)
     {
-      [v11 addSubview:v12];
+      [containerView addSubview:view];
     }
 
     else
     {
-      [v11 sendSubviewToBack:v12];
+      [containerView sendSubviewToBack:view];
     }
 
     v13 = [UIImageView alloc];
-    v14 = [(UIImageView *)self->_originalImageView image];
-    v15 = [v13 initWithImage:v14];
+    image = [(UIImageView *)self->_originalImageView image];
+    v15 = [v13 initWithImage:image];
 
     [v15 setContentMode:{-[UIImageView contentMode](self->_originalImageView, "contentMode")}];
     [v15 setClipsToBounds:1];
-    v16 = [v4 containerView];
-    [v16 addSubview:v15];
+    containerView2 = [transitionCopy containerView];
+    [containerView2 addSubview:v15];
 
-    v17 = [v4 containerView];
+    containerView3 = [transitionCopy containerView];
     [(UIImageView *)self->_originalImageView bounds];
-    [v17 convertRect:self->_originalImageView fromView:?];
+    [containerView3 convertRect:self->_originalImageView fromView:?];
     v69 = v19;
     v71 = v18;
     v65 = v21;
     v67 = v20;
 
-    if (v7)
+    if (isBeingPresented)
     {
-      [v4 finalFrameForViewController:v6];
+      [transitionCopy finalFrameForViewController:v6];
       v23 = v22;
       v25 = v24;
       v27 = v26;
@@ -69,15 +69,15 @@
 
     else
     {
-      v30 = [v4 containerView];
-      v31 = [v5 contentView];
-      [v31 bounds];
+      containerView4 = [transitionCopy containerView];
+      contentView2 = [v5 contentView];
+      [contentView2 bounds];
       v33 = v32;
       v35 = v34;
       v37 = v36;
       v39 = v38;
-      v40 = [v5 contentView];
-      [v30 convertRect:v40 fromView:{v33, v35, v37, v39}];
+      contentView3 = [v5 contentView];
+      [containerView4 convertRect:contentView3 fromView:{v33, v35, v37, v39}];
       v23 = v41;
       v25 = v42;
       v27 = v43;
@@ -88,16 +88,16 @@
     [v45 size];
     v47 = v27 / v46;
 
-    v48 = [(UIImageView *)self->_originalImageView image];
-    [v48 size];
+    image2 = [(UIImageView *)self->_originalImageView image];
+    [image2 size];
     v50 = v29 / v49;
 
     v51 = fmin(v47, v50);
-    v52 = [(UIImageView *)self->_originalImageView image];
-    [v52 size];
+    image3 = [(UIImageView *)self->_originalImageView image];
+    [image3 size];
     v54 = v53 * v51;
-    v55 = [(UIImageView *)self->_originalImageView image];
-    [v55 size];
+    image4 = [(UIImageView *)self->_originalImageView image];
+    [image4 size];
     v57 = v56 * v51;
 
     v85.origin.x = v23;
@@ -110,11 +110,11 @@
     v86.size.width = v27;
     v86.size.height = v29;
     v59 = CGRectGetMidY(v86) - v57 * 0.5;
-    if (v7)
+    if (isBeingPresented)
     {
       [v15 setFrame:{v72, v70, v68, v66}];
-      v60 = [v6 view];
-      [v60 setAlpha:0.0];
+      view2 = [v6 view];
+      [view2 setAlpha:0.0];
 
       v61 = 1.0;
     }
@@ -129,7 +129,7 @@
       v58 = v72;
     }
 
-    [(FullscreenImageViewControllerZoomAnimationController *)self transitionDuration:v4];
+    [(FullscreenImageViewControllerZoomAnimationController *)self transitionDuration:transitionCopy];
     v63 = v62;
     v77[0] = _NSConcreteStackBlock;
     v77[1] = 3221225472;
@@ -149,27 +149,27 @@
     v73[4] = self;
     v74 = v78;
     v75 = v79;
-    v76 = v4;
+    v76 = transitionCopy;
     v64 = v79;
     [UIView animateWithDuration:0x20000 delay:v77 options:v73 animations:v63 completion:0.0];
   }
 
   else
   {
-    [v4 completeTransition:0];
+    [transitionCopy completeTransition:0];
   }
 }
 
-- (FullscreenImageViewControllerZoomAnimationController)initWithOriginalImageView:(id)a3
+- (FullscreenImageViewControllerZoomAnimationController)initWithOriginalImageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = FullscreenImageViewControllerZoomAnimationController;
   v6 = [(FullscreenImageViewControllerZoomAnimationController *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_originalImageView, a3);
+    objc_storeStrong(&v6->_originalImageView, view);
     v8 = v7;
   }
 

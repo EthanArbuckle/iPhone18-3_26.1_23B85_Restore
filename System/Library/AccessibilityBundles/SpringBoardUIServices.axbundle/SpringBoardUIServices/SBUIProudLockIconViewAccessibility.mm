@@ -1,25 +1,25 @@
 @interface SBUIProudLockIconViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsBuddyRunning;
 - (BOOL)_accessibilityIsInSleepState;
 - (BOOL)lockViewIsAccessibilityElement;
-- (SBUIProudLockIconViewAccessibility)initWithFrame:(CGRect)a3;
+- (SBUIProudLockIconViewAccessibility)initWithFrame:(CGRect)frame;
 - (id)lockViewAccessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation SBUIProudLockIconViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBUIProudLockIconView" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SBUIProudLockIconView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"SBUIProudLockIconView" hasInstanceMethod:@"setState:animated:updateText:options:completion:" withFullSignature:{"v", "q", "B", "B", "q", "@?", 0}];
-  [v3 validateClass:@"SBUIProudLockIconView" hasInstanceVariable:@"_lockView" withType:"SBUIProudLockIconContentView"];
-  [v3 validateClass:@"SBUIProudLockIconContentView" hasInstanceVariable:@"_lockView" withType:"BSUICAPackageView"];
-  [v3 validateClass:@"BSUICAPackageView" hasInstanceVariable:@"_stateController" withType:"CAStateController"];
-  [v3 validateClass:@"BSUICAPackageView" hasInstanceVariable:@"_rootLayer" withType:"CALayer"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBUIProudLockIconView" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SBUIProudLockIconView" hasInstanceMethod:@"initWithFrame:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"SBUIProudLockIconView" hasInstanceMethod:@"setState:animated:updateText:options:completion:" withFullSignature:{"v", "q", "B", "B", "q", "@?", 0}];
+  [validationsCopy validateClass:@"SBUIProudLockIconView" hasInstanceVariable:@"_lockView" withType:"SBUIProudLockIconContentView"];
+  [validationsCopy validateClass:@"SBUIProudLockIconContentView" hasInstanceVariable:@"_lockView" withType:"BSUICAPackageView"];
+  [validationsCopy validateClass:@"BSUICAPackageView" hasInstanceVariable:@"_stateController" withType:"CAStateController"];
+  [validationsCopy validateClass:@"BSUICAPackageView" hasInstanceVariable:@"_rootLayer" withType:"CALayer"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -68,7 +68,7 @@ id __80__SBUIProudLockIconViewAccessibility__accessibilityLoadAccessibilityInfor
 {
   v3 = [(SBUIProudLockIconViewAccessibility *)self safeIntegerForKey:@"state"];
   v4 = AXRequestingClient();
-  v5 = [(SBUIProudLockIconViewAccessibility *)self _accessibilityIsBuddyRunning];
+  _accessibilityIsBuddyRunning = [(SBUIProudLockIconViewAccessibility *)self _accessibilityIsBuddyRunning];
   if (v3)
   {
     v6 = 1;
@@ -80,14 +80,14 @@ id __80__SBUIProudLockIconViewAccessibility__accessibilityLoadAccessibilityInfor
   }
 
   v7 = v6;
-  return !v5 && v7;
+  return !_accessibilityIsBuddyRunning && v7;
 }
 
 - (id)lockViewAccessibilityLabel
 {
   v8.receiver = self;
   v8.super_class = SBUIProudLockIconViewAccessibility;
-  v3 = [(SBUIProudLockIconViewAccessibility *)&v8 accessibilityLabel];
+  accessibilityLabel = [(SBUIProudLockIconViewAccessibility *)&v8 accessibilityLabel];
   v4 = [(SBUIProudLockIconViewAccessibility *)self safeIntegerForKey:@"state"];
   if (v4 <= 3)
   {
@@ -142,10 +142,10 @@ id __80__SBUIProudLockIconViewAccessibility__accessibilityLoadAccessibilityInfor
 
   v6 = accessibilitySBLocalizedString(v5);
 
-  v3 = v6;
+  accessibilityLabel = v6;
 LABEL_18:
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (BOOL)_accessibilityIsInSleepState
@@ -166,9 +166,9 @@ LABEL_18:
   if (v8 && v6)
   {
     v10 = [v6 stateOfLayer:v8];
-    v11 = [v10 name];
+    name = [v10 name];
 
-    v9 = [v11 isEqualToString:@"Sleep"];
+    v9 = [name isEqualToString:@"Sleep"];
   }
 
   return v9;
@@ -176,17 +176,17 @@ LABEL_18:
 
 - (BOOL)_accessibilityIsBuddyRunning
 {
-  v2 = [MEMORY[0x29EDBDFA8] server];
-  v3 = [v2 purpleBuddyPID] != -1;
+  server = [MEMORY[0x29EDBDFA8] server];
+  v3 = [server purpleBuddyPID] != -1;
 
   return v3;
 }
 
-- (SBUIProudLockIconViewAccessibility)initWithFrame:(CGRect)a3
+- (SBUIProudLockIconViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = SBUIProudLockIconViewAccessibility;
-  v3 = [(SBUIProudLockIconViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBUIProudLockIconViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SBUIProudLockIconViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
   return v3;
 }

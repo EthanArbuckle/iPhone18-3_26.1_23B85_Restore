@@ -1,10 +1,10 @@
 @interface MPGenericAction
 + (id)genericAction;
 - (MPGenericAction)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setAction:(id)a3;
-- (void)setAttributes:(id)a3;
+- (void)setAction:(id)action;
+- (void)setAttributes:(id)attributes;
 @end
 
 @implementation MPGenericAction
@@ -36,16 +36,16 @@
   [(MPAction *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MPGenericAction;
-  v4 = [(MPAction *)&v6 copyWithZone:a3];
+  v4 = [(MPAction *)&v6 copyWithZone:zone];
   [v4 setAttributes:self->_attributes];
   return v4;
 }
 
-- (void)setAttributes:(id)a3
+- (void)setAttributes:(id)attributes
 {
   attributes = self->_attributes;
   if (attributes)
@@ -54,7 +54,7 @@
     self->_attributes = 0;
   }
 
-  v6 = [a3 mutableCopy];
+  v6 = [attributes mutableCopy];
   self->_attributes = v6;
   action = self->super._action;
   if (action)
@@ -64,11 +64,11 @@
   }
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
   v5.receiver = self;
   v5.super_class = MPGenericAction;
-  [(MPAction *)&v5 setAction:a3];
+  [(MPAction *)&v5 setAction:action];
   action = self->super._action;
   if (action)
   {

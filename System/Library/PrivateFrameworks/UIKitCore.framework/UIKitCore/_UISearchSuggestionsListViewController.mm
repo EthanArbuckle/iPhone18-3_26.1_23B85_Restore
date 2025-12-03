@@ -1,19 +1,19 @@
 @interface _UISearchSuggestionsListViewController
-- (BOOL)collectionView:(id)a3 canPerformPrimaryActionForItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view canPerformPrimaryActionForItemAtIndexPath:(id)path;
 - (UISearchController)searchController;
-- (_UISearchSuggestionsListViewController)initWithCoder:(id)a3;
-- (_UISearchSuggestionsListViewController)initWithSearchController:(id)a3;
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (_UISearchSuggestionsListViewController)initWithCoder:(id)coder;
+- (_UISearchSuggestionsListViewController)initWithSearchController:(id)controller;
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path;
+- (void)encodeWithCoder:(id)coder;
 - (void)updateList;
 - (void)viewDidLoad;
 @end
 
 @implementation _UISearchSuggestionsListViewController
 
-- (_UISearchSuggestionsListViewController)initWithSearchController:(id)a3
+- (_UISearchSuggestionsListViewController)initWithSearchController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [[UICollectionLayoutListConfiguration alloc] initWithAppearance:1];
   v6 = [UICollectionViewCompositionalLayout layoutWithListConfiguration:v5];
   v23.receiver = self;
@@ -22,7 +22,7 @@
 
   if (v7)
   {
-    objc_storeWeak(&v7->_searchController, v4);
+    objc_storeWeak(&v7->_searchController, controllerCopy);
     [(UICollectionViewController *)v7 setInstallsStandardGestureForInteractiveMovement:0];
     objc_initWeak(&location, v7);
     v8 = objc_opt_class();
@@ -33,20 +33,20 @@
     objc_copyWeak(&v21, &location);
     v9 = [UICollectionViewCellRegistration registrationWithCellClass:v8 configurationHandler:v20];
     v10 = [UICollectionViewDiffableDataSource alloc];
-    v11 = [(UICollectionViewController *)v7 collectionView];
+    collectionView = [(UICollectionViewController *)v7 collectionView];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __67___UISearchSuggestionsListViewController_initWithSearchController___block_invoke_29;
     v18[3] = &unk_1E7128130;
     v12 = v9;
     v19 = v12;
-    v13 = [(UICollectionViewDiffableDataSource *)v10 initWithCollectionView:v11 cellProvider:v18];
+    v13 = [(UICollectionViewDiffableDataSource *)v10 initWithCollectionView:collectionView cellProvider:v18];
     dataSource = v7->_dataSource;
     v7->_dataSource = v13;
 
     v15 = v7->_dataSource;
-    v16 = [(UICollectionViewController *)v7 collectionView];
-    [v16 setDataSource:v15];
+    collectionView2 = [(UICollectionViewController *)v7 collectionView];
+    [collectionView2 setDataSource:v15];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -55,29 +55,29 @@
   return v7;
 }
 
-- (_UISearchSuggestionsListViewController)initWithCoder:(id)a3
+- (_UISearchSuggestionsListViewController)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = _UISearchSuggestionsListViewController;
-  v5 = [(UICollectionViewController *)&v8 initWithCoder:v4];
+  v5 = [(UICollectionViewController *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"SearchControllerForSearchSuggestionsList"];
+    v6 = [coderCopy decodeObjectForKey:@"SearchControllerForSearchSuggestionsList"];
     objc_storeWeak(&v5->_searchController, v6);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _UISearchSuggestionsListViewController;
-  v4 = a3;
-  [(UICollectionViewController *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(UICollectionViewController *)&v6 encodeWithCoder:coderCopy];
   WeakRetained = objc_loadWeakRetained(&self->_searchController);
-  [v4 encodeObject:WeakRetained forKey:{@"SearchControllerForSearchSuggestionsList", v6.receiver, v6.super_class}];
+  [coderCopy encodeObject:WeakRetained forKey:{@"SearchControllerForSearchSuggestionsList", v6.receiver, v6.super_class}];
 }
 
 - (void)viewDidLoad
@@ -91,14 +91,14 @@
 - (void)updateList
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v3 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-  v4 = [v3 numberOfSections];
-  v5 = [(_UISearchSuggestionsListViewController *)self searchController];
-  v6 = [v5 _dci_searchSuggestions];
+  snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+  numberOfSections = [snapshot numberOfSections];
+  searchController = [(_UISearchSuggestionsListViewController *)self searchController];
+  _dci_searchSuggestions = [searchController _dci_searchSuggestions];
 
-  v7 = [v6 count];
+  v7 = [_dci_searchSuggestions count];
   v8 = v7;
-  if (v4 >= 2)
+  if (numberOfSections >= 2)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -120,9 +120,9 @@
       }
     }
 
-    if (v4 >= 2)
+    if (numberOfSections >= 2)
     {
-      [v3 deleteAllItems];
+      [snapshot deleteAllItems];
       if (!v8)
       {
         dataSource = self->_dataSource;
@@ -136,20 +136,20 @@
   else
   {
     v9 = v7 == 0;
-    if (!(v4 | v7))
+    if (!(numberOfSections | v7))
     {
       goto LABEL_32;
     }
   }
 
-  if (![v3 numberOfSections])
+  if (![snapshot numberOfSections])
   {
     v26[0] = @"_UISearchSuggestionsList";
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-    [v3 appendSectionsWithIdentifiers:v10];
+    [snapshot appendSectionsWithIdentifiers:v10];
   }
 
-  v11 = [v3 numberOfItemsInSection:@"_UISearchSuggestionsList"];
+  v11 = [snapshot numberOfItemsInSection:@"_UISearchSuggestionsList"];
   if (v11 >= 1 || !v9)
   {
     v12 = v11;
@@ -166,7 +166,7 @@
 
     if (v14)
     {
-      v24 = v6;
+      v24 = _dci_searchSuggestions;
       v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:v14];
       for (i = 0; i != v14; ++i)
       {
@@ -174,9 +174,9 @@
         [v15 addObject:v17];
       }
 
-      [v3 reconfigureItemsWithIdentifiers:v15];
+      [snapshot reconfigureItemsWithIdentifiers:v15];
 
-      v6 = v24;
+      _dci_searchSuggestions = v24;
     }
 
     if (v13 >= v8)
@@ -196,7 +196,7 @@
       }
 
       while (v13 != v8);
-      [v3 deleteItemsWithIdentifiers:v18];
+      [snapshot deleteItemsWithIdentifiers:v18];
     }
 
     else
@@ -211,36 +211,36 @@
       }
 
       while (v8 != v13);
-      [v3 appendItemsWithIdentifiers:v18];
+      [snapshot appendItemsWithIdentifiers:v18];
     }
 
 LABEL_22:
     dataSource = self->_dataSource;
     if (v12 > 0)
     {
-      [(UICollectionViewDiffableDataSource *)dataSource applySnapshot:v3 animatingDifferences:1];
+      [(UICollectionViewDiffableDataSource *)dataSource applySnapshot:snapshot animatingDifferences:1];
       goto LABEL_32;
     }
 
 LABEL_31:
-    [(UICollectionViewDiffableDataSource *)dataSource applySnapshotUsingReloadData:v3];
+    [(UICollectionViewDiffableDataSource *)dataSource applySnapshotUsingReloadData:snapshot];
   }
 
 LABEL_32:
 }
 
-- (BOOL)collectionView:(id)a3 canPerformPrimaryActionForItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view canPerformPrimaryActionForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UICollectionViewController *)self collectionView];
+  pathCopy = path;
+  viewCopy = view;
+  collectionView = [(UICollectionViewController *)self collectionView];
 
-  if (v8 == v7)
+  if (collectionView == viewCopy)
   {
-    v10 = [v6 row];
-    v11 = [(_UISearchSuggestionsListViewController *)self searchController];
-    v12 = [v11 _dci_searchSuggestions];
-    v9 = v10 < [v12 count];
+    v10 = [pathCopy row];
+    searchController = [(_UISearchSuggestionsListViewController *)self searchController];
+    _dci_searchSuggestions = [searchController _dci_searchSuggestions];
+    v9 = v10 < [_dci_searchSuggestions count];
   }
 
   else
@@ -251,15 +251,15 @@ LABEL_32:
   return v9;
 }
 
-- (void)collectionView:(id)a3 performPrimaryActionForItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view performPrimaryActionForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v9 = [(_UISearchSuggestionsListViewController *)self searchController];
-  v6 = [v9 _dci_searchSuggestions];
-  v7 = [v5 row];
+  pathCopy = path;
+  searchController = [(_UISearchSuggestionsListViewController *)self searchController];
+  _dci_searchSuggestions = [searchController _dci_searchSuggestions];
+  v7 = [pathCopy row];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
-  [v9 _searchBarTextFieldDidSelectSearchSuggestion:v8];
+  v8 = [_dci_searchSuggestions objectAtIndexedSubscript:v7];
+  [searchController _searchBarTextFieldDidSelectSearchSuggestion:v8];
 }
 
 - (UISearchController)searchController

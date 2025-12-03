@@ -1,50 +1,50 @@
 @interface HKSortedQueryAnchor
-+ (id)sortConstraintsWithSortDescriptors:(id)a3 sample:(id)a4;
-+ (id)sortedQueryAnchorRelaxingConstraintsWithAnchor:(id)a3 error:(id *)a4;
-+ (id)sortedQueryAnchorWithSortDescriptors:(id)a3;
-+ (id)sortedQueryAnchorWithSortDescriptors:(id)a3 followingSample:(id)a4 objectID:(int64_t)a5;
-+ (id)sortedQueryAnchorWithSortDescriptors:(id)a3 includingSample:(id)a4 objectID:(int64_t)a5;
-+ (id)sortedQueryAnchorWithSortDescriptors:(id)a3 objectID:(int64_t)a4;
++ (id)sortConstraintsWithSortDescriptors:(id)descriptors sample:(id)sample;
++ (id)sortedQueryAnchorRelaxingConstraintsWithAnchor:(id)anchor error:(id *)error;
++ (id)sortedQueryAnchorWithSortDescriptors:(id)descriptors;
++ (id)sortedQueryAnchorWithSortDescriptors:(id)descriptors followingSample:(id)sample objectID:(int64_t)d;
++ (id)sortedQueryAnchorWithSortDescriptors:(id)descriptors includingSample:(id)sample objectID:(int64_t)d;
++ (id)sortedQueryAnchorWithSortDescriptors:(id)descriptors objectID:(int64_t)d;
 - (BOOL)canRelax;
-- (BOOL)isCompatibleWithSortDescriptors:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isCompatibleWithSortDescriptors:(id)descriptors;
+- (BOOL)isEqual:(id)equal;
 - (HKSortedQueryAnchor)init;
-- (HKSortedQueryAnchor)initWithCoder:(id)a3;
-- (HKSortedQueryAnchor)initWithSortConstraints:(id)a3 objectID:(id)a4;
+- (HKSortedQueryAnchor)initWithCoder:(id)coder;
+- (HKSortedQueryAnchor)initWithSortConstraints:(id)constraints objectID:(id)d;
 - (id)predicate;
 - (id)querySortDescriptors;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSortedQueryAnchor
 
-+ (id)sortedQueryAnchorWithSortDescriptors:(id)a3 objectID:(int64_t)a4
++ (id)sortedQueryAnchorWithSortDescriptors:(id)descriptors objectID:(int64_t)d
 {
-  v7 = a3;
-  if (!v7)
+  descriptorsCopy = descriptors;
+  if (!descriptorsCopy)
   {
-    [HKSortedQueryAnchor sortedQueryAnchorWithSortDescriptors:a2 objectID:a1];
+    [HKSortedQueryAnchor sortedQueryAnchorWithSortDescriptors:a2 objectID:self];
   }
 
-  v8 = [v7 hk_map:&__block_literal_global_112];
-  v9 = [a1 alloc];
-  v10 = [MEMORY[0x1E696AD98] numberWithLongLong:a4];
+  v8 = [descriptorsCopy hk_map:&__block_literal_global_112];
+  v9 = [self alloc];
+  v10 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v11 = [v9 initWithSortConstraints:v8 objectID:v10];
 
   return v11;
 }
 
-+ (id)sortedQueryAnchorWithSortDescriptors:(id)a3
++ (id)sortedQueryAnchorWithSortDescriptors:(id)descriptors
 {
-  v5 = a3;
-  if (!v5)
+  descriptorsCopy = descriptors;
+  if (!descriptorsCopy)
   {
-    [(HKSortedQueryAnchor *)a2 sortedQueryAnchorWithSortDescriptors:a1];
+    [(HKSortedQueryAnchor *)a2 sortedQueryAnchorWithSortDescriptors:self];
   }
 
-  v6 = [v5 hk_map:&__block_literal_global_17_0];
-  v7 = [[a1 alloc] initWithSortConstraints:v6 objectID:0];
+  v6 = [descriptorsCopy hk_map:&__block_literal_global_17_0];
+  v7 = [[self alloc] initWithSortConstraints:v6 objectID:0];
 
   return v7;
 }
@@ -59,11 +59,11 @@
   return 0;
 }
 
-- (HKSortedQueryAnchor)initWithSortConstraints:(id)a3 objectID:(id)a4
+- (HKSortedQueryAnchor)initWithSortConstraints:(id)constraints objectID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  constraintsCopy = constraints;
+  dCopy = d;
+  if (!constraintsCopy)
   {
     [HKSortedQueryAnchor initWithSortConstraints:a2 objectID:self];
   }
@@ -73,11 +73,11 @@
   v9 = [(HKSortedQueryAnchor *)&v15 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [constraintsCopy copy];
     sortConstraints = v9->_sortConstraints;
     v9->_sortConstraints = v10;
 
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     objectID = v9->_objectID;
     v9->_objectID = v12;
   }
@@ -85,16 +85,16 @@
   return v9;
 }
 
-+ (id)sortConstraintsWithSortDescriptors:(id)a3 sample:(id)a4
++ (id)sortConstraintsWithSortDescriptors:(id)descriptors sample:(id)sample
 {
-  v5 = a4;
+  sampleCopy = sample;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__HKSortedQueryAnchor_sortConstraintsWithSortDescriptors_sample___block_invoke;
   v9[3] = &unk_1E7383940;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a3 hk_map:v9];
+  v10 = sampleCopy;
+  v6 = sampleCopy;
+  v7 = [descriptors hk_map:v9];
 
   return v7;
 }
@@ -114,13 +114,13 @@ id __65__HKSortedQueryAnchor_sortConstraintsWithSortDescriptors_sample___block_i
   return v10;
 }
 
-+ (id)sortedQueryAnchorWithSortDescriptors:(id)a3 includingSample:(id)a4 objectID:(int64_t)a5
++ (id)sortedQueryAnchorWithSortDescriptors:(id)descriptors includingSample:(id)sample objectID:(int64_t)d
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() sortConstraintsWithSortDescriptors:v9 sample:v8];
+  sampleCopy = sample;
+  descriptorsCopy = descriptors;
+  v10 = [objc_opt_class() sortConstraintsWithSortDescriptors:descriptorsCopy sample:sampleCopy];
 
-  v11 = [a1 alloc];
+  v11 = [self alloc];
   if (v10)
   {
     v12 = v10;
@@ -131,19 +131,19 @@ id __65__HKSortedQueryAnchor_sortConstraintsWithSortDescriptors_sample___block_i
     v12 = MEMORY[0x1E695E0F0];
   }
 
-  v13 = [MEMORY[0x1E696AD98] numberWithLongLong:a5 - 1];
+  v13 = [MEMORY[0x1E696AD98] numberWithLongLong:d - 1];
   v14 = [v11 initWithSortConstraints:v12 objectID:v13];
 
   return v14;
 }
 
-+ (id)sortedQueryAnchorWithSortDescriptors:(id)a3 followingSample:(id)a4 objectID:(int64_t)a5
++ (id)sortedQueryAnchorWithSortDescriptors:(id)descriptors followingSample:(id)sample objectID:(int64_t)d
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_opt_class() sortConstraintsWithSortDescriptors:v9 sample:v8];
+  sampleCopy = sample;
+  descriptorsCopy = descriptors;
+  v10 = [objc_opt_class() sortConstraintsWithSortDescriptors:descriptorsCopy sample:sampleCopy];
 
-  v11 = [a1 alloc];
+  v11 = [self alloc];
   if (v10)
   {
     v12 = v10;
@@ -154,17 +154,17 @@ id __65__HKSortedQueryAnchor_sortConstraintsWithSortDescriptors_sample___block_i
     v12 = MEMORY[0x1E695E0F0];
   }
 
-  v13 = [MEMORY[0x1E696AD98] numberWithLongLong:a5];
+  v13 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v14 = [v11 initWithSortConstraints:v12 objectID:v13];
 
   return v14;
 }
 
-+ (id)sortedQueryAnchorRelaxingConstraintsWithAnchor:(id)a3 error:(id *)a4
++ (id)sortedQueryAnchorRelaxingConstraintsWithAnchor:(id)anchor error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 sortConstraints];
-  v8 = [v7 hk_reversed];
+  anchorCopy = anchor;
+  sortConstraints = [anchorCopy sortConstraints];
+  hk_reversed = [sortConstraints hk_reversed];
 
   v16[0] = 0;
   v16[1] = v16;
@@ -175,21 +175,21 @@ id __65__HKSortedQueryAnchor_sortConstraintsWithSortDescriptors_sample___block_i
   v15[2] = __76__HKSortedQueryAnchor_sortedQueryAnchorRelaxingConstraintsWithAnchor_error___block_invoke;
   v15[3] = &unk_1E7383968;
   v15[4] = v16;
-  v9 = [v8 hk_map:v15 error:a4];
-  v10 = [v9 hk_reversed];
+  v9 = [hk_reversed hk_map:v15 error:error];
+  hk_reversed2 = [v9 hk_reversed];
 
-  if (v10)
+  if (hk_reversed2)
   {
-    v11 = [v10 hk_filter:&__block_literal_global_29_1];
+    v11 = [hk_reversed2 hk_filter:&__block_literal_global_29_1];
     v12 = [v11 count];
 
     if (v12 > 0)
     {
-      v13 = [[a1 alloc] initWithSortConstraints:v10 objectID:0];
+      v13 = [[self alloc] initWithSortConstraints:hk_reversed2 objectID:0];
       goto LABEL_6;
     }
 
-    [MEMORY[0x1E696ABC0] hk_assignError:a4 code:3 format:@"Unable to relax query anchor"];
+    [MEMORY[0x1E696ABC0] hk_assignError:error code:3 format:@"Unable to relax query anchor"];
   }
 
   v13 = 0;
@@ -237,8 +237,8 @@ BOOL __76__HKSortedQueryAnchor_sortedQueryAnchorRelaxingConstraintsWithAnchor_er
 
 - (id)querySortDescriptors
 {
-  v2 = [(HKSortedQueryAnchor *)self sortConstraints];
-  v3 = [v2 hk_map:&__block_literal_global_36];
+  sortConstraints = [(HKSortedQueryAnchor *)self sortConstraints];
+  v3 = [sortConstraints hk_map:&__block_literal_global_36];
   v4 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"HKObjectSortIdentifierDataID" ascending:1];
   v5 = [v3 arrayByAddingObject:v4];
 
@@ -247,33 +247,33 @@ BOOL __76__HKSortedQueryAnchor_sortedQueryAnchorRelaxingConstraintsWithAnchor_er
 
 - (id)predicate
 {
-  v2 = [(HKSortedQueryAnchor *)self sortConstraints];
-  v3 = [v2 hk_map:&__block_literal_global_39_0];
+  sortConstraints = [(HKSortedQueryAnchor *)self sortConstraints];
+  v3 = [sortConstraints hk_map:&__block_literal_global_39_0];
 
   v4 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v3];
 
   return v4;
 }
 
-- (BOOL)isCompatibleWithSortDescriptors:(id)a3
+- (BOOL)isCompatibleWithSortDescriptors:(id)descriptors
 {
-  v4 = a3;
-  v5 = [(HKSortedQueryAnchor *)self sortConstraints];
-  v6 = [v5 hk_map:&__block_literal_global_42_0];
-  v7 = [v6 isEqualToArray:v4];
+  descriptorsCopy = descriptors;
+  sortConstraints = [(HKSortedQueryAnchor *)self sortConstraints];
+  v6 = [sortConstraints hk_map:&__block_literal_global_42_0];
+  v7 = [v6 isEqualToArray:descriptorsCopy];
 
   return v7;
 }
 
 - (BOOL)canRelax
 {
-  v3 = [(HKSortedQueryAnchor *)self sortConstraints];
-  v4 = [v3 hk_filter:&__block_literal_global_44_1];
+  sortConstraints = [(HKSortedQueryAnchor *)self sortConstraints];
+  v4 = [sortConstraints hk_filter:&__block_literal_global_44_1];
   v5 = [v4 count];
 
-  v6 = [(HKSortedQueryAnchor *)self objectID];
+  objectID = [(HKSortedQueryAnchor *)self objectID];
 
-  if (v6)
+  if (objectID)
   {
     v7 = v5 + 1;
   }
@@ -288,18 +288,18 @@ BOOL __76__HKSortedQueryAnchor_sortedQueryAnchorRelaxingConstraintsWithAnchor_er
 
 - (unint64_t)hash
 {
-  v3 = [(HKSortedQueryAnchor *)self sortConstraints];
-  v4 = [v3 hash];
-  v5 = [(HKSortedQueryAnchor *)self objectID];
-  v6 = [v5 hash];
+  sortConstraints = [(HKSortedQueryAnchor *)self sortConstraints];
+  v4 = [sortConstraints hash];
+  objectID = [(HKSortedQueryAnchor *)self objectID];
+  v6 = [objectID hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -309,26 +309,26 @@ BOOL __76__HKSortedQueryAnchor_sortedQueryAnchorRelaxingConstraintsWithAnchor_er
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       sortConstraints = self->_sortConstraints;
-      v7 = [(HKSortedQueryAnchor *)v5 sortConstraints];
-      v8 = v7;
-      if (sortConstraints == v7)
+      sortConstraints = [(HKSortedQueryAnchor *)v5 sortConstraints];
+      v8 = sortConstraints;
+      if (sortConstraints == sortConstraints)
       {
       }
 
       else
       {
-        v9 = [(HKSortedQueryAnchor *)v5 sortConstraints];
-        if (!v9)
+        sortConstraints2 = [(HKSortedQueryAnchor *)v5 sortConstraints];
+        if (!sortConstraints2)
         {
           goto LABEL_14;
         }
 
-        v10 = v9;
+        v10 = sortConstraints2;
         v11 = self->_sortConstraints;
-        v12 = [(HKSortedQueryAnchor *)v5 sortConstraints];
-        LODWORD(v11) = [(NSArray *)v11 isEqual:v12];
+        sortConstraints3 = [(HKSortedQueryAnchor *)v5 sortConstraints];
+        LODWORD(v11) = [(NSArray *)v11 isEqual:sortConstraints3];
 
         if (!v11)
         {
@@ -337,9 +337,9 @@ BOOL __76__HKSortedQueryAnchor_sortedQueryAnchorRelaxingConstraintsWithAnchor_er
       }
 
       objectID = self->_objectID;
-      v15 = [(HKSortedQueryAnchor *)v5 objectID];
-      v8 = v15;
-      if (objectID == v15)
+      objectID = [(HKSortedQueryAnchor *)v5 objectID];
+      v8 = objectID;
+      if (objectID == objectID)
       {
 
 LABEL_17:
@@ -347,13 +347,13 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v16 = [(HKSortedQueryAnchor *)v5 objectID];
-      if (v16)
+      objectID2 = [(HKSortedQueryAnchor *)v5 objectID];
+      if (objectID2)
       {
-        v17 = v16;
+        v17 = objectID2;
         v18 = self->_objectID;
-        v19 = [(HKSortedQueryAnchor *)v5 objectID];
-        LOBYTE(v18) = [(NSNumber *)v18 isEqual:v19];
+        objectID3 = [(HKSortedQueryAnchor *)v5 objectID];
+        LOBYTE(v18) = [(NSNumber *)v18 isEqual:objectID3];
 
         if (v18)
         {
@@ -380,20 +380,20 @@ LABEL_19:
   return v13;
 }
 
-- (HKSortedQueryAnchor)initWithCoder:(id)a3
+- (HKSortedQueryAnchor)initWithCoder:(id)coder
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v16[0] = objc_opt_class();
   v16[1] = objc_opt_class();
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
   v7 = [v5 setWithArray:v6];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"SortConstraints"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"SortConstraints"];
 
   if (v8)
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ObjectID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ObjectID"];
     v15.receiver = self;
     v15.super_class = HKSortedQueryAnchor;
     v10 = [(HKSortedQueryAnchor *)&v15 init];
@@ -406,24 +406,24 @@ LABEL_19:
 
     self = p_isa;
 
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sortConstraints = self->_sortConstraints;
-  v5 = a3;
-  [v5 encodeObject:sortConstraints forKey:@"SortConstraints"];
-  [v5 encodeObject:self->_objectID forKey:@"ObjectID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sortConstraints forKey:@"SortConstraints"];
+  [coderCopy encodeObject:self->_objectID forKey:@"ObjectID"];
 }
 
 + (void)sortedQueryAnchorWithSortDescriptors:(uint64_t)a1 objectID:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

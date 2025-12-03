@@ -1,13 +1,13 @@
 @interface TSTTableDataCustomFormat
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)initObjectWithCustomFormat:(void *)a3;
+- (id)initObjectWithCustomFormat:(void *)format;
 - (void)dealloc;
 @end
 
 @implementation TSTTableDataCustomFormat
 
-- (id)initObjectWithCustomFormat:(void *)a3
+- (id)initObjectWithCustomFormat:(void *)format
 {
   v4.receiver = self;
   v4.super_class = TSTTableDataCustomFormat;
@@ -19,7 +19,7 @@
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -28,7 +28,7 @@
   }
 
   mCustomFormat = self->mCustomFormat;
-  v6 = *(a3 + 2);
+  v6 = *(equal + 2);
 
   return TSUCustomFormat::customFormatIsEqual(mCustomFormat, v6);
 }

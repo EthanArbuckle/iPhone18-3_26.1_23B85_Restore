@@ -1,18 +1,18 @@
 @interface AKCodeGenerationView
 + (id)_generatorLabelFont;
-- (AKCodeGenerationView)initWithGeneratedCode:(id)a3;
-- (void)_updateFonts:(id)a3;
+- (AKCodeGenerationView)initWithGeneratedCode:(id)code;
+- (void)_updateFonts:(id)fonts;
 - (void)dealloc;
 @end
 
 @implementation AKCodeGenerationView
 
-- (AKCodeGenerationView)initWithGeneratedCode:(id)a3
+- (AKCodeGenerationView)initWithGeneratedCode:(id)code
 {
   v31[0] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, code);
   v3 = v31[0];
   v31[0] = 0;
   v29.receiver = v3;
@@ -28,13 +28,13 @@
 
     objc_storeStrong(v31[0] + 2, location[0]);
     [v31[0] setTranslatesAutoresizingMaskIntoConstraints:0];
-    v28 = [objc_opt_class() _generatorLabelFont];
+    _generatorLabelFont = [objc_opt_class() _generatorLabelFont];
     v27 = objc_alloc_init(NSMutableDictionary);
     for (i = 0; i < 6; ++i)
     {
       v25 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
       [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
-      [v25 setFont:v28];
+      [v25 setFont:_generatorLabelFont];
       v6 = *(v31[0] + 2);
       v31[2] = i;
       v31[1] = 1;
@@ -49,7 +49,7 @@
       if (i)
       {
         v16 = v25;
-        v18 = [*(v31[0] + 1) firstObject];
+        firstObject = [*(v31[0] + 1) firstObject];
         v17 = [NSLayoutConstraint constraintWithItem:"constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:" attribute:v16 relatedBy:11 toItem:0 attribute:1.0 multiplier:0.0 constant:?];
         [(NSLayoutConstraint *)v17 setActive:1];
       }
@@ -88,7 +88,7 @@
     objc_storeStrong(&v23, 0);
     objc_storeStrong(v24, 0);
     objc_storeStrong(&v27, 0);
-    objc_storeStrong(&v28, 0);
+    objc_storeStrong(&_generatorLabelFont, 0);
   }
 
   v11 = v31[0];
@@ -99,25 +99,25 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v2 = +[NSNotificationCenter defaultCenter];
-  [(NSNotificationCenter *)v2 removeObserver:v5 name:UIContentSizeCategoryDidChangeNotification object:0];
+  [(NSNotificationCenter *)v2 removeObserver:selfCopy name:UIContentSizeCategoryDidChangeNotification object:0];
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = AKCodeGenerationView;
   [(AKCodeGenerationView *)&v3 dealloc];
 }
 
-- (void)_updateFonts:(id)a3
+- (void)_updateFonts:(id)fonts
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = [objc_opt_class() _generatorLabelFont];
+  objc_storeStrong(location, fonts);
+  _generatorLabelFont = [objc_opt_class() _generatorLabelFont];
   memset(__b, 0, sizeof(__b));
-  obj = v13->_generatorLabels;
+  obj = selfCopy->_generatorLabels;
   v8 = [(NSMutableArray *)obj countByEnumeratingWithState:__b objects:v14 count:16];
   if (v8)
   {
@@ -133,7 +133,7 @@
       }
 
       v10 = *(__b[1] + 8 * v5);
-      [v10 setFont:v11];
+      [v10 setFont:_generatorLabelFont];
       ++v5;
       if (v3 + 1 >= v6)
       {
@@ -147,17 +147,17 @@
     }
   }
 
-  [(AKCodeGenerationView *)v13 setNeedsLayout];
-  objc_storeStrong(&v11, 0);
+  [(AKCodeGenerationView *)selfCopy setNeedsLayout];
+  objc_storeStrong(&_generatorLabelFont, 0);
   objc_storeStrong(location, 0);
 }
 
 + (id)_generatorLabelFont
 {
-  v12[2] = a1;
+  v12[2] = self;
   v12[1] = a2;
   v12[0] = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  v9 = [UIApp preferredContentSizeCategory];
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
   v10 = _UIContentSizeCategoryCompareToContentSizeCategory();
 
   if (v10 != -1)

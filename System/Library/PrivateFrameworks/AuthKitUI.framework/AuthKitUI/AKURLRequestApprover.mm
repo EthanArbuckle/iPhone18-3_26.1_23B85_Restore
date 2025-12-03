@@ -1,56 +1,56 @@
 @interface AKURLRequestApprover
-- (AKURLRequestApprover)initWithWhitelistedPaths:(id)a3;
-- (BOOL)_matchInputAgainstPaths:(id)a3;
-- (BOOL)shouldAllowRequest:(id)a3;
+- (AKURLRequestApprover)initWithWhitelistedPaths:(id)paths;
+- (BOOL)_matchInputAgainstPaths:(id)paths;
+- (BOOL)shouldAllowRequest:(id)request;
 @end
 
 @implementation AKURLRequestApprover
 
-- (AKURLRequestApprover)initWithWhitelistedPaths:(id)a3
+- (AKURLRequestApprover)initWithWhitelistedPaths:(id)paths
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
-  v11 = 0;
+  objc_storeStrong(location, paths);
+  v3 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v3;
   v9.super_class = AKURLRequestApprover;
   v8 = [(AKURLRequestApprover *)&v9 init];
-  v11 = v8;
-  objc_storeStrong(&v11, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
     v4 = [location[0] copy];
-    whiteListedPaths = v11->_whiteListedPaths;
-    v11->_whiteListedPaths = v4;
+    whiteListedPaths = selfCopy->_whiteListedPaths;
+    selfCopy->_whiteListedPaths = v4;
     MEMORY[0x277D82BD8](whiteListedPaths);
   }
 
-  v7 = MEMORY[0x277D82BE0](v11);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (BOOL)shouldAllowRequest:(id)a3
+- (BOOL)shouldAllowRequest:(id)request
 {
   v19 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v16->_whiteListedPaths)
+  objc_storeStrong(location, request);
+  if (selfCopy->_whiteListedPaths)
   {
     v6 = MEMORY[0x277CCACE0];
     v7 = [location[0] URL];
     v13 = [v6 componentsWithURL:? resolvingAgainstBaseURL:?];
-    v9 = [v13 host];
-    v8 = [v13 path];
-    v12 = [v9 stringByAppendingString:?];
-    MEMORY[0x277D82BD8](v8);
-    *&v3 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-    v11 = [(AKURLRequestApprover *)v16 _matchInputAgainstPaths:v12, v3];
+    host = [v13 host];
+    path = [v13 path];
+    v12 = [host stringByAppendingString:?];
+    MEMORY[0x277D82BD8](path);
+    *&v3 = MEMORY[0x277D82BD8](host).n128_u64[0];
+    v11 = [(AKURLRequestApprover *)selfCopy _matchInputAgainstPaths:v12, v3];
     oslog = _AKLogSystem();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
     {
@@ -78,15 +78,15 @@
   return v17 & 1;
 }
 
-- (BOOL)_matchInputAgainstPaths:(id)a3
+- (BOOL)_matchInputAgainstPaths:(id)paths
 {
   v20 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, paths);
   memset(__b, 0, sizeof(__b));
-  obj = MEMORY[0x277D82BE0](v16->_whiteListedPaths);
+  obj = MEMORY[0x277D82BE0](selfCopy->_whiteListedPaths);
   v10 = [obj countByEnumeratingWithState:__b objects:v19 count:16];
   if (v10)
   {

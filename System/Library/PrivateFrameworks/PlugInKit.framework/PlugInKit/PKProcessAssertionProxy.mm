@@ -2,38 +2,38 @@
 - (BOOL)acquire;
 - (id)invalidationHandler;
 - (void)invalidate;
-- (void)setInvalidationHandler:(id)a3;
+- (void)setInvalidationHandler:(id)handler;
 @end
 
 @implementation PKProcessAssertionProxy
 
 - (void)invalidate
 {
-  v2 = [(PKProcessAssertionProxy *)self _bksObject];
-  [v2 invalidate];
+  _bksObject = [(PKProcessAssertionProxy *)self _bksObject];
+  [_bksObject invalidate];
 }
 
 - (BOOL)acquire
 {
-  v2 = [(PKProcessAssertionProxy *)self _bksObject];
-  v3 = [v2 acquire];
+  _bksObject = [(PKProcessAssertionProxy *)self _bksObject];
+  acquire = [_bksObject acquire];
 
-  return v3;
+  return acquire;
 }
 
 - (id)invalidationHandler
 {
-  v2 = [(PKProcessAssertionProxy *)self _bksObject];
-  v3 = [v2 invalidationHandler];
+  _bksObject = [(PKProcessAssertionProxy *)self _bksObject];
+  invalidationHandler = [_bksObject invalidationHandler];
 
-  return v3;
+  return invalidationHandler;
 }
 
-- (void)setInvalidationHandler:(id)a3
+- (void)setInvalidationHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PKProcessAssertionProxy *)self _bksObject];
-  [v5 setInvalidationHandler:v4];
+  handlerCopy = handler;
+  _bksObject = [(PKProcessAssertionProxy *)self _bksObject];
+  [_bksObject setInvalidationHandler:handlerCopy];
 }
 
 @end

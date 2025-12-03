@@ -1,6 +1,6 @@
 @interface HSServiceDirectoryService
-- (BOOL)hsDecode:(void *)a3;
-- (BOOL)hsEncode:(void *)a3;
+- (BOOL)hsDecode:(void *)decode;
+- (BOOL)hsEncode:(void *)encode;
 - (NSString)description;
 @end
 
@@ -16,35 +16,35 @@
   return v5;
 }
 
-- (BOOL)hsEncode:(void *)a3
+- (BOOL)hsEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v6 = *(a3 + 17);
+    *&v6 = *(encode + 17);
     DWORD2(v6) = 2;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v6);
-    HSUtil::Encoder::_writeTokenValue16(a3, 0xE7u, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v6);
+    HSUtil::Encoder::_writeTokenValue16(encode, 0xE7u, 0);
   }
 
-  HSUtil::Encoder::encodeNSString(a3, self->name);
-  HSUtil::Encoder::encodeNSString(a3, self->description);
-  HSUtil::Encoder::encodeNSString(a3, self->protocol);
-  if (!*a3)
+  HSUtil::Encoder::encodeNSString(encode, self->name);
+  HSUtil::Encoder::encodeNSString(encode, self->description);
+  HSUtil::Encoder::encodeNSString(encode, self->protocol);
+  if (!*encode)
   {
-    HSUtil::Encoder::_encodeUInt(a3, self->version);
-    if (!*a3)
+    HSUtil::Encoder::_encodeUInt(encode, self->version);
+    if (!*encode)
     {
-      HSUtil::Encoder::_encodeContainerStop(a3);
+      HSUtil::Encoder::_encodeContainerStop(encode);
     }
   }
 
   return 1;
 }
 
-- (BOOL)hsDecode:(void *)a3
+- (BOOL)hsDecode:(void *)decode
 {
-  HSUtil::Decoder::decodeArray(a3, v14);
-  if (*a3)
+  HSUtil::Decoder::decodeArray(decode, v14);
+  if (*decode)
   {
     basename_r("/Library/Caches/com.apple.xbs/Sources/HIDSensingPipeline/HIDSensingPipeline/HSServiceDirectory.mm", v17);
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))

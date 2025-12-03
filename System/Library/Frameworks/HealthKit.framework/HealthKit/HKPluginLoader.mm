@@ -1,15 +1,15 @@
 @interface HKPluginLoader
-+ (Class)loadPrincipalClassConformingToProtocols:(id)a3 fromBundleAtURL:(id)a4 skipIfLoaded:(BOOL)a5;
++ (Class)loadPrincipalClassConformingToProtocols:(id)protocols fromBundleAtURL:(id)l skipIfLoaded:(BOOL)loaded;
 @end
 
 @implementation HKPluginLoader
 
-+ (Class)loadPrincipalClassConformingToProtocols:(id)a3 fromBundleAtURL:(id)a4 skipIfLoaded:(BOOL)a5
++ (Class)loadPrincipalClassConformingToProtocols:(id)protocols fromBundleAtURL:(id)l skipIfLoaded:(BOOL)loaded
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_alloc(MEMORY[0x1E696AAE8]) initWithURL:v8];
+  protocolsCopy = protocols;
+  lCopy = l;
+  v9 = [objc_alloc(MEMORY[0x1E696AAE8]) initWithURL:lCopy];
   v10 = v9;
   if (!v9)
   {
@@ -22,7 +22,7 @@
     goto LABEL_20;
   }
 
-  if ([v9 isLoaded] && a5)
+  if ([v9 isLoaded] && loaded)
   {
 LABEL_20:
     v20 = 0;
@@ -34,8 +34,8 @@ LABEL_20:
   v12 = v30;
   if (v11)
   {
-    v13 = [v10 principalClass];
-    if (!v13)
+    principalClass = [v10 principalClass];
+    if (!principalClass)
     {
       _HKInitializeLogging();
       if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_ERROR))
@@ -48,7 +48,7 @@ LABEL_20:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v14 = v7;
+    v14 = protocolsCopy;
     v15 = [v14 countByEnumeratingWithState:&v26 objects:v37 count:16];
     if (v15)
     {
@@ -63,7 +63,7 @@ LABEL_20:
             objc_enumerationMutation(v14);
           }
 
-          if ([v13 conformsToProtocol:{*(*(&v26 + 1) + 8 * i), v26}])
+          if ([principalClass conformsToProtocol:{*(*(&v26 + 1) + 8 * i), v26}])
           {
             _HKInitializeLogging();
             if (os_log_type_enabled(HKLogDefault, OS_LOG_TYPE_DEBUG))
@@ -71,7 +71,7 @@ LABEL_20:
               +[HKPluginLoader loadPrincipalClassConformingToProtocols:fromBundleAtURL:skipIfLoaded:];
             }
 
-            v20 = v13;
+            v20 = principalClass;
 
             goto LABEL_27;
           }
@@ -91,9 +91,9 @@ LABEL_20:
     v19 = HKLogDefault;
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      if (v13)
+      if (principalClass)
       {
-        v23 = NSStringFromClass(v13);
+        v23 = NSStringFromClass(principalClass);
       }
 
       else
@@ -104,14 +104,14 @@ LABEL_20:
       v24 = [v14 hk_map:{&__block_literal_global_2, v26}];
       v25 = [v24 componentsJoinedByString:{@", "}];
       *buf = 138543874;
-      v32 = v8;
+      v32 = lCopy;
       v33 = 2114;
       v34 = v23;
       v35 = 2114;
       v36 = v25;
       _os_log_error_impl(&dword_19197B000, v19, OS_LOG_TYPE_ERROR, "Error: failed to load bundle %{public}@: principal class %{public}@ doesn't conform to any of: %{public}@", buf, 0x20u);
 
-      if (v13)
+      if (principalClass)
       {
       }
     }

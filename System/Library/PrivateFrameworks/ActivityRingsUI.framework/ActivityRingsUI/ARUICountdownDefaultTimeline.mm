@@ -16,8 +16,8 @@
     [(ARUICountdownTimeline *)v2 setPrepareToAnimate:v15];
     v14 = objc_alloc_init(ARUICountdownPreCancel);
     [(ARUICountdownTimeline *)v2 setPrepareToCancel:v14];
-    v3 = [MEMORY[0x1E695DF70] array];
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v5 = objc_alloc_init(ARUICountdownFadeIn);
     v6 = objc_alloc_init(ARUICountdownWindUp);
     v7 = [[ARUICountdownCountdown alloc] initWithPercent:3 andStep:1 cancelable:0.66];
@@ -31,12 +31,12 @@
     v17[4] = v9;
     v17[5] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:6];
-    [v3 addObjectsFromArray:v11];
+    [array addObjectsFromArray:v11];
 
     v12 = objc_alloc_init(ARUICountdownCancel);
-    [v4 addObject:v12];
-    [(ARUICountdownTimeline *)v2 setAnimations:v3];
-    [(ARUICountdownTimeline *)v2 setCancelAnimations:v4];
+    [array2 addObject:v12];
+    [(ARUICountdownTimeline *)v2 setAnimations:array];
+    [(ARUICountdownTimeline *)v2 setCancelAnimations:array2];
   }
 
   return v2;

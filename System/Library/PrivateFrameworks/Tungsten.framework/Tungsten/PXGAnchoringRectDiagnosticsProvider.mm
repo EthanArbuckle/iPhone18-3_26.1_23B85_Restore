@@ -1,17 +1,17 @@
 @interface PXGAnchoringRectDiagnosticsProvider
-- (void)enumerateRectDiagnosticsForLayout:(id)a3 usingBlock:(id)a4;
+- (void)enumerateRectDiagnosticsForLayout:(id)layout usingBlock:(id)block;
 @end
 
 @implementation PXGAnchoringRectDiagnosticsProvider
 
-- (void)enumerateRectDiagnosticsForLayout:(id)a3 usingBlock:(id)a4
+- (void)enumerateRectDiagnosticsForLayout:(id)layout usingBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  layoutCopy = layout;
+  blockCopy = block;
   v7 = +[PXTungstenSettings sharedInstance];
-  v8 = [v7 enableAnchoringRectDiagnostics];
+  enableAnchoringRectDiagnostics = [v7 enableAnchoringRectDiagnostics];
 
-  if (v8)
+  if (enableAnchoringRectDiagnostics)
   {
     v13[0] = 0;
     v13[1] = v13;
@@ -21,8 +21,8 @@
     v9[1] = 3221225472;
     v9[2] = __84__PXGAnchoringRectDiagnosticsProvider_enumerateRectDiagnosticsForLayout_usingBlock___block_invoke;
     v9[3] = &unk_2782A9990;
-    v10 = v5;
-    v11 = v6;
+    v10 = layoutCopy;
+    v11 = blockCopy;
     v12 = v13;
     [v10 enumerateVisibleAnchoringSpriteIndexesUsingBlock:v9];
 

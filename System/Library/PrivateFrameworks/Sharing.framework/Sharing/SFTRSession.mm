@@ -1,16 +1,16 @@
 @interface SFTRSession
 - (SFTRSession)init;
-- (id)_decodeTRMessageData:(id)a3 kindOfClass:(Class)a4;
+- (id)_decodeTRMessageData:(id)data kindOfClass:(Class)class;
 - (void)_cleanup;
 - (void)activate;
 - (void)dealloc;
-- (void)handleEvent:(id)a3 flags:(unsigned int)a4;
-- (void)handleRequest:(id)a3 flags:(unsigned int)a4 responseHandler:(id)a5;
+- (void)handleEvent:(id)event flags:(unsigned int)flags;
+- (void)handleRequest:(id)request flags:(unsigned int)flags responseHandler:(id)handler;
 - (void)invalidate;
-- (void)sendEvent:(id)a3;
-- (void)sendRequest:(id)a3 withResponseHandler:(id)a4;
-- (void)setEventHandler:(id)a3 forEventClass:(Class)a4;
-- (void)setRequestHandler:(id)a3 forRequestClass:(Class)a4;
+- (void)sendEvent:(id)event;
+- (void)sendRequest:(id)request withResponseHandler:(id)handler;
+- (void)setEventHandler:(id)handler forEventClass:(Class)class;
+- (void)setRequestHandler:(id)handler forRequestClass:(Class)class;
 @end
 
 @implementation SFTRSession
@@ -123,18 +123,18 @@ uint64_t __25__SFTRSession_invalidate__block_invoke(uint64_t a1)
   return [v2 _cleanup];
 }
 
-- (void)handleEvent:(id)a3 flags:(unsigned int)a4
+- (void)handleEvent:(id)event flags:(unsigned int)flags
 {
-  v6 = a3;
+  eventCopy = event;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __33__SFTRSession_handleEvent_flags___block_invoke;
   block[3] = &unk_1E788EC90;
-  v12 = a4;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  flagsCopy = flags;
+  v10 = eventCopy;
+  selfCopy = self;
+  v8 = eventCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -205,21 +205,21 @@ LABEL_21:
 LABEL_9:
 }
 
-- (void)handleRequest:(id)a3 flags:(unsigned int)a4 responseHandler:(id)a5
+- (void)handleRequest:(id)request flags:(unsigned int)flags responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  requestCopy = request;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __51__SFTRSession_handleRequest_flags_responseHandler___block_invoke;
   v13[3] = &unk_1E788EAB8;
-  v17 = a4;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
+  flagsCopy = flags;
+  v14 = requestCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = requestCopy;
   dispatch_async(dispatchQueue, v13);
 }
 
@@ -382,17 +382,17 @@ LABEL_19:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __25__SFTRSession_sendEvent___block_invoke;
   v7[3] = &unk_1E788A658;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = eventCopy;
+  selfCopy = self;
+  v6 = eventCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -445,20 +445,20 @@ void __25__SFTRSession_sendEvent___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendRequest:(id)a3 withResponseHandler:(id)a4
+- (void)sendRequest:(id)request withResponseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__SFTRSession_sendRequest_withResponseHandler___block_invoke;
   block[3] = &unk_1E788A570;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -640,18 +640,18 @@ LABEL_9:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)setEventHandler:(id)a3 forEventClass:(Class)a4
+- (void)setEventHandler:(id)handler forEventClass:(Class)class
 {
-  v6 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__SFTRSession_setEventHandler_forEventClass___block_invoke;
   block[3] = &unk_1E78913D8;
-  v10 = v6;
-  v11 = a4;
+  v10 = handlerCopy;
+  classCopy = class;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -676,18 +676,18 @@ void __45__SFTRSession_setEventHandler_forEventClass___block_invoke(uint64_t a1)
   [v5 setObject:v7 forKeyedSubscript:v6];
 }
 
-- (void)setRequestHandler:(id)a3 forRequestClass:(Class)a4
+- (void)setRequestHandler:(id)handler forRequestClass:(Class)class
 {
-  v6 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__SFTRSession_setRequestHandler_forRequestClass___block_invoke;
   block[3] = &unk_1E78913D8;
-  v10 = v6;
-  v11 = a4;
+  v10 = handlerCopy;
+  classCopy = class;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -712,13 +712,13 @@ void __49__SFTRSession_setRequestHandler_forRequestClass___block_invoke(uint64_t
   [v5 setObject:v7 forKeyedSubscript:v6];
 }
 
-- (id)_decodeTRMessageData:(id)a3 kindOfClass:(Class)a4
+- (id)_decodeTRMessageData:(id)data kindOfClass:(Class)class
 {
   v16[6] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695DFD8];
-  v6 = a3;
+  dataCopy = data;
   v7 = [v5 alloc];
-  v16[0] = a4;
+  v16[0] = class;
   v16[1] = objc_opt_class();
   v16[2] = objc_opt_class();
   v16[3] = objc_opt_class();
@@ -728,7 +728,7 @@ void __49__SFTRSession_setRequestHandler_forRequestClass___block_invoke(uint64_t
   v9 = [v7 initWithArray:v8];
 
   v15 = 0;
-  v10 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v9 fromData:v6 error:&v15];
+  v10 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v9 fromData:dataCopy error:&v15];
 
   v11 = v15;
   if (v10)

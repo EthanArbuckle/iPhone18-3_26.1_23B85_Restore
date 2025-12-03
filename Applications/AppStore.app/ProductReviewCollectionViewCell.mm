@@ -1,12 +1,12 @@
 @interface ProductReviewCollectionViewCell
-- (_TtC8AppStore31ProductReviewCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore31ProductReviewCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation ProductReviewCollectionViewCell
 
-- (_TtC8AppStore31ProductReviewCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore31ProductReviewCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore31ProductReviewCollectionViewCell_itemLayoutContext;
   v5 = type metadata accessor for ItemLayoutContext();
@@ -21,13 +21,13 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_10039B850();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10039B934();
 }
 

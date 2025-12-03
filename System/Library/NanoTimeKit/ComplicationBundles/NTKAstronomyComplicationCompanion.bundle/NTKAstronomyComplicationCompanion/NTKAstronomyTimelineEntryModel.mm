@@ -1,38 +1,38 @@
 @interface NTKAstronomyTimelineEntryModel
-- (NTKAstronomyTimelineEntryModel)initWithVista:(unint64_t)a3 entryDate:(id)a4 currentDate:(id)a5 currentLocation:(id)a6 anyLocation:(id)a7;
+- (NTKAstronomyTimelineEntryModel)initWithVista:(unint64_t)vista entryDate:(id)date currentDate:(id)currentDate currentLocation:(id)location anyLocation:(id)anyLocation;
 - (id)_graphicRectangular;
-- (id)templateForComplicationFamily:(int64_t)a3;
+- (id)templateForComplicationFamily:(int64_t)family;
 @end
 
 @implementation NTKAstronomyTimelineEntryModel
 
-- (NTKAstronomyTimelineEntryModel)initWithVista:(unint64_t)a3 entryDate:(id)a4 currentDate:(id)a5 currentLocation:(id)a6 anyLocation:(id)a7
+- (NTKAstronomyTimelineEntryModel)initWithVista:(unint64_t)vista entryDate:(id)date currentDate:(id)currentDate currentLocation:(id)location anyLocation:(id)anyLocation
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  dateCopy = date;
+  currentDateCopy = currentDate;
+  locationCopy = location;
+  anyLocationCopy = anyLocation;
   v19.receiver = self;
   v19.super_class = NTKAstronomyTimelineEntryModel;
   v16 = [(NTKAstronomyTimelineEntryModel *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    v16->_vista = a3;
-    objc_storeStrong(&v16->_currentLocation, a6);
-    objc_storeStrong(&v17->_anyLocation, a7);
-    objc_storeStrong(&v17->_currentDate, a5);
-    [(NTKAstronomyTimelineEntryModel *)v17 setEntryDate:v12];
+    v16->_vista = vista;
+    objc_storeStrong(&v16->_currentLocation, location);
+    objc_storeStrong(&v17->_anyLocation, anyLocation);
+    objc_storeStrong(&v17->_currentDate, currentDate);
+    [(NTKAstronomyTimelineEntryModel *)v17 setEntryDate:dateCopy];
   }
 
   return v17;
 }
 
-- (id)templateForComplicationFamily:(int64_t)a3
+- (id)templateForComplicationFamily:(int64_t)family
 {
-  if (a3 == 11)
+  if (family == 11)
   {
-    v4 = [(NTKAstronomyTimelineEntryModel *)self _graphicRectangular];
+    _graphicRectangular = [(NTKAstronomyTimelineEntryModel *)self _graphicRectangular];
   }
 
   else
@@ -41,8 +41,8 @@
     v7 = [NSNumber numberWithInt:LODWORD(self->_vista)];
     [v6 setObject:v7 forKeyedSubscript:@"vista"];
 
-    v8 = [(NTKAstronomyTimelineEntryModel *)self entryDate];
-    [v6 setObject:v8 forKeyedSubscript:@"entry date"];
+    entryDate = [(NTKAstronomyTimelineEntryModel *)self entryDate];
+    [v6 setObject:entryDate forKeyedSubscript:@"entry date"];
 
     [v6 setObject:self->_currentDate forKeyedSubscript:@"current date"];
     [v6 setObject:self->_currentLocation forKeyedSubscript:@"current location"];
@@ -52,49 +52,49 @@
     {
       currentLocation = self->_currentLocation;
       anyLocation = self->_anyLocation;
-      v12 = [(NTKAstronomyTimelineEntryModel *)self entryDate];
+      entryDate2 = [(NTKAstronomyTimelineEntryModel *)self entryDate];
       v15 = 138478339;
       v16 = currentLocation;
       v17 = 2113;
       v18 = anyLocation;
       v19 = 2112;
-      v20 = v12;
+      v20 = entryDate2;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "NTKAstronomyTimeLineEntryModel templateForComplicationFamily with currentLocation?:%{private}@, anyLocation?:%{private}@, with date:%@", &v15, 0x20u);
     }
 
-    v13 = a3 - 8;
-    if (a3 - 8) <= 4 && ((0x17u >> v13))
+    v13 = family - 8;
+    if (family - 8) <= 4 && ((0x17u >> v13))
     {
-      v4 = [*off_C3F8[v13] templateWithMetadata:v6];
+      _graphicRectangular = [*off_C3F8[v13] templateWithMetadata:v6];
     }
 
     else
     {
-      v4 = 0;
+      _graphicRectangular = 0;
     }
   }
 
-  return v4;
+  return _graphicRectangular;
 }
 
 - (id)_graphicRectangular
 {
-  v3 = [(NTKAstronomyTimelineEntryModel *)self currentDate];
+  currentDate = [(NTKAstronomyTimelineEntryModel *)self currentDate];
   v4 = NUNILocalizedString();
-  v5 = [v3 dateByAddingTimeInterval:172800.0];
+  v5 = [currentDate dateByAddingTimeInterval:172800.0];
   v6 = [CLKSimpleTextProvider textProviderWithText:v4];
   v7 = [UIColor colorWithRed:0.811764706 green:0.937254902 blue:0.584313725 alpha:1.0];
   [v6 setTintColor:v7];
 
-  v8 = [(NTKAstronomyTimelineEntryModel *)self anyLocation];
-  v9 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v3, @"CurrentEventDate", v5, @"MoonViewOffsetDate", v8, @"AnyLocation", 0];
+  anyLocation = [(NTKAstronomyTimelineEntryModel *)self anyLocation];
+  v9 = [NSMutableDictionary dictionaryWithObjectsAndKeys:currentDate, @"CurrentEventDate", v5, @"MoonViewOffsetDate", anyLocation, @"AnyLocation", 0];
 
-  v10 = [(NTKAstronomyTimelineEntryModel *)self currentLocation];
+  currentLocation = [(NTKAstronomyTimelineEntryModel *)self currentLocation];
 
-  if (v10)
+  if (currentLocation)
   {
-    v11 = [(NTKAstronomyTimelineEntryModel *)self currentLocation];
-    [v9 setObject:v11 forKey:@"CurrentLocation"];
+    currentLocation2 = [(NTKAstronomyTimelineEntryModel *)self currentLocation];
+    [v9 setObject:currentLocation2 forKey:@"CurrentLocation"];
   }
 
   v12 = [CLKFullColorImageProvider fullColorImageProviderWithImageViewClass:objc_opt_class()];

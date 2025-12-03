@@ -1,11 +1,11 @@
 @interface CMLDataVault
-+ (id)cacheFileForUseCase:(id)a3 error:(id *)a4;
-+ (id)dataVaultDirectory:(id *)a3;
++ (id)cacheFileForUseCase:(id)case error:(id *)error;
++ (id)dataVaultDirectory:(id *)directory;
 @end
 
 @implementation CMLDataVault
 
-+ (id)dataVaultDirectory:(id *)a3
++ (id)dataVaultDirectory:(id *)directory
 {
   v22 = *MEMORY[0x277D85DE8];
   v19 = 0;
@@ -33,9 +33,9 @@
   v12[4] = &v13;
   v12[5] = a2;
   [v6 dataVaultDirectory:v12];
-  if (a3)
+  if (directory)
   {
-    *a3 = v19;
+    *directory = v19;
   }
 
   v9 = v14[5];
@@ -66,10 +66,10 @@ void __35__CMLDataVault_dataVaultDirectory___block_invoke(uint64_t a1, void *a2)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)cacheFileForUseCase:(id)a3 error:(id *)a4
++ (id)cacheFileForUseCase:(id)case error:(id *)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  caseCopy = case;
   v21 = 0;
   v7 = +[CMLXPC createConnection];
   v8 = [CMLXPC syncProxyToConnection:v7 error:&v21];
@@ -94,10 +94,10 @@ void __35__CMLDataVault_dataVaultDirectory___block_invoke(uint64_t a1, void *a2)
   v14[3] = &unk_278541BE0;
   v14[4] = &v15;
   v14[5] = a2;
-  [v8 cacheFileForUseCase:v6 reply:v14];
-  if (a4)
+  [v8 cacheFileForUseCase:caseCopy reply:v14];
+  if (error)
   {
-    *a4 = v21;
+    *error = v21;
   }
 
   v11 = v16[5];

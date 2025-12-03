@@ -1,25 +1,25 @@
 @interface UrsaClient
 - (_TtC21PowerlogLiteOperators10UrsaClient)init;
 - (void)cancel;
-- (void)periodicCheckSince:(double)a3 flag:(id)a4 completionHandler:(id)a5;
-- (void)reportPE:(id)a3 source:(id)a4 completionHandler:(id)a5;
-- (void)reportTTR:(id)a3 completionHandler:(id)a4;
-- (void)reportTelemetryEvent:(id)a3 payload:(id)a4 flag:(id)a5 completionHandler:(id)a6;
-- (void)shouldAdmitFor:(id)a3 impact:(int64_t)a4 flag:(id)a5 completionHandler:(id)a6;
+- (void)periodicCheckSince:(double)since flag:(id)flag completionHandler:(id)handler;
+- (void)reportPE:(id)e source:(id)source completionHandler:(id)handler;
+- (void)reportTTR:(id)r completionHandler:(id)handler;
+- (void)reportTelemetryEvent:(id)event payload:(id)payload flag:(id)flag completionHandler:(id)handler;
+- (void)shouldAdmitFor:(id)for impact:(int64_t)impact flag:(id)flag completionHandler:(id)handler;
 - (void)stressTest;
 @end
 
 @implementation UrsaClient
 
-- (void)shouldAdmitFor:(id)a3 impact:(int64_t)a4 flag:(id)a5 completionHandler:(id)a6
+- (void)shouldAdmitFor:(id)for impact:(int64_t)impact flag:(id)flag completionHandler:(id)handler
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(handler);
   v10 = sub_21A9ED2DC();
   v12 = v11;
-  if (a5)
+  if (flag)
   {
     v13 = sub_21A9ED2DC();
-    a5 = v14;
+    flag = v14;
   }
 
   else
@@ -28,19 +28,19 @@
   }
 
   _Block_copy(v9);
-  v15 = self;
-  sub_21A50BCA4(v10, v12, a4, v13, a5, v15, v9);
+  selfCopy = self;
+  sub_21A50BCA4(v10, v12, impact, v13, flag, selfCopy, v9);
   _Block_release(v9);
   _Block_release(v9);
 }
 
-- (void)periodicCheckSince:(double)a3 flag:(id)a4 completionHandler:(id)a5
+- (void)periodicCheckSince:(double)since flag:(id)flag completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
-  if (a4)
+  v8 = _Block_copy(handler);
+  if (flag)
   {
     v9 = sub_21A9ED2DC();
-    a4 = v10;
+    flag = v10;
   }
 
   else
@@ -49,8 +49,8 @@
   }
 
   _Block_copy(v8);
-  v11 = self;
-  sub_21A50C5B0(v9, a4, v11, v8, a3);
+  selfCopy = self;
+  sub_21A50C5B0(v9, flag, selfCopy, v8, since);
   _Block_release(v8);
   _Block_release(v8);
 }
@@ -59,48 +59,48 @@
 {
   if (*(&self->super.isa + OBJC_IVAR____TtC21PowerlogLiteOperators10UrsaClient_currentPeriodicTask))
   {
-    v2 = self;
+    selfCopy = self;
 
     sub_21A9ED3AC();
   }
 }
 
-- (void)reportTTR:(id)a3 completionHandler:(id)a4
+- (void)reportTTR:(id)r completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = sub_21A9ED2DC();
   v8 = v7;
   _Block_copy(v5);
-  v9 = self;
-  sub_21A50CA14(v6, v8, v9, v5);
+  selfCopy = self;
+  sub_21A50CA14(v6, v8, selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }
 
-- (void)reportPE:(id)a3 source:(id)a4 completionHandler:(id)a5
+- (void)reportPE:(id)e source:(id)source completionHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   v7 = sub_21A9ED2DC();
   v9 = v8;
   v10 = sub_21A9ED2DC();
   v12 = v11;
   _Block_copy(v6);
-  v13 = self;
-  sub_21A50CDF0(v7, v9, v10, v12, v13, v6);
+  selfCopy = self;
+  sub_21A50CDF0(v7, v9, v10, v12, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)reportTelemetryEvent:(id)a3 payload:(id)a4 flag:(id)a5 completionHandler:(id)a6
+- (void)reportTelemetryEvent:(id)event payload:(id)payload flag:(id)flag completionHandler:(id)handler
 {
-  v8 = _Block_copy(a6);
+  v8 = _Block_copy(handler);
   v9 = sub_21A9ED2DC();
   v11 = v10;
   v12 = sub_21A9ED27C();
-  if (a5)
+  if (flag)
   {
     v13 = sub_21A9ED2DC();
-    a5 = v14;
+    flag = v14;
   }
 
   else
@@ -109,8 +109,8 @@
   }
 
   _Block_copy(v8);
-  v15 = self;
-  sub_21A50D200(v9, v11, v12, v13, a5, v15, v8);
+  selfCopy = self;
+  sub_21A50D200(v9, v11, v12, v13, flag, selfCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
 }

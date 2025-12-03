@@ -1,12 +1,12 @@
 @interface MKPlaceReservationRowView
-- (MKPlaceReservationRowView)initWithReservationInfo:(id)a3;
+- (MKPlaceReservationRowView)initWithReservationInfo:(id)info;
 - (NSString)selectedTimeString;
 - (double)_buttonBottomMargin;
 - (double)_buttonTopMargin;
-- (id)_attributedStringFromButtonTitle:(id)a3 useSmallFont:(BOOL)a4;
+- (id)_attributedStringFromButtonTitle:(id)title useSmallFont:(BOOL)font;
 - (id)_buttonFontLarge;
 - (id)_buttonFontSmall;
-- (id)_newButtonForAttribution:(BOOL)a3;
+- (id)_newButtonForAttribution:(BOOL)attribution;
 - (unint64_t)selectedTimeIndex;
 - (void)_actionMakeReservation;
 - (void)_contentSizeDidChange;
@@ -15,7 +15,7 @@
 - (void)_updateMutableConstraints;
 - (void)_updateTintColor;
 - (void)_updateWithReservationInfo;
-- (void)setSelectedTimeString:(id)a3;
+- (void)setSelectedTimeString:(id)string;
 - (void)tintColorDidChange;
 @end
 
@@ -43,15 +43,15 @@
 - (void)_updateTintColor
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(UIView *)self mk_theme];
-  v4 = [v3 textColor];
+  mk_theme = [(UIView *)self mk_theme];
+  textColor = [mk_theme textColor];
 
-  if (v4)
+  if (textColor)
   {
-    [*&self->super._selected setTintColor:v4];
+    [*&self->super._selected setTintColor:textColor];
     v5 = *&self->super._selected;
     v7 = *MEMORY[0x1E69DB650];
-    v8[0] = v4;
+    v8[0] = textColor;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
     [v5 setTitleTextAttributes:v6 forState:0];
 
@@ -62,13 +62,13 @@
 - (void)_updateButtonTitleAttributes
 {
   openTimesControl = self->_openTimesControl;
-  v4 = [(UISegmentedControl *)openTimesControl _mapkit_title];
-  v5 = [(MKPlaceReservationRowView *)self _attributedStringFromButtonTitle:v4 useSmallFont:0];
+  _mapkit_title = [(UISegmentedControl *)openTimesControl _mapkit_title];
+  v5 = [(MKPlaceReservationRowView *)self _attributedStringFromButtonTitle:_mapkit_title useSmallFont:0];
   [(UISegmentedControl *)openTimesControl _mapkit_setAttributedTitle:v5];
 
   buttonMakeReservation = self->_buttonMakeReservation;
-  v8 = [(UIButton *)buttonMakeReservation _mapkit_title];
-  v7 = [(MKPlaceReservationRowView *)self _attributedStringFromButtonTitle:v8 useSmallFont:1];
+  _mapkit_title2 = [(UIButton *)buttonMakeReservation _mapkit_title];
+  v7 = [(MKPlaceReservationRowView *)self _attributedStringFromButtonTitle:_mapkit_title2 useSmallFont:1];
   [(UIButton *)buttonMakeReservation _mapkit_setAttributedTitle:v7];
 }
 
@@ -82,7 +82,7 @@
 
   if ([*&self->super._selected isHidden])
   {
-    v3 = [(UISegmentedControl *)self->_openTimesControl firstBaselineAnchor];
+    firstBaselineAnchor = [(UISegmentedControl *)self->_openTimesControl firstBaselineAnchor];
     [(MKPlaceReservationRowView *)self topAnchor];
   }
 
@@ -95,17 +95,17 @@
     [(UIButton *)buttonAttribution addObjectsFromArray:v7];
 
     v8 = self->_buttonAttribution;
-    v9 = [*&self->super._selected topAnchor];
-    v10 = [(MKPlaceReservationRowView *)self topAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10 constant:12.0];
+    topAnchor = [*&self->super._selected topAnchor];
+    topAnchor2 = [(MKPlaceReservationRowView *)self topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:12.0];
     [(UIButton *)v8 addObject:v11];
 
-    v3 = [(UISegmentedControl *)self->_openTimesControl firstBaselineAnchor];
+    firstBaselineAnchor = [(UISegmentedControl *)self->_openTimesControl firstBaselineAnchor];
     [*&self->super._selected bottomAnchor];
   }
   v12 = ;
   [(MKPlaceReservationRowView *)self _buttonTopMargin];
-  v13 = [v3 constraintEqualToAnchor:v12 constant:?];
+  v13 = [firstBaselineAnchor constraintEqualToAnchor:v12 constant:?];
   mutableConstraints = self->_mutableConstraints;
   self->_mutableConstraints = v13;
 
@@ -151,39 +151,39 @@
     while (v6);
   }
 
-  v10 = [*&self->super._selected leadingAnchor];
-  v11 = [(MKPlaceReservationRowView *)self layoutMarginsGuide];
-  v12 = [v11 leadingAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  leadingAnchor = [*&self->super._selected leadingAnchor];
+  layoutMarginsGuide = [(MKPlaceReservationRowView *)self layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v3 addObject:v13];
 
-  v14 = [*&self->super._selected trailingAnchor];
-  v15 = [(MKPlaceReservationRowView *)self layoutMarginsGuide];
-  v16 = [v15 trailingAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  trailingAnchor = [*&self->super._selected trailingAnchor];
+  layoutMarginsGuide2 = [(MKPlaceReservationRowView *)self layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v3 addObject:v17];
 
-  v18 = [(UISegmentedControl *)self->_openTimesControl leadingAnchor];
-  v19 = [(MKPlaceReservationRowView *)self layoutMarginsGuide];
-  v20 = [v19 leadingAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  leadingAnchor3 = [(UISegmentedControl *)self->_openTimesControl leadingAnchor];
+  layoutMarginsGuide3 = [(MKPlaceReservationRowView *)self layoutMarginsGuide];
+  leadingAnchor4 = [layoutMarginsGuide3 leadingAnchor];
+  v21 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v3 addObject:v21];
 
-  v22 = [(UIButton *)self->_buttonMakeReservation trailingAnchor];
-  v23 = [(MKPlaceReservationRowView *)self layoutMarginsGuide];
-  v24 = [v23 trailingAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24];
+  trailingAnchor3 = [(UIButton *)self->_buttonMakeReservation trailingAnchor];
+  layoutMarginsGuide4 = [(MKPlaceReservationRowView *)self layoutMarginsGuide];
+  trailingAnchor4 = [layoutMarginsGuide4 trailingAnchor];
+  v25 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v3 addObject:v25];
 
-  v26 = [(UIButton *)self->_buttonMakeReservation lastBaselineAnchor];
-  v27 = [(UISegmentedControl *)self->_openTimesControl lastBaselineAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  lastBaselineAnchor = [(UIButton *)self->_buttonMakeReservation lastBaselineAnchor];
+  lastBaselineAnchor2 = [(UISegmentedControl *)self->_openTimesControl lastBaselineAnchor];
+  v28 = [lastBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor2];
   [v3 addObject:v28];
 
-  v29 = [(MKPlaceReservationRowView *)self bottomAnchor];
-  v30 = [(UISegmentedControl *)self->_openTimesControl lastBaselineAnchor];
+  bottomAnchor = [(MKPlaceReservationRowView *)self bottomAnchor];
+  lastBaselineAnchor3 = [(UISegmentedControl *)self->_openTimesControl lastBaselineAnchor];
   [(MKPlaceReservationRowView *)self _buttonBottomMargin];
-  v31 = [v29 constraintEqualToAnchor:v30 constant:?];
+  v31 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor3 constant:?];
   constraintButtonTopMargin = self->_constraintButtonTopMargin;
   self->_constraintButtonTopMargin = v31;
 
@@ -194,48 +194,48 @@
 - (void)_updateWithReservationInfo
 {
   [*&self->super._selected _mapkit_removeAllSegments];
-  v12 = [(NSLayoutConstraint *)self->_constraintButtonBottomMargin openTimes];
-  if ([v12 count])
+  openTimes = [(NSLayoutConstraint *)self->_constraintButtonBottomMargin openTimes];
+  if ([openTimes count])
   {
     v3 = 0;
     do
     {
       v4 = *&self->super._selected;
-      v5 = [v12 objectAtIndexedSubscript:v3];
+      v5 = [openTimes objectAtIndexedSubscript:v3];
       [v4 _mapkit_setTitle:v5 forSegmentAtIndex:v3 insertIfNeeded:1];
 
       ++v3;
     }
 
-    while (v3 < [v12 count]);
+    while (v3 < [openTimes count]);
   }
 
-  [*&self->super._selected setHidden:{objc_msgSend(v12, "count") == 0}];
-  if ([v12 count])
+  [*&self->super._selected setHidden:{objc_msgSend(openTimes, "count") == 0}];
+  if ([openTimes count])
   {
-    -[MKPlaceReservationRowView setSelectedTimeIndex:](self, "setSelectedTimeIndex:", [v12 count] > 1);
+    -[MKPlaceReservationRowView setSelectedTimeIndex:](self, "setSelectedTimeIndex:", [openTimes count] > 1);
   }
 
-  v6 = [(NSLayoutConstraint *)self->_constraintButtonBottomMargin attributionProviderDisplayName];
-  v7 = [(MKPlaceReservationRowView *)self _attributedStringFromButtonTitle:v6 useSmallFont:1];
-  v8 = [(NSLayoutConstraint *)self->_constraintButtonBottomMargin attributionProviderLogoImage];
-  v9 = [(UIView *)self mk_theme];
-  v10 = [v9 textColor];
-  v11 = [v8 _flatImageWithColor:v10];
+  attributionProviderDisplayName = [(NSLayoutConstraint *)self->_constraintButtonBottomMargin attributionProviderDisplayName];
+  v7 = [(MKPlaceReservationRowView *)self _attributedStringFromButtonTitle:attributionProviderDisplayName useSmallFont:1];
+  attributionProviderLogoImage = [(NSLayoutConstraint *)self->_constraintButtonBottomMargin attributionProviderLogoImage];
+  mk_theme = [(UIView *)self mk_theme];
+  textColor = [mk_theme textColor];
+  v11 = [attributionProviderLogoImage _flatImageWithColor:textColor];
 
   [(UIButton *)self->_buttonMakeReservation _mapkit_setAttributedTitle:v7];
   [(UIButton *)self->_buttonMakeReservation _mapkit_setImage:v11];
-  -[UIButton setHidden:](self->_buttonMakeReservation, "setHidden:", ([v6 length] | v11) == 0);
+  -[UIButton setHidden:](self->_buttonMakeReservation, "setHidden:", ([attributionProviderDisplayName length] | v11) == 0);
   [(MKPlaceReservationRowView *)self _updateMutableConstraints];
 }
 
-- (id)_attributedStringFromButtonTitle:(id)a3 useSmallFont:(BOOL)a4
+- (id)_attributedStringFromButtonTitle:(id)title useSmallFont:(BOOL)font
 {
-  v6 = a3;
-  if ([v6 length])
+  titleCopy = title;
+  if ([titleCopy length])
   {
     v7 = objc_opt_new();
-    if (a4)
+    if (font)
     {
       [(MKPlaceReservationRowView *)self _buttonFontSmall];
     }
@@ -245,20 +245,20 @@
       [(MKPlaceReservationRowView *)self _buttonFontLarge];
     }
     v9 = ;
-    v10 = [(UIView *)self mk_theme];
-    v11 = [v10 textColor];
+    mk_theme = [(UIView *)self mk_theme];
+    textColor = [mk_theme textColor];
 
     if (v9)
     {
       [v7 setObject:v9 forKeyedSubscript:*MEMORY[0x1E69DB648]];
     }
 
-    if (v11)
+    if (textColor)
     {
-      [v7 setObject:v11 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+      [v7 setObject:textColor forKeyedSubscript:*MEMORY[0x1E69DB650]];
     }
 
-    v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v6 attributes:v7];
+    v8 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:titleCopy attributes:v7];
   }
 
   else
@@ -271,8 +271,8 @@
 
 - (double)_buttonBottomMargin
 {
-  v2 = [(MKPlaceReservationRowView *)self _buttonFontLarge];
-  [v2 _mapkit_scaledValueForValue:18.0];
+  _buttonFontLarge = [(MKPlaceReservationRowView *)self _buttonFontLarge];
+  [_buttonFontLarge _mapkit_scaledValueForValue:18.0];
   v4 = v3;
 
   return v4;
@@ -280,8 +280,8 @@
 
 - (double)_buttonTopMargin
 {
-  v2 = [(MKPlaceReservationRowView *)self _buttonFontLarge];
-  [v2 _mapkit_scaledValueForValue:27.0];
+  _buttonFontLarge = [(MKPlaceReservationRowView *)self _buttonFontLarge];
+  [_buttonFontLarge _mapkit_scaledValueForValue:27.0];
   v4 = v3;
 
   return v4;
@@ -290,64 +290,64 @@
 - (id)_buttonFontSmall
 {
   v2 = +[MKFontManager sharedManager];
-  v3 = [v2 smallAttributionFont];
+  smallAttributionFont = [v2 smallAttributionFont];
 
-  return v3;
+  return smallAttributionFont;
 }
 
 - (id)_buttonFontLarge
 {
   v2 = +[MKFontManager sharedManager];
-  v3 = [v2 boldBodyFont];
+  boldBodyFont = [v2 boldBodyFont];
 
-  return v3;
+  return boldBodyFont;
 }
 
 - (void)_actionMakeReservation
 {
-  v3 = [(MKPlaceReservationRowView *)self reservationInfo];
-  v4 = [v3 reservationDelegate];
+  reservationInfo = [(MKPlaceReservationRowView *)self reservationInfo];
+  reservationDelegate = [reservationInfo reservationDelegate];
 
-  if (v4)
+  if (reservationDelegate)
   {
-    v7 = [(MKPlaceReservationRowView *)self reservationInfo];
-    v5 = [v7 reservationDelegate];
-    v6 = [(MKPlaceReservationRowView *)self reservationInfo];
-    [v5 reservationInfo:v6 makeReservationForSelectedTimeAtIndex:{-[MKPlaceReservationRowView selectedTimeIndex](self, "selectedTimeIndex")}];
+    reservationInfo2 = [(MKPlaceReservationRowView *)self reservationInfo];
+    reservationDelegate2 = [reservationInfo2 reservationDelegate];
+    reservationInfo3 = [(MKPlaceReservationRowView *)self reservationInfo];
+    [reservationDelegate2 reservationInfo:reservationInfo3 makeReservationForSelectedTimeAtIndex:{-[MKPlaceReservationRowView selectedTimeIndex](self, "selectedTimeIndex")}];
   }
 }
 
-- (id)_newButtonForAttribution:(BOOL)a3
+- (id)_newButtonForAttribution:(BOOL)attribution
 {
   v3 = objc_alloc_init(MEMORY[0x1E69DC738]);
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   return v3;
 }
 
-- (void)setSelectedTimeString:(id)a3
+- (void)setSelectedTimeString:(id)string
 {
-  v4 = a3;
-  v5 = [(MKPlaceReservationRowView *)self reservationInfo];
-  v6 = [v5 openTimes];
-  v7 = [v6 indexOfObject:v4];
+  stringCopy = string;
+  reservationInfo = [(MKPlaceReservationRowView *)self reservationInfo];
+  openTimes = [reservationInfo openTimes];
+  v7 = [openTimes indexOfObject:stringCopy];
 
   [(MKPlaceReservationRowView *)self setSelectedTimeIndex:v7];
 }
 
 - (NSString)selectedTimeString
 {
-  v3 = [(MKPlaceReservationRowView *)self selectedTimeIndex];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  selectedTimeIndex = [(MKPlaceReservationRowView *)self selectedTimeIndex];
+  if (selectedTimeIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = v3;
-    v6 = [(MKPlaceReservationRowView *)self reservationInfo];
-    v7 = [v6 openTimes];
-    v4 = [v7 objectAtIndexedSubscript:v5];
+    v5 = selectedTimeIndex;
+    reservationInfo = [(MKPlaceReservationRowView *)self reservationInfo];
+    openTimes = [reservationInfo openTimes];
+    v4 = [openTimes objectAtIndexedSubscript:v5];
   }
 
   return v4;
@@ -365,10 +365,10 @@
   return [v3 _mapkit_selectedSegmentIndex];
 }
 
-- (MKPlaceReservationRowView)initWithReservationInfo:(id)a3
+- (MKPlaceReservationRowView)initWithReservationInfo:(id)info
 {
-  v5 = a3;
-  if (v5)
+  infoCopy = info;
+  if (infoCopy)
   {
     v26.receiver = self;
     v26.super_class = MKPlaceReservationRowView;
@@ -410,22 +410,22 @@
       buttonAttribution = v11->_buttonAttribution;
       v11->_buttonAttribution = v21;
 
-      objc_storeStrong(&v11->_constraintButtonBottomMargin, a3);
+      objc_storeStrong(&v11->_constraintButtonBottomMargin, info);
       [(MKPlaceReservationRowView *)v11 _updateWithReservationInfo];
-      v23 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v23 addObserver:v11 selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v11 selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
     }
 
     self = v11;
-    v24 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v24 = 0;
+    selfCopy = 0;
   }
 
-  return v24;
+  return selfCopy;
 }
 
 @end

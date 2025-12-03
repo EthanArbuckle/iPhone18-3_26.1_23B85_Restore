@@ -1,28 +1,28 @@
 @interface _MLCANEArithmeticParameters
-+ (id)arithmeticUnitParametersWith:(id)a3;
-- (_MLCANEArithmeticParameters)initWithArithmeticParams:(id)a3;
++ (id)arithmeticUnitParametersWith:(id)with;
+- (_MLCANEArithmeticParameters)initWithArithmeticParams:(id)params;
 @end
 
 @implementation _MLCANEArithmeticParameters
 
-+ (id)arithmeticUnitParametersWith:(id)a3
++ (id)arithmeticUnitParametersWith:(id)with
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithArithmeticParams:v4];
+  withCopy = with;
+  v5 = [[self alloc] initWithArithmeticParams:withCopy];
 
   return v5;
 }
 
-- (_MLCANEArithmeticParameters)initWithArithmeticParams:(id)a3
+- (_MLCANEArithmeticParameters)initWithArithmeticParams:(id)params
 {
-  v5 = a3;
+  paramsCopy = params;
   v9.receiver = self;
   v9.super_class = _MLCANEArithmeticParameters;
   v6 = [(_MLCANEArithmeticParameters *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_arithmeticParams, a3);
+    objc_storeStrong(&v6->_arithmeticParams, params);
   }
 
   return v7;

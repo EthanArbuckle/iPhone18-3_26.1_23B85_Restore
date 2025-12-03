@@ -1,7 +1,7 @@
 @interface DMDRegisterConfigurationSourceOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -21,25 +21,25 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(DMDTaskOperation *)self configurationEngine];
+  requestCopy = request;
+  configurationEngine = [(DMDTaskOperation *)self configurationEngine];
 
-  if (v5)
+  if (configurationEngine)
   {
-    v6 = [(DMDTaskOperation *)self context];
-    v7 = [v6 clientBundleIdentifier];
+    context = [(DMDTaskOperation *)self context];
+    clientBundleIdentifier = [context clientBundleIdentifier];
 
-    if (v7)
+    if (clientBundleIdentifier)
     {
-      v8 = [(DMDTaskOperation *)self configurationEngine];
+      configurationEngine2 = [(DMDTaskOperation *)self configurationEngine];
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_100068048;
       v10[3] = &unk_1000CEE68;
       v10[4] = self;
-      [v8 handleConfigurationSourceRegistrationRequest:v4 clientIdentifier:v7 completionHandler:v10];
+      [configurationEngine2 handleConfigurationSourceRegistrationRequest:requestCopy clientIdentifier:clientBundleIdentifier completionHandler:v10];
     }
 
     else
@@ -50,34 +50,34 @@
         sub_100086CCC(v9);
       }
 
-      v8 = DMFErrorWithCodeAndUserInfo();
-      [(DMDRegisterConfigurationSourceOperation *)self endOperationWithError:v8];
+      configurationEngine2 = DMFErrorWithCodeAndUserInfo();
+      [(DMDRegisterConfigurationSourceOperation *)self endOperationWithError:configurationEngine2];
     }
   }
 
   else
   {
-    v7 = DMFErrorWithCodeAndUserInfo();
-    [(DMDRegisterConfigurationSourceOperation *)self endOperationWithError:v7];
+    clientBundleIdentifier = DMFErrorWithCodeAndUserInfo();
+    [(DMDRegisterConfigurationSourceOperation *)self endOperationWithError:clientBundleIdentifier];
   }
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v15.receiver = a1;
+  requestCopy = request;
+  v15.receiver = self;
   v15.super_class = &OBJC_METACLASS___DMDRegisterConfigurationSourceOperation;
-  if (!objc_msgSendSuper2(&v15, "validateRequest:error:", v6, a4))
+  if (!objc_msgSendSuper2(&v15, "validateRequest:error:", requestCopy, error))
   {
     goto LABEL_10;
   }
 
-  v7 = [v6 configurationSourceName];
-  v8 = [v7 length];
+  configurationSourceName = [requestCopy configurationSourceName];
+  v8 = [configurationSourceName length];
 
   if (!v8)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -89,12 +89,12 @@
     goto LABEL_9;
   }
 
-  v9 = [v6 organizationIdentifier];
-  v10 = [v9 length];
+  organizationIdentifier = [requestCopy organizationIdentifier];
+  v10 = [organizationIdentifier length];
 
   if (!v10)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -105,17 +105,17 @@
     v12 = &v16;
 LABEL_9:
     v13 = [NSDictionary dictionaryWithObjects:v11 forKeys:v12 count:1];
-    *a4 = DMFErrorWithCodeAndUserInfo();
+    *error = DMFErrorWithCodeAndUserInfo();
 
 LABEL_10:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_11;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_11:
 
-  return a4;
+  return error;
 }
 
 @end

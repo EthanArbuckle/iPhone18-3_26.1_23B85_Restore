@@ -1,10 +1,10 @@
 @interface CalLocationManager
 + (BOOL)isCurrentProcessEntitledToUseLocationServices;
-+ (id)placemarkForAddress:(id)a3 withCompletionBlock:(id)a4;
-+ (id)placemarkForLocation:(id)a3 withCompletionBlock:(id)a4;
-+ (id)strictGeocodeString:(id)a3 withCompletionBlock:(id)a4;
++ (id)placemarkForAddress:(id)address withCompletionBlock:(id)block;
++ (id)placemarkForLocation:(id)location withCompletionBlock:(id)block;
++ (id)strictGeocodeString:(id)string withCompletionBlock:(id)block;
 + (void)_loadMapKit;
-+ (void)currentLocationWithCompletionBlock:(id)a3;
++ (void)currentLocationWithCompletionBlock:(id)block;
 @end
 
 @implementation CalLocationManager
@@ -45,23 +45,23 @@ void __33__CalLocationManager__loadMapKit__block_invoke()
 LABEL_8:
 }
 
-+ (void)currentLocationWithCompletionBlock:(id)a3
++ (void)currentLocationWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = [MEMORY[0x1E695FBE8] locationServicesEnabled];
+    locationServicesEnabled = [MEMORY[0x1E695FBE8] locationServicesEnabled];
     v6 = +[CalFoundationLogSubsystem locations];
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
-    if (v5)
+    if (locationServicesEnabled)
     {
       if (v7)
       {
         +[CalLocationManager currentLocationWithCompletionBlock:];
       }
 
-      v8 = [MEMORY[0x1E696AAE8] mainBundle];
-      v9 = [v8 bundleIdentifier];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
 
       v10 = +[CalFoundationLogSubsystem locations];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -69,7 +69,7 @@ LABEL_8:
         +[CalLocationManager currentLocationWithCompletionBlock:];
       }
 
-      if (([(__CFString *)v9 isEqualToString:@"com.apple.reminders"]& 1) == 0)
+      if (([(__CFString *)bundleIdentifier isEqualToString:@"com.apple.reminders"]& 1) == 0)
       {
         v11 = +[CalFoundationLogSubsystem locations];
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -77,17 +77,17 @@ LABEL_8:
           +[CalLocationManager currentLocationWithCompletionBlock:];
         }
 
-        v9 = @"com.apple.iCal";
+        bundleIdentifier = @"com.apple.iCal";
       }
 
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __57__CalLocationManager_currentLocationWithCompletionBlock___block_invoke;
       v13[3] = &unk_1E7EC6750;
-      v14 = v9;
-      v15 = v4;
-      v16 = a1;
-      v12 = v9;
+      v14 = bundleIdentifier;
+      v15 = blockCopy;
+      selfCopy = self;
+      v12 = bundleIdentifier;
       [CalLocationAuthorization authorizationStatusForBundleIdentifier:v12 completion:v13];
     }
 
@@ -99,7 +99,7 @@ LABEL_8:
       }
 
       v12 = [MEMORY[0x1E696ABC0] errorWithDomain:CalLocationErrorDomain code:2 userInfo:0];
-      (*(v4 + 2))(v4, 0, v12);
+      (*(blockCopy + 2))(blockCopy, 0, v12);
     }
   }
 
@@ -266,29 +266,29 @@ void __57__CalLocationManager_currentLocationWithCompletionBlock___block_invoke_
 
 + (BOOL)isCurrentProcessEntitledToUseLocationServices
 {
-  v2 = [MEMORY[0x1E696B0B8] currentConnection];
-  v3 = [v2 valueForEntitlement:@"com.apple.locationd.effective_bundle"];
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v3 = [currentConnection valueForEntitlement:@"com.apple.locationd.effective_bundle"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (id)placemarkForLocation:(id)a3 withCompletionBlock:(id)a4
++ (id)placemarkForLocation:(id)location withCompletionBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  locationCopy = location;
+  blockCopy = block;
   v7 = +[CalFoundationLogSubsystem locations];
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
-  if (v6)
+  if (blockCopy)
   {
     if (v8)
     {
@@ -301,9 +301,9 @@ void __57__CalLocationManager_currentLocationWithCompletionBlock___block_invoke_
     v18[1] = 3221225472;
     v18[2] = __63__CalLocationManager_placemarkForLocation_withCompletionBlock___block_invoke;
     v18[3] = &unk_1E7EC6778;
-    v10 = v5;
+    v10 = locationCopy;
     v19 = v10;
-    v21 = v6;
+    v21 = blockCopy;
     v11 = v9;
     v20 = v11;
     [v11 reverseGeocodeLocation:v10 completionHandler:v18];
@@ -372,11 +372,11 @@ uint64_t __63__CalLocationManager_placemarkForLocation_withCompletionBlock___blo
   return [*(a1 + 40) cancelGeocode];
 }
 
-+ (id)placemarkForAddress:(id)a3 withCompletionBlock:(id)a4
++ (id)placemarkForAddress:(id)address withCompletionBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  addressCopy = address;
+  blockCopy = block;
+  if (blockCopy)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695FBC8]);
     CFRetain(v7);
@@ -384,9 +384,9 @@ uint64_t __63__CalLocationManager_placemarkForLocation_withCompletionBlock___blo
     v17[1] = 3221225472;
     v17[2] = __62__CalLocationManager_placemarkForAddress_withCompletionBlock___block_invoke;
     v17[3] = &unk_1E7EC6778;
-    v8 = v5;
+    v8 = addressCopy;
     v18 = v8;
-    v20 = v6;
+    v20 = blockCopy;
     v9 = v7;
     v19 = v9;
     [v9 geocodeAddressString:v8 completionHandler:v17];
@@ -462,17 +462,17 @@ uint64_t __62__CalLocationManager_placemarkForAddress_withCompletionBlock___bloc
   return [*(a1 + 40) cancelGeocode];
 }
 
-+ (id)strictGeocodeString:(id)a3 withCompletionBlock:(id)a4
++ (id)strictGeocodeString:(id)string withCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  blockCopy = block;
   v8 = +[CalFoundationLogSubsystem locations];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     +[CalLocationManager strictGeocodeString:withCompletionBlock:];
   }
 
-  if (!v7)
+  if (!blockCopy)
   {
     v9 = +[CalFoundationLogSubsystem locations];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -487,7 +487,7 @@ uint64_t __62__CalLocationManager_placemarkForAddress_withCompletionBlock___bloc
     __57__CalLocationManager_currentLocationWithCompletionBlock___block_invoke_36_cold_1();
   }
 
-  [a1 _loadMapKit];
+  [self _loadMapKit];
   v11 = _sMapKitLoaded;
   v12 = +[CalFoundationLogSubsystem locations];
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG);
@@ -499,20 +499,20 @@ uint64_t __62__CalLocationManager_placemarkForAddress_withCompletionBlock___bloc
     }
 
     v14 = objc_alloc_init(NSClassFromString(&cfstr_Mklocalsearchr.isa));
-    [v14 _setCanonicalSearchString:v6];
+    [v14 _setCanonicalSearchString:stringCopy];
     v15 = [objc_alloc(NSClassFromString(&cfstr_Mklocalsearch.isa)) initWithRequest:v14];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __62__CalLocationManager_strictGeocodeString_withCompletionBlock___block_invoke;
     v23[3] = &unk_1E7EC67A0;
-    v24 = v7;
+    v24 = blockCopy;
     [v15 startWithCompletionHandler:v23];
     v16 = [CalCancellableSearch alloc];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __62__CalLocationManager_strictGeocodeString_withCompletionBlock___block_invoke_61;
     v20[3] = &unk_1E7EC6528;
-    v21 = v6;
+    v21 = stringCopy;
     v22 = v15;
     v17 = v15;
     v18 = [(CalCancellableSearch *)v16 initWithCancellationBlock:v20];
@@ -525,10 +525,10 @@ uint64_t __62__CalLocationManager_placemarkForAddress_withCompletionBlock___bloc
     __57__CalLocationManager_currentLocationWithCompletionBlock___block_invoke_36_cold_2();
   }
 
-  if (v7)
+  if (blockCopy)
   {
     v14 = [MEMORY[0x1E696ABC0] errorWithDomain:CalLocationErrorDomain code:4 userInfo:0];
-    (*(v7 + 2))(v7, 0, v14);
+    (*(blockCopy + 2))(blockCopy, 0, v14);
     v18 = 0;
 LABEL_17:
 

@@ -30,8 +30,8 @@
       {
         if (a5 == 1)
         {
-          LODWORD(a1) = *a4;
-          v5 = [MEMORY[0x277CCABB0] numberWithFloat:a1];
+          LODWORD(self) = *a4;
+          v5 = [MEMORY[0x277CCABB0] numberWithFloat:self];
         }
       }
 
@@ -232,17 +232,17 @@ LABEL_27:
       {
         if (a4 == 6)
         {
-          v8 = [a1 longLongValue];
+          longLongValue = [self longLongValue];
 LABEL_54:
-          *a3 = v8;
+          *a3 = longLongValue;
           return 1;
         }
 
-        v9 = [a1 unsignedCharValue];
+        unsignedCharValue = [self unsignedCharValue];
         goto LABEL_52;
       }
 
-      v10 = [a1 intValue];
+      intValue = [self intValue];
       goto LABEL_46;
     }
 
@@ -250,19 +250,19 @@ LABEL_54:
     {
       if (a4 != 9)
       {
-        v8 = [a1 unsignedLongLongValue];
+        longLongValue = [self unsignedLongLongValue];
         goto LABEL_54;
       }
 
-      v10 = [a1 unsignedIntValue];
+      intValue = [self unsignedIntValue];
 LABEL_46:
-      *a3 = v10;
+      *a3 = intValue;
       return 1;
     }
 
-    v13 = [a1 unsignedShortValue];
+    unsignedShortValue = [self unsignedShortValue];
 LABEL_49:
-    *a3 = v13;
+    *a3 = unsignedShortValue;
     return 1;
   }
 
@@ -270,12 +270,12 @@ LABEL_49:
   {
     if (a4)
     {
-      [a1 floatValue];
+      [self floatValue];
       *a3 = v14;
       return 1;
     }
 
-    v9 = [a1 BOOLValue];
+    unsignedCharValue = [self BOOLValue];
     goto LABEL_52;
   }
 
@@ -283,17 +283,17 @@ LABEL_49:
   {
     if (a4 != 3)
     {
-      v13 = [a1 shortValue];
+      unsignedShortValue = [self shortValue];
       goto LABEL_49;
     }
 
-    v9 = [a1 charValue];
+    unsignedCharValue = [self charValue];
 LABEL_52:
-    *a3 = v9;
+    *a3 = unsignedCharValue;
     return 1;
   }
 
-  [a1 doubleValue];
+  [self doubleValue];
   *a3 = v12;
   return 1;
 }

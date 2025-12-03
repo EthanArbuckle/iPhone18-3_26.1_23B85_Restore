@@ -1,5 +1,5 @@
 @interface SyncedLyricsLineViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (BOOL)isInstrumentalBreak;
 - (id)accessibilityElements;
@@ -9,20 +9,20 @@
 
 @implementation SyncedLyricsLineViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"LyricsX.SyncedLyricsLineView" isKindOfClass:@"UIControl"];
-  [v3 validateClass:@"UIControl" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"LyricsX.SyncedLyricsLineView" hasSwiftField:@"containerView" withSwiftType:"UIView"];
-  [v3 validateClass:@"MusicTextContentView"];
-  [v3 validateClass:@"MusicTextContentView" hasSwiftField:@"label" withSwiftType:"UILabel"];
-  [v3 validateClass:@"MusicSBS_TextContentView"];
-  [v3 validateClass:@"MusicSBS_TextContentView" hasSwiftField:@"text" withSwiftType:"Optional<String>"];
-  [v3 validateClass:@"MusicSBS_TextContentView" hasSwiftField:@"attributedText" withSwiftType:"Optional<NSAttributedString>"];
-  [v3 validateClass:@"MusicInstrumentalContentView"];
-  [v3 validateClass:@"MusicDespacitoContentView"];
-  [v3 validateClass:@"LyricsX.SyncedLyricsLineView" hasInstanceMethod:@"setSelected:animator:" withFullSignature:{"v", "B", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"LyricsX.SyncedLyricsLineView" isKindOfClass:@"UIControl"];
+  [validationsCopy validateClass:@"UIControl" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"LyricsX.SyncedLyricsLineView" hasSwiftField:@"containerView" withSwiftType:"UIView"];
+  [validationsCopy validateClass:@"MusicTextContentView"];
+  [validationsCopy validateClass:@"MusicTextContentView" hasSwiftField:@"label" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"MusicSBS_TextContentView"];
+  [validationsCopy validateClass:@"MusicSBS_TextContentView" hasSwiftField:@"text" withSwiftType:"Optional<String>"];
+  [validationsCopy validateClass:@"MusicSBS_TextContentView" hasSwiftField:@"attributedText" withSwiftType:"Optional<NSAttributedString>"];
+  [validationsCopy validateClass:@"MusicInstrumentalContentView"];
+  [validationsCopy validateClass:@"MusicDespacitoContentView"];
+  [validationsCopy validateClass:@"LyricsX.SyncedLyricsLineView" hasInstanceMethod:@"setSelected:animator:" withFullSignature:{"v", "B", "@", 0}];
 }
 
 - (BOOL)isAccessibilityElement
@@ -53,20 +53,20 @@
   {
     v6 = [MEMORY[0x29EDB8E90] mutableCopy];
     v7 = [v5 safeSwiftValueForKey:@"mainLineView"];
-    v8 = [v7 currentAccessibilityLabel];
-    if (v8)
+    currentAccessibilityLabel = [v7 currentAccessibilityLabel];
+    if (currentAccessibilityLabel)
     {
-      [v8 setAccessibilityTraits:{-[SyncedLyricsLineViewAccessibility accessibilityTraits](self, "accessibilityTraits")}];
-      [v6 addObject:v8];
+      [currentAccessibilityLabel setAccessibilityTraits:{-[SyncedLyricsLineViewAccessibility accessibilityTraits](self, "accessibilityTraits")}];
+      [v6 addObject:currentAccessibilityLabel];
     }
 
-    v9 = [v5 safeSwiftValueForKey:@"translationLineView"];
-    v10 = [v9 currentAccessibilityLabel];
+    accessibilityMainTextView = [v5 safeSwiftValueForKey:@"translationLineView"];
+    currentAccessibilityLabel2 = [accessibilityMainTextView currentAccessibilityLabel];
 LABEL_6:
-    v11 = v10;
-    if (v10)
+    v11 = currentAccessibilityLabel2;
+    if (currentAccessibilityLabel2)
     {
-      [v10 setAccessibilityTraits:{-[SyncedLyricsLineViewAccessibility accessibilityTraits](self, "accessibilityTraits")}];
+      [currentAccessibilityLabel2 setAccessibilityTraits:{-[SyncedLyricsLineViewAccessibility accessibilityTraits](self, "accessibilityTraits")}];
       [v6 addObject:v11];
     }
 
@@ -77,44 +77,44 @@ LABEL_6:
   if (v7)
   {
     objc_opt_class();
-    v12 = [v7 currentAccessibilityLabel];
-    v8 = __UIAccessibilityCastAsClass();
+    currentAccessibilityLabel3 = [v7 currentAccessibilityLabel];
+    currentAccessibilityLabel = __UIAccessibilityCastAsClass();
 
-    v19[0] = v8;
+    v19[0] = currentAccessibilityLabel;
     v6 = [MEMORY[0x29EDB8D80] arrayWithObjects:v19 count:1];
   }
 
   else
   {
-    v8 = [v4 _accessibilityDescendantOfType:MEMORY[0x29C2E2910](@"MusicSBS_TextContentView")];
-    if (v8)
+    currentAccessibilityLabel = [v4 _accessibilityDescendantOfType:MEMORY[0x29C2E2910](@"MusicSBS_TextContentView")];
+    if (currentAccessibilityLabel)
     {
       v6 = [MEMORY[0x29EDB8E90] mutableCopy];
-      v9 = [v8 accessibilityMainTextView];
-      [v9 setIsAccessibilityElement:1];
-      if (v9)
+      accessibilityMainTextView = [currentAccessibilityLabel accessibilityMainTextView];
+      [accessibilityMainTextView setIsAccessibilityElement:1];
+      if (accessibilityMainTextView)
       {
-        v15 = [v8 safeSwiftValueForKey:@"text"];
+        v15 = [currentAccessibilityLabel safeSwiftValueForKey:@"text"];
         if (v15)
         {
-          [v9 setAccessibilityLabel:v15];
+          [accessibilityMainTextView setAccessibilityLabel:v15];
         }
 
         else
         {
           objc_opt_class();
-          v16 = [v8 safeSwiftValueForKey:@"attributedText"];
+          v16 = [currentAccessibilityLabel safeSwiftValueForKey:@"attributedText"];
           v17 = __UIAccessibilityCastAsClass();
 
-          v18 = [v17 string];
-          [v9 setAccessibilityLabel:v18];
+          string = [v17 string];
+          [accessibilityMainTextView setAccessibilityLabel:string];
         }
 
-        [v9 setAccessibilityTraits:{-[SyncedLyricsLineViewAccessibility accessibilityTraits](self, "accessibilityTraits")}];
-        [v6 addObject:v9];
+        [accessibilityMainTextView setAccessibilityTraits:{-[SyncedLyricsLineViewAccessibility accessibilityTraits](self, "accessibilityTraits")}];
+        [v6 addObject:accessibilityMainTextView];
       }
 
-      v10 = [v8 accessibilityTranslationLabel];
+      currentAccessibilityLabel2 = [currentAccessibilityLabel accessibilityTranslationLabel];
       goto LABEL_6;
     }
 
@@ -159,7 +159,7 @@ LABEL_13:
       if (v8)
       {
         v9 = v8;
-        v3 = v9;
+        accessibilityLabel = v9;
 LABEL_15:
 
         goto LABEL_16;
@@ -169,7 +169,7 @@ LABEL_15:
       v14 = [v7 safeSwiftValueForKey:@"attributedText"];
       v12 = __UIAccessibilityCastAsClass();
 
-      v13 = [v12 string];
+      string = [v12 string];
     }
 
     else
@@ -181,9 +181,9 @@ LABEL_15:
         v10 = [v9 safeSwiftValueForKey:@"label"];
         v11 = __UIAccessibilityCastAsClass();
 
-        v3 = [v11 accessibilityLabel];
+        accessibilityLabel = [v11 accessibilityLabel];
 
-        if (v3)
+        if (accessibilityLabel)
         {
           goto LABEL_15;
         }
@@ -192,14 +192,14 @@ LABEL_15:
       v12 = [v5 _accessibilityDescendantOfType:MEMORY[0x29C2E2910](@"MusicInstrumentalContentView")];
       if (!v12)
       {
-        v3 = 0;
+        accessibilityLabel = 0;
         goto LABEL_14;
       }
 
-      v13 = accessibilityMusicLocalizedString(@"instrumental.break");
+      string = accessibilityMusicLocalizedString(@"instrumental.break");
     }
 
-    v3 = v13;
+    accessibilityLabel = string;
 LABEL_14:
 
     goto LABEL_15;
@@ -207,17 +207,17 @@ LABEL_14:
 
   if ([(SyncedLyricsLineViewAccessibility *)self isInstrumentalBreak])
   {
-    v3 = accessibilityMusicLocalizedString(@"instrumental.break");
+    accessibilityLabel = accessibilityMusicLocalizedString(@"instrumental.break");
   }
 
   else
   {
-    v3 = 0;
+    accessibilityLabel = 0;
   }
 
 LABEL_16:
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (BOOL)isInstrumentalBreak

@@ -1,19 +1,19 @@
 @interface PHAudioCallControlsSupplementalButton
-- (PHAudioCallControlsSupplementalButton)initWithFrame:(CGRect)a3;
+- (PHAudioCallControlsSupplementalButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)updateRoundViewColor;
 @end
 
 @implementation PHAudioCallControlsSupplementalButton
 
-- (PHAudioCallControlsSupplementalButton)initWithFrame:(CGRect)a3
+- (PHAudioCallControlsSupplementalButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v31.receiver = self;
   v31.super_class = PHAudioCallControlsSupplementalButton;
-  v5 = [(PHAudioCallControlsSupplementalButton *)&v31 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(PHAudioCallControlsSupplementalButton *)&v31 initWithFrame:frame.origin.x, frame.origin.y];
   v6 = v5;
   if (v5)
   {
@@ -29,11 +29,11 @@
     [v8 setPreferredSymbolConfigurationForImage:v9];
 
     [(PHAudioCallControlsSupplementalButton *)v6 setConfiguration:v8];
-    v10 = [(PHAudioCallControlsSupplementalButton *)v6 titleLabel];
-    [v10 setMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityExtraExtraLarge];
+    titleLabel = [(PHAudioCallControlsSupplementalButton *)v6 titleLabel];
+    [titleLabel setMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityExtraExtraLarge];
 
-    v11 = [(PHAudioCallControlsSupplementalButton *)v6 imageView];
-    [v11 setMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityExtraLarge];
+    imageView = [(PHAudioCallControlsSupplementalButton *)v6 imageView];
+    [imageView setMaximumContentSizeCategory:UIContentSizeCategoryAccessibilityExtraLarge];
 
     v12 = [PHRoundView alloc];
     *&v13 = height * 0.5;
@@ -92,11 +92,11 @@
     [(PHAudioCallControlsSupplementalButton *)v6 setTitleColor:v27 forState:0];
 
     [(PHAudioCallControlsSupplementalButton *)v6 setAdjustsImageWhenHighlighted:0];
-    v28 = [(PHAudioCallControlsSupplementalButton *)v6 layer];
-    [v28 setAllowsGroupBlending:0];
+    layer = [(PHAudioCallControlsSupplementalButton *)v6 layer];
+    [layer setAllowsGroupBlending:0];
 
-    v29 = [(PHAudioCallControlsSupplementalButton *)v6 layer];
-    [v29 setAllowsGroupOpacity:0];
+    layer2 = [(PHAudioCallControlsSupplementalButton *)v6 layer];
+    [layer2 setAllowsGroupOpacity:0];
   }
 
   return v6;
@@ -109,28 +109,28 @@
   [(PHAudioCallControlsSupplementalButton *)&v15 layoutSubviews];
   [(PHAudioCallControlsSupplementalButton *)self frame];
   v4 = v3 * 0.5;
-  v5 = [(PHAudioCallControlsSupplementalButton *)self roundView];
-  v6 = [v5 layer];
-  [v6 setCornerRadius:v4];
+  roundView = [(PHAudioCallControlsSupplementalButton *)self roundView];
+  layer = [roundView layer];
+  [layer setCornerRadius:v4];
 
   [(PHAudioCallControlsSupplementalButton *)self frame];
   v8 = v7;
   [(PHAudioCallControlsSupplementalButton *)self frame];
   v10 = v9;
-  v11 = [(PHAudioCallControlsSupplementalButton *)self backdropEffectView];
-  [v11 setFrame:{0.0, 0.0, v8, v10}];
+  backdropEffectView = [(PHAudioCallControlsSupplementalButton *)self backdropEffectView];
+  [backdropEffectView setFrame:{0.0, 0.0, v8, v10}];
 
   [(PHAudioCallControlsSupplementalButton *)self frame];
   v13 = v12 * 0.5;
-  v14 = [(PHAudioCallControlsSupplementalButton *)self backdropEffectView];
-  [v14 _setCornerRadius:v13];
+  backdropEffectView2 = [(PHAudioCallControlsSupplementalButton *)self backdropEffectView];
+  [backdropEffectView2 _setCornerRadius:v13];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = PHAudioCallControlsSupplementalButton;
-  [(PHAudioCallControlsSupplementalButton *)&v4 setHighlighted:a3];
+  [(PHAudioCallControlsSupplementalButton *)&v4 setHighlighted:highlighted];
   [(PHAudioCallControlsSupplementalButton *)self updateRoundViewColor];
   [(PHAudioCallControlsSupplementalButton *)self sendSubviewToBack:self->_roundView];
 }

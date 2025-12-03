@@ -1,23 +1,23 @@
 @interface KSInputModeTableCell
-- (KSInputModeTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (KSInputModeTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (id)subtitle;
 - (id)title;
 - (void)addDownloadIcon;
 - (void)dealloc;
-- (void)downloadButtonPressed:(id)a3 withEvent:(id)a4;
+- (void)downloadButtonPressed:(id)pressed withEvent:(id)event;
 - (void)updateLabels;
 @end
 
 @implementation KSInputModeTableCell
 
-- (KSInputModeTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (KSInputModeTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v8.receiver = self;
   v8.super_class = KSInputModeTableCell;
-  v6 = [(PSTableCell *)&v8 initWithStyle:a3 reuseIdentifier:a4 specifier:?];
+  v6 = [(PSTableCell *)&v8 initWithStyle:style reuseIdentifier:identifier specifier:?];
   if (v6)
   {
-    -[KSInputModeTableCell setInputMode:](v6, "setInputMode:", [MEMORY[0x277D75680] keyboardInputModeWithIdentifier:{objc_msgSend(a5, "propertyForKey:", *MEMORY[0x277D3FFB8])}]);
+    -[KSInputModeTableCell setInputMode:](v6, "setInputMode:", [MEMORY[0x277D75680] keyboardInputModeWithIdentifier:{objc_msgSend(specifier, "propertyForKey:", *MEMORY[0x277D3FFB8])}]);
     [(KSInputModeTableCell *)v6 updateLabels];
   }
 
@@ -45,18 +45,18 @@
 - (id)title
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v3 = [(UIKeyboardInputMode *)[(KSInputModeTableCell *)self inputMode] isExtensionInputMode];
-  v4 = [(KSInputModeTableCell *)self inputMode];
-  if (v3)
+  isExtensionInputMode = [(UIKeyboardInputMode *)[(KSInputModeTableCell *)self inputMode] isExtensionInputMode];
+  inputMode = [(KSInputModeTableCell *)self inputMode];
+  if (isExtensionInputMode)
   {
     v5 = *MEMORY[0x277D85DE8];
 
-    return [(UIKeyboardInputMode *)v4 safe__extendedDisplayName];
+    return [(UIKeyboardInputMode *)inputMode safe__extendedDisplayName];
   }
 
   else
   {
-    [(UIKeyboardInputMode *)v4 identifier];
+    [(UIKeyboardInputMode *)inputMode identifier];
     if ([TIInputModeGetSWLayout() isEqualToString:@"Korean-With-QWERTY"])
     {
       v11[0] = [KSKeyboardListController keyboardDisplayNameForIdentifier:TIInputModeGetLanguageWithRegion()];
@@ -96,12 +96,12 @@
   {
     v3 = [MEMORY[0x277CBEAF8] localeForBundleLanguage:{objc_msgSend(MEMORY[0x277CCA8D8], "mainBundle")}];
     v4 = *MEMORY[0x277CBE6C8];
-    v5 = [(UIKeyboardInputMode *)[(KSInputModeTableCell *)self inputMode] primaryLanguage];
+    primaryLanguage = [(UIKeyboardInputMode *)[(KSInputModeTableCell *)self inputMode] primaryLanguage];
 
-    return [v3 displayNameForKey:v4 value:v5];
+    return [v3 displayNameForKey:v4 value:primaryLanguage];
   }
 
-  v7 = [(UIKeyboardInputMode *)[(KSInputModeTableCell *)self inputMode] identifier];
+  identifier = [(UIKeyboardInputMode *)[(KSInputModeTableCell *)self inputMode] identifier];
   NormalizedIdentifier = TIInputModeGetNormalizedIdentifier();
   v9 = [KSKeyboardListController keyboardDisplayNameForIdentifier:[(UIKeyboardInputMode *)[(KSInputModeTableCell *)self inputMode] languageWithRegion]];
   ComponentsFromIdentifier = TIInputModeGetComponentsFromIdentifier();
@@ -183,12 +183,12 @@ uint64_t __32__KSInputModeTableCell_subtitle__block_invoke(uint64_t a1)
   }
 }
 
-- (void)downloadButtonPressed:(id)a3 withEvent:(id)a4
+- (void)downloadButtonPressed:(id)pressed withEvent:(id)event
 {
-  v5 = [MEMORY[0x277D6F378] sharedManager];
-  v6 = [(UIKeyboardInputMode *)[(KSInputModeTableCell *)self inputMode] identifier];
+  mEMORY[0x277D6F378] = [MEMORY[0x277D6F378] sharedManager];
+  identifier = [(UIKeyboardInputMode *)[(KSInputModeTableCell *)self inputMode] identifier];
 
-  [v5 startDownloadingAssetsForInputMode:v6];
+  [mEMORY[0x277D6F378] startDownloadingAssetsForInputMode:identifier];
 }
 
 @end

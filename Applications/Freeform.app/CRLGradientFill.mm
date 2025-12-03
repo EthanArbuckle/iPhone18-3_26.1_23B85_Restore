@@ -1,49 +1,49 @@
 @interface CRLGradientFill
-+ (id)linearGradientWithGradientStops:(id)a3;
-+ (id)linearGradientWithStartColor:(id)a3 endColor:(id)a4;
-+ (id)radialGradientWithGradientStops:(id)a3;
-+ (id)radialGradientWithStartColor:(id)a3 endColor:(id)a4;
++ (id)linearGradientWithGradientStops:(id)stops;
++ (id)linearGradientWithStartColor:(id)color endColor:(id)endColor;
++ (id)radialGradientWithGradientStops:(id)stops;
++ (id)radialGradientWithStartColor:(id)color endColor:(id)endColor;
 - (BOOL)hasAlpha;
 - (BOOL)isAdvancedGradient;
 - (BOOL)isAdvancedGradientIgnoringFlag;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOpaque;
 - (BOOL)p_isAnyStopP3;
-- (CGAffineTransform)centeredRadialTransformInRect:(SEL)a3;
-- (CGContext)p_beginBitmapWrapperContextInContext:(CGContext *)a3 returningIntegralBounds:(CGRect *)a4;
-- (CGPoint)endPointForPath:(id)a3 andBounds:(CGRect)a4;
-- (CGPoint)startPointForPath:(id)a3 andBounds:(CGRect)a4;
+- (CGAffineTransform)centeredRadialTransformInRect:(SEL)rect;
+- (CGContext)p_beginBitmapWrapperContextInContext:(CGContext *)context returningIntegralBounds:(CGRect *)bounds;
+- (CGPoint)endPointForPath:(id)path andBounds:(CGRect)bounds;
+- (CGPoint)startPointForPath:(id)path andBounds:(CGRect)bounds;
 - (CGShading)shadingRef;
 - (CRLColor)firstColor;
 - (CRLColor)lastColor;
 - (CRLGradientFill)init;
-- (CRLGradientFill)initWithGradientStops:(id)a3 type:(unint64_t)a4 opacity:(double)a5;
-- (CRLGradientFill)initWithStartColor:(id)a3 endColor:(id)a4 type:(unint64_t)a5;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)p_insertStopAtFraction:(double)a3;
-- (id)p_insertStopAtFraction:(double)a3 withColor:(id)a4;
-- (id)p_newColorAtFraction:(double)a3;
-- (id)p_newColorInShadingColorSpaceFromColor:(id)a3;
-- (id)p_removeStopAtIndex:(unint64_t)a3;
-- (id)stopAfterFraction:(double)a3;
-- (id)stopBeforeFraction:(double)a3;
+- (CRLGradientFill)initWithGradientStops:(id)stops type:(unint64_t)type opacity:(double)opacity;
+- (CRLGradientFill)initWithStartColor:(id)color endColor:(id)endColor type:(unint64_t)type;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)p_insertStopAtFraction:(double)fraction;
+- (id)p_insertStopAtFraction:(double)fraction withColor:(id)color;
+- (id)p_newColorAtFraction:(double)fraction;
+- (id)p_newColorInShadingColorSpaceFromColor:(id)color;
+- (id)p_removeStopAtIndex:(unint64_t)index;
+- (id)stopAfterFraction:(double)fraction;
+- (id)stopBeforeFraction:(double)fraction;
 - (unint64_t)hash;
 - (unint64_t)p_shadingColorSpace;
 - (void)dealloc;
-- (void)p_endBitmapWrapperContext:(CGContext *)a3 inContext:(CGContext *)a4 withIntegralBounds:(CGRect)a5;
+- (void)p_endBitmapWrapperContext:(CGContext *)context inContext:(CGContext *)inContext withIntegralBounds:(CGRect)bounds;
 - (void)p_evenlyDistributeStops;
-- (void)p_insertGradientStop:(id)a3;
-- (void)p_moveStopAtIndex:(unint64_t)a3 toFraction:(double)a4;
-- (void)p_removeStop:(id)a3;
+- (void)p_insertGradientStop:(id)stop;
+- (void)p_moveStopAtIndex:(unint64_t)index toFraction:(double)fraction;
+- (void)p_removeStop:(id)stop;
 - (void)p_reverseStopOrder;
-- (void)p_setAlpha:(CGContext *)a3;
-- (void)p_setColorOfStopAtIndex:(unint64_t)a3 toColor:(id)a4;
-- (void)p_setGradientStops:(id)a3;
-- (void)p_setInflectionOfStopAtIndex:(unint64_t)a3 toInflection:(double)a4;
-- (void)p_swapStopAtIndex:(unint64_t)a3 withStopAtIndex:(unint64_t)a4;
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4;
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4;
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4 atAngle:(double)a5;
+- (void)p_setAlpha:(CGContext *)alpha;
+- (void)p_setColorOfStopAtIndex:(unint64_t)index toColor:(id)color;
+- (void)p_setGradientStops:(id)stops;
+- (void)p_setInflectionOfStopAtIndex:(unint64_t)index toInflection:(double)inflection;
+- (void)p_swapStopAtIndex:(unint64_t)index withStopAtIndex:(unint64_t)atIndex;
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context;
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context;
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context atAngle:(double)angle;
 - (void)releaseShadingRef;
 @end
 
@@ -63,7 +63,7 @@
   return v2;
 }
 
-- (CRLGradientFill)initWithGradientStops:(id)a3 type:(unint64_t)a4 opacity:(double)a5
+- (CRLGradientFill)initWithGradientStops:(id)stops type:(unint64_t)type opacity:(double)opacity
 {
   v8 = [(CRLGradientFill *)self init];
   v9 = v8;
@@ -72,27 +72,27 @@
     mStops = v8->mStops;
     if (mStops)
     {
-      [(NSMutableArray *)mStops setArray:a3];
+      [(NSMutableArray *)mStops setArray:stops];
     }
 
     else
     {
-      v9->mStops = [a3 mutableCopy];
+      v9->mStops = [stops mutableCopy];
     }
 
-    v9->mType = a4;
-    v9->mOpacity = a5;
+    v9->mType = type;
+    v9->mOpacity = opacity;
     v9->mShadingColorSpace = 2;
   }
 
   return v9;
 }
 
-- (CRLGradientFill)initWithStartColor:(id)a3 endColor:(id)a4 type:(unint64_t)a5
+- (CRLGradientFill)initWithStartColor:(id)color endColor:(id)endColor type:(unint64_t)type
 {
-  v9[0] = [CRLGradientFillStop gradientStopWithColor:a3 fraction:0.0];
-  v9[1] = [CRLGradientFillStop gradientStopWithColor:a4 fraction:1.0];
-  return [(CRLGradientFill *)self initWithGradientStops:[NSArray type:"arrayWithObjects:count:" arrayWithObjects:v9 count:2], a5];
+  v9[0] = [CRLGradientFillStop gradientStopWithColor:color fraction:0.0];
+  v9[1] = [CRLGradientFillStop gradientStopWithColor:endColor fraction:1.0];
+  return [(CRLGradientFill *)self initWithGradientStops:[NSArray type:"arrayWithObjects:count:" arrayWithObjects:v9 count:2], type];
 }
 
 - (void)dealloc
@@ -111,9 +111,9 @@
   return sub_100083B3C(&self->mIsAdvancedGradient, 1, v4);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -123,7 +123,7 @@
     v18 = v4;
     v19 = v3;
     v11 = objc_opt_class();
-    v12 = sub_100014370(v11, a3);
+    v12 = sub_100014370(v11, equal);
     if (v12)
     {
       v13 = v12;
@@ -132,8 +132,8 @@
         LODWORD(v12) = -[NSMutableArray isEqualToArray:](self->mStops, "isEqualToArray:", [v13 gradientStops]);
         if (v12)
         {
-          v16 = [v13 isAdvancedGradient];
-          LOBYTE(v12) = v16 ^ [(CRLGradientFill *)self isAdvancedGradient]^ 1;
+          isAdvancedGradient = [v13 isAdvancedGradient];
+          LOBYTE(v12) = isAdvancedGradient ^ [(CRLGradientFill *)self isAdvancedGradient]^ 1;
         }
       }
 
@@ -147,46 +147,46 @@
   return v12;
 }
 
-+ (id)linearGradientWithStartColor:(id)a3 endColor:(id)a4
++ (id)linearGradientWithStartColor:(id)color endColor:(id)endColor
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithStartColor:a3 endColor:a4 type:0];
+  v4 = [objc_alloc(objc_opt_class()) initWithStartColor:color endColor:endColor type:0];
 
   return v4;
 }
 
-+ (id)linearGradientWithGradientStops:(id)a3
++ (id)linearGradientWithGradientStops:(id)stops
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithGradientStops:a3 type:0];
+  v3 = [objc_alloc(objc_opt_class()) initWithGradientStops:stops type:0];
 
   return v3;
 }
 
-+ (id)radialGradientWithStartColor:(id)a3 endColor:(id)a4
++ (id)radialGradientWithStartColor:(id)color endColor:(id)endColor
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithStartColor:a3 endColor:a4 type:1];
+  v4 = [objc_alloc(objc_opt_class()) initWithStartColor:color endColor:endColor type:1];
 
   return v4;
 }
 
-+ (id)radialGradientWithGradientStops:(id)a3
++ (id)radialGradientWithGradientStops:(id)stops
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithGradientStops:a3 type:1];
+  v3 = [objc_alloc(objc_opt_class()) initWithGradientStops:stops type:1];
 
   return v3;
 }
 
 - (CRLColor)firstColor
 {
-  v2 = [(NSMutableArray *)self->mStops firstObject];
+  firstObject = [(NSMutableArray *)self->mStops firstObject];
 
-  return [v2 color];
+  return [firstObject color];
 }
 
 - (CRLColor)lastColor
 {
-  v2 = [(NSMutableArray *)self->mStops lastObject];
+  lastObject = [(NSMutableArray *)self->mStops lastObject];
 
-  return [v2 color];
+  return [lastObject color];
 }
 
 - (CGShading)shadingRef
@@ -285,11 +285,11 @@
   self->mShadingColorSpace = 2;
 }
 
-- (id)p_newColorInShadingColorSpaceFromColor:(id)a3
+- (id)p_newColorInShadingColorSpaceFromColor:(id)color
 {
-  v3 = [(CRLGradientFill *)self p_shadingColorSpace];
-  v4 = [a3 colorRGBSpace];
-  if (v3 == 2)
+  p_shadingColorSpace = [(CRLGradientFill *)self p_shadingColorSpace];
+  colorRGBSpace = [color colorRGBSpace];
+  if (p_shadingColorSpace == 2)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -308,15 +308,15 @@
     }
 
     [CRLAssertionHandler handleFailureInFunction:[NSString stringWithUTF8String:"[CRLGradientFill p_newColorInShadingColorSpaceFromColor:]"] file:[NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLGradientFill.m"] lineNumber:286 isFatal:0 description:"Shading color space should not be unspecified.", v14, v15];
-    return a3;
+    return color;
   }
 
-  v7 = v4;
-  if (v4 != 2 && v4 != v3)
+  v7 = colorRGBSpace;
+  if (colorRGBSpace != 2 && colorRGBSpace != p_shadingColorSpace)
   {
-    if (v3 == 1)
+    if (p_shadingColorSpace == 1)
     {
-      if (v4)
+      if (colorRGBSpace)
       {
         v8 = +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -339,7 +339,7 @@
       }
 
       v10 = sub_1000CCE28();
-      CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v10, kCGRenderingIntentDefault, [a3 CGColor], 0);
+      CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v10, kCGRenderingIntentDefault, [color CGColor], 0);
       v5 = [[CRLColor alloc] initWithCGColor:CopyByMatchingToColorSpace colorSpace:1];
       CGColorRelease(CopyByMatchingToColorSpace);
       return v5;
@@ -365,7 +365,7 @@
       v25 = 2048;
       v26 = v7;
       v27 = 2048;
-      v28 = v3;
+      v28 = p_shadingColorSpace;
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Unexpected combination of source (%zu) and destination (%zu) color spaces for gradient shading.", buf, 0x36u);
       if (qword_101AD5A10 != -1)
       {
@@ -378,11 +378,11 @@
       sub_101327A4C();
     }
 
-    [CRLAssertionHandler handleFailureInFunction:[NSString stringWithUTF8String:"[CRLGradientFill p_newColorInShadingColorSpaceFromColor:]"] file:[NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLGradientFill.m"] lineNumber:307 isFatal:0 description:"Unexpected combination of source (%zu) and destination (%zu) color spaces for gradient shading.", v7, v3];
-    return a3;
+    [CRLAssertionHandler handleFailureInFunction:[NSString stringWithUTF8String:"[CRLGradientFill p_newColorInShadingColorSpaceFromColor:]"] file:[NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLGradientFill.m"] lineNumber:307 isFatal:0 description:"Unexpected combination of source (%zu) and destination (%zu) color spaces for gradient shading.", v7, p_shadingColorSpace];
+    return color;
   }
 
-  return a3;
+  return color;
 }
 
 - (BOOL)isAdvancedGradient
@@ -426,15 +426,15 @@
   return v6 != 1.0;
 }
 
-- (id)stopBeforeFraction:(double)a3
+- (id)stopBeforeFraction:(double)fraction
 {
-  v4 = sub_1004C3240(a3, 0.0, 1.0);
+  v4 = sub_1004C3240(fraction, 0.0, 1.0);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSMutableArray *)self->mStops reverseObjectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->mStops reverseObjectEnumerator];
+  v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (!v6)
   {
     return [(NSMutableArray *)self->mStops firstObject];
@@ -448,7 +448,7 @@ LABEL_3:
   {
     if (*v14 != v8)
     {
-      objc_enumerationMutation(v5);
+      objc_enumerationMutation(reverseObjectEnumerator);
     }
 
     v10 = *(*(&v13 + 1) + 8 * v9);
@@ -460,7 +460,7 @@ LABEL_3:
 
     if (v7 == ++v9)
     {
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         goto LABEL_3;
@@ -471,9 +471,9 @@ LABEL_3:
   }
 }
 
-- (id)stopAfterFraction:(double)a3
+- (id)stopAfterFraction:(double)fraction
 {
-  v4 = sub_1004C3240(a3, 0.0, 1.0);
+  v4 = sub_1004C3240(fraction, 0.0, 1.0);
   if (v4 == 1.0)
   {
     mStops = self->mStops;
@@ -527,27 +527,27 @@ LABEL_7:
   }
 }
 
-- (id)p_newColorAtFraction:(double)a3
+- (id)p_newColorAtFraction:(double)fraction
 {
-  if (a3 == 0.0)
+  if (fraction == 0.0)
   {
-    v4 = [(CRLGradientFill *)self firstColor];
+    firstColor = [(CRLGradientFill *)self firstColor];
 LABEL_5:
 
-    return v4;
+    return firstColor;
   }
 
-  if (a3 == 1.0)
+  if (fraction == 1.0)
   {
-    v4 = [(CRLGradientFill *)self lastColor];
+    firstColor = [(CRLGradientFill *)self lastColor];
     goto LABEL_5;
   }
 
-  v7 = [(CRLGradientFill *)self stopBeforeFraction:a3];
-  v8 = [(CRLGradientFill *)self stopAfterFraction:a3];
+  v7 = [(CRLGradientFill *)self stopBeforeFraction:fraction];
+  v8 = [(CRLGradientFill *)self stopAfterFraction:fraction];
   if (v7 == v8)
   {
-    v4 = [v7 color];
+    firstColor = [v7 color];
     goto LABEL_5;
   }
 
@@ -559,7 +559,7 @@ LABEL_5:
   v14 = 0.0;
   if (v13 > 0.001)
   {
-    v15 = sub_1004C3240((a3 - v11) / v13, 0.0, 1.0);
+    v15 = sub_1004C3240((fraction - v11) / v13, 0.0, 1.0);
     [v7 inflection];
     v17 = sub_1004C3240(v16, 0.0, 1.0);
     if (v15 >= v17)
@@ -577,15 +577,15 @@ LABEL_5:
     }
   }
 
-  v18 = [v7 color];
-  v19 = [v9 color];
+  color = [v7 color];
+  color2 = [v9 color];
 
-  return [v18 newBlendedColorWithFraction:v19 ofColor:v14];
+  return [color newBlendedColorWithFraction:color2 ofColor:v14];
 }
 
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context
 {
-  v4 = [CRLAssertionHandler _atomicIncrementAssertCount:a4];
+  v4 = [CRLAssertionHandler _atomicIncrementAssertCount:context];
   if (qword_101AD5A10 != -1)
   {
     dispatch_once(&qword_101AD5A10, &stru_101868AD8);
@@ -632,9 +632,9 @@ LABEL_5:
   objc_exception_throw(v13);
 }
 
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4 atAngle:(double)a5
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context atAngle:(double)angle
 {
-  v5 = [CRLAssertionHandler _atomicIncrementAssertCount:a4];
+  v5 = [CRLAssertionHandler _atomicIncrementAssertCount:context];
   if (qword_101AD5A10 != -1)
   {
     dispatch_once(&qword_101AD5A10, &stru_101868B18);
@@ -681,9 +681,9 @@ LABEL_5:
   objc_exception_throw(v14);
 }
 
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context
 {
-  v4 = [CRLAssertionHandler _atomicIncrementAssertCount:a3];
+  v4 = [CRLAssertionHandler _atomicIncrementAssertCount:path];
   if (qword_101AD5A10 != -1)
   {
     dispatch_once(&qword_101AD5A10, &stru_101868B58);
@@ -730,7 +730,7 @@ LABEL_5:
   objc_exception_throw(v13);
 }
 
-- (CGAffineTransform)centeredRadialTransformInRect:(SEL)a3
+- (CGAffineTransform)centeredRadialTransformInRect:(SEL)rect
 {
   height = a4.size.height;
   width = a4.size.width;
@@ -778,8 +778,8 @@ LABEL_5:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v4 = [(CRLGradientFill *)self gradientStops];
-    v5 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    gradientStops = [(CRLGradientFill *)self gradientStops];
+    v5 = [(NSArray *)gradientStops countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -790,7 +790,7 @@ LABEL_4:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(gradientStops);
         }
 
         v9 = [objc_msgSend(*(*(&v11 + 1) + 8 * v8) "color")];
@@ -801,7 +801,7 @@ LABEL_4:
 
         if (v6 == ++v8)
         {
-          v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+          v6 = [(NSArray *)gradientStops countByEnumeratingWithState:&v11 objects:v15 count:16];
           LOBYTE(v9) = 1;
           if (v6)
           {
@@ -827,7 +827,7 @@ LABEL_4:
   return v9;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(CRLGradientFill *)[CRLMutableGradientFill allocWithZone:?]type:"initWithGradientStops:type:opacity:" opacity:self->mStops, self->mType, self->mOpacity];
   [(CRLGradientFill *)v4 i_setAdvancedGradientFlag:[(CRLGradientFill *)self i_advancedGradientFlag]];
@@ -836,14 +836,14 @@ LABEL_4:
 
 - (BOOL)hasAlpha
 {
-  v2 = [(NSMutableArray *)self->mStops objectEnumerator];
+  objectEnumerator = [(NSMutableArray *)self->mStops objectEnumerator];
   do
   {
-    v3 = [v2 nextObject];
-    v4 = v3;
+    nextObject = [objectEnumerator nextObject];
+    v4 = nextObject;
   }
 
-  while (v3 && CGColorGetAlpha([objc_msgSend(v3 "color")]) == 1.0);
+  while (nextObject && CGColorGetAlpha([objc_msgSend(nextObject "color")]) == 1.0);
   return v4 != 0;
 }
 
@@ -891,9 +891,9 @@ LABEL_3:
   return v3;
 }
 
-- (CGPoint)startPointForPath:(id)a3 andBounds:(CGRect)a4
+- (CGPoint)startPointForPath:(id)path andBounds:(CGRect)bounds
 {
-  [CRLAssertionHandler _atomicIncrementAssertCount:a3];
+  [CRLAssertionHandler _atomicIncrementAssertCount:path];
   if (qword_101AD5A10 != -1)
   {
     sub_101383BA8();
@@ -917,9 +917,9 @@ LABEL_3:
   return result;
 }
 
-- (CGPoint)endPointForPath:(id)a3 andBounds:(CGRect)a4
+- (CGPoint)endPointForPath:(id)path andBounds:(CGRect)bounds
 {
-  [CRLAssertionHandler _atomicIncrementAssertCount:a3];
+  [CRLAssertionHandler _atomicIncrementAssertCount:path];
   if (qword_101AD5A10 != -1)
   {
     sub_101383C78();
@@ -943,29 +943,29 @@ LABEL_3:
   return result;
 }
 
-- (void)p_setAlpha:(CGContext *)a3
+- (void)p_setAlpha:(CGContext *)alpha
 {
   [(CRLGradientFill *)self opacity];
 
-  CGContextSetAlpha(a3, v4);
+  CGContextSetAlpha(alpha, v4);
 }
 
-- (CGContext)p_beginBitmapWrapperContextInContext:(CGContext *)a3 returningIntegralBounds:(CGRect *)a4
+- (CGContext)p_beginBitmapWrapperContextInContext:(CGContext *)context returningIntegralBounds:(CGRect *)bounds
 {
-  if (!a3)
+  if (!context)
   {
     return 0;
   }
 
-  ClipBoundingBox = CGContextGetClipBoundingBox(a3);
+  ClipBoundingBox = CGContextGetClipBoundingBox(context);
   x = ClipBoundingBox.origin.x;
   y = ClipBoundingBox.origin.y;
   width = ClipBoundingBox.size.width;
   height = ClipBoundingBox.size.height;
   v15 = CGRectIntegral(ClipBoundingBox);
-  if (a4)
+  if (bounds)
   {
-    *a4 = v15;
+    *bounds = v15;
   }
 
   v16.origin.x = sub_10011FFD8(x, y, width, height, 1.0);
@@ -987,65 +987,65 @@ LABEL_3:
   return v9;
 }
 
-- (void)p_endBitmapWrapperContext:(CGContext *)a3 inContext:(CGContext *)a4 withIntegralBounds:(CGRect)a5
+- (void)p_endBitmapWrapperContext:(CGContext *)context inContext:(CGContext *)inContext withIntegralBounds:(CGRect)bounds
 {
-  if (a3)
+  if (context)
   {
-    if (a4)
+    if (inContext)
     {
-      height = a5.size.height;
-      width = a5.size.width;
-      y = a5.origin.y;
-      x = a5.origin.x;
-      Image = CGBitmapContextCreateImage(a3);
+      height = bounds.size.height;
+      width = bounds.size.width;
+      y = bounds.origin.y;
+      x = bounds.origin.x;
+      Image = CGBitmapContextCreateImage(context);
       if (Image)
       {
         v12 = Image;
-        CGContextSaveGState(a4);
+        CGContextSaveGState(inContext);
         v14.origin.x = x;
         v14.origin.y = y;
         v14.size.width = width;
         v14.size.height = height;
-        CGContextDrawImage(a4, v14, v12);
-        CGContextRestoreGState(a4);
+        CGContextDrawImage(inContext, v14, v12);
+        CGContextRestoreGState(inContext);
         CGImageRelease(v12);
       }
     }
 
-    CGContextRelease(a3);
+    CGContextRelease(context);
   }
 }
 
-- (void)p_setGradientStops:(id)a3
+- (void)p_setGradientStops:(id)stops
 {
-  if (self->mStops != a3)
+  if (self->mStops != stops)
   {
     v5 = [NSMutableArray arrayWithArray:?];
-    if ([a3 count])
+    if ([stops count])
     {
       v6 = 0;
       v7 = 1;
       do
       {
-        v8 = [a3 objectAtIndexedSubscript:v6];
-        v9 = [v8 color];
-        ColorSpace = CGColorGetColorSpace([v9 CGColor]);
+        v8 = [stops objectAtIndexedSubscript:v6];
+        color = [v8 color];
+        ColorSpace = CGColorGetColorSpace([color CGColor]);
         if (CGColorSpaceGetModel(ColorSpace) != kCGColorSpaceModelRGB)
         {
-          [v9 redComponent];
+          [color redComponent];
           v12 = v11;
-          [v9 greenComponent];
+          [color greenComponent];
           v14 = v13;
-          [v9 blueComponent];
+          [color blueComponent];
           v16 = v15;
-          [v9 alphaComponent];
+          [color alphaComponent];
           -[NSMutableArray replaceObjectAtIndex:withObject:](v5, "replaceObjectAtIndex:withObject:", v6, [v8 gradientStopWithColor:{+[CRLColor colorWithRed:green:blue:alpha:](CRLColor, "colorWithRed:green:blue:alpha:", v12, v14, v16, v17)}]);
         }
 
         v6 = v7;
       }
 
-      while ([a3 count] > v7++);
+      while ([stops count] > v7++);
     }
 
     [(NSMutableArray *)self->mStops removeAllObjects];
@@ -1055,7 +1055,7 @@ LABEL_3:
   }
 }
 
-- (void)p_insertGradientStop:(id)a3
+- (void)p_insertGradientStop:(id)stop
 {
   if ([(NSMutableArray *)self->mStops count])
   {
@@ -1068,10 +1068,10 @@ LABEL_3:
     v7[1] = 3221225472;
     v7[2] = sub_1004C9760;
     v7[3] = &unk_101868C20;
-    v7[4] = a3;
+    v7[4] = stop;
     v7[5] = &v8;
     [(NSMutableArray *)mStops enumerateObjectsUsingBlock:v7];
-    [(NSMutableArray *)self->mStops insertObject:a3 atIndex:v9[3]];
+    [(NSMutableArray *)self->mStops insertObject:stop atIndex:v9[3]];
     [(CRLGradientFill *)self releaseShadingRef];
     _Block_object_dispose(&v8, 8);
   }
@@ -1080,11 +1080,11 @@ LABEL_3:
   {
     v6 = self->mStops;
 
-    [(NSMutableArray *)v6 addObject:a3];
+    [(NSMutableArray *)v6 addObject:stop];
   }
 }
 
-- (void)p_removeStop:(id)a3
+- (void)p_removeStop:(id)stop
 {
   if ([(NSMutableArray *)self->mStops count]< 3)
   {
@@ -1093,36 +1093,36 @@ LABEL_3:
 
   else
   {
-    [(NSMutableArray *)self->mStops removeObject:a3];
+    [(NSMutableArray *)self->mStops removeObject:stop];
   }
 
   [(CRLGradientFill *)self releaseShadingRef];
 }
 
-- (id)p_removeStopAtIndex:(unint64_t)a3
+- (id)p_removeStopAtIndex:(unint64_t)index
 {
   if ([(NSMutableArray *)self->mStops count]< 3)
   {
     objc_exception_throw([NSException exceptionWithName:NSInvalidArgumentException reason:@"Attempted to remove too many gradient stops. Must have at least 2." userInfo:0]);
   }
 
-  v5 = [(NSMutableArray *)self->mStops objectAtIndexedSubscript:a3];
-  [(NSMutableArray *)self->mStops removeObjectAtIndex:a3];
+  v5 = [(NSMutableArray *)self->mStops objectAtIndexedSubscript:index];
+  [(NSMutableArray *)self->mStops removeObjectAtIndex:index];
   [(CRLGradientFill *)self releaseShadingRef];
 
   return v5;
 }
 
-- (id)p_insertStopAtFraction:(double)a3
+- (id)p_insertStopAtFraction:(double)fraction
 {
   v5 = [(CRLGradientFill *)self p_newColorAtFraction:?];
 
-  return [(CRLGradientFill *)self p_insertStopAtFraction:v5 withColor:a3];
+  return [(CRLGradientFill *)self p_insertStopAtFraction:v5 withColor:fraction];
 }
 
-- (id)p_insertStopAtFraction:(double)a3 withColor:(id)a4
+- (id)p_insertStopAtFraction:(double)fraction withColor:(id)color
 {
-  v5 = [CRLGradientFillStop gradientStopWithColor:a4 fraction:a3];
+  v5 = [CRLGradientFillStop gradientStopWithColor:color fraction:fraction];
   [(CRLGradientFill *)self p_insertGradientStop:v5];
   [(CRLGradientFill *)self releaseShadingRef];
   return v5;
@@ -1223,43 +1223,43 @@ LABEL_3:
   [(CRLGradientFill *)self releaseShadingRef];
 }
 
-- (void)p_moveStopAtIndex:(unint64_t)a3 toFraction:(double)a4
+- (void)p_moveStopAtIndex:(unint64_t)index toFraction:(double)fraction
 {
   v7 = [-[NSMutableArray objectAtIndexedSubscript:](self->mStops "objectAtIndexedSubscript:"mutableCopy"")];
-  [v7 setFraction:a4];
+  [v7 setFraction:fraction];
   v8 = [[CRLGradientFillStop alloc] initWithGradientStop:v7];
-  [(NSMutableArray *)self->mStops setObject:v8 atIndexedSubscript:a3];
+  [(NSMutableArray *)self->mStops setObject:v8 atIndexedSubscript:index];
 
   [(CRLGradientFill *)self releaseShadingRef];
 }
 
-- (void)p_swapStopAtIndex:(unint64_t)a3 withStopAtIndex:(unint64_t)a4
+- (void)p_swapStopAtIndex:(unint64_t)index withStopAtIndex:(unint64_t)atIndex
 {
   v7 = [-[NSMutableArray objectAtIndexedSubscript:](self->mStops "objectAtIndexedSubscript:"mutableCopy"")];
-  v8 = -[CRLGradientFillStop initWithGradientStop:]([CRLGradientFillStop alloc], "initWithGradientStop:", [-[NSMutableArray objectAtIndexedSubscript:](self->mStops objectAtIndexedSubscript:{a4), "mutableCopy"}]);
+  v8 = -[CRLGradientFillStop initWithGradientStop:]([CRLGradientFillStop alloc], "initWithGradientStop:", [-[NSMutableArray objectAtIndexedSubscript:](self->mStops objectAtIndexedSubscript:{atIndex), "mutableCopy"}]);
   v9 = [[CRLGradientFillStop alloc] initWithGradientStop:v7];
-  [(NSMutableArray *)self->mStops setObject:v8 atIndexedSubscript:a3];
-  [(NSMutableArray *)self->mStops setObject:v9 atIndexedSubscript:a4];
+  [(NSMutableArray *)self->mStops setObject:v8 atIndexedSubscript:index];
+  [(NSMutableArray *)self->mStops setObject:v9 atIndexedSubscript:atIndex];
 
   [(CRLGradientFill *)self releaseShadingRef];
 }
 
-- (void)p_setColorOfStopAtIndex:(unint64_t)a3 toColor:(id)a4
+- (void)p_setColorOfStopAtIndex:(unint64_t)index toColor:(id)color
 {
   v7 = [-[NSMutableArray objectAtIndexedSubscript:](self->mStops "objectAtIndexedSubscript:"mutableCopy"")];
-  [v7 setColor:a4];
+  [v7 setColor:color];
   v8 = [[CRLGradientFillStop alloc] initWithGradientStop:v7];
-  [(NSMutableArray *)self->mStops setObject:v8 atIndexedSubscript:a3];
+  [(NSMutableArray *)self->mStops setObject:v8 atIndexedSubscript:index];
 
   [(CRLGradientFill *)self releaseShadingRef];
 }
 
-- (void)p_setInflectionOfStopAtIndex:(unint64_t)a3 toInflection:(double)a4
+- (void)p_setInflectionOfStopAtIndex:(unint64_t)index toInflection:(double)inflection
 {
   v7 = [-[NSMutableArray objectAtIndexedSubscript:](self->mStops "objectAtIndexedSubscript:"mutableCopy"")];
-  [v7 setInflection:a4];
+  [v7 setInflection:inflection];
   v8 = [[CRLGradientFillStop alloc] initWithGradientStop:v7];
-  [(NSMutableArray *)self->mStops setObject:v8 atIndexedSubscript:a3];
+  [(NSMutableArray *)self->mStops setObject:v8 atIndexedSubscript:index];
 
   [(CRLGradientFill *)self releaseShadingRef];
 }

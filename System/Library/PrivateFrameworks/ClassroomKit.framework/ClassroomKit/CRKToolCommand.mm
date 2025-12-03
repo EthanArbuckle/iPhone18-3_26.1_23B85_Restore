@@ -4,40 +4,40 @@
 + (id)help;
 + (void)printHelp;
 - (BOOL)didCommandSucceed;
-- (BOOL)didOperationSucceed:(id)a3;
+- (BOOL)didOperationSucceed:(id)succeed;
 - (BOOL)isCommandFinished;
 - (CRKToolCommand)init;
 - (CRKToolCommandDelegate)delegate;
-- (id)DMFRequestWithArguments:(id)a3;
-- (id)arrayByParsingAndRemovingArgumentFlags:(id)a3;
-- (id)operationWithClient:(id)a3 arguments:(id)a4;
-- (id)requestWithArguments:(id)a3;
+- (id)DMFRequestWithArguments:(id)arguments;
+- (id)arrayByParsingAndRemovingArgumentFlags:(id)flags;
+- (id)operationWithClient:(id)client arguments:(id)arguments;
+- (id)requestWithArguments:(id)arguments;
 - (id)transportProvider;
-- (void)_remoteTaskDidFinish:(id)a3;
+- (void)_remoteTaskDidFinish:(id)finish;
 - (void)cleanupAndExitIfNeeded;
-- (void)client:(id)a3 didInterruptWithError:(id)a4;
-- (void)client:(id)a3 didReceiveNotificationWithName:(id)a4 userInfo:(id)a5;
-- (void)connectToTaskClientWithCompletionBlock:(id)a3;
-- (void)executeOperation:(id)a3;
-- (void)remoteTaskDidFinish:(id)a3;
-- (void)runWithArguments:(id)a3;
-- (void)runWithClient:(id)a3 arguments:(id)a4;
+- (void)client:(id)client didInterruptWithError:(id)error;
+- (void)client:(id)client didReceiveNotificationWithName:(id)name userInfo:(id)info;
+- (void)connectToTaskClientWithCompletionBlock:(id)block;
+- (void)executeOperation:(id)operation;
+- (void)remoteTaskDidFinish:(id)finish;
+- (void)runWithArguments:(id)arguments;
+- (void)runWithClient:(id)client arguments:(id)arguments;
 @end
 
 @implementation CRKToolCommand
 
 + (id)aliases
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"CRKToolCommand.m" lineNumber:52 description:{@"%@: -aliases must be implemented", a1}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CRKToolCommand.m" lineNumber:52 description:{@"%@: -aliases must be implemented", self}];
 
   return 0;
 }
 
 + (id)description
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"CRKToolCommand.m" lineNumber:57 description:{@"%@: -description must be implemented", a1}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CRKToolCommand.m" lineNumber:57 description:{@"%@: -description must be implemented", self}];
 
   return 0;
 }
@@ -45,17 +45,17 @@
 + (id)help
 {
   v3 = objc_opt_new();
-  if ([a1 supportsJSON])
+  if ([self supportsJSON])
   {
     [v3 appendFormat:@"     [%@] - outputs in JSON format\n", @"-json"];
   }
 
-  if ([a1 supportsVerboseOutput])
+  if ([self supportsVerboseOutput])
   {
     [v3 appendFormat:@"     [%@] - displays verbose output\n", @"-v"];
   }
 
-  if ([a1 supportsDMFRequest])
+  if ([self supportsDMFRequest])
   {
     [v3 appendFormat:@"     [%@] - uses a deprecated DMF request instead of a CRK request\n", @"-dmf"];
   }
@@ -69,17 +69,17 @@
 + (void)printHelp
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [MEMORY[0x277CCAC38] processInfo];
-  v5 = [v4 processName];
-  v6 = [a1 aliases];
-  v7 = [v6 firstObject];
-  v25 = [v3 stringWithFormat:@"%@ %@", v5, v7];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  processName = [processInfo processName];
+  aliases = [self aliases];
+  firstObject = [aliases firstObject];
+  v25 = [v3 stringWithFormat:@"%@ %@", processName, firstObject];
 
-  v24 = [a1 description];
+  v24 = [self description];
   CRTLog(@"%@ -- %@", v8, v9, v10, v11, v12, v13, v14, v25);
 
-  v15 = [a1 help];
-  if ([v15 length])
+  help = [self help];
+  if ([help length])
   {
     CRTLog(@"Usage: %@ %@", v16, v17, v18, v19, v20, v21, v22, v25);
   }
@@ -105,20 +105,20 @@
   return v2;
 }
 
-- (void)runWithArguments:(id)a3
+- (void)runWithArguments:(id)arguments
 {
-  v4 = a3;
+  argumentsCopy = arguments;
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__CRKToolCommand_runWithArguments___block_invoke;
   v7[3] = &unk_278DC33D8;
   objc_copyWeak(&v9, &location);
-  v5 = v4;
+  v5 = argumentsCopy;
   v8 = v5;
   [(CRKToolCommand *)self connectToTaskClientWithCompletionBlock:v7];
-  v6 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [v6 run];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [mainRunLoop run];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -140,15 +140,15 @@ void __35__CRKToolCommand_runWithArguments___block_invoke(uint64_t a1, void *a2,
   [WeakRetained runWithClient:v15 arguments:*(a1 + 32)];
 }
 
-- (void)runWithClient:(id)a3 arguments:(id)a4
+- (void)runWithClient:(id)client arguments:(id)arguments
 {
-  v5 = [(CRKToolCommand *)self operationWithClient:a3 arguments:a4];
+  v5 = [(CRKToolCommand *)self operationWithClient:client arguments:arguments];
   [(CRKToolCommand *)self executeOperation:v5];
 }
 
-- (id)arrayByParsingAndRemovingArgumentFlags:(id)a3
+- (id)arrayByParsingAndRemovingArgumentFlags:(id)flags
 {
-  v4 = [a3 mutableCopy];
+  v4 = [flags mutableCopy];
   if ([objc_opt_class() supportsJSON])
   {
     v5 = [v4 crk_pluckFlag:@"-json"];
@@ -187,10 +187,10 @@ void __35__CRKToolCommand_runWithArguments___block_invoke(uint64_t a1, void *a2,
   return v8;
 }
 
-- (id)operationWithClient:(id)a3 arguments:(id)a4
+- (id)operationWithClient:(id)client arguments:(id)arguments
 {
-  v6 = a3;
-  v7 = [(CRKToolCommand *)self arrayByParsingAndRemovingArgumentFlags:a4];
+  clientCopy = client;
+  v7 = [(CRKToolCommand *)self arrayByParsingAndRemovingArgumentFlags:arguments];
   if ([(CRKToolCommand *)self shouldUseDMFRequest])
   {
     [(CRKToolCommand *)self DMFRequestWithArguments:v7];
@@ -203,7 +203,7 @@ void __35__CRKToolCommand_runWithArguments___block_invoke(uint64_t a1, void *a2,
   v8 = ;
   if (v8)
   {
-    v9 = [v6 prepareTaskOperationForRequest:v8];
+    v9 = [clientCopy prepareTaskOperationForRequest:v8];
   }
 
   else
@@ -214,45 +214,45 @@ void __35__CRKToolCommand_runWithArguments___block_invoke(uint64_t a1, void *a2,
   return v9;
 }
 
-- (id)requestWithArguments:(id)a3
+- (id)requestWithArguments:(id)arguments
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"CRKToolCommand.m" lineNumber:146 description:{@"%@: -requestWithArguments: must be implemented", self}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CRKToolCommand.m" lineNumber:146 description:{@"%@: -requestWithArguments: must be implemented", self}];
 
   return 0;
 }
 
-- (id)DMFRequestWithArguments:(id)a3
+- (id)DMFRequestWithArguments:(id)arguments
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"CRKToolCommand.m" lineNumber:151 description:{@"%@: -DMFRequestWithArguments: must be implemented", self}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CRKToolCommand.m" lineNumber:151 description:{@"%@: -DMFRequestWithArguments: must be implemented", self}];
 
   return 0;
 }
 
-- (void)remoteTaskDidFinish:(id)a3
+- (void)remoteTaskDidFinish:(id)finish
 {
-  v21 = a3;
-  v3 = [v21 error];
+  finishCopy = finish;
+  error = [finishCopy error];
 
-  if (v3)
+  if (error)
   {
-    v4 = [v21 error];
-    v5 = [v4 verboseDescription];
-    CRTLogError(@"Error: %@", v6, v7, v8, v9, v10, v11, v12, v5);
+    error2 = [finishCopy error];
+    verboseDescription = [error2 verboseDescription];
+    CRTLogError(@"Error: %@", v6, v7, v8, v9, v10, v11, v12, verboseDescription);
   }
 
   else
   {
-    v13 = [v21 resultObject];
+    resultObject = [finishCopy resultObject];
 
-    if (!v13)
+    if (!resultObject)
     {
       goto LABEL_6;
     }
 
-    v4 = [v21 resultObject];
-    CRTLog(@"%@", v14, v15, v16, v17, v18, v19, v20, v4);
+    error2 = [finishCopy resultObject];
+    CRTLog(@"%@", v14, v15, v16, v17, v18, v19, v20, error2);
   }
 
 LABEL_6:
@@ -262,11 +262,11 @@ LABEL_6:
 {
   if ([objc_opt_class() instructorCommand])
   {
-    v3 = [(CRKToolCommand *)self targetClassroomInstallation];
+    targetClassroomInstallation = [(CRKToolCommand *)self targetClassroomInstallation];
     v4 = [CRKCurrentPlatformInstructordTransportProvider alloc];
-    v5 = [v3 classroomURL];
-    v6 = [v3 instructordBundleIdentifier];
-    v7 = [(CRKCurrentPlatformInstructordTransportProvider *)v4 initWithStudentDaemonProxy:0 classroomAppBundleURL:v5 instructordBundleIdentifier:v6];
+    classroomURL = [targetClassroomInstallation classroomURL];
+    instructordBundleIdentifier = [targetClassroomInstallation instructordBundleIdentifier];
+    v7 = [(CRKCurrentPlatformInstructordTransportProvider *)v4 initWithStudentDaemonProxy:0 classroomAppBundleURL:classroomURL instructordBundleIdentifier:instructordBundleIdentifier];
   }
 
   else
@@ -277,23 +277,23 @@ LABEL_6:
   return v7;
 }
 
-- (void)connectToTaskClientWithCompletionBlock:(id)a3
+- (void)connectToTaskClientWithCompletionBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [(CRKToolCommand *)a2 connectToTaskClientWithCompletionBlock:?];
   }
 
-  v6 = [(CRKToolCommand *)self transportProvider];
+  transportProvider = [(CRKToolCommand *)self transportProvider];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57__CRKToolCommand_connectToTaskClientWithCompletionBlock___block_invoke;
   v8[3] = &unk_278DC3400;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  [v6 fetchTransportWithCompletion:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [transportProvider fetchTransportWithCompletion:v8];
 }
 
 void __57__CRKToolCommand_connectToTaskClientWithCompletionBlock___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -319,18 +319,18 @@ void __57__CRKToolCommand_connectToTaskClientWithCompletionBlock___block_invoke(
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)executeOperation:(id)a3
+- (void)executeOperation:(id)operation
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  operationCopy = operation;
+  if (!operationCopy)
   {
     [objc_opt_class() printHelp];
     exit(1);
   }
 
-  v6 = v5;
-  objc_storeStrong(&self->mOperation, a3);
+  v6 = operationCopy;
+  objc_storeStrong(&self->mOperation, operation);
   v7 = dispatch_source_create(MEMORY[0x277D85D30], 2uLL, 0, MEMORY[0x277D85CD0]);
   mSIGINTSource = self->mSIGINTSource;
   self->mSIGINTSource = v7;
@@ -371,8 +371,8 @@ LABEL_16:
   v20 = 0u;
   v21 = 0u;
   v17 = v10;
-  v11 = [v17 remoteTaskOperations];
-  v12 = [v11 countByEnumeratingWithState:&v18 objects:v25 count:16];
+  remoteTaskOperations = [v17 remoteTaskOperations];
+  v12 = [remoteTaskOperations countByEnumeratingWithState:&v18 objects:v25 count:16];
   if (v12)
   {
     v13 = v12;
@@ -383,7 +383,7 @@ LABEL_16:
       {
         if (*v19 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(remoteTaskOperations);
         }
 
         v16 = *(*(&v18 + 1) + 8 * i);
@@ -395,7 +395,7 @@ LABEL_16:
         [v16 addTarget:self selector:sel__remoteTaskDidFinish_ forOperationEvents:6];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v18 objects:v25 count:16];
+      v13 = [remoteTaskOperations countByEnumeratingWithState:&v18 objects:v25 count:16];
     }
 
     while (v13);
@@ -417,9 +417,9 @@ uint64_t __35__CRKToolCommand_executeOperation___block_invoke(uint64_t a1)
   return [v2 cancel];
 }
 
-- (void)_remoteTaskDidFinish:(id)a3
+- (void)_remoteTaskDidFinish:(id)finish
 {
-  [(CRKToolCommand *)self remoteTaskDidFinish:a3];
+  [(CRKToolCommand *)self remoteTaskDidFinish:finish];
 
   [(CRKToolCommand *)self cleanupAndExitIfNeeded];
 }
@@ -441,11 +441,11 @@ uint64_t __35__CRKToolCommand_executeOperation___block_invoke(uint64_t a1)
     v7[4] = self;
     v4 = [MEMORY[0x277CCA8C8] blockOperationWithBlock:v7];
     [v4 addDependency:v3];
-    v5 = [MEMORY[0x277CCABD8] mainQueue];
-    [v5 addOperation:v3];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
+    [mainQueue addOperation:v3];
 
-    v6 = [MEMORY[0x277CCABD8] mainQueue];
-    [v6 addOperation:v4];
+    mainQueue2 = [MEMORY[0x277CCABD8] mainQueue];
+    [mainQueue2 addOperation:v4];
   }
 }
 
@@ -459,8 +459,8 @@ uint64_t __35__CRKToolCommand_executeOperation___block_invoke(uint64_t a1)
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(CATOperation *)self->mOperation remoteTaskOperations];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    remoteTaskOperations = [(CATOperation *)self->mOperation remoteTaskOperations];
+    v4 = [remoteTaskOperations countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -471,7 +471,7 @@ uint64_t __35__CRKToolCommand_executeOperation___block_invoke(uint64_t a1)
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(remoteTaskOperations);
           }
 
           if (![*(*(&v11 + 1) + 8 * i) isFinished])
@@ -481,7 +481,7 @@ uint64_t __35__CRKToolCommand_executeOperation___block_invoke(uint64_t a1)
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [remoteTaskOperations countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v5)
         {
           continue;
@@ -515,8 +515,8 @@ LABEL_15:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(CATOperation *)self->mOperation remoteTaskOperations];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    remoteTaskOperations = [(CATOperation *)self->mOperation remoteTaskOperations];
+    v4 = [remoteTaskOperations countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -527,7 +527,7 @@ LABEL_15:
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(remoteTaskOperations);
           }
 
           if (![(CRKToolCommand *)self didOperationSucceed:*(*(&v11 + 1) + 8 * i)])
@@ -537,7 +537,7 @@ LABEL_15:
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [remoteTaskOperations countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v5)
         {
           continue;
@@ -561,13 +561,13 @@ LABEL_15:
   }
 }
 
-- (BOOL)didOperationSucceed:(id)a3
+- (BOOL)didOperationSucceed:(id)succeed
 {
-  v3 = a3;
-  if ([v3 isFinished])
+  succeedCopy = succeed;
+  if ([succeedCopy isFinished])
   {
-    v4 = [v3 error];
-    v5 = v4 == 0;
+    error = [succeedCopy error];
+    v5 = error == 0;
   }
 
   else
@@ -578,23 +578,23 @@ LABEL_15:
   return v5;
 }
 
-- (void)client:(id)a3 didReceiveNotificationWithName:(id)a4 userInfo:(id)a5
+- (void)client:(id)client didReceiveNotificationWithName:(id)name userInfo:(id)info
 {
   v7 = MEMORY[0x277CCAB98];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 defaultCenter];
-  [v11 postNotificationName:v9 object:v10 userInfo:v8];
+  infoCopy = info;
+  nameCopy = name;
+  clientCopy = client;
+  defaultCenter = [v7 defaultCenter];
+  [defaultCenter postNotificationName:nameCopy object:clientCopy userInfo:infoCopy];
 }
 
-- (void)client:(id)a3 didInterruptWithError:(id)a4
+- (void)client:(id)client didInterruptWithError:(id)error
 {
-  v13 = a3;
-  v12 = [a4 verboseDescription];
-  CRTLogError(@"Client failed with error: %@ %@", v5, v6, v7, v8, v9, v10, v11, v13);
+  clientCopy = client;
+  verboseDescription = [error verboseDescription];
+  CRTLogError(@"Client failed with error: %@ %@", v5, v6, v7, v8, v9, v10, v11, clientCopy);
 
-  [v13 invalidate];
+  [clientCopy invalidate];
 }
 
 - (CRKToolCommandDelegate)delegate

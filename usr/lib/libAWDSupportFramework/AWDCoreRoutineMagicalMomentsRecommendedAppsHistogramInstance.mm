@@ -1,14 +1,14 @@
 @interface AWDCoreRoutineMagicalMomentsRecommendedAppsHistogramInstance
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRank:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasRank:(BOOL)rank;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineMagicalMomentsRecommendedAppsHistogramInstance
@@ -21,9 +21,9 @@
   [(AWDCoreRoutineMagicalMomentsRecommendedAppsHistogramInstance *)&v3 dealloc];
 }
 
-- (void)setHasRank:(BOOL)a3
+- (void)setHasRank:(BOOL)rank
 {
-  if (a3)
+  if (rank)
   {
     v3 = 2;
   }
@@ -45,12 +45,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  v4 = dictionary;
   bundleId = self->_bundleId;
   if (bundleId)
   {
-    [v3 setObject:bundleId forKey:@"bundleId"];
+    [dictionary setObject:bundleId forKey:@"bundleId"];
   }
 
   has = self->_has;
@@ -68,7 +68,7 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_bundleId)
   {
@@ -91,33 +91,33 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_bundleId)
   {
-    [a3 setBundleId:?];
+    [to setBundleId:?];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 5) = self->_rank;
-    *(a3 + 24) |= 2u;
+    *(to + 5) = self->_rank;
+    *(to + 24) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(a3 + 4) = self->_confidence;
-    *(a3 + 24) |= 1u;
+    *(to + 4) = self->_confidence;
+    *(to + 24) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  *(v5 + 8) = [(NSString *)self->_bundleId copyWithZone:a3];
+  *(v5 + 8) = [(NSString *)self->_bundleId copyWithZone:zone];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -135,33 +135,33 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     bundleId = self->_bundleId;
-    if (!(bundleId | *(a3 + 1)) || (v5 = [(NSString *)bundleId isEqual:?]) != 0)
+    if (!(bundleId | *(equal + 1)) || (v5 = [(NSString *)bundleId isEqual:?]) != 0)
     {
       if ((*&self->_has & 2) != 0)
       {
-        if ((*(a3 + 24) & 2) == 0 || self->_rank != *(a3 + 5))
+        if ((*(equal + 24) & 2) == 0 || self->_rank != *(equal + 5))
         {
           goto LABEL_13;
         }
       }
 
-      else if ((*(a3 + 24) & 2) != 0)
+      else if ((*(equal + 24) & 2) != 0)
       {
 LABEL_13:
         LOBYTE(v5) = 0;
         return v5;
       }
 
-      LOBYTE(v5) = (*(a3 + 24) & 1) == 0;
+      LOBYTE(v5) = (*(equal + 24) & 1) == 0;
       if (*&self->_has)
       {
-        if ((*(a3 + 24) & 1) == 0 || self->_confidence != *(a3 + 4))
+        if ((*(equal + 24) & 1) == 0 || self->_confidence != *(equal + 4))
         {
           goto LABEL_13;
         }
@@ -201,24 +201,24 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(AWDCoreRoutineMagicalMomentsRecommendedAppsHistogramInstance *)self setBundleId:?];
   }
 
-  v5 = *(a3 + 24);
+  v5 = *(from + 24);
   if ((v5 & 2) != 0)
   {
-    self->_rank = *(a3 + 5);
+    self->_rank = *(from + 5);
     *&self->_has |= 2u;
-    v5 = *(a3 + 24);
+    v5 = *(from + 24);
   }
 
   if (v5)
   {
-    self->_confidence = *(a3 + 4);
+    self->_confidence = *(from + 4);
     *&self->_has |= 1u;
   }
 }

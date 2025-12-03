@@ -15,7 +15,7 @@
 + (BOOL)supportsSlowCharging;
 + (double)defaultBatteryEnergyCapacity;
 + (double)duetDiscretionaryBudget;
-+ (id)valueForMobileGestaltCapability:(id)a3;
++ (id)valueForMobileGestaltCapability:(id)capability;
 + (int)criticalBatteryLevel;
 @end
 
@@ -111,16 +111,16 @@ LABEL_13:
   return v2;
 }
 
-+ (id)valueForMobileGestaltCapability:(id)a3
++ (id)valueForMobileGestaltCapability:(id)capability
 {
-  v3 = a3;
+  capabilityCopy = capability;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__PLModelingUtilities_valueForMobileGestaltCapability___block_invoke;
   block[3] = &unk_1E7F187A0;
-  v10 = v3;
+  v10 = capabilityCopy;
   v4 = valueForMobileGestaltCapability__once;
-  v5 = v3;
+  v5 = capabilityCopy;
   if (v4 != -1)
   {
     dispatch_once(&valueForMobileGestaltCapability__once, block);
@@ -686,7 +686,7 @@ uint64_t __36__PLModelingUtilities_internalBuild__block_invoke()
   block[1] = 3221225472;
   block[2] = __35__PLModelingUtilities_carrierBuild__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (carrierBuild_onceToken != -1)
   {
     dispatch_once(&carrierBuild_onceToken, block);

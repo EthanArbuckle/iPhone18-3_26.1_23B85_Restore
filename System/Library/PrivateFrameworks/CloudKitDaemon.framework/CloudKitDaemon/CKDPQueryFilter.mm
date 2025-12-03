@@ -1,15 +1,15 @@
 @interface CKDPQueryFilter
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)typeAsString:(int)a3;
-- (int)StringAsType:(id)a3;
+- (id)typeAsString:(int)string;
+- (int)StringAsType:(id)type;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPQueryFilter
@@ -27,170 +27,170 @@
   }
 }
 
-- (id)typeAsString:(int)a3
+- (id)typeAsString:(int)string
 {
-  if ((a3 - 1) >= 0x1E)
+  if ((string - 1) >= 0x1E)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854C950[a3 - 1];
+    v4 = off_27854C950[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"equals"))
+  typeCopy = type;
+  if (objc_msgSend_isEqualToString_(typeCopy, v4, @"equals"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"notEquals"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v5, @"notEquals"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"in"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v7, @"in"))
   {
     v6 = 3;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v8, @"notIn"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v8, @"notIn"))
   {
     v6 = 4;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v9, @"lessThan"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v9, @"lessThan"))
   {
     v6 = 5;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v10, @"lessThanOrEquals"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v10, @"lessThanOrEquals"))
   {
     v6 = 6;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v11, @"greaterThan"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v11, @"greaterThan"))
   {
     v6 = 7;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v12, @"greaterThanOrEquals"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v12, @"greaterThanOrEquals"))
   {
     v6 = 8;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v13, @"near"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v13, @"near"))
   {
     v6 = 9;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v14, @"containsAllTokens"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v14, @"containsAllTokens"))
   {
     v6 = 10;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v15, @"containsAnyTokens"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v15, @"containsAnyTokens"))
   {
     v6 = 11;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v16, @"listContains"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v16, @"listContains"))
   {
     v6 = 12;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v17, @"listNotContains"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v17, @"listNotContains"))
   {
     v6 = 13;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v18, @"listContainsAny"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v18, @"listContainsAny"))
   {
     v6 = 14;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v19, @"listNotContainsAny"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v19, @"listNotContainsAny"))
   {
     v6 = 15;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v20, @"beginsWith"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v20, @"beginsWith"))
   {
     v6 = 16;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v21, @"notBeginsWith"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v21, @"notBeginsWith"))
   {
     v6 = 17;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v22, @"listMemberBeginsWith"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v22, @"listMemberBeginsWith"))
   {
     v6 = 18;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v23, @"notListMemberBeginsWith"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v23, @"notListMemberBeginsWith"))
   {
     v6 = 19;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v24, @"listContainsAll"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v24, @"listContainsAll"))
   {
     v6 = 20;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v25, @"listNotContainsAll"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v25, @"listNotContainsAll"))
   {
     v6 = 21;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v26, @"isNull"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v26, @"isNull"))
   {
     v6 = 22;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v27, @"notNull"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v27, @"notNull"))
   {
     v6 = 23;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v28, @"notEqualsOrNull"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v28, @"notEqualsOrNull"))
   {
     v6 = 24;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v29, @"notInOrNull"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v29, @"notInOrNull"))
   {
     v6 = 25;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v30, @"listNotContainsOrNull"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v30, @"listNotContainsOrNull"))
   {
     v6 = 26;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v31, @"listNotContainsAnyOrNull"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v31, @"listNotContainsAnyOrNull"))
   {
     v6 = 27;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v32, @"notBeginsWithOrNull"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v32, @"notBeginsWithOrNull"))
   {
     v6 = 28;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v33, @"notListMemberBeginsWithOrNull"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v33, @"notListMemberBeginsWithOrNull"))
   {
     v6 = 29;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v34, @"listNotContainsAllOrNull"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v34, @"listNotContainsAllOrNull"))
   {
     v6 = 30;
   }
@@ -258,82 +258,82 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_fieldName)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_fieldValue)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_bounds)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   fieldName = self->_fieldName;
-  v9 = v4;
+  v9 = toCopy;
   if (fieldName)
   {
-    objc_msgSend_setFieldName_(v4, v5, fieldName);
-    v4 = v9;
+    objc_msgSend_setFieldName_(toCopy, v5, fieldName);
+    toCopy = v9;
   }
 
   fieldValue = self->_fieldValue;
   if (fieldValue)
   {
     objc_msgSend_setFieldValue_(v9, v5, fieldValue);
-    v4 = v9;
+    toCopy = v9;
   }
 
   bounds = self->_bounds;
   if (bounds)
   {
     objc_msgSend_setBounds_(v9, v5, bounds);
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 8) = self->_type;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 8) = self->_type;
+    *(toCopy + 36) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_fieldName, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_fieldName, v11, zone);
   v13 = *(v10 + 16);
   *(v10 + 16) = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_fieldValue, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_fieldValue, v14, zone);
   v16 = *(v10 + 24);
   *(v10 + 24) = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_bounds, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_bounds, v17, zone);
   v19 = *(v10 + 8);
   *(v10 + 8) = v18;
 
@@ -346,17 +346,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_12;
   }
 
   fieldName = self->_fieldName;
-  v9 = v4[2];
+  v9 = equalCopy[2];
   if (fieldName | v9)
   {
     if (!objc_msgSend_isEqual_(fieldName, v7, v9))
@@ -366,7 +366,7 @@
   }
 
   fieldValue = self->_fieldValue;
-  v11 = v4[3];
+  v11 = equalCopy[3];
   if (fieldValue | v11)
   {
     if (!objc_msgSend_isEqual_(fieldValue, v7, v11))
@@ -376,7 +376,7 @@
   }
 
   bounds = self->_bounds;
-  v13 = v4[1];
+  v13 = equalCopy[1];
   if (bounds | v13)
   {
     if (!objc_msgSend_isEqual_(bounds, v7, v13))
@@ -385,10 +385,10 @@
     }
   }
 
-  v14 = (*(v4 + 36) & 1) == 0;
+  v14 = (*(equalCopy + 36) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) != 0 && self->_type == *(v4 + 8))
+    if ((*(equalCopy + 36) & 1) != 0 && self->_type == *(equalCopy + 8))
     {
       v14 = 1;
       goto LABEL_13;
@@ -421,12 +421,12 @@ LABEL_13:
   return v7 ^ v4 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   fieldName = self->_fieldName;
-  v6 = *(v4 + 2);
-  v11 = v4;
+  v6 = *(fromCopy + 2);
+  v11 = fromCopy;
   if (fieldName)
   {
     if (!v6)
@@ -434,7 +434,7 @@ LABEL_13:
       goto LABEL_7;
     }
 
-    objc_msgSend_mergeFrom_(fieldName, v4, v6);
+    objc_msgSend_mergeFrom_(fieldName, fromCopy, v6);
   }
 
   else
@@ -444,13 +444,13 @@ LABEL_13:
       goto LABEL_7;
     }
 
-    objc_msgSend_setFieldName_(self, v4, v6);
+    objc_msgSend_setFieldName_(self, fromCopy, v6);
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_7:
   fieldValue = self->_fieldValue;
-  v8 = *(v4 + 3);
+  v8 = *(fromCopy + 3);
   if (fieldValue)
   {
     if (!v8)
@@ -458,7 +458,7 @@ LABEL_7:
       goto LABEL_13;
     }
 
-    objc_msgSend_mergeFrom_(fieldValue, v4, v8);
+    objc_msgSend_mergeFrom_(fieldValue, fromCopy, v8);
   }
 
   else
@@ -468,13 +468,13 @@ LABEL_7:
       goto LABEL_13;
     }
 
-    objc_msgSend_setFieldValue_(self, v4, v8);
+    objc_msgSend_setFieldValue_(self, fromCopy, v8);
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_13:
   bounds = self->_bounds;
-  v10 = *(v4 + 1);
+  v10 = *(fromCopy + 1);
   if (bounds)
   {
     if (!v10)
@@ -482,7 +482,7 @@ LABEL_13:
       goto LABEL_19;
     }
 
-    objc_msgSend_mergeFrom_(bounds, v4, v10);
+    objc_msgSend_mergeFrom_(bounds, fromCopy, v10);
   }
 
   else
@@ -492,14 +492,14 @@ LABEL_13:
       goto LABEL_19;
     }
 
-    objc_msgSend_setBounds_(self, v4, v10);
+    objc_msgSend_setBounds_(self, fromCopy, v10);
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_19:
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
-    self->_type = *(v4 + 8);
+    self->_type = *(fromCopy + 8);
     *&self->_has |= 1u;
   }
 

@@ -1,7 +1,7 @@
 @interface XRConstantEngineeringValueElementParser
 + (id)_elementNameToClassMap;
 - (void)_handleCompletion;
-- (void)setValue:(id)a3 forElementName:(id)a4;
+- (void)setValue:(id)value forElementName:(id)name;
 @end
 
 @implementation XRConstantEngineeringValueElementParser
@@ -18,10 +18,10 @@
   return v3;
 }
 
-- (void)setValue:(id)a3 forElementName:(id)a4
+- (void)setValue:(id)value forElementName:(id)name
 {
-  v14 = a3;
-  v7 = a4;
+  valueCopy = value;
+  nameCopy = name;
   if (!self->_fields)
   {
     v8 = objc_opt_new();
@@ -35,7 +35,7 @@
     sub_2480B36E0(a2, self, v11, v12, v13);
   }
 
-  objc_msgSend_addObject_(self->_fields, v10, v14, v12, v13);
+  objc_msgSend_addObject_(self->_fields, v10, valueCopy, v12, v13);
 }
 
 - (void)_handleCompletion

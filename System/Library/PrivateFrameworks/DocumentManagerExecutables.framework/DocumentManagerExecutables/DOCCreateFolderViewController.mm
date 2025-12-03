@@ -1,16 +1,16 @@
 @interface DOCCreateFolderViewController
-- (id)initForCreatingFolderInParentItem:(id)a3 suggestedName:(id)a4 transitionProxy:(id)a5;
+- (id)initForCreatingFolderInParentItem:(id)item suggestedName:(id)name transitionProxy:(id)proxy;
 @end
 
 @implementation DOCCreateFolderViewController
 
-- (id)initForCreatingFolderInParentItem:(id)a3 suggestedName:(id)a4 transitionProxy:(id)a5
+- (id)initForCreatingFolderInParentItem:(id)item suggestedName:(id)name transitionProxy:(id)proxy
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
-  v10 = a3;
+  itemCopy = item;
   swift_unknownObjectRetain();
-  v11 = specialized DOCCreateFolderViewController.init(creatingFolderInParentItem:suggestedName:transitionProxy:)(v10, v7, v9, a5);
+  v11 = specialized DOCCreateFolderViewController.init(creatingFolderInParentItem:suggestedName:transitionProxy:)(itemCopy, v7, v9, proxy);
 
   return v11;
 }

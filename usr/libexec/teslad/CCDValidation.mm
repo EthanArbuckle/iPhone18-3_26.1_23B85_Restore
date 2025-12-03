@@ -1,5 +1,5 @@
 @interface CCDValidation
-+ (BOOL)validateCloudConfiguration:(id)a3 withResultDictionary:(id)a4;
++ (BOOL)validateCloudConfiguration:(id)configuration withResultDictionary:(id)dictionary;
 + (id)cloudConfigurationValidationDictionary;
 @end
 
@@ -17,10 +17,10 @@
   return v3;
 }
 
-+ (BOOL)validateCloudConfiguration:(id)a3 withResultDictionary:(id)a4
++ (BOOL)validateCloudConfiguration:(id)configuration withResultDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -39,7 +39,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v8 = [a1 validateGroupDependenciesInCloudConfiguration:v6];
+  v8 = [self validateGroupDependenciesInCloudConfiguration:configurationCopy];
   v9 = v8;
   if (v8)
   {
@@ -51,7 +51,7 @@ LABEL_24:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Cloud configuration group dependencies are valid.", buf, 2u);
     }
 
-    [a1 cloudConfigurationValidationDictionary];
+    [self cloudConfigurationValidationDictionary];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
@@ -75,7 +75,7 @@ LABEL_24:
           v18 = [v11 objectForKeyedSubscript:v16];
           v19 = [(CCDValidationGroupInfo *)v17 initWithName:v16 validationInfo:v18];
 
-          if (![(CCDValidationInfo *)v19 validateSelfWithDictionary:v6 resultsDictionary:v7])
+          if (![(CCDValidationInfo *)v19 validateSelfWithDictionary:configurationCopy resultsDictionary:dictionaryCopy])
           {
             v28 = *(DEPLogObjects() + 8);
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -101,11 +101,11 @@ LABEL_24:
     v9 = v30;
   }
 
-  v20 = [v6 objectForKeyedSubscript:@"is-multi-user"];
+  v20 = [configurationCopy objectForKeyedSubscript:@"is-multi-user"];
   if (v20)
   {
     v21 = v20;
-    v22 = [v6 objectForKeyedSubscript:@"is-return-to-service"];
+    v22 = [configurationCopy objectForKeyedSubscript:@"is-return-to-service"];
 
     if (v22)
     {

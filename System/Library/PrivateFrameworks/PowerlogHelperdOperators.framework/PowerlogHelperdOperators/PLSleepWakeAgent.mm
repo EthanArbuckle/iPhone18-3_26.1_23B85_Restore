@@ -13,9 +13,9 @@
 - (id)driverWakeReasons;
 - (id)getLastSleepEntry;
 - (id)getLastWakeEntry;
-- (id)getPostWakeEntry:(unint64_t)a3;
+- (id)getPostWakeEntry:(unint64_t)entry;
 - (id)getSleepStatisticsApps;
-- (id)getThisWakeEntry:(id)a3 withCurrentWakeTime:(unint64_t)a4 withIsDarkwake:(BOOL)a5 withDidSleep:(BOOL)a6;
+- (id)getThisWakeEntry:(id)entry withCurrentWakeTime:(unint64_t)time withIsDarkwake:(BOOL)darkwake withDidSleep:(BOOL)sleep;
 - (id)sleepTriggers;
 - (id)wakeReasonFromIORegistry;
 - (id)wakeReasons;
@@ -29,9 +29,9 @@
 - (void)logEventNonePowerNapConfig;
 - (void)logEventPointCurrentScheduledWake;
 - (void)logEventPointKernelState;
-- (void)logEventPointWakeGesture:(id)a3;
-- (void)logSleepEntries:(id)a3;
-- (void)logWakeEntries:(id)a3 withCurrentTime:(unint64_t)a4;
+- (void)logEventPointWakeGesture:(id)gesture;
+- (void)logSleepEntries:(id)entries;
+- (void)logWakeEntries:(id)entries withCurrentTime:(unint64_t)time;
 - (void)systemPoweredOn;
 - (void)wakeReasons;
 @end
@@ -40,7 +40,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLSleepWakeAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -49,8 +49,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"PowerNapConfig";
-  v2 = [objc_opt_class() entryEventNoneDefinitionPowerNapConfig];
-  v7[0] = v2;
+  entryEventNoneDefinitionPowerNapConfig = [objc_opt_class() entryEventNoneDefinitionPowerNapConfig];
+  v7[0] = entryEventNoneDefinitionPowerNapConfig;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -70,13 +70,13 @@
     v16[0] = v2;
     v15[1] = *MEMORY[0x277D3F540];
     v11[0] = @"BatteryPower";
-    v3 = [MEMORY[0x277D3F198] sharedInstance];
-    v4 = [v3 commonTypeDict_BoolFormat];
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat = [mEMORY[0x277D3F198] commonTypeDict_BoolFormat];
     v11[1] = @"ACPower";
-    v12[0] = v4;
-    v5 = [MEMORY[0x277D3F198] sharedInstance];
-    v6 = [v5 commonTypeDict_BoolFormat];
-    v12[1] = v6;
+    v12[0] = commonTypeDict_BoolFormat;
+    mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_BoolFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_BoolFormat];
+    v12[1] = commonTypeDict_BoolFormat2;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
     v16[1] = v7;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
@@ -96,20 +96,20 @@
 {
   v12[5] = *MEMORY[0x277D85DE8];
   v11[0] = @"WakeGesture";
-  v3 = [a1 entryEventPointDefinitionWakeGesture];
-  v12[0] = v3;
+  entryEventPointDefinitionWakeGesture = [self entryEventPointDefinitionWakeGesture];
+  v12[0] = entryEventPointDefinitionWakeGesture;
   v11[1] = @"CurrentMachWakeTime";
-  v4 = [a1 entryEventPointDefinitionCurrentMachWakeTime];
-  v12[1] = v4;
+  entryEventPointDefinitionCurrentMachWakeTime = [self entryEventPointDefinitionCurrentMachWakeTime];
+  v12[1] = entryEventPointDefinitionCurrentMachWakeTime;
   v11[2] = @"KernelState";
-  v5 = [a1 entryEventPointDefinitionKernelState];
-  v12[2] = v5;
+  entryEventPointDefinitionKernelState = [self entryEventPointDefinitionKernelState];
+  v12[2] = entryEventPointDefinitionKernelState;
   v11[3] = @"ScheduledWake";
-  v6 = [a1 entryEventPointDefinitionScheduledWake];
-  v12[3] = v6;
+  entryEventPointDefinitionScheduledWake = [self entryEventPointDefinitionScheduledWake];
+  v12[3] = entryEventPointDefinitionScheduledWake;
   v11[4] = @"CoSocPower";
-  v7 = [a1 entryEventPointDefinitionCoSocPower];
-  v12[4] = v7;
+  entryEventPointDefinitionCoSocPower = [self entryEventPointDefinitionCoSocPower];
+  v12[4] = entryEventPointDefinitionCoSocPower;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:5];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -130,17 +130,17 @@
   v19[0] = v3;
   v18[1] = *MEMORY[0x277D3F540];
   v14[0] = @"Mode";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v15[0] = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v15[0] = commonTypeDict_IntegerFormat;
   v14[1] = @"Event";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v15[1] = v7;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v15[1] = commonTypeDict_IntegerFormat2;
   v14[2] = @"Display";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v15[2] = v9;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v15[2] = commonTypeDict_IntegerFormat3;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
   v19[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:2];
@@ -160,13 +160,13 @@
   v16[0] = v2;
   v15[1] = *MEMORY[0x277D3F540];
   v11[0] = @"CurrentMachWakeTime";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
   v11[1] = @"WakeReasons";
-  v12[0] = v4;
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_StringFormat];
-  v12[1] = v6;
+  v12[0] = commonTypeDict_IntegerFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v12[1] = commonTypeDict_StringFormat;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v16[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
@@ -191,10 +191,10 @@
     v18[0] = v3;
     v17[1] = *MEMORY[0x277D3F540];
     v13[0] = @"State";
-    v4 = [MEMORY[0x277D3F198] sharedInstance];
-    v5 = [v4 commonTypeDict_IntegerFormat];
+    mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+    commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
     v13[1] = @"Reason";
-    v14[0] = v5;
+    v14[0] = commonTypeDict_IntegerFormat;
     v11 = *MEMORY[0x277D3F5A8];
     v12 = &unk_287145658;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v12 forKeys:&v11 count:1];
@@ -229,29 +229,29 @@
   v25[0] = v19;
   v24[1] = *MEMORY[0x277D3F540];
   v20[0] = @"EventTime";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_DateFormat];
-  v21[0] = v17;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198] commonTypeDict_DateFormat];
+  v21[0] = commonTypeDict_DateFormat;
   v20[1] = @"Type";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_StringFormat];
-  v21[1] = v15;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v21[1] = commonTypeDict_StringFormat;
   v20[2] = @"PID";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v21[2] = v4;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v21[2] = commonTypeDict_IntegerFormat;
   v20[3] = @"SleepWakeUUID";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_StringFormat];
-  v21[3] = v6;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_StringFormat];
+  v21[3] = commonTypeDict_StringFormat2;
   v20[4] = @"WakeInfo";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_StringFormat];
-  v21[4] = v8;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_StringFormat];
+  v21[4] = commonTypeDict_StringFormat3;
   v20[5] = @"ProcessName";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_StringFormat_withProcessName];
-  v21[5] = v10;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withProcessName = [mEMORY[0x277D3F198]6 commonTypeDict_StringFormat_withProcessName];
+  v21[5] = commonTypeDict_StringFormat_withProcessName;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:6];
   v25[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
@@ -265,11 +265,11 @@
 {
   v9[2] = *MEMORY[0x277D85DE8];
   v8[0] = @"PowerState";
-  v3 = [a1 entryEventForwardDefinitionPowerState];
+  entryEventForwardDefinitionPowerState = [self entryEventForwardDefinitionPowerState];
   v8[1] = @"UserIdle";
-  v9[0] = v3;
-  v4 = [a1 entryEventForwardDefinitionUserIdle];
-  v9[1] = v4;
+  v9[0] = entryEventForwardDefinitionPowerState;
+  entryEventForwardDefinitionUserIdle = [self entryEventForwardDefinitionUserIdle];
+  v9[1] = entryEventForwardDefinitionUserIdle;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -300,30 +300,30 @@
   v41[0] = v29;
   v40[1] = *MEMORY[0x277D3F540];
   v36[0] = @"State";
-  v28 = [MEMORY[0x277D3F198] sharedInstance];
-  v27 = [v28 commonTypeDict_IntegerFormat];
-  v37[0] = v27;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v37[0] = commonTypeDict_IntegerFormat;
   v36[1] = @"Event";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_IntegerFormat];
-  v37[1] = v25;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v37[1] = commonTypeDict_IntegerFormat2;
   v36[2] = @"Reason";
   v34 = *MEMORY[0x277D3F5A8];
   v35 = &unk_287145658;
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
   v37[2] = v24;
   v36[3] = @"UUID";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_StringFormat];
-  v37[3] = v22;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat];
+  v37[3] = commonTypeDict_StringFormat;
   v36[4] = @"CurrentMachWakeTime";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_IntegerFormat];
-  v37[4] = v20;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v37[4] = commonTypeDict_IntegerFormat3;
   v36[5] = @"KernelSleepDate";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_DateFormat];
-  v37[5] = v18;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]5 commonTypeDict_DateFormat];
+  v37[5] = commonTypeDict_DateFormat;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:6];
   v41[1] = v5;
   v41[2] = &unk_28714BCA8;
@@ -334,19 +334,19 @@
   v40[4] = *MEMORY[0x277D3F500];
   v32[0] = @"key";
   v30[0] = @"PID";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
   v30[1] = @"AppName";
-  v31[0] = v8;
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_StringFormat_withAppName];
-  v31[1] = v10;
+  v31[0] = commonTypeDict_IntegerFormat4;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withAppName = [mEMORY[0x277D3F198]7 commonTypeDict_StringFormat_withAppName];
+  v31[1] = commonTypeDict_StringFormat_withAppName;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
   v32[1] = @"value";
   v33[0] = v11;
-  v12 = [MEMORY[0x277D3F198] sharedInstance];
-  v13 = [v12 commonTypeDict_StringFormat];
-  v33[1] = v13;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]8 commonTypeDict_StringFormat];
+  v33[1] = commonTypeDict_StringFormat2;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
   v41[4] = v14;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:v40 count:5];
@@ -381,8 +381,8 @@
       systemPowerPortRef = v3->_systemPowerPortRef;
       if (systemPowerPortRef)
       {
-        v9 = [(PLOperator *)v3 workQueue];
-        IONotificationPortSetDispatchQueue(systemPowerPortRef, v9);
+        workQueue = [(PLOperator *)v3 workQueue];
+        IONotificationPortSetDispatchQueue(systemPowerPortRef, workQueue);
       }
     }
 
@@ -403,19 +403,19 @@
 
 - (void)initOperatorDependancies
 {
-  v3 = [(PLSleepWakeAgent *)self getLastSleepEntry];
+  getLastSleepEntry = [(PLSleepWakeAgent *)self getLastSleepEntry];
   lastSleepEntry = self->_lastSleepEntry;
-  self->_lastSleepEntry = v3;
+  self->_lastSleepEntry = getLastSleepEntry;
 
-  v5 = [(PLSleepWakeAgent *)self getLastWakeEntry];
+  getLastWakeEntry = [(PLSleepWakeAgent *)self getLastWakeEntry];
   lastWakeEntry = self->_lastWakeEntry;
-  self->_lastWakeEntry = v5;
+  self->_lastWakeEntry = getLastWakeEntry;
 
   if (([MEMORY[0x277D3F208] isHomePod] & 1) == 0)
   {
     v7 = [PLUtilities powerModelForOperatorName:@"Processor"];
-    v8 = [MEMORY[0x277D3F208] kPLSoCClassOfDevice];
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", v8];
+    kPLSoCClassOfDevice = [MEMORY[0x277D3F208] kPLSoCClassOfDevice];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", kPLSoCClassOfDevice];
     v10 = [v7 objectForKeyedSubscript:v9];
     [v10 doubleValue];
     [(PLSleepWakeAgent *)self setApSOCBasePower:?];
@@ -427,9 +427,9 @@
     }
   }
 
-  v12 = [(PLOperator *)self storage];
+  storage = [(PLOperator *)self storage];
   v13 = [(PLOperator *)PLSleepWakeAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"PowerState"];
-  v14 = [v12 lastEntryForKey:v13];
+  v14 = [storage lastEntryForKey:v13];
 
   if (!v14)
   {
@@ -448,13 +448,13 @@
     [(PLSleepWakeAgent *)self setWakeGestureXPCListener:v16];
     if ([MEMORY[0x277D3F208] kPLSoCClassOfDevice] <= 1001002)
     {
-      v17 = [MEMORY[0x277CBEAA8] monotonicDate];
-      v18 = [MEMORY[0x277D3F0C0] sharedInstance];
+      monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+      mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
       [(PLSleepWakeAgent *)self apSOCBasePower];
-      [v18 createPowerEventForwardWithRootNodeID:52 withPower:v17 withStartDate:?];
+      [mEMORY[0x277D3F0C0] createPowerEventForwardWithRootNodeID:52 withPower:monotonicDate withStartDate:?];
 
-      v19 = [MEMORY[0x277D3F0C0] sharedInstance];
-      [v19 createQualificationEventForwardWithQualificationID:8 withChildNodeNames:&unk_28714BCD8 withStartDate:v17];
+      mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+      [mEMORY[0x277D3F0C0]2 createQualificationEventForwardWithQualificationID:8 withChildNodeNames:&unk_28714BCD8 withStartDate:monotonicDate];
     }
   }
 
@@ -474,19 +474,19 @@ void __44__PLSleepWakeAgent_initOperatorDependancies__block_invoke(uint64_t a1, 
   [*(a1 + 32) logEventPointWakeGesture:v6];
 }
 
-- (void)logEventPointWakeGesture:(id)a3
+- (void)logEventPointWakeGesture:(id)gesture
 {
   v4 = *MEMORY[0x277D3F5E8];
-  v5 = a3;
+  gestureCopy = gesture;
   v10 = [(PLOperator *)PLSleepWakeAgent entryKeyForType:v4 andName:@"WakeGesture"];
   v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v10];
-  v7 = [v5 objectForKeyedSubscript:@"mode"];
+  v7 = [gestureCopy objectForKeyedSubscript:@"mode"];
   [v6 setObject:v7 forKeyedSubscript:@"Mode"];
 
-  v8 = [v5 objectForKeyedSubscript:@"event"];
+  v8 = [gestureCopy objectForKeyedSubscript:@"event"];
   [v6 setObject:v8 forKeyedSubscript:@"Event"];
 
-  v9 = [v5 objectForKeyedSubscript:@"display"];
+  v9 = [gestureCopy objectForKeyedSubscript:@"display"];
 
   [v6 setObject:v9 forKeyedSubscript:@"Display"];
   [(PLOperator *)self logEntry:v6];
@@ -496,7 +496,7 @@ void __44__PLSleepWakeAgent_initOperatorDependancies__block_invoke(uint64_t a1, 
 {
   v4 = *MEMORY[0x277D85DE8];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_error_impl(&dword_25EE51000, a2, OS_LOG_TYPE_ERROR, "Unable to query kernel metrics (%d)", v3, 8u);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -505,9 +505,9 @@ void __44__PLSleepWakeAgent_initOperatorDependancies__block_invoke(uint64_t a1, 
 {
   v3 = objc_autoreleasePoolPush();
   v4 = mach_absolute_time();
-  v5 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [(PLSleepWakeAgent *)self logSleepEntries:v5];
-  [(PLSleepWakeAgent *)self logWakeEntries:v5 withCurrentTime:v4];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [(PLSleepWakeAgent *)self logSleepEntries:monotonicDate];
+  [(PLSleepWakeAgent *)self logWakeEntries:monotonicDate withCurrentTime:v4];
   if (([MEMORY[0x277D3F1B8] hasAOT] & 1) != 0 || objc_msgSend(MEMORY[0x277D3F1B8], "hasLPW"))
   {
     [(PLSleepWakeAgent *)self logEventPointKernelState];
@@ -518,10 +518,10 @@ void __44__PLSleepWakeAgent_initOperatorDependancies__block_invoke(uint64_t a1, 
   objc_autoreleasePoolPop(v3);
 }
 
-- (void)logSleepEntries:(id)a3
+- (void)logSleepEntries:(id)entries
 {
   v62 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entriesCopy = entries;
   v5 = objc_autoreleasePoolPush();
   v45 = 0;
   v46 = 0;
@@ -532,7 +532,7 @@ void __44__PLSleepWakeAgent_initOperatorDependancies__block_invoke(uint64_t a1, 
     v7 = [PLUtilities dateFromTimevalSystemTime:v45, v46];
     lastSleepEntry = self->_lastSleepEntry;
     v36 = v5;
-    v37 = v4;
+    v37 = entriesCopy;
     v33 = 96;
     if (lastSleepEntry && (-[PLEntry dictionary](lastSleepEntry, "dictionary"), v9 = objc_claimAutoreleasedReturnValue(), [v9 objectForKeyedSubscript:@"KernelSleepDate"], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v7, "isEqualToDate:", v10), v10, v9, v11))
     {
@@ -542,7 +542,7 @@ void __44__PLSleepWakeAgent_initOperatorDependancies__block_invoke(uint64_t a1, 
         [PLSleepWakeAgent logSleepEntries:];
       }
 
-      v39 = [[PLEventForwardPowerStateEntry alloc] initEntryWithState:1 withEvent:5 withReason:0 withKernelSleepDate:v7 withDate:v4];
+      v39 = [[PLEventForwardPowerStateEntry alloc] initEntryWithState:1 withEvent:5 withReason:0 withKernelSleepDate:v7 withDate:entriesCopy];
     }
 
     else
@@ -562,16 +562,16 @@ void __44__PLSleepWakeAgent_initOperatorDependancies__block_invoke(uint64_t a1, 
       {
         if ([MEMORY[0x277D3F208] kPLSoCClassOfDevice] <= 1001002)
         {
-          v16 = [MEMORY[0x277D3F0C0] sharedInstance];
-          [v16 createPowerEventForwardWithRootNodeID:52 withPower:v6 withStartDate:0.0];
+          mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+          [mEMORY[0x277D3F0C0] createPowerEventForwardWithRootNodeID:52 withPower:v6 withStartDate:0.0];
         }
 
-        v17 = [MEMORY[0x277D3F0C0] sharedInstance];
-        [v17 createQualificationEventForwardWithQualificationID:8 withChildNodeNames:MEMORY[0x277CBEBF8] withStartDate:v6];
+        mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+        [mEMORY[0x277D3F0C0]2 createQualificationEventForwardWithQualificationID:8 withChildNodeNames:MEMORY[0x277CBEBF8] withStartDate:v6];
       }
     }
 
-    v35 = self;
+    selfCopy = self;
     [(PLSleepWakeAgent *)self getSleepStatisticsApps];
     v40 = 0u;
     v41 = 0u;
@@ -616,7 +616,7 @@ void __44__PLSleepWakeAgent_initOperatorDependancies__block_invoke(uint64_t a1, 
       v29 = v45;
       v30 = v46;
       [v6 timeIntervalSince1970];
-      v31 = *(&v35->super.super.super.isa + v34);
+      v31 = *(&selfCopy->super.super.super.isa + v34);
       *buf = 134219266;
       v48 = v29;
       v49 = 1024;
@@ -632,9 +632,9 @@ void __44__PLSleepWakeAgent_initOperatorDependancies__block_invoke(uint64_t a1, 
       _os_log_debug_impl(&dword_25EE51000, v27, OS_LOG_TYPE_DEBUG, "Ker_sleep_time.sec=%ld,kern_sleep_time.usec=%d,sleepDate=%f,kernelSleepDate=%@,lastsleep=%@,thissleep=%@", buf, 0x3Au);
     }
 
-    [(PLOperator *)v35 logEntry:v39];
+    [(PLOperator *)selfCopy logEntry:v39];
     v5 = v36;
-    v4 = v37;
+    entriesCopy = v37;
   }
 
   objc_autoreleasePoolPop(v5);
@@ -657,10 +657,10 @@ void __44__PLSleepWakeAgent_initOperatorDependancies__block_invoke(uint64_t a1, 
   }
 }
 
-- (id)getThisWakeEntry:(id)a3 withCurrentWakeTime:(unint64_t)a4 withIsDarkwake:(BOOL)a5 withDidSleep:(BOOL)a6
+- (id)getThisWakeEntry:(id)entry withCurrentWakeTime:(unint64_t)time withIsDarkwake:(BOOL)darkwake withDidSleep:(BOOL)sleep
 {
-  v6 = a6;
-  if (a5)
+  sleepCopy = sleep;
+  if (darkwake)
   {
     v9 = 5;
   }
@@ -670,7 +670,7 @@ void __44__PLSleepWakeAgent_initOperatorDependancies__block_invoke(uint64_t a1, 
     v9 = 0;
   }
 
-  if (a5)
+  if (darkwake)
   {
     v10 = 6;
   }
@@ -680,11 +680,11 @@ void __44__PLSleepWakeAgent_initOperatorDependancies__block_invoke(uint64_t a1, 
     v10 = 2;
   }
 
-  v11 = a3;
-  v12 = [(PLSleepWakeAgent *)self getCurrentWakeTimeKey];
+  entryCopy = entry;
+  getCurrentWakeTimeKey = [(PLSleepWakeAgent *)self getCurrentWakeTimeKey];
   v13 = [PLEventForwardPowerStateEntry alloc];
-  v14 = [(PLSleepWakeAgent *)self wakeReasons];
-  if (v6)
+  wakeReasons = [(PLSleepWakeAgent *)self wakeReasons];
+  if (sleepCopy)
   {
     v15 = v9;
   }
@@ -694,7 +694,7 @@ void __44__PLSleepWakeAgent_initOperatorDependancies__block_invoke(uint64_t a1, 
     v15 = v10;
   }
 
-  if (v6)
+  if (sleepCopy)
   {
     v16 = 0;
   }
@@ -704,54 +704,54 @@ void __44__PLSleepWakeAgent_initOperatorDependancies__block_invoke(uint64_t a1, 
     v16 = 5;
   }
 
-  v17 = [(PLEventForwardPowerStateEntry *)v13 initEntryWithState:v15 withEvent:v16 withReason:v14 withCurrentWakeTime:a4 withCurrentWakeTimeKey:v12 withDate:v11];
+  v17 = [(PLEventForwardPowerStateEntry *)v13 initEntryWithState:v15 withEvent:v16 withReason:wakeReasons withCurrentWakeTime:time withCurrentWakeTimeKey:getCurrentWakeTimeKey withDate:entryCopy];
 
   return v17;
 }
 
-- (id)getPostWakeEntry:(unint64_t)a3
+- (id)getPostWakeEntry:(unint64_t)entry
 {
   v5 = [(PLOperator *)PLSleepWakeAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"CurrentMachWakeTime"];
   v6 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v5];
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:entry];
   [v6 setObject:v7 forKeyedSubscript:@"CurrentMachWakeTime"];
 
-  v8 = [(PLSleepWakeAgent *)self wakeReasonsAsNSString];
-  [v6 setObject:v8 forKeyedSubscript:@"WakeReasons"];
+  wakeReasonsAsNSString = [(PLSleepWakeAgent *)self wakeReasonsAsNSString];
+  [v6 setObject:wakeReasonsAsNSString forKeyedSubscript:@"WakeReasons"];
 
   return v6;
 }
 
-- (void)logWakeEntries:(id)a3 withCurrentTime:(unint64_t)a4
+- (void)logWakeEntries:(id)entries withCurrentTime:(unint64_t)time
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  entriesCopy = entries;
   v7 = objc_autoreleasePoolPush();
-  v8 = [(PLSleepWakeAgent *)self getCurrentWakeTime];
-  v38 = a4;
-  [PLUtilities secondsFromMachTime:a4];
+  getCurrentWakeTime = [(PLSleepWakeAgent *)self getCurrentWakeTime];
+  timeCopy = time;
+  [PLUtilities secondsFromMachTime:time];
   v10 = v9;
-  [PLUtilities secondsFromMachTime:v8];
-  v12 = [v6 dateByAddingTimeInterval:-(v10 - v11)];
-  v13 = [(PLSleepWakeAgent *)self getCurrentWakeTimeKey];
+  [PLUtilities secondsFromMachTime:getCurrentWakeTime];
+  v12 = [entriesCopy dateByAddingTimeInterval:-(v10 - v11)];
+  getCurrentWakeTimeKey = [(PLSleepWakeAgent *)self getCurrentWakeTimeKey];
   lastWakeEntry = self->_lastWakeEntry;
   if (!lastWakeEntry)
   {
     goto LABEL_6;
   }
 
-  v15 = [(PLEntry *)lastWakeEntry dictionary];
-  v16 = [v15 objectForKeyedSubscript:v13];
-  [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v8];
+  dictionary = [(PLEntry *)lastWakeEntry dictionary];
+  v16 = [dictionary objectForKeyedSubscript:getCurrentWakeTimeKey];
+  [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:getCurrentWakeTime];
   v17 = v12;
-  v18 = v6;
-  v19 = v13;
+  v18 = entriesCopy;
+  v19 = getCurrentWakeTimeKey;
   v21 = v20 = v7;
   v39 = [v16 isEqual:v21];
 
   v7 = v20;
-  v13 = v19;
-  v6 = v18;
+  getCurrentWakeTimeKey = v19;
+  entriesCopy = v18;
   v12 = v17;
 
   if (v39)
@@ -762,28 +762,28 @@ void __44__PLSleepWakeAgent_initOperatorDependancies__block_invoke(uint64_t a1, 
       [PLSleepWakeAgent logSleepEntries:];
     }
 
-    v23 = [(PLSleepWakeAgent *)self getThisWakeEntry:v6 withCurrentWakeTime:v8 withIsDarkwake:0 withDidSleep:0];
+    v23 = [(PLSleepWakeAgent *)self getThisWakeEntry:entriesCopy withCurrentWakeTime:getCurrentWakeTime withIsDarkwake:0 withDidSleep:0];
   }
 
   else
   {
 LABEL_6:
-    v23 = [(PLSleepWakeAgent *)self getThisWakeEntry:v12 withCurrentWakeTime:v8 withIsDarkwake:0 withDidSleep:1];
+    v23 = [(PLSleepWakeAgent *)self getThisWakeEntry:v12 withCurrentWakeTime:getCurrentWakeTime withIsDarkwake:0 withDidSleep:1];
     objc_storeStrong(&self->_lastWakeEntry, v23);
     if (([MEMORY[0x277D3F208] isHomePod] & 1) == 0)
     {
       if ([MEMORY[0x277D3F208] kPLSoCClassOfDevice] <= 1001002)
       {
-        v24 = [MEMORY[0x277D3F0C0] sharedInstance];
+        mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
         [(PLSleepWakeAgent *)self apSOCBasePower];
-        [v24 createPowerEventForwardWithRootNodeID:52 withPower:v12 withStartDate:?];
+        [mEMORY[0x277D3F0C0] createPowerEventForwardWithRootNodeID:52 withPower:v12 withStartDate:?];
       }
 
-      v25 = [MEMORY[0x277D3F0C0] sharedInstance];
-      [v25 createQualificationEventForwardWithQualificationID:8 withChildNodeNames:&unk_28714BCF0 withStartDate:v12];
+      mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+      [mEMORY[0x277D3F0C0]2 createQualificationEventForwardWithQualificationID:8 withChildNodeNames:&unk_28714BCF0 withStartDate:v12];
     }
 
-    v26 = [(PLSleepWakeAgent *)self getPostWakeEntry:v8];
+    v26 = [(PLSleepWakeAgent *)self getPostWakeEntry:getCurrentWakeTime];
     v52[0] = v26;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:1];
     [(PLOperator *)self postEntries:v27];
@@ -792,13 +792,13 @@ LABEL_6:
   v28 = PLLogSleepWake();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
   {
-    [v6 timeIntervalSince1970];
+    [entriesCopy timeIntervalSince1970];
     v31 = v30;
     [v12 timeIntervalSince1970];
     v33 = v32;
-    [PLUtilities secondsFromMachTime:v8];
+    [PLUtilities secondsFromMachTime:getCurrentWakeTime];
     v35 = v34;
-    [PLUtilities secondsFromMachTime:v38];
+    [PLUtilities secondsFromMachTime:timeCopy];
     v36 = self->_lastWakeEntry;
     *buf = 134219266;
     v41 = v31;
@@ -867,8 +867,8 @@ LABEL_6:
   else
   {
     v2 = [MEMORY[0x277CCACA8] stringWithUTF8String:v8];
-    v3 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v4 = [v2 stringByTrimmingCharactersInSet:v3];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v4 = [v2 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   }
 
   v5 = *MEMORY[0x277D85DE8];
@@ -890,8 +890,8 @@ LABEL_6:
 
 - (unint64_t)getSleepSubclassKey
 {
-  v2 = [(PLSleepWakeAgent *)self getIOPMRootDomain];
-  result = IORegistryEntryCreateCFProperty(v2, @"IOPMSystemSleepType", *MEMORY[0x277CBECE8], 0);
+  getIOPMRootDomain = [(PLSleepWakeAgent *)self getIOPMRootDomain];
+  result = IORegistryEntryCreateCFProperty(getIOPMRootDomain, @"IOPMSystemSleepType", *MEMORY[0x277CBECE8], 0);
   valuePtr = 0;
   v6 = 0;
   if (result)
@@ -949,8 +949,8 @@ LABEL_6:
   v14 = 0u;
   *buffer = 0u;
   v12 = 0u;
-  v2 = [(PLSleepWakeAgent *)self getIOPMRootDomain];
-  CFProperty = IORegistryEntryCreateCFProperty(v2, @"Wake Type", *MEMORY[0x277CBECE8], 0);
+  getIOPMRootDomain = [(PLSleepWakeAgent *)self getIOPMRootDomain];
+  CFProperty = IORegistryEntryCreateCFProperty(getIOPMRootDomain, @"Wake Type", *MEMORY[0x277CBECE8], 0);
   if (CFProperty && (v4 = CFProperty, CString = CFStringGetCString(CFProperty, buffer, 128, 0x8000100u), CFRelease(v4), CString))
   {
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:buffer];
@@ -1061,8 +1061,8 @@ LABEL_18:
   v14 = 0u;
   *buffer = 0u;
   v12 = 0u;
-  v2 = [(PLSleepWakeAgent *)self getIOPMRootDomain];
-  CFProperty = IORegistryEntryCreateCFProperty(v2, @"Wake Reason", *MEMORY[0x277CBECE8], 0);
+  getIOPMRootDomain = [(PLSleepWakeAgent *)self getIOPMRootDomain];
+  CFProperty = IORegistryEntryCreateCFProperty(getIOPMRootDomain, @"Wake Reason", *MEMORY[0x277CBECE8], 0);
   if (CFProperty && (v4 = CFProperty, CString = CFStringGetCString(CFProperty, buffer, 128, 0x8000100u), CFRelease(v4), CString))
   {
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:buffer];
@@ -1082,12 +1082,12 @@ LABEL_18:
 
 - (id)getLastSleepEntry
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:@"Event" withValue:&unk_2871456A0 withComparisonOperation:0];
-  [v3 addObject:v4];
-  v5 = [(PLOperator *)self storage];
+  [array addObject:v4];
+  storage = [(PLOperator *)self storage];
   v6 = +[PLEventForwardPowerStateEntry entryKey];
-  v7 = [v5 lastEntryForKey:v6 withComparisons:v3 isSingleton:0];
+  v7 = [storage lastEntryForKey:v6 withComparisons:array isSingleton:0];
 
   return v7;
 }
@@ -1096,11 +1096,11 @@ LABEL_18:
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v3 = [objc_alloc(MEMORY[0x277D3F260]) initWithKey:@"Event" withValue:&unk_287145658 withComparisonOperation:0];
-  v4 = [(PLOperator *)self storage];
+  storage = [(PLOperator *)self storage];
   v5 = +[PLEventForwardPowerStateEntry entryKey];
   v10[0] = v3;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-  v7 = [v4 lastEntryForKey:v5 withComparisons:v6 isSingleton:0];
+  v7 = [storage lastEntryForKey:v5 withComparisons:v6 isSingleton:0];
 
   v8 = *MEMORY[0x277D85DE8];
 
@@ -1111,8 +1111,8 @@ LABEL_18:
 {
   v35 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(PLSleepWakeAgent *)self getIOPMRootDomain];
-  CFProperty = IORegistryEntryCreateCFProperty(v4, @"AppStatistics", *MEMORY[0x277CBECE8], 0);
+  getIOPMRootDomain = [(PLSleepWakeAgent *)self getIOPMRootDomain];
+  CFProperty = IORegistryEntryCreateCFProperty(getIOPMRootDomain, @"AppStatistics", *MEMORY[0x277CBECE8], 0);
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;

@@ -1,41 +1,41 @@
 @interface PLCloudDownloadBatchDetails
-- (void)unionBatchDetails:(id)a3;
+- (void)unionBatchDetails:(id)details;
 @end
 
 @implementation PLCloudDownloadBatchDetails
 
-- (void)unionBatchDetails:(id)a3
+- (void)unionBatchDetails:(id)details
 {
-  v15 = a3;
+  detailsCopy = details;
   if ([(PLCloudDownloadBatchDetails *)self hasResourceChanges])
   {
-    v4 = 1;
+    hasResourceChanges = 1;
   }
 
   else
   {
-    v4 = [v15 hasResourceChanges];
+    hasResourceChanges = [detailsCopy hasResourceChanges];
   }
 
-  [(PLCloudDownloadBatchDetails *)self setHasResourceChanges:v4];
+  [(PLCloudDownloadBatchDetails *)self setHasResourceChanges:hasResourceChanges];
   if ([(PLCloudDownloadBatchDetails *)self needsWidgetTimelineReload])
   {
-    v5 = 1;
+    needsWidgetTimelineReload = 1;
   }
 
   else
   {
-    v5 = [v15 needsWidgetTimelineReload];
+    needsWidgetTimelineReload = [detailsCopy needsWidgetTimelineReload];
   }
 
-  [(PLCloudDownloadBatchDetails *)self setNeedsWidgetTimelineReload:v5];
-  -[PLCloudDownloadBatchDetails setNumberOfPhotos:](self, "setNumberOfPhotos:", [v15 numberOfPhotos] + -[PLCloudDownloadBatchDetails numberOfPhotos](self, "numberOfPhotos"));
-  -[PLCloudDownloadBatchDetails setNumberOfVideos:](self, "setNumberOfVideos:", [v15 numberOfVideos] + -[PLCloudDownloadBatchDetails numberOfVideos](self, "numberOfVideos"));
-  v6 = [(PLCloudDownloadBatchDetails *)self cmmUUIDsToNotify];
-  v7 = v6;
-  if (v6)
+  [(PLCloudDownloadBatchDetails *)self setNeedsWidgetTimelineReload:needsWidgetTimelineReload];
+  -[PLCloudDownloadBatchDetails setNumberOfPhotos:](self, "setNumberOfPhotos:", [detailsCopy numberOfPhotos] + -[PLCloudDownloadBatchDetails numberOfPhotos](self, "numberOfPhotos"));
+  -[PLCloudDownloadBatchDetails setNumberOfVideos:](self, "setNumberOfVideos:", [detailsCopy numberOfVideos] + -[PLCloudDownloadBatchDetails numberOfVideos](self, "numberOfVideos"));
+  cmmUUIDsToNotify = [(PLCloudDownloadBatchDetails *)self cmmUUIDsToNotify];
+  v7 = cmmUUIDsToNotify;
+  if (cmmUUIDsToNotify)
   {
-    v8 = v6;
+    v8 = cmmUUIDsToNotify;
   }
 
   else
@@ -43,21 +43,21 @@
     v8 = MEMORY[0x1E695E0F0];
   }
 
-  v9 = [v15 cmmUUIDsToNotify];
-  v10 = [v8 arrayByAddingObjectsFromArray:v9];
+  cmmUUIDsToNotify2 = [detailsCopy cmmUUIDsToNotify];
+  v10 = [v8 arrayByAddingObjectsFromArray:cmmUUIDsToNotify2];
   [(PLCloudDownloadBatchDetails *)self setCmmUUIDsToNotify:v10];
 
-  v11 = [(PLCloudDownloadBatchDetails *)self confirmedResourceIDs];
-  v12 = v11;
-  if (!v11)
+  confirmedResourceIDs = [(PLCloudDownloadBatchDetails *)self confirmedResourceIDs];
+  v12 = confirmedResourceIDs;
+  if (!confirmedResourceIDs)
   {
     v12 = [MEMORY[0x1E695DFD8] set];
   }
 
-  v13 = [v15 confirmedResourceIDs];
-  v14 = [v12 setByAddingObjectsFromSet:v13];
+  confirmedResourceIDs2 = [detailsCopy confirmedResourceIDs];
+  v14 = [v12 setByAddingObjectsFromSet:confirmedResourceIDs2];
 
-  if (!v11)
+  if (!confirmedResourceIDs)
   {
   }
 

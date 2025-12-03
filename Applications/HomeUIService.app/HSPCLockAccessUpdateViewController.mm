@@ -1,18 +1,18 @@
 @interface HSPCLockAccessUpdateViewController
-- (HSPCLockAccessUpdateViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCLockAccessUpdateViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)hu_preloadContent;
 - (void)viewDidLoad;
 @end
 
 @implementation HSPCLockAccessUpdateViewController
 
-- (HSPCLockAccessUpdateViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCLockAccessUpdateViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v9 = [HULockAccessUpdateViewController alloc];
-  v10 = [v8 home];
-  v11 = [v9 initWithHome:v10];
+  home = [configCopy home];
+  v11 = [v9 initWithHome:home];
   lockAccessUpdateViewController = self->_lockAccessUpdateViewController;
   self->_lockAccessUpdateViewController = v11;
 
@@ -22,17 +22,17 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_config, a4);
-    objc_storeStrong(&v14->_coordinator, a3);
+    objc_storeStrong(&v13->_config, config);
+    objc_storeStrong(&v14->_coordinator, coordinator);
     v15 = sub_100063A44(@"HSLockAccessUpdate_Title");
     [(HSPCLockAccessUpdateViewController *)v14 setTitle:v15];
 
     v16 = sub_100063A44(@"HSLockAccessUpdate_Description");
     [(HSPCLockAccessUpdateViewController *)v14 setSubtitle:v16];
 
-    v17 = [v8 home];
-    v18 = [v17 name];
-    v25 = sub_100063B5C(@"HSLockAccessUpdate_Enable_Format", @"%@", v19, v20, v21, v22, v23, v24, v18);
+    home2 = [configCopy home];
+    name = [home2 name];
+    v25 = sub_100063B5C(@"HSLockAccessUpdate_Enable_Format", @"%@", v19, v20, v21, v22, v23, v24, name);
     v26 = [(HSPCLockAccessUpdateViewController *)v14 addProminentButtonWithLocalizedTitle:v25 target:v14 futureSelector:"commitConfiguration"];
   }
 
@@ -44,49 +44,49 @@
   v38.receiver = self;
   v38.super_class = HSPCLockAccessUpdateViewController;
   [(HSPCLockAccessUpdateViewController *)&v38 viewDidLoad];
-  v3 = [(HSPCLockAccessUpdateViewController *)self lockAccessUpdateViewController];
-  [(HSPCLockAccessUpdateViewController *)self addChildViewController:v3];
+  lockAccessUpdateViewController = [(HSPCLockAccessUpdateViewController *)self lockAccessUpdateViewController];
+  [(HSPCLockAccessUpdateViewController *)self addChildViewController:lockAccessUpdateViewController];
 
-  v4 = [(HSPCLockAccessUpdateViewController *)self contentView];
-  v5 = [(HSPCLockAccessUpdateViewController *)self lockAccessUpdateViewController];
-  v6 = [v5 contentView];
-  [v4 addSubview:v6];
+  contentView = [(HSPCLockAccessUpdateViewController *)self contentView];
+  lockAccessUpdateViewController2 = [(HSPCLockAccessUpdateViewController *)self lockAccessUpdateViewController];
+  contentView2 = [lockAccessUpdateViewController2 contentView];
+  [contentView addSubview:contentView2];
 
-  v7 = [(HSPCLockAccessUpdateViewController *)self lockAccessUpdateViewController];
-  v8 = [v7 contentView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  lockAccessUpdateViewController3 = [(HSPCLockAccessUpdateViewController *)self lockAccessUpdateViewController];
+  contentView3 = [lockAccessUpdateViewController3 contentView];
+  [contentView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v37 = [(HSPCLockAccessUpdateViewController *)self lockAccessUpdateViewController];
-  v36 = [v37 contentView];
-  v34 = [v36 topAnchor];
-  v35 = [(HSPCLockAccessUpdateViewController *)self contentView];
-  v33 = [v35 mainContentGuide];
-  v32 = [v33 topAnchor];
-  v31 = [v34 constraintEqualToAnchor:v32];
+  lockAccessUpdateViewController4 = [(HSPCLockAccessUpdateViewController *)self lockAccessUpdateViewController];
+  contentView4 = [lockAccessUpdateViewController4 contentView];
+  topAnchor = [contentView4 topAnchor];
+  contentView5 = [(HSPCLockAccessUpdateViewController *)self contentView];
+  mainContentGuide = [contentView5 mainContentGuide];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v39[0] = v31;
-  v30 = [(HSPCLockAccessUpdateViewController *)self lockAccessUpdateViewController];
-  v29 = [v30 contentView];
-  v27 = [v29 bottomAnchor];
-  v28 = [(HSPCLockAccessUpdateViewController *)self contentView];
-  v26 = [v28 mainContentGuide];
-  v25 = [v26 bottomAnchor];
-  v24 = [v27 constraintEqualToAnchor:v25];
+  lockAccessUpdateViewController5 = [(HSPCLockAccessUpdateViewController *)self lockAccessUpdateViewController];
+  contentView6 = [lockAccessUpdateViewController5 contentView];
+  bottomAnchor = [contentView6 bottomAnchor];
+  contentView7 = [(HSPCLockAccessUpdateViewController *)self contentView];
+  mainContentGuide2 = [contentView7 mainContentGuide];
+  bottomAnchor2 = [mainContentGuide2 bottomAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v39[1] = v24;
-  v23 = [(HSPCLockAccessUpdateViewController *)self lockAccessUpdateViewController];
-  v22 = [v23 contentView];
-  v20 = [v22 leadingAnchor];
-  v21 = [(HSPCLockAccessUpdateViewController *)self contentView];
-  v19 = [v21 mainContentGuide];
-  v9 = [v19 leadingAnchor];
-  v10 = [v20 constraintEqualToAnchor:v9];
+  lockAccessUpdateViewController6 = [(HSPCLockAccessUpdateViewController *)self lockAccessUpdateViewController];
+  contentView8 = [lockAccessUpdateViewController6 contentView];
+  leadingAnchor = [contentView8 leadingAnchor];
+  contentView9 = [(HSPCLockAccessUpdateViewController *)self contentView];
+  mainContentGuide3 = [contentView9 mainContentGuide];
+  leadingAnchor2 = [mainContentGuide3 leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v39[2] = v10;
-  v11 = [(HSPCLockAccessUpdateViewController *)self lockAccessUpdateViewController];
-  v12 = [v11 contentView];
-  v13 = [v12 trailingAnchor];
-  v14 = [(HSPCLockAccessUpdateViewController *)self contentView];
-  v15 = [v14 mainContentGuide];
-  v16 = [v15 trailingAnchor];
-  v17 = [v13 constraintEqualToAnchor:v16];
+  lockAccessUpdateViewController7 = [(HSPCLockAccessUpdateViewController *)self lockAccessUpdateViewController];
+  contentView10 = [lockAccessUpdateViewController7 contentView];
+  trailingAnchor = [contentView10 trailingAnchor];
+  contentView11 = [(HSPCLockAccessUpdateViewController *)self contentView];
+  mainContentGuide4 = [contentView11 mainContentGuide];
+  trailingAnchor2 = [mainContentGuide4 trailingAnchor];
+  v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v39[3] = v17;
   v18 = [NSArray arrayWithObjects:v39 count:4];
   [NSLayoutConstraint activateConstraints:v18];
@@ -94,10 +94,10 @@
 
 - (id)hu_preloadContent
 {
-  v2 = [(HSPCLockAccessUpdateViewController *)self lockAccessUpdateViewController];
-  v3 = [v2 hu_preloadContent];
+  lockAccessUpdateViewController = [(HSPCLockAccessUpdateViewController *)self lockAccessUpdateViewController];
+  hu_preloadContent = [lockAccessUpdateViewController hu_preloadContent];
 
-  return v3;
+  return hu_preloadContent;
 }
 
 @end

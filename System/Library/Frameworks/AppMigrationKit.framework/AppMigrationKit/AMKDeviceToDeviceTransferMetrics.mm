@@ -1,15 +1,15 @@
 @interface AMKDeviceToDeviceTransferMetrics
 - (AMKDeviceToDeviceTransferMetrics)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMKDeviceToDeviceTransferMetrics
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_29EAC4038(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_29EAC4038(coderCopy);
 }
 
 - (AMKDeviceToDeviceTransferMetrics)init

@@ -1,14 +1,14 @@
 @interface WebMainThreadInvoker
-- (void)forwardInvocation:(id)a3;
-- (void)handleException:(id)a3;
+- (void)forwardInvocation:(id)invocation;
+- (void)handleException:(id)exception;
 @end
 
 @implementation WebMainThreadInvoker
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  [a3 setTarget:self->target];
-  [a3 performSelectorOnMainThread:sel__webkit_invokeAndHandleException_ withObject:self waitUntilDone:1];
+  [invocation setTarget:self->target];
+  [invocation performSelectorOnMainThread:sel__webkit_invokeAndHandleException_ withObject:self waitUntilDone:1];
   m_ptr = self->exception.m_ptr;
   if (m_ptr)
   {
@@ -18,7 +18,7 @@
     objc_exception_throw(v12);
   }
 
-  v6 = [objc_msgSend(a3 "methodSignature")];
+  v6 = [objc_msgSend(invocation "methodSignature")];
   v7 = v6;
   if (v6)
   {
@@ -62,7 +62,7 @@
     if (v10 - v7 != -1)
     {
       v14 = 0;
-      [a3 getReturnValue:&v14];
+      [invocation getReturnValue:&v14];
       if (v14)
       {
         v11 = v14;
@@ -71,15 +71,15 @@
   }
 }
 
-- (void)handleException:(id)a3
+- (void)handleException:(id)exception
 {
-  if (a3)
+  if (exception)
   {
-    v5 = a3;
+    exceptionCopy = exception;
   }
 
   m_ptr = self->exception.m_ptr;
-  self->exception.m_ptr = a3;
+  self->exception.m_ptr = exception;
   if (m_ptr)
   {
   }

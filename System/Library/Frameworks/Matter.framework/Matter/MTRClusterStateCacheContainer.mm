@@ -1,9 +1,9 @@
 @interface MTRClusterStateCacheContainer
 - (MTRClusterStateCacheContainer)init;
 - (MTRDeviceControllerXPCConnection)xpcConnection;
-- (void)_readKnownCachedAttributeWithEndpointID:(unsigned __int16)a3 clusterID:(unsigned int)a4 attributeID:(unsigned int)a5 queue:(id)a6 completion:(id)a7;
+- (void)_readKnownCachedAttributeWithEndpointID:(unsigned __int16)d clusterID:(unsigned int)iD attributeID:(unsigned int)attributeID queue:(id)queue completion:(id)completion;
 - (void)readAttributesWithEndpointID:(NSNumber *)endpointID clusterID:(NSNumber *)clusterID attributeID:(NSNumber *)attributeID queue:(dispatch_queue_t)queue completion:(MTRDeviceResponseHandler)completion;
-- (void)setXPCConnection:(id)a3 controllerID:(id)a4 deviceID:(id)a5;
+- (void)setXPCConnection:(id)connection controllerID:(id)d deviceID:(id)iD;
 @end
 
 @implementation MTRClusterStateCacheContainer
@@ -26,14 +26,14 @@
   return v3;
 }
 
-- (void)setXPCConnection:(id)a3 controllerID:(id)a4 deviceID:(id)a5
+- (void)setXPCConnection:(id)connection controllerID:(id)d deviceID:(id)iD
 {
-  v10 = a3;
-  v8 = a4;
-  v9 = a5;
-  [(MTRClusterStateCacheContainer *)self setXpcConnection:v10];
-  [(MTRClusterStateCacheContainer *)self setXpcControllerID:v8];
-  [(MTRClusterStateCacheContainer *)self setDeviceID:v9];
+  connectionCopy = connection;
+  dCopy = d;
+  iDCopy = iD;
+  [(MTRClusterStateCacheContainer *)self setXpcConnection:connectionCopy];
+  [(MTRClusterStateCacheContainer *)self setXpcControllerID:dCopy];
+  [(MTRClusterStateCacheContainer *)self setDeviceID:iDCopy];
   [(MTRClusterStateCacheContainer *)self setShouldUseXPC:1];
 }
 
@@ -55,24 +55,24 @@
   v19 = MEMORY[0x23EE78590](v46);
   if ([(MTRClusterStateCacheContainer *)self shouldUseXPC])
   {
-    v20 = [(MTRClusterStateCacheContainer *)self xpcConnection];
-    if (v20)
+    xpcConnection = [(MTRClusterStateCacheContainer *)self xpcConnection];
+    if (xpcConnection)
     {
-      v21 = [(MTRClusterStateCacheContainer *)self xpcControllerID];
-      v22 = [(MTRClusterStateCacheContainer *)self deviceID];
+      xpcControllerID = [(MTRClusterStateCacheContainer *)self xpcControllerID];
+      deviceID = [(MTRClusterStateCacheContainer *)self deviceID];
       v38[0] = MEMORY[0x277D85DD0];
       v38[1] = 3221225472;
       v38[2] = sub_239293FB8;
       v38[3] = &unk_278A743A0;
-      v23 = v21;
+      v23 = xpcControllerID;
       v39 = v23;
-      v40 = v22;
+      v40 = deviceID;
       v41 = v12;
       v42 = v13;
       v43 = v14;
       v44 = v19;
-      v24 = v22;
-      [v20 getProxyHandleWithCompletion:v38];
+      v24 = deviceID;
+      [xpcConnection getProxyHandleWithCompletion:v38];
     }
 
     else
@@ -96,12 +96,12 @@
 
   else
   {
-    v25 = [(MTRClusterStateCacheContainer *)self baseDevice];
+    baseDevice = [(MTRClusterStateCacheContainer *)self baseDevice];
 
-    if (v25)
+    if (baseDevice)
     {
-      v26 = [(MTRClusterStateCacheContainer *)self baseDevice];
-      v27 = [v26 deviceController];
+      baseDevice2 = [(MTRClusterStateCacheContainer *)self baseDevice];
+      deviceController = [baseDevice2 deviceController];
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = sub_23929424C;
@@ -109,16 +109,16 @@
       v33 = v12;
       v34 = v13;
       v37 = v19;
-      v35 = self;
+      selfCopy = self;
       v36 = v14;
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = sub_239294C90;
       v30[3] = &unk_278A74170;
       v31 = v37;
-      [v27 asyncDispatchToMatterQueue:v32 errorHandler:v30];
+      [deviceController asyncDispatchToMatterQueue:v32 errorHandler:v30];
 
-      v20 = v33;
+      xpcConnection = v33;
     }
 
     else
@@ -135,46 +135,46 @@
         sub_2393D5320(0, 1);
       }
 
-      v20 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:1 userInfo:0];
-      (v19)[2](v19, 0, v20);
+      xpcConnection = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:1 userInfo:0];
+      (v19)[2](v19, 0, xpcConnection);
     }
   }
 }
 
-- (void)_readKnownCachedAttributeWithEndpointID:(unsigned __int16)a3 clusterID:(unsigned int)a4 attributeID:(unsigned int)a5 queue:(id)a6 completion:(id)a7
+- (void)_readKnownCachedAttributeWithEndpointID:(unsigned __int16)d clusterID:(unsigned int)iD attributeID:(unsigned int)attributeID queue:(id)queue completion:(id)completion
 {
-  v12 = a6;
-  v13 = a7;
+  queueCopy = queue;
+  completionCopy = completion;
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = sub_239294F2C;
   v28[3] = &unk_278A743F0;
-  v14 = v12;
+  v14 = queueCopy;
   v29 = v14;
-  v15 = v13;
+  v15 = completionCopy;
   v30 = v15;
   v16 = MEMORY[0x23EE78590](v28);
-  v17 = [(MTRClusterStateCacheContainer *)self baseDevice];
+  baseDevice = [(MTRClusterStateCacheContainer *)self baseDevice];
 
-  if (v17)
+  if (baseDevice)
   {
-    v18 = [(MTRClusterStateCacheContainer *)self baseDevice];
-    v19 = [v18 deviceController];
+    baseDevice2 = [(MTRClusterStateCacheContainer *)self baseDevice];
+    deviceController = [baseDevice2 deviceController];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = sub_239295018;
     v23[3] = &unk_278A74418;
     v23[4] = self;
     v24 = v16;
-    v27 = a3;
-    v25 = a4;
-    v26 = a5;
+    dCopy = d;
+    iDCopy = iD;
+    attributeIDCopy = attributeID;
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = sub_239295260;
     v21[3] = &unk_278A74170;
     v22 = v24;
-    [v19 asyncDispatchToMatterQueue:v23 errorHandler:v21];
+    [deviceController asyncDispatchToMatterQueue:v23 errorHandler:v21];
   }
 
   else

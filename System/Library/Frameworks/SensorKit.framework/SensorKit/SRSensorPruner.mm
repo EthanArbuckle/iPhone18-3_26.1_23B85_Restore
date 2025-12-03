@@ -3,18 +3,18 @@
 + (id)connectionToDaemon;
 + (id)remoteInterface;
 + (void)initialize;
-+ (void)removeAllSamplesForAllSensorsWithCompletionHandler:(id)a3;
-+ (void)removeAllSamplesForAllSensorsWithConnection:(id)a3 completionHandler:(id)a4;
++ (void)removeAllSamplesForAllSensorsWithCompletionHandler:(id)handler;
++ (void)removeAllSamplesForAllSensorsWithConnection:(id)connection completionHandler:(id)handler;
 - (SRDatastore)datastore;
-- (SRSensorPruner)initWithSensor:(id)a3 device:(id)a4;
-- (SRSensorPruner)initWithSensor:(id)a3 xpcConnection:(id)a4 daemonNotification:(id)a5 device:(id)a6;
-- (void)continuePruneFrom:(double)a3 to:(double)a4 withDatastoreFiles:(id)a5;
-- (void)daemonNotificationDaemonDidStart:(id)a3;
+- (SRSensorPruner)initWithSensor:(id)sensor device:(id)device;
+- (SRSensorPruner)initWithSensor:(id)sensor xpcConnection:(id)connection daemonNotification:(id)notification device:(id)device;
+- (void)continuePruneFrom:(double)from to:(double)to withDatastoreFiles:(id)files;
+- (void)daemonNotificationDaemonDidStart:(id)start;
 - (void)dealloc;
-- (void)registerWithDaemonIfNeededWithReply:(id)a3;
+- (void)registerWithDaemonIfNeededWithReply:(id)reply;
 - (void)removeAllSamples;
-- (void)removeSamplesFrom:(double)a3 to:(double)a4;
-- (void)removeSamplesFrom:(double)a3 to:(double)a4 inSegment:(id)a5;
+- (void)removeSamplesFrom:(double)from to:(double)to;
+- (void)removeSamplesFrom:(double)from to:(double)to inSegment:(id)segment;
 - (void)setupConnection;
 @end
 
@@ -65,33 +65,33 @@
   return v2;
 }
 
-- (SRSensorPruner)initWithSensor:(id)a3 device:(id)a4
+- (SRSensorPruner)initWithSensor:(id)sensor device:(id)device
 {
-  v7 = [objc_opt_class() connectionToDaemon];
-  v8 = [[SRDaemonNotification alloc] initWithSensor:a3];
+  connectionToDaemon = [objc_opt_class() connectionToDaemon];
+  v8 = [[SRDaemonNotification alloc] initWithSensor:sensor];
 
-  return [(SRSensorPruner *)self initWithSensor:a3 xpcConnection:v7 daemonNotification:v8 device:a4];
+  return [(SRSensorPruner *)self initWithSensor:sensor xpcConnection:connectionToDaemon daemonNotification:v8 device:device];
 }
 
-- (SRSensorPruner)initWithSensor:(id)a3 xpcConnection:(id)a4 daemonNotification:(id)a5 device:(id)a6
+- (SRSensorPruner)initWithSensor:(id)sensor xpcConnection:(id)connection daemonNotification:(id)notification device:(id)device
 {
   v14.receiver = self;
   v14.super_class = SRSensorPruner;
   v10 = [(SRSensorPruner *)&v14 init];
   if (v10)
   {
-    v11 = [a3 length];
-    if (a6 && v11)
+    v11 = [sensor length];
+    if (device && v11)
     {
-      [(SRSensorPruner *)v10 setSensor:a3];
-      v10->_device = a6;
-      v10->_connection = a4;
+      [(SRSensorPruner *)v10 setSensor:sensor];
+      v10->_device = device;
+      v10->_connection = connection;
       [(SRSensorPruner *)v10 setupConnection];
-      v12 = a5;
-      v10->_daemonNotification = v12;
-      if (v12)
+      notificationCopy = notification;
+      v10->_daemonNotification = notificationCopy;
+      if (notificationCopy)
       {
-        objc_storeWeak(&v12->_delegate, v10);
+        objc_storeWeak(&notificationCopy->_delegate, v10);
       }
 
       [(SRSensorPruner *)v10 setConnectionDidInterrupt:1];
@@ -123,7 +123,7 @@
   [(SRSensorPruner *)&v3 dealloc];
 }
 
-- (void)daemonNotificationDaemonDidStart:(id)a3
+- (void)daemonNotificationDaemonDidStart:(id)start
 {
   v3 = SRLogPruner;
   if (os_log_type_enabled(SRLogPruner, OS_LOG_TYPE_INFO))
@@ -142,26 +142,26 @@
     _os_log_impl(&dword_1C914D000, v3, OS_LOG_TYPE_DEFAULT, "Setting up connection to daemon", buf, 2u);
   }
 
-  v4 = [(SRSensorPruner *)self connection];
-  -[NSXPCConnection setRemoteObjectInterface:](v4, "setRemoteObjectInterface:", [objc_opt_class() remoteInterface]);
-  [(NSXPCConnection *)v4 setExportedObject:[SRSensorPrunerClient prunerClientWithPruner:self]];
-  -[NSXPCConnection setExportedInterface:](v4, "setExportedInterface:", [objc_opt_class() clientInterface]);
+  connection = [(SRSensorPruner *)self connection];
+  -[NSXPCConnection setRemoteObjectInterface:](connection, "setRemoteObjectInterface:", [objc_opt_class() remoteInterface]);
+  [(NSXPCConnection *)connection setExportedObject:[SRSensorPrunerClient prunerClientWithPruner:self]];
+  -[NSXPCConnection setExportedInterface:](connection, "setExportedInterface:", [objc_opt_class() clientInterface]);
   objc_initWeak(buf, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __33__SRSensorPruner_setupConnection__block_invoke;
   v10[3] = &unk_1E8330230;
   objc_copyWeak(&v11, buf);
-  [(NSXPCConnection *)v4 setInterruptionHandler:v10];
+  [(NSXPCConnection *)connection setInterruptionHandler:v10];
   [(SRSensorPruner *)self setConnectionDidInterrupt:0];
   v5 = MEMORY[0x1E69E9820];
   v6 = 3221225472;
   v7 = __33__SRSensorPruner_setupConnection__block_invoke_51;
   v8 = &unk_1E8330230;
   objc_copyWeak(&v9, buf);
-  [(NSXPCConnection *)v4 setInvalidationHandler:&v5];
+  [(NSXPCConnection *)connection setInvalidationHandler:&v5];
   [(SRSensorPruner *)self setConnectionDidInvalidate:0, v5, v6, v7, v8];
-  [(NSXPCConnection *)v4 resume];
+  [(NSXPCConnection *)connection resume];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v11);
   objc_destroyWeak(buf);
@@ -191,23 +191,23 @@ uint64_t __33__SRSensorPruner_setupConnection__block_invoke_51(uint64_t a1)
   return [objc_loadWeak((a1 + 32)) setConnectionDidInvalidate:1];
 }
 
-- (void)registerWithDaemonIfNeededWithReply:(id)a3
+- (void)registerWithDaemonIfNeededWithReply:(id)reply
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = [(SRSensorPruner *)self connectionDidInterrupt];
+  connectionDidInterrupt = [(SRSensorPruner *)self connectionDidInterrupt];
   if ([(SRSensorPruner *)self connectionDidInvalidate])
   {
     -[SRSensorPruner setConnection:](self, "setConnection:", [objc_opt_class() connectionToDaemon]);
     [(SRSensorPruner *)self setupConnection];
   }
 
-  if (v5)
+  if (connectionDidInterrupt)
   {
     v6 = SRLogPruner;
     if (os_log_type_enabled(SRLogPruner, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = [(SRSensorPruner *)self sensor];
+      sensor = [(SRSensorPruner *)self sensor];
       _os_log_impl(&dword_1C914D000, v6, OS_LOG_TYPE_DEFAULT, "Registering for pruning for %{public}@", buf, 0xCu);
     }
 
@@ -216,13 +216,13 @@ uint64_t __33__SRSensorPruner_setupConnection__block_invoke_51(uint64_t a1)
     v12[1] = 3221225472;
     v12[2] = __54__SRSensorPruner_registerWithDaemonIfNeededWithReply___block_invoke;
     v12[3] = &unk_1E8330408;
-    v12[4] = a3;
+    v12[4] = reply;
     v8 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v12];
     [v8 startPruningForSensor:-[SRSensorPruner sensor](self deviceId:{"sensor"), -[SRDevice deviceIdentifier](-[SRSensorPruner device](self, "device"), "deviceIdentifier")}];
     if (v8)
     {
       [(SRSensorPruner *)self setConnectionDidInterrupt:0];
-      (*(a3 + 2))(a3, 0);
+      (*(reply + 2))(reply, 0);
     }
 
     v9 = *MEMORY[0x1E69E9840];
@@ -230,10 +230,10 @@ uint64_t __33__SRSensorPruner_setupConnection__block_invoke_51(uint64_t a1)
 
   else
   {
-    v10 = *(a3 + 2);
+    v10 = *(reply + 2);
     v11 = *MEMORY[0x1E69E9840];
 
-    v10(a3, 0);
+    v10(reply, 0);
   }
 }
 
@@ -256,15 +256,15 @@ uint64_t __54__SRSensorPruner_registerWithDaemonIfNeededWithReply___block_invoke
 - (SRDatastore)datastore
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(SRSensorPruner *)self nextDatastoreFiles];
-  if (!v3)
+  nextDatastoreFiles = [(SRSensorPruner *)self nextDatastoreFiles];
+  if (!nextDatastoreFiles)
   {
 LABEL_8:
     result = self->_datastore;
     goto LABEL_12;
   }
 
-  v4 = v3;
+  v4 = nextDatastoreFiles;
   [(SRSensorPruner *)self setNextDatastoreFiles:0];
 
   self->_datastore = 0;
@@ -311,7 +311,7 @@ LABEL_12:
   return result;
 }
 
-- (void)removeSamplesFrom:(double)a3 to:(double)a4
+- (void)removeSamplesFrom:(double)from to:(double)to
 {
   objc_initWeak(&location, self);
   v7[0] = MEMORY[0x1E69E9820];
@@ -320,8 +320,8 @@ LABEL_12:
   v7[3] = &unk_1E8330710;
   objc_copyWeak(v8, &location);
   v7[4] = self;
-  v8[1] = *&a3;
-  v8[2] = *&a4;
+  v8[1] = *&from;
+  v8[2] = *&to;
   [(SRSensorPruner *)self registerWithDaemonIfNeededWithReply:v7];
   objc_destroyWeak(v8);
   objc_destroyWeak(&location);
@@ -365,28 +365,28 @@ uint64_t __39__SRSensorPruner_removeSamplesFrom_to___block_invoke_2(uint64_t a1,
   return [Weak continuePruneFrom:a2 to:v5 withDatastoreFiles:v6];
 }
 
-- (void)removeSamplesFrom:(double)a3 to:(double)a4 inSegment:(id)a5
+- (void)removeSamplesFrom:(double)from to:(double)to inSegment:(id)segment
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v9 = [(SRSensorPruner *)self datastore];
-  [(SRDatastore *)v9 startTimeOfCurrentSegment];
-  if (a3 <= a4 && v11 <= a4)
+  datastore = [(SRSensorPruner *)self datastore];
+  [(SRDatastore *)datastore startTimeOfCurrentSegment];
+  if (from <= to && v11 <= to)
   {
     v21[0] = 0;
     v21[1] = v21;
     v21[2] = 0x2020000000;
-    *&v21[3] = a3;
+    *&v21[3] = from;
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __49__SRSensorPruner_removeSamplesFrom_to_inSegment___block_invoke;
     v20[3] = &unk_1E8330738;
     v20[4] = v21;
-    [(SRDatastore *)v9 removeSamplesFrom:v20 to:a3 callback:a4];
+    [(SRDatastore *)datastore removeSamplesFrom:v20 to:from callback:to];
     v15 = SRLogPruner;
     if (os_log_type_enabled(SRLogPruner, OS_LOG_TYPE_DEBUG))
     {
       LODWORD(location[0]) = 138543362;
-      *(location + 4) = a5;
+      *(location + 4) = segment;
       _os_log_debug_impl(&dword_1C914D000, v15, OS_LOG_TYPE_DEBUG, "Requesting next segment after %{public}@", location, 0xCu);
     }
 
@@ -397,9 +397,9 @@ uint64_t __39__SRSensorPruner_removeSamplesFrom_to___block_invoke_2(uint64_t a1,
     v18[3] = &unk_1E8330788;
     v18[4] = self;
     objc_copyWeak(v19, location);
-    v18[5] = a5;
+    v18[5] = segment;
     v18[6] = v21;
-    v19[1] = *&a4;
+    v19[1] = *&to;
     [(SRSensorPruner *)self registerWithDaemonIfNeededWithReply:v18];
     objc_destroyWeak(v19);
     objc_destroyWeak(location);
@@ -407,7 +407,7 @@ uint64_t __39__SRSensorPruner_removeSamplesFrom_to___block_invoke_2(uint64_t a1,
     goto LABEL_13;
   }
 
-  v13 = [(SRSensorPruner *)self delegate];
+  delegate = [(SRSensorPruner *)self delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 LABEL_13:
@@ -417,7 +417,7 @@ LABEL_13:
 
   v14 = *MEMORY[0x1E69E9840];
 
-  [(SRSensorPrunerDelegate *)v13 sensorPrunerDidStopPruning:self];
+  [(SRSensorPrunerDelegate *)delegate sensorPrunerDidStopPruning:self];
 }
 
 void __49__SRSensorPruner_removeSamplesFrom_to_inSegment___block_invoke_59(uint64_t a1, uint64_t a2)
@@ -470,24 +470,24 @@ uint64_t __49__SRSensorPruner_removeSamplesFrom_to_inSegment___block_invoke_2(ui
   return result;
 }
 
-- (void)continuePruneFrom:(double)a3 to:(double)a4 withDatastoreFiles:(id)a5
+- (void)continuePruneFrom:(double)from to:(double)to withDatastoreFiles:(id)files
 {
   [(SRSensorPruner *)self resetDatastoreFiles:?];
-  v9 = [(SRSensorPruner *)self delegate];
+  delegate = [(SRSensorPruner *)self delegate];
   if ([(SRSensorPruner *)self datastore])
   {
-    v10 = [a5 objectForKeyedSubscript:0x1F48C05C0];
+    v10 = [files objectForKeyedSubscript:0x1F48C05C0];
     if (v10 && (v11 = [-[NSFileHandle pathname](v10) lastPathComponent]) != 0)
     {
 
-      [(SRSensorPruner *)self removeSamplesFrom:v11 to:a3 inSegment:a4];
+      [(SRSensorPruner *)self removeSamplesFrom:v11 to:from inSegment:to];
     }
 
     else
     {
-      if (a5)
+      if (files)
       {
-        if ([a5 objectForKeyedSubscript:0x1F48C05C0])
+        if ([files objectForKeyedSubscript:0x1F48C05C0])
         {
           v12 = SRLogPruner;
           if (os_log_type_enabled(SRLogPruner, OS_LOG_TYPE_ERROR))
@@ -500,7 +500,7 @@ uint64_t __49__SRSensorPruner_removeSamplesFrom_to_inSegment___block_invoke_2(ui
 
       if (objc_opt_respondsToSelector())
       {
-        [(SRSensorPrunerDelegate *)v9 sensorPrunerDidStopPruning:self];
+        [(SRSensorPrunerDelegate *)delegate sensorPrunerDidStopPruning:self];
       }
     }
   }
@@ -508,7 +508,7 @@ uint64_t __49__SRSensorPruner_removeSamplesFrom_to_inSegment___block_invoke_2(ui
   else if (objc_opt_respondsToSelector())
   {
 
-    [(SRSensorPrunerDelegate *)v9 sensorPrunerDidStopPruning:self];
+    [(SRSensorPrunerDelegate *)delegate sensorPrunerDidStopPruning:self];
   }
 }
 
@@ -600,19 +600,19 @@ uint64_t __34__SRSensorPruner_removeAllSamples__block_invoke_62(uint64_t a1)
   return result;
 }
 
-+ (void)removeAllSamplesForAllSensorsWithConnection:(id)a3 completionHandler:(id)a4
++ (void)removeAllSamplesForAllSensorsWithConnection:(id)connection completionHandler:(id)handler
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __80__SRSensorPruner_removeAllSamplesForAllSensorsWithConnection_completionHandler___block_invoke;
   v7[3] = &unk_1E8330408;
-  v7[4] = a4;
-  v5 = [a3 remoteObjectProxyWithErrorHandler:v7];
+  v7[4] = handler;
+  v5 = [connection remoteObjectProxyWithErrorHandler:v7];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __80__SRSensorPruner_removeAllSamplesForAllSensorsWithConnection_completionHandler___block_invoke_63;
   v6[3] = &unk_1E8330408;
-  v6[4] = a4;
+  v6[4] = handler;
   [v5 removeAllSamplesForAllSensorsWithReply:v6];
 }
 
@@ -648,13 +648,13 @@ uint64_t __80__SRSensorPruner_removeAllSamplesForAllSensorsWithConnection_comple
   return result;
 }
 
-+ (void)removeAllSamplesForAllSensorsWithCompletionHandler:(id)a3
++ (void)removeAllSamplesForAllSensorsWithCompletionHandler:(id)handler
 {
-  v5 = [a1 connectionToDaemon];
-  [v5 setRemoteObjectInterface:{objc_msgSend(a1, "remoteInterface")}];
-  [v5 resume];
+  connectionToDaemon = [self connectionToDaemon];
+  [connectionToDaemon setRemoteObjectInterface:{objc_msgSend(self, "remoteInterface")}];
+  [connectionToDaemon resume];
 
-  [a1 removeAllSamplesForAllSensorsWithConnection:v5 completionHandler:a3];
+  [self removeAllSamplesForAllSensorsWithConnection:connectionToDaemon completionHandler:handler];
 }
 
 @end

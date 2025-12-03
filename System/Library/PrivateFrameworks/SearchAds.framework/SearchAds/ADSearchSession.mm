@@ -1,29 +1,29 @@
 @interface ADSearchSession
-- (ADSearchSession)initWithAppID:(id)a3 appVersion:(id)a4 appsRank:(int)a5 storeFront:(id)a6;
+- (ADSearchSession)initWithAppID:(id)d appVersion:(id)version appsRank:(int)rank storeFront:(id)front;
 - (BOOL)startUpdatingIDs;
 - (id)_jsVersion;
 - (id)adParameters;
 - (id)campaignNamespaceParameter;
-- (id)populateStoreFrontLanguageLocale:(id)a3;
+- (id)populateStoreFrontLanguageLocale:(id)locale;
 - (id)rotatingIdentifiersProperties;
-- (id)sponsoredSearchRequestForLanguageLocale:(id)a3;
+- (id)sponsoredSearchRequestForLanguageLocale:(id)locale;
 - (id)userTargetingProperties;
-- (void)_setODMLProperties:(id)a3 withSettings:(id)a4;
+- (void)_setODMLProperties:(id)properties withSettings:(id)settings;
 - (void)dealloc;
-- (void)requestSponsoredSearchDataRoutingInfoAndRequestIDForLocality:(id)a3 withCompletionHandler:(id)a4;
-- (void)requestSponsoredSearchURL:(id)a3;
-- (void)requestUserTargetingIdentifier:(id)a3;
-- (void)searchObjectForCriteria:(id)a3 withCompletionHandler:(id)a4;
+- (void)requestSponsoredSearchDataRoutingInfoAndRequestIDForLocality:(id)locality withCompletionHandler:(id)handler;
+- (void)requestSponsoredSearchURL:(id)l;
+- (void)requestUserTargetingIdentifier:(id)identifier;
+- (void)searchObjectForCriteria:(id)criteria withCompletionHandler:(id)handler;
 @end
 
 @implementation ADSearchSession
 
-- (ADSearchSession)initWithAppID:(id)a3 appVersion:(id)a4 appsRank:(int)a5 storeFront:(id)a6
+- (ADSearchSession)initWithAppID:(id)d appVersion:(id)version appsRank:(int)rank storeFront:(id)front
 {
   v114 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  dCopy = d;
+  versionCopy = version;
+  frontCopy = front;
   v109.receiver = self;
   v109.super_class = ADSearchSession;
   v18 = [(ADSearchSession *)&v109 init];
@@ -43,9 +43,9 @@
     campaignNamespace = v18->_campaignNamespace;
     v18->_campaignNamespace = v32;
 
-    objc_storeStrong(&v18->_appID, a3);
-    objc_storeStrong(&v18->_appVersion, a4);
-    v18->_appsRank = a5;
+    objc_storeStrong(&v18->_appID, d);
+    objc_storeStrong(&v18->_appVersion, version);
+    v18->_appsRank = rank;
     clientRequestID = v18->_clientRequestID;
     v18->_clientRequestID = 0;
 
@@ -59,8 +59,8 @@
 
     v43 = objc_msgSend_sharedNetworkController(MEMORY[0x277CE9678], v39, v40, v41, v42);
     v48 = objc_msgSend_sharedInstance(MEMORY[0x277CE9638], v44, v45, v46, v47);
-    objc_msgSend_setBundleIdentifier_(v48, v49, v11, v50, v51);
-    objc_msgSend_setITunesStorefront_(v48, v52, v13, v53, v54);
+    objc_msgSend_setBundleIdentifier_(v48, v49, dCopy, v50, v51);
+    objc_msgSend_setITunesStorefront_(v48, v52, frontCopy, v53, v54);
     v59 = objc_msgSend_sharedInstance(MEMORY[0x277CE9658], v55, v56, v57, v58);
     v64 = objc_msgSend_sharedInstance(MEMORY[0x277CE4AB8], v60, v61, v62, v63);
     if (MGGetBoolAnswer())
@@ -103,7 +103,7 @@
       v97 = objc_msgSend_date(MEMORY[0x277CBEAA8], v93, v94, v95, v96);
       objc_msgSend_timeIntervalSinceDate_(v97, v98, v19, v99, v100);
       *buf = 138412546;
-      v111 = v11;
+      v111 = dCopy;
       v112 = 2048;
       v113 = v101;
       _os_log_impl(&dword_264E42000, v92, OS_LOG_TYPE_DEFAULT, "TORO: ADSearchSession initWithAppID:%@ initTime: %0.3lf", buf, 0x16u);
@@ -579,9 +579,9 @@ LABEL_23:
   return v27;
 }
 
-- (id)populateStoreFrontLanguageLocale:(id)a3
+- (id)populateStoreFrontLanguageLocale:(id)locale
 {
-  v3 = a3;
+  localeCopy = locale;
   v8 = objc_msgSend_sharedInstance(ADSearchAdsSettings, v4, v5, v6, v7);
   v13 = objc_msgSend_sharedInstance(MEMORY[0x277CE9638], v9, v10, v11, v12);
   if (!objc_msgSend_isTest(v8, v14, v15, v16, v17))
@@ -631,7 +631,7 @@ LABEL_4:
     }
   }
 
-  v41 = v3;
+  v41 = localeCopy;
   v42 = v26;
   if (((v39 | isEqualToString) & 1) == 0)
   {
@@ -646,7 +646,7 @@ LABEL_4:
 
 LABEL_11:
   v41 = v35;
-  v42 = v3;
+  v42 = localeCopy;
   if ((v43 & 1) == 0)
   {
 LABEL_12:
@@ -659,18 +659,18 @@ LABEL_12:
 LABEL_13:
 
 LABEL_14:
-  objc_msgSend_setStorefrontLocalizationLanguage_(v13, v18, v3, v20, v21);
-  v44 = v3;
+  objc_msgSend_setStorefrontLocalizationLanguage_(v13, v18, localeCopy, v20, v21);
+  v44 = localeCopy;
 LABEL_15:
 
   return v44;
 }
 
-- (void)searchObjectForCriteria:(id)a3 withCompletionHandler:(id)a4
+- (void)searchObjectForCriteria:(id)criteria withCompletionHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  criteriaCopy = criteria;
   v8 = APLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -680,7 +680,7 @@ LABEL_15:
   }
 
   Current = CFAbsoluteTimeGetCurrent();
-  v14 = objc_msgSend_languageLocale(v7, v10, v11, v12, v13);
+  v14 = objc_msgSend_languageLocale(criteriaCopy, v10, v11, v12, v13);
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
@@ -688,17 +688,17 @@ LABEL_15:
   v19[3] = &unk_279B88A58;
   v21 = Current;
   v19[4] = self;
-  v20 = v6;
-  v15 = v6;
+  v20 = handlerCopy;
+  v15 = handlerCopy;
   objc_msgSend_requestSponsoredSearchDataRoutingInfoAndRequestIDForLocality_withCompletionHandler_(self, v16, v14, v19, v17);
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestSponsoredSearchURL:(id)a3
+- (void)requestSponsoredSearchURL:(id)l
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  lCopy = l;
   v4 = APLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -712,17 +712,17 @@ LABEL_15:
   v15[1] = 3221225472;
   v15[2] = sub_264E4DF48;
   v15[3] = &unk_279B88A80;
-  v16 = v3;
-  v10 = v3;
+  v16 = lCopy;
+  v10 = lCopy;
   objc_msgSend_addOperationWithBlock_(v9, v11, v15, v12, v13);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestUserTargetingIdentifier:(id)a3
+- (void)requestUserTargetingIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = APLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -737,18 +737,18 @@ LABEL_15:
   v16[2] = sub_264E4E150;
   v16[3] = &unk_279B88AA8;
   v16[4] = self;
-  v17 = v4;
-  v11 = v4;
+  v17 = identifierCopy;
+  v11 = identifierCopy;
   objc_msgSend_addOperationWithBlock_(v10, v12, v16, v13, v14);
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestSponsoredSearchDataRoutingInfoAndRequestIDForLocality:(id)a3 withCompletionHandler:(id)a4
+- (void)requestSponsoredSearchDataRoutingInfoAndRequestIDForLocality:(id)locality withCompletionHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  localityCopy = locality;
+  handlerCopy = handler;
   v8 = APLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -763,18 +763,18 @@ LABEL_15:
   v20[2] = sub_264E4E464;
   v20[3] = &unk_279B88990;
   v20[4] = self;
-  v21 = v6;
-  v22 = v7;
-  v14 = v7;
-  v15 = v6;
+  v21 = localityCopy;
+  v22 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = localityCopy;
   objc_msgSend_addOperationWithBlock_(v13, v16, v20, v17, v18);
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sponsoredSearchRequestForLanguageLocale:(id)a3
+- (id)sponsoredSearchRequestForLanguageLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   v5 = objc_alloc_init(MEMORY[0x277CE96C0]);
   v10 = objc_msgSend_userTargetingProperties(self, v6, v7, v8, v9);
   objc_msgSend_setProperties_(v5, v11, v10, v12, v13);
@@ -791,7 +791,7 @@ LABEL_15:
     }
   }
 
-  v28 = objc_msgSend_populateStoreFrontLanguageLocale_(self, v14, v4, v16, v17);
+  v28 = objc_msgSend_populateStoreFrontLanguageLocale_(self, v14, localeCopy, v16, v17);
   v33 = objc_msgSend_properties(v5, v29, v30, v31, v32);
   objc_msgSend_setStoreFrontLanguageLocaleIdentifier_(v33, v34, v28, v35, v36);
 
@@ -843,34 +843,34 @@ LABEL_12:
   return v5;
 }
 
-- (void)_setODMLProperties:(id)a3 withSettings:(id)a4
+- (void)_setODMLProperties:(id)properties withSettings:(id)settings
 {
-  v56 = a4;
-  if (v56)
+  settingsCopy = settings;
+  if (settingsCopy)
   {
-    v5 = a3;
-    v10 = objc_msgSend_odmlVersion(v56, v6, v7, v8, v9);
-    objc_msgSend_setSupportedODMLVersion_(v5, v11, v10, v12, v13);
-    v18 = objc_msgSend_treatmentID(v56, v14, v15, v16, v17);
-    objc_msgSend_setTreatmentID_(v5, v19, v18, v20, v21);
+    propertiesCopy = properties;
+    v10 = objc_msgSend_odmlVersion(settingsCopy, v6, v7, v8, v9);
+    objc_msgSend_setSupportedODMLVersion_(propertiesCopy, v11, v10, v12, v13);
+    v18 = objc_msgSend_treatmentID(settingsCopy, v14, v15, v16, v17);
+    objc_msgSend_setTreatmentID_(propertiesCopy, v19, v18, v20, v21);
 
-    v26 = objc_msgSend_experimentID(v56, v22, v23, v24, v25);
-    objc_msgSend_setExperimentID_(v5, v27, v26, v28, v29);
+    v26 = objc_msgSend_experimentID(settingsCopy, v22, v23, v24, v25);
+    objc_msgSend_setExperimentID_(propertiesCopy, v27, v26, v28, v29);
 
     v30 = MEMORY[0x277CCACA8];
-    v35 = objc_msgSend_deploymentID(v56, v31, v32, v33, v34);
-    v39 = objc_msgSend_stringWithFormat_(v30, v36, @"%d", v37, v38, v35);
-    objc_msgSend_setDeploymentID_(v5, v40, v39, v41, v42);
+    v35 = objc_msgSend_deploymentID(settingsCopy, v31, v32, v33, v34);
+    propertiesCopy2 = objc_msgSend_stringWithFormat_(v30, v36, @"%d", v37, v38, v35);
+    objc_msgSend_setDeploymentID_(propertiesCopy, v40, propertiesCopy2, v41, v42);
   }
 
   else
   {
     v43 = *MEMORY[0x277D42CE8];
-    v39 = a3;
-    objc_msgSend_setSupportedODMLVersion_(v39, v44, v43, v45, v46);
-    objc_msgSend_setTreatmentID_(v39, v47, @"-1", v48, v49);
-    objc_msgSend_setExperimentID_(v39, v50, @"-1", v51, v52);
-    objc_msgSend_setDeploymentID_(v39, v53, @"-1", v54, v55);
+    propertiesCopy2 = properties;
+    objc_msgSend_setSupportedODMLVersion_(propertiesCopy2, v44, v43, v45, v46);
+    objc_msgSend_setTreatmentID_(propertiesCopy2, v47, @"-1", v48, v49);
+    objc_msgSend_setExperimentID_(propertiesCopy2, v50, @"-1", v51, v52);
+    objc_msgSend_setDeploymentID_(propertiesCopy2, v53, @"-1", v54, v55);
   }
 }
 

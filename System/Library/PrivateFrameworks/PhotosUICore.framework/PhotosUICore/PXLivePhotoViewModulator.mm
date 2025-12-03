@@ -1,23 +1,23 @@
 @interface PXLivePhotoViewModulator
 - (PXLivePhotoViewModulator)init;
-- (PXLivePhotoViewModulator)initWithImageModulator:(id)a3 videoModulator:(id)a4;
+- (PXLivePhotoViewModulator)initWithImageModulator:(id)modulator videoModulator:(id)videoModulator;
 - (void)_setNeedsUpdate;
 - (void)_updateGainMapImage;
 - (void)_updateIfNeeded;
 - (void)_updateInput;
-- (void)basePlayerUIView:(id)a3 didChange:(unint64_t)a4 withAnimationDuration:(double)a5;
+- (void)basePlayerUIView:(id)view didChange:(unint64_t)change withAnimationDuration:(double)duration;
 - (void)dealloc;
-- (void)performChanges:(id)a3;
+- (void)performChanges:(id)changes;
 - (void)prepareForReuse;
-- (void)setDisplayingVideoComplement:(BOOL)a3;
-- (void)setGainMapImage:(CGImage *)a3 animated:(BOOL)a4;
-- (void)setLivePhotoView:(id)a3;
-- (void)setRevealsGainMapImage:(BOOL)a3;
+- (void)setDisplayingVideoComplement:(BOOL)complement;
+- (void)setGainMapImage:(CGImage *)image animated:(BOOL)animated;
+- (void)setLivePhotoView:(id)view;
+- (void)setRevealsGainMapImage:(BOOL)image;
 @end
 
 @implementation PXLivePhotoViewModulator
 
-- (void)basePlayerUIView:(id)a3 didChange:(unint64_t)a4 withAnimationDuration:(double)a5
+- (void)basePlayerUIView:(id)view didChange:(unint64_t)change withAnimationDuration:(double)duration
 {
   v27 = *MEMORY[0x1E69E9840];
   v9 = PLUIGetLog();
@@ -25,38 +25,38 @@
   {
     v10 = NSStringFromSelector(a2);
     *buf = 134218754;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
     v22 = v10;
     v23 = 2048;
-    v24 = a4;
+    changeCopy = change;
     v25 = 2048;
-    v26 = a5;
+    durationCopy = duration;
     _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEBUG, "[LivePhotoViewModulator %p] %@ %li %f", buf, 0x2Au);
   }
 
-  if (a4)
+  if (change)
   {
-    v11 = [(PXLivePhotoViewModulator *)self livePhotoView];
-    v12 = [v11 isDisplayingPhoto] ^ 1;
+    livePhotoView = [(PXLivePhotoViewModulator *)self livePhotoView];
+    v12 = [livePhotoView isDisplayingPhoto] ^ 1;
 
-    v13 = [(PXLivePhotoViewModulator *)self imageModulator];
+    imageModulator = [(PXLivePhotoViewModulator *)self imageModulator];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __77__PXLivePhotoViewModulator_basePlayerUIView_didChange_withAnimationDuration___block_invoke;
     v17[3] = &__block_descriptor_41_e40_v16__0___PXMutableImageLayerModulator__8l;
     v18 = v12;
-    *&v17[4] = a5;
-    [v13 performChanges:v17];
+    *&v17[4] = duration;
+    [imageModulator performChanges:v17];
 
-    v14 = [(PXLivePhotoViewModulator *)self videoModulator];
+    videoModulator = [(PXLivePhotoViewModulator *)self videoModulator];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __77__PXLivePhotoViewModulator_basePlayerUIView_didChange_withAnimationDuration___block_invoke_2;
     v15[3] = &__block_descriptor_41_e40_v16__0___PXMutableImageLayerModulator__8l;
     v16 = v12;
-    *&v15[4] = a5;
-    [v14 performChanges:v15];
+    *&v15[4] = duration;
+    [videoModulator performChanges:v15];
   }
 }
 
@@ -83,13 +83,13 @@ void __77__PXLivePhotoViewModulator_basePlayerUIView_didChange_withAnimationDura
     v6[7] = v2;
     v6[8] = v3;
     self->_needsUpdateFlags.gainMapImage = 0;
-    v5 = [(PXLivePhotoViewModulator *)self imageModulator];
+    imageModulator = [(PXLivePhotoViewModulator *)self imageModulator];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __47__PXLivePhotoViewModulator__updateGainMapImage__block_invoke;
     v6[3] = &unk_1E7736B58;
     v6[4] = self;
-    [v5 performChanges:v6];
+    [imageModulator performChanges:v6];
   }
 }
 
@@ -109,41 +109,41 @@ void __47__PXLivePhotoViewModulator__updateGainMapImage__block_invoke(uint64_t a
     v25 = v2;
     v26 = v3;
     self->_needsUpdateFlags.input = 0;
-    v7 = [(PXLivePhotoViewModulator *)self livePhotoView];
-    v8 = [v7 customPhotoView];
-    v9 = v8;
-    if (v8)
+    livePhotoView = [(PXLivePhotoViewModulator *)self livePhotoView];
+    customPhotoView = [livePhotoView customPhotoView];
+    v9 = customPhotoView;
+    if (customPhotoView)
     {
-      v10 = v8;
+      photoView = customPhotoView;
     }
 
     else
     {
-      v10 = [v7 photoView];
+      photoView = [livePhotoView photoView];
     }
 
-    v11 = v10;
+    v11 = photoView;
 
-    v12 = [v7 videoView];
-    v13 = [(PXLivePhotoViewModulator *)self imageModulator];
+    videoView = [livePhotoView videoView];
+    imageModulator = [(PXLivePhotoViewModulator *)self imageModulator];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __40__PXLivePhotoViewModulator__updateInput__block_invoke;
     v20[3] = &unk_1E7736B30;
     v21 = v11;
-    v22 = self;
+    selfCopy = self;
     v14 = v11;
-    [v13 performChanges:v20];
+    [imageModulator performChanges:v20];
 
-    v15 = [(PXLivePhotoViewModulator *)self videoModulator];
+    videoModulator = [(PXLivePhotoViewModulator *)self videoModulator];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __40__PXLivePhotoViewModulator__updateInput__block_invoke_2;
     v17[3] = &unk_1E7736B30;
-    v18 = v12;
-    v19 = self;
-    v16 = v12;
-    [v15 performChanges:v17];
+    v18 = videoView;
+    selfCopy2 = self;
+    v16 = videoView;
+    [videoModulator performChanges:v17];
   }
 }
 
@@ -187,57 +187,57 @@ void __40__PXLivePhotoViewModulator__updateInput__block_invoke_2(uint64_t a1, vo
 {
   if (!self->_isPerformingChanges && !self->_isPerformingUpdates)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PXLivePhotoViewModulator.m" lineNumber:159 description:{@"neither insider -performChanges: block, nor performing updates"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXLivePhotoViewModulator.m" lineNumber:159 description:{@"neither insider -performChanges: block, nor performing updates"}];
   }
 }
 
-- (void)setRevealsGainMapImage:(BOOL)a3
+- (void)setRevealsGainMapImage:(BOOL)image
 {
-  if (self->_revealsGainMapImage != a3)
+  if (self->_revealsGainMapImage != image)
   {
-    self->_revealsGainMapImage = a3;
+    self->_revealsGainMapImage = image;
     [(PXLivePhotoViewModulator *)self _invalidateInput];
   }
 }
 
-- (void)setGainMapImage:(CGImage *)a3 animated:(BOOL)a4
+- (void)setGainMapImage:(CGImage *)image animated:(BOOL)animated
 {
   gainMapImage = self->_gainMapImage;
-  if (gainMapImage != a3)
+  if (gainMapImage != image)
   {
-    v6 = a4;
+    animatedCopy = animated;
     CGImageRelease(gainMapImage);
-    self->_gainMapImage = a3;
-    CGImageRetain(a3);
-    [(PXLivePhotoViewModulator *)self setAnimateGainMapAppearance:v6];
+    self->_gainMapImage = image;
+    CGImageRetain(image);
+    [(PXLivePhotoViewModulator *)self setAnimateGainMapAppearance:animatedCopy];
 
     [(PXLivePhotoViewModulator *)self _invalidateGainMapImage];
   }
 }
 
-- (void)setDisplayingVideoComplement:(BOOL)a3
+- (void)setDisplayingVideoComplement:(BOOL)complement
 {
-  if (self->_displayingVideoComplement != a3)
+  if (self->_displayingVideoComplement != complement)
   {
-    self->_displayingVideoComplement = a3;
+    self->_displayingVideoComplement = complement;
     [(PXLivePhotoViewModulator *)self _invalidateInput];
   }
 }
 
-- (void)setLivePhotoView:(id)a3
+- (void)setLivePhotoView:(id)view
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  viewCopy = view;
   livePhotoView = self->_livePhotoView;
-  if (livePhotoView != v6)
+  if (livePhotoView != viewCopy)
   {
     [(ISLivePhotoUIView *)livePhotoView unregisterChangeObserver:self];
-    objc_storeStrong(&self->_livePhotoView, a3);
-    [(ISLivePhotoUIView *)v6 registerChangeObserver:self];
-    if (v6)
+    objc_storeStrong(&self->_livePhotoView, view);
+    [(ISLivePhotoUIView *)viewCopy registerChangeObserver:self];
+    if (viewCopy)
     {
-      v8 = [(ISLivePhotoUIView *)v6 isDisplayingPhoto]^ 1;
+      v8 = [(ISLivePhotoUIView *)viewCopy isDisplayingPhoto]^ 1;
     }
 
     else
@@ -252,11 +252,11 @@ void __40__PXLivePhotoViewModulator__updateInput__block_invoke_2(uint64_t a1, vo
     {
       v10 = NSStringFromSelector(a2);
       v11 = 134218498;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
       v14 = v10;
       v15 = 2112;
-      v16 = v6;
+      v16 = viewCopy;
       _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEBUG, "[LivePhotoViewModulator %p] %@ %@", &v11, 0x20u);
     }
   }
@@ -270,11 +270,11 @@ void __40__PXLivePhotoViewModulator__updateInput__block_invoke_2(uint64_t a1, vo
   [(PXLivePhotoViewModulator *)self setGainMapValue:0.0];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   isPerformingChanges = self->_isPerformingChanges;
   self->_isPerformingChanges = 1;
-  (*(a3 + 2))(a3, self);
+  (*(changes + 2))(changes, self);
   self->_isPerformingChanges = isPerformingChanges;
   if (!isPerformingChanges)
   {
@@ -293,17 +293,17 @@ void __40__PXLivePhotoViewModulator__updateInput__block_invoke_2(uint64_t a1, vo
 
 - (PXLivePhotoViewModulator)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXLivePhotoViewModulator.m" lineNumber:59 description:{@"%s is not available as initializer", "-[PXLivePhotoViewModulator init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXLivePhotoViewModulator.m" lineNumber:59 description:{@"%s is not available as initializer", "-[PXLivePhotoViewModulator init]"}];
 
   abort();
 }
 
-- (PXLivePhotoViewModulator)initWithImageModulator:(id)a3 videoModulator:(id)a4
+- (PXLivePhotoViewModulator)initWithImageModulator:(id)modulator videoModulator:(id)videoModulator
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7 | v8)
+  modulatorCopy = modulator;
+  videoModulatorCopy = videoModulator;
+  if (modulatorCopy | videoModulatorCopy)
   {
     v13.receiver = self;
     v13.super_class = PXLivePhotoViewModulator;
@@ -311,21 +311,21 @@ void __40__PXLivePhotoViewModulator__updateInput__block_invoke_2(uint64_t a1, vo
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_imageModulator, a3);
-      objc_storeStrong(&v10->_videoModulator, a4);
+      objc_storeStrong(&v9->_imageModulator, modulator);
+      objc_storeStrong(&v10->_videoModulator, videoModulator);
       v10->_gainMapImage = PXImageCreateBlackPlaceholderImageWithSize();
     }
 
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 @end

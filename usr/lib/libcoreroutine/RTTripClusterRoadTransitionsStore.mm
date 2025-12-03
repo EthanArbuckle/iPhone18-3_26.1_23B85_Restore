@@ -1,39 +1,39 @@
 @interface RTTripClusterRoadTransitionsStore
-+ (id)predicateForClusterID:(id)a3;
-+ (id)predicateForClusterIDAndRoads:(id)a3 clRoadIDFrom:(unint64_t)a4 clRoadIDTo:(unint64_t)a5;
-- (BOOL)deleteTripClusterRoadTransitionsWithUUID:(id)a3;
-- (BOOL)deleteTripClusterRoadTransitionsWithUUIDAndRoadIDs:(id)a3 clRoadIDFrom:(unint64_t)a4 clRoadIDTo:(unint64_t)a5;
-- (BOOL)storeTripClusterRoadTransitions:(id)a3;
-- (RTTripClusterRoadTransitionsStore)initWithPersistenceManager:(id)a3;
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5 inManagedObjectContext:(id)a6;
-- (id)fetchRequestFromStoredTripClusterRoadTransitionsOptions:(id)a3 inManagedObjectContext:(id)a4;
-- (id)getRoadTransitionsWithID:(id)a3;
-- (void)_deleteTripClusterRoadTransitionsWithUUID:(id)a3 handler:(id)a4;
-- (void)_deleteTripClusterRoadTransitionsWithUUIDAndRoadIDs:(id)a3 clRoadIDFrom:(unint64_t)a4 clRoadIDTo:(unint64_t)a5 handler:(id)a6;
-- (void)_fetchTripClusterRoadTransitionsWithContext:(id)a3 handler:(id)a4;
-- (void)_fetchTripClusterRoadTransitionsWithOptions:(id)a3 handler:(id)a4;
-- (void)_purgeTripClusterRoadTransitionsWithHandler:(id)a3;
-- (void)_removeTripClusterRoadTransitionsOnDateInterval:(id)a3 handler:(id)a4;
-- (void)_removeTripClusterRoadTransitionsPredating:(id)a3 handler:(id)a4;
-- (void)_storeTripClusterRoadTransitions:(id)a3 handler:(id)a4;
-- (void)deleteTripClusterRoadTransitionsWithUUID:(id)a3 handler:(id)a4;
-- (void)deleteTripClusterRoadTransitionsWithUUIDAndRoadIDs:(id)a3 clRoadIDFrom:(unint64_t)a4 clRoadIDTo:(unint64_t)a5 handler:(id)a6;
-- (void)fetchTripClusterRoadTransitionsWithClusterID:(id)a3 handler:(id)a4;
-- (void)fetchTripClusterRoadTransitionsWithContext:(id)a3 handler:(id)a4;
-- (void)fetchTripClusterRoadTransitionsWithOptions:(id)a3 handler:(id)a4;
-- (void)purgeTripClusterRoadTransitionsWithHandler:(id)a3;
-- (void)removeTripClusterRoadTransitionsOnDateInterval:(id)a3 handler:(id)a4;
-- (void)removeTripClusterRoadTransitionsPredating:(id)a3 handler:(id)a4;
-- (void)storeTripClusterRoadTransitions:(id)a3 handler:(id)a4;
++ (id)predicateForClusterID:(id)d;
++ (id)predicateForClusterIDAndRoads:(id)roads clRoadIDFrom:(unint64_t)from clRoadIDTo:(unint64_t)to;
+- (BOOL)deleteTripClusterRoadTransitionsWithUUID:(id)d;
+- (BOOL)deleteTripClusterRoadTransitionsWithUUIDAndRoadIDs:(id)ds clRoadIDFrom:(unint64_t)from clRoadIDTo:(unint64_t)to;
+- (BOOL)storeTripClusterRoadTransitions:(id)transitions;
+- (RTTripClusterRoadTransitionsStore)initWithPersistenceManager:(id)manager;
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error inManagedObjectContext:(id)context;
+- (id)fetchRequestFromStoredTripClusterRoadTransitionsOptions:(id)options inManagedObjectContext:(id)context;
+- (id)getRoadTransitionsWithID:(id)d;
+- (void)_deleteTripClusterRoadTransitionsWithUUID:(id)d handler:(id)handler;
+- (void)_deleteTripClusterRoadTransitionsWithUUIDAndRoadIDs:(id)ds clRoadIDFrom:(unint64_t)from clRoadIDTo:(unint64_t)to handler:(id)handler;
+- (void)_fetchTripClusterRoadTransitionsWithContext:(id)context handler:(id)handler;
+- (void)_fetchTripClusterRoadTransitionsWithOptions:(id)options handler:(id)handler;
+- (void)_purgeTripClusterRoadTransitionsWithHandler:(id)handler;
+- (void)_removeTripClusterRoadTransitionsOnDateInterval:(id)interval handler:(id)handler;
+- (void)_removeTripClusterRoadTransitionsPredating:(id)predating handler:(id)handler;
+- (void)_storeTripClusterRoadTransitions:(id)transitions handler:(id)handler;
+- (void)deleteTripClusterRoadTransitionsWithUUID:(id)d handler:(id)handler;
+- (void)deleteTripClusterRoadTransitionsWithUUIDAndRoadIDs:(id)ds clRoadIDFrom:(unint64_t)from clRoadIDTo:(unint64_t)to handler:(id)handler;
+- (void)fetchTripClusterRoadTransitionsWithClusterID:(id)d handler:(id)handler;
+- (void)fetchTripClusterRoadTransitionsWithContext:(id)context handler:(id)handler;
+- (void)fetchTripClusterRoadTransitionsWithOptions:(id)options handler:(id)handler;
+- (void)purgeTripClusterRoadTransitionsWithHandler:(id)handler;
+- (void)removeTripClusterRoadTransitionsOnDateInterval:(id)interval handler:(id)handler;
+- (void)removeTripClusterRoadTransitionsPredating:(id)predating handler:(id)handler;
+- (void)storeTripClusterRoadTransitions:(id)transitions handler:(id)handler;
 @end
 
 @implementation RTTripClusterRoadTransitionsStore
 
-- (RTTripClusterRoadTransitionsStore)initWithPersistenceManager:(id)a3
+- (RTTripClusterRoadTransitionsStore)initWithPersistenceManager:(id)manager
 {
-  v3 = self;
+  selfCopy = self;
   v18 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (manager)
   {
     v13.receiver = self;
     v13.super_class = RTTripClusterRoadTransitionsStore;
@@ -54,8 +54,8 @@
       }
     }
 
-    v3 = v5;
-    v7 = v3;
+    selfCopy = v5;
+    v7 = selfCopy;
   }
 
   else
@@ -73,17 +73,17 @@
   return v7;
 }
 
-- (void)_storeTripClusterRoadTransitions:(id)a3 handler:(id)a4
+- (void)_storeTripClusterRoadTransitions:(id)transitions handler:(id)handler
 {
-  v7 = a4;
+  handlerCopy = handler;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __78__RTTripClusterRoadTransitionsStore__storeTripClusterRoadTransitions_handler___block_invoke;
   v9[3] = &unk_2788C4780;
-  v10 = v7;
+  v10 = handlerCopy;
   v11 = a2;
-  v8 = v7;
-  [(RTStore *)self storeWritableObjects:a3 handler:v9];
+  v8 = handlerCopy;
+  [(RTStore *)self storeWritableObjects:transitions handler:v9];
 }
 
 void __78__RTTripClusterRoadTransitionsStore__storeTripClusterRoadTransitions_handler___block_invoke(uint64_t a1, void *a2)
@@ -111,12 +111,12 @@ void __78__RTTripClusterRoadTransitionsStore__storeTripClusterRoadTransitions_ha
   }
 }
 
-- (void)storeTripClusterRoadTransitions:(id)a3 handler:(id)a4
+- (void)storeTripClusterRoadTransitions:(id)transitions handler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  transitionsCopy = transitions;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -129,24 +129,24 @@ void __78__RTTripClusterRoadTransitionsStore__storeTripClusterRoadTransitions_ha
     }
   }
 
-  v9 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__RTTripClusterRoadTransitionsStore_storeTripClusterRoadTransitions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = transitionsCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = transitionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (BOOL)storeTripClusterRoadTransitions:(id)a3
+- (BOOL)storeTripClusterRoadTransitions:(id)transitions
 {
   v56[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  transitionsCopy = transitions;
+  if ([transitionsCopy count])
   {
     v45 = 0;
     v46 = &v45;
@@ -162,7 +162,7 @@ void __78__RTTripClusterRoadTransitionsStore__storeTripClusterRoadTransitions_ha
     v44 = &v45;
     v6 = v5;
     v43 = v6;
-    [(RTTripClusterRoadTransitionsStore *)self storeTripClusterRoadTransitions:v4 handler:&v39];
+    [(RTTripClusterRoadTransitionsStore *)self storeTripClusterRoadTransitions:transitionsCopy handler:&v39];
     v7 = v6;
     v8 = [MEMORY[0x277CBEAA8] now];
     v9 = dispatch_time(0, 3600000000000);
@@ -173,11 +173,11 @@ void __78__RTTripClusterRoadTransitionsStore__storeTripClusterRoadTransitions_ha
       v12 = v11;
       v13 = objc_opt_new();
       v14 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_52];
-      v15 = [MEMORY[0x277CCACC8] callStackSymbols];
-      v16 = [v15 filteredArrayUsingPredicate:v14];
-      v17 = [v16 firstObject];
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      v16 = [callStackSymbols filteredArrayUsingPredicate:v14];
+      firstObject = [v16 firstObject];
 
-      [v13 submitToCoreAnalytics:v17 type:1 duration:v12];
+      [v13 submitToCoreAnalytics:firstObject type:1 duration:v12];
       v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
       {
@@ -210,16 +210,16 @@ void __78__RTTripClusterRoadTransitionsStore__storeTripClusterRoadTransitions_ha
       {
         v26 = objc_opt_class();
         v27 = NSStringFromClass(v26);
-        v28 = [v4 firstObject];
-        v29 = [v28 clusterID];
-        v30 = [v29 UUIDString];
-        v31 = [v24 localizedDescription];
+        firstObject2 = [transitionsCopy firstObject];
+        clusterID = [firstObject2 clusterID];
+        uUIDString = [clusterID UUIDString];
+        localizedDescription = [v24 localizedDescription];
         *buf = 138412802;
         *&buf[4] = v27;
         v52 = 2112;
-        v53 = v30;
+        v53 = uUIDString;
         v54 = 2112;
-        v55 = v31;
+        v55 = localizedDescription;
         _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "%@,Semaphore Error updating road transitions for cluster ID,%@,error,%@", buf, 0x20u);
       }
     }
@@ -237,16 +237,16 @@ void __78__RTTripClusterRoadTransitionsStore__storeTripClusterRoadTransitions_ha
       {
         v33 = objc_opt_class();
         v34 = NSStringFromClass(v33);
-        v35 = [v4 firstObject];
-        v36 = [v35 clusterID];
-        v37 = [v36 UUIDString];
-        v38 = [v46[5] localizedDescription];
+        firstObject3 = [transitionsCopy firstObject];
+        clusterID2 = [firstObject3 clusterID];
+        uUIDString2 = [clusterID2 UUIDString];
+        localizedDescription2 = [v46[5] localizedDescription];
         *buf = 138412802;
         *&buf[4] = v34;
         v52 = 2112;
-        v53 = v37;
+        v53 = uUIDString2;
         v54 = 2112;
-        v55 = v38;
+        v55 = localizedDescription2;
         _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "%@,Error updating road transition for cluster ID,%@,error,%@", buf, 0x20u);
       }
     }
@@ -271,15 +271,15 @@ void __69__RTTripClusterRoadTransitionsStore_storeTripClusterRoadTransitions___b
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)fetchTripClusterRoadTransitionsWithClusterID:(id)a3 handler:(id)a4
+- (void)fetchTripClusterRoadTransitionsWithClusterID:(id)d handler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  dCopy = d;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (dCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
@@ -325,13 +325,13 @@ LABEL_10:
       v25 = 2112;
       v26 = v19;
       v27 = 2112;
-      v28 = v7;
+      v28 = dCopy;
       _os_log_debug_impl(&dword_2304B3000, v12, OS_LOG_TYPE_DEBUG, "%@:%@ invoked with clusterID,%@", buf, 0x20u);
     }
   }
 
-  v13 = [objc_alloc(MEMORY[0x277D01398]) initWithClusterID:v7];
-  v14 = [(RTNotifier *)self queue];
+  v13 = [objc_alloc(MEMORY[0x277D01398]) initWithClusterID:dCopy];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __90__RTTripClusterRoadTransitionsStore_fetchTripClusterRoadTransitionsWithClusterID_handler___block_invoke;
@@ -341,13 +341,13 @@ LABEL_10:
   v22 = v9;
   v15 = v9;
   v16 = v13;
-  dispatch_async(v14, block);
+  dispatch_async(queue, block);
 }
 
-- (id)getRoadTransitionsWithID:(id)a3
+- (id)getRoadTransitionsWithID:(id)d
 {
   v51[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = dispatch_semaphore_create(0);
   v40 = 0;
   v41 = &v40;
@@ -359,8 +359,8 @@ LABEL_10:
   v33 = 3221225472;
   v34 = __62__RTTripClusterRoadTransitionsStore_getRoadTransitionsWithID___block_invoke;
   v35 = &unk_2788C4870;
-  v36 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = dCopy;
   v37 = v6;
   v39 = &v40;
   v7 = v5;
@@ -376,11 +376,11 @@ LABEL_10:
     v13 = v12;
     v14 = objc_opt_new();
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_52];
-    v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v17 = [v16 filteredArrayUsingPredicate:v15];
-    v18 = [v17 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+    firstObject = [v17 firstObject];
 
-    [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+    [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
@@ -413,14 +413,14 @@ LABEL_10:
     {
       v28 = objc_opt_class();
       v29 = NSStringFromClass(v28);
-      v30 = [v6 UUIDString];
-      v31 = [v24 localizedDescription];
+      uUIDString = [v6 UUIDString];
+      localizedDescription = [v24 localizedDescription];
       *buf = 138412802;
       *&buf[4] = v29;
       v47 = 2112;
-      v48 = v30;
+      v48 = uUIDString;
       v49 = 2112;
-      v50 = v31;
+      v50 = localizedDescription;
       _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "%@,Semaphore error updating road transitions for cluster ID,%@,error,%@", buf, 0x20u);
     }
   }
@@ -474,12 +474,12 @@ void __62__RTTripClusterRoadTransitionsStore_getRoadTransitionsWithID___block_in
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (void)_fetchTripClusterRoadTransitionsWithOptions:(id)a3 handler:(id)a4
+- (void)_fetchTripClusterRoadTransitionsWithOptions:(id)options handler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -492,16 +492,16 @@ void __62__RTTripClusterRoadTransitionsStore_getRoadTransitionsWithID___block_in
     }
   }
 
-  v9 = [objc_alloc(MEMORY[0x277D01390]) initWithEnumerationOptions:v6];
-  [(RTTripClusterRoadTransitionsStore *)self _fetchTripClusterRoadTransitionsWithContext:v9 handler:v7];
+  v9 = [objc_alloc(MEMORY[0x277D01390]) initWithEnumerationOptions:optionsCopy];
+  [(RTTripClusterRoadTransitionsStore *)self _fetchTripClusterRoadTransitionsWithContext:v9 handler:handlerCopy];
 }
 
-- (void)fetchTripClusterRoadTransitionsWithOptions:(id)a3 handler:(id)a4
+- (void)fetchTripClusterRoadTransitionsWithOptions:(id)options handler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -514,34 +514,34 @@ void __62__RTTripClusterRoadTransitionsStore_getRoadTransitionsWithID___block_in
     }
   }
 
-  v9 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __88__RTTripClusterRoadTransitionsStore_fetchTripClusterRoadTransitionsWithOptions_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = optionsCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = optionsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_fetchTripClusterRoadTransitionsWithContext:(id)a3 handler:(id)a4
+- (void)_fetchTripClusterRoadTransitionsWithContext:(id)context handler:(id)handler
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  contextCopy = context;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __89__RTTripClusterRoadTransitionsStore__fetchTripClusterRoadTransitionsWithContext_handler___block_invoke;
     aBlock[3] = &unk_2788C4910;
-    v20 = v7;
-    v21 = self;
+    v20 = contextCopy;
+    selfCopy = self;
     v23 = a2;
-    v9 = v8;
+    v9 = handlerCopy;
     v22 = v9;
     v10 = _Block_copy(aBlock);
     v17[0] = MEMORY[0x277D85DD0];
@@ -698,12 +698,12 @@ void __89__RTTripClusterRoadTransitionsStore__fetchTripClusterRoadTransitionsWit
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)fetchTripClusterRoadTransitionsWithContext:(id)a3 handler:(id)a4
+- (void)fetchTripClusterRoadTransitionsWithContext:(id)context handler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  contextCopy = context;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -716,25 +716,25 @@ void __89__RTTripClusterRoadTransitionsStore__fetchTripClusterRoadTransitionsWit
     }
   }
 
-  v9 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __88__RTTripClusterRoadTransitionsStore_fetchTripClusterRoadTransitionsWithContext_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = contextCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = contextCopy;
+  dispatch_async(queue, block);
 }
 
-- (id)fetchRequestFromOptions:(id)a3 offset:(unint64_t)a4 error:(id *)a5 inManagedObjectContext:(id)a6
+- (id)fetchRequestFromOptions:(id)options offset:(unint64_t)offset error:(id *)error inManagedObjectContext:(id)context
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  if (!a5)
+  optionsCopy = options;
+  contextCopy = context;
+  if (!error)
   {
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -746,7 +746,7 @@ void __89__RTTripClusterRoadTransitionsStore__fetchTripClusterRoadTransitionsWit
     goto LABEL_8;
   }
 
-  if (v10)
+  if (optionsCopy)
   {
     v12 = objc_opt_class();
     if (v12 != objc_opt_class())
@@ -764,16 +764,16 @@ void __89__RTTripClusterRoadTransitionsStore__fetchTripClusterRoadTransitionsWit
       v20 = [v17 errorWithDomain:v18 code:7 userInfo:v19];
 
       v21 = v20;
-      *a5 = v20;
+      *error = v20;
 
 LABEL_8:
       v23 = 0;
       goto LABEL_13;
     }
 
-    v23 = [(RTTripClusterRoadTransitionsStore *)self fetchRequestFromStoredTripClusterRoadTransitionsOptions:v10 inManagedObjectContext:v11];
-    [v23 setFetchOffset:a4];
-    *a5 = 0;
+    v23 = [(RTTripClusterRoadTransitionsStore *)self fetchRequestFromStoredTripClusterRoadTransitionsOptions:optionsCopy inManagedObjectContext:contextCopy];
+    [v23 setFetchOffset:offset];
+    *error = 0;
   }
 
   else
@@ -786,7 +786,7 @@ LABEL_8:
     }
 
     _RTErrorInvalidParameterCreate(@"options");
-    *a5 = v23 = 0;
+    *error = v23 = 0;
   }
 
 LABEL_13:
@@ -794,11 +794,11 @@ LABEL_13:
   return v23;
 }
 
-- (id)fetchRequestFromStoredTripClusterRoadTransitionsOptions:(id)a3 inManagedObjectContext:(id)a4
+- (id)fetchRequestFromStoredTripClusterRoadTransitionsOptions:(id)options inManagedObjectContext:(id)context
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  optionsCopy = options;
+  if (optionsCopy)
   {
     v5 = +[RTTripClusterRoadTransitionsMO fetchRequest];
     [v5 setReturnsObjectsAsFaults:0];
@@ -807,18 +807,18 @@ LABEL_13:
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
     [v5 setSortDescriptors:v7];
 
-    v8 = [MEMORY[0x277CBEB18] array];
-    v9 = [v4 clusterID];
+    array = [MEMORY[0x277CBEB18] array];
+    clusterID = [optionsCopy clusterID];
 
-    if (v9)
+    if (clusterID)
     {
-      v10 = [v4 clusterID];
-      v11 = [RTTripClusterRoadTransitionsStore predicateForClusterID:v10];
+      clusterID2 = [optionsCopy clusterID];
+      v11 = [RTTripClusterRoadTransitionsStore predicateForClusterID:clusterID2];
 
-      [v8 addObject:v11];
+      [array addObject:v11];
     }
 
-    v12 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v8];
+    v12 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:array];
     [v5 setPredicate:v12];
 
     [v5 setFetchBatchSize:100];
@@ -827,11 +827,11 @@ LABEL_13:
 
   else
   {
-    v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    array = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(array, OS_LOG_TYPE_ERROR))
     {
       *v14 = 0;
-      _os_log_error_impl(&dword_2304B3000, v8, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: options", v14, 2u);
+      _os_log_error_impl(&dword_2304B3000, array, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: options", v14, 2u);
     }
 
     v5 = 0;
@@ -840,11 +840,11 @@ LABEL_13:
   return v5;
 }
 
-+ (id)predicateForClusterID:(id)a3
++ (id)predicateForClusterID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"clusterID", a3];
+    v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"clusterID", d];
   }
 
   else
@@ -862,11 +862,11 @@ LABEL_13:
   return v3;
 }
 
-+ (id)predicateForClusterIDAndRoads:(id)a3 clRoadIDFrom:(unint64_t)a4 clRoadIDTo:(unint64_t)a5
++ (id)predicateForClusterIDAndRoads:(id)roads clRoadIDFrom:(unint64_t)from clRoadIDTo:(unint64_t)to
 {
-  if (a3)
+  if (roads)
   {
-    v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@ && %K == %llu && %K == %llu", @"clusterID", a3, @"clRoadIDFrom", a4, @"clRoadIDTo", a5];
+    v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@ && %K == %llu && %K == %llu", @"clusterID", roads, @"clRoadIDFrom", from, @"clRoadIDTo", to];
   }
 
   else
@@ -884,15 +884,15 @@ LABEL_13:
   return v5;
 }
 
-- (void)_deleteTripClusterRoadTransitionsWithUUID:(id)a3 handler:(id)a4
+- (void)_deleteTripClusterRoadTransitionsWithUUID:(id)d handler:(id)handler
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  dCopy = d;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (dCopy)
   {
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -908,7 +908,7 @@ LABEL_8:
       _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: handler (in %s:%d)", buf, 0x12u);
     }
 
-    if (v7)
+    if (dCopy)
     {
       goto LABEL_4;
     }
@@ -932,15 +932,15 @@ LABEL_8:
   }
 
 LABEL_3:
-  if (v7)
+  if (dCopy)
   {
 LABEL_4:
     v22 = MEMORY[0x277D85DD0];
     v23 = 3221225472;
     v24 = __87__RTTripClusterRoadTransitionsStore__deleteTripClusterRoadTransitionsWithUUID_handler___block_invoke;
     v25 = &unk_2788C4910;
-    v26 = v7;
-    v27 = self;
+    v26 = dCopy;
+    selfCopy = self;
     v29 = a2;
     v10 = v9;
     v28 = v10;
@@ -1024,15 +1024,15 @@ void __87__RTTripClusterRoadTransitionsStore__deleteTripClusterRoadTransitionsWi
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_deleteTripClusterRoadTransitionsWithUUIDAndRoadIDs:(id)a3 clRoadIDFrom:(unint64_t)a4 clRoadIDTo:(unint64_t)a5 handler:(id)a6
+- (void)_deleteTripClusterRoadTransitionsWithUUIDAndRoadIDs:(id)ds clRoadIDFrom:(unint64_t)from clRoadIDTo:(unint64_t)to handler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a6;
-  v13 = v12;
-  if (v11)
+  dsCopy = ds;
+  handlerCopy = handler;
+  v13 = handlerCopy;
+  if (dsCopy)
   {
-    if (v12)
+    if (handlerCopy)
     {
       goto LABEL_10;
     }
@@ -1081,15 +1081,15 @@ LABEL_10:
     }
   }
 
-  if (v11)
+  if (dsCopy)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __121__RTTripClusterRoadTransitionsStore__deleteTripClusterRoadTransitionsWithUUIDAndRoadIDs_clRoadIDFrom_clRoadIDTo_handler___block_invoke;
     aBlock[3] = &unk_2788CA6D8;
-    v27 = v11;
-    v29 = a4;
-    v30 = a5;
+    v27 = dsCopy;
+    fromCopy = from;
+    toCopy = to;
     v31 = a2;
     v17 = v13;
     v28 = v17;
@@ -1152,12 +1152,12 @@ void __121__RTTripClusterRoadTransitionsStore__deleteTripClusterRoadTransitionsW
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)deleteTripClusterRoadTransitionsWithUUID:(id)a3 handler:(id)a4
+- (void)deleteTripClusterRoadTransitionsWithUUID:(id)d handler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  dCopy = d;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1170,24 +1170,24 @@ void __121__RTTripClusterRoadTransitionsStore__deleteTripClusterRoadTransitionsW
     }
   }
 
-  v9 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__RTTripClusterRoadTransitionsStore_deleteTripClusterRoadTransitionsWithUUID_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = dCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = dCopy;
+  dispatch_async(queue, block);
 }
 
-- (BOOL)deleteTripClusterRoadTransitionsWithUUID:(id)a3
+- (BOOL)deleteTripClusterRoadTransitionsWithUUID:(id)d
 {
   v51[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1214,7 +1214,7 @@ void __121__RTTripClusterRoadTransitionsStore__deleteTripClusterRoadTransitionsW
   v41 = v47;
   v7 = v6;
   v40 = v7;
-  [(RTTripClusterRoadTransitionsStore *)self deleteTripClusterRoadTransitionsWithUUID:v4 handler:&v36];
+  [(RTTripClusterRoadTransitionsStore *)self deleteTripClusterRoadTransitionsWithUUID:dCopy handler:&v36];
   v8 = v7;
   v9 = [MEMORY[0x277CBEAA8] now];
   v10 = dispatch_time(0, 3600000000000);
@@ -1225,11 +1225,11 @@ void __121__RTTripClusterRoadTransitionsStore__deleteTripClusterRoadTransitionsW
     v13 = v12;
     v14 = objc_opt_new();
     v15 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_52];
-    v16 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v17 = [v16 filteredArrayUsingPredicate:v15];
-    v18 = [v17 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v17 = [callStackSymbols filteredArrayUsingPredicate:v15];
+    firstObject = [v17 firstObject];
 
-    [v14 submitToCoreAnalytics:v18 type:1 duration:v13];
+    [v14 submitToCoreAnalytics:firstObject type:1 duration:v13];
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
@@ -1262,14 +1262,14 @@ void __121__RTTripClusterRoadTransitionsStore__deleteTripClusterRoadTransitionsW
     {
       v26 = objc_opt_class();
       v27 = NSStringFromClass(v26);
-      v28 = [v4 UUIDString];
-      v29 = [v24 localizedDescription];
+      uUIDString = [dCopy UUIDString];
+      localizedDescription = [v24 localizedDescription];
       *buf = 138412802;
       *&buf[4] = v27;
       v43 = 2112;
-      v44 = v28;
+      v44 = uUIDString;
       v45 = 2112;
-      v46 = v29;
+      v46 = localizedDescription;
       _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "%@,Semaphore Error deleting road transition for cluster ID,%@,error,%@", buf, 0x20u);
     }
   }
@@ -1287,14 +1287,14 @@ void __121__RTTripClusterRoadTransitionsStore__deleteTripClusterRoadTransitionsW
     {
       v32 = objc_opt_class();
       v33 = NSStringFromClass(v32);
-      v34 = [v4 UUIDString];
-      v35 = [*(*&v47[8] + 40) localizedDescription];
+      uUIDString2 = [dCopy UUIDString];
+      localizedDescription2 = [*(*&v47[8] + 40) localizedDescription];
       *buf = 138412802;
       *&buf[4] = v33;
       v43 = 2112;
-      v44 = v34;
+      v44 = uUIDString2;
       v45 = 2112;
-      v46 = v35;
+      v46 = localizedDescription2;
       _os_log_error_impl(&dword_2304B3000, v25, OS_LOG_TYPE_ERROR, "%@,Error deleting road transition for cluster ID,%@,error,%@", buf, 0x20u);
     }
   }
@@ -1313,12 +1313,12 @@ void __78__RTTripClusterRoadTransitionsStore_deleteTripClusterRoadTransitionsWit
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)deleteTripClusterRoadTransitionsWithUUIDAndRoadIDs:(id)a3 clRoadIDFrom:(unint64_t)a4 clRoadIDTo:(unint64_t)a5 handler:(id)a6
+- (void)deleteTripClusterRoadTransitionsWithUUIDAndRoadIDs:(id)ds clRoadIDFrom:(unint64_t)from clRoadIDTo:(unint64_t)to handler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  if (!v11)
+  dsCopy = ds;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1331,25 +1331,25 @@ void __78__RTTripClusterRoadTransitionsStore_deleteTripClusterRoadTransitionsWit
     }
   }
 
-  v13 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __120__RTTripClusterRoadTransitionsStore_deleteTripClusterRoadTransitionsWithUUIDAndRoadIDs_clRoadIDFrom_clRoadIDTo_handler___block_invoke;
   block[3] = &unk_2788C6C20;
   block[4] = self;
-  v17 = v10;
-  v19 = a4;
-  v20 = a5;
-  v18 = v11;
-  v14 = v11;
-  v15 = v10;
-  dispatch_async(v13, block);
+  v17 = dsCopy;
+  fromCopy = from;
+  toCopy = to;
+  v18 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = dsCopy;
+  dispatch_async(queue, block);
 }
 
-- (BOOL)deleteTripClusterRoadTransitionsWithUUIDAndRoadIDs:(id)a3 clRoadIDFrom:(unint64_t)a4 clRoadIDTo:(unint64_t)a5
+- (BOOL)deleteTripClusterRoadTransitionsWithUUIDAndRoadIDs:(id)ds clRoadIDFrom:(unint64_t)from clRoadIDTo:(unint64_t)to
 {
   v56[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  dsCopy = ds;
   v45 = 0;
   v46 = &v45;
   v47 = 0x3032000000;
@@ -1364,7 +1364,7 @@ void __78__RTTripClusterRoadTransitionsStore_deleteTripClusterRoadTransitionsWit
   v44 = &v45;
   v10 = v9;
   v43 = v10;
-  [(RTTripClusterRoadTransitionsStore *)self deleteTripClusterRoadTransitionsWithUUIDAndRoadIDs:v8 clRoadIDFrom:a4 clRoadIDTo:a5 handler:&v39];
+  [(RTTripClusterRoadTransitionsStore *)self deleteTripClusterRoadTransitionsWithUUIDAndRoadIDs:dsCopy clRoadIDFrom:from clRoadIDTo:to handler:&v39];
   v11 = v10;
   v12 = [MEMORY[0x277CBEAA8] now];
   v13 = dispatch_time(0, 3600000000000);
@@ -1375,11 +1375,11 @@ void __78__RTTripClusterRoadTransitionsStore_deleteTripClusterRoadTransitionsWit
     v16 = v15;
     v17 = objc_opt_new();
     v18 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_52];
-    v19 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v20 = [v19 filteredArrayUsingPredicate:v18];
-    v21 = [v20 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v20 = [callStackSymbols filteredArrayUsingPredicate:v18];
+    firstObject = [v20 firstObject];
 
-    [v17 submitToCoreAnalytics:v21 type:1 duration:v16];
+    [v17 submitToCoreAnalytics:firstObject type:1 duration:v16];
     v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_FAULT))
     {
@@ -1412,14 +1412,14 @@ void __78__RTTripClusterRoadTransitionsStore_deleteTripClusterRoadTransitionsWit
     {
       v29 = objc_opt_class();
       v30 = NSStringFromClass(v29);
-      v31 = [v8 UUIDString];
-      v32 = [v27 localizedDescription];
+      uUIDString = [dsCopy UUIDString];
+      localizedDescription = [v27 localizedDescription];
       *buf = 138412802;
       *&buf[4] = v30;
       v52 = 2112;
-      v53 = v31;
+      v53 = uUIDString;
       v54 = 2112;
-      v55 = v32;
+      v55 = localizedDescription;
       _os_log_error_impl(&dword_2304B3000, v28, OS_LOG_TYPE_ERROR, "%@,Semaphore Error deleting road transition for cluster ID,%@,error,%@", buf, 0x20u);
     }
   }
@@ -1437,14 +1437,14 @@ void __78__RTTripClusterRoadTransitionsStore_deleteTripClusterRoadTransitionsWit
     {
       v35 = objc_opt_class();
       v36 = NSStringFromClass(v35);
-      v37 = [v8 UUIDString];
-      v38 = [v46[5] localizedDescription];
+      uUIDString2 = [dsCopy UUIDString];
+      localizedDescription2 = [v46[5] localizedDescription];
       *buf = 138412802;
       *&buf[4] = v36;
       v52 = 2112;
-      v53 = v37;
+      v53 = uUIDString2;
       v54 = 2112;
-      v55 = v38;
+      v55 = localizedDescription2;
       _os_log_error_impl(&dword_2304B3000, v28, OS_LOG_TYPE_ERROR, "%@,Error deleting road transition for cluster ID,%@,error,%@", buf, 0x20u);
     }
   }
@@ -1463,11 +1463,11 @@ void __112__RTTripClusterRoadTransitionsStore_deleteTripClusterRoadTransitionsWi
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_purgeTripClusterRoadTransitionsWithHandler:(id)a3
+- (void)_purgeTripClusterRoadTransitionsWithHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1498,14 +1498,14 @@ void __112__RTTripClusterRoadTransitionsStore_deleteTripClusterRoadTransitionsWi
 
   v12 = objc_opt_class();
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v12 count:1];
-  [(RTStore *)self removeAll:v8 handler:v5];
+  [(RTStore *)self removeAll:v8 handler:handlerCopy];
 }
 
-- (void)purgeTripClusterRoadTransitionsWithHandler:(id)a3
+- (void)purgeTripClusterRoadTransitionsWithHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1518,36 +1518,36 @@ void __112__RTTripClusterRoadTransitionsStore_deleteTripClusterRoadTransitionsWi
     }
   }
 
-  v6 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __80__RTTripClusterRoadTransitionsStore_purgeTripClusterRoadTransitionsWithHandler___block_invoke;
   v8[3] = &unk_2788C4938;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  dispatch_async(queue, v8);
 }
 
-- (void)_removeTripClusterRoadTransitionsPredating:(id)a3 handler:(id)a4
+- (void)_removeTripClusterRoadTransitionsPredating:(id)predating handler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  predatingCopy = predating;
+  if (predatingCopy)
   {
     v15 = @"startDate";
-    v7 = a4;
+    handlerCopy = handler;
     v14 = objc_opt_class();
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:1];
     v16 = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
 
-    [(RTStore *)self purgePredating:v6 predicateMappings:v9 handler:v7];
+    [(RTStore *)self purgePredating:predatingCopy predicateMappings:v9 handler:handlerCopy];
   }
 
   else
   {
-    v10 = a4;
+    handlerCopy2 = handler;
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -1563,17 +1563,17 @@ void __112__RTTripClusterRoadTransitionsStore_deleteTripClusterRoadTransitionsWi
     v17 = *MEMORY[0x277CCA450];
     v18 = @"requires a valid date.";
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-    v7 = [v12 errorWithDomain:v13 code:7 userInfo:v9];
-    v10[2](v10, v7);
+    handlerCopy = [v12 errorWithDomain:v13 code:7 userInfo:v9];
+    handlerCopy2[2](handlerCopy2, handlerCopy);
   }
 }
 
-- (void)removeTripClusterRoadTransitionsPredating:(id)a3 handler:(id)a4
+- (void)removeTripClusterRoadTransitionsPredating:(id)predating handler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  predatingCopy = predating;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1586,38 +1586,38 @@ void __112__RTTripClusterRoadTransitionsStore_deleteTripClusterRoadTransitionsWi
     }
   }
 
-  v9 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__RTTripClusterRoadTransitionsStore_removeTripClusterRoadTransitionsPredating_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = predatingCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = predatingCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_removeTripClusterRoadTransitionsOnDateInterval:(id)a3 handler:(id)a4
+- (void)_removeTripClusterRoadTransitionsOnDateInterval:(id)interval handler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  intervalCopy = interval;
+  if (intervalCopy)
   {
     v15 = @"startDate";
-    v7 = a4;
+    handlerCopy = handler;
     v14 = objc_opt_class();
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v14 count:1];
     v16 = v8;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
 
-    [(RTStore *)self purgeDateInterval:v6 predicateMappings:v9 purgeLimit:3600 handler:v7];
+    [(RTStore *)self purgeDateInterval:intervalCopy predicateMappings:v9 purgeLimit:3600 handler:handlerCopy];
   }
 
   else
   {
-    v10 = a4;
+    handlerCopy2 = handler;
     v11 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -1633,17 +1633,17 @@ void __112__RTTripClusterRoadTransitionsStore_deleteTripClusterRoadTransitionsWi
     v17 = *MEMORY[0x277CCA450];
     v18 = @"requires a valid dateInterval.";
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-    v7 = [v12 errorWithDomain:v13 code:7 userInfo:v9];
-    v10[2](v10, v7);
+    handlerCopy = [v12 errorWithDomain:v13 code:7 userInfo:v9];
+    handlerCopy2[2](handlerCopy2, handlerCopy);
   }
 }
 
-- (void)removeTripClusterRoadTransitionsOnDateInterval:(id)a3 handler:(id)a4
+- (void)removeTripClusterRoadTransitionsOnDateInterval:(id)interval handler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  intervalCopy = interval;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1656,17 +1656,17 @@ void __112__RTTripClusterRoadTransitionsStore_deleteTripClusterRoadTransitionsWi
     }
   }
 
-  v9 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __92__RTTripClusterRoadTransitionsStore_removeTripClusterRoadTransitionsOnDateInterval_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = intervalCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = intervalCopy;
+  dispatch_async(queue, block);
 }
 
 @end

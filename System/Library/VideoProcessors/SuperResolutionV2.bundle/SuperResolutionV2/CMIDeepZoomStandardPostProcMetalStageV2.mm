@@ -1,21 +1,21 @@
 @interface CMIDeepZoomStandardPostProcMetalStageV2
-- (CMIDeepZoomStandardPostProcMetalStageV2)initWithMetalContext:(id)a3 withTileConfiguration:(id *)a4;
-- (int)configureLumaGainLUT:(id *)a3;
+- (CMIDeepZoomStandardPostProcMetalStageV2)initWithMetalContext:(id)context withTileConfiguration:(id *)configuration;
+- (int)configureLumaGainLUT:(id *)t;
 - (void)dealloc;
 @end
 
 @implementation CMIDeepZoomStandardPostProcMetalStageV2
 
-- (CMIDeepZoomStandardPostProcMetalStageV2)initWithMetalContext:(id)a3 withTileConfiguration:(id *)a4
+- (CMIDeepZoomStandardPostProcMetalStageV2)initWithMetalContext:(id)context withTileConfiguration:(id *)configuration
 {
-  v7 = a3;
-  if (!a4)
+  contextCopy = context;
+  if (!configuration)
   {
     goto LABEL_11;
   }
 
-  v8 = 0;
-  if (*a4 && *(a4 + 1))
+  selfCopy = 0;
+  if (*configuration && *(configuration + 1))
   {
     v14.receiver = self;
     v14.super_class = CMIDeepZoomStandardPostProcMetalStageV2;
@@ -26,30 +26,30 @@
       goto LABEL_9;
     }
 
-    objc_storeStrong(&v9->_metalContext, a3);
+    objc_storeStrong(&v9->_metalContext, context);
     if (self->_metalContext || (+[NSBundle bundleForClass:](NSBundle, "bundleForClass:", objc_opt_class()), v10 = objc_claimAutoreleasedReturnValue(), v11 = [[FigMetalContext alloc] initWithbundle:v10 andOptionalCommandQueue:0], metalContext = self->_metalContext, self->_metalContext = v11, metalContext, v10, self->_metalContext))
     {
-      if (!sub_7B9C(self) && !sub_86F4(self, *a4, *(a4 + 1)))
+      if (!sub_7B9C(self) && !sub_86F4(self, *configuration, *(configuration + 1)))
       {
 LABEL_9:
         self = self;
-        v8 = self;
+        selfCopy = self;
         goto LABEL_10;
       }
     }
 
 LABEL_11:
-    v8 = 0;
+    selfCopy = 0;
   }
 
 LABEL_10:
 
-  return v8;
+  return selfCopy;
 }
 
-- (int)configureLumaGainLUT:(id *)a3
+- (int)configureLumaGainLUT:(id *)t
 {
-  if (!a3)
+  if (!t)
   {
     return -12780;
   }
@@ -60,7 +60,7 @@ LABEL_10:
   lumaGainCoefY = self->_controlParams.lumaGainCoefY;
 LABEL_3:
   v11 = v7 - 4;
-  v12 = &a3->var1[v7];
+  v12 = &t->var1[v7];
   v13 = &lumaGainCoefY[v7];
   do
   {

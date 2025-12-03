@@ -1,42 +1,42 @@
 @interface PHPTPConversionHelper
-+ (id)conversionResultForPTPAsset:(id)a3 sourceHints:(id)a4 withConversionManager:(id)a5 peerCapabilities:(id)a6;
-+ (id)conversionResultForPTPAsset:(id)a3 sourceHints:(id)a4 withPeerCapabilites:(id)a5;
++ (id)conversionResultForPTPAsset:(id)asset sourceHints:(id)hints withConversionManager:(id)manager peerCapabilities:(id)capabilities;
++ (id)conversionResultForPTPAsset:(id)asset sourceHints:(id)hints withPeerCapabilites:(id)capabilites;
 @end
 
 @implementation PHPTPConversionHelper
 
-+ (id)conversionResultForPTPAsset:(id)a3 sourceHints:(id)a4 withPeerCapabilites:(id)a5
++ (id)conversionResultForPTPAsset:(id)asset sourceHints:(id)hints withPeerCapabilites:(id)capabilites
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 originalFilename];
-  v11 = [v7 fullDirectoryPath];
-  v33 = v10;
-  v12 = [v11 stringByAppendingPathComponent:v10];
+  assetCopy = asset;
+  hintsCopy = hints;
+  capabilitesCopy = capabilites;
+  originalFilename = [assetCopy originalFilename];
+  fullDirectoryPath = [assetCopy fullDirectoryPath];
+  v33 = originalFilename;
+  v12 = [fullDirectoryPath stringByAppendingPathComponent:originalFilename];
 
   v32 = v12;
   v13 = [MEMORY[0x1E695DFF8] fileURLWithPath:v12 isDirectory:0];
-  v14 = [v7 groupUUID];
-  v15 = [v8 isVideo];
+  groupUUID = [assetCopy groupUUID];
+  isVideo = [hintsCopy isVideo];
   v16 = MEMORY[0x1E69AE8A8];
-  if (!v15)
+  if (!isVideo)
   {
-    [v7 imagePixSize];
+    [assetCopy imagePixSize];
     v17 = [v16 imageSourceForFileURL:v13 dimensions:?];
     goto LABEL_18;
   }
 
   v17 = [MEMORY[0x1E69AE8A8] videoSourceForFileURL:v13];
-  if ([v8 isLivePhoto])
+  if ([hintsCopy isLivePhoto])
   {
-    if ([v8 isRender])
+    if ([hintsCopy isRender])
     {
       goto LABEL_18;
     }
 
-    if (![v8 livePhotoImageIsHEIC])
+    if (![hintsCopy livePhotoImageIsHEIC])
     {
 LABEL_15:
       v19 = v17;
@@ -48,12 +48,12 @@ LABEL_15:
     goto LABEL_9;
   }
 
-  v18 = [v7 videoCodec];
-  if (v18)
+  videoCodec = [assetCopy videoCodec];
+  if (videoCodec)
   {
-    if (v18 != 1752589105)
+    if (videoCodec != 1752589105)
     {
-      if ([MEMORY[0x1E69C0700] videoCodecIsProResEligibleForBackwardsCompatibilityTranscoding:v18])
+      if ([MEMORY[0x1E69C0700] videoCodecIsProResEligibleForBackwardsCompatibilityTranscoding:videoCodec])
       {
         v19 = v17;
         v20 = 1;
@@ -80,16 +80,16 @@ LABEL_16:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v36 = v7;
+    v36 = assetCopy;
     _os_log_impl(&dword_19C86F000, v22, OS_LOG_TYPE_ERROR, "Failed to get video codec for asset: %@", buf, 0xCu);
   }
 
 LABEL_18:
-  [v17 markLivePhotoPairingIdentifierAsCheckedWithValue:v14];
-  [v17 markIsHDRAsCheckedWithValue:{objc_msgSend(v7, "isHDR")}];
-  if ([v8 isVideo])
+  [v17 markLivePhotoPairingIdentifierAsCheckedWithValue:groupUUID];
+  [v17 markIsHDRAsCheckedWithValue:{objc_msgSend(assetCopy, "isHDR")}];
+  if ([hintsCopy isVideo])
   {
-    v24 = [v8 isLivePhoto] ^ 1;
+    v24 = [hintsCopy isLivePhoto] ^ 1;
   }
 
   else
@@ -98,15 +98,15 @@ LABEL_18:
   }
 
   v34 = 0;
-  v25 = v9;
-  v26 = [MEMORY[0x1E69AE8A0] requestForSource:v17 destinationCapabilities:v9 error:&v34];
+  v25 = capabilitesCopy;
+  v26 = [MEMORY[0x1E69AE8A0] requestForSource:v17 destinationCapabilities:capabilitesCopy error:&v34];
   v27 = v34;
   if (v26)
   {
     [v26 setShouldPadOutputFileToEstimatedLength:1];
     [v26 setUseTransferBehaviorUserPreference:1];
-    v28 = [v7 filename];
-    [v26 setOutputFilename:v28];
+    filename = [assetCopy filename];
+    [v26 setOutputFilename:filename];
 
     if (v24)
     {
@@ -124,7 +124,7 @@ LABEL_18:
       *buf = 138412546;
       v36 = v27;
       v37 = 2112;
-      v38 = v7;
+      v38 = assetCopy;
       _os_log_impl(&dword_19C86F000, v30, OS_LOG_TYPE_ERROR, "Unable to create conversion request: %@, ptpAsset: %@", buf, 0x16u);
     }
   }
@@ -132,19 +132,19 @@ LABEL_18:
   return v26;
 }
 
-+ (id)conversionResultForPTPAsset:(id)a3 sourceHints:(id)a4 withConversionManager:(id)a5 peerCapabilities:(id)a6
++ (id)conversionResultForPTPAsset:(id)asset sourceHints:(id)hints withConversionManager:(id)manager peerCapabilities:(id)capabilities
 {
   v46 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = [a1 conversionResultForPTPAsset:v10 sourceHints:a4 withPeerCapabilites:a6];
+  assetCopy = asset;
+  managerCopy = manager;
+  v12 = [self conversionResultForPTPAsset:assetCopy sourceHints:hints withPeerCapabilites:capabilities];
   if (!v12)
   {
     v15 = PLPTPGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v41 = v10;
+      v41 = assetCopy;
       v16 = "Failed to create a conversion request for ptpAsset %@";
       v17 = v15;
       v18 = OS_LOG_TYPE_ERROR;
@@ -156,17 +156,17 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  [v11 preflightConversionRequest:v12];
-  v13 = [v12 source];
-  v14 = [v13 containsProResVideoWithFormatEligibleForTranscoding];
+  [managerCopy preflightConversionRequest:v12];
+  source = [v12 source];
+  containsProResVideoWithFormatEligibleForTranscoding = [source containsProResVideoWithFormatEligibleForTranscoding];
 
-  if (v14)
+  if (containsProResVideoWithFormatEligibleForTranscoding)
   {
     v15 = PLPTPGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v41 = v10;
+      v41 = assetCopy;
       v16 = "Never transcode ProRes ptpAsset: %@";
       v17 = v15;
       v18 = OS_LOG_TYPE_DEBUG;
@@ -186,66 +186,66 @@ LABEL_7:
       goto LABEL_26;
     }
 
-    v19 = [v12 error];
+    error = [v12 error];
     *buf = 138412546;
-    v41 = v19;
+    v41 = error;
     v42 = 2112;
-    v43 = v10;
+    v43 = assetCopy;
     _os_log_impl(&dword_19C86F000, v15, OS_LOG_TYPE_ERROR, "Unable to preflight conversion request: %@, ptpAsset: %@", buf, 0x16u);
 LABEL_25:
 
     goto LABEL_26;
   }
 
-  v20 = [v12 source];
-  if ([v20 isVideo])
+  source2 = [v12 source];
+  if ([source2 isVideo])
   {
-    v21 = [v12 source];
-    v22 = [v21 firstVideoTrackCodec];
+    source3 = [v12 source];
+    firstVideoTrackCodec = [source3 firstVideoTrackCodec];
   }
 
   else
   {
-    v22 = 0;
+    firstVideoTrackCodec = 0;
   }
 
   v23 = MEMORY[0x1E69C08F0];
-  v24 = [v12 source];
-  v25 = [v24 fileType];
-  v15 = [v23 typeWithIdentifier:v25];
+  source4 = [v12 source];
+  fileType = [source4 fileType];
+  v15 = [v23 typeWithIdentifier:fileType];
 
-  v26 = [v12 backwardsCompatibilityStatus];
-  if (v26 != 2)
+  backwardsCompatibilityStatus = [v12 backwardsCompatibilityStatus];
+  if (backwardsCompatibilityStatus != 2)
   {
-    v27 = v26;
-    if (v26 == 1)
+    v27 = backwardsCompatibilityStatus;
+    if (backwardsCompatibilityStatus == 1)
     {
-      v28 = [[PHPTPConversionResult alloc] initWithRequiresConversion:0 pathExtension:0 estimatedFileLength:0 inputVideoCodec:v22 inputContentType:v15 outputVideoCodec:v22 outputContentType:v15];
+      v28 = [[PHPTPConversionResult alloc] initWithRequiresConversion:0 pathExtension:0 estimatedFileLength:0 inputVideoCodec:firstVideoTrackCodec inputContentType:v15 outputVideoCodec:firstVideoTrackCodec outputContentType:v15];
       goto LABEL_27;
     }
 
-    v19 = PLPTPGetLog();
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    error = PLPTPGetLog();
+    if (os_log_type_enabled(error, OS_LOG_TYPE_ERROR))
     {
-      v36 = [v12 error];
+      error2 = [v12 error];
       *buf = 134218498;
       v41 = v27;
       v42 = 2112;
-      v43 = v36;
+      v43 = error2;
       v44 = 2112;
-      v45 = v10;
-      _os_log_impl(&dword_19C86F000, v19, OS_LOG_TYPE_ERROR, "Unexpected backwards compatibility status %ld: %@, ptpAsset: %@", buf, 0x20u);
+      v45 = assetCopy;
+      _os_log_impl(&dword_19C86F000, error, OS_LOG_TYPE_ERROR, "Unexpected backwards compatibility status %ld: %@, ptpAsset: %@", buf, 0x20u);
     }
 
     goto LABEL_25;
   }
 
   v38 = [PHPTPConversionResult alloc];
-  v39 = [v12 outputPathExtension];
-  v29 = [v39 uppercaseString];
-  v30 = [v12 estimatedOutputFileLength];
-  v31 = [v12 source];
-  if ([v31 isVideo])
+  outputPathExtension = [v12 outputPathExtension];
+  uppercaseString = [outputPathExtension uppercaseString];
+  estimatedOutputFileLength = [v12 estimatedOutputFileLength];
+  source5 = [v12 source];
+  if ([source5 isVideo])
   {
     v32 = 1635148593;
   }
@@ -255,15 +255,15 @@ LABEL_25:
     v32 = 0;
   }
 
-  v33 = [v12 source];
-  v34 = [v33 isVideo];
+  source6 = [v12 source];
+  isVideo = [source6 isVideo];
   v35 = MEMORY[0x1E6982F80];
-  if (!v34)
+  if (!isVideo)
   {
     v35 = MEMORY[0x1E6982E58];
   }
 
-  v28 = [(PHPTPConversionResult *)v38 initWithRequiresConversion:1 pathExtension:v29 estimatedFileLength:v30 inputVideoCodec:v22 inputContentType:v15 outputVideoCodec:v32 outputContentType:*v35];
+  v28 = [(PHPTPConversionResult *)v38 initWithRequiresConversion:1 pathExtension:uppercaseString estimatedFileLength:estimatedOutputFileLength inputVideoCodec:firstVideoTrackCodec inputContentType:v15 outputVideoCodec:v32 outputContentType:*v35];
 
 LABEL_27:
 

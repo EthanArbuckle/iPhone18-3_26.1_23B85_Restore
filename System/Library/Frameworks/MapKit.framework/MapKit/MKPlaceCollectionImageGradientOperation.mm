@@ -1,6 +1,6 @@
 @interface MKPlaceCollectionImageGradientOperation
 - (CGSize)desiredSize;
-- (MKPlaceCollectionImageGradientOperation)initWithUrl:(id)a3 size:(CGSize)a4 contentSizeCategory:(id)a5 name:(id)a6 downloadCache:(id)a7 gradientCache:(id)a8 isRTL:(BOOL)a9 screenScale:(double)a10 cacheId:(id)a11;
+- (MKPlaceCollectionImageGradientOperation)initWithUrl:(id)url size:(CGSize)size contentSizeCategory:(id)category name:(id)name downloadCache:(id)cache gradientCache:(id)gradientCache isRTL:(BOOL)l screenScale:(double)self0 cacheId:(id)self1;
 - (NSCache)blurCache;
 - (NSCache)downloadCache;
 - (void)main;
@@ -34,43 +34,43 @@
 - (void)main
 {
   v149 = *MEMORY[0x1E69E9840];
-  v3 = [(MKPlaceCollectionImageGradientOperation *)self downloadCache];
+  downloadCache = [(MKPlaceCollectionImageGradientOperation *)self downloadCache];
   v4 = [(MKPlaceCollectionImageGradientOperation *)self url];
-  v5 = [v4 absoluteString];
-  v6 = [v3 objectForKey:v5];
+  absoluteString = [v4 absoluteString];
+  v6 = [downloadCache objectForKey:absoluteString];
   [(MKPlaceCollectionImageGradientOperation *)self setSourceImage:v6];
 
   if ([(MKPlaceCollectionImageGradientOperation *)self isCancelled])
   {
-    v7 = MKGetCuratedCollectionsLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    date = MKGetCuratedCollectionsLog();
+    if (os_log_type_enabled(date, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [(MKPlaceCollectionImageGradientOperation *)self cacheId];
+      cacheId = [(MKPlaceCollectionImageGradientOperation *)self cacheId];
       *buf = 138412290;
-      v146 = v8;
+      v146 = cacheId;
       v9 = "[Step-1]Blurring Operation is cancelled for: %@";
 LABEL_8:
-      _os_log_impl(&dword_1A2EA0000, v7, OS_LOG_TYPE_DEBUG, v9, buf, 0xCu);
+      _os_log_impl(&dword_1A2EA0000, date, OS_LOG_TYPE_DEBUG, v9, buf, 0xCu);
 LABEL_11:
     }
   }
 
   else
   {
-    v10 = [(MKPlaceCollectionImageGradientOperation *)self sourceImage];
+    sourceImage = [(MKPlaceCollectionImageGradientOperation *)self sourceImage];
 
-    if (v10)
+    if (sourceImage)
     {
-      v11 = [(MKPlaceCollectionImageGradientOperation *)self isCancelled];
-      v7 = MKGetCuratedCollectionsLog();
-      v12 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
-      if (v11)
+      isCancelled = [(MKPlaceCollectionImageGradientOperation *)self isCancelled];
+      date = MKGetCuratedCollectionsLog();
+      v12 = os_log_type_enabled(date, OS_LOG_TYPE_DEBUG);
+      if (isCancelled)
       {
         if (v12)
         {
-          v8 = [(MKPlaceCollectionImageGradientOperation *)self cacheId];
+          cacheId = [(MKPlaceCollectionImageGradientOperation *)self cacheId];
           *buf = 138412290;
-          v146 = v8;
+          v146 = cacheId;
           v9 = "[Step-2]Gradient Operation is cancelled for: %@";
           goto LABEL_8;
         }
@@ -80,17 +80,17 @@ LABEL_11:
       {
         if (v12)
         {
-          v14 = [(MKPlaceCollectionImageGradientOperation *)self sourceImage];
+          sourceImage2 = [(MKPlaceCollectionImageGradientOperation *)self sourceImage];
           [(MKPlaceCollectionImageGradientOperation *)self desiredSize];
           v15 = NSStringFromCGSize(v150);
           *buf = 138412546;
-          v146 = v14;
+          v146 = sourceImage2;
           v147 = 2112;
           v148 = v15;
-          _os_log_impl(&dword_1A2EA0000, v7, OS_LOG_TYPE_DEBUG, "Starting gradient for Image: %@ with size: %@", buf, 0x16u);
+          _os_log_impl(&dword_1A2EA0000, date, OS_LOG_TYPE_DEBUG, "Starting gradient for Image: %@ with size: %@", buf, 0x16u);
         }
 
-        v7 = [MEMORY[0x1E695DF00] date];
+        date = [MEMORY[0x1E695DF00] date];
         v16 = +[MKSystemController sharedInstance];
         [v16 screenScale];
         v18 = v17;
@@ -101,8 +101,8 @@ LABEL_11:
         }
 
         v19 = objc_alloc(MEMORY[0x1E695F658]);
-        v20 = [(MKPlaceCollectionImageGradientOperation *)self sourceImage];
-        v21 = [v19 initWithImage:v20];
+        sourceImage3 = [(MKPlaceCollectionImageGradientOperation *)self sourceImage];
+        v21 = [v19 initWithImage:sourceImage3];
 
         [(MKPlaceCollectionImageGradientOperation *)self desiredSize];
         v23 = v22;
@@ -125,13 +125,13 @@ LABEL_11:
         v31 = *MEMORY[0x1E695FAB0];
         v136 = v21;
         [v30 setValue:v21 forKey:*MEMORY[0x1E695FAB0]];
-        v138 = self;
+        selfCopy = self;
         v32 = [MEMORY[0x1E696AD98] numberWithDouble:v29];
         [v30 setValue:v32 forKey:*MEMORY[0x1E695FB20]];
 
         [v30 setValue:&unk_1F1610CE0 forKey:*MEMORY[0x1E695FA40]];
-        v33 = [v30 outputImage];
-        [v33 extent];
+        outputImage = [v30 outputImage];
+        [outputImage extent];
         v35 = v34;
         v37 = v36 * 0.5;
         [(MKPlaceCollectionImageGradientOperation *)self desiredSize];
@@ -142,8 +142,8 @@ LABEL_11:
         v43 = v42;
         [(MKPlaceCollectionImageGradientOperation *)self desiredSize];
         v45 = v44;
-        v135 = v33;
-        v46 = [v33 imageByClampingToRect:{v39, v41, v43, v44}];
+        v135 = outputImage;
+        v46 = [outputImage imageByClampingToRect:{v39, v41, v43, v44}];
         v47 = [MEMORY[0x1E695F648] filterWithName:@"CIGaussianBlur"];
         [v47 setValue:v46 forKey:v31];
         v127 = v18;
@@ -151,9 +151,9 @@ LABEL_11:
         [v47 setValue:v48 forKey:*MEMORY[0x1E695FB10]];
 
         v133 = v47;
-        v132 = [v47 outputImage];
+        outputImage2 = [v47 outputImage];
         v126 = v39;
-        v49 = [v132 imageByCroppingToRect:{v39, v41, v43, v45}];
+        v49 = [outputImage2 imageByCroppingToRect:{v39, v41, v43, v45}];
         [(MKPlaceCollectionImageGradientOperation *)self desiredSize];
         v51 = v50;
         [(MKPlaceCollectionImageGradientOperation *)self desiredSize];
@@ -174,8 +174,8 @@ LABEL_11:
         [v56 setValue:v60 forKey:@"inputColor1"];
 
         v130 = v56;
-        v61 = [v56 outputImage];
-        v62 = [v61 imageByCroppingToRect:{0.0, 0.0, v53, v51}];
+        outputImage3 = [v56 outputImage];
+        v62 = [outputImage3 imageByCroppingToRect:{0.0, 0.0, v53, v51}];
 
         v63 = [MEMORY[0x1E695F648] filterWithName:@"CIBlendWithMask"];
         v131 = v49;
@@ -184,7 +184,7 @@ LABEL_11:
         v64 = *MEMORY[0x1E695FA48];
         [v63 setValue:v46 forKey:?];
         [v63 setValue:v62 forKey:*MEMORY[0x1E695FAC8]];
-        v137 = [v63 outputImage];
+        outputImage4 = [v63 outputImage];
         v128 = v63;
         v129 = v62;
         if ([(MKPlaceCollectionImageGradientOperation *)self isCancelled])
@@ -193,15 +193,15 @@ LABEL_11:
           v66 = MKGetCuratedCollectionsLog();
           if (os_log_type_enabled(v66, OS_LOG_TYPE_DEBUG))
           {
-            v67 = [(MKPlaceCollectionImageGradientOperation *)self cacheId];
+            cacheId2 = [(MKPlaceCollectionImageGradientOperation *)self cacheId];
             *buf = 138412290;
-            v146 = v67;
+            v146 = cacheId2;
             _os_log_impl(&dword_1A2EA0000, v66, OS_LOG_TYPE_DEBUG, "[Step-3]Gradient Operation is cancelled for: %@", buf, 0xCu);
           }
 
           v69 = v46;
           v68 = v135;
-          v71 = v132;
+          v71 = outputImage2;
           v70 = v133;
           v73 = v130;
           v72 = v131;
@@ -210,7 +210,7 @@ LABEL_11:
         else
         {
           v122 = v30;
-          v123 = v7;
+          v123 = date;
           [(MKPlaceCollectionImageGradientOperation *)self desiredSize];
           v75 = v74;
           [(MKPlaceCollectionImageGradientOperation *)self desiredSize];
@@ -264,7 +264,7 @@ LABEL_11:
           v90 = [MEMORY[0x1E695F610] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.3];
           [v86 setValue:v90 forKey:@"inputColor1"];
 
-          v91 = v124;
+          outputImage6 = v124;
           v139 = 0u;
           v140 = 0u;
           v141 = 0u;
@@ -275,7 +275,7 @@ LABEL_11:
           v143[1] = v86;
           v92 = [MEMORY[0x1E695DEC8] arrayWithObjects:v143 count:2];
           v93 = [v92 countByEnumeratingWithState:&v139 objects:v144 count:16];
-          v125 = v91;
+          v125 = outputImage6;
           if (v93)
           {
             v94 = v93;
@@ -283,7 +283,7 @@ LABEL_11:
             do
             {
               v96 = 0;
-              v97 = v91;
+              v97 = outputImage6;
               do
               {
                 if (*v140 != v95)
@@ -293,14 +293,14 @@ LABEL_11:
 
                 v98 = *(*(&v139 + 1) + 8 * v96);
                 v99 = [MEMORY[0x1E695F648] filterWithName:@"CIAdditionCompositing"];
-                v100 = [v98 outputImage];
-                [v99 setValue:v100 forKey:v31];
+                outputImage5 = [v98 outputImage];
+                [v99 setValue:outputImage5 forKey:v31];
 
                 [v99 setValue:v97 forKey:v64];
-                v91 = [v99 outputImage];
+                outputImage6 = [v99 outputImage];
 
                 ++v96;
-                v97 = v91;
+                v97 = outputImage6;
               }
 
               while (v94 != v96);
@@ -311,41 +311,41 @@ LABEL_11:
           }
 
           v101 = [MEMORY[0x1E695F648] filterWithName:@"CISourceOverCompositing"];
-          [v101 setValue:v91 forKey:v31];
-          [v101 setValue:v137 forKey:v64];
-          v102 = [v101 outputImage];
-          v103 = [main___sharedContext createCGImage:v102 fromRect:{v126, v41, v43, v45}];
-          v104 = [(MKPlaceCollectionImageGradientOperation *)v138 blurCache];
+          [v101 setValue:outputImage6 forKey:v31];
+          [v101 setValue:outputImage4 forKey:v64];
+          outputImage7 = [v101 outputImage];
+          v103 = [main___sharedContext createCGImage:outputImage7 fromRect:{v126, v41, v43, v45}];
+          blurCache = [(MKPlaceCollectionImageGradientOperation *)selfCopy blurCache];
           v105 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v103 scale:0 orientation:v127];
-          v106 = [(MKPlaceCollectionImageGradientOperation *)v138 cacheId];
-          [v104 setObject:v105 forKey:v106];
+          cacheId3 = [(MKPlaceCollectionImageGradientOperation *)selfCopy cacheId];
+          [blurCache setObject:v105 forKey:cacheId3];
 
           CGImageRelease(v103);
           v107 = MKGetCuratedCollectionsLog();
           if (os_log_type_enabled(v107, OS_LOG_TYPE_DEBUG))
           {
-            v108 = [(MKPlaceCollectionImageGradientOperation *)v138 blurCache];
-            v109 = [(MKPlaceCollectionImageGradientOperation *)v138 blurCache];
-            v110 = [v109 allObjects];
-            v111 = [v110 count];
+            blurCache2 = [(MKPlaceCollectionImageGradientOperation *)selfCopy blurCache];
+            blurCache3 = [(MKPlaceCollectionImageGradientOperation *)selfCopy blurCache];
+            allObjects = [blurCache3 allObjects];
+            v111 = [allObjects count];
             *buf = 138412546;
-            v146 = v108;
+            v146 = blurCache2;
             v147 = 2048;
             v148 = v111;
             _os_log_impl(&dword_1A2EA0000, v107, OS_LOG_TYPE_DEBUG, "Gradient cache %@ has %ld items.", buf, 0x16u);
           }
 
           v112 = MKGetCuratedCollectionsLog();
-          v7 = v123;
+          date = v123;
           v73 = v130;
           if (os_log_type_enabled(v112, OS_LOG_TYPE_DEBUG))
           {
-            v113 = [MEMORY[0x1E695DF00] date];
-            [v113 timeIntervalSinceDate:v123];
+            date2 = [MEMORY[0x1E695DF00] date];
+            [date2 timeIntervalSinceDate:v123];
             v115 = v114;
-            v116 = [(MKPlaceCollectionImageGradientOperation *)v138 blurCache];
-            v117 = [(MKPlaceCollectionImageGradientOperation *)v138 cacheId];
-            v118 = [v116 objectForKey:v117];
+            blurCache4 = [(MKPlaceCollectionImageGradientOperation *)selfCopy blurCache];
+            cacheId4 = [(MKPlaceCollectionImageGradientOperation *)selfCopy cacheId];
+            v118 = [blurCache4 objectForKey:cacheId4];
             *buf = 134218242;
             v146 = v115;
             v147 = 2112;
@@ -360,21 +360,21 @@ LABEL_11:
           v70 = v133;
           v69 = v134;
           v72 = v131;
-          v71 = v132;
+          v71 = outputImage2;
         }
       }
     }
 
     else
     {
-      v7 = MKGetCuratedCollectionsLog();
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      date = MKGetCuratedCollectionsLog();
+      if (os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
       {
-        v8 = [(MKPlaceCollectionImageGradientOperation *)self url];
-        v13 = [v8 absoluteString];
+        cacheId = [(MKPlaceCollectionImageGradientOperation *)self url];
+        absoluteString2 = [cacheId absoluteString];
         *buf = 138412290;
-        v146 = v13;
-        _os_log_impl(&dword_1A2EA0000, v7, OS_LOG_TYPE_ERROR, "[!]Operation shouldn't start unless we have source image. URL: %@", buf, 0xCu);
+        v146 = absoluteString2;
+        _os_log_impl(&dword_1A2EA0000, date, OS_LOG_TYPE_ERROR, "[!]Operation shouldn't start unless we have source image. URL: %@", buf, 0xCu);
 
         goto LABEL_11;
       }
@@ -398,34 +398,34 @@ void __47__MKPlaceCollectionImageGradientOperation_main__block_invoke()
   main___sharedContext = v4;
 }
 
-- (MKPlaceCollectionImageGradientOperation)initWithUrl:(id)a3 size:(CGSize)a4 contentSizeCategory:(id)a5 name:(id)a6 downloadCache:(id)a7 gradientCache:(id)a8 isRTL:(BOOL)a9 screenScale:(double)a10 cacheId:(id)a11
+- (MKPlaceCollectionImageGradientOperation)initWithUrl:(id)url size:(CGSize)size contentSizeCategory:(id)category name:(id)name downloadCache:(id)cache gradientCache:(id)gradientCache isRTL:(BOOL)l screenScale:(double)self0 cacheId:(id)self1
 {
-  height = a4.height;
-  width = a4.width;
-  v20 = a3;
-  v29 = a5;
-  v28 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a11;
+  height = size.height;
+  width = size.width;
+  urlCopy = url;
+  categoryCopy = category;
+  nameCopy = name;
+  cacheCopy = cache;
+  gradientCacheCopy = gradientCache;
+  idCopy = id;
   v30.receiver = self;
   v30.super_class = MKPlaceCollectionImageGradientOperation;
   v24 = [(MKPlaceCollectionImageGradientOperation *)&v30 self];
 
   if (v24)
   {
-    objc_storeStrong((v24 + 272), a3);
+    objc_storeStrong((v24 + 272), url);
     *(v24 + 328) = width;
     *(v24 + 336) = height;
-    objc_storeStrong((v24 + 296), a5);
-    objc_storeStrong((v24 + 280), a6);
-    objc_storeWeak((v24 + 312), v21);
-    objc_storeWeak((v24 + 320), v22);
-    *(v24 + 248) = a9;
-    *(v24 + 288) = a10;
-    objc_storeStrong((v24 + 304), a11);
-    v25 = [v20 absoluteString];
-    [v24 setName:v25];
+    objc_storeStrong((v24 + 296), category);
+    objc_storeStrong((v24 + 280), name);
+    objc_storeWeak((v24 + 312), cacheCopy);
+    objc_storeWeak((v24 + 320), gradientCacheCopy);
+    *(v24 + 248) = l;
+    *(v24 + 288) = scale;
+    objc_storeStrong((v24 + 304), id);
+    absoluteString = [urlCopy absoluteString];
+    [v24 setName:absoluteString];
   }
 
   return v24;

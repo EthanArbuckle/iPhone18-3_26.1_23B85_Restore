@@ -1,11 +1,11 @@
 @interface DBSDeviceAppearanceTableViewCell
 - (DBSDeviceAppearanceTableViewCell)init;
-- (DBSDeviceAppearanceTableViewCell)initWithCoder:(id)a3;
-- (DBSDeviceAppearanceTableViewCell)initWithFrame:(CGRect)a3;
-- (DBSDeviceAppearanceTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (DBSDeviceAppearanceTableViewCell)initWithCoder:(id)coder;
+- (DBSDeviceAppearanceTableViewCell)initWithFrame:(CGRect)frame;
+- (DBSDeviceAppearanceTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (DBSDeviceAppearanceTableViewCellDelegate)delegate;
 - (void)_configureView;
-- (void)userDidTapOnAppearanceOptionView:(id)a3;
+- (void)userDidTapOnAppearanceOptionView:(id)view;
 @end
 
 @implementation DBSDeviceAppearanceTableViewCell
@@ -24,11 +24,11 @@
   return v3;
 }
 
-- (DBSDeviceAppearanceTableViewCell)initWithFrame:(CGRect)a3
+- (DBSDeviceAppearanceTableViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = DBSDeviceAppearanceTableViewCell;
-  v3 = [(DBSDeviceAppearanceTableViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DBSDeviceAppearanceTableViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -38,11 +38,11 @@
   return v4;
 }
 
-- (DBSDeviceAppearanceTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (DBSDeviceAppearanceTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = DBSDeviceAppearanceTableViewCell;
-  v4 = [(PSTableCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -52,11 +52,11 @@
   return v5;
 }
 
-- (DBSDeviceAppearanceTableViewCell)initWithCoder:(id)a3
+- (DBSDeviceAppearanceTableViewCell)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = DBSDeviceAppearanceTableViewCell;
-  v3 = [(DBSDeviceAppearanceTableViewCell *)&v6 initWithCoder:a3];
+  v3 = [(DBSDeviceAppearanceTableViewCell *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -76,34 +76,34 @@
   v8 = [(DBSDeviceAppearanceOptionView *)v3 initWithFrame:0 appearanceOption:*MEMORY[0x277CBF3A0], v5, v6, v7];
   [(DBSDeviceAppearanceTableViewCell *)self set_lightOptionView:v8];
 
-  v9 = [(DBSDeviceAppearanceTableViewCell *)self _lightOptionView];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  _lightOptionView = [(DBSDeviceAppearanceTableViewCell *)self _lightOptionView];
+  [_lightOptionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(DBSDeviceAppearanceTableViewCell *)self _lightOptionView];
-  [v10 setDelegate:self];
+  _lightOptionView2 = [(DBSDeviceAppearanceTableViewCell *)self _lightOptionView];
+  [_lightOptionView2 setDelegate:self];
 
-  v11 = [(DBSDeviceAppearanceTableViewCell *)self _lightOptionView];
-  [v11 setAccessibilityIdentifier:@"DBSDeviceAppearanceOptionLight"];
+  _lightOptionView3 = [(DBSDeviceAppearanceTableViewCell *)self _lightOptionView];
+  [_lightOptionView3 setAccessibilityIdentifier:@"DBSDeviceAppearanceOptionLight"];
 
-  v12 = [(DBSDeviceAppearanceTableViewCell *)self contentView];
-  v13 = [(DBSDeviceAppearanceTableViewCell *)self _lightOptionView];
-  [v12 addSubview:v13];
+  contentView = [(DBSDeviceAppearanceTableViewCell *)self contentView];
+  _lightOptionView4 = [(DBSDeviceAppearanceTableViewCell *)self _lightOptionView];
+  [contentView addSubview:_lightOptionView4];
 
   v14 = [[DBSDeviceAppearanceOptionView alloc] initWithFrame:1 appearanceOption:v4, v5, v6, v7];
   [(DBSDeviceAppearanceTableViewCell *)self set_darkOptionView:v14];
 
-  v15 = [(DBSDeviceAppearanceTableViewCell *)self _darkOptionView];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  _darkOptionView = [(DBSDeviceAppearanceTableViewCell *)self _darkOptionView];
+  [_darkOptionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v16 = [(DBSDeviceAppearanceTableViewCell *)self _darkOptionView];
-  [v16 setDelegate:self];
+  _darkOptionView2 = [(DBSDeviceAppearanceTableViewCell *)self _darkOptionView];
+  [_darkOptionView2 setDelegate:self];
 
-  v17 = [(DBSDeviceAppearanceTableViewCell *)self _darkOptionView];
-  [v17 setAccessibilityIdentifier:@"DBSDeviceAppearanceOptionDark"];
+  _darkOptionView3 = [(DBSDeviceAppearanceTableViewCell *)self _darkOptionView];
+  [_darkOptionView3 setAccessibilityIdentifier:@"DBSDeviceAppearanceOptionDark"];
 
-  v18 = [(DBSDeviceAppearanceTableViewCell *)self contentView];
-  v19 = [(DBSDeviceAppearanceTableViewCell *)self _darkOptionView];
-  [v18 addSubview:v19];
+  contentView2 = [(DBSDeviceAppearanceTableViewCell *)self contentView];
+  _darkOptionView4 = [(DBSDeviceAppearanceTableViewCell *)self _darkOptionView];
+  [contentView2 addSubview:_darkOptionView4];
 
   v20 = objc_alloc_init(MEMORY[0x277D756D0]);
   [(DBSDeviceAppearanceTableViewCell *)self set_leadingGuide:v20];
@@ -114,111 +114,111 @@
   v22 = objc_alloc_init(MEMORY[0x277D756D0]);
   [(DBSDeviceAppearanceTableViewCell *)self set_trailingGuide:v22];
 
-  v23 = [(DBSDeviceAppearanceTableViewCell *)self contentView];
-  v24 = [(DBSDeviceAppearanceTableViewCell *)self _leadingGuide];
-  [v23 addLayoutGuide:v24];
+  contentView3 = [(DBSDeviceAppearanceTableViewCell *)self contentView];
+  _leadingGuide = [(DBSDeviceAppearanceTableViewCell *)self _leadingGuide];
+  [contentView3 addLayoutGuide:_leadingGuide];
 
-  v25 = [(DBSDeviceAppearanceTableViewCell *)self contentView];
-  v26 = [(DBSDeviceAppearanceTableViewCell *)self _middleGuide];
-  [v25 addLayoutGuide:v26];
+  contentView4 = [(DBSDeviceAppearanceTableViewCell *)self contentView];
+  _middleGuide = [(DBSDeviceAppearanceTableViewCell *)self _middleGuide];
+  [contentView4 addLayoutGuide:_middleGuide];
 
-  v27 = [(DBSDeviceAppearanceTableViewCell *)self contentView];
-  v28 = [(DBSDeviceAppearanceTableViewCell *)self _trailingGuide];
-  [v27 addLayoutGuide:v28];
+  contentView5 = [(DBSDeviceAppearanceTableViewCell *)self contentView];
+  _trailingGuide = [(DBSDeviceAppearanceTableViewCell *)self _trailingGuide];
+  [contentView5 addLayoutGuide:_trailingGuide];
 
-  v89 = [MEMORY[0x277CBEB18] array];
-  v29 = [(DBSDeviceAppearanceTableViewCell *)self _leadingGuide];
-  v30 = [v29 leadingAnchor];
-  v31 = [(DBSDeviceAppearanceTableViewCell *)self contentView];
-  v32 = [v31 leadingAnchor];
-  v33 = [v30 constraintEqualToAnchor:v32];
-  [v89 addObject:v33];
+  array = [MEMORY[0x277CBEB18] array];
+  _leadingGuide2 = [(DBSDeviceAppearanceTableViewCell *)self _leadingGuide];
+  leadingAnchor = [_leadingGuide2 leadingAnchor];
+  contentView6 = [(DBSDeviceAppearanceTableViewCell *)self contentView];
+  leadingAnchor2 = [contentView6 leadingAnchor];
+  v33 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+  [array addObject:v33];
 
-  v34 = [(DBSDeviceAppearanceTableViewCell *)self _leadingGuide];
-  v35 = [v34 trailingAnchor];
-  v36 = [(DBSDeviceAppearanceTableViewCell *)self _lightOptionView];
-  v37 = [v36 leadingAnchor];
-  v38 = [v35 constraintEqualToAnchor:v37];
-  [v89 addObject:v38];
+  _leadingGuide3 = [(DBSDeviceAppearanceTableViewCell *)self _leadingGuide];
+  trailingAnchor = [_leadingGuide3 trailingAnchor];
+  _lightOptionView5 = [(DBSDeviceAppearanceTableViewCell *)self _lightOptionView];
+  leadingAnchor3 = [_lightOptionView5 leadingAnchor];
+  v38 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3];
+  [array addObject:v38];
 
-  v39 = [(DBSDeviceAppearanceTableViewCell *)self _lightOptionView];
-  v40 = [v39 trailingAnchor];
-  v41 = [(DBSDeviceAppearanceTableViewCell *)self _middleGuide];
-  v42 = [v41 leadingAnchor];
-  v43 = [v40 constraintEqualToAnchor:v42];
-  [v89 addObject:v43];
+  _lightOptionView6 = [(DBSDeviceAppearanceTableViewCell *)self _lightOptionView];
+  trailingAnchor2 = [_lightOptionView6 trailingAnchor];
+  _middleGuide2 = [(DBSDeviceAppearanceTableViewCell *)self _middleGuide];
+  leadingAnchor4 = [_middleGuide2 leadingAnchor];
+  v43 = [trailingAnchor2 constraintEqualToAnchor:leadingAnchor4];
+  [array addObject:v43];
 
-  v44 = [(DBSDeviceAppearanceTableViewCell *)self _middleGuide];
-  v45 = [v44 trailingAnchor];
-  v46 = [(DBSDeviceAppearanceTableViewCell *)self _darkOptionView];
-  v47 = [v46 leadingAnchor];
-  v48 = [v45 constraintEqualToAnchor:v47];
-  [v89 addObject:v48];
+  _middleGuide3 = [(DBSDeviceAppearanceTableViewCell *)self _middleGuide];
+  trailingAnchor3 = [_middleGuide3 trailingAnchor];
+  _darkOptionView5 = [(DBSDeviceAppearanceTableViewCell *)self _darkOptionView];
+  leadingAnchor5 = [_darkOptionView5 leadingAnchor];
+  v48 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor5];
+  [array addObject:v48];
 
-  v49 = [(DBSDeviceAppearanceTableViewCell *)self _darkOptionView];
-  v50 = [v49 trailingAnchor];
-  v51 = [(DBSDeviceAppearanceTableViewCell *)self _trailingGuide];
-  v52 = [v51 leadingAnchor];
-  v53 = [v50 constraintEqualToAnchor:v52];
-  [v89 addObject:v53];
+  _darkOptionView6 = [(DBSDeviceAppearanceTableViewCell *)self _darkOptionView];
+  trailingAnchor4 = [_darkOptionView6 trailingAnchor];
+  _trailingGuide2 = [(DBSDeviceAppearanceTableViewCell *)self _trailingGuide];
+  leadingAnchor6 = [_trailingGuide2 leadingAnchor];
+  v53 = [trailingAnchor4 constraintEqualToAnchor:leadingAnchor6];
+  [array addObject:v53];
 
-  v54 = [(DBSDeviceAppearanceTableViewCell *)self _trailingGuide];
-  v55 = [v54 trailingAnchor];
-  v56 = [(DBSDeviceAppearanceTableViewCell *)self contentView];
-  v57 = [v56 trailingAnchor];
-  v58 = [v55 constraintEqualToAnchor:v57];
-  [v89 addObject:v58];
+  _trailingGuide3 = [(DBSDeviceAppearanceTableViewCell *)self _trailingGuide];
+  trailingAnchor5 = [_trailingGuide3 trailingAnchor];
+  contentView7 = [(DBSDeviceAppearanceTableViewCell *)self contentView];
+  trailingAnchor6 = [contentView7 trailingAnchor];
+  v58 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
+  [array addObject:v58];
 
-  v59 = [(DBSDeviceAppearanceTableViewCell *)self _leadingGuide];
-  v60 = [v59 widthAnchor];
-  v61 = [(DBSDeviceAppearanceTableViewCell *)self _middleGuide];
-  v62 = [v61 widthAnchor];
-  v63 = [v60 constraintEqualToAnchor:v62 multiplier:1.0];
-  [v89 addObject:v63];
+  _leadingGuide4 = [(DBSDeviceAppearanceTableViewCell *)self _leadingGuide];
+  widthAnchor = [_leadingGuide4 widthAnchor];
+  _middleGuide4 = [(DBSDeviceAppearanceTableViewCell *)self _middleGuide];
+  widthAnchor2 = [_middleGuide4 widthAnchor];
+  v63 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:1.0];
+  [array addObject:v63];
 
-  v64 = [(DBSDeviceAppearanceTableViewCell *)self _middleGuide];
-  v65 = [v64 widthAnchor];
-  v66 = [(DBSDeviceAppearanceTableViewCell *)self _trailingGuide];
-  v67 = [v66 widthAnchor];
-  v68 = [v65 constraintEqualToAnchor:v67 multiplier:1.0];
-  [v89 addObject:v68];
+  _middleGuide5 = [(DBSDeviceAppearanceTableViewCell *)self _middleGuide];
+  widthAnchor3 = [_middleGuide5 widthAnchor];
+  _trailingGuide4 = [(DBSDeviceAppearanceTableViewCell *)self _trailingGuide];
+  widthAnchor4 = [_trailingGuide4 widthAnchor];
+  v68 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 multiplier:1.0];
+  [array addObject:v68];
 
-  v69 = [(DBSDeviceAppearanceTableViewCell *)self _lightOptionView];
-  v70 = [v69 topAnchor];
-  v71 = [(DBSDeviceAppearanceTableViewCell *)self contentView];
-  v72 = [v71 topAnchor];
-  v73 = [v70 constraintEqualToSystemSpacingBelowAnchor:v72 multiplier:2.0];
-  [v89 addObject:v73];
+  _lightOptionView7 = [(DBSDeviceAppearanceTableViewCell *)self _lightOptionView];
+  topAnchor = [_lightOptionView7 topAnchor];
+  contentView8 = [(DBSDeviceAppearanceTableViewCell *)self contentView];
+  topAnchor2 = [contentView8 topAnchor];
+  v73 = [topAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:2.0];
+  [array addObject:v73];
 
-  v74 = [(DBSDeviceAppearanceTableViewCell *)self contentView];
-  v75 = [v74 bottomAnchor];
-  v76 = [(DBSDeviceAppearanceTableViewCell *)self _lightOptionView];
-  v77 = [v76 bottomAnchor];
-  v78 = [v75 constraintEqualToSystemSpacingBelowAnchor:v77 multiplier:2.0];
-  [v89 addObject:v78];
+  contentView9 = [(DBSDeviceAppearanceTableViewCell *)self contentView];
+  bottomAnchor = [contentView9 bottomAnchor];
+  _lightOptionView8 = [(DBSDeviceAppearanceTableViewCell *)self _lightOptionView];
+  bottomAnchor2 = [_lightOptionView8 bottomAnchor];
+  v78 = [bottomAnchor constraintEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:2.0];
+  [array addObject:v78];
 
-  v79 = [(DBSDeviceAppearanceTableViewCell *)self _darkOptionView];
-  v80 = [v79 topAnchor];
-  v81 = [(DBSDeviceAppearanceTableViewCell *)self contentView];
-  v82 = [v81 topAnchor];
-  v83 = [v80 constraintEqualToSystemSpacingBelowAnchor:v82 multiplier:2.0];
-  [v89 addObject:v83];
+  _darkOptionView7 = [(DBSDeviceAppearanceTableViewCell *)self _darkOptionView];
+  topAnchor3 = [_darkOptionView7 topAnchor];
+  contentView10 = [(DBSDeviceAppearanceTableViewCell *)self contentView];
+  topAnchor4 = [contentView10 topAnchor];
+  v83 = [topAnchor3 constraintEqualToSystemSpacingBelowAnchor:topAnchor4 multiplier:2.0];
+  [array addObject:v83];
 
-  v84 = [(DBSDeviceAppearanceTableViewCell *)self contentView];
-  v85 = [v84 bottomAnchor];
-  v86 = [(DBSDeviceAppearanceTableViewCell *)self _darkOptionView];
-  v87 = [v86 bottomAnchor];
-  v88 = [v85 constraintEqualToSystemSpacingBelowAnchor:v87 multiplier:2.0];
-  [v89 addObject:v88];
+  contentView11 = [(DBSDeviceAppearanceTableViewCell *)self contentView];
+  bottomAnchor3 = [contentView11 bottomAnchor];
+  _darkOptionView8 = [(DBSDeviceAppearanceTableViewCell *)self _darkOptionView];
+  bottomAnchor4 = [_darkOptionView8 bottomAnchor];
+  v88 = [bottomAnchor3 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor4 multiplier:2.0];
+  [array addObject:v88];
 
-  [MEMORY[0x277CCAAD0] activateConstraints:v89];
+  [MEMORY[0x277CCAAD0] activateConstraints:array];
 }
 
-- (void)userDidTapOnAppearanceOptionView:(id)a3
+- (void)userDidTapOnAppearanceOptionView:(id)view
 {
-  v4 = [a3 appearanceOption];
-  v5 = [(DBSDeviceAppearanceTableViewCell *)self delegate];
-  if (v4)
+  appearanceOption = [view appearanceOption];
+  delegate = [(DBSDeviceAppearanceTableViewCell *)self delegate];
+  if (appearanceOption)
   {
     v6 = objc_opt_respondsToSelector();
 
@@ -227,8 +227,8 @@
       return;
     }
 
-    v8 = [(DBSDeviceAppearanceTableViewCell *)self delegate];
-    [v8 deviceAppearanceTableViewCellUserDidTapOnDarkAppearance:self];
+    delegate2 = [(DBSDeviceAppearanceTableViewCell *)self delegate];
+    [delegate2 deviceAppearanceTableViewCellUserDidTapOnDarkAppearance:self];
   }
 
   else
@@ -240,8 +240,8 @@
       return;
     }
 
-    v8 = [(DBSDeviceAppearanceTableViewCell *)self delegate];
-    [v8 deviceAppearanceTableViewCellUserDidTapOnLightAppearance:self];
+    delegate2 = [(DBSDeviceAppearanceTableViewCell *)self delegate];
+    [delegate2 deviceAppearanceTableViewCellUserDidTapOnLightAppearance:self];
   }
 }
 

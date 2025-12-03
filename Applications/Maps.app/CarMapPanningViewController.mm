@@ -20,11 +20,11 @@
 - (void)_momentaryImpulseUp;
 - (void)_tappedDone;
 - (void)_updateContentViewIfNeeded;
-- (void)nudgerizer:(id)a3 didGestureMapView:(id)a4 inDirection:(int64_t)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)nudgerizer:(id)nudgerizer didGestureMapView:(id)view inDirection:(int64_t)direction;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CarMapPanningViewController
@@ -57,36 +57,36 @@
   return WeakRetained;
 }
 
-- (void)nudgerizer:(id)a3 didGestureMapView:(id)a4 inDirection:(int64_t)a5
+- (void)nudgerizer:(id)nudgerizer didGestureMapView:(id)view inDirection:(int64_t)direction
 {
-  v7 = [(CarMapPanningViewController *)self panDelegate:a3];
+  v7 = [(CarMapPanningViewController *)self panDelegate:nudgerizer];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CarMapPanningViewController *)self panDelegate];
-    [v9 carMapPanningViewControllerDidPan:self inDirection:a5];
+    panDelegate = [(CarMapPanningViewController *)self panDelegate];
+    [panDelegate carMapPanningViewControllerDidPan:self inDirection:direction];
   }
 
   v10 = +[CarDisplayController sharedInstance];
-  v11 = [v10 window];
-  v12 = [v11 windowScene];
-  v13 = [v12 focusSystem];
-  v14 = [v13 focusedItem];
+  window = [v10 window];
+  windowScene = [window windowScene];
+  focusSystem = [windowScene focusSystem];
+  focusedItem = [focusSystem focusedItem];
 
-  v15 = [(CarPanButtonContainer *)self->_panButtonContainer panUpButton];
-  v20[0] = v15;
-  v16 = [(CarPanButtonContainer *)self->_panButtonContainer panLeftButton];
-  v20[1] = v16;
-  v17 = [(CarPanButtonContainer *)self->_panButtonContainer panRightButton];
-  v20[2] = v17;
-  v18 = [(CarPanButtonContainer *)self->_panButtonContainer panDownButton];
-  v20[3] = v18;
+  panUpButton = [(CarPanButtonContainer *)self->_panButtonContainer panUpButton];
+  v20[0] = panUpButton;
+  panLeftButton = [(CarPanButtonContainer *)self->_panButtonContainer panLeftButton];
+  v20[1] = panLeftButton;
+  panRightButton = [(CarPanButtonContainer *)self->_panButtonContainer panRightButton];
+  v20[2] = panRightButton;
+  panDownButton = [(CarPanButtonContainer *)self->_panButtonContainer panDownButton];
+  v20[3] = panDownButton;
   v19 = [NSArray arrayWithObjects:v20 count:4];
 
-  if ([v19 containsObject:v14] && objc_msgSend(v14, "direction") != a5)
+  if ([v19 containsObject:focusedItem] && objc_msgSend(focusedItem, "direction") != direction)
   {
-    [(CarPanButtonContainer *)self->_panButtonContainer setLastNudgedDirection:a5];
+    [(CarPanButtonContainer *)self->_panButtonContainer setLastNudgedDirection:direction];
     [(CarPanButtonContainer *)self->_panButtonContainer setNeedsFocusUpdate];
   }
 }
@@ -96,28 +96,28 @@
   if ([(CarMapPanningViewController *)self isViewLoaded])
   {
     v3 = +[MapsExternalDevice sharedInstance];
-    v4 = [v3 rightHandDrive];
+    rightHandDrive = [v3 rightHandDrive];
 
-    v21 = [(CarPanButtonContainer *)self->_panButtonContainer panRightButton];
+    panRightButton = [(CarPanButtonContainer *)self->_panButtonContainer panRightButton];
     v5 = [CarFocusOrderItem itemWithFocusItem:?];
     v20 = v5;
-    if (v4)
+    if (rightHandDrive)
     {
       v24[0] = v5;
-      v19 = [(CarPanButtonContainer *)self->_panButtonContainer panDownButton];
-      v18 = [CarFocusOrderItem itemWithFocusItem:?];
-      v24[1] = v18;
-      v17 = [(CarMapPanningViewController *)self chromeViewController];
-      v6 = [v17 itemRepresentingMapControls];
-      v7 = [v6 itemFlippedForRHD];
-      v24[2] = v7;
-      v8 = [(CarPanButtonContainer *)self->_panButtonContainer panLeftButton];
-      v9 = [CarFocusOrderItem itemWithFocusItem:v8];
-      v24[3] = v9;
+      panDownButton = [(CarPanButtonContainer *)self->_panButtonContainer panDownButton];
+      itemRepresentingMapControls2 = [CarFocusOrderItem itemWithFocusItem:?];
+      v24[1] = itemRepresentingMapControls2;
+      chromeViewController = [(CarMapPanningViewController *)self chromeViewController];
+      itemRepresentingMapControls = [chromeViewController itemRepresentingMapControls];
+      itemFlippedForRHD = [itemRepresentingMapControls itemFlippedForRHD];
+      v24[2] = itemFlippedForRHD;
+      panLeftButton = [(CarPanButtonContainer *)self->_panButtonContainer panLeftButton];
+      panUpButton2 = [CarFocusOrderItem itemWithFocusItem:panLeftButton];
+      v24[3] = panUpButton2;
       v10 = [CarFocusOrderItem itemWithFocusItem:self->_doneButton];
       v24[4] = v10;
-      v11 = [(CarPanButtonContainer *)self->_panButtonContainer panUpButton];
-      v12 = [CarFocusOrderItem itemWithFocusItem:v11];
+      panUpButton = [(CarPanButtonContainer *)self->_panButtonContainer panUpButton];
+      v12 = [CarFocusOrderItem itemWithFocusItem:panUpButton];
       v24[5] = v12;
       v13 = [NSArray arrayWithObjects:v24 count:6];
       v14 = [CarFocusOrderSequence sequenceWithItems:v13 options:10];
@@ -128,20 +128,20 @@
     else
     {
       v22[0] = v5;
-      v19 = [(CarMapPanningViewController *)self chromeViewController];
-      v18 = [v19 itemRepresentingMapControls];
-      v22[1] = v18;
-      v17 = [(CarPanButtonContainer *)self->_panButtonContainer panDownButton];
-      v6 = [CarFocusOrderItem itemWithFocusItem:?];
-      v22[2] = v6;
-      v7 = [(CarPanButtonContainer *)self->_panButtonContainer panLeftButton];
-      v8 = [CarFocusOrderItem itemWithFocusItem:v7];
-      v22[3] = v8;
-      v9 = [(CarPanButtonContainer *)self->_panButtonContainer panUpButton];
-      v10 = [CarFocusOrderItem itemWithFocusItem:v9];
+      panDownButton = [(CarMapPanningViewController *)self chromeViewController];
+      itemRepresentingMapControls2 = [panDownButton itemRepresentingMapControls];
+      v22[1] = itemRepresentingMapControls2;
+      chromeViewController = [(CarPanButtonContainer *)self->_panButtonContainer panDownButton];
+      itemRepresentingMapControls = [CarFocusOrderItem itemWithFocusItem:?];
+      v22[2] = itemRepresentingMapControls;
+      itemFlippedForRHD = [(CarPanButtonContainer *)self->_panButtonContainer panLeftButton];
+      panLeftButton = [CarFocusOrderItem itemWithFocusItem:itemFlippedForRHD];
+      v22[3] = panLeftButton;
+      panUpButton2 = [(CarPanButtonContainer *)self->_panButtonContainer panUpButton];
+      v10 = [CarFocusOrderItem itemWithFocusItem:panUpButton2];
       v22[4] = v10;
-      v11 = [CarFocusOrderItem itemWithFocusItem:self->_doneButton];
-      v22[5] = v11;
+      panUpButton = [CarFocusOrderItem itemWithFocusItem:self->_doneButton];
+      v22[5] = panUpButton;
       v12 = [NSArray arrayWithObjects:v22 count:6];
       v13 = [CarFocusOrderSequence sequenceWithItems:v12 options:9];
       v23 = v13;
@@ -159,92 +159,92 @@
 
 - (void)_momentaryImpulseRight
 {
-  v2 = [(CarMapPanningViewController *)self nudgerizer];
-  [v2 momentaryImpulseInDirection:4];
+  nudgerizer = [(CarMapPanningViewController *)self nudgerizer];
+  [nudgerizer momentaryImpulseInDirection:4];
 }
 
 - (void)_endImpulseRight
 {
-  v2 = [(CarMapPanningViewController *)self nudgerizer];
-  [v2 endImpluseInDirection:4];
+  nudgerizer = [(CarMapPanningViewController *)self nudgerizer];
+  [nudgerizer endImpluseInDirection:4];
 }
 
 - (void)_beginImpulseRight
 {
-  v2 = [(CarMapPanningViewController *)self nudgerizer];
-  [v2 beginImpulseInDirection:4];
+  nudgerizer = [(CarMapPanningViewController *)self nudgerizer];
+  [nudgerizer beginImpulseInDirection:4];
 }
 
 - (void)_momentaryImpulseLeft
 {
-  v2 = [(CarMapPanningViewController *)self nudgerizer];
-  [v2 momentaryImpulseInDirection:3];
+  nudgerizer = [(CarMapPanningViewController *)self nudgerizer];
+  [nudgerizer momentaryImpulseInDirection:3];
 }
 
 - (void)_endImpulseLeft
 {
-  v2 = [(CarMapPanningViewController *)self nudgerizer];
-  [v2 endImpluseInDirection:3];
+  nudgerizer = [(CarMapPanningViewController *)self nudgerizer];
+  [nudgerizer endImpluseInDirection:3];
 }
 
 - (void)_beginImpulseLeft
 {
-  v2 = [(CarMapPanningViewController *)self nudgerizer];
-  [v2 beginImpulseInDirection:3];
+  nudgerizer = [(CarMapPanningViewController *)self nudgerizer];
+  [nudgerizer beginImpulseInDirection:3];
 }
 
 - (void)_momentaryImpulseDown
 {
-  v2 = [(CarMapPanningViewController *)self nudgerizer];
-  [v2 momentaryImpulseInDirection:2];
+  nudgerizer = [(CarMapPanningViewController *)self nudgerizer];
+  [nudgerizer momentaryImpulseInDirection:2];
 }
 
 - (void)_endImpulseDown
 {
-  v2 = [(CarMapPanningViewController *)self nudgerizer];
-  [v2 endImpluseInDirection:2];
+  nudgerizer = [(CarMapPanningViewController *)self nudgerizer];
+  [nudgerizer endImpluseInDirection:2];
 }
 
 - (void)_beginImpulseDown
 {
-  v2 = [(CarMapPanningViewController *)self nudgerizer];
-  [v2 beginImpulseInDirection:2];
+  nudgerizer = [(CarMapPanningViewController *)self nudgerizer];
+  [nudgerizer beginImpulseInDirection:2];
 }
 
 - (void)_momentaryImpulseUp
 {
-  v2 = [(CarMapPanningViewController *)self nudgerizer];
-  [v2 momentaryImpulseInDirection:1];
+  nudgerizer = [(CarMapPanningViewController *)self nudgerizer];
+  [nudgerizer momentaryImpulseInDirection:1];
 }
 
 - (void)_endImpulseUp
 {
-  v2 = [(CarMapPanningViewController *)self nudgerizer];
-  [v2 endImpluseInDirection:1];
+  nudgerizer = [(CarMapPanningViewController *)self nudgerizer];
+  [nudgerizer endImpluseInDirection:1];
 }
 
 - (void)_beginImpulseUp
 {
-  v2 = [(CarMapPanningViewController *)self nudgerizer];
-  [v2 beginImpulseInDirection:1];
+  nudgerizer = [(CarMapPanningViewController *)self nudgerizer];
+  [nudgerizer beginImpulseInDirection:1];
 }
 
 - (void)_tappedDone
 {
-  v3 = [(CarMapPanningViewController *)self panDelegate];
+  panDelegate = [(CarMapPanningViewController *)self panDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CarMapPanningViewController *)self panDelegate];
-    [v5 carMapPanningViewControllerDidTapDone:self];
+    panDelegate2 = [(CarMapPanningViewController *)self panDelegate];
+    [panDelegate2 carMapPanningViewControllerDidTapDone:self];
   }
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(CarMapPanningViewController *)self view];
-  [v3 bounds];
+  view = [(CarMapPanningViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -290,51 +290,51 @@
     self->_panButtonContainer = v5;
 
     [(CarPanButtonContainer *)self->_panButtonContainer setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(CarPanButtonContainer *)self->_panButtonContainer panUpButton];
-    [v7 addTarget:self action:"_beginImpulseUp" forControlEvents:0x2000000];
+    panUpButton = [(CarPanButtonContainer *)self->_panButtonContainer panUpButton];
+    [panUpButton addTarget:self action:"_beginImpulseUp" forControlEvents:0x2000000];
 
-    v8 = [(CarPanButtonContainer *)self->_panButtonContainer panUpButton];
-    [v8 addTarget:self action:"_endImpulseUp" forControlEvents:0x4000000];
+    panUpButton2 = [(CarPanButtonContainer *)self->_panButtonContainer panUpButton];
+    [panUpButton2 addTarget:self action:"_endImpulseUp" forControlEvents:0x4000000];
 
-    v9 = [(CarPanButtonContainer *)self->_panButtonContainer panUpButton];
-    [v9 addTarget:self action:"_momentaryImpulseUp" forControlEvents:0x1000000];
+    panUpButton3 = [(CarPanButtonContainer *)self->_panButtonContainer panUpButton];
+    [panUpButton3 addTarget:self action:"_momentaryImpulseUp" forControlEvents:0x1000000];
 
-    v10 = [(CarPanButtonContainer *)self->_panButtonContainer panLeftButton];
-    [v10 addTarget:self action:"_beginImpulseLeft" forControlEvents:0x2000000];
+    panLeftButton = [(CarPanButtonContainer *)self->_panButtonContainer panLeftButton];
+    [panLeftButton addTarget:self action:"_beginImpulseLeft" forControlEvents:0x2000000];
 
-    v11 = [(CarPanButtonContainer *)self->_panButtonContainer panLeftButton];
-    [v11 addTarget:self action:"_endImpulseLeft" forControlEvents:0x4000000];
+    panLeftButton2 = [(CarPanButtonContainer *)self->_panButtonContainer panLeftButton];
+    [panLeftButton2 addTarget:self action:"_endImpulseLeft" forControlEvents:0x4000000];
 
-    v12 = [(CarPanButtonContainer *)self->_panButtonContainer panLeftButton];
-    [v12 addTarget:self action:"_momentaryImpulseLeft" forControlEvents:0x1000000];
+    panLeftButton3 = [(CarPanButtonContainer *)self->_panButtonContainer panLeftButton];
+    [panLeftButton3 addTarget:self action:"_momentaryImpulseLeft" forControlEvents:0x1000000];
 
-    v13 = [(CarPanButtonContainer *)self->_panButtonContainer panRightButton];
-    [v13 addTarget:self action:"_beginImpulseRight" forControlEvents:0x2000000];
+    panRightButton = [(CarPanButtonContainer *)self->_panButtonContainer panRightButton];
+    [panRightButton addTarget:self action:"_beginImpulseRight" forControlEvents:0x2000000];
 
-    v14 = [(CarPanButtonContainer *)self->_panButtonContainer panRightButton];
-    [v14 addTarget:self action:"_endImpulseRight" forControlEvents:0x4000000];
+    panRightButton2 = [(CarPanButtonContainer *)self->_panButtonContainer panRightButton];
+    [panRightButton2 addTarget:self action:"_endImpulseRight" forControlEvents:0x4000000];
 
-    v15 = [(CarPanButtonContainer *)self->_panButtonContainer panRightButton];
-    [v15 addTarget:self action:"_momentaryImpulseRight" forControlEvents:0x1000000];
+    panRightButton3 = [(CarPanButtonContainer *)self->_panButtonContainer panRightButton];
+    [panRightButton3 addTarget:self action:"_momentaryImpulseRight" forControlEvents:0x1000000];
 
-    v16 = [(CarPanButtonContainer *)self->_panButtonContainer panDownButton];
-    [v16 addTarget:self action:"_beginImpulseDown" forControlEvents:0x2000000];
+    panDownButton = [(CarPanButtonContainer *)self->_panButtonContainer panDownButton];
+    [panDownButton addTarget:self action:"_beginImpulseDown" forControlEvents:0x2000000];
 
-    v17 = [(CarPanButtonContainer *)self->_panButtonContainer panDownButton];
-    [v17 addTarget:self action:"_endImpulseDown" forControlEvents:0x4000000];
+    panDownButton2 = [(CarPanButtonContainer *)self->_panButtonContainer panDownButton];
+    [panDownButton2 addTarget:self action:"_endImpulseDown" forControlEvents:0x4000000];
 
-    v18 = [(CarPanButtonContainer *)self->_panButtonContainer panDownButton];
-    [v18 addTarget:self action:"_momentaryImpulseDown" forControlEvents:0x1000000];
+    panDownButton3 = [(CarPanButtonContainer *)self->_panButtonContainer panDownButton];
+    [panDownButton3 addTarget:self action:"_momentaryImpulseDown" forControlEvents:0x1000000];
   }
 }
 
 - (void)_updateContentViewIfNeeded
 {
-  v3 = [(CarMapPanningViewController *)self chromeViewController];
-  v4 = [v3 viewport];
+  chromeViewController = [(CarMapPanningViewController *)self chromeViewController];
+  viewport = [chromeViewController viewport];
 
-  v5 = [(CarMapPanningViewController *)self chromeViewController];
-  v6 = [v5 viewportLayoutGuide];
+  chromeViewController2 = [(CarMapPanningViewController *)self chromeViewController];
+  viewportLayoutGuide = [chromeViewController2 viewportLayoutGuide];
 
   if (self->_doneButton)
   {
@@ -343,54 +343,54 @@
 
   else
   {
-    v7 = v4 == 0;
+    v7 = viewport == 0;
   }
 
-  v8 = v7 || v6 == 0;
+  v8 = v7 || viewportLayoutGuide == 0;
   if (!v8 && [(CarMapPanningViewController *)self isViewLoaded])
   {
     [(CarMapPanningViewController *)self _createViewsIfNeeded];
-    [v4 addSubview:self->_doneButton];
-    [v4 addSubview:self->_panButtonContainer];
-    v30 = [(CarDoneButton *)self->_doneButton _maps_rightRHDAnchor];
-    v31 = [v4 safeAreaLayoutGuide];
-    v29 = [v31 _maps_rightRHDAnchor];
+    [viewport addSubview:self->_doneButton];
+    [viewport addSubview:self->_panButtonContainer];
+    _maps_rightRHDAnchor = [(CarDoneButton *)self->_doneButton _maps_rightRHDAnchor];
+    safeAreaLayoutGuide = [viewport safeAreaLayoutGuide];
+    _maps_rightRHDAnchor2 = [safeAreaLayoutGuide _maps_rightRHDAnchor];
     LODWORD(v9) = 1148846080;
-    v28 = [v30 _maps_constraintWithRHDAnchor:v29 relation:0 constant:-10.0 priority:v9];
+    v28 = [_maps_rightRHDAnchor _maps_constraintWithRHDAnchor:_maps_rightRHDAnchor2 relation:0 constant:-10.0 priority:v9];
     v32[0] = v28;
-    v27 = [(CarDoneButton *)self->_doneButton topAnchor];
-    v26 = [v6 topAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26 constant:10.0];
+    topAnchor = [(CarDoneButton *)self->_doneButton topAnchor];
+    topAnchor2 = [viewportLayoutGuide topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
     v32[1] = v25;
-    v24 = [(CarDoneButton *)self->_doneButton heightAnchor];
-    v23 = [v24 constraintEqualToConstant:36.0];
+    heightAnchor = [(CarDoneButton *)self->_doneButton heightAnchor];
+    v23 = [heightAnchor constraintEqualToConstant:36.0];
     v32[2] = v23;
-    v22 = [(CarPanButtonContainer *)self->_panButtonContainer topAnchor];
-    v21 = [v6 topAnchor];
-    v20 = [v22 constraintEqualToAnchor:v21];
+    topAnchor3 = [(CarPanButtonContainer *)self->_panButtonContainer topAnchor];
+    topAnchor4 = [viewportLayoutGuide topAnchor];
+    v20 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v32[3] = v20;
-    v19 = [(CarPanButtonContainer *)self->_panButtonContainer bottomAnchor];
-    v18 = [v6 bottomAnchor];
-    v10 = [v19 constraintEqualToAnchor:v18];
+    bottomAnchor = [(CarPanButtonContainer *)self->_panButtonContainer bottomAnchor];
+    bottomAnchor2 = [viewportLayoutGuide bottomAnchor];
+    v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v32[4] = v10;
-    v11 = [(CarPanButtonContainer *)self->_panButtonContainer leadingAnchor];
-    v12 = [v6 leadingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    leadingAnchor = [(CarPanButtonContainer *)self->_panButtonContainer leadingAnchor];
+    leadingAnchor2 = [viewportLayoutGuide leadingAnchor];
+    v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v32[5] = v13;
-    v14 = [(CarPanButtonContainer *)self->_panButtonContainer trailingAnchor];
-    v15 = [v6 trailingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    trailingAnchor = [(CarPanButtonContainer *)self->_panButtonContainer trailingAnchor];
+    trailingAnchor2 = [viewportLayoutGuide trailingAnchor];
+    v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v32[6] = v16;
     v17 = [NSArray arrayWithObjects:v32 count:7];
     [NSLayoutConstraint activateConstraints:v17];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = CarMapPanningViewController;
-  [(CarMapPanningViewController *)&v6 viewWillDisappear:a3];
+  [(CarMapPanningViewController *)&v6 viewWillDisappear:disappear];
   [(CarDoneButton *)self->_doneButton removeFromSuperview];
   [(CarPanButtonContainer *)self->_panButtonContainer removeFromSuperview];
   doneButton = self->_doneButton;
@@ -400,22 +400,22 @@
   self->_panButtonContainer = 0;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(CarMapPanningViewController *)self navigationController];
-  [v5 setNeedsFocusUpdate];
+  appearCopy = appear;
+  navigationController = [(CarMapPanningViewController *)self navigationController];
+  [navigationController setNeedsFocusUpdate];
 
   v6.receiver = self;
   v6.super_class = CarMapPanningViewController;
-  [(CarMapPanningViewController *)&v6 viewDidAppear:v3];
+  [(CarMapPanningViewController *)&v6 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CarMapPanningViewController;
-  [(CarMapPanningViewController *)&v4 viewWillAppear:a3];
+  [(CarMapPanningViewController *)&v4 viewWillAppear:appear];
   [(CarMapPanningViewController *)self _updateContentViewIfNeeded];
 }
 

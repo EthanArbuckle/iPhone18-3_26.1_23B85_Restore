@@ -1,18 +1,18 @@
 @interface SBBiometricMonitorView
-- (SBBiometricMonitorView)initWithFrame:(CGRect)a3;
+- (SBBiometricMonitorView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setMatchState:(int64_t)a3;
-- (void)setPoseState:(int64_t)a3;
-- (void)setPresenceDetectState:(int64_t)a3;
+- (void)setMatchState:(int64_t)state;
+- (void)setPoseState:(int64_t)state;
+- (void)setPresenceDetectState:(int64_t)state;
 @end
 
 @implementation SBBiometricMonitorView
 
-- (SBBiometricMonitorView)initWithFrame:(CGRect)a3
+- (SBBiometricMonitorView)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = SBBiometricMonitorView;
-  v3 = [(SBBiometricMonitorView *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBBiometricMonitorView *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D75D18]);
@@ -40,106 +40,106 @@
   return v3;
 }
 
-- (void)setMatchState:(int64_t)a3
+- (void)setMatchState:(int64_t)state
 {
   v4 = 0;
-  self->_matchState = a3;
-  if (a3 > 1)
+  self->_matchState = state;
+  if (state > 1)
   {
-    if (a3 == 2)
+    if (state == 2)
     {
-      v5 = [MEMORY[0x277D75348] greenColor];
+      greenColor = [MEMORY[0x277D75348] greenColor];
     }
 
     else
     {
-      if (a3 != 3)
+      if (state != 3)
       {
         goto LABEL_11;
       }
 
-      v5 = [MEMORY[0x277D75348] redColor];
+      greenColor = [MEMORY[0x277D75348] redColor];
     }
   }
 
-  else if (a3)
+  else if (state)
   {
-    if (a3 != 1)
+    if (state != 1)
     {
       goto LABEL_11;
     }
 
-    v5 = [MEMORY[0x277D75348] yellowColor];
+    greenColor = [MEMORY[0x277D75348] yellowColor];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] clearColor];
+    greenColor = [MEMORY[0x277D75348] clearColor];
   }
 
-  v4 = v5;
+  v4 = greenColor;
 LABEL_11:
   v6 = v4;
   [(UIView *)self->_stateView setBackgroundColor:v4];
 }
 
-- (void)setPresenceDetectState:(int64_t)a3
+- (void)setPresenceDetectState:(int64_t)state
 {
   v4 = 0;
-  self->_presenceDetectState = a3;
-  if (a3 > 1)
+  self->_presenceDetectState = state;
+  if (state > 1)
   {
-    if (a3 == 2)
+    if (state == 2)
     {
-      v5 = [MEMORY[0x277D75348] greenColor];
+      greenColor = [MEMORY[0x277D75348] greenColor];
     }
 
     else
     {
-      if (a3 != 3)
+      if (state != 3)
       {
         goto LABEL_11;
       }
 
-      v5 = [MEMORY[0x277D75348] redColor];
+      greenColor = [MEMORY[0x277D75348] redColor];
     }
   }
 
-  else if (a3)
+  else if (state)
   {
-    if (a3 != 1)
+    if (state != 1)
     {
       goto LABEL_11;
     }
 
-    v5 = [MEMORY[0x277D75348] whiteColor];
+    greenColor = [MEMORY[0x277D75348] whiteColor];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D75348] clearColor];
+    greenColor = [MEMORY[0x277D75348] clearColor];
   }
 
-  v4 = v5;
+  v4 = greenColor;
 LABEL_11:
   v6 = v4;
   [(UIView *)self->_presenceView setBackgroundColor:v4];
 }
 
-- (void)setPoseState:(int64_t)a3
+- (void)setPoseState:(int64_t)state
 {
-  self->_poseState = a3;
-  if (a3 == 1)
+  self->_poseState = state;
+  if (state == 1)
   {
-    v4 = [MEMORY[0x277D75348] purpleColor];
+    purpleColor = [MEMORY[0x277D75348] purpleColor];
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!state)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
+    purpleColor = [MEMORY[0x277D75348] clearColor];
 LABEL_5:
-    v5 = v4;
+    v5 = purpleColor;
     goto LABEL_7;
   }
 

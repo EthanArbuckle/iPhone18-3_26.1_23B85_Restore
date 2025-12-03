@@ -1,19 +1,19 @@
 @interface PGFlexMusicCurationManager
 - (PGFlexMusicCurationManager)init;
-- (id)adjustCurationForCollectionWithLocalIdentifier:(id)a3 initialCuration:(id)a4 cache:(id)a5 progressReporter:(id)a6 error:(id *)a7;
+- (id)adjustCurationForCollectionWithLocalIdentifier:(id)identifier initialCuration:(id)curation cache:(id)cache progressReporter:(id)reporter error:(id *)error;
 @end
 
 @implementation PGFlexMusicCurationManager
 
-- (id)adjustCurationForCollectionWithLocalIdentifier:(id)a3 initialCuration:(id)a4 cache:(id)a5 progressReporter:(id)a6 error:(id *)a7
+- (id)adjustCurationForCollectionWithLocalIdentifier:(id)identifier initialCuration:(id)curation cache:(id)cache progressReporter:(id)reporter error:(id *)error
 {
   v11 = sub_22F740E20();
   v13 = v12;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = self;
-  sub_22F2BC31C(v11, v13, v14, v15);
+  curationCopy = curation;
+  cacheCopy = cache;
+  reporterCopy = reporter;
+  selfCopy = self;
+  sub_22F2BC31C(v11, v13, curationCopy, cacheCopy);
   v19 = v18;
 
   return v19;

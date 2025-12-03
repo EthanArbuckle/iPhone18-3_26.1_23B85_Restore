@@ -1,38 +1,38 @@
 @interface APKRemoteInspectorPageAgent
-- (APKRemoteInspectorPageAgent)initWithDispatcher:(id)a3;
+- (APKRemoteInspectorPageAgent)initWithDispatcher:(id)dispatcher;
 - (APKRemoteInspectorPageAgentDelegate)delegate;
-- (void)getResourceContentWithErrorCallback:(id)a3 successCallback:(id)a4 frameId:(id)a5 url:(id)a6;
-- (void)getResourceTreeWithErrorCallback:(id)a3 successCallback:(id)a4;
+- (void)getResourceContentWithErrorCallback:(id)callback successCallback:(id)successCallback frameId:(id)id url:(id)url;
+- (void)getResourceTreeWithErrorCallback:(id)callback successCallback:(id)successCallback;
 @end
 
 @implementation APKRemoteInspectorPageAgent
 
-- (APKRemoteInspectorPageAgent)initWithDispatcher:(id)a3
+- (APKRemoteInspectorPageAgent)initWithDispatcher:(id)dispatcher
 {
-  v5 = a3;
+  dispatcherCopy = dispatcher;
   v9.receiver = self;
   v9.super_class = APKRemoteInspectorPageAgent;
   v6 = [(APKRemoteInspectorPageAgent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dispatcher, a3);
+    objc_storeStrong(&v6->_dispatcher, dispatcher);
   }
 
   return v7;
 }
 
-- (void)getResourceTreeWithErrorCallback:(id)a3 successCallback:(id)a4
+- (void)getResourceTreeWithErrorCallback:(id)callback successCallback:(id)successCallback
 {
-  v5 = a4;
-  v6 = [(APKRemoteInspectorPageAgent *)self delegate];
+  successCallbackCopy = successCallback;
+  delegate = [(APKRemoteInspectorPageAgent *)self delegate];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __80__APKRemoteInspectorPageAgent_getResourceTreeWithErrorCallback_successCallback___block_invoke;
   v8[3] = &unk_278C5DE08;
-  v9 = v5;
-  v7 = v5;
-  [v6 pageAgent:self onResourcesRequestWithCompletion:v8];
+  v9 = successCallbackCopy;
+  v7 = successCallbackCopy;
+  [delegate pageAgent:self onResourcesRequestWithCompletion:v8];
 }
 
 void __80__APKRemoteInspectorPageAgent_getResourceTreeWithErrorCallback_successCallback___block_invoke(uint64_t a1, void *a2)
@@ -45,21 +45,21 @@ void __80__APKRemoteInspectorPageAgent_getResourceTreeWithErrorCallback_successC
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getResourceContentWithErrorCallback:(id)a3 successCallback:(id)a4 frameId:(id)a5 url:(id)a6
+- (void)getResourceContentWithErrorCallback:(id)callback successCallback:(id)successCallback frameId:(id)id url:(id)url
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [(APKRemoteInspectorPageAgent *)self delegate];
+  callbackCopy = callback;
+  successCallbackCopy = successCallback;
+  urlCopy = url;
+  delegate = [(APKRemoteInspectorPageAgent *)self delegate];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __95__APKRemoteInspectorPageAgent_getResourceContentWithErrorCallback_successCallback_frameId_url___block_invoke;
   v15[3] = &unk_278C5DE30;
-  v16 = v10;
-  v17 = v9;
-  v13 = v9;
-  v14 = v10;
-  [v12 pageAgent:self onResourceContentRequestWithIdentifier:v11 completion:v15];
+  v16 = successCallbackCopy;
+  v17 = callbackCopy;
+  v13 = callbackCopy;
+  v14 = successCallbackCopy;
+  [delegate pageAgent:self onResourceContentRequestWithIdentifier:urlCopy completion:v15];
 }
 
 void __95__APKRemoteInspectorPageAgent_getResourceContentWithErrorCallback_successCallback_frameId_url___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)

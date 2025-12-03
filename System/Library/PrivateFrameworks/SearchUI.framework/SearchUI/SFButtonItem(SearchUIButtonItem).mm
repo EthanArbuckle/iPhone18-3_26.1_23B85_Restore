@@ -10,7 +10,7 @@
   v2 = SearchUIGeneralLog();
   if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
   {
-    [(SFButtonItem(SearchUIButtonItem) *)a1 _searchUIButtonItemGeneratorClass];
+    [(SFButtonItem(SearchUIButtonItem) *)self _searchUIButtonItemGeneratorClass];
   }
 
   return 0;

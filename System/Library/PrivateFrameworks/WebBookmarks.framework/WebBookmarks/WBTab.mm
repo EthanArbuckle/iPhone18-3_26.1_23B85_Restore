@@ -1,11 +1,11 @@
 @interface WBTab
-+ (id)pinnedTabWithTitle:(id)a3 url:(id)a4 deviceIdentifier:(id)a5;
-+ (id)startPageTabWithDeviceIdentifier:(id)a3;
-- (BOOL)canCloseAutomaticallyForInterval:(double)a3;
-- (BOOL)hasSameUUIDAndURLAsTab:(id)a3;
++ (id)pinnedTabWithTitle:(id)title url:(id)url deviceIdentifier:(id)identifier;
++ (id)startPageTabWithDeviceIdentifier:(id)identifier;
+- (BOOL)canCloseAutomaticallyForInterval:(double)interval;
+- (BOOL)hasSameUUIDAndURLAsTab:(id)tab;
 - (BOOL)isBlank;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isIdentical:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isIdentical:(id)identical;
 - (BOOL)isInserted;
 - (BOOL)isMarkedAsRead;
 - (BOOL)isPinned;
@@ -24,40 +24,40 @@
 - (NSURL)url;
 - (WBLocalTabAttributes)localAttributes;
 - (WBSCRDTPosition)syncPosition;
-- (WBTab)initWithBookmark:(id)a3;
-- (WBTab)initWithBookmark:(id)a3 isPrivateBrowsing:(BOOL)a4;
-- (WBTab)initWithBookmarkStorage:(id)a3;
-- (WBTab)initWithCoder:(id)a3;
-- (WBTab)initWithDictionaryRepresentation:(id)a3;
-- (WBTab)initWithUUID:(id)a3 title:(id)a4 url:(id)a5 deviceIdentifier:(id)a6 isPrivateBrowsing:(BOOL)a7;
-- (WBTab)initWithUUID:(id)a3 title:(id)a4 url:(id)a5 deviceIdentifier:(id)a6 lastVisitTime:(id)a7;
+- (WBTab)initWithBookmark:(id)bookmark;
+- (WBTab)initWithBookmark:(id)bookmark isPrivateBrowsing:(BOOL)browsing;
+- (WBTab)initWithBookmarkStorage:(id)storage;
+- (WBTab)initWithCoder:(id)coder;
+- (WBTab)initWithDictionaryRepresentation:(id)representation;
+- (WBTab)initWithUUID:(id)d title:(id)title url:(id)url deviceIdentifier:(id)identifier isPrivateBrowsing:(BOOL)browsing;
+- (WBTab)initWithUUID:(id)d title:(id)title url:(id)url deviceIdentifier:(id)identifier lastVisitTime:(id)time;
 - (WebBookmark)bookmark;
 - (double)lastViewedTime;
-- (id)_addressFromURL:(id)a3;
+- (id)_addressFromURL:(id)l;
 - (id)_determineURL;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)duplicate;
 - (id)duplicatePreservingUUID;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)mutableDuplicate;
 - (int)identifier;
 - (int)orderIndex;
 - (int)parentIdentifier;
 - (unint64_t)hash;
-- (void)_setLocalURLString:(id)a3;
-- (void)_updateBookmarkWithURL:(id)a3 shouldSync:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBookmark:(id)a3;
+- (void)_setLocalURLString:(id)string;
+- (void)_updateBookmarkWithURL:(id)l shouldSync:(BOOL)sync;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBookmark:(id)bookmark;
 @end
 
 @implementation WBTab
 
 - (NSString)uuid
 {
-  v2 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-  v3 = [v2 UUID];
+  value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+  uUID = [value UUID];
 
-  return v3;
+  return uUID;
 }
 
 - (WebBookmark)bookmark
@@ -70,26 +70,26 @@
 
 - (int)identifier
 {
-  v2 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-  v3 = [v2 identifier];
+  value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+  identifier = [value identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (BOOL)isPinned
 {
-  v2 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-  v3 = [v2 isPinned];
+  value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+  isPinned = [value isPinned];
 
-  return v3;
+  return isPinned;
 }
 
 - (BOOL)isSyncable
 {
-  v2 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-  v3 = [v2 isSyncable];
+  value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+  isSyncable = [value isSyncable];
 
-  return v3;
+  return isSyncable;
 }
 
 - (NSURL)url
@@ -99,19 +99,19 @@
   os_unfair_lock_unlock(&self->_cachedURLUnfairLock);
   if (!v3)
   {
-    v4 = [(WBTab *)self _determineURL];
-    v5 = v4;
-    if (v4)
+    _determineURL = [(WBTab *)self _determineURL];
+    v5 = _determineURL;
+    if (_determineURL)
     {
-      v6 = v4;
+      null = _determineURL;
     }
 
     else
     {
-      v6 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    v3 = v6;
+    v3 = null;
 
     os_unfair_lock_lock(&self->_cachedURLUnfairLock);
     objc_storeStrong(&self->_cachedURL, v3);
@@ -136,9 +136,9 @@
 
 - (id)_determineURL
 {
-  v3 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-  v4 = [v3 extraAttributes];
-  v5 = [v4 objectForKeyedSubscript:@"LocalURL"];
+  value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+  extraAttributes = [value extraAttributes];
+  v5 = [extraAttributes objectForKeyedSubscript:@"LocalURL"];
 
   if ([v5 length])
   {
@@ -147,11 +147,11 @@
 
   else
   {
-    v7 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-    v8 = [v7 address];
+    value2 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+    address = [value2 address];
 
-    v9 = [MEMORY[0x277CBEBC0] URLWithString:v8];
-    if ([v8 length] && objc_msgSend(v9, "safari_isHTTPFamilyURL"))
+    v9 = [MEMORY[0x277CBEBC0] URLWithString:address];
+    if ([address length] && objc_msgSend(v9, "safari_isHTTPFamilyURL"))
     {
       v6 = v9;
     }
@@ -167,8 +167,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(WBTab *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(WBTab *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
@@ -183,60 +183,60 @@
 
 - (NSString)title
 {
-  v3 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-  v4 = [v3 extraAttributes];
-  v5 = [v4 objectForKeyedSubscript:@"LocalTitle"];
+  value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+  extraAttributes = [value extraAttributes];
+  v5 = [extraAttributes objectForKeyedSubscript:@"LocalTitle"];
 
   if ([v5 length])
   {
-    v6 = v5;
+    title = v5;
   }
 
   else
   {
-    v7 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-    v6 = [v7 title];
+    value2 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+    title = [value2 title];
   }
 
-  return v6;
+  return title;
 }
 
-+ (id)startPageTabWithDeviceIdentifier:(id)a3
++ (id)startPageTabWithDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 alloc];
+  identifierCopy = identifier;
+  v5 = [self alloc];
   v6 = _WBSLocalizedString();
-  v7 = [v5 initWithTitle:v6 url:0 deviceIdentifier:v4];
+  v7 = [v5 initWithTitle:v6 url:0 deviceIdentifier:identifierCopy];
 
   return v7;
 }
 
-+ (id)pinnedTabWithTitle:(id)a3 url:(id)a4 deviceIdentifier:(id)a5
++ (id)pinnedTabWithTitle:(id)title url:(id)url deviceIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithUUID:0 title:v10 url:v9 pinned:1 pinnedTitle:v10 pinnedURL:v9 localAttributes:0 deviceIdentifier:v8];
+  identifierCopy = identifier;
+  urlCopy = url;
+  titleCopy = title;
+  v11 = [[self alloc] initWithUUID:0 title:titleCopy url:urlCopy pinned:1 pinnedTitle:titleCopy pinnedURL:urlCopy localAttributes:0 deviceIdentifier:identifierCopy];
 
   return v11;
 }
 
-- (WBTab)initWithUUID:(id)a3 title:(id)a4 url:(id)a5 deviceIdentifier:(id)a6 isPrivateBrowsing:(BOOL)a7
+- (WBTab)initWithUUID:(id)d title:(id)title url:(id)url deviceIdentifier:(id)identifier isPrivateBrowsing:(BOOL)browsing
 {
-  result = [(WBTab *)self initWithUUID:a3 title:a4 url:a5 deviceIdentifier:a6];
-  result->_privateBrowsing = a7;
+  result = [(WBTab *)self initWithUUID:d title:title url:url deviceIdentifier:identifier];
+  result->_privateBrowsing = browsing;
   return result;
 }
 
-- (WBTab)initWithUUID:(id)a3 title:(id)a4 url:(id)a5 deviceIdentifier:(id)a6 lastVisitTime:(id)a7
+- (WBTab)initWithUUID:(id)d title:(id)title url:(id)url deviceIdentifier:(id)identifier lastVisitTime:(id)time
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (v13)
+  dCopy = d;
+  titleCopy = title;
+  urlCopy = url;
+  timeCopy = time;
+  if (titleCopy)
   {
-    v16 = v13;
+    v16 = titleCopy;
   }
 
   else
@@ -245,26 +245,26 @@
   }
 
   v17 = v16;
-  v18 = a6;
-  v19 = [[WebBookmark alloc] initWithTitle:v17 address:&stru_288259858 parentID:0 deviceIdentifier:v18 collectionType:1];
+  identifierCopy = identifier;
+  v19 = [[WebBookmark alloc] initWithTitle:v17 address:&stru_288259858 parentID:0 deviceIdentifier:identifierCopy collectionType:1];
 
-  if (v12)
+  if (dCopy)
   {
-    [(WebBookmark *)v19 _setUUID:v12];
+    [(WebBookmark *)v19 _setUUID:dCopy];
   }
 
-  if (v15)
+  if (timeCopy)
   {
-    [(WebBookmark *)v19 setLocalAttributesValue:v15 forKey:*MEMORY[0x277D4A570]];
-    [(WebBookmark *)v19 setTabDateLastViewed:v15];
+    [(WebBookmark *)v19 setLocalAttributesValue:timeCopy forKey:*MEMORY[0x277D4A570]];
+    [(WebBookmark *)v19 setTabDateLastViewed:timeCopy];
   }
 
   v20 = [(WBTab *)self initWithBookmark:v19];
   v21 = v20;
   if (v20)
   {
-    [(WBTab *)v20 _updateBookmarkWithURL:v14 shouldSync:0];
-    [(WBTab *)v21 _updateBookmarkWithURL:v14 shouldSync:1];
+    [(WBTab *)v20 _updateBookmarkWithURL:urlCopy shouldSync:0];
+    [(WBTab *)v21 _updateBookmarkWithURL:urlCopy shouldSync:1];
     v21->_modified = 0;
     [(WebBookmark *)v19 setModifiedAttributes:0];
     v22 = v21;
@@ -273,37 +273,37 @@
   return v21;
 }
 
-- (WBTab)initWithBookmark:(id)a3
+- (WBTab)initWithBookmark:(id)bookmark
 {
   v4 = MEMORY[0x277D499E0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithValue:v5];
+  bookmarkCopy = bookmark;
+  v6 = [[v4 alloc] initWithValue:bookmarkCopy];
 
   v7 = [(WBTab *)self initWithBookmarkStorage:v6];
   return v7;
 }
 
-- (WBTab)initWithBookmarkStorage:(id)a3
+- (WBTab)initWithBookmarkStorage:(id)storage
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  storageCopy = storage;
   v17.receiver = self;
   v17.super_class = WBTab;
   v6 = [(WBTab *)&v17 init];
   if (v6)
   {
-    v7 = [v5 value];
+    value = [storageCopy value];
 
-    if (v7)
+    if (value)
     {
-      objc_storeStrong(&v6->_bookmarkStorage, a3);
+      objc_storeStrong(&v6->_bookmarkStorage, storage);
       objc_opt_class();
       v6->_isMutable = objc_opt_isKindOfClass() & 1;
       v6->_cachedURLUnfairLock._os_unfair_lock_opaque = 0;
-      v8 = [(WBTab *)v6 uuid];
-      if (v8)
+      uuid = [(WBTab *)v6 uuid];
+      if (uuid)
       {
-        v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v8];
+        v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:uuid];
 
         if (!v9)
         {
@@ -311,9 +311,9 @@
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
           {
             v11 = v10;
-            v12 = [(WBTab *)v6 privacyPreservingDescription];
+            privacyPreservingDescription = [(WBTab *)v6 privacyPreservingDescription];
             *buf = 138543362;
-            v19 = v12;
+            v19 = privacyPreservingDescription;
             _os_log_impl(&dword_272C20000, v11, OS_LOG_TYPE_DEFAULT, "WBTab initialized with a malformed UUID %{public}@", buf, 0xCu);
           }
         }
@@ -336,7 +336,7 @@
         [(WBTab *)v13 initWithBookmarkStorage:v6];
       }
 
-      v8 = v6;
+      uuid = v6;
     }
 
     v6 = 0;
@@ -347,23 +347,23 @@ LABEL_14:
   return v6;
 }
 
-- (WBTab)initWithBookmark:(id)a3 isPrivateBrowsing:(BOOL)a4
+- (WBTab)initWithBookmark:(id)bookmark isPrivateBrowsing:(BOOL)browsing
 {
-  v5 = [(WBTab *)self initWithBookmark:a3];
+  v5 = [(WBTab *)self initWithBookmark:bookmark];
   v6 = v5;
   if (v5)
   {
-    v5->_privateBrowsing = a4;
+    v5->_privateBrowsing = browsing;
     v7 = v5;
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -373,9 +373,9 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WBTab *)self uuid];
-      v7 = [(WBTab *)v5 uuid];
+      v5 = equalCopy;
+      uuid = [(WBTab *)self uuid];
+      uuid2 = [(WBTab *)v5 uuid];
 
       v8 = WBSIsEqual();
     }
@@ -389,12 +389,12 @@ LABEL_14:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self->_isMutable)
   {
     v5 = [WBTab allocWithZone:?];
-    v6 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage copyWithZone:a3];
+    v6 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage copyWithZone:zone];
     v7 = [(WBTab *)v5 initWithBookmarkStorage:v6];
 
     v8 = [(NSString *)self->_tabGroupUUID copy];
@@ -417,10 +417,10 @@ LABEL_14:
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = [WBMutableTab alloc];
-  v6 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage copyWithZone:a3];
+  v6 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage copyWithZone:zone];
   v7 = [(WBTab *)v5 initWithBookmarkStorage:v6];
 
   [(WBMutableTab *)v7 setTabGroupUUID:self->_tabGroupUUID];
@@ -433,97 +433,97 @@ LABEL_14:
   return v7;
 }
 
-- (WBTab)initWithCoder:(id)a3
+- (WBTab)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bookmark"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bookmark"];
   v6 = [(WBTab *)self initWithBookmark:v5];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tabGroupUUID"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tabGroupUUID"];
     tabGroupUUID = v6->_tabGroupUUID;
     v6->_tabGroupUUID = v7;
 
-    v6->_privateBrowsing = [v4 decodeBoolForKey:@"privateBrowsing"];
-    v6->_inUnnamedTabGroup = [v4 decodeBoolForKey:@"local"];
-    v6->_shared = [v4 decodeBoolForKey:@"shared"];
+    v6->_privateBrowsing = [coderCopy decodeBoolForKey:@"privateBrowsing"];
+    v6->_inUnnamedTabGroup = [coderCopy decodeBoolForKey:@"local"];
+    v6->_shared = [coderCopy decodeBoolForKey:@"shared"];
     v9 = v6;
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bookmarkStorage = self->_bookmarkStorage;
-  v6 = a3;
-  v5 = [(WBSCopyOnWriteValue *)bookmarkStorage value];
-  [v6 encodeObject:v5 forKey:@"bookmark"];
+  coderCopy = coder;
+  value = [(WBSCopyOnWriteValue *)bookmarkStorage value];
+  [coderCopy encodeObject:value forKey:@"bookmark"];
 
-  [v6 encodeObject:self->_tabGroupUUID forKey:@"tabGroupUUID"];
-  [v6 encodeBool:self->_privateBrowsing forKey:@"privateBrowsing"];
-  [v6 encodeBool:self->_inUnnamedTabGroup forKey:@"local"];
-  [v6 encodeBool:self->_shared forKey:@"shared"];
+  [coderCopy encodeObject:self->_tabGroupUUID forKey:@"tabGroupUUID"];
+  [coderCopy encodeBool:self->_privateBrowsing forKey:@"privateBrowsing"];
+  [coderCopy encodeBool:self->_inUnnamedTabGroup forKey:@"local"];
+  [coderCopy encodeBool:self->_shared forKey:@"shared"];
 }
 
-- (WBTab)initWithDictionaryRepresentation:(id)a3
+- (WBTab)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = [WebBookmark alloc];
-  v6 = [v4 safari_dictionaryForKey:@"bookmark"];
+  v6 = [representationCopy safari_dictionaryForKey:@"bookmark"];
   v7 = [(WebBookmark *)v5 initWithDictionaryRepresentationForInMemoryChangeTracking:v6];
 
   if ([(WebBookmark *)v7 isFolder]|| (self = [(WBTab *)self initWithBookmark:v7]) == 0)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v8 = [v4 safari_stringForKey:@"tabGroupUUID"];
+    v8 = [representationCopy safari_stringForKey:@"tabGroupUUID"];
     tabGroupUUID = self->_tabGroupUUID;
     self->_tabGroupUUID = v8;
 
-    self->_privateBrowsing = [v4 safari_BOOLForKey:@"privateBrowsing"];
-    self->_inUnnamedTabGroup = [v4 safari_BOOLForKey:@"local"];
-    self->_shared = [v4 safari_BOOLForKey:@"shared"];
+    self->_privateBrowsing = [representationCopy safari_BOOLForKey:@"privateBrowsing"];
+    self->_inUnnamedTabGroup = [representationCopy safari_BOOLForKey:@"local"];
+    self->_shared = [representationCopy safari_BOOLForKey:@"shared"];
     self = self;
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-  v5 = [v4 dictionaryRepresentationForInMemoryChangeTracking];
-  [v3 setObject:v5 forKeyedSubscript:@"bookmark"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+  dictionaryRepresentationForInMemoryChangeTracking = [value dictionaryRepresentationForInMemoryChangeTracking];
+  [dictionary setObject:dictionaryRepresentationForInMemoryChangeTracking forKeyedSubscript:@"bookmark"];
 
-  [v3 setObject:self->_tabGroupUUID forKeyedSubscript:@"tabGroupUUID"];
+  [dictionary setObject:self->_tabGroupUUID forKeyedSubscript:@"tabGroupUUID"];
   v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_privateBrowsing];
-  [v3 setObject:v6 forKeyedSubscript:@"privateBrowsing"];
+  [dictionary setObject:v6 forKeyedSubscript:@"privateBrowsing"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_inUnnamedTabGroup];
-  [v3 setObject:v7 forKeyedSubscript:@"local"];
+  [dictionary setObject:v7 forKeyedSubscript:@"local"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:self->_shared];
-  [v3 setObject:v8 forKeyedSubscript:@"shared"];
+  [dictionary setObject:v8 forKeyedSubscript:@"shared"];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)hasSameUUIDAndURLAsTab:(id)a3
+- (BOOL)hasSameUUIDAndURLAsTab:(id)tab
 {
-  v4 = a3;
-  v5 = [v4 uuidString];
-  v6 = [(WBTab *)self uuidString];
-  v7 = [v5 isEqualToString:v6];
+  tabCopy = tab;
+  uuidString = [tabCopy uuidString];
+  uuidString2 = [(WBTab *)self uuidString];
+  v7 = [uuidString isEqualToString:uuidString2];
 
   if (v7)
   {
-    v8 = [v4 url];
+    v8 = [tabCopy url];
     v9 = [(WBTab *)self url];
     v10 = [v8 isEqual:v9];
   }
@@ -538,19 +538,19 @@ LABEL_14:
 
 - (double)lastViewedTime
 {
-  v2 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-  v3 = [v2 dateLastViewed];
-  [v3 timeIntervalSinceReferenceDate];
+  value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+  dateLastViewed = [value dateLastViewed];
+  [dateLastViewed timeIntervalSinceReferenceDate];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setBookmark:(id)a3
+- (void)setBookmark:(id)bookmark
 {
   v4 = MEMORY[0x277D499E0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithValue:v5];
+  bookmarkCopy = bookmark;
+  v6 = [[v4 alloc] initWithValue:bookmarkCopy];
 
   bookmarkStorage = self->_bookmarkStorage;
   self->_bookmarkStorage = v6;
@@ -559,33 +559,33 @@ LABEL_14:
 - (NSString)URLString
 {
   v2 = [(WBTab *)self url];
-  v3 = [v2 absoluteString];
+  absoluteString = [v2 absoluteString];
 
-  return v3;
+  return absoluteString;
 }
 
 - (NSString)deviceIdentifier
 {
-  v2 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-  v3 = [v2 deviceIdentifier];
+  value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+  deviceIdentifier = [value deviceIdentifier];
 
-  return v3;
+  return deviceIdentifier;
 }
 
 - (int)parentIdentifier
 {
-  v2 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-  v3 = [v2 parentID];
+  value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+  parentID = [value parentID];
 
-  return v3;
+  return parentID;
 }
 
 - (WBLocalTabAttributes)localAttributes
 {
   v3 = [WBLocalTabAttributes alloc];
-  v4 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-  v5 = [v4 localAttributes];
-  v6 = [(WBLocalTabAttributes *)v3 initWithDictionaryRepresentation:v5];
+  value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+  localAttributes = [value localAttributes];
+  v6 = [(WBLocalTabAttributes *)v3 initWithDictionaryRepresentation:localAttributes];
 
   return v6;
 }
@@ -593,24 +593,24 @@ LABEL_14:
 - (NSURL)syncableURL
 {
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-  v4 = [v3 address];
-  v5 = [v2 URLWithString:v4];
+  value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+  address = [value address];
+  v5 = [v2 URLWithString:address];
 
   return v5;
 }
 
-- (void)_updateBookmarkWithURL:(id)a3 shouldSync:(BOOL)a4
+- (void)_updateBookmarkWithURL:(id)l shouldSync:(BOOL)sync
 {
-  v4 = a4;
-  v6 = a3;
-  v16 = v6;
-  if (v4)
+  syncCopy = sync;
+  lCopy = l;
+  v16 = lCopy;
+  if (syncCopy)
   {
-    v7 = [(WBTab *)self _addressFromURL:v6];
-    v8 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-    v9 = [v8 address];
-    v10 = [v7 isEqualToString:v9];
+    v7 = [(WBTab *)self _addressFromURL:lCopy];
+    value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+    address = [value address];
+    v10 = [v7 isEqualToString:address];
 
     if ((v10 & 1) == 0)
     {
@@ -622,18 +622,18 @@ LABEL_14:
       self->_modified = 1;
       [(WBSCopyOnWriteValue *)self->_bookmarkStorage willModify];
       v12 = [(WBTab *)self _addressFromURL:v16];
-      v13 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-      [v13 setAddress:v12];
+      value2 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+      [value2 setAddress:v12];
     }
   }
 
   else
   {
-    v14 = [v6 absoluteString];
-    v7 = v14;
-    if (v14)
+    absoluteString = [lCopy absoluteString];
+    v7 = absoluteString;
+    if (absoluteString)
     {
-      v15 = v14;
+      v15 = absoluteString;
     }
 
     else
@@ -645,13 +645,13 @@ LABEL_14:
   }
 }
 
-- (void)_setLocalURLString:(id)a3
+- (void)_setLocalURLString:(id)string
 {
-  v10 = a3;
-  v4 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-  v5 = [v4 extraAttributes];
-  v6 = [v5 objectForKeyedSubscript:@"LocalURL"];
-  v7 = [v10 isEqualToString:v6];
+  stringCopy = string;
+  value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+  extraAttributes = [value extraAttributes];
+  v6 = [extraAttributes objectForKeyedSubscript:@"LocalURL"];
+  v7 = [stringCopy isEqualToString:v6];
 
   if ((v7 & 1) == 0)
   {
@@ -662,59 +662,59 @@ LABEL_14:
     os_unfair_lock_unlock(&self->_cachedURLUnfairLock);
     self->_modified = 1;
     [(WBSCopyOnWriteValue *)self->_bookmarkStorage willModify];
-    v9 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-    [v9 setExtraAttributesValue:v10 forKey:@"LocalURL"];
+    value2 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+    [value2 setExtraAttributesValue:stringCopy forKey:@"LocalURL"];
   }
 }
 
 - (BOOL)isMarkedAsRead
 {
-  v2 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-  v3 = [v2 isMarkedAsRead];
+  value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+  isMarkedAsRead = [value isMarkedAsRead];
 
-  return v3;
+  return isMarkedAsRead;
 }
 
 - (WBSCRDTPosition)syncPosition
 {
-  v2 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-  v3 = [v2 syncPosition];
+  value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+  syncPosition = [value syncPosition];
 
-  return v3;
+  return syncPosition;
 }
 
 - (int)orderIndex
 {
-  v2 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-  v3 = [v2 orderIndex];
+  value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+  orderIndex = [value orderIndex];
 
-  return v3;
+  return orderIndex;
 }
 
 - (BOOL)isInserted
 {
-  v2 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-  v3 = [v2 isInserted];
+  value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+  isInserted = [value isInserted];
 
-  return v3;
+  return isInserted;
 }
 
 - (NSString)pinnedTitle
 {
-  v2 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-  v3 = [v2 pinnedTitle];
+  value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+  pinnedTitle = [value pinnedTitle];
 
-  return v3;
+  return pinnedTitle;
 }
 
 - (NSURL)pinnedURL
 {
-  v2 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-  v3 = [v2 pinnedAddress];
+  value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+  pinnedAddress = [value pinnedAddress];
 
-  if (v3)
+  if (pinnedAddress)
   {
-    v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
+    v4 = [MEMORY[0x277CBEBC0] URLWithString:pinnedAddress];
   }
 
   else
@@ -725,22 +725,22 @@ LABEL_14:
   return v4;
 }
 
-- (BOOL)isIdentical:(id)a3
+- (BOOL)isIdentical:(id)identical
 {
-  v4 = a3;
+  identicalCopy = identical;
   if (!WBSIsEqual())
   {
     goto LABEL_6;
   }
 
-  v5 = [(WBTab *)self isPinned];
-  if (v5 != [v4 isPinned])
+  isPinned = [(WBTab *)self isPinned];
+  if (isPinned != [identicalCopy isPinned])
   {
     goto LABEL_6;
   }
 
-  v6 = [(WBTab *)self title];
-  v7 = [v4 title];
+  title = [(WBTab *)self title];
+  title2 = [identicalCopy title];
   v8 = WBSIsEqual();
 
   if (!v8)
@@ -748,20 +748,20 @@ LABEL_14:
     goto LABEL_6;
   }
 
-  v9 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-  v10 = [v9 extraAttributes];
-  v11 = [v10 objectForKeyedSubscript:@"LocalURL"];
-  v12 = [v4[1] value];
-  v13 = [v12 extraAttributes];
-  v14 = [v13 objectForKeyedSubscript:@"LocalURL"];
+  value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+  extraAttributes = [value extraAttributes];
+  v11 = [extraAttributes objectForKeyedSubscript:@"LocalURL"];
+  value2 = [identicalCopy[1] value];
+  extraAttributes2 = [value2 extraAttributes];
+  v14 = [extraAttributes2 objectForKeyedSubscript:@"LocalURL"];
   v15 = WBSIsEqual();
 
   if (v15)
   {
-    v16 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
-    v17 = [v16 address];
-    v18 = [v4[1] value];
-    v19 = [v18 address];
+    value3 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+    address = [value3 address];
+    value4 = [identicalCopy[1] value];
+    address2 = [value4 address];
     v20 = WBSIsEqual();
   }
 
@@ -777,8 +777,8 @@ LABEL_6:
 - (id)duplicate
 {
   v3 = [WBMutableTab alloc];
-  v4 = [(WBTab *)self deviceIdentifier];
-  v5 = [(WBTab *)v3 initWithUUID:0 deviceIdentifier:v4];
+  deviceIdentifier = [(WBTab *)self deviceIdentifier];
+  v5 = [(WBTab *)v3 initWithUUID:0 deviceIdentifier:deviceIdentifier];
 
   [(WBMutableTab *)v5 adoptAttributesFromTab:self];
   v6 = [(WBMutableTab *)v5 copy];
@@ -789,8 +789,8 @@ LABEL_6:
 - (id)mutableDuplicate
 {
   v3 = [WBMutableTab alloc];
-  v4 = [(WBTab *)self deviceIdentifier];
-  v5 = [(WBTab *)v3 initWithUUID:0 deviceIdentifier:v4];
+  deviceIdentifier = [(WBTab *)self deviceIdentifier];
+  v5 = [(WBTab *)v3 initWithUUID:0 deviceIdentifier:deviceIdentifier];
 
   [(WBMutableTab *)v5 adoptAttributesFromTab:self];
 
@@ -800,9 +800,9 @@ LABEL_6:
 - (id)duplicatePreservingUUID
 {
   v3 = [WBMutableTab alloc];
-  v4 = [(WBTab *)self uuid];
-  v5 = [(WBTab *)self deviceIdentifier];
-  v6 = [(WBTab *)v3 initWithUUID:v4 deviceIdentifier:v5];
+  uuid = [(WBTab *)self uuid];
+  deviceIdentifier = [(WBTab *)self deviceIdentifier];
+  v6 = [(WBTab *)v3 initWithUUID:uuid deviceIdentifier:deviceIdentifier];
 
   [(WBMutableTab *)v6 adoptAttributesFromTab:self];
   v7 = [(WBMutableTab *)v6 copy];
@@ -810,20 +810,20 @@ LABEL_6:
   return v7;
 }
 
-- (id)_addressFromURL:(id)a3
+- (id)_addressFromURL:(id)l
 {
-  v3 = a3;
-  if ([v3 safari_isHTTPFamilyURL])
+  lCopy = l;
+  if ([lCopy safari_isHTTPFamilyURL])
   {
-    v4 = [v3 absoluteString];
+    absoluteString = [lCopy absoluteString];
   }
 
   else
   {
-    v4 = &stru_288259858;
+    absoluteString = &stru_288259858;
   }
 
-  return v4;
+  return absoluteString;
 }
 
 - (NSString)description
@@ -831,11 +831,11 @@ LABEL_6:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WBTab *)self tabGroupUUID];
-  v7 = [(WBTab *)self title];
+  tabGroupUUID = [(WBTab *)self tabGroupUUID];
+  title = [(WBTab *)self title];
   v8 = [(WBTab *)self url];
-  v9 = [(WBTab *)self uuid];
-  v10 = [v3 stringWithFormat:@"<%@: %p tabGroupUUID = %@; title = %@; url = %@; uuid = %@>", v5, self, v6, v7, v8, v9];;
+  uuid = [(WBTab *)self uuid];
+  v10 = [v3 stringWithFormat:@"<%@: %p tabGroupUUID = %@; title = %@; url = %@; uuid = %@>", v5, self, tabGroupUUID, title, v8, uuid];;
 
   return v10;
 }
@@ -845,8 +845,8 @@ LABEL_6:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WBTab *)self uuid];
-  v7 = [v3 stringWithFormat:@"<%@: %p uuid = %@>", v5, self, v6];;
+  uuid = [(WBTab *)self uuid];
+  v7 = [v3 stringWithFormat:@"<%@: %p uuid = %@>", v5, self, uuid];;
 
   return v7;
 }
@@ -854,18 +854,18 @@ LABEL_6:
 - (NSString)debugSyncDescription
 {
   v3 = MEMORY[0x277CCAB68];
-  v4 = [(WBTab *)self title];
-  v5 = [(WBTab *)self uuid];
-  v6 = [v3 stringWithFormat:@"%@, UUID: %@", v4, v5];
+  title = [(WBTab *)self title];
+  uuid = [(WBTab *)self uuid];
+  v6 = [v3 stringWithFormat:@"%@, UUID: %@", title, uuid];
 
-  v7 = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
+  value = [(WBSCopyOnWriteValue *)self->_bookmarkStorage value];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __29__WBTab_debugSyncDescription__block_invoke;
   v11[3] = &unk_279E75E40;
   v12 = v6;
   v8 = v6;
-  [v7 getReadOnlyCachedBookmarkSyncDataUsingBlock:v11];
+  [value getReadOnlyCachedBookmarkSyncDataUsingBlock:v11];
 
   v9 = [v8 copy];
 
@@ -881,7 +881,7 @@ void __29__WBTab_debugSyncDescription__block_invoke(uint64_t a1, void *a2)
   [v2 appendFormat:@", recordID: %@", v4];
 }
 
-- (BOOL)canCloseAutomaticallyForInterval:(double)a3
+- (BOOL)canCloseAutomaticallyForInterval:(double)interval
 {
   if ([(WBTab *)self isSyncable])
   {
@@ -913,10 +913,10 @@ LABEL_19:
     return 0;
   }
 
-  v8 = [(WBTab *)self localAttributes];
-  v9 = [v8 lastVisitTime];
+  localAttributes = [(WBTab *)self localAttributes];
+  lastVisitTime = [localAttributes lastVisitTime];
 
-  if (!v9)
+  if (!lastVisitTime)
   {
     v5 = WBS_LOG_CHANNEL_PREFIXTabs();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -943,14 +943,14 @@ LABEL_19:
 
   else
   {
-    v12 = [(WBTab *)self localAttributes];
-    v13 = [v12 lastVisitTime];
-    [v13 timeIntervalSinceNow];
+    localAttributes2 = [(WBTab *)self localAttributes];
+    lastVisitTime2 = [localAttributes2 lastVisitTime];
+    [lastVisitTime2 timeIntervalSinceNow];
     v15 = -v14;
 
     v16 = WBS_LOG_CHANNEL_PREFIXTabs();
     v5 = v16;
-    if (v15 <= a3)
+    if (v15 <= interval)
     {
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {

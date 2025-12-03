@@ -7,48 +7,48 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(UIMapsViewAccessibility *)self accessibilityIdentification];
-  if ([v3 isEqualToString:@"distanceTimeView"])
+  accessibilityIdentification = [(UIMapsViewAccessibility *)self accessibilityIdentification];
+  if ([accessibilityIdentification isEqualToString:@"distanceTimeView"])
   {
-    v4 = 1;
+    isAccessibilityElement = 1;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = UIMapsViewAccessibility;
-    v4 = [(UIMapsViewAccessibility *)&v6 isAccessibilityElement];
+    isAccessibilityElement = [(UIMapsViewAccessibility *)&v6 isAccessibilityElement];
   }
 
-  return v4;
+  return isAccessibilityElement;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(UIMapsViewAccessibility *)self accessibilityIdentification];
-  if ([v3 isEqualToString:@"distanceTimeView"])
+  accessibilityIdentification = [(UIMapsViewAccessibility *)self accessibilityIdentification];
+  if ([accessibilityIdentification isEqualToString:@"distanceTimeView"])
   {
     v4 = [(UIMapsViewAccessibility *)self safeValueForKey:@"subviews"];
     if ([v4 count] >= 2)
     {
       v6 = [v4 objectAtIndex:0];
-      v7 = [v6 accessibilityLabel];
+      accessibilityLabel = [v6 accessibilityLabel];
 
       v8 = [v4 objectAtIndex:1];
-      v9 = [v8 accessibilityLabel];
+      accessibilityLabel2 = [v8 accessibilityLabel];
 
-      v5 = 0;
-      if (v7 && v9)
+      accessibilityLabel3 = 0;
+      if (accessibilityLabel && accessibilityLabel2)
       {
         v10 = MEMORY[0x29EDBA0F8];
         v11 = AXMapsLocString(@"DISTANCE_TIME_FORMAT");
-        v5 = [v10 localizedStringWithFormat:v11, v7, v9];
+        accessibilityLabel3 = [v10 localizedStringWithFormat:v11, accessibilityLabel, accessibilityLabel2];
       }
     }
 
     else
     {
-      v5 = 0;
+      accessibilityLabel3 = 0;
     }
   }
 
@@ -56,10 +56,10 @@
   {
     v13.receiver = self;
     v13.super_class = UIMapsViewAccessibility;
-    v5 = [(UIMapsViewAccessibility *)&v13 accessibilityLabel];
+    accessibilityLabel3 = [(UIMapsViewAccessibility *)&v13 accessibilityLabel];
   }
 
-  return v5;
+  return accessibilityLabel3;
 }
 
 @end

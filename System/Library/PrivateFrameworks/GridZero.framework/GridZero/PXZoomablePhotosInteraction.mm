@@ -1,14 +1,14 @@
 @interface PXZoomablePhotosInteraction
-- (BOOL)_pinchInteractionShouldBeginForViewModel:(id)a3;
-- (BOOL)handlePinch:(id)a3;
-- (BOOL)handleTapOnAssetReference:(id)a3;
+- (BOOL)_pinchInteractionShouldBeginForViewModel:(id)model;
+- (BOOL)handlePinch:(id)pinch;
+- (BOOL)handleTapOnAssetReference:(id)reference;
 - (PXZoomablePhotosInteraction)init;
-- (PXZoomablePhotosInteraction)initWithViewModelProvider:(id)a3;
-- (PXZoomablePhotosInteraction)initWithZoomablePhotosViewModel:(id)a3;
+- (PXZoomablePhotosInteraction)initWithViewModelProvider:(id)provider;
+- (PXZoomablePhotosInteraction)initWithZoomablePhotosViewModel:(id)model;
 - (PXZoomablePhotosInteractionDelegate)delegate;
 - (PXZoomablePhotosInteractionViewModelProvider)viewModelProvider;
 - (UIView)view;
-- (id)_getWorkingViewModelForPoint:(CGPoint)a3 coordinateSpace:(id)a4;
+- (id)_getWorkingViewModelForPoint:(CGPoint)point coordinateSpace:(id)space;
 @end
 
 @implementation PXZoomablePhotosInteraction
@@ -34,15 +34,15 @@
   return WeakRetained;
 }
 
-- (BOOL)handlePinch:(id)a3
+- (BOOL)handlePinch:(id)pinch
 {
-  v5 = a3;
+  pinchCopy = pinch;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v7 = v6;
-  v8 = [(PXZoomablePhotosInteraction *)self view];
-  v9 = [(PXZoomablePhotosInteraction *)self view];
-  [v5 locationInView:v8];
-  v10 = [(PXZoomablePhotosInteraction *)self _getWorkingViewModelForPoint:v9 coordinateSpace:?];
+  view = [(PXZoomablePhotosInteraction *)self view];
+  view2 = [(PXZoomablePhotosInteraction *)self view];
+  [pinchCopy locationInView:view];
+  v10 = [(PXZoomablePhotosInteraction *)self _getWorkingViewModelForPoint:view2 coordinateSpace:?];
   v11 = v10;
   if (v10)
   {
@@ -70,37 +70,37 @@
   v13 = 0;
   v15 = 0;
   v16 = 0.0;
-  v17 = [(PXZoomablePhotosViewModel *)v12 anchorAssetReference];
-  if ([v5 state] == 1)
+  anchorAssetReference = [(PXZoomablePhotosViewModel *)v12 anchorAssetReference];
+  if ([pinchCopy state] == 1)
   {
     v37 = a2;
     v18 = [(PXZoomablePhotosInteraction *)self _pinchInteractionShouldBeginForViewModel:v12];
-    [v5 locationInView:v8];
+    [pinchCopy locationInView:view];
     v20 = v19;
     v22 = v21;
-    v23 = [(PXZoomablePhotosInteraction *)self delegate];
-    v24 = [v23 zoomablePhotosInteraction:self assetReferenceAtLocation:{v20, v22}];
+    delegate = [(PXZoomablePhotosInteraction *)self delegate];
+    v24 = [delegate zoomablePhotosInteraction:self assetReferenceAtLocation:{v20, v22}];
 
-    [v8 bounds];
+    [view bounds];
     PXPointNormalize();
     v13 = v25;
     v14 = v26;
-    [v5 scale];
+    [pinchCopy scale];
     v15 = v27;
-    if ([v5 numberOfTouches] == 2)
+    if ([pinchCopy numberOfTouches] == 2)
     {
-      [v5 locationOfTouch:0 inView:v8];
-      [v5 locationOfTouch:1 inView:v8];
+      [pinchCopy locationOfTouch:0 inView:view];
+      [pinchCopy locationOfTouch:1 inView:view];
       PXDistanceBetweenPoints();
       v29 = v28;
-      [v8 bounds];
+      [view bounds];
       v16 = v29 / v30;
     }
 
     if (v18)
     {
-      v31 = [(PXZoomablePhotosInteraction *)self delegate];
-      [v31 zoomablePhotosInteractionWillBegin:self];
+      delegate2 = [(PXZoomablePhotosInteraction *)self delegate];
+      [delegate2 zoomablePhotosInteractionWillBegin:self];
 
       v32 = 0;
       a2 = v37;
@@ -109,31 +109,31 @@ LABEL_14:
       v38[1] = 3221225472;
       v38[2] = __43__PXZoomablePhotosInteraction_handlePinch___block_invoke;
       v38[3] = &unk_278297BE8;
-      v39 = v5;
+      v39 = pinchCopy;
       v43 = v15;
       v44 = a2;
-      v40 = v8;
-      v41 = self;
+      v40 = view;
+      selfCopy = self;
       v45 = v13;
       v46 = v14;
       v47 = v16;
       v48 = v32;
       v49 = v7;
-      v17 = v24;
-      v42 = v17;
+      anchorAssetReference = v24;
+      v42 = anchorAssetReference;
       [(PXZoomablePhotosViewModel *)v12 performChanges:v38];
 
       goto LABEL_19;
     }
 
-    v17 = v24;
+    anchorAssetReference = v24;
   }
 
-  else if ([v5 state] == 2)
+  else if ([pinchCopy state] == 2)
   {
     if (fmax(v7 - 0.0, 0.0) > 0.016)
     {
-      [v5 scale];
+      [pinchCopy scale];
       PXFloatByLinearlyInterpolatingFloats();
       v15 = v33;
     }
@@ -141,7 +141,7 @@ LABEL_14:
     if ([(PXZoomablePhotosViewModel *)v12 isPinching])
     {
       v32 = 1;
-      v24 = v17;
+      v24 = anchorAssetReference;
       goto LABEL_14;
     }
   }
@@ -230,18 +230,18 @@ void __43__PXZoomablePhotosInteraction_handlePinch___block_invoke(uint64_t a1, v
   [v3 setPinchState:v21 withAnchorAssetReference:v19];
 }
 
-- (BOOL)_pinchInteractionShouldBeginForViewModel:(id)a3
+- (BOOL)_pinchInteractionShouldBeginForViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = +[PXZoomablePhotosSettings sharedInstance];
   if ([v5 enablePinch])
   {
-    v6 = [v4 assetsDataSourceManager];
-    v7 = [v6 dataSource];
-    if ([v7 containsAnyItems])
+    assetsDataSourceManager = [modelCopy assetsDataSourceManager];
+    dataSource = [assetsDataSourceManager dataSource];
+    if ([dataSource containsAnyItems])
     {
-      v8 = [(PXZoomablePhotosInteraction *)self delegate];
-      v9 = [v8 zoomablePhotosInteractionShouldBegin:self];
+      delegate = [(PXZoomablePhotosInteraction *)self delegate];
+      v9 = [delegate zoomablePhotosInteractionShouldBegin:self];
     }
 
     else
@@ -258,75 +258,75 @@ void __43__PXZoomablePhotosInteraction_handlePinch___block_invoke(uint64_t a1, v
   return v9;
 }
 
-- (BOOL)handleTapOnAssetReference:(id)a3
+- (BOOL)handleTapOnAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(PXZoomablePhotosInteraction *)self viewModel];
-  v6 = v5;
-  if (v5)
+  referenceCopy = reference;
+  viewModel = [(PXZoomablePhotosInteraction *)self viewModel];
+  v6 = viewModel;
+  if (viewModel)
   {
-    v7 = v5;
+    v7 = viewModel;
   }
 
   else
   {
-    v8 = [(PXZoomablePhotosInteraction *)self viewModelProvider];
-    v7 = [v8 provideViewModelForAssetReference:v4];
+    viewModelProvider = [(PXZoomablePhotosInteraction *)self viewModelProvider];
+    v7 = [viewModelProvider provideViewModelForAssetReference:referenceCopy];
   }
 
-  v9 = [v7 isDisplayingIndividualItems];
-  if ((v9 & 1) == 0)
+  isDisplayingIndividualItems = [v7 isDisplayingIndividualItems];
+  if ((isDisplayingIndividualItems & 1) == 0)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __57__PXZoomablePhotosInteraction_handleTapOnAssetReference___block_invoke;
     v11[3] = &unk_278298548;
-    v12 = v4;
+    v12 = referenceCopy;
     [v7 performChanges:v11];
   }
 
-  return v9 ^ 1;
+  return isDisplayingIndividualItems ^ 1;
 }
 
-- (id)_getWorkingViewModelForPoint:(CGPoint)a3 coordinateSpace:(id)a4
+- (id)_getWorkingViewModelForPoint:(CGPoint)point coordinateSpace:(id)space
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = [(PXZoomablePhotosInteraction *)self viewModel];
+  y = point.y;
+  x = point.x;
+  spaceCopy = space;
+  viewModel = [(PXZoomablePhotosInteraction *)self viewModel];
 
-  if (v9)
+  if (viewModel)
   {
-    v10 = [(PXZoomablePhotosInteraction *)self viewModel];
+    viewModel2 = [(PXZoomablePhotosInteraction *)self viewModel];
   }
 
   else
   {
-    v11 = [(PXZoomablePhotosInteraction *)self viewModelProvider];
+    viewModelProvider = [(PXZoomablePhotosInteraction *)self viewModelProvider];
 
-    if (!v11)
+    if (!viewModelProvider)
     {
-      v14 = [MEMORY[0x277CCA890] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosInteraction.m" lineNumber:46 description:@"Interaction was created without a viewModel but viewModelProvider is nil"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosInteraction.m" lineNumber:46 description:@"Interaction was created without a viewModel but viewModelProvider is nil"];
     }
 
-    v12 = [(PXZoomablePhotosInteraction *)self viewModelProvider];
-    v10 = [v12 viewModelForPinchLocation:v8 inCoordinateSpace:{x, y}];
+    viewModelProvider2 = [(PXZoomablePhotosInteraction *)self viewModelProvider];
+    viewModel2 = [viewModelProvider2 viewModelForPinchLocation:spaceCopy inCoordinateSpace:{x, y}];
   }
 
-  return v10;
+  return viewModel2;
 }
 
-- (PXZoomablePhotosInteraction)initWithViewModelProvider:(id)a3
+- (PXZoomablePhotosInteraction)initWithViewModelProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = PXZoomablePhotosInteraction;
   v5 = [(PXZoomablePhotosInteraction *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_viewModelProvider, v4);
+    objc_storeWeak(&v5->_viewModelProvider, providerCopy);
   }
 
   return v6;
@@ -334,22 +334,22 @@ void __43__PXZoomablePhotosInteraction_handlePinch___block_invoke(uint64_t a1, v
 
 - (PXZoomablePhotosInteraction)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosInteraction.m" lineNumber:31 description:{@"%s is not available as initializer", "-[PXZoomablePhotosInteraction init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXZoomablePhotosInteraction.m" lineNumber:31 description:{@"%s is not available as initializer", "-[PXZoomablePhotosInteraction init]"}];
 
   abort();
 }
 
-- (PXZoomablePhotosInteraction)initWithZoomablePhotosViewModel:(id)a3
+- (PXZoomablePhotosInteraction)initWithZoomablePhotosViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = PXZoomablePhotosInteraction;
   v6 = [(PXZoomablePhotosInteraction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewModel, a3);
+    objc_storeStrong(&v6->_viewModel, model);
   }
 
   return v7;

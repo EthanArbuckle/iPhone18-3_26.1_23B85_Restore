@@ -1,43 +1,43 @@
 @interface CoreEmbeddedSpeechAnalyzer
 + (void)forceCooldownIfIdle;
 + (void)resetCache;
-+ (void)sendSpeechCorrectionInfo:(id)a3 interactionIdentifier:(id)a4;
-+ (void)sendVisualContextAndCorrectionsInfo:(id)a3 interactionIdentifier:(id)a4;
-- (CoreEmbeddedSpeechAnalyzer)initWithDelegate:(id)a3 instanceUUID:(char *)a4;
++ (void)sendSpeechCorrectionInfo:(id)info interactionIdentifier:(id)identifier;
++ (void)sendVisualContextAndCorrectionsInfo:(id)info interactionIdentifier:(id)identifier;
+- (CoreEmbeddedSpeechAnalyzer)initWithDelegate:(id)delegate instanceUUID:(char *)d;
 - (CoreEmbeddedSpeechRecognizerDelegate)delegate;
-- (void)addAudioPacket:(id)a3;
-- (void)addAudioPacket:(id)a3 packetRecordedTime:(id)a4 packetReadyUpstreamTime:(id)a5;
+- (void)addAudioPacket:(id)packet;
+- (void)addAudioPacket:(id)packet packetRecordedTime:(id)time packetReadyUpstreamTime:(id)upstreamTime;
 - (void)dealloc;
 - (void)finishAudio;
 - (void)invalidate;
 - (void)pauseRecognition;
-- (void)preheatSpeechRecognitionWithAssetConfig:(id)a3 preheatSource:(id)a4 modelOverrideURL:(id)a5;
+- (void)preheatSpeechRecognitionWithAssetConfig:(id)config preheatSource:(id)source modelOverrideURL:(id)l;
 - (void)requestEagerResult;
-- (void)resumeRecognitionWithPrefixText:(id)a3 postfixText:(id)a4 selectedText:(id)a5;
-- (void)setDelegate:(id)a3;
+- (void)resumeRecognitionWithPrefixText:(id)text postfixText:(id)postfixText selectedText:(id)selectedText;
+- (void)setDelegate:(id)delegate;
 - (void)startMissingAssetDownload;
-- (void)startSpeechRecognitionWithParameters:(id)a3 didStartHandlerWithInfo:(id)a4;
+- (void)startSpeechRecognitionWithParameters:(id)parameters didStartHandlerWithInfo:(id)info;
 - (void)stopAudioDecoding;
-- (void)updateVoiceCommandContextWithPrefixText:(id)a3 postfixText:(id)a4 selectedText:(id)a5 disambiguationActive:(id)a6 cursorInVisibleText:(id)a7 favorCommandSuppression:(id)a8 abortCommandSuppression:(id)a9 undoEvent:(id)a10;
+- (void)updateVoiceCommandContextWithPrefixText:(id)text postfixText:(id)postfixText selectedText:(id)selectedText disambiguationActive:(id)active cursorInVisibleText:(id)visibleText favorCommandSuppression:(id)suppression abortCommandSuppression:(id)commandSuppression undoEvent:(id)self0;
 @end
 
 @implementation CoreEmbeddedSpeechAnalyzer
 
-- (void)addAudioPacket:(id)a3 packetRecordedTime:(id)a4 packetReadyUpstreamTime:(id)a5
+- (void)addAudioPacket:(id)packet packetRecordedTime:(id)time packetReadyUpstreamTime:(id)upstreamTime
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
-  MEMORY[0x277D82BE0](a4);
-  MEMORY[0x277D82BE0](a5);
+  MEMORY[0x277D82BE0](packet);
+  MEMORY[0x277D82BE0](time);
+  MEMORY[0x277D82BE0](upstreamTime);
   MEMORY[0x277D82BE0](self);
   v7 = sub_226098978();
   v8 = v6;
-  CoreEmbeddedSpeechAnalyzer.addAudioPacket(_:packetRecordedTime:packetReadyUpstreamTime:)(v7, v6, a4, a5);
+  CoreEmbeddedSpeechAnalyzer.addAudioPacket(_:packetRecordedTime:packetReadyUpstreamTime:)(v7, v6, time, upstreamTime);
   sub_225EF5990(v7, v8);
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](packet);
   MEMORY[0x277D82BD8](self);
-  MEMORY[0x277D82BD8](a5);
-  MEMORY[0x277D82BD8](a4);
+  MEMORY[0x277D82BD8](upstreamTime);
+  MEMORY[0x277D82BD8](time);
 }
 
 - (CoreEmbeddedSpeechRecognizerDelegate)delegate
@@ -50,7 +50,7 @@
   return v5;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
@@ -59,11 +59,11 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (CoreEmbeddedSpeechAnalyzer)initWithDelegate:(id)a3 instanceUUID:(char *)a4
+- (CoreEmbeddedSpeechAnalyzer)initWithDelegate:(id)delegate instanceUUID:(char *)d
 {
   swift_getObjectType();
   swift_unknownObjectRetain();
-  return CoreEmbeddedSpeechAnalyzer.init(delegate:instanceUUID:)(a3, a4);
+  return CoreEmbeddedSpeechAnalyzer.init(delegate:instanceUUID:)(delegate, d);
 }
 
 - (void)dealloc
@@ -73,23 +73,23 @@
   sub_225F81CB8();
 }
 
-- (void)preheatSpeechRecognitionWithAssetConfig:(id)a3 preheatSource:(id)a4 modelOverrideURL:(id)a5
+- (void)preheatSpeechRecognitionWithAssetConfig:(id)config preheatSource:(id)source modelOverrideURL:(id)l
 {
-  v41 = a5;
-  v43 = a4;
-  v40 = a3;
-  v42 = self;
-  v38 = a4;
-  v39 = a5;
+  lCopy = l;
+  sourceCopy = source;
+  configCopy = config;
+  selfCopy = self;
+  sourceCopy2 = source;
+  lCopy2 = l;
   swift_getObjectType();
-  v5 = v40;
-  v6 = v43;
-  v7 = v41;
-  v8 = v42;
-  if (v43)
+  v5 = configCopy;
+  v6 = sourceCopy;
+  v7 = lCopy;
+  v8 = selfCopy;
+  if (sourceCopy)
   {
-    v37 = v38;
-    v32 = v38;
+    v37 = sourceCopy2;
+    v32 = sourceCopy2;
     v33 = sub_226099A08();
     v34 = v9;
 
@@ -112,8 +112,8 @@
   v31 = &v20 - v30;
   if (v14)
   {
-    v26 = v39;
-    v25 = v39;
+    v26 = lCopy2;
+    v25 = lCopy2;
     v23 = sub_226098948();
     v20 = *(v23 - 8);
     v22 = v20;
@@ -132,34 +132,34 @@
     (*(*(v19 - 8) + 56))(v31, 1);
   }
 
-  CoreEmbeddedSpeechAnalyzer.preheatSpeechRecognition(with:preheatSource:modelOverrideURL:)(v40, v28, v27, v31);
+  CoreEmbeddedSpeechAnalyzer.preheatSpeechRecognition(with:preheatSource:modelOverrideURL:)(configCopy, v28, v27, v31);
   sub_22601F334(v31);
 }
 
-- (void)startSpeechRecognitionWithParameters:(id)a3 didStartHandlerWithInfo:(id)a4
+- (void)startSpeechRecognitionWithParameters:(id)parameters didStartHandlerWithInfo:(id)info
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
-  v6 = _Block_copy(a4);
+  MEMORY[0x277D82BE0](parameters);
+  v6 = _Block_copy(info);
   MEMORY[0x277D82BE0](self);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  CoreEmbeddedSpeechAnalyzer.startSpeechRecognition(with:didStartHandlerWithInfo:)(a3, sub_22601FFA4, v7);
+  CoreEmbeddedSpeechAnalyzer.startSpeechRecognition(with:didStartHandlerWithInfo:)(parameters, sub_22601FFA4, v7);
 
   MEMORY[0x277D82BD8](self);
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](parameters);
 }
 
-- (void)addAudioPacket:(id)a3
+- (void)addAudioPacket:(id)packet
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](packet);
   MEMORY[0x277D82BE0](self);
   v5 = sub_226098978();
   v6 = v4;
   CoreEmbeddedSpeechAnalyzer.addAudioPacket(_:)(v5, v4);
   sub_225EF5990(v5, v6);
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](packet);
   MEMORY[0x277D82BD8](self);
 }
 
@@ -171,12 +171,12 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)resumeRecognitionWithPrefixText:(id)a3 postfixText:(id)a4 selectedText:(id)a5
+- (void)resumeRecognitionWithPrefixText:(id)text postfixText:(id)postfixText selectedText:(id)selectedText
 {
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
-  MEMORY[0x277D82BE0](a4);
-  MEMORY[0x277D82BE0](a5);
+  MEMORY[0x277D82BE0](text);
+  MEMORY[0x277D82BE0](postfixText);
+  MEMORY[0x277D82BE0](selectedText);
   MEMORY[0x277D82BE0](self);
   v14 = sub_226099A08();
   v18 = v6;
@@ -191,33 +191,33 @@
   v11._object = v18;
   CoreEmbeddedSpeechAnalyzer.resumeRecognition(withPrefixText:postfixText:selectedText:)(v11, v9, v10);
 
-  MEMORY[0x277D82BD8](a5);
+  MEMORY[0x277D82BD8](selectedText);
 
-  MEMORY[0x277D82BD8](a4);
+  MEMORY[0x277D82BD8](postfixText);
 
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](text);
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)updateVoiceCommandContextWithPrefixText:(id)a3 postfixText:(id)a4 selectedText:(id)a5 disambiguationActive:(id)a6 cursorInVisibleText:(id)a7 favorCommandSuppression:(id)a8 abortCommandSuppression:(id)a9 undoEvent:(id)a10
+- (void)updateVoiceCommandContextWithPrefixText:(id)text postfixText:(id)postfixText selectedText:(id)selectedText disambiguationActive:(id)active cursorInVisibleText:(id)visibleText favorCommandSuppression:(id)suppression abortCommandSuppression:(id)commandSuppression undoEvent:(id)self0
 {
-  *&v24 = a6;
-  *(&v24 + 1) = a7;
+  *&v24 = active;
+  *(&v24 + 1) = visibleText;
   swift_getObjectType();
-  MEMORY[0x277D82BE0](a3);
-  MEMORY[0x277D82BE0](a4);
-  MEMORY[0x277D82BE0](a5);
+  MEMORY[0x277D82BE0](text);
+  MEMORY[0x277D82BE0](postfixText);
+  MEMORY[0x277D82BE0](selectedText);
   MEMORY[0x277D82BE0](v24);
   MEMORY[0x277D82BE0](*(&v24 + 1));
-  MEMORY[0x277D82BE0](a8);
-  MEMORY[0x277D82BE0](a9);
-  MEMORY[0x277D82BE0](a10);
+  MEMORY[0x277D82BE0](suppression);
+  MEMORY[0x277D82BE0](commandSuppression);
+  MEMORY[0x277D82BE0](event);
   MEMORY[0x277D82BE0](self);
-  if (a3)
+  if (text)
   {
     v20.value._countAndFlagsBits = sub_226099A08();
     v20.value._object = v10;
-    MEMORY[0x277D82BD8](a3);
+    MEMORY[0x277D82BD8](text);
     v21 = v20;
   }
 
@@ -226,11 +226,11 @@
     v21 = 0;
   }
 
-  if (a4)
+  if (postfixText)
   {
     v18.value._countAndFlagsBits = sub_226099A08();
     v18.value._object = v11;
-    MEMORY[0x277D82BD8](a4);
+    MEMORY[0x277D82BD8](postfixText);
     v19 = v18;
   }
 
@@ -239,12 +239,12 @@
     v19 = 0;
   }
 
-  if (a5)
+  if (selectedText)
   {
-    abortCommandSuppression.is_nil = a5;
+    abortCommandSuppression.is_nil = selectedText;
     undoEvent.value._countAndFlagsBits = sub_226099A08();
     undoEvent.value._object = v12;
-    MEMORY[0x277D82BD8](a5);
+    MEMORY[0x277D82BD8](selectedText);
     selectedText = undoEvent;
   }
 
@@ -254,15 +254,15 @@
   }
 
   abortCommandSuppression.value.super.super.isa = selectedText.value._object;
-  cursorInVisibleText.value.super.super.isa = a8;
-  cursorInVisibleText.is_nil = a9;
-  favorCommandSuppression.value.super.super.isa = a10;
+  cursorInVisibleText.value.super.super.isa = suppression;
+  cursorInVisibleText.is_nil = commandSuppression;
+  favorCommandSuppression.value.super.super.isa = event;
   CoreEmbeddedSpeechAnalyzer.updateVoiceCommandContext(withPrefixText:postfixText:selectedText:disambiguationActive:cursorInVisibleText:favorCommandSuppression:abortCommandSuppression:undoEvent:)(v21, v19, selectedText, v24, cursorInVisibleText, favorCommandSuppression, abortCommandSuppression, *&undoEvent.value._countAndFlagsBits);
 
   MEMORY[0x277D82BD8](self);
-  MEMORY[0x277D82BD8](a10);
-  MEMORY[0x277D82BD8](a9);
-  MEMORY[0x277D82BD8](a8);
+  MEMORY[0x277D82BD8](event);
+  MEMORY[0x277D82BD8](commandSuppression);
+  MEMORY[0x277D82BD8](suppression);
   MEMORY[0x277D82BD8](*(&v24 + 1));
   MEMORY[0x277D82BD8](v24);
 }
@@ -321,30 +321,30 @@
   MEMORY[0x277D82BD8](self);
 }
 
-+ (void)sendSpeechCorrectionInfo:(id)a3 interactionIdentifier:(id)a4
++ (void)sendSpeechCorrectionInfo:(id)info interactionIdentifier:(id)identifier
 {
   swift_getObjCClassMetadata();
-  MEMORY[0x277D82BE0](a3);
-  MEMORY[0x277D82BE0](a4);
+  MEMORY[0x277D82BE0](info);
+  MEMORY[0x277D82BE0](identifier);
   v5 = sub_226099A08();
   v6 = v4;
   swift_getObjCClassMetadata();
-  static CoreEmbeddedSpeechAnalyzer.send(speechCorrectionInfo:interactionIdentifier:)(a3, v5, v6);
+  static CoreEmbeddedSpeechAnalyzer.send(speechCorrectionInfo:interactionIdentifier:)(info, v5, v6);
 
-  MEMORY[0x277D82BD8](a4);
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](identifier);
+  MEMORY[0x277D82BD8](info);
 }
 
-+ (void)sendVisualContextAndCorrectionsInfo:(id)a3 interactionIdentifier:(id)a4
++ (void)sendVisualContextAndCorrectionsInfo:(id)info interactionIdentifier:(id)identifier
 {
   swift_getObjCClassMetadata();
-  MEMORY[0x277D82BE0](a3);
-  MEMORY[0x277D82BE0](a4);
-  if (a4)
+  MEMORY[0x277D82BE0](info);
+  MEMORY[0x277D82BE0](identifier);
+  if (identifier)
   {
     v5 = sub_226099A08();
     v6 = v4;
-    MEMORY[0x277D82BD8](a4);
+    MEMORY[0x277D82BD8](identifier);
     v7 = v5;
     v8 = v6;
   }
@@ -356,9 +356,9 @@
   }
 
   swift_getObjCClassMetadata();
-  static CoreEmbeddedSpeechAnalyzer.send(visualContextAndCorrectionsInfo:interactionIdentifier:)(a3, v7, v8);
+  static CoreEmbeddedSpeechAnalyzer.send(visualContextAndCorrectionsInfo:interactionIdentifier:)(info, v7, v8);
 
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](info);
 }
 
 @end

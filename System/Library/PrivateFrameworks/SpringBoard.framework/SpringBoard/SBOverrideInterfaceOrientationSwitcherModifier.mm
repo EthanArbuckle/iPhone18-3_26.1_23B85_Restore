@@ -1,7 +1,7 @@
 @interface SBOverrideInterfaceOrientationSwitcherModifier
 - (CGRect)containerViewBounds;
 - (CGRect)switcherViewBounds;
-- (SBOverrideInterfaceOrientationSwitcherModifier)initWithInterfaceOrientation:(int64_t)a3;
+- (SBOverrideInterfaceOrientationSwitcherModifier)initWithInterfaceOrientation:(int64_t)orientation;
 @end
 
 @implementation SBOverrideInterfaceOrientationSwitcherModifier
@@ -47,14 +47,14 @@
   return result;
 }
 
-- (SBOverrideInterfaceOrientationSwitcherModifier)initWithInterfaceOrientation:(int64_t)a3
+- (SBOverrideInterfaceOrientationSwitcherModifier)initWithInterfaceOrientation:(int64_t)orientation
 {
   v5.receiver = self;
   v5.super_class = SBOverrideInterfaceOrientationSwitcherModifier;
   result = [(SBSwitcherModifier *)&v5 init];
   if (result)
   {
-    result->_orientation = a3;
+    result->_orientation = orientation;
   }
 
   return result;

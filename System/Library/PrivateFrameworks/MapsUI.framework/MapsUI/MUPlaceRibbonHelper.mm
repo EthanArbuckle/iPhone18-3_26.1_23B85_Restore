@@ -1,22 +1,22 @@
 @interface MUPlaceRibbonHelper
-+ (id)costStringForValue:(unint64_t)a3 locale:(id)a4;
-+ (id)priceRangeForMapItem:(id)a3 locale:(id)a4;
++ (id)costStringForValue:(unint64_t)value locale:(id)locale;
++ (id)priceRangeForMapItem:(id)item locale:(id)locale;
 @end
 
 @implementation MUPlaceRibbonHelper
 
-+ (id)priceRangeForMapItem:(id)a3 locale:(id)a4
++ (id)priceRangeForMapItem:(id)item locale:(id)locale
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  itemCopy = item;
+  localeCopy = locale;
+  if (localeCopy)
   {
-    v8 = [v6 _geoMapItem];
+    _geoMapItem = [itemCopy _geoMapItem];
 
-    if (v8)
+    if (_geoMapItem)
     {
-      v9 = [v6 _geoMapItem];
-      v10 = [a1 costStringForValue:objc_msgSend(v9 locale:{"_priceRange"), v7}];
+      _geoMapItem2 = [itemCopy _geoMapItem];
+      v10 = [self costStringForValue:objc_msgSend(_geoMapItem2 locale:{"_priceRange"), localeCopy}];
     }
 
     else
@@ -33,9 +33,9 @@
   return v10;
 }
 
-+ (id)costStringForValue:(unint64_t)a3 locale:(id)a4
++ (id)costStringForValue:(unint64_t)value locale:(id)locale
 {
-  if (a3)
+  if (value)
   {
     v5 = MKCurrencySymbolForLocale();
     v6 = &stru_1F44CA030;
@@ -48,7 +48,7 @@
       v9 = v7++;
     }
 
-    while (v9 < a3);
+    while (v9 < value);
   }
 
   else

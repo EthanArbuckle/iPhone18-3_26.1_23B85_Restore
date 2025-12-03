@@ -1,30 +1,30 @@
 @interface SFCommandReference
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFCommandReference)initWithCoder:(id)a3;
-- (SFCommandReference)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFCommandReference)initWithCoder:(id)coder;
+- (SFCommandReference)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFCommandReference
 
-- (SFCommandReference)initWithProtobuf:(id)a3
+- (SFCommandReference)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v10.receiver = self;
   v10.super_class = SFCommandReference;
   v5 = [(SFCommandReference *)&v10 init];
   if (v5)
   {
-    v6 = [v4 referenceIdentifier];
+    referenceIdentifier = [protobufCopy referenceIdentifier];
 
-    if (v6)
+    if (referenceIdentifier)
     {
-      v7 = [v4 referenceIdentifier];
-      [(SFCommandReference *)v5 setReferenceIdentifier:v7];
+      referenceIdentifier2 = [protobufCopy referenceIdentifier];
+      [(SFCommandReference *)v5 setReferenceIdentifier:referenceIdentifier2];
     }
 
     v8 = v5;
@@ -35,38 +35,38 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SFCommandReference *)self referenceIdentifier];
-  v3 = [v2 hash];
+  referenceIdentifier = [(SFCommandReference *)self referenceIdentifier];
+  v3 = [referenceIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(SFCommandReference *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(SFCommandReference *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(SFCommandReference *)self referenceIdentifier];
-    v7 = [(SFCommandReference *)v5 referenceIdentifier];
-    if ((v6 != 0) == (v7 == 0))
+    v5 = equalCopy;
+    referenceIdentifier = [(SFCommandReference *)self referenceIdentifier];
+    referenceIdentifier2 = [(SFCommandReference *)v5 referenceIdentifier];
+    if ((referenceIdentifier != 0) == (referenceIdentifier2 == 0))
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [(SFCommandReference *)self referenceIdentifier];
-      if (v8)
+      referenceIdentifier3 = [(SFCommandReference *)self referenceIdentifier];
+      if (referenceIdentifier3)
       {
-        v9 = [(SFCommandReference *)self referenceIdentifier];
-        v10 = [(SFCommandReference *)v5 referenceIdentifier];
-        v11 = [v9 isEqual:v10];
+        referenceIdentifier4 = [(SFCommandReference *)self referenceIdentifier];
+        referenceIdentifier5 = [(SFCommandReference *)v5 referenceIdentifier];
+        v11 = [referenceIdentifier4 isEqual:referenceIdentifier5];
       }
 
       else
@@ -84,11 +84,11 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFCommandReference *)self referenceIdentifier];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  referenceIdentifier = [(SFCommandReference *)self referenceIdentifier];
+  v6 = [referenceIdentifier copy];
   [v4 setReferenceIdentifier:v6];
 
   return v4;
@@ -97,31 +97,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBCommandReference alloc] initWithFacade:self];
-  v3 = [(_SFPBCommandReference *)v2 jsonData];
+  jsonData = [(_SFPBCommandReference *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBCommandReference alloc] initWithFacade:self];
-  v3 = [(_SFPBCommandReference *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBCommandReference *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBCommandReference alloc] initWithFacade:self];
-  v5 = [(_SFPBCommandReference *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBCommandReference *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFCommandReference)initWithCoder:(id)a3
+- (SFCommandReference)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBCommandReference alloc] initWithData:v5];
   v7 = [(SFCommandReference *)self initWithProtobuf:v6];

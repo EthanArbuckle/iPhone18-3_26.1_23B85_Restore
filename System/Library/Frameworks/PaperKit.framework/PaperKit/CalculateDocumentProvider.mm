@@ -1,7 +1,7 @@
 @interface CalculateDocumentProvider
 - (NSSet)declaredVariables;
 - (_TtC8PaperKit25CalculateDocumentProvider)init;
-- (void)setDeclaredVariables:(id)a3;
+- (void)setDeclaredVariables:(id)variables;
 @end
 
 @implementation CalculateDocumentProvider
@@ -14,7 +14,7 @@
   return v2.super.isa;
 }
 
-- (void)setDeclaredVariables:(id)a3
+- (void)setDeclaredVariables:(id)variables
 {
   *(self + OBJC_IVAR____TtC8PaperKit25CalculateDocumentProvider_declaredVariables) = static Set._unconditionallyBridgeFromObjectiveC(_:)();
 }

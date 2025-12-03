@@ -7,8 +7,8 @@
 
 + (id)generateSymbolicatedStackShot
 {
-  v2 = [a1 generateSymbolicatedStackShotPromise];
-  v3 = [v2 resultWithTimeout:0 error:10.0];
+  generateSymbolicatedStackShotPromise = [self generateSymbolicatedStackShotPromise];
+  v3 = [generateSymbolicatedStackShotPromise resultWithTimeout:0 error:10.0];
 
   return v3;
 }
@@ -18,7 +18,7 @@
   if (+[SSDevice deviceIsInternalBuild])
   {
     v2 = objc_alloc_init(SSPromise);
-    v3 = [MEMORY[0x1E696AF00] callStackReturnAddresses];
+    callStackReturnAddresses = [MEMORY[0x1E696AF00] callStackReturnAddresses];
     v4 = dispatch_get_global_queue(0, 0);
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -26,8 +26,8 @@
     v10[3] = &unk_1E84AC028;
     v5 = v2;
     v11 = v5;
-    v12 = v3;
-    v6 = v3;
+    v12 = callStackReturnAddresses;
+    v6 = callStackReturnAddresses;
     dispatch_async(v4, v10);
 
     v7 = v12;

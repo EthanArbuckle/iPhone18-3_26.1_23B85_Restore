@@ -1,7 +1,7 @@
 @interface LAACLCoder
 - (LAACLCoder)init;
 - (id)encode;
-- (void)addCredential:(id)a3 credentialType:(int64_t)a4;
+- (void)addCredential:(id)credential credentialType:(int64_t)type;
 @end
 
 @implementation LAACLCoder
@@ -30,13 +30,13 @@
   return v3;
 }
 
-- (void)addCredential:(id)a3 credentialType:(int64_t)a4
+- (void)addCredential:(id)credential credentialType:(int64_t)type
 {
   credentials = self->_credentials;
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v8 = [v6 numberWithInteger:a4];
-  [(NSMutableDictionary *)credentials setObject:v7 forKeyedSubscript:v8];
+  credentialCopy = credential;
+  v8 = [v6 numberWithInteger:type];
+  [(NSMutableDictionary *)credentials setObject:credentialCopy forKeyedSubscript:v8];
 }
 
 - (id)encode

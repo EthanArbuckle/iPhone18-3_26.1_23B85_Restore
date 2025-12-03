@@ -2,7 +2,7 @@
 + (BOOL)_iMessageEnabled;
 + (BOOL)_iMessageFailedAccountIsIrreparable;
 + (BOOL)_isTryingToLogin;
-+ (BOOL)_isUsableSendingForAccount:(id)a3;
++ (BOOL)_isUsableSendingForAccount:(id)account;
 + (BOOL)_isUserIntentNotLoggedOut;
 + (id)_accountsArrayForServiceIMessage;
 + (id)sharedInstance;
@@ -10,29 +10,29 @@
 - (BOOL)isInAppleStoreDemoMode;
 - (BOOL)isUnexpectedlyLoggedOut;
 - (IMDBadgeUtilities)init;
-- (IMDBadgeUtilities)initWithMessageStore:(id)a3 defaultsStore:(id)a4;
+- (IMDBadgeUtilities)initWithMessageStore:(id)store defaultsStore:(id)defaultsStore;
 - (IMDMessageStore)messageStore;
 - (IMDefaults)sharedDefaultsInstance;
 - (int64_t)_savedFailureDate;
-- (void)_cacheFailureDate:(int64_t)a3;
+- (void)_cacheFailureDate:(int64_t)date;
 - (void)_checkIfUnexpectedlyLoggedOut;
 - (void)_clearFailureBadge;
-- (void)_compareLastFailureDateAndUpdateBadge:(int64_t)a3;
-- (void)_postBadgeNumber:(id)a3;
-- (void)_postBadgeString:(id)a3;
+- (void)_compareLastFailureDateAndUpdateBadge:(int64_t)badge;
+- (void)_postBadgeNumber:(id)number;
+- (void)_postBadgeString:(id)string;
 - (void)_rebuildUnreadMessageCount;
-- (void)_saveFailureDate:(int64_t)a3;
+- (void)_saveFailureDate:(int64_t)date;
 - (void)_stopSuppressingSound;
 - (void)_updateBadge;
-- (void)_updateBadgeForLastFailedMessageDateChangeIfNeeded:(int64_t)a3;
-- (void)_updateBadgeForUnreadCountChangeIfNeeded:(int64_t)a3;
+- (void)_updateBadgeForLastFailedMessageDateChangeIfNeeded:(int64_t)needed;
+- (void)_updateBadgeForUnreadCountChangeIfNeeded:(int64_t)needed;
 - (void)checkIfUnexpectedlyLoggedOut;
 - (void)clearFailureBadge;
 - (void)dealloc;
-- (void)satelliteStateDidChange:(BOOL)a3;
-- (void)updateBadgeForLastFailedMessageDateChangeIfNeeded:(int64_t)a3;
-- (void)updateBadgeForPendingSatelliteMessagesIfNeeded:(int64_t)a3 onService:(id)a4;
-- (void)updateBadgeForUnreadCountChangeIfNeeded:(int64_t)a3;
+- (void)satelliteStateDidChange:(BOOL)change;
+- (void)updateBadgeForLastFailedMessageDateChangeIfNeeded:(int64_t)needed;
+- (void)updateBadgeForPendingSatelliteMessagesIfNeeded:(int64_t)needed onService:(id)service;
+- (void)updateBadgeForUnreadCountChangeIfNeeded:(int64_t)needed;
 - (void)updateBadgeInCaseOfMistakenLoginInvalidation;
 @end
 
@@ -107,13 +107,13 @@
     unreadCount = self->_unreadCount;
     if (self->_isStewieActive)
     {
-      v4 = [(IMDBadgeUtilities *)self pendingSatelliteMessagesPerService];
+      pendingSatelliteMessagesPerService = [(IMDBadgeUtilities *)self pendingSatelliteMessagesPerService];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = sub_22B6DEF18;
       v9[3] = &unk_278708790;
       v9[4] = &v10;
-      [v4 enumerateKeysAndObjectsUsingBlock:v9];
+      [pendingSatelliteMessagesPerService enumerateKeysAndObjectsUsingBlock:v9];
     }
 
     if (IMOSLoggingEnabled())
@@ -152,7 +152,7 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         showingFailure = self->_showingFailure;
-        v9 = [(IMDBadgeUtilities *)self _isUnexpectedlyLoggedOut];
+        _isUnexpectedlyLoggedOut = [(IMDBadgeUtilities *)self _isUnexpectedlyLoggedOut];
         v10 = @"NO";
         if (showingFailure)
         {
@@ -164,7 +164,7 @@
           v11 = @"NO";
         }
 
-        if (v9)
+        if (_isUnexpectedlyLoggedOut)
         {
           v10 = @"YES";
         }
@@ -305,12 +305,12 @@ LABEL_11:
 + (BOOL)_iMessageFailedAccountIsIrreparable
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = [objc_opt_class() _accountsArrayForServiceIMessage];
+  _accountsArrayForServiceIMessage = [objc_opt_class() _accountsArrayForServiceIMessage];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v3 = [_accountsArrayForServiceIMessage countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v3)
   {
     v4 = 0;
@@ -322,24 +322,24 @@ LABEL_11:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_accountsArrayForServiceIMessage);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v8 session];
-        v10 = [v9 registrationStatus];
+        session = [v8 session];
+        registrationStatus = [session registrationStatus];
 
-        if (v10 == -1)
+        if (registrationStatus == -1)
         {
-          v11 = [v8 session];
-          v12 = [v11 registrationError] != 26;
+          session2 = [v8 session];
+          v12 = [session2 registrationError] != 26;
 
           v5 |= v12;
           v4 = 1;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v3 = [_accountsArrayForServiceIMessage countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v3);
@@ -383,11 +383,11 @@ LABEL_11:
   return v4;
 }
 
-- (IMDBadgeUtilities)initWithMessageStore:(id)a3 defaultsStore:(id)a4
+- (IMDBadgeUtilities)initWithMessageStore:(id)store defaultsStore:(id)defaultsStore
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  defaultsStoreCopy = defaultsStore;
   v27.receiver = self;
   v27.super_class = IMDBadgeUtilities;
   v8 = [(IMDBadgeUtilities *)&v27 init];
@@ -397,8 +397,8 @@ LABEL_11:
     queue = v8->_queue;
     v8->_queue = v9;
 
-    objc_storeWeak(&v8->_messageStore, v6);
-    v8->_unreadCount = [v6 unreadMessagesCount];
+    objc_storeWeak(&v8->_messageStore, storeCopy);
+    v8->_unreadCount = [storeCopy unreadMessagesCount];
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     pendingSatelliteMessagesPerService = v8->_pendingSatelliteMessagesPerService;
     v8->_pendingSatelliteMessagesPerService = v11;
@@ -424,14 +424,14 @@ LABEL_11:
 
     *&v8->_showingFailure = 0;
     v8->_addedObserverForUnexpectedlyLoggedOut = 0;
-    objc_storeStrong(&v8->_sharedDefaultsInstance, a4);
-    v18 = [(IMDBadgeUtilities *)v8 _savedFailureDate];
-    v8->_lastFailedMessageDate = v18;
-    if (v18 <= 0)
+    objc_storeStrong(&v8->_sharedDefaultsInstance, defaultsStore);
+    _savedFailureDate = [(IMDBadgeUtilities *)v8 _savedFailureDate];
+    v8->_lastFailedMessageDate = _savedFailureDate;
+    if (_savedFailureDate <= 0)
     {
-      v19 = [v6 lastFailedMessageDate];
-      v8->_lastFailedMessageDate = v19;
-      [(IMDBadgeUtilities *)v8 _saveFailureDate:v19];
+      lastFailedMessageDate = [storeCopy lastFailedMessageDate];
+      v8->_lastFailedMessageDate = lastFailedMessageDate;
+      [(IMDBadgeUtilities *)v8 _saveFailureDate:lastFailedMessageDate];
     }
 
     if (IMOSLoggingEnabled())
@@ -440,7 +440,7 @@ LABEL_11:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         v21 = [MEMORY[0x277CCABB0] numberWithLongLong:v8->_lastFailedMessageDate];
-        v22 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v6, "lastFailedMessageDate")}];
+        v22 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(storeCopy, "lastFailedMessageDate")}];
         *buf = 138412546;
         v29 = v21;
         v30 = 2112;
@@ -481,7 +481,7 @@ LABEL_11:
   [(IMDBadgeUtilities *)&v8 dealloc];
 }
 
-- (void)updateBadgeForUnreadCountChangeIfNeeded:(int64_t)a3
+- (void)updateBadgeForUnreadCountChangeIfNeeded:(int64_t)needed
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -489,11 +489,11 @@ LABEL_11:
   v4[2] = sub_22B6DE950;
   v4[3] = &unk_278704970;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = needed;
   dispatch_async(queue, v4);
 }
 
-- (void)_updateBadgeForUnreadCountChangeIfNeeded:(int64_t)a3
+- (void)_updateBadgeForUnreadCountChangeIfNeeded:(int64_t)needed
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -501,11 +501,11 @@ LABEL_11:
   v4[2] = sub_22B6DE9D0;
   v4[3] = &unk_278704970;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = needed;
   dispatch_async(queue, v4);
 }
 
-- (void)updateBadgeForLastFailedMessageDateChangeIfNeeded:(int64_t)a3
+- (void)updateBadgeForLastFailedMessageDateChangeIfNeeded:(int64_t)needed
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -513,11 +513,11 @@ LABEL_11:
   v4[2] = sub_22B6DEBE8;
   v4[3] = &unk_278704970;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = needed;
   dispatch_async(queue, v4);
 }
 
-- (void)_updateBadgeForLastFailedMessageDateChangeIfNeeded:(int64_t)a3
+- (void)_updateBadgeForLastFailedMessageDateChangeIfNeeded:(int64_t)needed
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -525,7 +525,7 @@ LABEL_11:
   v4[2] = sub_22B6DEC68;
   v4[3] = &unk_278704970;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = needed;
   dispatch_async(queue, v4);
 }
 
@@ -540,54 +540,54 @@ LABEL_11:
   dispatch_async(queue, block);
 }
 
-- (void)updateBadgeForPendingSatelliteMessagesIfNeeded:(int64_t)a3 onService:(id)a4
+- (void)updateBadgeForPendingSatelliteMessagesIfNeeded:(int64_t)needed onService:(id)service
 {
-  v6 = a4;
+  serviceCopy = service;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_22B6DEEA0;
   block[3] = &unk_278703DE8;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = serviceCopy;
+  neededCopy = needed;
+  v8 = serviceCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_postBadgeNumber:(id)a3
+- (void)_postBadgeNumber:(id)number
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  numberCopy = number;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = numberCopy;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "Call notification center to post badge number %@", &v8, 0xCu);
     }
   }
 
-  v6 = [(IMDBadgeUtilities *)self notificationCenter];
-  [v6 setBadgeCount:objc_msgSend(v4 withCompletionHandler:{"integerValue"), &unk_283F1B368}];
+  notificationCenter = [(IMDBadgeUtilities *)self notificationCenter];
+  [notificationCenter setBadgeCount:objc_msgSend(numberCopy withCompletionHandler:{"integerValue"), &unk_283F1B368}];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_postBadgeString:(id)a3
+- (void)_postBadgeString:(id)string
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IMDBadgeUtilities *)self notificationCenter];
+  stringCopy = string;
+  notificationCenter = [(IMDBadgeUtilities *)self notificationCenter];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = stringCopy;
       _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_INFO, "Call notification center to post badge string %@", buf, 0xCu);
     }
   }
@@ -596,10 +596,10 @@ LABEL_11:
   v10[1] = 3221225472;
   v10[2] = sub_22B6DF2A4;
   v10[3] = &unk_278702FA0;
-  v11 = v5;
-  v12 = v4;
-  v7 = v4;
-  v8 = v5;
+  v11 = notificationCenter;
+  v12 = stringCopy;
+  v7 = stringCopy;
+  v8 = notificationCenter;
   dispatch_async(MEMORY[0x277D85CD0], v10);
 
   v9 = *MEMORY[0x277D85DE8];
@@ -634,32 +634,32 @@ LABEL_11:
   return v4;
 }
 
-+ (BOOL)_isUsableSendingForAccount:(id)a3
++ (BOOL)_isUsableSendingForAccount:(id)account
 {
-  v3 = a3;
-  if (![v3 isActive])
+  accountCopy = account;
+  if (![accountCopy isActive])
   {
     goto LABEL_14;
   }
 
-  if (![v3 accountType])
+  if (![accountCopy accountType])
   {
     goto LABEL_9;
   }
 
-  v4 = [v3 service];
-  v5 = [v4 supportsRegistration];
+  service = [accountCopy service];
+  supportsRegistration = [service supportsRegistration];
 
-  if (!v5)
+  if (!supportsRegistration)
   {
     goto LABEL_9;
   }
 
-  if ([v3 accountType] == 2)
+  if ([accountCopy accountType] == 2)
   {
-    if ([v3 registrationStatus] != 5)
+    if ([accountCopy registrationStatus] != 5)
     {
-      v6 = [v3 registrationStatus] == 2;
+      v6 = [accountCopy registrationStatus] == 2;
       goto LABEL_15;
     }
 
@@ -668,14 +668,14 @@ LABEL_9:
     goto LABEL_15;
   }
 
-  if ([v3 accountType] == 1)
+  if ([accountCopy accountType] == 1)
   {
-    if ([v3 registrationStatus] == 2)
+    if ([accountCopy registrationStatus] == 2)
     {
       goto LABEL_9;
     }
 
-    if ([v3 registrationStatus] != 5)
+    if ([accountCopy registrationStatus] != 5)
     {
 LABEL_14:
       v6 = 0;
@@ -683,13 +683,13 @@ LABEL_14:
     }
   }
 
-  v7 = [v3 aliases];
-  if ([v7 count])
+  aliases = [accountCopy aliases];
+  if ([aliases count])
   {
-    if ([v7 count] == 1)
+    if ([aliases count] == 1)
     {
-      v8 = [v7 lastObject];
-      v9 = [v8 isEqualToIgnoringCase:*MEMORY[0x277D19478]];
+      lastObject = [aliases lastObject];
+      v9 = [lastObject isEqualToIgnoringCase:*MEMORY[0x277D19478]];
 
       v6 = v9 ^ 1;
     }
@@ -715,19 +715,19 @@ LABEL_15:
   [WeakRetained rebuildUnreadMessageCount];
 }
 
-- (void)_compareLastFailureDateAndUpdateBadge:(int64_t)a3
+- (void)_compareLastFailureDateAndUpdateBadge:(int64_t)badge
 {
   lastFailedMessageDate = self->_lastFailedMessageDate;
-  if (lastFailedMessageDate < a3)
+  if (lastFailedMessageDate < badge)
   {
-    self->_lastFailedMessageDate = a3;
+    self->_lastFailedMessageDate = badge;
     v4 = 1;
 LABEL_5:
     self->_showingFailure = v4;
     goto LABEL_6;
   }
 
-  if (lastFailedMessageDate > a3)
+  if (lastFailedMessageDate > badge)
   {
     v4 = 0;
     goto LABEL_5;
@@ -744,10 +744,10 @@ LABEL_6:
   IMSetDomainValueForKey();
 }
 
-- (void)_cacheFailureDate:(int64_t)a3
+- (void)_cacheFailureDate:(int64_t)date
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a3 >= 1)
+  if (date >= 1)
   {
     if (IMOSLoggingEnabled())
     {
@@ -758,12 +758,12 @@ LABEL_6:
         v8 = 134218240;
         v9 = lastFailedMessageDate;
         v10 = 2048;
-        v11 = a3;
+        dateCopy = date;
         _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "Cached failure id %lld    alert failure id %lld", &v8, 0x16u);
       }
     }
 
-    [(IMDBadgeUtilities *)self _saveFailureDate:a3];
+    [(IMDBadgeUtilities *)self _saveFailureDate:date];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -774,9 +774,9 @@ LABEL_6:
   sharedDefaultsInstance = self->_sharedDefaultsInstance;
   if (!sharedDefaultsInstance)
   {
-    v4 = [MEMORY[0x277D1A990] sharedInstance];
+    mEMORY[0x277D1A990] = [MEMORY[0x277D1A990] sharedInstance];
     v5 = self->_sharedDefaultsInstance;
-    self->_sharedDefaultsInstance = v4;
+    self->_sharedDefaultsInstance = mEMORY[0x277D1A990];
 
     sharedDefaultsInstance = self->_sharedDefaultsInstance;
   }
@@ -786,30 +786,30 @@ LABEL_6:
 
 - (int64_t)_savedFailureDate
 {
-  v2 = [(IMDBadgeUtilities *)self sharedDefaultsInstance];
-  v3 = [v2 getValueFromDomain:@"com.apple.imdbadgeutilities" forKey:@"lastMadridFailureID"];
+  sharedDefaultsInstance = [(IMDBadgeUtilities *)self sharedDefaultsInstance];
+  v3 = [sharedDefaultsInstance getValueFromDomain:@"com.apple.imdbadgeutilities" forKey:@"lastMadridFailureID"];
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 longLongValue];
+    longLongValue = [v3 longLongValue];
   }
 
   else
   {
-    v4 = -1;
+    longLongValue = -1;
   }
 
-  return v4;
+  return longLongValue;
 }
 
-- (void)_saveFailureDate:(int64_t)a3
+- (void)_saveFailureDate:(int64_t)date
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
-  v4 = [(IMDBadgeUtilities *)self sharedDefaultsInstance];
-  [v4 setValue:v5 forDomain:@"com.apple.imdbadgeutilities" forKey:@"lastMadridFailureID"];
+  v5 = [MEMORY[0x277CCABB0] numberWithLongLong:date];
+  sharedDefaultsInstance = [(IMDBadgeUtilities *)self sharedDefaultsInstance];
+  [sharedDefaultsInstance setValue:v5 forDomain:@"com.apple.imdbadgeutilities" forKey:@"lastMadridFailureID"];
 }
 
-- (void)satelliteStateDidChange:(BOOL)a3
+- (void)satelliteStateDidChange:(BOOL)change
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -817,7 +817,7 @@ LABEL_6:
   v4[2] = sub_22B6DFBC4;
   v4[3] = &unk_2787087B8;
   v4[4] = self;
-  v5 = a3;
+  changeCopy = change;
   dispatch_async(queue, v4);
 }
 

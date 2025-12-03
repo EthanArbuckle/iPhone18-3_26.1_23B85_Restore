@@ -1,28 +1,28 @@
 @interface FCMockURLProtocol
-+ (BOOL)canInitWithRequest:(id)a3;
-+ (BOOL)requestIsCacheEquivalent:(id)a3 toRequest:(id)a4;
-+ (id)URLForData:(id)a3 mimeType:(id)a4 statusCode:(unint64_t)a5;
-+ (id)URLForError:(id)a3;
++ (BOOL)canInitWithRequest:(id)request;
++ (BOOL)requestIsCacheEquivalent:(id)equivalent toRequest:(id)request;
++ (id)URLForData:(id)data mimeType:(id)type statusCode:(unint64_t)code;
++ (id)URLForError:(id)error;
 - (void)startLoading;
 @end
 
 @implementation FCMockURLProtocol
 
-+ (id)URLForData:(id)a3 mimeType:(id)a4 statusCode:(unint64_t)a5
++ (id)URLForData:(id)data mimeType:(id)type statusCode:(unint64_t)code
 {
-  v7 = a4;
-  v8 = a3;
+  typeCopy = type;
+  dataCopy = data;
   v9 = NSTemporaryDirectory();
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  v11 = [v10 UUIDString];
-  v12 = [v9 stringByAppendingPathComponent:v11];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v12 = [v9 stringByAppendingPathComponent:uUIDString];
 
-  v13 = [MEMORY[0x1E696AC08] defaultManager];
-  [v13 createFileAtPath:v12 contents:v8 attributes:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager createFileAtPath:v12 contents:dataCopy attributes:0];
 
   if (qword_1EDB270C8 == -1)
   {
-    if (!v7)
+    if (!typeCopy)
     {
       goto LABEL_4;
     }
@@ -31,16 +31,16 @@
   }
 
   dispatch_once(&qword_1EDB270C8, &__block_literal_global_42);
-  if (v7)
+  if (typeCopy)
   {
 LABEL_3:
-    [_MergedGlobals_149 setObject:v7 forKey:v12];
+    [_MergedGlobals_149 setObject:typeCopy forKey:v12];
   }
 
 LABEL_4:
   if (qword_1EDB270D0 == -1)
   {
-    if (!a5)
+    if (!code)
     {
       goto LABEL_7;
     }
@@ -49,11 +49,11 @@ LABEL_4:
   }
 
   dispatch_once(&qword_1EDB270D0, &__block_literal_global_8_0);
-  if (a5)
+  if (code)
   {
 LABEL_6:
     v14 = qword_1EDB270B8;
-    v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+    v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:code];
     [v14 setObject:v15 forKey:v12];
   }
 
@@ -85,18 +85,18 @@ uint64_t __52__FCMockURLProtocol_URLForData_mimeType_statusCode___block_invoke_2
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)URLForError:(id)a3
++ (id)URLForError:(id)error
 {
   v3 = ++qword_1EDB270D8;
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  errorCopy = error;
   v6 = [v4 stringWithFormat:@"/%lu", v3];
   if (qword_1EDB270E0 != -1)
   {
     dispatch_once(&qword_1EDB270E0, &__block_literal_global_19);
   }
 
-  [qword_1EDB270C0 setObject:v5 forKey:v6];
+  [qword_1EDB270C0 setObject:errorCopy forKey:v6];
 
   v7 = objc_alloc_init(MEMORY[0x1E696AF20]);
   [v7 setScheme:@"https"];
@@ -116,23 +116,23 @@ uint64_t __33__FCMockURLProtocol_URLForError___block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (BOOL)canInitWithRequest:(id)a3
++ (BOOL)canInitWithRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   if (NSClassFromString(&cfstr_Xctest.isa))
   {
-    v4 = [v3 URL];
-    v5 = [v4 host];
-    if ([v5 isEqualToString:@"news-mock-file.local"])
+    v4 = [requestCopy URL];
+    host = [v4 host];
+    if ([host isEqualToString:@"news-mock-file.local"])
     {
       v6 = 1;
     }
 
     else
     {
-      v7 = [v3 URL];
-      v8 = [v7 host];
-      v6 = [v8 isEqualToString:@"news-mock-error.local"];
+      v7 = [requestCopy URL];
+      host2 = [v7 host];
+      v6 = [host2 isEqualToString:@"news-mock-error.local"];
     }
   }
 
@@ -144,94 +144,94 @@ uint64_t __33__FCMockURLProtocol_URLForError___block_invoke()
   return v6;
 }
 
-+ (BOOL)requestIsCacheEquivalent:(id)a3 toRequest:(id)a4
++ (BOOL)requestIsCacheEquivalent:(id)equivalent toRequest:(id)request
 {
-  v5 = a4;
-  v6 = [a3 URL];
-  v7 = [v6 path];
-  v8 = [v5 URL];
+  requestCopy = request;
+  v6 = [equivalent URL];
+  path = [v6 path];
+  v8 = [requestCopy URL];
 
-  v9 = [v8 path];
-  v10 = [v7 isEqualToString:v9];
+  path2 = [v8 path];
+  v10 = [path isEqualToString:path2];
 
   return v10;
 }
 
 - (void)startLoading
 {
-  v3 = [(NSURLProtocol *)self request];
-  v4 = [v3 URL];
-  v5 = [v4 host];
-  v6 = [v5 isEqualToString:@"news-mock-file.local"];
+  request = [(NSURLProtocol *)self request];
+  v4 = [request URL];
+  host = [v4 host];
+  v6 = [host isEqualToString:@"news-mock-file.local"];
 
   if (v6)
   {
     v7 = MEMORY[0x1E695DFF8];
-    v8 = [(NSURLProtocol *)self request];
-    v9 = [v8 URL];
-    v10 = [v9 path];
-    v11 = [v7 fileURLWithPath:v10];
+    request2 = [(NSURLProtocol *)self request];
+    v9 = [request2 URL];
+    path = [v9 path];
+    v11 = [v7 fileURLWithPath:path];
 
     v43 = 0;
     [v11 getResourceValue:&v43 forKey:*MEMORY[0x1E695DB50] error:0];
     v12 = qword_1EDB270B8;
     v13 = v43;
-    v14 = [(NSURLProtocol *)self request];
-    v15 = [v14 URL];
-    v16 = [v15 path];
-    v17 = [v12 objectForKey:v16];
+    request3 = [(NSURLProtocol *)self request];
+    v15 = [request3 URL];
+    path2 = [v15 path];
+    v17 = [v12 objectForKey:path2];
 
     v18 = _MergedGlobals_149;
-    v19 = [v11 path];
-    v20 = [v18 objectForKey:v19];
+    path3 = [v11 path];
+    v20 = [v18 objectForKey:path3];
 
-    v21 = [MEMORY[0x1E695DF90] dictionary];
-    [v21 fc_safelySetObjectAllowingNil:v20 forKey:@"Content-Type"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary fc_safelySetObjectAllowingNil:v20 forKey:@"Content-Type"];
     v22 = objc_alloc(MEMORY[0x1E695AC08]);
-    v23 = [(NSURLProtocol *)self request];
-    v24 = [v23 URL];
+    request4 = [(NSURLProtocol *)self request];
+    v24 = [request4 URL];
     if (v17)
     {
-      v25 = [v17 unsignedIntegerValue];
+      unsignedIntegerValue = [v17 unsignedIntegerValue];
     }
 
     else
     {
-      v25 = 200;
+      unsignedIntegerValue = 200;
     }
 
-    v35 = [v22 initWithURL:v24 statusCode:v25 HTTPVersion:0 headerFields:v21];
+    v35 = [v22 initWithURL:v24 statusCode:unsignedIntegerValue HTTPVersion:0 headerFields:dictionary];
 
-    v36 = [(NSURLProtocol *)self client];
-    [v36 URLProtocol:self didReceiveResponse:v35 cacheStoragePolicy:0];
+    client = [(NSURLProtocol *)self client];
+    [client URLProtocol:self didReceiveResponse:v35 cacheStoragePolicy:0];
 
-    v37 = [(NSURLProtocol *)self client];
+    client2 = [(NSURLProtocol *)self client];
     v38 = MEMORY[0x1E695DEF0];
-    v39 = [v11 path];
-    v40 = [v38 dataWithContentsOfFile:v39];
-    [v37 URLProtocol:self didLoadData:v40];
+    path4 = [v11 path];
+    v40 = [v38 dataWithContentsOfFile:path4];
+    [client2 URLProtocol:self didLoadData:v40];
 
-    v41 = [(NSURLProtocol *)self client];
-    [v41 URLProtocolDidFinishLoading:self];
+    client3 = [(NSURLProtocol *)self client];
+    [client3 URLProtocolDidFinishLoading:self];
   }
 
   else
   {
-    v26 = [(NSURLProtocol *)self request];
-    v27 = [v26 URL];
-    v28 = [v27 host];
-    v29 = [v28 isEqualToString:@"news-mock-error.local"];
+    request5 = [(NSURLProtocol *)self request];
+    v27 = [request5 URL];
+    host2 = [v27 host];
+    v29 = [host2 isEqualToString:@"news-mock-error.local"];
 
     if (v29)
     {
       v30 = qword_1EDB270C0;
-      v31 = [(NSURLProtocol *)self request];
-      v32 = [v31 URL];
-      v33 = [v32 path];
-      v42 = [v30 objectForKey:v33];
+      request6 = [(NSURLProtocol *)self request];
+      v32 = [request6 URL];
+      path5 = [v32 path];
+      v42 = [v30 objectForKey:path5];
 
-      v34 = [(NSURLProtocol *)self client];
-      [v34 URLProtocol:self didFailWithError:v42];
+      client4 = [(NSURLProtocol *)self client];
+      [client4 URLProtocol:self didFailWithError:v42];
     }
   }
 }

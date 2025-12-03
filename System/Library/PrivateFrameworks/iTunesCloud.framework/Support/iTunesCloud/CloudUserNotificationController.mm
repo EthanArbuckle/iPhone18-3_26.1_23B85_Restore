@@ -1,9 +1,9 @@
 @interface CloudUserNotificationController
 - (CloudBadgeControllerProtocol)badgeControllerProtocol;
 - (CloudUserNotificationController)init;
-- (void)badgeAppWithRequest:(id)a3;
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)badgeAppWithRequest:(id)request;
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation CloudUserNotificationController
@@ -15,55 +15,55 @@
   return WeakRetained;
 }
 
-- (void)badgeAppWithRequest:(id)a3
+- (void)badgeAppWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 enabled];
-  v6 = [(CloudUserNotificationController *)self badgeControllerProtocol];
-  v7 = [v4 actionMetricsEvent];
-  v8 = [(CloudUserNotificationController *)self _createBag];
-  v9 = [(CloudUserNotificationController *)self center];
+  requestCopy = request;
+  enabled = [requestCopy enabled];
+  badgeControllerProtocol = [(CloudUserNotificationController *)self badgeControllerProtocol];
+  actionMetricsEvent = [requestCopy actionMetricsEvent];
+  _createBag = [(CloudUserNotificationController *)self _createBag];
+  center = [(CloudUserNotificationController *)self center];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100059CE0;
   v14[3] = &unk_1001DE0A8;
-  v15 = v4;
-  v16 = v8;
-  v17 = v7;
-  v18 = v6;
-  v10 = v6;
-  v11 = v7;
-  v12 = v8;
-  v13 = v4;
-  [v9 setBadgeCount:v5 withCompletionHandler:v14];
+  v15 = requestCopy;
+  v16 = _createBag;
+  v17 = actionMetricsEvent;
+  v18 = badgeControllerProtocol;
+  v10 = badgeControllerProtocol;
+  v11 = actionMetricsEvent;
+  v12 = _createBag;
+  v13 = requestCopy;
+  [center setBadgeCount:enabled withCompletionHandler:v14];
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  if ([AMSUserNotification shouldHandleNotificationResponse:v7])
+  responseCopy = response;
+  handlerCopy = handler;
+  if ([AMSUserNotification shouldHandleNotificationResponse:responseCopy])
   {
-    v9 = [(CloudUserNotificationController *)self _createBag];
-    v10 = [AMSUserNotification handleNotificationResponse:v7 bag:v9];
+    _createBag = [(CloudUserNotificationController *)self _createBag];
+    v10 = [AMSUserNotification handleNotificationResponse:responseCopy bag:_createBag];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10005A0BC;
     v11[3] = &unk_1001DE1C8;
-    v12 = v8;
+    v12 = handlerCopy;
     [v10 addFinishBlock:v11];
   }
 
   else
   {
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)userNotificationCenter:(id)a3 didChangeSettings:(id)a4
+- (void)userNotificationCenter:(id)center didChangeSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  centerCopy = center;
+  settingsCopy = settings;
   v8 = os_log_create("com.apple.amp.itunescloudd", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -72,15 +72,15 @@
   }
 
   v15 = ICUserNotificationSettingsAreAuthorizedUserInfoKey;
-  v9 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v7 authorizationStatus] == 2);
+  v9 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [settingsCopy authorizationStatus] == 2);
   v16 = v9;
   v10 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
 
   v11 = +[NSDistributedNotificationCenter defaultCenter];
   [v11 postNotificationName:ICUserNotificationSettingsDidChangeNotification object:0 userInfo:v10];
 
-  v12 = [(CloudUserNotificationController *)self _createBag];
-  v13 = [AMSUserNotification notificationCenter:v6 didChangeSettings:v7 bag:v12];
+  _createBag = [(CloudUserNotificationController *)self _createBag];
+  v13 = [AMSUserNotification notificationCenter:centerCopy didChangeSettings:settingsCopy bag:_createBag];
 }
 
 - (CloudUserNotificationController)init

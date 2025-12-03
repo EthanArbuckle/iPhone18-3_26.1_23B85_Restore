@@ -1,51 +1,51 @@
 @interface OrgApacheLuceneStoreDataOutput
-- (void)copyBytesWithOrgApacheLuceneStoreDataInput:(id)a3 withLong:(int64_t)a4;
+- (void)copyBytesWithOrgApacheLuceneStoreDataInput:(id)input withLong:(int64_t)long;
 - (void)dealloc;
-- (void)writeIntWithInt:(int)a3;
-- (void)writeLongWithLong:(int64_t)a3;
-- (void)writeMapOfStringsWithJavaUtilMap:(id)a3;
-- (void)writeSetOfStringsWithJavaUtilSet:(id)a3;
-- (void)writeShortWithShort:(signed __int16)a3;
-- (void)writeSignedVLongWithLong:(int64_t)a3;
-- (void)writeStringSetWithJavaUtilSet:(id)a3;
-- (void)writeStringStringMapWithJavaUtilMap:(id)a3;
-- (void)writeStringWithNSString:(id)a3;
-- (void)writeVIntWithInt:(int)a3;
-- (void)writeVLongWithLong:(int64_t)a3;
-- (void)writeZIntWithInt:(int)a3;
-- (void)writeZLongWithLong:(int64_t)a3;
+- (void)writeIntWithInt:(int)int;
+- (void)writeLongWithLong:(int64_t)long;
+- (void)writeMapOfStringsWithJavaUtilMap:(id)map;
+- (void)writeSetOfStringsWithJavaUtilSet:(id)set;
+- (void)writeShortWithShort:(signed __int16)short;
+- (void)writeSignedVLongWithLong:(int64_t)long;
+- (void)writeStringSetWithJavaUtilSet:(id)set;
+- (void)writeStringStringMapWithJavaUtilMap:(id)map;
+- (void)writeStringWithNSString:(id)string;
+- (void)writeVIntWithInt:(int)int;
+- (void)writeVLongWithLong:(int64_t)long;
+- (void)writeZIntWithInt:(int)int;
+- (void)writeZLongWithLong:(int64_t)long;
 @end
 
 @implementation OrgApacheLuceneStoreDataOutput
 
-- (void)writeIntWithInt:(int)a3
+- (void)writeIntWithInt:(int)int
 {
-  [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:(a3 >> 24)];
-  [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:(a3 << 8 >> 24)];
-  [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:(a3 >> 8)];
+  [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:(int >> 24)];
+  [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:(int << 8 >> 24)];
+  [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:(int >> 8)];
 
-  [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:a3];
+  [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:int];
 }
 
-- (void)writeShortWithShort:(signed __int16)a3
+- (void)writeShortWithShort:(signed __int16)short
 {
-  v3 = a3;
-  [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:(a3 >> 8)];
+  shortCopy = short;
+  [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:(short >> 8)];
 
-  [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:v3];
+  [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:shortCopy];
 }
 
-- (void)writeVIntWithInt:(int)a3
+- (void)writeVIntWithInt:(int)int
 {
-  v3 = a3;
-  if (a3 >= 0x80)
+  intCopy = int;
+  if (int >= 0x80)
   {
     do
     {
-      [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:v3 | 0xFFFFFF80];
-      v5 = v3 >> 7;
-      v6 = v3 >> 14;
-      v3 >>= 7;
+      [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:intCopy | 0xFFFFFF80];
+      v5 = intCopy >> 7;
+      v6 = intCopy >> 14;
+      intCopy >>= 7;
     }
 
     while (v6);
@@ -53,15 +53,15 @@
 
   else
   {
-    LOBYTE(v5) = a3;
+    LOBYTE(v5) = int;
   }
 
   [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:v5];
 }
 
-- (void)writeZIntWithInt:(int)a3
+- (void)writeZIntWithInt:(int)int
 {
-  v4 = OrgApacheLuceneUtilBitUtil_zigZagEncodeWithInt_(a3);
+  v4 = OrgApacheLuceneUtilBitUtil_zigZagEncodeWithInt_(int);
   v5 = v4;
   if (v4 >= 0x80)
   {
@@ -84,31 +84,31 @@
   [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:v6];
 }
 
-- (void)writeLongWithLong:(int64_t)a3
+- (void)writeLongWithLong:(int64_t)long
 {
-  [(OrgApacheLuceneStoreDataOutput *)self writeIntWithInt:HIDWORD(a3)];
+  [(OrgApacheLuceneStoreDataOutput *)self writeIntWithInt:HIDWORD(long)];
 
-  [(OrgApacheLuceneStoreDataOutput *)self writeIntWithInt:a3];
+  [(OrgApacheLuceneStoreDataOutput *)self writeIntWithInt:long];
 }
 
-- (void)writeVLongWithLong:(int64_t)a3
+- (void)writeVLongWithLong:(int64_t)long
 {
-  v8 = a3;
-  if (a3 < 0)
+  longCopy = long;
+  if (long < 0)
   {
-    v12 = JreStrcat("$JC", a2, a3, v3, v4, v5, v6, v7, @"cannot write negative vLong (got: ");
+    v12 = JreStrcat("$JC", a2, long, v3, v4, v5, v6, v7, @"cannot write negative vLong (got: ");
     v13 = new_JavaLangIllegalArgumentException_initWithNSString_(v12);
     objc_exception_throw(v13);
   }
 
-  if (a3 >= 0x80)
+  if (long >= 0x80)
   {
     do
     {
-      [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:v8 | 0xFFFFFF80];
-      v10 = v8 >> 7;
-      v11 = v8 >> 14;
-      v8 >>= 7;
+      [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:longCopy | 0xFFFFFF80];
+      v10 = longCopy >> 7;
+      v11 = longCopy >> 14;
+      longCopy >>= 7;
     }
 
     while (v11);
@@ -116,23 +116,23 @@
 
   else
   {
-    LOBYTE(v10) = a3;
+    LOBYTE(v10) = long;
   }
 
   [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:v10];
 }
 
-- (void)writeSignedVLongWithLong:(int64_t)a3
+- (void)writeSignedVLongWithLong:(int64_t)long
 {
-  v3 = a3;
-  if (a3 >= 0x80)
+  longCopy = long;
+  if (long >= 0x80)
   {
     do
     {
-      [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:v3 | 0xFFFFFF80];
-      v5 = v3 >> 7;
-      v6 = v3 >> 14;
-      v3 >>= 7;
+      [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:longCopy | 0xFFFFFF80];
+      v5 = longCopy >> 7;
+      v6 = longCopy >> 14;
+      longCopy >>= 7;
     }
 
     while (v6);
@@ -140,15 +140,15 @@
 
   else
   {
-    LOBYTE(v5) = a3;
+    LOBYTE(v5) = long;
   }
 
   [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:v5];
 }
 
-- (void)writeZLongWithLong:(int64_t)a3
+- (void)writeZLongWithLong:(int64_t)long
 {
-  v4 = OrgApacheLuceneUtilBitUtil_zigZagEncodeWithLong_(a3);
+  v4 = OrgApacheLuceneUtilBitUtil_zigZagEncodeWithLong_(long);
   v5 = v4;
   if (v4 >= 0x80)
   {
@@ -171,9 +171,9 @@
   [(OrgApacheLuceneStoreDataOutput *)self writeByteWithByte:v6];
 }
 
-- (void)writeStringWithNSString:(id)a3
+- (void)writeStringWithNSString:(id)string
 {
-  v4 = new_OrgApacheLuceneUtilBytesRef_initWithJavaLangCharSequence_(a3);
+  v4 = new_OrgApacheLuceneUtilBytesRef_initWithJavaLangCharSequence_(string);
   v5 = v4;
   length = v4->length_;
   if (length >= 0x80)
@@ -202,60 +202,60 @@
   [(OrgApacheLuceneStoreDataOutput *)self writeBytesWithByteArray:bytes withInt:offset withInt:v11];
 }
 
-- (void)copyBytesWithOrgApacheLuceneStoreDataInput:(id)a3 withLong:(int64_t)a4
+- (void)copyBytesWithOrgApacheLuceneStoreDataInput:(id)input withLong:(int64_t)long
 {
   if (!self->copyBuffer_)
   {
     JreStrongAssignAndConsume(&self->copyBuffer_, [IOSByteArray newArrayWithLength:0x4000]);
   }
 
-  if (a4 >= 1)
+  if (long >= 1)
   {
-    if (!a3)
+    if (!input)
     {
       JreThrowNullPointerException();
     }
 
     do
     {
-      if (a4 >= 0x4000)
+      if (long >= 0x4000)
       {
-        v7 = 0x4000;
+        longCopy = 0x4000;
       }
 
       else
       {
-        v7 = a4;
+        longCopy = long;
       }
 
-      [a3 readBytesWithByteArray:self->copyBuffer_ withInt:0 withInt:v7];
-      [(OrgApacheLuceneStoreDataOutput *)self writeBytesWithByteArray:self->copyBuffer_ withInt:0 withInt:v7];
-      v8 = a4 <= v7;
-      a4 -= v7;
+      [input readBytesWithByteArray:self->copyBuffer_ withInt:0 withInt:longCopy];
+      [(OrgApacheLuceneStoreDataOutput *)self writeBytesWithByteArray:self->copyBuffer_ withInt:0 withInt:longCopy];
+      v8 = long <= longCopy;
+      long -= longCopy;
     }
 
     while (!v8);
   }
 }
 
-- (void)writeStringStringMapWithJavaUtilMap:(id)a3
+- (void)writeStringStringMapWithJavaUtilMap:(id)map
 {
-  if (a3)
+  if (map)
   {
-    -[OrgApacheLuceneStoreDataOutput writeIntWithInt:](self, "writeIntWithInt:", [a3 size]);
+    -[OrgApacheLuceneStoreDataOutput writeIntWithInt:](self, "writeIntWithInt:", [map size]);
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [a3 entrySet];
-    if (!v5)
+    entrySet = [map entrySet];
+    if (!entrySet)
     {
 LABEL_15:
       JreThrowNullPointerException();
     }
 
-    v6 = v5;
-    v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v6 = entrySet;
+    v7 = [entrySet countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -293,14 +293,14 @@ LABEL_15:
   }
 }
 
-- (void)writeMapOfStringsWithJavaUtilMap:(id)a3
+- (void)writeMapOfStringsWithJavaUtilMap:(id)map
 {
-  if (!a3)
+  if (!map)
   {
     goto LABEL_15;
   }
 
-  v5 = [a3 size];
+  v5 = [map size];
   v6 = v5;
   if (v5 >= 0x80)
   {
@@ -325,15 +325,15 @@ LABEL_15:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [a3 entrySet];
-  if (!v9)
+  entrySet = [map entrySet];
+  if (!entrySet)
   {
 LABEL_15:
     JreThrowNullPointerException();
   }
 
-  v10 = v9;
-  v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v10 = entrySet;
+  v11 = [entrySet countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
     v12 = v11;
@@ -364,16 +364,16 @@ LABEL_15:
   }
 }
 
-- (void)writeStringSetWithJavaUtilSet:(id)a3
+- (void)writeStringSetWithJavaUtilSet:(id)set
 {
-  if (a3)
+  if (set)
   {
-    -[OrgApacheLuceneStoreDataOutput writeIntWithInt:](self, "writeIntWithInt:", [a3 size]);
+    -[OrgApacheLuceneStoreDataOutput writeIntWithInt:](self, "writeIntWithInt:", [set size]);
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    v5 = [set countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -384,13 +384,13 @@ LABEL_15:
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(set);
           }
 
           [(OrgApacheLuceneStoreDataOutput *)self writeStringWithNSString:*(*(&v9 + 1) + 8 * i)];
         }
 
-        v6 = [a3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [set countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -404,14 +404,14 @@ LABEL_15:
   }
 }
 
-- (void)writeSetOfStringsWithJavaUtilSet:(id)a3
+- (void)writeSetOfStringsWithJavaUtilSet:(id)set
 {
-  if (!a3)
+  if (!set)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [a3 size];
+  v5 = [set size];
   v6 = v5;
   if (v5 >= 0x80)
   {
@@ -436,7 +436,7 @@ LABEL_15:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v9 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v9 = [set countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
     v10 = v9;
@@ -447,13 +447,13 @@ LABEL_15:
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(set);
         }
 
         [(OrgApacheLuceneStoreDataOutput *)self writeStringWithNSString:*(*(&v13 + 1) + 8 * i)];
       }
 
-      v10 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [set countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);

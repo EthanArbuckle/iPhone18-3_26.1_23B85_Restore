@@ -1,35 +1,35 @@
 @interface VCPCNNPersonKeypointsDetector
-- (VCPCNNPersonKeypointsDetector)initWithForceCPU:(BOOL)a3 sharedModel:(BOOL)a4;
+- (VCPCNNPersonKeypointsDetector)initWithForceCPU:(BOOL)u sharedModel:(BOOL)model;
 - (id).cxx_construct;
-- (int)analyzeFrame:(__CVBuffer *)a3 withBox:(id)a4 keypoints:(id)a5 padX:(int *)a6 padY:(int *)a7;
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4 cnnInputHeight:(int)a5 cnnInputWidth:(int)a6;
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4 cnnInputHeight:(int)a5 cnnInputWidth:(int)a6 box:(id)a7;
-- (int)parseKeypoints:(id)a3;
+- (int)analyzeFrame:(__CVBuffer *)frame withBox:(id)box keypoints:(id)keypoints padX:(int *)x padY:(int *)y;
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data cnnInputHeight:(int)height cnnInputWidth:(int)width;
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer cnnInputHeight:(int)height cnnInputWidth:(int)width box:(id)box;
+- (int)parseKeypoints:(id)keypoints;
 - (void)dealloc;
 @end
 
 @implementation VCPCNNPersonKeypointsDetector
 
-- (VCPCNNPersonKeypointsDetector)initWithForceCPU:(BOOL)a3 sharedModel:(BOOL)a4
+- (VCPCNNPersonKeypointsDetector)initWithForceCPU:(BOOL)u sharedModel:(BOOL)model
 {
-  v4 = a4;
-  v5 = a3;
+  modelCopy = model;
+  uCopy = u;
   v38[2] = *MEMORY[0x1E69E9840];
   v36.receiver = self;
   v36.super_class = VCPCNNPersonKeypointsDetector;
   v6 = [(VCPCNNPersonKeypointsDetector *)&v36 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-    v8 = [v7 resourceURL];
+    vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+    resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-    v9 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_human_pose_single.espresso.net" relativeToURL:v8];
+    v9 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_human_pose_single.espresso.net" relativeToURL:resourceURL];
     v10 = [VCPCNNModelEspresso alloc];
     v37[0] = @"forceCPU";
-    v11 = [MEMORY[0x1E696AD98] numberWithBool:v5];
+    v11 = [MEMORY[0x1E696AD98] numberWithBool:uCopy];
     v38[0] = v11;
     v37[1] = @"sharedContext";
-    v12 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+    v12 = [MEMORY[0x1E696AD98] numberWithBool:modelCopy];
     v38[1] = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:2];
     v14 = [(VCPCNNModelEspresso *)v10 initWithParameters:v9 inputNames:0 outputNames:0 properties:v13];
@@ -156,18 +156,18 @@ LABEL_27:
   [(VCPCNNPersonKeypointsDetector *)&v4 dealloc];
 }
 
-- (int)copyImage:(__CVBuffer *)a3 toData:(float *)a4 cnnInputHeight:(int)a5 cnnInputWidth:(int)a6
+- (int)copyImage:(__CVBuffer *)image toData:(float *)data cnnInputHeight:(int)height cnnInputWidth:(int)width
 {
-  if (CVPixelBufferGetPixelFormatType(a3) != 1111970369)
+  if (CVPixelBufferGetPixelFormatType(image) != 1111970369)
   {
     return -50;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  pixelBuffer = a3;
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
+  pixelBuffer = image;
   unlockFlags = 1;
-  if (!a3)
+  if (!image)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -178,7 +178,7 @@ LABEL_27:
   }
 
   v13 = Height;
-  v14 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+  v14 = CVPixelBufferLockBaseAddress(image, 1uLL);
   v33 = v14;
   if (v14)
   {
@@ -191,16 +191,16 @@ LABEL_27:
 
   else
   {
-    BaseAddress = CVPixelBufferGetBaseAddress(a3);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-    bzero(a4, 12 * a5 * a6);
+    BaseAddress = CVPixelBufferGetBaseAddress(image);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(image);
+    bzero(data, 12 * height * width);
     padY = self->_padY;
     if (padY + v13 >= 1)
     {
       v21 = 0;
-      v22 = &a4[2 * a6 * a5];
-      v23 = &a4[a6 * a5];
-      v24 = 4 * a6;
+      v22 = &data[2 * width * height];
+      v23 = &data[width * height];
+      v24 = 4 * width;
       do
       {
         if (v21 >= padY)
@@ -211,7 +211,7 @@ LABEL_27:
             padX = self->_padX;
             v27 = &v22[padX];
             v28 = &v23[padX];
-            v29 = &a4[padX];
+            v29 = &data[padX];
             v30 = Width & 0x7FFFFFFF;
             do
             {
@@ -239,7 +239,7 @@ LABEL_27:
         ++v21;
         v22 = (v22 + v24);
         v23 = (v23 + v24);
-        a4 = (a4 + v24);
+        data = (data + v24);
       }
 
       while (v21 != padY + v13);
@@ -255,36 +255,36 @@ LABEL_27:
   return v15;
 }
 
-- (int)createInput:(float *)a3 withBuffer:(__CVBuffer *)a4 cnnInputHeight:(int)a5 cnnInputWidth:(int)a6 box:(id)a7
+- (int)createInput:(float *)input withBuffer:(__CVBuffer *)buffer cnnInputHeight:(int)height cnnInputWidth:(int)width box:(id)box
 {
-  v7 = *&a6;
-  v8 = *&a5;
+  v7 = *&width;
+  v8 = *&height;
   v56 = *MEMORY[0x1E69E9840];
-  v12 = a7;
-  if (a3)
+  boxCopy = box;
+  if (input)
   {
-    Width = CVPixelBufferGetWidth(a4);
-    Height = CVPixelBufferGetHeight(a4);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
     cf = 0;
-    [v12 minX];
+    [boxCopy minX];
     v44 = v15;
-    [v12 minY];
+    [boxCopy minY];
     v17 = v16;
-    [v12 maxX];
+    [boxCopy maxX];
     v19 = v18;
-    [v12 minX];
+    [boxCopy minX];
     v21 = v20;
-    [v12 maxY];
+    [boxCopy maxY];
     v23 = v22;
-    [v12 minY];
+    [boxCopy minY];
     v25 = v24;
-    [v12 maxX];
+    [boxCopy maxX];
     v27 = v26;
-    [v12 minX];
+    [boxCopy minX];
     v29 = v28;
-    [v12 maxY];
+    [boxCopy maxY];
     v31 = v30;
-    [v12 minY];
+    [boxCopy minY];
     v33 = (((v27 - v29) / (v31 - v32)) * Width) / Height;
     if (v33 <= (v7 / v8))
     {
@@ -327,10 +327,10 @@ LABEL_27:
     v57.origin.y = v39;
     v57.size.width = v40;
     v57.size.height = (v23 - v25);
-    v38 = Scaler::ScaleCropped(&self->_scaler, v57, a4, &cf, v37, v35, 1111970369);
+    v38 = Scaler::ScaleCropped(&self->_scaler, v57, buffer, &cf, v37, v35, 1111970369);
     if (!v38)
     {
-      v38 = [(VCPCNNPersonKeypointsDetector *)self copyImage:cf toData:a3 cnnInputHeight:v8 cnnInputWidth:v7];
+      v38 = [(VCPCNNPersonKeypointsDetector *)self copyImage:cf toData:input cnnInputHeight:v8 cnnInputWidth:v7];
     }
 
     if (cf)
@@ -347,22 +347,22 @@ LABEL_27:
   return v38;
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 withBox:(id)a4 keypoints:(id)a5 padX:(int *)a6 padY:(int *)a7
+- (int)analyzeFrame:(__CVBuffer *)frame withBox:(id)box keypoints:(id)keypoints padX:(int *)x padY:(int *)y
 {
-  v12 = a4;
-  v13 = a5;
-  CVPixelBufferGetWidth(a3);
-  CVPixelBufferGetHeight(a3);
+  boxCopy = box;
+  keypointsCopy = keypoints;
+  CVPixelBufferGetWidth(frame);
+  CVPixelBufferGetHeight(frame);
   v14 = objc_autoreleasePoolPush();
-  v15 = [(VCPCNNPersonKeypointsDetector *)self createInput:self->_inputData withBuffer:a3 cnnInputHeight:self->_inputHeight cnnInputWidth:self->_inputWidth box:v12];
+  v15 = [(VCPCNNPersonKeypointsDetector *)self createInput:self->_inputData withBuffer:frame cnnInputHeight:self->_inputHeight cnnInputWidth:self->_inputWidth box:boxCopy];
   if (!v15)
   {
-    *a6 = self->_padX;
-    *a7 = self->_padY;
+    *x = self->_padX;
+    *y = self->_padY;
     v15 = [(VCPCNNModelEspresso *)self->_modelEspresso espressoForward:self->_inputData];
     if (!v15)
     {
-      v15 = [(VCPCNNPersonKeypointsDetector *)self parseKeypoints:v13];
+      v15 = [(VCPCNNPersonKeypointsDetector *)self parseKeypoints:keypointsCopy];
     }
   }
 
@@ -371,10 +371,10 @@ LABEL_27:
   return v15;
 }
 
-- (int)parseKeypoints:(id)a3
+- (int)parseKeypoints:(id)keypoints
 {
   v37[3] = *MEMORY[0x1E69E9840];
-  v32 = a3;
+  keypointsCopy = keypoints;
   modelEspresso = self->_modelEspresso;
   if (!modelEspresso)
   {
@@ -483,7 +483,7 @@ LABEL_9:
         v28 = [MEMORY[0x1E696AD98] numberWithFloat:v27];
         v37[2] = v28;
         v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:3];
-        [v32 addObject:v29];
+        [keypointsCopy addObject:v29];
 
         ++v13;
         v12 += v6 * v9;

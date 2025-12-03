@@ -7,7 +7,7 @@
 
 - (uint64_t)smm_restrictions
 {
-  if ([a1 restrictions])
+  if ([self restrictions])
   {
     return 0xFFFFLL;
   }
@@ -30,7 +30,7 @@
     v3 = 0;
   }
 
-  return [a1 setRestrictions:v3];
+  return [self setRestrictions:v3];
 }
 
 @end

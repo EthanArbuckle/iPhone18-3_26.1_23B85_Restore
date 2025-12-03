@@ -1,20 +1,20 @@
 @interface NESMDNSProxySession
-- (BOOL)handleUpdateConfiguration:(id)a3;
+- (BOOL)handleUpdateConfiguration:(id)configuration;
 - (BOOL)waitForPerApp;
-- (NESMDNSProxySession)initWithConfiguration:(id)a3 andServer:(id)a4 andProtocol:(id)a5 andPluginType:(id)a6;
+- (NESMDNSProxySession)initWithConfiguration:(id)configuration andServer:(id)server andProtocol:(id)protocol andPluginType:(id)type;
 - (id)providerBundleIdentifier;
 - (id)providerDesignatedRequirement;
-- (void)createConnectParametersWithStartMessage:(id)a3;
+- (void)createConnectParametersWithStartMessage:(id)message;
 - (void)handleCaptiveNetworkPluginsChanged;
 - (void)handleInstalledAppsChanged;
-- (void)handleNetworkConfigurationChange:(int64_t)a3;
-- (void)handleNetworkDetectionNotification:(int)a3;
-- (void)handleStartMessage:(id)a3;
+- (void)handleNetworkConfigurationChange:(int64_t)change;
+- (void)handleNetworkDetectionNotification:(int)notification;
+- (void)handleStartMessage:(id)message;
 - (void)handleUserLogin;
 - (void)install;
 - (void)prepareNetwork;
-- (void)resetProviderDesignatedRequirementInConfiguration:(id)a3;
-- (void)setProviderDesignatedRequirement:(id)a3;
+- (void)resetProviderDesignatedRequirementInConfiguration:(id)configuration;
+- (void)setProviderDesignatedRequirement:(id)requirement;
 - (void)uninstall;
 @end
 
@@ -36,8 +36,8 @@
   {
     if (self->_externallyStopped)
     {
-      v3 = [(NESMSession *)self policySession];
-      sub_100030D44(v3);
+      policySession = [(NESMSession *)self policySession];
+      sub_100030D44(policySession);
     }
 
     self->_installed = 0;
@@ -53,13 +53,13 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       v6 = 138412290;
-      v7 = self;
+      selfCopy = self;
       _os_log_error_impl(&_mh_execute_header, v4, OS_LOG_TYPE_ERROR, "%@: failed to set the DNSProxy policies", &v6, 0xCu);
     }
   }
 
-  v5 = [(NESMVPNSession *)self stateHandler];
-  [v5 handleSetConfigurationResult:v3];
+  stateHandler = [(NESMVPNSession *)self stateHandler];
+  [stateHandler handleSetConfigurationResult:v3];
 
   if (self)
   {
@@ -69,59 +69,59 @@
 
 - (BOOL)waitForPerApp
 {
-  v3 = [(NESMSession *)self configuration];
-  v4 = [v3 externalIdentifier];
-  if (!v4)
+  configuration = [(NESMSession *)self configuration];
+  externalIdentifier = [configuration externalIdentifier];
+  if (!externalIdentifier)
   {
     goto LABEL_9;
   }
 
-  v5 = v4;
-  v6 = [(NESMSession *)self configuration];
-  v7 = [v6 dnsProxy];
-  if (![v7 isEnabled])
+  v5 = externalIdentifier;
+  configuration2 = [(NESMSession *)self configuration];
+  dnsProxy = [configuration2 dnsProxy];
+  if (![dnsProxy isEnabled])
   {
 
 LABEL_9:
     return 1;
   }
 
-  v8 = [(NESMSession *)self configuration];
-  v9 = [v8 dnsProxy];
-  v10 = [v9 perApp];
+  configuration3 = [(NESMSession *)self configuration];
+  dnsProxy2 = [configuration3 dnsProxy];
+  perApp = [dnsProxy2 perApp];
 
-  if (v10)
+  if (perApp)
   {
-    v11 = [(NESMSession *)self configuration];
-    v12 = [v11 dnsProxy];
-    v13 = [v12 perApp];
+    configuration4 = [(NESMSession *)self configuration];
+    dnsProxy3 = [configuration4 dnsProxy];
+    perApp2 = [dnsProxy3 perApp];
     v14 = [(NESMSession *)self uid];
-    [v13 updateAppRulesForUID:{objc_msgSend(v14, "unsignedIntValue")}];
+    [perApp2 updateAppRulesForUID:{objc_msgSend(v14, "unsignedIntValue")}];
 
-    v15 = [(NESMSession *)self configuration];
-    v16 = [v15 dnsProxy];
-    v17 = [v16 perApp];
-    v18 = [v17 appRules];
-    v19 = [v18 count];
+    configuration5 = [(NESMSession *)self configuration];
+    dnsProxy4 = [configuration5 dnsProxy];
+    perApp3 = [dnsProxy4 perApp];
+    appRules = [perApp3 appRules];
+    v19 = [appRules count];
 
     if (v19)
     {
-      v20 = [(NESMSession *)self policySession];
-      v21 = [(NESMSession *)self configuration];
-      v22 = [v21 dnsProxy];
-      v23 = [v22 perApp];
-      v24 = [v23 appRules];
+      policySession = [(NESMSession *)self policySession];
+      configuration6 = [(NESMSession *)self configuration];
+      dnsProxy5 = [configuration6 dnsProxy];
+      perApp4 = [dnsProxy5 perApp];
+      appRules2 = [perApp4 appRules];
       v25 = [(NESMSession *)self uid];
       [v25 intValue];
-      sub_100040988(v20, v24);
+      sub_100040988(policySession, appRules2);
     }
 
-    v26 = [(NESMSession *)self configuration];
-    v27 = [v26 dnsProxy];
-    v28 = [v27 perApp];
-    v29 = [v28 copyCachedMachOUUIDs];
+    configuration7 = [(NESMSession *)self configuration];
+    dnsProxy6 = [configuration7 dnsProxy];
+    perApp5 = [dnsProxy6 perApp];
+    copyCachedMachOUUIDs = [perApp5 copyCachedMachOUUIDs];
 
-    if (v29)
+    if (copyCachedMachOUUIDs)
     {
       return 0;
     }
@@ -132,26 +132,26 @@ LABEL_9:
 
 - (void)prepareNetwork
 {
-  v2 = [(NESMVPNSession *)self stateHandler];
-  [v2 handleNetworkPrepareResult:&stru_1000EBA68];
+  stateHandler = [(NESMVPNSession *)self stateHandler];
+  [stateHandler handleNetworkPrepareResult:&stru_1000EBA68];
 }
 
-- (void)handleStartMessage:(id)a3
+- (void)handleStartMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   if (self)
   {
     objc_setProperty_atomic(self, v4, 0, 728);
   }
 
-  v6 = xpc_dictionary_get_value(v5, "SessionOptions");
+  v6 = xpc_dictionary_get_value(messageCopy, "SessionOptions");
   v7 = v6;
   if (!v6 || xpc_get_type(v6) != &_xpc_type_dictionary || !xpc_dictionary_get_BOOL(v7, "test-agent"))
   {
     goto LABEL_26;
   }
 
-  v8 = xpc_dictionary_get_remote_connection(v5);
+  v8 = xpc_dictionary_get_remote_connection(messageCopy);
   if (!v8)
   {
 LABEL_10:
@@ -160,8 +160,8 @@ LABEL_10:
     {
 LABEL_11:
 
-      v12 = [(NESMVPNSession *)self stateHandler];
-      [v12 handleStartMessage:v5];
+      stateHandler = [(NESMVPNSession *)self stateHandler];
+      [stateHandler handleStartMessage:messageCopy];
 
       goto LABEL_28;
     }
@@ -222,15 +222,15 @@ LABEL_30:
   if (v18 && xpc_get_type(v18) == &_xpc_type_endpoint)
   {
     v20 = [NETestAgent alloc];
-    v21 = [(NESMSession *)self configuration];
-    v22 = [v21 pluginType];
-    v23 = sub_100075628(&v20->super.super.isa, v22, 3, v5);
+    configuration = [(NESMSession *)self configuration];
+    pluginType = [configuration pluginType];
+    v23 = sub_100075628(&v20->super.super.isa, pluginType, 3, messageCopy);
 
     if (v23)
     {
       v24 = [NEDNSProxyPlugin alloc];
-      v25 = [(NESMSession *)self queue];
-      v26 = [(NEVPNTunnelPlugin *)v24 initWithAgent:v23 delegateQueue:v25 andDelegate:self];
+      queue = [(NESMSession *)self queue];
+      v26 = [(NEVPNTunnelPlugin *)v24 initWithAgent:v23 delegateQueue:queue andDelegate:self];
       [(NESMVPNSession *)self setPrimaryTunnelPlugin:v26];
     }
 
@@ -248,7 +248,7 @@ LABEL_30:
 LABEL_26:
   v31.receiver = self;
   v31.super_class = NESMDNSProxySession;
-  [(NESMVPNSession *)&v31 handleStartMessage:v5];
+  [(NESMVPNSession *)&v31 handleStartMessage:messageCopy];
   sub_10002F624(self, 0);
   if (self)
   {
@@ -258,34 +258,34 @@ LABEL_26:
 LABEL_28:
 }
 
-- (void)handleNetworkDetectionNotification:(int)a3
+- (void)handleNetworkDetectionNotification:(int)notification
 {
-  if (a3 <= 5 && ((1 << a3) & 0x26) != 0)
+  if (notification <= 5 && ((1 << notification) & 0x26) != 0)
   {
     v5 = ne_log_obj();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = inputNotification2String();
-      v7 = [(NESMSession *)self configuration];
-      v8 = [v7 name];
+      configuration = [(NESMSession *)self configuration];
+      name = [configuration name];
       *buf = 138412802;
-      v12 = self;
+      selfCopy = self;
       v13 = 2080;
       v14 = v6;
       v15 = 2112;
-      v16 = v8;
+      v16 = name;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@: received a %s notification <%@>", buf, 0x20u);
     }
 
-    if ((a3 - 1) <= 1)
+    if ((notification - 1) <= 1)
     {
-      v9 = [(NESMSession *)self queue];
+      queue = [(NESMSession *)self queue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100030058;
       block[3] = &unk_1000EB1C0;
       block[4] = self;
-      dispatch_async(v9, block);
+      dispatch_async(queue, block);
     }
 
     [(NESMSession *)self restartSession];
@@ -297,12 +297,12 @@ LABEL_28:
   v3 = ne_log_obj();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(NESMSession *)self configuration];
-    v5 = [v4 name];
+    configuration = [(NESMSession *)self configuration];
+    name = [configuration name];
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v5;
+    v9 = name;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@: Handling installed captive plugins change (%@>", &v6, 0x16u);
   }
 
@@ -314,35 +314,35 @@ LABEL_28:
   v3 = ne_log_obj();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(NESMSession *)self configuration];
-    v5 = [v4 name];
+    configuration = [(NESMSession *)self configuration];
+    name = [configuration name];
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v5;
+    v9 = name;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@: Handling installed apps change <%@>", &v6, 0x16u);
   }
 
   [(NESMDNSProxySession *)self handleNetworkDetectionNotification:2];
 }
 
-- (BOOL)handleUpdateConfiguration:(id)a3
+- (BOOL)handleUpdateConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (configurationCopy)
   {
-    v6 = [v4 dnsProxy];
-    if ([v6 isEnabled])
+    dnsProxy = [configurationCopy dnsProxy];
+    if ([dnsProxy isEnabled])
     {
-      v7 = [(NESMSession *)self configuration];
-      v8 = [v7 dnsProxy];
-      v9 = [v8 perApp];
-      v10 = [v9 appRules];
-      v11 = [v5 dnsProxy];
-      v12 = [v11 perApp];
-      v13 = [v12 appRules];
-      v14 = v10 == v13;
+      configuration = [(NESMSession *)self configuration];
+      dnsProxy2 = [configuration dnsProxy];
+      perApp = [dnsProxy2 perApp];
+      appRules = [perApp appRules];
+      dnsProxy3 = [v5 dnsProxy];
+      perApp2 = [dnsProxy3 perApp];
+      appRules2 = [perApp2 appRules];
+      v14 = appRules == appRules2;
     }
 
     else
@@ -364,12 +364,12 @@ LABEL_28:
     v16 = ne_log_obj();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(NESMSession *)self configuration];
-      v18 = [v17 name];
+      configuration2 = [(NESMSession *)self configuration];
+      name = [configuration2 name];
       *buf = 138412546;
-      v22 = self;
+      selfCopy = self;
       v23 = 2112;
-      v24 = v18;
+      v24 = name;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%@: Handling Update Configuration - updating policies <%@>", buf, 0x16u);
     }
 
@@ -379,84 +379,84 @@ LABEL_28:
   return v15;
 }
 
-- (void)handleNetworkConfigurationChange:(int64_t)a3
+- (void)handleNetworkConfigurationChange:(int64_t)change
 {
-  v3 = a3;
+  changeCopy = change;
   v7.receiver = self;
   v7.super_class = NESMDNSProxySession;
   [(NESMVPNSession *)&v7 handleNetworkConfigurationChange:?];
-  if ((v3 & 2) != 0)
+  if ((changeCopy & 2) != 0)
   {
-    v5 = [(NESMSession *)self queue];
+    queue = [(NESMSession *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100030674;
     block[3] = &unk_1000EB1C0;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(queue, block);
   }
 }
 
-- (void)createConnectParametersWithStartMessage:(id)a3
+- (void)createConnectParametersWithStartMessage:(id)message
 {
   v10.receiver = self;
   v10.super_class = NESMDNSProxySession;
-  [(NESMVPNSession *)&v10 createConnectParametersWithStartMessage:a3];
-  v4 = [(NESMSession *)self configuration];
-  v5 = [v4 dnsProxy];
-  v6 = [v5 protocol];
+  [(NESMVPNSession *)&v10 createConnectParametersWithStartMessage:message];
+  configuration = [(NESMSession *)self configuration];
+  dnsProxy = [configuration dnsProxy];
+  protocol = [dnsProxy protocol];
 
-  v7 = [v6 providerConfiguration];
+  providerConfiguration = [protocol providerConfiguration];
 
-  if (v7)
+  if (providerConfiguration)
   {
-    v8 = [v6 providerConfiguration];
-    v9 = [(NESMVPNSession *)self connectParameters];
-    [v9 setObject:v8 forKeyedSubscript:@"VendorData"];
+    providerConfiguration2 = [protocol providerConfiguration];
+    connectParameters = [(NESMVPNSession *)self connectParameters];
+    [connectParameters setObject:providerConfiguration2 forKeyedSubscript:@"VendorData"];
   }
 }
 
-- (void)resetProviderDesignatedRequirementInConfiguration:(id)a3
+- (void)resetProviderDesignatedRequirementInConfiguration:(id)configuration
 {
-  v4 = [a3 dnsProxy];
-  v6 = [v4 protocol];
+  dnsProxy = [configuration dnsProxy];
+  protocol = [dnsProxy protocol];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NESMDNSProxySession *)self providerDesignatedRequirement];
-    [v6 setDesignatedRequirement:v5];
+    providerDesignatedRequirement = [(NESMDNSProxySession *)self providerDesignatedRequirement];
+    [protocol setDesignatedRequirement:providerDesignatedRequirement];
   }
 }
 
-- (void)setProviderDesignatedRequirement:(id)a3
+- (void)setProviderDesignatedRequirement:(id)requirement
 {
-  v4 = a3;
-  v5 = [(NESMVPNSession *)self protocol];
-  [v5 setDesignatedRequirement:v4];
+  requirementCopy = requirement;
+  protocol = [(NESMVPNSession *)self protocol];
+  [protocol setDesignatedRequirement:requirementCopy];
 }
 
 - (id)providerDesignatedRequirement
 {
-  v2 = [(NESMVPNSession *)self protocol];
-  v3 = [v2 designatedRequirement];
+  protocol = [(NESMVPNSession *)self protocol];
+  designatedRequirement = [protocol designatedRequirement];
 
-  return v3;
+  return designatedRequirement;
 }
 
 - (id)providerBundleIdentifier
 {
-  v2 = [(NESMVPNSession *)self protocol];
-  v3 = [v2 providerBundleIdentifier];
+  protocol = [(NESMVPNSession *)self protocol];
+  providerBundleIdentifier = [protocol providerBundleIdentifier];
 
-  return v3;
+  return providerBundleIdentifier;
 }
 
-- (NESMDNSProxySession)initWithConfiguration:(id)a3 andServer:(id)a4 andProtocol:(id)a5 andPluginType:(id)a6
+- (NESMDNSProxySession)initWithConfiguration:(id)configuration andServer:(id)server andProtocol:(id)protocol andPluginType:(id)type
 {
   v7.receiver = self;
   v7.super_class = NESMDNSProxySession;
-  result = [(NESMVPNSession *)&v7 initWithConfiguration:a3 andServer:a4 andProtocol:a5 andPluginType:a6 andSessionType:6];
+  result = [(NESMVPNSession *)&v7 initWithConfiguration:configuration andServer:server andProtocol:protocol andPluginType:type andSessionType:6];
   if (result)
   {
     result->_restartIntervalSecs = 1;

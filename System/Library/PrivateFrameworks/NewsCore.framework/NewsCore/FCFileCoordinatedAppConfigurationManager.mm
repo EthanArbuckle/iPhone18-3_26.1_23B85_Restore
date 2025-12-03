@@ -1,12 +1,12 @@
 @interface FCFileCoordinatedAppConfigurationManager
 - (FCFileCoordinatedAppConfigurationManager)init;
-- (FCFileCoordinatedAppConfigurationManager)initWithFileURL:(id)a3 storefrontID:(id)a4;
+- (FCFileCoordinatedAppConfigurationManager)initWithFileURL:(id)l storefrontID:(id)d;
 - (FCNewsAppConfiguration)appConfiguration;
-- (id)_appConfigurationFromDictionary:(id)a3 forStorefrontID:(id)a4;
-- (id)_dictionaryFromAppConfiguration:(id)a3;
-- (void)depositAppConfiguration:(id)a3;
-- (void)fetchAppConfigurationIfNeededWithCompletionQueue:(id)a3 completion:(id)a4;
-- (void)refreshAppConfigurationIfNeededWithCompletionQueue:(id)a3 refreshCompletion:(id)a4;
+- (id)_appConfigurationFromDictionary:(id)dictionary forStorefrontID:(id)d;
+- (id)_dictionaryFromAppConfiguration:(id)configuration;
+- (void)depositAppConfiguration:(id)configuration;
+- (void)fetchAppConfigurationIfNeededWithCompletionQueue:(id)queue completion:(id)completion;
+- (void)refreshAppConfigurationIfNeededWithCompletionQueue:(id)queue refreshCompletion:(id)completion;
 @end
 
 @implementation FCFileCoordinatedAppConfigurationManager
@@ -37,12 +37,12 @@
   objc_exception_throw(v6);
 }
 
-- (FCFileCoordinatedAppConfigurationManager)initWithFileURL:(id)a3 storefrontID:(id)a4
+- (FCFileCoordinatedAppConfigurationManager)initWithFileURL:(id)l storefrontID:(id)d
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  lCopy = l;
+  dCopy = d;
+  if (!lCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v23 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "fileURL"];
     *buf = 136315906;
@@ -55,13 +55,13 @@
     v33 = v23;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v7)
+    if (dCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (dCopy)
   {
     goto LABEL_6;
   }
@@ -96,11 +96,11 @@ LABEL_6:
     lock = v8->_lock;
     v8->_lock = v15;
 
-    v17 = [[FCFileCoordinatedDictionary alloc] initWithFileURL:v6 allowedClasses:v14];
+    v17 = [[FCFileCoordinatedDictionary alloc] initWithFileURL:lCopy allowedClasses:v14];
     fileCoordinatedDictionary = v8->_fileCoordinatedDictionary;
     v8->_fileCoordinatedDictionary = v17;
 
-    v19 = [v7 copy];
+    v19 = [dCopy copy];
     storefrontID = v8->_storefrontID;
     v8->_storefrontID = v19;
   }
@@ -109,11 +109,11 @@ LABEL_6:
   return v8;
 }
 
-- (void)depositAppConfiguration:(id)a3
+- (void)depositAppConfiguration:(id)configuration
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  configurationCopy = configuration;
+  if (!configurationCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "appConfiguration"];
     *buf = 136315906;
@@ -127,15 +127,15 @@ LABEL_6:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [(FCFileCoordinatedAppConfigurationManager *)self fileCoordinatedDictionary];
+  fileCoordinatedDictionary = [(FCFileCoordinatedAppConfigurationManager *)self fileCoordinatedDictionary];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68__FCFileCoordinatedAppConfigurationManager_depositAppConfiguration___block_invoke;
   v9[3] = &unk_1E7C37D00;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  [v5 writeWithAccessor:v9 completion:0];
+  v10 = configurationCopy;
+  v6 = configurationCopy;
+  [fileCoordinatedDictionary writeWithAccessor:v9 completion:0];
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -156,14 +156,14 @@ void __68__FCFileCoordinatedAppConfigurationManager_depositAppConfiguration___bl
   v12 = __Block_byref_object_copy__3;
   v13 = __Block_byref_object_dispose__3;
   v14 = 0;
-  v3 = [(FCFileCoordinatedAppConfigurationManager *)self lock];
+  lock = [(FCFileCoordinatedAppConfigurationManager *)self lock];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __60__FCFileCoordinatedAppConfigurationManager_appConfiguration__block_invoke;
   v8[3] = &unk_1E7C37160;
   v8[4] = self;
   v8[5] = &v9;
-  [v3 performWithLockSync:v8];
+  [lock performWithLockSync:v8];
 
   v4 = v10[5];
   if (v4)
@@ -173,8 +173,8 @@ void __68__FCFileCoordinatedAppConfigurationManager_depositAppConfiguration___bl
 
   else
   {
-    v6 = [(FCFileCoordinatedAppConfigurationManager *)self storefrontID];
-    v5 = [FCNewsAppConfig defaultConfigurationForStoreFrontID:v6];
+    storefrontID = [(FCFileCoordinatedAppConfigurationManager *)self storefrontID];
+    v5 = [FCNewsAppConfig defaultConfigurationForStoreFrontID:storefrontID];
   }
 
   _Block_object_dispose(&v9, 8);
@@ -192,24 +192,24 @@ uint64_t __60__FCFileCoordinatedAppConfigurationManager_appConfiguration__block_
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)fetchAppConfigurationIfNeededWithCompletionQueue:(id)a3 completion:(id)a4
+- (void)fetchAppConfigurationIfNeededWithCompletionQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__3;
   v17 = __Block_byref_object_dispose__3;
   v18 = 0;
-  v8 = [(FCFileCoordinatedAppConfigurationManager *)self lock];
+  lock = [(FCFileCoordinatedAppConfigurationManager *)self lock];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __104__FCFileCoordinatedAppConfigurationManager_fetchAppConfigurationIfNeededWithCompletionQueue_completion___block_invoke;
   v12[3] = &unk_1E7C37160;
   v12[4] = self;
   v12[5] = &v13;
-  [v8 performWithLockSync:v12];
+  [lock performWithLockSync:v12];
 
   if (v14[5])
   {
@@ -217,14 +217,14 @@ uint64_t __60__FCFileCoordinatedAppConfigurationManager_appConfiguration__block_
     v9[1] = 3221225472;
     v9[2] = __104__FCFileCoordinatedAppConfigurationManager_fetchAppConfigurationIfNeededWithCompletionQueue_completion___block_invoke_2;
     v9[3] = &unk_1E7C37D28;
-    v10 = v7;
+    v10 = completionCopy;
     v11 = &v13;
-    dispatch_async(v6, v9);
+    dispatch_async(queueCopy, v9);
   }
 
   else
   {
-    [(FCFileCoordinatedAppConfigurationManager *)self refreshAppConfigurationIfNeededWithCompletionQueue:v6 refreshCompletion:v7];
+    [(FCFileCoordinatedAppConfigurationManager *)self refreshAppConfigurationIfNeededWithCompletionQueue:queueCopy refreshCompletion:completionCopy];
   }
 
   _Block_object_dispose(&v13, 8);
@@ -240,21 +240,21 @@ uint64_t __104__FCFileCoordinatedAppConfigurationManager_fetchAppConfigurationIf
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)refreshAppConfigurationIfNeededWithCompletionQueue:(id)a3 refreshCompletion:(id)a4
+- (void)refreshAppConfigurationIfNeededWithCompletionQueue:(id)queue refreshCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FCFileCoordinatedAppConfigurationManager *)self fileCoordinatedDictionary];
+  queueCopy = queue;
+  completionCopy = completion;
+  fileCoordinatedDictionary = [(FCFileCoordinatedAppConfigurationManager *)self fileCoordinatedDictionary];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __113__FCFileCoordinatedAppConfigurationManager_refreshAppConfigurationIfNeededWithCompletionQueue_refreshCompletion___block_invoke;
   v11[3] = &unk_1E7C37D50;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 readWithAccessor:v11];
+  v12 = queueCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = queueCopy;
+  [fileCoordinatedDictionary readWithAccessor:v11];
 }
 
 void __113__FCFileCoordinatedAppConfigurationManager_refreshAppConfigurationIfNeededWithCompletionQueue_refreshCompletion___block_invoke(uint64_t a1, void *a2)
@@ -297,11 +297,11 @@ void __113__FCFileCoordinatedAppConfigurationManager_refreshAppConfigurationIfNe
   (*(v1 + 16))(v1, v2, 0);
 }
 
-- (id)_dictionaryFromAppConfiguration:(id)a3
+- (id)_dictionaryFromAppConfiguration:(id)configuration
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  configurationCopy = configuration;
+  if (!configurationCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "appConfiguration"];
     *buf = 136315906;
@@ -315,16 +315,16 @@ void __113__FCFileCoordinatedAppConfigurationManager_refreshAppConfigurationIfNe
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v4 = [v3 internalConfiguration];
+  internalConfiguration = [configurationCopy internalConfiguration];
   v12[0] = @"c";
-  v5 = [v4 configDictionary];
-  v13[0] = v5;
+  configDictionary = [internalConfiguration configDictionary];
+  v13[0] = configDictionary;
   v12[1] = @"l";
-  v6 = [v4 languageConfigDictionary];
-  v13[1] = v6;
+  languageConfigDictionary = [internalConfiguration languageConfigDictionary];
+  v13[1] = languageConfigDictionary;
   v12[2] = @"s";
-  v7 = [v4 storefrontID];
-  v13[2] = v7;
+  storefrontID = [internalConfiguration storefrontID];
+  v13[2] = storefrontID;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -332,12 +332,12 @@ void __113__FCFileCoordinatedAppConfigurationManager_refreshAppConfigurationIfNe
   return v8;
 }
 
-- (id)_appConfigurationFromDictionary:(id)a3 forStorefrontID:(id)a4
+- (id)_appConfigurationFromDictionary:(id)dictionary forStorefrontID:(id)d
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dictionaryCopy = dictionary;
+  dCopy = d;
+  if (!dictionaryCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "dictionary"];
     *buf = 136315906;
@@ -350,13 +350,13 @@ void __113__FCFileCoordinatedAppConfigurationManager_refreshAppConfigurationIfNe
     v23 = v14;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v6)
+    if (dCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v6)
+  else if (dCopy)
   {
     goto LABEL_6;
   }
@@ -376,14 +376,14 @@ void __113__FCFileCoordinatedAppConfigurationManager_refreshAppConfigurationIfNe
   }
 
 LABEL_6:
-  v7 = [v5 objectForKeyedSubscript:@"c"];
-  v8 = [v5 objectForKeyedSubscript:@"l"];
-  v9 = [v5 objectForKeyedSubscript:@"s"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"c"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"l"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"s"];
   v10 = v9;
   v11 = 0;
   if (v7 && v8 && v9)
   {
-    if ([v9 isEqualToString:v6])
+    if ([v9 isEqualToString:dCopy])
     {
       v11 = [[FCNewsAppConfig alloc] initWithConfigDictionary:v7 storefrontID:v10 languageConfigDictionary:v8];
     }

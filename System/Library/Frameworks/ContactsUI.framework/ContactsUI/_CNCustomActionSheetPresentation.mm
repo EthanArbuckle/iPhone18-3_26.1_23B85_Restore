@@ -1,8 +1,8 @@
 @interface _CNCustomActionSheetPresentation
 - (CGRect)sourceRect;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (void)actionSheetPresentationControllerDidDismissActionSheet:(id)a3;
-- (void)prepareForPresentationOfController:(id)a3;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (void)actionSheetPresentationControllerDidDismissActionSheet:(id)sheet;
+- (void)prepareForPresentationOfController:(id)controller;
 @end
 
 @implementation _CNCustomActionSheetPresentation
@@ -20,18 +20,18 @@
   return result;
 }
 
-- (void)actionSheetPresentationControllerDidDismissActionSheet:(id)a3
+- (void)actionSheetPresentationControllerDidDismissActionSheet:(id)sheet
 {
-  v3 = [(_CNCustomActionSheetPresentation *)self dismissHandler];
-  v3[2]();
+  dismissHandler = [(_CNCustomActionSheetPresentation *)self dismissHandler];
+  dismissHandler[2]();
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
   v7 = MEMORY[0x1E69DD330];
-  v8 = a4;
-  v9 = a3;
-  v10 = [[v7 alloc] initWithPresentedViewController:v9 presentingViewController:v8];
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  v10 = [[v7 alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
   [v10 setActionSheetDelegate:self];
   [v10 _setShouldUseCompactPresentationControllerWhenPresentedInSheet:1];
@@ -41,20 +41,20 @@
 
   [(_CNCustomActionSheetPresentation *)self sourceRect];
   [v10 setSourceRect:?];
-  v13 = [(_CNCustomActionSheetPresentation *)self sourceView];
-  [v10 setSourceView:v13];
+  sourceView = [(_CNCustomActionSheetPresentation *)self sourceView];
+  [v10 setSourceView:sourceView];
 
   [v10 setPermittedArrowDirections:{-[_CNCustomActionSheetPresentation permittedArrowDirections](self, "permittedArrowDirections")}];
 
   return v10;
 }
 
-- (void)prepareForPresentationOfController:(id)a3
+- (void)prepareForPresentationOfController:(id)controller
 {
-  v4 = a3;
-  [v4 setModalPresentationStyle:4];
-  [v4 setTransitioningDelegate:self];
-  [(_CNCustomActionSheetPresentation *)self setViewController:v4];
+  controllerCopy = controller;
+  [controllerCopy setModalPresentationStyle:4];
+  [controllerCopy setTransitioningDelegate:self];
+  [(_CNCustomActionSheetPresentation *)self setViewController:controllerCopy];
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface SUItemContentRating
-+ (int64_t)ratingSystemFromString:(id)a3;
++ (int64_t)ratingSystemFromString:(id)string;
 - (BOOL)isRestricted;
-- (SUItemContentRating)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)valueForProperty:(id)a3;
+- (SUItemContentRating)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)valueForProperty:(id)property;
 - (void)dealloc;
 @end
 
 @implementation SUItemContentRating
 
-- (SUItemContentRating)initWithDictionary:(id)a3
+- (SUItemContentRating)initWithDictionary:(id)dictionary
 {
   v14.receiver = self;
   v14.super_class = SUItemContentRating;
   v4 = [(SUItemContentRating *)&v14 init];
   if (v4)
   {
-    v5 = [a3 copy];
+    v5 = [dictionary copy];
     v4->_dictionary = v5;
     v6 = [(NSDictionary *)v5 objectForKey:@"rank"];
     if (objc_opt_respondsToSelector())
@@ -75,24 +75,24 @@
   [(SUItemContentRating *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  *(v5 + 8) = [(NSDictionary *)self->_dictionary copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  *(v5 + 8) = [(NSDictionary *)self->_dictionary copyWithZone:zone];
   *(v5 + 16) = self->_rank;
-  *(v5 + 24) = [(NSString *)self->_ratingDescription copyWithZone:a3];
-  *(v5 + 32) = [(NSString *)self->_ratingLabel copyWithZone:a3];
+  *(v5 + 24) = [(NSString *)self->_ratingDescription copyWithZone:zone];
+  *(v5 + 32) = [(NSString *)self->_ratingLabel copyWithZone:zone];
   *(v5 + 40) = self->_ratingSystem;
-  *(v5 + 48) = [(SSItemArtworkImage *)self->_ratingSystemLogo copyWithZone:a3];
+  *(v5 + 48) = [(SSItemArtworkImage *)self->_ratingSystemLogo copyWithZone:zone];
   *(v5 + 56) = self->_shouldHideWhenRestricted;
   return v5;
 }
 
-+ (int64_t)ratingSystemFromString:(id)a3
++ (int64_t)ratingSystemFromString:(id)string
 {
   v4 = &qword_1E8166750;
   v5 = 36;
-  while ([*(v4 - 1) caseInsensitiveCompare:a3])
+  while ([*(v4 - 1) caseInsensitiveCompare:string])
   {
     v4 += 2;
     if (!--v5)
@@ -127,9 +127,9 @@
   return SSRestrictionsShouldRestrictExplicitContent();
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
-  v3 = [(NSDictionary *)self->_dictionary objectForKey:a3];
+  v3 = [(NSDictionary *)self->_dictionary objectForKey:property];
 
   return v3;
 }

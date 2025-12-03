@@ -19,7 +19,7 @@
 {
   v29[1] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69C6638];
-  v26.receiver = a1;
+  v26.receiver = self;
   v26.super_class = &OBJC_METACLASS___SBHScaleZoomSettings;
   v3 = objc_msgSendSuper2(&v26, sel_settingsControllerModule);
   v4 = [v2 submoduleWithModule:v3 childSettingsKeyPath:0];

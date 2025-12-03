@@ -1,5 +1,5 @@
 @interface MFLoadFailedProxyContentBannerView
-- (MFLoadFailedProxyContentBannerView)initWithFrame:(CGRect)a3 failureReason:(int64_t)a4;
+- (MFLoadFailedProxyContentBannerView)initWithFrame:(CGRect)frame failureReason:(int64_t)reason;
 - (MFLoadFailedProxyContentBannerViewDelegate)delegate;
 - (void)dismissAction;
 - (void)primaryAction;
@@ -7,28 +7,28 @@
 
 @implementation MFLoadFailedProxyContentBannerView
 
-- (MFLoadFailedProxyContentBannerView)initWithFrame:(CGRect)a3 failureReason:(int64_t)a4
+- (MFLoadFailedProxyContentBannerView)initWithFrame:(CGRect)frame failureReason:(int64_t)reason
 {
   v31[1] = *MEMORY[0x277D85DE8];
   v30.receiver = self;
   v30.super_class = MFLoadFailedProxyContentBannerView;
-  v5 = [(MFSuggestionBannerView *)&v30 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(MFSuggestionBannerView *)&v30 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     v6 = @"FAILED_TO_PROXY_REMOTE_CONTENT_NETWORK_INCOMPATIBLE";
     v7 = @"FAILED_TO_PROXY_REMOTE_CONTENT_OTHER";
-    if (a4)
+    if (reason)
     {
       v7 = 0;
     }
 
-    if (a4 != 1)
+    if (reason != 1)
     {
       v6 = v7;
     }
 
-    v8 = a4 == 2;
-    if (a4 == 2)
+    v8 = reason == 2;
+    if (reason == 2)
     {
       v9 = @"FAILED_TO_PROXY_REMOTE_CONTENT_VPN";
     }
@@ -38,8 +38,8 @@
       v9 = v6;
     }
 
-    v10 = [MEMORY[0x277CCA8D8] mainBundle];
-    v11 = [v10 localizedStringForKey:v9 value:&stru_2826D1AD8 table:@"Main"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v11 = [mainBundle localizedStringForKey:v9 value:&stru_2826D1AD8 table:@"Main"];
 
     v12 = objc_alloc_init(MEMORY[0x277D025D0]);
     [v12 setTitle:v11];
@@ -52,16 +52,16 @@
 
     else
     {
-      v14 = [MEMORY[0x277CCA8D8] mainBundle];
-      v15 = [v14 localizedStringForKey:@"LOAD_FAILED_PROXY_CONTENT" value:&stru_2826D1AD8 table:@"Main"];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      v15 = [mainBundle2 localizedStringForKey:@"LOAD_FAILED_PROXY_CONTENT" value:&stru_2826D1AD8 table:@"Main"];
       [v12 setActionTitle:v15];
 
       v13 = 0;
     }
 
     [v12 setAccessoryType:v13];
-    v16 = [MEMORY[0x277D75348] mailInteractiveColor];
-    v17 = [MFSuggestionBannerView bannerIconViewForSymbol:*MEMORY[0x277D259C8] tintColor:v16];
+    mailInteractiveColor = [MEMORY[0x277D75348] mailInteractiveColor];
+    v17 = [MFSuggestionBannerView bannerIconViewForSymbol:*MEMORY[0x277D259C8] tintColor:mailInteractiveColor];
     v31[0] = v17;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
     [v12 setImageSGViews:v18];
@@ -110,14 +110,14 @@ void __66__MFLoadFailedProxyContentBannerView_initWithFrame_failureReason___bloc
 
 - (void)primaryAction
 {
-  v3 = [(MFLoadFailedProxyContentBannerView *)self delegate];
-  [v3 loadFailedProxyContentBannerDidTriggerLoad:self];
+  delegate = [(MFLoadFailedProxyContentBannerView *)self delegate];
+  [delegate loadFailedProxyContentBannerDidTriggerLoad:self];
 }
 
 - (void)dismissAction
 {
-  v3 = [(MFLoadFailedProxyContentBannerView *)self delegate];
-  [v3 loadFailedProxyContentBannerWasDismissed:self];
+  delegate = [(MFLoadFailedProxyContentBannerView *)self delegate];
+  [delegate loadFailedProxyContentBannerWasDismissed:self];
 }
 
 - (MFLoadFailedProxyContentBannerViewDelegate)delegate

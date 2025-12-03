@@ -1,26 +1,26 @@
 @interface CUIKOverlayCalendar
 + (id)currentOverlayCalendarNoCaching;
 + (id)overlayCalendar;
-+ (id)overlayCalendarForCalendarIdentifier:(id)a3 timezone:(id)a4;
++ (id)overlayCalendarForCalendarIdentifier:(id)identifier timezone:(id)timezone;
 + (id)overlayCalendarID;
 + (void)invalidateOverlayCalendar;
 @end
 
 @implementation CUIKOverlayCalendar
 
-+ (id)overlayCalendarForCalendarIdentifier:(id)a3 timezone:(id)a4
++ (id)overlayCalendarForCalendarIdentifier:(id)identifier timezone:(id)timezone
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && [v5 length])
+  identifierCopy = identifier;
+  timezoneCopy = timezone;
+  if (identifierCopy && [identifierCopy length])
   {
-    v7 = [objc_alloc(MEMORY[0x1E695DEE8]) initWithCalendarIdentifier:v5];
+    v7 = [objc_alloc(MEMORY[0x1E695DEE8]) initWithCalendarIdentifier:identifierCopy];
     if (v7)
     {
-      v8 = [MEMORY[0x1E69AAE08] localeForCalendarID:v5];
+      v8 = [MEMORY[0x1E69AAE08] localeForCalendarID:identifierCopy];
       [v7 setLocale:v8];
 
-      [v7 setTimeZone:v6];
+      [v7 setTimeZone:timezoneCopy];
     }
   }
 
@@ -34,8 +34,8 @@
 
 + (id)overlayCalendarID
 {
-  v2 = [MEMORY[0x1E6992F80] shared];
-  v3 = [v2 stringForKey:*MEMORY[0x1E6992E98]];
+  mEMORY[0x1E6992F80] = [MEMORY[0x1E6992F80] shared];
+  v3 = [mEMORY[0x1E6992F80] stringForKey:*MEMORY[0x1E6992E98]];
 
   if (!v3)
   {
@@ -50,23 +50,23 @@
 
 + (id)currentOverlayCalendarNoCaching
 {
-  v2 = [objc_opt_class() overlayCalendarID];
-  v3 = [MEMORY[0x1E6992F28] activeTimeZone];
-  v4 = [CUIKOverlayCalendar overlayCalendarForCalendarIdentifier:v2 timezone:v3];
+  overlayCalendarID = [objc_opt_class() overlayCalendarID];
+  activeTimeZone = [MEMORY[0x1E6992F28] activeTimeZone];
+  v4 = [CUIKOverlayCalendar overlayCalendarForCalendarIdentifier:overlayCalendarID timezone:activeTimeZone];
 
   return v4;
 }
 
 + (void)invalidateOverlayCalendar
 {
-  obj = [a1 currentOverlayCalendarNoCaching];
+  obj = [self currentOverlayCalendarNoCaching];
   os_unfair_lock_lock(&_lock);
   if (_overlayCalendar | obj && ([_overlayCalendar isEqual:obj] & 1) == 0)
   {
     objc_storeStrong(&_overlayCalendar, obj);
     os_unfair_lock_unlock(&_lock);
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 postNotificationName:@"CUIKOverlayCalendarChangedNotification" object:a1];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"CUIKOverlayCalendarChangedNotification" object:self];
   }
 
   else
@@ -81,13 +81,13 @@
   if ((_initialized & 1) == 0)
   {
     _initialized = 1;
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:a1 selector:sel_invalidateOverlayCalendar name:*MEMORY[0x1E695D8F0] object:0];
-    [v3 addObserver:a1 selector:sel_invalidateOverlayCalendar name:@"com.apple.calendar.TimeZoneChanged" object:0];
-    [v3 addObserver:a1 selector:sel_invalidateOverlayCalendar name:*MEMORY[0x1E6992EA0] object:0];
-    v4 = [a1 currentOverlayCalendarNoCaching];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_invalidateOverlayCalendar name:*MEMORY[0x1E695D8F0] object:0];
+    [defaultCenter addObserver:self selector:sel_invalidateOverlayCalendar name:@"com.apple.calendar.TimeZoneChanged" object:0];
+    [defaultCenter addObserver:self selector:sel_invalidateOverlayCalendar name:*MEMORY[0x1E6992EA0] object:0];
+    currentOverlayCalendarNoCaching = [self currentOverlayCalendarNoCaching];
     v5 = _overlayCalendar;
-    _overlayCalendar = v4;
+    _overlayCalendar = currentOverlayCalendarNoCaching;
   }
 
   v6 = _overlayCalendar;

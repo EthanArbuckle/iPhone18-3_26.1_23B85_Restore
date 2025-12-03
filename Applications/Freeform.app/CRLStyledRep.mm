@@ -3,20 +3,20 @@
 - (BOOL)shouldShowSelectionHighlight;
 - (BOOL)shouldShowShadow;
 - (CGRect)clipRect;
-- (CGRect)p_clipRectInRootForTransform:(CGAffineTransform *)a3 includeShadow:(BOOL)a4;
-- (CGRect)p_rectWithEffectsAppliedToRect:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4 includeShadow:(BOOL)a5;
-- (CGRect)rectWithEffectsAppliedToRect:(CGRect)a3;
+- (CGRect)p_clipRectInRootForTransform:(CGAffineTransform *)transform includeShadow:(BOOL)shadow;
+- (CGRect)p_rectWithEffectsAppliedToRect:(CGRect)rect additionalTransform:(CGAffineTransform *)transform includeShadow:(BOOL)shadow;
+- (CGRect)rectWithEffectsAppliedToRect:(CGRect)rect;
 - (NSString)description;
 - (double)opacity;
-- (id)cursorAtPoint:(CGPoint)a3 forKnob:(id)a4 withCursorPlatformObject:(id)a5;
+- (id)cursorAtPoint:(CGPoint)point forKnob:(id)knob withCursorPlatformObject:(id)object;
 - (id)shadow;
-- (void)drawInContext:(CGContext *)a3;
-- (void)drawInContextWithoutEffects:(CGContext *)a3 withContent:(BOOL)a4 strokeDrawOptions:(unint64_t)a5 withOpacity:(BOOL)a6 forAlphaOnly:(BOOL)a7 drawChildren:(BOOL)a8 keepingChildrenPassingTest:(id)a9;
-- (void)drawShadowInContext:(CGContext *)a3 withChildren:(BOOL)a4 withDrawableOpacity:(BOOL)a5;
+- (void)drawInContext:(CGContext *)context;
+- (void)drawInContextWithoutEffects:(CGContext *)effects withContent:(BOOL)content strokeDrawOptions:(unint64_t)options withOpacity:(BOOL)opacity forAlphaOnly:(BOOL)only drawChildren:(BOOL)children keepingChildrenPassingTest:(id)test;
+- (void)drawShadowInContext:(CGContext *)context withChildren:(BOOL)children withDrawableOpacity:(BOOL)opacity;
 - (void)dynamicShadowChangeDidBegin;
 - (void)dynamicShadowChangeDidEnd;
-- (void)dynamicShadowUpdateToValue:(id)a3;
-- (void)processChangedProperty:(unint64_t)a3;
+- (void)dynamicShadowUpdateToValue:(id)value;
+- (void)processChangedProperty:(unint64_t)property;
 - (void)setNeedsDisplay;
 @end
 
@@ -26,17 +26,17 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CRLCanvasRep *)self info];
+  info = [(CRLCanvasRep *)self info];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(CRLCanvasRep *)self info];
-  v9 = [(CRLCanvasRep *)self layout];
+  info2 = [(CRLCanvasRep *)self info];
+  layout = [(CRLCanvasRep *)self layout];
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  v12 = [(CRLCanvasRep *)self layout];
+  layout2 = [(CRLCanvasRep *)self layout];
   [(CRLCanvasRep *)self frameInUnscaledCanvas];
   v13 = NSStringFromCGRect(v17);
-  v14 = [NSString stringWithFormat:@"<%@ %p info=<%@ %p> layout=<%@ %p> frameInUnscaledCanvas=%@>", v4, self, v7, v8, v11, v12, v13];
+  v14 = [NSString stringWithFormat:@"<%@ %p info=<%@ %p> layout=<%@ %p> frameInUnscaledCanvas=%@>", v4, self, v7, info2, v11, layout2, v13];
 
   return v14;
 }
@@ -53,20 +53,20 @@
   return result;
 }
 
-- (CGRect)p_clipRectInRootForTransform:(CGAffineTransform *)a3 includeShadow:(BOOL)a4
+- (CGRect)p_clipRectInRootForTransform:(CGAffineTransform *)transform includeShadow:(BOOL)shadow
 {
-  v4 = a4;
+  shadowCopy = shadow;
   [(CRLStyledRep *)self clipRectWithoutEffects];
-  v7 = *&a3->c;
-  *&v13.a = *&a3->a;
+  v7 = *&transform->c;
+  *&v13.a = *&transform->a;
   *&v13.c = v7;
-  *&v13.tx = *&a3->tx;
+  *&v13.tx = *&transform->tx;
   v15 = CGRectApplyAffineTransform(v14, &v13);
   v8 = *&CGAffineTransformIdentity.c;
   *&v13.a = *&CGAffineTransformIdentity.a;
   *&v13.c = v8;
   *&v13.tx = *&CGAffineTransformIdentity.tx;
-  [(CRLStyledRep *)self p_rectWithEffectsAppliedToRect:&v13 additionalTransform:v4 includeShadow:v15.origin.x, v15.origin.y, v15.size.width, v15.size.height];
+  [(CRLStyledRep *)self p_rectWithEffectsAppliedToRect:&v13 additionalTransform:shadowCopy includeShadow:v15.origin.x, v15.origin.y, v15.size.width, v15.size.height];
   result.size.height = v12;
   result.size.width = v11;
   result.origin.y = v10;
@@ -76,24 +76,24 @@
 
 - (double)opacity
 {
-  v2 = [(CRLStyledRep *)self styledLayout];
-  [v2 opacity];
+  styledLayout = [(CRLStyledRep *)self styledLayout];
+  [styledLayout opacity];
   v4 = v3;
 
   return v4;
 }
 
-- (CGRect)rectWithEffectsAppliedToRect:(CGRect)a3
+- (CGRect)rectWithEffectsAppliedToRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(CRLCanvasRep *)self layout];
-  v9 = v8;
-  if (v8)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  layout = [(CRLCanvasRep *)self layout];
+  v9 = layout;
+  if (layout)
   {
-    [v8 transformInRoot];
+    [layout transformInRoot];
   }
 
   else
@@ -119,27 +119,27 @@
   return result;
 }
 
-- (CGRect)p_rectWithEffectsAppliedToRect:(CGRect)a3 additionalTransform:(CGAffineTransform *)a4 includeShadow:(BOOL)a5
+- (CGRect)p_rectWithEffectsAppliedToRect:(CGRect)rect additionalTransform:(CGAffineTransform *)transform includeShadow:(BOOL)shadow
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a5)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (shadow)
   {
-    v11 = [(CRLCanvasRep *)self info];
+    info = [(CRLCanvasRep *)self info];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(CRLStyledRep *)self shadow];
-      v14 = v13;
-      if (v13 && [v13 isEnabled])
+      shadow = [(CRLStyledRep *)self shadow];
+      v14 = shadow;
+      if (shadow && [shadow isEnabled])
       {
-        v15 = *&a4->c;
-        v24[0] = *&a4->a;
+        v15 = *&transform->c;
+        v24[0] = *&transform->a;
         v24[1] = v15;
-        v24[2] = *&a4->tx;
+        v24[2] = *&transform->tx;
         [v14 shadowBoundsForRect:v24 additionalTransform:{x, y, width, height}];
         x = v16;
         y = v17;
@@ -164,24 +164,24 @@
 {
   if (self->mIsUpdatingShadow)
   {
-    v2 = self->mDynamicShadow;
+    shadow = self->mDynamicShadow;
   }
 
   else
   {
-    v3 = [(CRLStyledRep *)self styledInfo];
-    v2 = [v3 shadow];
+    styledInfo = [(CRLStyledRep *)self styledInfo];
+    shadow = [styledInfo shadow];
   }
 
-  return v2;
+  return shadow;
 }
 
 - (BOOL)shouldShowShadow
 {
-  v3 = [(CRLStyledRep *)self styledLayout];
-  v4 = [v3 isInvisible];
+  styledLayout = [(CRLStyledRep *)self styledLayout];
+  isInvisible = [styledLayout isInvisible];
 
-  if (v4)
+  if (isInvisible)
   {
     return 0;
   }
@@ -191,15 +191,15 @@
   return [(CRLCanvasRep *)&v6 shouldShowShadow];
 }
 
-- (void)drawShadowInContext:(CGContext *)a3 withChildren:(BOOL)a4 withDrawableOpacity:(BOOL)a5
+- (void)drawShadowInContext:(CGContext *)context withChildren:(BOOL)children withDrawableOpacity:(BOOL)opacity
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = [(CRLStyledRep *)self shadow];
-  v10 = v9;
-  if (v9)
+  opacityCopy = opacity;
+  childrenCopy = children;
+  shadow = [(CRLStyledRep *)self shadow];
+  v10 = shadow;
+  if (shadow)
   {
-    if ([v9 isEnabled])
+    if ([shadow isEnabled])
     {
       if ([(CRLStyledRep *)self shouldShowShadow])
       {
@@ -208,14 +208,14 @@
         y = v13;
         width = v15;
         height = v17;
-        v19 = [(CRLCanvasRep *)self newShadowImageWithSize:0 unflipped:v6 withChildren:v15, v17];
+        v19 = [(CRLCanvasRep *)self newShadowImageWithSize:0 unflipped:childrenCopy withChildren:v15, v17];
         if (v19)
         {
           v20 = v19;
-          CGContextSaveGState(a3);
+          CGContextSaveGState(context);
           [v10 opacity];
           v22 = v21;
-          if (v5)
+          if (opacityCopy)
           {
             [(CRLStyledRep *)self opacity];
             v22 = v22 * v23;
@@ -223,7 +223,7 @@
 
           if (v22 < 1.0)
           {
-            CGContextSetAlpha(a3, v22);
+            CGContextSetAlpha(context, v22);
           }
 
           if ([v10 isDropShadow])
@@ -231,11 +231,11 @@
             [v10 offsetDelta];
             v25 = v24;
             v27 = v26;
-            v28 = [(CRLStyledRep *)self styledLayout];
-            v29 = v28;
-            if (v28)
+            styledLayout = [(CRLStyledRep *)self styledLayout];
+            v29 = styledLayout;
+            if (styledLayout)
             {
-              [v28 transformInRoot];
+              [styledLayout transformInRoot];
             }
 
             else
@@ -262,20 +262,20 @@
           {
             if ([v10 isContactShadow])
             {
-              v30 = [(CRLStyledRep *)self styledLayout];
-              [v30 alignmentFrameInRoot];
+              styledLayout2 = [(CRLStyledRep *)self styledLayout];
+              [styledLayout2 alignmentFrameInRoot];
               v32 = v31;
 
-              v33 = [(CRLStyledRep *)self styledLayout];
-              [v33 alignmentFrameInRoot];
+              styledLayout3 = [(CRLStyledRep *)self styledLayout];
+              [styledLayout3 alignmentFrameInRoot];
               v35 = v34;
               v37 = v36;
 
-              v38 = [(CRLCanvasRep *)self layout];
-              v39 = v38;
-              if (v38)
+              layout = [(CRLCanvasRep *)self layout];
+              v39 = layout;
+              if (layout)
               {
-                [v38 transformInRoot];
+                [layout transformInRoot];
               }
 
               else
@@ -284,13 +284,13 @@
               }
 
               CGAffineTransformInvert(&transform, &v60);
-              CGContextConcatCTM(a3, &transform);
+              CGContextConcatCTM(context, &transform);
 
-              CGContextTranslateCTM(a3, v35, v37);
+              CGContextTranslateCTM(context, v35, v37);
               [v10 offset];
-              CGContextTranslateCTM(a3, 0.0, v32 + v56);
-              CGContextTranslateCTM(a3, 0.0, v32);
-              CGContextScaleCTM(a3, 1.0, -1.0);
+              CGContextTranslateCTM(context, 0.0, v32 + v56);
+              CGContextTranslateCTM(context, 0.0, v32);
+              CGContextScaleCTM(context, 1.0, -1.0);
               goto LABEL_25;
             }
 
@@ -301,34 +301,34 @@ LABEL_25:
               v64.origin.y = y;
               v64.size.width = width;
               v64.size.height = height;
-              CGContextDrawImage(a3, v64, v20);
+              CGContextDrawImage(context, v64, v20);
               CGImageRelease(v20);
-              CGContextRestoreGState(a3);
+              CGContextRestoreGState(context);
               goto LABEL_26;
             }
 
-            v40 = [(CRLCanvasRep *)self layout];
-            v41 = [v40 geometry];
-            [v41 frame];
+            layout2 = [(CRLCanvasRep *)self layout];
+            geometry = [layout2 geometry];
+            [geometry frame];
             v43 = v42;
             v45 = v44;
 
-            v46 = [(CRLCanvasRep *)self layout];
-            v47 = [v46 parent];
+            layout3 = [(CRLCanvasRep *)self layout];
+            parent = [layout3 parent];
 
-            if (v47)
+            if (parent)
             {
-              v48 = [(CRLCanvasRep *)self layout];
-              [v48 frameInRoot];
+              layout4 = [(CRLCanvasRep *)self layout];
+              [layout4 frameInRoot];
               v43 = v49;
               v45 = v50;
             }
 
-            v51 = [(CRLCanvasRep *)self layout];
-            v52 = v51;
-            if (v51)
+            layout5 = [(CRLCanvasRep *)self layout];
+            v52 = layout5;
+            if (layout5)
             {
-              [v51 transformInRoot];
+              [layout5 transformInRoot];
             }
 
             else
@@ -337,13 +337,13 @@ LABEL_25:
             }
 
             CGAffineTransformInvert(&transform, &v60);
-            CGContextConcatCTM(a3, &transform);
+            CGContextConcatCTM(context, &transform);
 
-            CGContextTranslateCTM(a3, v43, v45);
+            CGContextTranslateCTM(context, v43, v45);
             [v10 offsetDelta];
             v58 = v57;
             [v10 offsetDelta];
-            CGContextTranslateCTM(a3, v58, v59);
+            CGContextTranslateCTM(context, v58, v59);
             v63.origin.x = x;
             v63.origin.y = y;
             v63.size.width = width;
@@ -351,7 +351,7 @@ LABEL_25:
           }
 
           sub_100139C04(0, 1, &transform, v63.origin.x, v63.origin.y, v63.size.width, v63.size.height);
-          CGContextConcatCTM(a3, &transform);
+          CGContextConcatCTM(context, &transform);
           goto LABEL_25;
         }
       }
@@ -361,21 +361,21 @@ LABEL_25:
 LABEL_26:
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v5 = [(CRLStyledRep *)self styledLayout];
-  v6 = [v5 isInvisible];
+  styledLayout = [(CRLStyledRep *)self styledLayout];
+  isInvisible = [styledLayout isInvisible];
 
-  if ((v6 & 1) == 0)
+  if ((isInvisible & 1) == 0)
   {
-    [(CRLStyledRep *)self drawShadowInContext:a3 withChildren:1 withDrawableOpacity:1];
-    [(CRLStyledRep *)self drawInContextWithoutEffects:a3 withContent:1 strokeDrawOptions:7 withOpacity:1 forAlphaOnly:0 drawChildren:0 keepingChildrenPassingTest:0];
+    [(CRLStyledRep *)self drawShadowInContext:context withChildren:1 withDrawableOpacity:1];
+    [(CRLStyledRep *)self drawInContextWithoutEffects:context withContent:1 strokeDrawOptions:7 withOpacity:1 forAlphaOnly:0 drawChildren:0 keepingChildrenPassingTest:0];
   }
 }
 
-- (void)drawInContextWithoutEffects:(CGContext *)a3 withContent:(BOOL)a4 strokeDrawOptions:(unint64_t)a5 withOpacity:(BOOL)a6 forAlphaOnly:(BOOL)a7 drawChildren:(BOOL)a8 keepingChildrenPassingTest:(id)a9
+- (void)drawInContextWithoutEffects:(CGContext *)effects withContent:(BOOL)content strokeDrawOptions:(unint64_t)options withOpacity:(BOOL)opacity forAlphaOnly:(BOOL)only drawChildren:(BOOL)children keepingChildrenPassingTest:(id)test
 {
-  v9 = a9;
+  testCopy = test;
   v10 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {
@@ -441,12 +441,12 @@ LABEL_26:
   [(CRLCanvasRep *)self invalidateShadowRenderable];
 }
 
-- (void)processChangedProperty:(unint64_t)a3
+- (void)processChangedProperty:(unint64_t)property
 {
   v7.receiver = self;
   v7.super_class = CRLStyledRep;
   [(CRLCanvasRep *)&v7 processChangedProperty:?];
-  if (a3 == 18)
+  if (property == 18)
   {
     v6.receiver = self;
     v6.super_class = CRLStyledRep;
@@ -455,7 +455,7 @@ LABEL_26:
 
   else
   {
-    if (a3 != 17)
+    if (property != 17)
     {
       return;
     }
@@ -466,16 +466,16 @@ LABEL_26:
     }
   }
 
-  v5 = [(CRLCanvasRep *)self canvas];
-  [v5 canvasInvalidatedForRep:self];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas canvasInvalidatedForRep:self];
 }
 
 - (BOOL)shouldHideSelectionHighlightDueToRectangularPath
 {
-  v3 = [(CRLCanvasRep *)self layout];
-  v4 = [v3 i_wrapPath];
+  layout = [(CRLCanvasRep *)self layout];
+  i_wrapPath = [layout i_wrapPath];
 
-  if (!v4)
+  if (!i_wrapPath)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -504,7 +504,7 @@ LABEL_26:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:253 isFatal:0 description:"invalid nil value for '%{public}s'", "wrapPath"];
   }
 
-  if ([v4 isRectangular])
+  if ([i_wrapPath isRectangular])
   {
     v8 = 1;
   }
@@ -512,8 +512,8 @@ LABEL_26:
   else
   {
     v9 = objc_opt_class();
-    v10 = [(CRLStyledRep *)self pathSourceForSelectionHighlightBehavior];
-    v11 = sub_100014370(v9, v10);
+    pathSourceForSelectionHighlightBehavior = [(CRLStyledRep *)self pathSourceForSelectionHighlightBehavior];
+    v11 = sub_100014370(v9, pathSourceForSelectionHighlightBehavior);
 
     v8 = 0;
     if (v11)
@@ -545,20 +545,20 @@ LABEL_26:
 
 - (void)dynamicShadowChangeDidBegin
 {
-  v3 = [(CRLStyledRep *)self styledInfo];
-  v6 = [v3 shadow];
+  styledInfo = [(CRLStyledRep *)self styledInfo];
+  shadow = [styledInfo shadow];
 
-  v4 = [v6 copy];
+  v4 = [shadow copy];
   mDynamicShadow = self->mDynamicShadow;
   self->mDynamicShadow = v4;
 
   self->mIsUpdatingShadow = 1;
 }
 
-- (void)dynamicShadowUpdateToValue:(id)a3
+- (void)dynamicShadowUpdateToValue:(id)value
 {
-  v4 = a3;
-  if (!v4)
+  valueCopy = value;
+  if (!valueCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -587,7 +587,7 @@ LABEL_26:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:292 isFatal:0 description:"invalid nil value for '%{public}s'", "shadow"];
   }
 
-  v8 = [v4 copy];
+  v8 = [valueCopy copy];
   mDynamicShadow = self->mDynamicShadow;
   self->mDynamicShadow = v8;
 
@@ -601,37 +601,37 @@ LABEL_26:
   self->mDynamicShadow = 0;
 }
 
-- (id)cursorAtPoint:(CGPoint)a3 forKnob:(id)a4 withCursorPlatformObject:(id)a5
+- (id)cursorAtPoint:(CGPoint)point forKnob:(id)knob withCursorPlatformObject:(id)object
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 tag] < 0xC || objc_msgSend(v9, "tag") > 0x10)
+  y = point.y;
+  x = point.x;
+  knobCopy = knob;
+  objectCopy = object;
+  if ([knobCopy tag] < 0xC || objc_msgSend(knobCopy, "tag") > 0x10)
   {
     v17.receiver = self;
     v17.super_class = CRLStyledRep;
-    v15 = [(CRLCanvasRep *)&v17 cursorAtPoint:v9 forKnob:v10 withCursorPlatformObject:x, y];
+    v15 = [(CRLCanvasRep *)&v17 cursorAtPoint:knobCopy forKnob:objectCopy withCursorPlatformObject:x, y];
   }
 
   else
   {
     v11 = objc_opt_class();
-    v12 = [(CRLStyledRep *)self pathSourceForSelectionHighlightBehavior];
-    v13 = sub_100014370(v11, v12);
+    pathSourceForSelectionHighlightBehavior = [(CRLStyledRep *)self pathSourceForSelectionHighlightBehavior];
+    v13 = sub_100014370(v11, pathSourceForSelectionHighlightBehavior);
 
     if (v13 && ![v13 type])
     {
-      v14 = [v9 resizeCursor];
+      resizeCursor = [knobCopy resizeCursor];
     }
 
     else
     {
-      [v9 cursorActiveScaledRect];
-      v14 = [CRLCursor moveCursorWithActiveScaledRect:?];
+      [knobCopy cursorActiveScaledRect];
+      resizeCursor = [CRLCursor moveCursorWithActiveScaledRect:?];
     }
 
-    v15 = v14;
+    v15 = resizeCursor;
   }
 
   return v15;

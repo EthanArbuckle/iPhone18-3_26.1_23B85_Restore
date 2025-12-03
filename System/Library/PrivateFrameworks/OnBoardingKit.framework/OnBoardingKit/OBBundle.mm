@@ -1,26 +1,26 @@
 @interface OBBundle
-+ (OBBundle)bundleWithIdentifier:(id)a3;
-+ (id)bundleAtPath:(id)a3;
-+ (id)bundleAtPath:(id)a3 placeholderIdentifier:(id)a4;
-+ (id)nameFromIdentifier:(id)a3;
-- (OBBundle)initWithBundle:(id)a3 isLinkBundle:(BOOL)a4 isReplacementBundle:(BOOL)a5;
-- (OBBundle)initWithBundle:(id)a3 placeholderIdentifier:(id)a4;
++ (OBBundle)bundleWithIdentifier:(id)identifier;
++ (id)bundleAtPath:(id)path;
++ (id)bundleAtPath:(id)path placeholderIdentifier:(id)identifier;
++ (id)nameFromIdentifier:(id)identifier;
+- (OBBundle)initWithBundle:(id)bundle isLinkBundle:(BOOL)linkBundle isReplacementBundle:(BOOL)replacementBundle;
+- (OBBundle)initWithBundle:(id)bundle placeholderIdentifier:(id)identifier;
 @end
 
 @implementation OBBundle
 
-+ (OBBundle)bundleWithIdentifier:(id)a3
++ (OBBundle)bundleWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[OBBundleManager sharedManager];
-  v5 = [v4 bundleWithIdentifier:v3];
+  v5 = [v4 bundleWithIdentifier:identifierCopy];
 
   return v5;
 }
 
-+ (id)bundleAtPath:(id)a3
++ (id)bundleAtPath:(id)path
 {
-  v3 = [MEMORY[0x1E696AAE8] bundleWithPath:a3];
+  v3 = [MEMORY[0x1E696AAE8] bundleWithPath:path];
   if (v3)
   {
     v4 = [[OBBundle alloc] initWithBundle:v3];
@@ -34,13 +34,13 @@
   return v4;
 }
 
-+ (id)bundleAtPath:(id)a3 placeholderIdentifier:(id)a4
++ (id)bundleAtPath:(id)path placeholderIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [MEMORY[0x1E696AAE8] bundleWithPath:a3];
+  identifierCopy = identifier;
+  v6 = [MEMORY[0x1E696AAE8] bundleWithPath:path];
   if (v6)
   {
-    v7 = [[OBBundle alloc] initWithBundle:v6 placeholderIdentifier:v5];
+    v7 = [[OBBundle alloc] initWithBundle:v6 placeholderIdentifier:identifierCopy];
   }
 
   else
@@ -51,55 +51,55 @@
   return v7;
 }
 
-- (OBBundle)initWithBundle:(id)a3 isLinkBundle:(BOOL)a4 isReplacementBundle:(BOOL)a5
+- (OBBundle)initWithBundle:(id)bundle isLinkBundle:(BOOL)linkBundle isReplacementBundle:(BOOL)replacementBundle
 {
-  v5 = a5;
-  v9 = a3;
+  replacementBundleCopy = replacementBundle;
+  bundleCopy = bundle;
   v24.receiver = self;
   v24.super_class = OBBundle;
   v10 = [(OBBundle *)&v24 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_bundle, a3);
-    v12 = [v9 bundleIdentifier];
+    objc_storeStrong(&v10->_bundle, bundle);
+    bundleIdentifier = [bundleCopy bundleIdentifier];
     identifier = v11->_identifier;
-    v11->_identifier = v12;
+    v11->_identifier = bundleIdentifier;
 
-    v14 = [v9 objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    v14 = [bundleCopy objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     bundleVersion = v11->_bundleVersion;
     v11->_bundleVersion = v14;
 
     v11->_isPlaceholder = 0;
-    v11->_isLinkBundle = a4;
+    v11->_isLinkBundle = linkBundle;
     v16 = [OBBundle nameFromIdentifier:v11->_identifier];
     name = v11->_name;
     v11->_name = v16;
 
-    v11->_isReplacementBundle = v5;
-    if (v5)
+    v11->_isReplacementBundle = replacementBundleCopy;
+    if (replacementBundleCopy)
     {
-      v18 = [(OBBundle *)v11 privacyFlow];
-      v19 = [v18 replacementPrecondition];
+      privacyFlow = [(OBBundle *)v11 privacyFlow];
+      replacementPrecondition = [privacyFlow replacementPrecondition];
       replacementPreconditionCache = v11->_replacementPreconditionCache;
-      v11->_replacementPreconditionCache = v19;
+      v11->_replacementPreconditionCache = replacementPrecondition;
 
-      v21 = [v18 replaceeIdentifierSets];
+      replaceeIdentifierSets = [privacyFlow replaceeIdentifierSets];
       replaceeIdentifierSetsCache = v11->_replaceeIdentifierSetsCache;
-      v11->_replaceeIdentifierSetsCache = v21;
+      v11->_replaceeIdentifierSetsCache = replaceeIdentifierSets;
     }
   }
 
   return v11;
 }
 
-- (OBBundle)initWithBundle:(id)a3 placeholderIdentifier:(id)a4
+- (OBBundle)initWithBundle:(id)bundle placeholderIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(OBBundle *)self initWithBundle:a3];
+  identifierCopy = identifier;
+  v7 = [(OBBundle *)self initWithBundle:bundle];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     identifier = v7->_identifier;
     v7->_identifier = v8;
 
@@ -109,12 +109,12 @@
   return v7;
 }
 
-+ (id)nameFromIdentifier:(id)a3
++ (id)nameFromIdentifier:(id)identifier
 {
-  v3 = [a3 componentsSeparatedByString:@"com.apple.onboarding."];
-  v4 = [v3 lastObject];
+  v3 = [identifier componentsSeparatedByString:@"com.apple.onboarding."];
+  lastObject = [v3 lastObject];
 
-  return v4;
+  return lastObject;
 }
 
 @end

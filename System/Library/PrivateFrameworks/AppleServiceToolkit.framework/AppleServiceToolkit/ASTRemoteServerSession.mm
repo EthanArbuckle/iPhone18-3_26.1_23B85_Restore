@@ -1,35 +1,35 @@
 @interface ASTRemoteServerSession
-+ (ASTRemoteServerSession)sessionWithContext:(id)a3;
-+ (ASTRemoteServerSession)sessionWithIdentity:(id)a3;
-+ (ASTRemoteServerSession)sessionWithSerialNumber:(id)a3;
-+ (BOOL)auditToken:(id *)a3 hasEntitlement:(id)a4;
-+ (void)downloadAsset:(id)a3 serverURL:(id)a4 endpoint:(id)a5 fileHandle:(id)a6 completionHandler:(id)a7;
-+ (void)prepareDeviceWithIdentities:(id)a3 completionHandler:(id)a4;
-- (ASTRemoteServerSession)initWithContext:(id)a3;
-- (ASTRemoteServerSession)initWithIdentity:(id)a3;
-- (ASTRemoteServerSession)initWithSerialNumber:(id)a3;
++ (ASTRemoteServerSession)sessionWithContext:(id)context;
++ (ASTRemoteServerSession)sessionWithIdentity:(id)identity;
++ (ASTRemoteServerSession)sessionWithSerialNumber:(id)number;
++ (BOOL)auditToken:(id *)token hasEntitlement:(id)entitlement;
++ (void)downloadAsset:(id)asset serverURL:(id)l endpoint:(id)endpoint fileHandle:(id)handle completionHandler:(id)handler;
++ (void)prepareDeviceWithIdentities:(id)identities completionHandler:(id)handler;
+- (ASTRemoteServerSession)initWithContext:(id)context;
+- (ASTRemoteServerSession)initWithIdentity:(id)identity;
+- (ASTRemoteServerSession)initWithSerialNumber:(id)number;
 - (BOOL)_authInfoIfNecessary;
 - (BOOL)_profile;
-- (BOOL)_shouldAllowCellularForSealedSealablePayload:(id)a3;
-- (BOOL)_shouldAllowCellularForSealedTestResult:(id)a3;
-- (BOOL)_validateCommand:(int64_t)a3 clientStatus:(int64_t)a4;
-- (BOOL)sendAuthInfoResult:(id)a3 error:(id *)a4;
-- (BOOL)sendProfileResult:(id)a3 error:(id *)a4;
-- (BOOL)sendTestResult:(id)a3 error:(id *)a4;
+- (BOOL)_shouldAllowCellularForSealedSealablePayload:(id)payload;
+- (BOOL)_shouldAllowCellularForSealedTestResult:(id)result;
+- (BOOL)_validateCommand:(int64_t)command clientStatus:(int64_t)status;
+- (BOOL)sendAuthInfoResult:(id)result error:(id *)error;
+- (BOOL)sendProfileResult:(id)result error:(id *)error;
+- (BOOL)sendTestResult:(id)result error:(id *)error;
 - (id)_abort;
 - (id)_clientAbort;
-- (id)_continueWithLastRequest:(id)a3;
+- (id)_continueWithLastRequest:(id)request;
 - (id)_idle;
 - (id)_retryRequest;
-- (id)_sendPropertiesWithData:(id)a3;
-- (id)_sendRequest:(id)a3;
-- (id)_sendTestResults:(id)a3;
-- (id)_showInstructionalPromptWithData:(id)a3;
-- (id)_signFile:(id)a3 error:(id *)a4;
-- (id)_signPayload:(id)a3 error:(id *)a4;
-- (id)_startNewTest:(id)a3 data:(id)a4;
-- (id)_updateSessionSettingsWithData:(id)a3;
-- (id)_updateUIWithData:(id)a3;
+- (id)_sendPropertiesWithData:(id)data;
+- (id)_sendRequest:(id)request;
+- (id)_sendTestResults:(id)results;
+- (id)_showInstructionalPromptWithData:(id)data;
+- (id)_signFile:(id)file error:(id *)error;
+- (id)_signPayload:(id)payload error:(id *)error;
+- (id)_startNewTest:(id)test data:(id)data;
+- (id)_updateSessionSettingsWithData:(id)data;
+- (id)_updateUIWithData:(id)data;
 - (void)_abortRunningProcedures;
 - (void)_archive;
 - (void)_backoff;
@@ -37,84 +37,84 @@
 - (void)_cancelRunningTests;
 - (void)_cancelSendingTestResults;
 - (void)_protocolError;
-- (void)_rebootWithData:(id)a3;
+- (void)_rebootWithData:(id)data;
 - (void)_setup;
-- (void)_shutdownWithData:(id)a3;
+- (void)_shutdownWithData:(id)data;
 - (void)_startClientStatusLoop;
 - (void)_teardown;
-- (void)_updateProgress:(id)a3;
+- (void)_updateProgress:(id)progress;
 - (void)archive;
-- (void)connectionManager:(id)a3 pausedSendingResultForTest:(id)a4 reason:(int64_t)a5;
-- (void)connectionManager:(id)a3 resumedSendingResultForTest:(id)a4;
-- (void)connectionManagerRequestPaused:(id)a3;
-- (void)connectionManagerRequestResumed:(id)a3;
+- (void)connectionManager:(id)manager pausedSendingResultForTest:(id)test reason:(int64_t)reason;
+- (void)connectionManager:(id)manager resumedSendingResultForTest:(id)test;
+- (void)connectionManagerRequestPaused:(id)paused;
+- (void)connectionManagerRequestResumed:(id)resumed;
 - (void)dealloc;
 - (void)end;
-- (void)idleWithCompletion:(id)a3;
+- (void)idleWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)requestSuiteStart:(id)a3 completionHandler:(id)a4;
-- (void)requestSuiteSummary:(id)a3 completionHandler:(id)a4;
-- (void)requestSuitesAvailableWithCompletionHandler:(id)a3;
-- (void)setSessionEndReason:(int64_t)a3;
+- (void)requestSuiteStart:(id)start completionHandler:(id)handler;
+- (void)requestSuiteSummary:(id)summary completionHandler:(id)handler;
+- (void)requestSuitesAvailableWithCompletionHandler:(id)handler;
+- (void)setSessionEndReason:(int64_t)reason;
 - (void)start;
-- (void)updateAction:(id)a3;
+- (void)updateAction:(id)action;
 @end
 
 @implementation ASTRemoteServerSession
 
-- (ASTRemoteServerSession)initWithSerialNumber:(id)a3
+- (ASTRemoteServerSession)initWithSerialNumber:(id)number
 {
-  v4 = [ASTIdentity identityWithSerialNumber:a3];
+  v4 = [ASTIdentity identityWithSerialNumber:number];
   v5 = [(ASTRemoteServerSession *)self initWithIdentity:v4];
 
   return v5;
 }
 
-+ (ASTRemoteServerSession)sessionWithSerialNumber:(id)a3
++ (ASTRemoteServerSession)sessionWithSerialNumber:(id)number
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSerialNumber:v4];
+  numberCopy = number;
+  v5 = [[self alloc] initWithSerialNumber:numberCopy];
 
   return v5;
 }
 
-- (ASTRemoteServerSession)initWithIdentity:(id)a3
+- (ASTRemoteServerSession)initWithIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [[ASTContext alloc] initWithIdentity:v4];
+  identityCopy = identity;
+  v5 = [[ASTContext alloc] initWithIdentity:identityCopy];
 
   v6 = [(ASTRemoteServerSession *)self initWithContext:v5];
   return v6;
 }
 
-+ (ASTRemoteServerSession)sessionWithIdentity:(id)a3
++ (ASTRemoteServerSession)sessionWithIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentity:v4];
+  identityCopy = identity;
+  v5 = [[self alloc] initWithIdentity:identityCopy];
 
   return v5;
 }
 
-- (ASTRemoteServerSession)initWithContext:(id)a3
+- (ASTRemoteServerSession)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v28.receiver = self;
   v28.super_class = ASTRemoteServerSession;
   v6 = [(ASTRemoteServerSession *)&v28 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->super._context, a3);
+    objc_storeStrong(&v6->super._context, context);
     v8 = +[ASTEnvironment currentEnvironment];
-    v9 = [v8 SOCKSProxyServer];
-    v10 = [v8 SOCKSProxyPort];
-    v11 = [[ASTMaterializedConnectionManager alloc] initWithSOCKSProxyServer:v9 port:v10];
+    sOCKSProxyServer = [v8 SOCKSProxyServer];
+    sOCKSProxyPort = [v8 SOCKSProxyPort];
+    v11 = [[ASTMaterializedConnectionManager alloc] initWithSOCKSProxyServer:sOCKSProxyServer port:sOCKSProxyPort];
     connectionManager = v7->_connectionManager;
     v7->_connectionManager = v11;
 
     [(ASTConnectionManager *)v7->_connectionManager setDelegate:v7];
-    v13 = [(ASTContext *)v7->super._context identity];
-    [(ASTConnectionManager *)v7->_connectionManager setIdentity:v13];
+    identity = [(ASTContext *)v7->super._context identity];
+    [(ASTConnectionManager *)v7->_connectionManager setIdentity:identity];
 
     v7->super._sessionEndReason = 0;
     v14 = dispatch_queue_create("com.apple.AppleServiceToolkit.delegateQueue", 0);
@@ -171,32 +171,32 @@ id __42__ASTRemoteServerSession_initWithContext___block_invoke_2(uint64_t a1, vo
   return v7;
 }
 
-+ (ASTRemoteServerSession)sessionWithContext:(id)a3
++ (ASTRemoteServerSession)sessionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithContext:v4];
+  contextCopy = context;
+  v5 = [[self alloc] initWithContext:contextCopy];
 
   return v5;
 }
 
-+ (void)prepareDeviceWithIdentities:(id)a3 completionHandler:(id)a4
++ (void)prepareDeviceWithIdentities:(id)identities completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  identitiesCopy = identities;
   v10 = +[ASTEnvironment currentEnvironment];
-  v7 = [v10 SOCKSProxyServer];
-  v8 = [v10 SOCKSProxyPort];
-  v9 = [[ASTMaterializedConnectionManager alloc] initWithSOCKSProxyServer:v7 port:v8];
-  [(ASTMaterializedConnectionManager *)v9 postPrepareDeviceWithIdentities:v6 allowsCellularAccess:1 completionHandler:v5];
+  sOCKSProxyServer = [v10 SOCKSProxyServer];
+  sOCKSProxyPort = [v10 SOCKSProxyPort];
+  v9 = [[ASTMaterializedConnectionManager alloc] initWithSOCKSProxyServer:sOCKSProxyServer port:sOCKSProxyPort];
+  [(ASTMaterializedConnectionManager *)v9 postPrepareDeviceWithIdentities:identitiesCopy allowsCellularAccess:1 completionHandler:handlerCopy];
 }
 
-- (void)setSessionEndReason:(int64_t)a3
+- (void)setSessionEndReason:(int64_t)reason
 {
   obj = self;
   objc_sync_enter(obj);
   if (!obj->super._sessionEndReason)
   {
-    obj->super._sessionEndReason = a3;
+    obj->super._sessionEndReason = reason;
   }
 
   objc_sync_exit(obj);
@@ -254,11 +254,11 @@ void __115__ASTRemoteServerSession_sessionStatusForIdentities_ticketNumber_timeo
 
 - (void)start
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(ASTRemoteServerSession *)v2 phase])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(ASTRemoteServerSession *)selfCopy phase])
   {
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
 
     v3 = ASTLogHandleForCategory(0);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -269,14 +269,14 @@ void __115__ASTRemoteServerSession_sessionStatusForIdentities_ticketNumber_timeo
     return;
   }
 
-  [(ASTRemoteServerSession *)v2 setPhase:1];
-  objc_sync_exit(v2);
+  [(ASTRemoteServerSession *)selfCopy setPhase:1];
+  objc_sync_exit(selfCopy);
 
   if (+[ASTRemoteServerSession currentProcessHasEntitlement])
   {
-    [(ASTRemoteServerSession *)v2 _setup];
-    objc_initWeak(&location, v2);
-    v4 = [(ASTRemoteServerSession *)v2 clientStatusQueue];
+    [(ASTRemoteServerSession *)selfCopy _setup];
+    objc_initWeak(&location, selfCopy);
+    clientStatusQueue = [(ASTRemoteServerSession *)selfCopy clientStatusQueue];
     v5 = v13;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
@@ -285,7 +285,7 @@ void __115__ASTRemoteServerSession_sessionStatusForIdentities_ticketNumber_timeo
     objc_copyWeak(&v14, &location);
     v6 = v13;
 LABEL_11:
-    dispatch_async(v4, v6);
+    dispatch_async(clientStatusQueue, v6);
 
     objc_destroyWeak(v5 + 4);
     objc_destroyWeak(&location);
@@ -298,18 +298,18 @@ LABEL_11:
     [ASTRemoteServerSession start];
   }
 
-  v8 = v2;
+  v8 = selfCopy;
   objc_sync_enter(v8);
   [(ASTRemoteServerSession *)v8 setPhase:0];
   objc_sync_exit(v8);
 
-  v9 = [(ASTSession *)v8 delegate];
+  delegate = [(ASTSession *)v8 delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
     objc_initWeak(&location, v8);
-    v4 = [(ASTRemoteServerSession *)v8 delegateQueue];
+    clientStatusQueue = [(ASTRemoteServerSession *)v8 delegateQueue];
     v5 = block;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -409,30 +409,30 @@ void __31__ASTRemoteServerSession_start__block_invoke_33(uint64_t a1)
   [ASTAnalytics sendAnalyticsWithEvent:0 error:v1];
 }
 
-- (void)idleWithCompletion:(id)a3
+- (void)idleWithCompletion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ASTRemoteServerSession *)self sessionId];
+    sessionId = [(ASTRemoteServerSession *)self sessionId];
     v12 = 138412290;
-    v13 = v6;
+    v13 = sessionId;
     _os_log_impl(&dword_240F3C000, v5, OS_LOG_TYPE_DEFAULT, "[IDLE] (%@)", &v12, 0xCu);
   }
 
-  v7 = [v4 copy];
+  v7 = [completionCopy copy];
   clientAbortCompletion = self->_clientAbortCompletion;
   self->_clientAbortCompletion = v7;
 
   [(ASTRemoteServerSession *)self setShouldAbort:1];
-  v9 = [(ASTRemoteServerSession *)self backoffTimer];
+  backoffTimer = [(ASTRemoteServerSession *)self backoffTimer];
 
-  if (v9)
+  if (backoffTimer)
   {
-    v10 = [(ASTRemoteServerSession *)self backoffTimer];
-    dispatch_semaphore_signal(v10);
+    backoffTimer2 = [(ASTRemoteServerSession *)self backoffTimer];
+    dispatch_semaphore_signal(backoffTimer2);
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -444,9 +444,9 @@ void __31__ASTRemoteServerSession_start__block_invoke_33(uint64_t a1)
   v3 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ASTRemoteServerSession *)self sessionId];
+    sessionId = [(ASTRemoteServerSession *)self sessionId];
     v6 = 138412290;
-    v7 = v4;
+    v7 = sessionId;
     _os_log_impl(&dword_240F3C000, v3, OS_LOG_TYPE_DEFAULT, "[END] (%@)", &v6, 0xCu);
   }
 
@@ -460,25 +460,25 @@ void __31__ASTRemoteServerSession_start__block_invoke_33(uint64_t a1)
   v3 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ASTRemoteServerSession *)self sessionId];
+    sessionId = [(ASTRemoteServerSession *)self sessionId];
     *buf = 138412290;
-    v10 = v4;
+    v10 = sessionId;
     _os_log_impl(&dword_240F3C000, v3, OS_LOG_TYPE_DEFAULT, "[INVALIDATE] (%@)", buf, 0xCu);
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
-  [(ASTRemoteServerSession *)v5 setPhase:3];
-  objc_sync_exit(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(ASTRemoteServerSession *)selfCopy setPhase:3];
+  objc_sync_exit(selfCopy);
 
-  objc_initWeak(buf, v5);
+  objc_initWeak(buf, selfCopy);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__ASTRemoteServerSession_invalidate__block_invoke;
   v7[3] = &unk_278CBD6F0;
   objc_copyWeak(&v8, buf);
-  [(ASTRemoteServerSession *)v5 setSessionTeardownCompletion:v7];
-  [(ASTRemoteServerSession *)v5 _endAndUnenrollIfNecessary:0];
+  [(ASTRemoteServerSession *)selfCopy setSessionTeardownCompletion:v7];
+  [(ASTRemoteServerSession *)selfCopy _endAndUnenrollIfNecessary:0];
   objc_destroyWeak(&v8);
   objc_destroyWeak(buf);
   v6 = *MEMORY[0x277D85DE8];
@@ -515,19 +515,19 @@ void __36__ASTRemoteServerSession_invalidate__block_invoke_2(uint64_t a1)
 
 - (void)archive
 {
-  v3 = [(ASTRemoteServerSession *)self sessionId];
+  sessionId = [(ASTRemoteServerSession *)self sessionId];
 
-  if (v3)
+  if (sessionId)
   {
-    v4 = [(ASTRemoteServerSession *)self connectionManager];
-    v5 = [(ASTRemoteServerSession *)self sessionId];
-    v6 = [(ASTRemoteServerSession *)self payloadSigner];
+    connectionManager = [(ASTRemoteServerSession *)self connectionManager];
+    sessionId2 = [(ASTRemoteServerSession *)self sessionId];
+    payloadSigner = [(ASTRemoteServerSession *)self payloadSigner];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __33__ASTRemoteServerSession_archive__block_invoke;
     v8[3] = &unk_278CBD590;
     v8[4] = self;
-    [v4 requestSessionArchiveWithSessionID:v5 withPayloadSigner:v6 allowsCellularAccess:1 completionHandler:v8];
+    [connectionManager requestSessionArchiveWithSessionID:sessionId2 withPayloadSigner:payloadSigner allowsCellularAccess:1 completionHandler:v8];
   }
 
   else
@@ -556,48 +556,48 @@ void __33__ASTRemoteServerSession_archive__block_invoke(uint64_t a1, void *a2)
 - (void)_startClientStatusLoop
 {
   v63 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  [(ASTRemoteServerSession *)v2 setPhase:2];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(ASTRemoteServerSession *)selfCopy setPhase:2];
+  objc_sync_exit(selfCopy);
 
-  objc_initWeak(&location, v2);
-  v3 = [(ASTSession *)v2 delegate];
+  objc_initWeak(&location, selfCopy);
+  delegate = [(ASTSession *)selfCopy delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(ASTRemoteServerSession *)v2 delegateQueue];
+    delegateQueue = [(ASTRemoteServerSession *)selfCopy delegateQueue];
     block = MEMORY[0x277D85DD0];
     v54 = 3221225472;
     v55 = __48__ASTRemoteServerSession__startClientStatusLoop__block_invoke;
     v56 = &unk_278CBD6F0;
     objc_copyWeak(&v57, &location);
-    dispatch_async(v5, &block);
+    dispatch_async(delegateQueue, &block);
 
     objc_destroyWeak(&v57);
   }
 
   v6 = objc_alloc_init(ASTRequest);
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [(ASTSession *)v2 context];
-  v9 = [v8 clientStatus];
+  date = [MEMORY[0x277CBEAA8] date];
+  context = [(ASTSession *)selfCopy context];
+  clientStatus = [context clientStatus];
 
-  if ((v9 - 13) < 2)
+  if ((clientStatus - 13) < 2)
   {
-    v10 = [(ASTSession *)v2 context];
-    v11 = [v10 controlCommand];
-    v12 = [v11 requestData];
-    [(ASTRequest *)v6 setData:v12];
+    context2 = [(ASTSession *)selfCopy context];
+    controlCommand = [context2 controlCommand];
+    requestData = [controlCommand requestData];
+    [(ASTRequest *)v6 setData:requestData];
 
 LABEL_7:
-    v14 = [(ASTSession *)v2 context];
-    -[ASTRequest setClientStatus:](v6, "setClientStatus:", [v14 clientStatus]);
+    context3 = [(ASTSession *)selfCopy context];
+    -[ASTRequest setClientStatus:](v6, "setClientStatus:", [context3 clientStatus]);
 
     goto LABEL_8;
   }
 
-  if (v9)
+  if (clientStatus)
   {
     goto LABEL_7;
   }
@@ -606,137 +606,137 @@ LABEL_7:
 LABEL_8:
   *&v13 = 138412290;
   v52 = v13;
-  while ([(ASTRemoteServerSession *)v2 shouldContinueRequestLoop:v52])
+  while ([(ASTRemoteServerSession *)selfCopy shouldContinueRequestLoop:v52])
   {
     v15 = objc_autoreleasePoolPush();
-    if ([(ASTRemoteServerSession *)v2 shouldAbort])
+    if ([(ASTRemoteServerSession *)selfCopy shouldAbort])
     {
-      [(ASTRemoteServerSession *)v2 setShouldAbort:0];
-      v16 = [(ASTRemoteServerSession *)v2 _clientAbort];
+      [(ASTRemoteServerSession *)selfCopy setShouldAbort:0];
+      _clientAbort = [(ASTRemoteServerSession *)selfCopy _clientAbort];
 
-      v6 = v16;
+      v6 = _clientAbort;
     }
 
-    v17 = [(ASTRequest *)v6 clientStatus];
-    v18 = [(ASTSession *)v2 context];
-    [v18 setClientStatus:v17];
+    clientStatus2 = [(ASTRequest *)v6 clientStatus];
+    context4 = [(ASTSession *)selfCopy context];
+    [context4 setClientStatus:clientStatus2];
 
-    v19 = [(ASTRemoteServerSession *)v2 _sendRequest:v6];
+    v19 = [(ASTRemoteServerSession *)selfCopy _sendRequest:v6];
     v20 = v19;
     if (!v19)
     {
-      v26 = [(ASTRemoteServerSession *)v2 _retryRequest];
+      _retryRequest = [(ASTRemoteServerSession *)selfCopy _retryRequest];
       goto LABEL_20;
     }
 
-    v21 = [v19 progress];
-    [(ASTRemoteServerSession *)v2 _updateProgress:v21];
+    progress = [v19 progress];
+    [(ASTRemoteServerSession *)selfCopy _updateProgress:progress];
 
-    v22 = [v20 command];
-    if (![(ASTRemoteServerSession *)v2 _validateCommand:v22 clientStatus:[(ASTRequest *)v6 clientStatus]])
+    command = [v20 command];
+    if (![(ASTRemoteServerSession *)selfCopy _validateCommand:command clientStatus:[(ASTRequest *)v6 clientStatus]])
     {
-      [(ASTRemoteServerSession *)v2 _protocolError];
-      v26 = [(ASTRemoteServerSession *)v2 _retryRequest];
+      [(ASTRemoteServerSession *)selfCopy _protocolError];
+      _retryRequest = [(ASTRemoteServerSession *)selfCopy _retryRequest];
 LABEL_20:
-      v27 = v6;
-      v6 = v26;
+      context7 = v6;
+      v6 = _retryRequest;
 LABEL_21:
 
       goto LABEL_22;
     }
 
-    v23 = [v20 command];
-    v24 = [(ASTSession *)v2 context];
-    [v24 setCommand:v23];
+    command2 = [v20 command];
+    context5 = [(ASTSession *)selfCopy context];
+    [context5 setCommand:command2];
 
-    if (v22 != 7)
+    if (command != 7)
     {
-      [(ASTRemoteServerSession *)v2 setBackoffCounter:0];
+      [(ASTRemoteServerSession *)selfCopy setBackoffCounter:0];
     }
 
-    [(ASTRemoteServerSession *)v2 setRetryCounter:0];
-    switch(v22)
+    [(ASTRemoteServerSession *)selfCopy setRetryCounter:0];
+    switch(command)
     {
       case 1:
-        v25 = [(ASTRemoteServerSession *)v2 _idle];
+        _idle = [(ASTRemoteServerSession *)selfCopy _idle];
         goto LABEL_38;
       case 2:
-        v30 = [v20 data];
-        v31 = [(ASTRemoteServerSession *)v2 _updateUIWithData:v30];
+        data = [v20 data];
+        v31 = [(ASTRemoteServerSession *)selfCopy _updateUIWithData:data];
         goto LABEL_35;
       case 3:
-        v30 = [v20 testId];
-        v34 = [v20 data];
-        v37 = [(ASTRemoteServerSession *)v2 _startNewTest:v30 data:v34];
+        data = [v20 testId];
+        data2 = [v20 data];
+        v37 = [(ASTRemoteServerSession *)selfCopy _startNewTest:data data:data2];
         goto LABEL_30;
       case 4:
-        v30 = [v20 testId];
-        v31 = [(ASTRemoteServerSession *)v2 _sendTestResults:v30];
+        data = [v20 testId];
+        v31 = [(ASTRemoteServerSession *)selfCopy _sendTestResults:data];
         goto LABEL_35;
       case 5:
-        v30 = [v20 data];
-        v31 = [(ASTRemoteServerSession *)v2 _sendPropertiesWithData:v30];
+        data = [v20 data];
+        v31 = [(ASTRemoteServerSession *)selfCopy _sendPropertiesWithData:data];
         goto LABEL_35;
       case 6:
-        v30 = [v20 data];
-        v31 = [(ASTRemoteServerSession *)v2 _updateSessionSettingsWithData:v30];
+        data = [v20 data];
+        v31 = [(ASTRemoteServerSession *)selfCopy _updateSessionSettingsWithData:data];
         goto LABEL_35;
       case 7:
-        v25 = [(ASTRemoteServerSession *)v2 _continueWithLastRequest:v6];
+        _idle = [(ASTRemoteServerSession *)selfCopy _continueWithLastRequest:v6];
         goto LABEL_38;
       case 8:
-        v25 = [(ASTRemoteServerSession *)v2 _abort];
+        _idle = [(ASTRemoteServerSession *)selfCopy _abort];
 LABEL_38:
-        v37 = v25;
+        v37 = _idle;
         goto LABEL_39;
       case 9:
-        [(ASTRemoteServerSession *)v2 _archive];
+        [(ASTRemoteServerSession *)selfCopy _archive];
         v29 = 1;
         goto LABEL_43;
       case 10:
         v32 = ASTLogHandleForCategory(0);
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
-          v33 = [(ASTRemoteServerSession *)v2 sessionId];
+          sessionId = [(ASTRemoteServerSession *)selfCopy sessionId];
           *buf = v52;
-          v62 = v33;
+          v62 = sessionId;
           _os_log_impl(&dword_240F3C000, v32, OS_LOG_TYPE_DEFAULT, "[CONTROL] (%@)", buf, 0xCu);
         }
 
-        v30 = [(ASTSession *)v2 context];
-        v34 = [(ASTRequest *)v30 controlCommand];
-        v35 = [v20 data];
-        v36 = [(ASTRemoteServerSession *)v2 delegateQueue];
-        v37 = [(ASTRequest *)v34 requestWithData:v35 session:v2 queue:v36];
+        data = [(ASTSession *)selfCopy context];
+        data2 = [(ASTRequest *)data controlCommand];
+        data3 = [v20 data];
+        delegateQueue2 = [(ASTRemoteServerSession *)selfCopy delegateQueue];
+        v37 = [(ASTRequest *)data2 requestWithData:data3 session:selfCopy queue:delegateQueue2];
 
-        v6 = v35;
+        v6 = data3;
 LABEL_30:
 
-        v6 = v34;
+        v6 = data2;
         goto LABEL_36;
       case 11:
-        v28 = [v20 data];
-        [(ASTRemoteServerSession *)v2 _rebootWithData:v28];
+        data4 = [v20 data];
+        [(ASTRemoteServerSession *)selfCopy _rebootWithData:data4];
         v29 = 2;
         goto LABEL_41;
       case 12:
-        v28 = [v20 data];
-        [(ASTRemoteServerSession *)v2 _shutdownWithData:v28];
+        data4 = [v20 data];
+        [(ASTRemoteServerSession *)selfCopy _shutdownWithData:data4];
         v29 = 3;
 LABEL_41:
 
 LABEL_43:
-        [(ASTRemoteServerSession *)v2 setSessionEndReason:v29];
-        [(ASTRemoteServerSession *)v2 setShouldContinueRequestLoop:0];
+        [(ASTRemoteServerSession *)selfCopy setSessionEndReason:v29];
+        [(ASTRemoteServerSession *)selfCopy setShouldContinueRequestLoop:0];
         break;
       case 13:
-        v30 = [v20 data];
-        v31 = [(ASTRemoteServerSession *)v2 _showInstructionalPromptWithData:v30];
+        data = [v20 data];
+        v31 = [(ASTRemoteServerSession *)selfCopy _showInstructionalPromptWithData:data];
 LABEL_35:
         v37 = v31;
 LABEL_36:
 
-        v6 = v30;
+        v6 = data;
 LABEL_39:
 
         v6 = v37;
@@ -747,14 +747,14 @@ LABEL_39:
 
     if ([(ASTRequest *)v6 clientStatus]!= 13 && [(ASTRequest *)v6 clientStatus]!= 14)
     {
-      v38 = [(ASTSession *)v2 context];
-      v39 = [v38 clientStatus] == 14;
+      context6 = [(ASTSession *)selfCopy context];
+      v39 = [context6 clientStatus] == 14;
 
       if (v39)
       {
-        v27 = [(ASTSession *)v2 context];
-        v40 = [v27 controlCommand];
-        [v40 reset];
+        context7 = [(ASTSession *)selfCopy context];
+        controlCommand2 = [context7 controlCommand];
+        [controlCommand2 reset];
 
         goto LABEL_21;
       }
@@ -765,29 +765,29 @@ LABEL_22:
     objc_autoreleasePoolPop(v15);
   }
 
-  if ([(ASTRemoteServerSession *)v2 shouldUnenroll])
+  if ([(ASTRemoteServerSession *)selfCopy shouldUnenroll])
   {
     v41 = ASTLogHandleForCategory(0);
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
-      v42 = [(ASTRemoteServerSession *)v2 sessionId];
+      sessionId2 = [(ASTRemoteServerSession *)selfCopy sessionId];
       *buf = v52;
-      v62 = v42;
+      v62 = sessionId2;
       _os_log_impl(&dword_240F3C000, v41, OS_LOG_TYPE_DEFAULT, "[UNENROLL] (%@)", buf, 0xCu);
     }
 
     v43 = +[ASTRequest request];
     [v43 setClientStatus:9];
-    [(ASTRemoteServerSession *)v2 setSessionEndReason:4];
-    v44 = [(ASTRemoteServerSession *)v2 payloadSigner];
-    [v43 sealWithPayloadSigner:v44 error:0];
+    [(ASTRemoteServerSession *)selfCopy setSessionEndReason:4];
+    payloadSigner = [(ASTRemoteServerSession *)selfCopy payloadSigner];
+    [v43 sealWithPayloadSigner:payloadSigner error:0];
 
-    v45 = [(ASTRemoteServerSession *)v2 _shouldAllowCellularForSealedSealablePayload:v43];
-    v46 = [(ASTRemoteServerSession *)v2 connectionManager];
-    v47 = [v46 postRequest:v43 allowsCellularAccess:v45];
+    v45 = [(ASTRemoteServerSession *)selfCopy _shouldAllowCellularForSealedSealablePayload:v43];
+    connectionManager = [(ASTRemoteServerSession *)selfCopy connectionManager];
+    v47 = [connectionManager postRequest:v43 allowsCellularAccess:v45];
 
-    v48 = [MEMORY[0x277CBEAA8] date];
-    [v48 timeIntervalSinceDate:v7];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [date2 timeIntervalSinceDate:date];
     v59 = @"sessionDuration";
     v49 = [MEMORY[0x277CCABB0] numberWithDouble:?];
     v60 = v49;
@@ -795,7 +795,7 @@ LABEL_22:
     [ASTAnalytics sendAnalyticsWithEvent:3 payloadDict:v50];
   }
 
-  [(ASTRemoteServerSession *)v2 _teardown];
+  [(ASTRemoteServerSession *)selfCopy _teardown];
 
   objc_destroyWeak(&location);
   v51 = *MEMORY[0x277D85DE8];
@@ -815,11 +815,11 @@ void __48__ASTRemoteServerSession__startClientStatusLoop__block_invoke(uint64_t 
   [(ASTRemoteServerSession *)self setShouldAbort:0];
   [(ASTRemoteServerSession *)self setRetryCounter:0];
   [(ASTRemoteServerSession *)self setBackoffCounter:0];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [(ASTRemoteServerSession *)self setRunningTests:v3];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(ASTRemoteServerSession *)self setRunningTests:dictionary];
 
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  [(ASTRemoteServerSession *)self setPendingTestResults:v4];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  [(ASTRemoteServerSession *)self setPendingTestResults:dictionary2];
 
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x277D85DD0];
@@ -873,28 +873,28 @@ void __32__ASTRemoteServerSession__setup__block_invoke_2(uint64_t a1)
     _os_log_impl(&dword_240F3C000, v3, OS_LOG_TYPE_DEFAULT, "[ASTRemoteServerSession] %s", &v10, 0xCu);
   }
 
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(ASTRemoteServerSession *)v4 phase];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  phase = [(ASTRemoteServerSession *)selfCopy phase];
+  objc_sync_exit(selfCopy);
 
-  if (v5 != 3)
+  if (phase != 3)
   {
-    [(ASTRemoteServerSession *)v4 _cancelControlExecution];
+    [(ASTRemoteServerSession *)selfCopy _cancelControlExecution];
   }
 
-  [(ASTRemoteServerSession *)v4 _cancelRunningTests];
-  v6 = v4;
+  [(ASTRemoteServerSession *)selfCopy _cancelRunningTests];
+  v6 = selfCopy;
   objc_sync_enter(v6);
   [(ASTRemoteServerSession *)v6 setPhase:0];
   objc_sync_exit(v6);
 
-  v7 = [(ASTRemoteServerSession *)v6 sessionTeardownCompletion];
+  sessionTeardownCompletion = [(ASTRemoteServerSession *)v6 sessionTeardownCompletion];
 
-  if (v7)
+  if (sessionTeardownCompletion)
   {
-    v8 = [(ASTRemoteServerSession *)v6 sessionTeardownCompletion];
-    v8[2]();
+    sessionTeardownCompletion2 = [(ASTRemoteServerSession *)v6 sessionTeardownCompletion];
+    sessionTeardownCompletion2[2]();
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -919,13 +919,13 @@ void __32__ASTRemoteServerSession__setup__block_invoke_2(uint64_t a1)
   else
   {
     v5 = dispatch_semaphore_create(0);
-    v6 = self;
-    objc_sync_enter(v6);
-    [(ASTRemoteServerSession *)v6 setPendingAuthInfoSemaphore:v5];
-    objc_sync_exit(v6);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(ASTRemoteServerSession *)selfCopy setPendingAuthInfoSemaphore:v5];
+    objc_sync_exit(selfCopy);
 
-    objc_initWeak(buf, v6);
-    v7 = [(ASTRemoteServerSession *)v6 delegateQueue];
+    objc_initWeak(buf, selfCopy);
+    delegateQueue = [(ASTRemoteServerSession *)selfCopy delegateQueue];
     v14 = MEMORY[0x277D85DD0];
     v15 = 3221225472;
     v16 = __46__ASTRemoteServerSession__authInfoIfNecessary__block_invoke;
@@ -933,10 +933,10 @@ void __32__ASTRemoteServerSession__setup__block_invoke_2(uint64_t a1)
     objc_copyWeak(&v19, buf);
     v3 = v5;
     v18 = v3;
-    dispatch_async(v7, &v14);
+    dispatch_async(delegateQueue, &v14);
 
     dispatch_semaphore_wait(v3, 0xFFFFFFFFFFFFFFFFLL);
-    v8 = v6;
+    v8 = selfCopy;
     objc_sync_enter(v8);
     v9 = [(ASTRemoteServerSession *)v8 pendingAuthInfoResult:v14];
     [(ASTRemoteServerSession *)v8 setPendingAuthInfoResult:0];
@@ -946,16 +946,16 @@ void __32__ASTRemoteServerSession__setup__block_invoke_2(uint64_t a1)
     if (v9)
     {
       v10 = [(ASTRemoteServerSession *)v8 _shouldAllowCellularForSealedSealablePayload:v9];
-      v11 = [(ASTRemoteServerSession *)v8 connectionManager];
-      v4 = [(ASTRemoteServerSession *)v11 postAuthInfo:v9 allowsCellularAccess:v10];
+      connectionManager = [(ASTRemoteServerSession *)v8 connectionManager];
+      v4 = [(ASTRemoteServerSession *)connectionManager postAuthInfo:v9 allowsCellularAccess:v10];
     }
 
     else
     {
-      v11 = v8;
-      objc_sync_enter(v11);
-      v4 = [(ASTRemoteServerSession *)v11 phase]== 1;
-      objc_sync_exit(v11);
+      connectionManager = v8;
+      objc_sync_enter(connectionManager);
+      v4 = [(ASTRemoteServerSession *)connectionManager phase]== 1;
+      objc_sync_exit(connectionManager);
     }
 
     objc_destroyWeak(&v19);
@@ -1021,39 +1021,39 @@ void __46__ASTRemoteServerSession__authInfoIfNecessary__block_invoke(uint64_t a1
     v20 = 0x3032000000;
     v21 = __Block_byref_object_copy__4;
     v22 = __Block_byref_object_dispose__4;
-    v5 = [(ASTSession *)self context];
-    v6 = [v5 identity];
-    v23 = [ASTProfileResult resultWithIdentity:v6];
+    context = [(ASTSession *)self context];
+    identity = [context identity];
+    v23 = [ASTProfileResult resultWithIdentity:identity];
 
     v7 = dispatch_semaphore_create(0);
-    v8 = self;
-    objc_sync_enter(v8);
-    [(ASTRemoteServerSession *)v8 setPendingProfileSemaphore:v7];
-    objc_sync_exit(v8);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(ASTRemoteServerSession *)selfCopy setPendingProfileSemaphore:v7];
+    objc_sync_exit(selfCopy);
 
-    objc_initWeak(&location, v8);
-    v9 = [(ASTRemoteServerSession *)v8 delegateQueue];
+    objc_initWeak(&location, selfCopy);
+    delegateQueue = [(ASTRemoteServerSession *)selfCopy delegateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __34__ASTRemoteServerSession__profile__block_invoke;
     block[3] = &unk_278CBD740;
     objc_copyWeak(&v17, &location);
     block[4] = &buf;
-    dispatch_async(v9, block);
+    dispatch_async(delegateQueue, block);
 
     dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
-    v10 = v8;
+    v10 = selfCopy;
     objc_sync_enter(v10);
-    v11 = [(ASTRemoteServerSession *)v10 pendingProfileResult];
+    pendingProfileResult = [(ASTRemoteServerSession *)v10 pendingProfileResult];
     [(ASTRemoteServerSession *)v10 setPendingProfileSemaphore:0];
     [(ASTRemoteServerSession *)v10 setPendingProfileResult:0];
     objc_sync_exit(v10);
 
-    if (v11)
+    if (pendingProfileResult)
     {
-      v12 = [(ASTRemoteServerSession *)v10 _shouldAllowCellularForSealedSealablePayload:v11];
-      v13 = [(ASTRemoteServerSession *)v10 connectionManager];
-      v4 = [v13 postProfile:v11 allowsCellularAccess:v12];
+      v12 = [(ASTRemoteServerSession *)v10 _shouldAllowCellularForSealedSealablePayload:pendingProfileResult];
+      connectionManager = [(ASTRemoteServerSession *)v10 connectionManager];
+      v4 = [connectionManager postProfile:pendingProfileResult allowsCellularAccess:v12];
     }
 
     else
@@ -1083,91 +1083,91 @@ void __34__ASTRemoteServerSession__profile__block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (id)_sendRequest:(id)a3
+- (id)_sendRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(ASTRemoteServerSession *)self runningTests];
-  objc_sync_enter(v5);
-  v6 = [(ASTRemoteServerSession *)self runningTests];
-  v7 = [v6 allKeys];
+  requestCopy = request;
+  runningTests = [(ASTRemoteServerSession *)self runningTests];
+  objc_sync_enter(runningTests);
+  runningTests2 = [(ASTRemoteServerSession *)self runningTests];
+  allKeys = [runningTests2 allKeys];
 
-  objc_sync_exit(v5);
-  v8 = [(ASTRemoteServerSession *)self pendingTestResults];
-  v9 = [v8 allKeys];
+  objc_sync_exit(runningTests);
+  pendingTestResults = [(ASTRemoteServerSession *)self pendingTestResults];
+  allKeys2 = [pendingTestResults allKeys];
 
-  if (v7 && ([v7 count] || objc_msgSend(v9, "count")))
+  if (allKeys && ([allKeys count] || objc_msgSend(allKeys2, "count")))
   {
-    v10 = [(ASTRemoteServerSession *)self runningTests];
-    v11 = [v10 allKeys];
-    v12 = [v11 firstObject];
+    runningTests3 = [(ASTRemoteServerSession *)self runningTests];
+    allKeys3 = [runningTests3 allKeys];
+    firstObject = [allKeys3 firstObject];
 
-    v13 = [(ASTRemoteServerSession *)self pendingTestResults];
-    v14 = [v13 allKeys];
-    v15 = [v14 firstObject];
+    pendingTestResults2 = [(ASTRemoteServerSession *)self pendingTestResults];
+    allKeys4 = [pendingTestResults2 allKeys];
+    firstObject2 = [allKeys4 firstObject];
 
-    if (v12)
+    if (firstObject)
     {
-      v16 = v12;
+      v16 = firstObject;
     }
 
     else
     {
-      v16 = v15;
+      v16 = firstObject2;
     }
 
     v17 = v16;
-    [v4 setCurrentTest:v17];
-    if (v12)
+    [requestCopy setCurrentTest:v17];
+    if (firstObject)
     {
-      v18 = [(ASTSession *)self delegate];
+      delegate = [(ASTSession *)self delegate];
       v19 = objc_opt_respondsToSelector();
 
       if (v19)
       {
-        v20 = [(ASTRemoteServerSession *)self delegateQueue];
+        delegateQueue = [(ASTRemoteServerSession *)self delegateQueue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __39__ASTRemoteServerSession__sendRequest___block_invoke;
         block[3] = &unk_278CBCF40;
         block[4] = self;
-        v37 = v12;
-        v38 = v4;
-        dispatch_sync(v20, block);
+        v37 = firstObject;
+        v38 = requestCopy;
+        dispatch_sync(delegateQueue, block);
       }
 
       if (+[ASTRequest isEstimatedTimeRemainingFeatureEnabled])
       {
-        v21 = [(ASTSession *)self delegate];
+        delegate2 = [(ASTSession *)self delegate];
         v22 = objc_opt_respondsToSelector();
 
         if (v22)
         {
-          v23 = [(ASTRemoteServerSession *)self delegateQueue];
+          delegateQueue2 = [(ASTRemoteServerSession *)self delegateQueue];
           v29 = MEMORY[0x277D85DD0];
           v30 = 3221225472;
           v31 = __39__ASTRemoteServerSession__sendRequest___block_invoke_2;
           v32 = &unk_278CBCF40;
-          v33 = self;
-          v34 = v12;
-          v35 = v4;
-          dispatch_sync(v23, &v29);
+          selfCopy = self;
+          v34 = firstObject;
+          v35 = requestCopy;
+          dispatch_sync(delegateQueue2, &v29);
         }
       }
     }
 
-    else if ([v4 clientStatus] == 4)
+    else if ([requestCopy clientStatus] == 4)
     {
-      [v4 setProgress:&unk_2852D60A8];
-      [v4 setEstimatedTimeRemaining:&unk_2852D60C0];
+      [requestCopy setProgress:&unk_2852D60A8];
+      [requestCopy setEstimatedTimeRemaining:&unk_2852D60C0];
     }
   }
 
   v24 = [(ASTRemoteServerSession *)self payloadSigner:v29];
-  [v4 sealWithPayloadSigner:v24 error:0];
+  [requestCopy sealWithPayloadSigner:v24 error:0];
 
-  v25 = [(ASTRemoteServerSession *)self _shouldAllowCellularForSealedSealablePayload:v4];
-  v26 = [(ASTRemoteServerSession *)self connectionManager];
-  v27 = [v26 postRequest:v4 allowsCellularAccess:v25];
+  v25 = [(ASTRemoteServerSession *)self _shouldAllowCellularForSealedSealablePayload:requestCopy];
+  connectionManager = [(ASTRemoteServerSession *)self connectionManager];
+  v27 = [connectionManager postRequest:requestCopy allowsCellularAccess:v25];
 
   return v27;
 }
@@ -1206,25 +1206,25 @@ void __39__ASTRemoteServerSession__sendRequest___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_updateProgress:(id)a3
+- (void)_updateProgress:(id)progress
 {
-  v4 = a3;
-  if (v4)
+  progressCopy = progress;
+  if (progressCopy)
   {
-    v5 = [(ASTSession *)self delegate];
+    delegate = [(ASTSession *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
       objc_initWeak(&location, self);
-      v7 = [(ASTRemoteServerSession *)self delegateQueue];
+      delegateQueue = [(ASTRemoteServerSession *)self delegateQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __42__ASTRemoteServerSession__updateProgress___block_invoke;
       block[3] = &unk_278CBD718;
       objc_copyWeak(&v10, &location);
-      v9 = v4;
-      dispatch_async(v7, block);
+      v9 = progressCopy;
+      dispatch_async(delegateQueue, block);
 
       objc_destroyWeak(&v10);
       objc_destroyWeak(&location);
@@ -1245,9 +1245,9 @@ void __42__ASTRemoteServerSession__updateProgress___block_invoke(uint64_t a1)
   v3 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ASTRemoteServerSession *)self sessionId];
+    sessionId = [(ASTRemoteServerSession *)self sessionId];
     v8 = 138412290;
-    v9 = v4;
+    v9 = sessionId;
     _os_log_impl(&dword_240F3C000, v3, OS_LOG_TYPE_DEFAULT, "[IDLE] (%@)", &v8, 0xCu);
   }
 
@@ -1259,28 +1259,28 @@ void __42__ASTRemoteServerSession__updateProgress___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)_updateUIWithData:(id)a3
+- (id)_updateUIWithData:(id)data
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ASTRemoteServerSession *)self sessionId];
+    sessionId = [(ASTRemoteServerSession *)self sessionId];
     *buf = 138412290;
-    v29 = v6;
+    v29 = sessionId;
     _os_log_impl(&dword_240F3C000, v5, OS_LOG_TYPE_DEFAULT, "[UPDATE UI] (%@)", buf, 0xCu);
   }
 
   v7 = +[ASTRequest request];
   [v7 setClientStatus:2];
-  v8 = [v4 objectForKeyedSubscript:@"action"];
+  v8 = [dataCopy objectForKeyedSubscript:@"action"];
   if ([v8 isEqualToString:@"TestSuiteStarting"])
   {
-    v9 = [(ASTSession *)self context];
-    [v9 setTestSuiteRunning:1];
+    context = [(ASTSession *)self context];
+    [context setTestSuiteRunning:1];
 
-    v10 = [(ASTSession *)self delegate];
+    delegate = [(ASTSession *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if ((v11 & 1) == 0)
@@ -1292,8 +1292,8 @@ void __42__ASTRemoteServerSession__updateProgress___block_invoke(uint64_t a1)
     v25[1] = 3221225472;
     v25[2] = __44__ASTRemoteServerSession__updateUIWithData___block_invoke;
     v25[3] = &unk_278CBD790;
-    v26 = v4;
-    v27 = self;
+    v26 = dataCopy;
+    selfCopy = self;
     [ASTLocalization prepareLocalizedStringsWithCompletionHandler:v25];
     v12 = v26;
     goto LABEL_8;
@@ -1306,7 +1306,7 @@ void __42__ASTRemoteServerSession__updateProgress___block_invoke(uint64_t a1)
     v23[2] = __44__ASTRemoteServerSession__updateUIWithData___block_invoke_3;
     v23[3] = &unk_278CBCF18;
     v23[4] = self;
-    v24 = v4;
+    v24 = dataCopy;
     [v7 setCompletion:v23];
     v12 = v24;
 LABEL_8:
@@ -1316,7 +1316,7 @@ LABEL_8:
 
   if ([v8 isEqualToString:@"TestSuiteImage"])
   {
-    v15 = [v4 objectForKeyedSubscript:@"imageName"];
+    v15 = [dataCopy objectForKeyedSubscript:@"imageName"];
     v16 = v15;
     if (v15)
     {
@@ -1337,9 +1337,9 @@ LABEL_8:
         [ASTRemoteServerSession _updateUIWithData:];
       }
 
-      v20 = [(ASTRemoteServerSession *)self _retryRequest];
+      _retryRequest = [(ASTRemoteServerSession *)self _retryRequest];
 
-      v7 = v20;
+      v7 = _retryRequest;
     }
   }
 
@@ -1351,9 +1351,9 @@ LABEL_8:
       [(ASTRemoteServerSession *)v8 _updateUIWithData:v17];
     }
 
-    v18 = [(ASTRemoteServerSession *)self _retryRequest];
+    _retryRequest2 = [(ASTRemoteServerSession *)self _retryRequest];
 
-    v7 = v18;
+    v7 = _retryRequest2;
   }
 
 LABEL_9:
@@ -1494,47 +1494,47 @@ void __44__ASTRemoteServerSession__updateUIWithData___block_invoke_7(uint64_t a1
   [v2 session:WeakRetained didUpdateTestSuiteImage:*(a1 + 32)];
 }
 
-- (id)_startNewTest:(id)a3 data:(id)a4
+- (id)_startNewTest:(id)test data:(id)data
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  testCopy = test;
+  dataCopy = data;
   v8 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(ASTRemoteServerSession *)self sessionId];
+    sessionId = [(ASTRemoteServerSession *)self sessionId];
     *buf = 138412290;
-    v31 = v9;
+    v31 = sessionId;
     _os_log_impl(&dword_240F3C000, v8, OS_LOG_TYPE_DEFAULT, "[START NEW TEST] (%@)", buf, 0xCu);
   }
 
   v10 = +[ASTRequest request];
   [v10 setClientStatus:4];
-  v11 = [(ASTSession *)self delegate];
+  delegate = [(ASTSession *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [ASTTestResult resultWithTestId:v6 parameters:v7];
+    v13 = [ASTTestResult resultWithTestId:testCopy parameters:dataCopy];
     v14 = dispatch_semaphore_create(0);
-    v15 = [(ASTRemoteServerSession *)self runningTests];
-    objc_sync_enter(v15);
-    v16 = [(ASTRemoteServerSession *)self runningTests];
-    [v16 setObject:v14 forKeyedSubscript:v6];
+    runningTests = [(ASTRemoteServerSession *)self runningTests];
+    objc_sync_enter(runningTests);
+    runningTests2 = [(ASTRemoteServerSession *)self runningTests];
+    [runningTests2 setObject:v14 forKeyedSubscript:testCopy];
 
-    objc_sync_exit(v15);
+    objc_sync_exit(runningTests);
     objc_initWeak(buf, self);
-    v17 = [(ASTRemoteServerSession *)self delegateQueue];
+    delegateQueue = [(ASTRemoteServerSession *)self delegateQueue];
     v22 = MEMORY[0x277D85DD0];
     v23 = 3221225472;
     v24 = __45__ASTRemoteServerSession__startNewTest_data___block_invoke;
     v25 = &unk_278CBD7E0;
     objc_copyWeak(&v29, buf);
-    v26 = v6;
-    v27 = v7;
+    v26 = testCopy;
+    v27 = dataCopy;
     v18 = v13;
     v28 = v18;
-    dispatch_async(v17, &v22);
+    dispatch_async(delegateQueue, &v22);
 
     v19 = dispatch_time(0, 5000000000);
     if (dispatch_semaphore_wait(v14, v19))
@@ -1558,21 +1558,21 @@ void __45__ASTRemoteServerSession__startNewTest_data___block_invoke(uint64_t a1)
   [v2 session:WeakRetained startTest:*(a1 + 32) parameters:*(a1 + 40) testResult:*(a1 + 48)];
 }
 
-- (id)_sendTestResults:(id)a3
+- (id)_sendTestResults:(id)results
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resultsCopy = results;
   v5 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ASTRemoteServerSession *)self sessionId];
+    sessionId = [(ASTRemoteServerSession *)self sessionId];
     *buf = 138412290;
-    v63 = v6;
+    v63 = sessionId;
     _os_log_impl(&dword_240F3C000, v5, OS_LOG_TYPE_DEFAULT, "[SEND TEST RESULTS] (%@)", buf, 0xCu);
   }
 
-  v7 = [(ASTRemoteServerSession *)self pendingTestResults];
-  v8 = [v7 objectForKeyedSubscript:v4];
+  pendingTestResults = [(ASTRemoteServerSession *)self pendingTestResults];
+  v8 = [pendingTestResults objectForKeyedSubscript:resultsCopy];
 
   v9 = +[ASTRequest request];
   v10 = v9;
@@ -1586,28 +1586,28 @@ void __45__ASTRemoteServerSession__startNewTest_data___block_invoke(uint64_t a1)
     v56[2] = __43__ASTRemoteServerSession__sendTestResults___block_invoke;
     v56[3] = &unk_278CBD808;
     v56[4] = self;
-    v47 = v4;
+    v47 = resultsCopy;
     v57 = v47;
     v12 = v11;
     v58 = v12;
     v49 = MEMORY[0x245CD5130](v56);
-    v13 = [v8 files];
-    if (v13 && (v14 = v13, [v8 files], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "count"), v15, v14, v16))
+    files = [v8 files];
+    if (files && (v14 = files, [v8 files], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "count"), v15, v14, v16))
     {
       v54 = 0u;
       v55 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v17 = [v50 files];
-      v51 = [v17 countByEnumeratingWithState:&v52 objects:v61 count:16];
+      files2 = [v50 files];
+      v51 = [files2 countByEnumeratingWithState:&v52 objects:v61 count:16];
       if (v51)
       {
         v41 = v10;
-        v42 = v4;
+        v42 = resultsCopy;
         v44 = *v53;
         v45 = v12;
         v18 = 1;
-        obj = v17;
+        obj = files2;
         do
         {
           for (i = 0; i != v51; ++i)
@@ -1619,16 +1619,16 @@ void __45__ASTRemoteServerSession__startNewTest_data___block_invoke(uint64_t a1)
 
             v20 = *(*(&v52 + 1) + 8 * i);
             dispatch_group_enter(v12);
-            v21 = [(ASTRemoteServerSession *)self connectionManager];
+            connectionManager = [(ASTRemoteServerSession *)self connectionManager];
             v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", v18];
             v23 = MEMORY[0x277CCACA8];
-            v24 = [v50 files];
-            v25 = [v23 stringWithFormat:@"%lu", objc_msgSend(v24, "count")];
+            files3 = [v50 files];
+            v25 = [v23 stringWithFormat:@"%lu", objc_msgSend(files3, "count")];
             v26 = v20;
             [v20 fileURL];
             v28 = v27 = self;
-            v29 = [v28 lastPathComponent];
-            [v21 postSealableFile:v26 fileSequence:v22 totalFiles:v25 testId:v47 dataId:v29 allowsCellularAccess:v48 completion:v49];
+            lastPathComponent = [v28 lastPathComponent];
+            [connectionManager postSealableFile:v26 fileSequence:v22 totalFiles:v25 testId:v47 dataId:lastPathComponent allowsCellularAccess:v48 completion:v49];
 
             self = v27;
             v12 = v45;
@@ -1636,21 +1636,21 @@ void __45__ASTRemoteServerSession__startNewTest_data___block_invoke(uint64_t a1)
             ++v18;
           }
 
-          v17 = obj;
+          files2 = obj;
           v51 = [obj countByEnumeratingWithState:&v52 objects:v61 count:16];
         }
 
         while (v51);
         v10 = v41;
-        v4 = v42;
+        resultsCopy = v42;
       }
     }
 
     else
     {
       dispatch_group_enter(v12);
-      v17 = [(ASTRemoteServerSession *)self connectionManager];
-      [v17 postTestResult:v50 allowsCellularAccess:v48 completion:v49];
+      files2 = [(ASTRemoteServerSession *)self connectionManager];
+      [files2 postTestResult:v50 allowsCellularAccess:v48 completion:v49];
     }
 
     v30 = dispatch_time(0, 5000000000);
@@ -1665,16 +1665,16 @@ void __45__ASTRemoteServerSession__startNewTest_data___block_invoke(uint64_t a1)
       v59[0] = @"testID";
       v46 = v12;
       v31 = MEMORY[0x277CCACA8];
-      v32 = [v50 testId];
-      v33 = [v31 stringWithFormat:@"%@", v32];
+      testId = [v50 testId];
+      v33 = [v31 stringWithFormat:@"%@", testId];
       v60[0] = v33;
       v59[1] = @"statusCode";
-      v34 = [v50 statusCode];
-      v60[1] = v34;
+      statusCode = [v50 statusCode];
+      v60[1] = statusCode;
       v59[2] = @"statusCodeStr";
       v35 = MEMORY[0x277CCACA8];
-      v36 = [v50 statusCode];
-      v37 = [v35 stringWithFormat:@"%@", v36];
+      statusCode2 = [v50 statusCode];
+      v37 = [v35 stringWithFormat:@"%@", statusCode2];
       v60[2] = v37;
       v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:v59 count:3];
       [ASTAnalytics sendAnalyticsWithEvent:4 payloadDict:v38];
@@ -1743,24 +1743,24 @@ void __43__ASTRemoteServerSession__sendTestResults___block_invoke_154(uint64_t a
   [v2 session:WeakRetained didFinishSendingResultForTest:*(a1 + 32)];
 }
 
-- (id)_continueWithLastRequest:(id)a3
+- (id)_continueWithLastRequest:(id)request
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ASTRemoteServerSession *)self sessionId];
+    sessionId = [(ASTRemoteServerSession *)self sessionId];
     *buf = 138412290;
-    v32 = v6;
+    v32 = sessionId;
     _os_log_impl(&dword_240F3C000, v5, OS_LOG_TYPE_DEFAULT, "[CONTINUE] (%@)", buf, 0xCu);
   }
 
-  v7 = v4;
+  v7 = requestCopy;
   if ([v7 clientStatus] == 3)
   {
-    v8 = [(ASTRemoteServerSession *)self runningTests];
-    v9 = [v8 count];
+    runningTests = [(ASTRemoteServerSession *)self runningTests];
+    v9 = [runningTests count];
 
     if (!v9)
     {
@@ -1776,8 +1776,8 @@ LABEL_16:
 
   if ([v7 clientStatus] == 5)
   {
-    v10 = [(ASTRemoteServerSession *)self pendingTestResults];
-    v11 = [v10 count];
+    pendingTestResults = [(ASTRemoteServerSession *)self pendingTestResults];
+    v11 = [pendingTestResults count];
 
     if (!v11)
     {
@@ -1799,26 +1799,26 @@ LABEL_14:
 
   v12 = +[ASTRequest request];
 
-  v13 = [(ASTSession *)self context];
-  v14 = [v13 controlCommand];
-  v15 = [v14 allActionsFinished];
+  context = [(ASTSession *)self context];
+  controlCommand = [context controlCommand];
+  allActionsFinished = [controlCommand allActionsFinished];
 
-  if (!v15)
+  if (!allActionsFinished)
   {
     [v12 setClientStatus:13];
-    v25 = [(ASTSession *)self context];
-    v26 = [v25 controlCommand];
-    v27 = [v26 requestData];
-    [v12 setData:v27];
+    context2 = [(ASTSession *)self context];
+    controlCommand2 = [context2 controlCommand];
+    requestData = [controlCommand2 requestData];
+    [v12 setData:requestData];
 
     goto LABEL_14;
   }
 
   [v12 setClientStatus:14];
-  v16 = [(ASTSession *)self context];
-  v17 = [v16 controlCommand];
-  v18 = [v17 completionArray];
-  v19 = [v18 count];
+  context3 = [(ASTSession *)self context];
+  controlCommand3 = [context3 controlCommand];
+  completionArray = [controlCommand3 completionArray];
+  v19 = [completionArray count];
 
   if (v19)
   {
@@ -1830,10 +1830,10 @@ LABEL_14:
     [v12 setCompletion:v30];
   }
 
-  v20 = [(ASTSession *)self context];
-  v21 = [v20 controlCommand];
-  v22 = [v21 requestData];
-  [v12 setData:v22];
+  context4 = [(ASTSession *)self context];
+  controlCommand4 = [context4 controlCommand];
+  requestData2 = [controlCommand4 requestData];
+  [v12 setData:requestData2];
 
 LABEL_17:
   v28 = *MEMORY[0x277D85DE8];
@@ -1849,39 +1849,39 @@ void __51__ASTRemoteServerSession__continueWithLastRequest___block_invoke(uint64
   [v2 enumerateObjectsUsingBlock:&__block_literal_global_7];
 }
 
-- (id)_sendPropertiesWithData:(id)a3
+- (id)_sendPropertiesWithData:(id)data
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ASTRemoteServerSession *)self sessionId];
+    sessionId = [(ASTRemoteServerSession *)self sessionId];
     *buf = 138412290;
-    v27 = v6;
+    v27 = sessionId;
     _os_log_impl(&dword_240F3C000, v5, OS_LOG_TYPE_DEFAULT, "[SEND PROPERTIES] (%@)", buf, 0xCu);
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"propertyItems"];
+  v7 = [dataCopy objectForKeyedSubscript:@"propertyItems"];
 
   if (!v7)
   {
     goto LABEL_5;
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"propertyItems"];
-  v9 = [(ASTSession *)self context];
-  v10 = [v9 identity];
-  v11 = [ASTProfileResult resultWithIdentity:v10];
+  v8 = [dataCopy objectForKeyedSubscript:@"propertyItems"];
+  context = [(ASTSession *)self context];
+  identity = [context identity];
+  v11 = [ASTProfileResult resultWithIdentity:identity];
 
   v12 = dispatch_semaphore_create(0);
-  v13 = self;
-  objc_sync_enter(v13);
-  [(ASTRemoteServerSession *)v13 setPendingPropertiesSemaphore:v12];
-  objc_sync_exit(v13);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(ASTRemoteServerSession *)selfCopy setPendingPropertiesSemaphore:v12];
+  objc_sync_exit(selfCopy);
 
-  objc_initWeak(buf, v13);
-  v14 = [(ASTRemoteServerSession *)v13 delegateQueue];
+  objc_initWeak(buf, selfCopy);
+  delegateQueue = [(ASTRemoteServerSession *)selfCopy delegateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__ASTRemoteServerSession__sendPropertiesWithData___block_invoke;
@@ -1891,12 +1891,12 @@ void __51__ASTRemoteServerSession__continueWithLastRequest___block_invoke(uint64
   v23 = v15;
   v16 = v8;
   v24 = v16;
-  dispatch_async(v14, block);
+  dispatch_async(delegateQueue, block);
 
   dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
-  v17 = v13;
+  v17 = selfCopy;
   objc_sync_enter(v17);
-  v18 = [(ASTRemoteServerSession *)v17 pendingPropertiesResult];
+  pendingPropertiesResult = [(ASTRemoteServerSession *)v17 pendingPropertiesResult];
   [(ASTRemoteServerSession *)v17 setPendingPropertiesSemaphore:0];
   [(ASTRemoteServerSession *)v17 setPendingPropertiesResult:0];
   objc_sync_exit(v17);
@@ -1904,19 +1904,19 @@ void __51__ASTRemoteServerSession__continueWithLastRequest___block_invoke(uint64
   objc_destroyWeak(&v25);
   objc_destroyWeak(buf);
 
-  if (!v18)
+  if (!pendingPropertiesResult)
   {
 LABEL_5:
-    v18 = +[ASTRequest request];
+    pendingPropertiesResult = +[ASTRequest request];
     v19 = [(ASTErrorStatus *)ASTSendPropertiesErrorStatus errorStatusWithCode:-2];
-    [v18 setError:v19];
+    [pendingPropertiesResult setError:v19];
 
-    [v18 setClientStatus:10];
+    [pendingPropertiesResult setClientStatus:10];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return pendingPropertiesResult;
 }
 
 void __50__ASTRemoteServerSession__sendPropertiesWithData___block_invoke(uint64_t a1)
@@ -1926,28 +1926,28 @@ void __50__ASTRemoteServerSession__sendPropertiesWithData___block_invoke(uint64_
   [v2 session:WeakRetained profile:*(a1 + 32) filteredByComponents:*(a1 + 40)];
 }
 
-- (id)_updateSessionSettingsWithData:(id)a3
+- (id)_updateSessionSettingsWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = +[ASTRequest request];
-  v6 = [(ASTSession *)self delegate];
+  delegate = [(ASTSession *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = dispatch_semaphore_create(0);
     objc_initWeak(&location, self);
-    v9 = [(ASTRemoteServerSession *)self delegateQueue];
+    delegateQueue = [(ASTRemoteServerSession *)self delegateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __57__ASTRemoteServerSession__updateSessionSettingsWithData___block_invoke;
     block[3] = &unk_278CBD7E0;
     objc_copyWeak(&v16, &location);
-    v13 = v4;
+    v13 = dataCopy;
     v14 = v5;
     v15 = v8;
     v10 = v8;
-    dispatch_async(v9, block);
+    dispatch_async(delegateQueue, block);
 
     dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
     objc_destroyWeak(&v16);
@@ -1997,9 +1997,9 @@ void __57__ASTRemoteServerSession__updateSessionSettingsWithData___block_invoke_
   v3 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ASTRemoteServerSession *)self sessionId];
+    sessionId = [(ASTRemoteServerSession *)self sessionId];
     v8 = 138412290;
-    v9 = v4;
+    v9 = sessionId;
     _os_log_impl(&dword_240F3C000, v3, OS_LOG_TYPE_DEFAULT, "[ABORT] (%@)", &v8, 0xCu);
   }
 
@@ -2017,9 +2017,9 @@ void __57__ASTRemoteServerSession__updateSessionSettingsWithData___block_invoke_
   v3 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ASTRemoteServerSession *)self sessionId];
+    sessionId = [(ASTRemoteServerSession *)self sessionId];
     v8 = 138412290;
-    v9 = v4;
+    v9 = sessionId;
     _os_log_impl(&dword_240F3C000, v3, OS_LOG_TYPE_DEFAULT, "[CLIENT ABORT] (%@)", &v8, 0xCu);
   }
 
@@ -2038,9 +2038,9 @@ void __57__ASTRemoteServerSession__updateSessionSettingsWithData___block_invoke_
   v3 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ASTRemoteServerSession *)self sessionId];
+    sessionId = [(ASTRemoteServerSession *)self sessionId];
     v6 = 138412290;
-    v7 = v4;
+    v7 = sessionId;
     _os_log_impl(&dword_240F3C000, v3, OS_LOG_TYPE_DEFAULT, "[ARCHIVE] (%@)", &v6, 0xCu);
   }
 
@@ -2048,34 +2048,34 @@ void __57__ASTRemoteServerSession__updateSessionSettingsWithData___block_invoke_
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_rebootWithData:(id)a3
+- (void)_rebootWithData:(id)data
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ASTRemoteServerSession *)self sessionId];
+    sessionId = [(ASTRemoteServerSession *)self sessionId];
     *buf = 138412290;
-    v20 = v6;
+    v20 = sessionId;
     _os_log_impl(&dword_240F3C000, v5, OS_LOG_TYPE_DEFAULT, "[REBOOT] (%@)", buf, 0xCu);
   }
 
   [(ASTRemoteServerSession *)self _abortRunningProcedures];
-  v7 = [(ASTSession *)self delegate];
+  delegate = [(ASTSession *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     objc_initWeak(buf, self);
-    v9 = [(ASTRemoteServerSession *)self delegateQueue];
+    delegateQueue = [(ASTRemoteServerSession *)self delegateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __42__ASTRemoteServerSession__rebootWithData___block_invoke;
     block[3] = &unk_278CBD718;
     objc_copyWeak(&v18, buf);
-    v17 = v4;
-    dispatch_async(v9, block);
+    v17 = dataCopy;
+    dispatch_async(delegateQueue, block);
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(buf);
@@ -2083,19 +2083,19 @@ void __57__ASTRemoteServerSession__updateSessionSettingsWithData___block_invoke_
 
   else
   {
-    v10 = [(ASTSession *)self delegate];
+    delegate2 = [(ASTSession *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
       objc_initWeak(buf, self);
-      v12 = [(ASTRemoteServerSession *)self delegateQueue];
+      delegateQueue2 = [(ASTRemoteServerSession *)self delegateQueue];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __42__ASTRemoteServerSession__rebootWithData___block_invoke_2;
       v14[3] = &unk_278CBD6F0;
       objc_copyWeak(&v15, buf);
-      dispatch_async(v12, v14);
+      dispatch_async(delegateQueue2, v14);
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(buf);
@@ -2119,34 +2119,34 @@ void __42__ASTRemoteServerSession__rebootWithData___block_invoke_2(uint64_t a1)
   [v1 sessionDidReboot:WeakRetained];
 }
 
-- (void)_shutdownWithData:(id)a3
+- (void)_shutdownWithData:(id)data
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ASTRemoteServerSession *)self sessionId];
+    sessionId = [(ASTRemoteServerSession *)self sessionId];
     *buf = 138412290;
-    v15 = v6;
+    v15 = sessionId;
     _os_log_impl(&dword_240F3C000, v5, OS_LOG_TYPE_DEFAULT, "[SHUTDOWN] (%@)", buf, 0xCu);
   }
 
   [(ASTRemoteServerSession *)self _abortRunningProcedures];
-  v7 = [(ASTSession *)self delegate];
+  delegate = [(ASTSession *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
     objc_initWeak(buf, self);
-    v9 = [(ASTRemoteServerSession *)self delegateQueue];
+    delegateQueue = [(ASTRemoteServerSession *)self delegateQueue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __44__ASTRemoteServerSession__shutdownWithData___block_invoke;
     v11[3] = &unk_278CBD718;
     objc_copyWeak(&v13, buf);
-    v12 = v4;
-    dispatch_async(v9, v11);
+    v12 = dataCopy;
+    dispatch_async(delegateQueue, v11);
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(buf);
@@ -2162,16 +2162,16 @@ void __44__ASTRemoteServerSession__shutdownWithData___block_invoke(uint64_t a1)
   [v2 sessionDidShutDown:WeakRetained withParameters:*(a1 + 32)];
 }
 
-- (id)_showInstructionalPromptWithData:(id)a3
+- (id)_showInstructionalPromptWithData:(id)data
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ASTRemoteServerSession *)self sessionId];
+    sessionId = [(ASTRemoteServerSession *)self sessionId];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = sessionId;
     _os_log_impl(&dword_240F3C000, v5, OS_LOG_TYPE_DEFAULT, "[SHOW INSTRUCTIONS] (%@)", &buf, 0xCu);
   }
 
@@ -2181,9 +2181,9 @@ void __44__ASTRemoteServerSession__shutdownWithData___block_invoke(uint64_t a1)
   v43 = __Block_byref_object_copy__4;
   v44 = __Block_byref_object_dispose__4;
   v45 = 0;
-  v7 = [v4 objectForKeyedSubscript:@"instructionId"];
-  v8 = [v4 objectForKeyedSubscript:@"reference"];
-  v30 = [v4 objectForKeyedSubscript:@"type"];
+  v7 = [dataCopy objectForKeyedSubscript:@"instructionId"];
+  v8 = [dataCopy objectForKeyedSubscript:@"reference"];
+  v30 = [dataCopy objectForKeyedSubscript:@"type"];
   if (v7)
   {
     v9 = v8 == 0;
@@ -2196,9 +2196,9 @@ void __44__ASTRemoteServerSession__shutdownWithData___block_invoke(uint64_t a1)
 
   if (v9 || v30 == 0)
   {
-    v11 = [(ASTRemoteServerSession *)self _retryRequest];
+    _retryRequest = [(ASTRemoteServerSession *)self _retryRequest];
     v12 = *(*(&buf + 1) + 40);
-    *(*(&buf + 1) + 40) = v11;
+    *(*(&buf + 1) + 40) = _retryRequest;
 
     v13 = ASTLogHandleForCategory(0);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -2217,20 +2217,20 @@ void __44__ASTRemoteServerSession__shutdownWithData___block_invoke(uint64_t a1)
 
   else
   {
-    v15 = [MEMORY[0x277CBEAF8] preferredLanguages];
-    v16 = [v15 firstObject];
+    preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+    firstObject = [preferredLanguages firstObject];
 
-    v17 = [MEMORY[0x277CBEAF8] currentLocale];
-    v18 = [v17 localeIdentifier];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
 
-    v19 = [(ASTRemoteServerSession *)self connectionManager];
-    v20 = v19 == 0;
+    connectionManager = [(ASTRemoteServerSession *)self connectionManager];
+    v20 = connectionManager == 0;
 
     if (v20)
     {
-      v25 = [(ASTRemoteServerSession *)self _retryRequest];
+      _retryRequest2 = [(ASTRemoteServerSession *)self _retryRequest];
       v26 = *(*(&buf + 1) + 40);
-      *(*(&buf + 1) + 40) = v25;
+      *(*(&buf + 1) + 40) = _retryRequest2;
 
       v27 = ASTLogHandleForCategory(0);
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -2244,8 +2244,8 @@ void __44__ASTRemoteServerSession__shutdownWithData___block_invoke(uint64_t a1)
     else
     {
       v21 = dispatch_semaphore_create(0);
-      v22 = [(ASTRemoteServerSession *)self connectionManager];
-      v23 = [(ASTRemoteServerSession *)self payloadSigner];
+      connectionManager2 = [(ASTRemoteServerSession *)self connectionManager];
+      payloadSigner = [(ASTRemoteServerSession *)self payloadSigner];
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __59__ASTRemoteServerSession__showInstructionalPromptWithData___block_invoke;
@@ -2255,7 +2255,7 @@ void __44__ASTRemoteServerSession__shutdownWithData___block_invoke(uint64_t a1)
       v24 = v21;
       v32 = v24;
       v33 = v8;
-      [v22 requestInstructionalPromptDetailsWithInstructionID:v7 type:v30 withPayloadSigner:v23 language:v16 locale:v18 allowsCellularAccess:1 completionHandler:v31];
+      [connectionManager2 requestInstructionalPromptDetailsWithInstructionID:v7 type:v30 withPayloadSigner:payloadSigner language:firstObject locale:localeIdentifier allowsCellularAccess:1 completionHandler:v31];
 
       dispatch_semaphore_wait(v24, 0xFFFFFFFFFFFFFFFFLL);
       v14 = *(*(&buf + 1) + 40);
@@ -2358,29 +2358,29 @@ void __59__ASTRemoteServerSession__showInstructionalPromptWithData___block_invok
 
 - (void)_abortRunningProcedures
 {
-  v3 = [(ASTSession *)self context];
-  v4 = [v3 testSuiteRunning];
+  context = [(ASTSession *)self context];
+  testSuiteRunning = [context testSuiteRunning];
 
-  if (v4)
+  if (testSuiteRunning)
   {
     [(ASTRemoteServerSession *)self _cancelRunningTests];
     [(ASTRemoteServerSession *)self _cancelSendingTestResults];
-    v5 = [(ASTSession *)self context];
-    [v5 setTestSuiteRunning:0];
+    context2 = [(ASTSession *)self context];
+    [context2 setTestSuiteRunning:0];
 
-    v6 = [(ASTSession *)self delegate];
+    delegate = [(ASTSession *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
       objc_initWeak(&location, self);
-      v8 = [(ASTRemoteServerSession *)self delegateQueue];
+      delegateQueue = [(ASTRemoteServerSession *)self delegateQueue];
       v9 = MEMORY[0x277D85DD0];
       v10 = 3221225472;
       v11 = __49__ASTRemoteServerSession__abortRunningProcedures__block_invoke;
       v12 = &unk_278CBD6F0;
       objc_copyWeak(&v13, &location);
-      dispatch_async(v8, &v9);
+      dispatch_async(delegateQueue, &v9);
 
       objc_destroyWeak(&v13);
       objc_destroyWeak(&location);
@@ -2400,12 +2400,12 @@ void __49__ASTRemoteServerSession__abortRunningProcedures__block_invoke(uint64_t
 - (void)_cancelRunningTests
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(ASTRemoteServerSession *)self runningTests];
-  objc_sync_enter(v3);
-  v4 = [(ASTRemoteServerSession *)self runningTests];
-  v5 = [v4 copy];
+  runningTests = [(ASTRemoteServerSession *)self runningTests];
+  objc_sync_enter(runningTests);
+  runningTests2 = [(ASTRemoteServerSession *)self runningTests];
+  v5 = [runningTests2 copy];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(runningTests);
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -2426,31 +2426,31 @@ void __49__ASTRemoteServerSession__abortRunningProcedures__block_invoke(uint64_t
         }
 
         v9 = *(*(&v20 + 1) + 8 * v8);
-        v10 = [(ASTSession *)self delegate];
+        delegate = [(ASTSession *)self delegate];
         v11 = objc_opt_respondsToSelector();
 
         if (v11)
         {
           objc_initWeak(&location, self);
-          v12 = [(ASTRemoteServerSession *)self delegateQueue];
+          delegateQueue = [(ASTRemoteServerSession *)self delegateQueue];
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __45__ASTRemoteServerSession__cancelRunningTests__block_invoke;
           block[3] = &unk_278CBD718;
           objc_copyWeak(&v18, &location);
           block[4] = v9;
-          dispatch_async(v12, block);
+          dispatch_async(delegateQueue, block);
 
           objc_destroyWeak(&v18);
           objc_destroyWeak(&location);
         }
 
-        v13 = [(ASTRemoteServerSession *)self runningTests];
-        objc_sync_enter(v13);
-        v14 = [(ASTRemoteServerSession *)self runningTests];
-        [v14 removeObjectForKey:v9];
+        runningTests3 = [(ASTRemoteServerSession *)self runningTests];
+        objc_sync_enter(runningTests3);
+        runningTests4 = [(ASTRemoteServerSession *)self runningTests];
+        [runningTests4 removeObjectForKey:v9];
 
-        objc_sync_exit(v13);
+        objc_sync_exit(runningTests3);
         ++v8;
       }
 
@@ -2471,10 +2471,10 @@ void __45__ASTRemoteServerSession__cancelRunningTests__block_invoke(uint64_t a1)
   [v2 session:WeakRetained cancelTest:*(a1 + 32)];
 }
 
-- (BOOL)sendAuthInfoResult:(id)a3 error:(id *)a4
+- (BOOL)sendAuthInfoResult:(id)result error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  resultCopy = result;
   v7 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -2483,17 +2483,17 @@ void __45__ASTRemoteServerSession__cancelRunningTests__block_invoke(uint64_t a1)
     _os_log_impl(&dword_240F3C000, v7, OS_LOG_TYPE_DEFAULT, "[ASTRemoteServerSession] %s", &v16, 0xCu);
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(ASTRemoteServerSession *)v8 pendingAuthInfoSemaphore];
-  objc_sync_exit(v8);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingAuthInfoSemaphore = [(ASTRemoteServerSession *)selfCopy pendingAuthInfoSemaphore];
+  objc_sync_exit(selfCopy);
 
-  if (!v9)
+  if (!pendingAuthInfoSemaphore)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-1007 userInfo:0];
-      *a4 = v13 = 0;
+      *error = v13 = 0;
       goto LABEL_10;
     }
 
@@ -2502,10 +2502,10 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v6)
+  if (resultCopy)
   {
-    v10 = [(ASTRemoteServerSession *)v8 payloadSigner];
-    v11 = [v6 sealWithPayloadSigner:v10 error:a4];
+    payloadSigner = [(ASTRemoteServerSession *)selfCopy payloadSigner];
+    v11 = [resultCopy sealWithPayloadSigner:payloadSigner error:error];
 
     if (!v11)
     {
@@ -2513,12 +2513,12 @@ LABEL_9:
     }
   }
 
-  v12 = v8;
+  v12 = selfCopy;
   objc_sync_enter(v12);
-  [(ASTRemoteServerSession *)v12 setPendingAuthInfoResult:v6];
+  [(ASTRemoteServerSession *)v12 setPendingAuthInfoResult:resultCopy];
   objc_sync_exit(v12);
 
-  dispatch_semaphore_signal(v9);
+  dispatch_semaphore_signal(pendingAuthInfoSemaphore);
   v13 = 1;
 LABEL_10:
 
@@ -2526,24 +2526,24 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)sendProfileResult:(id)a3 error:(id *)a4
+- (BOOL)sendProfileResult:(id)result error:(id *)error
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(ASTRemoteServerSession *)v7 pendingPropertiesSemaphore];
-  v9 = [(ASTRemoteServerSession *)v7 pendingProfileSemaphore];
-  objc_sync_exit(v7);
+  resultCopy = result;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingPropertiesSemaphore = [(ASTRemoteServerSession *)selfCopy pendingPropertiesSemaphore];
+  pendingProfileSemaphore = [(ASTRemoteServerSession *)selfCopy pendingProfileSemaphore];
+  objc_sync_exit(selfCopy);
 
-  if (!v9)
+  if (!pendingProfileSemaphore)
   {
-    if (!v8)
+    if (!pendingPropertiesSemaphore)
     {
-      if (a4)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-1007 userInfo:0];
-        *a4 = v13 = 0;
+        *error = v13 = 0;
         goto LABEL_20;
       }
 
@@ -2552,32 +2552,32 @@ LABEL_11:
       goto LABEL_20;
     }
 
-    if (v6)
+    if (resultCopy)
     {
       v14 = +[ASTRequest request];
       [v14 setClientStatus:10];
-      if ([v6 isSealed])
+      if ([resultCopy isSealed])
       {
         [v14 setData:MEMORY[0x277CBEC10]];
         v15 = [(ASTErrorStatus *)ASTSendPropertiesErrorStatus errorStatusWithCode:-3];
         [v14 setError:v15];
 
-        if (a4)
+        if (error)
         {
-          *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-4002 userInfo:0];
+          *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-4002 userInfo:0];
         }
       }
 
       else
       {
-        v16 = [v6 properties];
-        v17 = [v16 count];
+        properties = [resultCopy properties];
+        v17 = [properties count];
 
         if (v17)
         {
           v25 = @"propertyItems";
-          v18 = [v6 properties];
-          v26[0] = v18;
+          properties2 = [resultCopy properties];
+          v26[0] = properties2;
           v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
           [v14 setData:v19];
         }
@@ -2585,17 +2585,17 @@ LABEL_11:
 
       if (v14)
       {
-        v20 = [(ASTRemoteServerSession *)v7 payloadSigner];
-        v21 = [v14 sealWithPayloadSigner:v20 error:a4];
+        payloadSigner = [(ASTRemoteServerSession *)selfCopy payloadSigner];
+        v21 = [v14 sealWithPayloadSigner:payloadSigner error:error];
 
         if (v21)
         {
-          v22 = v7;
+          v22 = selfCopy;
           objc_sync_enter(v22);
           [(ASTRemoteServerSession *)v22 setPendingPropertiesResult:v14];
           objc_sync_exit(v22);
 
-          dispatch_semaphore_signal(v8);
+          dispatch_semaphore_signal(pendingPropertiesSemaphore);
           v13 = 1;
 LABEL_19:
 
@@ -2613,20 +2613,20 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v10 = [(ASTRemoteServerSession *)v7 payloadSigner];
-  v11 = [v6 sealWithPayloadSigner:v10 error:a4];
+  payloadSigner2 = [(ASTRemoteServerSession *)selfCopy payloadSigner];
+  v11 = [resultCopy sealWithPayloadSigner:payloadSigner2 error:error];
 
   if (!v11)
   {
     goto LABEL_11;
   }
 
-  v12 = v7;
+  v12 = selfCopy;
   objc_sync_enter(v12);
-  [(ASTRemoteServerSession *)v12 setPendingProfileResult:v6];
+  [(ASTRemoteServerSession *)v12 setPendingProfileResult:resultCopy];
   objc_sync_exit(v12);
 
-  dispatch_semaphore_signal(v9);
+  dispatch_semaphore_signal(pendingProfileSemaphore);
   v13 = 1;
 LABEL_20:
 
@@ -2634,16 +2634,16 @@ LABEL_20:
   return v13;
 }
 
-- (BOOL)sendTestResult:(id)a3 error:(id *)a4
+- (BOOL)sendTestResult:(id)result error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ASTRemoteServerSession *)self runningTests];
-  objc_sync_enter(v7);
+  resultCopy = result;
+  runningTests = [(ASTRemoteServerSession *)self runningTests];
+  objc_sync_enter(runningTests);
   if ([(ASTRemoteServerSession *)self phase]== 2)
   {
-    v8 = [(ASTRemoteServerSession *)self runningTests];
-    v9 = [v6 testId];
-    v10 = [v8 objectForKeyedSubscript:v9];
+    runningTests2 = [(ASTRemoteServerSession *)self runningTests];
+    testId = [resultCopy testId];
+    v10 = [runningTests2 objectForKeyedSubscript:testId];
   }
 
   else
@@ -2651,34 +2651,34 @@ LABEL_20:
     v10 = 0;
   }
 
-  v11 = [(ASTRemoteServerSession *)self runningTests];
-  v12 = [v6 testId];
-  [v11 removeObjectForKey:v12];
+  runningTests3 = [(ASTRemoteServerSession *)self runningTests];
+  testId2 = [resultCopy testId];
+  [runningTests3 removeObjectForKey:testId2];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(runningTests);
   if (!v10)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-1007 userInfo:0];
-      *a4 = v25 = 0;
+      *error = v25 = 0;
       goto LABEL_16;
     }
 
     goto LABEL_15;
   }
 
-  v13 = [v6 files];
-  if (v13)
+  files = [resultCopy files];
+  if (files)
   {
-    v14 = v13;
-    v15 = [v6 files];
-    v16 = [v15 count];
+    v14 = files;
+    files2 = [resultCopy files];
+    v16 = [files2 count];
 
     if (v16)
     {
-      v17 = [(ASTRemoteServerSession *)self fileSigner];
-      v18 = [v6 sealWithFileSigner:v17 error:a4];
+      fileSigner = [(ASTRemoteServerSession *)self fileSigner];
+      v18 = [resultCopy sealWithFileSigner:fileSigner error:error];
 
       if ((v18 & 1) == 0)
       {
@@ -2689,8 +2689,8 @@ LABEL_20:
     }
   }
 
-  v19 = [(ASTRemoteServerSession *)self payloadSigner];
-  v20 = [v6 sealWithPayloadSigner:v19 error:a4];
+  payloadSigner = [(ASTRemoteServerSession *)self payloadSigner];
+  v20 = [resultCopy sealWithPayloadSigner:payloadSigner error:error];
 
   if (!v20)
   {
@@ -2700,17 +2700,17 @@ LABEL_15:
   }
 
 LABEL_10:
-  v21 = [(ASTRemoteServerSession *)self pendingTestResults];
-  v22 = [v6 testId];
-  [v21 setObject:v6 forKeyedSubscript:v22];
+  pendingTestResults = [(ASTRemoteServerSession *)self pendingTestResults];
+  testId3 = [resultCopy testId];
+  [pendingTestResults setObject:resultCopy forKeyedSubscript:testId3];
 
   dispatch_semaphore_signal(v10);
-  v23 = [(ASTRemoteServerSession *)self backoffTimer];
+  backoffTimer = [(ASTRemoteServerSession *)self backoffTimer];
 
-  if (v23)
+  if (backoffTimer)
   {
-    v24 = [(ASTRemoteServerSession *)self backoffTimer];
-    dispatch_semaphore_signal(v24);
+    backoffTimer2 = [(ASTRemoteServerSession *)self backoffTimer];
+    dispatch_semaphore_signal(backoffTimer2);
   }
 
   v25 = 1;
@@ -2722,17 +2722,17 @@ LABEL_16:
 - (void)_cancelSendingTestResults
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(ASTRemoteServerSession *)self connectionManager];
-  [v3 cancelAllTestResults];
+  connectionManager = [(ASTRemoteServerSession *)self connectionManager];
+  [connectionManager cancelAllTestResults];
 
-  v4 = [(ASTRemoteServerSession *)self pendingTestResults];
-  v5 = [v4 allKeys];
+  pendingTestResults = [(ASTRemoteServerSession *)self pendingTestResults];
+  allKeys = [pendingTestResults allKeys];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v5;
+  v6 = allKeys;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -2749,8 +2749,8 @@ LABEL_16:
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
-        v12 = [(ASTRemoteServerSession *)self pendingTestResults];
-        [v12 removeObjectForKey:v11];
+        pendingTestResults2 = [(ASTRemoteServerSession *)self pendingTestResults];
+        [pendingTestResults2 removeObjectForKey:v11];
 
         ++v10;
       }
@@ -2765,48 +2765,48 @@ LABEL_16:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateAction:(id)a3
+- (void)updateAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ASTSession *)self context];
-  v6 = [v5 controlCommand];
-  [v6 updateAction:v4];
+  actionCopy = action;
+  context = [(ASTSession *)self context];
+  controlCommand = [context controlCommand];
+  [controlCommand updateAction:actionCopy];
 
-  v7 = [(ASTRemoteServerSession *)self backoffTimer];
+  backoffTimer = [(ASTRemoteServerSession *)self backoffTimer];
 
-  if (v7)
+  if (backoffTimer)
   {
-    v8 = [(ASTRemoteServerSession *)self backoffTimer];
-    dispatch_semaphore_signal(v8);
+    backoffTimer2 = [(ASTRemoteServerSession *)self backoffTimer];
+    dispatch_semaphore_signal(backoffTimer2);
   }
 }
 
-+ (void)downloadAsset:(id)a3 serverURL:(id)a4 endpoint:(id)a5 fileHandle:(id)a6 completionHandler:(id)a7
++ (void)downloadAsset:(id)asset serverURL:(id)l endpoint:(id)endpoint fileHandle:(id)handle completionHandler:(id)handler
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  handlerCopy = handler;
+  handleCopy = handle;
+  endpointCopy = endpoint;
+  lCopy = l;
+  assetCopy = asset;
   v19 = +[ASTEnvironment currentEnvironment];
-  v16 = [v19 SOCKSProxyServer];
-  v17 = [v19 SOCKSProxyPort];
-  v18 = [[ASTMaterializedConnectionManager alloc] initWithSOCKSProxyServer:v16 port:v17];
-  [(ASTMaterializedConnectionManager *)v18 downloadAsset:v15 serverURL:v14 endpoint:v13 destinationFileHandle:v12 allowsCellularAccess:1 completion:v11];
+  sOCKSProxyServer = [v19 SOCKSProxyServer];
+  sOCKSProxyPort = [v19 SOCKSProxyPort];
+  v18 = [[ASTMaterializedConnectionManager alloc] initWithSOCKSProxyServer:sOCKSProxyServer port:sOCKSProxyPort];
+  [(ASTMaterializedConnectionManager *)v18 downloadAsset:assetCopy serverURL:lCopy endpoint:endpointCopy destinationFileHandle:handleCopy allowsCellularAccess:1 completion:handlerCopy];
 }
 
 - (void)_backoff
 {
   v3 = 1000000000;
-  v4 = [(ASTRemoteServerSession *)self runningTests];
-  if ([v4 count])
+  runningTests = [(ASTRemoteServerSession *)self runningTests];
+  if ([runningTests count])
   {
   }
 
   else
   {
-    v5 = [(ASTRemoteServerSession *)self pendingTestResults];
-    v6 = [v5 count];
+    pendingTestResults = [(ASTRemoteServerSession *)self pendingTestResults];
+    v6 = [pendingTestResults count];
 
     if (!v6)
     {
@@ -2849,7 +2849,7 @@ LABEL_7:
 - (void)_protocolError
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = [ASTRequest stringFromClientStatus:a1];
+  v7 = [ASTRequest stringFromClientStatus:self];
   OUTLINED_FUNCTION_2_0();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
 
@@ -2859,28 +2859,28 @@ LABEL_7:
 - (void)_cancelControlExecution
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(ASTSession *)self context];
-  v4 = [v3 controlCommand];
-  v5 = [v4 reset];
+  context = [(ASTSession *)self context];
+  controlCommand = [context controlCommand];
+  reset = [controlCommand reset];
 
   v6 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 67109120;
-    HIDWORD(buf) = v5;
+    HIDWORD(buf) = reset;
     _os_log_impl(&dword_240F3C000, v6, OS_LOG_TYPE_DEFAULT, "Reset control command: %d", &buf, 8u);
   }
 
-  if (v5)
+  if (reset)
   {
     objc_initWeak(&buf, self);
-    v7 = [(ASTRemoteServerSession *)self delegateQueue];
+    delegateQueue = [(ASTRemoteServerSession *)self delegateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __49__ASTRemoteServerSession__cancelControlExecution__block_invoke;
     block[3] = &unk_278CBD6F0;
     objc_copyWeak(&v10, &buf);
-    dispatch_async(v7, block);
+    dispatch_async(delegateQueue, block);
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&buf);
@@ -2902,18 +2902,18 @@ void __49__ASTRemoteServerSession__cancelControlExecution__block_invoke(uint64_t
   }
 }
 
-- (BOOL)_validateCommand:(int64_t)a3 clientStatus:(int64_t)a4
+- (BOOL)_validateCommand:(int64_t)command clientStatus:(int64_t)status
 {
-  if (a3 > 0xD)
+  if (command > 0xD)
   {
 LABEL_12:
-    if (a3 != 1)
+    if (command != 1)
     {
       goto LABEL_15;
     }
 
-    v7 = a4 - 1;
-    if ((a4 - 1) >= 0xF)
+    v7 = status - 1;
+    if ((status - 1) >= 0xF)
     {
       goto LABEL_15;
     }
@@ -2922,16 +2922,16 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  if (((1 << a3) & 0x3BC0) != 0)
+  if (((1 << command) & 0x3BC0) != 0)
   {
     return 1;
   }
 
-  if (((1 << a3) & 0x42C) == 0)
+  if (((1 << command) & 0x42C) == 0)
   {
-    if (a3 == 4)
+    if (command == 4)
     {
-      if (((a4 - 4) & 0xFFFFFFFFFFFFFFF7) == 0)
+      if (((status - 4) & 0xFFFFFFFFFFFFFFF7) == 0)
       {
         return 1;
       }
@@ -2942,8 +2942,8 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v7 = a4 - 1;
-  if ((a4 - 1) >= 0xF)
+  v7 = status - 1;
+  if ((status - 1) >= 0xF)
   {
     goto LABEL_15;
   }
@@ -2959,23 +2959,23 @@ LABEL_15:
   v9 = ASTLogHandleForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    [ASTRemoteServerSession _validateCommand:a3 clientStatus:a4];
+    [ASTRemoteServerSession _validateCommand:command clientStatus:status];
   }
 
   return 0;
 }
 
-- (void)connectionManagerRequestPaused:(id)a3
+- (void)connectionManagerRequestPaused:(id)paused
 {
-  v4 = a3;
-  v5 = [(ASTSession *)self delegate];
+  pausedCopy = paused;
+  delegate = [(ASTSession *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-1004 userInfo:0];
     objc_initWeak(&location, self);
-    v8 = [(ASTRemoteServerSession *)self delegateQueue];
+    delegateQueue = [(ASTRemoteServerSession *)self delegateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __57__ASTRemoteServerSession_connectionManagerRequestPaused___block_invoke;
@@ -2983,7 +2983,7 @@ LABEL_15:
     objc_copyWeak(&v12, &location);
     v11 = v7;
     v9 = v7;
-    dispatch_async(v8, block);
+    dispatch_async(delegateQueue, block);
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -2997,22 +2997,22 @@ void __57__ASTRemoteServerSession_connectionManagerRequestPaused___block_invoke(
   [v2 session:WeakRetained didPauseWithError:*(a1 + 32)];
 }
 
-- (void)connectionManagerRequestResumed:(id)a3
+- (void)connectionManagerRequestResumed:(id)resumed
 {
-  v4 = a3;
-  v5 = [(ASTSession *)self delegate];
+  resumedCopy = resumed;
+  delegate = [(ASTSession *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     objc_initWeak(&location, self);
-    v7 = [(ASTRemoteServerSession *)self delegateQueue];
+    delegateQueue = [(ASTRemoteServerSession *)self delegateQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __58__ASTRemoteServerSession_connectionManagerRequestResumed___block_invoke;
     v8[3] = &unk_278CBD6F0;
     objc_copyWeak(&v9, &location);
-    dispatch_async(v7, v8);
+    dispatch_async(delegateQueue, v8);
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -3026,16 +3026,16 @@ void __58__ASTRemoteServerSession_connectionManagerRequestResumed___block_invoke
   [v1 sessionDidResume:WeakRetained];
 }
 
-- (void)connectionManager:(id)a3 pausedSendingResultForTest:(id)a4 reason:(int64_t)a5
+- (void)connectionManager:(id)manager pausedSendingResultForTest:(id)test reason:(int64_t)reason
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ASTSession *)self delegate];
+  managerCopy = manager;
+  testCopy = test;
+  delegate = [(ASTSession *)self delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    if (a5)
+    if (reason)
     {
       v12 = -1003;
     }
@@ -3047,16 +3047,16 @@ void __58__ASTRemoteServerSession_connectionManagerRequestResumed___block_invoke
 
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:v12 userInfo:0];
     objc_initWeak(&location, self);
-    v14 = [(ASTRemoteServerSession *)self delegateQueue];
+    delegateQueue = [(ASTRemoteServerSession *)self delegateQueue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __78__ASTRemoteServerSession_connectionManager_pausedSendingResultForTest_reason___block_invoke;
     v16[3] = &unk_278CBD768;
     objc_copyWeak(&v19, &location);
-    v17 = v9;
+    v17 = testCopy;
     v18 = v13;
     v15 = v13;
-    dispatch_async(v14, v16);
+    dispatch_async(delegateQueue, v16);
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -3070,24 +3070,24 @@ void __78__ASTRemoteServerSession_connectionManager_pausedSendingResultForTest_r
   [v2 session:WeakRetained didPauseSendingResultForTest:*(a1 + 32) error:*(a1 + 40)];
 }
 
-- (void)connectionManager:(id)a3 resumedSendingResultForTest:(id)a4
+- (void)connectionManager:(id)manager resumedSendingResultForTest:(id)test
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ASTSession *)self delegate];
+  managerCopy = manager;
+  testCopy = test;
+  delegate = [(ASTSession *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
     objc_initWeak(&location, self);
-    v10 = [(ASTRemoteServerSession *)self delegateQueue];
+    delegateQueue = [(ASTRemoteServerSession *)self delegateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __72__ASTRemoteServerSession_connectionManager_resumedSendingResultForTest___block_invoke;
     block[3] = &unk_278CBD718;
     objc_copyWeak(&v13, &location);
-    v12 = v7;
-    dispatch_async(v10, block);
+    v12 = testCopy;
+    dispatch_async(delegateQueue, block);
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -3101,19 +3101,19 @@ void __72__ASTRemoteServerSession_connectionManager_resumedSendingResultForTest_
   [v2 session:WeakRetained didResumeSendingResultForTest:*(a1 + 32)];
 }
 
-- (id)_signPayload:(id)a3 error:(id *)a4
+- (id)_signPayload:(id)payload error:(id *)error
 {
-  v6 = a3;
+  payloadCopy = payload;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__4;
   v22 = __Block_byref_object_dispose__4;
   v23 = 0;
-  v7 = [(ASTSession *)self delegate];
-  if ([v7 conformsToProtocol:&unk_2852D8970])
+  delegate = [(ASTSession *)self delegate];
+  if ([delegate conformsToProtocol:&unk_2852D8970])
   {
-    v8 = [(ASTSession *)self delegate];
+    delegate2 = [(ASTSession *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if ((v9 & 1) == 0)
@@ -3121,17 +3121,17 @@ void __72__ASTRemoteServerSession_connectionManager_resumedSendingResultForTest_
       goto LABEL_5;
     }
 
-    v7 = [(ASTSession *)self delegate];
+    delegate = [(ASTSession *)self delegate];
     v10 = dispatch_semaphore_create(0);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __45__ASTRemoteServerSession__signPayload_error___block_invoke;
     v14[3] = &unk_278CBD8C8;
     v16 = &v18;
-    v17 = a4;
+    errorCopy = error;
     v11 = v10;
     v15 = v11;
-    [v7 session:self signPayload:v6 completionHandler:v14];
+    [delegate session:self signPayload:payloadCopy completionHandler:v14];
     dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
   }
 
@@ -3157,19 +3157,19 @@ void __45__ASTRemoteServerSession__signPayload_error___block_invoke(uint64_t a1,
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_signFile:(id)a3 error:(id *)a4
+- (id)_signFile:(id)file error:(id *)error
 {
-  v6 = a3;
+  fileCopy = file;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__4;
   v22 = __Block_byref_object_dispose__4;
   v23 = 0;
-  v7 = [(ASTSession *)self delegate];
-  if ([v7 conformsToProtocol:&unk_2852D8970])
+  delegate = [(ASTSession *)self delegate];
+  if ([delegate conformsToProtocol:&unk_2852D8970])
   {
-    v8 = [(ASTSession *)self delegate];
+    delegate2 = [(ASTSession *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if ((v9 & 1) == 0)
@@ -3177,17 +3177,17 @@ void __45__ASTRemoteServerSession__signPayload_error___block_invoke(uint64_t a1,
       goto LABEL_5;
     }
 
-    v7 = [(ASTSession *)self delegate];
+    delegate = [(ASTSession *)self delegate];
     v10 = dispatch_semaphore_create(0);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __42__ASTRemoteServerSession__signFile_error___block_invoke;
     v14[3] = &unk_278CBD8C8;
     v16 = &v18;
-    v17 = a4;
+    errorCopy = error;
     v11 = v10;
     v15 = v11;
-    [v7 session:self signFile:v6 completionHandler:v14];
+    [delegate session:self signFile:fileCopy completionHandler:v14];
     dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
   }
 
@@ -3213,49 +3213,49 @@ void __42__ASTRemoteServerSession__signFile_error___block_invoke(uint64_t a1, vo
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)_shouldAllowCellularForSealedTestResult:(id)a3
+- (BOOL)_shouldAllowCellularForSealedTestResult:(id)result
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASTSession *)self allowCellularSizeThreshold];
-  v6 = [v4 allowCellularSizeThreshold];
-  v7 = [v6 BOOLValue];
+  resultCopy = result;
+  allowCellularSizeThreshold = [(ASTSession *)self allowCellularSizeThreshold];
+  allowCellularSizeThreshold2 = [resultCopy allowCellularSizeThreshold];
+  bOOLValue = [allowCellularSizeThreshold2 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
-    v8 = [v4 allowCellularSizeThreshold];
-    v5 = [v8 unsignedIntegerValue];
+    allowCellularSizeThreshold3 = [resultCopy allowCellularSizeThreshold];
+    allowCellularSizeThreshold = [allowCellularSizeThreshold3 unsignedIntegerValue];
 
     v9 = ASTLogHandleForCategory(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v36 = v5;
+      v36 = allowCellularSizeThreshold;
       _os_log_impl(&dword_240F3C000, v9, OS_LOG_TYPE_DEFAULT, "Using cellular size threshold from test result: %lu", buf, 0xCu);
     }
   }
 
-  if (v5 == -1)
+  if (allowCellularSizeThreshold == -1)
   {
     v10 = 1;
   }
 
   else
   {
-    v11 = [v4 files];
-    if (v11 && (v12 = v11, [v4 files], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, v12, v14))
+    files = [resultCopy files];
+    if (files && (v12 = files, [resultCopy files], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, v12, v14))
     {
       v33 = 0u;
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v15 = [v4 files];
-      v16 = [v15 countByEnumeratingWithState:&v31 objects:v39 count:16];
+      files2 = [resultCopy files];
+      v16 = [files2 countByEnumeratingWithState:&v31 objects:v39 count:16];
       if (v16)
       {
         v17 = v16;
-        v29 = v5;
-        v30 = v4;
+        v29 = allowCellularSizeThreshold;
+        v30 = resultCopy;
         v18 = 0;
         v19 = *v32;
         do
@@ -3264,23 +3264,23 @@ void __42__ASTRemoteServerSession__signFile_error___block_invoke(uint64_t a1, vo
           {
             if (*v32 != v19)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(files2);
             }
 
             v21 = *(*(&v31 + 1) + 8 * i);
-            v22 = [MEMORY[0x277CCAA00] defaultManager];
-            v23 = [v21 fileURL];
-            v24 = [v23 path];
-            v25 = [v22 attributesOfItemAtPath:v24 error:0];
+            defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+            fileURL = [v21 fileURL];
+            path = [fileURL path];
+            v25 = [defaultManager attributesOfItemAtPath:path error:0];
             v18 += [v25 fileSize];
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v31 objects:v39 count:16];
+          v17 = [files2 countByEnumeratingWithState:&v31 objects:v39 count:16];
         }
 
         while (v17);
-        v5 = v29;
-        v4 = v30;
+        allowCellularSizeThreshold = v29;
+        resultCopy = v30;
       }
 
       else
@@ -3291,8 +3291,8 @@ void __42__ASTRemoteServerSession__signFile_error___block_invoke(uint64_t a1, vo
 
     else
     {
-      v15 = [v4 payload];
-      v18 = [v15 length];
+      files2 = [resultCopy payload];
+      v18 = [files2 length];
     }
 
     v26 = ASTLogHandleForCategory(0);
@@ -3301,32 +3301,32 @@ void __42__ASTRemoteServerSession__signFile_error___block_invoke(uint64_t a1, vo
       *buf = 134218240;
       v36 = v18;
       v37 = 2048;
-      v38 = v5;
+      v38 = allowCellularSizeThreshold;
       _os_log_impl(&dword_240F3C000, v26, OS_LOG_TYPE_DEFAULT, "Payload size: %llu, threshold: %lu", buf, 0x16u);
     }
 
-    v10 = v18 <= v5;
+    v10 = v18 <= allowCellularSizeThreshold;
   }
 
   v27 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-- (BOOL)_shouldAllowCellularForSealedSealablePayload:(id)a3
+- (BOOL)_shouldAllowCellularForSealedSealablePayload:(id)payload
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASTSession *)self allowCellularSizeThreshold];
-  if (v5 == -1)
+  payloadCopy = payload;
+  allowCellularSizeThreshold = [(ASTSession *)self allowCellularSizeThreshold];
+  if (allowCellularSizeThreshold == -1)
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = v5;
-    v8 = [v4 payload];
-    v9 = [v8 length];
+    v7 = allowCellularSizeThreshold;
+    payload = [payloadCopy payload];
+    v9 = [payload length];
 
     v10 = ASTLogHandleForCategory(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -3345,9 +3345,9 @@ void __42__ASTRemoteServerSession__signFile_error___block_invoke(uint64_t a1, vo
   return v6;
 }
 
-+ (BOOL)auditToken:(id *)a3 hasEntitlement:(id)a4
++ (BOOL)auditToken:(id *)token hasEntitlement:(id)entitlement
 {
-  [a4 UTF8String];
+  [entitlement UTF8String];
   v4 = xpc_copy_entitlement_for_token();
   v5 = v4;
   if (v4)
@@ -3387,9 +3387,9 @@ void __42__ASTRemoteServerSession__signFile_error___block_invoke(uint64_t a1, vo
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestSuitesAvailableWithCompletionHandler:(id)a3
+- (void)requestSuitesAvailableWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(ASTRemoteServerSession *)self phase]!= 2)
   {
     v9 = ASTLogHandleForCategory(0);
@@ -3398,16 +3398,16 @@ void __42__ASTRemoteServerSession__signFile_error___block_invoke(uint64_t a1, vo
       [ASTRemoteServerSession requestSuitesAvailableWithCompletionHandler:?];
     }
 
-    v6 = [MEMORY[0x277CBEA60] array];
-    v10 = [(ASTRemoteServerSession *)self clientStatusLoopError];
-    v4[2](v4, v6, v10);
+    array = [MEMORY[0x277CBEA60] array];
+    clientStatusLoopError = [(ASTRemoteServerSession *)self clientStatusLoopError];
+    handlerCopy[2](handlerCopy, array, clientStatusLoopError);
     goto LABEL_10;
   }
 
   v5 = +[ASTEnvironment currentEnvironment];
-  v6 = [v5 configCode];
+  array = [v5 configCode];
 
-  if (!v6)
+  if (!array)
   {
     v11 = ASTLogHandleForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -3415,23 +3415,23 @@ void __42__ASTRemoteServerSession__signFile_error___block_invoke(uint64_t a1, vo
       [ASTRemoteServerSession requestSuitesAvailableWithCompletionHandler:];
     }
 
-    v10 = [MEMORY[0x277CBEA60] array];
+    clientStatusLoopError = [MEMORY[0x277CBEA60] array];
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-4003 userInfo:0];
-    v4[2](v4, v10, v12);
+    handlerCopy[2](handlerCopy, clientStatusLoopError, v12);
 
 LABEL_10:
     goto LABEL_11;
   }
 
-  v7 = [(ASTRemoteServerSession *)self connectionManager];
-  v8 = [(ASTRemoteServerSession *)self payloadSigner];
+  connectionManager = [(ASTRemoteServerSession *)self connectionManager];
+  payloadSigner = [(ASTRemoteServerSession *)self payloadSigner];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __70__ASTRemoteServerSession_requestSuitesAvailableWithCompletionHandler___block_invoke;
   v13[3] = &unk_278CBD8F0;
   v13[4] = self;
-  v14 = v4;
-  [v7 requestSelfServiceSuitesAvailableWithConfigCode:v6 withPayloadSigner:v8 allowsCellularAccess:1 completionHandler:v13];
+  v14 = handlerCopy;
+  [connectionManager requestSelfServiceSuitesAvailableWithConfigCode:array withPayloadSigner:payloadSigner allowsCellularAccess:1 completionHandler:v13];
 
 LABEL_11:
 }
@@ -3455,44 +3455,44 @@ void __70__ASTRemoteServerSession_requestSuitesAvailableWithCompletionHandler___
   }
 }
 
-- (void)requestSuiteStart:(id)a3 completionHandler:(id)a4
+- (void)requestSuiteStart:(id)start completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  startCopy = start;
   if ([(ASTRemoteServerSession *)self phase]== 2)
   {
-    v8 = [(ASTRemoteServerSession *)self connectionManager];
-    v9 = [(ASTRemoteServerSession *)self payloadSigner];
+    connectionManager = [(ASTRemoteServerSession *)self connectionManager];
+    payloadSigner = [(ASTRemoteServerSession *)self payloadSigner];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __62__ASTRemoteServerSession_requestSuiteStart_completionHandler___block_invoke;
     v11[3] = &unk_278CBD918;
-    v12 = v6;
-    [v8 postSelectSelfServiceSuite:v7 withPayloadSigner:v9 allowsCellularAccess:1 completionHandler:v11];
+    v12 = handlerCopy;
+    [connectionManager postSelectSelfServiceSuite:startCopy withPayloadSigner:payloadSigner allowsCellularAccess:1 completionHandler:v11];
   }
 
   else
   {
-    v10 = [(ASTRemoteServerSession *)self clientStatusLoopError];
-    (*(v6 + 2))(v6, v7, 0, 0, v10);
+    clientStatusLoopError = [(ASTRemoteServerSession *)self clientStatusLoopError];
+    (*(handlerCopy + 2))(handlerCopy, startCopy, 0, 0, clientStatusLoopError);
   }
 }
 
-- (void)requestSuiteSummary:(id)a3 completionHandler:(id)a4
+- (void)requestSuiteSummary:(id)summary completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  summaryCopy = summary;
+  handlerCopy = handler;
   if ([(ASTRemoteServerSession *)self phase]!= 2)
   {
-    v10 = [(ASTRemoteServerSession *)self clientStatusLoopError];
+    clientStatusLoopError = [(ASTRemoteServerSession *)self clientStatusLoopError];
 LABEL_8:
-    v12 = v10;
-    v7[2](v7, 0, v10);
+    v12 = clientStatusLoopError;
+    handlerCopy[2](handlerCopy, 0, clientStatusLoopError);
 
     goto LABEL_9;
   }
 
-  if (![v6 length])
+  if (![summaryCopy length])
   {
     v11 = ASTLogHandleForCategory(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -3500,18 +3500,18 @@ LABEL_8:
       [ASTRemoteServerSession requestSuiteSummary:completionHandler:];
     }
 
-    v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-4004 userInfo:0];
+    clientStatusLoopError = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-4004 userInfo:0];
     goto LABEL_8;
   }
 
-  v8 = [(ASTRemoteServerSession *)self connectionManager];
-  v9 = [(ASTRemoteServerSession *)self payloadSigner];
+  connectionManager = [(ASTRemoteServerSession *)self connectionManager];
+  payloadSigner = [(ASTRemoteServerSession *)self payloadSigner];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __64__ASTRemoteServerSession_requestSuiteSummary_completionHandler___block_invoke;
   v13[3] = &unk_278CBD940;
-  v14 = v7;
-  [v8 requestSelfServiceSuiteResultsWithDiagnosticEventID:v6 withPayloadSigner:v9 allowsCellularAccess:1 completionHandler:v13];
+  v14 = handlerCopy;
+  [connectionManager requestSelfServiceSuiteResultsWithDiagnosticEventID:summaryCopy withPayloadSigner:payloadSigner allowsCellularAccess:1 completionHandler:v13];
 
 LABEL_9:
 }

@@ -1,6 +1,6 @@
 @interface APSupportedSecureEncodedClass
 + (NSSet)classes;
-+ (void)addClasses:(id)a3;
++ (void)addClasses:(id)classes;
 + (void)initialize;
 @end
 
@@ -37,12 +37,12 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)addClasses:(id)a3
++ (void)addClasses:(id)classes
 {
   v3 = qword_1EDBA4BA0;
-  v4 = a3;
+  classesCopy = classes;
   objc_msgSend_lock(v3, v5, v6, v7);
-  v10 = objc_msgSend_setByAddingObjectsFromSet_(qword_1EDBA4BD0, v8, v4, v9);
+  v10 = objc_msgSend_setByAddingObjectsFromSet_(qword_1EDBA4BD0, v8, classesCopy, v9);
 
   v11 = qword_1EDBA4BD0;
   qword_1EDBA4BD0 = v10;

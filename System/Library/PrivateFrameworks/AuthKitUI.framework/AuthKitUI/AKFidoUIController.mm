@@ -1,65 +1,65 @@
 @interface AKFidoUIController
 - (AKFidoUIController)init;
-- (AKFidoUIController)initWithXPCSession:(id)a3;
-- (void)registerFidoKeyWithContext:(id)a3 completion:(id)a4;
-- (void)verifyFidoKeyWithContext:(id)a3 completion:(id)a4;
-- (void)verifyFidoKeyWithFidoContext:(id)a3 completion:(id)a4;
-- (void)verifyFidoRecoveryWithContext:(id)a3 recoveryToken:(id)a4 completion:(id)a5;
+- (AKFidoUIController)initWithXPCSession:(id)session;
+- (void)registerFidoKeyWithContext:(id)context completion:(id)completion;
+- (void)verifyFidoKeyWithContext:(id)context completion:(id)completion;
+- (void)verifyFidoKeyWithFidoContext:(id)context completion:(id)completion;
+- (void)verifyFidoRecoveryWithContext:(id)context recoveryToken:(id)token completion:(id)completion;
 @end
 
 @implementation AKFidoUIController
 
 - (AKFidoUIController)init
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v2 = objc_alloc(MEMORY[0x277CE4558]);
   v8[0] = [v2 initWithServiceName:*MEMORY[0x277CF0020] remoteProtocol:&unk_2835ECBD8 options:0];
   v3 = objc_alloc(MEMORY[0x277CE4550]);
-  v7 = [v3 initWithRemoteServiceConfig:v8[0] delegate:v9];
-  v4 = v9;
-  v9 = 0;
-  v9 = [(AKFidoUIController *)v4 initWithXPCSession:v7];
-  objc_storeStrong(&v9, v9);
-  v6 = MEMORY[0x277D82BE0](v9);
+  v7 = [v3 initWithRemoteServiceConfig:v8[0] delegate:selfCopy];
+  v4 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(AKFidoUIController *)v4 initWithXPCSession:v7];
+  objc_storeStrong(&selfCopy, selfCopy);
+  v6 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(v8, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (AKFidoUIController)initWithXPCSession:(id)a3
+- (AKFidoUIController)initWithXPCSession:(id)session
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, session);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = AKFidoUIController;
-  v8 = [(AKFidoUIController *)&v6 init];
-  objc_storeStrong(&v8, v8);
-  if (v8)
+  selfCopy = [(AKFidoUIController *)&v6 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v8->_remoteService, location[0]);
-    [(AAFXPCSession *)v8->_remoteService resume];
+    objc_storeStrong(&selfCopy->_remoteService, location[0]);
+    [(AAFXPCSession *)selfCopy->_remoteService resume];
   }
 
-  v5 = MEMORY[0x277D82BE0](v8);
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (void)registerFidoKeyWithContext:(id)a3 completion:(id)a4
+- (void)registerFidoKeyWithContext:(id)context completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, completion);
   v27 = _os_activity_create(&dword_222379000, "fido-authkit/register-key", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v28 = v27;
   state.opaque[0] = 0;
@@ -71,7 +71,7 @@
   v22 = 48;
   v23 = __Block_byref_object_copy__1;
   v24 = __Block_byref_object_dispose__1;
-  v25 = MEMORY[0x277D82BE0](v31);
+  v25 = MEMORY[0x277D82BE0](selfCopy);
   v13 = MEMORY[0x277D85DD0];
   v14 = -1073741824;
   v15 = 0;
@@ -80,7 +80,7 @@
   v18[1] = v20;
   v18[0] = MEMORY[0x277D82BE0](v29);
   v19 = MEMORY[0x223DB6C90](&v13);
-  remoteService = v31->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
@@ -134,14 +134,14 @@ void __60__AKFidoUIController_registerFidoKeyWithContext_completion___block_invo
   *MEMORY[0x277D85DE8];
 }
 
-- (void)verifyFidoKeyWithFidoContext:(id)a3 completion:(id)a4
+- (void)verifyFidoKeyWithFidoContext:(id)context completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, completion);
   v27 = _os_activity_create(&dword_222379000, "fido-authkit/verify-fido-key", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v28 = v27;
   state.opaque[0] = 0;
@@ -153,7 +153,7 @@ void __60__AKFidoUIController_registerFidoKeyWithContext_completion___block_invo
   v22 = 48;
   v23 = __Block_byref_object_copy__1;
   v24 = __Block_byref_object_dispose__1;
-  v25 = MEMORY[0x277D82BE0](v31);
+  v25 = MEMORY[0x277D82BE0](selfCopy);
   v13 = MEMORY[0x277D85DD0];
   v14 = -1073741824;
   v15 = 0;
@@ -162,7 +162,7 @@ void __60__AKFidoUIController_registerFidoKeyWithContext_completion___block_invo
   v18[1] = v20;
   v18[0] = MEMORY[0x277D82BE0](v29);
   v19 = MEMORY[0x223DB6C90](&v13);
-  remoteService = v31->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
@@ -216,14 +216,14 @@ void __62__AKFidoUIController_verifyFidoKeyWithFidoContext_completion___block_in
   *MEMORY[0x277D85DE8];
 }
 
-- (void)verifyFidoKeyWithContext:(id)a3 completion:(id)a4
+- (void)verifyFidoKeyWithContext:(id)context completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, completion);
   v27 = _os_activity_create(&dword_222379000, "fido-authkit/verify-context-key", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v28 = v27;
   state.opaque[0] = 0;
@@ -235,7 +235,7 @@ void __62__AKFidoUIController_verifyFidoKeyWithFidoContext_completion___block_in
   v22 = 48;
   v23 = __Block_byref_object_copy__1;
   v24 = __Block_byref_object_dispose__1;
-  v25 = MEMORY[0x277D82BE0](v31);
+  v25 = MEMORY[0x277D82BE0](selfCopy);
   v13 = MEMORY[0x277D85DD0];
   v14 = -1073741824;
   v15 = 0;
@@ -244,7 +244,7 @@ void __62__AKFidoUIController_verifyFidoKeyWithFidoContext_completion___block_in
   v18[1] = v20;
   v18[0] = MEMORY[0x277D82BE0](v29);
   v19 = MEMORY[0x223DB6C90](&v13);
-  remoteService = v31->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
@@ -301,16 +301,16 @@ void __58__AKFidoUIController_verifyFidoKeyWithContext_completion___block_invoke
   *MEMORY[0x277D85DE8];
 }
 
-- (void)verifyFidoRecoveryWithContext:(id)a3 recoveryToken:(id)a4 completion:(id)a5
+- (void)verifyFidoRecoveryWithContext:(id)context recoveryToken:(id)token completion:(id)completion
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v32 = 0;
-  objc_storeStrong(&v32, a4);
+  objc_storeStrong(&v32, token);
   v31 = 0;
-  objc_storeStrong(&v31, a5);
+  objc_storeStrong(&v31, completion);
   v29 = _os_activity_create(&dword_222379000, "fido-authkit/verify-recovery-key", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v30 = v29;
   state.opaque[0] = 0;
@@ -322,7 +322,7 @@ void __58__AKFidoUIController_verifyFidoKeyWithContext_completion___block_invoke
   v24 = 48;
   v25 = __Block_byref_object_copy__1;
   v26 = __Block_byref_object_dispose__1;
-  v27 = MEMORY[0x277D82BE0](v34);
+  v27 = MEMORY[0x277D82BE0](selfCopy);
   v15 = MEMORY[0x277D85DD0];
   v16 = -1073741824;
   v17 = 0;
@@ -331,7 +331,7 @@ void __58__AKFidoUIController_verifyFidoKeyWithContext_completion___block_invoke
   v20[1] = v22;
   v20[0] = MEMORY[0x277D82BE0](v31);
   v21 = MEMORY[0x223DB6C90](&v15);
-  remoteService = v34->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
   v10 = 0;

@@ -1,163 +1,163 @@
 @interface TSWPCitationRecord
-- (BOOL)isRecordEqual:(id)a3;
+- (BOOL)isRecordEqual:(id)equal;
 - (NSString)cacheKey;
 - (id)authorYearString;
-- (id)copyWithContext:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithContext:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)p_endNoteXMLForComparison;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)p_copyPropertiesToObject:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setAuthorsString:(id)a3;
-- (void)setEndNoteXML:(id)a3;
-- (void)setHideAuthorNames:(BOOL)a3;
-- (void)setHideYear:(BOOL)a3;
-- (void)setPageRange:(id)a3;
-- (void)setPrefix:(id)a3;
-- (void)setSuffix:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setType:(id)a3;
-- (void)setYear:(id)a3;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)p_copyPropertiesToObject:(id)object;
+- (void)saveToArchiver:(id)archiver;
+- (void)setAuthorsString:(id)string;
+- (void)setEndNoteXML:(id)l;
+- (void)setHideAuthorNames:(BOOL)names;
+- (void)setHideYear:(BOOL)year;
+- (void)setPageRange:(id)range;
+- (void)setPrefix:(id)prefix;
+- (void)setSuffix:(id)suffix;
+- (void)setTitle:(id)title;
+- (void)setType:(id)type;
+- (void)setYear:(id)year;
 @end
 
 @implementation TSWPCitationRecord
 
-- (void)setEndNoteXML:(id)a3
+- (void)setEndNoteXML:(id)l
 {
-  v4 = a3;
-  if (self->_endNoteXML != v4)
+  lCopy = l;
+  if (self->_endNoteXML != lCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = lCopy;
+    objc_msgSend_willModify(self, lCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_endNoteXML, v8);
-    v4 = v8;
+    lCopy = v8;
   }
 }
 
-- (void)setHideAuthorNames:(BOOL)a3
+- (void)setHideAuthorNames:(BOOL)names
 {
-  if (self->_hideAuthorNames != a3)
+  if (self->_hideAuthorNames != names)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_hideAuthorNames = a3;
+    objc_msgSend_willModify(self, a2, names);
+    self->_hideAuthorNames = names;
   }
 }
 
-- (void)setHideYear:(BOOL)a3
+- (void)setHideYear:(BOOL)year
 {
-  if (self->_hideYear != a3)
+  if (self->_hideYear != year)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_hideYear = a3;
+    objc_msgSend_willModify(self, a2, year);
+    self->_hideYear = year;
   }
 }
 
-- (void)setPageRange:(id)a3
+- (void)setPageRange:(id)range
 {
-  v4 = a3;
-  if (self->_pageRange != v4)
+  rangeCopy = range;
+  if (self->_pageRange != rangeCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = rangeCopy;
+    objc_msgSend_willModify(self, rangeCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_pageRange, v8);
-    v4 = v8;
+    rangeCopy = v8;
   }
 }
 
-- (void)setPrefix:(id)a3
+- (void)setPrefix:(id)prefix
 {
-  v4 = a3;
-  if (self->_prefix != v4)
+  prefixCopy = prefix;
+  if (self->_prefix != prefixCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = prefixCopy;
+    objc_msgSend_willModify(self, prefixCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_prefix, v8);
-    v4 = v8;
+    prefixCopy = v8;
   }
 }
 
-- (void)setSuffix:(id)a3
+- (void)setSuffix:(id)suffix
 {
-  v4 = a3;
-  if (self->_suffix != v4)
+  suffixCopy = suffix;
+  if (self->_suffix != suffixCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = suffixCopy;
+    objc_msgSend_willModify(self, suffixCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_suffix, v8);
-    v4 = v8;
+    suffixCopy = v8;
   }
 }
 
-- (void)setAuthorsString:(id)a3
+- (void)setAuthorsString:(id)string
 {
-  v4 = a3;
-  if (self->_authorsString != v4)
+  stringCopy = string;
+  if (self->_authorsString != stringCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = stringCopy;
+    objc_msgSend_willModify(self, stringCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_authorsString, v8);
-    v4 = v8;
+    stringCopy = v8;
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  if (self->_title != v4)
+  titleCopy = title;
+  if (self->_title != titleCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = titleCopy;
+    objc_msgSend_willModify(self, titleCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_title, v8);
-    v4 = v8;
+    titleCopy = v8;
   }
 }
 
-- (void)setYear:(id)a3
+- (void)setYear:(id)year
 {
-  v4 = a3;
-  if (self->_year != v4)
+  yearCopy = year;
+  if (self->_year != yearCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = yearCopy;
+    objc_msgSend_willModify(self, yearCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_year, v8);
-    v4 = v8;
+    yearCopy = v8;
   }
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
-  v4 = a3;
-  if (self->_type != v4)
+  typeCopy = type;
+  if (self->_type != typeCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = typeCopy;
+    objc_msgSend_willModify(self, typeCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_type, v8);
-    v4 = v8;
+    typeCopy = v8;
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_276DF8B1C, off_2812DC408[146]);
+  v6 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_276DF8B1C, off_2812DC408[146]);
 
   endNoteXML = self->_endNoteXML;
   if (endNoteXML)
@@ -269,11 +269,11 @@
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v38 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v38, v4, off_2812DC408[146]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812DC408[146]);
 
   if (*(v5 + 16))
   {
@@ -390,9 +390,9 @@
   self->_type = v34;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(TSWPCitationRecord, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(TSWPCitationRecord, a2, zone);
   v7 = objc_msgSend_context(self, v5, v6);
   v9 = objc_msgSend_initWithContext_(v4, v8, v7);
 
@@ -400,11 +400,11 @@
   return v9;
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [TSWPCitationRecord alloc];
-  v7 = objc_msgSend_initWithContext_(v5, v6, v4);
+  v7 = objc_msgSend_initWithContext_(v5, v6, contextCopy);
   objc_msgSend_p_copyPropertiesToObject_(self, v8, v7);
 
   return v7;
@@ -424,15 +424,15 @@
   return v22;
 }
 
-- (BOOL)isRecordEqual:(id)a3
+- (BOOL)isRecordEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7 = objc_msgSend_authorsString(self, v5, v6);
-  v10 = objc_msgSend_authorsString(v4, v8, v9);
+  v10 = objc_msgSend_authorsString(equalCopy, v8, v9);
   if (objc_msgSend_isEqualToString_(v7, v11, v10))
   {
     v14 = objc_msgSend_p_endNoteXMLForComparison(self, v12, v13);
-    v17 = objc_msgSend_p_endNoteXMLForComparison(v4, v15, v16);
+    v17 = objc_msgSend_p_endNoteXMLForComparison(equalCopy, v15, v16);
     isEqualToString = objc_msgSend_isEqualToString_(v14, v18, v17);
   }
 
@@ -475,41 +475,41 @@
   return v10;
 }
 
-- (void)p_copyPropertiesToObject:(id)a3
+- (void)p_copyPropertiesToObject:(id)object
 {
-  v52 = a3;
+  objectCopy = object;
   v6 = objc_msgSend_endNoteXML(self, v4, v5);
-  objc_msgSend_setEndNoteXML_(v52, v7, v6);
+  objc_msgSend_setEndNoteXML_(objectCopy, v7, v6);
 
   v10 = objc_msgSend_hideAuthorNames(self, v8, v9);
-  objc_msgSend_setHideAuthorNames_(v52, v11, v10);
+  objc_msgSend_setHideAuthorNames_(objectCopy, v11, v10);
   v14 = objc_msgSend_hideYear(self, v12, v13);
-  objc_msgSend_setHideYear_(v52, v15, v14);
+  objc_msgSend_setHideYear_(objectCopy, v15, v14);
   v18 = objc_msgSend_pageRange(self, v16, v17);
-  objc_msgSend_setPageRange_(v52, v19, v18);
+  objc_msgSend_setPageRange_(objectCopy, v19, v18);
 
   v22 = objc_msgSend_prefix(self, v20, v21);
-  objc_msgSend_setPrefix_(v52, v23, v22);
+  objc_msgSend_setPrefix_(objectCopy, v23, v22);
 
   v26 = objc_msgSend_suffix(self, v24, v25);
-  objc_msgSend_setSuffix_(v52, v27, v26);
+  objc_msgSend_setSuffix_(objectCopy, v27, v26);
 
   v30 = objc_msgSend_authorsString(self, v28, v29);
-  objc_msgSend_setAuthorsString_(v52, v31, v30);
+  objc_msgSend_setAuthorsString_(objectCopy, v31, v30);
 
   v34 = objc_msgSend_title(self, v32, v33);
-  objc_msgSend_setTitle_(v52, v35, v34);
+  objc_msgSend_setTitle_(objectCopy, v35, v34);
 
   v38 = objc_msgSend_year(self, v36, v37);
-  objc_msgSend_setYear_(v52, v39, v38);
+  objc_msgSend_setYear_(objectCopy, v39, v38);
 
   v42 = objc_msgSend_type(self, v40, v41);
-  objc_msgSend_setType_(v52, v43, v42);
+  objc_msgSend_setType_(objectCopy, v43, v42);
 
   v46 = objc_msgSend_shouldRemove(self, v44, v45);
-  objc_msgSend_setShouldRemove_(v52, v47, v46);
+  objc_msgSend_setShouldRemove_(objectCopy, v47, v46);
   v50 = objc_msgSend_recordXMLApplied(self, v48, v49);
-  objc_msgSend_setRecordXMLApplied_(v52, v51, v50);
+  objc_msgSend_setRecordXMLApplied_(objectCopy, v51, v50);
 }
 
 - (id)p_endNoteXMLForComparison

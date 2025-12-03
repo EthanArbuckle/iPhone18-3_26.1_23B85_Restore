@@ -1,23 +1,23 @@
 @interface AWDIMessageQueryFinished
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConnectionType:(BOOL)a3;
-- (void)setHasGenericError:(BOOL)a3;
-- (void)setHasIsEmail:(BOOL)a3;
-- (void)setHasIsPhoneNumber:(BOOL)a3;
-- (void)setHasPOSIXError:(BOOL)a3;
-- (void)setHasQueryDuration:(BOOL)a3;
-- (void)setHasResultCode:(BOOL)a3;
-- (void)setHasSuccess:(BOOL)a3;
-- (void)setHasURLError:(BOOL)a3;
-- (void)setHasWasReversePushAttempted:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasConnectionType:(BOOL)type;
+- (void)setHasGenericError:(BOOL)error;
+- (void)setHasIsEmail:(BOOL)email;
+- (void)setHasIsPhoneNumber:(BOOL)number;
+- (void)setHasPOSIXError:(BOOL)error;
+- (void)setHasQueryDuration:(BOOL)duration;
+- (void)setHasResultCode:(BOOL)code;
+- (void)setHasSuccess:(BOOL)success;
+- (void)setHasURLError:(BOOL)error;
+- (void)setHasWasReversePushAttempted:(BOOL)attempted;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIMessageQueryFinished
@@ -30,9 +30,9 @@
   [(AWDIMessageQueryFinished *)&v3 dealloc];
 }
 
-- (void)setHasSuccess:(BOOL)a3
+- (void)setHasSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 256;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasConnectionType:(BOOL)a3
+- (void)setHasConnectionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasQueryDuration:(BOOL)a3
+- (void)setHasQueryDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 64;
   }
@@ -75,9 +75,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasIsPhoneNumber:(BOOL)a3
+- (void)setHasIsPhoneNumber:(BOOL)number
 {
-  if (a3)
+  if (number)
   {
     v3 = 16;
   }
@@ -90,9 +90,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasIsEmail:(BOOL)a3
+- (void)setHasIsEmail:(BOOL)email
 {
-  if (a3)
+  if (email)
   {
     v3 = 8;
   }
@@ -105,9 +105,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasResultCode:(BOOL)a3
+- (void)setHasResultCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 128;
   }
@@ -120,9 +120,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasGenericError:(BOOL)a3
+- (void)setHasGenericError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 4;
   }
@@ -135,9 +135,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasURLError:(BOOL)a3
+- (void)setHasURLError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 512;
   }
@@ -150,9 +150,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasPOSIXError:(BOOL)a3
+- (void)setHasPOSIXError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 32;
   }
@@ -165,9 +165,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasWasReversePushAttempted:(BOOL)a3
+- (void)setHasWasReversePushAttempted:(BOOL)attempted
 {
-  if (a3)
+  if (attempted)
   {
     v3 = 1024;
   }
@@ -189,12 +189,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  v4 = dictionary;
   guid = self->_guid;
   if (guid)
   {
-    [v3 setObject:guid forKey:@"guid"];
+    [dictionary setObject:guid forKey:@"guid"];
   }
 
   has = self->_has;
@@ -341,7 +341,7 @@ LABEL_14:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_guid)
   {
@@ -504,18 +504,18 @@ LABEL_25:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_guid)
   {
-    [a3 setGuid:?];
+    [to setGuid:?];
   }
 
   has = self->_has;
   if (has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 32) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 32) |= 1u;
     has = self->_has;
     if ((has & 0x100) == 0)
     {
@@ -534,8 +534,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(a3 + 13) = self->_success;
-  *(a3 + 32) |= 0x100u;
+  *(to + 13) = self->_success;
+  *(to + 32) |= 0x100u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -549,8 +549,8 @@ LABEL_6:
   }
 
 LABEL_18:
-  *(a3 + 4) = self->_connectionType;
-  *(a3 + 32) |= 2u;
+  *(to + 4) = self->_connectionType;
+  *(to + 32) |= 2u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -564,8 +564,8 @@ LABEL_7:
   }
 
 LABEL_19:
-  *(a3 + 11) = self->_queryDuration;
-  *(a3 + 32) |= 0x40u;
+  *(to + 11) = self->_queryDuration;
+  *(to + 32) |= 0x40u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -579,8 +579,8 @@ LABEL_8:
   }
 
 LABEL_20:
-  *(a3 + 9) = self->_isPhoneNumber;
-  *(a3 + 32) |= 0x10u;
+  *(to + 9) = self->_isPhoneNumber;
+  *(to + 32) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -594,8 +594,8 @@ LABEL_9:
   }
 
 LABEL_21:
-  *(a3 + 8) = self->_isEmail;
-  *(a3 + 32) |= 8u;
+  *(to + 8) = self->_isEmail;
+  *(to + 32) |= 8u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -609,8 +609,8 @@ LABEL_10:
   }
 
 LABEL_22:
-  *(a3 + 12) = self->_resultCode;
-  *(a3 + 32) |= 0x80u;
+  *(to + 12) = self->_resultCode;
+  *(to + 32) |= 0x80u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -624,8 +624,8 @@ LABEL_11:
   }
 
 LABEL_23:
-  *(a3 + 5) = self->_genericError;
-  *(a3 + 32) |= 4u;
+  *(to + 5) = self->_genericError;
+  *(to + 32) |= 4u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -639,8 +639,8 @@ LABEL_12:
   }
 
 LABEL_24:
-  *(a3 + 14) = self->_uRLError;
-  *(a3 + 32) |= 0x200u;
+  *(to + 14) = self->_uRLError;
+  *(to + 32) |= 0x200u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -654,23 +654,23 @@ LABEL_13:
   }
 
 LABEL_25:
-  *(a3 + 10) = self->_pOSIXError;
-  *(a3 + 32) |= 0x20u;
+  *(to + 10) = self->_pOSIXError;
+  *(to + 32) |= 0x20u;
   if ((*&self->_has & 0x400) == 0)
   {
     return;
   }
 
 LABEL_14:
-  *(a3 + 15) = self->_wasReversePushAttempted;
-  *(a3 + 32) |= 0x400u;
+  *(to + 15) = self->_wasReversePushAttempted;
+  *(to + 32) |= 0x400u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  *(v5 + 24) = [(NSString *)self->_guid copyWithZone:a3];
+  *(v5 + 24) = [(NSString *)self->_guid copyWithZone:zone];
   has = self->_has;
   if (has)
   {
@@ -826,19 +826,19 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     guid = self->_guid;
-    if (!(guid | *(a3 + 3)) || (v5 = [(NSString *)guid isEqual:?]) != 0)
+    if (!(guid | *(equal + 3)) || (v5 = [(NSString *)guid isEqual:?]) != 0)
     {
       has = self->_has;
-      v8 = *(a3 + 32);
+      v8 = *(equal + 32);
       if (has)
       {
-        if ((v8 & 1) == 0 || self->_timestamp != *(a3 + 1))
+        if ((v8 & 1) == 0 || self->_timestamp != *(equal + 1))
         {
           goto LABEL_58;
         }
@@ -853,20 +853,20 @@ LABEL_58:
 
       if ((*&self->_has & 0x100) != 0)
       {
-        if ((*(a3 + 32) & 0x100) == 0 || self->_success != *(a3 + 13))
+        if ((*(equal + 32) & 0x100) == 0 || self->_success != *(equal + 13))
         {
           goto LABEL_58;
         }
       }
 
-      else if ((*(a3 + 32) & 0x100) != 0)
+      else if ((*(equal + 32) & 0x100) != 0)
       {
         goto LABEL_58;
       }
 
       if ((has & 2) != 0)
       {
-        if ((v8 & 2) == 0 || self->_connectionType != *(a3 + 4))
+        if ((v8 & 2) == 0 || self->_connectionType != *(equal + 4))
         {
           goto LABEL_58;
         }
@@ -879,7 +879,7 @@ LABEL_58:
 
       if ((has & 0x40) != 0)
       {
-        if ((v8 & 0x40) == 0 || self->_queryDuration != *(a3 + 11))
+        if ((v8 & 0x40) == 0 || self->_queryDuration != *(equal + 11))
         {
           goto LABEL_58;
         }
@@ -892,7 +892,7 @@ LABEL_58:
 
       if ((has & 0x10) != 0)
       {
-        if ((v8 & 0x10) == 0 || self->_isPhoneNumber != *(a3 + 9))
+        if ((v8 & 0x10) == 0 || self->_isPhoneNumber != *(equal + 9))
         {
           goto LABEL_58;
         }
@@ -905,7 +905,7 @@ LABEL_58:
 
       if ((has & 8) != 0)
       {
-        if ((v8 & 8) == 0 || self->_isEmail != *(a3 + 8))
+        if ((v8 & 8) == 0 || self->_isEmail != *(equal + 8))
         {
           goto LABEL_58;
         }
@@ -918,7 +918,7 @@ LABEL_58:
 
       if ((has & 0x80) != 0)
       {
-        if ((v8 & 0x80) == 0 || self->_resultCode != *(a3 + 12))
+        if ((v8 & 0x80) == 0 || self->_resultCode != *(equal + 12))
         {
           goto LABEL_58;
         }
@@ -931,7 +931,7 @@ LABEL_58:
 
       if ((has & 4) != 0)
       {
-        if ((v8 & 4) == 0 || self->_genericError != *(a3 + 5))
+        if ((v8 & 4) == 0 || self->_genericError != *(equal + 5))
         {
           goto LABEL_58;
         }
@@ -944,20 +944,20 @@ LABEL_58:
 
       if ((*&self->_has & 0x200) != 0)
       {
-        if ((*(a3 + 32) & 0x200) == 0 || self->_uRLError != *(a3 + 14))
+        if ((*(equal + 32) & 0x200) == 0 || self->_uRLError != *(equal + 14))
         {
           goto LABEL_58;
         }
       }
 
-      else if ((*(a3 + 32) & 0x200) != 0)
+      else if ((*(equal + 32) & 0x200) != 0)
       {
         goto LABEL_58;
       }
 
       if ((has & 0x20) != 0)
       {
-        if ((v8 & 0x20) == 0 || self->_pOSIXError != *(a3 + 10))
+        if ((v8 & 0x20) == 0 || self->_pOSIXError != *(equal + 10))
         {
           goto LABEL_58;
         }
@@ -971,7 +971,7 @@ LABEL_58:
       LOBYTE(v5) = (v8 & 0x400) == 0;
       if ((*&self->_has & 0x400) != 0)
       {
-        if ((*(a3 + 32) & 0x400) == 0 || self->_wasReversePushAttempted != *(a3 + 15))
+        if ((*(equal + 32) & 0x400) == 0 || self->_wasReversePushAttempted != *(equal + 15))
         {
           goto LABEL_58;
         }
@@ -1138,19 +1138,19 @@ LABEL_12:
   return v5 ^ v3 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDIMessageQueryFinished *)self setGuid:?];
   }
 
-  v5 = *(a3 + 32);
+  v5 = *(from + 32);
   if (v5)
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
-    v5 = *(a3 + 32);
+    v5 = *(from + 32);
     if ((v5 & 0x100) == 0)
     {
 LABEL_5:
@@ -1163,14 +1163,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(a3 + 32) & 0x100) == 0)
+  else if ((*(from + 32) & 0x100) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_success = *(a3 + 13);
+  self->_success = *(from + 13);
   *&self->_has |= 0x100u;
-  v5 = *(a3 + 32);
+  v5 = *(from + 32);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -1183,9 +1183,9 @@ LABEL_6:
   }
 
 LABEL_18:
-  self->_connectionType = *(a3 + 4);
+  self->_connectionType = *(from + 4);
   *&self->_has |= 2u;
-  v5 = *(a3 + 32);
+  v5 = *(from + 32);
   if ((v5 & 0x40) == 0)
   {
 LABEL_7:
@@ -1198,9 +1198,9 @@ LABEL_7:
   }
 
 LABEL_19:
-  self->_queryDuration = *(a3 + 11);
+  self->_queryDuration = *(from + 11);
   *&self->_has |= 0x40u;
-  v5 = *(a3 + 32);
+  v5 = *(from + 32);
   if ((v5 & 0x10) == 0)
   {
 LABEL_8:
@@ -1213,9 +1213,9 @@ LABEL_8:
   }
 
 LABEL_20:
-  self->_isPhoneNumber = *(a3 + 9);
+  self->_isPhoneNumber = *(from + 9);
   *&self->_has |= 0x10u;
-  v5 = *(a3 + 32);
+  v5 = *(from + 32);
   if ((v5 & 8) == 0)
   {
 LABEL_9:
@@ -1228,9 +1228,9 @@ LABEL_9:
   }
 
 LABEL_21:
-  self->_isEmail = *(a3 + 8);
+  self->_isEmail = *(from + 8);
   *&self->_has |= 8u;
-  v5 = *(a3 + 32);
+  v5 = *(from + 32);
   if ((v5 & 0x80) == 0)
   {
 LABEL_10:
@@ -1243,9 +1243,9 @@ LABEL_10:
   }
 
 LABEL_22:
-  self->_resultCode = *(a3 + 12);
+  self->_resultCode = *(from + 12);
   *&self->_has |= 0x80u;
-  v5 = *(a3 + 32);
+  v5 = *(from + 32);
   if ((v5 & 4) == 0)
   {
 LABEL_11:
@@ -1258,9 +1258,9 @@ LABEL_11:
   }
 
 LABEL_23:
-  self->_genericError = *(a3 + 5);
+  self->_genericError = *(from + 5);
   *&self->_has |= 4u;
-  v5 = *(a3 + 32);
+  v5 = *(from + 32);
   if ((v5 & 0x200) == 0)
   {
 LABEL_12:
@@ -1273,9 +1273,9 @@ LABEL_12:
   }
 
 LABEL_24:
-  self->_uRLError = *(a3 + 14);
+  self->_uRLError = *(from + 14);
   *&self->_has |= 0x200u;
-  v5 = *(a3 + 32);
+  v5 = *(from + 32);
   if ((v5 & 0x20) == 0)
   {
 LABEL_13:
@@ -1288,15 +1288,15 @@ LABEL_13:
   }
 
 LABEL_25:
-  self->_pOSIXError = *(a3 + 10);
+  self->_pOSIXError = *(from + 10);
   *&self->_has |= 0x20u;
-  if ((*(a3 + 32) & 0x400) == 0)
+  if ((*(from + 32) & 0x400) == 0)
   {
     return;
   }
 
 LABEL_14:
-  self->_wasReversePushAttempted = *(a3 + 15);
+  self->_wasReversePushAttempted = *(from + 15);
   *&self->_has |= 0x400u;
 }
 

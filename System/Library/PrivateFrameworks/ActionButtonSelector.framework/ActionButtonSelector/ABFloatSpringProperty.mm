@@ -1,9 +1,9 @@
 @interface ABFloatSpringProperty
-- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)a3 toState:(int)a4;
+- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)state toState:(int)toState;
 - (ABFloatSpringProperty)init;
-- (double)projectForDeceleration:(double)a3;
-- (double)projectForTime:(double)a3;
-- (void)setOutput:(double)a3;
+- (double)projectForDeceleration:(double)deceleration;
+- (double)projectForTime:(double)time;
+- (void)setOutput:(double)output;
 @end
 
 @implementation ABFloatSpringProperty
@@ -41,14 +41,14 @@ uint64_t __34__ABFloatSpringProperty_setInput___block_invoke(uint64_t a1)
   return [v2 _modifyAnimationsWithPreferredFrameRateRange:v8 updateReason:v12 animations:{COERCE_DOUBLE(__PAIR64__(HIDWORD(*(a1 + 40)), LODWORD(v3))), v9, v10}];
 }
 
-- (void)setOutput:(double)a3
+- (void)setOutput:(double)output
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __35__ABFloatSpringProperty_setOutput___block_invoke;
   v3[3] = &unk_278BFFE20;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = output;
   [MEMORY[0x277D75D18] performWithoutAnimation:v3];
 }
 
@@ -63,7 +63,7 @@ uint64_t __35__ABFloatSpringProperty_setOutput___block_invoke(uint64_t a1)
   return [MEMORY[0x277D75D18] _performWithoutRetargetingAnimations:v2];
 }
 
-- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)a3 toState:(int)a4
+- ($6E732EA7D3E0C9EC9CEEF7385E7E4683)parametersForTransitionFromState:(SEL)state toState:(int)toState
 {
   *&retstr->var7 = 0u;
   *&retstr->var9 = 0u;
@@ -80,20 +80,20 @@ uint64_t __35__ABFloatSpringProperty_setOutput___block_invoke(uint64_t a1)
   return self;
 }
 
-- (double)projectForDeceleration:(double)a3
+- (double)projectForDeceleration:(double)deceleration
 {
   [(ABFloatSpringProperty *)self output];
   v6 = v5;
   [(UIViewFloatAnimatableProperty *)self velocity];
-  return v6 + v7 / 1000.0 * a3 / (1.0 - a3);
+  return v6 + v7 / 1000.0 * deceleration / (1.0 - deceleration);
 }
 
-- (double)projectForTime:(double)a3
+- (double)projectForTime:(double)time
 {
   [(ABFloatSpringProperty *)self output];
   v6 = v5;
   [(UIViewFloatAnimatableProperty *)self velocity];
-  return v6 + v7 * a3;
+  return v6 + v7 * time;
 }
 
 @end

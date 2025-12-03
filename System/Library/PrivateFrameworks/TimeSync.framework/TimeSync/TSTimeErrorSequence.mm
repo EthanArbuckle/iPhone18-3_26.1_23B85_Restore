@@ -1,30 +1,30 @@
 @interface TSTimeErrorSequence
-+ (id)timeErrorSequenceWithTimestamps:(unint64_t *)a3 timeError:(int64_t *)a4 count:(int64_t)a5;
-- (BOOL)exportTimeErrorsToDirectoryURL:(id)a3 withFilename:(id)a4;
-- (TSTimeErrorSequence)initWithTimeErrors:(id)a3;
-- (id)generatePythonScriptWithOutputPath:(id)a3 fileName:(id)a4 titleName:(id)a5 plotPath:(id)a6 showPlot:(BOOL)a7;
++ (id)timeErrorSequenceWithTimestamps:(unint64_t *)timestamps timeError:(int64_t *)error count:(int64_t)count;
+- (BOOL)exportTimeErrorsToDirectoryURL:(id)l withFilename:(id)filename;
+- (TSTimeErrorSequence)initWithTimeErrors:(id)errors;
+- (id)generatePythonScriptWithOutputPath:(id)path fileName:(id)name titleName:(id)titleName plotPath:(id)plotPath showPlot:(BOOL)plot;
 @end
 
 @implementation TSTimeErrorSequence
 
-+ (id)timeErrorSequenceWithTimestamps:(unint64_t *)a3 timeError:(int64_t *)a4 count:(int64_t)a5
++ (id)timeErrorSequenceWithTimestamps:(unint64_t *)timestamps timeError:(int64_t *)error count:(int64_t)count
 {
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (a3 && a4 && a5 >= 1)
+  if (timestamps && error && count >= 1)
   {
     do
     {
       v9 = [TSTimeErrorValue alloc];
-      v11 = *a3++;
+      v11 = *timestamps++;
       v10 = v11;
-      v12 = *a4++;
+      v12 = *error++;
       v13 = [(TSTimeErrorValue *)v9 initWithTimestamp:v10 andError:v12];
       [v8 addObject:v13];
 
-      --a5;
+      --count;
     }
 
-    while (a5);
+    while (count);
   }
 
   v14 = [objc_alloc(objc_opt_class()) initWithTimeErrors:v8];
@@ -32,15 +32,15 @@
   return v14;
 }
 
-- (TSTimeErrorSequence)initWithTimeErrors:(id)a3
+- (TSTimeErrorSequence)initWithTimeErrors:(id)errors
 {
-  v4 = a3;
+  errorsCopy = errors;
   v9.receiver = self;
   v9.super_class = TSTimeErrorSequence;
   v5 = [(TSTimeErrorSequence *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v4];
+    v6 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:errorsCopy];
     timeErrors = v5->_timeErrors;
     v5->_timeErrors = v6;
   }
@@ -48,52 +48,52 @@
   return v5;
 }
 
-- (id)generatePythonScriptWithOutputPath:(id)a3 fileName:(id)a4 titleName:(id)a5 plotPath:(id)a6 showPlot:(BOOL)a7
+- (id)generatePythonScriptWithOutputPath:(id)path fileName:(id)name titleName:(id)titleName plotPath:(id)plotPath showPlot:(BOOL)plot
 {
-  v7 = a7;
-  v11 = a3;
-  v12 = a6;
+  plotCopy = plot;
+  pathCopy = path;
+  plotPathCopy = plotPath;
   v13 = MEMORY[0x277CCAB68];
-  v14 = a5;
-  v15 = a4;
-  v16 = [v13 string];
-  [v16 appendFormat:@"#!/usr/bin/env python3\n\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport os\nimport sys\n"];
-  if (v11)
+  titleNameCopy = titleName;
+  nameCopy = name;
+  string = [v13 string];
+  [string appendFormat:@"#!/usr/bin/env python3\n\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport os\nimport sys\n"];
+  if (pathCopy)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"'%@/%@'", v11, v15];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"'%@/%@'", pathCopy, nameCopy];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"os.path.split(sys.argv[0])[0]+'/%@'", v15, v19];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"os.path.split(sys.argv[0])[0]+'/%@'", nameCopy, v19];
   }
   v17 = ;
 
-  [v16 appendFormat:@"timeErrorRecords = np.rec.array(np.genfromtxt(%@, dtype=None, delimiter=', ', names=True, encoding='utf-8'))\n\ntime = timeErrorRecords.time\ntimeError = timeErrorRecords.time_error\n\n", v17];
-  [v16 appendFormat:@"f1, ax1 = plt.subplots()\nax1.plot(time, timeError, 'r-')\nax1.set_ylabel('Time Error (ns)')\nax1.set_xlabel('Time (ns)')\nax1.set_title('Time Errors - %@')\nax1.grid(True)\n\nplt.subplots_adjust(left=0.05, right=0.97, bottom=0.05, top=0.97)\n", v14];
+  [string appendFormat:@"timeErrorRecords = np.rec.array(np.genfromtxt(%@, dtype=None, delimiter=', ', names=True, encoding='utf-8'))\n\ntime = timeErrorRecords.time\ntimeError = timeErrorRecords.time_error\n\n", v17];
+  [string appendFormat:@"f1, ax1 = plt.subplots()\nax1.plot(time, timeError, 'r-')\nax1.set_ylabel('Time Error (ns)')\nax1.set_xlabel('Time (ns)')\nax1.set_title('Time Errors - %@')\nax1.grid(True)\n\nplt.subplots_adjust(left=0.05, right=0.97, bottom=0.05, top=0.97)\n", titleNameCopy];
 
-  if (v12)
+  if (plotPathCopy)
   {
-    [v16 appendFormat:@"\nf1.set_size_inches(32, 16.98753)\n\nf1.savefig('%@')\n", v12];
+    [string appendFormat:@"\nf1.set_size_inches(32, 16.98753)\n\nf1.savefig('%@')\n", plotPathCopy];
   }
 
-  if (v7)
+  if (plotCopy)
   {
-    [v16 appendString:@"\nplt.show()\n"];
+    [string appendString:@"\nplt.show()\n"];
   }
 
-  return v16;
+  return string;
 }
 
-- (BOOL)exportTimeErrorsToDirectoryURL:(id)a3 withFilename:(id)a4
+- (BOOL)exportTimeErrorsToDirectoryURL:(id)l withFilename:(id)filename
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isFileURL])
+  lCopy = l;
+  filenameCopy = filename;
+  if ([lCopy isFileURL])
   {
-    v8 = [v6 path];
-    v9 = [v8 stringByAppendingPathComponent:v7];
+    path = [lCopy path];
+    v9 = [path stringByAppendingPathComponent:filenameCopy];
 
     v10 = fopen([v9 UTF8String], "w");
     v11 = v10 != 0;
@@ -107,8 +107,8 @@
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v13 = [(TSTimeErrorSequence *)self timeErrors];
-      v14 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      timeErrors = [(TSTimeErrorSequence *)self timeErrors];
+      v14 = [timeErrors countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v14)
       {
         v15 = v14;
@@ -119,13 +119,13 @@
           {
             if (*v23 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(timeErrors);
             }
 
             fprintf(v12, "%llu,%lld\n", [*(*(&v22 + 1) + 8 * i) timestamp], objc_msgSend(*(*(&v22 + 1) + 8 * i), "error"));
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v22 objects:v26 count:16];
+          v15 = [timeErrors countByEnumeratingWithState:&v22 objects:v26 count:16];
         }
 
         while (v15);

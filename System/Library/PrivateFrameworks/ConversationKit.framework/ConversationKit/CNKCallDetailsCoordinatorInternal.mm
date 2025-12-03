@@ -1,10 +1,10 @@
 @interface CNKCallDetailsCoordinatorInternal
 - (BOOL)isCaptioningEnabled;
-- (CNKCallDetailsCoordinatorInternal)initWithHostViewController:(id)a3 controlsManager:(id)a4 deferredPresentationManager:(id)a5;
-- (void)magicStartWithReason:(id)a3 fromView:(id)a4;
-- (void)setShouldHideViewsFromScreenSharing:(BOOL)a3;
-- (void)startWithReason:(id)a3;
-- (void)stopWithReason:(id)a3 forStartingPip:(BOOL)a4;
+- (CNKCallDetailsCoordinatorInternal)initWithHostViewController:(id)controller controlsManager:(id)manager deferredPresentationManager:(id)presentationManager;
+- (void)magicStartWithReason:(id)reason fromView:(id)view;
+- (void)setShouldHideViewsFromScreenSharing:(BOOL)sharing;
+- (void)startWithReason:(id)reason;
+- (void)stopWithReason:(id)reason forStartingPip:(BOOL)pip;
 - (void)wantsDismissal;
 @end
 
@@ -12,62 +12,62 @@
 
 - (BOOL)isCaptioningEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CallDetailsCoordinator.isCaptioningEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setShouldHideViewsFromScreenSharing:(BOOL)a3
+- (void)setShouldHideViewsFromScreenSharing:(BOOL)sharing
 {
-  v4 = self;
-  CallDetailsCoordinator.shouldHideViewsFromScreenSharing.setter(a3);
+  selfCopy = self;
+  CallDetailsCoordinator.shouldHideViewsFromScreenSharing.setter(sharing);
 }
 
-- (CNKCallDetailsCoordinatorInternal)initWithHostViewController:(id)a3 controlsManager:(id)a4 deferredPresentationManager:(id)a5
+- (CNKCallDetailsCoordinatorInternal)initWithHostViewController:(id)controller controlsManager:(id)manager deferredPresentationManager:(id)presentationManager
 {
   swift_getObjectType();
-  v9 = a3;
-  v10 = a4;
+  controllerCopy = controller;
+  managerCopy = manager;
   swift_unknownObjectRetain();
 
-  return specialized CallDetailsCoordinator.init(hostViewController:controlsManager:deferredPresentationManager:)(v9, v10, a5, self);
+  return specialized CallDetailsCoordinator.init(hostViewController:controlsManager:deferredPresentationManager:)(controllerCopy, managerCopy, presentationManager, self);
 }
 
-- (void)magicStartWithReason:(id)a3 fromView:(id)a4
+- (void)magicStartWithReason:(id)reason fromView:(id)view
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
+  viewCopy = view;
+  selfCopy = self;
   v11._countAndFlagsBits = v6;
   v11._object = v8;
-  CallDetailsCoordinator.magicStart(withReason:from:)(v11, v9);
+  CallDetailsCoordinator.magicStart(withReason:from:)(v11, viewCopy);
 }
 
-- (void)startWithReason:(id)a3
+- (void)startWithReason:(id)reason
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   CallDetailsCoordinator.start(withReason:)(v8);
 }
 
-- (void)stopWithReason:(id)a3 forStartingPip:(BOOL)a4
+- (void)stopWithReason:(id)reason forStartingPip:(BOOL)pip
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   v10._countAndFlagsBits = v6;
   v10._object = v8;
-  CallDetailsCoordinator.stop(withReason:forStartingPip:)(v10, a4);
+  CallDetailsCoordinator.stop(withReason:forStartingPip:)(v10, pip);
 }
 
 - (void)wantsDismissal
 {
-  v2 = self;
+  selfCopy = self;
   CallDetailsCoordinator.wantsDismissal()();
 }
 

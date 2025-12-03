@@ -1,42 +1,42 @@
 @interface PUParallaxVideoLayerView
 - (AVPlayer)player;
-- (PUParallaxVideoLayerView)initWithParallaxVideoLayer:(id)a3;
-- (id)snapshotViewAfterScreenUpdates:(BOOL)a3;
+- (PUParallaxVideoLayerView)initWithParallaxVideoLayer:(id)layer;
+- (id)snapshotViewAfterScreenUpdates:(BOOL)updates;
 - (void)_layoutWithCurrentLayoutInfo;
 - (void)_updateParallaxVideoLayerProperties;
-- (void)layoutWithInfo:(id)a3;
-- (void)setCurrentLayoutInfo:(id)a3;
-- (void)setParallaxVideoLayer:(id)a3;
+- (void)layoutWithInfo:(id)info;
+- (void)setCurrentLayoutInfo:(id)info;
+- (void)setParallaxVideoLayer:(id)layer;
 @end
 
 @implementation PUParallaxVideoLayerView
 
-- (id)snapshotViewAfterScreenUpdates:(BOOL)a3
+- (id)snapshotViewAfterScreenUpdates:(BOOL)updates
 {
-  v3 = a3;
+  updatesCopy = updates;
   v28.receiver = self;
   v28.super_class = PUParallaxVideoLayerView;
   v5 = [(PUParallaxVideoLayerView *)&v28 snapshotViewAfterScreenUpdates:?];
-  v6 = [(PUParallaxVideoLayerView *)self contentView];
-  v7 = [v6 snapshotViewAfterScreenUpdates:v3];
+  contentView = [(PUParallaxVideoLayerView *)self contentView];
+  v7 = [contentView snapshotViewAfterScreenUpdates:updatesCopy];
 
   [v5 addSubview:v7];
-  v8 = [(PUParallaxVideoLayerView *)self currentLayoutInfo];
-  v9 = [(PUParallaxVideoLayerView *)self parallaxVideoLayer];
-  [v9 frame];
+  currentLayoutInfo = [(PUParallaxVideoLayerView *)self currentLayoutInfo];
+  parallaxVideoLayer = [(PUParallaxVideoLayerView *)self parallaxVideoLayer];
+  [parallaxVideoLayer frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  [v8 viewFrameForLayerFrame:{v11, v13, v15, v17}];
+  [currentLayoutInfo viewFrameForLayerFrame:{v11, v13, v15, v17}];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  if (v8)
+  if (currentLayoutInfo)
   {
-    [v8 additionalContentTransform];
+    [currentLayoutInfo additionalContentTransform];
   }
 
   else
@@ -56,13 +56,13 @@
 
 - (void)_layoutWithCurrentLayoutInfo
 {
-  v3 = [(PUParallaxVideoLayerView *)self currentLayoutInfo];
-  v4 = v3;
-  if (v3)
+  currentLayoutInfo = [(PUParallaxVideoLayerView *)self currentLayoutInfo];
+  v4 = currentLayoutInfo;
+  if (currentLayoutInfo)
   {
-    [v3 containerFrame];
-    v5 = [(PUParallaxVideoLayerView *)self parallaxVideoLayer];
-    [v5 frame];
+    [currentLayoutInfo containerFrame];
+    parallaxVideoLayer = [(PUParallaxVideoLayerView *)self parallaxVideoLayer];
+    [parallaxVideoLayer frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -83,8 +83,8 @@
     y = v30.origin.y;
     width = v30.size.width;
     height = v30.size.height;
-    v26 = [(PUParallaxVideoLayerView *)self contentView];
-    [v26 setFrame:{x, y, width, height}];
+    contentView = [(PUParallaxVideoLayerView *)self contentView];
+    [contentView setFrame:{x, y, width, height}];
 
     [v4 additionalTransform];
     v28 = v27;
@@ -96,12 +96,12 @@
   }
 }
 
-- (void)setCurrentLayoutInfo:(id)a3
+- (void)setCurrentLayoutInfo:(id)info
 {
-  v8 = a3;
+  infoCopy = info;
   v5 = self->_currentLayoutInfo;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == infoCopy)
   {
   }
 
@@ -111,7 +111,7 @@
 
     if (!v7)
     {
-      objc_storeStrong(&self->_currentLayoutInfo, a3);
+      objc_storeStrong(&self->_currentLayoutInfo, info);
       [(PUParallaxVideoLayerView *)self _layoutWithCurrentLayoutInfo];
     }
   }
@@ -119,24 +119,24 @@
 
 - (void)_updateParallaxVideoLayerProperties
 {
-  v3 = [(PUParallaxVideoLayerView *)self parallaxVideoLayer];
-  v4 = [v3 video];
+  parallaxVideoLayer = [(PUParallaxVideoLayerView *)self parallaxVideoLayer];
+  video = [parallaxVideoLayer video];
 
   v11[0] = 0;
   v11[1] = v11;
   v11[2] = 0x3032000000;
   v11[3] = __Block_byref_object_copy__25155;
   v11[4] = __Block_byref_object_dispose__25156;
-  v12 = [(PUParallaxVideoLayerView *)self player];
+  player = [(PUParallaxVideoLayerView *)self player];
   v5 = MEMORY[0x1E69DD250];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__PUParallaxVideoLayerView__updateParallaxVideoLayerProperties__block_invoke;
   v7[3] = &unk_1E7B7FFC0;
   v10 = v11;
-  v6 = v4;
+  v6 = video;
   v8 = v6;
-  v9 = self;
+  selfCopy = self;
   [v5 performWithoutAnimation:v7];
 
   _Block_object_dispose(v11, 8);
@@ -189,21 +189,21 @@ uint64_t __63__PUParallaxVideoLayerView__updateParallaxVideoLayerProperties__blo
   return [v16 _layoutWithCurrentLayoutInfo];
 }
 
-- (void)layoutWithInfo:(id)a3
+- (void)layoutWithInfo:(id)info
 {
   v5.receiver = self;
   v5.super_class = PUParallaxVideoLayerView;
-  v4 = a3;
-  [(PUParallaxLayerView *)&v5 layoutWithInfo:v4];
-  [(PUParallaxVideoLayerView *)self setCurrentLayoutInfo:v4, v5.receiver, v5.super_class];
+  infoCopy = info;
+  [(PUParallaxLayerView *)&v5 layoutWithInfo:infoCopy];
+  [(PUParallaxVideoLayerView *)self setCurrentLayoutInfo:infoCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setParallaxVideoLayer:(id)a3
+- (void)setParallaxVideoLayer:(id)layer
 {
-  v8 = a3;
+  layerCopy = layer;
   v5 = self->_parallaxVideoLayer;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == layerCopy)
   {
   }
 
@@ -213,7 +213,7 @@ uint64_t __63__PUParallaxVideoLayerView__updateParallaxVideoLayerProperties__blo
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_parallaxVideoLayer, a3);
+      objc_storeStrong(&self->_parallaxVideoLayer, layer);
       [(PUParallaxVideoLayerView *)self _updateParallaxVideoLayerProperties];
     }
   }
@@ -221,23 +221,23 @@ uint64_t __63__PUParallaxVideoLayerView__updateParallaxVideoLayerProperties__blo
 
 - (AVPlayer)player
 {
-  v2 = [(PUParallaxVideoLayerView *)self contentView];
-  v3 = [v2 _playerLayer];
-  v4 = [v3 player];
+  contentView = [(PUParallaxVideoLayerView *)self contentView];
+  _playerLayer = [contentView _playerLayer];
+  player = [_playerLayer player];
 
-  return v4;
+  return player;
 }
 
-- (PUParallaxVideoLayerView)initWithParallaxVideoLayer:(id)a3
+- (PUParallaxVideoLayerView)initWithParallaxVideoLayer:(id)layer
 {
-  v5 = a3;
+  layerCopy = layer;
   v9.receiver = self;
   v9.super_class = PUParallaxVideoLayerView;
   v6 = [(PUParallaxVideoLayerView *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_parallaxVideoLayer, a3);
+    objc_storeStrong(&v6->_parallaxVideoLayer, layer);
     [(PUParallaxVideoLayerView *)v7 _updateParallaxVideoLayerProperties];
   }
 

@@ -1,16 +1,16 @@
 @interface PaginatedSwipingContainerView
-- (BOOL)accessibilityScroll:(int64_t)a3;
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 @end
 
 @implementation PaginatedSwipingContainerView
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
-  v8 = sub_1E3B51804(a4, width, height);
+  height = subviews.height;
+  width = subviews.width;
+  selfCopy = self;
+  v8 = sub_1E3B51804(only, width, height);
   v10 = v9;
 
   v11 = v8;
@@ -20,12 +20,12 @@
   return result;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  v4 = self;
-  LOBYTE(a3) = sub_1E3B51AA0(a3);
+  selfCopy = self;
+  LOBYTE(scroll) = sub_1E3B51AA0(scroll);
 
-  return a3 & 1;
+  return scroll & 1;
 }
 
 @end

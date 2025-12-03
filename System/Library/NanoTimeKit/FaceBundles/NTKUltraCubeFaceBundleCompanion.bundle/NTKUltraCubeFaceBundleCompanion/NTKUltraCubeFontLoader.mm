@@ -1,21 +1,21 @@
 @interface NTKUltraCubeFontLoader
-+ (id)nyNumeralsFontDescriptorOutlined:(BOOL)a3;
-+ (id)sfNumeralsFontDescriptorOutlined:(BOOL)a3;
-+ (id)tokyoFontDescriptorOutlined:(BOOL)a3;
++ (id)nyNumeralsFontDescriptorOutlined:(BOOL)outlined;
++ (id)sfNumeralsFontDescriptorOutlined:(BOOL)outlined;
++ (id)tokyoFontDescriptorOutlined:(BOOL)outlined;
 @end
 
 @implementation NTKUltraCubeFontLoader
 
-+ (id)nyNumeralsFontDescriptorOutlined:(BOOL)a3
++ (id)nyNumeralsFontDescriptorOutlined:(BOOL)outlined
 {
-  v3 = a3;
+  outlinedCopy = outlined;
   if (qword_58150 != -1)
   {
     sub_29A44();
   }
 
   v4 = &qword_58148;
-  if (!v3)
+  if (!outlinedCopy)
   {
     v4 = &qword_58140;
   }
@@ -25,16 +25,16 @@
   return v5;
 }
 
-+ (id)sfNumeralsFontDescriptorOutlined:(BOOL)a3
++ (id)sfNumeralsFontDescriptorOutlined:(BOOL)outlined
 {
-  v3 = a3;
+  outlinedCopy = outlined;
   if (qword_58168 != -1)
   {
     sub_29A58();
   }
 
   v4 = &qword_58160;
-  if (!v3)
+  if (!outlinedCopy)
   {
     v4 = &qword_58158;
   }
@@ -44,16 +44,16 @@
   return v5;
 }
 
-+ (id)tokyoFontDescriptorOutlined:(BOOL)a3
++ (id)tokyoFontDescriptorOutlined:(BOOL)outlined
 {
-  v3 = a3;
+  outlinedCopy = outlined;
   if (qword_58180 != -1)
   {
     sub_29A6C();
   }
 
   v4 = &qword_58178;
-  if (!v3)
+  if (!outlinedCopy)
   {
     v4 = &qword_58170;
   }

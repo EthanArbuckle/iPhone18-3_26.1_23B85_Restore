@@ -4,7 +4,7 @@
 - (uint64_t)_canUseCachedPersonaInfo;
 - (void)copyPrefs;
 - (void)dealloc;
-- (void)forEachPrefsPerformBlock:(id)a3;
+- (void)forEachPrefsPerformBlock:(id)block;
 @end
 
 @implementation _CFXPreferencesHandle
@@ -220,14 +220,14 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)forEachPrefsPerformBlock:(id)a3
+- (void)forEachPrefsPerformBlock:(id)block
 {
   os_unfair_lock_lock(&self->lock);
   v5 = self->prefs;
   v6 = self->nonLaunchPersonaPrefs;
   os_unfair_lock_unlock(&self->lock);
-  (*(a3 + 2))(a3, v5);
-  (*(a3 + 2))(a3, v6);
+  (*(block + 2))(block, v5);
+  (*(block + 2))(block, v6);
 }
 
 - (uint64_t)_canUseCachedPersonaInfo
@@ -264,7 +264,7 @@ LABEL_6:
 - (void)copyPrefs
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = *a1;
+  v3 = *self;
   v4 = *a2;
   v5 = *(*a2 + 60);
   v7[0] = 67109634;

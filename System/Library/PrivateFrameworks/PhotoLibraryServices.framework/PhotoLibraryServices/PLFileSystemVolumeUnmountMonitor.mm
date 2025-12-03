@@ -1,23 +1,23 @@
 @interface PLFileSystemVolumeUnmountMonitor
-- (PLFileSystemVolumeUnmountMonitor)initWithVolumeURL:(id)a3;
-- (void)addVolumeUnmountObserver:(id)a3;
+- (PLFileSystemVolumeUnmountMonitor)initWithVolumeURL:(id)l;
+- (void)addVolumeUnmountObserver:(id)observer;
 - (void)dealloc;
-- (void)removeVolumeUnmountObserver:(id)a3;
+- (void)removeVolumeUnmountObserver:(id)observer;
 @end
 
 @implementation PLFileSystemVolumeUnmountMonitor
 
-- (void)removeVolumeUnmountObserver:(id)a3
+- (void)removeVolumeUnmountObserver:(id)observer
 {
-  v4 = a3;
-  v3 = v4;
+  observerCopy = observer;
+  v3 = observerCopy;
   PLRunWithUnfairLock();
 }
 
-- (void)addVolumeUnmountObserver:(id)a3
+- (void)addVolumeUnmountObserver:(id)observer
 {
-  v4 = a3;
-  v3 = v4;
+  observerCopy = observer;
+  v3 = observerCopy;
   PLRunWithUnfairLock();
 }
 
@@ -28,10 +28,10 @@
   [(PLFileSystemVolumeUnmountMonitor *)&v2 dealloc];
 }
 
-- (PLFileSystemVolumeUnmountMonitor)initWithVolumeURL:(id)a3
+- (PLFileSystemVolumeUnmountMonitor)initWithVolumeURL:(id)l
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = PLFileSystemVolumeUnmountMonitor;
   v5 = [(PLFileSystemVolumeUnmountMonitor *)&v14 init];
@@ -39,11 +39,11 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v6->_observers;
-    v6->_observers = v7;
+    v6->_observers = weakObjectsHashTable;
 
-    v9 = [v4 copy];
+    v9 = [lCopy copy];
     volumeURL = v6->_volumeURL;
     v6->_volumeURL = v9;
 

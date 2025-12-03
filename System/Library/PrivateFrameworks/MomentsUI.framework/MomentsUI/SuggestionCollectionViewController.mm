@@ -1,23 +1,23 @@
 @interface SuggestionCollectionViewController
-- (_TtC9MomentsUI34SuggestionCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (void)_bridgedUpdateContentUnavailableConfigurationUsingState:(id)a3;
+- (_TtC9MomentsUI34SuggestionCollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point;
+- (void)_bridgedUpdateContentUnavailableConfigurationUsingState:(id)state;
 - (void)cancelSheet;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)pressedSegmentControl;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)shieldViewUnlockButtonPressed:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)shieldViewUnlockButtonPressed:(id)pressed;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation SuggestionCollectionViewController
 
-- (void)shieldViewUnlockButtonPressed:(id)a3
+- (void)shieldViewUnlockButtonPressed:(id)pressed
 {
   v3 = *((*MEMORY[0x277D85000] & self->super.super.super.isa) + 0x1D0);
-  v4 = self;
+  selfCopy = self;
   v5 = v3();
   v6 = swift_allocObject();
   swift_unknownObjectWeakInit();
@@ -28,13 +28,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   SuggestionCollectionViewController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = type metadata accessor for UUID();
   v6 = *(v5 - 8);
   v7 = *(v6 + 64);
@@ -48,7 +48,7 @@
   (*(*(v13 - 8) + 56))(v11, 1, 1, v13);
   (*(v6 + 16))(v8, self + v12, v5);
   type metadata accessor for MainActor();
-  v14 = self;
+  selfCopy = self;
   v15 = static MainActor.shared.getter();
   v16 = (*(v6 + 80) + 32) & ~*(v6 + 80);
   v17 = swift_allocObject();
@@ -59,14 +59,14 @@
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v11, &closure #1 in SuggestionCollectionViewController.viewDidAppear(_:)partial apply, v17);
 
   v19 = type metadata accessor for SuggestionCollectionViewController(0);
-  v20.receiver = v14;
+  v20.receiver = selfCopy;
   v20.super_class = v19;
-  [(SuggestionCollectionViewController *)&v20 viewDidAppear:v3];
+  [(SuggestionCollectionViewController *)&v20 viewDidAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = type metadata accessor for UUID();
   v6 = *(v5 - 8);
   v7 = *(v6 + 64);
@@ -78,12 +78,12 @@
   v12 = type metadata accessor for SuggestionCollectionViewController(0);
   v20.receiver = self;
   v20.super_class = v12;
-  v13 = self;
-  [(SuggestionCollectionViewController *)&v20 viewDidDisappear:v3];
+  selfCopy = self;
+  [(SuggestionCollectionViewController *)&v20 viewDidDisappear:disappearCopy];
   v14 = OBJC_IVAR____TtC9MomentsUI34SuggestionCollectionViewController_sessionUUID;
   v15 = type metadata accessor for TaskPriority();
   (*(*(v15 - 8) + 56))(v11, 1, 1, v15);
-  (*(v6 + 16))(v8, v13 + v14, v5);
+  (*(v6 + 16))(v8, selfCopy + v14, v5);
   type metadata accessor for MainActor();
   v16 = static MainActor.shared.getter();
   v17 = (*(v6 + 80) + 32) & ~*(v6 + 80);
@@ -98,7 +98,7 @@
 - (void)cancelSheet
 {
   v2 = *((*MEMORY[0x277D85000] & self->super.super.super.isa) + 0x170);
-  v3 = self;
+  selfCopy = self;
   v2(v9);
   if (v9[3])
   {
@@ -121,39 +121,39 @@
 
 - (void)pressedSegmentControl
 {
-  v2 = self;
+  selfCopy = self;
   SuggestionCollectionViewController.pressedSegmentControl()();
 }
 
-- (_TtC9MomentsUI34SuggestionCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9MomentsUI34SuggestionCollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   specialized SuggestionCollectionViewController.collectionView(_:didSelectItemAt:)();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9MomentsUI34SuggestionCollectionViewController_userHasScrolled) = 1;
-  v3 = self;
+  selfCopy = self;
   SuggestionCollectionViewController.checkIfNearBottom()();
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -173,7 +173,7 @@
   *(v16 + 16) = v13;
   (*(v7 + 32))(v16 + v14, v10, v6);
   *(v16 + v15) = self;
-  v17 = self;
+  selfCopy = self;
 
   v18 = UIContextMenuConfiguration.init(identifier:previewProvider:actionProvider:)(0, 0, 0, closure #1 in SuggestionCollectionViewController.collectionView(_:contextMenuConfigurationForItemAt:point:)partial apply, v16);
   (*(v7 + 8))(v12, v6);
@@ -181,14 +181,14 @@
   return v18;
 }
 
-- (void)_bridgedUpdateContentUnavailableConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateContentUnavailableConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UIContentUnavailableConfigurationState();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UIContentUnavailableConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   SuggestionCollectionViewController.updateContentUnavailableConfiguration(using:)();
 
   (*(v5 + 8))(v7, v4);

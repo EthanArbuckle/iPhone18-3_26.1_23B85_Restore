@@ -15,24 +15,24 @@
   v24 = *MEMORY[0x1E69E9840];
   if (objc_opt_respondsToSelector())
   {
-    v2 = [(__CFString *)a1 _pas_overrideStringBackedByUTF8CString];
+    selfCopy = [(__CFString *)self _pas_overrideStringBackedByUTF8CString];
 LABEL_5:
-    v3 = v2;
+    v3 = selfCopy;
     goto LABEL_6;
   }
 
-  if (CFStringGetCStringPtr(a1, 0x8000100u))
+  if (CFStringGetCStringPtr(self, 0x8000100u))
   {
 LABEL_4:
-    v2 = a1;
+    selfCopy = self;
     goto LABEL_5;
   }
 
-  v6 = [(__CFString *)a1 length];
+  v6 = [(__CFString *)self length];
   if (v6)
   {
     v7 = v6;
-    v8 = [(__CFString *)a1 lengthOfBytesUsingEncoding:4];
+    v8 = [(__CFString *)self lengthOfBytesUsingEncoding:4];
     if (!v8)
     {
       goto LABEL_4;
@@ -63,7 +63,7 @@ LABEL_4:
     }
 
     v11 = v23;
-    [(__CFString *)a1 getCString:v10 maxLength:v9 + 1 encoding:4];
+    [(__CFString *)self getCString:v10 maxLength:v9 + 1 encoding:4];
     if (v9 == v7)
     {
       if (strnlen(v10, v7) < v7)
@@ -128,22 +128,22 @@ LABEL_6:
   if (objc_opt_respondsToSelector())
   {
 
-    return [a1 _pas_overrideFastUTF8StringPtrWithOptions:a3 encodedLength:a4];
+    return [self _pas_overrideFastUTF8StringPtrWithOptions:a3 encodedLength:a4];
   }
 
   else
   {
-    v8 = [a1 _fastCStringContents:a3 & 1];
+    v8 = [self _fastCStringContents:a3 & 1];
     if (v8)
     {
       v9 = v8;
       if (a4)
       {
-        *a4 = [a1 length];
+        *a4 = [self length];
       }
     }
 
-    else if ([a1 length])
+    else if ([self length])
     {
       return 0;
     }
@@ -164,15 +164,15 @@ LABEL_6:
 
 - (uint64_t)_pas_retainsConmingledBackingStore
 {
-  v1 = objc_getAssociatedObject(a1, sel__pas_setRetainsConmingledBackingStore_);
-  v2 = [v1 BOOLValue];
+  v1 = objc_getAssociatedObject(self, sel__pas_setRetainsConmingledBackingStore_);
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)_pas_setRetainsConmingledBackingStore:()_PASAdditions
 {
-  if (malloc_size(a1))
+  if (malloc_size(self))
   {
     if (a3)
     {
@@ -184,20 +184,20 @@ LABEL_6:
       v5 = 0;
     }
 
-    objc_setAssociatedObject(a1, sel__pas_setRetainsConmingledBackingStore_, v5, 1);
+    objc_setAssociatedObject(self, sel__pas_setRetainsConmingledBackingStore_, v5, 1);
   }
 }
 
 - (id)_pas_proxyArrayOfSubstringsWithRanges:()_PASAdditions
 {
   v4 = a3;
-  v5 = a1;
+  selfCopy = self;
   v6 = MEMORY[0x1E695DEC8];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __65__NSString__PASAdditions___pas_proxyArrayOfSubstringsWithRanges___block_invoke;
   v13[3] = &unk_1E77F1CD0;
-  v14 = v5;
+  v14 = selfCopy;
   v15 = v4;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -205,7 +205,7 @@ LABEL_6:
   v11[3] = &unk_1E77F1CF8;
   v12 = v15;
   v7 = v15;
-  v8 = v5;
+  v8 = selfCopy;
   v9 = [v6 _pas_proxyArrayUsingObjectAtIndexBlock:v13 andCountBlock:v11];
 
   return v9;
@@ -250,8 +250,8 @@ LABEL_6:
       if (!a5)
       {
         v17 = encoding;
-        v16 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v16 handleFailureInMethod:a2 object:a1 file:@"NSString+_PASAdditions.m" lineNumber:933 description:{@"Invalid parameter not satisfying: %@", @"bufferSize > 0"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"NSString+_PASAdditions.m" lineNumber:933 description:{@"Invalid parameter not satisfying: %@", @"bufferSize > 0"}];
 
         encoding = v17;
       }
@@ -265,7 +265,7 @@ LABEL_6:
 
   else
   {
-    v12 = [(NSString *)a1 _pas_foundationStringNoCopyWithBufferStart:a3 bufferEnd:&a3[a5] encoding:encoding nullTerminated:a7 isExternalRepresentation:a8 allocator:*MEMORY[0x1E695E488]];
+    v12 = [(NSString *)self _pas_foundationStringNoCopyWithBufferStart:a3 bufferEnd:&a3[a5] encoding:encoding nullTerminated:a7 isExternalRepresentation:a8 allocator:*MEMORY[0x1E695E488]];
   }
 
   return v12;

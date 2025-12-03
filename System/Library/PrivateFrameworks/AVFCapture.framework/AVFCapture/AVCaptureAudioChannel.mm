@@ -1,5 +1,5 @@
 @interface AVCaptureAudioChannel
-- (AVCaptureAudioChannel)initWithConnection:(id)a3;
+- (AVCaptureAudioChannel)initWithConnection:(id)connection;
 - (void)dealloc;
 @end
 
@@ -12,7 +12,7 @@
   [(AVCaptureAudioChannel *)&v3 dealloc];
 }
 
-- (AVCaptureAudioChannel)initWithConnection:(id)a3
+- (AVCaptureAudioChannel)initWithConnection:(id)connection
 {
   v7.receiver = self;
   v7.super_class = AVCaptureAudioChannel;
@@ -23,7 +23,7 @@
     v4->_internal = v5;
     if (v5)
     {
-      v5->connection = a3;
+      v5->connection = connection;
     }
 
     else

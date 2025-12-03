@@ -1,7 +1,7 @@
 @interface VUIMPMediaLibraryConnectOperation
 - (VUIMPMediaLibraryConnectOperation)init;
-- (VUIMPMediaLibraryConnectOperation)initWithMediaLibrary:(id)a3;
-- (void)_notifyClientOfProgress:(float)a3;
+- (VUIMPMediaLibraryConnectOperation)initWithMediaLibrary:(id)library;
+- (void)_notifyClientOfProgress:(float)progress;
 - (void)_startProgressTimer;
 - (void)_stopProgressTimer;
 - (void)executionDidBegin;
@@ -19,10 +19,10 @@
   return 0;
 }
 
-- (VUIMPMediaLibraryConnectOperation)initWithMediaLibrary:(id)a3
+- (VUIMPMediaLibraryConnectOperation)initWithMediaLibrary:(id)library
 {
-  v5 = a3;
-  if (!v5)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"The %@ parameter must not be nil.", @"mediaLibrary"}];
   }
@@ -33,7 +33,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mediaLibrary, a3);
+    objc_storeStrong(&v6->_mediaLibrary, library);
   }
 
   return v7;
@@ -45,22 +45,22 @@
   v3 = VUIDefaultLogObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(VUIMPMediaLibraryConnectOperation *)self mediaLibrary];
-    v5 = [v4 name];
+    mediaLibrary = [(VUIMPMediaLibraryConnectOperation *)self mediaLibrary];
+    name = [mediaLibrary name];
     *buf = 138412290;
-    v10 = v5;
+    v10 = name;
     _os_log_impl(&dword_1E323F000, v3, OS_LOG_TYPE_DEFAULT, "Starting connection to %@", buf, 0xCu);
   }
 
   [(VUIMPMediaLibraryConnectOperation *)self _startProgressTimer];
   objc_initWeak(buf, self);
-  v6 = [(VUIMPMediaLibraryConnectOperation *)self mediaLibrary];
+  mediaLibrary2 = [(VUIMPMediaLibraryConnectOperation *)self mediaLibrary];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__VUIMPMediaLibraryConnectOperation_executionDidBegin__block_invoke;
   v7[3] = &unk_1E8736448;
   objc_copyWeak(&v8, buf);
-  [v6 connectWithCompletionHandler:v7];
+  [mediaLibrary2 connectWithCompletionHandler:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(buf);
@@ -135,28 +135,28 @@ void __56__VUIMPMediaLibraryConnectOperation__startProgressTimer__block_invoke(u
   dispatch_source_cancel(source);
 }
 
-- (void)_notifyClientOfProgress:(float)a3
+- (void)_notifyClientOfProgress:(float)progress
 {
   v16 = *MEMORY[0x1E69E9840];
   v5 = VUIDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(VUIMPMediaLibraryConnectOperation *)self mediaLibrary];
-    v7 = [v6 name];
-    *&v8 = a3;
+    mediaLibrary = [(VUIMPMediaLibraryConnectOperation *)self mediaLibrary];
+    name = [mediaLibrary name];
+    *&v8 = progress;
     v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
     v12 = 138412546;
-    v13 = v7;
+    v13 = name;
     v14 = 2112;
     v15 = v9;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "Connection progress to %@ (Progress = %@)", &v12, 0x16u);
   }
 
-  v10 = [(VUIMPMediaLibraryConnectOperation *)self progressBlock];
-  v11 = v10;
-  if (v10)
+  progressBlock = [(VUIMPMediaLibraryConnectOperation *)self progressBlock];
+  v11 = progressBlock;
+  if (progressBlock)
   {
-    (*(v10 + 16))(v10, a3);
+    (*(progressBlock + 16))(progressBlock, progress);
   }
 }
 

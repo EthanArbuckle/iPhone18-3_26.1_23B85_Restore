@@ -1,57 +1,57 @@
 @interface PRPosterAmbientWidgetLayout
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToWidgetLayout:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToWidgetLayout:(id)layout;
 - (NSString)description;
-- (PRPosterAmbientWidgetLayout)initWithBSXPCCoder:(id)a3;
-- (PRPosterAmbientWidgetLayout)initWithCoder:(id)a3;
-- (PRPosterAmbientWidgetLayout)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PRPosterAmbientWidgetLayout)initWithBSXPCCoder:(id)coder;
+- (PRPosterAmbientWidgetLayout)initWithCoder:(id)coder;
+- (PRPosterAmbientWidgetLayout)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRPosterAmbientWidgetLayout
 
-- (PRPosterAmbientWidgetLayout)initWithDictionary:(id)a3
+- (PRPosterAmbientWidgetLayout)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v10.receiver = self;
     v10.super_class = PRPosterAmbientWidgetLayout;
     v5 = [(PRPosterAmbientWidgetLayout *)&v10 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [dictionaryCopy copy];
       widgetLayoutIconState = v5->_widgetLayoutIconState;
       v5->_widgetLayoutIconState = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)isEqualToWidgetLayout:(id)a3
+- (BOOL)isEqualToWidgetLayout:(id)layout
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  layoutCopy = layout;
+  v5 = layoutCopy;
+  if (self == layoutCopy)
   {
     v6 = 1;
   }
 
-  else if (v4)
+  else if (layoutCopy)
   {
-    v6 = [(NSDictionary *)self->_widgetLayoutIconState isEqual:v4->_widgetLayoutIconState];
+    v6 = [(NSDictionary *)self->_widgetLayoutIconState isEqual:layoutCopy->_widgetLayoutIconState];
   }
 
   else
@@ -62,17 +62,17 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
   else
-    v8 = v4 && (objc_opt_self(), v6 = {;
+    v8 = equalCopy && (objc_opt_self(), v6 = {;
   }
 
   return v8;
@@ -84,25 +84,25 @@
   v3 = PRSPosterUpdateAmbientWidgetsIdentifiers();
   v4 = [v2 appendObject:v3 withName:@"widgetLayoutIconState"];
 
-  v5 = [v2 build];
+  build = [v2 build];
 
-  return v5;
+  return build;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3 = MEMORY[0x1E696AE40];
   widgetLayoutIconState = self->_widgetLayoutIconState;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v3 dataWithPropertyList:widgetLayoutIconState format:200 options:0 error:0];
-  [v5 encodeObject:v6 forKey:@"_widgetLayoutIconStateData"];
+  [coderCopy encodeObject:v6 forKey:@"_widgetLayoutIconStateData"];
 }
 
-- (PRPosterAmbientWidgetLayout)initWithCoder:(id)a3
+- (PRPosterAmbientWidgetLayout)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"_widgetLayoutIconStateData"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"_widgetLayoutIconStateData"];
 
   v7 = [MEMORY[0x1E696AE40] propertyListWithData:v6 options:0 format:0 error:0];
   v8 = [(PRPosterAmbientWidgetLayout *)self initWithDictionary:v7];
@@ -110,20 +110,20 @@
   return v8;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v3 = MEMORY[0x1E696AE40];
   widgetLayoutIconState = self->_widgetLayoutIconState;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v3 dataWithPropertyList:widgetLayoutIconState format:200 options:0 error:0];
-  [v5 encodeObject:v6 forKey:@"_widgetLayoutIconStateData"];
+  [coderCopy encodeObject:v6 forKey:@"_widgetLayoutIconStateData"];
 }
 
-- (PRPosterAmbientWidgetLayout)initWithBSXPCCoder:(id)a3
+- (PRPosterAmbientWidgetLayout)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"_widgetLayoutIconStateData"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"_widgetLayoutIconStateData"];
 
   v7 = [MEMORY[0x1E696AE40] propertyListWithData:v6 options:0 format:0 error:0];
   v8 = [(PRPosterAmbientWidgetLayout *)self initWithDictionary:v7];
@@ -131,7 +131,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PRPosterAmbientWidgetLayout alloc];
   widgetLayoutIconState = self->_widgetLayoutIconState;
@@ -139,9 +139,9 @@
   return [(PRPosterAmbientWidgetLayout *)v4 initWithDictionary:widgetLayoutIconState];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [PRMutablePosterAmbientWidgetLayout allocWithZone:a3];
+  v4 = [PRMutablePosterAmbientWidgetLayout allocWithZone:zone];
   widgetLayoutIconState = self->_widgetLayoutIconState;
 
   return [(PRPosterAmbientWidgetLayout *)v4 initWithDictionary:widgetLayoutIconState];

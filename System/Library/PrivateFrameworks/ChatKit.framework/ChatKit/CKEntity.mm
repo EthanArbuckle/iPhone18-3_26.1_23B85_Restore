@@ -1,14 +1,14 @@
 @interface CKEntity
-+ (BOOL)string:(id)a3 hasPrefix:(id)a4;
-+ (id)_copyEntityForAddressString:(id)a3 onAccount:(id)a4;
-+ (id)copyEntityForAddressString:(id)a3;
-+ (id)entityForAddress:(id)a3;
++ (BOOL)string:(id)string hasPrefix:(id)prefix;
++ (id)_copyEntityForAddressString:(id)string onAccount:(id)account;
++ (id)copyEntityForAddressString:(id)string;
++ (id)entityForAddress:(id)address;
 - (BOOL)_allowedByScreenTime;
 - (BOOL)isBlocked;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isMe;
 - (BOOL)isMentionable;
-- (CKEntity)initWithChat:(id)a3 imHandle:(id)a4;
+- (CKEntity)initWithChat:(id)chat imHandle:(id)handle;
 - (IMHandle)defaultIMHandle;
 - (NSString)IDSCanonicalAddress;
 - (NSString)abbreviatedDisplayName;
@@ -22,38 +22,38 @@
 - (NSString)textVibrationIdentifier;
 - (UIImage)locationMapViewContactImage;
 - (UIImage)locationShareBalloonContactImage;
-- (id)_createNicknameContactForNickname:(id)a3 emailAddresses:(id)a4 phoneNumbers:(id)a5 includeImageData:(BOOL)a6;
-- (id)_croppedImageFromImageData:(id)a3;
-- (id)_nicknameContactForNickname:(id)a3 emailAddresses:(id)a4 phoneNumbers:(id)a5 includeImageData:(BOOL)a6;
-- (id)cnContactWithKeys:(id)a3 shouldFetchSuggestedContact:(BOOL)a4;
+- (id)_createNicknameContactForNickname:(id)nickname emailAddresses:(id)addresses phoneNumbers:(id)numbers includeImageData:(BOOL)data;
+- (id)_croppedImageFromImageData:(id)data;
+- (id)_nicknameContactForNickname:(id)nickname emailAddresses:(id)addresses phoneNumbers:(id)numbers includeImageData:(BOOL)data;
+- (id)cnContactWithKeys:(id)keys shouldFetchSuggestedContact:(BOOL)contact;
 - (id)description;
-- (id)displayNameMatchingInputText:(id)a3;
+- (id)displayNameMatchingInputText:(id)text;
 - (id)mentionTokens;
 - (id)mentionsHandleID;
-- (id)personViewControllerWithDelegate:(id)a3 isUnknown:(BOOL *)a4;
-- (id)personViewControllerWithDelegate:(id)a3 isUnknown:(BOOL *)a4 contactStoreProvider:(id)a5;
+- (id)personViewControllerWithDelegate:(id)delegate isUnknown:(BOOL *)unknown;
+- (id)personViewControllerWithDelegate:(id)delegate isUnknown:(BOOL *)unknown contactStoreProvider:(id)provider;
 - (id)pinnedConversationContactItemIdentifier;
 - (unint64_t)hash;
-- (void)_invalidateContactStoreCache:(id)a3;
-- (void)_invalidatePartialContactStoreCache:(id)a3;
-- (void)addToken:(id)a3 ifAvailableToTokens:(id)a4;
-- (void)setEnlargedContactImage:(BOOL)a3;
+- (void)_invalidateContactStoreCache:(id)cache;
+- (void)_invalidatePartialContactStoreCache:(id)cache;
+- (void)addToken:(id)token ifAvailableToTokens:(id)tokens;
+- (void)setEnlargedContactImage:(BOOL)image;
 @end
 
 @implementation CKEntity
 
 - (IMHandle)defaultIMHandle
 {
-  v3 = [(IMHandle *)self->_handle account];
-  v4 = v3;
-  if (v3 && (![v3 isActive] || (objc_msgSend(v4, "isOperational") & 1) == 0))
+  account = [(IMHandle *)self->_handle account];
+  v4 = account;
+  if (account && (![account isActive] || (objc_msgSend(v4, "isOperational") & 1) == 0))
   {
     v5 = self->_chatAccount;
     if (!v5)
     {
-      v6 = [MEMORY[0x1E69A5A80] sharedInstance];
+      mEMORY[0x1E69A5A80] = [MEMORY[0x1E69A5A80] sharedInstance];
       v7 = [(IMHandle *)self->_handle ID];
-      v5 = [v6 __ck_bestAccountForAddress:v7];
+      v5 = [mEMORY[0x1E69A5A80] __ck_bestAccountForAddress:v7];
     }
 
     v8 = self->_handle;
@@ -70,31 +70,31 @@
 
 - (NSString)rawAddress
 {
-  v2 = [(CKEntity *)self defaultIMHandle];
-  v3 = [v2 ID];
+  defaultIMHandle = [(CKEntity *)self defaultIMHandle];
+  v3 = [defaultIMHandle ID];
 
   return v3;
 }
 
 - (NSString)IDSCanonicalAddress
 {
-  v3 = [(CKEntity *)self rawAddress];
+  rawAddress = [(CKEntity *)self rawAddress];
   v4 = IMStripFormattingFromAddress();
 
-  v5 = [(CKEntity *)self propertyType];
+  propertyType = [(CKEntity *)self propertyType];
   v6 = *MEMORY[0x1E695C330];
 
-  if (v5 == v6)
+  if (propertyType == v6)
   {
     v9 = IDSCopyIDForPhoneNumber();
   }
 
   else
   {
-    v7 = [(CKEntity *)self propertyType];
+    propertyType2 = [(CKEntity *)self propertyType];
     v8 = *MEMORY[0x1E695C208];
 
-    if (v7 != v8)
+    if (propertyType2 != v8)
     {
       goto LABEL_6;
     }
@@ -112,8 +112,8 @@ LABEL_6:
 
 - (NSString)propertyType
 {
-  v2 = [(CKEntity *)self defaultIMHandle];
-  v3 = [v2 ID];
+  defaultIMHandle = [(CKEntity *)self defaultIMHandle];
+  v3 = [defaultIMHandle ID];
   IsEmail = IMStringIsEmail();
 
   v5 = MEMORY[0x1E695C208];
@@ -127,21 +127,21 @@ LABEL_6:
   return v6;
 }
 
-+ (id)_copyEntityForAddressString:(id)a3 onAccount:(id)a4
++ (id)_copyEntityForAddressString:(id)string onAccount:(id)account
 {
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  accountCopy = account;
   if (CKIsRunningInFullCKClient())
   {
-    if (v5)
+    if (stringCopy)
     {
-      v7 = [MEMORY[0x1E695DEC8] arrayWithObject:v5];
-      v8 = [v6 __ck_handlesFromAddressStrings:v7];
-      v9 = [v8 __imFirstObject];
+      v7 = [MEMORY[0x1E695DEC8] arrayWithObject:stringCopy];
+      v8 = [accountCopy __ck_handlesFromAddressStrings:v7];
+      __imFirstObject = [v8 __imFirstObject];
 
-      if (v9)
+      if (__imFirstObject)
       {
-        v10 = [[CKEntity alloc] initWithIMHandle:v9];
+        v10 = [[CKEntity alloc] initWithIMHandle:__imFirstObject];
 
 LABEL_8:
         goto LABEL_9;
@@ -163,38 +163,38 @@ LABEL_9:
   return v10;
 }
 
-+ (id)copyEntityForAddressString:(id)a3
++ (id)copyEntityForAddressString:(id)string
 {
   v4 = MEMORY[0x1E69A5A80];
-  v5 = a3;
-  v6 = [v4 sharedInstance];
-  v7 = [v6 __ck_bestAccountForAddress:v5];
+  stringCopy = string;
+  sharedInstance = [v4 sharedInstance];
+  v7 = [sharedInstance __ck_bestAccountForAddress:stringCopy];
 
-  v8 = [a1 _copyEntityForAddressString:v5 onAccount:v7];
+  v8 = [self _copyEntityForAddressString:stringCopy onAccount:v7];
   return v8;
 }
 
-- (CKEntity)initWithChat:(id)a3 imHandle:(id)a4
+- (CKEntity)initWithChat:(id)chat imHandle:(id)handle
 {
-  v7 = a3;
-  v8 = a4;
+  chatCopy = chat;
+  handleCopy = handle;
   v16.receiver = self;
   v16.super_class = CKEntity;
   v9 = [(CKEntity *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_handle, a4);
-    objc_storeStrong(&v10->_chat, a3);
-    v11 = [v7 account];
+    objc_storeStrong(&v9->_handle, handle);
+    objc_storeStrong(&v10->_chat, chat);
+    account = [chatCopy account];
     chatAccount = v10->_chatAccount;
-    v10->_chatAccount = v11;
+    v10->_chatAccount = account;
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v10 selector:sel__invalidateContactStoreCache_ name:*MEMORY[0x1E69A6830] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__invalidateContactStoreCache_ name:*MEMORY[0x1E69A6830] object:0];
 
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v10 selector:sel__invalidatePartialContactStoreCache_ name:*MEMORY[0x1E69A6870] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v10 selector:sel__invalidatePartialContactStoreCache_ name:*MEMORY[0x1E69A6870] object:0];
   }
 
   return v10;
@@ -206,21 +206,21 @@ LABEL_9:
   v8.receiver = self;
   v8.super_class = CKEntity;
   v4 = [(CKEntity *)&v8 description];
-  v5 = [(CKEntity *)self defaultIMHandle];
-  v6 = [v3 stringWithFormat:@"%@ [Default IM Handle: %@]", v4, v5];
+  defaultIMHandle = [(CKEntity *)self defaultIMHandle];
+  v6 = [v3 stringWithFormat:@"%@ [Default IM Handle: %@]", v4, defaultIMHandle];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CKEntity *)self defaultIMHandle];
-    v6 = [v4 defaultIMHandle];
-    v7 = [v5 matchesIMHandle:v6];
+    defaultIMHandle = [(CKEntity *)self defaultIMHandle];
+    defaultIMHandle2 = [equalCopy defaultIMHandle];
+    v7 = [defaultIMHandle matchesIMHandle:defaultIMHandle2];
   }
 
   else
@@ -233,20 +233,20 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v2 = [(CKEntity *)self defaultIMHandle];
-  v3 = [v2 hash];
+  defaultIMHandle = [(CKEntity *)self defaultIMHandle];
+  v3 = [defaultIMHandle hash];
 
   return v3;
 }
 
-+ (id)entityForAddress:(id)a3
++ (id)entityForAddress:(id)address
 {
-  v3 = a3;
-  if ([v3 length])
+  addressCopy = address;
+  if ([addressCopy length])
   {
     v4 = IMStripFormattingFromAddress();
-    v5 = [MEMORY[0x1E69A5A80] sharedInstance];
-    v6 = [v5 __ck_bestAccountForAddress:v4];
+    mEMORY[0x1E69A5A80] = [MEMORY[0x1E69A5A80] sharedInstance];
+    v6 = [mEMORY[0x1E69A5A80] __ck_bestAccountForAddress:v4];
 
     if (v6)
     {
@@ -285,51 +285,51 @@ LABEL_9:
 - (BOOL)_allowedByScreenTime
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CKEntity *)self chat];
+  chat = [(CKEntity *)self chat];
 
-  if (v3)
+  if (chat)
   {
-    v4 = [(CKEntity *)self chat];
-    v5 = [v4 allowedByScreenTime];
+    chat2 = [(CKEntity *)self chat];
+    allowedByScreenTime = [chat2 allowedByScreenTime];
   }
 
   else
   {
-    v6 = [(CKEntity *)self handle];
-    v7 = [v6 ID];
+    handle = [(CKEntity *)self handle];
+    v7 = [handle ID];
 
     if (!v7)
     {
       return 1;
     }
 
-    v4 = [MEMORY[0x1E69A5B68] sharedInstance];
-    v8 = [(CKEntity *)self handle];
-    v9 = [v8 ID];
+    chat2 = [MEMORY[0x1E69A5B68] sharedInstance];
+    handle2 = [(CKEntity *)self handle];
+    v9 = [handle2 ID];
     v12[0] = v9;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-    v5 = [v4 allowedToShowConversationWithHandleIDs:v10 sync:1 context:0];
+    allowedByScreenTime = [chat2 allowedToShowConversationWithHandleIDs:v10 sync:1 context:0];
   }
 
-  return v5;
+  return allowedByScreenTime;
 }
 
-- (id)cnContactWithKeys:(id)a3 shouldFetchSuggestedContact:(BOOL)a4
+- (id)cnContactWithKeys:(id)keys shouldFetchSuggestedContact:(BOOL)contact
 {
-  v4 = a4;
+  contactCopy = contact;
   v75[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(IMHandle *)self->_handle cnContactWithKeys:v6];
+  keysCopy = keys;
+  v7 = [(IMHandle *)self->_handle cnContactWithKeys:keysCopy];
   handle = self->_handle;
   if (!v7)
   {
     if (([(IMHandle *)handle isBusiness]& 1) != 0 || [(IMHandle *)self->_handle isStewieRoadside])
     {
-      v14 = [(IMHandle *)self->_handle brand];
-      if (v14)
+      brand = [(IMHandle *)self->_handle brand];
+      if (brand)
       {
-        v15 = [(CNContact *)self->_cnContact imageData];
-        v16 = v15 == 0;
+        imageData = [(CNContact *)self->_cnContact imageData];
+        v16 = imageData == 0;
       }
 
       else
@@ -399,18 +399,18 @@ LABEL_36:
       v27[2](v27, v30);
     }
 
-    v36 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v37 = [v36 stewieEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    stewieEnabled = [mEMORY[0x1E69A8070] stewieEnabled];
 
-    if (!v37)
+    if (!stewieEnabled)
     {
       goto LABEL_50;
     }
 
     if ([(IMHandle *)self->_handle isStewieEmergency]&& ([(CNContact *)self->_cnContact imageData], v38 = objc_claimAutoreleasedReturnValue(), v39 = v38 == 0, v38, v39))
     {
-      v40 = [MEMORY[0x1E69DCAB8] ckImageNamed:@"SOS_50"];
-      v53 = UIImagePNGRepresentation(v40);
+      imageData2 = [MEMORY[0x1E69DCAB8] ckImageNamed:@"SOS_50"];
+      v53 = UIImagePNGRepresentation(imageData2);
       [(CNContact *)v30 setImageData:v53];
     }
 
@@ -421,14 +421,14 @@ LABEL_36:
         goto LABEL_50;
       }
 
-      v40 = [(CNContact *)self->_cnContact imageData];
-      if (v40)
+      imageData2 = [(CNContact *)self->_cnContact imageData];
+      if (imageData2)
       {
         goto LABEL_49;
       }
 
-      v41 = [(IMHandle *)self->_handle brandSquareLogoImageData];
-      v42 = v41 == 0;
+      brandSquareLogoImageData = [(IMHandle *)self->_handle brandSquareLogoImageData];
+      v42 = brandSquareLogoImageData == 0;
 
       if (!v42)
       {
@@ -470,14 +470,14 @@ LABEL_36:
       CGColorRelease(v45);
       CGColorSpaceRelease(DeviceRGB);
       v49 = MEMORY[0x1E69DCAD8];
-      v50 = [MEMORY[0x1E69DC888] whiteColor];
-      v68[0] = v50;
-      v51 = [MEMORY[0x1E69DC888] whiteColor];
-      v68[1] = v51;
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      v68[0] = whiteColor;
+      whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+      v68[1] = whiteColor2;
       v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v68 count:2];
-      v40 = [v49 configurationWithPaletteColors:v52];
+      imageData2 = [v49 configurationWithPaletteColors:v52];
 
-      v53 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"car.front.waves.down.fill" withConfiguration:v40];
+      v53 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"car.front.waves.down.fill" withConfiguration:imageData2];
       v82.size.width = 100.0;
       v82.origin.x = 0.0;
       v82.origin.y = 0.0;
@@ -495,23 +495,23 @@ LABEL_36:
 
 LABEL_49:
 LABEL_50:
-    v56 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v57 = [v56 isMergeBusinessSenderIndiaEnabled];
+    mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isMergeBusinessSenderIndiaEnabled = [mEMORY[0x1E69A8070]2 isMergeBusinessSenderIndiaEnabled];
 
-    if (v57 && (([(IMChat *)self->_chat isMergedBusinessThread]& 1) != 0 || [(IMHandle *)self->_handle isIndiaShortCode]))
+    if (isMergeBusinessSenderIndiaEnabled && (([(IMChat *)self->_chat isMergedBusinessThread]& 1) != 0 || [(IMHandle *)self->_handle isIndiaShortCode]))
     {
       [(CNContact *)v30 setContactType:1];
     }
 
-    v58 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v59 = [v58 isTranscriptSharingEnabled];
+    mEMORY[0x1E69A8070]3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isTranscriptSharingEnabled = [mEMORY[0x1E69A8070]3 isTranscriptSharingEnabled];
 
-    if (v59)
+    if (isTranscriptSharingEnabled)
     {
       if ([(IMHandle *)self->_handle isStewieTranscriptSharingHandle])
       {
-        v60 = [(CNContact *)self->_cnContact imageData];
-        v61 = v60 == 0;
+        imageData3 = [(CNContact *)self->_cnContact imageData];
+        v61 = imageData3 == 0;
 
         if (v61)
         {
@@ -529,19 +529,19 @@ LABEL_50:
 
   if (([(IMHandle *)handle isContact]& 1) == 0)
   {
-    v9 = [MEMORY[0x1E69A5C10] sharedInstance];
-    v10 = [v9 nicknameForHandle:self->_handle];
+    mEMORY[0x1E69A5C10] = [MEMORY[0x1E69A5C10] sharedInstance];
+    v10 = [mEMORY[0x1E69A5C10] nicknameForHandle:self->_handle];
 
     if (v10)
     {
-      v11 = [v7 emailAddresses];
-      v12 = [v7 phoneNumbers];
-      v13 = [(CKEntity *)self _nicknameContactForNickname:v10 emailAddresses:v11 phoneNumbers:v12 includeImageData:[(CKEntity *)self _allowedByScreenTime]];
+      emailAddresses = [v7 emailAddresses];
+      phoneNumbers = [v7 phoneNumbers];
+      v13 = [(CKEntity *)self _nicknameContactForNickname:v10 emailAddresses:emailAddresses phoneNumbers:phoneNumbers includeImageData:[(CKEntity *)self _allowedByScreenTime]];
 
       v7 = v13;
     }
 
-    else if (v4 && [(IMHandle *)self->_handle hasSuggestedName])
+    else if (contactCopy && [(IMHandle *)self->_handle hasSuggestedName])
     {
       if (IMOSLoggingEnabled())
       {
@@ -553,9 +553,9 @@ LABEL_50:
         }
       }
 
-      v18 = [MEMORY[0x1E69A5CC0] sharedInstance];
-      v19 = [(IMHandle *)self->_handle displayID];
-      v20 = [v18 fetchCNContactForSuggestedHandle:v19];
+      mEMORY[0x1E69A5CC0] = [MEMORY[0x1E69A5CC0] sharedInstance];
+      displayID = [(IMHandle *)self->_handle displayID];
+      v20 = [mEMORY[0x1E69A5CC0] fetchCNContactForSuggestedHandle:displayID];
 
       if (v20)
       {
@@ -565,10 +565,10 @@ LABEL_50:
       }
     }
 
-    v22 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v23 = [v22 isMergeBusinessSenderIndiaEnabled];
+    mEMORY[0x1E69A8070]4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isMergeBusinessSenderIndiaEnabled2 = [mEMORY[0x1E69A8070]4 isMergeBusinessSenderIndiaEnabled];
 
-    if (v23 && (([(IMChat *)self->_chat isMergedBusinessThread]& 1) != 0 || [(IMHandle *)self->_handle isIndiaShortCode]))
+    if (isMergeBusinessSenderIndiaEnabled2 && (([(IMChat *)self->_chat isMergedBusinessThread]& 1) != 0 || [(IMHandle *)self->_handle isIndiaShortCode]))
     {
       v24 = [v7 mutableCopy];
       [v24 setContactType:1];
@@ -607,12 +607,12 @@ void __58__CKEntity_cnContactWithKeys_shouldFetchSuggestedContact___block_invoke
   [*(a1 + 32) _setBusinessInfoForMutableContact:v6 enlargedImageData:v3];
 }
 
-- (id)_nicknameContactForNickname:(id)a3 emailAddresses:(id)a4 phoneNumbers:(id)a5 includeImageData:(BOOL)a6
+- (id)_nicknameContactForNickname:(id)nickname emailAddresses:(id)addresses phoneNumbers:(id)numbers includeImageData:(BOOL)data
 {
-  v6 = a6;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dataCopy = data;
+  nicknameCopy = nickname;
+  addressesCopy = addresses;
+  numbersCopy = numbers;
   p_cachedCNContactForNickname = &self->_cachedCNContactForNickname;
   if (!self->_cachedCNContactForNickname)
   {
@@ -625,10 +625,10 @@ void __58__CKEntity_cnContactWithKeys_shouldFetchSuggestedContact___block_invoke
     goto LABEL_17;
   }
 
-  v29 = [(IMNickname *)cachedNicknameForCNContact isUpdateFromNickname:v11 withOptions:8];
-  v16 = [(CNMutableContact *)*p_cachedCNContactForNickname emailAddresses];
-  v17 = v12;
-  v18 = v16;
+  v29 = [(IMNickname *)cachedNicknameForCNContact isUpdateFromNickname:nicknameCopy withOptions:8];
+  emailAddresses = [(CNMutableContact *)*p_cachedCNContactForNickname emailAddresses];
+  v17 = addressesCopy;
+  v18 = emailAddresses;
   v19 = v18;
   if (v18 == v17)
   {
@@ -646,9 +646,9 @@ void __58__CKEntity_cnContactWithKeys_shouldFetchSuggestedContact___block_invoke
 
   v28 = v20;
 
-  v21 = [(CNMutableContact *)*p_cachedCNContactForNickname phoneNumbers];
-  v22 = v13;
-  v23 = v21;
+  phoneNumbers = [(CNMutableContact *)*p_cachedCNContactForNickname phoneNumbers];
+  v22 = numbersCopy;
+  v23 = phoneNumbers;
   v24 = v23;
   if (v23 == v22)
   {
@@ -664,7 +664,7 @@ void __58__CKEntity_cnContactWithKeys_shouldFetchSuggestedContact___block_invoke
     }
   }
 
-  if (((v29 | v28) & 1) == 0 && (v25 & 1) == 0 && self->_cachedCNContactForNicknameIncludesImageData == v6)
+  if (((v29 | v28) & 1) == 0 && (v25 & 1) == 0 && self->_cachedCNContactForNicknameIncludesImageData == dataCopy)
   {
     v26 = *p_cachedCNContactForNickname;
   }
@@ -672,41 +672,41 @@ void __58__CKEntity_cnContactWithKeys_shouldFetchSuggestedContact___block_invoke
   else
   {
 LABEL_17:
-    v26 = [(CKEntity *)self _createNicknameContactForNickname:v11 emailAddresses:v12 phoneNumbers:v13 includeImageData:v6];
+    v26 = [(CKEntity *)self _createNicknameContactForNickname:nicknameCopy emailAddresses:addressesCopy phoneNumbers:numbersCopy includeImageData:dataCopy];
     objc_storeStrong(&self->_cachedCNContactForNickname, v26);
-    objc_storeStrong(&self->_cachedNicknameForCNContact, a3);
-    self->_cachedCNContactForNicknameIncludesImageData = v6;
+    objc_storeStrong(&self->_cachedNicknameForCNContact, nickname);
+    self->_cachedCNContactForNicknameIncludesImageData = dataCopy;
   }
 
   return v26;
 }
 
-- (id)_createNicknameContactForNickname:(id)a3 emailAddresses:(id)a4 phoneNumbers:(id)a5 includeImageData:(BOOL)a6
+- (id)_createNicknameContactForNickname:(id)nickname emailAddresses:(id)addresses phoneNumbers:(id)numbers includeImageData:(BOOL)data
 {
-  v6 = a6;
+  dataCopy = data;
   v21 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v6)
+  nicknameCopy = nickname;
+  addressesCopy = addresses;
+  numbersCopy = numbers;
+  if (dataCopy)
   {
-    v12 = [v9 avatar];
-    v13 = [v12 imageData];
+    avatar = [nicknameCopy avatar];
+    imageData = [avatar imageData];
   }
 
   else
   {
-    v13 = 0;
+    imageData = 0;
   }
 
-  v14 = [v9 firstName];
-  v15 = [v9 lastName];
+  firstName = [nicknameCopy firstName];
+  lastName = [nicknameCopy lastName];
   v16 = objc_alloc_init(MEMORY[0x1E695CF18]);
-  [v16 setImageData:v13];
-  [v16 setGivenName:v14];
-  [v16 setFamilyName:v15];
-  [v16 setEmailAddresses:v10];
-  [v16 setPhoneNumbers:v11];
+  [v16 setImageData:imageData];
+  [v16 setGivenName:firstName];
+  [v16 setFamilyName:lastName];
+  [v16 setEmailAddresses:addressesCopy];
+  [v16 setPhoneNumbers:numbersCopy];
   if (IMOSLoggingEnabled())
   {
     v17 = OSLogHandleForIMFoundationCategory();
@@ -723,53 +723,53 @@ LABEL_17:
 
 - (BOOL)isBlocked
 {
-  v3 = [MEMORY[0x1E69A7F20] sharedBlockList];
-  v4 = [(CKEntity *)self rawAddress];
-  v5 = [v3 addressIsBlocked:v4];
+  mEMORY[0x1E69A7F20] = [MEMORY[0x1E69A7F20] sharedBlockList];
+  rawAddress = [(CKEntity *)self rawAddress];
+  v5 = [mEMORY[0x1E69A7F20] addressIsBlocked:rawAddress];
 
   return v5;
 }
 
 - (BOOL)isMe
 {
-  v2 = [(CKEntity *)self defaultIMHandle];
-  v3 = [v2 isLoginIMHandle];
+  defaultIMHandle = [(CKEntity *)self defaultIMHandle];
+  isLoginIMHandle = [defaultIMHandle isLoginIMHandle];
 
-  return v3;
+  return isLoginIMHandle;
 }
 
-- (void)setEnlargedContactImage:(BOOL)a3
+- (void)setEnlargedContactImage:(BOOL)image
 {
-  self->_enlargedContactImage = a3;
+  self->_enlargedContactImage = image;
   cnContact = self->_cnContact;
   self->_cnContact = 0;
 }
 
 - (NSString)abbreviatedDisplayName
 {
-  v2 = [(CKEntity *)self defaultIMHandle];
-  v3 = [v2 _displayNameWithAbbreviation];
+  defaultIMHandle = [(CKEntity *)self defaultIMHandle];
+  _displayNameWithAbbreviation = [defaultIMHandle _displayNameWithAbbreviation];
 
-  return v3;
+  return _displayNameWithAbbreviation;
 }
 
-- (void)_invalidateContactStoreCache:(id)a3
+- (void)_invalidateContactStoreCache:(id)cache
 {
   cnContact = self->_cnContact;
   self->_cnContact = 0;
 }
 
-- (void)_invalidatePartialContactStoreCache:(id)a3
+- (void)_invalidatePartialContactStoreCache:(id)cache
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69A6868]];
+  cacheCopy = cache;
+  userInfo = [cacheCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69A6868]];
   if ([v6 length])
   {
     v7 = self->_handle;
-    v8 = [(CKEntity *)self defaultIMHandle];
-    v9 = [(IMHandle *)v8 ID];
+    defaultIMHandle = [(CKEntity *)self defaultIMHandle];
+    v9 = [(IMHandle *)defaultIMHandle ID];
     if ([v9 length] && objc_msgSend(v9, "isEqualToString:", v6))
     {
       v10 = IMHandleLogHandle();
@@ -778,7 +778,7 @@ LABEL_17:
         v16 = 138412546;
         v17 = v6;
         v18 = 2112;
-        v19 = self;
+        selfCopy = self;
         _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_DEFAULT, "Received partial change notification for UID %@. Invalidating contact for IMHandle: %@", &v16, 0x16u);
       }
 
@@ -787,14 +787,14 @@ LABEL_17:
         goto LABEL_10;
       }
 
-      if (v7 != v8)
+      if (v7 != defaultIMHandle)
       {
         cnContact = self->_cnContact;
         self->_cnContact = 0;
       }
 
-      v12 = [v4 object];
-      v13 = v12 == v8;
+      object = [cacheCopy object];
+      v13 = object == defaultIMHandle;
 
       if (v13)
       {
@@ -818,53 +818,53 @@ LABEL_10:
 
 - (NSString)originalAddress
 {
-  v3 = [(CKEntity *)self defaultIMHandle];
-  v4 = [v3 originalID];
+  defaultIMHandle = [(CKEntity *)self defaultIMHandle];
+  originalID = [defaultIMHandle originalID];
 
-  if (![v4 length])
+  if (![originalID length])
   {
-    v5 = [(CKEntity *)self rawAddress];
+    rawAddress = [(CKEntity *)self rawAddress];
 
-    v4 = v5;
+    originalID = rawAddress;
   }
 
-  return v4;
+  return originalID;
 }
 
 - (NSString)fullName
 {
-  v2 = [(CKEntity *)self defaultIMHandle];
-  v3 = [v2 fullName];
+  defaultIMHandle = [(CKEntity *)self defaultIMHandle];
+  fullName = [defaultIMHandle fullName];
 
-  if (!v3)
+  if (!fullName)
   {
     v4 = CKFrameworkBundle();
-    v3 = [v4 localizedStringForKey:@"Unknown" value:&stru_1F04268F8 table:@"ChatKit"];
+    fullName = [v4 localizedStringForKey:@"Unknown" value:&stru_1F04268F8 table:@"ChatKit"];
   }
 
-  return v3;
+  return fullName;
 }
 
 - (NSString)name
 {
-  v2 = [(CKEntity *)self defaultIMHandle];
-  v3 = [v2 name];
+  defaultIMHandle = [(CKEntity *)self defaultIMHandle];
+  name = [defaultIMHandle name];
 
-  if (!v3)
+  if (!name)
   {
     v4 = CKFrameworkBundle();
-    v3 = [v4 localizedStringForKey:@"Unknown" value:&stru_1F04268F8 table:@"ChatKit"];
+    name = [v4 localizedStringForKey:@"Unknown" value:&stru_1F04268F8 table:@"ChatKit"];
   }
 
-  return v3;
+  return name;
 }
 
 - (NSString)namePrefixedWithMaybe
 {
-  v2 = [(CKEntity *)self defaultIMHandle];
-  v3 = [v2 namePrefixedWithMaybe];
+  defaultIMHandle = [(CKEntity *)self defaultIMHandle];
+  namePrefixedWithMaybe = [defaultIMHandle namePrefixedWithMaybe];
 
-  return v3;
+  return namePrefixedWithMaybe;
 }
 
 - (NSString)textToneIdentifier
@@ -876,9 +876,9 @@ LABEL_10:
   v5 = [(CKEntity *)self cnContactWithKeys:v4];
   v6 = [v5 valueForKey:v3];
 
-  v7 = [v6 sound];
+  sound = [v6 sound];
 
-  return v7;
+  return sound;
 }
 
 - (NSString)textVibrationIdentifier
@@ -890,16 +890,16 @@ LABEL_10:
   v5 = [(CKEntity *)self cnContactWithKeys:v4];
   v6 = [v5 valueForKey:v3];
 
-  v7 = [v6 vibration];
+  vibration = [v6 vibration];
 
-  return v7;
+  return vibration;
 }
 
 - (UIImage)locationMapViewContactImage
 {
-  v3 = [(CKEntity *)self defaultIMHandle];
+  defaultIMHandle = [(CKEntity *)self defaultIMHandle];
 
-  if (v3)
+  if (defaultIMHandle)
   {
     v4 = MEMORY[0x193AF5EC0](@"FMFMapViewController", @"FMFUI");
     if (v4)
@@ -913,8 +913,8 @@ LABEL_10:
       v6 = 0.0;
     }
 
-    v8 = [(CKEntity *)self rawAddress];
-    v7 = [CKAddressBook locationSharingContactImageOfDiameter:v8 forID:1 useCustomFont:v6];
+    rawAddress = [(CKEntity *)self rawAddress];
+    v7 = [CKAddressBook locationSharingContactImageOfDiameter:rawAddress forID:1 useCustomFont:v6];
   }
 
   else
@@ -930,15 +930,15 @@ LABEL_10:
   v3 = +[CKUIBehavior sharedBehaviors];
   [v3 locationShareBalloonContactImageDiameter];
   v5 = v4;
-  v6 = [(CKEntity *)self rawAddress];
-  v7 = [CKAddressBook locationSharingContactImageOfDiameter:v6 forID:0 useCustomFont:v5];
+  rawAddress = [(CKEntity *)self rawAddress];
+  v7 = [CKAddressBook locationSharingContactImageOfDiameter:rawAddress forID:0 useCustomFont:v5];
 
   return v7;
 }
 
-- (id)_croppedImageFromImageData:(id)a3
+- (id)_croppedImageFromImageData:(id)data
 {
-  v3 = [MEMORY[0x1E69DCAB8] imageWithData:a3];
+  v3 = [MEMORY[0x1E69DCAB8] imageWithData:data];
   [v3 size];
   v5 = v4 * 0.17;
   [v3 size];
@@ -947,12 +947,12 @@ LABEL_10:
   v9 = v8 + v5 * -2.0;
   [v3 size];
   v11 = v10 + v5 * -2.0;
-  v12 = [v3 CGImage];
+  cGImage = [v3 CGImage];
   v18.origin.x = v5;
   v18.origin.y = v7;
   v18.size.width = v9;
   v18.size.height = v11;
-  v13 = CGImageCreateWithImageInRect(v12, v18);
+  v13 = CGImageCreateWithImageInRect(cGImage, v18);
   v14 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v13];
   CGImageRelease(v13);
   v15 = UIImagePNGRepresentation(v14);
@@ -962,270 +962,270 @@ LABEL_10:
 
 - (BOOL)isMentionable
 {
-  v2 = [(CKEntity *)self defaultIMHandle];
-  v3 = [v2 isContact];
+  defaultIMHandle = [(CKEntity *)self defaultIMHandle];
+  isContact = [defaultIMHandle isContact];
 
-  return v3;
+  return isContact;
 }
 
 - (id)mentionTokens
 {
   v3 = [MEMORY[0x1E695DFA8] setWithCapacity:9];
-  v4 = [(CKEntity *)self abbreviatedDisplayName];
-  v5 = [v4 mentionsSafeText];
-  [(CKEntity *)self addToken:v5 ifAvailableToTokens:v3];
+  abbreviatedDisplayName = [(CKEntity *)self abbreviatedDisplayName];
+  mentionsSafeText = [abbreviatedDisplayName mentionsSafeText];
+  [(CKEntity *)self addToken:mentionsSafeText ifAvailableToTokens:v3];
 
-  v6 = [(CKEntity *)self name];
-  v7 = [v6 mentionsSafeText];
-  [(CKEntity *)self addToken:v7 ifAvailableToTokens:v3];
+  name = [(CKEntity *)self name];
+  mentionsSafeText2 = [name mentionsSafeText];
+  [(CKEntity *)self addToken:mentionsSafeText2 ifAvailableToTokens:v3];
 
-  v8 = [(CKEntity *)self fullName];
-  v9 = [v8 mentionsSafeText];
-  [(CKEntity *)self addToken:v9 ifAvailableToTokens:v3];
+  fullName = [(CKEntity *)self fullName];
+  mentionsSafeText3 = [fullName mentionsSafeText];
+  [(CKEntity *)self addToken:mentionsSafeText3 ifAvailableToTokens:v3];
 
-  v10 = [(CKEntity *)self defaultIMHandle];
-  v11 = [v10 nickname];
-  v12 = [v11 mentionsSafeText];
-  [(CKEntity *)self addToken:v12 ifAvailableToTokens:v3];
+  defaultIMHandle = [(CKEntity *)self defaultIMHandle];
+  nickname = [defaultIMHandle nickname];
+  mentionsSafeText4 = [nickname mentionsSafeText];
+  [(CKEntity *)self addToken:mentionsSafeText4 ifAvailableToTokens:v3];
 
-  v13 = [(CKEntity *)self defaultIMHandle];
-  v14 = [v13 firstName];
-  v15 = [v14 mentionsSafeText];
-  [(CKEntity *)self addToken:v15 ifAvailableToTokens:v3];
+  defaultIMHandle2 = [(CKEntity *)self defaultIMHandle];
+  firstName = [defaultIMHandle2 firstName];
+  mentionsSafeText5 = [firstName mentionsSafeText];
+  [(CKEntity *)self addToken:mentionsSafeText5 ifAvailableToTokens:v3];
 
-  v16 = [(CKEntity *)self defaultIMHandle];
-  v17 = [v16 lastName];
-  v18 = [v17 mentionsSafeText];
-  [(CKEntity *)self addToken:v18 ifAvailableToTokens:v3];
+  defaultIMHandle3 = [(CKEntity *)self defaultIMHandle];
+  lastName = [defaultIMHandle3 lastName];
+  mentionsSafeText6 = [lastName mentionsSafeText];
+  [(CKEntity *)self addToken:mentionsSafeText6 ifAvailableToTokens:v3];
 
-  v19 = [(CKEntity *)self defaultIMHandle];
-  v20 = [v19 phoneticFirstName];
-  v21 = [v20 mentionsSafeText];
-  [(CKEntity *)self addToken:v21 ifAvailableToTokens:v3];
+  defaultIMHandle4 = [(CKEntity *)self defaultIMHandle];
+  phoneticFirstName = [defaultIMHandle4 phoneticFirstName];
+  mentionsSafeText7 = [phoneticFirstName mentionsSafeText];
+  [(CKEntity *)self addToken:mentionsSafeText7 ifAvailableToTokens:v3];
 
-  v22 = [(CKEntity *)self defaultIMHandle];
-  v23 = [v22 phoneticLastName];
-  v24 = [v23 mentionsSafeText];
-  [(CKEntity *)self addToken:v24 ifAvailableToTokens:v3];
+  defaultIMHandle5 = [(CKEntity *)self defaultIMHandle];
+  phoneticLastName = [defaultIMHandle5 phoneticLastName];
+  mentionsSafeText8 = [phoneticLastName mentionsSafeText];
+  [(CKEntity *)self addToken:mentionsSafeText8 ifAvailableToTokens:v3];
 
-  v25 = [(CKEntity *)self defaultIMHandle];
-  v26 = [v25 phoneticFullName];
-  v27 = [v26 mentionsSafeText];
-  [(CKEntity *)self addToken:v27 ifAvailableToTokens:v3];
+  defaultIMHandle6 = [(CKEntity *)self defaultIMHandle];
+  phoneticFullName = [defaultIMHandle6 phoneticFullName];
+  mentionsSafeText9 = [phoneticFullName mentionsSafeText];
+  [(CKEntity *)self addToken:mentionsSafeText9 ifAvailableToTokens:v3];
 
   v28 = [v3 copy];
 
   return v28;
 }
 
-- (void)addToken:(id)a3 ifAvailableToTokens:(id)a4
+- (void)addToken:(id)token ifAvailableToTokens:(id)tokens
 {
-  v6 = a3;
-  v5 = a4;
-  if ([v6 length])
+  tokenCopy = token;
+  tokensCopy = tokens;
+  if ([tokenCopy length])
   {
-    [v5 addObject:v6];
+    [tokensCopy addObject:tokenCopy];
   }
 }
 
 - (id)mentionsHandleID
 {
-  v2 = [(CKEntity *)self defaultIMHandle];
-  v3 = [v2 ID];
+  defaultIMHandle = [(CKEntity *)self defaultIMHandle];
+  v3 = [defaultIMHandle ID];
 
   return v3;
 }
 
-- (id)displayNameMatchingInputText:(id)a3
+- (id)displayNameMatchingInputText:(id)text
 {
-  v4 = a3;
-  v5 = [v4 mentionsSafeText];
-  v6 = [(CKEntity *)self abbreviatedDisplayName];
-  v7 = [v6 mentionsSafeText];
-  v8 = [v7 isEqualToIgnoringCase:v5];
+  textCopy = text;
+  mentionsSafeText = [textCopy mentionsSafeText];
+  abbreviatedDisplayName = [(CKEntity *)self abbreviatedDisplayName];
+  mentionsSafeText2 = [abbreviatedDisplayName mentionsSafeText];
+  v8 = [mentionsSafeText2 isEqualToIgnoringCase:mentionsSafeText];
 
   if (v8)
   {
-    v9 = [(CKEntity *)self abbreviatedDisplayName];
+    abbreviatedDisplayName2 = [(CKEntity *)self abbreviatedDisplayName];
 LABEL_7:
-    v16 = v9;
+    v16 = abbreviatedDisplayName2;
     goto LABEL_8;
   }
 
-  v10 = [(CKEntity *)self name];
-  v11 = [v10 mentionsSafeText];
-  v12 = [v11 isEqualToIgnoringCase:v5];
+  name = [(CKEntity *)self name];
+  mentionsSafeText3 = [name mentionsSafeText];
+  v12 = [mentionsSafeText3 isEqualToIgnoringCase:mentionsSafeText];
 
   if (v12)
   {
-    v9 = [(CKEntity *)self name];
+    abbreviatedDisplayName2 = [(CKEntity *)self name];
     goto LABEL_7;
   }
 
-  v13 = [(CKEntity *)self fullName];
-  v14 = [v13 mentionsSafeText];
-  v15 = [v14 isEqualToIgnoringCase:v5];
+  fullName = [(CKEntity *)self fullName];
+  mentionsSafeText4 = [fullName mentionsSafeText];
+  v15 = [mentionsSafeText4 isEqualToIgnoringCase:mentionsSafeText];
 
   if (v15)
   {
-    v9 = [(CKEntity *)self fullName];
+    abbreviatedDisplayName2 = [(CKEntity *)self fullName];
     goto LABEL_7;
   }
 
-  v18 = [(CKEntity *)self defaultIMHandle];
-  v19 = [v18 nickname];
-  v20 = [v19 mentionsSafeText];
-  v21 = [v20 isEqualToIgnoringCase:v5];
+  defaultIMHandle = [(CKEntity *)self defaultIMHandle];
+  nickname = [defaultIMHandle nickname];
+  mentionsSafeText5 = [nickname mentionsSafeText];
+  v21 = [mentionsSafeText5 isEqualToIgnoringCase:mentionsSafeText];
 
-  v22 = [(CKEntity *)self defaultIMHandle];
-  v23 = v22;
+  defaultIMHandle2 = [(CKEntity *)self defaultIMHandle];
+  defaultIMHandle7 = defaultIMHandle2;
   if (v21)
   {
-    v24 = [v22 nickname];
+    nickname2 = [defaultIMHandle2 nickname];
   }
 
   else
   {
-    v25 = [v22 firstName];
-    v26 = [v25 mentionsSafeText];
-    v27 = [v26 isEqualToIgnoringCase:v5];
+    firstName = [defaultIMHandle2 firstName];
+    mentionsSafeText6 = [firstName mentionsSafeText];
+    v27 = [mentionsSafeText6 isEqualToIgnoringCase:mentionsSafeText];
 
-    v28 = [(CKEntity *)self defaultIMHandle];
-    v23 = v28;
+    defaultIMHandle3 = [(CKEntity *)self defaultIMHandle];
+    defaultIMHandle7 = defaultIMHandle3;
     if (v27)
     {
-      v24 = [v28 firstName];
+      nickname2 = [defaultIMHandle3 firstName];
     }
 
     else
     {
-      v29 = [v28 lastName];
-      v30 = [v29 mentionsSafeText];
-      v31 = [v30 isEqualToIgnoringCase:v5];
+      lastName = [defaultIMHandle3 lastName];
+      mentionsSafeText7 = [lastName mentionsSafeText];
+      v31 = [mentionsSafeText7 isEqualToIgnoringCase:mentionsSafeText];
 
-      v32 = [(CKEntity *)self defaultIMHandle];
-      v23 = v32;
+      defaultIMHandle4 = [(CKEntity *)self defaultIMHandle];
+      defaultIMHandle7 = defaultIMHandle4;
       if (v31)
       {
-        v24 = [v32 lastName];
+        nickname2 = [defaultIMHandle4 lastName];
       }
 
       else
       {
-        v33 = [v32 phoneticFirstName];
-        v34 = [v33 mentionsSafeText];
-        v35 = [v34 isEqualToIgnoringCase:v5];
+        phoneticFirstName = [defaultIMHandle4 phoneticFirstName];
+        mentionsSafeText8 = [phoneticFirstName mentionsSafeText];
+        v35 = [mentionsSafeText8 isEqualToIgnoringCase:mentionsSafeText];
 
-        v36 = [(CKEntity *)self defaultIMHandle];
-        v23 = v36;
+        defaultIMHandle5 = [(CKEntity *)self defaultIMHandle];
+        defaultIMHandle7 = defaultIMHandle5;
         if (v35)
         {
-          v24 = [v36 phoneticFirstName];
+          nickname2 = [defaultIMHandle5 phoneticFirstName];
         }
 
         else
         {
-          v37 = [v36 phoneticLastName];
-          v38 = [v37 mentionsSafeText];
-          v39 = [v38 isEqualToIgnoringCase:v5];
+          phoneticLastName = [defaultIMHandle5 phoneticLastName];
+          mentionsSafeText9 = [phoneticLastName mentionsSafeText];
+          v39 = [mentionsSafeText9 isEqualToIgnoringCase:mentionsSafeText];
 
-          v40 = [(CKEntity *)self defaultIMHandle];
-          v23 = v40;
+          defaultIMHandle6 = [(CKEntity *)self defaultIMHandle];
+          defaultIMHandle7 = defaultIMHandle6;
           if (v39)
           {
-            v24 = [v40 phoneticLastName];
+            nickname2 = [defaultIMHandle6 phoneticLastName];
           }
 
           else
           {
-            v41 = [v40 phoneticFullName];
-            v42 = [v41 mentionsSafeText];
-            v43 = [v42 isEqualToIgnoringCase:v5];
+            phoneticFullName = [defaultIMHandle6 phoneticFullName];
+            mentionsSafeText10 = [phoneticFullName mentionsSafeText];
+            v43 = [mentionsSafeText10 isEqualToIgnoringCase:mentionsSafeText];
 
             if (!v43)
             {
-              v9 = v4;
+              abbreviatedDisplayName2 = textCopy;
               goto LABEL_7;
             }
 
-            v23 = [(CKEntity *)self defaultIMHandle];
-            v24 = [v23 phoneticFullName];
+            defaultIMHandle7 = [(CKEntity *)self defaultIMHandle];
+            nickname2 = [defaultIMHandle7 phoneticFullName];
           }
         }
       }
     }
   }
 
-  v16 = v24;
+  v16 = nickname2;
 
 LABEL_8:
 
   return v16;
 }
 
-+ (BOOL)string:(id)a3 hasPrefix:(id)a4
++ (BOOL)string:(id)string hasPrefix:(id)prefix
 {
   v5 = MEMORY[0x1E696AE18];
-  v6 = a3;
-  v7 = [v5 predicateWithFormat:@"SELF beginswith[cld] %@", a4];
-  LOBYTE(v5) = [v7 evaluateWithObject:v6];
+  stringCopy = string;
+  prefix = [v5 predicateWithFormat:@"SELF beginswith[cld] %@", prefix];
+  LOBYTE(v5) = [prefix evaluateWithObject:stringCopy];
 
   return v5;
 }
 
-- (id)personViewControllerWithDelegate:(id)a3 isUnknown:(BOOL *)a4
+- (id)personViewControllerWithDelegate:(id)delegate isUnknown:(BOOL *)unknown
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v7 = +[_CKEntityContactStoreProvider sharedInstance];
-  v8 = [(CKEntity *)self personViewControllerWithDelegate:v6 isUnknown:a4 contactStoreProvider:v7];
+  v8 = [(CKEntity *)self personViewControllerWithDelegate:delegateCopy isUnknown:unknown contactStoreProvider:v7];
 
   return v8;
 }
 
-- (id)personViewControllerWithDelegate:(id)a3 isUnknown:(BOOL *)a4 contactStoreProvider:(id)a5
+- (id)personViewControllerWithDelegate:(id)delegate isUnknown:(BOOL *)unknown contactStoreProvider:(id)provider
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(CKEntity *)self defaultIMHandle];
-  v9 = [MEMORY[0x1E695D148] descriptorForRequiredKeys];
-  v16[0] = v9;
+  delegateCopy = delegate;
+  defaultIMHandle = [(CKEntity *)self defaultIMHandle];
+  descriptorForRequiredKeys = [MEMORY[0x1E695D148] descriptorForRequiredKeys];
+  v16[0] = descriptorForRequiredKeys;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-  v11 = [v8 cnContactWithKeys:v10];
+  v11 = [defaultIMHandle cnContactWithKeys:v10];
 
   if ([MEMORY[0x1E69A7FD0] isCNContactAKnownContact:v11])
   {
-    *a4 = 0;
+    *unknown = 0;
     v12 = [MEMORY[0x1E695D148] viewControllerForContact:v11];
     [v12 setDisplayMode:2];
     [v12 setAllowsActions:1];
     [v12 setAllowsEditing:1];
     [v12 setShouldShowLinkedContacts:1];
     [v12 setActions:{objc_msgSend(v12, "actions") | 0x80}];
-    v13 = [(CKEntity *)self propertyType];
-    [v12 highlightPropertyWithKey:v13 identifier:0];
+    propertyType = [(CKEntity *)self propertyType];
+    [v12 highlightPropertyWithKey:propertyType identifier:0];
   }
 
   else
   {
-    *a4 = 1;
+    *unknown = 1;
     v12 = [MEMORY[0x1E695D148] viewControllerForUnknownContact:v11];
     [v12 setDisplayMode:2];
-    v14 = [(CKEntity *)self propertyType];
-    [v12 setPrimaryPropertyKey:v14];
+    propertyType2 = [(CKEntity *)self propertyType];
+    [v12 setPrimaryPropertyKey:propertyType2];
 
     [v12 setAllowsActions:1];
     [v12 setActions:{objc_msgSend(v12, "actions") | 0x80}];
   }
 
-  [v12 setDelegate:v7];
+  [v12 setDelegate:delegateCopy];
 
   return v12;
 }
 
 - (id)pinnedConversationContactItemIdentifier
 {
-  v3 = [(CKEntity *)self rawAddress];
-  if (![v3 length])
+  rawAddress = [(CKEntity *)self rawAddress];
+  if (![rawAddress length])
   {
     v4 = IMLogHandleForCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -1235,10 +1235,10 @@ LABEL_8:
 
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", self];
 
-    v3 = v5;
+    rawAddress = v5;
   }
 
-  return v3;
+  return rawAddress;
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface BatteryUIDetailController
-- (id)getSortValueForKey:(id)a3;
-- (id)getValueForSpecifier:(id)a3;
+- (id)getSortValueForKey:(id)key;
+- (id)getValueForSpecifier:(id)specifier;
 - (id)specifiers;
 @end
 
 @implementation BatteryUIDetailController
 
-- (id)getValueForSpecifier:(id)a3
+- (id)getValueForSpecifier:(id)specifier
 {
-  v4 = [a3 propertyForKey:PSIDKey];
+  v4 = [specifier propertyForKey:PSIDKey];
   if ([v4 isEqualToString:@"PLBatteryUIAppEnergyUsedKey"])
   {
     v5 = [(NSDictionary *)self->_appEntry objectForKeyedSubscript:v4];
@@ -101,125 +101,125 @@ LABEL_6:
   return v8;
 }
 
-- (id)getSortValueForKey:(id)a3
+- (id)getSortValueForKey:(id)key
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PLBatteryUIAppNameKey"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"PLBatteryUIAppNameKey"])
   {
     v4 = &off_1732E0;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppBundleIDKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppBundleIDKey"])
   {
     v4 = &off_1732F8;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppEnergyValueKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppEnergyValueKey"])
   {
     v4 = &off_173310;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppEnergyUsedKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppEnergyUsedKey"])
   {
     v4 = &off_173328;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppCPUEnergyKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppCPUEnergyKey"])
   {
     v4 = &off_173340;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppVENCEnergyKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppVENCEnergyKey"])
   {
     v4 = &off_173358;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppVDECEnergyKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppVDECEnergyKey"])
   {
     v4 = &off_173370;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppISPEnergyKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppISPEnergyKey"])
   {
     v4 = &off_173388;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppRestOfSOCEnergyKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppRestOfSOCEnergyKey"])
   {
     v4 = &off_1733A0;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppSOCEnergyKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppSOCEnergyKey"])
   {
     v4 = &off_1733B8;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppGPUEnergyKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppGPUEnergyKey"])
   {
     v4 = &off_1733D0;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppDRAMEnergyKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppDRAMEnergyKey"])
   {
     v4 = &off_1733E8;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppDisplayEnergyKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppDisplayEnergyKey"])
   {
     v4 = &off_173400;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppAUDIOEnergyKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppAUDIOEnergyKey"])
   {
     v4 = &off_173418;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppBBEnergyKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppBBEnergyKey"])
   {
     v4 = &off_173430;
   }
 
-  else if ([v3 isEqualToString:@"BLMEnergyGPS"])
+  else if ([keyCopy isEqualToString:@"BLMEnergyGPS"])
   {
     v4 = &off_173448;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppWIFIEnergyKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppWIFIEnergyKey"])
   {
     v4 = &off_173460;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppWifiLocationEnergyKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppWifiLocationEnergyKey"])
   {
     v4 = &off_173478;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppWifiPipelineEnergyKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppWifiPipelineEnergyKey"])
   {
     v4 = &off_173490;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppBluetoothEnergyKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppBluetoothEnergyKey"])
   {
     v4 = &off_1734A8;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppAccessoryEnergyKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppAccessoryEnergyKey"])
   {
     v4 = &off_1734C0;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppNfcEnergyKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppNfcEnergyKey"])
   {
     v4 = &off_1734D8;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppQualifiersKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppQualifiersKey"])
   {
     v4 = &off_1734F0;
   }
 
-  else if ([v3 isEqualToString:@"PLBatteryUIAppTypeKey"])
+  else if ([keyCopy isEqualToString:@"PLBatteryUIAppTypeKey"])
   {
     v4 = &off_173508;
   }
@@ -249,8 +249,8 @@ LABEL_18:
     goto LABEL_4;
   }
 
-  v5 = [(BatteryUIDetailController *)self specifier];
-  v6 = [v5 propertyForKey:@"APP_ENERGY_ENTRY"];
+  specifier = [(BatteryUIDetailController *)self specifier];
+  v6 = [specifier propertyForKey:@"APP_ENERGY_ENTRY"];
   appEntry = self->_appEntry;
   self->_appEntry = v6;
 
@@ -258,33 +258,33 @@ LABEL_18:
   {
 LABEL_4:
     v53 = v2;
-    v8 = [(BatteryUIDetailController *)self specifier];
-    v9 = [v8 name];
-    v10 = [PSSpecifier preferenceSpecifierNamed:v9 target:self set:0 get:0 detail:0 cell:3 edit:0];
+    specifier2 = [(BatteryUIDetailController *)self specifier];
+    name = [specifier2 name];
+    v10 = [PSSpecifier preferenceSpecifierNamed:name target:self set:0 get:0 detail:0 cell:3 edit:0];
 
     v11 = [(NSDictionary *)self->_appEntry objectForKeyedSubscript:@"PLBatteryUIAppBundleIDKey"];
     v54 = PSIDKey;
     [v10 setProperty:v11 forKey:?];
 
-    v12 = [(BatteryUIDetailController *)self specifier];
+    specifier3 = [(BatteryUIDetailController *)self specifier];
     v13 = PSLazyIconAppID;
-    v14 = [v12 propertyForKey:PSLazyIconAppID];
+    v14 = [specifier3 propertyForKey:PSLazyIconAppID];
 
     if (v14)
     {
-      v15 = [(BatteryUIDetailController *)self specifier];
-      v16 = [v15 propertyForKey:v13];
+      specifier4 = [(BatteryUIDetailController *)self specifier];
+      v16 = [specifier4 propertyForKey:v13];
       [v10 setProperty:v16 forKey:v13];
     }
 
-    v17 = [(BatteryUIDetailController *)self specifier];
+    specifier5 = [(BatteryUIDetailController *)self specifier];
     v18 = PSLazyIconLoading;
-    v19 = [v17 propertyForKey:PSLazyIconLoading];
+    v19 = [specifier5 propertyForKey:PSLazyIconLoading];
 
     if (v19)
     {
-      v20 = [(BatteryUIDetailController *)self specifier];
-      v21 = [v20 propertyForKey:v18];
+      specifier6 = [(BatteryUIDetailController *)self specifier];
+      v21 = [specifier6 propertyForKey:v18];
       [v10 setProperty:v21 forKey:v18];
     }
 
@@ -293,8 +293,8 @@ LABEL_4:
 
     v52 = v10;
     [v55 addObject:v10];
-    v23 = [(BatteryUIDetailController *)self specifier];
-    v24 = [v23 propertyForKey:@"usageString"];
+    specifier7 = [(BatteryUIDetailController *)self specifier];
+    v24 = [specifier7 propertyForKey:@"usageString"];
 
     v51 = v24;
     v25 = [PSSpecifier groupSpecifierWithName:v24];
@@ -316,8 +316,8 @@ LABEL_4:
     v31 = [PSSpecifier groupSpecifierWithName:v30];
     [v55 addObject:v31];
 
-    v32 = [(NSDictionary *)self->_appEntry allKeys];
-    v33 = [v32 mutableCopy];
+    allKeys = [(NSDictionary *)self->_appEntry allKeys];
+    v33 = [allKeys mutableCopy];
 
     v60[0] = _NSConcreteStackBlock;
     v60[1] = 3221225472;

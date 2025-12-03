@@ -1,7 +1,7 @@
 @interface SGLabeledValue
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLabeledValue:(id)a3;
-- (SGLabeledValue)initWithLabel:(id)a3 value:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLabeledValue:(id)value;
+- (SGLabeledValue)initWithLabel:(id)label value:(id)value;
 - (id)description;
 @end
 
@@ -14,12 +14,12 @@
   return v2;
 }
 
-- (BOOL)isEqualToLabeledValue:(id)a3
+- (BOOL)isEqualToLabeledValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = self->_label;
   v6 = v5;
-  if (v5 == v4[1])
+  if (v5 == valueCopy[1])
   {
   }
 
@@ -36,7 +36,7 @@
 
   v9 = self->_value;
   v10 = v9;
-  if (v9 == v4[2])
+  if (v9 == valueCopy[2])
   {
     v8 = 1;
   }
@@ -50,37 +50,37 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGLabeledValue *)self isEqualToLabeledValue:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGLabeledValue *)self isEqualToLabeledValue:v5];
   }
 
   return v6;
 }
 
-- (SGLabeledValue)initWithLabel:(id)a3 value:(id)a4
+- (SGLabeledValue)initWithLabel:(id)label value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  labelCopy = label;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = SGLabeledValue;
   v8 = [(SGLabeledValue *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [labelCopy copy];
     label = v8->_label;
     v8->_label = v9;
 
-    v11 = [v7 copy];
+    v11 = [valueCopy copy];
     value = v8->_value;
     v8->_value = v11;
   }

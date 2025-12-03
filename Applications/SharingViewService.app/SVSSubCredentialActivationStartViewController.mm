@@ -4,9 +4,9 @@
 - (SubCredentialActivationMainController)mainController;
 - (void)_handleEnterCode;
 - (void)_handleOpenApp;
-- (void)updateAppName:(id)a3 image:(id)a4;
+- (void)updateAppName:(id)name image:(id)image;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SVSSubCredentialActivationStartViewController
@@ -39,13 +39,13 @@
     LogPrintF();
   }
 
-  v3 = [(SVSSubCredentialActivationStartViewController *)self mainController];
+  mainController = [(SVSSubCredentialActivationStartViewController *)self mainController];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10011C478;
   v4[3] = &unk_100195AC0;
   v4[4] = self;
-  [v3 dismissAnimated:1 completion:v4];
+  [mainController dismissAnimated:1 completion:v4];
 }
 
 - (void)_handleEnterCode
@@ -64,29 +64,29 @@
   [v3 dismissAnimated:1 completion:v4];
 }
 
-- (void)updateAppName:(id)a3 image:(id)a4
+- (void)updateAppName:(id)name image:(id)image
 {
-  v23 = a3;
-  v6 = a4;
+  nameCopy = name;
+  imageCopy = image;
   if (dword_1001BEEA8 <= 50 && (dword_1001BEEA8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
   }
 
-  v7 = [(SVSSubCredentialActivationStartViewController *)self activityIndicator];
-  [v7 setHidden:1];
+  activityIndicator = [(SVSSubCredentialActivationStartViewController *)self activityIndicator];
+  [activityIndicator setHidden:1];
 
-  v8 = [(SVSSubCredentialActivationStartViewController *)self activityIndicator];
-  [v8 stopAnimating];
+  activityIndicator2 = [(SVSSubCredentialActivationStartViewController *)self activityIndicator];
+  [activityIndicator2 stopAnimating];
 
-  v9 = [(SVSSubCredentialActivationStartViewController *)self openButton];
-  if ([v23 length])
+  openButton = [(SVSSubCredentialActivationStartViewController *)self openButton];
+  if ([nameCopy length])
   {
-    v10 = [(SVSSubCredentialActivationStartViewController *)self mainController];
-    v11 = [v10 appContent];
-    v12 = [v11 installed];
+    mainController = [(SVSSubCredentialActivationStartViewController *)self mainController];
+    appContent = [mainController appContent];
+    installed = [appContent installed];
 
-    if (v12)
+    if (installed)
     {
       v19 = @"SUBCREDENTIAL_OPEN_BUTTON_INSTALLED";
     }
@@ -96,56 +96,56 @@
       v19 = @"SUBCREDENTIAL_OPEN_BUTTON_UNINSTALLED";
     }
 
-    v20 = sub_100127C0C(@"Localizable-Subcredential", v19, v13, v14, v15, v16, v17, v18, v23);
-    [v9 setTitle:v20 forState:0];
-    [v9 setHidden:0];
+    v20 = sub_100127C0C(@"Localizable-Subcredential", v19, v13, v14, v15, v16, v17, v18, nameCopy);
+    [openButton setTitle:v20 forState:0];
+    [openButton setHidden:0];
   }
 
   else
   {
-    [v9 setHidden:1];
+    [openButton setHidden:1];
   }
 
-  [(SVSSubCredentialActivationStartViewController *)self setAppIconImage:v6];
-  v21 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
-  [v21 setImage:v6];
+  [(SVSSubCredentialActivationStartViewController *)self setAppIconImage:imageCopy];
+  appIconImageView = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
+  [appIconImageView setImage:imageCopy];
 
-  v22 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
-  [v22 setBackgroundColor:0];
+  appIconImageView2 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
+  [appIconImageView2 setBackgroundColor:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = SVSSubCredentialActivationStartViewController;
-  [(SVSSubCredentialActivationStartViewController *)&v13 viewWillAppear:a3];
-  v4 = [(SVSSubCredentialActivationStartViewController *)self mainController];
-  v5 = [v4 _remoteViewControllerProxy];
-  [v5 setStatusBarHidden:1 withDuration:0.3];
+  [(SVSSubCredentialActivationStartViewController *)&v13 viewWillAppear:appear];
+  mainController = [(SVSSubCredentialActivationStartViewController *)self mainController];
+  _remoteViewControllerProxy = [mainController _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setStatusBarHidden:1 withDuration:0.3];
 
-  v6 = [(SVSSubCredentialActivationStartViewController *)self appIconImage];
+  appIconImage = [(SVSSubCredentialActivationStartViewController *)self appIconImage];
 
-  if (v6)
+  if (appIconImage)
   {
-    v7 = [(SVSSubCredentialActivationStartViewController *)self appName];
-    v8 = [(SVSSubCredentialActivationStartViewController *)self appIconImage];
-    [(SVSSubCredentialActivationStartViewController *)self updateAppName:v7 image:v8];
+    appName = [(SVSSubCredentialActivationStartViewController *)self appName];
+    appIconImage2 = [(SVSSubCredentialActivationStartViewController *)self appIconImage];
+    [(SVSSubCredentialActivationStartViewController *)self updateAppName:appName image:appIconImage2];
   }
 
   else
   {
     v9 = +[UIColor secondarySystemFillColor];
-    v10 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
-    [v10 setBackgroundColor:v9];
+    appIconImageView = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
+    [appIconImageView setBackgroundColor:v9];
 
-    v11 = [(SVSSubCredentialActivationStartViewController *)self openButton];
-    [v11 setHidden:1];
+    openButton = [(SVSSubCredentialActivationStartViewController *)self openButton];
+    [openButton setHidden:1];
 
-    v12 = [(SVSSubCredentialActivationStartViewController *)self activityIndicator];
-    [v12 setHidden:0];
+    activityIndicator = [(SVSSubCredentialActivationStartViewController *)self activityIndicator];
+    [activityIndicator setHidden:0];
 
-    v7 = [(SVSSubCredentialActivationStartViewController *)self activityIndicator];
-    [v7 startAnimating];
+    appName = [(SVSSubCredentialActivationStartViewController *)self activityIndicator];
+    [appName startAnimating];
   }
 }
 
@@ -154,13 +154,13 @@
   v88.receiver = self;
   v88.super_class = SVSSubCredentialActivationStartViewController;
   [(SVSSubCredentialActivationStartViewController *)&v88 viewDidLoad];
-  v78 = [(SVSSubCredentialActivationStartViewController *)self mainController];
+  mainController = [(SVSSubCredentialActivationStartViewController *)self mainController];
   [(SVSSubCredentialActivationStartViewController *)self setDismissalType:3];
-  v3 = [v78 cardTitle];
-  [(SVSSubCredentialActivationStartViewController *)self setTitle:v3];
+  cardTitle = [mainController cardTitle];
+  [(SVSSubCredentialActivationStartViewController *)self setTitle:cardTitle];
 
-  v4 = [v78 cardSubtitle];
-  [(SVSSubCredentialActivationStartViewController *)self setSubtitle:v4];
+  cardSubtitle = [mainController cardSubtitle];
+  [(SVSSubCredentialActivationStartViewController *)self setSubtitle:cardSubtitle];
 
   objc_initWeak(&location, self);
   v77 = sub_100127C0C(@"Localizable-Subcredential", @"SUBCREDENTIAL_ENTER_CODE", v5, v6, v7, v8, v9, v10, v42);
@@ -182,84 +182,84 @@
   v13 = objc_alloc_init(UIImageView);
   [(SVSSubCredentialActivationStartViewController *)self setAppIconImageView:v13];
 
-  v14 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  appIconImageView = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
+  [appIconImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v15 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
-  [v15 _setContinuousCornerRadius:20.0];
+  appIconImageView2 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
+  [appIconImageView2 _setContinuousCornerRadius:20.0];
 
-  v16 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
-  v17 = [v16 layer];
-  [v17 setMasksToBounds:1];
+  appIconImageView3 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
+  layer = [appIconImageView3 layer];
+  [layer setMasksToBounds:1];
 
   v18 = +[UIColor labelColor];
-  v19 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
-  [v19 setTintColor:v18];
+  appIconImageView4 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
+  [appIconImageView4 setTintColor:v18];
 
-  v20 = [(SVSSubCredentialActivationStartViewController *)self contentView];
-  v21 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
-  [v20 addSubview:v21];
+  contentView = [(SVSSubCredentialActivationStartViewController *)self contentView];
+  appIconImageView5 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
+  [contentView addSubview:appIconImageView5];
 
   v22 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:101];
   [(SVSSubCredentialActivationStartViewController *)self setActivityIndicator:v22];
 
-  v23 = [(SVSSubCredentialActivationStartViewController *)self activityIndicator];
-  [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
+  activityIndicator = [(SVSSubCredentialActivationStartViewController *)self activityIndicator];
+  [activityIndicator setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v24 = [(SVSSubCredentialActivationStartViewController *)self activityIndicator];
-  [v24 setHidden:1];
+  activityIndicator2 = [(SVSSubCredentialActivationStartViewController *)self activityIndicator];
+  [activityIndicator2 setHidden:1];
 
-  v25 = [(SVSSubCredentialActivationStartViewController *)self contentView];
-  v26 = [(SVSSubCredentialActivationStartViewController *)self activityIndicator];
-  [v25 addSubview:v26];
+  contentView2 = [(SVSSubCredentialActivationStartViewController *)self contentView];
+  activityIndicator3 = [(SVSSubCredentialActivationStartViewController *)self activityIndicator];
+  [contentView2 addSubview:activityIndicator3];
 
-  v74 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
-  v71 = [v74 topAnchor];
-  v73 = [(SVSSubCredentialActivationStartViewController *)self contentView];
-  v72 = [v73 mainContentGuide];
-  v70 = [v72 topAnchor];
-  v69 = [v71 constraintGreaterThanOrEqualToAnchor:v70];
+  appIconImageView6 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
+  topAnchor = [appIconImageView6 topAnchor];
+  contentView3 = [(SVSSubCredentialActivationStartViewController *)self contentView];
+  mainContentGuide = [contentView3 mainContentGuide];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v69 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v90[0] = v69;
-  v68 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
-  v65 = [v68 centerYAnchor];
-  v67 = [(SVSSubCredentialActivationStartViewController *)self contentView];
-  v66 = [v67 mainContentGuide];
-  v64 = [v66 centerYAnchor];
-  v63 = [v65 constraintEqualToAnchor:v64];
+  appIconImageView7 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
+  centerYAnchor = [appIconImageView7 centerYAnchor];
+  contentView4 = [(SVSSubCredentialActivationStartViewController *)self contentView];
+  mainContentGuide2 = [contentView4 mainContentGuide];
+  centerYAnchor2 = [mainContentGuide2 centerYAnchor];
+  v63 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v90[1] = v63;
-  v62 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
-  v59 = [v62 centerXAnchor];
-  v61 = [(SVSSubCredentialActivationStartViewController *)self contentView];
-  v60 = [v61 mainContentGuide];
-  v58 = [v60 centerXAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58];
+  appIconImageView8 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
+  centerXAnchor = [appIconImageView8 centerXAnchor];
+  contentView5 = [(SVSSubCredentialActivationStartViewController *)self contentView];
+  mainContentGuide3 = [contentView5 mainContentGuide];
+  centerXAnchor2 = [mainContentGuide3 centerXAnchor];
+  v57 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v90[2] = v57;
-  v56 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
-  v55 = [v56 heightAnchor];
-  v54 = [v55 constraintEqualToConstant:98.0];
+  appIconImageView9 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
+  heightAnchor = [appIconImageView9 heightAnchor];
+  v54 = [heightAnchor constraintEqualToConstant:98.0];
   v90[3] = v54;
-  v53 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
-  v52 = [v53 widthAnchor];
-  v51 = [v52 constraintEqualToConstant:98.0];
+  appIconImageView10 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
+  widthAnchor = [appIconImageView10 widthAnchor];
+  v51 = [widthAnchor constraintEqualToConstant:98.0];
   v90[4] = v51;
-  v50 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
-  v47 = [v50 bottomAnchor];
-  v49 = [(SVSSubCredentialActivationStartViewController *)self contentView];
-  v48 = [v49 mainContentGuide];
-  v46 = [v48 bottomAnchor];
-  v45 = [v47 constraintLessThanOrEqualToAnchor:v46];
+  appIconImageView11 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
+  bottomAnchor = [appIconImageView11 bottomAnchor];
+  contentView6 = [(SVSSubCredentialActivationStartViewController *)self contentView];
+  mainContentGuide4 = [contentView6 mainContentGuide];
+  bottomAnchor2 = [mainContentGuide4 bottomAnchor];
+  v45 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v90[5] = v45;
-  v44 = [(SVSSubCredentialActivationStartViewController *)self activityIndicator];
-  v43 = [v44 centerXAnchor];
-  v27 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
-  v28 = [v27 centerXAnchor];
-  v29 = [v43 constraintEqualToAnchor:v28];
+  activityIndicator4 = [(SVSSubCredentialActivationStartViewController *)self activityIndicator];
+  centerXAnchor3 = [activityIndicator4 centerXAnchor];
+  appIconImageView12 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
+  centerXAnchor4 = [appIconImageView12 centerXAnchor];
+  v29 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v90[6] = v29;
-  v30 = [(SVSSubCredentialActivationStartViewController *)self activityIndicator];
-  v31 = [v30 centerYAnchor];
-  v32 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
-  v33 = [v32 centerYAnchor];
-  v34 = [v31 constraintEqualToAnchor:v33];
+  activityIndicator5 = [(SVSSubCredentialActivationStartViewController *)self activityIndicator];
+  centerYAnchor3 = [activityIndicator5 centerYAnchor];
+  appIconImageView13 = [(SVSSubCredentialActivationStartViewController *)self appIconImageView];
+  centerYAnchor4 = [appIconImageView13 centerYAnchor];
+  v34 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v90[7] = v34;
   v35 = [NSArray arrayWithObjects:v90 count:8];
   [NSLayoutConstraint activateConstraints:v35];
@@ -268,10 +268,10 @@
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v36 = [(SVSSubCredentialActivationStartViewController *)self contentView];
-  v37 = [v36 actionButtons];
+  contentView7 = [(SVSSubCredentialActivationStartViewController *)self contentView];
+  actionButtons = [contentView7 actionButtons];
 
-  v38 = [v37 countByEnumeratingWithState:&v79 objects:v89 count:16];
+  v38 = [actionButtons countByEnumeratingWithState:&v79 objects:v89 count:16];
   if (v38)
   {
     v39 = *v80;
@@ -281,7 +281,7 @@
       {
         if (*v80 != v39)
         {
-          objc_enumerationMutation(v37);
+          objc_enumerationMutation(actionButtons);
         }
 
         v41 = *(*(&v79 + 1) + 8 * i);
@@ -292,7 +292,7 @@
         }
       }
 
-      v38 = [v37 countByEnumeratingWithState:&v79 objects:v89 count:16];
+      v38 = [actionButtons countByEnumeratingWithState:&v79 objects:v89 count:16];
       if (v38)
       {
         continue;

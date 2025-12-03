@@ -1,10 +1,10 @@
 @interface MIOWriterMetadataGroupStreamInput
-- (BOOL)appendMetadata:(id)a3 error:(id *)a4;
-- (BOOL)superAppendMetadata:(id)a3;
+- (BOOL)appendMetadata:(id)metadata error:(id *)error;
+- (BOOL)superAppendMetadata:(id)metadata;
 - (MIOWriterBufferStreamInput)associateToInput;
 - (MIOWriterMetadataGroupStreamInput)init;
-- (MIOWriterMetadataGroupStreamInput)initWithStreamId:(id)a3 format:(opaqueCMFormatDescription *)a4;
-- (MIOWriterMetadataGroupStreamInput)initWithStreamId:(id)a3 format:(opaqueCMFormatDescription *)a4 associateToInput:(id)a5;
+- (MIOWriterMetadataGroupStreamInput)initWithStreamId:(id)id format:(opaqueCMFormatDescription *)format;
+- (MIOWriterMetadataGroupStreamInput)initWithStreamId:(id)id format:(opaqueCMFormatDescription *)format associateToInput:(id)input;
 - (id)uuid;
 @end
 
@@ -19,21 +19,21 @@
   return 0;
 }
 
-- (MIOWriterMetadataGroupStreamInput)initWithStreamId:(id)a3 format:(opaqueCMFormatDescription *)a4 associateToInput:(id)a5
+- (MIOWriterMetadataGroupStreamInput)initWithStreamId:(id)id format:(opaqueCMFormatDescription *)format associateToInput:(id)input
 {
-  v8 = a5;
-  v9 = [(MIOWriterMetadataGroupStreamInput *)self initWithStreamId:a3 format:a4];
+  inputCopy = input;
+  v9 = [(MIOWriterMetadataGroupStreamInput *)self initWithStreamId:id format:format];
   if (v9)
   {
-    if (![v8 registerForAssociating:v9 trackRelation:*MEMORY[0x277CE6198]])
+    if (![inputCopy registerForAssociating:v9 trackRelation:*MEMORY[0x277CE6198]])
     {
       v12 = 0;
       goto LABEL_6;
     }
 
-    v10 = [v8 uuid];
+    uuid = [inputCopy uuid];
     associatedInputUUID = v9->_associatedInputUUID;
-    v9->_associatedInputUUID = v10;
+    v9->_associatedInputUUID = uuid;
   }
 
   v12 = v9;
@@ -42,27 +42,27 @@ LABEL_6:
   return v12;
 }
 
-- (MIOWriterMetadataGroupStreamInput)initWithStreamId:(id)a3 format:(opaqueCMFormatDescription *)a4
+- (MIOWriterMetadataGroupStreamInput)initWithStreamId:(id)id format:(opaqueCMFormatDescription *)format
 {
   v5.receiver = self;
   v5.super_class = MIOWriterMetadataGroupStreamInput;
-  return [(MIOWriterMetadataStreamInput *)&v5 initWithStreamId:a3 format:a4];
+  return [(MIOWriterMetadataStreamInput *)&v5 initWithStreamId:id format:format];
 }
 
-- (BOOL)superAppendMetadata:(id)a3
+- (BOOL)superAppendMetadata:(id)metadata
 {
   v4.receiver = self;
   v4.super_class = MIOWriterMetadataGroupStreamInput;
-  return [(MIOWriterMetadataStreamInput *)&v4 appendMetadata:a3];
+  return [(MIOWriterMetadataStreamInput *)&v4 appendMetadata:metadata];
 }
 
-- (BOOL)appendMetadata:(id)a3 error:(id *)a4
+- (BOOL)appendMetadata:(id)metadata error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  metadataCopy = metadata;
+  v7 = metadataCopy;
+  if (metadataCopy)
   {
-    [v6 timeRange];
+    [metadataCopy timeRange];
   }
 
   else
@@ -74,7 +74,7 @@ LABEL_6:
 
   *location = v18;
   v17 = v19;
-  if ([(MIOWriterStreamInput *)self prepareForAppendWithTimeStamp:location error:a4])
+  if ([(MIOWriterStreamInput *)self prepareForAppendWithTimeStamp:location error:error])
   {
     objc_initWeak(location, self);
     v13[0] = MEMORY[0x277D85DD0];
@@ -84,10 +84,10 @@ LABEL_6:
     objc_copyWeak(&v15, location);
     v14 = v7;
     v8 = MEMORY[0x259C68980](v13);
-    v9 = [(MIOWriterStreamInput *)self threadingOption];
-    if (v9)
+    threadingOption = [(MIOWriterStreamInput *)self threadingOption];
+    if (threadingOption)
     {
-      if (v9 == 1)
+      if (threadingOption == 1)
       {
         LOBYTE(self) = v8[2](v8);
       }
@@ -138,12 +138,12 @@ uint64_t __58__MIOWriterMetadataGroupStreamInput_appendMetadata_error___block_in
 
 - (MIOWriterBufferStreamInput)associateToInput
 {
-  v2 = [(MIOWriterStreamInput *)self associatedInputs];
-  v3 = [v2 firstObject];
-  v4 = [v3 firstObject];
-  v5 = [v4 nonretainedObjectValue];
+  associatedInputs = [(MIOWriterStreamInput *)self associatedInputs];
+  firstObject = [associatedInputs firstObject];
+  v3FirstObject = [firstObject firstObject];
+  nonretainedObjectValue = [v3FirstObject nonretainedObjectValue];
 
-  return v5;
+  return nonretainedObjectValue;
 }
 
 - (id)uuid
@@ -152,8 +152,8 @@ uint64_t __58__MIOWriterMetadataGroupStreamInput_appendMetadata_error___block_in
   if (!uuid)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(MIOWriterStreamInput *)self streamId];
-    v6 = [v4 stringWithFormat:@"%@_%ld_%@", v5, -[MIOWriterStreamInput mediaType](self, "mediaType"), self->_associatedInputUUID];
+    streamId = [(MIOWriterStreamInput *)self streamId];
+    v6 = [v4 stringWithFormat:@"%@_%ld_%@", streamId, -[MIOWriterStreamInput mediaType](self, "mediaType"), self->_associatedInputUUID];
     v7 = self->_uuid;
     self->_uuid = v6;
 

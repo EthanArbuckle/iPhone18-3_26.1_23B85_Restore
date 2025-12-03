@@ -2,7 +2,7 @@
 - (SAEmergencyResponseManager)init;
 - (id)delegate;
 - (void)dialVoiceCallToPhoneNumber:(NSString *)phoneNumber completionHandler:(void *)handler;
-- (void)updateVoiceCallStatus:(int64_t)a3;
+- (void)updateVoiceCallStatus:(int64_t)status;
 @end
 
 @implementation SAEmergencyResponseManager
@@ -15,8 +15,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(SAEmergencyResponseManager *)v2 client];
-    [v4 setEmergencyResponseClientDelegate:v3];
+    client = [(SAEmergencyResponseManager *)v2 client];
+    [client setEmergencyResponseClientDelegate:v3];
   }
 
   return v3;
@@ -32,22 +32,22 @@
     [SAEmergencyResponseManager dialVoiceCallToPhoneNumber:v6 completionHandler:v8];
   }
 
-  v9 = [(SAEmergencyResponseManager *)self client];
-  [v9 dialVoiceCallToPhoneNumber:v6 completionHandler:v7];
+  client = [(SAEmergencyResponseManager *)self client];
+  [client dialVoiceCallToPhoneNumber:v6 completionHandler:v7];
 }
 
-- (void)updateVoiceCallStatus:(int64_t)a3
+- (void)updateVoiceCallStatus:(int64_t)status
 {
   v5 = sa_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(SAEmergencyResponseManager *)a3 updateVoiceCallStatus:v5];
+    [(SAEmergencyResponseManager *)status updateVoiceCallStatus:v5];
   }
 
-  v6 = [(SAEmergencyResponseManager *)self delegate];
-  if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(SAEmergencyResponseManager *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v6 emergencyResponseManager:self didUpdateVoiceCallStatus:a3];
+    [delegate emergencyResponseManager:self didUpdateVoiceCallStatus:status];
   }
 }
 

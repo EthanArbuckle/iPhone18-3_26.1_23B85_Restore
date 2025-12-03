@@ -1,22 +1,22 @@
 @interface OFUITableViewController
-- (OFUITableViewController)initWithCoder:(id)a3;
-- (OFUITableViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (OFUITableViewController)initWithCoder:(id)coder;
+- (OFUITableViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
 - (void)viewDidLoad;
 - (void)viewDidUnload;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillUnload;
 @end
 
 @implementation OFUITableViewController
 
-- (OFUITableViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (OFUITableViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = OFUITableViewController;
-  v4 = [(OFUITableViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(OFUITableViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -26,11 +26,11 @@
   return v5;
 }
 
-- (OFUITableViewController)initWithCoder:(id)a3
+- (OFUITableViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = OFUITableViewController;
-  v3 = [(OFUITableViewController *)&v6 initWithCoder:a3];
+  v3 = [(OFUITableViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -75,18 +75,18 @@
   [(OFUITableViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = OFUITableViewController;
-  [(OFUITableViewController *)&v3 viewWillAppear:a3];
+  [(OFUITableViewController *)&v3 viewWillAppear:appear];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = OFUITableViewController;
-  [(OFUITableViewController *)&v3 viewWillDisappear:a3];
+  [(OFUITableViewController *)&v3 viewWillDisappear:disappear];
 }
 
 @end

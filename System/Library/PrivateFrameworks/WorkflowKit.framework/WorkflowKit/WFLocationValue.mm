@@ -3,11 +3,11 @@
 - (NSString)defaultSearchText;
 - (NSString)displayString;
 - (WFLocationValue)initWithCurrentLocation;
-- (WFLocationValue)initWithLegacyVariableString:(id)a3;
-- (WFLocationValue)initWithLocationName:(id)a3;
-- (WFLocationValue)initWithLocationName:(id)a3 placemark:(id)a4;
-- (WFLocationValue)initWithPlacemark:(id)a3;
-- (WFLocationValue)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
+- (WFLocationValue)initWithLegacyVariableString:(id)string;
+- (WFLocationValue)initWithLocationName:(id)name;
+- (WFLocationValue)initWithLocationName:(id)name placemark:(id)placemark;
+- (WFLocationValue)initWithPlacemark:(id)placemark;
+- (WFLocationValue)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
 - (WFPropertyListObject)serializedRepresentation;
 @end
 
@@ -21,40 +21,40 @@
     [v3 setObject:MEMORY[0x1E695E118] forKey:@"isCurrentLocation"];
   }
 
-  v4 = [(WFLocationValue *)self locationName];
-  [v3 setValue:v4 forKey:@"locationName"];
+  locationName = [(WFLocationValue *)self locationName];
+  [v3 setValue:locationName forKey:@"locationName"];
 
-  v5 = [(WFLocationValue *)self placemark];
+  placemark = [(WFLocationValue *)self placemark];
   v6 = WFSerializedPlacemarkFromCLPlacemark();
   [v3 setValue:v6 forKey:@"placemark"];
 
-  v7 = [(WFLocationValue *)self legacyVariableString];
-  v8 = [v7 serializedRepresentation];
-  [v3 setValue:v8 forKey:@"legacyVariableString"];
+  legacyVariableString = [(WFLocationValue *)self legacyVariableString];
+  serializedRepresentation = [legacyVariableString serializedRepresentation];
+  [v3 setValue:serializedRepresentation forKey:@"legacyVariableString"];
 
   return v3;
 }
 
-- (WFLocationValue)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFLocationValue)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  providerCopy = provider;
+  parameterCopy = parameter;
+  representationCopy = representation;
   v11 = objc_opt_class();
-  v12 = WFEnforceClass_1501(v10, v11);
+  v12 = WFEnforceClass_1501(representationCopy, v11);
 
   if (!v12)
   {
-    v17 = 0;
+    selfCopy3 = 0;
     goto LABEL_11;
   }
 
   v13 = [v12 objectForKey:@"isCurrentLocation"];
   v14 = objc_opt_class();
   v15 = WFEnforceClass_1501(v13, v14);
-  v16 = [v15 BOOLValue];
+  bOOLValue = [v15 BOOLValue];
 
-  if (!v16)
+  if (!bOOLValue)
   {
     v18 = [v12 objectForKey:@"placemark"];
     v19 = objc_opt_class();
@@ -80,15 +80,15 @@
 
         if (v28)
         {
-          v29 = [[WFVariableString alloc] initWithSerializedRepresentation:v28 variableProvider:v8 parameter:v9];
+          v29 = [[WFVariableString alloc] initWithSerializedRepresentation:v28 variableProvider:providerCopy parameter:parameterCopy];
           self = [(WFLocationValue *)self initWithLegacyVariableString:v29];
 
-          v17 = self;
+          selfCopy3 = self;
         }
 
         else
         {
-          v17 = 0;
+          selfCopy3 = 0;
         }
 
         v21 = 0;
@@ -99,29 +99,29 @@
     }
 
     self = v22;
-    v17 = self;
+    selfCopy3 = self;
 LABEL_10:
 
     goto LABEL_11;
   }
 
   self = [(WFLocationValue *)self initWithCurrentLocation];
-  v17 = self;
+  selfCopy3 = self;
 LABEL_11:
 
-  return v17;
+  return selfCopy3;
 }
 
-- (WFLocationValue)initWithLegacyVariableString:(id)a3
+- (WFLocationValue)initWithLegacyVariableString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   v10.receiver = self;
   v10.super_class = WFLocationValue;
   v6 = [(WFLocationValue *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_legacyVariableString, a3);
+    objc_storeStrong(&v6->_legacyVariableString, string);
     v8 = v7;
   }
 
@@ -130,82 +130,82 @@ LABEL_11:
 
 - (NSString)defaultSearchText
 {
-  v3 = [(WFLocationValue *)self locationName];
+  locationName = [(WFLocationValue *)self locationName];
 
-  if (v3)
+  if (locationName)
   {
-    v4 = [(WFLocationValue *)self locationName];
+    locationName2 = [(WFLocationValue *)self locationName];
     goto LABEL_11;
   }
 
-  v5 = [(WFLocationValue *)self placemark];
+  placemark = [(WFLocationValue *)self placemark];
 
-  if (v5)
+  if (placemark)
   {
-    v6 = [(WFLocationValue *)self placemark];
-    v7 = [v6 name];
-    v8 = v7;
-    if (v7)
+    placemark2 = [(WFLocationValue *)self placemark];
+    name = [placemark2 name];
+    v8 = name;
+    if (name)
     {
-      v4 = v7;
+      locationName2 = name;
     }
 
     else
     {
-      v10 = [(WFLocationValue *)self placemark];
-      v11 = [v10 postalAddress];
-      v4 = [v11 street];
+      placemark3 = [(WFLocationValue *)self placemark];
+      postalAddress = [placemark3 postalAddress];
+      locationName2 = [postalAddress street];
     }
 
     goto LABEL_10;
   }
 
-  v9 = [(WFLocationValue *)self legacyVariableString];
+  legacyVariableString = [(WFLocationValue *)self legacyVariableString];
 
-  if (v9)
+  if (legacyVariableString)
   {
-    v6 = [(WFLocationValue *)self legacyVariableString];
-    v4 = [v6 stringByRemovingVariables];
+    placemark2 = [(WFLocationValue *)self legacyVariableString];
+    locationName2 = [placemark2 stringByRemovingVariables];
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v4 = 0;
+  locationName2 = 0;
 LABEL_11:
 
-  return v4;
+  return locationName2;
 }
 
 - (NSString)displayString
 {
-  v3 = [(WFLocationValue *)self locationName];
+  locationName = [(WFLocationValue *)self locationName];
 
-  if (v3)
+  if (locationName)
   {
-    v4 = [(WFLocationValue *)self locationName];
+    locationName2 = [(WFLocationValue *)self locationName];
 LABEL_3:
-    v5 = v4;
+    street = locationName2;
     goto LABEL_12;
   }
 
-  v6 = [(WFLocationValue *)self placemark];
+  placemark = [(WFLocationValue *)self placemark];
 
-  if (v6)
+  if (placemark)
   {
-    v7 = [(WFLocationValue *)self placemark];
-    v8 = [v7 name];
-    v9 = v8;
-    if (v8)
+    placemark2 = [(WFLocationValue *)self placemark];
+    name = [placemark2 name];
+    v9 = name;
+    if (name)
     {
-      v5 = v8;
+      street = name;
     }
 
     else
     {
-      v10 = [(WFLocationValue *)self placemark];
-      v11 = [v10 postalAddress];
-      v5 = [v11 street];
+      placemark3 = [(WFLocationValue *)self placemark];
+      postalAddress = [placemark3 postalAddress];
+      street = [postalAddress street];
     }
 
     goto LABEL_11;
@@ -213,25 +213,25 @@ LABEL_3:
 
   if ([(WFLocationValue *)self isCurrentLocation])
   {
-    v4 = WFLocalizedString(@"Current Location");
+    locationName2 = WFLocalizedString(@"Current Location");
     goto LABEL_3;
   }
 
-  v13 = [(WFLocationValue *)self legacyVariableString];
+  legacyVariableString = [(WFLocationValue *)self legacyVariableString];
 
-  if (v13)
+  if (legacyVariableString)
   {
-    v7 = [(WFLocationValue *)self legacyVariableString];
-    v5 = [v7 stringByReplacingVariablesWithNames];
+    placemark2 = [(WFLocationValue *)self legacyVariableString];
+    street = [placemark2 stringByReplacingVariablesWithNames];
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v5 = 0;
+  street = 0;
 LABEL_12:
 
-  return v5;
+  return street;
 }
 
 - (WFLocationValue)initWithCurrentLocation
@@ -249,51 +249,51 @@ LABEL_12:
   return v3;
 }
 
-- (WFLocationValue)initWithLocationName:(id)a3 placemark:(id)a4
+- (WFLocationValue)initWithLocationName:(id)name placemark:(id)placemark
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  placemarkCopy = placemark;
   v13.receiver = self;
   v13.super_class = WFLocationValue;
   v8 = [(WFLocationValue *)&v13 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     locationName = v8->_locationName;
     v8->_locationName = v9;
 
-    objc_storeStrong(&v8->_placemark, a4);
+    objc_storeStrong(&v8->_placemark, placemark);
     v11 = v8;
   }
 
   return v8;
 }
 
-- (WFLocationValue)initWithPlacemark:(id)a3
+- (WFLocationValue)initWithPlacemark:(id)placemark
 {
-  v5 = a3;
+  placemarkCopy = placemark;
   v10.receiver = self;
   v10.super_class = WFLocationValue;
   v6 = [(WFLocationValue *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_placemark, a3);
+    objc_storeStrong(&v6->_placemark, placemark);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (WFLocationValue)initWithLocationName:(id)a3
+- (WFLocationValue)initWithLocationName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = WFLocationValue;
   v5 = [(WFLocationValue *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     locationName = v5->_locationName;
     v5->_locationName = v6;
 

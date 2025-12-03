@@ -23,7 +23,7 @@
 - (id)CAF_decodeBinaryPlist:()CAF
 {
   v10 = 0;
-  v4 = [MEMORY[0x277CCAC58] propertyListWithData:a1 options:0 format:&v10 error:a3];
+  v4 = [MEMORY[0x277CCAC58] propertyListWithData:self options:0 format:&v10 error:a3];
   v5 = v4;
   if (v10 == 200)
   {

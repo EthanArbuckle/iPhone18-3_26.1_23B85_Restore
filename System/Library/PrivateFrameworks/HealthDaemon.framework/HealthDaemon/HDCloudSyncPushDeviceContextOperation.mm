@@ -1,5 +1,5 @@
 @interface HDCloudSyncPushDeviceContextOperation
-- (void)_updateRecordsAdd:(void *)a3 recordIDsToDelete:(void *)a4 completion:;
+- (void)_updateRecordsAdd:(void *)add recordIDsToDelete:(void *)delete completion:;
 - (void)main;
 @end
 
@@ -9,29 +9,29 @@
 {
   v50 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBC5F8];
-  v4 = [(HDCloudSyncOperation *)self configuration];
-  v5 = [v4 repository];
-  v6 = [v5 syncCircleIdentifier];
-  v36 = [v3 hd_contextSyncZoneIDForSyncCircleIdentifier:v6];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  syncCircleIdentifier = [repository syncCircleIdentifier];
+  v36 = [v3 hd_contextSyncZoneIDForSyncCircleIdentifier:syncCircleIdentifier];
 
-  v7 = [(HDCloudSyncOperation *)self profile];
-  v8 = [v7 syncIdentityManager];
-  v9 = [v8 currentSyncIdentity];
-  v10 = [v9 identity];
+  profile = [(HDCloudSyncOperation *)self profile];
+  syncIdentityManager = [profile syncIdentityManager];
+  currentSyncIdentity = [syncIdentityManager currentSyncIdentity];
+  identity = [currentSyncIdentity identity];
 
-  v11 = [(HDCloudSyncOperation *)self configuration];
-  v12 = [v11 cachedCloudState];
-  v13 = [(HDCloudSyncOperation *)self configuration];
-  v14 = [v13 repository];
-  v15 = [v14 primaryCKContainer];
-  v16 = [v15 containerIdentifier];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  cachedCloudState = [configuration2 cachedCloudState];
+  configuration3 = [(HDCloudSyncOperation *)self configuration];
+  repository2 = [configuration3 repository];
+  primaryCKContainer = [repository2 primaryCKContainer];
+  containerIdentifier = [primaryCKContainer containerIdentifier];
   v47 = 0;
-  v17 = [v12 contextSyncZoneForContainerID:v16 error:&v47];
+  v17 = [cachedCloudState contextSyncZoneForContainerID:containerIdentifier error:&v47];
   v18 = v47;
 
   if (v17)
   {
-    v35 = v10;
+    v35 = identity;
     v46 = 0;
     v19 = [v17 recordsForClass:objc_opt_class() error:&v46];
     v20 = v46;
@@ -42,27 +42,27 @@
       v44[2] = __45__HDCloudSyncPushDeviceContextOperation_main__block_invoke;
       v44[3] = &unk_278614348;
       v44[4] = self;
-      v21 = v10;
+      v21 = identity;
       v45 = v21;
       v22 = [v19 hk_filter:v44];
       if ([v22 count] < 2)
       {
-        v28 = [v22 firstObject];
-        v29 = [(HDCloudSyncOperation *)self configuration];
-        v30 = [v29 repository];
-        [v30 cloudSyncShimProvider];
+        firstObject = [v22 firstObject];
+        configuration4 = [(HDCloudSyncOperation *)self configuration];
+        repository3 = [configuration4 repository];
+        [repository3 cloudSyncShimProvider];
         v31 = v34 = v20;
-        v32 = [v31 contextSyncShim];
+        contextSyncShim = [v31 contextSyncShim];
         v37[0] = MEMORY[0x277D85DD0];
         v37[1] = 3221225472;
         v37[2] = __45__HDCloudSyncPushDeviceContextOperation_main__block_invoke_2;
         v37[3] = &unk_278614398;
         v37[4] = self;
-        v38 = v28;
+        v38 = firstObject;
         v39 = v36;
         v40 = v19;
-        v24 = v28;
-        [v32 lookupOrCreateLocalDeviceContextWithCompletion:v37];
+        v24 = firstObject;
+        [contextSyncShim lookupOrCreateLocalDeviceContextWithCompletion:v37];
 
         v20 = v34;
         v27 = v38;
@@ -83,7 +83,7 @@
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
-          v49 = self;
+          selfCopy = self;
           _os_log_error_impl(&dword_228986000, v26, OS_LOG_TYPE_ERROR, "%{public}@: Multiple device contexts for same identity", buf, 0xCu);
         }
 
@@ -97,7 +97,7 @@
         v27 = v43;
       }
 
-      v10 = v35;
+      identity = v35;
     }
 
     else
@@ -188,26 +188,26 @@ void __45__HDCloudSyncPushDeviceContextOperation_main__block_invoke_300(uint64_t
   }
 }
 
-- (void)_updateRecordsAdd:(void *)a3 recordIDsToDelete:(void *)a4 completion:
+- (void)_updateRecordsAdd:(void *)add recordIDsToDelete:(void *)delete completion:
 {
-  v7 = a4;
-  if (a1)
+  deleteCopy = delete;
+  if (self)
   {
-    v8 = a3;
+    addCopy = add;
     v9 = a2;
     v10 = [HDCloudSyncModifyRecordsOperation alloc];
-    v11 = [a1 configuration];
-    v12 = [a1 configuration];
-    v13 = [v12 repository];
-    v14 = [v13 primaryCKContainer];
-    v15 = [(HDCloudSyncModifyRecordsOperation *)v10 initWithConfiguration:v11 container:v14 recordsToSave:v9 recordIDsToDelete:v8];
+    configuration = [self configuration];
+    configuration2 = [self configuration];
+    repository = [configuration2 repository];
+    primaryCKContainer = [repository primaryCKContainer];
+    v15 = [(HDCloudSyncModifyRecordsOperation *)v10 initWithConfiguration:configuration container:primaryCKContainer recordsToSave:v9 recordIDsToDelete:addCopy];
 
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __88__HDCloudSyncPushDeviceContextOperation__updateRecordsAdd_recordIDsToDelete_completion___block_invoke;
     v19[3] = &unk_2786143E8;
-    v19[4] = a1;
-    v16 = v7;
+    v19[4] = self;
+    v16 = deleteCopy;
     v20 = v16;
     [(HDCloudSyncOperation *)v15 setOnError:v19];
     v17[0] = MEMORY[0x277D85DD0];

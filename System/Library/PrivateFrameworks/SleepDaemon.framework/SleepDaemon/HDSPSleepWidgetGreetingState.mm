@@ -16,21 +16,21 @@
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] received greeting expired event due", v11, 0xCu);
   }
 
-  v5 = [(HKSPStateMachineState *)self stateMachine];
-  v6 = [(HDSPSleepWidgetStateMachineState *)self shouldGoIntoUpcomingState];
-  v7 = [(HKSPStateMachineState *)self stateMachine];
-  v8 = v7;
-  if (v6)
+  stateMachine = [(HKSPStateMachineState *)self stateMachine];
+  shouldGoIntoUpcomingState = [(HDSPSleepWidgetStateMachineState *)self shouldGoIntoUpcomingState];
+  stateMachine2 = [(HKSPStateMachineState *)self stateMachine];
+  v8 = stateMachine2;
+  if (shouldGoIntoUpcomingState)
   {
-    [v7 upcomingState];
+    [stateMachine2 upcomingState];
   }
 
   else
   {
-    [v7 waitingState];
+    [stateMachine2 waitingState];
   }
   v9 = ;
-  [v5 enterState:{v9, *v11}];
+  [stateMachine enterState:{v9, *v11}];
 
   v10 = *MEMORY[0x277D85DE8];
 }

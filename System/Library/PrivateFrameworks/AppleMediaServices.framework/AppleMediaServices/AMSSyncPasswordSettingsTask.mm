@@ -3,33 +3,33 @@
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
 + (id)createBagForSubProfile;
-+ (id)serverValueForFreePasswordSetting:(unint64_t)a3;
-+ (id)serverValueForPaidPasswordSetting:(unint64_t)a3;
-+ (unint64_t)freePasswordSettingFromServerValue:(unint64_t)a3;
-+ (unint64_t)paidPasswordSettingFromServerValue:(unint64_t)a3;
-- (AMSSyncPasswordSettingsTask)initWithAccount:(id)a3 freeSetting:(unint64_t)a4 paidSetting:(unint64_t)a5 delegate:(id)a6 bag:(id)a7;
++ (id)serverValueForFreePasswordSetting:(unint64_t)setting;
++ (id)serverValueForPaidPasswordSetting:(unint64_t)setting;
++ (unint64_t)freePasswordSettingFromServerValue:(unint64_t)value;
++ (unint64_t)paidPasswordSettingFromServerValue:(unint64_t)value;
+- (AMSSyncPasswordSettingsTask)initWithAccount:(id)account freeSetting:(unint64_t)setting paidSetting:(unint64_t)paidSetting delegate:(id)delegate bag:(id)bag;
 - (NSURLSessionDelegate)delegate;
 - (id)performSync;
 @end
 
 @implementation AMSSyncPasswordSettingsTask
 
-- (AMSSyncPasswordSettingsTask)initWithAccount:(id)a3 freeSetting:(unint64_t)a4 paidSetting:(unint64_t)a5 delegate:(id)a6 bag:(id)a7
+- (AMSSyncPasswordSettingsTask)initWithAccount:(id)account freeSetting:(unint64_t)setting paidSetting:(unint64_t)paidSetting delegate:(id)delegate bag:(id)bag
 {
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  accountCopy = account;
+  delegateCopy = delegate;
+  bagCopy = bag;
   v19.receiver = self;
   v19.super_class = AMSSyncPasswordSettingsTask;
   v16 = [(AMSTask *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_account, a3);
-    v17->_freeSetting = a4;
-    v17->_paidSetting = a5;
-    objc_storeStrong(&v17->_bag, a7);
-    objc_storeWeak(&v17->_delegate, v14);
+    objc_storeStrong(&v16->_account, account);
+    v17->_freeSetting = setting;
+    v17->_paidSetting = paidSetting;
+    objc_storeStrong(&v17->_bag, bag);
+    objc_storeWeak(&v17->_delegate, delegateCopy);
   }
 
   return v17;
@@ -165,41 +165,41 @@ id __42__AMSSyncPasswordSettingsTask_performSync__block_invoke_2(uint64_t a1)
   return v8;
 }
 
-+ (id)serverValueForFreePasswordSetting:(unint64_t)a3
++ (id)serverValueForFreePasswordSetting:(unint64_t)setting
 {
-  if (a3 > 3)
+  if (setting > 3)
   {
     return &stru_1F071BA78;
   }
 
   else
   {
-    return off_1E73BC710[a3];
+    return off_1E73BC710[setting];
   }
 }
 
-+ (id)serverValueForPaidPasswordSetting:(unint64_t)a3
++ (id)serverValueForPaidPasswordSetting:(unint64_t)setting
 {
-  if (a3 > 3)
+  if (setting > 3)
   {
     return &stru_1F071BA78;
   }
 
   else
   {
-    return off_1E73BC730[a3];
+    return off_1E73BC730[setting];
   }
 }
 
-+ (unint64_t)freePasswordSettingFromServerValue:(unint64_t)a3
++ (unint64_t)freePasswordSettingFromServerValue:(unint64_t)value
 {
   v3 = 3;
-  if ((a3 & 0xC) != 0xC)
+  if ((value & 0xC) != 0xC)
   {
-    v3 = (a3 & 0xC) == 4;
+    v3 = (value & 0xC) == 4;
   }
 
-  if ((a3 & 0xC) == 8)
+  if ((value & 0xC) == 8)
   {
     return 2;
   }
@@ -210,16 +210,16 @@ id __42__AMSSyncPasswordSettingsTask_performSync__block_invoke_2(uint64_t a1)
   }
 }
 
-+ (unint64_t)paidPasswordSettingFromServerValue:(unint64_t)a3
++ (unint64_t)paidPasswordSettingFromServerValue:(unint64_t)value
 {
-  if ((a3 & 2) != 0)
+  if ((value & 2) != 0)
   {
-    return a3 & 3;
+    return value & 3;
   }
 
   else
   {
-    return (a3 & 3) == 1;
+    return (value & 3) == 1;
   }
 }
 
@@ -261,9 +261,9 @@ void __51__AMSSyncPasswordSettingsTask_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }

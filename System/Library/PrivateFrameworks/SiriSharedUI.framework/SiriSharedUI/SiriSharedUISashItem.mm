@@ -1,43 +1,43 @@
 @interface SiriSharedUISashItem
-+ (void)setLanguageCode:(id)a3;
++ (void)setLanguageCode:(id)code;
 - (BOOL)canPunchout;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SiriSharedUISashItem)init;
-- (SiriSharedUISashItem)initWithApplicationBundleIdentifier:(id)a3;
-- (SiriSharedUISashItem)initWithTitle:(id)a3 image:(id)a4;
+- (SiriSharedUISashItem)initWithApplicationBundleIdentifier:(id)identifier;
+- (SiriSharedUISashItem)initWithTitle:(id)title image:(id)image;
 - (SiriSharedUISashItemDelegate)delegate;
-- (void)_configureIconForAppProxy:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)_configureIconForAppProxy:(id)proxy;
+- (void)setImage:(id)image;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SiriSharedUISashItem
 
-- (SiriSharedUISashItem)initWithTitle:(id)a3 image:(id)a4
+- (SiriSharedUISashItem)initWithTitle:(id)title image:(id)image
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  imageCopy = image;
   v8 = [(SiriSharedUISashItem *)self init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [titleCopy copy];
     title = v8->_title;
     v8->_title = v9;
 
-    [(SiriSharedUISashItem *)v8 setImage:v7];
+    [(SiriSharedUISashItem *)v8 setImage:imageCopy];
   }
 
   return v8;
 }
 
-- (SiriSharedUISashItem)initWithApplicationBundleIdentifier:(id)a3
+- (SiriSharedUISashItem)initWithApplicationBundleIdentifier:(id)identifier
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(SiriSharedUISashItem *)self init];
   if (v5)
   {
-    if (([v4 isEqualToString:@"com.apple.SiriViewService"] & 1) != 0 || !objc_msgSend(v4, "length"))
+    if (([identifierCopy isEqualToString:@"com.apple.SiriViewService"] & 1) != 0 || !objc_msgSend(identifierCopy, "length"))
     {
       applicationBundleIdentifier = v5->_applicationBundleIdentifier;
       v5->_applicationBundleIdentifier = @"com.apple.siri";
@@ -45,24 +45,24 @@
 
     else
     {
-      v6 = v4;
+      v6 = identifierCopy;
       applicationBundleIdentifier = v5->_applicationBundleIdentifier;
       v5->_applicationBundleIdentifier = v6;
     }
 
-    v5->_siriImage = [v4 isEqualToString:@"com.apple.siri"];
+    v5->_siriImage = [identifierCopy isEqualToString:@"com.apple.siri"];
     v8 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:v5->_applicationBundleIdentifier];
-    v9 = [v8 appState];
-    v10 = [v9 isValid];
+    appState = [v8 appState];
+    isValid = [appState isValid];
 
-    if ((v10 & 1) == 0)
+    if ((isValid & 1) == 0)
     {
       v11 = [MEMORY[0x277CC1E60] applicationProxyForSystemPlaceholder:v5->_applicationBundleIdentifier];
 
-      v12 = [v11 appState];
-      v13 = [v12 isValid];
+      appState2 = [v11 appState];
+      isValid2 = [appState2 isValid];
 
-      if (!v13)
+      if (!isValid2)
       {
 
         v20 = 0;
@@ -73,21 +73,21 @@
     }
 
     [(SiriSharedUISashItem *)v5 _configureIconForAppProxy:v8];
-    v14 = [objc_opt_class() languageCode];
-    v15 = v14;
-    if (v14)
+    languageCode = [objc_opt_class() languageCode];
+    v15 = languageCode;
+    if (languageCode)
     {
-      v22[0] = v14;
+      v22[0] = languageCode;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
-      v17 = [v8 localizedNameForContext:0 preferredLocalizations:v16];
+      localizedName = [v8 localizedNameForContext:0 preferredLocalizations:v16];
     }
 
     else
     {
-      v17 = [v8 localizedName];
+      localizedName = [v8 localizedName];
     }
 
-    v18 = [v17 copy];
+    v18 = [localizedName copy];
     title = v5->_title;
     v5->_title = v18;
 
@@ -113,19 +113,19 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     title = self->_title;
-    v6 = [v4 title];
-    if ([(NSString *)title isEqualToString:v6])
+    title = [equalCopy title];
+    if ([(NSString *)title isEqualToString:title])
     {
       image = self->_image;
-      v8 = [v4 image];
-      v9 = [(UIImage *)image isEqual:v8];
+      image = [equalCopy image];
+      v9 = [(UIImage *)image isEqual:image];
     }
 
     else
@@ -142,29 +142,29 @@ LABEL_14:
   return v9;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v4 = MEMORY[0x277D759A0];
-  v5 = a3;
-  v8 = [v4 mainScreen];
-  [v8 scale];
-  v6 = [v5 _applicationIconImageForFormat:5 precomposed:0 scale:?];
+  imageCopy = image;
+  mainScreen = [v4 mainScreen];
+  [mainScreen scale];
+  v6 = [imageCopy _applicationIconImageForFormat:5 precomposed:0 scale:?];
 
   image = self->_image;
   self->_image = v6;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  self->_title = [a3 copy];
+  self->_title = [title copy];
 
   MEMORY[0x2821F96F8]();
 }
 
 - (BOOL)canPunchout
 {
-  v3 = [(SiriSharedUISashItem *)self commands];
-  if (v3 && (v4 = v3, -[SiriSharedUISashItem commands](self, "commands"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, !v6))
+  commands = [(SiriSharedUISashItem *)self commands];
+  if (commands && (v4 = commands, -[SiriSharedUISashItem commands](self, "commands"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v4, !v6))
   {
     return 0;
   }
@@ -175,16 +175,16 @@ LABEL_14:
   }
 }
 
-- (void)_configureIconForAppProxy:(id)a3
+- (void)_configureIconForAppProxy:(id)proxy
 {
-  self->_image = [MEMORY[0x277D755B8] _iconForResourceProxy:a3 format:5];
+  self->_image = [MEMORY[0x277D755B8] _iconForResourceProxy:proxy format:5];
 
   MEMORY[0x2821F96F8]();
 }
 
-+ (void)setLanguageCode:(id)a3
++ (void)setLanguageCode:(id)code
 {
-  _languageCode = [a3 copy];
+  _languageCode = [code copy];
 
   MEMORY[0x2821F96F8]();
 }

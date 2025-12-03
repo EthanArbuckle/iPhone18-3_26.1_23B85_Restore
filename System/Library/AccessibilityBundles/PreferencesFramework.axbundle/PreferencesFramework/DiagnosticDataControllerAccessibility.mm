@@ -1,15 +1,15 @@
 @interface DiagnosticDataControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)viewDidLoad;
 @end
 
 @implementation DiagnosticDataControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DiagnosticDataController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"DiagnosticDataController" isKindOfClass:@"UINavigationController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DiagnosticDataController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"DiagnosticDataController" isKindOfClass:@"UINavigationController"];
 }
 
 - (void)viewDidLoad
@@ -19,8 +19,8 @@
   [(DiagnosticDataControllerAccessibility *)&v4 viewDidLoad];
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 navigationItem];
-  [v3 _accessibilityLoadAccessibilityInformation];
+  navigationItem = [v2 navigationItem];
+  [navigationItem _accessibilityLoadAccessibilityInformation];
 }
 
 @end

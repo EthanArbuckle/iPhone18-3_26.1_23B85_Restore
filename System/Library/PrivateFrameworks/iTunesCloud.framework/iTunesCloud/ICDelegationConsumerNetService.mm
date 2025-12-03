@@ -1,12 +1,12 @@
 @interface ICDelegationConsumerNetService
-- (ICDelegationConsumerNetService)initWithUserIdentityDelegationAccountUUIDs:(id)a3;
+- (ICDelegationConsumerNetService)initWithUserIdentityDelegationAccountUUIDs:(id)ds;
 - (ICDelegationConsumerNetServiceDelegate)delegate;
 - (ICDelegationServiceSecuritySettings)securitySettings;
 - (void)_updateNetServiceStatus;
 - (void)dealloc;
-- (void)netService:(id)a3 didAcceptConnectionWithInputStream:(id)a4 outputStream:(id)a5;
-- (void)netService:(id)a3 didNotPublish:(id)a4;
-- (void)netServiceDidPublish:(id)a3;
+- (void)netService:(id)service didAcceptConnectionWithInputStream:(id)stream outputStream:(id)outputStream;
+- (void)netService:(id)service didNotPublish:(id)publish;
+- (void)netServiceDidPublish:(id)publish;
 - (void)publish;
 - (void)stop;
 @end
@@ -32,17 +32,17 @@
 
     if (!self->_netService)
     {
-      v3 = [MEMORY[0x1E696AFB0] UUID];
-      v4 = [v3 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
 
-      if ([v4 length] >= 0x40)
+      if ([uUIDString length] >= 0x40)
       {
-        v5 = [v4 substringToIndex:63];
+        v5 = [uUIDString substringToIndex:63];
 
-        v4 = v5;
+        uUIDString = v5;
       }
 
-      v6 = [objc_alloc(MEMORY[0x1E695AC20]) initWithDomain:@"local." type:@"_itsdlgt._tcp." name:v4 port:0];
+      v6 = [objc_alloc(MEMORY[0x1E695AC20]) initWithDomain:@"local." type:@"_itsdlgt._tcp." name:uUIDString port:0];
       netService = self->_netService;
       self->_netService = v6;
 
@@ -52,7 +52,7 @@
       {
         v9 = self->_netService;
         *buf = 138543618;
-        v36 = self;
+        selfCopy3 = self;
         v37 = 2114;
         v38 = v9;
         _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Created net service %{public}@.", buf, 0x16u);
@@ -64,8 +64,8 @@
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v11 = [(NSDictionary *)self->_userIdentityDelegationAccountUUIDs objectEnumerator];
-    v12 = [v11 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    objectEnumerator = [(NSDictionary *)self->_userIdentityDelegationAccountUUIDs objectEnumerator];
+    v12 = [objectEnumerator countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v12)
     {
       v13 = v12;
@@ -77,14 +77,14 @@
         {
           if (*v31 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           [v10 addObjectsFromArray:*(*(&v30 + 1) + 8 * v15++)];
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v13 = [objectEnumerator countByEnumeratingWithState:&v30 objects:v34 count:16];
       }
 
       while (v13);
@@ -96,7 +96,7 @@
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v36 = self;
+      selfCopy3 = self;
       v37 = 2114;
       v38 = v16;
       _os_log_impl(&dword_1B4491000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@: Published net service %{public}@.", buf, 0x16u);
@@ -127,7 +127,7 @@
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v36 = self;
+      selfCopy3 = self;
       v37 = 2114;
       v38 = v21;
       _os_log_impl(&dword_1B4491000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: Stopped net service %{public}@.", buf, 0x16u);
@@ -292,16 +292,16 @@ uint64_t __41__ICDelegationConsumerNetService_publish__block_invoke(uint64_t res
   return v3;
 }
 
-- (void)netService:(id)a3 didNotPublish:(id)a4
+- (void)netService:(id)service didNotPublish:(id)publish
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  serviceCopy = service;
   v7 = MEMORY[0x1E696ABC0];
   v8 = *MEMORY[0x1E695AB38];
   v9 = *MEMORY[0x1E695AB30];
-  v10 = a4;
-  v11 = [v10 objectForKeyedSubscript:v9];
-  v12 = [v7 errorWithDomain:v8 code:objc_msgSend(v11 userInfo:{"integerValue"), v10}];
+  publishCopy = publish;
+  v11 = [publishCopy objectForKeyedSubscript:v9];
+  v12 = [v7 errorWithDomain:v8 code:objc_msgSend(v11 userInfo:{"integerValue"), publishCopy}];
 
   if ([v12 code] == -72001)
   {
@@ -317,9 +317,9 @@ uint64_t __41__ICDelegationConsumerNetService_publish__block_invoke(uint64_t res
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544130;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
-    v23 = v6;
+    v23 = serviceCopy;
     v24 = 2114;
     v25 = v12;
     v26 = 2048;
@@ -376,38 +376,38 @@ void __59__ICDelegationConsumerNetService_netService_didNotPublish___block_invok
   dispatch_barrier_async(v2, block);
 }
 
-- (void)netServiceDidPublish:(id)a3
+- (void)netServiceDidPublish:(id)publish
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  publishCopy = publish;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2114;
-    v9 = v4;
+    v9 = publishCopy;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Remote server advertisement success with service: %{public}@", &v6, 0x16u);
   }
 }
 
-- (void)netService:(id)a3 didAcceptConnectionWithInputStream:(id)a4 outputStream:(id)a5
+- (void)netService:(id)service didAcceptConnectionWithInputStream:(id)stream outputStream:(id)outputStream
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  streamCopy = stream;
+  outputStreamCopy = outputStream;
   v11 = os_log_create("com.apple.amp.iTunesCloud", "Delegation");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544130;
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
-    v21 = v8;
+    v21 = serviceCopy;
     v22 = 2114;
-    v23 = v9;
+    v23 = streamCopy;
     v24 = 2114;
-    v25 = v10;
+    v25 = outputStreamCopy;
     _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: Did accept connection with service: %{public}@ input: %{public}@ output: %{public}@", buf, 0x2Au);
   }
 
@@ -417,10 +417,10 @@ void __59__ICDelegationConsumerNetService_netService_didNotPublish___block_invok
   block[2] = __93__ICDelegationConsumerNetService_netService_didAcceptConnectionWithInputStream_outputStream___block_invoke;
   block[3] = &unk_1E7BFA178;
   block[4] = self;
-  v16 = v9;
-  v17 = v10;
-  v13 = v10;
-  v14 = v9;
+  v16 = streamCopy;
+  v17 = outputStreamCopy;
+  v13 = outputStreamCopy;
+  v14 = streamCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -466,9 +466,9 @@ void __93__ICDelegationConsumerNetService_netService_didAcceptConnectionWithInpu
   [(ICDelegationConsumerNetService *)&v6 dealloc];
 }
 
-- (ICDelegationConsumerNetService)initWithUserIdentityDelegationAccountUUIDs:(id)a3
+- (ICDelegationConsumerNetService)initWithUserIdentityDelegationAccountUUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v15.receiver = self;
   v15.super_class = ICDelegationConsumerNetService;
   v5 = [(ICDelegationConsumerNetService *)&v15 init];
@@ -486,7 +486,7 @@ void __93__ICDelegationConsumerNetService_netService_didAcceptConnectionWithInpu
     calloutQueue = v5->_calloutQueue;
     v5->_calloutQueue = v10;
 
-    v12 = [v4 copy];
+    v12 = [dsCopy copy];
     userIdentityDelegationAccountUUIDs = v5->_userIdentityDelegationAccountUUIDs;
     v5->_userIdentityDelegationAccountUUIDs = v12;
   }

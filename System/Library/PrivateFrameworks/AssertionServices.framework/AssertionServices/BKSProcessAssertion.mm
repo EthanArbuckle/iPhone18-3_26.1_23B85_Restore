@@ -1,13 +1,13 @@
 @interface BKSProcessAssertion
-+ (id)NameForReason:(unsigned int)a3;
++ (id)NameForReason:(unsigned int)reason;
 - (BOOL)acquire;
-- (unint64_t)_legacyReasonForReason:(unsigned int)a3;
+- (unint64_t)_legacyReasonForReason:(unsigned int)reason;
 - (unsigned)flags;
 - (void)acquire;
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4;
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setFlags:(unsigned int)a3;
+- (void)setFlags:(unsigned int)flags;
 @end
 
 @implementation BKSProcessAssertion
@@ -20,18 +20,18 @@
     goto LABEL_12;
   }
 
-  v3 = [(BKSAssertion *)self _target];
-  v4 = [v3 processIdentity];
-  if (!v4)
+  _target = [(BKSAssertion *)self _target];
+  processIdentity = [_target processIdentity];
+  if (!processIdentity)
   {
     v5 = MEMORY[0x277D46F48];
-    v6 = [MEMORY[0x277D46FA0] predicateMatchingTarget:v3];
+    v6 = [MEMORY[0x277D46FA0] predicateMatchingTarget:_target];
     v7 = [v5 handleForPredicate:v6 error:0];
 
-    v4 = [v7 identity];
+    processIdentity = [v7 identity];
   }
 
-  if (![v4 isExtension])
+  if (![processIdentity isExtension])
   {
 LABEL_11:
 
@@ -42,14 +42,14 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [v4 hostIdentifier];
-  if (!v8)
+  hostIdentifier = [processIdentity hostIdentifier];
+  if (!hostIdentifier)
   {
     v11 = rbs_general_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = v4;
+      v25 = processIdentity;
       _os_log_impl(&dword_22EEB6000, v11, OS_LOG_TYPE_DEFAULT, "MediaPlayback hack extensions %{public}@ doesn't have host", buf, 0xCu);
     }
 
@@ -63,7 +63,7 @@ LABEL_12:
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
 
   v12 = objc_alloc(MEMORY[0x277D46DB8]);
-  v13 = [MEMORY[0x277D47008] targetWithProcessIdentifier:v8];
+  v13 = [MEMORY[0x277D47008] targetWithProcessIdentifier:hostIdentifier];
   v14 = [v12 initWithExplanation:@"MediaPlackback hack assertion" target:v13 attributes:v11];
   mediaPlaybackHackAssertion = self->_mediaPlaybackHackAssertion;
   self->_mediaPlaybackHackAssertion = v14;
@@ -122,20 +122,20 @@ LABEL_13:
   [(BKSAssertion *)&v5 dealloc];
 }
 
-+ (id)NameForReason:(unsigned int)a3
++ (id)NameForReason:(unsigned int)reason
 {
-  if (a3 > 9999)
+  if (reason > 9999)
   {
-    if (a3 > 10006)
+    if (reason > 10006)
     {
-      if (a3 <= 50003)
+      if (reason <= 50003)
       {
-        if (a3 == 10007)
+        if (reason == 10007)
         {
           return @"notificationAction";
         }
 
-        if (a3 == 10008)
+        if (reason == 10008)
         {
           return @"PIP";
         }
@@ -143,7 +143,7 @@ LABEL_13:
 
       else
       {
-        switch(a3)
+        switch(reason)
         {
           case 0xC354u:
             return @"finishTaskAfterWatchConnectivity";
@@ -157,14 +157,14 @@ LABEL_13:
 
     else
     {
-      if (a3 > 10003)
+      if (reason > 10003)
       {
-        if (a3 == 10004)
+        if (reason == 10004)
         {
           return @"finishTaskUnbounded";
         }
 
-        if (a3 == 10005)
+        if (reason == 10005)
         {
           return @"continuous";
         }
@@ -172,12 +172,12 @@ LABEL_13:
         return @"backgroundContentFetching";
       }
 
-      if (a3 == 10000)
+      if (reason == 10000)
       {
         return @"activation";
       }
 
-      if (a3 == 10002)
+      if (reason == 10002)
       {
         return @"transientWakeup";
       }
@@ -187,7 +187,7 @@ LABEL_13:
   }
 
   result = @"none";
-  switch(a3)
+  switch(reason)
   {
     case 0u:
       return result;
@@ -278,14 +278,14 @@ uint64_t __90__BKSProcessAssertion_initWithBundleIdentifier_pid_flags_reason_nam
   return v2;
 }
 
-- (void)setFlags:(unsigned int)a3
+- (void)setFlags:(unsigned int)flags
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __32__BKSProcessAssertion_setFlags___block_invoke;
   v3[3] = &unk_278871BC8;
   v3[4] = self;
-  v4 = a3;
+  flagsCopy = flags;
   [(BKSAssertion *)self _lock:v3];
 }
 
@@ -311,10 +311,10 @@ uint64_t __32__BKSProcessAssertion_setFlags___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  assertionCopy = assertion;
+  errorCopy = error;
   mediaPlaybackHackAssertion = self->_mediaPlaybackHackAssertion;
   if (mediaPlaybackHackAssertion)
   {
@@ -325,21 +325,21 @@ uint64_t __32__BKSProcessAssertion_setFlags___block_invoke(uint64_t result)
 
   v10.receiver = self;
   v10.super_class = BKSProcessAssertion;
-  [(BKSAssertion *)&v10 assertion:v6 didInvalidateWithError:v7];
+  [(BKSAssertion *)&v10 assertion:assertionCopy didInvalidateWithError:errorCopy];
 }
 
-- (unint64_t)_legacyReasonForReason:(unsigned int)a3
+- (unint64_t)_legacyReasonForReason:(unsigned int)reason
 {
   result = 0;
-  if (a3 > 9999)
+  if (reason > 9999)
   {
     v4 = 50004;
-    if (a3 != 50004)
+    if (reason != 50004)
     {
       v4 = 0;
     }
 
-    if (a3 == 10008)
+    if (reason == 10008)
     {
       v5 = 10008;
     }
@@ -350,12 +350,12 @@ uint64_t __32__BKSProcessAssertion_setFlags___block_invoke(uint64_t result)
     }
 
     v6 = 10007;
-    if (a3 != 10007)
+    if (reason != 10007)
     {
       v6 = 0;
     }
 
-    if (a3 == 10006)
+    if (reason == 10006)
     {
       v7 = 10006;
     }
@@ -365,7 +365,7 @@ uint64_t __32__BKSProcessAssertion_setFlags___block_invoke(uint64_t result)
       v7 = v6;
     }
 
-    if (a3 <= 10007)
+    if (reason <= 10007)
     {
       v8 = v7;
     }
@@ -376,12 +376,12 @@ uint64_t __32__BKSProcessAssertion_setFlags___block_invoke(uint64_t result)
     }
 
     v9 = 10005;
-    if (a3 != 10005)
+    if (reason != 10005)
     {
       v9 = 0;
     }
 
-    if (a3 == 10004)
+    if (reason == 10004)
     {
       v10 = 10004;
     }
@@ -392,12 +392,12 @@ uint64_t __32__BKSProcessAssertion_setFlags___block_invoke(uint64_t result)
     }
 
     v11 = 10002;
-    if (a3 != 10002)
+    if (reason != 10002)
     {
       v11 = 0;
     }
 
-    if (a3 == 10000)
+    if (reason == 10000)
     {
       v12 = 10000;
     }
@@ -407,7 +407,7 @@ uint64_t __32__BKSProcessAssertion_setFlags___block_invoke(uint64_t result)
       v12 = v11;
     }
 
-    if (a3 <= 10003)
+    if (reason <= 10003)
     {
       v13 = v12;
     }
@@ -417,7 +417,7 @@ uint64_t __32__BKSProcessAssertion_setFlags___block_invoke(uint64_t result)
       v13 = v10;
     }
 
-    if (a3 <= 10005)
+    if (reason <= 10005)
     {
       return v13;
     }
@@ -430,7 +430,7 @@ uint64_t __32__BKSProcessAssertion_setFlags___block_invoke(uint64_t result)
 
   else
   {
-    switch(a3)
+    switch(reason)
     {
       case 1u:
         result = 1;

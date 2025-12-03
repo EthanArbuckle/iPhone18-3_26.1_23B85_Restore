@@ -1,13 +1,13 @@
 @interface VUIPlayerHapticManagerObjC
-+ (void)setPlayer:(id)a3;
++ (void)setPlayer:(id)player;
 @end
 
 @implementation VUIPlayerHapticManagerObjC
 
-+ (void)setPlayer:(id)a3
++ (void)setPlayer:(id)player
 {
-  v4 = a3;
-  static PlayerHapticManagerObjC.setPlayer(_:)(a3);
+  playerCopy = player;
+  static PlayerHapticManagerObjC.setPlayer(_:)(player);
 }
 
 @end

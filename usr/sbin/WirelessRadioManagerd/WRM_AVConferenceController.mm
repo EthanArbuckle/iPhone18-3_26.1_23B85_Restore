@@ -3,11 +3,11 @@
 - (void)configureFaceTimeRTPMetricsReporting;
 - (void)configureRTPMetricsReporting;
 - (void)dealloc;
-- (void)handleFaceTimeRTPMetrics:(id)a3;
-- (void)handleMessage:(id)a3;
-- (void)handlePeriodicRTPMetrics:(id)a3;
-- (void)handleRTPEvent:(id)a3;
-- (void)handleTelephonyRTPMetrics:(id)a3;
+- (void)handleFaceTimeRTPMetrics:(id)metrics;
+- (void)handleMessage:(id)message;
+- (void)handlePeriodicRTPMetrics:(id)metrics;
+- (void)handleRTPEvent:(id)event;
+- (void)handleTelephonyRTPMetrics:(id)metrics;
 - (void)resetCumulativeRTPMetrics;
 - (void)resetPeriodicRTPStats;
 - (void)resetRTPMetrics;
@@ -29,12 +29,12 @@
   [(WCM_Controller *)&v2 dealloc];
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kMessageId");
+  uint64 = xpc_dictionary_get_uint64(message, "kMessageId");
   if (!uint64)
   {
-    uint64 = xpc_dictionary_get_int64(a3, "kMessageId");
+    uint64 = xpc_dictionary_get_int64(message, "kMessageId");
     if (!uint64)
     {
       [WCM_Logging logLevel:23 message:@"Received AVConference Message  message-id: %lld", 0];
@@ -48,13 +48,13 @@
   if (uint64 == 201)
   {
 
-    [(WRM_AVConferenceController *)self handleRTPEvent:a3];
+    [(WRM_AVConferenceController *)self handleRTPEvent:message];
   }
 
   else if (uint64 == 202)
   {
 
-    [(WRM_AVConferenceController *)self handlePeriodicRTPMetrics:a3];
+    [(WRM_AVConferenceController *)self handlePeriodicRTPMetrics:message];
   }
 }
 
@@ -163,11 +163,11 @@
   }
 }
 
-- (void)handleTelephonyRTPMetrics:(id)a3
+- (void)handleTelephonyRTPMetrics:(id)metrics
 {
-  [WCM_Logging logLevel:23 message:@"Received message from AVConference client, params are %@", a3];
+  [WCM_Logging logLevel:23 message:@"Received message from AVConference client, params are %@", metrics];
   [(WRM_AVConferenceController *)self setRxRtpMetricsSampleCount:[(WRM_AVConferenceController *)self rxRtpMetricsSampleCount]+ 1];
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(metrics, "kMessageArgs");
   if (!value)
   {
     v8 = @"Unable to extract content of IMG message, nothing to report";
@@ -224,9 +224,9 @@ LABEL_6:
     v16 = (v15 * 100.0 / v12);
     [(WRM_AVConferenceController *)self setRxPktLoss:v16];
     [(WRM_AVConferenceController *)self setCumRxPktLoss:[(WRM_AVConferenceController *)self cumRxPktLoss]+ v16];
-    v17 = [(WRM_AVConferenceController *)self cumRxPktLoss];
+    cumRxPktLoss = [(WRM_AVConferenceController *)self cumRxPktLoss];
     v26 = v12;
-    v18 = (v17 / ([(WRM_AVConferenceController *)self rxRtpMetricsSampleCount]+ 0.000001));
+    v18 = (cumRxPktLoss / ([(WRM_AVConferenceController *)self rxRtpMetricsSampleCount]+ 0.000001));
     [(WRM_AVConferenceController *)self setAvgRxPktLoss:v18];
     [WCM_Logging logLevel:23 message:@"Rx periodic Average RTP packet loss=%lld", v18];
     [(WRM_AVConferenceController *)self movAvgRxPktLoss];
@@ -244,16 +244,16 @@ LABEL_6:
     [(WRM_AVConferenceController *)self setAveragedNominalJitterBufferDelay:([(WRM_AVConferenceController *)self cumulativeNominalJitterBufferDelay]/ ([(WRM_AVConferenceController *)self rxRtpMetricsSampleCount]+ 0.000001))];
     v24 = +[WRM_HandoverManager WRM_HandoverManagerSingleton];
 
-    [v24 updateControllerState:a3];
+    [v24 updateControllerState:metrics];
   }
 }
 
-- (void)handleFaceTimeRTPMetrics:(id)a3
+- (void)handleFaceTimeRTPMetrics:(id)metrics
 {
   v5 = [+[WRM_HandoverManager WRM_HandoverManagerSingleton](WRM_HandoverManager "WRM_HandoverManagerSingleton")];
-  [WCM_Logging logLevel:23 message:@"Received message from AVConference client, params are %@", a3];
+  [WCM_Logging logLevel:23 message:@"Received message from AVConference client, params are %@", metrics];
   [(WRM_AVConferenceController *)self setRxRtpMetricsSampleCount:[(WRM_AVConferenceController *)self rxRtpMetricsSampleCount]+ 1];
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(metrics, "kMessageArgs");
   if (!value)
   {
     [(WRM_AVConferenceController *)self setDeltaVideoErasure:0.0];
@@ -304,54 +304,54 @@ LABEL_5:
   [(WRM_AVConferenceController *)self setOneWayDealy:xpc_dictionary_get_uint64(v7, "kWRMAVConferencePeriodicReport_OneWayRelativeDelay")];
   [(WRM_AVConferenceController *)self setAdaptationPaceketLoss:xpc_dictionary_get_uint64(v7, "kWRMAVConferencePeriodicReport_AdaptationPacketLoss")];
   v11 = xpc_dictionary_get_uint64(v7, "PriVidRxCnt");
-  v12 = [(WRM_AVConferenceController *)self primaryVideoPacketReceived];
+  primaryVideoPacketReceived = [(WRM_AVConferenceController *)self primaryVideoPacketReceived];
   [(WRM_AVConferenceController *)self setPrimaryVideoPacketReceived:v11];
   v13 = xpc_dictionary_get_uint64(v7, "TotVidRxExpCnt");
-  v14 = [(WRM_AVConferenceController *)self videoPacketExpected];
+  videoPacketExpected = [(WRM_AVConferenceController *)self videoPacketExpected];
   [(WRM_AVConferenceController *)self setVideoPacketExpected:v13];
-  v15 = [(WRM_AVConferenceController *)self callType];
+  callType = [(WRM_AVConferenceController *)self callType];
   v16 = 0.0;
   v17 = 0.0;
-  if (v15 == 2 && v13 != v14 && v11 != v12)
+  if (callType == 2 && v13 != videoPacketExpected && v11 != primaryVideoPacketReceived)
   {
-    v17 = 1.0 - (v11 - v12) / ((v13 - v14) + 0.000001);
+    v17 = 1.0 - (v11 - primaryVideoPacketReceived) / ((v13 - videoPacketExpected) + 0.000001);
     *&v17 = v17;
   }
 
   [(WRM_AVConferenceController *)self setPrimaryVideoPacketLossRate:v17];
   v18 = xpc_dictionary_get_uint64(v7, "PriAudRxCnt");
-  v19 = [(WRM_AVConferenceController *)self primaryAudioPacketReceived];
+  primaryAudioPacketReceived = [(WRM_AVConferenceController *)self primaryAudioPacketReceived];
   [(WRM_AVConferenceController *)self setPrimaryAudioPacketReceived:v18];
   v20 = xpc_dictionary_get_uint64(v7, "TotAudRxExpCnt");
   v21 = v20 - [(WRM_AVConferenceController *)self audioPacketExpected];
   [(WRM_AVConferenceController *)self setAudioPacketExpected:v20];
-  if (v18 != v19)
+  if (v18 != primaryAudioPacketReceived)
   {
-    v22 = 1.0 - (v18 - v19) / (v21 + 0.000001);
+    v22 = 1.0 - (v18 - primaryAudioPacketReceived) / (v21 + 0.000001);
     v16 = v22;
   }
 
   *&v22 = v16;
   [(WRM_AVConferenceController *)self setPrimaryAudioPacketLossRate:v22];
   v23 = xpc_dictionary_get_uint64(v7, "TotVidRxCnt");
-  v24 = [(WRM_AVConferenceController *)self totalVideoPacketReceived];
+  totalVideoPacketReceived = [(WRM_AVConferenceController *)self totalVideoPacketReceived];
   [(WRM_AVConferenceController *)self setTotalVideoPacketReceived:v23];
-  v25 = [(WRM_AVConferenceController *)self callType];
+  callType2 = [(WRM_AVConferenceController *)self callType];
   v26 = 0.0;
   v27 = 0.0;
-  if (v25 == 2 && v13 != v14 && v23 != v24)
+  if (callType2 == 2 && v13 != videoPacketExpected && v23 != totalVideoPacketReceived)
   {
-    v27 = 1.0 - (v23 - v24) / ((v13 - v14) + 0.000001);
+    v27 = 1.0 - (v23 - totalVideoPacketReceived) / ((v13 - videoPacketExpected) + 0.000001);
     *&v27 = v27;
   }
 
   [(WRM_AVConferenceController *)self setTotalVideoPacketLossRate:v27];
   v28 = xpc_dictionary_get_uint64(v7, "TotAudRxCnt");
-  v29 = [(WRM_AVConferenceController *)self totalAudioPacketReceived];
+  totalAudioPacketReceived = [(WRM_AVConferenceController *)self totalAudioPacketReceived];
   [(WRM_AVConferenceController *)self setTotalAudioPacketReceived:v28];
-  if (v28 != v29)
+  if (v28 != totalAudioPacketReceived)
   {
-    v30 = 1.0 - (v28 - v29) / (v21 + 0.000001);
+    v30 = 1.0 - (v28 - totalAudioPacketReceived) / (v21 + 0.000001);
     v26 = v30;
   }
 
@@ -408,8 +408,8 @@ LABEL_5:
     [(WRM_AVConferenceController *)self setRxPktLoss:v49];
     [(WRM_AVConferenceController *)self setRxSpeechPktLoss:(v61 * 100.0 / v62)];
     [(WRM_AVConferenceController *)self setCumRxPktLoss:[(WRM_AVConferenceController *)self cumRxPktLoss]+ v49];
-    v50 = [(WRM_AVConferenceController *)self cumRxPktLoss];
-    v51 = (v50 / ([(WRM_AVConferenceController *)self rxRtpMetricsSampleCount]+ 0.000001));
+    cumRxPktLoss = [(WRM_AVConferenceController *)self cumRxPktLoss];
+    v51 = (cumRxPktLoss / ([(WRM_AVConferenceController *)self rxRtpMetricsSampleCount]+ 0.000001));
     [(WRM_AVConferenceController *)self setAvgRxPktLoss:v51];
     [WCM_Logging logLevel:23 message:@"Rx periodic Average RTP packet loss=%lld", v51];
     v52 = ([v5 faceTimeMovingAverageWindow] - 1);
@@ -426,16 +426,16 @@ LABEL_5:
     [(WRM_AVConferenceController *)self setNominalJitterBufferDelay:v58];
     [(WRM_AVConferenceController *)self setMovAvgNominalJitterBufferDelay:(v58 + 19 * [(WRM_AVConferenceController *)self movAvgNominalJitterBufferDelay]) / 0x14];
     [(WRM_AVConferenceController *)self setCumulativeNominalJitterBufferDelay:[(WRM_AVConferenceController *)self cumulativeNominalJitterBufferDelay]+ v58];
-    v59 = [(WRM_AVConferenceController *)self cumulativeNominalJitterBufferDelay];
-    v60 = (v59 / ([(WRM_AVConferenceController *)self rxRtpMetricsSampleCount]+ 0.000001));
+    cumulativeNominalJitterBufferDelay = [(WRM_AVConferenceController *)self cumulativeNominalJitterBufferDelay];
+    v60 = (cumulativeNominalJitterBufferDelay / ([(WRM_AVConferenceController *)self rxRtpMetricsSampleCount]+ 0.000001));
 
     [(WRM_AVConferenceController *)self setAveragedNominalJitterBufferDelay:v60];
   }
 }
 
-- (void)handleRTPEvent:(id)a3
+- (void)handleRTPEvent:(id)event
 {
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(event, "kMessageArgs");
   if (value)
   {
     v5 = value;
@@ -446,18 +446,18 @@ LABEL_5:
   }
 }
 
-- (void)handlePeriodicRTPMetrics:(id)a3
+- (void)handlePeriodicRTPMetrics:(id)metrics
 {
   if ([(WRM_AVConferenceController *)self isActiveClientFaceTime])
   {
 
-    [(WRM_AVConferenceController *)self handleFaceTimeRTPMetrics:a3];
+    [(WRM_AVConferenceController *)self handleFaceTimeRTPMetrics:metrics];
   }
 
   else
   {
 
-    [(WRM_AVConferenceController *)self handleTelephonyRTPMetrics:a3];
+    [(WRM_AVConferenceController *)self handleTelephonyRTPMetrics:metrics];
   }
 }
 

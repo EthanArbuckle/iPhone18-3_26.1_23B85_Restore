@@ -1,6 +1,6 @@
 @interface BWMetadataObjectFormat
-+ (id)formatWithMetadataIdentifiers:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)formatWithMetadataIdentifiers:(id)identifiers;
+- (BOOL)isEqual:(id)equal;
 - (id)debugDescription;
 - (id)description;
 - (void)dealloc;
@@ -15,9 +15,9 @@
   [(BWMetadataObjectFormat *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -29,7 +29,7 @@
   }
 
   metadataIdentifiers = self->_metadataIdentifiers;
-  v6 = *(a3 + 1);
+  v6 = *(equal + 1);
 
   return [(NSArray *)metadataIdentifiers isEqualToArray:v6];
 }
@@ -67,7 +67,7 @@
   return [v3 stringWithFormat:@"<%@: %p> %@", NSStringFromClass(v4), self, -[BWMetadataObjectFormat description](self, "description")];
 }
 
-+ (id)formatWithMetadataIdentifiers:(id)a3
++ (id)formatWithMetadataIdentifiers:(id)identifiers
 {
   v4 = [BWMetadataObjectFormat alloc];
   if (v4)
@@ -77,7 +77,7 @@
     v5 = objc_msgSendSuper2(&v7, sel_init);
     if (v5)
     {
-      v5[1] = [a3 copy];
+      v5[1] = [identifiers copy];
     }
   }
 

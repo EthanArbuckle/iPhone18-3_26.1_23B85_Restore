@@ -1,24 +1,24 @@
 @interface CNContactPickerViewControllerWrapper.Coordinator
 - (_TtCV10ContactsUI36CNContactPickerViewControllerWrapper11Coordinator)init;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
-- (void)contactPickerDidCancel:(id)a3;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
+- (void)contactPickerDidCancel:(id)cancel;
 @end
 
 @implementation CNContactPickerViewControllerWrapper.Coordinator
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
   v6 = *(&self->super.isa + OBJC_IVAR____TtCV10ContactsUI36CNContactPickerViewControllerWrapper11Coordinator_onContactSelected);
-  v7 = a4;
-  v8 = self;
+  contactCopy = contact;
+  selfCopy = self;
 
-  v6(a4);
+  v6(contact);
 }
 
-- (void)contactPickerDidCancel:(id)a3
+- (void)contactPickerDidCancel:(id)cancel
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtCV10ContactsUI36CNContactPickerViewControllerWrapper11Coordinator_onContactSelected);
-  v4 = self;
+  selfCopy = self;
 
   v3(0);
 }

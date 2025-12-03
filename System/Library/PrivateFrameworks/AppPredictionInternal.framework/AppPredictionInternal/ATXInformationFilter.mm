@@ -1,40 +1,40 @@
 @interface ATXInformationFilter
-+ (int64_t)chsFamilyForTimelineRelevanceSuggestionLayoutOptions:(unint64_t)a3;
-- (ATXInformationFilter)initWithStore:(id)a3 abuseControlConfig:(id)a4;
-- (ATXInformationFilter)initWithStore:(id)a3 abuseControlConfig:(id)a4 histogram:(id)a5 digitalHealthBlockList:(id)a6;
-- (BOOL)_canSuggestionPassAppLaunchCheck:(id)a3;
-- (BOOL)_isFirstPartyApp:(id)a3;
-- (BOOL)_isSuggestionBlockedByDismiss:(id)a3 withGuardedData:(id)a4;
-- (BOOL)_shouldBlockTimelineSuggestion:(id)a3 updatingAbuseControlOutcomes:(id)a4;
-- (BOOL)shouldDisableRandomization:(id)a3;
-- (BOOL)stalenessRotationsAreEnabled:(id)a3;
-- (id)_fetchAppLaunchCountForBundleId:(id)a3;
-- (id)filterInfoSuggestions:(id)a3;
-- (int64_t)_numberOfSeenRotationsForSuggestion:(id)a3;
-- (int64_t)numberOfSeenRotationsForWidget:(id)a3 kind:(id)a4 intent:(id)a5 filterByClientModelId:(id)a6;
-- (void)_demoteFirstPartyDonatedSuggestionIfNecessary:(id)a3;
++ (int64_t)chsFamilyForTimelineRelevanceSuggestionLayoutOptions:(unint64_t)options;
+- (ATXInformationFilter)initWithStore:(id)store abuseControlConfig:(id)config;
+- (ATXInformationFilter)initWithStore:(id)store abuseControlConfig:(id)config histogram:(id)histogram digitalHealthBlockList:(id)list;
+- (BOOL)_canSuggestionPassAppLaunchCheck:(id)check;
+- (BOOL)_isFirstPartyApp:(id)app;
+- (BOOL)_isSuggestionBlockedByDismiss:(id)dismiss withGuardedData:(id)data;
+- (BOOL)_shouldBlockTimelineSuggestion:(id)suggestion updatingAbuseControlOutcomes:(id)outcomes;
+- (BOOL)shouldDisableRandomization:(id)randomization;
+- (BOOL)stalenessRotationsAreEnabled:(id)enabled;
+- (id)_fetchAppLaunchCountForBundleId:(id)id;
+- (id)filterInfoSuggestions:(id)suggestions;
+- (int64_t)_numberOfSeenRotationsForSuggestion:(id)suggestion;
+- (int64_t)numberOfSeenRotationsForWidget:(id)widget kind:(id)kind intent:(id)intent filterByClientModelId:(id)id;
+- (void)_demoteFirstPartyDonatedSuggestionIfNecessary:(id)necessary;
 - (void)_populateDismissRecordsCacheAsynchronously;
-- (void)recordDismissOfSuggestion:(id)a3 isDismissalLongTerm:(BOOL)a4 completionHandler:(id)a5;
+- (void)recordDismissOfSuggestion:(id)suggestion isDismissalLongTerm:(BOOL)term completionHandler:(id)handler;
 @end
 
 @implementation ATXInformationFilter
 
-- (ATXInformationFilter)initWithStore:(id)a3 abuseControlConfig:(id)a4
+- (ATXInformationFilter)initWithStore:(id)store abuseControlConfig:(id)config
 {
-  v6 = a4;
-  v7 = a3;
+  configCopy = config;
+  storeCopy = store;
   v8 = +[ATXDigitalHealthBlacklist sharedInstance];
-  v9 = [(ATXInformationFilter *)self initWithStore:v7 abuseControlConfig:v6 histogram:0 digitalHealthBlockList:v8];
+  v9 = [(ATXInformationFilter *)self initWithStore:storeCopy abuseControlConfig:configCopy histogram:0 digitalHealthBlockList:v8];
 
   return v9;
 }
 
-- (ATXInformationFilter)initWithStore:(id)a3 abuseControlConfig:(id)a4 histogram:(id)a5 digitalHealthBlockList:(id)a6
+- (ATXInformationFilter)initWithStore:(id)store abuseControlConfig:(id)config histogram:(id)histogram digitalHealthBlockList:(id)list
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  storeCopy = store;
+  configCopy = config;
+  histogramCopy = histogram;
+  listCopy = list;
   v33.receiver = self;
   v33.super_class = ATXInformationFilter;
   v15 = [(ATXInformationFilter *)&v33 init];
@@ -42,28 +42,28 @@
   {
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    v32 = v11;
-    v18 = [v17 UTF8String];
+    v32 = storeCopy;
+    uTF8String = [v17 UTF8String];
     dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    obj = a6;
-    v19 = v14;
-    v20 = v13;
-    v22 = v21 = v12;
-    v23 = dispatch_queue_create(v18, v22);
+    obj = list;
+    v19 = listCopy;
+    v20 = histogramCopy;
+    v22 = v21 = configCopy;
+    v23 = dispatch_queue_create(uTF8String, v22);
     queue = v15->_queue;
     v15->_queue = v23;
 
-    v12 = v21;
-    v13 = v20;
-    v14 = v19;
+    configCopy = v21;
+    histogramCopy = v20;
+    listCopy = v19;
 
     v25 = objc_opt_new();
     appLaunchCountsByBundleId = v15->_appLaunchCountsByBundleId;
     v15->_appLaunchCountsByBundleId = v25;
 
-    objc_storeStrong(&v15->_store, a3);
-    objc_storeStrong(&v15->_abuseControlConfig, a4);
-    objc_storeStrong(&v15->_histogram, a5);
+    objc_storeStrong(&v15->_store, store);
+    objc_storeStrong(&v15->_abuseControlConfig, config);
+    objc_storeStrong(&v15->_histogram, histogram);
     objc_storeStrong(&v15->_digitalHealthBlockList, obj);
     v27 = objc_opt_new();
     v28 = [objc_alloc(MEMORY[0x277D42610]) initWithGuardedData:v27 serialQueue:v15->_queue];
@@ -71,27 +71,27 @@
     v15->_lock = v28;
 
     [(ATXInformationFilter *)v15 _populateDismissRecordsCacheAsynchronously];
-    v11 = v32;
+    storeCopy = v32;
   }
 
   return v15;
 }
 
-- (void)recordDismissOfSuggestion:(id)a3 isDismissalLongTerm:(BOOL)a4 completionHandler:(id)a5
+- (void)recordDismissOfSuggestion:(id)suggestion isDismissalLongTerm:(BOOL)term completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  suggestionCopy = suggestion;
+  handlerCopy = handler;
   lock = self->_lock;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __88__ATXInformationFilter_recordDismissOfSuggestion_isDismissalLongTerm_completionHandler___block_invoke;
   v13[3] = &unk_278596FB0;
-  v17 = a4;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
+  termCopy = term;
+  v14 = suggestionCopy;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = suggestionCopy;
   [(_PASQueueLock *)lock runAsyncWithLockAcquired:v13];
 }
 
@@ -168,9 +168,9 @@ void __88__ATXInformationFilter_recordDismissOfSuggestion_isDismissalLongTerm_co
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)filterInfoSuggestions:(id)a3
+- (id)filterInfoSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v5 = __atxlog_handle_timeline();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -184,13 +184,13 @@ void __88__ATXInformationFilter_recordDismissOfSuggestion_isDismissalLongTerm_co
   v16 = 3221225472;
   v17 = __46__ATXInformationFilter_filterInfoSuggestions___block_invoke;
   v18 = &unk_278596FD8;
-  v19 = self;
-  v20 = v4;
+  selfCopy = self;
+  v20 = suggestionsCopy;
   v9 = v6;
   v21 = v9;
   v22 = v7;
   v10 = v7;
-  v11 = v4;
+  v11 = suggestionsCopy;
   [(_PASQueueLock *)lock runWithLockAcquired:&v15];
   [(ATXInformationFilter *)self _removeExpiredDismissRecordsAsynchronously:v15];
   [(ATXInformationStore *)self->_store updateEndDateForInfoSuggestions:v10];
@@ -671,11 +671,11 @@ LABEL_72:
   v116 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_canSuggestionPassAppLaunchCheck:(id)a3
+- (BOOL)_canSuggestionPassAppLaunchCheck:(id)check
 {
-  v4 = [a3 appBundleIdentifier];
-  v5 = [(NSCache *)self->_appLaunchCountsByBundleId objectForKey:v4];
-  if ([(ATXInformationFilter *)self _isFirstPartyApp:v4])
+  appBundleIdentifier = [check appBundleIdentifier];
+  v5 = [(NSCache *)self->_appLaunchCountsByBundleId objectForKey:appBundleIdentifier];
+  if ([(ATXInformationFilter *)self _isFirstPartyApp:appBundleIdentifier])
   {
     v6 = 3.0;
   }
@@ -685,7 +685,7 @@ LABEL_72:
     v6 = 8.0;
   }
 
-  if (v5 && ([v5 doubleValue], v7 >= v6) || (-[ATXInformationFilter _fetchAppLaunchCountForBundleId:](self, "_fetchAppLaunchCountForBundleId:", v4), v8 = objc_claimAutoreleasedReturnValue(), v5, -[NSCache setObject:forKey:](self->_appLaunchCountsByBundleId, "setObject:forKey:", v8, v4), (v5 = v8) != 0))
+  if (v5 && ([v5 doubleValue], v7 >= v6) || (-[ATXInformationFilter _fetchAppLaunchCountForBundleId:](self, "_fetchAppLaunchCountForBundleId:", appBundleIdentifier), v8 = objc_claimAutoreleasedReturnValue(), v5, -[NSCache setObject:forKey:](self->_appLaunchCountsByBundleId, "setObject:forKey:", v8, appBundleIdentifier), (v5 = v8) != 0))
   {
     [v5 doubleValue];
     v10 = v9 >= v6;
@@ -699,10 +699,10 @@ LABEL_72:
   return v10;
 }
 
-- (id)_fetchAppLaunchCountForBundleId:(id)a3
+- (id)_fetchAppLaunchCountForBundleId:(id)id
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   histogram = self->_histogram;
   if (!histogram)
   {
@@ -715,7 +715,7 @@ LABEL_72:
   }
 
   v9 = MEMORY[0x277CCABB0];
-  v14[0] = v4;
+  v14[0] = idCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
   [(_ATXAppLaunchHistogram *)histogram totalLaunchesForBundleIds:v10];
   v11 = [v9 numberWithDouble:?];
@@ -725,17 +725,17 @@ LABEL_72:
   return v11;
 }
 
-- (BOOL)_isFirstPartyApp:(id)a3
+- (BOOL)_isFirstPartyApp:(id)app
 {
-  v3 = [a3 lowercaseString];
-  if ([MEMORY[0x277CEB3B8] isSystemAppForBundleId:v3])
+  lowercaseString = [app lowercaseString];
+  if ([MEMORY[0x277CEB3B8] isSystemAppForBundleId:lowercaseString])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 hasPrefix:@"com.apple."];
+    v4 = [lowercaseString hasPrefix:@"com.apple."];
   }
 
   return v4;
@@ -872,18 +872,18 @@ void __66__ATXInformationFilter__removeExpiredDismissRecordsAsynchronously__bloc
   }
 }
 
-- (BOOL)_isSuggestionBlockedByDismiss:(id)a3 withGuardedData:(id)a4
+- (BOOL)_isSuggestionBlockedByDismiss:(id)dismiss withGuardedData:(id)data
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = *(a4 + 1);
-  v26 = v5;
-  v7 = [v5 widgetBundleIdentifier];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  dismissCopy = dismiss;
+  v6 = *(data + 1);
+  v26 = dismissCopy;
+  widgetBundleIdentifier = [dismissCopy widgetBundleIdentifier];
+  v8 = [v6 objectForKeyedSubscript:widgetBundleIdentifier];
 
   if (v8)
   {
-    v9 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -904,24 +904,24 @@ void __66__ATXInformationFilter__removeExpiredDismissRecordsAsynchronously__bloc
           }
 
           v14 = *(*(&v27 + 1) + 8 * i);
-          v15 = [v14 blockWidgetUntilDate];
-          v16 = [v9 earlierDate:v15];
+          blockWidgetUntilDate = [v14 blockWidgetUntilDate];
+          v16 = [date earlierDate:blockWidgetUntilDate];
 
-          if (v16 == v9)
+          if (v16 == date)
           {
 LABEL_14:
             LOBYTE(v11) = 1;
             goto LABEL_15;
           }
 
-          v17 = [v14 blockCriterionUntilDate];
-          v18 = [v9 earlierDate:v17];
+          blockCriterionUntilDate = [v14 blockCriterionUntilDate];
+          v18 = [date earlierDate:blockCriterionUntilDate];
           v19 = v18;
-          if (v18 == v9)
+          if (v18 == date)
           {
-            v20 = [v26 criterion];
-            v21 = [v14 criterion];
-            v22 = [v20 isEqualToString:v21];
+            criterion = [v26 criterion];
+            criterion2 = [v14 criterion];
+            v22 = [criterion isEqualToString:criterion2];
 
             if (v22)
             {
@@ -957,18 +957,18 @@ LABEL_15:
   return v11;
 }
 
-- (void)_demoteFirstPartyDonatedSuggestionIfNecessary:(id)a3
+- (void)_demoteFirstPartyDonatedSuggestionIfNecessary:(id)necessary
 {
-  v9 = a3;
-  v4 = [v9 appBundleIdentifier];
-  if ([v4 isEqualToString:@"com.apple.mobileslideshow"])
+  necessaryCopy = necessary;
+  appBundleIdentifier = [necessaryCopy appBundleIdentifier];
+  if ([appBundleIdentifier isEqualToString:@"com.apple.mobileslideshow"])
   {
   }
 
   else
   {
-    v5 = [v9 appBundleIdentifier];
-    v6 = [v5 isEqualToString:@"com.apple.news"];
+    appBundleIdentifier2 = [necessaryCopy appBundleIdentifier];
+    v6 = [appBundleIdentifier2 isEqualToString:@"com.apple.news"];
 
     if (!v6)
     {
@@ -977,31 +977,31 @@ LABEL_15:
   }
 
   store = self->_store;
-  v8 = [v9 suggestionIdentifier];
-  LODWORD(store) = [(ATXInformationStore *)store didSuggestionReachDurationLimit:v8];
+  suggestionIdentifier = [necessaryCopy suggestionIdentifier];
+  LODWORD(store) = [(ATXInformationStore *)store didSuggestionReachDurationLimit:suggestionIdentifier];
 
   if (store)
   {
-    [v9 setConfidenceLevel:1];
+    [necessaryCopy setConfidenceLevel:1];
   }
 
 LABEL_6:
 }
 
-- (BOOL)shouldDisableRandomization:(id)a3
+- (BOOL)shouldDisableRandomization:(id)randomization
 {
-  v4 = a3;
+  randomizationCopy = randomization;
   abuseControlConfig = self->_abuseControlConfig;
-  v6 = [v4 widgetBundleIdentifier];
-  v7 = [v4 widgetKind];
-  v8 = [(ATXTimelineAbuseControlConfig *)abuseControlConfig randomizationDisabledForWidgetWithIdentifier:v6 kind:v7];
+  widgetBundleIdentifier = [randomizationCopy widgetBundleIdentifier];
+  widgetKind = [randomizationCopy widgetKind];
+  v8 = [(ATXTimelineAbuseControlConfig *)abuseControlConfig randomizationDisabledForWidgetWithIdentifier:widgetBundleIdentifier kind:widgetKind];
 
   if (v8)
   {
     store = self->_store;
-    v10 = [v4 widgetBundleIdentifier];
-    v11 = [v4 widgetKind];
-    v12 = [(ATXInformationStore *)store distinctScoresForWidget:v10 kind:v11];
+    widgetBundleIdentifier2 = [randomizationCopy widgetBundleIdentifier];
+    widgetKind2 = [randomizationCopy widgetKind];
+    v12 = [(ATXInformationStore *)store distinctScoresForWidget:widgetBundleIdentifier2 kind:widgetKind2];
 
     if ([v12 count] < 2)
     {
@@ -1010,35 +1010,35 @@ LABEL_6:
 
     else
     {
-      v13 = [v4 relevanceScore];
+      relevanceScore = [randomizationCopy relevanceScore];
       v14 = [v12 objectAtIndexedSubscript:0];
-      v8 = [v13 isEqualToNumber:v14] ^ 1;
+      v8 = [relevanceScore isEqualToNumber:v14] ^ 1;
     }
   }
 
   return v8;
 }
 
-- (BOOL)stalenessRotationsAreEnabled:(id)a3
+- (BOOL)stalenessRotationsAreEnabled:(id)enabled
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  enabledCopy = enabled;
   abuseControlConfig = self->_abuseControlConfig;
-  v6 = [v4 widgetBundleIdentifier];
-  v7 = [v4 widgetKind];
-  v8 = [(ATXTimelineAbuseControlConfig *)abuseControlConfig stalenessDisabledForWidgetWithIdentifier:v6 kind:v7];
+  widgetBundleIdentifier = [enabledCopy widgetBundleIdentifier];
+  widgetKind = [enabledCopy widgetKind];
+  v8 = [(ATXTimelineAbuseControlConfig *)abuseControlConfig stalenessDisabledForWidgetWithIdentifier:widgetBundleIdentifier kind:widgetKind];
 
   if (v8)
   {
     v9 = __atxlog_handle_timeline();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v4 widgetBundleIdentifier];
-      v11 = [v4 widgetKind];
+      widgetBundleIdentifier2 = [enabledCopy widgetBundleIdentifier];
+      widgetKind2 = [enabledCopy widgetKind];
       v14 = 138412546;
-      v15 = v10;
+      v15 = widgetBundleIdentifier2;
       v16 = 2112;
-      v17 = v11;
+      v17 = widgetKind2;
       _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_INFO, "ATXInformationFilter: Staleness rotations are not enabled for widget with bundleId: %@, widget kind: %@", &v14, 0x16u);
     }
   }
@@ -1047,34 +1047,34 @@ LABEL_6:
   return !v8;
 }
 
-- (int64_t)_numberOfSeenRotationsForSuggestion:(id)a3
+- (int64_t)_numberOfSeenRotationsForSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [v4 widgetBundleIdentifier];
-  v6 = [v4 widgetKind];
-  v7 = [v4 intent];
+  suggestionCopy = suggestion;
+  widgetBundleIdentifier = [suggestionCopy widgetBundleIdentifier];
+  widgetKind = [suggestionCopy widgetKind];
+  intent = [suggestionCopy intent];
 
   v8 = [MEMORY[0x277D42070] clientModelIdFromClientModelType:19];
-  v9 = [(ATXInformationFilter *)self numberOfSeenRotationsForWidget:v5 kind:v6 intent:v7 filterByClientModelId:v8];
+  v9 = [(ATXInformationFilter *)self numberOfSeenRotationsForWidget:widgetBundleIdentifier kind:widgetKind intent:intent filterByClientModelId:v8];
 
   return v9;
 }
 
-- (int64_t)numberOfSeenRotationsForWidget:(id)a3 kind:(id)a4 intent:(id)a5 filterByClientModelId:(id)a6
+- (int64_t)numberOfSeenRotationsForWidget:(id)widget kind:(id)kind intent:(id)intent filterByClientModelId:(id)id
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(ATXInformationStore *)self->_store engagementTimestampsForExtensionBundleId:v10 kind:v11 intent:v12 engagementType:3];
+  widgetCopy = widget;
+  kindCopy = kind;
+  intentCopy = intent;
+  idCopy = id;
+  v14 = [(ATXInformationStore *)self->_store engagementTimestampsForExtensionBundleId:widgetCopy kind:kindCopy intent:intentCopy engagementType:3];
   if ([v14 count])
   {
-    v32 = v11;
-    v33 = v10;
-    v30 = v13;
-    v31 = v12;
-    [(ATXInformationStore *)self->_store proactiveRotationsForWidgetInThePastDay:v10 kind:v11 intent:v12 filterByClientModelId:v13];
+    v32 = kindCopy;
+    v33 = widgetCopy;
+    v30 = idCopy;
+    v31 = intentCopy;
+    [(ATXInformationStore *)self->_store proactiveRotationsForWidgetInThePastDay:widgetCopy kind:kindCopy intent:intentCopy filterByClientModelId:idCopy];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
@@ -1101,9 +1101,9 @@ LABEL_4:
           break;
         }
 
-        v21 = [v20 rotationDate];
+        rotationDate = [v20 rotationDate];
         [v20 durationLimit];
-        v22 = [v21 dateByAddingTimeInterval:?];
+        v22 = [rotationDate dateByAddingTimeInterval:?];
         while (1)
         {
 
@@ -1112,16 +1112,16 @@ LABEL_4:
             break;
           }
 
-          v21 = [v14 objectAtIndexedSubscript:v17];
-          v23 = [v20 rotationDate];
-          v24 = [v23 earlierDate:v21];
+          rotationDate = [v14 objectAtIndexedSubscript:v17];
+          rotationDate2 = [v20 rotationDate];
+          v24 = [rotationDate2 earlierDate:rotationDate];
 
-          if (v24 != v21)
+          if (v24 != rotationDate)
           {
-            v25 = [v21 earlierDate:v22];
+            v25 = [rotationDate earlierDate:v22];
 
             v26 = v34;
-            if (v25 == v21)
+            if (v25 == rotationDate)
             {
               v26 = v34 + 1;
             }
@@ -1152,10 +1152,10 @@ LABEL_4:
       v34 = 0;
     }
 
-    v11 = v32;
-    v10 = v33;
-    v13 = v30;
-    v12 = v31;
+    kindCopy = v32;
+    widgetCopy = v33;
+    idCopy = v30;
+    intentCopy = v31;
     v27 = v34;
   }
 
@@ -1168,14 +1168,14 @@ LABEL_4:
   return v27;
 }
 
-- (BOOL)_shouldBlockTimelineSuggestion:(id)a3 updatingAbuseControlOutcomes:(id)a4
+- (BOOL)_shouldBlockTimelineSuggestion:(id)suggestion updatingAbuseControlOutcomes:(id)outcomes
 {
   v164 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v139 = a4;
-  v6 = [v5 relevanceScore];
+  suggestionCopy = suggestion;
+  outcomesCopy = outcomes;
+  relevanceScore = [suggestionCopy relevanceScore];
 
-  if (!v6)
+  if (!relevanceScore)
   {
     v17 = __atxlog_handle_timeline();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
@@ -1185,14 +1185,14 @@ LABEL_4:
 
     v18 = MEMORY[0x277D42100];
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-    v19 = [v18 outcomeWithSuggestion:v5 timestamp:7 abuseControlOutcome:?];
-    [v139 addObject:v19];
+    v19 = [v18 outcomeWithSuggestion:suggestionCopy timestamp:7 abuseControlOutcome:?];
+    [outcomesCopy addObject:v19];
 
     goto LABEL_12;
   }
 
-  v7 = [v5 relevanceScore];
-  [v7 doubleValue];
+  relevanceScore2 = [suggestionCopy relevanceScore];
+  [relevanceScore2 doubleValue];
   v9 = v8;
 
   if (v9 <= 0.0)
@@ -1205,57 +1205,57 @@ LABEL_4:
 
     v21 = MEMORY[0x277D42100];
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-    v22 = [v21 outcomeWithSuggestion:v5 timestamp:8 abuseControlOutcome:?];
-    [v139 addObject:v22];
+    v22 = [v21 outcomeWithSuggestion:suggestionCopy timestamp:8 abuseControlOutcome:?];
+    [outcomesCopy addObject:v22];
 
     goto LABEL_12;
   }
 
   store = self->_store;
-  v11 = [v5 suggestionIdentifier];
-  LODWORD(store) = [(ATXInformationStore *)store rotationExistsForSuggestionWithId:v11 considerStalenessRotation:0];
+  suggestionIdentifier = [suggestionCopy suggestionIdentifier];
+  LODWORD(store) = [(ATXInformationStore *)store rotationExistsForSuggestionWithId:suggestionIdentifier considerStalenessRotation:0];
 
   v12 = self->_store;
   if (!store)
   {
-    v26 = [(ATXInformationStore *)self->_store firstTimeAtWhichSuggestionPassedTimelineFilters:v5];
+    v26 = [(ATXInformationStore *)self->_store firstTimeAtWhichSuggestionPassedTimelineFilters:suggestionCopy];
 
     if (v26)
     {
       v27 = __atxlog_handle_timeline();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [v5 suggestionIdentifier];
+        suggestionIdentifier2 = [suggestionCopy suggestionIdentifier];
         *buf = 138412290;
-        *&buf[4] = v28;
+        *&buf[4] = suggestionIdentifier2;
         _os_log_impl(&dword_2263AA000, v27, OS_LOG_TYPE_DEFAULT, "TimelineFilter: suggestion %@ passed (suggestion has passed before and haven't been rotated to)", buf, 0xCu);
       }
 
       v29 = MEMORY[0x277D42100];
       [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-      v30 = [v29 outcomeWithSuggestion:v5 timestamp:17 abuseControlOutcome:?];
-      [v139 addObject:v30];
+      v30 = [v29 outcomeWithSuggestion:suggestionCopy timestamp:17 abuseControlOutcome:?];
+      [outcomesCopy addObject:v30];
 
       goto LABEL_21;
     }
 
     v137 = [MEMORY[0x277D42070] clientModelIdFromClientModelType:19];
-    v35 = [v5 widgetBundleIdentifier];
-    v36 = [v5 widgetKind];
-    v37 = [v5 intent];
-    v135 = [(ATXInformationFilter *)self numberOfSeenRotationsForWidget:v35 kind:v36 intent:v37 filterByClientModelId:v137];
+    widgetBundleIdentifier = [suggestionCopy widgetBundleIdentifier];
+    widgetKind = [suggestionCopy widgetKind];
+    intent = [suggestionCopy intent];
+    v135 = [(ATXInformationFilter *)self numberOfSeenRotationsForWidget:widgetBundleIdentifier kind:widgetKind intent:intent filterByClientModelId:v137];
 
     abuseControlConfig = self->_abuseControlConfig;
-    v39 = [v5 widgetBundleIdentifier];
-    v40 = [v5 widgetKind];
-    v41 = [(ATXTimelineAbuseControlConfig *)abuseControlConfig hardRotationQuotaForWidgetWithIdentifier:v39 kind:v40];
+    widgetBundleIdentifier2 = [suggestionCopy widgetBundleIdentifier];
+    widgetKind2 = [suggestionCopy widgetKind];
+    v41 = [(ATXTimelineAbuseControlConfig *)abuseControlConfig hardRotationQuotaForWidgetWithIdentifier:widgetBundleIdentifier2 kind:widgetKind2];
 
     if ((v41 & 0x8000000000000000) == 0 && v135 >= v41)
     {
       v42 = MEMORY[0x277D42100];
       [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-      v43 = [v42 outcomeWithSuggestion:v5 timestamp:9 abuseControlOutcome:?];
-      [v139 addObject:v43];
+      v43 = [v42 outcomeWithSuggestion:suggestionCopy timestamp:9 abuseControlOutcome:?];
+      [outcomesCopy addObject:v43];
 
       v23 = 1;
 LABEL_78:
@@ -1264,21 +1264,21 @@ LABEL_78:
     }
 
     v44 = self->_store;
-    v45 = [v5 widgetBundleIdentifier];
-    v46 = [v5 widgetKind];
-    v47 = [v5 intent];
-    v136 = [(ATXInformationStore *)v44 mostRecentRotationRecordForWidget:v45 kind:v46 intent:v47 considerStalenessRotation:0 filterByClientModelId:v137];
+    widgetBundleIdentifier3 = [suggestionCopy widgetBundleIdentifier];
+    widgetKind3 = [suggestionCopy widgetKind];
+    intent2 = [suggestionCopy intent];
+    v136 = [(ATXInformationStore *)v44 mostRecentRotationRecordForWidget:widgetBundleIdentifier3 kind:widgetKind3 intent:intent2 considerStalenessRotation:0 filterByClientModelId:v137];
 
     if (v136)
     {
       v48 = [MEMORY[0x277CBEAA8] now];
-      v49 = [v136 rotationDate];
-      [v48 timeIntervalSinceDate:v49];
+      rotationDate = [v136 rotationDate];
+      [v48 timeIntervalSinceDate:rotationDate];
       v51 = v50;
 
-      v52 = [v5 criterion];
-      v53 = [v136 criterion];
-      v54 = [v52 isEqualToString:v53];
+      criterion = [suggestionCopy criterion];
+      criterion2 = [v136 criterion];
+      v54 = [criterion isEqualToString:criterion2];
 
       if (v54)
       {
@@ -1301,8 +1301,8 @@ LABEL_78:
 LABEL_31:
           v58 = MEMORY[0x277D42100];
           [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-          v59 = [v58 outcomeWithSuggestion:v5 timestamp:10 abuseControlOutcome:?];
-          [v139 addObject:v59];
+          v59 = [v58 outcomeWithSuggestion:suggestionCopy timestamp:10 abuseControlOutcome:?];
+          [outcomesCopy addObject:v59];
 
           v23 = 1;
 LABEL_77:
@@ -1313,26 +1313,26 @@ LABEL_77:
     }
 
     v60 = self->_abuseControlConfig;
-    v61 = [v5 widgetBundleIdentifier];
-    v62 = [v5 widgetKind];
-    v63 = [(ATXTimelineAbuseControlConfig *)v60 softRotationQuotaForWidgetWithIdentifier:v61 kind:v62];
+    widgetBundleIdentifier4 = [suggestionCopy widgetBundleIdentifier];
+    widgetKind4 = [suggestionCopy widgetKind];
+    v63 = [(ATXTimelineAbuseControlConfig *)v60 softRotationQuotaForWidgetWithIdentifier:widgetBundleIdentifier4 kind:widgetKind4];
 
     if (v63 < 0)
     {
       v71 = __atxlog_handle_timeline();
       if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
       {
-        v72 = [v5 suggestionIdentifier];
+        suggestionIdentifier3 = [suggestionCopy suggestionIdentifier];
         *buf = 138412290;
-        *&buf[4] = v72;
+        *&buf[4] = suggestionIdentifier3;
         _os_log_impl(&dword_2263AA000, v71, OS_LOG_TYPE_DEFAULT, "TimelineFilter: suggestion %@ passed (unlimited soft rotation quota)", buf, 0xCu);
       }
 
-      [(ATXInformationStore *)self->_store recordSuggestionPassedTimelineFiltersForTheFirstTime:v5];
+      [(ATXInformationStore *)self->_store recordSuggestionPassedTimelineFiltersForTheFirstTime:suggestionCopy];
       v73 = MEMORY[0x277D42100];
       [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-      v74 = [v73 outcomeWithSuggestion:v5 timestamp:15 abuseControlOutcome:?];
-      [v139 addObject:v74];
+      v74 = [v73 outcomeWithSuggestion:suggestionCopy timestamp:15 abuseControlOutcome:?];
+      [outcomesCopy addObject:v74];
 
       v23 = 0;
       goto LABEL_77;
@@ -1340,18 +1340,18 @@ LABEL_77:
 
     v133 = v63;
     v64 = self->_store;
-    v65 = [v5 widgetBundleIdentifier];
-    v66 = [v5 widgetKind];
-    v67 = [objc_opt_class() chsFamilyForTimelineRelevanceSuggestionLayoutOptions:{objc_msgSend(v5, "layouts")}];
-    v68 = [v5 intent];
-    v134 = [(ATXInformationStore *)v64 recentRelevantTimelineEntriesOrderedByDescendingScoreForWidget:v65 kind:v66 family:v67 intent:v68];
+    widgetBundleIdentifier5 = [suggestionCopy widgetBundleIdentifier];
+    widgetKind5 = [suggestionCopy widgetKind];
+    v67 = [objc_opt_class() chsFamilyForTimelineRelevanceSuggestionLayoutOptions:{objc_msgSend(suggestionCopy, "layouts")}];
+    intent3 = [suggestionCopy intent];
+    v134 = [(ATXInformationStore *)v64 recentRelevantTimelineEntriesOrderedByDescendingScoreForWidget:widgetBundleIdentifier5 kind:widgetKind5 family:v67 intent:intent3];
 
     if ([v134 count] <= 9)
     {
       v69 = MEMORY[0x277D42100];
       [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-      v70 = [v69 outcomeWithSuggestion:v5 timestamp:11 abuseControlOutcome:?];
-      [v139 addObject:v70];
+      v70 = [v69 outcomeWithSuggestion:suggestionCopy timestamp:11 abuseControlOutcome:?];
+      [outcomesCopy addObject:v70];
 
       v23 = 1;
 LABEL_76:
@@ -1359,10 +1359,10 @@ LABEL_76:
       goto LABEL_77;
     }
 
-    v75 = [v134 firstObject];
-    v76 = [v75 date];
+    firstObject = [v134 firstObject];
+    date = [firstObject date];
 
-    v77 = v76;
+    v77 = date;
     v149 = 0u;
     v150 = 0u;
     v151 = 0u;
@@ -1386,11 +1386,11 @@ LABEL_76:
           }
 
           v85 = *(*(&v149 + 1) + 8 * v82);
-          v86 = [v85 date];
-          v81 = [v86 earlierDate:v84];
+          date2 = [v85 date];
+          v81 = [date2 earlierDate:v84];
 
-          v87 = [v85 date];
-          v77 = [v87 laterDate:v83];
+          date3 = [v85 date];
+          v77 = [date3 laterDate:v83];
 
           ++v82;
           v83 = v77;
@@ -1430,9 +1430,9 @@ LABEL_76:
       v108 = __atxlog_handle_timeline();
       if (os_log_type_enabled(v108, OS_LOG_TYPE_DEFAULT))
       {
-        v109 = [v5 suggestionIdentifier];
+        suggestionIdentifier4 = [suggestionCopy suggestionIdentifier];
         *buf = 138412802;
-        *&buf[4] = v109;
+        *&buf[4] = suggestionIdentifier4;
         *&buf[12] = 2048;
         *&buf[14] = v93;
         *&buf[22] = 2048;
@@ -1442,35 +1442,35 @@ LABEL_76:
 
       v110 = MEMORY[0x277D42100];
       [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-      v111 = [v110 outcomeWithSuggestion:v5 timestamp:16 abuseControlOutcome:?];
-      [v139 addObject:v111];
+      v111 = [v110 outcomeWithSuggestion:suggestionCopy timestamp:16 abuseControlOutcome:?];
+      [outcomesCopy addObject:v111];
 
-      [(ATXInformationStore *)self->_store recordSuggestionPassedTimelineFiltersForTheFirstTime:v5];
+      [(ATXInformationStore *)self->_store recordSuggestionPassedTimelineFiltersForTheFirstTime:suggestionCopy];
     }
 
     else
     {
       v95 = [v78 count];
-      v96 = [v5 relevanceScore];
-      [v96 doubleValue];
+      relevanceScore3 = [suggestionCopy relevanceScore];
+      [relevanceScore3 doubleValue];
       v98 = v97;
 
       v99 = (v94 * v95);
       v100 = [v78 objectAtIndexedSubscript:v99];
-      v101 = [v100 relevance];
-      [v101 score];
+      relevance = [v100 relevance];
+      [relevance score];
       v103 = v102;
 
       if (v98 - v103 <= 2.22044605e-16)
       {
         if (v103 - v98 <= 2.22044605e-16)
         {
-          if ([(ATXInformationFilter *)self shouldDisableRandomization:v5, v103 - v98])
+          if ([(ATXInformationFilter *)self shouldDisableRandomization:suggestionCopy, v103 - v98])
           {
             v116 = MEMORY[0x277D42100];
             [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-            v117 = [v116 outcomeWithSuggestion:v5 timestamp:23 abuseControlOutcome:?];
-            [v139 addObject:v117];
+            v117 = [v116 outcomeWithSuggestion:suggestionCopy timestamp:23 abuseControlOutcome:?];
+            [outcomesCopy addObject:v117];
           }
 
           else
@@ -1502,9 +1502,9 @@ LABEL_76:
                 v120 = __atxlog_handle_timeline();
                 if (os_log_type_enabled(v120, OS_LOG_TYPE_DEFAULT))
                 {
-                  v121 = [v5 suggestionIdentifier];
+                  suggestionIdentifier5 = [suggestionCopy suggestionIdentifier];
                   *v153 = 138412802;
-                  v154 = v121;
+                  v154 = suggestionIdentifier5;
                   v155 = 2048;
                   v156 = v98;
                   v157 = 2048;
@@ -1514,8 +1514,8 @@ LABEL_76:
 
                 v122 = MEMORY[0x277D42100];
                 [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-                v123 = [v122 outcomeWithSuggestion:v5 timestamp:13 abuseControlOutcome:?];
-                [v139 addObject:v123];
+                v123 = [v122 outcomeWithSuggestion:suggestionCopy timestamp:13 abuseControlOutcome:?];
+                [outcomesCopy addObject:v123];
               }
 
               else
@@ -1523,9 +1523,9 @@ LABEL_76:
                 v128 = __atxlog_handle_timeline();
                 if (os_log_type_enabled(v128, OS_LOG_TYPE_DEFAULT))
                 {
-                  v130 = [v5 suggestionIdentifier];
+                  suggestionIdentifier6 = [suggestionCopy suggestionIdentifier];
                   *v153 = 138412802;
-                  v154 = v130;
+                  v154 = suggestionIdentifier6;
                   v155 = 2048;
                   v156 = v98;
                   v157 = 2048;
@@ -1535,10 +1535,10 @@ LABEL_76:
 
                 v131 = MEMORY[0x277D42100];
                 [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-                v132 = [v131 outcomeWithSuggestion:v5 timestamp:20 abuseControlOutcome:?];
-                [v139 addObject:v132];
+                v132 = [v131 outcomeWithSuggestion:suggestionCopy timestamp:20 abuseControlOutcome:?];
+                [outcomesCopy addObject:v132];
 
-                [(ATXInformationStore *)self->_store recordSuggestionPassedTimelineFiltersForTheFirstTime:v5];
+                [(ATXInformationStore *)self->_store recordSuggestionPassedTimelineFiltersForTheFirstTime:suggestionCopy];
               }
 
               _Block_object_dispose(&v145, 8);
@@ -1549,9 +1549,9 @@ LABEL_76:
             v124 = __atxlog_handle_timeline();
             if (os_log_type_enabled(v124, OS_LOG_TYPE_DEFAULT))
             {
-              v125 = [v5 suggestionIdentifier];
+              suggestionIdentifier7 = [suggestionCopy suggestionIdentifier];
               *buf = 138413058;
-              *&buf[4] = v125;
+              *&buf[4] = suggestionIdentifier7;
               *&buf[12] = 2048;
               *&buf[14] = v98;
               *&buf[22] = 2048;
@@ -1563,8 +1563,8 @@ LABEL_76:
 
             v126 = MEMORY[0x277D42100];
             [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-            v127 = [v126 outcomeWithSuggestion:v5 timestamp:6 abuseControlOutcome:?];
-            [v139 addObject:v127];
+            v127 = [v126 outcomeWithSuggestion:suggestionCopy timestamp:6 abuseControlOutcome:?];
+            [outcomesCopy addObject:v127];
           }
         }
 
@@ -1573,9 +1573,9 @@ LABEL_76:
           v112 = __atxlog_handle_timeline();
           if (os_log_type_enabled(v112, OS_LOG_TYPE_DEFAULT))
           {
-            v113 = [v5 suggestionIdentifier];
+            suggestionIdentifier8 = [suggestionCopy suggestionIdentifier];
             *buf = 138412802;
-            *&buf[4] = v113;
+            *&buf[4] = suggestionIdentifier8;
             *&buf[12] = 2048;
             *&buf[14] = v98;
             *&buf[22] = 2048;
@@ -1585,8 +1585,8 @@ LABEL_76:
 
           v114 = MEMORY[0x277D42100];
           [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-          v115 = [v114 outcomeWithSuggestion:v5 timestamp:12 abuseControlOutcome:?];
-          [v139 addObject:v115];
+          v115 = [v114 outcomeWithSuggestion:suggestionCopy timestamp:12 abuseControlOutcome:?];
+          [outcomesCopy addObject:v115];
         }
 
         v23 = 1;
@@ -1598,9 +1598,9 @@ LABEL_75:
       v104 = __atxlog_handle_timeline();
       if (os_log_type_enabled(v104, OS_LOG_TYPE_DEFAULT))
       {
-        v105 = [v5 suggestionIdentifier];
+        suggestionIdentifier9 = [suggestionCopy suggestionIdentifier];
         *buf = 138412802;
-        *&buf[4] = v105;
+        *&buf[4] = suggestionIdentifier9;
         *&buf[12] = 2048;
         *&buf[14] = v98;
         *&buf[22] = 2048;
@@ -1610,34 +1610,34 @@ LABEL_75:
 
       v106 = MEMORY[0x277D42100];
       [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-      v107 = [v106 outcomeWithSuggestion:v5 timestamp:19 abuseControlOutcome:?];
-      [v139 addObject:v107];
+      v107 = [v106 outcomeWithSuggestion:suggestionCopy timestamp:19 abuseControlOutcome:?];
+      [outcomesCopy addObject:v107];
 
-      [(ATXInformationStore *)self->_store recordSuggestionPassedTimelineFiltersForTheFirstTime:v5];
+      [(ATXInformationStore *)self->_store recordSuggestionPassedTimelineFiltersForTheFirstTime:suggestionCopy];
     }
 
     v23 = 0;
     goto LABEL_75;
   }
 
-  v13 = [v5 suggestionIdentifier];
-  v14 = [(ATXInformationStore *)v12 didSuggestionReachDurationLimit:v13];
+  suggestionIdentifier10 = [suggestionCopy suggestionIdentifier];
+  v14 = [(ATXInformationStore *)v12 didSuggestionReachDurationLimit:suggestionIdentifier10];
 
   if (!v14)
   {
     v31 = __atxlog_handle_timeline();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [v5 suggestionIdentifier];
+      suggestionIdentifier11 = [suggestionCopy suggestionIdentifier];
       *buf = 138412290;
-      *&buf[4] = v32;
+      *&buf[4] = suggestionIdentifier11;
       _os_log_impl(&dword_2263AA000, v31, OS_LOG_TYPE_DEFAULT, "TimelineFilter: suggestion %@ passed (rotation for this suggestion exists and is within duration limit)", buf, 0xCu);
     }
 
     v33 = MEMORY[0x277D42100];
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-    v34 = [v33 outcomeWithSuggestion:v5 timestamp:18 abuseControlOutcome:?];
-    [v139 addObject:v34];
+    v34 = [v33 outcomeWithSuggestion:suggestionCopy timestamp:18 abuseControlOutcome:?];
+    [outcomesCopy addObject:v34];
 
 LABEL_21:
     v23 = 0;
@@ -1646,8 +1646,8 @@ LABEL_21:
 
   v15 = MEMORY[0x277D42100];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-  v16 = [v15 outcomeWithSuggestion:v5 timestamp:3 abuseControlOutcome:?];
-  [v139 addObject:v16];
+  v16 = [v15 outcomeWithSuggestion:suggestionCopy timestamp:3 abuseControlOutcome:?];
+  [outcomesCopy addObject:v16];
 
 LABEL_12:
   v23 = 1;
@@ -1686,16 +1686,16 @@ void __84__ATXInformationFilter__shouldBlockTimelineSuggestion_updatingAbuseCont
   }
 }
 
-+ (int64_t)chsFamilyForTimelineRelevanceSuggestionLayoutOptions:(unint64_t)a3
++ (int64_t)chsFamilyForTimelineRelevanceSuggestionLayoutOptions:(unint64_t)options
 {
-  if (a3 > 63)
+  if (options > 63)
   {
-    if (a3 == 64)
+    if (options == 64)
     {
       return 3;
     }
 
-    if (a3 == 128)
+    if (options == 128)
     {
       return 4;
     }
@@ -1703,12 +1703,12 @@ void __84__ATXInformationFilter__shouldBlockTimelineSuggestion_updatingAbuseCont
 
   else
   {
-    if (a3 == 8)
+    if (options == 8)
     {
       return 1;
     }
 
-    if (a3 == 16)
+    if (options == 16)
     {
       return 2;
     }

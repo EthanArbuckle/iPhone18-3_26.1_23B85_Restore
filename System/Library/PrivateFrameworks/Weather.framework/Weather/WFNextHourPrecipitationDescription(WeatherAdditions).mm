@@ -10,11 +10,11 @@
   v29 = *MEMORY[0x277D85DE8];
   v3 = a3;
   v4 = [v3 objectForKey:0x28822C468];
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  if (v5)
+  if (unsignedIntegerValue)
   {
-    v22 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v5];
+    v22 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:unsignedIntegerValue];
   }
 
   else
@@ -47,11 +47,11 @@
 
         v13 = *(*(&v24 + 1) + 8 * i);
         v14 = [v8 objectForKey:v13];
-        v15 = [v14 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v14 unsignedIntegerValue];
 
-        if (v15)
+        if (unsignedIntegerValue2)
         {
-          [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v15];
+          [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:unsignedIntegerValue2];
         }
 
         else
@@ -68,7 +68,7 @@
     while (v10);
   }
 
-  v17 = [a1 initWithShortTemplate:v21 longTemplate:v20 parameters:v7 validUntil:v22];
+  v17 = [self initWithShortTemplate:v21 longTemplate:v20 parameters:v7 validUntil:v22];
   v18 = *MEMORY[0x277D85DE8];
   return v17;
 }
@@ -81,8 +81,8 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = [a1 parameters];
-  v4 = [v3 countByEnumeratingWithState:&v23 objects:v29 count:16];
+  parameters = [self parameters];
+  v4 = [parameters countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v4)
   {
     v5 = v4;
@@ -93,12 +93,12 @@
       {
         if (*v24 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(parameters);
         }
 
         v8 = *(*(&v23 + 1) + 8 * i);
-        v9 = [a1 parameters];
-        v10 = [v9 objectForKey:v8];
+        parameters2 = [self parameters];
+        v10 = [parameters2 objectForKey:v8];
 
         v11 = MEMORY[0x277CCABB0];
         [v10 timeIntervalSince1970];
@@ -106,28 +106,28 @@
         [v2 setObject:v12 forKey:v8];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v23 objects:v29 count:16];
+      v5 = [parameters countByEnumeratingWithState:&v23 objects:v29 count:16];
     }
 
     while (v5);
   }
 
   v27[0] = 0x28822C488;
-  v13 = [a1 shortTemplate];
+  shortTemplate = [self shortTemplate];
   v27[1] = 0x28822C4A8;
-  v28[0] = v13;
-  v14 = [a1 longTemplate];
-  v28[1] = v14;
+  v28[0] = shortTemplate;
+  longTemplate = [self longTemplate];
+  v28[1] = longTemplate;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
   v16 = [v15 mutableCopy];
 
-  v17 = [a1 validUntil];
+  validUntil = [self validUntil];
 
-  if (v17)
+  if (validUntil)
   {
     v18 = MEMORY[0x277CCABB0];
-    v19 = [a1 validUntil];
-    [v19 timeIntervalSince1970];
+    validUntil2 = [self validUntil];
+    [validUntil2 timeIntervalSince1970];
     v20 = [v18 numberWithDouble:?];
     [v16 setObject:v20 forKey:0x28822C468];
   }

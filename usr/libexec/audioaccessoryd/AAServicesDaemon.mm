@@ -2,69 +2,69 @@
 + (id)sharedAAServicesDaemon;
 - (AAServicesDaemon)init;
 - (BOOL)_shouldRunHeadGesture;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)descriptionWithLevel:(int)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)descriptionWithLevel:(int)level;
 - (void)_activate;
-- (void)_activateAudioRoutingControl:(id)a3 completion:(id)a4;
-- (void)_activateAudioSessionControl:(id)a3 completion:(id)a4;
-- (void)_activateSystemStateMonitorDirect:(id)a3 completion:(id)a4;
+- (void)_activateAudioRoutingControl:(id)control completion:(id)completion;
+- (void)_activateAudioSessionControl:(id)control completion:(id)completion;
+- (void)_activateSystemStateMonitorDirect:(id)direct completion:(id)completion;
 - (void)_avSystemControllerServerReset;
-- (void)_createBannerSessionMuteActionForIOS:(int)a3 auditToken:(id *)a4 appName:(id)a5 appBundleID:(id)a6;
-- (void)_createBannerSessionMuteActionForMacOS:(int)a3 auditToken:(id *)a4 appName:(id)a5 appBundleID:(id)a6;
+- (void)_createBannerSessionMuteActionForIOS:(int)s auditToken:(id *)token appName:(id)name appBundleID:(id)d;
+- (void)_createBannerSessionMuteActionForMacOS:(int)s auditToken:(id *)token appName:(id)name appBundleID:(id)d;
 - (void)_deregisterFromAVSystemControllerDeathNotifications;
 - (void)_deregisterFromAVSystemControllerStateNotifications;
-- (void)_deviceFound:(id)a3;
-- (void)_deviceLost:(id)a3;
-- (void)_deviceManagerActivateDirect:(id)a3 completion:(id)a4;
-- (void)_deviceManagerSendDeviceConfigDirect:(id)a3 identifier:(id)a4 completion:(id)a5;
+- (void)_deviceFound:(id)found;
+- (void)_deviceLost:(id)lost;
+- (void)_deviceManagerActivateDirect:(id)direct completion:(id)completion;
+- (void)_deviceManagerSendDeviceConfigDirect:(id)direct identifier:(id)identifier completion:(id)completion;
 - (void)_ensureHeadGestureDetectionStarted;
 - (void)_ensureHeadGestureDetectionStopped;
-- (void)_handleCallIsActiveDidChangeNotification:(id)a3;
-- (void)_handlePTTCallStatusChangedNotification:(id)a3;
-- (void)_invalidateAudioRoutingControl:(id)a3 completion:(id)a4;
-- (void)_invalidateAudioSessionControl:(id)a3 completion:(id)a4;
+- (void)_handleCallIsActiveDidChangeNotification:(id)notification;
+- (void)_handlePTTCallStatusChangedNotification:(id)notification;
+- (void)_invalidateAudioRoutingControl:(id)control completion:(id)completion;
+- (void)_invalidateAudioSessionControl:(id)control completion:(id)completion;
 - (void)_invalidateMuteBanner;
-- (void)_invalidateSystemStateMonitorDirect:(id)a3;
-- (void)_playChime:(int)a3;
-- (void)_processBannerRequestForMuteAction:(int)a3 auditToken:(id *)a4 bundleIdentifier:(id)a5 completion:(id)a6;
-- (void)_processFirstPartyBannerRequestWithCompletion:(id)a3;
+- (void)_invalidateSystemStateMonitorDirect:(id)direct;
+- (void)_playChime:(int)chime;
+- (void)_processBannerRequestForMuteAction:(int)action auditToken:(id *)token bundleIdentifier:(id)identifier completion:(id)completion;
+- (void)_processFirstPartyBannerRequestWithCompletion:(id)completion;
 - (void)_registerForAVSystemControllerDeathNotifications;
 - (void)_registerForAVSystemControllerStateNotifications;
-- (void)_reportDeviceBatteryInfoFound:(id)a3;
-- (void)_reportDeviceBatteryInfoLost:(id)a3;
-- (void)_reportDeviceFound:(id)a3;
-- (void)_reportDeviceLost:(id)a3;
-- (void)_reportSensorInfo:(id)a3;
+- (void)_reportDeviceBatteryInfoFound:(id)found;
+- (void)_reportDeviceBatteryInfoLost:(id)lost;
+- (void)_reportDeviceFound:(id)found;
+- (void)_reportDeviceLost:(id)lost;
+- (void)_reportSensorInfo:(id)info;
 - (void)_scheduleUpdate;
-- (void)_submitMetricsForMuteAction:(int)a3 auditTokenBundleID:(id)a4 appName:(id)a5 appBundleID:(id)a6;
+- (void)_submitMetricsForMuteAction:(int)action auditTokenBundleID:(id)d appName:(id)name appBundleID:(id)iD;
 - (void)_toggleInputMuteState;
 - (void)_update;
-- (void)_updateAudioSessionControl:(id)a3;
+- (void)_updateAudioSessionControl:(id)control;
 - (void)_updateBannerChimeSuppressionState;
-- (void)_updateDetectedHeadGesture:(id)a3;
-- (void)_xpcConnectionInterrupted:(id)a3;
-- (void)_xpcConnectionInvalidated:(id)a3;
+- (void)_updateDetectedHeadGesture:(id)gesture;
+- (void)_xpcConnectionInterrupted:(id)interrupted;
+- (void)_xpcConnectionInvalidated:(id)invalidated;
 - (void)activate;
-- (void)activateAudioRoutingControl:(id)a3 completion:(id)a4;
-- (void)activateAudioSessionControl:(id)a3 completion:(id)a4;
-- (void)activateSystemStateMonitorDirect:(id)a3 completion:(id)a4;
-- (void)deviceBatteryInfoLost:(id)a3;
-- (void)deviceBatteryInfoUpdated:(id)a3;
-- (void)deviceManagerActivateDirect:(id)a3 completion:(id)a4;
-- (void)deviceManagerInvalidateDirect:(id)a3;
-- (void)deviceManagerSendDeviceConfigDirect:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)deviceManagerUpdateDirect:(id)a3;
+- (void)activateAudioRoutingControl:(id)control completion:(id)completion;
+- (void)activateAudioSessionControl:(id)control completion:(id)completion;
+- (void)activateSystemStateMonitorDirect:(id)direct completion:(id)completion;
+- (void)deviceBatteryInfoLost:(id)lost;
+- (void)deviceBatteryInfoUpdated:(id)updated;
+- (void)deviceManagerActivateDirect:(id)direct completion:(id)completion;
+- (void)deviceManagerInvalidateDirect:(id)direct;
+- (void)deviceManagerSendDeviceConfigDirect:(id)direct identifier:(id)identifier completion:(id)completion;
+- (void)deviceManagerUpdateDirect:(id)direct;
 - (void)invalidate;
-- (void)invalidateAudioRoutingControl:(id)a3 completion:(id)a4;
-- (void)invalidateAudioSessionControl:(id)a3 completion:(id)a4;
-- (void)invalidateSystemStateMonitorDirect:(id)a3;
-- (void)reportActiveHRMDeviceUpdated:(id)a3 withSREnabled:(BOOL)a4;
-- (void)reportDeviceFound:(id)a3;
-- (void)reportDeviceLost:(id)a3;
-- (void)reportHeadGestureDetected:(id)a3;
-- (void)reportSensorInfo:(id)a3;
-- (void)reportSiriHijackElgibilityUpdated:(BOOL)a3;
-- (void)updateAudioSessionControl:(id)a3;
+- (void)invalidateAudioRoutingControl:(id)control completion:(id)completion;
+- (void)invalidateAudioSessionControl:(id)control completion:(id)completion;
+- (void)invalidateSystemStateMonitorDirect:(id)direct;
+- (void)reportActiveHRMDeviceUpdated:(id)updated withSREnabled:(BOOL)enabled;
+- (void)reportDeviceFound:(id)found;
+- (void)reportDeviceLost:(id)lost;
+- (void)reportHeadGestureDetected:(id)detected;
+- (void)reportSensorInfo:(id)info;
+- (void)reportSiriHijackElgibilityUpdated:(BOOL)updated;
+- (void)updateAudioSessionControl:(id)control;
 @end
 
 @implementation AAServicesDaemon
@@ -174,7 +174,7 @@ LABEL_14:
   return v2;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v126 = 0;
   NSAppendPrintF_safe();
@@ -379,7 +379,7 @@ LABEL_14:
   }
 
   v40 = v39;
-  v90 = self;
+  selfCopy = self;
   v41 = 0;
   v42 = *v99;
   do
@@ -417,13 +417,13 @@ LABEL_14:
     NSAppendPrintF();
     v38 = v37;
     v37 = v37;
-    self = v90;
+    self = selfCopy;
 LABEL_43:
 
     goto LABEL_45;
   }
 
-  self = v90;
+  self = selfCopy;
 LABEL_45:
   v46 = [(NSMutableSet *)self->_xpcConnections count:v80];
   if (v46)
@@ -456,16 +456,16 @@ LABEL_45:
         }
 
         v53 = *(*(&v91 + 1) + 8 * j);
-        v54 = [v53 xpcCnx];
-        v55 = [v54 processIdentifier];
-        v56 = [v53 entitled];
+        xpcCnx = [v53 xpcCnx];
+        processIdentifier = [xpcCnx processIdentifier];
+        entitled = [v53 entitled];
         v57 = "no";
-        if (v56)
+        if (entitled)
         {
           v57 = "yes";
         }
 
-        v81 = v55;
+        v81 = processIdentifier;
         v89 = v57;
         NSAppendPrintF();
         v58 = v37;
@@ -474,7 +474,7 @@ LABEL_45:
         v37 = v58;
       }
 
-      v50 = [(NSMutableSet *)v48 countByEnumeratingWithState:&v91 objects:v127 count:16, v55, v89];
+      v50 = [(NSMutableSet *)v48 countByEnumeratingWithState:&v91 objects:v127 count:16, processIdentifier, v89];
     }
 
     while (v50);
@@ -636,7 +636,7 @@ LABEL_45:
     v44 = 3221225472;
     v45 = sub_10002203C;
     v46 = &unk_1002B7390;
-    v47 = self;
+    selfCopy = self;
     self->_stateHandle = os_state_add_handler();
   }
 
@@ -652,7 +652,7 @@ LABEL_45:
     v40[3] = &unk_1002B6DA8;
     v25 = v24;
     v41 = v25;
-    v42 = self;
+    selfCopy2 = self;
     [v25 setDeviceFoundHandler:v40];
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
@@ -660,7 +660,7 @@ LABEL_45:
     v37[3] = &unk_1002B6DA8;
     v26 = v25;
     v38 = v26;
-    v39 = self;
+    selfCopy3 = self;
     [v26 setDeviceLostHandler:v37];
     v34[0] = _NSConcreteStackBlock;
     v34[1] = 3221225472;
@@ -668,7 +668,7 @@ LABEL_45:
     v34[3] = &unk_1002B6D18;
     v27 = v26;
     v35 = v27;
-    v36 = self;
+    selfCopy4 = self;
     [v27 setInterruptionHandler:v34];
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
@@ -684,7 +684,7 @@ LABEL_45:
     v29[3] = &unk_1002B68A8;
     v23 = v28;
     v30 = v23;
-    v31 = self;
+    selfCopy5 = self;
     [(CBDiscovery *)v23 activateWithCompletion:v29];
   }
 
@@ -703,9 +703,9 @@ LABEL_45:
   dispatch_async(dispatchQueue, block);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___AAServicesXPCDaemonInterface];
   v7 = [NSSet alloc];
   v8 = objc_opt_class();
@@ -714,7 +714,7 @@ LABEL_45:
   v10 = objc_alloc_init(AAServicesXPCConnection);
   [(AAServicesXPCConnection *)v10 setDaemon:self];
   [(AAServicesXPCConnection *)v10 setDispatchQueue:self->_dispatchQueue];
-  [(AAServicesXPCConnection *)v10 setXpcCnx:v5];
+  [(AAServicesXPCConnection *)v10 setXpcCnx:connectionCopy];
   [(AAServicesXPCConnection *)v10 setConnectionID:sub_100003530()];
   xpcConnections = self->_xpcConnections;
   if (!xpcConnections)
@@ -728,28 +728,28 @@ LABEL_45:
 
   [(NSMutableSet *)xpcConnections addObject:v10];
   v14 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___AAServicesXPCClientInterface];
-  [v5 _setQueue:self->_dispatchQueue];
-  [v5 setExportedInterface:v6];
-  [v5 setExportedObject:v10];
+  [connectionCopy _setQueue:self->_dispatchQueue];
+  [connectionCopy setExportedInterface:v6];
+  [connectionCopy setExportedObject:v10];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10002281C;
   v17[3] = &unk_1002B6D18;
   v17[4] = self;
   v17[5] = v10;
-  [v5 setInterruptionHandler:v17];
+  [connectionCopy setInterruptionHandler:v17];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100022828;
   v16[3] = &unk_1002B6D18;
   v16[4] = self;
   v16[5] = v10;
-  [v5 setInvalidationHandler:v16];
-  [v5 setRemoteObjectInterface:v14];
-  [v5 resume];
+  [connectionCopy setInvalidationHandler:v16];
+  [connectionCopy setRemoteObjectInterface:v14];
+  [connectionCopy resume];
   if (dword_1002F6480 <= 20 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
   {
-    sub_1001D6F44(v5);
+    sub_1001D6F44(connectionCopy);
   }
 
   return 1;
@@ -770,61 +770,61 @@ LABEL_45:
   }
 }
 
-- (void)_xpcConnectionInvalidated:(id)a3
+- (void)_xpcConnectionInvalidated:(id)invalidated
 {
-  v4 = a3;
-  v6 = v4;
+  invalidatedCopy = invalidated;
+  v6 = invalidatedCopy;
   if (dword_1002F6480 <= 20)
   {
-    if (dword_1002F6480 != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
+    if (dword_1002F6480 != -1 || (v5 = _LogCategory_Initialize(), invalidatedCopy = v6, v5))
     {
-      sub_1001D6F88(v4);
-      v4 = v6;
+      sub_1001D6F88(invalidatedCopy);
+      invalidatedCopy = v6;
     }
   }
 
-  [v4 xpcConnectionInvalidated];
+  [invalidatedCopy xpcConnectionInvalidated];
   [(NSMutableSet *)self->_xpcConnections removeObject:v6];
   [(AAServicesDaemon *)self _update];
 }
 
-- (void)_xpcConnectionInterrupted:(id)a3
+- (void)_xpcConnectionInterrupted:(id)interrupted
 {
-  v3 = a3;
-  v5 = v3;
+  interruptedCopy = interrupted;
+  v5 = interruptedCopy;
   if (dword_1002F6480 <= 20)
   {
-    if (dword_1002F6480 != -1 || (v4 = _LogCategory_Initialize(), v3 = v5, v4))
+    if (dword_1002F6480 != -1 || (v4 = _LogCategory_Initialize(), interruptedCopy = v5, v4))
     {
-      sub_1001D6FEC(v3);
-      v3 = v5;
+      sub_1001D6FEC(interruptedCopy);
+      interruptedCopy = v5;
     }
   }
 
-  [v3 xpcConnectionInterrupted];
+  [interruptedCopy xpcConnectionInterrupted];
 }
 
-- (void)activateAudioRoutingControl:(id)a3 completion:(id)a4
+- (void)activateAudioRoutingControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100022AB4;
   block[3] = &unk_1002B6BB0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = controlCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = controlCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_activateAudioRoutingControl:(id)a3 completion:(id)a4
+- (void)_activateAudioRoutingControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -845,7 +845,7 @@ LABEL_45:
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = v6;
+        v14 = controlCopy;
         v15 = v13;
         v16 = v15;
         if (v15 == v14)
@@ -860,7 +860,7 @@ LABEL_20:
           goto LABEL_23;
         }
 
-        if ((v6 != 0) != (v15 == 0))
+        if ((controlCopy != 0) != (v15 == 0))
         {
           v17 = [v14 isEqual:v15];
 
@@ -900,34 +900,34 @@ LABEL_20:
     activatedAudioRoutingControlSet = self->_activatedAudioRoutingControlSet;
   }
 
-  [(NSMutableSet *)activatedAudioRoutingControlSet addObject:v6];
-  objc_storeStrong(&self->_currentAudioRoutingControl, a3);
+  [(NSMutableSet *)activatedAudioRoutingControlSet addObject:controlCopy];
+  objc_storeStrong(&self->_currentAudioRoutingControl, control);
 LABEL_23:
   [(AAServicesDaemon *)self _update];
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)invalidateAudioRoutingControl:(id)a3 completion:(id)a4
+- (void)invalidateAudioRoutingControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100022DD0;
   block[3] = &unk_1002B6BB0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = controlCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = controlCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_invalidateAudioRoutingControl:(id)a3 completion:(id)a4
+- (void)_invalidateAudioRoutingControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -951,7 +951,7 @@ LABEL_23:
       }
 
       v13 = *(*(&v23 + 1) + 8 * i);
-      v14 = v6;
+      v14 = controlCopy;
       v15 = v13;
       v16 = v15;
       if (v15 == v14)
@@ -995,7 +995,7 @@ LABEL_25:
         goto LABEL_26;
       }
 
-      if ((v6 != 0) != (v15 == 0))
+      if ((controlCopy != 0) != (v15 == 0))
       {
         v17 = [v14 isEqual:{v15, v23}];
 
@@ -1022,30 +1022,30 @@ LABEL_25:
 LABEL_26:
 
   [(AAServicesDaemon *)self _update];
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)activateAudioSessionControl:(id)a3 completion:(id)a4
+- (void)activateAudioSessionControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000230F0;
   block[3] = &unk_1002B6BB0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = controlCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = controlCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_activateAudioSessionControl:(id)a3 completion:(id)a4
+- (void)_activateAudioSessionControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -1066,7 +1066,7 @@ LABEL_26:
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = v6;
+        v14 = controlCopy;
         v15 = v13;
         v16 = v15;
         if (v15 == v14)
@@ -1081,7 +1081,7 @@ LABEL_20:
           goto LABEL_23;
         }
 
-        if ((v6 != 0) != (v15 == 0))
+        if ((controlCopy != 0) != (v15 == 0))
         {
           v17 = [v14 isEqual:v15];
 
@@ -1121,30 +1121,30 @@ LABEL_20:
     activatedAudioSessionControlSet = self->_activatedAudioSessionControlSet;
   }
 
-  [(NSMutableSet *)activatedAudioSessionControlSet addObject:v6];
-  objc_storeStrong(&self->_currentAudioSessionControl, a3);
+  [(NSMutableSet *)activatedAudioSessionControlSet addObject:controlCopy];
+  objc_storeStrong(&self->_currentAudioSessionControl, control);
 LABEL_23:
   [(AAServicesDaemon *)self _update];
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)updateAudioSessionControl:(id)a3
+- (void)updateAudioSessionControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000233E0;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = controlCopy;
+  v6 = controlCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_updateAudioSessionControl:(id)a3
+- (void)_updateAudioSessionControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -1165,7 +1165,7 @@ LABEL_23:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = v4;
+        v11 = controlCopy;
         v12 = v10;
         v13 = v12;
         if (v12 == v11)
@@ -1181,7 +1181,7 @@ LABEL_15:
           goto LABEL_19;
         }
 
-        if ((v4 != 0) != (v12 == 0))
+        if ((controlCopy != 0) != (v12 == 0))
         {
           v14 = [v11 isEqual:{v12, v15}];
 
@@ -1209,27 +1209,27 @@ LABEL_15:
 LABEL_19:
 }
 
-- (void)invalidateAudioSessionControl:(id)a3 completion:(id)a4
+- (void)invalidateAudioSessionControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100023660;
   block[3] = &unk_1002B6BB0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = controlCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = controlCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_invalidateAudioSessionControl:(id)a3 completion:(id)a4
+- (void)_invalidateAudioSessionControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -1253,7 +1253,7 @@ LABEL_19:
       }
 
       v13 = *(*(&v23 + 1) + 8 * i);
-      v14 = v6;
+      v14 = controlCopy;
       v15 = v13;
       v16 = v15;
       if (v15 == v14)
@@ -1297,7 +1297,7 @@ LABEL_25:
         goto LABEL_26;
       }
 
-      if ((v6 != 0) != (v15 == 0))
+      if ((controlCopy != 0) != (v15 == 0))
       {
         v17 = [v14 isEqual:{v15, v23}];
 
@@ -1324,30 +1324,30 @@ LABEL_25:
 LABEL_26:
 
   [(AAServicesDaemon *)self _update];
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)deviceManagerActivateDirect:(id)a3 completion:(id)a4
+- (void)deviceManagerActivateDirect:(id)direct completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  directCopy = direct;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100023980;
   block[3] = &unk_1002B6BB0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = directCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = directCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_deviceManagerActivateDirect:(id)a3 completion:(id)a4
+- (void)_deviceManagerActivateDirect:(id)direct completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  directCopy = direct;
+  completionCopy = completion;
   activatedDeviceManagerSet = self->_activatedDeviceManagerSet;
   if (!activatedDeviceManagerSet)
   {
@@ -1358,8 +1358,8 @@ LABEL_26:
     activatedDeviceManagerSet = self->_activatedDeviceManagerSet;
   }
 
-  v31 = v7;
-  if ([(NSMutableSet *)activatedDeviceManagerSet containsObject:v6])
+  v31 = completionCopy;
+  if ([(NSMutableSet *)activatedDeviceManagerSet containsObject:directCopy])
   {
     if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
     {
@@ -1374,24 +1374,24 @@ LABEL_26:
       sub_1001D7228();
     }
 
-    [(NSMutableSet *)self->_activatedDeviceManagerSet addObject:v6];
+    [(NSMutableSet *)self->_activatedDeviceManagerSet addObject:directCopy];
   }
 
   [(AAServicesDaemon *)self _update];
   v11 = +[AADeviceManagerDaemon sharedAADeviceManagerDaemon];
-  v12 = [v11 availableDevices];
+  availableDevices = [v11 availableDevices];
 
   if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
   {
-    sub_1001D72A8(v12);
+    sub_1001D72A8(availableDevices);
   }
 
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v13 = [v12 allValues];
-  v14 = [v13 countByEnumeratingWithState:&v41 objects:v46 count:16];
+  allValues = [availableDevices allValues];
+  v14 = [allValues countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v14)
   {
     v15 = v14;
@@ -1403,7 +1403,7 @@ LABEL_26:
       {
         if (*v42 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allValues);
         }
 
         v18 = *(*(&v41 + 1) + 8 * v17);
@@ -1412,20 +1412,20 @@ LABEL_26:
           sub_1001D72EC();
         }
 
-        v19 = [v6 dispatchQueue];
+        dispatchQueue = [directCopy dispatchQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_100023DE4;
         block[3] = &unk_1002B6D18;
-        v39 = v6;
+        v39 = directCopy;
         v40 = v18;
-        dispatch_async(v19, block);
+        dispatch_async(dispatchQueue, block);
 
         v17 = v17 + 1;
       }
 
       while (v15 != v17);
-      v20 = [v13 countByEnumeratingWithState:&v41 objects:v46 count:16];
+      v20 = [allValues countByEnumeratingWithState:&v41 objects:v46 count:16];
       v15 = v20;
     }
 
@@ -1433,18 +1433,18 @@ LABEL_26:
   }
 
   v21 = +[AABatteryMonitorDaemon sharedAABatteryMonitorDaemon];
-  v22 = [v21 devices];
+  devices = [v21 devices];
 
   if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
   {
-    sub_1001D732C(v22);
+    sub_1001D732C(devices);
   }
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v23 = v22;
+  v23 = devices;
   v24 = [v23 countByEnumeratingWithState:&v34 objects:v45 count:16];
   if (v24)
   {
@@ -1460,14 +1460,14 @@ LABEL_26:
         }
 
         v28 = *(*(&v34 + 1) + 8 * i);
-        v29 = [v6 dispatchQueue];
+        dispatchQueue2 = [directCopy dispatchQueue];
         v32[0] = _NSConcreteStackBlock;
         v32[1] = 3221225472;
         v32[2] = sub_100023DF0;
         v32[3] = &unk_1002B6D18;
         v32[4] = v28;
-        v33 = v6;
-        dispatch_async(v29, v32);
+        v33 = directCopy;
+        dispatch_async(dispatchQueue2, v32);
       }
 
       v25 = [v23 countByEnumeratingWithState:&v34 objects:v45 count:16];
@@ -1479,9 +1479,9 @@ LABEL_26:
   v31[2](v31, 0);
 }
 
-- (void)deviceManagerUpdateDirect:(id)a3
+- (void)deviceManagerUpdateDirect:(id)direct
 {
-  v4 = a3;
+  directCopy = direct;
   if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
   {
     sub_1001D73B0();
@@ -1490,9 +1490,9 @@ LABEL_26:
   [(AAServicesDaemon *)self _update];
 }
 
-- (void)deviceManagerInvalidateDirect:(id)a3
+- (void)deviceManagerInvalidateDirect:(id)direct
 {
-  v4 = a3;
+  directCopy = direct;
   if (([(NSMutableSet *)self->_activatedDeviceManagerSet containsObject:?]& 1) != 0)
   {
     if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
@@ -1500,7 +1500,7 @@ LABEL_26:
       sub_1001D7430();
     }
 
-    [(NSMutableSet *)self->_activatedDeviceManagerSet removeObject:v4];
+    [(NSMutableSet *)self->_activatedDeviceManagerSet removeObject:directCopy];
     [(AAServicesDaemon *)self _update];
   }
 
@@ -1510,63 +1510,63 @@ LABEL_26:
   }
 }
 
-- (void)deviceManagerSendDeviceConfigDirect:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)deviceManagerSendDeviceConfigDirect:(id)direct identifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  directCopy = direct;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100024094;
   v15[3] = &unk_1002B6B88;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = directCopy;
+  v17 = identifierCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = identifierCopy;
+  v14 = directCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
-- (void)_deviceManagerSendDeviceConfigDirect:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)_deviceManagerSendDeviceConfigDirect:(id)direct identifier:(id)identifier completion:(id)completion
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = a5;
+  directCopy = direct;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
   {
-    v10 = v12;
-    v11 = v7;
+    v10 = directCopy;
+    v11 = identifierCopy;
     LogPrintF();
   }
 
   v9 = [AADeviceManagerDaemon sharedAADeviceManagerDaemon:v10];
-  [v9 sendDeviceConfig:v12 identifier:v7 completion:v8];
+  [v9 sendDeviceConfig:directCopy identifier:identifierCopy completion:completionCopy];
 }
 
-- (void)activateSystemStateMonitorDirect:(id)a3 completion:(id)a4
+- (void)activateSystemStateMonitorDirect:(id)direct completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  directCopy = direct;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100024250;
   block[3] = &unk_1002B6BB0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = directCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = directCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_activateSystemStateMonitorDirect:(id)a3 completion:(id)a4
+- (void)_activateSystemStateMonitorDirect:(id)direct completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  directCopy = direct;
+  completionCopy = completion;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -1587,7 +1587,7 @@ LABEL_26:
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = v6;
+        v14 = directCopy;
         v15 = v13;
         v16 = v15;
         if (v15 == v14)
@@ -1602,7 +1602,7 @@ LABEL_20:
           goto LABEL_23;
         }
 
-        if ((v6 != 0) != (v15 == 0))
+        if ((directCopy != 0) != (v15 == 0))
         {
           v17 = [v14 isEqual:{v15, v21}];
 
@@ -1642,29 +1642,29 @@ LABEL_20:
     activatedSystemStateMonitorSet = self->_activatedSystemStateMonitorSet;
   }
 
-  [(NSMutableSet *)activatedSystemStateMonitorSet addObject:v6, v21];
+  [(NSMutableSet *)activatedSystemStateMonitorSet addObject:directCopy, v21];
 LABEL_23:
   [(AAServicesDaemon *)self _update];
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)invalidateSystemStateMonitorDirect:(id)a3
+- (void)invalidateSystemStateMonitorDirect:(id)direct
 {
-  v4 = a3;
+  directCopy = direct;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100024530;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = directCopy;
+  v6 = directCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_invalidateSystemStateMonitorDirect:(id)a3
+- (void)_invalidateSystemStateMonitorDirect:(id)direct
 {
-  v4 = a3;
+  directCopy = direct;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -1685,7 +1685,7 @@ LABEL_23:
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = v4;
+        v11 = directCopy;
         v12 = v10;
         v13 = v12;
         if (v12 == v11)
@@ -1701,7 +1701,7 @@ LABEL_15:
           goto LABEL_19;
         }
 
-        if ((v4 != 0) != (v12 == 0))
+        if ((directCopy != 0) != (v12 == 0))
         {
           v14 = [v11 isEqual:{v12, v15}];
 
@@ -1731,15 +1731,15 @@ LABEL_19:
   [(AAServicesDaemon *)self _update];
 }
 
-- (void)_deviceFound:(id)a3
+- (void)_deviceFound:(id)found
 {
-  v13 = a3;
+  foundCopy = found;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v5 = [v13 identifier];
+  identifier = [foundCopy identifier];
   p_currentAudioOwnerDevice = &self->_currentAudioOwnerDevice;
-  v7 = [(CBDevice *)self->_currentAudioOwnerDevice identifier];
-  v8 = v5;
-  v9 = v7;
+  identifier2 = [(CBDevice *)self->_currentAudioOwnerDevice identifier];
+  v8 = identifier;
+  v9 = identifier2;
   v10 = v9;
   if (v8 == v9)
   {
@@ -1758,14 +1758,14 @@ LABEL_19:
     if ((v11 & 1) == 0)
     {
 LABEL_14:
-      if (([v13 deviceFlags] & 0x40) != 0 && objc_msgSend(v13, "audioStreamState") == 3)
+      if (([foundCopy deviceFlags] & 0x40) != 0 && objc_msgSend(foundCopy, "audioStreamState") == 3)
       {
         if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
         {
           sub_1001D7530();
         }
 
-        objc_storeStrong(&self->_currentAudioOwnerDevice, a3);
+        objc_storeStrong(&self->_currentAudioOwnerDevice, found);
       }
 
       [(AAServicesDaemon *)self _update];
@@ -1773,9 +1773,9 @@ LABEL_14:
     }
   }
 
-  if (([v13 deviceFlags] & 0x40) != 0 && objc_msgSend(v13, "audioStreamState") == 3)
+  if (([foundCopy deviceFlags] & 0x40) != 0 && objc_msgSend(foundCopy, "audioStreamState") == 3)
   {
-    objc_storeStrong(&self->_currentAudioOwnerDevice, a3);
+    objc_storeStrong(&self->_currentAudioOwnerDevice, found);
   }
 
   else
@@ -1792,14 +1792,14 @@ LABEL_14:
 LABEL_21:
 }
 
-- (void)_deviceLost:(id)a3
+- (void)_deviceLost:(id)lost
 {
-  v10 = a3;
+  lostCopy = lost;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v4 = [v10 identifier];
-  v5 = [(CBDevice *)self->_currentAudioOwnerDevice identifier];
-  currentAudioOwnerDevice = v4;
-  v7 = v5;
+  identifier = [lostCopy identifier];
+  identifier2 = [(CBDevice *)self->_currentAudioOwnerDevice identifier];
+  currentAudioOwnerDevice = identifier;
+  v7 = identifier2;
   v8 = v7;
   if (currentAudioOwnerDevice == v7)
   {
@@ -1869,9 +1869,9 @@ LABEL_12:
   }
 }
 
-- (void)_updateDetectedHeadGesture:(id)a3
+- (void)_updateDetectedHeadGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v28 = 0u;
   v29 = 0u;
@@ -1893,12 +1893,12 @@ LABEL_12:
         }
 
         v10 = *(*(&v26 + 1) + 8 * i);
-        v11 = [v10 deviceManager];
-        v12 = [v11 headGestureUpdateFlags];
+        deviceManager = [v10 deviceManager];
+        headGestureUpdateFlags = [deviceManager headGestureUpdateFlags];
 
-        if (v12)
+        if (headGestureUpdateFlags)
         {
-          [v10 deviceManagerHeadGestureDetected:v4];
+          [v10 deviceManagerHeadGestureDetected:gestureCopy];
         }
       }
 
@@ -1930,14 +1930,14 @@ LABEL_12:
         v18 = *(*(&v22 + 1) + 8 * j);
         if ([v18 direct] && objc_msgSend(v18, "headGestureUpdateFlags"))
         {
-          v19 = [v18 dispatchQueue];
+          dispatchQueue = [v18 dispatchQueue];
           v20[0] = _NSConcreteStackBlock;
           v20[1] = 3221225472;
           v20[2] = sub_100024D88;
           v20[3] = &unk_1002B6D18;
           v20[4] = v18;
-          v21 = v4;
-          dispatch_async(v19, v20);
+          v21 = gestureCopy;
+          dispatch_async(dispatchQueue, v20);
         }
       }
 
@@ -1948,31 +1948,31 @@ LABEL_12:
   }
 }
 
-- (void)reportHeadGestureDetected:(id)a3
+- (void)reportHeadGestureDetected:(id)detected
 {
   dispatchQueue = self->_dispatchQueue;
-  v5 = a3;
+  detectedCopy = detected;
   dispatch_assert_queue_V2(dispatchQueue);
-  [(AAServicesDaemon *)self _updateDetectedHeadGesture:v5];
+  [(AAServicesDaemon *)self _updateDetectedHeadGesture:detectedCopy];
 }
 
-- (void)deviceBatteryInfoUpdated:(id)a3
+- (void)deviceBatteryInfoUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100024E88;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = updatedCopy;
+  v6 = updatedCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_reportDeviceBatteryInfoFound:(id)a3
+- (void)_reportDeviceBatteryInfoFound:(id)found
 {
-  v4 = a3;
+  foundCopy = found;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -1993,10 +1993,10 @@ LABEL_12:
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
-        v11 = [v10 deviceManager];
-        if (v11)
+        deviceManager = [v10 deviceManager];
+        if (deviceManager)
         {
-          [v10 deviceManagerReportDeviceBatteryInfoFound:v4];
+          [v10 deviceManagerReportDeviceBatteryInfoFound:foundCopy];
         }
       }
 
@@ -2028,8 +2028,8 @@ LABEL_12:
         v17 = *(*(&v23 + 1) + 8 * j);
         if ([v17 direct])
         {
-          v18 = [v4 copy];
-          v19 = [v17 dispatchQueue];
+          v18 = [foundCopy copy];
+          dispatchQueue = [v17 dispatchQueue];
           v21[0] = _NSConcreteStackBlock;
           v21[1] = 3221225472;
           v21[2] = sub_1000250E8;
@@ -2037,7 +2037,7 @@ LABEL_12:
           v21[4] = v17;
           v22 = v18;
           v20 = v18;
-          dispatch_async(v19, v21);
+          dispatch_async(dispatchQueue, v21);
         }
       }
 
@@ -2048,23 +2048,23 @@ LABEL_12:
   }
 }
 
-- (void)deviceBatteryInfoLost:(id)a3
+- (void)deviceBatteryInfoLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002518C;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = lostCopy;
+  v6 = lostCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_reportDeviceBatteryInfoLost:(id)a3
+- (void)_reportDeviceBatteryInfoLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -2084,7 +2084,7 @@ LABEL_12:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v25 + 1) + 8 * i) deviceManagerReportDeviceBatteryInfoLost:v4];
+        [*(*(&v25 + 1) + 8 * i) deviceManagerReportDeviceBatteryInfoLost:lostCopy];
       }
 
       v7 = [(NSMutableSet *)v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -2115,8 +2115,8 @@ LABEL_12:
         v15 = *(*(&v21 + 1) + 8 * j);
         if ([v15 direct])
         {
-          v16 = [v4 copy];
-          v17 = [v15 dispatchQueue];
+          v16 = [lostCopy copy];
+          dispatchQueue = [v15 dispatchQueue];
           v19[0] = _NSConcreteStackBlock;
           v19[1] = 3221225472;
           v19[2] = sub_1000253D0;
@@ -2124,7 +2124,7 @@ LABEL_12:
           v19[4] = v15;
           v20 = v16;
           v18 = v16;
-          dispatch_async(v17, v19);
+          dispatch_async(dispatchQueue, v19);
         }
       }
 
@@ -2135,9 +2135,9 @@ LABEL_12:
   }
 }
 
-- (void)reportDeviceFound:(id)a3
+- (void)reportDeviceFound:(id)found
 {
-  v4 = [a3 copy];
+  v4 = [found copy];
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -2149,9 +2149,9 @@ LABEL_12:
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_reportDeviceFound:(id)a3
+- (void)_reportDeviceFound:(id)found
 {
-  v4 = a3;
+  foundCopy = found;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
@@ -2172,10 +2172,10 @@ LABEL_12:
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
-        v11 = [v10 deviceManager];
-        if (v11)
+        deviceManager = [v10 deviceManager];
+        if (deviceManager)
         {
-          [v10 deviceManagerReportDeviceFound:v4];
+          [v10 deviceManagerReportDeviceFound:foundCopy];
         }
       }
 
@@ -2207,8 +2207,8 @@ LABEL_12:
         v17 = *(*(&v23 + 1) + 8 * j);
         if ([v17 direct])
         {
-          v18 = [v4 copy];
-          v19 = [v17 dispatchQueue];
+          v18 = [foundCopy copy];
+          dispatchQueue = [v17 dispatchQueue];
           v21[0] = _NSConcreteStackBlock;
           v21[1] = 3221225472;
           v21[2] = sub_1000256D8;
@@ -2216,7 +2216,7 @@ LABEL_12:
           v21[4] = v17;
           v22 = v18;
           v20 = v18;
-          dispatch_async(v19, v21);
+          dispatch_async(dispatchQueue, v21);
         }
       }
 
@@ -2227,9 +2227,9 @@ LABEL_12:
   }
 }
 
-- (void)reportDeviceLost:(id)a3
+- (void)reportDeviceLost:(id)lost
 {
-  v4 = [a3 copy];
+  v4 = [lost copy];
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -2241,9 +2241,9 @@ LABEL_12:
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_reportDeviceLost:(id)a3
+- (void)_reportDeviceLost:(id)lost
 {
-  v4 = a3;
+  lostCopy = lost;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -2263,7 +2263,7 @@ LABEL_12:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v25 + 1) + 8 * i) deviceManagerReportDeviceLost:v4];
+        [*(*(&v25 + 1) + 8 * i) deviceManagerReportDeviceLost:lostCopy];
       }
 
       v7 = [(NSMutableSet *)v5 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -2294,8 +2294,8 @@ LABEL_12:
         v15 = *(*(&v21 + 1) + 8 * j);
         if ([v15 direct])
         {
-          v16 = [v4 copy];
-          v17 = [v15 dispatchQueue];
+          v16 = [lostCopy copy];
+          dispatchQueue = [v15 dispatchQueue];
           v19[0] = _NSConcreteStackBlock;
           v19[1] = 3221225472;
           v19[2] = sub_1000259C4;
@@ -2303,7 +2303,7 @@ LABEL_12:
           v19[4] = v15;
           v20 = v16;
           v18 = v16;
-          dispatch_async(v17, v19);
+          dispatch_async(dispatchQueue, v19);
         }
       }
 
@@ -2314,32 +2314,32 @@ LABEL_12:
   }
 }
 
-- (void)_handleCallIsActiveDidChangeNotification:(id)a3
+- (void)_handleCallIsActiveDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100025A68;
   v7[3] = &unk_1002B6D18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_handlePTTCallStatusChangedNotification:(id)a3
+- (void)_handlePTTCallStatusChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
-  v11 = [v5 isPTT];
+  isPTT = [object isPTT];
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x2020000000;
-  v9 = [v5 status];
+  status = [object status];
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2402,10 +2402,10 @@ LABEL_8:
   }
 }
 
-- (void)_createBannerSessionMuteActionForIOS:(int)a3 auditToken:(id *)a4 appName:(id)a5 appBundleID:(id)a6
+- (void)_createBannerSessionMuteActionForIOS:(int)s auditToken:(id *)token appName:(id)name appBundleID:(id)d
 {
-  v10 = a5;
-  v11 = a6;
+  nameCopy = name;
+  dCopy = d;
   if (self->_muteBanner)
   {
     [(AAServicesDaemon *)self _invalidateMuteBanner];
@@ -2418,33 +2418,33 @@ LABEL_8:
   v28 = sub_100003830;
   v29 = objc_alloc_init(BTBannerUISession);
   objc_storeStrong(&self->_muteBanner, v25[5]);
-  [v25[5] setBannerAppID:v11];
+  [v25[5] setBannerAppID:dCopy];
   [v25[5] setBannerType:2];
-  [v25[5] setCenterContentText:v10];
-  if (a3 == 1)
+  [v25[5] setCenterContentText:nameCopy];
+  if (s == 1)
   {
-    v12 = @"mute";
+    productName2 = @"mute";
     goto LABEL_12;
   }
 
-  if (a3 == 2)
+  if (s == 2)
   {
-    v12 = @"unmute";
+    productName2 = @"unmute";
 LABEL_12:
-    [v25[5] setCenterContentItemsText:v12];
+    [v25[5] setCenterContentItemsText:productName2];
     [v25[5] setDispatchQueue:self->_dispatchQueue];
     [v25[5] setTimeoutSeconds:4.0];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
-    v16 = *&a4->var0[4];
-    v21 = *a4->var0;
+    v16 = *&token->var0[4];
+    v21 = *token->var0;
     v19[2] = sub_100026270;
     v19[3] = &unk_1002B73E0;
     v19[4] = self;
     v19[5] = &v24;
-    v20 = a3;
+    sCopy = s;
     v22 = v16;
-    v23 = a3 == 2;
+    v23 = s == 2;
     [v25[5] setActionHandler:v19];
     [v25[5] activate];
 
@@ -2454,14 +2454,14 @@ LABEL_12:
   currentAudioOwnerDevice = self->_currentAudioOwnerDevice;
   if (currentAudioOwnerDevice)
   {
-    v14 = [(CBDevice *)currentAudioOwnerDevice productName];
-    if (v14)
+    productName = [(CBDevice *)currentAudioOwnerDevice productName];
+    if (productName)
     {
       v15 = [(CBDevice *)self->_currentAudioOwnerDevice productID]- 8194;
       if (v15 <= 0x2D && ((1 << v15) & 0x207C7BB7FF9BLL) != 0)
       {
 
-        v12 = [(CBDevice *)self->_currentAudioOwnerDevice productName];
+        productName2 = [(CBDevice *)self->_currentAudioOwnerDevice productName];
         goto LABEL_12;
       }
     }
@@ -2483,9 +2483,9 @@ LABEL_19:
   _Block_object_dispose(&v24, 8);
 }
 
-- (void)_createBannerSessionMuteActionForMacOS:(int)a3 auditToken:(id *)a4 appName:(id)a5 appBundleID:(id)a6
+- (void)_createBannerSessionMuteActionForMacOS:(int)s auditToken:(id *)token appName:(id)name appBundleID:(id)d
 {
-  v9 = a6;
+  dCopy = d;
   if (_os_feature_enabled_impl())
   {
     if (self->_uiNotificationSessionMuteControl)
@@ -2502,7 +2502,7 @@ LABEL_19:
     [(CUUserNotificationSession *)v11 setCategoryID:@"MuteControlUserNotifications"];
     [(CUUserNotificationSession *)v11 setDispatchQueue:self->_dispatchQueue];
     [(CUUserNotificationSession *)v11 setFlags:81];
-    [(CUUserNotificationSession *)v11 setIconAppIdentifier:v9];
+    [(CUUserNotificationSession *)v11 setIconAppIdentifier:dCopy];
     [(CUUserNotificationSession *)v11 setLabel:@"MuteControl"];
     [(CUUserNotificationSession *)v11 setSubtitleKey:@"TITLE_FORMAT"];
     [(CUUserNotificationSession *)v11 setTimeoutSeconds:20.0];
@@ -2514,17 +2514,17 @@ LABEL_19:
 
     [(CUUserNotificationSession *)v11 removeAllActions];
     v15 = &off_100225000;
-    switch(a3)
+    switch(s)
     {
       case 3:
         p_currentAudioOwnerDevice = &self->_currentAudioOwnerDevice;
         currentAudioOwnerDevice = self->_currentAudioOwnerDevice;
         if (currentAudioOwnerDevice)
         {
-          v24 = [(CBDevice *)currentAudioOwnerDevice productName];
-          if (v24)
+          productName = [(CBDevice *)currentAudioOwnerDevice productName];
+          if (productName)
           {
-            v25 = v24;
+            v25 = productName;
             v26 = [(CBDevice *)*p_currentAudioOwnerDevice productID]- 8194;
             if (v26 <= 0x2D && ((1 << v26) & 0x207C7BB7FF9BLL) != 0)
             {
@@ -2532,8 +2532,8 @@ LABEL_19:
               v20 = CULocalizedStringEx();
               if (v20)
               {
-                v27 = [(CBDevice *)*p_currentAudioOwnerDevice productName];
-                v28 = [NSString stringWithFormat:v20, v27];
+                productName2 = [(CBDevice *)*p_currentAudioOwnerDevice productName];
+                v28 = [NSString stringWithFormat:v20, productName2];
 
                 v15 = &off_100225000;
               }
@@ -2591,8 +2591,8 @@ LABEL_17:
         v31[3] = &unk_1002B7408;
         v31[4] = v11;
         v31[5] = self;
-        v21 = *&a4->var0[4];
-        v32 = *a4->var0;
+        v21 = *&token->var0[4];
+        v32 = *token->var0;
         v33 = v21;
         v34 = v17;
         [(CUUserNotificationSession *)v11 addActionWithIdentifier:@"ReverseMuteAction" title:v20 flags:0 handler:v31];
@@ -2612,7 +2612,7 @@ LABEL_36:
       default:
         if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
         {
-          sub_1001D7900(a3);
+          sub_1001D7900(s);
         }
 
         break;
@@ -2668,9 +2668,9 @@ LABEL_37:
   self->_muteActionTrigger = @"stemClick";
 }
 
-- (void)_playChime:(int)a3
+- (void)_playChime:(int)chime
 {
-  if (a3 > 6)
+  if (chime > 6)
   {
 LABEL_17:
     if (dword_1002F6480 <= 90 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
@@ -2681,20 +2681,20 @@ LABEL_17:
     return;
   }
 
-  if (((1 << a3) & 0x18) != 0)
+  if (((1 << chime) & 0x18) != 0)
   {
     goto LABEL_21;
   }
 
-  if (((1 << a3) & 0x22) == 0)
+  if (((1 << chime) & 0x22) == 0)
   {
-    if (((1 << a3) & 0x44) != 0)
+    if (((1 << chime) & 0x44) != 0)
     {
       if (self->_shouldSuppressMuteChime)
       {
         if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
         {
-          sub_1001D7A5C(a3);
+          sub_1001D7A5C(chime);
         }
 
         return;
@@ -2711,7 +2711,7 @@ LABEL_17:
 LABEL_21:
     if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
     {
-      sub_1001D7AAC(a3);
+      sub_1001D7AAC(chime);
     }
 
     AudioServicesPlaySystemSoundWithOptions();
@@ -2720,30 +2720,30 @@ LABEL_21:
 
   if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
   {
-    sub_1001D7AFC(a3);
+    sub_1001D7AFC(chime);
   }
 }
 
-- (void)_processFirstPartyBannerRequestWithCompletion:(id)a3
+- (void)_processFirstPartyBannerRequestWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(TUCallCenter *)self->_tuSharedInst queue];
+  completionCopy = completion;
+  queue = [(TUCallCenter *)self->_tuSharedInst queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100026ED8;
   v7[3] = &unk_1002B6948;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_processBannerRequestForMuteAction:(int)a3 auditToken:(id *)a4 bundleIdentifier:(id)a5 completion:(id)a6
+- (void)_processBannerRequestForMuteAction:(int)action auditToken:(id *)token bundleIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
-  v31 = self;
-  if (v10)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  selfCopy = self;
+  if (identifierCopy)
   {
     if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
     {
@@ -2751,16 +2751,16 @@ LABEL_21:
     }
 
     v37 = 0;
-    v12 = [LSBundleRecord bundleRecordWithBundleIdentifier:v10 allowPlaceholder:0 error:&v37];
+    v12 = [LSBundleRecord bundleRecordWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v37];
     v13 = v37;
     if (!v13)
     {
-      v14 = v10;
-      v15 = [v12 localizedName];
+      v14 = identifierCopy;
+      localizedName = [v12 localizedName];
       v33 = [v12 URL];
 
       v16 = 0;
-      if (v15)
+      if (localizedName)
       {
         goto LABEL_23;
       }
@@ -2770,7 +2770,7 @@ LABEL_21:
 
     if (dword_1002F6480 <= 90 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
     {
-      v27 = v10;
+      v27 = identifierCopy;
       v28 = v13;
       LogPrintF();
     }
@@ -2785,8 +2785,8 @@ LABEL_21:
   v14 = 0;
 LABEL_15:
   v36 = v13;
-  v17 = *&a4->var0[4];
-  v34 = *a4->var0;
+  v17 = *&token->var0[4];
+  v34 = *token->var0;
   v35 = v17;
   v18 = [LSBundleRecord bundleRecordForAuditToken:&v34 error:&v36, v27, v28];
   v19 = v36;
@@ -2799,22 +2799,22 @@ LABEL_15:
     }
 
     v20 = v33;
-    if (v11)
+    if (completionCopy)
     {
-      (*(v11 + 2))(v11, 0, 0, v14, v19);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v14, v19);
     }
 
     v16 = 0;
-    v15 = 0;
+    localizedName = 0;
     goto LABEL_58;
   }
 
-  v15 = [v18 localizedName];
-  v21 = [v18 bundleIdentifier];
+  localizedName = [v18 localizedName];
+  bundleIdentifier = [v18 bundleIdentifier];
 
-  v14 = v21;
+  v14 = bundleIdentifier;
   v16 = v14;
-  if (!v15)
+  if (!localizedName)
   {
     goto LABEL_29;
   }
@@ -2831,30 +2831,30 @@ LABEL_29:
     goto LABEL_39;
   }
 
-  if ((a3 - 4) <= 2)
+  if ((action - 4) <= 2)
   {
     if (dword_1002F6480 <= 90 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
     {
-      sub_1001D7C40(a3);
+      sub_1001D7C40(action);
     }
 
 LABEL_39:
     v19 = NSErrorF();
     v20 = v33;
-    if (v11)
+    if (completionCopy)
     {
-      (*(v11 + 2))(v11, v16, v15, v14, v19);
+      (*(completionCopy + 2))(completionCopy, v16, localizedName, v14, v19);
     }
 
     goto LABEL_58;
   }
 
-  if (![(NSString *)v31->_muteActionTrigger isEqualToString:@"stemClick"]&& ![(NSString *)v31->_muteActionTrigger isEqualToString:@"bannerAction"])
+  if (![(NSString *)selfCopy->_muteActionTrigger isEqualToString:@"stemClick"]&& ![(NSString *)selfCopy->_muteActionTrigger isEqualToString:@"bannerAction"])
   {
     if (dword_1002F6480 <= 90 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
     {
-      v23 = sub_10002645C(a3);
-      muteActionTrigger = v31->_muteActionTrigger;
+      v23 = sub_10002645C(action);
+      muteActionTrigger = selfCopy->_muteActionTrigger;
       if (!muteActionTrigger)
       {
         muteActionTrigger = @"nil";
@@ -2862,55 +2862,55 @@ LABEL_39:
 
       v29 = v23;
       v30 = muteActionTrigger;
-      v27 = v15;
+      v27 = localizedName;
       v28 = v14;
       LogPrintF();
     }
 
-    [(AAServicesDaemon *)v31 _invalidateMuteBanner:v27];
+    [(AAServicesDaemon *)selfCopy _invalidateMuteBanner:v27];
     goto LABEL_39;
   }
 
   if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
   {
-    if (a3 > 3)
+    if (action > 3)
     {
       v22 = "?";
     }
 
     else
     {
-      v22 = (&off_1002B7690)[a3];
+      v22 = (&off_1002B7690)[action];
     }
 
     v28 = v14;
     v29 = v22;
-    v27 = v15;
+    v27 = localizedName;
     LogPrintF();
   }
 
-  v31->_currentMuteControlAction = a3;
-  objc_storeStrong(&v31->_currentMuteControlAppName, v15);
-  v25 = *a4->var0;
-  *&v31->_currentMuteControlAuditToken.val[4] = *&a4->var0[4];
-  *v31->_currentMuteControlAuditToken.val = v25;
-  objc_storeStrong(&v31->_currentMuteControlAuditTokenBundleIdentifier, v16);
-  objc_storeStrong(&v31->_currentMuteControlBundleIdentifier, a5);
+  selfCopy->_currentMuteControlAction = action;
+  objc_storeStrong(&selfCopy->_currentMuteControlAppName, localizedName);
+  v25 = *token->var0;
+  *&selfCopy->_currentMuteControlAuditToken.val[4] = *&token->var0[4];
+  *selfCopy->_currentMuteControlAuditToken.val = v25;
+  objc_storeStrong(&selfCopy->_currentMuteControlAuditTokenBundleIdentifier, v16);
+  objc_storeStrong(&selfCopy->_currentMuteControlBundleIdentifier, identifier);
   if ([v14 caseInsensitiveCompare:@"com.apple.facetime"] && objc_msgSend(v14, "caseInsensitiveCompare:", @"com.apple.mobilephone"))
   {
-    v26 = *&a4->var0[4];
-    v34 = *a4->var0;
+    v26 = *&token->var0[4];
+    v34 = *token->var0;
     v35 = v26;
-    [(AAServicesDaemon *)v31 _createBannerSessionMuteActionForIOS:a3 auditToken:&v34 appName:v15 appBundleID:v14];
-    if (v11)
+    [(AAServicesDaemon *)selfCopy _createBannerSessionMuteActionForIOS:action auditToken:&v34 appName:localizedName appBundleID:v14];
+    if (completionCopy)
     {
-      (*(v11 + 2))(v11, v16, v15, v14, 0);
+      (*(completionCopy + 2))(completionCopy, v16, localizedName, v14, 0);
     }
   }
 
   else
   {
-    [(AAServicesDaemon *)v31 _processFirstPartyBannerRequestWithCompletion:v11, v27, v28, v29];
+    [(AAServicesDaemon *)selfCopy _processFirstPartyBannerRequestWithCompletion:completionCopy, v27, v28, v29];
   }
 
   v19 = 0;
@@ -2918,19 +2918,19 @@ LABEL_39:
 LABEL_58:
 }
 
-- (void)_submitMetricsForMuteAction:(int)a3 auditTokenBundleID:(id)a4 appName:(id)a5 appBundleID:(id)a6
+- (void)_submitMetricsForMuteAction:(int)action auditTokenBundleID:(id)d appName:(id)name appBundleID:(id)iD
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (a3 > 6)
+  dCopy = d;
+  nameCopy = name;
+  iDCopy = iD;
+  if (action > 6)
   {
     v13 = "?";
   }
 
   else
   {
-    v13 = (&off_1002B7748)[a3];
+    v13 = (&off_1002B7748)[action];
   }
 
   v14 = [NSString stringWithUTF8String:v13];
@@ -2938,9 +2938,9 @@ LABEL_58:
   v27[0] = @"action";
   v27[1] = @"attributionAppName";
   v16 = @"unknown";
-  if (v11)
+  if (nameCopy)
   {
-    v17 = v11;
+    v17 = nameCopy;
   }
 
   else
@@ -2950,9 +2950,9 @@ LABEL_58:
 
   v28[0] = v14;
   v28[1] = v17;
-  if (v12)
+  if (iDCopy)
   {
-    v18 = v12;
+    v18 = iDCopy;
   }
 
   else
@@ -2962,9 +2962,9 @@ LABEL_58:
 
   v27[2] = @"attributionBundleID";
   v27[3] = @"bundleID";
-  if (v10)
+  if (dCopy)
   {
-    v19 = v10;
+    v19 = dCopy;
   }
 
   else
@@ -2992,15 +2992,15 @@ LABEL_58:
   v28[4] = muteActionTrigger;
   v28[5] = v22;
   v27[6] = @"accessoryProductID";
-  v23 = [(CBDevice *)currentAudioOwnerDevice productID];
-  if (v23)
+  productID = [(CBDevice *)currentAudioOwnerDevice productID];
+  if (productID)
   {
-    v24 = [(CBDevice *)self->_currentAudioOwnerDevice productID];
-    if (v24 <= 21759)
+    productID2 = [(CBDevice *)self->_currentAudioOwnerDevice productID];
+    if (productID2 <= 21759)
     {
-      if (v24 > 8193)
+      if (productID2 > 8193)
       {
-        switch(v24)
+        switch(productID2)
         {
           case 8194:
             v25 = "AirPods1,1";
@@ -3114,7 +3114,7 @@ LABEL_58:
         goto LABEL_86;
       }
 
-      switch(v24)
+      switch(productID2)
       {
         case 0:
           v25 = "Invalid";
@@ -3132,17 +3132,17 @@ LABEL_85:
       goto LABEL_86;
     }
 
-    if (v24 > 28943)
+    if (productID2 > 28943)
     {
-      if (v24 <= 29714)
+      if (productID2 <= 29714)
       {
-        if (v24 == 28944)
+        if (productID2 == 28944)
         {
           v25 = "AudioAccessory1,2";
           goto LABEL_86;
         }
 
-        if (v24 == 29455)
+        if (productID2 == 29455)
         {
           v25 = "AppleTV11,1";
           goto LABEL_86;
@@ -3151,19 +3151,19 @@ LABEL_85:
         goto LABEL_85;
       }
 
-      if (v24 == 29715)
+      if (productID2 == 29715)
       {
         v25 = "AudioAccessory5,1";
         goto LABEL_86;
       }
 
-      if (v24 == 65533)
+      if (productID2 == 65533)
       {
         v25 = "HeGn";
         goto LABEL_86;
       }
 
-      if (v24 != 65534)
+      if (productID2 != 65534)
       {
         goto LABEL_85;
       }
@@ -3173,15 +3173,15 @@ LABEL_85:
 
     else
     {
-      if (v24 <= 28419)
+      if (productID2 <= 28419)
       {
-        if (v24 == 21760)
+        if (productID2 == 21760)
         {
           v25 = "Device1,21760";
           goto LABEL_86;
         }
 
-        if (v24 == 22034)
+        if (productID2 == 22034)
         {
           v25 = "Device1,22034";
           goto LABEL_86;
@@ -3190,19 +3190,19 @@ LABEL_85:
         goto LABEL_85;
       }
 
-      if (v24 == 28420)
+      if (productID2 == 28420)
       {
         v25 = "AppleTV5,3";
         goto LABEL_86;
       }
 
-      if (v24 == 28936)
+      if (productID2 == 28936)
       {
         v25 = "AppleTV6,2";
         goto LABEL_86;
       }
 
-      if (v24 != 28943)
+      if (productID2 != 28943)
       {
         goto LABEL_85;
       }
@@ -3218,7 +3218,7 @@ LABEL_86:
   v26 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:7];
   CUMetricsLog();
 
-  if (v23)
+  if (productID)
   {
   }
 }
@@ -3309,23 +3309,23 @@ LABEL_86:
   }
 }
 
-- (void)reportSensorInfo:(id)a3
+- (void)reportSensorInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100028600;
   v7[3] = &unk_1002B6D18;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_reportSensorInfo:(id)a3
+- (void)_reportSensorInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -3346,10 +3346,10 @@ LABEL_86:
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 sensorService];
-        if (v11)
+        sensorService = [v10 sensorService];
+        if (sensorService)
         {
-          v12 = [v4 copy];
+          v12 = [infoCopy copy];
           [v10 sensorServiceReportSensorInfo:v12];
         }
       }
@@ -3361,22 +3361,22 @@ LABEL_86:
   }
 }
 
-- (void)reportActiveHRMDeviceUpdated:(id)a3 withSREnabled:(BOOL)a4
+- (void)reportActiveHRMDeviceUpdated:(id)updated withSREnabled:(BOOL)enabled
 {
-  v6 = a3;
+  updatedCopy = updated;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000287F0;
   block[3] = &unk_1002B7170;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = updatedCopy;
+  enabledCopy = enabled;
+  v8 = updatedCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)reportSiriHijackElgibilityUpdated:(BOOL)a3
+- (void)reportSiriHijackElgibilityUpdated:(BOOL)updated
 {
   if (_os_feature_enabled_impl())
   {
@@ -3386,7 +3386,7 @@ LABEL_86:
     v6[2] = sub_100028B04;
     v6[3] = &unk_1002B67F0;
     v6[4] = self;
-    v7 = a3;
+    updatedCopy = updated;
     dispatch_async(dispatchQueue, v6);
   }
 }

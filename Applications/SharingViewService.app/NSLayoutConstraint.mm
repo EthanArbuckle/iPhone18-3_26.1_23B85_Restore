@@ -1,13 +1,13 @@
 @interface NSLayoutConstraint
 - (double)d22Constant;
 - (double)iPhoneSEConstant;
-- (void)setD22Constant:(double)a3;
-- (void)setIPhoneSEConstant:(double)a3;
+- (void)setD22Constant:(double)constant;
+- (void)setIPhoneSEConstant:(double)constant;
 @end
 
 @implementation NSLayoutConstraint
 
-- (void)setIPhoneSEConstant:(double)a3
+- (void)setIPhoneSEConstant:(double)constant
 {
   v5 = [NSNumber numberWithDouble:?];
   objc_setAssociatedObject(self, "iPhoneSEConstant", v5, 1);
@@ -15,7 +15,7 @@
   if (SFDeviceModelCodeGet() == 2)
   {
 
-    [(NSLayoutConstraint *)self setConstant:a3];
+    [(NSLayoutConstraint *)self setConstant:constant];
   }
 }
 
@@ -28,7 +28,7 @@
   return v4;
 }
 
-- (void)setD22Constant:(double)a3
+- (void)setD22Constant:(double)constant
 {
   v5 = [NSNumber numberWithDouble:?];
   objc_setAssociatedObject(self, "d22Constant", v5, 1);
@@ -36,7 +36,7 @@
   if (SFDeviceModelCodeGet() == 1)
   {
 
-    [(NSLayoutConstraint *)self setConstant:a3];
+    [(NSLayoutConstraint *)self setConstant:constant];
   }
 }
 

@@ -1,38 +1,38 @@
 @interface ICTintedLayer
-- (void)setContents:(id)a3;
-- (void)setTintColor:(id)a3;
+- (void)setContents:(id)contents;
+- (void)setTintColor:(id)color;
 - (void)updateContents;
 @end
 
 @implementation ICTintedLayer
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
-  v5 = a3;
-  if (self->_originalContents != v5)
+  contentsCopy = contents;
+  if (self->_originalContents != contentsCopy)
   {
-    objc_storeStrong(&self->_originalContents, a3);
+    objc_storeStrong(&self->_originalContents, contents);
   }
 
   [(ICTintedLayer *)self updateContents];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_tintColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_tintColor, a3);
+    objc_storeStrong(&self->_tintColor, color);
     [(ICTintedLayer *)self updateContents];
   }
 }
 
 - (void)updateContents
 {
-  v3 = [(ICTintedLayer *)self tintColor];
+  tintColor = [(ICTintedLayer *)self tintColor];
 
   originalContents = self->_originalContents;
-  if (v3)
+  if (tintColor)
   {
     Width = CGImageGetWidth(self->_originalContents);
     [(ICTintedLayer *)self contentsScale];
@@ -40,10 +40,10 @@
     Height = CGImageGetHeight(originalContents);
     [(ICTintedLayer *)self contentsScale];
     v10 = Height / v9;
-    v11 = [MEMORY[0x1E69DCA80] defaultFormat];
+    defaultFormat = [MEMORY[0x1E69DCA80] defaultFormat];
     [(ICTintedLayer *)self contentsScale];
-    [v11 setScale:?];
-    v12 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v11 format:{v7, v10}];
+    [defaultFormat setScale:?];
+    v12 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:defaultFormat format:{v7, v10}];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __31__ICTintedLayer_updateContents__block_invoke;

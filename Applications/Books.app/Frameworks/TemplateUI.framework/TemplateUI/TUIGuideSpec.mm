@@ -1,96 +1,96 @@
 @interface TUIGuideSpec
-+ (id)columnWithIndex:(int64_t)a3 edge:(unint64_t)a4;
-+ (id)contentWithEdge:(unint64_t)a3;
-+ (id)gridWithEdge:(unint64_t)a3;
-+ (id)named:(int64_t)a3;
++ (id)columnWithIndex:(int64_t)index edge:(unint64_t)edge;
++ (id)contentWithEdge:(unint64_t)edge;
++ (id)gridWithEdge:(unint64_t)edge;
++ (id)named:(int64_t)named;
 + (id)unbound;
-- (BOOL)isEqual:(id)a3;
-- (TUIGuideSpec)initWithOther:(id)a3;
-- (id)_initWithKind:(unint64_t)a3 index:(int64_t)a4 edge:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TUIGuideSpec)initWithOther:(id)other;
+- (id)_initWithKind:(unint64_t)kind index:(int64_t)index edge:(unint64_t)edge;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation TUIGuideSpec
 
-- (id)_initWithKind:(unint64_t)a3 index:(int64_t)a4 edge:(unint64_t)a5
+- (id)_initWithKind:(unint64_t)kind index:(int64_t)index edge:(unint64_t)edge
 {
   v9.receiver = self;
   v9.super_class = TUIGuideSpec;
   result = [(TUIGuideSpec *)&v9 init];
   if (result)
   {
-    *(result + 1) = a3;
-    *(result + 2) = a4;
-    *(result + 3) = a5;
+    *(result + 1) = kind;
+    *(result + 2) = index;
+    *(result + 3) = edge;
   }
 
   return result;
 }
 
-- (TUIGuideSpec)initWithOther:(id)a3
+- (TUIGuideSpec)initWithOther:(id)other
 {
-  v4 = a3;
+  otherCopy = other;
   v7.receiver = self;
   v7.super_class = TUIGuideSpec;
   v5 = [(TUIGuideSpec *)&v7 init];
   if (v5)
   {
-    v5->_kind = [v4 kind];
-    v5->_index = [v4 index];
-    v5->_edge = [v4 edge];
+    v5->_kind = [otherCopy kind];
+    v5->_index = [otherCopy index];
+    v5->_edge = [otherCopy edge];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithOther:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v8 = (objc_opt_isKindOfClass() & 1) != 0 && (kind = self->_kind, kind == [v4 kind]) && (edge = self->_edge, edge == objc_msgSend(v4, "edge")) && (index = self->_index, index == objc_msgSend(v4, "index")) && self->_kind != 1;
+  v8 = (objc_opt_isKindOfClass() & 1) != 0 && (kind = self->_kind, kind == [equalCopy kind]) && (edge = self->_edge, edge == objc_msgSend(equalCopy, "edge")) && (index = self->_index, index == objc_msgSend(equalCopy, "index")) && self->_kind != 1;
 
   return v8;
 }
 
-+ (id)gridWithEdge:(unint64_t)a3
++ (id)gridWithEdge:(unint64_t)edge
 {
-  v3 = [[a1 alloc] _initWithKind:2 index:0x7FFFFFFFFFFFFFFFLL edge:a3];
+  v3 = [[self alloc] _initWithKind:2 index:0x7FFFFFFFFFFFFFFFLL edge:edge];
 
   return v3;
 }
 
-+ (id)contentWithEdge:(unint64_t)a3
++ (id)contentWithEdge:(unint64_t)edge
 {
-  v3 = [[a1 alloc] _initWithKind:3 index:0x7FFFFFFFFFFFFFFFLL edge:a3];
+  v3 = [[self alloc] _initWithKind:3 index:0x7FFFFFFFFFFFFFFFLL edge:edge];
 
   return v3;
 }
 
-+ (id)columnWithIndex:(int64_t)a3 edge:(unint64_t)a4
++ (id)columnWithIndex:(int64_t)index edge:(unint64_t)edge
 {
-  v4 = [[a1 alloc] _initWithKind:4 index:a3 edge:a4];
+  v4 = [[self alloc] _initWithKind:4 index:index edge:edge];
 
   return v4;
 }
 
 + (id)unbound
 {
-  v2 = [[a1 alloc] _initWithKind:1 index:0x7FFFFFFFFFFFFFFFLL edge:0];
+  v2 = [[self alloc] _initWithKind:1 index:0x7FFFFFFFFFFFFFFFLL edge:0];
 
   return v2;
 }
 
-+ (id)named:(int64_t)a3
++ (id)named:(int64_t)named
 {
-  v3 = [[a1 alloc] _initWithKind:5 index:a3 edge:0];
+  v3 = [[self alloc] _initWithKind:5 index:named edge:0];
 
   return v3;
 }

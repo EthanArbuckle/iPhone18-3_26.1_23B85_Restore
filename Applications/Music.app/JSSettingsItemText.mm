@@ -6,7 +6,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   JSSettingsItemText.description.getter();
 
   v3 = String._bridgeToObjectiveC()();

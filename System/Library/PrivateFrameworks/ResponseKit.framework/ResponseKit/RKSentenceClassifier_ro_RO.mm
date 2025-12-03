@@ -1,16 +1,16 @@
 @interface RKSentenceClassifier_ro_RO
-- (id)addSentenceTerminatorQuestion:(id)a3;
+- (id)addSentenceTerminatorQuestion:(id)question;
 - (id)classifySentence;
 - (void)analyzeSentence;
 @end
 
 @implementation RKSentenceClassifier_ro_RO
 
-- (id)addSentenceTerminatorQuestion:(id)a3
+- (id)addSentenceTerminatorQuestion:(id)question
 {
   v6.receiver = self;
   v6.super_class = RKSentenceClassifier_ro_RO;
-  v3 = [(RKSentenceClassifier *)&v6 addSentenceTerminatorQuestion:a3];
+  v3 = [(RKSentenceClassifier *)&v6 addSentenceTerminatorQuestion:question];
   v4 = [v3 stringByAppendingString:@"?"];
 
   return v4;
@@ -27,24 +27,24 @@
 {
   v8.receiver = self;
   v8.super_class = RKSentenceClassifier_ro_RO;
-  v3 = [(RKSentenceClassifier *)&v8 classifySentence];
-  if (![v3 sentenceType])
+  classifySentence = [(RKSentenceClassifier *)&v8 classifySentence];
+  if (![classifySentence sentenceType])
   {
-    v4 = [(RKSentenceClassifier *)self interrogatives];
+    interrogatives = [(RKSentenceClassifier *)self interrogatives];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __46__RKSentenceClassifier_ro_RO_classifySentence__block_invoke;
     v6[3] = &unk_279B0FD90;
-    v7 = v3;
-    [v4 enumerateObjectsUsingBlock:v6];
+    v7 = classifySentence;
+    [interrogatives enumerateObjectsUsingBlock:v6];
   }
 
-  if (![v3 sentenceType] && -[RKSentenceClassifier sentenceHasQuestionTerminator](self, "sentenceHasQuestionTerminator"))
+  if (![classifySentence sentenceType] && -[RKSentenceClassifier sentenceHasQuestionTerminator](self, "sentenceHasQuestionTerminator"))
   {
-    [v3 setSentenceType:1];
+    [classifySentence setSentenceType:1];
   }
 
-  return v3;
+  return classifySentence;
 }
 
 @end

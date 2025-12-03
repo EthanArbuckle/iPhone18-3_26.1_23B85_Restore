@@ -1,23 +1,23 @@
 @interface TIWordSearchWubixing
-- (id)autoconvertWubiXingPrefixes:(id)a3 option:(unint64_t)a4 candidateResultSet:(id)a5 autoconvertedCandidateArray:(id *)a6;
+- (id)autoconvertWubiXingPrefixes:(id)prefixes option:(unint64_t)option candidateResultSet:(id)set autoconvertedCandidateArray:(id *)array;
 - (id)mecabraCreationOptionsDictionary;
-- (id)uncachedCandidatesForOperation:(id)a3;
+- (id)uncachedCandidatesForOperation:(id)operation;
 - (int)wubiStandardPreference;
 - (void)checkWubiStandard;
 - (void)dealloc;
-- (void)shouldAutoCommitCode:(id)a3 withOption:(unint64_t)a4;
+- (void)shouldAutoCommitCode:(id)code withOption:(unint64_t)option;
 - (void)updateMecabraState;
 @end
 
 @implementation TIWordSearchWubixing
 
-- (void)shouldAutoCommitCode:(id)a3 withOption:(unint64_t)a4
+- (void)shouldAutoCommitCode:(id)code withOption:(unint64_t)option
 {
-  v6 = a3;
-  v7 = [(TIWordSearch *)self mecabraEnvironment];
-  LODWORD(a4) = [v7 analyzeString:v6 options:a4];
+  codeCopy = code;
+  mecabraEnvironment = [(TIWordSearch *)self mecabraEnvironment];
+  LODWORD(option) = [mecabraEnvironment analyzeString:codeCopy options:option];
 
-  if (!a4)
+  if (!option)
   {
     return 0;
   }
@@ -33,24 +33,24 @@
   return NextCandidate;
 }
 
-- (id)autoconvertWubiXingPrefixes:(id)a3 option:(unint64_t)a4 candidateResultSet:(id)a5 autoconvertedCandidateArray:(id *)a6
+- (id)autoconvertWubiXingPrefixes:(id)prefixes option:(unint64_t)option candidateResultSet:(id)set autoconvertedCandidateArray:(id *)array
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [MEMORY[0x277CBEB18] array];
-  v13 = [MEMORY[0x277CBEB38] dictionary];
-  if ([v10 length] < 5)
+  prefixesCopy = prefixes;
+  setCopy = set;
+  array = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if ([prefixesCopy length] < 5)
   {
     goto LABEL_11;
   }
 
-  v27 = a6;
-  v28 = v11;
+  arrayCopy = array;
+  v28 = setCopy;
   v14 = 0;
   while (1)
   {
-    v15 = [v10 substringWithRange:{v14, 4, v27}];
-    v16 = [(TIWordSearchWubixing *)self shouldAutoCommitCode:v15 withOption:a4];
+    v15 = [prefixesCopy substringWithRange:{v14, 4, arrayCopy}];
+    v16 = [(TIWordSearchWubixing *)self shouldAutoCommitCode:v15 withOption:option];
     if (!v16)
     {
       break;
@@ -58,11 +58,11 @@
 
     v17 = v16;
     v18 = [objc_alloc(MEMORY[0x277D6F448]) initWithMecabraCandidate:v16];
-    [v12 addObject:v18];
-    v19 = [v18 mecabraCandidatePointerValue];
-    [v13 setObject:v17 forKeyedSubscript:v19];
+    [array addObject:v18];
+    mecabraCandidatePointerValue = [v18 mecabraCandidatePointerValue];
+    [dictionary setObject:v17 forKeyedSubscript:mecabraCandidatePointerValue];
 
-    v20 = [v10 length];
+    v20 = [prefixesCopy length];
     v21 = v14 + 4;
     v22 = v14 + 8;
     v14 += 4;
@@ -74,23 +74,23 @@
 
   v21 = v14;
 LABEL_7:
-  v11 = v28;
+  setCopy = v28;
   if (v21)
   {
-    if (v27)
+    if (arrayCopy)
     {
-      v23 = v12;
-      *v27 = v12;
+      v23 = array;
+      *arrayCopy = array;
     }
 
-    [v28 setAutoconvertedMecabraCandidates:v12 candidateRefsDictionary:v13];
-    v24 = [v10 substringFromIndex:v21];
+    [v28 setAutoconvertedMecabraCandidates:array candidateRefsDictionary:dictionary];
+    v24 = [prefixesCopy substringFromIndex:v21];
   }
 
   else
   {
 LABEL_11:
-    v24 = v10;
+    v24 = prefixesCopy;
   }
 
   v25 = v24;
@@ -98,19 +98,19 @@ LABEL_11:
   return v25;
 }
 
-- (id)uncachedCandidatesForOperation:(id)a3
+- (id)uncachedCandidatesForOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v5 = objc_alloc_init(MEMORY[0x277D6FF00]);
-  v6 = [v4 inputString];
+  inputString = [operationCopy inputString];
   v7 = objc_autoreleasePoolPush();
-  if (![v6 length])
+  if (![inputString length])
   {
     v37 = 0;
     v8 = 0;
 LABEL_6:
     v34 = v7;
-    v35 = v4;
+    v35 = operationCopy;
     v36 = v8;
     v11 = [v8 containsString:@"z"];
     v12 = 0;
@@ -127,27 +127,27 @@ LABEL_6:
       v15 = [MEMORY[0x277D6F448] mecabraCandidateWithCandidateRef:NextCandidate autoconvertedCandidates:v37];
       if (([v15 isWubixingConvertedByPinyin] | v11))
       {
-        v16 = [(TIWordSearch *)self mecabraEnvironment];
-        v17 = [v15 label];
-        v18 = [v16 wubiAnnotationForCandidate:v17];
+        mecabraEnvironment = [(TIWordSearch *)self mecabraEnvironment];
+        label = [v15 label];
+        v18 = [mecabraEnvironment wubiAnnotationForCandidate:label];
         [v15 setAlternativeText:v18];
       }
 
       [v5 addMecabraCandidate:v15 mecabraCandidateRef:v14];
-      v19 = [v15 candidate];
-      v20 = [v19 isEqualToString:v6];
+      candidate = [v15 candidate];
+      v20 = [candidate isEqualToString:inputString];
 
       v12 |= v20;
     }
 
     v8 = v36;
-    if (([v6 isEqualToString:v36] & 1) == 0)
+    if (([inputString isEqualToString:v36] & 1) == 0)
     {
-      v21 = [v5 candidates];
-      v22 = [v21 indexOfObjectPassingTest:&__block_literal_global_937];
+      candidates = [v5 candidates];
+      v22 = [candidates indexOfObjectPassingTest:&__block_literal_global_937];
 
-      v23 = [(TIWordSearch *)self mecabraEnvironment];
-      [v23 analyzeString:v6 options:0];
+      mecabraEnvironment2 = [(TIWordSearch *)self mecabraEnvironment];
+      [mecabraEnvironment2 analyzeString:inputString options:0];
       while (1)
       {
 
@@ -159,28 +159,28 @@ LABEL_6:
         }
 
         v25 = v24;
-        v23 = [MEMORY[0x277D6F448] mecabraCandidateWithCandidateRef:v24 autoconvertedCandidates:0];
-        if ([v23 isWubixingConvertedByPinyin])
+        mecabraEnvironment2 = [MEMORY[0x277D6F448] mecabraCandidateWithCandidateRef:v24 autoconvertedCandidates:0];
+        if ([mecabraEnvironment2 isWubixingConvertedByPinyin])
         {
-          v26 = [(TIWordSearch *)self mecabraEnvironment];
-          v27 = [v23 candidate];
-          v28 = [v26 wubiAnnotationForCandidate:v27];
-          [v23 setAlternativeText:v28];
+          mecabraEnvironment3 = [(TIWordSearch *)self mecabraEnvironment];
+          candidate2 = [mecabraEnvironment2 candidate];
+          v28 = [mecabraEnvironment3 wubiAnnotationForCandidate:candidate2];
+          [mecabraEnvironment2 setAlternativeText:v28];
         }
 
         if (v22 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          [v5 addMecabraCandidate:v23 mecabraCandidateRef:v25];
+          [v5 addMecabraCandidate:mecabraEnvironment2 mecabraCandidateRef:v25];
           v22 = 0x7FFFFFFFFFFFFFFFLL;
         }
 
         else
         {
-          [v5 insertMecabraCandidate:v23 mecabraCandidateRef:v25 atIndex:v22++];
+          [v5 insertMecabraCandidate:mecabraEnvironment2 mecabraCandidateRef:v25 atIndex:v22++];
         }
 
-        v29 = [v23 candidate];
-        v30 = [v29 isEqualToString:v6];
+        candidate3 = [mecabraEnvironment2 candidate];
+        v30 = [candidate3 isEqualToString:inputString];
 
         v12 |= v30;
       }
@@ -188,20 +188,20 @@ LABEL_6:
       v8 = v36;
     }
 
-    v31 = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
-    v32 = [v6 rangeOfCharacterFromSet:v31];
+    uppercaseLetterCharacterSet = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
+    v32 = [inputString rangeOfCharacterFromSet:uppercaseLetterCharacterSet];
 
     if (v32 != 0x7FFFFFFFFFFFFFFFLL && (v12 & 1) == 0)
     {
-      [v5 addSyntheticMecabraCandidateWithSurface:v6 input:v6 isExtension:1];
+      [v5 addSyntheticMecabraCandidateWithSurface:inputString input:inputString isExtension:1];
     }
 
     v7 = v34;
-    v4 = v35;
+    operationCopy = v35;
     goto LABEL_25;
   }
 
-  if ([(TIWordSearch *)self addFacemarkCandidatesToResultSet:v5 forInput:v6])
+  if ([(TIWordSearch *)self addFacemarkCandidatesToResultSet:v5 forInput:inputString])
   {
     v37 = 0;
     v8 = 0;
@@ -210,10 +210,10 @@ LABEL_6:
 
   [(TIWordSearchWubixing *)self checkWubiStandard];
   v38 = 0;
-  v8 = [(TIWordSearchWubixing *)self autoconvertWubiXingPrefixes:v6 option:0 candidateResultSet:v5 autoconvertedCandidateArray:&v38];
+  v8 = [(TIWordSearchWubixing *)self autoconvertWubiXingPrefixes:inputString option:0 candidateResultSet:v5 autoconvertedCandidateArray:&v38];
   v37 = v38;
-  v9 = [(TIWordSearch *)self mecabraEnvironment];
-  v10 = [v9 analyzeString:v8 options:0];
+  mecabraEnvironment4 = [(TIWordSearch *)self mecabraEnvironment];
+  v10 = [mecabraEnvironment4 analyzeString:v8 options:0];
 
   if (v10)
   {
@@ -245,8 +245,8 @@ uint64_t __55__TIWordSearchWubixing_uncachedCandidatesForOperation___block_invok
 
 - (void)checkWubiStandard
 {
-  v3 = [(TIWordSearchWubixing *)self wubiStandardPreference];
-  if (v3 != [(TIWordSearchWubixing *)self wubiStandard])
+  wubiStandardPreference = [(TIWordSearchWubixing *)self wubiStandardPreference];
+  if (wubiStandardPreference != [(TIWordSearchWubixing *)self wubiStandard])
   {
     [(TIWordSearchWubixing *)self setWubiStandard:[(TIWordSearchWubixing *)self wubiStandardPreference]];
     [(TIWordSearch *)self mecabra];
@@ -259,20 +259,20 @@ uint64_t __55__TIWordSearchWubixing_uncachedCandidatesForOperation___block_invok
 
 - (int)wubiStandardPreference
 {
-  v2 = [MEMORY[0x277D6F470] sharedPreferencesController];
-  v3 = [v2 valueForPreferenceKey:*MEMORY[0x277D6FD18]];
+  mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+  v3 = [mEMORY[0x277D6F470] valueForPreferenceKey:*MEMORY[0x277D6FD18]];
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (void)updateMecabraState
@@ -295,8 +295,8 @@ uint64_t __55__TIWordSearchWubixing_uncachedCandidatesForOperation___block_invok
 {
   v7.receiver = self;
   v7.super_class = TIWordSearchWubixing;
-  v3 = [(TIWordSearch *)&v7 mecabraCreationOptionsDictionary];
-  v4 = [v3 mutableCopy];
+  mecabraCreationOptionsDictionary = [(TIWordSearch *)&v7 mecabraCreationOptionsDictionary];
+  v4 = [mecabraCreationOptionsDictionary mutableCopy];
 
   [(TIWordSearchWubixing *)self setWubiStandard:[(TIWordSearchWubixing *)self wubiStandardPreference]];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[TIWordSearchWubixing wubiStandard](self, "wubiStandard")}];

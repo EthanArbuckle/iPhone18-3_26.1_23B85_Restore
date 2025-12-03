@@ -1,33 +1,33 @@
 @interface CKInvisibleInkEffectController
-- (CKInvisibleInkEffectController)initWithHostView:(id)a3;
+- (CKInvisibleInkEffectController)initWithHostView:(id)view;
 - (CKInvisibleInkEffectHostView)hostView;
 - (CKInvisibleInkEffectView)effectView;
 - (id)borrowEffectView;
 - (void)_updateBorrowedEffectViewSnapshot;
 - (void)dealloc;
 - (void)hostViewDidLayoutSubviews;
-- (void)hostViewDidUpdateSnapshot:(id)a3;
-- (void)invisibleInkEffectViewWasUncovered:(id)a3;
+- (void)hostViewDidUpdateSnapshot:(id)snapshot;
+- (void)invisibleInkEffectViewWasUncovered:(id)uncovered;
 - (void)prepareForDisplay;
 - (void)returnBorrowedEffectView;
-- (void)setEnabled:(BOOL)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)setSuspended:(BOOL)a3;
-- (void)suspendForTimeInterval:(double)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setPaused:(BOOL)paused;
+- (void)setSuspended:(BOOL)suspended;
+- (void)suspendForTimeInterval:(double)interval;
 @end
 
 @implementation CKInvisibleInkEffectController
 
-- (CKInvisibleInkEffectController)initWithHostView:(id)a3
+- (CKInvisibleInkEffectController)initWithHostView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = CKInvisibleInkEffectController;
   v5 = [(CKInvisibleInkEffectController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_hostView, v4);
+    objc_storeWeak(&v5->_hostView, viewCopy);
   }
 
   return v6;
@@ -35,25 +35,25 @@
 
 - (void)dealloc
 {
-  v3 = [(CKInvisibleInkEffectController *)self resumeTimer];
-  [v3 invalidate];
+  resumeTimer = [(CKInvisibleInkEffectController *)self resumeTimer];
+  [resumeTimer invalidate];
 
   v4.receiver = self;
   v4.super_class = CKInvisibleInkEffectController;
   [(CKInvisibleInkEffectController *)&v4 dealloc];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled == !a3)
+  if (self->_enabled == !enabled)
   {
     block[7] = v3;
     block[8] = v4;
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(CKInvisibleInkEffectController *)self setEffectViewNeedsReset:1];
     [(CKInvisibleInkEffectController *)self setSuspended:0];
-    v6 = [(CKInvisibleInkEffectController *)self resumeTimer];
-    [v6 invalidate];
+    resumeTimer = [(CKInvisibleInkEffectController *)self resumeTimer];
+    [resumeTimer invalidate];
 
     if (!self->_enabled)
     {
@@ -85,56 +85,56 @@ void __45__CKInvisibleInkEffectController_setEnabled___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
-  if (self->_suspended == !a3)
+  if (self->_suspended == !suspended)
   {
-    v4 = a3;
-    self->_suspended = a3;
+    suspendedCopy = suspended;
+    self->_suspended = suspended;
     [(CKInvisibleInkEffectView *)self->_effectView setSuspended:?];
-    v5 = [(CKInvisibleInkEffectController *)self hostView];
-    v6 = v5;
-    if (v4)
+    hostView = [(CKInvisibleInkEffectController *)self hostView];
+    v6 = hostView;
+    if (suspendedCopy)
     {
-      [v5 invisibleInkEffectViewWasSuspended];
+      [hostView invisibleInkEffectViewWasSuspended];
     }
 
     else
     {
-      [v5 invisibleInkEffectViewWasResumed];
+      [hostView invisibleInkEffectViewWasResumed];
     }
   }
 
-  v7 = [(CKInvisibleInkEffectController *)self resumeTimer];
-  [v7 invalidate];
+  resumeTimer = [(CKInvisibleInkEffectController *)self resumeTimer];
+  [resumeTimer invalidate];
 }
 
-- (void)suspendForTimeInterval:(double)a3
+- (void)suspendForTimeInterval:(double)interval
 {
   [(CKInvisibleInkEffectController *)self setSuspended:1];
-  v5 = [(CKInvisibleInkEffectController *)self resumeTimer];
-  v6 = [v5 isValid];
+  resumeTimer = [(CKInvisibleInkEffectController *)self resumeTimer];
+  isValid = [resumeTimer isValid];
 
-  if (v6)
+  if (isValid)
   {
-    v8 = [(CKInvisibleInkEffectController *)self resumeTimer];
-    v7 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:a3];
-    [v8 setFireDate:v7];
+    resumeTimer2 = [(CKInvisibleInkEffectController *)self resumeTimer];
+    v7 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:interval];
+    [resumeTimer2 setFireDate:v7];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel_resumeTimerFired_ selector:0 userInfo:0 repeats:a3];
+    resumeTimer2 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel_resumeTimerFired_ selector:0 userInfo:0 repeats:interval];
     [(CKInvisibleInkEffectController *)self setResumeTimer:?];
   }
 }
 
 - (void)prepareForDisplay
 {
-  v11 = [(CKInvisibleInkEffectController *)self hostView];
-  v3 = [(CKInvisibleInkEffectController *)self isEnabled];
+  hostView = [(CKInvisibleInkEffectController *)self hostView];
+  isEnabled = [(CKInvisibleInkEffectController *)self isEnabled];
   effectView = self->_effectView;
-  if (v3)
+  if (isEnabled)
   {
     if (effectView)
     {
@@ -148,9 +148,9 @@ void __45__CKInvisibleInkEffectController_setEnabled___block_invoke(uint64_t a1)
 
     else
     {
-      v6 = [(CKInvisibleInkEffectController *)self hostView];
-      v7 = objc_alloc([v6 invisibleInkEffectViewClass]);
-      [v11 bounds];
+      hostView2 = [(CKInvisibleInkEffectController *)self hostView];
+      v7 = objc_alloc([hostView2 invisibleInkEffectViewClass]);
+      [hostView bounds];
       v8 = [v7 initWithFrame:?];
       v9 = self->_effectView;
       self->_effectView = v8;
@@ -162,7 +162,7 @@ void __45__CKInvisibleInkEffectController_setEnabled___block_invoke(uint64_t a1)
       [(CKInvisibleInkEffectView *)self->_effectView setDelegate:self];
       [(CKInvisibleInkEffectView *)self->_effectView setPaused:[(CKInvisibleInkEffectController *)self isPaused]];
       [(CKInvisibleInkEffectView *)self->_effectView setSuspended:[(CKInvisibleInkEffectController *)self isSuspended]];
-      [v11 attachInvisibleInkEffectView];
+      [hostView attachInvisibleInkEffectView];
     }
 
     [(CKInvisibleInkEffectController *)self setEffectViewNeedsReset:0];
@@ -170,7 +170,7 @@ void __45__CKInvisibleInkEffectController_setEnabled___block_invoke(uint64_t a1)
 
   else if (effectView)
   {
-    [v11 detachInvisibleInkEffectView];
+    [hostView detachInvisibleInkEffectView];
     v5 = self->_effectView;
     self->_effectView = 0;
   }
@@ -181,26 +181,26 @@ void __45__CKInvisibleInkEffectController_setEnabled___block_invoke(uint64_t a1)
   if ([(CKInvisibleInkEffectController *)self isEnabled])
   {
     effectView = self->_effectView;
-    v5 = [(CKInvisibleInkEffectController *)self hostView];
-    v4 = [v5 imageForInvisibleInkEffectView];
-    [(CKInvisibleInkEffectView *)effectView setImage:v4];
+    hostView = [(CKInvisibleInkEffectController *)self hostView];
+    imageForInvisibleInkEffectView = [hostView imageForInvisibleInkEffectView];
+    [(CKInvisibleInkEffectView *)effectView setImage:imageForInvisibleInkEffectView];
   }
 }
 
-- (void)hostViewDidUpdateSnapshot:(id)a3
+- (void)hostViewDidUpdateSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   if ([(CKInvisibleInkEffectController *)self isEnabled])
   {
-    [(CKInvisibleInkEffectView *)self->_effectView setImage:v4];
+    [(CKInvisibleInkEffectView *)self->_effectView setImage:snapshotCopy];
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (self->_paused == !a3)
+  if (self->_paused == !paused)
   {
-    self->_paused = a3;
+    self->_paused = paused;
     [(CKInvisibleInkEffectView *)self->_effectView setPaused:?];
   }
 }
@@ -208,17 +208,17 @@ void __45__CKInvisibleInkEffectController_setEnabled___block_invoke(uint64_t a1)
 - (void)_updateBorrowedEffectViewSnapshot
 {
   v4 = [(CKInvisibleInkEffectView *)self->_effectView snapshotViewAfterScreenUpdates:0];
-  v3 = [(CKInvisibleInkEffectController *)self hostView];
-  [v3 detachInvisibleInkEffectView];
+  hostView = [(CKInvisibleInkEffectController *)self hostView];
+  [hostView detachInvisibleInkEffectView];
   [(CKInvisibleInkEffectController *)self setBorrowedEffectViewSnapshot:v4];
-  [v3 attachInvisibleInkEffectView];
+  [hostView attachInvisibleInkEffectView];
 }
 
 - (id)borrowEffectView
 {
-  v3 = [(CKInvisibleInkEffectController *)self borrowedEffectViewSnapshot];
+  borrowedEffectViewSnapshot = [(CKInvisibleInkEffectController *)self borrowedEffectViewSnapshot];
 
-  if (!v3)
+  if (!borrowedEffectViewSnapshot)
   {
     [(CKInvisibleInkEffectController *)self _updateBorrowedEffectViewSnapshot];
   }
@@ -230,12 +230,12 @@ void __45__CKInvisibleInkEffectController_setEnabled___block_invoke(uint64_t a1)
 
 - (void)returnBorrowedEffectView
 {
-  v3 = [(CKInvisibleInkEffectController *)self borrowedEffectViewSnapshot];
+  borrowedEffectViewSnapshot = [(CKInvisibleInkEffectController *)self borrowedEffectViewSnapshot];
 
-  if (v3)
+  if (borrowedEffectViewSnapshot)
   {
-    v4 = [(CKInvisibleInkEffectController *)self hostView];
-    [v4 detachInvisibleInkEffectView];
+    hostView = [(CKInvisibleInkEffectController *)self hostView];
+    [hostView detachInvisibleInkEffectView];
     [(CKInvisibleInkEffectController *)self setBorrowedEffectViewSnapshot:0];
     effectView = self->_effectView;
     v6 = *(MEMORY[0x1E695EFD0] + 16);
@@ -244,9 +244,9 @@ void __45__CKInvisibleInkEffectController_setEnabled___block_invoke(uint64_t a1)
     v8[2] = *(MEMORY[0x1E695EFD0] + 32);
     [(CKInvisibleInkEffectView *)effectView setTransform:v8];
     v7 = self->_effectView;
-    [v4 bounds];
+    [hostView bounds];
     [(CKInvisibleInkEffectView *)v7 setFrame:?];
-    [v4 attachInvisibleInkEffectView];
+    [hostView attachInvisibleInkEffectView];
   }
 }
 
@@ -261,10 +261,10 @@ void __45__CKInvisibleInkEffectController_setEnabled___block_invoke(uint64_t a1)
   return borrowedEffectViewSnapshot;
 }
 
-- (void)invisibleInkEffectViewWasUncovered:(id)a3
+- (void)invisibleInkEffectViewWasUncovered:(id)uncovered
 {
-  v3 = [(CKInvisibleInkEffectController *)self hostView];
-  [v3 invisibleInkEffectViewWasUncovered];
+  hostView = [(CKInvisibleInkEffectController *)self hostView];
+  [hostView invisibleInkEffectViewWasUncovered];
 }
 
 - (CKInvisibleInkEffectHostView)hostView

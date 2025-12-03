@@ -1,11 +1,11 @@
 @interface BuddyCloudConfigWiFiAssociationWatcher
 - (BuddyCloudConfigWiFiAssociationWatcher)init;
 - (unint64_t)countOfAssociationAttempts;
-- (void)_associationDidFinish:(id)a3;
-- (void)_associationDidStart:(id)a3;
+- (void)_associationDidFinish:(id)finish;
+- (void)_associationDidStart:(id)start;
 - (void)dealloc;
-- (void)setCountOfAssociationAttempts:(unint64_t)a3;
-- (void)waitForCurrentAssociationToFinishWithCompletionHandler:(id)a3;
+- (void)setCountOfAssociationAttempts:(unint64_t)attempts;
+- (void)waitForCurrentAssociationToFinishWithCompletionHandler:(id)handler;
 @end
 
 @implementation BuddyCloudConfigWiFiAssociationWatcher
@@ -38,36 +38,36 @@
 
 - (void)dealloc
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v2 = +[NSNotificationCenter defaultCenter];
   v3 = sub_1001D6CF0();
-  [(NSNotificationCenter *)v2 removeObserver:v8 name:v3 object:0];
+  [(NSNotificationCenter *)v2 removeObserver:selfCopy name:v3 object:0];
 
   v4 = +[NSNotificationCenter defaultCenter];
   v5 = sub_1001D6DF8();
-  [(NSNotificationCenter *)v4 removeObserver:v8 name:v5 object:0];
+  [(NSNotificationCenter *)v4 removeObserver:selfCopy name:v5 object:0];
 
-  v6.receiver = v8;
+  v6.receiver = selfCopy;
   v6.super_class = BuddyCloudConfigWiFiAssociationWatcher;
   [(BuddyCloudConfigWiFiAssociationWatcher *)&v6 dealloc];
 }
 
-- (void)waitForCurrentAssociationToFinishWithCompletionHandler:(id)a3
+- (void)waitForCurrentAssociationToFinishWithCompletionHandler:(id)handler
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, handler);
   v3 = &_dispatch_main_q;
   dispatch_assert_queue_V2(v3);
 
-  v4 = [(BuddyCloudConfigWiFiAssociationWatcher *)v8 currentAssociationFinishHandlers];
-  if (v4)
+  currentAssociationFinishHandlers = [(BuddyCloudConfigWiFiAssociationWatcher *)selfCopy currentAssociationFinishHandlers];
+  if (currentAssociationFinishHandlers)
   {
-    v5 = [(BuddyCloudConfigWiFiAssociationWatcher *)v8 currentAssociationFinishHandlers];
+    currentAssociationFinishHandlers2 = [(BuddyCloudConfigWiFiAssociationWatcher *)selfCopy currentAssociationFinishHandlers];
     v6 = objc_retainBlock(location[0]);
-    [(NSMutableArray *)v5 addObject:v6];
+    [(NSMutableArray *)currentAssociationFinishHandlers2 addObject:v6];
   }
 
   else
@@ -78,12 +78,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)setCountOfAssociationAttempts:(unint64_t)a3
+- (void)setCountOfAssociationAttempts:(unint64_t)attempts
 {
   v3 = &_dispatch_main_q;
   dispatch_assert_queue_V2(v3);
 
-  self->_countOfAssociationAttempts = a3;
+  self->_countOfAssociationAttempts = attempts;
 }
 
 - (unint64_t)countOfAssociationAttempts
@@ -94,38 +94,38 @@
   return self->_countOfAssociationAttempts;
 }
 
-- (void)_associationDidStart:(id)a3
+- (void)_associationDidStart:(id)start
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, start);
   v3 = &_dispatch_main_q;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1001D729C;
   v8 = &unk_10032B0D0;
-  v9 = v11;
+  v9 = selfCopy;
   dispatch_async(v3, &v4);
 
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_associationDidFinish:(id)a3
+- (void)_associationDidFinish:(id)finish
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, finish);
   v3 = &_dispatch_main_q;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1001D73F4;
   v8 = &unk_10032B0D0;
-  v9 = v11;
+  v9 = selfCopy;
   dispatch_async(v3, &v4);
 
   objc_storeStrong(&v9, 0);

@@ -1,13 +1,13 @@
 @interface EngagementUpsellOfferManager
 - (_TtC7NewsUI228EngagementUpsellOfferManager)init;
-- (void)bundleSubscriptionDidSubscribe:(void *)a1;
+- (void)bundleSubscriptionDidSubscribe:(void *)subscribe;
 @end
 
 @implementation EngagementUpsellOfferManager
 
-- (void)bundleSubscriptionDidSubscribe:(void *)a1
+- (void)bundleSubscriptionDidSubscribe:(void *)subscribe
 {
-  v1 = a1;
+  subscribeCopy = subscribe;
   sub_2187AC958(1);
 }
 

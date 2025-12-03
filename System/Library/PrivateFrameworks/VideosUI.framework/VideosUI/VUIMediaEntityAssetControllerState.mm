@@ -1,7 +1,7 @@
 @interface VUIMediaEntityAssetControllerState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VUIMediaEntityAssetControllerState)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(VUIMediaEntityAssetControllerState);
   v4->_status = self->_status;
@@ -41,60 +41,60 @@
 
 - (unint64_t)hash
 {
-  v3 = [(VUIMediaEntityAssetControllerState *)self status];
+  status = [(VUIMediaEntityAssetControllerState *)self status];
   [(VUIMediaEntityAssetControllerState *)self downloadProgress];
   v5 = (v4 * 100.0);
-  v6 = [(VUIMediaEntityAssetControllerState *)self bytesToDownload];
-  v7 = v3 ^ (4 * v6) ^ (2 * v5) ^ (8 * [(VUIMediaEntityAssetControllerState *)self bytesDownloaded]);
+  bytesToDownload = [(VUIMediaEntityAssetControllerState *)self bytesToDownload];
+  v7 = status ^ (4 * bytesToDownload) ^ (2 * v5) ^ (8 * [(VUIMediaEntityAssetControllerState *)self bytesDownloaded]);
   [(VUIMediaEntityAssetControllerState *)self supportsCancellation];
   [(VUIMediaEntityAssetControllerState *)self supportsPausing];
   [(VUIMediaEntityAssetControllerState *)self renewsOfflineKeysAutomatically];
-  v8 = [(VUIMediaEntityAssetControllerState *)self allowsCellular];
+  allowsCellular = [(VUIMediaEntityAssetControllerState *)self allowsCellular];
   v9 = 128;
-  if (!v8)
+  if (!allowsCellular)
   {
     v9 = 0;
   }
 
   v10 = v9 & v7;
-  v11 = [(VUIMediaEntityAssetControllerState *)self downloadFailedDueToError];
+  downloadFailedDueToError = [(VUIMediaEntityAssetControllerState *)self downloadFailedDueToError];
   v12 = 256;
-  if (!v11)
+  if (!downloadFailedDueToError)
   {
     v12 = 0;
   }
 
   v13 = v10 | v12;
-  v14 = [(VUIMediaEntityAssetControllerState *)self downloadExpirationDate];
-  v15 = [v14 hash];
+  downloadExpirationDate = [(VUIMediaEntityAssetControllerState *)self downloadExpirationDate];
+  v15 = [downloadExpirationDate hash];
 
-  v16 = [(VUIMediaEntityAssetControllerState *)self availabilityEndDate];
-  v17 = v15 ^ [v16 hash];
+  availabilityEndDate = [(VUIMediaEntityAssetControllerState *)self availabilityEndDate];
+  v17 = v15 ^ [availabilityEndDate hash];
 
   return v17 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(v21) = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(VUIMediaEntityAssetControllerState *)self downloadExpirationDate];
-    v8 = [(VUIMediaEntityAssetControllerState *)v6 downloadExpirationDate];
-    v9 = [(VUIMediaEntityAssetControllerState *)self availabilityEndDate];
-    v10 = [(VUIMediaEntityAssetControllerState *)v6 availabilityEndDate];
-    v11 = [(VUIMediaEntityAssetControllerState *)self status];
-    if (v11 == -[VUIMediaEntityAssetControllerState status](v6, "status") && (-[VUIMediaEntityAssetControllerState downloadProgress](self, "downloadProgress"), v13 = v12, -[VUIMediaEntityAssetControllerState downloadProgress](v6, "downloadProgress"), v13 == v14) && (v15 = -[VUIMediaEntityAssetControllerState bytesToDownload](self, "bytesToDownload"), v15 == -[VUIMediaEntityAssetControllerState bytesToDownload](v6, "bytesToDownload")) && (v16 = -[VUIMediaEntityAssetControllerState bytesDownloaded](self, "bytesDownloaded"), v16 == -[VUIMediaEntityAssetControllerState bytesDownloaded](v6, "bytesDownloaded")) && (v17 = -[VUIMediaEntityAssetControllerState supportsCancellation](self, "supportsCancellation"), v17 == -[VUIMediaEntityAssetControllerState supportsCancellation](v6, "supportsCancellation")) && (v18 = -[VUIMediaEntityAssetControllerState supportsPausing](self, "supportsPausing"), v18 == -[VUIMediaEntityAssetControllerState supportsPausing](v6, "supportsPausing")) && (v19 = -[VUIMediaEntityAssetControllerState renewsOfflineKeysAutomatically](self, "renewsOfflineKeysAutomatically"), v19 == -[VUIMediaEntityAssetControllerState renewsOfflineKeysAutomatically](v6, "renewsOfflineKeysAutomatically")) && (v20 = -[VUIMediaEntityAssetControllerState allowsCellular](self, "allowsCellular"), v20 == -[VUIMediaEntityAssetControllerState allowsCellular](v6, "allowsCellular")) && (!(v7 | v8) || [v7 isEqualToDate:v8]) && (!(v9 | v10) || objc_msgSend(v9, "isEqualToDate:", v10)))
+    downloadExpirationDate = [(VUIMediaEntityAssetControllerState *)self downloadExpirationDate];
+    downloadExpirationDate2 = [(VUIMediaEntityAssetControllerState *)v6 downloadExpirationDate];
+    availabilityEndDate = [(VUIMediaEntityAssetControllerState *)self availabilityEndDate];
+    availabilityEndDate2 = [(VUIMediaEntityAssetControllerState *)v6 availabilityEndDate];
+    status = [(VUIMediaEntityAssetControllerState *)self status];
+    if (status == -[VUIMediaEntityAssetControllerState status](v6, "status") && (-[VUIMediaEntityAssetControllerState downloadProgress](self, "downloadProgress"), v13 = v12, -[VUIMediaEntityAssetControllerState downloadProgress](v6, "downloadProgress"), v13 == v14) && (v15 = -[VUIMediaEntityAssetControllerState bytesToDownload](self, "bytesToDownload"), v15 == -[VUIMediaEntityAssetControllerState bytesToDownload](v6, "bytesToDownload")) && (v16 = -[VUIMediaEntityAssetControllerState bytesDownloaded](self, "bytesDownloaded"), v16 == -[VUIMediaEntityAssetControllerState bytesDownloaded](v6, "bytesDownloaded")) && (v17 = -[VUIMediaEntityAssetControllerState supportsCancellation](self, "supportsCancellation"), v17 == -[VUIMediaEntityAssetControllerState supportsCancellation](v6, "supportsCancellation")) && (v18 = -[VUIMediaEntityAssetControllerState supportsPausing](self, "supportsPausing"), v18 == -[VUIMediaEntityAssetControllerState supportsPausing](v6, "supportsPausing")) && (v19 = -[VUIMediaEntityAssetControllerState renewsOfflineKeysAutomatically](self, "renewsOfflineKeysAutomatically"), v19 == -[VUIMediaEntityAssetControllerState renewsOfflineKeysAutomatically](v6, "renewsOfflineKeysAutomatically")) && (v20 = -[VUIMediaEntityAssetControllerState allowsCellular](self, "allowsCellular"), v20 == -[VUIMediaEntityAssetControllerState allowsCellular](v6, "allowsCellular")) && (!(downloadExpirationDate | downloadExpirationDate2) || [downloadExpirationDate isEqualToDate:downloadExpirationDate2]) && (!(availabilityEndDate | availabilityEndDate2) || objc_msgSend(availabilityEndDate, "isEqualToDate:", availabilityEndDate2)))
     {
-      v23 = [(VUIMediaEntityAssetControllerState *)self downloadFailedDueToError];
-      v21 = v23 ^ [(VUIMediaEntityAssetControllerState *)v6 downloadFailedDueToError]^ 1;
+      downloadFailedDueToError = [(VUIMediaEntityAssetControllerState *)self downloadFailedDueToError];
+      v21 = downloadFailedDueToError ^ [(VUIMediaEntityAssetControllerState *)v6 downloadFailedDueToError]^ 1;
     }
 
     else
@@ -172,13 +172,13 @@
   [v3 addObject:v32];
 
   v33 = MEMORY[0x1E696AEC0];
-  v34 = [(VUIMediaEntityAssetControllerState *)self downloadExpirationDate];
-  v35 = [v33 stringWithFormat:@"%@=%@", @"downloadExpirationDate", v34];
+  downloadExpirationDate = [(VUIMediaEntityAssetControllerState *)self downloadExpirationDate];
+  v35 = [v33 stringWithFormat:@"%@=%@", @"downloadExpirationDate", downloadExpirationDate];
   [v3 addObject:v35];
 
   v36 = MEMORY[0x1E696AEC0];
-  v37 = [(VUIMediaEntityAssetControllerState *)self availabilityEndDate];
-  v38 = [v36 stringWithFormat:@"%@=%@", @"availabilityEndDate", v37];
+  availabilityEndDate = [(VUIMediaEntityAssetControllerState *)self availabilityEndDate];
+  v38 = [v36 stringWithFormat:@"%@=%@", @"availabilityEndDate", availabilityEndDate];
   [v3 addObject:v38];
 
   v39 = MEMORY[0x1E696AEC0];

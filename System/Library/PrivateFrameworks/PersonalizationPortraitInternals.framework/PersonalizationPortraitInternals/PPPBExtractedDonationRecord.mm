@@ -1,57 +1,57 @@
 @interface PPPBExtractedDonationRecord
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTopicId:(BOOL)a3;
-- (void)setHasUnixTimestampSec:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasTopicId:(BOOL)id;
+- (void)setHasUnixTimestampSec:(BOOL)sec;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPPBExtractedDonationRecord
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 6))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 6))
   {
     [(PPPBExtractedDonationRecord *)self setSourceBundleId:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PPPBExtractedDonationRecord *)self setAlgorithm:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(fromCopy + 56);
   if (v5)
   {
-    self->_score = *(v4 + 1);
+    self->_score = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 56);
+    v5 = *(fromCopy + 56);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_topicId = *(v4 + 2);
+    self->_topicId = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PPPBExtractedDonationRecord *)self setNamedEntity:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 56) & 4) != 0)
+  if ((*(fromCopy + 56) & 4) != 0)
   {
-    self->_unixTimestampSec = *(v4 + 3);
+    self->_unixTimestampSec = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 }
@@ -117,16 +117,16 @@
   return v4 ^ v3 ^ v7 ^ v11 ^ v12 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   sourceBundleId = self->_sourceBundleId;
-  if (sourceBundleId | *(v4 + 6))
+  if (sourceBundleId | *(equalCopy + 6))
   {
     if (![(NSString *)sourceBundleId isEqual:?])
     {
@@ -135,7 +135,7 @@
   }
 
   algorithm = self->_algorithm;
-  if (algorithm | *(v4 + 4))
+  if (algorithm | *(equalCopy + 4))
   {
     if (![(NSString *)algorithm isEqual:?])
     {
@@ -144,35 +144,35 @@
   }
 
   has = self->_has;
-  v8 = *(v4 + 56);
+  v8 = *(equalCopy + 56);
   if (has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_score != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_score != *(equalCopy + 1))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_23;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_topicId != *(v4 + 2))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_topicId != *(equalCopy + 2))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 56) & 2) != 0)
+  else if ((*(equalCopy + 56) & 2) != 0)
   {
     goto LABEL_23;
   }
 
   namedEntity = self->_namedEntity;
-  if (namedEntity | *(v4 + 5))
+  if (namedEntity | *(equalCopy + 5))
   {
     if (![(NSString *)namedEntity isEqual:?])
     {
@@ -182,13 +182,13 @@ LABEL_23:
     }
 
     has = self->_has;
-    v8 = *(v4 + 56);
+    v8 = *(equalCopy + 56);
   }
 
   v10 = (v8 & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((v8 & 4) == 0 || self->_unixTimestampSec != *(v4 + 3))
+    if ((v8 & 4) == 0 || self->_unixTimestampSec != *(equalCopy + 3))
     {
       goto LABEL_23;
     }
@@ -201,14 +201,14 @@ LABEL_24:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_sourceBundleId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_sourceBundleId copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
-  v8 = [(NSString *)self->_algorithm copyWithZone:a3];
+  v8 = [(NSString *)self->_algorithm copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -226,7 +226,7 @@ LABEL_24:
     *(v5 + 56) |= 2u;
   }
 
-  v11 = [(NSString *)self->_namedEntity copyWithZone:a3];
+  v11 = [(NSString *)self->_namedEntity copyWithZone:zone];
   v12 = *(v5 + 40);
   *(v5 + 40) = v11;
 
@@ -239,63 +239,63 @@ LABEL_24:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_sourceBundleId)
   {
-    [v4 setSourceBundleId:?];
-    v4 = v6;
+    [toCopy setSourceBundleId:?];
+    toCopy = v6;
   }
 
   if (self->_algorithm)
   {
     [v6 setAlgorithm:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_score;
-    *(v4 + 56) |= 1u;
+    *(toCopy + 1) = *&self->_score;
+    *(toCopy + 56) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = self->_topicId;
-    *(v4 + 56) |= 2u;
+    *(toCopy + 2) = self->_topicId;
+    *(toCopy + 56) |= 2u;
   }
 
   if (self->_namedEntity)
   {
     [v6 setNamedEntity:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 3) = self->_unixTimestampSec;
-    *(v4 + 56) |= 4u;
+    *(toCopy + 3) = self->_unixTimestampSec;
+    *(toCopy + 56) |= 4u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_sourceBundleId)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_algorithm)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -303,7 +303,7 @@ LABEL_24:
   {
     score = self->_score;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
   }
 
@@ -311,31 +311,31 @@ LABEL_24:
   {
     topicId = self->_topicId;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_namedEntity)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     unixTimestampSec = self->_unixTimestampSec;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   sourceBundleId = self->_sourceBundleId;
   if (sourceBundleId)
   {
-    [v3 setObject:sourceBundleId forKey:@"sourceBundleId"];
+    [dictionary setObject:sourceBundleId forKey:@"sourceBundleId"];
   }
 
   algorithm = self->_algorithm;
@@ -380,15 +380,15 @@ LABEL_24:
   v8.receiver = self;
   v8.super_class = PPPBExtractedDonationRecord;
   v4 = [(PPPBExtractedDonationRecord *)&v8 description];
-  v5 = [(PPPBExtractedDonationRecord *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPPBExtractedDonationRecord *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasUnixTimestampSec:(BOOL)a3
+- (void)setHasUnixTimestampSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 4;
   }
@@ -401,9 +401,9 @@ LABEL_24:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTopicId:(BOOL)a3
+- (void)setHasTopicId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }

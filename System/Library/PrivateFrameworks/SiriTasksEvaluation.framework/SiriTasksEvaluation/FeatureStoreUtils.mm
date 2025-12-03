@@ -1,11 +1,11 @@
 @interface FeatureStoreUtils
-+ (id)retrieveFeatureDataWithStreamId:(id)a3 interactionId:(id)a4;
++ (id)retrieveFeatureDataWithStreamId:(id)id interactionId:(id)interactionId;
 - (_TtC19SiriTasksEvaluation17FeatureStoreUtils)init;
 @end
 
 @implementation FeatureStoreUtils
 
-+ (id)retrieveFeatureDataWithStreamId:(id)a3 interactionId:(id)a4
++ (id)retrieveFeatureDataWithStreamId:(id)id interactionId:(id)interactionId
 {
   v4 = sub_26926B230();
   v6 = v5;

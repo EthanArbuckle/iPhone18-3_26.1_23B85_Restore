@@ -1,20 +1,20 @@
 @interface HMMutableMediaSystemData
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMMutableMediaSystemData
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HMMediaSystemData alloc];
-  v5 = [(HMMediaGroup *)self identifier];
-  v6 = [(HMMediaGroup *)self parentIdentifier];
-  v7 = [(HMMediaGroup *)self name];
-  v8 = [(HMMediaGroup *)self isDefaultName];
-  v9 = [(HMMediaGroup *)self associatedGroupIdentifier];
-  v10 = [(HMMediaSystemData *)self leftDestinationIdentifier];
-  v11 = [(HMMediaSystemData *)self rightDestinationIdentifier];
-  v12 = [(HMMediaSystemData *)v4 initWithIdentifier:v5 parentIdentifier:v6 name:v7 defaultName:v8 associatedGroupIdentifier:v9 leftDestinationIdentifier:v10 rightDestinationIdentifier:v11];
+  identifier = [(HMMediaGroup *)self identifier];
+  parentIdentifier = [(HMMediaGroup *)self parentIdentifier];
+  name = [(HMMediaGroup *)self name];
+  isDefaultName = [(HMMediaGroup *)self isDefaultName];
+  associatedGroupIdentifier = [(HMMediaGroup *)self associatedGroupIdentifier];
+  leftDestinationIdentifier = [(HMMediaSystemData *)self leftDestinationIdentifier];
+  rightDestinationIdentifier = [(HMMediaSystemData *)self rightDestinationIdentifier];
+  v12 = [(HMMediaSystemData *)v4 initWithIdentifier:identifier parentIdentifier:parentIdentifier name:name defaultName:isDefaultName associatedGroupIdentifier:associatedGroupIdentifier leftDestinationIdentifier:leftDestinationIdentifier rightDestinationIdentifier:rightDestinationIdentifier];
 
   return v12;
 }

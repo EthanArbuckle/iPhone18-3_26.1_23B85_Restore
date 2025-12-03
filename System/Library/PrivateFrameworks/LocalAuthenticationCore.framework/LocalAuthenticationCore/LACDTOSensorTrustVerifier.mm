@@ -1,32 +1,32 @@
 @interface LACDTOSensorTrustVerifier
-- (LACDTOSensorTrustVerifier)initWithTrustStateProvider:(id)a3 featureStateProvider:(id)a4 repairStateProvider:(id)a5;
-- (void)verifySensorTrustWithCompletion:(id)a3;
+- (LACDTOSensorTrustVerifier)initWithTrustStateProvider:(id)provider featureStateProvider:(id)stateProvider repairStateProvider:(id)repairStateProvider;
+- (void)verifySensorTrustWithCompletion:(id)completion;
 @end
 
 @implementation LACDTOSensorTrustVerifier
 
-- (LACDTOSensorTrustVerifier)initWithTrustStateProvider:(id)a3 featureStateProvider:(id)a4 repairStateProvider:(id)a5
+- (LACDTOSensorTrustVerifier)initWithTrustStateProvider:(id)provider featureStateProvider:(id)stateProvider repairStateProvider:(id)repairStateProvider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  stateProviderCopy = stateProvider;
+  repairStateProviderCopy = repairStateProvider;
   v15.receiver = self;
   v15.super_class = LACDTOSensorTrustVerifier;
   v12 = [(LACDTOSensorTrustVerifier *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_trustStateProvider, a3);
-    objc_storeStrong(&v13->_featureStateProvider, a4);
-    objc_storeStrong(&v13->_repairStateProvider, a5);
+    objc_storeStrong(&v12->_trustStateProvider, provider);
+    objc_storeStrong(&v13->_featureStateProvider, stateProvider);
+    objc_storeStrong(&v13->_repairStateProvider, repairStateProvider);
   }
 
   return v13;
 }
 
-- (void)verifySensorTrustWithCompletion:(id)a3
+- (void)verifySensorTrustWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = objc_alloc_init(LACDTOSensorTrustVerifyService);
   featureStateProvider = self->_featureStateProvider;
@@ -35,7 +35,7 @@
   v9[2] = __61__LACDTOSensorTrustVerifier_verifySensorTrustWithCompletion___block_invoke;
   v9[3] = &unk_1E7A962C8;
   objc_copyWeak(&v12, &location);
-  v7 = v4;
+  v7 = completionCopy;
   v11 = v7;
   v8 = v5;
   v10 = v8;

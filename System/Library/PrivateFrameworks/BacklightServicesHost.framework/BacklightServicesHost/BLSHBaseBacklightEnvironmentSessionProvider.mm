@@ -3,10 +3,10 @@
 - (BLSHBacklightInactiveEnvironmentSession)activeSession;
 - (BLSHBaseBacklightEnvironmentSessionProvider)init;
 - (id)createInactiveEnvironmentSession;
-- (void)didEndInactiveEnvironmentSession:(id)a3;
-- (void)inactiveEnvironmentSession:(id)a3 didUpdateToPresentation:(id)a4;
-- (void)setPresentation:(id)a3 withCompletion:(id)a4;
-- (void)setPresentationWithFBScenes:(id)a3 flipbookContext:(id)a4 completion:(id)a5;
+- (void)didEndInactiveEnvironmentSession:(id)session;
+- (void)inactiveEnvironmentSession:(id)session didUpdateToPresentation:(id)presentation;
+- (void)setPresentation:(id)presentation withCompletion:(id)completion;
+- (void)setPresentationWithFBScenes:(id)scenes flipbookContext:(id)context completion:(id)completion;
 @end
 
 @implementation BLSHBaseBacklightEnvironmentSessionProvider
@@ -47,17 +47,17 @@
   return v3;
 }
 
-- (void)setPresentation:(id)a3 withCompletion:(id)a4
+- (void)setPresentation:(id)presentation withCompletion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  presentationCopy = presentation;
+  completionCopy = completion;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = [v7 presentationEntries];
-  v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  presentationEntries = [presentationCopy presentationEntries];
+  v10 = [presentationEntries countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v10)
   {
     v11 = v10;
@@ -68,15 +68,15 @@
       {
         if (*v26 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(presentationEntries);
         }
 
         v14 = *(*(&v25 + 1) + 8 * i);
-        v15 = [v14 environment];
-        [v15 setAlwaysOnEnabledForEnvironment:{-[BLSHBaseBacklightEnvironmentSessionProvider presentationEntrySupportsAlwaysOn:](self, "presentationEntrySupportsAlwaysOn:", v14)}];
+        environment = [v14 environment];
+        [environment setAlwaysOnEnabledForEnvironment:{-[BLSHBaseBacklightEnvironmentSessionProvider presentationEntrySupportsAlwaysOn:](self, "presentationEntrySupportsAlwaysOn:", v14)}];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v11 = [presentationEntries countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v11);
@@ -84,12 +84,12 @@
 
   os_unfair_lock_lock(&self->_lock);
   v16 = self->_lock_presentation;
-  objc_storeStrong(&self->_lock_presentation, a3);
-  v17 = MEMORY[0x223D70730](v8);
+  objc_storeStrong(&self->_lock_presentation, presentation);
+  v17 = MEMORY[0x223D70730](completionCopy);
   lock_setPresentationCompletion = self->_lock_setPresentationCompletion;
   self->_lock_setPresentationCompletion = v17;
 
-  v19 = [v7 isEqual:v16];
+  v19 = [presentationCopy isEqual:v16];
   v20 = self->_lock_activeSession;
   if (!v20)
   {
@@ -103,7 +103,7 @@
 
   else
   {
-    v21 = v8;
+    v21 = completionCopy;
   }
 
   v22 = MEMORY[0x223D70730](v21);
@@ -113,28 +113,28 @@
   os_unfair_lock_unlock(&self->_lock);
   if (v19)
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
-    [(BLSHBacklightInactiveEnvironmentSession *)v20 setPresentation:v7];
+    [(BLSHBacklightInactiveEnvironmentSession *)v20 setPresentation:presentationCopy];
   }
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPresentationWithFBScenes:(id)a3 flipbookContext:(id)a4 completion:(id)a5
+- (void)setPresentationWithFBScenes:(id)scenes flipbookContext:(id)context completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v11 = [a3 bs_mapNoNulls:&__block_literal_global_31];
-  v10 = [[BLSHBacklightEnvironmentPresentation alloc] initWithPresentationEntries:v11 flipbookContext:v9 expirationDate:0];
+  completionCopy = completion;
+  contextCopy = context;
+  v11 = [scenes bs_mapNoNulls:&__block_literal_global_31];
+  v10 = [[BLSHBacklightEnvironmentPresentation alloc] initWithPresentationEntries:v11 flipbookContext:contextCopy expirationDate:0];
 
-  [(BLSHBaseBacklightEnvironmentSessionProvider *)self setPresentation:v10 withCompletion:v8];
+  [(BLSHBaseBacklightEnvironmentSessionProvider *)self setPresentation:v10 withCompletion:completionCopy];
 }
 
 BLSHPresentationEntry *__102__BLSHBaseBacklightEnvironmentSessionProvider_setPresentationWithFBScenes_flipbookContext_completion___block_invoke(uint64_t a1, void *a2)
@@ -145,14 +145,14 @@ BLSHPresentationEntry *__102__BLSHBaseBacklightEnvironmentSessionProvider_setPre
   return v3;
 }
 
-- (void)inactiveEnvironmentSession:(id)a3 didUpdateToPresentation:(id)a4
+- (void)inactiveEnvironmentSession:(id)session didUpdateToPresentation:(id)presentation
 {
-  v10 = a4;
-  v6 = a3;
+  presentationCopy = presentation;
+  sessionCopy = session;
   os_unfair_lock_lock(&self->_lock);
   lock_activeSession = self->_lock_activeSession;
 
-  if (__PAIR128__(self->_lock_presentation, lock_activeSession) == __PAIR128__(v10, v6))
+  if (__PAIR128__(self->_lock_presentation, lock_activeSession) == __PAIR128__(presentationCopy, sessionCopy))
   {
     v8 = MEMORY[0x223D70730](self->_lock_setPresentationCompletion);
     lock_setPresentationCompletion = self->_lock_setPresentationCompletion;
@@ -171,18 +171,18 @@ BLSHPresentationEntry *__102__BLSHBaseBacklightEnvironmentSessionProvider_setPre
   }
 }
 
-- (void)didEndInactiveEnvironmentSession:(id)a3
+- (void)didEndInactiveEnvironmentSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   os_unfair_lock_lock(&self->_lock);
   lock_activeSession = self->_lock_activeSession;
-  if (lock_activeSession == v5)
+  if (lock_activeSession == sessionCopy)
   {
     self->_lock_activeSession = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  [(BLSHBacklightInactiveEnvironmentSession *)v5 removeObserver:self];
+  [(BLSHBacklightInactiveEnvironmentSession *)sessionCopy removeObserver:self];
 }
 
 - (id)createInactiveEnvironmentSession

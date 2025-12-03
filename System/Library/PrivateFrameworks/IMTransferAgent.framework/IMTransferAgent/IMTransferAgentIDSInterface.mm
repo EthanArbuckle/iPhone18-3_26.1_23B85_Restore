@@ -1,16 +1,16 @@
 @interface IMTransferAgentIDSInterface
 + (id)sharedInstance;
-- (BOOL)_sendIDSMessage:(id)a3 topic:(id)a4 localPath:(id)a5;
+- (BOOL)_sendIDSMessage:(id)message topic:(id)topic localPath:(id)path;
 - (IMTransferAgentIDSInterface)init;
-- (void)_handleUploadRequest:(id)a3;
-- (void)_handleUploadResponse:(id)a3;
-- (void)_sendUploadRequest:(id)a3 topic:(id)a4 transferID:(id)a5 sourceAppID:(id)a6 allowReauthorize:(BOOL)a7;
+- (void)_handleUploadRequest:(id)request;
+- (void)_handleUploadResponse:(id)response;
+- (void)_sendUploadRequest:(id)request topic:(id)topic transferID:(id)d sourceAppID:(id)iD allowReauthorize:(BOOL)reauthorize;
 - (void)dealloc;
 - (void)decrementTransferCount;
 - (void)incrementTransferCount;
-- (void)remoteUploadFileRequest:(id)a3 topic:(id)a4 transferID:(id)a5 sourceAppID:(id)a6 completionBlock:(id)a7;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
+- (void)remoteUploadFileRequest:(id)request topic:(id)topic transferID:(id)d sourceAppID:(id)iD completionBlock:(id)block;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
 @end
 
 @implementation IMTransferAgentIDSInterface
@@ -70,31 +70,31 @@
   [(IMTransferAgentIDSInterface *)&v3 dealloc];
 }
 
-- (void)remoteUploadFileRequest:(id)a3 topic:(id)a4 transferID:(id)a5 sourceAppID:(id)a6 completionBlock:(id)a7
+- (void)remoteUploadFileRequest:(id)request topic:(id)topic transferID:(id)d sourceAppID:(id)iD completionBlock:(id)block
 {
   v32 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  requestCopy = request;
+  topicCopy = topic;
+  dCopy = d;
+  iDCopy = iD;
+  blockCopy = block;
   if (IMOSLoggingEnabled())
   {
     v17 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v28 = 138412546;
-      v29 = v12;
+      v29 = requestCopy;
       v30 = 2112;
-      v31 = v15;
+      v31 = iDCopy;
       _os_log_impl(&dword_254850000, v17, OS_LOG_TYPE_INFO, "Received Request to Remote Upload an Attachment at %@ sourceApp %@", &v28, 0x16u);
     }
   }
 
   im_assert_primary_queue();
-  if (!v14)
+  if (!dCopy)
   {
-    v14 = StringGUID();
+    dCopy = StringGUID();
   }
 
   if (!self->_uniqueIDToTransferCompletionBlockMap)
@@ -112,11 +112,11 @@
   }
 
   v22 = self->_uniqueIDToTransferCompletionBlockMap;
-  v23 = MEMORY[0x259C1C440](v16);
-  objc_msgSend_setObject_forKey_(v22, v24, v23, v14);
+  v23 = MEMORY[0x259C1C440](blockCopy);
+  objc_msgSend_setObject_forKey_(v22, v24, v23, dCopy);
 
-  objc_msgSend_setObject_forKey_(self->_uniqueIDToFilePathMap, v25, v12, v14);
-  objc_msgSend__sendUploadRequest_topic_transferID_sourceAppID_allowReauthorize_(self, v26, v12, v13, v14, v15, 0);
+  objc_msgSend_setObject_forKey_(self->_uniqueIDToFilePathMap, v25, requestCopy, dCopy);
+  objc_msgSend__sendUploadRequest_topic_transferID_sourceAppID_allowReauthorize_(self, v26, requestCopy, topicCopy, dCopy, iDCopy, 0);
 
   v27 = *MEMORY[0x277D85DE8];
 }
@@ -180,14 +180,14 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendUploadRequest:(id)a3 topic:(id)a4 transferID:(id)a5 sourceAppID:(id)a6 allowReauthorize:(BOOL)a7
+- (void)_sendUploadRequest:(id)request topic:(id)topic transferID:(id)d sourceAppID:(id)iD allowReauthorize:(BOOL)reauthorize
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  requestCopy = request;
+  topicCopy = topic;
+  dCopy = d;
+  iDCopy = iD;
   im_assert_primary_queue();
-  v16 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x277CBEA90], v15, v11);
+  v16 = objc_msgSend_dataWithContentsOfFile_(MEMORY[0x277CBEA90], v15, requestCopy);
   v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v18 = v16;
   if (v18)
@@ -200,7 +200,7 @@
     sub_254867AAC();
   }
 
-  v19 = v12;
+  v19 = topicCopy;
   if (v19)
   {
     CFDictionarySetValue(v17, qword_27F611B48, v19);
@@ -211,7 +211,7 @@
     sub_254867B30();
   }
 
-  v20 = v13;
+  v20 = dCopy;
   if (v20)
   {
     CFDictionarySetValue(v17, qword_27F611B50, v20);
@@ -223,17 +223,17 @@
   }
 
   CFDictionarySetValue(v17, qword_27F611B30, &unk_28669F518);
-  if (v14)
+  if (iDCopy)
   {
-    CFDictionarySetValue(v17, qword_27F611B58, v14);
+    CFDictionarySetValue(v17, qword_27F611B58, iDCopy);
   }
 
-  objc_msgSend__sendIDSMessage_topic_localPath_(self, v21, v17, v19, v11);
+  objc_msgSend__sendIDSMessage_topic_localPath_(self, v21, v17, v19, requestCopy);
 }
 
-- (void)_handleUploadRequest:(id)a3
+- (void)_handleUploadRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -246,11 +246,11 @@
 
   im_assert_primary_queue();
   objc_msgSend_incrementTransferCount(self, v6, v7);
-  v9 = objc_msgSend__dataForKey_(v4, v8, qword_27F611B38);
-  v11 = objc_msgSend__stringForKey_(v4, v10, qword_27F611B60);
-  v13 = objc_msgSend__stringForKey_(v4, v12, qword_27F611B48);
-  v15 = objc_msgSend__stringForKey_(v4, v14, qword_27F611B50);
-  v17 = objc_msgSend__stringForKey_(v4, v16, qword_27F611B58);
+  v9 = objc_msgSend__dataForKey_(requestCopy, v8, qword_27F611B38);
+  v11 = objc_msgSend__stringForKey_(requestCopy, v10, qword_27F611B60);
+  v13 = objc_msgSend__stringForKey_(requestCopy, v12, qword_27F611B48);
+  v15 = objc_msgSend__stringForKey_(requestCopy, v14, qword_27F611B50);
+  v17 = objc_msgSend__stringForKey_(requestCopy, v16, qword_27F611B58);
   v20 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v18, v19);
   v22 = objc_msgSend_im_randomTemporaryFileURLWithFileName_(v20, v21, v11);
   v25 = objc_msgSend_path(v22, v23, v24);
@@ -270,17 +270,17 @@
   }
 }
 
-- (void)_handleUploadResponse:(id)a3
+- (void)_handleUploadResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   im_assert_primary_queue();
-  v6 = objc_msgSend__stringForKey_(v4, v5, qword_27F611B50);
-  v8 = objc_msgSend_objectForKey_(v4, v7, qword_27F611B70);
+  v6 = objc_msgSend__stringForKey_(responseCopy, v5, qword_27F611B50);
+  v8 = objc_msgSend_objectForKey_(responseCopy, v7, qword_27F611B70);
   v11 = objc_msgSend_BOOLValue(v8, v9, v10);
 
-  v13 = objc_msgSend__stringForKey_(v4, v12, qword_27F611B80);
-  v15 = objc_msgSend_objectForKey_(v4, v14, qword_27F611B88);
-  v17 = objc_msgSend__stringForKey_(v4, v16, qword_27F611B90);
+  v13 = objc_msgSend__stringForKey_(responseCopy, v12, qword_27F611B80);
+  v15 = objc_msgSend_objectForKey_(responseCopy, v14, qword_27F611B88);
+  v17 = objc_msgSend__stringForKey_(responseCopy, v16, qword_27F611B90);
   v19 = objc_msgSend_objectForKey_(self->_uniqueIDToTransferCompletionBlockMap, v18, v6);
   v21 = objc_msgSend_objectForKey_(self->_uniqueIDToFilePathMap, v20, v6);
   v22 = IMOSLoggingEnabled();
@@ -353,19 +353,19 @@
   }
 }
 
-- (BOOL)_sendIDSMessage:(id)a3 topic:(id)a4 localPath:(id)a5
+- (BOOL)_sendIDSMessage:(id)message topic:(id)topic localPath:(id)path
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  topicCopy = topic;
+  pathCopy = path;
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v33 = v8;
+      v33 = messageCopy;
       _os_log_impl(&dword_254850000, v11, OS_LOG_TYPE_INFO, " SENDING Remote Attachment IDS Message with content %@", buf, 0xCu);
     }
   }
@@ -397,16 +397,16 @@
       v34 = 2112;
       v35 = v22;
       v36 = 2112;
-      v37 = v8;
+      v37 = messageCopy;
       v38 = 2112;
       v39 = v24;
       _os_log_impl(&dword_254850000, v23, OS_LOG_TYPE_INFO, "Sending message to local account (identifier %@)  (error %@)  (messageDict %@) success: %@", buf, 0x2Au);
     }
   }
 
-  if (v20 && IMTransferRequestIsForMessages(v9, v10))
+  if (v20 && IMTransferRequestIsForMessages(topicCopy, pathCopy))
   {
-    v27 = objc_msgSend_lastPathComponent(v10, v25, v26);
+    v27 = objc_msgSend_lastPathComponent(pathCopy, v25, v26);
     IMGreenTeaAttachmentTransmitLoggingFormat();
   }
 
@@ -414,35 +414,35 @@
   return v20;
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
   v40 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  dataCopy = data;
+  dCopy = d;
+  contextCopy = context;
   if (IMOSLoggingEnabled())
   {
     v17 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v30 = 138413314;
-      v31 = v12;
+      v31 = serviceCopy;
       v32 = 2112;
-      v33 = v13;
+      v33 = accountCopy;
       v34 = 2112;
-      v35 = v14;
+      v35 = dataCopy;
       v36 = 2112;
-      v37 = v15;
+      v37 = dCopy;
       v38 = 2112;
-      v39 = v16;
+      v39 = contextCopy;
       _os_log_impl(&dword_254850000, v17, OS_LOG_TYPE_INFO, "incomingData on service %@, account %@ data %@ fromID %@ context %@", &v30, 0x34u);
     }
   }
 
   im_assert_primary_queue();
-  v20 = objc_msgSend__CUTOptionallyDecompressData(v14, v18, v19);
+  v20 = objc_msgSend__CUTOptionallyDecompressData(dataCopy, v18, v19);
   v21 = JWDecodeDictionary();
   v23 = objc_msgSend_objectForKey_(v21, v22, qword_27F611B30);
   v26 = objc_msgSend_unsignedIntValue(v23, v24, v25);
@@ -471,27 +471,27 @@
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
+  successCopy = success;
   v22 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
   if (IMOSLoggingEnabled())
   {
     v15 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = @"NO";
-      if (v8)
+      if (successCopy)
       {
         v16 = @"YES";
       }
 
       v18 = 138412546;
-      v19 = v13;
+      v19 = identifierCopy;
       v20 = 2112;
       v21 = v16;
       _os_log_impl(&dword_254850000, v15, OS_LOG_TYPE_INFO, "Sent message with identifier %@ success %@", &v18, 0x16u);

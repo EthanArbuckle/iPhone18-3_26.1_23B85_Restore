@@ -1,13 +1,13 @@
 @interface Turtle
-- (BOOL)configureFrequentBackgroundScan:(BOOL)a3 error:(id *)a4;
-- (BOOL)gapSubtraction:(BOOL)a3 error:(id *)a4;
+- (BOOL)configureFrequentBackgroundScan:(BOOL)scan error:(id *)error;
+- (BOOL)gapSubtraction:(BOOL)subtraction error:(id *)error;
 - (SSHBHIDSSHBTurtleDelegate)delegate;
 - (Turtle)init;
-- (id)_frequentScanPeriodMs:(id *)a3;
-- (id)bytesToInputPacket:(id *)a3;
-- (id)criticalErrors:(id *)a3;
-- (void)deviceWasAdded:(__IOHIDDevice *)a3;
-- (void)deviceWasRemoved:(__IOHIDDevice *)a3;
+- (id)_frequentScanPeriodMs:(id *)ms;
+- (id)bytesToInputPacket:(id *)packet;
+- (id)criticalErrors:(id *)errors;
+- (void)deviceWasAdded:(__IOHIDDevice *)added;
+- (void)deviceWasRemoved:(__IOHIDDevice *)removed;
 @end
 
 @implementation Turtle
@@ -32,43 +32,43 @@
   return v2;
 }
 
-- (void)deviceWasAdded:(__IOHIDDevice *)a3
+- (void)deviceWasAdded:(__IOHIDDevice *)added
 {
-  [(Turtle *)self setTurtleRef:a3];
-  v4 = [(Turtle *)self delegate];
-  [v4 turtleWasConnected];
+  [(Turtle *)self setTurtleRef:added];
+  delegate = [(Turtle *)self delegate];
+  [delegate turtleWasConnected];
 }
 
-- (void)deviceWasRemoved:(__IOHIDDevice *)a3
+- (void)deviceWasRemoved:(__IOHIDDevice *)removed
 {
   [(Turtle *)self setTurtleRef:0];
-  v4 = [(Turtle *)self delegate];
-  [v4 turtleWasDisconnected];
+  delegate = [(Turtle *)self delegate];
+  [delegate turtleWasDisconnected];
 }
 
-- (id)bytesToInputPacket:(id *)a3
+- (id)bytesToInputPacket:(id *)packet
 {
   v4 = objc_alloc_init(SSHBHIDSSHBTurtleInputPacket);
-  [(SSHBHIDSSHBTurtleInputPacket *)v4 setReportID:a3->var0];
-  [(SSHBHIDSSHBTurtleInputPacket *)v4 setFrameNumber:a3->var1];
-  [(SSHBHIDSSHBTurtleInputPacket *)v4 setTimestamp:*(&a3->var1 + 1)];
-  [(SSHBHIDSSHBTurtleInputPacket *)v4 setCookie_type:BYTE2(a3->var2)];
-  [(SSHBHIDSSHBTurtleInputPacket *)v4 setCookie:*(&a3->var2 + 3)];
-  [(SSHBHIDSSHBTurtleInputPacket *)v4 setCapValue:*(&a3->var2 + 5)];
-  [(SSHBHIDSSHBTurtleInputPacket *)v4 setGapValue:*(&a3->var4 + 1)];
-  [(SSHBHIDSSHBTurtleInputPacket *)v4 setForceValue:*(&a3->var6 + 1)];
-  [(SSHBHIDSSHBTurtleInputPacket *)v4 setMesaTemperature:*(&a3->var6 + 3)];
-  [(SSHBHIDSSHBTurtleInputPacket *)v4 setMesaFd:HIBYTE(a3->var7)];
-  [(SSHBHIDSSHBTurtleInputPacket *)v4 setMesaFdStuck:LOBYTE(a3->var8)];
-  *&v5 = vcvts_n_f32_s32(*(&a3->var6 + 3), 2uLL);
+  [(SSHBHIDSSHBTurtleInputPacket *)v4 setReportID:packet->var0];
+  [(SSHBHIDSSHBTurtleInputPacket *)v4 setFrameNumber:packet->var1];
+  [(SSHBHIDSSHBTurtleInputPacket *)v4 setTimestamp:*(&packet->var1 + 1)];
+  [(SSHBHIDSSHBTurtleInputPacket *)v4 setCookie_type:BYTE2(packet->var2)];
+  [(SSHBHIDSSHBTurtleInputPacket *)v4 setCookie:*(&packet->var2 + 3)];
+  [(SSHBHIDSSHBTurtleInputPacket *)v4 setCapValue:*(&packet->var2 + 5)];
+  [(SSHBHIDSSHBTurtleInputPacket *)v4 setGapValue:*(&packet->var4 + 1)];
+  [(SSHBHIDSSHBTurtleInputPacket *)v4 setForceValue:*(&packet->var6 + 1)];
+  [(SSHBHIDSSHBTurtleInputPacket *)v4 setMesaTemperature:*(&packet->var6 + 3)];
+  [(SSHBHIDSSHBTurtleInputPacket *)v4 setMesaFd:HIBYTE(packet->var7)];
+  [(SSHBHIDSSHBTurtleInputPacket *)v4 setMesaFdStuck:LOBYTE(packet->var8)];
+  *&v5 = vcvts_n_f32_s32(*(&packet->var6 + 3), 2uLL);
   [(SSHBHIDSSHBTurtleInputPacket *)v4 setMesaTemperatureProcessed:v5];
 
   return v4;
 }
 
-- (BOOL)gapSubtraction:(BOOL)a3 error:(id *)a4
+- (BOOL)gapSubtraction:(BOOL)subtraction error:(id *)error
 {
-  if (a3)
+  if (subtraction)
   {
     v6 = 1;
   }
@@ -80,34 +80,34 @@
 
   v13[0] = -95;
   v13[1] = v6;
-  v7 = [(Turtle *)self hidManager];
-  v8 = [(Turtle *)self turtleRef];
+  hidManager = [(Turtle *)self hidManager];
+  turtleRef = [(Turtle *)self turtleRef];
   v9 = [NSData dataWithBytes:v13 length:2];
   LODWORD(v12) = 161;
-  v10 = [v7 setReportForDevice:v8 reportType:0 reportID:161 buffer:v9 error:a4 domain:@"com.apple.DiagnosticsService.Diagnostic-4492.Turtle" code:v12];
+  v10 = [hidManager setReportForDevice:turtleRef reportType:0 reportID:161 buffer:v9 error:error domain:@"com.apple.DiagnosticsService.Diagnostic-4492.Turtle" code:v12];
 
   return v10;
 }
 
-- (BOOL)configureFrequentBackgroundScan:(BOOL)a3 error:(id *)a4
+- (BOOL)configureFrequentBackgroundScan:(BOOL)scan error:(id *)error
 {
-  v7 = [(Turtle *)self _frequentScanPeriodMs:a4];
+  v7 = [(Turtle *)self _frequentScanPeriodMs:error];
   v8 = v7;
   if (v7)
   {
     v18 = 33;
-    v19 = [v7 unsignedShortValue];
+    unsignedShortValue = [v7 unsignedShortValue];
     if (qword_100014410)
     {
-      if (a3)
+      if (scan)
       {
 LABEL_4:
         v9 = [NSData dataWithBytes:&v18 length:3];
 LABEL_8:
         v14 = v9;
-        v15 = [(Turtle *)self hidManager];
+        hidManager = [(Turtle *)self hidManager];
         LODWORD(v17) = 33;
-        v10 = [v15 setReportForDevice:-[Turtle turtleRef](self reportType:"turtleRef") reportID:0 buffer:33 error:v14 domain:a4 code:{@"com.apple.DiagnosticsService.Diagnostic-4492.Turtle", v17}];
+        v10 = [hidManager setReportForDevice:-[Turtle turtleRef](self reportType:"turtleRef") reportID:0 buffer:33 error:v14 domain:error code:{@"com.apple.DiagnosticsService.Diagnostic-4492.Turtle", v17}];
 
         goto LABEL_9;
       }
@@ -115,12 +115,12 @@ LABEL_8:
 
     else
     {
-      v11 = [(Turtle *)self hidManager];
-      v12 = [v11 getReportForDevice:-[Turtle turtleRef](self reportType:"turtleRef") reportID:0 error:{33, a4}];
+      hidManager2 = [(Turtle *)self hidManager];
+      v12 = [hidManager2 getReportForDevice:-[Turtle turtleRef](self reportType:"turtleRef") reportID:0 error:{33, error}];
       v13 = qword_100014410;
       qword_100014410 = v12;
 
-      if (a3)
+      if (scan)
       {
         goto LABEL_4;
       }
@@ -136,10 +136,10 @@ LABEL_9:
   return v10;
 }
 
-- (id)_frequentScanPeriodMs:(id *)a3
+- (id)_frequentScanPeriodMs:(id *)ms
 {
-  v5 = [(Turtle *)self hidManager];
-  v6 = [v5 getReportForDevice:-[Turtle turtleRef](self reportType:"turtleRef") reportID:0 error:{34, a3}];
+  hidManager = [(Turtle *)self hidManager];
+  v6 = [hidManager getReportForDevice:-[Turtle turtleRef](self reportType:"turtleRef") reportID:0 error:{34, ms}];
 
   if ([v6 length] == 3)
   {
@@ -154,13 +154,13 @@ LABEL_9:
   return v7;
 }
 
-- (id)criticalErrors:(id *)a3
+- (id)criticalErrors:(id *)errors
 {
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [(Turtle *)self _getReport:224 error:a3];
-  v7 = [(Turtle *)self _getReport:225 error:a3];
-  v8 = [(Turtle *)self _getReport:226 error:a3];
-  v9 = [(Turtle *)self _getReport:227 error:a3];
+  v6 = [(Turtle *)self _getReport:224 error:errors];
+  v7 = [(Turtle *)self _getReport:225 error:errors];
+  v8 = [(Turtle *)self _getReport:226 error:errors];
+  v9 = [(Turtle *)self _getReport:227 error:errors];
   if (v6)
   {
     v10 = *[v6 bytes];
@@ -179,15 +179,15 @@ LABEL_9:
 
   if (v7)
   {
-    v15 = [v7 bytes];
+    bytes = [v7 bytes];
     v35[0] = @"startScanFailures";
-    v30 = [NSNumber numberWithUnsignedChar:*v15];
+    v30 = [NSNumber numberWithUnsignedChar:*bytes];
     v36[0] = v30;
     v35[1] = @"stopScanFailures";
-    v16 = [NSNumber numberWithUnsignedChar:v15[1]];
+    v16 = [NSNumber numberWithUnsignedChar:bytes[1]];
     v36[1] = v16;
     v35[2] = @"readScanResultFailures";
-    v17 = [NSNumber numberWithUnsignedChar:v15[2]];
+    v17 = [NSNumber numberWithUnsignedChar:bytes[2]];
     v36[2] = v17;
     v18 = [NSDictionary dictionaryWithObjects:v36 forKeys:v35 count:3];
     [v5 setObject:v18 forKeyedSubscript:@"scan"];
@@ -195,12 +195,12 @@ LABEL_9:
 
   if (v8)
   {
-    v19 = [v8 bytes];
+    bytes2 = [v8 bytes];
     v33[0] = @"readFailures";
-    v20 = [NSNumber numberWithUnsignedChar:*v19];
+    v20 = [NSNumber numberWithUnsignedChar:*bytes2];
     v33[1] = @"writeFailures";
     v34[0] = v20;
-    v21 = [NSNumber numberWithUnsignedChar:v19[1]];
+    v21 = [NSNumber numberWithUnsignedChar:bytes2[1]];
     v34[1] = v21;
     v22 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:2];
     [v5 setObject:v22 forKeyedSubscript:@"i2c"];

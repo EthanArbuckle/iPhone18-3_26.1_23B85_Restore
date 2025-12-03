@@ -1,35 +1,35 @@
 @interface INUserActivityDescriptor
-- (BOOL)isEqual:(id)a3;
-- (INUserActivityDescriptor)descriptorWithAppDescriptor:(id)a3;
-- (INUserActivityDescriptor)initWithCoder:(id)a3;
-- (INUserActivityDescriptor)initWithUserActivityType:(id)a3 localizedName:(id)a4 bundleIdentifier:(id)a5 extensionBundleIdentifier:(id)a6 counterpartIdentifiers:(id)a7 teamIdentifier:(id)a8 supportedIntents:(id)a9 bundleURL:(id)a10;
+- (BOOL)isEqual:(id)equal;
+- (INUserActivityDescriptor)descriptorWithAppDescriptor:(id)descriptor;
+- (INUserActivityDescriptor)initWithCoder:(id)coder;
+- (INUserActivityDescriptor)initWithUserActivityType:(id)type localizedName:(id)name bundleIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier counterpartIdentifiers:(id)identifiers teamIdentifier:(id)teamIdentifier supportedIntents:(id)intents bundleURL:(id)self0;
 - (id)appDescriptor;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INUserActivityDescriptor
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = INUserActivityDescriptor;
-  v4 = a3;
-  [(INAppDescriptor *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(INAppDescriptor *)&v6 encodeWithCoder:coderCopy];
   v5 = [(INUserActivityDescriptor *)self userActivityType:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"userActivityType"];
+  [coderCopy encodeObject:v5 forKey:@"userActivityType"];
 }
 
-- (INUserActivityDescriptor)initWithCoder:(id)a3
+- (INUserActivityDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = INUserActivityDescriptor;
-  v5 = [(INAppDescriptor *)&v10 initWithCoder:v4];
+  v5 = [(INAppDescriptor *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userActivityType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userActivityType"];
     userActivityType = v5->_userActivityType;
     v5->_userActivityType = v6;
 
@@ -39,20 +39,20 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if ([(INUserActivityDescriptor *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(INUserActivityDescriptor *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     v16.receiver = self;
     v16.super_class = INUserActivityDescriptor;
-    v5 = [(INAppDescriptor *)&v16 isEqual:v4];
-    v6 = v4;
+    v5 = [(INAppDescriptor *)&v16 isEqual:equalCopy];
+    v6 = equalCopy;
     if (v6)
     {
       objc_opt_class();
@@ -76,10 +76,10 @@
 
     if (v5)
     {
-      v10 = [(INUserActivityDescriptor *)self userActivityType];
-      v11 = [(INUserActivityDescriptor *)v9 userActivityType];
-      v12 = v10;
-      v13 = v11;
+      userActivityType = [(INUserActivityDescriptor *)self userActivityType];
+      userActivityType2 = [(INUserActivityDescriptor *)v9 userActivityType];
+      v12 = userActivityType;
+      v13 = userActivityType2;
       v14 = v13;
       if (v12 == v13)
       {
@@ -115,26 +115,26 @@
   v7.receiver = self;
   v7.super_class = INUserActivityDescriptor;
   v3 = [(INAppDescriptor *)&v7 hash];
-  v4 = [(INUserActivityDescriptor *)self userActivityType];
-  v5 = [v4 hash];
+  userActivityType = [(INUserActivityDescriptor *)self userActivityType];
+  v5 = [userActivityType hash];
 
   return v5 ^ v3;
 }
 
-- (INUserActivityDescriptor)descriptorWithAppDescriptor:(id)a3
+- (INUserActivityDescriptor)descriptorWithAppDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v5 = [INUserActivityDescriptor alloc];
-  v6 = [(INUserActivityDescriptor *)self userActivityType];
-  v7 = [v4 localizedName];
-  v8 = [v4 bundleIdentifier];
-  v9 = [v4 extensionBundleIdentifier];
-  v10 = [v4 counterpartIdentifiers];
-  v11 = [v4 teamIdentifier];
-  v12 = [v4 supportedIntents];
-  v13 = [v4 bundleURL];
+  userActivityType = [(INUserActivityDescriptor *)self userActivityType];
+  localizedName = [descriptorCopy localizedName];
+  bundleIdentifier = [descriptorCopy bundleIdentifier];
+  extensionBundleIdentifier = [descriptorCopy extensionBundleIdentifier];
+  counterpartIdentifiers = [descriptorCopy counterpartIdentifiers];
+  teamIdentifier = [descriptorCopy teamIdentifier];
+  supportedIntents = [descriptorCopy supportedIntents];
+  bundleURL = [descriptorCopy bundleURL];
 
-  v14 = [(INUserActivityDescriptor *)v5 initWithUserActivityType:v6 localizedName:v7 bundleIdentifier:v8 extensionBundleIdentifier:v9 counterpartIdentifiers:v10 teamIdentifier:v11 supportedIntents:v12 bundleURL:v13];
+  v14 = [(INUserActivityDescriptor *)v5 initWithUserActivityType:userActivityType localizedName:localizedName bundleIdentifier:bundleIdentifier extensionBundleIdentifier:extensionBundleIdentifier counterpartIdentifiers:counterpartIdentifiers teamIdentifier:teamIdentifier supportedIntents:supportedIntents bundleURL:bundleURL];
   [(INAppDescriptor *)v14 setRequiresUserConfirmation:[(INAppDescriptor *)self requiresUserConfirmation]];
 
   return v14;
@@ -143,15 +143,15 @@
 - (id)appDescriptor
 {
   v3 = [INAppDescriptor alloc];
-  v4 = [(INAppDescriptor *)self localizedName];
-  v5 = [(INAppDescriptor *)self bundleIdentifier];
-  v6 = [(INAppDescriptor *)self extensionBundleIdentifier];
-  v7 = [(INAppDescriptor *)self counterpartIdentifiers];
-  v8 = [(INAppDescriptor *)self teamIdentifier];
-  v9 = [(INAppDescriptor *)self supportedIntents];
-  v10 = [(INAppDescriptor *)self bundleURL];
-  v11 = [(INAppDescriptor *)self documentTypes];
-  v12 = [(INAppDescriptor *)v3 initWithLocalizedName:v4 bundleIdentifier:v5 extensionBundleIdentifier:v6 counterpartIdentifiers:v7 teamIdentifier:v8 supportedIntents:v9 bundleURL:v10 documentTypes:v11];
+  localizedName = [(INAppDescriptor *)self localizedName];
+  bundleIdentifier = [(INAppDescriptor *)self bundleIdentifier];
+  extensionBundleIdentifier = [(INAppDescriptor *)self extensionBundleIdentifier];
+  counterpartIdentifiers = [(INAppDescriptor *)self counterpartIdentifiers];
+  teamIdentifier = [(INAppDescriptor *)self teamIdentifier];
+  supportedIntents = [(INAppDescriptor *)self supportedIntents];
+  bundleURL = [(INAppDescriptor *)self bundleURL];
+  documentTypes = [(INAppDescriptor *)self documentTypes];
+  v12 = [(INAppDescriptor *)v3 initWithLocalizedName:localizedName bundleIdentifier:bundleIdentifier extensionBundleIdentifier:extensionBundleIdentifier counterpartIdentifiers:counterpartIdentifiers teamIdentifier:teamIdentifier supportedIntents:supportedIntents bundleURL:bundleURL documentTypes:documentTypes];
 
   [(INAppDescriptor *)v12 setRequiresUserConfirmation:[(INAppDescriptor *)self requiresUserConfirmation]];
 
@@ -164,21 +164,21 @@
   v8.receiver = self;
   v8.super_class = INUserActivityDescriptor;
   v4 = [(INAppDescriptor *)&v8 description];
-  v5 = [(INUserActivityDescriptor *)self userActivityType];
-  v6 = [v3 stringWithFormat:@"%@, userActivityType: %@", v4, v5];
+  userActivityType = [(INUserActivityDescriptor *)self userActivityType];
+  v6 = [v3 stringWithFormat:@"%@, userActivityType: %@", v4, userActivityType];
 
   return v6;
 }
 
-- (INUserActivityDescriptor)initWithUserActivityType:(id)a3 localizedName:(id)a4 bundleIdentifier:(id)a5 extensionBundleIdentifier:(id)a6 counterpartIdentifiers:(id)a7 teamIdentifier:(id)a8 supportedIntents:(id)a9 bundleURL:(id)a10
+- (INUserActivityDescriptor)initWithUserActivityType:(id)type localizedName:(id)name bundleIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier counterpartIdentifiers:(id)identifiers teamIdentifier:(id)teamIdentifier supportedIntents:(id)intents bundleURL:(id)self0
 {
-  v16 = a3;
+  typeCopy = type;
   v22.receiver = self;
   v22.super_class = INUserActivityDescriptor;
-  v17 = [(INAppDescriptor *)&v22 initWithLocalizedName:a4 bundleIdentifier:a5 extensionBundleIdentifier:a6 counterpartIdentifiers:a7 teamIdentifier:a8 supportedIntents:a9 bundleURL:a10 documentTypes:0];
+  v17 = [(INAppDescriptor *)&v22 initWithLocalizedName:name bundleIdentifier:identifier extensionBundleIdentifier:bundleIdentifier counterpartIdentifiers:identifiers teamIdentifier:teamIdentifier supportedIntents:intents bundleURL:l documentTypes:0];
   if (v17)
   {
-    v18 = [v16 copy];
+    v18 = [typeCopy copy];
     userActivityType = v17->_userActivityType;
     v17->_userActivityType = v18;
 

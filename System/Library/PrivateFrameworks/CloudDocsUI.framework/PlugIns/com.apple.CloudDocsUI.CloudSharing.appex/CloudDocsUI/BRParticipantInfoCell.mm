@@ -1,17 +1,17 @@
 @interface BRParticipantInfoCell
-- (BRParticipantInfoCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)copy:(id)a3;
+- (BRParticipantInfoCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)copy:(id)copy;
 - (void)prepareForReuse;
-- (void)setRepresentedValue:(id)a3;
+- (void)setRepresentedValue:(id)value;
 @end
 
 @implementation BRParticipantInfoCell
 
-- (BRParticipantInfoCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (BRParticipantInfoCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v35.receiver = self;
   v35.super_class = BRParticipantInfoCell;
-  v4 = [(BRParticipantInfoCell *)&v35 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(BRParticipantInfoCell *)&v35 initWithStyle:0 reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -29,40 +29,40 @@
     [(UILabel *)v4->_accountValueLabel setLineBreakMode:5];
     [(BRParticipantInfoCell *)v4 addSubview:v4->_accountTypeLabel];
     [(BRParticipantInfoCell *)v4 addSubview:v4->_accountValueLabel];
-    v10 = [(BRParticipantInfoCell *)v4 safeAreaLayoutGuide];
-    v11 = [(UILabel *)v4->_accountTypeLabel leadingAnchor];
-    v12 = [v10 leadingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12 constant:14.0];
+    safeAreaLayoutGuide = [(BRParticipantInfoCell *)v4 safeAreaLayoutGuide];
+    leadingAnchor = [(UILabel *)v4->_accountTypeLabel leadingAnchor];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:14.0];
     [v5 addObject:v13];
 
-    v14 = [(UILabel *)v4->_accountValueLabel leadingAnchor];
-    v15 = [v10 leadingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15 constant:14.0];
+    leadingAnchor3 = [(UILabel *)v4->_accountValueLabel leadingAnchor];
+    leadingAnchor4 = [safeAreaLayoutGuide leadingAnchor];
+    v16 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:14.0];
     [v5 addObject:v16];
 
-    v17 = [v10 trailingAnchor];
-    v18 = [(UILabel *)v4->_accountTypeLabel trailingAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18 constant:14.0];
+    trailingAnchor = [safeAreaLayoutGuide trailingAnchor];
+    trailingAnchor2 = [(UILabel *)v4->_accountTypeLabel trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:14.0];
     [v5 addObject:v19];
 
-    v20 = [v10 trailingAnchor];
-    v21 = [(UILabel *)v4->_accountValueLabel trailingAnchor];
-    v22 = [v20 constraintGreaterThanOrEqualToAnchor:v21 constant:14.0];
+    trailingAnchor3 = [safeAreaLayoutGuide trailingAnchor];
+    trailingAnchor4 = [(UILabel *)v4->_accountValueLabel trailingAnchor];
+    v22 = [trailingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor4 constant:14.0];
     [v5 addObject:v22];
 
-    v23 = [(UILabel *)v4->_accountTypeLabel firstBaselineAnchor];
-    v24 = [(BRParticipantInfoCell *)v4 topAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24 constant:18.0];
+    firstBaselineAnchor = [(UILabel *)v4->_accountTypeLabel firstBaselineAnchor];
+    topAnchor = [(BRParticipantInfoCell *)v4 topAnchor];
+    v25 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:18.0];
     [v5 addObject:v25];
 
-    v26 = [(UILabel *)v4->_accountValueLabel firstBaselineAnchor];
-    v27 = [(UILabel *)v4->_accountTypeLabel firstBaselineAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27 constant:24.0];
+    firstBaselineAnchor2 = [(UILabel *)v4->_accountValueLabel firstBaselineAnchor];
+    firstBaselineAnchor3 = [(UILabel *)v4->_accountTypeLabel firstBaselineAnchor];
+    v28 = [firstBaselineAnchor2 constraintEqualToAnchor:firstBaselineAnchor3 constant:24.0];
     [v5 addObject:v28];
 
-    v29 = [(BRParticipantInfoCell *)v4 bottomAnchor];
-    v30 = [(UILabel *)v4->_accountValueLabel firstBaselineAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30 constant:16.0];
+    bottomAnchor = [(BRParticipantInfoCell *)v4 bottomAnchor];
+    firstBaselineAnchor4 = [(UILabel *)v4->_accountValueLabel firstBaselineAnchor];
+    v31 = [bottomAnchor constraintEqualToAnchor:firstBaselineAnchor4 constant:16.0];
     [v5 addObject:v31];
 
     v32 = [UIFont systemFontOfSize:12.0 weight:UIFontWeightRegular];
@@ -86,30 +86,30 @@
   [(BRParticipantInfoCell *)&v3 prepareForReuse];
 }
 
-- (void)setRepresentedValue:(id)a3
+- (void)setRepresentedValue:(id)value
 {
-  v5 = a3;
-  if (self->_representedValue != v5)
+  valueCopy = value;
+  if (self->_representedValue != valueCopy)
   {
-    v19 = v5;
-    objc_storeStrong(&self->_representedValue, a3);
-    v6 = [(CKShareParticipantContact *)self->_representedValue participant];
-    v7 = [v6 userIdentity];
-    v8 = [v7 lookupInfo];
-    v9 = [v8 emailAddress];
+    v19 = valueCopy;
+    objc_storeStrong(&self->_representedValue, value);
+    participant = [(CKShareParticipantContact *)self->_representedValue participant];
+    userIdentity = [participant userIdentity];
+    lookupInfo = [userIdentity lookupInfo];
+    emailAddress = [lookupInfo emailAddress];
 
     v10 = [NSBundle bundleWithIdentifier:@"com.apple.CloudDocsUI"];
     v11 = v10;
-    if (v9)
+    if (emailAddress)
     {
       v12 = [v10 localizedStringForKey:@"email" value:@"email" table:@"Localizable"];
       [(UILabel *)self->_accountTypeLabel setText:v12];
 
-      v13 = [(CKShareParticipantContact *)self->_representedValue participant];
-      v14 = [v13 userIdentity];
-      v15 = [v14 lookupInfo];
-      v16 = [v15 emailAddress];
-      [(UILabel *)self->_accountValueLabel setText:v16];
+      participant2 = [(CKShareParticipantContact *)self->_representedValue participant];
+      userIdentity2 = [participant2 userIdentity];
+      lookupInfo2 = [userIdentity2 lookupInfo];
+      emailAddress2 = [lookupInfo2 emailAddress];
+      [(UILabel *)self->_accountValueLabel setText:emailAddress2];
     }
 
     else
@@ -117,23 +117,23 @@
       v17 = [v10 localizedStringForKey:@"Phone number" value:@"Phone number" table:@"Localizable"];
       [(UILabel *)self->_accountTypeLabel setText:v17];
 
-      v13 = [(CKShareParticipantContact *)self->_representedValue participant];
-      v14 = [v13 userIdentity];
-      v15 = [v14 lookupInfo];
-      v16 = [v15 phoneNumber];
+      participant2 = [(CKShareParticipantContact *)self->_representedValue participant];
+      userIdentity2 = [participant2 userIdentity];
+      lookupInfo2 = [userIdentity2 lookupInfo];
+      emailAddress2 = [lookupInfo2 phoneNumber];
       v18 = BRFormatPhoneNumber();
       [(UILabel *)self->_accountValueLabel setText:v18];
     }
 
-    v5 = v19;
+    valueCopy = v19;
   }
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
   v5 = +[UIPasteboard generalPasteboard];
-  v4 = [(UILabel *)self->_accountValueLabel text];
-  [v5 setValue:v4 forPasteboardType:kUTTypeText];
+  text = [(UILabel *)self->_accountValueLabel text];
+  [v5 setValue:text forPasteboardType:kUTTypeText];
 }
 
 @end

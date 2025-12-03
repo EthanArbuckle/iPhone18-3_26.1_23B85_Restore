@@ -8,7 +8,7 @@
 - (NSString)description
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR____TtC11WorkoutCore16MediaMomentAlert_startTime);
-  v3 = self;
+  selfCopy = self;
   v4 = Double.description.getter();
   MEMORY[0x20F2E6D80](v4);
 

@@ -17,17 +17,17 @@
   else
   {
     v10 = ARKitCoreBundle();
-    v11 = [v10 bundlePath];
-    v12 = [v11 stringByDeletingLastPathComponent];
-    v13 = [v12 stringByAppendingPathComponent:@"ARKitInternalExtras.bundle"];
+    bundlePath = [v10 bundlePath];
+    stringByDeletingLastPathComponent = [bundlePath stringByDeletingLastPathComponent];
+    v13 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:@"ARKitInternalExtras.bundle"];
 
     v9 = [MEMORY[0x1E696AAE8] bundleWithPath:v13];
 
     if (!v9)
     {
       v14 = MEMORY[0x1E696AAE8];
-      v15 = [a1 ar_pathForPrivateResourceBundlePath];
-      v9 = [v14 bundleWithPath:v15];
+      ar_pathForPrivateResourceBundlePath = [self ar_pathForPrivateResourceBundlePath];
+      v9 = [v14 bundleWithPath:ar_pathForPrivateResourceBundlePath];
     }
   }
 

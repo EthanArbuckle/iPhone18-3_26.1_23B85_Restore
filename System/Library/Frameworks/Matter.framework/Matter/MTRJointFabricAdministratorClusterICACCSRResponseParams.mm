@@ -1,9 +1,9 @@
 @interface MTRJointFabricAdministratorClusterICACCSRResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRJointFabricAdministratorClusterICACCSRResponseParams)init;
-- (MTRJointFabricAdministratorClusterICACCSRResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTRJointFabricAdministratorClusterICACCSRResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRJointFabricAdministratorClusterICACCSRResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTRJointFabricAdministratorClusterICACCSRResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -16,19 +16,19 @@
   v2 = [(MTRJointFabricAdministratorClusterICACCSRResponseParams *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     icaccsr = v2->_icaccsr;
-    v2->_icaccsr = v3;
+    v2->_icaccsr = data;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRJointFabricAdministratorClusterICACCSRResponseParams);
-  v5 = [(MTRJointFabricAdministratorClusterICACCSRResponseParams *)self icaccsr];
-  [(MTRJointFabricAdministratorClusterICACCSRResponseParams *)v4 setIcaccsr:v5];
+  icaccsr = [(MTRJointFabricAdministratorClusterICACCSRResponseParams *)self icaccsr];
+  [(MTRJointFabricAdministratorClusterICACCSRResponseParams *)v4 setIcaccsr:icaccsr];
 
   return v4;
 }
@@ -44,9 +44,9 @@
   return v7;
 }
 
-- (MTRJointFabricAdministratorClusterICACCSRResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRJointFabricAdministratorClusterICACCSRResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v15.receiver = self;
   v15.super_class = MTRJointFabricAdministratorClusterICACCSRResponseParams;
   v7 = [(MTRJointFabricAdministratorClusterICACCSRResponseParams *)&v15 init];
@@ -56,7 +56,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:1875 commandID:1 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:1875 commandID:1 error:error];
   if (v14)
   {
     sub_2393C5AAC(v13);
@@ -77,7 +77,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -88,7 +88,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRJointFabricAdministratorClusterICACCSRResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRJointFabricAdministratorClusterICACCSRResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRJointFabricAdministratorClusterICACCSRResponseParams;
@@ -96,7 +96,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRJointFabricAdministratorClusterICACCSRResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRJointFabricAdministratorClusterICACCSRResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -112,9 +112,9 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v4 = [MEMORY[0x277CBEA90] dataWithBytes:*a3 length:*(a3 + 1)];
+  v4 = [MEMORY[0x277CBEA90] dataWithBytes:*struct length:*(struct + 1)];
   [(MTRJointFabricAdministratorClusterICACCSRResponseParams *)self setIcaccsr:v4];
 
   v5 = 0;

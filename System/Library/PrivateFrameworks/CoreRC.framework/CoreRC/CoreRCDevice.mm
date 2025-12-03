@@ -1,29 +1,29 @@
 @interface CoreRCDevice
-- (BOOL)isEqual:(id)a3;
-- (BOOL)sendCommand:(unint64_t)a3 target:(id)a4 withDuration:(unint64_t)a5 error:(id *)a6;
-- (BOOL)sendHIDEvent:(id)a3 target:(id)a4 error:(id *)a5;
-- (BOOL)setExtendedProperty:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (CoreRCDevice)initWithBus:(id)a3 local:(BOOL)a4;
-- (CoreRCDevice)initWithCoder:(id)a3;
-- (CoreRCDevice)initWithDevice:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)sendCommand:(unint64_t)command target:(id)target withDuration:(unint64_t)duration error:(id *)error;
+- (BOOL)sendHIDEvent:(id)event target:(id)target error:(id *)error;
+- (BOOL)setExtendedProperty:(id)property forKey:(id)key error:(id *)error;
+- (CoreRCDevice)initWithBus:(id)bus local:(BOOL)local;
+- (CoreRCDevice)initWithCoder:(id)coder;
+- (CoreRCDevice)initWithDevice:(id)device;
 - (id)bus;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)extendedPropertyForKey:(id)a3 error:(id *)a4;
-- (unint64_t)addOwningClient:(id)a3;
+- (id)extendedPropertyForKey:(id)key error:(id *)error;
+- (unint64_t)addOwningClient:(id)client;
 - (unint64_t)removeAllOwningClients;
-- (unint64_t)removeOwningClient:(id)a3;
+- (unint64_t)removeOwningClient:(id)client;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergePropertiesFromDevice:(id)a3;
-- (void)receivedHIDEvent:(id)a3 fromDevice:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergePropertiesFromDevice:(id)device;
+- (void)receivedHIDEvent:(id)event fromDevice:(id)device;
 @end
 
 @implementation CoreRCDevice
 
-- (CoreRCDevice)initWithDevice:(id)a3
+- (CoreRCDevice)initWithDevice:(id)device
 {
-  if (a3)
+  if (device)
   {
     v8.receiver = self;
     v8.super_class = CoreRCDevice;
@@ -32,9 +32,9 @@
     if (v4)
     {
       v6 = [(CoreRCDevice *)v4 zone];
-      v5->_busUniqueID = [objc_msgSend(a3 "busUniqueID")];
-      v5->_uniqueID = [objc_msgSend(a3 "uniqueID")];
-      v5->_isLocalDevice = [a3 isLocalDevice];
+      v5->_busUniqueID = [objc_msgSend(device "busUniqueID")];
+      v5->_uniqueID = [objc_msgSend(device "uniqueID")];
+      v5->_isLocalDevice = [device isLocalDevice];
       v5->_owningClients = 0;
     }
   }
@@ -48,45 +48,45 @@
   return v5;
 }
 
-- (CoreRCDevice)initWithBus:(id)a3 local:(BOOL)a4
+- (CoreRCDevice)initWithBus:(id)bus local:(BOOL)local
 {
   v8.receiver = self;
   v8.super_class = CoreRCDevice;
   v6 = [(CoreRCDevice *)&v8 init];
   if (v6)
   {
-    v6->_busUniqueID = [objc_msgSend(a3 "uniqueID")];
+    v6->_busUniqueID = [objc_msgSend(bus "uniqueID")];
     v6->_uniqueID = objc_opt_new();
-    v6->_isLocalDevice = a4;
+    v6->_isLocalDevice = local;
     v6->_owningClients = objc_opt_new();
   }
 
   return v6;
 }
 
-- (CoreRCDevice)initWithCoder:(id)a3
+- (CoreRCDevice)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CoreRCDevice;
   v4 = [(CoreRCDevice *)&v6 init];
   if (v4)
   {
-    v4->_uniqueID = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
-    v4->_busUniqueID = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"busUniqueID"];
-    v4->_isLocalDevice = [a3 decodeBoolForKey:@"isLocalDevice"];
+    v4->_uniqueID = [coder decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
+    v4->_busUniqueID = [coder decodeObjectOfClass:objc_opt_class() forKey:@"busUniqueID"];
+    v4->_isLocalDevice = [coder decodeBoolForKey:@"isLocalDevice"];
     v4->_owningClients = 0;
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_uniqueID forKey:@"uniqueID"];
-  [a3 encodeObject:self->_busUniqueID forKey:@"busUniqueID"];
+  [coder encodeObject:self->_uniqueID forKey:@"uniqueID"];
+  [coder encodeObject:self->_busUniqueID forKey:@"busUniqueID"];
   isLocalDevice = self->_isLocalDevice;
 
-  [a3 encodeBool:isLocalDevice forKey:@"isLocalDevice"];
+  [coder encodeBool:isLocalDevice forKey:@"isLocalDevice"];
 }
 
 - (void)dealloc
@@ -101,9 +101,9 @@
   [(CoreRCDevice *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
 
   return [v4 initWithDevice:self];
 }
@@ -115,9 +115,9 @@
   v3 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:{-[CoreRCDevice description](&v8, sel_description)}];
   [v3 appendFormat:@" ID: %@;", -[NSUUID UUIDString](-[CoreRCDevice uniqueID](self, "uniqueID"), "UUIDString")];
   [v3 appendFormat:@" Bus: %@;", -[NSUUID UUIDString](-[CoreRCDevice busUniqueID](self, "busUniqueID"), "UUIDString")];
-  v4 = [(CoreRCDevice *)self isLocalDevice];
+  isLocalDevice = [(CoreRCDevice *)self isLocalDevice];
   v5 = "N";
-  if (v4)
+  if (isLocalDevice)
   {
     v5 = "Y";
   }
@@ -133,7 +133,7 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -142,41 +142,41 @@
   }
 
   uniqueID = self->_uniqueID;
-  v6 = [a3 uniqueID];
+  uniqueID = [equal uniqueID];
 
-  return [(NSUUID *)uniqueID isEqual:v6];
+  return [(NSUUID *)uniqueID isEqual:uniqueID];
 }
 
 - (id)bus
 {
-  v3 = [(CoreRCDevice *)self manager];
+  manager = [(CoreRCDevice *)self manager];
 
-  return [v3 managedBusForDevice:self];
+  return [manager managedBusForDevice:self];
 }
 
-- (BOOL)sendHIDEvent:(id)a3 target:(id)a4 error:(id *)a5
+- (BOOL)sendHIDEvent:(id)event target:(id)target error:(id *)error
 {
-  v9 = [(CoreRCDevice *)self manager];
+  manager = [(CoreRCDevice *)self manager];
 
-  return [v9 sendHIDEvent:a3 fromDevice:self toDevice:a4 error:a5];
+  return [manager sendHIDEvent:event fromDevice:self toDevice:target error:error];
 }
 
-- (BOOL)sendCommand:(unint64_t)a3 target:(id)a4 withDuration:(unint64_t)a5 error:(id *)a6
+- (BOOL)sendCommand:(unint64_t)command target:(id)target withDuration:(unint64_t)duration error:(id *)error
 {
-  v11 = [(CoreRCDevice *)self manager];
+  manager = [(CoreRCDevice *)self manager];
 
-  return [v11 sendCommand:a3 fromDevice:self toDevice:a4 withDuration:a5 error:a6];
+  return [manager sendCommand:command fromDevice:self toDevice:target withDuration:duration error:error];
 }
 
-- (void)receivedHIDEvent:(id)a3 fromDevice:(id)a4
+- (void)receivedHIDEvent:(id)event fromDevice:(id)device
 {
-  v7 = [(CoreRCDevice *)self delegate];
+  delegate = [(CoreRCDevice *)self delegate];
   if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
     [CoreRCDevice receivedHIDEvent:fromDevice:];
   }
 
-  if ([a3 isRepeat] && gLogCategory_CoreRCDevice <= 60 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
+  if ([event isRepeat] && gLogCategory_CoreRCDevice <= 60 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
     [CoreRCDevice receivedHIDEvent:fromDevice:];
   }
@@ -184,22 +184,22 @@
   if (objc_opt_respondsToSelector())
   {
 
-    [v7 device:self receivedHIDEvent:a3 fromDevice:a4];
+    [delegate device:self receivedHIDEvent:event fromDevice:device];
   }
 }
 
-- (BOOL)setExtendedProperty:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setExtendedProperty:(id)property forKey:(id)key error:(id *)error
 {
-  v9 = [(CoreRCDevice *)self manager];
+  manager = [(CoreRCDevice *)self manager];
 
-  return [v9 setExtendedProperty:a3 forKey:a4 ofDevice:self error:a5];
+  return [manager setExtendedProperty:property forKey:key ofDevice:self error:error];
 }
 
-- (id)extendedPropertyForKey:(id)a3 error:(id *)a4
+- (id)extendedPropertyForKey:(id)key error:(id *)error
 {
-  v7 = [(CoreRCDevice *)self manager];
+  manager = [(CoreRCDevice *)self manager];
 
-  return [v7 extendedPropertyForKey:a3 ofDevice:self error:a4];
+  return [manager extendedPropertyForKey:key ofDevice:self error:error];
 }
 
 - (unint64_t)removeAllOwningClients
@@ -244,53 +244,53 @@
   return result;
 }
 
-- (unint64_t)removeOwningClient:(id)a3
+- (unint64_t)removeOwningClient:(id)client
 {
   if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
-    v8 = self;
+    selfCopy = self;
     owningClients = self->_owningClients;
-    v7 = a3;
+    clientCopy = client;
     LogPrintF();
   }
 
-  [(NSMutableSet *)self->_owningClients removeObject:a3, v7, v8, owningClients];
-  [objc_msgSend(a3 "userInfo")];
+  [(NSMutableSet *)self->_owningClients removeObject:client, clientCopy, selfCopy, owningClients];
+  [objc_msgSend(client "userInfo")];
   v5 = self->_owningClients;
 
   return [(NSMutableSet *)v5 count];
 }
 
-- (unint64_t)addOwningClient:(id)a3
+- (unint64_t)addOwningClient:(id)client
 {
   if (gLogCategory_CoreRCDevice <= 40 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
   {
-    v8 = self;
+    selfCopy = self;
     owningClients = self->_owningClients;
-    v7 = a3;
+    clientCopy = client;
     LogPrintF();
   }
 
-  [(NSMutableSet *)self->_owningClients addObject:a3, v7, v8, owningClients];
-  [objc_msgSend(a3 "userInfo")];
+  [(NSMutableSet *)self->_owningClients addObject:client, clientCopy, selfCopy, owningClients];
+  [objc_msgSend(client "userInfo")];
   v5 = self->_owningClients;
 
   return [(NSMutableSet *)v5 count];
 }
 
-- (void)mergePropertiesFromDevice:(id)a3
+- (void)mergePropertiesFromDevice:(id)device
 {
   v21 = *MEMORY[0x277D85DE8];
   if ([(CoreRCDevice *)self isEqual:?])
   {
-    if (-[NSUUID isEqual:](-[CoreRCDevice busUniqueID](self, "busUniqueID"), "isEqual:", [a3 busUniqueID]))
+    if (-[NSUUID isEqual:](-[CoreRCDevice busUniqueID](self, "busUniqueID"), "isEqual:", [device busUniqueID]))
     {
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v5 = [(CoreRCDevice *)self mergeProperties];
-      v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      mergeProperties = [(CoreRCDevice *)self mergeProperties];
+      v6 = [mergeProperties countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v6)
       {
         v7 = v6;
@@ -302,18 +302,18 @@
           {
             if (*v17 != v9)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(mergeProperties);
             }
 
             v11 = *(*(&v16 + 1) + 8 * i);
-            v12 = [a3 valueForKey:{v11, v14, v15}];
+            v12 = [device valueForKey:{v11, v14, selfCopy}];
             if (([-[CoreRCDevice valueForKey:](self valueForKey:{v11), "isEqual:", v12}] & 1) == 0)
             {
               [(CoreRCDevice *)self setValue:v12 forKey:v11];
               if (gLogCategory_CoreRCDevice <= 10 && (gLogCategory_CoreRCDevice != -1 || _LogCategory_Initialize()))
               {
                 v14 = v11;
-                v15 = self;
+                selfCopy = self;
                 LogPrintF();
               }
 
@@ -321,7 +321,7 @@
             }
           }
 
-          v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v7 = [mergeProperties countByEnumeratingWithState:&v16 objects:v20 count:16];
         }
 
         while (v7);

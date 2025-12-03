@@ -1,22 +1,22 @@
 @interface PLExpandedPlatterInteractionManager
 + (void)initialize;
-- (BOOL)_contextMenuInteractionShouldAllowSwipeToDismiss:(id)a3;
+- (BOOL)_contextMenuInteractionShouldAllowSwipeToDismiss:(id)dismiss;
 - (BOOL)reachedForceThreshold;
 - (PLExpandedPlatterInteractionHosting)presentingViewController;
-- (PLExpandedPlatterInteractionManager)initWithPresentingViewController:(id)a3 delegate:(id)a4;
+- (PLExpandedPlatterInteractionManager)initWithPresentingViewController:(id)controller delegate:(id)delegate;
 - (PLExpandedPlatterInteractionManagerDelegate)delegate;
 - (id)_contextMenuConfigurationIdentifier;
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4;
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration;
 - (id)_identifier;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (unint64_t)_activationMethodForContextMenuInteraction:(id)a3;
-- (void)_contextMenuInteraction:(id)a3 shouldPresentWithCompletion:(id)a4;
-- (void)_setPresentingViewControllerHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)presentAtLocation:(CGPoint)a3 completion:(id)a4;
-- (void)updateVisibleMenuWithBlock:(id)a3;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (unint64_t)_activationMethodForContextMenuInteraction:(id)interaction;
+- (void)_contextMenuInteraction:(id)interaction shouldPresentWithCompletion:(id)completion;
+- (void)_setPresentingViewControllerHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)presentAtLocation:(CGPoint)location completion:(id)completion;
+- (void)updateVisibleMenuWithBlock:(id)block;
 @end
 
 @implementation PLExpandedPlatterInteractionManager
@@ -25,25 +25,25 @@
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     PLRegisterPlatterKitLogging();
   }
 }
 
-- (PLExpandedPlatterInteractionManager)initWithPresentingViewController:(id)a3 delegate:(id)a4
+- (PLExpandedPlatterInteractionManager)initWithPresentingViewController:(id)controller delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = PLExpandedPlatterInteractionManager;
   v8 = [(PLExpandedPlatterInteractionManager *)&v22 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_presentingViewController, v6);
-    objc_storeWeak(&v9->_delegate, v7);
+    objc_storeWeak(&v8->_presentingViewController, controllerCopy);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     *&v9->_expandedPlatterInteractionManagerDelegateFlags = *&v9->_expandedPlatterInteractionManagerDelegateFlags & 0xFFFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
     {
@@ -137,18 +137,18 @@
     contextMenuInteraction = v9->_contextMenuInteraction;
     v9->_contextMenuInteraction = &v18->super;
 
-    v20 = [v6 viewForPreview];
-    [v20 addInteraction:v9->_contextMenuInteraction];
+    viewForPreview = [controllerCopy viewForPreview];
+    [viewForPreview addInteraction:v9->_contextMenuInteraction];
   }
 
   return v9;
 }
 
-- (void)presentAtLocation:(CGPoint)a3 completion:(id)a4
+- (void)presentAtLocation:(CGPoint)location completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = location.y;
+  x = location.x;
+  completionCopy = completion;
   if (self->_cachedCompletion)
   {
     v8 = PLLogTransition;
@@ -160,16 +160,16 @@
     (*(self->_cachedCompletion + 2))();
   }
 
-  v9 = [v7 copy];
+  v9 = [completionCopy copy];
   cachedCompletion = self->_cachedCompletion;
   self->_cachedCompletion = v9;
 
   [(UIContextMenuInteraction *)self->_contextMenuInteraction _presentMenuAtLocation:x, y];
 }
 
-- (void)updateVisibleMenuWithBlock:(id)a3
+- (void)updateVisibleMenuWithBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     [(UIContextMenuInteraction *)self->_contextMenuInteraction updateVisibleMenuWithBlock:?];
   }
@@ -187,11 +187,11 @@
   return [(UIContextMenuInteraction *)contextMenuInteraction _reachedForceThreshold];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3;
+  y = location.y;
+  x = location.x;
+  interactionCopy = interaction;
   WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
   v10 = PLLogTransition;
   if (os_log_type_enabled(PLLogTransition, OS_LOG_TYPE_DEBUG))
@@ -212,7 +212,7 @@
     v14 = v13;
     expandedPlatterInteractionManagerDelegateFlags = self->_expandedPlatterInteractionManagerDelegateFlags;
     v16 = &unk_21FE0D000;
-    v29 = v8;
+    v29 = interactionCopy;
     if ((expandedPlatterInteractionManagerDelegateFlags & 2) != 0)
     {
       v17 = v33;
@@ -253,8 +253,8 @@
 
     v21 = MEMORY[0x223D70F60](v20);
     v22 = MEMORY[0x277D753B0];
-    v23 = [(PLExpandedPlatterInteractionManager *)self _contextMenuConfigurationIdentifier];
-    v24 = [v22 configurationWithIdentifier:v23 previewProvider:v18 actionProvider:v21];
+    _contextMenuConfigurationIdentifier = [(PLExpandedPlatterInteractionManager *)self _contextMenuConfigurationIdentifier];
+    v24 = [v22 configurationWithIdentifier:_contextMenuConfigurationIdentifier previewProvider:v18 actionProvider:v21];
 
     if ((v19 & 4) != 0)
     {
@@ -268,7 +268,7 @@
 
     objc_destroyWeak(location);
     WeakRetained = v28;
-    v8 = v29;
+    interactionCopy = v29;
   }
 
   return v24;
@@ -293,7 +293,7 @@ id __93__PLExpandedPlatterInteractionManager_contextMenuInteraction_configuratio
   return v6;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
   v7 = PLLogTransition;
@@ -302,23 +302,23 @@ id __93__PLExpandedPlatterInteractionManager_contextMenuInteraction_configuratio
     [PLExpandedPlatterInteractionManager contextMenuInteraction:v7 configuration:? highlightPreviewForItemWithIdentifier:?];
   }
 
-  v8 = [WeakRetained viewForPreview];
-  v9 = [v8 window];
+  viewForPreview = [WeakRetained viewForPreview];
+  window = [viewForPreview window];
 
-  if (v9)
+  if (window)
   {
     [(PLExpandedPlatterInteractionManager *)self _setPresentingViewControllerHighlighted:1 animated:1];
     v10 = objc_alloc_init(MEMORY[0x277D758D8]);
-    v11 = [MEMORY[0x277D75348] clearColor];
-    [v10 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v10 setBackgroundColor:clearColor];
 
     if (objc_opt_respondsToSelector())
     {
-      v12 = [WeakRetained visiblePath];
-      [v10 setVisiblePath:v12];
+      visiblePath = [WeakRetained visiblePath];
+      [v10 setVisiblePath:visiblePath];
     }
 
-    v13 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:v8 parameters:v10];
+    v13 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:viewForPreview parameters:v10];
   }
 
   else
@@ -326,7 +326,7 @@ id __93__PLExpandedPlatterInteractionManager_contextMenuInteraction_configuratio
     v14 = PLLogTransition;
     if (os_log_type_enabled(PLLogTransition, OS_LOG_TYPE_ERROR))
     {
-      [PLExpandedPlatterInteractionManager contextMenuInteraction:v8 configuration:v14 highlightPreviewForItemWithIdentifier:?];
+      [PLExpandedPlatterInteractionManager contextMenuInteraction:viewForPreview configuration:v14 highlightPreviewForItemWithIdentifier:?];
     }
 
     v13 = 0;
@@ -335,11 +335,11 @@ id __93__PLExpandedPlatterInteractionManager_contextMenuInteraction_configuratio
   return v13;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
   if (self->_cachedCompletion)
   {
     v11 = MEMORY[0x223D70F60]();
@@ -352,49 +352,49 @@ id __93__PLExpandedPlatterInteractionManager_contextMenuInteraction_configuratio
     v15[3] = &unk_2784256E8;
     v16 = v11;
     v13 = v11;
-    [v10 addCompletion:v15];
+    [animatorCopy addCompletion:v15];
   }
 
   if ((*&self->_expandedPlatterInteractionManagerDelegateFlags & 0x10) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained expandedPlatterInteractionManager:self willPresentContentWithAnimator:v10];
+    [WeakRetained expandedPlatterInteractionManager:self willPresentContentWithAnimator:animatorCopy];
   }
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a5;
+  animatorCopy = animator;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __95__PLExpandedPlatterInteractionManager_contextMenuInteraction_willEndForConfiguration_animator___block_invoke;
   v8[3] = &unk_2784250D8;
   v8[4] = self;
-  [v6 addAnimations:v8];
+  [animatorCopy addAnimations:v8];
   if ((*&self->_expandedPlatterInteractionManagerDelegateFlags & 0x80) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained expandedPlatterInteractionManager:self willDismissContentWithAnimator:v6];
+    [WeakRetained expandedPlatterInteractionManager:self willDismissContentWithAnimator:animatorCopy];
   }
 }
 
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration
 {
-  v5 = [MEMORY[0x277D75EA8] defaultStyle];
-  [v5 setHasInteractivePreview:1];
+  defaultStyle = [MEMORY[0x277D75EA8] defaultStyle];
+  [defaultStyle setHasInteractivePreview:1];
   if (objc_opt_respondsToSelector())
   {
-    [v5 setPrefersCenteredPreviewWhenActionsAreAbsent:0];
+    [defaultStyle setPrefersCenteredPreviewWhenActionsAreAbsent:0];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v5 setKeepsInputViewsVisible:1];
+    [defaultStyle setKeepsInputViewsVisible:1];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v5 setIgnoresDefaultSizingRules:1];
+    [defaultStyle setIgnoresDefaultSizingRules:1];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -403,14 +403,14 @@ id __93__PLExpandedPlatterInteractionManager_contextMenuInteraction_configuratio
     v7 = [WeakRetained expandedPlatterInteractionManagerContainerView:self];
     if (v7)
     {
-      [v5 setContainerView:v7];
+      [defaultStyle setContainerView:v7];
     }
   }
 
-  return v5;
+  return defaultStyle;
 }
 
-- (BOOL)_contextMenuInteractionShouldAllowSwipeToDismiss:(id)a3
+- (BOOL)_contextMenuInteractionShouldAllowSwipeToDismiss:(id)dismiss
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = WeakRetained;
@@ -431,17 +431,17 @@ id __93__PLExpandedPlatterInteractionManager_contextMenuInteraction_configuratio
   return v6;
 }
 
-- (void)_contextMenuInteraction:(id)a3 shouldPresentWithCompletion:(id)a4
+- (void)_contextMenuInteraction:(id)interaction shouldPresentWithCompletion:(id)completion
 {
   if ((*&self->_expandedPlatterInteractionManagerDelegateFlags & 0x20) != 0)
   {
-    v6 = a4;
+    completionCopy = completion;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained expandedPlatterInteractionManager:self shouldCommitInteraction:v6];
+    [WeakRetained expandedPlatterInteractionManager:self shouldCommitInteraction:completionCopy];
   }
 }
 
-- (unint64_t)_activationMethodForContextMenuInteraction:(id)a3
+- (unint64_t)_activationMethodForContextMenuInteraction:(id)interaction
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = WeakRetained;
@@ -469,8 +469,8 @@ id __93__PLExpandedPlatterInteractionManager_contextMenuInteraction_configuratio
   else
   {
     WeakRetained = [MEMORY[0x277CCAD78] UUID];
-    v3 = [WeakRetained UUIDString];
-    v4 = [@"com.apple.PlatterKit.PLExpandedPlatterInteractionManager" stringByAppendingPathExtension:v3];
+    uUIDString = [WeakRetained UUIDString];
+    v4 = [@"com.apple.PlatterKit.PLExpandedPlatterInteractionManager" stringByAppendingPathExtension:uUIDString];
   }
 
   return v4;
@@ -478,35 +478,35 @@ id __93__PLExpandedPlatterInteractionManager_contextMenuInteraction_configuratio
 
 - (id)_contextMenuConfigurationIdentifier
 {
-  v2 = [(PLExpandedPlatterInteractionManager *)self _identifier];
-  v3 = [v2 stringByAppendingPathExtension:@"contextMenuConfiguration"];
+  _identifier = [(PLExpandedPlatterInteractionManager *)self _identifier];
+  v3 = [_identifier stringByAppendingPathExtension:@"contextMenuConfiguration"];
 
   return v3;
 }
 
-- (void)_setPresentingViewControllerHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)_setPresentingViewControllerHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  highlightedCopy = highlighted;
   WeakRetained = objc_loadWeakRetained(&self->_presentingViewController);
   if (objc_opt_respondsToSelector())
   {
-    if (v4)
+    if (animatedCopy)
     {
-      v7 = [MEMORY[0x277D26718] newDefaultHighlightAnimator];
+      newDefaultHighlightAnimator = [MEMORY[0x277D26718] newDefaultHighlightAnimator];
       v8 = MEMORY[0x277D85DD0];
       v9 = 3221225472;
       v10 = __88__PLExpandedPlatterInteractionManager__setPresentingViewControllerHighlighted_animated___block_invoke;
       v11 = &unk_278425100;
       v12 = WeakRetained;
-      v13 = v5;
-      [v7 addAnimations:&v8];
-      [v7 startAnimation];
+      v13 = highlightedCopy;
+      [newDefaultHighlightAnimator addAnimations:&v8];
+      [newDefaultHighlightAnimator startAnimation];
     }
 
     else
     {
-      [WeakRetained setHighlighted:v5];
+      [WeakRetained setHighlighted:highlightedCopy];
     }
   }
 }

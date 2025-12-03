@@ -1,9 +1,9 @@
 @interface PHAudioCallViewController
-+ (BOOL)wallpaperContentIsSensitive:(id)a3;
++ (BOOL)wallpaperContentIsSensitive:(id)sensitive;
 + (NSArray)contactKeysToFetch;
 - (AVSpeechSynthesizer)speechSynthesizer;
-- (BOOL)_isScreeningAnyCallGroup:(id)a3;
-- (BOOL)_isScreeningCallGroup:(id)a3;
+- (BOOL)_isScreeningAnyCallGroup:(id)group;
+- (BOOL)_isScreeningCallGroup:(id)group;
 - (BOOL)allowsBanners;
 - (BOOL)allowsMenuButtonDismissal;
 - (BOOL)allowsOrientationChangeEvents;
@@ -11,23 +11,23 @@
 - (BOOL)callHasContactPosterWithVerticalName;
 - (BOOL)callHasNoContactPoster;
 - (BOOL)callIsRecording;
-- (BOOL)callParticipantsViewControllerShouldShowLargeAvatar:(id)a3;
+- (BOOL)callParticipantsViewControllerShouldShowLargeAvatar:(id)avatar;
 - (BOOL)callRecordingAllowed;
-- (BOOL)callStateCanShowNewPoster:(id)a3;
-- (BOOL)canDoInfoButtonCoinFlipWith:(id)a3 contactStore:(id)a4;
+- (BOOL)callStateCanShowNewPoster:(id)poster;
+- (BOOL)canDoInfoButtonCoinFlipWith:(id)with contactStore:(id)store;
 - (BOOL)canRecord;
 - (BOOL)canShowBackgroundImage;
-- (BOOL)canShowPosterBadgeInAudioCallView:(id)a3;
+- (BOOL)canShowPosterBadgeInAudioCallView:(id)view;
 - (BOOL)canShowPosterImage;
 - (BOOL)currentCallStateCanShowNewPoster;
 - (BOOL)desiresLockButtonEvents;
-- (BOOL)desiresLockButtonEventsForCallContainer:(id)a3;
+- (BOOL)desiresLockButtonEventsForCallContainer:(id)container;
 - (BOOL)fetchLockState;
-- (BOOL)hasLastSeenPosterForCall:(id)a3;
+- (BOOL)hasLastSeenPosterForCall:(id)call;
 - (BOOL)hasNoCallsOrOnlyEndedCalls;
 - (BOOL)holdingConditions;
 - (BOOL)isCallRecordingActive;
-- (BOOL)isCallSmartHoldingSessionActive:(id)a3;
+- (BOOL)isCallSmartHoldingSessionActive:(id)active;
 - (BOOL)isPickedRouteReceiver;
 - (BOOL)isPickedRouteSpeaker;
 - (BOOL)isReadyToShowCallDetails;
@@ -35,13 +35,13 @@
 - (BOOL)isShowingBackgroundImage;
 - (BOOL)isShowingPosterBadge;
 - (BOOL)isUserInterfaceShowing;
-- (BOOL)lastSeenPosterDataIsSensitiveForCall:(id)a3;
+- (BOOL)lastSeenPosterDataIsSensitiveForCall:(id)call;
 - (BOOL)middlePillContainerIsShowing;
 - (BOOL)needsDismissalAssertion;
-- (BOOL)prefersShowingCachedLastSeenPosterBeforeCallConnected:(id)a3;
-- (BOOL)prioritizedCallIsInSameCallGroupAsCall:(id)a3;
+- (BOOL)prefersShowingCachedLastSeenPosterBeforeCallConnected:(id)connected;
+- (BOOL)prioritizedCallIsInSameCallGroupAsCall:(id)call;
 - (BOOL)recordingSupportedForCurrentCallDsplayStyles;
-- (BOOL)setCallForBackgroundImage:(id)a3 animated:(BOOL)a4 callDisplayStyleChanged:(BOOL)a5;
+- (BOOL)setCallForBackgroundImage:(id)image animated:(BOOL)animated callDisplayStyleChanged:(BOOL)changed;
 - (BOOL)shouldAddExtensionNumberButtonToViewHierarchy;
 - (BOOL)shouldAddRTTButtonToViewHierarchy;
 - (BOOL)shouldApplyNewGradientBlur;
@@ -54,8 +54,8 @@
 - (BOOL)shouldShowCircularAvatar;
 - (BOOL)shouldShowConferenceCallDetails;
 - (BOOL)shouldShowContactOrLastSeenWallpaper;
-- (BOOL)shouldShowEnableWiFiCallingAlertForCall:(id)a3;
-- (BOOL)shouldShowLargeAvatarForCall:(id)a3;
+- (BOOL)shouldShowEnableWiFiCallingAlertForCall:(id)call;
+- (BOOL)shouldShowLargeAvatarForCall:(id)call;
 - (BOOL)shouldShowMergeCalls;
 - (BOOL)shouldShowNewPosterUpdates;
 - (BOOL)shouldShowUseRTT;
@@ -69,7 +69,7 @@
 - (PHAudioCallControlsSupplementalButton)extensionNumberButton;
 - (PHAudioCallControlsSupplementalButton)mergeCallsButton;
 - (PHAudioCallControlsSupplementalButton)useRTTButton;
-- (PHAudioCallViewController)initWithCallDisplayStyleManager:(id)a3 callCenter:(id)a4 featureFlags:(id)a5;
+- (PHAudioCallViewController)initWithCallDisplayStyleManager:(id)manager callCenter:(id)center featureFlags:(id)flags;
 - (PHAudioCallVoiceLoopViewController)voiceLoopViewController;
 - (PHCallTranslationController)translationController;
 - (PHInCallKeypadViewController)keypadViewController;
@@ -90,144 +90,144 @@
 - (double)callDetailsButtonPaddingTrailing_PERCENT;
 - (double)callWaitingAnimationDelay;
 - (double)screeningTextFieldPadding;
-- (id)ambientParticipantsViewConstraintsForView:(id)a3 largeAvatar:(BOOL)a4;
-- (id)answerRequestForCall:(id)a3;
-- (id)associatedCallGroupForCall:(id)a3;
+- (id)ambientParticipantsViewConstraintsForView:(id)view largeAvatar:(BOOL)avatar;
+- (id)answerRequestForCall:(id)call;
+- (id)associatedCallGroupForCall:(id)call;
 - (id)audioRouteMenu;
 - (id)bottomBarBottomConstraintToUse;
 - (id)buttonsViewBottomConstraintToUse;
-- (id)contactForCall:(id)a3;
+- (id)contactForCall:(id)call;
 - (id)contactImage;
-- (id)contactImageDataForCall:(id)a3;
-- (id)contactImageForCall:(id)a3;
-- (id)contactToDisplayInCallWallpaperForCall:(id)a3;
+- (id)contactImageDataForCall:(id)call;
+- (id)contactImageForCall:(id)call;
+- (id)contactToDisplayInCallWallpaperForCall:(id)call;
 - (id)contactWallpaperBackgroundColor;
-- (id)contactWallpaperConfigurationForCall:(id)a3 shouldReadFromCache:(BOOL)a4;
-- (id)contactWallpaperForCall:(id)a3;
+- (id)contactWallpaperConfigurationForCall:(id)call shouldReadFromCache:(BOOL)cache;
+- (id)contactWallpaperForCall:(id)call;
 - (id)createBlurryBackgroundView;
 - (id)createContactFirstNameLabelViewModel;
 - (id)createPosterBlurryBackgroundView;
-- (id)currentIMNicknameMatchingContact:(id)a3;
-- (id)customColorForParticipantLabelWithCall:(id)a3;
-- (id)customColorForStatusLabelWithCall:(id)a3;
-- (id)customFontForParticipantLabelWithCall:(id)a3;
-- (id)customizedTitleForItemInBar:(id)a3 withActionType:(int64_t)a4;
+- (id)currentIMNicknameMatchingContact:(id)contact;
+- (id)customColorForParticipantLabelWithCall:(id)call;
+- (id)customColorForStatusLabelWithCall:(id)call;
+- (id)customFontForParticipantLabelWithCall:(id)call;
+- (id)customizedTitleForItemInBar:(id)bar withActionType:(int64_t)type;
 - (id)fallbackHorizontalNameLabelString;
-- (id)fallbackImageDataForCall:(id)a3;
+- (id)fallbackImageDataForCall:(id)call;
 - (id)getAudioRouteMenu;
 - (id)getCurrentCall;
 - (id)getParticipantsView_NotWaiting;
 - (id)getParticipantsView_Waiting;
 - (id)getParticipantsView_WaitingOrNot;
 - (id)isolatedCall;
-- (id)lastSeenOrCurrentPosterConfigurationForCall:(id)a3;
-- (id)lastSeenPosterConfigurationForCall:(id)a3;
-- (id)lastSeenPosterIMWallpaperMetadataForCall:(id)a3;
-- (id)makeCallDetailsCoordinatorWithBannerPresentationManager:(id)a3 existingCoordinator:(id)a4 deferredPresentationManager:(id)a5;
-- (id)makeHeldCallControlsViewWithCallCenter:(id)a3 style:(int64_t)a4;
-- (id)makeLockObserverWithHandler:(id)a3;
-- (id)newPosterConfigurationForCall:(id)a3;
-- (id)readCachedLastSeenPosterDataForCall:(id)a3;
-- (id)routesForAudioRoutingMenuController:(id)a3;
+- (id)lastSeenOrCurrentPosterConfigurationForCall:(id)call;
+- (id)lastSeenPosterConfigurationForCall:(id)call;
+- (id)lastSeenPosterIMWallpaperMetadataForCall:(id)call;
+- (id)makeCallDetailsCoordinatorWithBannerPresentationManager:(id)manager existingCoordinator:(id)coordinator deferredPresentationManager:(id)presentationManager;
+- (id)makeHeldCallControlsViewWithCallCenter:(id)center style:(int64_t)style;
+- (id)makeLockObserverWithHandler:(id)handler;
+- (id)newPosterConfigurationForCall:(id)call;
+- (id)readCachedLastSeenPosterDataForCall:(id)call;
+- (id)routesForAudioRoutingMenuController:(id)controller;
 - (id)screeningContainerView;
-- (id)sharedProfileStateOracleForCall:(id)a3;
+- (id)sharedProfileStateOracleForCall:(id)call;
 - (id)snapshotUIImageView;
 - (id)wallpaperTitleStyleAttributes;
-- (id)wallpaperTitleStyleAttributesForCall:(id)a3;
-- (id)wallpaperTypeForBundleID:(id)a3;
-- (id)wallpaperTypeForCNWallpaper:(id)a3;
-- (id)wallpaperTypeForIMWallpaperMetadata:(id)a3;
-- (int64_t)bottomBarCallStateInBar:(id)a3;
+- (id)wallpaperTitleStyleAttributesForCall:(id)call;
+- (id)wallpaperTypeForBundleID:(id)d;
+- (id)wallpaperTypeForCNWallpaper:(id)wallpaper;
+- (id)wallpaperTypeForIMWallpaperMetadata:(id)metadata;
+- (int64_t)bottomBarCallStateInBar:(id)bar;
 - (int64_t)bottomBarStateForCallWaitingCall;
 - (int64_t)preferredInterfaceOrientationForPresentation;
-- (unint64_t)currentDisplayedPosterSourceForCall:(id)a3;
-- (unint64_t)suggestedNewPosterSourceAfterCallConnects:(id)a3;
+- (unint64_t)currentDisplayedPosterSourceForCall:(id)call;
+- (unint64_t)suggestedNewPosterSourceAfterCallConnects:(id)connects;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_leaveMessage;
-- (void)_performPosterTransformationsIfNecessaryToState:(unsigned __int16)a3;
-- (void)_testing_didTransitionToActiveCallState:(id)a3;
+- (void)_performPosterTransformationsIfNecessaryToState:(unsigned __int16)state;
+- (void)_testing_didTransitionToActiveCallState:(id)state;
 - (void)_testing_didTransitionToEndingCallState;
 - (void)_testing_didTransitionToIdleCallState;
-- (void)_testing_didTransitionToIncomingRingingCallState:(id)a3;
-- (void)_testing_finishedAnimatingToActiveCallState:(id)a3;
+- (void)_testing_didTransitionToIncomingRingingCallState:(id)state;
+- (void)_testing_finishedAnimatingToActiveCallState:(id)state;
 - (void)_updatePosterNameAlpha;
-- (void)_updatePosterStatusLabelForState:(unsigned __int16)a3;
+- (void)_updatePosterStatusLabelForState:(unsigned __int16)state;
 - (void)_updateStatusLabelVisibility;
 - (void)addBottomBarSubView;
-- (void)addButton:(id)a3;
-- (void)addCallHoldingIfNeeded:(id)a3;
+- (void)addButton:(id)button;
+- (void)addCallHoldingIfNeeded:(id)needed;
 - (void)addCallParticipantsSubView;
-- (void)addCallRecordingIfNeededWithButtonContainer:(id)a3 pillContainer:(id)a4;
+- (void)addCallRecordingIfNeededWithButtonContainer:(id)container pillContainer:(id)pillContainer;
 - (void)addDefaultBackgroundGradientView;
 - (void)addDimmingView;
-- (void)addEnhancedEmergencyIntermittentStateLabelWithState:(int64_t)a3;
-- (void)addHoldingButton:(id)a3;
-- (void)addMediaRequestViewController:(id)a3;
-- (void)addPosterBlurToPosterVC:(id)a3 nameLabelWrapper:(id)a4;
-- (void)addRecordingIndicatorWithPillContainer:(id)a3;
-- (void)addWebRTCViewController:(id)a3;
+- (void)addEnhancedEmergencyIntermittentStateLabelWithState:(int64_t)state;
+- (void)addHoldingButton:(id)button;
+- (void)addMediaRequestViewController:(id)controller;
+- (void)addPosterBlurToPosterVC:(id)c nameLabelWrapper:(id)wrapper;
+- (void)addRecordingIndicatorWithPillContainer:(id)container;
+- (void)addWebRTCViewController:(id)controller;
 - (void)alertWillInvoke;
 - (void)animateInfoButtonCoinFlipIfNeeded;
-- (void)applyBlockButtonPositionAndSizeCapToElement:(id)a3;
-- (void)applyCallDetailsViewButtonPositionAndSizeCapToElement:(id)a3;
+- (void)applyBlockButtonPositionAndSizeCapToElement:(id)element;
+- (void)applyCallDetailsViewButtonPositionAndSizeCapToElement:(id)element;
 - (void)applyCallWaitingConstraintsForAmbient;
 - (void)applyParticipantsViewConstraints;
 - (void)applyParticipantsViewConstraintsForAmbient;
 - (void)applyParticipantsViewConstraintsForBanner;
 - (void)applyParticipantsViewConstraintsForFullScreen;
-- (void)applySizeToElement:(id)a3 usingThisElementAsGuide:(id)a4;
-- (void)applyWallpaperTitleStyleAttributesToTextViewWrapper:(id)a3;
-- (void)audioCallControlsViewControllerDidTapEndButton:(id)a3;
+- (void)applySizeToElement:(id)element usingThisElementAsGuide:(id)guide;
+- (void)applyWallpaperTitleStyleAttributesToTextViewWrapper:(id)wrapper;
+- (void)audioCallControlsViewControllerDidTapEndButton:(id)button;
 - (void)audioCallControlsViewControllerDidTapRTTButton;
 - (void)audioCallControlsViewControllerDidTapVideoStreamingButton;
-- (void)audioCallControlsViewControllerDidToggleMuteButton:(BOOL)a3;
-- (void)audioCallControlsViewControllerRequestedAddCallPresentation:(id)a3 forView:(id)a4;
-- (void)audioCallControlsViewControllerRequestedAudioRoutesPresentation:(id)a3;
-- (void)audioCallControlsViewControllerRequestedContactsPresentation:(id)a3 forView:(id)a4;
+- (void)audioCallControlsViewControllerDidToggleMuteButton:(BOOL)button;
+- (void)audioCallControlsViewControllerRequestedAddCallPresentation:(id)presentation forView:(id)view;
+- (void)audioCallControlsViewControllerRequestedAudioRoutesPresentation:(id)presentation;
+- (void)audioCallControlsViewControllerRequestedContactsPresentation:(id)presentation forView:(id)view;
 - (void)audioCallControlsViewControllerRequestedInvokeAlert;
-- (void)audioCallControlsViewControllerRequestedKeypadPresentation:(id)a3;
-- (void)audioCallControlsViewControllerRequestedKeypadPresentationForFieldMode:(id)a3;
-- (void)audioCallControlsViewControllerRequestedMoreMenuFromSourceView:(id)a3;
-- (void)audioCallControlsViewControllerRequestedShareCardFromSourceView:(id)a3;
+- (void)audioCallControlsViewControllerRequestedKeypadPresentation:(id)presentation;
+- (void)audioCallControlsViewControllerRequestedKeypadPresentationForFieldMode:(id)mode;
+- (void)audioCallControlsViewControllerRequestedMoreMenuFromSourceView:(id)view;
+- (void)audioCallControlsViewControllerRequestedShareCardFromSourceView:(id)view;
 - (void)audioCallControlsViewControllerRequestedShareMedia;
-- (void)audioCallControlsViewControllerRequestedVideoPresentation:(id)a3;
+- (void)audioCallControlsViewControllerRequestedVideoPresentation:(id)presentation;
 - (void)audioCallVoiceLoopViewControllerRequestedButtonPresentation;
-- (void)audioDeviceControllerMutedTalkerDidStart:(id)a3;
-- (void)audioRoutingMenuController:(id)a3 didSelectRoute:(id)a4;
+- (void)audioDeviceControllerMutedTalkerDidStart:(id)start;
+- (void)audioRoutingMenuController:(id)controller didSelectRoute:(id)route;
 - (void)bannerDidGetTap;
 - (void)blockButtonTapped;
-- (void)blockWithHandle:(id)a3;
-- (void)bottomBarActionPerformed:(int64_t)a3 withCompletionState:(int64_t)a4 fromBar:(id)a5;
-- (void)bringWebRTCViewControllerToFront:(id)a3;
-- (void)callCenterCallStatusChangedNotification:(id)a3;
-- (void)callCenterScreeningStatusChangedNotification:(id)a3;
-- (void)callContinuityStateChangedNotification:(id)a3;
+- (void)blockWithHandle:(id)handle;
+- (void)bottomBarActionPerformed:(int64_t)performed withCompletionState:(int64_t)state fromBar:(id)bar;
+- (void)bringWebRTCViewControllerToFront:(id)front;
+- (void)callCenterCallStatusChangedNotification:(id)notification;
+- (void)callCenterScreeningStatusChangedNotification:(id)notification;
+- (void)callContinuityStateChangedNotification:(id)notification;
 - (void)callDetailsViewButtonTapped;
-- (void)callDisplayContextChangedNotification:(id)a3;
-- (void)callDisplayStyleDidChangeFromStyle:(int64_t)a3 toStyle:(int64_t)a4;
-- (void)callIsEmergencyChangedNotification:(id)a3;
-- (void)callIsScreenSharingChangedNotification:(id)a3;
-- (void)callKeypadDataSourceChangedNotification:(id)a3;
-- (void)callOnHoldChangedNotification:(id)a3;
-- (void)callParticipantsViewController:(id)a3 didPerformActionType:(int64_t)a4;
-- (void)callParticipantsViewController:(id)a3 didShowMultipleLabel:(BOOL)a4;
-- (void)callParticipantsViewController:(id)a3 willShowMultipleLabel:(BOOL)a4;
-- (void)callParticipantsViewControllerDidTapCallDetailsGestureRecognizer:(id)a3;
-- (void)callRecordingAfterFullScreenRequest:(id)a3;
-- (void)callRecordingCountdownStarted:(id)a3;
-- (void)callRecordingStateChanged:(id)a3;
+- (void)callDisplayContextChangedNotification:(id)notification;
+- (void)callDisplayStyleDidChangeFromStyle:(int64_t)style toStyle:(int64_t)toStyle;
+- (void)callIsEmergencyChangedNotification:(id)notification;
+- (void)callIsScreenSharingChangedNotification:(id)notification;
+- (void)callKeypadDataSourceChangedNotification:(id)notification;
+- (void)callOnHoldChangedNotification:(id)notification;
+- (void)callParticipantsViewController:(id)controller didPerformActionType:(int64_t)type;
+- (void)callParticipantsViewController:(id)controller didShowMultipleLabel:(BOOL)label;
+- (void)callParticipantsViewController:(id)controller willShowMultipleLabel:(BOOL)label;
+- (void)callParticipantsViewControllerDidTapCallDetailsGestureRecognizer:(id)recognizer;
+- (void)callRecordingAfterFullScreenRequest:(id)request;
+- (void)callRecordingCountdownStarted:(id)started;
+- (void)callRecordingStateChanged:(id)changed;
 - (void)callTransferButtonTapped;
-- (void)clearMenuItemRegistration:(id)a3;
-- (void)conferenceParticipantCallsChangedNotification:(id)a3;
+- (void)clearMenuItemRegistration:(id)registration;
+- (void)conferenceParticipantCallsChangedNotification:(id)notification;
 - (void)constrainBottomBar;
 - (void)constrainBottomBarBottom;
 - (void)constrainButtonsViewBottom;
-- (void)contactDidChange:(id)a3;
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4;
-- (void)contactViewController:(id)a3 didExecuteBlockAndReportContactAction:(id)a4;
+- (void)contactDidChange:(id)change;
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact;
+- (void)contactViewController:(id)controller didExecuteBlockAndReportContactAction:(id)action;
 - (void)copyCallWaitingConstraintsFromParticipantsView;
-- (void)createContactWithHandle:(id)a3;
-- (void)createDetachedPosterNameViewModel:(id)a3;
+- (void)createContactWithHandle:(id)handle;
+- (void)createDetachedPosterNameViewModel:(id)model;
 - (void)createPosterContainerWithDimmingLayer;
 - (void)dealloc;
 - (void)deleteAllUnarchivedPosterDirectories;
@@ -242,69 +242,69 @@
 - (void)endWaitOnHoldSession;
 - (void)extensionNumberButtonTapped;
 - (void)fadeInBottomBar;
-- (void)finishNewPosterUpdatesWithCompletion:(id)a3;
+- (void)finishNewPosterUpdatesWithCompletion:(id)completion;
 - (void)gameControllerDidChangeContext;
-- (void)handleCallRecordingCountdownNotificationWithNotification:(id)a3;
+- (void)handleCallRecordingCountdownNotificationWithNotification:(id)notification;
 - (void)handleCancelPressedInCallBufferScreen;
-- (void)handleDeviceLockEventWithSourceType:(int64_t)a3;
-- (void)handleTUCallSupportsTTYWithVoiceChangedNotification:(id)a3;
-- (void)handleTUCallTTYTypeChangedNotification:(id)a3;
-- (void)handleViewDidAppear:(BOOL)a3;
-- (void)handleViewDidDisappear:(BOOL)a3;
-- (void)handleViewWillAppear:(BOOL)a3;
-- (void)handleViewWillDisappear:(BOOL)a3;
-- (void)hardPauseDigitsStateChangedNotification:(id)a3;
-- (void)hardwareButtonEventNotification:(id)a3;
+- (void)handleDeviceLockEventWithSourceType:(int64_t)type;
+- (void)handleTUCallSupportsTTYWithVoiceChangedNotification:(id)notification;
+- (void)handleTUCallTTYTypeChangedNotification:(id)notification;
+- (void)handleViewDidAppear:(BOOL)appear;
+- (void)handleViewDidDisappear:(BOOL)disappear;
+- (void)handleViewWillAppear:(BOOL)appear;
+- (void)handleViewWillDisappear:(BOOL)disappear;
+- (void)hardPauseDigitsStateChangedNotification:(id)notification;
+- (void)hardwareButtonEventNotification:(id)notification;
 - (void)hideCallControls;
 - (void)hideFirstNameLabelOnKeypad;
 - (void)hideOrShowKeypadBackgroundView;
 - (void)hideOrShowScreeningBackgroundView;
-- (void)hideOrShowThirdPartyBackgroundImageWithImage:(id)a3;
+- (void)hideOrShowThirdPartyBackgroundImageWithImage:(id)image;
 - (void)hideRTTConversationIfNeeded;
-- (void)hideWebRTCViewController:(id)a3;
-- (void)insertBelowDimmingLayerWithNewView:(id)a3 containerView:(id)a4;
-- (void)insertWebViewUnderButtonControls:(id)a3;
-- (void)invertColorCallHoldingButtonColor:(BOOL)a3;
-- (void)invertColorCallRecordingButtonColor:(BOOL)a3;
-- (void)layoutParticipantsViewAnimated:(BOOL)a3 crossfade:(BOOL)a4;
+- (void)hideWebRTCViewController:(id)controller;
+- (void)insertBelowDimmingLayerWithNewView:(id)view containerView:(id)containerView;
+- (void)insertWebViewUnderButtonControls:(id)controls;
+- (void)invertColorCallHoldingButtonColor:(BOOL)color;
+- (void)invertColorCallRecordingButtonColor:(BOOL)color;
+- (void)layoutParticipantsViewAnimated:(BOOL)animated crossfade:(BOOL)crossfade;
 - (void)loadView;
-- (void)localAudioToggledWithIsMuted:(BOOL)a3;
-- (void)lockScreenVisibilityDidChange:(id)a3;
+- (void)localAudioToggledWithIsMuted:(BOOL)muted;
+- (void)lockScreenVisibilityDidChange:(id)change;
 - (void)mergeCallsButtonTapped;
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4;
-- (void)performBottomBarActionType:(int64_t)a3;
-- (void)positionParticipantsViewStatusLabelToBeHorizontallyCenteredToInfoButton:(id)a3;
-- (void)positionPosterBadgeToBeHorizontallyCenteredToInfoButton:(id)a3;
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result;
+- (void)performBottomBarActionType:(int64_t)type;
+- (void)positionParticipantsViewStatusLabelToBeHorizontallyCenteredToInfoButton:(id)button;
+- (void)positionPosterBadgeToBeHorizontallyCenteredToInfoButton:(id)button;
 - (void)presentContactCard;
-- (void)presentDisconnectionAlert:(id)a3;
+- (void)presentDisconnectionAlert:(id)alert;
 - (void)presentFullScreenPeoplePicker;
-- (void)presentMoreMenu:(id)a3 source:(id)a4;
-- (void)presentMoreMenu:(id)a3 source:(id)a4 alongsideTransition:(id)a5;
-- (void)presentShareCard:(id)a3 source:(id)a4;
-- (void)presentWaitOnHoldEndForAnotherCallAlertWithCallerName:(id)a3 completionHandler:(id)a4;
-- (void)receptionistStateChanged:(id)a3;
+- (void)presentMoreMenu:(id)menu source:(id)source;
+- (void)presentMoreMenu:(id)menu source:(id)source alongsideTransition:(id)transition;
+- (void)presentShareCard:(id)card source:(id)source;
+- (void)presentWaitOnHoldEndForAnotherCallAlertWithCallerName:(id)name completionHandler:(id)handler;
+- (void)receptionistStateChanged:(id)changed;
 - (void)refreshCallDetailsViewButton;
 - (void)refreshExtensionNumberButton;
 - (void)refreshUseRTTButton;
 - (void)releaseDismissalAssertion;
 - (void)removeAllParticipantsViewConstraints;
 - (void)removeBackgroundContactImageView;
-- (void)removeButtonFrom:(id)a3;
+- (void)removeButtonFrom:(id)from;
 - (void)removeDefaultBackgroundGradientView;
 - (void)removeEmergencyTextViaSatelliteUI;
 - (void)removeEnhancedEmergencyIntermittentStateLabel;
 - (void)removeFirstNameLabelFromViewIfNeeded;
-- (void)removeMediaRequestViewController:(id)a3;
+- (void)removeMediaRequestViewController:(id)controller;
 - (void)removeNameLabelForAlwaysOnDisplay;
-- (void)removePosterViewController:(BOOL)a3 completion:(id)a4;
+- (void)removePosterViewController:(BOOL)controller completion:(id)completion;
 - (void)removeScreeningBackgroundView;
 - (void)removeSupplementalButtons;
-- (void)removeWebRTCViewController:(id)a3;
-- (void)removeWebRTCViewControllerForPIP:(id)a3;
-- (void)reportWithCall:(id)a3;
+- (void)removeWebRTCViewController:(id)controller;
+- (void)removeWebRTCViewControllerForPIP:(id)p;
+- (void)reportWithCall:(id)call;
 - (void)requestAnimationToFullScreenWebView;
 - (void)requestHapticForRequest;
-- (void)requestToAddErrorLabelWithRetryable:(BOOL)a3;
+- (void)requestToAddErrorLabelWithRetryable:(BOOL)retryable;
 - (void)requestToAddMitigationLabel;
 - (void)requestToAddPhotoMitigationLabel;
 - (void)requestToAddResumeCameraLabel;
@@ -319,57 +319,57 @@
 - (void)resetParticipantsViewConstraints;
 - (void)restartCallBufferTimer;
 - (void)restoreParticipantsViewStatusLabelForFullScreen;
-- (void)revealAudioRoutingDeviceListAnimated:(BOOL)a3;
+- (void)revealAudioRoutingDeviceListAnimated:(BOOL)animated;
 - (void)revealAudioRoutingDeviceListAnimatedIfNeeded;
-- (void)routesChangedForRouteController:(id)a3;
-- (void)screenSharingInteractionController:(id)a3 didUpdateRemoteControlStatus:(BOOL)a4;
-- (void)setActiveState:(unsigned __int16)a3;
-- (void)setAlertModeNeededState:(unsigned __int16)a3;
-- (void)setBackgroundColor:(id)a3 animated:(BOOL)a4;
-- (void)setBackgroundImage:(id)a3;
-- (void)setCallBufferState:(unsigned __int16)a3;
-- (void)setCurrentState:(unsigned __int16)a3 animated:(BOOL)a4;
-- (void)setDetachedPosterNameViewModel:(id)a3;
+- (void)routesChangedForRouteController:(id)controller;
+- (void)screenSharingInteractionController:(id)controller didUpdateRemoteControlStatus:(BOOL)status;
+- (void)setActiveState:(unsigned __int16)state;
+- (void)setAlertModeNeededState:(unsigned __int16)state;
+- (void)setBackgroundColor:(id)color animated:(BOOL)animated;
+- (void)setBackgroundImage:(id)image;
+- (void)setCallBufferState:(unsigned __int16)state;
+- (void)setCurrentState:(unsigned __int16)state animated:(BOOL)animated;
+- (void)setDetachedPosterNameViewModel:(id)model;
 - (void)setEmergencyTextViaSatelliteUI;
-- (void)setEndedState:(unsigned __int16)a3;
-- (void)setEndingState:(unsigned __int16)a3;
-- (void)setIdleState:(unsigned __int16)a3;
-- (void)setInCallRootViewController:(id)a3;
-- (void)setKeypadPosterNameViewModel:(id)a3;
+- (void)setEndedState:(unsigned __int16)state;
+- (void)setEndingState:(unsigned __int16)state;
+- (void)setIdleState:(unsigned __int16)state;
+- (void)setInCallRootViewController:(id)controller;
+- (void)setKeypadPosterNameViewModel:(id)model;
 - (void)setMiddleViewButtonsIfNecessary;
-- (void)setMiddleViewState:(unsigned __int16)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setOutgoingRingingState:(unsigned __int16)a3;
-- (void)setParticipantsViewControllersShouldIgnoreUpdates:(BOOL)a3;
-- (void)setParticipantsViewShouldShowParticipantLabel:(BOOL)a3;
-- (void)setPosterNameViewModel:(id)a3;
-- (void)setPrioritizedCall:(id)a3;
-- (void)setRingingState:(unsigned __int16)a3;
+- (void)setMiddleViewState:(unsigned __int16)state animated:(BOOL)animated completion:(id)completion;
+- (void)setOutgoingRingingState:(unsigned __int16)state;
+- (void)setParticipantsViewControllersShouldIgnoreUpdates:(BOOL)updates;
+- (void)setParticipantsViewShouldShowParticipantLabel:(BOOL)label;
+- (void)setPosterNameViewModel:(id)model;
+- (void)setPrioritizedCall:(id)call;
+- (void)setRingingState:(unsigned __int16)state;
 - (void)setRootView;
-- (void)setScreeningState:(unsigned __int16)a3 animated:(BOOL)a4;
-- (void)setScreeningState:(unsigned __int16)a3 animated:(BOOL)a4 overrideWithIsUnlocked:(BOOL)a5;
-- (void)setShowsBlockButton:(BOOL)a3;
-- (void)setShowsCallDetailsViewButton:(BOOL)a3;
-- (void)setShowsCallWaitingParticipantView:(BOOL)a3;
+- (void)setScreeningState:(unsigned __int16)state animated:(BOOL)animated;
+- (void)setScreeningState:(unsigned __int16)state animated:(BOOL)animated overrideWithIsUnlocked:(BOOL)unlocked;
+- (void)setShowsBlockButton:(BOOL)button;
+- (void)setShowsCallDetailsViewButton:(BOOL)button;
+- (void)setShowsCallWaitingParticipantView:(BOOL)view;
 - (void)setUpBlockButton;
 - (void)setUpCallDetailsViewButton;
-- (void)setUpLayoutGuidesForParticipantsViewController:(id)a3;
+- (void)setUpLayoutGuidesForParticipantsViewController:(id)controller;
 - (void)setUpMiddlePillContainerConstraints;
 - (void)setUpPosterBadgeViewIfNecessary;
-- (void)setViewsHiddenForAudioRoutes:(BOOL)a3 animated:(BOOL)a4;
-- (void)setWaitOnHoldState:(unsigned __int16)a3 animated:(BOOL)a4;
-- (void)setWaitingState:(unsigned __int16)a3;
+- (void)setViewsHiddenForAudioRoutes:(BOOL)routes animated:(BOOL)animated;
+- (void)setWaitOnHoldState:(unsigned __int16)state animated:(BOOL)animated;
+- (void)setWaitingState:(unsigned __int16)state;
 - (void)setupAmbientAudioRoutesControlViewIfNeeded;
 - (void)setupCallHoldingObservers;
 - (void)setupDimmingViewForAlwaysOnDisplay;
 - (void)setupHeldCallControlsViewIfNeeded;
 - (void)setupNameLabelForAlwaysOnDisplay;
 - (void)showAddParticipantSheet;
-- (void)showBlockAlertForCall:(id)a3;
-- (void)showBlockAlertForHandle:(id)a3;
+- (void)showBlockAlertForCall:(id)call;
+- (void)showBlockAlertForHandle:(id)handle;
 - (void)showCallControls;
-- (void)showCallDetailsIfNecessaryForDisplayStyle:(int64_t)a3;
+- (void)showCallDetailsIfNecessaryForDisplayStyle:(int64_t)style;
 - (void)showFirstNameLabelOnKeypad;
-- (void)showNameAndPhotoHUDIfNecessaryWithBannerPresentationManager:(id)a3 callCenter:(id)a4;
+- (void)showNameAndPhotoHUDIfNecessaryWithBannerPresentationManager:(id)manager callCenter:(id)center;
 - (void)showPosterBlurTransition;
 - (void)showRTTConversation;
 - (void)speakAlertUtteranceIfNecessary;
@@ -383,65 +383,65 @@
 - (void)stopMessagePlayback;
 - (void)stopSuppressionOfSTKAlerts;
 - (void)suppressRingtoneForIncomingCall;
-- (void)suspendPosterAndCancelDelay:(BOOL)a3;
+- (void)suspendPosterAndCancelDelay:(BOOL)delay;
 - (void)synchronizeSingleLabelViewWithPosterText;
 - (void)tipKitStartWaitOnHoldObservation;
 - (void)tipKitStopWaitOnHoldObservation;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)transitionToFullScreenIfNecessary;
-- (void)transitionToNewPoster:(id)a3 showingPosterTransition:(BOOL)a4 shouldBlurPoster:(BOOL)a5 completion:(id)a6;
+- (void)transitionToNewPoster:(id)poster showingPosterTransition:(BOOL)transition shouldBlurPoster:(BOOL)blurPoster completion:(id)completion;
 - (void)triggerAutoCountdownIfAvailable;
 - (void)updateAmbientAudioRoutesVisibility;
-- (void)updateBackgroundContactImageViewWithImage:(id)a3 animated:(BOOL)a4;
+- (void)updateBackgroundContactImageViewWithImage:(id)image animated:(BOOL)animated;
 - (void)updateBackgroundForEmergencyCall;
-- (void)updateBottomBarAlphaWithCurrentState:(unsigned __int16)a3;
-- (void)updateBottomBarButtonsWithCall:(id)a3;
-- (void)updateCallHoldingIfNeeded:(id)a3;
+- (void)updateBottomBarAlphaWithCurrentState:(unsigned __int16)state;
+- (void)updateBottomBarButtonsWithCall:(id)call;
+- (void)updateCallHoldingIfNeeded:(id)needed;
 - (void)updateCallHoldingPositionIfNeeded;
 - (void)updateCallParticipantsViewControllerCallGroups;
-- (void)updateCallRecordingIfNeededWithButtonContainer:(id)a3 pillContainer:(id)a4;
+- (void)updateCallRecordingIfNeededWithButtonContainer:(id)container pillContainer:(id)pillContainer;
 - (void)updateCallRecordingPositionIfNeeded;
-- (void)updateCallRecordingViewBackgroundMaterialType:(unint64_t)a3;
+- (void)updateCallRecordingViewBackgroundMaterialType:(unint64_t)type;
 - (void)updateCallTranslationIfNeeded;
 - (void)updateCurrentState;
-- (void)updateDimmingValuesFor:(unsigned __int16)a3;
+- (void)updateDimmingValuesFor:(unsigned __int16)for;
 - (void)updateDimmingView;
 - (void)updateEnhancedEmergencyViewWhenKeypadPresented;
 - (void)updateHardPauseDigitsState;
 - (void)updateIncomingBottomBarControlState;
 - (void)updateLayeredBackgroundWallpaper;
 - (void)updateLayoutSupplementalButtons;
-- (void)updateLegacyBackgroundImageVisibilityWithShouldShowWallpaper:(BOOL)a3;
-- (void)updateParticipantConstraintsForPosterName:(id)a3;
-- (void)updateParticipantsLabelForView:(id)a3 isHidden:(BOOL)a4;
-- (void)updatePosterBadgeView:(BOOL)a3 to:(id)a4;
-- (void)updatePosterDimmingAreaWith:(CGRect)a3;
-- (void)updatePosterViewModelForParticipantsView:(id)a3;
-- (void)updatePresentationStateWithAllowed:(BOOL)a3;
+- (void)updateLegacyBackgroundImageVisibilityWithShouldShowWallpaper:(BOOL)wallpaper;
+- (void)updateParticipantConstraintsForPosterName:(id)name;
+- (void)updateParticipantsLabelForView:(id)view isHidden:(BOOL)hidden;
+- (void)updatePosterBadgeView:(BOOL)view to:(id)to;
+- (void)updatePosterDimmingAreaWith:(CGRect)with;
+- (void)updatePosterViewModelForParticipantsView:(id)view;
+- (void)updatePresentationStateWithAllowed:(BOOL)allowed;
 - (void)updateSaliencyRectIfNeeded;
 - (void)updateScreenSharingDisableUpdateMask;
 - (void)updateScreenSharingIndicatorView;
 - (void)updateShareNameAndPhotoHUDPresentationIfNeeded;
 - (void)updateShouldShowLargeAvatar;
-- (void)updateTextFieldPadding:(id)a3 padding:(double)a4;
-- (void)updateTranslationBackgroundView:(BOOL)a3;
-- (void)updateTranslationPosterName:(BOOL)a3;
+- (void)updateTextFieldPadding:(id)padding padding:(double)a4;
+- (void)updateTranslationBackgroundView:(BOOL)view;
+- (void)updateTranslationPosterName:(BOOL)name;
 - (void)updateViewForEmergencyCallIfNecessary;
 - (void)updateViewsForHeldCallControlsViewIfNeeded;
-- (void)updateWaitOnHoldServiceWithCallWithCall:(id)a3;
+- (void)updateWaitOnHoldServiceWithCallWithCall:(id)call;
 - (void)updateWaitOnHoldViewIfNeeded;
 - (void)useRTTButtonTapped;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)wantsHoldMusicChangedNotification:(id)a3;
-- (void)writeToLastSeenPosterCacheIfNecessaryForCall:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)wantsHoldMusicChangedNotification:(id)notification;
+- (void)writeToLastSeenPosterCacheIfNecessaryForCall:(id)call;
 @end
 
 @implementation PHAudioCallViewController
@@ -465,9 +465,9 @@
   if (objc_opt_respondsToSelector())
   {
     v3 = +[UIDevice currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-    v5 = v4 == 1;
+    v5 = userInterfaceIdiom == 1;
   }
 
   else
@@ -480,51 +480,51 @@
 
 - (BOOL)desiresLockButtonEvents
 {
-  v2 = self;
-  v3 = [(PHAudioCallViewController *)self callCenter];
-  LOBYTE(v2) = [(PHAudioCallViewController *)v2 desiresLockButtonEventsForCallContainer:v3];
+  selfCopy = self;
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  LOBYTE(selfCopy) = [(PHAudioCallViewController *)selfCopy desiresLockButtonEventsForCallContainer:callCenter];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isPickedRouteReceiver
 {
-  v2 = [(PHAudioCallViewController *)self callCenter];
-  v3 = [v2 routeController];
-  v4 = [v3 pickedRoute];
-  v5 = [v4 isReceiver];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  routeController = [callCenter routeController];
+  pickedRoute = [routeController pickedRoute];
+  isReceiver = [pickedRoute isReceiver];
 
-  return v5;
+  return isReceiver;
 }
 
 - (BOOL)allowsMenuButtonDismissal
 {
-  v2 = [(PHAudioCallViewController *)self callCenter];
-  v3 = [v2 incomingCall];
-  v4 = v3 == 0;
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  incomingCall = [callCenter incomingCall];
+  v4 = incomingCall == 0;
 
   return v4;
 }
 
 - (BOOL)allowsBanners
 {
-  v2 = [(PHAudioCallViewController *)self callCenter];
-  v3 = [v2 incomingCall];
-  v4 = v3 == 0;
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  incomingCall = [callCenter incomingCall];
+  v4 = incomingCall == 0;
 
   return v4;
 }
 
 - (BOOL)usesCompactMulticallUI
 {
-  v3 = [(PHAudioCallViewController *)self features];
-  if ([v3 callManagerEnabled])
+  features = [(PHAudioCallViewController *)self features];
+  if ([features callManagerEnabled])
   {
-    v4 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v4 callDisplayStyle] == 3)
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager callDisplayStyle] == 3)
     {
-      v5 = [(PHAudioCallViewController *)self features];
-      v6 = [v5 isDominoEnabled] ^ 1;
+      features2 = [(PHAudioCallViewController *)self features];
+      v6 = [features2 isDominoEnabled] ^ 1;
     }
 
     else
@@ -551,12 +551,12 @@
 - (void)updateViewsForHeldCallControlsViewIfNeeded
 {
   v3 = +[PHInCallUtilities sharedInstance];
-  v4 = [v3 isIPadIdiom];
+  isIPadIdiom = [v3 isIPadIdiom];
 
-  if ((v4 & 1) == 0)
+  if ((isIPadIdiom & 1) == 0)
   {
-    v5 = [(PHAudioCallViewController *)self heldCallControlsView];
-    [v5 removeFromSuperview];
+    heldCallControlsView = [(PHAudioCallViewController *)self heldCallControlsView];
+    [heldCallControlsView removeFromSuperview];
 
     [(PHAudioCallViewController *)self setHeldCallControlsView:0];
     [(PHAudioCallViewController *)self setupHeldCallControlsViewIfNeeded];
@@ -568,56 +568,56 @@
 
 - (void)setupHeldCallControlsViewIfNeeded
 {
-  v3 = [(PHAudioCallViewController *)self heldCallControlsView];
+  heldCallControlsView = [(PHAudioCallViewController *)self heldCallControlsView];
 
-  if (!v3)
+  if (!heldCallControlsView)
   {
-    v4 = [(PHAudioCallViewController *)self callCenter];
-    v5 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    v6 = -[PHAudioCallViewController makeHeldCallControlsViewWithCallCenter:style:](self, "makeHeldCallControlsViewWithCallCenter:style:", v4, [v5 callDisplayStyle]);
+    callCenter = [(PHAudioCallViewController *)self callCenter];
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    v6 = -[PHAudioCallViewController makeHeldCallControlsViewWithCallCenter:style:](self, "makeHeldCallControlsViewWithCallCenter:style:", callCenter, [callDisplayStyleManager callDisplayStyle]);
     [(PHAudioCallViewController *)self setHeldCallControlsView:v6];
 
-    v7 = [(PHAudioCallViewController *)self heldCallControlsView];
+    heldCallControlsView2 = [(PHAudioCallViewController *)self heldCallControlsView];
 
-    if (v7)
+    if (heldCallControlsView2)
     {
-      v8 = [(PHAudioCallViewController *)self view];
-      v9 = [(PHAudioCallViewController *)self heldCallControlsView];
-      [v8 addSubview:v9];
+      view = [(PHAudioCallViewController *)self view];
+      heldCallControlsView3 = [(PHAudioCallViewController *)self heldCallControlsView];
+      [view addSubview:heldCallControlsView3];
 
-      v10 = [(PHAudioCallViewController *)self heldCallControlsView];
-      [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+      heldCallControlsView4 = [(PHAudioCallViewController *)self heldCallControlsView];
+      [heldCallControlsView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v11 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-      if ([v11 callDisplayStyle] == 3)
+      callDisplayStyleManager2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+      if ([callDisplayStyleManager2 callDisplayStyle] == 3)
       {
-        v12 = [(PHAudioCallViewController *)self features];
-        v13 = [v12 isDominoEnabled];
+        features = [(PHAudioCallViewController *)self features];
+        isDominoEnabled = [features isDominoEnabled];
 
-        if (v13)
+        if (isDominoEnabled)
         {
-          v14 = [(PHAudioCallViewController *)self heldCallControlsView];
-          v15 = [v14 leadingAnchor];
-          v16 = [(PHAudioCallViewController *)self view];
-          v17 = [v16 leadingAnchor];
-          v18 = [v15 constraintEqualToAnchor:v17 constant:10.0];
+          heldCallControlsView5 = [(PHAudioCallViewController *)self heldCallControlsView];
+          leadingAnchor = [heldCallControlsView5 leadingAnchor];
+          view2 = [(PHAudioCallViewController *)self view];
+          leadingAnchor2 = [view2 leadingAnchor];
+          v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
           v39[0] = v18;
-          v37 = [(PHAudioCallViewController *)self heldCallControlsView];
-          v19 = [v37 bottomAnchor];
-          v35 = [(PHAudioCallViewController *)self view];
-          v34 = [v35 safeAreaLayoutGuide];
-          [v34 bottomAnchor];
-          v33 = v36 = v19;
-          v32 = [v19 constraintEqualToAnchor:?];
+          heldCallControlsView6 = [(PHAudioCallViewController *)self heldCallControlsView];
+          bottomAnchor = [heldCallControlsView6 bottomAnchor];
+          view3 = [(PHAudioCallViewController *)self view];
+          safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+          [safeAreaLayoutGuide bottomAnchor];
+          layoutMarginsGuide = heldCallControlsView9 = bottomAnchor;
+          v32 = [bottomAnchor constraintEqualToAnchor:?];
           v39[1] = v32;
-          v31 = [(PHAudioCallViewController *)self heldCallControlsView];
-          v20 = [v31 trailingAnchor];
-          v21 = [(PHAudioCallViewController *)self leadingSideLayoutGuide];
-          v22 = [v21 trailingAnchor];
-          v23 = [v20 constraintEqualToAnchor:v22 constant:20.0];
-          v39[2] = v23;
-          v24 = [NSArray arrayWithObjects:v39 count:3];
-          [NSLayoutConstraint activateConstraints:v24];
+          heldCallControlsView7 = [(PHAudioCallViewController *)self heldCallControlsView];
+          trailingAnchor = [heldCallControlsView7 trailingAnchor];
+          leadingSideLayoutGuide = [(PHAudioCallViewController *)self leadingSideLayoutGuide];
+          trailingAnchor2 = [leadingSideLayoutGuide trailingAnchor];
+          safeAreaLayoutGuide2 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:20.0];
+          v39[2] = safeAreaLayoutGuide2;
+          bottomAnchor2 = [NSArray arrayWithObjects:v39 count:3];
+          [NSLayoutConstraint activateConstraints:bottomAnchor2];
 LABEL_8:
 
           return;
@@ -628,89 +628,89 @@ LABEL_8:
       {
       }
 
-      v30 = [(PHAudioCallViewController *)self heldCallControlsView];
-      v29 = [v30 leadingAnchor];
-      v16 = [(PHAudioCallViewController *)self view];
-      v17 = [v16 layoutMarginsGuide];
-      v25 = [v17 leadingAnchor];
-      v37 = [v29 constraintEqualToAnchor:v25];
-      v38[0] = v37;
-      v36 = [(PHAudioCallViewController *)self heldCallControlsView];
-      v26 = [v36 trailingAnchor];
-      v34 = [(PHAudioCallViewController *)self view];
-      v33 = [v34 layoutMarginsGuide];
-      [v33 trailingAnchor];
-      v32 = v35 = v26;
-      v31 = [v26 constraintEqualToAnchor:?];
-      v38[1] = v31;
-      v20 = [(PHAudioCallViewController *)self heldCallControlsView];
-      v21 = [v20 bottomAnchor];
-      v22 = [(PHAudioCallViewController *)self view];
-      v23 = [v22 safeAreaLayoutGuide];
-      v24 = [v23 bottomAnchor];
-      v27 = [v21 constraintEqualToAnchor:v24];
+      heldCallControlsView8 = [(PHAudioCallViewController *)self heldCallControlsView];
+      leadingAnchor3 = [heldCallControlsView8 leadingAnchor];
+      view2 = [(PHAudioCallViewController *)self view];
+      leadingAnchor2 = [view2 layoutMarginsGuide];
+      v17LeadingAnchor = [leadingAnchor2 leadingAnchor];
+      heldCallControlsView6 = [leadingAnchor3 constraintEqualToAnchor:v17LeadingAnchor];
+      v38[0] = heldCallControlsView6;
+      heldCallControlsView9 = [(PHAudioCallViewController *)self heldCallControlsView];
+      trailingAnchor3 = [heldCallControlsView9 trailingAnchor];
+      safeAreaLayoutGuide = [(PHAudioCallViewController *)self view];
+      layoutMarginsGuide = [safeAreaLayoutGuide layoutMarginsGuide];
+      [layoutMarginsGuide trailingAnchor];
+      v32 = view3 = trailingAnchor3;
+      heldCallControlsView7 = [trailingAnchor3 constraintEqualToAnchor:?];
+      v38[1] = heldCallControlsView7;
+      trailingAnchor = [(PHAudioCallViewController *)self heldCallControlsView];
+      leadingSideLayoutGuide = [trailingAnchor bottomAnchor];
+      trailingAnchor2 = [(PHAudioCallViewController *)self view];
+      safeAreaLayoutGuide2 = [trailingAnchor2 safeAreaLayoutGuide];
+      bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+      v27 = [leadingSideLayoutGuide constraintEqualToAnchor:bottomAnchor2];
       v38[2] = v27;
       v28 = [NSArray arrayWithObjects:v38 count:3];
       [NSLayoutConstraint activateConstraints:v28];
 
-      v18 = v25;
-      v14 = v30;
-      v15 = v29;
+      v18 = v17LeadingAnchor;
+      heldCallControlsView5 = heldCallControlsView8;
+      leadingAnchor = leadingAnchor3;
       goto LABEL_8;
     }
   }
 }
 
-- (id)makeHeldCallControlsViewWithCallCenter:(id)a3 style:(int64_t)a4
+- (id)makeHeldCallControlsViewWithCallCenter:(id)center style:(int64_t)style
 {
-  v6 = a3;
-  v7 = self;
-  v8 = PHAudioCallViewController.makeHeldCallControls(callCenter:style:)(v6, a4);
+  centerCopy = center;
+  selfCopy = self;
+  v8 = PHAudioCallViewController.makeHeldCallControls(callCenter:style:)(centerCopy, style);
 
   return v8;
 }
 
 - (void)constrainButtonsViewBottom
 {
-  v3 = [(PHAudioCallViewController *)self buttonsViewBottomConstraintToUse];
-  if (v3)
+  buttonsViewBottomConstraintToUse = [(PHAudioCallViewController *)self buttonsViewBottomConstraintToUse];
+  if (buttonsViewBottomConstraintToUse)
   {
-    v5 = v3;
-    v4 = [(PHAudioCallViewController *)self buttonsViewBottomConstraint];
-    [v4 setActive:0];
+    v5 = buttonsViewBottomConstraintToUse;
+    buttonsViewBottomConstraint = [(PHAudioCallViewController *)self buttonsViewBottomConstraint];
+    [buttonsViewBottomConstraint setActive:0];
 
     [(PHAudioCallViewController *)self setButtonsViewBottomConstraint:v5];
     [v5 setActive:1];
-    v3 = v5;
+    buttonsViewBottomConstraintToUse = v5;
   }
 }
 
 - (id)buttonsViewBottomConstraintToUse
 {
-  v4 = [(PHAudioCallViewController *)self buttonsViewController];
-  v5 = [v4 view];
-  v6 = [v5 superview];
+  buttonsViewController = [(PHAudioCallViewController *)self buttonsViewController];
+  view = [buttonsViewController view];
+  superview = [view superview];
 
-  if (!v6)
+  if (!superview)
   {
     goto LABEL_26;
   }
 
-  v7 = [(PHAudioCallViewController *)self emergencyPhotoPickerGrabberView];
+  emergencyPhotoPickerGrabberView = [(PHAudioCallViewController *)self emergencyPhotoPickerGrabberView];
 
-  if (v7)
+  if (emergencyPhotoPickerGrabberView)
   {
-    v8 = [(PHAudioCallViewController *)self buttonsViewController];
-    v9 = [v8 view];
-    v10 = [v9 bottomAnchor];
-    v11 = [(PHAudioCallViewController *)self emergencyPhotoPickerGrabberView];
-    v12 = [v11 topAnchor];
-    v13 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    v14 = [v13 callDisplayStyle];
-    if (v14 == 3)
+    buttonsViewController2 = [(PHAudioCallViewController *)self buttonsViewController];
+    view2 = [buttonsViewController2 view];
+    bottomAnchor = [view2 bottomAnchor];
+    emergencyPhotoPickerGrabberView2 = [(PHAudioCallViewController *)self emergencyPhotoPickerGrabberView];
+    topAnchor = [emergencyPhotoPickerGrabberView2 topAnchor];
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
+    if (callDisplayStyle == 3)
     {
-      v2 = [(PHAudioCallViewController *)self features];
-      if ([v2 isDominoEnabled])
+      features = [(PHAudioCallViewController *)self features];
+      if ([features isDominoEnabled])
       {
         +[PHUIConfiguration ambientVerticalPadding];
         v16 = (v15 + 32.0) * -2.5;
@@ -728,8 +728,8 @@ LABEL_8:
     }
 
 LABEL_20:
-    v28 = [v10 constraintEqualToAnchor:v12 constant:v16];
-    if (v14 == 3)
+    v28 = [bottomAnchor constraintEqualToAnchor:topAnchor constant:v16];
+    if (callDisplayStyle == 3)
     {
     }
 
@@ -737,17 +737,17 @@ LABEL_23:
     goto LABEL_27;
   }
 
-  v17 = [(PHAudioCallViewController *)self heldCallControlsView];
-  if (v17)
+  heldCallControlsView = [(PHAudioCallViewController *)self heldCallControlsView];
+  if (heldCallControlsView)
   {
-    v18 = v17;
-    v19 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v19 callDisplayStyle] == 3)
+    v18 = heldCallControlsView;
+    callDisplayStyleManager2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager2 callDisplayStyle] == 3)
     {
-      v20 = [(PHAudioCallViewController *)self features];
-      v21 = [v20 isDominoEnabled];
+      features2 = [(PHAudioCallViewController *)self features];
+      isDominoEnabled = [features2 isDominoEnabled];
 
-      if (v21)
+      if (isDominoEnabled)
       {
         goto LABEL_9;
       }
@@ -757,20 +757,20 @@ LABEL_23:
     {
     }
 
-    v8 = [(PHAudioCallViewController *)self buttonsViewController];
-    v9 = [v8 view];
-    v10 = [v9 bottomAnchor];
-    v11 = [(PHAudioCallViewController *)self heldCallControlsView];
-    v25 = [v11 topAnchor];
+    buttonsViewController2 = [(PHAudioCallViewController *)self buttonsViewController];
+    view2 = [buttonsViewController2 view];
+    bottomAnchor = [view2 bottomAnchor];
+    emergencyPhotoPickerGrabberView2 = [(PHAudioCallViewController *)self heldCallControlsView];
+    topAnchor2 = [emergencyPhotoPickerGrabberView2 topAnchor];
 LABEL_16:
-    v12 = v25;
-    v13 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    v14 = [v13 callDisplayStyle];
+    topAnchor = topAnchor2;
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
     v26 = 20.0;
-    if (v14 == 3)
+    if (callDisplayStyle == 3)
     {
-      v2 = [(PHAudioCallViewController *)self features];
-      if ([v2 isDominoEnabled])
+      features = [(PHAudioCallViewController *)self features];
+      if ([features isDominoEnabled])
       {
         +[PHUIConfiguration ambientVerticalPadding];
         v26 = v27 + 32.0;
@@ -782,19 +782,19 @@ LABEL_16:
   }
 
 LABEL_9:
-  v22 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v22 callDisplayStyle] == 3)
+  callDisplayStyleManager3 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager3 callDisplayStyle] == 3)
   {
-    v23 = [(PHAudioCallViewController *)self features];
-    v24 = [v23 isDominoEnabled];
+    features3 = [(PHAudioCallViewController *)self features];
+    isDominoEnabled2 = [features3 isDominoEnabled];
 
-    if (v24)
+    if (isDominoEnabled2)
     {
-      v8 = [(PHAudioCallViewController *)self buttonsViewController];
-      v9 = [v8 view];
-      v10 = [v9 bottomAnchor];
-      v11 = [(PHAudioCallViewController *)self view];
-      v25 = [v11 bottomAnchor];
+      buttonsViewController2 = [(PHAudioCallViewController *)self buttonsViewController];
+      view2 = [buttonsViewController2 view];
+      bottomAnchor = [view2 bottomAnchor];
+      emergencyPhotoPickerGrabberView2 = [(PHAudioCallViewController *)self view];
+      topAnchor2 = [emergencyPhotoPickerGrabberView2 bottomAnchor];
       goto LABEL_16;
     }
   }
@@ -804,9 +804,9 @@ LABEL_9:
   }
 
   v29 = +[PHInCallUtilities sharedInstance];
-  v30 = [v29 isIPadIdiom];
+  isIPadIdiom = [v29 isIPadIdiom];
 
-  if ((v30 & 1) == 0)
+  if ((isIPadIdiom & 1) == 0)
   {
     v32 = +[UIScreen mainScreen];
     [v32 bounds];
@@ -820,12 +820,12 @@ LABEL_9:
 
     +[PHUIConfiguration inComingCallAndInCallControlsBottomPaddingRatio];
     v38 = v37;
-    v8 = [(PHAudioCallViewController *)self buttonsViewController];
-    v9 = [v8 view];
-    v10 = [v9 bottomAnchor];
-    v11 = [(PHAudioCallViewController *)self view];
-    v12 = [v11 bottomAnchor];
-    v28 = [v10 constraintEqualToAnchor:v12 constant:-(v36 * v38)];
+    buttonsViewController2 = [(PHAudioCallViewController *)self buttonsViewController];
+    view2 = [buttonsViewController2 view];
+    bottomAnchor = [view2 bottomAnchor];
+    emergencyPhotoPickerGrabberView2 = [(PHAudioCallViewController *)self view];
+    topAnchor = [emergencyPhotoPickerGrabberView2 bottomAnchor];
+    v28 = [bottomAnchor constraintEqualToAnchor:topAnchor constant:-(v36 * v38)];
     goto LABEL_23;
   }
 
@@ -840,23 +840,23 @@ LABEL_27:
 {
   if (!self->_buttonsViewController)
   {
-    v3 = [(PHAudioCallViewController *)self features];
-    v4 = [v3 isModernAudioBottomButtonsEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isModernAudioBottomButtonsEnabled = [features isModernAudioBottomButtonsEnabled];
 
-    v5 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if (v4)
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if (isModernAudioBottomButtonsEnabled)
     {
-      v6 = [(PHAudioCallViewController *)self frontmostCall];
-      v7 = [(PHAudioCallViewController *)self view];
-      [v7 frame];
-      v9 = [PHInCallAudioButtonsBuilder buildModernSixedUpViewControllerWithCallDisplayManager:v5 frontmostCall:v6 with:v8];
+      frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+      view = [(PHAudioCallViewController *)self view];
+      [view frame];
+      v9 = [PHInCallAudioButtonsBuilder buildModernSixedUpViewControllerWithCallDisplayManager:callDisplayStyleManager frontmostCall:frontmostCall with:v8];
       buttonsViewController = self->_buttonsViewController;
       self->_buttonsViewController = v9;
     }
 
     else
     {
-      v11 = [PHInCallAudioButtonsBuilder buildDeprecatedSixedUpViewControllerWithCallDisplayManager:v5];
+      v11 = [PHInCallAudioButtonsBuilder buildDeprecatedSixedUpViewControllerWithCallDisplayManager:callDisplayStyleManager];
       v12 = self->_buttonsViewController;
       self->_buttonsViewController = v11;
     }
@@ -877,32 +877,32 @@ LABEL_27:
 
 - (void)constrainBottomBarBottom
 {
-  v3 = [(PHAudioCallViewController *)self bottomBarBottomConstraintToUse];
-  if (v3)
+  bottomBarBottomConstraintToUse = [(PHAudioCallViewController *)self bottomBarBottomConstraintToUse];
+  if (bottomBarBottomConstraintToUse)
   {
-    v5 = v3;
-    v4 = [(PHAudioCallViewController *)self bottomBarBottomConstraint];
-    [v4 setActive:0];
+    v5 = bottomBarBottomConstraintToUse;
+    bottomBarBottomConstraint = [(PHAudioCallViewController *)self bottomBarBottomConstraint];
+    [bottomBarBottomConstraint setActive:0];
 
     [(PHAudioCallViewController *)self setBottomBarBottomConstraint:v5];
     [v5 setActive:1];
-    v3 = v5;
+    bottomBarBottomConstraintToUse = v5;
   }
 }
 
 - (id)bottomBarBottomConstraintToUse
 {
-  v4 = [(PHAudioCallViewController *)self heldCallControlsView];
-  if (v4)
+  heldCallControlsView = [(PHAudioCallViewController *)self heldCallControlsView];
+  if (heldCallControlsView)
   {
-    v5 = v4;
-    v6 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v6 callDisplayStyle] == 3)
+    v5 = heldCallControlsView;
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager callDisplayStyle] == 3)
     {
-      v7 = [(PHAudioCallViewController *)self features];
-      v8 = [v7 isDominoEnabled];
+      features = [(PHAudioCallViewController *)self features];
+      isDominoEnabled = [features isDominoEnabled];
 
-      if (v8)
+      if (isDominoEnabled)
       {
         goto LABEL_4;
       }
@@ -912,59 +912,59 @@ LABEL_27:
     {
     }
 
-    v11 = [(PHCallViewController *)self bottomBar];
-    v12 = [v11 bottomAnchor];
-    v13 = [(PHAudioCallViewController *)self heldCallControlsView];
-    v17 = [v13 topAnchor];
+    bottomBar = [(PHCallViewController *)self bottomBar];
+    bottomAnchor = [bottomBar bottomAnchor];
+    heldCallControlsView2 = [(PHAudioCallViewController *)self heldCallControlsView];
+    topAnchor = [heldCallControlsView2 topAnchor];
     goto LABEL_8;
   }
 
 LABEL_4:
   v9 = +[UIDevice currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  userInterfaceIdiom = [v9 userInterfaceIdiom];
 
-  if (v10 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v11 = [(PHCallViewController *)self bottomBar];
-    v12 = [v11 bottomAnchor];
-    v13 = [(PHAudioCallViewController *)self view];
-    v14 = [v13 safeAreaLayoutGuide];
-    v15 = [v14 bottomAnchor];
-    v16 = [v12 constraintEqualToAnchor:v15];
+    bottomBar = [(PHCallViewController *)self bottomBar];
+    bottomAnchor = [bottomBar bottomAnchor];
+    heldCallControlsView2 = [(PHAudioCallViewController *)self view];
+    safeAreaLayoutGuide = [heldCallControlsView2 safeAreaLayoutGuide];
+    bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+    v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v22 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v22 callDisplayStyle] == 3)
+  callDisplayStyleManager2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager2 callDisplayStyle] == 3)
   {
-    v23 = [(PHAudioCallViewController *)self features];
-    v24 = [v23 isDominoEnabled];
+    features2 = [(PHAudioCallViewController *)self features];
+    isDominoEnabled2 = [features2 isDominoEnabled];
 
-    if (v24)
+    if (isDominoEnabled2)
     {
-      v11 = [(PHCallViewController *)self bottomBar];
-      v12 = [v11 bottomAnchor];
-      v13 = [(PHAudioCallViewController *)self view];
-      v17 = [v13 bottomAnchor];
+      bottomBar = [(PHCallViewController *)self bottomBar];
+      bottomAnchor = [bottomBar bottomAnchor];
+      heldCallControlsView2 = [(PHAudioCallViewController *)self view];
+      topAnchor = [heldCallControlsView2 bottomAnchor];
 LABEL_8:
-      v14 = v17;
-      v15 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-      v18 = [v15 callDisplayStyle];
+      safeAreaLayoutGuide = topAnchor;
+      bottomAnchor2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+      callDisplayStyle = [bottomAnchor2 callDisplayStyle];
       v19 = 20.0;
-      if (v18 == 3)
+      if (callDisplayStyle == 3)
       {
-        v2 = [(PHAudioCallViewController *)self features];
-        if ([v2 isDominoEnabled])
+        features3 = [(PHAudioCallViewController *)self features];
+        if ([features3 isDominoEnabled])
         {
           +[PHUIConfiguration ambientVerticalPadding];
           v19 = v20 + 32.0;
         }
       }
 
-      v16 = [v12 constraintEqualToAnchor:v14 constant:-v19];
-      if (v18 == 3)
+      v16 = [bottomAnchor constraintEqualToAnchor:safeAreaLayoutGuide constant:-v19];
+      if (callDisplayStyle == 3)
       {
       }
 
@@ -979,11 +979,11 @@ LABEL_8:
   v25 = +[PHInCallUtilities sharedInstance];
   [v25 isIPadIdiom];
 
-  v11 = [(PHCallViewController *)self bottomBar];
-  v12 = [v11 bottomAnchor];
-  v13 = [(PHAudioCallViewController *)self view];
-  v14 = [v13 bottomAnchor];
-  v16 = [v12 constraintEqualToAnchor:v14];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  bottomAnchor = [bottomBar bottomAnchor];
+  heldCallControlsView2 = [(PHAudioCallViewController *)self view];
+  safeAreaLayoutGuide = [heldCallControlsView2 bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:safeAreaLayoutGuide];
 LABEL_14:
 
   return v16;
@@ -992,23 +992,23 @@ LABEL_14:
 - (void)updateCurrentState
 {
   [(PHAudioCallViewController *)self refreshCallDetailsViewButton];
-  v3 = [(PHAudioCallViewController *)self callCenter];
-  v4 = [v3 currentCallGroups];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  currentCallGroups = [callCenter currentCallGroups];
 
-  v5 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if (![v5 callDisplayStyle])
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if (![callDisplayStyleManager callDisplayStyle])
   {
-    v6 = [(PHAudioCallViewController *)self _isScreeningAnyCallGroup:v4];
+    v6 = [(PHAudioCallViewController *)self _isScreeningAnyCallGroup:currentCallGroups];
 
     if (!v6)
     {
       goto LABEL_5;
     }
 
-    v5 = +[UIApplication sharedApplication];
-    v7 = [v5 delegate];
-    v8 = [v7 currentInCallScene];
-    [v8 requestTransitionToPresentationMode:0 shouldDismissCMASAlerts:0 analyticsSource:@"SBSUIInCallTransitionAnalyticsSourceCallScreeningBegin"];
+    callDisplayStyleManager = +[UIApplication sharedApplication];
+    delegate = [callDisplayStyleManager delegate];
+    currentInCallScene = [delegate currentInCallScene];
+    [currentInCallScene requestTransitionToPresentationMode:0 shouldDismissCMASAlerts:0 analyticsSource:@"SBSUIInCallTransitionAnalyticsSourceCallScreeningBegin"];
   }
 
 LABEL_5:
@@ -1017,7 +1017,7 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  if ([v4 count])
+  if ([currentCallGroups count])
   {
     +[PHSOSViewController releaseAllCallBufferDismissalAssertions];
 LABEL_8:
@@ -1025,30 +1025,30 @@ LABEL_8:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *v135 = 138412290;
-      *&v135[4] = v4;
+      *&v135[4] = currentCallGroups;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Current Call Groups is %@", v135, 0xCu);
     }
 
-    v10 = [(PHAudioCallViewController *)self callCenter];
-    v11 = [v10 allCallsPassTest:&stru_100359C08];
+    callCenter2 = [(PHAudioCallViewController *)self callCenter];
+    v11 = [callCenter2 allCallsPassTest:&stru_100359C08];
 
-    v12 = [(PHAudioCallViewController *)self callCenter];
-    v13 = [v12 routeController];
-    v14 = [v13 pickedRoute];
-    v15 = [v14 deviceType];
+    callCenter3 = [(PHAudioCallViewController *)self callCenter];
+    routeController = [callCenter3 routeController];
+    pickedRoute = [routeController pickedRoute];
+    deviceType = [pickedRoute deviceType];
 
-    if (!v11 || [(PHCallViewController *)self currentState]!= 1 && [(PHCallViewController *)self currentState]!= 3 && v15 != 13)
+    if (!v11 || [(PHCallViewController *)self currentState]!= 1 && [(PHCallViewController *)self currentState]!= 3 && deviceType != 13)
     {
       goto LABEL_17;
     }
 
-    v16 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v16 callDisplayStyle] == 3)
+    callDisplayStyleManager2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager2 callDisplayStyle] == 3)
     {
-      v17 = [(PHAudioCallViewController *)self features];
-      v18 = [v17 isDominoEnabled];
+      features = [(PHAudioCallViewController *)self features];
+      isDominoEnabled = [features isDominoEnabled];
 
-      if (v18)
+      if (isDominoEnabled)
       {
 LABEL_17:
         [(PHCallViewController *)self obtainDismissalAssertionIfNeeded];
@@ -1063,7 +1063,7 @@ LABEL_17:
 
     v19 = 1;
 LABEL_23:
-    if ([v4 count])
+    if ([currentCallGroups count])
     {
       if (([(PHAudioCallViewController *)self isViewLoaded]& 1) == 0)
       {
@@ -1071,36 +1071,36 @@ LABEL_23:
       }
 
       v21 = +[UIApplication sharedApplication];
-      v22 = [v21 delegate];
-      v23 = [v22 bannerPresentationManager];
-      v24 = [(PHAudioCallViewController *)self callDetailsCoordinator];
-      v25 = [(PHAudioCallViewController *)self makeCallDetailsCoordinatorWithBannerPresentationManager:v23 existingCoordinator:v24 deferredPresentationManager:self];
+      delegate2 = [v21 delegate];
+      bannerPresentationManager = [delegate2 bannerPresentationManager];
+      callDetailsCoordinator = [(PHAudioCallViewController *)self callDetailsCoordinator];
+      v25 = [(PHAudioCallViewController *)self makeCallDetailsCoordinatorWithBannerPresentationManager:bannerPresentationManager existingCoordinator:callDetailsCoordinator deferredPresentationManager:self];
 
-      v26 = [v25 outcome];
-      if (v26 == 1)
+      outcome = [v25 outcome];
+      if (outcome == 1)
       {
         [(PHAudioCallViewController *)self setCallDetailsCoordinator:0];
       }
 
-      else if (v26 == 2)
+      else if (outcome == 2)
       {
-        v27 = [v25 coordinator];
-        [(PHAudioCallViewController *)self setCallDetailsCoordinator:v27];
+        coordinator = [v25 coordinator];
+        [(PHAudioCallViewController *)self setCallDetailsCoordinator:coordinator];
       }
     }
 
-    if (![v4 count])
+    if (![currentCallGroups count])
     {
       v32 = +[UIApplication sharedApplication];
-      v33 = [v32 delegate];
-      v34 = [v33 mostRecentlyDisconnectedAudioCall];
+      delegate3 = [v32 delegate];
+      mostRecentlyDisconnectedAudioCall = [delegate3 mostRecentlyDisconnectedAudioCall];
 
-      if (!v34)
+      if (!mostRecentlyDisconnectedAudioCall)
       {
         goto LABEL_76;
       }
 
-      v35 = [v34 canDisplayAlertUI:{-[PHAudioCallViewController shouldPresentAlertButton](self, "shouldPresentAlertButton")}];
+      v35 = [mostRecentlyDisconnectedAudioCall canDisplayAlertUI:{-[PHAudioCallViewController shouldPresentAlertButton](self, "shouldPresentAlertButton")}];
       v36 = sub_100004F84();
       v37 = os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT);
       if (v35)
@@ -1114,18 +1114,18 @@ LABEL_23:
         [(PHAudioCallViewController *)self setCurrentState:8 animated:1];
         [(PHAudioCallViewController *)self updateCallParticipantsViewControllerCallGroups];
         [(PHAudioCallViewController *)self setEmergencyTextViaSatelliteUI];
-        v38 = [(PHAudioCallViewController *)self buttonsViewController];
-        v39 = [v38 view];
+        buttonsViewController = [(PHAudioCallViewController *)self buttonsViewController];
+        view = [buttonsViewController view];
 
-        [v39 updateControls];
+        [view updateControls];
         [(PHAudioCallViewController *)self setMiddleViewState:1];
-        v40 = [(PHAudioCallViewController *)self currentMiddleView];
+        currentMiddleView = [(PHAudioCallViewController *)self currentMiddleView];
         v41 = objc_opt_respondsToSelector();
 
         if (v41)
         {
-          v42 = [(PHAudioCallViewController *)self currentMiddleView];
-          [v42 setButtonsEnabled:1];
+          currentMiddleView2 = [(PHAudioCallViewController *)self currentMiddleView];
+          [currentMiddleView2 setButtonsEnabled:1];
         }
       }
 
@@ -1139,8 +1139,8 @@ LABEL_23:
 
         if ([(PHCallViewController *)self currentState]== 8)
         {
-          v70 = [(PHCallViewController *)self bottomBar];
-          [v70 setCurrentState:11];
+          bottomBar = [(PHCallViewController *)self bottomBar];
+          [bottomBar setCurrentState:11];
         }
 
         [(PHAudioCallViewController *)self setCurrentState:7 animated:0];
@@ -1148,7 +1148,7 @@ LABEL_23:
         [(PHAudioCallViewController *)self updateCallParticipantsViewControllerCallGroups];
       }
 
-      if (([v34 disconnectedReasonRequiresCallBackUI] & 1) == 0)
+      if (([mostRecentlyDisconnectedAudioCall disconnectedReasonRequiresCallBackUI] & 1) == 0)
       {
 LABEL_76:
         [(PHAudioCallViewController *)self removeEmergencyTextViaSatelliteUI];
@@ -1162,24 +1162,24 @@ LABEL_76:
       v28 = sub_100004F84();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [(PHCallViewController *)self currentState];
+        currentState = [(PHCallViewController *)self currentState];
         *v135 = 67109376;
-        *&v135[4] = v29;
+        *&v135[4] = currentState;
         *&v135[8] = 1024;
-        *&v135[10] = v15 == 13;
+        *&v135[10] = deviceType == 13;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: All calls are an endpoint elsewhere and previous state was %d OR shouldDismissForPickedRoute is %d, so setting state to PHInCallStateIdle", v135, 0xEu);
       }
 
-      v30 = self;
+      selfCopy4 = self;
       v31 = 0;
       goto LABEL_36;
     }
 
-    if ([v4 count] != 1 || (-[PHAudioCallViewController callCenter](self, "callCenter"), v43 = objc_claimAutoreleasedReturnValue(), v44 = objc_msgSend(v43, "hasCurrentVideoCalls"), v43, (v44 & 1) != 0))
+    if ([currentCallGroups count] != 1 || (-[PHAudioCallViewController callCenter](self, "callCenter"), v43 = objc_claimAutoreleasedReturnValue(), v44 = objc_msgSend(v43, "hasCurrentVideoCalls"), v43, (v44 & 1) != 0))
     {
-      v45 = [v4 count];
-      v46 = [(PHAudioCallViewController *)self callCenter];
-      v47 = &v45[[v46 currentVideoCallCount]];
+      v45 = [currentCallGroups count];
+      callCenter4 = [(PHAudioCallViewController *)self callCenter];
+      v47 = &v45[[callCenter4 currentVideoCallCount]];
 
       if (v47 < 2)
       {
@@ -1193,10 +1193,10 @@ LABEL_76:
         _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: More than one call is active...", v135, 2u);
       }
 
-      v49 = [(PHAudioCallViewController *)self callCenter];
-      v50 = [v49 incomingCall];
+      callCenter5 = [(PHAudioCallViewController *)self callCenter];
+      incomingCall = [callCenter5 incomingCall];
 
-      if (v50)
+      if (incomingCall)
       {
         v51 = sub_100004F84();
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
@@ -1205,52 +1205,52 @@ LABEL_76:
           _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: ... and we have an incoming audio call...", v135, 2u);
         }
 
-        v52 = [(PHAudioCallViewController *)self callCenter];
-        v53 = [v52 callWithStatus:1];
-        if (!v53)
+        callCenter6 = [(PHAudioCallViewController *)self callCenter];
+        callCenter7 = [callCenter6 callWithStatus:1];
+        if (!callCenter7)
         {
-          v53 = [(PHAudioCallViewController *)self callCenter];
-          v54 = [v53 callWithStatus:3];
-          if (!v54)
+          callCenter7 = [(PHAudioCallViewController *)self callCenter];
+          callCenter8 = [callCenter7 callWithStatus:3];
+          if (!callCenter8)
           {
-            v54 = [(PHAudioCallViewController *)self callCenter];
-            v55 = [v54 callWithStatus:2];
+            callCenter8 = [(PHAudioCallViewController *)self callCenter];
+            v55 = [callCenter8 callWithStatus:2];
             if (!v55)
             {
-              v123 = [(PHAudioCallViewController *)self callCenter];
-              v124 = [v123 currentVideoCallCount];
+              callCenter9 = [(PHAudioCallViewController *)self callCenter];
+              currentVideoCallCount = [callCenter9 currentVideoCallCount];
 
-              if (!v124)
+              if (!currentVideoCallCount)
               {
-                v61 = sub_100004F84();
-                if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
+                prioritizedCall = sub_100004F84();
+                if (os_log_type_enabled(prioritizedCall, OS_LOG_TYPE_DEFAULT))
                 {
                   *v135 = 0;
-                  _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: ... but we don't also have an active call, so moving to PHInCallStateIncomingRinging", v135, 2u);
+                  _os_log_impl(&_mh_execute_header, prioritizedCall, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: ... but we don't also have an active call, so moving to PHInCallStateIncomingRinging", v135, 2u);
                 }
 
                 goto LABEL_147;
               }
 
 LABEL_58:
-              v56 = [(PHAudioCallViewController *)self _isScreeningAnyCallGroup:v4];
-              v57 = [(PHAudioCallViewController *)self callCenter];
-              v58 = [v57 ics_hasTooManyCallsForCallWaitingBanner];
+              v56 = [(PHAudioCallViewController *)self _isScreeningAnyCallGroup:currentCallGroups];
+              callCenter10 = [(PHAudioCallViewController *)self callCenter];
+              ics_hasTooManyCallsForCallWaitingBanner = [callCenter10 ics_hasTooManyCallsForCallWaitingBanner];
 
-              v59 = [(PHAudioCallViewController *)self features];
-              if (([v59 shouldShowFullScreenCallWaiting] & 1) != 0 || (v56 & 1) != 0 || (v58 & 1) != 0 || -[PHAudioCallViewController usesCompactMulticallUI](self, "usesCompactMulticallUI"))
+              features2 = [(PHAudioCallViewController *)self features];
+              if (([features2 shouldShowFullScreenCallWaiting] & 1) != 0 || (v56 & 1) != 0 || (ics_hasTooManyCallsForCallWaitingBanner & 1) != 0 || -[PHAudioCallViewController usesCompactMulticallUI](self, "usesCompactMulticallUI"))
               {
 
                 goto LABEL_63;
               }
 
-              v104 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-              if ([v104 callDisplayStyle] == 3)
+              callDisplayStyleManager3 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+              if ([callDisplayStyleManager3 callDisplayStyle] == 3)
               {
-                v105 = [(PHAudioCallViewController *)self features];
-                v106 = [v105 isDominoEnabled];
+                features3 = [(PHAudioCallViewController *)self features];
+                isDominoEnabled2 = [features3 isDominoEnabled];
 
-                if (v106)
+                if (isDominoEnabled2)
                 {
 LABEL_63:
                   v60 = sub_100004F84();
@@ -1262,36 +1262,36 @@ LABEL_63:
 
                   if (![(PHAudioCallViewController *)self usesCompactMulticallUI])
                   {
-                    v30 = self;
+                    selfCopy4 = self;
                     v31 = 3;
 LABEL_36:
-                    [(PHAudioCallViewController *)v30 setCurrentState:v31 animated:1, *v135];
+                    [(PHAudioCallViewController *)selfCopy4 setCurrentState:v31 animated:1, *v135];
                     goto LABEL_112;
                   }
 
-                  v61 = [(PHAudioCallViewController *)self prioritizedCall];
-                  v62 = [v61 callUUID];
-                  if (v62)
+                  prioritizedCall = [(PHAudioCallViewController *)self prioritizedCall];
+                  callUUID = [prioritizedCall callUUID];
+                  if (callUUID)
                   {
-                    v63 = v62;
-                    v64 = [(PHAudioCallViewController *)self callCenter];
-                    v65 = [v64 incomingCall];
-                    v66 = [v65 callUUID];
-                    v67 = [(PHAudioCallViewController *)self prioritizedCall];
-                    v68 = [v67 callUUID];
+                    v63 = callUUID;
+                    callCenter11 = [(PHAudioCallViewController *)self callCenter];
+                    incomingCall2 = [callCenter11 incomingCall];
+                    callUUID2 = [incomingCall2 callUUID];
+                    prioritizedCall2 = [(PHAudioCallViewController *)self prioritizedCall];
+                    callUUID3 = [prioritizedCall2 callUUID];
 
-                    if (v66 != v68)
+                    if (callUUID2 != callUUID3)
                     {
-                      v69 = [(PHAudioCallViewController *)self prioritizedCall];
-                      if ([(PHAudioCallViewController *)self isCallSmartHoldingSessionActive:v69])
+                      prioritizedCall3 = [(PHAudioCallViewController *)self prioritizedCall];
+                      if ([(PHAudioCallViewController *)self isCallSmartHoldingSessionActive:prioritizedCall3])
                       {
                       }
 
                       else
                       {
-                        v122 = [(PHCallViewController *)self currentState];
+                        currentState2 = [(PHCallViewController *)self currentState];
 
-                        if (v122 == 12)
+                        if (currentState2 == 12)
                         {
                           [(PHAudioCallViewController *)self setCurrentState:4 animated:1];
                         }
@@ -1306,7 +1306,7 @@ LABEL_36:
 LABEL_147:
 
 LABEL_148:
-                  v30 = self;
+                  selfCopy4 = self;
                   v31 = 1;
                   goto LABEL_36;
                 }
@@ -1334,9 +1334,9 @@ LABEL_157:
         goto LABEL_58;
       }
 
-      v81 = [(PHAudioCallViewController *)self _isScreeningAnyCallGroup:v4];
-      v82 = [(PHAudioCallViewController *)self usesCompactMulticallUI];
-      v83 = v82;
+      v81 = [(PHAudioCallViewController *)self _isScreeningAnyCallGroup:currentCallGroups];
+      usesCompactMulticallUI = [(PHAudioCallViewController *)self usesCompactMulticallUI];
+      v83 = usesCompactMulticallUI;
       if (!v81)
       {
         v95 = sub_100004F84();
@@ -1368,16 +1368,16 @@ LABEL_157:
         goto LABEL_112;
       }
 
-      if (v82)
+      if (usesCompactMulticallUI)
       {
-        v84 = [(PHAudioCallViewController *)self prioritizedCall];
-        if (v84)
+        prioritizedCall4 = [(PHAudioCallViewController *)self prioritizedCall];
+        if (prioritizedCall4)
         {
-          v85 = v84;
-          v86 = [(PHAudioCallViewController *)self prioritizedCall];
-          v87 = [v86 isScreening];
+          v85 = prioritizedCall4;
+          prioritizedCall5 = [(PHAudioCallViewController *)self prioritizedCall];
+          isScreening = [prioritizedCall5 isScreening];
 
-          if ((v87 & 1) == 0)
+          if ((isScreening & 1) == 0)
           {
             v115 = sub_100004F84();
             if (os_log_type_enabled(v115, OS_LOG_TYPE_DEFAULT))
@@ -1389,7 +1389,7 @@ LABEL_157:
 
 LABEL_158:
 
-            v30 = self;
+            selfCopy4 = self;
             v31 = 4;
             goto LABEL_36;
           }
@@ -1403,31 +1403,31 @@ LABEL_158:
         _os_log_impl(&_mh_execute_header, v88, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: ... but no incoming call while one is being screened meaning the other was declined, so moving to PHInCallStateScreening", v135, 2u);
       }
 
-      v89 = [(PHAudioCallViewController *)self frontmostCall];
-      v90 = v89;
-      if (v89)
+      frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+      v90 = frontmostCall;
+      if (frontmostCall)
       {
-        v34 = v89;
+        mostRecentlyDisconnectedAudioCall = frontmostCall;
       }
 
       else
       {
-        v117 = [(PHAudioCallViewController *)self callCenter];
-        v118 = [v117 currentCalls];
-        v34 = [v118 firstObject];
+        callCenter12 = [(PHAudioCallViewController *)self callCenter];
+        currentCalls = [callCenter12 currentCalls];
+        mostRecentlyDisconnectedAudioCall = [currentCalls firstObject];
       }
 
       v119 = sub_100004F84();
       if (os_log_type_enabled(v119, OS_LOG_TYPE_DEFAULT))
       {
         *v135 = 138412290;
-        *&v135[4] = v34;
+        *&v135[4] = mostRecentlyDisconnectedAudioCall;
         _os_log_impl(&_mh_execute_header, v119, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: ... frontmost call %@", v135, 0xCu);
       }
 
-      if (v34)
+      if (mostRecentlyDisconnectedAudioCall)
       {
-        if ([(PHAudioCallViewController *)self isCallSmartHoldingSessionActive:v34])
+        if ([(PHAudioCallViewController *)self isCallSmartHoldingSessionActive:mostRecentlyDisconnectedAudioCall])
         {
           waitOnHoldViewController = self->_waitOnHoldViewController;
           self->_waitOnHoldViewController = 0;
@@ -1446,12 +1446,12 @@ LABEL_158:
 LABEL_111:
 
 LABEL_112:
-      v100 = [(PHAudioCallViewController *)self topLeadingContainer];
-      v101 = [(PHAudioCallViewController *)self middlePillContainer];
-      [(PHAudioCallViewController *)self updateCallRecordingIfNeededWithButtonContainer:v100 pillContainer:v101];
+      topLeadingContainer = [(PHAudioCallViewController *)self topLeadingContainer];
+      middlePillContainer = [(PHAudioCallViewController *)self middlePillContainer];
+      [(PHAudioCallViewController *)self updateCallRecordingIfNeededWithButtonContainer:topLeadingContainer pillContainer:middlePillContainer];
 
-      v102 = [(PHAudioCallViewController *)self topLeadingContainer];
-      [(PHAudioCallViewController *)self updateCallHoldingIfNeeded:v102];
+      topLeadingContainer2 = [(PHAudioCallViewController *)self topLeadingContainer];
+      [(PHAudioCallViewController *)self updateCallHoldingIfNeeded:topLeadingContainer2];
 
       [(PHAudioCallViewController *)self updateCallTranslationIfNeeded];
       screeningViewController = self->_screeningViewController;
@@ -1464,9 +1464,9 @@ LABEL_112:
       goto LABEL_114;
     }
 
-    v34 = [v4 lastObject];
-    v71 = [v34 isConnected];
-    v72 = [v34 canDisplayAlertUI:{-[PHAudioCallViewController shouldPresentAlertButton](self, "shouldPresentAlertButton")}];
+    mostRecentlyDisconnectedAudioCall = [currentCallGroups lastObject];
+    isConnected = [mostRecentlyDisconnectedAudioCall isConnected];
+    v72 = [mostRecentlyDisconnectedAudioCall canDisplayAlertUI:{-[PHAudioCallViewController shouldPresentAlertButton](self, "shouldPresentAlertButton")}];
     if ((v72 & 1) == 0)
     {
       [(PHAudioCallViewController *)self removeEmergencyTextViaSatelliteUI];
@@ -1475,20 +1475,20 @@ LABEL_112:
     v73 = sub_100004F84();
     if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
     {
-      v74 = [v34 callStatus];
-      v75 = [v34 isEmergency];
-      v76 = [v34 isFailureExpected];
-      v77 = [(PHAudioCallViewController *)self shouldPresentAlertButton];
+      callStatus = [mostRecentlyDisconnectedAudioCall callStatus];
+      isEmergency = [mostRecentlyDisconnectedAudioCall isEmergency];
+      isFailureExpected = [mostRecentlyDisconnectedAudioCall isFailureExpected];
+      shouldPresentAlertButton = [(PHAudioCallViewController *)self shouldPresentAlertButton];
       *v135 = 67110144;
       *&v135[4] = v72;
       *&v135[8] = 1024;
-      *&v135[10] = v74;
+      *&v135[10] = callStatus;
       v136 = 1024;
-      v137 = v75;
+      v137 = isEmergency;
       v138 = 1024;
-      v139 = v76;
+      v139 = isFailureExpected;
       v140 = 1024;
-      v141 = v77;
+      v141 = shouldPresentAlertButton;
       _os_log_impl(&_mh_execute_header, v73, OS_LOG_TYPE_DEFAULT, "PHAudioCallViewController will or will not update UI for alert: needsAlertUI = %d, callStatus = %d, isEmergency = %d, isFailureExpected = %d, alertServiceAvailable = %d", v135, 0x20u);
     }
 
@@ -1496,7 +1496,7 @@ LABEL_112:
     {
       v78 = sub_100004F84();
       v79 = os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT);
-      if (v71)
+      if (isConnected)
       {
         if (v79)
         {
@@ -1522,14 +1522,14 @@ LABEL_112:
       [(PHAudioCallViewController *)self updateCallParticipantsViewControllerCallGroups];
       [(PHAudioCallViewController *)self setEmergencyTextViaSatelliteUI];
 LABEL_109:
-      v98 = [(PHAudioCallViewController *)self buttonsViewController];
-      v99 = [v98 view];
+      buttonsViewController2 = [(PHAudioCallViewController *)self buttonsViewController];
+      view2 = [buttonsViewController2 view];
 
-      [v99 updateControls];
+      [view2 updateControls];
       goto LABEL_110;
     }
 
-    if ([v34 status] == 4 || objc_msgSend(v34, "wantsHoldMusic"))
+    if ([mostRecentlyDisconnectedAudioCall status] == 4 || objc_msgSend(mostRecentlyDisconnectedAudioCall, "wantsHoldMusic"))
     {
       v91 = sub_100004F84();
       if (os_log_type_enabled(v91, OS_LOG_TYPE_DEFAULT))
@@ -1538,15 +1538,15 @@ LABEL_109:
         _os_log_impl(&_mh_execute_header, v91, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Call status is TUCallStatusRinging, setting state to PHInCallStateIncomingRinging", v135, 2u);
       }
 
-      v92 = self;
+      selfCopy7 = self;
       v93 = 1;
       v94 = 0;
       goto LABEL_99;
     }
 
-    if ([v34 status] != 1 && objc_msgSend(v34, "status") != 2)
+    if ([mostRecentlyDisconnectedAudioCall status] != 1 && objc_msgSend(mostRecentlyDisconnectedAudioCall, "status") != 2)
     {
-      if ([v34 status] == 5)
+      if ([mostRecentlyDisconnectedAudioCall status] == 5)
       {
         v127 = sub_100004F84();
         if (os_log_type_enabled(v127, OS_LOG_TYPE_DEFAULT))
@@ -1555,20 +1555,20 @@ LABEL_109:
           _os_log_impl(&_mh_execute_header, v127, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Call status is TUCallStatusDisconnecting, setting state to PHInCallStateEnding", v135, 2u);
         }
 
-        v92 = self;
+        selfCopy7 = self;
         v93 = 6;
       }
 
       else
       {
-        if ([v34 status] != 6)
+        if ([mostRecentlyDisconnectedAudioCall status] != 6)
         {
-          if ([v34 status] != 3)
+          if ([mostRecentlyDisconnectedAudioCall status] != 3)
           {
             goto LABEL_110;
           }
 
-          LOWORD(v107) = [(PHCallViewController *)self currentState];
+          LOWORD(currentState3) = [(PHCallViewController *)self currentState];
           v129 = sub_100004F84();
           if (os_log_type_enabled(v129, OS_LOG_TYPE_DEFAULT))
           {
@@ -1587,19 +1587,19 @@ LABEL_109:
           _os_log_impl(&_mh_execute_header, v128, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Call status is TUCallStatusDisconnected, setting state to PHInCallStateEnded", v135, 2u);
         }
 
-        v92 = self;
+        selfCopy7 = self;
         v93 = 7;
       }
 
       v94 = 1;
 LABEL_99:
-      [(PHAudioCallViewController *)v92 setCurrentState:v93 animated:v94];
+      [(PHAudioCallViewController *)selfCopy7 setCurrentState:v93 animated:v94];
 LABEL_110:
 
       goto LABEL_111;
     }
 
-    v107 = [(PHCallViewController *)self currentState];
+    currentState3 = [(PHCallViewController *)self currentState];
     v108 = sub_100004F84();
     if (os_log_type_enabled(v108, OS_LOG_TYPE_DEFAULT))
     {
@@ -1607,8 +1607,8 @@ LABEL_110:
       _os_log_impl(&_mh_execute_header, v108, OS_LOG_TYPE_DEFAULT, "UpdateCurrentState: Call status is TUCallStatusActive, and the call was initiated on this device", v135, 2u);
     }
 
-    v109 = [v34 calls];
-    v110 = [v109 count];
+    calls = [mostRecentlyDisconnectedAudioCall calls];
+    v110 = [calls count];
 
     v111 = sub_100004F84();
     v112 = os_log_type_enabled(v111, OS_LOG_TYPE_DEFAULT);
@@ -1616,15 +1616,15 @@ LABEL_110:
     {
       if (v112)
       {
-        v113 = [v34 calls];
-        v114 = [v113 count];
+        calls2 = [mostRecentlyDisconnectedAudioCall calls];
+        v114 = [calls2 count];
         *v135 = 134217984;
         *&v135[4] = v114;
         _os_log_impl(&_mh_execute_header, v111, OS_LOG_TYPE_DEFAULT, "There are %lu calls in call group, so setting state to PHInCallStateMultipleCallsActive", v135, 0xCu);
       }
 
       [(PHAudioCallViewController *)self setCurrentState:5 animated:1];
-      if (!v107)
+      if (!currentState3)
       {
         [(PHAudioCallViewController *)self setMiddleViewState:1];
         goto LABEL_110;
@@ -1639,15 +1639,15 @@ LABEL_110:
       _os_log_impl(&_mh_execute_header, v111, OS_LOG_TYPE_DEFAULT, "There is only one call in call group, so setting state to PHInCallStateSingleCallActive", v135, 2u);
     }
 
-    if ([(PHAudioCallViewController *)self _isScreeningCallGroup:v34]&& ![(PHAudioCallViewController *)self isCallSmartHoldingSessionActive:v34])
+    if ([(PHAudioCallViewController *)self _isScreeningCallGroup:mostRecentlyDisconnectedAudioCall]&& ![(PHAudioCallViewController *)self isCallSmartHoldingSessionActive:mostRecentlyDisconnectedAudioCall])
     {
-      v125 = self;
+      selfCopy9 = self;
       v126 = 11;
     }
 
     else
     {
-      if (![(PHAudioCallViewController *)self isCallSmartHoldingSessionActive:v34])
+      if (![(PHAudioCallViewController *)self isCallSmartHoldingSessionActive:mostRecentlyDisconnectedAudioCall])
       {
         [(PHAudioCallViewController *)self setCurrentState:4 animated:1];
         if (![(PHAudioCallViewController *)self hasKeypadUpdated])
@@ -1658,11 +1658,11 @@ LABEL_110:
         goto LABEL_172;
       }
 
-      v125 = self;
+      selfCopy9 = self;
       v126 = 12;
     }
 
-    [(PHAudioCallViewController *)v125 setCurrentState:v126 animated:1];
+    [(PHAudioCallViewController *)selfCopy9 setCurrentState:v126 animated:1];
 LABEL_172:
     if (self->_waitOnHoldTipView && [(PHCallViewController *)self currentState]== 4)
     {
@@ -1670,29 +1670,29 @@ LABEL_172:
     }
 
 LABEL_179:
-    if ((v107 & 0xFFFE) != 8)
+    if ((currentState3 & 0xFFFE) != 8)
     {
       goto LABEL_110;
     }
 
-    v130 = [(PHCallViewController *)self bottomBar];
-    [v130 setCurrentState:11];
+    bottomBar2 = [(PHCallViewController *)self bottomBar];
+    [bottomBar2 setCurrentState:11];
 
     [(PHAudioCallViewController *)self updateCallParticipantsViewControllerCallGroups];
     v131 = +[PHInCallUtilities sharedInstance];
     if ([v131 isIPadIdiom])
     {
-      v132 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-      if ([v132 callDisplayStyle] != 3)
+      callDisplayStyleManager4 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+      if ([callDisplayStyleManager4 callDisplayStyle] != 3)
       {
 
         goto LABEL_110;
       }
 
-      v133 = [(PHAudioCallViewController *)self features];
-      v134 = [v133 isDominoEnabled];
+      features4 = [(PHAudioCallViewController *)self features];
+      isDominoEnabled3 = [features4 isDominoEnabled];
 
-      if (!v134)
+      if (!isDominoEnabled3)
       {
         goto LABEL_110;
       }
@@ -1718,9 +1718,9 @@ LABEL_114:
 
 - (void)refreshCallDetailsViewButton
 {
-  v3 = [(PHAudioCallViewController *)self shouldShowCallDetailsViewButton];
+  shouldShowCallDetailsViewButton = [(PHAudioCallViewController *)self shouldShowCallDetailsViewButton];
 
-  [(PHAudioCallViewController *)self setShowsCallDetailsViewButton:v3];
+  [(PHAudioCallViewController *)self setShowsCallDetailsViewButton:shouldShowCallDetailsViewButton];
 }
 
 - (BOOL)shouldShowCallDetailsViewButton
@@ -1729,21 +1729,21 @@ LABEL_114:
   {
 LABEL_2:
     v4 = +[CNKFeatures sharedInstance];
-    v5 = [v4 isMoreMenuEnabled];
+    isMoreMenuEnabled = [v4 isMoreMenuEnabled];
 
-    v6 = [(PHAudioCallViewController *)self frontmostCall];
-    v7 = v6;
-    if (v5)
+    frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+    v7 = frontmostCall;
+    if (isMoreMenuEnabled)
     {
-      v8 = [(PHAudioCallViewController *)self callCenter];
-      v9 = [v8 currentCallGroups];
+      callCenter = [(PHAudioCallViewController *)self callCenter];
+      currentCallGroups = [callCenter currentCallGroups];
 
       v29 = 0u;
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v10 = v9;
-      v11 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      provider2 = currentCallGroups;
+      v11 = [provider2 countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v11)
       {
         v12 = v11;
@@ -1754,11 +1754,11 @@ LABEL_2:
           {
             if (*v28 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(provider2);
             }
 
-            v15 = [*(*(&v27 + 1) + 8 * i) calls];
-            v16 = [v15 count];
+            calls = [*(*(&v27 + 1) + 8 * i) calls];
+            v16 = [calls count];
 
             if (v16 > 1)
             {
@@ -1767,7 +1767,7 @@ LABEL_2:
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+          v12 = [provider2 countByEnumeratingWithState:&v27 objects:v31 count:16];
           if (v12)
           {
             continue;
@@ -1780,14 +1780,14 @@ LABEL_2:
       v17 = 0;
 LABEL_26:
 
-      v2 = [v7 provider];
-      if ((([v2 isFaceTimeProvider] & 1) != 0 || v17 && -[PHAudioCallViewController shouldShowConferenceCallDetails](self, "shouldShowConferenceCallDetails")) && ((objc_msgSend(v7, "isActive", v27) & 1) != 0 || objc_msgSend(v7, "isOnHold")) && (objc_msgSend(v7, "isVideo") & 1) == 0)
+      provider = [v7 provider];
+      if ((([provider isFaceTimeProvider] & 1) != 0 || v17 && -[PHAudioCallViewController shouldShowConferenceCallDetails](self, "shouldShowConferenceCallDetails")) && ((objc_msgSend(v7, "isActive", v27) & 1) != 0 || objc_msgSend(v7, "isOnHold")) && (objc_msgSend(v7, "isVideo") & 1) == 0)
       {
-        v24 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-        if ([v24 callDisplayStyle])
+        callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+        if ([callDisplayStyleManager callDisplayStyle])
         {
-          v25 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-          v23 = [v25 callDisplayStyle] != 3;
+          callDisplayStyleManager2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+          v23 = [callDisplayStyleManager2 callDisplayStyle] != 3;
         }
 
         else
@@ -1801,19 +1801,19 @@ LABEL_26:
 
     else
     {
-      v10 = [v6 provider];
-      v20 = [v10 isFaceTimeProvider];
-      if ((v20 & 1) != 0 || ([v7 provider], v2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "isTelephonyProvider")))
+      provider2 = [frontmostCall provider];
+      isFaceTimeProvider = [provider2 isFaceTimeProvider];
+      if ((isFaceTimeProvider & 1) != 0 || ([v7 provider], provider = objc_claimAutoreleasedReturnValue(), objc_msgSend(provider, "isTelephonyProvider")))
       {
         if ((([v7 isActive] & 1) != 0 || objc_msgSend(v7, "isOnHold")) && (objc_msgSend(v7, "isVideo") & 1) == 0)
         {
-          v21 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-          if ([v21 callDisplayStyle])
+          callDisplayStyleManager3 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+          if ([callDisplayStyleManager3 callDisplayStyle])
           {
-            v22 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-            v23 = [v22 callDisplayStyle] != 3;
+            callDisplayStyleManager4 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+            v23 = [callDisplayStyleManager4 callDisplayStyle] != 3;
 
-            if (v20)
+            if (isFaceTimeProvider)
             {
               goto LABEL_41;
             }
@@ -1823,7 +1823,7 @@ LABEL_26:
         }
 
         v23 = 0;
-        if (v20)
+        if (isFaceTimeProvider)
         {
           goto LABEL_41;
         }
@@ -1839,13 +1839,13 @@ LABEL_41:
     goto LABEL_40;
   }
 
-  v18 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v18 callDisplayStyle] == 3)
+  callDisplayStyleManager5 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager5 callDisplayStyle] == 3)
   {
-    v19 = [(PHAudioCallViewController *)self features];
-    v2 = [v19 isDominoEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    provider = [features isDominoEnabled];
 
-    if (v2)
+    if (provider)
     {
       goto LABEL_2;
     }
@@ -1860,77 +1860,77 @@ LABEL_41:
 
 - (BOOL)shouldUseHeroImageLayout
 {
-  v2 = [(PHAudioCallViewController *)self features];
-  v3 = [v2 isHeroImageEnabled];
+  features = [(PHAudioCallViewController *)self features];
+  isHeroImageEnabled = [features isHeroImageEnabled];
 
-  return v3;
+  return isHeroImageEnabled;
 }
 
 - (TUCall)frontmostCall
 {
   if ([(PHAudioCallViewController *)self usesCompactMulticallUI])
   {
-    v3 = [(PHAudioCallViewController *)self activeCall];
+    activeCall = [(PHAudioCallViewController *)self activeCall];
   }
 
   else
   {
-    v4 = [(PHAudioCallViewController *)self callCenter];
-    v3 = [v4 frontmostCall];
+    callCenter = [(PHAudioCallViewController *)self callCenter];
+    activeCall = [callCenter frontmostCall];
   }
 
-  return v3;
+  return activeCall;
 }
 
 - (TUCall)activeCall
 {
   if ([(PHAudioCallViewController *)self usesCompactMulticallUI]&& ([(PHAudioCallViewController *)self prioritizedCall], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(PHAudioCallViewController *)self prioritizedCall];
+    prioritizedCall = [(PHAudioCallViewController *)self prioritizedCall];
   }
 
   else
   {
-    v5 = [(PHAudioCallViewController *)self callCenter];
-    v4 = [v5 callWithStatus:1];
+    callCenter = [(PHAudioCallViewController *)self callCenter];
+    prioritizedCall = [callCenter callWithStatus:1];
 
-    if (!v4)
+    if (!prioritizedCall)
     {
-      v6 = [(PHAudioCallViewController *)self callCenter];
-      v4 = [v6 callWithStatus:4];
+      callCenter2 = [(PHAudioCallViewController *)self callCenter];
+      prioritizedCall = [callCenter2 callWithStatus:4];
 
-      if (!v4)
+      if (!prioritizedCall)
       {
-        v7 = [(PHAudioCallViewController *)self callCenter];
-        v4 = [v7 callWithStatus:3];
+        callCenter3 = [(PHAudioCallViewController *)self callCenter];
+        prioritizedCall = [callCenter3 callWithStatus:3];
 
-        if (!v4)
+        if (!prioritizedCall)
         {
-          v8 = [(PHAudioCallViewController *)self callCenter];
-          v4 = [v8 callWithStatus:2];
+          callCenter4 = [(PHAudioCallViewController *)self callCenter];
+          prioritizedCall = [callCenter4 callWithStatus:2];
         }
       }
     }
   }
 
-  return v4;
+  return prioritizedCall;
 }
 
 - (BOOL)needsDismissalAssertion
 {
-  v2 = [(PHAudioCallViewController *)self callCenter];
-  v3 = [v2 hasCurrentAudioCalls];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  hasCurrentAudioCalls = [callCenter hasCurrentAudioCalls];
 
-  return v3;
+  return hasCurrentAudioCalls;
 }
 
-- (id)makeCallDetailsCoordinatorWithBannerPresentationManager:(id)a3 existingCoordinator:(id)a4 deferredPresentationManager:(id)a5
+- (id)makeCallDetailsCoordinatorWithBannerPresentationManager:(id)manager existingCoordinator:(id)coordinator deferredPresentationManager:(id)presentationManager
 {
-  v7 = a3;
+  managerCopy = manager;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v8 = self;
-  v9 = PHAudioCallViewController.makeCallDetailsCoordinator(bannerPresentationManager:existingCoordinator:deferredPresentationManager:)(v7, a4);
+  selfCopy = self;
+  v9 = PHAudioCallViewController.makeCallDetailsCoordinator(bannerPresentationManager:existingCoordinator:deferredPresentationManager:)(managerCopy, coordinator);
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
@@ -1943,21 +1943,21 @@ LABEL_41:
   if ([(PHAudioCallViewController *)self shouldUseHeroImageLayout])
   {
 LABEL_2:
-    v3 = [(PHAudioCallViewController *)self frontmostCall];
-    if (!v3 || [v3 isEmergency])
+    frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+    if (!frontmostCall || [frontmostCall isEmergency])
     {
       [(PHAudioCallViewController *)self addDefaultBackgroundGradientView];
-      v4 = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
-      v5 = [v4 singleCallLabelView];
-      v6 = [v5 statusLabel];
+      getParticipantsView_NotWaiting = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
+      singleCallLabelView = [getParticipantsView_NotWaiting singleCallLabelView];
+      statusLabel = [singleCallLabelView statusLabel];
 
-      [v6 setAlpha:1.0];
-      v7 = [(PHAudioCallViewController *)self emergencyTextViaSatelliteLabel];
+      [statusLabel setAlpha:1.0];
+      emergencyTextViaSatelliteLabel = [(PHAudioCallViewController *)self emergencyTextViaSatelliteLabel];
 
-      if (v7)
+      if (emergencyTextViaSatelliteLabel)
       {
-        v8 = [(PHAudioCallViewController *)self emergencyTextViaSatelliteLabel];
-        [v8 removeFromSuperview];
+        emergencyTextViaSatelliteLabel2 = [(PHAudioCallViewController *)self emergencyTextViaSatelliteLabel];
+        [emergencyTextViaSatelliteLabel2 removeFromSuperview];
 
         [(PHAudioCallViewController *)self setEmergencyTextViaSatelliteLabel:0];
       }
@@ -1966,13 +1966,13 @@ LABEL_2:
     goto LABEL_10;
   }
 
-  v11 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v11 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v9 = [(PHAudioCallViewController *)self features];
-    v10 = [v9 isDominoEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (!v10)
+    if (!isDominoEnabled)
     {
       return;
     }
@@ -1987,20 +1987,20 @@ LABEL_10:
 
 - (id)isolatedCall
 {
-  v2 = [(PHAudioCallViewController *)self callCenter];
-  v3 = [v2 currentCalls];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  currentCalls = [callCenter currentCalls];
 
-  if ([v3 count] == 1)
+  if ([currentCalls count] == 1)
   {
-    v4 = [v3 firstObject];
+    firstObject = [currentCalls firstObject];
   }
 
   else
   {
-    v4 = 0;
+    firstObject = 0;
   }
 
-  return v4;
+  return firstObject;
 }
 
 + (NSArray)contactKeysToFetch
@@ -2017,19 +2017,19 @@ LABEL_10:
 
 - (BOOL)shouldShowContactOrLastSeenWallpaper
 {
-  v3 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v3 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v4 = [(PHAudioCallViewController *)self features];
-    if ([v4 isDominoEnabled])
+    features = [(PHAudioCallViewController *)self features];
+    if ([features isDominoEnabled])
     {
 
       goto LABEL_13;
     }
 
-    v10 = [(PHAudioCallViewController *)self shouldUseHeroImageLayout];
+    shouldUseHeroImageLayout = [(PHAudioCallViewController *)self shouldUseHeroImageLayout];
 
-    if ((v10 & 1) == 0)
+    if ((shouldUseHeroImageLayout & 1) == 0)
     {
       return 0;
     }
@@ -2037,9 +2037,9 @@ LABEL_10:
 
   else
   {
-    v5 = [(PHAudioCallViewController *)self shouldUseHeroImageLayout];
+    shouldUseHeroImageLayout2 = [(PHAudioCallViewController *)self shouldUseHeroImageLayout];
 
-    if (!v5)
+    if (!shouldUseHeroImageLayout2)
     {
       return 0;
     }
@@ -2047,23 +2047,23 @@ LABEL_10:
 
   if (![(PHAudioCallViewController *)self hasNoCallsOrOnlyEndedCalls]|| ([(PHAudioCallViewController *)self renderingViewController], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
   {
-    v8 = [(PHAudioCallViewController *)self callToUseForWallpaper];
-    v3 = v8;
-    if (v8)
+    callToUseForWallpaper = [(PHAudioCallViewController *)self callToUseForWallpaper];
+    callDisplayStyleManager = callToUseForWallpaper;
+    if (callToUseForWallpaper)
     {
-      v9 = [v8 contactIdentifier];
+      contactIdentifier = [callToUseForWallpaper contactIdentifier];
 
-      if (v9)
+      if (contactIdentifier)
       {
-        if ([(PHAudioCallViewController *)self callStateCanShowNewPoster:v3]|| ![(PHAudioCallViewController *)self prefersShowingCachedLastSeenPosterBeforeCallConnected:v3])
+        if ([(PHAudioCallViewController *)self callStateCanShowNewPoster:callDisplayStyleManager]|| ![(PHAudioCallViewController *)self prefersShowingCachedLastSeenPosterBeforeCallConnected:callDisplayStyleManager])
         {
-          v12 = [(PHAudioCallViewController *)self contactWallpaperForCall:v3];
+          v12 = [(PHAudioCallViewController *)self contactWallpaperForCall:callDisplayStyleManager];
           v7 = v12 != 0;
         }
 
         else
         {
-          v7 = [(PHAudioCallViewController *)self hasLastSeenPosterForCall:v3];
+          v7 = [(PHAudioCallViewController *)self hasLastSeenPosterForCall:callDisplayStyleManager];
         }
 
         goto LABEL_14;
@@ -2082,7 +2082,7 @@ LABEL_14:
 
 - (BOOL)hasNoCallsOrOnlyEndedCalls
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10001299C();
 
   return v3;
@@ -2090,20 +2090,20 @@ LABEL_14:
 
 - (TUCall)callToUseForWallpaper
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100012B70();
 
   return v3;
 }
 
-- (BOOL)prefersShowingCachedLastSeenPosterBeforeCallConnected:(id)a3
+- (BOOL)prefersShowingCachedLastSeenPosterBeforeCallConnected:(id)connected
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  LOBYTE(v3) = sub_100013460(v3);
+  connectedCopy = connected;
+  connectedCopy2 = connected;
+  selfCopy = self;
+  LOBYTE(connectedCopy) = sub_100013460(connectedCopy);
 
-  return v3 & 1;
+  return connectedCopy & 1;
 }
 
 - (void)addDefaultBackgroundGradientView
@@ -2120,26 +2120,26 @@ LABEL_14:
     goto LABEL_4;
   }
 
-  v7 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v7 callDisplayStyle] != 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
 
     return;
   }
 
-  v8 = [(PHAudioCallViewController *)self features];
-  v9 = [v8 isDominoEnabled];
+  features = [(PHAudioCallViewController *)self features];
+  isDominoEnabled = [features isDominoEnabled];
 
-  if (v9)
+  if (isDominoEnabled)
   {
 LABEL_4:
-    v4 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v4 callDisplayStyle] == 3)
+    callDisplayStyleManager2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager2 callDisplayStyle] == 3)
     {
-      v5 = [(PHAudioCallViewController *)self features];
-      v6 = [v5 isDominoEnabled];
+      features2 = [(PHAudioCallViewController *)self features];
+      isDominoEnabled2 = [features2 isDominoEnabled];
 
-      if (v6)
+      if (isDominoEnabled2)
       {
         return;
       }
@@ -2156,47 +2156,47 @@ LABEL_4:
 
     else
     {
-      v10 = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
+      defaultBackgroundGradientView = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
 
-      if (!v10)
+      if (!defaultBackgroundGradientView)
       {
         v32 = objc_alloc_init(PHAudioCallBackgroundGradientViewController);
-        v11 = [(PHAudioCallBackgroundGradientViewController *)v32 view];
-        [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v12 = [(PHAudioCallViewController *)self view];
-        [v12 insertSubview:v11 atIndex:0];
+        view = [(PHAudioCallBackgroundGradientViewController *)v32 view];
+        [view setTranslatesAutoresizingMaskIntoConstraints:0];
+        view2 = [(PHAudioCallViewController *)self view];
+        [view2 insertSubview:view atIndex:0];
 
-        v30 = [v11 leadingAnchor];
-        v31 = [(PHAudioCallViewController *)self view];
-        v29 = [v31 leadingAnchor];
-        v28 = [v30 constraintEqualToAnchor:v29];
+        leadingAnchor = [view leadingAnchor];
+        view3 = [(PHAudioCallViewController *)self view];
+        leadingAnchor2 = [view3 leadingAnchor];
+        v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v34[0] = v28;
-        v26 = [v11 trailingAnchor];
-        v27 = [(PHAudioCallViewController *)self view];
-        v25 = [v27 trailingAnchor];
-        v24 = [v26 constraintEqualToAnchor:v25];
+        trailingAnchor = [view trailingAnchor];
+        view4 = [(PHAudioCallViewController *)self view];
+        trailingAnchor2 = [view4 trailingAnchor];
+        v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v34[1] = v24;
-        v23 = [v11 topAnchor];
-        v13 = [(PHAudioCallViewController *)self view];
-        v14 = [v13 topAnchor];
-        v15 = [v23 constraintEqualToAnchor:v14];
+        topAnchor = [view topAnchor];
+        view5 = [(PHAudioCallViewController *)self view];
+        topAnchor2 = [view5 topAnchor];
+        v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v34[2] = v15;
-        v16 = [v11 bottomAnchor];
-        v17 = [(PHAudioCallViewController *)self view];
-        v18 = [v17 bottomAnchor];
-        v19 = [v16 constraintEqualToAnchor:v18];
+        bottomAnchor = [view bottomAnchor];
+        view6 = [(PHAudioCallViewController *)self view];
+        bottomAnchor2 = [view6 bottomAnchor];
+        v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v34[3] = v19;
         v20 = [NSArray arrayWithObjects:v34 count:4];
         [NSLayoutConstraint activateConstraints:v20];
 
-        [(PHAudioCallViewController *)self setDefaultBackgroundGradientView:v11];
+        [(PHAudioCallViewController *)self setDefaultBackgroundGradientView:view];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v21 = [(PHAudioCallViewController *)self buttonsViewController];
-          v22 = [v21 view];
+          buttonsViewController = [(PHAudioCallViewController *)self buttonsViewController];
+          view7 = [buttonsViewController view];
 
-          [v22 updateBackgroundMaterial:2];
+          [view7 updateBackgroundMaterial:2];
         }
 
         [(PHAudioCallViewController *)self updateCallRecordingViewBackgroundMaterialType:2];
@@ -2209,28 +2209,28 @@ LABEL_4:
 
 - (BOOL)currentCallStateCanShowNewPoster
 {
-  v2 = self;
-  v3 = [(PHAudioCallViewController *)self frontmostCall];
-  LOBYTE(v2) = [(PHAudioCallViewController *)v2 callStateCanShowNewPoster:v3];
+  selfCopy = self;
+  frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+  LOBYTE(selfCopy) = [(PHAudioCallViewController *)selfCopy callStateCanShowNewPoster:frontmostCall];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)getParticipantsView_WaitingOrNot
 {
-  v3 = [(PHAudioCallViewController *)self getParticipantsView_Waiting];
-  v4 = v3;
-  if (v3)
+  getParticipantsView_Waiting = [(PHAudioCallViewController *)self getParticipantsView_Waiting];
+  v4 = getParticipantsView_Waiting;
+  if (getParticipantsView_Waiting)
   {
-    v5 = v3;
+    getParticipantsView_NotWaiting = getParticipantsView_Waiting;
   }
 
   else
   {
-    v5 = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
+    getParticipantsView_NotWaiting = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
   }
 
-  v6 = v5;
+  v6 = getParticipantsView_NotWaiting;
 
   return v6;
 }
@@ -2242,20 +2242,20 @@ LABEL_4:
     if ([(PHAudioCallViewController *)self shouldUseHeroImageLayout])
     {
 LABEL_4:
-      v5 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-      v6 = [v5 callDisplayStyle] != 0;
+      callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+      v6 = [callDisplayStyleManager callDisplayStyle] != 0;
 LABEL_12:
 
       return v6;
     }
 
-    v7 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v7 callDisplayStyle] == 3)
+    callDisplayStyleManager2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager2 callDisplayStyle] == 3)
     {
-      v8 = [(PHAudioCallViewController *)self features];
-      v9 = [v8 isDominoEnabled];
+      features = [(PHAudioCallViewController *)self features];
+      isDominoEnabled = [features isDominoEnabled];
 
-      if (v9)
+      if (isDominoEnabled)
       {
         goto LABEL_4;
       }
@@ -2267,8 +2267,8 @@ LABEL_12:
 
     if (![(PHAudioCallViewController *)self wasPresentedAsBanner])
     {
-      v5 = +[UIDevice currentDevice];
-      v6 = [v5 userInterfaceIdiom] == 0;
+      callDisplayStyleManager = +[UIDevice currentDevice];
+      v6 = [callDisplayStyleManager userInterfaceIdiom] == 0;
       goto LABEL_12;
     }
   }
@@ -2278,7 +2278,7 @@ LABEL_12:
 
 - (BOOL)shouldUpdateBackgroundForEmergencyCall
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100013C0C();
 
   return v3;
@@ -2288,13 +2288,13 @@ LABEL_12:
 {
   if ([(PHAudioCallViewController *)self shouldUseHeroImageLayout])
   {
-    v3 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v3 callDisplayStyle] == 3)
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager callDisplayStyle] == 3)
     {
-      v4 = [(PHAudioCallViewController *)self features];
-      v5 = [v4 isDominoEnabled];
+      features = [(PHAudioCallViewController *)self features];
+      isDominoEnabled = [features isDominoEnabled];
 
-      if (v5)
+      if (isDominoEnabled)
       {
         return;
       }
@@ -2306,15 +2306,15 @@ LABEL_12:
 
     if (![(PHAudioCallViewController *)self hasNoCallsOrOnlyEndedCalls])
     {
-      v85 = [(PHAudioCallViewController *)self callToUseForWallpaper];
-      v82 = [PHInCallUtilities contactStoreForCall:v85];
-      v6 = [v85 contactIdentifier];
+      callToUseForWallpaper = [(PHAudioCallViewController *)self callToUseForWallpaper];
+      v82 = [PHInCallUtilities contactStoreForCall:callToUseForWallpaper];
+      contactIdentifier = [callToUseForWallpaper contactIdentifier];
       v7 = +[PHAudioCallViewController contactKeysToFetch];
-      v8 = [(PHAudioCallViewController *)self contactsCache];
-      v80 = [v82 contactForIdentifier:v6 keysToFetch:v7 usingCache:v8];
+      contactsCache = [(PHAudioCallViewController *)self contactsCache];
+      v80 = [v82 contactForIdentifier:contactIdentifier keysToFetch:v7 usingCache:contactsCache];
 
-      v9 = [(PHAudioCallViewController *)self prefersShowingCachedLastSeenPosterBeforeCallConnected:v85];
-      v10 = [(PHAudioCallViewController *)self suggestedNewPosterSourceAfterCallConnects:v85];
+      v9 = [(PHAudioCallViewController *)self prefersShowingCachedLastSeenPosterBeforeCallConnected:callToUseForWallpaper];
+      v10 = [(PHAudioCallViewController *)self suggestedNewPosterSourceAfterCallConnects:callToUseForWallpaper];
       if (-[PHAudioCallViewController currentCallStateCanShowNewPoster](self, "currentCallStateCanShowNewPoster") && [objc_opt_class() posterSourceIsSyncedWithContacts:v10])
       {
         if (v10 == 2)
@@ -2326,31 +2326,31 @@ LABEL_12:
             _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "SNAP: PosterSource - transitioning from cached last seen poster -> current wallpaper if available.", buf, 2u);
           }
 
-          v29 = [(PHAudioCallViewController *)self contactsCache];
-          v30 = [v85 contactIdentifier];
-          v31 = [v29 objectForKey:v30];
+          contactsCache2 = [(PHAudioCallViewController *)self contactsCache];
+          contactIdentifier2 = [callToUseForWallpaper contactIdentifier];
+          v31 = [contactsCache2 objectForKey:contactIdentifier2];
 
           if (v31)
           {
-            v32 = [(PHAudioCallViewController *)self contactsCache];
-            v33 = [v85 contactIdentifier];
-            [v32 removeObjectForKey:v33];
+            contactsCache3 = [(PHAudioCallViewController *)self contactsCache];
+            contactIdentifier3 = [callToUseForWallpaper contactIdentifier];
+            [contactsCache3 removeObjectForKey:contactIdentifier3];
           }
 
-          v34 = [(PHAudioCallViewController *)self currentDisplayedPosterSourceForCall:v85]!= 1;
+          v34 = [(PHAudioCallViewController *)self currentDisplayedPosterSourceForCall:callToUseForWallpaper]!= 1;
           [(PHAudioCallViewController *)self setSnapshottedPosterImageToUseForColorInversion:0];
           [(PHAudioCallViewController *)self setHasInvertedUIElementColorsBasedOnPoster:0];
-          v84 = [(PHAudioCallViewController *)self contactWallpaperConfigurationForCall:v85 shouldReadFromCache:v34];
+          v84 = [(PHAudioCallViewController *)self contactWallpaperConfigurationForCall:callToUseForWallpaper shouldReadFromCache:v34];
           v35 = objc_opt_class();
           v36 = [(PHAudioCallViewController *)self currentIMNicknameMatchingContact:v80];
-          v37 = [v36 wallpaper];
-          v22 = [v35 wallpaperContentIsSensitive:v37];
+          wallpaper = [v36 wallpaper];
+          v22 = [v35 wallpaperContentIsSensitive:wallpaper];
         }
 
         else if (v10 == 3)
         {
-          v11 = [(PHAudioCallViewController *)self frontmostCall];
-          v84 = [(PHAudioCallViewController *)self newPosterConfigurationForCall:v11];
+          frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+          v84 = [(PHAudioCallViewController *)self newPosterConfigurationForCall:frontmostCall];
 
           v12 = sub_100004F84();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -2360,25 +2360,25 @@ LABEL_12:
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "SNAP: PosterSource - transitioning to show new poster updates (i.e. pendingIMNickname), new configuration: %@", buf, 0xCu);
           }
 
-          v13 = [(PHAudioCallViewController *)self contactsCache];
-          v14 = [v85 contactIdentifier];
-          v15 = [v13 objectForKey:v14];
+          contactsCache4 = [(PHAudioCallViewController *)self contactsCache];
+          contactIdentifier4 = [callToUseForWallpaper contactIdentifier];
+          v15 = [contactsCache4 objectForKey:contactIdentifier4];
 
           if (v15)
           {
-            v16 = [(PHAudioCallViewController *)self contactsCache];
-            v17 = [v85 contactIdentifier];
-            [v16 removeObjectForKey:v17];
+            contactsCache5 = [(PHAudioCallViewController *)self contactsCache];
+            contactIdentifier5 = [callToUseForWallpaper contactIdentifier];
+            [contactsCache5 removeObjectForKey:contactIdentifier5];
           }
 
           [(PHAudioCallViewController *)self setSnapshottedPosterImageToUseForColorInversion:0];
           [(PHAudioCallViewController *)self setHasInvertedUIElementColorsBasedOnPoster:0];
-          v18 = [(PHAudioCallViewController *)self sharedProfileStateOracleForCall:v85];
-          v19 = [v18 pendingNickname];
+          v18 = [(PHAudioCallViewController *)self sharedProfileStateOracleForCall:callToUseForWallpaper];
+          pendingNickname = [v18 pendingNickname];
 
           v20 = objc_opt_class();
-          v21 = [v19 wallpaper];
-          v22 = [v20 wallpaperContentIsSensitive:v21];
+          wallpaper2 = [pendingNickname wallpaper];
+          v22 = [v20 wallpaperContentIsSensitive:wallpaper2];
         }
 
         else
@@ -2408,8 +2408,8 @@ LABEL_12:
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "SNAP: PosterSource - Going to show the last seen poster for this contact if available.", buf, 2u);
           }
 
-          v84 = [(PHAudioCallViewController *)self lastSeenPosterConfigurationForCall:v85];
-          v22 = [(PHAudioCallViewController *)self lastSeenPosterDataIsSensitiveForCall:v85];
+          v84 = [(PHAudioCallViewController *)self lastSeenPosterConfigurationForCall:callToUseForWallpaper];
+          v22 = [(PHAudioCallViewController *)self lastSeenPosterDataIsSensitiveForCall:callToUseForWallpaper];
         }
 
         else
@@ -2420,32 +2420,32 @@ LABEL_12:
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "SNAP: PosterSource - Going to show the current wallpaper for this contact if available.", buf, 2u);
           }
 
-          v84 = [(PHAudioCallViewController *)self contactWallpaperConfigurationForCall:v85 shouldReadFromCache:1];
+          v84 = [(PHAudioCallViewController *)self contactWallpaperConfigurationForCall:callToUseForWallpaper shouldReadFromCache:1];
           v25 = objc_opt_class();
           v26 = [(PHAudioCallViewController *)self currentIMNicknameMatchingContact:v80];
-          v27 = [v26 wallpaper];
-          v22 = [v25 wallpaperContentIsSensitive:v27];
+          wallpaper3 = [v26 wallpaper];
+          v22 = [v25 wallpaperContentIsSensitive:wallpaper3];
         }
 
         v81 = 0;
       }
 
-      v83 = [(PHAudioCallViewController *)self getParticipantsView_WaitingOrNot];
+      getParticipantsView_WaitingOrNot = [(PHAudioCallViewController *)self getParticipantsView_WaitingOrNot];
       if (v84)
       {
         v78 = [[PRUISIncomingCallPosterContext alloc] initWithTitleString:&stru_100361FD0 horizontalTitleBoundingRect:0 verticalTitleBoundingRect:1 imageAssetID:CGRectZero.origin.x personalPoster:{CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height, CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
         v39 = [[PRUISPosterRenderingViewController alloc] initWithConfiguration:v84 context:v78];
-        v40 = [(PHAudioCallViewController *)self view];
-        [v40 bounds];
+        view = [(PHAudioCallViewController *)self view];
+        [view bounds];
         v42 = v41;
         v44 = v43;
         v46 = v45;
         v48 = v47;
-        v49 = [v39 view];
-        [v49 setFrame:{v42, v44, v46, v48}];
+        view2 = [v39 view];
+        [view2 setFrame:{v42, v44, v46, v48}];
 
-        v50 = [v39 view];
-        [v50 setAutoresizingMask:18];
+        view3 = [v39 view];
+        [view3 setAutoresizingMask:18];
 
         [(PHAudioCallViewController *)self createPosterContainerWithDimmingLayer];
         if (objc_opt_respondsToSelector())
@@ -2458,13 +2458,13 @@ LABEL_12:
           }
 
           [v39 setRenderingMode:2];
-          v52 = [(PHAudioCallViewController *)self suspendPosterAfterDelayBlock];
-          v53 = v52 == 0;
+          suspendPosterAfterDelayBlock = [(PHAudioCallViewController *)self suspendPosterAfterDelayBlock];
+          v53 = suspendPosterAfterDelayBlock == 0;
 
           if (!v53)
           {
-            v54 = [(PHAudioCallViewController *)self suspendPosterAfterDelayBlock];
-            dispatch_block_cancel(v54);
+            suspendPosterAfterDelayBlock2 = [(PHAudioCallViewController *)self suspendPosterAfterDelayBlock];
+            dispatch_block_cancel(suspendPosterAfterDelayBlock2);
 
             [(PHAudioCallViewController *)self setSuspendPosterAfterDelayBlock:0];
           }
@@ -2480,15 +2480,15 @@ LABEL_12:
 
           v56 = dispatch_time(0, 30000000000);
           v57 = &_dispatch_main_q;
-          v58 = [(PHAudioCallViewController *)self suspendPosterAfterDelayBlock];
-          dispatch_after(v56, &_dispatch_main_q, v58);
+          suspendPosterAfterDelayBlock3 = [(PHAudioCallViewController *)self suspendPosterAfterDelayBlock];
+          dispatch_after(v56, &_dispatch_main_q, suspendPosterAfterDelayBlock3);
 
           objc_destroyWeak(v91);
           objc_destroyWeak(buf);
         }
 
-        v59 = [v83 singleCallLabelView];
-        v79 = [v59 statusLabel];
+        singleCallLabelView = [getParticipantsView_WaitingOrNot singleCallLabelView];
+        statusLabel = [singleCallLabelView statusLabel];
 
         if ([(PHAudioCallViewController *)self canShowPosterImage])
         {
@@ -2496,15 +2496,15 @@ LABEL_12:
           v61 = v60;
           if (v81)
           {
-            v62 = [v60 forceBlurNewPoster];
+            forceBlurNewPoster = [v60 forceBlurNewPoster];
           }
 
           else
           {
-            v62 = [v60 forceBlurCurrentPoster];
+            forceBlurNewPoster = [v60 forceBlurCurrentPoster];
           }
 
-          v66 = v62;
+          v66 = forceBlurNewPoster;
 
           v65 = v66 | v22;
         }
@@ -2514,17 +2514,17 @@ LABEL_12:
           v65 = 0;
         }
 
-        v67 = [(PHAudioCallViewController *)self callToUseForWallpaper];
-        v68 = [v79 text];
+        callToUseForWallpaper2 = [(PHAudioCallViewController *)self callToUseForWallpaper];
+        text = [statusLabel text];
         objc_initWeak(buf, self);
         v86[0] = _NSConcreteStackBlock;
         v86[1] = 3221225472;
         v86[2] = sub_100121344;
         v86[3] = &unk_100359CD0;
         objc_copyWeak(&v89, buf);
-        v69 = v67;
+        v69 = callToUseForWallpaper2;
         v87 = v69;
-        v70 = v68;
+        v70 = text;
         v88 = v70;
         v71 = objc_retainBlock(v86);
         v72 = (v71[2])(v71, 0);
@@ -2542,25 +2542,25 @@ LABEL_12:
         v74 = [[PHPosterNameViewModel alloc] initWithCall:v69 posterNameTextView:v72 priorityPosterNameTextView:v73];
         [(PHAudioCallViewController *)self setPosterNameViewModel:v74];
 
-        [(PHAudioCallViewController *)self updatePosterViewModelForParticipantsView:v83];
+        [(PHAudioCallViewController *)self updatePosterViewModelForParticipantsView:getParticipantsView_WaitingOrNot];
         [(PHAudioCallViewController *)self setupNameLabelForAlwaysOnDisplay];
-        v75 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-        v76 = [v75 callDisplayStyle] == 0;
+        callDisplayStyleManager2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+        v76 = [callDisplayStyleManager2 callDisplayStyle] == 0;
 
         if (v76)
         {
           [(PHAudioCallViewController *)self setParticipantsViewShouldShowParticipantLabel:1];
-          [v79 setAlpha:1.0];
+          [statusLabel setAlpha:1.0];
         }
 
         else
         {
           [(PHAudioCallViewController *)self setParticipantsViewShouldShowParticipantLabel:0];
-          v77 = [(PHAudioCallViewController *)self getParticipantsView_Waiting];
-          [(PHAudioCallViewController *)self updateParticipantsLabelForView:v77 isHidden:1];
+          getParticipantsView_Waiting = [(PHAudioCallViewController *)self getParticipantsView_Waiting];
+          [(PHAudioCallViewController *)self updateParticipantsLabelForView:getParticipantsView_Waiting isHidden:1];
 
           [(PHAudioCallViewController *)self _updatePosterStatusLabelForState:[(PHCallViewController *)self currentState]];
-          [(PHAudioCallViewController *)self updateParticipantConstraintsForPosterName:v83];
+          [(PHAudioCallViewController *)self updateParticipantConstraintsForPosterName:getParticipantsView_WaitingOrNot];
           [(PHAudioCallViewController *)self _updatePosterNameAlpha];
         }
 
@@ -2575,9 +2575,9 @@ LABEL_12:
         v63 = sub_100004F84();
         if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
         {
-          v64 = [(PHAudioCallViewController *)self renderingViewController];
+          renderingViewController = [(PHAudioCallViewController *)self renderingViewController];
           *buf = 138412290;
-          v94 = v64;
+          v94 = renderingViewController;
           _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEFAULT, "SNAP: There is no configuration now, we are going to fade out old poster %@", buf, 0xCu);
         }
 
@@ -2599,29 +2599,29 @@ LABEL_12:
   }
 }
 
-- (unint64_t)suggestedNewPosterSourceAfterCallConnects:(id)a3
+- (unint64_t)suggestedNewPosterSourceAfterCallConnects:(id)connects
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_100018238(a3);
+  connectsCopy = connects;
+  selfCopy = self;
+  v7 = sub_100018238(connects);
 
   return v7;
 }
 
-- (BOOL)hasLastSeenPosterForCall:(id)a3
+- (BOOL)hasLastSeenPosterForCall:(id)call
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  LOBYTE(v3) = sub_100013F60(v3);
+  callCopy = call;
+  callCopy2 = call;
+  selfCopy = self;
+  LOBYTE(callCopy) = sub_100013F60(callCopy);
 
-  return v3 & 1;
+  return callCopy & 1;
 }
 
-- (id)currentIMNicknameMatchingContact:(id)a3
+- (id)currentIMNicknameMatchingContact:(id)contact
 {
-  v4 = a3;
-  v5 = self;
+  contactCopy = contact;
+  selfCopy = self;
   v6 = sub_100018C98();
 
   return v6;
@@ -2629,28 +2629,28 @@ LABEL_12:
 
 - (id)getParticipantsView_Waiting
 {
-  v2 = [(PHAudioCallViewController *)self callWaitingParticipantsViewController];
-  v3 = [v2 view];
+  callWaitingParticipantsViewController = [(PHAudioCallViewController *)self callWaitingParticipantsViewController];
+  view = [callWaitingParticipantsViewController view];
 
-  return v3;
+  return view;
 }
 
 - (id)getParticipantsView_NotWaiting
 {
-  v2 = [(PHAudioCallViewController *)self callParticipantsViewController];
-  v3 = [v2 view];
+  callParticipantsViewController = [(PHAudioCallViewController *)self callParticipantsViewController];
+  view = [callParticipantsViewController view];
 
-  return v3;
+  return view;
 }
 
 - (void)removeNameLabelForAlwaysOnDisplay
 {
-  v3 = [(PHAudioCallViewController *)self alwaysOnDisplayPosterNameViewModel];
+  alwaysOnDisplayPosterNameViewModel = [(PHAudioCallViewController *)self alwaysOnDisplayPosterNameViewModel];
 
-  if (v3)
+  if (alwaysOnDisplayPosterNameViewModel)
   {
-    v4 = [(PHAudioCallViewController *)self alwaysOnDisplayPosterNameViewModel];
-    [v4 removeFromSuperview];
+    alwaysOnDisplayPosterNameViewModel2 = [(PHAudioCallViewController *)self alwaysOnDisplayPosterNameViewModel];
+    [alwaysOnDisplayPosterNameViewModel2 removeFromSuperview];
 
     [(PHAudioCallViewController *)self setAlwaysOnDisplayPosterNameViewModel:0];
   }
@@ -2658,19 +2658,19 @@ LABEL_12:
 
 - (void)_updateStatusLabelVisibility
 {
-  v13 = [(PHAudioCallViewController *)self getParticipantsView_WaitingOrNot];
-  v3 = [v13 singleCallLabelView];
-  v4 = [(PHAudioCallViewController *)self callHasNoContactPoster];
-  if (v3)
+  getParticipantsView_WaitingOrNot = [(PHAudioCallViewController *)self getParticipantsView_WaitingOrNot];
+  singleCallLabelView = [getParticipantsView_WaitingOrNot singleCallLabelView];
+  callHasNoContactPoster = [(PHAudioCallViewController *)self callHasNoContactPoster];
+  if (singleCallLabelView)
   {
-    [(PHAudioCallViewController *)self updatePosterBadgeView:v4 ^ 1 to:v3];
+    [(PHAudioCallViewController *)self updatePosterBadgeView:callHasNoContactPoster ^ 1 to:singleCallLabelView];
   }
 
   [(PHAudioCallViewController *)self updateCallRecordingPositionIfNeeded];
   [(PHAudioCallViewController *)self updateCallHoldingPositionIfNeeded];
   if ([(PHAudioCallViewController *)self callHasContactPosterWithHorizontalName]|| ([(PHAudioCallViewController *)self detachedPosterNameViewModel], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v6 = v3;
+    v6 = singleCallLabelView;
     v7 = 1;
 LABEL_6:
     [v6 setHidesLabel:v7];
@@ -2679,21 +2679,21 @@ LABEL_6:
 
   if (![(PHAudioCallViewController *)self callHasContactPosterWithVerticalName])
   {
-    v6 = v3;
+    v6 = singleCallLabelView;
     v7 = 0;
     goto LABEL_6;
   }
 
-  v8 = [(PHAudioCallViewController *)self posterNameViewModel];
-  v9 = [v8 posterNameTextView];
-  v10 = [v9 callIsActive];
+  posterNameViewModel = [(PHAudioCallViewController *)self posterNameViewModel];
+  posterNameTextView = [posterNameViewModel posterNameTextView];
+  callIsActive = [posterNameTextView callIsActive];
 
-  v11 = [(PHAudioCallViewController *)self posterNameViewModel];
-  v12 = [v11 posterNameTextView];
-  LODWORD(v9) = [v12 statusIsSuitableForVerticalLayout];
+  posterNameViewModel2 = [(PHAudioCallViewController *)self posterNameViewModel];
+  posterNameTextView2 = [posterNameViewModel2 posterNameTextView];
+  LODWORD(posterNameTextView) = [posterNameTextView2 statusIsSuitableForVerticalLayout];
 
-  [v3 setHidesLabel:(v10 ^ 1) & v9];
-  [v3 hideBadgesOnly];
+  [singleCallLabelView setHidesLabel:(callIsActive ^ 1) & posterNameTextView];
+  [singleCallLabelView hideBadgesOnly];
 LABEL_7:
 }
 
@@ -2704,38 +2704,38 @@ LABEL_7:
     return 1;
   }
 
-  v3 = [(PHAudioCallViewController *)self renderingViewController];
-  v4 = v3 == 0;
+  renderingViewController = [(PHAudioCallViewController *)self renderingViewController];
+  v4 = renderingViewController == 0;
 
   return v4;
 }
 
 - (void)synchronizeSingleLabelViewWithPosterText
 {
-  v5 = [(PHAudioCallViewController *)self getParticipantsView_WaitingOrNot];
-  v3 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
+  getParticipantsView_WaitingOrNot = [(PHAudioCallViewController *)self getParticipantsView_WaitingOrNot];
+  detachedPosterNameViewModel = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
 
-  if (v3)
+  if (detachedPosterNameViewModel)
   {
-    v4 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
-    [v4 updateViewModelForParticipantsView:v5];
+    detachedPosterNameViewModel2 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
+    [detachedPosterNameViewModel2 updateViewModelForParticipantsView:getParticipantsView_WaitingOrNot];
   }
 
   else
   {
-    [(PHAudioCallViewController *)self updatePosterViewModelForParticipantsView:v5];
+    [(PHAudioCallViewController *)self updatePosterViewModelForParticipantsView:getParticipantsView_WaitingOrNot];
   }
 }
 
 - (void)updateCallRecordingPositionIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   PHAudioCallViewController.updateCallRecordingPositionIfNeeded()();
 }
 
 - (void)updateCallHoldingPositionIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   PHAudioCallViewController.updateCallHoldingPositionIfNeeded()();
 }
 
@@ -2754,16 +2754,16 @@ LABEL_7:
 
 - (BOOL)callHasContactPosterWithVerticalName
 {
-  v3 = [(PHAudioCallViewController *)self posterNameViewModel];
+  posterNameViewModel = [(PHAudioCallViewController *)self posterNameViewModel];
 
-  if (!v3)
+  if (!posterNameViewModel)
   {
     return 0;
   }
 
-  v4 = [(PHAudioCallViewController *)self posterNameViewModel];
-  v5 = [v4 posterNameTextView];
-  v6 = [v5 layout] == 1;
+  posterNameViewModel2 = [(PHAudioCallViewController *)self posterNameViewModel];
+  posterNameTextView = [posterNameViewModel2 posterNameTextView];
+  v6 = [posterNameTextView layout] == 1;
 
   return v6;
 }
@@ -2779,16 +2779,16 @@ LABEL_7:
 {
   if (!-[CNKFeatures isEnhancedEmergencyEnabled](self->_features, "isEnhancedEmergencyEnabled") || (-[PHAudioCallViewController frontmostCall](self, "frontmostCall"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 isEmergency], v3, (v4 & 1) == 0))
   {
-    v6 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v6 callDisplayStyle] == 3)
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager callDisplayStyle] == 3)
     {
-      v7 = [(PHAudioCallViewController *)self features];
-      v8 = [v7 isDominoEnabled];
+      features = [(PHAudioCallViewController *)self features];
+      isDominoEnabled = [features isDominoEnabled];
 
-      if (v8)
+      if (isDominoEnabled)
       {
-        v9 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-        v5 = [v9 callDisplayStyle] != 0;
+        callDisplayStyleManager2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+        v5 = [callDisplayStyleManager2 callDisplayStyle] != 0;
 LABEL_11:
 
         return v5;
@@ -2799,16 +2799,16 @@ LABEL_11:
     {
     }
 
-    v9 = +[UIDevice currentDevice];
-    if ([v9 userInterfaceIdiom])
+    callDisplayStyleManager2 = +[UIDevice currentDevice];
+    if ([callDisplayStyleManager2 userInterfaceIdiom])
     {
       v5 = 0;
     }
 
     else
     {
-      v10 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-      v5 = [v10 callDisplayStyle] != 0;
+      callDisplayStyleManager3 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+      v5 = [callDisplayStyleManager3 callDisplayStyle] != 0;
     }
 
     goto LABEL_11;
@@ -2819,21 +2819,21 @@ LABEL_11:
 
 - (UILayoutGuide)translationLayoutGuide
 {
-  v3 = [(PHAudioCallViewController *)self featureFlags];
-  v4 = [v3 audioCallTranslationEnabled];
+  featureFlags = [(PHAudioCallViewController *)self featureFlags];
+  audioCallTranslationEnabled = [featureFlags audioCallTranslationEnabled];
 
-  if (!v4)
+  if (!audioCallTranslationEnabled)
   {
     goto LABEL_4;
   }
 
-  v5 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v5 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v6 = [(PHAudioCallViewController *)self features];
-    v7 = [v6 isDominoEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (v7)
+    if (isDominoEnabled)
     {
 LABEL_4:
       v8 = 0;
@@ -2852,18 +2852,18 @@ LABEL_4:
     v11 = self->_translationLayoutGuide;
     self->_translationLayoutGuide = v10;
 
-    v12 = [(PHAudioCallViewController *)self view];
-    [v12 addLayoutGuide:self->_translationLayoutGuide];
+    view = [(PHAudioCallViewController *)self view];
+    [view addLayoutGuide:self->_translationLayoutGuide];
 
-    v22 = [(UILayoutGuide *)self->_translationLayoutGuide leadingAnchor];
-    v13 = [(PHAudioCallViewController *)self view];
-    v14 = [v13 leadingAnchor];
-    v15 = [v22 constraintEqualToAnchor:v14];
+    leadingAnchor = [(UILayoutGuide *)self->_translationLayoutGuide leadingAnchor];
+    view2 = [(PHAudioCallViewController *)self view];
+    leadingAnchor2 = [view2 leadingAnchor];
+    v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v23[0] = v15;
-    v16 = [(UILayoutGuide *)self->_translationLayoutGuide trailingAnchor];
-    v17 = [(PHAudioCallViewController *)self view];
-    v18 = [v17 trailingAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18];
+    trailingAnchor = [(UILayoutGuide *)self->_translationLayoutGuide trailingAnchor];
+    view3 = [(PHAudioCallViewController *)self view];
+    trailingAnchor2 = [view3 trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v23[1] = v19;
     v20 = [NSArray arrayWithObjects:v23 count:2];
     [NSLayoutConstraint activateConstraints:v20];
@@ -2879,43 +2879,43 @@ LABEL_9:
 
 - (BOOL)shouldShowUseRTT
 {
-  v3 = [(PHAudioCallViewController *)self callCenter];
-  v4 = [v3 currentCallCount];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  currentCallCount = [callCenter currentCallCount];
 
-  if (v4 != 1)
+  if (currentCallCount != 1)
   {
-    v5 = sub_100004F84();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    frontmostCall = sub_100004F84();
+    if (os_log_type_enabled(frontmostCall, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v13) = 0;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Multiple calls are currently active; Use RTT button should not be presented.", &v13, 2u);
+      _os_log_impl(&_mh_execute_header, frontmostCall, OS_LOG_TYPE_DEFAULT, "Multiple calls are currently active; Use RTT button should not be presented.", &v13, 2u);
     }
 
     goto LABEL_17;
   }
 
-  v5 = [(PHAudioCallViewController *)self frontmostCall];
-  if (([v5 isRTT]& 1) != 0 || ([v5 isTTY]& 1) != 0 || ![v5 supportsTTYWithVoice]|| [v5 status]!= 1)
+  frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+  if (([frontmostCall isRTT]& 1) != 0 || ([frontmostCall isTTY]& 1) != 0 || ![frontmostCall supportsTTYWithVoice]|| [frontmostCall status]!= 1)
   {
 LABEL_17:
     LOBYTE(v9) = 0;
     goto LABEL_18;
   }
 
-  v6 = [v5 localSenderIdentityUUID];
-  if (!v6)
+  localSenderIdentityUUID = [frontmostCall localSenderIdentityUUID];
+  if (!localSenderIdentityUUID)
   {
     v7 = sub_100004F84();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v5;
+      v14 = frontmostCall;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Could not retrieve a sender identity UUID from the frontmost call %@; checking if RTT is available anyway.", &v13, 0xCu);
     }
   }
 
-  v8 = [(PHCallViewController *)self senderIdentityClient];
-  v9 = [v8 isRTTAvailableForSenderIdentityUUID:v6];
+  senderIdentityClient = [(PHCallViewController *)self senderIdentityClient];
+  v9 = [senderIdentityClient isRTTAvailableForSenderIdentityUUID:localSenderIdentityUUID];
 
   v10 = sub_100004F84();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2929,7 +2929,7 @@ LABEL_17:
     v13 = 138412546;
     v14 = v11;
     v15 = 2112;
-    v16 = v5;
+    v16 = frontmostCall;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Determined that the Use RTT button %@ be presented for the frontmost call %@.", &v13, 0x16u);
   }
 
@@ -2940,8 +2940,8 @@ LABEL_18:
 - (void)refreshUseRTTButton
 {
   [(PHAudioCallViewController *)self updateLayoutSupplementalButtons];
-  v3 = [(PHCallViewController *)self bottomBar];
-  [v3 refreshUseRTTButton];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar refreshUseRTTButton];
 }
 
 - (void)updateLayoutSupplementalButtons
@@ -2949,11 +2949,11 @@ LABEL_18:
   [(PHAudioCallViewController *)self removeSupplementalButtons];
   if (![(PHAudioCallViewController *)self middlePillContainerIsShowing])
   {
-    v3 = [(PHAudioCallViewController *)self buttonsViewController];
-    v4 = [v3 view];
+    buttonsViewController = [(PHAudioCallViewController *)self buttonsViewController];
+    view = [buttonsViewController view];
 
-    v5 = [v4 superview];
-    if (!v5 || (v6 = v5, v7 = [(PHAudioCallViewController *)self middleViewState], v6, v7 != 1))
+    superview = [view superview];
+    if (!superview || (v6 = superview, v7 = [(PHAudioCallViewController *)self middleViewState], v6, v7 != 1))
     {
 LABEL_27:
 
@@ -2973,26 +2973,26 @@ LABEL_27:
     v13 = objc_alloc_init(NSMutableArray);
     if ([(PHAudioCallViewController *)self shouldShowCallTransfer])
     {
-      v14 = [(PHAudioCallViewController *)self callTransferButton];
-      [v13 addObject:v14];
+      callTransferButton = [(PHAudioCallViewController *)self callTransferButton];
+      [v13 addObject:callTransferButton];
     }
 
     if ([(PHAudioCallViewController *)self shouldShowMergeCalls])
     {
-      v15 = [(PHAudioCallViewController *)self mergeCallsButton];
-      [v13 addObject:v15];
+      mergeCallsButton = [(PHAudioCallViewController *)self mergeCallsButton];
+      [v13 addObject:mergeCallsButton];
     }
 
     if ([(PHAudioCallViewController *)self shouldAddExtensionNumberButtonToViewHierarchy])
     {
-      v16 = [(PHAudioCallViewController *)self extensionNumberButton];
-      [v13 addObject:v16];
+      extensionNumberButton = [(PHAudioCallViewController *)self extensionNumberButton];
+      [v13 addObject:extensionNumberButton];
     }
 
     if ([(PHAudioCallViewController *)self shouldAddRTTButtonToViewHierarchy])
     {
-      v17 = [(PHAudioCallViewController *)self useRTTButton];
-      [v13 addObject:v17];
+      useRTTButton = [(PHAudioCallViewController *)self useRTTButton];
+      [v13 addObject:useRTTButton];
     }
 
     v18 = v10 * 0.102;
@@ -3001,25 +3001,25 @@ LABEL_27:
     v54[2] = sub_100117944;
     v54[3] = &unk_100359BE8;
     v54[4] = self;
-    v19 = v4;
+    v19 = view;
     v55 = v19;
     [v13 __imForEach:v54];
     if ([v13 count] == 3)
     {
       v47 = [v13 objectAtIndexedSubscript:0];
-      v49 = [v47 leadingAnchor];
-      v52 = [v19 leadingAnchor];
-      v50 = [v49 constraintEqualToAnchor:v52 constant:v18];
+      leadingAnchor = [v47 leadingAnchor];
+      leadingAnchor2 = [v19 leadingAnchor];
+      v50 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v18];
       v57[0] = v50;
       v48 = [v13 objectAtIndexedSubscript:1];
-      v46 = [v48 centerXAnchor];
-      v20 = [v19 centerXAnchor];
-      v21 = [v46 constraintEqualToAnchor:v20];
+      centerXAnchor = [v48 centerXAnchor];
+      centerXAnchor2 = [v19 centerXAnchor];
+      v21 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v57[1] = v21;
       v22 = [v13 objectAtIndexedSubscript:2];
-      v23 = [v22 trailingAnchor];
-      v24 = [v19 trailingAnchor];
-      v25 = [v23 constraintEqualToAnchor:v24 constant:-v18];
+      trailingAnchor = [v22 trailingAnchor];
+      trailingAnchor2 = [v19 trailingAnchor];
+      v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v18];
       v57[2] = v25;
       v26 = [NSArray arrayWithObjects:v57 count:3];
       [NSLayoutConstraint activateConstraints:v26];
@@ -3027,27 +3027,27 @@ LABEL_27:
       v27 = v47;
       v28 = v50;
 
-      v29 = v52;
-      v30 = v49;
+      centerXAnchor3 = leadingAnchor2;
+      leadingAnchor3 = leadingAnchor;
     }
 
     else if ([v13 count] == 2)
     {
       v27 = [v13 objectAtIndexedSubscript:0];
-      v30 = [v27 leadingAnchor];
-      v53 = [v19 leadingAnchor];
-      v51 = [v30 constraintEqualToAnchor:v53 constant:v18];
+      leadingAnchor3 = [v27 leadingAnchor];
+      leadingAnchor4 = [v19 leadingAnchor];
+      v51 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v18];
       v56[0] = v51;
       v31 = [v13 objectAtIndexedSubscript:1];
-      v32 = [v31 trailingAnchor];
-      v33 = [v19 trailingAnchor];
-      v34 = [v32 constraintEqualToAnchor:v33 constant:-v18];
+      trailingAnchor3 = [v31 trailingAnchor];
+      trailingAnchor4 = [v19 trailingAnchor];
+      v34 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-v18];
       v56[1] = v34;
       v35 = [NSArray arrayWithObjects:v56 count:2];
       [NSLayoutConstraint activateConstraints:v35];
 
       v28 = v51;
-      v29 = v53;
+      centerXAnchor3 = leadingAnchor4;
     }
 
     else
@@ -3055,44 +3055,44 @@ LABEL_27:
       if ([v13 count] != 1)
       {
 LABEL_21:
-        v36 = [(PHAudioCallViewController *)self translationLayoutGuide];
+        translationLayoutGuide = [(PHAudioCallViewController *)self translationLayoutGuide];
 
-        if (v36)
+        if (translationLayoutGuide)
         {
-          v37 = [(PHAudioCallViewController *)self translationLayoutBottomConstraint];
-          [v37 setActive:0];
+          translationLayoutBottomConstraint = [(PHAudioCallViewController *)self translationLayoutBottomConstraint];
+          [translationLayoutBottomConstraint setActive:0];
 
           v38 = [v13 count];
-          v39 = [(PHAudioCallViewController *)self translationLayoutGuide];
-          v40 = [v39 bottomAnchor];
+          translationLayoutGuide2 = [(PHAudioCallViewController *)self translationLayoutGuide];
+          bottomAnchor = [translationLayoutGuide2 bottomAnchor];
           if (v38)
           {
-            v41 = [v13 objectAtIndexedSubscript:0];
-            v42 = [v41 topAnchor];
-            v43 = [v40 constraintEqualToAnchor:v42];
-            [(PHAudioCallViewController *)self setTranslationLayoutBottomConstraint:v43];
+            buttonsViewController2 = [v13 objectAtIndexedSubscript:0];
+            topAnchor = [buttonsViewController2 topAnchor];
+            v42TopAnchor = [bottomAnchor constraintEqualToAnchor:topAnchor];
+            [(PHAudioCallViewController *)self setTranslationLayoutBottomConstraint:v42TopAnchor];
           }
 
           else
           {
-            v41 = [(PHAudioCallViewController *)self buttonsViewController];
-            v42 = [v41 view];
-            v43 = [v42 topAnchor];
-            v44 = [v40 constraintEqualToAnchor:v43];
+            buttonsViewController2 = [(PHAudioCallViewController *)self buttonsViewController];
+            topAnchor = [buttonsViewController2 view];
+            v42TopAnchor = [topAnchor topAnchor];
+            v44 = [bottomAnchor constraintEqualToAnchor:v42TopAnchor];
             [(PHAudioCallViewController *)self setTranslationLayoutBottomConstraint:v44];
           }
 
-          v45 = [(PHAudioCallViewController *)self translationLayoutBottomConstraint];
-          [v45 setActive:1];
+          translationLayoutBottomConstraint2 = [(PHAudioCallViewController *)self translationLayoutBottomConstraint];
+          [translationLayoutBottomConstraint2 setActive:1];
         }
 
         goto LABEL_27;
       }
 
       v27 = [v13 objectAtIndexedSubscript:0];
-      v30 = [v27 centerXAnchor];
-      v29 = [v19 centerXAnchor];
-      v28 = [v30 constraintEqualToAnchor:v29];
+      leadingAnchor3 = [v27 centerXAnchor];
+      centerXAnchor3 = [v19 centerXAnchor];
+      v28 = [leadingAnchor3 constraintEqualToAnchor:centerXAnchor3];
       [v28 setActive:1];
     }
 
@@ -3147,13 +3147,13 @@ LABEL_21:
   if (!useRTTButton)
   {
     v4 = sub_10001A58C();
-    v5 = [(PHAudioCallViewController *)self frontmostCall];
+    frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
     v6 = [[PHAudioCallControlsSupplementalButton alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
     v7 = self->_useRTTButton;
     self->_useRTTButton = v6;
 
-    v8 = [v5 localSenderIdentityUUID];
-    v9 = [v4 rttDisplayName:0 forSubscriptionContextUUID:v8];
+    localSenderIdentityUUID = [frontmostCall localSenderIdentityUUID];
+    v9 = [v4 rttDisplayName:0 forSubscriptionContextUUID:localSenderIdentityUUID];
 
     [(PHAudioCallControlsSupplementalButton *)self->_useRTTButton setTitle:v9 forState:0];
     v10 = self->_useRTTButton;
@@ -3169,13 +3169,13 @@ LABEL_21:
 
 - (BOOL)shouldShowCallTransfer
 {
-  v3 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v3 callDisplayStyle] != 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
 
 LABEL_5:
-    v7 = [(PHAudioCallViewController *)self callCenter];
-    v8 = [v7 callsPassingTest:&stru_100359D90];
+    callCenter = [(PHAudioCallViewController *)self callCenter];
+    v8 = [callCenter callsPassingTest:&stru_100359D90];
 
     if ([v8 count] == 2)
     {
@@ -3187,16 +3187,16 @@ LABEL_5:
       else
       {
         v10 = [v8 objectAtIndexedSubscript:0];
-        v11 = [v10 provider];
-        v12 = [v11 identifier];
+        provider = [v10 provider];
+        identifier = [provider identifier];
         v13 = [v8 objectAtIndexedSubscript:1];
-        v14 = [v13 provider];
-        v15 = [v14 identifier];
+        provider2 = [v13 provider];
+        identifier2 = [provider2 identifier];
 
-        if (v12 == v15)
+        if (identifier == identifier2)
         {
-          v17 = [v8 firstObject];
-          v18 = [PHInCallUtilities contactStoreForCall:v17];
+          firstObject = [v8 firstObject];
+          v18 = [PHInCallUtilities contactStoreForCall:firstObject];
 
           v19 = [CNPhoneNumber phoneNumberWithStringValue:@"4"];
           v20 = [CNContact predicateForContactMatchingPhoneNumber:v19];
@@ -3207,11 +3207,11 @@ LABEL_5:
           v22 = [v18 unifiedContactsMatchingPredicate:v20 keysToFetch:v21 error:&v31];
           v23 = v31;
 
-          v24 = [v8 firstObject];
-          v25 = [v24 localSenderIdentity];
-          v26 = [v25 accountUUID];
-          v27 = [v26 UUIDString];
-          v28 = [PHInCallUIUtilities isExplicitTransferSupportedForSubscriptionLabelIdentifier:v27];
+          firstObject2 = [v8 firstObject];
+          localSenderIdentity = [firstObject2 localSenderIdentity];
+          accountUUID = [localSenderIdentity accountUUID];
+          uUIDString = [accountUUID UUIDString];
+          v28 = [PHInCallUIUtilities isExplicitTransferSupportedForSubscriptionLabelIdentifier:uUIDString];
 
           v29 = sub_100004F84();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -3247,10 +3247,10 @@ LABEL_10:
     return v6 & 1;
   }
 
-  v4 = [(PHAudioCallViewController *)self features];
-  v5 = [v4 isDominoEnabled];
+  features = [(PHAudioCallViewController *)self features];
+  isDominoEnabled = [features isDominoEnabled];
 
-  if ((v5 & 1) == 0)
+  if ((isDominoEnabled & 1) == 0)
   {
     goto LABEL_5;
   }
@@ -3264,12 +3264,12 @@ LABEL_10:
   v4 = +[PHInCallUtilities sharedInstance];
   if (([v4 isIPadIdiom] & 1) == 0)
   {
-    v6 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    v7 = [v6 callDisplayStyle];
-    if (v7 == 3)
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
+    if (callDisplayStyle == 3)
     {
-      v2 = [(PHAudioCallViewController *)self features];
-      if (([v2 isDominoEnabled] & 1) != 0 || self->_middleViewState != 1)
+      features = [(PHAudioCallViewController *)self features];
+      if (([features isDominoEnabled] & 1) != 0 || self->_middleViewState != 1)
       {
         v5 = 0;
         goto LABEL_9;
@@ -3282,10 +3282,10 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v8 = [(PHAudioCallViewController *)self frontmostCall];
-    v5 = [v8 hardPauseDigitsState] == 2;
+    frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+    v5 = [frontmostCall hardPauseDigitsState] == 2;
 
-    if (v7 != 3)
+    if (callDisplayStyle != 3)
     {
 LABEL_11:
 
@@ -3316,12 +3316,12 @@ LABEL_14:
       return v5;
     }
 
-    v6 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    v7 = [v6 callDisplayStyle];
-    if (v7 == 3)
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
+    if (callDisplayStyle == 3)
     {
-      v2 = [(PHAudioCallViewController *)self features];
-      if (([v2 isDominoEnabled] & 1) != 0 || self->_middleViewState != 1)
+      features = [(PHAudioCallViewController *)self features];
+      if (([features isDominoEnabled] & 1) != 0 || self->_middleViewState != 1)
       {
         v5 = 0;
         goto LABEL_11;
@@ -3334,10 +3334,10 @@ LABEL_14:
       goto LABEL_13;
     }
 
-    v8 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    v5 = [v8 callDisplayStyle] != 0;
+    callDisplayStyleManager2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    v5 = [callDisplayStyleManager2 callDisplayStyle] != 0;
 
-    if (v7 != 3)
+    if (callDisplayStyle != 3)
     {
 LABEL_13:
 
@@ -3354,8 +3354,8 @@ LABEL_11:
 
 - (void)refreshExtensionNumberButton
 {
-  v3 = [(PHCallViewController *)self bottomBar];
-  v4 = [(PHAudioCallViewController *)self customizedTitleForItemInBar:v3 withActionType:23];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  v4 = [(PHAudioCallViewController *)self customizedTitleForItemInBar:bottomBar withActionType:23];
 
   [(PHAudioCallControlsSupplementalButton *)self->_extensionNumberButton setTitle:v4 forState:0];
   [(PHAudioCallViewController *)self updateLayoutSupplementalButtons];
@@ -3363,7 +3363,7 @@ LABEL_11:
 
 - (void)hideOrShowScreeningBackgroundView
 {
-  v3 = [(PHAudioCallViewController *)self featureFlags];
+  featureFlags = [(PHAudioCallViewController *)self featureFlags];
   v4 = TUCallScreeningEnabled();
 
   if (!v4)
@@ -3373,8 +3373,8 @@ LABEL_11:
 
   if ([(PHCallViewController *)self currentState]== 11 && [(PHAudioCallViewController *)self isShowingNewTranscriptsView])
   {
-    v5 = [(PHAudioCallViewController *)self renderingViewController];
-    v6 = v5 != 0;
+    renderingViewController = [(PHAudioCallViewController *)self renderingViewController];
+    v6 = renderingViewController != 0;
   }
 
   else
@@ -3382,77 +3382,77 @@ LABEL_11:
     v6 = 0;
   }
 
-  v7 = [(PHCallViewController *)self currentState];
-  if (v7 == 12)
+  currentState = [(PHCallViewController *)self currentState];
+  if (currentState == 12)
   {
-    v8 = [(PHAudioCallViewController *)self renderingViewController];
-    v9 = v8 != 0;
+    renderingViewController2 = [(PHAudioCallViewController *)self renderingViewController];
+    v9 = renderingViewController2 != 0;
 
     v6 |= v9;
   }
 
-  v10 = [(PHCallViewController *)self bottomBar];
-  v11 = [v10 currentState];
-  if (v7 == 12 || v11 == 23)
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  currentState2 = [bottomBar currentState];
+  if (currentState == 12 || currentState2 == 23)
   {
     goto LABEL_13;
   }
 
-  v12 = [(PHCallViewController *)self bottomBar];
-  if ([v12 currentState] == 24 && -[PHCallViewController currentState](self, "currentState") == 11)
+  bottomBar2 = [(PHCallViewController *)self bottomBar];
+  if ([bottomBar2 currentState] == 24 && -[PHCallViewController currentState](self, "currentState") == 11)
   {
 
 LABEL_13:
 LABEL_15:
-    v13 = [(PHAudioCallViewController *)self screeningBackgroundView];
-    if (v13)
+    screeningBackgroundView = [(PHAudioCallViewController *)self screeningBackgroundView];
+    if (screeningBackgroundView)
     {
     }
 
     else
     {
-      v14 = [(PHAudioCallViewController *)self renderingViewController];
+      renderingViewController3 = [(PHAudioCallViewController *)self renderingViewController];
 
-      if (v14)
+      if (renderingViewController3)
       {
         if (v6)
         {
-          v64 = [(PHAudioCallViewController *)self createPosterBlurryBackgroundView];
-          [(PHAudioCallViewController *)self setScreeningBackgroundView:v64];
-          v15 = [(PHAudioCallViewController *)self view];
-          v16 = [(PHAudioCallViewController *)self screeningBackgroundView];
-          v17 = [(PHAudioCallViewController *)self posterContainer];
-          [v15 insertSubview:v16 above:v17];
+          createPosterBlurryBackgroundView = [(PHAudioCallViewController *)self createPosterBlurryBackgroundView];
+          [(PHAudioCallViewController *)self setScreeningBackgroundView:createPosterBlurryBackgroundView];
+          view = [(PHAudioCallViewController *)self view];
+          screeningBackgroundView2 = [(PHAudioCallViewController *)self screeningBackgroundView];
+          posterContainer = [(PHAudioCallViewController *)self posterContainer];
+          [view insertSubview:screeningBackgroundView2 above:posterContainer];
 
-          v18 = [v64 contentView];
-          [(PHAudioCallViewController *)self createDetachedPosterNameViewModel:v18];
+          contentView = [createPosterBlurryBackgroundView contentView];
+          [(PHAudioCallViewController *)self createDetachedPosterNameViewModel:contentView];
 
-          v19 = [(PHAudioCallViewController *)self screeningBackgroundView];
-          [v19 setTranslatesAutoresizingMaskIntoConstraints:0];
+          screeningBackgroundView3 = [(PHAudioCallViewController *)self screeningBackgroundView];
+          [screeningBackgroundView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-          v63 = [(PHAudioCallViewController *)self screeningBackgroundView];
-          v61 = [v63 topAnchor];
-          v62 = [(PHAudioCallViewController *)self view];
-          v60 = [v62 topAnchor];
-          v59 = [v61 constraintEqualToAnchor:v60];
+          screeningBackgroundView4 = [(PHAudioCallViewController *)self screeningBackgroundView];
+          topAnchor = [screeningBackgroundView4 topAnchor];
+          view2 = [(PHAudioCallViewController *)self view];
+          topAnchor2 = [view2 topAnchor];
+          v59 = [topAnchor constraintEqualToAnchor:topAnchor2];
           v68[0] = v59;
-          v58 = [(PHAudioCallViewController *)self screeningBackgroundView];
-          v56 = [v58 bottomAnchor];
-          v57 = [(PHAudioCallViewController *)self view];
-          v55 = [v57 bottomAnchor];
-          v54 = [v56 constraintEqualToAnchor:v55];
+          screeningBackgroundView5 = [(PHAudioCallViewController *)self screeningBackgroundView];
+          bottomAnchor = [screeningBackgroundView5 bottomAnchor];
+          view3 = [(PHAudioCallViewController *)self view];
+          bottomAnchor2 = [view3 bottomAnchor];
+          v54 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
           v68[1] = v54;
-          v53 = [(PHAudioCallViewController *)self screeningBackgroundView];
-          v52 = [v53 leadingAnchor];
-          v20 = [(PHAudioCallViewController *)self view];
-          v21 = [v20 leadingAnchor];
-          v22 = [v52 constraintEqualToAnchor:v21];
+          screeningBackgroundView6 = [(PHAudioCallViewController *)self screeningBackgroundView];
+          leadingAnchor = [screeningBackgroundView6 leadingAnchor];
+          view4 = [(PHAudioCallViewController *)self view];
+          leadingAnchor2 = [view4 leadingAnchor];
+          v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
           v68[2] = v22;
-          v23 = [(PHAudioCallViewController *)self screeningBackgroundView];
-          v24 = [v23 trailingAnchor];
-          v25 = [(PHAudioCallViewController *)self view];
-          v26 = [v25 trailingAnchor];
-          v27 = [v24 constraintEqualToAnchor:v26];
+          screeningBackgroundView7 = [(PHAudioCallViewController *)self screeningBackgroundView];
+          trailingAnchor = [screeningBackgroundView7 trailingAnchor];
+          view5 = [(PHAudioCallViewController *)self view];
+          trailingAnchor2 = [view5 trailingAnchor];
+          v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
           v68[3] = v27;
           v28 = [NSArray arrayWithObjects:v68 count:4];
           [NSLayoutConstraint activateConstraints:v28];
@@ -3460,29 +3460,29 @@ LABEL_15:
 
         else
         {
-          v29 = [(PHAudioCallViewController *)self createBlurryBackgroundView];
+          createBlurryBackgroundView = [(PHAudioCallViewController *)self createBlurryBackgroundView];
           v30 = objc_opt_new();
-          v31 = [v30 makeViewComposer];
-          v32 = [v31 composeBackgroundWithView:v29];
+          makeViewComposer = [v30 makeViewComposer];
+          v32 = [makeViewComposer composeBackgroundWithView:createBlurryBackgroundView];
           [(PHAudioCallViewController *)self setScreeningBackgroundViewController:v32];
 
-          v33 = [(PHAudioCallViewController *)self screeningBackgroundViewController];
-          [(PHAudioCallViewController *)self addChildViewController:v33];
+          screeningBackgroundViewController = [(PHAudioCallViewController *)self screeningBackgroundViewController];
+          [(PHAudioCallViewController *)self addChildViewController:screeningBackgroundViewController];
 
-          v34 = [(PHAudioCallViewController *)self screeningBackgroundViewController];
-          v35 = [v34 view];
-          [(PHAudioCallViewController *)self setScreeningBackgroundView:v35];
+          screeningBackgroundViewController2 = [(PHAudioCallViewController *)self screeningBackgroundViewController];
+          view6 = [screeningBackgroundViewController2 view];
+          [(PHAudioCallViewController *)self setScreeningBackgroundView:view6];
 
-          v36 = [(PHAudioCallViewController *)self view];
-          v37 = [(PHAudioCallViewController *)self screeningBackgroundView];
-          v38 = [(PHAudioCallViewController *)self posterContainer];
-          [v36 insertSubview:v37 above:v38];
+          view7 = [(PHAudioCallViewController *)self view];
+          screeningBackgroundView8 = [(PHAudioCallViewController *)self screeningBackgroundView];
+          posterContainer2 = [(PHAudioCallViewController *)self posterContainer];
+          [view7 insertSubview:screeningBackgroundView8 above:posterContainer2];
 
-          v39 = [(PHAudioCallViewController *)self screeningBackgroundViewController];
-          [v39 didMoveToParentViewController:self];
+          screeningBackgroundViewController3 = [(PHAudioCallViewController *)self screeningBackgroundViewController];
+          [screeningBackgroundViewController3 didMoveToParentViewController:self];
 
-          v40 = [(PHAudioCallViewController *)self screeningBackgroundView];
-          [(PHAudioCallViewController *)self createDetachedPosterNameViewModel:v40];
+          screeningBackgroundView9 = [(PHAudioCallViewController *)self screeningBackgroundView];
+          [(PHAudioCallViewController *)self createDetachedPosterNameViewModel:screeningBackgroundView9];
         }
 
         objc_initWeak(&location, self);
@@ -3498,14 +3498,14 @@ LABEL_15:
       }
     }
 
-    v42 = [(PHAudioCallViewController *)self posterContainer];
-    [v42 frame];
+    posterContainer3 = [(PHAudioCallViewController *)self posterContainer];
+    [posterContainer3 frame];
     v44 = v43;
     v46 = v45;
     v48 = v47;
     v50 = v49;
-    v51 = [(PHAudioCallViewController *)self screeningBackgroundView];
-    [v51 setFrame:{v44, v46, v48, v50}];
+    screeningBackgroundView10 = [(PHAudioCallViewController *)self screeningBackgroundView];
+    [screeningBackgroundView10 setFrame:{v44, v46, v48, v50}];
 
     return;
   }
@@ -3520,9 +3520,9 @@ LABEL_15:
 
 - (void)removeScreeningBackgroundView
 {
-  v10 = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
-  v3 = [(PHAudioCallViewController *)self translationBackgroundView];
-  [v3 alpha];
+  getParticipantsView_NotWaiting = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
+  translationBackgroundView = [(PHAudioCallViewController *)self translationBackgroundView];
+  [translationBackgroundView alpha];
   v5 = v4;
 
   if (v5 == 0.0)
@@ -3530,45 +3530,45 @@ LABEL_15:
     [(PHAudioCallViewController *)self setDetachedPosterNameViewModel:0];
   }
 
-  v6 = [(PHAudioCallViewController *)self screeningBackgroundView];
+  screeningBackgroundView = [(PHAudioCallViewController *)self screeningBackgroundView];
 
-  if (v6)
+  if (screeningBackgroundView)
   {
-    v7 = [(PHAudioCallViewController *)self screeningBackgroundView];
-    [v7 removeFromSuperview];
+    screeningBackgroundView2 = [(PHAudioCallViewController *)self screeningBackgroundView];
+    [screeningBackgroundView2 removeFromSuperview];
 
     [(PHAudioCallViewController *)self setScreeningBackgroundView:0];
-    v8 = [(PHAudioCallViewController *)self screeningBackgroundViewController];
-    [v8 willMoveToParentViewController:0];
+    screeningBackgroundViewController = [(PHAudioCallViewController *)self screeningBackgroundViewController];
+    [screeningBackgroundViewController willMoveToParentViewController:0];
 
-    v9 = [(PHAudioCallViewController *)self screeningBackgroundViewController];
-    [v9 removeFromParentViewController];
+    screeningBackgroundViewController2 = [(PHAudioCallViewController *)self screeningBackgroundViewController];
+    [screeningBackgroundViewController2 removeFromParentViewController];
 
     [(PHAudioCallViewController *)self setScreeningBackgroundViewController:0];
   }
 
   [(PHAudioCallViewController *)self _updatePosterNameAlpha];
   [(PHAudioCallViewController *)self _updateStatusLabelVisibility];
-  [(PHAudioCallViewController *)self updateParticipantConstraintsForPosterName:v10];
+  [(PHAudioCallViewController *)self updateParticipantConstraintsForPosterName:getParticipantsView_NotWaiting];
 }
 
 - (void)_updatePosterNameAlpha
 {
-  v8 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
-  if (v8 || ([(PHAudioCallViewController *)self posterNameViewModel], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  detachedPosterNameViewModel = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
+  if (detachedPosterNameViewModel || ([(PHAudioCallViewController *)self posterNameViewModel], (detachedPosterNameViewModel = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v3 = [(PHAudioCallViewController *)self frontmostCall];
-    [v8 updatePosterNameAlpha:{((objc_msgSend(v3, "status") == 4) | !self->_participantsViewIsShowingMultipleLabel)}];
-    v4 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
-    if (v4)
+    frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+    [detachedPosterNameViewModel updatePosterNameAlpha:{((objc_msgSend(frontmostCall, "status") == 4) | !self->_participantsViewIsShowingMultipleLabel)}];
+    detachedPosterNameViewModel2 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
+    if (detachedPosterNameViewModel2)
     {
-      v5 = v4;
-      v6 = [(PHAudioCallViewController *)self posterNameViewModel];
+      v5 = detachedPosterNameViewModel2;
+      posterNameViewModel = [(PHAudioCallViewController *)self posterNameViewModel];
 
-      if (v6)
+      if (posterNameViewModel)
       {
-        v7 = [(PHAudioCallViewController *)self posterNameViewModel];
-        [v7 updatePosterNameAlpha:0.0];
+        posterNameViewModel2 = [(PHAudioCallViewController *)self posterNameViewModel];
+        [posterNameViewModel2 updatePosterNameAlpha:0.0];
       }
     }
   }
@@ -3576,33 +3576,33 @@ LABEL_15:
 
 - (void)restoreParticipantsViewStatusLabelForFullScreen
 {
-  v3 = [(PHAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
-  if (v3)
+  participantsViewVerticalPosterNameTopConstraint = [(PHAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
+  if (participantsViewVerticalPosterNameTopConstraint)
   {
-    v4 = v3;
-    v5 = [(PHAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
-    v6 = [v5 isActive];
+    v4 = participantsViewVerticalPosterNameTopConstraint;
+    participantsViewVerticalPosterNameTopConstraint2 = [(PHAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
+    isActive = [participantsViewVerticalPosterNameTopConstraint2 isActive];
 
-    if (v6)
+    if (isActive)
     {
-      v7 = [(PHAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
-      [v7 setActive:0];
+      participantsViewVerticalPosterNameTopConstraint3 = [(PHAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
+      [participantsViewVerticalPosterNameTopConstraint3 setActive:0];
 
       [(PHAudioCallViewController *)self setParticipantsViewVerticalPosterNameTopConstraint:0];
     }
   }
 
-  v8 = [(PHAudioCallViewController *)self participantsViewTopConstraint];
-  if (v8)
+  participantsViewTopConstraint = [(PHAudioCallViewController *)self participantsViewTopConstraint];
+  if (participantsViewTopConstraint)
   {
-    v9 = v8;
-    v10 = [(PHAudioCallViewController *)self participantsViewTopConstraint];
-    v11 = [v10 isActive];
+    v9 = participantsViewTopConstraint;
+    participantsViewTopConstraint2 = [(PHAudioCallViewController *)self participantsViewTopConstraint];
+    isActive2 = [participantsViewTopConstraint2 isActive];
 
-    if ((v11 & 1) == 0)
+    if ((isActive2 & 1) == 0)
     {
-      v12 = [(PHAudioCallViewController *)self participantsViewTopConstraint];
-      [v12 setActive:1];
+      participantsViewTopConstraint3 = [(PHAudioCallViewController *)self participantsViewTopConstraint];
+      [participantsViewTopConstraint3 setActive:1];
     }
   }
 }
@@ -3610,9 +3610,9 @@ LABEL_15:
 - (UIStackView)topLeadingContainer
 {
   v3 = +[CNKFeatures sharedInstance];
-  v4 = [v3 isMoreMenuEnabled];
+  isMoreMenuEnabled = [v3 isMoreMenuEnabled];
 
-  if (v4)
+  if (isMoreMenuEnabled)
   {
     v5 = 0;
   }
@@ -3636,23 +3636,23 @@ LABEL_15:
       [(UIStackView *)self->_topLeadingContainer setAlignment:3];
       [(UIStackView *)self->_topLeadingContainer setDistribution:1];
       [(UIStackView *)self->_topLeadingContainer setTranslatesAutoresizingMaskIntoConstraints:0];
-      v9 = [(PHAudioCallViewController *)self view];
-      [v9 addSubview:self->_topLeadingContainer];
+      view = [(PHAudioCallViewController *)self view];
+      [view addSubview:self->_topLeadingContainer];
 
-      v10 = [(UIStackView *)self->_topLeadingContainer leadingAnchor];
-      v11 = [(PHAudioCallViewController *)self view];
-      v12 = [v11 leadingAnchor];
+      leadingAnchor = [(UIStackView *)self->_topLeadingContainer leadingAnchor];
+      view2 = [(PHAudioCallViewController *)self view];
+      leadingAnchor2 = [view2 leadingAnchor];
       [(PHAudioCallViewController *)self callDetailsButtonPaddingTrailing];
-      v13 = [v10 constraintEqualToAnchor:v12 constant:?];
+      v13 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
 
       LODWORD(v14) = 1132068864;
       [v13 setPriority:v14];
       v22[0] = v13;
-      v15 = [(UIStackView *)self->_topLeadingContainer topAnchor];
-      v16 = [(PHAudioCallViewController *)self view];
-      v17 = [v16 topAnchor];
+      topAnchor = [(UIStackView *)self->_topLeadingContainer topAnchor];
+      view3 = [(PHAudioCallViewController *)self view];
+      topAnchor2 = [view3 topAnchor];
       [(PHAudioCallViewController *)self callDetailsButtonPaddingTop];
-      v19 = [v15 constraintEqualToAnchor:v17 constant:v18 + 3.0];
+      v19 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v18 + 3.0];
       v22[1] = v19;
       v20 = [NSArray arrayWithObjects:v22 count:2];
       [NSLayoutConstraint activateConstraints:v20];
@@ -3666,7 +3666,7 @@ LABEL_15:
 
 - (BOOL)canRecord
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001D85C();
   v4 = v3;
 
@@ -3675,7 +3675,7 @@ LABEL_15:
 
 - (BOOL)recordingSupportedForCurrentCallDsplayStyles
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10001DAE0();
 
   return v3;
@@ -3683,54 +3683,54 @@ LABEL_15:
 
 - (BOOL)callIsRecording
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001DBB0();
   v4 = v3;
 
   return v4 & 1;
 }
 
-- (void)addButton:(id)a3
+- (void)addButton:(id)button
 {
-  v5 = a3;
-  v6 = self;
-  sub_10001DE6C(a3);
+  buttonCopy = button;
+  selfCopy = self;
+  sub_10001DE6C(button);
 }
 
-- (void)updateCallHoldingIfNeeded:(id)a3
+- (void)updateCallHoldingIfNeeded:(id)needed
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.super.super.isa = a3;
+  neededCopy = needed;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.super.super.isa = needed;
   PHAudioCallViewController.updateCallHoldingIfNeeded(_:)(v9);
 }
 
-- (void)addCallHoldingIfNeeded:(id)a3
+- (void)addCallHoldingIfNeeded:(id)needed
 {
-  v5 = a3;
-  v6 = self;
-  sub_10001E4D0(a3);
+  neededCopy = needed;
+  selfCopy = self;
+  sub_10001E4D0(needed);
 }
 
-- (void)addHoldingButton:(id)a3
+- (void)addHoldingButton:(id)button
 {
-  v5 = a3;
-  v6 = self;
-  sub_10001E5C8(a3);
+  buttonCopy = button;
+  selfCopy = self;
+  sub_10001E5C8(button);
 }
 
-- (void)updateWaitOnHoldServiceWithCallWithCall:(id)a3
+- (void)updateWaitOnHoldServiceWithCallWithCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
-  sub_10001E934(v4);
+  callCopy = call;
+  selfCopy = self;
+  sub_10001E934(callCopy);
 }
 
 - (BOOL)holdingConditions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10001EA6C();
 
   return v3;
@@ -3756,10 +3756,10 @@ LABEL_15:
 
 - (BOOL)shouldShowNewPosterUpdates
 {
-  v3 = [(PHAudioCallViewController *)self frontmostCall];
-  if ([(PHAudioCallViewController *)self callStateCanShowNewPoster:v3])
+  frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+  if ([(PHAudioCallViewController *)self callStateCanShowNewPoster:frontmostCall])
   {
-    v4 = [objc_opt_class() posterSourceIsSyncedWithContacts:{-[PHAudioCallViewController suggestedNewPosterSourceAfterCallConnects:](self, "suggestedNewPosterSourceAfterCallConnects:", v3)}];
+    v4 = [objc_opt_class() posterSourceIsSyncedWithContacts:{-[PHAudioCallViewController suggestedNewPosterSourceAfterCallConnects:](self, "suggestedNewPosterSourceAfterCallConnects:", frontmostCall)}];
   }
 
   else
@@ -3773,51 +3773,51 @@ LABEL_15:
 - (void)updateAmbientAudioRoutesVisibility
 {
   [(PHAudioCallViewController *)self setupAmbientAudioRoutesControlViewIfNeeded];
-  v3 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v3 callDisplayStyle] != 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
     goto LABEL_7;
   }
 
-  v4 = [(PHAudioCallViewController *)self features];
-  if (([v4 isDominoEnabled] & 1) == 0)
+  features = [(PHAudioCallViewController *)self features];
+  if (([features isDominoEnabled] & 1) == 0)
   {
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v5 = [(PHAudioCallViewController *)self middleViewState];
+  middleViewState = [(PHAudioCallViewController *)self middleViewState];
 
-  if (v5 != 1)
+  if (middleViewState != 1)
   {
 LABEL_8:
     v11 = 1;
     goto LABEL_9;
   }
 
-  v6 = [(PHAudioCallViewController *)self ambientAudioRoutesControlView];
-  v7 = [v6 isHidden];
+  ambientAudioRoutesControlView = [(PHAudioCallViewController *)self ambientAudioRoutesControlView];
+  isHidden = [ambientAudioRoutesControlView isHidden];
 
-  if (v7)
+  if (isHidden)
   {
-    v8 = [(PHAudioCallViewController *)self ambientAudioRoutesControlView];
-    [_TtC13InCallService27AmbientAnimationCoordinator show:v8 completion:0];
+    ambientAudioRoutesControlView2 = [(PHAudioCallViewController *)self ambientAudioRoutesControlView];
+    [_TtC13InCallService27AmbientAnimationCoordinator show:ambientAudioRoutesControlView2 completion:0];
 
-    v9 = [(PHAudioCallViewController *)self ambientAudioRoutesControlView];
-    [v9 setHidden:0];
+    ambientAudioRoutesControlView3 = [(PHAudioCallViewController *)self ambientAudioRoutesControlView];
+    [ambientAudioRoutesControlView3 setHidden:0];
 
-    v12 = [(PHAudioCallViewController *)self view];
-    v10 = [(PHAudioCallViewController *)self ambientAudioRoutesControlView];
-    [v12 bringSubviewToFront:v10];
+    view = [(PHAudioCallViewController *)self view];
+    ambientAudioRoutesControlView4 = [(PHAudioCallViewController *)self ambientAudioRoutesControlView];
+    [view bringSubviewToFront:ambientAudioRoutesControlView4];
 
     goto LABEL_10;
   }
 
   v11 = 0;
 LABEL_9:
-  v12 = [(PHAudioCallViewController *)self ambientAudioRoutesControlView];
-  [v12 setHidden:v11];
+  view = [(PHAudioCallViewController *)self ambientAudioRoutesControlView];
+  [view setHidden:v11];
 LABEL_10:
 }
 
@@ -3825,43 +3825,43 @@ LABEL_10:
 {
   if (!self->_ambientAudioRoutesControlView)
   {
-    v19 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v19 callDisplayStyle] == 3)
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager callDisplayStyle] == 3)
     {
-      v3 = [(PHAudioCallViewController *)self features];
-      v4 = [v3 isDominoEnabled];
+      features = [(PHAudioCallViewController *)self features];
+      isDominoEnabled = [features isDominoEnabled];
 
-      if (!v4)
+      if (!isDominoEnabled)
       {
         return;
       }
 
       v5 = objc_alloc_init(PHAmbientAudioRoutesControlView);
-      v6 = [(PHAudioCallViewController *)self buttonsViewController];
-      [(PHAmbientAudioRoutesControlView *)v5 setDelegate:v6];
+      buttonsViewController = [(PHAudioCallViewController *)self buttonsViewController];
+      [(PHAmbientAudioRoutesControlView *)v5 setDelegate:buttonsViewController];
 
       [(PHAmbientAudioRoutesControlView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
       ambientAudioRoutesControlView = self->_ambientAudioRoutesControlView;
       self->_ambientAudioRoutesControlView = &v5->super;
       v8 = v5;
 
-      v9 = [(PHAudioCallViewController *)self view];
-      [v9 addSubview:self->_ambientAudioRoutesControlView];
+      view = [(PHAudioCallViewController *)self view];
+      [view addSubview:self->_ambientAudioRoutesControlView];
 
-      v10 = [(UIView *)self->_ambientAudioRoutesControlView topAnchor];
-      v11 = [(PHAudioCallViewController *)self view];
-      v12 = [v11 topAnchor];
+      topAnchor = [(UIView *)self->_ambientAudioRoutesControlView topAnchor];
+      view2 = [(PHAudioCallViewController *)self view];
+      topAnchor2 = [view2 topAnchor];
       +[PHUIConfiguration ambientAudioRoutesInset];
-      v13 = [v10 constraintEqualToAnchor:v12 constant:?];
+      v13 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
       [v13 setActive:1];
 
-      v19 = [(UIView *)self->_ambientAudioRoutesControlView trailingAnchor];
-      v14 = [(PHAudioCallViewController *)self view];
-      v15 = [v14 trailingAnchor];
+      callDisplayStyleManager = [(UIView *)self->_ambientAudioRoutesControlView trailingAnchor];
+      view3 = [(PHAudioCallViewController *)self view];
+      trailingAnchor = [view3 trailingAnchor];
       +[PHUIConfiguration ambientAudioRoutesInset];
       v17 = v16;
 
-      v18 = [v19 constraintEqualToAnchor:v15 constant:-v17];
+      v18 = [callDisplayStyleManager constraintEqualToAnchor:trailingAnchor constant:-v17];
       [v18 setActive:1];
     }
   }
@@ -3869,39 +3869,39 @@ LABEL_10:
 
 - (void)updateShareNameAndPhotoHUDPresentationIfNeeded
 {
-  v3 = [(PHAudioCallViewController *)self features];
-  v4 = [v3 isNameAndPhotoC3Enabled];
+  features = [(PHAudioCallViewController *)self features];
+  isNameAndPhotoC3Enabled = [features isNameAndPhotoC3Enabled];
 
-  if (v4 && ([(PHCallViewController *)self currentState]== 4 || [(PHCallViewController *)self currentState]== 5))
+  if (isNameAndPhotoC3Enabled && ([(PHCallViewController *)self currentState]== 4 || [(PHCallViewController *)self currentState]== 5))
   {
-    v5 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    v6 = [v5 callDisplayStyle];
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-    if (v6 == 2)
+    if (callDisplayStyle == 2)
     {
       v10 = +[UIApplication sharedApplication];
-      v7 = [v10 delegate];
-      v8 = [v7 bannerPresentationManager];
-      v9 = [(PHAudioCallViewController *)self callCenter];
-      [(PHAudioCallViewController *)self showNameAndPhotoHUDIfNecessaryWithBannerPresentationManager:v8 callCenter:v9];
+      delegate = [v10 delegate];
+      bannerPresentationManager = [delegate bannerPresentationManager];
+      callCenter = [(PHAudioCallViewController *)self callCenter];
+      [(PHAudioCallViewController *)self showNameAndPhotoHUDIfNecessaryWithBannerPresentationManager:bannerPresentationManager callCenter:callCenter];
     }
   }
 }
 
 - (void)updateCallTranslationIfNeeded
 {
-  v3 = [(PHAudioCallViewController *)self featureFlags];
-  v4 = [v3 audioCallTranslationEnabled];
+  featureFlags = [(PHAudioCallViewController *)self featureFlags];
+  audioCallTranslationEnabled = [featureFlags audioCallTranslationEnabled];
 
-  if (v4)
+  if (audioCallTranslationEnabled)
   {
-    v5 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v5 callDisplayStyle] == 3)
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager callDisplayStyle] == 3)
     {
-      v6 = [(PHAudioCallViewController *)self features];
-      v7 = [v6 isDominoEnabled];
+      features = [(PHAudioCallViewController *)self features];
+      isDominoEnabled = [features isDominoEnabled];
 
-      if (v7)
+      if (isDominoEnabled)
       {
         return;
       }
@@ -3911,57 +3911,57 @@ LABEL_10:
     {
     }
 
-    v8 = [(PHAudioCallViewController *)self activeCall];
+    activeCall = [(PHAudioCallViewController *)self activeCall];
     v9 = sub_100004F84();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-      v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v10 callDisplayStyle]);
+      callDisplayStyleManager2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+      v11 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [callDisplayStyleManager2 callDisplayStyle]);
       v16 = 138412546;
-      v17 = v8;
+      v17 = activeCall;
       v18 = 2112;
       v19 = v11;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Update translation with call: %@, display style %@", &v16, 0x16u);
     }
 
-    if ([v8 translationAvailability] == 3 && (objc_msgSend(v8, "callStatus") == 1 || objc_msgSend(v8, "callStatus") == 4) && (-[PHCallViewController currentState](self, "currentState") == 4 || -[PHCallViewController currentState](self, "currentState") == 1 || -[PHCallViewController currentState](self, "currentState") == 2))
+    if ([activeCall translationAvailability] == 3 && (objc_msgSend(activeCall, "callStatus") == 1 || objc_msgSend(activeCall, "callStatus") == 4) && (-[PHCallViewController currentState](self, "currentState") == 4 || -[PHCallViewController currentState](self, "currentState") == 1 || -[PHCallViewController currentState](self, "currentState") == 2))
     {
-      v12 = [(PHAudioCallViewController *)self translationController];
-      [v12 updateCall:v8];
+      translationController = [(PHAudioCallViewController *)self translationController];
+      [translationController updateCall:activeCall];
 
-      v13 = [(PHAudioCallViewController *)self translationController];
-      v14 = [(PHAudioCallViewController *)self topLeadingContainer];
-      [v13 showCallTranslationButtonIfNeeded:self buttonContainer:v14];
+      translationController2 = [(PHAudioCallViewController *)self translationController];
+      topLeadingContainer = [(PHAudioCallViewController *)self topLeadingContainer];
+      [translationController2 showCallTranslationButtonIfNeeded:self buttonContainer:topLeadingContainer];
     }
 
     else
     {
-      v15 = [(PHAudioCallViewController *)self translationController];
-      [v15 hideCallTranslationButtonIfNeeded];
+      translationController3 = [(PHAudioCallViewController *)self translationController];
+      [translationController3 hideCallTranslationButtonIfNeeded];
 
-      v13 = [(PHAudioCallViewController *)self translationController];
-      [v13 updateCall:0];
+      translationController2 = [(PHAudioCallViewController *)self translationController];
+      [translationController2 updateCall:0];
     }
   }
 }
 
 - (PHCallTranslationController)translationController
 {
-  v3 = [(PHAudioCallViewController *)self featureFlags];
-  v4 = [v3 audioCallTranslationEnabled];
+  featureFlags = [(PHAudioCallViewController *)self featureFlags];
+  audioCallTranslationEnabled = [featureFlags audioCallTranslationEnabled];
 
-  if (!v4)
+  if (!audioCallTranslationEnabled)
   {
     goto LABEL_4;
   }
 
-  v5 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v5 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v6 = [(PHAudioCallViewController *)self features];
-    v7 = [v6 isDominoEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (v7)
+    if (isDominoEnabled)
     {
 LABEL_4:
       v8 = 0;
@@ -3985,13 +3985,13 @@ LABEL_4:
 
     objc_initWeak(buf, self);
     v11 = [PHCallTranslationController alloc];
-    v12 = [(PHAudioCallViewController *)self translationLayoutGuide];
+    translationLayoutGuide = [(PHAudioCallViewController *)self translationLayoutGuide];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100130A78;
     v16[3] = &unk_100356E98;
     objc_copyWeak(&v17, buf);
-    v13 = [(PHCallTranslationController *)v11 initWithContentLayoutGuide:v12 translationStateDidChange:v16];
+    v13 = [(PHCallTranslationController *)v11 initWithContentLayoutGuide:translationLayoutGuide translationStateDidChange:v16];
     v14 = self->_translationController;
     self->_translationController = v13;
 
@@ -4010,25 +4010,25 @@ LABEL_11:
 {
   if (!-[CNKFeatures isEnhancedEmergencyEnabled](self->_features, "isEnhancedEmergencyEnabled") || (-[PHAudioCallViewController frontmostCall](self, "frontmostCall"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isEmergency], v4, (v5 & 1) == 0))
   {
-    v7 = [(PHAudioCallViewController *)self callToUseForWallpaper];
-    v8 = [v7 provider];
-    v9 = [v8 isSystemProvider];
-    if ((v9 & 1) != 0 || (-[PHAudioCallViewController callToUseForWallpaper](self, "callToUseForWallpaper"), v2 = objc_claimAutoreleasedReturnValue(), [v2 status] != 4))
+    callToUseForWallpaper = [(PHAudioCallViewController *)self callToUseForWallpaper];
+    provider = [callToUseForWallpaper provider];
+    isSystemProvider = [provider isSystemProvider];
+    if ((isSystemProvider & 1) != 0 || (-[PHAudioCallViewController callToUseForWallpaper](self, "callToUseForWallpaper"), v2 = objc_claimAutoreleasedReturnValue(), [v2 status] != 4))
     {
-      v10 = [(PHAudioCallViewController *)self features];
-      v6 = [v10 isHeroImageEnabled];
+      features = [(PHAudioCallViewController *)self features];
+      isHeroImageEnabled = [features isHeroImageEnabled];
 
-      if (v9)
+      if (isSystemProvider)
       {
 LABEL_9:
 
-        return v6;
+        return isHeroImageEnabled;
       }
     }
 
     else
     {
-      v6 = 0;
+      isHeroImageEnabled = 0;
     }
 
     goto LABEL_9;
@@ -4054,41 +4054,41 @@ LABEL_9:
 {
   if ([(CNKFeatures *)self->_features isEnhancedEmergencyEnabled])
   {
-    v3 = [(PHAudioCallViewController *)self frontmostCall];
-    if (v3)
+    frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+    if (frontmostCall)
     {
-      v4 = v3;
+      firstObject = frontmostCall;
     }
 
     else
     {
-      v5 = [(PHAudioCallViewController *)self callCenter];
-      v6 = [v5 currentCalls];
-      v4 = [v6 firstObject];
+      callCenter = [(PHAudioCallViewController *)self callCenter];
+      currentCalls = [callCenter currentCalls];
+      firstObject = [currentCalls firstObject];
 
-      if (!v4)
+      if (!firstObject)
       {
         v7 = +[UIApplication sharedApplication];
-        v8 = [v7 delegate];
-        v4 = [v8 mostRecentlyDisconnectedAudioCall];
+        delegate = [v7 delegate];
+        firstObject = [delegate mostRecentlyDisconnectedAudioCall];
       }
     }
 
-    v9 = [v4 isEmergency];
+    isEmergency = [firstObject isEmergency];
 
-    if (v9)
+    if (isEmergency)
     {
       return 0;
     }
   }
 
-  v11 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v11 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v12 = [(PHAudioCallViewController *)self features];
-    v13 = [v12 isDominoEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (v13)
+    if (isDominoEnabled)
     {
       return 1;
     }
@@ -4099,10 +4099,10 @@ LABEL_9:
   }
 
   v14 = +[UIDevice currentDevice];
-  v15 = [v14 userInterfaceIdiom];
+  userInterfaceIdiom = [v14 userInterfaceIdiom];
 
-  v16 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  v17 = [v16 callDisplayStyle];
+  callDisplayStyleManager2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager2 callDisplayStyle];
 
   if ([(PHAudioCallViewController *)self shouldShowContactOrLastSeenWallpaper])
   {
@@ -4111,15 +4111,15 @@ LABEL_9:
 
   else
   {
-    v19 = [(PHAudioCallViewController *)self renderingViewController];
-    v18 = v19 != 0;
+    renderingViewController = [(PHAudioCallViewController *)self renderingViewController];
+    v18 = renderingViewController != 0;
   }
 
-  v20 = [(PHAudioCallViewController *)self callToUseForWallpaper];
-  v21 = [(PHAudioCallViewController *)self contactImageForCall:v20];
+  callToUseForWallpaper = [(PHAudioCallViewController *)self callToUseForWallpaper];
+  v21 = [(PHAudioCallViewController *)self contactImageForCall:callToUseForWallpaper];
 
-  v22 = [(PHAudioCallViewController *)self callToUseForWallpaper];
-  v23 = [(PHAudioCallViewController *)self fallbackImageDataForCall:v22];
+  callToUseForWallpaper2 = [(PHAudioCallViewController *)self callToUseForWallpaper];
+  v23 = [(PHAudioCallViewController *)self fallbackImageDataForCall:callToUseForWallpaper2];
 
   if (!v18 && [(PHAudioCallViewController *)self shouldApplyNewGradientBlur])
   {
@@ -4137,9 +4137,9 @@ LABEL_9:
   }
 
   v25 = !v24;
-  if ((v15 | v17) == 0 || v18)
+  if ((userInterfaceIdiom | callDisplayStyle) == 0 || v18)
   {
-    return (v15 | v17) == 0;
+    return (userInterfaceIdiom | callDisplayStyle) == 0;
   }
 
   else
@@ -4153,17 +4153,17 @@ LABEL_9:
   v8.receiver = self;
   v8.super_class = PHAudioCallViewController;
   [(PHAudioCallViewController *)&v8 viewDidLayoutSubviews];
-  v3 = [(PHAudioCallViewController *)self callParticipantsViewController];
-  if (v3)
+  callParticipantsViewController = [(PHAudioCallViewController *)self callParticipantsViewController];
+  if (callParticipantsViewController)
   {
-    v4 = v3;
-    v5 = [(PHAudioCallViewController *)self canDumpHierarchy];
+    v4 = callParticipantsViewController;
+    canDumpHierarchy = [(PHAudioCallViewController *)self canDumpHierarchy];
 
-    if (v5)
+    if (canDumpHierarchy)
     {
-      v6 = [(PHAudioCallViewController *)self callParticipantsViewController];
-      v7 = [v6 view];
-      [ICSViewEvaluation processHierarchy:v7];
+      callParticipantsViewController2 = [(PHAudioCallViewController *)self callParticipantsViewController];
+      view = [callParticipantsViewController2 view];
+      [ICSViewEvaluation processHierarchy:view];
 
       [(PHAudioCallViewController *)self setCanDumpHierarchy:0];
     }
@@ -4174,9 +4174,9 @@ LABEL_9:
   [(PHAudioCallViewController *)self updatePosterDimmingAreaWith:?];
 }
 
-- (void)clearMenuItemRegistration:(id)a3
+- (void)clearMenuItemRegistration:(id)registration
 {
-  if (a3)
+  if (registration)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -4188,47 +4188,47 @@ LABEL_9:
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1000321BC(v4, v6);
 }
 
-- (void)writeToLastSeenPosterCacheIfNecessaryForCall:(id)a3
+- (void)writeToLastSeenPosterCacheIfNecessaryForCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
+  callCopy = call;
+  selfCopy = self;
   sub_1000322E4();
 }
 
 - (void)tipKitStopWaitOnHoldObservation
 {
-  v2 = self;
+  selfCopy = self;
   sub_10003430C();
 }
 
 - (BOOL)isUserInterfaceShowing
 {
   v3 = +[ICSPreferences sharedPreferences];
-  v4 = [v3 hasAdoptedModernInCallAPI];
+  hasAdoptedModernInCallAPI = [v3 hasAdoptedModernInCallAPI];
 
-  if (!v4)
+  if (!hasAdoptedModernInCallAPI)
   {
     return [(PHAudioCallViewController *)self _appearState]== 2;
   }
 
-  v5 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  v6 = [v5 callDisplayStyle] != 4;
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  v6 = [callDisplayStyleManager callDisplayStyle] != 4;
 
   return v6;
 }
 
 - (void)transitionToFullScreenIfNecessary
 {
-  v7 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if (![v7 callDisplayStyle])
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if (![callDisplayStyleManager callDisplayStyle])
   {
-    v3 = [(PHAudioCallViewController *)self view];
-    v4 = [v3 window];
-    v5 = [v4 windowScene];
+    view = [(PHAudioCallViewController *)self view];
+    window = [view window];
+    windowScene = [window windowScene];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -4237,50 +4237,50 @@ LABEL_9:
       return;
     }
 
-    v7 = [(PHAudioCallViewController *)self inCallRootViewController];
-    [v7 requestInCallSceneTransitionToFullScreen];
+    callDisplayStyleManager = [(PHAudioCallViewController *)self inCallRootViewController];
+    [callDisplayStyleManager requestInCallSceneTransitionToFullScreen];
   }
 }
 
-- (void)removeButtonFrom:(id)a3
+- (void)removeButtonFrom:(id)from
 {
-  v5 = a3;
-  v6 = self;
-  sub_1000349B4(a3);
+  fromCopy = from;
+  selfCopy = self;
+  sub_1000349B4(from);
 }
 
 - (void)updateCallParticipantsViewControllerCallGroups
 {
   if ([(PHAudioCallViewController *)self usesCompactMulticallUI]&& ([(PHAudioCallViewController *)self prioritizedCall], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v5 = [(PHAudioCallViewController *)self prioritizedCall];
-    v4 = [(PHAudioCallViewController *)self callParticipantsViewController];
-    [v4 setPrioritizedCall:v5];
+    prioritizedCall = [(PHAudioCallViewController *)self prioritizedCall];
+    callParticipantsViewController = [(PHAudioCallViewController *)self callParticipantsViewController];
+    [callParticipantsViewController setPrioritizedCall:prioritizedCall];
   }
 
   else
   {
-    v5 = [(PHAudioCallViewController *)self callParticipantsViewController];
-    [v5 updateCallGroups];
+    prioritizedCall = [(PHAudioCallViewController *)self callParticipantsViewController];
+    [prioritizedCall updateCallGroups];
   }
 }
 
 - (void)dismissWaitOnHoldTip
 {
-  v2 = self;
+  selfCopy = self;
   sub_10024E4A8();
 }
 
 - (void)revealAudioRoutingDeviceListAnimatedIfNeeded
 {
-  v3 = [(PHAudioCallViewController *)self callCenter];
-  v7 = [v3 routeController];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  routeController = [callCenter routeController];
 
-  if ([v7 areNonRelayAuxiliaryRoutesAvailable])
+  if ([routeController areNonRelayAuxiliaryRoutesAvailable])
   {
-    v4 = [v7 pickedRoute];
-    v5 = v4;
-    if (!v4 || (v6 = [v4 deviceType], v6 > 0x1D) || ((1 << v6) & 0x24140002) == 0 || (objc_msgSend(v5, "isPreferredAndActive") & 1) == 0)
+    pickedRoute = [routeController pickedRoute];
+    v5 = pickedRoute;
+    if (!pickedRoute || (v6 = [pickedRoute deviceType], v6 > 0x1D) || ((1 << v6) & 0x24140002) == 0 || (objc_msgSend(v5, "isPreferredAndActive") & 1) == 0)
     {
       [(PHAudioCallViewController *)self revealAudioRoutingDeviceListAnimated:1];
     }
@@ -4314,19 +4314,19 @@ LABEL_9:
   }
 }
 
-- (void)_testing_finishedAnimatingToActiveCallState:(id)a3
+- (void)_testing_finishedAnimatingToActiveCallState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if ([UIApp isRunningTest:@"AnswerIncomingCall"])
   {
     [UIApp finishedSubTest:@"end-to-end" forTest:@"AnswerIncomingCall"];
-    [(PHAudioCallViewController *)self bottomBarActionPerformed:15 withCompletionState:1 fromBar:v4];
+    [(PHAudioCallViewController *)self bottomBarActionPerformed:15 withCompletionState:1 fromBar:stateCopy];
   }
 }
 
-- (void)_testing_didTransitionToActiveCallState:(id)a3
+- (void)_testing_didTransitionToActiveCallState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if ([UIApp isRunningTest:@"AnswerIncomingCall"])
   {
     [UIApp finishedSubTest:@"pre-animation-delay" forTest:@"AnswerIncomingCall"];
@@ -4340,7 +4340,7 @@ LABEL_9:
     v7[2] = sub_1000B1AD0;
     v7[3] = &unk_100357110;
     v7[4] = self;
-    v8 = v4;
+    v8 = stateCopy;
     dispatch_after(v5, &_dispatch_main_q, v7);
   }
 
@@ -4394,9 +4394,9 @@ LABEL_9:
   }
 }
 
-- (void)_testing_didTransitionToIncomingRingingCallState:(id)a3
+- (void)_testing_didTransitionToIncomingRingingCallState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if ([UIApp isRunningTest:@"AnswerIncomingCall"])
   {
     v5 = dispatch_time(0, 2000000000);
@@ -4405,21 +4405,21 @@ LABEL_9:
     v6[2] = sub_1000B1D4C;
     v6[3] = &unk_100357110;
     v6[4] = self;
-    v7 = v4;
+    v7 = stateCopy;
     dispatch_after(v5, &_dispatch_main_q, v6);
   }
 }
 
-- (void)setParticipantsViewControllersShouldIgnoreUpdates:(BOOL)a3
+- (void)setParticipantsViewControllersShouldIgnoreUpdates:(BOOL)updates
 {
-  if (self->_participantsViewControllersShouldIgnoreUpdates != a3)
+  if (self->_participantsViewControllersShouldIgnoreUpdates != updates)
   {
-    v3 = a3;
+    updatesCopy = updates;
     v5 = sub_100004F84();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (updatesCopy)
       {
         v6 = @"YES";
       }
@@ -4429,34 +4429,34 @@ LABEL_9:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating the participants view and viewController shouldIgnoreUpdates: %@", &v9, 0xCu);
     }
 
-    self->_participantsViewControllersShouldIgnoreUpdates = v3;
-    v7 = [(PHAudioCallViewController *)self callParticipantsViewController];
-    [v7 setShouldIgnoreUpdates:v3];
+    self->_participantsViewControllersShouldIgnoreUpdates = updatesCopy;
+    callParticipantsViewController = [(PHAudioCallViewController *)self callParticipantsViewController];
+    [callParticipantsViewController setShouldIgnoreUpdates:updatesCopy];
 
-    v8 = [(PHAudioCallViewController *)self callWaitingParticipantsViewController];
-    [v8 setShouldIgnoreUpdates:v3];
+    callWaitingParticipantsViewController = [(PHAudioCallViewController *)self callWaitingParticipantsViewController];
+    [callWaitingParticipantsViewController setShouldIgnoreUpdates:updatesCopy];
   }
 }
 
-- (PHAudioCallViewController)initWithCallDisplayStyleManager:(id)a3 callCenter:(id)a4 featureFlags:(id)a5
+- (PHAudioCallViewController)initWithCallDisplayStyleManager:(id)manager callCenter:(id)center featureFlags:(id)flags
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  centerCopy = center;
+  flagsCopy = flags;
   v80.receiver = self;
   v80.super_class = PHAudioCallViewController;
   v12 = [(PHCallViewController *)&v80 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_callCenter, a4);
-    objc_storeStrong(&v13->_featureFlags, a5);
+    objc_storeStrong(&v12->_callCenter, center);
+    objc_storeStrong(&v13->_featureFlags, flags);
     v14 = objc_opt_new();
     analyticsReporter = v13->_analyticsReporter;
     v13->_analyticsReporter = v14;
 
     v16 = objc_opt_new();
-    v17 = [v16 makeWithCallCenter:v10];
+    v17 = [v16 makeWithCallCenter:centerCopy];
     declineCallService = v13->_declineCallService;
     v13->_declineCallService = v17;
 
@@ -4464,17 +4464,17 @@ LABEL_9:
     labelDescriptorFactory = v13->_labelDescriptorFactory;
     v13->_labelDescriptorFactory = v19;
 
-    objc_storeStrong(&v13->_callDisplayStyleManager, a3);
-    v13->_wasPresentedAsBanner = [v9 callDisplayStyle] == 0;
+    objc_storeStrong(&v13->_callDisplayStyleManager, manager);
+    v13->_wasPresentedAsBanner = [managerCopy callDisplayStyle] == 0;
     v13->_middleViewState = 0;
     v13->_canDumpHierarchy = 1;
     v21 = objc_opt_new();
     mutedTalkerViewControllerFactory = v13->_mutedTalkerViewControllerFactory;
     v13->_mutedTalkerViewControllerFactory = v21;
 
-    v23 = [(CNKMutedTalkerBannerViewControllerFactory *)v13->_mutedTalkerViewControllerFactory makeViewController];
+    makeViewController = [(CNKMutedTalkerBannerViewControllerFactory *)v13->_mutedTalkerViewControllerFactory makeViewController];
     mutedTalkerBannerViewController = v13->_mutedTalkerBannerViewController;
-    v13->_mutedTalkerBannerViewController = v23;
+    v13->_mutedTalkerBannerViewController = makeViewController;
 
     [(CNKMutedTalkerBannerViewControllerProtocol *)v13->_mutedTalkerBannerViewController setDelegate:v13];
     v13->_didNotifyMutedCaller = 0;
@@ -4535,7 +4535,7 @@ LABEL_9:
     [v43 addObserver:v13 selector:"callRecordingAfterFullScreenRequest:" name:@"MoreMenuRemoteAlertViewCallRecordingNotification" object:0];
     [v43 addObserver:v13 selector:"callRecordingStateChanged:" name:TUCallRecordingStateChangedNotification object:0];
     [v43 addObserver:v13 selector:"callRecordingCountdownStarted:" name:@"startCountdownForCallRecording" object:0];
-    v44 = [(PHAudioCallViewController *)v13 featureFlags];
+    featureFlags = [(PHAudioCallViewController *)v13 featureFlags];
     v45 = TUCallScreeningEnabledM3();
 
     if (v45)
@@ -4543,43 +4543,43 @@ LABEL_9:
       [v43 addObserver:v13 selector:"callCenterScreeningStatusChangedNotification:" name:TUCallCenterIsScreeningChangedNotification object:0];
     }
 
-    v46 = [(PHAudioCallViewController *)v13 featureFlags];
-    v47 = [v46 receptionistEnabled];
+    featureFlags2 = [(PHAudioCallViewController *)v13 featureFlags];
+    receptionistEnabled = [featureFlags2 receptionistEnabled];
 
-    if (v47)
+    if (receptionistEnabled)
     {
       [v43 addObserver:v13 selector:"receptionistStateChanged:" name:TUCallCenterReceptionistStateChangedNotification object:0];
     }
 
-    v48 = [(PHAudioCallViewController *)v13 featureFlags];
-    v49 = [v48 audioCallTranslationEnabled];
+    featureFlags3 = [(PHAudioCallViewController *)v13 featureFlags];
+    audioCallTranslationEnabled = [featureFlags3 audioCallTranslationEnabled];
 
-    if (v49)
+    if (audioCallTranslationEnabled)
     {
       [v43 addObserver:v13 selector:"updateCallTranslationIfNeeded" name:TUCallTranslationAvailabilityChangedNotification object:0];
     }
 
-    v50 = [(PHAudioCallViewController *)v13 featureFlags];
-    v51 = [v50 waitOnHoldEnabled];
+    featureFlags4 = [(PHAudioCallViewController *)v13 featureFlags];
+    waitOnHoldEnabled = [featureFlags4 waitOnHoldEnabled];
 
-    if (v51)
+    if (waitOnHoldEnabled)
     {
       [(PHAudioCallViewController *)v13 setupCallHoldingObservers];
     }
 
-    v52 = [v10 routeController];
-    [v52 addDelegate:v13];
+    routeController = [centerCopy routeController];
+    [routeController addDelegate:v13];
 
-    v53 = [v10 audioDeviceController];
-    [v53 addDelegate:v13];
+    audioDeviceController = [centerCopy audioDeviceController];
+    [audioDeviceController addDelegate:v13];
 
     v54 = +[UIApplication sharedApplication];
-    v55 = [v54 delegate];
-    v56 = [v55 bannerPresentationManager];
-    [v56 setLocalAudioTogglingDelegate:v13];
+    delegate = [v54 delegate];
+    bannerPresentationManager = [delegate bannerPresentationManager];
+    [bannerPresentationManager setLocalAudioTogglingDelegate:v13];
 
-    v57 = [(CNKScreenSharingInteractionControllerFactory *)v13->_screenSharingInteractionControllerFactory sharedController];
-    [v57 addDelegate:v13];
+    sharedController = [(CNKScreenSharingInteractionControllerFactory *)v13->_screenSharingInteractionControllerFactory sharedController];
+    [sharedController addDelegate:v13];
   }
 
   v58 = sub_100004F84();
@@ -4591,38 +4591,38 @@ LABEL_9:
 
   v13->_shouldPresentAlertButton = 0;
   v59 = +[UIApplication sharedApplication];
-  v60 = [v59 delegate];
-  v61 = [v60 alertCoordinator];
+  delegate2 = [v59 delegate];
+  alertCoordinator = [delegate2 alertCoordinator];
 
-  if (!v61)
+  if (!alertCoordinator)
   {
     v62 = objc_alloc_init(_TtC13InCallService16AlertCoordinator);
     v63 = +[UIApplication sharedApplication];
-    v64 = [v63 delegate];
-    [v64 setAlertCoordinator:v62];
+    delegate3 = [v63 delegate];
+    [delegate3 setAlertCoordinator:v62];
   }
 
   v65 = +[UIApplication sharedApplication];
-  v66 = [v65 delegate];
-  v67 = [v66 alertCoordinator];
-  [v67 setDelegate:v13];
+  delegate4 = [v65 delegate];
+  alertCoordinator2 = [delegate4 alertCoordinator];
+  [alertCoordinator2 setDelegate:v13];
 
   v13->_shouldEnableVideoStreamingButton = 0;
   v13->_shouldEnableShareMediaButton = 0;
-  v68 = [(PHAudioCallViewController *)v13 features];
-  LODWORD(v66) = [v68 isEnhancedEmergencyEnabled];
+  features = [(PHAudioCallViewController *)v13 features];
+  LODWORD(delegate4) = [features isEnhancedEmergencyEnabled];
 
-  if (v66)
+  if (delegate4)
   {
     v69 = +[PHSOSDisconnectionConfirmation sharedInstance];
     [v69 addDelegate:v13];
 
-    v70 = [v10 frontmostCall];
-    if ([v70 isEmergency])
+    frontmostCall = [centerCopy frontmostCall];
+    if ([frontmostCall isEmergency])
     {
-      v71 = [(PHAudioCallViewController *)v13 emergencyCoordinator];
+      emergencyCoordinator = [(PHAudioCallViewController *)v13 emergencyCoordinator];
 
-      if (v71)
+      if (emergencyCoordinator)
       {
         goto LABEL_22;
       }
@@ -4638,12 +4638,12 @@ LABEL_9:
       v73 = objc_alloc_init(PHEnhancedEmergencyCoordinator);
       [(PHAudioCallViewController *)v13 setEmergencyCoordinator:v73];
 
-      v74 = [(PHAudioCallViewController *)v13 emergencyCoordinator];
-      [v74 setDelegate:v13];
+      emergencyCoordinator2 = [(PHAudioCallViewController *)v13 emergencyCoordinator];
+      [emergencyCoordinator2 setDelegate:v13];
 
-      v70 = [v10 frontmostCall];
-      v75 = [(PHAudioCallViewController *)v13 emergencyCoordinator];
-      [v75 setTuCall:v70];
+      frontmostCall = [centerCopy frontmostCall];
+      emergencyCoordinator3 = [(PHAudioCallViewController *)v13 emergencyCoordinator];
+      [emergencyCoordinator3 setTuCall:frontmostCall];
     }
   }
 
@@ -4654,24 +4654,24 @@ LABEL_22:
     [(PHAudioCallViewController *)v13 addDimmingView];
   }
 
-  v76 = [(PHAudioCallViewController *)v13 topLeadingContainer];
-  v77 = [(PHAudioCallViewController *)v13 middlePillContainer];
-  [(PHAudioCallViewController *)v13 updateCallRecordingIfNeededWithButtonContainer:v76 pillContainer:v77];
+  topLeadingContainer = [(PHAudioCallViewController *)v13 topLeadingContainer];
+  middlePillContainer = [(PHAudioCallViewController *)v13 middlePillContainer];
+  [(PHAudioCallViewController *)v13 updateCallRecordingIfNeededWithButtonContainer:topLeadingContainer pillContainer:middlePillContainer];
 
-  v78 = [(PHAudioCallViewController *)v13 topLeadingContainer];
-  [(PHAudioCallViewController *)v13 updateCallHoldingIfNeeded:v78];
+  topLeadingContainer2 = [(PHAudioCallViewController *)v13 topLeadingContainer];
+  [(PHAudioCallViewController *)v13 updateCallHoldingIfNeeded:topLeadingContainer2];
 
   return v13;
 }
 
-- (void)callRecordingAfterFullScreenRequest:(id)a3
+- (void)callRecordingAfterFullScreenRequest:(id)request
 {
-  v4 = [a3 userInfo];
-  v7 = [v4 valueForKey:@"callRecording"];
+  userInfo = [request userInfo];
+  v7 = [userInfo valueForKey:@"callRecording"];
 
-  v5 = [(PHAudioCallViewController *)self topLeadingContainer];
-  v6 = [(PHAudioCallViewController *)self middlePillContainer];
-  [(PHAudioCallViewController *)self updateCallRecordingIfNeededWithButtonContainer:v5 pillContainer:v6];
+  topLeadingContainer = [(PHAudioCallViewController *)self topLeadingContainer];
+  middlePillContainer = [(PHAudioCallViewController *)self middlePillContainer];
+  [(PHAudioCallViewController *)self updateCallRecordingIfNeededWithButtonContainer:topLeadingContainer pillContainer:middlePillContainer];
 
   if ([v7 isEqual:@"start"])
   {
@@ -4684,22 +4684,22 @@ LABEL_22:
   }
 }
 
-- (void)callRecordingCountdownStarted:(id)a3
+- (void)callRecordingCountdownStarted:(id)started
 {
   self->_callRecordingCountdownShowing = 1;
-  v4 = [(PHAudioCallViewController *)self topLeadingContainer];
-  v5 = [(PHAudioCallViewController *)self middlePillContainer];
-  [(PHAudioCallViewController *)self updateCallRecordingIfNeededWithButtonContainer:v4 pillContainer:v5];
+  topLeadingContainer = [(PHAudioCallViewController *)self topLeadingContainer];
+  middlePillContainer = [(PHAudioCallViewController *)self middlePillContainer];
+  [(PHAudioCallViewController *)self updateCallRecordingIfNeededWithButtonContainer:topLeadingContainer pillContainer:middlePillContainer];
 
   [(PHAudioCallViewController *)self removeSupplementalButtons];
 }
 
-- (void)callRecordingStateChanged:(id)a3
+- (void)callRecordingStateChanged:(id)changed
 {
   self->_callRecordingCountdownShowing = 0;
-  v4 = [(PHAudioCallViewController *)self topLeadingContainer];
-  v5 = [(PHAudioCallViewController *)self middlePillContainer];
-  [(PHAudioCallViewController *)self updateCallRecordingIfNeededWithButtonContainer:v4 pillContainer:v5];
+  topLeadingContainer = [(PHAudioCallViewController *)self topLeadingContainer];
+  middlePillContainer = [(PHAudioCallViewController *)self middlePillContainer];
+  [(PHAudioCallViewController *)self updateCallRecordingIfNeededWithButtonContainer:topLeadingContainer pillContainer:middlePillContainer];
 
   [(PHAudioCallViewController *)self updateLayoutSupplementalButtons];
 }
@@ -4709,33 +4709,33 @@ LABEL_22:
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self];
 
-  v4 = [(PHCallViewController *)self bottomBar];
-  [v4 setDelegate:0];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar setDelegate:0];
 
-  v5 = [(PHAudioCallViewController *)self callCenter];
-  v6 = [v5 audioDeviceController];
-  [v6 removeDelegate:self];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  audioDeviceController = [callCenter audioDeviceController];
+  [audioDeviceController removeDelegate:self];
 
-  v7 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v7 callDisplayStyle] != 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
 
     goto LABEL_5;
   }
 
-  v8 = [(PHAudioCallViewController *)self features];
-  v9 = [v8 isDominoEnabled];
+  features = [(PHAudioCallViewController *)self features];
+  isDominoEnabled = [features isDominoEnabled];
 
-  if ((v9 & 1) == 0)
+  if ((isDominoEnabled & 1) == 0)
   {
 LABEL_5:
     [(PHAudioCallViewController *)self deleteAllUnarchivedPosterDirectories];
   }
 
-  v10 = [(PHAudioCallViewController *)self features];
-  v11 = [v10 isEnhancedEmergencyEnabled];
+  features2 = [(PHAudioCallViewController *)self features];
+  isEnhancedEmergencyEnabled = [features2 isEnhancedEmergencyEnabled];
 
-  if (v11)
+  if (isEnhancedEmergencyEnabled)
   {
     v12 = +[PHSOSDisconnectionConfirmation sharedInstance];
     [v12 removeDelegate:self];
@@ -4745,7 +4745,7 @@ LABEL_5:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "PHAudioCallViewController deallocated %@", buf, 0xCu);
   }
 
@@ -4763,9 +4763,9 @@ LABEL_5:
   v3 = sub_100004F84();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PHAudioCallViewController *)self view];
+    view = [(PHAudioCallViewController *)self view];
     v5 = 138412290;
-    v6 = v4;
+    v6 = view;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "PHAudioCallViewController view loaded: %@", &v5, 0xCu);
   }
 }
@@ -4782,10 +4782,10 @@ LABEL_5:
   if ([(PHAudioCallViewController *)self preferredInterfaceOrientationForPresentation]== 1)
   {
     v12 = +[PHInCallUtilities sharedInstance];
-    v13 = [v12 isIPadIdiom];
+    isIPadIdiom = [v12 isIPadIdiom];
 
     v14 = v11 < v9;
-    if ((v14 & ~v13) != 0)
+    if ((v14 & ~isIPadIdiom) != 0)
     {
       v15 = v9;
     }
@@ -4809,11 +4809,11 @@ LABEL_5:
 
   v18 = [[UIView alloc] initWithFrame:{v5, v7, v9, v15}];
   [(PHAudioCallViewController *)self setView:v18];
-  v16 = [v18 layer];
-  [v16 setAllowsGroupBlending:0];
+  layer = [v18 layer];
+  [layer setAllowsGroupBlending:0];
 
-  v17 = [v18 layer];
-  [v17 setAllowsGroupOpacity:0];
+  layer2 = [v18 layer];
+  [layer2 setAllowsGroupOpacity:0];
 
   [v18 setAutoresizingMask:18];
 }
@@ -4821,48 +4821,48 @@ LABEL_5:
 - (void)addBottomBarSubView
 {
   v3 = [PHBottomBar alloc];
-  v4 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  v5 = [(PHBottomBar *)v3 initWithCallDisplayStyleManager:v4];
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  v5 = [(PHBottomBar *)v3 initWithCallDisplayStyleManager:callDisplayStyleManager];
   [(PHCallViewController *)self setBottomBar:v5];
 
-  v6 = [(PHAudioCallViewController *)self view];
-  [v6 frame];
+  view = [(PHAudioCallViewController *)self view];
+  [view frame];
   v8 = v7;
   v10 = v9;
-  v11 = [(PHCallViewController *)self bottomBar];
-  [v11 setRotatedTargetSizeOfParent:{v8, v10}];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar setRotatedTargetSizeOfParent:{v8, v10}];
 
   v12 = +[UIColor clearColor];
-  v13 = [(PHCallViewController *)self bottomBar];
-  [v13 setBackgroundColor:v12];
+  bottomBar2 = [(PHCallViewController *)self bottomBar];
+  [bottomBar2 setBackgroundColor:v12];
 
-  v14 = [(PHCallViewController *)self bottomBar];
-  [v14 setDelegate:self];
+  bottomBar3 = [(PHCallViewController *)self bottomBar];
+  [bottomBar3 setDelegate:self];
 
   v15 = objc_opt_class();
-  v16 = [(PHAudioCallViewController *)self view];
-  [v15 _bottomBarBottomMarginForView:v16];
+  view2 = [(PHAudioCallViewController *)self view];
+  [v15 _bottomBarBottomMarginForView:view2];
   v18 = v17;
-  v19 = [(PHCallViewController *)self bottomBar];
-  [v19 setBottomMargin:v18];
+  bottomBar4 = [(PHCallViewController *)self bottomBar];
+  [bottomBar4 setBottomMargin:v18];
 
-  v20 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  v21 = [v20 callDisplayStyle];
+  callDisplayStyleManager2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager2 callDisplayStyle];
 
-  if (!v21)
+  if (!callDisplayStyle)
   {
-    v22 = [(PHCallViewController *)self bottomBar];
-    [v22 setAlpha:0.0];
+    bottomBar5 = [(PHCallViewController *)self bottomBar];
+    [bottomBar5 setAlpha:0.0];
   }
 
   [(PHAudioCallViewController *)self updateHardPauseDigitsState];
-  v23 = [(PHAudioCallViewController *)self view];
-  v24 = [(PHCallViewController *)self bottomBar];
-  [v23 addSubview:v24];
+  view3 = [(PHAudioCallViewController *)self view];
+  bottomBar6 = [(PHCallViewController *)self bottomBar];
+  [view3 addSubview:bottomBar6];
 
   [(PHAudioCallViewController *)self constrainBottomBar];
-  v25 = [(PHCallViewController *)self bottomBar];
-  [v25 setCurrentState:11];
+  bottomBar7 = [(PHCallViewController *)self bottomBar];
+  [bottomBar7 setCurrentState:11];
 
   objc_initWeak(&location, self);
   v31 = _NSConcreteStackBlock;
@@ -4881,39 +4881,39 @@ LABEL_5:
 
 - (void)constrainBottomBar
 {
-  v3 = [(PHCallViewController *)self bottomBar];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(PHAudioCallViewController *)self constrainBottomBarBottom];
-  v4 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v4 callDisplayStyle] != 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
 
 LABEL_5:
-    v19 = [(PHCallViewController *)self bottomBar];
-    v20 = [v19 centerXAnchor];
-    v21 = [(PHAudioCallViewController *)self view];
-    v22 = [v21 centerXAnchor];
-    v18 = [v20 constraintEqualToAnchor:v22];
+    bottomBar2 = [(PHCallViewController *)self bottomBar];
+    centerXAnchor = [bottomBar2 centerXAnchor];
+    view = [(PHAudioCallViewController *)self view];
+    centerXAnchor2 = [view centerXAnchor];
+    v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
     v23 = +[PHInCallUtilities sharedInstance];
     if ([v23 isIPadIdiom])
     {
-      v24 = [(PHAudioCallViewController *)self features];
-      v25 = [v24 lvmEverywhereEnabled];
+      features = [(PHAudioCallViewController *)self features];
+      lvmEverywhereEnabled = [features lvmEverywhereEnabled];
 
-      if (!v25)
+      if (!lvmEverywhereEnabled)
       {
-        v26 = [(PHCallViewController *)self bottomBar];
-        v27 = [v26 widthAnchor];
+        bottomBar3 = [(PHCallViewController *)self bottomBar];
+        widthAnchor = [bottomBar3 widthAnchor];
         +[PHBottomBar defaultWidth];
-        v7 = [v27 constraintEqualToConstant:?];
+        topAnchor = [widthAnchor constraintEqualToConstant:?];
 LABEL_10:
 
         v44[0] = v18;
-        v44[1] = v7;
-        v8 = [NSArray arrayWithObjects:v44 count:2];
-        [NSLayoutConstraint activateConstraints:v8];
+        v44[1] = topAnchor;
+        trailingSideLayoutGuide = [NSArray arrayWithObjects:v44 count:2];
+        [NSLayoutConstraint activateConstraints:trailingSideLayoutGuide];
         goto LABEL_11;
       }
     }
@@ -4922,57 +4922,57 @@ LABEL_10:
     {
     }
 
-    v26 = [(PHCallViewController *)self bottomBar];
-    v27 = [v26 widthAnchor];
-    v28 = [(PHAudioCallViewController *)self view];
-    [v28 frame];
-    v7 = [v27 constraintEqualToConstant:v29];
+    bottomBar3 = [(PHCallViewController *)self bottomBar];
+    widthAnchor = [bottomBar3 widthAnchor];
+    view2 = [(PHAudioCallViewController *)self view];
+    [view2 frame];
+    topAnchor = [widthAnchor constraintEqualToConstant:v29];
 
     goto LABEL_10;
   }
 
-  v5 = [(PHAudioCallViewController *)self features];
-  v6 = [v5 isDominoEnabled];
+  features2 = [(PHAudioCallViewController *)self features];
+  isDominoEnabled = [features2 isDominoEnabled];
 
-  if (!v6)
+  if (!isDominoEnabled)
   {
     goto LABEL_5;
   }
 
-  v40 = [(PHCallViewController *)self bottomBar];
-  v7 = [v40 topAnchor];
-  v8 = [(PHAudioCallViewController *)self trailingSideLayoutGuide];
-  v43 = [v8 bottomAnchor];
-  v42 = [v7 constraintGreaterThanOrEqualToAnchor:v43 constant:11.0];
+  bottomBar4 = [(PHCallViewController *)self bottomBar];
+  topAnchor = [bottomBar4 topAnchor];
+  trailingSideLayoutGuide = [(PHAudioCallViewController *)self trailingSideLayoutGuide];
+  bottomAnchor = [trailingSideLayoutGuide bottomAnchor];
+  v42 = [topAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor constant:11.0];
   v45[0] = v42;
-  v41 = [(PHCallViewController *)self bottomBar];
-  v38 = [v41 trailingAnchor];
-  v39 = [(PHAudioCallViewController *)self safeAreaLayoutGuide];
-  v37 = [v39 trailingAnchor];
+  bottomBar5 = [(PHCallViewController *)self bottomBar];
+  trailingAnchor = [bottomBar5 trailingAnchor];
+  safeAreaLayoutGuide = [(PHAudioCallViewController *)self safeAreaLayoutGuide];
+  trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
   +[PHUIConfiguration ambientHorizontalPadding];
-  v36 = [v38 constraintEqualToAnchor:v37 constant:-v9];
+  v36 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v9];
   v45[1] = v36;
-  v35 = [(PHCallViewController *)self bottomBar];
-  v34 = [v35 widthAnchor];
+  bottomBar6 = [(PHCallViewController *)self bottomBar];
+  widthAnchor2 = [bottomBar6 widthAnchor];
   +[PHBottomBar ambientWidth];
-  v33 = [v34 constraintEqualToConstant:?];
+  v33 = [widthAnchor2 constraintEqualToConstant:?];
   v45[2] = v33;
-  v32 = [(PHCallViewController *)self bottomBar];
-  v30 = [v32 leadingAnchor];
-  v31 = [(PHAudioCallViewController *)self trailingSideLayoutGuide];
-  v10 = [v31 leadingAnchor];
-  v11 = [v30 constraintEqualToAnchor:v10];
+  bottomBar7 = [(PHCallViewController *)self bottomBar];
+  leadingAnchor = [bottomBar7 leadingAnchor];
+  trailingSideLayoutGuide2 = [(PHAudioCallViewController *)self trailingSideLayoutGuide];
+  leadingAnchor2 = [trailingSideLayoutGuide2 leadingAnchor];
+  v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v45[3] = v11;
-  v12 = [(PHCallViewController *)self bottomBar];
-  v13 = [v12 trailingAnchor];
-  v14 = [(PHAudioCallViewController *)self trailingSideLayoutGuide];
-  v15 = [v14 trailingAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  bottomBar8 = [(PHCallViewController *)self bottomBar];
+  trailingAnchor3 = [bottomBar8 trailingAnchor];
+  trailingSideLayoutGuide3 = [(PHAudioCallViewController *)self trailingSideLayoutGuide];
+  trailingAnchor4 = [trailingSideLayoutGuide3 trailingAnchor];
+  v16 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v45[4] = v16;
   v17 = [NSArray arrayWithObjects:v45 count:5];
   [NSLayoutConstraint activateConstraints:v17];
 
-  v18 = v40;
+  v18 = bottomBar4;
 LABEL_11:
 }
 
@@ -4981,49 +4981,49 @@ LABEL_11:
   if (!self->_callParticipantsViewController)
   {
     v3 = [PHCallParticipantsViewController alloc];
-    v4 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    v5 = [(PHAudioCallViewController *)self contactsCache];
-    v6 = [(PHCallParticipantsViewController *)v3 initWithCallDisplayStyleManager:v4 contactsCache:v5];
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    contactsCache = [(PHAudioCallViewController *)self contactsCache];
+    v6 = [(PHCallParticipantsViewController *)v3 initWithCallDisplayStyleManager:callDisplayStyleManager contactsCache:contactsCache];
     callParticipantsViewController = self->_callParticipantsViewController;
     self->_callParticipantsViewController = v6;
 
-    v8 = [(PHAudioCallViewController *)self prioritizedCall];
-    [(PHCallParticipantsViewController *)self->_callParticipantsViewController setPrioritizedCall:v8];
+    prioritizedCall = [(PHAudioCallViewController *)self prioritizedCall];
+    [(PHCallParticipantsViewController *)self->_callParticipantsViewController setPrioritizedCall:prioritizedCall];
 
     [(PHCallParticipantsViewController *)self->_callParticipantsViewController setDelegate:self];
     [(PHCallParticipantsViewController *)self->_callParticipantsViewController setShouldIgnoreUpdates:[(PHAudioCallViewController *)self participantsViewControllersShouldIgnoreUpdates]];
     [(PHAudioCallViewController *)self updateShouldShowLargeAvatar];
     [(PHAudioCallViewController *)self addChildViewController:self->_callParticipantsViewController];
-    v9 = [(PHAudioCallViewController *)self view];
-    v10 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
-    [v9 addSubview:v10];
+    view = [(PHAudioCallViewController *)self view];
+    view2 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
+    [view addSubview:view2];
 
     [(PHAudioCallViewController *)self setUpLayoutGuidesForParticipantsViewController:self->_callParticipantsViewController];
     [(PHAudioCallViewController *)self applyParticipantsViewConstraints];
-    v11 = [(PHAudioCallViewController *)self translationLayoutGuide];
+    translationLayoutGuide = [(PHAudioCallViewController *)self translationLayoutGuide];
 
-    if (v11)
+    if (translationLayoutGuide)
     {
-      v16 = [(PHAudioCallViewController *)self translationLayoutGuide];
-      v12 = [v16 topAnchor];
-      v13 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
-      v14 = [v13 bottomAnchor];
-      v15 = [v12 constraintEqualToAnchor:v14];
+      translationLayoutGuide2 = [(PHAudioCallViewController *)self translationLayoutGuide];
+      topAnchor = [translationLayoutGuide2 topAnchor];
+      view3 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
+      bottomAnchor = [view3 bottomAnchor];
+      v15 = [topAnchor constraintEqualToAnchor:bottomAnchor];
       [v15 setActive:1];
     }
   }
 }
 
-- (void)layoutParticipantsViewAnimated:(BOOL)a3 crossfade:(BOOL)a4
+- (void)layoutParticipantsViewAnimated:(BOOL)animated crossfade:(BOOL)crossfade
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(PHAudioCallViewController *)self shouldShowLargeAvatar];
+  crossfadeCopy = crossfade;
+  animatedCopy = animated;
+  shouldShowLargeAvatar = [(PHAudioCallViewController *)self shouldShowLargeAvatar];
   [(PHAudioCallViewController *)self updateShouldShowLargeAvatar];
-  v8 = [(PHAudioCallViewController *)self shouldShowLargeAvatar];
-  if (v5)
+  shouldShowLargeAvatar2 = [(PHAudioCallViewController *)self shouldShowLargeAvatar];
+  if (animatedCopy)
   {
-    if (v4)
+    if (crossfadeCopy)
     {
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
@@ -5040,11 +5040,11 @@ LABEL_11:
 
     else
     {
-      v9 = v7 ^ v8;
+      v9 = shouldShowLargeAvatar ^ shouldShowLargeAvatar2;
       if (v9)
       {
-        v10 = [(PHAudioCallViewController *)self view];
-        [v10 layoutIfNeeded];
+        view = [(PHAudioCallViewController *)self view];
+        [view layoutIfNeeded];
       }
 
       v11[0] = _NSConcreteStackBlock;
@@ -5075,52 +5075,52 @@ LABEL_11:
 - (void)removeAllParticipantsViewConstraints
 {
   v15 = +[NSMutableArray array];
-  v3 = [(PHAudioCallViewController *)self participantsViewTopConstraint];
+  participantsViewTopConstraint = [(PHAudioCallViewController *)self participantsViewTopConstraint];
 
-  if (v3)
+  if (participantsViewTopConstraint)
   {
-    v4 = [(PHAudioCallViewController *)self participantsViewTopConstraint];
-    [v15 addObject:v4];
+    participantsViewTopConstraint2 = [(PHAudioCallViewController *)self participantsViewTopConstraint];
+    [v15 addObject:participantsViewTopConstraint2];
   }
 
-  v5 = [(PHAudioCallViewController *)self participantsViewLeadingConstraint];
+  participantsViewLeadingConstraint = [(PHAudioCallViewController *)self participantsViewLeadingConstraint];
 
-  if (v5)
+  if (participantsViewLeadingConstraint)
   {
-    v6 = [(PHAudioCallViewController *)self participantsViewLeadingConstraint];
-    [v15 addObject:v6];
+    participantsViewLeadingConstraint2 = [(PHAudioCallViewController *)self participantsViewLeadingConstraint];
+    [v15 addObject:participantsViewLeadingConstraint2];
   }
 
-  v7 = [(PHAudioCallViewController *)self participantsViewTrailingConstraint];
+  participantsViewTrailingConstraint = [(PHAudioCallViewController *)self participantsViewTrailingConstraint];
 
-  if (v7)
+  if (participantsViewTrailingConstraint)
   {
-    v8 = [(PHAudioCallViewController *)self participantsViewTrailingConstraint];
-    [v15 addObject:v8];
+    participantsViewTrailingConstraint2 = [(PHAudioCallViewController *)self participantsViewTrailingConstraint];
+    [v15 addObject:participantsViewTrailingConstraint2];
   }
 
-  v9 = [(PHAudioCallViewController *)self participantsViewCenterXConstraint];
+  participantsViewCenterXConstraint = [(PHAudioCallViewController *)self participantsViewCenterXConstraint];
 
-  if (v9)
+  if (participantsViewCenterXConstraint)
   {
-    v10 = [(PHAudioCallViewController *)self participantsViewCenterXConstraint];
-    [v15 addObject:v10];
+    participantsViewCenterXConstraint2 = [(PHAudioCallViewController *)self participantsViewCenterXConstraint];
+    [v15 addObject:participantsViewCenterXConstraint2];
   }
 
-  v11 = [(PHAudioCallViewController *)self participantsViewBottomConstraint];
+  participantsViewBottomConstraint = [(PHAudioCallViewController *)self participantsViewBottomConstraint];
 
-  if (v11)
+  if (participantsViewBottomConstraint)
   {
-    v12 = [(PHAudioCallViewController *)self participantsViewBottomConstraint];
-    [v15 addObject:v12];
+    participantsViewBottomConstraint2 = [(PHAudioCallViewController *)self participantsViewBottomConstraint];
+    [v15 addObject:participantsViewBottomConstraint2];
   }
 
-  v13 = [(PHAudioCallViewController *)self participantsViewCenterYConstraint];
+  participantsViewCenterYConstraint = [(PHAudioCallViewController *)self participantsViewCenterYConstraint];
 
-  if (v13)
+  if (participantsViewCenterYConstraint)
   {
-    v14 = [(PHAudioCallViewController *)self participantsViewCenterYConstraint];
-    [v15 addObject:v14];
+    participantsViewCenterYConstraint2 = [(PHAudioCallViewController *)self participantsViewCenterYConstraint];
+    [v15 addObject:participantsViewCenterYConstraint2];
   }
 
   [NSLayoutConstraint deactivateConstraints:v15];
@@ -5128,14 +5128,14 @@ LABEL_11:
 
 - (void)applyParticipantsViewConstraints
 {
-  v3 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  v4 = [v3 callDisplayStyle];
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (v4 <= 2)
+  if (callDisplayStyle <= 2)
   {
-    if ((v4 - 1) >= 2)
+    if ((callDisplayStyle - 1) >= 2)
     {
-      if (!v4)
+      if (!callDisplayStyle)
       {
 
         [(PHAudioCallViewController *)self applyParticipantsViewConstraintsForBanner];
@@ -5147,9 +5147,9 @@ LABEL_11:
     goto LABEL_9;
   }
 
-  if (v4 != 3)
+  if (callDisplayStyle != 3)
   {
-    if (v4 != 4)
+    if (callDisplayStyle != 4)
     {
       return;
     }
@@ -5165,102 +5165,102 @@ LABEL_9:
 
 - (void)applyParticipantsViewConstraintsForFullScreen
 {
-  v3 = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
-  if (v3)
+  getParticipantsView_NotWaiting = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
+  if (getParticipantsView_NotWaiting)
   {
-    v4 = [(PHAudioCallViewController *)self viewIfLoaded];
+    viewIfLoaded = [(PHAudioCallViewController *)self viewIfLoaded];
 
-    if (v4)
+    if (viewIfLoaded)
     {
-      [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [getParticipantsView_NotWaiting setTranslatesAutoresizingMaskIntoConstraints:0];
       [(PHAudioCallViewController *)self setParticipantsViewCenterYConstraint:0];
-      v5 = [v3 topAnchor];
-      v6 = [(PHAudioCallViewController *)self view];
-      v7 = [v6 safeAreaLayoutGuide];
-      v8 = [v7 topAnchor];
+      topAnchor = [getParticipantsView_NotWaiting topAnchor];
+      view = [(PHAudioCallViewController *)self view];
+      safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+      topAnchor2 = [safeAreaLayoutGuide topAnchor];
       +[TPIncomingCallMetricsProvider sixPercentOfDeviceHeight];
-      v9 = [v5 constraintEqualToAnchor:v8 constant:?];
+      v9 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
       [(PHAudioCallViewController *)self setParticipantsViewTopConstraint:v9];
 
-      v10 = [v3 centerXAnchor];
-      v11 = [(PHAudioCallViewController *)self view];
-      v12 = [v11 centerXAnchor];
-      v13 = [v10 constraintEqualToAnchor:v12];
+      centerXAnchor = [getParticipantsView_NotWaiting centerXAnchor];
+      view2 = [(PHAudioCallViewController *)self view];
+      centerXAnchor2 = [view2 centerXAnchor];
+      v13 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       [(PHAudioCallViewController *)self setParticipantsViewCenterXConstraint:v13];
 
-      v14 = [v3 leadingAnchor];
-      v15 = [(PHAudioCallViewController *)self view];
-      v16 = [v15 readableContentGuide];
-      v17 = [v16 leadingAnchor];
-      v18 = [v14 constraintEqualToAnchor:v17];
+      leadingAnchor = [getParticipantsView_NotWaiting leadingAnchor];
+      view3 = [(PHAudioCallViewController *)self view];
+      readableContentGuide = [view3 readableContentGuide];
+      leadingAnchor2 = [readableContentGuide leadingAnchor];
+      v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [(PHAudioCallViewController *)self setParticipantsViewLeadingConstraint:v18];
 
-      v19 = [v3 trailingAnchor];
-      v20 = [(PHAudioCallViewController *)self view];
-      v21 = [v20 readableContentGuide];
-      v22 = [v21 trailingAnchor];
-      v23 = [v19 constraintEqualToAnchor:v22];
+      trailingAnchor = [getParticipantsView_NotWaiting trailingAnchor];
+      view4 = [(PHAudioCallViewController *)self view];
+      readableContentGuide2 = [view4 readableContentGuide];
+      trailingAnchor2 = [readableContentGuide2 trailingAnchor];
+      v23 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       [(PHAudioCallViewController *)self setParticipantsViewTrailingConstraint:v23];
 
-      v24 = [(PHAudioCallViewController *)self participantsViewTopConstraint];
-      v29[0] = v24;
-      v25 = [(PHAudioCallViewController *)self participantsViewCenterXConstraint];
-      v29[1] = v25;
-      v26 = [(PHAudioCallViewController *)self participantsViewLeadingConstraint];
-      v29[2] = v26;
-      v27 = [(PHAudioCallViewController *)self participantsViewTrailingConstraint];
-      v29[3] = v27;
+      participantsViewTopConstraint = [(PHAudioCallViewController *)self participantsViewTopConstraint];
+      v29[0] = participantsViewTopConstraint;
+      participantsViewCenterXConstraint = [(PHAudioCallViewController *)self participantsViewCenterXConstraint];
+      v29[1] = participantsViewCenterXConstraint;
+      participantsViewLeadingConstraint = [(PHAudioCallViewController *)self participantsViewLeadingConstraint];
+      v29[2] = participantsViewLeadingConstraint;
+      participantsViewTrailingConstraint = [(PHAudioCallViewController *)self participantsViewTrailingConstraint];
+      v29[3] = participantsViewTrailingConstraint;
       v28 = [NSArray arrayWithObjects:v29 count:4];
       [NSLayoutConstraint activateConstraints:v28];
     }
   }
 }
 
-- (id)ambientParticipantsViewConstraintsForView:(id)a3 largeAvatar:(BOOL)a4
+- (id)ambientParticipantsViewConstraintsForView:(id)view largeAvatar:(BOOL)avatar
 {
-  v4 = a4;
-  v6 = a3;
+  avatarCopy = avatar;
+  viewCopy = view;
   v7 = objc_alloc_init(NSMutableDictionary);
   +[PHUIConfiguration ambientVerticalPadding];
   v9 = v8;
   +[PHUIConfiguration ambientHorizontalPadding];
   v11 = v10;
-  if (v4)
+  if (avatarCopy)
   {
-    v12 = [v6 bottomAnchor];
-    v13 = [(PHAudioCallViewController *)self view];
-    v14 = [v13 bottomAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14 constant:-v9];
+    bottomAnchor = [viewCopy bottomAnchor];
+    view = [(PHAudioCallViewController *)self view];
+    bottomAnchor2 = [view bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v9];
     [v7 setObject:v15 forKeyedSubscript:&off_10036A508];
 
-    v16 = [v6 trailingAnchor];
-    v17 = [(PHAudioCallViewController *)self view];
-    v18 = [v17 safeAreaLayoutGuide];
-    v19 = [v18 trailingAnchor];
-    v20 = [v16 constraintEqualToAnchor:v19 constant:-v11];
+    trailingAnchor = [viewCopy trailingAnchor];
+    view2 = [(PHAudioCallViewController *)self view];
+    safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
+    v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v11];
     [v7 setObject:v20 forKeyedSubscript:&off_10036A520];
   }
 
   else
   {
-    v16 = [v6 trailingAnchor];
-    v17 = [(PHAudioCallViewController *)self ambientAudioRoutesControlView];
-    v18 = [v17 leadingAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18 constant:-20.0];
-    [v7 setObject:v19 forKeyedSubscript:&off_10036A520];
+    trailingAnchor = [viewCopy trailingAnchor];
+    view2 = [(PHAudioCallViewController *)self ambientAudioRoutesControlView];
+    safeAreaLayoutGuide = [view2 leadingAnchor];
+    trailingAnchor2 = [trailingAnchor constraintEqualToAnchor:safeAreaLayoutGuide constant:-20.0];
+    [v7 setObject:trailingAnchor2 forKeyedSubscript:&off_10036A520];
   }
 
-  v21 = [v6 topAnchor];
-  v22 = [(PHAudioCallViewController *)self view];
-  v23 = [v22 topAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23 constant:v9];
+  topAnchor = [viewCopy topAnchor];
+  view3 = [(PHAudioCallViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v9];
   [v7 setObject:v24 forKeyedSubscript:&off_10036A538];
 
-  v25 = [v6 leadingAnchor];
-  v26 = [(PHAudioCallViewController *)self view];
-  v27 = [v26 safeAreaLayoutGuide];
-  v28 = [v27 leadingAnchor];
-  v29 = [v25 constraintEqualToAnchor:v28 constant:v11];
+  leadingAnchor = [viewCopy leadingAnchor];
+  view4 = [(PHAudioCallViewController *)self view];
+  safeAreaLayoutGuide2 = [view4 safeAreaLayoutGuide];
+  leadingAnchor2 = [safeAreaLayoutGuide2 leadingAnchor];
+  v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v11];
   [v7 setObject:v29 forKeyedSubscript:&off_10036A550];
 
   return v7;
@@ -5268,11 +5268,11 @@ LABEL_9:
 
 - (void)applyParticipantsViewConstraintsForAmbient
 {
-  v3 = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
-  v4 = v3;
-  if (v3)
+  getParticipantsView_NotWaiting = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
+  v4 = getParticipantsView_NotWaiting;
+  if (getParticipantsView_NotWaiting)
   {
-    [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [getParticipantsView_NotWaiting setTranslatesAutoresizingMaskIntoConstraints:0];
     v5 = [(PHAudioCallViewController *)self ambientParticipantsViewConstraintsForView:v4 largeAvatar:[(PHAudioCallViewController *)self shouldShowLargeAvatar]];
     [(PHAudioCallViewController *)self setParticipantsViewCenterXConstraint:0];
     [(PHAudioCallViewController *)self setParticipantsViewCenterYConstraint:0];
@@ -5288,91 +5288,91 @@ LABEL_9:
     v9 = [v5 objectForKeyedSubscript:&off_10036A520];
     [(PHAudioCallViewController *)self setParticipantsViewTrailingConstraint:v9];
 
-    v10 = [(PHAudioCallViewController *)self participantsViewTopConstraint];
-    v11 = [(PHAudioCallViewController *)self participantsViewLeadingConstraint];
-    v16[1] = v11;
-    v12 = [(PHAudioCallViewController *)self participantsViewTrailingConstraint];
-    v16[2] = v12;
+    participantsViewTopConstraint = [(PHAudioCallViewController *)self participantsViewTopConstraint];
+    participantsViewLeadingConstraint = [(PHAudioCallViewController *)self participantsViewLeadingConstraint];
+    v16[1] = participantsViewLeadingConstraint;
+    participantsViewTrailingConstraint = [(PHAudioCallViewController *)self participantsViewTrailingConstraint];
+    v16[2] = participantsViewTrailingConstraint;
     v13 = [NSArray arrayWithObjects:v16 count:3];
     [NSLayoutConstraint activateConstraints:v13];
 
-    v14 = [(PHAudioCallViewController *)self participantsViewBottomConstraint];
+    participantsViewBottomConstraint = [(PHAudioCallViewController *)self participantsViewBottomConstraint];
 
-    if (v14)
+    if (participantsViewBottomConstraint)
     {
-      v15 = [(PHAudioCallViewController *)self participantsViewBottomConstraint];
-      [v15 setActive:1];
+      participantsViewBottomConstraint2 = [(PHAudioCallViewController *)self participantsViewBottomConstraint];
+      [participantsViewBottomConstraint2 setActive:1];
     }
   }
 }
 
 - (void)applyParticipantsViewConstraintsForBanner
 {
-  v3 = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
-  v4 = v3;
-  if (v3)
+  getParticipantsView_NotWaiting = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
+  v4 = getParticipantsView_NotWaiting;
+  if (getParticipantsView_NotWaiting)
   {
-    [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [getParticipantsView_NotWaiting setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PHAudioCallViewController *)self setParticipantsViewCenterXConstraint:0];
-    v5 = [v4 centerYAnchor];
-    v6 = [(PHAudioCallViewController *)self view];
-    v7 = [v6 centerYAnchor];
-    v8 = [v5 constraintEqualToAnchor:v7];
+    centerYAnchor = [v4 centerYAnchor];
+    view = [(PHAudioCallViewController *)self view];
+    centerYAnchor2 = [view centerYAnchor];
+    v8 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [(PHAudioCallViewController *)self setParticipantsViewCenterYConstraint:v8];
 
-    v9 = [v4 topAnchor];
-    v10 = [(PHAudioCallViewController *)self view];
-    v11 = [v10 topAnchor];
-    v12 = [v9 constraintGreaterThanOrEqualToAnchor:v11];
+    topAnchor = [v4 topAnchor];
+    view2 = [(PHAudioCallViewController *)self view];
+    topAnchor2 = [view2 topAnchor];
+    v12 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     [(PHAudioCallViewController *)self setParticipantsViewTopConstraint:v12];
 
-    v13 = [v4 bottomAnchor];
-    v14 = [(PHAudioCallViewController *)self view];
-    v15 = [v14 bottomAnchor];
-    v16 = [v13 constraintLessThanOrEqualToAnchor:v15];
+    bottomAnchor = [v4 bottomAnchor];
+    view3 = [(PHAudioCallViewController *)self view];
+    bottomAnchor2 = [view3 bottomAnchor];
+    v16 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
     [(PHAudioCallViewController *)self setParticipantsViewBottomConstraint:v16];
 
-    v17 = [v4 leadingAnchor];
-    v18 = [(PHAudioCallViewController *)self view];
-    v19 = [v18 leadingAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19];
+    leadingAnchor = [v4 leadingAnchor];
+    view4 = [(PHAudioCallViewController *)self view];
+    leadingAnchor2 = [view4 leadingAnchor];
+    v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [(PHAudioCallViewController *)self setParticipantsViewLeadingConstraint:v20];
 
-    v21 = [v4 trailingAnchor];
-    v22 = [(PHAudioCallViewController *)self view];
-    v23 = [v22 trailingAnchor];
-    v24 = [v21 constraintEqualToAnchor:v23];
+    trailingAnchor = [v4 trailingAnchor];
+    view5 = [(PHAudioCallViewController *)self view];
+    trailingAnchor2 = [view5 trailingAnchor];
+    v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [(PHAudioCallViewController *)self setParticipantsViewTrailingConstraint:v24];
 
-    v25 = [(PHAudioCallViewController *)self participantsViewCenterYConstraint];
-    v26 = [(PHAudioCallViewController *)self participantsViewTopConstraint];
-    v31[1] = v26;
-    v27 = [(PHAudioCallViewController *)self participantsViewBottomConstraint];
-    v31[2] = v27;
-    v28 = [(PHAudioCallViewController *)self participantsViewLeadingConstraint];
-    v31[3] = v28;
-    v29 = [(PHAudioCallViewController *)self participantsViewTrailingConstraint];
-    v31[4] = v29;
+    participantsViewCenterYConstraint = [(PHAudioCallViewController *)self participantsViewCenterYConstraint];
+    participantsViewTopConstraint = [(PHAudioCallViewController *)self participantsViewTopConstraint];
+    v31[1] = participantsViewTopConstraint;
+    participantsViewBottomConstraint = [(PHAudioCallViewController *)self participantsViewBottomConstraint];
+    v31[2] = participantsViewBottomConstraint;
+    participantsViewLeadingConstraint = [(PHAudioCallViewController *)self participantsViewLeadingConstraint];
+    v31[3] = participantsViewLeadingConstraint;
+    participantsViewTrailingConstraint = [(PHAudioCallViewController *)self participantsViewTrailingConstraint];
+    v31[4] = participantsViewTrailingConstraint;
     v30 = [NSArray arrayWithObjects:v31 count:5];
     [NSLayoutConstraint activateConstraints:v30];
   }
 }
 
-- (void)setUpLayoutGuidesForParticipantsViewController:(id)a3
+- (void)setUpLayoutGuidesForParticipantsViewController:(id)controller
 {
-  v28 = a3;
-  v4 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v4 callDisplayStyle] == 3)
+  controllerCopy = controller;
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v5 = [(PHAudioCallViewController *)self features];
-    v6 = [v5 isDominoEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (!v6)
+    if (!isDominoEnabled)
     {
       goto LABEL_8;
     }
 
-    v4 = [v28 view];
+    callDisplayStyleManager = [controllerCopy view];
     if (!self->_leadingSideLayoutGuide && !self->_trailingSideLayoutGuide)
     {
       v7 = objc_alloc_init(UILayoutGuide);
@@ -5383,35 +5383,35 @@ LABEL_9:
       trailingSideLayoutGuide = self->_trailingSideLayoutGuide;
       self->_trailingSideLayoutGuide = v9;
 
-      v11 = [(PHAudioCallViewController *)self view];
-      v12 = [(PHAudioCallViewController *)self leadingSideLayoutGuide];
-      [v11 addLayoutGuide:v12];
+      view = [(PHAudioCallViewController *)self view];
+      leadingSideLayoutGuide = [(PHAudioCallViewController *)self leadingSideLayoutGuide];
+      [view addLayoutGuide:leadingSideLayoutGuide];
 
-      v13 = [(PHAudioCallViewController *)self view];
-      v14 = [(PHAudioCallViewController *)self trailingSideLayoutGuide];
-      [v13 addLayoutGuide:v14];
+      view2 = [(PHAudioCallViewController *)self view];
+      trailingSideLayoutGuide = [(PHAudioCallViewController *)self trailingSideLayoutGuide];
+      [view2 addLayoutGuide:trailingSideLayoutGuide];
 
-      v15 = [(PHAudioCallViewController *)self leadingSideLayoutGuide];
-      v16 = [v15 leadingAnchor];
-      v17 = [(PHAudioCallViewController *)self view];
-      v18 = [v17 safeAreaLayoutGuide];
-      v19 = [v18 leadingAnchor];
-      v20 = [v16 constraintEqualToAnchor:v19];
+      leadingSideLayoutGuide2 = [(PHAudioCallViewController *)self leadingSideLayoutGuide];
+      leadingAnchor = [leadingSideLayoutGuide2 leadingAnchor];
+      view3 = [(PHAudioCallViewController *)self view];
+      safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+      leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+      v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [v20 setActive:1];
 
-      v21 = [(PHAudioCallViewController *)self leadingSideLayoutGuide];
-      v22 = [v21 trailingAnchor];
-      v23 = [(PHAudioCallViewController *)self view];
-      v24 = [v23 centerXAnchor];
-      v25 = [v22 constraintEqualToAnchor:v24];
+      leadingSideLayoutGuide3 = [(PHAudioCallViewController *)self leadingSideLayoutGuide];
+      trailingAnchor = [leadingSideLayoutGuide3 trailingAnchor];
+      view4 = [(PHAudioCallViewController *)self view];
+      centerXAnchor = [view4 centerXAnchor];
+      v25 = [trailingAnchor constraintEqualToAnchor:centerXAnchor];
       [v25 setActive:1];
     }
 
-    v26 = [(PHAudioCallViewController *)self leadingSideLayoutGuide];
-    [v4 setLeadingSideLayoutGuide:v26];
+    leadingSideLayoutGuide4 = [(PHAudioCallViewController *)self leadingSideLayoutGuide];
+    [callDisplayStyleManager setLeadingSideLayoutGuide:leadingSideLayoutGuide4];
 
-    v27 = [(PHAudioCallViewController *)self trailingSideLayoutGuide];
-    [v4 setTrailingSideLayoutGuide:v27];
+    trailingSideLayoutGuide2 = [(PHAudioCallViewController *)self trailingSideLayoutGuide];
+    [callDisplayStyleManager setTrailingSideLayoutGuide:trailingSideLayoutGuide2];
   }
 
 LABEL_8:
@@ -5423,10 +5423,10 @@ LABEL_8:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v3 = [(PHAudioCallViewController *)self callCenter];
-  v4 = [v3 currentAudioAndVideoCalls];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  currentAudioAndVideoCalls = [callCenter currentAudioAndVideoCalls];
 
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v32 count:16];
+  v5 = [currentAudioAndVideoCalls countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (v5)
   {
     v6 = v5;
@@ -5437,7 +5437,7 @@ LABEL_8:
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(currentAudioAndVideoCalls);
         }
 
         if ([*(*(&v22 + 1) + 8 * i) isSharingScreen])
@@ -5447,7 +5447,7 @@ LABEL_8:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v32 count:16];
+      v6 = [currentAudioAndVideoCalls countByEnumeratingWithState:&v22 objects:v32 count:16];
       if (v6)
       {
         continue;
@@ -5460,11 +5460,11 @@ LABEL_8:
   v9 = 0;
 LABEL_11:
 
-  v10 = [(PHAudioCallViewController *)self screenSharingInteractionControllerFactory];
-  v11 = [v10 sharedController];
-  v12 = [v11 remoteControlStatus];
+  screenSharingInteractionControllerFactory = [(PHAudioCallViewController *)self screenSharingInteractionControllerFactory];
+  sharedController = [screenSharingInteractionControllerFactory sharedController];
+  remoteControlStatus = [sharedController remoteControlStatus];
 
-  if (v12 == 2)
+  if (remoteControlStatus == 2)
   {
     v13 = 0;
   }
@@ -5502,7 +5502,7 @@ LABEL_11:
     v27 = v16;
     v28 = 2114;
     v29 = v17;
-    if (v12 == 2)
+    if (remoteControlStatus == 2)
     {
       v15 = @"YES";
     }
@@ -5522,29 +5522,29 @@ LABEL_11:
     v18 = 0;
   }
 
-  v19 = [(PHAudioCallViewController *)self view];
-  v20 = [v19 layer];
-  [v20 setDisableUpdateMask:v18];
+  view = [(PHAudioCallViewController *)self view];
+  layer = [view layer];
+  [layer setDisableUpdateMask:v18];
 
-  v21 = [(PHAudioCallViewController *)self callDetailsCoordinator];
-  [v21 setShouldHideViewsFromScreenSharing:v13];
+  callDetailsCoordinator = [(PHAudioCallViewController *)self callDetailsCoordinator];
+  [callDetailsCoordinator setShouldHideViewsFromScreenSharing:v13];
 }
 
 - (void)updateScreenSharingIndicatorView
 {
-  v3 = [(PHAudioCallViewController *)self features];
-  v4 = [v3 sharePlayInCallsEnabled];
+  features = [(PHAudioCallViewController *)self features];
+  sharePlayInCallsEnabled = [features sharePlayInCallsEnabled];
 
-  if (v4)
+  if (sharePlayInCallsEnabled)
   {
-    v5 = [(PHAudioCallViewController *)self callCenter];
-    v8 = [v5 frontmostCall];
+    callCenter = [(PHAudioCallViewController *)self callCenter];
+    frontmostCall = [callCenter frontmostCall];
 
-    if ([v8 isSharingScreen])
+    if ([frontmostCall isSharingScreen])
     {
       v6 = objc_alloc_init(_TtC13InCallService26ScreenSharingIndicatorView);
-      v7 = [(ScreenSharingIndicatorView *)v6 getView];
-      [(PHAudioCallViewController *)self setScreenSharingIndicatorView:v7];
+      getView = [(ScreenSharingIndicatorView *)v6 getView];
+      [(PHAudioCallViewController *)self setScreenSharingIndicatorView:getView];
 
       [(PHAudioCallViewController *)self displayScreenSharingIndicator];
     }
@@ -5561,9 +5561,9 @@ LABEL_11:
   v6.receiver = self;
   v6.super_class = PHAudioCallViewController;
   [(PHAudioCallViewController *)&v6 viewDidLoad];
-  v3 = [(PHAudioCallViewController *)self inCallRootViewController];
+  inCallRootViewController = [(PHAudioCallViewController *)self inCallRootViewController];
 
-  if (v3)
+  if (inCallRootViewController)
   {
     [(PHAudioCallViewController *)self updateCurrentState];
   }
@@ -5579,9 +5579,9 @@ LABEL_11:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -5591,39 +5591,39 @@ LABEL_11:
 
   v6.receiver = self;
   v6.super_class = PHAudioCallViewController;
-  [(PHAudioCallViewController *)&v6 viewWillAppear:v3];
-  [(PHAudioCallViewController *)self handleViewWillAppear:v3];
+  [(PHAudioCallViewController *)&v6 viewWillAppear:appearCopy];
+  [(PHAudioCallViewController *)self handleViewWillAppear:appearCopy];
 }
 
-- (void)handleViewWillAppear:(BOOL)a3
+- (void)handleViewWillAppear:(BOOL)appear
 {
   [(PHAudioCallViewController *)self setParticipantsViewControllersShouldIgnoreUpdates:0];
   [(PHAudioCallViewController *)self updateCurrentState];
   [(PHAudioCallViewController *)self updateScreenSharingDisableUpdateMask];
-  v8 = [(PHAudioCallViewController *)self features];
-  if ([v8 isEnhancedEmergencyEnabled])
+  features = [(PHAudioCallViewController *)self features];
+  if ([features isEnhancedEmergencyEnabled])
   {
-    v4 = [(PHAudioCallViewController *)self emergencyCoordinator];
-    if (v4)
+    emergencyCoordinator = [(PHAudioCallViewController *)self emergencyCoordinator];
+    if (emergencyCoordinator)
     {
-      v5 = v4;
-      v6 = [(PHAudioCallViewController *)self emergencyCoordinator];
-      v7 = [v6 eedRTTState];
+      v5 = emergencyCoordinator;
+      emergencyCoordinator2 = [(PHAudioCallViewController *)self emergencyCoordinator];
+      eedRTTState = [emergencyCoordinator2 eedRTTState];
 
-      if (v7 != 4)
+      if (eedRTTState != 4)
       {
         return;
       }
 
-      v8 = [(PHAudioCallViewController *)self emergencyCoordinator];
-      [v8 transitionToRTTState:2];
+      features = [(PHAudioCallViewController *)self emergencyCoordinator];
+      [features transitionToRTTState:2];
     }
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -5633,61 +5633,61 @@ LABEL_11:
 
   v6.receiver = self;
   v6.super_class = PHAudioCallViewController;
-  [(PHAudioCallViewController *)&v6 viewDidAppear:v3];
-  [(PHAudioCallViewController *)self handleViewDidAppear:v3];
+  [(PHAudioCallViewController *)&v6 viewDidAppear:appearCopy];
+  [(PHAudioCallViewController *)self handleViewDidAppear:appearCopy];
 }
 
-- (void)handleViewDidAppear:(BOOL)a3
+- (void)handleViewDidAppear:(BOOL)appear
 {
   v4 = 0.300000012;
-  if (!a3)
+  if (!appear)
   {
     v4 = 0.0;
   }
 
   [(PHCallViewController *)self setStatusBarHidden:0 withDuration:v4];
-  v16 = [(PHAudioCallViewController *)self frontmostCall];
-  v5 = [v16 provider];
-  if ([v5 isFaceTimeProvider])
+  frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+  provider = [frontmostCall provider];
+  if ([provider isFaceTimeProvider])
   {
-    v6 = [v16 isVideo];
+    isVideo = [frontmostCall isVideo];
 
-    if (v6)
+    if (isVideo)
     {
       goto LABEL_7;
     }
 
-    v5 = +[CUTWiFiManager sharedInstance];
-    [v5 addWiFiAutoAssociationClientToken:@"PHFaceTimeAudioWiFiAssertionKey"];
+    provider = +[CUTWiFiManager sharedInstance];
+    [provider addWiFiAutoAssociationClientToken:@"PHFaceTimeAudioWiFiAssertionKey"];
   }
 
 LABEL_7:
-  v7 = [(PHAudioCallViewController *)self callCenter];
-  [v7 enteredForegroundForCall:v16];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  [callCenter enteredForegroundForCall:frontmostCall];
 
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 delegate];
-  v10 = [v9 alertCoordinator];
-  v11 = [v10 isMonitoring];
+  delegate = [v8 delegate];
+  alertCoordinator = [delegate alertCoordinator];
+  isMonitoring = [alertCoordinator isMonitoring];
 
   v12 = +[UIApplication sharedApplication];
-  v13 = [v12 delegate];
-  v14 = [v13 alertCoordinator];
-  v15 = v14;
-  if (v11)
+  delegate2 = [v12 delegate];
+  alertCoordinator2 = [delegate2 alertCoordinator];
+  v15 = alertCoordinator2;
+  if (isMonitoring)
   {
-    [v14 refreshDelegateWithState];
+    [alertCoordinator2 refreshDelegateWithState];
   }
 
   else
   {
-    [v14 startMonitoring];
+    [alertCoordinator2 startMonitoring];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -5697,19 +5697,19 @@ LABEL_7:
 
   v6.receiver = self;
   v6.super_class = PHAudioCallViewController;
-  [(PHAudioCallViewController *)&v6 viewWillDisappear:v3];
-  [(PHAudioCallViewController *)self handleViewWillDisappear:v3];
+  [(PHAudioCallViewController *)&v6 viewWillDisappear:disappearCopy];
+  [(PHAudioCallViewController *)self handleViewWillDisappear:disappearCopy];
 }
 
-- (void)handleViewWillDisappear:(BOOL)a3
+- (void)handleViewWillDisappear:(BOOL)disappear
 {
   v3 = +[CUTWiFiManager sharedInstance];
   [v3 removeWiFiAutoAssociationClientToken:@"PHFaceTimeAudioWiFiAssertionKey"];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -5719,60 +5719,60 @@ LABEL_7:
 
   v6.receiver = self;
   v6.super_class = PHAudioCallViewController;
-  [(PHCallViewController *)&v6 viewDidDisappear:v3];
-  [(PHAudioCallViewController *)self handleViewDidDisappear:v3];
+  [(PHCallViewController *)&v6 viewDidDisappear:disappearCopy];
+  [(PHAudioCallViewController *)self handleViewDidDisappear:disappearCopy];
   [(PHAudioCallViewController *)self setCanDumpHierarchy:1];
 }
 
-- (void)handleViewDidDisappear:(BOOL)a3
+- (void)handleViewDidDisappear:(BOOL)disappear
 {
-  v4 = [(PHAudioCallViewController *)self callCenter];
-  [v4 enteredBackgroundForAllCalls];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  [callCenter enteredBackgroundForAllCalls];
 
   [(PHAudioCallViewController *)self suspendPosterAndCancelDelay:1];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v6 = a3;
+  disappearCopy = disappear;
+  windowCopy = window;
   v8.receiver = self;
   v8.super_class = PHAudioCallViewController;
-  [(PHAudioCallViewController *)&v8 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
+  [(PHAudioCallViewController *)&v8 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
   v7 = sub_100004F84();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v10 = v6;
+    v10 = windowCopy;
     v11 = 1024;
-    v12 = v4;
+    v12 = disappearCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "PHAudioCallViewController view did move to window %@, shouldAppearOrDisappear %d", buf, 0x12u);
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v35.receiver = self;
   v35.super_class = PHAudioCallViewController;
-  v4 = a3;
-  [(PHAudioCallViewController *)&v35 traitCollectionDidChange:v4];
-  v5 = [v4 _backlightLuminance];
+  changeCopy = change;
+  [(PHAudioCallViewController *)&v35 traitCollectionDidChange:changeCopy];
+  _backlightLuminance = [changeCopy _backlightLuminance];
 
-  v6 = [(PHAudioCallViewController *)self traitCollection];
-  v7 = [v6 _backlightLuminance];
+  traitCollection = [(PHAudioCallViewController *)self traitCollection];
+  _backlightLuminance2 = [traitCollection _backlightLuminance];
 
-  if (v5 == v7)
+  if (_backlightLuminance == _backlightLuminance2)
   {
     goto LABEL_26;
   }
 
-  v8 = [(PHAudioCallViewController *)self traitCollection];
-  v9 = [v8 _backlightLuminance];
+  traitCollection2 = [(PHAudioCallViewController *)self traitCollection];
+  _backlightLuminance3 = [traitCollection2 _backlightLuminance];
 
-  v10 = [(PHAudioCallViewController *)self traitCollection];
-  v11 = [v10 _backlightLuminance];
+  traitCollection3 = [(PHAudioCallViewController *)self traitCollection];
+  _backlightLuminance4 = [traitCollection3 _backlightLuminance];
 
-  if (!v11)
+  if (!_backlightLuminance4)
   {
     v12 = sub_100004F84();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -5784,31 +5784,31 @@ LABEL_7:
     [(PHAudioCallViewController *)self suspendPosterAndCancelDelay:1];
   }
 
-  if (v9 == 1)
+  if (_backlightLuminance3 == 1)
   {
-    v13 = [(PHAudioCallViewController *)self view];
-    v14 = [(PHAudioCallViewController *)self alwaysOnDisplayDimmingView];
-    [v13 bringSubviewToFront:v14];
+    view = [(PHAudioCallViewController *)self view];
+    alwaysOnDisplayDimmingView = [(PHAudioCallViewController *)self alwaysOnDisplayDimmingView];
+    [view bringSubviewToFront:alwaysOnDisplayDimmingView];
 
-    v15 = [(PHAudioCallViewController *)self view];
-    v16 = [(PHAudioCallViewController *)self callParticipantsViewController];
-    v17 = [v16 view];
-    [v15 bringSubviewToFront:v17];
+    view2 = [(PHAudioCallViewController *)self view];
+    callParticipantsViewController = [(PHAudioCallViewController *)self callParticipantsViewController];
+    view3 = [callParticipantsViewController view];
+    [view2 bringSubviewToFront:view3];
 
-    v18 = [(PHAudioCallViewController *)self alwaysOnDisplayDimmingView];
-    [v18 setAlpha:1.0];
+    alwaysOnDisplayDimmingView2 = [(PHAudioCallViewController *)self alwaysOnDisplayDimmingView];
+    [alwaysOnDisplayDimmingView2 setAlpha:1.0];
 
-    v19 = [(PHAudioCallViewController *)self renderingViewController];
+    renderingViewController = [(PHAudioCallViewController *)self renderingViewController];
 
-    if (v19)
+    if (renderingViewController)
     {
-      v20 = [(PHAudioCallViewController *)self posterContainer];
-      [v20 setAlpha:0.0];
+      posterContainer = [(PHAudioCallViewController *)self posterContainer];
+      [posterContainer setAlpha:0.0];
     }
 
-    v21 = [(PHAudioCallViewController *)self alwaysOnDisplayPosterNameViewModel];
+    alwaysOnDisplayPosterNameViewModel = [(PHAudioCallViewController *)self alwaysOnDisplayPosterNameViewModel];
 
-    if (!v21)
+    if (!alwaysOnDisplayPosterNameViewModel)
     {
       goto LABEL_19;
     }
@@ -5820,10 +5820,10 @@ LABEL_7:
 
     else
     {
-      v23 = [(PHAudioCallViewController *)self usesCompactMulticallUI];
+      usesCompactMulticallUI = [(PHAudioCallViewController *)self usesCompactMulticallUI];
 
       v24 = 0.0;
-      if ((v23 & 1) == 0)
+      if ((usesCompactMulticallUI & 1) == 0)
       {
         goto LABEL_18;
       }
@@ -5831,8 +5831,8 @@ LABEL_7:
 
     v24 = 1.0;
 LABEL_18:
-    v30 = [(PHAudioCallViewController *)self alwaysOnDisplayPosterNameViewModel];
-    [v30 updatePosterNameAlpha:v24];
+    alwaysOnDisplayPosterNameViewModel2 = [(PHAudioCallViewController *)self alwaysOnDisplayPosterNameViewModel];
+    [alwaysOnDisplayPosterNameViewModel2 updatePosterNameAlpha:v24];
 
 LABEL_19:
     if (![(PHAudioCallViewController *)self videoStreamingIsGoingOn])
@@ -5847,35 +5847,35 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "EnhancedEmergency: pause video if necessary when going to AOD", v34, 2u);
     }
 
-    v29 = [(PHAudioCallViewController *)self emergencyCoordinator];
-    [v29 handleDeviceLockEvent];
+    emergencyCoordinator = [(PHAudioCallViewController *)self emergencyCoordinator];
+    [emergencyCoordinator handleDeviceLockEvent];
     goto LABEL_23;
   }
 
-  v25 = [(PHAudioCallViewController *)self alwaysOnDisplayDimmingView];
-  [v25 setAlpha:0.0];
+  alwaysOnDisplayDimmingView3 = [(PHAudioCallViewController *)self alwaysOnDisplayDimmingView];
+  [alwaysOnDisplayDimmingView3 setAlpha:0.0];
 
-  v26 = [(PHAudioCallViewController *)self renderingViewController];
-  if (v26)
+  renderingViewController2 = [(PHAudioCallViewController *)self renderingViewController];
+  if (renderingViewController2)
   {
-    v27 = v26;
-    v28 = [(PHAudioCallViewController *)self canShowPosterImage];
+    v27 = renderingViewController2;
+    canShowPosterImage = [(PHAudioCallViewController *)self canShowPosterImage];
 
-    if (v28)
+    if (canShowPosterImage)
     {
-      v29 = [(PHAudioCallViewController *)self posterContainer];
-      [v29 setAlpha:1.0];
+      emergencyCoordinator = [(PHAudioCallViewController *)self posterContainer];
+      [emergencyCoordinator setAlpha:1.0];
 LABEL_23:
     }
   }
 
 LABEL_24:
-  v32 = [(PHAudioCallViewController *)self stateDisplayChangedObservation];
+  stateDisplayChangedObservation = [(PHAudioCallViewController *)self stateDisplayChangedObservation];
 
-  if (v32)
+  if (stateDisplayChangedObservation)
   {
-    v33 = [(PHAudioCallViewController *)self stateDisplayChangedObservation];
-    v33[2]();
+    stateDisplayChangedObservation2 = [(PHAudioCallViewController *)self stateDisplayChangedObservation];
+    stateDisplayChangedObservation2[2]();
   }
 
 LABEL_26:
@@ -5890,45 +5890,45 @@ LABEL_26:
   [PHInCallRootViewController releaseDismissalAssertionForReason:@"PHAudioCallViewControllerDismissalAssertionHandlingCallFailure"];
 }
 
-- (void)callIsEmergencyChangedNotification:(id)a3
+- (void)callIsEmergencyChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v14 = 138412546;
-    v15 = v6;
+    selfCopy = v6;
     v16 = 2112;
-    v17 = v8;
+    v17 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", &v14, 0x16u);
   }
 
-  v9 = [v4 object];
-  if (v9)
+  object = [notificationCopy object];
+  if (object)
   {
     if ([(PHAudioCallViewController *)self shouldUpdateBackgroundForEmergencyCall])
     {
       [(PHAudioCallViewController *)self updateViewForEmergencyCallIfNecessary];
-      v10 = [(PHAudioCallViewController *)self emergencyCoordinator];
+      emergencyCoordinator = [(PHAudioCallViewController *)self emergencyCoordinator];
 
-      if (!v10)
+      if (!emergencyCoordinator)
       {
         v11 = sub_100004F84();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           v14 = 138412290;
-          v15 = self;
+          selfCopy = self;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "EnhancedEmergency: going to create PHEnhancedEmergencyCoordinator from callIsEmergencyChangedNotification from PHAudioCallViewController: %@", &v14, 0xCu);
         }
 
         v12 = objc_alloc_init(PHEnhancedEmergencyCoordinator);
         [(PHAudioCallViewController *)self setEmergencyCoordinator:v12];
 
-        v13 = [(PHAudioCallViewController *)self emergencyCoordinator];
-        [v13 setDelegate:self];
+        emergencyCoordinator2 = [(PHAudioCallViewController *)self emergencyCoordinator];
+        [emergencyCoordinator2 setDelegate:self];
       }
     }
   }
@@ -5943,33 +5943,33 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "EnhancedEmergency: remove all the possile call UI because we are now in emergency call", v9, 2u);
   }
 
-  v4 = [(PHAudioCallViewController *)self renderingViewController];
+  renderingViewController = [(PHAudioCallViewController *)self renderingViewController];
 
-  if (v4)
+  if (renderingViewController)
   {
     [(PHAudioCallViewController *)self removePosterViewController:1 completion:0];
   }
 
-  v5 = [(PHAudioCallViewController *)self backgroundImageView];
+  backgroundImageView = [(PHAudioCallViewController *)self backgroundImageView];
 
-  if (v5)
+  if (backgroundImageView)
   {
     [(PHAudioCallViewController *)self removeBackgroundContactImageView];
   }
 
-  v6 = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
+  defaultBackgroundGradientView = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
 
-  if (v6)
+  if (defaultBackgroundGradientView)
   {
     [(PHAudioCallViewController *)self removeDefaultBackgroundGradientView];
   }
 
-  v7 = [(PHAudioCallViewController *)self unblurredBackgroundImageView];
+  unblurredBackgroundImageView = [(PHAudioCallViewController *)self unblurredBackgroundImageView];
 
-  if (v7)
+  if (unblurredBackgroundImageView)
   {
-    v8 = [(PHAudioCallViewController *)self unblurredBackgroundImageView];
-    [v8 removeFromSuperview];
+    unblurredBackgroundImageView2 = [(PHAudioCallViewController *)self unblurredBackgroundImageView];
+    [unblurredBackgroundImageView2 removeFromSuperview];
 
     [(PHAudioCallViewController *)self setUnblurredBackgroundImageView:0];
   }
@@ -5978,12 +5978,12 @@ LABEL_26:
   [(PHAudioCallViewController *)self _updateStatusLabelVisibility];
 }
 
-- (void)wantsHoldMusicChangedNotification:(id)a3
+- (void)wantsHoldMusicChangedNotification:(id)notification
 {
-  v4 = [(PHAudioCallViewController *)self frontmostCall];
-  v5 = [v4 wantsHoldMusic];
+  frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+  wantsHoldMusic = [frontmostCall wantsHoldMusic];
 
-  if (v5)
+  if (wantsHoldMusic)
   {
     v6 = sub_100004F84();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -5992,79 +5992,79 @@ LABEL_26:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "decline with reminder and decline with message unavailable due to call wanting hold music.", v9, 2u);
     }
 
-    v7 = [(PHCallViewController *)self bottomBar];
-    [v7 setDeclineAndMessageIsAvailable:0];
+    bottomBar = [(PHCallViewController *)self bottomBar];
+    [bottomBar setDeclineAndMessageIsAvailable:0];
 
-    v8 = [(PHCallViewController *)self bottomBar];
-    [v8 setDeclineAndRemindIsAvailable:0];
+    bottomBar2 = [(PHCallViewController *)self bottomBar];
+    [bottomBar2 setDeclineAndRemindIsAvailable:0];
   }
 }
 
-- (void)callCenterScreeningStatusChangedNotification:(id)a3
+- (void)callCenterScreeningStatusChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v11 = 138412546;
     v12 = v6;
     v13 = 2112;
-    v14 = v8;
+    v14 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", &v11, 0x16u);
   }
 
   [(PHAudioCallViewController *)self updateCurrentState];
-  v9 = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
-  v10 = [v9 singleCallLabelView];
-  [v10 updateLabelsOrderAndLayout];
+  getParticipantsView_NotWaiting = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
+  singleCallLabelView = [getParticipantsView_NotWaiting singleCallLabelView];
+  [singleCallLabelView updateLabelsOrderAndLayout];
 }
 
-- (void)callCenterCallStatusChangedNotification:(id)a3
+- (void)callCenterCallStatusChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v46 = 138412546;
-    v47 = v6;
+    selfCopy = v6;
     v48 = 2112;
-    v49 = v8;
+    v49 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", &v46, 0x16u);
   }
 
-  v9 = [v4 object];
+  object = [notificationCopy object];
   if (![(PHAudioCallViewController *)self usesCompactMulticallUI])
   {
     goto LABEL_12;
   }
 
-  v10 = [(PHAudioCallViewController *)self prioritizedCall];
-  v11 = [v10 callUUID];
-  if (!v11)
+  prioritizedCall = [(PHAudioCallViewController *)self prioritizedCall];
+  callUUID = [prioritizedCall callUUID];
+  if (!callUUID)
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = v11;
-  v13 = [v9 callUUID];
-  v14 = [(PHAudioCallViewController *)self prioritizedCall];
-  v15 = [v14 callUUID];
-  v16 = v15;
-  if (v13 == v15)
+  v12 = callUUID;
+  callUUID2 = [object callUUID];
+  prioritizedCall2 = [(PHAudioCallViewController *)self prioritizedCall];
+  callUUID3 = [prioritizedCall2 callUUID];
+  v16 = callUUID3;
+  if (callUUID2 == callUUID3)
   {
 
     goto LABEL_11;
   }
 
-  v17 = [(PHAudioCallViewController *)self prioritizedCallIsInSameCallGroupAsCall:v9];
+  v17 = [(PHAudioCallViewController *)self prioritizedCallIsInSameCallGroupAsCall:object];
 
   if ((v17 & 1) == 0)
   {
@@ -6081,21 +6081,21 @@ LABEL_11:
   }
 
 LABEL_12:
-  if ([v9 status] == 1)
+  if ([object status] == 1)
   {
-    v19 = [(PHAudioCallViewController *)self features];
-    if ([v19 isEnhancedEmergencyEnabled])
+    features = [(PHAudioCallViewController *)self features];
+    if ([features isEnhancedEmergencyEnabled])
     {
-      v20 = [(PHAudioCallViewController *)self emergencyCoordinator];
-      if (v20)
+      emergencyCoordinator = [(PHAudioCallViewController *)self emergencyCoordinator];
+      if (emergencyCoordinator)
       {
       }
 
       else
       {
-        v21 = [v9 isEmergency];
+        isEmergency = [object isEmergency];
 
-        if (!v21)
+        if (!isEmergency)
         {
 LABEL_21:
           [(PHAudioCallViewController *)self tipKitStartWaitOnHoldObservation];
@@ -6106,15 +6106,15 @@ LABEL_21:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           v46 = 138412290;
-          v47 = self;
+          selfCopy = self;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "EnhancedEmergency: going to create PHEnhancedEmergencyCoordinator when call is active from PHAudioCallViewController: %@", &v46, 0xCu);
         }
 
         v23 = objc_alloc_init(PHEnhancedEmergencyCoordinator);
         [(PHAudioCallViewController *)self setEmergencyCoordinator:v23];
 
-        v19 = [(PHAudioCallViewController *)self emergencyCoordinator];
-        [v19 setDelegate:self];
+        features = [(PHAudioCallViewController *)self emergencyCoordinator];
+        [features setDelegate:self];
       }
     }
 
@@ -6122,51 +6122,51 @@ LABEL_21:
   }
 
 LABEL_22:
-  if ([v9 status] == 6)
+  if ([object status] == 6)
   {
     v24 = +[UIApplication sharedApplication];
-    v25 = [v24 delegate];
-    [v25 setMostRecentlyDisconnectedAudioCall:v9];
+    delegate = [v24 delegate];
+    [delegate setMostRecentlyDisconnectedAudioCall:object];
 
-    v26 = [v9 uniqueProxyIdentifier];
-    [(PHAudioCallViewController *)self clearMenuItemRegistration:v26];
+    uniqueProxyIdentifier = [object uniqueProxyIdentifier];
+    [(PHAudioCallViewController *)self clearMenuItemRegistration:uniqueProxyIdentifier];
 
-    v27 = [(PHAudioCallViewController *)self frontmostCall];
-    if (([v9 isVideo] & 1) == 0 && objc_msgSend(v9, "disconnectedReason") == 6)
+    frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+    if (([object isVideo] & 1) == 0 && objc_msgSend(object, "disconnectedReason") == 6)
     {
-      if (v27)
+      if (frontmostCall)
       {
-        v43 = [(PHCallViewController *)self bottomBar];
-        v44 = [v43 currentState];
+        bottomBar = [(PHCallViewController *)self bottomBar];
+        currentState = [bottomBar currentState];
 
-        if (v44 == 7)
+        if (currentState == 7)
         {
-          v45 = [(PHAudioCallViewController *)self analyticsReporter];
-          [v45 reportMultipleCallsWaitingUIAction:0];
+          analyticsReporter = [(PHAudioCallViewController *)self analyticsReporter];
+          [analyticsReporter reportMultipleCallsWaitingUIAction:0];
         }
       }
     }
 
-    [(PHAudioCallViewController *)self writeToLastSeenPosterCacheIfNecessaryForCall:v9];
-    v28 = [(PHAudioCallViewController *)self features];
-    if (([v28 isEnhancedEmergencyEnabled] & 1) != 0 && (-[PHAudioCallViewController emergencyCoordinator](self, "emergencyCoordinator"), (v29 = objc_claimAutoreleasedReturnValue()) != 0))
+    [(PHAudioCallViewController *)self writeToLastSeenPosterCacheIfNecessaryForCall:object];
+    features2 = [(PHAudioCallViewController *)self features];
+    if (([features2 isEnhancedEmergencyEnabled] & 1) != 0 && (-[PHAudioCallViewController emergencyCoordinator](self, "emergencyCoordinator"), (v29 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v30 = v29;
-      v31 = [v9 isEmergency];
+      isEmergency2 = [object isEmergency];
 
-      if (v31)
+      if (isEmergency2)
       {
         v32 = sub_100004F84();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
-          v33 = [(PHAudioCallViewController *)self emergencyCoordinator];
+          emergencyCoordinator2 = [(PHAudioCallViewController *)self emergencyCoordinator];
           v46 = 138412290;
-          v47 = v33;
+          selfCopy = emergencyCoordinator2;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "EnhancedEmergency: clean emergencyCoordinator: %@", &v46, 0xCu);
         }
 
-        v34 = [(PHAudioCallViewController *)self emergencyCoordinator];
-        [v34 cleanUpViewAndObjectWhenCallEnds];
+        emergencyCoordinator3 = [(PHAudioCallViewController *)self emergencyCoordinator];
+        [emergencyCoordinator3 cleanUpViewAndObjectWhenCallEnds];
 
         [(PHAudioCallViewController *)self setEmergencyCoordinator:0];
       }
@@ -6179,12 +6179,12 @@ LABEL_22:
     [(PHAudioCallViewController *)self tipKitStopWaitOnHoldObservation];
   }
 
-  v35 = [(PHAudioCallViewController *)self emergencyCoordinator];
+  emergencyCoordinator4 = [(PHAudioCallViewController *)self emergencyCoordinator];
 
-  if (v35)
+  if (emergencyCoordinator4)
   {
-    v36 = [(PHAudioCallViewController *)self emergencyCoordinator];
-    [v36 setTuCall:v9];
+    emergencyCoordinator5 = [(PHAudioCallViewController *)self emergencyCoordinator];
+    [emergencyCoordinator5 setTuCall:object];
   }
 
   [(PHAudioCallViewController *)self updateViewsForHeldCallControlsViewIfNeeded];
@@ -6192,14 +6192,14 @@ LABEL_22:
   [(PHAudioCallViewController *)self refreshUseRTTButton];
   if ([(PHAudioCallViewController *)self shouldUseHeroImageLayout])
   {
-    v37 = [(PHAudioCallViewController *)self callToUseForWallpaper];
-    [(PHAudioCallViewController *)self setCallForBackgroundImage:v37 animated:1 callDisplayStyleChanged:0];
+    callToUseForWallpaper = [(PHAudioCallViewController *)self callToUseForWallpaper];
+    [(PHAudioCallViewController *)self setCallForBackgroundImage:callToUseForWallpaper animated:1 callDisplayStyleChanged:0];
   }
 
-  v38 = [(PHAudioCallViewController *)self callCenter];
-  v39 = [v38 autoPunchOutBehaviorRequiredForCurrentCalls];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  autoPunchOutBehaviorRequiredForCurrentCalls = [callCenter autoPunchOutBehaviorRequiredForCurrentCalls];
 
-  if (v39)
+  if (autoPunchOutBehaviorRequiredForCurrentCalls)
   {
     v40 = sub_100004F84();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -6214,12 +6214,12 @@ LABEL_22:
 
   else
   {
-    v41 = [(PHAudioCallViewController *)self callCenter];
-    v42 = [v41 shouldActivateProviderInBackgroundForCall:v9];
+    callCenter2 = [(PHAudioCallViewController *)self callCenter];
+    v42 = [callCenter2 shouldActivateProviderInBackgroundForCall:object];
 
     if (v42)
     {
-      [(PHCallViewController *)self activateProviderInBackgroundForCall:v9];
+      [(PHCallViewController *)self activateProviderInBackgroundForCall:object];
     }
 
     else
@@ -6231,44 +6231,44 @@ LABEL_22:
 LABEL_47:
 }
 
-- (void)conferenceParticipantCallsChangedNotification:(id)a3
+- (void)conferenceParticipantCallsChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v9 = 138412546;
     v10 = v6;
     v11 = 2112;
-    v12 = v8;
+    v12 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", &v9, 0x16u);
   }
 
   [(PHAudioCallViewController *)self updateCurrentState];
 }
 
-- (void)receptionistStateChanged:(id)a3
+- (void)receptionistStateChanged:(id)changed
 {
-  v4 = [(PHAudioCallViewController *)self frontmostCall];
-  v5 = [v4 isScreening];
+  frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+  isScreening = [frontmostCall isScreening];
 
-  if (v5)
+  if (isScreening)
   {
-    v6 = [(PHAudioCallViewController *)self screeningViewController];
-    if (v6)
+    screeningViewController = [(PHAudioCallViewController *)self screeningViewController];
+    if (screeningViewController)
     {
-      v7 = v6;
-      v8 = [(PHAudioCallViewController *)self isShowingNewTranscriptsView];
+      v7 = screeningViewController;
+      isShowingNewTranscriptsView = [(PHAudioCallViewController *)self isShowingNewTranscriptsView];
 
-      if ((v8 & 1) == 0)
+      if ((isShowingNewTranscriptsView & 1) == 0)
       {
-        v9 = [(PHAudioCallViewController *)self frontmostCall];
-        v10 = [v9 receptionistState];
+        frontmostCall2 = [(PHAudioCallViewController *)self frontmostCall];
+        receptionistState = [frontmostCall2 receptionistState];
 
-        if (v10)
+        if (receptionistState)
         {
           [(PHAudioCallViewController *)self setMiddleViewState:0 animated:0];
           [(PHAudioCallViewController *)self setScreeningViewController:0];
@@ -6281,103 +6281,103 @@ LABEL_47:
   }
 }
 
-- (void)callContinuityStateChangedNotification:(id)a3
+- (void)callContinuityStateChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "callContinuityStateChangedNotification: %@", &v6, 0xCu);
   }
 
   [(PHAudioCallViewController *)self updateCurrentState];
 }
 
-- (void)hardPauseDigitsStateChangedNotification:(id)a3
+- (void)hardPauseDigitsStateChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "hardPauseDigitsStateChangedNotification: %@", &v7, 0xCu);
   }
 
-  v6 = [(PHCallViewController *)self bottomBar];
-  [v6 refreshCustomizedActionTypeTitles];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar refreshCustomizedActionTypeTitles];
 
   [(PHAudioCallViewController *)self updateHardPauseDigitsState];
   [(PHAudioCallViewController *)self refreshExtensionNumberButton];
 }
 
-- (void)callOnHoldChangedNotification:(id)a3
+- (void)callOnHoldChangedNotification:(id)notification
 {
-  v4 = [(PHCallViewController *)self bottomBar];
-  [v4 refreshEndCallButton];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar refreshEndCallButton];
 
-  v5 = [(PHAudioCallViewController *)self topLeadingContainer];
-  [(PHAudioCallViewController *)self updateCallHoldingIfNeeded:v5];
+  topLeadingContainer = [(PHAudioCallViewController *)self topLeadingContainer];
+  [(PHAudioCallViewController *)self updateCallHoldingIfNeeded:topLeadingContainer];
 }
 
-- (void)handleTUCallSupportsTTYWithVoiceChangedNotification:(id)a3
+- (void)handleTUCallSupportsTTYWithVoiceChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v9 = 138412546;
     v10 = v6;
     v11 = 2112;
-    v12 = v8;
+    v12 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", &v9, 0x16u);
   }
 
   [(PHAudioCallViewController *)self refreshUseRTTButton];
 }
 
-- (void)handleTUCallTTYTypeChangedNotification:(id)a3
+- (void)handleTUCallTTYTypeChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v34 = 138412546;
     v35 = v6;
     v36 = 2112;
-    v37 = v8;
+    v37 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", &v34, 0x16u);
   }
 
   [(PHAudioCallViewController *)self refreshUseRTTButton];
-  v9 = [(PHAudioCallViewController *)self features];
-  if ([v9 isEnhancedEmergencyEnabled])
+  features = [(PHAudioCallViewController *)self features];
+  if ([features isEnhancedEmergencyEnabled])
   {
-    v10 = [(PHAudioCallViewController *)self callCenter];
-    v11 = [v10 frontmostCall];
-    v12 = [v11 isEmergency];
+    callCenter = [(PHAudioCallViewController *)self callCenter];
+    frontmostCall = [callCenter frontmostCall];
+    isEmergency = [frontmostCall isEmergency];
 
-    if (!v12)
+    if (!isEmergency)
     {
       goto LABEL_7;
     }
 
-    v9 = [(PHAudioCallViewController *)self emergencyCoordinator];
-    v13 = [(PHAudioCallViewController *)self callCenter];
-    v14 = [v13 frontmostCall];
-    [v9 updateRTTEnabled:{objc_msgSend(v14, "isRTT")}];
+    features = [(PHAudioCallViewController *)self emergencyCoordinator];
+    callCenter2 = [(PHAudioCallViewController *)self callCenter];
+    frontmostCall2 = [callCenter2 frontmostCall];
+    [features updateRTTEnabled:{objc_msgSend(frontmostCall2, "isRTT")}];
   }
 
 LABEL_7:
-  v15 = [(PHAudioCallViewController *)self featureFlags];
+  featureFlags = [(PHAudioCallViewController *)self featureFlags];
   v16 = TUCallScreeningRTTEnabled();
 
   if (v16)
@@ -6388,10 +6388,10 @@ LABEL_7:
       screeningViewController = self->_screeningViewController;
       self->_screeningViewController = 0;
 
-      v18 = [(PHAudioCallViewController *)self featureFlags];
-      v19 = [v18 receptionistEnabled];
+      featureFlags2 = [(PHAudioCallViewController *)self featureFlags];
+      receptionistEnabled = [featureFlags2 receptionistEnabled];
 
-      if (v19)
+      if (receptionistEnabled)
       {
         [(PHAudioCallViewController *)self setIsShowingNewTranscriptsView:0];
       }
@@ -6399,48 +6399,48 @@ LABEL_7:
       [(PHAudioCallViewController *)self setMiddleViewState:4];
     }
 
-    v20 = [(PHCallViewController *)self bottomBar];
-    v21 = [v20 currentState];
+    bottomBar = [(PHCallViewController *)self bottomBar];
+    currentState = [bottomBar currentState];
 
-    if (v21 == 23)
+    if (currentState == 23)
     {
-      v22 = [(PHCallViewController *)self bottomBar];
-      [v22 setCurrentState:29];
+      bottomBar2 = [(PHCallViewController *)self bottomBar];
+      [bottomBar2 setCurrentState:29];
 
-      v23 = [(PHCallViewController *)self bottomBar];
-      [v23 setCurrentState:23];
+      bottomBar3 = [(PHCallViewController *)self bottomBar];
+      [bottomBar3 setCurrentState:23];
     }
   }
 
   v24 = +[UIApplication sharedApplication];
-  v25 = [v24 delegate];
-  v26 = [v25 currentInCallScene];
+  delegate = [v24 delegate];
+  currentInCallScene = [delegate currentInCallScene];
 
-  if (v26)
+  if (currentInCallScene)
   {
     v27 = +[UIApplication sharedApplication];
-    v28 = [v27 delegate];
-    v29 = [v28 currentInCallScene];
-    v30 = [v29 delegate];
+    delegate2 = [v27 delegate];
+    currentInCallScene2 = [delegate2 currentInCallScene];
+    delegate3 = [currentInCallScene2 delegate];
     v31 = +[UIApplication sharedApplication];
-    v32 = [v31 delegate];
-    v33 = [v32 currentInCallScene];
-    [v30 updateSceneBackgroundMaterialWith:v33];
+    delegate4 = [v31 delegate];
+    currentInCallScene3 = [delegate4 currentInCallScene];
+    [delegate3 updateSceneBackgroundMaterialWith:currentInCallScene3];
   }
 }
 
-- (void)callIsScreenSharingChangedNotification:(id)a3
+- (void)callIsScreenSharingChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
-    v7 = [v4 name];
+    name = [notificationCopy name];
     v8 = 138412546;
     v9 = v6;
     v10 = 2112;
-    v11 = v7;
+    v11 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", &v8, 0x16u);
   }
 
@@ -6448,18 +6448,18 @@ LABEL_7:
   [(PHAudioCallViewController *)self updateScreenSharingIndicatorView];
 }
 
-- (void)callKeypadDataSourceChangedNotification:(id)a3
+- (void)callKeypadDataSourceChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
-    v7 = [v4 name];
+    name = [notificationCopy name];
     v8 = 138412546;
     v9 = v6;
     v10 = 2112;
-    v11 = v7;
+    v11 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@, we are going to hide the name on keypad", &v8, 0x16u);
   }
 
@@ -6467,31 +6467,31 @@ LABEL_7:
   [(PHAudioCallViewController *)self setHasKeypadUpdated:1];
 }
 
-- (void)callDisplayContextChangedNotification:(id)a3
+- (void)callDisplayContextChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
-    v7 = [v4 name];
+    name = [notificationCopy name];
     v9 = 138412546;
     v10 = v6;
     v11 = 2112;
-    v12 = v7;
+    v12 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling %@", &v9, 0x16u);
   }
 
-  v8 = [v4 object];
-  [(PHAudioCallViewController *)self updateBottomBarButtonsWithCall:v8];
+  object = [notificationCopy object];
+  [(PHAudioCallViewController *)self updateBottomBarButtonsWithCall:object];
 }
 
-- (void)setShowsCallDetailsViewButton:(BOOL)a3
+- (void)setShowsCallDetailsViewButton:(BOOL)button
 {
-  v3 = a3;
-  v5 = [(PHAudioCallViewController *)self callDetailsViewButton];
-  v6 = v5;
-  if (v3)
+  buttonCopy = button;
+  callDetailsViewButton = [(PHAudioCallViewController *)self callDetailsViewButton];
+  v6 = callDetailsViewButton;
+  if (buttonCopy)
   {
 
     if (!v6)
@@ -6503,7 +6503,7 @@ LABEL_7:
 
   else
   {
-    [v5 removeFromSuperview];
+    [callDetailsViewButton removeFromSuperview];
 
     [(PHAudioCallViewController *)self setCallDetailsViewButton:0];
   }
@@ -6514,29 +6514,29 @@ LABEL_7:
   v3 = [UIButton buttonWithType:4];
   [(PHAudioCallViewController *)self setCallDetailsViewButton:v3];
 
-  v4 = [(PHAudioCallViewController *)self callDetailsViewButton];
-  [v4 addTarget:self action:"callDetailsViewButtonTapped" forEvents:64];
+  callDetailsViewButton = [(PHAudioCallViewController *)self callDetailsViewButton];
+  [callDetailsViewButton addTarget:self action:"callDetailsViewButtonTapped" forEvents:64];
 
-  v5 = [(PHAudioCallViewController *)self callDetailsViewButton];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  callDetailsViewButton2 = [(PHAudioCallViewController *)self callDetailsViewButton];
+  [callDetailsViewButton2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(PHAudioCallViewController *)self view];
-  v7 = [(PHAudioCallViewController *)self callDetailsViewButton];
-  [v6 addSubview:v7];
+  view = [(PHAudioCallViewController *)self view];
+  callDetailsViewButton3 = [(PHAudioCallViewController *)self callDetailsViewButton];
+  [view addSubview:callDetailsViewButton3];
 
   v8 = +[UIColor whiteColor];
-  v9 = [(PHAudioCallViewController *)self callDetailsViewButton];
-  [v9 setTintColor:v8];
+  callDetailsViewButton4 = [(PHAudioCallViewController *)self callDetailsViewButton];
+  [callDetailsViewButton4 setTintColor:v8];
 
-  v10 = [(PHAudioCallViewController *)self callDetailsViewButton];
-  [(PHAudioCallViewController *)self applyCallDetailsViewButtonPositionAndSizeCapToElement:v10];
+  callDetailsViewButton5 = [(PHAudioCallViewController *)self callDetailsViewButton];
+  [(PHAudioCallViewController *)self applyCallDetailsViewButtonPositionAndSizeCapToElement:callDetailsViewButton5];
 }
 
 - (double)callDetailsButtonPaddingTop
 {
   +[TPIncomingCallMetricsProvider fullDeviceHeight];
   [(PHAudioCallViewController *)self callDetailsButtonPaddingTop_PERCENT];
-  v3 = [(PHAudioCallViewController *)self view];
+  view = [(PHAudioCallViewController *)self view];
   UIRoundToViewScale();
   v5 = v4;
 
@@ -6547,7 +6547,7 @@ LABEL_7:
 {
   +[TPIncomingCallMetricsProvider fullDeviceWidth];
   [(PHAudioCallViewController *)self callDetailsButtonPaddingTrailing_PERCENT];
-  v3 = [(PHAudioCallViewController *)self view];
+  view = [(PHAudioCallViewController *)self view];
   UIRoundToViewScale();
   v5 = v4;
 
@@ -6564,10 +6564,10 @@ LABEL_7:
 
   else
   {
-    v3 = [(PHAudioCallViewController *)self features];
-    v4 = [v3 isSystemApertureEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isSystemApertureEnabled = [features isSystemApertureEnabled];
 
-    if (v4)
+    if (isSystemApertureEnabled)
     {
 
       +[TPIncomingCallMetricsProvider callDetailsButtonPaddingTopPercent_DynamicIsland];
@@ -6593,10 +6593,10 @@ LABEL_7:
 
   else
   {
-    v3 = [(PHAudioCallViewController *)self features];
-    v4 = [v3 isSystemApertureEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isSystemApertureEnabled = [features isSystemApertureEnabled];
 
-    if (v4)
+    if (isSystemApertureEnabled)
     {
 
       +[TPIncomingCallMetricsProvider callDetailsButtonPaddingTrailingPercent_DynamicIsland];
@@ -6612,40 +6612,40 @@ LABEL_7:
   return result;
 }
 
-- (void)applyBlockButtonPositionAndSizeCapToElement:(id)a3
+- (void)applyBlockButtonPositionAndSizeCapToElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 topAnchor];
-  v6 = [(PHAudioCallViewController *)self view];
-  v7 = [v6 topAnchor];
+  elementCopy = element;
+  topAnchor = [elementCopy topAnchor];
+  view = [(PHAudioCallViewController *)self view];
+  topAnchor2 = [view topAnchor];
   [(PHAudioCallViewController *)self callDetailsButtonPaddingTop];
-  v8 = [v5 constraintEqualToAnchor:v7 constant:?];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
   v15[0] = v8;
-  v9 = [v4 leadingAnchor];
-  v10 = [(PHAudioCallViewController *)self view];
-  v11 = [v10 leadingAnchor];
+  leadingAnchor = [elementCopy leadingAnchor];
+  view2 = [(PHAudioCallViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
   [(PHAudioCallViewController *)self callDetailsButtonPaddingTrailing];
-  v12 = [v9 constraintEqualToAnchor:v11 constant:?];
+  v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
   v15[1] = v12;
   v13 = [NSArray arrayWithObjects:v15 count:2];
   [NSLayoutConstraint activateConstraints:v13];
 
   v14 = +[TPIncomingCallMetricsProvider callDetailsButtonMaxSize];
-  [v4 setMaximumContentSizeCategory:v14];
+  [elementCopy setMaximumContentSizeCategory:v14];
 }
 
 - (void)blockButtonTapped
 {
-  v3 = [(PHAudioCallViewController *)self frontmostCall];
-  [(PHAudioCallViewController *)self showBlockAlertForCall:v3];
+  frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+  [(PHAudioCallViewController *)self showBlockAlertForCall:frontmostCall];
 }
 
-- (void)setShowsBlockButton:(BOOL)a3
+- (void)setShowsBlockButton:(BOOL)button
 {
-  v3 = a3;
-  v5 = [(PHAudioCallViewController *)self blockButton];
-  v6 = v5;
-  if (v3)
+  buttonCopy = button;
+  blockButton = [(PHAudioCallViewController *)self blockButton];
+  v6 = blockButton;
+  if (buttonCopy)
   {
 
     if (!v6)
@@ -6657,7 +6657,7 @@ LABEL_7:
 
   else
   {
-    [v5 removeFromSuperview];
+    [blockButton removeFromSuperview];
 
     [(PHAudioCallViewController *)self setBlockButton:0];
   }
@@ -6684,35 +6684,35 @@ LABEL_7:
 
   [v11 addTarget:self action:"blockButtonTapped" forEvents:64];
   [(PHAudioCallViewController *)self setBlockButton:v11];
-  v8 = [(PHAudioCallViewController *)self view];
-  v9 = [(PHAudioCallViewController *)self blockButton];
-  [v8 addSubview:v9];
+  view = [(PHAudioCallViewController *)self view];
+  blockButton = [(PHAudioCallViewController *)self blockButton];
+  [view addSubview:blockButton];
 
-  v10 = [(PHAudioCallViewController *)self blockButton];
-  [(PHAudioCallViewController *)self applyBlockButtonPositionAndSizeCapToElement:v10];
+  blockButton2 = [(PHAudioCallViewController *)self blockButton];
+  [(PHAudioCallViewController *)self applyBlockButtonPositionAndSizeCapToElement:blockButton2];
 }
 
-- (void)updateParticipantConstraintsForPosterName:(id)a3
+- (void)updateParticipantConstraintsForPosterName:(id)name
 {
-  v9 = a3;
-  v4 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  v5 = [v4 callDisplayStyle];
+  nameCopy = name;
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-  if (v5)
+  if (callDisplayStyle)
   {
     if (![(PHAudioCallViewController *)self participantsViewIsShowingMultipleLabel])
     {
-      v6 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
-      if (v6)
+      detachedPosterNameViewModel = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
+      if (detachedPosterNameViewModel)
       {
       }
 
       else if ([(PHAudioCallViewController *)self callHasContactPosterWithVerticalName])
       {
-        [(PHAudioCallViewController *)self positionParticipantsViewStatusLabelToBeHorizontallyCenteredToInfoButton:v9];
-        v7 = [(PHAudioCallViewController *)self callDetailsViewButton];
+        [(PHAudioCallViewController *)self positionParticipantsViewStatusLabelToBeHorizontallyCenteredToInfoButton:nameCopy];
+        callDetailsViewButton = [(PHAudioCallViewController *)self callDetailsViewButton];
         v8 = +[TPIncomingCallMetricsProvider callDetailsButtonMaxSize];
-        [v7 setMaximumContentSizeCategory:v8];
+        [callDetailsViewButton setMaximumContentSizeCategory:v8];
 
         goto LABEL_8;
       }
@@ -6724,140 +6724,140 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)positionParticipantsViewStatusLabelToBeHorizontallyCenteredToInfoButton:(id)a3
+- (void)positionParticipantsViewStatusLabelToBeHorizontallyCenteredToInfoButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v16 = +[NSMutableArray array];
-  v5 = [(PHAudioCallViewController *)self participantsViewTopConstraint];
+  participantsViewTopConstraint = [(PHAudioCallViewController *)self participantsViewTopConstraint];
 
-  if (v5)
+  if (participantsViewTopConstraint)
   {
-    v6 = [(PHAudioCallViewController *)self participantsViewTopConstraint];
-    [v16 addObject:v6];
+    participantsViewTopConstraint2 = [(PHAudioCallViewController *)self participantsViewTopConstraint];
+    [v16 addObject:participantsViewTopConstraint2];
   }
 
-  v7 = [(PHAudioCallViewController *)self participantsViewCenterYConstraint];
+  participantsViewCenterYConstraint = [(PHAudioCallViewController *)self participantsViewCenterYConstraint];
 
-  if (v7)
+  if (participantsViewCenterYConstraint)
   {
-    v8 = [(PHAudioCallViewController *)self participantsViewCenterYConstraint];
-    [v16 addObject:v8];
+    participantsViewCenterYConstraint2 = [(PHAudioCallViewController *)self participantsViewCenterYConstraint];
+    [v16 addObject:participantsViewCenterYConstraint2];
   }
 
-  v9 = [(PHAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
+  participantsViewVerticalPosterNameTopConstraint = [(PHAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
 
-  if (v9)
+  if (participantsViewVerticalPosterNameTopConstraint)
   {
-    v10 = [(PHAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
-    [v16 addObject:v10];
+    participantsViewVerticalPosterNameTopConstraint2 = [(PHAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
+    [v16 addObject:participantsViewVerticalPosterNameTopConstraint2];
   }
 
   [NSLayoutConstraint deactivateConstraints:v16];
-  v11 = [v4 topAnchor];
+  topAnchor = [buttonCopy topAnchor];
 
-  v12 = [(PHAudioCallViewController *)self view];
-  v13 = [v12 topAnchor];
+  view = [(PHAudioCallViewController *)self view];
+  topAnchor2 = [view topAnchor];
   [(PHAudioCallViewController *)self callDetailsButtonPaddingTop];
-  v14 = [v11 constraintEqualToAnchor:v13 constant:?];
+  v14 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
   [(PHAudioCallViewController *)self setParticipantsViewVerticalPosterNameTopConstraint:v14];
 
-  v15 = [(PHAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
-  [v15 setActive:1];
+  participantsViewVerticalPosterNameTopConstraint3 = [(PHAudioCallViewController *)self participantsViewVerticalPosterNameTopConstraint];
+  [participantsViewVerticalPosterNameTopConstraint3 setActive:1];
 }
 
-- (void)positionPosterBadgeToBeHorizontallyCenteredToInfoButton:(id)a3
+- (void)positionPosterBadgeToBeHorizontallyCenteredToInfoButton:(id)button
 {
-  v4 = a3;
-  v5 = [v4 leadingAnchor];
-  v6 = [(PHAudioCallViewController *)self view];
-  v7 = [v6 leadingAnchor];
+  buttonCopy = button;
+  leadingAnchor = [buttonCopy leadingAnchor];
+  view = [(PHAudioCallViewController *)self view];
+  leadingAnchor2 = [view leadingAnchor];
   [(PHAudioCallViewController *)self callDetailsButtonPaddingTrailing];
-  v8 = [v5 constraintEqualToAnchor:v7 constant:?];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
   v15[0] = v8;
-  v9 = [v4 topAnchor];
+  topAnchor = [buttonCopy topAnchor];
 
-  v10 = [(PHAudioCallViewController *)self view];
-  v11 = [v10 topAnchor];
+  view2 = [(PHAudioCallViewController *)self view];
+  topAnchor2 = [view2 topAnchor];
   [(PHAudioCallViewController *)self callDetailsButtonPaddingTop];
-  v13 = [v9 constraintEqualToAnchor:v11 constant:v12 + 6.0];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v12 + 6.0];
   v15[1] = v13;
   v14 = [NSArray arrayWithObjects:v15 count:2];
   [NSLayoutConstraint activateConstraints:v14];
 }
 
-- (void)applySizeToElement:(id)a3 usingThisElementAsGuide:(id)a4
+- (void)applySizeToElement:(id)element usingThisElementAsGuide:(id)guide
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  elementCopy = element;
+  guideCopy = guide;
+  if (guideCopy)
   {
-    v7 = [v5 widthAnchor];
-    v8 = [v6 widthAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8 constant:0.0];
+    widthAnchor = [elementCopy widthAnchor];
+    widthAnchor2 = [guideCopy widthAnchor];
+    v9 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:0.0];
     v16[0] = v9;
-    v10 = [v5 heightAnchor];
-    v11 = [v6 heightAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11 constant:0.0];
+    heightAnchor = [elementCopy heightAnchor];
+    heightAnchor2 = [guideCopy heightAnchor];
+    v12 = [heightAnchor constraintEqualToAnchor:heightAnchor2 constant:0.0];
     v16[1] = v12;
     v13 = [NSArray arrayWithObjects:v16 count:2];
     [NSLayoutConstraint activateConstraints:v13];
 
-    v14 = [v6 maximumContentSizeCategory];
+    maximumContentSizeCategory = [guideCopy maximumContentSizeCategory];
 
-    if (v14)
+    if (maximumContentSizeCategory)
     {
-      v15 = [v6 maximumContentSizeCategory];
-      [v5 setMaximumContentSizeCategory:v15];
+      maximumContentSizeCategory2 = [guideCopy maximumContentSizeCategory];
+      [elementCopy setMaximumContentSizeCategory:maximumContentSizeCategory2];
     }
   }
 }
 
-- (void)applyCallDetailsViewButtonPositionAndSizeCapToElement:(id)a3
+- (void)applyCallDetailsViewButtonPositionAndSizeCapToElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 topAnchor];
-  v6 = [(PHAudioCallViewController *)self view];
-  v7 = [v6 topAnchor];
+  elementCopy = element;
+  topAnchor = [elementCopy topAnchor];
+  view = [(PHAudioCallViewController *)self view];
+  topAnchor2 = [view topAnchor];
   [(PHAudioCallViewController *)self callDetailsButtonPaddingTop];
-  v8 = [v5 constraintEqualToAnchor:v7 constant:?];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
   v16[0] = v8;
-  v9 = [v4 trailingAnchor];
-  v10 = [(PHAudioCallViewController *)self view];
-  v11 = [v10 trailingAnchor];
+  trailingAnchor = [elementCopy trailingAnchor];
+  view2 = [(PHAudioCallViewController *)self view];
+  trailingAnchor2 = [view2 trailingAnchor];
   [(PHAudioCallViewController *)self callDetailsButtonPaddingTrailing];
-  v13 = [v9 constraintEqualToAnchor:v11 constant:-v12];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v12];
   v16[1] = v13;
   v14 = [NSArray arrayWithObjects:v16 count:2];
   [NSLayoutConstraint activateConstraints:v14];
 
   v15 = +[TPIncomingCallMetricsProvider callDetailsButtonMaxSize];
-  [v4 setMaximumContentSizeCategory:v15];
+  [elementCopy setMaximumContentSizeCategory:v15];
 }
 
 - (void)callDetailsViewButtonTapped
 {
-  v3 = [(PHAudioCallViewController *)self frontmostCall];
+  frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
   if ([(PHAudioCallViewController *)self shouldShowConferenceCallDetails])
   {
     v4 = objc_alloc_init(PHConferenceParticipantsViewController);
     v5 = [[UINavigationController alloc] initWithRootViewController:v4];
     v6 = +[UIColor grayColor];
-    v7 = [v5 view];
-    [v7 setBackgroundColor:v6];
+    view = [v5 view];
+    [view setBackgroundColor:v6];
 
     v8 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"dismissNavigationController"];
-    v9 = [(PHConferenceParticipantsViewController *)v4 navigationItem];
-    [v9 setLeftBarButtonItem:v8];
+    navigationItem = [(PHConferenceParticipantsViewController *)v4 navigationItem];
+    [navigationItem setLeftBarButtonItem:v8];
 
     [(PHAudioCallViewController *)self presentViewController:v5 animated:1 completion:0];
   }
 
   else
   {
-    v10 = [v3 provider];
-    v11 = [v10 isTelephonyProvider];
+    provider = [frontmostCall provider];
+    isTelephonyProvider = [provider isTelephonyProvider];
 
-    if (v11)
+    if (isTelephonyProvider)
     {
       [(PHAudioCallViewController *)self presentContactCard];
     }
@@ -6880,16 +6880,16 @@ LABEL_8:
   }
 }
 
-- (void)contactViewController:(id)a3 didExecuteBlockAndReportContactAction:(id)a4
+- (void)contactViewController:(id)controller didExecuteBlockAndReportContactAction:(id)action
 {
-  v5 = [(PHAudioCallViewController *)self activeCall:a3];
+  v5 = [(PHAudioCallViewController *)self activeCall:controller];
   [(PHAudioCallViewController *)self reportWithCall:v5];
 }
 
 - (BOOL)shouldShowConferenceCallDetails
 {
-  v3 = [(PHAudioCallViewController *)self callParticipantsViewController];
-  v4 = [v3 view];
+  callParticipantsViewController = [(PHAudioCallViewController *)self callParticipantsViewController];
+  view = [callParticipantsViewController view];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -6898,23 +6898,23 @@ LABEL_8:
     return 0;
   }
 
-  v6 = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
-  v7 = [(PHAudioCallViewController *)self callParticipantsViewController];
-  v8 = [v7 shouldShowInfoButtonForParticipantAtIndex:0 inParticipantsView:v6];
+  getParticipantsView_NotWaiting = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
+  callParticipantsViewController2 = [(PHAudioCallViewController *)self callParticipantsViewController];
+  v8 = [callParticipantsViewController2 shouldShowInfoButtonForParticipantAtIndex:0 inParticipantsView:getParticipantsView_NotWaiting];
 
   return v8;
 }
 
-- (BOOL)canDoInfoButtonCoinFlipWith:(id)a3 contactStore:(id)a4
+- (BOOL)canDoInfoButtonCoinFlipWith:(id)with contactStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
+  withCopy = with;
+  storeCopy = store;
   v7 = +[NSUserDefaults standardUserDefaults];
   v8 = [v7 BOOLForKey:@"PHInCallUIInfoButtonCoinFlipKey"];
 
   if (v8)
   {
-    v9 = [[CNSharedProfileStateOracle alloc] initWithContact:v5 contactStore:v6];
+    v9 = [[CNSharedProfileStateOracle alloc] initWithContact:withCopy contactStore:storeCopy];
     v10 = [v9 avatarViewAnimationTypeForEffectiveState] == 1;
   }
 
@@ -6928,19 +6928,19 @@ LABEL_8:
 
 - (void)animateInfoButtonCoinFlipIfNeeded
 {
-  v4 = [(PHAudioCallViewController *)self shouldUseHeroImageLayout];
-  if ((v4 & 1) == 0)
+  shouldUseHeroImageLayout = [(PHAudioCallViewController *)self shouldUseHeroImageLayout];
+  if ((shouldUseHeroImageLayout & 1) == 0)
   {
-    v51 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v51 callDisplayStyle] != 3)
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager callDisplayStyle] != 3)
     {
 LABEL_19:
 
       return;
     }
 
-    v2 = [(PHAudioCallViewController *)self features];
-    if (([v2 isDominoEnabled] & 1) == 0)
+    features = [(PHAudioCallViewController *)self features];
+    if (([features isDominoEnabled] & 1) == 0)
     {
 LABEL_18:
 
@@ -6948,11 +6948,11 @@ LABEL_18:
     }
   }
 
-  v5 = [(PHAudioCallViewController *)self features];
-  if (![v5 isNameAndPhotoC3Enabled])
+  features2 = [(PHAudioCallViewController *)self features];
+  if (![features2 isNameAndPhotoC3Enabled])
   {
 
-    if (v4)
+    if (shouldUseHeroImageLayout)
     {
       return;
     }
@@ -6960,29 +6960,29 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v6 = [(PHAudioCallViewController *)self callDetailsViewButton];
+  callDetailsViewButton = [(PHAudioCallViewController *)self callDetailsViewButton];
 
-  if (!v4)
+  if (!shouldUseHeroImageLayout)
   {
   }
 
-  if (v6)
+  if (callDetailsViewButton)
   {
-    v7 = [(PHAudioCallViewController *)self frontmostCall];
-    v8 = [v7 contactIdentifier];
+    frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+    contactIdentifier = [frontmostCall contactIdentifier];
 
-    if (!v8)
+    if (!contactIdentifier)
     {
 LABEL_36:
 
       return;
     }
 
-    v9 = [PHInCallUtilities contactStoreForCall:v7];
-    v10 = [v7 contactIdentifier];
+    v9 = [PHInCallUtilities contactStoreForCall:frontmostCall];
+    contactIdentifier2 = [frontmostCall contactIdentifier];
     v11 = +[PHAudioCallViewController contactKeysToFetch];
-    v12 = [(PHAudioCallViewController *)self contactsCache];
-    v13 = [v9 contactForIdentifier:v10 keysToFetch:v11 usingCache:v12];
+    contactsCache = [(PHAudioCallViewController *)self contactsCache];
+    v13 = [v9 contactForIdentifier:contactIdentifier2 keysToFetch:v11 usingCache:contactsCache];
 
     if (!v13 || ![(PHAudioCallViewController *)self canDoInfoButtonCoinFlipWith:v13 contactStore:v9])
     {
@@ -6999,66 +6999,66 @@ LABEL_35:
     {
       if (v17)
       {
-        v18 = [v14 currentNickname];
-        v19 = [v13 imageData];
+        currentNickname = [v14 currentNickname];
+        imageData = [v13 imageData];
         *buf = 138412546;
-        v61 = v18;
+        v61 = currentNickname;
         v62 = 2112;
-        v63 = v19;
+        v63 = imageData;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "SNAP: animateInfoButtonCoinFlipIfNeeded using currentNickname %@ contact.imageData: %@", buf, 0x16u);
       }
 
-      v20 = [v14 currentNickname];
+      currentNickname2 = [v14 currentNickname];
 
       v21 = [CNSharedProfile alloc];
       v22 = v21;
-      if (!v20)
+      if (!currentNickname2)
       {
         v52 = [v21 initWithContact:v13];
         goto LABEL_26;
       }
 
-      v23 = [v14 currentNickname];
+      currentNickname3 = [v14 currentNickname];
     }
 
     else
     {
       if (v17)
       {
-        v24 = [v14 pendingNickname];
+        pendingNickname = [v14 pendingNickname];
         *buf = 138412290;
-        v61 = v24;
+        v61 = pendingNickname;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "SNAP: animateInfoButtonCoinFlipIfNeeded using pendingNickname %@", buf, 0xCu);
       }
 
       v22 = [CNSharedProfile alloc];
-      v23 = [v14 pendingNickname];
+      currentNickname3 = [v14 pendingNickname];
     }
 
-    v25 = v23;
-    v52 = [v22 initWithNickname:v23];
+    v25 = currentNickname3;
+    v52 = [v22 initWithNickname:currentNickname3];
 
 LABEL_26:
-    v26 = [(PHAudioCallViewController *)self callDetailsViewButton];
-    [v26 setAlpha:0.0];
+    callDetailsViewButton2 = [(PHAudioCallViewController *)self callDetailsViewButton];
+    [callDetailsViewButton2 setAlpha:0.0];
 
     v27 = objc_alloc_init(UIView);
     [v27 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v28 = [(PHAudioCallViewController *)self view];
-    [v28 addSubview:v27];
+    view = [(PHAudioCallViewController *)self view];
+    [view addSubview:v27];
 
-    v29 = [v14 pendingNickname];
-    v30 = [v29 avatar];
+    pendingNickname2 = [v14 pendingNickname];
+    avatar = [pendingNickname2 avatar];
 
-    v49 = v30;
+    v49 = avatar;
     if (+[_TtC13InCallService23SensitivityFeatureFlags isSensitivityAvatarTreatmentEnabled])
     {
-      v31 = [v30 contentIsSensitive];
+      contentIsSensitive = [avatar contentIsSensitive];
       v32 = sub_100004F84();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        LODWORD(v61) = v31;
+        LODWORD(v61) = contentIsSensitive;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "SNAP: IMNicknameAvatarImage.contentIsSensitive for infoButton peekaboo returning %d", buf, 8u);
       }
     }
@@ -7072,16 +7072,16 @@ LABEL_26:
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "SNAP: IMNicknameAvatarImage.contentIsSensitive for infoButton peekaboo not performing check", buf, 2u);
       }
 
-      LOBYTE(v31) = 0;
+      LOBYTE(contentIsSensitive) = 0;
     }
 
     v33 = +[ICSPreferences sharedPreferences];
-    v34 = [v33 forceBlurNewPoster];
+    forceBlurNewPoster = [v33 forceBlurNewPoster];
 
-    v35 = v34 | v31;
+    v35 = forceBlurNewPoster | contentIsSensitive;
     v36 = [_TtC13InCallService19BlurrableAvatarView alloc];
-    v37 = [v52 contact];
-    v38 = [(BlurrableAvatarView *)v36 initWithContact:v37 wantsBlur:v35 & 1 isCommunicationSafetyEnabled:+[_TtC13InCallService23SensitivityFeatureFlags isCommunicationSafetyEnabled]];
+    contact = [v52 contact];
+    v38 = [(BlurrableAvatarView *)v36 initWithContact:contact wantsBlur:v35 & 1 isCommunicationSafetyEnabled:+[_TtC13InCallService23SensitivityFeatureFlags isCommunicationSafetyEnabled]];
 
     [(BlurrableAvatarView *)v38 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v27 addSubview:v38];
@@ -7092,12 +7092,12 @@ LABEL_26:
     [v39 setTintColor:v40];
 
     [(PHAudioCallViewController *)self applyCallDetailsViewButtonPositionAndSizeCapToElement:v39];
-    v41 = [(PHAudioCallViewController *)self wallpaperTitleStyleAttributes];
-    v42 = v41;
-    if (v41)
+    wallpaperTitleStyleAttributes = [(PHAudioCallViewController *)self wallpaperTitleStyleAttributes];
+    v42 = wallpaperTitleStyleAttributes;
+    if (wallpaperTitleStyleAttributes)
     {
-      v43 = [v41 titleColor];
-      [v39 setTintColor:v43];
+      titleColor = [wallpaperTitleStyleAttributes titleColor];
+      [v39 setTintColor:titleColor];
     }
 
     v44 = +[TPIncomingCallMetricsProvider callDetailsButtonMaxSize];
@@ -7115,7 +7115,7 @@ LABEL_26:
     v54 = v27;
     v55 = v38;
     v56 = v39;
-    v57 = self;
+    selfCopy = self;
     v58 = v13;
     v59 = v14;
     v45 = v14;
@@ -7138,8 +7138,8 @@ LABEL_26:
     v6 = v5;
     +[TPIncomingCallMetricsProvider fullDeviceHeight];
     v8 = v7 - v4;
-    v9 = [(PHCallViewController *)self bottomBar];
-    [v9 frame];
+    bottomBar = [(PHCallViewController *)self bottomBar];
+    [bottomBar frame];
     v11 = v8 - v10;
 
     [(PRUISPosterRenderingViewController *)self->_renderingViewController salientContentRectangle];
@@ -7168,43 +7168,43 @@ LABEL_26:
 
 - (void)useRTTButtonTapped
 {
-  v4 = [(PHAudioCallViewController *)self frontmostCall];
-  v3 = [(PHAudioCallViewController *)self callCenter];
-  [v3 setTTYType:1 forCall:v4];
+  frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  [callCenter setTTYType:1 forCall:frontmostCall];
 }
 
 - (void)extensionNumberButtonTapped
 {
-  v2 = [(PHAudioCallViewController *)self frontmostCall];
-  [v2 sendHardPauseDigits];
+  frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+  [frontmostCall sendHardPauseDigits];
 }
 
 - (void)callTransferButtonTapped
 {
   v11 = objc_alloc_init(TUCallProviderManager);
   v3 = [TUDialRequest alloc];
-  v4 = [v11 telephonyProvider];
-  v5 = [v3 initWithProvider:v4];
+  telephonyProvider = [v11 telephonyProvider];
+  v5 = [v3 initWithProvider:telephonyProvider];
 
   v6 = [[TUHandle alloc] initWithType:2 value:@"4"];
   [v5 setHandle:v6];
 
   [v5 setOriginatingUIType:38];
-  v7 = [(PHAudioCallViewController *)self frontmostCall];
-  v8 = [v7 localSenderIdentityAccountUUID];
-  [v5 setLocalSenderIdentityAccountUUID:v8];
+  frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+  localSenderIdentityAccountUUID = [frontmostCall localSenderIdentityAccountUUID];
+  [v5 setLocalSenderIdentityAccountUUID:localSenderIdentityAccountUUID];
 
-  v9 = [(PHAudioCallViewController *)self callCenter];
-  v10 = [v9 dialWithRequest:v5];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  v10 = [callCenter dialWithRequest:v5];
 }
 
 - (void)mergeCallsButtonTapped
 {
-  v3 = [(PHAudioCallViewController *)self callCenter];
-  v4 = [v3 callWithStatus:2];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  v4 = [callCenter callWithStatus:2];
 
-  v5 = [(PHAudioCallViewController *)self callCenter];
-  v6 = [v5 callWithStatus:1];
+  callCenter2 = [(PHAudioCallViewController *)self callCenter];
+  v6 = [callCenter2 callWithStatus:1];
 
   v7 = sub_100004F84();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -7216,80 +7216,80 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Supplemental merge button tapped. Grouping held call %@ with active call %@", &v9, 0x16u);
   }
 
-  v8 = [(PHAudioCallViewController *)self callCenter];
-  [v8 groupCall:v4 withOtherCall:v6];
+  callCenter3 = [(PHAudioCallViewController *)self callCenter];
+  [callCenter3 groupCall:v4 withOtherCall:v6];
 }
 
 - (void)removeSupplementalButtons
 {
-  v3 = [(PHAudioCallViewController *)self callTransferButton];
-  [v3 removeFromSuperview];
+  callTransferButton = [(PHAudioCallViewController *)self callTransferButton];
+  [callTransferButton removeFromSuperview];
 
-  v4 = [(PHAudioCallViewController *)self extensionNumberButton];
-  [v4 removeFromSuperview];
+  extensionNumberButton = [(PHAudioCallViewController *)self extensionNumberButton];
+  [extensionNumberButton removeFromSuperview];
 
-  v5 = [(PHAudioCallViewController *)self useRTTButton];
-  [v5 removeFromSuperview];
+  useRTTButton = [(PHAudioCallViewController *)self useRTTButton];
+  [useRTTButton removeFromSuperview];
 
-  v6 = [(PHAudioCallViewController *)self mergeCallsButton];
-  [v6 removeFromSuperview];
+  mergeCallsButton = [(PHAudioCallViewController *)self mergeCallsButton];
+  [mergeCallsButton removeFromSuperview];
 }
 
 - (void)dismissNavigationController
 {
-  v2 = [(PHAudioCallViewController *)self navigationController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(PHAudioCallViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)dismissNavigationControllerAndUpdateScene
 {
   objc_initWeak(&location, self);
-  v3 = [(PHAudioCallViewController *)self navigationController];
+  navigationController = [(PHAudioCallViewController *)self navigationController];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100117B20;
   v4[3] = &unk_100356F60;
   objc_copyWeak(&v5, &location);
-  [v3 dismissViewControllerAnimated:1 completion:v4];
+  [navigationController dismissViewControllerAnimated:1 completion:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_isScreeningAnyCallGroup:(id)a3
+- (BOOL)_isScreeningAnyCallGroup:(id)group
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100117C80;
   v4[3] = &unk_100359130;
   v4[4] = self;
-  return [a3 tu_containsObjectPassingTest:v4];
+  return [group tu_containsObjectPassingTest:v4];
 }
 
-- (BOOL)_isScreeningCallGroup:(id)a3
+- (BOOL)_isScreeningCallGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(PHAudioCallViewController *)self featureFlags];
+  groupCopy = group;
+  featureFlags = [(PHAudioCallViewController *)self featureFlags];
   if (TUCallScreeningEnabled())
   {
-    v6 = [v4 calls];
-    v7 = [v6 firstObject];
-    v8 = [v7 isScreening];
+    calls = [groupCopy calls];
+    firstObject = [calls firstObject];
+    isScreening = [firstObject isScreening];
   }
 
   else
   {
-    v8 = 0;
+    isScreening = 0;
   }
 
-  return v8;
+  return isScreening;
 }
 
-- (void)setIdleState:(unsigned __int16)a3
+- (void)setIdleState:(unsigned __int16)state
 {
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 delegate];
-  [v5 setMostRecentlyDisconnectedAudioCall:0];
+  delegate = [v4 delegate];
+  [delegate setMostRecentlyDisconnectedAudioCall:0];
 
   [PHInCallRootViewController releaseDismissalAssertionForReason:@"PHAudioCallViewControllerDismissalAssertionWaitingForIdle"];
   [(PHAudioCallViewController *)self setCallForBackgroundImage:0 animated:1 callDisplayStyleChanged:0];
@@ -7298,15 +7298,15 @@ LABEL_26:
   [(PHAudioCallViewController *)self _testing_didTransitionToIdleCallState];
 }
 
-- (void)setActiveState:(unsigned __int16)a3
+- (void)setActiveState:(unsigned __int16)state
 {
-  v3 = a3;
-  v5 = [(PHAudioCallViewController *)self callCenter];
-  v6 = [v5 routeController];
+  stateCopy = state;
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  routeController = [callCenter routeController];
 
-  if ([v6 hasAirPodsAvailable])
+  if ([routeController hasAirPodsAvailable])
   {
-    v7 = [v6 hasAirPodsInEar] ^ 1;
+    v7 = [routeController hasAirPodsInEar] ^ 1;
   }
 
   else
@@ -7339,7 +7339,7 @@ LABEL_26:
     objc_destroyWeak(location);
   }
 
-  if (v3 == 5 || [(PHCallViewController *)self currentState]== 5)
+  if (stateCopy == 5 || [(PHCallViewController *)self currentState]== 5)
   {
     [(PHAudioCallViewController *)self updateViewsForHeldCallControlsViewIfNeeded:v40];
   }
@@ -7347,26 +7347,26 @@ LABEL_26:
   v10 = [(PHCallViewController *)self bottomBar:v40];
   [v10 setUserInteractionEnabled:1];
 
-  v11 = [(PHAudioCallViewController *)self currentMiddleView];
+  currentMiddleView = [(PHAudioCallViewController *)self currentMiddleView];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(PHAudioCallViewController *)self currentMiddleView];
-    [v13 setButtonsEnabled:1];
+    currentMiddleView2 = [(PHAudioCallViewController *)self currentMiddleView];
+    [currentMiddleView2 setButtonsEnabled:1];
   }
 
-  v14 = [(PHCallViewController *)self bottomBar];
-  [(PHAudioCallViewController *)self _testing_didTransitionToActiveCallState:v14];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [(PHAudioCallViewController *)self _testing_didTransitionToActiveCallState:bottomBar];
 
-  [(PHCallViewController *)self setWantsApplicationDismissalStyle:v3 == 4];
-  v15 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v15 callDisplayStyle] == 3)
+  [(PHCallViewController *)self setWantsApplicationDismissalStyle:stateCopy == 4];
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v16 = [(PHAudioCallViewController *)self features];
-    v17 = [v16 isDominoEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (v17)
+    if (isDominoEnabled)
     {
       [(PHAudioCallViewController *)self layoutParticipantsViewAnimated:0];
     }
@@ -7376,10 +7376,10 @@ LABEL_26:
   {
   }
 
-  if (v3 == 4)
+  if (stateCopy == 4)
   {
-    v18 = [(PHAudioCallViewController *)self isolatedCall];
-    [(PHAudioCallViewController *)self setCallForBackgroundImage:v18 animated:1 callDisplayStyleChanged:0];
+    isolatedCall = [(PHAudioCallViewController *)self isolatedCall];
+    [(PHAudioCallViewController *)self setCallForBackgroundImage:isolatedCall animated:1 callDisplayStyleChanged:0];
     if ([(PHAudioCallViewController *)self shouldShowNewPosterUpdates])
     {
       [(PHAudioCallViewController *)self updateLayeredBackgroundWallpaper];
@@ -7390,101 +7390,101 @@ LABEL_26:
 
   else
   {
-    v18 = [(PHAudioCallViewController *)self callToUseForWallpaper];
-    [(PHAudioCallViewController *)self setCallForBackgroundImage:v18 animated:1 callDisplayStyleChanged:0];
+    isolatedCall = [(PHAudioCallViewController *)self callToUseForWallpaper];
+    [(PHAudioCallViewController *)self setCallForBackgroundImage:isolatedCall animated:1 callDisplayStyleChanged:0];
   }
 
-  if ([v18 originatingUIType] == 10)
+  if ([isolatedCall originatingUIType] == 10)
   {
-    v19 = [(PHAudioCallViewController *)self callCenter];
-    v20 = [v19 routeController];
-    v21 = [v20 routeForSpeakerEnable];
+    callCenter2 = [(PHAudioCallViewController *)self callCenter];
+    routeController2 = [callCenter2 routeController];
+    routeForSpeakerEnable = [routeController2 routeForSpeakerEnable];
 
-    if (v21)
+    if (routeForSpeakerEnable)
     {
-      v22 = [(PHAudioCallViewController *)self callCenter];
-      v23 = [v22 routeController];
-      [v23 pickRoute:v21];
+      callCenter3 = [(PHAudioCallViewController *)self callCenter];
+      routeController3 = [callCenter3 routeController];
+      [routeController3 pickRoute:routeForSpeakerEnable];
     }
 
     else
     {
-      v22 = sub_100004F84();
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      callCenter3 = sub_100004F84();
+      if (os_log_type_enabled(callCenter3, OS_LOG_TYPE_ERROR))
       {
         sub_10025710C();
       }
     }
 
-    v26 = [(PHAudioCallViewController *)self voiceLoopManager];
-    [v26 startLoopPlayback];
+    voiceLoopManager = [(PHAudioCallViewController *)self voiceLoopManager];
+    [voiceLoopManager startLoopPlayback];
   }
 
   else
   {
-    if ([v18 originatingUIType] != 12)
+    if ([isolatedCall originatingUIType] != 12)
     {
       goto LABEL_35;
     }
 
-    v24 = [(PHAudioCallViewController *)self callCenter];
-    v25 = [v24 routeController];
-    v21 = [v25 routeForSpeakerDisable];
+    callCenter4 = [(PHAudioCallViewController *)self callCenter];
+    routeController4 = [callCenter4 routeController];
+    routeForSpeakerEnable = [routeController4 routeForSpeakerDisable];
 
-    if (v21)
+    if (routeForSpeakerEnable)
     {
-      v26 = [(PHAudioCallViewController *)self callCenter];
-      v27 = [v26 routeController];
-      [v27 pickRoute:v21];
+      voiceLoopManager = [(PHAudioCallViewController *)self callCenter];
+      routeController5 = [voiceLoopManager routeController];
+      [routeController5 pickRoute:routeForSpeakerEnable];
     }
 
     else
     {
-      v26 = sub_100004F84();
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+      voiceLoopManager = sub_100004F84();
+      if (os_log_type_enabled(voiceLoopManager, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(location[0]) = 0;
-        _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "[WARN] PHAudioCallViewController: Could not find available route to pick for speaker disable", location, 2u);
+        _os_log_impl(&_mh_execute_header, voiceLoopManager, OS_LOG_TYPE_DEFAULT, "[WARN] PHAudioCallViewController: Could not find available route to pick for speaker disable", location, 2u);
       }
     }
   }
 
 LABEL_35:
-  v28 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  v29 = [v28 callDisplayStyle];
+  callDisplayStyleManager2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager2 callDisplayStyle];
 
-  if (!v29)
+  if (!callDisplayStyle)
   {
-    v30 = [(PHAudioCallViewController *)self callParticipantsViewController];
-    [v30 setBannerButtonsState:1];
+    callParticipantsViewController = [(PHAudioCallViewController *)self callParticipantsViewController];
+    [callParticipantsViewController setBannerButtonsState:1];
 
-    v31 = [(PHAudioCallViewController *)self callCenter];
-    v32 = [v31 routeController];
-    v33 = [v32 pickedRoute];
-    v34 = [v33 isReceiver];
+    callCenter5 = [(PHAudioCallViewController *)self callCenter];
+    routeController6 = [callCenter5 routeController];
+    pickedRoute = [routeController6 pickedRoute];
+    isReceiver = [pickedRoute isReceiver];
 
     v35 = +[UIApplication sharedApplication];
-    v36 = [v35 delegate];
-    v37 = [v36 currentInCallScene];
-    v38 = [v37 delegate];
-    v39 = [v38 callAnalyticsLogger];
-    [v39 createAnsweredBannerAnalyticsViewWithIsHandsfreeAudioRoute:v34 ^ 1];
+    delegate = [v35 delegate];
+    currentInCallScene = [delegate currentInCallScene];
+    delegate2 = [currentInCallScene delegate];
+    callAnalyticsLogger = [delegate2 callAnalyticsLogger];
+    [callAnalyticsLogger createAnsweredBannerAnalyticsViewWithIsHandsfreeAudioRoute:isReceiver ^ 1];
   }
 
-  [(PHAudioCallViewController *)self _performPosterTransformationsIfNecessaryToState:v3];
+  [(PHAudioCallViewController *)self _performPosterTransformationsIfNecessaryToState:stateCopy];
 }
 
-- (void)_performPosterTransformationsIfNecessaryToState:(unsigned __int16)a3
+- (void)_performPosterTransformationsIfNecessaryToState:(unsigned __int16)state
 {
-  v3 = a3;
-  v10 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  v5 = [v10 callDisplayStyle];
-  if (v3 == 4 && v5 == 2 && ([(PHAudioCallViewController *)self renderingViewController], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  stateCopy = state;
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
+  if (stateCopy == 4 && callDisplayStyle == 2 && ([(PHAudioCallViewController *)self renderingViewController], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
-    v8 = [(PHAudioCallViewController *)self shouldShowContactOrLastSeenWallpaper];
+    shouldShowContactOrLastSeenWallpaper = [(PHAudioCallViewController *)self shouldShowContactOrLastSeenWallpaper];
 
-    if (v8)
+    if (shouldShowContactOrLastSeenWallpaper)
     {
       v11[0] = _NSConcreteStackBlock;
       v11[1] = 3221225472;
@@ -7504,49 +7504,49 @@ LABEL_35:
 
 - (BOOL)isShowingPosterBadge
 {
-  v2 = [(PHAudioCallViewController *)self posterBadgeView];
-  v3 = v2 != 0;
+  posterBadgeView = [(PHAudioCallViewController *)self posterBadgeView];
+  v3 = posterBadgeView != 0;
 
   return v3;
 }
 
-- (void)updatePosterBadgeView:(BOOL)a3 to:(id)a4
+- (void)updatePosterBadgeView:(BOOL)view to:(id)to
 {
-  v4 = a3;
-  v9 = a4;
-  if (v4 && [(PHAudioCallViewController *)self canShowPosterBadgeInAudioCallView:v9])
+  viewCopy = view;
+  toCopy = to;
+  if (viewCopy && [(PHAudioCallViewController *)self canShowPosterBadgeInAudioCallView:toCopy])
   {
     [(PHAudioCallViewController *)self setUpPosterBadgeViewIfNecessary];
   }
 
   else
   {
-    v6 = [(PHAudioCallViewController *)self posterBadgeView];
+    posterBadgeView = [(PHAudioCallViewController *)self posterBadgeView];
 
-    if (v6)
+    if (posterBadgeView)
     {
-      v7 = [(PHAudioCallViewController *)self posterBadgeView];
-      [v7 removeFromSuperview];
+      posterBadgeView2 = [(PHAudioCallViewController *)self posterBadgeView];
+      [posterBadgeView2 removeFromSuperview];
 
       [(PHAudioCallViewController *)self setPosterBadgeView:0];
     }
   }
 
-  v8 = [(PHAudioCallViewController *)self posterBadgeView];
-  [v9 setPosterBadgeView:v8];
+  posterBadgeView3 = [(PHAudioCallViewController *)self posterBadgeView];
+  [toCopy setPosterBadgeView:posterBadgeView3];
 
   [(PHAudioCallViewController *)self synchronizeSingleLabelViewWithPosterText];
 }
 
 - (void)setUpPosterBadgeViewIfNecessary
 {
-  v3 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v3 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v4 = [(PHAudioCallViewController *)self features];
-    v5 = [v4 isDominoEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (v5)
+    if (isDominoEnabled)
     {
       return;
     }
@@ -7556,75 +7556,75 @@ LABEL_35:
   {
   }
 
-  v6 = [(PHAudioCallViewController *)self posterBadgeView];
+  posterBadgeView = [(PHAudioCallViewController *)self posterBadgeView];
 
-  if (v6)
+  if (posterBadgeView)
   {
     return;
   }
 
-  v19 = [(PHAudioCallViewController *)self getParticipantsView_WaitingOrNot];
-  v7 = [v19 singleCallLabelView];
-  v8 = [v7 iconView];
+  getParticipantsView_WaitingOrNot = [(PHAudioCallViewController *)self getParticipantsView_WaitingOrNot];
+  singleCallLabelView = [getParticipantsView_WaitingOrNot singleCallLabelView];
+  iconView = [singleCallLabelView iconView];
 
-  if (v8)
+  if (iconView)
   {
     v9 = objc_alloc_init(UIImageView);
 LABEL_10:
-    v10 = v9;
+    badgeView = v9;
     goto LABEL_11;
   }
 
-  v10 = [v7 badgeView];
+  badgeView = [singleCallLabelView badgeView];
 
-  if (v10)
+  if (badgeView)
   {
     v9 = [[TPBadgeView alloc] initWithTitle:&stru_100361FD0 theme:1];
     goto LABEL_10;
   }
 
 LABEL_11:
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [(PHAudioCallViewController *)self view];
-  [v11 addSubview:v10];
+  [badgeView setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(PHAudioCallViewController *)self view];
+  [view addSubview:badgeView];
 
-  [(PHAudioCallViewController *)self positionPosterBadgeToBeHorizontallyCenteredToInfoButton:v10];
-  v12 = [(PHAudioCallViewController *)self topLeadingContainer];
+  [(PHAudioCallViewController *)self positionPosterBadgeToBeHorizontallyCenteredToInfoButton:badgeView];
+  topLeadingContainer = [(PHAudioCallViewController *)self topLeadingContainer];
 
-  if (v12)
+  if (topLeadingContainer)
   {
-    v13 = [(PHAudioCallViewController *)self topLeadingContainer];
-    v14 = [v13 leadingAnchor];
-    v15 = [v10 trailingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15 constant:8.0];
+    topLeadingContainer2 = [(PHAudioCallViewController *)self topLeadingContainer];
+    leadingAnchor = [topLeadingContainer2 leadingAnchor];
+    trailingAnchor = [badgeView trailingAnchor];
+    v16 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:8.0];
 
     [v16 setActive:1];
   }
 
-  [(PHAudioCallViewController *)self setPosterBadgeView:v10];
-  v17 = [(PHAudioCallViewController *)self posterBadgeView];
+  [(PHAudioCallViewController *)self setPosterBadgeView:badgeView];
+  posterBadgeView2 = [(PHAudioCallViewController *)self posterBadgeView];
   v18 = +[TPIncomingCallMetricsProvider posterBadgeMaxSize];
-  [v17 setMaximumContentSizeCategory:v18];
+  [posterBadgeView2 setMaximumContentSizeCategory:v18];
 }
 
-- (void)_updatePosterStatusLabelForState:(unsigned __int16)a3
+- (void)_updatePosterStatusLabelForState:(unsigned __int16)state
 {
-  v3 = a3;
-  v5 = [(PHAudioCallViewController *)self posterNameViewModel];
+  stateCopy = state;
+  posterNameViewModel = [(PHAudioCallViewController *)self posterNameViewModel];
 
-  if (v5)
+  if (posterNameViewModel)
   {
-    v6 = [(PHAudioCallViewController *)self getParticipantsView_WaitingOrNot];
-    v7 = [(PHAudioCallViewController *)self posterNameViewModel];
-    [v7 updateStatusFromParticipantsView:v6];
+    getParticipantsView_WaitingOrNot = [(PHAudioCallViewController *)self getParticipantsView_WaitingOrNot];
+    posterNameViewModel2 = [(PHAudioCallViewController *)self posterNameViewModel];
+    [posterNameViewModel2 updateStatusFromParticipantsView:getParticipantsView_WaitingOrNot];
 
-    if (v3 <= 0xB && ((1 << v3) & 0x814) != 0)
+    if (stateCopy <= 0xB && ((1 << stateCopy) & 0x814) != 0)
     {
       [(PHAudioCallViewController *)self _updatePosterNameAlpha];
-      v8 = [(PHAudioCallViewController *)self view];
-      v9 = [v8 window];
+      view = [(PHAudioCallViewController *)self view];
+      window = [view window];
 
-      v10 = v9 != 0;
+      v10 = window != 0;
       if ([(PHAudioCallViewController *)self shouldShowNewPosterUpdates])
       {
         v11 = dispatch_time(0, 850000000);
@@ -7639,8 +7639,8 @@ LABEL_11:
 
       else
       {
-        v12 = [(PHAudioCallViewController *)self posterNameViewModel];
-        [v12 transitionCallToActiveStateAnimated:v10];
+        posterNameViewModel3 = [(PHAudioCallViewController *)self posterNameViewModel];
+        [posterNameViewModel3 transitionCallToActiveStateAnimated:v10];
       }
     }
 
@@ -7648,32 +7648,32 @@ LABEL_11:
   }
 }
 
-- (void)setRingingState:(unsigned __int16)a3
+- (void)setRingingState:(unsigned __int16)state
 {
-  v4 = [(PHAudioCallViewController *)self presentedViewController];
+  presentedViewController = [(PHAudioCallViewController *)self presentedViewController];
 
-  if (v4)
+  if (presentedViewController)
   {
     [(PHAudioCallViewController *)self dismissViewControllerAnimated:1 completion:0];
   }
 
   [(PHAudioCallViewController *)self updateShouldShowLargeAvatar];
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 delegate];
-  v7 = [v6 currentInCallScene];
-  v8 = [v7 isBeingShownAboveCoverSheet];
+  delegate = [v5 delegate];
+  currentInCallScene = [delegate currentInCallScene];
+  isBeingShownAboveCoverSheet = [currentInCallScene isBeingShownAboveCoverSheet];
 
-  v9 = [(PHAudioCallViewController *)self callCenter];
-  v25 = [v9 incomingCall];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  incomingCall = [callCenter incomingCall];
 
-  v10 = [(PHAudioCallViewController *)self setCallForBackgroundImage:v25 animated:1 callDisplayStyleChanged:0];
+  v10 = [(PHAudioCallViewController *)self setCallForBackgroundImage:incomingCall animated:1 callDisplayStyleChanged:0];
   v11 = 4;
   if (v10)
   {
     v11 = 5;
   }
 
-  if (v8)
+  if (isBeingShownAboveCoverSheet)
   {
     v12 = v11;
   }
@@ -7683,13 +7683,13 @@ LABEL_11:
     v12 = 0;
   }
 
-  v13 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v13 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v14 = [(PHAudioCallViewController *)self features];
-    v15 = [v14 isDominoEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (v15)
+    if (isDominoEnabled)
     {
       v12 = 0;
     }
@@ -7699,56 +7699,56 @@ LABEL_11:
   {
   }
 
-  v16 = [v25 isMessagingAllowed];
-  v17 = [(PHCallViewController *)self bottomBar];
-  [v17 setDeclineAndMessageIsAvailable:v16];
+  isMessagingAllowed = [incomingCall isMessagingAllowed];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar setDeclineAndMessageIsAvailable:isMessagingAllowed];
 
-  v18 = [v25 isReminderAllowed];
-  v19 = [(PHCallViewController *)self bottomBar];
-  [v19 setDeclineAndRemindIsAvailable:v18];
+  isReminderAllowed = [incomingCall isReminderAllowed];
+  bottomBar2 = [(PHCallViewController *)self bottomBar];
+  [bottomBar2 setDeclineAndRemindIsAvailable:isReminderAllowed];
 
-  v20 = [(PHCallViewController *)self bottomBar];
-  [v20 setCurrentState:v12];
+  bottomBar3 = [(PHCallViewController *)self bottomBar];
+  [bottomBar3 setCurrentState:v12];
 
   [(PHAudioCallViewController *)self setMiddleViewState:0 animated:0];
-  v21 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  v22 = [v21 callDisplayStyle];
+  callDisplayStyleManager2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  callDisplayStyle = [callDisplayStyleManager2 callDisplayStyle];
 
-  if (!v22)
+  if (!callDisplayStyle)
   {
-    v23 = [(PHAudioCallViewController *)self callParticipantsViewController];
-    [v23 setBannerButtonsState:0];
+    callParticipantsViewController = [(PHAudioCallViewController *)self callParticipantsViewController];
+    [callParticipantsViewController setBannerButtonsState:0];
   }
 
-  v24 = [(PHCallViewController *)self bottomBar];
-  [(PHAudioCallViewController *)self _testing_didTransitionToIncomingRingingCallState:v24];
+  bottomBar4 = [(PHCallViewController *)self bottomBar];
+  [(PHAudioCallViewController *)self _testing_didTransitionToIncomingRingingCallState:bottomBar4];
 }
 
-- (void)setWaitingState:(unsigned __int16)a3
+- (void)setWaitingState:(unsigned __int16)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 134217984;
-    v24 = v3;
+    v24 = stateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "setWaitingState: %lu", &v23, 0xCu);
   }
 
-  v6 = [(PHAudioCallViewController *)self callCenter];
-  v7 = [v6 incomingCall];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  incomingCall = [callCenter incomingCall];
 
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 delegate];
-  v10 = [v9 isPresentingAmbient];
+  delegate = [v8 delegate];
+  isPresentingAmbient = [delegate isPresentingAmbient];
 
-  if ((v10 & 1) == 0)
+  if ((isPresentingAmbient & 1) == 0)
   {
-    v11 = [v7 provider];
-    if ([v11 supportsDynamicSystemUI])
+    provider = [incomingCall provider];
+    if ([provider supportsDynamicSystemUI])
     {
-      v12 = [(PHAudioCallViewController *)self featureFlags];
-      if ([v12 groupConversations])
+      featureFlags = [(PHAudioCallViewController *)self featureFlags];
+      if ([featureFlags groupConversations])
       {
         HasChinaSKU = TUDeviceHasChinaSKU();
 
@@ -7762,118 +7762,118 @@ LABEL_11:
     }
 
 LABEL_10:
-    v14 = [(PHAudioCallViewController *)self inCallRootViewController];
-    [v14 requestInCallSceneTransitionToFullScreen];
+    inCallRootViewController = [(PHAudioCallViewController *)self inCallRootViewController];
+    [inCallRootViewController requestInCallSceneTransitionToFullScreen];
   }
 
 LABEL_11:
-  [(PHAudioCallViewController *)self setShouldShowLargeAvatarForCallWaiting:[(PHAudioCallViewController *)self shouldShowLargeAvatarForCall:v7]];
-  [(PHAudioCallViewController *)self setCallForBackgroundImage:v7 animated:1 callDisplayStyleChanged:0];
+  [(PHAudioCallViewController *)self setShouldShowLargeAvatarForCallWaiting:[(PHAudioCallViewController *)self shouldShowLargeAvatarForCall:incomingCall]];
+  [(PHAudioCallViewController *)self setCallForBackgroundImage:incomingCall animated:1 callDisplayStyleChanged:0];
   if ([(PHAudioCallViewController *)self participantsViewControllersShouldIgnoreUpdates])
   {
-    v15 = [(PHAudioCallViewController *)self callCenter];
-    v16 = [v15 autoPunchOutBehaviorRequiredForCurrentCalls];
+    callCenter2 = [(PHAudioCallViewController *)self callCenter];
+    autoPunchOutBehaviorRequiredForCurrentCalls = [callCenter2 autoPunchOutBehaviorRequiredForCurrentCalls];
 
-    if ((v16 & 1) == 0)
+    if ((autoPunchOutBehaviorRequiredForCurrentCalls & 1) == 0)
     {
       [(PHAudioCallViewController *)self setParticipantsViewControllersShouldIgnoreUpdates:0];
     }
   }
 
   [(PHAudioCallViewController *)self setShowsCallWaitingParticipantView:1];
-  v17 = [v7 isMessagingAllowed];
-  v18 = [(PHCallViewController *)self bottomBar];
-  [v18 setDeclineAndMessageIsAvailable:v17];
+  isMessagingAllowed = [incomingCall isMessagingAllowed];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar setDeclineAndMessageIsAvailable:isMessagingAllowed];
 
-  v19 = [v7 isReminderAllowed];
-  v20 = [(PHCallViewController *)self bottomBar];
-  [v20 setDeclineAndRemindIsAvailable:v19];
+  isReminderAllowed = [incomingCall isReminderAllowed];
+  bottomBar2 = [(PHCallViewController *)self bottomBar];
+  [bottomBar2 setDeclineAndRemindIsAvailable:isReminderAllowed];
 
-  v21 = [(PHCallViewController *)self bottomBar];
-  [v21 setUserInteractionEnabled:1];
+  bottomBar3 = [(PHCallViewController *)self bottomBar];
+  [bottomBar3 setUserInteractionEnabled:1];
 
-  v22 = [(PHCallViewController *)self bottomBar];
-  [v22 setCurrentState:-[PHAudioCallViewController bottomBarStateForCallWaitingCall](self animated:"bottomBarStateForCallWaitingCall") animationCompletionBlock:{0, 0}];
+  bottomBar4 = [(PHCallViewController *)self bottomBar];
+  [bottomBar4 setCurrentState:-[PHAudioCallViewController bottomBarStateForCallWaitingCall](self animated:"bottomBarStateForCallWaitingCall") animationCompletionBlock:{0, 0}];
 
   [(PHAudioCallViewController *)self setMiddleViewState:0 animated:1];
   [(PHCallViewController *)self setWantsApplicationDismissalStyle:0];
 }
 
-- (void)setEndedState:(unsigned __int16)a3
+- (void)setEndedState:(unsigned __int16)state
 {
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 delegate];
-  v6 = [v5 mostRecentlyDisconnectedAudioCall];
+  delegate = [v4 delegate];
+  mostRecentlyDisconnectedAudioCall = [delegate mostRecentlyDisconnectedAudioCall];
 
-  v7 = [(PHAudioCallViewController *)self currentMiddleView];
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  currentMiddleView = [(PHAudioCallViewController *)self currentMiddleView];
+  LOBYTE(delegate) = objc_opt_respondsToSelector();
 
-  if (v5)
+  if (delegate)
   {
-    v8 = [(PHAudioCallViewController *)self currentMiddleView];
-    [v8 setButtonsEnabled:0];
+    currentMiddleView2 = [(PHAudioCallViewController *)self currentMiddleView];
+    [currentMiddleView2 setButtonsEnabled:0];
   }
 
   [(SOSEmergencyCallVoiceLoopManager *)self->_voiceLoopManager invalidate];
   v9 = sub_100004F84();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 contactIdentifiers];
-    v11 = [v10 count];
-    v12 = [v6 isOutgoing];
-    v13 = [v6 dateConnected];
-    v14 = [v13 description];
-    v15 = [v6 provider];
+    contactIdentifiers = [mostRecentlyDisconnectedAudioCall contactIdentifiers];
+    v11 = [contactIdentifiers count];
+    isOutgoing = [mostRecentlyDisconnectedAudioCall isOutgoing];
+    dateConnected = [mostRecentlyDisconnectedAudioCall dateConnected];
+    v14 = [dateConnected description];
+    provider = [mostRecentlyDisconnectedAudioCall provider];
     v27 = 134218754;
     v28 = v11;
     v29 = 1024;
-    v30 = v12;
+    v30 = isOutgoing;
     v31 = 2112;
     v32 = v14;
     v33 = 1024;
-    v34 = [v15 isFaceTimeProvider];
+    isFaceTimeProvider = [provider isFaceTimeProvider];
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "(disconnectedCall.contactIdentifiers.count: %lu && \n\n !(disconnectedCall.isOutgoing: %d && disconnectedCall.dateConnected: %@) && \n\n disconnectedCall.provider.isFaceTimeProvider: %d)", &v27, 0x22u);
   }
 
-  if (![v6 disconnectedReasonRequiresCallBackUI] || !-[PHAudioCallViewController isUserInterfaceShowing](self, "isUserInterfaceShowing"))
+  if (![mostRecentlyDisconnectedAudioCall disconnectedReasonRequiresCallBackUI] || !-[PHAudioCallViewController isUserInterfaceShowing](self, "isUserInterfaceShowing"))
   {
-    v17 = [(PHAudioCallViewController *)self UUIDForLocallyDisconnectedCall];
-    v18 = [v6 callUUID];
-    if ([v17 isEqualToString:v18])
+    uUIDForLocallyDisconnectedCall = [(PHAudioCallViewController *)self UUIDForLocallyDisconnectedCall];
+    callUUID = [mostRecentlyDisconnectedAudioCall callUUID];
+    if ([uUIDForLocallyDisconnectedCall isEqualToString:callUUID])
     {
     }
 
     else
     {
       v19 = +[UIApplication sharedApplication];
-      v20 = [v19 delegate];
-      v21 = [v20 hasExistingFullScreenInCallScene];
+      delegate2 = [v19 delegate];
+      hasExistingFullScreenInCallScene = [delegate2 hasExistingFullScreenInCallScene];
 
-      if (v21)
+      if (hasExistingFullScreenInCallScene)
       {
         [PHInCallRootViewController obtainDismissalAssertionForReason:@"PHAudioCallViewControllerDismissalAssertionWaitingForIdle"];
       }
     }
 
-    v22 = [(PHCallViewController *)self bottomBar];
-    [v22 setUserInteractionEnabled:0];
+    bottomBar = [(PHCallViewController *)self bottomBar];
+    [bottomBar setUserInteractionEnabled:0];
 
     [(PHCallViewController *)self transitionToIdleAfterDelay];
-    v23 = [(PHAudioCallViewController *)self inCallRootViewController];
-    [v23 showFailureOrFallbackAlertIfNecessaryForCall:v6];
+    inCallRootViewController = [(PHAudioCallViewController *)self inCallRootViewController];
+    [inCallRootViewController showFailureOrFallbackAlertIfNecessaryForCall:mostRecentlyDisconnectedAudioCall];
     goto LABEL_15;
   }
 
   [(PHAudioCallViewController *)self transitionToFullScreenIfNecessary];
   [PHInCallRootViewController obtainDismissalAssertionForReason:@"PHAudioCallViewControllerDismissalAssertionHandlingCallFailure"];
   [(PHAudioCallViewController *)self setMiddleViewState:0];
-  [(PHAudioCallViewController *)self setCallForBackgroundImage:v6 animated:1 callDisplayStyleChanged:0];
-  if ([v6 service] == 2 && (objc_msgSend(v6, "isMessagingAllowed") & 1) != 0)
+  [(PHAudioCallViewController *)self setCallForBackgroundImage:mostRecentlyDisconnectedAudioCall animated:1 callDisplayStyleChanged:0];
+  if ([mostRecentlyDisconnectedAudioCall service] == 2 && (objc_msgSend(mostRecentlyDisconnectedAudioCall, "isMessagingAllowed") & 1) != 0)
   {
     v16 = 17;
   }
 
-  else if ([v6 isCallbackAllowed])
+  else if ([mostRecentlyDisconnectedAudioCall isCallbackAllowed])
   {
     v16 = 13;
   }
@@ -7883,25 +7883,25 @@ LABEL_11:
     v16 = 18;
   }
 
-  v25 = [(PHCallViewController *)self bottomBar];
-  [v25 setCurrentState:v16 animated:1 animationCompletionBlock:0];
+  bottomBar2 = [(PHCallViewController *)self bottomBar];
+  [bottomBar2 setCurrentState:v16 animated:1 animationCompletionBlock:0];
 
-  v26 = [(PHCallViewController *)self bottomBar];
-  [v26 setUserInteractionEnabled:1];
+  bottomBar3 = [(PHCallViewController *)self bottomBar];
+  [bottomBar3 setUserInteractionEnabled:1];
 
-  if ([(PHAudioCallViewController *)self shouldShowEnableWiFiCallingAlertForCall:v6])
+  if ([(PHAudioCallViewController *)self shouldShowEnableWiFiCallingAlertForCall:mostRecentlyDisconnectedAudioCall])
   {
-    v23 = +[UIAlertController enableWiFiCallingAlertController];
-    if (v23)
+    inCallRootViewController = +[UIAlertController enableWiFiCallingAlertController];
+    if (inCallRootViewController)
     {
-      [(PHAudioCallViewController *)self presentViewController:v23 animated:1 completion:0];
+      [(PHAudioCallViewController *)self presentViewController:inCallRootViewController animated:1 completion:0];
       PHIncrementWifiCallingAlertShowCount();
     }
 
 LABEL_15:
   }
 
-  if ([v6 disconnectedReason] == 34)
+  if ([mostRecentlyDisconnectedAudioCall disconnectedReason] == 34)
   {
     [(PHAudioCallViewController *)self setMiddleViewState:0];
     v24 = sub_100004F84();
@@ -7915,56 +7915,56 @@ LABEL_15:
   }
 }
 
-- (void)setEndingState:(unsigned __int16)a3
+- (void)setEndingState:(unsigned __int16)state
 {
-  v4 = [(PHCallViewController *)self bottomBar];
-  [v4 setUserInteractionEnabled:0];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar setUserInteractionEnabled:0];
 
-  v5 = [(PHAudioCallViewController *)self currentMiddleView];
+  currentMiddleView = [(PHAudioCallViewController *)self currentMiddleView];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PHAudioCallViewController *)self currentMiddleView];
-    [v7 setButtonsEnabled:0];
+    currentMiddleView2 = [(PHAudioCallViewController *)self currentMiddleView];
+    [currentMiddleView2 setButtonsEnabled:0];
   }
 
   [(SOSEmergencyCallVoiceLoopManager *)self->_voiceLoopManager invalidate];
-  v8 = [(PHAudioCallViewController *)self isolatedCall];
-  v9 = v8;
-  if (v8)
+  isolatedCall = [(PHAudioCallViewController *)self isolatedCall];
+  v9 = isolatedCall;
+  if (isolatedCall)
   {
-    v10 = v8;
-    v8 = [(PHAudioCallViewController *)self setCallForBackgroundImage:v8 animated:0 callDisplayStyleChanged:0];
+    v10 = isolatedCall;
+    isolatedCall = [(PHAudioCallViewController *)self setCallForBackgroundImage:isolatedCall animated:0 callDisplayStyleChanged:0];
     v9 = v10;
   }
 
-  _objc_release_x1(v8, v9);
+  _objc_release_x1(isolatedCall, v9);
 }
 
-- (void)setOutgoingRingingState:(unsigned __int16)a3
+- (void)setOutgoingRingingState:(unsigned __int16)state
 {
-  v4 = [(PHAudioCallViewController *)self callCenter];
-  v5 = [v4 currentCallGroups];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  currentCallGroups = [callCenter currentCallGroups];
 
-  v6 = [v5 lastObject];
-  if ([v6 originatingUIType] == 10)
+  lastObject = [currentCallGroups lastObject];
+  if ([lastObject originatingUIType] == 10)
   {
-    v7 = [(PHAudioCallViewController *)self callCenter];
-    v8 = [v7 routeController];
-    v9 = [v8 pickedRoute];
-    v10 = [v9 isSpeaker];
+    callCenter2 = [(PHAudioCallViewController *)self callCenter];
+    routeController = [callCenter2 routeController];
+    pickedRoute = [routeController pickedRoute];
+    isSpeaker = [pickedRoute isSpeaker];
 
-    if ((v10 & 1) == 0)
+    if ((isSpeaker & 1) == 0)
     {
-      v19 = [(PHAudioCallViewController *)self callCenter];
-      v20 = [v19 routeController];
-      v17 = [v20 routeForSpeakerEnable];
+      callCenter3 = [(PHAudioCallViewController *)self callCenter];
+      routeController2 = [callCenter3 routeController];
+      routeForSpeakerEnable = [routeController2 routeForSpeakerEnable];
 
-      if (!v17)
+      if (!routeForSpeakerEnable)
       {
-        v18 = sub_100004F84();
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+        callCenter6 = sub_100004F84();
+        if (os_log_type_enabled(callCenter6, OS_LOG_TYPE_ERROR))
         {
           sub_10025710C();
         }
@@ -7976,59 +7976,59 @@ LABEL_15:
     }
   }
 
-  if ([v6 originatingUIType] == 12)
+  if ([lastObject originatingUIType] == 12)
   {
-    v11 = [(PHAudioCallViewController *)self callCenter];
-    v12 = [v11 routeController];
-    v13 = [v12 pickedRoute];
-    v14 = [v13 isReceiver];
+    callCenter4 = [(PHAudioCallViewController *)self callCenter];
+    routeController3 = [callCenter4 routeController];
+    pickedRoute2 = [routeController3 pickedRoute];
+    isReceiver = [pickedRoute2 isReceiver];
 
-    if ((v14 & 1) == 0)
+    if ((isReceiver & 1) == 0)
     {
-      v15 = [(PHAudioCallViewController *)self callCenter];
-      v16 = [v15 routeController];
-      v17 = [v16 routeForSpeakerDisable];
+      callCenter5 = [(PHAudioCallViewController *)self callCenter];
+      routeController4 = [callCenter5 routeController];
+      routeForSpeakerEnable = [routeController4 routeForSpeakerDisable];
 
-      if (!v17)
+      if (!routeForSpeakerEnable)
       {
-        v18 = sub_100004F84();
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+        callCenter6 = sub_100004F84();
+        if (os_log_type_enabled(callCenter6, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[WARN] PHAudioCallViewController: Could not find available route to pick for speaker disable", buf, 2u);
+          _os_log_impl(&_mh_execute_header, callCenter6, OS_LOG_TYPE_DEFAULT, "[WARN] PHAudioCallViewController: Could not find available route to pick for speaker disable", buf, 2u);
         }
 
         goto LABEL_12;
       }
 
 LABEL_9:
-      v18 = [(PHAudioCallViewController *)self callCenter];
-      v21 = [v18 routeController];
-      [v21 pickRoute:v17];
+      callCenter6 = [(PHAudioCallViewController *)self callCenter];
+      routeController5 = [callCenter6 routeController];
+      [routeController5 pickRoute:routeForSpeakerEnable];
 
 LABEL_12:
     }
   }
 
-  v22 = [(PHAudioCallViewController *)self isolatedCall];
-  [(PHAudioCallViewController *)self setCallForBackgroundImage:v22 animated:1 callDisplayStyleChanged:0];
+  isolatedCall = [(PHAudioCallViewController *)self isolatedCall];
+  [(PHAudioCallViewController *)self setCallForBackgroundImage:isolatedCall animated:1 callDisplayStyleChanged:0];
 
   v39 = _NSConcreteStackBlock;
   v40 = 3221225472;
   v41 = sub_10011996C;
   v42 = &unk_100356D10;
-  v23 = v6;
+  v23 = lastObject;
   v43 = v23;
-  v44 = self;
+  selfCopy = self;
   v24 = objc_retainBlock(&v39);
   -[PHAudioCallViewController setMiddleViewState:animated:completion:](self, "setMiddleViewState:animated:completion:", 1, [v23 isVoicemail] ^ 1, v24);
-  v25 = [(PHAudioCallViewController *)self currentMiddleView];
+  currentMiddleView = [(PHAudioCallViewController *)self currentMiddleView];
   v26 = objc_opt_respondsToSelector();
 
   if (v26)
   {
-    v27 = [(PHAudioCallViewController *)self currentMiddleView];
-    [v27 setButtonsEnabled:1];
+    currentMiddleView2 = [(PHAudioCallViewController *)self currentMiddleView];
+    [currentMiddleView2 setButtonsEnabled:1];
   }
 
   if ([v23 isVoicemail])
@@ -8037,52 +8037,52 @@ LABEL_12:
   }
 
   [(PHCallViewController *)self setWantsApplicationDismissalStyle:1];
-  v28 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v28 callDisplayStyle] != 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
     goto LABEL_24;
   }
 
-  v29 = [(PHAudioCallViewController *)self features];
-  if (![v29 isDominoEnabled])
+  features = [(PHAudioCallViewController *)self features];
+  if (![features isDominoEnabled])
   {
     goto LABEL_23;
   }
 
   v30 = +[UIApplication sharedApplication];
-  v31 = [v30 delegate];
-  v32 = [v31 currentInCallScene];
-  v33 = [v32 presentationMode];
+  delegate = [v30 delegate];
+  currentInCallScene = [delegate currentInCallScene];
+  presentationMode = [currentInCallScene presentationMode];
 
-  if (!v33)
+  if (!presentationMode)
   {
-    v34 = [(PHAudioCallViewController *)self callCenter];
-    v28 = [v34 routeController];
+    callCenter7 = [(PHAudioCallViewController *)self callCenter];
+    callDisplayStyleManager = [callCenter7 routeController];
 
-    v35 = [v28 routeForSpeakerEnable];
-    if (!v35)
+    routeForSpeakerEnable2 = [callDisplayStyleManager routeForSpeakerEnable];
+    if (!routeForSpeakerEnable2)
     {
       goto LABEL_24;
     }
 
-    v36 = v35;
-    v37 = [v28 pickedRoute];
-    v38 = [v37 isReceiver];
+    v36 = routeForSpeakerEnable2;
+    pickedRoute3 = [callDisplayStyleManager pickedRoute];
+    isReceiver2 = [pickedRoute3 isReceiver];
 
-    if (!v38)
+    if (!isReceiver2)
     {
       goto LABEL_24;
     }
 
-    v29 = [v28 routeForSpeakerEnable];
-    [v28 pickRoute:v29];
+    features = [callDisplayStyleManager routeForSpeakerEnable];
+    [callDisplayStyleManager pickRoute:features];
 LABEL_23:
 
 LABEL_24:
   }
 }
 
-- (void)setCallBufferState:(unsigned __int16)a3
+- (void)setCallBufferState:(unsigned __int16)state
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -8093,11 +8093,11 @@ LABEL_24:
 
   if ([(PHAudioCallViewController *)self middleViewState]== 1)
   {
-    v5 = [(PHAudioCallViewController *)self currentMiddleView];
-    [v5 setButtonsEnabled:0];
+    currentMiddleView = [(PHAudioCallViewController *)self currentMiddleView];
+    [currentMiddleView setButtonsEnabled:0];
 
-    v6 = [(PHAudioCallViewController *)self currentMiddleView];
-    v7 = [v6 buttonForControlType:15];
+    currentMiddleView2 = [(PHAudioCallViewController *)self currentMiddleView];
+    v7 = [currentMiddleView2 buttonForControlType:15];
     [v7 setEnabled:1];
   }
 
@@ -8114,8 +8114,8 @@ LABEL_24:
     objc_destroyWeak(buf);
   }
 
-  v8 = [(PHCallViewController *)self bottomBar];
-  [v8 setUserInteractionEnabled:1];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar setUserInteractionEnabled:1];
 
   [(PHAudioCallViewController *)self setCallForBackgroundImage:0 animated:1 callDisplayStyleChanged:0];
   [(PHAudioCallViewController *)self displayDialledNumberDetailsForCallBufferScreen];
@@ -8123,27 +8123,27 @@ LABEL_24:
   [(PHAudioCallViewController *)self startCallBufferScreenCountdown];
 }
 
-- (void)setAlertModeNeededState:(unsigned __int16)a3
+- (void)setAlertModeNeededState:(unsigned __int16)state
 {
   if ([(PHAudioCallViewController *)self shouldPresentAlertButton])
   {
-    v4 = [(PHCallViewController *)self bottomBar];
-    [v4 setUserInteractionEnabled:1];
+    bottomBar = [(PHCallViewController *)self bottomBar];
+    [bottomBar setUserInteractionEnabled:1];
 
     if ([(PHAudioCallViewController *)self middleViewState]== 2)
     {
-      v5 = sub_100004F84();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+      bottomBar2 = sub_100004F84();
+      if (os_log_type_enabled(bottomBar2, OS_LOG_TYPE_DEFAULT))
       {
         *v6 = 0;
-        _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PHAudioCallViewController skips updating bottomBarButton to alert style since keypad is expanded", v6, 2u);
+        _os_log_impl(&_mh_execute_header, bottomBar2, OS_LOG_TYPE_DEFAULT, "PHAudioCallViewController skips updating bottomBarButton to alert style since keypad is expanded", v6, 2u);
       }
     }
 
     else
     {
-      v5 = [(PHCallViewController *)self bottomBar];
-      [v5 setCurrentState:22];
+      bottomBar2 = [(PHCallViewController *)self bottomBar];
+      [bottomBar2 setCurrentState:22];
     }
 
     [(PHAudioCallViewController *)self speakAlertUtteranceIfNecessary];
@@ -8157,66 +8157,66 @@ LABEL_24:
   {
 
 LABEL_6:
-    v6 = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
-    v7 = [v6 singleCallLabelView];
-    v8 = [v7 statusLabel];
+    getParticipantsView_NotWaiting = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
+    singleCallLabelView = [getParticipantsView_NotWaiting singleCallLabelView];
+    statusLabel = [singleCallLabelView statusLabel];
 
-    v9 = [(PHAudioCallViewController *)self emergencyTextViaSatelliteLabel];
+    emergencyTextViaSatelliteLabel = [(PHAudioCallViewController *)self emergencyTextViaSatelliteLabel];
 
-    if (!v9)
+    if (!emergencyTextViaSatelliteLabel)
     {
-      v10 = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
-      [v10 removeFromSuperview];
+      defaultBackgroundGradientView = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
+      [defaultBackgroundGradientView removeFromSuperview];
 
       [(PHAudioCallViewController *)self setDefaultBackgroundGradientView:0];
       v11 = +[UIColor blackColor];
-      v12 = [(PHAudioCallViewController *)self view];
-      [v12 setBackgroundColor:v11];
+      view = [(PHAudioCallViewController *)self view];
+      [view setBackgroundColor:v11];
 
       v13 = objc_alloc_init(UILabel);
-      v14 = [v8 text];
-      [v13 setText:v14];
+      text = [statusLabel text];
+      [v13 setText:text];
 
-      v15 = [v8 font];
-      [v13 setFont:v15];
+      font = [statusLabel font];
+      [v13 setFont:font];
 
       [v13 setNumberOfLines:3];
       [v13 setTextAlignment:1];
-      v16 = [v8 textColor];
-      [v13 setTextColor:v16];
+      textColor = [statusLabel textColor];
+      [v13 setTextColor:textColor];
 
       [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
       [(PHAudioCallViewController *)self setEmergencyTextViaSatelliteLabel:v13];
-      v17 = [(PHAudioCallViewController *)self view];
-      [v17 addSubview:v13];
+      view2 = [(PHAudioCallViewController *)self view];
+      [view2 addSubview:v13];
 
-      v39 = [v13 leadingAnchor];
-      v37 = [v6 leadingAnchor];
-      v36 = [v39 constraintEqualToAnchor:v37];
+      leadingAnchor = [v13 leadingAnchor];
+      leadingAnchor2 = [getParticipantsView_NotWaiting leadingAnchor];
+      v36 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v40[0] = v36;
-      v35 = [v13 trailingAnchor];
-      v34 = [v6 trailingAnchor];
-      v33 = [v35 constraintEqualToAnchor:v34];
+      trailingAnchor = [v13 trailingAnchor];
+      trailingAnchor2 = [getParticipantsView_NotWaiting trailingAnchor];
+      v33 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v40[1] = v33;
-      v31 = [v13 centerXAnchor];
-      v32 = [(PHAudioCallViewController *)self view];
-      v30 = [v32 centerXAnchor];
-      v18 = [v31 constraintEqualToAnchor:v30];
+      centerXAnchor = [v13 centerXAnchor];
+      view3 = [(PHAudioCallViewController *)self view];
+      centerXAnchor2 = [view3 centerXAnchor];
+      v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v40[2] = v18;
-      v19 = [v13 centerYAnchor];
-      v20 = [(PHAudioCallViewController *)self view];
-      v21 = [v20 centerYAnchor];
-      v22 = [v19 constraintEqualToAnchor:v21];
+      centerYAnchor = [v13 centerYAnchor];
+      view4 = [(PHAudioCallViewController *)self view];
+      centerYAnchor2 = [view4 centerYAnchor];
+      v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v40[3] = v22;
       [NSArray arrayWithObjects:v40 count:4];
-      v24 = v23 = v6;
+      v24 = v23 = getParticipantsView_NotWaiting;
       [NSLayoutConstraint activateConstraints:v24];
 
-      v6 = v23;
+      getParticipantsView_NotWaiting = v23;
     }
 
-    v25 = [(PHCallViewController *)self bottomBar];
-    if ([v25 currentState] == 19)
+    bottomBar = [(PHCallViewController *)self bottomBar];
+    if ([bottomBar currentState] == 19)
     {
       v26 = 0.0;
     }
@@ -8226,11 +8226,11 @@ LABEL_6:
       v26 = 1.0;
     }
 
-    v27 = [(PHAudioCallViewController *)self emergencyTextViaSatelliteLabel];
-    [v27 setAlpha:v26];
+    emergencyTextViaSatelliteLabel2 = [(PHAudioCallViewController *)self emergencyTextViaSatelliteLabel];
+    [emergencyTextViaSatelliteLabel2 setAlpha:v26];
 
-    v28 = [(PHCallViewController *)self bottomBar];
-    if ([v28 currentState] == 19)
+    bottomBar2 = [(PHCallViewController *)self bottomBar];
+    if ([bottomBar2 currentState] == 19)
     {
       v29 = 1.0;
     }
@@ -8240,18 +8240,18 @@ LABEL_6:
       v29 = 0.0;
     }
 
-    [v8 setAlpha:v29];
+    [statusLabel setAlpha:v29];
 
     return;
   }
 
-  v3 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v3 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v4 = [(PHAudioCallViewController *)self features];
-    v5 = [v4 isDominoEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (!v5)
+    if (!isDominoEnabled)
     {
       return;
     }
@@ -8260,16 +8260,16 @@ LABEL_6:
   }
 }
 
-- (void)setScreeningState:(unsigned __int16)a3 animated:(BOOL)a4
+- (void)setScreeningState:(unsigned __int16)state animated:(BOOL)animated
 {
-  v4 = a3;
-  v6 = [(PHAudioCallViewController *)self callDisplayStyleManager:a3];
+  stateCopy = state;
+  v6 = [(PHAudioCallViewController *)self callDisplayStyleManager:state];
   if ([v6 callDisplayStyle] == 3)
   {
-    v7 = [(PHAudioCallViewController *)self features];
-    v8 = [v7 isDominoEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (v8)
+    if (isDominoEnabled)
     {
       v9 = [(PHAudioCallViewController *)self fetchLockState]^ 1;
       goto LABEL_6;
@@ -8283,69 +8283,69 @@ LABEL_6:
   v9 = 0;
 LABEL_6:
 
-  [(PHAudioCallViewController *)self setScreeningState:v4 animated:1 overrideWithIsUnlocked:v9];
+  [(PHAudioCallViewController *)self setScreeningState:stateCopy animated:1 overrideWithIsUnlocked:v9];
 }
 
-- (void)setScreeningState:(unsigned __int16)a3 animated:(BOOL)a4 overrideWithIsUnlocked:(BOOL)a5
+- (void)setScreeningState:(unsigned __int16)state animated:(BOOL)animated overrideWithIsUnlocked:(BOOL)unlocked
 {
-  v76 = a3;
-  v77 = a5;
-  v73 = a4;
+  stateCopy = state;
+  unlockedCopy = unlocked;
+  animatedCopy = animated;
   v7 = sub_100004F84();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    *&buf[4] = v76;
+    *&buf[4] = stateCopy;
     *&buf[8] = 1024;
-    *&buf[10] = v77;
+    *&buf[10] = unlockedCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Audio: setCurrentState: (existing state is %d) with unlockedOverride: %d", buf, 0xEu);
   }
 
-  v8 = [(PHAudioCallViewController *)self features];
-  v9 = [v8 lvm_stopEnabled];
+  features = [(PHAudioCallViewController *)self features];
+  lvm_stopEnabled = [features lvm_stopEnabled];
 
-  if (v9)
+  if (lvm_stopEnabled)
   {
     [(PHAudioCallViewController *)self setShowsBlockButton:0];
   }
 
-  v10 = [(PHCallViewController *)self bottomBar];
-  [v10 setUserInteractionEnabled:1];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar setUserInteractionEnabled:1];
 
-  v11 = [(PHAudioCallViewController *)self presentedViewController];
-  if (v11)
+  presentedViewController = [(PHAudioCallViewController *)self presentedViewController];
+  if (presentedViewController)
   {
-    v12 = [(PHCallViewController *)self isPresentingCustomMessageController];
+    isPresentingCustomMessageController = [(PHCallViewController *)self isPresentingCustomMessageController];
 
-    if ((v12 & 1) == 0)
+    if ((isPresentingCustomMessageController & 1) == 0)
     {
       [(PHAudioCallViewController *)self dismissViewControllerAnimated:1 completion:0];
     }
   }
 
-  v13 = [(PHAudioCallViewController *)self traitCollection];
-  if ([v13 _backlightLuminance] == 1)
+  traitCollection = [(PHAudioCallViewController *)self traitCollection];
+  if ([traitCollection _backlightLuminance] == 1)
   {
     v14 = 1;
   }
 
   else
   {
-    v15 = [(PHAudioCallViewController *)self traitCollection];
-    v14 = [v15 _backlightLuminance] == 0;
+    traitCollection2 = [(PHAudioCallViewController *)self traitCollection];
+    v14 = [traitCollection2 _backlightLuminance] == 0;
   }
 
   v16 = +[UIApplication sharedApplication];
-  v17 = [v16 delegate];
-  v18 = [v17 currentInCallScene];
-  v19 = [v18 isBeingShownAboveCoverSheet];
+  delegate = [v16 delegate];
+  currentInCallScene = [delegate currentInCallScene];
+  isBeingShownAboveCoverSheet = [currentInCallScene isBeingShownAboveCoverSheet];
 
-  v20 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  v75 = v19 & !v77 | v14;
-  if ([v20 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  v75 = isBeingShownAboveCoverSheet & !unlockedCopy | v14;
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v21 = [(PHAudioCallViewController *)self features];
-    v22 = [v21 isDominoEnabled];
+    features2 = [(PHAudioCallViewController *)self features];
+    isDominoEnabled = [features2 isDominoEnabled];
     v23 = 23;
     if (v75)
     {
@@ -8357,7 +8357,7 @@ LABEL_6:
       v24 = 23;
     }
 
-    if (!v22)
+    if (!isDominoEnabled)
     {
       v23 = v24;
     }
@@ -8368,7 +8368,7 @@ LABEL_6:
   else
   {
     v25 = 23;
-    if ((v19 & !v77 | v14))
+    if ((isBeingShownAboveCoverSheet & !unlockedCopy | v14))
     {
       v25 = 24;
     }
@@ -8376,8 +8376,8 @@ LABEL_6:
     v74 = v25;
   }
 
-  v26 = [(PHAudioCallViewController *)self callCenter];
-  v78 = [v26 screeningCall];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  screeningCall = [callCenter screeningCall];
 
   v27 = sub_100004F84();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -8402,7 +8402,7 @@ LABEL_6:
       v29 = @"NO";
     }
 
-    if (v19)
+    if (isBeingShownAboveCoverSheet)
     {
       v30 = @"YES";
     }
@@ -8412,13 +8412,13 @@ LABEL_6:
       v30 = @"NO";
     }
 
-    v31 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    v32 = [v31 callDisplayStyle];
+    callDisplayStyleManager2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    callDisplayStyle = [callDisplayStyleManager2 callDisplayStyle];
     v33 = @"NO";
-    if (v32 == 3)
+    if (callDisplayStyle == 3)
     {
-      v5 = [(PHAudioCallViewController *)self features];
-      if ([v5 isDominoEnabled])
+      features3 = [(PHAudioCallViewController *)self features];
+      if ([features3 isDominoEnabled])
       {
         v33 = @"YES";
       }
@@ -8433,29 +8433,29 @@ LABEL_6:
     LOWORD(v88[0]) = 2112;
     *(v88 + 2) = v33;
     _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Audio: setCurrentState: showLockedState: %@, displayIsOff: %@, beingShownAboveCoverSheet: %@, isAmbient: %@", buf, 0x2Au);
-    if (v32 == 3)
+    if (callDisplayStyle == 3)
     {
     }
   }
 
-  v34 = [(PHAudioCallViewController *)self featureFlags];
+  featureFlags = [(PHAudioCallViewController *)self featureFlags];
   if (TUCallScreeningEnabledM3())
   {
-    v35 = [v78 contactIdentifiers];
-    v36 = [v35 count] != 0;
+    contactIdentifiers = [screeningCall contactIdentifiers];
+    v36 = [contactIdentifiers count] != 0;
 
     if (((v36 | v75) & 1) == 0)
     {
-      v37 = [(PHAudioCallViewController *)self features];
-      if ([v37 lvm_stopEnabled])
+      features4 = [(PHAudioCallViewController *)self features];
+      if ([features4 lvm_stopEnabled])
       {
-        v38 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-        if ([v38 callDisplayStyle] == 3)
+        callDisplayStyleManager3 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+        if ([callDisplayStyleManager3 callDisplayStyle] == 3)
         {
-          v39 = [(PHAudioCallViewController *)self features];
-          v40 = [v39 isDominoEnabled];
+          features5 = [(PHAudioCallViewController *)self features];
+          isDominoEnabled2 = [features5 isDominoEnabled];
 
-          if (v40)
+          if (isDominoEnabled2)
           {
             goto LABEL_53;
           }
@@ -8465,10 +8465,10 @@ LABEL_6:
         {
         }
 
-        v42 = [(PHAudioCallViewController *)self features];
-        v43 = [v42 receptionistEnabled];
+        features6 = [(PHAudioCallViewController *)self features];
+        receptionistEnabled = [features6 receptionistEnabled];
 
-        if (v43 && [v78 receptionistState])
+        if (receptionistEnabled && [screeningCall receptionistState])
         {
           [(PHAudioCallViewController *)self setShowsBlockButton:0];
         }
@@ -8482,7 +8482,7 @@ LABEL_6:
       }
 
 LABEL_53:
-      [(PHAudioCallViewController *)self setCallForBackgroundImage:v78 animated:1 callDisplayStyleChanged:0];
+      [(PHAudioCallViewController *)self setCallForBackgroundImage:screeningCall animated:1 callDisplayStyleChanged:0];
       v41 = 25;
       goto LABEL_54;
     }
@@ -8492,7 +8492,7 @@ LABEL_53:
   {
   }
 
-  [(PHAudioCallViewController *)self setCallForBackgroundImage:v78 animated:1 callDisplayStyleChanged:0];
+  [(PHAudioCallViewController *)self setCallForBackgroundImage:screeningCall animated:1 callDisplayStyleChanged:0];
   if (v74 != 23)
   {
     v41 = 24;
@@ -8501,15 +8501,15 @@ LABEL_53:
 
   v41 = 23;
 LABEL_54:
-  if (!v77)
+  if (!unlockedCopy)
   {
-    v44 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v44 callDisplayStyle] == 3)
+    callDisplayStyleManager4 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager4 callDisplayStyle] == 3)
     {
-      v45 = [(PHAudioCallViewController *)self features];
-      v46 = [v45 isDominoEnabled];
+      features7 = [(PHAudioCallViewController *)self features];
+      isDominoEnabled3 = [features7 isDominoEnabled];
 
-      if (v46)
+      if (isDominoEnabled3)
       {
         v41 = 26;
       }
@@ -8521,65 +8521,65 @@ LABEL_54:
   }
 
 LABEL_60:
-  v47 = [v78 isMessagingAllowed];
-  v48 = [(PHCallViewController *)self bottomBar];
-  [v48 setDeclineAndMessageIsAvailable:v47];
+  isMessagingAllowed = [screeningCall isMessagingAllowed];
+  bottomBar2 = [(PHCallViewController *)self bottomBar];
+  [bottomBar2 setDeclineAndMessageIsAvailable:isMessagingAllowed];
 
-  v49 = [v78 isReminderAllowed];
-  v50 = [(PHCallViewController *)self bottomBar];
-  [v50 setDeclineAndRemindIsAvailable:v49];
+  isReminderAllowed = [screeningCall isReminderAllowed];
+  bottomBar3 = [(PHCallViewController *)self bottomBar];
+  [bottomBar3 setDeclineAndRemindIsAvailable:isReminderAllowed];
 
-  v51 = [(PHCallViewController *)self bottomBar];
-  v52 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v52 callDisplayStyle] == 3)
+  bottomBar4 = [(PHCallViewController *)self bottomBar];
+  callDisplayStyleManager5 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager5 callDisplayStyle] == 3)
   {
-    v53 = [(PHAudioCallViewController *)self features];
-    [v51 setCurrentState:v41 animated:objc_msgSend(v53 animationCompletionBlock:{"isDominoEnabled"), 0}];
+    features8 = [(PHAudioCallViewController *)self features];
+    [bottomBar4 setCurrentState:v41 animated:objc_msgSend(features8 animationCompletionBlock:{"isDominoEnabled"), 0}];
   }
 
   else
   {
-    [v51 setCurrentState:v41 animated:0 animationCompletionBlock:0];
+    [bottomBar4 setCurrentState:v41 animated:0 animationCompletionBlock:0];
   }
 
-  v54 = [(PHCallViewController *)self bottomBar];
-  v55 = [v54 controlForActionType:30];
+  bottomBar5 = [(PHCallViewController *)self bottomBar];
+  v55 = [bottomBar5 controlForActionType:30];
 
-  [(PHCallViewController *)self configureDeclineWithReminderButton:0 declineWithMessageButton:v55 forIncomingCall:v78];
-  v56 = [(PHAudioCallViewController *)self featureFlags];
-  v57 = [v56 receptionistEnabled];
+  [(PHCallViewController *)self configureDeclineWithReminderButton:0 declineWithMessageButton:v55 forIncomingCall:screeningCall];
+  featureFlags2 = [(PHAudioCallViewController *)self featureFlags];
+  receptionistEnabled2 = [featureFlags2 receptionistEnabled];
 
-  if (v57)
+  if (receptionistEnabled2)
   {
-    v58 = [(PHCallViewController *)self bottomBar];
-    v59 = [v58 controlForActionType:27];
+    bottomBar6 = [(PHCallViewController *)self bottomBar];
+    v59 = [bottomBar6 controlForActionType:27];
 
-    [(PHCallViewController *)self configureDeclineWithMoreButton:v59 forIncomingCall:v78];
+    [(PHCallViewController *)self configureDeclineWithMoreButton:v59 forIncomingCall:screeningCall];
   }
 
   [(PHAudioCallViewController *)self setMiddleViewState:4 animated:1];
-  v60 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  v61 = [v60 callDisplayStyle] == 0;
+  callDisplayStyleManager6 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  v61 = [callDisplayStyleManager6 callDisplayStyle] == 0;
 
   if (v61)
   {
-    v62 = [(PHAudioCallViewController *)self callParticipantsViewController];
-    [v62 setBannerButtonsState:0];
+    callParticipantsViewController = [(PHAudioCallViewController *)self callParticipantsViewController];
+    [callParticipantsViewController setBannerButtonsState:0];
   }
 
-  v63 = [(PHCallViewController *)self bottomBar];
-  [(PHAudioCallViewController *)self _testing_didTransitionToIncomingRingingCallState:v63];
+  bottomBar7 = [(PHCallViewController *)self bottomBar];
+  [(PHAudioCallViewController *)self _testing_didTransitionToIncomingRingingCallState:bottomBar7];
 
-  v64 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v64 callDisplayStyle] == 3)
+  callDisplayStyleManager7 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager7 callDisplayStyle] == 3)
   {
-    v65 = [(PHAudioCallViewController *)self features];
-    v66 = [v65 isDominoEnabled];
+    features9 = [(PHAudioCallViewController *)self features];
+    isDominoEnabled4 = [features9 isDominoEnabled];
 
-    if (v66)
+    if (isDominoEnabled4)
     {
-      [(PHAudioCallViewController *)self layoutParticipantsViewAnimated:v73];
-      [(PHAudioCallViewController *)self updateBottomBarAlphaWithCurrentState:v76];
+      [(PHAudioCallViewController *)self layoutParticipantsViewAnimated:animatedCopy];
+      [(PHAudioCallViewController *)self updateBottomBarAlphaWithCurrentState:stateCopy];
     }
   }
 
@@ -8587,8 +8587,8 @@ LABEL_60:
   {
   }
 
-  v67 = [(PHAudioCallViewController *)self stateChangeLockObservation];
-  if (!v67 || ([(PHAudioCallViewController *)self stateDisplayChangedObservation], v68 = objc_claimAutoreleasedReturnValue(), v69 = v68 == 0, v68, v67, v69))
+  stateChangeLockObservation = [(PHAudioCallViewController *)self stateChangeLockObservation];
+  if (!stateChangeLockObservation || ([(PHAudioCallViewController *)self stateDisplayChangedObservation], v68 = objc_claimAutoreleasedReturnValue(), v69 = v68 == 0, v68, stateChangeLockObservation, v69))
   {
     v84[0] = 0;
     v84[1] = v84;
@@ -8606,17 +8606,17 @@ LABEL_60:
     v82[3] = &unk_100359180;
     v82[4] = buf;
     v82[5] = v84;
-    v83 = v76;
+    v83 = stateCopy;
     v70 = [(PHAudioCallViewController *)self makeLockObserverWithHandler:v82];
     [(PHAudioCallViewController *)self setStateChangeLockObservation:v70];
 
     v81[0] = 0;
     v81[1] = v81;
     v81[2] = 0x2020000000;
-    v71 = [(PHAudioCallViewController *)self traitCollection];
-    v72 = [v71 _backlightLuminance];
+    traitCollection3 = [(PHAudioCallViewController *)self traitCollection];
+    _backlightLuminance = [traitCollection3 _backlightLuminance];
 
-    v81[3] = v72;
+    v81[3] = _backlightLuminance;
     v79[0] = _NSConcreteStackBlock;
     v79[1] = 3221225472;
     v79[2] = sub_10011AD24;
@@ -8624,7 +8624,7 @@ LABEL_60:
     v79[4] = buf;
     v79[5] = v81;
     v79[6] = v84;
-    v80 = v76;
+    v80 = stateCopy;
     [(PHAudioCallViewController *)self setStateDisplayChangedObservation:v79];
     _Block_object_dispose(v81, 8);
     _Block_object_dispose(buf, 8);
@@ -8633,32 +8633,32 @@ LABEL_60:
   }
 }
 
-- (void)setWaitOnHoldState:(unsigned __int16)a3 animated:(BOOL)a4
+- (void)setWaitOnHoldState:(unsigned __int16)state animated:(BOOL)animated
 {
-  [(PHAudioCallViewController *)self dismissWaitOnHoldTip:a3];
-  v5 = [(PHAudioCallViewController *)self presentedViewController];
-  if (v5)
+  [(PHAudioCallViewController *)self dismissWaitOnHoldTip:state];
+  presentedViewController = [(PHAudioCallViewController *)self presentedViewController];
+  if (presentedViewController)
   {
-    v6 = v5;
-    v7 = [(PHCallViewController *)self isPresentingCustomMessageController];
+    v6 = presentedViewController;
+    isPresentingCustomMessageController = [(PHCallViewController *)self isPresentingCustomMessageController];
 
-    if ((v7 & 1) == 0)
+    if ((isPresentingCustomMessageController & 1) == 0)
     {
       [(PHAudioCallViewController *)self dismissViewControllerAnimated:1 completion:0];
     }
   }
 
-  v8 = [(PHCallViewController *)self bottomBar];
-  v9 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v9 callDisplayStyle] == 3)
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v10 = [(PHAudioCallViewController *)self features];
-    [v8 setCurrentState:28 animated:objc_msgSend(v10 animationCompletionBlock:{"isDominoEnabled"), 0}];
+    features = [(PHAudioCallViewController *)self features];
+    [bottomBar setCurrentState:28 animated:objc_msgSend(features animationCompletionBlock:{"isDominoEnabled"), 0}];
   }
 
   else
   {
-    [v8 setCurrentState:28 animated:0 animationCompletionBlock:0];
+    [bottomBar setCurrentState:28 animated:0 animationCompletionBlock:0];
   }
 
   [(PHAudioCallViewController *)self setMiddleViewState:5 animated:1];
@@ -8666,45 +8666,45 @@ LABEL_60:
 
 - (void)displayWaitOnHoldTip
 {
-  v3 = [(PHAudioCallViewController *)self waitOnHoldTipView];
-  v4 = [v3 superview];
+  waitOnHoldTipView = [(PHAudioCallViewController *)self waitOnHoldTipView];
+  superview = [waitOnHoldTipView superview];
 
-  if (!v4)
+  if (!superview)
   {
-    v5 = [(PHAudioCallViewController *)self middlePillContainer];
-    v6 = [(PHAudioCallViewController *)self waitOnHoldTipView];
-    [v5 addArrangedSubview:v6];
+    middlePillContainer = [(PHAudioCallViewController *)self middlePillContainer];
+    waitOnHoldTipView2 = [(PHAudioCallViewController *)self waitOnHoldTipView];
+    [middlePillContainer addArrangedSubview:waitOnHoldTipView2];
 
     [(PHAudioCallViewController *)self updateLayoutSupplementalButtons];
-    v7 = [(PHAudioCallViewController *)self waitOnHoldTipView];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    waitOnHoldTipView3 = [(PHAudioCallViewController *)self waitOnHoldTipView];
+    [waitOnHoldTipView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v8 = [(PHAudioCallViewController *)self waitOnHoldTipViewLayoutConstraints];
+    waitOnHoldTipViewLayoutConstraints = [(PHAudioCallViewController *)self waitOnHoldTipViewLayoutConstraints];
 
-    if (v8)
+    if (waitOnHoldTipViewLayoutConstraints)
     {
-      v9 = [(PHAudioCallViewController *)self waitOnHoldTipViewLayoutConstraints];
-      [NSLayoutConstraint deactivateConstraints:v9];
+      waitOnHoldTipViewLayoutConstraints2 = [(PHAudioCallViewController *)self waitOnHoldTipViewLayoutConstraints];
+      [NSLayoutConstraint deactivateConstraints:waitOnHoldTipViewLayoutConstraints2];
     }
 
     v23 = [[NSMutableArray alloc] initWithArray:&__NSArray0__struct];
-    v10 = [(PHAudioCallViewController *)self waitOnHoldTipView];
-    v11 = [v10 trailingAnchor];
-    v12 = [(PHAudioCallViewController *)self middlePillContainer];
-    v13 = [v12 trailingAnchor];
-    v14 = [v11 constraintEqualToAnchor:v13];
+    waitOnHoldTipView4 = [(PHAudioCallViewController *)self waitOnHoldTipView];
+    trailingAnchor = [waitOnHoldTipView4 trailingAnchor];
+    middlePillContainer2 = [(PHAudioCallViewController *)self middlePillContainer];
+    trailingAnchor2 = [middlePillContainer2 trailingAnchor];
+    v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v23 addObject:v14];
 
-    v15 = [(PHAudioCallViewController *)self waitOnHoldTipView];
-    v16 = [v15 leadingAnchor];
-    v17 = [(PHAudioCallViewController *)self middlePillContainer];
-    v18 = [v17 leadingAnchor];
-    v19 = [v16 constraintEqualToAnchor:v18];
+    waitOnHoldTipView5 = [(PHAudioCallViewController *)self waitOnHoldTipView];
+    leadingAnchor = [waitOnHoldTipView5 leadingAnchor];
+    middlePillContainer3 = [(PHAudioCallViewController *)self middlePillContainer];
+    leadingAnchor2 = [middlePillContainer3 leadingAnchor];
+    v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v23 addObject:v19];
 
     [(PHAudioCallViewController *)self setWaitOnHoldTipViewLayoutConstraints:v23];
-    v20 = [(PHAudioCallViewController *)self waitOnHoldTipViewLayoutConstraints];
-    [NSLayoutConstraint activateConstraints:v20];
+    waitOnHoldTipViewLayoutConstraints3 = [(PHAudioCallViewController *)self waitOnHoldTipViewLayoutConstraints];
+    [NSLayoutConstraint activateConstraints:waitOnHoldTipViewLayoutConstraints3];
 
     v21 = [[TLAlertConfiguration alloc] initWithType:17];
     v22 = [TLAlert alertWithConfiguration:v21];
@@ -8714,31 +8714,31 @@ LABEL_60:
 
 - (void)displayScreenSharingIndicator
 {
-  v3 = [(PHAudioCallViewController *)self screenSharingIndicatorView];
-  v4 = [v3 superview];
+  screenSharingIndicatorView = [(PHAudioCallViewController *)self screenSharingIndicatorView];
+  superview = [screenSharingIndicatorView superview];
 
-  if (!v4)
+  if (!superview)
   {
-    v5 = [(PHAudioCallViewController *)self middlePillContainer];
-    v6 = [(PHAudioCallViewController *)self screenSharingIndicatorView];
-    [v5 addArrangedSubview:v6];
+    middlePillContainer = [(PHAudioCallViewController *)self middlePillContainer];
+    screenSharingIndicatorView2 = [(PHAudioCallViewController *)self screenSharingIndicatorView];
+    [middlePillContainer addArrangedSubview:screenSharingIndicatorView2];
 
     [(PHAudioCallViewController *)self updateLayoutSupplementalButtons];
   }
 
   v17 = [[NSMutableArray alloc] initWithArray:&__NSArray0__struct];
-  v7 = [(PHAudioCallViewController *)self screenSharingIndicatorView];
-  v8 = [v7 trailingAnchor];
-  v9 = [(PHAudioCallViewController *)self middlePillContainer];
-  v10 = [v9 trailingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  screenSharingIndicatorView3 = [(PHAudioCallViewController *)self screenSharingIndicatorView];
+  trailingAnchor = [screenSharingIndicatorView3 trailingAnchor];
+  middlePillContainer2 = [(PHAudioCallViewController *)self middlePillContainer];
+  trailingAnchor2 = [middlePillContainer2 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v17 addObject:v11];
 
-  v12 = [(PHAudioCallViewController *)self screenSharingIndicatorView];
-  v13 = [v12 leadingAnchor];
-  v14 = [(PHAudioCallViewController *)self middlePillContainer];
-  v15 = [v14 leadingAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  screenSharingIndicatorView4 = [(PHAudioCallViewController *)self screenSharingIndicatorView];
+  leadingAnchor = [screenSharingIndicatorView4 leadingAnchor];
+  middlePillContainer3 = [(PHAudioCallViewController *)self middlePillContainer];
+  leadingAnchor2 = [middlePillContainer3 leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v17 addObject:v16];
 
   [NSLayoutConstraint activateConstraints:v17];
@@ -8746,8 +8746,8 @@ LABEL_60:
 
 - (void)dismissScreenSharingIndicatorView
 {
-  v3 = [(PHAudioCallViewController *)self screenSharingIndicatorView];
-  [v3 removeFromSuperview];
+  screenSharingIndicatorView = [(PHAudioCallViewController *)self screenSharingIndicatorView];
+  [screenSharingIndicatorView removeFromSuperview];
 
   [(PHAudioCallViewController *)self setScreenSharingIndicatorView:0];
 
@@ -8763,17 +8763,17 @@ LABEL_60:
   }
 
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 delegate];
-  v6 = [v5 waitOnHoldService];
+  delegate = [v4 delegate];
+  waitOnHoldService = [delegate waitOnHoldService];
 
-  if (v6)
+  if (waitOnHoldService)
   {
-    v7 = [(CNKWaitOnHoldViewComposerFactory *)self->_waitOnHoldViewControllerFactory makeViewComposer];
-    v8 = [(PHAudioCallViewController *)self activeCall];
+    makeViewComposer = [(CNKWaitOnHoldViewComposerFactory *)self->_waitOnHoldViewControllerFactory makeViewComposer];
+    activeCall = [(PHAudioCallViewController *)self activeCall];
     v9 = +[UIApplication sharedApplication];
-    v10 = [v9 delegate];
-    v11 = [v10 waitOnHoldService];
-    v12 = [v7 composeWithCall:v8 waitOnHoldService:v11];
+    delegate2 = [v9 delegate];
+    waitOnHoldService2 = [delegate2 waitOnHoldService];
+    v12 = [makeViewComposer composeWithCall:activeCall waitOnHoldService:waitOnHoldService2];
     v13 = self->_waitOnHoldViewController;
     self->_waitOnHoldViewController = v12;
 
@@ -8800,28 +8800,28 @@ LABEL_5:
   }
 
   [(PHAudioCallViewController *)self updateCurrentState];
-  v4 = [(PHAudioCallViewController *)self activeCall];
-  v5 = [v4 isWaitOnHoldActive];
+  activeCall = [(PHAudioCallViewController *)self activeCall];
+  isWaitOnHoldActive = [activeCall isWaitOnHoldActive];
 
-  if ((v5 & 1) == 0)
+  if ((isWaitOnHoldActive & 1) == 0)
   {
     waitOnHoldViewController = self->_waitOnHoldViewController;
     self->_waitOnHoldViewController = 0;
   }
 }
 
-- (BOOL)isCallSmartHoldingSessionActive:(id)a3
+- (BOOL)isCallSmartHoldingSessionActive:(id)active
 {
-  v3 = a3;
-  v4 = [v3 smartHoldingSession];
+  activeCopy = active;
+  smartHoldingSession = [activeCopy smartHoldingSession];
 
-  if (v4)
+  if (smartHoldingSession)
   {
-    v5 = [v3 smartHoldingSession];
-    if ([v5 state])
+    smartHoldingSession2 = [activeCopy smartHoldingSession];
+    if ([smartHoldingSession2 state])
     {
-      v6 = [v3 smartHoldingSession];
-      v7 = [v6 state] == 3;
+      smartHoldingSession3 = [activeCopy smartHoldingSession];
+      v7 = [smartHoldingSession3 state] == 3;
     }
 
     else
@@ -8838,85 +8838,85 @@ LABEL_5:
   return v7;
 }
 
-- (void)setCurrentState:(unsigned __int16)a3 animated:(BOOL)a4
+- (void)setCurrentState:(unsigned __int16)state animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(PHCallViewController *)self currentState];
+  animatedCopy = animated;
+  stateCopy = state;
+  currentState = [(PHCallViewController *)self currentState];
   v8 = sub_100004F84();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    *&buf[4] = v5;
+    *&buf[4] = stateCopy;
     *&buf[8] = 1024;
-    *&buf[10] = v7;
+    *&buf[10] = currentState;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Audio: setCurrentState: %d (existing state is %d)", buf, 0xEu);
   }
 
-  if (v7 != v5)
+  if (currentState != stateCopy)
   {
     v9 = sub_100004F84();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(PHCallViewController *)self currentState];
+      currentState2 = [(PHCallViewController *)self currentState];
       *buf = 67109376;
-      *&buf[4] = v10;
+      *&buf[4] = currentState2;
       *&buf[8] = 1024;
-      *&buf[10] = v5;
+      *&buf[10] = stateCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Audio: Setting current state: %d -> %d", buf, 0xEu);
     }
 
     v35.receiver = self;
     v35.super_class = PHAudioCallViewController;
-    [(PHCallViewController *)&v35 setCurrentState:v5];
+    [(PHCallViewController *)&v35 setCurrentState:stateCopy];
     [(PHAudioCallViewController *)self setStateChangeLockObservation:0];
     [(PHAudioCallViewController *)self setStateDisplayChangedObservation:0];
-    v11 = [(PHAudioCallViewController *)self features];
-    v12 = [v11 lvm_stopEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    lvm_stopEnabled = [features lvm_stopEnabled];
 
-    if (v12)
+    if (lvm_stopEnabled)
     {
       [(PHAudioCallViewController *)self setShowsBlockButton:0];
     }
 
-    if (v5 <= 5)
+    if (stateCopy <= 5)
     {
-      if (v5 > 2)
+      if (stateCopy > 2)
       {
-        if ((v5 - 4) >= 2)
+        if ((stateCopy - 4) >= 2)
         {
-          if (v5 == 3)
+          if (stateCopy == 3)
           {
             [(PHAudioCallViewController *)self setWaitingState:3];
 LABEL_65:
-            v32 = [(PHCallViewController *)self bottomBar];
-            [v32 setUserInteractionEnabled:1];
+            bottomBar = [(PHCallViewController *)self bottomBar];
+            [bottomBar setUserInteractionEnabled:1];
 
-            if (v5 == 1)
+            if (stateCopy == 1)
             {
               [(PHAudioCallViewController *)self startSuppressionOfSTKAlerts];
 LABEL_43:
-              v17 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-              if ([v17 callDisplayStyle] == 3)
+              callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+              if ([callDisplayStyleManager callDisplayStyle] == 3)
               {
-                v18 = [(PHAudioCallViewController *)self features];
-                v19 = [v18 isDominoEnabled];
+                features2 = [(PHAudioCallViewController *)self features];
+                isDominoEnabled = [features2 isDominoEnabled];
 
-                if (v19)
+                if (isDominoEnabled)
                 {
 LABEL_48:
                   if (![(PHAudioCallViewController *)self shouldUseHeroImageLayout])
                   {
-                    v20 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-                    if ([v20 callDisplayStyle] != 3)
+                    callDisplayStyleManager2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+                    if ([callDisplayStyleManager2 callDisplayStyle] != 3)
                     {
 LABEL_56:
 
                       goto LABEL_57;
                     }
 
-                    v22 = [(PHAudioCallViewController *)self features];
-                    if (![v22 isDominoEnabled])
+                    features3 = [(PHAudioCallViewController *)self features];
+                    if (![features3 isDominoEnabled])
                     {
 LABEL_55:
 
@@ -8924,7 +8924,7 @@ LABEL_55:
                     }
                   }
 
-                  if (v5 != 7)
+                  if (stateCopy != 7)
                   {
 LABEL_57:
                     if ([(PHAudioCallViewController *)self shouldShowNewPosterUpdates])
@@ -8935,26 +8935,26 @@ LABEL_57:
                       v33[2] = sub_10011BC74;
                       v33[3] = &unk_100356960;
                       v33[4] = self;
-                      v34 = v5;
+                      v34 = stateCopy;
                       dispatch_after(v25, &_dispatch_main_q, v33);
                     }
 
                     else
                     {
-                      [(PHAudioCallViewController *)self _updatePosterStatusLabelForState:v5];
+                      [(PHAudioCallViewController *)self _updatePosterStatusLabelForState:stateCopy];
                       if ([(PHAudioCallViewController *)self hasNoCallsOrOnlyEndedCalls])
                       {
-                        v26 = [(PHAudioCallViewController *)self renderingViewController];
-                        if (v26)
+                        renderingViewController = [(PHAudioCallViewController *)self renderingViewController];
+                        if (renderingViewController)
                         {
-                          v27 = v26;
-                          v28 = [(PHAudioCallViewController *)self posterNameViewModel];
-                          v29 = [v28 priorityPosterNameTextView];
+                          v27 = renderingViewController;
+                          posterNameViewModel = [(PHAudioCallViewController *)self posterNameViewModel];
+                          priorityPosterNameTextView = [posterNameViewModel priorityPosterNameTextView];
 
-                          if (v29)
+                          if (priorityPosterNameTextView)
                           {
-                            v30 = [(PHAudioCallViewController *)self posterContainer];
-                            [v30 setAlpha:0.0];
+                            posterContainer = [(PHAudioCallViewController *)self posterContainer];
+                            [posterContainer setAlpha:0.0];
                           }
                         }
                       }
@@ -8968,17 +8968,17 @@ LABEL_57:
                     return;
                   }
 
-                  v20 = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
-                  v21 = [v20 singleCallLabelView];
-                  v22 = v21;
-                  if (v21)
+                  callDisplayStyleManager2 = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
+                  singleCallLabelView = [callDisplayStyleManager2 singleCallLabelView];
+                  features3 = singleCallLabelView;
+                  if (singleCallLabelView)
                   {
-                    v23 = [v21 statusLabel];
+                    statusLabel = [singleCallLabelView statusLabel];
                     v24 = *&CGAffineTransformIdentity.c;
                     *buf = *&CGAffineTransformIdentity.a;
                     v37 = v24;
                     v38 = *&CGAffineTransformIdentity.tx;
-                    [v23 setTransform:buf];
+                    [statusLabel setTransform:buf];
                   }
 
                   goto LABEL_55;
@@ -8989,7 +8989,7 @@ LABEL_57:
               {
               }
 
-              [(PHAudioCallViewController *)self updateBottomBarAlphaWithCurrentState:v5];
+              [(PHAudioCallViewController *)self updateBottomBarAlphaWithCurrentState:stateCopy];
               goto LABEL_48;
             }
 
@@ -9001,16 +9001,16 @@ LABEL_42:
 
         else
         {
-          v13 = [(PHAudioCallViewController *)self usesCompactMulticallUI];
-          if (v5 == 5 && v13)
+          usesCompactMulticallUI = [(PHAudioCallViewController *)self usesCompactMulticallUI];
+          if (stateCopy == 5 && usesCompactMulticallUI)
           {
-            v14 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-            if ([v14 callDisplayStyle] == 3)
+            callDisplayStyleManager3 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+            if ([callDisplayStyleManager3 callDisplayStyle] == 3)
             {
-              v15 = [(PHAudioCallViewController *)self features];
-              v16 = [v15 isDominoEnabled];
+              features4 = [(PHAudioCallViewController *)self features];
+              isDominoEnabled2 = [features4 isDominoEnabled];
 
-              if (v16)
+              if (isDominoEnabled2)
               {
                 return;
               }
@@ -9024,18 +9024,18 @@ LABEL_42:
             return;
           }
 
-          [(PHAudioCallViewController *)self setActiveState:v5];
+          [(PHAudioCallViewController *)self setActiveState:stateCopy];
         }
       }
 
-      else if (v5)
+      else if (stateCopy)
       {
-        if (v5 == 1)
+        if (stateCopy == 1)
         {
           [(PHAudioCallViewController *)self setRingingState:1];
         }
 
-        else if (v5 == 2)
+        else if (stateCopy == 2)
         {
           [(PHAudioCallViewController *)self setOutgoingRingingState:2];
         }
@@ -9047,44 +9047,44 @@ LABEL_42:
       }
     }
 
-    else if (v5 > 9)
+    else if (stateCopy > 9)
     {
-      switch(v5)
+      switch(stateCopy)
       {
         case 0xA:
           [(PHAudioCallViewController *)self setCallBufferState:10];
           break;
         case 0xB:
-          [(PHAudioCallViewController *)self setScreeningState:11 animated:v4];
+          [(PHAudioCallViewController *)self setScreeningState:11 animated:animatedCopy];
           break;
         case 0xC:
-          [(PHAudioCallViewController *)self setWaitOnHoldState:12 animated:v4];
+          [(PHAudioCallViewController *)self setWaitOnHoldState:12 animated:animatedCopy];
           break;
       }
     }
 
-    else if ((v5 - 8) < 2)
+    else if ((stateCopy - 8) < 2)
     {
-      [(PHAudioCallViewController *)self setAlertModeNeededState:v5];
+      [(PHAudioCallViewController *)self setAlertModeNeededState:stateCopy];
     }
 
-    else if (v5 == 6)
+    else if (stateCopy == 6)
     {
       [(PHAudioCallViewController *)self setEndingState:6];
       [(PHAudioCallViewController *)self _testing_didTransitionToEndingCallState];
     }
 
-    else if (v5 == 7)
+    else if (stateCopy == 7)
     {
       [(PHAudioCallViewController *)self setEndedState:7];
     }
 
-    if (v7 == 3)
+    if (currentState == 3)
     {
       [(PHAudioCallViewController *)self setShowsCallWaitingParticipantView:0];
     }
 
-    if (v5 <= 7 && ((1 << v5) & 0xC1) != 0)
+    if (stateCopy <= 7 && ((1 << stateCopy) & 0xC1) != 0)
     {
       goto LABEL_42;
     }
@@ -9093,63 +9093,63 @@ LABEL_42:
   }
 }
 
-- (void)updateBottomBarAlphaWithCurrentState:(unsigned __int16)a3
+- (void)updateBottomBarAlphaWithCurrentState:(unsigned __int16)state
 {
-  v3 = a3;
-  v14 = +[PHInCallUtilities sharedInstance];
-  if (([v14 isIPadIdiom] & 1) == 0)
+  stateCopy = state;
+  mostRecentlyDisconnectedAudioCall = +[PHInCallUtilities sharedInstance];
+  if (([mostRecentlyDisconnectedAudioCall isIPadIdiom] & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v5 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v5 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v6 = [(PHAudioCallViewController *)self features];
-    v7 = [v6 isDominoEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (!v7)
+    if (!isDominoEnabled)
     {
       return;
     }
 
 LABEL_6:
     v8 = +[UIApplication sharedApplication];
-    v9 = [v8 delegate];
-    v14 = [v9 mostRecentlyDisconnectedAudioCall];
+    delegate = [v8 delegate];
+    mostRecentlyDisconnectedAudioCall = [delegate mostRecentlyDisconnectedAudioCall];
 
-    v10 = v14;
-    if (v14)
+    disconnectedReasonRequiresCallBackUI = mostRecentlyDisconnectedAudioCall;
+    if (mostRecentlyDisconnectedAudioCall)
     {
-      v10 = [v14 disconnectedReasonRequiresCallBackUI];
+      disconnectedReasonRequiresCallBackUI = [mostRecentlyDisconnectedAudioCall disconnectedReasonRequiresCallBackUI];
     }
 
-    if (v3 == 1 || v3 == 3)
+    if (stateCopy == 1 || stateCopy == 3)
     {
       goto LABEL_12;
     }
 
-    if (v3 == 7)
+    if (stateCopy == 7)
     {
-      if (v10)
+      if (disconnectedReasonRequiresCallBackUI)
       {
 LABEL_12:
-        v11 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-        if ([v11 callDisplayStyle])
+        callDisplayStyleManager2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+        if ([callDisplayStyleManager2 callDisplayStyle])
         {
 
           v12 = 1.0;
 LABEL_16:
-          v5 = [(PHCallViewController *)self bottomBar];
-          [v5 setAlpha:v12];
+          callDisplayStyleManager = [(PHCallViewController *)self bottomBar];
+          [callDisplayStyleManager setAlpha:v12];
           goto LABEL_17;
         }
 
-        v13 = [(PHAudioCallViewController *)self middleViewState];
+        middleViewState = [(PHAudioCallViewController *)self middleViewState];
 
         v12 = 1.0;
-        if (v13 == 2)
+        if (middleViewState == 2)
         {
           goto LABEL_16;
         }
@@ -9160,7 +9160,7 @@ LABEL_15:
       }
     }
 
-    else if ((v3 - 11) <= 1)
+    else if ((stateCopy - 11) <= 1)
     {
       goto LABEL_12;
     }
@@ -9181,22 +9181,22 @@ LABEL_17:
 {
   if ([(PHCallViewController *)self currentState]== 11)
   {
-    v3 = [(PHCallViewController *)self currentState];
+    currentState = [(PHCallViewController *)self currentState];
 
-    [(PHAudioCallViewController *)self setScreeningState:v3 animated:1];
+    [(PHAudioCallViewController *)self setScreeningState:currentState animated:1];
   }
 
   else
   {
-    v4 = [(PHCallViewController *)self bottomBar];
-    v5 = [v4 currentState];
+    bottomBar = [(PHCallViewController *)self bottomBar];
+    currentState2 = [bottomBar currentState];
 
-    if (!v5)
+    if (!currentState2)
     {
       v6 = +[UIApplication sharedApplication];
-      v7 = [v6 delegate];
-      v8 = [v7 currentInCallScene];
-      if ([v8 isBeingShownAboveCoverSheet])
+      delegate = [v6 delegate];
+      currentInCallScene = [delegate currentInCallScene];
+      if ([currentInCallScene isBeingShownAboveCoverSheet])
       {
         v9 = 4;
       }
@@ -9206,39 +9206,39 @@ LABEL_17:
         v9 = 0;
       }
 
-      v10 = [(PHCallViewController *)self bottomBar];
-      [v10 setCurrentState:v9];
+      bottomBar2 = [(PHCallViewController *)self bottomBar];
+      [bottomBar2 setCurrentState:v9];
     }
   }
 }
 
-- (void)updateBottomBarButtonsWithCall:(id)a3
+- (void)updateBottomBarButtonsWithCall:(id)call
 {
-  v4 = [a3 isMessagingAllowed];
-  v5 = [(PHCallViewController *)self bottomBar];
-  [v5 setDeclineAndMessageIsAvailable:v4];
+  isMessagingAllowed = [call isMessagingAllowed];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar setDeclineAndMessageIsAvailable:isMessagingAllowed];
 }
 
 - (void)updateHardPauseDigitsState
 {
-  v3 = [(PHAudioCallViewController *)self frontmostCall];
-  v4 = [v3 hardPauseDigitsState] == 2;
+  frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+  v4 = [frontmostCall hardPauseDigitsState] == 2;
 
-  v5 = [(PHCallViewController *)self bottomBar];
-  [v5 setAction:23 enabled:v4];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar setAction:23 enabled:v4];
 }
 
-- (id)associatedCallGroupForCall:(id)a3
+- (id)associatedCallGroupForCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(PHAudioCallViewController *)self callCenter];
-  v6 = [v5 currentCallGroups];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  currentCallGroups = [callCenter currentCallGroups];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [currentCallGroups countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -9248,12 +9248,12 @@ LABEL_17:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(currentCallGroups);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 calls];
-        v12 = [v11 containsObject:v4];
+        calls = [v10 calls];
+        v12 = [calls containsObject:callCopy];
 
         if (v12)
         {
@@ -9262,7 +9262,7 @@ LABEL_17:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [currentCallGroups countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -9277,20 +9277,20 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)prioritizedCallIsInSameCallGroupAsCall:(id)a3
+- (BOOL)prioritizedCallIsInSameCallGroupAsCall:(id)call
 {
-  v4 = a3;
-  v5 = [(PHAudioCallViewController *)self prioritizedCall];
+  callCopy = call;
+  prioritizedCall = [(PHAudioCallViewController *)self prioritizedCall];
 
-  if (v5)
+  if (prioritizedCall)
   {
-    v6 = [(PHAudioCallViewController *)self associatedCallGroupForCall:v4];
+    v6 = [(PHAudioCallViewController *)self associatedCallGroupForCall:callCopy];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 calls];
-      v9 = [(PHAudioCallViewController *)self prioritizedCall];
-      v10 = [v8 containsObject:v9];
+      calls = [v6 calls];
+      prioritizedCall2 = [(PHAudioCallViewController *)self prioritizedCall];
+      v10 = [calls containsObject:prioritizedCall2];
     }
 
     else
@@ -9307,36 +9307,36 @@ LABEL_11:
   return v10;
 }
 
-- (void)setInCallRootViewController:(id)a3
+- (void)setInCallRootViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_inCallRootViewController);
 
   v6 = obj;
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_inCallRootViewController, obj);
-    v5 = [(PHAudioCallViewController *)self isViewLoaded];
+    isViewLoaded = [(PHAudioCallViewController *)self isViewLoaded];
     v6 = obj;
-    if (v5)
+    if (isViewLoaded)
     {
-      v5 = [(PHAudioCallViewController *)self updateCurrentState];
+      isViewLoaded = [(PHAudioCallViewController *)self updateCurrentState];
       v6 = obj;
     }
   }
 
-  _objc_release_x1(v5, v6);
+  _objc_release_x1(isViewLoaded, v6);
 }
 
 - (void)gameControllerDidChangeContext
 {
-  v2 = [(PHAudioCallViewController *)self callParticipantsViewController];
-  [v2 gameControllerDidChangeContext];
+  callParticipantsViewController = [(PHAudioCallViewController *)self callParticipantsViewController];
+  [callParticipantsViewController gameControllerDidChangeContext];
 }
 
-- (BOOL)canShowPosterBadgeInAudioCallView:(id)a3
+- (BOOL)canShowPosterBadgeInAudioCallView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(PHAudioCallViewController *)self participantsViewIsShowingMultipleLabel])
   {
     v5 = 0;
@@ -9344,33 +9344,33 @@ LABEL_11:
 
   else
   {
-    v6 = [v4 badgeView];
-    if (v6)
+    badgeView = [viewCopy badgeView];
+    if (badgeView)
     {
       v5 = 1;
     }
 
     else
     {
-      v7 = [v4 iconView];
-      v5 = v7 != 0;
+      iconView = [viewCopy iconView];
+      v5 = iconView != 0;
     }
   }
 
   return v5;
 }
 
-- (id)newPosterConfigurationForCall:(id)a3
+- (id)newPosterConfigurationForCall:(id)call
 {
-  v6 = a3;
-  v7 = [(PHAudioCallViewController *)self shouldUseHeroImageLayout];
-  if ((v7 & 1) == 0)
+  callCopy = call;
+  shouldUseHeroImageLayout = [(PHAudioCallViewController *)self shouldUseHeroImageLayout];
+  if ((shouldUseHeroImageLayout & 1) == 0)
   {
-    v3 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v3 callDisplayStyle] == 3)
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager callDisplayStyle] == 3)
     {
-      v4 = [(PHAudioCallViewController *)self features];
-      if ([v4 isDominoEnabled])
+      features = [(PHAudioCallViewController *)self features];
+      if ([features isDominoEnabled])
       {
         goto LABEL_2;
       }
@@ -9380,13 +9380,13 @@ LABEL_11:
   }
 
 LABEL_2:
-  v8 = [(PHAudioCallViewController *)self features];
-  v9 = [v8 isNameAndPhotoC3Enabled];
+  features2 = [(PHAudioCallViewController *)self features];
+  isNameAndPhotoC3Enabled = [features2 isNameAndPhotoC3Enabled];
 
-  if ((v7 & 1) == 0)
+  if ((shouldUseHeroImageLayout & 1) == 0)
   {
 
-    if (v9)
+    if (isNameAndPhotoC3Enabled)
     {
       goto LABEL_10;
     }
@@ -9396,34 +9396,34 @@ LABEL_16:
     goto LABEL_21;
   }
 
-  if (!v9)
+  if (!isNameAndPhotoC3Enabled)
   {
     goto LABEL_16;
   }
 
 LABEL_10:
-  v10 = [(PHAudioCallViewController *)self sharedProfileStateOracleForCall:v6];
-  v11 = [v10 pendingNickname];
+  v10 = [(PHAudioCallViewController *)self sharedProfileStateOracleForCall:callCopy];
+  pendingNickname = [v10 pendingNickname];
 
-  if (v11 && ([v11 wallpaper], (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, objc_msgSend(v11, "wallpaper"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "wallpaperData"), v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v13, v15))
+  if (pendingNickname && ([pendingNickname wallpaper], (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, objc_msgSend(pendingNickname, "wallpaper"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "wallpaperData"), v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v13, v15))
   {
-    v16 = [v11 wallpaper];
-    v17 = [v16 wallpaperData];
+    wallpaper = [pendingNickname wallpaper];
+    wallpaperData = [wallpaper wallpaperData];
 
-    v18 = [PRSPosterArchiver unarchiveConfigurationFromData:v17 error:0];
+    v18 = [PRSPosterArchiver unarchiveConfigurationFromData:wallpaperData error:0];
     v19 = sub_100004F84();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v6 uniqueProxyIdentifier];
+      uniqueProxyIdentifier = [callCopy uniqueProxyIdentifier];
       v26 = 138412290;
-      v27 = v20;
+      v27 = uniqueProxyIdentifier;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "SNAP: unarchived a pending PRSPosterConfiguration for %@", &v26, 0xCu);
     }
 
     v21 = [[ICSPosterConfigurationWrapper alloc] initWithConfiguration:v18 source:3];
-    v22 = [(PHAudioCallViewController *)self configurationCache];
-    v23 = [v6 uniqueProxyIdentifier];
-    [v22 setObject:v21 forKey:v23];
+    configurationCache = [(PHAudioCallViewController *)self configurationCache];
+    uniqueProxyIdentifier2 = [callCopy uniqueProxyIdentifier];
+    [configurationCache setObject:v21 forKey:uniqueProxyIdentifier2];
   }
 
   else
@@ -9432,14 +9432,14 @@ LABEL_10:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       v26 = 138412290;
-      v27 = v11;
+      v27 = pendingNickname;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "SNAP: there is no newPosterConfiguration, current pendingNickName is %@", &v26, 0xCu);
     }
 
-    v17 = [(PHAudioCallViewController *)self configurationCache];
+    wallpaperData = [(PHAudioCallViewController *)self configurationCache];
     v21 = [[ICSPosterConfigurationWrapper alloc] initWithConfiguration:0 source:3];
-    v22 = [v6 uniqueProxyIdentifier];
-    [v17 setObject:v21 forKey:v22];
+    configurationCache = [callCopy uniqueProxyIdentifier];
+    [wallpaperData setObject:v21 forKey:configurationCache];
     v18 = 0;
   }
 
@@ -9447,18 +9447,18 @@ LABEL_21:
   return v18;
 }
 
-- (id)sharedProfileStateOracleForCall:(id)a3
+- (id)sharedProfileStateOracleForCall:(id)call
 {
-  v4 = a3;
-  v5 = [v4 contactIdentifier];
+  callCopy = call;
+  contactIdentifier = [callCopy contactIdentifier];
 
-  if (v5)
+  if (contactIdentifier)
   {
-    v6 = [PHInCallUtilities contactStoreForCall:v4];
-    v7 = [v4 contactIdentifier];
+    v6 = [PHInCallUtilities contactStoreForCall:callCopy];
+    contactIdentifier2 = [callCopy contactIdentifier];
     v8 = +[PHAudioCallViewController contactKeysToFetch];
-    v9 = [(PHAudioCallViewController *)self contactsCache];
-    v10 = [v6 contactForIdentifier:v7 keysToFetch:v8 usingCache:v9];
+    contactsCache = [(PHAudioCallViewController *)self contactsCache];
+    v10 = [v6 contactForIdentifier:contactIdentifier2 keysToFetch:v8 usingCache:contactsCache];
 
     if (v10)
     {
@@ -9483,9 +9483,9 @@ LABEL_21:
     v6 = sub_100004F84();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v4 uniqueProxyIdentifier];
+      uniqueProxyIdentifier = [callCopy uniqueProxyIdentifier];
       v15 = 138412290;
-      v16 = v13;
+      v16 = uniqueProxyIdentifier;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "SNAP: call doesn't have contactIdentifier %@", &v15, 0xCu);
     }
 
@@ -9495,37 +9495,37 @@ LABEL_21:
   return v11;
 }
 
-- (BOOL)callStateCanShowNewPoster:(id)a3
+- (BOOL)callStateCanShowNewPoster:(id)poster
 {
-  v6 = a3;
-  v7 = [(PHAudioCallViewController *)self shouldUseHeroImageLayout];
-  if (v7)
+  posterCopy = poster;
+  shouldUseHeroImageLayout = [(PHAudioCallViewController *)self shouldUseHeroImageLayout];
+  if (shouldUseHeroImageLayout)
   {
     goto LABEL_2;
   }
 
-  v3 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v3 callDisplayStyle] != 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
 LABEL_8:
 
     goto LABEL_13;
   }
 
-  v4 = [(PHAudioCallViewController *)self features];
-  if (([v4 isDominoEnabled] & 1) == 0)
+  features = [(PHAudioCallViewController *)self features];
+  if (([features isDominoEnabled] & 1) == 0)
   {
 
     goto LABEL_8;
   }
 
 LABEL_2:
-  v8 = [(PHAudioCallViewController *)self features];
-  v9 = [v8 isNameAndPhotoC3Enabled];
+  features2 = [(PHAudioCallViewController *)self features];
+  isNameAndPhotoC3Enabled = [features2 isNameAndPhotoC3Enabled];
 
-  if (v7)
+  if (shouldUseHeroImageLayout)
   {
-    if (!v9)
+    if (!isNameAndPhotoC3Enabled)
     {
       goto LABEL_13;
     }
@@ -9534,20 +9534,20 @@ LABEL_2:
   else
   {
 
-    if ((v9 & 1) == 0)
+    if ((isNameAndPhotoC3Enabled & 1) == 0)
     {
       goto LABEL_13;
     }
   }
 
-  if (v6)
+  if (posterCopy)
   {
-    if ([v6 status] == 1)
+    if ([posterCopy status] == 1)
     {
-      v10 = [(PHAudioCallViewController *)self callCenter];
-      v11 = [v10 currentCallCount];
+      callCenter = [(PHAudioCallViewController *)self callCenter];
+      currentCallCount = [callCenter currentCallCount];
 
-      if (v11 < 2)
+      if (currentCallCount < 2)
       {
         v12 = 1;
         goto LABEL_14;
@@ -9562,17 +9562,17 @@ LABEL_14:
   return v12;
 }
 
-- (void)finishNewPosterUpdatesWithCompletion:(id)a3
+- (void)finishNewPosterUpdatesWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = [(PHAudioCallViewController *)self shouldUseHeroImageLayout];
-  if ((v7 & 1) == 0)
+  completionCopy = completion;
+  shouldUseHeroImageLayout = [(PHAudioCallViewController *)self shouldUseHeroImageLayout];
+  if ((shouldUseHeroImageLayout & 1) == 0)
   {
-    v3 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v3 callDisplayStyle] == 3)
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager callDisplayStyle] == 3)
     {
-      v4 = [(PHAudioCallViewController *)self features];
-      if ([v4 isDominoEnabled])
+      features = [(PHAudioCallViewController *)self features];
+      if ([features isDominoEnabled])
       {
         goto LABEL_2;
       }
@@ -9584,12 +9584,12 @@ LABEL_17:
   }
 
 LABEL_2:
-  v8 = [(PHAudioCallViewController *)self features];
-  v9 = [v8 isNameAndPhotoC3Enabled];
+  features2 = [(PHAudioCallViewController *)self features];
+  isNameAndPhotoC3Enabled = [features2 isNameAndPhotoC3Enabled];
 
-  if (v7)
+  if (shouldUseHeroImageLayout)
   {
-    if (!v9)
+    if (!isNameAndPhotoC3Enabled)
     {
       goto LABEL_18;
     }
@@ -9597,21 +9597,21 @@ LABEL_2:
     goto LABEL_9;
   }
 
-  if (v9)
+  if (isNameAndPhotoC3Enabled)
   {
 LABEL_9:
-    v10 = [(PHAudioCallViewController *)self frontmostCall];
-    v3 = v10;
-    if (v10)
+    frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+    callDisplayStyleManager = frontmostCall;
+    if (frontmostCall)
     {
-      if ([v10 status] == 1)
+      if ([frontmostCall status] == 1)
       {
-        v11 = [(PHAudioCallViewController *)self callCenter];
-        v12 = [v11 currentCallCount];
+        callCenter = [(PHAudioCallViewController *)self callCenter];
+        currentCallCount = [callCenter currentCallCount];
 
-        if (v12 <= 1)
+        if (currentCallCount <= 1)
         {
-          v13 = [(PHAudioCallViewController *)self sharedProfileStateOracleForCall:v3];
+          v13 = [(PHAudioCallViewController *)self sharedProfileStateOracleForCall:callDisplayStyleManager];
           v17 = 0;
           v14 = [v13 updateContactAndNicknamesForAutoUpdateWithError:&v17];
           v15 = v17;
@@ -9623,9 +9623,9 @@ LABEL_9:
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "SNAP: new poster update completed with error: %@", buf, 0xCu);
           }
 
-          if (v6)
+          if (completionCopy)
           {
-            v6[2](v6, v13);
+            completionCopy[2](completionCopy, v13);
           }
         }
       }
@@ -9639,34 +9639,34 @@ LABEL_18:
 
 - (BOOL)isShowingBackgroundImage
 {
-  v2 = [(PHAudioCallViewController *)self backgroundImageView];
-  v3 = v2 != 0;
+  backgroundImageView = [(PHAudioCallViewController *)self backgroundImageView];
+  v3 = backgroundImageView != 0;
 
   return v3;
 }
 
-- (id)contactToDisplayInCallWallpaperForCall:(id)a3
+- (id)contactToDisplayInCallWallpaperForCall:(id)call
 {
-  v4 = a3;
-  v5 = [(PHAudioCallViewController *)self isBeingDismissed];
+  callCopy = call;
+  isBeingDismissed = [(PHAudioCallViewController *)self isBeingDismissed];
   v6 = 0;
-  if (v4 && (v5 & 1) == 0)
+  if (callCopy && (isBeingDismissed & 1) == 0)
   {
-    v7 = [v4 contactIdentifier];
+    contactIdentifier = [callCopy contactIdentifier];
 
-    if (v7)
+    if (contactIdentifier)
     {
-      v8 = [PHInCallUtilities contactStoreForCall:v4];
-      v9 = [v4 contactIdentifier];
+      v8 = [PHInCallUtilities contactStoreForCall:callCopy];
+      contactIdentifier2 = [callCopy contactIdentifier];
       v10 = +[PHAudioCallViewController contactKeysToFetch];
-      v11 = [(PHAudioCallViewController *)self contactsCache];
-      v6 = [v8 contactForIdentifier:v9 keysToFetch:v10 usingCache:v11];
+      contactsCache = [(PHAudioCallViewController *)self contactsCache];
+      v6 = [v8 contactForIdentifier:contactIdentifier2 keysToFetch:v10 usingCache:contactsCache];
 
       if (v6)
       {
-        v12 = [(PHAudioCallViewController *)self mostRecentContactToDisplayInCallWallpaper];
+        mostRecentContactToDisplayInCallWallpaper = [(PHAudioCallViewController *)self mostRecentContactToDisplayInCallWallpaper];
 
-        if (v6 != v12)
+        if (v6 != mostRecentContactToDisplayInCallWallpaper)
         {
           [(PHAudioCallViewController *)self setMostRecentContactToDisplayInCallWallpaper:v6];
           v13 = +[CNContactChangesNotifier sharedNotifier];
@@ -9688,33 +9688,33 @@ LABEL_18:
   return v6;
 }
 
-- (id)contactWallpaperForCall:(id)a3
+- (id)contactWallpaperForCall:(id)call
 {
-  v4 = a3;
-  if (-[CNKFeatures isEnhancedEmergencyEnabled](self->_features, "isEnhancedEmergencyEnabled") && ([v4 isEmergency] & 1) != 0)
+  callCopy = call;
+  if (-[CNKFeatures isEnhancedEmergencyEnabled](self->_features, "isEnhancedEmergencyEnabled") && ([callCopy isEmergency] & 1) != 0)
   {
-    v5 = 0;
+    wallpaper = 0;
     goto LABEL_20;
   }
 
-  v6 = [v4 contactIdentifier];
+  contactIdentifier = [callCopy contactIdentifier];
 
-  if (v6)
+  if (contactIdentifier)
   {
-    v7 = [v4 handle];
-    v8 = [v7 siriDisplayName];
-    if ([v8 length])
+    handle = [callCopy handle];
+    siriDisplayName = [handle siriDisplayName];
+    if ([siriDisplayName length])
     {
-      v9 = [v4 handle];
-      v10 = [v9 shouldHideContact];
+      handle2 = [callCopy handle];
+      shouldHideContact = [handle2 shouldHideContact];
 
-      if (v10)
+      if (shouldHideContact)
       {
         v11 = sub_100004F84();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           v19 = 138412290;
-          v20 = v4;
+          v20 = callCopy;
           v12 = "SNAP: call initiated with Siri using a phone or email on a lock device, not showing the wallpaper %@";
 LABEL_11:
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, v12, &v19, 0xCu);
@@ -9729,11 +9729,11 @@ LABEL_11:
     {
     }
 
-    v11 = [PHInCallUtilities contactStoreForCall:v4];
-    v13 = [v4 contactIdentifier];
+    v11 = [PHInCallUtilities contactStoreForCall:callCopy];
+    contactIdentifier2 = [callCopy contactIdentifier];
     v14 = +[PHAudioCallViewController contactKeysToFetch];
-    v15 = [(PHAudioCallViewController *)self contactsCache];
-    v16 = [v11 contactForIdentifier:v13 keysToFetch:v14 usingCache:v15];
+    contactsCache = [(PHAudioCallViewController *)self contactsCache];
+    v16 = [v11 contactForIdentifier:contactIdentifier2 keysToFetch:v14 usingCache:contactsCache];
 
     v17 = sub_100004F84();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -9743,11 +9743,11 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "SNAP: the contact we used to fetch wallpaper for call is non-nil: %d", &v19, 8u);
     }
 
-    v5 = [v16 wallpaper];
+    wallpaper = [v16 wallpaper];
 
-    if (v5)
+    if (wallpaper)
     {
-      v5 = [v16 wallpaper];
+      wallpaper = [v16 wallpaper];
     }
 
     goto LABEL_19;
@@ -9757,40 +9757,40 @@ LABEL_11:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412290;
-    v20 = v4;
+    v20 = callCopy;
     v12 = "SNAP: call doesn't have contactIdentifier %@";
     goto LABEL_11;
   }
 
 LABEL_12:
-  v5 = 0;
+  wallpaper = 0;
 LABEL_19:
 
 LABEL_20:
 
-  return v5;
+  return wallpaper;
 }
 
-- (id)wallpaperTypeForCNWallpaper:(id)a3
+- (id)wallpaperTypeForCNWallpaper:(id)wallpaper
 {
-  v4 = [a3 extensionBundleID];
-  v5 = [(PHAudioCallViewController *)self wallpaperTypeForBundleID:v4];
-
-  return v5;
-}
-
-- (id)wallpaperTypeForIMWallpaperMetadata:(id)a3
-{
-  v4 = [a3 type];
-  v5 = [(PHAudioCallViewController *)self wallpaperTypeForBundleID:v4];
+  extensionBundleID = [wallpaper extensionBundleID];
+  v5 = [(PHAudioCallViewController *)self wallpaperTypeForBundleID:extensionBundleID];
 
   return v5;
 }
 
-- (id)wallpaperTypeForBundleID:(id)a3
+- (id)wallpaperTypeForIMWallpaperMetadata:(id)metadata
 {
-  v3 = a3;
-  if ([v3 isEqual:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"])
+  type = [metadata type];
+  v5 = [(PHAudioCallViewController *)self wallpaperTypeForBundleID:type];
+
+  return v5;
+}
+
+- (id)wallpaperTypeForBundleID:(id)d
+{
+  dCopy = d;
+  if ([dCopy isEqual:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"])
   {
     v4 = &CNWallpaperTypePhoto;
 LABEL_7:
@@ -9798,13 +9798,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v3 isEqual:@"com.apple.AvatarUI.AvatarPosterExtension"])
+  if ([dCopy isEqual:@"com.apple.AvatarUI.AvatarPosterExtension"])
   {
     v4 = &CNWallpaperTypeMemoji;
     goto LABEL_7;
   }
 
-  if ([v3 isEqual:@"com.apple.ContactsUI.MonogramPosterExtension"])
+  if ([dCopy isEqual:@"com.apple.ContactsUI.MonogramPosterExtension"])
   {
     v4 = &CNWallpaperTypeMonogram;
     goto LABEL_7;
@@ -9816,35 +9816,35 @@ LABEL_8:
   return v5;
 }
 
-- (id)lastSeenOrCurrentPosterConfigurationForCall:(id)a3
+- (id)lastSeenOrCurrentPosterConfigurationForCall:(id)call
 {
-  v4 = a3;
-  if ([(PHAudioCallViewController *)self prefersShowingCachedLastSeenPosterBeforeCallConnected:v4])
+  callCopy = call;
+  if ([(PHAudioCallViewController *)self prefersShowingCachedLastSeenPosterBeforeCallConnected:callCopy])
   {
-    [(PHAudioCallViewController *)self lastSeenPosterConfigurationForCall:v4];
+    [(PHAudioCallViewController *)self lastSeenPosterConfigurationForCall:callCopy];
   }
 
   else
   {
-    [(PHAudioCallViewController *)self contactWallpaperConfigurationForCall:v4 shouldReadFromCache:1];
+    [(PHAudioCallViewController *)self contactWallpaperConfigurationForCall:callCopy shouldReadFromCache:1];
   }
   v5 = ;
 
   return v5;
 }
 
-- (id)lastSeenPosterConfigurationForCall:(id)a3
+- (id)lastSeenPosterConfigurationForCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   if (![(PHAudioCallViewController *)self shouldUseHeroImageLayout])
   {
-    v12 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v12 callDisplayStyle] == 3)
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager callDisplayStyle] == 3)
     {
-      v13 = [(PHAudioCallViewController *)self features];
-      v14 = [v13 isDominoEnabled];
+      features = [(PHAudioCallViewController *)self features];
+      isDominoEnabled = [features isDominoEnabled];
 
-      if (v14)
+      if (isDominoEnabled)
       {
         goto LABEL_2;
       }
@@ -9859,41 +9859,41 @@ LABEL_8:
   }
 
 LABEL_2:
-  v5 = [(PHAudioCallViewController *)self configurationCache];
-  v6 = [v4 uniqueProxyIdentifier];
-  v7 = [v5 objectForKey:v6];
-  v8 = [v7 configuration];
+  configurationCache = [(PHAudioCallViewController *)self configurationCache];
+  uniqueProxyIdentifier = [callCopy uniqueProxyIdentifier];
+  v7 = [configurationCache objectForKey:uniqueProxyIdentifier];
+  configuration = [v7 configuration];
 
-  if (v8)
+  if (configuration)
   {
     v9 = sub_100004F84();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v4 callUUID];
+      callUUID = [callCopy callUUID];
       v29 = 138412290;
-      v30 = v10;
+      v30 = callUUID;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "SNAP: Returning a cached PRSPosterConfiguration for %@", &v29, 0xCu);
     }
 
-    v11 = v8;
+    v11 = configuration;
     goto LABEL_23;
   }
 
-  v15 = [v4 handle];
-  v16 = [v15 siriDisplayName];
-  if ([v16 length])
+  handle = [callCopy handle];
+  siriDisplayName = [handle siriDisplayName];
+  if ([siriDisplayName length])
   {
-    v17 = [v4 handle];
-    v18 = [v17 shouldHideContact];
+    handle2 = [callCopy handle];
+    shouldHideContact = [handle2 shouldHideContact];
 
-    if (v18)
+    if (shouldHideContact)
     {
       v19 = sub_100004F84();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v4 uniqueProxyIdentifier];
+        uniqueProxyIdentifier2 = [callCopy uniqueProxyIdentifier];
         v29 = 138412290;
-        v30 = v20;
+        v30 = uniqueProxyIdentifier2;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "SNAP: call initiated with Siri using a phone or email on a lock device, not showing the wallpaper for callUUID %@", &v29, 0xCu);
       }
 
@@ -9905,33 +9905,33 @@ LABEL_2:
   {
   }
 
-  v21 = [(PHAudioCallViewController *)self readCachedLastSeenPosterDataForCall:v4];
+  v21 = [(PHAudioCallViewController *)self readCachedLastSeenPosterDataForCall:callCopy];
   if (v21)
   {
-    v22 = v21;
+    configurationCache3 = v21;
     v11 = [PRSPosterArchiver unarchiveConfigurationFromData:v21 error:0];
     v23 = sub_100004F84();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [v4 uniqueProxyIdentifier];
+      uniqueProxyIdentifier3 = [callCopy uniqueProxyIdentifier];
       v29 = 138412290;
-      v30 = v24;
+      v30 = uniqueProxyIdentifier3;
       _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "SNAP: unarchived a lastSeen PRSPosterConfiguration for %@", &v29, 0xCu);
     }
 
     v25 = [[ICSPosterConfigurationWrapper alloc] initWithConfiguration:v11 source:1];
-    v26 = [(PHAudioCallViewController *)self configurationCache];
-    v27 = [v4 uniqueProxyIdentifier];
-    [v26 setObject:v25 forKey:v27];
+    configurationCache2 = [(PHAudioCallViewController *)self configurationCache];
+    uniqueProxyIdentifier4 = [callCopy uniqueProxyIdentifier];
+    [configurationCache2 setObject:v25 forKey:uniqueProxyIdentifier4];
 
     goto LABEL_22;
   }
 
 LABEL_21:
-  v22 = [(PHAudioCallViewController *)self configurationCache];
+  configurationCache3 = [(PHAudioCallViewController *)self configurationCache];
   v25 = [[ICSPosterConfigurationWrapper alloc] initWithConfiguration:0 source:1];
-  v26 = [v4 uniqueProxyIdentifier];
-  [v22 setObject:v25 forKey:v26];
+  configurationCache2 = [callCopy uniqueProxyIdentifier];
+  [configurationCache3 setObject:v25 forKey:configurationCache2];
   v11 = 0;
 LABEL_22:
 
@@ -9941,17 +9941,17 @@ LABEL_24:
   return v11;
 }
 
-- (id)contactWallpaperConfigurationForCall:(id)a3 shouldReadFromCache:(BOOL)a4
+- (id)contactWallpaperConfigurationForCall:(id)call shouldReadFromCache:(BOOL)cache
 {
-  v4 = a4;
-  v6 = a3;
+  cacheCopy = cache;
+  callCopy = call;
   if ([(PHAudioCallViewController *)self shouldUseHeroImageLayout])
   {
     goto LABEL_2;
   }
 
-  v14 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v14 callDisplayStyle] != 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
 
 LABEL_17:
@@ -9959,60 +9959,60 @@ LABEL_17:
     goto LABEL_26;
   }
 
-  v15 = [(PHAudioCallViewController *)self features];
-  v16 = [v15 isDominoEnabled];
+  features = [(PHAudioCallViewController *)self features];
+  isDominoEnabled = [features isDominoEnabled];
 
-  if (!v16)
+  if (!isDominoEnabled)
   {
     goto LABEL_17;
   }
 
 LABEL_2:
-  v7 = [(PHAudioCallViewController *)self contactWallpaperForCall:v6];
+  v7 = [(PHAudioCallViewController *)self contactWallpaperForCall:callCopy];
   if (v7)
   {
-    if (v4 && (-[PHAudioCallViewController configurationCache](self, "configurationCache"), v8 = objc_claimAutoreleasedReturnValue(), [v6 uniqueProxyIdentifier], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "objectForKey:", v9), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "configuration"), v11 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v11))
+    if (cacheCopy && (-[PHAudioCallViewController configurationCache](self, "configurationCache"), v8 = objc_claimAutoreleasedReturnValue(), [callCopy uniqueProxyIdentifier], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "objectForKey:", v9), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "configuration"), v11 = objc_claimAutoreleasedReturnValue(), v10, v9, v8, v11))
     {
-      v12 = sub_100004F84();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      posterArchiveData = sub_100004F84();
+      if (os_log_type_enabled(posterArchiveData, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v6 callUUID];
+        callUUID = [callCopy callUUID];
         v28 = 138412290;
-        v29 = v13;
-        _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "SNAP: Returning a cached PRSPosterConfiguration for %@", &v28, 0xCu);
+        v29 = callUUID;
+        _os_log_impl(&_mh_execute_header, posterArchiveData, OS_LOG_TYPE_DEFAULT, "SNAP: Returning a cached PRSPosterConfiguration for %@", &v28, 0xCu);
       }
     }
 
     else
     {
-      v12 = [v7 posterArchiveData];
+      posterArchiveData = [v7 posterArchiveData];
       v17 = sub_100004F84();
       v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-      if (v12)
+      if (posterArchiveData)
       {
         if (v18)
         {
           v28 = 138412546;
-          v29 = v12;
+          v29 = posterArchiveData;
           v30 = 2048;
-          v31 = [v12 length];
+          v31 = [posterArchiveData length];
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "SNAP: posterArchiveData in wallpaper is %@, length is %lu", &v28, 0x16u);
         }
 
-        v11 = [PRSPosterArchiver unarchiveConfigurationFromData:v12 error:0];
+        v11 = [PRSPosterArchiver unarchiveConfigurationFromData:posterArchiveData error:0];
         v19 = sub_100004F84();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v6 uniqueProxyIdentifier];
+          uniqueProxyIdentifier = [callCopy uniqueProxyIdentifier];
           v28 = 138412290;
-          v29 = v20;
+          v29 = uniqueProxyIdentifier;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "SNAP: unarchived a contact (current) PRSPosterConfiguration for %@", &v28, 0xCu);
         }
 
-        v21 = [[ICSPosterConfigurationWrapper alloc] initWithConfiguration:v11 source:2];
-        v22 = [(PHAudioCallViewController *)self configurationCache];
-        v23 = [v6 uniqueProxyIdentifier];
-        [(ICSPosterConfigurationWrapper *)v22 setObject:v21 forKey:v23];
+        configurationCache2 = [[ICSPosterConfigurationWrapper alloc] initWithConfiguration:v11 source:2];
+        configurationCache = [(PHAudioCallViewController *)self configurationCache];
+        uniqueProxyIdentifier2 = [callCopy uniqueProxyIdentifier];
+        [(ICSPosterConfigurationWrapper *)configurationCache setObject:configurationCache2 forKey:uniqueProxyIdentifier2];
       }
 
       else
@@ -10023,10 +10023,10 @@ LABEL_2:
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "SNAP: there is no posterArchiveData in wallpaper", &v28, 2u);
         }
 
-        v21 = [(PHAudioCallViewController *)self configurationCache];
-        v22 = [[ICSPosterConfigurationWrapper alloc] initWithConfiguration:0 source:2];
-        v23 = [v6 uniqueProxyIdentifier];
-        [(ICSPosterConfigurationWrapper *)v21 setObject:v22 forKey:v23];
+        configurationCache2 = [(PHAudioCallViewController *)self configurationCache];
+        configurationCache = [[ICSPosterConfigurationWrapper alloc] initWithConfiguration:0 source:2];
+        uniqueProxyIdentifier2 = [callCopy uniqueProxyIdentifier];
+        [(ICSPosterConfigurationWrapper *)configurationCache2 setObject:configurationCache forKey:uniqueProxyIdentifier2];
         v11 = 0;
       }
     }
@@ -10034,16 +10034,16 @@ LABEL_2:
 
   else
   {
-    v24 = [(PHAudioCallViewController *)self configurationCache];
+    configurationCache3 = [(PHAudioCallViewController *)self configurationCache];
     v25 = [[ICSPosterConfigurationWrapper alloc] initWithConfiguration:0 source:2];
-    v26 = [v6 uniqueProxyIdentifier];
-    [v24 setObject:v25 forKey:v26];
+    uniqueProxyIdentifier3 = [callCopy uniqueProxyIdentifier];
+    [configurationCache3 setObject:v25 forKey:uniqueProxyIdentifier3];
 
-    v12 = sub_100004F84();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    posterArchiveData = sub_100004F84();
+    if (os_log_type_enabled(posterArchiveData, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v28) = 0;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "SNAP: contactWallpaperForCall is nil", &v28, 2u);
+      _os_log_impl(&_mh_execute_header, posterArchiveData, OS_LOG_TYPE_DEFAULT, "SNAP: contactWallpaperForCall is nil", &v28, 2u);
     }
 
     v11 = 0;
@@ -10054,18 +10054,18 @@ LABEL_26:
   return v11;
 }
 
-- (id)wallpaperTitleStyleAttributesForCall:(id)a3
+- (id)wallpaperTitleStyleAttributesForCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   if (![(PHAudioCallViewController *)self shouldUseHeroImageLayout])
   {
-    v12 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v12 callDisplayStyle] == 3)
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager callDisplayStyle] == 3)
     {
-      v13 = [(PHAudioCallViewController *)self features];
-      v14 = [v13 isDominoEnabled];
+      features = [(PHAudioCallViewController *)self features];
+      isDominoEnabled = [features isDominoEnabled];
 
-      if (v14)
+      if (isDominoEnabled)
       {
         goto LABEL_2;
       }
@@ -10075,28 +10075,28 @@ LABEL_26:
     {
     }
 
-    v11 = 0;
+    titleStyleAttributes2 = 0;
     goto LABEL_19;
   }
 
 LABEL_2:
-  v5 = [(PHAudioCallViewController *)self lastSeenOrCurrentPosterConfigurationForCall:v4];
+  v5 = [(PHAudioCallViewController *)self lastSeenOrCurrentPosterConfigurationForCall:callCopy];
   if (v5)
   {
-    v6 = [(PHAudioCallViewController *)self configurationCache];
-    v7 = [v4 uniqueProxyIdentifier];
-    v8 = [v6 objectForKey:v7];
+    configurationCache = [(PHAudioCallViewController *)self configurationCache];
+    uniqueProxyIdentifier = [callCopy uniqueProxyIdentifier];
+    v8 = [configurationCache objectForKey:uniqueProxyIdentifier];
 
     if (v8)
     {
-      v9 = [v8 configuration];
-      if ([v9 isEqual:v5])
+      configuration = [v8 configuration];
+      if ([configuration isEqual:v5])
       {
-        v10 = [v8 titleStyleAttributes];
+        titleStyleAttributes = [v8 titleStyleAttributes];
 
-        if (v10)
+        if (titleStyleAttributes)
         {
-          v11 = [v8 titleStyleAttributes];
+          titleStyleAttributes2 = [v8 titleStyleAttributes];
 LABEL_17:
 
           goto LABEL_18;
@@ -10109,54 +10109,54 @@ LABEL_17:
     }
 
     v18 = 0;
-    v11 = [PRUISPosterConfigurationUtilities titleStyleAttributesForConfiguration:v5 error:&v18];
+    titleStyleAttributes2 = [PRUISPosterConfigurationUtilities titleStyleAttributesForConfiguration:v5 error:&v18];
     if (v8)
     {
-      v15 = [v8 configuration];
-      v16 = [v15 isEqual:v5];
+      configuration2 = [v8 configuration];
+      v16 = [configuration2 isEqual:v5];
 
       if (v16)
       {
-        [v8 setTitleStyleAttributes:v11];
+        [v8 setTitleStyleAttributes:titleStyleAttributes2];
       }
     }
 
     goto LABEL_17;
   }
 
-  v11 = 0;
+  titleStyleAttributes2 = 0;
 LABEL_18:
 
 LABEL_19:
 
-  return v11;
+  return titleStyleAttributes2;
 }
 
 - (id)wallpaperTitleStyleAttributes
 {
-  v3 = [(PHAudioCallViewController *)self callToUseForWallpaper];
-  v4 = [(PHAudioCallViewController *)self wallpaperTitleStyleAttributesForCall:v3];
+  callToUseForWallpaper = [(PHAudioCallViewController *)self callToUseForWallpaper];
+  v4 = [(PHAudioCallViewController *)self wallpaperTitleStyleAttributesForCall:callToUseForWallpaper];
 
   return v4;
 }
 
 - (id)contactWallpaperBackgroundColor
 {
-  v3 = [(PHAudioCallViewController *)self callToUseForWallpaper];
-  if (![(PHAudioCallViewController *)self callStateCanShowNewPoster:v3]&& [(PHAudioCallViewController *)self prefersShowingCachedLastSeenPosterBeforeCallConnected:v3])
+  callToUseForWallpaper = [(PHAudioCallViewController *)self callToUseForWallpaper];
+  if (![(PHAudioCallViewController *)self callStateCanShowNewPoster:callToUseForWallpaper]&& [(PHAudioCallViewController *)self prefersShowingCachedLastSeenPosterBeforeCallConnected:callToUseForWallpaper])
   {
-    v4 = [(PHAudioCallViewController *)self lastSeenPosterIMWallpaperMetadataForCall:v3];
-    v5 = [v4 backgroundColor];
+    v4 = [(PHAudioCallViewController *)self lastSeenPosterIMWallpaperMetadataForCall:callToUseForWallpaper];
+    backgroundColor = [v4 backgroundColor];
 LABEL_6:
-    v7 = v5;
+    v7 = backgroundColor;
     goto LABEL_8;
   }
 
-  v6 = [(PHAudioCallViewController *)self contactWallpaperForCall:v3];
+  v6 = [(PHAudioCallViewController *)self contactWallpaperForCall:callToUseForWallpaper];
   v4 = v6;
   if (v6)
   {
-    v5 = [v6 backgroundColorDescription];
+    backgroundColor = [v6 backgroundColorDescription];
     goto LABEL_6;
   }
 
@@ -10198,12 +10198,12 @@ LABEL_8:
   return v23;
 }
 
-- (void)updateLegacyBackgroundImageVisibilityWithShouldShowWallpaper:(BOOL)a3
+- (void)updateLegacyBackgroundImageVisibilityWithShouldShowWallpaper:(BOOL)wallpaper
 {
-  v3 = a3;
-  v5 = [(PHAudioCallViewController *)self canShowBackgroundImage];
-  v6 = !v3;
-  if (!v5)
+  wallpaperCopy = wallpaper;
+  canShowBackgroundImage = [(PHAudioCallViewController *)self canShowBackgroundImage];
+  v6 = !wallpaperCopy;
+  if (!canShowBackgroundImage)
   {
     v6 = 0.0;
   }
@@ -10219,39 +10219,39 @@ LABEL_8:
   }
 }
 
-- (BOOL)setCallForBackgroundImage:(id)a3 animated:(BOOL)a4 callDisplayStyleChanged:(BOOL)a5
+- (BOOL)setCallForBackgroundImage:(id)image animated:(BOOL)animated callDisplayStyleChanged:(BOOL)changed
 {
-  v5 = a5;
-  v7 = a3;
+  changedCopy = changed;
+  imageCopy = image;
   v8 = sub_100004F84();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138412290;
-    v18 = v7;
+    v18 = imageCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "setCallForBackgroundImage to: %@", &v17, 0xCu);
   }
 
-  v9 = [(PHAudioCallViewController *)self callForBackgroundImage];
-  if ([v9 isEqual:v7])
+  callForBackgroundImage = [(PHAudioCallViewController *)self callForBackgroundImage];
+  if ([callForBackgroundImage isEqual:imageCopy])
   {
-    v10 = [(PHAudioCallViewController *)self callForBackgroundImage];
+    callForBackgroundImage2 = [(PHAudioCallViewController *)self callForBackgroundImage];
 
-    if (v10)
+    if (callForBackgroundImage2)
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = v7 == 0;
+      v11 = imageCopy == 0;
     }
 
-    if (v11 && !v5)
+    if (v11 && !changedCopy)
     {
-      v12 = [(PHAudioCallViewController *)self backgroundImageView];
-      v13 = [v12 image];
+      backgroundImageView = [(PHAudioCallViewController *)self backgroundImageView];
+      image = [backgroundImageView image];
 
-      [(PHAudioCallViewController *)self hideOrShowThirdPartyBackgroundImageWithImage:v13];
+      [(PHAudioCallViewController *)self hideOrShowThirdPartyBackgroundImageWithImage:image];
       goto LABEL_19;
     }
   }
@@ -10260,58 +10260,58 @@ LABEL_8:
   {
   }
 
-  if (v7)
+  if (imageCopy)
   {
-    v14 = [(PHAudioCallViewController *)self contactImageDataForCall:v7];
+    v14 = [(PHAudioCallViewController *)self contactImageDataForCall:imageCopy];
     if (v14)
     {
-      v13 = [[UIImage alloc] initWithData:v14];
+      image = [[UIImage alloc] initWithData:v14];
     }
 
     else
     {
-      v13 = 0;
+      image = 0;
     }
   }
 
   else
   {
-    v13 = 0;
+    image = 0;
   }
 
-  [(PHAudioCallViewController *)self setBackgroundImage:v13];
-  [(PHAudioCallViewController *)self setCallForBackgroundImage:v7];
+  [(PHAudioCallViewController *)self setBackgroundImage:image];
+  [(PHAudioCallViewController *)self setCallForBackgroundImage:imageCopy];
 LABEL_19:
   [(PHAudioCallViewController *)self updateLegacyBackgroundImageVisibilityWithShouldShowWallpaper:[(PHAudioCallViewController *)self callHasNoContactPoster]^ 1];
-  if (v13)
+  if (image)
   {
-    v15 = [(PHAudioCallViewController *)self canShowBackgroundImage];
+    canShowBackgroundImage = [(PHAudioCallViewController *)self canShowBackgroundImage];
   }
 
   else
   {
-    v15 = 0;
+    canShowBackgroundImage = 0;
   }
 
-  return v15;
+  return canShowBackgroundImage;
 }
 
-- (id)contactImageDataForCall:(id)a3
+- (id)contactImageDataForCall:(id)call
 {
-  v4 = [(PHAudioCallViewController *)self contactForCall:a3];
+  v4 = [(PHAudioCallViewController *)self contactForCall:call];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 fullscreenImageData];
-    v7 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v7 callDisplayStyle] == 3)
+    fullscreenImageData = [v4 fullscreenImageData];
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager callDisplayStyle] == 3)
     {
-      v8 = [(PHAudioCallViewController *)self features];
-      v9 = [v8 isDominoEnabled];
+      features = [(PHAudioCallViewController *)self features];
+      isDominoEnabled = [features isDominoEnabled];
 
-      if (v9 && !v6)
+      if (isDominoEnabled && !fullscreenImageData)
       {
-        v6 = [v5 imageData];
+        fullscreenImageData = [v5 imageData];
       }
     }
 
@@ -10322,29 +10322,29 @@ LABEL_19:
 
   else
   {
-    v6 = 0;
+    fullscreenImageData = 0;
   }
 
   v10 = sub_100004F84();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v6;
+    v13 = fullscreenImageData;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "SNAP: contactImageDataForCall is %@", &v12, 0xCu);
   }
 
-  return v6;
+  return fullscreenImageData;
 }
 
-- (id)contactForCall:(id)a3
+- (id)contactForCall:(id)call
 {
-  v4 = a3;
-  v5 = [v4 handle];
-  v6 = [v5 siriDisplayName];
-  if ([v6 length])
+  callCopy = call;
+  handle = [callCopy handle];
+  siriDisplayName = [handle siriDisplayName];
+  if ([siriDisplayName length])
   {
-    v7 = [v4 handle];
-    v8 = [v7 shouldHideContact] ^ 1;
+    handle2 = [callCopy handle];
+    v8 = [handle2 shouldHideContact] ^ 1;
   }
 
   else
@@ -10352,10 +10352,10 @@ LABEL_19:
     v8 = 1;
   }
 
-  v9 = [v4 contactIdentifier];
+  contactIdentifier = [callCopy contactIdentifier];
 
   v10 = 0;
-  if (v9 && v8)
+  if (contactIdentifier && v8)
   {
     v11 = sub_100004F84();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -10364,45 +10364,45 @@ LABEL_19:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "SNAP: trying to fetch contactImageData", v17, 2u);
     }
 
-    v12 = [PHInCallUtilities contactStoreForCall:v4];
-    v13 = [v4 contactIdentifier];
+    v12 = [PHInCallUtilities contactStoreForCall:callCopy];
+    contactIdentifier2 = [callCopy contactIdentifier];
     v14 = +[PHAudioCallViewController contactKeysToFetch];
-    v15 = [(PHAudioCallViewController *)self contactsCache];
-    v10 = [v12 contactForIdentifier:v13 keysToFetch:v14 usingCache:v15];
+    contactsCache = [(PHAudioCallViewController *)self contactsCache];
+    v10 = [v12 contactForIdentifier:contactIdentifier2 keysToFetch:v14 usingCache:contactsCache];
   }
 
   return v10;
 }
 
-- (id)fallbackImageDataForCall:(id)a3
+- (id)fallbackImageDataForCall:(id)call
 {
-  v3 = [(PHAudioCallViewController *)self contactForCall:a3];
+  v3 = [(PHAudioCallViewController *)self contactForCall:call];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 imageData];
+    imageData = [v3 imageData];
   }
 
   else
   {
-    v5 = 0;
+    imageData = 0;
   }
 
   v6 = sub_100004F84();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = imageData;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "SNAP: fallbackImageDataForContact is %@", &v8, 0xCu);
   }
 
-  return v5;
+  return imageData;
 }
 
-- (id)contactImageForCall:(id)a3
+- (id)contactImageForCall:(id)call
 {
-  v4 = a3;
-  if (v4 && ([(PHAudioCallViewController *)self contactImageDataForCall:v4], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  callCopy = call;
+  if (callCopy && ([(PHAudioCallViewController *)self contactImageDataForCall:callCopy], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
     v7 = [UIImage imageWithData:v5];
@@ -10418,60 +10418,60 @@ LABEL_19:
 
 - (id)contactImage
 {
-  v3 = [(PHAudioCallViewController *)self callToUseForWallpaper];
-  v4 = [(PHAudioCallViewController *)self contactImageForCall:v3];
+  callToUseForWallpaper = [(PHAudioCallViewController *)self callToUseForWallpaper];
+  v4 = [(PHAudioCallViewController *)self contactImageForCall:callToUseForWallpaper];
 
   return v4;
 }
 
-- (void)setBackgroundImage:(id)a3
+- (void)setBackgroundImage:(id)image
 {
-  v27 = a3;
-  v4 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v4 callDisplayStyle] == 3)
+  imageCopy = image;
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v5 = [(PHAudioCallViewController *)self features];
-    v6 = [v5 isDominoEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (v6)
+    if (isDominoEnabled)
     {
-      v7 = [(PHAudioCallViewController *)self callToUseForWallpaper];
-      if ([(PHAudioCallViewController *)self callStateCanShowNewPoster:v7]|| ![(PHAudioCallViewController *)self prefersShowingCachedLastSeenPosterBeforeCallConnected:v7])
+      callToUseForWallpaper = [(PHAudioCallViewController *)self callToUseForWallpaper];
+      if ([(PHAudioCallViewController *)self callStateCanShowNewPoster:callToUseForWallpaper]|| ![(PHAudioCallViewController *)self prefersShowingCachedLastSeenPosterBeforeCallConnected:callToUseForWallpaper])
       {
-        v8 = [(PHAudioCallViewController *)self contactWallpaperForCall:v7];
+        v8 = [(PHAudioCallViewController *)self contactWallpaperForCall:callToUseForWallpaper];
         v9 = [(PHAudioCallViewController *)self wallpaperTypeForCNWallpaper:v8];
       }
 
       else
       {
-        v8 = [(PHAudioCallViewController *)self lastSeenPosterIMWallpaperMetadataForCall:v7];
+        v8 = [(PHAudioCallViewController *)self lastSeenPosterIMWallpaperMetadataForCall:callToUseForWallpaper];
         v9 = [(PHAudioCallViewController *)self wallpaperTypeForIMWallpaperMetadata:v8];
       }
 
       v15 = v9;
 
-      v16 = [(PHAudioCallViewController *)self callCenter];
-      if ([v16 currentCallCount] <= 1)
+      callCenter = [(PHAudioCallViewController *)self callCenter];
+      if ([callCenter currentCallCount] <= 1)
       {
       }
 
       else
       {
-        v17 = [(PHAudioCallViewController *)self callCenter];
-        v18 = [v17 incomingCall];
+        callCenter2 = [(PHAudioCallViewController *)self callCenter];
+        incomingCall = [callCenter2 incomingCall];
 
-        if (v18)
+        if (incomingCall)
         {
           v19 = &OBJC_IVAR___PHAudioCallViewController__shouldShowLargeAvatarForCallWaiting;
 LABEL_24:
           v21 = *(&self->super.super.super.super.isa + *v19);
-          v22 = [(PHCallViewController *)self currentState];
+          currentState = [(PHCallViewController *)self currentState];
           if (v15 == CNWallpaperTypeMemoji || v15 == CNWallpaperTypeMonogram)
           {
-            v24 = [(PHAudioCallViewController *)self contactWallpaperBackgroundColor];
-            if (v24)
+            contactWallpaperBackgroundColor = [(PHAudioCallViewController *)self contactWallpaperBackgroundColor];
+            if (contactWallpaperBackgroundColor)
             {
-              [(PHAudioCallViewController *)self setBackgroundColor:v24 animated:1];
+              [(PHAudioCallViewController *)self setBackgroundColor:contactWallpaperBackgroundColor animated:1];
             }
 
             else
@@ -10485,7 +10485,7 @@ LABEL_24:
 
           else
           {
-            if (v22 == 11)
+            if (currentState == 11)
             {
               v23 = 1;
             }
@@ -10495,9 +10495,9 @@ LABEL_24:
               v23 = v21;
             }
 
-            if (v27 && v23)
+            if (imageCopy && v23)
             {
-              [(PHAudioCallViewController *)self updateBackgroundContactImageViewWithImage:v27 animated:1];
+              [(PHAudioCallViewController *)self updateBackgroundContactImageViewWithImage:imageCopy animated:1];
             }
 
             else
@@ -10511,9 +10511,9 @@ LABEL_24:
         }
       }
 
-      v20 = [(PHAudioCallViewController *)self usesCompactMulticallUI];
+      usesCompactMulticallUI = [(PHAudioCallViewController *)self usesCompactMulticallUI];
       v19 = &OBJC_IVAR___PHAudioCallViewController__shouldShowLargeAvatar;
-      if (v20)
+      if (usesCompactMulticallUI)
       {
         v19 = &OBJC_IVAR___PHAudioCallViewController__shouldShowLargeAvatarForCallWaiting;
       }
@@ -10526,25 +10526,25 @@ LABEL_24:
   {
   }
 
-  if (v27 && [(PHAudioCallViewController *)self canShowBackgroundImage]|| [(PHAudioCallViewController *)self shouldShowContactOrLastSeenWallpaper])
+  if (imageCopy && [(PHAudioCallViewController *)self canShowBackgroundImage]|| [(PHAudioCallViewController *)self shouldShowContactOrLastSeenWallpaper])
   {
-    [(PHAudioCallViewController *)self updateBackgroundContactImageViewWithImage:v27 animated:0];
+    [(PHAudioCallViewController *)self updateBackgroundContactImageViewWithImage:imageCopy animated:0];
     [(PHAudioCallViewController *)self updateLayeredBackgroundWallpaper];
     [(PHAudioCallViewController *)self removeDefaultBackgroundGradientView];
   }
 
   else
   {
-    v10 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    v11 = [v10 callDisplayStyle];
+    callDisplayStyleManager2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    callDisplayStyle = [callDisplayStyleManager2 callDisplayStyle];
 
-    if (v11)
+    if (callDisplayStyle)
     {
       v12 = +[UIApplication sharedApplication];
-      v13 = [v12 delegate];
-      v14 = [v13 mostRecentlyDisconnectedAudioCall];
+      delegate = [v12 delegate];
+      mostRecentlyDisconnectedAudioCall = [delegate mostRecentlyDisconnectedAudioCall];
 
-      if (!v14 || ![v14 isEmergency] || (objc_msgSend(v14, "disconnectedReasonRequiresCallBackUI") & 1) == 0)
+      if (!mostRecentlyDisconnectedAudioCall || ![mostRecentlyDisconnectedAudioCall isEmergency] || (objc_msgSend(mostRecentlyDisconnectedAudioCall, "disconnectedReasonRequiresCallBackUI") & 1) == 0)
       {
         [(PHAudioCallViewController *)self addDefaultBackgroundGradientView];
       }
@@ -10557,19 +10557,19 @@ LABEL_24:
 LABEL_38:
 }
 
-- (void)setBackgroundColor:(id)a3 animated:(BOOL)a4
+- (void)setBackgroundColor:(id)color animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10011E9CC;
   v10[3] = &unk_100357110;
   v10[4] = self;
-  v5 = a3;
-  v11 = v5;
+  colorCopy = color;
+  v11 = colorCopy;
   v6 = objc_retainBlock(v10);
   v7 = v6;
-  if (v4)
+  if (animatedCopy)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
@@ -10585,21 +10585,21 @@ LABEL_38:
   }
 }
 
-- (void)updateBackgroundContactImageViewWithImage:(id)a3 animated:(BOOL)a4
+- (void)updateBackgroundContactImageViewWithImage:(id)image animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  imageCopy = image;
   v7 = sub_100004F84();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v46 = v6;
+    v46 = imageCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "SNAP: update backgroundContactImageView withImage: %@", buf, 0xCu);
   }
 
   if ([(PHAudioCallViewController *)self isShowingBackgroundImage])
   {
-    if (v4)
+    if (animatedCopy)
     {
       backgroundImageView = self->_backgroundImageView;
       v41[0] = _NSConcreteStackBlock;
@@ -10607,56 +10607,56 @@ LABEL_38:
       v41[2] = sub_10011EFE8;
       v41[3] = &unk_100357110;
       v41[4] = self;
-      v42 = v6;
+      v42 = imageCopy;
       [UIView transitionWithView:backgroundImageView duration:5242880 options:v41 animations:0 completion:0.5];
     }
 
     else
     {
-      [(PHBackgroundGradientBlurView *)self->_backgroundImageView setImage:v6];
+      [(PHBackgroundGradientBlurView *)self->_backgroundImageView setImage:imageCopy];
       [(PHBackgroundGradientBlurView *)self->_backgroundImageView setAlpha:1.0];
     }
 
     goto LABEL_16;
   }
 
-  v9 = [[PHBackgroundGradientBlurView alloc] initWithImage:v6];
+  v9 = [[PHBackgroundGradientBlurView alloc] initWithImage:imageCopy];
   v10 = self->_backgroundImageView;
   self->_backgroundImageView = v9;
 
   [(PHBackgroundGradientBlurView *)self->_backgroundImageView setContentMode:2];
   [(PHBackgroundGradientBlurView *)self->_backgroundImageView setClipsToBounds:1];
-  v11 = [(PHAudioCallViewController *)self view];
-  [v11 insertSubview:self->_backgroundImageView atIndex:0];
+  view = [(PHAudioCallViewController *)self view];
+  [view insertSubview:self->_backgroundImageView atIndex:0];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [(PHAudioCallViewController *)self buttonsViewController];
-    v13 = [v12 view];
+    buttonsViewController = [(PHAudioCallViewController *)self buttonsViewController];
+    view2 = [buttonsViewController view];
 
-    [v13 updateBackgroundMaterial:1];
+    [view2 updateBackgroundMaterial:1];
   }
 
   [(PHAudioCallViewController *)self updateCallRecordingViewBackgroundMaterialType:1];
   [(PHBackgroundGradientBlurView *)self->_backgroundImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v14 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v14 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v15 = [(PHAudioCallViewController *)self features];
-    v16 = [v15 isDominoEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (v16)
+    if (isDominoEnabled)
     {
       [(PHBackgroundGradientBlurView *)self->_backgroundImageView setTranslatesAutoresizingMaskIntoConstraints:0];
       v17 = _NSDictionaryOfVariableBindings(@"_backgroundImageView", self->_backgroundImageView, 0);
-      v18 = [(PHAudioCallViewController *)self view];
+      view3 = [(PHAudioCallViewController *)self view];
       v19 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_backgroundImageView]|" options:0 metrics:0 views:v17];
-      [v18 addConstraints:v19];
+      [view3 addConstraints:v19];
 
-      v20 = [(PHAudioCallViewController *)self view];
+      view4 = [(PHAudioCallViewController *)self view];
       v21 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_backgroundImageView]|" options:0 metrics:0 views:v17];
-      [v20 addConstraints:v21];
+      [view4 addConstraints:v21];
       goto LABEL_14;
     }
   }
@@ -10665,41 +10665,41 @@ LABEL_38:
   {
   }
 
-  v35 = [(PHBackgroundGradientBlurView *)self->_backgroundImageView topAnchor];
-  v36 = [(PHAudioCallViewController *)self view];
-  v32 = [v36 topAnchor];
-  v39 = [v35 constraintEqualToAnchor:v32];
+  topAnchor = [(PHBackgroundGradientBlurView *)self->_backgroundImageView topAnchor];
+  view5 = [(PHAudioCallViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v39 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v44[0] = v39;
-  v37 = [(PHBackgroundGradientBlurView *)self->_backgroundImageView bottomAnchor];
-  v38 = [(PHAudioCallViewController *)self view];
-  v34 = [v38 bottomAnchor];
-  v33 = [v37 constraintEqualToAnchor:v34];
+  bottomAnchor = [(PHBackgroundGradientBlurView *)self->_backgroundImageView bottomAnchor];
+  view6 = [(PHAudioCallViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v44[1] = v33;
-  v30 = [(PHBackgroundGradientBlurView *)self->_backgroundImageView leadingAnchor];
-  v31 = [(PHAudioCallViewController *)self view];
-  [v31 leadingAnchor];
-  v22 = v40 = v6;
-  v23 = [v30 constraintEqualToAnchor:v22];
+  leadingAnchor = [(PHBackgroundGradientBlurView *)self->_backgroundImageView leadingAnchor];
+  view7 = [(PHAudioCallViewController *)self view];
+  [view7 leadingAnchor];
+  v22 = v40 = imageCopy;
+  v23 = [leadingAnchor constraintEqualToAnchor:v22];
   v44[2] = v23;
-  v24 = [(PHBackgroundGradientBlurView *)self->_backgroundImageView trailingAnchor];
-  v25 = [(PHAudioCallViewController *)self view];
-  [v25 trailingAnchor];
-  v27 = v26 = v4;
-  v28 = [v24 constraintEqualToAnchor:v27];
+  trailingAnchor = [(PHBackgroundGradientBlurView *)self->_backgroundImageView trailingAnchor];
+  view8 = [(PHAudioCallViewController *)self view];
+  [view8 trailingAnchor];
+  v27 = v26 = animatedCopy;
+  v28 = [trailingAnchor constraintEqualToAnchor:v27];
   v44[3] = v28;
   v29 = [NSArray arrayWithObjects:v44 count:4];
   [NSLayoutConstraint activateConstraints:v29];
 
-  v21 = v32;
-  v4 = v26;
+  v21 = topAnchor2;
+  animatedCopy = v26;
 
-  v20 = v36;
-  v17 = v35;
+  view4 = view5;
+  v17 = topAnchor;
 
-  v6 = v40;
+  imageCopy = v40;
 LABEL_14:
 
-  if (v4)
+  if (animatedCopy)
   {
     [(PHBackgroundGradientBlurView *)self->_backgroundImageView setAlpha:0.0];
     v43[0] = _NSConcreteStackBlock;
@@ -10711,101 +10711,101 @@ LABEL_14:
   }
 
 LABEL_16:
-  [(PHAudioCallViewController *)self hideOrShowThirdPartyBackgroundImageWithImage:v6];
+  [(PHAudioCallViewController *)self hideOrShowThirdPartyBackgroundImageWithImage:imageCopy];
 }
 
-- (void)hideOrShowThirdPartyBackgroundImageWithImage:(id)a3
+- (void)hideOrShowThirdPartyBackgroundImageWithImage:(id)image
 {
-  v24 = a3;
+  imageCopy = image;
   if (!-[CNKFeatures isEnhancedEmergencyEnabled](self->_features, "isEnhancedEmergencyEnabled") || (-[PHAudioCallViewController frontmostCall](self, "frontmostCall"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isEmergency], v4, (v5 & 1) == 0))
   {
     if ([(PHAudioCallViewController *)self shouldApplyNewGradientBlur]|| [(PHAudioCallViewController *)self shouldShowContactOrLastSeenWallpaper])
     {
-      v6 = [(PHAudioCallViewController *)self unblurredBackgroundImageView];
-      [v6 removeFromSuperview];
+      unblurredBackgroundImageView = [(PHAudioCallViewController *)self unblurredBackgroundImageView];
+      [unblurredBackgroundImageView removeFromSuperview];
 
       [(PHAudioCallViewController *)self setUnblurredBackgroundImageView:0];
     }
 
     else
     {
-      v7 = [(PHAudioCallViewController *)self unblurredBackgroundImageView];
+      unblurredBackgroundImageView2 = [(PHAudioCallViewController *)self unblurredBackgroundImageView];
 
-      if (!v7)
+      if (!unblurredBackgroundImageView2)
       {
         v8 = objc_opt_new();
         [(PHAudioCallViewController *)self setUnblurredBackgroundImageView:v8];
 
-        v9 = [(PHAudioCallViewController *)self view];
-        [v9 frame];
+        view = [(PHAudioCallViewController *)self view];
+        [view frame];
         v11 = v10;
         v13 = v12;
         v15 = v14;
         v17 = v16;
-        v18 = [(PHAudioCallViewController *)self unblurredBackgroundImageView];
-        [v18 setFrame:{v11, v13, v15, v17}];
+        unblurredBackgroundImageView3 = [(PHAudioCallViewController *)self unblurredBackgroundImageView];
+        [unblurredBackgroundImageView3 setFrame:{v11, v13, v15, v17}];
 
-        v19 = [(PHAudioCallViewController *)self unblurredBackgroundImageView];
-        [v19 setContentMode:2];
+        unblurredBackgroundImageView4 = [(PHAudioCallViewController *)self unblurredBackgroundImageView];
+        [unblurredBackgroundImageView4 setContentMode:2];
       }
 
-      v20 = [(PHAudioCallViewController *)self unblurredBackgroundImageView];
-      [v20 setImage:v24];
+      unblurredBackgroundImageView5 = [(PHAudioCallViewController *)self unblurredBackgroundImageView];
+      [unblurredBackgroundImageView5 setImage:imageCopy];
 
-      v21 = [(PHAudioCallViewController *)self view];
-      v22 = [(PHAudioCallViewController *)self unblurredBackgroundImageView];
-      v23 = [(PHAudioCallViewController *)self backgroundImageView];
-      [v21 insertSubview:v22 above:v23];
+      view2 = [(PHAudioCallViewController *)self view];
+      unblurredBackgroundImageView6 = [(PHAudioCallViewController *)self unblurredBackgroundImageView];
+      backgroundImageView = [(PHAudioCallViewController *)self backgroundImageView];
+      [view2 insertSubview:unblurredBackgroundImageView6 above:backgroundImageView];
     }
   }
 }
 
 - (id)fallbackHorizontalNameLabelString
 {
-  v3 = [(PHAudioCallViewController *)self callToUseForWallpaper];
-  v4 = [(PHAudioCallViewController *)self associatedCallGroupForCall:v3];
+  callToUseForWallpaper = [(PHAudioCallViewController *)self callToUseForWallpaper];
+  v4 = [(PHAudioCallViewController *)self associatedCallGroupForCall:callToUseForWallpaper];
 
-  v5 = [(PHAudioCallViewController *)self callParticipantsViewController];
-  v6 = [v5 nameForCallGroup:v4];
+  callParticipantsViewController = [(PHAudioCallViewController *)self callParticipantsViewController];
+  v6 = [callParticipantsViewController nameForCallGroup:v4];
 
   return v6;
 }
 
 - (id)createContactFirstNameLabelViewModel
 {
-  v3 = [(PHAudioCallViewController *)self callToUseForWallpaper];
-  v4 = [(PHAudioCallViewController *)self contactToDisplayInCallWallpaperForCall:v3];
-  v5 = [v3 handle];
-  v6 = [v5 value];
-  v7 = [TPIncomingCallMetricsProvider appropriateCallerNameViewForContact:v4 callStatus:0 callIsActive:1 optionalBackupName:v6];
+  callToUseForWallpaper = [(PHAudioCallViewController *)self callToUseForWallpaper];
+  v4 = [(PHAudioCallViewController *)self contactToDisplayInCallWallpaperForCall:callToUseForWallpaper];
+  handle = [callToUseForWallpaper handle];
+  value = [handle value];
+  v7 = [TPIncomingCallMetricsProvider appropriateCallerNameViewForContact:v4 callStatus:0 callIsActive:1 optionalBackupName:value];
 
   [(PHAudioCallViewController *)self applyWallpaperTitleStyleAttributesToTextViewWrapper:v7];
   [v7 overrideTitleLayoutWith:0];
-  v8 = [[PHPosterNameViewModel alloc] initWithCall:v3 posterNameTextView:v7];
+  v8 = [[PHPosterNameViewModel alloc] initWithCall:callToUseForWallpaper posterNameTextView:v7];
 
   return v8;
 }
 
-- (void)applyWallpaperTitleStyleAttributesToTextViewWrapper:(id)a3
+- (void)applyWallpaperTitleStyleAttributesToTextViewWrapper:(id)wrapper
 {
-  v7 = a3;
-  v4 = [(PHAudioCallViewController *)self wallpaperTitleStyleAttributes];
-  v5 = v4;
-  if (v4)
+  wrapperCopy = wrapper;
+  wallpaperTitleStyleAttributes = [(PHAudioCallViewController *)self wallpaperTitleStyleAttributes];
+  v5 = wallpaperTitleStyleAttributes;
+  if (wallpaperTitleStyleAttributes)
   {
-    v6 = [v4 titleFont];
-    [v7 setTextFontUsingDefaultFontSizes:v6];
+    titleFont = [wallpaperTitleStyleAttributes titleFont];
+    [wrapperCopy setTextFontUsingDefaultFontSizes:titleFont];
 
-    [v7 setPreferredAlignment:{objc_msgSend(v5, "preferredTitleAlignment")}];
-    [v7 setPreferredLayout:0];
+    [wrapperCopy setPreferredAlignment:{objc_msgSend(v5, "preferredTitleAlignment")}];
+    [wrapperCopy setPreferredLayout:0];
   }
 }
 
 - (void)removeFirstNameLabelFromViewIfNeeded
 {
-  v3 = [(PHAudioCallViewController *)self keypadPosterNameViewModel];
+  keypadPosterNameViewModel = [(PHAudioCallViewController *)self keypadPosterNameViewModel];
 
-  if (v3)
+  if (keypadPosterNameViewModel)
   {
 
     [(PHAudioCallViewController *)self setKeypadPosterNameViewModel:0];
@@ -10814,23 +10814,23 @@ LABEL_16:
 
 - (void)hideFirstNameLabelOnKeypad
 {
-  v3 = [(PHAudioCallViewController *)self keypadPosterNameViewModel];
+  keypadPosterNameViewModel = [(PHAudioCallViewController *)self keypadPosterNameViewModel];
 
-  if (v3)
+  if (keypadPosterNameViewModel)
   {
-    v4 = [(PHAudioCallViewController *)self keypadPosterNameViewModel];
-    [v4 updatePosterNameAlpha:0.0];
+    keypadPosterNameViewModel2 = [(PHAudioCallViewController *)self keypadPosterNameViewModel];
+    [keypadPosterNameViewModel2 updatePosterNameAlpha:0.0];
   }
 }
 
 - (void)showFirstNameLabelOnKeypad
 {
-  v3 = [(PHAudioCallViewController *)self keypadPosterNameViewModel];
+  keypadPosterNameViewModel = [(PHAudioCallViewController *)self keypadPosterNameViewModel];
 
-  if (v3)
+  if (keypadPosterNameViewModel)
   {
-    v4 = [(PHAudioCallViewController *)self keypadPosterNameViewModel];
-    [v4 updatePosterNameAlpha:1.0];
+    keypadPosterNameViewModel2 = [(PHAudioCallViewController *)self keypadPosterNameViewModel];
+    [keypadPosterNameViewModel2 updatePosterNameAlpha:1.0];
   }
 }
 
@@ -10839,12 +10839,12 @@ LABEL_16:
   v3 = +[UIColorEffect inCallControls];
   v4 = [UIBlurEffect effectWithBlurRadius:50.0];
   v5 = [[UIVisualEffectView alloc] initWithEffect:0];
-  v6 = [(PHAudioCallViewController *)self view];
-  [v6 frame];
+  view = [(PHAudioCallViewController *)self view];
+  [view frame];
   [v5 setFrame:?];
 
-  v7 = [(PHAudioCallViewController *)self renderingViewController];
-  if (v7)
+  renderingViewController = [(PHAudioCallViewController *)self renderingViewController];
+  if (renderingViewController)
   {
 
 LABEL_3:
@@ -10855,12 +10855,12 @@ LABEL_3:
     goto LABEL_7;
   }
 
-  v10 = [(PHAudioCallViewController *)self backgroundImageView];
-  if (v10)
+  backgroundImageView = [(PHAudioCallViewController *)self backgroundImageView];
+  if (backgroundImageView)
   {
-    v11 = v10;
-    v12 = [(PHAudioCallViewController *)self backgroundImageView];
-    [v12 alpha];
+    v11 = backgroundImageView;
+    backgroundImageView2 = [(PHAudioCallViewController *)self backgroundImageView];
+    [backgroundImageView2 alpha];
     v14 = v13;
 
     if (v14 != 0.0)
@@ -10881,81 +10881,81 @@ LABEL_7:
 
 - (void)hideOrShowKeypadBackgroundView
 {
-  v3 = [(PHAudioCallViewController *)self features];
-  v4 = [v3 isDialPadEnabled];
+  features = [(PHAudioCallViewController *)self features];
+  isDialPadEnabled = [features isDialPadEnabled];
 
-  if (!v4)
+  if (!isDialPadEnabled)
   {
     return;
   }
 
-  v5 = [(PHCallViewController *)self bottomBar];
-  v6 = [v5 currentState];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  currentState = [bottomBar currentState];
 
-  v7 = [(PHAudioCallViewController *)self translationBackgroundView];
-  v8 = v7;
-  if (v6 != 19)
+  translationBackgroundView = [(PHAudioCallViewController *)self translationBackgroundView];
+  v8 = translationBackgroundView;
+  if (currentState != 19)
   {
-    v20 = [v7 superview];
+    superview = [translationBackgroundView superview];
 
-    if (v20)
+    if (superview)
     {
-      v21 = [(PHAudioCallViewController *)self translationBackgroundView];
-      [v21 setAlpha:1.0];
+      translationBackgroundView2 = [(PHAudioCallViewController *)self translationBackgroundView];
+      [translationBackgroundView2 setAlpha:1.0];
 
       [(PHAudioCallViewController *)self updateTranslationPosterName:1];
     }
 
     [(PHAudioCallViewController *)self removeFirstNameLabelFromViewIfNeeded];
-    v22 = [(PHAudioCallViewController *)self keypadBackgroundView];
+    keypadBackgroundView = [(PHAudioCallViewController *)self keypadBackgroundView];
 
-    if (v22)
+    if (keypadBackgroundView)
     {
-      v23 = [(PHAudioCallViewController *)self keypadBackgroundView];
-      [v23 removeFromSuperview];
+      keypadBackgroundView2 = [(PHAudioCallViewController *)self keypadBackgroundView];
+      [keypadBackgroundView2 removeFromSuperview];
 
       [(PHAudioCallViewController *)self setKeypadBackgroundView:0];
     }
 
-    v24 = [(PHAudioCallViewController *)self emergencyTextViaSatelliteLabel];
+    emergencyTextViaSatelliteLabel = [(PHAudioCallViewController *)self emergencyTextViaSatelliteLabel];
 
-    if (!v24)
+    if (!emergencyTextViaSatelliteLabel)
     {
       goto LABEL_28;
     }
 
-    v25 = [(PHAudioCallViewController *)self shouldPresentAlertButton];
+    shouldPresentAlertButton = [(PHAudioCallViewController *)self shouldPresentAlertButton];
     goto LABEL_27;
   }
 
-  [v7 setAlpha:0.0];
+  [translationBackgroundView setAlpha:0.0];
 
-  v9 = [(PHAudioCallViewController *)self keypadBackgroundView];
+  keypadBackgroundView3 = [(PHAudioCallViewController *)self keypadBackgroundView];
 
-  if (!v9)
+  if (!keypadBackgroundView3)
   {
     [(PHAudioCallViewController *)self setHasKeypadUpdated:0];
-    v10 = [(PHAudioCallViewController *)self createBlurryBackgroundView];
-    v11 = [(PHAudioCallViewController *)self renderingViewController];
+    createBlurryBackgroundView = [(PHAudioCallViewController *)self createBlurryBackgroundView];
+    renderingViewController = [(PHAudioCallViewController *)self renderingViewController];
 
-    if (v11)
+    if (renderingViewController)
     {
-      v12 = [(PHAudioCallViewController *)self view];
-      v13 = [(PHAudioCallViewController *)self posterContainer];
-      [v12 insertSubview:v10 above:v13];
+      view = [(PHAudioCallViewController *)self view];
+      posterContainer = [(PHAudioCallViewController *)self posterContainer];
+      [view insertSubview:createBlurryBackgroundView above:posterContainer];
 
-      v14 = [(PHAudioCallViewController *)self createContactFirstNameLabelViewModel];
-      [(PHAudioCallViewController *)self setKeypadPosterNameViewModel:v14];
+      createContactFirstNameLabelViewModel = [(PHAudioCallViewController *)self createContactFirstNameLabelViewModel];
+      [(PHAudioCallViewController *)self setKeypadPosterNameViewModel:createContactFirstNameLabelViewModel];
 
-      v15 = [(PHAudioCallViewController *)self keypadPosterNameViewModel];
-      v16 = [v15 posterNameTextView];
-      v17 = [v10 contentView];
-      [TPIncomingCallMetricsProvider addCallerNameView:v16 toContainerView:v17];
+      keypadPosterNameViewModel = [(PHAudioCallViewController *)self keypadPosterNameViewModel];
+      posterNameTextView = [keypadPosterNameViewModel posterNameTextView];
+      contentView = [createBlurryBackgroundView contentView];
+      [TPIncomingCallMetricsProvider addCallerNameView:posterNameTextView toContainerView:contentView];
 
       v18 = +[TUCallCenter sharedInstance];
-      v19 = [v18 currentCallCount];
+      currentCallCount = [v18 currentCallCount];
 
-      if (v19 >= 2)
+      if (currentCallCount >= 2)
       {
         [(PHAudioCallViewController *)self hideFirstNameLabelOnKeypad];
       }
@@ -10963,67 +10963,67 @@ LABEL_7:
 
     else
     {
-      v26 = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
+      defaultBackgroundGradientView = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
 
-      if (v26)
+      if (defaultBackgroundGradientView)
       {
-        v27 = [(PHAudioCallViewController *)self view];
-        v28 = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
-        [v27 insertSubview:v10 above:v28];
+        view2 = [(PHAudioCallViewController *)self view];
+        defaultBackgroundGradientView2 = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
+        [view2 insertSubview:createBlurryBackgroundView above:defaultBackgroundGradientView2];
       }
     }
 
-    [(PHAudioCallViewController *)self setKeypadBackgroundView:v10];
-    v29 = [(PHAudioCallViewController *)self callToUseForWallpaper];
-    v30 = v29;
-    if (v29 && [v29 status] == 1)
+    [(PHAudioCallViewController *)self setKeypadBackgroundView:createBlurryBackgroundView];
+    callToUseForWallpaper = [(PHAudioCallViewController *)self callToUseForWallpaper];
+    v30 = callToUseForWallpaper;
+    if (callToUseForWallpaper && [callToUseForWallpaper status] == 1)
     {
       memset(&v46, 0, sizeof(v46));
       CGAffineTransformMakeScale(&v46, 1.03, 1.03);
       v45 = v46;
-      v31 = [(PHAudioCallViewController *)self keypadBackgroundView];
+      keypadBackgroundView4 = [(PHAudioCallViewController *)self keypadBackgroundView];
       v44 = v45;
-      [v31 setTransform:&v44];
+      [keypadBackgroundView4 setTransform:&v44];
     }
 
-    v32 = [(PHAudioCallViewController *)self renderingViewController];
-    if (v32)
+    renderingViewController2 = [(PHAudioCallViewController *)self renderingViewController];
+    if (renderingViewController2)
     {
     }
 
     else
     {
-      v36 = [(PHAudioCallViewController *)self backgroundImageView];
-      if (!v36 || (v37 = v36, -[PHAudioCallViewController backgroundImageView](self, "backgroundImageView"), v38 = objc_claimAutoreleasedReturnValue(), [v38 alpha], v40 = v39, v38, v37, v40 == 0.0))
+      backgroundImageView = [(PHAudioCallViewController *)self backgroundImageView];
+      if (!backgroundImageView || (v37 = backgroundImageView, -[PHAudioCallViewController backgroundImageView](self, "backgroundImageView"), v38 = objc_claimAutoreleasedReturnValue(), [v38 alpha], v40 = v39, v38, v37, v40 == 0.0))
       {
         v33 = +[UIColorEffect inCallControlsButtonNoPhotoNoAvatar];
-        v34 = [UIBlurEffect effectWithBlurRadius:30.0];
-        v35 = [(PHAudioCallViewController *)self keypadViewController];
+        keypadViewController2 = [UIBlurEffect effectWithBlurRadius:30.0];
+        keypadViewController = [(PHAudioCallViewController *)self keypadViewController];
         v47[0] = v33;
-        v47[1] = v34;
+        v47[1] = keypadViewController2;
         v41 = [NSArray arrayWithObjects:v47 count:2];
-        [v35 updateKeypadButtonBackgroundMaterial:v41];
+        [keypadViewController updateKeypadButtonBackgroundMaterial:v41];
 
         goto LABEL_24;
       }
     }
 
     v33 = +[UIColorEffect inCallControlsKeypadButton];
-    v34 = [(PHAudioCallViewController *)self keypadViewController];
+    keypadViewController2 = [(PHAudioCallViewController *)self keypadViewController];
     v48 = v33;
-    v35 = [NSArray arrayWithObjects:&v48 count:1];
-    [v34 updateKeypadButtonBackgroundMaterial:v35];
+    keypadViewController = [NSArray arrayWithObjects:&v48 count:1];
+    [keypadViewController2 updateKeypadButtonBackgroundMaterial:keypadViewController];
 LABEL_24:
   }
 
-  v42 = [(PHAudioCallViewController *)self emergencyTextViaSatelliteLabel];
+  emergencyTextViaSatelliteLabel2 = [(PHAudioCallViewController *)self emergencyTextViaSatelliteLabel];
 
-  if (v42)
+  if (emergencyTextViaSatelliteLabel2)
   {
-    v25 = ([(PHAudioCallViewController *)self shouldPresentAlertButton]^ 1);
+    shouldPresentAlertButton = ([(PHAudioCallViewController *)self shouldPresentAlertButton]^ 1);
 LABEL_27:
-    v43 = [(PHAudioCallViewController *)self emergencyTextViaSatelliteLabel];
-    [v43 setAlpha:v25];
+    emergencyTextViaSatelliteLabel3 = [(PHAudioCallViewController *)self emergencyTextViaSatelliteLabel];
+    [emergencyTextViaSatelliteLabel3 setAlpha:shouldPresentAlertButton];
   }
 
 LABEL_28:
@@ -11036,63 +11036,63 @@ LABEL_28:
   [(PHAudioCallViewController *)self updateDimmingView];
 }
 
-- (void)createDetachedPosterNameViewModel:(id)a3
+- (void)createDetachedPosterNameViewModel:(id)model
 {
-  v33 = a3;
-  v4 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
+  modelCopy = model;
+  detachedPosterNameViewModel = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
 
-  if (!v4)
+  if (!detachedPosterNameViewModel)
   {
-    v5 = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
-    v6 = [(PHAudioCallViewController *)self createContactFirstNameLabelViewModel];
-    [(PHAudioCallViewController *)self setDetachedPosterNameViewModel:v6];
+    getParticipantsView_NotWaiting = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
+    createContactFirstNameLabelViewModel = [(PHAudioCallViewController *)self createContactFirstNameLabelViewModel];
+    [(PHAudioCallViewController *)self setDetachedPosterNameViewModel:createContactFirstNameLabelViewModel];
 
-    v7 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
-    [v7 updatePosterNameAlpha:0.0];
+    detachedPosterNameViewModel2 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
+    [detachedPosterNameViewModel2 updatePosterNameAlpha:0.0];
 
-    v8 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
-    [v8 updateStatusFromParticipantsView:v5];
+    detachedPosterNameViewModel3 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
+    [detachedPosterNameViewModel3 updateStatusFromParticipantsView:getParticipantsView_NotWaiting];
 
-    v9 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
-    v10 = [v9 posterNameTextView];
-    [TPIncomingCallMetricsProvider addCallerNameView:v10 toContainerView:v33];
+    detachedPosterNameViewModel4 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
+    posterNameTextView = [detachedPosterNameViewModel4 posterNameTextView];
+    [TPIncomingCallMetricsProvider addCallerNameView:posterNameTextView toContainerView:modelCopy];
 
-    v11 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
-    v12 = [v11 posterNameTextView];
-    v13 = [v12 displayNameText];
+    detachedPosterNameViewModel5 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
+    posterNameTextView2 = [detachedPosterNameViewModel5 posterNameTextView];
+    displayNameText = [posterNameTextView2 displayNameText];
 
-    v14 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
-    v15 = [v14 posterNameTextView];
-    [(PHAudioCallViewController *)self applyWallpaperTitleStyleAttributesToTextViewWrapper:v15];
+    detachedPosterNameViewModel6 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
+    posterNameTextView3 = [detachedPosterNameViewModel6 posterNameTextView];
+    [(PHAudioCallViewController *)self applyWallpaperTitleStyleAttributesToTextViewWrapper:posterNameTextView3];
 
-    v16 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
-    v17 = [v16 posterNameTextView];
-    v18 = [v17 displayNameText];
-    v19 = [v18 length];
+    detachedPosterNameViewModel7 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
+    posterNameTextView4 = [detachedPosterNameViewModel7 posterNameTextView];
+    displayNameText2 = [posterNameTextView4 displayNameText];
+    v19 = [displayNameText2 length];
 
     if (!v19)
     {
-      v20 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
-      v21 = [v20 posterNameTextView];
-      [v21 setDisplayNameText:v13];
+      detachedPosterNameViewModel8 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
+      posterNameTextView5 = [detachedPosterNameViewModel8 posterNameTextView];
+      [posterNameTextView5 setDisplayNameText:displayNameText];
     }
 
-    v22 = [(PHAudioCallViewController *)self translationLayoutGuide];
-    if (v22)
+    translationLayoutGuide = [(PHAudioCallViewController *)self translationLayoutGuide];
+    if (translationLayoutGuide)
     {
-      v23 = v22;
-      v24 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
+      v23 = translationLayoutGuide;
+      detachedPosterNameViewModel9 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
 
-      if (v24)
+      if (detachedPosterNameViewModel9)
       {
-        v25 = [(PHAudioCallViewController *)self translationLayoutGuide];
-        v26 = [v25 topAnchor];
-        v27 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
-        v28 = [v27 posterNameTextView];
-        v29 = [v28 viewController];
-        v30 = [v29 view];
-        v31 = [v30 bottomAnchor];
-        v32 = [v26 constraintEqualToAnchor:v31];
+        translationLayoutGuide2 = [(PHAudioCallViewController *)self translationLayoutGuide];
+        topAnchor = [translationLayoutGuide2 topAnchor];
+        detachedPosterNameViewModel10 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
+        posterNameTextView6 = [detachedPosterNameViewModel10 posterNameTextView];
+        viewController = [posterNameTextView6 viewController];
+        view = [viewController view];
+        bottomAnchor = [view bottomAnchor];
+        v32 = [topAnchor constraintEqualToAnchor:bottomAnchor];
         [v32 setActive:1];
       }
     }
@@ -11113,17 +11113,17 @@ LABEL_28:
     goto LABEL_4;
   }
 
-  v5 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v5 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v6 = [(PHAudioCallViewController *)self features];
-    v7 = [v6 isDominoEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (v7)
+    if (isDominoEnabled)
     {
 LABEL_4:
-      v4 = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
-      [v4 removeFromSuperview];
+      defaultBackgroundGradientView = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
+      [defaultBackgroundGradientView removeFromSuperview];
 
       [(PHAudioCallViewController *)self setDefaultBackgroundGradientView:0];
     }
@@ -11134,9 +11134,9 @@ LABEL_4:
   }
 }
 
-- (void)setPosterNameViewModel:(id)a3
+- (void)setPosterNameViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   posterNameViewModel = self->_posterNameViewModel;
   if (posterNameViewModel)
   {
@@ -11144,12 +11144,12 @@ LABEL_4:
   }
 
   v6 = self->_posterNameViewModel;
-  self->_posterNameViewModel = v4;
+  self->_posterNameViewModel = modelCopy;
 }
 
-- (void)setKeypadPosterNameViewModel:(id)a3
+- (void)setKeypadPosterNameViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   keypadPosterNameViewModel = self->_keypadPosterNameViewModel;
   if (keypadPosterNameViewModel)
   {
@@ -11157,12 +11157,12 @@ LABEL_4:
   }
 
   v6 = self->_keypadPosterNameViewModel;
-  self->_keypadPosterNameViewModel = v4;
+  self->_keypadPosterNameViewModel = modelCopy;
 }
 
-- (void)setDetachedPosterNameViewModel:(id)a3
+- (void)setDetachedPosterNameViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   detachedPosterNameViewModel = self->_detachedPosterNameViewModel;
   if (detachedPosterNameViewModel)
   {
@@ -11170,24 +11170,24 @@ LABEL_4:
   }
 
   v6 = self->_detachedPosterNameViewModel;
-  self->_detachedPosterNameViewModel = v4;
+  self->_detachedPosterNameViewModel = modelCopy;
 }
 
-- (void)updatePosterViewModelForParticipantsView:(id)a3
+- (void)updatePosterViewModelForParticipantsView:(id)view
 {
-  v6 = a3;
-  v4 = [(PHAudioCallViewController *)self posterNameViewModel];
+  viewCopy = view;
+  posterNameViewModel = [(PHAudioCallViewController *)self posterNameViewModel];
 
-  if (v4)
+  if (posterNameViewModel)
   {
-    v5 = [(PHAudioCallViewController *)self posterNameViewModel];
-    [v5 updateViewModelForParticipantsView:v6];
+    posterNameViewModel2 = [(PHAudioCallViewController *)self posterNameViewModel];
+    [posterNameViewModel2 updateViewModelForParticipantsView:viewCopy];
   }
 
   else
   {
-    v5 = [v6 singleCallLabelView];
-    [v5 setPosterNameViewModel:0];
+    posterNameViewModel2 = [viewCopy singleCallLabelView];
+    [posterNameViewModel2 setPosterNameViewModel:0];
   }
 }
 
@@ -11195,22 +11195,22 @@ LABEL_4:
 {
   v3 = [UIBlurEffect effectWithBlurRadius:15.0];
   v4 = [[UIVisualEffectView alloc] initWithEffect:0];
-  v5 = [(PHAudioCallViewController *)self view];
-  [v5 frame];
+  view = [(PHAudioCallViewController *)self view];
+  [view frame];
   [v4 setFrame:?];
 
-  v6 = [(PHAudioCallViewController *)self view];
-  v7 = [(PHAudioCallViewController *)self buttonsViewController];
-  v8 = [v7 view];
-  [v6 insertSubview:v4 below:v8];
+  view2 = [(PHAudioCallViewController *)self view];
+  buttonsViewController = [(PHAudioCallViewController *)self buttonsViewController];
+  view3 = [buttonsViewController view];
+  [view2 insertSubview:v4 below:view3];
 
-  v9 = [(PHAudioCallViewController *)self view];
-  v10 = [(PHAudioCallViewController *)self callDetailsViewButton];
-  [v9 bringSubviewToFront:v10];
+  view4 = [(PHAudioCallViewController *)self view];
+  callDetailsViewButton = [(PHAudioCallViewController *)self callDetailsViewButton];
+  [view4 bringSubviewToFront:callDetailsViewButton];
 
-  v11 = [(PHAudioCallViewController *)self view];
-  v12 = [(PHAudioCallViewController *)self posterBadgeView];
-  [v11 bringSubviewToFront:v12];
+  view5 = [(PHAudioCallViewController *)self view];
+  posterBadgeView = [(PHAudioCallViewController *)self posterBadgeView];
+  [view5 bringSubviewToFront:posterBadgeView];
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
@@ -11228,25 +11228,25 @@ LABEL_4:
   [UIView _animateUsingSpringWithDuration:0 delay:v17 options:v15 mass:0.25 stiffness:0.0 damping:2.0 initialVelocity:300.0 animations:50.0 completion:0.0];
 }
 
-- (void)removePosterViewController:(BOOL)a3 completion:(id)a4
+- (void)removePosterViewController:(BOOL)controller completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PHAudioCallViewController *)self renderingViewController];
+  controllerCopy = controller;
+  completionCopy = completion;
+  renderingViewController = [(PHAudioCallViewController *)self renderingViewController];
   [(PHAudioCallViewController *)self setRenderingViewController:0];
   [(PHAudioCallViewController *)self setPosterNameViewModel:0];
-  if (v7)
+  if (renderingViewController)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1001207D0;
     v11[3] = &unk_100357C78;
-    v12 = v7;
-    v13 = self;
-    v14 = v6;
+    v12 = renderingViewController;
+    selfCopy = self;
+    v14 = completionCopy;
     v8 = objc_retainBlock(v11);
     v9 = v8;
-    if (v4)
+    if (controllerCopy)
     {
       [(PHAudioCallViewController *)self showPosterBlurTransition];
       v10 = dispatch_time(0, 0);
@@ -11262,27 +11262,27 @@ LABEL_4:
   else
   {
     [(PHAudioCallViewController *)self setParticipantsViewShouldShowParticipantLabel:1];
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (void)transitionToNewPoster:(id)a3 showingPosterTransition:(BOOL)a4 shouldBlurPoster:(BOOL)a5 completion:(id)a6
+- (void)transitionToNewPoster:(id)poster showingPosterTransition:(BOOL)transition shouldBlurPoster:(BOOL)blurPoster completion:(id)completion
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
-  v12 = [(PHAudioCallViewController *)self renderingViewController];
-  [(PHAudioCallViewController *)self setRenderingViewController:v10];
-  [(PHAudioCallViewController *)self addChildViewController:v10];
-  v13 = [v10 view];
-  [(PHAudioCallViewController *)self insertBelowDimmingLayerWithNewView:v13 containerView:self->_posterContainer];
+  transitionCopy = transition;
+  posterCopy = poster;
+  completionCopy = completion;
+  renderingViewController = [(PHAudioCallViewController *)self renderingViewController];
+  [(PHAudioCallViewController *)self setRenderingViewController:posterCopy];
+  [(PHAudioCallViewController *)self addChildViewController:posterCopy];
+  view = [posterCopy view];
+  [(PHAudioCallViewController *)self insertBelowDimmingLayerWithNewView:view containerView:self->_posterContainer];
 
   v14 = sub_100004F84();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-  if (!v12)
+  if (!renderingViewController)
   {
     if (v15)
     {
@@ -11290,36 +11290,36 @@ LABEL_4:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "SNAP: Going to set up a new poster, there isn't an old one", buf, 2u);
     }
 
-    if (v8 && ([(PHAudioCallViewController *)self backgroundImageView], v29 = objc_claimAutoreleasedReturnValue(), v29, !v29))
+    if (transitionCopy && ([(PHAudioCallViewController *)self backgroundImageView], v29 = objc_claimAutoreleasedReturnValue(), v29, !v29))
     {
-      v46 = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
+      defaultBackgroundGradientView = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
 
-      if (!v46)
+      if (!defaultBackgroundGradientView)
       {
-        v30 = sub_100004F84();
-        if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+        view2 = sub_100004F84();
+        if (os_log_type_enabled(view2, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "SNAP: Going to set up a new poster, but there is no backgroundImageView or defaultBackgroundGradientView", buf, 2u);
+          _os_log_impl(&_mh_execute_header, view2, OS_LOG_TYPE_DEFAULT, "SNAP: Going to set up a new poster, but there is no backgroundImageView or defaultBackgroundGradientView", buf, 2u);
         }
 
         goto LABEL_12;
       }
 
-      v30 = [(PHAudioCallViewController *)self view];
+      view2 = [(PHAudioCallViewController *)self view];
       posterContainer = self->_posterContainer;
-      v32 = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
+      defaultBackgroundGradientView2 = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
     }
 
     else
     {
-      v30 = [(PHAudioCallViewController *)self view];
+      view2 = [(PHAudioCallViewController *)self view];
       posterContainer = self->_posterContainer;
-      v32 = [(PHAudioCallViewController *)self backgroundImageView];
+      defaultBackgroundGradientView2 = [(PHAudioCallViewController *)self backgroundImageView];
     }
 
-    v33 = v32;
-    [v30 insertSubview:posterContainer above:v32];
+    v33 = defaultBackgroundGradientView2;
+    [view2 insertSubview:posterContainer above:defaultBackgroundGradientView2];
 
 LABEL_12:
     [(PHAudioCallViewController *)self hideOrShowScreeningBackgroundView];
@@ -11332,43 +11332,43 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "SNAP: Going to swap old and new poster", buf, 2u);
   }
 
-  v16 = [(PHAudioCallViewController *)self screeningBackgroundView];
+  screeningBackgroundView = [(PHAudioCallViewController *)self screeningBackgroundView];
 
-  if (v16)
+  if (screeningBackgroundView)
   {
     [(UIView *)self->_posterContainer frame];
     v18 = v17;
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    v25 = [(PHAudioCallViewController *)self screeningBackgroundView];
-    [v25 setFrame:{v18, v20, v22, v24}];
+    screeningBackgroundView2 = [(PHAudioCallViewController *)self screeningBackgroundView];
+    [screeningBackgroundView2 setFrame:{v18, v20, v22, v24}];
 
-    v26 = [(PHAudioCallViewController *)self view];
+    view3 = [(PHAudioCallViewController *)self view];
     v27 = self->_posterContainer;
-    v28 = [(PHAudioCallViewController *)self screeningBackgroundView];
-    [v26 insertSubview:v27 below:v28];
+    screeningBackgroundView3 = [(PHAudioCallViewController *)self screeningBackgroundView];
+    [view3 insertSubview:v27 below:screeningBackgroundView3];
   }
 
   else
   {
-    v34 = [(PHAudioCallViewController *)self backgroundImageView];
+    backgroundImageView = [(PHAudioCallViewController *)self backgroundImageView];
 
-    if (v34)
+    if (backgroundImageView)
     {
-      v26 = [(PHAudioCallViewController *)self view];
+      view3 = [(PHAudioCallViewController *)self view];
       v35 = self->_posterContainer;
-      v36 = [(PHAudioCallViewController *)self backgroundImageView];
+      backgroundImageView2 = [(PHAudioCallViewController *)self backgroundImageView];
     }
 
     else
     {
-      v37 = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
+      defaultBackgroundGradientView3 = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
 
-      if (!v37)
+      if (!defaultBackgroundGradientView3)
       {
-        v26 = sub_100004F84();
-        if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+        view3 = sub_100004F84();
+        if (os_log_type_enabled(view3, OS_LOG_TYPE_ERROR))
         {
           sub_100257140();
         }
@@ -11376,34 +11376,34 @@ LABEL_12:
         goto LABEL_19;
       }
 
-      v26 = [(PHAudioCallViewController *)self view];
+      view3 = [(PHAudioCallViewController *)self view];
       v35 = self->_posterContainer;
-      v36 = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
+      backgroundImageView2 = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
     }
 
-    v28 = v36;
-    [v26 insertSubview:v35 above:v36];
+    screeningBackgroundView3 = backgroundImageView2;
+    [view3 insertSubview:v35 above:backgroundImageView2];
   }
 
 LABEL_19:
 LABEL_20:
-  [v10 didMoveToParentViewController:self];
+  [posterCopy didMoveToParentViewController:self];
   v47 = _NSConcreteStackBlock;
   v48 = 3221225472;
   v49 = sub_100120E80;
   v50 = &unk_100359C58;
-  v56 = a5;
-  v51 = self;
-  v38 = v10;
+  blurPosterCopy = blurPoster;
+  selfCopy = self;
+  v38 = posterCopy;
   v52 = v38;
-  v39 = v12;
+  v39 = renderingViewController;
   v53 = v39;
   v55 = 0x3FE0000000000000;
-  v40 = v11;
+  v40 = completionCopy;
   v54 = v40;
   v41 = objc_retainBlock(&v47);
   v42 = v41;
-  if (v8)
+  if (transitionCopy)
   {
     [(PHAudioCallViewController *)self showPosterBlurTransition:v47];
     v43 = dispatch_time(0, 0);
@@ -11417,12 +11417,12 @@ LABEL_20:
     if (objc_opt_isKindOfClass())
     {
       v44 = [(PHAudioCallViewController *)self buttonsViewController:v47];
-      v45 = [v44 view];
+      view4 = [v44 view];
 
-      [v45 updateBackgroundMaterial:0];
+      [view4 updateBackgroundMaterial:0];
     }
 
-    [(PHAudioCallViewController *)self updateCallRecordingViewBackgroundMaterialType:0, v47, v48, v49, v50, v51];
+    [(PHAudioCallViewController *)self updateCallRecordingViewBackgroundMaterialType:0, v47, v48, v49, v50, selfCopy];
     [(PHAudioCallViewController *)self updateDimmingView];
     [(PHAudioCallViewController *)self updateSaliencyRectIfNeeded];
   }
@@ -11432,48 +11432,48 @@ LABEL_20:
 {
   [(PHAudioCallViewController *)self removeNameLabelForAlwaysOnDisplay];
   [(PHAudioCallViewController *)self setupDimmingViewForAlwaysOnDisplay];
-  v3 = [(PHAudioCallViewController *)self createContactFirstNameLabelViewModel];
-  [(PHAudioCallViewController *)self setAlwaysOnDisplayPosterNameViewModel:v3];
+  createContactFirstNameLabelViewModel = [(PHAudioCallViewController *)self createContactFirstNameLabelViewModel];
+  [(PHAudioCallViewController *)self setAlwaysOnDisplayPosterNameViewModel:createContactFirstNameLabelViewModel];
 
-  v6 = [(PHAudioCallViewController *)self alwaysOnDisplayPosterNameViewModel];
-  v4 = [v6 posterNameTextView];
-  v5 = [(PHAudioCallViewController *)self alwaysOnDisplayDimmingView];
-  [TPIncomingCallMetricsProvider addCallerNameView:v4 toContainerView:v5];
+  alwaysOnDisplayPosterNameViewModel = [(PHAudioCallViewController *)self alwaysOnDisplayPosterNameViewModel];
+  posterNameTextView = [alwaysOnDisplayPosterNameViewModel posterNameTextView];
+  alwaysOnDisplayDimmingView = [(PHAudioCallViewController *)self alwaysOnDisplayDimmingView];
+  [TPIncomingCallMetricsProvider addCallerNameView:posterNameTextView toContainerView:alwaysOnDisplayDimmingView];
 }
 
 - (void)setupDimmingViewForAlwaysOnDisplay
 {
-  v3 = [(PHAudioCallViewController *)self alwaysOnDisplayDimmingView];
+  alwaysOnDisplayDimmingView = [(PHAudioCallViewController *)self alwaysOnDisplayDimmingView];
 
-  if (!v3)
+  if (!alwaysOnDisplayDimmingView)
   {
     v4 = [UIView alloc];
-    v5 = [(PHAudioCallViewController *)self view];
-    [v5 frame];
+    view = [(PHAudioCallViewController *)self view];
+    [view frame];
     v10 = [v4 initWithFrame:?];
 
     v6 = +[UIColor blackColor];
     v7 = [v6 colorWithAlphaComponent:0.75];
     [v10 setBackgroundColor:v7];
 
-    v8 = [(PHAudioCallViewController *)self view];
-    [v8 addSubview:v10];
+    view2 = [(PHAudioCallViewController *)self view];
+    [view2 addSubview:v10];
 
     [(PHAudioCallViewController *)self setAlwaysOnDisplayDimmingView:v10];
-    v9 = [(PHAudioCallViewController *)self alwaysOnDisplayDimmingView];
-    [v9 setAlpha:0.0];
+    alwaysOnDisplayDimmingView2 = [(PHAudioCallViewController *)self alwaysOnDisplayDimmingView];
+    [alwaysOnDisplayDimmingView2 setAlpha:0.0];
   }
 }
 
 - (id)snapshotUIImageView
 {
   v3 = [UIImageView alloc];
-  v4 = [(PHAudioCallViewController *)self backgroundImageView];
-  v5 = [v4 image];
-  v6 = [v3 initWithImage:v5];
+  backgroundImageView = [(PHAudioCallViewController *)self backgroundImageView];
+  image = [backgroundImageView image];
+  v6 = [v3 initWithImage:image];
 
-  v7 = [(PHAudioCallViewController *)self view];
-  [v7 frame];
+  view = [(PHAudioCallViewController *)self view];
+  [view frame];
   [v6 setFrame:?];
 
   v8 = objc_alloc_init(UIVisualEffectView);
@@ -11482,8 +11482,8 @@ LABEL_20:
   v10 = [NSArray arrayWithObjects:&v18 count:1];
   [v8 setBackgroundEffects:v10];
 
-  v11 = [(PHAudioCallViewController *)self view];
-  [v11 frame];
+  view2 = [(PHAudioCallViewController *)self view];
+  [view2 frame];
   [v8 setFrame:?];
 
   [v6 addSubview:v8];
@@ -11494,12 +11494,12 @@ LABEL_20:
   v14 = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.150000006];
   [v12 setBackgroundColor:{objc_msgSend(v14, "CGColor")}];
 
-  v15 = [(PHAudioCallViewController *)self view];
-  [v15 frame];
+  view3 = [(PHAudioCallViewController *)self view];
+  [view3 frame];
   [v12 setFrame:?];
 
-  v16 = [v8 layer];
-  [v16 addSublayer:v12];
+  layer = [v8 layer];
+  [layer addSublayer:v12];
 
   return v6;
 }
@@ -11510,23 +11510,23 @@ LABEL_20:
   v4.super_class = PHAudioCallViewController;
   [(PHAudioCallViewController *)&v4 viewSafeAreaInsetsDidChange];
   [(PHAudioCallViewController *)self _updateStatusLabelVisibility];
-  v3 = [(PHAudioCallViewController *)self renderingViewController];
+  renderingViewController = [(PHAudioCallViewController *)self renderingViewController];
 
-  if (v3)
+  if (renderingViewController)
   {
     [(PHAudioCallViewController *)self setupNameLabelForAlwaysOnDisplay];
   }
 }
 
-- (void)lockScreenVisibilityDidChange:(id)a3
+- (void)lockScreenVisibilityDidChange:(id)change
 {
-  v4 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v4 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v5 = [(PHAudioCallViewController *)self features];
-    v6 = [v5 isDominoEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (v6)
+    if (isDominoEnabled)
     {
       return;
     }
@@ -11544,88 +11544,88 @@ LABEL_20:
   }
 
   [(PHAudioCallViewController *)self setCallForBackgroundImage:0];
-  v8 = [(PHAudioCallViewController *)self callToUseForWallpaper];
-  [(PHAudioCallViewController *)self setCallForBackgroundImage:v8 animated:1 callDisplayStyleChanged:0];
+  callToUseForWallpaper = [(PHAudioCallViewController *)self callToUseForWallpaper];
+  [(PHAudioCallViewController *)self setCallForBackgroundImage:callToUseForWallpaper animated:1 callDisplayStyleChanged:0];
 
   [(PHAudioCallViewController *)self updateCallParticipantsViewControllerCallGroups];
-  v9 = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
-  v10 = [v9 singleCallLabelView];
-  [v10 updateLabelsOrderAndLayout];
-  v11 = [(PHAudioCallViewController *)self middleViewState];
+  getParticipantsView_NotWaiting = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
+  singleCallLabelView = [getParticipantsView_NotWaiting singleCallLabelView];
+  [singleCallLabelView updateLabelsOrderAndLayout];
+  middleViewState = [(PHAudioCallViewController *)self middleViewState];
   [(PHAudioCallViewController *)self setMiddleViewState:0];
   screeningViewController = self->_screeningViewController;
   self->_screeningViewController = 0;
 
-  v13 = [(PHAudioCallViewController *)self featureFlags];
-  v14 = [v13 receptionistEnabled];
+  featureFlags = [(PHAudioCallViewController *)self featureFlags];
+  receptionistEnabled = [featureFlags receptionistEnabled];
 
-  if (v14)
+  if (receptionistEnabled)
   {
     [(PHAudioCallViewController *)self setIsShowingNewTranscriptsView:0];
   }
 
-  [(PHAudioCallViewController *)self setMiddleViewState:v11];
-  v15 = [(PHCallViewController *)self bottomBar];
-  v16 = [v15 currentState];
+  [(PHAudioCallViewController *)self setMiddleViewState:middleViewState];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  currentState = [bottomBar currentState];
 
-  v17 = [(PHCallViewController *)self bottomBar];
-  [v17 setCurrentState:-1];
+  bottomBar2 = [(PHCallViewController *)self bottomBar];
+  [bottomBar2 setCurrentState:-1];
 
-  v18 = [(PHCallViewController *)self bottomBar];
-  [v18 setCurrentState:v16];
+  bottomBar3 = [(PHCallViewController *)self bottomBar];
+  [bottomBar3 setCurrentState:currentState];
 }
 
-- (unint64_t)currentDisplayedPosterSourceForCall:(id)a3
+- (unint64_t)currentDisplayedPosterSourceForCall:(id)call
 {
-  v4 = a3;
-  v5 = [v4 uniqueProxyIdentifier];
+  callCopy = call;
+  uniqueProxyIdentifier = [callCopy uniqueProxyIdentifier];
 
-  if (v5)
+  if (uniqueProxyIdentifier)
   {
-    v6 = [(PHAudioCallViewController *)self configurationCache];
-    v7 = [v4 uniqueProxyIdentifier];
-    v8 = [v6 objectForKey:v7];
+    configurationCache = [(PHAudioCallViewController *)self configurationCache];
+    uniqueProxyIdentifier2 = [callCopy uniqueProxyIdentifier];
+    v8 = [configurationCache objectForKey:uniqueProxyIdentifier2];
 
-    v9 = [v8 source];
+    source = [v8 source];
   }
 
   else
   {
-    v9 = 0;
+    source = 0;
   }
 
-  return v9;
+  return source;
 }
 
-- (void)suspendPosterAndCancelDelay:(BOOL)a3
+- (void)suspendPosterAndCancelDelay:(BOOL)delay
 {
-  v3 = a3;
-  v5 = [(PHAudioCallViewController *)self renderingViewController];
+  delayCopy = delay;
+  renderingViewController = [(PHAudioCallViewController *)self renderingViewController];
 
-  if (v5)
+  if (renderingViewController)
   {
-    v6 = [(PHAudioCallViewController *)self renderingViewController];
+    renderingViewController2 = [(PHAudioCallViewController *)self renderingViewController];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      if (v3)
+      if (delayCopy)
       {
-        v8 = [(PHAudioCallViewController *)self suspendPosterAfterDelayBlock];
+        suspendPosterAfterDelayBlock = [(PHAudioCallViewController *)self suspendPosterAfterDelayBlock];
 
-        if (v8)
+        if (suspendPosterAfterDelayBlock)
         {
-          v9 = [(PHAudioCallViewController *)self suspendPosterAfterDelayBlock];
-          dispatch_block_cancel(v9);
+          suspendPosterAfterDelayBlock2 = [(PHAudioCallViewController *)self suspendPosterAfterDelayBlock];
+          dispatch_block_cancel(suspendPosterAfterDelayBlock2);
 
           [(PHAudioCallViewController *)self setSuspendPosterAfterDelayBlock:0];
         }
       }
 
-      v10 = [(PHAudioCallViewController *)self renderingViewController];
-      v11 = [v10 renderingMode];
+      renderingViewController3 = [(PHAudioCallViewController *)self renderingViewController];
+      renderingMode = [renderingViewController3 renderingMode];
 
-      if (v11 == 2)
+      if (renderingMode == 2)
       {
         v12 = sub_100004F84();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -11634,17 +11634,17 @@ LABEL_20:
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "SNAP: Setting poster renderingMode to .paused", v14, 2u);
         }
 
-        v13 = [(PHAudioCallViewController *)self renderingViewController];
-        [v13 setRenderingMode:1];
+        renderingViewController4 = [(PHAudioCallViewController *)self renderingViewController];
+        [renderingViewController4 setRenderingMode:1];
       }
     }
   }
 }
 
-- (void)setShowsCallWaitingParticipantView:(BOOL)a3
+- (void)setShowsCallWaitingParticipantView:(BOOL)view
 {
   callWaitingParticipantsViewController = self->_callWaitingParticipantsViewController;
-  if (a3)
+  if (view)
   {
     if (callWaitingParticipantsViewController)
     {
@@ -11652,9 +11652,9 @@ LABEL_20:
     }
 
     v5 = [PHCallParticipantsViewController alloc];
-    v6 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    v7 = [(PHAudioCallViewController *)self contactsCache];
-    v8 = [(PHCallParticipantsViewController *)v5 initWithCallDisplayStyleManager:v6 contactsCache:v7];
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    contactsCache = [(PHAudioCallViewController *)self contactsCache];
+    v8 = [(PHCallParticipantsViewController *)v5 initWithCallDisplayStyleManager:callDisplayStyleManager contactsCache:contactsCache];
     v9 = self->_callWaitingParticipantsViewController;
     self->_callWaitingParticipantsViewController = v8;
 
@@ -11662,42 +11662,42 @@ LABEL_20:
     [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController setHandlesCallWaitingCalls:1];
     [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController setDelegate:self];
     [(PHAudioCallViewController *)self addChildViewController:self->_callWaitingParticipantsViewController];
-    v10 = [(PHAudioCallViewController *)self view];
-    v11 = [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController view];
-    [v10 addSubview:v11];
+    view = [(PHAudioCallViewController *)self view];
+    view2 = [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController view];
+    [view addSubview:view2];
 
-    v12 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
-    v13 = [v12 singleCallLabelView];
-    [v13 setPosterNameViewModel:0];
+    view3 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
+    singleCallLabelView = [view3 singleCallLabelView];
+    [singleCallLabelView setPosterNameViewModel:0];
 
-    v14 = [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController view];
-    [(PHAudioCallViewController *)self updatePosterViewModelForParticipantsView:v14];
-    v15 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v15 callDisplayStyle] == 3)
+    view4 = [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController view];
+    [(PHAudioCallViewController *)self updatePosterViewModelForParticipantsView:view4];
+    callDisplayStyleManager2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager2 callDisplayStyle] == 3)
     {
-      v16 = [(PHAudioCallViewController *)self features];
-      v17 = [v16 isDominoEnabled];
+      features = [(PHAudioCallViewController *)self features];
+      isDominoEnabled = [features isDominoEnabled];
 
-      if (v17)
+      if (isDominoEnabled)
       {
-        v18 = [(PHAudioCallViewController *)self view];
-        v19 = [(PHCallViewController *)self bottomBar];
-        [v18 bringSubviewToFront:v19];
+        view5 = [(PHAudioCallViewController *)self view];
+        bottomBar = [(PHCallViewController *)self bottomBar];
+        [view5 bringSubviewToFront:bottomBar];
 
-        v20 = [(PHAudioCallViewController *)self view];
-        v21 = [(PHAudioCallViewController *)self ambientAudioRoutesControlView];
-        [v20 bringSubviewToFront:v21];
+        view6 = [(PHAudioCallViewController *)self view];
+        ambientAudioRoutesControlView = [(PHAudioCallViewController *)self ambientAudioRoutesControlView];
+        [view6 bringSubviewToFront:ambientAudioRoutesControlView];
 
         [(PHAudioCallViewController *)self setUpLayoutGuidesForParticipantsViewController:self->_callWaitingParticipantsViewController];
         [(PHAudioCallViewController *)self applyCallWaitingConstraintsForAmbient];
         [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController updateCallGroups];
         [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController setShouldIgnoreUpdates:1];
 LABEL_10:
-        v27 = [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController view];
-        [v27 setAlpha:0.0];
+        view7 = [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController view];
+        [view7 setAlpha:0.0];
 
-        v28 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
-        [v28 setAlpha:1.0];
+        view8 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
+        [view8 setAlpha:1.0];
 
         [(PHAudioCallViewController *)self callWaitingAnimationDelay];
         v36[0] = _NSConcreteStackBlock;
@@ -11724,30 +11724,30 @@ LABEL_10:
   }
 
   v22 = callWaitingParticipantsViewController;
-  v23 = [(PHCallParticipantsViewController *)v22 view];
-  [v23 setAlpha:1.0];
+  view9 = [(PHCallParticipantsViewController *)v22 view];
+  [view9 setAlpha:1.0];
 
-  v24 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
-  [v24 setAlpha:0.0];
+  view10 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
+  [view10 setAlpha:0.0];
 
-  v12 = [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController view];
-  v25 = [v12 singleCallLabelView];
-  [v25 setPosterNameViewModel:0];
+  view3 = [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController view];
+  singleCallLabelView2 = [view3 singleCallLabelView];
+  [singleCallLabelView2 setPosterNameViewModel:0];
 
-  v14 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
-  [(PHAudioCallViewController *)self updatePosterViewModelForParticipantsView:v14];
+  view4 = [(PHCallParticipantsViewController *)self->_callParticipantsViewController view];
+  [(PHAudioCallViewController *)self updatePosterViewModelForParticipantsView:view4];
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_1001222E4;
   v33[3] = &unk_100357110;
   v34 = v22;
-  v35 = self;
+  selfCopy = self;
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_100122360;
   v30[3] = &unk_100356D10;
   v31 = v34;
-  v32 = self;
+  selfCopy2 = self;
   v26 = v34;
   [UIView animateWithDuration:v33 animations:v30 completion:0.5];
 
@@ -11756,8 +11756,8 @@ LABEL_11:
 
 - (double)callWaitingAnimationDelay
 {
-  v2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v2 callDisplayStyle])
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle])
   {
     v3 = 0.0;
   }
@@ -11772,8 +11772,8 @@ LABEL_11:
 
 - (int64_t)bottomBarStateForCallWaitingCall
 {
-  v3 = [(PHAudioCallViewController *)self callCenter];
-  if ([v3 currentVideoCallCount])
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  if ([callCenter currentVideoCallCount])
   {
 
 LABEL_8:
@@ -11781,21 +11781,21 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v4 = [(PHAudioCallViewController *)self callCenter];
-  v5 = [v4 isHoldAndAnswerAllowed];
+  callCenter2 = [(PHAudioCallViewController *)self callCenter];
+  isHoldAndAnswerAllowed = [callCenter2 isHoldAndAnswerAllowed];
 
-  if (!v5)
+  if (!isHoldAndAnswerAllowed)
   {
     goto LABEL_8;
   }
 
-  v6 = [(PHAudioCallViewController *)self callCenter];
-  v7 = [v6 callWithStatus:2];
+  callCenter3 = [(PHAudioCallViewController *)self callCenter];
+  v7 = [callCenter3 callWithStatus:2];
   if (v7)
   {
     v8 = v7;
-    v9 = [(PHAudioCallViewController *)self callCenter];
-    v10 = [v9 callWithStatus:1];
+    callCenter4 = [(PHAudioCallViewController *)self callCenter];
+    v10 = [callCenter4 callWithStatus:1];
 
     if (v10)
     {
@@ -11828,13 +11828,13 @@ LABEL_9:
 
 - (void)copyCallWaitingConstraintsFromParticipantsView
 {
-  v3 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v3 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v4 = [(PHAudioCallViewController *)self features];
-    v5 = [v4 isDominoEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (v5)
+    if (isDominoEnabled)
     {
       return;
     }
@@ -11844,49 +11844,49 @@ LABEL_9:
   {
   }
 
-  v6 = [(PHAudioCallViewController *)self getParticipantsView_Waiting];
-  v7 = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
-  if (v6)
+  getParticipantsView_Waiting = [(PHAudioCallViewController *)self getParticipantsView_Waiting];
+  getParticipantsView_NotWaiting = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
+  if (getParticipantsView_Waiting)
   {
-    v8 = [v6 superview];
+    superview = [getParticipantsView_Waiting superview];
 
-    if (v8)
+    if (superview)
     {
-      if (v7)
+      if (getParticipantsView_NotWaiting)
       {
-        [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v9 = [(PHAudioCallViewController *)self callWaitingLayoutConstraints];
-        [NSLayoutConstraint deactivateConstraints:v9];
+        [getParticipantsView_Waiting setTranslatesAutoresizingMaskIntoConstraints:0];
+        callWaitingLayoutConstraints = [(PHAudioCallViewController *)self callWaitingLayoutConstraints];
+        [NSLayoutConstraint deactivateConstraints:callWaitingLayoutConstraints];
 
-        v29 = [v6 centerYAnchor];
-        v28 = [v7 centerYAnchor];
-        v27 = [v29 constraintEqualToAnchor:v28];
+        centerYAnchor = [getParticipantsView_Waiting centerYAnchor];
+        centerYAnchor2 = [getParticipantsView_NotWaiting centerYAnchor];
+        v27 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         v30[0] = v27;
-        v26 = [v6 centerXAnchor];
-        v25 = [v7 centerXAnchor];
-        v24 = [v26 constraintEqualToAnchor:v25];
+        centerXAnchor = [getParticipantsView_Waiting centerXAnchor];
+        centerXAnchor2 = [getParticipantsView_NotWaiting centerXAnchor];
+        v24 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         v30[1] = v24;
-        v23 = [v6 topAnchor];
-        v22 = [v7 topAnchor];
-        v21 = [v23 constraintEqualToAnchor:v22];
+        topAnchor = [getParticipantsView_Waiting topAnchor];
+        topAnchor2 = [getParticipantsView_NotWaiting topAnchor];
+        v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v30[2] = v21;
-        v20 = [v6 bottomAnchor];
-        v19 = [v7 bottomAnchor];
-        v18 = [v20 constraintEqualToAnchor:v19];
+        bottomAnchor = [getParticipantsView_Waiting bottomAnchor];
+        bottomAnchor2 = [getParticipantsView_NotWaiting bottomAnchor];
+        v18 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v30[3] = v18;
-        v10 = [v6 leadingAnchor];
-        v11 = [v7 leadingAnchor];
-        v12 = [v10 constraintEqualToAnchor:v11];
+        leadingAnchor = [getParticipantsView_Waiting leadingAnchor];
+        leadingAnchor2 = [getParticipantsView_NotWaiting leadingAnchor];
+        v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v30[4] = v12;
-        v13 = [v6 trailingAnchor];
-        v14 = [v7 trailingAnchor];
-        v15 = [v13 constraintEqualToAnchor:v14];
+        trailingAnchor = [getParticipantsView_Waiting trailingAnchor];
+        trailingAnchor2 = [getParticipantsView_NotWaiting trailingAnchor];
+        v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v30[5] = v15;
         v16 = [NSArray arrayWithObjects:v30 count:6];
         [(PHAudioCallViewController *)self setCallWaitingLayoutConstraints:v16];
 
-        v17 = [(PHAudioCallViewController *)self callWaitingLayoutConstraints];
-        [NSLayoutConstraint activateConstraints:v17];
+        callWaitingLayoutConstraints2 = [(PHAudioCallViewController *)self callWaitingLayoutConstraints];
+        [NSLayoutConstraint activateConstraints:callWaitingLayoutConstraints2];
       }
     }
   }
@@ -11894,45 +11894,45 @@ LABEL_9:
 
 - (void)applyCallWaitingConstraintsForAmbient
 {
-  v3 = [(PHAudioCallViewController *)self getParticipantsView_Waiting];
-  if (v3)
+  getParticipantsView_Waiting = [(PHAudioCallViewController *)self getParticipantsView_Waiting];
+  if (getParticipantsView_Waiting)
   {
-    v10 = v3;
-    v4 = [v3 superview];
-    v3 = v10;
-    if (v4)
+    v10 = getParticipantsView_Waiting;
+    superview = [getParticipantsView_Waiting superview];
+    getParticipantsView_Waiting = v10;
+    if (superview)
     {
-      v5 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-      if ([v5 callDisplayStyle] == 3)
+      callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+      if ([callDisplayStyleManager callDisplayStyle] == 3)
       {
-        v6 = [(PHAudioCallViewController *)self features];
-        v7 = [v6 isDominoEnabled];
+        features = [(PHAudioCallViewController *)self features];
+        isDominoEnabled = [features isDominoEnabled];
 
-        v3 = v10;
-        if (!v7)
+        getParticipantsView_Waiting = v10;
+        if (!isDominoEnabled)
         {
           goto LABEL_7;
         }
 
-        v8 = [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController view];
-        [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+        view = [(PHCallParticipantsViewController *)self->_callWaitingParticipantsViewController view];
+        [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-        v4 = [(PHAudioCallViewController *)self ambientParticipantsViewConstraintsForView:v10 largeAvatar:self->_shouldShowLargeAvatarForCallWaiting];
-        v9 = [v4 allValues];
-        [(PHAudioCallViewController *)self setCallWaitingLayoutConstraints:v9];
+        superview = [(PHAudioCallViewController *)self ambientParticipantsViewConstraintsForView:v10 largeAvatar:self->_shouldShowLargeAvatarForCallWaiting];
+        allValues = [superview allValues];
+        [(PHAudioCallViewController *)self setCallWaitingLayoutConstraints:allValues];
 
-        v5 = [(PHAudioCallViewController *)self callWaitingLayoutConstraints];
-        [NSLayoutConstraint activateConstraints:v5];
+        callDisplayStyleManager = [(PHAudioCallViewController *)self callWaitingLayoutConstraints];
+        [NSLayoutConstraint activateConstraints:callDisplayStyleManager];
       }
 
-      v3 = v10;
+      getParticipantsView_Waiting = v10;
     }
   }
 
 LABEL_7:
 }
 
-- (void)audioCallControlsViewControllerRequestedKeypadPresentation:(id)a3
+- (void)audioCallControlsViewControllerRequestedKeypadPresentation:(id)presentation
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -11941,13 +11941,13 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "PHAudioCallViewController: Requested keypad presentation", v9, 2u);
   }
 
-  v5 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v5 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v6 = [(PHAudioCallViewController *)self features];
-    v7 = [v6 isDominoEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (v7)
+    if (isDominoEnabled)
     {
       v8 = +[NSURL showKeypadURL];
       TUUnlockAndOpenURL();
@@ -11963,7 +11963,7 @@ LABEL_7:
   [(PHAudioCallViewController *)self setMiddleViewState:2 animated:1];
 }
 
-- (void)audioCallControlsViewControllerRequestedKeypadPresentationForFieldMode:(id)a3
+- (void)audioCallControlsViewControllerRequestedKeypadPresentationForFieldMode:(id)mode
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -11973,13 +11973,13 @@ LABEL_7:
   }
 
   [(PHAudioCallViewController *)self setMiddleViewState:2 animated:1];
-  v5 = [(PHAudioCallViewController *)self callParticipantsViewController];
-  [v5 setAllowsFieldModeSendButton:1];
+  callParticipantsViewController = [(PHAudioCallViewController *)self callParticipantsViewController];
+  [callParticipantsViewController setAllowsFieldModeSendButton:1];
 }
 
-- (void)audioCallControlsViewControllerRequestedContactsPresentation:(id)a3 forView:(id)a4
+- (void)audioCallControlsViewControllerRequestedContactsPresentation:(id)presentation forView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   v6 = sub_100004F84();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -11991,17 +11991,17 @@ LABEL_7:
   v11 = 3221225472;
   v12 = sub_100122CA0;
   v13 = &unk_100356D10;
-  v14 = self;
-  v15 = v5;
-  v7 = v5;
+  selfCopy = self;
+  v15 = viewCopy;
+  v7 = viewCopy;
   v8 = objc_retainBlock(&v10);
   v9 = [PHInCallUtilities sharedInstance:v10];
   [v9 requestPasscodeUnlockWithCompletion:v8];
 }
 
-- (void)audioCallControlsViewControllerRequestedAddCallPresentation:(id)a3 forView:(id)a4
+- (void)audioCallControlsViewControllerRequestedAddCallPresentation:(id)presentation forView:(id)view
 {
-  v5 = a4;
+  viewCopy = view;
   v6 = sub_100004F84();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -12013,15 +12013,15 @@ LABEL_7:
   v11 = 3221225472;
   v12 = sub_100122E3C;
   v13 = &unk_100356D10;
-  v14 = self;
-  v15 = v5;
-  v7 = v5;
+  selfCopy = self;
+  v15 = viewCopy;
+  v7 = viewCopy;
   v8 = objc_retainBlock(&v10);
   v9 = [PHInCallUtilities sharedInstance:v10];
   [v9 requestPasscodeUnlockWithCompletion:v8];
 }
 
-- (void)audioCallControlsViewControllerRequestedAudioRoutesPresentation:(id)a3
+- (void)audioCallControlsViewControllerRequestedAudioRoutesPresentation:(id)presentation
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -12033,7 +12033,7 @@ LABEL_7:
   [(PHAudioCallViewController *)self revealAudioRoutingDeviceListAnimated:1];
 }
 
-- (void)audioCallControlsViewControllerRequestedVideoPresentation:(id)a3
+- (void)audioCallControlsViewControllerRequestedVideoPresentation:(id)presentation
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -12055,35 +12055,35 @@ LABEL_7:
 - (void)audioCallControlsViewControllerRequestedInvokeAlert
 {
   v5 = +[UIApplication sharedApplication];
-  v3 = [v5 delegate];
-  v4 = [v3 alertCoordinator];
-  [v4 invokeAlertWithRequestUnlock:-[PHAudioCallViewController alertTriggeredByAutoCountdown](self automaticallyInvoked:{"alertTriggeredByAutoCountdown") ^ 1, -[PHAudioCallViewController alertTriggeredByAutoCountdown](self, "alertTriggeredByAutoCountdown")}];
+  delegate = [v5 delegate];
+  alertCoordinator = [delegate alertCoordinator];
+  [alertCoordinator invokeAlertWithRequestUnlock:-[PHAudioCallViewController alertTriggeredByAutoCountdown](self automaticallyInvoked:{"alertTriggeredByAutoCountdown") ^ 1, -[PHAudioCallViewController alertTriggeredByAutoCountdown](self, "alertTriggeredByAutoCountdown")}];
 }
 
 - (void)audioCallControlsViewControllerDidTapVideoStreamingButton
 {
-  v3 = [(PHAudioCallViewController *)self features];
-  v4 = [v3 isEnhancedEmergencyEnabled];
+  features = [(PHAudioCallViewController *)self features];
+  isEnhancedEmergencyEnabled = [features isEnhancedEmergencyEnabled];
 
-  if (v4)
+  if (isEnhancedEmergencyEnabled)
   {
     [(PHAudioCallViewController *)self removeEnhancedEmergencyIntermittentStateLabel];
-    v5 = [(PHAudioCallViewController *)self emergencyCoordinator];
-    [v5 handleVideoStreamingButtonTapped];
+    emergencyCoordinator = [(PHAudioCallViewController *)self emergencyCoordinator];
+    [emergencyCoordinator handleVideoStreamingButtonTapped];
 
-    v6 = [(PHAudioCallViewController *)self emergencyCoordinator];
-    v7 = [v6 videoStreamingIsOnScreen];
+    emergencyCoordinator2 = [(PHAudioCallViewController *)self emergencyCoordinator];
+    videoStreamingIsOnScreen = [emergencyCoordinator2 videoStreamingIsOnScreen];
 
-    if (v7)
+    if (videoStreamingIsOnScreen)
     {
-      v8 = [(PHAudioCallViewController *)self buttonsViewController];
-      v11 = [v8 view];
+      buttonsViewController = [(PHAudioCallViewController *)self buttonsViewController];
+      view = [buttonsViewController view];
 
-      [v11 changeVideoStreamingButtonTitleWithIsSharing:1];
-      v9 = [(PHAudioCallViewController *)self emergencyCoordinator];
-      v10 = [v9 videoStreamingRequestHasBeenAccepted];
+      [view changeVideoStreamingButtonTitleWithIsSharing:1];
+      emergencyCoordinator3 = [(PHAudioCallViewController *)self emergencyCoordinator];
+      videoStreamingRequestHasBeenAccepted = [emergencyCoordinator3 videoStreamingRequestHasBeenAccepted];
 
-      if (v10)
+      if (videoStreamingRequestHasBeenAccepted)
       {
         [(PHAudioCallViewController *)self addEnhancedEmergencyIntermittentStateLabelWithState:1];
       }
@@ -12099,29 +12099,29 @@ LABEL_7:
 
 - (void)audioCallControlsViewControllerRequestedShareMedia
 {
-  v3 = [(PHAudioCallViewController *)self features];
-  v4 = [v3 isEnhancedEmergencyEnabled];
+  features = [(PHAudioCallViewController *)self features];
+  isEnhancedEmergencyEnabled = [features isEnhancedEmergencyEnabled];
 
-  if (v4)
+  if (isEnhancedEmergencyEnabled)
   {
-    v5 = [(PHAudioCallViewController *)self emergencyCoordinator];
-    [v5 handleMediaUploadButtonTapped];
+    emergencyCoordinator = [(PHAudioCallViewController *)self emergencyCoordinator];
+    [emergencyCoordinator handleMediaUploadButtonTapped];
   }
 }
 
 - (void)audioCallControlsViewControllerDidTapRTTButton
 {
-  v3 = [(PHAudioCallViewController *)self features];
-  if ([v3 isEnhancedEmergencyEnabled] && (-[PHAudioCallViewController emergencyCoordinator](self, "emergencyCoordinator"), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  features = [(PHAudioCallViewController *)self features];
+  if ([features isEnhancedEmergencyEnabled] && (-[PHAudioCallViewController emergencyCoordinator](self, "emergencyCoordinator"), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
-    v6 = [(PHAudioCallViewController *)self emergencyCoordinator];
-    v7 = [v6 eedRTTState];
+    emergencyCoordinator = [(PHAudioCallViewController *)self emergencyCoordinator];
+    eedRTTState = [emergencyCoordinator eedRTTState];
 
-    if (v7 == 3)
+    if (eedRTTState == 3)
     {
-      v12 = [(PHAudioCallViewController *)self emergencyCoordinator];
-      [v12 transitionToRTTState:2];
+      emergencyCoordinator2 = [(PHAudioCallViewController *)self emergencyCoordinator];
+      [emergencyCoordinator2 transitionToRTTState:2];
       goto LABEL_8;
     }
   }
@@ -12137,18 +12137,18 @@ LABEL_7:
   }
 
   v9 = v8;
-  v10 = [(PHAudioCallViewController *)self activeCall];
-  v12 = [v9 viewControllerForCall:v10];
+  activeCall = [(PHAudioCallViewController *)self activeCall];
+  emergencyCoordinator2 = [v9 viewControllerForCall:activeCall];
 
-  v11 = [(PHAudioCallViewController *)self navigationController];
-  [v11 pushViewController:v12 animated:1];
+  navigationController = [(PHAudioCallViewController *)self navigationController];
+  [navigationController pushViewController:emergencyCoordinator2 animated:1];
 
 LABEL_8:
 }
 
-- (void)audioCallControlsViewControllerRequestedMoreMenuFromSourceView:(id)a3
+- (void)audioCallControlsViewControllerRequestedMoreMenuFromSourceView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -12158,24 +12158,24 @@ LABEL_8:
 
   objc_initWeak(buf, self);
   v6 = +[UIApplication sharedApplication];
-  v7 = [v6 delegate];
-  v8 = [v7 bannerPresentationManager];
+  delegate = [v6 delegate];
+  bannerPresentationManager = [delegate bannerPresentationManager];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10012377C;
   v10[3] = &unk_100357E78;
   objc_copyWeak(&v12, buf);
-  v9 = v4;
+  v9 = viewCopy;
   v11 = v9;
-  [(PHAudioCallViewController *)self presentMoreMenu:v8 source:v9 alongsideTransition:v10];
+  [(PHAudioCallViewController *)self presentMoreMenu:bannerPresentationManager source:v9 alongsideTransition:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);
 }
 
-- (void)audioCallControlsViewControllerRequestedShareCardFromSourceView:(id)a3
+- (void)audioCallControlsViewControllerRequestedShareCardFromSourceView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -12184,53 +12184,53 @@ LABEL_8:
   }
 
   v6 = +[UIApplication sharedApplication];
-  v7 = [v6 delegate];
-  v8 = [v7 bannerPresentationManager];
-  [(PHAudioCallViewController *)self presentShareCard:v8 source:v4];
+  delegate = [v6 delegate];
+  bannerPresentationManager = [delegate bannerPresentationManager];
+  [(PHAudioCallViewController *)self presentShareCard:bannerPresentationManager source:viewCopy];
 }
 
 - (BOOL)videoStreamingIsGoingOn
 {
-  v3 = [(PHAudioCallViewController *)self features];
-  if ([v3 isEnhancedEmergencyEnabled])
+  features = [(PHAudioCallViewController *)self features];
+  if ([features isEnhancedEmergencyEnabled])
   {
-    v4 = [(PHAudioCallViewController *)self emergencyCoordinator];
-    if (v4)
+    emergencyCoordinator = [(PHAudioCallViewController *)self emergencyCoordinator];
+    if (emergencyCoordinator)
     {
-      v5 = [(PHAudioCallViewController *)self emergencyCoordinator];
-      v6 = [v5 videoStreamingIsOnScreen];
+      emergencyCoordinator2 = [(PHAudioCallViewController *)self emergencyCoordinator];
+      videoStreamingIsOnScreen = [emergencyCoordinator2 videoStreamingIsOnScreen];
     }
 
     else
     {
-      v6 = 0;
+      videoStreamingIsOnScreen = 0;
     }
   }
 
   else
   {
-    v6 = 0;
+    videoStreamingIsOnScreen = 0;
   }
 
-  return v6;
+  return videoStreamingIsOnScreen;
 }
 
-- (void)audioCallControlsViewControllerDidToggleMuteButton:(BOOL)a3
+- (void)audioCallControlsViewControllerDidToggleMuteButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   if ([(PHAudioCallViewController *)self audioCallMutedTalkerIsSupported])
   {
-    if (!v3)
+    if (!buttonCopy)
     {
       [(PHAudioCallViewController *)self setDidNotifyMutedCaller:0];
     }
 
-    v5 = [(PHAudioCallViewController *)self mutedTalkerBannerViewController];
-    [v5 updatePillViewWithIsMuted:v3];
+    mutedTalkerBannerViewController = [(PHAudioCallViewController *)self mutedTalkerBannerViewController];
+    [mutedTalkerBannerViewController updatePillViewWithIsMuted:buttonCopy];
   }
 }
 
-- (void)audioCallControlsViewControllerDidTapEndButton:(id)a3
+- (void)audioCallControlsViewControllerDidTapEndButton:(id)button
 {
   if ([(PHCallViewController *)self currentState]== 10)
   {
@@ -12241,49 +12241,49 @@ LABEL_8:
   else
   {
     v4 = +[UIApplication sharedApplication];
-    v5 = [v4 delegate];
-    v11 = [v5 mostRecentlyDisconnectedAudioCall];
+    delegate = [v4 delegate];
+    mostRecentlyDisconnectedAudioCall = [delegate mostRecentlyDisconnectedAudioCall];
 
-    if (v11 && [v11 isEmergency])
+    if (mostRecentlyDisconnectedAudioCall && [mostRecentlyDisconnectedAudioCall isEmergency])
     {
-      v6 = [v11 disconnectedReasonRequiresCallBackUI];
+      disconnectedReasonRequiresCallBackUI = [mostRecentlyDisconnectedAudioCall disconnectedReasonRequiresCallBackUI];
     }
 
     else
     {
-      v6 = 0;
+      disconnectedReasonRequiresCallBackUI = 0;
     }
 
-    v7 = [v11 canDisplayAlertUI:{-[PHAudioCallViewController shouldPresentAlertButton](self, "shouldPresentAlertButton")}];
-    if (v6 && v7)
+    v7 = [mostRecentlyDisconnectedAudioCall canDisplayAlertUI:{-[PHAudioCallViewController shouldPresentAlertButton](self, "shouldPresentAlertButton")}];
+    if (disconnectedReasonRequiresCallBackUI && v7)
     {
       [(PHAudioCallViewController *)self setCurrentState:0];
     }
 
     else
     {
-      v8 = [(PHAudioCallViewController *)self activeCall];
-      v9 = [v8 callUUID];
-      [(PHAudioCallViewController *)self setUUIDForLocallyDisconnectedCall:v9];
+      activeCall = [(PHAudioCallViewController *)self activeCall];
+      callUUID = [activeCall callUUID];
+      [(PHAudioCallViewController *)self setUUIDForLocallyDisconnectedCall:callUUID];
 
-      v10 = [(PHAudioCallViewController *)self callCenter];
-      [v10 disconnectCurrentCall];
+      callCenter = [(PHAudioCallViewController *)self callCenter];
+      [callCenter disconnectCurrentCall];
     }
   }
 }
 
-- (void)localAudioToggledWithIsMuted:(BOOL)a3
+- (void)localAudioToggledWithIsMuted:(BOOL)muted
 {
-  v3 = a3;
+  mutedCopy = muted;
   if ([(PHAudioCallViewController *)self audioCallMutedTalkerIsSupported])
   {
-    if (!v3)
+    if (!mutedCopy)
     {
       [(PHAudioCallViewController *)self setDidNotifyMutedCaller:0];
     }
 
-    v5 = [(PHAudioCallViewController *)self mutedTalkerBannerViewController];
-    [v5 updatePillViewWithIsMuted:v3];
+    mutedTalkerBannerViewController = [(PHAudioCallViewController *)self mutedTalkerBannerViewController];
+    [mutedTalkerBannerViewController updatePillViewWithIsMuted:mutedCopy];
   }
 }
 
@@ -12296,222 +12296,222 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "PHAudioCallViewController: Voice loop controller requested button presentation", v5, 2u);
   }
 
-  v4 = [(PHAudioCallViewController *)self voiceLoopManager];
-  [v4 stopLoopPlayback];
+  voiceLoopManager = [(PHAudioCallViewController *)self voiceLoopManager];
+  [voiceLoopManager stopLoopPlayback];
 }
 
-- (void)setMiddleViewState:(unsigned __int16)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setMiddleViewState:(unsigned __int16)state animated:(BOOL)animated completion:(id)completion
 {
-  v490 = a4;
-  v5 = a3;
-  v7 = a5;
+  animatedCopy = animated;
+  stateCopy = state;
+  completionCopy = completion;
   v8 = sub_100004F84();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf.a) = 67109120;
-    HIDWORD(buf.a) = v5;
+    HIDWORD(buf.a) = stateCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "setMiddleViewState: %d", &buf, 8u);
   }
 
   v9 = sub_100004F84();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(PHAudioCallViewController *)self buttonsViewController];
-    v11 = [v10 view];
+    buttonsViewController = [(PHAudioCallViewController *)self buttonsViewController];
+    view = [buttonsViewController view];
     [(PHAudioCallViewController *)self buttonsViewController];
-    v12 = v484 = v5;
-    v13 = [v12 view];
-    [v13 alpha];
+    v12 = v484 = stateCopy;
+    view2 = [v12 view];
+    [view2 alpha];
     v15 = v14;
-    v16 = [(PHAudioCallViewController *)self buttonsViewController];
-    [v16 view];
+    buttonsViewController2 = [(PHAudioCallViewController *)self buttonsViewController];
+    [buttonsViewController2 view];
     v18 = v17 = self;
-    v19 = [v18 superview];
+    superview = [v18 superview];
     LODWORD(buf.a) = 138412802;
-    *(&buf.a + 4) = v11;
+    *(&buf.a + 4) = view;
     WORD2(buf.b) = 2048;
     *(&buf.b + 6) = v15;
     HIWORD(buf.c) = 2112;
-    *&buf.d = v19;
+    *&buf.d = superview;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "current six-up is: %@, six-up view alpha is: %f, six-up view parent view is: %@", &buf, 0x20u);
 
     self = v17;
-    v5 = v484;
+    stateCopy = v484;
   }
 
-  v20 = [(PHAudioCallViewController *)self currentMiddleView];
+  currentMiddleView = [(PHAudioCallViewController *)self currentMiddleView];
   v574[0] = _NSConcreteStackBlock;
   v574[1] = 3221225472;
   v574[2] = sub_1001279A8;
   v574[3] = &unk_100357CA0;
-  v21 = v7;
+  v21 = completionCopy;
   v575 = v21;
   v22 = objc_retainBlock(v574);
   v23 = &_sScI4next7ElementQzSgyYaKFTj_ptr;
   if (+[PHUIConfiguration usesMiddleCenteringView])
   {
-    v24 = [(PHAudioCallViewController *)self middleSizingView];
+    middleSizingView = [(PHAudioCallViewController *)self middleSizingView];
 
-    if (!v24)
+    if (!middleSizingView)
     {
       v25 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
       [(PHAudioCallViewController *)self setMiddleSizingView:v25];
 
-      v26 = [(PHAudioCallViewController *)self middleSizingView];
-      [v26 setTranslatesAutoresizingMaskIntoConstraints:0];
+      middleSizingView2 = [(PHAudioCallViewController *)self middleSizingView];
+      [middleSizingView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v27 = [(PHAudioCallViewController *)self view];
-      v28 = [(PHAudioCallViewController *)self middleSizingView];
-      [v27 addSubview:v28];
+      view3 = [(PHAudioCallViewController *)self view];
+      middleSizingView3 = [(PHAudioCallViewController *)self middleSizingView];
+      [view3 addSubview:middleSizingView3];
 
-      v29 = [(PHAudioCallViewController *)self view];
+      view4 = [(PHAudioCallViewController *)self view];
       [(PHAudioCallViewController *)self middleSizingView];
       v30 = v485 = v22;
       [(PHAudioCallViewController *)self callParticipantsViewController];
       v32 = v31 = v21;
       [v32 view];
-      v34 = v33 = v20;
+      v34 = v33 = currentMiddleView;
       v35 = [NSLayoutConstraint constraintWithItem:v30 attribute:3 relatedBy:0 toItem:v34 attribute:4 multiplier:1.0 constant:0.0];
-      [v29 addConstraint:v35];
+      [view4 addConstraint:v35];
 
-      v36 = [(PHAudioCallViewController *)self view];
-      v37 = [(PHAudioCallViewController *)self middleSizingView];
-      v38 = [(PHCallViewController *)self bottomBar];
-      v39 = [v38 mainButtonLayoutGuide];
-      v40 = [NSLayoutConstraint constraintWithItem:v37 attribute:4 relatedBy:0 toItem:v39 attribute:3 multiplier:1.0 constant:0.0];
-      [v36 addConstraint:v40];
+      view5 = [(PHAudioCallViewController *)self view];
+      middleSizingView4 = [(PHAudioCallViewController *)self middleSizingView];
+      bottomBar = [(PHCallViewController *)self bottomBar];
+      mainButtonLayoutGuide = [bottomBar mainButtonLayoutGuide];
+      v40 = [NSLayoutConstraint constraintWithItem:middleSizingView4 attribute:4 relatedBy:0 toItem:mainButtonLayoutGuide attribute:3 multiplier:1.0 constant:0.0];
+      [view5 addConstraint:v40];
 
-      v20 = v33;
+      currentMiddleView = v33;
       v21 = v31;
 
-      v41 = [(PHAudioCallViewController *)self view];
+      view6 = [(PHAudioCallViewController *)self view];
       v23 = &_sScI4next7ElementQzSgyYaKFTj_ptr;
-      v42 = [(PHAudioCallViewController *)self middleSizingView];
-      v43 = [NSLayoutConstraint constraintWithItem:v42 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
-      [v41 addConstraint:v43];
+      middleSizingView5 = [(PHAudioCallViewController *)self middleSizingView];
+      v43 = [NSLayoutConstraint constraintWithItem:middleSizingView5 attribute:7 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:0.0];
+      [view6 addConstraint:v43];
 
       v22 = v485;
     }
   }
 
-  if (self->_middleViewState == v5)
+  if (self->_middleViewState == stateCopy)
   {
     v44 = 0;
-    v45 = 0;
+    view21 = 0;
     goto LABEL_238;
   }
 
-  v46 = [(PHAudioCallViewController *)self frontmostCall];
-  v47 = [v46 canDisplayAlertUI:{-[PHAudioCallViewController shouldPresentAlertButton](self, "shouldPresentAlertButton")}];
-  v45 = 0;
-  v483 = v46;
-  if (v5 > 2)
+  frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+  v47 = [frontmostCall canDisplayAlertUI:{-[PHAudioCallViewController shouldPresentAlertButton](self, "shouldPresentAlertButton")}];
+  view21 = 0;
+  v483 = frontmostCall;
+  if (stateCopy > 2)
   {
     v486 = v22;
-    if (v5 == 3)
+    if (stateCopy == 3)
     {
-      v111 = [(PHAudioCallViewController *)self voiceLoopViewController];
-      v112 = [v111 view];
-      v113 = [v112 superview];
+      voiceLoopViewController = [(PHAudioCallViewController *)self voiceLoopViewController];
+      view7 = [voiceLoopViewController view];
+      superview2 = [view7 superview];
 
-      if (!v113)
+      if (!superview2)
       {
-        v114 = [(PHAudioCallViewController *)self view];
-        v115 = [(PHAudioCallViewController *)self voiceLoopViewController];
-        v116 = [v115 view];
-        [v114 addSubview:v116];
+        view8 = [(PHAudioCallViewController *)self view];
+        voiceLoopViewController2 = [(PHAudioCallViewController *)self voiceLoopViewController];
+        view9 = [voiceLoopViewController2 view];
+        [view8 addSubview:view9];
 
-        v117 = [(PHAudioCallViewController *)self voiceLoopViewController];
-        v118 = [v117 view];
-        [v118 setTranslatesAutoresizingMaskIntoConstraints:0];
+        voiceLoopViewController3 = [(PHAudioCallViewController *)self voiceLoopViewController];
+        view10 = [voiceLoopViewController3 view];
+        [view10 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-        v468 = [(PHAudioCallViewController *)self voiceLoopViewController];
-        v465 = [v468 view];
-        v459 = [v465 centerXAnchor];
-        v462 = [(PHAudioCallViewController *)self view];
-        v456 = [v462 centerXAnchor];
-        v453 = [v459 constraintEqualToAnchor:v456];
+        voiceLoopViewController4 = [(PHAudioCallViewController *)self voiceLoopViewController];
+        view11 = [voiceLoopViewController4 view];
+        centerXAnchor = [view11 centerXAnchor];
+        view12 = [(PHAudioCallViewController *)self view];
+        centerXAnchor2 = [view12 centerXAnchor];
+        v453 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         v580[0] = v453;
-        v450 = [(PHAudioCallViewController *)self voiceLoopViewController];
-        v447 = [v450 view];
-        v441 = [v447 leadingAnchor];
-        v444 = [(PHAudioCallViewController *)self view];
-        v438 = [v444 leadingAnchor];
-        v435 = [v441 constraintEqualToAnchor:v438];
+        voiceLoopViewController5 = [(PHAudioCallViewController *)self voiceLoopViewController];
+        view13 = [voiceLoopViewController5 view];
+        leadingAnchor = [view13 leadingAnchor];
+        view14 = [(PHAudioCallViewController *)self view];
+        leadingAnchor2 = [view14 leadingAnchor];
+        v435 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v580[1] = v435;
-        v432 = [(PHAudioCallViewController *)self voiceLoopViewController];
-        v429 = [v432 view];
-        v421 = [v429 trailingAnchor];
-        v424 = [(PHAudioCallViewController *)self view];
-        v419 = [v424 trailingAnchor];
-        v417 = [v421 constraintEqualToAnchor:v419];
+        voiceLoopViewController6 = [(PHAudioCallViewController *)self voiceLoopViewController];
+        view15 = [voiceLoopViewController6 view];
+        trailingAnchor = [view15 trailingAnchor];
+        view16 = [(PHAudioCallViewController *)self view];
+        trailingAnchor2 = [view16 trailingAnchor];
+        v417 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v580[2] = v417;
-        v415 = [(PHAudioCallViewController *)self voiceLoopViewController];
-        v413 = [v415 view];
-        v411 = [v413 topAnchor];
-        v412 = [(PHAudioCallViewController *)self callParticipantsViewController];
-        v410 = [v412 view];
-        v409 = [v410 bottomAnchor];
-        v408 = [v411 constraintEqualToAnchor:v409];
+        voiceLoopViewController7 = [(PHAudioCallViewController *)self voiceLoopViewController];
+        view17 = [voiceLoopViewController7 view];
+        topAnchor = [view17 topAnchor];
+        callParticipantsViewController = [(PHAudioCallViewController *)self callParticipantsViewController];
+        view18 = [callParticipantsViewController view];
+        bottomAnchor = [view18 bottomAnchor];
+        v408 = [topAnchor constraintEqualToAnchor:bottomAnchor];
         v580[3] = v408;
-        v407 = [(PHAudioCallViewController *)self voiceLoopViewController];
-        [v407 view];
+        voiceLoopViewController8 = [(PHAudioCallViewController *)self voiceLoopViewController];
+        [voiceLoopViewController8 view];
         v120 = v119 = self;
         [v120 bottomAnchor];
-        v121 = v474 = v20;
+        v121 = v474 = currentMiddleView;
         [(PHCallViewController *)v119 bottomBar];
         v122 = v479 = v21;
-        v123 = [v122 topLayoutGuide];
-        v124 = [v123 topAnchor];
-        v125 = [v121 constraintEqualToAnchor:v124];
+        topLayoutGuide = [v122 topLayoutGuide];
+        topAnchor2 = [topLayoutGuide topAnchor];
+        v125 = [v121 constraintEqualToAnchor:topAnchor2];
         v580[4] = v125;
         [NSArray arrayWithObjects:v580 count:5];
-        v127 = v126 = v5;
+        v127 = v126 = stateCopy;
         [NSLayoutConstraint activateConstraints:v127];
 
-        v5 = v126;
+        stateCopy = v126;
         v21 = v479;
 
-        v20 = v474;
+        currentMiddleView = v474;
         self = v119;
       }
 
-      v128 = [(PHAudioCallViewController *)self callParticipantsViewController];
-      [v128 resetNameOverrideString];
+      callParticipantsViewController2 = [(PHAudioCallViewController *)self callParticipantsViewController];
+      [callParticipantsViewController2 resetNameOverrideString];
 
-      v129 = [(PHAudioCallViewController *)self callParticipantsViewController];
-      v130 = [v129 view];
-      [v130 setNeedsLayout];
+      callParticipantsViewController3 = [(PHAudioCallViewController *)self callParticipantsViewController];
+      view19 = [callParticipantsViewController3 view];
+      [view19 setNeedsLayout];
 
-      v131 = [(PHAudioCallViewController *)self callParticipantsViewController];
-      v132 = [v131 view];
-      [v132 layoutIfNeeded];
+      callParticipantsViewController4 = [(PHAudioCallViewController *)self callParticipantsViewController];
+      view20 = [callParticipantsViewController4 view];
+      [view20 layoutIfNeeded];
 
-      v133 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-      v134 = [v133 callDisplayStyle] != 0;
+      callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+      v134 = [callDisplayStyleManager callDisplayStyle] != 0;
 
-      v135 = [(PHCallViewController *)self bottomBar];
-      [v135 setCurrentState:11 animated:v134 animationCompletionBlock:0];
+      bottomBar2 = [(PHCallViewController *)self bottomBar];
+      [bottomBar2 setCurrentState:11 animated:v134 animationCompletionBlock:0];
 
-      v136 = [(PHAudioCallViewController *)self voiceLoopViewController];
-      v45 = [v136 view];
+      voiceLoopViewController9 = [(PHAudioCallViewController *)self voiceLoopViewController];
+      view21 = [voiceLoopViewController9 view];
 
       if (![(PHAudioCallViewController *)self middleViewState])
       {
-        [v45 setAlpha:0.0];
+        [view21 setAlpha:0.0];
         v532[0] = _NSConcreteStackBlock;
         v532[1] = 3221225472;
         v532[2] = sub_100128114;
         v532[3] = &unk_100356988;
-        v45 = v45;
-        v533 = v45;
+        view21 = view21;
+        v533 = view21;
         v164 = objc_retainBlock(v532);
-        v165 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-        v166 = [v165 callDisplayStyle];
+        callDisplayStyleManager2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+        callDisplayStyle = [callDisplayStyleManager2 callDisplayStyle];
 
-        if (v166)
+        if (callDisplayStyle)
         {
-          v137 = self;
+          selfCopy15 = self;
           v44 = objc_retainBlock(v164);
         }
 
@@ -12524,7 +12524,7 @@ LABEL_8:
             _os_log_impl(&_mh_execute_header, v207, OS_LOG_TYPE_DEFAULT, "The audio call UI is currently showing in a banner, animations on the middle view state will be queued up until we transition out of the banner.", &buf, 2u);
           }
 
-          v137 = self;
+          selfCopy15 = self;
           [(PHAudioCallViewController *)self setPendingMiddleViewAnimations:v164];
           v44 = 0;
         }
@@ -12537,16 +12537,16 @@ LABEL_8:
 
       if ([(PHAudioCallViewController *)self middleViewState]== 1)
       {
-        v137 = self;
-        [v45 setAlpha:0.0];
+        selfCopy15 = self;
+        [view21 setAlpha:0.0];
         v529[0] = _NSConcreteStackBlock;
         v529[1] = 3221225472;
         v529[2] = sub_100128120;
         v529[3] = &unk_100357110;
-        v138 = v20;
+        v138 = currentMiddleView;
         v530 = v138;
-        v45 = v45;
-        v531 = v45;
+        view21 = view21;
+        v531 = view21;
         v44 = objc_retainBlock(v529);
         v526[0] = _NSConcreteStackBlock;
         v526[1] = 3221225472;
@@ -12566,24 +12566,24 @@ LABEL_8:
         goto LABEL_211;
       }
 
-      v137 = self;
-      v168 = [(PHAudioCallViewController *)self participantsViewTopConstraint];
+      selfCopy15 = self;
+      participantsViewTopConstraint = [(PHAudioCallViewController *)self participantsViewTopConstraint];
       +[PHUIConfiguration yParticipantsViewAdjustmentForKeypad];
       v170 = v169;
-      [v168 constant];
-      [v168 setConstant:v170 + v171];
+      [participantsViewTopConstraint constant];
+      [participantsViewTopConstraint setConstant:v170 + v171];
 
       CGAffineTransformMakeScale(&v525, 1.20000005, 1.20000005);
       buf = v525;
-      [v45 setTransform:&buf];
-      [v45 setAlpha:0.0];
+      [view21 setTransform:&buf];
+      [view21 setAlpha:0.0];
       v522[0] = _NSConcreteStackBlock;
       v522[1] = 3221225472;
       v522[2] = sub_1001281C8;
       v522[3] = &unk_100357110;
-      v45 = v45;
-      v523 = v45;
-      v172 = v20;
+      view21 = view21;
+      v523 = view21;
+      v172 = currentMiddleView;
       v524 = v172;
       v44 = objc_retainBlock(v522);
       v519[0] = _NSConcreteStackBlock;
@@ -12600,9 +12600,9 @@ LABEL_61:
       goto LABEL_220;
     }
 
-    if (v5 != 4)
+    if (stateCopy != 4)
     {
-      if (v5 != 5)
+      if (stateCopy != 5)
       {
         v44 = 0;
 LABEL_139:
@@ -12610,54 +12610,54 @@ LABEL_139:
         goto LABEL_228;
       }
 
-      v71 = [(PHAudioCallViewController *)self waitOnHoldViewController];
+      waitOnHoldViewController = [(PHAudioCallViewController *)self waitOnHoldViewController];
 
-      if (v71)
+      if (waitOnHoldViewController)
       {
-        v72 = [(PHAudioCallViewController *)self middleViewState]!= 1 && v490;
-        v490 = v72;
-        v73 = [(PHAudioCallViewController *)self waitOnHoldViewController];
-        v74 = [v73 view];
-        v75 = [v74 superview];
+        v72 = [(PHAudioCallViewController *)self middleViewState]!= 1 && animatedCopy;
+        animatedCopy = v72;
+        waitOnHoldViewController2 = [(PHAudioCallViewController *)self waitOnHoldViewController];
+        view22 = [waitOnHoldViewController2 view];
+        superview3 = [view22 superview];
 
-        if (!v75)
+        if (!superview3)
         {
-          v76 = [(PHAudioCallViewController *)self screeningContainerView];
-          v77 = [(PHAudioCallViewController *)self waitOnHoldViewController];
-          v78 = [v77 view];
-          [v76 addSubview:v78];
+          screeningContainerView = [(PHAudioCallViewController *)self screeningContainerView];
+          waitOnHoldViewController3 = [(PHAudioCallViewController *)self waitOnHoldViewController];
+          view23 = [waitOnHoldViewController3 view];
+          [screeningContainerView addSubview:view23];
 
-          v79 = [(PHAudioCallViewController *)self waitOnHoldViewController];
-          v80 = [v79 view];
-          [v80 setTranslatesAutoresizingMaskIntoConstraints:0];
+          waitOnHoldViewController4 = [(PHAudioCallViewController *)self waitOnHoldViewController];
+          view24 = [waitOnHoldViewController4 view];
+          [view24 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-          v81 = [(PHAudioCallViewController *)self waitOnHoldViewController];
-          v82 = [v81 view];
-          [v82 setContentCompressionResistancePriority:0 forAxis:0.0];
+          waitOnHoldViewController5 = [(PHAudioCallViewController *)self waitOnHoldViewController];
+          view25 = [waitOnHoldViewController5 view];
+          [view25 setContentCompressionResistancePriority:0 forAxis:0.0];
 
-          v83 = [(PHAudioCallViewController *)self waitOnHoldViewController];
-          v84 = [v83 view];
-          [v84 setContentCompressionResistancePriority:1 forAxis:0.0];
+          waitOnHoldViewController6 = [(PHAudioCallViewController *)self waitOnHoldViewController];
+          view26 = [waitOnHoldViewController6 view];
+          [view26 setContentCompressionResistancePriority:1 forAxis:0.0];
 
-          v85 = [(PHAudioCallViewController *)self waitOnHoldViewController];
-          v86 = [v85 view];
-          [v86 setContentHuggingPriority:0 forAxis:0.0];
+          waitOnHoldViewController7 = [(PHAudioCallViewController *)self waitOnHoldViewController];
+          view27 = [waitOnHoldViewController7 view];
+          [view27 setContentHuggingPriority:0 forAxis:0.0];
 
-          v87 = [(PHAudioCallViewController *)self waitOnHoldViewController];
-          v88 = [v87 view];
-          [v88 setContentHuggingPriority:1 forAxis:0.0];
+          waitOnHoldViewController8 = [(PHAudioCallViewController *)self waitOnHoldViewController];
+          view28 = [waitOnHoldViewController8 view];
+          [view28 setContentHuggingPriority:1 forAxis:0.0];
 
-          v89 = [(PHAudioCallViewController *)self waitOnHoldViewController];
-          v90 = [v89 view];
+          waitOnHoldViewController9 = [(PHAudioCallViewController *)self waitOnHoldViewController];
+          view29 = [waitOnHoldViewController9 view];
           v91 = +[UIColor clearColor];
-          [v90 setBackgroundColor:v91];
+          [view29 setBackgroundColor:v91];
 
           v92 = objc_opt_new();
           [(PHAudioCallViewController *)self setWaitOnHoldConstraints:v92];
 
-          v93 = [(PHAudioCallViewController *)self view];
-          v94 = [(PHAudioCallViewController *)self waitOnHoldConstraints];
-          [v94 setView:v93];
+          view30 = [(PHAudioCallViewController *)self view];
+          waitOnHoldConstraints = [(PHAudioCallViewController *)self waitOnHoldConstraints];
+          [waitOnHoldConstraints setView:view30];
 
           v95 = +[UIScreen mainScreen];
           [v95 bounds];
@@ -12669,86 +12669,86 @@ LABEL_139:
             v97 = v99;
           }
 
-          v473 = v20;
+          v473 = currentMiddleView;
           v478 = v21;
           if (+[PHUIConfiguration usesMiddleCenteringView])
           {
-            v100 = [(PHAudioCallViewController *)self middleSizingView];
-            v101 = [v100 centerYAnchor];
+            middleSizingView6 = [(PHAudioCallViewController *)self middleSizingView];
+            centerYAnchor = [middleSizingView6 centerYAnchor];
           }
 
           else
           {
-            v100 = [(PHAudioCallViewController *)self callParticipantsViewController];
-            v208 = [v100 view];
-            v101 = [v208 bottomAnchor];
+            middleSizingView6 = [(PHAudioCallViewController *)self callParticipantsViewController];
+            view31 = [middleSizingView6 view];
+            centerYAnchor = [view31 bottomAnchor];
           }
 
-          v427 = v101;
+          v427 = centerYAnchor;
 
-          v469 = [(PHAudioCallViewController *)self view];
-          v463 = [v469 trailingAnchor];
-          v466 = [(PHAudioCallViewController *)self waitOnHoldViewController];
-          v460 = [v466 view];
-          v457 = [v460 trailingAnchor];
-          v454 = [v463 constraintEqualToAnchor:v457 constant:8.0];
+          view32 = [(PHAudioCallViewController *)self view];
+          trailingAnchor3 = [view32 trailingAnchor];
+          waitOnHoldViewController10 = [(PHAudioCallViewController *)self waitOnHoldViewController];
+          view33 = [waitOnHoldViewController10 view];
+          trailingAnchor4 = [view33 trailingAnchor];
+          v454 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:8.0];
           v576[0] = v454;
-          v451 = [(PHAudioCallViewController *)self waitOnHoldViewController];
-          v448 = [v451 view];
-          v442 = [v448 leadingAnchor];
-          v445 = [(PHAudioCallViewController *)self view];
-          v439 = [v445 leadingAnchor];
-          v436 = [v442 constraintEqualToAnchor:v439 constant:8.0];
+          waitOnHoldViewController11 = [(PHAudioCallViewController *)self waitOnHoldViewController];
+          view34 = [waitOnHoldViewController11 view];
+          leadingAnchor3 = [view34 leadingAnchor];
+          view35 = [(PHAudioCallViewController *)self view];
+          leadingAnchor4 = [view35 leadingAnchor];
+          v436 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:8.0];
           v576[1] = v436;
-          v433 = [(PHCallViewController *)self bottomBar];
-          v430 = [v433 mainButtonLayoutGuide];
-          v422 = [v430 topAnchor];
-          v425 = [(PHAudioCallViewController *)self waitOnHoldViewController];
-          v209 = [v425 view];
-          v210 = [v209 bottomAnchor];
-          v211 = [v422 constraintEqualToAnchor:v210 constant:v97 * 0.0425];
+          bottomBar3 = [(PHCallViewController *)self bottomBar];
+          mainButtonLayoutGuide2 = [bottomBar3 mainButtonLayoutGuide];
+          topAnchor3 = [mainButtonLayoutGuide2 topAnchor];
+          waitOnHoldViewController12 = [(PHAudioCallViewController *)self waitOnHoldViewController];
+          view36 = [waitOnHoldViewController12 view];
+          bottomAnchor2 = [view36 bottomAnchor];
+          v211 = [topAnchor3 constraintEqualToAnchor:bottomAnchor2 constant:v97 * 0.0425];
           v576[2] = v211;
-          v212 = [(PHAudioCallViewController *)self waitOnHoldViewController];
-          v213 = [v212 view];
-          v214 = [v213 topAnchor];
-          v215 = [v214 constraintEqualToAnchor:v101 constant:v97 * 0.0475];
+          waitOnHoldViewController13 = [(PHAudioCallViewController *)self waitOnHoldViewController];
+          view37 = [waitOnHoldViewController13 view];
+          topAnchor4 = [view37 topAnchor];
+          v215 = [topAnchor4 constraintEqualToAnchor:centerYAnchor constant:v97 * 0.0475];
           v576[3] = v215;
           [NSArray arrayWithObjects:v576 count:4];
           v217 = v216 = self;
-          v218 = [(PHAudioCallViewController *)v216 waitOnHoldConstraints];
-          [v218 setConstraintsStatePrimary:v217];
+          waitOnHoldConstraints2 = [(PHAudioCallViewController *)v216 waitOnHoldConstraints];
+          [waitOnHoldConstraints2 setConstraintsStatePrimary:v217];
 
           self = v216;
-          v5 = 5;
-          v20 = v473;
+          stateCopy = 5;
+          currentMiddleView = v473;
           v21 = v478;
         }
 
         [(PHAudioCallViewController *)self hideOrShowScreeningBackgroundView];
-        v219 = [(PHAudioCallViewController *)self waitOnHoldViewController];
-        v220 = [v219 view];
+        waitOnHoldViewController14 = [(PHAudioCallViewController *)self waitOnHoldViewController];
+        view38 = [waitOnHoldViewController14 view];
 
         CGAffineTransformMakeScale(&v502, 0.100000001, 0.100000001);
         buf = v502;
-        [v220 setTransform:&buf];
-        [v220 setAlpha:0.0];
+        [view38 setTransform:&buf];
+        [view38 setAlpha:0.0];
         v499[0] = _NSConcreteStackBlock;
         v499[1] = 3221225472;
         v499[2] = sub_100128608;
         v499[3] = &unk_100357110;
-        v221 = v20;
+        v221 = currentMiddleView;
         v500 = v221;
-        v45 = v220;
-        v501 = v45;
+        view21 = view38;
+        v501 = view21;
         v44 = objc_retainBlock(v499);
         v495[0] = _NSConcreteStackBlock;
         v495[1] = 3221225472;
         v495[2] = sub_10012869C;
         v495[3] = &unk_100357978;
         v496 = v221;
-        v497 = self;
+        selfCopy5 = self;
         v498 = v21;
-        v137 = self;
+        selfCopy15 = self;
         v22 = objc_retainBlock(v495);
 
         v139 = v500;
@@ -12762,37 +12762,37 @@ LABEL_139:
         _os_log_impl(&_mh_execute_header, v167, OS_LOG_TYPE_DEFAULT, "[WARN] WaitOnHoldViewController was unexpectedly nil, cannot show WaitOnHold middle view state.", &buf, 2u);
       }
 
-      v45 = 0;
+      view21 = 0;
 LABEL_138:
       v44 = 0;
       goto LABEL_139;
     }
 
-    v159 = [(PHAudioCallViewController *)self middleViewState]!= 1 && v490;
-    v490 = v159;
-    v160 = [(PHAudioCallViewController *)self screeningViewController];
-    v161 = [v160 view];
-    v162 = [v161 superview];
+    v159 = [(PHAudioCallViewController *)self middleViewState]!= 1 && animatedCopy;
+    animatedCopy = v159;
+    screeningViewController = [(PHAudioCallViewController *)self screeningViewController];
+    view39 = [screeningViewController view];
+    superview4 = [view39 superview];
 
-    if (v162)
+    if (superview4)
     {
 LABEL_111:
       [(PHAudioCallViewController *)self hideOrShowScreeningBackgroundView];
-      v285 = [(PHAudioCallViewController *)self screeningViewController];
-      v286 = [v285 view];
+      screeningViewController2 = [(PHAudioCallViewController *)self screeningViewController];
+      view40 = [screeningViewController2 view];
 
       CGAffineTransformMakeScale(&v510, 0.100000001, 0.100000001);
       buf = v510;
-      [v286 setTransform:&buf];
-      [v286 setAlpha:0.0];
+      [view40 setTransform:&buf];
+      [view40 setAlpha:0.0];
       v507[0] = _NSConcreteStackBlock;
       v507[1] = 3221225472;
       v507[2] = sub_1001283C4;
       v507[3] = &unk_100357110;
-      v287 = v20;
+      v287 = currentMiddleView;
       v508 = v287;
-      v45 = v286;
-      v509 = v45;
+      view21 = view40;
+      v509 = view21;
       v44 = objc_retainBlock(v507);
       v503[0] = _NSConcreteStackBlock;
       v503[1] = 3221225472;
@@ -12800,116 +12800,116 @@ LABEL_111:
       v503[3] = &unk_100357978;
       v504 = v287;
       v506 = v21;
-      v137 = self;
-      v505 = self;
+      selfCopy15 = self;
+      selfCopy8 = self;
       v22 = objc_retainBlock(v503);
 
       v139 = v508;
       goto LABEL_220;
     }
 
-    v163 = [(PHAudioCallViewController *)self featureFlags];
-    if ([v163 receptionistEnabled])
+    featureFlags = [(PHAudioCallViewController *)self featureFlags];
+    if ([featureFlags receptionistEnabled])
     {
     }
 
     else
     {
-      v204 = [(PHAudioCallViewController *)self featureFlags];
-      v205 = [v204 LVMEverywhere];
+      featureFlags2 = [(PHAudioCallViewController *)self featureFlags];
+      lVMEverywhere = [featureFlags2 LVMEverywhere];
 
-      if (!v205)
+      if (!lVMEverywhere)
       {
-        v206 = [(PHAudioCallViewController *)self view];
+        view41 = [(PHAudioCallViewController *)self view];
 LABEL_88:
-        v227 = v206;
-        v228 = [(PHAudioCallViewController *)self screeningViewController];
-        v229 = [v228 view];
-        [v227 addSubview:v229];
+        v227 = view41;
+        screeningViewController3 = [(PHAudioCallViewController *)self screeningViewController];
+        view42 = [screeningViewController3 view];
+        [v227 addSubview:view42];
 
-        v230 = [(PHAudioCallViewController *)self screeningViewController];
-        v231 = [v230 view];
-        [v231 setTranslatesAutoresizingMaskIntoConstraints:0];
+        screeningViewController4 = [(PHAudioCallViewController *)self screeningViewController];
+        view43 = [screeningViewController4 view];
+        [view43 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-        v232 = [(PHAudioCallViewController *)self screeningViewController];
-        v233 = [v232 view];
-        [v233 setContentCompressionResistancePriority:0 forAxis:0.0];
+        screeningViewController5 = [(PHAudioCallViewController *)self screeningViewController];
+        view44 = [screeningViewController5 view];
+        [view44 setContentCompressionResistancePriority:0 forAxis:0.0];
 
-        v234 = [(PHAudioCallViewController *)self screeningViewController];
-        v235 = [v234 view];
-        [v235 setContentCompressionResistancePriority:1 forAxis:0.0];
+        screeningViewController6 = [(PHAudioCallViewController *)self screeningViewController];
+        view45 = [screeningViewController6 view];
+        [view45 setContentCompressionResistancePriority:1 forAxis:0.0];
 
-        v236 = [(PHAudioCallViewController *)self screeningViewController];
-        v237 = [v236 view];
-        [v237 setContentHuggingPriority:0 forAxis:0.0];
+        screeningViewController7 = [(PHAudioCallViewController *)self screeningViewController];
+        view46 = [screeningViewController7 view];
+        [view46 setContentHuggingPriority:0 forAxis:0.0];
 
-        v238 = [(PHAudioCallViewController *)self screeningViewController];
-        v239 = [v238 view];
-        [v239 setContentHuggingPriority:1 forAxis:0.0];
+        screeningViewController8 = [(PHAudioCallViewController *)self screeningViewController];
+        view47 = [screeningViewController8 view];
+        [view47 setContentHuggingPriority:1 forAxis:0.0];
 
         v240 = objc_opt_new();
         [(PHAudioCallViewController *)self setScreeningConstraints:v240];
 
-        v241 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-        v475 = v20;
+        callDisplayStyleManager3 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+        v475 = currentMiddleView;
         v481 = v21;
-        if ([v241 callDisplayStyle] == 3)
+        if ([callDisplayStyleManager3 callDisplayStyle] == 3)
         {
-          v242 = [(PHAudioCallViewController *)self features];
-          v243 = [v242 isDominoEnabled];
+          features = [(PHAudioCallViewController *)self features];
+          isDominoEnabled = [features isDominoEnabled];
 
-          if (v243)
+          if (isDominoEnabled)
           {
-            v416 = [(PHAudioCallViewController *)self screeningViewController];
-            v414 = [v416 view];
-            v244 = [v414 trailingAnchor];
-            v467 = [(PHCallViewController *)self bottomBar];
-            v464 = [v467 mainButtonLayoutGuide];
-            [v464 leadingAnchor];
-            v461 = v470 = v244;
-            v458 = [v244 constraintEqualToAnchor:-20.0 constant:?];
+            screeningViewController9 = [(PHAudioCallViewController *)self screeningViewController];
+            view48 = [screeningViewController9 view];
+            trailingAnchor5 = [view48 trailingAnchor];
+            bottomBar4 = [(PHCallViewController *)self bottomBar];
+            mainButtonLayoutGuide3 = [bottomBar4 mainButtonLayoutGuide];
+            [mainButtonLayoutGuide3 leadingAnchor];
+            v461 = v260View = trailingAnchor5;
+            v458 = [trailingAnchor5 constraintEqualToAnchor:-20.0 constant:?];
             v579[0] = v458;
-            v455 = [(PHAudioCallViewController *)self screeningViewController];
-            v452 = [v455 view];
-            v245 = [v452 leadingAnchor];
-            v446 = [(PHAudioCallViewController *)self view];
-            v443 = [v446 safeAreaLayoutGuide];
-            [v443 leadingAnchor];
-            v440 = v449 = v245;
-            v437 = [v245 constraintEqualToAnchor:?];
-            v579[1] = v437;
-            v434 = [(PHAudioCallViewController *)self screeningViewController];
-            v431 = [v434 view];
-            v246 = [v431 topAnchor];
-            v426 = [(PHAudioCallViewController *)self callParticipantsViewController];
-            v423 = [v426 view];
-            [v423 bottomAnchor];
-            v420 = v428 = v246;
-            v418 = [v246 constraintEqualToAnchor:?];
-            v579[2] = v418;
-            v247 = [(PHAudioCallViewController *)self screeningViewController];
-            [v247 view];
+            screeningViewController10 = [(PHAudioCallViewController *)self screeningViewController];
+            view49 = [screeningViewController10 view];
+            leadingAnchor5 = [view49 leadingAnchor];
+            view50 = [(PHAudioCallViewController *)self view];
+            safeAreaLayoutGuide = [view50 safeAreaLayoutGuide];
+            [safeAreaLayoutGuide leadingAnchor];
+            v440 = v449 = leadingAnchor5;
+            bottomBar5 = [leadingAnchor5 constraintEqualToAnchor:?];
+            v579[1] = bottomBar5;
+            screeningViewController11 = [(PHAudioCallViewController *)self screeningViewController];
+            view51 = [screeningViewController11 view];
+            topAnchor5 = [view51 topAnchor];
+            callParticipantsViewController5 = [(PHAudioCallViewController *)self callParticipantsViewController];
+            view52 = [callParticipantsViewController5 view];
+            [view52 bottomAnchor];
+            v420 = screeningViewController13 = topAnchor5;
+            screeningViewController14 = [topAnchor5 constraintEqualToAnchor:?];
+            v579[2] = screeningViewController14;
+            screeningViewController12 = [(PHAudioCallViewController *)self screeningViewController];
+            [screeningViewController12 view];
             v249 = v248 = self;
-            v250 = [v249 bottomAnchor];
-            v251 = [(PHAudioCallViewController *)v248 view];
-            v252 = [v251 bottomAnchor];
+            bottomAnchor3 = [v249 bottomAnchor];
+            view53 = [(PHAudioCallViewController *)v248 view];
+            bottomAnchor4 = [view53 bottomAnchor];
             +[PHUIConfiguration ambientVerticalPadding];
-            v254 = [v250 constraintEqualToAnchor:v252 constant:-v253];
+            v254 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-v253];
             v579[3] = v254;
             v255 = [NSArray arrayWithObjects:v579 count:4];
             v256 = v248;
             [(PHAudioCallViewController *)v248 screeningConstraints];
-            v258 = v257 = v5;
+            v258 = v257 = stateCopy;
             [v258 setConstraintsStatePrimary:v255];
 
-            v5 = v257;
-            v259 = v416;
+            stateCopy = v257;
+            centerYAnchor2 = screeningViewController9;
 
-            v260 = v414;
+            view56 = view48;
 LABEL_110:
 
             self = v256;
-            v20 = v475;
+            currentMiddleView = v475;
             v21 = v481;
             goto LABEL_111;
           }
@@ -12941,161 +12941,161 @@ LABEL_110:
 
         if (+[PHUIConfiguration usesMiddleCenteringView])
         {
-          v267 = [(PHAudioCallViewController *)self middleSizingView];
-          v259 = [v267 centerYAnchor];
+          middleSizingView7 = [(PHAudioCallViewController *)self middleSizingView];
+          centerYAnchor2 = [middleSizingView7 centerYAnchor];
         }
 
         else
         {
-          v267 = [(PHAudioCallViewController *)self callParticipantsViewController];
-          v268 = [v267 view];
-          v259 = [v268 bottomAnchor];
+          middleSizingView7 = [(PHAudioCallViewController *)self callParticipantsViewController];
+          view54 = [middleSizingView7 view];
+          centerYAnchor2 = [view54 bottomAnchor];
         }
 
-        v269 = [(PHAudioCallViewController *)self view];
-        v270 = [(PHAudioCallViewController *)self screeningConstraints];
-        [v270 setView:v269];
+        view55 = [(PHAudioCallViewController *)self view];
+        screeningConstraints = [(PHAudioCallViewController *)self screeningConstraints];
+        [screeningConstraints setView:view55];
 
-        v271 = [(PHAudioCallViewController *)self featureFlags];
-        if ([v271 receptionistEnabled])
+        featureFlags3 = [(PHAudioCallViewController *)self featureFlags];
+        if ([featureFlags3 receptionistEnabled])
         {
         }
 
         else
         {
-          v272 = [(PHAudioCallViewController *)self featureFlags];
-          v273 = [v272 LVMEverywhere];
+          featureFlags4 = [(PHAudioCallViewController *)self featureFlags];
+          lVMEverywhere2 = [featureFlags4 LVMEverywhere];
 
-          if (!v273)
+          if (!lVMEverywhere2)
           {
-            v260 = [(PHAudioCallViewController *)self view];
-            v282 = [v260 trailingAnchor];
-            v467 = [(PHAudioCallViewController *)self screeningViewController];
-            v464 = [v467 view];
-            [v464 trailingAnchor];
-            v461 = v470 = v282;
-            v458 = [v282 constraintEqualToAnchor:v266 * 0.102 constant:?];
+            view56 = [(PHAudioCallViewController *)self view];
+            trailingAnchor6 = [view56 trailingAnchor];
+            bottomBar4 = [(PHAudioCallViewController *)self screeningViewController];
+            mainButtonLayoutGuide3 = [bottomBar4 view];
+            [mainButtonLayoutGuide3 trailingAnchor];
+            v461 = v260View = trailingAnchor6;
+            v458 = [trailingAnchor6 constraintEqualToAnchor:v266 * 0.102 constant:?];
             v577[0] = v458;
-            v455 = [(PHAudioCallViewController *)self screeningViewController];
-            v452 = [v455 view];
-            v283 = [v452 leadingAnchor];
-            v446 = [(PHAudioCallViewController *)self view];
-            [v446 leadingAnchor];
-            v443 = v449 = v283;
-            v440 = [v283 constraintEqualToAnchor:v266 * 0.102 constant:?];
+            screeningViewController10 = [(PHAudioCallViewController *)self screeningViewController];
+            view49 = [screeningViewController10 view];
+            leadingAnchor6 = [view49 leadingAnchor];
+            view50 = [(PHAudioCallViewController *)self view];
+            [view50 leadingAnchor];
+            safeAreaLayoutGuide = v449 = leadingAnchor6;
+            v440 = [leadingAnchor6 constraintEqualToAnchor:v266 * 0.102 constant:?];
             v577[1] = v440;
-            v437 = [(PHCallViewController *)self bottomBar];
-            v434 = [v437 mainButtonLayoutGuide];
-            v284 = [v434 topAnchor];
-            v428 = [(PHAudioCallViewController *)self screeningViewController];
-            v426 = [v428 view];
-            [v426 bottomAnchor];
-            v423 = v431 = v284;
-            v420 = [v284 constraintEqualToAnchor:v265 * 0.0425 constant:?];
+            bottomBar5 = [(PHCallViewController *)self bottomBar];
+            screeningViewController11 = [bottomBar5 mainButtonLayoutGuide];
+            topAnchor6 = [screeningViewController11 topAnchor];
+            screeningViewController13 = [(PHAudioCallViewController *)self screeningViewController];
+            callParticipantsViewController5 = [screeningViewController13 view];
+            [callParticipantsViewController5 bottomAnchor];
+            view52 = view51 = topAnchor6;
+            v420 = [topAnchor6 constraintEqualToAnchor:v265 * 0.0425 constant:?];
             v577[2] = v420;
-            v418 = [(PHAudioCallViewController *)self screeningViewController];
-            v247 = [v418 view];
-            [v247 topAnchor];
+            screeningViewController14 = [(PHAudioCallViewController *)self screeningViewController];
+            screeningViewController12 = [screeningViewController14 view];
+            [screeningViewController12 topAnchor];
             v249 = v280 = self;
-            v250 = [v249 constraintEqualToAnchor:v259 constant:v265 * 0.0475];
-            v577[3] = v250;
+            bottomAnchor3 = [v249 constraintEqualToAnchor:centerYAnchor2 constant:v265 * 0.0475];
+            v577[3] = bottomAnchor3;
             v281 = v577;
 LABEL_109:
-            v251 = [NSArray arrayWithObjects:v281 count:4];
+            view53 = [NSArray arrayWithObjects:v281 count:4];
             v256 = v280;
-            v252 = [(PHAudioCallViewController *)v280 screeningConstraints];
-            [v252 setConstraintsStatePrimary:v251];
+            bottomAnchor4 = [(PHAudioCallViewController *)v280 screeningConstraints];
+            [bottomAnchor4 setConstraintsStatePrimary:view53];
             goto LABEL_110;
           }
         }
 
-        v274 = [(PHAudioCallViewController *)self translationLayoutGuide];
+        translationLayoutGuide = [(PHAudioCallViewController *)self translationLayoutGuide];
 
-        if (v274)
+        if (translationLayoutGuide)
         {
-          v275 = [(PHAudioCallViewController *)self translationLayoutGuide];
-          v276 = [v275 topAnchor];
+          translationLayoutGuide2 = [(PHAudioCallViewController *)self translationLayoutGuide];
+          topAnchor7 = [translationLayoutGuide2 topAnchor];
 
-          v259 = v276;
+          centerYAnchor2 = topAnchor7;
         }
 
-        v260 = [(PHAudioCallViewController *)self screeningViewController];
-        v470 = [v260 view];
-        v277 = [v470 trailingAnchor];
-        v464 = [(PHAudioCallViewController *)self view];
-        [v464 trailingAnchor];
-        v461 = v467 = v277;
-        v458 = [v277 constraintEqualToAnchor:?];
+        view56 = [(PHAudioCallViewController *)self screeningViewController];
+        v260View = [view56 view];
+        trailingAnchor7 = [v260View trailingAnchor];
+        mainButtonLayoutGuide3 = [(PHAudioCallViewController *)self view];
+        [mainButtonLayoutGuide3 trailingAnchor];
+        v461 = bottomBar4 = trailingAnchor7;
+        v458 = [trailingAnchor7 constraintEqualToAnchor:?];
         v578[0] = v458;
-        v455 = [(PHAudioCallViewController *)self screeningViewController];
-        v452 = [v455 view];
-        v278 = [v452 leadingAnchor];
-        v446 = [(PHAudioCallViewController *)self view];
-        [v446 leadingAnchor];
-        v443 = v449 = v278;
-        v440 = [v278 constraintEqualToAnchor:?];
+        screeningViewController10 = [(PHAudioCallViewController *)self screeningViewController];
+        view49 = [screeningViewController10 view];
+        leadingAnchor7 = [view49 leadingAnchor];
+        view50 = [(PHAudioCallViewController *)self view];
+        [view50 leadingAnchor];
+        safeAreaLayoutGuide = v449 = leadingAnchor7;
+        v440 = [leadingAnchor7 constraintEqualToAnchor:?];
         v578[1] = v440;
-        v437 = [(PHCallViewController *)self bottomBar];
-        v434 = [v437 mainButtonLayoutGuide];
-        v279 = [v434 topAnchor];
-        v428 = [(PHAudioCallViewController *)self screeningViewController];
-        v426 = [v428 view];
-        [v426 bottomAnchor];
-        v423 = v431 = v279;
-        v420 = [v279 constraintEqualToAnchor:11.0 constant:?];
+        bottomBar5 = [(PHCallViewController *)self bottomBar];
+        screeningViewController11 = [bottomBar5 mainButtonLayoutGuide];
+        topAnchor8 = [screeningViewController11 topAnchor];
+        screeningViewController13 = [(PHAudioCallViewController *)self screeningViewController];
+        callParticipantsViewController5 = [screeningViewController13 view];
+        [callParticipantsViewController5 bottomAnchor];
+        view52 = view51 = topAnchor8;
+        v420 = [topAnchor8 constraintEqualToAnchor:11.0 constant:?];
         v578[2] = v420;
-        v418 = [(PHAudioCallViewController *)self screeningViewController];
-        v247 = [v418 view];
-        [v247 topAnchor];
+        screeningViewController14 = [(PHAudioCallViewController *)self screeningViewController];
+        screeningViewController12 = [screeningViewController14 view];
+        [screeningViewController12 topAnchor];
         v249 = v280 = self;
-        v250 = [v249 constraintEqualToAnchor:v259];
-        v578[3] = v250;
+        bottomAnchor3 = [v249 constraintEqualToAnchor:centerYAnchor2];
+        v578[3] = bottomAnchor3;
         v281 = v578;
         goto LABEL_109;
       }
     }
 
     [(PHAudioCallViewController *)self hideOrShowScreeningBackgroundView];
-    v206 = [(PHAudioCallViewController *)self screeningContainerView];
+    view41 = [(PHAudioCallViewController *)self screeningContainerView];
     goto LABEL_88;
   }
 
-  if (!v5)
+  if (!stateCopy)
   {
-    v102 = [(PHAudioCallViewController *)self callParticipantsViewController];
-    [v102 resetNameOverrideString];
+    callParticipantsViewController6 = [(PHAudioCallViewController *)self callParticipantsViewController];
+    [callParticipantsViewController6 resetNameOverrideString];
 
-    v103 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v103 callDisplayStyle] == 3)
+    callDisplayStyleManager4 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager4 callDisplayStyle] == 3)
     {
       v104 = v22;
-      v105 = [(PHAudioCallViewController *)self features];
-      if ([v105 isDominoEnabled])
+      features2 = [(PHAudioCallViewController *)self features];
+      if ([features2 isDominoEnabled])
       {
-        v106 = [(PHAudioCallViewController *)self middleViewState];
+        middleViewState = [(PHAudioCallViewController *)self middleViewState];
 
         v22 = v104;
-        if (v106 == 1)
+        if (middleViewState == 1)
         {
-          v107 = [(PHCallViewController *)self bottomBar];
-          [v107 setAlpha:1.0];
+          bottomBar6 = [(PHCallViewController *)self bottomBar];
+          [bottomBar6 setAlpha:1.0];
 
-          v108 = [(PHAudioCallViewController *)self buttonsViewController];
-          [v108 setUpdatesPaused:1];
+          buttonsViewController3 = [(PHAudioCallViewController *)self buttonsViewController];
+          [buttonsViewController3 setUpdatesPaused:1];
 
-          v109 = [(PHAudioCallViewController *)self buttonsViewController];
-          v110 = [(PHCallViewController *)self bottomBar];
+          buttonsViewController4 = [(PHAudioCallViewController *)self buttonsViewController];
+          bottomBar7 = [(PHCallViewController *)self bottomBar];
           v516[0] = _NSConcreteStackBlock;
           v516[1] = 3221225472;
           v516[2] = sub_1001282D4;
           v516[3] = &unk_1003591D0;
           v516[4] = self;
-          v517 = v20;
+          v517 = currentMiddleView;
           v518 = v21;
-          [_TtC13InCallService27AmbientAnimationCoordinator transitionFrom:v109 to:v110 allowRoll:0 completion:v516];
+          [_TtC13InCallService27AmbientAnimationCoordinator transitionFrom:buttonsViewController4 to:bottomBar7 allowRoll:0 completion:v516];
 
           v22 = v104;
-          v45 = 0;
+          view21 = 0;
           goto LABEL_211;
         }
 
@@ -13106,12 +13106,12 @@ LABEL_109:
     }
 
 LABEL_60:
-    v137 = self;
+    selfCopy15 = self;
     v514[0] = _NSConcreteStackBlock;
     v514[1] = 3221225472;
     v514[2] = sub_10012835C;
     v514[3] = &unk_100356988;
-    v174 = v20;
+    v174 = currentMiddleView;
     v515 = v174;
     v44 = objc_retainBlock(v514);
     v511[0] = _NSConcreteStackBlock;
@@ -13122,57 +13122,57 @@ LABEL_60:
     v513 = v21;
     v173 = objc_retainBlock(v511);
 
-    v45 = 0;
+    view21 = 0;
     v139 = v515;
     goto LABEL_61;
   }
 
   v48 = v47;
-  if (v5 != 1)
+  if (stateCopy != 1)
   {
-    if (v5 != 2)
+    if (stateCopy != 2)
     {
       v44 = 0;
       goto LABEL_228;
     }
 
     v486 = v22;
-    v49 = [(PHAudioCallViewController *)self keypadViewController];
-    v50 = [v49 view];
-    v51 = [v50 superview];
+    keypadViewController = [(PHAudioCallViewController *)self keypadViewController];
+    view57 = [keypadViewController view];
+    superview5 = [view57 superview];
 
-    if (v51)
+    if (superview5)
     {
       goto LABEL_128;
     }
 
-    v472 = v20;
+    v472 = currentMiddleView;
     v477 = v21;
-    v52 = [(PHAudioCallViewController *)self view];
-    v53 = [(PHAudioCallViewController *)self keypadViewController];
-    v54 = [v53 view];
-    [v52 addSubview:v54];
+    view58 = [(PHAudioCallViewController *)self view];
+    keypadViewController2 = [(PHAudioCallViewController *)self keypadViewController];
+    view59 = [keypadViewController2 view];
+    [view58 addSubview:view59];
 
     v55 = +[UIColor clearColor];
-    v56 = [(PHAudioCallViewController *)self keypadViewController];
-    v57 = [v56 view];
-    [v57 setBackgroundColor:v55];
+    keypadViewController3 = [(PHAudioCallViewController *)self keypadViewController];
+    view60 = [keypadViewController3 view];
+    [view60 setBackgroundColor:v55];
 
-    v58 = [(PHAudioCallViewController *)self keypadViewController];
-    v59 = [v58 view];
-    [v59 setTranslatesAutoresizingMaskIntoConstraints:0];
+    keypadViewController4 = [(PHAudioCallViewController *)self keypadViewController];
+    view61 = [keypadViewController4 view];
+    [view61 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v60 = [(PHAudioCallViewController *)self view];
-    v61 = [(PHAudioCallViewController *)self keypadViewController];
-    v62 = [v61 view];
-    v63 = [(PHAudioCallViewController *)self view];
-    v64 = [NSLayoutConstraint constraintWithItem:v62 attribute:9 relatedBy:0 toItem:v63 attribute:9 multiplier:1.0 constant:0.0];
-    [v60 addConstraint:v64];
+    view62 = [(PHAudioCallViewController *)self view];
+    keypadViewController5 = [(PHAudioCallViewController *)self keypadViewController];
+    view63 = [keypadViewController5 view];
+    view64 = [(PHAudioCallViewController *)self view];
+    v64 = [NSLayoutConstraint constraintWithItem:view63 attribute:9 relatedBy:0 toItem:view64 attribute:9 multiplier:1.0 constant:0.0];
+    [view62 addConstraint:v64];
 
     v65 = +[PHInCallUtilities sharedInstance];
-    LOBYTE(v60) = [v65 isIPadIdiom];
+    LOBYTE(view62) = [v65 isIPadIdiom];
 
-    if ((v60 & 1) == 0)
+    if ((view62 & 1) == 0)
     {
       v175 = +[UIScreen mainScreen];
       [v175 bounds];
@@ -13202,39 +13202,39 @@ LABEL_60:
       v185 = v177 * v184;
       +[TPNumberPadButton verticalPadding];
       v187 = v185 + v182 + v183 - v186;
-      v188 = [(PHAudioCallViewController *)self keypadViewController];
-      v189 = [v188 view];
-      v190 = [(PHAudioCallViewController *)self view];
-      v69 = [NSLayoutConstraint constraintWithItem:v189 attribute:4 relatedBy:0 toItem:v190 attribute:4 multiplier:1.0 constant:-v187];
+      keypadViewController6 = [(PHAudioCallViewController *)self keypadViewController];
+      view65 = [keypadViewController6 view];
+      view66 = [(PHAudioCallViewController *)self view];
+      v69 = [NSLayoutConstraint constraintWithItem:view65 attribute:4 relatedBy:0 toItem:view66 attribute:4 multiplier:1.0 constant:-v187];
 
       goto LABEL_68;
     }
 
     if (+[PHUIConfiguration usesMiddleCenteringView])
     {
-      v66 = [(PHAudioCallViewController *)self keypadViewController];
-      v67 = [v66 view];
-      v68 = [(PHAudioCallViewController *)self middleSizingView];
-      v69 = [NSLayoutConstraint constraintWithItem:v67 attribute:10 relatedBy:0 toItem:v68 attribute:10 multiplier:1.0 constant:0.0];
+      keypadViewController7 = [(PHAudioCallViewController *)self keypadViewController];
+      view67 = [keypadViewController7 view];
+      middleSizingView8 = [(PHAudioCallViewController *)self middleSizingView];
+      v69 = [NSLayoutConstraint constraintWithItem:view67 attribute:10 relatedBy:0 toItem:middleSizingView8 attribute:10 multiplier:1.0 constant:0.0];
 
       LODWORD(v70) = 1144750080;
       [v69 setPriority:v70];
 LABEL_68:
-      v191 = [(PHAudioCallViewController *)self view];
-      [v191 addConstraint:v69];
+      view68 = [(PHAudioCallViewController *)self view];
+      [view68 addConstraint:v69];
 LABEL_127:
 
-      v20 = v472;
+      currentMiddleView = v472;
       v21 = v477;
 LABEL_128:
-      v306 = [(PHAudioCallViewController *)self features];
-      v307 = [v306 isDialPadEnabled];
+      features3 = [(PHAudioCallViewController *)self features];
+      isDialPadEnabled = [features3 isDialPadEnabled];
 
-      v308 = [(PHCallViewController *)self bottomBar];
-      v309 = v308;
-      if (v307)
+      bottomBar8 = [(PHCallViewController *)self bottomBar];
+      v309 = bottomBar8;
+      if (isDialPadEnabled)
       {
-        [v308 setCurrentState:19 animated:0 animationCompletionBlock:0];
+        [bottomBar8 setCurrentState:19 animated:0 animationCompletionBlock:0];
 
         [(PHAudioCallViewController *)self hideOrShowKeypadBackgroundView];
         [(PHAudioCallViewController *)self updateEnhancedEmergencyViewWhenKeypadPresented];
@@ -13242,39 +13242,39 @@ LABEL_128:
 
       else
       {
-        [v308 setCurrentState:19 animated:1 animationCompletionBlock:0];
+        [bottomBar8 setCurrentState:19 animated:1 animationCompletionBlock:0];
       }
 
-      v310 = [(PHAudioCallViewController *)self keypadViewController];
-      v45 = [v310 view];
+      keypadViewController8 = [(PHAudioCallViewController *)self keypadViewController];
+      view21 = [keypadViewController8 view];
 
-      v311 = [(PHAudioCallViewController *)self participantsViewTopConstraint];
+      participantsViewTopConstraint2 = [(PHAudioCallViewController *)self participantsViewTopConstraint];
       +[PHUIConfiguration yParticipantsViewAdjustmentForKeypad];
       v313 = v312;
-      [v311 constant];
-      [v311 setConstant:v314 - v313];
+      [participantsViewTopConstraint2 constant];
+      [participantsViewTopConstraint2 setConstant:v314 - v313];
 
       if ([(PHAudioCallViewController *)self middleViewState]== 1)
       {
         v315 = +[PHInCallUtilities sharedInstance];
-        v316 = [v315 isIPadIdiom];
+        isIPadIdiom = [v315 isIPadIdiom];
 
-        if (v316)
+        if (isIPadIdiom)
         {
           CGAffineTransformMakeScale(&v540, 0.100000001, 0.100000001);
           buf = v540;
-          [v45 setTransform:&buf];
+          [view21 setTransform:&buf];
         }
 
-        [v45 setAlpha:0.0];
+        [view21 setAlpha:0.0];
         v537[0] = _NSConcreteStackBlock;
         v537[1] = 3221225472;
         v537[2] = sub_100127FB0;
         v537[3] = &unk_100357110;
-        v317 = v20;
+        v317 = currentMiddleView;
         v538 = v317;
-        v45 = v45;
-        v539 = v45;
+        view21 = view21;
+        v539 = view21;
         v44 = objc_retainBlock(v537);
         v534[0] = _NSConcreteStackBlock;
         v534[1] = 3221225472;
@@ -13284,23 +13284,23 @@ LABEL_128:
         v536 = v21;
         v318 = objc_retainBlock(v534);
 
-        v319 = +[PHInCallUtilities sharedInstance];
-        if ([v319 isIPadIdiom])
+        bottomBar9 = +[PHInCallUtilities sharedInstance];
+        if ([bottomBar9 isIPadIdiom])
         {
           v320 = v21;
-          v321 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-          if ([v321 callDisplayStyle] != 3)
+          callDisplayStyleManager5 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+          if ([callDisplayStyleManager5 callDisplayStyle] != 3)
           {
 
             v21 = v320;
             goto LABEL_143;
           }
 
-          v322 = [(PHAudioCallViewController *)self features];
-          v488 = [v322 isDominoEnabled];
+          features4 = [(PHAudioCallViewController *)self features];
+          isDominoEnabled2 = [features4 isDominoEnabled];
 
           v21 = v320;
-          if (!v488)
+          if (!isDominoEnabled2)
           {
             goto LABEL_144;
           }
@@ -13310,12 +13310,12 @@ LABEL_128:
         {
         }
 
-        v319 = [(PHCallViewController *)self bottomBar];
-        [v319 setAlpha:1.0];
+        bottomBar9 = [(PHCallViewController *)self bottomBar];
+        [bottomBar9 setAlpha:1.0];
 LABEL_143:
 
 LABEL_144:
-        v137 = self;
+        selfCopy15 = self;
 
         v139 = v538;
 LABEL_205:
@@ -13326,12 +13326,12 @@ LABEL_205:
       goto LABEL_138;
     }
 
-    v222 = [(PHAudioCallViewController *)self features];
-    v223 = [v222 isDialPadEnabled];
+    features5 = [(PHAudioCallViewController *)self features];
+    isDialPadEnabled2 = [features5 isDialPadEnabled];
 
     v224 = +[PHUIConfiguration inCallControlSpacing];
     v225 = v224 == 5;
-    if (v223)
+    if (isDialPadEnabled2)
     {
       if (v224 == 5)
       {
@@ -13351,17 +13351,17 @@ LABEL_118:
         }
 
         [(PHAudioCallViewController *)self updateViewsForHeldCallControlsViewIfNeeded];
-        v289 = [(PHAudioCallViewController *)self keypadViewController];
-        v290 = [v289 view];
-        v291 = [v290 centerYAnchor];
-        v292 = [(PHAudioCallViewController *)self view];
-        v293 = [v292 centerYAnchor];
-        v69 = [v291 constraintEqualToAnchor:v293 constant:v226];
+        keypadViewController9 = [(PHAudioCallViewController *)self keypadViewController];
+        view69 = [keypadViewController9 view];
+        centerYAnchor3 = [view69 centerYAnchor];
+        view70 = [(PHAudioCallViewController *)self view];
+        centerYAnchor4 = [view70 centerYAnchor];
+        v69 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4 constant:v226];
 
-        v294 = [(PHAudioCallViewController *)self features];
-        v295 = [v294 shouldEmbedSwapBanner];
+        features6 = [(PHAudioCallViewController *)self features];
+        shouldEmbedSwapBanner = [features6 shouldEmbedSwapBanner];
         LODWORD(v296) = 1144750080;
-        if (v295)
+        if (shouldEmbedSwapBanner)
         {
           *&v296 = 250.0;
         }
@@ -13369,12 +13369,12 @@ LABEL_118:
         [v69 setPriority:v296];
 
         v581[0] = v69;
-        v191 = [(PHAudioCallViewController *)self keypadViewController];
-        v471 = [v191 view];
-        v297 = [v471 bottomAnchor];
-        v298 = [(PHCallViewController *)self bottomBar];
-        v299 = [v298 topLayoutGuide];
-        v300 = [v299 topAnchor];
+        view68 = [(PHAudioCallViewController *)self keypadViewController];
+        v191View = [view68 view];
+        bottomAnchor5 = [v191View bottomAnchor];
+        bottomBar10 = [(PHCallViewController *)self bottomBar];
+        topLayoutGuide2 = [bottomBar10 topLayoutGuide];
+        topAnchor9 = [topLayoutGuide2 topAnchor];
         v301 = +[PHUIConfiguration inCallControlSpacing];
         v302 = -4.0;
         if (v301 > 1)
@@ -13382,14 +13382,14 @@ LABEL_118:
           v302 = -9.0;
         }
 
-        [v297 constraintLessThanOrEqualToAnchor:v300 constant:v302];
+        [bottomAnchor5 constraintLessThanOrEqualToAnchor:topAnchor9 constant:v302];
         v304 = v303 = self;
         v581[1] = v304;
         v305 = [NSArray arrayWithObjects:v581 count:2];
         [NSLayoutConstraint activateConstraints:v305];
 
         self = v303;
-        v5 = 2;
+        stateCopy = 2;
         goto LABEL_127;
       }
 
@@ -13416,66 +13416,66 @@ LABEL_118:
   }
 
   v487 = v22;
-  v140 = [(PHAudioCallViewController *)self buttonsViewController];
-  v141 = [v140 view];
-  v142 = [v141 superview];
+  buttonsViewController5 = [(PHAudioCallViewController *)self buttonsViewController];
+  view71 = [buttonsViewController5 view];
+  superview6 = [view71 superview];
 
-  if (v142)
+  if (superview6)
   {
     goto LABEL_149;
   }
 
-  v143 = [(PHAudioCallViewController *)self view];
-  v144 = [(PHAudioCallViewController *)self buttonsViewController];
-  v145 = [v144 view];
-  [v143 addSubview:v145];
+  view72 = [(PHAudioCallViewController *)self view];
+  buttonsViewController6 = [(PHAudioCallViewController *)self buttonsViewController];
+  view73 = [buttonsViewController6 view];
+  [view72 addSubview:view73];
 
-  v146 = [(PHAudioCallViewController *)self buttonsViewController];
-  v147 = [v146 view];
-  [v147 setTranslatesAutoresizingMaskIntoConstraints:0];
+  buttonsViewController7 = [(PHAudioCallViewController *)self buttonsViewController];
+  view74 = [buttonsViewController7 view];
+  [view74 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v148 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  callDisplayStyleManager6 = [(PHAudioCallViewController *)self callDisplayStyleManager];
   v480 = v21;
-  v149 = v20;
-  v150 = v5;
-  if ([v148 callDisplayStyle] != 3)
+  v149 = currentMiddleView;
+  v150 = stateCopy;
+  if ([callDisplayStyleManager6 callDisplayStyle] != 3)
   {
 
     goto LABEL_70;
   }
 
-  v151 = [(PHAudioCallViewController *)self features];
-  v152 = [v151 isDominoEnabled];
+  features7 = [(PHAudioCallViewController *)self features];
+  isDominoEnabled3 = [features7 isDominoEnabled];
 
-  if (!v152)
+  if (!isDominoEnabled3)
   {
 LABEL_70:
-    v153 = [(PHAudioCallViewController *)self view];
-    v154 = [(PHAudioCallViewController *)self buttonsViewController];
-    v155 = [v154 view];
-    v156 = [(PHAudioCallViewController *)self view];
-    v157 = [NSLayoutConstraint constraintWithItem:v155 attribute:9 relatedBy:0 toItem:v156 attribute:9 multiplier:1.0 constant:0.0];
-    [v153 addConstraint:v157];
+    view75 = [(PHAudioCallViewController *)self view];
+    buttonsViewController8 = [(PHAudioCallViewController *)self buttonsViewController];
+    view76 = [buttonsViewController8 view];
+    view77 = [(PHAudioCallViewController *)self view];
+    centerXAnchor3 = [NSLayoutConstraint constraintWithItem:view76 attribute:9 relatedBy:0 toItem:view77 attribute:9 multiplier:1.0 constant:0.0];
+    [view75 addConstraint:centerXAnchor3];
     goto LABEL_71;
   }
 
-  v153 = [(PHAudioCallViewController *)self trailingSideLayoutGuide];
-  v154 = [v153 centerXAnchor];
-  v155 = [(PHAudioCallViewController *)self buttonsViewController];
-  v156 = [v155 view];
-  v157 = [v156 centerXAnchor];
-  v158 = [v154 constraintEqualToAnchor:v157];
+  view75 = [(PHAudioCallViewController *)self trailingSideLayoutGuide];
+  buttonsViewController8 = [view75 centerXAnchor];
+  view76 = [(PHAudioCallViewController *)self buttonsViewController];
+  view77 = [view76 view];
+  centerXAnchor3 = [view77 centerXAnchor];
+  v158 = [buttonsViewController8 constraintEqualToAnchor:centerXAnchor3];
   [v158 setActive:1];
 
 LABEL_71:
   [(PHAudioCallViewController *)self updateViewsForHeldCallControlsViewIfNeeded];
-  v192 = [(PHAudioCallViewController *)self buttonsViewBottomConstraint];
+  buttonsViewBottomConstraint = [(PHAudioCallViewController *)self buttonsViewBottomConstraint];
 
-  v5 = v150;
-  v20 = v149;
+  stateCopy = v150;
+  currentMiddleView = v149;
   v21 = v480;
   v23 = &_sScI4next7ElementQzSgyYaKFTj_ptr;
-  if (v192)
+  if (buttonsViewBottomConstraint)
   {
     goto LABEL_149;
   }
@@ -13483,15 +13483,15 @@ LABEL_71:
   if (PHUIInCallControlAlignmentIs())
   {
     v193 = v149;
-    v194 = [(PHAudioCallViewController *)self view];
-    v195 = [(PHAudioCallViewController *)self buttonsViewController];
-    v196 = [v195 view];
-    v197 = [(PHAudioCallViewController *)self view];
+    view78 = [(PHAudioCallViewController *)self view];
+    buttonsViewController9 = [(PHAudioCallViewController *)self buttonsViewController];
+    view79 = [buttonsViewController9 view];
+    view80 = [(PHAudioCallViewController *)self view];
     v198 = 0.326797396;
     v199 = 0.0;
-    v200 = v196;
+    v200 = view79;
     v201 = 3;
-    v202 = v197;
+    v202 = view80;
     v203 = 4;
   }
 
@@ -13500,10 +13500,10 @@ LABEL_71:
     if (PHUIInCallControlAlignmentIs())
     {
       v193 = v149;
-      v194 = [(PHAudioCallViewController *)self view];
-      v195 = [(PHAudioCallViewController *)self buttonsViewController];
-      v196 = [v195 view];
-      v197 = [(PHAudioCallViewController *)self view];
+      view78 = [(PHAudioCallViewController *)self view];
+      buttonsViewController9 = [(PHAudioCallViewController *)self buttonsViewController];
+      view79 = [buttonsViewController9 view];
+      view80 = [(PHAudioCallViewController *)self view];
       v198 = 1.0;
       v199 = -12.0;
     }
@@ -13511,10 +13511,10 @@ LABEL_71:
     else if (PHUIInCallControlAlignmentIs())
     {
       v193 = v149;
-      v194 = [(PHAudioCallViewController *)self view];
-      v195 = [(PHAudioCallViewController *)self buttonsViewController];
-      v196 = [v195 view];
-      v197 = [(PHAudioCallViewController *)self view];
+      view78 = [(PHAudioCallViewController *)self view];
+      buttonsViewController9 = [(PHAudioCallViewController *)self buttonsViewController];
+      view79 = [buttonsViewController9 view];
+      view80 = [(PHAudioCallViewController *)self view];
       v198 = 1.0;
       v199 = -2.0;
     }
@@ -13527,38 +13527,38 @@ LABEL_71:
       }
 
       v193 = v149;
-      v194 = [(PHAudioCallViewController *)self view];
-      v195 = [(PHAudioCallViewController *)self buttonsViewController];
-      v196 = [v195 view];
-      v197 = [(PHAudioCallViewController *)self view];
+      view78 = [(PHAudioCallViewController *)self view];
+      buttonsViewController9 = [(PHAudioCallViewController *)self buttonsViewController];
+      view79 = [buttonsViewController9 view];
+      view80 = [(PHAudioCallViewController *)self view];
       v198 = 1.0;
       v199 = 2.0;
     }
 
-    v200 = v196;
+    v200 = view79;
     v201 = 10;
-    v202 = v197;
+    v202 = view80;
     v203 = 10;
   }
 
   v323 = [NSLayoutConstraint constraintWithItem:v200 attribute:v201 relatedBy:0 toItem:v202 attribute:v203 multiplier:v198 constant:v199];
-  [v194 addConstraint:v323];
+  [view78 addConstraint:v323];
 
-  v20 = v193;
+  currentMiddleView = v193;
   v21 = v480;
   v23 = &_sScI4next7ElementQzSgyYaKFTj_ptr;
 LABEL_149:
-  v324 = [(PHAudioCallViewController *)self callParticipantsViewController];
-  [v324 resetNameOverrideString];
+  callParticipantsViewController7 = [(PHAudioCallViewController *)self callParticipantsViewController];
+  [callParticipantsViewController7 resetNameOverrideString];
 
   [(PHAudioCallViewController *)self _updateStatusLabelVisibility];
-  v325 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v325 callDisplayStyle] == 3)
+  callDisplayStyleManager7 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager7 callDisplayStyle] == 3)
   {
-    v326 = [(PHAudioCallViewController *)self features];
-    v327 = [v326 isDominoEnabled];
+    features8 = [(PHAudioCallViewController *)self features];
+    isDominoEnabled4 = [features8 isDominoEnabled];
 
-    if (v327)
+    if (isDominoEnabled4)
     {
       [(PHAudioCallViewController *)self layoutParticipantsViewAnimated:0];
       goto LABEL_154;
@@ -13569,27 +13569,27 @@ LABEL_149:
   {
   }
 
-  v328 = [(PHAudioCallViewController *)self callParticipantsViewController];
-  v329 = [v328 view];
-  [v329 setNeedsLayout];
+  callParticipantsViewController8 = [(PHAudioCallViewController *)self callParticipantsViewController];
+  view81 = [callParticipantsViewController8 view];
+  [view81 setNeedsLayout];
 
-  v330 = [(PHAudioCallViewController *)self callParticipantsViewController];
-  v331 = [v330 view];
-  [v331 layoutIfNeeded];
+  callParticipantsViewController9 = [(PHAudioCallViewController *)self callParticipantsViewController];
+  view82 = [callParticipantsViewController9 view];
+  [view82 layoutIfNeeded];
 
 LABEL_154:
   if (!v48)
   {
-    v335 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v335 callDisplayStyle])
+    callDisplayStyleManager8 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager8 callDisplayStyle])
     {
       v336 = v23;
       v337 = v21;
-      v338 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-      if ([v338 callDisplayStyle] == 3)
+      callDisplayStyleManager9 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+      if ([callDisplayStyleManager9 callDisplayStyle] == 3)
       {
-        v339 = [(PHAudioCallViewController *)self features];
-        v340 = [v339 isDominoEnabled] ^ 1;
+        features9 = [(PHAudioCallViewController *)self features];
+        v340 = [features9 isDominoEnabled] ^ 1;
       }
 
       else
@@ -13606,12 +13606,12 @@ LABEL_154:
       v340 = 0;
     }
 
-    v341 = [(PHAudioCallViewController *)self features];
+    features10 = [(PHAudioCallViewController *)self features];
     v342 = v23;
-    if ([v341 isDialPadEnabled])
+    if ([features10 isDialPadEnabled])
     {
-      v343 = [(PHCallViewController *)self bottomBar];
-      v344 = [v343 currentState] != 19;
+      bottomBar11 = [(PHCallViewController *)self bottomBar];
+      v344 = [bottomBar11 currentState] != 19;
 
       v340 = v344 & v340;
     }
@@ -13621,13 +13621,13 @@ LABEL_154:
     }
 
     v345 = v21;
-    v346 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v346 callDisplayStyle] == 3)
+    callDisplayStyleManager10 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager10 callDisplayStyle] == 3)
     {
-      v347 = [(PHAudioCallViewController *)self features];
-      v348 = [v347 isDominoEnabled];
+      features11 = [(PHAudioCallViewController *)self features];
+      isDominoEnabled5 = [features11 isDominoEnabled];
 
-      if (v348)
+      if (isDominoEnabled5)
       {
         goto LABEL_171;
       }
@@ -13637,13 +13637,13 @@ LABEL_154:
     {
     }
 
-    v349 = [(PHCallViewController *)self bottomBar];
-    [v349 setCurrentState:11 animated:v340 animationCompletionBlock:0];
+    bottomBar12 = [(PHCallViewController *)self bottomBar];
+    [bottomBar12 setCurrentState:11 animated:v340 animationCompletionBlock:0];
 
 LABEL_171:
-    v350 = [(PHAudioCallViewController *)self features];
+    features12 = [(PHAudioCallViewController *)self features];
     v22 = v487;
-    if (![v350 isDialPadEnabled])
+    if (![features12 isDialPadEnabled])
     {
 
       v21 = v345;
@@ -13651,11 +13651,11 @@ LABEL_171:
       goto LABEL_175;
     }
 
-    v351 = [(PHAudioCallViewController *)self middleViewState];
+    middleViewState2 = [(PHAudioCallViewController *)self middleViewState];
 
     v21 = v345;
     v23 = v342;
-    if (!v351)
+    if (!middleViewState2)
     {
       goto LABEL_175;
     }
@@ -13665,67 +13665,67 @@ LABEL_173:
     goto LABEL_175;
   }
 
-  v332 = [(PHCallViewController *)self bottomBar];
-  [v332 setCurrentState:22];
+  bottomBar13 = [(PHCallViewController *)self bottomBar];
+  [bottomBar13 setCurrentState:22];
 
-  v333 = [(PHAudioCallViewController *)self features];
-  v334 = [v333 isDialPadEnabled];
+  features13 = [(PHAudioCallViewController *)self features];
+  isDialPadEnabled3 = [features13 isDialPadEnabled];
 
   v22 = v487;
-  if (v334)
+  if (isDialPadEnabled3)
   {
     goto LABEL_173;
   }
 
 LABEL_175:
-  v352 = [(PHAudioCallViewController *)self buttonsViewController];
-  v45 = [v352 view];
+  buttonsViewController10 = [(PHAudioCallViewController *)self buttonsViewController];
+  view21 = [buttonsViewController10 view];
 
   if (![(PHAudioCallViewController *)self middleViewState])
   {
-    v476 = v20;
+    v476 = currentMiddleView;
     v482 = v21;
-    v364 = [(PHAudioCallViewController *)self callCenter];
-    [v364 currentCallGroups];
+    callCenter = [(PHAudioCallViewController *)self callCenter];
+    [callCenter currentCallGroups];
     v139 = v365 = self;
 
     v366 = [v139 count];
-    v367 = [(PHAudioCallViewController *)v365 callCenter];
-    v368 = [v367 currentVideoCallCount];
+    callCenter2 = [(PHAudioCallViewController *)v365 callCenter];
+    currentVideoCallCount = [callCenter2 currentVideoCallCount];
 
-    v369 = [(PHAudioCallViewController *)v365 callDisplayStyleManager];
-    if ([v369 callDisplayStyle] == 3)
+    callDisplayStyleManager11 = [(PHAudioCallViewController *)v365 callDisplayStyleManager];
+    if ([callDisplayStyleManager11 callDisplayStyle] == 3)
     {
-      v137 = v365;
-      v370 = [(PHAudioCallViewController *)v365 features];
-      v371 = [v370 isDominoEnabled];
+      selfCopy15 = v365;
+      features14 = [(PHAudioCallViewController *)v365 features];
+      isDominoEnabled6 = [features14 isDominoEnabled];
 
-      if (v371)
+      if (isDominoEnabled6)
       {
-        [v45 setAlpha:1.0];
-        if (v490)
+        [view21 setAlpha:1.0];
+        if (animatedCopy)
         {
-          v372 = &v366[v368] < 2;
-          v373 = [(PHCallViewController *)v137 bottomBar];
-          v374 = [(PHAudioCallViewController *)v137 buttonsViewController];
+          v372 = &v366[currentVideoCallCount] < 2;
+          bottomBar14 = [(PHCallViewController *)selfCopy15 bottomBar];
+          buttonsViewController11 = [(PHAudioCallViewController *)selfCopy15 buttonsViewController];
           v573[0] = _NSConcreteStackBlock;
           v573[1] = 3221225472;
           v573[2] = sub_1001279C4;
           v573[3] = &unk_1003569B0;
-          v573[4] = v137;
-          [_TtC13InCallService27AmbientAnimationCoordinator transitionFrom:v373 to:v374 allowRoll:v372 completion:v573];
+          v573[4] = selfCopy15;
+          [_TtC13InCallService27AmbientAnimationCoordinator transitionFrom:bottomBar14 to:buttonsViewController11 allowRoll:v372 completion:v573];
         }
 
         else
         {
-          v394 = [(PHCallViewController *)v137 bottomBar];
-          [v394 setCurrentState:11 animated:0 animationCompletionBlock:0];
+          bottomBar15 = [(PHCallViewController *)selfCopy15 bottomBar];
+          [bottomBar15 setCurrentState:11 animated:0 animationCompletionBlock:0];
 
-          [(PHAudioCallViewController *)v137 updateBottomBarAlphaWithCurrentState:[(PHCallViewController *)v137 currentState]];
+          [(PHAudioCallViewController *)selfCopy15 updateBottomBarAlphaWithCurrentState:[(PHCallViewController *)selfCopy15 currentState]];
         }
 
         v44 = 0;
-        v20 = v476;
+        currentMiddleView = v476;
         v21 = v482;
 LABEL_214:
         v22 = v487;
@@ -13735,38 +13735,38 @@ LABEL_214:
 
     else
     {
-      v137 = v365;
+      selfCopy15 = v365;
     }
 
-    [v45 setAlpha:0.0];
+    [view21 setAlpha:0.0];
     v571[0] = _NSConcreteStackBlock;
     v571[1] = 3221225472;
     v571[2] = sub_100127A30;
     v571[3] = &unk_100356988;
-    v45 = v45;
-    v572 = v45;
+    view21 = view21;
+    v572 = view21;
     v381 = objc_retainBlock(v571);
-    v382 = [(PHAudioCallViewController *)v137 callDisplayStyleManager];
-    v383 = [v382 callDisplayStyle];
+    callDisplayStyleManager12 = [(PHAudioCallViewController *)selfCopy15 callDisplayStyleManager];
+    callDisplayStyle2 = [callDisplayStyleManager12 callDisplayStyle];
 
     v21 = v482;
-    if (v383)
+    if (callDisplayStyle2)
     {
       v44 = objc_retainBlock(v381);
-      v20 = v476;
+      currentMiddleView = v476;
     }
 
     else
     {
       v385 = sub_100004F84();
-      v20 = v476;
+      currentMiddleView = v476;
       if (os_log_type_enabled(v385, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(buf.a) = 0;
         _os_log_impl(&_mh_execute_header, v385, OS_LOG_TYPE_DEFAULT, "The audio call UI is currently showing in a banner, animations on the middle view state will be queued up until we transition out of the banner.", &buf, 2u);
       }
 
-      [(PHAudioCallViewController *)v137 setPendingMiddleViewAnimations:v381];
+      [(PHAudioCallViewController *)selfCopy15 setPendingMiddleViewAnimations:v381];
       v44 = 0;
     }
 
@@ -13775,30 +13775,30 @@ LABEL_214:
 
   if ([(PHAudioCallViewController *)self middleViewState]== 2)
   {
-    v353 = [(PHAudioCallViewController *)self participantsViewTopConstraint];
+    participantsViewTopConstraint3 = [(PHAudioCallViewController *)self participantsViewTopConstraint];
     [v23[80] yParticipantsViewAdjustmentForKeypad];
     v355 = v354;
-    [v353 constant];
-    [v353 setConstant:v355 + v356];
+    [participantsViewTopConstraint3 constant];
+    [participantsViewTopConstraint3 setConstant:v355 + v356];
 
     v357 = +[PHInCallUtilities sharedInstance];
-    v358 = [v357 isIPadIdiom];
+    isIPadIdiom2 = [v357 isIPadIdiom];
 
-    if (v358)
+    if (isIPadIdiom2)
     {
       CGAffineTransformMakeScale(&v570, 1.20000005, 1.20000005);
       buf = v570;
-      [v45 setTransform:&buf];
+      [view21 setTransform:&buf];
     }
 
-    [v45 setAlpha:0.0];
+    [view21 setAlpha:0.0];
     v567[0] = _NSConcreteStackBlock;
     v567[1] = 3221225472;
     v567[2] = sub_100127A3C;
     v567[3] = &unk_100357110;
-    v45 = v45;
-    v568 = v45;
-    v359 = v20;
+    view21 = view21;
+    v568 = view21;
+    v359 = currentMiddleView;
     v569 = v359;
     v44 = objc_retainBlock(v567);
     v564[0] = _NSConcreteStackBlock;
@@ -13809,23 +13809,23 @@ LABEL_214:
     v566 = v21;
     v318 = objc_retainBlock(v564);
 
-    v360 = +[PHInCallUtilities sharedInstance];
-    if ([v360 isIPadIdiom])
+    bottomBar16 = +[PHInCallUtilities sharedInstance];
+    if ([bottomBar16 isIPadIdiom])
     {
       v361 = v21;
-      v362 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-      if ([v362 callDisplayStyle] != 3)
+      callDisplayStyleManager13 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+      if ([callDisplayStyleManager13 callDisplayStyle] != 3)
       {
 
         v21 = v361;
         goto LABEL_203;
       }
 
-      v363 = [(PHAudioCallViewController *)self features];
-      v489 = [v363 isDominoEnabled];
+      features15 = [(PHAudioCallViewController *)self features];
+      isDominoEnabled7 = [features15 isDominoEnabled];
 
       v21 = v361;
-      if (!v489)
+      if (!isDominoEnabled7)
       {
         goto LABEL_204;
       }
@@ -13835,12 +13835,12 @@ LABEL_214:
     {
     }
 
-    v360 = [(PHCallViewController *)self bottomBar];
-    [v360 setAlpha:0.0];
+    bottomBar16 = [(PHCallViewController *)self bottomBar];
+    [bottomBar16 setAlpha:0.0];
 LABEL_203:
 
 LABEL_204:
-    v137 = self;
+    selfCopy15 = self;
 
     v139 = v568;
     goto LABEL_205;
@@ -13848,28 +13848,28 @@ LABEL_204:
 
   if ([(PHAudioCallViewController *)self middleViewState]== 4)
   {
-    v375 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v375 callDisplayStyle] == 3)
+    callDisplayStyleManager14 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager14 callDisplayStyle] == 3)
     {
-      v376 = [(PHAudioCallViewController *)self features];
-      v377 = [v376 isDominoEnabled];
+      features16 = [(PHAudioCallViewController *)self features];
+      isDominoEnabled8 = [features16 isDominoEnabled];
 
-      if (v377)
+      if (isDominoEnabled8)
       {
-        v378 = [(PHCallViewController *)self bottomBar];
-        v379 = [(PHAudioCallViewController *)self buttonsViewController];
+        bottomBar17 = [(PHCallViewController *)self bottomBar];
+        buttonsViewController12 = [(PHAudioCallViewController *)self buttonsViewController];
         v563[0] = _NSConcreteStackBlock;
         v563[1] = 3221225472;
         v563[2] = sub_100127BA0;
         v563[3] = &unk_1003569B0;
         v563[4] = self;
-        [_TtC13InCallService27AmbientAnimationCoordinator transitionFrom:v378 to:v379 allowRoll:1 completion:v563];
+        [_TtC13InCallService27AmbientAnimationCoordinator transitionFrom:bottomBar17 to:buttonsViewController12 allowRoll:1 completion:v563];
 
         v561[0] = _NSConcreteStackBlock;
         v561[1] = 3221225472;
         v561[2] = sub_100127C10;
         v561[3] = &unk_100356988;
-        v562 = v20;
+        v562 = currentMiddleView;
         v44 = objc_retainBlock(v561);
         v380 = v562;
 LABEL_219:
@@ -13878,25 +13878,25 @@ LABEL_219:
         v553[1] = 3221225472;
         v553[2] = sub_100127CB0;
         v553[3] = &unk_100357978;
-        v554 = v20;
+        v554 = currentMiddleView;
         v556 = v21;
-        v137 = self;
-        v555 = self;
+        selfCopy15 = self;
+        selfCopy13 = self;
         v22 = objc_retainBlock(v553);
 
         v139 = v554;
 LABEL_220:
 
-        self = v137;
+        self = selfCopy15;
         if (v44)
         {
-          if (v490)
+          if (animatedCopy)
           {
             v396 = v22;
             v397 = +[PHInCallUtilities sharedInstance];
-            v398 = [v397 isIPadIdiom];
+            isIPadIdiom3 = [v397 isIPadIdiom];
 
-            if (v398)
+            if (isIPadIdiom3)
             {
               v491[0] = _NSConcreteStackBlock;
               v491[1] = 3221225472;
@@ -13911,7 +13911,7 @@ LABEL_220:
 
             else
             {
-              v400 = [(PHAudioCallViewController *)self view];
+              view83 = [(PHAudioCallViewController *)self view];
               v493[0] = _NSConcreteStackBlock;
               v493[1] = 3221225472;
               v493[2] = sub_10012884C;
@@ -13919,7 +13919,7 @@ LABEL_220:
               v44 = v44;
               v494 = v44;
               v22 = v396;
-              [UIView transitionWithView:v400 duration:5242880 options:v493 animations:v396 completion:0.200000003];
+              [UIView transitionWithView:view83 duration:5242880 options:v493 animations:v396 completion:0.200000003];
 
               v399 = v494;
             }
@@ -13943,27 +13943,27 @@ LABEL_220:
     {
     }
 
-    v386 = [(PHAudioCallViewController *)self participantsViewTopConstraint];
+    participantsViewTopConstraint4 = [(PHAudioCallViewController *)self participantsViewTopConstraint];
     [v23[80] yParticipantsViewAdjustmentForKeypad];
     v388 = v387;
-    [v386 constant];
-    [v386 setConstant:v388 + v389];
+    [participantsViewTopConstraint4 constant];
+    [participantsViewTopConstraint4 setConstant:v388 + v389];
 
     CGAffineTransformMakeScale(&v560, 1.20000005, 1.20000005);
     buf = v560;
-    [v45 setTransform:&buf];
-    [v45 setAlpha:0.0];
+    [view21 setTransform:&buf];
+    [view21 setAlpha:0.0];
     v557[0] = _NSConcreteStackBlock;
     v557[1] = 3221225472;
     v557[2] = sub_100127C1C;
     v557[3] = &unk_100357110;
-    v558 = v45;
-    v559 = v20;
+    v558 = view21;
+    v559 = currentMiddleView;
     v390 = objc_retainBlock(v557);
-    v391 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    v392 = [v391 callDisplayStyle];
+    callDisplayStyleManager15 = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    callDisplayStyle3 = [callDisplayStyleManager15 callDisplayStyle];
 
-    if (v392)
+    if (callDisplayStyle3)
     {
       v44 = objc_retainBlock(v390);
     }
@@ -13987,16 +13987,16 @@ LABEL_220:
 
   if ([(PHAudioCallViewController *)self middleViewState]== 3)
   {
-    v137 = self;
-    [v45 setAlpha:0.0];
+    selfCopy15 = self;
+    [view21 setAlpha:0.0];
     v550[0] = _NSConcreteStackBlock;
     v550[1] = 3221225472;
     v550[2] = sub_100127E60;
     v550[3] = &unk_100357110;
-    v384 = v20;
+    v384 = currentMiddleView;
     v551 = v384;
-    v45 = v45;
-    v552 = v45;
+    view21 = view21;
+    v552 = view21;
     v44 = objc_retainBlock(v550);
     v547[0] = _NSConcreteStackBlock;
     v547[1] = 3221225472;
@@ -14012,16 +14012,16 @@ LABEL_220:
 
   if ([(PHAudioCallViewController *)self middleViewState]== 5)
   {
-    v137 = self;
-    [v45 setAlpha:0.0];
+    selfCopy15 = self;
+    [view21 setAlpha:0.0];
     v544[0] = _NSConcreteStackBlock;
     v544[1] = 3221225472;
     v544[2] = sub_100127F08;
     v544[3] = &unk_100357110;
-    v393 = v20;
+    v393 = currentMiddleView;
     v545 = v393;
-    v45 = v45;
-    v546 = v45;
+    view21 = view21;
+    v546 = view21;
     v44 = objc_retainBlock(v544);
     v541[0] = _NSConcreteStackBlock;
     v541[1] = 3221225472;
@@ -14038,26 +14038,26 @@ LABEL_220:
 LABEL_211:
   v44 = 0;
 LABEL_228:
-  self->_middleViewState = v5;
+  self->_middleViewState = stateCopy;
   [(PHAudioCallViewController *)self updateDimmingView];
-  [(PHAudioCallViewController *)self setCurrentMiddleView:v45];
+  [(PHAudioCallViewController *)self setCurrentMiddleView:view21];
   [(PHAudioCallViewController *)self refreshUseRTTButton];
   [(PHAudioCallViewController *)self refreshExtensionNumberButton];
   [(PHAudioCallViewController *)self hideOrShowScreeningBackgroundView];
-  v401 = [(PHAudioCallViewController *)self topLeadingContainer];
-  v402 = [(PHAudioCallViewController *)self middlePillContainer];
-  [(PHAudioCallViewController *)self updateCallRecordingIfNeededWithButtonContainer:v401 pillContainer:v402];
+  topLeadingContainer = [(PHAudioCallViewController *)self topLeadingContainer];
+  middlePillContainer = [(PHAudioCallViewController *)self middlePillContainer];
+  [(PHAudioCallViewController *)self updateCallRecordingIfNeededWithButtonContainer:topLeadingContainer pillContainer:middlePillContainer];
 
-  v403 = [(PHAudioCallViewController *)self topLeadingContainer];
-  [(PHAudioCallViewController *)self updateCallHoldingIfNeeded:v403];
+  topLeadingContainer2 = [(PHAudioCallViewController *)self topLeadingContainer];
+  [(PHAudioCallViewController *)self updateCallHoldingIfNeeded:topLeadingContainer2];
 
   if (self->_waitOnHoldTipView && [(PHCallViewController *)self currentState]== 4 && ([(PHAudioCallViewController *)self middleViewState]== 2 || [(PHAudioCallViewController *)self middleViewState]== 1))
   {
     [(PHAudioCallViewController *)self displayWaitOnHoldTip];
   }
 
-  v404 = [(PHAudioCallViewController *)self features];
-  if ([v404 sharePlayInCallsEnabled])
+  features17 = [(PHAudioCallViewController *)self features];
+  if ([features17 sharePlayInCallsEnabled])
   {
     screenSharingIndicatorView = self->_screenSharingIndicatorView;
 
@@ -14076,7 +14076,7 @@ LABEL_228:
   }
 
 LABEL_238:
-  [(PHAudioCallViewController *)self updateDimmingValuesFor:v5];
+  [(PHAudioCallViewController *)self updateDimmingValuesFor:stateCopy];
 }
 
 - (PHInCallKeypadViewController)keypadViewController
@@ -14097,57 +14097,57 @@ LABEL_238:
 
 - (id)screeningContainerView
 {
-  v3 = [(PHAudioCallViewController *)self screeningBackgroundView];
-  if (v3)
+  screeningBackgroundView = [(PHAudioCallViewController *)self screeningBackgroundView];
+  if (screeningBackgroundView)
   {
-    v4 = v3;
-    v5 = [(PHAudioCallViewController *)self screeningBackgroundView];
+    v4 = screeningBackgroundView;
+    screeningBackgroundView2 = [(PHAudioCallViewController *)self screeningBackgroundView];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v7 = [(PHAudioCallViewController *)self screeningBackgroundView];
+      screeningBackgroundView3 = [(PHAudioCallViewController *)self screeningBackgroundView];
 LABEL_7:
-      v12 = v7;
-      v13 = [v7 contentView];
+      v12 = screeningBackgroundView3;
+      contentView = [screeningBackgroundView3 contentView];
 
       goto LABEL_9;
     }
   }
 
-  v8 = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
-  if (v8)
+  defaultBackgroundGradientView = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
+  if (defaultBackgroundGradientView)
   {
-    v9 = v8;
-    v10 = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
+    v9 = defaultBackgroundGradientView;
+    defaultBackgroundGradientView2 = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
     objc_opt_class();
     v11 = objc_opt_isKindOfClass();
 
     if (v11)
     {
-      v7 = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
+      screeningBackgroundView3 = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
       goto LABEL_7;
     }
   }
 
-  v13 = [(PHAudioCallViewController *)self viewIfLoaded];
+  contentView = [(PHAudioCallViewController *)self viewIfLoaded];
 LABEL_9:
 
-  return v13;
+  return contentView;
 }
 
 - (double)screeningTextFieldPadding
 {
-  v3 = [(PHCallViewController *)self bottomBar];
-  if (v3 && (v4 = v3, -[PHCallViewController bottomBar](self, "bottomBar"), v5 = objc_claimAutoreleasedReturnValue(), [v5 trackSize], v7 = v6, v5, v4, v7 > 0.0))
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  if (bottomBar && (v4 = bottomBar, -[PHCallViewController bottomBar](self, "bottomBar"), v5 = objc_claimAutoreleasedReturnValue(), [v5 trackSize], v7 = v6, v5, v4, v7 > 0.0))
   {
-    v8 = [(PHCallViewController *)self bottomBar];
-    [v8 trackSize];
+    bottomBar2 = [(PHCallViewController *)self bottomBar];
+    [bottomBar2 trackSize];
     v10 = v9;
 
-    v11 = [(PHAudioCallViewController *)self view];
-    [v11 bounds];
+    view = [(PHAudioCallViewController *)self view];
+    [view bounds];
     v13 = (v12 - v10) * 0.5;
 
     if (v13 < 0.0)
@@ -14158,14 +14158,14 @@ LABEL_9:
 
   else
   {
-    v14 = [(PHCallViewController *)self bottomBar];
-    v15 = [v14 mainButtonLayoutGuide];
+    bottomBar3 = [(PHCallViewController *)self bottomBar];
+    mainButtonLayoutGuide = [bottomBar3 mainButtonLayoutGuide];
 
-    if (v15)
+    if (mainButtonLayoutGuide)
     {
-      v16 = [(PHCallViewController *)self bottomBar];
-      v17 = [v16 mainButtonLayoutGuide];
-      [v17 frame];
+      bottomBar4 = [(PHCallViewController *)self bottomBar];
+      mainButtonLayoutGuide2 = [bottomBar4 mainButtonLayoutGuide];
+      [mainButtonLayoutGuide2 frame];
       v13 = v18;
     }
 
@@ -14183,25 +14183,25 @@ LABEL_9:
   screeningViewController = self->_screeningViewController;
   if (!screeningViewController)
   {
-    v4 = [(PHAudioCallViewController *)self featureFlags];
-    if ([v4 receptionistEnabled])
+    featureFlags = [(PHAudioCallViewController *)self featureFlags];
+    if ([featureFlags receptionistEnabled])
     {
       [(PHAudioCallViewController *)self setIsShowingNewTranscriptsView:1];
     }
 
     else
     {
-      v5 = [(PHAudioCallViewController *)self featureFlags];
-      -[PHAudioCallViewController setIsShowingNewTranscriptsView:](self, "setIsShowingNewTranscriptsView:", [v5 LVMEverywhere]);
+      featureFlags2 = [(PHAudioCallViewController *)self featureFlags];
+      -[PHAudioCallViewController setIsShowingNewTranscriptsView:](self, "setIsShowingNewTranscriptsView:", [featureFlags2 LVMEverywhere]);
     }
 
     if ([(PHAudioCallViewController *)self isShowingNewTranscriptsView])
     {
       [(PHAudioCallViewController *)self screeningTextFieldPadding];
       v7 = v6;
-      v8 = [(CNKTranscriptionViewComposerFactory *)self->_screeningViewControllerFactory makeViewComposer];
-      v9 = [(PHAudioCallViewController *)self frontmostCall];
-      v10 = [v8 composeWithCall:v9 createTextField:1 liveReply:-[PHAudioCallViewController sendToLiveReply](self textFieldPadding:{"sendToLiveReply"), v7}];
+      makeViewComposer = [(CNKTranscriptionViewComposerFactory *)self->_screeningViewControllerFactory makeViewComposer];
+      frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+      v10 = [makeViewComposer composeWithCall:frontmostCall createTextField:1 liveReply:-[PHAudioCallViewController sendToLiveReply](self textFieldPadding:{"sendToLiveReply"), v7}];
       v11 = self->_screeningViewController;
       self->_screeningViewController = v10;
 
@@ -14210,9 +14210,9 @@ LABEL_9:
 
     else
     {
-      v12 = [(CNKTranscriptionViewComposerFactory *)self->_screeningViewControllerFactory makeViewComposer];
-      v13 = [(PHAudioCallViewController *)self frontmostCall];
-      v14 = [v12 composeWithCall:v13];
+      makeViewComposer2 = [(CNKTranscriptionViewComposerFactory *)self->_screeningViewControllerFactory makeViewComposer];
+      frontmostCall2 = [(PHAudioCallViewController *)self frontmostCall];
+      v14 = [makeViewComposer2 composeWithCall:frontmostCall2];
       v15 = self->_screeningViewController;
       self->_screeningViewController = v14;
     }
@@ -14282,14 +14282,14 @@ LABEL_9:
   return voiceLoopViewController;
 }
 
-- (void)bottomBarActionPerformed:(int64_t)a3 withCompletionState:(int64_t)a4 fromBar:(id)a5
+- (void)bottomBarActionPerformed:(int64_t)performed withCompletionState:(int64_t)state fromBar:(id)bar
 {
-  v7 = a5;
-  v8 = [(PHCallViewController *)self bottomBar];
+  barCopy = bar;
+  bottomBar = [(PHCallViewController *)self bottomBar];
 
-  if (v8 == v7)
+  if (bottomBar == barCopy)
   {
-    [(PHAudioCallViewController *)self performBottomBarActionType:a3];
+    [(PHAudioCallViewController *)self performBottomBarActionType:performed];
   }
 
   else
@@ -14298,21 +14298,21 @@ LABEL_9:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 134218242;
-      v11 = a3;
+      performedCopy = performed;
       v12 = 2112;
-      v13 = v7;
+      v13 = barCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[WARN] Cannot perform bottom bar action %ld from unknown bottom bar %@", &v10, 0x16u);
     }
   }
 }
 
-- (void)performBottomBarActionType:(int64_t)a3
+- (void)performBottomBarActionType:(int64_t)type
 {
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PHCallViewController *)self bottomBar];
-    v7 = [v6 nameForActionType:a3];
+    bottomBar = [(PHCallViewController *)self bottomBar];
+    v7 = [bottomBar nameForActionType:type];
     *buf = 138412290;
     v128 = v7;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "BottomBarActionPerformed: %@", buf, 0xCu);
@@ -14325,56 +14325,56 @@ LABEL_9:
   v12 = [NSNumber numberWithInteger:3];
   v13 = [NSArray arrayWithObjects:v8, v9, v10, v11, v12, 0];
 
-  v14 = [NSNumber numberWithInteger:a3];
+  v14 = [NSNumber numberWithInteger:type];
   LODWORD(v9) = [v13 containsObject:v14];
 
   if (v9)
   {
     v15 = +[TUCallCenter sharedInstance];
     v16 = [v15 callsPassingTest:&stru_100359D10];
-    v17 = [v16 firstObject];
+    firstObject = [v16 firstObject];
 
-    if (v17 && !self->_shouldIgnoreWaitOnHoldSessionState)
+    if (firstObject && !self->_shouldIgnoreWaitOnHoldSessionState)
     {
       v126[0] = _NSConcreteStackBlock;
       v126[1] = 3221225472;
       v126[2] = sub_10012A10C;
       v126[3] = &unk_100359238;
       v126[4] = self;
-      v126[5] = a3;
+      v126[5] = type;
       v18 = objc_retainBlock(v126);
-      v19 = [v17 displayName];
-      [(PHAudioCallViewController *)self presentWaitOnHoldEndForAnotherCallAlertWithCallerName:v19 completionHandler:v18];
+      displayName = [firstObject displayName];
+      [(PHAudioCallViewController *)self presentWaitOnHoldEndForAnotherCallAlertWithCallerName:displayName completionHandler:v18];
 
       goto LABEL_104;
     }
   }
 
-  switch(a3)
+  switch(type)
   {
     case 1:
       goto LABEL_32;
     case 2:
-      v52 = [(PHAudioCallViewController *)self inCallRootViewController];
-      [v52 requestInCallSceneTransitionToFullScreen];
+      inCallRootViewController = [(PHAudioCallViewController *)self inCallRootViewController];
+      [inCallRootViewController requestInCallSceneTransitionToFullScreen];
 
 LABEL_32:
-      v41 = [(PHAudioCallViewController *)self frontmostCall];
-      if ([v41 wantsHoldMusic])
+      frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+      if ([frontmostCall wantsHoldMusic])
       {
-        [v41 resetWantsHoldMusic];
+        [frontmostCall resetWantsHoldMusic];
         [(PHAudioCallViewController *)self updateCurrentState];
       }
 
       else
       {
-        v85 = [(PHAudioCallViewController *)self callCenter];
-        v86 = [v85 screeningCall];
+        callCenter = [(PHAudioCallViewController *)self callCenter];
+        screeningCall = [callCenter screeningCall];
 
         if ([(PHAudioCallViewController *)self usesCompactMulticallUI])
         {
-          v87 = [(PHAudioCallViewController *)self prioritizedCall];
-          v88 = [v86 isEqualToCall:v87];
+          prioritizedCall = [(PHAudioCallViewController *)self prioritizedCall];
+          v88 = [screeningCall isEqualToCall:prioritizedCall];
 
           v89 = v88 ^ 1;
         }
@@ -14384,43 +14384,43 @@ LABEL_32:
           v89 = 0;
         }
 
-        if (!v86 || (v89 & 1) != 0)
+        if (!screeningCall || (v89 & 1) != 0)
         {
-          v102 = [(PHAudioCallViewController *)self callCenter];
-          v100 = [v102 incomingCall];
+          callCenter2 = [(PHAudioCallViewController *)self callCenter];
+          incomingCall = [callCenter2 incomingCall];
 
           v103 = sub_100004F84();
           if (os_log_type_enabled(v103, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v128 = v100;
+            v128 = incomingCall;
             _os_log_impl(&_mh_execute_header, v103, OS_LOG_TYPE_DEFAULT, "Answering incoming call: %@", buf, 0xCu);
           }
 
           if (-[PHAudioCallViewController usesCompactMulticallUI](self, "usesCompactMulticallUI") && (-[PHAudioCallViewController callCenter](self, "callCenter"), v104 = objc_claimAutoreleasedReturnValue(), [v104 currentCallGroups], v105 = objc_claimAutoreleasedReturnValue(), v106 = objc_msgSend(v105, "count") > 1, v105, v104, v106))
           {
-            v101 = [(PHAudioCallViewController *)self answerRequestForCall:v100];
-            v107 = [(PHAudioCallViewController *)self callCenter];
-            v108 = v107;
-            if (v86)
+            callCenter4 = [(PHAudioCallViewController *)self answerRequestForCall:incomingCall];
+            callCenter3 = [(PHAudioCallViewController *)self callCenter];
+            v108 = callCenter3;
+            if (screeningCall)
             {
-              [v107 endActiveOrHeldAndAnswerWithRequest:v101];
+              [callCenter3 endActiveOrHeldAndAnswerWithRequest:callCenter4];
             }
 
             else
             {
-              [v107 holdActiveAndAnswerWithRequest:v101];
+              [callCenter3 holdActiveAndAnswerWithRequest:callCenter4];
             }
 
-            v119 = [(PHAudioCallViewController *)self analyticsReporter];
-            [v119 reportMultipleCallsWaitingUIAction:3];
+            analyticsReporter = [(PHAudioCallViewController *)self analyticsReporter];
+            [analyticsReporter reportMultipleCallsWaitingUIAction:3];
           }
 
           else
           {
-            v101 = [(PHAudioCallViewController *)self callCenter];
-            v119 = [(PHAudioCallViewController *)self answerRequestForCall:v100];
-            [v101 answerWithRequest:v119];
+            callCenter4 = [(PHAudioCallViewController *)self callCenter];
+            analyticsReporter = [(PHAudioCallViewController *)self answerRequestForCall:incomingCall];
+            [callCenter4 answerWithRequest:analyticsReporter];
           }
         }
 
@@ -14430,40 +14430,40 @@ LABEL_32:
           if (os_log_type_enabled(v99, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v128 = v86;
+            v128 = screeningCall;
             _os_log_impl(&_mh_execute_header, v99, OS_LOG_TYPE_DEFAULT, "Answering screened call: %@", buf, 0xCu);
           }
 
-          v100 = [(PHAudioCallViewController *)self answerRequestForCall:v86];
-          [v100 setBehavior:4];
-          v101 = [(PHAudioCallViewController *)self callCenter];
-          [v101 answerWithRequest:v100];
+          incomingCall = [(PHAudioCallViewController *)self answerRequestForCall:screeningCall];
+          [incomingCall setBehavior:4];
+          callCenter4 = [(PHAudioCallViewController *)self callCenter];
+          [callCenter4 answerWithRequest:incomingCall];
         }
       }
 
       goto LABEL_102;
     case 4:
-      v67 = [(PHAudioCallViewController *)self callCenter];
-      v68 = [v67 incomingCall];
-      v69 = [(PHAudioCallViewController *)self answerRequestForCall:v68];
+      callCenter5 = [(PHAudioCallViewController *)self callCenter];
+      incomingCall2 = [callCenter5 incomingCall];
+      mostRecentlyDisconnectedAudioCall = [(PHAudioCallViewController *)self answerRequestForCall:incomingCall2];
 
-      v70 = [(PHAudioCallViewController *)self callCenter];
-      v71 = [v70 activeVideoCall];
+      callCenter6 = [(PHAudioCallViewController *)self callCenter];
+      activeVideoCall = [callCenter6 activeVideoCall];
 
-      v72 = [(PHAudioCallViewController *)self callCenter];
-      v73 = v72;
-      if (v71)
+      callCenter7 = [(PHAudioCallViewController *)self callCenter];
+      analyticsReporter2 = callCenter7;
+      if (activeVideoCall)
       {
-        [v72 endActiveOrHeldAndAnswerWithRequest:v69];
+        [callCenter7 endActiveOrHeldAndAnswerWithRequest:mostRecentlyDisconnectedAudioCall];
       }
 
       else
       {
-        v115 = [v72 isEndAndAnswerAllowed];
+        isEndAndAnswerAllowed = [callCenter7 isEndAndAnswerAllowed];
 
         v116 = sub_100004F84();
         v117 = os_log_type_enabled(v116, OS_LOG_TYPE_DEFAULT);
-        if (v115)
+        if (isEndAndAnswerAllowed)
         {
           if (v117)
           {
@@ -14471,8 +14471,8 @@ LABEL_32:
             _os_log_impl(&_mh_execute_header, v116, OS_LOG_TYPE_DEFAULT, "BottomBar: Ending active and answering incoming call", buf, 2u);
           }
 
-          v118 = [(PHAudioCallViewController *)self callCenter];
-          [v118 endActiveOrHeldAndAnswerWithRequest:v69];
+          callCenter8 = [(PHAudioCallViewController *)self callCenter];
+          [callCenter8 endActiveOrHeldAndAnswerWithRequest:mostRecentlyDisconnectedAudioCall];
         }
 
         else
@@ -14483,60 +14483,60 @@ LABEL_32:
             _os_log_impl(&_mh_execute_header, v116, OS_LOG_TYPE_DEFAULT, "BottomBar: Disconnecting all calls", buf, 2u);
           }
 
-          v118 = [(PHAudioCallViewController *)self callCenter];
-          [v118 disconnectAllCalls];
+          callCenter8 = [(PHAudioCallViewController *)self callCenter];
+          [callCenter8 disconnectAllCalls];
         }
 
-        v73 = [(PHAudioCallViewController *)self analyticsReporter];
-        [v73 reportMultipleCallsWaitingUIAction:2];
+        analyticsReporter2 = [(PHAudioCallViewController *)self analyticsReporter];
+        [analyticsReporter2 reportMultipleCallsWaitingUIAction:2];
       }
 
       goto LABEL_97;
     case 5:
-      v43 = [(PHAudioCallViewController *)self callCenter];
-      v44 = [(PHAudioCallViewController *)self callCenter];
-      v45 = [v44 incomingCall];
-      v46 = [(PHAudioCallViewController *)self answerRequestForCall:v45];
-      [v43 endHeldAndAnswerWithRequest:v46];
+      callCenter9 = [(PHAudioCallViewController *)self callCenter];
+      callCenter10 = [(PHAudioCallViewController *)self callCenter];
+      incomingCall3 = [callCenter10 incomingCall];
+      v46 = [(PHAudioCallViewController *)self answerRequestForCall:incomingCall3];
+      [callCenter9 endHeldAndAnswerWithRequest:v46];
 
       break;
     case 6:
-      v47 = [(PHAudioCallViewController *)self callCenter];
-      v48 = [(PHAudioCallViewController *)self callCenter];
-      v49 = [v48 incomingCall];
-      v50 = [(PHAudioCallViewController *)self answerRequestForCall:v49];
-      [v47 holdActiveAndAnswerWithRequest:v50];
+      callCenter11 = [(PHAudioCallViewController *)self callCenter];
+      callCenter12 = [(PHAudioCallViewController *)self callCenter];
+      incomingCall4 = [callCenter12 incomingCall];
+      v50 = [(PHAudioCallViewController *)self answerRequestForCall:incomingCall4];
+      [callCenter11 holdActiveAndAnswerWithRequest:v50];
 
-      v51 = [(PHAudioCallViewController *)self analyticsReporter];
-      [v51 reportMultipleCallsWaitingUIAction:3];
+      analyticsReporter3 = [(PHAudioCallViewController *)self analyticsReporter];
+      [analyticsReporter3 reportMultipleCallsWaitingUIAction:3];
 
       break;
     case 7:
-      v74 = [(PHAudioCallViewController *)self declineCallService];
-      [v74 declineAnsweringFrontMostCallViaUserActionWithCompletionHandler:&stru_100359D30];
+      declineCallService = [(PHAudioCallViewController *)self declineCallService];
+      [declineCallService declineAnsweringFrontMostCallViaUserActionWithCompletionHandler:&stru_100359D30];
 
       break;
     case 10:
-      v40 = [(PHAudioCallViewController *)self frontmostCall];
-      [(PHAudioCallViewController *)self showBlockAlertForCall:v40];
+      frontmostCall2 = [(PHAudioCallViewController *)self frontmostCall];
+      [(PHAudioCallViewController *)self showBlockAlertForCall:frontmostCall2];
 
       break;
     case 11:
-      v41 = [(PHAudioCallViewController *)self frontmostCall];
-      if (v41)
+      frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+      if (frontmostCall)
       {
         if ([(PHCallViewController *)self currentState]== 11 || [(PHCallViewController *)self currentState]== 12)
         {
           [(PHAudioCallViewController *)self setMiddleViewState:0];
         }
 
-        if ([(PHAudioCallViewController *)self isCallSmartHoldingSessionActive:v41])
+        if ([(PHAudioCallViewController *)self isCallSmartHoldingSessionActive:frontmostCall])
         {
           [(PHAudioCallViewController *)self endWaitOnHoldSession];
         }
 
-        v42 = [(PHAudioCallViewController *)self callCenter];
-        [v42 disconnectCall:v41 withReason:2];
+        callCenter13 = [(PHAudioCallViewController *)self callCenter];
+        [callCenter13 disconnectCall:frontmostCall withReason:2];
       }
 
       goto LABEL_102;
@@ -14554,8 +14554,8 @@ LABEL_32:
       [(PHAudioCallViewController *)self handleCancelPressedInCallBufferScreen];
       break;
     case 16:
-      v78 = [(PHAudioCallViewController *)self callCenter];
-      [v78 disconnectAllCalls];
+      callCenter14 = [(PHAudioCallViewController *)self callCenter];
+      [callCenter14 disconnectAllCalls];
 
       break;
     case 17:
@@ -14563,20 +14563,20 @@ LABEL_32:
       break;
     case 18:
       v75 = +[UIApplication sharedApplication];
-      v76 = [v75 delegate];
-      v69 = [v76 mostRecentlyDisconnectedAudioCall];
+      delegate = [v75 delegate];
+      mostRecentlyDisconnectedAudioCall = [delegate mostRecentlyDisconnectedAudioCall];
 
-      if (v69)
+      if (mostRecentlyDisconnectedAudioCall)
       {
-        v73 = [(PHAudioCallViewController *)self callCenter];
-        v77 = [v69 dialRequestForRedial];
-        [v73 launchAppForDialRequest:v77 completion:0];
+        analyticsReporter2 = [(PHAudioCallViewController *)self callCenter];
+        dialRequestForRedial = [mostRecentlyDisconnectedAudioCall dialRequestForRedial];
+        [analyticsReporter2 launchAppForDialRequest:dialRequestForRedial completion:0];
       }
 
       else
       {
-        v73 = sub_100004F84();
-        if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
+        analyticsReporter2 = sub_100004F84();
+        if (os_log_type_enabled(analyticsReporter2, OS_LOG_TYPE_ERROR))
         {
           sub_1002565D8();
         }
@@ -14584,76 +14584,76 @@ LABEL_32:
 
       goto LABEL_97;
     case 22:
-      v33 = [(PHAudioCallViewController *)self callCenter];
-      v34 = [v33 routeController];
-      v35 = [v34 areAuxiliaryRoutesAvailable];
+      callCenter15 = [(PHAudioCallViewController *)self callCenter];
+      routeController = [callCenter15 routeController];
+      areAuxiliaryRoutesAvailable = [routeController areAuxiliaryRoutesAvailable];
 
-      if (v35)
+      if (areAuxiliaryRoutesAvailable)
       {
         v36 = +[UIApplication sharedApplication];
-        v37 = [v36 delegate];
-        v38 = [v37 currentInCallScene];
-        [v38 requestTransitionToPresentationMode:2 shouldDismissCMASAlerts:0 analyticsSource:@"SBSUIInCallTransitionAnalyticsSourceAudioRouteButtonPress"];
+        delegate2 = [v36 delegate];
+        currentInCallScene = [delegate2 currentInCallScene];
+        [currentInCallScene requestTransitionToPresentationMode:2 shouldDismissCMASAlerts:0 analyticsSource:@"SBSUIInCallTransitionAnalyticsSourceAudioRouteButtonPress"];
 
         [(PHAudioCallViewController *)self setWaitingForFullScreenAudioRoutes:1];
       }
 
       else
       {
-        v90 = [(PHAudioCallViewController *)self callCenter];
-        v91 = [v90 routeController];
-        v92 = [v91 pickedRoute];
-        v93 = [v92 isSpeaker];
+        callCenter16 = [(PHAudioCallViewController *)self callCenter];
+        routeController2 = [callCenter16 routeController];
+        pickedRoute = [routeController2 pickedRoute];
+        isSpeaker = [pickedRoute isSpeaker];
 
-        v94 = [(PHAudioCallViewController *)self callCenter];
-        v95 = [v94 routeController];
-        v96 = v95;
-        if (v93)
+        callCenter17 = [(PHAudioCallViewController *)self callCenter];
+        routeController3 = [callCenter17 routeController];
+        v96 = routeController3;
+        if (isSpeaker)
         {
-          v69 = [v95 routeForSpeakerDisable];
+          mostRecentlyDisconnectedAudioCall = [routeController3 routeForSpeakerDisable];
 
-          if (v69)
+          if (mostRecentlyDisconnectedAudioCall)
           {
-            v97 = [(PHAudioCallViewController *)self callCenter];
-            v98 = [v97 routeController];
-            [v98 pickRoute:v69];
+            callCenter18 = [(PHAudioCallViewController *)self callCenter];
+            routeController4 = [callCenter18 routeController];
+            [routeController4 pickRoute:mostRecentlyDisconnectedAudioCall];
 
-            v73 = [(PHAudioCallViewController *)self callParticipantsViewController];
-            [v73 setBannerAudioRouteButtonSelected:0];
+            analyticsReporter2 = [(PHAudioCallViewController *)self callParticipantsViewController];
+            [analyticsReporter2 setBannerAudioRouteButtonSelected:0];
           }
 
           else
           {
-            v73 = sub_100004F84();
-            if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
+            analyticsReporter2 = sub_100004F84();
+            if (os_log_type_enabled(analyticsReporter2, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 0;
-              _os_log_impl(&_mh_execute_header, v73, OS_LOG_TYPE_DEFAULT, "[WARN] Could not find available route to pick for speaker disable", buf, 2u);
+              _os_log_impl(&_mh_execute_header, analyticsReporter2, OS_LOG_TYPE_DEFAULT, "[WARN] Could not find available route to pick for speaker disable", buf, 2u);
             }
           }
         }
 
         else
         {
-          v69 = [v95 routeForSpeakerEnable];
+          mostRecentlyDisconnectedAudioCall = [routeController3 routeForSpeakerEnable];
 
-          if (v69)
+          if (mostRecentlyDisconnectedAudioCall)
           {
-            v120 = [(PHAudioCallViewController *)self callCenter];
-            v121 = [v120 routeController];
-            [v121 pickRoute:v69];
+            callCenter19 = [(PHAudioCallViewController *)self callCenter];
+            routeController5 = [callCenter19 routeController];
+            [routeController5 pickRoute:mostRecentlyDisconnectedAudioCall];
 
-            v73 = [(PHAudioCallViewController *)self callParticipantsViewController];
-            [v73 setBannerAudioRouteButtonSelected:1];
+            analyticsReporter2 = [(PHAudioCallViewController *)self callParticipantsViewController];
+            [analyticsReporter2 setBannerAudioRouteButtonSelected:1];
           }
 
           else
           {
-            v73 = sub_100004F84();
-            if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
+            analyticsReporter2 = sub_100004F84();
+            if (os_log_type_enabled(analyticsReporter2, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 0;
-              _os_log_impl(&_mh_execute_header, v73, OS_LOG_TYPE_DEFAULT, "[WARN] Could not find available route to pick for speaker enable", buf, 2u);
+              _os_log_impl(&_mh_execute_header, analyticsReporter2, OS_LOG_TYPE_DEFAULT, "[WARN] Could not find available route to pick for speaker enable", buf, 2u);
             }
           }
         }
@@ -14663,23 +14663,23 @@ LABEL_97:
 
       break;
     case 23:
-      v39 = [(PHAudioCallViewController *)self frontmostCall];
-      [v39 sendHardPauseDigits];
+      frontmostCall3 = [(PHAudioCallViewController *)self frontmostCall];
+      [frontmostCall3 sendHardPauseDigits];
 
       break;
     case 24:
-      v64 = [(PHAudioCallViewController *)self callCenter];
-      v65 = [v64 currentCallCount] > 1;
+      callCenter20 = [(PHAudioCallViewController *)self callCenter];
+      v65 = [callCenter20 currentCallCount] > 1;
 
       if (v65)
       {
-        v66 = [(PHAudioCallViewController *)self analyticsReporter];
-        [v66 reportMultipleCallsWaitingUIAction:4];
+        analyticsReporter4 = [(PHAudioCallViewController *)self analyticsReporter];
+        [analyticsReporter4 reportMultipleCallsWaitingUIAction:4];
       }
 
       goto LABEL_39;
     case 25:
-      v53 = [(PHAudioCallViewController *)self featureFlags];
+      featureFlags = [(PHAudioCallViewController *)self featureFlags];
       v54 = TUCallScreeningEnabledM3();
 
       if (!v54)
@@ -14689,20 +14689,20 @@ LABEL_97:
 
       if (-[PHAudioCallViewController usesCompactMulticallUI](self, "usesCompactMulticallUI") && (-[PHAudioCallViewController callCenter](self, "callCenter"), v55 = objc_claimAutoreleasedReturnValue(), [v55 currentCallGroups], v56 = objc_claimAutoreleasedReturnValue(), v57 = objc_msgSend(v56, "count") > 1, v56, v55, v57))
       {
-        v58 = [(PHAudioCallViewController *)self callCenter];
-        v59 = [v58 currentCallCount] > 1;
+        callCenter21 = [(PHAudioCallViewController *)self callCenter];
+        v59 = [callCenter21 currentCallCount] > 1;
 
         if (v59)
         {
-          v60 = [(PHAudioCallViewController *)self analyticsReporter];
-          [v60 reportMultipleCallsWaitingUIAction:4];
+          analyticsReporter5 = [(PHAudioCallViewController *)self analyticsReporter];
+          [analyticsReporter5 reportMultipleCallsWaitingUIAction:4];
         }
 
 LABEL_39:
-        v61 = [(PHAudioCallViewController *)self callCenter];
-        v62 = [(PHAudioCallViewController *)self callCenter];
-        v63 = [v62 incomingCall];
-        [v61 disconnectCall:v63 withReason:2];
+        callCenter22 = [(PHAudioCallViewController *)self callCenter];
+        callCenter23 = [(PHAudioCallViewController *)self callCenter];
+        incomingCall5 = [callCenter23 incomingCall];
+        [callCenter22 disconnectCall:incomingCall5 withReason:2];
       }
 
       else
@@ -14710,20 +14710,20 @@ LABEL_39:
         v109 = sub_100004F84();
         if (os_log_type_enabled(v109, OS_LOG_TYPE_DEFAULT))
         {
-          v110 = [(PHAudioCallViewController *)self frontmostCall];
+          frontmostCall4 = [(PHAudioCallViewController *)self frontmostCall];
           *buf = 138412290;
-          v128 = v110;
+          v128 = frontmostCall4;
           _os_log_impl(&_mh_execute_header, v109, OS_LOG_TYPE_DEFAULT, "Answering screened call: %@", buf, 0xCu);
         }
 
-        v41 = [(PHAudioCallViewController *)self frontmostCall];
-        if (v41)
+        frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+        if (frontmostCall)
         {
           v111 = +[UIApplication sharedApplication];
-          v112 = [v111 delegate];
-          v113 = [v112 answeringMachine];
-          v114 = [v41 callUUID];
-          [v113 screenCallWithUUID:v114 manualScreening:1 completion:&stru_100359D50];
+          delegate3 = [v111 delegate];
+          answeringMachine = [delegate3 answeringMachine];
+          callUUID = [frontmostCall callUUID];
+          [answeringMachine screenCallWithUUID:callUUID manualScreening:1 completion:&stru_100359D50];
         }
 
 LABEL_102:
@@ -14731,7 +14731,7 @@ LABEL_102:
 
       break;
     case 26:
-      v81 = [(PHAudioCallViewController *)self featureFlags];
+      featureFlags2 = [(PHAudioCallViewController *)self featureFlags];
       v82 = TUCallScreeningEnabledM3();
 
       if (v82)
@@ -14754,24 +14754,24 @@ LABEL_102:
       [(PHAudioCallViewController *)self _leaveMessage];
       break;
     case 32:
-      v79 = [(PHAudioCallViewController *)self callCenter];
-      v80 = [(PHAudioCallViewController *)self frontmostCall];
-      [v79 setTTYType:1 forCall:v80];
+      callCenter24 = [(PHAudioCallViewController *)self callCenter];
+      frontmostCall5 = [(PHAudioCallViewController *)self frontmostCall];
+      [callCenter24 setTTYType:1 forCall:frontmostCall5];
 
       break;
     case 35:
       v20 = +[UIApplication sharedApplication];
-      v21 = [v20 delegate];
-      v22 = [v21 mostRecentlyDisconnectedAudioCall];
+      delegate4 = [v20 delegate];
+      mostRecentlyDisconnectedAudioCall2 = [delegate4 mostRecentlyDisconnectedAudioCall];
 
       objc_initWeak(buf, self);
-      v23 = [(PHAudioCallViewController *)self inCallRootViewController];
+      inCallRootViewController2 = [(PHAudioCallViewController *)self inCallRootViewController];
       v124[0] = _NSConcreteStackBlock;
       v124[1] = 3221225472;
       v124[2] = sub_10012A20C;
       v124[3] = &unk_100356E98;
       objc_copyWeak(&v125, buf);
-      [v23 presentBlockAndReportAlertToBlockCall:v22 forViewController:self completion:v124];
+      [inCallRootViewController2 presentBlockAndReportAlertToBlockCall:mostRecentlyDisconnectedAudioCall2 forViewController:self completion:v124];
 
       objc_destroyWeak(&v125);
       objc_destroyWeak(buf);
@@ -14779,25 +14779,25 @@ LABEL_102:
       break;
     case 36:
       v25 = +[UIApplication sharedApplication];
-      v26 = [v25 delegate];
-      v27 = [v26 mostRecentlyDisconnectedAudioCall];
+      delegate5 = [v25 delegate];
+      mostRecentlyDisconnectedAudioCall3 = [delegate5 mostRecentlyDisconnectedAudioCall];
 
-      v28 = [(PHAudioCallViewController *)self inCallRootViewController];
-      v29 = [v27 handle];
-      [v28 presentCreateContactViewControllerWithHandle:v29 forViewController:self];
+      inCallRootViewController3 = [(PHAudioCallViewController *)self inCallRootViewController];
+      handle = [mostRecentlyDisconnectedAudioCall3 handle];
+      [inCallRootViewController3 presentCreateContactViewControllerWithHandle:handle forViewController:self];
 
       break;
     case 38:
       v30 = +[UIApplication sharedApplication];
-      v31 = [v30 delegate];
-      v32 = [v31 alertCoordinator];
-      [v32 invokeAlertWithRequestUnlock:-[PHAudioCallViewController alertTriggeredByAutoCountdown](self automaticallyInvoked:{"alertTriggeredByAutoCountdown") ^ 1, -[PHAudioCallViewController alertTriggeredByAutoCountdown](self, "alertTriggeredByAutoCountdown")}];
+      delegate6 = [v30 delegate];
+      alertCoordinator = [delegate6 alertCoordinator];
+      [alertCoordinator invokeAlertWithRequestUnlock:-[PHAudioCallViewController alertTriggeredByAutoCountdown](self automaticallyInvoked:{"alertTriggeredByAutoCountdown") ^ 1, -[PHAudioCallViewController alertTriggeredByAutoCountdown](self, "alertTriggeredByAutoCountdown")}];
 
       break;
     case 39:
 LABEL_11:
-      v24 = [(PHAudioCallViewController *)self callCenter];
-      [v24 disconnectCurrentCall];
+      callCenter25 = [(PHAudioCallViewController *)self callCenter];
+      [callCenter25 disconnectCurrentCall];
 
       break;
     case 40:
@@ -14819,54 +14819,54 @@ LABEL_104:
 
 - (BOOL)shouldShowAnswerRTT
 {
-  v2 = [(PHAudioCallViewController *)self frontmostCall];
-  if ([v2 isRTT])
+  frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+  if ([frontmostCall isRTT])
   {
-    v3 = 1;
+    isTTY = 1;
   }
 
   else
   {
-    v3 = [v2 isTTY];
+    isTTY = [frontmostCall isTTY];
   }
 
-  return v3;
+  return isTTY;
 }
 
-- (id)customizedTitleForItemInBar:(id)a3 withActionType:(int64_t)a4
+- (id)customizedTitleForItemInBar:(id)bar withActionType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(PHCallViewController *)self bottomBar];
+  barCopy = bar;
+  bottomBar = [(PHCallViewController *)self bottomBar];
 
-  v8 = 0;
-  if (a4 == 23 && v7 == v6)
+  hardPauseDigitsDisplayString = 0;
+  if (type == 23 && bottomBar == barCopy)
   {
-    v9 = [(PHAudioCallViewController *)self frontmostCall];
-    if ([v9 hardPauseDigitsState] == 2)
+    frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+    if ([frontmostCall hardPauseDigitsState] == 2)
     {
-      v8 = [v9 hardPauseDigitsDisplayString];
+      hardPauseDigitsDisplayString = [frontmostCall hardPauseDigitsDisplayString];
     }
 
     else
     {
-      v8 = &stru_100361FD0;
+      hardPauseDigitsDisplayString = &stru_100361FD0;
     }
   }
 
-  return v8;
+  return hardPauseDigitsDisplayString;
 }
 
-- (int64_t)bottomBarCallStateInBar:(id)a3
+- (int64_t)bottomBarCallStateInBar:(id)bar
 {
-  v3 = [(PHAudioCallViewController *)self callCenter];
-  v4 = [v3 bottomBarCallState];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  bottomBarCallState = [callCenter bottomBarCallState];
 
-  return v4;
+  return bottomBarCallState;
 }
 
-- (void)showBlockAlertForHandle:(id)a3
+- (void)showBlockAlertForHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   objc_initWeak(&location, self);
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"BLOCK_UNKNOWN_CALLER_ALERT_TITLE" value:&stru_100361FD0 table:@"InCallService"];
@@ -14879,7 +14879,7 @@ LABEL_104:
   v15[2] = sub_10012A868;
   v15[3] = &unk_1003592E0;
   objc_copyWeak(&v17, &location);
-  v10 = v4;
+  v10 = handleCopy;
   v16 = v10;
   v11 = [UIAlertAction actionWithTitle:v9 style:2 handler:v15];
   [v7 addAction:v11];
@@ -14895,21 +14895,21 @@ LABEL_104:
   objc_destroyWeak(&location);
 }
 
-- (void)showBlockAlertForCall:(id)a3
+- (void)showBlockAlertForCall:(id)call
 {
-  v4 = a3;
-  v5 = [(PHAudioCallViewController *)self features];
-  v6 = [v5 lvm_stopEnabled];
+  callCopy = call;
+  features = [(PHAudioCallViewController *)self features];
+  lvm_stopEnabled = [features lvm_stopEnabled];
 
-  if (v4 && v6)
+  if (callCopy && lvm_stopEnabled)
   {
-    v7 = [v4 handle];
-    if ([v4 carrierAllowsReportVoiceCall])
+    handle = [callCopy handle];
+    if ([callCopy carrierAllowsReportVoiceCall])
     {
       v8 = +[NSBundle mainBundle];
       v9 = [v8 localizedStringForKey:@"BLOCK_REPORT_CARRIER_CALL_ALERT_TITLE" value:&stru_100361FD0 table:@"InCallService"];
-      v10 = [v4 carrierName];
-      v11 = [NSString stringWithFormat:v9, v10];
+      carrierName = [callCopy carrierName];
+      v11 = [NSString stringWithFormat:v9, carrierName];
     }
 
     else
@@ -14927,10 +14927,10 @@ LABEL_104:
     v29[2] = sub_10012AD74;
     v29[3] = &unk_100359328;
     objc_copyWeak(&v33, location);
-    v15 = v7;
+    v15 = handle;
     v30 = v15;
-    v31 = self;
-    v16 = v4;
+    selfCopy = self;
+    v16 = callCopy;
     v32 = v16;
     v17 = [UIAlertAction actionWithTitle:v14 style:2 handler:v29];
     [v12 addAction:v17];
@@ -14946,7 +14946,7 @@ LABEL_104:
       objc_copyWeak(&v28, location);
       v25 = v15;
       v26 = v16;
-      v27 = self;
+      selfCopy2 = self;
       v20 = [UIAlertAction actionWithTitle:v19 style:2 handler:v24];
       [v12 addAction:v20];
 
@@ -14965,28 +14965,28 @@ LABEL_104:
   }
 }
 
-- (id)answerRequestForCall:(id)a3
+- (id)answerRequestForCall:(id)call
 {
-  v4 = a3;
-  v5 = [[TUAnswerRequest alloc] initWithCall:v4];
+  callCopy = call;
+  v5 = [[TUAnswerRequest alloc] initWithCall:callCopy];
 
-  v6 = [(PHAudioCallViewController *)self callCenter];
-  v7 = [v6 routeController];
-  v8 = [v7 pickedRoute];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  routeController = [callCenter routeController];
+  pickedRoute = [routeController pickedRoute];
 
-  v9 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v9 callDisplayStyle] != 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
 
     goto LABEL_9;
   }
 
-  v10 = [(PHAudioCallViewController *)self features];
-  v11 = [v10 isDominoEnabled];
-  if (!v11 || !v8)
+  features = [(PHAudioCallViewController *)self features];
+  isDominoEnabled = [features isDominoEnabled];
+  if (!isDominoEnabled || !pickedRoute)
   {
 
-    if (!v11)
+    if (!isDominoEnabled)
     {
       goto LABEL_9;
     }
@@ -15002,9 +15002,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v13 = [(PHAudioCallViewController *)self isPickedRouteReceiver];
+  isPickedRouteReceiver = [(PHAudioCallViewController *)self isPickedRouteReceiver];
 
-  if (v13)
+  if (isPickedRouteReceiver)
   {
     goto LABEL_8;
   }
@@ -15017,32 +15017,32 @@ LABEL_9:
 - (void)_leaveMessage
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 delegate];
-  v5 = [v4 mostRecentlyDisconnectedAudioCall];
+  delegate = [v3 delegate];
+  mostRecentlyDisconnectedAudioCall = [delegate mostRecentlyDisconnectedAudioCall];
 
-  v6 = [(PHAudioCallViewController *)self featureFlags];
-  LODWORD(v4) = TUCallScreeningEnabled();
+  featureFlags = [(PHAudioCallViewController *)self featureFlags];
+  LODWORD(delegate) = TUCallScreeningEnabled();
 
-  if (v4 && !v5)
+  if (delegate && !mostRecentlyDisconnectedAudioCall)
   {
-    v7 = [(PHAudioCallViewController *)self callCenter];
-    v5 = [v7 screeningCall];
+    callCenter = [(PHAudioCallViewController *)self callCenter];
+    mostRecentlyDisconnectedAudioCall = [callCenter screeningCall];
   }
 
-  v8 = [v5 handle];
-  v9 = [v8 value];
+  handle = [mostRecentlyDisconnectedAudioCall handle];
+  value = [handle value];
 
   v10 = sub_100004F84();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412546;
-    v17 = v5;
+    v17 = mostRecentlyDisconnectedAudioCall;
     v18 = 2112;
-    v19 = v9;
+    v19 = value;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Call %@; Destination ID %@", &v16, 0x16u);
   }
 
-  if ([v9 destinationIdIsPhoneNumber])
+  if ([value destinationIdIsPhoneNumber])
   {
     v11 = CPPhoneNumberCopyCountryCodeForIncomingTextMessage();
     if (!v11)
@@ -15053,13 +15053,13 @@ LABEL_9:
     v12 = TUNetworkCountryCode();
     v13 = TUNumberToDial();
 
-    v9 = v13;
+    value = v13;
   }
 
-  if (v9 && [v9 length])
+  if (value && [value length])
   {
     v14 = objc_alloc_init(MFMessageComposeViewController);
-    v15 = [NSArray arrayWithObject:v9];
+    v15 = [NSArray arrayWithObject:value];
     [v14 setRecipients:v15];
 
     [v14 setBody:&stru_100361FD0];
@@ -15078,7 +15078,7 @@ LABEL_9:
   }
 }
 
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -15088,29 +15088,29 @@ LABEL_9:
   [(PHAudioCallViewController *)self dismissViewControllerAnimated:1 completion:v4];
 }
 
-- (BOOL)desiresLockButtonEventsForCallContainer:(id)a3
+- (BOOL)desiresLockButtonEventsForCallContainer:(id)container
 {
-  v4 = a3;
-  v5 = [v4 resolvedIncomingCall];
-  if (v5 || [v4 currentCallCount] && -[PHAudioCallViewController isPickedRouteReceiver](self, "isPickedRouteReceiver"))
+  containerCopy = container;
+  resolvedIncomingCall = [containerCopy resolvedIncomingCall];
+  if (resolvedIncomingCall || [containerCopy currentCallCount] && -[PHAudioCallViewController isPickedRouteReceiver](self, "isPickedRouteReceiver"))
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v4 screeningCall];
-    v6 = v7 != 0;
+    screeningCall = [containerCopy screeningCall];
+    v6 = screeningCall != 0;
   }
 
   return v6;
 }
 
-- (void)setPrioritizedCall:(id)a3
+- (void)setPrioritizedCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   WeakRetained = objc_loadWeakRetained(&self->_prioritizedCall);
-  v6 = [WeakRetained isEqualToCall:v4];
+  v6 = [WeakRetained isEqualToCall:callCopy];
 
   if ((v6 & 1) == 0)
   {
@@ -15118,12 +15118,12 @@ LABEL_9:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = callCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Ignoring our own call management, told to take in prioritizedCall %@", &v12, 0xCu);
     }
 
-    v8 = objc_storeWeak(&self->_prioritizedCall, v4);
-    [(PHCallParticipantsViewController *)self->_callParticipantsViewController setPrioritizedCall:v4];
+    v8 = objc_storeWeak(&self->_prioritizedCall, callCopy);
+    [(PHCallParticipantsViewController *)self->_callParticipantsViewController setPrioritizedCall:callCopy];
 
     v9 = objc_loadWeakRetained(&self->_prioritizedCall);
     [(PHAudioButtonsViewControllerProtocol *)self->_buttonsViewController setPrioritizedCall:v9];
@@ -15131,44 +15131,44 @@ LABEL_9:
     [(PHAudioCallViewController *)self updateCurrentState];
     if ([(PHAudioCallViewController *)self shouldUseHeroImageLayout])
     {
-      v10 = [(PHAudioCallViewController *)self callToUseForWallpaper];
+      callToUseForWallpaper = [(PHAudioCallViewController *)self callToUseForWallpaper];
       v11 = objc_loadWeakRetained(&self->_prioritizedCall);
-      -[PHAudioCallViewController setCallForBackgroundImage:animated:callDisplayStyleChanged:](self, "setCallForBackgroundImage:animated:callDisplayStyleChanged:", v10, 1, [v11 status] == 4);
+      -[PHAudioCallViewController setCallForBackgroundImage:animated:callDisplayStyleChanged:](self, "setCallForBackgroundImage:animated:callDisplayStyleChanged:", callToUseForWallpaper, 1, [v11 status] == 4);
     }
 
     [(PHAudioCallViewController *)self _updatePosterStatusLabelForState:[(PHCallViewController *)self currentState]];
   }
 }
 
-- (void)hardwareButtonEventNotification:(id)a3
+- (void)hardwareButtonEventNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   v6 = sub_100004F84();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 userInfo];
+    userInfo = [notificationCopy userInfo];
     v33 = 138412290;
-    *v34 = v7;
+    *v34 = userInfo;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "PHAudioCallViewController received a hardware button event (%@)", &v33, 0xCu);
   }
 
-  v8 = [(PHAudioCallViewController *)self activeCall];
-  if (([v8 isRTT] & 1) != 0 || objc_msgSend(v8, "isTTY"))
+  activeCall = [(PHAudioCallViewController *)self activeCall];
+  if (([activeCall isRTT] & 1) != 0 || objc_msgSend(activeCall, "isTTY"))
   {
     v9 = sub_10014265C();
     isKindOfClass = v9;
     if (v9)
     {
-      v11 = [(PHAudioCallViewController *)self navigationController];
-      v12 = [v11 visibleViewController];
+      navigationController = [(PHAudioCallViewController *)self navigationController];
+      visibleViewController = [navigationController visibleViewController];
       isKindOfClass = objc_opt_isKindOfClass();
 
-      v3 = sub_100004F84();
-      if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+      view = sub_100004F84();
+      if (os_log_type_enabled(view, OS_LOG_TYPE_DEFAULT))
       {
         v33 = 67109120;
         *v34 = isKindOfClass & 1;
-        _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "setting isShowingRTTConversationViewController: %d", &v33, 8u);
+        _os_log_impl(&_mh_execute_header, view, OS_LOG_TYPE_DEFAULT, "setting isShowingRTTConversationViewController: %d", &v33, 8u);
       }
     }
   }
@@ -15178,13 +15178,13 @@ LABEL_9:
     isKindOfClass = 0;
   }
 
-  v13 = [(PHAudioCallViewController *)self isViewLoaded];
-  v14 = v13;
-  if (v13)
+  isViewLoaded = [(PHAudioCallViewController *)self isViewLoaded];
+  v14 = isViewLoaded;
+  if (isViewLoaded)
   {
-    v3 = [(PHAudioCallViewController *)self view];
-    v15 = [v3 window];
-    if ((v15 != 0) | isKindOfClass & 1)
+    view = [(PHAudioCallViewController *)self view];
+    window = [view window];
+    if ((window != 0) | isKindOfClass & 1)
     {
 
       goto LABEL_19;
@@ -15196,23 +15196,23 @@ LABEL_9:
     goto LABEL_19;
   }
 
-  v16 = [(PHAudioCallViewController *)self inCallRootViewController];
-  v17 = [v16 isDisplayStyleMiniWindow];
+  inCallRootViewController = [(PHAudioCallViewController *)self inCallRootViewController];
+  isDisplayStyleMiniWindow = [inCallRootViewController isDisplayStyleMiniWindow];
 
   if (v14)
   {
 
-    if ((v17 & 1) == 0)
+    if ((isDisplayStyleMiniWindow & 1) == 0)
     {
       goto LABEL_16;
     }
 
 LABEL_19:
-    v22 = [v5 userInfo];
-    v18 = [v22 valueForKey:@"kPHHardwareButtonEventType"];
+    userInfo2 = [notificationCopy userInfo];
+    v18 = [userInfo2 valueForKey:@"kPHHardwareButtonEventType"];
 
-    v23 = [(PHAudioCallViewController *)self callCenter];
-    v24 = [v23 resolvedIncomingCall];
+    callCenter = [(PHAudioCallViewController *)self callCenter];
+    resolvedIncomingCall = [callCenter resolvedIncomingCall];
 
     if (v18 == @"kPHHardwareButtonEventTypeLockButton")
     {
@@ -15230,7 +15230,7 @@ LABEL_19:
           _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "PHAudioCallViewController handling kPHHardwareButtonEventTypeVolumeDownButton || kPHHardwareButtonEventTypeVolumeUpButton buttonType", &v33, 2u);
         }
 
-        [v24 suppressRingtone];
+        [resolvedIncomingCall suppressRingtone];
         goto LABEL_35;
       }
 
@@ -15239,17 +15239,17 @@ LABEL_19:
         v30 = sub_100004F84();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
-          v31 = [(PHAudioCallViewController *)self callCenter];
-          v32 = [v31 incomingCall];
+          callCenter2 = [(PHAudioCallViewController *)self callCenter];
+          incomingCall = [callCenter2 incomingCall];
           v33 = 138412546;
-          *v34 = v32;
+          *v34 = incomingCall;
           *&v34[8] = 2112;
-          v35 = v8;
+          v35 = activeCall;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "PHAudioCallViewController handling kPHHardwareButtonEventTypeHeadsetButton buttonType (incoming call = %@, active call = %@)", &v33, 0x16u);
         }
 
-        v28 = [(PHAudioCallViewController *)self callCenter];
-        [v28 handleActionForWiredHeadsetMiddleButtonPress];
+        callCenter3 = [(PHAudioCallViewController *)self callCenter];
+        [callCenter3 handleActionForWiredHeadsetMiddleButtonPress];
         goto LABEL_34;
       }
 
@@ -15258,15 +15258,15 @@ LABEL_19:
         v25 = sub_100004F84();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [(PHAudioCallViewController *)self callCenter];
-          v27 = [v26 incomingCall];
+          callCenter4 = [(PHAudioCallViewController *)self callCenter];
+          incomingCall2 = [callCenter4 incomingCall];
           v33 = 138412290;
-          *v34 = v27;
+          *v34 = incomingCall2;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "PHAudioCallViewController handling kPHHardwareButtonEventTypeHeadsetButtonLongPress buttonType (incoming call = %@)", &v33, 0xCu);
         }
 
-        v28 = [(PHAudioCallViewController *)self callCenter];
-        [v28 handleActionForWiredHeadsetMiddleButtonLongPress];
+        callCenter3 = [(PHAudioCallViewController *)self callCenter];
+        [callCenter3 handleActionForWiredHeadsetMiddleButtonLongPress];
 LABEL_34:
       }
     }
@@ -15276,7 +15276,7 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if (v17)
+  if (isDisplayStyleMiniWindow)
   {
     goto LABEL_19;
   }
@@ -15285,103 +15285,103 @@ LABEL_16:
   v18 = sub_100004F84();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [(PHAudioCallViewController *)self isViewLoaded];
-    v20 = [(PHAudioCallViewController *)self view];
-    v21 = [v20 window];
+    isViewLoaded2 = [(PHAudioCallViewController *)self isViewLoaded];
+    view2 = [(PHAudioCallViewController *)self view];
+    window2 = [view2 window];
     v33 = 67109376;
-    *v34 = v19;
+    *v34 = isViewLoaded2;
     *&v34[4] = 1024;
-    *&v34[6] = v21 != 0;
+    *&v34[6] = window2 != 0;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[WARN] PHAudioCallViewController will not handle the hardware button event as the view is not loaded (viewLoaded = %d) or we have no window (window exists = %d)", &v33, 0xEu);
   }
 
 LABEL_36:
 }
 
-- (void)handleDeviceLockEventWithSourceType:(int64_t)a3
+- (void)handleDeviceLockEventWithSourceType:(int64_t)type
 {
   v22.receiver = self;
   v22.super_class = PHAudioCallViewController;
   [(PHCallViewController *)&v22 handleDeviceLockEventWithSourceType:?];
-  v5 = [(PHAudioCallViewController *)self activeCall];
-  v6 = [(PHAudioCallViewController *)self callCenter];
-  v7 = [v6 resolvedIncomingCall];
+  activeCall = [(PHAudioCallViewController *)self activeCall];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  resolvedIncomingCall = [callCenter resolvedIncomingCall];
 
-  v8 = [(PHAudioCallViewController *)self isPickedRouteReceiver];
+  isPickedRouteReceiver = [(PHAudioCallViewController *)self isPickedRouteReceiver];
   v9 = sub_100004F84();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109888;
-    v24 = v8;
+    v24 = isPickedRouteReceiver;
     v25 = 1024;
-    v26 = v5 != 0;
+    v26 = activeCall != 0;
     v27 = 1024;
-    v28 = v7 != 0;
+    v28 = resolvedIncomingCall != 0;
     v29 = 1024;
-    v30 = a3;
+    typeCopy = type;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "PHAudioCallViewController handling device lock event isPickedRouteReceiver=%d, activeCall=%d, incomingCall=%d, sourceType=%d", buf, 0x1Au);
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
-    if ((v7 != 0) | v8 & 1)
+    if ((resolvedIncomingCall != 0) | isPickedRouteReceiver & 1)
     {
-      v10 = [(PHAudioCallViewController *)self declineCallService];
-      [v10 declineAnsweringCallDueToLockEventWithCurrentActiveCall:v5 completionHandler:&stru_100359DF0];
+      declineCallService = [(PHAudioCallViewController *)self declineCallService];
+      [declineCallService declineAnsweringCallDueToLockEventWithCurrentActiveCall:activeCall completionHandler:&stru_100359DF0];
 LABEL_25:
 
       goto LABEL_26;
     }
 
 LABEL_12:
-    if (((v5 != 0) & v8) == 1)
+    if (((activeCall != 0) & isPickedRouteReceiver) == 1)
     {
       goto LABEL_13;
     }
 
 LABEL_10:
-    v11 = sub_100004F84();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    declineCallService2 = sub_100004F84();
+    if (os_log_type_enabled(declineCallService2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "PHAudioCallViewController: Not suppressing ringtone or declining call.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, declineCallService2, OS_LOG_TYPE_DEFAULT, "PHAudioCallViewController: Not suppressing ringtone or declining call.", buf, 2u);
     }
 
     goto LABEL_15;
   }
 
-  if (!v7)
+  if (!resolvedIncomingCall)
   {
     goto LABEL_12;
   }
 
-  if (([v7 shouldSuppressRingtone] & 1) == 0)
+  if (([resolvedIncomingCall shouldSuppressRingtone] & 1) == 0)
   {
     v14 = +[UIApplication sharedApplication];
-    v15 = [v14 delegate];
-    v16 = [v15 currentInCallScene];
-    v17 = [v16 delegate];
-    v18 = [v17 callAnalyticsLogger];
-    v19 = [v7 uniqueProxyIdentifierUUID];
-    [v18 ringerMutedForCallUUID:v19];
+    delegate = [v14 delegate];
+    currentInCallScene = [delegate currentInCallScene];
+    delegate2 = [currentInCallScene delegate];
+    callAnalyticsLogger = [delegate2 callAnalyticsLogger];
+    uniqueProxyIdentifierUUID = [resolvedIncomingCall uniqueProxyIdentifierUUID];
+    [callAnalyticsLogger ringerMutedForCallUUID:uniqueProxyIdentifierUUID];
 
-    [v7 suppressRingtone];
+    [resolvedIncomingCall suppressRingtone];
     goto LABEL_20;
   }
 
-  if (([v7 shouldSuppressRingtone] & 1) == 0 && ((v5 != 0) & v8) == 0)
+  if (([resolvedIncomingCall shouldSuppressRingtone] & 1) == 0 && ((activeCall != 0) & isPickedRouteReceiver) == 0)
   {
     goto LABEL_10;
   }
 
 LABEL_13:
   v12 = +[PHInCallUtilities sharedInstance];
-  v13 = [v12 isLockToEndCallEnabled];
+  isLockToEndCallEnabled = [v12 isLockToEndCallEnabled];
 
-  if (v13)
+  if (isLockToEndCallEnabled)
   {
-    v11 = [(PHAudioCallViewController *)self declineCallService];
-    [v11 declineAnsweringCallDueToLockEventWithCurrentActiveCall:v5 completionHandler:&stru_100359E10];
+    declineCallService2 = [(PHAudioCallViewController *)self declineCallService];
+    [declineCallService2 declineAnsweringCallDueToLockEventWithCurrentActiveCall:activeCall completionHandler:&stru_100359E10];
 LABEL_15:
 
     goto LABEL_20;
@@ -15396,7 +15396,7 @@ LABEL_15:
 
   +[PHInCallRootViewController setShouldLockDeviceOnNextDismiss];
 LABEL_20:
-  if (a3 == 1 && [(PHAudioCallViewController *)self videoStreamingIsGoingOn])
+  if (type == 1 && [(PHAudioCallViewController *)self videoStreamingIsGoingOn])
   {
     v21 = sub_100004F84();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -15405,8 +15405,8 @@ LABEL_20:
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "EnhancedEmergency: pause video if necessary when locking device", buf, 2u);
     }
 
-    v10 = [(PHAudioCallViewController *)self emergencyCoordinator];
-    [v10 handleDeviceLockEvent];
+    declineCallService = [(PHAudioCallViewController *)self emergencyCoordinator];
+    [declineCallService handleDeviceLockEvent];
     goto LABEL_25;
   }
 
@@ -15415,31 +15415,31 @@ LABEL_26:
 
 - (BOOL)isPickedRouteSpeaker
 {
-  v2 = [(PHAudioCallViewController *)self callCenter];
-  v3 = [v2 routeController];
-  v4 = [v3 pickedRoute];
-  v5 = [v4 isSpeaker];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  routeController = [callCenter routeController];
+  pickedRoute = [routeController pickedRoute];
+  isSpeaker = [pickedRoute isSpeaker];
 
-  return v5;
+  return isSpeaker;
 }
 
-- (void)setViewsHiddenForAudioRoutes:(BOOL)a3 animated:(BOOL)a4
+- (void)setViewsHiddenForAudioRoutes:(BOOL)routes animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7 = +[UIDevice currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  userInterfaceIdiom = [v7 userInterfaceIdiom];
 
-  if (v8 != 1)
+  if (userInterfaceIdiom != 1)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10012BEB4;
     v11[3] = &unk_100356BB8;
-    v12 = a3;
+    routesCopy = routes;
     v11[4] = self;
     v9 = objc_retainBlock(v11);
     v10 = v9;
-    if (v4)
+    if (animatedCopy)
     {
       [UIView animateWithDuration:v9 animations:0.25];
     }
@@ -15451,7 +15451,7 @@ LABEL_26:
   }
 }
 
-- (void)revealAudioRoutingDeviceListAnimated:(BOOL)a3
+- (void)revealAudioRoutingDeviceListAnimated:(BOOL)animated
 {
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -15460,32 +15460,32 @@ LABEL_26:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Revealing audio routing device list", buf, 2u);
   }
 
-  v5 = [(PHAudioCallViewController *)self buttonsViewController];
-  if ([v5 isViewLoaded])
+  buttonsViewController = [(PHAudioCallViewController *)self buttonsViewController];
+  if ([buttonsViewController isViewLoaded])
   {
-    v6 = [(PHAudioCallViewController *)self buttonsViewController];
-    v7 = [v6 view];
-    v8 = [v7 window];
+    buttonsViewController2 = [(PHAudioCallViewController *)self buttonsViewController];
+    view = [buttonsViewController2 view];
+    window = [view window];
 
-    if (v8)
+    if (window)
     {
-      v9 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-      if ([v9 callDisplayStyle] == 3)
+      callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+      if ([callDisplayStyleManager callDisplayStyle] == 3)
       {
-        v10 = [(PHAudioCallViewController *)self features];
-        if ([v10 isDominoEnabled])
+        features = [(PHAudioCallViewController *)self features];
+        if ([features isDominoEnabled])
         {
-          v11 = [(PHAudioCallViewController *)self ambientAudioRoutesControlView];
+          ambientAudioRoutesControlView = [(PHAudioCallViewController *)self ambientAudioRoutesControlView];
 
-          if (v11)
+          if (ambientAudioRoutesControlView)
           {
-            v12 = [(PHAudioCallViewController *)self ambientAudioRoutesControlView];
-            v13 = [v12 button];
+            ambientAudioRoutesControlView2 = [(PHAudioCallViewController *)self ambientAudioRoutesControlView];
+            button = [ambientAudioRoutesControlView2 button];
             goto LABEL_16;
           }
 
 LABEL_14:
-          v20 = [(PHAudioCallViewController *)self currentMiddleView];
+          currentMiddleView = [(PHAudioCallViewController *)self currentMiddleView];
           v21 = objc_opt_respondsToSelector();
 
           if ((v21 & 1) == 0)
@@ -15496,8 +15496,8 @@ LABEL_18:
             v38 = 0u;
             v35 = 0u;
             v36 = 0u;
-            v22 = [v14 interactions];
-            v23 = [v22 countByEnumeratingWithState:&v35 objects:v39 count:16];
+            interactions = [v14 interactions];
+            v23 = [interactions countByEnumeratingWithState:&v35 objects:v39 count:16];
             if (v23)
             {
               v24 = v23;
@@ -15508,7 +15508,7 @@ LABEL_20:
               {
                 if (*v36 != v25)
                 {
-                  objc_enumerationMutation(v22);
+                  objc_enumerationMutation(interactions);
                 }
 
                 v27 = *(*(&v35 + 1) + 8 * v26);
@@ -15520,7 +15520,7 @@ LABEL_20:
 
                 if (v24 == ++v26)
                 {
-                  v24 = [v22 countByEnumeratingWithState:&v35 objects:v39 count:16];
+                  v24 = [interactions countByEnumeratingWithState:&v35 objects:v39 count:16];
                   if (v24)
                   {
                     goto LABEL_20;
@@ -15530,9 +15530,9 @@ LABEL_20:
                 }
               }
 
-              v15 = v27;
+              buttonsViewController3 = v27;
 
-              if (!v15)
+              if (!buttonsViewController3)
               {
                 goto LABEL_29;
               }
@@ -15544,7 +15544,7 @@ LABEL_20:
               [v14 bounds];
               v33 = v32;
               [v14 bounds];
-              [v15 _presentMenuAtLocation:v31, v33 + v34 * 0.5];
+              [buttonsViewController3 _presentMenuAtLocation:v31, v33 + v34 * 0.5];
             }
 
             else
@@ -15552,22 +15552,22 @@ LABEL_20:
 LABEL_26:
 
 LABEL_29:
-              v15 = sub_100004F84();
-              if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+              buttonsViewController3 = sub_100004F84();
+              if (os_log_type_enabled(buttonsViewController3, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
                 *v41 = v14;
-                _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[WARN] Could not find menu interaction for audio routes button: %@", buf, 0xCu);
+                _os_log_impl(&_mh_execute_header, buttonsViewController3, OS_LOG_TYPE_DEFAULT, "[WARN] Could not find menu interaction for audio routes button: %@", buf, 0xCu);
               }
             }
 
             goto LABEL_31;
           }
 
-          v12 = [(PHAudioCallViewController *)self currentMiddleView];
-          v13 = [v12 buttonForControlType:3];
+          ambientAudioRoutesControlView2 = [(PHAudioCallViewController *)self currentMiddleView];
+          button = [ambientAudioRoutesControlView2 buttonForControlType:3];
 LABEL_16:
-          v14 = v13;
+          v14 = button;
 
           goto LABEL_18;
         }
@@ -15584,15 +15584,15 @@ LABEL_16:
   v14 = sub_100004F84();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(PHAudioCallViewController *)self buttonsViewController];
-    v16 = [v15 isViewLoaded];
-    v17 = [(PHAudioCallViewController *)self buttonsViewController];
-    v18 = [v17 view];
-    v19 = [v18 window];
+    buttonsViewController3 = [(PHAudioCallViewController *)self buttonsViewController];
+    isViewLoaded = [buttonsViewController3 isViewLoaded];
+    buttonsViewController4 = [(PHAudioCallViewController *)self buttonsViewController];
+    view2 = [buttonsViewController4 view];
+    window2 = [view2 window];
     *buf = 67109378;
-    *v41 = v16;
+    *v41 = isViewLoaded;
     *&v41[4] = 2112;
-    *&v41[6] = v19;
+    *&v41[6] = window2;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Not presenting audio routing device list since isViewLoaded: %d; window: %@", buf, 0x12u);
 
 LABEL_31:
@@ -15601,60 +15601,60 @@ LABEL_31:
 
 - (id)audioRouteMenu
 {
-  v3 = [(PHAudioCallViewController *)self routeListController];
+  routeListController = [(PHAudioCallViewController *)self routeListController];
 
-  if (!v3)
+  if (!routeListController)
   {
     v4 = [PHAudioRoutingMenuController menuControllerWithCallStyle:1 dataSource:self delegate:self];
     [(PHAudioCallViewController *)self setRouteListController:v4];
   }
 
-  v5 = [(PHAudioCallViewController *)self routeListController];
-  v6 = [v5 menu];
+  routeListController2 = [(PHAudioCallViewController *)self routeListController];
+  menu = [routeListController2 menu];
 
-  return v6;
+  return menu;
 }
 
-- (id)routesForAudioRoutingMenuController:(id)a3
+- (id)routesForAudioRoutingMenuController:(id)controller
 {
-  v3 = [(PHAudioCallViewController *)self callCenter];
-  v4 = [v3 routeController];
-  v5 = [v4 sortedRoutes];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  routeController = [callCenter routeController];
+  sortedRoutes = [routeController sortedRoutes];
 
-  return v5;
+  return sortedRoutes;
 }
 
-- (void)audioRoutingMenuController:(id)a3 didSelectRoute:(id)a4
+- (void)audioRoutingMenuController:(id)controller didSelectRoute:(id)route
 {
-  v5 = a4;
-  v6 = [(PHAudioCallViewController *)self callCenter];
-  v7 = [v6 routeController];
-  [v7 pickRoute:v5];
+  routeCopy = route;
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  routeController = [callCenter routeController];
+  [routeController pickRoute:routeCopy];
 
-  v12 = [(PHAudioCallViewController *)self features];
-  if ([v12 isEnhancedEmergencyEnabled])
+  features = [(PHAudioCallViewController *)self features];
+  if ([features isEnhancedEmergencyEnabled])
   {
-    v8 = [(PHAudioCallViewController *)self emergencyCoordinator];
-    if (v8)
+    emergencyCoordinator = [(PHAudioCallViewController *)self emergencyCoordinator];
+    if (emergencyCoordinator)
     {
-      v9 = v8;
-      v10 = [(PHAudioCallViewController *)self emergencyCoordinator];
-      v11 = [v10 eedRTTState];
+      v9 = emergencyCoordinator;
+      emergencyCoordinator2 = [(PHAudioCallViewController *)self emergencyCoordinator];
+      eedRTTState = [emergencyCoordinator2 eedRTTState];
 
-      if (!v11)
+      if (!eedRTTState)
       {
         return;
       }
 
-      v12 = [(PHAudioCallViewController *)self emergencyCoordinator];
-      [v12 updateRTTAudioRouteButton];
+      features = [(PHAudioCallViewController *)self emergencyCoordinator];
+      [features updateRTTAudioRouteButton];
     }
   }
 }
 
-- (void)routesChangedForRouteController:(id)a3
+- (void)routesChangedForRouteController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -15663,49 +15663,49 @@ LABEL_31:
   }
 
   [(PHAudioCallViewController *)self updateCurrentState];
-  v6 = [(PHAudioCallViewController *)self routeListController];
-  [v6 reload];
+  routeListController = [(PHAudioCallViewController *)self routeListController];
+  [routeListController reload];
 
   v7 = +[UIApplication sharedApplication];
-  v8 = [v7 delegate];
-  v9 = [v8 currentInCallScene];
-  v10 = [v9 delegate];
-  v11 = [v10 callAnalyticsLogger];
-  v12 = [v4 pickedRoute];
+  delegate = [v7 delegate];
+  currentInCallScene = [delegate currentInCallScene];
+  delegate2 = [currentInCallScene delegate];
+  callAnalyticsLogger = [delegate2 callAnalyticsLogger];
+  pickedRoute = [controllerCopy pickedRoute];
 
-  [v11 audioRouteIsHandsfree:{objc_msgSend(v12, "isReceiver") ^ 1}];
-  v13 = [(PHAudioCallViewController *)self features];
-  if ([v13 isEnhancedEmergencyEnabled])
+  [callAnalyticsLogger audioRouteIsHandsfree:{objc_msgSend(pickedRoute, "isReceiver") ^ 1}];
+  features = [(PHAudioCallViewController *)self features];
+  if ([features isEnhancedEmergencyEnabled])
   {
-    v14 = [(PHAudioCallViewController *)self emergencyCoordinator];
-    if (v14)
+    emergencyCoordinator = [(PHAudioCallViewController *)self emergencyCoordinator];
+    if (emergencyCoordinator)
     {
-      v15 = v14;
-      v16 = [(PHAudioCallViewController *)self emergencyCoordinator];
-      v17 = [v16 eedRTTState];
+      v15 = emergencyCoordinator;
+      emergencyCoordinator2 = [(PHAudioCallViewController *)self emergencyCoordinator];
+      eedRTTState = [emergencyCoordinator2 eedRTTState];
 
-      if (!v17)
+      if (!eedRTTState)
       {
         return;
       }
 
-      v13 = [(PHAudioCallViewController *)self emergencyCoordinator];
-      [v13 updateRTTAudioRouteButton];
+      features = [(PHAudioCallViewController *)self emergencyCoordinator];
+      [features updateRTTAudioRouteButton];
     }
   }
 }
 
-- (void)callDisplayStyleDidChangeFromStyle:(int64_t)a3 toStyle:(int64_t)a4
+- (void)callDisplayStyleDidChangeFromStyle:(int64_t)style toStyle:(int64_t)toStyle
 {
   v40.receiver = self;
   v40.super_class = PHAudioCallViewController;
   [PHCallViewController callDisplayStyleDidChangeFromStyle:"callDisplayStyleDidChangeFromStyle:toStyle:" toStyle:?];
-  if (a4 == 4)
+  if (toStyle == 4)
   {
-    v7 = [(PHAudioCallViewController *)self callCenter];
-    v8 = [v7 hasCurrentCalls];
+    callCenter = [(PHAudioCallViewController *)self callCenter];
+    hasCurrentCalls = [callCenter hasCurrentCalls];
 
-    if ((v8 & 1) == 0)
+    if ((hasCurrentCalls & 1) == 0)
     {
       v9 = sub_100004F84();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -15720,26 +15720,26 @@ LABEL_31:
     }
   }
 
-  if (!a3)
+  if (!style)
   {
     [(PHAudioCallViewController *)self resetParticipantsViewConstraints];
-    v10 = [(PHAudioCallViewController *)self pendingMiddleViewAnimations];
+    pendingMiddleViewAnimations = [(PHAudioCallViewController *)self pendingMiddleViewAnimations];
 
-    if (v10)
+    if (pendingMiddleViewAnimations)
     {
-      v11 = [(PHAudioCallViewController *)self pendingMiddleViewAnimations];
-      v11[2]();
+      pendingMiddleViewAnimations2 = [(PHAudioCallViewController *)self pendingMiddleViewAnimations];
+      pendingMiddleViewAnimations2[2]();
 
       [(PHAudioCallViewController *)self setPendingMiddleViewAnimations:0];
     }
 
     if ([(PHAudioCallViewController *)self waitingForFullScreenAudioRoutes])
     {
-      v12 = [(PHAudioCallViewController *)self callCenter];
-      v13 = [v12 routeController];
-      v14 = [v13 areAuxiliaryRoutesAvailable];
+      callCenter2 = [(PHAudioCallViewController *)self callCenter];
+      routeController = [callCenter2 routeController];
+      areAuxiliaryRoutesAvailable = [routeController areAuxiliaryRoutesAvailable];
 
-      if (v14)
+      if (areAuxiliaryRoutesAvailable)
       {
         objc_initWeak(buf, self);
         +[UIView _currentAnimationDuration];
@@ -15757,9 +15757,9 @@ LABEL_31:
 
     [(PHAudioCallViewController *)self setWaitingForFullScreenAudioRoutes:0];
     v17 = +[PHInCallUtilities sharedInstance];
-    v18 = [v17 isIPadIdiom];
+    isIPadIdiom = [v17 isIPadIdiom];
 
-    if (v18)
+    if (isIPadIdiom)
     {
       [(PHAudioCallViewController *)self fadeInBottomBar];
     }
@@ -15767,31 +15767,31 @@ LABEL_31:
     [(PHAudioCallViewController *)self updateBottomBarAlphaWithCurrentState:[(PHCallViewController *)self currentState]];
     if (![(PHAudioCallViewController *)self shouldUseHeroImageLayout])
     {
-      v19 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-      if ([v19 callDisplayStyle] != 3)
+      callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+      if ([callDisplayStyleManager callDisplayStyle] != 3)
       {
         goto LABEL_19;
       }
 
-      v20 = [(PHAudioCallViewController *)self features];
-      v21 = [v20 isDominoEnabled];
+      features = [(PHAudioCallViewController *)self features];
+      isDominoEnabled = [features isDominoEnabled];
 
-      if (!v21)
+      if (!isDominoEnabled)
       {
         goto LABEL_20;
       }
     }
 
-    v19 = [(PHAudioCallViewController *)self frontmostCall];
-    [(PHAudioCallViewController *)self setCallForBackgroundImage:v19 animated:0 callDisplayStyleChanged:1];
+    callDisplayStyleManager = [(PHAudioCallViewController *)self frontmostCall];
+    [(PHAudioCallViewController *)self setCallForBackgroundImage:callDisplayStyleManager animated:0 callDisplayStyleChanged:1];
     [(PHAudioCallViewController *)self updateCallParticipantsViewControllerCallGroups];
 LABEL_19:
   }
 
 LABEL_20:
-  if (a3 == 1 || a4 != 1)
+  if (style == 1 || toStyle != 1)
   {
-    if (a3 == 2 && a4 == 4)
+    if (style == 2 && toStyle == 4)
     {
       if ([(PHAudioCallViewController *)self videoStreamingIsGoingOn])
       {
@@ -15814,9 +15814,9 @@ LABEL_20:
     [(PHAudioCallViewController *)self handleDeviceLockEventWithSourceType:1];
   }
 
-  if (a3 != 4)
+  if (style != 4)
   {
-    if (a4 != 4)
+    if (toStyle != 4)
     {
       goto LABEL_41;
     }
@@ -15824,16 +15824,16 @@ LABEL_20:
 LABEL_32:
     [(PHAudioCallViewController *)self handleViewWillDisappear:1];
     [(PHAudioCallViewController *)self handleViewDidDisappear:1];
-    v23 = [(PHAudioCallViewController *)self callCenter];
-    v24 = [v23 incomingCall];
+    callCenter3 = [(PHAudioCallViewController *)self callCenter];
+    incomingCall = [callCenter3 incomingCall];
 
-    if (v24)
+    if (incomingCall)
     {
-      v25 = [v24 provider];
-      if ([v25 supportsDynamicSystemUI])
+      provider = [incomingCall provider];
+      if ([provider supportsDynamicSystemUI])
       {
-        v26 = [(PHAudioCallViewController *)self featureFlags];
-        if ([v26 groupConversations])
+        featureFlags = [(PHAudioCallViewController *)self featureFlags];
+        if ([featureFlags groupConversations])
         {
           HasChinaSKU = TUDeviceHasChinaSKU();
 
@@ -15858,9 +15858,9 @@ LABEL_40:
   [(PHAudioCallViewController *)self handleViewDidAppear:1];
 LABEL_41:
   v28 = +[UIDevice currentDevice];
-  v29 = [v28 orientation];
+  orientation = [v28 orientation];
 
-  if (a3 || a4 != 2 || (v29 - 3) > 1)
+  if (style || toStyle != 2 || (orientation - 3) > 1)
   {
     if (!UIAccessibilityIsReduceMotionEnabled())
     {
@@ -15886,71 +15886,71 @@ LABEL_41:
     }
   }
 
-  v32 = [(PHAudioCallViewController *)self view];
-  [ICSBannerTransitionAnimation performBannerToFullScreenCrossFadeAnimationWithView:v32];
+  view = [(PHAudioCallViewController *)self view];
+  [ICSBannerTransitionAnimation performBannerToFullScreenCrossFadeAnimationWithView:view];
 
 LABEL_51:
-  [(PHAudioCallViewController *)self showCallDetailsIfNecessaryForDisplayStyle:a4];
+  [(PHAudioCallViewController *)self showCallDetailsIfNecessaryForDisplayStyle:toStyle];
   [(PHAudioCallViewController *)self refreshCallDetailsViewButton];
   [(PHAudioCallViewController *)self setupAmbientAudioRoutesControlViewIfNeeded];
   [(PHAudioCallViewController *)self updateShareNameAndPhotoHUDPresentationIfNeeded];
-  v33 = [(PHAudioCallViewController *)self topLeadingContainer];
-  v34 = [(PHAudioCallViewController *)self middlePillContainer];
-  [(PHAudioCallViewController *)self updateCallRecordingIfNeededWithButtonContainer:v33 pillContainer:v34];
+  topLeadingContainer = [(PHAudioCallViewController *)self topLeadingContainer];
+  middlePillContainer = [(PHAudioCallViewController *)self middlePillContainer];
+  [(PHAudioCallViewController *)self updateCallRecordingIfNeededWithButtonContainer:topLeadingContainer pillContainer:middlePillContainer];
 
-  v35 = [(PHAudioCallViewController *)self topLeadingContainer];
-  [(PHAudioCallViewController *)self updateCallHoldingIfNeeded:v35];
+  topLeadingContainer2 = [(PHAudioCallViewController *)self topLeadingContainer];
+  [(PHAudioCallViewController *)self updateCallHoldingIfNeeded:topLeadingContainer2];
 
-  v36 = [(PHAudioCallViewController *)self topLeadingContainer];
-  [v36 setHidden:a4 != 2];
+  topLeadingContainer3 = [(PHAudioCallViewController *)self topLeadingContainer];
+  [topLeadingContainer3 setHidden:toStyle != 2];
 }
 
 - (void)suppressRingtoneForIncomingCall
 {
-  v2 = [(PHAudioCallViewController *)self callCenter];
-  v5 = [v2 incomingCall];
+  callCenter = [(PHAudioCallViewController *)self callCenter];
+  incomingCall = [callCenter incomingCall];
 
-  v4 = v5;
-  if (v5)
+  v4 = incomingCall;
+  if (incomingCall)
   {
-    v3 = [v5 shouldSuppressRingtone];
-    v4 = v5;
-    if ((v3 & 1) == 0)
+    shouldSuppressRingtone = [incomingCall shouldSuppressRingtone];
+    v4 = incomingCall;
+    if ((shouldSuppressRingtone & 1) == 0)
     {
-      v3 = [v5 suppressRingtone];
-      v4 = v5;
+      shouldSuppressRingtone = [incomingCall suppressRingtone];
+      v4 = incomingCall;
     }
   }
 
-  _objc_release_x1(v3, v4);
+  _objc_release_x1(shouldSuppressRingtone, v4);
 }
 
-- (void)showCallDetailsIfNecessaryForDisplayStyle:(int64_t)a3
+- (void)showCallDetailsIfNecessaryForDisplayStyle:(int64_t)style
 {
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 delegate];
-  v13 = [v6 bannerPresentationManager];
+  delegate = [v5 delegate];
+  bannerPresentationManager = [delegate bannerPresentationManager];
 
-  v7 = [(PHAudioCallViewController *)self callDetailsCoordinator];
-  if (v7 && [v13 shouldShowCallDetailsWhenReady])
+  callDetailsCoordinator = [(PHAudioCallViewController *)self callDetailsCoordinator];
+  if (callDetailsCoordinator && [bannerPresentationManager shouldShowCallDetailsWhenReady])
   {
 
-    if (a3 != 2)
+    if (style != 2)
     {
       goto LABEL_9;
     }
 
-    v7 = [(PHAudioCallViewController *)self frontmostCall];
-    v8 = [(PHAudioCallViewController *)self callCenter];
-    v9 = [v8 activeConversationForCall:v7];
+    callDetailsCoordinator = [(PHAudioCallViewController *)self frontmostCall];
+    callCenter = [(PHAudioCallViewController *)self callCenter];
+    v9 = [callCenter activeConversationForCall:callDetailsCoordinator];
 
-    v10 = [v9 activitySessions];
-    v11 = [v10 count];
+    activitySessions = [v9 activitySessions];
+    v11 = [activitySessions count];
 
     if (v11)
     {
-      v12 = [(PHAudioCallViewController *)self callDetailsCoordinator];
-      [v12 startWithReason:@"Controls manager requested deferred call details presentation"];
+      callDetailsCoordinator2 = [(PHAudioCallViewController *)self callDetailsCoordinator];
+      [callDetailsCoordinator2 startWithReason:@"Controls manager requested deferred call details presentation"];
     }
 
     else
@@ -15962,18 +15962,18 @@ LABEL_51:
 LABEL_9:
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = PHAudioCallViewController;
-  [(PHAudioCallViewController *)&v9 viewWillTransitionToSize:a4 withTransitionCoordinator:?];
-  v7 = [(PHCallViewController *)self bottomBar];
-  [v7 setRotatedTargetSizeOfParent:{width, height}];
+  [(PHAudioCallViewController *)&v9 viewWillTransitionToSize:coordinator withTransitionCoordinator:?];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar setRotatedTargetSizeOfParent:{width, height}];
 
-  v8 = [(PHCallViewController *)self bottomBar];
-  [v8 invalidateIntrinsicContentSize];
+  bottomBar2 = [(PHCallViewController *)self bottomBar];
+  [bottomBar2 invalidateIntrinsicContentSize];
 }
 
 - (void)fadeInBottomBar
@@ -16002,14 +16002,14 @@ LABEL_9:
   }
 }
 
-- (void)callParticipantsViewController:(id)a3 didPerformActionType:(int64_t)a4
+- (void)callParticipantsViewController:(id)controller didPerformActionType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(PHAudioCallViewController *)self callParticipantsViewController];
+  controllerCopy = controller;
+  callParticipantsViewController = [(PHAudioCallViewController *)self callParticipantsViewController];
 
-  if (v7 == v6)
+  if (callParticipantsViewController == controllerCopy)
   {
-    [(PHAudioCallViewController *)self performBottomBarActionType:a4];
+    [(PHAudioCallViewController *)self performBottomBarActionType:type];
   }
 
   else
@@ -16018,84 +16018,84 @@ LABEL_9:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134218242;
-      v10 = a4;
+      typeCopy = type;
       v11 = 2112;
-      v12 = v6;
+      v12 = controllerCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[WARN] Cannot perform bottom bar action %ld from unknown call participants viewcontroller object %@", &v9, 0x16u);
     }
   }
 }
 
-- (void)callParticipantsViewControllerDidTapCallDetailsGestureRecognizer:(id)a3
+- (void)callParticipantsViewControllerDidTapCallDetailsGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [(PHAudioCallViewController *)self callParticipantsViewController];
+  recognizerCopy = recognizer;
+  callParticipantsViewController = [(PHAudioCallViewController *)self callParticipantsViewController];
 
-  if (v5 == v4)
+  if (callParticipantsViewController == recognizerCopy)
   {
-    v6 = [(PHAudioCallViewController *)self callDetailsCoordinator];
-    [v6 startWithReason:@"Call participant view requested call details"];
+    callDetailsCoordinator = [(PHAudioCallViewController *)self callDetailsCoordinator];
+    [callDetailsCoordinator startWithReason:@"Call participant view requested call details"];
   }
 
   else
   {
-    v6 = sub_100004F84();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    callDetailsCoordinator = sub_100004F84();
+    if (os_log_type_enabled(callDetailsCoordinator, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v4;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[WARN] Cannot handle call details disclosure button tap from unknown call participants viewcontroller object %@", &v7, 0xCu);
+      v8 = recognizerCopy;
+      _os_log_impl(&_mh_execute_header, callDetailsCoordinator, OS_LOG_TYPE_DEFAULT, "[WARN] Cannot handle call details disclosure button tap from unknown call participants viewcontroller object %@", &v7, 0xCu);
     }
   }
 }
 
-- (void)callParticipantsViewController:(id)a3 willShowMultipleLabel:(BOOL)a4
+- (void)callParticipantsViewController:(id)controller willShowMultipleLabel:(BOOL)label
 {
-  v6 = a3;
-  v7 = [(PHAudioCallViewController *)self callParticipantsViewController];
+  controllerCopy = controller;
+  callParticipantsViewController = [(PHAudioCallViewController *)self callParticipantsViewController];
 
-  if (v7 != v6)
+  if (callParticipantsViewController != controllerCopy)
   {
     return;
   }
 
-  self->_participantsViewIsShowingMultipleLabel = a4 & ~[(PHAudioCallViewController *)self usesCompactMulticallUI];
+  self->_participantsViewIsShowingMultipleLabel = label & ~[(PHAudioCallViewController *)self usesCompactMulticallUI];
   [(PHAudioCallViewController *)self _updatePosterNameAlpha];
   [(PHAudioCallViewController *)self _updateStatusLabelVisibility];
-  v11 = [(PHAudioCallViewController *)self getParticipantsView_WaitingOrNot];
+  getParticipantsView_WaitingOrNot = [(PHAudioCallViewController *)self getParticipantsView_WaitingOrNot];
   [(PHAudioCallViewController *)self updateParticipantConstraintsForPosterName:?];
-  v8 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v8 callDisplayStyle] != 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
     goto LABEL_5;
   }
 
-  v9 = [(PHAudioCallViewController *)self features];
-  v10 = [v9 isDominoEnabled];
+  features = [(PHAudioCallViewController *)self features];
+  isDominoEnabled = [features isDominoEnabled];
 
-  if (v10)
+  if (isDominoEnabled)
   {
     [(PHAudioCallViewController *)self layoutParticipantsViewAnimated:0];
-    v8 = [(PHAudioCallViewController *)self callToUseForWallpaper];
-    [(PHAudioCallViewController *)self setCallForBackgroundImage:v8 animated:1 callDisplayStyleChanged:0];
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callToUseForWallpaper];
+    [(PHAudioCallViewController *)self setCallForBackgroundImage:callDisplayStyleManager animated:1 callDisplayStyleChanged:0];
 LABEL_5:
   }
 }
 
-- (void)callParticipantsViewController:(id)a3 didShowMultipleLabel:(BOOL)a4
+- (void)callParticipantsViewController:(id)controller didShowMultipleLabel:(BOOL)label
 {
-  v6 = a3;
-  v7 = [(PHAudioCallViewController *)self callParticipantsViewController];
+  controllerCopy = controller;
+  callParticipantsViewController = [(PHAudioCallViewController *)self callParticipantsViewController];
 
-  if (v7 == v6)
+  if (callParticipantsViewController == controllerCopy)
   {
-    v8 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v8 callDisplayStyle] == 3)
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager callDisplayStyle] == 3)
     {
-      v9 = [(PHAudioCallViewController *)self features];
-      v10 = [v9 isDominoEnabled];
+      features = [(PHAudioCallViewController *)self features];
+      isDominoEnabled = [features isDominoEnabled];
 
-      if ((v10 & 1) != 0 || a4)
+      if ((isDominoEnabled & 1) != 0 || label)
       {
         return;
       }
@@ -16104,15 +16104,15 @@ LABEL_5:
     else
     {
 
-      if (a4)
+      if (label)
       {
         return;
       }
     }
 
-    v11 = [(PHAudioCallViewController *)self posterNameViewModel];
+    posterNameViewModel = [(PHAudioCallViewController *)self posterNameViewModel];
 
-    if (v11)
+    if (posterNameViewModel)
     {
 
       [(PHAudioCallViewController *)self _updateStatusLabelVisibility];
@@ -16120,24 +16120,24 @@ LABEL_5:
   }
 }
 
-- (BOOL)callParticipantsViewControllerShouldShowLargeAvatar:(id)a3
+- (BOOL)callParticipantsViewControllerShouldShowLargeAvatar:(id)avatar
 {
-  v4 = a3;
-  v5 = [(PHAudioCallViewController *)self callParticipantsViewController];
+  avatarCopy = avatar;
+  callParticipantsViewController = [(PHAudioCallViewController *)self callParticipantsViewController];
 
-  if (v5 == v4)
+  if (callParticipantsViewController == avatarCopy)
   {
-    v8 = [(PHAudioCallViewController *)self shouldShowLargeAvatar];
+    shouldShowLargeAvatar = [(PHAudioCallViewController *)self shouldShowLargeAvatar];
 LABEL_6:
-    v7 = v8;
+    v7 = shouldShowLargeAvatar;
     goto LABEL_7;
   }
 
-  v6 = [(PHAudioCallViewController *)self callWaitingParticipantsViewController];
+  callWaitingParticipantsViewController = [(PHAudioCallViewController *)self callWaitingParticipantsViewController];
 
-  if (v6 == v4)
+  if (callWaitingParticipantsViewController == avatarCopy)
   {
-    v8 = [(PHAudioCallViewController *)self shouldShowLargeAvatarForCallWaiting];
+    shouldShowLargeAvatar = [(PHAudioCallViewController *)self shouldShowLargeAvatarForCallWaiting];
     goto LABEL_6;
   }
 
@@ -16147,34 +16147,34 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)shouldShowLargeAvatarForCall:(id)a3
+- (BOOL)shouldShowLargeAvatarForCall:(id)call
 {
-  v4 = a3;
-  if ([(PHAudioCallViewController *)self callStateCanShowNewPoster:v4]|| ![(PHAudioCallViewController *)self prefersShowingCachedLastSeenPosterBeforeCallConnected:v4])
+  callCopy = call;
+  if ([(PHAudioCallViewController *)self callStateCanShowNewPoster:callCopy]|| ![(PHAudioCallViewController *)self prefersShowingCachedLastSeenPosterBeforeCallConnected:callCopy])
   {
-    v5 = [(PHAudioCallViewController *)self contactWallpaperForCall:v4];
+    v5 = [(PHAudioCallViewController *)self contactWallpaperForCall:callCopy];
     v6 = [(PHAudioCallViewController *)self wallpaperTypeForCNWallpaper:v5];
   }
 
   else
   {
-    v5 = [(PHAudioCallViewController *)self lastSeenPosterIMWallpaperMetadataForCall:v4];
+    v5 = [(PHAudioCallViewController *)self lastSeenPosterIMWallpaperMetadataForCall:callCopy];
     v6 = [(PHAudioCallViewController *)self wallpaperTypeForIMWallpaperMetadata:v5];
   }
 
   v7 = v6;
 
-  v8 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v8 callDisplayStyle] != 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
     v11 = 0;
     goto LABEL_11;
   }
 
-  v9 = [(PHAudioCallViewController *)self features];
-  v10 = [v9 isDominoEnabled];
+  features = [(PHAudioCallViewController *)self features];
+  isDominoEnabled = [features isDominoEnabled];
 
-  if (!v10)
+  if (!isDominoEnabled)
   {
     v11 = 0;
     goto LABEL_13;
@@ -16183,8 +16183,8 @@ LABEL_7:
   v11 = 1;
   if (v7 != CNWallpaperTypeMemoji && v7 != CNWallpaperTypeMonogram)
   {
-    v8 = [(PHAudioCallViewController *)self contactImageForCall:v4];
-    [v8 size];
+    callDisplayStyleManager = [(PHAudioCallViewController *)self contactImageForCall:callCopy];
+    [callDisplayStyleManager size];
     v11 = v12 > 300.0;
 LABEL_11:
   }
@@ -16196,13 +16196,13 @@ LABEL_13:
 
 - (void)updateShouldShowLargeAvatar
 {
-  v11 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v11 callDisplayStyle] == 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] == 3)
   {
-    v3 = [(PHAudioCallViewController *)self features];
-    v4 = [v3 isDominoEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (!v4)
+    if (!isDominoEnabled)
     {
       return;
     }
@@ -16216,131 +16216,131 @@ LABEL_13:
 
     if ([(PHAudioCallViewController *)self usesCompactMulticallUI]&& ([(PHAudioCallViewController *)self prioritizedCall], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
     {
-      v11 = [(PHAudioCallViewController *)self prioritizedCall];
-      v6 = [(PHAudioCallViewController *)self shouldShowLargeAvatarForCall:v11];
+      callDisplayStyleManager = [(PHAudioCallViewController *)self prioritizedCall];
+      v6 = [(PHAudioCallViewController *)self shouldShowLargeAvatarForCall:callDisplayStyleManager];
     }
 
     else
     {
-      v7 = [(PHAudioCallViewController *)self callParticipantsViewController];
-      v8 = [v7 currentCallGroups];
-      v9 = [v8 firstObject];
-      v10 = [v9 calls];
-      v11 = [v10 firstObject];
+      callParticipantsViewController = [(PHAudioCallViewController *)self callParticipantsViewController];
+      currentCallGroups = [callParticipantsViewController currentCallGroups];
+      firstObject = [currentCallGroups firstObject];
+      calls = [firstObject calls];
+      callDisplayStyleManager = [calls firstObject];
 
-      v6 = [(PHAudioCallViewController *)self shouldShowLargeAvatarForCall:v11];
+      v6 = [(PHAudioCallViewController *)self shouldShowLargeAvatarForCall:callDisplayStyleManager];
     }
 
     [(PHAudioCallViewController *)self setShouldShowLargeAvatar:v6];
   }
 }
 
-- (id)customColorForStatusLabelWithCall:(id)a3
+- (id)customColorForStatusLabelWithCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   if (![(PHAudioCallViewController *)self shouldUseHeroImageLayout])
   {
-    v5 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    if ([v5 callDisplayStyle] != 3)
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    if ([callDisplayStyleManager callDisplayStyle] != 3)
     {
-      v6 = 0;
+      titleColor = 0;
       goto LABEL_7;
     }
 
-    v7 = [(PHAudioCallViewController *)self features];
-    v8 = [v7 isDominoEnabled];
+    features = [(PHAudioCallViewController *)self features];
+    isDominoEnabled = [features isDominoEnabled];
 
-    if (!v8)
+    if (!isDominoEnabled)
     {
-      v6 = 0;
+      titleColor = 0;
       goto LABEL_8;
     }
   }
 
-  v5 = [(PHAudioCallViewController *)self wallpaperTitleStyleAttributesForCall:v4];
-  v6 = [v5 titleColor];
+  callDisplayStyleManager = [(PHAudioCallViewController *)self wallpaperTitleStyleAttributesForCall:callCopy];
+  titleColor = [callDisplayStyleManager titleColor];
 LABEL_7:
 
 LABEL_8:
 
-  return v6;
+  return titleColor;
 }
 
-- (id)customColorForParticipantLabelWithCall:(id)a3
+- (id)customColorForParticipantLabelWithCall:(id)call
 {
-  v4 = a3;
-  v5 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v5 callDisplayStyle] != 3)
+  callCopy = call;
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
-    v8 = 0;
+    titleColor = 0;
     goto LABEL_5;
   }
 
-  v6 = [(PHAudioCallViewController *)self features];
-  v7 = [v6 isDominoEnabled];
+  features = [(PHAudioCallViewController *)self features];
+  isDominoEnabled = [features isDominoEnabled];
 
-  if (v7)
+  if (isDominoEnabled)
   {
-    v5 = [(PHAudioCallViewController *)self wallpaperTitleStyleAttributesForCall:v4];
-    v8 = [v5 titleColor];
+    callDisplayStyleManager = [(PHAudioCallViewController *)self wallpaperTitleStyleAttributesForCall:callCopy];
+    titleColor = [callDisplayStyleManager titleColor];
 LABEL_5:
 
     goto LABEL_7;
   }
 
-  v8 = 0;
+  titleColor = 0;
 LABEL_7:
 
-  return v8;
+  return titleColor;
 }
 
-- (id)customFontForParticipantLabelWithCall:(id)a3
+- (id)customFontForParticipantLabelWithCall:(id)call
 {
-  v4 = a3;
-  v5 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v5 callDisplayStyle] != 3)
+  callCopy = call;
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
-    v8 = 0;
+    titleFont = 0;
     goto LABEL_5;
   }
 
-  v6 = [(PHAudioCallViewController *)self features];
-  v7 = [v6 isDominoEnabled];
+  features = [(PHAudioCallViewController *)self features];
+  isDominoEnabled = [features isDominoEnabled];
 
-  if (v7)
+  if (isDominoEnabled)
   {
-    v5 = [(PHAudioCallViewController *)self wallpaperTitleStyleAttributesForCall:v4];
-    v8 = [v5 titleFont];
+    callDisplayStyleManager = [(PHAudioCallViewController *)self wallpaperTitleStyleAttributesForCall:callCopy];
+    titleFont = [callDisplayStyleManager titleFont];
 LABEL_5:
 
     goto LABEL_7;
   }
 
-  v8 = 0;
+  titleFont = 0;
 LABEL_7:
 
-  return v8;
+  return titleFont;
 }
 
-- (void)setParticipantsViewShouldShowParticipantLabel:(BOOL)a3
+- (void)setParticipantsViewShouldShowParticipantLabel:(BOOL)label
 {
-  if (self->_participantsViewShouldShowParticipantLabel != a3)
+  if (self->_participantsViewShouldShowParticipantLabel != label)
   {
-    v4 = a3;
-    self->_participantsViewShouldShowParticipantLabel = a3;
-    v6 = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
-    [(PHAudioCallViewController *)self updateParticipantsLabelForView:v6 isHidden:!v4];
+    labelCopy = label;
+    self->_participantsViewShouldShowParticipantLabel = label;
+    getParticipantsView_NotWaiting = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
+    [(PHAudioCallViewController *)self updateParticipantsLabelForView:getParticipantsView_NotWaiting isHidden:!labelCopy];
   }
 }
 
-- (void)updateParticipantsLabelForView:(id)a3 isHidden:(BOOL)a4
+- (void)updateParticipantsLabelForView:(id)view isHidden:(BOOL)hidden
 {
-  if (a3)
+  if (view)
   {
-    v4 = !a4;
-    v6 = [a3 singleCallLabelView];
-    v5 = [v6 participantMarqueeLabel];
-    [v5 setAlpha:v4];
+    v4 = !hidden;
+    singleCallLabelView = [view singleCallLabelView];
+    participantMarqueeLabel = [singleCallLabelView participantMarqueeLabel];
+    [participantMarqueeLabel setAlpha:v4];
   }
 }
 
@@ -16363,10 +16363,10 @@ LABEL_7:
   }
 }
 
-- (BOOL)shouldShowEnableWiFiCallingAlertForCall:(id)a3
+- (BOOL)shouldShowEnableWiFiCallingAlertForCall:(id)call
 {
-  v3 = a3;
-  if (([v3 isEmergency] & 1) == 0 && objc_msgSend(v3, "disconnectedReason") == 14 && objc_msgSend(v3, "service") == 1)
+  callCopy = call;
+  if (([callCopy isEmergency] & 1) == 0 && objc_msgSend(callCopy, "disconnectedReason") == 14 && objc_msgSend(callCopy, "service") == 1)
   {
     v4 = PHShouldShowWifiCallingAlert();
   }
@@ -16376,10 +16376,10 @@ LABEL_7:
     v4 = 0;
   }
 
-  v5 = [v3 localSenderIdentityUUID];
-  if (v5)
+  localSenderIdentityUUID = [callCopy localSenderIdentityUUID];
+  if (localSenderIdentityUUID)
   {
-    v6 = [TUCallCapabilities senderIdentityCapabilitiesWithUUID:v5];
+    v6 = [TUCallCapabilities senderIdentityCapabilitiesWithUUID:localSenderIdentityUUID];
     v7 = v6;
     LOBYTE(v8) = (v6 == 0) & v4;
     if (v6 && ((v4 ^ 1) & 1) == 0)
@@ -16414,20 +16414,20 @@ LABEL_7:
   [v2 postNotificationName:@"PHAlertDisconnectingCallsNotification" object:0];
 }
 
-- (void)updatePresentationStateWithAllowed:(BOOL)a3
+- (void)updatePresentationStateWithAllowed:(BOOL)allowed
 {
-  v3 = a3;
-  if ([(PHAudioCallViewController *)self shouldPresentAlertButton]!= a3)
+  allowedCopy = allowed;
+  if ([(PHAudioCallViewController *)self shouldPresentAlertButton]!= allowed)
   {
     v5 = sub_100004F84();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6[0] = 67109120;
-      v6[1] = v3;
+      v6[1] = allowedCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PHAudioCallViewController is about to set shouldPresentAlertButton to %d", v6, 8u);
     }
 
-    [(PHAudioCallViewController *)self setShouldPresentAlertButton:v3];
+    [(PHAudioCallViewController *)self setShouldPresentAlertButton:allowedCopy];
     [(PHAudioCallViewController *)self updateCurrentState];
     [(PHAudioCallViewController *)self triggerAutoCountdownIfAvailable];
   }
@@ -16456,9 +16456,9 @@ LABEL_7:
 
     else
     {
-      v4 = [(PHAudioCallViewController *)self alertCountDownTimer];
+      alertCountDownTimer = [(PHAudioCallViewController *)self alertCountDownTimer];
 
-      if (!v4)
+      if (!alertCountDownTimer)
       {
         v5 = sub_100004F84();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -16474,22 +16474,22 @@ LABEL_7:
         +[_TtC13InCallService16AlertCoordinator countdownDuration];
         v25 = v6;
         v7 = +[UIApplication sharedApplication];
-        v8 = [v7 delegate];
-        v9 = [v8 alertCoordinator];
-        v10 = [v9 isBackgroundCountdownRunning];
+        delegate = [v7 delegate];
+        alertCoordinator = [delegate alertCoordinator];
+        isBackgroundCountdownRunning = [alertCoordinator isBackgroundCountdownRunning];
 
-        if (v10)
+        if (isBackgroundCountdownRunning)
         {
           v11 = +[UIApplication sharedApplication];
-          v12 = [v11 delegate];
-          v13 = [v12 alertCoordinator];
-          [v13 currentBackgroundCountdownDuration];
+          delegate2 = [v11 delegate];
+          alertCoordinator2 = [delegate2 alertCoordinator];
+          [alertCoordinator2 currentBackgroundCountdownDuration];
           *(v23 + 3) = v14;
 
           v15 = +[UIApplication sharedApplication];
-          v16 = [v15 delegate];
-          v17 = [v16 alertCoordinator];
-          [v17 stopBackgroundCountdown];
+          delegate3 = [v15 delegate];
+          alertCoordinator3 = [delegate3 alertCoordinator];
+          [alertCoordinator3 stopBackgroundCountdown];
         }
 
         objc_initWeak(&location, self);
@@ -16514,8 +16514,8 @@ LABEL_7:
 {
   if ([(PHAudioCallViewController *)self shouldPresentAlertButton])
   {
-    v3 = [(PHAudioCallViewController *)self frontmostCall];
-    if ([v3 originatingUIType] == 11 && !-[PHAudioCallViewController didRequestToSpeakAlertUtterance](self, "didRequestToSpeakAlertUtterance"))
+    frontmostCall = [(PHAudioCallViewController *)self frontmostCall];
+    if ([frontmostCall originatingUIType] == 11 && !-[PHAudioCallViewController didRequestToSpeakAlertUtterance](self, "didRequestToSpeakAlertUtterance"))
     {
       v4 = +[UIScreen _carScreen];
 
@@ -16542,12 +16542,12 @@ LABEL_7:
       }
 
       v10 = +[UIScreen _carScreen];
-      v11 = [(PHAudioCallViewController *)self speechSynthesizer];
-      [v11 setUsesApplicationAudioSession:v10 != 0];
+      speechSynthesizer = [(PHAudioCallViewController *)self speechSynthesizer];
+      [speechSynthesizer setUsesApplicationAudioSession:v10 != 0];
 
       v12 = [AVSpeechUtterance speechUtteranceWithString:v8];
-      v13 = [(PHAudioCallViewController *)self speechSynthesizer];
-      [v13 speakUtterance:v12];
+      speechSynthesizer2 = [(PHAudioCallViewController *)self speechSynthesizer];
+      [speechSynthesizer2 speakUtterance:v12];
 
       [(PHAudioCallViewController *)self setDidRequestToSpeakAlertUtterance:1];
     }
@@ -16556,25 +16556,25 @@ LABEL_7:
 
 - (BOOL)isReadyToShowCallDetails
 {
-  v2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  v3 = [v2 callDisplayStyle] == 2;
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  v3 = [callDisplayStyleManager callDisplayStyle] == 2;
 
   return v3;
 }
 
-- (void)audioDeviceControllerMutedTalkerDidStart:(id)a3
+- (void)audioDeviceControllerMutedTalkerDidStart:(id)start
 {
   if ([(PHAudioCallViewController *)self audioCallMutedTalkerIsSupported])
   {
-    v4 = [(PHAudioCallViewController *)self didNotifyMutedCaller];
-    v5 = sub_100004F84();
-    v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    didNotifyMutedCaller = [(PHAudioCallViewController *)self didNotifyMutedCaller];
+    mutedTalkerBannerViewController2 = sub_100004F84();
+    v6 = os_log_type_enabled(mutedTalkerBannerViewController2, OS_LOG_TYPE_DEFAULT);
+    if (didNotifyMutedCaller)
     {
       if (v6)
       {
         *v8 = 0;
-        _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PHAudioCallViewController: received audioDeviceControllerMutedTalkerDidStart callback, but banner was presented before, skips updating", v8, 2u);
+        _os_log_impl(&_mh_execute_header, mutedTalkerBannerViewController2, OS_LOG_TYPE_DEFAULT, "PHAudioCallViewController: received audioDeviceControllerMutedTalkerDidStart callback, but banner was presented before, skips updating", v8, 2u);
       }
     }
 
@@ -16583,15 +16583,15 @@ LABEL_7:
       if (v6)
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PHAudioCallViewController: received audioDeviceControllerMutedTalkerDidStart callback, presenting banner", buf, 2u);
+        _os_log_impl(&_mh_execute_header, mutedTalkerBannerViewController2, OS_LOG_TYPE_DEFAULT, "PHAudioCallViewController: received audioDeviceControllerMutedTalkerDidStart callback, presenting banner", buf, 2u);
       }
 
       [(PHAudioCallViewController *)self setDidNotifyMutedCaller:1];
-      v7 = [(PHAudioCallViewController *)self mutedTalkerBannerViewController];
-      [v7 showBanner];
+      mutedTalkerBannerViewController = [(PHAudioCallViewController *)self mutedTalkerBannerViewController];
+      [mutedTalkerBannerViewController showBanner];
 
-      v5 = [(PHAudioCallViewController *)self mutedTalkerBannerViewController];
-      [v5 playBannerSound];
+      mutedTalkerBannerViewController2 = [(PHAudioCallViewController *)self mutedTalkerBannerViewController];
+      [mutedTalkerBannerViewController2 playBannerSound];
     }
   }
 }
@@ -16600,31 +16600,31 @@ LABEL_7:
 {
   if ([(PHAudioCallViewController *)self audioCallMutedTalkerIsSupported])
   {
-    v3 = [(PHAudioCallViewController *)self buttonsViewController];
-    [v3 handleMutedTalkerBannerTap];
+    buttonsViewController = [(PHAudioCallViewController *)self buttonsViewController];
+    [buttonsViewController handleMutedTalkerBannerTap];
 
-    v4 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    v5 = [v4 callDisplayStyle];
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    callDisplayStyle = [callDisplayStyleManager callDisplayStyle];
 
-    if (v5 == 2)
+    if (callDisplayStyle == 2)
     {
-      v6 = [(PHAudioCallViewController *)self mutedTalkerBannerViewController];
-      [v6 dismissBanner];
+      mutedTalkerBannerViewController = [(PHAudioCallViewController *)self mutedTalkerBannerViewController];
+      [mutedTalkerBannerViewController dismissBanner];
     }
   }
 }
 
-- (void)contactDidChange:(id)a3
+- (void)contactDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 wallpaper];
+    wallpaper = [changeCopy wallpaper];
     v28 = 138412546;
-    *v29 = v4;
+    *v29 = changeCopy;
     *&v29[8] = 2112;
-    v30 = v6;
+    v30 = wallpaper;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "contactDidChange: %@ wallpaper: %@", &v28, 0x16u);
   }
 
@@ -16641,20 +16641,20 @@ LABEL_7:
     goto LABEL_25;
   }
 
-  v8 = [(PHAudioCallViewController *)self contactsCache];
-  v9 = [v4 identifier];
-  v10 = [v8 objectForKey:v9];
+  contactsCache = [(PHAudioCallViewController *)self contactsCache];
+  identifier = [changeCopy identifier];
+  v10 = [contactsCache objectForKey:identifier];
 
   v11 = +[UIApplication sharedApplication];
-  v12 = [v11 delegate];
-  v13 = [v12 isShowingIncomingNameUpdate];
+  delegate = [v11 delegate];
+  isShowingIncomingNameUpdate = [delegate isShowingIncomingNameUpdate];
 
-  v14 = [(PHAudioCallViewController *)self presentedViewController];
+  presentedViewController = [(PHAudioCallViewController *)self presentedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = [v14 topViewController];
-    if (v15)
+    topViewController = [presentedViewController topViewController];
+    if (topViewController)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -16674,90 +16674,90 @@ LABEL_7:
   else
   {
     isKindOfClass = 0;
-    v15 = v14;
+    topViewController = presentedViewController;
     if (!v10)
     {
       goto LABEL_22;
     }
   }
 
-  v17 = [(PHAudioCallViewController *)self contactsCache];
-  v18 = [v4 identifier];
-  [v17 setObject:v4 forKey:v18];
+  contactsCache2 = [(PHAudioCallViewController *)self contactsCache];
+  identifier2 = [changeCopy identifier];
+  [contactsCache2 setObject:changeCopy forKey:identifier2];
 
-  if ((v13 | isKindOfClass))
+  if ((isShowingIncomingNameUpdate | isKindOfClass))
   {
     v19 = sub_100004F84();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v28 = 67109376;
-      *v29 = v13;
+      *v29 = isShowingIncomingNameUpdate;
       *&v29[4] = 1024;
       *&v29[6] = isKindOfClass & 1;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "SNAP: going to render poster again since contact did change, isBannerPresented = %d, isContactCardPresented = %d", &v28, 0xEu);
     }
 
-    v20 = [(PHAudioCallViewController *)self configurationCache];
-    [v20 removeAllObjects];
+    configurationCache = [(PHAudioCallViewController *)self configurationCache];
+    [configurationCache removeAllObjects];
 
     [(PHAudioCallViewController *)self updateLayeredBackgroundWallpaper];
   }
 
-  v21 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  if ([v21 callDisplayStyle] != 3)
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  if ([callDisplayStyleManager callDisplayStyle] != 3)
   {
     goto LABEL_21;
   }
 
-  v22 = [(PHAudioCallViewController *)self features];
-  v23 = [v22 isDominoEnabled];
+  features = [(PHAudioCallViewController *)self features];
+  isDominoEnabled = [features isDominoEnabled];
 
-  if (v23)
+  if (isDominoEnabled)
   {
-    v24 = [(PHAudioCallViewController *)self callToUseForWallpaper];
-    v21 = [(PHAudioCallViewController *)self contactImageDataForCall:v24];
+    callToUseForWallpaper = [(PHAudioCallViewController *)self callToUseForWallpaper];
+    callDisplayStyleManager = [(PHAudioCallViewController *)self contactImageDataForCall:callToUseForWallpaper];
 
-    v25 = [[UIImage alloc] initWithData:v21];
+    v25 = [[UIImage alloc] initWithData:callDisplayStyleManager];
     [(PHAudioCallViewController *)self setBackgroundImage:v25];
 
 LABEL_21:
   }
 
 LABEL_22:
-  if (v13)
+  if (isShowingIncomingNameUpdate)
   {
     v26 = +[UIApplication sharedApplication];
-    v27 = [v26 delegate];
-    [v27 setIsShowingIncomingNameUpdate:0];
+    delegate2 = [v26 delegate];
+    [delegate2 setIsShowingIncomingNameUpdate:0];
   }
 
 LABEL_25:
 }
 
-- (void)presentDisconnectionAlert:(id)a3
+- (void)presentDisconnectionAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v5 = +[CNKFeatures sharedInstance];
-  v6 = [v5 isEnhancedEmergencyEnabled];
+  isEnhancedEmergencyEnabled = [v5 isEnhancedEmergencyEnabled];
 
-  if (v6)
+  if (isEnhancedEmergencyEnabled)
   {
-    v7 = [(PHAudioCallViewController *)self emergencyCoordinator];
-    if (v7)
+    emergencyCoordinator = [(PHAudioCallViewController *)self emergencyCoordinator];
+    if (emergencyCoordinator)
     {
-      v8 = v7;
-      v9 = [(PHAudioCallViewController *)self emergencyCoordinator];
-      v10 = [v9 videoStreamingIsOnScreen];
+      v8 = emergencyCoordinator;
+      emergencyCoordinator2 = [(PHAudioCallViewController *)self emergencyCoordinator];
+      videoStreamingIsOnScreen = [emergencyCoordinator2 videoStreamingIsOnScreen];
 
-      if (v10)
+      if (videoStreamingIsOnScreen)
       {
         v11 = +[NSBundle mainBundle];
         v12 = [v11 localizedStringForKey:@"STOP_SHARING_LIVE_VIDEO_TITLE" value:&stru_100361FD0 table:@"InCallService"];
-        [v4 setTitle:v12];
+        [alertCopy setTitle:v12];
 
         v13 = +[NSBundle mainBundle];
         v14 = [v13 localizedStringForKey:@"STOP_SHARING_LIVE_VIDEO_SUBTITLE" value:&stru_100361FD0 table:@"InCallService"];
-        [v4 setMessage:v14];
+        [alertCopy setMessage:v14];
 
         objc_initWeak(&location, self);
         v15 = +[NSBundle mainBundle];
@@ -16768,39 +16768,39 @@ LABEL_25:
         v21 = &unk_100359390;
         objc_copyWeak(&v22, &location);
         v17 = [UIAlertAction actionWithTitle:v16 style:0 handler:&v18];
-        [v4 addAction:{v17, v18, v19, v20, v21}];
+        [alertCopy addAction:{v17, v18, v19, v20, v21}];
 
         objc_destroyWeak(&v22);
         objc_destroyWeak(&location);
       }
     }
 
-    [(PHAudioCallViewController *)self presentViewController:v4 animated:1 completion:0];
+    [(PHAudioCallViewController *)self presentViewController:alertCopy animated:1 completion:0];
   }
 }
 
 - (BOOL)isShowSOSConfirmationSupported
 {
-  v2 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-  v3 = [v2 callDisplayStyle] == 2;
+  callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+  v3 = [callDisplayStyleManager callDisplayStyle] == 2;
 
   return v3;
 }
 
-- (void)screenSharingInteractionController:(id)a3 didUpdateRemoteControlStatus:(BOOL)a4
+- (void)screenSharingInteractionController:(id)controller didUpdateRemoteControlStatus:(BOOL)status
 {
-  v4 = a4;
-  v6 = [(PHAudioCallViewController *)self featureFlags];
-  v7 = [v6 screenSharingRemoteControlEnabled];
+  statusCopy = status;
+  featureFlags = [(PHAudioCallViewController *)self featureFlags];
+  screenSharingRemoteControlEnabled = [featureFlags screenSharingRemoteControlEnabled];
 
   v8 = sub_10000B2A0();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (screenSharingRemoteControlEnabled)
   {
     if (v9)
     {
       v10 = @"NO";
-      if (v4)
+      if (statusCopy)
       {
         v10 = @"YES";
       }
@@ -16873,8 +16873,8 @@ LABEL_25:
   [(PHAudioCallViewController *)self stopMessagePlayback];
   if (+[SOSUtilities shouldPlayAudioDuringCountdown])
   {
-    v3 = [(PHAudioCallViewController *)self voiceMessageManager];
-    if (v3)
+    voiceMessageManager = [(PHAudioCallViewController *)self voiceMessageManager];
+    if (voiceMessageManager)
     {
     }
 
@@ -16890,17 +16890,17 @@ LABEL_25:
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "startMessagePlayback,starting call buffer voice message", v7, 2u);
       }
 
-      v6 = [(PHAudioCallViewController *)self voiceMessageManager];
-      [v6 startMessagePlayback];
+      voiceMessageManager2 = [(PHAudioCallViewController *)self voiceMessageManager];
+      [voiceMessageManager2 startMessagePlayback];
     }
   }
 }
 
 - (void)stopMessagePlayback
 {
-  v3 = [(PHAudioCallViewController *)self voiceMessageManager];
+  voiceMessageManager = [(PHAudioCallViewController *)self voiceMessageManager];
 
-  if (v3)
+  if (voiceMessageManager)
   {
     v4 = sub_100004F84();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -16909,8 +16909,8 @@ LABEL_25:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "stopMessagePlayback", v6, 2u);
     }
 
-    v5 = [(PHAudioCallViewController *)self voiceMessageManager];
-    [v5 stopMessagePlayback];
+    voiceMessageManager2 = [(PHAudioCallViewController *)self voiceMessageManager];
+    [voiceMessageManager2 stopMessagePlayback];
 
     [(PHAudioCallViewController *)self setVoiceMessageManager:0];
   }
@@ -16920,9 +16920,9 @@ LABEL_25:
 {
   [(PHAudioCallViewController *)self stopCallBufferTimer];
   [(PHAudioCallViewController *)self startMessagePlayback];
-  v3 = [(PHAudioCallViewController *)self callBufferTimer];
+  callBufferTimer = [(PHAudioCallViewController *)self callBufferTimer];
 
-  if (!v3)
+  if (!callBufferTimer)
   {
     objc_initWeak(&location, self);
     v7[0] = 0;
@@ -16946,10 +16946,10 @@ LABEL_25:
 
 - (void)stopCallBufferTimer
 {
-  v3 = [(PHAudioCallViewController *)self callBufferTimer];
-  v4 = [v3 isValid];
+  callBufferTimer = [(PHAudioCallViewController *)self callBufferTimer];
+  isValid = [callBufferTimer isValid];
 
-  if (v4)
+  if (isValid)
   {
     v5 = sub_100004F84();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -16958,8 +16958,8 @@ LABEL_25:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PHAudioCallViewController,stopCallBufferTimer", v7, 2u);
     }
 
-    v6 = [(PHAudioCallViewController *)self callBufferTimer];
-    [v6 invalidate];
+    callBufferTimer2 = [(PHAudioCallViewController *)self callBufferTimer];
+    [callBufferTimer2 invalidate];
 
     [(PHAudioCallViewController *)self setCallBufferTimer:0];
   }
@@ -16977,8 +16977,8 @@ LABEL_25:
   if (!self->_bufferSingleCallLabelView)
   {
     v3 = [PHSingleCallParticipantLabelView alloc];
-    v4 = [(PHAudioCallViewController *)self callDisplayStyleManager];
-    v5 = [(PHSingleCallParticipantLabelView *)v3 initWithCallDisplayStyleManager:v4];
+    callDisplayStyleManager = [(PHAudioCallViewController *)self callDisplayStyleManager];
+    v5 = [(PHSingleCallParticipantLabelView *)v3 initWithCallDisplayStyleManager:callDisplayStyleManager];
     bufferSingleCallLabelView = self->_bufferSingleCallLabelView;
     self->_bufferSingleCallLabelView = v5;
 
@@ -16994,8 +16994,8 @@ LABEL_25:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Adding a new single-participant view to the view hierarchy: %@", buf, 0xCu);
     }
 
-    v9 = [(PHAudioCallViewController *)self view];
-    [v9 addSubview:self->_bufferSingleCallLabelView];
+    view = [(PHAudioCallViewController *)self view];
+    [view addSubview:self->_bufferSingleCallLabelView];
 
     v41 = [UIFont phPreferredFontForTextStyle:UIFontTextStyleLargeTitle];
     v10 = self->_bufferSingleCallLabelView;
@@ -17005,8 +17005,8 @@ LABEL_25:
 
     v12 = +[NSBundle mainBundle];
     v13 = [v12 localizedStringForKey:@"SOS_CALL_BUFFER_TITLE" value:&stru_100361FD0 table:@"InCallService"];
-    v14 = [(PHAbstractCallParticipantLabelView *)self->_bufferSingleCallLabelView participantMarqueeLabel];
-    [v14 setText:v13];
+    participantMarqueeLabel = [(PHAbstractCallParticipantLabelView *)self->_bufferSingleCallLabelView participantMarqueeLabel];
+    [participantMarqueeLabel setText:v13];
 
     v15 = self->_bufferSingleCallLabelView;
     v16 = +[UIColor systemRedColor];
@@ -17018,29 +17018,29 @@ LABEL_25:
     v20 = [(CNKCallParticipantLabelDescriptorFactory *)labelDescriptorFactory makeLabelWithString:v19];
 
     [(PHSingleCallParticipantLabelView *)self->_bufferSingleCallLabelView setLabelDescriptor:v20];
-    v21 = [(PHSingleCallParticipantLabelView *)self->_bufferSingleCallLabelView topAnchor];
-    v22 = [(PHAudioCallViewController *)self view];
-    v23 = [v22 safeAreaLayoutGuide];
-    v24 = [v23 topAnchor];
+    topAnchor = [(PHSingleCallParticipantLabelView *)self->_bufferSingleCallLabelView topAnchor];
+    view2 = [(PHAudioCallViewController *)self view];
+    safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
     +[TPIncomingCallMetricsProvider sixPercentOfDeviceHeight];
-    v25 = [v21 constraintEqualToAnchor:v24 constant:?];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
 
-    v26 = [(PHSingleCallParticipantLabelView *)self->_bufferSingleCallLabelView centerXAnchor];
-    v27 = [(PHAudioCallViewController *)self view];
-    v28 = [v27 centerXAnchor];
-    v29 = [v26 constraintEqualToAnchor:v28];
+    centerXAnchor = [(PHSingleCallParticipantLabelView *)self->_bufferSingleCallLabelView centerXAnchor];
+    view3 = [(PHAudioCallViewController *)self view];
+    centerXAnchor2 = [view3 centerXAnchor];
+    v29 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-    v30 = [(PHSingleCallParticipantLabelView *)self->_bufferSingleCallLabelView leadingAnchor];
-    v31 = [(PHAudioCallViewController *)self view];
-    v32 = [v31 readableContentGuide];
-    v33 = [v32 leadingAnchor];
-    v34 = [v30 constraintEqualToAnchor:v33];
+    leadingAnchor = [(PHSingleCallParticipantLabelView *)self->_bufferSingleCallLabelView leadingAnchor];
+    view4 = [(PHAudioCallViewController *)self view];
+    readableContentGuide = [view4 readableContentGuide];
+    leadingAnchor2 = [readableContentGuide leadingAnchor];
+    v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-    v35 = [(PHSingleCallParticipantLabelView *)self->_bufferSingleCallLabelView trailingAnchor];
-    v36 = [(PHAudioCallViewController *)self view];
-    v37 = [v36 readableContentGuide];
-    v38 = [v37 trailingAnchor];
-    v39 = [v35 constraintEqualToAnchor:v38];
+    trailingAnchor = [(PHSingleCallParticipantLabelView *)self->_bufferSingleCallLabelView trailingAnchor];
+    view5 = [(PHAudioCallViewController *)self view];
+    readableContentGuide2 = [view5 readableContentGuide];
+    trailingAnchor2 = [readableContentGuide2 trailingAnchor];
+    v39 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
     v42[0] = v25;
     v42[1] = v29;
@@ -17051,17 +17051,17 @@ LABEL_25:
   }
 }
 
-+ (BOOL)wallpaperContentIsSensitive:(id)a3
++ (BOOL)wallpaperContentIsSensitive:(id)sensitive
 {
-  v3 = a3;
+  sensitiveCopy = sensitive;
   if (+[_TtC13InCallService23SensitivityFeatureFlags isContactNudityDetectionEnabled])
   {
-    v4 = [v3 contentIsSensitive];
+    contentIsSensitive = [sensitiveCopy contentIsSensitive];
     v5 = sub_100004F84();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7[0] = 67109120;
-      v7[1] = v4;
+      v7[1] = contentIsSensitive;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "SNAP: IMWallpaper.contentIsSensitive returning %d", v7, 8u);
     }
   }
@@ -17075,10 +17075,10 @@ LABEL_25:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "SNAP: IMWallpaper.contentIsSensitive not performing check", v7, 2u);
     }
 
-    LOBYTE(v4) = 0;
+    LOBYTE(contentIsSensitive) = 0;
   }
 
-  return v4;
+  return contentIsSensitive;
 }
 
 - (IMNicknameProvider)imNicknameProvider
@@ -17096,13 +17096,13 @@ LABEL_25:
   return imNicknameProvider;
 }
 
-- (void)addPosterBlurToPosterVC:(id)a3 nameLabelWrapper:(id)a4
+- (void)addPosterBlurToPosterVC:(id)c nameLabelWrapper:(id)wrapper
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  cCopy = c;
+  wrapperCopy = wrapper;
+  if (cCopy)
   {
-    v19 = v6;
+    v19 = wrapperCopy;
     v7 = +[_TtC13InCallService23SensitivityFeatureFlags isCommunicationSafetyEnabled];
     v8 = sub_100004F84();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -17127,34 +17127,34 @@ LABEL_25:
       objc_destroyWeak(buf);
     }
 
-    v10 = [v5 view];
-    [v10 addSubview:v9];
+    view = [cCopy view];
+    [view addSubview:v9];
 
-    v27 = [(PHContactWallpaperSensitiveBlurView *)v9 topAnchor];
-    v28 = [v5 view];
-    v26 = [v28 topAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26];
+    topAnchor = [(PHContactWallpaperSensitiveBlurView *)v9 topAnchor];
+    view2 = [cCopy view];
+    topAnchor2 = [view2 topAnchor];
+    v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v31[0] = v25;
-    v23 = [(PHContactWallpaperSensitiveBlurView *)v9 bottomAnchor];
-    v24 = [v5 view];
-    v22 = [v24 bottomAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22];
+    bottomAnchor = [(PHContactWallpaperSensitiveBlurView *)v9 bottomAnchor];
+    view3 = [cCopy view];
+    bottomAnchor2 = [view3 bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v31[1] = v21;
-    v20 = [(PHContactWallpaperSensitiveBlurView *)v9 trailingAnchor];
-    v11 = [v5 view];
-    v12 = [v11 trailingAnchor];
-    v13 = [v20 constraintEqualToAnchor:v12];
+    trailingAnchor = [(PHContactWallpaperSensitiveBlurView *)v9 trailingAnchor];
+    view4 = [cCopy view];
+    trailingAnchor2 = [view4 trailingAnchor];
+    v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v31[2] = v13;
-    v14 = [(PHContactWallpaperSensitiveBlurView *)v9 leadingAnchor];
-    v15 = [v5 view];
-    v16 = [v15 leadingAnchor];
-    v17 = [v14 constraintEqualToAnchor:v16];
+    leadingAnchor = [(PHContactWallpaperSensitiveBlurView *)v9 leadingAnchor];
+    view5 = [cCopy view];
+    leadingAnchor2 = [view5 leadingAnchor];
+    v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v31[3] = v17;
     v18 = [NSArray arrayWithObjects:v31 count:4];
     [NSLayoutConstraint activateConstraints:v18];
 
     [TPIncomingCallMetricsProvider addCallerNameView:v19 toContainerView:v9];
-    v6 = v19;
+    wrapperCopy = v19;
   }
 }
 
@@ -17171,13 +17171,13 @@ LABEL_25:
     [(UIStackView *)self->_middlePillContainer setAlignment:0];
     [(UIStackView *)self->_middlePillContainer setDistribution:3];
     [(UIStackView *)self->_middlePillContainer setTranslatesAutoresizingMaskIntoConstraints:0];
-    v5 = [(PHAudioCallViewController *)self view];
-    [v5 addSubview:self->_middlePillContainer];
+    view = [(PHAudioCallViewController *)self view];
+    [view addSubview:self->_middlePillContainer];
 
     v6 = objc_alloc_init(UIView);
     [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [v6 heightAnchor];
-    v8 = [v7 constraintGreaterThanOrEqualToConstant:0.0];
+    heightAnchor = [v6 heightAnchor];
+    v8 = [heightAnchor constraintGreaterThanOrEqualToConstant:0.0];
     [v8 setActive:1];
 
     [(UIStackView *)self->_middlePillContainer addArrangedSubview:v6];
@@ -17195,47 +17195,47 @@ LABEL_25:
   {
     if (self->_middlePillContainerLayoutConstraints)
     {
-      v3 = [(PHAudioCallViewController *)self middlePillContainerLayoutConstraints];
-      [NSLayoutConstraint deactivateConstraints:v3];
+      middlePillContainerLayoutConstraints = [(PHAudioCallViewController *)self middlePillContainerLayoutConstraints];
+      [NSLayoutConstraint deactivateConstraints:middlePillContainerLayoutConstraints];
     }
 
     v4 = [[NSMutableArray alloc] initWithArray:&__NSArray0__struct];
     if (-[PHAudioCallViewController middleViewState](self, "middleViewState") == 2 && (-[PHAudioCallViewController keypadViewController](self, "keypadViewController"), v5 = objc_claimAutoreleasedReturnValue(), [v5 view], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "superview"), v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v5, v7))
     {
-      v8 = [(PHAudioCallViewController *)self keypadViewController];
-      v9 = [v8 view];
-      v10 = [v9 topAnchor];
-      v11 = [(UIStackView *)self->_middlePillContainer bottomAnchor];
-      v12 = [v10 constraintEqualToAnchor:v11 constant:10.0];
+      keypadViewController = [(PHAudioCallViewController *)self keypadViewController];
+      view = [keypadViewController view];
+      topAnchor = [view topAnchor];
+      bottomAnchor = [(UIStackView *)self->_middlePillContainer bottomAnchor];
+      v12 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:10.0];
       [v4 addObject:v12];
 
-      v13 = [(PHAudioCallViewController *)self keypadViewController];
-      v14 = [v13 view];
-      v15 = [v14 trailingAnchor];
-      v16 = [(UIStackView *)self->_middlePillContainer trailingAnchor];
-      v17 = [v15 constraintEqualToAnchor:v16 constant:-10.0];
+      keypadViewController2 = [(PHAudioCallViewController *)self keypadViewController];
+      view2 = [keypadViewController2 view];
+      trailingAnchor = [view2 trailingAnchor];
+      trailingAnchor2 = [(UIStackView *)self->_middlePillContainer trailingAnchor];
+      v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
       [v4 addObject:v17];
 
-      v18 = [(PHAudioCallViewController *)self keypadViewController];
-      v19 = [v18 view];
-      v20 = [v19 leadingAnchor];
-      v21 = [(UIStackView *)self->_middlePillContainer leadingAnchor];
+      keypadViewController3 = [(PHAudioCallViewController *)self keypadViewController];
+      view3 = [keypadViewController3 view];
+      leadingAnchor = [view3 leadingAnchor];
+      leadingAnchor2 = [(UIStackView *)self->_middlePillContainer leadingAnchor];
       v22 = 10.0;
     }
 
     else
     {
-      v23 = [(PHAudioCallViewController *)self buttonsViewController];
-      v24 = [v23 view];
-      v25 = [v24 superview];
+      buttonsViewController = [(PHAudioCallViewController *)self buttonsViewController];
+      view4 = [buttonsViewController view];
+      superview = [view4 superview];
 
-      if (!v25)
+      if (!superview)
       {
-        v18 = sub_100004F84();
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+        keypadViewController3 = sub_100004F84();
+        if (os_log_type_enabled(keypadViewController3, OS_LOG_TYPE_DEFAULT))
         {
           *v45 = 0;
-          _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[WARN] Setting middlePillContainer constraints but the buttonViewController was not in the view hierarchy", v45, 2u);
+          _os_log_impl(&_mh_execute_header, keypadViewController3, OS_LOG_TYPE_DEFAULT, "[WARN] Setting middlePillContainer constraints but the buttonViewController was not in the view hierarchy", v45, 2u);
         }
 
         goto LABEL_13;
@@ -17257,117 +17257,117 @@ LABEL_25:
       }
 
       v32 = v31 * 0.102;
-      v33 = [(UIStackView *)self->_middlePillContainer trailingAnchor];
-      v34 = [(PHAudioCallViewController *)self buttonsViewController];
-      v35 = [v34 view];
-      v36 = [v35 trailingAnchor];
-      v37 = [v33 constraintEqualToAnchor:v36 constant:10.0 - v32];
+      trailingAnchor3 = [(UIStackView *)self->_middlePillContainer trailingAnchor];
+      buttonsViewController2 = [(PHAudioCallViewController *)self buttonsViewController];
+      view5 = [buttonsViewController2 view];
+      trailingAnchor4 = [view5 trailingAnchor];
+      v37 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:10.0 - v32];
       [v4 addObject:v37];
 
-      v38 = [(UIStackView *)self->_middlePillContainer leadingAnchor];
-      v39 = [(PHAudioCallViewController *)self buttonsViewController];
-      v40 = [v39 view];
-      v41 = [v40 leadingAnchor];
-      v42 = [v38 constraintEqualToAnchor:v41 constant:v32 + -10.0];
+      leadingAnchor3 = [(UIStackView *)self->_middlePillContainer leadingAnchor];
+      buttonsViewController3 = [(PHAudioCallViewController *)self buttonsViewController];
+      view6 = [buttonsViewController3 view];
+      leadingAnchor4 = [view6 leadingAnchor];
+      v42 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v32 + -10.0];
       [v4 addObject:v42];
 
-      v18 = [(PHAudioCallViewController *)self buttonsViewController];
-      v19 = [v18 view];
-      v20 = [v19 topAnchor];
-      v21 = [(UIStackView *)self->_middlePillContainer bottomAnchor];
+      keypadViewController3 = [(PHAudioCallViewController *)self buttonsViewController];
+      view3 = [keypadViewController3 view];
+      leadingAnchor = [view3 topAnchor];
+      leadingAnchor2 = [(UIStackView *)self->_middlePillContainer bottomAnchor];
       v22 = 20.0;
     }
 
-    v43 = [v20 constraintEqualToAnchor:v21 constant:v22];
+    v43 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v22];
     [v4 addObject:v43];
 
 LABEL_13:
     [(PHAudioCallViewController *)self setMiddlePillContainerLayoutConstraints:v4];
-    v44 = [(PHAudioCallViewController *)self middlePillContainerLayoutConstraints];
-    [NSLayoutConstraint activateConstraints:v44];
+    middlePillContainerLayoutConstraints2 = [(PHAudioCallViewController *)self middlePillContainerLayoutConstraints];
+    [NSLayoutConstraint activateConstraints:middlePillContainerLayoutConstraints2];
   }
 }
 
 - (BOOL)middlePillContainerIsShowing
 {
-  v3 = [(PHAudioCallViewController *)self activeCall];
-  v4 = [v3 recordingSession];
-  if ([v4 recordingState] == 1)
+  activeCall = [(PHAudioCallViewController *)self activeCall];
+  recordingSession = [activeCall recordingSession];
+  if ([recordingSession recordingState] == 1)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(PHAudioCallViewController *)self activeCall];
-    v7 = [v6 recordingSession];
-    if ([v7 recordingState] == 2)
+    activeCall2 = [(PHAudioCallViewController *)self activeCall];
+    recordingSession2 = [activeCall2 recordingSession];
+    if ([recordingSession2 recordingState] == 2)
     {
       v5 = 1;
     }
 
     else
     {
-      v8 = [(PHAudioCallViewController *)self activeCall];
-      v9 = [v8 recordingSession];
-      v5 = [v9 recordingState] == 3;
+      activeCall3 = [(PHAudioCallViewController *)self activeCall];
+      recordingSession3 = [activeCall3 recordingSession];
+      v5 = [recordingSession3 recordingState] == 3;
     }
   }
 
-  v10 = [(UIStackView *)self->_middlePillContainer arrangedSubviews];
-  if ([v10 containsObject:self->_screenSharingIndicatorView])
+  arrangedSubviews = [(UIStackView *)self->_middlePillContainer arrangedSubviews];
+  if ([arrangedSubviews containsObject:self->_screenSharingIndicatorView])
   {
     v11 = 1;
   }
 
   else
   {
-    v12 = [(UIStackView *)self->_middlePillContainer arrangedSubviews];
-    v11 = (([v12 containsObject:self->_waitOnHoldTipView] | v5) & 1) != 0 || self->_callRecordingCountdownShowing;
+    arrangedSubviews2 = [(UIStackView *)self->_middlePillContainer arrangedSubviews];
+    v11 = (([arrangedSubviews2 containsObject:self->_waitOnHoldTipView] | v5) & 1) != 0 || self->_callRecordingCountdownShowing;
   }
 
   return v11;
 }
 
-- (void)updateTranslationBackgroundView:(BOOL)a3
+- (void)updateTranslationBackgroundView:(BOOL)view
 {
-  v3 = a3;
-  v5 = [(PHAudioCallViewController *)self renderingViewController];
+  viewCopy = view;
+  renderingViewController = [(PHAudioCallViewController *)self renderingViewController];
 
-  if (v5)
+  if (renderingViewController)
   {
-    if (v3)
+    if (viewCopy)
     {
-      v6 = [(PHAudioCallViewController *)self translationBackgroundView];
+      translationBackgroundView = [(PHAudioCallViewController *)self translationBackgroundView];
 
-      if (!v6)
+      if (!translationBackgroundView)
       {
-        v7 = [(PHAudioCallViewController *)self createPosterBlurryBackgroundView];
-        [(PHAudioCallViewController *)self setTranslationBackgroundView:v7];
+        createPosterBlurryBackgroundView = [(PHAudioCallViewController *)self createPosterBlurryBackgroundView];
+        [(PHAudioCallViewController *)self setTranslationBackgroundView:createPosterBlurryBackgroundView];
 
-        v8 = [(PHAudioCallViewController *)self posterContainer];
-        [v8 frame];
+        posterContainer = [(PHAudioCallViewController *)self posterContainer];
+        [posterContainer frame];
         v10 = v9;
         v12 = v11;
         v14 = v13;
         v16 = v15;
-        v17 = [(PHAudioCallViewController *)self translationBackgroundView];
-        [v17 setFrame:{v10, v12, v14, v16}];
+        translationBackgroundView2 = [(PHAudioCallViewController *)self translationBackgroundView];
+        [translationBackgroundView2 setFrame:{v10, v12, v14, v16}];
       }
 
-      v18 = [(PHAudioCallViewController *)self view];
-      v19 = [(PHAudioCallViewController *)self translationBackgroundView];
-      v20 = [(PHAudioCallViewController *)self posterContainer];
-      [v18 insertSubview:v19 above:v20];
+      view = [(PHAudioCallViewController *)self view];
+      translationBackgroundView3 = [(PHAudioCallViewController *)self translationBackgroundView];
+      posterContainer2 = [(PHAudioCallViewController *)self posterContainer];
+      [view insertSubview:translationBackgroundView3 above:posterContainer2];
 
-      v21 = [(PHAudioCallViewController *)self translationController];
-      v22 = [(PHAudioCallViewController *)self translationBackgroundView];
-      v23 = [v22 contentView];
-      [v21 updateContentView:v23 updateVisibility:0];
+      translationController = [(PHAudioCallViewController *)self translationController];
+      translationBackgroundView4 = [(PHAudioCallViewController *)self translationBackgroundView];
+      contentView = [translationBackgroundView4 contentView];
+      [translationController updateContentView:contentView updateVisibility:0];
 
       [(PHAudioCallViewController *)self updateTranslationPosterName:1];
-      v24 = [(PHAudioCallViewController *)self translationBackgroundView];
-      [v24 setAlpha:0.0];
+      translationBackgroundView5 = [(PHAudioCallViewController *)self translationBackgroundView];
+      [translationBackgroundView5 setAlpha:0.0];
 
       v33[0] = _NSConcreteStackBlock;
       v33[1] = 3221225472;
@@ -17380,11 +17380,11 @@ LABEL_13:
     else
     {
       [(PHAudioCallViewController *)self updateTranslationPosterName:0];
-      v26 = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
-      [(PHAudioCallViewController *)self updateParticipantConstraintsForPosterName:v26];
-      v27 = [(PHAudioCallViewController *)self translationBackgroundView];
+      getParticipantsView_NotWaiting = [(PHAudioCallViewController *)self getParticipantsView_NotWaiting];
+      [(PHAudioCallViewController *)self updateParticipantConstraintsForPosterName:getParticipantsView_NotWaiting];
+      translationBackgroundView6 = [(PHAudioCallViewController *)self translationBackgroundView];
 
-      if (v27)
+      if (translationBackgroundView6)
       {
         v32[0] = _NSConcreteStackBlock;
         v32[1] = 3221225472;
@@ -17404,10 +17404,10 @@ LABEL_13:
 
   else
   {
-    v25 = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
+    defaultBackgroundGradientView = [(PHAudioCallViewController *)self defaultBackgroundGradientView];
 
-    v29 = [(PHAudioCallViewController *)self translationController];
-    if (v25)
+    translationController2 = [(PHAudioCallViewController *)self translationController];
+    if (defaultBackgroundGradientView)
     {
       [(PHAudioCallViewController *)self defaultBackgroundGradientView];
     }
@@ -17417,30 +17417,30 @@ LABEL_13:
       [(PHAudioCallViewController *)self view];
     }
     v28 = ;
-    [v29 updateContentView:v28 updateVisibility:1];
+    [translationController2 updateContentView:v28 updateVisibility:1];
   }
 }
 
-- (void)updateTranslationPosterName:(BOOL)a3
+- (void)updateTranslationPosterName:(BOOL)name
 {
-  v3 = a3;
-  v5 = [(PHAudioCallViewController *)self renderingViewController];
+  nameCopy = name;
+  renderingViewController = [(PHAudioCallViewController *)self renderingViewController];
 
-  if (v5)
+  if (renderingViewController)
   {
-    v6 = [(PHAudioCallViewController *)self translationBackgroundView];
+    translationBackgroundView = [(PHAudioCallViewController *)self translationBackgroundView];
 
-    if (v6)
+    if (translationBackgroundView)
     {
-      if (v3)
+      if (nameCopy)
       {
-        v7 = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
+        detachedPosterNameViewModel = [(PHAudioCallViewController *)self detachedPosterNameViewModel];
 
-        if (!v7)
+        if (!detachedPosterNameViewModel)
         {
-          v8 = [(PHAudioCallViewController *)self translationBackgroundView];
-          v9 = [v8 contentView];
-          [(PHAudioCallViewController *)self createDetachedPosterNameViewModel:v9];
+          translationBackgroundView2 = [(PHAudioCallViewController *)self translationBackgroundView];
+          contentView = [translationBackgroundView2 contentView];
+          [(PHAudioCallViewController *)self createDetachedPosterNameViewModel:contentView];
         }
       }
 
@@ -17463,31 +17463,31 @@ LABEL_13:
   return WeakRetained;
 }
 
-- (void)presentWaitOnHoldEndForAnotherCallAlertWithCallerName:(id)a3 completionHandler:(id)a4
+- (void)presentWaitOnHoldEndForAnotherCallAlertWithCallerName:(id)name completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   v9 = swift_allocObject();
   *(v9 + 16) = v5;
-  v10 = self;
+  selfCopy = self;
   PHAudioCallViewController.presentWaitOnHoldEndForAnotherCallAlert(callerName:completionHandler:)(v6, v8, sub_10016D3D8, v9);
 }
 
 - (BOOL)fetchLockState
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100164A2C();
 
   return v3;
 }
 
-- (id)makeLockObserverWithHandler:(id)a3
+- (id)makeLockObserverWithHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   PHAudioCallViewController.makeLockObserver(with:)(sub_10016D3D8, v5, v9);
 
   sub_100008878(v9, v9[3]);
@@ -17497,112 +17497,112 @@ LABEL_13:
   return v7;
 }
 
-- (void)showNameAndPhotoHUDIfNecessaryWithBannerPresentationManager:(id)a3 callCenter:(id)a4
+- (void)showNameAndPhotoHUDIfNecessaryWithBannerPresentationManager:(id)manager callCenter:(id)center
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  centerCopy = center;
+  selfCopy = self;
   sub_100164C38();
 }
 
-- (void)presentMoreMenu:(id)a3 source:(id)a4
+- (void)presentMoreMenu:(id)menu source:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1001657F0(v6, a4);
+  menuCopy = menu;
+  sourceCopy = source;
+  selfCopy = self;
+  sub_1001657F0(menuCopy, source);
 }
 
-- (void)presentMoreMenu:(id)a3 source:(id)a4 alongsideTransition:(id)a5
+- (void)presentMoreMenu:(id)menu source:(id)source alongsideTransition:(id)transition
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(transition);
   if (v8)
   {
     *(swift_allocObject() + 16) = v8;
     v8 = sub_10016D258;
   }
 
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
+  menuCopy = menu;
+  sourceCopy = source;
+  selfCopy = self;
   sub_100165888();
   sub_1000081F4(v8);
 }
 
 - (id)createPosterBlurryBackgroundView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100166390();
 
   return v3;
 }
 
-- (void)updateTextFieldPadding:(id)a3 padding:(double)a4
+- (void)updateTextFieldPadding:(id)padding padding:(double)a4
 {
-  v6 = a3;
-  v7 = self;
-  sub_100166BC4(v6, a4);
+  paddingCopy = padding;
+  selfCopy = self;
+  sub_100166BC4(paddingCopy, a4);
 }
 
-- (void)presentShareCard:(id)a3 source:(id)a4
+- (void)presentShareCard:(id)card source:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_100166CE0(v6, a4);
+  cardCopy = card;
+  sourceCopy = source;
+  selfCopy = self;
+  sub_100166CE0(cardCopy, source);
 }
 
 - (void)startCallRecording
 {
-  v2 = self;
+  selfCopy = self;
   sub_100167538();
 }
 
 - (void)stopCallRecording
 {
-  v2 = self;
+  selfCopy = self;
   sub_100167638();
 }
 
 - (void)showAddParticipantSheet
 {
-  v2 = self;
+  selfCopy = self;
   sub_100167728();
 }
 
 - (void)presentContactCard
 {
-  v2 = self;
+  selfCopy = self;
   sub_100167824();
 }
 
 - (void)addDimmingView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001684DC();
 }
 
 - (void)updateDimmingView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001688C4();
 }
 
-- (BOOL)lastSeenPosterDataIsSensitiveForCall:(id)a3
+- (BOOL)lastSeenPosterDataIsSensitiveForCall:(id)call
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  LOBYTE(v3) = sub_100168C40(v3);
+  callCopy = call;
+  callCopy2 = call;
+  selfCopy = self;
+  LOBYTE(callCopy) = sub_100168C40(callCopy);
 
-  return v3 & 1;
+  return callCopy & 1;
 }
 
-- (id)readCachedLastSeenPosterDataForCall:(id)a3
+- (id)readCachedLastSeenPosterDataForCall:(id)call
 {
-  v4 = self;
-  v5 = a3;
-  v6 = sub_100168D40(a3);
+  selfCopy = self;
+  callCopy = call;
+  v6 = sub_100168D40(call);
   v8 = v7;
 
   if (v8 >> 60 == 15)
@@ -17619,112 +17619,112 @@ LABEL_13:
   return isa;
 }
 
-- (id)lastSeenPosterIMWallpaperMetadataForCall:(id)a3
+- (id)lastSeenPosterIMWallpaperMetadataForCall:(id)call
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_1001690A0(a3);
+  callCopy = call;
+  selfCopy = self;
+  v7 = sub_1001690A0(call);
 
   return v7;
 }
 
 - (void)deleteAllUnarchivedPosterDirectories
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001691DC();
 }
 
 - (BOOL)shouldShowMergeCalls
 {
-  v2 = self;
+  selfCopy = self;
   sub_100169D94();
   v4 = v3;
 
   return v4 & 1;
 }
 
-- (void)blockWithHandle:(id)a3
+- (void)blockWithHandle:(id)handle
 {
-  v4 = a3;
-  v5 = self;
-  sub_10016A860(v4);
+  handleCopy = handle;
+  selfCopy = self;
+  sub_10016A860(handleCopy);
 }
 
-- (void)reportWithCall:(id)a3
+- (void)reportWithCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
-  sub_10016AB8C(v4);
+  callCopy = call;
+  selfCopy = self;
+  sub_10016AB8C(callCopy);
 }
 
-- (void)createContactWithHandle:(id)a3
+- (void)createContactWithHandle:(id)handle
 {
-  v4 = a3;
-  v5 = self;
-  sub_10016AE2C(v4);
+  handleCopy = handle;
+  selfCopy = self;
+  sub_10016AE2C(handleCopy);
 }
 
-- (void)contactViewController:(id)a3 didCompleteWithContact:(id)a4
+- (void)contactViewController:(id)controller didCompleteWithContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  PHAudioCallViewController.contactViewController(_:didCompleteWith:)(v8, v10);
+  controllerCopy = controller;
+  contactCopy = contact;
+  selfCopy = self;
+  PHAudioCallViewController.contactViewController(_:didCompleteWith:)(selfCopy, v10);
 }
 
 - (void)updateBackgroundForEmergencyCall
 {
-  v2 = self;
+  selfCopy = self;
   sub_10016B6E0();
 }
 
 - (void)presentFullScreenPeoplePicker
 {
-  v2 = self;
+  selfCopy = self;
   sub_10016B920();
 }
 
 - (void)dismissPeoplePicker
 {
-  v2 = self;
+  selfCopy = self;
   sub_10016C570();
 }
 
-- (void)updateCallRecordingIfNeededWithButtonContainer:(id)a3 pillContainer:(id)a4
+- (void)updateCallRecordingIfNeededWithButtonContainer:(id)container pillContainer:(id)pillContainer
 {
-  v7 = a3;
-  v8 = a4;
+  containerCopy = container;
+  pillContainerCopy = pillContainer;
   v12.value.super.super.super.isa = self;
   isa = v12.value.super.super.super.isa;
-  v11.value.super.super.super.isa = a3;
-  v11.is_nil = a4;
+  v11.value.super.super.super.isa = container;
+  v11.is_nil = pillContainer;
   PHAudioCallViewController.updateCallRecordingIfNeeded(buttonContainer:pillContainer:)(v11, v12);
 }
 
-- (void)invertColorCallRecordingButtonColor:(BOOL)a3
+- (void)invertColorCallRecordingButtonColor:(BOOL)color
 {
-  v4 = self;
-  PHAudioCallViewController.invertColorCallRecordingButtonColor(_:)(a3);
+  selfCopy = self;
+  PHAudioCallViewController.invertColorCallRecordingButtonColor(_:)(color);
 }
 
-- (void)addCallRecordingIfNeededWithButtonContainer:(id)a3 pillContainer:(id)a4
+- (void)addCallRecordingIfNeededWithButtonContainer:(id)container pillContainer:(id)pillContainer
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_100170E54(a3, a4);
+  containerCopy = container;
+  pillContainerCopy = pillContainer;
+  selfCopy = self;
+  sub_100170E54(container, pillContainer);
 }
 
-- (void)addRecordingIndicatorWithPillContainer:(id)a3
+- (void)addRecordingIndicatorWithPillContainer:(id)container
 {
-  v5 = a3;
-  v6 = self;
-  sub_100170FC4(a3);
+  containerCopy = container;
+  selfCopy = self;
+  sub_100170FC4(container);
 }
 
 - (BOOL)callRecordingAllowed
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PHAudioCallViewController.callRecordingAllowed.getter();
 
   return v3 & 1;
@@ -17732,217 +17732,217 @@ LABEL_13:
 
 - (BOOL)isCallRecordingActive
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PHAudioCallViewController.isCallRecordingActive.getter();
 
   return v3 & 1;
 }
 
-- (void)updateCallRecordingViewBackgroundMaterialType:(unint64_t)a3
+- (void)updateCallRecordingViewBackgroundMaterialType:(unint64_t)type
 {
-  v4 = self;
-  PHAudioCallViewController.updateCallRecordingViewBackgroundMaterialType(_:)(a3);
+  selfCopy = self;
+  PHAudioCallViewController.updateCallRecordingViewBackgroundMaterialType(_:)(type);
 }
 
-- (void)updatePosterDimmingAreaWith:(CGRect)a3
+- (void)updatePosterDimmingAreaWith:(CGRect)with
 {
-  v3 = self;
+  selfCopy = self;
   sub_1001C8A80();
 }
 
-- (void)updateDimmingValuesFor:(unsigned __int16)a3
+- (void)updateDimmingValuesFor:(unsigned __int16)for
 {
-  v4 = self;
-  sub_1001C8BA8(a3);
+  selfCopy = self;
+  sub_1001C8BA8(for);
 }
 
-- (void)insertBelowDimmingLayerWithNewView:(id)a3 containerView:(id)a4
+- (void)insertBelowDimmingLayerWithNewView:(id)view containerView:(id)containerView
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1001C8C9C(v6, v7);
+  viewCopy = view;
+  containerViewCopy = containerView;
+  selfCopy = self;
+  sub_1001C8C9C(viewCopy, containerViewCopy);
 }
 
 - (void)createPosterContainerWithDimmingLayer
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001C8DC0();
 }
 
-- (void)addWebRTCViewController:(id)a3
+- (void)addWebRTCViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1001CC7EC();
 }
 
-- (void)removeWebRTCViewController:(id)a3
+- (void)removeWebRTCViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1001CD1E8();
 }
 
 - (void)requestToEnableVideoStreamingButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001CD444();
 }
 
 - (void)requestToDisableVideoStreamingButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001CD604(&selRef_setShouldEnableVideoStreamingButton_, 0);
 }
 
 - (void)requestToEnableMediaUploadButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001CD604(&selRef_setShouldEnableShareMediaButton_, 1);
 }
 
 - (void)requestToDisableMediaUploadButton
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001CD604(&selRef_setShouldEnableShareMediaButton_, 0);
 }
 
-- (void)hideWebRTCViewController:(id)a3
+- (void)hideWebRTCViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1001CD70C();
 }
 
-- (void)removeWebRTCViewControllerForPIP:(id)a3
+- (void)removeWebRTCViewControllerForPIP:(id)p
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001CD8E0(v4);
+  pCopy = p;
+  selfCopy = self;
+  sub_1001CD8E0(pCopy);
 }
 
-- (void)addMediaRequestViewController:(id)a3
+- (void)addMediaRequestViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1001CDA84();
 }
 
-- (void)removeMediaRequestViewController:(id)a3
+- (void)removeMediaRequestViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1001CDFF4();
 }
 
-- (void)insertWebViewUnderButtonControls:(id)a3
+- (void)insertWebViewUnderButtonControls:(id)controls
 {
-  v4 = a3;
-  v5 = self;
+  controlsCopy = controls;
+  selfCopy = self;
   sub_1001CE1DC();
 }
 
-- (void)bringWebRTCViewControllerToFront:(id)a3
+- (void)bringWebRTCViewControllerToFront:(id)front
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001CE838(v4);
+  frontCopy = front;
+  selfCopy = self;
+  sub_1001CE838(frontCopy);
 }
 
 - (void)requestAnimationToFullScreenWebView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001CE9DC();
 }
 
 - (void)requestToRemoveEnhancedEmergencyIntermittentStateLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001CEC18();
 }
 
 - (void)requestToPresentMediaUploadRequestBanner
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001CF0BC("EnhancedEmergency: PHAudioCallViewController trying to request mediaUploadRequest banner", &BannerPresentationManager.showEnhancedEmergenctMediaUploadHUD(), &BannerPresentationManager.showEnhancedEmergencyRTTMediaUploadHUD());
 }
 
 - (void)requestToPresentMediaUploadRequestBannerDuringStreaming
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001CEDC0();
 }
 
 - (void)requestHapticForRequest
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001CF000();
 }
 
 - (void)requestToPresentVideoStreamingRequestBanner
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001CF0BC("EnhancedEmergency: PHAudioCallViewController trying to request videoStreaming banner", &BannerPresentationManager.showEnhancedEmergenctVideoStreamingHUD(), &BannerPresentationManager.showEnhancedEmergencyRTTVideoStreamingHUD());
 }
 
-- (void)requestToAddErrorLabelWithRetryable:(BOOL)a3
+- (void)requestToAddErrorLabelWithRetryable:(BOOL)retryable
 {
-  v3 = self;
+  selfCopy = self;
   sub_1001CF420();
 }
 
 - (void)requestToAddResumeCameraLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001CF484();
 }
 
 - (void)requestToAddMitigationLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001CF8E0(2, &unk_10035E560, sub_1001D1740, &unk_10035E578);
 }
 
 - (void)requestToAddPhotoMitigationLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001CF8E0(3, &unk_10035E510, sub_1001D17F8, &unk_10035E528);
 }
 
 - (void)updateEnhancedEmergencyViewWhenKeypadPresented
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001CFC84();
 }
 
-- (void)addEnhancedEmergencyIntermittentStateLabelWithState:(int64_t)a3
+- (void)addEnhancedEmergencyIntermittentStateLabelWithState:(int64_t)state
 {
-  v4 = self;
-  sub_1001CFDA8(a3);
+  selfCopy = self;
+  sub_1001CFDA8(state);
 }
 
 - (void)removeEnhancedEmergencyIntermittentStateLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001D0E64();
 }
 
 - (void)showCallControls
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001D0FA0();
 }
 
 - (void)hideCallControls
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001D114C();
 }
 
 - (id)getCurrentCall
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001D13E4();
 
   return v3;
@@ -17950,19 +17950,19 @@ LABEL_13:
 
 - (void)showRTTConversation
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001D1460();
 }
 
 - (void)hideRTTConversationIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001D1578();
 }
 
 - (id)getAudioRouteMenu
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001D16B0();
 
   return v3;
@@ -17970,30 +17970,30 @@ LABEL_13:
 
 - (void)setupCallHoldingObservers
 {
-  v2 = self;
+  selfCopy = self;
   iPadAudioCallViewController.setupCallHoldingObservers()();
 }
 
 - (void)endWaitOnHoldSession
 {
-  v2 = self;
+  selfCopy = self;
   PHAudioCallViewController.endWaitOnHoldSession()();
 }
 
-- (void)invertColorCallHoldingButtonColor:(BOOL)a3
+- (void)invertColorCallHoldingButtonColor:(BOOL)color
 {
-  v4 = self;
-  PHAudioCallViewController.invertColorCallHoldingButtonColor(_:)(a3);
+  selfCopy = self;
+  PHAudioCallViewController.invertColorCallHoldingButtonColor(_:)(color);
 }
 
-- (void)handleCallRecordingCountdownNotificationWithNotification:(id)a3
+- (void)handleCallRecordingCountdownNotificationWithNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4, v6);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   iPadAudioCallViewController.handleCallRecordingCountdownNotification(notification:)();
 
   (*(v5 + 8))(v8, v4);
@@ -18001,7 +18001,7 @@ LABEL_13:
 
 - (void)tipKitStartWaitOnHoldObservation
 {
-  v2 = self;
+  selfCopy = self;
   sub_10024E71C();
 }
 

@@ -1,22 +1,22 @@
 @interface ASKStorefrontChangeProvider
-- (ASKStorefrontChangeProvider)initWithBlock:(id)a3;
-- (BOOL)hasManagedStateChangedFromAccount:(id)a3 toAccount:(id)a4;
-- (BOOL)hasStorefrontChangedFromAccount:(id)a3 toAccount:(id)a4;
-- (void)accountStoreDidChange:(id)a3;
+- (ASKStorefrontChangeProvider)initWithBlock:(id)block;
+- (BOOL)hasManagedStateChangedFromAccount:(id)account toAccount:(id)toAccount;
+- (BOOL)hasStorefrontChangedFromAccount:(id)account toAccount:(id)toAccount;
+- (void)accountStoreDidChange:(id)change;
 - (void)dealloc;
 @end
 
 @implementation ASKStorefrontChangeProvider
 
-- (ASKStorefrontChangeProvider)initWithBlock:(id)a3
+- (ASKStorefrontChangeProvider)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v16.receiver = self;
   v16.super_class = ASKStorefrontChangeProvider;
   v5 = [(ASKStorefrontChangeProvider *)&v16 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     v7 = v5->_block;
     v5->_block = v6;
 
@@ -28,13 +28,13 @@
     accountStore = v5->_accountStore;
     v5->_accountStore = v10;
 
-    v12 = [(ASKStorefrontChangeProvider *)v5 notifyQueue];
+    notifyQueue = [(ASKStorefrontChangeProvider *)v5 notifyQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __45__ASKStorefrontChangeProvider_initWithBlock___block_invoke;
     block[3] = &unk_4AF510;
     v15 = v5;
-    dispatch_async(v12, block);
+    dispatch_async(notifyQueue, block);
   }
 
   return v5;
@@ -64,23 +64,23 @@ void __45__ASKStorefrontChangeProvider_initWithBlock___block_invoke(uint64_t a1)
   [(ASKStorefrontChangeProvider *)&v4 dealloc];
 }
 
-- (BOOL)hasStorefrontChangedFromAccount:(id)a3 toAccount:(id)a4
+- (BOOL)hasStorefrontChangedFromAccount:(id)account toAccount:(id)toAccount
 {
-  v5 = a4;
-  v6 = [a3 ams_storefront];
-  v7 = [v5 ams_storefront];
+  toAccountCopy = toAccount;
+  ams_storefront = [account ams_storefront];
+  ams_storefront2 = [toAccountCopy ams_storefront];
 
-  if (v6 && v7)
+  if (ams_storefront && ams_storefront2)
   {
-    v8 = [v6 componentsSeparatedByString:@" "];
-    v9 = [v8 firstObject];
+    v8 = [ams_storefront componentsSeparatedByString:@" "];
+    firstObject = [v8 firstObject];
 
-    v10 = [v7 componentsSeparatedByString:@" "];
-    v11 = [v10 firstObject];
+    v10 = [ams_storefront2 componentsSeparatedByString:@" "];
+    firstObject2 = [v10 firstObject];
 
-    if (v9 | v11)
+    if (firstObject | firstObject2)
     {
-      v12 = [v9 isEqual:v11];
+      v12 = [firstObject isEqual:firstObject2];
     }
 
     else
@@ -89,9 +89,9 @@ void __45__ASKStorefrontChangeProvider_initWithBlock___block_invoke(uint64_t a1)
     }
   }
 
-  else if (v6 | v7)
+  else if (ams_storefront | ams_storefront2)
   {
-    v12 = [v6 isEqual:v7];
+    v12 = [ams_storefront isEqual:ams_storefront2];
   }
 
   else
@@ -102,10 +102,10 @@ void __45__ASKStorefrontChangeProvider_initWithBlock___block_invoke(uint64_t a1)
   return v12 ^ 1;
 }
 
-- (BOOL)hasManagedStateChangedFromAccount:(id)a3 toAccount:(id)a4
+- (BOOL)hasManagedStateChangedFromAccount:(id)account toAccount:(id)toAccount
 {
-  v5 = a4;
-  v6 = [a3 accountPropertyForKey:@"isManagedAppleID"];
+  toAccountCopy = toAccount;
+  v6 = [account accountPropertyForKey:@"isManagedAppleID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -117,8 +117,8 @@ void __45__ASKStorefrontChangeProvider_initWithBlock___block_invoke(uint64_t a1)
     v7 = 0;
   }
 
-  v8 = [v7 BOOLValue];
-  v9 = [v5 accountPropertyForKey:@"isManagedAppleID"];
+  bOOLValue = [v7 BOOLValue];
+  v9 = [toAccountCopy accountPropertyForKey:@"isManagedAppleID"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -131,19 +131,19 @@ void __45__ASKStorefrontChangeProvider_initWithBlock___block_invoke(uint64_t a1)
     v10 = 0;
   }
 
-  v11 = [v10 BOOLValue];
-  return v8 ^ v11;
+  bOOLValue2 = [v10 BOOLValue];
+  return bOOLValue ^ bOOLValue2;
 }
 
-- (void)accountStoreDidChange:(id)a3
+- (void)accountStoreDidChange:(id)change
 {
-  v4 = [(ASKStorefrontChangeProvider *)self notifyQueue];
+  notifyQueue = [(ASKStorefrontChangeProvider *)self notifyQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __53__ASKStorefrontChangeProvider_accountStoreDidChange___block_invoke;
   block[3] = &unk_4AF510;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(notifyQueue, block);
 }
 
 void __53__ASKStorefrontChangeProvider_accountStoreDidChange___block_invoke(uint64_t a1)

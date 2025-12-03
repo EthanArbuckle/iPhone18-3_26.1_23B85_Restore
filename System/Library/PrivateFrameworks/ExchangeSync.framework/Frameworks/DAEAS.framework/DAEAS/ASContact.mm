@@ -5,47 +5,47 @@
 + (BOOL)parsingLeafNode;
 + (BOOL)parsingWithSubItems;
 + (id)asParseRules;
-+ (id)contactWithABRecord:(void *)a3 serverID:(id)a4;
++ (id)contactWithABRecord:(void *)record serverID:(id)d;
 + (id)externalRepClasses;
-- (ASContact)initWithABRecord:(void *)a3 serverID:(id)a4;
-- (ASContact)initWithCoder:(id)a3;
-- (BOOL)_saveDatesToAddressBookWithExistingRecord:(void *)a3 shouldMergeProperties:(BOOL)a4;
-- (BOOL)_saveEmailsToAddressBookWithExistingRecord:(void *)a3 shouldMergeProperties:(BOOL)a4;
-- (BOOL)_saveExternalRepToAddressBookWithExistingRecord:(void *)a3 shouldMergeProperties:(BOOL)a4 storeExternalRep:(BOOL)a5;
-- (BOOL)_saveIMsToAddressBookWithExistingRecord:(void *)a3 shouldMergeProperties:(BOOL)a4;
-- (BOOL)_savePhoneNumbersToAddressBookWithExistingRecord:(void *)a3 shouldMergeProperties:(BOOL)a4;
-- (BOOL)_saveRelatedNamesToAddressBookWithExistingRecord:(void *)a3 shouldMergeProperties:(BOOL)a4;
-- (BOOL)_saveStreetAddressesToAddressBookWithExistingRecord:(void *)a3 shouldMergeProperties:(BOOL)a4;
-- (BOOL)_saveURLsToAddressBookWithExistingRecord:(void *)a3 shouldMergeProperties:(BOOL)a4;
-- (BOOL)_setDatesWithExistingRecord:(void *)a3;
-- (BOOL)_setEmailsWithExistingRecord:(void *)a3;
-- (BOOL)_setExternalRepWithExistingRecord:(void *)a3;
-- (BOOL)_setIMsWithExistingRecord:(void *)a3;
-- (BOOL)_setPhoneNumbersWithExistingRecord:(void *)a3;
-- (BOOL)_setRelatedNamesWithExistingRecord:(void *)a3;
-- (BOOL)_setStreetAddressesWithExistingRecord:(void *)a3;
-- (BOOL)_setURLsWithExistingRecord:(void *)a3;
+- (ASContact)initWithABRecord:(void *)record serverID:(id)d;
+- (ASContact)initWithCoder:(id)coder;
+- (BOOL)_saveDatesToAddressBookWithExistingRecord:(void *)record shouldMergeProperties:(BOOL)properties;
+- (BOOL)_saveEmailsToAddressBookWithExistingRecord:(void *)record shouldMergeProperties:(BOOL)properties;
+- (BOOL)_saveExternalRepToAddressBookWithExistingRecord:(void *)record shouldMergeProperties:(BOOL)properties storeExternalRep:(BOOL)rep;
+- (BOOL)_saveIMsToAddressBookWithExistingRecord:(void *)record shouldMergeProperties:(BOOL)properties;
+- (BOOL)_savePhoneNumbersToAddressBookWithExistingRecord:(void *)record shouldMergeProperties:(BOOL)properties;
+- (BOOL)_saveRelatedNamesToAddressBookWithExistingRecord:(void *)record shouldMergeProperties:(BOOL)properties;
+- (BOOL)_saveStreetAddressesToAddressBookWithExistingRecord:(void *)record shouldMergeProperties:(BOOL)properties;
+- (BOOL)_saveURLsToAddressBookWithExistingRecord:(void *)record shouldMergeProperties:(BOOL)properties;
+- (BOOL)_setDatesWithExistingRecord:(void *)record;
+- (BOOL)_setEmailsWithExistingRecord:(void *)record;
+- (BOOL)_setExternalRepWithExistingRecord:(void *)record;
+- (BOOL)_setIMsWithExistingRecord:(void *)record;
+- (BOOL)_setPhoneNumbersWithExistingRecord:(void *)record;
+- (BOOL)_setRelatedNamesWithExistingRecord:(void *)record;
+- (BOOL)_setStreetAddressesWithExistingRecord:(void *)record;
+- (BOOL)_setURLsWithExistingRecord:(void *)record;
 - (BOOL)deleteFromAddressBook;
 - (BOOL)loadABRecord;
 - (BOOL)saveServerIDToContact;
 - (NSString)description;
-- (id)_transformedDateForABFramework:(id)a3;
-- (id)bestEmailFromAppData:(int)a3;
+- (id)_transformedDateForABFramework:(id)framework;
+- (id)bestEmailFromAppData:(int)data;
 - (void)_detectFileAsAutoConstruction;
-- (void)_loadAttributesFromABRecord:(void *)a3;
+- (void)_loadAttributesFromABRecord:(void *)record;
 - (void)_reconstructFileAsField;
-- (void)_setImageOnContactFromPerson:(void *)a3;
-- (void)appendActiveSyncDataForTask:(id)a3 toWBXMLData:(id)a4;
+- (void)_setImageOnContactFromPerson:(void *)person;
+- (void)appendActiveSyncDataForTask:(id)task toWBXMLData:(id)data;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)loadABRecord;
 - (void)loadClientIDs;
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8;
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account;
 - (void)postProcessApplicationData;
-- (void)setABRecord:(void *)a3;
-- (void)setBody:(id)a3;
-- (void)setBodySizeNumber:(id)a3;
-- (void)setBodyTruncatedNumber:(id)a3;
+- (void)setABRecord:(void *)record;
+- (void)setBody:(id)body;
+- (void)setBodySizeNumber:(id)number;
+- (void)setBodyTruncatedNumber:(id)number;
 @end
 
 @implementation ASContact
@@ -59,7 +59,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_24 = v2;
     acceptsTopLevelLeaves___haveChecked_24 = 1;
   }
@@ -76,7 +76,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_24 = v2;
     parsingLeafNode___haveChecked_24 = 1;
   }
@@ -93,7 +93,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_24 = v2;
     parsingWithSubItems___haveChecked_24 = 1;
   }
@@ -110,7 +110,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_24 = v2;
     frontingBasicTypes___haveChecked_24 = 1;
   }
@@ -127,7 +127,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_24 = v2;
     notifyOfUnknownTokens___haveChecked_24 = 1;
   }
@@ -135,10 +135,10 @@
   return v2 & 1;
 }
 
-- (id)_transformedDateForABFramework:(id)a3
+- (id)_transformedDateForABFramework:(id)framework
 {
-  v3 = [a3 gmtMidnight];
-  v4 = [v3 dateByAddingYears:0 months:0 days:0 hours:12 minutes:0 seconds:0];
+  gmtMidnight = [framework gmtMidnight];
+  v4 = [gmtMidnight dateByAddingYears:0 months:0 days:0 hours:12 minutes:0 seconds:0];
 
   return v4;
 }
@@ -146,18 +146,18 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
   {
-    v37.receiver = a1;
+    v37.receiver = self;
     v37.super_class = &OBJC_METACLASS___ASContact;
     v6 = objc_msgSendSuper2(&v37, sel_asParseRules);
     v5 = [v6 mutableCopy];
 
     v35 = objc_alloc(MEMORY[0x277CBEAC0]);
-    v36 = a1;
+    selfCopy = self;
     v32 = [ASParseRule alloc];
     v31 = objc_opt_class();
     v29 = MEMORY[0x277CBEAC0];
@@ -186,14 +186,14 @@
 
     [v5 addEntriesFromDictionary:v19];
     v20 = +[ASItem parseRuleCache];
-    v21 = NSStringFromClass(v36);
+    v21 = NSStringFromClass(selfCopy);
     [v20 setObject:v5 forKey:v21];
   }
 
   return v5;
 }
 
-- (void)_setImageOnContactFromPerson:(void *)a3
+- (void)_setImageOnContactFromPerson:(void *)person
 {
   HIBYTE(v6) = 0;
   LODWORD(v6) = 2;
@@ -205,9 +205,9 @@
   }
 }
 
-- (BOOL)_setDatesWithExistingRecord:(void *)a3
+- (BOOL)_setDatesWithExistingRecord:(void *)record
 {
-  v4 = ABRecordCopyValue(a3, *MEMORY[0x277CE9870]);
+  v4 = ABRecordCopyValue(record, *MEMORY[0x277CE9870]);
   if (v4)
   {
     v5 = v4;
@@ -242,9 +242,9 @@
   return 1;
 }
 
-- (BOOL)_setRelatedNamesWithExistingRecord:(void *)a3
+- (BOOL)_setRelatedNamesWithExistingRecord:(void *)record
 {
-  v4 = ABRecordCopyValue(a3, *MEMORY[0x277CE9A38]);
+  v4 = ABRecordCopyValue(record, *MEMORY[0x277CE9A38]);
   if (v4)
   {
     v5 = v4;
@@ -300,9 +300,9 @@ LABEL_13:
   return 1;
 }
 
-- (BOOL)_setPhoneNumbersWithExistingRecord:(void *)a3
+- (BOOL)_setPhoneNumbersWithExistingRecord:(void *)record
 {
-  v4 = ABRecordCopyValue(a3, *MEMORY[0x277CE9A18]);
+  v4 = ABRecordCopyValue(record, *MEMORY[0x277CE9A18]);
   if (v4)
   {
     v5 = v4;
@@ -427,9 +427,9 @@ LABEL_18:
   return 1;
 }
 
-- (BOOL)_setStreetAddressesWithExistingRecord:(void *)a3
+- (BOOL)_setStreetAddressesWithExistingRecord:(void *)record
 {
-  v4 = ABRecordCopyValue(a3, *MEMORY[0x277CE9828]);
+  v4 = ABRecordCopyValue(record, *MEMORY[0x277CE9828]);
   if (v4)
   {
     v5 = v4;
@@ -532,9 +532,9 @@ LABEL_13:
   return 1;
 }
 
-- (BOOL)_setEmailsWithExistingRecord:(void *)a3
+- (BOOL)_setEmailsWithExistingRecord:(void *)record
 {
-  v4 = ABRecordCopyValue(a3, *MEMORY[0x277CE9888]);
+  v4 = ABRecordCopyValue(record, *MEMORY[0x277CE9888]);
   if (v4)
   {
     v5 = v4;
@@ -571,9 +571,9 @@ LABEL_13:
   return 1;
 }
 
-- (BOOL)_setURLsWithExistingRecord:(void *)a3
+- (BOOL)_setURLsWithExistingRecord:(void *)record
 {
-  v4 = ABRecordCopyValue(a3, *MEMORY[0x277CE9A58]);
+  v4 = ABRecordCopyValue(record, *MEMORY[0x277CE9A58]);
   if (v4)
   {
     v5 = v4;
@@ -607,9 +607,9 @@ LABEL_13:
   return 1;
 }
 
-- (BOOL)_setIMsWithExistingRecord:(void *)a3
+- (BOOL)_setIMsWithExistingRecord:(void *)record
 {
-  v4 = ABRecordCopyValue(a3, *MEMORY[0x277CE98E8]);
+  v4 = ABRecordCopyValue(record, *MEMORY[0x277CE98E8]);
   if (v4)
   {
     v5 = v4;
@@ -662,10 +662,10 @@ LABEL_13:
   return [v2 setWithObjects:{v3, v4, v5, objc_opt_class(), 0}];
 }
 
-- (BOOL)_setExternalRepWithExistingRecord:(void *)a3
+- (BOOL)_setExternalRepWithExistingRecord:(void *)record
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = ABRecordCopyValue(a3, *MEMORY[0x277CE98A0]);
+  v4 = ABRecordCopyValue(record, *MEMORY[0x277CE98A0]);
   if (v4)
   {
     v5 = MEMORY[0x277CCAAC8];
@@ -705,9 +705,9 @@ LABEL_13:
       v14 = v13;
       if (v13)
       {
-        v15 = [v13 intValue];
-        self->_fileAsAutoConstruction = v15;
-        if (v15 >= 0xE)
+        intValue = [v13 intValue];
+        self->_fileAsAutoConstruction = intValue;
+        if (intValue >= 0xE)
         {
           self->_fileAsAutoConstruction = 1;
           v16 = DALoggingwithCategory();
@@ -1102,52 +1102,52 @@ LABEL_32:
   }
 }
 
-- (void)_loadAttributesFromABRecord:(void *)a3
+- (void)_loadAttributesFromABRecord:(void *)record
 {
   v33 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (record)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", ABRecordGetRecordID(a3)];
+    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", ABRecordGetRecordID(record)];
     [(ASChangedCollectionLeaf *)self setClientID:v5];
 
-    v6 = ABRecordCopyValue(a3, *MEMORY[0x277CE9858]);
+    v6 = ABRecordCopyValue(record, *MEMORY[0x277CE9858]);
     v7 = [(ASContact *)self _transformedDateForActiveSync:v6];
     [(ASContact *)self setBirthday:v7];
 
-    v8 = ABRecordCopyValue(a3, *MEMORY[0x277CE99B8]);
+    v8 = ABRecordCopyValue(record, *MEMORY[0x277CE99B8]);
     [(ASContact *)self setBody:v8];
 
-    v9 = ABRecordCopyValue(a3, *MEMORY[0x277CE99C0]);
+    v9 = ABRecordCopyValue(record, *MEMORY[0x277CE99C0]);
     [(ASContact *)self setCompanyName:v9];
 
-    v10 = ABRecordCopyValue(a3, *MEMORY[0x277CE9878]);
+    v10 = ABRecordCopyValue(record, *MEMORY[0x277CE9878]);
     [(ASContact *)self setDepartment:v10];
 
-    v11 = ABRecordCopyValue(a3, *MEMORY[0x277CE9880]);
+    v11 = ABRecordCopyValue(record, *MEMORY[0x277CE9880]);
     [(ASContact *)self setFileAs:v11];
 
-    v12 = ABRecordCopyValue(a3, *MEMORY[0x277CE98C0]);
+    v12 = ABRecordCopyValue(record, *MEMORY[0x277CE98C0]);
     [(ASContact *)self setFirstName:v12];
 
-    v13 = ABRecordCopyValue(a3, *MEMORY[0x277CE9958]);
+    v13 = ABRecordCopyValue(record, *MEMORY[0x277CE9958]);
     [(ASContact *)self setJobTitle:v13];
 
-    v14 = ABRecordCopyValue(a3, *MEMORY[0x277CE9980]);
+    v14 = ABRecordCopyValue(record, *MEMORY[0x277CE9980]);
     [(ASContact *)self setLastName:v14];
 
-    v15 = ABRecordCopyValue(a3, *MEMORY[0x277CE99A0]);
+    v15 = ABRecordCopyValue(record, *MEMORY[0x277CE99A0]);
     [(ASContact *)self setMiddleName:v15];
 
-    v16 = ABRecordCopyValue(a3, *MEMORY[0x277CE9A50]);
+    v16 = ABRecordCopyValue(record, *MEMORY[0x277CE9A50]);
     [(ASContact *)self setSuffix:v16];
 
-    v17 = ABRecordCopyValue(a3, *MEMORY[0x277CE9A30]);
+    v17 = ABRecordCopyValue(record, *MEMORY[0x277CE9A30]);
     [(ASContact *)self setTitle:v17];
 
-    v18 = ABRecordCopyValue(a3, *MEMORY[0x277CE99B0]);
+    v18 = ABRecordCopyValue(record, *MEMORY[0x277CE99B0]);
     [(ASContact *)self setNickName:v18];
 
-    v19 = ABRecordCopyValue(a3, *MEMORY[0x277CE98B8]);
+    v19 = ABRecordCopyValue(record, *MEMORY[0x277CE98B8]);
     v20 = v19;
     v21 = MEMORY[0x277CBF0B0];
     if (v19)
@@ -1168,7 +1168,7 @@ LABEL_32:
       [(ASContact *)self setYomiFirstName:v22];
     }
 
-    v25 = ABRecordCopyValue(a3, *MEMORY[0x277CE9978]);
+    v25 = ABRecordCopyValue(record, *MEMORY[0x277CE9978]);
     v26 = v25;
     if (v25)
     {
@@ -1188,66 +1188,66 @@ LABEL_32:
       [(ASContact *)self setYomiLastName:v27];
     }
 
-    [(ASContact *)self _setImageOnContactFromPerson:a3];
-    [(ASContact *)self _setDatesWithExistingRecord:a3];
-    [(ASContact *)self _setRelatedNamesWithExistingRecord:a3];
-    [(ASContact *)self _setPhoneNumbersWithExistingRecord:a3];
-    [(ASContact *)self _setStreetAddressesWithExistingRecord:a3];
-    [(ASContact *)self _setEmailsWithExistingRecord:a3];
-    [(ASContact *)self _setURLsWithExistingRecord:a3];
-    [(ASContact *)self _setIMsWithExistingRecord:a3];
-    [(ASContact *)self _setExternalRepWithExistingRecord:a3];
+    [(ASContact *)self _setImageOnContactFromPerson:record];
+    [(ASContact *)self _setDatesWithExistingRecord:record];
+    [(ASContact *)self _setRelatedNamesWithExistingRecord:record];
+    [(ASContact *)self _setPhoneNumbersWithExistingRecord:record];
+    [(ASContact *)self _setStreetAddressesWithExistingRecord:record];
+    [(ASContact *)self _setEmailsWithExistingRecord:record];
+    [(ASContact *)self _setURLsWithExistingRecord:record];
+    [(ASContact *)self _setIMsWithExistingRecord:record];
+    [(ASContact *)self _setExternalRepWithExistingRecord:record];
     [(ASContact *)self _reconstructFileAsField];
   }
 
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (ASContact)initWithABRecord:(void *)a3 serverID:(id)a4
+- (ASContact)initWithABRecord:(void *)record serverID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = ASContact;
   v7 = [(ASChangedCollectionLeaf *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(ASChangedCollectionLeaf *)v7 setServerID:v6];
-    if (a3)
+    [(ASChangedCollectionLeaf *)v7 setServerID:dCopy];
+    if (record)
     {
-      [(ASContact *)v8 _loadAttributesFromABRecord:a3];
-      [(ASContact *)v8 setABRecord:a3];
+      [(ASContact *)v8 _loadAttributesFromABRecord:record];
+      [(ASContact *)v8 setABRecord:record];
     }
   }
 
   return v8;
 }
 
-+ (id)contactWithABRecord:(void *)a3 serverID:(id)a4
++ (id)contactWithABRecord:(void *)record serverID:(id)d
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithABRecord:a3 serverID:v6];
+  dCopy = d;
+  v7 = [[self alloc] initWithABRecord:record serverID:dCopy];
 
   return v7;
 }
 
-- (BOOL)_saveDatesToAddressBookWithExistingRecord:(void *)a3 shouldMergeProperties:(BOOL)a4
+- (BOOL)_saveDatesToAddressBookWithExistingRecord:(void *)record shouldMergeProperties:(BOOL)properties
 {
   Mutable = ABMultiValueCreateMutable(4u);
   v8 = *MEMORY[0x277CE9848];
-  v9 = [(ASContact *)self anniversary];
-  v10 = [(ASContact *)self _transformedDateForABFramework:v9];
+  anniversary = [(ASContact *)self anniversary];
+  v10 = [(ASContact *)self _transformedDateForABFramework:anniversary];
   if (v10)
   {
     ABMultiValueAddValueAndLabel(Mutable, v10, v8, 0);
   }
 
-  if (a4)
+  if (properties)
   {
-    v11 = [(ASContact *)self anniversary];
+    anniversary2 = [(ASContact *)self anniversary];
 
     v12 = *MEMORY[0x277CE9870];
-    if (v11 || (v15 = ABRecordCopyValue(a3, *MEMORY[0x277CE9870])) == 0)
+    if (anniversary2 || (v15 = ABRecordCopyValue(record, *MEMORY[0x277CE9870])) == 0)
     {
       v13 = 0;
     }
@@ -1301,7 +1301,7 @@ LABEL_32:
     v12 = *MEMORY[0x277CE9870];
   }
 
-  ABRecordSetValue(a3, v12, Mutable, 0);
+  ABRecordSetValue(record, v12, Mutable, 0);
   if (Mutable)
   {
     CFRelease(Mutable);
@@ -1310,39 +1310,39 @@ LABEL_32:
   return v13;
 }
 
-- (BOOL)_saveRelatedNamesToAddressBookWithExistingRecord:(void *)a3 shouldMergeProperties:(BOOL)a4
+- (BOOL)_saveRelatedNamesToAddressBookWithExistingRecord:(void *)record shouldMergeProperties:(BOOL)properties
 {
-  v4 = a4;
+  propertiesCopy = properties;
   Mutable = ABMultiValueCreateMutable(1u);
   v8 = *MEMORY[0x277CE9850];
-  v9 = [(ASContact *)self assistantName];
-  if (v9)
+  assistantName = [(ASContact *)self assistantName];
+  if (assistantName)
   {
-    ABMultiValueAddValueAndLabel(Mutable, v9, v8, 0);
+    ABMultiValueAddValueAndLabel(Mutable, assistantName, v8, 0);
   }
 
   v10 = *MEMORY[0x277CE9990];
-  v11 = [(ASContact *)self managerName];
-  if (v11)
+  managerName = [(ASContact *)self managerName];
+  if (managerName)
   {
-    ABMultiValueAddValueAndLabel(Mutable, v11, v10, 0);
+    ABMultiValueAddValueAndLabel(Mutable, managerName, v10, 0);
   }
 
   v12 = *MEMORY[0x277CE9A48];
-  v13 = [(ASContact *)self spouse];
-  if (v13)
+  spouse = [(ASContact *)self spouse];
+  if (spouse)
   {
-    ABMultiValueAddValueAndLabel(Mutable, v13, v12, 0);
+    ABMultiValueAddValueAndLabel(Mutable, spouse, v12, 0);
   }
 
   v14 = *MEMORY[0x277CE9A38];
-  if (v4 && (v15 = ABRecordCopyValue(a3, *MEMORY[0x277CE9A38])) != 0)
+  if (propertiesCopy && (v15 = ABRecordCopyValue(record, *MEMORY[0x277CE9A38])) != 0)
   {
     v16 = v15;
     if (ABMultiValueGetCount(v15) >= 1 && (MutableCopy = ABMultiValueCreateMutableCopy(v16)) != 0)
     {
       v18 = MutableCopy;
-      v32 = a3;
+      recordCopy = record;
       v31 = v14;
       v30 = v16;
       if (ABMultiValueGetCount(MutableCopy))
@@ -1386,9 +1386,9 @@ LABEL_32:
                 goto LABEL_28;
               }
 
-              v24 = [(ASContact *)self spouse];
+              spouse2 = [(ASContact *)self spouse];
 
-              if (v24)
+              if (spouse2)
               {
                 goto LABEL_28;
               }
@@ -1418,7 +1418,7 @@ LABEL_28:
       v19 = 0;
 LABEL_33:
       CFRelease(v18);
-      a3 = v32;
+      record = recordCopy;
       v14 = v31;
       v16 = v30;
     }
@@ -1436,7 +1436,7 @@ LABEL_33:
     v19 = 0;
   }
 
-  ABRecordSetValue(a3, v14, Mutable, 0);
+  ABRecordSetValue(record, v14, Mutable, 0);
   if (Mutable)
   {
     CFRelease(Mutable);
@@ -1445,148 +1445,148 @@ LABEL_33:
   return v19;
 }
 
-- (BOOL)_savePhoneNumbersToAddressBookWithExistingRecord:(void *)a3 shouldMergeProperties:(BOOL)a4
+- (BOOL)_savePhoneNumbersToAddressBookWithExistingRecord:(void *)record shouldMergeProperties:(BOOL)properties
 {
-  v4 = a4;
+  propertiesCopy = properties;
   v112 = *MEMORY[0x277D85DE8];
   Mutable = ABMultiValueCreateMutable(1u);
   v8 = *MEMORY[0x277CE9AE8];
-  v9 = [(ASContact *)self businessTelephoneNumber];
-  if (v9)
+  businessTelephoneNumber = [(ASContact *)self businessTelephoneNumber];
+  if (businessTelephoneNumber)
   {
-    ABMultiValueAddValueAndLabel(Mutable, v9, v8, 0);
+    ABMultiValueAddValueAndLabel(Mutable, businessTelephoneNumber, v8, 0);
   }
 
-  v10 = [(ASContact *)self business2TelephoneNumber];
-  if (v10)
+  business2TelephoneNumber = [(ASContact *)self business2TelephoneNumber];
+  if (business2TelephoneNumber)
   {
-    ABMultiValueAddValueAndLabel(Mutable, v10, v8, 0);
+    ABMultiValueAddValueAndLabel(Mutable, business2TelephoneNumber, v8, 0);
   }
 
   v11 = *MEMORY[0x277CE9A28];
-  v12 = [(ASContact *)self businessFaxNumber];
-  if (v12)
+  businessFaxNumber = [(ASContact *)self businessFaxNumber];
+  if (businessFaxNumber)
   {
-    ABMultiValueAddValueAndLabel(Mutable, v12, v11, 0);
+    ABMultiValueAddValueAndLabel(Mutable, businessFaxNumber, v11, 0);
   }
 
   v98 = v11;
 
   v13 = *MEMORY[0x277CE9800];
-  v14 = [(ASContact *)self homeTelephoneNumber];
-  if (v14)
+  homeTelephoneNumber = [(ASContact *)self homeTelephoneNumber];
+  if (homeTelephoneNumber)
   {
-    ABMultiValueAddValueAndLabel(Mutable, v14, v13, 0);
+    ABMultiValueAddValueAndLabel(Mutable, homeTelephoneNumber, v13, 0);
   }
 
-  v15 = [(ASContact *)self home2TelephoneNumber];
-  if (v15)
+  home2TelephoneNumber = [(ASContact *)self home2TelephoneNumber];
+  if (home2TelephoneNumber)
   {
-    ABMultiValueAddValueAndLabel(Mutable, v15, v13, 0);
+    ABMultiValueAddValueAndLabel(Mutable, home2TelephoneNumber, v13, 0);
   }
 
   v16 = *MEMORY[0x277CE99F0];
-  v17 = [(ASContact *)self homeFaxNumber];
-  if (v17)
+  homeFaxNumber = [(ASContact *)self homeFaxNumber];
+  if (homeFaxNumber)
   {
-    ABMultiValueAddValueAndLabel(Mutable, v17, v16, 0);
+    ABMultiValueAddValueAndLabel(Mutable, homeFaxNumber, v16, 0);
   }
 
   v97 = v16;
 
   v18 = *MEMORY[0x277CE9A08];
-  v19 = [(ASContact *)self mobileTelephoneNumber];
-  if (v19)
+  mobileTelephoneNumber = [(ASContact *)self mobileTelephoneNumber];
+  if (mobileTelephoneNumber)
   {
-    ABMultiValueAddValueAndLabel(Mutable, v19, v18, 0);
+    ABMultiValueAddValueAndLabel(Mutable, mobileTelephoneNumber, v18, 0);
   }
 
   v20 = *MEMORY[0x277CE9A10];
-  v21 = [(ASContact *)self pagerNumber];
-  if (v21)
+  pagerNumber = [(ASContact *)self pagerNumber];
+  if (pagerNumber)
   {
-    ABMultiValueAddValueAndLabel(Mutable, v21, v20, 0);
+    ABMultiValueAddValueAndLabel(Mutable, pagerNumber, v20, 0);
   }
 
   v95 = v20;
 
   v22 = *MEMORY[0x277CE99D8];
-  v23 = [(ASContact *)self assistantTelephoneNumber];
-  if (v23)
+  assistantTelephoneNumber = [(ASContact *)self assistantTelephoneNumber];
+  if (assistantTelephoneNumber)
   {
-    ABMultiValueAddValueAndLabel(Mutable, v23, v22, 0);
+    ABMultiValueAddValueAndLabel(Mutable, assistantTelephoneNumber, v22, 0);
   }
 
   v99 = v8;
   v94 = v22;
 
   v24 = *MEMORY[0x277CE99E0];
-  v25 = [(ASContact *)self carTelephoneNumber];
-  if (v25)
+  carTelephoneNumber = [(ASContact *)self carTelephoneNumber];
+  if (carTelephoneNumber)
   {
-    ABMultiValueAddValueAndLabel(Mutable, v25, v24, 0);
+    ABMultiValueAddValueAndLabel(Mutable, carTelephoneNumber, v24, 0);
   }
 
   v26 = *MEMORY[0x277CE9A20];
-  v27 = [(ASContact *)self radioTelephoneNumber];
-  if (v27)
+  radioTelephoneNumber = [(ASContact *)self radioTelephoneNumber];
+  if (radioTelephoneNumber)
   {
-    ABMultiValueAddValueAndLabel(Mutable, v27, v26, 0);
+    ABMultiValueAddValueAndLabel(Mutable, radioTelephoneNumber, v26, 0);
   }
 
   v28 = *MEMORY[0x277CE99E8];
-  v29 = [(ASContact *)self companyMainPhone];
-  if (v29)
+  companyMainPhone = [(ASContact *)self companyMainPhone];
+  if (companyMainPhone)
   {
-    ABMultiValueAddValueAndLabel(Mutable, v29, v28, 0);
+    ABMultiValueAddValueAndLabel(Mutable, companyMainPhone, v28, 0);
   }
 
   v93 = v28;
 
   v30 = *MEMORY[0x277CE9A18];
-  if (!v4)
+  if (!propertiesCopy)
   {
-    v31 = a3;
+    recordCopy2 = record;
     goto LABEL_125;
   }
 
   v90 = v24;
   v91 = v18;
-  v31 = a3;
+  recordCopy2 = record;
   property = *MEMORY[0x277CE9A18];
-  v32 = ABRecordCopyValue(a3, v30);
+  v32 = ABRecordCopyValue(record, v30);
   v33 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:4];
   v101 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:4];
-  v34 = [(ASContact *)self homeTelephoneNumber];
+  homeTelephoneNumber2 = [(ASContact *)self homeTelephoneNumber];
 
-  if (v34)
+  if (homeTelephoneNumber2)
   {
-    v35 = [(ASContact *)self homeTelephoneNumber];
-    [v33 addObject:v35];
+    homeTelephoneNumber3 = [(ASContact *)self homeTelephoneNumber];
+    [v33 addObject:homeTelephoneNumber3];
   }
 
-  v36 = [(ASContact *)self home2TelephoneNumber];
+  home2TelephoneNumber2 = [(ASContact *)self home2TelephoneNumber];
 
-  if (v36)
+  if (home2TelephoneNumber2)
   {
-    v37 = [(ASContact *)self home2TelephoneNumber];
-    [v33 addObject:v37];
+    home2TelephoneNumber3 = [(ASContact *)self home2TelephoneNumber];
+    [v33 addObject:home2TelephoneNumber3];
   }
 
-  v38 = [(ASContact *)self businessTelephoneNumber];
+  businessTelephoneNumber2 = [(ASContact *)self businessTelephoneNumber];
 
-  if (v38)
+  if (businessTelephoneNumber2)
   {
-    v39 = [(ASContact *)self businessTelephoneNumber];
-    [v101 addObject:v39];
+    businessTelephoneNumber3 = [(ASContact *)self businessTelephoneNumber];
+    [v101 addObject:businessTelephoneNumber3];
   }
 
-  v40 = [(ASContact *)self business2TelephoneNumber];
+  business2TelephoneNumber2 = [(ASContact *)self business2TelephoneNumber];
 
-  if (v40)
+  if (business2TelephoneNumber2)
   {
-    v41 = [(ASContact *)self business2TelephoneNumber];
-    [v101 addObject:v41];
+    business2TelephoneNumber3 = [(ASContact *)self business2TelephoneNumber];
+    [v101 addObject:business2TelephoneNumber3];
   }
 
   v100 = v33;
@@ -1596,7 +1596,7 @@ LABEL_33:
     {
       v43 = MutableCopy;
       v87 = v32;
-      v88 = a3;
+      recordCopy3 = record;
       if (ABMultiValueGetCount(MutableCopy) >= 1)
       {
         Count = ABMultiValueGetCount(v43);
@@ -1705,9 +1705,9 @@ LABEL_33:
                       goto LABEL_80;
                     }
 
-                    v57 = [(ASContact *)self companyMainPhone];
+                    companyMainPhone2 = [(ASContact *)self companyMainPhone];
 
-                    if (v57)
+                    if (companyMainPhone2)
                     {
                       goto LABEL_80;
                     }
@@ -1762,7 +1762,7 @@ LABEL_80:
 LABEL_86:
       CFRelease(v43);
       v32 = v87;
-      v31 = v88;
+      recordCopy2 = recordCopy3;
     }
 
     else
@@ -1778,12 +1778,12 @@ LABEL_86:
     v96 = 0;
   }
 
-  v61 = [(ASContact *)self homeTelephoneNumber];
+  homeTelephoneNumber4 = [(ASContact *)self homeTelephoneNumber];
 
-  if (v61)
+  if (homeTelephoneNumber4)
   {
-    v62 = [(ASContact *)self homeTelephoneNumber];
-    [v33 removeObject:v62];
+    homeTelephoneNumber5 = [(ASContact *)self homeTelephoneNumber];
+    [v33 removeObject:homeTelephoneNumber5];
 
     v63 = 1;
   }
@@ -1793,14 +1793,14 @@ LABEL_86:
     v63 = 0;
   }
 
-  v64 = [(ASContact *)self home2TelephoneNumber];
+  home2TelephoneNumber4 = [(ASContact *)self home2TelephoneNumber];
 
-  if (v64)
+  if (home2TelephoneNumber4)
   {
-    v65 = [(ASContact *)self home2TelephoneNumber];
-    [v33 removeObject:v65];
+    home2TelephoneNumber5 = [(ASContact *)self home2TelephoneNumber];
+    [v33 removeObject:home2TelephoneNumber5];
 
-    if (v61)
+    if (homeTelephoneNumber4)
     {
       goto LABEL_106;
     }
@@ -1817,7 +1817,7 @@ LABEL_86:
   if (v67)
   {
     v68 = v67;
-    v89 = v31;
+    v89 = recordCopy2;
     v69 = 0;
     v70 = *v107;
 LABEL_96:
@@ -1857,17 +1857,17 @@ LABEL_96:
       }
     }
 
-    v31 = v89;
+    recordCopy2 = v89;
     v33 = v100;
   }
 
 LABEL_106:
-  v73 = [(ASContact *)self businessTelephoneNumber];
+  businessTelephoneNumber4 = [(ASContact *)self businessTelephoneNumber];
 
-  if (v73)
+  if (businessTelephoneNumber4)
   {
-    v74 = [(ASContact *)self businessTelephoneNumber];
-    [v101 removeObject:v74];
+    businessTelephoneNumber5 = [(ASContact *)self businessTelephoneNumber];
+    [v101 removeObject:businessTelephoneNumber5];
 
     v75 = 1;
   }
@@ -1877,17 +1877,17 @@ LABEL_106:
     v75 = 0;
   }
 
-  v76 = [(ASContact *)self business2TelephoneNumber];
+  business2TelephoneNumber4 = [(ASContact *)self business2TelephoneNumber];
 
-  if (!v76)
+  if (!business2TelephoneNumber4)
   {
     goto LABEL_112;
   }
 
-  v77 = [(ASContact *)self business2TelephoneNumber];
-  [v101 removeObject:v77];
+  business2TelephoneNumber5 = [(ASContact *)self business2TelephoneNumber];
+  [v101 removeObject:business2TelephoneNumber5];
 
-  if (!v73)
+  if (!businessTelephoneNumber4)
   {
     v75 = 1;
 LABEL_112:
@@ -1944,58 +1944,58 @@ LABEL_114:
   }
 
   v30 = property;
-  LOBYTE(v4) = v96;
+  LOBYTE(propertiesCopy) = v96;
 LABEL_125:
-  ABRecordSetValue(v31, v30, Mutable, 0);
+  ABRecordSetValue(recordCopy2, v30, Mutable, 0);
   if (Mutable)
   {
     CFRelease(Mutable);
   }
 
   v85 = *MEMORY[0x277D85DE8];
-  return v4;
+  return propertiesCopy;
 }
 
-- (BOOL)_saveStreetAddressesToAddressBookWithExistingRecord:(void *)a3 shouldMergeProperties:(BOOL)a4
+- (BOOL)_saveStreetAddressesToAddressBookWithExistingRecord:(void *)record shouldMergeProperties:(BOOL)properties
 {
-  v53 = a4;
+  propertiesCopy = properties;
   multiValue = ABMultiValueCreateMutable(5u);
   v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:5];
   v7 = *MEMORY[0x277CE9810];
-  v8 = [(ASContact *)self businessAddressCity];
-  if (v8)
+  businessAddressCity = [(ASContact *)self businessAddressCity];
+  if (businessAddressCity)
   {
-    [v6 setObject:v8 forKeyedSubscript:v7];
+    [v6 setObject:businessAddressCity forKeyedSubscript:v7];
   }
 
   v9 = *MEMORY[0x277CE9820];
-  v10 = [(ASContact *)self businessAddressCountry];
-  if (v10)
+  businessAddressCountry = [(ASContact *)self businessAddressCountry];
+  if (businessAddressCountry)
   {
-    [v6 setObject:v10 forKeyedSubscript:v9];
+    [v6 setObject:businessAddressCountry forKeyedSubscript:v9];
   }
 
-  record = a3;
+  record = record;
 
   v11 = *MEMORY[0x277CE9840];
-  v12 = [(ASContact *)self businessAddressPostalCode];
-  if (v12)
+  businessAddressPostalCode = [(ASContact *)self businessAddressPostalCode];
+  if (businessAddressPostalCode)
   {
-    [v6 setObject:v12 forKeyedSubscript:v11];
+    [v6 setObject:businessAddressPostalCode forKeyedSubscript:v11];
   }
 
   v13 = *MEMORY[0x277CE9830];
-  v14 = [(ASContact *)self businessAddressState];
-  if (v14)
+  businessAddressState = [(ASContact *)self businessAddressState];
+  if (businessAddressState)
   {
-    [v6 setObject:v14 forKeyedSubscript:v13];
+    [v6 setObject:businessAddressState forKeyedSubscript:v13];
   }
 
   v15 = *MEMORY[0x277CE9838];
-  v16 = [(ASContact *)self businessAddressStreet];
-  if (v16)
+  businessAddressStreet = [(ASContact *)self businessAddressStreet];
+  if (businessAddressStreet)
   {
-    [v6 setObject:v16 forKeyedSubscript:v15];
+    [v6 setObject:businessAddressStreet forKeyedSubscript:v15];
   }
 
   v56 = [v6 count];
@@ -2005,34 +2005,34 @@ LABEL_125:
   }
 
   v17 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:5];
-  v18 = [(ASContact *)self homeAddressCity];
-  if (v18)
+  homeAddressCity = [(ASContact *)self homeAddressCity];
+  if (homeAddressCity)
   {
-    [v17 setObject:v18 forKeyedSubscript:v7];
+    [v17 setObject:homeAddressCity forKeyedSubscript:v7];
   }
 
-  v19 = [(ASContact *)self homeAddressCountry];
-  if (v19)
+  homeAddressCountry = [(ASContact *)self homeAddressCountry];
+  if (homeAddressCountry)
   {
-    [v17 setObject:v19 forKeyedSubscript:v9];
+    [v17 setObject:homeAddressCountry forKeyedSubscript:v9];
   }
 
-  v20 = [(ASContact *)self homeAddressPostalCode];
-  if (v20)
+  homeAddressPostalCode = [(ASContact *)self homeAddressPostalCode];
+  if (homeAddressPostalCode)
   {
-    [v17 setObject:v20 forKeyedSubscript:v11];
+    [v17 setObject:homeAddressPostalCode forKeyedSubscript:v11];
   }
 
-  v21 = [(ASContact *)self homeAddressState];
-  if (v21)
+  homeAddressState = [(ASContact *)self homeAddressState];
+  if (homeAddressState)
   {
-    [v17 setObject:v21 forKeyedSubscript:v13];
+    [v17 setObject:homeAddressState forKeyedSubscript:v13];
   }
 
-  v22 = [(ASContact *)self homeAddressStreet];
-  if (v22)
+  homeAddressStreet = [(ASContact *)self homeAddressStreet];
+  if (homeAddressStreet)
   {
-    [v17 setObject:v22 forKeyedSubscript:v15];
+    [v17 setObject:homeAddressStreet forKeyedSubscript:v15];
   }
 
   v52 = [v17 count];
@@ -2042,46 +2042,46 @@ LABEL_125:
   }
 
   v23 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:5];
-  v24 = [(ASContact *)self otherAddressCity];
-  if (v24)
+  otherAddressCity = [(ASContact *)self otherAddressCity];
+  if (otherAddressCity)
   {
-    [v23 setObject:v24 forKeyedSubscript:v7];
+    [v23 setObject:otherAddressCity forKeyedSubscript:v7];
   }
 
-  v25 = [(ASContact *)self otherAddressCountry];
-  if (v25)
+  otherAddressCountry = [(ASContact *)self otherAddressCountry];
+  if (otherAddressCountry)
   {
-    [v23 setObject:v25 forKeyedSubscript:v9];
+    [v23 setObject:otherAddressCountry forKeyedSubscript:v9];
   }
 
-  v26 = [(ASContact *)self otherAddressPostalCode];
-  if (v26)
+  otherAddressPostalCode = [(ASContact *)self otherAddressPostalCode];
+  if (otherAddressPostalCode)
   {
-    [v23 setObject:v26 forKeyedSubscript:v11];
+    [v23 setObject:otherAddressPostalCode forKeyedSubscript:v11];
   }
 
-  v27 = [(ASContact *)self otherAddressState];
-  if (v27)
+  otherAddressState = [(ASContact *)self otherAddressState];
+  if (otherAddressState)
   {
-    [v23 setObject:v27 forKeyedSubscript:v13];
+    [v23 setObject:otherAddressState forKeyedSubscript:v13];
   }
 
-  v28 = [(ASContact *)self otherAddressStreet];
-  if (v28)
+  otherAddressStreet = [(ASContact *)self otherAddressStreet];
+  if (otherAddressStreet)
   {
-    [v23 setObject:v28 forKeyedSubscript:v15];
+    [v23 setObject:otherAddressStreet forKeyedSubscript:v15];
   }
 
   v29 = [v23 count];
   v30 = multiValue;
-  v31 = record;
+  recordCopy2 = record;
   if (v29 && v23)
   {
     ABMultiValueAddValueAndLabel(multiValue, v23, *MEMORY[0x277CE9808], 0);
   }
 
   v32 = *MEMORY[0x277CE9828];
-  if (v53 && (v33 = ABRecordCopyValue(record, *MEMORY[0x277CE9828])) != 0)
+  if (propertiesCopy && (v33 = ABRecordCopyValue(record, *MEMORY[0x277CE9828])) != 0)
   {
     v34 = v33;
     if (ABMultiValueGetCount(v33) >= 1 && (MutableCopy = ABMultiValueCreateMutableCopy(v34)) != 0)
@@ -2164,7 +2164,7 @@ LABEL_61:
 LABEL_66:
       CFRelease(v36);
       v30 = multiValue;
-      v31 = record;
+      recordCopy2 = record;
       v34 = v49;
     }
 
@@ -2181,7 +2181,7 @@ LABEL_66:
     v37 = 0;
   }
 
-  ABRecordSetValue(v31, v32, v30, 0);
+  ABRecordSetValue(recordCopy2, v32, v30, 0);
   if (v30)
   {
     CFRelease(v30);
@@ -2190,62 +2190,62 @@ LABEL_66:
   return v37 & 1;
 }
 
-- (BOOL)_saveEmailsToAddressBookWithExistingRecord:(void *)a3 shouldMergeProperties:(BOOL)a4
+- (BOOL)_saveEmailsToAddressBookWithExistingRecord:(void *)record shouldMergeProperties:(BOOL)properties
 {
   v53 = *MEMORY[0x277D85DE8];
   Mutable = ABMultiValueCreateMutable(1u);
   v8 = *MEMORY[0x277CBEEE8];
-  v9 = [(ASContact *)self email1Address];
-  if (v9)
+  email1Address = [(ASContact *)self email1Address];
+  if (email1Address)
   {
-    ABMultiValueAddValueAndLabel(Mutable, v9, v8, 0);
+    ABMultiValueAddValueAndLabel(Mutable, email1Address, v8, 0);
   }
 
-  v10 = [(ASContact *)self email2Address];
-  if (v10)
+  email2Address = [(ASContact *)self email2Address];
+  if (email2Address)
   {
-    ABMultiValueAddValueAndLabel(Mutable, v10, v8, 0);
+    ABMultiValueAddValueAndLabel(Mutable, email2Address, v8, 0);
   }
 
-  v11 = [(ASContact *)self email3Address];
-  if (v11)
+  email3Address = [(ASContact *)self email3Address];
+  if (email3Address)
   {
-    ABMultiValueAddValueAndLabel(Mutable, v11, v8, 0);
+    ABMultiValueAddValueAndLabel(Mutable, email3Address, v8, 0);
   }
 
-  if (!a4)
+  if (!properties)
   {
     v19 = *MEMORY[0x277CE9888];
     goto LABEL_45;
   }
 
   v12 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:6];
-  v13 = [(ASContact *)self email1Address];
+  email1Address2 = [(ASContact *)self email1Address];
 
-  if (v13)
+  if (email1Address2)
   {
-    v14 = [(ASContact *)self email1Address];
-    [v12 addObject:v14];
+    email1Address3 = [(ASContact *)self email1Address];
+    [v12 addObject:email1Address3];
   }
 
-  v15 = [(ASContact *)self email2Address];
+  email2Address2 = [(ASContact *)self email2Address];
 
-  if (v15)
+  if (email2Address2)
   {
-    v16 = [(ASContact *)self email2Address];
-    [v12 addObject:v16];
+    email2Address3 = [(ASContact *)self email2Address];
+    [v12 addObject:email2Address3];
   }
 
-  v17 = [(ASContact *)self email3Address];
+  email3Address2 = [(ASContact *)self email3Address];
 
-  if (v17)
+  if (email3Address2)
   {
-    v18 = [(ASContact *)self email3Address];
-    [v12 addObject:v18];
+    email3Address3 = [(ASContact *)self email3Address];
+    [v12 addObject:email3Address3];
   }
 
   v19 = *MEMORY[0x277CE9888];
-  v20 = ABRecordCopyValue(a3, *MEMORY[0x277CE9888]);
+  v20 = ABRecordCopyValue(record, *MEMORY[0x277CE9888]);
   if (v20)
   {
     v21 = v20;
@@ -2256,7 +2256,7 @@ LABEL_66:
       {
         v23 = MutableCopy;
         v46 = v19;
-        v24 = a3;
+        recordCopy = record;
         if (ABMultiValueGetCount(MutableCopy) >= 1)
         {
           Count = ABMultiValueGetCount(v23);
@@ -2272,7 +2272,7 @@ LABEL_66:
         }
 
         CFRelease(v23);
-        a3 = v24;
+        record = recordCopy;
         v19 = v46;
       }
     }
@@ -2280,12 +2280,12 @@ LABEL_66:
     CFRelease(v21);
   }
 
-  v29 = [(ASContact *)self email1Address];
+  email1Address4 = [(ASContact *)self email1Address];
 
-  if (v29)
+  if (email1Address4)
   {
-    v30 = [(ASContact *)self email1Address];
-    [v12 removeObject:v30];
+    email1Address5 = [(ASContact *)self email1Address];
+    [v12 removeObject:email1Address5];
 
     v31 = 1;
   }
@@ -2295,25 +2295,25 @@ LABEL_66:
     v31 = 0;
   }
 
-  v32 = [(ASContact *)self email2Address];
+  email2Address4 = [(ASContact *)self email2Address];
 
-  if (v32)
+  if (email2Address4)
   {
-    v33 = [(ASContact *)self email2Address];
-    [v12 removeObject:v33];
+    email2Address5 = [(ASContact *)self email2Address];
+    [v12 removeObject:email2Address5];
 
     ++v31;
   }
 
-  v34 = [(ASContact *)self email3Address];
+  email3Address4 = [(ASContact *)self email3Address];
 
-  if (!v34)
+  if (!email3Address4)
   {
     goto LABEL_32;
   }
 
-  v35 = [(ASContact *)self email3Address];
-  [v12 removeObject:v35];
+  email3Address5 = [(ASContact *)self email3Address];
+  [v12 removeObject:email3Address5];
 
   if (v31 <= 1)
   {
@@ -2329,7 +2329,7 @@ LABEL_32:
     {
       v38 = v37;
       v47 = v19;
-      v45 = a3;
+      recordCopy2 = record;
       v39 = 0;
       v40 = *v49;
 LABEL_34:
@@ -2369,13 +2369,13 @@ LABEL_34:
         }
       }
 
-      a3 = v45;
+      record = recordCopy2;
       v19 = v47;
     }
   }
 
 LABEL_45:
-  ABRecordSetValue(a3, v19, Mutable, 0);
+  ABRecordSetValue(record, v19, Mutable, 0);
   if (Mutable)
   {
     CFRelease(Mutable);
@@ -2385,25 +2385,25 @@ LABEL_45:
   return 0;
 }
 
-- (BOOL)_saveURLsToAddressBookWithExistingRecord:(void *)a3 shouldMergeProperties:(BOOL)a4
+- (BOOL)_saveURLsToAddressBookWithExistingRecord:(void *)record shouldMergeProperties:(BOOL)properties
 {
-  v4 = a4;
+  propertiesCopy = properties;
   Mutable = ABMultiValueCreateMutable(1u);
   v8 = *MEMORY[0x277CE98D0];
-  v9 = [(ASContact *)self webpage];
-  if (v9)
+  webpage = [(ASContact *)self webpage];
+  if (webpage)
   {
-    ABMultiValueAddValueAndLabel(Mutable, v9, v8, 0);
+    ABMultiValueAddValueAndLabel(Mutable, webpage, v8, 0);
   }
 
   v10 = *MEMORY[0x277CE9A58];
-  if (v4 && (v11 = ABRecordCopyValue(a3, *MEMORY[0x277CE9A58])) != 0)
+  if (propertiesCopy && (v11 = ABRecordCopyValue(record, *MEMORY[0x277CE9A58])) != 0)
   {
     v12 = v11;
     if (ABMultiValueGetCount(v11) >= 1 && (MutableCopy = ABMultiValueCreateMutableCopy(v12)) != 0)
     {
       v14 = MutableCopy;
-      v24 = a3;
+      recordCopy = record;
       v23 = v12;
       if (ABMultiValueGetCount(MutableCopy) < 1 || (Count = ABMultiValueGetCount(v14), Count < 1))
       {
@@ -2419,9 +2419,9 @@ LABEL_45:
           v19 = ABMultiValueCopyLabelAtIndex(v14, i);
           if ([(__CFString *)v8 isEqualToString:v19])
           {
-            v20 = [(ASContact *)self webpage];
+            webpage2 = [(ASContact *)self webpage];
 
-            if (!v20)
+            if (!webpage2)
             {
               v21 = ABMultiValueCopyValueAtIndex(v14, i);
               if (v21)
@@ -2437,7 +2437,7 @@ LABEL_45:
 
       CFRelease(v14);
       v12 = v23;
-      a3 = v24;
+      record = recordCopy;
     }
 
     else
@@ -2453,7 +2453,7 @@ LABEL_45:
     v17 = 0;
   }
 
-  ABRecordSetValue(a3, v10, Mutable, 0);
+  ABRecordSetValue(record, v10, Mutable, 0);
   if (Mutable)
   {
     CFRelease(Mutable);
@@ -2462,53 +2462,53 @@ LABEL_45:
   return v17;
 }
 
-- (BOOL)_saveIMsToAddressBookWithExistingRecord:(void *)a3 shouldMergeProperties:(BOOL)a4
+- (BOOL)_saveIMsToAddressBookWithExistingRecord:(void *)record shouldMergeProperties:(BOOL)properties
 {
   v57 = *MEMORY[0x277D85DE8];
   Mutable = ABMultiValueCreateMutable(1u);
   v8 = *MEMORY[0x277CE9808];
-  v9 = [(ASContact *)self im1Address];
-  addIMUserNameToMultiValue(Mutable, v8, v9);
+  im1Address = [(ASContact *)self im1Address];
+  addIMUserNameToMultiValue(Mutable, v8, im1Address);
 
-  v10 = [(ASContact *)self im2Address];
-  addIMUserNameToMultiValue(Mutable, v8, v10);
+  im2Address = [(ASContact *)self im2Address];
+  addIMUserNameToMultiValue(Mutable, v8, im2Address);
 
-  v11 = [(ASContact *)self im3Address];
-  addIMUserNameToMultiValue(Mutable, v8, v11);
+  im3Address = [(ASContact *)self im3Address];
+  addIMUserNameToMultiValue(Mutable, v8, im3Address);
 
-  if (!a4)
+  if (!properties)
   {
     v19 = *MEMORY[0x277CE98E8];
     goto LABEL_37;
   }
 
   v12 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:6];
-  v13 = [(ASContact *)self im1Address];
+  im1Address2 = [(ASContact *)self im1Address];
 
-  if (v13)
+  if (im1Address2)
   {
-    v14 = [(ASContact *)self im1Address];
-    [v12 addObject:v14];
+    im1Address3 = [(ASContact *)self im1Address];
+    [v12 addObject:im1Address3];
   }
 
-  v15 = [(ASContact *)self im2Address];
+  im2Address2 = [(ASContact *)self im2Address];
 
-  if (v15)
+  if (im2Address2)
   {
-    v16 = [(ASContact *)self im2Address];
-    [v12 addObject:v16];
+    im2Address3 = [(ASContact *)self im2Address];
+    [v12 addObject:im2Address3];
   }
 
-  v17 = [(ASContact *)self im3Address];
+  im3Address2 = [(ASContact *)self im3Address];
 
-  if (v17)
+  if (im3Address2)
   {
-    v18 = [(ASContact *)self im3Address];
-    [v12 addObject:v18];
+    im3Address3 = [(ASContact *)self im3Address];
+    [v12 addObject:im3Address3];
   }
 
   v19 = *MEMORY[0x277CE98E8];
-  v20 = ABRecordCopyValue(a3, *MEMORY[0x277CE98E8]);
+  v20 = ABRecordCopyValue(record, *MEMORY[0x277CE98E8]);
   if (v20)
   {
     v21 = v20;
@@ -2519,7 +2519,7 @@ LABEL_45:
       {
         v23 = MutableCopy;
         v47 = v21;
-        v48 = a3;
+        recordCopy = record;
         v50 = v19;
         v24 = v12;
         if (ABMultiValueGetCount(MutableCopy) >= 1)
@@ -2545,7 +2545,7 @@ LABEL_45:
 
         CFRelease(v23);
         v21 = v47;
-        a3 = v48;
+        record = recordCopy;
         v12 = v24;
         v19 = v50;
       }
@@ -2554,12 +2554,12 @@ LABEL_45:
     CFRelease(v21);
   }
 
-  v31 = [(ASContact *)self im1Address];
+  im1Address4 = [(ASContact *)self im1Address];
 
-  if (v31)
+  if (im1Address4)
   {
-    v32 = [(ASContact *)self im1Address];
-    [v12 removeObject:v32];
+    im1Address5 = [(ASContact *)self im1Address];
+    [v12 removeObject:im1Address5];
 
     v33 = 1;
   }
@@ -2569,25 +2569,25 @@ LABEL_45:
     v33 = 0;
   }
 
-  v34 = [(ASContact *)self im2Address];
+  im2Address4 = [(ASContact *)self im2Address];
 
-  if (v34)
+  if (im2Address4)
   {
-    v35 = [(ASContact *)self im2Address];
-    [v12 removeObject:v35];
+    im2Address5 = [(ASContact *)self im2Address];
+    [v12 removeObject:im2Address5];
 
     ++v33;
   }
 
-  v36 = [(ASContact *)self im3Address];
+  im3Address4 = [(ASContact *)self im3Address];
 
-  if (!v36)
+  if (!im3Address4)
   {
     goto LABEL_26;
   }
 
-  v37 = [(ASContact *)self im3Address];
-  [v12 removeObject:v37];
+  im3Address5 = [(ASContact *)self im3Address];
+  [v12 removeObject:im3Address5];
 
   if (v33 <= 1)
   {
@@ -2645,7 +2645,7 @@ LABEL_28:
   }
 
 LABEL_37:
-  ABRecordSetValue(a3, v19, Mutable, 0);
+  ABRecordSetValue(record, v19, Mutable, 0);
   if (Mutable)
   {
     CFRelease(Mutable);
@@ -2655,13 +2655,13 @@ LABEL_37:
   return 0;
 }
 
-- (BOOL)_saveExternalRepToAddressBookWithExistingRecord:(void *)a3 shouldMergeProperties:(BOOL)a4 storeExternalRep:(BOOL)a5
+- (BOOL)_saveExternalRepToAddressBookWithExistingRecord:(void *)record shouldMergeProperties:(BOOL)properties storeExternalRep:(BOOL)rep
 {
-  v5 = a5;
-  v31 = a4;
+  repCopy = rep;
+  propertiesCopy = properties;
   v37 = *MEMORY[0x277D85DE8];
   v8 = *MEMORY[0x277CE98A0];
-  v9 = ABRecordCopyValue(a3, *MEMORY[0x277CE98A0]);
+  v9 = ABRecordCopyValue(record, *MEMORY[0x277CE98A0]);
   if (v9)
   {
     v10 = MEMORY[0x277CCAAC8];
@@ -2701,9 +2701,9 @@ LABEL_9:
   v17 = [MEMORY[0x277CCABB0] numberWithInteger:self->_fileAsAutoConstruction];
   [v14 setObject:v17 forKeyedSubscript:@"fileAsAutoConstruction"];
 
-  if (v5)
+  if (repCopy)
   {
-    if (!v31 || ([v14 objectForKeyedSubscript:@"easExtraProperties"], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "mutableCopy"), v18, !v19))
+    if (!propertiesCopy || ([v14 objectForKeyedSubscript:@"easExtraProperties"], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "mutableCopy"), v18, !v19))
     {
       v19 = objc_opt_new();
     }
@@ -2760,27 +2760,27 @@ LABEL_9:
   }
 
   v28 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v14];
-  ABRecordSetValue(a3, v8, v28, 0);
+  ABRecordSetValue(record, v8, v28, 0);
 
   v29 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (void)setABRecord:(void *)a3
+- (void)setABRecord:(void *)record
 {
   abRecord = self->_abRecord;
-  if (abRecord != a3)
+  if (abRecord != record)
   {
     if (abRecord)
     {
       CFRelease(abRecord);
     }
 
-    self->_abRecord = a3;
-    if (a3)
+    self->_abRecord = record;
+    if (record)
     {
 
-      CFRetain(a3);
+      CFRetain(record);
     }
   }
 }
@@ -2792,17 +2792,17 @@ LABEL_9:
     [(ASContact *)a2 loadABRecord];
   }
 
-  v4 = [(ASChangedCollectionLeaf *)self clientID];
+  clientID = [(ASChangedCollectionLeaf *)self clientID];
 
-  if (!v4)
+  if (!clientID)
   {
     [(ASContact *)a2 loadABRecord];
   }
 
   v5 = +[ASLocalDBHelper sharedInstance];
-  v6 = [v5 abDB];
-  v7 = [(ASChangedCollectionLeaf *)self clientID];
-  PersonWithRecordID = ABAddressBookGetPersonWithRecordID(v6, [v7 intValue]);
+  abDB = [v5 abDB];
+  clientID2 = [(ASChangedCollectionLeaf *)self clientID];
+  PersonWithRecordID = ABAddressBookGetPersonWithRecordID(abDB, [clientID2 intValue]);
 
   [(ASContact *)self _loadAttributesFromABRecord:PersonWithRecordID];
   [(ASContact *)self setABRecord:PersonWithRecordID];
@@ -2815,8 +2815,8 @@ LABEL_9:
   if (abRecord)
   {
     v3 = *MEMORY[0x277CE9890];
-    v4 = [(ASChangedCollectionLeaf *)self serverID];
-    ABRecordSetValue(abRecord, v3, v4, 0);
+    serverID = [(ASChangedCollectionLeaf *)self serverID];
+    ABRecordSetValue(abRecord, v3, serverID, 0);
   }
 
   return abRecord != 0;
@@ -2835,9 +2835,9 @@ LABEL_9:
 - (BOOL)deleteFromAddressBook
 {
   v3 = +[ASLocalDBHelper sharedInstance];
-  v4 = [v3 abDB];
+  abDB = [v3 abDB];
 
-  if (!v4)
+  if (!abDB)
   {
     return 0;
   }
@@ -2845,7 +2845,7 @@ LABEL_9:
   abRecord = self->_abRecord;
   if (abRecord)
   {
-    if (ABAddressBookRemoveRecord(v4, abRecord, 0))
+    if (ABAddressBookRemoveRecord(abDB, abRecord, 0))
     {
       return 1;
     }
@@ -2879,339 +2879,339 @@ LABEL_10:
   return 0;
 }
 
-- (void)appendActiveSyncDataForTask:(id)a3 toWBXMLData:(id)a4
+- (void)appendActiveSyncDataForTask:(id)task toWBXMLData:(id)data
 {
   v124 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 taskManager];
-  v9 = [v8 protocol];
-  v10 = [v9 usesAirSyncBaseNamespace];
+  taskCopy = task;
+  dataCopy = data;
+  taskManager = [taskCopy taskManager];
+  protocol = [taskManager protocol];
+  usesAirSyncBaseNamespace = [protocol usesAirSyncBaseNamespace];
 
-  v11 = [v6 taskManager];
-  v12 = [v11 protocol];
-  v13 = [v12 shouldSendFullContactInfo];
+  taskManager2 = [taskCopy taskManager];
+  protocol2 = [taskManager2 protocol];
+  shouldSendFullContactInfo = [protocol2 shouldSendFullContactInfo];
 
-  v14 = [(ASContact *)self body];
-  if (v10)
+  body = [(ASContact *)self body];
+  if (usesAirSyncBaseNamespace)
   {
-    [v7 switchToCodePage:17];
-    [v7 openTag:10];
-    [v7 appendTag:6 withIntContent:1];
-    if ([v14 length])
+    [dataCopy switchToCodePage:17];
+    [dataCopy openTag:10];
+    [dataCopy appendTag:6 withIntContent:1];
+    if ([body length])
     {
-      [v7 appendTag:11 withStringContent:v14];
+      [dataCopy appendTag:11 withStringContent:body];
     }
 
     else
     {
-      [v7 appendEmptyTag:11];
+      [dataCopy appendEmptyTag:11];
     }
 
-    [v7 closeTag:10];
+    [dataCopy closeTag:10];
   }
 
-  [v7 switchToCodePage:1];
-  v15 = [(ASContact *)self anniversary];
-  v16 = v15;
-  if (v15)
+  [dataCopy switchToCodePage:1];
+  anniversary = [(ASContact *)self anniversary];
+  v16 = anniversary;
+  if (anniversary)
   {
-    v17 = [v15 activeSyncString];
-    [v7 appendTag:5 withStringContent:v17];
+    activeSyncString = [anniversary activeSyncString];
+    [dataCopy appendTag:5 withStringContent:activeSyncString];
   }
 
-  v18 = [(ASContact *)self assistantName];
-  if (v18)
+  assistantName = [(ASContact *)self assistantName];
+  if (assistantName)
   {
-    [v7 appendTag:6 withStringContent:v18];
+    [dataCopy appendTag:6 withStringContent:assistantName];
   }
 
-  v19 = [(ASContact *)self assistantTelephoneNumber];
-  if (v19)
+  assistantTelephoneNumber = [(ASContact *)self assistantTelephoneNumber];
+  if (assistantTelephoneNumber)
   {
-    [v7 appendTag:7 withStringContent:v19];
+    [dataCopy appendTag:7 withStringContent:assistantTelephoneNumber];
   }
 
-  v20 = [(ASContact *)self birthday];
-  v21 = v20;
-  if (v20)
+  birthday = [(ASContact *)self birthday];
+  v21 = birthday;
+  if (birthday)
   {
-    v22 = [v20 activeSyncString];
-    [v7 appendTag:8 withStringContent:v22];
+    activeSyncString2 = [birthday activeSyncString];
+    [dataCopy appendTag:8 withStringContent:activeSyncString2];
   }
 
-  if ((v10 & 1) == 0)
+  if ((usesAirSyncBaseNamespace & 1) == 0)
   {
-    if ([v14 length])
+    if ([body length])
     {
-      [v7 appendTag:9 withStringContent:v14];
+      [dataCopy appendTag:9 withStringContent:body];
     }
 
     else
     {
-      [v7 appendEmptyTag:9];
+      [dataCopy appendEmptyTag:9];
     }
   }
 
-  v23 = [(ASContact *)self business2TelephoneNumber];
-  if (v23)
+  business2TelephoneNumber = [(ASContact *)self business2TelephoneNumber];
+  if (business2TelephoneNumber)
   {
-    [v7 appendTag:12 withStringContent:v23];
+    [dataCopy appendTag:12 withStringContent:business2TelephoneNumber];
   }
 
-  v24 = [(ASContact *)self businessAddressCity];
-  if (v24)
+  businessAddressCity = [(ASContact *)self businessAddressCity];
+  if (businessAddressCity)
   {
-    [v7 appendTag:13 withStringContent:v24];
+    [dataCopy appendTag:13 withStringContent:businessAddressCity];
   }
 
-  v25 = [(ASContact *)self businessAddressCountry];
-  if (v25)
+  businessAddressCountry = [(ASContact *)self businessAddressCountry];
+  if (businessAddressCountry)
   {
-    [v7 appendTag:14 withStringContent:v25];
+    [dataCopy appendTag:14 withStringContent:businessAddressCountry];
   }
 
-  v26 = [(ASContact *)self businessAddressPostalCode];
-  if (v26)
+  businessAddressPostalCode = [(ASContact *)self businessAddressPostalCode];
+  if (businessAddressPostalCode)
   {
-    [v7 appendTag:15 withStringContent:v26];
+    [dataCopy appendTag:15 withStringContent:businessAddressPostalCode];
   }
 
-  v27 = [(ASContact *)self businessAddressState];
-  if (v27)
+  businessAddressState = [(ASContact *)self businessAddressState];
+  if (businessAddressState)
   {
-    [v7 appendTag:16 withStringContent:v27];
+    [dataCopy appendTag:16 withStringContent:businessAddressState];
   }
 
-  v28 = [(ASContact *)self businessAddressStreet];
-  if (v28)
+  businessAddressStreet = [(ASContact *)self businessAddressStreet];
+  if (businessAddressStreet)
   {
-    [v7 appendTag:17 withStringContent:v28];
+    [dataCopy appendTag:17 withStringContent:businessAddressStreet];
   }
 
-  v29 = [(ASContact *)self businessFaxNumber];
-  if (v29)
+  businessFaxNumber = [(ASContact *)self businessFaxNumber];
+  if (businessFaxNumber)
   {
-    [v7 appendTag:18 withStringContent:v29];
+    [dataCopy appendTag:18 withStringContent:businessFaxNumber];
   }
 
-  v30 = [(ASContact *)self businessTelephoneNumber];
-  if (v30)
+  businessTelephoneNumber = [(ASContact *)self businessTelephoneNumber];
+  if (businessTelephoneNumber)
   {
-    [v7 appendTag:19 withStringContent:v30];
+    [dataCopy appendTag:19 withStringContent:businessTelephoneNumber];
   }
 
-  v31 = [(ASContact *)self carTelephoneNumber];
-  if (v31)
+  carTelephoneNumber = [(ASContact *)self carTelephoneNumber];
+  if (carTelephoneNumber)
   {
-    [v7 appendTag:20 withStringContent:v31];
+    [dataCopy appendTag:20 withStringContent:carTelephoneNumber];
   }
 
-  v32 = [(ASContact *)self companyName];
-  if (v32)
+  companyName = [(ASContact *)self companyName];
+  if (companyName)
   {
-    [v7 appendTag:25 withStringContent:v32];
+    [dataCopy appendTag:25 withStringContent:companyName];
   }
 
-  v33 = [(ASContact *)self department];
-  if (v33)
+  department = [(ASContact *)self department];
+  if (department)
   {
-    [v7 appendTag:26 withStringContent:v33];
+    [dataCopy appendTag:26 withStringContent:department];
   }
 
-  v34 = [(ASContact *)self email1Address];
-  if (v34)
+  email1Address = [(ASContact *)self email1Address];
+  if (email1Address)
   {
-    [v7 appendTag:27 withStringContent:v34];
+    [dataCopy appendTag:27 withStringContent:email1Address];
   }
 
-  v35 = [(ASContact *)self email2Address];
-  if (v35)
+  email2Address = [(ASContact *)self email2Address];
+  if (email2Address)
   {
-    [v7 appendTag:28 withStringContent:v35];
+    [dataCopy appendTag:28 withStringContent:email2Address];
   }
 
-  v36 = [(ASContact *)self email3Address];
-  if (v36)
+  email3Address = [(ASContact *)self email3Address];
+  if (email3Address)
   {
-    [v7 appendTag:29 withStringContent:v36];
+    [dataCopy appendTag:29 withStringContent:email3Address];
   }
 
-  v37 = [(ASContact *)self fileAs];
+  fileAs = [(ASContact *)self fileAs];
 
-  if (v37)
+  if (fileAs)
   {
-    v38 = [(ASContact *)self fileAs];
+    fileAs2 = [(ASContact *)self fileAs];
   }
 
   else
   {
-    v38 = objc_opt_new();
-    v39 = [(ASContact *)self lastName];
+    fileAs2 = objc_opt_new();
+    lastName = [(ASContact *)self lastName];
 
-    if (v39)
+    if (lastName)
     {
-      v40 = [(ASContact *)self lastName];
-      [v38 appendString:v40];
+      lastName2 = [(ASContact *)self lastName];
+      [fileAs2 appendString:lastName2];
 
-      [v38 appendString:{@", "}];
+      [fileAs2 appendString:{@", "}];
     }
 
-    v41 = [(ASContact *)self firstName];
+    firstName = [(ASContact *)self firstName];
 
-    if (v41)
+    if (firstName)
     {
-      v42 = [(ASContact *)self firstName];
-      [v38 appendString:v42];
+      firstName2 = [(ASContact *)self firstName];
+      [fileAs2 appendString:firstName2];
 
-      [v38 appendString:@" "];
+      [fileAs2 appendString:@" "];
     }
 
-    v43 = [(ASContact *)self middleName];
-    v44 = [v43 length];
+    middleName = [(ASContact *)self middleName];
+    v44 = [middleName length];
 
     if (v44)
     {
-      v45 = [(ASContact *)self middleName];
-      v46 = [v45 substringToIndex:1];
-      [v38 appendString:v46];
+      middleName2 = [(ASContact *)self middleName];
+      v46 = [middleName2 substringToIndex:1];
+      [fileAs2 appendString:v46];
 
-      [v38 appendString:@"."];
+      [fileAs2 appendString:@"."];
     }
 
-    if (![v38 length])
+    if (![fileAs2 length])
     {
-      v47 = [(ASContact *)self companyName];
+      companyName2 = [(ASContact *)self companyName];
 
-      if (v47)
+      if (companyName2)
       {
-        v48 = [(ASContact *)self companyName];
-        [v38 appendString:v48];
+        companyName3 = [(ASContact *)self companyName];
+        [fileAs2 appendString:companyName3];
       }
     }
   }
 
-  [v7 appendTag:30 withStringContent:v38];
+  [dataCopy appendTag:30 withStringContent:fileAs2];
 
-  v49 = [(ASContact *)self firstName];
-  if (v49)
+  firstName3 = [(ASContact *)self firstName];
+  if (firstName3)
   {
-    [v7 appendTag:31 withStringContent:v49];
+    [dataCopy appendTag:31 withStringContent:firstName3];
   }
 
-  v50 = [(ASContact *)self home2TelephoneNumber];
-  if (v50)
+  home2TelephoneNumber = [(ASContact *)self home2TelephoneNumber];
+  if (home2TelephoneNumber)
   {
-    [v7 appendTag:32 withStringContent:v50];
+    [dataCopy appendTag:32 withStringContent:home2TelephoneNumber];
   }
 
-  v51 = [(ASContact *)self homeAddressCity];
-  if (v51)
+  homeAddressCity = [(ASContact *)self homeAddressCity];
+  if (homeAddressCity)
   {
-    [v7 appendTag:33 withStringContent:v51];
+    [dataCopy appendTag:33 withStringContent:homeAddressCity];
   }
 
-  v52 = [(ASContact *)self homeAddressCountry];
-  if (v52)
+  homeAddressCountry = [(ASContact *)self homeAddressCountry];
+  if (homeAddressCountry)
   {
-    [v7 appendTag:34 withStringContent:v52];
+    [dataCopy appendTag:34 withStringContent:homeAddressCountry];
   }
 
-  v53 = [(ASContact *)self homeAddressPostalCode];
-  if (v53)
+  homeAddressPostalCode = [(ASContact *)self homeAddressPostalCode];
+  if (homeAddressPostalCode)
   {
-    [v7 appendTag:35 withStringContent:v53];
+    [dataCopy appendTag:35 withStringContent:homeAddressPostalCode];
   }
 
-  v54 = [(ASContact *)self homeAddressState];
-  if (v54)
+  homeAddressState = [(ASContact *)self homeAddressState];
+  if (homeAddressState)
   {
-    [v7 appendTag:36 withStringContent:v54];
+    [dataCopy appendTag:36 withStringContent:homeAddressState];
   }
 
-  v55 = [(ASContact *)self homeAddressStreet];
-  if (v55)
+  homeAddressStreet = [(ASContact *)self homeAddressStreet];
+  if (homeAddressStreet)
   {
-    [v7 appendTag:37 withStringContent:v55];
+    [dataCopy appendTag:37 withStringContent:homeAddressStreet];
   }
 
-  v56 = [(ASContact *)self homeFaxNumber];
-  if (v56)
+  homeFaxNumber = [(ASContact *)self homeFaxNumber];
+  if (homeFaxNumber)
   {
-    [v7 appendTag:38 withStringContent:v56];
+    [dataCopy appendTag:38 withStringContent:homeFaxNumber];
   }
 
-  v57 = [(ASContact *)self homeTelephoneNumber];
-  if (v57)
+  homeTelephoneNumber = [(ASContact *)self homeTelephoneNumber];
+  if (homeTelephoneNumber)
   {
-    [v7 appendTag:39 withStringContent:v57];
+    [dataCopy appendTag:39 withStringContent:homeTelephoneNumber];
   }
 
-  v58 = [(ASContact *)self jobTitle];
-  if (v58)
+  jobTitle = [(ASContact *)self jobTitle];
+  if (jobTitle)
   {
-    [v7 appendTag:40 withStringContent:v58];
+    [dataCopy appendTag:40 withStringContent:jobTitle];
   }
 
-  v59 = [(ASContact *)self lastName];
-  if (v59)
+  lastName3 = [(ASContact *)self lastName];
+  if (lastName3)
   {
-    [v7 appendTag:41 withStringContent:v59];
+    [dataCopy appendTag:41 withStringContent:lastName3];
   }
 
-  v60 = [(ASContact *)self middleName];
-  if (v60)
+  middleName3 = [(ASContact *)self middleName];
+  if (middleName3)
   {
-    [v7 appendTag:42 withStringContent:v60];
+    [dataCopy appendTag:42 withStringContent:middleName3];
   }
 
-  v61 = [(ASContact *)self mobileTelephoneNumber];
-  if (v61)
+  mobileTelephoneNumber = [(ASContact *)self mobileTelephoneNumber];
+  if (mobileTelephoneNumber)
   {
-    [v7 appendTag:43 withStringContent:v61];
+    [dataCopy appendTag:43 withStringContent:mobileTelephoneNumber];
   }
 
-  v62 = [(ASContact *)self otherAddressCity];
-  if (v62)
+  otherAddressCity = [(ASContact *)self otherAddressCity];
+  if (otherAddressCity)
   {
-    [v7 appendTag:45 withStringContent:v62];
+    [dataCopy appendTag:45 withStringContent:otherAddressCity];
   }
 
-  v63 = [(ASContact *)self otherAddressCountry];
-  if (v63)
+  otherAddressCountry = [(ASContact *)self otherAddressCountry];
+  if (otherAddressCountry)
   {
-    [v7 appendTag:46 withStringContent:v63];
+    [dataCopy appendTag:46 withStringContent:otherAddressCountry];
   }
 
-  v64 = [(ASContact *)self otherAddressPostalCode];
-  if (v64)
+  otherAddressPostalCode = [(ASContact *)self otherAddressPostalCode];
+  if (otherAddressPostalCode)
   {
-    [v7 appendTag:47 withStringContent:v64];
+    [dataCopy appendTag:47 withStringContent:otherAddressPostalCode];
   }
 
-  v65 = [(ASContact *)self otherAddressState];
-  if (v65)
+  otherAddressState = [(ASContact *)self otherAddressState];
+  if (otherAddressState)
   {
-    [v7 appendTag:48 withStringContent:v65];
+    [dataCopy appendTag:48 withStringContent:otherAddressState];
   }
 
-  v66 = [(ASContact *)self otherAddressStreet];
-  if (v66)
+  otherAddressStreet = [(ASContact *)self otherAddressStreet];
+  if (otherAddressStreet)
   {
-    [v7 appendTag:49 withStringContent:v66];
+    [dataCopy appendTag:49 withStringContent:otherAddressStreet];
   }
 
-  v67 = [(ASContact *)self pagerNumber];
-  if (v67)
+  pagerNumber = [(ASContact *)self pagerNumber];
+  if (pagerNumber)
   {
-    [v7 appendTag:50 withStringContent:v67];
+    [dataCopy appendTag:50 withStringContent:pagerNumber];
   }
 
-  v68 = [(ASContact *)self picture];
-  v69 = v68;
-  if (v68)
+  picture = [(ASContact *)self picture];
+  v69 = picture;
+  if (picture)
   {
-    if ([v68 length] > 0x9266)
+    if ([picture length] > 0x9266)
     {
       if ([v69 length] >= 0x9267)
       {
@@ -3220,7 +3220,7 @@ LABEL_10:
         if (os_log_type_enabled(v70, v71))
         {
           *buf = 138412546;
-          v121 = self;
+          selfCopy = self;
           v122 = 2048;
           v123 = [v69 length];
           _os_log_impl(&dword_24A0AC000, v70, v71, "Ignoring photo for %@, as it's bigger than our limit of 36.6k, length: %lu", buf, 0x16u);
@@ -3230,74 +3230,74 @@ LABEL_10:
 
     else
     {
-      [v7 appendTag:60 withStringContent:v69];
+      [dataCopy appendTag:60 withStringContent:v69];
     }
   }
 
   else
   {
-    [v7 appendEmptyTag:60];
+    [dataCopy appendEmptyTag:60];
   }
 
-  v72 = [(ASContact *)self radioTelephoneNumber];
-  if (v72)
+  radioTelephoneNumber = [(ASContact *)self radioTelephoneNumber];
+  if (radioTelephoneNumber)
   {
-    [v7 appendTag:51 withStringContent:v72];
+    [dataCopy appendTag:51 withStringContent:radioTelephoneNumber];
   }
 
-  v73 = [(ASContact *)self spouse];
-  if (v73)
+  spouse = [(ASContact *)self spouse];
+  if (spouse)
   {
-    [v7 appendTag:52 withStringContent:v73];
+    [dataCopy appendTag:52 withStringContent:spouse];
   }
 
-  v74 = [(ASContact *)self suffix];
-  if (v74)
+  suffix = [(ASContact *)self suffix];
+  if (suffix)
   {
-    [v7 appendTag:53 withStringContent:v74];
+    [dataCopy appendTag:53 withStringContent:suffix];
   }
 
-  v75 = [(ASContact *)self title];
-  if (v75)
+  title = [(ASContact *)self title];
+  if (title)
   {
-    [v7 appendTag:54 withStringContent:v75];
+    [dataCopy appendTag:54 withStringContent:title];
   }
 
-  v76 = [(ASContact *)self webpage];
-  if (v76)
+  webpage = [(ASContact *)self webpage];
+  if (webpage)
   {
-    [v7 appendTag:55 withStringContent:v76];
+    [dataCopy appendTag:55 withStringContent:webpage];
   }
 
-  v77 = [(ASContact *)self yomiFirstName];
-  if (v77)
+  yomiFirstName = [(ASContact *)self yomiFirstName];
+  if (yomiFirstName)
   {
-    [v7 appendTag:57 withStringContent:v77];
+    [dataCopy appendTag:57 withStringContent:yomiFirstName];
   }
 
-  v78 = [(ASContact *)self yomiLastName];
-  if (v78)
+  yomiLastName = [(ASContact *)self yomiLastName];
+  if (yomiLastName)
   {
-    [v7 appendTag:58 withStringContent:v78];
+    [dataCopy appendTag:58 withStringContent:yomiLastName];
   }
 
-  if (v13)
+  if (shouldSendFullContactInfo)
   {
-    v79 = [(ASContact *)self yomiCompanyName];
-    if (v79)
+    yomiCompanyName = [(ASContact *)self yomiCompanyName];
+    if (yomiCompanyName)
     {
-      [v7 appendTag:56 withStringContent:v79];
+      [dataCopy appendTag:56 withStringContent:yomiCompanyName];
     }
 
-    v80 = [(ASContact *)self officeLocation];
-    if (v80)
+    officeLocation = [(ASContact *)self officeLocation];
+    if (officeLocation)
     {
-      [v7 appendTag:44 withStringContent:v80];
+      [dataCopy appendTag:44 withStringContent:officeLocation];
     }
 
     if ([(NSArray *)self->_categories count])
     {
-      [v7 openTag:21];
+      [dataCopy openTag:21];
       v116 = 0u;
       v117 = 0u;
       v114 = 0u;
@@ -3317,7 +3317,7 @@ LABEL_10:
               objc_enumerationMutation(v81);
             }
 
-            [v7 appendTag:22 withStringContent:*(*(&v114 + 1) + 8 * i)];
+            [dataCopy appendTag:22 withStringContent:*(*(&v114 + 1) + 8 * i)];
           }
 
           v83 = [(NSArray *)v81 countByEnumeratingWithState:&v114 objects:v119 count:16];
@@ -3326,12 +3326,12 @@ LABEL_10:
         while (v83);
       }
 
-      [v7 closeTag:21];
+      [dataCopy closeTag:21];
     }
 
     if ([(NSArray *)self->_children count])
     {
-      [v7 openTag:23];
+      [dataCopy openTag:23];
       v112 = 0u;
       v113 = 0u;
       v110 = 0u;
@@ -3351,7 +3351,7 @@ LABEL_10:
               objc_enumerationMutation(v86);
             }
 
-            [v7 appendTag:24 withStringContent:{*(*(&v110 + 1) + 8 * j), v110}];
+            [dataCopy appendTag:24 withStringContent:{*(*(&v110 + 1) + 8 * j), v110}];
           }
 
           v88 = [(NSArray *)v86 countByEnumeratingWithState:&v110 objects:v118 count:16];
@@ -3360,27 +3360,27 @@ LABEL_10:
         while (v88);
       }
 
-      [v7 closeTag:23];
+      [dataCopy closeTag:23];
     }
 
-    v91 = [(ASContact *)self customerID];
-    if (v91)
+    customerID = [(ASContact *)self customerID];
+    if (customerID)
     {
       v92 = 1;
     }
 
     else
     {
-      v93 = [(ASContact *)self governmentID];
-      if (v93)
+      governmentID = [(ASContact *)self governmentID];
+      if (governmentID)
       {
         v92 = 1;
       }
 
       else
       {
-        v94 = [(ASContact *)self accountName];
-        if (v94)
+        accountName = [(ASContact *)self accountName];
+        if (accountName)
         {
           v92 = 1;
         }
@@ -3399,22 +3399,22 @@ LABEL_10:
     v92 = 0;
   }
 
-  v96 = [(ASContact *)self im1Address];
-  if (v96)
+  im1Address = [(ASContact *)self im1Address];
+  if (im1Address)
   {
     goto LABEL_156;
   }
 
-  v96 = [(ASContact *)self im2Address];
-  if (v96 || ([(ASContact *)self im3Address], (v96 = objc_claimAutoreleasedReturnValue()) != 0) || ([(ASContact *)self managerName], (v96 = objc_claimAutoreleasedReturnValue()) != 0) || ([(ASContact *)self companyMainPhone], (v96 = objc_claimAutoreleasedReturnValue()) != 0))
+  im1Address = [(ASContact *)self im2Address];
+  if (im1Address || ([(ASContact *)self im3Address], (im1Address = objc_claimAutoreleasedReturnValue()) != 0) || ([(ASContact *)self managerName], (im1Address = objc_claimAutoreleasedReturnValue()) != 0) || ([(ASContact *)self companyMainPhone], (im1Address = objc_claimAutoreleasedReturnValue()) != 0))
   {
 LABEL_156:
   }
 
   else
   {
-    v108 = [(ASContact *)self nickName];
-    v109 = v108 != 0 || v92;
+    nickName = [(ASContact *)self nickName];
+    v109 = nickName != 0 || v92;
 
     if (!v109)
     {
@@ -3422,73 +3422,73 @@ LABEL_156:
     }
   }
 
-  [v7 switchToCodePage:12];
-  if (v13)
+  [dataCopy switchToCodePage:12];
+  if (shouldSendFullContactInfo)
   {
-    v97 = [(ASContact *)self customerID];
-    if (v97)
+    customerID2 = [(ASContact *)self customerID];
+    if (customerID2)
     {
-      [v7 appendTag:5 withStringContent:v97];
+      [dataCopy appendTag:5 withStringContent:customerID2];
     }
 
-    v98 = [(ASContact *)self governmentID];
-    if (v98)
+    governmentID2 = [(ASContact *)self governmentID];
+    if (governmentID2)
     {
-      [v7 appendTag:6 withStringContent:v98];
-    }
-  }
-
-  v99 = [(ASContact *)self im1Address];
-  if (v99)
-  {
-    [v7 appendTag:7 withStringContent:v99];
-  }
-
-  v100 = [(ASContact *)self im2Address];
-  if (v100)
-  {
-    [v7 appendTag:8 withStringContent:v100];
-  }
-
-  v101 = [(ASContact *)self im3Address];
-  if (v101)
-  {
-    [v7 appendTag:9 withStringContent:v101];
-  }
-
-  v102 = [(ASContact *)self managerName];
-  if (v102)
-  {
-    [v7 appendTag:10 withStringContent:v102];
-  }
-
-  v103 = [(ASContact *)self companyMainPhone];
-  if (v103)
-  {
-    [v7 appendTag:11 withStringContent:v103];
-  }
-
-  if (v13)
-  {
-    v104 = [(ASContact *)self accountName];
-    if (v104)
-    {
-      [v7 appendTag:12 withStringContent:v104];
+      [dataCopy appendTag:6 withStringContent:governmentID2];
     }
   }
 
-  v105 = [(ASContact *)self nickName];
-  if (v105)
+  im1Address2 = [(ASContact *)self im1Address];
+  if (im1Address2)
   {
-    [v7 appendTag:13 withStringContent:v105];
+    [dataCopy appendTag:7 withStringContent:im1Address2];
   }
 
-  if (v13)
+  im2Address = [(ASContact *)self im2Address];
+  if (im2Address)
+  {
+    [dataCopy appendTag:8 withStringContent:im2Address];
+  }
+
+  im3Address = [(ASContact *)self im3Address];
+  if (im3Address)
+  {
+    [dataCopy appendTag:9 withStringContent:im3Address];
+  }
+
+  managerName = [(ASContact *)self managerName];
+  if (managerName)
+  {
+    [dataCopy appendTag:10 withStringContent:managerName];
+  }
+
+  companyMainPhone = [(ASContact *)self companyMainPhone];
+  if (companyMainPhone)
+  {
+    [dataCopy appendTag:11 withStringContent:companyMainPhone];
+  }
+
+  if (shouldSendFullContactInfo)
+  {
+    accountName2 = [(ASContact *)self accountName];
+    if (accountName2)
+    {
+      [dataCopy appendTag:12 withStringContent:accountName2];
+    }
+  }
+
+  nickName2 = [(ASContact *)self nickName];
+  if (nickName2)
+  {
+    [dataCopy appendTag:13 withStringContent:nickName2];
+  }
+
+  if (shouldSendFullContactInfo)
   {
     v106 = [(ASContact *)self mms];
     if (v106)
     {
-      [v7 appendTag:14 withStringContent:v106];
+      [dataCopy appendTag:14 withStringContent:v106];
     }
   }
 
@@ -3497,17 +3497,17 @@ LABEL_183:
   v107 = *MEMORY[0x277D85DE8];
 }
 
-- (id)bestEmailFromAppData:(int)a3
+- (id)bestEmailFromAppData:(int)data
 {
-  v4 = [(ASChangedCollectionLeaf *)self applicationData];
-  v5 = [MEMORY[0x277CCABB0] numberWithInt:a3 | 0x100u];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  applicationData = [(ASChangedCollectionLeaf *)self applicationData];
+  0x100u = [MEMORY[0x277CCABB0] numberWithInt:data | 0x100u];
+  v6 = [applicationData objectForKeyedSubscript:0x100u];
 
-  v7 = [v6 mf_uncommentedAddress];
-  v8 = v7;
-  if (v7)
+  mf_uncommentedAddress = [v6 mf_uncommentedAddress];
+  v8 = mf_uncommentedAddress;
+  if (mf_uncommentedAddress)
   {
-    v9 = v7;
+    v9 = mf_uncommentedAddress;
   }
 
   else
@@ -3522,9 +3522,9 @@ LABEL_183:
 
 - (void)postProcessApplicationData
 {
-  v3 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData = [(ASChangedCollectionLeaf *)self applicationData];
   v4 = [MEMORY[0x277CCABB0] numberWithInt:261];
-  v5 = [v3 objectForKey:v4];
+  v5 = [applicationData objectForKey:v4];
 
   if (v5)
   {
@@ -3536,9 +3536,9 @@ LABEL_183:
     }
   }
 
-  v7 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData2 = [(ASChangedCollectionLeaf *)self applicationData];
   v8 = [MEMORY[0x277CCABB0] numberWithInt:262];
-  v9 = [v7 objectForKey:v8];
+  v9 = [applicationData2 objectForKey:v8];
 
   if (v9)
   {
@@ -3549,9 +3549,9 @@ LABEL_183:
     }
   }
 
-  v10 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData3 = [(ASChangedCollectionLeaf *)self applicationData];
   v11 = [MEMORY[0x277CCABB0] numberWithInt:263];
-  v12 = [v10 objectForKey:v11];
+  v12 = [applicationData3 objectForKey:v11];
 
   if (v12)
   {
@@ -3562,9 +3562,9 @@ LABEL_183:
     }
   }
 
-  v13 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData4 = [(ASChangedCollectionLeaf *)self applicationData];
   v14 = [MEMORY[0x277CCABB0] numberWithInt:264];
-  v15 = [v13 objectForKey:v14];
+  v15 = [applicationData4 objectForKey:v14];
 
   if (v15)
   {
@@ -3576,8 +3576,8 @@ LABEL_183:
     }
   }
 
-  v17 = [(ASChangedCollectionLeaf *)self applicationData];
-  v193 = [v17 objectForKeyedSubscript:&unk_285D57C78];
+  applicationData5 = [(ASChangedCollectionLeaf *)self applicationData];
+  v193 = [applicationData5 objectForKeyedSubscript:&unk_285D57C78];
 
   if (v193)
   {
@@ -3605,15 +3605,15 @@ LABEL_183:
       }
     }
 
-    v22 = [MEMORY[0x277CCABB0] numberWithInt:4365];
-    v23 = [v193 objectForKey:v22];
+    applicationData8 = [MEMORY[0x277CCABB0] numberWithInt:4365];
+    v23 = [v193 objectForKey:applicationData8];
   }
 
   else
   {
-    v24 = [(ASChangedCollectionLeaf *)self applicationData];
+    applicationData6 = [(ASChangedCollectionLeaf *)self applicationData];
     v25 = [MEMORY[0x277CCABB0] numberWithInt:265];
-    v26 = [v24 objectForKey:v25];
+    v26 = [applicationData6 objectForKey:v25];
 
     if (v26)
     {
@@ -3624,9 +3624,9 @@ LABEL_183:
       }
     }
 
-    v27 = [(ASChangedCollectionLeaf *)self applicationData];
+    applicationData7 = [(ASChangedCollectionLeaf *)self applicationData];
     v28 = [MEMORY[0x277CCABB0] numberWithInt:266];
-    v29 = [v27 objectForKey:v28];
+    v29 = [applicationData7 objectForKey:v28];
 
     if (v29)
     {
@@ -3637,9 +3637,9 @@ LABEL_183:
       }
     }
 
-    v22 = [(ASChangedCollectionLeaf *)self applicationData];
+    applicationData8 = [(ASChangedCollectionLeaf *)self applicationData];
     v30 = [MEMORY[0x277CCABB0] numberWithInt:267];
-    v23 = [v22 objectForKey:v30];
+    v23 = [applicationData8 objectForKey:v30];
   }
 
   if (v23)
@@ -3651,9 +3651,9 @@ LABEL_183:
     }
   }
 
-  v31 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData9 = [(ASChangedCollectionLeaf *)self applicationData];
   v32 = [MEMORY[0x277CCABB0] numberWithInt:268];
-  v33 = [v31 objectForKey:v32];
+  v33 = [applicationData9 objectForKey:v32];
 
   if (v33)
   {
@@ -3664,9 +3664,9 @@ LABEL_183:
     }
   }
 
-  v34 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData10 = [(ASChangedCollectionLeaf *)self applicationData];
   v35 = [MEMORY[0x277CCABB0] numberWithInt:269];
-  v36 = [v34 objectForKey:v35];
+  v36 = [applicationData10 objectForKey:v35];
 
   if (v36)
   {
@@ -3677,9 +3677,9 @@ LABEL_183:
     }
   }
 
-  v37 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData11 = [(ASChangedCollectionLeaf *)self applicationData];
   v38 = [MEMORY[0x277CCABB0] numberWithInt:270];
-  v39 = [v37 objectForKey:v38];
+  v39 = [applicationData11 objectForKey:v38];
 
   if (v39)
   {
@@ -3690,9 +3690,9 @@ LABEL_183:
     }
   }
 
-  v40 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData12 = [(ASChangedCollectionLeaf *)self applicationData];
   v41 = [MEMORY[0x277CCABB0] numberWithInt:271];
-  v42 = [v40 objectForKey:v41];
+  v42 = [applicationData12 objectForKey:v41];
 
   if (v42)
   {
@@ -3703,9 +3703,9 @@ LABEL_183:
     }
   }
 
-  v43 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData13 = [(ASChangedCollectionLeaf *)self applicationData];
   v44 = [MEMORY[0x277CCABB0] numberWithInt:272];
-  v45 = [v43 objectForKey:v44];
+  v45 = [applicationData13 objectForKey:v44];
 
   if (v45)
   {
@@ -3716,9 +3716,9 @@ LABEL_183:
     }
   }
 
-  v46 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData14 = [(ASChangedCollectionLeaf *)self applicationData];
   v47 = [MEMORY[0x277CCABB0] numberWithInt:273];
-  v48 = [v46 objectForKey:v47];
+  v48 = [applicationData14 objectForKey:v47];
 
   if (v48)
   {
@@ -3729,9 +3729,9 @@ LABEL_183:
     }
   }
 
-  v49 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData15 = [(ASChangedCollectionLeaf *)self applicationData];
   v50 = [MEMORY[0x277CCABB0] numberWithInt:274];
-  v51 = [v49 objectForKey:v50];
+  v51 = [applicationData15 objectForKey:v50];
 
   if (v51)
   {
@@ -3742,9 +3742,9 @@ LABEL_183:
     }
   }
 
-  v52 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData16 = [(ASChangedCollectionLeaf *)self applicationData];
   v53 = [MEMORY[0x277CCABB0] numberWithInt:275];
-  v54 = [v52 objectForKey:v53];
+  v54 = [applicationData16 objectForKey:v53];
 
   if (v54)
   {
@@ -3755,9 +3755,9 @@ LABEL_183:
     }
   }
 
-  v55 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData17 = [(ASChangedCollectionLeaf *)self applicationData];
   v56 = [MEMORY[0x277CCABB0] numberWithInt:276];
-  v57 = [v55 objectForKey:v56];
+  v57 = [applicationData17 objectForKey:v56];
 
   if (v57)
   {
@@ -3768,9 +3768,9 @@ LABEL_183:
     }
   }
 
-  v58 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData18 = [(ASChangedCollectionLeaf *)self applicationData];
   v59 = [MEMORY[0x277CCABB0] numberWithInt:277];
-  v60 = [v58 objectForKey:v59];
+  v60 = [applicationData18 objectForKey:v59];
 
   if (v60)
   {
@@ -3781,9 +3781,9 @@ LABEL_183:
     }
   }
 
-  v61 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData19 = [(ASChangedCollectionLeaf *)self applicationData];
   v62 = [MEMORY[0x277CCABB0] numberWithInt:279];
-  v63 = [v61 objectForKey:v62];
+  v63 = [applicationData19 objectForKey:v62];
 
   if (v63)
   {
@@ -3794,9 +3794,9 @@ LABEL_183:
     }
   }
 
-  v64 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData20 = [(ASChangedCollectionLeaf *)self applicationData];
   v65 = [MEMORY[0x277CCABB0] numberWithInt:281];
-  v66 = [v64 objectForKey:v65];
+  v66 = [applicationData20 objectForKey:v65];
 
   if (v66)
   {
@@ -3807,9 +3807,9 @@ LABEL_183:
     }
   }
 
-  v67 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData21 = [(ASChangedCollectionLeaf *)self applicationData];
   v68 = [MEMORY[0x277CCABB0] numberWithInt:282];
-  v69 = [v67 objectForKey:v68];
+  v69 = [applicationData21 objectForKey:v68];
 
   if (v69)
   {
@@ -3829,9 +3829,9 @@ LABEL_183:
   v72 = [(ASContact *)self bestEmailFromAppData:29];
   [(ASContact *)self setEmail3Address:v72];
 
-  v73 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData22 = [(ASChangedCollectionLeaf *)self applicationData];
   v74 = [MEMORY[0x277CCABB0] numberWithInt:286];
-  v75 = [v73 objectForKey:v74];
+  v75 = [applicationData22 objectForKey:v74];
 
   if (v75)
   {
@@ -3842,9 +3842,9 @@ LABEL_183:
     }
   }
 
-  v76 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData23 = [(ASChangedCollectionLeaf *)self applicationData];
   v77 = [MEMORY[0x277CCABB0] numberWithInt:287];
-  v78 = [v76 objectForKey:v77];
+  v78 = [applicationData23 objectForKey:v77];
 
   if (v78)
   {
@@ -3855,9 +3855,9 @@ LABEL_183:
     }
   }
 
-  v79 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData24 = [(ASChangedCollectionLeaf *)self applicationData];
   v80 = [MEMORY[0x277CCABB0] numberWithInt:288];
-  v81 = [v79 objectForKey:v80];
+  v81 = [applicationData24 objectForKey:v80];
 
   if (v81)
   {
@@ -3868,9 +3868,9 @@ LABEL_183:
     }
   }
 
-  v82 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData25 = [(ASChangedCollectionLeaf *)self applicationData];
   v83 = [MEMORY[0x277CCABB0] numberWithInt:289];
-  v84 = [v82 objectForKey:v83];
+  v84 = [applicationData25 objectForKey:v83];
 
   if (v84)
   {
@@ -3881,9 +3881,9 @@ LABEL_183:
     }
   }
 
-  v85 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData26 = [(ASChangedCollectionLeaf *)self applicationData];
   v86 = [MEMORY[0x277CCABB0] numberWithInt:290];
-  v87 = [v85 objectForKey:v86];
+  v87 = [applicationData26 objectForKey:v86];
 
   if (v87)
   {
@@ -3894,9 +3894,9 @@ LABEL_183:
     }
   }
 
-  v88 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData27 = [(ASChangedCollectionLeaf *)self applicationData];
   v89 = [MEMORY[0x277CCABB0] numberWithInt:291];
-  v90 = [v88 objectForKey:v89];
+  v90 = [applicationData27 objectForKey:v89];
 
   if (v90)
   {
@@ -3907,9 +3907,9 @@ LABEL_183:
     }
   }
 
-  v91 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData28 = [(ASChangedCollectionLeaf *)self applicationData];
   v92 = [MEMORY[0x277CCABB0] numberWithInt:292];
-  v93 = [v91 objectForKey:v92];
+  v93 = [applicationData28 objectForKey:v92];
 
   if (v93)
   {
@@ -3920,9 +3920,9 @@ LABEL_183:
     }
   }
 
-  v94 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData29 = [(ASChangedCollectionLeaf *)self applicationData];
   v95 = [MEMORY[0x277CCABB0] numberWithInt:293];
-  v96 = [v94 objectForKey:v95];
+  v96 = [applicationData29 objectForKey:v95];
 
   if (v96)
   {
@@ -3933,9 +3933,9 @@ LABEL_183:
     }
   }
 
-  v97 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData30 = [(ASChangedCollectionLeaf *)self applicationData];
   v98 = [MEMORY[0x277CCABB0] numberWithInt:294];
-  v99 = [v97 objectForKey:v98];
+  v99 = [applicationData30 objectForKey:v98];
 
   if (v99)
   {
@@ -3946,9 +3946,9 @@ LABEL_183:
     }
   }
 
-  v100 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData31 = [(ASChangedCollectionLeaf *)self applicationData];
   v101 = [MEMORY[0x277CCABB0] numberWithInt:295];
-  v102 = [v100 objectForKey:v101];
+  v102 = [applicationData31 objectForKey:v101];
 
   if (v102)
   {
@@ -3959,9 +3959,9 @@ LABEL_183:
     }
   }
 
-  v103 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData32 = [(ASChangedCollectionLeaf *)self applicationData];
   v104 = [MEMORY[0x277CCABB0] numberWithInt:296];
-  v105 = [v103 objectForKey:v104];
+  v105 = [applicationData32 objectForKey:v104];
 
   if (v105)
   {
@@ -3972,9 +3972,9 @@ LABEL_183:
     }
   }
 
-  v106 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData33 = [(ASChangedCollectionLeaf *)self applicationData];
   v107 = [MEMORY[0x277CCABB0] numberWithInt:297];
-  v108 = [v106 objectForKey:v107];
+  v108 = [applicationData33 objectForKey:v107];
 
   if (v108)
   {
@@ -3985,9 +3985,9 @@ LABEL_183:
     }
   }
 
-  v109 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData34 = [(ASChangedCollectionLeaf *)self applicationData];
   v110 = [MEMORY[0x277CCABB0] numberWithInt:298];
-  v111 = [v109 objectForKey:v110];
+  v111 = [applicationData34 objectForKey:v110];
 
   if (v111)
   {
@@ -3998,9 +3998,9 @@ LABEL_183:
     }
   }
 
-  v112 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData35 = [(ASChangedCollectionLeaf *)self applicationData];
   v113 = [MEMORY[0x277CCABB0] numberWithInt:299];
-  v114 = [v112 objectForKey:v113];
+  v114 = [applicationData35 objectForKey:v113];
 
   if (v114)
   {
@@ -4011,9 +4011,9 @@ LABEL_183:
     }
   }
 
-  v115 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData36 = [(ASChangedCollectionLeaf *)self applicationData];
   v116 = [MEMORY[0x277CCABB0] numberWithInt:300];
-  v117 = [v115 objectForKey:v116];
+  v117 = [applicationData36 objectForKey:v116];
 
   if (v117)
   {
@@ -4024,9 +4024,9 @@ LABEL_183:
     }
   }
 
-  v118 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData37 = [(ASChangedCollectionLeaf *)self applicationData];
   v119 = [MEMORY[0x277CCABB0] numberWithInt:301];
-  v120 = [v118 objectForKey:v119];
+  v120 = [applicationData37 objectForKey:v119];
 
   if (v120)
   {
@@ -4037,9 +4037,9 @@ LABEL_183:
     }
   }
 
-  v121 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData38 = [(ASChangedCollectionLeaf *)self applicationData];
   v122 = [MEMORY[0x277CCABB0] numberWithInt:302];
-  v123 = [v121 objectForKey:v122];
+  v123 = [applicationData38 objectForKey:v122];
 
   if (v123)
   {
@@ -4050,9 +4050,9 @@ LABEL_183:
     }
   }
 
-  v124 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData39 = [(ASChangedCollectionLeaf *)self applicationData];
   v125 = [MEMORY[0x277CCABB0] numberWithInt:303];
-  v126 = [v124 objectForKey:v125];
+  v126 = [applicationData39 objectForKey:v125];
 
   if (v126)
   {
@@ -4063,9 +4063,9 @@ LABEL_183:
     }
   }
 
-  v127 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData40 = [(ASChangedCollectionLeaf *)self applicationData];
   v128 = [MEMORY[0x277CCABB0] numberWithInt:304];
-  v129 = [v127 objectForKey:v128];
+  v129 = [applicationData40 objectForKey:v128];
 
   if (v129)
   {
@@ -4076,9 +4076,9 @@ LABEL_183:
     }
   }
 
-  v130 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData41 = [(ASChangedCollectionLeaf *)self applicationData];
   v131 = [MEMORY[0x277CCABB0] numberWithInt:305];
-  v132 = [v130 objectForKey:v131];
+  v132 = [applicationData41 objectForKey:v131];
 
   if (v132)
   {
@@ -4089,9 +4089,9 @@ LABEL_183:
     }
   }
 
-  v133 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData42 = [(ASChangedCollectionLeaf *)self applicationData];
   v134 = [MEMORY[0x277CCABB0] numberWithInt:306];
-  v135 = [v133 objectForKey:v134];
+  v135 = [applicationData42 objectForKey:v134];
 
   if (v135)
   {
@@ -4102,9 +4102,9 @@ LABEL_183:
     }
   }
 
-  v136 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData43 = [(ASChangedCollectionLeaf *)self applicationData];
   v137 = [MEMORY[0x277CCABB0] numberWithInt:316];
-  v138 = [v136 objectForKey:v137];
+  v138 = [applicationData43 objectForKey:v137];
 
   if (v138)
   {
@@ -4115,9 +4115,9 @@ LABEL_183:
     }
   }
 
-  v139 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData44 = [(ASChangedCollectionLeaf *)self applicationData];
   v140 = [MEMORY[0x277CCABB0] numberWithInt:307];
-  v141 = [v139 objectForKey:v140];
+  v141 = [applicationData44 objectForKey:v140];
 
   if (v141)
   {
@@ -4128,9 +4128,9 @@ LABEL_183:
     }
   }
 
-  v142 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData45 = [(ASChangedCollectionLeaf *)self applicationData];
   v143 = [MEMORY[0x277CCABB0] numberWithInt:308];
-  v144 = [v142 objectForKey:v143];
+  v144 = [applicationData45 objectForKey:v143];
 
   if (v144)
   {
@@ -4141,9 +4141,9 @@ LABEL_183:
     }
   }
 
-  v145 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData46 = [(ASChangedCollectionLeaf *)self applicationData];
   v146 = [MEMORY[0x277CCABB0] numberWithInt:309];
-  v147 = [v145 objectForKey:v146];
+  v147 = [applicationData46 objectForKey:v146];
 
   if (v147)
   {
@@ -4154,9 +4154,9 @@ LABEL_183:
     }
   }
 
-  v148 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData47 = [(ASChangedCollectionLeaf *)self applicationData];
   v149 = [MEMORY[0x277CCABB0] numberWithInt:310];
-  v150 = [v148 objectForKey:v149];
+  v150 = [applicationData47 objectForKey:v149];
 
   if (v150)
   {
@@ -4167,9 +4167,9 @@ LABEL_183:
     }
   }
 
-  v151 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData48 = [(ASChangedCollectionLeaf *)self applicationData];
   v152 = [MEMORY[0x277CCABB0] numberWithInt:311];
-  v153 = [v151 objectForKey:v152];
+  v153 = [applicationData48 objectForKey:v152];
 
   if (v153)
   {
@@ -4180,9 +4180,9 @@ LABEL_183:
     }
   }
 
-  v154 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData49 = [(ASChangedCollectionLeaf *)self applicationData];
   v155 = [MEMORY[0x277CCABB0] numberWithInt:312];
-  v156 = [v154 objectForKey:v155];
+  v156 = [applicationData49 objectForKey:v155];
 
   if (v156)
   {
@@ -4193,9 +4193,9 @@ LABEL_183:
     }
   }
 
-  v157 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData50 = [(ASChangedCollectionLeaf *)self applicationData];
   v158 = [MEMORY[0x277CCABB0] numberWithInt:313];
-  v159 = [v157 objectForKey:v158];
+  v159 = [applicationData50 objectForKey:v158];
 
   if (v159)
   {
@@ -4206,9 +4206,9 @@ LABEL_183:
     }
   }
 
-  v160 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData51 = [(ASChangedCollectionLeaf *)self applicationData];
   v161 = [MEMORY[0x277CCABB0] numberWithInt:314];
-  v162 = [v160 objectForKey:v161];
+  v162 = [applicationData51 objectForKey:v161];
 
   if (v162)
   {
@@ -4219,9 +4219,9 @@ LABEL_183:
     }
   }
 
-  v163 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData52 = [(ASChangedCollectionLeaf *)self applicationData];
   v164 = [MEMORY[0x277CCABB0] numberWithInt:3077];
-  v165 = [v163 objectForKey:v164];
+  v165 = [applicationData52 objectForKey:v164];
 
   if (v165)
   {
@@ -4232,9 +4232,9 @@ LABEL_183:
     }
   }
 
-  v166 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData53 = [(ASChangedCollectionLeaf *)self applicationData];
   v167 = [MEMORY[0x277CCABB0] numberWithInt:3078];
-  v168 = [v166 objectForKey:v167];
+  v168 = [applicationData53 objectForKey:v167];
 
   if (v168)
   {
@@ -4245,9 +4245,9 @@ LABEL_183:
     }
   }
 
-  v169 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData54 = [(ASChangedCollectionLeaf *)self applicationData];
   v170 = [MEMORY[0x277CCABB0] numberWithInt:3079];
-  v171 = [v169 objectForKey:v170];
+  v171 = [applicationData54 objectForKey:v170];
 
   if (v171)
   {
@@ -4258,9 +4258,9 @@ LABEL_183:
     }
   }
 
-  v172 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData55 = [(ASChangedCollectionLeaf *)self applicationData];
   v173 = [MEMORY[0x277CCABB0] numberWithInt:3080];
-  v174 = [v172 objectForKey:v173];
+  v174 = [applicationData55 objectForKey:v173];
 
   if (v174)
   {
@@ -4271,9 +4271,9 @@ LABEL_183:
     }
   }
 
-  v175 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData56 = [(ASChangedCollectionLeaf *)self applicationData];
   v176 = [MEMORY[0x277CCABB0] numberWithInt:3081];
-  v177 = [v175 objectForKey:v176];
+  v177 = [applicationData56 objectForKey:v176];
 
   if (v177)
   {
@@ -4284,9 +4284,9 @@ LABEL_183:
     }
   }
 
-  v178 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData57 = [(ASChangedCollectionLeaf *)self applicationData];
   v179 = [MEMORY[0x277CCABB0] numberWithInt:3082];
-  v180 = [v178 objectForKey:v179];
+  v180 = [applicationData57 objectForKey:v179];
 
   if (v180)
   {
@@ -4297,9 +4297,9 @@ LABEL_183:
     }
   }
 
-  v181 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData58 = [(ASChangedCollectionLeaf *)self applicationData];
   v182 = [MEMORY[0x277CCABB0] numberWithInt:3083];
-  v183 = [v181 objectForKey:v182];
+  v183 = [applicationData58 objectForKey:v182];
 
   if (v183)
   {
@@ -4310,9 +4310,9 @@ LABEL_183:
     }
   }
 
-  v184 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData59 = [(ASChangedCollectionLeaf *)self applicationData];
   v185 = [MEMORY[0x277CCABB0] numberWithInt:3084];
-  v186 = [v184 objectForKey:v185];
+  v186 = [applicationData59 objectForKey:v185];
 
   if (v186)
   {
@@ -4323,9 +4323,9 @@ LABEL_183:
     }
   }
 
-  v187 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData60 = [(ASChangedCollectionLeaf *)self applicationData];
   v188 = [MEMORY[0x277CCABB0] numberWithInt:3085];
-  v189 = [v187 objectForKey:v188];
+  v189 = [applicationData60 objectForKey:v188];
 
   if (v189)
   {
@@ -4336,9 +4336,9 @@ LABEL_183:
     }
   }
 
-  v190 = [(ASChangedCollectionLeaf *)self applicationData];
+  applicationData61 = [(ASChangedCollectionLeaf *)self applicationData];
   v191 = [MEMORY[0x277CCABB0] numberWithInt:3086];
-  v192 = [v190 objectForKey:v191];
+  v192 = [applicationData61 objectForKey:v191];
 
   if (v192)
   {
@@ -4367,11 +4367,11 @@ LABEL_183:
   [(ASContact *)&v4 dealloc];
 }
 
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account
 {
   v10.receiver = self;
   v10.super_class = ASContact;
-  [(ASChangedCollectionLeaf *)&v10 parseASParseContext:a3 root:a4 parent:a5 callbackDict:a6 streamCallbackDict:a7 account:a8];
+  [(ASChangedCollectionLeaf *)&v10 parseASParseContext:context root:root parent:parent callbackDict:dict streamCallbackDict:callbackDict account:account];
   parsingState = self->super.super._parsingState;
   if (parsingState >= 2)
   {
@@ -4387,18 +4387,18 @@ LABEL_183:
   }
 }
 
-- (void)setBodySizeNumber:(id)a3
+- (void)setBodySizeNumber:(id)number
 {
-  v4 = [a3 intValue];
+  intValue = [number intValue];
 
-  [(ASContact *)self setBodySize:v4];
+  [(ASContact *)self setBodySize:intValue];
 }
 
-- (void)setBodyTruncatedNumber:(id)a3
+- (void)setBodyTruncatedNumber:(id)number
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [number BOOLValue];
 
-  [(ASContact *)self setBodyTruncated:v4];
+  [(ASContact *)self setBodyTruncated:bOOLValue];
 }
 
 - (NSString)description
@@ -4425,36 +4425,36 @@ LABEL_183:
   return v10;
 }
 
-- (void)setBody:(id)a3
+- (void)setBody:(id)body
 {
-  v5 = a3;
-  if (self->_body != v5)
+  bodyCopy = body;
+  if (self->_body != bodyCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_body, a3);
+    v6 = bodyCopy;
+    objc_storeStrong(&self->_body, body);
     [(ASContact *)self setBodySize:[(NSString *)v6 lengthOfBytesUsingEncoding:4]];
-    v5 = v6;
+    bodyCopy = v6;
   }
 }
 
-- (ASContact)initWithCoder:(id)a3
+- (ASContact)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"ASContact.m" lineNumber:1735 description:{@"Yes, I know ASContact is a subclass of ASChangedCollectionLeaf, and should handle initWithCoder:.  But I'm lazy, and no one needs this yet"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ASContact.m" lineNumber:1735 description:{@"Yes, I know ASContact is a subclass of ASChangedCollectionLeaf, and should handle initWithCoder:.  But I'm lazy, and no one needs this yet"}];
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"ASContact.m" lineNumber:1740 description:{@"Yes, I know ASContact is a subclass of ASChangedCollectionLeaf, and should handle encodeWithCoder:.  But I'm lazy, and no one needs this yet"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ASContact.m" lineNumber:1740 description:{@"Yes, I know ASContact is a subclass of ASChangedCollectionLeaf, and should handle encodeWithCoder:.  But I'm lazy, and no one needs this yet"}];
 }
 
 - (void)loadABRecord
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"ASContact.m" lineNumber:1349 description:{@"%@ asked to loadABRecord, but I have no client id", a2}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"ASContact.m" lineNumber:1349 description:{@"%@ asked to loadABRecord, but I have no client id", a2}];
 }
 
 @end

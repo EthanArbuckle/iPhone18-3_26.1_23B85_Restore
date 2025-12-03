@@ -2,7 +2,7 @@
 + (id)dtoErrorBiometryNotEnrolled;
 + (id)dtoErrorDeviceTypeNotSupported;
 + (id)dtoErrorPasscodeNotSet;
-+ (id)dtoSecurityDelayEndedText:(id)a3 duration:(double)a4;
++ (id)dtoSecurityDelayEndedText:(id)text duration:(double)duration;
 + (id)errorAuthenticationCanceled;
 + (id)errorAuthenticationFailure;
 + (id)errorBiometryDeniedForApp;
@@ -21,8 +21,8 @@
 + (id)errorPasscodeNotSet;
 + (id)errorRecoveryUserNotFound;
 + (id)errorTimeout;
-+ (id)localizedStringWithKey:(id)a3 value:(id)a4 table:(id)a5;
-+ (id)localizedStringWithKey:(id)a3 value:(id)a4 tableSuffix:(id)a5;
++ (id)localizedStringWithKey:(id)key value:(id)value table:(id)table;
++ (id)localizedStringWithKey:(id)key value:(id)value tableSuffix:(id)suffix;
 @end
 
 @implementation LACLocalization
@@ -32,12 +32,12 @@
   v3 = MEMORY[0x1B27229A0](0xD000000000000015, 0x80000001B0357C40);
   v4 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
   v5 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
-  v6 = [a1 localizedStringWithKey:v3 value:v4 tableSuffix:v5];
+  v6 = [self localizedStringWithKey:v3 value:v4 tableSuffix:v5];
 
   return v6;
 }
 
-+ (id)localizedStringWithKey:(id)a3 value:(id)a4 tableSuffix:(id)a5
++ (id)localizedStringWithKey:(id)key value:(id)value tableSuffix:(id)suffix
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
@@ -54,7 +54,7 @@
   return v17;
 }
 
-+ (id)localizedStringWithKey:(id)a3 value:(id)a4 table:(id)a5
++ (id)localizedStringWithKey:(id)key value:(id)value table:(id)table
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
@@ -86,7 +86,7 @@
   v3 = MEMORY[0x1B27229A0](0xD000000000000016, 0x80000001B0357C20);
   v4 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
   v5 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
-  v6 = [a1 localizedStringWithKey:v3 value:v4 tableSuffix:v5];
+  v6 = [self localizedStringWithKey:v3 value:v4 tableSuffix:v5];
 
   return v6;
 }
@@ -96,7 +96,7 @@
   v3 = MEMORY[0x1B27229A0](0xD00000000000001ALL, 0x80000001B0357C80);
   v4 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
   v5 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
-  v6 = [a1 localizedStringWithKey:v3 value:v4 tableSuffix:v5];
+  v6 = [self localizedStringWithKey:v3 value:v4 tableSuffix:v5];
 
   return v6;
 }
@@ -106,7 +106,7 @@
   v3 = MEMORY[0x1B27229A0](0xD000000000000016, 0x80000001B0357BE0);
   v4 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
   v5 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
-  v6 = [a1 localizedStringWithKey:v3 value:v4 tableSuffix:v5];
+  v6 = [self localizedStringWithKey:v3 value:v4 tableSuffix:v5];
 
   return v6;
 }
@@ -116,7 +116,7 @@
   v3 = MEMORY[0x1B27229A0](0xD00000000000001FLL, 0x80000001B0357EB0);
   v4 = MEMORY[0x1B27229A0](0x74656863746152, 0xE700000000000000);
   v5 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
-  v6 = [a1 localizedStringWithKey:v3 value:v5 tableSuffix:v4];
+  v6 = [self localizedStringWithKey:v3 value:v5 tableSuffix:v4];
 
   return v6;
 }
@@ -126,7 +126,7 @@
   v3 = MEMORY[0x1B27229A0](0xD000000000000017, 0x80000001B0357C00);
   v4 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
   v5 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
-  v6 = [a1 localizedStringWithKey:v3 value:v4 tableSuffix:v5];
+  v6 = [self localizedStringWithKey:v3 value:v4 tableSuffix:v5];
 
   return v6;
 }
@@ -136,7 +136,7 @@
   v3 = MEMORY[0x1B27229A0](0xD000000000000013, 0x80000001B0357C60);
   v4 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
   v5 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
-  v6 = [a1 localizedStringWithKey:v3 value:v4 tableSuffix:v5];
+  v6 = [self localizedStringWithKey:v3 value:v4 tableSuffix:v5];
 
   return v6;
 }
@@ -146,7 +146,7 @@
   v3 = MEMORY[0x1B27229A0](0xD00000000000001ALL, 0x80000001B0357CA0);
   v4 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
   v5 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
-  v6 = [a1 localizedStringWithKey:v3 value:v4 tableSuffix:v5];
+  v6 = [self localizedStringWithKey:v3 value:v4 tableSuffix:v5];
 
   return v6;
 }
@@ -156,7 +156,7 @@
   v3 = MEMORY[0x1B27229A0](0xD00000000000001DLL, 0x80000001B0357CC0);
   v4 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
   v5 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
-  v6 = [a1 localizedStringWithKey:v3 value:v4 tableSuffix:v5];
+  v6 = [self localizedStringWithKey:v3 value:v4 tableSuffix:v5];
 
   return v6;
 }
@@ -166,7 +166,7 @@
   v3 = MEMORY[0x1B27229A0](0xD000000000000020, 0x80000001B0357CE0);
   v4 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
   v5 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
-  v6 = [a1 localizedStringWithKey:v3 value:v4 tableSuffix:v5];
+  v6 = [self localizedStringWithKey:v3 value:v4 tableSuffix:v5];
 
   return v6;
 }
@@ -176,7 +176,7 @@
   v3 = MEMORY[0x1B27229A0](0xD00000000000001DLL, 0x80000001B0357D10);
   v4 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
   v5 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
-  v6 = [a1 localizedStringWithKey:v3 value:v4 tableSuffix:v5];
+  v6 = [self localizedStringWithKey:v3 value:v4 tableSuffix:v5];
 
   return v6;
 }
@@ -186,7 +186,7 @@
   v3 = MEMORY[0x1B27229A0](0xD000000000000020, 0x80000001B0357D30);
   v4 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
   v5 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
-  v6 = [a1 localizedStringWithKey:v3 value:v4 tableSuffix:v5];
+  v6 = [self localizedStringWithKey:v3 value:v4 tableSuffix:v5];
 
   return v6;
 }
@@ -196,7 +196,7 @@
   v3 = MEMORY[0x1B27229A0](0xD000000000000013, 0x80000001B0357D60);
   v4 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
   v5 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
-  v6 = [a1 localizedStringWithKey:v3 value:v4 tableSuffix:v5];
+  v6 = [self localizedStringWithKey:v3 value:v4 tableSuffix:v5];
 
   return v6;
 }
@@ -206,7 +206,7 @@
   v3 = MEMORY[0x1B27229A0](0xD000000000000012, 0x80000001B0357D80);
   v4 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
   v5 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
-  v6 = [a1 localizedStringWithKey:v3 value:v4 tableSuffix:v5];
+  v6 = [self localizedStringWithKey:v3 value:v4 tableSuffix:v5];
 
   return v6;
 }
@@ -216,7 +216,7 @@
   v3 = MEMORY[0x1B27229A0](0xD00000000000001FLL, 0x80000001B0357DA0);
   v4 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
   v5 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
-  v6 = [a1 localizedStringWithKey:v3 value:v4 tableSuffix:v5];
+  v6 = [self localizedStringWithKey:v3 value:v4 tableSuffix:v5];
 
   return v6;
 }
@@ -226,7 +226,7 @@
   v3 = MEMORY[0x1B27229A0](0xD000000000000024, 0x80000001B0357DC0);
   v4 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
   v5 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
-  v6 = [a1 localizedStringWithKey:v3 value:v4 tableSuffix:v5];
+  v6 = [self localizedStringWithKey:v3 value:v4 tableSuffix:v5];
 
   return v6;
 }
@@ -236,7 +236,7 @@
   v3 = MEMORY[0x1B27229A0](0xD000000000000020, 0x80000001B0357DF0);
   v4 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
   v5 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
-  v6 = [a1 localizedStringWithKey:v3 value:v4 tableSuffix:v5];
+  v6 = [self localizedStringWithKey:v3 value:v4 tableSuffix:v5];
 
   return v6;
 }
@@ -246,7 +246,7 @@
   v3 = MEMORY[0x1B27229A0](0xD000000000000014, 0x80000001B0357E20);
   v4 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
   v5 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
-  v6 = [a1 localizedStringWithKey:v3 value:v4 tableSuffix:v5];
+  v6 = [self localizedStringWithKey:v3 value:v4 tableSuffix:v5];
 
   return v6;
 }
@@ -256,17 +256,17 @@
   v3 = MEMORY[0x1B27229A0](0xD000000000000021, 0x80000001B0357E40);
   v4 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
   v5 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
-  v6 = [a1 localizedStringWithKey:v3 value:v4 tableSuffix:v5];
+  v6 = [self localizedStringWithKey:v3 value:v4 tableSuffix:v5];
 
   return v6;
 }
 
-+ (id)dtoSecurityDelayEndedText:(id)a3 duration:(double)a4
++ (id)dtoSecurityDelayEndedText:(id)text duration:(double)duration
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
   swift_getObjCClassMetadata();
-  v8 = static LACLocalization.dtoSecurityDelayEndedText(_:duration:)(v5, v7, a4);
+  v8 = static LACLocalization.dtoSecurityDelayEndedText(_:duration:)(v5, v7, duration);
   v10 = v9;
 
   v11 = MEMORY[0x1B27229A0](v8, v10);
@@ -279,7 +279,7 @@
   v3 = MEMORY[0x1B27229A0](0xD00000000000001ALL, 0x80000001B0357E90);
   v4 = MEMORY[0x1B27229A0](0x74656863746152, 0xE700000000000000);
   v5 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
-  v6 = [a1 localizedStringWithKey:v3 value:v5 tableSuffix:v4];
+  v6 = [self localizedStringWithKey:v3 value:v5 tableSuffix:v4];
 
   return v6;
 }
@@ -289,7 +289,7 @@
   v3 = MEMORY[0x1B27229A0](0xD000000000000023, 0x80000001B0357ED0);
   v4 = MEMORY[0x1B27229A0](0x74656863746152, 0xE700000000000000);
   v5 = MEMORY[0x1B27229A0](0, 0xE000000000000000);
-  v6 = [a1 localizedStringWithKey:v3 value:v5 tableSuffix:v4];
+  v6 = [self localizedStringWithKey:v3 value:v5 tableSuffix:v4];
 
   return v6;
 }

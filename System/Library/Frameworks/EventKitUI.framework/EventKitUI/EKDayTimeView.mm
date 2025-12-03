@@ -1,29 +1,29 @@
 @interface EKDayTimeView
-+ (CGRect)_timeLineExtensionFrameForTimeWidth:(double)a3 timeMarker:(id)a4 timeLabelXPosition:(double)a5 yPosition:(double)a6;
-+ (CGRect)timeMarkerFrameForTotalWidth:(double)a3 timeWidth:(double)a4 timeMarker:(id)a5 hourHeight:(double)a6 topPadding:(double)a7;
-+ (double)_dynamicFontSizeForOrientation:(int64_t)a3;
-+ (double)_timeTextWidthForSizeClass:(int64_t)a3 orientation:(int64_t)a4 inViewHierarchy:(id)a5;
-+ (double)_timeVerticalInsetForOrientation:(int64_t)a3 inViewHierarchy:(id)a4;
-+ (double)_widthForOrientation:(int64_t)a3 sizeClass:(int64_t)a4 excludeCurrentTime:(BOOL)a5;
-+ (double)defaultHeightForSizeClass:(int64_t)a3 orientation:(int64_t)a4;
-+ (double)defaultHeightForSizeClass:(int64_t)a3 orientation:(int64_t)a4 withHourScale:(double)a5;
-+ (double)heightOfHourTextForHour:(int64_t)a3 orientation:(int64_t)a4;
-+ (double)hourHeightForSizeClass:(int64_t)a3 orientation:(int64_t)a4;
-+ (double)positionOfSecond:(int64_t)a3 hourHeight:(double)a4 topPadding:(double)a5 clampToBounds:(BOOL)a6;
-+ (double)timeInsetForSizeClass:(int64_t)a3 orientation:(int64_t)a4;
-+ (double)timeWidthForOrientation:(int64_t)a3 inViewHierarchy:(id)a4;
-+ (id)_hourFontForOrientation:(int64_t)a3;
-+ (id)_noonAttributedStringForString:(id)a3 orientation:(int64_t)a4;
-+ (id)_noonFontForOrientation:(int64_t)a3;
-+ (id)noonAttributedStringComponentsForOrientation:(int64_t)a3;
-+ (id)noonAttributedStringForOrientation:(int64_t)a3;
++ (CGRect)_timeLineExtensionFrameForTimeWidth:(double)width timeMarker:(id)marker timeLabelXPosition:(double)position yPosition:(double)yPosition;
++ (CGRect)timeMarkerFrameForTotalWidth:(double)width timeWidth:(double)timeWidth timeMarker:(id)marker hourHeight:(double)height topPadding:(double)padding;
++ (double)_dynamicFontSizeForOrientation:(int64_t)orientation;
++ (double)_timeTextWidthForSizeClass:(int64_t)class orientation:(int64_t)orientation inViewHierarchy:(id)hierarchy;
++ (double)_timeVerticalInsetForOrientation:(int64_t)orientation inViewHierarchy:(id)hierarchy;
++ (double)_widthForOrientation:(int64_t)orientation sizeClass:(int64_t)class excludeCurrentTime:(BOOL)time;
++ (double)defaultHeightForSizeClass:(int64_t)class orientation:(int64_t)orientation;
++ (double)defaultHeightForSizeClass:(int64_t)class orientation:(int64_t)orientation withHourScale:(double)scale;
++ (double)heightOfHourTextForHour:(int64_t)hour orientation:(int64_t)orientation;
++ (double)hourHeightForSizeClass:(int64_t)class orientation:(int64_t)orientation;
++ (double)positionOfSecond:(int64_t)second hourHeight:(double)height topPadding:(double)padding clampToBounds:(BOOL)bounds;
++ (double)timeInsetForSizeClass:(int64_t)class orientation:(int64_t)orientation;
++ (double)timeWidthForOrientation:(int64_t)orientation inViewHierarchy:(id)hierarchy;
++ (id)_hourFontForOrientation:(int64_t)orientation;
++ (id)_noonAttributedStringForString:(id)string orientation:(int64_t)orientation;
++ (id)_noonFontForOrientation:(int64_t)orientation;
++ (id)noonAttributedStringComponentsForOrientation:(int64_t)orientation;
++ (id)noonAttributedStringForOrientation:(int64_t)orientation;
 + (id)noonString;
-+ (void)_calculateWidthForSizeClass:(int64_t)a3 orientation:(int64_t)a4 excludeCurrentTime:(BOOL)a5 inViewHierarchy:(id)a6;
++ (void)_calculateWidthForSizeClass:(int64_t)class orientation:(int64_t)orientation excludeCurrentTime:(BOOL)time inViewHierarchy:(id)hierarchy;
 + (void)_invalidateWidth;
 + (void)_registerForInvalidation;
-+ (void)_setWidth:(double)a3 forOrientation:(int64_t)a4 sizeClass:(int64_t)a5 excludeCurrentTime:(BOOL)a6;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (EKDayTimeView)initWithFrame:(CGRect)a3 sizeClass:(int64_t)a4;
++ (void)_setWidth:(double)width forOrientation:(int64_t)orientation sizeClass:(int64_t)class excludeCurrentTime:(BOOL)time;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (EKDayTimeView)initWithFrame:(CGRect)frame sizeClass:(int64_t)class;
 - (EKDayTimeViewDelegate)delegate;
 - (UIColor)timeColor;
 - (_NSRange)hoursToRender;
@@ -37,28 +37,28 @@
 - (void)_sizeClassChanged;
 - (void)_updateMarkerAlpha;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3 forContentView:(id)a4 withHourRange:(_NSRange)a5;
+- (void)drawRect:(CGRect)rect forContentView:(id)view withHourRange:(_NSRange)range;
 - (void)layoutFrames;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setCurtainHeight:(double)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlightedHour:(double)a3;
-- (void)setHourHeightScale:(double)a3;
-- (void)setHoursToRender:(_NSRange)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setCurtainHeight:(double)height;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlightedHour:(double)hour;
+- (void)setHourHeightScale:(double)scale;
+- (void)setHoursToRender:(_NSRange)render;
 - (void)setNeedsDisplay;
-- (void)setOpaque:(BOOL)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
-- (void)setShowsLeftBorder:(BOOL)a3;
-- (void)setShowsRightBorder:(BOOL)a3;
-- (void)setShowsTimeMarker:(BOOL)a3;
-- (void)setShowsTimeMarkerExtension:(BOOL)a3;
-- (void)setTimeColor:(id)a3;
-- (void)setTimeMarkerExtensionColor:(id)a3;
-- (void)setVisualEffect:(id)a3;
+- (void)setOpaque:(BOOL)opaque;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
+- (void)setShowsLeftBorder:(BOOL)border;
+- (void)setShowsRightBorder:(BOOL)border;
+- (void)setShowsTimeMarker:(BOOL)marker;
+- (void)setShowsTimeMarkerExtension:(BOOL)extension;
+- (void)setTimeColor:(id)color;
+- (void)setTimeMarkerExtensionColor:(id)color;
+- (void)setVisualEffect:(id)effect;
 - (void)updateMarkerPosition;
-- (void)viewTintColorDidChangeForView:(id)a3 toColor:(id)a4;
+- (void)viewTintColorDidChangeForView:(id)view toColor:(id)color;
 @end
 
 @implementation EKDayTimeView
@@ -69,7 +69,7 @@
   block[1] = 3221225472;
   block[2] = __41__EKDayTimeView__registerForInvalidation__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_registerForInvalidation_onceToken_0 != -1)
   {
     dispatch_once(&_registerForInvalidation_onceToken_0, block);
@@ -163,8 +163,8 @@ void __41__EKDayTimeView__registerForInvalidation__block_invoke(uint64_t a1)
             [(EKDayTimeContentView *)v23 setNeedsDisplayOnBoundsChange:1];
             v26 = objc_alloc_init(EKUIVisualEffectView);
             [(EKUIVisualEffectView *)v26 setTintColorDelegate:self];
-            v28 = [(EKUIVisualEffectView *)v26 contentView];
-            [v28 addSubview:v23];
+            contentView = [(EKUIVisualEffectView *)v26 contentView];
+            [contentView addSubview:v23];
 
             [(EKDayTimeView *)self addSubview:v26];
             [*(&self->super.super.super.isa + v2) addObject:v23];
@@ -222,17 +222,17 @@ void __41__EKDayTimeView__registerForInvalidation__block_invoke(uint64_t a1)
         while (v12 > 0);
         while (v7 < [*(&self->super.super.super.isa + v2) count])
         {
-          v43 = [*(&self->super.super.super.isa + v2) lastObject];
-          [v43 setOwner:0];
+          lastObject = [*(&self->super.super.super.isa + v2) lastObject];
+          [lastObject setOwner:0];
           [*(&self->super.super.super.isa + v2) removeLastObject];
           v44 = v10[849];
           v45 = *(&self->super.super.super.isa + v44);
-          v46 = [*(v11 + 3776) stringWithFormat:@"%p", v43];
+          v46 = [*(v11 + 3776) stringWithFormat:@"%p", lastObject];
           v47 = [v45 objectForKey:v46];
 
           [v47 removeFromSuperview];
           v48 = *(&self->super.super.super.isa + v44);
-          v49 = [v43 description];
+          v49 = [lastObject description];
           [v48 removeObjectForKey:v49];
         }
 
@@ -286,9 +286,9 @@ void __41__EKDayTimeView__registerForInvalidation__block_invoke(uint64_t a1)
 
 - (int64_t)_sizeClass
 {
-  v3 = [(EKDayTimeView *)self window];
+  window = [(EKDayTimeView *)self window];
 
-  if (!v3)
+  if (!window)
   {
     return self->_targetSizeClass;
   }
@@ -372,9 +372,9 @@ void __41__EKDayTimeView__registerForInvalidation__block_invoke(uint64_t a1)
     }
 
     [(EKDayTimeView *)self _updateMarkerAlpha];
-    v21 = [(EKDayTimeView *)self delegate];
+    delegate = [(EKDayTimeView *)self delegate];
 
-    if (v21)
+    if (delegate)
     {
 
       [(EKDayTimeView *)self setNeedsDisplay];
@@ -392,44 +392,44 @@ void __41__EKDayTimeView__registerForInvalidation__block_invoke(uint64_t a1)
   __HourWidthExcludingCurrentTimePortraitCompact = 0;
   __HourWidthExcludingCurrentTimeLandscapeRegular = 0;
   __HourWidthExcludingCurrentTimeLandscapeCompact = 0;
-  v2 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v2 postNotificationName:@"EKDayTimeViewHourWidthChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"EKDayTimeViewHourWidthChangedNotification" object:0];
 }
 
-+ (double)_dynamicFontSizeForOrientation:(int64_t)a3
++ (double)_dynamicFontSizeForOrientation:(int64_t)orientation
 {
   v3 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD10]];
-  v4 = [v3 fontDescriptor];
-  [v4 pointSize];
+  fontDescriptor = [v3 fontDescriptor];
+  [fontDescriptor pointSize];
   v6 = v5;
 
   CalRoundToScreenScale(v6);
   return fmin(v7, 24.0);
 }
 
-+ (id)_hourFontForOrientation:(int64_t)a3
++ (id)_hourFontForOrientation:(int64_t)orientation
 {
-  [a1 _dynamicFontSizeForOrientation:a3];
+  [self _dynamicFontSizeForOrientation:orientation];
   v4 = [MEMORY[0x1E69DB878] systemFontOfSize:v3 * 1.36363636];
   v5 = [MEMORY[0x1E69DB878] cuik_createFontFromFont:v4 withFontGrade:2];
 
   return v5;
 }
 
-+ (id)_noonFontForOrientation:(int64_t)a3
++ (id)_noonFontForOrientation:(int64_t)orientation
 {
-  [a1 _dynamicFontSizeForOrientation:a3];
+  [self _dynamicFontSizeForOrientation:orientation];
   v3 = MEMORY[0x1E69DB878];
 
   return [v3 systemFontOfSize:? weight:?];
 }
 
-+ (void)_calculateWidthForSizeClass:(int64_t)a3 orientation:(int64_t)a4 excludeCurrentTime:(BOOL)a5 inViewHierarchy:(id)a6
++ (void)_calculateWidthForSizeClass:(int64_t)class orientation:(int64_t)orientation excludeCurrentTime:(BOOL)time inViewHierarchy:(id)hierarchy
 {
-  v61 = a5;
+  timeCopy = time;
   v69[1] = *MEMORY[0x1E69E9840];
-  v9 = a6;
-  EKUIMultiwindowAssert(a3 != 0, @"Unspecified size class", v10, v11, v12, v13, v14, v15, v56);
+  hierarchyCopy = hierarchy;
+  EKUIMultiwindowAssert(class != 0, @"Unspecified size class", v10, v11, v12, v13, v14, v15, v56);
   [objc_opt_class() allDayWidth];
   v17 = *&__AllDayWidth;
   if (*&__AllDayWidth <= 0.0)
@@ -438,9 +438,9 @@ void __41__EKDayTimeView__registerForInvalidation__block_invoke(uint64_t a1)
     v17 = *&v16;
   }
 
-  v62 = v9;
+  v62 = hierarchyCopy;
   v18 = fmax(v17, 0.0);
-  v19 = [EKCurrentTimeMarkerView timeMarkerFontForSizeClass:a3];
+  v19 = [EKCurrentTimeMarkerView timeMarkerFontForSizeClass:class];
   v20 = CUIKTodayComponents();
   [v20 setHour:22];
   [v20 setMinute:45];
@@ -448,9 +448,9 @@ void __41__EKDayTimeView__registerForInvalidation__block_invoke(uint64_t a1)
   v22 = [v21 dateFromComponents:v20];
 
   v23 = *MEMORY[0x1E6992E88];
-  v24 = [MEMORY[0x1E695DFE8] calendarTimeZone];
+  calendarTimeZone = [MEMORY[0x1E695DFE8] calendarTimeZone];
   v59 = v22;
-  v25 = [v22 localizedStringWithFormat:v23 timeZone:v24];
+  v25 = [v22 localizedStringWithFormat:v23 timeZone:calendarTimeZone];
 
   v68 = *MEMORY[0x1E69DB648];
   v69[0] = v19;
@@ -479,14 +479,14 @@ void __41__EKDayTimeView__registerForInvalidation__block_invoke(uint64_t a1)
   v33 = [v32 dateFromComponents:v30];
 
   v34 = MEMORY[0x1E69933D8];
-  [a1 _dynamicFontSizeForOrientation:1];
+  [self _dynamicFontSizeForOrientation:1];
   v57 = v33;
   v35 = [v34 stylizedTimelineHourStringForHourDate:v33 baseFontSize:?];
   [v35 boundingRectWithSize:0 options:0 context:{1.79769313e308, 1.79769313e308}];
   v37 = v36;
-  v38 = a1;
-  v39 = a4;
-  v40 = [a1 noonAttributedStringComponentsForOrientation:a4];
+  selfCopy = self;
+  orientationCopy = orientation;
+  v40 = [self noonAttributedStringComponentsForOrientation:orientation];
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
@@ -532,12 +532,12 @@ void __41__EKDayTimeView__registerForInvalidation__block_invoke(uint64_t a1)
     v46 = v37 + 8.0 + 1.0;
   }
 
-  if (a3 != 2)
+  if (class != 2)
   {
-    v49 = v39;
+    v49 = orientationCopy;
     v47 = v62;
-    v50 = v38;
-    if ((v39 - 1) <= 1)
+    v50 = selfCopy;
+    if ((orientationCopy - 1) <= 1)
     {
       v55 = 4.5;
 LABEL_27:
@@ -552,15 +552,15 @@ LABEL_26:
 
   v47 = v62;
   v48 = EKUIIsExtended(v62);
-  v49 = v39;
-  v50 = v38;
-  if (v39 - 3) <= 1 && (v48)
+  v49 = orientationCopy;
+  v50 = selfCopy;
+  if (orientationCopy - 3) <= 1 && (v48)
   {
     goto LABEL_26;
   }
 
   v51 = 37.0;
-  if ((v39 - 1) >= 2)
+  if ((orientationCopy - 1) >= 2)
   {
     v51 = 31.0;
   }
@@ -569,7 +569,7 @@ LABEL_26:
   CalRoundToScreenScale(5.5);
   v54 = v52 + v53;
 LABEL_28:
-  [v50 _setWidth:v49 forOrientation:a3 sizeClass:v61 excludeCurrentTime:v54];
+  [v50 _setWidth:v49 forOrientation:class sizeClass:timeCopy excludeCurrentTime:v54];
 }
 
 + (id)noonString
@@ -580,18 +580,18 @@ LABEL_28:
   return v3;
 }
 
-+ (id)noonAttributedStringForOrientation:(int64_t)a3
++ (id)noonAttributedStringForOrientation:(int64_t)orientation
 {
-  v5 = [a1 noonString];
-  v6 = [a1 _noonAttributedStringForString:v5 orientation:a3];
+  noonString = [self noonString];
+  v6 = [self _noonAttributedStringForString:noonString orientation:orientation];
 
   return v6;
 }
 
-+ (id)noonAttributedStringComponentsForOrientation:(int64_t)a3
++ (id)noonAttributedStringComponentsForOrientation:(int64_t)orientation
 {
-  v5 = [a1 noonString];
-  v6 = [v5 componentsSeparatedByString:@" "];
+  noonString = [self noonString];
+  v6 = [noonString componentsSeparatedByString:@" "];
 
   v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
   v10[0] = MEMORY[0x1E69E9820];
@@ -600,8 +600,8 @@ LABEL_28:
   v10[3] = &unk_1E8442448;
   v8 = v7;
   v11 = v8;
-  v12 = a1;
-  v13 = a3;
+  selfCopy = self;
+  orientationCopy = orientation;
   [v6 enumerateObjectsUsingBlock:v10];
 
   return v8;
@@ -614,11 +614,11 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   [v2 addObject:v3];
 }
 
-+ (id)_noonAttributedStringForString:(id)a3 orientation:(int64_t)a4
++ (id)_noonAttributedStringForString:(id)string orientation:(int64_t)orientation
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 _noonFontForOrientation:a4];
+  stringCopy = string;
+  v7 = [self _noonFontForOrientation:orientation];
   v8 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
   if (CUIKLocaleIsRightToLeft())
   {
@@ -636,25 +636,25 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   v11 = *MEMORY[0x1E69DB650];
   v16[0] = v10;
   v16[1] = v11;
-  v12 = [MEMORY[0x1E69DC888] cuik_timelineHourColor];
+  cuik_timelineHourColor = [MEMORY[0x1E69DC888] cuik_timelineHourColor];
   v16[2] = *MEMORY[0x1E69DB688];
-  v17[1] = v12;
+  v17[1] = cuik_timelineHourColor;
   v17[2] = v8;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
 
-  v14 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v6 attributes:v13];
+  v14 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:stringCopy attributes:v13];
 
   return v14;
 }
 
-+ (double)_timeTextWidthForSizeClass:(int64_t)a3 orientation:(int64_t)a4 inViewHierarchy:(id)a5
++ (double)_timeTextWidthForSizeClass:(int64_t)class orientation:(int64_t)orientation inViewHierarchy:(id)hierarchy
 {
-  v8 = a5;
-  [a1 _widthForOrientation:a4 sizeClass:a3 excludeCurrentTime:0];
+  hierarchyCopy = hierarchy;
+  [self _widthForOrientation:orientation sizeClass:class excludeCurrentTime:0];
   if (v9 == 0.0)
   {
-    [a1 _calculateWidthForSizeClass:a3 orientation:a4 excludeCurrentTime:0 inViewHierarchy:v8];
-    [a1 _widthForOrientation:a4 sizeClass:a3 excludeCurrentTime:0];
+    [self _calculateWidthForSizeClass:class orientation:orientation excludeCurrentTime:0 inViewHierarchy:hierarchyCopy];
+    [self _widthForOrientation:orientation sizeClass:class excludeCurrentTime:0];
   }
 
   v10 = v9;
@@ -662,16 +662,16 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   return v10;
 }
 
-+ (void)_setWidth:(double)a3 forOrientation:(int64_t)a4 sizeClass:(int64_t)a5 excludeCurrentTime:(BOOL)a6
++ (void)_setWidth:(double)width forOrientation:(int64_t)orientation sizeClass:(int64_t)class excludeCurrentTime:(BOOL)time
 {
-  v6 = a6;
+  timeCopy = time;
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a4 - 1;
-  v10 = !a6;
-  v11 = (a4 - 1) > 1 || !a6;
-  if (v11 || a5 != 2)
+  v9 = orientation - 1;
+  v10 = !time;
+  v11 = (orientation - 1) > 1 || !time;
+  if (v11 || class != 2)
   {
-    if (a5 == 2)
+    if (class == 2)
     {
       v11 = 1;
     }
@@ -683,29 +683,29 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
         v10 = 1;
       }
 
-      if (v10 || a5 != 2)
+      if (v10 || class != 2)
       {
-        if (a5 == 2)
+        if (class == 2)
         {
           v10 = 1;
         }
 
         if (v10)
         {
-          v12 = (a4 - 1) > 1 || a6;
-          if ((a4 - 1) > 1 || a6 || a5 != 2)
+          v12 = (orientation - 1) > 1 || time;
+          if ((orientation - 1) > 1 || time || class != 2)
           {
-            if (a5 == 2)
+            if (class == 2)
             {
               v12 = 1;
             }
 
             if (v12)
             {
-              v13 = v9 < 2 || a6;
-              if (v13 || a5 != 2)
+              v13 = v9 < 2 || time;
+              if (v13 || class != 2)
               {
-                if (a5 == 2)
+                if (class == 2)
                 {
                   v13 = 1;
                 }
@@ -721,73 +721,73 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
                     v18 = 138413058;
                     v19 = v17;
                     v20 = 1024;
-                    v21 = v6;
+                    v21 = timeCopy;
                     v22 = 2048;
-                    v23 = a4;
+                    orientationCopy = orientation;
                     v24 = 2048;
-                    v25 = a5;
+                    classCopy = class;
                     _os_log_impl(&dword_1D3400000, v15, OS_LOG_TYPE_ERROR, "[%@] Unhandled combination of excludeCurrentTime:%d, orientation:%ld, sizeClass:%ld when trying to setWidth", &v18, 0x26u);
                   }
                 }
 
                 else
                 {
-                  __HourWidthLandscapeCompact = *&a3;
+                  __HourWidthLandscapeCompact = *&width;
                 }
               }
 
               else
               {
-                __HourWidthLandscapeRegular = *&a3;
+                __HourWidthLandscapeRegular = *&width;
               }
             }
 
             else
             {
-              __HourWidthPortraitCompact = *&a3;
+              __HourWidthPortraitCompact = *&width;
             }
           }
 
           else
           {
-            __HourWidthPortraitRegular = *&a3;
+            __HourWidthPortraitRegular = *&width;
           }
         }
 
         else
         {
-          __HourWidthExcludingCurrentTimeLandscapeCompact = *&a3;
+          __HourWidthExcludingCurrentTimeLandscapeCompact = *&width;
         }
       }
 
       else
       {
-        __HourWidthExcludingCurrentTimeLandscapeRegular = *&a3;
+        __HourWidthExcludingCurrentTimeLandscapeRegular = *&width;
       }
     }
 
     else
     {
-      __HourWidthExcludingCurrentTimePortraitCompact = *&a3;
+      __HourWidthExcludingCurrentTimePortraitCompact = *&width;
     }
   }
 
   else
   {
-    __HourWidthExcludingCurrentTimePortraitRegular = *&a3;
+    __HourWidthExcludingCurrentTimePortraitRegular = *&width;
   }
 }
 
-+ (double)_widthForOrientation:(int64_t)a3 sizeClass:(int64_t)a4 excludeCurrentTime:(BOOL)a5
++ (double)_widthForOrientation:(int64_t)orientation sizeClass:(int64_t)class excludeCurrentTime:(BOOL)time
 {
-  v5 = a5;
+  timeCopy = time;
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3 - 1;
-  v9 = !a5;
-  v10 = (a3 - 1) > 1 || !a5;
-  if (v10 || a4 != 2)
+  v8 = orientation - 1;
+  v9 = !time;
+  v10 = (orientation - 1) > 1 || !time;
+  if (v10 || class != 2)
   {
-    if (a4 == 2)
+    if (class == 2)
     {
       v10 = 1;
     }
@@ -799,29 +799,29 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
         v9 = 1;
       }
 
-      if (v9 || a4 != 2)
+      if (v9 || class != 2)
       {
-        if (a4 == 2)
+        if (class == 2)
         {
           v9 = 1;
         }
 
         if (v9)
         {
-          v12 = (a3 - 1) > 1 || a5;
-          if ((a3 - 1) > 1 || a5 || a4 != 2)
+          v12 = (orientation - 1) > 1 || time;
+          if ((orientation - 1) > 1 || time || class != 2)
           {
-            if (a4 == 2)
+            if (class == 2)
             {
               v12 = 1;
             }
 
             if (v12)
             {
-              v13 = v8 < 2 || a5;
-              if (v13 || a4 != 2)
+              v13 = v8 < 2 || time;
+              if (v13 || class != 2)
               {
-                if (a4 == 2)
+                if (class == 2)
                 {
                   v13 = 1;
                 }
@@ -838,11 +838,11 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
                     v19 = 138413058;
                     v20 = v17;
                     v21 = 1024;
-                    v22 = v5;
+                    v22 = timeCopy;
                     v23 = 2048;
-                    v24 = a3;
+                    orientationCopy = orientation;
                     v25 = 2048;
-                    v26 = a4;
+                    classCopy = class;
                     _os_log_impl(&dword_1D3400000, v15, OS_LOG_TYPE_ERROR, "[%@] Unhandled combination of excludeCurrentTime:%d, orientation:%ld, sizeClass:%ld when trying to get width, returning 0", &v19, 0x26u);
                   }
                 }
@@ -897,10 +897,10 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   return *&v11;
 }
 
-+ (double)timeInsetForSizeClass:(int64_t)a3 orientation:(int64_t)a4
++ (double)timeInsetForSizeClass:(int64_t)class orientation:(int64_t)orientation
 {
-  EKUIMultiwindowAssert(a3 != 0, @"Size class not specified.", a3, a4, v4, v5, v6, v7, v10);
-  if (a3 != 2)
+  EKUIMultiwindowAssert(class != 0, @"Size class not specified.", class, orientation, v4, v5, v6, v7, v10);
+  if (class != 2)
   {
     return 6.0;
   }
@@ -909,15 +909,15 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   return result;
 }
 
-+ (double)_timeVerticalInsetForOrientation:(int64_t)a3 inViewHierarchy:(id)a4
++ (double)_timeVerticalInsetForOrientation:(int64_t)orientation inViewHierarchy:(id)hierarchy
 {
-  v5 = a4;
+  hierarchyCopy = hierarchy;
   v6 = 0.0;
   if ((MEMORY[0x1D38B98D0]() & 1) == 0)
   {
-    IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy(v5);
+    IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy(hierarchyCopy);
     v8 = -3.0;
-    if ((a3 - 1) >= 2)
+    if ((orientation - 1) >= 2)
     {
       v8 = -3.5;
     }
@@ -936,15 +936,15 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   return v6;
 }
 
-+ (double)timeWidthForOrientation:(int64_t)a3 inViewHierarchy:(id)a4
++ (double)timeWidthForOrientation:(int64_t)orientation inViewHierarchy:(id)hierarchy
 {
-  v6 = a4;
-  if (EKUICurrentWidthSizeClassIsRegularInViewHierarchy(v6))
+  hierarchyCopy = hierarchy;
+  if (EKUICurrentWidthSizeClassIsRegularInViewHierarchy(hierarchyCopy))
   {
     CalRoundToScreenScale(5.5);
     v8 = v7;
     v9 = 44.0;
-    if ((((a3 - 3) < 2) & EKUIIsExtended(v6)) != 0)
+    if ((((orientation - 3) < 2) & EKUIIsExtended(hierarchyCopy)) != 0)
     {
       v10 = 44.0;
     }
@@ -959,26 +959,26 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   {
     v8 = 6.0;
     v10 = 0.0;
-    if ((a3 - 1) >= 2)
+    if ((orientation - 1) >= 2)
     {
       v9 = 47.0;
       if (MGGetBoolAnswer())
       {
-        v11 = [MEMORY[0x1E69DC938] currentDevice];
-        if ([v11 userInterfaceIdiom])
+        currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+        if ([currentDevice userInterfaceIdiom])
         {
         }
 
         else
         {
-          v12 = [MEMORY[0x1E6992FA0] currentProcessIsFirstPartyCalendarApp];
+          currentProcessIsFirstPartyCalendarApp = [MEMORY[0x1E6992FA0] currentProcessIsFirstPartyCalendarApp];
 
-          if (v12)
+          if (currentProcessIsFirstPartyCalendarApp)
           {
             v10 = 20.0;
-            if ((a3 - 3) <= 1)
+            if ((orientation - 3) <= 1)
             {
-              if (EKUICurrentWindowSizeParadigmForViewHierarchy(v6) == 0x8000000)
+              if (EKUICurrentWindowSizeParadigmForViewHierarchy(hierarchyCopy) == 0x8000000)
               {
                 v10 = 52.0;
               }
@@ -999,7 +999,7 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
     }
   }
 
-  [a1 _timeTextWidthForSizeClass:EKUIWidthSizeClassForViewHierarchy(v6) orientation:a3 inViewHierarchy:v6];
+  [self _timeTextWidthForSizeClass:EKUIWidthSizeClassForViewHierarchy(hierarchyCopy) orientation:orientation inViewHierarchy:hierarchyCopy];
   v14 = v8 + v13;
   if (v14 < v9)
   {
@@ -1012,17 +1012,17 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   return v16;
 }
 
-+ (double)hourHeightForSizeClass:(int64_t)a3 orientation:(int64_t)a4
++ (double)hourHeightForSizeClass:(int64_t)class orientation:(int64_t)orientation
 {
-  [a1 _registerForInvalidation];
-  EKUIMultiwindowAssert(a3 != 0, @"Unspecified size class", v6, v7, v8, v9, v10, v11, v19);
+  [self _registerForInvalidation];
+  EKUIMultiwindowAssert(class != 0, @"Unspecified size class", v6, v7, v8, v9, v10, v11, v19);
   v12 = 44.0;
-  if ((a4 - 1) < 2)
+  if ((orientation - 1) < 2)
   {
     v12 = 50.0;
   }
 
-  if (a3 == 2)
+  if (class == 2)
   {
     v13 = 65.0;
   }
@@ -1033,19 +1033,19 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   }
 
   v14 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:{*MEMORY[0x1E69DDCF8], v12}];
-  v15 = [v14 fontDescriptor];
-  [v15 pointSize];
+  fontDescriptor = [v14 fontDescriptor];
+  [fontDescriptor pointSize];
   v17 = v16;
 
   CalRoundToScreenScale(v13 * (v17 / 17.0));
   return result;
 }
 
-+ (double)defaultHeightForSizeClass:(int64_t)a3 orientation:(int64_t)a4
++ (double)defaultHeightForSizeClass:(int64_t)class orientation:(int64_t)orientation
 {
   v6 = objc_opt_class();
 
-  [v6 defaultHeightForSizeClass:a3 orientation:a4 withHourScale:1.0];
+  [v6 defaultHeightForSizeClass:class orientation:orientation withHourScale:1.0];
   return result;
 }
 
@@ -1061,19 +1061,19 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   return result;
 }
 
-+ (double)defaultHeightForSizeClass:(int64_t)a3 orientation:(int64_t)a4 withHourScale:(double)a5
++ (double)defaultHeightForSizeClass:(int64_t)class orientation:(int64_t)orientation withHourScale:(double)scale
 {
-  [EKDayTimeView hourHeightForSizeClass:a3 orientation:a4];
-  v8 = v7 * a5;
+  [EKDayTimeView hourHeightForSizeClass:class orientation:orientation];
+  v8 = v7 * scale;
 
-  [a1 defaultHeightForNumHours:24 scaledHourHeight:v8];
+  [self defaultHeightForNumHours:24 scaledHourHeight:v8];
   return result;
 }
 
-+ (double)heightOfHourTextForHour:(int64_t)a3 orientation:(int64_t)a4
++ (double)heightOfHourTextForHour:(int64_t)hour orientation:(int64_t)orientation
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = [a1 _hourFontForOrientation:a4];
+  v4 = [self _hourFontForOrientation:orientation];
   v5 = CUIKStringForHour();
   v10 = *MEMORY[0x1E69DB648];
   v11[0] = v4;
@@ -1084,12 +1084,12 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   return v8;
 }
 
-- (EKDayTimeView)initWithFrame:(CGRect)a3 sizeClass:(int64_t)a4
+- (EKDayTimeView)initWithFrame:(CGRect)frame sizeClass:(int64_t)class
 {
   v38[4] = *MEMORY[0x1E69E9840];
   v37.receiver = self;
   v37.super_class = EKDayTimeView;
-  v5 = [(EKDayTimeView *)&v37 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(EKDayTimeView *)&v37 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
@@ -1097,13 +1097,13 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
     v5->_hourHeight = -1.0;
     [objc_opt_class() defaultHourScale];
     v6->_hourHeightScale = v7;
-    v6->_targetSizeClass = a4;
-    v8 = [MEMORY[0x1E69DC888] cuik_todayTimelineColor];
+    v6->_targetSizeClass = class;
+    cuik_todayTimelineColor = [MEMORY[0x1E69DC888] cuik_todayTimelineColor];
     timeMarkerExtensionColor = v6->_timeMarkerExtensionColor;
-    v6->_timeMarkerExtensionColor = v8;
+    v6->_timeMarkerExtensionColor = cuik_todayTimelineColor;
 
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [(EKDayTimeView *)v6 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(EKDayTimeView *)v6 setBackgroundColor:clearColor];
 
     v11 = CalendarAppTintColor();
     [(EKDayTimeView *)v6 setTintColor:v11];
@@ -1124,42 +1124,42 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
       curtain = v6->_curtain;
       v6->_curtain = v16;
 
-      v18 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-      [(UIView *)v6->_curtain setBackgroundColor:v18];
+      systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+      [(UIView *)v6->_curtain setBackgroundColor:systemBackgroundColor];
 
       [(UIView *)v6->_curtain setTranslatesAutoresizingMaskIntoConstraints:0];
       [(EKDayTimeView *)v6 addSubview:v6->_curtain];
-      v19 = [(UIView *)v6->_curtain heightAnchor];
-      v20 = [v19 constraintEqualToConstant:0.0];
+      heightAnchor = [(UIView *)v6->_curtain heightAnchor];
+      v20 = [heightAnchor constraintEqualToConstant:0.0];
       curtainHeightConstraint = v6->_curtainHeightConstraint;
       v6->_curtainHeightConstraint = v20;
 
       v34 = MEMORY[0x1E696ACD8];
-      v36 = [(UIView *)v6->_curtain leadingAnchor];
-      v35 = [(EKDayTimeView *)v6 leadingAnchor];
-      v22 = [v36 constraintEqualToAnchor:v35];
+      leadingAnchor = [(UIView *)v6->_curtain leadingAnchor];
+      leadingAnchor2 = [(EKDayTimeView *)v6 leadingAnchor];
+      v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v38[0] = v22;
-      v23 = [(UIView *)v6->_curtain trailingAnchor];
-      v24 = [(EKDayTimeView *)v6 trailingAnchor];
-      v25 = [v23 constraintEqualToAnchor:v24];
+      trailingAnchor = [(UIView *)v6->_curtain trailingAnchor];
+      trailingAnchor2 = [(EKDayTimeView *)v6 trailingAnchor];
+      v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v38[1] = v25;
-      v26 = [(UIView *)v6->_curtain topAnchor];
-      v27 = [(EKDayTimeView *)v6 topAnchor];
-      v28 = [v26 constraintEqualToAnchor:v27];
+      topAnchor = [(UIView *)v6->_curtain topAnchor];
+      topAnchor2 = [(EKDayTimeView *)v6 topAnchor];
+      v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v38[2] = v28;
       v38[3] = v6->_curtainHeightConstraint;
       v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:4];
       [v34 activateConstraints:v29];
     }
 
-    v30 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v30 addObserver:v6 selector:sel__localeChanged name:*MEMORY[0x1E6993308] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__localeChanged name:*MEMORY[0x1E6993308] object:0];
 
-    v31 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v31 addObserver:v6 selector:sel__fontSizeChanged name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel__fontSizeChanged name:*MEMORY[0x1E69DDC48] object:0];
 
-    v32 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v32 addObserver:v6 selector:sel__sizeClassChanged name:*MEMORY[0x1E6993358] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v6 selector:sel__sizeClassChanged name:*MEMORY[0x1E6993358] object:0];
   }
 
   return v6;
@@ -1230,27 +1230,27 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   [(EKDayTimeView *)self setNeedsDisplay];
 }
 
-- (void)setHoursToRender:(_NSRange)a3
+- (void)setHoursToRender:(_NSRange)render
 {
-  if (self->_hoursToRender.location != a3.location || self->_hoursToRender.length != a3.length)
+  if (self->_hoursToRender.location != render.location || self->_hoursToRender.length != render.length)
   {
-    self->_hoursToRender = a3;
+    self->_hoursToRender = render;
     [(EKDayTimeView *)self setNeedsDisplay];
   }
 }
 
-- (void)setHourHeightScale:(double)a3
+- (void)setHourHeightScale:(double)scale
 {
-  self->_hourHeightScale = a3;
+  self->_hourHeightScale = scale;
   [(EKDayTimeView *)self updateHourHeight];
   [(EKDayTimeView *)self layoutFrames];
 
   [(EKDayTimeView *)self setNeedsDisplay];
 }
 
-- (void)setOpaque:(BOOL)a3
+- (void)setOpaque:(BOOL)opaque
 {
-  v3 = a3;
+  opaqueCopy = opaque;
   v21 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
   v19.super_class = EKDayTimeView;
@@ -1275,22 +1275,22 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        [v9 setOpaque:v3];
-        v10 = [(EKDayTimeView *)self backgroundColor];
-        if (v3)
+        [v9 setOpaque:opaqueCopy];
+        backgroundColor = [(EKDayTimeView *)self backgroundColor];
+        if (opaqueCopy)
         {
-          v11 = [MEMORY[0x1E69DC888] clearColor];
-          v12 = [v10 isEqual:v11];
+          clearColor = [MEMORY[0x1E69DC888] clearColor];
+          v12 = [backgroundColor isEqual:clearColor];
 
           if (v12)
           {
-            v13 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+            systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
 
-            v10 = v13;
+            backgroundColor = systemBackgroundColor;
           }
         }
 
-        [v9 setBackgroundColor:v10];
+        [v9 setBackgroundColor:backgroundColor];
       }
 
       v6 = [(NSMutableArray *)obj countByEnumeratingWithState:&v15 objects:v20 count:16];
@@ -1300,23 +1300,23 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = EKDayTimeView;
-  v4 = a3;
-  [(EKDayTimeView *)&v5 setBackgroundColor:v4];
-  [(UIView *)self->_curtain setBackgroundColor:v4, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(EKDayTimeView *)&v5 setBackgroundColor:colorCopy];
+  [(UIView *)self->_curtain setBackgroundColor:colorCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setShowsLeftBorder:(BOOL)a3
+- (void)setShowsLeftBorder:(BOOL)border
 {
   v4 = *(self + 424);
-  if ((v4 & 1) != a3)
+  if ((v4 & 1) != border)
   {
-    *(self + 424) = v4 & 0xFE | a3;
-    v6 = [(EKDayTimeView *)self superview];
-    [v6 setNeedsLayout];
+    *(self + 424) = v4 & 0xFE | border;
+    superview = [(EKDayTimeView *)self superview];
+    [superview setNeedsLayout];
 
     [(EKDayTimeView *)self setNeedsLayout];
 
@@ -1324,12 +1324,12 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   }
 }
 
-- (void)setShowsRightBorder:(BOOL)a3
+- (void)setShowsRightBorder:(BOOL)border
 {
   v3 = *(self + 424);
-  if (((((v3 & 2) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 2) == 0) ^ border) & 1) == 0)
   {
-    if (a3)
+    if (border)
     {
       v4 = 2;
     }
@@ -1344,10 +1344,10 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   }
 }
 
-- (void)setHighlightedHour:(double)a3
+- (void)setHighlightedHour:(double)hour
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (self->_highlightedHour != a3)
+  if (self->_highlightedHour != hour)
   {
     [(EKDayTimeView *)self scaledHourHeight];
     v6 = v5;
@@ -1375,7 +1375,7 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
     {
       v18 = v17;
       v19 = v8 - (v10 + 5.0);
-      v20 = v19 + v6 * a3;
+      v20 = v19 + v6 * hour;
       v21 = v19 + v6 * highlightedHour;
       v22 = v6 + 10.0;
       v23 = *v27;
@@ -1401,19 +1401,19 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
       while (v18);
     }
 
-    self->_highlightedHour = a3;
+    self->_highlightedHour = hour;
   }
 }
 
-- (void)setTimeColor:(id)a3
+- (void)setTimeColor:(id)color
 {
-  v5 = a3;
-  if (self->_timeColor != v5)
+  colorCopy = color;
+  if (self->_timeColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_timeColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_timeColor, color);
     [(EKDayTimeView *)self setNeedsDisplay];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
@@ -1422,9 +1422,9 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   timeColor = self->_timeColor;
   if (!timeColor)
   {
-    v4 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
     v5 = self->_timeColor;
-    self->_timeColor = v4;
+    self->_timeColor = secondaryLabelColor;
 
     timeColor = self->_timeColor;
   }
@@ -1432,11 +1432,11 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   return timeColor;
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
+    self->_orientation = orientation;
     [(EKDayTimeView *)self updateHourHeight];
     [(EKDayTimeView *)self _invalidateTimeWidth];
     [(EKDayTimeView *)self _flushTimeStringImageCache];
@@ -1447,9 +1447,9 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(EKDayTimeView *)self timeWidth:a3.width];
+  [(EKDayTimeView *)self timeWidth:fits.width];
   v5 = v4;
   [(EKDayTimeView *)self defaultHeight];
   v7 = v6;
@@ -1459,12 +1459,12 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = CalCeilToScreenScale(a3.size.height);
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v7 = CalCeilToScreenScale(frame.size.height);
   v8.receiver = self;
   v8.super_class = EKDayTimeView;
   [(EKDayTimeView *)&v8 setFrame:x, y, width, v7];
@@ -1472,20 +1472,20 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   [(EKDayTimeView *)self _invalidateTimeWidth];
 }
 
-- (void)drawRect:(CGRect)a3 forContentView:(id)a4 withHourRange:(_NSRange)a5
+- (void)drawRect:(CGRect)rect forContentView:(id)view withHourRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v158[1] = *MEMORY[0x1E69E9840];
-  v131 = a4;
-  [v131 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v123 = v9;
   v124 = v8;
   v143 = v10;
   rect = v11;
   v128 = CUIKShow24Hours();
-  v12 = [(EKDayTimeView *)self traitCollection];
-  v13 = [v12 userInterfaceStyle] == 2;
+  traitCollection = [(EKDayTimeView *)self traitCollection];
+  v13 = [traitCollection userInterfaceStyle] == 2;
 
   if (self->_cachedHoursAreDark != v13)
   {
@@ -1506,7 +1506,7 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   CalRoundToScreenScale(v14);
   v16 = v15;
   hourHeight = self->_hourHeight;
-  v18 = ceil((CGRectGetMaxY(a3) + location * hourHeight - v15) / hourHeight);
+  v18 = ceil((CGRectGetMaxY(rect) + location * hourHeight - v15) / hourHeight);
   if (v18 > (length + location))
   {
     v18 = (length + location);
@@ -1524,7 +1524,7 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
 
   v139 = v16;
   v140 = hourHeight;
-  v20 = floor((a3.origin.y - v16) / hourHeight);
+  v20 = floor((rect.origin.y - v16) / hourHeight);
   if (v20 <= location)
   {
     v20 = location;
@@ -1535,8 +1535,8 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
   v138 = v22;
   [objc_opt_class() _timeVerticalInsetForOrientation:self->_orientation inViewHierarchy:self];
   v137 = v23;
-  v24 = [(EKDayTimeView *)self delegate];
-  [v24 currentTimeRectInView:v131];
+  delegate = [(EKDayTimeView *)self delegate];
+  [delegate currentTimeRectInView:viewCopy];
   v26 = v25;
   v142 = v27;
   v29 = v28;
@@ -1560,7 +1560,7 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
     v39 = v133;
     v147 = v31;
     v148.origin.x = v26;
-    v127 = self;
+    selfCopy = self;
     v146 = v29;
     v126 = v21;
     v136 = v21;
@@ -1583,9 +1583,9 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
         {
           v49 = objc_opt_new();
           [v49 setHour:v40];
-          v50 = [MEMORY[0x1E695DEE8] CalGregorianGMTCalendar];
+          calGregorianGMTCalendar = [MEMORY[0x1E695DEE8] CalGregorianGMTCalendar];
           v144 = v49;
-          v51 = [v50 dateFromComponents:v49];
+          v51 = [calGregorianGMTCalendar dateFromComponents:v49];
 
           v129 = v51;
           if ((v40 != 12) | v128 & 1)
@@ -1609,9 +1609,9 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
           [v53 size];
           v56 = v55;
           v58 = v57;
-          v59 = self;
+          selfCopy2 = self;
           v60 = objc_opt_class();
-          [v60 _timeTextWidthForSizeClass:EKUIWidthSizeClassForViewHierarchy(v131) orientation:v59->_orientation inViewHierarchy:v131];
+          [v60 _timeTextWidthForSizeClass:EKUIWidthSizeClassForViewHierarchy(viewCopy) orientation:selfCopy2->_orientation inViewHierarchy:viewCopy];
           if (v61 >= v56)
           {
             v46 = v56 + v156 + v155;
@@ -1638,7 +1638,7 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
           v42 = [v65 cuik_drawImageWithSize:&v148.origin.y drawBlock:{v46, v48}];
           objc_storeStrong(v39 + 61, v42);
 
-          self = v127;
+          self = selfCopy;
           v21 = v126;
           v34 = &OBJC_IVAR___EKUIViewHierarchyFromComponents__ekui_tintColor;
         }
@@ -1681,7 +1681,7 @@ void __62__EKDayTimeView_noonAttributedStringComponentsForOrientation___block_in
         MaxY = CGRectGetMaxY(v159);
         CalRoundToScreenScale(v137 + MaxY + v48 * -0.5);
         v75 = v74;
-        if (v135 != v35 && v35 || (v174.origin.x = v72, v174.origin.y = v74, v174.size.width = v46, v174.size.height = v48, CGRectIntersectsRect(a3, v174)))
+        if (v135 != v35 && v35 || (v174.origin.x = v72, v174.origin.y = v74, v174.size.width = v46, v174.size.height = v48, CGRectIntersectsRect(rect, v174)))
         {
           v160.origin.x = v72;
           v160.origin.y = v75;
@@ -1839,8 +1839,8 @@ LABEL_78:
     v166.size.height = v31;
     if (v112 > CGRectGetMaxY(v166) || (v167.origin.x = v100, v167.origin.y = v111, v167.size.width = v90, v167.size.height = v33, v113 = CGRectGetMaxY(v167), v168.origin.x = v26, v168.origin.y = v142, v168.size.width = v29, v168.size.height = v31, v113 < CGRectGetMinY(v168)))
     {
-      v114 = [MEMORY[0x1E69DC888] cuik_timelineHourColor];
-      [v114 CGColor];
+      cuik_timelineHourColor = [MEMORY[0x1E69DC888] cuik_timelineHourColor];
+      [cuik_timelineHourColor CGColor];
       UISetColor();
 
       [v93 _legacy_drawAtPoint:v83 withFont:{CalRoundPointToScreenScale(v100, v111)}];
@@ -1850,13 +1850,13 @@ LABEL_78:
   }
 
 LABEL_79:
-  v115 = [MEMORY[0x1E69DC888] separatorColor];
+  separatorColor = [MEMORY[0x1E69DC888] separatorColor];
   if (*(self + 424))
   {
     CurrentContext = UIGraphicsGetCurrentContext();
     CGContextSaveGState(CurrentContext);
     CGContextSetShouldAntialias(CurrentContext, 0);
-    [v115 CGColor];
+    [separatorColor CGColor];
     UISetColor();
     v117 = EKUISeparatorLineThickness();
     v169.size.height = v123;
@@ -1875,7 +1875,7 @@ LABEL_79:
     v118 = UIGraphicsGetCurrentContext();
     CGContextSaveGState(v118);
     CGContextSetShouldAntialias(v118, 0);
-    [v115 CGColor];
+    [separatorColor CGColor];
     UISetColor();
     v171.origin.x = v124;
     v171.origin.y = v143;
@@ -1896,27 +1896,27 @@ LABEL_79:
   }
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v5.receiver = self;
   v5.super_class = EKDayTimeView;
   [(EKDayTimeView *)&v5 setSemanticContentAttribute:?];
-  [(EKCurrentTimeMarkerView *)self->_timeMarker setSemanticContentAttribute:a3];
+  [(EKCurrentTimeMarkerView *)self->_timeMarker setSemanticContentAttribute:attribute];
 }
 
-- (void)setVisualEffect:(id)a3
+- (void)setVisualEffect:(id)effect
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_visualEffect != v5)
+  effectCopy = effect;
+  if (self->_visualEffect != effectCopy)
   {
-    objc_storeStrong(&self->_visualEffect, a3);
+    objc_storeStrong(&self->_visualEffect, effect);
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [(NSMutableDictionary *)self->_visualEffectViews allValues];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    allValues = [(NSMutableDictionary *)self->_visualEffectViews allValues];
+    v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1928,14 +1928,14 @@ LABEL_79:
         {
           if (*v12 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allValues);
           }
 
-          [*(*(&v11 + 1) + 8 * v10++) setEffect:v5];
+          [*(*(&v11 + 1) + 8 * v10++) setEffect:effectCopy];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v8 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v8);
@@ -1943,12 +1943,12 @@ LABEL_79:
   }
 }
 
-- (void)setShowsTimeMarker:(BOOL)a3
+- (void)setShowsTimeMarker:(BOOL)marker
 {
-  if (self->_showsTimeMarker != a3)
+  if (self->_showsTimeMarker != marker)
   {
     timeMarker = self->_timeMarker;
-    if (a3)
+    if (marker)
     {
       if (timeMarker)
       {
@@ -2002,7 +2002,7 @@ LABEL_79:
       v28[2] = __36__EKDayTimeView_setShowsTimeMarker___block_invoke_2;
       v28[3] = &unk_1E843EFB8;
       v29 = v18;
-      v30 = self;
+      selfCopy = self;
       v23 = MEMORY[0x1E69E9820];
       v24 = 3221225472;
       v25 = __36__EKDayTimeView_setShowsTimeMarker___block_invoke_3;
@@ -2012,7 +2012,7 @@ LABEL_79:
       [v20 animateWithDuration:v28 animations:&v23 completion:0.2];
     }
 
-    self->_showsTimeMarker = a3;
+    self->_showsTimeMarker = marker;
     v22 = [(EKDayTimeView *)self delegate:v23];
 
     if (v22)
@@ -2040,12 +2040,12 @@ uint64_t __36__EKDayTimeView_setShowsTimeMarker___block_invoke_2(uint64_t a1)
   return [v2 setAlpha:0.0];
 }
 
-- (void)setShowsTimeMarkerExtension:(BOOL)a3
+- (void)setShowsTimeMarkerExtension:(BOOL)extension
 {
-  if (self->_showsTimeMarkerExtension != a3)
+  if (self->_showsTimeMarkerExtension != extension)
   {
-    self->_showsTimeMarkerExtension = a3;
-    if (a3)
+    self->_showsTimeMarkerExtension = extension;
+    if (extension)
     {
       v5 = objc_alloc_init(MEMORY[0x1E69DD250]);
       timeMarkerExtension = self->_timeMarkerExtension;
@@ -2066,92 +2066,92 @@ uint64_t __36__EKDayTimeView_setShowsTimeMarker___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setTimeMarkerExtensionColor:(id)a3
+- (void)setTimeMarkerExtensionColor:(id)color
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_timeMarkerExtensionColor] & 1) == 0)
+  colorCopy = color;
+  if (([colorCopy isEqual:self->_timeMarkerExtensionColor] & 1) == 0)
   {
-    objc_storeStrong(&self->_timeMarkerExtensionColor, a3);
-    [(UIView *)self->_timeMarkerExtension setBackgroundColor:v5];
+    objc_storeStrong(&self->_timeMarkerExtensionColor, color);
+    [(UIView *)self->_timeMarkerExtension setBackgroundColor:colorCopy];
   }
 }
 
-+ (double)positionOfSecond:(int64_t)a3 hourHeight:(double)a4 topPadding:(double)a5 clampToBounds:(BOOL)a6
++ (double)positionOfSecond:(int64_t)second hourHeight:(double)height topPadding:(double)padding clampToBounds:(BOOL)bounds
 {
-  v6 = a3 & ~(a3 >> 63);
-  if (v6 >= 86400)
+  secondCopy = second & ~(second >> 63);
+  if (secondCopy >= 86400)
   {
-    v6 = 86400;
+    secondCopy = 86400;
   }
 
-  if (!a6)
+  if (!bounds)
   {
-    v6 = a3;
+    secondCopy = second;
   }
 
-  CalRoundToScreenScale(a5 + a4 * 24.0 * (v6 / 86400.0));
+  CalRoundToScreenScale(padding + height * 24.0 * (secondCopy / 86400.0));
   return result;
 }
 
-+ (CGRect)timeMarkerFrameForTotalWidth:(double)a3 timeWidth:(double)a4 timeMarker:(id)a5 hourHeight:(double)a6 topPadding:(double)a7
++ (CGRect)timeMarkerFrameForTotalWidth:(double)width timeWidth:(double)timeWidth timeMarker:(id)marker hourHeight:(double)height topPadding:(double)padding
 {
-  v12 = a5;
+  markerCopy = marker;
   IsLeftToRight = CalInterfaceIsLeftToRight();
-  v14 = [v12 showsThumb];
+  showsThumb = [markerCopy showsThumb];
   v15 = 0.0;
   if (IsLeftToRight)
   {
-    if (v14)
+    if (showsThumb)
     {
-      [v12 markerWidth];
-      v17 = a4 - v16;
-      [v12 markerInset];
+      [markerCopy markerWidth];
+      v17 = timeWidth - v16;
+      [markerCopy markerInset];
       v15 = v17 - v18;
-      a3 = a3 - v15;
+      width = width - v15;
     }
   }
 
-  else if (v14)
+  else if (showsThumb)
   {
-    [v12 markerWidth];
-    v20 = a3 - a4 + v19;
-    [v12 markerInset];
-    a3 = v20 + v21;
+    [markerCopy markerWidth];
+    v20 = width - timeWidth + v19;
+    [markerCopy markerInset];
+    width = v20 + v21;
   }
 
   v22 = CUIKNowComponents();
-  [a1 positionOfSecond:(objc_msgSend(v22 hourHeight:"second") + (3600 * objc_msgSend(v22 topPadding:"hour") + 60 * objc_msgSend(v22 clampToBounds:{"minute"))), 1, a6, a7}];
+  [self positionOfSecond:(objc_msgSend(v22 hourHeight:"second") + (3600 * objc_msgSend(v22 topPadding:"hour") + 60 * objc_msgSend(v22 clampToBounds:{"minute"))), 1, height, padding}];
   v24 = v23;
-  [v12 bounds];
+  [markerCopy bounds];
   v26 = v24 + v25 * -0.5;
-  [v12 bounds];
+  [markerCopy bounds];
   v28 = v27;
 
   v29 = v15;
   v30 = v26;
-  v31 = a3;
+  widthCopy = width;
   v32 = v28;
   result.size.height = v32;
-  result.size.width = v31;
+  result.size.width = widthCopy;
   result.origin.y = v30;
   result.origin.x = v29;
   return result;
 }
 
-+ (CGRect)_timeLineExtensionFrameForTimeWidth:(double)a3 timeMarker:(id)a4 timeLabelXPosition:(double)a5 yPosition:(double)a6
++ (CGRect)_timeLineExtensionFrameForTimeWidth:(double)width timeMarker:(id)marker timeLabelXPosition:(double)position yPosition:(double)yPosition
 {
-  v8 = a4;
+  markerCopy = marker;
   v9 = 0.0;
   if (CalInterfaceIsLeftToRight())
   {
-    [v8 markerWidth];
-    v9 = v10 + a5;
+    [markerCopy markerWidth];
+    v9 = v10 + position;
   }
 
-  [v8 extensionLineHeight];
+  [markerCopy extensionLineHeight];
   v12 = v11;
-  v13 = a6 + v11 * -0.5;
-  [v8 markerInset];
+  v13 = yPosition + v11 * -0.5;
+  [markerCopy markerInset];
   v15 = v14;
 
   v16 = v9;
@@ -2165,23 +2165,23 @@ uint64_t __36__EKDayTimeView_setShowsTimeMarker___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)viewTintColorDidChangeForView:(id)a3 toColor:(id)a4
+- (void)viewTintColorDidChangeForView:(id)view toColor:(id)color
 {
-  v6 = a4;
-  v5 = [(EKDayTimeView *)self visualEffect];
+  colorCopy = color;
+  visualEffect = [(EKDayTimeView *)self visualEffect];
 
-  if (v5)
+  if (visualEffect)
   {
-    [(EKDayTimeView *)self setTimeColor:v6];
+    [(EKDayTimeView *)self setTimeColor:colorCopy];
     [(EKDayTimeView *)self setNeedsDisplay];
   }
 }
 
-- (void)setCurtainHeight:(double)a3
+- (void)setCurtainHeight:(double)height
 {
-  self->_curtainHeight = a3;
+  self->_curtainHeight = height;
   [(EKDayTimeView *)self _updateMarkerAlpha];
-  v5 = fmax(a3, 0.0);
+  v5 = fmax(height, 0.0);
   curtainHeightConstraint = self->_curtainHeightConstraint;
 
   [(NSLayoutConstraint *)curtainHeightConstraint setConstant:v5];

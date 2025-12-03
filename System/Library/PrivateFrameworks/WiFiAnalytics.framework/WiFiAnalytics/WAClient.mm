@@ -1,71 +1,71 @@
 @interface WAClient
-+ (id)WANetworkAuthFlagsLabel:(signed __int16)a3;
-+ (id)WANetworkHighestAuthFlagsLabel:(signed __int16)a3;
-+ (id)ouiFromThreeBytes:(unsigned __int8)a3[3];
-+ (id)sharedClientWithIdentifier:(id)a3;
++ (id)WANetworkAuthFlagsLabel:(signed __int16)label;
++ (id)WANetworkHighestAuthFlagsLabel:(signed __int16)label;
++ (id)ouiFromThreeBytes:(unsigned __int8)bytes[3];
++ (id)sharedClientWithIdentifier:(id)identifier;
 - (NSMutableDictionary)configuredMessageIdentifiers;
 - (NSMutableDictionary)interestedMessageIdentifiers;
 - (WAClient)init;
 - (id)_getConnectionIssueHandlerBlock;
 - (id)_initPrivate;
-- (int64_t)_writeWiFiAnalyticsMessageToJSONFile:(id)a3 metricInfo:(id)a4;
-- (void)_clearMessageStoreAndReply:(id)a3 queuedInvocation:(id)a4;
+- (int64_t)_writeWiFiAnalyticsMessageToJSONFile:(id)file metricInfo:(id)info;
+- (void)_clearMessageStoreAndReply:(id)reply queuedInvocation:(id)invocation;
 - (void)_connectionRecovered;
 - (void)_connectionRecoveryTick;
 - (void)_connectionTimedOut;
-- (void)_dequeueInvocation:(id)a3;
+- (void)_dequeueInvocation:(id)invocation;
 - (void)_establishDaemonConnection;
-- (void)_getDeviceAnalyticsConfigurationAndReply:(id)a3 queuedInvocation:(id)a4;
-- (void)_getDpsStatsandReply:(id)a3 queuedInvocation:(id)a4;
-- (void)_getMessagesModelForGroupType:(int64_t)a3 andReply:(id)a4 queuedInvocation:(id)a5;
-- (void)_getNewMessageForKey:(id)a3 groupType:(int64_t)a4 withCopy:(id)a5 andReply:(id)a6 queuedInvocation:(id)a7;
-- (void)_getUsageStatsandReply:(id)a3 queuedInvocation:(id)a4;
-- (void)_issueIOReportManagementCommand:(unint64_t)a3 andReply:(id)a4 queuedInvocation:(id)a5;
-- (void)_killDaemonAndReply:(id)a3 queuedInvocation:(id)a4;
-- (void)_lqmCrashTracerNotifyForInterfaceWithName:(id)a3 andReply:(id)a4 queuedInvocation:(id)a5;
-- (void)_lqmCrashTracerReceiveBlock:(id)a3 forInterfaceWithName:(id)a4 andReply:(id)a5 queuedInvocation:(id)a6;
-- (void)_processManagedFault:(id)a3 at:(id)a4 andReply:(id)a5 queuedInvocation:(id)a6;
-- (void)_processWAMessageForCoreAnalytics:(id)a3;
-- (void)_registerMessageGroup:(int64_t)a3 andReply:(id)a4 queuedInvocation:(id)a5;
+- (void)_getDeviceAnalyticsConfigurationAndReply:(id)reply queuedInvocation:(id)invocation;
+- (void)_getDpsStatsandReply:(id)reply queuedInvocation:(id)invocation;
+- (void)_getMessagesModelForGroupType:(int64_t)type andReply:(id)reply queuedInvocation:(id)invocation;
+- (void)_getNewMessageForKey:(id)key groupType:(int64_t)type withCopy:(id)copy andReply:(id)reply queuedInvocation:(id)invocation;
+- (void)_getUsageStatsandReply:(id)reply queuedInvocation:(id)invocation;
+- (void)_issueIOReportManagementCommand:(unint64_t)command andReply:(id)reply queuedInvocation:(id)invocation;
+- (void)_killDaemonAndReply:(id)reply queuedInvocation:(id)invocation;
+- (void)_lqmCrashTracerNotifyForInterfaceWithName:(id)name andReply:(id)reply queuedInvocation:(id)invocation;
+- (void)_lqmCrashTracerReceiveBlock:(id)block forInterfaceWithName:(id)name andReply:(id)reply queuedInvocation:(id)invocation;
+- (void)_processManagedFault:(id)fault at:(id)at andReply:(id)reply queuedInvocation:(id)invocation;
+- (void)_processWAMessageForCoreAnalytics:(id)analytics;
+- (void)_registerMessageGroup:(int64_t)group andReply:(id)reply queuedInvocation:(id)invocation;
 - (void)_removeAllQueuedInvocations;
 - (void)_replyAllWithTimeoutErrorAndRemove;
 - (void)_reregister;
-- (void)_sendMemoryPressureRequestAndReply:(id)a3 queuedInvocation:(id)a4;
-- (void)_setDeviceAnalyticsConfiguration:(id)a3 andReply:(id)a4 queuedInvocation:(id)a5;
-- (void)_signalPotentialNewIORChannelsAndReply:(id)a3 queuedInvocation:(id)a4;
+- (void)_sendMemoryPressureRequestAndReply:(id)reply queuedInvocation:(id)invocation;
+- (void)_setDeviceAnalyticsConfiguration:(id)configuration andReply:(id)reply queuedInvocation:(id)invocation;
+- (void)_signalPotentialNewIORChannelsAndReply:(id)reply queuedInvocation:(id)invocation;
 - (void)_startConnectionRecovery;
-- (void)_submitMessage:(id)a3 groupType:(int64_t)a4 andReply:(id)a5 queuedInvocation:(id)a6;
-- (void)_trapCrashMiniTracerDumpReadyForInterfaceWithName:(id)a3 andReply:(id)a4 queuedInvocation:(id)a5;
-- (void)_triggerDatapathDiagnosticsAndCollectUpdates:(int64_t)a3 waMessage:(id)a4 andReply:(id)a5 queuedInvocation:(id)a6;
-- (void)_triggerDeviceAnalyticsStoreMigrationAndReply:(id)a3 queuedInvocation:(id)a4;
-- (void)_triggerQueryForNWActivity:(int64_t)a3 andReply:(id)a4 queuedInvocation:(id)a5;
-- (void)_triggerQueryForNWActivityWithPeers:(id)a3 andReply:(id)a4 queuedInvocation:(id)a5;
-- (void)_updateRoamPoliciesForSourceBssid:(id)a3 andUpdateRoamCache:(BOOL)a4 andReply:(id)a5 queuedInvocation:(id)a6;
-- (void)_wakeUpNotificationForThisClientReceived:(id)a3;
-- (void)convertWiFiStatsIntoPercentile:(id)a3 analysisGroup:(int64_t)a4 groupTarget:(id)a5 andReply:(id)a6 queuedInvocation:(id)a7;
+- (void)_submitMessage:(id)message groupType:(int64_t)type andReply:(id)reply queuedInvocation:(id)invocation;
+- (void)_trapCrashMiniTracerDumpReadyForInterfaceWithName:(id)name andReply:(id)reply queuedInvocation:(id)invocation;
+- (void)_triggerDatapathDiagnosticsAndCollectUpdates:(int64_t)updates waMessage:(id)message andReply:(id)reply queuedInvocation:(id)invocation;
+- (void)_triggerDeviceAnalyticsStoreMigrationAndReply:(id)reply queuedInvocation:(id)invocation;
+- (void)_triggerQueryForNWActivity:(int64_t)activity andReply:(id)reply queuedInvocation:(id)invocation;
+- (void)_triggerQueryForNWActivityWithPeers:(id)peers andReply:(id)reply queuedInvocation:(id)invocation;
+- (void)_updateRoamPoliciesForSourceBssid:(id)bssid andUpdateRoamCache:(BOOL)cache andReply:(id)reply queuedInvocation:(id)invocation;
+- (void)_wakeUpNotificationForThisClientReceived:(id)received;
+- (void)convertWiFiStatsIntoPercentile:(id)percentile analysisGroup:(int64_t)group groupTarget:(id)target andReply:(id)reply queuedInvocation:(id)invocation;
 - (void)dealloc;
-- (void)fakeDaemonConnectionDead:(unsigned __int8)a3;
-- (void)getNewMessageForKey:(id)a3 groupType:(int64_t)a4 andReply:(id)a5;
-- (void)resetDeviceAnalyticsConfigurationAndReply:(id)a3;
-- (void)setConfiguredMessageIdentifiers:(id)a3;
-- (void)setDeviceAnalyticsConfiguration:(id)a3 andReply:(id)a4;
-- (void)setInterestedMessageIdentifiers:(id)a3;
-- (void)submitWiFiAnalytics:(id)a3 data:(id)a4;
-- (void)submitWiFiAnalyticsMessageAdvanced:(id)a3;
-- (void)updateRoamPoliciesAndSummarizeAnalyticsForNetwork:(id)a3 maxAgeInDays:(unint64_t)a4 andReply:(id)a5 queuedInvocation:(id)a6;
+- (void)fakeDaemonConnectionDead:(unsigned __int8)dead;
+- (void)getNewMessageForKey:(id)key groupType:(int64_t)type andReply:(id)reply;
+- (void)resetDeviceAnalyticsConfigurationAndReply:(id)reply;
+- (void)setConfiguredMessageIdentifiers:(id)identifiers;
+- (void)setDeviceAnalyticsConfiguration:(id)configuration andReply:(id)reply;
+- (void)setInterestedMessageIdentifiers:(id)identifiers;
+- (void)submitWiFiAnalytics:(id)analytics data:(id)data;
+- (void)submitWiFiAnalyticsMessageAdvanced:(id)advanced;
+- (void)updateRoamPoliciesAndSummarizeAnalyticsForNetwork:(id)network maxAgeInDays:(unint64_t)days andReply:(id)reply queuedInvocation:(id)invocation;
 @end
 
 @implementation WAClient
 
-+ (id)sharedClientWithIdentifier:(id)a3
++ (id)sharedClientWithIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifierCopy = identifier;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__WAClient_sharedClientWithIdentifier___block_invoke;
   block[3] = &unk_1E830D880;
-  v4 = v3;
+  v4 = identifierCopy;
   v11 = v4;
   if (qword_1EDE5CB18 != -1)
   {
@@ -192,33 +192,33 @@ LABEL_6:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = WAClient;
   [(WAClient *)&v4 dealloc];
 }
 
-- (void)_registerMessageGroup:(int64_t)a3 andReply:(id)a4 queuedInvocation:(id)a5
+- (void)_registerMessageGroup:(int64_t)group andReply:(id)reply queuedInvocation:(id)invocation
 {
-  v9 = a4;
-  v10 = a5;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v11 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__WAClient__registerMessageGroup_andReply_queuedInvocation___block_invoke;
   block[3] = &unk_1E830EC70;
   objc_copyWeak(v18, &location);
-  v18[1] = a3;
+  v18[1] = group;
   v18[2] = a2;
-  v15 = v10;
-  v16 = self;
-  v17 = v9;
-  v12 = v9;
-  v13 = v10;
-  dispatch_async(v11, block);
+  v15 = invocationCopy;
+  selfCopy = self;
+  v17 = replyCopy;
+  v12 = replyCopy;
+  v13 = invocationCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(v18);
   objc_destroyWeak(&location);
@@ -354,40 +354,40 @@ void __60__WAClient__registerMessageGroup_andReply_queuedInvocation___block_invo
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)getNewMessageForKey:(id)a3 groupType:(int64_t)a4 andReply:(id)a5
+- (void)getNewMessageForKey:(id)key groupType:(int64_t)type andReply:(id)reply
 {
   v8 = MEMORY[0x1E696AD98];
-  v9 = a5;
-  v10 = a3;
+  replyCopy = reply;
+  keyCopy = key;
   v11 = [v8 numberWithBool:0];
-  [(WAClient *)self _getNewMessageForKey:v10 groupType:a4 withCopy:v11 andReply:v9 queuedInvocation:0];
+  [(WAClient *)self _getNewMessageForKey:keyCopy groupType:type withCopy:v11 andReply:replyCopy queuedInvocation:0];
 }
 
-- (void)_getNewMessageForKey:(id)a3 groupType:(int64_t)a4 withCopy:(id)a5 andReply:(id)a6 queuedInvocation:(id)a7
+- (void)_getNewMessageForKey:(id)key groupType:(int64_t)type withCopy:(id)copy andReply:(id)reply queuedInvocation:(id)invocation
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  keyCopy = key;
+  copyCopy = copy;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v17 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__WAClient__getNewMessageForKey_groupType_withCopy_andReply_queuedInvocation___block_invoke;
   block[3] = &unk_1E830ECC0;
   objc_copyWeak(v28, &location);
-  v23 = v16;
-  v24 = self;
+  v23 = invocationCopy;
+  selfCopy = self;
   v28[1] = a2;
-  v28[2] = a4;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v16;
-  dispatch_async(v17, block);
+  v28[2] = type;
+  v25 = keyCopy;
+  v26 = copyCopy;
+  v27 = replyCopy;
+  v18 = replyCopy;
+  v19 = copyCopy;
+  v20 = keyCopy;
+  v21 = invocationCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(v28);
   objc_destroyWeak(&location);
@@ -512,17 +512,17 @@ void __78__WAClient__getNewMessageForKey_groupType_withCopy_andReply_queuedInvoc
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_dequeueInvocation:(id)a3
+- (void)_dequeueInvocation:(id)invocation
 {
-  v4 = a3;
-  v5 = [(WAClient *)self queue];
+  invocationCopy = invocation;
+  queue = [(WAClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __31__WAClient__dequeueInvocation___block_invoke;
   block[3] = &unk_1E830D880;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v8 = invocationCopy;
+  v6 = invocationCopy;
+  dispatch_sync(queue, block);
 }
 
 void __31__WAClient__dequeueInvocation___block_invoke(uint64_t a1)
@@ -537,29 +537,29 @@ void __31__WAClient__dequeueInvocation___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_submitMessage:(id)a3 groupType:(int64_t)a4 andReply:(id)a5 queuedInvocation:(id)a6
+- (void)_submitMessage:(id)message groupType:(int64_t)type andReply:(id)reply queuedInvocation:(id)invocation
 {
   v29 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  if (v11)
+  if (messageCopy)
   {
-    v14 = [(WAClient *)self queue];
+    queue = [(WAClient *)self queue];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __63__WAClient__submitMessage_groupType_andReply_queuedInvocation___block_invoke;
     v18[3] = &unk_1E830ECE8;
     objc_copyWeak(v23, &location);
-    v15 = v13;
+    v15 = invocationCopy;
     v23[1] = a2;
     v19 = v15;
-    v20 = self;
-    v21 = v11;
-    v23[2] = a4;
-    v22 = v12;
-    dispatch_async(v14, v18);
+    selfCopy = self;
+    v21 = messageCopy;
+    v23[2] = type;
+    v22 = replyCopy;
+    dispatch_async(queue, v18);
 
     objc_destroyWeak(v23);
   }
@@ -702,31 +702,31 @@ void __63__WAClient__submitMessage_groupType_andReply_queuedInvocation___block_i
   objc_autoreleasePoolPop(v2);
 }
 
-- (int64_t)_writeWiFiAnalyticsMessageToJSONFile:(id)a3 metricInfo:(id)a4
+- (int64_t)_writeWiFiAnalyticsMessageToJSONFile:(id)file metricInfo:(id)info
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v7])
+  fileCopy = file;
+  infoCopy = info;
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:infoCopy])
   {
-    v39 = v7;
-    v40 = v6;
+    v39 = infoCopy;
+    v40 = fileCopy;
     v8 = objc_alloc_init(MEMORY[0x1E696AB78]);
     [v8 setDateFormat:@"yyyy'-'MM'-'dd-HHmmssSSS"];
-    v9 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v38 = v8;
-    v10 = [v8 stringFromDate:v9];
+    v10 = [v8 stringFromDate:date];
 
     v43 = v10;
     v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"wifianalytics_%@.json", v10];
-    v42 = self;
-    v12 = [(WAClient *)self wifianalyticsTmpDir];
-    v13 = [v12 URLByAppendingPathComponent:v11 isDirectory:0];
+    selfCopy = self;
+    wifianalyticsTmpDir = [(WAClient *)self wifianalyticsTmpDir];
+    v13 = [wifianalyticsTmpDir URLByAppendingPathComponent:v11 isDirectory:0];
 
-    v14 = [MEMORY[0x1E696AC08] defaultManager];
-    v15 = [v13 path];
-    v41 = v14;
-    v16 = [v14 fileExistsAtPath:v15];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    path = [v13 path];
+    v41 = defaultManager;
+    v16 = [defaultManager fileExistsAtPath:path];
 
     if (v16)
     {
@@ -736,11 +736,11 @@ void __63__WAClient__submitMessage_groupType_andReply_queuedInvocation___block_i
         v18 = v17 + 1;
         v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"wifianalytics_%@_%lu.json", v43, v17];
 
-        v20 = [(WAClient *)v42 wifianalyticsTmpDir];
-        v21 = [v20 URLByAppendingPathComponent:v19 isDirectory:0];
+        wifianalyticsTmpDir2 = [(WAClient *)selfCopy wifianalyticsTmpDir];
+        v21 = [wifianalyticsTmpDir2 URLByAppendingPathComponent:v19 isDirectory:0];
 
-        v22 = [v21 path];
-        v23 = [v41 fileExistsAtPath:v22];
+        path2 = [v21 path];
+        v23 = [v41 fileExistsAtPath:path2];
 
         v11 = v19;
         v17 = v18;
@@ -757,7 +757,7 @@ void __63__WAClient__submitMessage_groupType_andReply_queuedInvocation___block_i
     }
 
     v45 = 0;
-    v7 = v39;
+    infoCopy = v39;
     v24 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v39 options:3 error:&v45];
     v25 = v45;
     if (v25)
@@ -792,15 +792,15 @@ void __63__WAClient__submitMessage_groupType_andReply_queuedInvocation___block_i
       v28 = v41;
     }
 
-    v30 = [(WAClient *)v42 wifianalyticsTmpDir];
-    v31 = [v30 path];
-    v32 = [v28 contentsOfDirectoryAtPath:v31 error:0];
+    wifianalyticsTmpDir3 = [(WAClient *)selfCopy wifianalyticsTmpDir];
+    path3 = [wifianalyticsTmpDir3 path];
+    v32 = [v28 contentsOfDirectoryAtPath:path3 error:0];
 
     v33 = [MEMORY[0x1E696AE18] predicateWithFormat:@"SELF EndsWith '.json'"];
     v34 = [v32 filteredArrayUsingPredicate:v33];
 
     v35 = [v34 count];
-    v6 = v40;
+    fileCopy = v40;
   }
 
   else
@@ -813,7 +813,7 @@ void __63__WAClient__submitMessage_groupType_andReply_queuedInvocation___block_i
       v48 = 1024;
       v49 = 307;
       v50 = 2112;
-      v51 = v6;
+      v51 = fileCopy;
       _os_log_impl(&dword_1C8460000, v19, OS_LOG_TYPE_ERROR, "%{public}s::%d:Invalid data passed to JSON serialization for %@", buf, 0x1Cu);
     }
 
@@ -824,10 +824,10 @@ void __63__WAClient__submitMessage_groupType_andReply_queuedInvocation___block_i
   return v35;
 }
 
-- (void)_processWAMessageForCoreAnalytics:(id)a3
+- (void)_processWAMessageForCoreAnalytics:(id)analytics
 {
   v34 = *MEMORY[0x1E69E9840];
-  v21 = a3;
+  analyticsCopy = analytics;
   v3 = WALogCategoryDefaultHandle();
   if (os_signpost_enabled(v3))
   {
@@ -835,8 +835,8 @@ void __63__WAClient__submitMessage_groupType_andReply_queuedInvocation___block_i
     _os_signpost_emit_with_name_impl(&dword_1C8460000, v3, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_processWAMessageForCoreAnalytics", "", buf, 2u);
   }
 
-  v20 = [MEMORY[0x1E695DF90] dictionary];
-  if (!v20)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (!dictionary)
   {
     v17 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -857,10 +857,10 @@ void __63__WAClient__submitMessage_groupType_andReply_queuedInvocation___block_i
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v4 = [v21 metricInfo];
-  v5 = [v4 allKeys];
+  metricInfo = [analyticsCopy metricInfo];
+  allKeys = [metricInfo allKeys];
 
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -871,33 +871,33 @@ void __63__WAClient__submitMessage_groupType_andReply_queuedInvocation___block_i
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
-        v11 = [v21 metricInfo];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        metricInfo2 = [analyticsCopy metricInfo];
+        v12 = [metricInfo2 objectForKeyedSubscript:v10];
 
         v13 = [v12 objectForKeyedSubscript:@"options"];
-        v14 = [v13 integerValue];
+        integerValue = [v13 integerValue];
 
-        if (v14)
+        if (integerValue)
         {
           v15 = [v12 objectForKeyedSubscript:@"value"];
-          [v20 setObject:v15 forKey:v10];
+          [dictionary setObject:v15 forKey:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v7);
   }
 
-  if ([v20 count])
+  if ([dictionary count])
   {
-    v16 = [v21 metricName];
-    v22 = v20;
+    metricName = [analyticsCopy metricName];
+    v22 = dictionary;
     AnalyticsSendEventLazy();
 
     v17 = v22;
@@ -914,19 +914,19 @@ LABEL_15:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)submitWiFiAnalytics:(id)a3 data:(id)a4
+- (void)submitWiFiAnalytics:(id)analytics data:(id)data
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  analyticsCopy = analytics;
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x3032000000;
   v12[3] = __Block_byref_object_copy__6;
   v12[4] = __Block_byref_object_dispose__6;
-  v6 = a4;
-  v7 = v6;
-  v13 = v6;
-  if (v5 && v6)
+  dataCopy = data;
+  v7 = dataCopy;
+  v13 = dataCopy;
+  if (analyticsCopy && dataCopy)
   {
     v8 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -936,13 +936,13 @@ LABEL_15:
       v16 = 1024;
       v17 = 381;
       v18 = 2112;
-      v19 = v5;
+      v19 = analyticsCopy;
       v20 = 2112;
       v21 = v7;
       _os_log_impl(&dword_1C8460000, v8, OS_LOG_TYPE_DEBUG, "%{public}s::%d:submitting %@: %@", buf, 0x26u);
     }
 
-    v10 = v5;
+    v10 = analyticsCopy;
     v11 = v7;
     AnalyticsSendEventLazy();
   }
@@ -1074,12 +1074,12 @@ LABEL_16:
   return v2;
 }
 
-- (void)submitWiFiAnalyticsMessageAdvanced:(id)a3
+- (void)submitWiFiAnalyticsMessageAdvanced:(id)advanced
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  advancedCopy = advanced;
+  v5 = advancedCopy;
+  if (!advancedCopy)
   {
     v10 = WALogCategoryDefaultHandle();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1095,8 +1095,8 @@ LABEL_16:
     goto LABEL_7;
   }
 
-  v6 = [v4 metricName];
-  if (!v6 || (v7 = v6, [v5 metricInfo], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
+  metricName = [advancedCopy metricName];
+  if (!metricName || (v7 = metricName, [v5 metricInfo], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
   {
     v10 = WALogCategoryDefaultHandle();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1114,14 +1114,14 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __47__WAClient_submitWiFiAnalyticsMessageAdvanced___block_invoke;
   v13[3] = &unk_1E830DB70;
   v14 = v5;
-  v15 = self;
-  dispatch_async(v9, v13);
+  selfCopy = self;
+  dispatch_async(queue, v13);
 
   v10 = v14;
 LABEL_8:
@@ -1140,27 +1140,27 @@ void __47__WAClient_submitWiFiAnalyticsMessageAdvanced___block_invoke(uint64_t a
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_triggerQueryForNWActivityWithPeers:(id)a3 andReply:(id)a4 queuedInvocation:(id)a5
+- (void)_triggerQueryForNWActivityWithPeers:(id)peers andReply:(id)reply queuedInvocation:(id)invocation
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  peersCopy = peers;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v12 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__WAClient__triggerQueryForNWActivityWithPeers_andReply_queuedInvocation___block_invoke;
   block[3] = &unk_1E830ED38;
   objc_copyWeak(v21, &location);
   v21[1] = a2;
-  v17 = v11;
-  v18 = self;
-  v19 = v9;
-  v20 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v11;
-  dispatch_async(v12, block);
+  v17 = invocationCopy;
+  selfCopy = self;
+  v19 = peersCopy;
+  v20 = replyCopy;
+  v13 = replyCopy;
+  v14 = peersCopy;
+  v15 = invocationCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(v21);
   objc_destroyWeak(&location);
@@ -1326,25 +1326,25 @@ void __74__WAClient__triggerQueryForNWActivityWithPeers_andReply_queuedInvocatio
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_triggerQueryForNWActivity:(int64_t)a3 andReply:(id)a4 queuedInvocation:(id)a5
+- (void)_triggerQueryForNWActivity:(int64_t)activity andReply:(id)reply queuedInvocation:(id)invocation
 {
-  v9 = a4;
-  v10 = a5;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v11 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__WAClient__triggerQueryForNWActivity_andReply_queuedInvocation___block_invoke;
   block[3] = &unk_1E830EC70;
   objc_copyWeak(v18, &location);
-  v15 = v10;
-  v16 = self;
+  v15 = invocationCopy;
+  selfCopy = self;
   v18[1] = a2;
-  v18[2] = a3;
-  v17 = v9;
-  v12 = v9;
-  v13 = v10;
-  dispatch_async(v11, block);
+  v18[2] = activity;
+  v17 = replyCopy;
+  v12 = replyCopy;
+  v13 = invocationCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(v18);
   objc_destroyWeak(&location);
@@ -1510,31 +1510,31 @@ void __65__WAClient__triggerQueryForNWActivity_andReply_queuedInvocation___block
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)convertWiFiStatsIntoPercentile:(id)a3 analysisGroup:(int64_t)a4 groupTarget:(id)a5 andReply:(id)a6 queuedInvocation:(id)a7
+- (void)convertWiFiStatsIntoPercentile:(id)percentile analysisGroup:(int64_t)group groupTarget:(id)target andReply:(id)reply queuedInvocation:(id)invocation
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  percentileCopy = percentile;
+  targetCopy = target;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v17 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __95__WAClient_convertWiFiStatsIntoPercentile_analysisGroup_groupTarget_andReply_queuedInvocation___block_invoke;
   block[3] = &unk_1E830ECC0;
   objc_copyWeak(v28, &location);
-  v23 = v16;
-  v24 = self;
+  v23 = invocationCopy;
+  selfCopy = self;
   v28[1] = a2;
-  v28[2] = a4;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v16;
-  dispatch_async(v17, block);
+  v28[2] = group;
+  v25 = percentileCopy;
+  v26 = targetCopy;
+  v27 = replyCopy;
+  v18 = replyCopy;
+  v19 = targetCopy;
+  v20 = percentileCopy;
+  v21 = invocationCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(v28);
   objc_destroyWeak(&location);
@@ -1707,28 +1707,28 @@ void __95__WAClient_convertWiFiStatsIntoPercentile_analysisGroup_groupTarget_and
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_triggerDatapathDiagnosticsAndCollectUpdates:(int64_t)a3 waMessage:(id)a4 andReply:(id)a5 queuedInvocation:(id)a6
+- (void)_triggerDatapathDiagnosticsAndCollectUpdates:(int64_t)updates waMessage:(id)message andReply:(id)reply queuedInvocation:(id)invocation
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v14 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __93__WAClient__triggerDatapathDiagnosticsAndCollectUpdates_waMessage_andReply_queuedInvocation___block_invoke;
   v18[3] = &unk_1E830ECE8;
   objc_copyWeak(v23, &location);
-  v19 = v13;
-  v20 = self;
+  v19 = invocationCopy;
+  selfCopy = self;
   v23[1] = a2;
-  v23[2] = a3;
-  v21 = v11;
-  v22 = v12;
-  v15 = v12;
-  v16 = v11;
-  v17 = v13;
-  dispatch_async(v14, v18);
+  v23[2] = updates;
+  v21 = messageCopy;
+  v22 = replyCopy;
+  v15 = replyCopy;
+  v16 = messageCopy;
+  v17 = invocationCopy;
+  dispatch_async(queue, v18);
 
   objc_destroyWeak(v23);
   objc_destroyWeak(&location);
@@ -1896,24 +1896,24 @@ void __93__WAClient__triggerDatapathDiagnosticsAndCollectUpdates_waMessage_andRe
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_getDpsStatsandReply:(id)a3 queuedInvocation:(id)a4
+- (void)_getDpsStatsandReply:(id)reply queuedInvocation:(id)invocation
 {
-  v7 = a3;
-  v8 = a4;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v9 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __50__WAClient__getDpsStatsandReply_queuedInvocation___block_invoke;
   v12[3] = &unk_1E830EA28;
   objc_copyWeak(v16, &location);
-  v13 = v8;
-  v14 = self;
+  v13 = invocationCopy;
+  selfCopy = self;
   v16[1] = a2;
-  v15 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v15 = replyCopy;
+  v10 = replyCopy;
+  v11 = invocationCopy;
+  dispatch_async(queue, v12);
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
@@ -2054,24 +2054,24 @@ void __50__WAClient__getDpsStatsandReply_queuedInvocation___block_invoke_154(uin
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_killDaemonAndReply:(id)a3 queuedInvocation:(id)a4
+- (void)_killDaemonAndReply:(id)reply queuedInvocation:(id)invocation
 {
-  v7 = a3;
-  v8 = a4;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v9 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __49__WAClient__killDaemonAndReply_queuedInvocation___block_invoke;
   v12[3] = &unk_1E830EA28;
   objc_copyWeak(v16, &location);
-  v13 = v8;
-  v14 = self;
+  v13 = invocationCopy;
+  selfCopy = self;
   v16[1] = a2;
-  v15 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v15 = replyCopy;
+  v10 = replyCopy;
+  v11 = invocationCopy;
+  dispatch_async(queue, v12);
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
@@ -2214,24 +2214,24 @@ void __49__WAClient__killDaemonAndReply_queuedInvocation___block_invoke_2(uint64
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_clearMessageStoreAndReply:(id)a3 queuedInvocation:(id)a4
+- (void)_clearMessageStoreAndReply:(id)reply queuedInvocation:(id)invocation
 {
-  v7 = a3;
-  v8 = a4;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v9 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __56__WAClient__clearMessageStoreAndReply_queuedInvocation___block_invoke;
   v12[3] = &unk_1E830EA28;
   objc_copyWeak(v16, &location);
-  v13 = v8;
-  v14 = self;
+  v13 = invocationCopy;
+  selfCopy = self;
   v16[1] = a2;
-  v15 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v15 = replyCopy;
+  v10 = replyCopy;
+  v11 = invocationCopy;
+  dispatch_async(queue, v12);
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
@@ -2366,25 +2366,25 @@ void __56__WAClient__clearMessageStoreAndReply_queuedInvocation___block_invoke_2
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_getMessagesModelForGroupType:(int64_t)a3 andReply:(id)a4 queuedInvocation:(id)a5
+- (void)_getMessagesModelForGroupType:(int64_t)type andReply:(id)reply queuedInvocation:(id)invocation
 {
-  v9 = a4;
-  v10 = a5;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v11 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__WAClient__getMessagesModelForGroupType_andReply_queuedInvocation___block_invoke;
   block[3] = &unk_1E830EC70;
   objc_copyWeak(v18, &location);
-  v15 = v10;
-  v16 = self;
+  v15 = invocationCopy;
+  selfCopy = self;
   v18[1] = a2;
-  v18[2] = a3;
-  v17 = v9;
-  v12 = v9;
-  v13 = v10;
-  dispatch_async(v11, block);
+  v18[2] = type;
+  v17 = replyCopy;
+  v12 = replyCopy;
+  v13 = invocationCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(v18);
   objc_destroyWeak(&location);
@@ -2508,24 +2508,24 @@ void __68__WAClient__getMessagesModelForGroupType_andReply_queuedInvocation___bl
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_sendMemoryPressureRequestAndReply:(id)a3 queuedInvocation:(id)a4
+- (void)_sendMemoryPressureRequestAndReply:(id)reply queuedInvocation:(id)invocation
 {
-  v7 = a3;
-  v8 = a4;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v9 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __64__WAClient__sendMemoryPressureRequestAndReply_queuedInvocation___block_invoke;
   v12[3] = &unk_1E830EA28;
   objc_copyWeak(v16, &location);
-  v13 = v8;
-  v14 = self;
+  v13 = invocationCopy;
+  selfCopy = self;
   v16[1] = a2;
-  v15 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v15 = replyCopy;
+  v10 = replyCopy;
+  v11 = invocationCopy;
+  dispatch_async(queue, v12);
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
@@ -2724,13 +2724,13 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  v19 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   configuredMessageIdentifiers = v2->_configuredMessageIdentifiers;
-  v2->_configuredMessageIdentifiers = v19;
+  v2->_configuredMessageIdentifiers = dictionary;
 
-  v21 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   interestedMessageIdentifiers = v2->_interestedMessageIdentifiers;
-  v2->_interestedMessageIdentifiers = v21;
+  v2->_interestedMessageIdentifiers = dictionary2;
 
   v23 = [MEMORY[0x1E695DFA8] set];
   registeredGroupTypes = v2->_registeredGroupTypes;
@@ -2787,13 +2787,13 @@ LABEL_11:
     dispatch_once(&_establishDaemonConnection_tokenLookupOnceToken, v6);
   }
 
-  v3 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__WAClient__establishDaemonConnection__block_invoke_2;
   block[3] = &unk_1E830EE00;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -3200,14 +3200,14 @@ void __38__WAClient__establishDaemonConnection__block_invoke_185(uint64_t a1, vo
 - (void)_reregister
 {
   objc_initWeak(&location, self);
-  v3 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __23__WAClient__reregister__block_invoke;
   block[3] = &unk_1E830EE28;
   objc_copyWeak(&v5, &location);
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -3321,17 +3321,17 @@ void __43__WAClient__getConnectionIssueHandlerBlock__block_invoke(uint64_t a1)
   [WeakRetained _startConnectionRecovery];
 }
 
-- (void)_wakeUpNotificationForThisClientReceived:(id)a3
+- (void)_wakeUpNotificationForThisClientReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   objc_initWeak(&location, self);
-  v5 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__WAClient__wakeUpNotificationForThisClientReceived___block_invoke;
   v6[3] = &unk_1E830EE00;
   objc_copyWeak(&v7, &location);
-  dispatch_async(v5, v6);
+  dispatch_async(queue, v6);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -3433,30 +3433,30 @@ void __39__WAClient__removeAllQueuedInvocations__block_invoke(uint64_t a1)
   else
   {
     [(WAClient *)self setDaemonConnectionValid:0];
-    v4 = [(WAClient *)self conn];
+    conn = [(WAClient *)self conn];
 
-    if (v4)
+    if (conn)
     {
-      v5 = [(WAClient *)self conn];
-      [v5 invalidate];
+      conn2 = [(WAClient *)self conn];
+      [conn2 invalidate];
 
       [(WAClient *)self setConn:0];
     }
 
-    v6 = [MEMORY[0x1E695DF00] date];
-    [v6 timeIntervalSince1970];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     [(WAClient *)self setConnectionRecoveryStartTime:?];
 
-    v7 = [(WAClient *)self recoveryTickBlock];
-    if (v7)
+    recoveryTickBlock = [(WAClient *)self recoveryTickBlock];
+    if (recoveryTickBlock)
     {
-      v8 = [(WAClient *)self recoveryTickBlock];
-      v9 = dispatch_block_testcancel(v8) == 0;
+      recoveryTickBlock2 = [(WAClient *)self recoveryTickBlock];
+      v9 = dispatch_block_testcancel(recoveryTickBlock2) == 0;
 
       if (v9)
       {
-        v10 = [(WAClient *)self recoveryTickBlock];
-        dispatch_block_cancel(v10);
+        recoveryTickBlock3 = [(WAClient *)self recoveryTickBlock];
+        dispatch_block_cancel(recoveryTickBlock3);
       }
     }
 
@@ -3469,9 +3469,9 @@ void __39__WAClient__removeAllQueuedInvocations__block_invoke(uint64_t a1)
     [(WAClient *)self setRecoveryTickBlock:v11, v17, v18, v19, v20];
 
     v12 = dispatch_time(0, 500000000);
-    v13 = [(WAClient *)self queue];
-    v14 = [(WAClient *)self recoveryTickBlock];
-    dispatch_after(v12, v13, v14);
+    queue = [(WAClient *)self queue];
+    recoveryTickBlock4 = [(WAClient *)self recoveryTickBlock];
+    dispatch_after(v12, queue, recoveryTickBlock4);
 
     objc_destroyWeak(&v21);
   }
@@ -3503,8 +3503,8 @@ void __36__WAClient__startConnectionRecovery__block_invoke(uint64_t a1)
 
     else
     {
-      v2 = [MEMORY[0x1E695DF00] date];
-      [v2 timeIntervalSince1970];
+      date = [MEMORY[0x1E695DF00] date];
+      [date timeIntervalSince1970];
       v10 = v9;
       [(WAClient *)self connectionRecoveryStartTime];
       v12 = v10 - v11;
@@ -3539,21 +3539,21 @@ void __36__WAClient__startConnectionRecovery__block_invoke(uint64_t a1)
 
     else
     {
-      v19 = [(WAClient *)self conn];
+      conn = [(WAClient *)self conn];
 
-      if (v19)
+      if (conn)
       {
-        v20 = [(WAClient *)self conn];
-        [v20 invalidate];
+        conn2 = [(WAClient *)self conn];
+        [conn2 invalidate];
 
         [(WAClient *)self setConn:0];
       }
 
       [(WAClient *)self _establishDaemonConnection];
       v21 = dispatch_time(0, 500000000);
-      v22 = [(WAClient *)self queue];
-      v23 = [(WAClient *)self recoveryTickBlock];
-      dispatch_after(v21, v22, v23);
+      queue = [(WAClient *)self queue];
+      recoveryTickBlock = [(WAClient *)self recoveryTickBlock];
+      dispatch_after(v21, queue, recoveryTickBlock);
     }
   }
 
@@ -3580,7 +3580,7 @@ void __36__WAClient__startConnectionRecovery__block_invoke(uint64_t a1)
 - (void)_replyAllWithTimeoutErrorAndRemove
 {
   v26 = *MEMORY[0x1E69E9840];
-  v13 = self;
+  selfCopy = self;
   objc_initWeak(&location, self);
   v2 = dispatch_group_create();
   dispatch_group_enter(v2);
@@ -3605,14 +3605,14 @@ void __36__WAClient__startConnectionRecovery__block_invoke(uint64_t a1)
         }
 
         v7 = *(*(&v20 + 1) + 8 * i);
-        v8 = [v7 reply];
+        reply = [v7 reply];
         NSClassFromString(&cfstr_Nsblock.isa);
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
           dispatch_group_enter(v2);
-          v10 = [(WAClient *)v13 replyQueue];
+          replyQueue = [(WAClient *)selfCopy replyQueue];
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = __46__WAClient__replyAllWithTimeoutErrorAndRemove__block_invoke;
@@ -3620,7 +3620,7 @@ void __36__WAClient__startConnectionRecovery__block_invoke(uint64_t a1)
           block[4] = v7;
           objc_copyWeak(&v19, &location);
           v18 = v2;
-          dispatch_async(v10, block);
+          dispatch_async(replyQueue, block);
 
           objc_destroyWeak(&v19);
         }
@@ -3632,13 +3632,13 @@ void __36__WAClient__startConnectionRecovery__block_invoke(uint64_t a1)
     while (v4);
   }
 
-  v11 = [(WAClient *)v13 queue];
+  queue = [(WAClient *)selfCopy queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __46__WAClient__replyAllWithTimeoutErrorAndRemove__block_invoke_3;
   v15[3] = &unk_1E830EE00;
   objc_copyWeak(&v16, &location);
-  dispatch_group_notify(v2, v11, v15);
+  dispatch_group_notify(v2, queue, v15);
 
   dispatch_group_leave(v2);
   objc_destroyWeak(&v16);
@@ -3733,8 +3733,8 @@ void __46__WAClient__replyAllWithTimeoutErrorAndRemove__block_invoke_3(uint64_t 
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [v14 queuedInvocations];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v27 count:16];
+  queuedInvocations = [v14 queuedInvocations];
+  v5 = [queuedInvocations countByEnumeratingWithState:&v16 objects:v27 count:16];
   if (v5)
   {
     v6 = *v17;
@@ -3744,15 +3744,15 @@ void __46__WAClient__replyAllWithTimeoutErrorAndRemove__block_invoke_3(uint64_t 
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(queuedInvocations);
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
         v9 = WALogCategoryDefaultHandle();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
         {
-          v10 = [v8 invocation];
-          v11 = NSStringFromSelector([v10 selector]);
+          invocation = [v8 invocation];
+          v11 = NSStringFromSelector([invocation selector]);
           *buf = 136446722;
           v22 = "[WAClient _connectionRecovered]";
           v23 = 1024;
@@ -3762,11 +3762,11 @@ void __46__WAClient__replyAllWithTimeoutErrorAndRemove__block_invoke_3(uint64_t 
           _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Connection recovery invoke iteration... selector: %@", buf, 0x1Cu);
         }
 
-        v12 = [v8 invocation];
-        [v12 invoke];
+        invocation2 = [v8 invocation];
+        [invocation2 invoke];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v16 objects:v27 count:16];
+      v5 = [queuedInvocations countByEnumeratingWithState:&v16 objects:v27 count:16];
     }
 
     while (v5);
@@ -3787,14 +3787,14 @@ void __46__WAClient__replyAllWithTimeoutErrorAndRemove__block_invoke_3(uint64_t 
   v10 = __Block_byref_object_copy__6;
   v11 = __Block_byref_object_dispose__6;
   v12 = 0;
-  v3 = [(WAClient *)self propertyQueue];
+  propertyQueue = [(WAClient *)self propertyQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__WAClient_interestedMessageIdentifiers__block_invoke;
   v6[3] = &unk_1E830EE78;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(propertyQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -3818,14 +3818,14 @@ void __40__WAClient_interestedMessageIdentifiers__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__6;
   v11 = __Block_byref_object_dispose__6;
   v12 = 0;
-  v3 = [(WAClient *)self propertyQueue];
+  propertyQueue = [(WAClient *)self propertyQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__WAClient_configuredMessageIdentifiers__block_invoke;
   v6[3] = &unk_1E830EE78;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(propertyQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -3841,18 +3841,18 @@ void __40__WAClient_configuredMessageIdentifiers__block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)setInterestedMessageIdentifiers:(id)a3
+- (void)setInterestedMessageIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(WAClient *)self propertyQueue];
+  identifiersCopy = identifiers;
+  propertyQueue = [(WAClient *)self propertyQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__WAClient_setInterestedMessageIdentifiers___block_invoke;
   v7[3] = &unk_1E830DB70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
+  dispatch_barrier_async(propertyQueue, v7);
 }
 
 void __44__WAClient_setInterestedMessageIdentifiers___block_invoke(uint64_t a1)
@@ -3863,18 +3863,18 @@ void __44__WAClient_setInterestedMessageIdentifiers___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)setConfiguredMessageIdentifiers:(id)a3
+- (void)setConfiguredMessageIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(WAClient *)self propertyQueue];
+  identifiersCopy = identifiers;
+  propertyQueue = [(WAClient *)self propertyQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__WAClient_setConfiguredMessageIdentifiers___block_invoke;
   v7[3] = &unk_1E830DB70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
+  dispatch_barrier_async(propertyQueue, v7);
 }
 
 void __44__WAClient_setConfiguredMessageIdentifiers___block_invoke(uint64_t a1)
@@ -3885,27 +3885,27 @@ void __44__WAClient_setConfiguredMessageIdentifiers___block_invoke(uint64_t a1)
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_trapCrashMiniTracerDumpReadyForInterfaceWithName:(id)a3 andReply:(id)a4 queuedInvocation:(id)a5
+- (void)_trapCrashMiniTracerDumpReadyForInterfaceWithName:(id)name andReply:(id)reply queuedInvocation:(id)invocation
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v12 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __88__WAClient__trapCrashMiniTracerDumpReadyForInterfaceWithName_andReply_queuedInvocation___block_invoke;
   block[3] = &unk_1E830ED38;
   objc_copyWeak(v21, &location);
   v21[1] = a2;
-  v17 = v11;
-  v18 = self;
-  v19 = v9;
-  v20 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v11;
-  dispatch_async(v12, block);
+  v17 = invocationCopy;
+  selfCopy = self;
+  v19 = nameCopy;
+  v20 = replyCopy;
+  v13 = replyCopy;
+  v14 = nameCopy;
+  v15 = invocationCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(v21);
   objc_destroyWeak(&location);
@@ -4026,27 +4026,27 @@ void __88__WAClient__trapCrashMiniTracerDumpReadyForInterfaceWithName_andReply_q
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_lqmCrashTracerNotifyForInterfaceWithName:(id)a3 andReply:(id)a4 queuedInvocation:(id)a5
+- (void)_lqmCrashTracerNotifyForInterfaceWithName:(id)name andReply:(id)reply queuedInvocation:(id)invocation
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v12 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__WAClient__lqmCrashTracerNotifyForInterfaceWithName_andReply_queuedInvocation___block_invoke;
   block[3] = &unk_1E830ED38;
   objc_copyWeak(v21, &location);
   v21[1] = a2;
-  v17 = v11;
-  v18 = self;
-  v19 = v9;
-  v20 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v11;
-  dispatch_async(v12, block);
+  v17 = invocationCopy;
+  selfCopy = self;
+  v19 = nameCopy;
+  v20 = replyCopy;
+  v13 = replyCopy;
+  v14 = nameCopy;
+  v15 = invocationCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(v21);
   objc_destroyWeak(&location);
@@ -4167,30 +4167,30 @@ void __80__WAClient__lqmCrashTracerNotifyForInterfaceWithName_andReply_queuedInv
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_lqmCrashTracerReceiveBlock:(id)a3 forInterfaceWithName:(id)a4 andReply:(id)a5 queuedInvocation:(id)a6
+- (void)_lqmCrashTracerReceiveBlock:(id)block forInterfaceWithName:(id)name andReply:(id)reply queuedInvocation:(id)invocation
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  blockCopy = block;
+  nameCopy = name;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v15 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __87__WAClient__lqmCrashTracerReceiveBlock_forInterfaceWithName_andReply_queuedInvocation___block_invoke;
   v20[3] = &unk_1E830EEA0;
   objc_copyWeak(v26, &location);
-  v21 = v14;
-  v22 = self;
-  v23 = v11;
-  v24 = v12;
+  v21 = invocationCopy;
+  selfCopy = self;
+  v23 = blockCopy;
+  v24 = nameCopy;
   v26[1] = a2;
-  v25 = v13;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
-  v19 = v14;
-  dispatch_async(v15, v20);
+  v25 = replyCopy;
+  v16 = replyCopy;
+  v17 = nameCopy;
+  v18 = blockCopy;
+  v19 = invocationCopy;
+  dispatch_async(queue, v20);
 
   objc_destroyWeak(v26);
   objc_destroyWeak(&location);
@@ -4313,43 +4313,43 @@ void __87__WAClient__lqmCrashTracerReceiveBlock_forInterfaceWithName_andReply_qu
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)setDeviceAnalyticsConfiguration:(id)a3 andReply:(id)a4
+- (void)setDeviceAnalyticsConfiguration:(id)configuration andReply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  [(WAClient *)self setDeviceAnalyticsConfig:v7];
-  [(WAClient *)self _setDeviceAnalyticsConfiguration:v7 andReply:v6 queuedInvocation:0];
+  replyCopy = reply;
+  configurationCopy = configuration;
+  [(WAClient *)self setDeviceAnalyticsConfig:configurationCopy];
+  [(WAClient *)self _setDeviceAnalyticsConfiguration:configurationCopy andReply:replyCopy queuedInvocation:0];
 }
 
-- (void)resetDeviceAnalyticsConfigurationAndReply:(id)a3
+- (void)resetDeviceAnalyticsConfigurationAndReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   [(WAClient *)self setDeviceAnalyticsConfig:0];
-  [(WAClient *)self _setDeviceAnalyticsConfiguration:0 andReply:v4 queuedInvocation:0];
+  [(WAClient *)self _setDeviceAnalyticsConfiguration:0 andReply:replyCopy queuedInvocation:0];
 }
 
-- (void)_setDeviceAnalyticsConfiguration:(id)a3 andReply:(id)a4 queuedInvocation:(id)a5
+- (void)_setDeviceAnalyticsConfiguration:(id)configuration andReply:(id)reply queuedInvocation:(id)invocation
 {
   v27 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  configurationCopy = configuration;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  if (v9)
+  if (configurationCopy)
   {
-    v12 = [(WAClient *)self queue];
+    queue = [(WAClient *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __71__WAClient__setDeviceAnalyticsConfiguration_andReply_queuedInvocation___block_invoke;
     block[3] = &unk_1E830ED38;
     objc_copyWeak(v21, &location);
-    v13 = v11;
+    v13 = invocationCopy;
     v21[1] = a2;
     v17 = v13;
-    v18 = self;
-    v19 = v9;
-    v20 = v10;
-    dispatch_async(v12, block);
+    selfCopy = self;
+    v19 = configurationCopy;
+    v20 = replyCopy;
+    dispatch_async(queue, block);
 
     objc_destroyWeak(v21);
   }
@@ -4490,24 +4490,24 @@ void __71__WAClient__setDeviceAnalyticsConfiguration_andReply_queuedInvocation__
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_signalPotentialNewIORChannelsAndReply:(id)a3 queuedInvocation:(id)a4
+- (void)_signalPotentialNewIORChannelsAndReply:(id)reply queuedInvocation:(id)invocation
 {
-  v7 = a3;
-  v8 = a4;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v9 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __68__WAClient__signalPotentialNewIORChannelsAndReply_queuedInvocation___block_invoke;
   v12[3] = &unk_1E830EA28;
   objc_copyWeak(v16, &location);
-  v13 = v8;
-  v14 = self;
+  v13 = invocationCopy;
+  selfCopy = self;
   v16[1] = a2;
-  v15 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v15 = replyCopy;
+  v10 = replyCopy;
+  v11 = invocationCopy;
+  dispatch_async(queue, v12);
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
@@ -4658,28 +4658,28 @@ void __68__WAClient__signalPotentialNewIORChannelsAndReply_queuedInvocation___bl
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_updateRoamPoliciesForSourceBssid:(id)a3 andUpdateRoamCache:(BOOL)a4 andReply:(id)a5 queuedInvocation:(id)a6
+- (void)_updateRoamPoliciesForSourceBssid:(id)bssid andUpdateRoamCache:(BOOL)cache andReply:(id)reply queuedInvocation:(id)invocation
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  bssidCopy = bssid;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v14 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __91__WAClient__updateRoamPoliciesForSourceBssid_andUpdateRoamCache_andReply_queuedInvocation___block_invoke;
   v18[3] = &unk_1E830EEC8;
   objc_copyWeak(v23, &location);
   v23[1] = a2;
-  v19 = v13;
-  v20 = self;
-  v24 = a4;
-  v21 = v11;
-  v22 = v12;
-  v15 = v12;
-  v16 = v11;
-  v17 = v13;
-  dispatch_async(v14, v18);
+  v19 = invocationCopy;
+  selfCopy = self;
+  cacheCopy = cache;
+  v21 = bssidCopy;
+  v22 = replyCopy;
+  v15 = replyCopy;
+  v16 = bssidCopy;
+  v17 = invocationCopy;
+  dispatch_async(queue, v18);
 
   objc_destroyWeak(v23);
   objc_destroyWeak(&location);
@@ -4834,24 +4834,24 @@ void __91__WAClient__updateRoamPoliciesForSourceBssid_andUpdateRoamCache_andRepl
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_getDeviceAnalyticsConfigurationAndReply:(id)a3 queuedInvocation:(id)a4
+- (void)_getDeviceAnalyticsConfigurationAndReply:(id)reply queuedInvocation:(id)invocation
 {
-  v7 = a3;
-  v8 = a4;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v9 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __70__WAClient__getDeviceAnalyticsConfigurationAndReply_queuedInvocation___block_invoke;
   v12[3] = &unk_1E830EA28;
   objc_copyWeak(v16, &location);
-  v13 = v8;
-  v14 = self;
+  v13 = invocationCopy;
+  selfCopy = self;
   v16[1] = a2;
-  v15 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v15 = replyCopy;
+  v10 = replyCopy;
+  v11 = invocationCopy;
+  dispatch_async(queue, v12);
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
@@ -4992,28 +4992,28 @@ void __70__WAClient__getDeviceAnalyticsConfigurationAndReply_queuedInvocation___
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)updateRoamPoliciesAndSummarizeAnalyticsForNetwork:(id)a3 maxAgeInDays:(unint64_t)a4 andReply:(id)a5 queuedInvocation:(id)a6
+- (void)updateRoamPoliciesAndSummarizeAnalyticsForNetwork:(id)network maxAgeInDays:(unint64_t)days andReply:(id)reply queuedInvocation:(id)invocation
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  networkCopy = network;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v14 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __101__WAClient_updateRoamPoliciesAndSummarizeAnalyticsForNetwork_maxAgeInDays_andReply_queuedInvocation___block_invoke;
   v18[3] = &unk_1E830ECE8;
   objc_copyWeak(v23, &location);
-  v19 = v13;
-  v20 = self;
+  v19 = invocationCopy;
+  selfCopy = self;
   v23[1] = a2;
-  v23[2] = a4;
-  v21 = v11;
-  v22 = v12;
-  v15 = v12;
-  v16 = v11;
-  v17 = v13;
-  dispatch_async(v14, v18);
+  v23[2] = days;
+  v21 = networkCopy;
+  v22 = replyCopy;
+  v15 = replyCopy;
+  v16 = networkCopy;
+  v17 = invocationCopy;
+  dispatch_async(queue, v18);
 
   objc_destroyWeak(v23);
   objc_destroyWeak(&location);
@@ -5139,24 +5139,24 @@ void __101__WAClient_updateRoamPoliciesAndSummarizeAnalyticsForNetwork_maxAgeInD
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_triggerDeviceAnalyticsStoreMigrationAndReply:(id)a3 queuedInvocation:(id)a4
+- (void)_triggerDeviceAnalyticsStoreMigrationAndReply:(id)reply queuedInvocation:(id)invocation
 {
-  v7 = a3;
-  v8 = a4;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v9 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __75__WAClient__triggerDeviceAnalyticsStoreMigrationAndReply_queuedInvocation___block_invoke;
   v12[3] = &unk_1E830EA28;
   objc_copyWeak(v16, &location);
-  v13 = v8;
-  v14 = self;
+  v13 = invocationCopy;
+  selfCopy = self;
   v16[1] = a2;
-  v15 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v15 = replyCopy;
+  v10 = replyCopy;
+  v11 = invocationCopy;
+  dispatch_async(queue, v12);
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
@@ -5297,25 +5297,25 @@ void __75__WAClient__triggerDeviceAnalyticsStoreMigrationAndReply_queuedInvocati
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_issueIOReportManagementCommand:(unint64_t)a3 andReply:(id)a4 queuedInvocation:(id)a5
+- (void)_issueIOReportManagementCommand:(unint64_t)command andReply:(id)reply queuedInvocation:(id)invocation
 {
-  v9 = a4;
-  v10 = a5;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v11 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__WAClient__issueIOReportManagementCommand_andReply_queuedInvocation___block_invoke;
   block[3] = &unk_1E830EC70;
   objc_copyWeak(v18, &location);
-  v15 = v10;
-  v16 = self;
+  v15 = invocationCopy;
+  selfCopy = self;
   v18[1] = a2;
-  v18[2] = a3;
-  v17 = v9;
-  v12 = v9;
-  v13 = v10;
-  dispatch_async(v11, block);
+  v18[2] = command;
+  v17 = replyCopy;
+  v12 = replyCopy;
+  v13 = invocationCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(v18);
   objc_destroyWeak(&location);
@@ -5458,30 +5458,30 @@ void __70__WAClient__issueIOReportManagementCommand_andReply_queuedInvocation___
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_processManagedFault:(id)a3 at:(id)a4 andReply:(id)a5 queuedInvocation:(id)a6
+- (void)_processManagedFault:(id)fault at:(id)at andReply:(id)reply queuedInvocation:(id)invocation
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  faultCopy = fault;
+  atCopy = at;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v15 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __62__WAClient__processManagedFault_at_andReply_queuedInvocation___block_invoke;
   v20[3] = &unk_1E830EEA0;
   objc_copyWeak(v26, &location);
-  v21 = v14;
-  v22 = self;
-  v23 = v11;
-  v24 = v12;
+  v21 = invocationCopy;
+  selfCopy = self;
+  v23 = faultCopy;
+  v24 = atCopy;
   v26[1] = a2;
-  v25 = v13;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
-  v19 = v14;
-  dispatch_async(v15, v20);
+  v25 = replyCopy;
+  v16 = replyCopy;
+  v17 = atCopy;
+  v18 = faultCopy;
+  v19 = invocationCopy;
+  dispatch_async(queue, v20);
 
   objc_destroyWeak(v26);
   objc_destroyWeak(&location);
@@ -5626,24 +5626,24 @@ void __62__WAClient__processManagedFault_at_andReply_queuedInvocation___block_in
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_getUsageStatsandReply:(id)a3 queuedInvocation:(id)a4
+- (void)_getUsageStatsandReply:(id)reply queuedInvocation:(id)invocation
 {
-  v7 = a3;
-  v8 = a4;
+  replyCopy = reply;
+  invocationCopy = invocation;
   objc_initWeak(&location, self);
-  v9 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __52__WAClient__getUsageStatsandReply_queuedInvocation___block_invoke;
   v12[3] = &unk_1E830EA28;
   objc_copyWeak(v16, &location);
-  v13 = v8;
-  v14 = self;
+  v13 = invocationCopy;
+  selfCopy = self;
   v16[1] = a2;
-  v15 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v15 = replyCopy;
+  v10 = replyCopy;
+  v11 = invocationCopy;
+  dispatch_async(queue, v12);
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
@@ -5784,17 +5784,17 @@ void __52__WAClient__getUsageStatsandReply_queuedInvocation___block_invoke_255(u
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)fakeDaemonConnectionDead:(unsigned __int8)a3
+- (void)fakeDaemonConnectionDead:(unsigned __int8)dead
 {
   objc_initWeak(&location, self);
-  v5 = [(WAClient *)self queue];
+  queue = [(WAClient *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __37__WAClient_fakeDaemonConnectionDead___block_invoke;
   block[3] = &unk_1E830EEF0;
-  v8 = a3;
+  deadCopy = dead;
   objc_copyWeak(&v7, &location);
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -5852,44 +5852,44 @@ void __37__WAClient_fakeDaemonConnectionDead___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)WANetworkHighestAuthFlagsLabel:(signed __int16)a3
++ (id)WANetworkHighestAuthFlagsLabel:(signed __int16)label
 {
   v8 = *MEMORY[0x1E69E9840];
-  if ((a3 & 0x10) != 0)
+  if ((label & 0x10) != 0)
   {
     result = @"SAEPK";
   }
 
   else
   {
-    v3 = a3;
-    if ((a3 & 4) != 0)
+    labelCopy = label;
+    if ((label & 4) != 0)
     {
       result = @"SAE";
     }
 
-    else if ((a3 & 8) != 0)
+    else if ((label & 8) != 0)
     {
       result = @"EAP";
     }
 
-    else if ((a3 & 2) != 0)
+    else if ((label & 2) != 0)
     {
       result = @"WPA";
     }
 
-    else if (a3)
+    else if (label)
     {
       result = @"WEP";
     }
 
-    else if (a3)
+    else if (label)
     {
       v4 = WALogCategoryDefaultHandle();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
       {
         v7[0] = 67109120;
-        v7[1] = v3;
+        v7[1] = labelCopy;
         _os_log_fault_impl(&dword_1C8460000, v4, OS_LOG_TYPE_FAULT, "CODE FIX NEEDED! value %u does not have a mapping", v7, 8u);
       }
 
@@ -5906,19 +5906,19 @@ void __37__WAClient_fakeDaemonConnectionDead___block_invoke(uint64_t a1)
   return result;
 }
 
-+ (id)WANetworkAuthFlagsLabel:(signed __int16)a3
++ (id)WANetworkAuthFlagsLabel:(signed __int16)label
 {
-  v3 = a3;
+  labelCopy = label;
   v11 = *MEMORY[0x1E69E9840];
   v4 = objc_opt_new();
   v5 = v4;
-  if ((v3 & 0x10) != 0)
+  if ((labelCopy & 0x10) != 0)
   {
     [v4 addObject:@"SAEPK"];
-    if ((v3 & 4) == 0)
+    if ((labelCopy & 4) == 0)
     {
 LABEL_3:
-      if ((v3 & 8) == 0)
+      if ((labelCopy & 8) == 0)
       {
         goto LABEL_4;
       }
@@ -5927,16 +5927,16 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 4) == 0)
+  else if ((labelCopy & 4) == 0)
   {
     goto LABEL_3;
   }
 
   [v5 addObject:@"SAE"];
-  if ((v3 & 8) == 0)
+  if ((labelCopy & 8) == 0)
   {
 LABEL_4:
-    if ((v3 & 2) == 0)
+    if ((labelCopy & 2) == 0)
     {
       goto LABEL_5;
     }
@@ -5946,17 +5946,17 @@ LABEL_4:
 
 LABEL_16:
   [v5 addObject:@"EAP"];
-  if ((v3 & 2) == 0)
+  if ((labelCopy & 2) == 0)
   {
 LABEL_5:
-    if ((v3 & 1) == 0)
+    if ((labelCopy & 1) == 0)
     {
       goto LABEL_6;
     }
 
 LABEL_18:
     [v5 addObject:@"WEP"];
-    if (v3)
+    if (labelCopy)
     {
       goto LABEL_7;
     }
@@ -5966,13 +5966,13 @@ LABEL_18:
 
 LABEL_17:
   [v5 addObject:@"WPA"];
-  if (v3)
+  if (labelCopy)
   {
     goto LABEL_18;
   }
 
 LABEL_6:
-  if (v3)
+  if (labelCopy)
   {
     goto LABEL_7;
   }
@@ -5986,7 +5986,7 @@ LABEL_7:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
       v10[0] = 67109120;
-      v10[1] = v3;
+      v10[1] = labelCopy;
       _os_log_fault_impl(&dword_1C8460000, v6, OS_LOG_TYPE_FAULT, "CODE FIX NEEDED! value %u does not have a mapping", v10, 8u);
     }
   }
@@ -5998,27 +5998,27 @@ LABEL_7:
   return v7;
 }
 
-+ (id)ouiFromThreeBytes:(unsigned __int8)a3[3]
++ (id)ouiFromThreeBytes:(unsigned __int8)bytes[3]
 {
-  if (a3)
+  if (bytes)
   {
-    v4 = [MEMORY[0x1E696AD60] string];
-    v6 = *a3;
-    v5 = a3 + 1;
-    [v4 appendFormat:@"%02x", v6];
+    string = [MEMORY[0x1E696AD60] string];
+    v6 = *bytes;
+    v5 = bytes + 1;
+    [string appendFormat:@"%02x", v6];
     for (i = 0; i != 2; ++i)
     {
-      [v4 appendFormat:@":"];
-      [v4 appendFormat:@"%02x", v5[i]];
+      [string appendFormat:@":"];
+      [string appendFormat:@"%02x", v5[i]];
     }
   }
 
   else
   {
-    v4 = 0;
+    string = 0;
   }
 
-  return v4;
+  return string;
 }
 
 @end

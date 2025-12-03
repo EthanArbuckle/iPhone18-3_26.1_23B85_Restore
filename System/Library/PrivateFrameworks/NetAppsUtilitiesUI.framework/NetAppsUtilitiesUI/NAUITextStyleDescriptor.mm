@@ -1,11 +1,11 @@
 @interface NAUITextStyleDescriptor
-+ (id)defaultFontForTextStyleDescriptor:(id)a3;
-+ (id)descriptorWithTextStyle:(id)a3;
-+ (id)fontWithTextStyleDescriptor:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (NAUITextStyleDescriptor)initWithTextStyle:(id)a3 symbolicTraits:(unsigned int)a4 allowsAccessibilitySizes:(BOOL)a5 allowsSmallSizes:(BOOL)a6;
++ (id)defaultFontForTextStyleDescriptor:(id)descriptor;
++ (id)descriptorWithTextStyle:(id)style;
++ (id)fontWithTextStyleDescriptor:(id)descriptor;
+- (BOOL)isEqual:(id)equal;
+- (NAUITextStyleDescriptor)initWithTextStyle:(id)style symbolicTraits:(unsigned int)traits allowsAccessibilitySizes:(BOOL)sizes allowsSmallSizes:(BOOL)smallSizes;
 - (id)description;
-- (id)descriptorByAddingSymbolicTraits:(unsigned int)a3 removingSymbolicTraits:(unsigned int)a4;
+- (id)descriptorByAddingSymbolicTraits:(unsigned int)traits removingSymbolicTraits:(unsigned int)symbolicTraits;
 - (id)descriptorByDisallowingAccessibilitySizes;
 - (id)descriptorByDisallowingSmallSizes;
 - (unint64_t)hash;
@@ -13,20 +13,20 @@
 
 @implementation NAUITextStyleDescriptor
 
-+ (id)descriptorWithTextStyle:(id)a3
++ (id)descriptorWithTextStyle:(id)style
 {
-  v3 = a3;
-  v4 = [[NAUITextStyleDescriptor alloc] initWithTextStyle:v3 symbolicTraits:0 allowsAccessibilitySizes:1 allowsSmallSizes:1];
+  styleCopy = style;
+  v4 = [[NAUITextStyleDescriptor alloc] initWithTextStyle:styleCopy symbolicTraits:0 allowsAccessibilitySizes:1 allowsSmallSizes:1];
 
   return v4;
 }
 
-- (id)descriptorByAddingSymbolicTraits:(unsigned int)a3 removingSymbolicTraits:(unsigned int)a4
+- (id)descriptorByAddingSymbolicTraits:(unsigned int)traits removingSymbolicTraits:(unsigned int)symbolicTraits
 {
-  v6 = [(NAUITextStyleDescriptor *)self symbolicTraits]& ~a4;
+  v6 = [(NAUITextStyleDescriptor *)self symbolicTraits]& ~symbolicTraits;
   v7 = [NAUITextStyleDescriptor alloc];
-  v8 = [(NAUITextStyleDescriptor *)self textStyle];
-  v9 = [(NAUITextStyleDescriptor *)v7 initWithTextStyle:v8 symbolicTraits:v6 | a3 allowsAccessibilitySizes:[(NAUITextStyleDescriptor *)self allowsAccessibilitySizes] allowsSmallSizes:[(NAUITextStyleDescriptor *)self allowsSmallSizes]];
+  textStyle = [(NAUITextStyleDescriptor *)self textStyle];
+  v9 = [(NAUITextStyleDescriptor *)v7 initWithTextStyle:textStyle symbolicTraits:v6 | traits allowsAccessibilitySizes:[(NAUITextStyleDescriptor *)self allowsAccessibilitySizes] allowsSmallSizes:[(NAUITextStyleDescriptor *)self allowsSmallSizes]];
 
   return v9;
 }
@@ -34,8 +34,8 @@
 - (id)descriptorByDisallowingAccessibilitySizes
 {
   v3 = [NAUITextStyleDescriptor alloc];
-  v4 = [(NAUITextStyleDescriptor *)self textStyle];
-  v5 = [(NAUITextStyleDescriptor *)v3 initWithTextStyle:v4 symbolicTraits:[(NAUITextStyleDescriptor *)self symbolicTraits] allowsAccessibilitySizes:0 allowsSmallSizes:[(NAUITextStyleDescriptor *)self allowsSmallSizes]];
+  textStyle = [(NAUITextStyleDescriptor *)self textStyle];
+  v5 = [(NAUITextStyleDescriptor *)v3 initWithTextStyle:textStyle symbolicTraits:[(NAUITextStyleDescriptor *)self symbolicTraits] allowsAccessibilitySizes:0 allowsSmallSizes:[(NAUITextStyleDescriptor *)self allowsSmallSizes]];
 
   return v5;
 }
@@ -43,39 +43,39 @@
 - (id)descriptorByDisallowingSmallSizes
 {
   v3 = [NAUITextStyleDescriptor alloc];
-  v4 = [(NAUITextStyleDescriptor *)self textStyle];
-  v5 = [(NAUITextStyleDescriptor *)v3 initWithTextStyle:v4 symbolicTraits:[(NAUITextStyleDescriptor *)self symbolicTraits] allowsAccessibilitySizes:[(NAUITextStyleDescriptor *)self allowsAccessibilitySizes] allowsSmallSizes:0];
+  textStyle = [(NAUITextStyleDescriptor *)self textStyle];
+  v5 = [(NAUITextStyleDescriptor *)v3 initWithTextStyle:textStyle symbolicTraits:[(NAUITextStyleDescriptor *)self symbolicTraits] allowsAccessibilitySizes:[(NAUITextStyleDescriptor *)self allowsAccessibilitySizes] allowsSmallSizes:0];
 
   return v5;
 }
 
-+ (id)fontWithTextStyleDescriptor:(id)a3
++ (id)fontWithTextStyleDescriptor:(id)descriptor
 {
-  v3 = a3;
-  v4 = [v3 allowsAccessibilitySizes] ^ 1;
-  if (![v3 allowsSmallSizes])
+  descriptorCopy = descriptor;
+  v4 = [descriptorCopy allowsAccessibilitySizes] ^ 1;
+  if (![descriptorCopy allowsSmallSizes])
   {
     v4 |= 2uLL;
   }
 
   v5 = MEMORY[0x277D74310];
-  v6 = [v3 textStyle];
-  v7 = [v3 symbolicTraits];
+  textStyle = [descriptorCopy textStyle];
+  symbolicTraits = [descriptorCopy symbolicTraits];
 
-  v8 = [v5 preferredFontDescriptorWithTextStyle:v6 addingSymbolicTraits:v7 options:v4];
+  v8 = [v5 preferredFontDescriptorWithTextStyle:textStyle addingSymbolicTraits:symbolicTraits options:v4];
 
   v9 = [MEMORY[0x277D74300] fontWithDescriptor:v8 size:0.0];
 
   return v9;
 }
 
-+ (id)defaultFontForTextStyleDescriptor:(id)a3
++ (id)defaultFontForTextStyleDescriptor:(id)descriptor
 {
-  if (a3)
+  if (descriptor)
   {
     v3 = MEMORY[0x277D74300];
-    v4 = [a3 textStyle];
-    v5 = [v3 defaultFontForTextStyle:v4];
+    textStyle = [descriptor textStyle];
+    v5 = [v3 defaultFontForTextStyle:textStyle];
   }
 
   else
@@ -86,19 +86,19 @@
   return v5;
 }
 
-- (NAUITextStyleDescriptor)initWithTextStyle:(id)a3 symbolicTraits:(unsigned int)a4 allowsAccessibilitySizes:(BOOL)a5 allowsSmallSizes:(BOOL)a6
+- (NAUITextStyleDescriptor)initWithTextStyle:(id)style symbolicTraits:(unsigned int)traits allowsAccessibilitySizes:(BOOL)sizes allowsSmallSizes:(BOOL)smallSizes
 {
-  v11 = a3;
+  styleCopy = style;
   v15.receiver = self;
   v15.super_class = NAUITextStyleDescriptor;
   v12 = [(NAUITextStyleDescriptor *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_textStyle, a3);
-    v13->_symbolicTraits = a4;
-    v13->_allowsAccessibilitySizes = a5;
-    v13->_allowsSmallSizes = a6;
+    objc_storeStrong(&v12->_textStyle, style);
+    v13->_symbolicTraits = traits;
+    v13->_allowsAccessibilitySizes = sizes;
+    v13->_allowsSmallSizes = smallSizes;
   }
 
   return v13;
@@ -155,31 +155,31 @@ uint64_t __38__NAUITextStyleDescriptor_na_identity__block_invoke_6(uint64_t a1, 
 - (id)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(NAUITextStyleDescriptor *)self textStyle];
-  [v3 appendString:v4 withName:@"textStyle" skipIfEmpty:0];
+  textStyle = [(NAUITextStyleDescriptor *)self textStyle];
+  [v3 appendString:textStyle withName:@"textStyle" skipIfEmpty:0];
 
-  v5 = [v3 appendSuper];
+  appendSuper = [v3 appendSuper];
   v6 = [v3 appendBool:self->_allowsSmallSizes withName:@"allowsSmallSizes"];
   v7 = [v3 appendBool:self->_allowsAccessibilitySizes withName:&stru_286D0F0D8];
   v8 = [v3 appendUnsignedInteger:self->_symbolicTraits withName:@"custom-traits"];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }

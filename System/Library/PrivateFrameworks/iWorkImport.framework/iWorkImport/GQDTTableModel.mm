@@ -1,17 +1,17 @@
 @interface GQDTTableModel
-- (BOOL)hasGroupDisplayType:(unsigned __int16)a3 level:(int)a4 displayType:(int *)a5 isTypeVisible:(BOOL *)a6;
-- (BOOL)visibilityForColumn:(unsigned __int16)a3;
-- (BOOL)visibilityForRow:(unsigned __int16)a3;
-- (float)heightForRow:(unsigned __int16)a3;
-- (float)widthForColumn:(unsigned __int16)a3;
-- (int)addColumnWidthFrom:(_xmlTextReader *)a3;
-- (int)addRowHeightFrom:(_xmlTextReader *)a3;
-- (int)readAttributesForGrid:(_xmlTextReader *)a3;
-- (int)readAttributesForModel:(_xmlTextReader *)a3;
-- (int)typeOfVectorAlongGridline:(unsigned __int16)a3 offset:(unsigned __int16)a4 length:(unsigned __int16)a5 vertical:(BOOL)a6;
+- (BOOL)hasGroupDisplayType:(unsigned __int16)type level:(int)level displayType:(int *)displayType isTypeVisible:(BOOL *)visible;
+- (BOOL)visibilityForColumn:(unsigned __int16)column;
+- (BOOL)visibilityForRow:(unsigned __int16)row;
+- (float)heightForRow:(unsigned __int16)row;
+- (float)widthForColumn:(unsigned __int16)column;
+- (int)addColumnWidthFrom:(_xmlTextReader *)from;
+- (int)addRowHeightFrom:(_xmlTextReader *)from;
+- (int)readAttributesForGrid:(_xmlTextReader *)grid;
+- (int)readAttributesForModel:(_xmlTextReader *)model;
+- (int)typeOfVectorAlongGridline:(unsigned __int16)gridline offset:(unsigned __int16)offset length:(unsigned __int16)length vertical:(BOOL)vertical;
 - (unsigned)firstVisibleColumn;
 - (void)dealloc;
-- (void)setCells:(__CFArray *)a3;
+- (void)setCells:(__CFArray *)cells;
 @end
 
 @implementation GQDTTableModel
@@ -65,14 +65,14 @@
   [(GQDTTableModel *)&v10 dealloc];
 }
 
-- (float)widthForColumn:(unsigned __int16)a3
+- (float)widthForColumn:(unsigned __int16)column
 {
-  v3 = a3;
+  columnCopy = column;
   Count = CFArrayGetCount(self->mColumnWidths);
   result = -1.0;
-  if (Count > v3)
+  if (Count > columnCopy)
   {
-    ValueAtIndex = CFArrayGetValueAtIndex(self->mColumnWidths, v3);
+    ValueAtIndex = CFArrayGetValueAtIndex(self->mColumnWidths, columnCopy);
     valuePtr = 0.0;
     CFNumberGetValue(ValueAtIndex, kCFNumberFloatType, &valuePtr);
     return valuePtr;
@@ -81,14 +81,14 @@
   return result;
 }
 
-- (float)heightForRow:(unsigned __int16)a3
+- (float)heightForRow:(unsigned __int16)row
 {
-  v3 = a3;
+  rowCopy = row;
   Count = CFArrayGetCount(self->mRowHeights);
   result = -1.0;
-  if (Count > v3)
+  if (Count > rowCopy)
   {
-    ValueAtIndex = CFArrayGetValueAtIndex(self->mRowHeights, v3);
+    ValueAtIndex = CFArrayGetValueAtIndex(self->mRowHeights, rowCopy);
     valuePtr = 0.0;
     CFNumberGetValue(ValueAtIndex, kCFNumberFloatType, &valuePtr);
     return valuePtr;
@@ -97,7 +97,7 @@
   return result;
 }
 
-- (BOOL)visibilityForColumn:(unsigned __int16)a3
+- (BOOL)visibilityForColumn:(unsigned __int16)column
 {
   mColumnVisibilities = self->mColumnVisibilities;
   if (!mColumnVisibilities)
@@ -105,17 +105,17 @@
     return 1;
   }
 
-  v5 = a3;
-  if (CFArrayGetCount(mColumnVisibilities) <= a3)
+  columnCopy = column;
+  if (CFArrayGetCount(mColumnVisibilities) <= column)
   {
     return 0;
   }
 
-  ValueAtIndex = CFArrayGetValueAtIndex(self->mColumnVisibilities, v5);
+  ValueAtIndex = CFArrayGetValueAtIndex(self->mColumnVisibilities, columnCopy);
   return CFBooleanGetValue(ValueAtIndex) != 0;
 }
 
-- (BOOL)visibilityForRow:(unsigned __int16)a3
+- (BOOL)visibilityForRow:(unsigned __int16)row
 {
   mRowVisibilities = self->mRowVisibilities;
   if (!mRowVisibilities)
@@ -123,19 +123,19 @@
     return 1;
   }
 
-  v5 = a3;
-  if (CFArrayGetCount(mRowVisibilities) <= a3)
+  rowCopy = row;
+  if (CFArrayGetCount(mRowVisibilities) <= row)
   {
     return 0;
   }
 
-  ValueAtIndex = CFArrayGetValueAtIndex(self->mRowVisibilities, v5);
+  ValueAtIndex = CFArrayGetValueAtIndex(self->mRowVisibilities, rowCopy);
   return CFBooleanGetValue(ValueAtIndex) != 0;
 }
 
-- (int)typeOfVectorAlongGridline:(unsigned __int16)a3 offset:(unsigned __int16)a4 length:(unsigned __int16)a5 vertical:(BOOL)a6
+- (int)typeOfVectorAlongGridline:(unsigned __int16)gridline offset:(unsigned __int16)offset length:(unsigned __int16)length vertical:(BOOL)vertical
 {
-  if (a6)
+  if (vertical)
   {
     v6 = 0;
     p_mColumnCount = &self->mColumnCount;
@@ -157,9 +157,9 @@
 
   v12 = *p_mHeaderRowCount;
   v13 = *p_mColumnCount;
-  if (a3)
+  if (gridline)
   {
-    v14 = v13 == a3;
+    v14 = v13 == gridline;
   }
 
   else
@@ -168,7 +168,7 @@
   }
 
   v15 = v14;
-  if (a5 + a4 <= v12)
+  if (length + offset <= v12)
   {
     LOBYTE(v19) = 1;
     result = v15;
@@ -177,7 +177,7 @@
   else
   {
     v16 = mFooterRowCount != 0;
-    v17 = *p_mRowCount - mFooterRowCount <= a4;
+    v17 = *p_mRowCount - mFooterRowCount <= offset;
     if (v15)
     {
       v18 = 4;
@@ -201,21 +201,21 @@
   }
 
   v21 = *p_mHeaderColumnCount;
-  if ((v19 & 1) == 0 || !a6)
+  if ((v19 & 1) == 0 || !vertical)
   {
     if (v21)
     {
-      if (!a3)
+      if (!gridline)
       {
         return 1;
       }
 
-      if (v21 > a3)
+      if (v21 > gridline)
       {
         return 0;
       }
 
-      if (v21 == a3)
+      if (v21 == gridline)
       {
         return 2;
       }
@@ -226,18 +226,18 @@
       goto LABEL_34;
     }
 
-    if (v13 == a3)
+    if (v13 == gridline)
     {
       return 4;
     }
 
     v22 = v13 - v6;
-    if (v22 < a3)
+    if (v22 < gridline)
     {
       return 3;
     }
 
-    if (v22 == a3)
+    if (v22 == gridline)
     {
       return 5;
     }
@@ -265,11 +265,11 @@ LABEL_34:
   return result;
 }
 
-- (BOOL)hasGroupDisplayType:(unsigned __int16)a3 level:(int)a4 displayType:(int *)a5 isTypeVisible:(BOOL *)a6
+- (BOOL)hasGroupDisplayType:(unsigned __int16)type level:(int)level displayType:(int *)displayType isTypeVisible:(BOOL *)visible
 {
-  v8 = a4;
-  valuePtr = a4;
-  ValueAtIndex = CFArrayGetValueAtIndex(self->mColumnGroupDisplayTypes, a3);
+  levelCopy = level;
+  valuePtr = level;
+  ValueAtIndex = CFArrayGetValueAtIndex(self->mColumnGroupDisplayTypes, type);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -278,21 +278,21 @@ LABEL_34:
     if (CFDictionaryGetValueIfPresent(ValueAtIndex, v11, &v14))
     {
       v12 = v14;
-      *a5 = v14[2];
-      *a6 = *(v12 + 12);
+      *displayType = v14[2];
+      *visible = *(v12 + 12);
       CFRelease(v11);
       return 1;
     }
 
     CFRelease(v11);
-    v8 = valuePtr;
+    levelCopy = valuePtr;
   }
 
   result = 0;
-  if (v8 < self->mNumGroupLevels)
+  if (levelCopy < self->mNumGroupLevels)
   {
-    *a5 = 0;
-    *a6 = 1;
+    *displayType = 0;
+    *visible = 1;
   }
 
   return result;
@@ -325,20 +325,20 @@ LABEL_34:
   return v3;
 }
 
-- (int)readAttributesForModel:(_xmlTextReader *)a3
+- (int)readAttributesForModel:(_xmlTextReader *)model
 {
-  self->mName = sub_4294C(a3, qword_A35E8, "name");
-  self->mNameVisible = sub_42340(a3, qword_A35E8, "name-is-visible", 0);
-  self->mHeaderRowCount = sub_4258C(a3, qword_A35E8, "num-header-rows", 0);
-  self->mHeaderColumnCount = sub_4258C(a3, qword_A35E8, "num-header-columns", 0);
-  self->mFooterRowCount = sub_4258C(a3, qword_A35E8, "num-footer-rows", 0);
+  self->mName = sub_4294C(model, qword_A35E8, "name");
+  self->mNameVisible = sub_42340(model, qword_A35E8, "name-is-visible", 0);
+  self->mHeaderRowCount = sub_4258C(model, qword_A35E8, "num-header-rows", 0);
+  self->mHeaderColumnCount = sub_4258C(model, qword_A35E8, "num-header-columns", 0);
+  self->mFooterRowCount = sub_4258C(model, qword_A35E8, "num-footer-rows", 0);
   return 1;
 }
 
-- (int)readAttributesForGrid:(_xmlTextReader *)a3
+- (int)readAttributesForGrid:(_xmlTextReader *)grid
 {
-  self->mColumnCount = sub_4258C(a3, qword_A35E8, "numcols", 0);
-  self->mRowCount = sub_4258C(a3, qword_A35E8, "numrows", 0);
+  self->mColumnCount = sub_4258C(grid, qword_A35E8, "numcols", 0);
+  self->mRowCount = sub_4258C(grid, qword_A35E8, "numrows", 0);
   self->mColumnWidths = CFArrayCreateMutable(kCFAllocatorDefault, self->mColumnCount, &kCFTypeArrayCallBacks);
   self->mRowHeights = CFArrayCreateMutable(kCFAllocatorDefault, self->mRowCount, &kCFTypeArrayCallBacks);
   self->mColumnVisibilities = CFArrayCreateMutable(kCFAllocatorDefault, self->mColumnCount, &kCFTypeArrayCallBacks);
@@ -347,15 +347,15 @@ LABEL_34:
   return 1;
 }
 
-- (int)addColumnWidthFrom:(_xmlTextReader *)a3
+- (int)addColumnWidthFrom:(_xmlTextReader *)from
 {
-  sub_4290C(a3, qword_A35E8, "width");
+  sub_4290C(from, qword_A35E8, "width");
   *&v5 = v5;
   valuePtr = LODWORD(v5);
   v6 = CFNumberCreate(kCFAllocatorDefault, kCFNumberFloatType, &valuePtr);
   CFArrayAppendValue(self->mColumnWidths, v6);
   CFRelease(v6);
-  v7 = sub_42468(a3, qword_A35E8, "hiding-state", 0);
+  v7 = sub_42468(from, qword_A35E8, "hiding-state", 0);
   v8 = &kCFBooleanTrue;
   mColumnVisibilities = self->mColumnVisibilities;
   if (v7)
@@ -367,15 +367,15 @@ LABEL_34:
   return 1;
 }
 
-- (int)addRowHeightFrom:(_xmlTextReader *)a3
+- (int)addRowHeightFrom:(_xmlTextReader *)from
 {
-  sub_4290C(a3, qword_A35E8, "height");
+  sub_4290C(from, qword_A35E8, "height");
   *&v5 = v5;
   valuePtr = LODWORD(v5);
   v6 = CFNumberCreate(kCFAllocatorDefault, kCFNumberFloatType, &valuePtr);
   CFArrayAppendValue(self->mRowHeights, v6);
   CFRelease(v6);
-  v7 = sub_42468(a3, qword_A35E8, "hiding-state", 0);
+  v7 = sub_42468(from, qword_A35E8, "hiding-state", 0);
   v8 = &kCFBooleanTrue;
   mRowVisibilities = self->mRowVisibilities;
   if (v7)
@@ -387,7 +387,7 @@ LABEL_34:
   return 1;
 }
 
-- (void)setCells:(__CFArray *)a3
+- (void)setCells:(__CFArray *)cells
 {
   mCells = self->mCells;
   if (mCells)
@@ -395,7 +395,7 @@ LABEL_34:
     CFRelease(mCells);
   }
 
-  self->mCells = a3;
+  self->mCells = cells;
 }
 
 @end

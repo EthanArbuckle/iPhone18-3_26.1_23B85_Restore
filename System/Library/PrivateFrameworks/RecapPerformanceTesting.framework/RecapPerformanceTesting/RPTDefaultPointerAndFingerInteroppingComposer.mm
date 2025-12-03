@@ -1,52 +1,52 @@
 @interface RPTDefaultPointerAndFingerInteroppingComposer
-+ (id)composerWrapping:(id)a3 withInteractionOptions:(id)a4;
++ (id)composerWrapping:(id)wrapping withInteractionOptions:(id)options;
 - (CGPoint)_currentlySetAbsolutePosition;
-- (id)initFromWrapping:(id)a3 interactionOptions:(id)a4;
-- (void)_pointerOrFingerFlickAt:(CGPoint)a3 byDelta:(CGVector)a4 duration:(double)a5;
-- (void)_pointerOrFingerScrollAt:(CGPoint)a3 byDelta:(CGVector)a4 duration:(double)a5 touchDownAndLift:(BOOL)a6;
-- (void)overrideInteractionOptions:(id)a3 withEventActionsBlock:(id)a4;
-- (void)pointerMoveDelta:(CGPoint)a3 duration:(double)a4 frequency:(int64_t)a5;
-- (void)pointerMoveToPoint:(CGPoint)a3 duration:(double)a4;
-- (void)pointerMoveToPointIfApplicable:(CGPoint)a3;
-- (void)pointerOrFingerDoubleTap:(CGPoint)a3;
-- (void)pointerOrFingerDragWithStartPoint:(CGPoint)a3 mask:(unint64_t)a4 endPoint:(CGPoint)a5 mask:(unint64_t)a6 duration:(double)a7;
-- (void)pointerOrFingerMoveToPoint:(CGPoint)a3 duration:(double)a4;
-- (void)pointerOrFingerTap:(CGPoint)a3;
-- (void)pointerOrFingerTapDown:(CGPoint)a3;
-- (void)pointerOrFingerTapUp:(CGPoint)a3;
+- (id)initFromWrapping:(id)wrapping interactionOptions:(id)options;
+- (void)_pointerOrFingerFlickAt:(CGPoint)at byDelta:(CGVector)delta duration:(double)duration;
+- (void)_pointerOrFingerScrollAt:(CGPoint)at byDelta:(CGVector)delta duration:(double)duration touchDownAndLift:(BOOL)lift;
+- (void)overrideInteractionOptions:(id)options withEventActionsBlock:(id)block;
+- (void)pointerMoveDelta:(CGPoint)delta duration:(double)duration frequency:(int64_t)frequency;
+- (void)pointerMoveToPoint:(CGPoint)point duration:(double)duration;
+- (void)pointerMoveToPointIfApplicable:(CGPoint)applicable;
+- (void)pointerOrFingerDoubleTap:(CGPoint)tap;
+- (void)pointerOrFingerDragWithStartPoint:(CGPoint)point mask:(unint64_t)mask endPoint:(CGPoint)endPoint mask:(unint64_t)a6 duration:(double)duration;
+- (void)pointerOrFingerMoveToPoint:(CGPoint)point duration:(double)duration;
+- (void)pointerOrFingerTap:(CGPoint)tap;
+- (void)pointerOrFingerTapDown:(CGPoint)down;
+- (void)pointerOrFingerTapUp:(CGPoint)up;
 @end
 
 @implementation RPTDefaultPointerAndFingerInteroppingComposer
 
-+ (id)composerWrapping:(id)a3 withInteractionOptions:(id)a4
++ (id)composerWrapping:(id)wrapping withInteractionOptions:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initFromWrapping:v7 interactionOptions:v6];
+  optionsCopy = options;
+  wrappingCopy = wrapping;
+  v8 = [[self alloc] initFromWrapping:wrappingCopy interactionOptions:optionsCopy];
 
   return v8;
 }
 
-- (void)overrideInteractionOptions:(id)a3 withEventActionsBlock:(id)a4
+- (void)overrideInteractionOptions:(id)options withEventActionsBlock:(id)block
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [objc_opt_class() composerWrapping:self->_forwardingTarget withInteractionOptions:v8];
+  blockCopy = block;
+  optionsCopy = options;
+  v9 = [objc_opt_class() composerWrapping:self->_forwardingTarget withInteractionOptions:optionsCopy];
 
-  (*(a4 + 2))(v7, v9);
+  (*(block + 2))(blockCopy, v9);
 }
 
-- (id)initFromWrapping:(id)a3 interactionOptions:(id)a4
+- (id)initFromWrapping:(id)wrapping interactionOptions:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_forwardingTarget, a3);
-  objc_storeStrong(&self->_interactionOptions, a4);
-  v9 = [v8 prefersPointer];
-  self->__usePointer = v9;
+  wrappingCopy = wrapping;
+  optionsCopy = options;
+  objc_storeStrong(&self->_forwardingTarget, wrapping);
+  objc_storeStrong(&self->_interactionOptions, options);
+  prefersPointer = [optionsCopy prefersPointer];
+  self->__usePointer = prefersPointer;
   self->__currentlySetAbsolutePosition.x = 0.0;
   self->__currentlySetAbsolutePosition.y = 0.0;
-  if (v9)
+  if (prefersPointer)
   {
     [MEMORY[0x277CCACC8] sleepForTimeInterval:1.0];
     [(RCPEventStreamComposer *)self->_forwardingTarget pointerSetAbsolutePosition:self->__currentlySetAbsolutePosition.x, self->__currentlySetAbsolutePosition.y];
@@ -56,31 +56,31 @@
   return self;
 }
 
-- (void)_pointerOrFingerScrollAt:(CGPoint)a3 byDelta:(CGVector)a4 duration:(double)a5 touchDownAndLift:(BOOL)a6
+- (void)_pointerOrFingerScrollAt:(CGPoint)at byDelta:(CGVector)delta duration:(double)duration touchDownAndLift:(BOOL)lift
 {
-  dy = a4.dy;
-  dx = a4.dx;
+  dy = delta.dy;
+  dx = delta.dx;
   if (self->__usePointer)
   {
-    v10 = a3.x + a4.dx * 0.5;
-    v11 = a3.y + a4.dy * 0.5;
-    [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerMoveToPoint:a6 duration:v10, v11, 0.01];
-    [(RCPEventStreamComposer *)self->_forwardingTarget pointerPhasedScroll:[(RPTInteractionOptions *)self->_interactionOptions pointerFrequency] duration:-dx frequency:-dy, a5];
+    v10 = at.x + delta.dx * 0.5;
+    v11 = at.y + delta.dy * 0.5;
+    [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerMoveToPoint:lift duration:v10, v11, 0.01];
+    [(RCPEventStreamComposer *)self->_forwardingTarget pointerPhasedScroll:[(RPTInteractionOptions *)self->_interactionOptions pointerFrequency] duration:-dx frequency:-dy, duration];
   }
 
   else
   {
-    v10 = a3.x + a4.dx;
-    v11 = a3.y + a4.dy;
+    v10 = at.x + delta.dx;
+    v11 = at.y + delta.dy;
     forwardingTarget = self->_forwardingTarget;
-    if (a6)
+    if (lift)
     {
       [RCPEventStreamComposer dragWithStartPoint:"dragWithStartPoint:endPoint:duration:" endPoint:? duration:?];
     }
 
     else
     {
-      [(RCPEventStreamComposer *)forwardingTarget moveToPoint:a3.x + a4.dx duration:a3.y + a4.dy, a5];
+      [(RCPEventStreamComposer *)forwardingTarget moveToPoint:at.x + delta.dx duration:at.y + delta.dy, duration];
     }
   }
 
@@ -88,17 +88,17 @@
   self->__currentlySetAbsolutePosition.y = v11;
 }
 
-- (void)_pointerOrFingerFlickAt:(CGPoint)a3 byDelta:(CGVector)a4 duration:(double)a5
+- (void)_pointerOrFingerFlickAt:(CGPoint)at byDelta:(CGVector)delta duration:(double)duration
 {
-  dy = a4.dy;
-  dx = a4.dx;
-  y = a3.y;
-  x = a3.x;
+  dy = delta.dy;
+  dx = delta.dx;
+  y = at.y;
+  x = at.x;
   v31 = *MEMORY[0x277D85DE8];
   if (self->__usePointer)
   {
-    v11 = a3.x + a4.dx * 0.5;
-    v12 = a3.y + a4.dy * 0.5;
+    v11 = at.x + delta.dx * 0.5;
+    v12 = at.y + delta.dy * 0.5;
     [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerMoveToPoint:v11 duration:v12, 0.01];
     v13 = RPTLogTestRunning();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -114,18 +114,18 @@
       v25 = 2114;
       v26 = v15;
       v27 = 2048;
-      v28 = a5;
+      durationCopy3 = duration;
       _os_log_impl(&dword_261A17000, v13, OS_LOG_TYPE_DEFAULT, "RPT: -[RPTDefaultPointerAndFingerInteroppingComposer pointerFlickAt: %{public}@ delta: %{public}@ duration: %f", &v23, 0x20u);
     }
 
-    [(RCPEventStreamComposer *)self->_forwardingTarget pointerPhasedFlick:[(RPTInteractionOptions *)self->_interactionOptions pointerFrequency] duration:-dx frequency:-dy, a5];
+    [(RCPEventStreamComposer *)self->_forwardingTarget pointerPhasedFlick:[(RPTInteractionOptions *)self->_interactionOptions pointerFrequency] duration:-dx frequency:-dy, duration];
   }
 
   else
   {
-    v16 = 0.5 - a5;
-    v11 = a3.x + a4.dx;
-    v12 = a3.y + a4.dy;
+    v16 = 0.5 - duration;
+    v11 = at.x + delta.dx;
+    v12 = at.y + delta.dy;
     v17 = RPTLogTestRunning();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
     if (v16 >= 0.0)
@@ -143,7 +143,7 @@
         v25 = 2114;
         v26 = v22;
         v27 = 2048;
-        v28 = a5;
+        durationCopy3 = duration;
         v29 = 2048;
         v30 = *&v16;
         _os_log_impl(&dword_261A17000, v17, OS_LOG_TYPE_DEFAULT, "RPT: -[RPTDefaultPointerAndFingerInteroppingComposer touchFlickAt: %{public}@ to: %{public}@ duration: %f excessDuration: %f", &v23, 0x2Au);
@@ -165,7 +165,7 @@
         v25 = 2114;
         v26 = v20;
         v27 = 2048;
-        v28 = a5;
+        durationCopy3 = duration;
         v29 = 2048;
         v30 = 0x3FD3333333333333;
         _os_log_impl(&dword_261A17000, v17, OS_LOG_TYPE_DEFAULT, "RPT: -[RPTDefaultPointerAndFingerInteroppingComposer touchFlickAt: %{public}@ to: %{public}@ duration: %f excessDuration: %f", &v23, 0x2Au);
@@ -174,7 +174,7 @@
       v16 = 0.3;
     }
 
-    [(RCPEventStreamComposer *)self->_forwardingTarget sendFlickWithStartPoint:x endPoint:y duration:x + dx, y + dy, a5];
+    [(RCPEventStreamComposer *)self->_forwardingTarget sendFlickWithStartPoint:x endPoint:y duration:x + dx, y + dy, duration];
     [(RCPEventStreamComposer *)self->_forwardingTarget advanceTime:v16];
   }
 
@@ -182,41 +182,41 @@
   self->__currentlySetAbsolutePosition.y = v12;
 }
 
-- (void)pointerMoveToPoint:(CGPoint)a3 duration:(double)a4
+- (void)pointerMoveToPoint:(CGPoint)point duration:(double)duration
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   p_currentlySetAbsolutePosition = &self->__currentlySetAbsolutePosition;
-  v7 = a3.x - self->__currentlySetAbsolutePosition.x;
-  v8 = a3.y - self->__currentlySetAbsolutePosition.y;
+  v7 = point.x - self->__currentlySetAbsolutePosition.x;
+  v8 = point.y - self->__currentlySetAbsolutePosition.y;
   if (v7 != *MEMORY[0x277CBF348] || v8 != *(MEMORY[0x277CBF348] + 8))
   {
-    [(RCPEventStreamComposer *)self->_forwardingTarget pointerMoveDelta:[(RPTInteractionOptions *)self->_interactionOptions pointerFrequency] duration:v7 frequency:v8, a4];
+    [(RCPEventStreamComposer *)self->_forwardingTarget pointerMoveDelta:[(RPTInteractionOptions *)self->_interactionOptions pointerFrequency] duration:v7 frequency:v8, duration];
     p_currentlySetAbsolutePosition->x = x;
     p_currentlySetAbsolutePosition->y = y;
   }
 }
 
-- (void)pointerMoveDelta:(CGPoint)a3 duration:(double)a4 frequency:(int64_t)a5
+- (void)pointerMoveDelta:(CGPoint)delta duration:(double)duration frequency:(int64_t)frequency
 {
-  v6 = *&a3.x;
-  [(RCPEventStreamComposer *)self->_forwardingTarget pointerMoveDelta:a5 duration:a3.x frequency:a3.y, a4];
+  v6 = *&delta.x;
+  [(RCPEventStreamComposer *)self->_forwardingTarget pointerMoveDelta:frequency duration:delta.x frequency:delta.y, duration];
   self->__currentlySetAbsolutePosition = vaddq_f64(vdupq_lane_s64(v6, 0), self->__currentlySetAbsolutePosition);
 }
 
-- (void)pointerMoveToPointIfApplicable:(CGPoint)a3
+- (void)pointerMoveToPointIfApplicable:(CGPoint)applicable
 {
   if (self->__usePointer)
   {
-    [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerMoveToPoint:a3.x duration:a3.y, 2.0];
+    [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerMoveToPoint:applicable.x duration:applicable.y, 2.0];
   }
 }
 
-- (void)pointerOrFingerTapDown:(CGPoint)a3
+- (void)pointerOrFingerTapDown:(CGPoint)down
 {
   if (self->__usePointer)
   {
-    [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerMoveToPoint:a3.x duration:a3.y, 0.8];
+    [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerMoveToPoint:down.x duration:down.y, 0.8];
     forwardingTarget = self->_forwardingTarget;
 
     [(RCPEventStreamComposer *)forwardingTarget pointerBeginPressingButton:1];
@@ -226,28 +226,28 @@
   {
     v5 = self->_forwardingTarget;
 
-    [(RCPEventStreamComposer *)v5 touchDown:a3.x, a3.y];
+    [(RCPEventStreamComposer *)v5 touchDown:down.x, down.y];
   }
 }
 
-- (void)pointerOrFingerMoveToPoint:(CGPoint)a3 duration:(double)a4
+- (void)pointerOrFingerMoveToPoint:(CGPoint)point duration:(double)duration
 {
   if (self->__usePointer)
   {
-    [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerMoveToPoint:a3.x duration:a3.y, a4];
+    [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerMoveToPoint:point.x duration:point.y, duration];
   }
 
   else
   {
-    [(RPTDefaultPointerAndFingerInteroppingComposer *)self moveToPoint:a3.x duration:a3.y, a4];
+    [(RPTDefaultPointerAndFingerInteroppingComposer *)self moveToPoint:point.x duration:point.y, duration];
   }
 }
 
-- (void)pointerOrFingerTapUp:(CGPoint)a3
+- (void)pointerOrFingerTapUp:(CGPoint)up
 {
   if (self->__usePointer)
   {
-    [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerMoveToPoint:a3.x duration:a3.y, 1.0];
+    [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerMoveToPoint:up.x duration:up.y, 1.0];
     forwardingTarget = self->_forwardingTarget;
 
     [(RCPEventStreamComposer *)forwardingTarget pointerEndPressingButton:1];
@@ -257,20 +257,20 @@
   {
     v5 = self->_forwardingTarget;
 
-    [(RCPEventStreamComposer *)v5 liftUp:a3.x, a3.y];
+    [(RCPEventStreamComposer *)v5 liftUp:up.x, up.y];
   }
 }
 
-- (void)pointerOrFingerDragWithStartPoint:(CGPoint)a3 mask:(unint64_t)a4 endPoint:(CGPoint)a5 mask:(unint64_t)a6 duration:(double)a7
+- (void)pointerOrFingerDragWithStartPoint:(CGPoint)point mask:(unint64_t)mask endPoint:(CGPoint)endPoint mask:(unint64_t)a6 duration:(double)duration
 {
-  y = a5.y;
-  x = a5.x;
-  v10 = a3.y;
-  v11 = a3.x;
+  y = endPoint.y;
+  x = endPoint.x;
+  v10 = point.y;
+  v11 = point.x;
   if (self->__usePointer)
   {
-    [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerOrFingerTapDown:a4, a6, a3.x, a3.y];
-    [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerMoveToPoint:x duration:y, a7];
+    [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerOrFingerTapDown:mask, a6, point.x, point.y];
+    [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerMoveToPoint:x duration:y, duration];
 
     [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerOrFingerTapDown:v11, v10];
   }
@@ -279,17 +279,17 @@
   {
     forwardingTarget = self->_forwardingTarget;
 
-    [RCPEventStreamComposer dragWithStartPoint:"dragWithStartPoint:mask:endPoint:mask:duration:" mask:a4 endPoint:a6 mask:? duration:?];
+    [RCPEventStreamComposer dragWithStartPoint:"dragWithStartPoint:mask:endPoint:mask:duration:" mask:mask endPoint:a6 mask:? duration:?];
   }
 }
 
-- (void)pointerOrFingerTap:(CGPoint)a3
+- (void)pointerOrFingerTap:(CGPoint)tap
 {
-  y = a3.y;
-  x = a3.x;
+  y = tap.y;
+  x = tap.x;
   if (self->__usePointer)
   {
-    [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerOrFingerTapDown:a3.x, a3.y];
+    [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerOrFingerTapDown:tap.x, tap.y];
     [(RCPEventStreamComposer *)self->_forwardingTarget advanceTime:0.5];
 
     [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerOrFingerTapUp:x, y];
@@ -303,13 +303,13 @@
   }
 }
 
-- (void)pointerOrFingerDoubleTap:(CGPoint)a3
+- (void)pointerOrFingerDoubleTap:(CGPoint)tap
 {
-  y = a3.y;
-  x = a3.x;
+  y = tap.y;
+  x = tap.x;
   if (self->__usePointer)
   {
-    [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerOrFingerTapUp:a3.x, a3.y];
+    [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerOrFingerTapUp:tap.x, tap.y];
     [(RCPEventStreamComposer *)self->_forwardingTarget advanceTime:0.5];
 
     [(RPTDefaultPointerAndFingerInteroppingComposer *)self pointerOrFingerTapUp:x, y];

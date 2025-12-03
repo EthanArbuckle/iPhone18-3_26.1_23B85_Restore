@@ -2,7 +2,7 @@
 + (PUSuggestionsSettings)sharedInstance;
 + (id)_debugRowsForCurrentAsset;
 + (id)settingsControllerModule;
-+ (id)sortDescriptorForMode:(int64_t)a3;
++ (id)sortDescriptorForMode:(int64_t)mode;
 - (BOOL)debugTintLayers;
 - (BOOL)disableSegmentation;
 - (BOOL)disableSegmentationCache;
@@ -12,14 +12,14 @@
 - (int64_t)infillMode;
 - (void)createChildren;
 - (void)performPostSaveActions;
-- (void)setDebugTintLayers:(BOOL)a3;
+- (void)setDebugTintLayers:(BOOL)layers;
 - (void)setDefaultValues;
-- (void)setDisableSegmentation:(BOOL)a3;
-- (void)setDisableSegmentationCache:(BOOL)a3;
-- (void)setEnableCustomStyles:(BOOL)a3;
-- (void)setEnableGreenScreenStyles:(BOOL)a3;
-- (void)setInfillMode:(int64_t)a3;
-- (void)setManualGatingLenience:(double)a3;
+- (void)setDisableSegmentation:(BOOL)segmentation;
+- (void)setDisableSegmentationCache:(BOOL)cache;
+- (void)setEnableCustomStyles:(BOOL)styles;
+- (void)setEnableGreenScreenStyles:(BOOL)styles;
+- (void)setInfillMode:(int64_t)mode;
+- (void)setManualGatingLenience:(double)lenience;
 @end
 
 @implementation PUSuggestionsSettings
@@ -51,16 +51,16 @@
 + (id)_debugRowsForCurrentAsset
 {
   v64 = *MEMORY[0x1E69E9840];
-  v31 = [MEMORY[0x1E69DD258] pu_currentViewControllerStack];
-  v30 = [v31 firstObject];
-  if (v30)
+  pu_currentViewControllerStack = [MEMORY[0x1E69DD258] pu_currentViewControllerStack];
+  firstObject = [pu_currentViewControllerStack firstObject];
+  if (firstObject)
   {
-    v33 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    obj = [v31 reverseObjectEnumerator];
+    obj = [pu_currentViewControllerStack reverseObjectEnumerator];
     v37 = [obj countByEnumeratingWithState:&v57 objects:v63 count:16];
     if (!v37)
     {
@@ -84,7 +84,7 @@
         aBlock[3] = &unk_1E7B7E418;
         objc_copyWeak(&v55, &location);
         v38 = _Block_copy(aBlock);
-        v2 = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
         v52 = 0u;
         v53 = 0u;
         v50 = 0u;
@@ -113,23 +113,23 @@
                   goto LABEL_14;
                 }
 
-                v8 = [MEMORY[0x1E696AAA8] currentHandler];
+                currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
                 v11 = objc_opt_class();
                 v10 = NSStringFromClass(v11);
-                v12 = [v7 px_descriptionForAssertionMessage];
-                [v8 handleFailureInMethod:a2 object:a1 file:@"PUSuggestionsSettings+UI.m" lineNumber:274 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v10, v12}];
+                px_descriptionForAssertionMessage = [v7 px_descriptionForAssertionMessage];
+                [currentHandler handleFailureInMethod:a2 object:self file:@"PUSuggestionsSettings+UI.m" lineNumber:274 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"asset", v10, px_descriptionForAssertionMessage}];
               }
 
               else
               {
-                v8 = [MEMORY[0x1E696AAA8] currentHandler];
+                currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
                 v9 = objc_opt_class();
                 v10 = NSStringFromClass(v9);
-                [v8 handleFailureInMethod:a2 object:a1 file:@"PUSuggestionsSettings+UI.m" lineNumber:274 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v10}];
+                [currentHandler handleFailureInMethod:a2 object:self file:@"PUSuggestionsSettings+UI.m" lineNumber:274 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"asset", v10}];
               }
 
 LABEL_14:
-              [v2 addObject:v7];
+              [array2 addObject:v7];
 
               ++v6;
             }
@@ -142,14 +142,14 @@ LABEL_14:
           while (v13);
         }
 
-        if ([v2 count])
+        if ([array2 count])
         {
           v14 = MEMORY[0x1E69C65E8];
           v48[0] = MEMORY[0x1E69E9820];
           v48[1] = 3221225472;
           v48[2] = __54__PUSuggestionsSettings_UI___debugRowsForCurrentAsset__block_invoke_2;
           v48[3] = &unk_1E7B7E3F0;
-          v15 = v2;
+          v15 = array2;
           v49 = v15;
           v16 = [v14 pu_rowWithTitle:@"Show in Parallax Debug Viewer" action:v48];
           v61[0] = v16;
@@ -190,7 +190,7 @@ LABEL_14:
           v61[4] = v27;
           v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:5];
 
-          [v33 addObjectsFromArray:v28];
+          [array addObjectsFromArray:v28];
         }
 
         objc_destroyWeak(&v55);
@@ -207,10 +207,10 @@ LABEL_24:
     }
   }
 
-  v33 = MEMORY[0x1E695E0F0];
+  array = MEMORY[0x1E695E0F0];
 LABEL_26:
 
-  return v33;
+  return array;
 }
 
 id __54__PUSuggestionsSettings_UI___debugRowsForCurrentAsset__block_invoke(uint64_t a1)
@@ -301,7 +301,7 @@ void __54__PUSuggestionsSettings_UI___debugRowsForCurrentAsset__block_invoke_6(u
 + (id)settingsControllerModule
 {
   v178[5] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69789A8] px_systemPhotoLibrary];
+  px_systemPhotoLibrary = [MEMORY[0x1E69789A8] px_systemPhotoLibrary];
   v4 = [MEMORY[0x1E69C65E8] px_rowWithTitle:@"Top People Suggestion Generation" protoViewControllerFactoryClassName:@"PXProtoSuggestionsDebugViewControllerFactory" options:&unk_1F2B7F210];
   v5 = [MEMORY[0x1E69C65E8] px_rowWithTitle:@"Wallpaper Nightly Suggestions" protoViewControllerFactoryClassName:@"PXProtoSuggestionsDebugViewControllerFactory" options:&unk_1F2B7F238];
   v6 = [MEMORY[0x1E69C65E8] px_rowWithTitle:@"Portrait Wallpaper Candidates" protoViewControllerFactoryClassName:@"PXProtoSuggestionsDebugViewControllerFactory" options:&unk_1F2B7F260];
@@ -339,9 +339,9 @@ void __54__PUSuggestionsSettings_UI___debugRowsForCurrentAsset__block_invoke_6(u
   v167[1] = 3221225472;
   v167[2] = __53__PUSuggestionsSettings_UI__settingsControllerModule__block_invoke;
   v167[3] = &unk_1E7B7E3C8;
-  v147 = v3;
+  v147 = px_systemPhotoLibrary;
   v168 = v147;
-  v169 = a1;
+  selfCopy = self;
   v145 = [v17 pu_rowWithTitle:@"Picker Playground" action:v167];
   v176[0] = v145;
   v18 = MEMORY[0x1E69C65F8];
@@ -533,10 +533,10 @@ void __54__PUSuggestionsSettings_UI___debugRowsForCurrentAsset__block_invoke_6(u
   v93 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v171 count:1];
   v94 = [v89 sectionWithRows:v93 title:@"Shortcuts"];
 
-  v95 = [a1 _debugRowsForCurrentAsset];
-  if ([v95 count])
+  _debugRowsForCurrentAsset = [self _debugRowsForCurrentAsset];
+  if ([_debugRowsForCurrentAsset count])
   {
-    v96 = [MEMORY[0x1E69C6638] sectionWithRows:v95 title:@"Current Asset or Selection"];
+    v96 = [MEMORY[0x1E69C6638] sectionWithRows:_debugRowsForCurrentAsset title:@"Current Asset or Selection"];
   }
 
   else
@@ -565,8 +565,8 @@ void __54__PUSuggestionsSettings_UI___debugRowsForCurrentAsset__block_invoke_6(u
   }
 
   [v99 addObject:v94];
-  v100 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
-  [v99 addObject:v100];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  [v99 addObject:px_restoreDefaultsSection];
 
   v101 = MEMORY[0x1E69C6638];
   v102 = [v99 copy];
@@ -683,108 +683,108 @@ void __53__PUSuggestionsSettings_UI__settingsControllerModule__block_invoke_10(u
   [v4 pushViewController:v5 animated:1];
 }
 
-- (void)setEnableGreenScreenStyles:(BOOL)a3
+- (void)setEnableGreenScreenStyles:(BOOL)styles
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69BDE40] globalSettings];
-  [v4 setParallaxStyleEnableGreenScreen:v3];
+  stylesCopy = styles;
+  globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+  [globalSettings setParallaxStyleEnableGreenScreen:stylesCopy];
 }
 
 - (BOOL)enableGreenScreenStyles
 {
-  v2 = [MEMORY[0x1E69BDE40] globalSettings];
-  v3 = [v2 parallaxStyleEnableGreenScreen];
+  globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+  parallaxStyleEnableGreenScreen = [globalSettings parallaxStyleEnableGreenScreen];
 
-  return v3;
+  return parallaxStyleEnableGreenScreen;
 }
 
-- (void)setEnableCustomStyles:(BOOL)a3
+- (void)setEnableCustomStyles:(BOOL)styles
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69BDE40] globalSettings];
-  [v4 setUseStyleRecipeConfigDirectory:v3];
+  stylesCopy = styles;
+  globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+  [globalSettings setUseStyleRecipeConfigDirectory:stylesCopy];
 }
 
 - (BOOL)enableCustomStyles
 {
-  v2 = [MEMORY[0x1E69BDE40] globalSettings];
-  v3 = [v2 useStyleRecipeConfigDirectory];
+  globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+  useStyleRecipeConfigDirectory = [globalSettings useStyleRecipeConfigDirectory];
 
-  return v3;
+  return useStyleRecipeConfigDirectory;
 }
 
-- (void)setDisableSegmentationCache:(BOOL)a3
+- (void)setDisableSegmentationCache:(BOOL)cache
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69BDE40] globalSettings];
-  [v4 setSegmentationDisableCaching:v3];
+  cacheCopy = cache;
+  globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+  [globalSettings setSegmentationDisableCaching:cacheCopy];
 }
 
 - (BOOL)disableSegmentationCache
 {
-  v2 = [MEMORY[0x1E69BDE40] globalSettings];
-  v3 = [v2 segmentationDisableCaching];
+  globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+  segmentationDisableCaching = [globalSettings segmentationDisableCaching];
 
-  return v3;
+  return segmentationDisableCaching;
 }
 
-- (void)setManualGatingLenience:(double)a3
+- (void)setManualGatingLenience:(double)lenience
 {
-  v4 = [MEMORY[0x1E69BDE40] globalSettings];
-  [v4 setSegmentationManualGatingLenience:a3];
+  globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+  [globalSettings setSegmentationManualGatingLenience:lenience];
 }
 
 - (double)manualGatingLenience
 {
-  v2 = [MEMORY[0x1E69BDE40] globalSettings];
-  [v2 segmentationManualGatingLenience];
+  globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+  [globalSettings segmentationManualGatingLenience];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setDisableSegmentation:(BOOL)a3
+- (void)setDisableSegmentation:(BOOL)segmentation
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69BDE40] globalSettings];
-  [v4 setDisableSegmentation:v3];
+  segmentationCopy = segmentation;
+  globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+  [globalSettings setDisableSegmentation:segmentationCopy];
 }
 
 - (BOOL)disableSegmentation
 {
-  v2 = [MEMORY[0x1E69BDE40] globalSettings];
-  v3 = [v2 disableSegmentation];
+  globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+  disableSegmentation = [globalSettings disableSegmentation];
 
-  return v3;
+  return disableSegmentation;
 }
 
-- (void)setDebugTintLayers:(BOOL)a3
+- (void)setDebugTintLayers:(BOOL)layers
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69BDE40] globalSettings];
-  [v4 setSegmentationDebugTintLayers:v3];
+  layersCopy = layers;
+  globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+  [globalSettings setSegmentationDebugTintLayers:layersCopy];
 }
 
 - (BOOL)debugTintLayers
 {
-  v2 = [MEMORY[0x1E69BDE40] globalSettings];
-  v3 = [v2 segmentationDebugTintLayers];
+  globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+  segmentationDebugTintLayers = [globalSettings segmentationDebugTintLayers];
 
-  return v3;
+  return segmentationDebugTintLayers;
 }
 
-- (void)setInfillMode:(int64_t)a3
+- (void)setInfillMode:(int64_t)mode
 {
-  v4 = [MEMORY[0x1E69BDE40] globalSettings];
-  [v4 setSegmentationInfillAlgorithm:a3];
+  globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+  [globalSettings setSegmentationInfillAlgorithm:mode];
 }
 
 - (int64_t)infillMode
 {
-  v2 = [MEMORY[0x1E69BDE40] globalSettings];
-  v3 = [v2 segmentationInfillAlgorithm];
+  globalSettings = [MEMORY[0x1E69BDE40] globalSettings];
+  segmentationInfillAlgorithm = [globalSettings segmentationInfillAlgorithm];
 
-  return v3;
+  return segmentationInfillAlgorithm;
 }
 
 - (void)performPostSaveActions
@@ -792,9 +792,9 @@ void __53__PUSuggestionsSettings_UI__settingsControllerModule__block_invoke_10(u
   v7.receiver = self;
   v7.super_class = PUSuggestionsSettings;
   [(PXSettings *)&v7 performPostSaveActions];
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v4 = *MEMORY[0x1E696A400];
-  v5 = [v3 persistentDomainForName:*MEMORY[0x1E696A400]];
+  v5 = [standardUserDefaults persistentDomainForName:*MEMORY[0x1E696A400]];
   v6 = [v5 mutableCopy];
 
   if ([(PUSuggestionsSettings *)self enableFRCInAssetDetails])
@@ -807,17 +807,17 @@ void __53__PUSuggestionsSettings_UI__settingsControllerModule__block_invoke_10(u
     [v6 removeObjectForKey:*MEMORY[0x1E69C1720]];
   }
 
-  [v3 setPersistentDomain:v6 forName:v4];
+  [standardUserDefaults setPersistentDomain:v6 forName:v4];
 }
 
-+ (id)sortDescriptorForMode:(int64_t)a3
++ (id)sortDescriptorForMode:(int64_t)mode
 {
-  if (a3 <= 4)
+  if (mode <= 4)
   {
-    a1 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:off_1E7B7F370[a3] ascending:{0, v3}];
+    self = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:off_1E7B7F370[mode] ascending:{0, v3}];
   }
 
-  return a1;
+  return self;
 }
 
 + (PUSuggestionsSettings)sharedInstance

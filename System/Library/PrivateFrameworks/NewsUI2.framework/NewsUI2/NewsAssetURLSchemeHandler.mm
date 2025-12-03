@@ -17,13 +17,13 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_219B10040();
 }
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_219B107CC();
 }
 
@@ -33,7 +33,7 @@
   memset(v5, 0, sizeof(v5));
   v3 = OBJC_IVAR____TtC7NewsUI225NewsAssetURLSchemeHandler_cancelHandler;
   swift_beginAccess();
-  v4 = self;
+  selfCopy = self;
   sub_219B10B8C(v5, self + v3);
   swift_endAccess();
 }

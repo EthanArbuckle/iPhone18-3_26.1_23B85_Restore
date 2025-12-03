@@ -1,19 +1,19 @@
 @interface AppCardContainerViewController
 - (NSString)debugDescription;
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4;
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute;
 - (_UIRemoteViewController)_containedRemoteViewController;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)checkForTouchInRemoteProcessIfNecessaryWithCompletion:(id)a3;
+- (void)checkForTouchInRemoteProcessIfNecessaryWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)loadView;
-- (void)setShowingDarkEffect:(BOOL)a3 isInDarkMode:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setShowingDarkEffect:(BOOL)effect isInDarkMode:(BOOL)mode;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation AppCardContainerViewController
@@ -21,15 +21,15 @@
 - (void)loadView
 {
   v3 = objc_allocWithZone(MEMORY[0x1E69DD250]);
-  v8 = self;
+  selfCopy = self;
   v4 = [v3 init];
-  [(AppCardContainerViewController *)v8 setView:v4];
+  [(AppCardContainerViewController *)selfCopy setView:v4];
 
-  v5 = [(AppCardContainerViewController *)v8 view];
-  if (v5)
+  view = [(AppCardContainerViewController *)selfCopy view];
+  if (view)
   {
-    v6 = v5;
-    v7 = [objc_opt_self() clearColor];
+    v6 = view;
+    clearColor = [objc_opt_self() clearColor];
     [v6 setBackgroundColor_];
 
     sub_1909E613C();
@@ -43,42 +43,42 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1909E68E4();
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1909E6FEC();
 
   return v3;
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
+  disappearCopy = disappear;
   v11.receiver = self;
   v11.super_class = type metadata accessor for AppCardContainerViewController();
   v6 = v11.receiver;
-  v7 = a3;
-  [(AppCardContainerViewController *)&v11 viewDidMoveToWindow:v7 shouldAppearOrDisappear:v4];
+  windowCopy = window;
+  [(AppCardContainerViewController *)&v11 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
   v8 = &v6[OBJC_IVAR____TtC7ChatKit30AppCardContainerViewController_presentationDelegate];
   if (swift_unknownObjectWeakLoadStrong())
   {
     v9 = *(v8 + 1);
     ObjectType = swift_getObjectType();
-    (*(v9 + 40))(v6, v7, ObjectType, v9);
+    (*(v9 + 40))(v6, windowCopy, ObjectType, v9);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)checkForTouchInRemoteProcessIfNecessaryWithCompletion:(id)a3
+- (void)checkForTouchInRemoteProcessIfNecessaryWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_1909E7160(sub_190851E64, v5);
 }
 
@@ -88,13 +88,13 @@
   if ([v3 respondsToSelector_])
   {
     v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC7ChatKit30AppCardContainerViewController_shouldOverrideExceptionsOnDismissal);
-    v5 = self;
+    selfCopy = self;
     [v3 forceTearDownRemoteViewOverridingExceptions_];
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
   }
 
   v7.receiver = self;
@@ -102,31 +102,31 @@
   [(AppCardContainerViewController *)&v7 dealloc];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1909E7EB8(a3);
+  selfCopy = self;
+  sub_1909E7EB8(disappear);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1909E8004(a3);
+  selfCopy = self;
+  sub_1909E8004(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1909E8134(a3);
+  selfCopy = self;
+  sub_1909E8134(appear);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1909E8270();
 }
 
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute
 {
   v5 = self + OBJC_IVAR____TtC7ChatKit30AppCardContainerViewController_presentationDelegate;
   if (swift_unknownObjectWeakLoadStrong())
@@ -134,7 +134,7 @@
     v6 = *(v5 + 1);
     swift_getObjectType();
     v7 = *(v6 + 48);
-    v8 = self;
+    selfCopy = self;
     v9 = v7();
     v11 = v10;
     v13 = v12;
@@ -161,28 +161,28 @@
   return result;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = type metadata accessor for AppCardContainerViewController();
   v7 = v9.receiver;
-  [(AppCardContainerViewController *)&v9 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(AppCardContainerViewController *)&v9 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
   v8 = &v7[OBJC_IVAR____TtC7ChatKit30AppCardContainerViewController_cachedCompactDetentHeight];
   *v8 = 0;
   v8[8] = 1;
 }
 
-- (void)setShowingDarkEffect:(BOOL)a3 isInDarkMode:(BOOL)a4
+- (void)setShowingDarkEffect:(BOOL)effect isInDarkMode:(BOOL)mode
 {
-  v4 = self;
+  selfCopy = self;
   sub_1909E8F88();
 }
 
 - (_UIRemoteViewController)_containedRemoteViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1909E91A0();
 
   return v3;
@@ -190,7 +190,7 @@
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   sub_1909E9420();
 
   v3 = sub_190D56ED0();

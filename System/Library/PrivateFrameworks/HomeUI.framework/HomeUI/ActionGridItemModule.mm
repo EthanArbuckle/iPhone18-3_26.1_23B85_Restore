@@ -1,13 +1,13 @@
 @interface ActionGridItemModule
 - (id)buildItemProviders;
-- (void)actionSetValueSource:(id)a3 didUpdateValuesForActionBuilders:(id)a4;
+- (void)actionSetValueSource:(id)source didUpdateValuesForActionBuilders:(id)builders;
 @end
 
 @implementation ActionGridItemModule
 
 - (id)buildItemProviders
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_20D1040AC();
 
   if (v3)
@@ -25,14 +25,14 @@
   return v4;
 }
 
-- (void)actionSetValueSource:(id)a3 didUpdateValuesForActionBuilders:(id)a4
+- (void)actionSetValueSource:(id)source didUpdateValuesForActionBuilders:(id)builders
 {
   sub_20CECF940(0, &qword_27C81AE50);
   sub_20CEF7F74(&qword_27C8217F0, &qword_27C81AE50);
   v5 = sub_20D567D08();
   if (swift_unknownObjectWeakLoadStrong())
   {
-    v6 = self;
+    selfCopy = self;
     sub_20CECDBF4(v5);
     swift_unknownObjectRelease();
   }

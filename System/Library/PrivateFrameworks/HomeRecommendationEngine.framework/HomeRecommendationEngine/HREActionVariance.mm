@@ -1,34 +1,34 @@
 @interface HREActionVariance
-+ (id)varianceKeyForAction:(id)a3;
-- (id)_initWithKey:(id)a3;
++ (id)varianceKeyForAction:(id)action;
+- (id)_initWithKey:(id)key;
 @end
 
 @implementation HREActionVariance
 
-- (id)_initWithKey:(id)a3
+- (id)_initWithKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v9.receiver = self;
   v9.super_class = HREActionVariance;
-  v6 = [(HRERule *)&v9 _init];
-  v7 = v6;
-  if (v6)
+  _init = [(HRERule *)&v9 _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(_init + 1, key);
   }
 
   return v7;
 }
 
-+ (id)varianceKeyForAction:(id)a3
++ (id)varianceKeyForAction:(id)action
 {
-  v3 = a3;
+  actionCopy = action;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 characteristic];
-    v5 = [v4 characteristicType];
-    v6 = [HRECharacteristicActionVarianceRule varianceKeyForCharacteristicType:v5];
+    characteristic = [actionCopy characteristic];
+    characteristicType = [characteristic characteristicType];
+    v6 = [HRECharacteristicActionVarianceRule varianceKeyForCharacteristicType:characteristicType];
   }
 
   else

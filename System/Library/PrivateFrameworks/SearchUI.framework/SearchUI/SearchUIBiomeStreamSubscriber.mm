@@ -1,16 +1,16 @@
 @interface SearchUIBiomeStreamSubscriber
 - (BOOL)isFinished;
-- (SearchUIBiomeStreamSubscriber)initWithStreamIdentifier:(id)a3;
+- (SearchUIBiomeStreamSubscriber)initWithStreamIdentifier:(id)identifier;
 - (id)latestEvent;
 - (id)notificationName;
 - (id)queueLabel;
 - (id)schedulerIdentifier;
-- (void)addObserver:(id)a3 selector:(SEL)a4;
+- (void)addObserver:(id)observer selector:(SEL)selector;
 - (void)dealloc;
-- (void)getLatestEventWithCompletion:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)getLatestEventWithCompletion:(id)completion;
+- (void)removeObserver:(id)observer;
 - (void)setupSink;
-- (void)updateWithEvent:(id)a3;
+- (void)updateWithEvent:(id)event;
 @end
 
 @implementation SearchUIBiomeStreamSubscriber
@@ -18,8 +18,8 @@
 - (id)notificationName
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(SearchUIBiomeStreamSubscriber *)self streamIdentifier];
-  v4 = [v2 stringWithFormat:@"searchui_biomeObserver_%@", v3];
+  streamIdentifier = [(SearchUIBiomeStreamSubscriber *)self streamIdentifier];
+  v4 = [v2 stringWithFormat:@"searchui_biomeObserver_%@", streamIdentifier];
 
   return v4;
 }
@@ -27,8 +27,8 @@
 - (id)queueLabel
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(SearchUIBiomeStreamSubscriber *)self streamIdentifier];
-  v4 = [v2 stringWithFormat:@"com.apple.SearchUI.SearchUIBiomeObserver.%@.queue", v3];
+  streamIdentifier = [(SearchUIBiomeStreamSubscriber *)self streamIdentifier];
+  v4 = [v2 stringWithFormat:@"com.apple.SearchUI.SearchUIBiomeObserver.%@.queue", streamIdentifier];
 
   return v4;
 }
@@ -36,15 +36,15 @@
 - (id)schedulerIdentifier
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(SearchUIBiomeStreamSubscriber *)self streamIdentifier];
-  v4 = [v2 stringWithFormat:@"com.apple.SearchUI.SearchUIBiomeObserver.%@.scheduler", v3];
+  streamIdentifier = [(SearchUIBiomeStreamSubscriber *)self streamIdentifier];
+  v4 = [v2 stringWithFormat:@"com.apple.SearchUI.SearchUIBiomeObserver.%@.scheduler", streamIdentifier];
 
   return v4;
 }
 
-- (SearchUIBiomeStreamSubscriber)initWithStreamIdentifier:(id)a3
+- (SearchUIBiomeStreamSubscriber)initWithStreamIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [(SearchUIBiomeStreamSubscriber *)self init];
   v7 = v6;
   if (!v6)
@@ -52,24 +52,24 @@
     goto LABEL_7;
   }
 
-  objc_storeStrong(&v6->_streamIdentifier, a3);
+  objc_storeStrong(&v6->_streamIdentifier, identifier);
   v8 = objc_alloc_init(MEMORY[0x1E696AD88]);
   center = v7->_center;
   v7->_center = v8;
 
   v7->_observerCount = 0;
-  v10 = [(SearchUIBiomeStreamSubscriber *)v7 queueLabel];
-  v11 = [v10 UTF8String];
+  queueLabel = [(SearchUIBiomeStreamSubscriber *)v7 queueLabel];
+  uTF8String = [queueLabel UTF8String];
 
   v12 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v13 = dispatch_queue_create(v11, v12);
+  v13 = dispatch_queue_create(uTF8String, v12);
   queue = v7->_queue;
   v7->_queue = v13;
 
   v15 = BiomeLibrary();
-  v16 = [(SearchUIBiomeStreamSubscriber *)v7 streamIdentifier];
+  streamIdentifier = [(SearchUIBiomeStreamSubscriber *)v7 streamIdentifier];
   v23 = 0;
-  v17 = [v15 streamWithIdentifier:v16 error:&v23];
+  v17 = [v15 streamWithIdentifier:streamIdentifier error:&v23];
   v18 = v23;
   stream = v7->_stream;
   v7->_stream = v17;
@@ -94,18 +94,18 @@ LABEL_8:
   return v21;
 }
 
-- (void)getLatestEventWithCompletion:(id)a3
+- (void)getLatestEventWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SearchUIBiomeStreamSubscriber *)self queue];
+  completionCopy = completion;
+  queue = [(SearchUIBiomeStreamSubscriber *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__SearchUIBiomeStreamSubscriber_getLatestEventWithCompletion___block_invoke;
   v7[3] = &unk_1E85B3958;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, v7);
 }
 
 void __62__SearchUIBiomeStreamSubscriber_getLatestEventWithCompletion___block_invoke(uint64_t a1)
@@ -123,9 +123,9 @@ void __62__SearchUIBiomeStreamSubscriber_getLatestEventWithCompletion___block_in
   v14 = __Block_byref_object_copy__5;
   v15 = __Block_byref_object_dispose__5;
   v16 = 0;
-  v3 = [(SearchUIBiomeStreamSubscriber *)self stream];
-  v4 = [v3 publisher];
-  v5 = [v4 last];
+  stream = [(SearchUIBiomeStreamSubscriber *)self stream];
+  publisher = [stream publisher];
+  last = [publisher last];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __44__SearchUIBiomeStreamSubscriber_latestEvent__block_invoke;
@@ -137,7 +137,7 @@ void __62__SearchUIBiomeStreamSubscriber_getLatestEventWithCompletion___block_in
   v9[3] = &unk_1E85B4360;
   v9[4] = self;
   v9[5] = &v11;
-  v6 = [v5 sinkWithCompletion:v10 receiveInput:v9];
+  v6 = [last sinkWithCompletion:v10 receiveInput:v9];
 
   v7 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -192,56 +192,56 @@ void __44__SearchUIBiomeStreamSubscriber_latestEvent__block_invoke_13(uint64_t a
 
 - (BOOL)isFinished
 {
-  v2 = [(SearchUIBiomeStreamSubscriber *)self biomeSink];
-  v3 = [v2 status];
-  v4 = [v3 state] == 2;
+  biomeSink = [(SearchUIBiomeStreamSubscriber *)self biomeSink];
+  status = [biomeSink status];
+  v4 = [status state] == 2;
 
   return v4;
 }
 
 - (void)dealloc
 {
-  v3 = [(SearchUIBiomeStreamSubscriber *)self biomeSink];
-  v4 = [(SearchUIBiomeStreamSubscriber *)self queue];
+  biomeSink = [(SearchUIBiomeStreamSubscriber *)self biomeSink];
+  queue = [(SearchUIBiomeStreamSubscriber *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__SearchUIBiomeStreamSubscriber_dealloc__block_invoke;
   block[3] = &unk_1E85B24C8;
-  v8 = v3;
-  v5 = v3;
-  dispatch_async(v4, block);
+  v8 = biomeSink;
+  v5 = biomeSink;
+  dispatch_async(queue, block);
 
   v6.receiver = self;
   v6.super_class = SearchUIBiomeStreamSubscriber;
   [(SearchUIBiomeStreamSubscriber *)&v6 dealloc];
 }
 
-- (void)addObserver:(id)a3 selector:(SEL)a4
+- (void)addObserver:(id)observer selector:(SEL)selector
 {
-  v6 = a3;
-  v8 = [(SearchUIBiomeStreamSubscriber *)self center];
-  v7 = [(SearchUIBiomeStreamSubscriber *)self notificationName];
-  [v8 addObserver:v6 selector:a4 name:v7 object:self];
+  observerCopy = observer;
+  center = [(SearchUIBiomeStreamSubscriber *)self center];
+  notificationName = [(SearchUIBiomeStreamSubscriber *)self notificationName];
+  [center addObserver:observerCopy selector:selector name:notificationName object:self];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SearchUIBiomeStreamSubscriber *)self center];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  center = [(SearchUIBiomeStreamSubscriber *)self center];
+  [center removeObserver:observerCopy];
 }
 
 - (void)setupSink
 {
   v3 = objc_alloc(MEMORY[0x1E698F258]);
-  v4 = [(SearchUIBiomeStreamSubscriber *)self schedulerIdentifier];
-  v5 = [(SearchUIBiomeStreamSubscriber *)self queue];
-  v6 = [v3 initWithIdentifier:v4 targetQueue:v5 waking:0];
+  schedulerIdentifier = [(SearchUIBiomeStreamSubscriber *)self schedulerIdentifier];
+  queue = [(SearchUIBiomeStreamSubscriber *)self queue];
+  v6 = [v3 initWithIdentifier:schedulerIdentifier targetQueue:queue waking:0];
 
   objc_initWeak(&location, self);
-  v7 = [(SearchUIBiomeStreamSubscriber *)self stream];
-  v8 = [v7 DSLPublisher];
-  v9 = [v8 subscribeOn:v6];
+  stream = [(SearchUIBiomeStreamSubscriber *)self stream];
+  dSLPublisher = [stream DSLPublisher];
+  v9 = [dSLPublisher subscribeOn:v6];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __42__SearchUIBiomeStreamSubscriber_setupSink__block_invoke;
@@ -305,17 +305,17 @@ void __42__SearchUIBiomeStreamSubscriber_setupSink__block_invoke_16(uint64_t a1,
   [WeakRetained updateWithEvent:v7];
 }
 
-- (void)updateWithEvent:(id)a3
+- (void)updateWithEvent:(id)event
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SearchUIBiomeStreamSubscriber *)self center];
-  v6 = [(SearchUIBiomeStreamSubscriber *)self notificationName];
+  eventCopy = event;
+  center = [(SearchUIBiomeStreamSubscriber *)self center];
+  notificationName = [(SearchUIBiomeStreamSubscriber *)self notificationName];
   v8 = @"event";
-  v9[0] = v4;
+  v9[0] = eventCopy;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
-  [v5 postNotificationName:v6 object:self userInfo:v7];
+  [center postNotificationName:notificationName object:self userInfo:v7];
 }
 
 - (void)initWithStreamIdentifier:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

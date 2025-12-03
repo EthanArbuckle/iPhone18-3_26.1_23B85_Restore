@@ -1,51 +1,51 @@
 @interface AMSPurchaseSIWATask
 - (AKCredentialRequestContext)requestContext;
-- (AMSPurchaseSIWATask)initWithPurchaseSIWA:(id)a3 bag:(id)a4;
+- (AMSPurchaseSIWATask)initWithPurchaseSIWA:(id)a bag:(id)bag;
 - (BOOL)_beginAuthorizationWasPerformed;
 - (BOOL)_siwaDidCommence;
-- (BOOL)_willRequireAskToBuyForTaskInfo:(id)a3;
+- (BOOL)_willRequireAskToBuyForTaskInfo:(id)info;
 - (id)_beginAuthorization;
 - (id)_cancelAuthorization;
 - (id)_continueAuthorization;
-- (id)performPreActionRequestForTaskInfo:(id)a3 requiresAuthorization:(BOOL)a4;
+- (id)performPreActionRequestForTaskInfo:(id)info requiresAuthorization:(BOOL)authorization;
 - (id)performPreauthenticate;
 - (id)performPurchaseSIWA;
 - (id)preauthenticateOptions;
-- (void)_updateRequestContextWithPurchaseInfo:(id)a3;
+- (void)_updateRequestContextWithPurchaseInfo:(id)info;
 @end
 
 @implementation AMSPurchaseSIWATask
 
-- (AMSPurchaseSIWATask)initWithPurchaseSIWA:(id)a3 bag:(id)a4
+- (AMSPurchaseSIWATask)initWithPurchaseSIWA:(id)a bag:(id)bag
 {
-  v6 = a3;
+  aCopy = a;
   v10.receiver = self;
   v10.super_class = AMSPurchaseSIWATask;
-  v7 = [(AMSPurchaseTask *)&v10 initWithPurchase:v6 bag:a4];
+  v7 = [(AMSPurchaseTask *)&v10 initWithPurchase:aCopy bag:bag];
   v8 = v7;
   if (v7)
   {
-    [(AMSPurchaseSIWATask *)v7 setPurchaseSIWA:v6];
+    [(AMSPurchaseSIWATask *)v7 setPurchaseSIWA:aCopy];
   }
 
   return v8;
 }
 
-- (id)performPreActionRequestForTaskInfo:(id)a3 requiresAuthorization:(BOOL)a4
+- (id)performPreActionRequestForTaskInfo:(id)info requiresAuthorization:(BOOL)authorization
 {
-  v4 = a4;
+  authorizationCopy = authorization;
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 properties];
-  v8 = [v7 logUUID];
+  infoCopy = info;
+  properties = [infoCopy properties];
+  logUUID = [properties logUUID];
 
-  LODWORD(v7) = [(AMSPurchaseSIWATask *)self _willRequireAskToBuyForTaskInfo:v6];
-  if (v7)
+  LODWORD(properties) = [(AMSPurchaseSIWATask *)self _willRequireAskToBuyForTaskInfo:infoCopy];
+  if (properties)
   {
-    v9 = [(AMSPurchaseTask *)self purchaseInfo];
-    v10 = [v9 hasBeenAuthedForBuy];
+    purchaseInfo = [(AMSPurchaseTask *)self purchaseInfo];
+    hasBeenAuthedForBuy = [purchaseInfo hasBeenAuthedForBuy];
 
-    if (v10)
+    if (hasBeenAuthedForBuy)
     {
       v11 = +[AMSLogConfig sharedConfig];
       if (!v11)
@@ -53,25 +53,25 @@
         v11 = +[AMSLogConfig sharedConfig];
       }
 
-      v12 = [v11 OSLogObject];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v11 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
         v28 = objc_opt_class();
         v29 = 2114;
-        v30 = v8;
+        v30 = logUUID;
         v13 = v28;
-        _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Cancelling SiWA because pre-auth and AtB is enabled for this purchase", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Cancelling SiWA because pre-auth and AtB is enabled for this purchase", buf, 0x16u);
       }
 
-      v14 = [(AMSPurchaseSIWATask *)self _cancelAuthorization];
+      _cancelAuthorization = [(AMSPurchaseSIWATask *)self _cancelAuthorization];
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
       v25[2] = __80__AMSPurchaseSIWATask_performPreActionRequestForTaskInfo_requiresAuthorization___block_invoke;
       v25[3] = &unk_1E73BB440;
       v25[4] = self;
-      v26 = v8;
-      v15 = [v14 continueWithBinaryPromiseBlock:v25];
+      v26 = logUUID;
+      v15 = [_cancelAuthorization continueWithBinaryPromiseBlock:v25];
       v16 = v26;
       goto LABEL_20;
     }
@@ -85,8 +85,8 @@
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v17 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
 LABEL_18:
 
@@ -97,11 +97,11 @@ LABEL_18:
     *buf = 138543618;
     v28 = objc_opt_class();
     v29 = 2114;
-    v30 = v8;
+    v30 = logUUID;
     v19 = v28;
     v20 = "%{public}@: [%{public}@] Skipping SiWA commencement because AtB is enabled for this purchase";
 LABEL_17:
-    _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_DEFAULT, v20, buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, v20, buf, 0x16u);
 
     goto LABEL_18;
   }
@@ -114,8 +114,8 @@ LABEL_17:
       v17 = +[AMSLogConfig sharedConfig];
     }
 
-    v18 = [v17 OSLogObject];
-    if (!os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v17 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_18;
     }
@@ -123,21 +123,21 @@ LABEL_17:
     *buf = 138543618;
     v28 = objc_opt_class();
     v29 = 2114;
-    v30 = v8;
+    v30 = logUUID;
     v19 = v28;
     v20 = "%{public}@: [%{public}@] Will not commence SiWA authorization during pre-action step due to it already being performed";
     goto LABEL_17;
   }
 
-  [(AMSPurchaseSIWATask *)self setPurchaseRequiresAuthorization:v4];
-  v14 = [(AMSPurchaseSIWATask *)self _beginAuthorization];
+  [(AMSPurchaseSIWATask *)self setPurchaseRequiresAuthorization:authorizationCopy];
+  _cancelAuthorization = [(AMSPurchaseSIWATask *)self _beginAuthorization];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __80__AMSPurchaseSIWATask_performPreActionRequestForTaskInfo_requiresAuthorization___block_invoke_12;
   v23[3] = &unk_1E73BB440;
   v23[4] = self;
-  v24 = v8;
-  v15 = [v14 continueWithBinaryPromiseBlock:v23];
+  v24 = logUUID;
+  v15 = [_cancelAuthorization continueWithBinaryPromiseBlock:v23];
   v16 = v24;
 LABEL_20:
 
@@ -230,13 +230,13 @@ id __80__AMSPurchaseSIWATask_performPreActionRequestForTaskInfo_requiresAuthoriz
 - (id)performPreauthenticate
 {
   [(AMSPurchaseSIWATask *)self setPurchaseRequiresAuthorization:1];
-  v3 = [(AMSPurchaseSIWATask *)self _beginAuthorization];
+  _beginAuthorization = [(AMSPurchaseSIWATask *)self _beginAuthorization];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__AMSPurchaseSIWATask_performPreauthenticate__block_invoke;
   v6[3] = &unk_1E73BB468;
   v6[4] = self;
-  v4 = [v3 continueWithBlock:v6];
+  v4 = [_beginAuthorization continueWithBlock:v6];
 
   return v4;
 }
@@ -283,23 +283,23 @@ id __45__AMSPurchaseSIWATask_performPreauthenticate__block_invoke(uint64_t a1, u
 {
   v7.receiver = self;
   v7.super_class = AMSPurchaseSIWATask;
-  v3 = [(AMSPurchaseTask *)&v7 preauthenticateOptions];
-  v4 = [(AMSPurchaseSIWATask *)self purchaseSIWA];
-  v5 = [v4 appProvidedData];
-  [v3 setAppProvidedData:v5];
+  preauthenticateOptions = [(AMSPurchaseTask *)&v7 preauthenticateOptions];
+  purchaseSIWA = [(AMSPurchaseSIWATask *)self purchaseSIWA];
+  appProvidedData = [purchaseSIWA appProvidedData];
+  [preauthenticateOptions setAppProvidedData:appProvidedData];
 
-  return v3;
+  return preauthenticateOptions;
 }
 
 - (id)performPurchaseSIWA
 {
-  v3 = [(AMSPurchaseTask *)self performPurchase];
+  performPurchase = [(AMSPurchaseTask *)self performPurchase];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__AMSPurchaseSIWATask_performPurchaseSIWA__block_invoke;
   v6[3] = &unk_1E73BB4B8;
   v6[4] = self;
-  v4 = [v3 continueWithBlock:v6];
+  v4 = [performPurchase continueWithBlock:v6];
 
   return v4;
 }
@@ -535,55 +535,55 @@ id __42__AMSPurchaseSIWATask_performPurchaseSIWA__block_invoke_21(uint64_t a1, v
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = v5;
-    v7 = [(AMSPurchaseSIWATask *)self purchaseSIWA];
-    v8 = [v7 logUUID];
+    purchaseSIWA = [(AMSPurchaseSIWATask *)self purchaseSIWA];
+    logUUID = [purchaseSIWA logUUID];
     *buf = 138543618;
     v41 = v5;
     v42 = 2114;
-    v43 = v8;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Commencing begin authorization", buf, 0x16u);
+    v43 = logUUID;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Commencing begin authorization", buf, 0x16u);
   }
 
-  v9 = [(AMSPurchaseSIWATask *)self newAuthorizationController];
-  v10 = [(AMSPurchaseSIWATask *)self purchaseRequiresAuthorization];
+  newAuthorizationController = [(AMSPurchaseSIWATask *)self newAuthorizationController];
+  purchaseRequiresAuthorization = [(AMSPurchaseSIWATask *)self purchaseRequiresAuthorization];
   v11 = +[AMSLogConfig sharedConfig];
   v12 = v11;
-  if (v10)
+  if (purchaseRequiresAuthorization)
   {
     if (!v11)
     {
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v14 = objc_opt_class();
       v15 = v14;
-      v16 = [(AMSPurchaseSIWATask *)self purchaseSIWA];
-      v17 = [v16 logUUID];
+      purchaseSIWA2 = [(AMSPurchaseSIWATask *)self purchaseSIWA];
+      logUUID2 = [purchaseSIWA2 logUUID];
       *buf = 138543618;
       v41 = v14;
       v42 = 2114;
-      v43 = v17;
-      _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Invoking beginAuthorization", buf, 0x16u);
+      v43 = logUUID2;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Invoking beginAuthorization", buf, 0x16u);
     }
 
     v18 = objc_alloc_init(AMSPromise);
-    v19 = [(AMSPurchaseSIWATask *)self requestContext];
-    v20 = [(AMSPromise *)v18 completionHandlerAdapter];
-    [v9 beginAuthorizationWithContext:v19 completion:v20];
+    requestContext = [(AMSPurchaseSIWATask *)self requestContext];
+    completionHandlerAdapter = [(AMSPromise *)v18 completionHandlerAdapter];
+    [newAuthorizationController beginAuthorizationWithContext:requestContext completion:completionHandlerAdapter];
 
     v35 = MEMORY[0x1E69E9820];
     v36 = 3221225472;
     v37 = __42__AMSPurchaseSIWATask__beginAuthorization__block_invoke;
     v38 = &unk_1E73BB4E0;
-    v39 = self;
+    selfCopy = self;
     v21 = &v35;
   }
 
@@ -594,34 +594,34 @@ id __42__AMSPurchaseSIWATask_performPurchaseSIWA__block_invoke_21(uint64_t a1, v
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v22 = [v12 OSLogObject];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    oSLogObject3 = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
       v23 = objc_opt_class();
       v24 = v23;
-      v25 = [(AMSPurchaseSIWATask *)self purchaseSIWA];
-      v26 = [v25 logUUID];
+      purchaseSIWA3 = [(AMSPurchaseSIWATask *)self purchaseSIWA];
+      logUUID3 = [purchaseSIWA3 logUUID];
       *buf = 138543618;
       v41 = v23;
       v42 = 2114;
-      v43 = v26;
-      _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Invoking performAuthorization", buf, 0x16u);
+      v43 = logUUID3;
+      _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Invoking performAuthorization", buf, 0x16u);
     }
 
     v18 = objc_alloc_init(AMSPromise);
-    v27 = [(AMSPurchaseSIWATask *)self requestContext];
-    v28 = [(AMSPromise *)v18 completionHandlerAdapter];
-    [v9 performAuthorizationWithContext:v27 completion:v28];
+    requestContext2 = [(AMSPurchaseSIWATask *)self requestContext];
+    completionHandlerAdapter2 = [(AMSPromise *)v18 completionHandlerAdapter];
+    [newAuthorizationController performAuthorizationWithContext:requestContext2 completion:completionHandlerAdapter2];
 
     v30 = MEMORY[0x1E69E9820];
     v31 = 3221225472;
     v32 = __42__AMSPurchaseSIWATask__beginAuthorization__block_invoke_26;
     v33 = &unk_1E73BB508;
-    v34 = self;
+    selfCopy2 = self;
     v21 = &v30;
   }
 
-  [(AMSPromise *)v18 addSuccessBlock:v21, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39];
+  [(AMSPromise *)v18 addSuccessBlock:v21, v30, v31, v32, v33, selfCopy2, v35, v36, v37, v38, selfCopy];
 
   return v18;
 }
@@ -636,8 +636,8 @@ void __42__AMSPurchaseSIWATask__beginAuthorization__block_invoke(uint64_t a1, vo
 - (id)_continueAuthorization
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSPurchaseTask *)self purchaseInfo];
-  [(AMSPurchaseSIWATask *)self _updateRequestContextWithPurchaseInfo:v3];
+  purchaseInfo = [(AMSPurchaseTask *)self purchaseInfo];
+  [(AMSPurchaseSIWATask *)self _updateRequestContextWithPurchaseInfo:purchaseInfo];
 
   v4 = objc_alloc_init(AMSPromise);
   v5 = +[AMSLogConfig sharedConfig];
@@ -646,24 +646,24 @@ void __42__AMSPurchaseSIWATask__beginAuthorization__block_invoke(uint64_t a1, vo
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [(AMSPurchaseSIWATask *)self purchaseSIWA];
-    v10 = [v9 logUUID];
+    purchaseSIWA = [(AMSPurchaseSIWATask *)self purchaseSIWA];
+    logUUID = [purchaseSIWA logUUID];
     v15 = 138543618;
     v16 = v7;
     v17 = 2114;
-    v18 = v10;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Commencing continue authorization", &v15, 0x16u);
+    v18 = logUUID;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Commencing continue authorization", &v15, 0x16u);
   }
 
-  v11 = [(AMSPurchaseSIWATask *)self newAuthorizationController];
-  v12 = [(AMSPurchaseSIWATask *)self requestContext];
-  v13 = [(AMSPromise *)v4 completionHandlerAdapter];
-  [v11 continueAuthorizationWithContext:v12 completion:v13];
+  newAuthorizationController = [(AMSPurchaseSIWATask *)self newAuthorizationController];
+  requestContext = [(AMSPurchaseSIWATask *)self requestContext];
+  completionHandlerAdapter = [(AMSPromise *)v4 completionHandlerAdapter];
+  [newAuthorizationController continueAuthorizationWithContext:requestContext completion:completionHandlerAdapter];
 
   return v4;
 }
@@ -671,8 +671,8 @@ void __42__AMSPurchaseSIWATask__beginAuthorization__block_invoke(uint64_t a1, vo
 - (id)_cancelAuthorization
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSPurchaseTask *)self purchaseInfo];
-  [(AMSPurchaseSIWATask *)self _updateRequestContextWithPurchaseInfo:v3];
+  purchaseInfo = [(AMSPurchaseTask *)self purchaseInfo];
+  [(AMSPurchaseSIWATask *)self _updateRequestContextWithPurchaseInfo:purchaseInfo];
 
   v4 = objc_alloc_init(AMSPromise);
   v5 = +[AMSLogConfig sharedConfig];
@@ -681,64 +681,64 @@ void __42__AMSPurchaseSIWATask__beginAuthorization__block_invoke(uint64_t a1, vo
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [(AMSPurchaseSIWATask *)self purchaseSIWA];
-    v10 = [v9 logUUID];
+    purchaseSIWA = [(AMSPurchaseSIWATask *)self purchaseSIWA];
+    logUUID = [purchaseSIWA logUUID];
     v15 = 138543618;
     v16 = v7;
     v17 = 2114;
-    v18 = v10;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Commencing cancel authorization", &v15, 0x16u);
+    v18 = logUUID;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Commencing cancel authorization", &v15, 0x16u);
   }
 
-  v11 = [(AMSPurchaseSIWATask *)self newAuthorizationController];
-  v12 = [(AMSPurchaseSIWATask *)self requestContext];
-  v13 = [(AMSPromise *)v4 errorOnlyCompletionHandlerAdapter];
-  [v11 cancelAuthorizationWithContext:v12 completion:v13];
+  newAuthorizationController = [(AMSPurchaseSIWATask *)self newAuthorizationController];
+  requestContext = [(AMSPurchaseSIWATask *)self requestContext];
+  errorOnlyCompletionHandlerAdapter = [(AMSPromise *)v4 errorOnlyCompletionHandlerAdapter];
+  [newAuthorizationController cancelAuthorizationWithContext:requestContext completion:errorOnlyCompletionHandlerAdapter];
 
   return v4;
 }
 
-- (void)_updateRequestContextWithPurchaseInfo:(id)a3
+- (void)_updateRequestContextWithPurchaseInfo:(id)info
 {
-  v18 = a3;
-  v4 = [(AMSPurchaseSIWATask *)self continuationRequestIdentifier];
-  v5 = [v4 UUIDString];
-  v6 = [(AMSPurchaseSIWATask *)self requestContext];
-  [v6 set_continuationRequestIdentifier:v5];
+  infoCopy = info;
+  continuationRequestIdentifier = [(AMSPurchaseSIWATask *)self continuationRequestIdentifier];
+  uUIDString = [continuationRequestIdentifier UUIDString];
+  requestContext = [(AMSPurchaseSIWATask *)self requestContext];
+  [requestContext set_continuationRequestIdentifier:uUIDString];
 
-  v7 = [v18 localAuthContext];
-  v8 = [v7 externalizedContext];
-  v9 = [(AMSPurchaseSIWATask *)self requestContext];
-  [v9 set_externalLocalAuthData:v8];
+  localAuthContext = [infoCopy localAuthContext];
+  externalizedContext = [localAuthContext externalizedContext];
+  requestContext2 = [(AMSPurchaseSIWATask *)self requestContext];
+  [requestContext2 set_externalLocalAuthData:externalizedContext];
 
-  v10 = [(AMSPurchaseSIWATask *)self requestContext];
-  v11 = [v10 _externalLocalAuthData];
-  if (v11)
+  requestContext3 = [(AMSPurchaseSIWATask *)self requestContext];
+  _externalLocalAuthData = [requestContext3 _externalLocalAuthData];
+  if (_externalLocalAuthData)
   {
-    v12 = v11;
+    purchaseSIWA2 = _externalLocalAuthData;
   }
 
   else
   {
-    v13 = [(AMSPurchaseSIWATask *)self purchaseSIWA];
-    v14 = [v13 serviceID];
+    purchaseSIWA = [(AMSPurchaseSIWATask *)self purchaseSIWA];
+    serviceID = [purchaseSIWA serviceID];
 
-    if (!v14)
+    if (!serviceID)
     {
       goto LABEL_6;
     }
 
-    v10 = [v18 idmsTokens];
-    v12 = [(AMSPurchaseSIWATask *)self purchaseSIWA];
-    v15 = [v12 serviceID];
-    v16 = [v10 objectForKeyedSubscript:v15];
-    v17 = [(AMSPurchaseSIWATask *)self requestContext];
-    [v17 set_externalAuthToken:v16];
+    requestContext3 = [infoCopy idmsTokens];
+    purchaseSIWA2 = [(AMSPurchaseSIWATask *)self purchaseSIWA];
+    serviceID2 = [purchaseSIWA2 serviceID];
+    v16 = [requestContext3 objectForKeyedSubscript:serviceID2];
+    requestContext4 = [(AMSPurchaseSIWATask *)self requestContext];
+    [requestContext4 set_externalAuthToken:v16];
   }
 
 LABEL_6:
@@ -746,24 +746,24 @@ LABEL_6:
 
 - (BOOL)_beginAuthorizationWasPerformed
 {
-  v3 = [(AMSPurchaseSIWATask *)self continuationRequestIdentifier];
-  if (v3)
+  continuationRequestIdentifier = [(AMSPurchaseSIWATask *)self continuationRequestIdentifier];
+  if (continuationRequestIdentifier)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(AMSPurchaseSIWATask *)self authorization];
-    if (v5)
+    authorization = [(AMSPurchaseSIWATask *)self authorization];
+    if (authorization)
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(AMSPurchaseSIWATask *)self siwaError];
-      v4 = v6 != 0;
+      siwaError = [(AMSPurchaseSIWATask *)self siwaError];
+      v4 = siwaError != 0;
     }
   }
 
@@ -777,18 +777,18 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [(AMSPurchaseSIWATask *)self siwaError];
-  v4 = v3 == 0;
+  siwaError = [(AMSPurchaseSIWATask *)self siwaError];
+  v4 = siwaError == 0;
 
   return v4;
 }
 
-- (BOOL)_willRequireAskToBuyForTaskInfo:(id)a3
+- (BOOL)_willRequireAskToBuyForTaskInfo:(id)info
 {
-  v3 = [a3 response];
-  v4 = [v3 ams_valueForHTTPHeaderField:@"buyproductwillrequireatb"];
-  v5 = [v4 lowercaseString];
-  v6 = [v5 isEqualToString:@"true"];
+  response = [info response];
+  v4 = [response ams_valueForHTTPHeaderField:@"buyproductwillrequireatb"];
+  lowercaseString = [v4 lowercaseString];
+  v6 = [lowercaseString isEqualToString:@"true"];
 
   return v6;
 }
@@ -800,13 +800,13 @@ LABEL_6:
   if (!requestContext)
   {
     v4 = objc_alloc_init(MEMORY[0x1E698DDD0]);
-    v5 = [(AMSPurchaseSIWATask *)self purchaseSIWA];
-    v6 = [v5 teamID];
-    [v4 setTeamID:v6];
+    purchaseSIWA = [(AMSPurchaseSIWATask *)self purchaseSIWA];
+    teamID = [purchaseSIWA teamID];
+    [v4 setTeamID:teamID];
 
-    v7 = [(AMSPurchaseSIWATask *)self purchaseSIWA];
-    v8 = [v7 bundleID];
-    [v4 setBundleID:v8];
+    purchaseSIWA2 = [(AMSPurchaseSIWATask *)self purchaseSIWA];
+    bundleID = [purchaseSIWA2 bundleID];
+    [v4 setBundleID:bundleID];
 
     v9 = [objc_alloc(MEMORY[0x1E698DD58]) initWithProxiedClientContext:v4];
     v10 = objc_alloc_init(MEMORY[0x1E698DD08]);

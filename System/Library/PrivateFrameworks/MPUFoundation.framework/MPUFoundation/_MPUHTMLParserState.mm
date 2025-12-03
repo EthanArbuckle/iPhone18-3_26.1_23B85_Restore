@@ -1,15 +1,15 @@
 @interface _MPUHTMLParserState
-- (BOOL)parse:(id *)a3;
-- (_MPUHTMLParserState)initWithParser:(id)a3 data:(id)a4;
+- (BOOL)parse:(id *)parse;
+- (_MPUHTMLParserState)initWithParser:(id)parser data:(id)data;
 - (id)attributedString;
 - (id)currentTagAttributes;
 - (id)tagStack;
-- (void)_appendString:(id)a3;
-- (void)_characters:(const char *)a3 length:(int)a4;
-- (void)_endElement:(const char *)a3;
-- (void)_error:(int64_t)a3 msg:(const char *)a4 args:(char *)a5;
+- (void)_appendString:(id)string;
+- (void)_characters:(const char *)_characters length:(int)length;
+- (void)_endElement:(const char *)element;
+- (void)_error:(int64_t)_error msg:(const char *)msg args:(char *)args;
 - (void)_startDocument;
-- (void)_startElement:(const char *)a3 attrs:(const char *)a4;
+- (void)_startElement:(const char *)element attrs:(const char *)attrs;
 @end
 
 @implementation _MPUHTMLParserState
@@ -28,14 +28,14 @@
   }
 }
 
-- (void)_startElement:(const char *)a3 attrs:(const char *)a4
+- (void)_startElement:(const char *)element attrs:(const char *)attrs
 {
-  v20 = _MPUHTMLStringFromXMLString(a3, 1);
+  v20 = _MPUHTMLStringFromXMLString(element, 1);
   [(NSMutableArray *)self->_tagStack addObject:?];
-  v6 = [(NSMutableArray *)self->_stringStack lastObject];
-  [(_MPUHTMLParserState *)self _appendString:v6];
-  v7 = [(NSMutableArray *)self->_stringStack lastObject];
-  [v7 setString:&stru_2868E4110];
+  lastObject = [(NSMutableArray *)self->_stringStack lastObject];
+  [(_MPUHTMLParserState *)self _appendString:lastObject];
+  lastObject2 = [(NSMutableArray *)self->_stringStack lastObject];
+  [lastObject2 setString:&stru_2868E4110];
 
   v8 = objc_alloc_init(MEMORY[0x277CCAB68]);
   [(NSMutableArray *)self->_stringStack addObject:v8];
@@ -53,13 +53,13 @@
 
   if ((delegateCapabilites & 2) != 0)
   {
-    if (a4)
+    if (attrs)
     {
       v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v12 = *a4;
-      if (*a4)
+      v12 = *attrs;
+      if (*attrs)
       {
-        v13 = a4 + 2;
+        v13 = attrs + 2;
         do
         {
           v14 = *(v13 - 1);
@@ -101,47 +101,47 @@
   }
 }
 
-- (void)_endElement:(const char *)a3
+- (void)_endElement:(const char *)element
 {
-  v4 = [(NSMutableArray *)self->_stringStack lastObject];
-  [(_MPUHTMLParserState *)self _appendString:v4];
+  lastObject = [(NSMutableArray *)self->_stringStack lastObject];
+  [(_MPUHTMLParserState *)self _appendString:lastObject];
   [(NSMutableArray *)self->_attributeDictionaries removeLastObject];
   [(NSMutableArray *)self->_tagStack removeLastObject];
   [(NSMutableArray *)self->_stringStack removeLastObject];
 }
 
-- (void)_characters:(const char *)a3 length:(int)a4
+- (void)_characters:(const char *)_characters length:(int)length
 {
-  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:a3 length:a4 encoding:4];
-  v5 = [(NSMutableArray *)self->_stringStack lastObject];
-  [v5 appendString:v6];
+  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:_characters length:length encoding:4];
+  lastObject = [(NSMutableArray *)self->_stringStack lastObject];
+  [lastObject appendString:v6];
 }
 
-- (void)_error:(int64_t)a3 msg:(const char *)a4 args:(char *)a5
+- (void)_error:(int64_t)_error msg:(const char *)msg args:(char *)args
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CCACA8];
-  v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:a4];
-  v10 = [v8 stringWithValidatedFormat:v9 validFormatSpecifiers:@"%s" error:0, a5];
+  v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:msg];
+  args = [v8 stringWithValidatedFormat:v9 validFormatSpecifiers:@"%s" error:0, args];
 
   v11 = MEMORY[0x277CCA9B8];
   v18 = *MEMORY[0x277CCA450];
-  v19[0] = v10;
+  v19[0] = args;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:&v18 count:1];
-  v13 = [v11 errorWithDomain:@"com.apple.music.htmlparsererror" code:a3 userInfo:v12];
+  v13 = [v11 errorWithDomain:@"com.apple.music.htmlparsererror" code:_error userInfo:v12];
 
   v14 = @"WARNING";
-  if (a3 == 2)
+  if (_error == 2)
   {
     v14 = @"FATAL";
   }
 
-  if (a3 == 1)
+  if (_error == 1)
   {
     v14 = @"ERROR";
   }
 
-  NSLog(&cfstr_Xml.isa, v14, v10);
+  NSLog(&cfstr_Xml.isa, v14, args);
   errors = self->_errors;
   if (!errors)
   {
@@ -155,13 +155,13 @@
   [(NSMutableArray *)errors addObject:v13];
 }
 
-- (void)_appendString:(id)a3
+- (void)_appendString:(id)string
 {
-  v6 = a3;
-  if ([v6 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v4 = [(_MPUHTMLParserState *)self currentTagAttributes];
-    v5 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v6 attributes:v4];
+    currentTagAttributes = [(_MPUHTMLParserState *)self currentTagAttributes];
+    v5 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:stringCopy attributes:currentTagAttributes];
     [(NSMutableAttributedString *)self->_attributedString appendAttributedString:v5];
   }
 }
@@ -201,10 +201,10 @@
   return v3;
 }
 
-- (_MPUHTMLParserState)initWithParser:(id)a3 data:(id)a4
+- (_MPUHTMLParserState)initWithParser:(id)parser data:(id)data
 {
-  v7 = a3;
-  v8 = a4;
+  parserCopy = parser;
+  dataCopy = data;
   v16.receiver = self;
   v16.super_class = _MPUHTMLParserState;
   v9 = [(_MPUHTMLParserState *)&v16 init];
@@ -212,11 +212,11 @@
   if (v9)
   {
     v9->_selfRef = v9;
-    objc_storeStrong(&v9->_parser, a3);
-    objc_storeStrong(&v10->_data, a4);
-    v11 = [v7 delegate];
+    objc_storeStrong(&v9->_parser, parser);
+    objc_storeStrong(&v10->_data, data);
+    delegate = [parserCopy delegate];
     delegate = v10->_delegate;
-    v10->_delegate = v11;
+    v10->_delegate = delegate;
 
     *&v10->_delegateCapabilites = *&v10->_delegateCapabilites & 0xFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
@@ -246,7 +246,7 @@
   return v10;
 }
 
-- (BOOL)parse:(id *)a3
+- (BOOL)parse:(id *)parse
 {
   v28[1] = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CCAB48]);
@@ -275,7 +275,7 @@
   htmlSAXParseDoc(v13, CharEncodingName, _MPUHTMLParserStateSAXInitSharedHandler___gMPUHTMLParserStateSAXHandler, self->_selfRef);
   xmlCleanupParser();
   free(v13);
-  if (a3)
+  if (parse)
   {
     if ([(NSMutableArray *)self->_errors count])
     {
@@ -284,15 +284,15 @@
       v16 = [(NSMutableArray *)self->_errors copy];
       v28[0] = v16;
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
-      *a3 = [v15 errorWithDomain:@"com.apple.music.htmlparsererror" code:0 userInfo:v17];
+      *parse = [v15 errorWithDomain:@"com.apple.music.htmlparsererror" code:0 userInfo:v17];
 
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
       v18 = self->_errors;
-      a3 = [(NSMutableArray *)v18 countByEnumeratingWithState:&v22 objects:v26 count:16];
-      if (a3)
+      parse = [(NSMutableArray *)v18 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      if (parse)
       {
         v19 = *v23;
         while (2)
@@ -307,16 +307,16 @@
 
             if ([*(*(&v22 + 1) + 8 * v20) code])
             {
-              LOBYTE(a3) = 1;
+              LOBYTE(parse) = 1;
               goto LABEL_15;
             }
 
             v20 = (v20 + 1);
           }
 
-          while (a3 != v20);
-          a3 = [(NSMutableArray *)v18 countByEnumeratingWithState:&v22 objects:v26 count:16];
-          if (a3)
+          while (parse != v20);
+          parse = [(NSMutableArray *)v18 countByEnumeratingWithState:&v22 objects:v26 count:16];
+          if (parse)
           {
             continue;
           }
@@ -330,11 +330,11 @@ LABEL_15:
 
     else
     {
-      LOBYTE(a3) = 0;
+      LOBYTE(parse) = 0;
     }
   }
 
-  return a3;
+  return parse;
 }
 
 - (id)attributedString

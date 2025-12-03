@@ -1,24 +1,24 @@
 @interface _SFPBSportsDetail
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBSportsDetail)initWithDictionary:(id)a3;
-- (_SFPBSportsDetail)initWithJSON:(id)a3;
+- (_SFPBSportsDetail)initWithDictionary:(id)dictionary;
+- (_SFPBSportsDetail)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setRequested_entity_type:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setRequested_entity_type:(id)requested_entity_type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBSportsDetail
 
-- (_SFPBSportsDetail)initWithDictionary:(id)a3
+- (_SFPBSportsDetail)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = _SFPBSportsDetail;
   v5 = [(_SFPBSportsDetail *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"requestedEntityType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"requestedEntityType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,30 +32,30 @@
   return v5;
 }
 
-- (_SFPBSportsDetail)initWithJSON:(id)a3
+- (_SFPBSportsDetail)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBSportsDetail *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBSportsDetail *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBSportsDetail *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -68,29 +68,29 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_requested_entity_type)
   {
-    v4 = [(_SFPBSportsDetail *)self requested_entity_type];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"requestedEntityType"];
+    requested_entity_type = [(_SFPBSportsDetail *)self requested_entity_type];
+    v5 = [requested_entity_type copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"requestedEntityType"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBSportsDetail *)self requested_entity_type];
-    v6 = [v4 requested_entity_type];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    requested_entity_type = [(_SFPBSportsDetail *)self requested_entity_type];
+    requested_entity_type2 = [equalCopy requested_entity_type];
+    v7 = requested_entity_type2;
+    if ((requested_entity_type != 0) != (requested_entity_type2 == 0))
     {
-      v8 = [(_SFPBSportsDetail *)self requested_entity_type];
-      if (!v8)
+      requested_entity_type3 = [(_SFPBSportsDetail *)self requested_entity_type];
+      if (!requested_entity_type3)
       {
 
 LABEL_10:
@@ -98,10 +98,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBSportsDetail *)self requested_entity_type];
-      v11 = [v4 requested_entity_type];
-      v12 = [v10 isEqual:v11];
+      v9 = requested_entity_type3;
+      requested_entity_type4 = [(_SFPBSportsDetail *)self requested_entity_type];
+      requested_entity_type5 = [equalCopy requested_entity_type];
+      v12 = [requested_entity_type4 isEqual:requested_entity_type5];
 
       if (v12)
       {
@@ -120,19 +120,19 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(_SFPBSportsDetail *)self requested_entity_type];
-  if (v4)
+  toCopy = to;
+  requested_entity_type = [(_SFPBSportsDetail *)self requested_entity_type];
+  if (requested_entity_type)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setRequested_entity_type:(id)a3
+- (void)setRequested_entity_type:(id)requested_entity_type
 {
-  v4 = [a3 copy];
+  v4 = [requested_entity_type copy];
   requested_entity_type = self->_requested_entity_type;
   self->_requested_entity_type = v4;
 

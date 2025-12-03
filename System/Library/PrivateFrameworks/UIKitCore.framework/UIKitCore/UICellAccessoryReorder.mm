@@ -1,10 +1,10 @@
 @interface UICellAccessoryReorder
-- (BOOL)_canDirectlyUpdateExistingAccessoryViewFrom:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_canDirectlyUpdateExistingAccessoryViewFrom:(id)from;
+- (BOOL)isEqual:(id)equal;
 - (UICellAccessoryReorder)init;
-- (UICellAccessoryReorder)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (UICellAccessoryReorder)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UICellAccessoryReorder
@@ -24,34 +24,34 @@
   return v3;
 }
 
-- (UICellAccessoryReorder)initWithCoder:(id)a3
+- (UICellAccessoryReorder)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = UICellAccessoryReorder;
-  v5 = [(UICellAccessory *)&v7 initWithCoder:v4];
+  v5 = [(UICellAccessory *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_showsVerticalSeparator = [v4 decodeBoolForKey:@"showsVerticalSeparator"];
+    v5->_showsVerticalSeparator = [coderCopy decodeBoolForKey:@"showsVerticalSeparator"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = UICellAccessoryReorder;
-  v4 = a3;
-  [(UICellAccessory *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_showsVerticalSeparator forKey:{@"showsVerticalSeparator", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(UICellAccessory *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_showsVerticalSeparator forKey:{@"showsVerticalSeparator", v5.receiver, v5.super_class}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = UICellAccessoryReorder;
-  result = [(UICellAccessory *)&v5 copyWithZone:a3];
+  result = [(UICellAccessory *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 56) = self->_showsVerticalSeparator;
@@ -60,14 +60,14 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = UICellAccessoryReorder;
-  if ([(UICellAccessory *)&v7 isEqual:v4])
+  if ([(UICellAccessory *)&v7 isEqual:equalCopy])
   {
-    v5 = self->_showsVerticalSeparator == v4[56];
+    v5 = self->_showsVerticalSeparator == equalCopy[56];
   }
 
   else
@@ -78,14 +78,14 @@
   return v5;
 }
 
-- (BOOL)_canDirectlyUpdateExistingAccessoryViewFrom:(id)a3
+- (BOOL)_canDirectlyUpdateExistingAccessoryViewFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v7.receiver = self;
   v7.super_class = UICellAccessoryReorder;
-  if ([(UICellAccessory *)&v7 _canDirectlyUpdateExistingAccessoryViewFrom:v4])
+  if ([(UICellAccessory *)&v7 _canDirectlyUpdateExistingAccessoryViewFrom:fromCopy])
   {
-    v5 = self->_showsVerticalSeparator == v4[56];
+    v5 = self->_showsVerticalSeparator == fromCopy[56];
   }
 
   else

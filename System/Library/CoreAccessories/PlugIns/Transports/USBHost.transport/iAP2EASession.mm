@@ -3,7 +3,7 @@
 - (BOOL)openPipeFromApp;
 - (BOOL)openPipeToApp;
 - (iAP2EASession)init;
-- (iAP2EASession)initWithProtocol:(id)a3 endpointUUID:(id)a4 eaSessionUUID:(id)a5;
+- (iAP2EASession)initWithProtocol:(id)protocol endpointUUID:(id)d eaSessionUUID:(id)iD;
 - (id)description;
 - (int)_createListenSocket;
 - (void)_createListenSocket;
@@ -20,20 +20,20 @@
   return 0;
 }
 
-- (iAP2EASession)initWithProtocol:(id)a3 endpointUUID:(id)a4 eaSessionUUID:(id)a5
+- (iAP2EASession)initWithProtocol:(id)protocol endpointUUID:(id)d eaSessionUUID:(id)iD
 {
-  v7 = a4;
-  v8 = a5;
+  dCopy = d;
+  iDCopy = iD;
   v23.receiver = self;
   v23.super_class = iAP2EASession;
   v9 = [(iAP2EASession *)&v23 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [dCopy copy];
     endpointUUID = v9->_endpointUUID;
     v9->_endpointUUID = v10;
 
-    v12 = [v8 copy];
+    v12 = [iDCopy copy];
     eaSessionUUID = v9->_eaSessionUUID;
     v9->_eaSessionUUID = v12;
 
@@ -72,7 +72,7 @@
 - (void)shuttingDownSession
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = HIDWORD(*(a1 + 8));
+  v9 = HIDWORD(*(self + 8));
   OUTLINED_FUNCTION_6_0(&dword_2336F5000, a2, a3, "endpointUUID: %@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }

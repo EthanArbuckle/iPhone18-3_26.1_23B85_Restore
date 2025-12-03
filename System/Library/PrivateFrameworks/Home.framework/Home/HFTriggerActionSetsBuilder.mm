@@ -3,7 +3,7 @@
 - (BOOL)hasActions;
 - (BOOL)isShortcutOwned;
 - (HFSetDiff)namedActionSetsDiff;
-- (HFTriggerActionSetsBuilder)initWithActionSets:(id)a3 inHome:(id)a4 filterEmptyActionSets:(BOOL)a5;
+- (HFTriggerActionSetsBuilder)initWithActionSets:(id)sets inHome:(id)home filterEmptyActionSets:(BOOL)actionSets;
 - (NSArray)allActionBuilders;
 - (NSArray)allActionSets;
 - (NSArray)anonymousActionBuilder;
@@ -12,33 +12,33 @@
 - (id)_generateSummaryInformation;
 - (id)_generateSummaryInformationForShortcutOwnedTrigger;
 - (id)_generateSummaryInformationForStandardTrigger;
-- (id)_removeDuplicateActionSets:(id)a3;
-- (id)_uniqueServiceGroupForServices:(id)a3;
-- (id)compareToObject:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_removeDuplicateActionSets:(id)sets;
+- (id)_uniqueServiceGroupForServices:(id)services;
+- (id)compareToObject:(id)object;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createActionSetsForShortcuts;
-- (id)mediaAccessoriesForPlaybackAction:(id)a3;
-- (void)_generateMatterRepresentables:(id)a3;
-- (void)_generateStandaloneServices:(id)a3 andMediaAccessories:(id)a4;
+- (id)mediaAccessoriesForPlaybackAction:(id)action;
+- (void)_generateMatterRepresentables:(id)representables;
+- (void)_generateStandaloneServices:(id)services andMediaAccessories:(id)accessories;
 - (void)_removeAllNamedActionsSets;
-- (void)addActionSetBuilder:(id)a3;
-- (void)addActionSetIfNotPresent:(id)a3;
-- (void)addAnonymousActionBuilder:(id)a3;
-- (void)convertToHomeWorkflowActionSet:(id)a3;
+- (void)addActionSetBuilder:(id)builder;
+- (void)addActionSetIfNotPresent:(id)present;
+- (void)addAnonymousActionBuilder:(id)builder;
+- (void)convertToHomeWorkflowActionSet:(id)set;
 - (void)convertToHomeWorkflowActionSetIfNeeded;
 - (void)defaultActionsForShortcut;
-- (void)removeActionSetBuilder:(id)a3;
-- (void)removeActionSetIfPresent:(id)a3;
+- (void)removeActionSetBuilder:(id)builder;
+- (void)removeActionSetIfPresent:(id)present;
 - (void)removeAllActionsAndActionSets;
-- (void)removeAnonymousActionBuilder:(id)a3;
+- (void)removeAnonymousActionBuilder:(id)builder;
 - (void)resetActionSetBuilders;
 - (void)resetAllActionSets;
-- (void)setFromTriggerActionSetsBuilder:(id)a3;
-- (void)setHomeWorkflow:(id)a3;
-- (void)updateActionSetBuilder:(id)a3;
-- (void)updateActionSetsInTriggerBuilder:(id)a3;
-- (void)updateAnonymousActionBuilder:(id)a3;
-- (void)updateFromTriggerActionSetsBuilder:(id)a3;
+- (void)setFromTriggerActionSetsBuilder:(id)builder;
+- (void)setHomeWorkflow:(id)workflow;
+- (void)updateActionSetBuilder:(id)builder;
+- (void)updateActionSetsInTriggerBuilder:(id)builder;
+- (void)updateAnonymousActionBuilder:(id)builder;
+- (void)updateFromTriggerActionSetsBuilder:(id)builder;
 @end
 
 @implementation HFTriggerActionSetsBuilder
@@ -61,21 +61,21 @@
 
 - (id)_generateSummaryInformationForShortcutOwnedTrigger
 {
-  v3 = [(HFTriggerActionSetsBuilder *)self homeWorkflow];
-  if (v3)
+  homeWorkflow = [(HFTriggerActionSetsBuilder *)self homeWorkflow];
+  if (homeWorkflow)
   {
     v4 = [HFTriggerActionsSetsUISummary alloc];
-    v5 = [v3 summaryString];
-    v6 = [v3 summaryIconDescriptors];
-    v7 = [(HFTriggerActionsSetsUISummary *)v4 initWithSummaryText:v5 summaryIconDescriptors:v6];
+    summaryString = [homeWorkflow summaryString];
+    summaryIconDescriptors = [homeWorkflow summaryIconDescriptors];
+    _generateSummaryInformationForStandardTrigger = [(HFTriggerActionsSetsUISummary *)v4 initWithSummaryText:summaryString summaryIconDescriptors:summaryIconDescriptors];
   }
 
   else
   {
-    v7 = [(HFTriggerActionSetsBuilder *)self _generateSummaryInformationForStandardTrigger];
+    _generateSummaryInformationForStandardTrigger = [(HFTriggerActionSetsBuilder *)self _generateSummaryInformationForStandardTrigger];
   }
 
-  return v7;
+  return _generateSummaryInformationForStandardTrigger;
 }
 
 - (id)_generateSummaryInformationForStandardTrigger
@@ -86,8 +86,8 @@
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v4 = [(HFTriggerActionSetsBuilder *)self namedActionSets];
-  v5 = [v4 countByEnumeratingWithState:&v63 objects:v70 count:16];
+  namedActionSets = [(HFTriggerActionSetsBuilder *)self namedActionSets];
+  v5 = [namedActionSets countByEnumeratingWithState:&v63 objects:v70 count:16];
   if (v5)
   {
     v6 = v5;
@@ -98,23 +98,23 @@
       {
         if (*v64 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(namedActionSets);
         }
 
         v9 = *(*(&v63 + 1) + 8 * i);
-        v10 = [v9 name];
-        [(HFTriggerActionsSetsUISummary *)v3 addSceneNamed:v10];
+        name = [v9 name];
+        [(HFTriggerActionsSetsUISummary *)v3 addSceneNamed:name];
 
-        v11 = [v9 actionSet];
-        v12 = [v11 hf_iconDescriptor];
+        actionSet = [v9 actionSet];
+        hf_iconDescriptor = [actionSet hf_iconDescriptor];
 
-        if (v12)
+        if (hf_iconDescriptor)
         {
-          [(HFTriggerActionsSetsUISummary *)v3 addIconDescriptor:v12];
+          [(HFTriggerActionsSetsUISummary *)v3 addIconDescriptor:hf_iconDescriptor];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v63 objects:v70 count:16];
+      v6 = [namedActionSets countByEnumeratingWithState:&v63 objects:v70 count:16];
     }
 
     while (v6);
@@ -127,8 +127,8 @@
   v16 = v15;
   if (v15)
   {
-    v17 = [v15 name];
-    [(HFTriggerActionsSetsUISummary *)v3 setUniqueServiceGroupName:v17];
+    name2 = [v15 name];
+    [(HFTriggerActionsSetsUISummary *)v3 setUniqueServiceGroupName:name2];
   }
 
   v50 = v16;
@@ -152,11 +152,11 @@
         }
 
         v23 = *(*(&v59 + 1) + 8 * j);
-        v24 = [v23 name];
-        [(HFTriggerActionsSetsUISummary *)v3 addServiceNamed:v24];
+        name3 = [v23 name];
+        [(HFTriggerActionsSetsUISummary *)v3 addServiceNamed:name3];
 
-        v25 = [v23 hf_iconDescriptor];
-        [(HFTriggerActionsSetsUISummary *)v3 addIconDescriptor:v25];
+        hf_iconDescriptor2 = [v23 hf_iconDescriptor];
+        [(HFTriggerActionsSetsUISummary *)v3 addIconDescriptor:hf_iconDescriptor2];
       }
 
       v20 = [v18 countByEnumeratingWithState:&v59 objects:v69 count:16];
@@ -187,9 +187,9 @@
         }
 
         v31 = *(*(&v55 + 1) + 8 * k);
-        v32 = [v31 hf_serviceNameComponents];
-        v33 = [v32 composedString];
-        [(HFTriggerActionsSetsUISummary *)v3 addMediaAccessoryNamed:v33];
+        hf_serviceNameComponents = [v31 hf_serviceNameComponents];
+        composedString = [hf_serviceNameComponents composedString];
+        [(HFTriggerActionsSetsUISummary *)v3 addMediaAccessoryNamed:composedString];
 
         v34 = [HFMediaHelper mediaIconDescriptorForMediaContainer:v31];
         [(HFTriggerActionsSetsUISummary *)v3 addIconDescriptor:v34];
@@ -223,13 +223,13 @@
         }
 
         v41 = *(*(&v51 + 1) + 8 * m);
-        v42 = [v41 hf_serviceNameComponents];
-        v43 = [v42 serviceName];
-        [(HFTriggerActionsSetsUISummary *)v3 addMatterRepresentableNamed:v43];
+        hf_serviceNameComponents2 = [v41 hf_serviceNameComponents];
+        serviceName = [hf_serviceNameComponents2 serviceName];
+        [(HFTriggerActionsSetsUISummary *)v3 addMatterRepresentableNamed:serviceName];
 
         v44 = [HFImageIconDescriptor alloc];
-        v45 = [v41 hf_iconIdentifier];
-        v46 = [(HFImageIconDescriptor *)v44 initWithImageIdentifier:v45];
+        hf_iconIdentifier = [v41 hf_iconIdentifier];
+        v46 = [(HFImageIconDescriptor *)v44 initWithImageIdentifier:hf_iconIdentifier];
 
         [(HFTriggerActionsSetsUISummary *)v3 addIconDescriptor:v46];
       }
@@ -245,19 +245,19 @@
   return v3;
 }
 
-- (void)_generateStandaloneServices:(id)a3 andMediaAccessories:(id)a4
+- (void)_generateStandaloneServices:(id)services andMediaAccessories:(id)accessories
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v25 = a4;
+  servicesCopy = services;
+  accessoriesCopy = accessories;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-  v8 = [v7 actions];
+  anonymousActionSetBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+  actions = [anonymousActionSetBuilder actions];
 
-  v9 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v9 = [actions countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v9)
   {
     v10 = v9;
@@ -268,15 +268,15 @@
       {
         if (*v27 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(actions);
         }
 
         v13 = *(*(&v26 + 1) + 8 * i);
-        v14 = [v13 getOrCreateAction];
-        if (v14)
+        getOrCreateAction = [v13 getOrCreateAction];
+        if (getOrCreateAction)
         {
           objc_opt_class();
-          v15 = v14;
+          v15 = getOrCreateAction;
           if (objc_opt_isKindOfClass())
           {
             v16 = v15;
@@ -291,25 +291,25 @@
 
           if (v17)
           {
-            v18 = [v17 characteristic];
-            v19 = [v18 service];
+            characteristic = [v17 characteristic];
+            service = [characteristic service];
 
-            if (!v19)
+            if (!service)
             {
-              v20 = [v17 characteristic];
-              NSLog(&cfstr_UnexpectedlyGo.isa, v17, v20);
+              characteristic2 = [v17 characteristic];
+              NSLog(&cfstr_UnexpectedlyGo.isa, v17, characteristic2);
             }
 
-            [v6 na_safeAddObject:v19];
+            [servicesCopy na_safeAddObject:service];
           }
 
           else
           {
             objc_opt_class();
-            v19 = [v13 action];
+            service = [v13 action];
             if (objc_opt_isKindOfClass())
             {
-              v21 = v19;
+              v21 = service;
             }
 
             else
@@ -322,18 +322,18 @@
             if (v22)
             {
               v23 = [(HFTriggerActionSetsBuilder *)self mediaAccessoriesForPlaybackAction:v22];
-              [v25 unionSet:v23];
+              [accessoriesCopy unionSet:v23];
             }
 
             else
             {
-              v19 = 0;
+              service = 0;
             }
           }
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v10 = [actions countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v10);
@@ -342,18 +342,18 @@
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_generateMatterRepresentables:(id)a3
+- (void)_generateMatterRepresentables:(id)representables
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  representablesCopy = representables;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-  v6 = [v5 actions];
+  anonymousActionSetBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+  actions = [anonymousActionSetBuilder actions];
 
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v7 = [actions countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -364,14 +364,14 @@
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(actions);
         }
 
-        v11 = [*(*(&v18 + 1) + 8 * i) getOrCreateAction];
-        if (v11)
+        getOrCreateAction = [*(*(&v18 + 1) + 8 * i) getOrCreateAction];
+        if (getOrCreateAction)
         {
           objc_opt_class();
-          v12 = v11;
+          v12 = getOrCreateAction;
           if (objc_opt_isKindOfClass())
           {
             v13 = v12;
@@ -386,11 +386,11 @@
 
           if (v14)
           {
-            v15 = [v14 representedAccessory];
-            if (v15)
+            representedAccessory = [v14 representedAccessory];
+            if (representedAccessory)
             {
-              v16 = [[HFMatterAccessoryRepresentable alloc] initWithAccessory:v15];
-              [v4 na_safeAddObject:v16];
+              v16 = [[HFMatterAccessoryRepresentable alloc] initWithAccessory:representedAccessory];
+              [representablesCopy na_safeAddObject:v16];
             }
 
             else
@@ -401,7 +401,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [actions countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
@@ -410,19 +410,19 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_uniqueServiceGroupForServices:(id)a3
+- (id)_uniqueServiceGroupForServices:(id)services
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  servicesCopy = services;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-  v6 = [v5 home];
-  v7 = [v6 serviceGroups];
+  anonymousActionSetBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+  home = [anonymousActionSetBuilder home];
+  serviceGroups = [home serviceGroups];
 
-  v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v8 = [serviceGroups countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -434,19 +434,19 @@
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(serviceGroups);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
         if ([v13 hf_isSupported])
         {
           v14 = objc_alloc(MEMORY[0x277CBEB98]);
-          v15 = [v13 services];
-          v16 = [v14 initWithArray:v15];
+          services = [v13 services];
+          v16 = [v14 initWithArray:services];
 
-          if ([v16 intersectsSet:v4])
+          if ([v16 intersectsSet:servicesCopy])
           {
-            if (v10 || ![v16 isEqualToSet:v4])
+            if (v10 || ![v16 isEqualToSet:servicesCopy])
             {
 
               v17 = 0;
@@ -458,7 +458,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [serviceGroups countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v9)
       {
         continue;
@@ -482,15 +482,15 @@ LABEL_18:
   return v17;
 }
 
-- (id)mediaAccessoriesForPlaybackAction:(id)a3
+- (id)mediaAccessoriesForPlaybackAction:(id)action
 {
-  v4 = [a3 mediaProfiles];
+  mediaProfiles = [action mediaProfiles];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__HFTriggerActionSetsBuilder_UI__mediaAccessoriesForPlaybackAction___block_invoke;
   v7[3] = &unk_277DF7DD0;
   v7[4] = self;
-  v5 = [v4 na_map:v7];
+  v5 = [mediaProfiles na_map:v7];
 
   return v5;
 }
@@ -547,36 +547,36 @@ uint64_t __68__HFTriggerActionSetsBuilder_UI__mediaAccessoriesForPlaybackAction_
   return v6;
 }
 
-- (void)updateActionSetsInTriggerBuilder:(id)a3
+- (void)updateActionSetsInTriggerBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [(HFTriggerActionSetsBuilder *)self namedActionSetsDiff];
-  v6 = [v5 toSet];
-  v7 = [v6 allObjects];
-  v10 = [v7 na_map:&__block_literal_global_81];
+  builderCopy = builder;
+  namedActionSetsDiff = [(HFTriggerActionSetsBuilder *)self namedActionSetsDiff];
+  toSet = [namedActionSetsDiff toSet];
+  allObjects = [toSet allObjects];
+  v10 = [allObjects na_map:&__block_literal_global_81];
 
-  [v4 setActionSets:v10];
-  v8 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-  v9 = [v4 triggerOwnedActionSet];
+  [builderCopy setActionSets:v10];
+  anonymousActionSetBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+  triggerOwnedActionSet = [builderCopy triggerOwnedActionSet];
 
-  [v8 updateActionsInBuilder:v9];
+  [anonymousActionSetBuilder updateActionsInBuilder:triggerOwnedActionSet];
 }
 
-- (HFTriggerActionSetsBuilder)initWithActionSets:(id)a3 inHome:(id)a4 filterEmptyActionSets:(BOOL)a5
+- (HFTriggerActionSetsBuilder)initWithActionSets:(id)sets inHome:(id)home filterEmptyActionSets:(BOOL)actionSets
 {
-  v5 = a5;
+  actionSetsCopy = actionSets;
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  setsCopy = sets;
+  homeCopy = home;
   v39.receiver = self;
   v39.super_class = HFTriggerActionSetsBuilder;
   v10 = [(HFTriggerActionSetsBuilder *)&v39 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_home, a4);
-    v12 = [(HFTriggerActionSetsBuilder *)v11 _removeDuplicateActionSets:v8];
-    if (v5)
+    objc_storeStrong(&v10->_home, home);
+    v12 = [(HFTriggerActionSetsBuilder *)v11 _removeDuplicateActionSets:setsCopy];
+    if (actionSetsCopy)
     {
       v13 = [(HFTriggerActionSetsBuilder *)v11 _removeEmptyActionSets:v12];
 
@@ -602,12 +602,12 @@ LABEL_6:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v35 + 1) + 8 * v18) hf_shortcutAction];
-        [(HFTriggerActionSetsBuilder *)v11 setShortcutAction:v19];
+        hf_shortcutAction = [*(*(&v35 + 1) + 8 * v18) hf_shortcutAction];
+        [(HFTriggerActionSetsBuilder *)v11 setShortcutAction:hf_shortcutAction];
 
-        v20 = [(HFTriggerActionSetsBuilder *)v11 shortcutAction];
+        shortcutAction = [(HFTriggerActionSetsBuilder *)v11 shortcutAction];
 
-        if (v20)
+        if (shortcutAction)
         {
           break;
         }
@@ -629,7 +629,7 @@ LABEL_6:
     v33[1] = 3221225472;
     v33[2] = __78__HFTriggerActionSetsBuilder_initWithActionSets_inHome_filterEmptyActionSets___block_invoke;
     v33[3] = &unk_277DFA398;
-    v21 = v9;
+    v21 = homeCopy;
     v34 = v21;
     v22 = [v14 na_map:v33];
     v23 = [v22 mutableCopy];
@@ -675,16 +675,16 @@ HFActionSetBuilder *__78__HFTriggerActionSetsBuilder_initWithActionSets_inHome_f
   return v4;
 }
 
-- (id)_removeDuplicateActionSets:(id)a3
+- (id)_removeDuplicateActionSets:(id)sets
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  setsCopy = sets;
   v4 = [MEMORY[0x277CBEB58] set];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = v3;
+  v5 = setsCopy;
   v6 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v6)
   {
@@ -699,8 +699,8 @@ HFActionSetBuilder *__78__HFTriggerActionSetsBuilder_initWithActionSets_inHome_f
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v27 + 1) + 8 * i) uniqueIdentifier];
-        [v4 addObject:v10];
+        uniqueIdentifier = [*(*(&v27 + 1) + 8 * i) uniqueIdentifier];
+        [v4 addObject:uniqueIdentifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -709,7 +709,7 @@ HFActionSetBuilder *__78__HFTriggerActionSetsBuilder_initWithActionSets_inHome_f
     while (v7);
   }
 
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -730,15 +730,15 @@ HFActionSetBuilder *__78__HFTriggerActionSetsBuilder_initWithActionSets_inHome_f
         }
 
         v17 = *(*(&v23 + 1) + 8 * j);
-        v18 = [v17 uniqueIdentifier];
-        v19 = [v4 containsObject:v18];
+        uniqueIdentifier2 = [v17 uniqueIdentifier];
+        v19 = [v4 containsObject:uniqueIdentifier2];
 
         if (v19)
         {
-          v20 = [v17 uniqueIdentifier];
-          [v4 removeObject:v20];
+          uniqueIdentifier3 = [v17 uniqueIdentifier];
+          [v4 removeObject:uniqueIdentifier3];
 
-          [v11 addObject:v17];
+          [array addObject:v17];
         }
       }
 
@@ -750,7 +750,7 @@ HFActionSetBuilder *__78__HFTriggerActionSetsBuilder_initWithActionSets_inHome_f
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return array;
 }
 
 BOOL __53__HFTriggerActionSetsBuilder__removeEmptyActionSets___block_invoke(uint64_t a1, void *a2)
@@ -761,64 +761,64 @@ BOOL __53__HFTriggerActionSetsBuilder__removeEmptyActionSets___block_invoke(uint
   return v3;
 }
 
-- (void)setFromTriggerActionSetsBuilder:(id)a3
+- (void)setFromTriggerActionSetsBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v5 = [HFMutableSetDiff alloc];
-  v6 = [v4 namedActionSetsDiff];
-  v7 = [v6 toSet];
-  v8 = [(HFMutableSetDiff *)v5 initWithFromSet:v7];
+  namedActionSetsDiff = [builderCopy namedActionSetsDiff];
+  toSet = [namedActionSetsDiff toSet];
+  v8 = [(HFMutableSetDiff *)v5 initWithFromSet:toSet];
   [(HFTriggerActionSetsBuilder *)self setActionSetBuilders:v8];
 
   v9 = [HFTriggerAnonymousActionSetBuilder alloc];
-  v10 = [(HFTriggerActionSetsBuilder *)self home];
-  v11 = [(HFItemBuilder *)v9 initWithHome:v10];
+  home = [(HFTriggerActionSetsBuilder *)self home];
+  v11 = [(HFItemBuilder *)v9 initWithHome:home];
   [(HFTriggerActionSetsBuilder *)self setAnonymousActionSetBuilder:v11];
 
-  v14 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-  v12 = [v4 anonymousActionSetBuilder];
+  anonymousActionSetBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+  anonymousActionSetBuilder2 = [builderCopy anonymousActionSetBuilder];
 
-  v13 = [v12 actionBuilders];
-  [v14 updateActionBuildersDiff:v13];
+  actionBuilders = [anonymousActionSetBuilder2 actionBuilders];
+  [anonymousActionSetBuilder updateActionBuildersDiff:actionBuilders];
 }
 
-- (void)updateFromTriggerActionSetsBuilder:(id)a3
+- (void)updateFromTriggerActionSetsBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [v4 actionSetBuilders];
-  v6 = [v5 mutableCopy];
+  builderCopy = builder;
+  actionSetBuilders = [builderCopy actionSetBuilders];
+  v6 = [actionSetBuilders mutableCopy];
   [(HFTriggerActionSetsBuilder *)self setActionSetBuilders:v6];
 
-  v7 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-  v8 = [v4 anonymousActionSetBuilder];
-  v9 = [v8 actionBuilders];
-  [v7 updateActionBuildersDiff:v9];
+  anonymousActionSetBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+  anonymousActionSetBuilder2 = [builderCopy anonymousActionSetBuilder];
+  actionBuilders = [anonymousActionSetBuilder2 actionBuilders];
+  [anonymousActionSetBuilder updateActionBuildersDiff:actionBuilders];
 
-  v10 = [v4 shortcutAction];
+  shortcutAction = [builderCopy shortcutAction];
 
-  [(HFTriggerActionSetsBuilder *)self setShortcutAction:v10];
+  [(HFTriggerActionSetsBuilder *)self setShortcutAction:shortcutAction];
 }
 
 - (HFSetDiff)namedActionSetsDiff
 {
-  v2 = [(HFTriggerActionSetsBuilder *)self actionSetBuilders];
-  v3 = [v2 copy];
+  actionSetBuilders = [(HFTriggerActionSetsBuilder *)self actionSetBuilders];
+  v3 = [actionSetBuilders copy];
 
   return v3;
 }
 
 - (BOOL)isShortcutOwned
 {
-  v3 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-  if ([v3 actionSetType] == 1)
+  anonymousActionSetBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+  if ([anonymousActionSetBuilder actionSetType] == 1)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(HFTriggerActionSetsBuilder *)self shortcutAction];
-    v4 = v5 != 0;
+    shortcutAction = [(HFTriggerActionSetsBuilder *)self shortcutAction];
+    v4 = shortcutAction != 0;
   }
 
   return v4;
@@ -826,18 +826,18 @@ BOOL __53__HFTriggerActionSetsBuilder__removeEmptyActionSets___block_invoke(uint
 
 - (WFHomeWorkflow)homeWorkflow
 {
-  v2 = [(HFTriggerActionSetsBuilder *)self shortcutAction];
-  v3 = [v2 shortcut];
+  shortcutAction = [(HFTriggerActionSetsBuilder *)self shortcutAction];
+  shortcut = [shortcutAction shortcut];
 
-  return v3;
+  return shortcut;
 }
 
-- (void)setHomeWorkflow:(id)a3
+- (void)setHomeWorkflow:(id)workflow
 {
-  v5 = a3;
-  if (v5)
+  workflowCopy = workflow;
+  if (workflowCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x277CD1DF8]) initWithShortcut:v5];
+    v4 = [objc_alloc(MEMORY[0x277CD1DF8]) initWithShortcut:workflowCopy];
     [(HFTriggerActionSetsBuilder *)self setShortcutAction:v4];
   }
 
@@ -849,25 +849,25 @@ BOOL __53__HFTriggerActionSetsBuilder__removeEmptyActionSets___block_invoke(uint
 
 - (BOOL)hasActions
 {
-  v3 = [(HFTriggerActionSetsBuilder *)self namedActionSets];
-  if ([v3 count])
+  namedActionSets = [(HFTriggerActionSetsBuilder *)self namedActionSets];
+  if ([namedActionSets count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-    v6 = [v5 actions];
-    if ([v6 count])
+    anonymousActionSetBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+    actions = [anonymousActionSetBuilder actions];
+    if ([actions count])
     {
       v4 = 1;
     }
 
     else
     {
-      v7 = [(HFTriggerActionSetsBuilder *)self shortcutAction];
-      v4 = v7 != 0;
+      shortcutAction = [(HFTriggerActionSetsBuilder *)self shortcutAction];
+      v4 = shortcutAction != 0;
     }
   }
 
@@ -876,88 +876,88 @@ BOOL __53__HFTriggerActionSetsBuilder__removeEmptyActionSets___block_invoke(uint
 
 - (NSArray)namedActionSets
 {
-  v2 = [(HFTriggerActionSetsBuilder *)self actionSetBuilders];
-  v3 = [v2 toSet];
-  v4 = [v3 allObjects];
+  actionSetBuilders = [(HFTriggerActionSetsBuilder *)self actionSetBuilders];
+  toSet = [actionSetBuilders toSet];
+  allObjects = [toSet allObjects];
 
-  return v4;
+  return allObjects;
 }
 
 - (NSArray)anonymousActionBuilder
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HFTriggerActionSetsBuilder *)self shortcutAction];
+  shortcutAction = [(HFTriggerActionSetsBuilder *)self shortcutAction];
 
-  if (v3)
+  if (shortcutAction)
   {
-    v4 = [(HFTriggerActionSetsBuilder *)self shortcutAction];
-    v5 = [(HFTriggerActionSetsBuilder *)self home];
-    v6 = [HFActionBuilder actionBuilderForAction:v4 inHome:v5];
+    shortcutAction2 = [(HFTriggerActionSetsBuilder *)self shortcutAction];
+    home = [(HFTriggerActionSetsBuilder *)self home];
+    anonymousActionSetBuilder = [HFActionBuilder actionBuilderForAction:shortcutAction2 inHome:home];
 
-    v11[0] = v6;
-    v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
+    v11[0] = anonymousActionSetBuilder;
+    actions = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
   }
 
   else
   {
-    v6 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-    v7 = [v6 actions];
+    anonymousActionSetBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+    actions = [anonymousActionSetBuilder actions];
   }
 
-  v8 = v7;
+  v8 = actions;
 
   v9 = *MEMORY[0x277D85DE8];
 
   return v8;
 }
 
-- (void)addActionSetBuilder:(id)a3
+- (void)addActionSetBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [(HFTriggerActionSetsBuilder *)self actionSetBuilders];
-  [v5 addObject:v4];
+  builderCopy = builder;
+  actionSetBuilders = [(HFTriggerActionSetsBuilder *)self actionSetBuilders];
+  [actionSetBuilders addObject:builderCopy];
 }
 
-- (void)updateActionSetBuilder:(id)a3
+- (void)updateActionSetBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [(HFTriggerActionSetsBuilder *)self actionSetBuilders];
-  [v5 updateObject:v4];
+  builderCopy = builder;
+  actionSetBuilders = [(HFTriggerActionSetsBuilder *)self actionSetBuilders];
+  [actionSetBuilders updateObject:builderCopy];
 }
 
-- (void)removeActionSetBuilder:(id)a3
+- (void)removeActionSetBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [(HFTriggerActionSetsBuilder *)self actionSetBuilders];
-  [v5 deleteObject:v4];
+  builderCopy = builder;
+  actionSetBuilders = [(HFTriggerActionSetsBuilder *)self actionSetBuilders];
+  [actionSetBuilders deleteObject:builderCopy];
 }
 
-- (void)addAnonymousActionBuilder:(id)a3
+- (void)addAnonymousActionBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-  [v5 addAction:v4];
+  builderCopy = builder;
+  anonymousActionSetBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+  [anonymousActionSetBuilder addAction:builderCopy];
 }
 
-- (void)updateAnonymousActionBuilder:(id)a3
+- (void)updateAnonymousActionBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-  [v5 updateAction:v4];
+  builderCopy = builder;
+  anonymousActionSetBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+  [anonymousActionSetBuilder updateAction:builderCopy];
 }
 
-- (void)removeAnonymousActionBuilder:(id)a3
+- (void)removeAnonymousActionBuilder:(id)builder
 {
-  v4 = a3;
-  v5 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-  [v5 removeAction:v4];
+  builderCopy = builder;
+  anonymousActionSetBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+  [anonymousActionSetBuilder removeAction:builderCopy];
 }
 
 - (void)removeAllActionsAndActionSets
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HFTriggerActionSetsBuilder *)self namedActionSets];
-  v4 = [v3 copy];
+  namedActionSets = [(HFTriggerActionSetsBuilder *)self namedActionSets];
+  v4 = [namedActionSets copy];
 
   v14 = 0u;
   v15 = 0u;
@@ -989,44 +989,44 @@ BOOL __53__HFTriggerActionSetsBuilder__removeEmptyActionSets___block_invoke(uint
     while (v7);
   }
 
-  v10 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-  [v10 removeAllActions];
+  anonymousActionSetBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+  [anonymousActionSetBuilder removeAllActions];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)areActionsAffectedByEndEvents
 {
-  v3 = [(HFTriggerActionSetsBuilder *)self namedActionSets];
-  v4 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-  v5 = [v3 arrayByAddingObject:v4];
+  namedActionSets = [(HFTriggerActionSetsBuilder *)self namedActionSets];
+  anonymousActionSetBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+  v5 = [namedActionSets arrayByAddingObject:anonymousActionSetBuilder];
 
-  LOBYTE(v4) = [v5 na_any:&__block_literal_global_14_4];
-  return v4;
+  LOBYTE(anonymousActionSetBuilder) = [v5 na_any:&__block_literal_global_14_4];
+  return anonymousActionSetBuilder;
 }
 
 - (void)resetAllActionSets
 {
   v26 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CBEB98] set];
-  v4 = [(HFTriggerActionSetsBuilder *)self actionSetBuilders];
-  v5 = [v4 toSet];
-  v6 = [HFSetDiff diffFromSet:v3 toSet:v5];
+  actionSetBuilders = [(HFTriggerActionSetsBuilder *)self actionSetBuilders];
+  toSet = [actionSetBuilders toSet];
+  v6 = [HFSetDiff diffFromSet:v3 toSet:toSet];
   v7 = [v6 mutableCopy];
   [(HFTriggerActionSetsBuilder *)self setActionSetBuilders:v7];
 
-  v8 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+  anonymousActionSetBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
   v9 = [HFTriggerAnonymousActionSetBuilder alloc];
-  v10 = [(HFTriggerActionSetsBuilder *)self home];
-  v11 = [(HFItemBuilder *)v9 initWithHome:v10];
+  home = [(HFTriggerActionSetsBuilder *)self home];
+  v11 = [(HFItemBuilder *)v9 initWithHome:home];
   [(HFTriggerActionSetsBuilder *)self setAnonymousActionSetBuilder:v11];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = [v8 actions];
-  v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  actions = [anonymousActionSetBuilder actions];
+  v13 = [actions countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1038,19 +1038,19 @@ BOOL __53__HFTriggerActionSetsBuilder__removeEmptyActionSets___block_invoke(uint
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(actions);
         }
 
         v17 = *(*(&v21 + 1) + 8 * v16);
-        v18 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-        v19 = [v17 copyForCreatingNewAction];
-        [v18 addAction:v19];
+        anonymousActionSetBuilder2 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+        copyForCreatingNewAction = [v17 copyForCreatingNewAction];
+        [anonymousActionSetBuilder2 addAction:copyForCreatingNewAction];
 
         ++v16;
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v14 = [actions countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v14);
@@ -1062,29 +1062,29 @@ BOOL __53__HFTriggerActionSetsBuilder__removeEmptyActionSets___block_invoke(uint
 - (void)resetActionSetBuilders
 {
   v3 = [HFMutableSetDiff alloc];
-  v6 = [(HFTriggerActionSetsBuilder *)self actionSetBuilders];
-  v4 = [v6 toSet];
-  v5 = [(HFMutableSetDiff *)v3 initWithFromSet:v4];
+  actionSetBuilders = [(HFTriggerActionSetsBuilder *)self actionSetBuilders];
+  toSet = [actionSetBuilders toSet];
+  v5 = [(HFMutableSetDiff *)v3 initWithFromSet:toSet];
   [(HFTriggerActionSetsBuilder *)self setActionSetBuilders:v5];
 }
 
-- (void)addActionSetIfNotPresent:(id)a3
+- (void)addActionSetIfNotPresent:(id)present
 {
-  v4 = a3;
-  v5 = [(HFTriggerActionSetsBuilder *)self namedActionSets];
+  presentCopy = present;
+  namedActionSets = [(HFTriggerActionSetsBuilder *)self namedActionSets];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__HFTriggerActionSetsBuilder_addActionSetIfNotPresent___block_invoke;
   v11[3] = &unk_277DFA3C0;
-  v6 = v4;
+  v6 = presentCopy;
   v12 = v6;
-  v7 = [v5 na_any:v11];
+  v7 = [namedActionSets na_any:v11];
 
   if (v6 && (v7 & 1) == 0)
   {
     v8 = [HFActionSetBuilder alloc];
-    v9 = [(HFTriggerActionSetsBuilder *)self home];
-    v10 = [(HFActionSetBuilder *)v8 initWithExistingObject:v6 inHome:v9];
+    home = [(HFTriggerActionSetsBuilder *)self home];
+    v10 = [(HFActionSetBuilder *)v8 initWithExistingObject:v6 inHome:home];
 
     [(HFTriggerActionSetsBuilder *)self addActionSetBuilder:v10];
   }
@@ -1100,17 +1100,17 @@ uint64_t __55__HFTriggerActionSetsBuilder_addActionSetIfNotPresent___block_invok
   return v6;
 }
 
-- (void)removeActionSetIfPresent:(id)a3
+- (void)removeActionSetIfPresent:(id)present
 {
-  v4 = a3;
-  v5 = [(HFTriggerActionSetsBuilder *)self namedActionSets];
+  presentCopy = present;
+  namedActionSets = [(HFTriggerActionSetsBuilder *)self namedActionSets];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __55__HFTriggerActionSetsBuilder_removeActionSetIfPresent___block_invoke;
   v11 = &unk_277DFA3C0;
-  v6 = v4;
+  v6 = presentCopy;
   v12 = v6;
-  v7 = [v5 na_firstObjectPassingTest:&v8];
+  v7 = [namedActionSets na_firstObjectPassingTest:&v8];
 
   if (v7)
   {
@@ -1135,18 +1135,18 @@ uint64_t __55__HFTriggerActionSetsBuilder_removeActionSetIfPresent___block_invok
 
 - (id)createActionSetsForShortcuts
 {
-  v3 = [(HFTriggerActionSetsBuilder *)self namedActionSets];
-  v4 = [v3 na_map:&__block_literal_global_20_5];
+  namedActionSets = [(HFTriggerActionSetsBuilder *)self namedActionSets];
+  v4 = [namedActionSets na_map:&__block_literal_global_20_5];
   v5 = [v4 mutableCopy];
 
-  v6 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-  LODWORD(v4) = [v6 hasActions];
+  anonymousActionSetBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+  LODWORD(v4) = [anonymousActionSetBuilder hasActions];
 
   if (v4)
   {
-    v7 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-    v8 = [v7 shortcutsComponentActionSet];
-    [v5 na_safeAddObject:v8];
+    anonymousActionSetBuilder2 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+    shortcutsComponentActionSet = [anonymousActionSetBuilder2 shortcutsComponentActionSet];
+    [v5 na_safeAddObject:shortcutsComponentActionSet];
   }
 
   return v5;
@@ -1155,29 +1155,29 @@ uint64_t __55__HFTriggerActionSetsBuilder_removeActionSetIfPresent___block_invok
 - (NSArray)allActionSets
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(HFTriggerActionSetsBuilder *)self namedActionSets];
-  v5 = [v4 na_map:&__block_literal_global_22_4];
+  namedActionSets = [(HFTriggerActionSetsBuilder *)self namedActionSets];
+  v5 = [namedActionSets na_map:&__block_literal_global_22_4];
   v6 = [v3 arrayWithArray:v5];
 
-  v7 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-  LODWORD(v5) = [v7 hasActions];
+  anonymousActionSetBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+  LODWORD(v5) = [anonymousActionSetBuilder hasActions];
 
   if (v5)
   {
-    v8 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-    v9 = [v8 actionSet];
+    anonymousActionSetBuilder2 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+    actionSet = [anonymousActionSetBuilder2 actionSet];
 
-    if (v9)
+    if (actionSet)
     {
-      v10 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-      v11 = [v10 copy];
+      anonymousActionSetBuilder3 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+      v11 = [anonymousActionSetBuilder3 copy];
 
       [v11 setActionSet:0];
-      v8 = v11;
+      anonymousActionSetBuilder2 = v11;
     }
 
-    v12 = [v8 getOrCreateActionSet];
-    [v6 addObject:v12];
+    getOrCreateActionSet = [anonymousActionSetBuilder2 getOrCreateActionSet];
+    [v6 addObject:getOrCreateActionSet];
   }
 
   return v6;
@@ -1187,15 +1187,15 @@ uint64_t __55__HFTriggerActionSetsBuilder_removeActionSetIfPresent___block_invok
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBEB18]);
-  v4 = [(HFTriggerActionSetsBuilder *)self anonymousActionBuilder];
-  v5 = [v3 initWithArray:v4];
+  anonymousActionBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionBuilder];
+  v5 = [v3 initWithArray:anonymousActionBuilder];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(HFTriggerActionSetsBuilder *)self namedActionSets];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  namedActionSets = [(HFTriggerActionSetsBuilder *)self namedActionSets];
+  v7 = [namedActionSets countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1206,14 +1206,14 @@ uint64_t __55__HFTriggerActionSetsBuilder_removeActionSetIfPresent___block_invok
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(namedActionSets);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) actions];
-        [v5 addObjectsFromArray:v11];
+        actions = [*(*(&v14 + 1) + 8 * i) actions];
+        [v5 addObjectsFromArray:actions];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [namedActionSets countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -1224,25 +1224,25 @@ uint64_t __55__HFTriggerActionSetsBuilder_removeActionSetIfPresent___block_invok
   return v5;
 }
 
-- (void)convertToHomeWorkflowActionSet:(id)a3
+- (void)convertToHomeWorkflowActionSet:(id)set
 {
-  [(HFTriggerActionSetsBuilder *)self setHomeWorkflow:a3];
+  [(HFTriggerActionSetsBuilder *)self setHomeWorkflow:set];
 
   [(HFTriggerActionSetsBuilder *)self convertToHomeWorkflowActionSetIfNeeded];
 }
 
 - (void)convertToHomeWorkflowActionSetIfNeeded
 {
-  v3 = [(HFTriggerActionSetsBuilder *)self shortcutAction];
+  shortcutAction = [(HFTriggerActionSetsBuilder *)self shortcutAction];
 
-  if (v3)
+  if (shortcutAction)
   {
-    v4 = [(HFTriggerActionSetsBuilder *)self shortcutAction];
-    v5 = [(HFTriggerActionSetsBuilder *)self home];
-    v7 = [HFActionBuilder actionBuilderForAction:v4 inHome:v5];
+    shortcutAction2 = [(HFTriggerActionSetsBuilder *)self shortcutAction];
+    home = [(HFTriggerActionSetsBuilder *)self home];
+    v7 = [HFActionBuilder actionBuilderForAction:shortcutAction2 inHome:home];
 
-    v6 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-    [v6 addAction:v7 actionSetType:1];
+    anonymousActionSetBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+    [anonymousActionSetBuilder addAction:v7 actionSetType:1];
 
     [(HFTriggerActionSetsBuilder *)self _removeAllNamedActionsSets];
   }
@@ -1250,8 +1250,8 @@ uint64_t __55__HFTriggerActionSetsBuilder_removeActionSetIfPresent___block_invok
 
 - (void)_removeAllNamedActionsSets
 {
-  v2 = [(HFTriggerActionSetsBuilder *)self actionSetBuilders];
-  [v2 deleteAllObjects];
+  actionSetBuilders = [(HFTriggerActionSetsBuilder *)self actionSetBuilders];
+  [actionSetBuilders deleteAllObjects];
 }
 
 - (void)defaultActionsForShortcut
@@ -1261,11 +1261,11 @@ uint64_t __55__HFTriggerActionSetsBuilder_removeActionSetIfPresent___block_invok
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v2 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-  v3 = [v2 actionBuilders];
-  v4 = [v3 toSet];
+  anonymousActionSetBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+  actionBuilders = [anonymousActionSetBuilder actionBuilders];
+  toSet = [actionBuilders toSet];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [toSet countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1277,7 +1277,7 @@ uint64_t __55__HFTriggerActionSetsBuilder_removeActionSetIfPresent___block_invok
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(toSet);
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
@@ -1304,7 +1304,7 @@ uint64_t __55__HFTriggerActionSetsBuilder_removeActionSetIfPresent___block_invok
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [toSet countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -1313,45 +1313,45 @@ uint64_t __55__HFTriggerActionSetsBuilder_removeActionSetIfPresent___block_invok
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [(HFTriggerActionSetsBuilder *)self actionSetBuilders];
-  v6 = [v5 fromSet];
-  v7 = [v6 allObjects];
-  v8 = [v7 na_map:&__block_literal_global_26_0];
+  actionSetBuilders = [(HFTriggerActionSetsBuilder *)self actionSetBuilders];
+  fromSet = [actionSetBuilders fromSet];
+  allObjects = [fromSet allObjects];
+  v8 = [allObjects na_map:&__block_literal_global_26_0];
 
-  v9 = [objc_opt_class() allocWithZone:a3];
-  v10 = [(HFTriggerActionSetsBuilder *)self home];
-  v11 = [v9 initWithActionSets:v8 inHome:v10];
+  v9 = [objc_opt_class() allocWithZone:zone];
+  home = [(HFTriggerActionSetsBuilder *)self home];
+  v11 = [v9 initWithActionSets:v8 inHome:home];
 
-  v12 = [(HFTriggerActionSetsBuilder *)self actionSetBuilders];
-  v13 = [v12 mutableCopyWithZone:a3];
+  actionSetBuilders2 = [(HFTriggerActionSetsBuilder *)self actionSetBuilders];
+  v13 = [actionSetBuilders2 mutableCopyWithZone:zone];
   [v11 setActionSetBuilders:v13];
 
-  v14 = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
-  v15 = [v14 copyWithZone:a3];
+  anonymousActionSetBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionSetBuilder];
+  v15 = [anonymousActionSetBuilder copyWithZone:zone];
   [v11 setAnonymousActionSetBuilder:v15];
 
-  v16 = [(HFTriggerActionSetsBuilder *)self shortcutAction];
-  [v11 setShortcutAction:v16];
+  shortcutAction = [(HFTriggerActionSetsBuilder *)self shortcutAction];
+  [v11 setShortcutAction:shortcutAction];
 
   return v11;
 }
 
-- (id)compareToObject:(id)a3
+- (id)compareToObject:(id)object
 {
-  v4 = a3;
-  v5 = [[HFComparisonResult alloc] initWithObjectA:self objectB:v4];
+  objectCopy = object;
+  v5 = [[HFComparisonResult alloc] initWithObjectA:self objectB:objectCopy];
   if (![(HFComparisonResult *)v5 containsCriticalDifference])
   {
-    v6 = [(HFTriggerActionSetsBuilder *)self namedActionSets];
-    v7 = [v4 namedActionSets];
-    v8 = [HFContainedObjectListDifference containedObjectDifferenceWithKey:@"actionSets" objectsA:v6 objectsB:v7];
+    namedActionSets = [(HFTriggerActionSetsBuilder *)self namedActionSets];
+    namedActionSets2 = [objectCopy namedActionSets];
+    v8 = [HFContainedObjectListDifference containedObjectDifferenceWithKey:@"actionSets" objectsA:namedActionSets objectsB:namedActionSets2];
     [(HFComparisonResult *)v5 add:v8];
 
-    v9 = [(HFTriggerActionSetsBuilder *)self anonymousActionBuilder];
-    v10 = [v4 anonymousActionBuilder];
-    v11 = [HFContainedObjectListDifference containedObjectDifferenceWithKey:@"actions" objectsA:v9 objectsB:v10];
+    anonymousActionBuilder = [(HFTriggerActionSetsBuilder *)self anonymousActionBuilder];
+    anonymousActionBuilder2 = [objectCopy anonymousActionBuilder];
+    v11 = [HFContainedObjectListDifference containedObjectDifferenceWithKey:@"actions" objectsA:anonymousActionBuilder objectsB:anonymousActionBuilder2];
     [(HFComparisonResult *)v5 add:v11];
   }
 

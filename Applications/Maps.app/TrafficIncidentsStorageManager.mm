@@ -6,20 +6,20 @@
 - (id)observers;
 - (id)removedTrafficIncidentFeaturesIds;
 - (id)visibleReports;
-- (void)_addReport:(id)a3;
+- (void)_addReport:(id)report;
 - (void)_deleteExpiredReports;
-- (void)_didModifyExistingReport:(id)a3;
-- (void)_removeReport:(id)a3;
+- (void)_didModifyExistingReport:(id)report;
+- (void)_removeReport:(id)report;
 - (void)_startExpirationRefresh;
 - (void)_updateTrafficIncidentFeatures;
-- (void)addObserver:(id)a3;
-- (void)addReport:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)addReport:(id)report;
 - (void)clearCache;
 - (void)dealloc;
-- (void)hideReport:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)removeReport:(id)a3;
-- (void)removeTrafficIncidentFeature:(id)a3;
+- (void)hideReport:(id)report;
+- (void)removeObserver:(id)observer;
+- (void)removeReport:(id)report;
+- (void)removeTrafficIncidentFeature:(id)feature;
 - (void)resubmitLastReport;
 @end
 
@@ -56,12 +56,12 @@
 - (void)_deleteExpiredReports
 {
   Current = CFAbsoluteTimeGetCurrent();
-  v4 = [(TrafficIncidentsStorageManager *)self _reports];
+  _reports = [(TrafficIncidentsStorageManager *)self _reports];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  v5 = [_reports countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -73,7 +73,7 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_reports);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
@@ -87,20 +87,20 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v22 count:16];
+      v6 = [_reports countByEnumeratingWithState:&v16 objects:v22 count:16];
     }
 
     while (v6);
-    if ((([v4 count] != 0) & v7) == 1)
+    if ((([_reports count] != 0) & v7) == 1)
     {
-      v14 = [(TrafficIncidentsStorageManager *)self observers];
-      [v14 incidentsStorageManagerDidUpdate];
+      observers = [(TrafficIncidentsStorageManager *)self observers];
+      [observers incidentsStorageManagerDidUpdate];
 
       v15 = sub_1005B0030();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v21 = v4;
+        v21 = _reports;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "TrafficIncidentsStorageManager deleted expired reports : %@", buf, 0xCu);
       }
     }
@@ -108,18 +108,18 @@
 
   else
   {
-    [v4 count];
+    [_reports count];
   }
 }
 
 - (id)_reports
 {
-  v2 = [(TrafficIncidentsStorageManager *)self _sharedUserDefaults];
-  v3 = [v2 dictionaryForKey:@"TrafficIncidentsStorageDictionaryKey"];
-  v4 = [v3 allValues];
+  _sharedUserDefaults = [(TrafficIncidentsStorageManager *)self _sharedUserDefaults];
+  v3 = [_sharedUserDefaults dictionaryForKey:@"TrafficIncidentsStorageDictionaryKey"];
+  allValues = [v3 allValues];
 
   v5 = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:1];
-  v6 = sub_100021DB0(v4, &stru_101622B58);
+  v6 = sub_100021DB0(allValues, &stru_101622B58);
   v10 = v5;
   v7 = [NSArray arrayWithObjects:&v10 count:1];
   v8 = [v6 sortedArrayUsingDescriptors:v7];
@@ -151,20 +151,20 @@
 
 - (id)visibleReports
 {
-  v2 = [(TrafficIncidentsStorageManager *)self _reports];
+  _reports = [(TrafficIncidentsStorageManager *)self _reports];
   v3 = [NSPredicate predicateWithBlock:&stru_101622B18];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [_reports filteredArrayUsingPredicate:v3];
 
   return v4;
 }
 
 - (void)clearCache
 {
-  v4 = [(TrafficIncidentsStorageManager *)self _sharedUserDefaults];
-  [v4 setObject:0 forKey:@"TrafficIncidentsStorageDictionaryKey"];
-  [v4 synchronize];
-  v3 = [(TrafficIncidentsStorageManager *)self observers];
-  [v3 incidentsStorageManagerDidUpdate];
+  _sharedUserDefaults = [(TrafficIncidentsStorageManager *)self _sharedUserDefaults];
+  [_sharedUserDefaults setObject:0 forKey:@"TrafficIncidentsStorageDictionaryKey"];
+  [_sharedUserDefaults synchronize];
+  observers = [(TrafficIncidentsStorageManager *)self observers];
+  [observers incidentsStorageManagerDidUpdate];
 }
 
 - (void)_updateTrafficIncidentFeatures
@@ -172,13 +172,13 @@
   if ([(NSMutableSet *)self->_trafficIncidentFeatures count])
   {
     v3 = +[UIApplication sharedMapsDelegate];
-    v4 = [v3 appCoordinator];
-    v5 = [v4 chromeViewController];
-    v8 = [v5 mapView];
+    appCoordinator = [v3 appCoordinator];
+    chromeViewController = [appCoordinator chromeViewController];
+    mapView = [chromeViewController mapView];
 
-    v6 = [v8 _mapLayer];
-    v7 = [(NSMutableSet *)self->_trafficIncidentFeatures allObjects];
-    [v6 setHiddenTrafficIncidentFeatures:v7];
+    _mapLayer = [mapView _mapLayer];
+    allObjects = [(NSMutableSet *)self->_trafficIncidentFeatures allObjects];
+    [_mapLayer setHiddenTrafficIncidentFeatures:allObjects];
   }
 }
 
@@ -197,31 +197,31 @@
   return v3;
 }
 
-- (void)_removeReport:(id)a3
+- (void)_removeReport:(id)report
 {
-  v10 = a3;
-  v4 = [(TrafficIncidentsStorageManager *)self _sharedUserDefaults];
-  v5 = [v4 dictionaryForKey:@"TrafficIncidentsStorageDictionaryKey"];
+  reportCopy = report;
+  _sharedUserDefaults = [(TrafficIncidentsStorageManager *)self _sharedUserDefaults];
+  v5 = [_sharedUserDefaults dictionaryForKey:@"TrafficIncidentsStorageDictionaryKey"];
   v6 = [v5 mutableCopy];
 
   if ([v6 count])
   {
-    v7 = [v10 uniqueID];
-    v8 = [v7 UUIDString];
-    [v6 removeObjectForKey:v8];
+    uniqueID = [reportCopy uniqueID];
+    uUIDString = [uniqueID UUIDString];
+    [v6 removeObjectForKey:uUIDString];
 
     v9 = [v6 copy];
-    [v4 setObject:v9 forKey:@"TrafficIncidentsStorageDictionaryKey"];
+    [_sharedUserDefaults setObject:v9 forKey:@"TrafficIncidentsStorageDictionaryKey"];
 
-    [v4 synchronize];
+    [_sharedUserDefaults synchronize];
   }
 }
 
-- (void)_addReport:(id)a3
+- (void)_addReport:(id)report
 {
-  v4 = a3;
-  v11 = [(TrafficIncidentsStorageManager *)self _sharedUserDefaults];
-  v5 = [v11 dictionaryForKey:@"TrafficIncidentsStorageDictionaryKey"];
+  reportCopy = report;
+  _sharedUserDefaults = [(TrafficIncidentsStorageManager *)self _sharedUserDefaults];
+  v5 = [_sharedUserDefaults dictionaryForKey:@"TrafficIncidentsStorageDictionaryKey"];
   v6 = [v5 mutableCopy];
 
   if (!v6)
@@ -229,72 +229,72 @@
     v6 = objc_alloc_init(NSMutableDictionary);
   }
 
-  v7 = [NSKeyedArchiver archivedDataWithRootObject:v4 requiringSecureCoding:1 error:0];
-  v8 = [v4 uniqueID];
+  v7 = [NSKeyedArchiver archivedDataWithRootObject:reportCopy requiringSecureCoding:1 error:0];
+  uniqueID = [reportCopy uniqueID];
 
-  v9 = [v8 UUIDString];
-  [v6 setValue:v7 forKey:v9];
+  uUIDString = [uniqueID UUIDString];
+  [v6 setValue:v7 forKey:uUIDString];
 
   v10 = [v6 copy];
-  [v11 setObject:v10 forKey:@"TrafficIncidentsStorageDictionaryKey"];
+  [_sharedUserDefaults setObject:v10 forKey:@"TrafficIncidentsStorageDictionaryKey"];
 
-  [v11 synchronize];
+  [_sharedUserDefaults synchronize];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(TrafficIncidentsStorageManager *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(TrafficIncidentsStorageManager *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(TrafficIncidentsStorageManager *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(TrafficIncidentsStorageManager *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
 - (id)removedTrafficIncidentFeaturesIds
 {
-  v2 = [(TrafficIncidentsStorageManager *)self _trafficIncidentFeaturesUniqueIds];
-  v3 = [NSSet setWithArray:v2];
+  _trafficIncidentFeaturesUniqueIds = [(TrafficIncidentsStorageManager *)self _trafficIncidentFeaturesUniqueIds];
+  v3 = [NSSet setWithArray:_trafficIncidentFeaturesUniqueIds];
 
   return v3;
 }
 
-- (void)removeTrafficIncidentFeature:(id)a3
+- (void)removeTrafficIncidentFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   trafficIncidentFeatures = self->_trafficIncidentFeatures;
-  v9 = v4;
+  v9 = featureCopy;
   if (!trafficIncidentFeatures)
   {
     v6 = objc_alloc_init(NSMutableSet);
     v7 = self->_trafficIncidentFeatures;
     self->_trafficIncidentFeatures = v6;
 
-    v4 = v9;
+    featureCopy = v9;
     trafficIncidentFeatures = self->_trafficIncidentFeatures;
   }
 
-  [(NSMutableSet *)trafficIncidentFeatures addObject:v4];
-  v8 = [(TrafficIncidentsStorageManager *)self observers];
-  [v8 incidentsStorageManagerDidUpdateVendorIncidentFeatures];
+  [(NSMutableSet *)trafficIncidentFeatures addObject:featureCopy];
+  observers = [(TrafficIncidentsStorageManager *)self observers];
+  [observers incidentsStorageManagerDidUpdateVendorIncidentFeatures];
 
   [(TrafficIncidentsStorageManager *)self _updateTrafficIncidentFeatures];
 }
 
 - (void)resubmitLastReport
 {
-  v3 = [(TrafficIncidentsStorageManager *)self _reports];
-  v4 = [v3 lastObject];
+  _reports = [(TrafficIncidentsStorageManager *)self _reports];
+  lastObject = [_reports lastObject];
 
-  [v4 setSubmissionCount:{objc_msgSend(v4, "submissionCount") + 1}];
-  [v4 setSubmissionFailed:0];
-  [(TrafficIncidentsStorageManager *)self _didModifyExistingReport:v4];
-  v5 = [v4 submissionCount];
-  if (v5 <= GEOConfigGetUInteger())
+  [lastObject setSubmissionCount:{objc_msgSend(lastObject, "submissionCount") + 1}];
+  [lastObject setSubmissionFailed:0];
+  [(TrafficIncidentsStorageManager *)self _didModifyExistingReport:lastObject];
+  submissionCount = [lastObject submissionCount];
+  if (submissionCount <= GEOConfigGetUInteger())
   {
     UInteger = GEOConfigGetUInteger();
     v7 = dispatch_time(0, 1000000000 * UInteger);
@@ -302,58 +302,58 @@
     block[1] = 3221225472;
     block[2] = sub_1005B0898;
     block[3] = &unk_101661B18;
-    v9 = v4;
+    v9 = lastObject;
     dispatch_after(v7, &_dispatch_main_q, block);
   }
 }
 
-- (void)_didModifyExistingReport:(id)a3
+- (void)_didModifyExistingReport:(id)report
 {
-  v5 = a3;
-  v4 = [(TrafficIncidentsStorageManager *)self _reports];
-  if ([v4 containsObject:v5])
+  reportCopy = report;
+  _reports = [(TrafficIncidentsStorageManager *)self _reports];
+  if ([_reports containsObject:reportCopy])
   {
-    [(TrafficIncidentsStorageManager *)self _addReport:v5];
+    [(TrafficIncidentsStorageManager *)self _addReport:reportCopy];
   }
 }
 
-- (void)hideReport:(id)a3
+- (void)hideReport:(id)report
 {
-  v4 = a3;
-  [v4 setHidden:1];
-  [(TrafficIncidentsStorageManager *)self _didModifyExistingReport:v4];
+  reportCopy = report;
+  [reportCopy setHidden:1];
+  [(TrafficIncidentsStorageManager *)self _didModifyExistingReport:reportCopy];
 
-  v5 = [(TrafficIncidentsStorageManager *)self observers];
-  [v5 incidentsStorageManagerDidUpdate];
+  observers = [(TrafficIncidentsStorageManager *)self observers];
+  [observers incidentsStorageManagerDidUpdate];
 }
 
-- (void)removeReport:(id)a3
+- (void)removeReport:(id)report
 {
-  [(TrafficIncidentsStorageManager *)self _removeReport:a3];
-  v4 = [(TrafficIncidentsStorageManager *)self observers];
-  [v4 incidentsStorageManagerDidUpdate];
+  [(TrafficIncidentsStorageManager *)self _removeReport:report];
+  observers = [(TrafficIncidentsStorageManager *)self observers];
+  [observers incidentsStorageManagerDidUpdate];
 }
 
-- (void)addReport:(id)a3
+- (void)addReport:(id)report
 {
-  v6 = a3;
-  v4 = [(TrafficIncidentsStorageManager *)self _reports];
-  if (([v4 containsObject:v6] & 1) == 0)
+  reportCopy = report;
+  _reports = [(TrafficIncidentsStorageManager *)self _reports];
+  if (([_reports containsObject:reportCopy] & 1) == 0)
   {
-    [(TrafficIncidentsStorageManager *)self _addReport:v6];
-    v5 = [(TrafficIncidentsStorageManager *)self observers];
-    [v5 incidentsStorageManagerDidAddReport:v6];
+    [(TrafficIncidentsStorageManager *)self _addReport:reportCopy];
+    observers = [(TrafficIncidentsStorageManager *)self observers];
+    [observers incidentsStorageManagerDidAddReport:reportCopy];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [(TrafficIncidentsStorageManager *)self reportsExpirationTimer];
-  [v3 invalidate];
+  reportsExpirationTimer = [(TrafficIncidentsStorageManager *)self reportsExpirationTimer];
+  [reportsExpirationTimer invalidate];
 
   [(TrafficIncidentsStorageManager *)self setReportsExpirationTimer:0];
-  v4 = [(TrafficIncidentsStorageManager *)self reportsResubmissionTimer];
-  [v4 invalidate];
+  reportsResubmissionTimer = [(TrafficIncidentsStorageManager *)self reportsResubmissionTimer];
+  [reportsResubmissionTimer invalidate];
 
   [(TrafficIncidentsStorageManager *)self setReportsResubmissionTimer:0];
   v5.receiver = self;

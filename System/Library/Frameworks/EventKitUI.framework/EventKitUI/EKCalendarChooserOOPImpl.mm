@@ -12,17 +12,17 @@
 - (EKCalendarChooserDelegate)delegate;
 - (EKSource)limitedToSource;
 - (NSSet)selectedCalendars;
-- (_TtC10EventKitUI24EKCalendarChooserOOPImpl)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC10EventKitUI24EKCalendarChooserOOPImpl)initWithNibName:(id)name bundle:(id)bundle;
 - (int)explanatoryTextMode;
 - (int64_t)chooserMode;
 - (int64_t)displayStyle;
 - (int64_t)selectionStyle;
 - (unint64_t)entityType;
-- (void)setDelegate:(id)a3;
-- (void)setExplanatoryTextMode:(int)a3;
-- (void)setLimitedToSource:(id)a3;
-- (void)setSelectedCalendar:(id)a3;
-- (void)setSelectedCalendars:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setExplanatoryTextMode:(int)mode;
+- (void)setLimitedToSource:(id)source;
+- (void)setSelectedCalendar:(id)calendar;
+- (void)setSelectedCalendars:(id)calendars;
 - (void)toggleAllCalendars;
 - (void)viewDidLoad;
 @end
@@ -31,7 +31,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D35A5ACC();
 }
 
@@ -89,18 +89,18 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = OBJC_IVAR____TtC10EventKitUI24EKCalendarChooserOOPImpl_delegate;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
 - (NSSet)selectedCalendars
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D35A87A4();
 
   sub_1D35A52E0(0, &qword_1EC76A860);
@@ -110,12 +110,12 @@
   return v3;
 }
 
-- (void)setSelectedCalendars:(id)a3
+- (void)setSelectedCalendars:(id)calendars
 {
   sub_1D35A52E0(0, &qword_1EC76A860);
   sub_1D35AC630();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC10EventKitUI24EKCalendarChooserOOPImpl__selectedCalendars) = sub_1D35DF494();
-  v5 = self;
+  selfCopy = self;
 
   sub_1D35A8C18(v4);
 }
@@ -150,18 +150,18 @@
 
 - (EKCalendar)selectedCalendar
 {
-  v2 = self;
+  selfCopy = self;
 
   v4 = sub_1D35A9C1C(v3);
 
   return v4;
 }
 
-- (void)setSelectedCalendar:(id)a3
+- (void)setSelectedCalendar:(id)calendar
 {
-  v6 = a3;
-  v5 = self;
-  sub_1D35AC698(a3);
+  calendarCopy = calendar;
+  selfCopy = self;
+  sub_1D35AC698(calendar);
 }
 
 - (BOOL)showsDeclinedEventsSetting
@@ -178,11 +178,11 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setLimitedToSource:(id)a3
+- (void)setLimitedToSource:(id)source
 {
-  v6 = a3;
-  v5 = self;
-  sub_1D35AC7B8(a3);
+  sourceCopy = source;
+  selfCopy = self;
+  sub_1D35AC7B8(source);
 }
 
 - (int)explanatoryTextMode
@@ -192,12 +192,12 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setExplanatoryTextMode:(int)a3
+- (void)setExplanatoryTextMode:(int)mode
 {
   v5 = OBJC_IVAR____TtC10EventKitUI24EKCalendarChooserOOPImpl_explanatoryTextMode;
   swift_beginAccess();
-  *(&self->super.super.super.isa + v5) = a3;
-  v6 = self;
+  *(&self->super.super.super.isa + v5) = mode;
+  selfCopy = self;
   v7 = sub_1D35A5820();
   memmove(__dst, v8, 0x92uLL);
   if (sub_1D35AC2C8(__dst) != 1)
@@ -267,7 +267,7 @@
     v13[16] = v20;
     v13[11] = v15;
     v13[12] = v16;
-    v12 = self;
+    selfCopy = self;
     sub_1D35AD594(&v15, v13);
     sub_1D35D74F8();
 
@@ -275,7 +275,7 @@
   }
 }
 
-- (_TtC10EventKitUI24EKCalendarChooserOOPImpl)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10EventKitUI24EKCalendarChooserOOPImpl)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

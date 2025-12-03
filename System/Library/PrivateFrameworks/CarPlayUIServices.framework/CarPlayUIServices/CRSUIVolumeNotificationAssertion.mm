@@ -17,15 +17,15 @@
   v2 = [(CRSUIVolumeNotificationAssertion *)&v20 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v2->_identifier;
-    v2->_identifier = v3;
+    v2->_identifier = uUID;
 
     v2->_lock._os_unfair_lock_opaque = 0;
     v5 = MEMORY[0x277CF3288];
     v6 = +[CRSUIVolumeNotificationSpecification identifier];
-    v7 = [(NSUUID *)v2->_identifier UUIDString];
-    v8 = [v5 endpointForMachName:@"com.apple.CarPlayApp.volume-notification-service" service:v6 instance:v7];
+    uUIDString = [(NSUUID *)v2->_identifier UUIDString];
+    v8 = [v5 endpointForMachName:@"com.apple.CarPlayApp.volume-notification-service" service:v6 instance:uUIDString];
 
     v9 = [MEMORY[0x277CF3280] connectionWithEndpoint:v8];
     connection = v2->_connection;
@@ -138,9 +138,9 @@ void __40__CRSUIVolumeNotificationAssertion_init__block_invoke_6(uint64_t a1, vo
       _os_log_impl(&dword_243218000, v4, OS_LOG_TYPE_DEFAULT, "Acquiring assertion", v7, 2u);
     }
 
-    v5 = [(CRSUIVolumeNotificationAssertion *)self connection];
-    v6 = [v5 remoteTarget];
-    [v6 clientSuspendNotifications];
+    connection = [(CRSUIVolumeNotificationAssertion *)self connection];
+    remoteTarget = [connection remoteTarget];
+    [remoteTarget clientSuspendNotifications];
 
     v3 = 12;
   }
@@ -163,19 +163,19 @@ void __40__CRSUIVolumeNotificationAssertion_init__block_invoke_6(uint64_t a1, vo
     v3 = CRSUILogForCategory(2uLL);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(CRSUIVolumeNotificationAssertion *)self connection];
-      v5 = [(CRSUIVolumeNotificationAssertion *)self connection];
-      v6 = [v5 remoteTarget];
+      connection = [(CRSUIVolumeNotificationAssertion *)self connection];
+      connection2 = [(CRSUIVolumeNotificationAssertion *)self connection];
+      remoteTarget = [connection2 remoteTarget];
       v10 = 138412546;
-      v11 = v4;
+      v11 = connection;
       v12 = 2112;
-      v13 = v6;
+      v13 = remoteTarget;
       _os_log_impl(&dword_243218000, v3, OS_LOG_TYPE_DEFAULT, "Relinquishing volume notification assertion connection: %@. Remote target: %@", &v10, 0x16u);
     }
 
-    v7 = [(CRSUIVolumeNotificationAssertion *)self connection];
-    v8 = [v7 remoteTarget];
-    [v8 clientCancelSuspension];
+    connection3 = [(CRSUIVolumeNotificationAssertion *)self connection];
+    remoteTarget2 = [connection3 remoteTarget];
+    [remoteTarget2 clientCancelSuspension];
 
     self->_lock_acquired = 0;
   }
@@ -221,9 +221,9 @@ void __40__CRSUIVolumeNotificationAssertion_init__block_invoke_6(uint64_t a1, vo
       _os_log_impl(&dword_243218000, v3, OS_LOG_TYPE_DEFAULT, "Acquiring volume notification assertion", v6, 2u);
     }
 
-    v4 = [(CRSUIVolumeNotificationAssertion *)self connection];
-    v5 = [v4 remoteTarget];
-    [v5 clientSuspendNotifications];
+    connection = [(CRSUIVolumeNotificationAssertion *)self connection];
+    remoteTarget = [connection remoteTarget];
+    [remoteTarget clientSuspendNotifications];
 
     self->_lock_acquired = 1;
   }

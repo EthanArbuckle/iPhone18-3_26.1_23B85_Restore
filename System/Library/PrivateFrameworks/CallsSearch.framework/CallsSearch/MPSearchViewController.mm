@@ -1,7 +1,7 @@
 @interface MPSearchViewController
 - (BOOL)needsReindexing;
-- (BOOL)tableView:(id)a3 shouldDrawTopSeparatorForSection:(int64_t)a4;
-- (MPSearchViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)tableView:(id)view shouldDrawTopSeparatorForSection:(int64_t)section;
+- (MPSearchViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (MPSearchViewControllerDelegate)delegate;
 - (NSArray)searchControllers;
 - (NSArray)searchTokens;
@@ -10,43 +10,43 @@
 - (UINavigationController)hostingNavigationController;
 - (_TtC11CallsSearch16SearchFooterCell)footerView;
 - (_TtC11CallsSearch27ContactAvatarCardController)contactAvatarCardController;
-- (double)heightForFooterInTableView:(id)a3;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (double)heightForFooterInTableView:(id)view;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)searchControllerProvider;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)viewForFooterInTableView:(id)a3;
-- (int64_t)configureWithCardController:(id)a3 presentationResultForIndex:(id)a4;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)viewForFooterInTableView:(id)view;
+- (int64_t)configureWithCardController:(id)controller presentationResultForIndex:(id)index;
 - (int64_t)contentInsetAdjustmentBehavior;
 - (void)didCompleteSearch;
-- (void)didSelectSuggestedSearchWithToken:(id)a3;
+- (void)didSelectSuggestedSearchWithToken:(id)token;
 - (void)loadConstraints;
-- (void)performSearch:(id)a3 :(id)a4;
-- (void)presentSeeAllViewControllerFor:(id)a3;
-- (void)prewarmSearchControllersAfterSeconds:(double)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setContactAvatarCardController:(id)a3;
-- (void)setContentInsetAdjustmentBehavior:(int64_t)a3;
-- (void)setFooterView:(id)a3;
-- (void)setHostingNavigationController:(id)a3;
-- (void)setSearchControllerProvider:(id)a3;
-- (void)setSearchControllers:(id)a3;
-- (void)setSearchText:(id)a3;
-- (void)setSearchTokens:(id)a3;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)performSearch:(id)search :(id)a4;
+- (void)presentSeeAllViewControllerFor:(id)for;
+- (void)prewarmSearchControllersAfterSeconds:(double)seconds;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setContactAvatarCardController:(id)controller;
+- (void)setContentInsetAdjustmentBehavior:(int64_t)behavior;
+- (void)setFooterView:(id)view;
+- (void)setHostingNavigationController:(id)controller;
+- (void)setSearchControllerProvider:(id)provider;
+- (void)setSearchControllers:(id)controllers;
+- (void)setSearchText:(id)text;
+- (void)setSearchTokens:(id)tokens;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)updateTableViewSeperatorInset;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation MPSearchViewController
 
-- (MPSearchViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (MPSearchViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1CFB8FA90();
     v7 = v6;
@@ -58,20 +58,20 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return MPSearchViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return MPSearchViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
-- (void)setHostingNavigationController:(id)a3
+- (void)setHostingNavigationController:(id)controller
 {
-  v5 = a3;
-  v4 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1CFB66098();
 }
 
 - (NSArray)searchControllers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CFB5E0B0();
 
   v4 = *&v3[OBJC_IVAR____TtC11CallsSearch33SearchTableViewDiffableDataSource_searchControllers];
@@ -82,9 +82,9 @@
   return v5;
 }
 
-- (void)setSearchControllerProvider:(id)a3
+- (void)setSearchControllerProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   if (v4)
   {
     v5 = v4;
@@ -103,7 +103,7 @@
   v9 = *(self + OBJC_IVAR___MPSearchViewController_searchControllerProvider + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_1CFB5F258(v8);
 }
 
@@ -116,17 +116,17 @@
 
 - (_TtC11CallsSearch16SearchFooterCell)footerView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CFB60498();
 
   return v3;
 }
 
-- (void)setFooterView:(id)a3
+- (void)setFooterView:(id)view
 {
   v4 = *(self + OBJC_IVAR___MPSearchViewController____lazy_storage___footerView);
-  *(self + OBJC_IVAR___MPSearchViewController____lazy_storage___footerView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MPSearchViewController____lazy_storage___footerView) = view;
+  viewCopy = view;
 }
 
 - (UINavigationController)hostingNavigationController
@@ -138,17 +138,17 @@
 
 - (_TtC11CallsSearch27ContactAvatarCardController)contactAvatarCardController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1CFB60600();
 
   return v3;
 }
 
-- (void)setContactAvatarCardController:(id)a3
+- (void)setContactAvatarCardController:(id)controller
 {
   v4 = *(self + OBJC_IVAR___MPSearchViewController____lazy_storage___contactAvatarCardController);
-  *(self + OBJC_IVAR___MPSearchViewController____lazy_storage___contactAvatarCardController) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___MPSearchViewController____lazy_storage___contactAvatarCardController) = controller;
+  controllerCopy = controller;
 }
 
 - (NSString)searchText
@@ -169,9 +169,9 @@
   return v4;
 }
 
-- (void)setSearchText:(id)a3
+- (void)setSearchText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = sub_1CFB8FA90();
   }
@@ -198,7 +198,7 @@
   return v3;
 }
 
-- (void)setSearchTokens:(id)a3
+- (void)setSearchTokens:(id)tokens
 {
   sub_1CFB5D38C(0, &unk_1EE04BD50, 0x1E69DCF30);
   v4 = sub_1CFB8FB30();
@@ -228,59 +228,59 @@
   return v3;
 }
 
-- (void)setSearchControllers:(id)a3
+- (void)setSearchControllers:(id)controllers
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EC4EC8A0, &qword_1CFB92380);
   v4 = sub_1CFB8FB30();
-  v5 = self;
+  selfCopy = self;
   sub_1CFB60AB0(v4);
 }
 
 - (int64_t)contentInsetAdjustmentBehavior
 {
-  v2 = self;
-  v3 = [(MPSearchViewController *)v2 tableView];
-  v4 = [(UITableView *)v3 contentInsetAdjustmentBehavior];
+  selfCopy = self;
+  tableView = [(MPSearchViewController *)selfCopy tableView];
+  contentInsetAdjustmentBehavior = [(UITableView *)tableView contentInsetAdjustmentBehavior];
 
-  return v4;
+  return contentInsetAdjustmentBehavior;
 }
 
-- (void)setContentInsetAdjustmentBehavior:(int64_t)a3
+- (void)setContentInsetAdjustmentBehavior:(int64_t)behavior
 {
-  v5 = self;
-  v4 = [(MPSearchViewController *)v5 tableView];
-  [(UITableView *)v4 setContentInsetAdjustmentBehavior:a3];
+  selfCopy = self;
+  tableView = [(MPSearchViewController *)selfCopy tableView];
+  [(UITableView *)tableView setContentInsetAdjustmentBehavior:behavior];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   MPSearchViewController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v6 = self;
-  v3 = [(MPSearchViewController *)v6 contactAvatarCardController];
+  selfCopy = self;
+  contactAvatarCardController = [(MPSearchViewController *)selfCopy contactAvatarCardController];
   v4 = ContactAvatarCardController.cardController.getter();
 
-  v5 = [(MPSearchViewController *)v6 view];
+  view = [(MPSearchViewController *)selfCopy view];
   [v4 setSourceView_];
 }
 
 - (void)loadConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CFB614A0();
 }
 
 - (void)updateTableViewSeperatorInset
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CFB6181C();
 }
 
-- (void)prewarmSearchControllersAfterSeconds:(double)a3
+- (void)prewarmSearchControllersAfterSeconds:(double)seconds
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EC4EC4B0, &qword_1CFB91F10);
   v6 = *(*(v5 - 8) + 64);
@@ -291,37 +291,37 @@
   v10 = swift_allocObject();
   swift_unknownObjectWeakInit();
   sub_1CFB8FBC0();
-  v11 = self;
+  selfCopy = self;
 
   v12 = sub_1CFB8FBB0();
   v13 = swift_allocObject();
   v14 = MEMORY[0x1E69E85E0];
   *(v13 + 16) = v12;
   *(v13 + 24) = v14;
-  *(v13 + 32) = a3;
+  *(v13 + 32) = seconds;
   *(v13 + 40) = v10;
 
   sub_1CFB80934(0, 0, v8, &unk_1CFB91F20, v13);
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  v6 = self;
-  v5 = [v4 searchBar];
-  MPSearchViewController.updateSearchResults(for:)(v5);
+  controllerCopy = controller;
+  selfCopy = self;
+  searchBar = [controllerCopy searchBar];
+  MPSearchViewController.updateSearchResults(for:)(searchBar);
 }
 
-- (void)didSelectSuggestedSearchWithToken:(id)a3
+- (void)didSelectSuggestedSearchWithToken:(id)token
 {
-  v4 = a3;
-  v5 = self;
-  sub_1CFB62410(v4);
+  tokenCopy = token;
+  selfCopy = self;
+  sub_1CFB62410(tokenCopy);
 }
 
-- (void)performSearch:(id)a3 :(id)a4
+- (void)performSearch:(id)search :(id)a4
 {
-  if (a3)
+  if (search)
   {
     v5 = sub_1CFB8FA90();
     v7 = v6;
@@ -335,11 +335,11 @@
 
   sub_1CFB5D38C(0, &unk_1EE04BD50, 0x1E69DCF30);
   v8 = sub_1CFB8FB30();
-  v9 = self;
+  selfCopy = self;
   sub_1CFB62770(v5, v7, v8);
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   v8 = sub_1CFB8F780();
   v9 = *(v8 - 8);
@@ -347,15 +347,15 @@
   MEMORY[0x1EEE9AC00](v8);
   v12 = &v16 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1CFB8F750();
-  v13 = a3;
-  v14 = a4;
-  v15 = self;
-  sub_1CFB62AB4(v13, v14);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_1CFB62AB4(viewCopy, cellCopy);
 
   (*(v9 + 8))(v12, v8);
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
   v6 = sub_1CFB8F780();
   v7 = *(v6 - 8);
@@ -363,96 +363,96 @@
   MEMORY[0x1EEE9AC00](v6);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1CFB8F750();
-  v11 = a3;
-  v12 = self;
-  v13 = sub_1CFB62F14(v11);
+  viewCopy = view;
+  selfCopy = self;
+  v13 = sub_1CFB62F14(viewCopy);
 
   (*(v7 + 8))(v10, v6);
 
   return v13;
 }
 
-- (BOOL)tableView:(id)a3 shouldDrawTopSeparatorForSection:(int64_t)a4
+- (BOOL)tableView:(id)view shouldDrawTopSeparatorForSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  LOBYTE(a4) = sub_1CFB662D0(a4);
+  viewCopy = view;
+  selfCopy = self;
+  LOBYTE(section) = sub_1CFB662D0(section);
 
-  return a4 & 1;
+  return section & 1;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1CFB63494(v6, a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_1CFB63494(viewCopy, section);
 
   return v8;
 }
 
-- (void)presentSeeAllViewControllerFor:(id)a3
+- (void)presentSeeAllViewControllerFor:(id)for
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1CFB63C10(a3);
+  selfCopy = self;
+  sub_1CFB63C10(for);
   swift_unknownObjectRelease();
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_1CFB66534(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1CFB66534(section);
   v9 = v8;
 
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  sub_1CFB66654(a4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1CFB66654(section);
   v9 = v8;
 
   return v9;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1CFB667B8(a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_1CFB667B8(section);
 
   return v8;
 }
 
-- (id)viewForFooterInTableView:(id)a3
+- (id)viewForFooterInTableView:(id)view
 {
-  v3 = self;
-  if ([(MPSearchViewController *)v3 needsReindexing])
+  selfCopy = self;
+  if ([(MPSearchViewController *)selfCopy needsReindexing])
   {
-    v4 = [(MPSearchViewController *)v3 footerView];
+    footerView = [(MPSearchViewController *)selfCopy footerView];
   }
 
   else
   {
-    v4 = 0;
+    footerView = 0;
   }
 
-  return v4;
+  return footerView;
 }
 
-- (double)heightForFooterInTableView:(id)a3
+- (double)heightForFooterInTableView:(id)view
 {
-  v3 = self;
+  selfCopy = self;
   v4 = 0.0;
-  if ([(MPSearchViewController *)v3 needsReindexing])
+  if ([(MPSearchViewController *)selfCopy needsReindexing])
   {
-    v5 = [(MPSearchViewController *)v3 footerView];
+    footerView = [(MPSearchViewController *)selfCopy footerView];
 
-    v4 = *(&v5->super.super.super.super.isa + OBJC_IVAR____TtC11CallsSearch16SearchFooterCell_footerHeight);
-    v3 = v5;
+    v4 = *(&footerView->super.super.super.super.isa + OBJC_IVAR____TtC11CallsSearch16SearchFooterCell_footerHeight);
+    selfCopy = footerView;
   }
 
   return v4;
@@ -460,7 +460,7 @@
 
 - (BOOL)needsReindexing
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CFB64460();
   v4 = v3;
 
@@ -469,13 +469,13 @@
 
 - (void)didCompleteSearch
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CFB645B8();
 }
 
 - (NSString)compositeSearchText
 {
-  v2 = self;
+  selfCopy = self;
   sub_1CFB64B88();
 
   v3 = sub_1CFB8FA80();
@@ -483,18 +483,18 @@
   return v3;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = self;
-  v3 = [(MPSearchViewController *)v4 delegate];
-  if (v3)
+  selfCopy = self;
+  delegate = [(MPSearchViewController *)selfCopy delegate];
+  if (delegate)
   {
-    [(MPSearchViewControllerDelegate *)v3 searchControllerBeginDragging];
+    [(MPSearchViewControllerDelegate *)delegate searchControllerBeginDragging];
     swift_unknownObjectRelease();
   }
 }
 
-- (int64_t)configureWithCardController:(id)a3 presentationResultForIndex:(id)a4
+- (int64_t)configureWithCardController:(id)controller presentationResultForIndex:(id)index
 {
   v6 = sub_1CFB8F780();
   v7 = *(v6 - 8);
@@ -502,9 +502,9 @@
   MEMORY[0x1EEE9AC00](v6);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1CFB8F750();
-  v11 = a3;
-  v12 = self;
-  v13 = sub_1CFB64F98(v11);
+  controllerCopy = controller;
+  selfCopy = self;
+  v13 = sub_1CFB64F98(controllerCopy);
 
   (*(v7 + 8))(v10, v6);
   return v13;

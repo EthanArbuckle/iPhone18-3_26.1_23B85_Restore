@@ -1,12 +1,12 @@
 @interface PXImportMediaLoadingCoordinator
 - (PXImportController)importController;
-- (PXImportMediaLoadingCoordinator)initWithImportController:(id)a3;
+- (PXImportMediaLoadingCoordinator)initWithImportController:(id)controller;
 - (id)dequeueNextThumbnailWorkItem;
 - (void)_processItemIfPossible;
-- (void)handleNewDataSource:(id)a3;
-- (void)mediaProviderThumbnailingBecameIdle:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setPaused:(BOOL)a3;
+- (void)handleNewDataSource:(id)source;
+- (void)mediaProviderThumbnailingBecameIdle:(id)idle;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setPaused:(BOOL)paused;
 - (void)shutdown;
 @end
 
@@ -19,7 +19,7 @@
   return WeakRetained;
 }
 
-- (void)mediaProviderThumbnailingBecameIdle:(id)a3
+- (void)mediaProviderThumbnailingBecameIdle:(id)idle
 {
   if ([(PXImportMediaLoadingCoordinator *)self paused])
   {
@@ -34,11 +34,11 @@ LABEL_10:
 
   else
   {
-    v5 = [(PXImportMediaLoadingCoordinator *)self completedDataSourceIdentifier];
-    v6 = [(PXImportMediaLoadingCoordinator *)self dataSource];
-    v7 = [v6 identifier];
+    completedDataSourceIdentifier = [(PXImportMediaLoadingCoordinator *)self completedDataSourceIdentifier];
+    dataSource = [(PXImportMediaLoadingCoordinator *)self dataSource];
+    identifier = [dataSource identifier];
 
-    if (v5 == v7)
+    if (completedDataSourceIdentifier == identifier)
     {
       if (os_log_type_enabled(0, OS_LOG_TYPE_DEBUG))
       {
@@ -115,9 +115,9 @@ void __71__PXImportMediaLoadingCoordinator_mediaProviderThumbnailingBecameIdle__
 
 - (void)_processItemIfPossible
 {
-  v3 = [(PXImportMediaLoadingCoordinator *)self importController];
-  v2 = [v3 importMediaProvider];
-  [v2 sendMediaProviderThumbnailingBecameIdle];
+  importController = [(PXImportMediaLoadingCoordinator *)self importController];
+  importMediaProvider = [importController importMediaProvider];
+  [importMediaProvider sendMediaProviderThumbnailingBecameIdle];
 }
 
 - (id)dequeueNextThumbnailWorkItem
@@ -204,10 +204,10 @@ LABEL_8:
   [v14 removeObject:v15];
 }
 
-- (void)handleNewDataSource:(id)a3
+- (void)handleNewDataSource:(id)source
 {
   modelQueue = self->_modelQueue;
-  v5 = a3;
+  sourceCopy = source;
   dispatch_assert_queue_V2(modelQueue);
   if (os_log_type_enabled(0, OS_LOG_TYPE_DEBUG))
   {
@@ -215,25 +215,25 @@ LABEL_8:
     _os_log_debug_impl(&dword_1A3C1C000, 0, OS_LOG_TYPE_DEBUG, "new datasource", v10, 2u);
   }
 
-  [(PXImportMediaLoadingCoordinator *)self setDataSource:v5];
+  [(PXImportMediaLoadingCoordinator *)self setDataSource:sourceCopy];
 
-  v6 = [(PXImportMediaLoadingCoordinator *)self dataSource];
-  v7 = [v6 allItems];
-  v8 = [v7 valueForKeyPath:@"importAsset.uuid"];
+  dataSource = [(PXImportMediaLoadingCoordinator *)self dataSource];
+  allItems = [dataSource allItems];
+  v8 = [allItems valueForKeyPath:@"importAsset.uuid"];
   v9 = [v8 mutableCopy];
   [(PXImportMediaLoadingCoordinator *)self setThumbnailWorkItemUuids:v9];
 
   [(PXImportMediaLoadingCoordinator *)self _processItemIfPossible];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if (PXImportAssetsDataSourceManagerObserverContext == a5)
+  if (PXImportAssetsDataSourceManagerObserverContext == context)
   {
     v14 = v5;
     v15 = v6;
-    v8 = [(PXImportMediaLoadingCoordinator *)self dataSourceManager:a3];
-    v9 = [v8 dataSource];
+    v8 = [(PXImportMediaLoadingCoordinator *)self dataSourceManager:observable];
+    dataSource = [v8 dataSource];
 
     modelQueue = self->_modelQueue;
     v12[0] = MEMORY[0x1E69E9820];
@@ -241,27 +241,27 @@ LABEL_8:
     v12[2] = __64__PXImportMediaLoadingCoordinator_observable_didChange_context___block_invoke;
     v12[3] = &unk_1E774C620;
     v12[4] = self;
-    v13 = v9;
-    v11 = v9;
+    v13 = dataSource;
+    v11 = dataSource;
     dispatch_async(modelQueue, v12);
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (self->_paused != a3)
+  if (self->_paused != paused)
   {
-    v3 = a3;
+    pausedCopy = paused;
     if (os_log_type_enabled(0, OS_LOG_TYPE_DEBUG))
     {
       v5[0] = 67109120;
-      v5[1] = v3;
+      v5[1] = pausedCopy;
       _os_log_debug_impl(&dword_1A3C1C000, 0, OS_LOG_TYPE_DEBUG, "paused state changed %d", v5, 8u);
     }
 
-    self->_paused = v3;
-    if (!v3)
+    self->_paused = pausedCopy;
+    if (!pausedCopy)
     {
       [(PXImportMediaLoadingCoordinator *)self _processItemIfPossible];
     }
@@ -282,8 +282,8 @@ LABEL_8:
 
   if (WeakRetained)
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 removeObserver:self name:@"PXImportMediaProviderThumbnailingBecameIdleNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"PXImportMediaProviderThumbnailingBecameIdleNotification" object:0];
 
     objc_storeWeak(&self->_importController, 0);
   }
@@ -292,9 +292,9 @@ LABEL_8:
   self->_dataSource = 0;
 }
 
-- (PXImportMediaLoadingCoordinator)initWithImportController:(id)a3
+- (PXImportMediaLoadingCoordinator)initWithImportController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v25.receiver = self;
   v25.super_class = PXImportMediaLoadingCoordinator;
   v5 = [(PXImportMediaLoadingCoordinator *)&v25 init];
@@ -320,9 +320,9 @@ LABEL_8:
     v5->_workerQueue = v18;
 
     v5->_paused = 1;
-    objc_storeWeak(&v5->_importController, v4);
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v20 addObserver:v5 selector:sel_mediaProviderThumbnailingBecameIdle_ name:@"PXImportMediaProviderThumbnailingBecameIdleNotification" object:0];
+    objc_storeWeak(&v5->_importController, controllerCopy);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_mediaProviderThumbnailingBecameIdle_ name:@"PXImportMediaProviderThumbnailingBecameIdleNotification" object:0];
 
     WeakRetained = objc_loadWeakRetained(&v5->_importController);
     if (!WeakRetained)
@@ -330,9 +330,9 @@ LABEL_8:
       _PFAssertContinueHandler();
     }
 
-    v22 = [v4 dataSourceManager];
+    dataSourceManager = [controllerCopy dataSourceManager];
     dataSourceManager = v5->_dataSourceManager;
-    v5->_dataSourceManager = v22;
+    v5->_dataSourceManager = dataSourceManager;
 
     [(PXImportAssetsDataSourceManager *)v5->_dataSourceManager registerChangeObserver:v5 context:PXImportAssetsDataSourceManagerObserverContext];
     if (!v5->_dataSourceManager)

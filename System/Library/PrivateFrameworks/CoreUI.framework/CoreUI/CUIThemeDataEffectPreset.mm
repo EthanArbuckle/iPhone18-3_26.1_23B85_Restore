@@ -1,26 +1,26 @@
 @interface CUIThemeDataEffectPreset
-- (CUIThemeDataEffectPreset)initWithEffectData:(const _cuieffectdata *)a3 forScaleFactor:(double)a4;
+- (CUIThemeDataEffectPreset)initWithEffectData:(const _cuieffectdata *)data forScaleFactor:(double)factor;
 @end
 
 @implementation CUIThemeDataEffectPreset
 
-- (CUIThemeDataEffectPreset)initWithEffectData:(const _cuieffectdata *)a3 forScaleFactor:(double)a4
+- (CUIThemeDataEffectPreset)initWithEffectData:(const _cuieffectdata *)data forScaleFactor:(double)factor
 {
   v34.receiver = self;
   v34.super_class = CUIThemeDataEffectPreset;
   v7 = [(CUIShapeEffectPreset *)&v34 init];
   v14 = v7;
-  if (a3 && a3->var0 == 1129596504)
+  if (data && data->var0 == 1129596504)
   {
     v32 = a2;
-    [(CUIShapeEffectPreset *)v7 setScaleFactor:a4];
-    var0 = a3->var4.var0;
+    [(CUIShapeEffectPreset *)v7 setScaleFactor:factor];
+    var0 = data->var4.var0;
     if (var0)
     {
       v21 = 0;
-      var1 = a3->var4.var1;
-      v23 = &a3->var4.var1[var0 + 1];
-      v33 = &a3->var4.var1[var0 + 4];
+      var1 = data->var4.var1;
+      v23 = &data->var4.var1[var0 + 1];
+      v33 = &data->var4.var1[var0 + 4];
       while (1)
       {
         v24 = var1[v21];

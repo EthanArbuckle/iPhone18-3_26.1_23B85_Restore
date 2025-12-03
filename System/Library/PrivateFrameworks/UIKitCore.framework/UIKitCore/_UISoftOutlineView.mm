@@ -1,6 +1,6 @@
 @interface _UISoftOutlineView
-- (_TtC5UIKit18_UISoftOutlineView)initWithCoder:(id)a3;
-- (_TtC5UIKit18_UISoftOutlineView)initWithFrame:(CGRect)a3;
+- (_TtC5UIKit18_UISoftOutlineView)initWithCoder:(id)coder;
+- (_TtC5UIKit18_UISoftOutlineView)initWithFrame:(CGRect)frame;
 - (void)_updateColors;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
@@ -19,11 +19,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_188DC854C();
 }
 
-- (_TtC5UIKit18_UISoftOutlineView)initWithCoder:(id)a3
+- (_TtC5UIKit18_UISoftOutlineView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC5UIKit18_UISoftOutlineView_shapeView;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(UIView) init];
@@ -34,11 +34,11 @@
 
 - (void)_updateColors
 {
-  v2 = self;
+  selfCopy = self;
   sub_188DBD174();
 }
 
-- (_TtC5UIKit18_UISoftOutlineView)initWithFrame:(CGRect)a3
+- (_TtC5UIKit18_UISoftOutlineView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

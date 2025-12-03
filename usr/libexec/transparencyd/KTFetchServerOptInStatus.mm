@@ -1,25 +1,25 @@
 @interface KTFetchServerOptInStatus
-- (KTFetchServerOptInStatus)initWithDependencies:(id)a3 reason:(id)a4 retryScheduler:(id)a5;
+- (KTFetchServerOptInStatus)initWithDependencies:(id)dependencies reason:(id)reason retryScheduler:(id)scheduler;
 - (void)groupStart;
 - (void)retry;
 @end
 
 @implementation KTFetchServerOptInStatus
 
-- (KTFetchServerOptInStatus)initWithDependencies:(id)a3 reason:(id)a4 retryScheduler:(id)a5
+- (KTFetchServerOptInStatus)initWithDependencies:(id)dependencies reason:(id)reason retryScheduler:(id)scheduler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dependenciesCopy = dependencies;
+  reasonCopy = reason;
+  schedulerCopy = scheduler;
   v14.receiver = self;
   v14.super_class = KTFetchServerOptInStatus;
   v11 = [(KTGroupOperation *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(KTFetchServerOptInStatus *)v11 setDeps:v8];
-    [(KTFetchServerOptInStatus *)v12 setRetryScheduler:v10];
-    [(KTFetchServerOptInStatus *)v12 setReason:v9];
+    [(KTFetchServerOptInStatus *)v11 setDeps:dependenciesCopy];
+    [(KTFetchServerOptInStatus *)v12 setRetryScheduler:schedulerCopy];
+    [(KTFetchServerOptInStatus *)v12 setReason:reasonCopy];
   }
 
   return v12;
@@ -27,22 +27,22 @@
 
 - (void)groupStart
 {
-  v3 = [(KTFetchServerOptInStatus *)self deps];
-  v4 = [v3 stateMonitor];
-  v5 = [v4 ktStatus];
+  deps = [(KTFetchServerOptInStatus *)self deps];
+  stateMonitor = [deps stateMonitor];
+  ktStatus = [stateMonitor ktStatus];
 
-  v6 = [v5 idsAccountStatus] == 3;
+  v6 = [ktStatus idsAccountStatus] == 3;
   if (_os_feature_enabled_impl())
   {
-    v6 = [v5 idsAccountStatus] != 0;
+    v6 = [ktStatus idsAccountStatus] != 0;
   }
 
-  if ([v5 optIn] == 2 || objc_msgSend(v5, "accountStatus") != 4 && v6)
+  if ([ktStatus optIn] == 2 || objc_msgSend(ktStatus, "accountStatus") != 4 && v6)
   {
-    v7 = [(KTFetchServerOptInStatus *)self deps];
-    v8 = [v7 accountOperations];
+    deps2 = [(KTFetchServerOptInStatus *)self deps];
+    accountOperations = [deps2 accountOperations];
     v31 = 0;
-    v9 = [v8 primaryAccount:&v31];
+    v9 = [accountOperations primaryAccount:&v31];
     v10 = v31;
 
     if (v9)
@@ -50,16 +50,16 @@
       v11 = objc_alloc_init(NSOperation);
       [(KTFetchServerOptInStatus *)self setFinishedOp:v11];
 
-      v12 = [(KTFetchServerOptInStatus *)self finishedOp];
-      [(KTGroupOperation *)self dependOnBeforeGroupFinished:v12];
+      finishedOp = [(KTFetchServerOptInStatus *)self finishedOp];
+      [(KTGroupOperation *)self dependOnBeforeGroupFinished:finishedOp];
 
-      v27 = [v9 username];
-      v13 = [IDSURI URIWithUnprefixedURI:v27];
+      username = [v9 username];
+      v13 = [IDSURI URIWithUnprefixedURI:username];
       objc_initWeak(location, self);
-      v14 = [(KTFetchServerOptInStatus *)self deps];
-      v15 = [v14 contextStore];
-      v16 = [(KTFetchServerOptInStatus *)self deps];
-      v17 = [v16 logClient];
+      deps3 = [(KTFetchServerOptInStatus *)self deps];
+      contextStore = [deps3 contextStore];
+      deps4 = [(KTFetchServerOptInStatus *)self deps];
+      logClient = [deps4 logClient];
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
       v28[2] = sub_10003A37C;
@@ -69,7 +69,7 @@
       v19 = kKTApplicationIdentifierIDS;
       v20 = v13;
       v29 = v20;
-      [v15 contextForApplication:v19 logClient:v17 fetchState:1 completionHandler:v28];
+      [contextStore contextForApplication:v19 logClient:logClient fetchState:1 completionHandler:v28];
 
       v10 = v18;
       objc_destroyWeak(&v30);
@@ -78,9 +78,9 @@
 
     else
     {
-      v21 = [(KTFetchServerOptInStatus *)self deps];
-      v22 = [v21 stateMonitor];
-      [v22 setServerOptInState:2];
+      deps5 = [(KTFetchServerOptInStatus *)self deps];
+      stateMonitor2 = [deps5 stateMonitor];
+      [stateMonitor2 setServerOptInState:2];
 
       if (qword_10038BCC0 != -1)
       {
@@ -99,9 +99,9 @@
 
   else
   {
-    v24 = [(KTFetchServerOptInStatus *)self deps];
-    v25 = [v24 stateMonitor];
-    [v25 setServerOptInState:2];
+    deps6 = [(KTFetchServerOptInStatus *)self deps];
+    stateMonitor3 = [deps6 stateMonitor];
+    [stateMonitor3 setServerOptInState:2];
 
     if (qword_10038BCC0 != -1)
     {
@@ -132,19 +132,19 @@
   }
 
   v4 = [KTPendingFlag alloc];
-  v5 = [(KTFetchServerOptInStatus *)self retryScheduler];
-  v6 = [(KTPendingFlag *)v4 initWithFlag:@"CheckServerOptIn" conditions:2 scheduler:v5];
+  retryScheduler = [(KTFetchServerOptInStatus *)self retryScheduler];
+  v6 = [(KTPendingFlag *)v4 initWithFlag:@"CheckServerOptIn" conditions:2 scheduler:retryScheduler];
 
-  v7 = [(KTFetchServerOptInStatus *)self deps];
-  v8 = [v7 flagHandler];
-  [v8 handlePendingFlag:v6];
+  deps = [(KTFetchServerOptInStatus *)self deps];
+  flagHandler = [deps flagHandler];
+  [flagHandler handlePendingFlag:v6];
 
-  v9 = [(KTFetchServerOptInStatus *)self deps];
-  v10 = [v9 stateMonitor];
-  [v10 setNewServerOptInRequests:1];
+  deps2 = [(KTFetchServerOptInStatus *)self deps];
+  stateMonitor = [deps2 stateMonitor];
+  [stateMonitor setNewServerOptInRequests:1];
 
-  v11 = [(KTFetchServerOptInStatus *)self retryScheduler];
-  [v11 trigger];
+  retryScheduler2 = [(KTFetchServerOptInStatus *)self retryScheduler];
+  [retryScheduler2 trigger];
 }
 
 @end

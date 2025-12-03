@@ -1,14 +1,14 @@
 @interface UIScrollView
-+ (void)_maps_updateHairlineAlpha:(double)a3 animated:(BOOL)a4 getter:(id)a5 setter:(id)a6;
-- (unint64_t)_maps_edgesObscuringContentIncludingContentInsets:(BOOL)a3;
-- (void)_maps_scrollTextViewSelectedRangeVisible:(id)a3;
++ (void)_maps_updateHairlineAlpha:(double)alpha animated:(BOOL)animated getter:(id)getter setter:(id)setter;
+- (unint64_t)_maps_edgesObscuringContentIncludingContentInsets:(BOOL)insets;
+- (void)_maps_scrollTextViewSelectedRangeVisible:(id)visible;
 @end
 
 @implementation UIScrollView
 
-- (unint64_t)_maps_edgesObscuringContentIncludingContentInsets:(BOOL)a3
+- (unint64_t)_maps_edgesObscuringContentIncludingContentInsets:(BOOL)insets
 {
-  v3 = a3;
+  insetsCopy = insets;
   [(UIScrollView *)self bounds];
   MinX = CGRectGetMinX(v32);
   [(UIScrollView *)self bounds];
@@ -21,7 +21,7 @@
   v10 = v9;
   [(UIScrollView *)self contentSize];
   v12 = v11;
-  if (v3)
+  if (insetsCopy)
   {
     [(UIScrollView *)self adjustedContentInset];
     v14 = -v13;
@@ -110,14 +110,14 @@
   }
 }
 
-- (void)_maps_scrollTextViewSelectedRangeVisible:(id)a3
+- (void)_maps_scrollTextViewSelectedRangeVisible:(id)visible
 {
-  v22 = a3;
-  v4 = [v22 selectedTextRange];
-  if (v4)
+  visibleCopy = visible;
+  selectedTextRange = [visibleCopy selectedTextRange];
+  if (selectedTextRange)
   {
-    [v22 firstRectForRange:v4];
-    [(UIScrollView *)self convertRect:v22 toView:?];
+    [visibleCopy firstRectForRange:selectedTextRange];
+    [(UIScrollView *)self convertRect:visibleCopy toView:?];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -140,8 +140,8 @@
 
       [(UIScrollView *)self scrollRectToVisible:0 animated:v6, v8, v10, v12];
       [(UIScrollView *)self layoutIfNeeded];
-      [v22 firstRectForRange:v4];
-      [(UIScrollView *)self convertRect:v22 toView:?];
+      [visibleCopy firstRectForRange:selectedTextRange];
+      [(UIScrollView *)self convertRect:visibleCopy toView:?];
       width = v10;
       height = v12;
       y = v8;
@@ -155,20 +155,20 @@
   }
 }
 
-+ (void)_maps_updateHairlineAlpha:(double)a3 animated:(BOOL)a4 getter:(id)a5 setter:(id)a6
++ (void)_maps_updateHairlineAlpha:(double)alpha animated:(BOOL)animated getter:(id)getter setter:(id)setter
 {
-  v7 = a4;
-  v9 = a6;
-  if ((*(a5 + 2))(a5) != a3)
+  animatedCopy = animated;
+  setterCopy = setter;
+  if ((*(getter + 2))(getter) != alpha)
   {
     v11 = _NSConcreteStackBlock;
     v12 = 3221225472;
     v13 = sub_1007A3F5C;
     v14 = &unk_101658A20;
-    v15 = v9;
-    v16 = a3;
+    v15 = setterCopy;
+    alphaCopy = alpha;
     v10 = objc_retainBlock(&v11);
-    if (v7)
+    if (animatedCopy)
     {
       [UIView animateWithDuration:4 delay:v10 options:0 animations:0.2 completion:0.0, v11, v12, v13, v14];
     }

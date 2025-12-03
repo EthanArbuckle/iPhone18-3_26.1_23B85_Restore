@@ -1,54 +1,54 @@
 @interface PLDeferredPhotoPendingAssetRecord
-- (PLDeferredPhotoPendingAssetRecord)initWithAssetObjectID:(id)a3 lsm:(id)a4 requestReason:(id)a5 isBackgroundPriority:(BOOL)a6 signpostId:(unint64_t)a7 expectsSecondProcessingCallback:(BOOL)a8 needsSemanticDevelopment:(BOOL)a9 fileURLForFullsizeRenderImage:(id)a10 mainFileURL:(id)a11 logDescription:(id)a12 startTimestamp:(double)a13 deferredmediadQos:(id)a14 clientBundleID:(id)a15 completionHandler:(id)a16;
+- (PLDeferredPhotoPendingAssetRecord)initWithAssetObjectID:(id)d lsm:(id)lsm requestReason:(id)reason isBackgroundPriority:(BOOL)priority signpostId:(unint64_t)id expectsSecondProcessingCallback:(BOOL)callback needsSemanticDevelopment:(BOOL)development fileURLForFullsizeRenderImage:(id)self0 mainFileURL:(id)self1 logDescription:(id)self2 startTimestamp:(double)self3 deferredmediadQos:(id)self4 clientBundleID:(id)self5 completionHandler:(id)self6;
 @end
 
 @implementation PLDeferredPhotoPendingAssetRecord
 
-- (PLDeferredPhotoPendingAssetRecord)initWithAssetObjectID:(id)a3 lsm:(id)a4 requestReason:(id)a5 isBackgroundPriority:(BOOL)a6 signpostId:(unint64_t)a7 expectsSecondProcessingCallback:(BOOL)a8 needsSemanticDevelopment:(BOOL)a9 fileURLForFullsizeRenderImage:(id)a10 mainFileURL:(id)a11 logDescription:(id)a12 startTimestamp:(double)a13 deferredmediadQos:(id)a14 clientBundleID:(id)a15 completionHandler:(id)a16
+- (PLDeferredPhotoPendingAssetRecord)initWithAssetObjectID:(id)d lsm:(id)lsm requestReason:(id)reason isBackgroundPriority:(BOOL)priority signpostId:(unint64_t)id expectsSecondProcessingCallback:(BOOL)callback needsSemanticDevelopment:(BOOL)development fileURLForFullsizeRenderImage:(id)self0 mainFileURL:(id)self1 logDescription:(id)self2 startTimestamp:(double)self3 deferredmediadQos:(id)self4 clientBundleID:(id)self5 completionHandler:(id)self6
 {
-  v46 = a3;
-  v44 = a4;
-  v45 = a5;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
-  v43 = a14;
-  v23 = a15;
-  v24 = a16;
+  dCopy = d;
+  lsmCopy = lsm;
+  reasonCopy = reason;
+  imageCopy = image;
+  lCopy = l;
+  descriptionCopy = description;
+  qosCopy = qos;
+  iDCopy = iD;
+  handlerCopy = handler;
   v47.receiver = self;
   v47.super_class = PLDeferredPhotoPendingAssetRecord;
   v25 = [(PLDeferredPhotoPendingAssetRecord *)&v47 init];
   if (v25)
   {
-    v26 = [v46 copy];
+    v26 = [dCopy copy];
     assetObjectID = v25->_assetObjectID;
     v25->_assetObjectID = v26;
 
-    objc_storeStrong(&v25->_lsm, a4);
-    v28 = [v45 copy];
+    objc_storeStrong(&v25->_lsm, lsm);
+    v28 = [reasonCopy copy];
     requestReason = v25->_requestReason;
     v25->_requestReason = v28;
 
-    v25->_isBackgroundPriority = a6;
-    v25->_signpostId = a7;
-    v25->_expectsSecondProcessingCallback = a8;
-    v25->_needsSemanticDevelopment = a9;
-    v30 = [v20 copy];
+    v25->_isBackgroundPriority = priority;
+    v25->_signpostId = id;
+    v25->_expectsSecondProcessingCallback = callback;
+    v25->_needsSemanticDevelopment = development;
+    v30 = [imageCopy copy];
     fileURLForFullsizeRenderImage = v25->_fileURLForFullsizeRenderImage;
     v25->_fileURLForFullsizeRenderImage = v30;
 
-    v32 = [v21 copy];
+    v32 = [lCopy copy];
     mainFileURL = v25->_mainFileURL;
     v25->_mainFileURL = v32;
 
-    v34 = [v22 copy];
+    v34 = [descriptionCopy copy];
     logDescription = v25->_logDescription;
     v25->_logDescription = v34;
 
-    v25->_startTimestamp = a13;
-    objc_storeStrong(&v25->_qosToProcess, a14);
-    objc_storeStrong(&v25->_clientBundleID, a15);
-    v36 = [v24 copy];
+    v25->_startTimestamp = timestamp;
+    objc_storeStrong(&v25->_qosToProcess, qos);
+    objc_storeStrong(&v25->_clientBundleID, iD);
+    v36 = [handlerCopy copy];
     completionHandler = v25->_completionHandler;
     v25->_completionHandler = v36;
 

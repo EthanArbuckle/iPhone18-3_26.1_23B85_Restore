@@ -10,8 +10,8 @@
   v2 = NSHomeDirectory();
   v3 = [v2 stringByAppendingString:@"/Library/Assistant/LLMCache/NLRouter"];
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  if (([v4 removeItemAtPath:v3 error:0] & 1) == 0)
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if (([defaultManager removeItemAtPath:v3 error:0] & 1) == 0)
   {
     v5 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))

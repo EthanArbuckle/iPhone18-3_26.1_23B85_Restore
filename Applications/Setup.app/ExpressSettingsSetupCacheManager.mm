@@ -1,12 +1,12 @@
 @interface ExpressSettingsSetupCacheManager
 - (_TtC5Setup32ExpressSettingsSetupCacheManager)init;
-- (void)applyHandlers:(id)a3;
-- (void)registerExpressSettings:(id)a3;
-- (void)removeApplyHandlerFor:(unint64_t)a3;
+- (void)applyHandlers:(id)handlers;
+- (void)registerExpressSettings:(id)settings;
+- (void)removeApplyHandlerFor:(unint64_t)for;
 - (void)resetCache;
 - (void)resetHandlers;
-- (void)setApplyHandlerFor:(unint64_t)a3;
-- (void)setExpressDataSource:(id)a3;
+- (void)setApplyHandlerFor:(unint64_t)for;
+- (void)setExpressDataSource:(id)source;
 @end
 
 @implementation ExpressSettingsSetupCacheManager
@@ -35,51 +35,51 @@
   return v9;
 }
 
-- (void)setExpressDataSource:(id)a3
+- (void)setExpressDataSource:(id)source
 {
-  *(&self->super.isa + OBJC_IVAR____TtC5Setup32ExpressSettingsSetupCacheManager_dataSource) = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC5Setup32ExpressSettingsSetupCacheManager_dataSource) = source;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (void)setApplyHandlerFor:(unint64_t)a3
+- (void)setApplyHandlerFor:(unint64_t)for
 {
-  v4 = self;
-  sub_100006C88(a3);
+  selfCopy = self;
+  sub_100006C88(for);
 }
 
-- (void)removeApplyHandlerFor:(unint64_t)a3
+- (void)removeApplyHandlerFor:(unint64_t)for
 {
-  v4 = self;
-  sub_100007094(a3);
+  selfCopy = self;
+  sub_100007094(for);
 }
 
-- (void)registerExpressSettings:(id)a3
+- (void)registerExpressSettings:(id)settings
 {
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_1000073C4(v4);
 }
 
-- (void)applyHandlers:(id)a3
+- (void)applyHandlers:(id)handlers
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handlers);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_100007A9C(sub_10000A524, v5);
 }
 
 - (void)resetHandlers
 {
-  v2 = self;
+  selfCopy = self;
   sub_100008D9C();
 }
 
 - (void)resetCache
 {
-  v2 = self;
+  selfCopy = self;
   sub_100009124();
 }
 

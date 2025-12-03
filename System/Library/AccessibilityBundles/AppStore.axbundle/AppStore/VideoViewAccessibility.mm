@@ -1,15 +1,15 @@
 @interface VideoViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)accessibilityUpdatePlayerControllerControls;
 @end
 
 @implementation VideoViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AppStore.ProductLockupCollectionViewCell"];
-  [v3 validateClass:@"AppStore.VideoView" hasInstanceMethod:@"accessibilityUpdatePlayerControllerControls" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AppStore.ProductLockupCollectionViewCell"];
+  [validationsCopy validateClass:@"AppStore.VideoView" hasInstanceMethod:@"accessibilityUpdatePlayerControllerControls" withFullSignature:{"v", 0}];
 }
 
 - (void)accessibilityUpdatePlayerControllerControls

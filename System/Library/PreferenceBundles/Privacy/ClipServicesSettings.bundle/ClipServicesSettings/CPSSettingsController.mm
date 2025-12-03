@@ -1,18 +1,18 @@
 @interface CPSSettingsController
-- (BOOL)_hasAppClipInAppProxies:(id)a3;
-- (BOOL)_isDimSumApp:(id)a3;
+- (BOOL)_hasAppClipInAppProxies:(id)proxies;
+- (BOOL)_isDimSumApp:(id)app;
 - (id)_allDimSumApps;
 - (id)_specifiersForDimSumAppsIfExists;
 - (id)specifiers;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
 - (void)_didClearAllAppClips;
-- (void)_reloadSpecifiersForUpdatedAppsIfNeeded:(id)a3;
+- (void)_reloadSpecifiersForUpdatedAppsIfNeeded:(id)needed;
 - (void)_willClearAllAppClips;
 - (void)clearAllClips;
-- (void)confirmClearAllClips:(id)a3;
-- (void)didMoveToParentViewController:(id)a3;
+- (void)confirmClearAllClips:(id)clips;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)didTapLearnMoreLink;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 @end
 
 @implementation CPSSettingsController
@@ -29,16 +29,16 @@
   else
   {
     v6 = [(CPSSettingsController *)self loadSpecifiersFromPlistName:@"ClipServicesSettings" target:self];
-    v7 = [(CPSSettingsController *)self _specifiersForDimSumAppsIfExists];
-    if ([v7 count])
+    _specifiersForDimSumAppsIfExists = [(CPSSettingsController *)self _specifiersForDimSumAppsIfExists];
+    if ([_specifiersForDimSumAppsIfExists count])
     {
-      v8 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, [v7 count]);
-      [v6 insertObjects:v7 atIndexes:v8];
+      v8 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, [_specifiersForDimSumAppsIfExists count]);
+      [v6 insertObjects:_specifiersForDimSumAppsIfExists atIndexes:v8];
     }
 
     v9 = [v6 specifierForID:@"CLEAR_CLIP_HISTORY"];
     v10 = &__kCFBooleanFalse;
-    if (+[CPSClipURL isSupported](CPSClipURL, "isSupported") && [v7 count])
+    if (+[CPSClipURL isSupported](CPSClipURL, "isSupported") && [_specifiersForDimSumAppsIfExists count])
     {
       v10 = &__kCFBooleanTrue;
     }
@@ -72,11 +72,11 @@
   return v4;
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v5 = +[LSApplicationWorkspace defaultWorkspace];
   v6 = v5;
-  if (a3)
+  if (controller)
   {
     [v5 addObserver:self];
   }
@@ -90,8 +90,8 @@
 - (id)_specifiersForDimSumAppsIfExists
 {
   v3 = +[NSMutableArray array];
-  v4 = [(CPSSettingsController *)self _allDimSumApps];
-  v5 = [PSSystemPolicyManager specifiersForThirdPartyApps:v4];
+  _allDimSumApps = [(CPSSettingsController *)self _allDimSumApps];
+  v5 = [PSSystemPolicyManager specifiersForThirdPartyApps:_allDimSumApps];
 
   v15 = 0u;
   v16 = 0u;
@@ -151,19 +151,19 @@
   return v5;
 }
 
-- (BOOL)_isDimSumApp:(id)a3
+- (BOOL)_isDimSumApp:(id)app
 {
-  v3 = a3;
+  appCopy = app;
   v7 = 0;
-  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v3 allowPlaceholder:0 error:&v7];
+  v4 = [[LSApplicationRecord alloc] initWithBundleIdentifier:appCopy allowPlaceholder:0 error:&v7];
 
-  v5 = [v4 appClipMetadata];
-  LOBYTE(v3) = v5 != 0;
+  appClipMetadata = [v4 appClipMetadata];
+  LOBYTE(appCopy) = appClipMetadata != 0;
 
-  return v3;
+  return appCopy;
 }
 
-- (void)confirmClearAllClips:(id)a3
+- (void)confirmClearAllClips:(id)clips
 {
   v4 = [PSConfirmationSpecifier preferenceSpecifierNamed:&stru_14F50 target:self set:0 get:0 detail:0 cell:-1 edit:0];
   v12 = PSConfirmationTitleKey;
@@ -211,12 +211,12 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * v8) identifier];
-        if ([(CPSSettingsController *)self _isDimSumApp:v9])
+        identifier = [*(*(&v12 + 1) + 8 * v8) identifier];
+        if ([(CPSSettingsController *)self _isDimSumApp:identifier])
         {
-          [v3 addObject:v9];
+          [v3 addObject:identifier];
           v10 = +[CPSAnalyticsLogger sharedLogger];
-          [v10 didManuallyDeleteClip:v9 withEvent:2];
+          [v10 didManuallyDeleteClip:identifier withEvent:2];
         }
 
         v8 = v8 + 1;
@@ -247,11 +247,11 @@
   [(CPSSettingsController *)self presentViewController:v3 animated:1 completion:0];
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(CPSSettingsController *)self specifierAtIndexPath:a4];
-  v5 = [v4 identifier];
-  if ([v5 isEqualToString:@"APP_CLIPS"])
+  v4 = [(CPSSettingsController *)self specifierAtIndexPath:path];
+  identifier = [v4 identifier];
+  if ([identifier isEqualToString:@"APP_CLIPS"])
   {
 
     v6 = 0;
@@ -267,41 +267,41 @@
   return v6;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 1)
+  viewCopy = view;
+  pathCopy = path;
+  if (style == 1)
   {
-    v10 = [(CPSSettingsController *)self specifierAtIndexPath:v9];
+    v10 = [(CPSSettingsController *)self specifierAtIndexPath:pathCopy];
     [(CPSSettingsController *)self beginUpdates];
     [(CPSSettingsController *)self removeSpecifier:v10 animated:1];
     [(CPSSettingsController *)self endUpdates];
-    v11 = [v10 identifier];
+    identifier = [v10 identifier];
     v12 = +[CPSAnalyticsLogger sharedLogger];
-    [v12 didManuallyDeleteClip:v11 withEvent:1];
+    [v12 didManuallyDeleteClip:identifier withEvent:1];
 
-    v18 = v11;
+    v18 = identifier;
     v13 = [NSArray arrayWithObjects:&v18 count:1];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_80D4;
     v14[3] = &unk_14B88;
-    v15 = v8;
-    v16 = v9;
-    v17 = self;
+    v15 = viewCopy;
+    v16 = pathCopy;
+    selfCopy = self;
     [CPSClipRequest deleteClipsWithBundleIDs:v13 completion:v14];
   }
 }
 
-- (BOOL)_hasAppClipInAppProxies:(id)a3
+- (BOOL)_hasAppClipInAppProxies:(id)proxies
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  proxiesCopy = proxies;
+  v4 = [proxiesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -311,20 +311,20 @@
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(proxiesCopy);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) correspondingApplicationRecord];
-        v8 = [v7 appClipMetadata];
+        correspondingApplicationRecord = [*(*(&v10 + 1) + 8 * i) correspondingApplicationRecord];
+        appClipMetadata = [correspondingApplicationRecord appClipMetadata];
 
-        if (v8)
+        if (appClipMetadata)
         {
           LOBYTE(v4) = 1;
           goto LABEL_11;
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [proxiesCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -339,17 +339,17 @@ LABEL_11:
   return v4;
 }
 
-- (void)_reloadSpecifiersForUpdatedAppsIfNeeded:(id)a3
+- (void)_reloadSpecifiersForUpdatedAppsIfNeeded:(id)needed
 {
-  v4 = a3;
-  if (!self->_clearingAllAppClips && [(CPSSettingsController *)self _hasAppClipInAppProxies:v4])
+  neededCopy = needed;
+  if (!self->_clearingAllAppClips && [(CPSSettingsController *)self _hasAppClipInAppProxies:neededCopy])
   {
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_8364;
     v5[3] = &unk_14758;
-    v6 = v4;
-    v7 = self;
+    v6 = neededCopy;
+    selfCopy = self;
     dispatch_async(&_dispatch_main_q, v5);
   }
 }
@@ -357,17 +357,17 @@ LABEL_11:
 - (void)_willClearAllAppClips
 {
   self->_clearingAllAppClips = 1;
-  v2 = [(CPSSettingsController *)self specifiers];
-  v7 = [v2 specifierForID:@"CLEAR_CLIP_HISTORY"];
+  specifiers = [(CPSSettingsController *)self specifiers];
+  v7 = [specifiers specifierForID:@"CLEAR_CLIP_HISTORY"];
 
   [v7 setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
   v3 = [v7 propertyForKey:PSTableCellKey];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 accessoryView];
+    accessoryView = [v3 accessoryView];
 
-    if (!v5)
+    if (!accessoryView)
     {
       v6 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
       [v4 setAccessoryView:v6];
@@ -378,8 +378,8 @@ LABEL_11:
 
 - (void)_didClearAllAppClips
 {
-  v3 = [(CPSSettingsController *)self specifiers];
-  v5 = [v3 specifierForID:@"CLEAR_CLIP_HISTORY"];
+  specifiers = [(CPSSettingsController *)self specifiers];
+  v5 = [specifiers specifierForID:@"CLEAR_CLIP_HISTORY"];
 
   v4 = [v5 propertyForKey:PSTableCellKey];
   [v4 setAccessoryView:0];

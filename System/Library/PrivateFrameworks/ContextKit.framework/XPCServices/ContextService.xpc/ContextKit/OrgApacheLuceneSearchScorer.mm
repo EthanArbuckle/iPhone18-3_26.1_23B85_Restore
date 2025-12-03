@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneSearchScorer
-- (OrgApacheLuceneSearchScorer)initWithOrgApacheLuceneSearchWeight:(id)a3;
+- (OrgApacheLuceneSearchScorer)initWithOrgApacheLuceneSearchWeight:(id)weight;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchScorer
 
-- (OrgApacheLuceneSearchScorer)initWithOrgApacheLuceneSearchWeight:(id)a3
+- (OrgApacheLuceneSearchScorer)initWithOrgApacheLuceneSearchWeight:(id)weight
 {
   OrgApacheLuceneSearchDocIdSetIterator_init(self, a2);
-  JreStrongAssign(&self->weight_, a3);
+  JreStrongAssign(&self->weight_, weight);
   return self;
 }
 

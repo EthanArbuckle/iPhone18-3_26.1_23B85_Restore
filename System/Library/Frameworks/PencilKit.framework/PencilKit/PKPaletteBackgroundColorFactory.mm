@@ -6,13 +6,13 @@
 
 - (id)makeBackgroundColor
 {
-  if (a1)
+  if (self)
   {
-    a1 = [MEMORY[0x1E69DC888] colorWithDynamicProvider:&__block_literal_global_46];
+    self = [MEMORY[0x1E69DC888] colorWithDynamicProvider:&__block_literal_global_46];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 id __54__PKPaletteBackgroundColorFactory_makeBackgroundColor__block_invoke(uint64_t a1, void *a2)

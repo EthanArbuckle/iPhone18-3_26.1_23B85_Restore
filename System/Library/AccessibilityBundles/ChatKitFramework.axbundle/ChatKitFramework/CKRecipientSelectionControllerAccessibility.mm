@@ -1,25 +1,25 @@
 @interface CKRecipientSelectionControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_updateLabelOnToField;
-- (void)addRecipient:(id)a3;
+- (void)addRecipient:(id)recipient;
 - (void)viewDidLoad;
 @end
 
 @implementation CKRecipientSelectionControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKComposeRecipientView" isKindOfClass:@"CNComposeRecipientTextView"];
-  [v3 validateClass:@"CNComposeRecipientTextView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNAutocompleteResultsTableViewController" isKindOfClass:@"UITableViewController"];
-  [v3 validateClass:@"CKRecipientSearchListController" isKindOfClass:@"CNAutocompleteResultsTableViewController"];
-  [v3 validateClass:@"CNComposeRecipient" hasInstanceMethod:@"displayString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKRecipientSelectionController" hasInstanceMethod:@"searchListController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UITableViewController" hasInstanceMethod:@"tableView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKRecipientSelectionController" hasInstanceMethod:@"addRecipient:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKComposeRecipientView" isKindOfClass:@"CNComposeRecipientTextView"];
+  [validationsCopy validateClass:@"CNComposeRecipientTextView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNAutocompleteResultsTableViewController" isKindOfClass:@"UITableViewController"];
+  [validationsCopy validateClass:@"CKRecipientSearchListController" isKindOfClass:@"CNAutocompleteResultsTableViewController"];
+  [validationsCopy validateClass:@"CNComposeRecipient" hasInstanceMethod:@"displayString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKRecipientSelectionController" hasInstanceMethod:@"searchListController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UITableViewController" hasInstanceMethod:@"tableView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKRecipientSelectionController" hasInstanceMethod:@"addRecipient:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_updateLabelOnToField
@@ -58,13 +58,13 @@
   [(CKRecipientSelectionControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)addRecipient:(id)a3
+- (void)addRecipient:(id)recipient
 {
   v8.receiver = self;
   v8.super_class = CKRecipientSelectionControllerAccessibility;
-  v3 = a3;
-  [(CKRecipientSelectionControllerAccessibility *)&v8 addRecipient:v3];
-  v4 = [v3 safeStringForKey:@"displayString"];
+  recipientCopy = recipient;
+  [(CKRecipientSelectionControllerAccessibility *)&v8 addRecipient:recipientCopy];
+  v4 = [recipientCopy safeStringForKey:@"displayString"];
 
   v5 = MEMORY[0x29EDBA0F8];
   v6 = accessibilityLocalizedString(@"recipient.added.announcement");

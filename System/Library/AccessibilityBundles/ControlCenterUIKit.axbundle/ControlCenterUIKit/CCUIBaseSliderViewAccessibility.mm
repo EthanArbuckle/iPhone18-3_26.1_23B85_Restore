@@ -16,18 +16,18 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(CCUIBaseSliderViewAccessibility *)self accessibilityUserDefinedTraits];
-  v3 = [v2 unsignedIntegerValue];
+  accessibilityUserDefinedTraits = [(CCUIBaseSliderViewAccessibility *)self accessibilityUserDefinedTraits];
+  unsignedIntegerValue = [accessibilityUserDefinedTraits unsignedIntegerValue];
 
   objc_opt_class();
   v4 = __UIAccessibilityCastAsClass();
   v5 = v4;
-  v6 = *MEMORY[0x29EDC7F60] | v3;
+  v6 = *MEMORY[0x29EDC7F60] | unsignedIntegerValue;
   if (v4)
   {
-    v7 = [v4 isEnabled];
+    isEnabled = [v4 isEnabled];
     v8 = *MEMORY[0x29EDC7FA8];
-    if (v7)
+    if (isEnabled)
     {
       v8 = 0;
     }
@@ -46,7 +46,7 @@
 {
   v5.receiver = self;
   v5.super_class = CCUIBaseSliderViewAccessibility;
-  v2 = [(CCUIBaseSliderViewAccessibility *)&v5 accessibilityCustomActions];
+  accessibilityCustomActions = [(CCUIBaseSliderViewAccessibility *)&v5 accessibilityCustomActions];
   v3 = AXGuaranteedMutableArray();
 
   UIAccessibilityControlCenterAttachOpenCloseCustomActionsIfNeeded();

@@ -1,33 +1,33 @@
 @interface SSWishlistAddItemsRequest
-- (SSWishlistAddItemsRequest)initWithItems:(id)a3 caller:(id)a4 version:(id)a5;
-- (SSWishlistAddItemsRequest)initWithXPCEncoding:(id)a3;
-- (id)_convertedValueForValue:(id)a3;
+- (SSWishlistAddItemsRequest)initWithItems:(id)items caller:(id)caller version:(id)version;
+- (SSWishlistAddItemsRequest)initWithXPCEncoding:(id)encoding;
+- (id)_convertedValueForValue:(id)value;
 - (id)copyQueryStringParameters;
 - (id)copyXPCEncoding;
-- (void)startWithAddItemsResponseBlock:(id)a3;
+- (void)startWithAddItemsResponseBlock:(id)block;
 @end
 
 @implementation SSWishlistAddItemsRequest
 
-- (SSWishlistAddItemsRequest)initWithItems:(id)a3 caller:(id)a4 version:(id)a5
+- (SSWishlistAddItemsRequest)initWithItems:(id)items caller:(id)caller version:(id)version
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemsCopy = items;
+  callerCopy = caller;
+  versionCopy = version;
   v19.receiver = self;
   v19.super_class = SSWishlistAddItemsRequest;
   v11 = [(SSRequest *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [itemsCopy copy];
     items = v11->_items;
     v11->_items = v12;
 
-    v14 = [v9 copy];
+    v14 = [callerCopy copy];
     caller = v11->_caller;
     v11->_caller = v14;
 
-    v16 = [v10 copy];
+    v16 = [versionCopy copy];
     version = v11->_version;
     v11->_version = v16;
   }
@@ -35,10 +35,10 @@
   return v11;
 }
 
-- (void)startWithAddItemsResponseBlock:(id)a3
+- (void)startWithAddItemsResponseBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
   {
     v5 = +[SSLogConfig sharedStoreServicesConfig];
@@ -47,19 +47,19 @@
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
-    v8 = [v5 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v9 = v7;
     }
@@ -83,9 +83,9 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v21, v18}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v21, v18}];
       free(v10);
-      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+      SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
     }
 
     goto LABEL_15;
@@ -97,8 +97,8 @@ LABEL_16:
   v19[2] = __60__SSWishlistAddItemsRequest_startWithAddItemsResponseBlock___block_invoke;
   v19[3] = &unk_1E84ABEF0;
   v19[4] = self;
-  v20 = v4;
-  v17 = v4;
+  v20 = blockCopy;
+  v17 = blockCopy;
   [(SSRequest *)self _startWithMessageID:166 messageBlock:v19];
 }
 
@@ -154,7 +154,7 @@ void __60__SSWishlistAddItemsRequest_startWithAddItemsResponseBlock___block_invo
   v8[3] = &unk_1E84AC028;
   v5 = v3;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   dispatch_sync(dispatchQueue, v8);
   v6 = v5;
 
@@ -171,11 +171,11 @@ void __44__SSWishlistAddItemsRequest_copyXPCEncoding__block_invoke(uint64_t a1)
   SSXPCDictionarySetCFObject(v2, "2", v3);
 }
 
-- (SSWishlistAddItemsRequest)initWithXPCEncoding:(id)a3
+- (SSWishlistAddItemsRequest)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v6 = [(SSWishlistAddItemsRequest *)self init];
     if (!v6)
@@ -261,13 +261,13 @@ void __54__SSWishlistAddItemsRequest_copyQueryStringParameters__block_invoke(uin
   }
 }
 
-- (id)_convertedValueForValue:(id)a3
+- (id)_convertedValueForValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = valueCopy;
 LABEL_7:
     v8 = v4;
     goto LABEL_9;
@@ -288,7 +288,7 @@ LABEL_7:
       v5 = _convertedValueForValue__formatter;
     }
 
-    v4 = [v5 stringFromNumber:v3];
+    v4 = [v5 stringFromNumber:valueCopy];
     goto LABEL_7;
   }
 

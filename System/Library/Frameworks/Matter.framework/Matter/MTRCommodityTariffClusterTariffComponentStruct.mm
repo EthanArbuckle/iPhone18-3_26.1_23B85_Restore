@@ -1,6 +1,6 @@
 @interface MTRCommodityTariffClusterTariffComponentStruct
 - (MTRCommodityTariffClusterTariffComponentStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -45,35 +45,35 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCommodityTariffClusterTariffComponentStruct);
-  v5 = [(MTRCommodityTariffClusterTariffComponentStruct *)self tariffComponentID];
-  [(MTRCommodityTariffClusterTariffComponentStruct *)v4 setTariffComponentID:v5];
+  tariffComponentID = [(MTRCommodityTariffClusterTariffComponentStruct *)self tariffComponentID];
+  [(MTRCommodityTariffClusterTariffComponentStruct *)v4 setTariffComponentID:tariffComponentID];
 
-  v6 = [(MTRCommodityTariffClusterTariffComponentStruct *)self price];
-  [(MTRCommodityTariffClusterTariffComponentStruct *)v4 setPrice:v6];
+  price = [(MTRCommodityTariffClusterTariffComponentStruct *)self price];
+  [(MTRCommodityTariffClusterTariffComponentStruct *)v4 setPrice:price];
 
-  v7 = [(MTRCommodityTariffClusterTariffComponentStruct *)self friendlyCredit];
-  [(MTRCommodityTariffClusterTariffComponentStruct *)v4 setFriendlyCredit:v7];
+  friendlyCredit = [(MTRCommodityTariffClusterTariffComponentStruct *)self friendlyCredit];
+  [(MTRCommodityTariffClusterTariffComponentStruct *)v4 setFriendlyCredit:friendlyCredit];
 
-  v8 = [(MTRCommodityTariffClusterTariffComponentStruct *)self auxiliaryLoad];
-  [(MTRCommodityTariffClusterTariffComponentStruct *)v4 setAuxiliaryLoad:v8];
+  auxiliaryLoad = [(MTRCommodityTariffClusterTariffComponentStruct *)self auxiliaryLoad];
+  [(MTRCommodityTariffClusterTariffComponentStruct *)v4 setAuxiliaryLoad:auxiliaryLoad];
 
-  v9 = [(MTRCommodityTariffClusterTariffComponentStruct *)self peakPeriod];
-  [(MTRCommodityTariffClusterTariffComponentStruct *)v4 setPeakPeriod:v9];
+  peakPeriod = [(MTRCommodityTariffClusterTariffComponentStruct *)self peakPeriod];
+  [(MTRCommodityTariffClusterTariffComponentStruct *)v4 setPeakPeriod:peakPeriod];
 
-  v10 = [(MTRCommodityTariffClusterTariffComponentStruct *)self powerThreshold];
-  [(MTRCommodityTariffClusterTariffComponentStruct *)v4 setPowerThreshold:v10];
+  powerThreshold = [(MTRCommodityTariffClusterTariffComponentStruct *)self powerThreshold];
+  [(MTRCommodityTariffClusterTariffComponentStruct *)v4 setPowerThreshold:powerThreshold];
 
-  v11 = [(MTRCommodityTariffClusterTariffComponentStruct *)self threshold];
-  [(MTRCommodityTariffClusterTariffComponentStruct *)v4 setThreshold:v11];
+  threshold = [(MTRCommodityTariffClusterTariffComponentStruct *)self threshold];
+  [(MTRCommodityTariffClusterTariffComponentStruct *)v4 setThreshold:threshold];
 
-  v12 = [(MTRCommodityTariffClusterTariffComponentStruct *)self label];
-  [(MTRCommodityTariffClusterTariffComponentStruct *)v4 setLabel:v12];
+  label = [(MTRCommodityTariffClusterTariffComponentStruct *)self label];
+  [(MTRCommodityTariffClusterTariffComponentStruct *)v4 setLabel:label];
 
-  v13 = [(MTRCommodityTariffClusterTariffComponentStruct *)self predicted];
-  [(MTRCommodityTariffClusterTariffComponentStruct *)v4 setPredicted:v13];
+  predicted = [(MTRCommodityTariffClusterTariffComponentStruct *)self predicted];
+  [(MTRCommodityTariffClusterTariffComponentStruct *)v4 setPredicted:predicted];
 
   return v4;
 }

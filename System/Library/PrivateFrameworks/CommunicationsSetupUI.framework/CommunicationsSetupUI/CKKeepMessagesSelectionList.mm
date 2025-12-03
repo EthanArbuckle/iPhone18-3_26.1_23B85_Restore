@@ -1,16 +1,16 @@
 @interface CKKeepMessagesSelectionList
 - (CKKeepMessagesSelectionList)init;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_configureInitialSelectedIndexes;
 - (void)_internalInit;
-- (void)_selectionListDidSelectIndexPath:(id)a3;
-- (void)_updatePreferenceAtIndexPath:(id)a3;
-- (void)_warnAboutDeletingMessagesForSelectedListItem:(id)a3;
-- (void)_warnForFinalConfirmationForUpdatingIndexPath:(id)a3;
+- (void)_selectionListDidSelectIndexPath:(id)path;
+- (void)_updatePreferenceAtIndexPath:(id)path;
+- (void)_warnAboutDeletingMessagesForSelectedListItem:(id)item;
+- (void)_warnForFinalConfirmationForUpdatingIndexPath:(id)path;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateKeepMessagesPreference:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateKeepMessagesPreference:(id)preference;
 @end
 
 @implementation CKKeepMessagesSelectionList
@@ -50,16 +50,16 @@
   self->_durationPreferenceValues = &unk_2856EB928;
 
   [(CKKeepMessagesSelectionList *)self _configureInitialSelectedIndexes:v13];
-  v11 = [(CKKeepMessagesSelectionList *)self keepMessagesPreferenceManager];
-  [v11 addSyncedSettingObserver:self selector:sel__syncedSettingsDidChange_ key:0];
+  keepMessagesPreferenceManager = [(CKKeepMessagesSelectionList *)self keepMessagesPreferenceManager];
+  [keepMessagesPreferenceManager addSyncedSettingObserver:self selector:sel__syncedSettingsDidChange_ key:0];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
 - (void)dealloc
 {
-  v3 = [(CKKeepMessagesSelectionList *)self keepMessagesPreferenceManager];
-  [v3 removeSyncedSettingObserver:self key:0];
+  keepMessagesPreferenceManager = [(CKKeepMessagesSelectionList *)self keepMessagesPreferenceManager];
+  [keepMessagesPreferenceManager removeSyncedSettingObserver:self key:0];
 
   v4.receiver = self;
   v4.super_class = CKKeepMessagesSelectionList;
@@ -72,7 +72,7 @@
   if (!v3)
   {
     v21 = *MEMORY[0x277D3FC48];
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = MessagesSettingsLocalizedString(@"KEEP_ALL_MESSAGES_HEADER");
     v6 = MessagesSettingsLocalizedString(@"KEEP_ALL_MESSAGES_FOOTER");
     v7 = 0x277D3F000uLL;
@@ -81,7 +81,7 @@
     [v8 setName:v5];
     [v8 setProperty:v6 forKey:*MEMORY[0x277D3FF88]];
     v19 = v8;
-    [v4 addObject:v8];
+    [array addObject:v8];
     if ([(NSArray *)self->_durationPreferenceTitles count])
     {
       v9 = 0;
@@ -95,7 +95,7 @@
         v15 = [v13 stringWithFormat:@"%ld", objc_msgSend(v14, "integerValue")];
 
         [v12 setIdentifier:v15];
-        [v4 addObject:v12];
+        [array addObject:v12];
 
         v7 = v11;
         ++v9;
@@ -104,7 +104,7 @@
       while ([(NSArray *)self->_durationPreferenceTitles count]> v9);
     }
 
-    v16 = [v4 copy];
+    v16 = [array copy];
     v17 = *(&self->super.super.super.super.super.isa + v21);
     *(&self->super.super.super.super.super.isa + v21) = v16;
 
@@ -117,25 +117,25 @@
 - (void)_configureInitialSelectedIndexes
 {
   v5 = +[CKKeepMessagesPreferenceManager keepMessagesPreference];
-  v3 = [(CKKeepMessagesSelectionList *)self durationPreferenceValues];
-  v4 = [v3 indexOfObject:v5];
+  durationPreferenceValues = [(CKKeepMessagesSelectionList *)self durationPreferenceValues];
+  v4 = [durationPreferenceValues indexOfObject:v5];
 
   self->_selectedKeepMessagesPreferenceIndex = v4;
 }
 
-- (void)_selectionListDidSelectIndexPath:(id)a3
+- (void)_selectionListDidSelectIndexPath:(id)path
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [v4 row];
-  if (!v5)
+  pathCopy = path;
+  section = [pathCopy section];
+  v6 = [pathCopy row];
+  if (!section)
   {
     v8 = v6;
-    v9 = [(CKKeepMessagesSelectionList *)self selectedKeepMessagesPreferenceIndex];
-    if (v8 >= v9)
+    selectedKeepMessagesPreferenceIndex = [(CKKeepMessagesSelectionList *)self selectedKeepMessagesPreferenceIndex];
+    if (v8 >= selectedKeepMessagesPreferenceIndex)
     {
-      [(CKKeepMessagesSelectionList *)self _updatePreferenceAtIndexPath:v4];
+      [(CKKeepMessagesSelectionList *)self _updatePreferenceAtIndexPath:pathCopy];
       if (!IMOSLoggingEnabled())
       {
         goto LABEL_15;
@@ -145,7 +145,7 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v12 = 134218496;
-        v13 = v9;
+        v13 = selectedKeepMessagesPreferenceIndex;
         v14 = 2048;
         v15 = v8;
         v16 = 2048;
@@ -156,7 +156,7 @@
 
     else
     {
-      [(CKKeepMessagesSelectionList *)self _warnAboutDeletingMessagesForSelectedListItem:v4];
+      [(CKKeepMessagesSelectionList *)self _warnAboutDeletingMessagesForSelectedListItem:pathCopy];
       if (!IMOSLoggingEnabled())
       {
         goto LABEL_15;
@@ -166,7 +166,7 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v12 = 134218496;
-        v13 = v9;
+        v13 = selectedKeepMessagesPreferenceIndex;
         v14 = 2048;
         v15 = v8;
         v16 = 2048;
@@ -184,7 +184,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v12 = 134217984;
-      v13 = [v4 row];
+      v13 = [pathCopy row];
       _os_log_impl(&dword_243BE5000, v7, OS_LOG_TYPE_INFO, "[Conference] Selected an indexPath from an unsupported section={%ld}", &v12, 0xCu);
     }
   }
@@ -194,52 +194,52 @@ LABEL_15:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updatePreferenceAtIndexPath:(id)a3
+- (void)_updatePreferenceAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 row];
-  v6 = [(CKKeepMessagesSelectionList *)self durationPreferenceValues];
-  v9 = [v6 objectAtIndexedSubscript:v5];
+  pathCopy = path;
+  v5 = [pathCopy row];
+  durationPreferenceValues = [(CKKeepMessagesSelectionList *)self durationPreferenceValues];
+  v9 = [durationPreferenceValues objectAtIndexedSubscript:v5];
 
-  v7 = [v4 section];
-  if (!v7)
+  section = [pathCopy section];
+  if (!section)
   {
     [(CKKeepMessagesSelectionList *)self updateKeepMessagesPreference:v9];
-    v8 = [(CKKeepMessagesSelectionList *)self durationPreferenceValues];
-    self->_selectedKeepMessagesPreferenceIndex = [v8 indexOfObject:v9];
+    durationPreferenceValues2 = [(CKKeepMessagesSelectionList *)self durationPreferenceValues];
+    self->_selectedKeepMessagesPreferenceIndex = [durationPreferenceValues2 indexOfObject:v9];
 
     [(CKKeepMessagesSelectionList *)self reloadSpecifiers];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  [(CKKeepMessagesSelectionList *)self _selectionListDidSelectIndexPath:v6];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  pathCopy = path;
+  viewCopy = view;
+  [(CKKeepMessagesSelectionList *)self _selectionListDidSelectIndexPath:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 
   [(CKKeepMessagesSelectionList *)self reloadSpecifiers];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = CKKeepMessagesSelectionList;
-  v7 = [(CKKeepMessagesSelectionList *)&v9 tableView:a3 cellForRowAtIndexPath:v6];
-  if (![v6 section])
+  v7 = [(CKKeepMessagesSelectionList *)&v9 tableView:view cellForRowAtIndexPath:pathCopy];
+  if (![pathCopy section])
   {
-    [v7 setChecked:{objc_msgSend(v6, "row") == -[CKKeepMessagesSelectionList selectedKeepMessagesPreferenceIndex](self, "selectedKeepMessagesPreferenceIndex")}];
+    [v7 setChecked:{objc_msgSend(pathCopy, "row") == -[CKKeepMessagesSelectionList selectedKeepMessagesPreferenceIndex](self, "selectedKeepMessagesPreferenceIndex")}];
   }
 
   return v7;
 }
 
-- (void)_warnAboutDeletingMessagesForSelectedListItem:(id)a3
+- (void)_warnAboutDeletingMessagesForSelectedListItem:(id)item
 {
-  v4 = a3;
-  if ([v4 row])
+  itemCopy = item;
+  if ([itemCopy row])
   {
     v5 = @"DELETE_MESSAGES_WARNING_YEAR";
   }
@@ -262,26 +262,26 @@ LABEL_15:
   v27[2] = __77__CKKeepMessagesSelectionList__warnAboutDeletingMessagesForSelectedListItem___block_invoke;
   v27[3] = &unk_278DE8A18;
   objc_copyWeak(&v29, &location);
-  v12 = v4;
+  v12 = itemCopy;
   v28 = v12;
   v13 = [v10 actionWithTitle:v11 style:2 handler:v27];
 
   v14 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:v6 preferredStyle:0];
   [v14 addAction:v9];
   [v14 addAction:v13];
-  v15 = [(CKKeepMessagesSelectionList *)self table];
-  v16 = [v15 cellForRowAtIndexPath:v12];
+  table = [(CKKeepMessagesSelectionList *)self table];
+  v16 = [table cellForRowAtIndexPath:v12];
 
-  v17 = [v14 popoverPresentationController];
-  [v17 setSourceView:v16];
+  popoverPresentationController = [v14 popoverPresentationController];
+  [popoverPresentationController setSourceView:v16];
 
   [v16 bounds];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  v26 = [v14 popoverPresentationController];
-  [v26 setSourceRect:{v19, v21, v23, v25}];
+  popoverPresentationController2 = [v14 popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{v19, v21, v23, v25}];
 
   [(CKKeepMessagesSelectionList *)self presentViewController:v14 animated:1 completion:0];
   objc_destroyWeak(&v29);
@@ -306,13 +306,13 @@ void __77__CKKeepMessagesSelectionList__warnAboutDeletingMessagesForSelectedList
   [WeakRetained _warnForFinalConfirmationForUpdatingIndexPath:*(a1 + 32)];
 }
 
-- (void)_warnForFinalConfirmationForUpdatingIndexPath:(id)a3
+- (void)_warnForFinalConfirmationForUpdatingIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D18D58] sharedInstance];
-  v6 = [v5 isEnabled];
+  pathCopy = path;
+  mEMORY[0x277D18D58] = [MEMORY[0x277D18D58] sharedInstance];
+  isEnabled = [mEMORY[0x277D18D58] isEnabled];
 
-  if (v6)
+  if (isEnabled)
   {
     v7 = @"ALL_DEVICES";
   }
@@ -323,7 +323,7 @@ void __77__CKKeepMessagesSelectionList__warnAboutDeletingMessagesForSelectedList
   }
 
   v8 = MadridLocalizedString(v7);
-  v9 = [v4 row];
+  v9 = [pathCopy row];
   v10 = v9 == 0;
   if (v9)
   {
@@ -361,26 +361,26 @@ void __77__CKKeepMessagesSelectionList__warnAboutDeletingMessagesForSelectedList
   v36[2] = __77__CKKeepMessagesSelectionList__warnForFinalConfirmationForUpdatingIndexPath___block_invoke;
   v36[3] = &unk_278DE8A18;
   objc_copyWeak(&v38, &location);
-  v20 = v4;
+  v20 = pathCopy;
   v37 = v20;
   v21 = [v18 actionWithTitle:v19 style:2 handler:v36];
 
   v22 = [MEMORY[0x277D75110] alertControllerWithTitle:v35 message:v14 preferredStyle:1];
   [v22 addAction:v17];
   [v22 addAction:v21];
-  v23 = [(CKKeepMessagesSelectionList *)self table];
-  v24 = [v23 cellForRowAtIndexPath:v20];
+  table = [(CKKeepMessagesSelectionList *)self table];
+  v24 = [table cellForRowAtIndexPath:v20];
 
-  v25 = [v22 popoverPresentationController];
-  [v25 setSourceView:v24];
+  popoverPresentationController = [v22 popoverPresentationController];
+  [popoverPresentationController setSourceView:v24];
 
   [v24 bounds];
   v27 = v26;
   v29 = v28;
   v31 = v30;
   v33 = v32;
-  v34 = [v22 popoverPresentationController];
-  [v34 setSourceRect:{v27, v29, v31, v33}];
+  popoverPresentationController2 = [v22 popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{v27, v29, v31, v33}];
 
   [(CKKeepMessagesSelectionList *)self presentViewController:v22 animated:1 completion:0];
   objc_destroyWeak(&v38);
@@ -407,11 +407,11 @@ void __77__CKKeepMessagesSelectionList__warnForFinalConfirmationForUpdatingIndex
   notify_post("com.apple.imautomatichistorydeletionagent.prefchange");
 }
 
-- (void)updateKeepMessagesPreference:(id)a3
+- (void)updateKeepMessagesPreference:(id)preference
 {
-  v4 = a3;
-  v5 = [(CKKeepMessagesSelectionList *)self keepMessagesPreferenceManager];
-  [v5 updateKeepMessagesPreference:v4];
+  preferenceCopy = preference;
+  keepMessagesPreferenceManager = [(CKKeepMessagesSelectionList *)self keepMessagesPreferenceManager];
+  [keepMessagesPreferenceManager updateKeepMessagesPreference:preferenceCopy];
 }
 
 @end

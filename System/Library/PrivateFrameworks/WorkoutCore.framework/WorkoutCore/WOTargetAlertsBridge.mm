@@ -1,19 +1,19 @@
 @interface WOTargetAlertsBridge
-+ (BOOL)intervalTargetAlertsEnabledForActivityType:(id)a3;
++ (BOOL)intervalTargetAlertsEnabledForActivityType:(id)type;
 - (WOTargetAlertsBridge)init;
 @end
 
 @implementation WOTargetAlertsBridge
 
-+ (BOOL)intervalTargetAlertsEnabledForActivityType:(id)a3
++ (BOOL)intervalTargetAlertsEnabledForActivityType:(id)type
 {
-  v3 = a3;
-  v4 = specialized static TargetAlertsStore.read(for:)(v3);
+  typeCopy = type;
+  v4 = specialized static TargetAlertsStore.read(for:)(typeCopy);
 
   swift_beginAccess();
-  LOBYTE(v3) = *(v4 + 16);
+  LOBYTE(typeCopy) = *(v4 + 16);
 
-  return v3;
+  return typeCopy;
 }
 
 - (WOTargetAlertsBridge)init

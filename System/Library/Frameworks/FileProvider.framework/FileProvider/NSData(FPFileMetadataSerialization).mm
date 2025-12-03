@@ -34,7 +34,7 @@
 {
   v3[0] = 0;
   v3[1] = 0;
-  if ((fpfs_deserialize_last_use_date(v3, [a1 bytes], objc_msgSend(a1, "length"), 1) & 0x80000000) != 0)
+  if ((fpfs_deserialize_last_use_date(v3, [self bytes], objc_msgSend(self, "length"), 1) & 0x80000000) != 0)
   {
     v1 = 0;
   }
@@ -69,7 +69,7 @@
 - (id)fp_favoriteRank
 {
   v4 = 0;
-  v1 = fpfs_deserialize_favorite_rank(&v4, [a1 bytes], objc_msgSend(a1, "length"));
+  v1 = fpfs_deserialize_favorite_rank(&v4, [self bytes], objc_msgSend(self, "length"));
   v2 = 0;
   if ((v1 & 0x80000000) == 0 && v4)
   {

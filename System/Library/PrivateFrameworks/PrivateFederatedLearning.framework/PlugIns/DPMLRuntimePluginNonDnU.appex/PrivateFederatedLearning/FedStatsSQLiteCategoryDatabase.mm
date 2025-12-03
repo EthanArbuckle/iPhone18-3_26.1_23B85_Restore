@@ -1,39 +1,39 @@
 @interface FedStatsSQLiteCategoryDatabase
-+ (id)categoryDatabaseAt:(id)a3 withCategories:(id)a4 error:(id *)a5;
-+ (id)databaseWithFileURL:(id)a3 error:(id *)a4;
-- (FedStatsSQLiteCategoryDatabase)initWithSQLiteDatabase:(id)a3 dimensionality:(unint64_t)a4;
-- (id)decode:(unint64_t)a3 error:(id *)a4;
-- (id)encode:(id)a3 error:(id *)a4;
++ (id)categoryDatabaseAt:(id)at withCategories:(id)categories error:(id *)error;
++ (id)databaseWithFileURL:(id)l error:(id *)error;
+- (FedStatsSQLiteCategoryDatabase)initWithSQLiteDatabase:(id)database dimensionality:(unint64_t)dimensionality;
+- (id)decode:(unint64_t)decode error:(id *)error;
+- (id)encode:(id)encode error:(id *)error;
 @end
 
 @implementation FedStatsSQLiteCategoryDatabase
 
-- (FedStatsSQLiteCategoryDatabase)initWithSQLiteDatabase:(id)a3 dimensionality:(unint64_t)a4
+- (FedStatsSQLiteCategoryDatabase)initWithSQLiteDatabase:(id)database dimensionality:(unint64_t)dimensionality
 {
-  v7 = a3;
+  databaseCopy = database;
   v11.receiver = self;
   v11.super_class = FedStatsSQLiteCategoryDatabase;
   v8 = [(FedStatsSQLiteCategoryDatabase *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_sqliteDB, a3);
-    v9->_dimensionality = a4;
+    objc_storeStrong(&v8->_sqliteDB, database);
+    v9->_dimensionality = dimensionality;
   }
 
   return v9;
 }
 
-+ (id)databaseWithFileURL:(id)a3 error:(id *)a4
++ (id)databaseWithFileURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       [FedStatsError errorWithCode:302 description:@"SQLite categories database requires a path in URL"];
-      *a4 = v33 = 0;
+      *error = v33 = 0;
     }
 
     else
@@ -45,15 +45,15 @@
   }
 
   v68 = 0;
-  v7 = [FedStatsSQLiteDatabase databaseWithURL:v6 mode:114 error:&v68];
+  v7 = [FedStatsSQLiteDatabase databaseWithURL:lCopy mode:114 error:&v68];
   v8 = v68;
   v9 = v8;
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       [FedStatsError errorWithCode:302 underlyingError:v8 description:@"Cannot open database"];
-      *a4 = v33 = 0;
+      *error = v33 = 0;
     }
 
     else
@@ -64,9 +64,9 @@
     goto LABEL_66;
   }
 
-  v48 = a1;
-  v49 = v6;
-  v50 = a4;
+  selfCopy = self;
+  v49 = lCopy;
+  errorCopy = error;
   v51 = v8;
   v57 = v7;
   v75[0] = @"SELECT COUNT(*) AS count FROM sqlite_master WHERE type == 'table' AND name == 'categories'";
@@ -103,7 +103,7 @@
   v54 = [v17 countByEnumeratingWithState:&v64 objects:v69 count:16];
   v18 = 0;
   v19 = 0;
-  v20 = 0;
+  next = 0;
   if (!v54)
   {
     v60 = 0;
@@ -118,7 +118,7 @@
   {
     v23 = 0;
     v24 = v18;
-    v58 = v20;
+    v58 = next;
     v25 = v21;
     v26 = v51;
     do
@@ -140,17 +140,17 @@
 
       if (!v21)
       {
-        v45 = v50;
+        v45 = errorCopy;
         v44 = v58;
-        if (!v50)
+        if (!errorCopy)
         {
 LABEL_52:
           v18 = v29;
 
           v33 = 0;
-          v20 = v44;
+          next = v44;
           v17 = obj;
-          v6 = v49;
+          lCopy = v49;
           goto LABEL_64;
         }
 
@@ -160,12 +160,12 @@ LABEL_42:
         goto LABEL_52;
       }
 
-      v20 = [v21 next];
+      next = [v21 next];
 
-      if (!v20)
+      if (!next)
       {
-        v45 = v50;
-        if (!v50)
+        v45 = errorCopy;
+        if (!errorCopy)
         {
           v44 = 0;
           goto LABEL_52;
@@ -176,18 +176,18 @@ LABEL_42:
         goto LABEL_42;
       }
 
-      v30 = [v20 objectForKey:@"count"];
+      v30 = [next objectForKey:@"count"];
 
       if (!v30 || (v31 = v29, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([v30 isEqualToNumber:v29] & 1) == 0)
       {
-        if (v50)
+        if (errorCopy)
         {
           v43 = [NSString stringWithFormat:@"Cannot complete check statement for %@", v60];
-          *v50 = [FedStatsError errorWithCode:302 description:v43];
+          *errorCopy = [FedStatsError errorWithCode:302 description:v43];
         }
 
         v19 = v30;
-        v44 = v20;
+        v44 = next;
         goto LABEL_52;
       }
 
@@ -195,7 +195,7 @@ LABEL_42:
       v32 = v9;
       v24 = v29;
       v19 = v30;
-      v58 = v20;
+      v58 = next;
       v25 = v21;
       v22 = v60;
       v26 = v32;
@@ -222,7 +222,7 @@ LABEL_22:
   v34 = [v57 runQuery:@"SELECT COUNT(*) AS count FROM categories" error:&v62];
   v35 = v62;
 
-  v6 = v49;
+  lCopy = v49;
   v59 = v34;
   if (v34)
   {
@@ -234,27 +234,27 @@ LABEL_22:
     v38 = v18;
     if (v36)
     {
-      v39 = [v59 next];
+      next2 = [v59 next];
 
-      if (v39)
+      if (next2)
       {
         v56 = v36;
-        v40 = [v36 next];
+        next3 = [v36 next];
         obja = v17;
-        if (v40)
+        if (next3)
         {
-          v41 = [v39 objectForKey:@"count"];
+          v41 = [next2 objectForKey:@"count"];
 
-          v42 = [v40 objectForKey:@"maxIndex"];
+          v42 = [next3 objectForKey:@"maxIndex"];
           if (v41 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && v42 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ([v42 isEqualToNumber:v41] & 1) != 0)
           {
-            v33 = [[v48 alloc] initWithSQLiteDatabase:v57 dimensionality:{objc_msgSend(v42, "unsignedLongValue")}];
+            v33 = [[selfCopy alloc] initWithSQLiteDatabase:v57 dimensionality:{objc_msgSend(v42, "unsignedLongValue")}];
           }
 
-          else if (v50)
+          else if (errorCopy)
           {
             [FedStatsError errorWithCode:302 description:@"Cannot check if max index is equal to the number of entries"];
-            *v50 = v33 = 0;
+            *errorCopy = v33 = 0;
           }
 
           else
@@ -265,10 +265,10 @@ LABEL_22:
 
         else
         {
-          if (v50)
+          if (errorCopy)
           {
             [FedStatsError errorWithCode:302 description:@"No results for max index (how?)"];
-            *v50 = v33 = 0;
+            *errorCopy = v33 = 0;
           }
 
           else
@@ -284,26 +284,26 @@ LABEL_22:
         v37 = v56;
       }
 
-      else if (v50)
+      else if (errorCopy)
       {
         [FedStatsError errorWithCode:302 description:@"No results for row count (how?)"];
-        v39 = 0;
-        *v50 = v33 = 0;
+        next2 = 0;
+        *errorCopy = v33 = 0;
       }
 
       else
       {
-        v39 = 0;
+        next2 = 0;
         v33 = 0;
       }
     }
 
     else
     {
-      if (v50)
+      if (errorCopy)
       {
         [FedStatsError errorWithCode:302 underlyingError:v9 description:@"Cannot find max index"];
-        *v50 = v33 = 0;
+        *errorCopy = v33 = 0;
       }
 
       else
@@ -311,10 +311,10 @@ LABEL_22:
         v33 = 0;
       }
 
-      v39 = v20;
+      next2 = next;
     }
 
-    v20 = v39;
+    next = next2;
     v18 = v38;
 LABEL_64:
     v7 = v57;
@@ -322,10 +322,10 @@ LABEL_64:
 
   else
   {
-    if (v50)
+    if (errorCopy)
     {
       [FedStatsError errorWithCode:302 underlyingError:v35 description:@"Cannot count rows"];
-      *v50 = v33 = 0;
+      *errorCopy = v33 = 0;
     }
 
     else
@@ -342,26 +342,26 @@ LABEL_67:
   return v33;
 }
 
-- (id)encode:(id)a3 error:(id *)a4
+- (id)encode:(id)encode error:(id *)error
 {
-  v6 = a3;
+  encodeCopy = encode;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [NSString stringWithFormat:@"SELECT idx FROM categories WHERE category == '%@'", v6];
-    v8 = [(FedStatsSQLiteCategoryDatabase *)self sqliteDB];
+    encodeCopy = [NSString stringWithFormat:@"SELECT idx FROM categories WHERE category == '%@'", encodeCopy];
+    sqliteDB = [(FedStatsSQLiteCategoryDatabase *)self sqliteDB];
     v17 = 0;
-    v9 = [v8 runQuery:v7 error:&v17];
+    v9 = [sqliteDB runQuery:encodeCopy error:&v17];
     v10 = v17;
 
     if (v9)
     {
-      v11 = [v9 next];
-      v12 = v11;
+      next = [v9 next];
+      v12 = next;
       v13 = &off_1000342F0;
-      if (v11)
+      if (next)
       {
-        v14 = [v11 objectForKey:@"idx"];
+        v14 = [next objectForKey:@"idx"];
         if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           if ([v14 intValue] >= 0)
@@ -377,10 +377,10 @@ LABEL_67:
           v13 = v15;
         }
 
-        else if (a4)
+        else if (error)
         {
           [FedStatsError errorWithCode:900 description:@"Database columns are malformed"];
-          *a4 = v13 = 0;
+          *error = v13 = 0;
         }
 
         else
@@ -390,10 +390,10 @@ LABEL_67:
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       [FedStatsError errorWithCode:401 underlyingError:v10 description:@"Failed to lookup category in the database"];
-      *a4 = v13 = 0;
+      *error = v13 = 0;
     }
 
     else
@@ -402,10 +402,10 @@ LABEL_67:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [FedStatsError errorWithCode:401 description:@"Input category should be a string"];
-    *a4 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -416,20 +416,20 @@ LABEL_67:
   return v13;
 }
 
-- (id)decode:(unint64_t)a3 error:(id *)a4
+- (id)decode:(unint64_t)decode error:(id *)error
 {
-  v5 = [NSString stringWithFormat:@"SELECT category FROM categories WHERE idx == %lu", a4, a3];
-  v6 = [(FedStatsSQLiteCategoryDatabase *)self sqliteDB];
+  decode = [NSString stringWithFormat:@"SELECT category FROM categories WHERE idx == %lu", error, decode];
+  sqliteDB = [(FedStatsSQLiteCategoryDatabase *)self sqliteDB];
   v13 = 0;
-  v7 = [v6 runQuery:v5 error:&v13];
+  v7 = [sqliteDB runQuery:decode error:&v13];
 
   if (v7)
   {
-    v8 = [v7 next];
-    v9 = v8;
-    if (v8)
+    next = [v7 next];
+    v9 = next;
+    if (next)
     {
-      v10 = [v8 objectForKey:@"category"];
+      v10 = [next objectForKey:@"category"];
       if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v11 = v10;
@@ -455,10 +455,10 @@ LABEL_67:
   return v11;
 }
 
-+ (id)categoryDatabaseAt:(id)a3 withCategories:(id)a4 error:(id *)a5
++ (id)categoryDatabaseAt:(id)at withCategories:(id)categories error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  atCopy = at;
+  categoriesCopy = categories;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -469,7 +469,7 @@ LABEL_67:
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v9 = v8;
+      v9 = categoriesCopy;
       v10 = [v9 countByEnumeratingWithState:&v33 objects:v37 count:16];
       if (v10)
       {
@@ -488,8 +488,8 @@ LABEL_67:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (a5)
-                *a5 = {;
+              if (error)
+                *error = {;
               }
 
               goto LABEL_35;
@@ -507,7 +507,7 @@ LABEL_67:
       }
 
       v32 = 0;
-      v15 = [FedStatsSQLiteDatabase databaseWithURL:v7 mode:119 error:&v32];
+      v15 = [FedStatsSQLiteDatabase databaseWithURL:atCopy mode:119 error:&v32];
       v16 = v32;
       v17 = v16;
       if (v15)
@@ -526,7 +526,7 @@ LABEL_67:
             if (v21 - 1 >= [v9 count])
             {
 
-              v26 = [FedStatsSQLiteCategoryDatabase databaseWithFileURL:v7 error:a5];
+              v26 = [FedStatsSQLiteCategoryDatabase databaseWithFileURL:atCopy error:error];
               goto LABEL_36;
             }
 
@@ -543,15 +543,15 @@ LABEL_67:
           }
 
           while ((v22 & 1) != 0);
-          if (a5)
+          if (error)
           {
-            *a5 = [FedStatsError errorWithCode:302 underlyingError:v24 description:@"Cannot insert elements into the table"];
+            *error = [FedStatsError errorWithCode:302 underlyingError:v24 description:@"Cannot insert elements into the table"];
           }
 
           goto LABEL_35;
         }
 
-        if (!a5)
+        if (!error)
         {
           goto LABEL_34;
         }
@@ -560,7 +560,7 @@ LABEL_67:
 
       else
       {
-        if (!a5)
+        if (!error)
         {
           v19 = v16;
           goto LABEL_34;
@@ -570,23 +570,23 @@ LABEL_67:
         v19 = v17;
       }
 
-      *a5 = v27;
+      *error = v27;
 LABEL_34:
 
       goto LABEL_35;
     }
 
-    if (a5)
+    if (error)
     {
       goto LABEL_23;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
 LABEL_23:
     [FedStatsError errorWithCode:302 description:v25];
-    *a5 = v26 = 0;
+    *error = v26 = 0;
     goto LABEL_36;
   }
 

@@ -1,10 +1,10 @@
 @interface WorkoutPlanWeekdayDetailViewController
-- (_TtC9SeymourUI38WorkoutPlanWeekdayDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC9SeymourUI38WorkoutPlanWeekdayDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation WorkoutPlanWeekdayDetailViewController
@@ -21,22 +21,22 @@
   [v3 setAlwaysBounceVertical_];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(WorkoutPlanWeekdayDetailViewController *)&v5 viewDidAppear:v3];
+  [(WorkoutPlanWeekdayDetailViewController *)&v5 viewDidAppear:appearCopy];
   sub_20B589790();
   sub_20B9EE6E8(&qword_27C768EF8);
   sub_20B9EE6E8(&qword_27C768F00);
   sub_20C139364();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   ObjectType = swift_getObjectType();
   v6 = sub_20C132E94();
   v7 = *(v6 - 8);
@@ -44,22 +44,22 @@
   v9 = v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = self;
-  [(WorkoutPlanWeekdayDetailViewController *)&v12 viewWillDisappear:v3];
-  v11[1] = v10;
+  selfCopy = self;
+  [(WorkoutPlanWeekdayDetailViewController *)&v12 viewWillDisappear:disappearCopy];
+  v11[1] = selfCopy;
   sub_20C132E84();
   sub_20B9EE6E8(&qword_27C768EF8);
   sub_20C139274();
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(WorkoutPlanWeekdayDetailViewController *)&v5 viewDidDisappear:v3];
+  [(WorkoutPlanWeekdayDetailViewController *)&v5 viewDidDisappear:disappearCopy];
   sub_20B9EE6E8(&qword_27C768EF8);
   sub_20B9EE6E8(&qword_27C768F00);
   sub_20C139374();
@@ -79,7 +79,7 @@
   sub_20B9D8614(v6, v7, v8, v9);
 }
 
-- (_TtC9SeymourUI38WorkoutPlanWeekdayDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI38WorkoutPlanWeekdayDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,16 +1,16 @@
 @interface _LSDRebuildClient
-- (_LSDRebuildClient)initWithXPCConnection:(id)a3;
-- (void)noteMigratorRunningWithReply:(id)a3;
-- (void)performRebuildRegistration:(id)a3 personaUniqueStrings:(id)a4 reply:(id)a5;
+- (_LSDRebuildClient)initWithXPCConnection:(id)connection;
+- (void)noteMigratorRunningWithReply:(id)reply;
+- (void)performRebuildRegistration:(id)registration personaUniqueStrings:(id)strings reply:(id)reply;
 @end
 
 @implementation _LSDRebuildClient
 
-- (_LSDRebuildClient)initWithXPCConnection:(id)a3
+- (_LSDRebuildClient)initWithXPCConnection:(id)connection
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 valueForEntitlement:@"application-identifier"];
+  connectionCopy = connection;
+  v5 = [connectionCopy valueForEntitlement:@"application-identifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -26,22 +26,22 @@
   {
   }
 
-  v7 = [v4 _xpcConnection];
-  v8 = _LSCheckEntitlementForXPCConnection(v7, @"com.apple.private.coreservices.can-perform-rebuild-registration");
+  _xpcConnection = [connectionCopy _xpcConnection];
+  v8 = _LSCheckEntitlementForXPCConnection(_xpcConnection, @"com.apple.private.coreservices.can-perform-rebuild-registration");
 
   if (v8)
   {
 LABEL_6:
     v13.receiver = self;
     v13.super_class = _LSDRebuildClient;
-    v9 = [(_LSDClient *)&v13 initWithXPCConnection:v4];
+    v9 = [(_LSDClient *)&v13 initWithXPCConnection:connectionCopy];
     goto LABEL_10;
   }
 
   v10 = _LSDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    -[_LSDRebuildClient initWithXPCConnection:].cold.1(buf, [v4 processIdentifier], v10);
+    -[_LSDRebuildClient initWithXPCConnection:].cold.1(buf, [connectionCopy processIdentifier], v10);
   }
 
   v9 = 0;
@@ -51,28 +51,28 @@ LABEL_10:
   return v9;
 }
 
-- (void)performRebuildRegistration:(id)a3 personaUniqueStrings:(id)a4 reply:(id)a5
+- (void)performRebuildRegistration:(id)registration personaUniqueStrings:(id)strings reply:(id)reply
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v26 = v8;
-  v27 = a5;
-  if (!v8)
+  registrationCopy = registration;
+  stringsCopy = strings;
+  v26 = stringsCopy;
+  replyCopy = reply;
+  if (!stringsCopy)
   {
     goto LABEL_14;
   }
 
   v29 = 0;
-  v9 = v7;
-  v25 = v8;
+  v9 = registrationCopy;
+  v25 = stringsCopy;
   v10 = +[_LSPersonaDatabase sharedInstance];
   v11 = [MEMORY[0x1E695DFD8] setWithArray:v25];
   v12 = [(_LSPersonaDatabase *)v10 personasWithAttributesForPersonaUniqueStrings:v11 error:&v29];
 
   if (v12)
   {
-    v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
+    registrationCopy = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v9, "count")}];
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
@@ -95,7 +95,7 @@ LABEL_10:
           v17 = [*(*(&v30 + 1) + 8 * v16) mutableCopy];
           [v17 setObject:v12 forKeyedSubscript:@"LSPersonaUniqueStrings"];
           v18 = [v17 copy];
-          [v7 addObject:v18];
+          [registrationCopy addObject:v18];
 
           ++v16;
         }
@@ -110,16 +110,16 @@ LABEL_10:
 
   else
   {
-    v7 = 0;
+    registrationCopy = 0;
   }
 
   v19 = v29;
-  if (v7)
+  if (registrationCopy)
   {
 
 LABEL_14:
     v28 = 0;
-    v20 = _LSServer_PerformExternalRebuildRegistration(v7, &v28);
+    v20 = _LSServer_PerformExternalRebuildRegistration(registrationCopy, &v28);
     v21 = v28;
     if (!v20)
     {
@@ -130,7 +130,7 @@ LABEL_14:
       }
     }
 
-    v27[2](v27, v21);
+    replyCopy[2](replyCopy, v21);
 
     goto LABEL_22;
   }
@@ -141,16 +141,16 @@ LABEL_14:
     [_LSDRebuildClient performRebuildRegistration:v25 personaUniqueStrings:v19 reply:v23];
   }
 
-  v27[2](v27, v19);
-  v7 = v19;
+  replyCopy[2](replyCopy, v19);
+  registrationCopy = v19;
 LABEL_22:
 
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)noteMigratorRunningWithReply:(id)a3
+- (void)noteMigratorRunningWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = _LSDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -159,7 +159,7 @@ LABEL_22:
   }
 
   _LSServer_NoteMigratorRunningInMigration();
-  v3[2](v3, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
 - (void)initWithXPCConnection:(os_log_t)log .cold.1(uint8_t *buf, int a2, os_log_t log)

@@ -2,53 +2,53 @@
 + (void)resetRestingOrientation;
 - (CGSize)intrinsicContentSize;
 - (NSString)description;
-- (_SKIStickerEffectViewInternal)initWithFrame:(CGRect)a3;
-- (void)_internalUpdateFromDisplayLink:(id)a3;
-- (void)_observeScrollViewDidScroll:(id)a3;
-- (void)configureWithImage:(id)a3 effect:(id)a4 didDisplayHandler:(id)a5;
+- (_SKIStickerEffectViewInternal)initWithFrame:(CGRect)frame;
+- (void)_internalUpdateFromDisplayLink:(id)link;
+- (void)_observeScrollViewDidScroll:(id)scroll;
+- (void)configureWithImage:(id)image effect:(id)effect didDisplayHandler:(id)handler;
 - (void)playSettlingAnimation;
-- (void)setCurlPosition:(float)a3;
-- (void)setEffect:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setIsPaused:(BOOL)a3;
-- (void)snapshotWithCompletionHandler:(id)a3;
+- (void)setCurlPosition:(float)position;
+- (void)setEffect:(id)effect;
+- (void)setImage:(id)image;
+- (void)setIsPaused:(BOOL)paused;
+- (void)snapshotWithCompletionHandler:(id)handler;
 @end
 
 @implementation _SKIStickerEffectViewInternal
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
   if ((*(&self->super.super.super.isa + OBJC_IVAR____SKIStickerEffectViewInternal_displayLinkActive) & 1) == 0)
   {
     v4 = *(&self->super.super.super.isa + OBJC_IVAR____SKIStickerEffectViewInternal_displayLink);
     v6 = v4;
-    v9 = self;
+    selfCopy = self;
     sub_19A77F05C(v4);
     v8 = v7;
 
-    *(&v9->super.super.super.isa + OBJC_IVAR____SKIStickerEffectViewInternal_unitScreenCenter) = v8;
+    *(&selfCopy->super.super.super.isa + OBJC_IVAR____SKIStickerEffectViewInternal_unitScreenCenter) = v8;
     sub_19A77EC24();
   }
 }
 
-- (void)setCurlPosition:(float)a3
+- (void)setCurlPosition:(float)position
 {
-  v4 = self;
-  sub_19A77C790(a3);
+  selfCopy = self;
+  sub_19A77C790(position);
 }
 
-- (void)setEffect:(id)a3
+- (void)setEffect:(id)effect
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____SKIStickerEffectViewInternal_effect);
-  *(&self->super.super.super.isa + OBJC_IVAR____SKIStickerEffectViewInternal_effect) = a3;
-  v5 = a3;
-  v6 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR____SKIStickerEffectViewInternal_effect) = effect;
+  effectCopy = effect;
+  selfCopy = self;
   sub_19A77C86C(v4);
 }
 
-- (void)configureWithImage:(id)a3 effect:(id)a4 didDisplayHandler:(id)a5
+- (void)configureWithImage:(id)image effect:(id)effect didDisplayHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -61,36 +61,36 @@
     v9 = 0;
   }
 
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  sub_19A77C8EC(v10, v11, v8, v9);
+  imageCopy = image;
+  effectCopy = effect;
+  selfCopy = self;
+  sub_19A77C8EC(imageCopy, effectCopy, v8, v9);
   sub_19A60126C(v8);
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v6 = *(&self->super.super.super.isa + OBJC_IVAR____SKIStickerEffectViewInternal_image);
-  *(&self->super.super.super.isa + OBJC_IVAR____SKIStickerEffectViewInternal_image) = a3;
-  v4 = a3;
-  v5 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR____SKIStickerEffectViewInternal_image) = image;
+  imageCopy = image;
+  selfCopy = self;
   sub_19A77CBE0(v6);
 }
 
-- (void)setIsPaused:(BOOL)a3
+- (void)setIsPaused:(BOOL)paused
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____SKIStickerEffectViewInternal_isPaused);
-  *(&self->super.super.super.isa + OBJC_IVAR____SKIStickerEffectViewInternal_isPaused) = a3;
-  if (v4 != a3)
+  *(&self->super.super.super.isa + OBJC_IVAR____SKIStickerEffectViewInternal_isPaused) = paused;
+  if (v4 != paused)
   {
-    v5 = self;
+    selfCopy = self;
     sub_19A77EC24();
   }
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A77CD78();
 
   v3 = sub_19A7AAFE4();
@@ -121,29 +121,29 @@
 
 - (void)playSettlingAnimation
 {
-  v2 = self;
-  *(&v2->super.super.super.isa + OBJC_IVAR____SKIStickerEffectViewInternal_settlingStartTime) = CACurrentMediaTime();
+  selfCopy = self;
+  *(&selfCopy->super.super.super.isa + OBJC_IVAR____SKIStickerEffectViewInternal_settlingStartTime) = CACurrentMediaTime();
   sub_19A77EC24();
 }
 
-- (void)_internalUpdateFromDisplayLink:(id)a3
+- (void)_internalUpdateFromDisplayLink:(id)link
 {
-  v4 = a3;
-  v5 = self;
-  sub_19A77ED64(v4);
+  linkCopy = link;
+  selfCopy = self;
+  sub_19A77ED64(linkCopy);
 }
 
-- (void)snapshotWithCompletionHandler:(id)a3
+- (void)snapshotWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   _Block_copy(v4);
-  v5 = self;
-  sub_19A781C50(v5, v4);
+  selfCopy = self;
+  sub_19A781C50(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (_SKIStickerEffectViewInternal)initWithFrame:(CGRect)a3
+- (_SKIStickerEffectViewInternal)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

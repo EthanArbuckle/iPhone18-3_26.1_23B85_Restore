@@ -1,39 +1,39 @@
 @interface DMCPropertyListStorage
-- (BOOL)_updateDictionaryAtPath:(id)a3 updateBlock:(id)a4 error:(id *)a5;
-- (BOOL)clearAllKeyValueStorageWithError:(id *)a3;
-- (BOOL)clearKeys:(id)a3 error:(id *)a4;
-- (BOOL)saveKeyValuePairs:(id)a3 error:(id *)a4;
-- (BOOL)saveValue:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (DMCPropertyListStorage)initWithFilePath:(id)a3 excludesFromBackup:(BOOL)a4;
-- (id)_accessor_removeFileAtPath:(id)a3;
-- (id)_accessor_valueForKey:(id)a3 atPath:(id)a4;
-- (id)retrieveDictionaryWithError:(id *)a3;
-- (id)retrieveValueForKey:(id)a3 error:(id *)a4;
-- (unint64_t)_optionForFileModificationAtPath:(id)a3 isDeletion:(BOOL)a4;
-- (void)_accessor_updateDictionaryAtReadPath:(id)a3 writePath:(id)a4 updateBlock:(id)a5;
-- (void)_ensureDirectoryExistsForFilePath:(id)a3;
-- (void)_updateDictionaryAtPath:(id)a3 updateBlock:(id)a4 completionHandler:(id)a5;
-- (void)clearAllKeyValueStorage:(id)a3;
-- (void)clearKeys:(id)a3 completionHandler:(id)a4;
-- (void)retrieveDictionaryWithCompletionHandler:(id)a3;
-- (void)retrieveValueForKey:(id)a3 completionHandler:(id)a4;
-- (void)saveKeyValuePairs:(id)a3 completionHandler:(id)a4;
-- (void)saveValue:(id)a3 forKey:(id)a4 completionHandler:(id)a5;
+- (BOOL)_updateDictionaryAtPath:(id)path updateBlock:(id)block error:(id *)error;
+- (BOOL)clearAllKeyValueStorageWithError:(id *)error;
+- (BOOL)clearKeys:(id)keys error:(id *)error;
+- (BOOL)saveKeyValuePairs:(id)pairs error:(id *)error;
+- (BOOL)saveValue:(id)value forKey:(id)key error:(id *)error;
+- (DMCPropertyListStorage)initWithFilePath:(id)path excludesFromBackup:(BOOL)backup;
+- (id)_accessor_removeFileAtPath:(id)path;
+- (id)_accessor_valueForKey:(id)key atPath:(id)path;
+- (id)retrieveDictionaryWithError:(id *)error;
+- (id)retrieveValueForKey:(id)key error:(id *)error;
+- (unint64_t)_optionForFileModificationAtPath:(id)path isDeletion:(BOOL)deletion;
+- (void)_accessor_updateDictionaryAtReadPath:(id)path writePath:(id)writePath updateBlock:(id)block;
+- (void)_ensureDirectoryExistsForFilePath:(id)path;
+- (void)_updateDictionaryAtPath:(id)path updateBlock:(id)block completionHandler:(id)handler;
+- (void)clearAllKeyValueStorage:(id)storage;
+- (void)clearKeys:(id)keys completionHandler:(id)handler;
+- (void)retrieveDictionaryWithCompletionHandler:(id)handler;
+- (void)retrieveValueForKey:(id)key completionHandler:(id)handler;
+- (void)saveKeyValuePairs:(id)pairs completionHandler:(id)handler;
+- (void)saveValue:(id)value forKey:(id)key completionHandler:(id)handler;
 @end
 
 @implementation DMCPropertyListStorage
 
-- (DMCPropertyListStorage)initWithFilePath:(id)a3 excludesFromBackup:(BOOL)a4
+- (DMCPropertyListStorage)initWithFilePath:(id)path excludesFromBackup:(BOOL)backup
 {
-  v7 = a3;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = DMCPropertyListStorage;
   v8 = [(DMCPropertyListStorage *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_filePath, a3);
-    v9->_excludesFromBackup = a4;
+    objc_storeStrong(&v8->_filePath, path);
+    v9->_excludesFromBackup = backup;
     v10 = objc_opt_new();
     storageQueue = v9->_storageQueue;
     v9->_storageQueue = v10;
@@ -44,85 +44,85 @@
   return v9;
 }
 
-- (void)saveValue:(id)a3 forKey:(id)a4 completionHandler:(id)a5
+- (void)saveValue:(id)value forKey:(id)key completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DMCPropertyListStorage *)self filePath];
+  valueCopy = value;
+  keyCopy = key;
+  handlerCopy = handler;
+  filePath = [(DMCPropertyListStorage *)self filePath];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __61__DMCPropertyListStorage_saveValue_forKey_completionHandler___block_invoke;
   v14[3] = &unk_1E7ADCF28;
-  v15 = v9;
-  v16 = v8;
-  v12 = v8;
-  v13 = v9;
-  [(DMCPropertyListStorage *)self _updateDictionaryAtPath:v11 updateBlock:v14 completionHandler:v10];
+  v15 = keyCopy;
+  v16 = valueCopy;
+  v12 = valueCopy;
+  v13 = keyCopy;
+  [(DMCPropertyListStorage *)self _updateDictionaryAtPath:filePath updateBlock:v14 completionHandler:handlerCopy];
 }
 
-- (BOOL)saveValue:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)saveValue:(id)value forKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(DMCPropertyListStorage *)self filePath];
+  valueCopy = value;
+  keyCopy = key;
+  filePath = [(DMCPropertyListStorage *)self filePath];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __49__DMCPropertyListStorage_saveValue_forKey_error___block_invoke;
   v14[3] = &unk_1E7ADCF28;
-  v15 = v9;
-  v16 = v8;
-  v11 = v8;
-  v12 = v9;
-  LOBYTE(a5) = [(DMCPropertyListStorage *)self _updateDictionaryAtPath:v10 updateBlock:v14 error:a5];
+  v15 = keyCopy;
+  v16 = valueCopy;
+  v11 = valueCopy;
+  v12 = keyCopy;
+  LOBYTE(error) = [(DMCPropertyListStorage *)self _updateDictionaryAtPath:filePath updateBlock:v14 error:error];
 
-  return a5;
+  return error;
 }
 
-- (void)saveKeyValuePairs:(id)a3 completionHandler:(id)a4
+- (void)saveKeyValuePairs:(id)pairs completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DMCPropertyListStorage *)self filePath];
+  pairsCopy = pairs;
+  handlerCopy = handler;
+  filePath = [(DMCPropertyListStorage *)self filePath];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __62__DMCPropertyListStorage_saveKeyValuePairs_completionHandler___block_invoke;
   v10[3] = &unk_1E7ADCF50;
-  v11 = v6;
-  v9 = v6;
-  [(DMCPropertyListStorage *)self _updateDictionaryAtPath:v8 updateBlock:v10 completionHandler:v7];
+  v11 = pairsCopy;
+  v9 = pairsCopy;
+  [(DMCPropertyListStorage *)self _updateDictionaryAtPath:filePath updateBlock:v10 completionHandler:handlerCopy];
 }
 
-- (BOOL)saveKeyValuePairs:(id)a3 error:(id *)a4
+- (BOOL)saveKeyValuePairs:(id)pairs error:(id *)error
 {
-  v6 = a3;
-  v7 = [(DMCPropertyListStorage *)self filePath];
+  pairsCopy = pairs;
+  filePath = [(DMCPropertyListStorage *)self filePath];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __50__DMCPropertyListStorage_saveKeyValuePairs_error___block_invoke;
   v10[3] = &unk_1E7ADCF50;
-  v11 = v6;
-  v8 = v6;
-  LOBYTE(a4) = [(DMCPropertyListStorage *)self _updateDictionaryAtPath:v7 updateBlock:v10 error:a4];
+  v11 = pairsCopy;
+  v8 = pairsCopy;
+  LOBYTE(error) = [(DMCPropertyListStorage *)self _updateDictionaryAtPath:filePath updateBlock:v10 error:error];
 
-  return a4;
+  return error;
 }
 
-- (void)retrieveValueForKey:(id)a3 completionHandler:(id)a4
+- (void)retrieveValueForKey:(id)key completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DMCPropertyListStorage *)self filePath];
+  keyCopy = key;
+  handlerCopy = handler;
+  filePath = [(DMCPropertyListStorage *)self filePath];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __64__DMCPropertyListStorage_retrieveValueForKey_completionHandler___block_invoke;
   v11[3] = &unk_1E7ADCF78;
-  v12 = v6;
-  v13 = v7;
+  v12 = keyCopy;
+  v13 = handlerCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
-  [(DMCPropertyListStorage *)self _performFileActionAtPath:v8 asynchronously:1 hasRead:1 hasWrite:0 isDeletion:0 action:v11];
+  v9 = keyCopy;
+  v10 = handlerCopy;
+  [(DMCPropertyListStorage *)self _performFileActionAtPath:filePath asynchronously:1 hasRead:1 hasWrite:0 isDeletion:0 action:v11];
 }
 
 void __64__DMCPropertyListStorage_retrieveValueForKey_completionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -142,12 +142,12 @@ void __64__DMCPropertyListStorage_retrieveValueForKey_completionHandler___block_
   }
 }
 
-- (id)retrieveValueForKey:(id)a3 error:(id *)a4
+- (id)retrieveValueForKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [(DMCPropertyListStorage *)self filePath];
-  v9 = [v7 fileExistsAtPath:v8];
+  keyCopy = key;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  filePath = [(DMCPropertyListStorage *)self filePath];
+  v9 = [defaultManager fileExistsAtPath:filePath];
 
   if (v9)
   {
@@ -163,7 +163,7 @@ void __64__DMCPropertyListStorage_retrieveValueForKey_completionHandler___block_
     v20 = __Block_byref_object_copy__6;
     v21 = __Block_byref_object_dispose__6;
     v22 = 0;
-    v10 = [(DMCPropertyListStorage *)self filePath];
+    filePath2 = [(DMCPropertyListStorage *)self filePath];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __52__DMCPropertyListStorage_retrieveValueForKey_error___block_invoke;
@@ -171,12 +171,12 @@ void __64__DMCPropertyListStorage_retrieveValueForKey_completionHandler___block_
     v15 = &v17;
     v16 = &v23;
     v13[4] = self;
-    v14 = v6;
-    [(DMCPropertyListStorage *)self _performFileActionAtPath:v10 asynchronously:0 hasRead:1 hasWrite:0 isDeletion:0 action:v13];
+    v14 = keyCopy;
+    [(DMCPropertyListStorage *)self _performFileActionAtPath:filePath2 asynchronously:0 hasRead:1 hasWrite:0 isDeletion:0 action:v13];
 
-    if (a4)
+    if (error)
     {
-      *a4 = v18[5];
+      *error = v18[5];
     }
 
     v11 = v24[5];
@@ -214,17 +214,17 @@ void __52__DMCPropertyListStorage_retrieveValueForKey_error___block_invoke(uint6
   }
 }
 
-- (void)retrieveDictionaryWithCompletionHandler:(id)a3
+- (void)retrieveDictionaryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(DMCPropertyListStorage *)self filePath];
+  handlerCopy = handler;
+  filePath = [(DMCPropertyListStorage *)self filePath];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__DMCPropertyListStorage_retrieveDictionaryWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7ADCFC8;
-  v8 = v4;
-  v6 = v4;
-  [(DMCPropertyListStorage *)self _performFileActionAtPath:v5 asynchronously:1 hasRead:1 hasWrite:0 isDeletion:0 action:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [(DMCPropertyListStorage *)self _performFileActionAtPath:filePath asynchronously:1 hasRead:1 hasWrite:0 isDeletion:0 action:v7];
 }
 
 void __66__DMCPropertyListStorage_retrieveDictionaryWithCompletionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -244,11 +244,11 @@ void __66__DMCPropertyListStorage_retrieveDictionaryWithCompletionHandler___bloc
   }
 }
 
-- (id)retrieveDictionaryWithError:(id *)a3
+- (id)retrieveDictionaryWithError:(id *)error
 {
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [(DMCPropertyListStorage *)self filePath];
-  v7 = [v5 fileExistsAtPath:v6];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  filePath = [(DMCPropertyListStorage *)self filePath];
+  v7 = [defaultManager fileExistsAtPath:filePath];
 
   if (v7)
   {
@@ -264,18 +264,18 @@ void __66__DMCPropertyListStorage_retrieveDictionaryWithCompletionHandler___bloc
     v15 = __Block_byref_object_copy__6;
     v16 = __Block_byref_object_dispose__6;
     v17 = 0;
-    v8 = [(DMCPropertyListStorage *)self filePath];
+    filePath2 = [(DMCPropertyListStorage *)self filePath];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __54__DMCPropertyListStorage_retrieveDictionaryWithError___block_invoke;
     v11[3] = &unk_1E7ADCFF0;
     v11[4] = &v12;
     v11[5] = &v18;
-    [(DMCPropertyListStorage *)self _performFileActionAtPath:v8 asynchronously:0 hasRead:1 hasWrite:0 isDeletion:0 action:v11];
+    [(DMCPropertyListStorage *)self _performFileActionAtPath:filePath2 asynchronously:0 hasRead:1 hasWrite:0 isDeletion:0 action:v11];
 
-    if (a3)
+    if (error)
     {
-      *a3 = v13[5];
+      *error = v13[5];
     }
 
     v9 = v19[5];
@@ -313,47 +313,47 @@ void __54__DMCPropertyListStorage_retrieveDictionaryWithError___block_invoke(uin
   }
 }
 
-- (void)clearKeys:(id)a3 completionHandler:(id)a4
+- (void)clearKeys:(id)keys completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DMCPropertyListStorage *)self filePath];
+  keysCopy = keys;
+  handlerCopy = handler;
+  filePath = [(DMCPropertyListStorage *)self filePath];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __54__DMCPropertyListStorage_clearKeys_completionHandler___block_invoke;
   v10[3] = &unk_1E7ADCF50;
-  v11 = v6;
-  v9 = v6;
-  [(DMCPropertyListStorage *)self _updateDictionaryAtPath:v8 updateBlock:v10 completionHandler:v7];
+  v11 = keysCopy;
+  v9 = keysCopy;
+  [(DMCPropertyListStorage *)self _updateDictionaryAtPath:filePath updateBlock:v10 completionHandler:handlerCopy];
 }
 
-- (BOOL)clearKeys:(id)a3 error:(id *)a4
+- (BOOL)clearKeys:(id)keys error:(id *)error
 {
-  v6 = a3;
-  v7 = [(DMCPropertyListStorage *)self filePath];
+  keysCopy = keys;
+  filePath = [(DMCPropertyListStorage *)self filePath];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __42__DMCPropertyListStorage_clearKeys_error___block_invoke;
   v10[3] = &unk_1E7ADCF50;
-  v11 = v6;
-  v8 = v6;
-  LOBYTE(a4) = [(DMCPropertyListStorage *)self _updateDictionaryAtPath:v7 updateBlock:v10 error:a4];
+  v11 = keysCopy;
+  v8 = keysCopy;
+  LOBYTE(error) = [(DMCPropertyListStorage *)self _updateDictionaryAtPath:filePath updateBlock:v10 error:error];
 
-  return a4;
+  return error;
 }
 
-- (void)clearAllKeyValueStorage:(id)a3
+- (void)clearAllKeyValueStorage:(id)storage
 {
-  v4 = a3;
-  v5 = [(DMCPropertyListStorage *)self filePath];
+  storageCopy = storage;
+  filePath = [(DMCPropertyListStorage *)self filePath];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__DMCPropertyListStorage_clearAllKeyValueStorage___block_invoke;
   v7[3] = &unk_1E7ADD018;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [(DMCPropertyListStorage *)self _performFileActionAtPath:v5 asynchronously:1 hasRead:0 hasWrite:1 isDeletion:1 action:v7];
+  v8 = storageCopy;
+  v6 = storageCopy;
+  [(DMCPropertyListStorage *)self _performFileActionAtPath:filePath asynchronously:1 hasRead:0 hasWrite:1 isDeletion:1 action:v7];
 }
 
 void __50__DMCPropertyListStorage_clearAllKeyValueStorage___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -373,7 +373,7 @@ void __50__DMCPropertyListStorage_clearAllKeyValueStorage___block_invoke(uint64_
   }
 }
 
-- (BOOL)clearAllKeyValueStorageWithError:(id *)a3
+- (BOOL)clearAllKeyValueStorageWithError:(id *)error
 {
   v9 = 0;
   v10 = &v9;
@@ -381,18 +381,18 @@ void __50__DMCPropertyListStorage_clearAllKeyValueStorage___block_invoke(uint64_
   v12 = __Block_byref_object_copy__6;
   v13 = __Block_byref_object_dispose__6;
   v14 = 0;
-  v5 = [(DMCPropertyListStorage *)self filePath];
+  filePath = [(DMCPropertyListStorage *)self filePath];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59__DMCPropertyListStorage_clearAllKeyValueStorageWithError___block_invoke;
   v8[3] = &unk_1E7ADD040;
   v8[4] = self;
   v8[5] = &v9;
-  [(DMCPropertyListStorage *)self _performFileActionAtPath:v5 asynchronously:0 hasRead:0 hasWrite:1 isDeletion:1 action:v8];
+  [(DMCPropertyListStorage *)self _performFileActionAtPath:filePath asynchronously:0 hasRead:0 hasWrite:1 isDeletion:1 action:v8];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v10[5];
+    *error = v10[5];
   }
 
   v6 = v10[5] == 0;
@@ -422,17 +422,17 @@ void __59__DMCPropertyListStorage_clearAllKeyValueStorageWithError___block_invok
   }
 }
 
-- (unint64_t)_optionForFileModificationAtPath:(id)a3 isDeletion:(BOOL)a4
+- (unint64_t)_optionForFileModificationAtPath:(id)path isDeletion:(BOOL)deletion
 {
-  if (a4)
+  if (deletion)
   {
     return 1;
   }
 
   v5 = MEMORY[0x1E696AC08];
-  v6 = a3;
-  v7 = [v5 defaultManager];
-  LODWORD(v5) = [v7 fileExistsAtPath:v6];
+  pathCopy = path;
+  defaultManager = [v5 defaultManager];
+  LODWORD(v5) = [defaultManager fileExistsAtPath:pathCopy];
 
   if (v5)
   {
@@ -447,18 +447,18 @@ void __59__DMCPropertyListStorage_clearAllKeyValueStorageWithError___block_invok
   return v4;
 }
 
-- (void)_ensureDirectoryExistsForFilePath:(id)a3
+- (void)_ensureDirectoryExistsForFilePath:(id)path
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [a3 stringByDeletingLastPathComponent];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:stringByDeletingLastPathComponent];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v10 = 0;
-    [v6 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v10];
+    [defaultManager2 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v10];
     v7 = v10;
 
     if (v7)
@@ -531,22 +531,22 @@ void __101__DMCPropertyListStorage__performFileActionAtPath_asynchronously_hasRe
   (*(v2 + 16))(v2, 0, v3, 0);
 }
 
-- (void)_updateDictionaryAtPath:(id)a3 updateBlock:(id)a4 completionHandler:(id)a5
+- (void)_updateDictionaryAtPath:(id)path updateBlock:(id)block completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  [(DMCPropertyListStorage *)self _ensureDirectoryExistsForFilePath:v10];
+  blockCopy = block;
+  handlerCopy = handler;
+  pathCopy = path;
+  [(DMCPropertyListStorage *)self _ensureDirectoryExistsForFilePath:pathCopy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __80__DMCPropertyListStorage__updateDictionaryAtPath_updateBlock_completionHandler___block_invoke;
   v13[3] = &unk_1E7ADD0E0;
   v13[4] = self;
-  v14 = v9;
-  v15 = v8;
-  v11 = v8;
-  v12 = v9;
-  [(DMCPropertyListStorage *)self _performFileActionAtPath:v10 asynchronously:1 hasRead:1 hasWrite:1 isDeletion:0 action:v13];
+  v14 = handlerCopy;
+  v15 = blockCopy;
+  v11 = blockCopy;
+  v12 = handlerCopy;
+  [(DMCPropertyListStorage *)self _performFileActionAtPath:pathCopy asynchronously:1 hasRead:1 hasWrite:1 isDeletion:0 action:v13];
 }
 
 uint64_t __80__DMCPropertyListStorage__updateDictionaryAtPath_updateBlock_completionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -568,11 +568,11 @@ uint64_t __80__DMCPropertyListStorage__updateDictionaryAtPath_updateBlock_comple
   }
 }
 
-- (BOOL)_updateDictionaryAtPath:(id)a3 updateBlock:(id)a4 error:(id *)a5
+- (BOOL)_updateDictionaryAtPath:(id)path updateBlock:(id)block error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  [(DMCPropertyListStorage *)self _ensureDirectoryExistsForFilePath:v8];
+  pathCopy = path;
+  blockCopy = block;
+  [(DMCPropertyListStorage *)self _ensureDirectoryExistsForFilePath:pathCopy];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -585,12 +585,12 @@ uint64_t __80__DMCPropertyListStorage__updateDictionaryAtPath_updateBlock_comple
   v13[3] = &unk_1E7ADD108;
   v15 = &v16;
   v13[4] = self;
-  v10 = v9;
+  v10 = blockCopy;
   v14 = v10;
-  [(DMCPropertyListStorage *)self _performFileActionAtPath:v8 asynchronously:0 hasRead:1 hasWrite:1 isDeletion:0 action:v13];
-  if (a5)
+  [(DMCPropertyListStorage *)self _performFileActionAtPath:pathCopy asynchronously:0 hasRead:1 hasWrite:1 isDeletion:0 action:v13];
+  if (error)
   {
-    *a5 = v17[5];
+    *error = v17[5];
   }
 
   v11 = v17[5] == 0;
@@ -613,76 +613,76 @@ void __68__DMCPropertyListStorage__updateDictionaryAtPath_updateBlock_error___bl
   }
 }
 
-- (id)_accessor_valueForKey:(id)a3 atPath:(id)a4
+- (id)_accessor_valueForKey:(id)key atPath:(id)path
 {
   v5 = MEMORY[0x1E695DF20];
-  v6 = a3;
-  v7 = [v5 DMCDictionaryFromFile:a4];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  v7 = [v5 DMCDictionaryFromFile:path];
+  v8 = [v7 objectForKeyedSubscript:keyCopy];
 
   return v8;
 }
 
-- (void)_accessor_updateDictionaryAtReadPath:(id)a3 writePath:(id)a4 updateBlock:(id)a5
+- (void)_accessor_updateDictionaryAtReadPath:(id)path writePath:(id)writePath updateBlock:(id)block
 {
-  v19 = a3;
-  v8 = a4;
+  pathCopy = path;
+  writePathCopy = writePath;
   v9 = MEMORY[0x1E696AC08];
-  v10 = a5;
-  v11 = [v9 defaultManager];
-  v12 = [v11 fileExistsAtPath:v19];
+  blockCopy = block;
+  defaultManager = [v9 defaultManager];
+  v12 = [defaultManager fileExistsAtPath:pathCopy];
 
   if (v12)
   {
-    v13 = [MEMORY[0x1E695DF20] DMCDictionaryFromFile:v19];
+    v13 = [MEMORY[0x1E695DF20] DMCDictionaryFromFile:pathCopy];
     v14 = [v13 mutableCopy];
     v15 = v14;
     if (v14)
     {
-      v16 = v14;
+      dictionary = v14;
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v17 = v16;
+    dictionary2 = dictionary;
   }
 
   else
   {
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v10[2](v10, v17);
+  blockCopy[2](blockCopy, dictionary2);
 
-  if ([v17 count])
+  if ([dictionary2 count])
   {
-    [v17 DMCWriteToBinaryFile:v8];
+    [dictionary2 DMCWriteToBinaryFile:writePathCopy];
     if ([(DMCPropertyListStorage *)self excludesFromBackup])
     {
-      DMCSetSkipBackupAttributeToItemAtPath(v8, 1);
+      DMCSetSkipBackupAttributeToItemAtPath(writePathCopy, 1);
     }
   }
 
   else
   {
-    v18 = [(DMCPropertyListStorage *)self _accessor_removeFileAtPath:v8];
+    v18 = [(DMCPropertyListStorage *)self _accessor_removeFileAtPath:writePathCopy];
   }
 }
 
-- (id)_accessor_removeFileAtPath:(id)a3
+- (id)_accessor_removeFileAtPath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:pathCopy];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v9 = 0;
-    [v6 removeItemAtPath:v3 error:&v9];
+    [defaultManager2 removeItemAtPath:pathCopy error:&v9];
     v7 = v9;
   }
 

@@ -4,7 +4,7 @@
 + (BOOL)hasCDMA;
 + (BOOL)hasGSM;
 + (BOOL)isRoaming;
-+ (BOOL)isSubscriptionRoaming:(id)a3 client:(id)a4;
++ (BOOL)isSubscriptionRoaming:(id)roaming client:(id)client;
 + (BOOL)voiceRoamingEnabled;
 + (NSString)ICCID;
 + (NSString)IMEI;
@@ -15,18 +15,18 @@
 + (NSString)currentMobileNetworkCode;
 + (NSString)currentNetworkName;
 + (NSString)modemFirmwareVersion;
-+ (id)formattedICCIDStringFromString:(id)a3;
-+ (id)formattedIMEIStringFromString:(id)a3;
-+ (void)setDataRoamingEnabled:(BOOL)a3;
-+ (void)setVoiceRoamingEnabled:(BOOL)a3;
-+ (void)withCurrentDataServiceDescriptorDo:(id)a3;
++ (id)formattedICCIDStringFromString:(id)string;
++ (id)formattedIMEIStringFromString:(id)string;
++ (void)setDataRoamingEnabled:(BOOL)enabled;
++ (void)setVoiceRoamingEnabled:(BOOL)enabled;
++ (void)withCurrentDataServiceDescriptorDo:(id)do;
 @end
 
 @implementation DMDCoreTelephonyUtilities
 
-+ (id)formattedIMEIStringFromString:(id)a3
++ (id)formattedIMEIStringFromString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v3 = [NSMutableString stringWithString:?];
     if ([v3 length] >= 3)
@@ -55,19 +55,19 @@
   return v4;
 }
 
-+ (id)formattedICCIDStringFromString:(id)a3
++ (id)formattedICCIDStringFromString:(id)string
 {
-  v3 = a3;
-  if (v3)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v4 = [NSMutableString stringWithString:v3];
-    if ([v3 length] >= 4 && objc_msgSend(v3, "length") >= 5)
+    v4 = [NSMutableString stringWithString:stringCopy];
+    if ([stringCopy length] >= 4 && objc_msgSend(stringCopy, "length") >= 5)
     {
       v5 = 0;
       v6 = 4;
       do
       {
-        if ([v3 length] > v6)
+        if ([stringCopy length] > v6)
         {
           [v4 insertString:@" " atIndex:(v5 + v6)];
           ++v5;
@@ -76,7 +76,7 @@
         v6 = (v6 + 4);
       }
 
-      while ([v3 length] > v6);
+      while ([stringCopy length] > v6);
     }
 
     v7 = [v4 copy];
@@ -93,11 +93,11 @@
 + (NSString)IMEI
 {
   v3 = sub_1000323EC();
-  v4 = [v3 IMEI];
+  iMEI = [v3 IMEI];
 
-  if ([v4 length])
+  if ([iMEI length])
   {
-    v5 = [a1 formattedIMEIStringFromString:v4];
+    v5 = [self formattedIMEIStringFromString:iMEI];
   }
 
   else
@@ -145,11 +145,11 @@
   if (+[DMDMobileGestalt hasCellularDataCapability])
   {
     v3 = sub_1000323EC();
-    v4 = [v3 ICCID];
+    iCCID = [v3 ICCID];
 
-    if ([v4 length])
+    if ([iCCID length])
     {
-      v5 = [a1 formattedICCIDStringFromString:v4];
+      v5 = [self formattedICCIDStringFromString:iCCID];
     }
 
     else
@@ -357,7 +357,7 @@ LABEL_12:
   return v2;
 }
 
-+ (void)setDataRoamingEnabled:(BOOL)a3
++ (void)setDataRoamingEnabled:(BOOL)enabled
 {
   if (+[DMDMobileGestalt hasCellularDataCapability])
   {
@@ -365,30 +365,30 @@ LABEL_12:
     v4[1] = 3221225472;
     v4[2] = sub_10003324C;
     v4[3] = &unk_1000CEDD0;
-    v5 = a3;
+    enabledCopy = enabled;
     [objc_opt_class() withCurrentDataServiceDescriptorDo:v4];
   }
 }
 
-+ (void)withCurrentDataServiceDescriptorDo:(id)a3
++ (void)withCurrentDataServiceDescriptorDo:(id)do
 {
-  v5 = a3;
-  if (!v5)
+  doCopy = do;
+  if (!doCopy)
   {
-    sub_100081884(a2, a1);
+    sub_100081884(a2, self);
   }
 
   v6 = sub_100032A20();
   v9 = 0;
   v7 = [v6 getCurrentDataServiceDescriptorSync:&v9];
   v8 = v9;
-  v5[2](v5, v7, v8);
+  doCopy[2](doCopy, v7, v8);
 }
 
-+ (BOOL)isSubscriptionRoaming:(id)a3 client:(id)a4
++ (BOOL)isSubscriptionRoaming:(id)roaming client:(id)client
 {
   v8 = 0;
-  v4 = [a4 copyRegistrationStatus:a3 error:&v8];
+  v4 = [client copyRegistrationStatus:roaming error:&v8];
   v5 = v8;
   if (v4)
   {
@@ -425,7 +425,7 @@ LABEL_12:
 
 + (BOOL)voiceRoamingEnabled
 {
-  if (![a1 _supportsVoiceRoaming])
+  if (![self _supportsVoiceRoaming])
   {
     return 0;
   }
@@ -442,12 +442,12 @@ LABEL_12:
   return v4;
 }
 
-+ (void)setVoiceRoamingEnabled:(BOOL)a3
++ (void)setVoiceRoamingEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([a1 _supportsVoiceRoaming])
+  enabledCopy = enabled;
+  if ([self _supportsVoiceRoaming])
   {
-    if ([a1 voiceRoamingEnabled] == v3)
+    if ([self voiceRoamingEnabled] == enabledCopy)
     {
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
@@ -470,16 +470,16 @@ LABEL_12:
 
 + (BOOL)hasGSM
 {
-  v2 = [a1 IMEI];
-  v3 = v2 != 0;
+  iMEI = [self IMEI];
+  v3 = iMEI != 0;
 
   return v3;
 }
 
 + (BOOL)hasCDMA
 {
-  v2 = [a1 MEID];
-  v3 = v2 != 0;
+  mEID = [self MEID];
+  v3 = mEID != 0;
 
   return v3;
 }
@@ -488,7 +488,7 @@ LABEL_12:
 {
   if (!+[DMDMobileGestalt hasTelephonyCapability])
   {
-    v7 = 0;
+    bOOLValue = 0;
     goto LABEL_12;
   }
 
@@ -503,7 +503,7 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v5 BOOLValue];
+      bOOLValue = [v5 BOOLValue];
       v8 = 1;
       goto LABEL_11;
     }
@@ -520,20 +520,20 @@ LABEL_12:
   }
 
   v8 = 0;
-  v7 = 0;
+  bOOLValue = 0;
 LABEL_11:
 
   if (!v8)
   {
-    LOBYTE(v7) = 0;
-    return v7;
+    LOBYTE(bOOLValue) = 0;
+    return bOOLValue;
   }
 
 LABEL_12:
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     v9 = @"NO";
-    if (v7)
+    if (bOOLValue)
     {
       v9 = @"YES";
     }
@@ -543,7 +543,7 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "device supports voice roaming: %{public}@", buf, 0xCu);
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 @end

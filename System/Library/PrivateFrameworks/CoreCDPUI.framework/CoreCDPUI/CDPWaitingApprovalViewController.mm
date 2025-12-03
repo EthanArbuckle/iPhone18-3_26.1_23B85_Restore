@@ -1,36 +1,36 @@
 @interface CDPWaitingApprovalViewController
-- (CDPWaitingApprovalViewController)initWithEscapeOffer:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (CDPWaitingApprovalViewController)initWithEscapeOffer:(id)offer;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)cancelRemoteApproval;
-- (void)escapeOfferSelectedWithOption:(id)a3;
+- (void)escapeOfferSelectedWithOption:(id)option;
 - (void)loadView;
 - (void)remoteApprovalSucceeded;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation CDPWaitingApprovalViewController
 
-- (CDPWaitingApprovalViewController)initWithEscapeOffer:(id)a3
+- (CDPWaitingApprovalViewController)initWithEscapeOffer:(id)offer
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CFD4F8] sharedInstance];
-  v7 = [v6 deviceClass];
+  offerCopy = offer;
+  mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+  deviceClass = [mEMORY[0x277CFD4F8] deviceClass];
 
   v8 = [MEMORY[0x277CFD508] builderForKey:@"WAITING_APPROVAL_TITLE"];
-  v9 = [v8 addDeviceClass:v7];
-  v10 = [v9 localizedString];
+  v9 = [v8 addDeviceClass:deviceClass];
+  localizedString = [v9 localizedString];
 
   v11 = [MEMORY[0x277CFD508] builderForKey:@"WAITING_APPROVAL_SUBTITLE"];
-  v12 = [v11 addDeviceClass:v7];
-  v13 = [v12 localizedString];
+  v12 = [v11 addDeviceClass:deviceClass];
+  localizedString2 = [v12 localizedString];
 
-  v14 = [(CDPTableViewController *)self initWithTitle:v10 subTitle:v13];
+  v14 = [(CDPTableViewController *)self initWithTitle:localizedString subTitle:localizedString2];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_escapeOffer, a3);
+    objc_storeStrong(&v14->_escapeOffer, offer);
     [(CDPRemoteValidationEscapeOffer *)v15->_escapeOffer setPresentingViewController:v15];
   }
 
@@ -39,13 +39,13 @@
 
 - (void)cancelRemoteApproval
 {
-  v3 = [(CDPWaitingApprovalViewController *)self remoteApprovalCompletion];
+  remoteApprovalCompletion = [(CDPWaitingApprovalViewController *)self remoteApprovalCompletion];
 
-  if (v3)
+  if (remoteApprovalCompletion)
   {
-    v5 = [(CDPWaitingApprovalViewController *)self remoteApprovalCompletion];
+    remoteApprovalCompletion2 = [(CDPWaitingApprovalViewController *)self remoteApprovalCompletion];
     v4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CFD418] code:-5307 userInfo:0];
-    v5[2](v5, 0, v4);
+    remoteApprovalCompletion2[2](remoteApprovalCompletion2, 0, v4);
   }
 }
 
@@ -59,8 +59,8 @@
   self->_spinner = v3;
 
   [(UIActivityIndicatorView *)self->_spinner startAnimating];
-  v5 = [(CDPTableViewController *)self tableView];
-  [v5 addSubview:self->_spinner];
+  tableView = [(CDPTableViewController *)self tableView];
+  [tableView addSubview:self->_spinner];
 
   v6 = objc_alloc(MEMORY[0x277D756B8]);
   v7 = [v6 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -76,8 +76,8 @@
   [(UILabel *)v11 setFont:v12];
 
   [(UILabel *)self->_waitingLabel sizeToFit];
-  v13 = [(CDPTableViewController *)self tableView];
-  [v13 addSubview:self->_waitingLabel];
+  tableView2 = [(CDPTableViewController *)self tableView];
+  [tableView2 addSubview:self->_waitingLabel];
 
   if (self->_escapeOffer)
   {
@@ -86,18 +86,18 @@
     self->_escapeButton = v14;
 
     v16 = self->_escapeButton;
-    v17 = [(CDPRemoteValidationEscapeOffer *)self->_escapeOffer title];
-    [(UIButton *)v16 setTitle:v17 forState:0];
+    title = [(CDPRemoteValidationEscapeOffer *)self->_escapeOffer title];
+    [(UIButton *)v16 setTitle:title forState:0];
 
-    v18 = [(UIButton *)self->_escapeButton titleLabel];
+    titleLabel = [(UIButton *)self->_escapeButton titleLabel];
     v19 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
-    [v18 setFont:v19];
+    [titleLabel setFont:v19];
 
     [(UIButton *)self->_escapeButton addTarget:self->_escapeOffer action:sel_handleEscapeAction_ forControlEvents:64];
     [(UIButton *)self->_escapeButton sizeToFit];
     [(UIButton *)self->_escapeButton setAutoresizingMask:12];
-    v20 = [(CDPTableViewController *)self tableView];
-    [v20 addSubview:self->_escapeButton];
+    tableView3 = [(CDPTableViewController *)self tableView];
+    [tableView3 addSubview:self->_escapeButton];
   }
 }
 
@@ -106,13 +106,13 @@
   v24.receiver = self;
   v24.super_class = CDPWaitingApprovalViewController;
   [(CDPTableViewController *)&v24 viewDidLayoutSubviews];
-  v3 = [(CDPTableViewController *)self tableView];
-  [v3 bounds];
+  tableView = [(CDPTableViewController *)self tableView];
+  [tableView bounds];
   MidX = CGRectGetMidX(v25);
   [(UIButton *)self->_escapeButton frame];
   v5 = MidX - CGRectGetWidth(v26) * 0.5;
-  v6 = [(CDPTableViewController *)self tableView];
-  [v6 bounds];
+  tableView2 = [(CDPTableViewController *)self tableView];
+  [tableView2 bounds];
   MaxY = CGRectGetMaxY(v27);
   [(UIButton *)self->_escapeButton frame];
   v8 = MaxY - CGRectGetHeight(v28) + -10.0;
@@ -122,11 +122,11 @@
   Height = CGRectGetHeight(v30);
 
   [(UIButton *)self->_escapeButton setFrame:v5, v8, Width, Height];
-  v11 = [(CDPTableViewController *)self tableView];
-  [v11 bounds];
+  tableView3 = [(CDPTableViewController *)self tableView];
+  [tableView3 bounds];
   v12 = CGRectGetMidX(v31);
-  v13 = [(CDPTableViewController *)self tableView];
-  [v13 bounds];
+  tableView4 = [(CDPTableViewController *)self tableView];
+  [tableView4 bounds];
   MidY = CGRectGetMidY(v32);
   [(UIActivityIndicatorView *)self->_spinner frame];
   v15 = CGRectGetWidth(v33);
@@ -160,63 +160,63 @@
   [(UILabel *)self->_waitingLabel setHidden:1];
   [(UILabel *)self->_waitingLabel sizeToFit];
   [(UIButton *)self->_escapeButton removeFromSuperview];
-  v3 = [(CDPWaitingApprovalViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(CDPWaitingApprovalViewController *)self view];
+  [view setNeedsLayout];
 
-  v4 = [MEMORY[0x277D3FA90] sharedSpinnerManager];
-  v5 = [(CDPWaitingApprovalViewController *)self navigationItem];
-  [v4 startAnimatingInNavItem:v5 forIdentifier:@"waitingApproval"];
+  mEMORY[0x277D3FA90] = [MEMORY[0x277D3FA90] sharedSpinnerManager];
+  navigationItem = [(CDPWaitingApprovalViewController *)self navigationItem];
+  [mEMORY[0x277D3FA90] startAnimatingInNavItem:navigationItem forIdentifier:@"waitingApproval"];
 
-  v6 = [(CDPWaitingApprovalViewController *)self remoteApprovalCompletion];
+  remoteApprovalCompletion = [(CDPWaitingApprovalViewController *)self remoteApprovalCompletion];
 
-  if (v6)
+  if (remoteApprovalCompletion)
   {
-    v7 = [(CDPWaitingApprovalViewController *)self remoteApprovalCompletion];
-    v7[2](v7, 1, 0);
+    remoteApprovalCompletion2 = [(CDPWaitingApprovalViewController *)self remoteApprovalCompletion];
+    remoteApprovalCompletion2[2](remoteApprovalCompletion2, 1, 0);
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = CDPWaitingApprovalViewController;
-  [(CDPWaitingApprovalViewController *)&v3 viewDidAppear:a3];
+  [(CDPWaitingApprovalViewController *)&v3 viewDidAppear:appear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CDPWaitingApprovalViewController;
-  [(CDPWaitingApprovalViewController *)&v4 viewDidDisappear:a3];
-  v3 = [MEMORY[0x277D3FA90] sharedSpinnerManager];
-  [v3 stopAnimatingForIdentifier:@"waitingApproval"];
+  [(CDPWaitingApprovalViewController *)&v4 viewDidDisappear:disappear];
+  mEMORY[0x277D3FA90] = [MEMORY[0x277D3FA90] sharedSpinnerManager];
+  [mEMORY[0x277D3FA90] stopAnimatingForIdentifier:@"waitingApproval"];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v4 = objc_alloc_init(MEMORY[0x277D75B48]);
 
   return v4;
 }
 
-- (void)escapeOfferSelectedWithOption:(id)a3
+- (void)escapeOfferSelectedWithOption:(id)option
 {
-  v8 = a3;
-  v4 = [v8 progressTitle];
+  optionCopy = option;
+  progressTitle = [optionCopy progressTitle];
 
-  if (v4)
+  if (progressTitle)
   {
-    v5 = [v8 progressTitle];
-    [(CDPTableViewController *)self setHeaderTitle:v5];
+    progressTitle2 = [optionCopy progressTitle];
+    [(CDPTableViewController *)self setHeaderTitle:progressTitle2];
 
     [(CDPTableViewController *)self setHeaderSubTitle:0];
-    v6 = [v8 progressLabel];
-    [(UILabel *)self->_waitingLabel setText:v6];
+    progressLabel = [optionCopy progressLabel];
+    [(UILabel *)self->_waitingLabel setText:progressLabel];
 
     [(UILabel *)self->_waitingLabel sizeToFit];
     [(UIButton *)self->_escapeButton removeFromSuperview];
-    v7 = [(CDPWaitingApprovalViewController *)self view];
-    [v7 setNeedsLayout];
+    view = [(CDPWaitingApprovalViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 

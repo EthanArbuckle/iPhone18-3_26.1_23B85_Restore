@@ -1,7 +1,7 @@
 @interface ObjcSingleFireEvent
 - (BOOL)hasFired;
 - (_TtC20PreviewsFoundationOS19ObjcSingleFireEvent)init;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)cancel;
 - (void)fire;
 @end
@@ -11,23 +11,23 @@
 - (void)fire
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC20PreviewsFoundationOS19ObjcSingleFireEvent_event);
-  v3 = self;
+  selfCopy = self;
   sub_25F2FBD3C(v2);
 }
 
 - (void)cancel
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC20PreviewsFoundationOS19ObjcSingleFireEvent_event);
-  v3 = self;
+  selfCopy = self;
   SingleFireEvent.cancel()();
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(observer);
   v5 = *(&self->super.isa + OBJC_IVAR____TtC20PreviewsFoundationOS19ObjcSingleFireEvent_event);
   _Block_copy(v4);
-  v6 = self;
+  selfCopy = self;
   sub_25F2FBB88(v5, v4, &v8);
   v7 = v8;
   if (v8)
@@ -46,7 +46,7 @@
 - (BOOL)hasFired
 {
   v2 = (*(&self->super.isa + OBJC_IVAR____TtC20PreviewsFoundationOS19ObjcSingleFireEvent_event))[2];
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock((v2 + 32));
   v4 = *(v2 + 16);
   sub_25F2C403C(v4);

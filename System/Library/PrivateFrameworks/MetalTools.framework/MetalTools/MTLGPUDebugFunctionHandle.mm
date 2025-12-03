@@ -1,38 +1,38 @@
 @interface MTLGPUDebugFunctionHandle
-- (MTLGPUDebugFunctionHandle)initWithFunctionHandle:(id)a3 computePipelineState:(id)a4;
-- (MTLGPUDebugFunctionHandle)initWithFunctionHandle:(id)a3 computePiplineState:(id)a4 function:(id)a5;
-- (MTLGPUDebugFunctionHandle)initWithFunctionHandle:(id)a3 renderPipelineState:(id)a4 stage:(unint64_t)a5;
-- (MTLGPUDebugFunctionHandle)initWithFunctionHandle:(id)a3 renderPipelineState:(id)a4 stage:(unint64_t)a5 function:(id)a6;
+- (MTLGPUDebugFunctionHandle)initWithFunctionHandle:(id)handle computePipelineState:(id)state;
+- (MTLGPUDebugFunctionHandle)initWithFunctionHandle:(id)handle computePiplineState:(id)state function:(id)function;
+- (MTLGPUDebugFunctionHandle)initWithFunctionHandle:(id)handle renderPipelineState:(id)state stage:(unint64_t)stage;
+- (MTLGPUDebugFunctionHandle)initWithFunctionHandle:(id)handle renderPipelineState:(id)state stage:(unint64_t)stage function:(id)function;
 @end
 
 @implementation MTLGPUDebugFunctionHandle
 
-- (MTLGPUDebugFunctionHandle)initWithFunctionHandle:(id)a3 computePiplineState:(id)a4 function:(id)a5
+- (MTLGPUDebugFunctionHandle)initWithFunctionHandle:(id)handle computePiplineState:(id)state function:(id)function
 {
   v6.receiver = self;
   v6.super_class = MTLGPUDebugFunctionHandle;
-  return [(MTLToolsFunctionHandle *)&v6 initWithBaseObject:a3 parent:a4 function:a5];
+  return [(MTLToolsFunctionHandle *)&v6 initWithBaseObject:handle parent:state function:function];
 }
 
-- (MTLGPUDebugFunctionHandle)initWithFunctionHandle:(id)a3 renderPipelineState:(id)a4 stage:(unint64_t)a5 function:(id)a6
+- (MTLGPUDebugFunctionHandle)initWithFunctionHandle:(id)handle renderPipelineState:(id)state stage:(unint64_t)stage function:(id)function
 {
   v7.receiver = self;
   v7.super_class = MTLGPUDebugFunctionHandle;
-  return [(MTLToolsFunctionHandle *)&v7 initWithBaseObject:a3 parent:a4 function:a6];
+  return [(MTLToolsFunctionHandle *)&v7 initWithBaseObject:handle parent:state function:function];
 }
 
-- (MTLGPUDebugFunctionHandle)initWithFunctionHandle:(id)a3 computePipelineState:(id)a4
+- (MTLGPUDebugFunctionHandle)initWithFunctionHandle:(id)handle computePipelineState:(id)state
 {
   v5.receiver = self;
   v5.super_class = MTLGPUDebugFunctionHandle;
-  return [(MTLToolsObject *)&v5 initWithBaseObject:a3 parent:a4];
+  return [(MTLToolsObject *)&v5 initWithBaseObject:handle parent:state];
 }
 
-- (MTLGPUDebugFunctionHandle)initWithFunctionHandle:(id)a3 renderPipelineState:(id)a4 stage:(unint64_t)a5
+- (MTLGPUDebugFunctionHandle)initWithFunctionHandle:(id)handle renderPipelineState:(id)state stage:(unint64_t)stage
 {
   v6.receiver = self;
   v6.super_class = MTLGPUDebugFunctionHandle;
-  return [(MTLToolsObject *)&v6 initWithBaseObject:a3 parent:a4, a5];
+  return [(MTLToolsObject *)&v6 initWithBaseObject:handle parent:state, stage];
 }
 
 @end

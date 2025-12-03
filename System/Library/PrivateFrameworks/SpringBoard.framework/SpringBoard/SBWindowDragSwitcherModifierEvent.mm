@@ -1,16 +1,16 @@
 @interface SBWindowDragSwitcherModifierEvent
 - (CGPoint)locationInSelectedDisplayItem;
 - (CGSize)sizeOfSelectedDisplayItem;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBWindowDragSwitcherModifierEvent
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = SBWindowDragSwitcherModifierEvent;
-  result = [(SBGestureSwitcherModifierEvent *)&v5 copyWithZone:a3];
+  result = [(SBGestureSwitcherModifierEvent *)&v5 copyWithZone:zone];
   *(result + 168) = self->_draggingFromContinuousExposeStrips;
   *(result + 184) = self->_locationInSelectedDisplayItem;
   *(result + 200) = self->_sizeOfSelectedDisplayItem;

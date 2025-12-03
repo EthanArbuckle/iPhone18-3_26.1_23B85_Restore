@@ -1,15 +1,15 @@
 @interface CESRSpeechItemRanker_Media
-- (BOOL)addSet:(id)a3;
-- (BOOL)enumerateRankedItemsWithError:(id *)a3 usingBlock:(id)a4;
-- (CESRSpeechItemRanker_Media)initWithInstance:(id)a3 speechProfileSite:(id)a4 categoryGroup:(id)a5 playableLimit:(unint64_t)a6 artistLimit:(unint64_t)a7;
+- (BOOL)addSet:(id)set;
+- (BOOL)enumerateRankedItemsWithError:(id *)error usingBlock:(id)block;
+- (CESRSpeechItemRanker_Media)initWithInstance:(id)instance speechProfileSite:(id)site categoryGroup:(id)group playableLimit:(unint64_t)limit artistLimit:(unint64_t)artistLimit;
 @end
 
 @implementation CESRSpeechItemRanker_Media
 
-- (BOOL)enumerateRankedItemsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateRankedItemsWithError:(id *)error usingBlock:(id)block
 {
   v53 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  blockCopy = block;
   v40 = 0;
   v41 = &v40;
   v42 = 0x2020000000;
@@ -31,12 +31,12 @@
   v27 = &v40;
   v28 = &v36;
   v25[4] = self;
-  v7 = v6;
+  v7 = blockCopy;
   v26 = v7;
   v29 = &v30;
   v24.receiver = self;
   v24.super_class = CESRSpeechItemRanker_Media;
-  v8 = [(CESRSpeechItemRanker *)&v24 enumerateRankedRepresentativeItemsWithError:a3 usingBlock:v25];
+  v8 = [(CESRSpeechItemRanker *)&v24 enumerateRankedRepresentativeItemsWithError:error usingBlock:v25];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -102,14 +102,14 @@ LABEL_3:
   return v8 & 1;
 }
 
-- (BOOL)addSet:(id)a3
+- (BOOL)addSet:(id)set
 {
-  v4 = a3;
-  if ([v4 itemType] == 18540)
+  setCopy = set;
+  if ([setCopy itemType] == 18540)
   {
     v7.receiver = self;
     v7.super_class = CESRSpeechItemRanker_Media;
-    v5 = [(CESRSpeechItemRanker *)&v7 addSet:v4];
+    v5 = [(CESRSpeechItemRanker *)&v7 addSet:setCopy];
   }
 
   else
@@ -120,15 +120,15 @@ LABEL_3:
   return v5;
 }
 
-- (CESRSpeechItemRanker_Media)initWithInstance:(id)a3 speechProfileSite:(id)a4 categoryGroup:(id)a5 playableLimit:(unint64_t)a6 artistLimit:(unint64_t)a7
+- (CESRSpeechItemRanker_Media)initWithInstance:(id)instance speechProfileSite:(id)site categoryGroup:(id)group playableLimit:(unint64_t)limit artistLimit:(unint64_t)artistLimit
 {
   v10.receiver = self;
   v10.super_class = CESRSpeechItemRanker_Media;
-  result = [(CESRSpeechItemRanker *)&v10 initWithInstance:a3 speechProfileSite:a4 categoryGroup:a5];
+  result = [(CESRSpeechItemRanker *)&v10 initWithInstance:instance speechProfileSite:site categoryGroup:group];
   if (result)
   {
-    result->_playableLimit = a6;
-    result->_artistLimit = a7;
+    result->_playableLimit = limit;
+    result->_artistLimit = artistLimit;
   }
 
   return result;

@@ -1,9 +1,9 @@
 @interface DMDRemoveConfigurationOperation
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4;
++ (BOOL)validateRequest:(id)request error:(id *)error;
 + (id)whitelistedClassesForRequest;
-- (BOOL)_removeRestrictionsWithRequest:(id)a3 error:(id *)a4;
-- (void)_removeProfile:(id)a3 withRequest:(id)a4 completion:(id)a5;
-- (void)runWithRequest:(id)a3;
+- (BOOL)_removeRestrictionsWithRequest:(id)request error:(id *)error;
+- (void)_removeProfile:(id)profile withRequest:(id)request completion:(id)completion;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -23,21 +23,21 @@
   return [NSSet setWithObject:v2];
 }
 
-+ (BOOL)validateRequest:(id)a3 error:(id *)a4
++ (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v10.receiver = a1;
+  requestCopy = request;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___DMDRemoveConfigurationOperation;
-  if (!objc_msgSendSuper2(&v10, "validateRequest:error:", v6, a4))
+  if (!objc_msgSendSuper2(&v10, "validateRequest:error:", requestCopy, error))
   {
     goto LABEL_6;
   }
 
-  v7 = [v6 profile];
+  profile = [requestCopy profile];
 
-  if (!v7)
+  if (!profile)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -45,24 +45,24 @@
     v11 = DMFInvalidParameterErrorKey;
     v12 = @"request.profile";
     v8 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    *a4 = DMFErrorWithCodeAndUserInfo();
+    *error = DMFErrorWithCodeAndUserInfo();
 
 LABEL_6:
-    LOBYTE(a4) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_7;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_7:
 
-  return a4;
+  return error;
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 profile];
-  v6 = [v5 objectForKeyedSubscript:@"PayloadContent"];
+  requestCopy = request;
+  profile = [requestCopy profile];
+  v6 = [profile objectForKeyedSubscript:@"PayloadContent"];
 
   if ([v6 count] == 1)
   {
@@ -72,21 +72,21 @@ LABEL_7:
 
     if (v9)
     {
-      v10 = 0;
+      profile2 = 0;
       v11 = 1;
     }
 
     else
     {
-      v10 = [v4 profile];
+      profile2 = [requestCopy profile];
       v11 = 0;
     }
   }
 
   else if ([v6 count] == 2)
   {
-    v12 = [v4 profile];
-    v13 = [v12 mutableCopy];
+    profile3 = [requestCopy profile];
+    v13 = [profile3 mutableCopy];
 
     v14 = [v6 objectAtIndexedSubscript:0];
     v20 = v14;
@@ -94,13 +94,13 @@ LABEL_7:
     v15 = [NSArray arrayWithObjects:&v20 count:1];
     [v13 setObject:v15 forKeyedSubscript:@"PayloadContent"];
 
-    v10 = [v13 copy];
+    profile2 = [v13 copy];
   }
 
   else
   {
     v11 = 0;
-    v10 = 0;
+    profile2 = 0;
   }
 
   v17[0] = _NSConcreteStackBlock;
@@ -109,19 +109,19 @@ LABEL_7:
   v17[3] = &unk_1000CFDE0;
   v19 = v11;
   v17[4] = self;
-  v18 = v4;
-  v16 = v4;
-  [(DMDRemoveConfigurationOperation *)self _removeProfile:v10 withRequest:v16 completion:v17];
+  v18 = requestCopy;
+  v16 = requestCopy;
+  [(DMDRemoveConfigurationOperation *)self _removeProfile:profile2 withRequest:v16 completion:v17];
 }
 
-- (void)_removeProfile:(id)a3 withRequest:(id)a4 completion:(id)a5
+- (void)_removeProfile:(id)profile withRequest:(id)request completion:(id)completion
 {
-  v8 = a5;
-  v9 = v8;
-  if (a3)
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (profile)
   {
-    v10 = [a4 profile];
-    v11 = [v10 objectForKeyedSubscript:@"PayloadIdentifier"];
+    profile = [request profile];
+    v11 = [profile objectForKeyedSubscript:@"PayloadIdentifier"];
 
     v12 = +[MCProfileConnection sharedConnection];
     v13 = [v12 installedProfileWithIdentifier:v11];
@@ -138,17 +138,17 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v14 = [(DMDTaskOperation *)self context];
-    if ([v14 runAsUser])
+    context = [(DMDTaskOperation *)self context];
+    if ([context runAsUser])
     {
     }
 
     else
     {
-      v17 = [(DMDRemoveConfigurationOperation *)self request];
-      v18 = [v17 type];
+      request = [(DMDRemoveConfigurationOperation *)self request];
+      type = [request type];
 
-      if (v18 != 1)
+      if (type != 1)
       {
         v19 = 1;
         goto LABEL_10;
@@ -163,14 +163,14 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  (*(v8 + 2))(v8, 0);
+  (*(completionCopy + 2))(completionCopy, 0);
 LABEL_12:
 }
 
-- (BOOL)_removeRestrictionsWithRequest:(id)a3 error:(id *)a4
+- (BOOL)_removeRestrictionsWithRequest:(id)request error:(id *)error
 {
-  v4 = [a3 profile];
-  v5 = [v4 objectForKeyedSubscript:@"PayloadIdentifier"];
+  profile = [request profile];
+  v5 = [profile objectForKeyedSubscript:@"PayloadIdentifier"];
   v6 = [NSString stringWithFormat:@"%@-restrictions", v5];
 
   v7 = +[MCProfileConnection sharedConnection];
@@ -178,9 +178,9 @@ LABEL_12:
 
   v9 = MCFeatureMaximumAppsRating;
   v10 = [MCRestrictionManager valueForFeature:MCFeatureMaximumAppsRating withRestrictionsDictionary:v8];
-  v11 = [v10 intValue];
+  intValue = [v10 intValue];
   v12 = DMFAppRatingUnrated;
-  v13 = [DMFAppRatingUnrated intValue];
+  intValue2 = [DMFAppRatingUnrated intValue];
   v14 = +[MCProfileConnection sharedConnection];
   v24 = 0;
   v15 = [v14 applyRestrictionDictionary:0 clientType:@"com.apple.dmd" clientUUID:v6 localizedClientDescription:0 localizedWarningMessage:0 outRestrictionChanged:0 outEffectiveSettingsChanged:0 outError:&v24];
@@ -188,7 +188,7 @@ LABEL_12:
 
   if (v15)
   {
-    if (v11 == v13)
+    if (intValue == intValue2)
     {
       v17 = +[MCProfileConnection sharedConnection];
       v18 = [v17 userValueForSetting:v9];
@@ -210,10 +210,10 @@ LABEL_12:
       sub_100087508(v16, v20);
     }
 
-    if (*a4)
+    if (*error)
     {
       v21 = v16;
-      *a4 = v16;
+      *error = v16;
     }
   }
 

@@ -1,13 +1,13 @@
 @interface PFMetricsClient
 + (void)initialize;
-- (void)logMetric:(uint64_t)a1;
+- (void)logMetric:(uint64_t)metric;
 @end
 
 @implementation PFMetricsClient
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && initialize_onceToken_0 != -1)
+  if (objc_opt_class() == self && initialize_onceToken_0 != -1)
   {
 
     dispatch_once(&initialize_onceToken_0, &__block_literal_global_24);
@@ -33,14 +33,14 @@ uint64_t __29__PFMetricsClient_initialize__block_invoke()
   return result;
 }
 
-- (void)logMetric:(uint64_t)a1
+- (void)logMetric:(uint64_t)metric
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a1 && _MergedGlobals_84 == 1)
+  if (metric && _MergedGlobals_84 == 1)
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = [a2 name];
-    if (![v4 length])
+    name = [a2 name];
+    if (![name length])
     {
       LogStream = _PFLogGetLogStream(17);
       if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
@@ -72,10 +72,10 @@ uint64_t __29__PFMetricsClient_initialize__block_invoke()
       dispatch_once(&qword_1ED4BEB08, &__block_literal_global_4);
     }
 
-    if (([qword_1ED4BEB10 containsObject:v4] & 1) == 0)
+    if (([qword_1ED4BEB10 containsObject:name] & 1) == 0)
     {
-      v7 = [a2 createPayload];
-      if (![v7 count])
+      createPayload = [a2 createPayload];
+      if (![createPayload count])
       {
         v8 = _PFLogGetLogStream(17);
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))

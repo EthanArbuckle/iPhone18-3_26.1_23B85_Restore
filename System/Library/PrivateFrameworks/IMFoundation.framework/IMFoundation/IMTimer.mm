@@ -1,9 +1,9 @@
 @interface IMTimer
 - (NSDate)fireDate;
-- (id)_initWithTimeInterval:(double)a3 name:(id)a4 shouldWake:(BOOL)a5 target:(id)a6 selector:(SEL)a7 userInfo:(id)a8 useCurrentRunLoop:(BOOL)a9 queue:(id)a10;
+- (id)_initWithTimeInterval:(double)interval name:(id)name shouldWake:(BOOL)wake target:(id)target selector:(SEL)selector userInfo:(id)info useCurrentRunLoop:(BOOL)loop queue:(id)self0;
 - (void)_reschedulePCPersistentTimer;
 - (void)dealloc;
-- (void)setFireTimeInterval:(double)a3;
+- (void)setFireTimeInterval:(double)interval;
 @end
 
 @implementation IMTimer
@@ -99,15 +99,15 @@
   objc_autoreleasePoolPop(v3);
 }
 
-- (id)_initWithTimeInterval:(double)a3 name:(id)a4 shouldWake:(BOOL)a5 target:(id)a6 selector:(SEL)a7 userInfo:(id)a8 useCurrentRunLoop:(BOOL)a9 queue:(id)a10
+- (id)_initWithTimeInterval:(double)interval name:(id)name shouldWake:(BOOL)wake target:(id)target selector:(SEL)selector userInfo:(id)info useCurrentRunLoop:(BOOL)loop queue:(id)self0
 {
-  v33 = a4;
-  v35 = a6;
-  v18 = a8;
-  v19 = a10;
-  if (a3 < 0.001)
+  nameCopy = name;
+  targetCopy = target;
+  infoCopy = info;
+  queueCopy = queue;
+  if (interval < 0.001)
   {
-    a3 = 5.0;
+    interval = 5.0;
   }
 
   v36.receiver = self;
@@ -116,40 +116,40 @@
   v21 = v20;
   if (v20)
   {
-    v20->_wakeDevice = a5;
-    objc_storeStrong(&v20->_target, a6);
-    if (a7)
+    v20->_wakeDevice = wake;
+    objc_storeStrong(&v20->_target, target);
+    if (selector)
     {
-      v22 = a7;
+      selectorCopy = selector;
     }
 
     else
     {
-      v22 = 0;
+      selectorCopy = 0;
     }
 
-    v21->_selector = v22;
-    v21->_timeInterval = a3;
-    v21->_useCurrentRunLoop = a9;
-    objc_storeStrong(&v21->_userInfo, a8);
-    objc_storeStrong(&v21->_name, a4);
-    if (v19)
+    v21->_selector = selectorCopy;
+    v21->_timeInterval = interval;
+    v21->_useCurrentRunLoop = loop;
+    objc_storeStrong(&v21->_userInfo, info);
+    objc_storeStrong(&v21->_name, name);
+    if (queueCopy)
     {
-      objc_storeStrong(&v21->_queue, a10);
+      objc_storeStrong(&v21->_queue, queue);
     }
 
-    if (a5 || v21->_queue)
+    if (wake || v21->_queue)
     {
       objc_msgSend__reschedulePCPersistentTimer(v21, v23, v24);
     }
 
     else
     {
-      v26 = objc_msgSend_timerWithTimeInterval_target_selector_userInfo_repeats_(MEMORY[0x1E695DFF0], v23, v35, a7, v18, 0, a3);
+      v26 = objc_msgSend_timerWithTimeInterval_target_selector_userInfo_repeats_(MEMORY[0x1E695DFF0], v23, targetCopy, selector, infoCopy, 0, interval);
       timer = v21->_timer;
       v21->_timer = v26;
 
-      if (a9 || !objc_msgSend_isMainThread(MEMORY[0x1E696AF00], v28, v29))
+      if (loop || !objc_msgSend_isMainThread(MEMORY[0x1E696AF00], v28, v29))
       {
         v30 = objc_msgSend_mainRunLoop(MEMORY[0x1E695DFD0], v28, v29);
       }
@@ -167,9 +167,9 @@
   return v21;
 }
 
-- (void)setFireTimeInterval:(double)a3
+- (void)setFireTimeInterval:(double)interval
 {
-  self->_timeInterval = a3;
+  self->_timeInterval = interval;
   if (self->_wakeDevice || self->_queue)
   {
 

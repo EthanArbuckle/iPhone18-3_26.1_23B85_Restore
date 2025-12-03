@@ -1,15 +1,15 @@
 @interface AFSiriActivationContext
-+ (id)newWithBuilder:(id)a3;
-- (AFSiriActivationContext)initWithBuilder:(id)a3;
-- (AFSiriActivationContext)initWithCoder:(id)a3;
-- (AFSiriActivationContext)initWithDictionaryRepresentation:(id)a3;
-- (AFSiriActivationContext)initWithTimestamp:(unint64_t)a3 source:(int64_t)a4 event:(int64_t)a5 options:(unint64_t)a6 deviceID:(id)a7 userInfo:(id)a8;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFSiriActivationContext)initWithBuilder:(id)builder;
+- (AFSiriActivationContext)initWithCoder:(id)coder;
+- (AFSiriActivationContext)initWithDictionaryRepresentation:(id)representation;
+- (AFSiriActivationContext)initWithTimestamp:(unint64_t)timestamp source:(int64_t)source event:(int64_t)event options:(unint64_t)options deviceID:(id)d userInfo:(id)info;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFSiriActivationContext
@@ -68,13 +68,13 @@
   return v14;
 }
 
-- (AFSiriActivationContext)initWithDictionaryRepresentation:(id)a3
+- (AFSiriActivationContext)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"timestamp"];
+    v6 = [representationCopy objectForKey:@"timestamp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,7 +86,7 @@
       v7 = 0;
     }
 
-    v9 = [v7 unsignedLongLongValue];
+    unsignedLongLongValue = [v7 unsignedLongLongValue];
     v10 = [v5 objectForKey:@"source"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -147,55 +147,55 @@
       v19 = 0;
     }
 
-    self = [(AFSiriActivationContext *)self initWithTimestamp:v9 source:v11 event:v13 options:v15 deviceID:v17 userInfo:v19];
-    v8 = self;
+    self = [(AFSiriActivationContext *)self initWithTimestamp:unsignedLongLongValue source:v11 event:v13 options:v15 deviceID:v17 userInfo:v19];
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   timestamp = self->_timestamp;
-  v10 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedLongLong:timestamp];
-  [v10 encodeObject:v6 forKey:@"AFSiriActivationContext::timestamp"];
+  [coderCopy encodeObject:v6 forKey:@"AFSiriActivationContext::timestamp"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:self->_source];
-  [v10 encodeObject:v7 forKey:@"AFSiriActivationContext::source"];
+  [coderCopy encodeObject:v7 forKey:@"AFSiriActivationContext::source"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:self->_event];
-  [v10 encodeObject:v8 forKey:@"AFSiriActivationContext::event"];
+  [coderCopy encodeObject:v8 forKey:@"AFSiriActivationContext::event"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_options];
-  [v10 encodeObject:v9 forKey:@"AFSiriActivationContext::options"];
+  [coderCopy encodeObject:v9 forKey:@"AFSiriActivationContext::options"];
 
-  [v10 encodeObject:self->_deviceID forKey:@"AFSiriActivationContext::deviceID"];
-  [v10 encodeObject:self->_userInfo forKey:@"AFSiriActivationContext::userInfo"];
+  [coderCopy encodeObject:self->_deviceID forKey:@"AFSiriActivationContext::deviceID"];
+  [coderCopy encodeObject:self->_userInfo forKey:@"AFSiriActivationContext::userInfo"];
 }
 
-- (AFSiriActivationContext)initWithCoder:(id)a3
+- (AFSiriActivationContext)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSiriActivationContext::timestamp"];
-  v30 = [v4 unsignedLongLongValue];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSiriActivationContext::timestamp"];
+  unsignedLongLongValue = [v4 unsignedLongLongValue];
 
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSiriActivationContext::source"];
-  v29 = [v5 integerValue];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSiriActivationContext::source"];
+  integerValue = [v5 integerValue];
 
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSiriActivationContext::event"];
-  v28 = [v6 integerValue];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSiriActivationContext::event"];
+  integerValue2 = [v6 integerValue];
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSiriActivationContext::options"];
-  v27 = [v7 unsignedIntegerValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSiriActivationContext::options"];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFSiriActivationContext::deviceID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFSiriActivationContext::deviceID"];
   v25 = MEMORY[0x1E695DFD8];
   v26 = v8;
   v24 = objc_opt_class();
@@ -211,16 +211,16 @@
   v16 = objc_opt_class();
   v17 = objc_opt_class();
   v18 = [v25 setWithObjects:{v24, v23, v22, v9, v10, v11, v12, v13, v14, v15, v16, v17, objc_opt_class(), 0}];
-  v19 = [v3 decodeObjectOfClasses:v18 forKey:@"AFSiriActivationContext::userInfo"];
+  v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"AFSiriActivationContext::userInfo"];
 
-  v20 = [(AFSiriActivationContext *)self initWithTimestamp:v30 source:v29 event:v28 options:v27 deviceID:v26 userInfo:v19];
+  v20 = [(AFSiriActivationContext *)self initWithTimestamp:unsignedLongLongValue source:integerValue event:integerValue2 options:unsignedIntegerValue deviceID:v26 userInfo:v19];
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -230,17 +230,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       timestamp = self->_timestamp;
       if (timestamp == [(AFSiriActivationContext *)v5 timestamp]&& (source = self->_source, source == [(AFSiriActivationContext *)v5 source]) && (event = self->_event, event == [(AFSiriActivationContext *)v5 event]) && (options = self->_options, options == [(AFSiriActivationContext *)v5 options]))
       {
-        v10 = [(AFSiriActivationContext *)v5 deviceID];
+        deviceID = [(AFSiriActivationContext *)v5 deviceID];
         deviceID = self->_deviceID;
-        if (deviceID == v10 || [(NSString *)deviceID isEqual:v10])
+        if (deviceID == deviceID || [(NSString *)deviceID isEqual:deviceID])
         {
-          v12 = [(AFSiriActivationContext *)v5 userInfo];
+          userInfo = [(AFSiriActivationContext *)v5 userInfo];
           userInfo = self->_userInfo;
-          v14 = userInfo == v12 || [(NSDictionary *)userInfo isEqual:v12];
+          v14 = userInfo == userInfo || [(NSDictionary *)userInfo isEqual:userInfo];
         }
 
         else
@@ -280,7 +280,7 @@
   return v10 ^ v12;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v17.receiver = self;
@@ -318,22 +318,22 @@
   return v15;
 }
 
-- (AFSiriActivationContext)initWithTimestamp:(unint64_t)a3 source:(int64_t)a4 event:(int64_t)a5 options:(unint64_t)a6 deviceID:(id)a7 userInfo:(id)a8
+- (AFSiriActivationContext)initWithTimestamp:(unint64_t)timestamp source:(int64_t)source event:(int64_t)event options:(unint64_t)options deviceID:(id)d userInfo:(id)info
 {
-  v14 = a7;
-  v15 = a8;
+  dCopy = d;
+  infoCopy = info;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __84__AFSiriActivationContext_initWithTimestamp_source_event_options_deviceID_userInfo___block_invoke;
   v20[3] = &unk_1E7346480;
-  v23 = a3;
-  v24 = a4;
-  v25 = a5;
-  v26 = a6;
-  v21 = v14;
-  v22 = v15;
-  v16 = v15;
-  v17 = v14;
+  timestampCopy = timestamp;
+  sourceCopy = source;
+  eventCopy = event;
+  optionsCopy = options;
+  v21 = dCopy;
+  v22 = infoCopy;
+  v16 = infoCopy;
+  v17 = dCopy;
   v18 = [(AFSiriActivationContext *)self initWithBuilder:v20];
 
   return v18;
@@ -351,30 +351,30 @@ void __84__AFSiriActivationContext_initWithTimestamp_source_event_options_device
   [v4 setUserInfo:a1[5]];
 }
 
-- (AFSiriActivationContext)initWithBuilder:(id)a3
+- (AFSiriActivationContext)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v15.receiver = self;
   v15.super_class = AFSiriActivationContext;
   v5 = [(AFSiriActivationContext *)&v15 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFSiriActivationContextMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFSiriActivationContextMutation *)v7 isDirty])
     {
       v6->_timestamp = [(_AFSiriActivationContextMutation *)v7 getTimestamp];
       v6->_source = [(_AFSiriActivationContextMutation *)v7 getSource];
       v6->_event = [(_AFSiriActivationContextMutation *)v7 getEvent];
       v6->_options = [(_AFSiriActivationContextMutation *)v7 getOptions];
-      v8 = [(_AFSiriActivationContextMutation *)v7 getDeviceID];
-      v9 = [v8 copy];
+      getDeviceID = [(_AFSiriActivationContextMutation *)v7 getDeviceID];
+      v9 = [getDeviceID copy];
       deviceID = v6->_deviceID;
       v6->_deviceID = v9;
 
-      v11 = [(_AFSiriActivationContextMutation *)v7 getUserInfo];
-      v12 = [v11 copy];
+      getUserInfo = [(_AFSiriActivationContextMutation *)v7 getUserInfo];
+      v12 = [getUserInfo copy];
       userInfo = v6->_userInfo;
       v6->_userInfo = v12;
     }
@@ -383,21 +383,21 @@ void __84__AFSiriActivationContext_initWithTimestamp_source_event_options_device
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFSiriActivationContextMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFSiriActivationContextMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFSiriActivationContext);
@@ -405,13 +405,13 @@ void __84__AFSiriActivationContext_initWithTimestamp_source_event_options_device
       v6->_source = [(_AFSiriActivationContextMutation *)v5 getSource];
       v6->_event = [(_AFSiriActivationContextMutation *)v5 getEvent];
       v6->_options = [(_AFSiriActivationContextMutation *)v5 getOptions];
-      v7 = [(_AFSiriActivationContextMutation *)v5 getDeviceID];
-      v8 = [v7 copy];
+      getDeviceID = [(_AFSiriActivationContextMutation *)v5 getDeviceID];
+      v8 = [getDeviceID copy];
       deviceID = v6->_deviceID;
       v6->_deviceID = v8;
 
-      v10 = [(_AFSiriActivationContextMutation *)v5 getUserInfo];
-      v11 = [v10 copy];
+      getUserInfo = [(_AFSiriActivationContextMutation *)v5 getUserInfo];
+      v11 = [getUserInfo copy];
       userInfo = v6->_userInfo;
       v6->_userInfo = v11;
     }

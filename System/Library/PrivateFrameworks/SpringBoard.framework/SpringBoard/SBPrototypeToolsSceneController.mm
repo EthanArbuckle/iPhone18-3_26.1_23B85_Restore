@@ -2,7 +2,7 @@
 + (id)_setupInfo;
 - (id)_currentDisplayConfiguration;
 - (id)_currentTraitsPipelineManager;
-- (void)focusContextDidChange:(id)a3;
+- (void)focusContextDidChange:(id)change;
 @end
 
 @implementation SBPrototypeToolsSceneController
@@ -34,10 +34,10 @@
   return v3;
 }
 
-- (void)focusContextDidChange:(id)a3
+- (void)focusContextDidChange:(id)change
 {
-  v4 = a3;
-  v3 = v4;
+  changeCopy = change;
+  v3 = changeCopy;
   BSDispatchMain();
 }
 
@@ -67,34 +67,34 @@ void __57__SBPrototypeToolsSceneController_focusContextDidChange___block_invoke(
 
 - (id)_currentTraitsPipelineManager
 {
-  v3 = [SBApp windowSceneManager];
-  v4 = [(SBPrototypeToolsSceneController *)self _currentDisplayConfiguration];
-  v5 = [v4 identity];
-  v6 = [v3 windowSceneForDisplayIdentity:v5];
-  v7 = [v6 traitsPipelineManager];
+  windowSceneManager = [SBApp windowSceneManager];
+  _currentDisplayConfiguration = [(SBPrototypeToolsSceneController *)self _currentDisplayConfiguration];
+  identity = [_currentDisplayConfiguration identity];
+  v6 = [windowSceneManager windowSceneForDisplayIdentity:identity];
+  traitsPipelineManager = [v6 traitsPipelineManager];
 
-  return v7;
+  return traitsPipelineManager;
 }
 
 - (id)_currentDisplayConfiguration
 {
-  v3 = [(SBSystemUISceneController *)self defaultPresenter];
-  v4 = [v3 targetWindowScene];
+  defaultPresenter = [(SBSystemUISceneController *)self defaultPresenter];
+  targetWindowScene = [defaultPresenter targetWindowScene];
 
-  v5 = [(SBSystemUISceneController *)self defaultPresenter];
-  v6 = [v5 targetDisplayConfiguration];
+  defaultPresenter2 = [(SBSystemUISceneController *)self defaultPresenter];
+  targetDisplayConfiguration = [defaultPresenter2 targetDisplayConfiguration];
 
-  if (v4)
+  if (targetWindowScene)
   {
-    v7 = [v4 _sbDisplayConfiguration];
+    _sbDisplayConfiguration = [targetWindowScene _sbDisplayConfiguration];
   }
 
   else
   {
-    v7 = v6;
+    _sbDisplayConfiguration = targetDisplayConfiguration;
   }
 
-  v8 = v7;
+  v8 = _sbDisplayConfiguration;
 
   return v8;
 }

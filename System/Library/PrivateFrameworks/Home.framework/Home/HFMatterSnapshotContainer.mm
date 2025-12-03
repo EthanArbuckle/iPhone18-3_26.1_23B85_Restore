@@ -1,6 +1,6 @@
 @interface HFMatterSnapshotContainer
 + (id)fetchCurrent;
-+ (void)fetchCurrentWithCompletionHandler:(id)a3;
++ (void)fetchCurrentWithCompletionHandler:(id)handler;
 - (HFMatterSnapshotContainer)init;
 @end
 
@@ -14,16 +14,16 @@
   return [(HFMatterSnapshotContainer *)&v3 init];
 }
 
-+ (void)fetchCurrentWithCompletionHandler:(id)a3
++ (void)fetchCurrentWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C8443F0, &qword_20DD93820);
   v6 = *(*(v5 - 8) + 64);
   MEMORY[0x28223BE20](v5 - 8);
   v8 = &v14 - v7;
-  v9 = _Block_copy(a3);
+  v9 = _Block_copy(handler);
   v10 = swift_allocObject();
   *(v10 + 16) = v9;
-  *(v10 + 24) = a1;
+  *(v10 + 24) = self;
   v11 = sub_20DD65114();
   (*(*(v11 - 8) + 56))(v8, 1, 1, v11);
   v12 = swift_allocObject();

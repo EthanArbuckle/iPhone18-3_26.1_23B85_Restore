@@ -1,9 +1,9 @@
 @interface _EDDisplayNameGroupingTrie
 - (_EDDisplayNameGroupingTrie)init;
-- (id)_addressesInGroupWithRoot:(id)a3;
-- (id)_findTopLevelGroupsForStart:(id)a3;
+- (id)_addressesInGroupWithRoot:(id)root;
+- (id)_findTopLevelGroupsForStart:(id)start;
 - (id)findGroups;
-- (void)insertDisplayName:(id)a3 addressID:(id)a4;
+- (void)insertDisplayName:(id)name addressID:(id)d;
 @end
 
 @implementation _EDDisplayNameGroupingTrie
@@ -23,14 +23,14 @@
   return v2;
 }
 
-- (void)insertDisplayName:(id)a3 addressID:(id)a4
+- (void)insertDisplayName:(id)name addressID:(id)d
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v23 = a4;
-  v6 = [v22 lowercaseString];
+  nameCopy = name;
+  dCopy = d;
+  lowercaseString = [nameCopy lowercaseString];
   v29 = 0;
-  v7 = [v6 ef_wordComponentsForLocale:0 minimumWordLength:0 componentLimit:50 remainingString:&v29];
+  v7 = [lowercaseString ef_wordComponentsForLocale:0 minimumWordLength:0 componentLimit:50 remainingString:&v29];
   v24 = v29;
 
   if (v24)
@@ -38,7 +38,7 @@
     v31[0] = v7;
     v31[1] = v24;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
-    v9 = [v8 ef_flatten];
+    ef_flatten = [v8 ef_flatten];
 
     v10 = +[EDBusinessCommonPrefixGroupingUpgradeStep log];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -46,12 +46,12 @@
       [_EDDisplayNameGroupingTrie insertDisplayName:v10 addressID:?];
     }
 
-    v7 = v9;
+    v7 = ef_flatten;
   }
 
   if ([v7 count])
   {
-    v11 = [(_EDDisplayNameGroupingTrie *)self root];
+    root = [(_EDDisplayNameGroupingTrie *)self root];
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
@@ -72,8 +72,8 @@
           }
 
           v16 = *(*(&v25 + 1) + 8 * v15);
-          v17 = [v11 children];
-          v18 = [v17 objectForKeyedSubscript:v16];
+          children = [root children];
+          v18 = [children objectForKeyedSubscript:v16];
 
           if (v18)
           {
@@ -81,7 +81,7 @@
 
             if ([v19 isEndOfName])
             {
-              [v19 addAddressID:v23];
+              [v19 addAddressID:dCopy];
 
               goto LABEL_18;
             }
@@ -89,12 +89,12 @@
 
           else
           {
-            [v11 addChild:v16];
-            v20 = [v11 children];
-            v19 = [v20 objectForKeyedSubscript:v16];
+            [root addChild:v16];
+            children2 = [root children];
+            v19 = [children2 objectForKeyedSubscript:v16];
           }
 
-          v11 = v19;
+          root = v19;
 
           ++v15;
         }
@@ -106,9 +106,9 @@
       while (v13);
     }
 
-    [v11 setIsEndOfName:1];
-    [v11 addAddressID:v23];
-    v19 = v11;
+    [root setIsEndOfName:1];
+    [root addAddressID:dCopy];
+    v19 = root;
 LABEL_18:
   }
 
@@ -118,8 +118,8 @@ LABEL_18:
 - (id)findGroups
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(_EDDisplayNameGroupingTrie *)self root];
-  v4 = [(_EDDisplayNameGroupingTrie *)self _findTopLevelGroupsForStart:v3];
+  root = [(_EDDisplayNameGroupingTrie *)self root];
+  v4 = [(_EDDisplayNameGroupingTrie *)self _findTopLevelGroupsForStart:root];
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v18 = 0u;
@@ -141,13 +141,13 @@ LABEL_18:
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 addressIDs];
-        v12 = [v11 firstObject];
+        addressIDs = [v10 addressIDs];
+        firstObject = [addressIDs firstObject];
 
-        if (v12)
+        if (firstObject)
         {
           v13 = [(_EDDisplayNameGroupingTrie *)self _addressesInGroupWithRoot:v10];
-          [v5 setObject:v13 forKeyedSubscript:v12];
+          [v5 setObject:v13 forKeyedSubscript:firstObject];
         }
       }
 
@@ -162,58 +162,58 @@ LABEL_18:
   return v5;
 }
 
-- (id)_addressesInGroupWithRoot:(id)a3
+- (id)_addressesInGroupWithRoot:(id)root
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v3, 0}];
+  rootCopy = root;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{rootCopy, 0}];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   while ([v4 count])
   {
-    v6 = [v4 ef_popElement];
-    v7 = v6;
-    if (!v6)
+    ef_popElement = [v4 ef_popElement];
+    v7 = ef_popElement;
+    if (!ef_popElement)
     {
       break;
     }
 
-    if ([v6 isEndOfName])
+    if ([ef_popElement isEndOfName])
     {
-      v8 = [v7 addressIDs];
-      [v5 addObjectsFromArray:v8];
+      addressIDs = [v7 addressIDs];
+      [v5 addObjectsFromArray:addressIDs];
     }
 
-    v9 = [v7 children];
-    v10 = [v9 allValues];
-    [v4 addObjectsFromArray:v10];
+    children = [v7 children];
+    allValues = [children allValues];
+    [v4 addObjectsFromArray:allValues];
   }
 
   return v5;
 }
 
-- (id)_findTopLevelGroupsForStart:(id)a3
+- (id)_findTopLevelGroupsForStart:(id)start
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v3, 0}];
+  startCopy = start;
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{startCopy, 0}];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   while ([v4 count])
   {
-    v6 = [v4 ef_popElement];
-    v7 = v6;
-    if (!v6)
+    ef_popElement = [v4 ef_popElement];
+    v7 = ef_popElement;
+    if (!ef_popElement)
     {
       break;
     }
 
-    if ([v6 isEndOfName])
+    if ([ef_popElement isEndOfName])
     {
       [v5 addObject:v7];
     }
 
     else
     {
-      v8 = [v7 children];
-      v9 = [v8 allValues];
-      [v4 addObjectsFromArray:v9];
+      children = [v7 children];
+      allValues = [children allValues];
+      [v4 addObjectsFromArray:allValues];
     }
   }
 

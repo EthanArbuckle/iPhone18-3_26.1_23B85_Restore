@@ -1,27 +1,27 @@
 @interface VKGestureCameraBehavior
-- (VKGestureCameraBehavior)initWithCameraController:(id)a3;
+- (VKGestureCameraBehavior)initWithCameraController:(id)controller;
 - (void)resetGestureState;
-- (void)startPanningAtPoint:(CGPoint)a3 panAtStartPoint:(BOOL)a4;
-- (void)startPinchingWithFocusPoint:(CGPoint)a3;
-- (void)startPitchingWithFocusPoint:(CGPoint)a3;
-- (void)startRotatingWithFocusPoint:(CGPoint)a3;
-- (void)stopPanningAtPoint:(CGPoint)a3;
-- (void)stopPinchingWithFocusPoint:(CGPoint)a3;
-- (void)stopPitchingWithFocusPoint:(CGPoint)a3;
-- (void)stopRotatingWithFocusPoint:(CGPoint)a3;
-- (void)tapZoom:(CGPoint)a3 levels:(double)a4 completionHandler:(id)a5;
-- (void)transferGestureState:(id)a3;
-- (void)updatePanWithTranslation:(CGPoint)a3;
-- (void)updatePinchWithFocusPoint:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5;
-- (void)updatePitchWithFocusPoint:(CGPoint)a3 degrees:(double)a4;
-- (void)updatePitchWithFocusPoint:(CGPoint)a3 translation:(double)a4;
-- (void)updateRotationWithFocusPoint:(CGPoint)a3 newValue:(double)a4;
-- (void)zoom:(double)a3 withFocusPoint:(CGPoint)a4 completionHandler:(id)a5;
+- (void)startPanningAtPoint:(CGPoint)point panAtStartPoint:(BOOL)startPoint;
+- (void)startPinchingWithFocusPoint:(CGPoint)point;
+- (void)startPitchingWithFocusPoint:(CGPoint)point;
+- (void)startRotatingWithFocusPoint:(CGPoint)point;
+- (void)stopPanningAtPoint:(CGPoint)point;
+- (void)stopPinchingWithFocusPoint:(CGPoint)point;
+- (void)stopPitchingWithFocusPoint:(CGPoint)point;
+- (void)stopRotatingWithFocusPoint:(CGPoint)point;
+- (void)tapZoom:(CGPoint)zoom levels:(double)levels completionHandler:(id)handler;
+- (void)transferGestureState:(id)state;
+- (void)updatePanWithTranslation:(CGPoint)translation;
+- (void)updatePinchWithFocusPoint:(CGPoint)point oldFactor:(double)factor newFactor:(double)newFactor;
+- (void)updatePitchWithFocusPoint:(CGPoint)point degrees:(double)degrees;
+- (void)updatePitchWithFocusPoint:(CGPoint)point translation:(double)translation;
+- (void)updateRotationWithFocusPoint:(CGPoint)point newValue:(double)value;
+- (void)zoom:(double)zoom withFocusPoint:(CGPoint)point completionHandler:(id)handler;
 @end
 
 @implementation VKGestureCameraBehavior
 
-- (void)stopPitchingWithFocusPoint:(CGPoint)a3
+- (void)stopPitchingWithFocusPoint:(CGPoint)point
 {
   self->_pitching = 0;
   WeakRetained = objc_loadWeakRetained(&self->_cameraController);
@@ -32,19 +32,19 @@
   [(VKGestureCameraBehavior *)self endPitch:v6, v8];
 }
 
-- (void)updatePitchWithFocusPoint:(CGPoint)a3 degrees:(double)a4
+- (void)updatePitchWithFocusPoint:(CGPoint)point degrees:(double)degrees
 {
   WeakRetained = objc_loadWeakRetained(&self->_cameraController);
   [WeakRetained centerScreenPoint];
   v7 = v6;
   v9 = v8;
 
-  [(VKGestureCameraBehavior *)self updatePitch:v7 degrees:v9, a4];
+  [(VKGestureCameraBehavior *)self updatePitch:v7 degrees:v9, degrees];
   if (self->_notifyCameraStateChanges)
   {
     v13 = objc_loadWeakRetained(&self->_cameraController);
-    v10 = [v13 cameraDelegate];
-    [v10 mapLayerDidChangeVisibleRegion];
+    cameraDelegate = [v13 cameraDelegate];
+    [cameraDelegate mapLayerDidChangeVisibleRegion];
 
     v14 = objc_loadWeakRetained(&self->_cameraController);
     v11 = *[v14 runLoopController];
@@ -56,19 +56,19 @@
   }
 }
 
-- (void)updatePitchWithFocusPoint:(CGPoint)a3 translation:(double)a4
+- (void)updatePitchWithFocusPoint:(CGPoint)point translation:(double)translation
 {
   WeakRetained = objc_loadWeakRetained(&self->_cameraController);
   [WeakRetained centerScreenPoint];
   v7 = v6;
   v9 = v8;
 
-  [(VKGestureCameraBehavior *)self updatePitch:v7 translation:v9, a4 * 0.005];
+  [(VKGestureCameraBehavior *)self updatePitch:v7 translation:v9, translation * 0.005];
   if (self->_notifyCameraStateChanges)
   {
     v13 = objc_loadWeakRetained(&self->_cameraController);
-    v10 = [v13 cameraDelegate];
-    [v10 mapLayerDidChangeVisibleRegion];
+    cameraDelegate = [v13 cameraDelegate];
+    [cameraDelegate mapLayerDidChangeVisibleRegion];
 
     v14 = objc_loadWeakRetained(&self->_cameraController);
     v11 = *[v14 runLoopController];
@@ -80,10 +80,10 @@
   }
 }
 
-- (void)startPitchingWithFocusPoint:(CGPoint)a3
+- (void)startPitchingWithFocusPoint:(CGPoint)point
 {
   self->_pitching = 1;
-  self->_pitchStartFocusPoint = a3;
+  self->_pitchStartFocusPoint = point;
   WeakRetained = objc_loadWeakRetained(&self->_cameraController);
   [WeakRetained centerScreenPoint];
   v6 = v5;
@@ -95,16 +95,16 @@
   [(VKGestureCameraBehavior *)self beginPitch:v6, v8];
 }
 
-- (void)stopRotatingWithFocusPoint:(CGPoint)a3
+- (void)stopRotatingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_cameraController);
-  v7 = [WeakRetained staysCenteredDuringPinch];
+  staysCenteredDuringPinch = [WeakRetained staysCenteredDuringPinch];
 
   v8 = objc_loadWeakRetained(&self->_cameraController);
   v9 = v8;
-  if (v7)
+  if (staysCenteredDuringPinch)
   {
     [v8 centerScreenPoint];
   }
@@ -120,15 +120,15 @@
   [(VKGestureCameraBehavior *)self endRotate:v12, v13];
 }
 
-- (void)updateRotationWithFocusPoint:(CGPoint)a3 newValue:(double)a4
+- (void)updateRotationWithFocusPoint:(CGPoint)point newValue:(double)value
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_cameraController);
-  v8 = [WeakRetained staysCenteredDuringPinch];
+  staysCenteredDuringPinch = [WeakRetained staysCenteredDuringPinch];
 
   v9 = objc_loadWeakRetained(&self->_cameraController);
-  if (v8)
+  if (staysCenteredDuringPinch)
   {
     [v9 centerScreenPoint];
   }
@@ -143,27 +143,27 @@
 
   if (self->_shouldRotationRubberband)
   {
-    v14 = rubberBandOffsetForOffset(fabs(a4), 0.392699082, 0.0, 0.261799388);
-    if (a4 >= 0.0)
+    v14 = rubberBandOffsetForOffset(fabs(value), 0.392699082, 0.0, 0.261799388);
+    if (value >= 0.0)
     {
-      a4 = v14;
+      value = v14;
     }
 
     else
     {
-      a4 = -v14;
+      value = -v14;
     }
   }
 
-  v15 = fmod(a4 + 3.14159265 - self->_lastRotation, 6.28318531);
+  v15 = fmod(value + 3.14159265 - self->_lastRotation, 6.28318531);
   v16 = fmod(v15 + 6.28318531, 6.28318531);
-  self->_lastRotation = a4;
+  self->_lastRotation = value;
   [(VKGestureCameraBehavior *)self updateRotate:(v16 + -3.14159265) atScreenPoint:v12, v13];
   if (self->_notifyCameraStateChanges)
   {
     v21 = objc_loadWeakRetained(&self->_cameraController);
-    v17 = [v21 cameraDelegate];
-    [v17 mapLayerDidChangeVisibleRegion];
+    cameraDelegate = [v21 cameraDelegate];
+    [cameraDelegate mapLayerDidChangeVisibleRegion];
 
     v22 = objc_loadWeakRetained(&self->_cameraController);
     v18 = *[v22 runLoopController];
@@ -175,15 +175,15 @@
   }
 }
 
-- (void)startRotatingWithFocusPoint:(CGPoint)a3
+- (void)startRotatingWithFocusPoint:(CGPoint)point
 {
-  self->_rotateStartFocusPoint = a3;
+  self->_rotateStartFocusPoint = point;
   WeakRetained = objc_loadWeakRetained(&self->_cameraController);
-  v5 = [WeakRetained staysCenteredDuringPinch];
+  staysCenteredDuringPinch = [WeakRetained staysCenteredDuringPinch];
 
   v6 = objc_loadWeakRetained(&self->_cameraController);
   v7 = v6;
-  if (v5)
+  if (staysCenteredDuringPinch)
   {
     [v6 centerScreenPoint];
   }
@@ -204,7 +204,7 @@
   [(VKGestureCameraBehavior *)self beginRotate:v10, v11];
 }
 
-- (void)stopPanningAtPoint:(CGPoint)a3
+- (void)stopPanningAtPoint:(CGPoint)point
 {
   if (!self->_pitching)
   {
@@ -215,20 +215,20 @@
   }
 }
 
-- (void)updatePanWithTranslation:(CGPoint)a3
+- (void)updatePanWithTranslation:(CGPoint)translation
 {
   if (!self->_pitching)
   {
-    y = a3.y;
-    x = a3.x;
+    y = translation.y;
+    x = translation.x;
     WeakRetained = objc_loadWeakRetained(&self->_cameraController);
-    v7 = [WeakRetained canvas];
-    [v7 size];
+    canvas = [WeakRetained canvas];
+    [canvas size];
     v9 = v8;
 
     v10 = objc_loadWeakRetained(&self->_cameraController);
-    v11 = [v10 canvas];
-    [v11 size];
+    canvas2 = [v10 canvas];
+    [canvas2 size];
     v13 = v12;
 
     v14 = self->_panStartScreenPoint.x + x / v9;
@@ -237,8 +237,8 @@
     if (self->_notifyCameraStateChanges)
     {
       v16 = objc_loadWeakRetained(&self->_cameraController);
-      v17 = [v16 cameraDelegate];
-      [v17 mapLayerDidChangeVisibleRegion];
+      cameraDelegate = [v16 cameraDelegate];
+      [cameraDelegate mapLayerDidChangeVisibleRegion];
 
       v18 = objc_loadWeakRetained(&self->_cameraController);
       v19 = *[v18 runLoopController];
@@ -254,11 +254,11 @@
   }
 }
 
-- (void)startPanningAtPoint:(CGPoint)a3 panAtStartPoint:(BOOL)a4
+- (void)startPanningAtPoint:(CGPoint)point panAtStartPoint:(BOOL)startPoint
 {
   if (!self->_pitching)
   {
-    self->_panStartFocusPoint = a3;
+    self->_panStartFocusPoint = point;
     WeakRetained = objc_loadWeakRetained(&self->_cameraController);
     [WeakRetained scaledScreenPointForPoint:{self->_panStartFocusPoint.x, self->_panStartFocusPoint.y}];
     v7 = v6;
@@ -274,17 +274,17 @@
   }
 }
 
-- (void)stopPinchingWithFocusPoint:(CGPoint)a3
+- (void)stopPinchingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   self->_pinching = 0;
   WeakRetained = objc_loadWeakRetained(&self->_cameraController);
-  v7 = [WeakRetained staysCenteredDuringPinch];
+  staysCenteredDuringPinch = [WeakRetained staysCenteredDuringPinch];
 
   v8 = objc_loadWeakRetained(&self->_cameraController);
   v9 = v8;
-  if (v7)
+  if (staysCenteredDuringPinch)
   {
     [v8 centerScreenPoint];
   }
@@ -300,17 +300,17 @@
   [(VKGestureCameraBehavior *)self endZoom:v12, v13];
 }
 
-- (void)updatePinchWithFocusPoint:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5
+- (void)updatePinchWithFocusPoint:(CGPoint)point oldFactor:(double)factor newFactor:(double)newFactor
 {
-  x = a3.x;
-  if (a5 >= 0.01)
+  x = point.x;
+  if (newFactor >= 0.01)
   {
-    y = a3.y;
+    y = point.y;
     WeakRetained = objc_loadWeakRetained(&self->_cameraController);
-    v10 = [WeakRetained staysCenteredDuringPinch];
+    staysCenteredDuringPinch = [WeakRetained staysCenteredDuringPinch];
 
     v11 = objc_loadWeakRetained(&self->_cameraController);
-    if (v10)
+    if (staysCenteredDuringPinch)
     {
       [v11 centerScreenPoint];
     }
@@ -323,12 +323,12 @@
     v14 = v12;
     v15 = v13;
 
-    [(VKGestureCameraBehavior *)self updateZoom:v14 oldFactor:v15 newFactor:a4, a5];
+    [(VKGestureCameraBehavior *)self updateZoom:v14 oldFactor:v15 newFactor:factor, newFactor];
     if (self->_notifyCameraStateChanges)
     {
       v20 = objc_loadWeakRetained(&self->_cameraController);
-      v16 = [v20 cameraDelegate];
-      [v16 mapLayerDidChangeVisibleRegion];
+      cameraDelegate = [v20 cameraDelegate];
+      [cameraDelegate mapLayerDidChangeVisibleRegion];
 
       v21 = objc_loadWeakRetained(&self->_cameraController);
       v17 = *[v21 runLoopController];
@@ -341,18 +341,18 @@
   }
 }
 
-- (void)startPinchingWithFocusPoint:(CGPoint)a3
+- (void)startPinchingWithFocusPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   self->_pinching = 1;
-  self->_pinchStartFocusPoint = a3;
+  self->_pinchStartFocusPoint = point;
   WeakRetained = objc_loadWeakRetained(&self->_cameraController);
-  v7 = [WeakRetained staysCenteredDuringPinch];
+  staysCenteredDuringPinch = [WeakRetained staysCenteredDuringPinch];
 
   v8 = objc_loadWeakRetained(&self->_cameraController);
   v9 = v8;
-  if (v7)
+  if (staysCenteredDuringPinch)
   {
     [v8 centerScreenPoint];
   }
@@ -368,26 +368,26 @@
   [(VKGestureCameraBehavior *)self beginZoom:v12, v13];
 }
 
-- (void)tapZoom:(CGPoint)a3 levels:(double)a4 completionHandler:(id)a5
+- (void)tapZoom:(CGPoint)zoom levels:(double)levels completionHandler:(id)handler
 {
-  v5 = a5;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5[2]();
+    handlerCopy[2]();
   }
 }
 
-- (void)zoom:(double)a3 withFocusPoint:(CGPoint)a4 completionHandler:(id)a5
+- (void)zoom:(double)zoom withFocusPoint:(CGPoint)point completionHandler:(id)handler
 {
-  y = a4.y;
-  x = a4.x;
-  v17 = a5;
+  y = point.y;
+  x = point.x;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_cameraController);
-  v10 = [WeakRetained staysCenteredDuringPinch];
+  staysCenteredDuringPinch = [WeakRetained staysCenteredDuringPinch];
 
   v11 = objc_loadWeakRetained(&self->_cameraController);
   v12 = v11;
-  if (v10)
+  if (staysCenteredDuringPinch)
   {
     [v11 centerScreenPoint];
   }
@@ -400,7 +400,7 @@
   v15 = v13;
   v16 = v14;
 
-  [(VKGestureCameraBehavior *)self tapZoom:v17 levels:v15 completionHandler:v16, a3];
+  [(VKGestureCameraBehavior *)self tapZoom:handlerCopy levels:v15 completionHandler:v16, zoom];
 }
 
 - (void)resetGestureState
@@ -411,9 +411,9 @@
   self->_pinching = 0;
 }
 
-- (void)transferGestureState:(id)a3
+- (void)transferGestureState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if (GEOGetVectorKitVKDefaultLog_onceToken != -1)
   {
     dispatch_once(&GEOGetVectorKitVKDefaultLog_onceToken, &__block_literal_global_5_15525);
@@ -440,7 +440,7 @@
       _os_log_impl(&dword_1B2754000, v6, OS_LOG_TYPE_INFO, "Transferring pinching state to camera controller", v13, 2u);
     }
 
-    [v4 startPinchingWithFocusPoint:{self->_pinchStartFocusPoint.x, self->_pinchStartFocusPoint.y}];
+    [stateCopy startPinchingWithFocusPoint:{self->_pinchStartFocusPoint.x, self->_pinchStartFocusPoint.y}];
   }
 
   if (self->_panning)
@@ -457,7 +457,7 @@
       _os_log_impl(&dword_1B2754000, v7, OS_LOG_TYPE_INFO, "Transferring panning state to camera controller", v12, 2u);
     }
 
-    [v4 startPanningAtPoint:1 panAtStartPoint:{self->_panStartFocusPoint.x, self->_panStartFocusPoint.y}];
+    [stateCopy startPanningAtPoint:1 panAtStartPoint:{self->_panStartFocusPoint.x, self->_panStartFocusPoint.y}];
   }
 
   if (self->_rotating)
@@ -474,7 +474,7 @@
       _os_log_impl(&dword_1B2754000, v8, OS_LOG_TYPE_INFO, "Transferring rotating state to camera controller", v11, 2u);
     }
 
-    [v4 startRotatingWithFocusPoint:{self->_rotateStartFocusPoint.x, self->_rotateStartFocusPoint.y}];
+    [stateCopy startRotatingWithFocusPoint:{self->_rotateStartFocusPoint.x, self->_rotateStartFocusPoint.y}];
   }
 
   if (self->_pitching)
@@ -491,20 +491,20 @@
       _os_log_impl(&dword_1B2754000, v9, OS_LOG_TYPE_INFO, "Transferring pitching state to camera controller", v10, 2u);
     }
 
-    [v4 startPitchingWithFocusPoint:{self->_pitchStartFocusPoint.x, self->_pitchStartFocusPoint.y}];
+    [stateCopy startPitchingWithFocusPoint:{self->_pitchStartFocusPoint.x, self->_pitchStartFocusPoint.y}];
   }
 }
 
-- (VKGestureCameraBehavior)initWithCameraController:(id)a3
+- (VKGestureCameraBehavior)initWithCameraController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = VKGestureCameraBehavior;
   v5 = [(VKGestureCameraBehavior *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_cameraController, v4);
+    objc_storeWeak(&v5->_cameraController, controllerCopy);
     v6->_notifyCameraStateChanges = 1;
     v7 = v6;
   }

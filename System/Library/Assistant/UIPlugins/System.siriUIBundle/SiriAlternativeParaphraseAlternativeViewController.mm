@@ -1,27 +1,27 @@
 @interface SiriAlternativeParaphraseAlternativeViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (double)desiredHeightForHeaderView;
-- (double)desiredHeightForWidth:(double)a3;
+- (double)desiredHeightForWidth:(double)width;
 - (double)viewControllerExpectedWidth;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (void)configureReusableHeaderView:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (void)configureReusableHeaderView:(id)view;
 - (void)createViewArray;
 - (void)loadView;
-- (void)performAceCommands:(id)a3 userUtterance:(id)a4;
-- (void)setAceObject:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)performAceCommands:(id)commands userUtterance:(id)utterance;
+- (void)setAceObject:(id)object;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SiriAlternativeParaphraseAlternativeViewController
 
-- (void)setAceObject:(id)a3
+- (void)setAceObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v6.receiver = self;
   v6.super_class = SiriAlternativeParaphraseAlternativeViewController;
-  [(SiriAlternativeParaphraseAlternativeViewController *)&v6 setAceObject:v4];
+  [(SiriAlternativeParaphraseAlternativeViewController *)&v6 setAceObject:objectCopy];
   resultsPod = self->_resultsPod;
-  self->_resultsPod = v4;
+  self->_resultsPod = objectCopy;
 }
 
 - (void)createViewArray
@@ -34,8 +34,8 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(SAARParaphrasedAlternativeResultsPod *)self->_resultsPod alternativeResultViews];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  alternativeResultViews = [(SAARParaphrasedAlternativeResultsPod *)self->_resultsPod alternativeResultViews];
+  v6 = [alternativeResultViews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -47,7 +47,7 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(alternativeResultViews);
         }
 
         v10 = [[SiriAlternativeParaphraseAlternativeMultiResultsView alloc] initWithAlternativeResult:*(*(&v13 + 1) + 8 * v9)];
@@ -58,17 +58,17 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [alternativeResultViews countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(SiriAlternativeParaphraseAlternativeViewController *)self collectionView];
-  [v11 reloadData];
+  collectionView = [(SiriAlternativeParaphraseAlternativeViewController *)self collectionView];
+  [collectionView reloadData];
 
-  v12 = [(SiriAlternativeParaphraseAlternativeViewController *)self collectionViewLayout];
-  [v12 invalidateLayout];
+  collectionViewLayout = [(SiriAlternativeParaphraseAlternativeViewController *)self collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
 - (void)loadView
@@ -77,43 +77,43 @@
   v6.super_class = SiriAlternativeParaphraseAlternativeViewController;
   [(SiriAlternativeParaphraseAlternativeViewController *)&v6 loadView];
   [(SiriAlternativeParaphraseAlternativeViewController *)self setDefaultViewInsets:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
-  v3 = [(SiriAlternativeParaphraseAlternativeViewController *)self collectionView];
+  collectionView = [(SiriAlternativeParaphraseAlternativeViewController *)self collectionView];
   v4 = objc_opt_class();
   v5 = +[SiriUIContentCollectionViewCell reuseIdentifier];
-  [v3 registerClass:v4 forCellWithReuseIdentifier:v5];
+  [collectionView registerClass:v4 forCellWithReuseIdentifier:v5];
 
   [(SiriAlternativeParaphraseAlternativeViewController *)self createViewArray];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = SiriAlternativeParaphraseAlternativeViewController;
-  [(SiriAlternativeParaphraseAlternativeViewController *)&v3 viewWillAppear:a3];
+  [(SiriAlternativeParaphraseAlternativeViewController *)&v3 viewWillAppear:appear];
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
   if (([(SiriAlternativeParaphraseAlternativeViewController *)self isViewLoaded]& 1) == 0)
   {
     [(SiriAlternativeParaphraseAlternativeViewController *)self loadView];
   }
 
-  v4 = [(SiriAlternativeParaphraseAlternativeViewController *)self collectionViewLayout];
-  [v4 collectionViewContentSize];
+  collectionViewLayout = [(SiriAlternativeParaphraseAlternativeViewController *)self collectionViewLayout];
+  [collectionViewLayout collectionViewContentSize];
   v6 = v5;
 
   return v6;
 }
 
-- (void)configureReusableHeaderView:(id)a3
+- (void)configureReusableHeaderView:(id)view
 {
   resultsPod = self->_resultsPod;
-  v5 = a3;
-  v8 = [(SAARParaphrasedAlternativeResultsPod *)resultsPod title];
-  v6 = [(SiriAlternativeParaphraseAlternativeViewController *)self _privateDelegate];
-  v7 = [v6 localeForSiriViewController:self];
-  [v5 configureWithText:v8 locale:v7];
+  viewCopy = view;
+  title = [(SAARParaphrasedAlternativeResultsPod *)resultsPod title];
+  _privateDelegate = [(SiriAlternativeParaphraseAlternativeViewController *)self _privateDelegate];
+  v7 = [_privateDelegate localeForSiriViewController:self];
+  [viewCopy configureWithText:title locale:v7];
 }
 
 - (double)desiredHeightForHeaderView
@@ -124,38 +124,38 @@
   return result;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[SiriUIContentCollectionViewCell reuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
   [v9 setHasChevron:0];
   viewArray = self->_viewArray;
-  v11 = [v6 item];
+  item = [pathCopy item];
 
-  v12 = [(NSMutableArray *)viewArray objectAtIndex:v11];
+  v12 = [(NSMutableArray *)viewArray objectAtIndex:item];
   [v9 setCustomView:v12];
-  v13 = [(NSMutableArray *)self->_viewArray lastObject];
-  v14 = v12 != v13;
+  lastObject = [(NSMutableArray *)self->_viewArray lastObject];
+  v14 = v12 != lastObject;
 
   [v9 setKeylineType:v14];
 
   return v9;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [(SiriAlternativeParaphraseAlternativeViewController *)self delegate];
-  [v7 siriViewControllerExpectedWidth:self];
+  pathCopy = path;
+  delegate = [(SiriAlternativeParaphraseAlternativeViewController *)self delegate];
+  [delegate siriViewControllerExpectedWidth:self];
   v9 = v8;
 
   viewArray = self->_viewArray;
-  v11 = [v6 item];
+  item = [pathCopy item];
 
-  v12 = [(NSMutableArray *)viewArray objectAtIndex:v11];
+  v12 = [(NSMutableArray *)viewArray objectAtIndex:item];
   [v12 sizeThatFits:{v9, 1.79769313e308}];
   v14 = v13;
 
@@ -166,27 +166,27 @@
   return result;
 }
 
-- (void)performAceCommands:(id)a3 userUtterance:(id)a4
+- (void)performAceCommands:(id)commands userUtterance:(id)utterance
 {
-  v10 = a3;
-  if (a4)
+  commandsCopy = commands;
+  if (utterance)
   {
-    v6 = a4;
+    utteranceCopy = utterance;
     v7 = objc_alloc_init(SAUIListItem);
-    [v7 setSelectionText:v6];
+    [v7 setSelectionText:utteranceCopy];
 
-    v8 = [(SiriAlternativeParaphraseAlternativeViewController *)self delegate];
-    [v8 siriViewController:self addSelectionResponse:v7];
+    delegate = [(SiriAlternativeParaphraseAlternativeViewController *)self delegate];
+    [delegate siriViewController:self addSelectionResponse:v7];
   }
 
-  v9 = [(SiriAlternativeParaphraseAlternativeViewController *)self delegate];
-  [v9 siriViewController:self performAceCommands:v10];
+  delegate2 = [(SiriAlternativeParaphraseAlternativeViewController *)self delegate];
+  [delegate2 siriViewController:self performAceCommands:commandsCopy];
 }
 
 - (double)viewControllerExpectedWidth
 {
-  v3 = [(SiriAlternativeParaphraseAlternativeViewController *)self delegate];
-  [v3 siriViewControllerExpectedWidth:self];
+  delegate = [(SiriAlternativeParaphraseAlternativeViewController *)self delegate];
+  [delegate siriViewControllerExpectedWidth:self];
   v5 = v4;
 
   return v5;

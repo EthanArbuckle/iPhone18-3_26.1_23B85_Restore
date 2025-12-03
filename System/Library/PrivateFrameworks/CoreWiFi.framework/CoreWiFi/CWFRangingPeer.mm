@@ -1,25 +1,25 @@
 @interface CWFRangingPeer
-+ (id)rangingPeerWithMACAddress:(id)a3 PMK:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRangingPeer:(id)a3;
-- (CWFRangingPeer)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)rangingPeerWithMACAddress:(id)address PMK:(id)k;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRangingPeer:(id)peer;
+- (CWFRangingPeer)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFRangingPeer
 
-+ (id)rangingPeerWithMACAddress:(id)a3 PMK:(id)a4
++ (id)rangingPeerWithMACAddress:(id)address PMK:(id)k
 {
-  v5 = a4;
-  v6 = a3;
+  kCopy = k;
+  addressCopy = address;
   v7 = objc_alloc_init(CWFRangingPeer);
   [(CWFRangingPeer *)v7 setIdentifier:0];
-  [(CWFRangingPeer *)v7 setMACAddress:v6];
+  [(CWFRangingPeer *)v7 setMACAddress:addressCopy];
 
-  [(CWFRangingPeer *)v7 setPMK:v5];
+  [(CWFRangingPeer *)v7 setPMK:kCopy];
 
   return v7;
 }
@@ -51,20 +51,20 @@
   return v9;
 }
 
-- (BOOL)isEqualToRangingPeer:(id)a3
+- (BOOL)isEqualToRangingPeer:(id)peer
 {
-  v5 = a3;
+  peerCopy = peer;
   numberOfMeasurements = self->_numberOfMeasurements;
-  if (numberOfMeasurements == [v5 numberOfMeasurements])
+  if (numberOfMeasurements == [peerCopy numberOfMeasurements])
   {
     useCoreRotation = self->_useCoreRotation;
-    if (useCoreRotation == [v5 useCoreRotation])
+    if (useCoreRotation == [peerCopy useCoreRotation])
     {
       MACAddress = self->_MACAddress;
-      v9 = [v5 MACAddress];
-      if (MACAddress != v9)
+      mACAddress = [peerCopy MACAddress];
+      if (MACAddress != mACAddress)
       {
-        if (!self->_MACAddress || ([v5 MACAddress], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+        if (!self->_MACAddress || ([peerCopy MACAddress], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
         {
           v14 = 0;
           goto LABEL_31;
@@ -72,8 +72,8 @@
 
         v11 = v10;
         v12 = self->_MACAddress;
-        v13 = [v5 MACAddress];
-        if (![(NSString *)v12 isEqual:v13])
+        mACAddress2 = [peerCopy MACAddress];
+        if (![(NSString *)v12 isEqual:mACAddress2])
         {
           v14 = 0;
 LABEL_30:
@@ -81,15 +81,15 @@ LABEL_30:
           goto LABEL_31;
         }
 
-        v30 = v13;
+        v30 = mACAddress2;
         v31 = v11;
       }
 
       PMK = self->_PMK;
-      v16 = [v5 PMK];
+      v16 = [peerCopy PMK];
       if (PMK != v16)
       {
-        if (!self->_PMK || ([v5 PMK], (v17 = objc_claimAutoreleasedReturnValue()) == 0))
+        if (!self->_PMK || ([peerCopy PMK], (v17 = objc_claimAutoreleasedReturnValue()) == 0))
         {
 LABEL_27:
           v14 = 0;
@@ -98,13 +98,13 @@ LABEL_27:
 
         v3 = v17;
         v18 = self->_PMK;
-        v19 = [v5 PMK];
+        v19 = [peerCopy PMK];
         if (([(NSData *)v18 isEqual:v19]& 1) == 0)
         {
 
           v14 = 0;
 LABEL_25:
-          v27 = MACAddress == v9;
+          v27 = MACAddress == mACAddress;
           v11 = v31;
           goto LABEL_29;
         }
@@ -113,10 +113,10 @@ LABEL_25:
       }
 
       identifier = self->_identifier;
-      v21 = [v5 identifier];
-      v22 = v21;
-      v14 = identifier == v21;
-      if (identifier == v21 || !self->_identifier)
+      identifier = [peerCopy identifier];
+      v22 = identifier;
+      v14 = identifier == identifier;
+      if (identifier == identifier || !self->_identifier)
       {
 
         if (PMK == v16)
@@ -124,9 +124,9 @@ LABEL_25:
 LABEL_28:
           v11 = v31;
 
-          v27 = MACAddress == v9;
+          v27 = MACAddress == mACAddress;
 LABEL_29:
-          v13 = v30;
+          mACAddress2 = v30;
           if (!v27)
           {
             goto LABEL_30;
@@ -140,13 +140,13 @@ LABEL_31:
 
       else
       {
-        v23 = [v5 identifier];
-        if (v23)
+        identifier2 = [peerCopy identifier];
+        if (identifier2)
         {
-          v24 = v23;
+          v24 = identifier2;
           v25 = self->_identifier;
-          v26 = [v5 identifier];
-          v14 = [(NSData *)v25 isEqual:v26];
+          identifier3 = [peerCopy identifier];
+          v14 = [(NSData *)v25 isEqual:identifier3];
 
           if (PMK != v16)
           {
@@ -171,18 +171,18 @@ LABEL_32:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFRangingPeer *)self isEqualToRangingPeer:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFRangingPeer *)self isEqualToRangingPeer:v5];
   }
 
   return v6;
@@ -200,7 +200,7 @@ LABEL_32:
   return v6 ^ v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFRangingPeer allocWithZone:?]];
   [(CWFRangingPeer *)v4 setMACAddress:self->_MACAddress];
@@ -211,44 +211,44 @@ LABEL_32:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   MACAddress = self->_MACAddress;
-  v5 = a3;
-  [v5 encodeObject:MACAddress forKey:@"_MACAddress"];
-  [v5 encodeObject:self->_PMK forKey:@"_PMK"];
+  coderCopy = coder;
+  [coderCopy encodeObject:MACAddress forKey:@"_MACAddress"];
+  [coderCopy encodeObject:self->_PMK forKey:@"_PMK"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_numberOfMeasurements];
-  [v5 encodeObject:v6 forKey:@"_numberOfMeasurements"];
+  [coderCopy encodeObject:v6 forKey:@"_numberOfMeasurements"];
 
-  [v5 encodeObject:self->_identifier forKey:@"_identifier"];
+  [coderCopy encodeObject:self->_identifier forKey:@"_identifier"];
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_useCoreRotation];
-  [v5 encodeObject:v7 forKey:@"_useCoreRotation"];
+  [coderCopy encodeObject:v7 forKey:@"_useCoreRotation"];
 }
 
-- (CWFRangingPeer)initWithCoder:(id)a3
+- (CWFRangingPeer)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CWFRangingPeer;
   v5 = [(CWFRangingPeer *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_MACAddress"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_MACAddress"];
     MACAddress = v5->_MACAddress;
     v5->_MACAddress = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_PMK"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_PMK"];
     PMK = v5->_PMK;
     v5->_PMK = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_numberOfMeasurements"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_numberOfMeasurements"];
     v5->_numberOfMeasurements = [v10 unsignedIntegerValue];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_useCoreRotation"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_useCoreRotation"];
     v5->_useCoreRotation = [v13 BOOLValue];
   }
 

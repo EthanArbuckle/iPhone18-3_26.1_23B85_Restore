@@ -1,20 +1,20 @@
 @interface CPLUnionCKRecordBuilder
-- (CPLUnionCKRecordBuilder)initWithRecordBuilders:(id)a3;
-- (id)recordIDForResourcesOfRecordWithScopedIdentifier:(id)a3 cloudKitScope:(id *)a4 error:(id *)a5;
-- (void)requestRecordWithID:(id)a3 cloudKitScope:(id)a4 forKey:(id)a5 completionHandler:(id)a6;
-- (void)setCKAsset:(id)a3 forKey:(id)a4;
-- (void)setCKReferenceWithScopedIdentifier:(id)a3 forKey:(id)a4 referenceAction:(unint64_t)a5;
-- (void)setEncryptedObject:(id)a3 forKey:(id)a4 validateClass:(Class)a5;
-- (void)setLegacyEncryptedObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (CPLUnionCKRecordBuilder)initWithRecordBuilders:(id)builders;
+- (id)recordIDForResourcesOfRecordWithScopedIdentifier:(id)identifier cloudKitScope:(id *)scope error:(id *)error;
+- (void)requestRecordWithID:(id)d cloudKitScope:(id)scope forKey:(id)key completionHandler:(id)handler;
+- (void)setCKAsset:(id)asset forKey:(id)key;
+- (void)setCKReferenceWithScopedIdentifier:(id)identifier forKey:(id)key referenceAction:(unint64_t)action;
+- (void)setEncryptedObject:(id)object forKey:(id)key validateClass:(Class)class;
+- (void)setLegacyEncryptedObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation CPLUnionCKRecordBuilder
 
-- (CPLUnionCKRecordBuilder)initWithRecordBuilders:(id)a3
+- (CPLUnionCKRecordBuilder)initWithRecordBuilders:(id)builders
 {
-  v5 = a3;
-  if (![v5 count])
+  buildersCopy = builders;
+  if (![buildersCopy count])
   {
     sub_100198490(a2, self);
   }
@@ -24,7 +24,7 @@
   v6 = [(CPLUnionCKRecordBuilder *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [buildersCopy copy];
     builders = v6->_builders;
     v6->_builders = v7;
   }
@@ -32,10 +32,10 @@
   return v6;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -56,7 +56,7 @@
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12) setObject:v6 forKey:{v7, v13}];
+        [*(*(&v13 + 1) + 8 * v12) setObject:objectCopy forKey:{keyCopy, v13}];
         v12 = v12 + 1;
       }
 
@@ -68,10 +68,10 @@
   }
 }
 
-- (void)setEncryptedObject:(id)a3 forKey:(id)a4 validateClass:(Class)a5
+- (void)setEncryptedObject:(id)object forKey:(id)key validateClass:(Class)class
 {
-  v8 = a3;
-  v9 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -92,7 +92,7 @@
           objc_enumerationMutation(v10);
         }
 
-        [*(*(&v15 + 1) + 8 * v14) setEncryptedObject:v8 forKey:v9 validateClass:{a5, v15}];
+        [*(*(&v15 + 1) + 8 * v14) setEncryptedObject:objectCopy forKey:keyCopy validateClass:{class, v15}];
         v14 = v14 + 1;
       }
 
@@ -104,10 +104,10 @@
   }
 }
 
-- (void)setLegacyEncryptedObject:(id)a3 forKey:(id)a4
+- (void)setLegacyEncryptedObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -128,7 +128,7 @@
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12) setLegacyEncryptedObject:v6 forKey:{v7, v13}];
+        [*(*(&v13 + 1) + 8 * v12) setLegacyEncryptedObject:objectCopy forKey:{keyCopy, v13}];
         v12 = v12 + 1;
       }
 
@@ -140,18 +140,18 @@
   }
 }
 
-- (void)setCKAsset:(id)a3 forKey:(id)a4
+- (void)setCKAsset:(id)asset forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  keyCopy = key;
   if ([(NSArray *)self->_builders count]> 1)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = self->_builders;
-    v9 = [(NSArray *)v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    firstObject = self->_builders;
+    v9 = [(NSArray *)firstObject countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -163,18 +163,18 @@
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(firstObject);
           }
 
           v13 = *(*(&v15 + 1) + 8 * v12);
-          v14 = [v6 cplCopyCleanAsset];
-          [v13 setCKAsset:v14 forKey:v7];
+          cplCopyCleanAsset = [assetCopy cplCopyCleanAsset];
+          [v13 setCKAsset:cplCopyCleanAsset forKey:keyCopy];
 
           v12 = v12 + 1;
         }
 
         while (v10 != v12);
-        v10 = [(NSArray *)v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v10 = [(NSArray *)firstObject countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v10);
@@ -183,15 +183,15 @@
 
   else
   {
-    v8 = [(NSArray *)self->_builders firstObject];
-    [(NSArray *)v8 setCKAsset:v6 forKey:v7];
+    firstObject = [(NSArray *)self->_builders firstObject];
+    [(NSArray *)firstObject setCKAsset:assetCopy forKey:keyCopy];
   }
 }
 
-- (void)setCKReferenceWithScopedIdentifier:(id)a3 forKey:(id)a4 referenceAction:(unint64_t)a5
+- (void)setCKReferenceWithScopedIdentifier:(id)identifier forKey:(id)key referenceAction:(unint64_t)action
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  keyCopy = key;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -212,7 +212,7 @@
           objc_enumerationMutation(v10);
         }
 
-        [*(*(&v15 + 1) + 8 * v14) setCKReferenceWithScopedIdentifier:v8 forKey:v9 referenceAction:{a5, v15}];
+        [*(*(&v15 + 1) + 8 * v14) setCKReferenceWithScopedIdentifier:identifierCopy forKey:keyCopy referenceAction:{action, v15}];
         v14 = v14 + 1;
       }
 
@@ -224,12 +224,12 @@
   }
 }
 
-- (void)requestRecordWithID:(id)a3 cloudKitScope:(id)a4 forKey:(id)a5 completionHandler:(id)a6
+- (void)requestRecordWithID:(id)d cloudKitScope:(id)scope forKey:(id)key completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  scopeCopy = scope;
+  keyCopy = key;
+  handlerCopy = handler;
   v15 = +[NSAssertionHandler currentHandler];
   v16 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Implementations/CloudKit/CPLCKRecordBuilder.m"];
   v17 = NSStringFromSelector(a2);
@@ -238,12 +238,12 @@
   abort();
 }
 
-- (id)recordIDForResourcesOfRecordWithScopedIdentifier:(id)a3 cloudKitScope:(id *)a4 error:(id *)a5
+- (id)recordIDForResourcesOfRecordWithScopedIdentifier:(id)identifier cloudKitScope:(id *)scope error:(id *)error
 {
   builders = self->_builders;
-  v8 = a3;
-  v9 = [(NSArray *)builders firstObject];
-  v10 = [v9 recordIDForResourcesOfRecordWithScopedIdentifier:v8 cloudKitScope:a4 error:a5];
+  identifierCopy = identifier;
+  firstObject = [(NSArray *)builders firstObject];
+  v10 = [firstObject recordIDForResourcesOfRecordWithScopedIdentifier:identifierCopy cloudKitScope:scope error:error];
 
   return v10;
 }

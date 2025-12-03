@@ -1,9 +1,9 @@
 @interface SearchUIHomeScreenModel
 + (id)sharedInstance;
 - (SearchUIHomeScreenModel)init;
-- (id)appIconForApplicationBundleIdentifier:(id)a3;
-- (id)clipIconForIdentifier:(id)a3;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (id)appIconForApplicationBundleIdentifier:(id)identifier;
+- (id)clipIconForIdentifier:(id)identifier;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 - (void)resetIconModel;
 @end
 
@@ -37,11 +37,11 @@ uint64_t __41__SearchUIHomeScreenModel_sharedInstance__block_invoke()
   if (v2)
   {
     [(SearchUIHomeScreenModel *)v2 resetIconModel];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel_resetIconModel name:*MEMORY[0x1E69DDAD8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_resetIconModel name:*MEMORY[0x1E69DDAD8] object:0];
 
-    v5 = [MEMORY[0x1E698B0F0] subjectMonitorRegistry];
-    v6 = [v5 addMonitor:v3 subjectMask:1];
+    subjectMonitorRegistry = [MEMORY[0x1E698B0F0] subjectMonitorRegistry];
+    v6 = [subjectMonitorRegistry addMonitor:v3 subjectMask:1];
     subscription = v3->_subscription;
     v3->_subscription = v6;
   }
@@ -55,24 +55,24 @@ uint64_t __41__SearchUIHomeScreenModel_sharedInstance__block_invoke()
   [(SearchUIHomeScreenModel *)self setDataSource:v3];
 
   v4 = objc_alloc(MEMORY[0x1E69D40A8]);
-  v6 = [(SearchUIHomeScreenModel *)self dataSource];
-  v5 = [v4 initWithStore:0 applicationDataSource:v6];
+  dataSource = [(SearchUIHomeScreenModel *)self dataSource];
+  v5 = [v4 initWithStore:0 applicationDataSource:dataSource];
   [(SearchUIHomeScreenModel *)self setIconModel:v5];
 }
 
-- (id)appIconForApplicationBundleIdentifier:(id)a3
+- (id)appIconForApplicationBundleIdentifier:(id)identifier
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
-    v5 = [(SearchUIHomeScreenModel *)self dataSource];
-    v10[0] = v4;
+    identifierCopy = identifier;
+    dataSource = [(SearchUIHomeScreenModel *)self dataSource];
+    v10[0] = identifierCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-    [v5 beginTrackingApplicationsWithBundleIdentifiers:v6];
+    [dataSource beginTrackingApplicationsWithBundleIdentifiers:v6];
 
-    v7 = [(SearchUIHomeScreenModel *)self iconModel];
-    v8 = [v7 applicationIconForBundleIdentifier:v4];
+    iconModel = [(SearchUIHomeScreenModel *)self iconModel];
+    v8 = [iconModel applicationIconForBundleIdentifier:identifierCopy];
   }
 
   else
@@ -83,26 +83,26 @@ uint64_t __41__SearchUIHomeScreenModel_sharedInstance__block_invoke()
   return v8;
 }
 
-- (id)clipIconForIdentifier:(id)a3
+- (id)clipIconForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = v4;
+    v5 = identifierCopy;
     v6 = *MEMORY[0x1E69DE790];
-    if ([v4 hasPrefix:*MEMORY[0x1E69DE790]])
+    if ([identifierCopy hasPrefix:*MEMORY[0x1E69DE790]])
     {
       v7 = [v5 substringFromIndex:{objc_msgSend(v6, "length")}];
 
       v5 = v7;
     }
 
-    v8 = [(SearchUIHomeScreenModel *)self iconModel];
+    iconModel = [(SearchUIHomeScreenModel *)self iconModel];
     v9 = [MEMORY[0x1E69DD2B8] webClipWithIdentifier:v5];
-    v10 = [v8 addBookmarkIconForWebClip:v9];
+    v10 = [iconModel addBookmarkIconForWebClip:v9];
 
-    v11 = [(SearchUIHomeScreenModel *)self iconModel];
-    v12 = [v11 bookmarkIconForWebClipIdentifier:v5];
+    iconModel2 = [(SearchUIHomeScreenModel *)self iconModel];
+    v12 = [iconModel2 bookmarkIconForWebClipIdentifier:v5];
   }
 
   else
@@ -113,15 +113,15 @@ uint64_t __41__SearchUIHomeScreenModel_sharedInstance__block_invoke()
   return v12;
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  changedCopy = changed;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [changedCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -133,7 +133,7 @@ uint64_t __41__SearchUIHomeScreenModel_sharedInstance__block_invoke()
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(changedCopy);
         }
 
         v10 = *(*(&v16 + 1) + 8 * v9);
@@ -141,14 +141,14 @@ uint64_t __41__SearchUIHomeScreenModel_sharedInstance__block_invoke()
         if ((objc_opt_isKindOfClass() & 1) != 0 && [v10 isHidden])
         {
           v11 = v10;
-          v12 = [v11 bundleIdentifier];
+          bundleIdentifier = [v11 bundleIdentifier];
           v14[0] = MEMORY[0x1E69E9820];
           v14[1] = 3221225472;
           v14[2] = __72__SearchUIHomeScreenModel_appProtectionSubjectsChanged_forSubscription___block_invoke;
           v14[3] = &unk_1E85B2540;
           v14[4] = self;
-          v15 = v12;
-          v13 = v12;
+          v15 = bundleIdentifier;
+          v13 = bundleIdentifier;
           [SearchUIUtilities dispatchMainIfNecessary:v14];
         }
 
@@ -156,7 +156,7 @@ uint64_t __41__SearchUIHomeScreenModel_sharedInstance__block_invoke()
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [changedCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);

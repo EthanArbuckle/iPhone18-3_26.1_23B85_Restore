@@ -1,18 +1,18 @@
 @interface HKFeatureAvailabilityCapabilityIsSupportedOnAnyPairedBluetoothDeviceRequirement
-- (BOOL)capabilityIsSupportedOnPairedBluetoothDevice:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4;
+- (BOOL)capabilityIsSupportedOnPairedBluetoothDevice:(id)device;
+- (BOOL)isEqual:(id)equal;
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error;
 - (unint64_t)hash;
-- (void)registerObserver:(id)a3 forDataSource:(id)a4;
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4;
+- (void)registerObserver:(id)observer forDataSource:(id)source;
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source;
 @end
 
 @implementation HKFeatureAvailabilityCapabilityIsSupportedOnAnyPairedBluetoothDeviceRequirement
 
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error
 {
-  v6 = [a3 bluetoothDeviceDataSource];
-  v7 = [v6 pairedDevicesWithError:a4];
+  bluetoothDeviceDataSource = [source bluetoothDeviceDataSource];
+  v7 = [bluetoothDeviceDataSource pairedDevicesWithError:error];
 
   if (v7)
   {
@@ -32,19 +32,19 @@
   return v8;
 }
 
-- (void)registerObserver:(id)a3 forDataSource:(id)a4
+- (void)registerObserver:(id)observer forDataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
-  objc_initWeak(&location, v7);
-  v8 = [v7 bluetoothDeviceDataSource];
+  observerCopy = observer;
+  sourceCopy = source;
+  objc_initWeak(&location, sourceCopy);
+  bluetoothDeviceDataSource = [sourceCopy bluetoothDeviceDataSource];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __114__HKFeatureAvailabilityCapabilityIsSupportedOnAnyPairedBluetoothDeviceRequirement_registerObserver_forDataSource___block_invoke;
   v9[3] = &unk_1E7379DC8;
   objc_copyWeak(&v10, &location);
   v9[4] = self;
-  [v8 registerObserverForDevicePairingChanges:v6 updateHandler:v9];
+  [bluetoothDeviceDataSource registerObserverForDevicePairingChanges:observerCopy updateHandler:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -78,16 +78,16 @@ void __114__HKFeatureAvailabilityCapabilityIsSupportedOnAnyPairedBluetoothDevice
   }
 }
 
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source
 {
-  v5 = a3;
-  v6 = [a4 bluetoothDeviceDataSource];
-  [v6 unregisterObserverForDevicePairingChanges:v5];
+  observerCopy = observer;
+  bluetoothDeviceDataSource = [source bluetoothDeviceDataSource];
+  [bluetoothDeviceDataSource unregisterObserverForDevicePairingChanges:observerCopy];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -103,7 +103,7 @@ void __114__HKFeatureAvailabilityCapabilityIsSupportedOnAnyPairedBluetoothDevice
   return v4;
 }
 
-- (BOOL)capabilityIsSupportedOnPairedBluetoothDevice:(id)a3
+- (BOOL)capabilityIsSupportedOnPairedBluetoothDevice:(id)device
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

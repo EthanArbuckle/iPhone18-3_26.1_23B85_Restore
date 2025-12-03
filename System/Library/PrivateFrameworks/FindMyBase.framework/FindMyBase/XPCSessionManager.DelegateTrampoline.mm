@@ -1,20 +1,20 @@
 @interface XPCSessionManager.DelegateTrampoline
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtCC10FindMyBase17XPCSessionManagerP33_A03603F91824D587CF1B3EB0B5E03C5F18DelegateTrampoline)init;
 @end
 
 @implementation XPCSessionManager.DelegateTrampoline
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v7 = *(&self->super.isa + OBJC_IVAR____TtCC10FindMyBase17XPCSessionManagerP33_A03603F91824D587CF1B3EB0B5E03C5F18DelegateTrampoline_sessionManager);
   swift_unownedRetainStrong();
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  LOBYTE(a3) = sub_1DF5A6910(v8, v9);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  LOBYTE(listener) = sub_1DF5A6910(listenerCopy, connectionCopy);
 
-  return a3 & 1;
+  return listener & 1;
 }
 
 - (_TtCC10FindMyBase17XPCSessionManagerP33_A03603F91824D587CF1B3EB0B5E03C5F18DelegateTrampoline)init

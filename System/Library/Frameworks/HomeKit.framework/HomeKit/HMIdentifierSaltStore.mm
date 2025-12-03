@@ -2,8 +2,8 @@
 + (HMIdentifierSaltStore)sharedIdentifierSaltStore;
 - (NSData)assistantIdentifierSalt;
 - (NSData)identifierSalt;
-- (void)setAssistantIdentifierSalt:(id)a3;
-- (void)setIdentifierSalt:(id)a3;
+- (void)setAssistantIdentifierSalt:(id)salt;
+- (void)setIdentifierSalt:(id)salt;
 @end
 
 @implementation HMIdentifierSaltStore
@@ -29,12 +29,12 @@
   return v3;
 }
 
-- (void)setAssistantIdentifierSalt:(id)a3
+- (void)setAssistantIdentifierSalt:(id)salt
 {
-  v4 = a3;
+  saltCopy = salt;
   os_unfair_lock_lock_with_options();
   assistantIdentifierSalt = self->_assistantIdentifierSalt;
-  self->_assistantIdentifierSalt = v4;
+  self->_assistantIdentifierSalt = saltCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -48,22 +48,22 @@
   return v3;
 }
 
-- (void)setIdentifierSalt:(id)a3
+- (void)setIdentifierSalt:(id)salt
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  saltCopy = salt;
   os_unfair_lock_lock_with_options();
-  if ([(NSData *)self->_identifierSalt isEqualToData:v5])
+  if ([(NSData *)self->_identifierSalt isEqualToData:saltCopy])
   {
     os_unfair_lock_unlock(&self->_lock);
   }
 
   else
   {
-    objc_storeStrong(&self->_identifierSalt, a3);
+    objc_storeStrong(&self->_identifierSalt, salt);
     os_unfair_lock_unlock(&self->_lock);
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -71,7 +71,7 @@
       v11 = 138543618;
       v12 = v9;
       v13 = 2112;
-      v14 = v5;
+      v14 = saltCopy;
       _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@Updated identifier salt to %@", &v11, 0x16u);
     }
 

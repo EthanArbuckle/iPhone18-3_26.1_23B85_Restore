@@ -1,6 +1,6 @@
 @interface CalExchangeCalendarItemExternalRepresentation
-+ (id)dictionaryWithExternalRepresentationData:(id)a3;
-+ (id)externalRepresentationDataWithDictionary:(id)a3;
++ (id)dictionaryWithExternalRepresentationData:(id)data;
++ (id)externalRepresentationDataWithDictionary:(id)dictionary;
 + (id)logHandle;
 @end
 
@@ -27,10 +27,10 @@ uint64_t __58__CalExchangeCalendarItemExternalRepresentation_logHandle__block_in
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (id)externalRepresentationDataWithDictionary:(id)a3
++ (id)externalRepresentationDataWithDictionary:(id)dictionary
 {
   v15 = 0;
-  v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:a3 options:0 error:&v15];
+  v4 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:0 error:&v15];
   v5 = v15;
   if (v4)
   {
@@ -39,35 +39,35 @@ uint64_t __58__CalExchangeCalendarItemExternalRepresentation_logHandle__block_in
 
   else
   {
-    v7 = [a1 logHandle];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    logHandle = [self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
-      [(CalExchangeCalendarItemExternalRepresentation *)v5 externalRepresentationDataWithDictionary:v7, v8, v9, v10, v11, v12, v13];
+      [(CalExchangeCalendarItemExternalRepresentation *)v5 externalRepresentationDataWithDictionary:logHandle, v8, v9, v10, v11, v12, v13];
     }
   }
 
   return v4;
 }
 
-+ (id)dictionaryWithExternalRepresentationData:(id)a3
++ (id)dictionaryWithExternalRepresentationData:(id)data
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  dataCopy = data;
+  if (!dataCopy)
   {
-    v5 = 0;
+    logHandle = 0;
     goto LABEL_12;
   }
 
   v17 = 0;
-  v5 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v4 options:0 error:&v17];
+  logHandle = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:0 error:&v17];
   v6 = v17;
-  if (!v5)
+  if (!logHandle)
   {
-    v5 = [a1 logHandle];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    logHandle = [self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
-      [(CalExchangeCalendarItemExternalRepresentation *)v6 dictionaryWithExternalRepresentationData:v5, v9, v10, v11, v12, v13, v14];
+      [(CalExchangeCalendarItemExternalRepresentation *)v6 dictionaryWithExternalRepresentationData:logHandle, v9, v10, v11, v12, v13, v14];
     }
 
     goto LABEL_10;
@@ -76,21 +76,21 @@ uint64_t __58__CalExchangeCalendarItemExternalRepresentation_logHandle__block_in
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v7 = [a1 logHandle];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    logHandle2 = [self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
     {
       v8 = objc_opt_class();
-      [(CalExchangeCalendarItemExternalRepresentation *)v8 dictionaryWithExternalRepresentationData:buf, v7];
+      [(CalExchangeCalendarItemExternalRepresentation *)v8 dictionaryWithExternalRepresentationData:buf, logHandle2];
     }
 
 LABEL_10:
-    v5 = 0;
+    logHandle = 0;
   }
 
 LABEL_12:
   v15 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return logHandle;
 }
 
 + (void)externalRepresentationDataWithDictionary:(uint64_t)a3 .cold.1(uint64_t a1, NSObject *a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, uint64_t a7, uint64_t a8)

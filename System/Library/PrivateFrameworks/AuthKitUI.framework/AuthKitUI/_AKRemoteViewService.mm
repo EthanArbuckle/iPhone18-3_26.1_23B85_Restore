@@ -1,67 +1,67 @@
 @interface _AKRemoteViewService
-- (_AKRemoteViewService)initWithConnection:(id)a3 rootViewController:(id)a4;
-- (void)_onmainqueue_presentAuthorizationWithContext:(id)a3 usingHost:(id)a4 completionHandler:(id)a5;
-- (void)_onmainqueue_presentPrivateEmailWithContext:(id)a3 usingHost:(id)a4 completionHandler:(id)a5;
-- (void)_onmainqueue_presentShieldWithContext:(id)a3 completionHandler:(id)a4;
-- (void)_onxpcqueue_continueAuthenticationWithSurrogateID:(id)a3 completionHandler:(id)a4;
-- (void)continueAuthenticationWithSurrogateID:(id)a3 completionHandler:(id)a4;
-- (void)presentAuthorizationWithContext:(id)a3 usingHost:(id)a4 completionHandler:(id)a5;
-- (void)presentPrivateEmailWithContext:(id)a3 usingHost:(id)a4 completionHandler:(id)a5;
-- (void)presentShieldWithContext:(id)a3 completionHandler:(id)a4;
+- (_AKRemoteViewService)initWithConnection:(id)connection rootViewController:(id)controller;
+- (void)_onmainqueue_presentAuthorizationWithContext:(id)context usingHost:(id)host completionHandler:(id)handler;
+- (void)_onmainqueue_presentPrivateEmailWithContext:(id)context usingHost:(id)host completionHandler:(id)handler;
+- (void)_onmainqueue_presentShieldWithContext:(id)context completionHandler:(id)handler;
+- (void)_onxpcqueue_continueAuthenticationWithSurrogateID:(id)d completionHandler:(id)handler;
+- (void)continueAuthenticationWithSurrogateID:(id)d completionHandler:(id)handler;
+- (void)presentAuthorizationWithContext:(id)context usingHost:(id)host completionHandler:(id)handler;
+- (void)presentPrivateEmailWithContext:(id)context usingHost:(id)host completionHandler:(id)handler;
+- (void)presentShieldWithContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation _AKRemoteViewService
 
-- (_AKRemoteViewService)initWithConnection:(id)a3 rootViewController:(id)a4
+- (_AKRemoteViewService)initWithConnection:(id)connection rootViewController:(id)controller
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, connection);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  v4 = v11;
-  v11 = 0;
+  objc_storeStrong(&v9, controller);
+  v4 = selfCopy;
+  selfCopy = 0;
   v8.receiver = v4;
   v8.super_class = _AKRemoteViewService;
-  v11 = [(_AKRemoteViewService *)&v8 init];
-  objc_storeStrong(&v11, v11);
-  if (v11)
+  selfCopy = [(_AKRemoteViewService *)&v8 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v11->_connection, location[0]);
-    objc_storeStrong(&v11->_rootViewController, v9);
+    objc_storeStrong(&selfCopy->_connection, location[0]);
+    objc_storeStrong(&selfCopy->_rootViewController, v9);
   }
 
-  v6 = MEMORY[0x277D82BE0](v11);
+  v6 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
-- (void)continueAuthenticationWithSurrogateID:(id)a3 completionHandler:(id)a4
+- (void)continueAuthenticationWithSurrogateID:(id)d completionHandler:(id)handler
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(_AKRemoteViewService *)v7 _onxpcqueue_continueAuthenticationWithSurrogateID:location[0] completionHandler:v5];
+  objc_storeStrong(&v5, handler);
+  [(_AKRemoteViewService *)selfCopy _onxpcqueue_continueAuthenticationWithSurrogateID:location[0] completionHandler:v5];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)presentAuthorizationWithContext:(id)a3 usingHost:(id)a4 completionHandler:(id)a5
+- (void)presentAuthorizationWithContext:(id)context usingHost:(id)host completionHandler:(id)handler
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, host);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
+  objc_storeStrong(&v19, handler);
   v8 = MEMORY[0x277D85CD0];
   v5 = MEMORY[0x277D85CD0];
   queue = v8;
@@ -70,7 +70,7 @@
   v12 = 0;
   v13 = __84___AKRemoteViewService_presentAuthorizationWithContext_usingHost_completionHandler___block_invoke;
   v14 = &unk_2784A6E98;
-  v15 = MEMORY[0x277D82BE0](v22);
+  v15 = MEMORY[0x277D82BE0](selfCopy);
   v16 = MEMORY[0x277D82BE0](location[0]);
   v17 = MEMORY[0x277D82BE0](v20);
   v18 = MEMORY[0x277D82BE0](v19);
@@ -85,16 +85,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)presentPrivateEmailWithContext:(id)a3 usingHost:(id)a4 completionHandler:(id)a5
+- (void)presentPrivateEmailWithContext:(id)context usingHost:(id)host completionHandler:(id)handler
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, host);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
+  objc_storeStrong(&v19, handler);
   v8 = MEMORY[0x277D85CD0];
   v5 = MEMORY[0x277D85CD0];
   queue = v8;
@@ -103,7 +103,7 @@
   v12 = 0;
   v13 = __83___AKRemoteViewService_presentPrivateEmailWithContext_usingHost_completionHandler___block_invoke;
   v14 = &unk_2784A6E98;
-  v15 = MEMORY[0x277D82BE0](v22);
+  v15 = MEMORY[0x277D82BE0](selfCopy);
   v16 = MEMORY[0x277D82BE0](location[0]);
   v17 = MEMORY[0x277D82BE0](v20);
   v18 = MEMORY[0x277D82BE0](v19);
@@ -118,14 +118,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)presentShieldWithContext:(id)a3 completionHandler:(id)a4
+- (void)presentShieldWithContext:(id)context completionHandler:(id)handler
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, handler);
   v6 = MEMORY[0x277D85CD0];
   v4 = MEMORY[0x277D85CD0];
   queue = v6;
@@ -134,7 +134,7 @@
   v10 = 0;
   v11 = __67___AKRemoteViewService_presentShieldWithContext_completionHandler___block_invoke;
   v12 = &unk_2784A6818;
-  v13 = MEMORY[0x277D82BE0](v18);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   v14 = MEMORY[0x277D82BE0](location[0]);
   v15 = MEMORY[0x277D82BE0](v16);
   dispatch_async(queue, &v8);
@@ -146,15 +146,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_onxpcqueue_continueAuthenticationWithSurrogateID:(id)a3 completionHandler:(id)a4
+- (void)_onxpcqueue_continueAuthenticationWithSurrogateID:(id)d completionHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, handler);
   v20 = _AKLogSystem();
   v19 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -165,12 +165,12 @@
 
   objc_storeStrong(&v20, 0);
   v5 = [AKAppleIDAuthenticationUISurrogateContext alloc];
-  v6 = [location[0] UUIDString];
+  uUIDString = [location[0] UUIDString];
   v18 = [(AKAppleIDAuthenticationUISurrogateContext *)v5 initWithSurrogateID:?];
-  *&v4 = MEMORY[0x277D82BD8](v6).n128_u64[0];
-  v7 = [(_AKRemoteViewService *)v23 rootViewController];
+  *&v4 = MEMORY[0x277D82BD8](uUIDString).n128_u64[0];
+  rootViewController = [(_AKRemoteViewService *)selfCopy rootViewController];
   [(AKAppleIDAuthenticationInAppContext *)v18 setPresentingViewController:?];
-  MEMORY[0x277D82BD8](v7);
+  MEMORY[0x277D82BD8](rootViewController);
   v17 = objc_alloc_init(MEMORY[0x277CF0178]);
   v9 = v17;
   v8 = v18;
@@ -189,17 +189,17 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_onmainqueue_presentAuthorizationWithContext:(id)a3 usingHost:(id)a4 completionHandler:(id)a5
+- (void)_onmainqueue_presentAuthorizationWithContext:(id)context usingHost:(id)host completionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, host);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
+  objc_storeStrong(&v17, handler);
   v16 = _AKLogSystem();
   v15 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -209,16 +209,16 @@
   }
 
   objc_storeStrong(&v16, 0);
-  v11 = [(_AKRemoteViewService *)v20 newAuthorizationViewController];
-  *&v5 = MEMORY[0x277D82BD8](v11).n128_u64[0];
-  if (v11)
+  newAuthorizationViewController = [(_AKRemoteViewService *)selfCopy newAuthorizationViewController];
+  *&v5 = MEMORY[0x277D82BD8](newAuthorizationViewController).n128_u64[0];
+  if (newAuthorizationViewController)
   {
-    v9 = [(_AKRemoteViewService *)v20 newAuthorizationViewController];
-    v14 = v9[2](v9, location[0], v18, v17);
-    *&v6 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-    v10 = [(_AKRemoteViewService *)v20 rootViewController];
-    [(UIViewController *)v10 presentViewController:v14 animated:0 completion:?];
-    MEMORY[0x277D82BD8](v10);
+    newAuthorizationViewController2 = [(_AKRemoteViewService *)selfCopy newAuthorizationViewController];
+    v14 = newAuthorizationViewController2[2](newAuthorizationViewController2, location[0], v18, v17);
+    *&v6 = MEMORY[0x277D82BD8](newAuthorizationViewController2).n128_u64[0];
+    rootViewController = [(_AKRemoteViewService *)selfCopy rootViewController];
+    [(UIViewController *)rootViewController presentViewController:v14 animated:0 completion:?];
+    MEMORY[0x277D82BD8](rootViewController);
     objc_storeStrong(&v14, 0);
   }
 
@@ -236,17 +236,17 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_onmainqueue_presentPrivateEmailWithContext:(id)a3 usingHost:(id)a4 completionHandler:(id)a5
+- (void)_onmainqueue_presentPrivateEmailWithContext:(id)context usingHost:(id)host completionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, host);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
+  objc_storeStrong(&v17, handler);
   v16 = _AKLogSystem();
   v15 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -256,16 +256,16 @@
   }
 
   objc_storeStrong(&v16, 0);
-  v11 = [(_AKRemoteViewService *)v20 newPrivateEmailViewController];
-  *&v5 = MEMORY[0x277D82BD8](v11).n128_u64[0];
-  if (v11)
+  newPrivateEmailViewController = [(_AKRemoteViewService *)selfCopy newPrivateEmailViewController];
+  *&v5 = MEMORY[0x277D82BD8](newPrivateEmailViewController).n128_u64[0];
+  if (newPrivateEmailViewController)
   {
-    v9 = [(_AKRemoteViewService *)v20 newPrivateEmailViewController];
-    v14 = v9[2](v9, location[0], v18, v17);
-    *&v6 = MEMORY[0x277D82BD8](v9).n128_u64[0];
-    v10 = [(_AKRemoteViewService *)v20 rootViewController];
-    [(UIViewController *)v10 presentViewController:v14 animated:0 completion:?];
-    MEMORY[0x277D82BD8](v10);
+    newPrivateEmailViewController2 = [(_AKRemoteViewService *)selfCopy newPrivateEmailViewController];
+    v14 = newPrivateEmailViewController2[2](newPrivateEmailViewController2, location[0], v18, v17);
+    *&v6 = MEMORY[0x277D82BD8](newPrivateEmailViewController2).n128_u64[0];
+    rootViewController = [(_AKRemoteViewService *)selfCopy rootViewController];
+    [(UIViewController *)rootViewController presentViewController:v14 animated:0 completion:?];
+    MEMORY[0x277D82BD8](rootViewController);
     objc_storeStrong(&v14, 0);
   }
 
@@ -283,15 +283,15 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_onmainqueue_presentShieldWithContext:(id)a3 completionHandler:(id)a4
+- (void)_onmainqueue_presentShieldWithContext:(id)context completionHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
+  objc_storeStrong(&v15, handler);
   v14 = _AKLogSystem();
   v13 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -301,16 +301,16 @@
   }
 
   objc_storeStrong(&v14, 0);
-  v10 = [(_AKRemoteViewService *)v17 newShieldViewController];
-  *&v4 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-  if (v10)
+  newShieldViewController = [(_AKRemoteViewService *)selfCopy newShieldViewController];
+  *&v4 = MEMORY[0x277D82BD8](newShieldViewController).n128_u64[0];
+  if (newShieldViewController)
   {
-    v8 = [(_AKRemoteViewService *)v17 newShieldViewController];
-    v12 = v8[2](v8, location[0], v15);
-    *&v5 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-    v9 = [(_AKRemoteViewService *)v17 rootViewController];
-    [(UIViewController *)v9 presentViewController:v12 animated:1 completion:?];
-    MEMORY[0x277D82BD8](v9);
+    newShieldViewController2 = [(_AKRemoteViewService *)selfCopy newShieldViewController];
+    v12 = newShieldViewController2[2](newShieldViewController2, location[0], v15);
+    *&v5 = MEMORY[0x277D82BD8](newShieldViewController2).n128_u64[0];
+    rootViewController = [(_AKRemoteViewService *)selfCopy rootViewController];
+    [(UIViewController *)rootViewController presentViewController:v12 animated:1 completion:?];
+    MEMORY[0x277D82BD8](rootViewController);
     objc_storeStrong(&v12, 0);
   }
 

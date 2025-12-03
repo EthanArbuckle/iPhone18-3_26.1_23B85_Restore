@@ -1,18 +1,18 @@
 @interface CKElasticFunction
-+ (id)functionWithTension:(double)a3 friction:(double)a4 initialValue:(double)a5;
++ (id)functionWithTension:(double)tension friction:(double)friction initialValue:(double)value;
 - (CKElasticFunction)init;
 - (void)step;
 @end
 
 @implementation CKElasticFunction
 
-+ (id)functionWithTension:(double)a3 friction:(double)a4 initialValue:(double)a5
++ (id)functionWithTension:(double)tension friction:(double)friction initialValue:(double)value
 {
   v8 = objc_alloc_init(objc_opt_class());
-  [v8 setTension:a3];
-  [v8 setFriction:a4];
-  v8[2] = a5;
-  v8[3] = a5;
+  [v8 setTension:tension];
+  [v8 setFriction:friction];
+  v8[2] = value;
+  v8[3] = value;
 
   return v8;
 }

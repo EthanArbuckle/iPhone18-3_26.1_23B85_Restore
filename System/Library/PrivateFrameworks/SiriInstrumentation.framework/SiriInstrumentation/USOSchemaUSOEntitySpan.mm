@@ -1,30 +1,30 @@
 @interface USOSchemaUSOEntitySpan
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (USOSchemaUSOEntitySpan)initWithDictionary:(id)a3;
-- (USOSchemaUSOEntitySpan)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (USOSchemaUSOEntitySpan)initWithDictionary:(id)dictionary;
+- (USOSchemaUSOEntitySpan)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasEndIndex:(BOOL)a3;
-- (void)setHasOriginAppBundleIdType:(BOOL)a3;
-- (void)setHasSourceComponent:(BOOL)a3;
-- (void)setHasStartIndex:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasEndIndex:(BOOL)index;
+- (void)setHasOriginAppBundleIdType:(BOOL)type;
+- (void)setHasSourceComponent:(BOOL)component;
+- (void)setHasStartIndex:(BOOL)index;
+- (void)writeTo:(id)to;
 @end
 
 @implementation USOSchemaUSOEntitySpan
 
-- (USOSchemaUSOEntitySpan)initWithDictionary:(id)a3
+- (USOSchemaUSOEntitySpan)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = USOSchemaUSOEntitySpan;
   v5 = [(USOSchemaUSOEntitySpan *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"nodeIndex"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"nodeIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,14 +32,14 @@
     }
 
     v19 = v6;
-    v7 = [v4 objectForKeyedSubscript:@"sourceComponent"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"sourceComponent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSOEntitySpan setSourceComponent:](v5, "setSourceComponent:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"label"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"label"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,7 +47,7 @@
       [(USOSchemaUSOEntitySpan *)v5 setLabel:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"matchInfo"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"matchInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -55,28 +55,28 @@
       [(USOSchemaUSOEntitySpan *)v5 setMatchInfo:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"startIndex"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"startIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSOEntitySpan setStartIndex:](v5, "setStartIndex:", [v12 unsignedIntValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"endIndex"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"endIndex"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSOEntitySpan setEndIndex:](v5, "setEndIndex:", [v13 unsignedIntValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"originAppBundleIdType"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"originAppBundleIdType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[USOSchemaUSOEntitySpan setOriginAppBundleIdType:](v5, "setOriginAppBundleIdType:", [v14 intValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"payloadAttachmentInfo"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"payloadAttachmentInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,30 +90,30 @@
   return v5;
 }
 
-- (USOSchemaUSOEntitySpan)initWithJSON:(id)a3
+- (USOSchemaUSOEntitySpan)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(USOSchemaUSOEntitySpan *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(USOSchemaUSOEntitySpan *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(USOSchemaUSOEntitySpan *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -126,33 +126,33 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 8) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[USOSchemaUSOEntitySpan endIndex](self, "endIndex")}];
-    [v3 setObject:v4 forKeyedSubscript:@"endIndex"];
+    [dictionary setObject:v4 forKeyedSubscript:@"endIndex"];
   }
 
   if (self->_label)
   {
-    v5 = [(USOSchemaUSOEntitySpan *)self label];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"label"];
+    label = [(USOSchemaUSOEntitySpan *)self label];
+    v6 = [label copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"label"];
   }
 
   if (self->_matchInfo)
   {
-    v7 = [(USOSchemaUSOEntitySpan *)self matchInfo];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    matchInfo = [(USOSchemaUSOEntitySpan *)self matchInfo];
+    dictionaryRepresentation = [matchInfo dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"matchInfo"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"matchInfo"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"matchInfo"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"matchInfo"];
     }
   }
 
@@ -160,7 +160,7 @@
   if (has)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[USOSchemaUSOEntitySpan nodeIndex](self, "nodeIndex")}];
-    [v3 setObject:v11 forKeyedSubscript:@"nodeIndex"];
+    [dictionary setObject:v11 forKeyedSubscript:@"nodeIndex"];
 
     has = self->_has;
   }
@@ -178,22 +178,22 @@
       v13 = off_1E78E8B28[v12];
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"originAppBundleIdType"];
+    [dictionary setObject:v13 forKeyedSubscript:@"originAppBundleIdType"];
   }
 
   if (self->_payloadAttachmentInfo)
   {
-    v14 = [(USOSchemaUSOEntitySpan *)self payloadAttachmentInfo];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    payloadAttachmentInfo = [(USOSchemaUSOEntitySpan *)self payloadAttachmentInfo];
+    dictionaryRepresentation2 = [payloadAttachmentInfo dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"payloadAttachmentInfo"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"payloadAttachmentInfo"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"payloadAttachmentInfo"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"payloadAttachmentInfo"];
     }
   }
 
@@ -211,19 +211,19 @@
       v19 = off_1E78E8BF0[v18];
     }
 
-    [v3 setObject:v19 forKeyedSubscript:@"sourceComponent"];
+    [dictionary setObject:v19 forKeyedSubscript:@"sourceComponent"];
     v17 = self->_has;
   }
 
   if ((v17 & 4) != 0)
   {
     v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[USOSchemaUSOEntitySpan startIndex](self, "startIndex")}];
-    [v3 setObject:v20 forKeyedSubscript:@"startIndex"];
+    [dictionary setObject:v20 forKeyedSubscript:@"startIndex"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -290,16 +290,16 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ [(USOSchemaUSOPayloadAttachmentInfo *)self->_payloadAttachmentInfo hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
   has = self->_has;
-  v6 = v4[56];
+  v6 = equalCopy[56];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_35;
@@ -308,13 +308,13 @@ LABEL_9:
   if (*&has)
   {
     nodeIndex = self->_nodeIndex;
-    if (nodeIndex != [v4 nodeIndex])
+    if (nodeIndex != [equalCopy nodeIndex])
     {
       goto LABEL_35;
     }
 
     has = self->_has;
-    v6 = v4[56];
+    v6 = equalCopy[56];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -326,26 +326,26 @@ LABEL_9:
   if (v8)
   {
     sourceComponent = self->_sourceComponent;
-    if (sourceComponent != [v4 sourceComponent])
+    if (sourceComponent != [equalCopy sourceComponent])
     {
       goto LABEL_35;
     }
   }
 
-  v10 = [(USOSchemaUSOEntitySpan *)self label];
-  v11 = [v4 label];
-  if ((v10 != 0) == (v11 == 0))
+  label = [(USOSchemaUSOEntitySpan *)self label];
+  label2 = [equalCopy label];
+  if ((label != 0) == (label2 == 0))
   {
     goto LABEL_34;
   }
 
-  v12 = [(USOSchemaUSOEntitySpan *)self label];
-  if (v12)
+  label3 = [(USOSchemaUSOEntitySpan *)self label];
+  if (label3)
   {
-    v13 = v12;
-    v14 = [(USOSchemaUSOEntitySpan *)self label];
-    v15 = [v4 label];
-    v16 = [v14 isEqual:v15];
+    v13 = label3;
+    label4 = [(USOSchemaUSOEntitySpan *)self label];
+    label5 = [equalCopy label];
+    v16 = [label4 isEqual:label5];
 
     if (!v16)
     {
@@ -357,20 +357,20 @@ LABEL_9:
   {
   }
 
-  v10 = [(USOSchemaUSOEntitySpan *)self matchInfo];
-  v11 = [v4 matchInfo];
-  if ((v10 != 0) == (v11 == 0))
+  label = [(USOSchemaUSOEntitySpan *)self matchInfo];
+  label2 = [equalCopy matchInfo];
+  if ((label != 0) == (label2 == 0))
   {
     goto LABEL_34;
   }
 
-  v17 = [(USOSchemaUSOEntitySpan *)self matchInfo];
-  if (v17)
+  matchInfo = [(USOSchemaUSOEntitySpan *)self matchInfo];
+  if (matchInfo)
   {
-    v18 = v17;
-    v19 = [(USOSchemaUSOEntitySpan *)self matchInfo];
-    v20 = [v4 matchInfo];
-    v21 = [v19 isEqual:v20];
+    v18 = matchInfo;
+    matchInfo2 = [(USOSchemaUSOEntitySpan *)self matchInfo];
+    matchInfo3 = [equalCopy matchInfo];
+    v21 = [matchInfo2 isEqual:matchInfo3];
 
     if (!v21)
     {
@@ -384,7 +384,7 @@ LABEL_9:
 
   v22 = self->_has;
   v23 = (*&v22 >> 2) & 1;
-  v24 = v4[56];
+  v24 = equalCopy[56];
   if (v23 != ((v24 >> 2) & 1))
   {
     goto LABEL_35;
@@ -393,13 +393,13 @@ LABEL_9:
   if (v23)
   {
     startIndex = self->_startIndex;
-    if (startIndex != [v4 startIndex])
+    if (startIndex != [equalCopy startIndex])
     {
       goto LABEL_35;
     }
 
     v22 = self->_has;
-    v24 = v4[56];
+    v24 = equalCopy[56];
   }
 
   v26 = (*&v22 >> 3) & 1;
@@ -411,13 +411,13 @@ LABEL_9:
   if (v26)
   {
     endIndex = self->_endIndex;
-    if (endIndex != [v4 endIndex])
+    if (endIndex != [equalCopy endIndex])
     {
       goto LABEL_35;
     }
 
     v22 = self->_has;
-    v24 = v4[56];
+    v24 = equalCopy[56];
   }
 
   v28 = (*&v22 >> 4) & 1;
@@ -429,23 +429,23 @@ LABEL_9:
   if (v28)
   {
     originAppBundleIdType = self->_originAppBundleIdType;
-    if (originAppBundleIdType != [v4 originAppBundleIdType])
+    if (originAppBundleIdType != [equalCopy originAppBundleIdType])
     {
       goto LABEL_35;
     }
   }
 
-  v10 = [(USOSchemaUSOEntitySpan *)self payloadAttachmentInfo];
-  v11 = [v4 payloadAttachmentInfo];
-  if ((v10 != 0) == (v11 == 0))
+  label = [(USOSchemaUSOEntitySpan *)self payloadAttachmentInfo];
+  label2 = [equalCopy payloadAttachmentInfo];
+  if ((label != 0) == (label2 == 0))
   {
 LABEL_34:
 
     goto LABEL_35;
   }
 
-  v30 = [(USOSchemaUSOEntitySpan *)self payloadAttachmentInfo];
-  if (!v30)
+  payloadAttachmentInfo = [(USOSchemaUSOEntitySpan *)self payloadAttachmentInfo];
+  if (!payloadAttachmentInfo)
   {
 
 LABEL_38:
@@ -453,10 +453,10 @@ LABEL_38:
     goto LABEL_36;
   }
 
-  v31 = v30;
-  v32 = [(USOSchemaUSOEntitySpan *)self payloadAttachmentInfo];
-  v33 = [v4 payloadAttachmentInfo];
-  v34 = [v32 isEqual:v33];
+  v31 = payloadAttachmentInfo;
+  payloadAttachmentInfo2 = [(USOSchemaUSOEntitySpan *)self payloadAttachmentInfo];
+  payloadAttachmentInfo3 = [equalCopy payloadAttachmentInfo];
+  v34 = [payloadAttachmentInfo2 isEqual:payloadAttachmentInfo3];
 
   if (v34)
   {
@@ -470,9 +470,9 @@ LABEL_36:
   return v35;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -485,18 +485,18 @@ LABEL_36:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(USOSchemaUSOEntitySpan *)self label];
+  label = [(USOSchemaUSOEntitySpan *)self label];
 
-  if (v5)
+  if (label)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(USOSchemaUSOEntitySpan *)self matchInfo];
+  matchInfo = [(USOSchemaUSOEntitySpan *)self matchInfo];
 
-  if (v6)
+  if (matchInfo)
   {
-    v7 = [(USOSchemaUSOEntitySpan *)self matchInfo];
+    matchInfo2 = [(USOSchemaUSOEntitySpan *)self matchInfo];
     PBDataWriterWriteSubmessage();
   }
 
@@ -530,21 +530,21 @@ LABEL_12:
   }
 
 LABEL_13:
-  v9 = [(USOSchemaUSOEntitySpan *)self payloadAttachmentInfo];
+  payloadAttachmentInfo = [(USOSchemaUSOEntitySpan *)self payloadAttachmentInfo];
 
-  v10 = v12;
-  if (v9)
+  v10 = toCopy;
+  if (payloadAttachmentInfo)
   {
-    v11 = [(USOSchemaUSOEntitySpan *)self payloadAttachmentInfo];
+    payloadAttachmentInfo2 = [(USOSchemaUSOEntitySpan *)self payloadAttachmentInfo];
     PBDataWriterWriteSubmessage();
 
-    v10 = v12;
+    v10 = toCopy;
   }
 }
 
-- (void)setHasOriginAppBundleIdType:(BOOL)a3
+- (void)setHasOriginAppBundleIdType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 16;
   }
@@ -557,9 +557,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasEndIndex:(BOOL)a3
+- (void)setHasEndIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 8;
   }
@@ -572,9 +572,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasStartIndex:(BOOL)a3
+- (void)setHasStartIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 4;
   }
@@ -587,9 +587,9 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSourceComponent:(BOOL)a3
+- (void)setHasSourceComponent:(BOOL)component
 {
-  if (a3)
+  if (component)
   {
     v3 = 2;
   }
@@ -602,26 +602,26 @@ LABEL_13:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = USOSchemaUSOEntitySpan;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(USOSchemaUSOEntitySpan *)self matchInfo];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  matchInfo = [(USOSchemaUSOEntitySpan *)self matchInfo];
+  v7 = [matchInfo applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(USOSchemaUSOEntitySpan *)self deleteMatchInfo];
   }
 
-  v9 = [(USOSchemaUSOEntitySpan *)self payloadAttachmentInfo];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  payloadAttachmentInfo = [(USOSchemaUSOEntitySpan *)self payloadAttachmentInfo];
+  v10 = [payloadAttachmentInfo applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(USOSchemaUSOEntitySpan *)self deletePayloadAttachmentInfo];
   }

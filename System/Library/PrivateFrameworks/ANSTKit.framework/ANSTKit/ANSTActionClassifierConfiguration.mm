@@ -1,15 +1,15 @@
 @interface ANSTActionClassifierConfiguration
-- (ANSTActionClassifierConfiguration)initWithVersion:(unint64_t)a3;
+- (ANSTActionClassifierConfiguration)initWithVersion:(unint64_t)version;
 - (id)description;
 @end
 
 @implementation ANSTActionClassifierConfiguration
 
-- (ANSTActionClassifierConfiguration)initWithVersion:(unint64_t)a3
+- (ANSTActionClassifierConfiguration)initWithVersion:(unint64_t)version
 {
   v4.receiver = self;
   v4.super_class = ANSTActionClassifierConfiguration;
-  return [(ANSTConfiguration *)&v4 initWithVersion:a3];
+  return [(ANSTConfiguration *)&v4 initWithVersion:version];
 }
 
 - (id)description

@@ -1,36 +1,36 @@
 @interface MNNavigationStateNoDestination
 - (int64_t)desiredLocationProviderType;
-- (void)setRoutesForPreview:(id)a3 selectedRouteIndex:(unint64_t)a4;
-- (void)startNavigationWithDetails:(id)a3 activeBlock:(id)a4;
+- (void)setRoutesForPreview:(id)preview selectedRouteIndex:(unint64_t)index;
+- (void)startNavigationWithDetails:(id)details activeBlock:(id)block;
 @end
 
 @implementation MNNavigationStateNoDestination
 
-- (void)startNavigationWithDetails:(id)a3 activeBlock:(id)a4
+- (void)startNavigationWithDetails:(id)details activeBlock:(id)block
 {
-  v5 = a3;
-  v6 = [(MNNavigationState *)self stateManager];
-  v8 = [MNNavigationStateGuidance guidanceStateForStartDetails:v5 stateManager:v6 navigationSessionManager:0];
+  detailsCopy = details;
+  stateManager = [(MNNavigationState *)self stateManager];
+  v8 = [MNNavigationStateGuidance guidanceStateForStartDetails:detailsCopy stateManager:stateManager navigationSessionManager:0];
 
   if (v8)
   {
-    v7 = [(MNNavigationState *)self stateManager];
-    [v7 transitionToState:v8];
+    stateManager2 = [(MNNavigationState *)self stateManager];
+    [stateManager2 transitionToState:v8];
   }
 }
 
-- (void)setRoutesForPreview:(id)a3 selectedRouteIndex:(unint64_t)a4
+- (void)setRoutesForPreview:(id)preview selectedRouteIndex:(unint64_t)index
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 count] && objc_msgSend(v6, "count") > a4)
+  previewCopy = preview;
+  if ([previewCopy count] && objc_msgSend(previewCopy, "count") > index)
   {
     v7 = [MNNavigationStateRoutePreview alloc];
-    v8 = [(MNNavigationState *)self stateManager];
-    v9 = [(MNNavigationStateRoutePreview *)v7 initWithStateManager:v8 previewRoutes:v6 selectedRouteIndex:a4];
+    stateManager = [(MNNavigationState *)self stateManager];
+    v9 = [(MNNavigationStateRoutePreview *)v7 initWithStateManager:stateManager previewRoutes:previewCopy selectedRouteIndex:index];
 
-    v10 = [(MNNavigationState *)self stateManager];
-    [v10 transitionToState:v9];
+    stateManager2 = [(MNNavigationState *)self stateManager];
+    [stateManager2 transitionToState:v9];
   }
 
   else
@@ -39,9 +39,9 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v13 = 138412546;
-      v14 = v6;
+      v14 = previewCopy;
       v15 = 2048;
-      v16 = a4;
+      indexCopy = index;
       _os_log_impl(&dword_1D311E000, v11, OS_LOG_TYPE_INFO, "setting nil routes (%@) or selectedRouteIndex out of bound (%ld) for route previews while in state MNNavigationStateNoDestination is a no-op, returning early", &v13, 0x16u);
     }
   }
@@ -51,10 +51,10 @@
 
 - (int64_t)desiredLocationProviderType
 {
-  v2 = [(MNNavigationState *)self traceManager];
-  v3 = [v2 tracePlayer];
+  traceManager = [(MNNavigationState *)self traceManager];
+  tracePlayer = [traceManager tracePlayer];
 
-  if (v3)
+  if (tracePlayer)
   {
     return 3;
   }

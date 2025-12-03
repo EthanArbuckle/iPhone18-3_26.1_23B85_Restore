@@ -1,70 +1,70 @@
 @interface BuddyMultilingualDataSource
-- (BOOL)_isEmojiSoleDataItemPostDeletion:(id)a3;
-- (BOOL)containsKey:(id)a3;
-- (BOOL)itemDeleteableAtIndexPath:(id)a3;
-- (BOOL)itemReorderableAtIndexPath:(id)a3;
-- (BOOL)rowActionableAtIndexPath:(id)a3;
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4;
-- (BuddyMultilingualDataSource)initWithBackingStore:(id)a3 actionText:(id)a4;
-- (id)addToCollectionCellWithTableView:(id)a3;
+- (BOOL)_isEmojiSoleDataItemPostDeletion:(id)deletion;
+- (BOOL)containsKey:(id)key;
+- (BOOL)itemDeleteableAtIndexPath:(id)path;
+- (BOOL)itemReorderableAtIndexPath:(id)path;
+- (BOOL)rowActionableAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path;
+- (BuddyMultilingualDataSource)initWithBackingStore:(id)store actionText:(id)text;
+- (id)addToCollectionCellWithTableView:(id)view;
 - (id)combinedStore;
 - (id)immutableBackingStore;
-- (id)itemForPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)editingStyleForRowAtIndexPath:(id)a3;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (unint64_t)_additionRowForSection:(int64_t)a3;
-- (unint64_t)itemEditingOptionsAtIndexPath:(id)a3;
-- (unint64_t)rowForInsertionInSection:(unint64_t)a3;
+- (id)itemForPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)editingStyleForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (unint64_t)_additionRowForSection:(int64_t)section;
+- (unint64_t)itemEditingOptionsAtIndexPath:(id)path;
+- (unint64_t)rowForInsertionInSection:(unint64_t)section;
 - (void)_sizeConsistentRowHeight;
-- (void)tableView:(id)a3 allowAdditionalDataSelection:(BOOL)a4;
-- (void)tableView:(id)a3 appendItem:(id)a4 inSection:(unint64_t)a5;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)tableView:(id)a3 setBackingStore:(id)a4;
+- (void)tableView:(id)view allowAdditionalDataSelection:(BOOL)selection;
+- (void)tableView:(id)view appendItem:(id)item inSection:(unint64_t)section;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)tableView:(id)view setBackingStore:(id)store;
 @end
 
 @implementation BuddyMultilingualDataSource
 
-- (BuddyMultilingualDataSource)initWithBackingStore:(id)a3 actionText:(id)a4
+- (BuddyMultilingualDataSource)initWithBackingStore:(id)store actionText:(id)text
 {
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, store);
   v39 = 0;
-  objc_storeStrong(&v39, a4);
-  v5 = v41;
-  v41 = 0;
+  objc_storeStrong(&v39, text);
+  v5 = selfCopy;
+  selfCopy = 0;
   v38.receiver = v5;
   v38.super_class = BuddyMultilingualDataSource;
   v6 = [(BuddyMultilingualDataSource *)&v38 init];
-  v41 = v6;
-  objc_storeStrong(&v41, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    *(v41 + 5) = UITableViewAutomaticDimension;
+    *(selfCopy + 5) = UITableViewAutomaticDimension;
     v7 = [NSMutableArray alloc];
     v8 = [v7 initWithCapacity:{objc_msgSend(location[0], "count")}];
-    v9 = *(v41 + 2);
-    *(v41 + 2) = v8;
+    v9 = *(selfCopy + 2);
+    *(selfCopy + 2) = v8;
 
     v10 = +[NSMutableDictionary dictionary];
-    v11 = *(v41 + 4);
-    *(v41 + 4) = v10;
+    v11 = *(selfCopy + 4);
+    *(selfCopy + 4) = v10;
 
     v12 = [v39 copy];
-    v13 = *(v41 + 3);
-    *(v41 + 3) = v12;
+    v13 = *(selfCopy + 3);
+    *(selfCopy + 3) = v12;
 
-    *(v41 + 8) = 1;
-    *(v41 + 9) = 0;
+    *(selfCopy + 8) = 1;
+    *(selfCopy + 9) = 0;
     v14 = [UIKeyboardInputMode keyboardInputModeWithIdentifier:UIKeyboardInputMode_emoji];
-    v15 = [(UIKeyboardInputMode *)v14 identifierWithLayouts];
-    v16 = *(v41 + 6);
-    *(v41 + 6) = v15;
+    identifierWithLayouts = [(UIKeyboardInputMode *)v14 identifierWithLayouts];
+    v16 = *(selfCopy + 6);
+    *(selfCopy + 6) = identifierWithLayouts;
 
     memset(__b, 0, sizeof(__b));
     v17 = location[0];
@@ -100,14 +100,14 @@
                 }
 
                 v35 = *(v34[1] + 8 * j);
-                v25 = *(v41 + 4);
-                v26 = [v35 identifier];
-                v27 = [v35 identifier];
-                [v25 setObject:v26 forKey:v27];
+                v25 = *(selfCopy + 4);
+                identifier = [v35 identifier];
+                identifier2 = [v35 identifier];
+                [v25 setObject:identifier forKey:identifier2];
 
                 if ([v35 showDetailText])
                 {
-                  *(v41 + 9) = 1;
+                  *(selfCopy + 9) = 1;
                 }
               }
 
@@ -119,7 +119,7 @@
             v19 = v32;
           }
 
-          v28 = *(v41 + 2);
+          v28 = *(selfCopy + 2);
           v29 = [v37 mutableCopy];
           [v28 addObject:v29];
         }
@@ -131,26 +131,26 @@
     }
   }
 
-  v30 = v41;
+  v30 = selfCopy;
   objc_storeStrong(&v39, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v41, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v30;
 }
 
-- (void)tableView:(id)a3 setBackingStore:(id)a4
+- (void)tableView:(id)view setBackingStore:(id)store
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v25 = 0;
-  objc_storeStrong(&v25, a4);
+  objc_storeStrong(&v25, store);
   v5 = &_dispatch_main_q;
   dispatch_assert_queue_V2(v5);
 
-  [(NSMutableArray *)v27->_backingStore removeAllObjects];
-  [(NSMutableDictionary *)v27->_fastIdentifierMap removeAllObjects];
+  [(NSMutableArray *)selfCopy->_backingStore removeAllObjects];
+  [(NSMutableDictionary *)selfCopy->_fastIdentifierMap removeAllObjects];
   memset(__b, 0, sizeof(__b));
   v6 = v25;
   v7 = [v6 countByEnumeratingWithState:__b objects:v29 count:16];
@@ -185,14 +185,14 @@
               }
 
               v22 = *(v21[1] + 8 * j);
-              fastIdentifierMap = v27->_fastIdentifierMap;
-              v15 = [v22 identifier];
-              v16 = [v22 identifier];
-              [(NSMutableDictionary *)fastIdentifierMap setObject:v15 forKey:v16];
+              fastIdentifierMap = selfCopy->_fastIdentifierMap;
+              identifier = [v22 identifier];
+              identifier2 = [v22 identifier];
+              [(NSMutableDictionary *)fastIdentifierMap setObject:identifier forKey:identifier2];
 
               if ([v22 showDetailText])
               {
-                v27->_dataHasDetailedLabelField = 1;
+                selfCopy->_dataHasDetailedLabelField = 1;
               }
             }
 
@@ -204,7 +204,7 @@
           v8 = v19;
         }
 
-        backingStore = v27->_backingStore;
+        backingStore = selfCopy->_backingStore;
         v18 = [v24 mutableCopy];
         [(NSMutableArray *)backingStore addObject:v18];
       }
@@ -220,22 +220,22 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v21 = 0;
-  objc_storeStrong(&v21, a4);
+  objc_storeStrong(&v21, path);
   v5 = [v21 row];
-  v6 = [(BuddyMultilingualDataSource *)v23 backingStore];
-  v7 = -[NSMutableArray objectAtIndexedSubscript:](v6, "objectAtIndexedSubscript:", [v21 section]);
+  backingStore = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+  v7 = -[NSMutableArray objectAtIndexedSubscript:](backingStore, "objectAtIndexedSubscript:", [v21 section]);
   v8 = [v7 count];
 
   if (v5 == v8)
   {
-    v24 = [(BuddyMultilingualDataSource *)v23 addToCollectionCellWithTableView:location[0]];
+    v24 = [(BuddyMultilingualDataSource *)selfCopy addToCollectionCellWithTableView:location[0]];
     v20 = 1;
   }
 
@@ -247,22 +247,22 @@
       v19 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:@"com.purpleBuddy.BuddyMultilingualCell"];
     }
 
-    v9 = [(BuddyMultilingualDataSource *)v23 backingStore];
-    v10 = -[NSMutableArray objectAtIndexedSubscript:](v9, "objectAtIndexedSubscript:", [v21 section]);
+    backingStore2 = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+    v10 = -[NSMutableArray objectAtIndexedSubscript:](backingStore2, "objectAtIndexedSubscript:", [v21 section]);
     v18 = [v10 objectAtIndexedSubscript:{objc_msgSend(v21, "row")}];
 
     if (![v21 row])
     {
-      [(BuddyMultilingualDataSource *)v23 _sizeConsistentRowHeight];
+      [(BuddyMultilingualDataSource *)selfCopy _sizeConsistentRowHeight];
     }
 
-    v11 = [v18 title];
-    v12 = [v19 textLabel];
-    [v12 setText:v11];
+    title = [v18 title];
+    textLabel = [v19 textLabel];
+    [textLabel setText:title];
 
-    v13 = [v18 detailText];
-    v14 = [v19 detailTextLabel];
-    [v14 setText:v13];
+    detailText = [v18 detailText];
+    detailTextLabel = [v19 detailTextLabel];
+    [detailTextLabel setText:detailText];
 
     [v19 setSelectionStyle:0];
     v15 = +[UIColor secondarySystemBackgroundColor];
@@ -281,25 +281,25 @@
   return v16;
 }
 
-- (id)addToCollectionCellWithTableView:(id)a3
+- (id)addToCollectionCellWithTableView:(id)view
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v15 = [location[0] dequeueReusableCellWithIdentifier:@"com.purpleBuddy.BuddyMultilingual.dataAdditionCell"];
   if (!v15)
   {
     v15 = [[UITableViewCell alloc] initWithStyle:1 reuseIdentifier:@"com.purpleBuddy.BuddyMultilingual.dataAdditionCell"];
   }
 
-  v3 = [(BuddyMultilingualDataSource *)v17 actionString];
-  v4 = [v15 textLabel];
-  [v4 setText:v3];
+  actionString = [(BuddyMultilingualDataSource *)selfCopy actionString];
+  textLabel = [v15 textLabel];
+  [textLabel setText:actionString];
 
   v13 = 0;
   v11 = 0;
-  if ([(BuddyMultilingualDataSource *)v17 dataSourceActionEnabled])
+  if ([(BuddyMultilingualDataSource *)selfCopy dataSourceActionEnabled])
   {
     v5 = +[UIColor systemBlueColor];
     v14 = v5;
@@ -313,8 +313,8 @@
     v11 = 1;
   }
 
-  v6 = [v15 textLabel];
-  [v6 setTextColor:v5];
+  textLabel2 = [v15 textLabel];
+  [textLabel2 setTextColor:v5];
 
   if (v11)
   {
@@ -324,7 +324,7 @@
   {
   }
 
-  if ([(BuddyMultilingualDataSource *)v17 dataSourceActionEnabled])
+  if ([(BuddyMultilingualDataSource *)selfCopy dataSourceActionEnabled])
   {
     v7 = 2;
   }
@@ -335,7 +335,7 @@
   }
 
   [v15 setSelectionStyle:v7];
-  [v15 setUserInteractionEnabled:{-[BuddyMultilingualDataSource dataSourceActionEnabled](v17, "dataSourceActionEnabled")}];
+  [v15 setUserInteractionEnabled:{-[BuddyMultilingualDataSource dataSourceActionEnabled](selfCopy, "dataSourceActionEnabled")}];
   v8 = +[UIColor secondarySystemBackgroundColor];
   [v15 setBackgroundColor:v8];
 
@@ -345,42 +345,42 @@
   return v9;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = a4;
-  v5 = [(BuddyMultilingualDataSource *)v11 backingStore];
-  v6 = [(NSMutableArray *)v5 objectAtIndexedSubscript:v9];
+  objc_storeStrong(location, view);
+  sectionCopy = section;
+  backingStore = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+  v6 = [(NSMutableArray *)backingStore objectAtIndexedSubscript:sectionCopy];
   v7 = [v6 count] + 1;
 
   objc_storeStrong(location, 0);
   return v7;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyMultilingualDataSource *)v7 backingStore];
-  v4 = [(NSMutableArray *)v3 count];
+  objc_storeStrong(location, view);
+  backingStore = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+  v4 = [(NSMutableArray *)backingStore count];
 
   objc_storeStrong(location, 0);
   return v4;
 }
 
-- (BOOL)rowActionableAtIndexPath:(id)a3
+- (BOOL)rowActionableAtIndexPath:(id)path
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyMultilingualDataSource *)v8 backingStore];
-  v4 = -[NSMutableArray objectAtIndexedSubscript:](v3, "objectAtIndexedSubscript:", [location[0] section]);
+  objc_storeStrong(location, path);
+  backingStore = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+  v4 = -[NSMutableArray objectAtIndexedSubscript:](backingStore, "objectAtIndexedSubscript:", [location[0] section]);
   v5 = [v4 count];
   LOBYTE(v5) = v5 == [location[0] row];
 
@@ -388,22 +388,22 @@
   return v5 & 1;
 }
 
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v11 = 0;
-  objc_storeStrong(&v11, a4);
+  objc_storeStrong(&v11, path);
   v5 = [v11 row];
-  v6 = [(BuddyMultilingualDataSource *)v13 backingStore];
-  v7 = -[NSMutableArray objectAtIndexedSubscript:](v6, "objectAtIndexedSubscript:", [v11 section]);
+  backingStore = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+  v7 = -[NSMutableArray objectAtIndexedSubscript:](backingStore, "objectAtIndexedSubscript:", [v11 section]);
   v8 = v5 == [v7 count];
   v9 = 0;
   if (!v8)
   {
-    v9 = [(BuddyMultilingualDataSource *)v13 itemReorderableAtIndexPath:v11];
+    v9 = [(BuddyMultilingualDataSource *)selfCopy itemReorderableAtIndexPath:v11];
   }
 
   objc_storeStrong(&v11, 0);
@@ -411,33 +411,33 @@
   return v9 & 1;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, path);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
+  objc_storeStrong(&v19, indexPath);
   v7 = [v19 row];
-  v8 = [(BuddyMultilingualDataSource *)v22 backingStore];
-  v9 = -[NSMutableArray objectAtIndexedSubscript:](v8, "objectAtIndexedSubscript:", [v19 section]);
+  backingStore = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+  v9 = -[NSMutableArray objectAtIndexedSubscript:](backingStore, "objectAtIndexedSubscript:", [v19 section]);
   v10 = [v9 count];
 
   if (v7 < v10)
   {
-    v11 = [(BuddyMultilingualDataSource *)v22 backingStore];
-    v12 = -[NSMutableArray objectAtIndexedSubscript:](v11, "objectAtIndexedSubscript:", [v20 section]);
+    backingStore2 = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+    v12 = -[NSMutableArray objectAtIndexedSubscript:](backingStore2, "objectAtIndexedSubscript:", [v20 section]);
     v17 = [v12 objectAtIndexedSubscript:{objc_msgSend(v20, "row")}];
 
-    v13 = [(BuddyMultilingualDataSource *)v22 backingStore];
-    v14 = -[NSMutableArray objectAtIndexedSubscript:](v13, "objectAtIndexedSubscript:", [v20 section]);
+    backingStore3 = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+    v14 = -[NSMutableArray objectAtIndexedSubscript:](backingStore3, "objectAtIndexedSubscript:", [v20 section]);
     [v14 removeObjectAtIndex:{objc_msgSend(v20, "row")}];
 
-    v15 = [(BuddyMultilingualDataSource *)v22 backingStore];
-    v16 = -[NSMutableArray objectAtIndexedSubscript:](v15, "objectAtIndexedSubscript:", [v19 section]);
+    backingStore4 = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+    v16 = -[NSMutableArray objectAtIndexedSubscript:](backingStore4, "objectAtIndexedSubscript:", [v19 section]);
     [v16 insertObject:v17 atIndex:{objc_msgSend(v19, "row")}];
 
     objc_storeStrong(&v17, 0);
@@ -454,27 +454,27 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  LOBYTE(a4) = [(BuddyMultilingualDataSource *)v8 itemEditingOptionsAtIndexPath:v6]!= 0;
+  objc_storeStrong(&v6, path);
+  LOBYTE(path) = [(BuddyMultilingualDataSource *)selfCopy itemEditingOptionsAtIndexPath:v6]!= 0;
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
-  return a4 & 1;
+  return path & 1;
 }
 
-- (int64_t)editingStyleForRowAtIndexPath:(id)a3
+- (int64_t)editingStyleForRowAtIndexPath:(id)path
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyMultilingualDataSource *)v6 itemEditingOptionsAtIndexPath:location[0]];
+  objc_storeStrong(location, path);
+  v3 = [(BuddyMultilingualDataSource *)selfCopy itemEditingOptionsAtIndexPath:location[0]];
   if (v3)
   {
     if ((v3 - 1) < 3)
@@ -484,7 +484,7 @@
 
     else if (v3 == 4)
     {
-      if ([(BuddyMultilingualDataSource *)v6 dataSourceActionEnabled])
+      if ([(BuddyMultilingualDataSource *)selfCopy dataSourceActionEnabled])
       {
         v7 = 2;
       }
@@ -505,26 +505,26 @@
   return v7;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = a4;
+  objc_storeStrong(location, view);
+  styleCopy = style;
   v16 = 0;
-  objc_storeStrong(&v16, a5);
-  if (v17 == 1 && [(BuddyMultilingualDataSource *)v19 itemDeleteableAtIndexPath:v16])
+  objc_storeStrong(&v16, path);
+  if (styleCopy == 1 && [(BuddyMultilingualDataSource *)selfCopy itemDeleteableAtIndexPath:v16])
   {
-    v7 = [(BuddyMultilingualDataSource *)v19 fastIdentifierMap];
-    v8 = [(BuddyMultilingualDataSource *)v19 backingStore];
-    v9 = -[NSMutableArray objectAtIndexedSubscript:](v8, "objectAtIndexedSubscript:", [v16 section]);
+    fastIdentifierMap = [(BuddyMultilingualDataSource *)selfCopy fastIdentifierMap];
+    backingStore = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+    v9 = -[NSMutableArray objectAtIndexedSubscript:](backingStore, "objectAtIndexedSubscript:", [v16 section]);
     v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v16, "row")}];
-    v11 = [v10 identifier];
-    [(NSMutableDictionary *)v7 removeObjectForKey:v11];
+    identifier = [v10 identifier];
+    [(NSMutableDictionary *)fastIdentifierMap removeObjectForKey:identifier];
 
-    v12 = [(BuddyMultilingualDataSource *)v19 backingStore];
-    v13 = -[NSMutableArray objectAtIndexedSubscript:](v12, "objectAtIndexedSubscript:", [v16 section]);
+    backingStore2 = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+    v13 = -[NSMutableArray objectAtIndexedSubscript:](backingStore2, "objectAtIndexedSubscript:", [v16 section]);
     [v13 removeObjectAtIndex:{objc_msgSend(v16, "row")}];
 
     v14 = location[0];
@@ -532,9 +532,9 @@
     v15 = [NSArray arrayWithObjects:&v20 count:1];
     [v14 deleteRowsAtIndexPaths:v15 withRowAnimation:6];
 
-    if (![(BuddyMultilingualDataSource *)v19 dataSourceActionEnabled])
+    if (![(BuddyMultilingualDataSource *)selfCopy dataSourceActionEnabled])
     {
-      [(BuddyMultilingualDataSource *)v19 tableView:location[0] allowAdditionalDataSelection:1];
+      [(BuddyMultilingualDataSource *)selfCopy tableView:location[0] allowAdditionalDataSelection:1];
     }
   }
 
@@ -542,27 +542,27 @@
   objc_storeStrong(location, 0);
 }
 
-- (unint64_t)itemEditingOptionsAtIndexPath:(id)a3
+- (unint64_t)itemEditingOptionsAtIndexPath:(id)path
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, path);
   v3 = [location[0] row];
-  v14 = v3 == -[BuddyMultilingualDataSource _additionRowForSection:](v16, "_additionRowForSection:", [location[0] section]);
+  v14 = v3 == -[BuddyMultilingualDataSource _additionRowForSection:](selfCopy, "_additionRowForSection:", [location[0] section]);
   v12 = 0;
   v10 = 0;
   v4 = 1;
   if (!v14)
   {
-    v13 = [(BuddyMultilingualDataSource *)v16 backingStore];
+    backingStore = [(BuddyMultilingualDataSource *)selfCopy backingStore];
     v12 = 1;
-    v11 = [v13 objectAtIndexedSubscript:{objc_msgSend(location[0], "section")}];
+    v11 = [backingStore objectAtIndexedSubscript:{objc_msgSend(location[0], "section")}];
     v10 = 1;
     v4 = 1;
     if ([v11 count] > 1)
     {
-      v4 = [(BuddyMultilingualDataSource *)v16 _isEmojiSoleDataItemPostDeletion:location[0]];
+      v4 = [(BuddyMultilingualDataSource *)selfCopy _isEmojiSoleDataItemPostDeletion:location[0]];
     }
   }
 
@@ -578,12 +578,12 @@
   {
     if (v14)
     {
-      v17 = 4;
+      editingOptions = 4;
     }
 
     else
     {
-      v17 = 0;
+      editingOptions = 0;
     }
 
     v9 = 1;
@@ -591,52 +591,52 @@
 
   else
   {
-    v5 = [(BuddyMultilingualDataSource *)v16 backingStore];
-    v6 = -[NSMutableArray objectAtIndexedSubscript:](v5, "objectAtIndexedSubscript:", [location[0] section]);
+    backingStore2 = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+    v6 = -[NSMutableArray objectAtIndexedSubscript:](backingStore2, "objectAtIndexedSubscript:", [location[0] section]);
     v8 = [v6 objectAtIndexedSubscript:{objc_msgSend(location[0], "row")}];
 
-    v17 = [v8 editingOptions];
+    editingOptions = [v8 editingOptions];
     v9 = 1;
     objc_storeStrong(&v8, 0);
   }
 
   objc_storeStrong(location, 0);
-  return v17;
+  return editingOptions;
 }
 
-- (void)tableView:(id)a3 appendItem:(id)a4 inSection:(unint64_t)a5
+- (void)tableView:(id)view appendItem:(id)item inSection:(unint64_t)section
 {
-  v26 = self;
+  selfCopy = self;
   v25 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, view);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
-  v22 = a5;
-  v7 = a5;
-  v8 = [(BuddyMultilingualDataSource *)v26 backingStore];
-  v9 = v7 >= [(NSMutableArray *)v8 count];
+  objc_storeStrong(&v23, item);
+  sectionCopy = section;
+  sectionCopy2 = section;
+  backingStore = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+  v9 = sectionCopy2 >= [(NSMutableArray *)backingStore count];
 
   if (v9)
   {
     v10 = +[NSAssertionHandler currentHandler];
     v11 = v25;
-    v12 = v26;
-    v13 = [(BuddyMultilingualDataSource *)v26 backingStore];
-    [(NSAssertionHandler *)v10 handleFailureInMethod:v11 object:v12 file:@"BuddyMultilingualDataSource.m" lineNumber:206 description:@"OOB check failed store:%@ section:%lu", v13, v22];
+    v12 = selfCopy;
+    backingStore2 = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+    [(NSAssertionHandler *)v10 handleFailureInMethod:v11 object:v12 file:@"BuddyMultilingualDataSource.m" lineNumber:206 description:@"OOB check failed store:%@ section:%lu", backingStore2, sectionCopy];
   }
 
   [location beginUpdates];
-  v14 = [(BuddyMultilingualDataSource *)v26 backingStore];
-  v15 = [(NSMutableArray *)v14 objectAtIndexedSubscript:v22];
+  backingStore3 = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+  v15 = [(NSMutableArray *)backingStore3 objectAtIndexedSubscript:sectionCopy];
   [v15 addObject:v23];
 
-  v16 = [(BuddyMultilingualDataSource *)v26 fastIdentifierMap];
-  v17 = [v23 identifier];
-  v18 = [v23 identifier];
-  [(NSMutableDictionary *)v16 setObject:v17 forKey:v18];
+  fastIdentifierMap = [(BuddyMultilingualDataSource *)selfCopy fastIdentifierMap];
+  identifier = [v23 identifier];
+  identifier2 = [v23 identifier];
+  [(NSMutableDictionary *)fastIdentifierMap setObject:identifier forKey:identifier2];
 
-  v21 = [NSIndexPath indexPathForRow:[(BuddyMultilingualDataSource *)v26 rowForInsertionInSection:v22] inSection:v22];
+  v21 = [NSIndexPath indexPathForRow:[(BuddyMultilingualDataSource *)selfCopy rowForInsertionInSection:sectionCopy] inSection:sectionCopy];
   v19 = location;
   v27 = v21;
   v20 = [NSArray arrayWithObjects:&v27 count:1];
@@ -648,25 +648,25 @@
   objc_storeStrong(&location, 0);
 }
 
-- (void)tableView:(id)a3 allowAdditionalDataSelection:(BOOL)a4
+- (void)tableView:(id)view allowAdditionalDataSelection:(BOOL)selection
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (a4 != [(BuddyMultilingualDataSource *)v6 dataSourceActionEnabled])
+  objc_storeStrong(location, view);
+  if (selection != [(BuddyMultilingualDataSource *)selfCopy dataSourceActionEnabled])
   {
-    [(BuddyMultilingualDataSource *)v6 setDataSourceActionEnabled:a4];
+    [(BuddyMultilingualDataSource *)selfCopy setDataSourceActionEnabled:selection];
     [location[0] reloadData];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (unint64_t)rowForInsertionInSection:(unint64_t)a3
+- (unint64_t)rowForInsertionInSection:(unint64_t)section
 {
-  v3 = [(BuddyMultilingualDataSource *)self backingStore];
-  v4 = [(NSMutableArray *)v3 objectAtIndexedSubscript:a3];
+  backingStore = [(BuddyMultilingualDataSource *)self backingStore];
+  v4 = [(NSMutableArray *)backingStore objectAtIndexedSubscript:section];
   v9 = 0;
   v7 = 0;
   if ([v4 count] == 1)
@@ -676,9 +676,9 @@
 
   else
   {
-    v10 = [(BuddyMultilingualDataSource *)self backingStore];
+    backingStore2 = [(BuddyMultilingualDataSource *)self backingStore];
     v9 = 1;
-    v8 = [(NSMutableArray *)v10 objectAtIndexedSubscript:a3];
+    v8 = [(NSMutableArray *)backingStore2 objectAtIndexedSubscript:section];
     v7 = 1;
     v5 = [v8 count] - 1;
   }
@@ -695,14 +695,14 @@
   return v13;
 }
 
-- (id)itemForPath:(id)a3
+- (id)itemForPath:(id)path
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyMultilingualDataSource *)v8 backingStore];
-  v4 = -[NSMutableArray objectAtIndexedSubscript:](v3, "objectAtIndexedSubscript:", [location[0] section]);
+  objc_storeStrong(location, path);
+  backingStore = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+  v4 = -[NSMutableArray objectAtIndexedSubscript:](backingStore, "objectAtIndexedSubscript:", [location[0] section]);
   v5 = [v4 objectAtIndexedSubscript:{objc_msgSend(location[0], "row")}];
 
   objc_storeStrong(location, 0);
@@ -712,12 +712,12 @@
 
 - (id)combinedStore
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = objc_opt_new();
   memset(__b, 0, sizeof(__b));
-  v2 = [(BuddyMultilingualDataSource *)v17 backingStore];
-  v3 = [(NSMutableArray *)v2 countByEnumeratingWithState:__b objects:v19 count:16];
+  backingStore = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+  v3 = [(NSMutableArray *)backingStore countByEnumeratingWithState:__b objects:v19 count:16];
   if (v3)
   {
     v4 = *__b[2];
@@ -727,7 +727,7 @@
       {
         if (*__b[2] != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(backingStore);
         }
 
         v15 = *(__b[1] + 8 * i);
@@ -757,7 +757,7 @@
         }
       }
 
-      v3 = [(NSMutableArray *)v2 countByEnumeratingWithState:__b objects:v19 count:16];
+      v3 = [(NSMutableArray *)backingStore countByEnumeratingWithState:__b objects:v19 count:16];
     }
 
     while (v3);
@@ -769,14 +769,14 @@
   return v10;
 }
 
-- (BOOL)containsKey:(id)a3
+- (BOOL)containsKey:(id)key
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyMultilingualDataSource *)v8 fastIdentifierMap];
-  v4 = [(NSMutableDictionary *)v3 objectForKey:location[0]];
+  objc_storeStrong(location, key);
+  fastIdentifierMap = [(BuddyMultilingualDataSource *)selfCopy fastIdentifierMap];
+  v4 = [(NSMutableDictionary *)fastIdentifierMap objectForKey:location[0]];
   v5 = v4 != 0;
 
   objc_storeStrong(location, 0);
@@ -785,15 +785,15 @@
 
 - (id)immutableBackingStore
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   v2 = [NSMutableArray alloc];
-  v3 = [(BuddyMultilingualDataSource *)v15 backingStore];
-  location[0] = [v2 initWithCapacity:{-[NSMutableArray count](v3, "count")}];
+  backingStore = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+  location[0] = [v2 initWithCapacity:{-[NSMutableArray count](backingStore, "count")}];
 
   memset(__b, 0, sizeof(__b));
-  v4 = [(BuddyMultilingualDataSource *)v15 backingStore];
-  v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:__b objects:v16 count:16];
+  backingStore2 = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+  v5 = [(NSMutableArray *)backingStore2 countByEnumeratingWithState:__b objects:v16 count:16];
   if (v5)
   {
     v6 = *__b[2];
@@ -803,7 +803,7 @@
       {
         if (*__b[2] != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(backingStore2);
         }
 
         v13 = *(__b[1] + 8 * i);
@@ -812,7 +812,7 @@
         [v8 addObject:v9];
       }
 
-      v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:__b objects:v16 count:16];
+      v5 = [(NSMutableArray *)backingStore2 countByEnumeratingWithState:__b objects:v16 count:16];
     }
 
     while (v5);
@@ -824,53 +824,53 @@
   return v10;
 }
 
-- (BOOL)itemReorderableAtIndexPath:(id)a3
+- (BOOL)itemReorderableAtIndexPath:(id)path
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = ([(BuddyMultilingualDataSource *)v6 itemEditingOptionsAtIndexPath:location[0]]& 1) == 1;
+  objc_storeStrong(location, path);
+  v3 = ([(BuddyMultilingualDataSource *)selfCopy itemEditingOptionsAtIndexPath:location[0]]& 1) == 1;
   objc_storeStrong(location, 0);
   return v3;
 }
 
-- (BOOL)itemDeleteableAtIndexPath:(id)a3
+- (BOOL)itemDeleteableAtIndexPath:(id)path
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyMultilingualDataSource *)v8 backingStore];
-  v4 = -[NSMutableArray objectAtIndexedSubscript:](v3, "objectAtIndexedSubscript:", [location[0] section]);
+  objc_storeStrong(location, path);
+  backingStore = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+  v4 = -[NSMutableArray objectAtIndexedSubscript:](backingStore, "objectAtIndexedSubscript:", [location[0] section]);
   v5 = 1;
   if ([v4 count] != 1)
   {
-    v5 = [(BuddyMultilingualDataSource *)v8 _isEmojiSoleDataItemPostDeletion:location[0]];
+    v5 = [(BuddyMultilingualDataSource *)selfCopy _isEmojiSoleDataItemPostDeletion:location[0]];
   }
 
-  v9 = (v5 & 1) == 0 && ([(BuddyMultilingualDataSource *)v8 itemEditingOptionsAtIndexPath:location[0]]& 2) == 2;
+  v9 = (v5 & 1) == 0 && ([(BuddyMultilingualDataSource *)selfCopy itemEditingOptionsAtIndexPath:location[0]]& 2) == 2;
   objc_storeStrong(location, 0);
   return v9;
 }
 
-- (unint64_t)_additionRowForSection:(int64_t)a3
+- (unint64_t)_additionRowForSection:(int64_t)section
 {
-  v3 = [(BuddyMultilingualDataSource *)self backingStore];
-  v4 = [(NSMutableArray *)v3 objectAtIndexedSubscript:a3];
+  backingStore = [(BuddyMultilingualDataSource *)self backingStore];
+  v4 = [(NSMutableArray *)backingStore objectAtIndexedSubscript:section];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (BOOL)_isEmojiSoleDataItemPostDeletion:(id)a3
+- (BOOL)_isEmojiSoleDataItemPostDeletion:(id)deletion
 {
-  v35 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(BuddyMultilingualDataSource *)v35 backingStore];
-  v4 = -[NSMutableArray objectAtIndexedSubscript:](v3, "objectAtIndexedSubscript:", [location[0] section]);
+  objc_storeStrong(location, deletion);
+  backingStore = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+  v4 = -[NSMutableArray objectAtIndexedSubscript:](backingStore, "objectAtIndexedSubscript:", [location[0] section]);
   v5 = [v4 count];
 
   if (v5 != 2)
@@ -878,30 +878,30 @@
     goto LABEL_28;
   }
 
-  v6 = [(BuddyMultilingualDataSource *)v35 backingStore];
-  v7 = -[NSMutableArray objectAtIndexedSubscript:](v6, "objectAtIndexedSubscript:", [location[0] section]);
+  backingStore2 = [(BuddyMultilingualDataSource *)selfCopy backingStore];
+  v7 = -[NSMutableArray objectAtIndexedSubscript:](backingStore2, "objectAtIndexedSubscript:", [location[0] section]);
   v8 = [v7 objectAtIndexedSubscript:0];
-  v9 = [v8 identifier];
-  v10 = [(BuddyMultilingualDataSource *)v35 emojiKeyboardIdentifier];
+  identifier = [v8 identifier];
+  emojiKeyboardIdentifier = [(BuddyMultilingualDataSource *)selfCopy emojiKeyboardIdentifier];
   v32 = 0;
   v30 = 0;
   v28 = 0;
   v26 = 0;
   v24 = 0;
   v11 = 1;
-  if (([v9 hasPrefix:v10] & 1) == 0)
+  if (([identifier hasPrefix:emojiKeyboardIdentifier] & 1) == 0)
   {
-    v33 = [(BuddyMultilingualDataSource *)v35 backingStore];
+    backingStore3 = [(BuddyMultilingualDataSource *)selfCopy backingStore];
     v32 = 1;
-    v31 = -[NSMutableArray objectAtIndexedSubscript:](v33, "objectAtIndexedSubscript:", [location[0] section]);
+    v31 = -[NSMutableArray objectAtIndexedSubscript:](backingStore3, "objectAtIndexedSubscript:", [location[0] section]);
     v30 = 1;
     v29 = [v31 objectAtIndexedSubscript:1];
     v28 = 1;
-    v27 = [v29 identifier];
+    identifier2 = [v29 identifier];
     v26 = 1;
-    v25 = [(BuddyMultilingualDataSource *)v35 emojiKeyboardIdentifier];
+    emojiKeyboardIdentifier2 = [(BuddyMultilingualDataSource *)selfCopy emojiKeyboardIdentifier];
     v24 = 1;
-    v11 = [v27 hasPrefix:?];
+    v11 = [identifier2 hasPrefix:?];
   }
 
   if (v24)
@@ -932,17 +932,17 @@
   v12 = 0;
   if (v11)
   {
-    v23 = [(BuddyMultilingualDataSource *)v35 backingStore];
+    backingStore4 = [(BuddyMultilingualDataSource *)selfCopy backingStore];
     v22 = 1;
-    v21 = -[NSMutableArray objectAtIndexedSubscript:](v23, "objectAtIndexedSubscript:", [location[0] section]);
+    v21 = -[NSMutableArray objectAtIndexedSubscript:](backingStore4, "objectAtIndexedSubscript:", [location[0] section]);
     v20 = 1;
     v19 = [v21 objectAtIndexedSubscript:{objc_msgSend(location[0], "row")}];
     v18 = 1;
-    v17 = [v19 identifier];
+    identifier3 = [v19 identifier];
     v16 = 1;
-    v15 = [(BuddyMultilingualDataSource *)v35 emojiKeyboardIdentifier];
+    emojiKeyboardIdentifier3 = [(BuddyMultilingualDataSource *)selfCopy emojiKeyboardIdentifier];
     v14 = 1;
-    v12 = [v17 hasPrefix:?] ^ 1;
+    v12 = [identifier3 hasPrefix:?] ^ 1;
   }
 
   if (v14)
@@ -982,27 +982,27 @@ LABEL_28:
 
 - (void)_sizeConsistentRowHeight
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   v2 = +[UIApplication sharedApplication];
-  v3 = [(UIApplication *)v2 preferredContentSizeCategory];
-  v4 = UIContentSizeCategoryCompareToCategory(UIContentSizeCategoryExtraLarge, v3);
+  preferredContentSizeCategory = [(UIApplication *)v2 preferredContentSizeCategory];
+  v4 = UIContentSizeCategoryCompareToCategory(UIContentSizeCategoryExtraLarge, preferredContentSizeCategory);
 
   if (v4 == NSOrderedAscending)
   {
-    [(BuddyMultilingualDataSource *)v15 setConsistentRowHeight:UITableViewAutomaticDimension];
+    [(BuddyMultilingualDataSource *)selfCopy setConsistentRowHeight:UITableViewAutomaticDimension];
   }
 
   else
   {
-    [(BuddyMultilingualDataSource *)v15 consistentRowHeight];
+    [(BuddyMultilingualDataSource *)selfCopy consistentRowHeight];
     if (v5 == UITableViewAutomaticDimension)
     {
       location[0] = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:0];
-      v6 = [location[0] textLabel];
-      [v6 setText:@"SIZING_TEXT"];
+      textLabel = [location[0] textLabel];
+      [textLabel setText:@"SIZING_TEXT"];
 
-      if ([(BuddyMultilingualDataSource *)v15 dataHasDetailedLabelField])
+      if ([(BuddyMultilingualDataSource *)selfCopy dataHasDetailedLabelField])
       {
         v7 = @"SIZING_DETAIL_TEXT";
       }
@@ -1012,8 +1012,8 @@ LABEL_28:
         v7 = 0;
       }
 
-      v8 = [location[0] detailTextLabel];
-      [v8 setText:v7];
+      detailTextLabel = [location[0] detailTextLabel];
+      [detailTextLabel setText:v7];
 
       [location[0] layoutIfNeeded];
       [location[0] frame];
@@ -1021,7 +1021,7 @@ LABEL_28:
       LODWORD(v9) = 1148846080;
       LODWORD(v10) = 1112014848;
       [location[0] systemLayoutSizeFittingSize:v11 withHorizontalFittingPriority:v12 verticalFittingPriority:{v9, v10}];
-      [(BuddyMultilingualDataSource *)v15 setConsistentRowHeight:v13];
+      [(BuddyMultilingualDataSource *)selfCopy setConsistentRowHeight:v13];
       objc_storeStrong(location, 0);
     }
   }

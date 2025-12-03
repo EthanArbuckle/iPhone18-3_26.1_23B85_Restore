@@ -112,7 +112,7 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = __39__SecureCameraIndicator_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -132,44 +132,44 @@ uint64_t __39__SecureCameraIndicator_sharedInstance__block_invoke(uint64_t a1)
 
 - (void)activate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  activeCounter = v2->_activeCounter;
-  v2->_activeCounter = activeCounter + 1;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activeCounter = selfCopy->_activeCounter;
+  selfCopy->_activeCounter = activeCounter + 1;
   if (!activeCounter)
   {
-    publisher = v2->_publisher;
+    publisher = selfCopy->_publisher;
     v5[0] = MEMORY[0x29EDCA5F8];
     v5[1] = 3221225472;
     v5[2] = __33__SecureCameraIndicator_activate__block_invoke;
     v5[3] = &unk_29EE54D38;
-    v5[4] = v2;
+    v5[4] = selfCopy;
     [(STMediaStatusDomainPublisher *)publisher updateVolatileData:v5 completion:0];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (int)deactivate
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v8 = 0;
   v9[0] = &v8;
   v9[1] = 0x2020000000;
   v10 = 263;
-  activeCounter = v2->_activeCounter;
+  activeCounter = selfCopy->_activeCounter;
   if (activeCounter)
   {
-    v2->_activeCounter = activeCounter - 1;
+    selfCopy->_activeCounter = activeCounter - 1;
     if (activeCounter == 1)
     {
-      publisher = v2->_publisher;
+      publisher = selfCopy->_publisher;
       v7[0] = MEMORY[0x29EDCA5F8];
       v7[1] = 3221225472;
       v7[2] = __35__SecureCameraIndicator_deactivate__block_invoke;
       v7[3] = &unk_29EE54D60;
-      v7[4] = v2;
+      v7[4] = selfCopy;
       v7[5] = &v8;
       [(STMediaStatusDomainPublisher *)publisher updateVolatileData:v7 completion:0];
       v4 = *(v9[0] + 24);
@@ -188,7 +188,7 @@ uint64_t __39__SecureCameraIndicator_sharedInstance__block_invoke(uint64_t a1)
   }
 
   _Block_object_dispose(&v8, 8);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -248,7 +248,7 @@ uint64_t __35__SecureCameraIndicator_deactivate__block_invoke(uint64_t a1, void 
     OUTLINED_FUNCTION_7_0(&dword_296CA4000, v2, v3, "AssertMacros: %s (value = 0x%lx), %s file: %s, line: %d\n\n", v4, v5, v6, v7, v9);
   }
 
-  *(*a1 + 24) = 267;
+  *(*self + 24) = 267;
   v8 = *MEMORY[0x29EDCA608];
 }
 

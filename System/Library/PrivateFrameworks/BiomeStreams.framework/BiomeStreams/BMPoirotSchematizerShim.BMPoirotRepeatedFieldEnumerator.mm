@@ -6,7 +6,7 @@
 
 - (id)nextObject
 {
-  v2 = self;
+  selfCopy = self;
   BMPoirotSchematizerShim.BMPoirotRepeatedFieldEnumerator.nextObject()(v11);
 
   v3 = v12;

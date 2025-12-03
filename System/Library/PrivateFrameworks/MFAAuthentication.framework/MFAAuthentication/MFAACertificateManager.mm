@@ -1,36 +1,36 @@
 @interface MFAACertificateManager
-+ (BOOL)isBAAUserCertInfo:(id)a3;
-+ (BOOL)isBAAUserPolicy:(unint64_t)a3;
-+ (BOOL)isCertificateValidForFeatures:(unint64_t)a3 certificate:(id)a4;
-+ (BOOL)isComponentCertInfo:(id)a3;
-+ (BOOL)isComponentPolicy:(unint64_t)a3;
-+ (BOOL)isMFi2_3CertInfo:(id)a3;
-+ (BOOL)isMFi2_3Policy:(unint64_t)a3;
-+ (id)_anchorCertificatesDataForTypes:(int)a3;
-+ (id)anchorCertificatesForTypes:(int)a3;
++ (BOOL)isBAAUserCertInfo:(id)info;
++ (BOOL)isBAAUserPolicy:(unint64_t)policy;
++ (BOOL)isCertificateValidForFeatures:(unint64_t)features certificate:(id)certificate;
++ (BOOL)isComponentCertInfo:(id)info;
++ (BOOL)isComponentPolicy:(unint64_t)policy;
++ (BOOL)isMFi2_3CertInfo:(id)info;
++ (BOOL)isMFi2_3Policy:(unint64_t)policy;
++ (id)_anchorCertificatesDataForTypes:(int)types;
++ (id)anchorCertificatesForTypes:(int)types;
 + (id)sharedManager;
-+ (int)_anchorType2CertType:(int)a3;
-+ (int)determineCertificateType:(id)a3;
-- (BOOL)verifyCertificateChainInfoSerialNumber:(id)a3;
-- (BOOL)verifyCertificateSerialNumberBySerialNumber:(id)a3 authVer:(int)a4;
-- (BOOL)verifyNonceSignature:(id)a3 nonce:(id)a4 signature:(id)a5;
++ (int)_anchorType2CertType:(int)type;
++ (int)determineCertificateType:(id)type;
+- (BOOL)verifyCertificateChainInfoSerialNumber:(id)number;
+- (BOOL)verifyCertificateSerialNumberBySerialNumber:(id)number authVer:(int)ver;
+- (BOOL)verifyNonceSignature:(id)signature nonce:(id)nonce signature:(id)a5;
 - (MFAACertificateManager)init;
-- (id)_getAnchorCertsForPolicy:(unint64_t)a3;
+- (id)_getAnchorCertsForPolicy:(unint64_t)policy;
 - (id)_init;
-- (id)copyCertificateSerialNumber:(id)a3 authVer:(int)a4;
-- (id)copyLeafCertificateSerialNumber:(id)a3;
-- (id)copyParsedCertificateChainInfo:(id)a3;
-- (id)copyParsedCertificateChainInfo:(id)a3 assumeType:(int)a4;
-- (id)createVeridianNonce:(id)a3 withChallenge:(id)a4;
-- (int)_getCachedCertStatus:(id)a3 issuerSeq:(id)a4 ppid:(id)a5;
-- (int)_validateBAACertificateChain:(id)a3 error:(id *)a4;
-- (int)_validateCertificateChain:(id)a3 realtime:(BOOL)a4 error:(id *)a5;
-- (int)_validateCertificateWithServer:(id)a3 issuerSeq:(id)a4 ppid:(id)a5 error:(id *)a6;
-- (int)_validateX509CertificateChain:(id)a3 anchorCerts:(id)a4 error:(id *)a5;
-- (int)authVersionFromCertificateChainInfo:(id)a3;
-- (int)validateCertificateChain:(id)a3 type:(int)a4 realtime:(BOOL)a5 error:(id *)a6;
-- (void)requestMetadataForCertificate:(id)a3 requestedLocale:(id)a4 requestInfo:(id)a5 completionHandler:(id)a6;
-- (void)validateCertificate:(id)a3 realtime:(BOOL)a4 completionHandler:(id)a5;
+- (id)copyCertificateSerialNumber:(id)number authVer:(int)ver;
+- (id)copyLeafCertificateSerialNumber:(id)number;
+- (id)copyParsedCertificateChainInfo:(id)info;
+- (id)copyParsedCertificateChainInfo:(id)info assumeType:(int)type;
+- (id)createVeridianNonce:(id)nonce withChallenge:(id)challenge;
+- (int)_getCachedCertStatus:(id)status issuerSeq:(id)seq ppid:(id)ppid;
+- (int)_validateBAACertificateChain:(id)chain error:(id *)error;
+- (int)_validateCertificateChain:(id)chain realtime:(BOOL)realtime error:(id *)error;
+- (int)_validateCertificateWithServer:(id)server issuerSeq:(id)seq ppid:(id)ppid error:(id *)error;
+- (int)_validateX509CertificateChain:(id)chain anchorCerts:(id)certs error:(id *)error;
+- (int)authVersionFromCertificateChainInfo:(id)info;
+- (int)validateCertificateChain:(id)chain type:(int)type realtime:(BOOL)realtime error:(id *)error;
+- (void)requestMetadataForCertificate:(id)certificate requestedLocale:(id)locale requestInfo:(id)info completionHandler:(id)handler;
+- (void)validateCertificate:(id)certificate realtime:(BOOL)realtime completionHandler:(id)handler;
 @end
 
 @implementation MFAACertificateManager
@@ -41,7 +41,7 @@
   block[1] = 3221225472;
   block[2] = __39__MFAACertificateManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_once_1 != -1)
   {
     dispatch_once(&sharedManager_once_1, block);
@@ -120,12 +120,12 @@
   return v6;
 }
 
-- (void)validateCertificate:(id)a3 realtime:(BOOL)a4 completionHandler:(id)a5
+- (void)validateCertificate:(id)certificate realtime:(BOOL)realtime completionHandler:(id)handler
 {
-  v6 = a4;
+  realtimeCopy = realtime;
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  certificateCopy = certificate;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 2;
@@ -155,7 +155,7 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = "YES";
-    if (!v9)
+    if (!handlerCopy)
     {
       v13 = "NO";
     }
@@ -165,9 +165,9 @@
     _os_log_impl(&dword_25627E000, v12, OS_LOG_TYPE_DEFAULT, "Validating certificate... (completionHandler: %s)", buf, 0xCu);
   }
 
-  if (v9)
+  if (handlerCopy)
   {
-    if (v6)
+    if (realtimeCopy)
     {
       v14 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x277D85DD0];
@@ -175,18 +175,18 @@
       block[2] = __73__MFAACertificateManager_validateCertificate_realtime_completionHandler___block_invoke;
       block[3] = &unk_279831B50;
       block[4] = self;
-      v20 = v8;
-      v22 = v6;
-      v21 = v9;
+      v20 = certificateCopy;
+      v22 = realtimeCopy;
+      v21 = handlerCopy;
       dispatch_async(v14, block);
     }
 
     else
     {
       v18 = 0;
-      v15 = [(MFAACertificateManager *)self validateCertificate:v8 realtime:0 error:&v18];
+      v15 = [(MFAACertificateManager *)self validateCertificate:certificateCopy realtime:0 error:&v18];
       v16 = v18;
-      (*(v9 + 2))(v9, v15, v16);
+      (*(handlerCopy + 2))(handlerCopy, v15, v16);
     }
   }
 
@@ -204,17 +204,17 @@ void __73__MFAACertificateManager_validateCertificate_realtime_completionHandler
   (*(*(a1 + 48) + 16))();
 }
 
-- (int)validateCertificateChain:(id)a3 type:(int)a4 realtime:(BOOL)a5 error:(id *)a6
+- (int)validateCertificateChain:(id)chain type:(int)type realtime:(BOOL)realtime error:(id *)error
 {
-  v7 = a5;
+  realtimeCopy = realtime;
   v96 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = v10;
-  if (a4 > 3)
+  chainCopy = chain;
+  v11 = chainCopy;
+  if (type > 3)
   {
-    if (a4 <= 5)
+    if (type <= 5)
     {
-      if (a4 != 4)
+      if (type != 4)
       {
         goto LABEL_8;
       }
@@ -285,7 +285,7 @@ void __73__MFAACertificateManager_validateCertificate_realtime_completionHandler
       }
 
       v53 = _anchorCertsForProvenance_anchorCerts;
-      LODWORD(self) = [(MFAACertificateManager *)self _validateX509CertificateChain:Mutable anchorCerts:v53 error:a6];
+      LODWORD(self) = [(MFAACertificateManager *)self _validateX509CertificateChain:Mutable anchorCerts:v53 error:error];
       if (gLogObjects && gNumLogObjects >= 2)
       {
         v54 = *(gLogObjects + 8);
@@ -316,7 +316,7 @@ LABEL_196:
       goto LABEL_197;
     }
 
-    if (a4 == 7)
+    if (type == 7)
     {
       v34 = *MEMORY[0x277CBECE8];
       Mutable = CFArrayCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBF128]);
@@ -420,7 +420,7 @@ LABEL_196:
       }
 
       v53 = _anchorCertsForWPC_anchorCerts;
-      LODWORD(self) = [(MFAACertificateManager *)self _validateX509CertificateChain:Mutable anchorCerts:v53 error:a6];
+      LODWORD(self) = [(MFAACertificateManager *)self _validateX509CertificateChain:Mutable anchorCerts:v53 error:error];
       if (gLogObjects && gNumLogObjects >= 2)
       {
         v54 = *(gLogObjects + 8);
@@ -448,12 +448,12 @@ LABEL_196:
       goto LABEL_196;
     }
 
-    if (a4 == 6)
+    if (type == 6)
     {
 LABEL_12:
       trust = 0;
       v87 = 0;
-      if (v10 && [v10 count])
+      if (chainCopy && [chainCopy count])
       {
         [v11 objectAtIndexedSubscript:0];
 
@@ -470,7 +470,7 @@ LABEL_12:
         if (v16)
         {
           v17 = v11;
-          v18 = v7;
+          v18 = realtimeCopy;
           v85 = 0u;
           v86 = 0u;
           v83 = 0u;
@@ -513,13 +513,13 @@ LABEL_12:
             [MFAACertificateManager validateCertificateChain:type:realtime:error:];
             v16 = 0;
             LODWORD(self) = 0;
-            v7 = v18;
+            realtimeCopy = v18;
             v11 = v82;
             goto LABEL_73;
           }
 
-          v7 = v18;
-          if (a4 == 1)
+          realtimeCopy = v18;
+          if (type == 1)
           {
             v11 = v82;
             if (_anchorCertsForMFi3_onceToken != -1)
@@ -640,14 +640,14 @@ LABEL_73:
     goto LABEL_34;
   }
 
-  if (a4)
+  if (type)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       goto LABEL_12;
     }
 
-    if (a4 == 3)
+    if (type == 3)
     {
 LABEL_8:
       Mutable = CFArrayCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBF128]);
@@ -681,12 +681,12 @@ LABEL_8:
         if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 67109120;
-          *v90 = a4;
+          *v90 = type;
           _os_log_impl(&dword_25627E000, v37, OS_LOG_TYPE_DEFAULT, "validateCertificateChain: Cannot get leafCert for type %d", buf, 8u);
         }
       }
 
-      if (a4 == 5)
+      if (type == 5)
       {
         v49 = _anchorCertsForComponentAuth();
       }
@@ -726,7 +726,7 @@ LABEL_8:
       }
 
       v53 = v49;
-      LODWORD(self) = [(MFAACertificateManager *)self _validateX509CertificateChain:Mutable anchorCerts:v49 error:a6];
+      LODWORD(self) = [(MFAACertificateManager *)self _validateX509CertificateChain:Mutable anchorCerts:v49 error:error];
       if (gLogObjects && gNumLogObjects >= 2)
       {
         v54 = *(gLogObjects + 8);
@@ -749,7 +749,7 @@ LABEL_8:
       }
 
       *buf = 67109376;
-      *v90 = a4;
+      *v90 = type;
       *&v90[4] = 1024;
       *&v90[6] = self;
       v56 = "validateCertificateChain: type=%d, status = %d";
@@ -787,7 +787,7 @@ LABEL_34:
     if (os_log_type_enabled(&self->super, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      *v90 = a4;
+      *v90 = type;
       _os_log_impl(&dword_25627E000, &self->super, OS_LOG_TYPE_DEFAULT, "validateCertificateChain: Unrecognized cert type %d for cert validation, likely not supported by this API yet", buf, 8u);
     }
 
@@ -867,7 +867,7 @@ LABEL_34:
     }
   }
 
-  LODWORD(self) = [(MFAACertificateManager *)self _validateBAACertificateChain:v29 error:a6];
+  LODWORD(self) = [(MFAACertificateManager *)self _validateBAACertificateChain:v29 error:error];
   if (gLogObjects && gNumLogObjects >= 2)
   {
     v64 = *(gLogObjects + 8);
@@ -904,9 +904,9 @@ LABEL_201:
     *buf = 67109890;
     *v90 = self;
     *&v90[4] = 1024;
-    *&v90[6] = a4;
+    *&v90[6] = type;
     v91 = 1024;
-    v92 = v7;
+    v92 = realtimeCopy;
     v93 = 2112;
     v94 = v11;
     _os_log_impl(&dword_25627E000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "validateCertificateChain: status %d, type %d, realtime %d, certificates %@", buf, 0x1Eu);
@@ -916,13 +916,13 @@ LABEL_201:
   return self;
 }
 
-- (void)requestMetadataForCertificate:(id)a3 requestedLocale:(id)a4 requestInfo:(id)a5 completionHandler:(id)a6
+- (void)requestMetadataForCertificate:(id)certificate requestedLocale:(id)locale requestInfo:(id)info completionHandler:(id)handler
 {
   v51 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  certificateCopy = certificate;
+  localeCopy = locale;
+  infoCopy = info;
+  handlerCopy = handler;
   if (gLogObjects)
   {
     v14 = gNumLogObjects < 2;
@@ -973,27 +973,27 @@ LABEL_201:
 
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v10 length];
-    v20 = [v11 localeIdentifier];
-    v21 = v20;
+    v19 = [certificateCopy length];
+    localeIdentifier = [localeCopy localeIdentifier];
+    v21 = localeIdentifier;
     v22 = "YES";
     *buf = 134218755;
     v44 = v19;
     v45 = 2112;
-    if (!v13)
+    if (!handlerCopy)
     {
       v22 = "NO";
     }
 
-    v46 = v20;
+    v46 = localeIdentifier;
     v47 = 2113;
-    v48 = v12;
+    v48 = infoCopy;
     v49 = 2080;
     v50 = v22;
     _os_log_impl(&dword_25627E000, v17, OS_LOG_TYPE_DEFAULT, "certificate.length: %lu, requestedLocale: %@, requestInfo: %{private}@, completionHandler: %s", buf, 0x2Au);
   }
 
-  if (v13)
+  if (handlerCopy)
   {
     if (systemInfo_isInternalBuild() && (-[MFAACertificateManager userDefaults](self, "userDefaults"), v23 = objc_claimAutoreleasedReturnValue(), v24 = [v23 BOOLForKey:@"SpoofPPIDMetadata"], v23, v24))
     {
@@ -1049,8 +1049,8 @@ LABEL_201:
       v40[2] = __102__MFAACertificateManager_requestMetadataForCertificate_requestedLocale_requestInfo_completionHandler___block_invoke;
       v40[3] = &unk_279831B78;
       v27 = &v42;
-      v42 = v13;
-      v41 = v11;
+      v42 = handlerCopy;
+      v41 = localeCopy;
       dispatch_after(v32, v33, v40);
 
       v28 = v41;
@@ -1064,11 +1064,11 @@ LABEL_201:
       block[2] = __102__MFAACertificateManager_requestMetadataForCertificate_requestedLocale_requestInfo_completionHandler___block_invoke_74;
       block[3] = &unk_279831BA0;
       v27 = v36;
-      v36[0] = v10;
+      v36[0] = certificateCopy;
       v36[1] = self;
-      v37 = v11;
-      v39 = v13;
-      v38 = v12;
+      v37 = localeCopy;
+      v39 = handlerCopy;
+      v38 = infoCopy;
       dispatch_async(v26, block);
 
       v28 = v37;
@@ -1320,10 +1320,10 @@ void __102__MFAACertificateManager_requestMetadataForCertificate_requestedLocale
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)copyParsedCertificateChainInfo:(id)a3
+- (id)copyParsedCertificateChainInfo:(id)info
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  infoCopy = info;
   if (gLogObjects)
   {
     v4 = gNumLogObjects < 2;
@@ -1353,11 +1353,11 @@ void __102__MFAACertificateManager_requestMetadataForCertificate_requestedLocale
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = v3;
+    v28 = infoCopy;
     _os_log_impl(&dword_25627E000, v6, OS_LOG_TYPE_DEFAULT, "copyParsedCertificateChainInfo: certificateData %@", buf, 0xCu);
   }
 
-  if (!v3)
+  if (!infoCopy)
   {
     [MFAACertificateManager copyParsedCertificateChainInfo:];
     v14 = 0;
@@ -1376,14 +1376,14 @@ LABEL_42:
     goto LABEL_27;
   }
 
-  v8 = [v3 bytes];
-  v9 = [v3 length];
+  bytes = [infoCopy bytes];
+  v9 = [infoCopy length];
   v25 = 0;
   v26 = 0;
   v23 = 0;
   v24 = 0;
   v22 = 0;
-  v10 = CTParseAccessoryCerts(v8, v9, &v26, &v25, &v24, &v23, &v22);
+  v10 = CTParseAccessoryCerts(bytes, v9, &v26, &v25, &v24, &v23, &v22);
   if (gLogObjects && gNumLogObjects >= 2)
   {
     v11 = *(gLogObjects + 8);
@@ -1431,7 +1431,7 @@ LABEL_27:
   }
 
   [v7 setObject:v13 forKey:@"LeafCertData"];
-  [v7 setObject:v3 forKey:@"FullCertData"];
+  [v7 setObject:infoCopy forKey:@"FullCertData"];
   if (v24)
   {
     v14 = [MEMORY[0x277CBEA90] dataWithBytes:v24 length:v23];
@@ -1479,10 +1479,10 @@ LABEL_30:
   return v19;
 }
 
-- (id)copyParsedCertificateChainInfo:(id)a3 assumeType:(int)a4
+- (id)copyParsedCertificateChainInfo:(id)info assumeType:(int)type
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  infoCopy = info;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 2;
@@ -1512,13 +1512,13 @@ LABEL_30:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 67109378;
-    v21 = a4;
+    typeCopy2 = type;
     v22 = 2112;
-    v23 = v6;
+    v23 = infoCopy;
     _os_log_impl(&dword_25627E000, v9, OS_LOG_TYPE_DEFAULT, "copyParsedCertificateChainInfo:assumeType: %d, certificateData %@", &v20, 0x12u);
   }
 
-  if (!v6)
+  if (!infoCopy)
   {
     [MFAACertificateManager copyParsedCertificateChainInfo:];
 LABEL_26:
@@ -1526,7 +1526,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if ((a4 + 1) > 7)
+  if ((type + 1) > 7)
   {
     if (gLogObjects && gNumLogObjects >= 2)
     {
@@ -1552,14 +1552,14 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if (((1 << (a4 + 1)) & 0xCF) == 0)
+  if (((1 << (type + 1)) & 0xCF) == 0)
   {
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v11 = v12;
     if (v12)
     {
-      [v12 setObject:v6 forKey:@"LeafCertData"];
-      [v11 setObject:v6 forKey:@"FullCertData"];
+      [v12 setObject:infoCopy forKey:@"LeafCertData"];
+      [v11 setObject:infoCopy forKey:@"FullCertData"];
       v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:0];
       [v11 setObject:v13 forKey:@"PolicyFlags"];
 
@@ -1573,7 +1573,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  v10 = [(MFAACertificateManager *)self copyParsedCertificateChainInfo:v6];
+  v10 = [(MFAACertificateManager *)self copyParsedCertificateChainInfo:infoCopy];
   v11 = 0;
 LABEL_28:
   if (gLogObjects && gNumLogObjects >= 2)
@@ -1595,7 +1595,7 @@ LABEL_28:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 67109378;
-    v21 = a4;
+    typeCopy2 = type;
     v22 = 2112;
     v23 = v10;
     _os_log_impl(&dword_25627E000, v16, OS_LOG_TYPE_DEFAULT, "copyParsedCertificateChainInfo:assumeType: %d, result %@", &v20, 0x12u);
@@ -1605,13 +1605,13 @@ LABEL_28:
   return v10;
 }
 
-- (int)authVersionFromCertificateChainInfo:(id)a3
+- (int)authVersionFromCertificateChainInfo:(id)info
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  infoCopy = info;
+  v4 = infoCopy;
+  if (infoCopy)
   {
-    v5 = [v3 objectForKey:@"PolicyFlags"];
+    v5 = [infoCopy objectForKey:@"PolicyFlags"];
     v6 = v5;
     if (v5)
     {
@@ -1686,16 +1686,16 @@ LABEL_14:
   return v7;
 }
 
-- (id)copyCertificateSerialNumber:(id)a3 authVer:(int)a4
+- (id)copyCertificateSerialNumber:(id)number authVer:(int)ver
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
+  numberCopy = number;
+  v6 = numberCopy;
   error = 0;
-  if (v5)
+  if (numberCopy)
   {
     v7 = *MEMORY[0x277CBECE8];
-    [v5 bytes];
+    [numberCopy bytes];
     [v6 length];
     v8 = SecCertificateCreateWithBytes();
     if (v8)
@@ -1715,7 +1715,7 @@ LABEL_14:
 
       if (v12)
       {
-        if (a4 != 2)
+        if (ver != 2)
         {
           goto LABEL_17;
         }
@@ -1809,14 +1809,14 @@ LABEL_18:
   return v11;
 }
 
-- (id)copyLeafCertificateSerialNumber:(id)a3
+- (id)copyLeafCertificateSerialNumber:(id)number
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  numberCopy = number;
+  v5 = numberCopy;
+  if (numberCopy)
   {
-    v6 = [v4 objectForKey:@"LeafCertData"];
+    v6 = [numberCopy objectForKey:@"LeafCertData"];
     if (v6)
     {
       v7 = [(MFAACertificateManager *)self copyCertificateSerialNumber:v6 authVer:[(MFAACertificateManager *)self authVersionFromCertificateChainInfo:v5]];
@@ -1875,11 +1875,11 @@ LABEL_18:
   return v7;
 }
 
-- (BOOL)verifyCertificateSerialNumberBySerialNumber:(id)a3 authVer:(int)a4
+- (BOOL)verifyCertificateSerialNumberBySerialNumber:(id)number authVer:(int)ver
 {
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  numberCopy = number;
+  v6 = numberCopy;
+  if (!numberCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -1889,9 +1889,9 @@ LABEL_18:
     goto LABEL_26;
   }
 
-  v7 = [v5 bytes];
+  bytes = [numberCopy bytes];
   v8 = [v6 length];
-  if (!v7)
+  if (!bytes)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -1901,13 +1901,13 @@ LABEL_18:
     goto LABEL_26;
   }
 
-  if (a4 == 2 && v8 == 15)
+  if (ver == 2 && v8 == 15)
   {
-    v9 = (*v7 << 56) | (v7[1] << 48) | (v7[3] << 40) | (v7[4] << 32) | (v7[5] << 24) | (v7[7] << 16) | (v7[9] << 8);
-    v10 = v7[10];
-    v11 = v7[12];
-    v12 = v7[13];
-    v13 = v7[14];
+    v9 = (*bytes << 56) | (bytes[1] << 48) | (bytes[3] << 40) | (bytes[4] << 32) | (bytes[5] << 24) | (bytes[7] << 16) | (bytes[9] << 8);
+    v10 = bytes[10];
+    v11 = bytes[12];
+    v12 = bytes[13];
+    v13 = bytes[14];
     NumRevokedAuthICBatches = getNumRevokedAuthICBatches();
     RevokedAuthICBatches = getRevokedAuthICBatches();
     v16 = MFAAPrefixesBinarySearch(RevokedAuthICBatches, v9 + v10, NumRevokedAuthICBatches);
@@ -1920,7 +1920,7 @@ LABEL_18:
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
-        [(MFAACertificateManager *)v7 verifyCertificateSerialNumberBySerialNumber:v17 authVer:v18, v19, v20, v21, v22, v23];
+        [(MFAACertificateManager *)bytes verifyCertificateSerialNumberBySerialNumber:v17 authVer:v18, v19, v20, v21, v22, v23];
       }
 
 LABEL_26:
@@ -1931,7 +1931,7 @@ LABEL_26:
 
   else
   {
-    if (a4 != 3 || v8 != 16)
+    if (ver != 3 || v8 != 16)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -1941,19 +1941,19 @@ LABEL_26:
       goto LABEL_26;
     }
 
-    v24 = *v7;
+    v24 = *bytes;
     if (v24 < 0)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
-        [MFAACertificateManager verifyCertificateSerialNumberBySerialNumber:v7 authVer:?];
+        [MFAACertificateManager verifyCertificateSerialNumberBySerialNumber:bytes authVer:?];
       }
 
       goto LABEL_26;
     }
 
-    v25 = (v24 << 40) | (v7[1] << 32) | (v7[2] << 24) | (v7[3] << 16) | (v7[4] << 8);
-    v26 = v7[5];
+    v25 = (v24 << 40) | (bytes[1] << 32) | (bytes[2] << 24) | (bytes[3] << 16) | (bytes[4] << 8);
+    v26 = bytes[5];
     NumRevokedAuth3Wafers = getNumRevokedAuth3Wafers();
     RevokedAuth3Wafers = getRevokedAuth3Wafers();
     if (MFAAWaferBinarySearch(RevokedAuth3Wafers, v25 | v26, NumRevokedAuth3Wafers))
@@ -1973,12 +1973,12 @@ LABEL_27:
   return v29;
 }
 
-- (BOOL)verifyCertificateChainInfoSerialNumber:(id)a3
+- (BOOL)verifyCertificateChainInfoSerialNumber:(id)number
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  numberCopy = number;
+  v5 = numberCopy;
+  if (!numberCopy)
   {
     v7 = logObjectForModule(1);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1989,7 +1989,7 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v6 = [v4 objectForKey:@"LeafCertData"];
+  v6 = [numberCopy objectForKey:@"LeafCertData"];
   if (!v6)
   {
     v7 = logObjectForModule(1);
@@ -2069,34 +2069,34 @@ LABEL_14:
   return v9;
 }
 
-- (BOOL)verifyNonceSignature:(id)a3 nonce:(id)a4 signature:(id)a5
+- (BOOL)verifyNonceSignature:(id)signature nonce:(id)nonce signature:(id)a5
 {
   v53 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  signatureCopy = signature;
+  nonceCopy = nonce;
   v10 = a5;
   v11 = v10;
   error = 0;
   trust = 0;
-  v47 = self;
-  v48 = v9;
-  if (!v8)
+  selfCopy = self;
+  v48 = nonceCopy;
+  if (!signatureCopy)
   {
     [MFAACertificateManager copyEvaluatedCertificateChainInfo:forSpecificType:];
 LABEL_86:
     v21 = 0;
-    LOBYTE(v13) = 0;
+    LOBYTE(bytes2) = 0;
     v27 = 0;
     v24 = 0;
-    v9 = 0;
+    nonceCopy = 0;
     goto LABEL_87;
   }
 
-  if (!v9)
+  if (!nonceCopy)
   {
     [MFAACertificateManager verifyNonceSignature:nonce:signature:];
     v21 = 0;
-    LOBYTE(v13) = 0;
+    LOBYTE(bytes2) = 0;
     v27 = 0;
     v24 = 0;
 LABEL_87:
@@ -2110,28 +2110,28 @@ LABEL_87:
     goto LABEL_86;
   }
 
-  v12 = [v8 objectForKey:@"LeafCertData"];
+  v12 = [signatureCopy objectForKey:@"LeafCertData"];
   if (!v12)
   {
     [MFAACertificateManager verifyNonceSignature:nonce:signature:];
     v21 = 0;
-    LOBYTE(v13) = 0;
+    LOBYTE(bytes2) = 0;
 LABEL_90:
     v27 = 0;
     v24 = 0;
-    v9 = 0;
+    nonceCopy = 0;
     goto LABEL_33;
   }
 
-  v13 = [v8 objectForKey:@"FullCertData"];
-  if (!v13)
+  bytes2 = [signatureCopy objectForKey:@"FullCertData"];
+  if (!bytes2)
   {
     [MFAACertificateManager verifyNonceSignature:nonce:signature:];
     v21 = 0;
     goto LABEL_90;
   }
 
-  v14 = [(MFAACertificateManager *)self authVersionFromCertificateChainInfo:v8];
+  v14 = [(MFAACertificateManager *)self authVersionFromCertificateChainInfo:signatureCopy];
   v15 = *MEMORY[0x277CBECE8];
   if ((v14 - 4) <= 0xFFFFFFFD)
   {
@@ -2145,7 +2145,7 @@ LABEL_90:
       if (v18)
       {
         v19 = v18;
-        v20 = SecKeyVerifySignature(v18, *MEMORY[0x277CDC300], v9, v11, &error);
+        v20 = SecKeyVerifySignature(v18, *MEMORY[0x277CDC300], nonceCopy, v11, &error);
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
           *buf = 67109378;
@@ -2168,7 +2168,7 @@ LABEL_90:
 
         else
         {
-          v28 = SecKeyVerifySignature(v19, *MEMORY[0x277CDC318], v9, v11, &error);
+          v28 = SecKeyVerifySignature(v19, *MEMORY[0x277CDC318], nonceCopy, v11, &error);
           v21 = v28 != 0;
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
           {
@@ -2186,12 +2186,12 @@ LABEL_90:
           }
         }
 
-        v9 = v13;
+        nonceCopy = bytes2;
         CFRelease(v19);
         goto LABEL_31;
       }
 
-      v9 = v13;
+      nonceCopy = bytes2;
       [MFAACertificateManager verifyNonceSignature:nonce:signature:];
 LABEL_25:
       v21 = 0;
@@ -2199,7 +2199,7 @@ LABEL_31:
       v24 = 0;
 LABEL_32:
       CFRelease(v17);
-      LOBYTE(v13) = 0;
+      LOBYTE(bytes2) = 0;
       v27 = 0;
       goto LABEL_33;
     }
@@ -2214,7 +2214,7 @@ LABEL_32:
     Mutable = CFArrayCreateMutable(0, 0, MEMORY[0x277CBF128]);
     if (!Mutable)
     {
-      v9 = v13;
+      nonceCopy = bytes2;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         [MFAACertificateManager verifyNonceSignature:nonce:signature:];
@@ -2228,7 +2228,7 @@ LABEL_32:
     v25 = SecPolicyCreateiAP();
     if (!v25)
     {
-      v9 = v13;
+      nonceCopy = bytes2;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         [MFAACertificateManager verifyNonceSignature:nonce:signature:];
@@ -2242,13 +2242,13 @@ LABEL_32:
     SecTrustCreateWithCertificates(v24, v25, &trust);
     if (!trust)
     {
-      v9 = v13;
+      nonceCopy = bytes2;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         [MFAACertificateManager verifyNonceSignature:nonce:signature:];
       }
 
-      LOBYTE(v13) = 0;
+      LOBYTE(bytes2) = 0;
       v27 = 0;
       goto LABEL_82;
     }
@@ -2257,13 +2257,13 @@ LABEL_32:
     v27 = MFAACreateAnchorCertificateAuthorityArray(v14);
     if (!v27)
     {
-      v9 = v13;
+      nonceCopy = bytes2;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         [MFAACertificateManager verifyNonceSignature:nonce:signature:];
       }
 
-      LOBYTE(v13) = 0;
+      LOBYTE(bytes2) = 0;
       goto LABEL_82;
     }
 
@@ -2271,7 +2271,7 @@ LABEL_32:
     SecTrustSetAnchorCertificates(trust, v27);
     if (MEMORY[0x259C60280](trust, buf))
     {
-      v9 = v13;
+      nonceCopy = bytes2;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         [MFAACertificateManager verifyNonceSignature:nonce:signature:];
@@ -2283,13 +2283,13 @@ LABEL_32:
       if (*buf == 4 || *buf == 1)
       {
         v35 = MEMORY[0x259C60260](trust);
-        v9 = v13;
+        nonceCopy = bytes2;
         if (v35)
         {
           v36 = v35;
-          v42 = [(__CFData *)v48 bytes];
+          bytes = [(__CFData *)v48 bytes];
           v41 = [(__CFData *)v48 length];
-          v13 = [(__CFData *)v11 bytes];
+          bytes2 = [(__CFData *)v11 bytes];
           v37 = [(__CFData *)v11 length];
           if (v14 == 2)
           {
@@ -2302,8 +2302,8 @@ LABEL_32:
           }
 
           cf = v36;
-          v39 = SecKeyRawVerify(v36, v38, v42, v41, v13, v37);
-          LOBYTE(v13) = v39 == 0;
+          v39 = SecKeyRawVerify(v36, v38, bytes, v41, bytes2, v37);
+          LOBYTE(bytes2) = v39 == 0;
           v26 = v46;
           if (v39)
           {
@@ -2333,7 +2333,7 @@ LABEL_32:
 
       else
       {
-        v9 = v13;
+        nonceCopy = bytes2;
         v40 = logObjectForModule(-1);
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
@@ -2342,7 +2342,7 @@ LABEL_32:
       }
     }
 
-    LOBYTE(v13) = 0;
+    LOBYTE(bytes2) = 0;
 LABEL_82:
     CFRelease(v17);
     CFRelease(v26);
@@ -2351,10 +2351,10 @@ LABEL_82:
   }
 
 LABEL_91:
-  v9 = v13;
+  nonceCopy = bytes2;
   [MFAACertificateManager verifyNonceSignature:nonce:signature:];
   v21 = 0;
-  LOBYTE(v13) = 0;
+  LOBYTE(bytes2) = 0;
   v27 = 0;
   v24 = 0;
 LABEL_33:
@@ -2374,14 +2374,14 @@ LABEL_33:
     CFRelease(v24);
   }
 
-  if (v13)
+  if (bytes2)
   {
     LOBYTE(v21) = 1;
   }
 
   else
   {
-    v29 = [(MFAACertificateManager *)v47 copyLeafCertificateSerialNumber:v8];
+    v29 = [(MFAACertificateManager *)selfCopy copyLeafCertificateSerialNumber:signatureCopy];
     if (gLogObjects && gNumLogObjects >= 2)
     {
       v30 = *(gLogObjects + 8);
@@ -2419,21 +2419,21 @@ LABEL_33:
   return v21;
 }
 
-- (id)createVeridianNonce:(id)a3 withChallenge:(id)a4
+- (id)createVeridianNonce:(id)nonce withChallenge:(id)challenge
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB28] dataWithData:v6];
-  [v7 appendData:v5];
+  nonceCopy = nonce;
+  challengeCopy = challenge;
+  v7 = [MEMORY[0x277CBEB28] dataWithData:challengeCopy];
+  [v7 appendData:nonceCopy];
   v8 = *MEMORY[0x277CBECE8];
   v9 = SecSHA256DigestCreateFromData();
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138413058;
-    v13 = v6;
+    v13 = challengeCopy;
     v14 = 2112;
-    v15 = v5;
+    v15 = nonceCopy;
     v16 = 2112;
     v17 = v7;
     v18 = 2112;
@@ -2446,11 +2446,11 @@ LABEL_33:
   return v9;
 }
 
-- (int)_validateCertificateChain:(id)a3 realtime:(BOOL)a4 error:(id *)a5
+- (int)_validateCertificateChain:(id)chain realtime:(BOOL)realtime error:(id *)error
 {
-  v6 = a4;
+  realtimeCopy = realtime;
   v123[4] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  chainCopy = chain;
   if (gLogObjects)
   {
     v9 = gNumLogObjects < 2;
@@ -2485,8 +2485,8 @@ LABEL_33:
 
   if (systemInfo_isInternalBuild())
   {
-    v12 = [(MFAACertificateManager *)self userDefaults];
-    v13 = [v12 stringForKey:@"SpoofCertificateStatus"];
+    userDefaults = [(MFAACertificateManager *)self userDefaults];
+    v13 = [userDefaults stringForKey:@"SpoofCertificateStatus"];
 
     if (v13)
     {
@@ -2504,9 +2504,9 @@ LABEL_33:
       if (v15)
       {
         v16 = [v14 objectForKeyedSubscript:v13];
-        v17 = [v16 intValue];
+        intValue = [v16 intValue];
 
-        if (v17)
+        if (intValue)
         {
           if (gLogObjects && gNumLogObjects >= 2)
           {
@@ -2527,7 +2527,7 @@ LABEL_33:
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 67109120;
-            *&buf[4] = v17;
+            *&buf[4] = intValue;
             _os_log_impl(&dword_25627E000, v18, OS_LOG_TYPE_DEFAULT, "Spoofing certificate status: %{coreacc:MFAACertificateManager_CertStatus_t}d", buf, 8u);
           }
 
@@ -2562,7 +2562,7 @@ LABEL_33:
     }
   }
 
-  v23 = [v8 objectAtIndex:0];
+  v23 = [chainCopy objectAtIndex:0];
 
   if (v23)
   {
@@ -2583,7 +2583,7 @@ LABEL_33:
       v27 = MEMORY[0x277D86220];
     }
 
-    v105 = v6;
+    v105 = realtimeCopy;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
@@ -2739,9 +2739,9 @@ LABEL_33:
         v48 = BasicX509;
         if (BasicX509)
         {
-          if (SecTrustCreateWithCertificates(v8, BasicX509, buf) || (v49 = *buf, v50 = _anchorCertsForComponentAuth(), SecTrustSetAnchorCertificates(v49, v50), v116 = 0, MEMORY[0x259C60280](*buf, &v116)))
+          if (SecTrustCreateWithCertificates(chainCopy, BasicX509, buf) || (v49 = *buf, v50 = _anchorCertsForComponentAuth(), SecTrustSetAnchorCertificates(v49, v50), v116 = 0, MEMORY[0x259C60280](*buf, &v116)))
           {
-            v17 = 0;
+            intValue = 0;
           }
 
           else
@@ -2771,7 +2771,7 @@ LABEL_33:
 
             if (v116 == 4 || v116 == 5 && SecTrustIsExpiredOnly())
             {
-              v17 = 1;
+              intValue = 1;
             }
 
             else
@@ -2792,7 +2792,7 @@ LABEL_33:
                 }
               }
 
-              v17 = 2;
+              intValue = 2;
             }
           }
 
@@ -2801,7 +2801,7 @@ LABEL_33:
 
         else
         {
-          v17 = 0;
+          intValue = 0;
         }
 
         if (*buf)
@@ -2844,43 +2844,43 @@ LABEL_141:
         }
 
         v21 = [MEMORY[0x277CCA9B8] MFAA_errorWithDomain:@"MFAACertificateManagerErrorDomain" code:-3];
-        v17 = 2;
+        intValue = 2;
         goto LABEL_141;
       }
 
       if (v37 != 4)
       {
-        v42 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+        v42 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(chainCopy, "count")}];
         if (v42)
         {
-          if ([v8 count])
+          if ([chainCopy count])
           {
             v43 = 0;
             do
             {
-              v44 = SecCertificateCopyData([v8 objectAtIndex:v43]);
+              v44 = SecCertificateCopyData([chainCopy objectAtIndex:v43]);
               [v42 addObject:v44];
 
               ++v43;
             }
 
-            while ([v8 count] > v43);
+            while ([chainCopy count] > v43);
           }
 
           if (MFAAVerifyPublicCertificateChain(v42))
           {
-            v17 = 1;
+            intValue = 1;
           }
 
           else
           {
-            v17 = 2;
+            intValue = 2;
           }
         }
 
         else
         {
-          v17 = 0;
+          intValue = 0;
         }
 
         goto LABEL_140;
@@ -2892,8 +2892,8 @@ LABEL_141:
     if ((systemInfo_isInternalBuild() & 1) != 0 || (systemInfo_isDeveloperBuild() & 1) != 0 || v63 == 1)
     {
       v101 = v63;
-      v64 = [(MFAACertificateManager *)self userDefaults];
-      v65 = [v64 BOOLForKey:@"BypassCertificateExpirationCheck"];
+      userDefaults2 = [(MFAACertificateManager *)self userDefaults];
+      v65 = [userDefaults2 BOOLForKey:@"BypassCertificateExpirationCheck"];
 
       if (gLogObjects)
       {
@@ -2971,7 +2971,7 @@ LABEL_141:
         if (SecTrustCreateWithCertificates(v23, v72, v121))
         {
           v21 = 0;
-          v17 = 0;
+          intValue = 0;
         }
 
         else
@@ -3014,7 +3014,7 @@ LABEL_141:
           if (MEMORY[0x259C60280](*v121, &v116))
           {
             v21 = 0;
-            v17 = 0;
+            intValue = 0;
           }
 
           else
@@ -3045,12 +3045,12 @@ LABEL_141:
             v102 = v116;
             if (v116 == 4)
             {
-              v17 = 1;
+              intValue = 1;
             }
 
             else if (v116 == 6)
             {
-              v17 = 3;
+              intValue = 3;
             }
 
             else
@@ -3071,7 +3071,7 @@ LABEL_141:
                 }
               }
 
-              v17 = 2;
+              intValue = 2;
             }
 
             if (gLogObjects && gNumLogObjects >= 2)
@@ -3093,7 +3093,7 @@ LABEL_141:
             if (os_log_type_enabled(v83, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 67109120;
-              *&buf[4] = v17;
+              *&buf[4] = intValue;
               _os_log_impl(&dword_25627E000, v83, OS_LOG_TYPE_DEFAULT, "certStatus (local): %{coreacc:MFAACertificateManager_CertStatus_t}d", buf, 8u);
             }
 
@@ -3160,7 +3160,7 @@ LABEL_141:
                   if (v105)
                   {
                     v115 = 0;
-                    v17 = [(MFAACertificateManager *)self _validateCertificateWithServer:v107 issuerSeq:v85 ppid:v103 error:&v115];
+                    intValue = [(MFAACertificateManager *)self _validateCertificateWithServer:v107 issuerSeq:v85 ppid:v103 error:&v115];
                     v21 = v115;
                     v94 = logObjectForModule(1);
                     if (os_log_type_enabled(v94, OS_LOG_TYPE_DEFAULT))
@@ -3173,7 +3173,7 @@ LABEL_141:
                     if (os_log_type_enabled(v95, OS_LOG_TYPE_DEFAULT))
                     {
                       *buf = 67109120;
-                      *&buf[4] = v17;
+                      *&buf[4] = intValue;
                       _os_log_impl(&dword_25627E000, v95, OS_LOG_TYPE_DEFAULT, "certStatus (remote): %{coreacc:MFAACertificateManager_CertStatus_t}d", buf, 8u);
                     }
 
@@ -3182,20 +3182,20 @@ LABEL_141:
 
                   else
                   {
-                    v17 = [(MFAACertificateManager *)self _getCachedCertStatus:v107 issuerSeq:v85 ppid:v103];
+                    intValue = [(MFAACertificateManager *)self _getCachedCertStatus:v107 issuerSeq:v85 ppid:v103];
                     v97 = logObjectForModule(1);
                     if (os_log_type_enabled(v97, OS_LOG_TYPE_INFO))
                     {
                       *buf = 67109376;
                       *&buf[4] = 1;
                       *&buf[8] = 1024;
-                      *&buf[10] = v17;
+                      *&buf[10] = intValue;
                       _os_log_impl(&dword_25627E000, v97, OS_LOG_TYPE_INFO, "certStatus: %{coreacc:MFAACertificateManager_CertStatus_t}d, cachedCertStatus: %{coreacc:MFAACertificateManager_CertStatus_t}d", buf, 0xEu);
                     }
 
-                    if (v17 <= 1)
+                    if (intValue <= 1)
                     {
-                      v17 = 1;
+                      intValue = 1;
                     }
 
                     v98 = dispatch_get_global_queue(-32768, 0);
@@ -3217,7 +3217,7 @@ LABEL_141:
                 else
                 {
                   v21 = 0;
-                  v17 = 2;
+                  intValue = 2;
                 }
 
                 v73 = cf;
@@ -3228,7 +3228,7 @@ LABEL_141:
               else
               {
                 v21 = 0;
-                v17 = 2;
+                intValue = 2;
                 v73 = cf;
               }
 
@@ -3246,7 +3246,7 @@ LABEL_266:
         goto LABEL_267;
       }
 
-      v17 = 0;
+      intValue = 0;
       v21 = 0;
     }
 
@@ -3254,7 +3254,7 @@ LABEL_266:
     {
       [MFAACertificateManager _validateCertificateChain:realtime:error:];
       v21 = 0;
-      v17 = 2;
+      intValue = 2;
     }
 
 LABEL_267:
@@ -3288,7 +3288,7 @@ LABEL_267:
   }
 
   v21 = [MEMORY[0x277CCA9B8] MFAA_errorWithDomain:@"MFAACertificateManagerErrorDomain" code:-3];
-  v17 = 2;
+  intValue = 2;
 LABEL_142:
   if (gLogObjects && gNumLogObjects >= 2)
   {
@@ -3309,7 +3309,7 @@ LABEL_142:
   if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    *&buf[4] = v17;
+    *&buf[4] = intValue;
     _os_log_impl(&dword_25627E000, v56, OS_LOG_TYPE_DEFAULT, "Returning certStatus: %{coreacc:MFAACertificateManager_CertStatus_t}d", buf, 8u);
   }
 
@@ -3337,14 +3337,14 @@ LABEL_142:
     }
   }
 
-  if (a5)
+  if (error)
   {
     v60 = v21;
-    *a5 = v21;
+    *error = v21;
   }
 
   v61 = *MEMORY[0x277D85DE8];
-  return v17;
+  return intValue;
 }
 
 void __67__MFAACertificateManager__validateCertificateChain_realtime_error___block_invoke(void *a1)
@@ -3449,11 +3449,11 @@ void __67__MFAACertificateManager__validateCertificateChain_realtime_error___blo
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (int)_validateCertificateWithServer:(id)a3 issuerSeq:(id)a4 ppid:(id)a5 error:(id *)a6
+- (int)_validateCertificateWithServer:(id)server issuerSeq:(id)seq ppid:(id)ppid error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  serverCopy = server;
+  seqCopy = seq;
+  ppidCopy = ppid;
   v38 = 0;
   v39 = &v38;
   v40 = 0x2020000000;
@@ -3487,7 +3487,7 @@ void __67__MFAACertificateManager__validateCertificateChain_realtime_error___blo
   }
 
   v15 = dispatch_semaphore_create(0);
-  v16 = [(MFAACertificateManager *)self xpcConnection];
+  xpcConnection = [(MFAACertificateManager *)self xpcConnection];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __78__MFAACertificateManager__validateCertificateWithServer_issuerSeq_ppid_error___block_invoke;
@@ -3495,7 +3495,7 @@ void __67__MFAACertificateManager__validateCertificateChain_realtime_error___blo
   v33 = &v35;
   v17 = v15;
   v32 = v17;
-  v18 = [v16 remoteObjectProxyWithErrorHandler:v31];
+  v18 = [xpcConnection remoteObjectProxyWithErrorHandler:v31];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __78__MFAACertificateManager__validateCertificateWithServer_issuerSeq_ppid_error___block_invoke_128;
@@ -3504,7 +3504,7 @@ void __67__MFAACertificateManager__validateCertificateChain_realtime_error___blo
   v30 = &v35;
   v19 = v17;
   v28 = v19;
-  [v18 validateCertSerial:v10 issuerSeq:v11 ppid:v12 withReply:v27];
+  [v18 validateCertSerial:serverCopy issuerSeq:seqCopy ppid:ppidCopy withReply:v27];
 
   v20 = dispatch_time(0, 65000000000);
   if (dispatch_semaphore_wait(v19, v20))
@@ -3538,9 +3538,9 @@ void __67__MFAACertificateManager__validateCertificateChain_realtime_error___blo
     }
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = *(v36[0] + 40);
+    *error = *(v36[0] + 40);
   }
 
   v25 = *(v39 + 6);
@@ -3603,12 +3603,12 @@ void __78__MFAACertificateManager__validateCertificateWithServer_issuerSeq_ppid_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (int)_getCachedCertStatus:(id)a3 issuerSeq:(id)a4 ppid:(id)a5
+- (int)_getCachedCertStatus:(id)status issuerSeq:(id)seq ppid:(id)ppid
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  statusCopy = status;
+  seqCopy = seq;
+  ppidCopy = ppid;
   v36 = 0;
   v37 = &v36;
   v38 = 0x2020000000;
@@ -3638,12 +3638,12 @@ void __78__MFAACertificateManager__validateCertificateWithServer_issuerSeq_ppid_
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v41 = v8;
+    v41 = statusCopy;
     _os_log_impl(&dword_25627E000, v11, OS_LOG_TYPE_DEFAULT, "Checking cached cert status... (certSerial: %{private}@)", buf, 0xCu);
   }
 
   v13 = dispatch_semaphore_create(0);
-  v14 = [(MFAACertificateManager *)self xpcConnection];
+  xpcConnection = [(MFAACertificateManager *)self xpcConnection];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __62__MFAACertificateManager__getCachedCertStatus_issuerSeq_ppid___block_invoke;
@@ -3651,7 +3651,7 @@ void __78__MFAACertificateManager__validateCertificateWithServer_issuerSeq_ppid_
   v32 = &v33;
   v15 = v13;
   v31 = v15;
-  v16 = [v14 remoteObjectProxyWithErrorHandler:v30];
+  v16 = [xpcConnection remoteObjectProxyWithErrorHandler:v30];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __62__MFAACertificateManager__getCachedCertStatus_issuerSeq_ppid___block_invoke_133;
@@ -3660,7 +3660,7 @@ void __78__MFAACertificateManager__validateCertificateWithServer_issuerSeq_ppid_
   v29 = &v33;
   v17 = v15;
   v27 = v17;
-  [v16 getCachedStatusForCertSerial:v8 issuerSeq:v9 ppid:v10 withReply:v26];
+  [v16 getCachedStatusForCertSerial:statusCopy issuerSeq:seqCopy ppid:ppidCopy withReply:v26];
 
   v18 = dispatch_time(0, 65000000000);
   if (dispatch_semaphore_wait(v17, v18))
@@ -3755,10 +3755,10 @@ void __62__MFAACertificateManager__getCachedCertStatus_issuerSeq_ppid___block_in
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (id)_anchorCertificatesDataForTypes:(int)a3
++ (id)_anchorCertificatesDataForTypes:(int)types
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   init_logging();
   if (gLogObjects)
   {
@@ -3789,103 +3789,103 @@ void __62__MFAACertificateManager__getCachedCertStatus_issuerSeq_ppid___block_in
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v35 = 67109120;
-    LODWORD(v36) = a3;
+    LODWORD(v36) = types;
     _os_log_impl(&dword_25627E000, v7, OS_LOG_TYPE_INFO, "Generating anchor cert(s) for types: 0x%02X", &v35, 8u);
   }
 
-  if (a3)
+  if (types)
   {
     v8 = [MEMORY[0x277CBEA90] dataWithBytes:&kiPodAccessoryCA1 length:1091];
-    [v4 addObject:v8];
+    [array addObject:v8];
 
     v9 = [MEMORY[0x277CBEA90] dataWithBytes:&kiPodAccessoryCA2 length:1026];
-    [v4 addObject:v9];
+    [array addObject:v9];
   }
 
-  if ((a3 & 2) != 0)
+  if ((types & 2) != 0)
   {
     v10 = [MEMORY[0x277CBEA90] dataWithBytes:kAuth3ECSSubCAProd length:667];
-    [v4 addObject:v10];
+    [array addObject:v10];
 
     v11 = [MEMORY[0x277CBEA90] dataWithBytes:kAuth3ECSSubCADev length:667];
-    [v4 addObject:v11];
+    [array addObject:v11];
 
     v12 = [MEMORY[0x277CBEA90] dataWithBytes:kiPodAccessoryTestAuth3CA length:667];
-    [v4 addObject:v12];
+    [array addObject:v12];
 
     if (systemInfo_isInternalBuild())
     {
       v13 = [MEMORY[0x277CBEA90] dataWithBytes:kiPodAccessoryTestCAProto length:637];
-      [v4 addObject:v13];
+      [array addObject:v13];
 
       v14 = [MEMORY[0x277CBEA90] dataWithBytes:kAuth3ECSSubCASimu length:667];
-      [v4 addObject:v14];
+      [array addObject:v14];
 
       v15 = [MEMORY[0x277CBEA90] dataWithBytes:kAuth3ECSSubCADev0 length:667];
-      [v4 addObject:v15];
+      [array addObject:v15];
     }
   }
 
-  if ((a3 & 4) != 0)
+  if ((types & 4) != 0)
   {
     v16 = [MEMORY[0x277CBEA90] dataWithBytes:&kCertDER_SWAuth_ProdRoot length:573];
-    [v4 addObject:v16];
+    [array addObject:v16];
 
     if (systemInfo_isInternalBuild())
     {
       v17 = [MEMORY[0x277CBEA90] dataWithBytes:&kCertDER_SWAuth_TestRoot length:584];
-      [v4 addObject:v17];
+      [array addObject:v17];
     }
   }
 
-  if ((a3 & 8) != 0)
+  if ((types & 8) != 0)
   {
     if (systemInfo_isInternalBuild())
     {
       v18 = [MEMORY[0x277CBEA90] dataWithBytes:&kCertDER_VeridianAuth_SoftCA length:512];
-      [v4 addObject:v18];
+      [array addObject:v18];
     }
 
     v19 = [MEMORY[0x277CBEA90] dataWithBytes:&kCertDER_ComponentAuth_ComponentRoot length:517];
-    [v4 addObject:v19];
+    [array addObject:v19];
   }
 
-  if ((a3 & 0x10) != 0)
+  if ((types & 0x10) != 0)
   {
     v20 = [MEMORY[0x277CBEA90] dataWithBytes:&kCertDER_BAAAuth_UserRoot length:542];
-    [v4 addObject:v20];
+    [array addObject:v20];
   }
 
-  if ((a3 & 0x20) != 0)
+  if ((types & 0x20) != 0)
   {
     v21 = [MEMORY[0x277CBEA90] dataWithBytes:&kCertDER_DEVN_Root length:467];
-    [v4 addObject:v21];
+    [array addObject:v21];
   }
 
-  if ((a3 & 0x40) != 0)
+  if ((types & 0x40) != 0)
   {
     v22 = [MEMORY[0x277CBEA90] dataWithBytes:&kCertDER_Prov_Root length:1500];
-    [v4 addObject:v22];
+    [array addObject:v22];
   }
 
-  if ((a3 & 0x80) != 0)
+  if ((types & 0x80) != 0)
   {
     v23 = [MEMORY[0x277CBEA90] dataWithBytes:&kCertDER_WPCCA1 length:304];
-    [v4 addObject:v23];
+    [array addObject:v23];
 
     if (systemInfo_isInternalBuild())
     {
       v24 = [MEMORY[0x277CBEA90] dataWithBytes:&kCertDER_TSTWPC1 length:305];
-      [v4 addObject:v24];
+      [array addObject:v24];
 
       v25 = [MEMORY[0x277CBEA90] dataWithBytes:&kCertDER_WPCDevCACert length:328];
-      [v4 addObject:v25];
+      [array addObject:v25];
 
       v26 = [MEMORY[0x277CBEA90] dataWithBytes:&kCertDER_WPCCAX length:304];
-      [v4 addObject:v26];
+      [array addObject:v26];
 
       v27 = [MEMORY[0x277CBEA90] dataWithBytes:&kCertDER_WPCDUMCA1 length:306];
-      [v4 addObject:v27];
+      [array addObject:v27];
     }
   }
 
@@ -3907,11 +3907,11 @@ void __62__MFAACertificateManager__getCachedCertStatus_issuerSeq_ppid___block_in
 
   if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
   {
-    v30 = [v4 count];
+    v30 = [array count];
     v35 = 134218240;
     v36 = v30;
     v37 = 1024;
-    v38 = a3;
+    typesCopy = types;
     _os_log_impl(&dword_25627E000, v28, OS_LOG_TYPE_DEFAULT, "Returning %lu anchor cert(s) for types: 0x%02X", &v35, 0x12u);
   }
 
@@ -3934,27 +3934,27 @@ void __62__MFAACertificateManager__getCachedCertStatus_issuerSeq_ppid___block_in
   if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
   {
     v35 = 138412290;
-    v36 = v4;
+    v36 = array;
     _os_log_impl(&dword_25627E000, v31, OS_LOG_TYPE_INFO, "anchorCerts: %@", &v35, 0xCu);
   }
 
   v33 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
-+ (int)_anchorType2CertType:(int)a3
++ (int)_anchorType2CertType:(int)type
 {
-  if (a3 <= 15)
+  if (type <= 15)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       return 6;
     }
 
-    if (a3 != 2)
+    if (type != 2)
     {
-      if (a3 == 8)
+      if (type == 8)
       {
         return 5;
       }
@@ -3965,11 +3965,11 @@ void __62__MFAACertificateManager__getCachedCertStatus_issuerSeq_ppid___block_in
     return 1;
   }
 
-  else if (a3 > 63)
+  else if (type > 63)
   {
-    if (a3 != 64)
+    if (type != 64)
     {
-      if (a3 == 128)
+      if (type == 128)
       {
         return 7;
       }
@@ -3982,9 +3982,9 @@ void __62__MFAACertificateManager__getCachedCertStatus_issuerSeq_ppid___block_in
 
   else
   {
-    if (a3 != 16)
+    if (type != 16)
     {
-      if (a3 == 32)
+      if (type == 32)
       {
         return 3;
       }
@@ -3996,7 +3996,7 @@ void __62__MFAACertificateManager__getCachedCertStatus_issuerSeq_ppid___block_in
   }
 }
 
-- (id)_getAnchorCertsForPolicy:(unint64_t)a3
+- (id)_getAnchorCertsForPolicy:(unint64_t)policy
 {
   if ([MFAACertificateManager isMFi2_3Policy:?])
   {
@@ -4008,8 +4008,8 @@ void __62__MFAACertificateManager__getCachedCertStatus_issuerSeq_ppid___block_in
     v4 = 0;
   }
 
-  v5 = (a3 >> 27) & 8 | (a3 >> 38) & 0x10 | v4;
-  if ((a3 & 0x30000000) != 0)
+  v5 = (policy >> 27) & 8 | (policy >> 38) & 0x10 | v4;
+  if ((policy & 0x30000000) != 0)
   {
     v6 = v5 | 4;
   }
@@ -4040,10 +4040,10 @@ uint64_t __39__MFAACertificateManager_sharedManager__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)anchorCertificatesForTypes:(int)a3
++ (id)anchorCertificatesForTypes:(int)types
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   init_logging();
   if (gLogObjects)
   {
@@ -4074,48 +4074,48 @@ uint64_t __39__MFAACertificateManager_sharedManager__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v56 = 67109120;
-    LODWORD(v57) = a3;
+    LODWORD(v57) = types;
     _os_log_impl(&dword_25627E000, v7, OS_LOG_TYPE_INFO, "Generating anchor cert(s) for types: 0x%02X", &v56, 8u);
   }
 
-  if (a3)
+  if (types)
   {
     CertificateRefWithBytes = createCertificateRefWithBytes(&kiPodAccessoryCA1, 1091, 1);
     if (CertificateRefWithBytes)
     {
       v9 = CertificateRefWithBytes;
-      [v4 addObject:CertificateRefWithBytes];
+      [array addObject:CertificateRefWithBytes];
     }
 
     v10 = createCertificateRefWithBytes(&kiPodAccessoryCA2, 1026, 1);
     if (v10)
     {
       v11 = v10;
-      [v4 addObject:v10];
+      [array addObject:v10];
     }
   }
 
-  if ((a3 & 2) != 0)
+  if ((types & 2) != 0)
   {
     v12 = createCertificateRefWithBytes(kAuth3ECSSubCAProd, 667, 1);
     if (v12)
     {
       v13 = v12;
-      [v4 addObject:v12];
+      [array addObject:v12];
     }
 
     v14 = createCertificateRefWithBytes(kAuth3ECSSubCADev, 667, 1);
     if (v14)
     {
       v15 = v14;
-      [v4 addObject:v14];
+      [array addObject:v14];
     }
 
     v16 = createCertificateRefWithBytes(kiPodAccessoryTestAuth3CA, 667, 1);
     if (v16)
     {
       v17 = v16;
-      [v4 addObject:v16];
+      [array addObject:v16];
     }
 
     if (systemInfo_isInternalBuild())
@@ -4124,32 +4124,32 @@ uint64_t __39__MFAACertificateManager_sharedManager__block_invoke(uint64_t a1)
       if (v18)
       {
         v19 = v18;
-        [v4 addObject:v18];
+        [array addObject:v18];
       }
 
       v20 = createCertificateRefWithBytes(kAuth3ECSSubCASimu, 667, 1);
       if (v20)
       {
         v21 = v20;
-        [v4 addObject:v20];
+        [array addObject:v20];
       }
 
       v22 = createCertificateRefWithBytes(kAuth3ECSSubCADev0, 667, 1);
       if (v22)
       {
         v23 = v22;
-        [v4 addObject:v22];
+        [array addObject:v22];
       }
     }
   }
 
-  if ((a3 & 4) != 0)
+  if ((types & 4) != 0)
   {
     v24 = createCertificateRefWithBytes(&kCertDER_SWAuth_ProdRoot, 573, 1);
     if (v24)
     {
       v25 = v24;
-      [v4 addObject:v24];
+      [array addObject:v24];
     }
 
     if (systemInfo_isInternalBuild())
@@ -4158,12 +4158,12 @@ uint64_t __39__MFAACertificateManager_sharedManager__block_invoke(uint64_t a1)
       if (v26)
       {
         v27 = v26;
-        [v4 addObject:v26];
+        [array addObject:v26];
       }
     }
   }
 
-  if ((a3 & 8) != 0)
+  if ((types & 8) != 0)
   {
     if (systemInfo_isInternalBuild())
     {
@@ -4171,7 +4171,7 @@ uint64_t __39__MFAACertificateManager_sharedManager__block_invoke(uint64_t a1)
       if (v28)
       {
         v29 = v28;
-        [v4 addObject:v28];
+        [array addObject:v28];
       }
     }
 
@@ -4179,47 +4179,47 @@ uint64_t __39__MFAACertificateManager_sharedManager__block_invoke(uint64_t a1)
     if (v30)
     {
       v31 = v30;
-      [v4 addObject:v30];
+      [array addObject:v30];
     }
   }
 
-  if ((a3 & 0x10) != 0)
+  if ((types & 0x10) != 0)
   {
     v32 = createCertificateRefWithBytes(&kCertDER_BAAAuth_UserRoot, 542, 1);
     if (v32)
     {
       v33 = v32;
-      [v4 addObject:v32];
+      [array addObject:v32];
     }
   }
 
-  if ((a3 & 0x20) != 0)
+  if ((types & 0x20) != 0)
   {
     v34 = createCertificateRefWithBytes(&kCertDER_DEVN_Root, 467, 1);
     if (v34)
     {
       v35 = v34;
-      [v4 addObject:v34];
+      [array addObject:v34];
     }
   }
 
-  if ((a3 & 0x40) != 0)
+  if ((types & 0x40) != 0)
   {
     v36 = createCertificateRefWithBytes(&kCertDER_Prov_Root, 1500, 1);
     if (v36)
     {
       v37 = v36;
-      [v4 addObject:v36];
+      [array addObject:v36];
     }
   }
 
-  if ((a3 & 0x80) != 0)
+  if ((types & 0x80) != 0)
   {
     v38 = createCertificateRefWithBytes(&kCertDER_WPCCA1, 304, 1);
     if (v38)
     {
       v39 = v38;
-      [v4 addObject:v38];
+      [array addObject:v38];
     }
 
     if (systemInfo_isInternalBuild())
@@ -4228,28 +4228,28 @@ uint64_t __39__MFAACertificateManager_sharedManager__block_invoke(uint64_t a1)
       if (v40)
       {
         v41 = v40;
-        [v4 addObject:v40];
+        [array addObject:v40];
       }
 
       v42 = createCertificateRefWithBytes(&kCertDER_WPCDevCACert, 328, 1);
       if (v42)
       {
         v43 = v42;
-        [v4 addObject:v42];
+        [array addObject:v42];
       }
 
       v44 = createCertificateRefWithBytes(&kCertDER_WPCCAX, 304, 1);
       if (v44)
       {
         v45 = v44;
-        [v4 addObject:v44];
+        [array addObject:v44];
       }
 
       v46 = createCertificateRefWithBytes(&kCertDER_WPCDUMCA1, 306, 1);
       if (v46)
       {
         v47 = v46;
-        [v4 addObject:v46];
+        [array addObject:v46];
       }
     }
   }
@@ -4272,11 +4272,11 @@ uint64_t __39__MFAACertificateManager_sharedManager__block_invoke(uint64_t a1)
 
   if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
   {
-    v50 = [v4 count];
+    v50 = [array count];
     v56 = 134218240;
     v57 = v50;
     v58 = 1024;
-    v59 = a3;
+    typesCopy = types;
     _os_log_impl(&dword_25627E000, v48, OS_LOG_TYPE_DEFAULT, "Returning %lu anchor cert(s) for types: 0x%02X", &v56, 0x12u);
   }
 
@@ -4299,25 +4299,25 @@ uint64_t __39__MFAACertificateManager_sharedManager__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
   {
     v56 = 138412290;
-    v57 = v4;
+    v57 = array;
     _os_log_impl(&dword_25627E000, v51, OS_LOG_TYPE_INFO, "anchorCerts: %@", &v56, 0xCu);
   }
 
-  v53 = v4;
+  v53 = array;
   v54 = *MEMORY[0x277D85DE8];
-  return v4;
+  return array;
 }
 
-+ (int)determineCertificateType:(id)a3
++ (int)determineCertificateType:(id)type
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  typeCopy = type;
+  v4 = typeCopy;
+  if (typeCopy)
   {
-    v5 = [v3 valueForKey:@"PolicyFlags"];
-    v6 = [v5 unsignedLongLongValue];
+    v5 = [typeCopy valueForKey:@"PolicyFlags"];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
 
-    if ((v6 & 0x200000) != 0)
+    if ((unsignedLongLongValue & 0x200000) != 0)
     {
       v7 = 4;
     }
@@ -4327,7 +4327,7 @@ uint64_t __39__MFAACertificateManager_sharedManager__block_invoke(uint64_t a1)
       v7 = -1;
     }
 
-    if ((v6 & 0x41C00000000) != 0)
+    if ((unsignedLongLongValue & 0x41C00000000) != 0)
     {
       v8 = 2;
     }
@@ -4337,7 +4337,7 @@ uint64_t __39__MFAACertificateManager_sharedManager__block_invoke(uint64_t a1)
       v8 = v7;
     }
 
-    if ((v6 & 0x40000000) != 0)
+    if ((unsignedLongLongValue & 0x40000000) != 0)
     {
       v9 = 5;
     }
@@ -4347,7 +4347,7 @@ uint64_t __39__MFAACertificateManager_sharedManager__block_invoke(uint64_t a1)
       v9 = v8;
     }
 
-    if ((v6 & 4) != 0)
+    if ((unsignedLongLongValue & 4) != 0)
     {
       v10 = 1;
     }
@@ -4357,7 +4357,7 @@ uint64_t __39__MFAACertificateManager_sharedManager__block_invoke(uint64_t a1)
       v10 = v9;
     }
 
-    if ((v6 & 0x8000000) != 0)
+    if ((unsignedLongLongValue & 0x8000000) != 0)
     {
       v11 = 6;
     }
@@ -4377,9 +4377,9 @@ uint64_t __39__MFAACertificateManager_sharedManager__block_invoke(uint64_t a1)
   return v11;
 }
 
-+ (BOOL)isMFi2_3Policy:(unint64_t)a3
++ (BOOL)isMFi2_3Policy:(unint64_t)policy
 {
-  v3 = a3;
+  policyCopy = policy;
   if (gLogObjects)
   {
     v4 = gNumLogObjects < 2;
@@ -4411,12 +4411,12 @@ uint64_t __39__MFAACertificateManager_sharedManager__block_invoke(uint64_t a1)
     +[MFAACertificateManager isMFi2_3Policy:];
   }
 
-  return (v3 & 0x8000004) != 0;
+  return (policyCopy & 0x8000004) != 0;
 }
 
-+ (BOOL)isMFi2_3CertInfo:(id)a3
++ (BOOL)isMFi2_3CertInfo:(id)info
 {
-  v3 = [a3 objectForKey:@"PolicyFlags"];
+  v3 = [info objectForKey:@"PolicyFlags"];
   v4 = v3;
   if (v3)
   {
@@ -4431,7 +4431,7 @@ uint64_t __39__MFAACertificateManager_sharedManager__block_invoke(uint64_t a1)
   return v5;
 }
 
-+ (BOOL)isBAAUserPolicy:(unint64_t)a3
++ (BOOL)isBAAUserPolicy:(unint64_t)policy
 {
   if (gLogObjects)
   {
@@ -4464,12 +4464,12 @@ uint64_t __39__MFAACertificateManager_sharedManager__block_invoke(uint64_t a1)
     +[MFAACertificateManager isBAAUserPolicy:];
   }
 
-  return (a3 & 0x40000000000) != 0;
+  return (policy & 0x40000000000) != 0;
 }
 
-+ (BOOL)isBAAUserCertInfo:(id)a3
++ (BOOL)isBAAUserCertInfo:(id)info
 {
-  v3 = [a3 objectForKey:@"PolicyFlags"];
+  v3 = [info objectForKey:@"PolicyFlags"];
   v4 = v3;
   if (v3)
   {
@@ -4484,9 +4484,9 @@ uint64_t __39__MFAACertificateManager_sharedManager__block_invoke(uint64_t a1)
   return v5;
 }
 
-+ (BOOL)isComponentPolicy:(unint64_t)a3
++ (BOOL)isComponentPolicy:(unint64_t)policy
 {
-  v3 = a3;
+  policyCopy = policy;
   if (gLogObjects)
   {
     v4 = gNumLogObjects < 2;
@@ -4518,12 +4518,12 @@ uint64_t __39__MFAACertificateManager_sharedManager__block_invoke(uint64_t a1)
     +[MFAACertificateManager isComponentPolicy:];
   }
 
-  return (v3 & 0x40000000) != 0;
+  return (policyCopy & 0x40000000) != 0;
 }
 
-+ (BOOL)isComponentCertInfo:(id)a3
++ (BOOL)isComponentCertInfo:(id)info
 {
-  v3 = [a3 objectForKey:@"PolicyFlags"];
+  v3 = [info objectForKey:@"PolicyFlags"];
   v4 = v3;
   if (v3)
   {
@@ -4538,16 +4538,16 @@ uint64_t __39__MFAACertificateManager_sharedManager__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (int)_validateBAACertificateChain:(id)a3 error:(id *)a4
+- (int)_validateBAACertificateChain:(id)chain error:(id *)error
 {
   v61 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  chainCopy = chain;
   trust = 0;
   AppleBasicAttestationUser = SecPolicyCreateAppleBasicAttestationUser();
   if (AppleBasicAttestationUser)
   {
     v6 = AppleBasicAttestationUser;
-    if (SecTrustCreateWithCertificates(v4, AppleBasicAttestationUser, &trust))
+    if (SecTrustCreateWithCertificates(chainCopy, AppleBasicAttestationUser, &trust))
     {
       goto LABEL_50;
     }
@@ -4581,7 +4581,7 @@ uint64_t __39__MFAACertificateManager_sharedManager__block_invoke(uint64_t a1)
     {
       v11 = [_MergedGlobals count];
       *buf = 134217984;
-      v59 = v11;
+      errorCopy = v11;
       OUTLINED_FUNCTION_23();
       _os_log_impl(v12, v13, OS_LOG_TYPE_INFO, v14, v15, 0xCu);
     }
@@ -4618,7 +4618,7 @@ LABEL_50:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        LODWORD(v59) = HIDWORD(v56);
+        LODWORD(errorCopy) = HIDWORD(v56);
         OUTLINED_FUNCTION_19(&dword_25627E000, v18, v20, "BAA trustResult: %d", buf);
       }
 
@@ -4653,7 +4653,7 @@ LABEL_50:
           if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v59 = error;
+            errorCopy = error;
             _os_log_error_impl(&dword_25627E000, v22, OS_LOG_TYPE_ERROR, "trustError: %@", buf, 0xCu);
           }
 
@@ -4688,7 +4688,7 @@ LABEL_50:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        LODWORD(v59) = v21;
+        LODWORD(errorCopy) = v21;
         OUTLINED_FUNCTION_23();
         OUTLINED_FUNCTION_19(v27, v28, v29, v30, v31);
       }
@@ -4710,17 +4710,17 @@ LABEL_50:
   return v21;
 }
 
-- (int)_validateX509CertificateChain:(id)a3 anchorCerts:(id)a4 error:(id *)a5
+- (int)_validateX509CertificateChain:(id)chain anchorCerts:(id)certs error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  chainCopy = chain;
+  certsCopy = certs;
   trust = 0;
   BasicX509 = SecPolicyCreateBasicX509();
   if (BasicX509)
   {
     v9 = BasicX509;
-    if (SecTrustCreateWithCertificates(v6, BasicX509, &trust) || (SecTrustSetAnchorCertificates(trust, v7), HIDWORD(v50) = 0, MEMORY[0x259C60280](trust, &v50 + 4)))
+    if (SecTrustCreateWithCertificates(chainCopy, BasicX509, &trust) || (SecTrustSetAnchorCertificates(trust, certsCopy), HIDWORD(v50) = 0, MEMORY[0x259C60280](trust, &v50 + 4)))
     {
       v18 = 0;
     }
@@ -4749,7 +4749,7 @@ LABEL_50:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        LODWORD(v53) = HIDWORD(v50);
+        LODWORD(errorCopy) = HIDWORD(v50);
         OUTLINED_FUNCTION_23();
         OUTLINED_FUNCTION_19(v13, v14, v15, v16, v17);
       }
@@ -4787,7 +4787,7 @@ LABEL_50:
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v53 = error;
+            errorCopy = error;
             OUTLINED_FUNCTION_23();
             _os_log_error_impl(v39, v40, OS_LOG_TYPE_ERROR, v41, v42, 0xCu);
           }
@@ -4812,7 +4812,7 @@ LABEL_50:
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
-          HIDWORD(v53) = v22;
+          HIDWORD(errorCopy) = v22;
           v54 = 1024;
           v55 = v23;
           OUTLINED_FUNCTION_9(&dword_25627E000, MEMORY[0x277D86220], v25, "Make sure you have called init_logging()!\ngLogObjects: %p, gNumLogObjects: %d", v26, v27, v28, v29, v48, error, v50, trust, 0);
@@ -4825,7 +4825,7 @@ LABEL_50:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        LODWORD(v53) = v18;
+        LODWORD(errorCopy) = v18;
         OUTLINED_FUNCTION_19(&dword_25627E000, v24, v31, "after verifying standard X509 cert chain, certStatus = %d", buf);
       }
     }
@@ -4846,11 +4846,11 @@ LABEL_50:
   return v18;
 }
 
-+ (BOOL)isCertificateValidForFeatures:(unint64_t)a3 certificate:(id)a4
++ (BOOL)isCertificateValidForFeatures:(unint64_t)features certificate:(id)certificate
 {
   v68 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (CertificateRefWithData = createCertificateRefWithData(v5, 1)) != 0)
+  certificateCopy = certificate;
+  if (certificateCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (CertificateRefWithData = createCertificateRefWithData(certificateCopy, 1)) != 0)
   {
     v7 = CertificateRefWithData;
     v8 = SecCertificateGetiAuthVersion();
@@ -4972,7 +4972,7 @@ LABEL_50:
         v22 |= 0x10uLL;
       }
 
-      v45 = (a3 & ~v22) == 0;
+      v45 = (features & ~v22) == 0;
     }
 
     else

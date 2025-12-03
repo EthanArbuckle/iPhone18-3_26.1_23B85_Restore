@@ -28,7 +28,7 @@
 + (REFeature)dayOfWeekFeature;
 + (REFeature)deviceMotionFeature;
 + (REFeature)exerciseTimeCompletionFeature;
-+ (REFeature)featureWithName:(id)a3 featureType:(unint64_t)a4;
++ (REFeature)featureWithName:(id)name featureType:(unint64_t)type;
 + (REFeature)geofenceFeature;
 + (REFeature)interactionFeature;
 + (REFeature)isConnectedToBluetoothSpeakerFeature;
@@ -63,17 +63,17 @@
 + (REFeature)standHourCompletionFeature;
 + (REFeature)travelingFeature;
 + (REFeature)workoutStateFeature;
-+ (id)crossedFeatureWithFeatures:(id)a3;
-+ (id)featuresFromSource:(id)a3;
-+ (id)featuresFromSource:(id)a3 withNames:(id)a4;
-+ (id)featuresFromSourceAtPath:(id)a3;
-+ (id)featuresFromSourceAtPath:(id)a3 withNames:(id)a4;
++ (id)crossedFeatureWithFeatures:(id)features;
++ (id)featuresFromSource:(id)source;
++ (id)featuresFromSource:(id)source withNames:(id)names;
++ (id)featuresFromSourceAtPath:(id)path;
++ (id)featuresFromSourceAtPath:(id)path withNames:(id)names;
 + (id)forcedFeature;
 + (id)groupFeature;
 + (id)systemFeatureNames;
-+ (id)transformedFeatureWithTransformer:(id)a3 features:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)featureByUsingTransformer:(id)a3;
++ (id)transformedFeatureWithTransformer:(id)transformer features:(id)features;
+- (BOOL)isEqual:(id)equal;
+- (id)featureByUsingTransformer:(id)transformer;
 - (unint64_t)hash;
 @end
 
@@ -163,12 +163,12 @@
   return v3;
 }
 
-+ (REFeature)featureWithName:(id)a3 featureType:(unint64_t)a4
++ (REFeature)featureWithName:(id)name featureType:(unint64_t)type
 {
-  if (a3)
+  if (name)
   {
-    v5 = a3;
-    v6 = [[_REConcreteFeature alloc] initWithName:v5 featureType:a4];
+    nameCopy = name;
+    v6 = [[_REConcreteFeature alloc] initWithName:nameCopy featureType:type];
   }
 
   else
@@ -179,12 +179,12 @@
   return v6;
 }
 
-+ (id)crossedFeatureWithFeatures:(id)a3
++ (id)crossedFeatureWithFeatures:(id)features
 {
-  v3 = a3;
-  if (v3)
+  featuresCopy = features;
+  if (featuresCopy)
   {
-    v4 = v3;
+    v4 = featuresCopy;
   }
 
   else
@@ -197,47 +197,47 @@
   return v5;
 }
 
-+ (id)transformedFeatureWithTransformer:(id)a3 features:(id)a4
++ (id)transformedFeatureWithTransformer:(id)transformer features:(id)features
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v5 _validateWithFeatures:v6] & 1) == 0)
+  transformerCopy = transformer;
+  featuresCopy = features;
+  if (([transformerCopy _validateWithFeatures:featuresCopy] & 1) == 0)
   {
-    RERaiseInternalException(*MEMORY[0x277CBE660], @"Feature Transformer %@ unable to support features %@", v7, v8, v9, v10, v11, v12, v5);
+    RERaiseInternalException(*MEMORY[0x277CBE660], @"Feature Transformer %@ unable to support features %@", v7, v8, v9, v10, v11, v12, transformerCopy);
   }
 
-  v13 = [v5 _featureCount];
-  if (v13 != [v6 count])
+  _featureCount = [transformerCopy _featureCount];
+  if (_featureCount != [featuresCopy count])
   {
     v14 = *MEMORY[0x277CBE658];
-    v15 = [v5 _featureCount];
-    [v6 count];
-    RERaiseInternalException(v14, @"Expected %lu number of features. Received %lu.", v16, v17, v18, v19, v20, v21, v15);
+    _featureCount2 = [transformerCopy _featureCount];
+    [featuresCopy count];
+    RERaiseInternalException(v14, @"Expected %lu number of features. Received %lu.", v16, v17, v18, v19, v20, v21, _featureCount2);
   }
 
-  v22 = [[_RETransformedFeature alloc] initWithTransformer:v5 features:v6];
+  v22 = [[_RETransformedFeature alloc] initWithTransformer:transformerCopy features:featuresCopy];
 
   return v22;
 }
 
-- (id)featureByUsingTransformer:(id)a3
+- (id)featureByUsingTransformer:(id)transformer
 {
   v10 = *MEMORY[0x277D85DE8];
-  v9 = self;
+  selfCopy = self;
   v3 = MEMORY[0x277CBEA60];
-  v4 = a3;
-  v5 = [v3 arrayWithObjects:&v9 count:1];
-  v6 = [REFeature transformedFeatureWithTransformer:v4 features:v5, v9, v10];
+  transformerCopy = transformer;
+  v5 = [v3 arrayWithObjects:&selfCopy count:1];
+  v6 = [REFeature transformedFeatureWithTransformer:transformerCopy features:v5, selfCopy, v10];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -247,13 +247,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(REFeature *)self name];
-      v7 = [(REFeature *)v5 name];
-      if (v6 == v7 || [v6 isEqual:v7])
+      v5 = equalCopy;
+      name = [(REFeature *)self name];
+      name2 = [(REFeature *)v5 name];
+      if (name == name2 || [name isEqual:name2])
       {
-        v8 = [(REFeature *)self featureType];
-        v9 = v8 == [(REFeature *)v5 featureType];
+        featureType = [(REFeature *)self featureType];
+        v9 = featureType == [(REFeature *)v5 featureType];
       }
 
       else
@@ -273,11 +273,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [(REFeature *)self name];
-  v4 = [v3 hash];
-  v5 = [(REFeature *)self featureType];
+  name = [(REFeature *)self name];
+  v4 = [name hash];
+  featureType = [(REFeature *)self featureType];
 
-  return v5 ^ v4;
+  return featureType ^ v4;
 }
 
 + (REFeature)sectionFeature
@@ -1582,20 +1582,20 @@ uint64_t __31__REFeature_systemFeatureNames__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)featuresFromSource:(id)a3
++ (id)featuresFromSource:(id)source
 {
-  v3 = [REScriptProcessor processorWithSource:a3];
-  v4 = [v3 features];
-  v5 = [REFeatureSet featureSetWithFeatures:v4];
+  v3 = [REScriptProcessor processorWithSource:source];
+  features = [v3 features];
+  v5 = [REFeatureSet featureSetWithFeatures:features];
 
   return v5;
 }
 
-+ (id)featuresFromSource:(id)a3 withNames:(id)a4
++ (id)featuresFromSource:(id)source withNames:(id)names
 {
-  v5 = a4;
-  v6 = [REScriptProcessor processorWithSource:a3];
-  v7 = [MEMORY[0x277CBEB98] setWithArray:v5];
+  namesCopy = names;
+  v6 = [REScriptProcessor processorWithSource:source];
+  v7 = [MEMORY[0x277CBEB98] setWithArray:namesCopy];
 
   v8 = [v6 featuresWithNames:v7];
 
@@ -1604,20 +1604,20 @@ uint64_t __31__REFeature_systemFeatureNames__block_invoke()
   return v9;
 }
 
-+ (id)featuresFromSourceAtPath:(id)a3
++ (id)featuresFromSourceAtPath:(id)path
 {
-  v3 = [REScriptProcessor processorWithPath:a3];
-  v4 = [v3 features];
-  v5 = [REFeatureSet featureSetWithFeatures:v4];
+  v3 = [REScriptProcessor processorWithPath:path];
+  features = [v3 features];
+  v5 = [REFeatureSet featureSetWithFeatures:features];
 
   return v5;
 }
 
-+ (id)featuresFromSourceAtPath:(id)a3 withNames:(id)a4
++ (id)featuresFromSourceAtPath:(id)path withNames:(id)names
 {
-  v5 = a4;
-  v6 = [REScriptProcessor processorWithPath:a3];
-  v7 = [MEMORY[0x277CBEB98] setWithArray:v5];
+  namesCopy = names;
+  v6 = [REScriptProcessor processorWithPath:path];
+  v7 = [MEMORY[0x277CBEB98] setWithArray:namesCopy];
 
   v8 = [v6 featuresWithNames:v7];
 

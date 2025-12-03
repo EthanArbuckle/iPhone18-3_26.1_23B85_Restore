@@ -48,14 +48,14 @@
 - (id)dealloc
 {
   v4 = *MEMORY[0x1E69E9840];
-  if ([a1 _kvo])
+  if ([self _kvo])
   {
     _CFPrefsUnregisterUserDefaultsInstance();
   }
 
-  [a1 _setIdentifier:0];
-  [a1 _setContainer:0];
-  v3.receiver = a1;
+  [self _setIdentifier:0];
+  [self _setContainer:0];
+  v3.receiver = self;
   v3.super_class = &off_1EEF970D8;
   return objc_msgSendSuper2(&v3, sel_dealloc);
 }
@@ -81,8 +81,8 @@
 
 - (id)dictionaryRepresentation
 {
-  [a1 _identifier];
-  [a1 _container];
+  [self _identifier];
+  [self _container];
   v2 = _CFPrefsCopyAppDictionaryWithContainer();
 
   return v2;
@@ -90,8 +90,8 @@
 
 - (BOOL)synchronize
 {
-  [a1 _identifier];
-  [a1 _container];
+  [self _identifier];
+  [self _container];
   v2 = _CFPreferencesAppSynchronizeWithContainer() != 0;
   _CFPrefsSynchronizeForProcessTermination();
   return v2;
@@ -99,12 +99,12 @@
 
 - (uint64_t)_willBeginKeyValueObserving
 {
-  result = [a1 _kvo];
+  result = [self _kvo];
   if (!result)
   {
-    [a1 _setKVO:&off_1EEF573B0];
+    [self _setKVO:&off_1EEF573B0];
 
-    return MEMORY[0x1EEDB8488](a1);
+    return MEMORY[0x1EEDB8488](self);
   }
 
   return result;
@@ -112,12 +112,12 @@
 
 - (uint64_t)_didEndKeyValueObserving
 {
-  result = [a1 _kvo];
+  result = [self _kvo];
   if (result)
   {
     _CFPrefsUnregisterUserDefaultsInstance();
 
-    return [a1 _setKVO:0];
+    return [self _setKVO:0];
   }
 
   return result;
@@ -125,8 +125,8 @@
 
 - (id)objectForKey:()NSUserDefaults
 {
-  [a1 _identifier];
-  [a1 _container];
+  [self _identifier];
+  [self _container];
   v2 = _CFPreferencesCopyAppValueWithContainer();
 
   return v2;
@@ -134,19 +134,19 @@
 
 - (uint64_t)setObject:()NSUserDefaults forKey:
 {
-  [a1 _identifier];
-  [a1 _container];
+  [self _identifier];
+  [self _container];
   _CFPreferencesSetAppValueWithContainer();
   v2 = +[NSNotificationCenter defaultCenter];
 
-  return [(NSNotificationCenter *)v2 postNotificationName:@"NSUserDefaultsDidChangeNotification" object:a1 userInfo:0];
+  return [(NSNotificationCenter *)v2 postNotificationName:@"NSUserDefaultsDidChangeNotification" object:self userInfo:0];
 }
 
 - (id)objectForKey:()NSUserDefaults inDomain:
 {
   if (!a4 || [(__CFString *)a4 isEqualToString:&stru_1EEEFDF90])
   {
-    v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: domain name cannot be nil or empty", _NSMethodExceptionProem(a1, a2)), 0}];
+    v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: domain name cannot be nil or empty", _NSMethodExceptionProem(self, a2)), 0}];
     objc_exception_throw(v11);
   }
 
@@ -169,7 +169,7 @@
 {
   if (!a5 || [(__CFString *)a5 isEqualToString:&stru_1EEEFDF90])
   {
-    v15 = [NSString stringWithFormat:@"%@: domain name cannot be nil or empty", _NSMethodExceptionProem(a1, a2)];
+    v15 = [NSString stringWithFormat:@"%@: domain name cannot be nil or empty", _NSMethodExceptionProem(self, a2)];
     goto LABEL_14;
   }
 
@@ -192,7 +192,7 @@
       goto LABEL_10;
     }
 
-    v15 = [NSString stringWithFormat:@"%@: value name cannot be nil for registration or argument domain", _NSMethodExceptionProem(a1, a2)];
+    v15 = [NSString stringWithFormat:@"%@: value name cannot be nil for registration or argument domain", _NSMethodExceptionProem(self, a2)];
 LABEL_14:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v15 userInfo:0]);
   }
@@ -202,12 +202,12 @@ LABEL_14:
 LABEL_10:
   v13 = +[NSNotificationCenter defaultCenter];
 
-  return [(NSNotificationCenter *)v13 postNotificationName:@"NSUserDefaultsDidChangeNotification" object:a1 userInfo:0];
+  return [(NSNotificationCenter *)v13 postNotificationName:@"NSUserDefaultsDidChangeNotification" object:self userInfo:0];
 }
 
 - (uint64_t)stringForKey:()NSUserDefaults
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (_NSIsNSString())
   {
     return v1;
@@ -223,7 +223,7 @@ LABEL_10:
 
 - (uint64_t)arrayForKey:()NSUserDefaults
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (_NSIsNSArray())
   {
     return v1;
@@ -237,7 +237,7 @@ LABEL_10:
 
 - (uint64_t)dictionaryForKey:()NSUserDefaults
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (_NSIsNSDictionary())
   {
     return v1;
@@ -251,7 +251,7 @@ LABEL_10:
 
 - (uint64_t)dataForKey:()NSUserDefaults
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (_NSIsNSData())
   {
     return v1;
@@ -266,7 +266,7 @@ LABEL_10:
 - (void)stringArrayForKey:()NSUserDefaults
 {
   v12 = *MEMORY[0x1E69E9840];
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (!_NSIsNSArray())
   {
     return 0;
@@ -313,17 +313,17 @@ LABEL_4:
 
 - (uint64_t)integerForKey:()NSUserDefaults
 {
-  if ([a1 isMemberOfClass:MEMORY[0x1E695E000]])
+  if ([self isMemberOfClass:MEMORY[0x1E695E000]])
   {
-    v5 = [a1 _identifier];
-    v6 = [a1 _container];
+    _identifier = [self _identifier];
+    _container = [self _container];
 
-    return MEMORY[0x1EEDB8408](a3, v5, v6, 0);
+    return MEMORY[0x1EEDB8408](a3, _identifier, _container, 0);
   }
 
   else
   {
-    v7 = [a1 objectForKey:a3];
+    v7 = [self objectForKey:a3];
     if (v7 && ((v8 = v7, (_NSIsNSString() & 1) != 0) || _NSIsNSNumber()))
     {
 
@@ -340,7 +340,7 @@ LABEL_4:
 - (uint64_t)longForKey:()NSUserDefaults
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  result = [a1 objectForKey:?];
+  result = [self objectForKey:?];
   v4[0] = 0;
   if (result)
   {
@@ -376,7 +376,7 @@ LABEL_4:
 
 - (double)floatForKey:()NSUserDefaults
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (!v1)
   {
     return 0.0;
@@ -394,7 +394,7 @@ LABEL_4:
 
 - (double)doubleForKey:()NSUserDefaults
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (!v1)
   {
     return 0.0;
@@ -412,15 +412,15 @@ LABEL_4:
 
 - (uint64_t)BOOLForKey:()NSUserDefaults
 {
-  if ([a1 isMemberOfClass:MEMORY[0x1E695E000]])
+  if ([self isMemberOfClass:MEMORY[0x1E695E000]])
   {
-    [a1 _identifier];
-    [a1 _container];
+    [self _identifier];
+    [self _container];
     v5 = _CFPreferencesGetAppBooleanValueWithContainer() == 0;
     return !v5;
   }
 
-  v8 = [a1 objectForKey:a3];
+  v8 = [self objectForKey:a3];
   if (_NSIsNSString())
   {
     if (([v8 isEqualToString:@"YES"] & 1) == 0)
@@ -455,7 +455,7 @@ LABEL_4:
 
 - (id)URLForKey:()NSUserDefaults
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (_NSIsNSData())
   {
     v2 = +[NSKeyedUnarchiver _strictlyUnarchivedObjectOfClasses:fromData:error:](NSKeyedUnarchiver, "_strictlyUnarchivedObjectOfClasses:fromData:error:", [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()], v1, 0);
@@ -466,9 +466,9 @@ LABEL_4:
   else if (_NSIsNSString())
   {
     v4 = MEMORY[0x1E695DFF8];
-    v5 = [v1 stringByExpandingTildeInPath];
+    stringByExpandingTildeInPath = [v1 stringByExpandingTildeInPath];
 
-    return [v4 fileURLWithPath:v5];
+    return [v4 fileURLWithPath:stringByExpandingTildeInPath];
   }
 
   else
@@ -481,41 +481,41 @@ LABEL_4:
 {
   v6 = [NSNumber numberWithInteger:?];
 
-  return [a1 setObject:v6 forKey:a4];
+  return [self setObject:v6 forKey:a4];
 }
 
 - (uint64_t)setLong:()NSUserDefaults forKey:
 {
   v6 = [NSNumber numberWithLongLong:?];
 
-  return [a1 setObject:v6 forKey:a4];
+  return [self setObject:v6 forKey:a4];
 }
 
 - (uint64_t)setFloat:()NSUserDefaults forKey:
 {
   v5 = [NSNumber numberWithFloat:?];
 
-  return [a1 setObject:v5 forKey:a3];
+  return [self setObject:v5 forKey:a3];
 }
 
 - (uint64_t)setDouble:()NSUserDefaults forKey:
 {
   v5 = [NSNumber numberWithDouble:?];
 
-  return [a1 setObject:v5 forKey:a3];
+  return [self setObject:v5 forKey:a3];
 }
 
 - (uint64_t)setBool:()NSUserDefaults forKey:
 {
   v6 = [NSNumber numberWithBool:?];
 
-  return [a1 setObject:v6 forKey:a4];
+  return [self setObject:v6 forKey:a4];
 }
 
 - (void)setURL:()NSUserDefaults forKey:
 {
   v7 = objc_autoreleasePoolPush();
-  [a1 setObject:encodeURLForDefaults(a3) forKey:a4];
+  [self setObject:encodeURLForDefaults(a3) forKey:a4];
 
   objc_autoreleasePoolPop(v7);
 }
@@ -550,19 +550,19 @@ LABEL_4:
 
   else
   {
-    v6 = [a1 _identifier];
-    v7 = [a1 _container];
+    _identifier = [self _identifier];
+    _container = [self _container];
 
-    MEMORY[0x1EEDB83C8](v6, a3, v7);
+    MEMORY[0x1EEDB83C8](_identifier, a3, _container);
   }
 }
 
 - (uint64_t)removeSuiteNamed:()NSUserDefaults
 {
-  v5 = [a1 _identifier];
-  v6 = [a1 _container];
+  _identifier = [self _identifier];
+  _container = [self _container];
 
-  return MEMORY[0x1EEDB8438](v5, a3, v6);
+  return MEMORY[0x1EEDB8438](_identifier, a3, _container);
 }
 
 - (void)registerDefaults:()NSUserDefaults
@@ -593,7 +593,7 @@ LABEL_4:
     {
     }
 
-    [+[NSNotificationCenter defaultCenter](NSNotificationCenter postNotificationName:"postNotificationName:object:userInfo:" object:@"NSUserDefaultsDidChangeNotification" userInfo:a1, 0];
+    [+[NSNotificationCenter defaultCenter](NSNotificationCenter postNotificationName:"postNotificationName:object:userInfo:" object:@"NSUserDefaultsDidChangeNotification" userInfo:self, 0];
     _Block_object_dispose(&v9, 8);
   }
 }
@@ -610,7 +610,7 @@ LABEL_4:
 
   else
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = &off_1EEF970D8;
     v9 = objc_msgSendSuper2(&v11, sel_init);
     v8 = v9;
@@ -661,7 +661,7 @@ LABEL_4:
   _CFXPreferencesReplaceValuesInNamedVolatileSource();
   v2 = +[NSNotificationCenter defaultCenter];
 
-  return [(NSNotificationCenter *)v2 postNotificationName:@"NSUserDefaultsDidChangeNotification" object:a1 userInfo:0];
+  return [(NSNotificationCenter *)v2 postNotificationName:@"NSUserDefaultsDidChangeNotification" object:self userInfo:0];
 }
 
 - (uint64_t)removeVolatileDomainForName:()NSUserDefaults
@@ -669,7 +669,7 @@ LABEL_4:
   _CFXPreferencesRemoveNamedVolatileSource();
   v2 = +[NSNotificationCenter defaultCenter];
 
-  return [(NSNotificationCenter *)v2 postNotificationName:@"NSUserDefaultsDidChangeNotification" object:a1 userInfo:0];
+  return [(NSNotificationCenter *)v2 postNotificationName:@"NSUserDefaultsDidChangeNotification" object:self userInfo:0];
 }
 
 - (CFArrayRef)persistentDomainNames
@@ -700,18 +700,18 @@ LABEL_4:
 {
   if (a3 && [a3 count] && ((objc_msgSend(a4, "isEqual:", @"NSArgumentDomain") & 1) != 0 || objc_msgSend(a4, "isEqual:", @"NSRegistrationDomain")))
   {
-    v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: cannot create persistent domain %@. Volatile domain %@ already exists.", _NSMethodExceptionProem(a1, a2), a4, a4), 0}];
+    v9 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: cannot create persistent domain %@. Volatile domain %@ already exists.", _NSMethodExceptionProem(self, a2), a4, a4), 0}];
     objc_exception_throw(v9);
   }
 
   [a4 isEqual:@"NSGlobalDomain"];
-  [(objc_class *)a1 _container];
+  [(objc_class *)self _container];
   _CFXPreferencesReplaceValuesInSourceWithBundleIDWithContainer();
-  [(objc_class *)a1 _container];
+  [(objc_class *)self _container];
   _CFPreferencesSynchronizeWithContainer();
   v7 = +[NSNotificationCenter defaultCenter];
 
-  return [(NSNotificationCenter *)v7 postNotificationName:@"NSUserDefaultsDidChangeNotification" object:a1 userInfo:0];
+  return [(NSNotificationCenter *)v7 postNotificationName:@"NSUserDefaultsDidChangeNotification" object:self userInfo:0];
 }
 
 @end

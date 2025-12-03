@@ -1,28 +1,28 @@
 @interface KCSharingXPCServer
 - (KCSharingSyncController)syncController;
-- (KCSharingXPCServer)initWithConnection:(id)a3 allowedProtocol:(id)a4 groupManager:(id)a5 syncController:(id)a6;
+- (KCSharingXPCServer)initWithConnection:(id)connection allowedProtocol:(id)protocol groupManager:(id)manager syncController:(id)controller;
 - (NSString)description;
-- (void)acceptInviteForGroupID:(id)a3 completion:(id)a4;
-- (void)checkAvailabilityForHandles:(id)a3 completion:(id)a4;
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5;
-- (void)createGroupWithRequest:(id)a3 completion:(id)a4;
-- (void)declineInviteForGroupID:(id)a3 completion:(id)a4;
-- (void)deleteGroupWithRequest:(id)a3 completion:(id)a4;
-- (void)fetchCurrentUserIdentifierWithReply:(id)a3;
-- (void)fetchRemoteChangesWithReply:(id)a3;
-- (void)getGroupByGroupID:(id)a3 completion:(id)a4;
-- (void)getGroupsWithRequest:(id)a3 completion:(id)a4;
+- (void)acceptInviteForGroupID:(id)d completion:(id)completion;
+- (void)checkAvailabilityForHandles:(id)handles completion:(id)completion;
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply;
+- (void)createGroupWithRequest:(id)request completion:(id)completion;
+- (void)declineInviteForGroupID:(id)d completion:(id)completion;
+- (void)deleteGroupWithRequest:(id)request completion:(id)completion;
+- (void)fetchCurrentUserIdentifierWithReply:(id)reply;
+- (void)fetchRemoteChangesWithReply:(id)reply;
+- (void)getGroupByGroupID:(id)d completion:(id)completion;
+- (void)getGroupsWithRequest:(id)request completion:(id)completion;
 - (void)groupInvitationWasCancelled;
-- (void)leaveGroupWithRequest:(id)a3 completion:(id)a4;
-- (void)performMaintenanceWithCompletion:(id)a3;
-- (void)provisionWithReply:(id)a3;
-- (void)receivedGroupInvitation:(id)a3;
-- (void)resyncWithCompletion:(id)a3;
-- (void)saveLocalChangesWithReply:(id)a3;
-- (void)setChangeTrackingEnabled:(BOOL)a3 reply:(id)a4;
-- (void)updateGroupWithRequest:(id)a3 completion:(id)a4;
-- (void)verifyGroupsInSyncAndResyncMissingGroupsWithCompletion:(id)a3;
-- (void)verifyGroupsInSyncWithCompletion:(id)a3;
+- (void)leaveGroupWithRequest:(id)request completion:(id)completion;
+- (void)performMaintenanceWithCompletion:(id)completion;
+- (void)provisionWithReply:(id)reply;
+- (void)receivedGroupInvitation:(id)invitation;
+- (void)resyncWithCompletion:(id)completion;
+- (void)saveLocalChangesWithReply:(id)reply;
+- (void)setChangeTrackingEnabled:(BOOL)enabled reply:(id)reply;
+- (void)updateGroupWithRequest:(id)request completion:(id)completion;
+- (void)verifyGroupsInSyncAndResyncMissingGroupsWithCompletion:(id)completion;
+- (void)verifyGroupsInSyncWithCompletion:(id)completion;
 @end
 
 @implementation KCSharingXPCServer
@@ -34,50 +34,50 @@
   return WeakRetained;
 }
 
-- (void)performMaintenanceWithCompletion:(id)a3
+- (void)performMaintenanceWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(KCSharingXPCServer *)self syncController];
+  completionCopy = completion;
+  syncController = [(KCSharingXPCServer *)self syncController];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002F248;
   v7[3] = &unk_100337928;
-  v8 = v4;
-  v6 = v4;
-  [v5 performMaintenanceWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [syncController performMaintenanceWithCompletion:v7];
 }
 
-- (void)verifyGroupsInSyncAndResyncMissingGroupsWithCompletion:(id)a3
+- (void)verifyGroupsInSyncAndResyncMissingGroupsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(KCSharingXPCServer *)self syncController];
+  completionCopy = completion;
+  syncController = [(KCSharingXPCServer *)self syncController];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002F354;
   v7[3] = &unk_100337BD8;
-  v8 = v4;
-  v6 = v4;
-  [v5 verifyGroupsInSyncAndResyncMissingGroupsWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [syncController verifyGroupsInSyncAndResyncMissingGroupsWithCompletion:v7];
 }
 
-- (void)verifyGroupsInSyncWithCompletion:(id)a3
+- (void)verifyGroupsInSyncWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(KCSharingXPCServer *)self syncController];
+  completionCopy = completion;
+  syncController = [(KCSharingXPCServer *)self syncController];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002F468;
   v7[3] = &unk_100337BD8;
-  v8 = v4;
-  v6 = v4;
-  [v5 verifyGroupsInSyncWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [syncController verifyGroupsInSyncWithCompletion:v7];
 }
 
-- (void)resyncWithCompletion:(id)a3
+- (void)resyncWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(KCSharingXPCServer *)self syncController];
-  [v5 resyncFromRPC:1 completion:v4];
+  completionCopy = completion;
+  syncController = [(KCSharingXPCServer *)self syncController];
+  [syncController resyncFromRPC:1 completion:completionCopy];
 }
 
 - (void)groupInvitationWasCancelled
@@ -93,15 +93,15 @@
   [v3 groupsUpdated];
 }
 
-- (void)receivedGroupInvitation:(id)a3
+- (void)receivedGroupInvitation:(id)invitation
 {
-  v3 = a3;
+  invitationCopy = invitation;
   v4 = KCSharingLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 groupID];
+    groupID = [invitationCopy groupID];
     v7 = 138412290;
-    v8 = v5;
+    v8 = groupID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "received group invite for %@", &v7, 0xCu);
   }
 
@@ -109,37 +109,37 @@
   [v6 groupsUpdated];
 }
 
-- (void)saveLocalChangesWithReply:(id)a3
+- (void)saveLocalChangesWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(KCSharingXPCServer *)self syncController];
+  replyCopy = reply;
+  syncController = [(KCSharingXPCServer *)self syncController];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002F7D0;
   v7[3] = &unk_100337928;
-  v8 = v4;
-  v6 = v4;
-  [v5 saveAllOutgoingChangesWithCompletion:v7];
+  v8 = replyCopy;
+  v6 = replyCopy;
+  [syncController saveAllOutgoingChangesWithCompletion:v7];
 }
 
-- (void)fetchRemoteChangesWithReply:(id)a3
+- (void)fetchRemoteChangesWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(KCSharingXPCServer *)self syncController];
+  replyCopy = reply;
+  syncController = [(KCSharingXPCServer *)self syncController];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002F8E0;
   v7[3] = &unk_100337928;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchRemoteChangesForZoneIDs:0 completion:v7];
+  v8 = replyCopy;
+  v6 = replyCopy;
+  [syncController fetchRemoteChangesForZoneIDs:0 completion:v7];
 }
 
-- (void)setChangeTrackingEnabled:(BOOL)a3 reply:(id)a4
+- (void)setChangeTrackingEnabled:(BOOL)enabled reply:(id)reply
 {
-  v4 = a3;
-  v5 = a4;
-  if (v4)
+  enabledCopy = enabled;
+  replyCopy = reply;
+  if (enabledCopy)
   {
     v6 = 1;
   }
@@ -158,167 +158,167 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Updated change tracking state=%d", v8, 8u);
   }
 
-  v5[2](v5, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)checkAvailabilityForHandles:(id)a3 completion:(id)a4
+- (void)checkAvailabilityForHandles:(id)handles completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KCSharingXPCServer *)self groupManager];
+  completionCopy = completion;
+  handlesCopy = handles;
+  groupManager = [(KCSharingXPCServer *)self groupManager];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10002FB04;
   v10[3] = &unk_100344F58;
-  v11 = v6;
-  v9 = v6;
-  [v8 checkAvailabilityForHandles:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [groupManager checkAvailabilityForHandles:handlesCopy completion:v10];
 }
 
-- (void)declineInviteForGroupID:(id)a3 completion:(id)a4
+- (void)declineInviteForGroupID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KCSharingXPCServer *)self groupManager];
+  completionCopy = completion;
+  dCopy = d;
+  groupManager = [(KCSharingXPCServer *)self groupManager];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10002FC48;
   v10[3] = &unk_100333BD0;
-  v11 = v6;
-  v9 = v6;
-  [v8 declineInviteForGroupID:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [groupManager declineInviteForGroupID:dCopy completion:v10];
 }
 
-- (void)acceptInviteForGroupID:(id)a3 completion:(id)a4
+- (void)acceptInviteForGroupID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KCSharingXPCServer *)self groupManager];
+  completionCopy = completion;
+  dCopy = d;
+  groupManager = [(KCSharingXPCServer *)self groupManager];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10002FD8C;
   v10[3] = &unk_100333BD0;
-  v11 = v6;
-  v9 = v6;
-  [v8 acceptInviteForGroupID:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [groupManager acceptInviteForGroupID:dCopy completion:v10];
 }
 
-- (void)deleteGroupWithRequest:(id)a3 completion:(id)a4
+- (void)deleteGroupWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KCSharingXPCServer *)self groupManager];
+  completionCopy = completion;
+  requestCopy = request;
+  groupManager = [(KCSharingXPCServer *)self groupManager];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10002FED0;
   v10[3] = &unk_100337928;
-  v11 = v6;
-  v9 = v6;
-  [v8 handleGroupDeleteRequest:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [groupManager handleGroupDeleteRequest:requestCopy completion:v10];
 }
 
-- (void)leaveGroupWithRequest:(id)a3 completion:(id)a4
+- (void)leaveGroupWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KCSharingXPCServer *)self groupManager];
+  completionCopy = completion;
+  requestCopy = request;
+  groupManager = [(KCSharingXPCServer *)self groupManager];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10002FFF8;
   v10[3] = &unk_100337928;
-  v11 = v6;
-  v9 = v6;
-  [v8 handleGroupLeaveRequest:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [groupManager handleGroupLeaveRequest:requestCopy completion:v10];
 }
 
-- (void)updateGroupWithRequest:(id)a3 completion:(id)a4
+- (void)updateGroupWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KCSharingXPCServer *)self groupManager];
+  completionCopy = completion;
+  requestCopy = request;
+  groupManager = [(KCSharingXPCServer *)self groupManager];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100030120;
   v10[3] = &unk_100333BD0;
-  v11 = v6;
-  v9 = v6;
-  [v8 handleGroupUpdateRequest:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [groupManager handleGroupUpdateRequest:requestCopy completion:v10];
 }
 
-- (void)createGroupWithRequest:(id)a3 completion:(id)a4
+- (void)createGroupWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KCSharingXPCServer *)self groupManager];
+  completionCopy = completion;
+  requestCopy = request;
+  groupManager = [(KCSharingXPCServer *)self groupManager];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100030264;
   v10[3] = &unk_100333BD0;
-  v11 = v6;
-  v9 = v6;
-  [v8 handleGroupCreateRequest:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [groupManager handleGroupCreateRequest:requestCopy completion:v10];
 }
 
-- (void)getGroupsWithRequest:(id)a3 completion:(id)a4
+- (void)getGroupsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KCSharingXPCServer *)self groupManager];
+  completionCopy = completion;
+  requestCopy = request;
+  groupManager = [(KCSharingXPCServer *)self groupManager];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000303A8;
   v10[3] = &unk_100337C78;
-  v11 = v6;
-  v9 = v6;
-  [v8 handleGroupFetchRequest:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [groupManager handleGroupFetchRequest:requestCopy completion:v10];
 }
 
-- (void)getGroupByGroupID:(id)a3 completion:(id)a4
+- (void)getGroupByGroupID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KCSharingXPCServer *)self groupManager];
+  completionCopy = completion;
+  dCopy = d;
+  groupManager = [(KCSharingXPCServer *)self groupManager];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000304EC;
   v10[3] = &unk_100333BD0;
-  v11 = v6;
-  v9 = v6;
-  [v8 getGroupByGroupID:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [groupManager getGroupByGroupID:dCopy completion:v10];
 }
 
-- (void)fetchCurrentUserIdentifierWithReply:(id)a3
+- (void)fetchCurrentUserIdentifierWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(KCSharingXPCServer *)self syncController];
+  replyCopy = reply;
+  syncController = [(KCSharingXPCServer *)self syncController];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100030614;
   v7[3] = &unk_100337D88;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchCurrentUserIdentifierWithReply:v7];
+  v8 = replyCopy;
+  v6 = replyCopy;
+  [syncController fetchCurrentUserIdentifierWithReply:v7];
 }
 
-- (void)provisionWithReply:(id)a3
+- (void)provisionWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(KCSharingXPCServer *)self syncController];
+  replyCopy = reply;
+  syncController = [(KCSharingXPCServer *)self syncController];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003073C;
   v7[3] = &unk_100337928;
-  v8 = v4;
-  v6 = v4;
-  [v5 ensureCurrentUserProvisionedWithCompletion:v7];
+  v8 = replyCopy;
+  v6 = replyCopy;
+  [syncController ensureCurrentUserProvisionedWithCompletion:v7];
 }
 
-- (void)connection:(id)a3 handleInvocation:(id)a4 isReply:(BOOL)a5
+- (void)connection:(id)connection handleInvocation:(id)invocation isReply:(BOOL)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (a5 || (v11 = [v9 selector], protocol_getMethodDescription(self->_allowedProtocol, v11, 1, 1).name))
+  connectionCopy = connection;
+  invocationCopy = invocation;
+  v10 = invocationCopy;
+  if (reply || (v11 = [invocationCopy selector], protocol_getMethodDescription(self->_allowedProtocol, v11, 1, 1).name))
   {
     [v10 invoke];
   }
@@ -331,7 +331,7 @@
       v13 = NSStringFromSelector(v11);
       v14 = NSStringFromProtocol(self->_allowedProtocol);
       v15 = 138543874;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = v13;
       v19 = 2114;
@@ -339,7 +339,7 @@
       _os_log_fault_impl(&_mh_execute_header, v12, OS_LOG_TYPE_FAULT, "%{public}@ tried to call %{public}@ which isn't part of the allowed protocol %{public}@", &v15, 0x20u);
     }
 
-    [v8 invalidate];
+    [connectionCopy invalidate];
   }
 }
 
@@ -347,19 +347,19 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(KCSharingXPCServer *)self allowedProtocol];
-  v6 = NSStringFromProtocol(v5);
+  allowedProtocol = [(KCSharingXPCServer *)self allowedProtocol];
+  v6 = NSStringFromProtocol(allowedProtocol);
   v7 = [NSString stringWithFormat:@"<%@(%@): %@>", v4, v6, self->_connection];
 
   return v7;
 }
 
-- (KCSharingXPCServer)initWithConnection:(id)a3 allowedProtocol:(id)a4 groupManager:(id)a5 syncController:(id)a6
+- (KCSharingXPCServer)initWithConnection:(id)connection allowedProtocol:(id)protocol groupManager:(id)manager syncController:(id)controller
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  connectionCopy = connection;
+  protocolCopy = protocol;
+  managerCopy = manager;
+  controllerCopy = controller;
   v25.receiver = self;
   v25.super_class = KCSharingXPCServer;
   v15 = [(KCSharingXPCServer *)&v25 init];
@@ -369,29 +369,29 @@
     goto LABEL_7;
   }
 
-  objc_storeStrong(&v15->_connection, a3);
-  objc_storeStrong(p_isa + 2, a4);
-  objc_storeStrong(p_isa + 3, a5);
-  objc_storeWeak(p_isa + 4, v14);
-  if (protocol_isEqual(v12, &OBJC_PROTOCOL___KCSharingXPCServerProtocol))
+  objc_storeStrong(&v15->_connection, connection);
+  objc_storeStrong(p_isa + 2, protocol);
+  objc_storeStrong(p_isa + 3, manager);
+  objc_storeWeak(p_isa + 4, controllerCopy);
+  if (protocol_isEqual(protocolCopy, &OBJC_PROTOCOL___KCSharingXPCServerProtocol))
   {
     v17 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___KCSharingXPCServerProtocol];
     v18 = KCSharingSetupServerProtocol();
 LABEL_6:
     v19 = v18;
-    [v11 setExportedInterface:v18];
+    [connectionCopy setExportedInterface:v18];
 
-    [v11 setExportedObject:p_isa];
-    [v11 setDelegate:p_isa];
+    [connectionCopy setExportedObject:p_isa];
+    [connectionCopy setDelegate:p_isa];
     v20 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___KCSharingXPCClientProtocol];
-    [v11 setRemoteObjectInterface:v20];
+    [connectionCopy setRemoteObjectInterface:v20];
 
 LABEL_7:
     v21 = p_isa;
     goto LABEL_8;
   }
 
-  if (protocol_isEqual(v12, &OBJC_PROTOCOL___KCSharingInvitationNotificationProtocol))
+  if (protocol_isEqual(protocolCopy, &OBJC_PROTOCOL___KCSharingInvitationNotificationProtocol))
   {
     v17 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___KCSharingInvitationNotificationProtocol];
     v18 = KCSharingSetupInvitationNotificationProtocol();
@@ -401,7 +401,7 @@ LABEL_7:
   v23 = KCSharingLogObject();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
   {
-    v24 = NSStringFromProtocol(v12);
+    v24 = NSStringFromProtocol(protocolCopy);
     *buf = 138543362;
     v27 = v24;
     _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Rejected unsupported protocol %{public}@", buf, 0xCu);

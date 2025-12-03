@@ -1,26 +1,26 @@
 @interface SUUIBannerCloseButton
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation SUUIBannerCloseButton
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(SUUIBannerCloseButton *)self imageView];
-  v6 = v5;
+  highlightedCopy = highlighted;
+  imageView = [(SUUIBannerCloseButton *)self imageView];
+  v6 = imageView;
   v7 = 0.5;
-  if (v3)
+  if (highlightedCopy)
   {
     v7 = 1.0;
   }
 
-  [v5 setAlpha:v7];
+  [imageView setAlpha:v7];
 
   v8.receiver = self;
   v8.super_class = SUUIBannerCloseButton;
-  [(SUUIBannerCloseButton *)&v8 setHighlighted:v3];
+  [(SUUIBannerCloseButton *)&v8 setHighlighted:highlightedCopy];
 }
 
 - (void)layoutSubviews
@@ -28,15 +28,15 @@
   v6.receiver = self;
   v6.super_class = SUUIBannerCloseButton;
   [(SUUIBannerCloseButton *)&v6 layoutSubviews];
-  v3 = [(SUUIBannerCloseButton *)self imageView];
-  v4 = [(SUUIBannerCloseButton *)self isHighlighted];
+  imageView = [(SUUIBannerCloseButton *)self imageView];
+  isHighlighted = [(SUUIBannerCloseButton *)self isHighlighted];
   v5 = 0.5;
-  if (v4)
+  if (isHighlighted)
   {
     v5 = 1.0;
   }
 
-  [v3 setAlpha:v5];
+  [imageView setAlpha:v5];
 }
 
 @end

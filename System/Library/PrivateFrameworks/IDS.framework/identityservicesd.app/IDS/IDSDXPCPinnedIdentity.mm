@@ -1,34 +1,34 @@
 @interface IDSDXPCPinnedIdentity
-- (IDSDXPCPinnedIdentity)initWithQueue:(id)a3 connection:(id)a4;
-- (IDSDXPCPinnedIdentity)initWithQueue:(id)a3 connection:(id)a4 pinnedIdentityController:(id)a5;
+- (IDSDXPCPinnedIdentity)initWithQueue:(id)queue connection:(id)connection;
+- (IDSDXPCPinnedIdentity)initWithQueue:(id)queue connection:(id)connection pinnedIdentityController:(id)controller;
 @end
 
 @implementation IDSDXPCPinnedIdentity
 
-- (IDSDXPCPinnedIdentity)initWithQueue:(id)a3 connection:(id)a4
+- (IDSDXPCPinnedIdentity)initWithQueue:(id)queue connection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
+  connectionCopy = connection;
+  queueCopy = queue;
   v8 = +[IDSPinnedIdentityController sharedInstance];
-  v9 = [(IDSDXPCPinnedIdentity *)self initWithQueue:v7 connection:v6 pinnedIdentityController:v8];
+  v9 = [(IDSDXPCPinnedIdentity *)self initWithQueue:queueCopy connection:connectionCopy pinnedIdentityController:v8];
 
   return v9;
 }
 
-- (IDSDXPCPinnedIdentity)initWithQueue:(id)a3 connection:(id)a4 pinnedIdentityController:(id)a5
+- (IDSDXPCPinnedIdentity)initWithQueue:(id)queue connection:(id)connection pinnedIdentityController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  connectionCopy = connection;
+  controllerCopy = controller;
   v15.receiver = self;
   v15.super_class = IDSDXPCPinnedIdentity;
   v12 = [(IDSDXPCPinnedIdentity *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_queue, a3);
-    objc_storeStrong(&v13->_connection, a4);
-    objc_storeStrong(&v13->_pinnedIdentityController, a5);
+    objc_storeStrong(&v12->_queue, queue);
+    objc_storeStrong(&v13->_connection, connection);
+    objc_storeStrong(&v13->_pinnedIdentityController, controller);
   }
 
   return v13;

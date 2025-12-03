@@ -1,39 +1,39 @@
 @interface PKVectorMultiTimestamp
-- (BOOL)isEqual:(id)a3;
-- (PKVectorMultiTimestamp)initWithArchive:(const void *)a3 andCapacity:(unint64_t)a4;
-- (PKVectorMultiTimestamp)initWithCapacity:(unint64_t)a3;
-- (PKVectorMultiTimestamp)initWithData:(id)a3 andCapacity:(unint64_t)a4;
-- (PKVectorMultiTimestamp)initWithTimestamps:(id)a3;
-- (id)clockElementForUUID:(id)a3 atIndex:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKVectorMultiTimestamp)initWithArchive:(const void *)archive andCapacity:(unint64_t)capacity;
+- (PKVectorMultiTimestamp)initWithCapacity:(unint64_t)capacity;
+- (PKVectorMultiTimestamp)initWithData:(id)data andCapacity:(unint64_t)capacity;
+- (PKVectorMultiTimestamp)initWithTimestamps:(id)timestamps;
+- (id)clockElementForUUID:(id)d atIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)serialize;
 - (id)sortedUUIDs;
-- (unint64_t)clockForUUID:(id)a3 atIndex:(unint64_t)a4;
-- (unint64_t)compareTo:(id)a3;
+- (unint64_t)clockForUUID:(id)d atIndex:(unint64_t)index;
+- (unint64_t)compareTo:(id)to;
 - (unint64_t)hash;
-- (void)mergeWithTimestamp:(id)a3;
-- (void)saveToArchive:(void *)a3;
-- (void)setClock:(unint64_t)a3 forUUID:(id)a4 atIndex:(unint64_t)a5;
-- (void)setClock:(unint64_t)a3 subclock:(unint64_t)a4 forUUID:(id)a5 atIndex:(unint64_t)a6;
+- (void)mergeWithTimestamp:(id)timestamp;
+- (void)saveToArchive:(void *)archive;
+- (void)setClock:(unint64_t)clock forUUID:(id)d atIndex:(unint64_t)index;
+- (void)setClock:(unint64_t)clock subclock:(unint64_t)subclock forUUID:(id)d atIndex:(unint64_t)index;
 @end
 
 @implementation PKVectorMultiTimestamp
 
-- (PKVectorMultiTimestamp)initWithData:(id)a3 andCapacity:(unint64_t)a4
+- (PKVectorMultiTimestamp)initWithData:(id)data andCapacity:(unint64_t)capacity
 {
   v11 = &unk_1F47695B0;
   memset(v12, 0, sizeof(v12));
-  v6 = a3;
-  v7 = [v6 bytes];
-  [v6 length];
-  PB::Reader::Reader(buf, v7);
-  LODWORD(v7) = unk_1F47695C0(&v11, buf);
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  [dataCopy length];
+  PB::Reader::Reader(buf, bytes);
+  LODWORD(bytes) = unk_1F47695C0(&v11, buf);
 
-  if (v7)
+  if (bytes)
   {
-    self = [(PKVectorMultiTimestamp *)self initWithArchive:&v11 andCapacity:a4];
-    v8 = self;
+    self = [(PKVectorMultiTimestamp *)self initWithArchive:&v11 andCapacity:capacity];
+    selfCopy = self;
   }
 
   else
@@ -45,7 +45,7 @@
       _os_log_error_impl(&dword_1C7CCA000, v9, OS_LOG_TYPE_ERROR, "PKVectorMultiTimestamp protobuf corrupt.", buf, 2u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
   v11 = &unk_1F47695B0;
@@ -53,13 +53,13 @@
   std::vector<std::unique_ptr<drawing::Stroke>>::__destroy_vector::operator()[abi:ne200100](buf);
   PB::Base::~Base(&v11);
 
-  return v8;
+  return selfCopy;
 }
 
-- (PKVectorMultiTimestamp)initWithArchive:(const void *)a3 andCapacity:(unint64_t)a4
+- (PKVectorMultiTimestamp)initWithArchive:(const void *)archive andCapacity:(unint64_t)capacity
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = [(PKVectorMultiTimestamp *)self initWithCapacity:a4];
+  v6 = [(PKVectorMultiTimestamp *)self initWithCapacity:capacity];
   v7 = v6;
   if (!v6)
   {
@@ -69,7 +69,7 @@ LABEL_20:
   }
 
   v8 = v6;
-  v9 = *(a3 + 2) - *(a3 + 1);
+  v9 = *(archive + 2) - *(archive + 1);
   if (v9)
   {
     v10 = 0;
@@ -85,7 +85,7 @@ LABEL_20:
 
     while (1)
     {
-      v12 = *(*(a3 + 1) + 8 * v10);
+      v12 = *(*(archive + 1) + 8 * v10);
       v13 = v12[4];
       if (!v13 || *(v13 + 8) != 16)
       {
@@ -96,7 +96,7 @@ LABEL_20:
       v16 = v12[1];
       v15 = v12[2];
       v17 = (v15 - v16) >> 3;
-      if (v17 != a4)
+      if (v17 != capacity)
       {
         v21 = os_log_create("com.apple.pencilkit", "");
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -104,7 +104,7 @@ LABEL_20:
           v24 = 134218240;
           v25 = v17;
           v26 = 2048;
-          v27 = a4;
+          capacityCopy = capacity;
           _os_log_error_impl(&dword_1C7CCA000, v21, OS_LOG_TYPE_ERROR, "PKVectorMultiTimestamp requires the same number of clocks as capacity %zu != %ld.", &v24, 0x16u);
         }
 
@@ -122,7 +122,7 @@ LABEL_20:
           v18 = v19++;
         }
 
-        while (v18 < a4);
+        while (v18 < capacity);
       }
 
       if (++v10 == v11)
@@ -150,7 +150,7 @@ LABEL_21:
   return v22;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
   v6 = *MEMORY[0x1E69E9840];
   memset(v4, 0, sizeof(v4));
@@ -179,18 +179,18 @@ LABEL_21:
   return v3;
 }
 
-- (PKVectorMultiTimestamp)initWithCapacity:(unint64_t)a3
+- (PKVectorMultiTimestamp)initWithCapacity:(unint64_t)capacity
 {
   v10.receiver = self;
   v10.super_class = PKVectorMultiTimestamp;
   v4 = [(PKVectorMultiTimestamp *)&v10 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a3];
+    v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:capacity];
     timestamps = v4->_timestamps;
     v4->_timestamps = v5;
 
-    if (a3)
+    if (capacity)
     {
       v7 = 0;
       do
@@ -201,22 +201,22 @@ LABEL_21:
         ++v7;
       }
 
-      while (a3 != v7);
+      while (capacity != v7);
     }
   }
 
   return v4;
 }
 
-- (PKVectorMultiTimestamp)initWithTimestamps:(id)a3
+- (PKVectorMultiTimestamp)initWithTimestamps:(id)timestamps
 {
-  v4 = a3;
+  timestampsCopy = timestamps;
   v9.receiver = self;
   v9.super_class = PKVectorMultiTimestamp;
   v5 = [(PKVectorMultiTimestamp *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [timestampsCopy copy];
     timestamps = v5->_timestamps;
     v5->_timestamps = v6;
   }
@@ -224,64 +224,64 @@ LABEL_21:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PKVectorMultiTimestamp alloc] initWithCapacity:[(NSArray *)self->_timestamps count]];
   [(PKVectorMultiTimestamp *)v4 mergeWithTimestamp:self];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKVectorMultiTimestamp *)self compareTo:v4]== 0;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PKVectorMultiTimestamp *)self compareTo:equalCopy]== 0;
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(PKVectorMultiTimestamp *)self timestamps];
-  v3 = [v2 count];
+  timestamps = [(PKVectorMultiTimestamp *)self timestamps];
+  v3 = [timestamps count];
 
   return v3;
 }
 
-- (id)clockElementForUUID:(id)a3 atIndex:(unint64_t)a4
+- (id)clockElementForUUID:(id)d atIndex:(unint64_t)index
 {
   timestamps = self->_timestamps;
-  v6 = a3;
-  v7 = [(NSArray *)timestamps objectAtIndexedSubscript:a4];
-  v8 = [v7 clockElementForUUID:v6];
+  dCopy = d;
+  v7 = [(NSArray *)timestamps objectAtIndexedSubscript:index];
+  v8 = [v7 clockElementForUUID:dCopy];
 
   return v8;
 }
 
-- (unint64_t)clockForUUID:(id)a3 atIndex:(unint64_t)a4
+- (unint64_t)clockForUUID:(id)d atIndex:(unint64_t)index
 {
   timestamps = self->_timestamps;
-  v6 = a3;
-  v7 = [(NSArray *)timestamps objectAtIndexedSubscript:a4];
-  v8 = [v7 clockForUUID:v6];
+  dCopy = d;
+  v7 = [(NSArray *)timestamps objectAtIndexedSubscript:index];
+  v8 = [v7 clockForUUID:dCopy];
 
   return v8;
 }
 
-- (void)setClock:(unint64_t)a3 forUUID:(id)a4 atIndex:(unint64_t)a5
+- (void)setClock:(unint64_t)clock forUUID:(id)d atIndex:(unint64_t)index
 {
   timestamps = self->_timestamps;
-  v8 = a4;
-  v9 = [(NSArray *)timestamps objectAtIndexedSubscript:a5];
-  [v9 setClock:a3 forUUID:v8];
+  dCopy = d;
+  v9 = [(NSArray *)timestamps objectAtIndexedSubscript:index];
+  [v9 setClock:clock forUUID:dCopy];
 }
 
-- (void)setClock:(unint64_t)a3 subclock:(unint64_t)a4 forUUID:(id)a5 atIndex:(unint64_t)a6
+- (void)setClock:(unint64_t)clock subclock:(unint64_t)subclock forUUID:(id)d atIndex:(unint64_t)index
 {
   timestamps = self->_timestamps;
-  v10 = a5;
-  v11 = [(NSArray *)timestamps objectAtIndexedSubscript:a6];
-  [v11 setClock:a3 subclock:a4 forUUID:v10];
+  dCopy = d;
+  v11 = [(NSArray *)timestamps objectAtIndexedSubscript:index];
+  [v11 setClock:clock subclock:subclock forUUID:dCopy];
 }
 
 - (id)sortedUUIDs
@@ -294,20 +294,20 @@ LABEL_21:
     for (i = 0; i != v5; ++i)
     {
       v7 = [(NSArray *)self->_timestamps objectAtIndexedSubscript:i];
-      v8 = [v7 allUUIDs];
-      [v3 addObjectsFromArray:v8];
+      allUUIDs = [v7 allUUIDs];
+      [v3 addObjectsFromArray:allUUIDs];
     }
   }
 
-  v9 = [v3 allObjects];
-  v10 = [v9 sortedArrayUsingSelector:sel_PK_compare_];
+  allObjects = [v3 allObjects];
+  v10 = [allObjects sortedArrayUsingSelector:sel_PK_compare_];
 
   return v10;
 }
 
-- (unint64_t)compareTo:(id)a3
+- (unint64_t)compareTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = [(NSArray *)self->_timestamps count];
   if (v5)
   {
@@ -316,8 +316,8 @@ LABEL_21:
     for (i = 0; i != v6; ++i)
     {
       v9 = [(NSArray *)self->_timestamps objectAtIndexedSubscript:i];
-      v10 = [v4 timestamps];
-      v11 = [v10 objectAtIndexedSubscript:i];
+      timestamps = [toCopy timestamps];
+      v11 = [timestamps objectAtIndexedSubscript:i];
       v7 |= [v9 compareTo:v11];
 
       if (v7 == 5)
@@ -335,9 +335,9 @@ LABEL_21:
   return v7;
 }
 
-- (void)mergeWithTimestamp:(id)a3
+- (void)mergeWithTimestamp:(id)timestamp
 {
-  v10 = a3;
+  timestampCopy = timestamp;
   v4 = [(NSArray *)self->_timestamps count];
   if (v4)
   {
@@ -345,8 +345,8 @@ LABEL_21:
     for (i = 0; i != v5; ++i)
     {
       v7 = [(NSArray *)self->_timestamps objectAtIndexedSubscript:i];
-      v8 = [v10 timestamps];
-      v9 = [v8 objectAtIndexedSubscript:i];
+      timestamps = [timestampCopy timestamps];
+      v9 = [timestamps objectAtIndexedSubscript:i];
       [v7 mergeWithTimestamp:v9];
     }
   }
@@ -380,8 +380,8 @@ LABEL_21:
           objc_enumerationMutation(v6);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * i) shortDescription];
-        [v3 appendFormat:@"%@(%@)", v10, v12, v14];
+        shortDescription = [*(*(&v14 + 1) + 8 * i) shortDescription];
+        [v3 appendFormat:@"%@(%@)", v10, shortDescription, v14];
 
         v10 = @", ";
       }

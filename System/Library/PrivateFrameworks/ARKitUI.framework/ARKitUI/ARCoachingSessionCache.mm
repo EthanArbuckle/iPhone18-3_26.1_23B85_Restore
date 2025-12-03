@@ -1,15 +1,15 @@
 @interface ARCoachingSessionCache
 - (ARCoachingSessionCache)init;
-- (BOOL)hasAnyPlane:(id)a3;
-- (BOOL)hasHorizontalPlane:(id)a3;
-- (BOOL)hasVerticalPlane:(id)a3;
-- (void)anchorsAdded:(id)a3;
-- (void)anchorsRemoved:(id)a3;
+- (BOOL)hasAnyPlane:(id)plane;
+- (BOOL)hasHorizontalPlane:(id)plane;
+- (BOOL)hasVerticalPlane:(id)plane;
+- (void)anchorsAdded:(id)added;
+- (void)anchorsRemoved:(id)removed;
 - (void)clear;
-- (void)initializePlaneCache:(id)a3;
-- (void)removeFromPlaneCache:(id)a3;
+- (void)initializePlaneCache:(id)cache;
+- (void)removeFromPlaneCache:(id)cache;
 - (void)sessionChanged;
-- (void)updatePlaneCache:(id)a3;
+- (void)updatePlaneCache:(id)cache;
 @end
 
 @implementation ARCoachingSessionCache
@@ -36,19 +36,19 @@
   self->_verticalPlaneCount = 0;
 }
 
-- (void)anchorsAdded:(id)a3
+- (void)anchorsAdded:(id)added
 {
   if (self->_planeCacheInitialized)
   {
-    [(ARCoachingSessionCache *)self updatePlaneCache:a3];
+    [(ARCoachingSessionCache *)self updatePlaneCache:added];
   }
 }
 
-- (void)anchorsRemoved:(id)a3
+- (void)anchorsRemoved:(id)removed
 {
   if (self->_planeCacheInitialized)
   {
-    [(ARCoachingSessionCache *)self removeFromPlaneCache:a3];
+    [(ARCoachingSessionCache *)self removeFromPlaneCache:removed];
   }
 }
 
@@ -63,7 +63,7 @@
     v7 = 138543618;
     v8 = v5;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23D3AE000, v3, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Clearing cached anchors info after session change", &v7, 0x16u);
   }
 
@@ -71,11 +71,11 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)hasAnyPlane:(id)a3
+- (BOOL)hasAnyPlane:(id)plane
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  planeCopy = plane;
+  if (planeCopy)
   {
     if (!self->_planeCacheInitialized)
     {
@@ -87,11 +87,11 @@
         v11 = 138543618;
         v12 = v7;
         v13 = 2048;
-        v14 = self;
+        selfCopy = self;
         _os_log_impl(&dword_23D3AE000, v5, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Searching frame for any planes", &v11, 0x16u);
       }
 
-      [(ARCoachingSessionCache *)self initializePlaneCache:v4];
+      [(ARCoachingSessionCache *)self initializePlaneCache:planeCopy];
     }
 
     v8 = self->_planeCount > 0;
@@ -106,11 +106,11 @@
   return v8;
 }
 
-- (BOOL)hasHorizontalPlane:(id)a3
+- (BOOL)hasHorizontalPlane:(id)plane
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  planeCopy = plane;
+  if (planeCopy)
   {
     if (!self->_planeCacheInitialized)
     {
@@ -122,11 +122,11 @@
         v11 = 138543618;
         v12 = v7;
         v13 = 2048;
-        v14 = self;
+        selfCopy = self;
         _os_log_impl(&dword_23D3AE000, v5, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Searching frame for horizontal planes", &v11, 0x16u);
       }
 
-      [(ARCoachingSessionCache *)self initializePlaneCache:v4];
+      [(ARCoachingSessionCache *)self initializePlaneCache:planeCopy];
     }
 
     v8 = self->_horizontalPlaneCount > 0;
@@ -141,11 +141,11 @@
   return v8;
 }
 
-- (BOOL)hasVerticalPlane:(id)a3
+- (BOOL)hasVerticalPlane:(id)plane
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  planeCopy = plane;
+  if (planeCopy)
   {
     if (!self->_planeCacheInitialized)
     {
@@ -157,11 +157,11 @@
         v11 = 138543618;
         v12 = v7;
         v13 = 2048;
-        v14 = self;
+        selfCopy = self;
         _os_log_impl(&dword_23D3AE000, v5, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Searching frame for vertical planes", &v11, 0x16u);
       }
 
-      [(ARCoachingSessionCache *)self initializePlaneCache:v4];
+      [(ARCoachingSessionCache *)self initializePlaneCache:planeCopy];
     }
 
     v8 = self->_verticalPlaneCount > 0;
@@ -176,22 +176,22 @@
   return v8;
 }
 
-- (void)initializePlaneCache:(id)a3
+- (void)initializePlaneCache:(id)cache
 {
-  v4 = [a3 anchors];
-  [(ARCoachingSessionCache *)self updatePlaneCache:v4];
+  anchors = [cache anchors];
+  [(ARCoachingSessionCache *)self updatePlaneCache:anchors];
 
   self->_planeCacheInitialized = 1;
 }
 
-- (void)updatePlaneCache:(id)a3
+- (void)updatePlaneCache:(id)cache
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __43__ARCoachingSessionCache_updatePlaneCache___block_invoke;
   v3[3] = &unk_278BCD3C8;
   v3[4] = self;
-  ARCoachingEnumeratePlaneAnchors(a3, v3);
+  ARCoachingEnumeratePlaneAnchors(cache, v3);
 }
 
 uint64_t __43__ARCoachingSessionCache_updatePlaneCache___block_invoke(uint64_t a1, void *a2)
@@ -217,14 +217,14 @@ uint64_t __43__ARCoachingSessionCache_updatePlaneCache___block_invoke(uint64_t a
   return result;
 }
 
-- (void)removeFromPlaneCache:(id)a3
+- (void)removeFromPlaneCache:(id)cache
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __47__ARCoachingSessionCache_removeFromPlaneCache___block_invoke;
   v3[3] = &unk_278BCD3C8;
   v3[4] = self;
-  ARCoachingEnumeratePlaneAnchors(a3, v3);
+  ARCoachingEnumeratePlaneAnchors(cache, v3);
 }
 
 uint64_t __47__ARCoachingSessionCache_removeFromPlaneCache___block_invoke(uint64_t a1, void *a2)

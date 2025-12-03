@@ -1,22 +1,22 @@
 @interface WFNANPublishTableViewController
-- (WFNANPublishTableViewController)initWithContext:(id)a3;
-- (id)createTextFieldCellWithTableView:(id)a3 indexPath:(id)a4 text:(id)a5 placeholder:(id)a6 keyboardType:(int64_t)a7 textChangedHandler:(id)a8;
+- (WFNANPublishTableViewController)initWithContext:(id)context;
+- (id)createTextFieldCellWithTableView:(id)view indexPath:(id)path text:(id)text placeholder:(id)placeholder keyboardType:(int64_t)type textChangedHandler:(id)handler;
 - (id)serviceSpecificInfoFromString;
 - (void)_configureDataSource;
 - (void)_handleAddPublisher;
-- (void)_handleDataSessionsChangedNotification:(id)a3;
-- (void)_handlePublishersChangedNotification:(id)a3;
+- (void)_handleDataSessionsChangedNotification:(id)notification;
+- (void)_handlePublishersChangedNotification:(id)notification;
 - (void)clearInputFields;
 - (void)dismissKeyboard;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation WFNANPublishTableViewController
 
-- (WFNANPublishTableViewController)initWithContext:(id)a3
+- (WFNANPublishTableViewController)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = +[WFAppearanceProxy defaultAppearanceProxy];
   v19.receiver = self;
   v19.super_class = WFNANPublishTableViewController;
@@ -25,24 +25,24 @@
   if (v7)
   {
     v8 = MEMORY[0x277CBEB70];
-    v9 = [(WFNANPublishTableViewController *)v7 _defaultSections];
-    v10 = [v8 orderedSetWithArray:v9];
+    _defaultSections = [(WFNANPublishTableViewController *)v7 _defaultSections];
+    v10 = [v8 orderedSetWithArray:_defaultSections];
     sections = v7->_sections;
     v7->_sections = v10;
 
-    objc_storeStrong(&v7->_context, a3);
+    objc_storeStrong(&v7->_context, context);
     v12 = [WFNetworkSettingsCellFactory alloc];
-    v13 = [(WFNANPublishTableViewController *)v7 tableView];
-    v14 = [(WFNetworkSettingsCellFactory *)v12 initWithTableView:v13];
+    tableView = [(WFNANPublishTableViewController *)v7 tableView];
+    v14 = [(WFNetworkSettingsCellFactory *)v12 initWithTableView:tableView];
     cellFactory = v7->_cellFactory;
     v7->_cellFactory = v14;
 
     [(WFNANPublishTableViewController *)v7 clearInputFields];
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v7 selector:sel__handlePublishersChangedNotification_ name:@"WFNANPublishersChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__handlePublishersChangedNotification_ name:@"WFNANPublishersChangedNotification" object:0];
 
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v7 selector:sel__handleDataSessionsChangedNotification_ name:@"WFNANDataSessionsForPublishChangedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel__handleDataSessionsChangedNotification_ name:@"WFNANDataSessionsForPublishChangedNotification" object:0];
 
     [(WFInsetTableViewController *)v7 setReloadDataOnUpdateSectionContentInset:0];
   }
@@ -63,36 +63,36 @@
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v5 nibWithNibName:@"WFTextFieldCell" bundle:v6];
 
-  v8 = [(WFNANPublishTableViewController *)self tableView];
-  [v8 registerNib:v7 forCellReuseIdentifier:@"kWFTextFieldCellIdentifier"];
+  tableView = [(WFNANPublishTableViewController *)self tableView];
+  [tableView registerNib:v7 forCellReuseIdentifier:@"kWFTextFieldCellIdentifier"];
 
   [(WFNANPublishTableViewController *)self _configureDataSource];
 }
 
 - (void)dismissKeyboard
 {
-  v2 = [(WFNANPublishTableViewController *)self view];
-  [v2 endEditing:1];
+  view = [(WFNANPublishTableViewController *)self view];
+  [view endEditing:1];
 }
 
-- (id)createTextFieldCellWithTableView:(id)a3 indexPath:(id)a4 text:(id)a5 placeholder:(id)a6 keyboardType:(int64_t)a7 textChangedHandler:(id)a8
+- (id)createTextFieldCellWithTableView:(id)view indexPath:(id)path text:(id)text placeholder:(id)placeholder keyboardType:(int64_t)type textChangedHandler:(id)handler
 {
-  v13 = a8;
-  v14 = a6;
-  v15 = a5;
-  v16 = [a3 dequeueReusableCellWithIdentifier:@"kWFTextFieldCellIdentifier" forIndexPath:a4];
+  handlerCopy = handler;
+  placeholderCopy = placeholder;
+  textCopy = text;
+  v16 = [view dequeueReusableCellWithIdentifier:@"kWFTextFieldCellIdentifier" forIndexPath:path];
   [v16 setHideLabel:1];
   [v16 setEditable:1];
-  v17 = [v16 textField];
-  [v17 setText:v15];
+  textField = [v16 textField];
+  [textField setText:textCopy];
 
-  v18 = [v16 textField];
-  [v18 setPlaceholder:v14];
+  textField2 = [v16 textField];
+  [textField2 setPlaceholder:placeholderCopy];
 
-  v19 = [v16 textField];
-  [v19 setKeyboardType:a7];
+  textField3 = [v16 textField];
+  [textField3 setKeyboardType:type];
 
-  [v16 setTextChangeHandler:v13];
+  [v16 setTextChangeHandler:handlerCopy];
 
   return v16;
 }
@@ -101,43 +101,43 @@
 {
   v51[1] = *MEMORY[0x277D85DE8];
   v3 = [WFNANPublishTableViewDataSource alloc];
-  v4 = [(WFNANPublishTableViewController *)self tableView];
-  v5 = [(WFNANPublishTableViewController *)self context];
-  v6 = [(WFNANPublishTableViewController *)self sections];
+  tableView = [(WFNANPublishTableViewController *)self tableView];
+  context = [(WFNANPublishTableViewController *)self context];
+  sections = [(WFNANPublishTableViewController *)self sections];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __55__WFNANPublishTableViewController__configureDataSource__block_invoke;
   v41[3] = &unk_279EC5440;
   v41[4] = self;
-  v7 = [(WFNANPublishTableViewDataSource *)v3 initWithTableView:v4 context:v5 sections:v6 cellProvider:v41];
+  v7 = [(WFNANPublishTableViewDataSource *)v3 initWithTableView:tableView context:context sections:sections cellProvider:v41];
   [(WFNANPublishTableViewController *)self setDataSource:v7];
 
   v8 = objc_alloc_init(MEMORY[0x277CFB890]);
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [(WFNANPublishTableViewController *)self sections];
-  v11 = [v10 count];
+  array = [MEMORY[0x277CBEB18] array];
+  sections2 = [(WFNANPublishTableViewController *)self sections];
+  v11 = [sections2 count];
 
   if (v11)
   {
     v12 = 0;
     do
     {
-      v13 = [(WFNANPublishTableViewController *)self sections];
-      v14 = [v13 objectAtIndexedSubscript:v12];
-      v15 = [v14 unsignedIntegerValue];
+      sections3 = [(WFNANPublishTableViewController *)self sections];
+      v14 = [sections3 objectAtIndexedSubscript:v12];
+      unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-      v16 = [(WFNANPublishTableViewController *)self _identifierForSection:v15];
-      [v9 addObject:v16];
+      v16 = [(WFNANPublishTableViewController *)self _identifierForSection:unsignedIntegerValue];
+      [array addObject:v16];
 
       ++v12;
-      v17 = [(WFNANPublishTableViewController *)self sections];
-      v18 = [v17 count];
+      sections4 = [(WFNANPublishTableViewController *)self sections];
+      v18 = [sections4 count];
     }
 
     while (v18 > v12);
   }
 
-  [v8 appendSectionsWithIdentifiers:v9];
+  [v8 appendSectionsWithIdentifiers:array];
   v51[0] = @"WFNANPublishServiceNameIdentifier";
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:1];
   v20 = [(WFNANPublishTableViewController *)self _identifierForSection:0];
@@ -197,8 +197,8 @@
   v38 = [(WFNANPublishTableViewController *)self _identifierForSection:1];
   [v8 appendItemsWithIdentifiers:v37 intoSectionWithIdentifier:v38];
 
-  v39 = [(WFNANPublishTableViewController *)self dataSource];
-  [v39 applySnapshot:v8 animatingDifferences:1];
+  dataSource = [(WFNANPublishTableViewController *)self dataSource];
+  [dataSource applySnapshot:v8 animatingDifferences:1];
 
   v40 = *MEMORY[0x277D85DE8];
 }
@@ -538,19 +538,19 @@ void __55__WFNANPublishTableViewController__configureDataSource__block_invoke_9(
   [WeakRetained setPassphrase:v3];
 }
 
-- (void)_handlePublishersChangedNotification:(id)a3
+- (void)_handlePublishersChangedNotification:(id)notification
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFNANPublishTableViewController *)self dataSource];
-  v6 = [v5 snapshot];
+  notificationCopy = notification;
+  dataSource = [(WFNANPublishTableViewController *)self dataSource];
+  snapshot = [dataSource snapshot];
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"WFNANTableViewContextChangedPublisherKey"];
+  userInfo = [notificationCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"WFNANTableViewContextChangedPublisherKey"];
 
-  v9 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v10 = [v9 objectForKeyedSubscript:@"WFNANTableViewContextChangedOperationTypeKey"];
+  v10 = [userInfo2 objectForKeyedSubscript:@"WFNANTableViewContextChangedOperationTypeKey"];
 
   if (v10)
   {
@@ -564,36 +564,36 @@ void __55__WFNANPublishTableViewController__configureDataSource__block_invoke_9(
 
   if (!v11)
   {
-    v12 = [v10 unsignedIntegerValue];
-    if (v12 == 1)
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
+    if (unsignedIntegerValue == 1)
     {
       v22 = v8;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:1];
-      [v6 deleteItemsWithIdentifiers:v17];
+      [snapshot deleteItemsWithIdentifiers:v17];
 
       if (![(WFNANTableViewContext *)self->_context getPublishersCount])
       {
         v21 = @"WFNANPublishNoPublishersIdentifier";
         v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
         v18 = [(WFNANPublishTableViewController *)self _identifierForSection:1];
-        [v6 appendItemsWithIdentifiers:v16 intoSectionWithIdentifier:v18];
+        [snapshot appendItemsWithIdentifiers:v16 intoSectionWithIdentifier:v18];
 
 LABEL_12:
       }
     }
 
-    else if (!v12)
+    else if (!unsignedIntegerValue)
     {
       v25[0] = v8;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
       v14 = [(WFNANPublishTableViewController *)self _identifierForSection:1];
-      [v6 appendItemsWithIdentifiers:v13 intoSectionWithIdentifier:v14];
+      [snapshot appendItemsWithIdentifiers:v13 intoSectionWithIdentifier:v14];
 
       if ([(WFNANTableViewContext *)self->_context getPublishersCount]== 1)
       {
         v24 = @"WFNANPublishNoPublishersIdentifier";
         v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
-        [v6 deleteItemsWithIdentifiers:v15];
+        [snapshot deleteItemsWithIdentifiers:v15];
       }
 
       [(WFNANPublishTableViewController *)self clearInputFields];
@@ -606,36 +606,36 @@ LABEL_12:
       v23[6] = @"WFNANPublishProtocolTypeIdentifier";
       v23[7] = @"WFNANPublishPassphraseIdentifier";
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:8];
-      [v6 reconfigureItemsWithIdentifiers:v16];
+      [snapshot reconfigureItemsWithIdentifiers:v16];
       goto LABEL_12;
     }
 
-    v19 = [(WFNANPublishTableViewController *)self dataSource];
-    [v19 applySnapshot:v6 animatingDifferences:1];
+    dataSource2 = [(WFNANPublishTableViewController *)self dataSource];
+    [dataSource2 applySnapshot:snapshot animatingDifferences:1];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDataSessionsChangedNotification:(id)a3
+- (void)_handleDataSessionsChangedNotification:(id)notification
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFNANPublishTableViewController *)self dataSource];
-  v6 = [v5 snapshot];
+  notificationCopy = notification;
+  dataSource = [(WFNANPublishTableViewController *)self dataSource];
+  snapshot = [dataSource snapshot];
 
-  v7 = [v4 userInfo];
+  userInfo = [notificationCopy userInfo];
 
-  v8 = [v7 objectForKeyedSubscript:@"WFNANTableViewContextChangedPublisherKey"];
+  v8 = [userInfo objectForKeyedSubscript:@"WFNANTableViewContextChangedPublisherKey"];
 
   if (v8)
   {
     v12[0] = v8;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-    [v6 reconfigureItemsWithIdentifiers:v9];
+    [snapshot reconfigureItemsWithIdentifiers:v9];
 
-    v10 = [(WFNANPublishTableViewController *)self dataSource];
-    [v10 applySnapshot:v6 animatingDifferences:1];
+    dataSource2 = [(WFNANPublishTableViewController *)self dataSource];
+    [dataSource2 applySnapshot:snapshot animatingDifferences:1];
   }
 
   v11 = *MEMORY[0x277D85DE8];
@@ -664,17 +664,17 @@ LABEL_12:
   if (self->_isServiceSpecificInfoHex)
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB28]);
-    v4 = [(WFNANPublishTableViewController *)self serviceSpecificInfo];
-    v5 = [v4 lowercaseString];
-    v6 = [v5 UTF8String];
+    serviceSpecificInfo = [(WFNANPublishTableViewController *)self serviceSpecificInfo];
+    lowercaseString = [serviceSpecificInfo lowercaseString];
+    uTF8String = [lowercaseString UTF8String];
 
-    v7 = [(WFNANPublishTableViewController *)self serviceSpecificInfo];
-    v8 = [v7 length];
+    serviceSpecificInfo2 = [(WFNANPublishTableViewController *)self serviceSpecificInfo];
+    v8 = [serviceSpecificInfo2 length];
 
     if (v8 >= 2)
     {
       v9 = 0;
-      v10 = (v6 + 1);
+      v10 = (uTF8String + 1);
       while (1)
       {
         v19 = 0;
@@ -711,8 +711,8 @@ LABEL_15:
         v10 += 2;
         [v3 appendBytes:&v19 length:1];
         ++v9;
-        v15 = [(WFNANPublishTableViewController *)self serviceSpecificInfo];
-        v16 = [v15 length];
+        serviceSpecificInfo3 = [(WFNANPublishTableViewController *)self serviceSpecificInfo];
+        v16 = [serviceSpecificInfo3 length];
 
         if (v9 >= v16 >> 1)
         {
@@ -729,8 +729,8 @@ LABEL_8:
 
   else
   {
-    v17 = [(WFNANPublishTableViewController *)self serviceSpecificInfo];
-    v3 = [v17 dataUsingEncoding:4];
+    serviceSpecificInfo4 = [(WFNANPublishTableViewController *)self serviceSpecificInfo];
+    v3 = [serviceSpecificInfo4 dataUsingEncoding:4];
   }
 
 LABEL_18:
@@ -757,21 +757,21 @@ LABEL_18:
 
   v7 = [objc_alloc(MEMORY[0x277D7BAD0]) initWithServiceType:-[WFNANPublishTableViewController serviceType](self securityConfiguration:{"serviceType"), v6}];
   v8 = objc_alloc(MEMORY[0x277D7BAE0]);
-  v9 = [(WFNANPublishTableViewController *)self protocolType];
-  v10 = [(WFNANPublishTableViewController *)self portNumber];
-  v11 = [v8 initWithProtocolType:v9 servicePort:{objc_msgSend(v10, "integerValue")}];
+  protocolType = [(WFNANPublishTableViewController *)self protocolType];
+  portNumber = [(WFNANPublishTableViewController *)self portNumber];
+  v11 = [v8 initWithProtocolType:protocolType servicePort:{objc_msgSend(portNumber, "integerValue")}];
 
   [v7 setServiceSpecificInfo:v11];
   v12 = objc_alloc_init(MEMORY[0x277D7BAE8]);
-  v13 = [(WFNANPublishTableViewController *)self instanceName];
-  [v12 setInstanceName:v13];
+  instanceName = [(WFNANPublishTableViewController *)self instanceName];
+  [v12 setInstanceName:instanceName];
 
-  v14 = [(WFNANPublishTableViewController *)self serviceSpecificInfoFromString];
-  [v12 setBlob:v14];
+  serviceSpecificInfoFromString = [(WFNANPublishTableViewController *)self serviceSpecificInfoFromString];
+  [v12 setBlob:serviceSpecificInfoFromString];
 
   v15 = objc_alloc(MEMORY[0x277D7BAC8]);
-  v16 = [(WFNANPublishTableViewController *)self serviceName];
-  v17 = [v15 initWithServiceName:v16];
+  serviceName = [(WFNANPublishTableViewController *)self serviceName];
+  v17 = [v15 initWithServiceName:serviceName];
 
   [v17 setDatapathConfiguration:v7];
   [v17 setServiceSpecificInfo:v12];
@@ -779,25 +779,25 @@ LABEL_18:
   v18 = [objc_alloc(MEMORY[0x277D7BAF0]) initWithConfiguration:v17];
   [v18 setDelegate:self->_context];
   [(WFNANPublishTableViewController *)self clearInputFields];
-  v19 = [(WFNANPublishTableViewController *)self context];
-  [v19 addPublisher:v18];
+  context = [(WFNANPublishTableViewController *)self context];
+  [context addPublisher:v18];
 
   [(WFNANPublishTableViewController *)self dismissKeyboard];
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v12 = a4;
-  v5 = [(WFNANPublishTableViewController *)self sections];
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v12, "section")}];
-  v7 = [v6 unsignedIntegerValue];
+  pathCopy = path;
+  sections = [(WFNANPublishTableViewController *)self sections];
+  v6 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  if (v7 == 1 && [(WFNANTableViewContext *)self->_context getPublishersCount]>= 1)
+  if (unsignedIntegerValue == 1 && [(WFNANTableViewContext *)self->_context getPublishersCount]>= 1)
   {
     v8 = [WFNANDataSessionsTableViewController alloc];
     context = self->_context;
-    v10 = -[WFNANTableViewContext getPublisherAtIndex:](context, "getPublisherAtIndex:", [v12 row]);
+    v10 = -[WFNANTableViewContext getPublisherAtIndex:](context, "getPublisherAtIndex:", [pathCopy row]);
     v11 = [(WFNANDataSessionsTableViewController *)v8 initWithContext:context forPublisher:v10];
 
     [(UIViewController *)self wf_pushViewController:v11 animated:1];

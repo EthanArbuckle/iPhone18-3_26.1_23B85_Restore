@@ -1,7 +1,7 @@
 @interface PPSFeatureFlagReader
 - (BOOL)hasEntitlements;
 - (PPSFeatureFlagReader)init;
-- (void)getFeatureFlags:(id)a3;
+- (void)getFeatureFlags:(id)flags;
 @end
 
 @implementation PPSFeatureFlagReader
@@ -17,30 +17,30 @@
     v3 = dispatch_get_global_queue(21, 0);
     [(PPSFeatureFlagReader *)v2 setSigterm_queue:v3];
 
-    v4 = [(PPSFeatureFlagReader *)v2 sigterm_queue];
-    v5 = dispatch_source_create(&_dispatch_source_type_signal, 0xFuLL, 0, v4);
+    sigterm_queue = [(PPSFeatureFlagReader *)v2 sigterm_queue];
+    v5 = dispatch_source_create(&_dispatch_source_type_signal, 0xFuLL, 0, sigterm_queue);
     [(PPSFeatureFlagReader *)v2 setSigterm_source:v5];
 
-    v6 = [(PPSFeatureFlagReader *)v2 sigterm_source];
-    dispatch_source_set_event_handler(v6, &stru_1000042B8);
+    sigterm_source = [(PPSFeatureFlagReader *)v2 sigterm_source];
+    dispatch_source_set_event_handler(sigterm_source, &stru_1000042B8);
 
-    v7 = [(PPSFeatureFlagReader *)v2 sigterm_source];
-    dispatch_activate(v7);
+    sigterm_source2 = [(PPSFeatureFlagReader *)v2 sigterm_source];
+    dispatch_activate(sigterm_source2);
   }
 
   return v2;
 }
 
-- (void)getFeatureFlags:(id)a3
+- (void)getFeatureFlags:(id)flags
 {
-  v27 = a3;
+  flagsCopy = flags;
   context = objc_autoreleasePoolPush();
   if ([(PPSFeatureFlagReader *)self hasEntitlements])
   {
     v4 = +[FFConfiguration shared];
-    v5 = [v4 domains];
+    domains = [v4 domains];
 
-    if (![v5 count])
+    if (![domains count])
     {
       v6 = logPPSFeatureFlagReader();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -48,13 +48,13 @@
         sub_100001ED0(v6);
       }
 
-      v27[2](v27, &__NSArray0__struct);
+      flagsCopy[2](flagsCopy, &__NSArray0__struct);
     }
 
     v7 = logPPSFeatureFlagReader();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      sub_100001F14(v5, v7);
+      sub_100001F14(domains, v7);
     }
 
     v33 = +[NSMutableArray array];
@@ -62,7 +62,7 @@
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    obj = v5;
+    obj = domains;
     v30 = [obj countByEnumeratingWithState:&v40 objects:v51 count:16];
     if (v30)
     {
@@ -112,9 +112,9 @@
 
                     if (!v16 || (v17 = [v16 value], v17 != objc_msgSend(v14, "value")))
                     {
-                      v18 = [v16 attributes];
-                      v19 = [v18 objectForKeyedSubscript:@"TargetRelease"];
-                      v20 = [v19 value];
+                      attributes = [v16 attributes];
+                      v19 = [attributes objectForKeyedSubscript:@"TargetRelease"];
+                      value = [v19 value];
                       v21 = logPPSFeatureFlagReader();
                       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
                       {
@@ -133,9 +133,9 @@
                       v23 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v14 value]);
                       [v22 setObject:v23 forKeyedSubscript:@"State"];
 
-                      if (v20)
+                      if (value)
                       {
-                        v24 = v20;
+                        v24 = value;
                       }
 
                       else
@@ -166,7 +166,7 @@
       while (v30);
     }
 
-    v27[2](v27, v33);
+    flagsCopy[2](flagsCopy, v33);
   }
 
   else
@@ -177,7 +177,7 @@
       sub_100001E8C(v25);
     }
 
-    v27[2](v27, &__NSArray0__struct);
+    flagsCopy[2](flagsCopy, &__NSArray0__struct);
   }
 
   objc_autoreleasePoolPop(context);

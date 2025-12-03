@@ -1,68 +1,68 @@
 @interface TNChartRangeList
-+ (id)rangeListWithRangeRef:(TSCERangeRef *)a3;
-+ (id)rangeListWithTableUID:(const TSKUIDStruct *)a3;
-+ (id)rangeListWithTableUID:(const TSKUIDStruct *)a3 range:(TSCERangeCoordinate)a4;
-- ($85CD2974BE96D4886BB301820D1C36C2)chartableSizeByDirection:(int)a3;
-- (BOOL)containsCell:(TSUCellCoord)a3;
-- (BOOL)containsRange:(TSCERangeCoordinate)a3;
-- (TNChartRangeList)initWithTableUID:(const TSKUIDStruct *)a3;
-- (TNChartRangeList)initWithTableUID:(const TSKUIDStruct *)a3 range:(TSCERangeCoordinate)a4;
-- (TSCERangeCoordinate)rangeAtIndex:(unint64_t)a3;
-- (TSCERangeCoordinate)rangeStartingAfterCell:(TSUCellCoord)a3 direction:(int)a4;
-- (TSCERangeCoordinate)rangeStartingAtCell:(TSUCellCoord)a3 direction:(int)a4;
++ (id)rangeListWithRangeRef:(TSCERangeRef *)ref;
++ (id)rangeListWithTableUID:(const TSKUIDStruct *)d;
++ (id)rangeListWithTableUID:(const TSKUIDStruct *)d range:(TSCERangeCoordinate)range;
+- ($85CD2974BE96D4886BB301820D1C36C2)chartableSizeByDirection:(int)direction;
+- (BOOL)containsCell:(TSUCellCoord)cell;
+- (BOOL)containsRange:(TSCERangeCoordinate)range;
+- (TNChartRangeList)initWithTableUID:(const TSKUIDStruct *)d;
+- (TNChartRangeList)initWithTableUID:(const TSKUIDStruct *)d range:(TSCERangeCoordinate)range;
+- (TSCERangeCoordinate)rangeAtIndex:(unint64_t)index;
+- (TSCERangeCoordinate)rangeStartingAfterCell:(TSUCellCoord)cell direction:(int)direction;
+- (TSCERangeCoordinate)rangeStartingAtCell:(TSUCellCoord)cell direction:(int)direction;
 - (TSCERangeCoordinate)unionRange;
 - (TSKUIDStruct)tableUID;
 - (TSTCellRegion)cellRegion;
 - (id).cxx_construct;
 - (id)description;
-- (void)addRange:(TSCERangeCoordinate)a3 coalesceFlags:(int)a4;
-- (void)enumerateRangesUsingBlock:(id)a3;
+- (void)addRange:(TSCERangeCoordinate)range coalesceFlags:(int)flags;
+- (void)enumerateRangesUsingBlock:(id)block;
 @end
 
 @implementation TNChartRangeList
 
-+ (id)rangeListWithTableUID:(const TSKUIDStruct *)a3
++ (id)rangeListWithTableUID:(const TSKUIDStruct *)d
 {
-  v4 = [a1 alloc];
-  v6 = objc_msgSend_initWithTableUID_(v4, v5, a3);
+  v4 = [self alloc];
+  v6 = objc_msgSend_initWithTableUID_(v4, v5, d);
 
   return v6;
 }
 
-+ (id)rangeListWithTableUID:(const TSKUIDStruct *)a3 range:(TSCERangeCoordinate)a4
++ (id)rangeListWithTableUID:(const TSKUIDStruct *)d range:(TSCERangeCoordinate)range
 {
-  bottomRight = a4._bottomRight;
-  topLeft = a4._topLeft;
-  v7 = [a1 alloc];
-  v9 = objc_msgSend_initWithTableUID_range_(v7, v8, a3, topLeft, bottomRight);
+  bottomRight = range._bottomRight;
+  topLeft = range._topLeft;
+  v7 = [self alloc];
+  v9 = objc_msgSend_initWithTableUID_range_(v7, v8, d, topLeft, bottomRight);
 
   return v9;
 }
 
-+ (id)rangeListWithRangeRef:(TSCERangeRef *)a3
++ (id)rangeListWithRangeRef:(TSCERangeRef *)ref
 {
-  v4 = [a1 alloc];
-  v6 = objc_msgSend_initWithTableUID_range_(v4, v5, &a3->_tableUID, *&a3->range._topLeft, *&a3->range._bottomRight);
+  v4 = [self alloc];
+  v6 = objc_msgSend_initWithTableUID_range_(v4, v5, &ref->_tableUID, *&ref->range._topLeft, *&ref->range._bottomRight);
 
   return v6;
 }
 
-- (TNChartRangeList)initWithTableUID:(const TSKUIDStruct *)a3
+- (TNChartRangeList)initWithTableUID:(const TSKUIDStruct *)d
 {
   v5.receiver = self;
   v5.super_class = TNChartRangeList;
   result = [(TNChartRangeList *)&v5 init];
   if (result)
   {
-    result->_tableUID = *a3;
+    result->_tableUID = *d;
   }
 
   return result;
 }
 
-- (TNChartRangeList)initWithTableUID:(const TSKUIDStruct *)a3 range:(TSCERangeCoordinate)a4
+- (TNChartRangeList)initWithTableUID:(const TSKUIDStruct *)d range:(TSCERangeCoordinate)range
 {
-  v4 = objc_msgSend_initWithTableUID_(self, a2, a3, *&a4._topLeft, *&a4._bottomRight);
+  v4 = objc_msgSend_initWithTableUID_(self, a2, d, *&range._topLeft, *&range._bottomRight);
   v5 = v4;
   if (v4)
   {
@@ -72,10 +72,10 @@
   return v5;
 }
 
-- (void)addRange:(TSCERangeCoordinate)a3 coalesceFlags:(int)a4
+- (void)addRange:(TSCERangeCoordinate)range coalesceFlags:(int)flags
 {
-  v19 = a3;
-  if (a4)
+  rangeCopy = range;
+  if (flags)
   {
     begin = self->_ranges.__begin_;
     end = self->_ranges.__end_;
@@ -85,12 +85,12 @@
       while (1)
       {
         row = begin->_topLeft.row;
-        v9 = begin->_topLeft.row != a3._topLeft.row || begin->_bottomRight.row != a3._bottomRight.row;
+        v9 = begin->_topLeft.row != range._topLeft.row || begin->_bottomRight.row != range._bottomRight.row;
         column = begin->_topLeft.column;
-        if (column == a3._topLeft.column)
+        if (column == range._topLeft.column)
         {
-          v11 = begin->_bottomRight.column != a3._bottomRight.column;
-          if ((a4 & 2) == 0)
+          v11 = begin->_bottomRight.column != range._bottomRight.column;
+          if ((flags & 2) == 0)
           {
             goto LABEL_17;
           }
@@ -99,17 +99,17 @@
         else
         {
           v11 = 1;
-          if ((a4 & 2) == 0)
+          if ((flags & 2) == 0)
           {
             goto LABEL_17;
           }
         }
 
-        if (column <= a3._bottomRight.column)
+        if (column <= range._bottomRight.column)
         {
           v12 = begin->_bottomRight.column;
-          v13 = v12 + 1 < a3._topLeft.column;
-          if (v12 + 1 >= a3._topLeft.column || (a4 & 1) == 0)
+          v13 = v12 + 1 < range._topLeft.column;
+          if (v12 + 1 >= range._topLeft.column || (flags & 1) == 0)
           {
             goto LABEL_22;
           }
@@ -118,7 +118,7 @@
         }
 
 LABEL_17:
-        if ((a4 & 1) == 0)
+        if ((flags & 1) == 0)
         {
           v13 = 1;
           goto LABEL_22;
@@ -126,18 +126,18 @@ LABEL_17:
 
         v12 = begin->_bottomRight.column;
 LABEL_20:
-        v13 = a3._bottomRight.column + 1 < column;
-        if (v12 < a3._topLeft.column)
+        v13 = range._bottomRight.column + 1 < column;
+        if (v12 < range._topLeft.column)
         {
           v13 = 1;
         }
 
 LABEL_22:
-        if ((a4 & 8) != 0 && row <= a3._bottomRight.row)
+        if ((flags & 8) != 0 && row <= range._bottomRight.row)
         {
           v15 = begin->_bottomRight.row;
-          v16 = v15 + 1 < a3._topLeft.row;
-          if (v15 + 1 >= a3._topLeft.row || (a4 & 4) == 0)
+          v16 = v15 + 1 < range._topLeft.row;
+          if (v15 + 1 >= range._topLeft.row || (flags & 4) == 0)
           {
             goto LABEL_36;
           }
@@ -145,7 +145,7 @@ LABEL_22:
 
         else
         {
-          if ((a4 & 4) == 0)
+          if ((flags & 4) == 0)
           {
             v16 = 1;
             goto LABEL_36;
@@ -154,11 +154,11 @@ LABEL_22:
           v15 = begin->_bottomRight.row;
         }
 
-        v16 = v15 < a3._topLeft.row || a3._bottomRight.row + 1 < row;
+        v16 = v15 < range._topLeft.row || range._bottomRight.row + 1 < row;
 LABEL_36:
         if (!v9 && !v13 || !v11 && !v16)
         {
-          begin->_topLeft = sub_275F295E4(*&begin->_topLeft, *&begin->_bottomRight, *&a3._topLeft, *&a3._bottomRight);
+          begin->_topLeft = sub_275F295E4(*&begin->_topLeft, *&begin->_bottomRight, *&range._topLeft, *&range._bottomRight);
           begin->_bottomRight = v18;
           goto LABEL_42;
         }
@@ -173,14 +173,14 @@ LABEL_36:
 
   p_ranges = &self->_ranges;
 LABEL_41:
-  sub_275F293A4(p_ranges, &v19);
+  sub_275F293A4(p_ranges, &rangeCopy);
 LABEL_42:
   self->_unionRangeValid = 0;
 }
 
-- (TSCERangeCoordinate)rangeAtIndex:(unint64_t)a3
+- (TSCERangeCoordinate)rangeAtIndex:(unint64_t)index
 {
-  if (objc_msgSend_numberOfRanges(self, a2, a3) <= a3)
+  if (objc_msgSend_numberOfRanges(self, a2, index) <= index)
   {
     v9 = MEMORY[0x277D81150];
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TNChartRangeList rangeAtIndex:]");
@@ -194,7 +194,7 @@ LABEL_42:
 
   else
   {
-    v6 = &self->_ranges.__begin_[a3];
+    v6 = &self->_ranges.__begin_[index];
     topLeft = v6->_topLeft;
     bottomRight = v6->_bottomRight;
   }
@@ -205,7 +205,7 @@ LABEL_42:
   return result;
 }
 
-- (BOOL)containsCell:(TSUCellCoord)a3
+- (BOOL)containsCell:(TSUCellCoord)cell
 {
   begin = self->_ranges.__begin_;
   end = self->_ranges.__end_;
@@ -216,10 +216,10 @@ LABEL_42:
 
   while (1)
   {
-    if (a3.column >= WORD2(*&begin->_topLeft))
+    if (cell.column >= WORD2(*&begin->_topLeft))
     {
-      v5 = a3.row <= begin->_bottomRight.row && a3.row >= *&begin->_topLeft;
-      if (v5 && a3.column <= begin->_bottomRight.column)
+      v5 = cell.row <= begin->_bottomRight.row && cell.row >= *&begin->_topLeft;
+      if (v5 && cell.column <= begin->_bottomRight.column)
       {
         break;
       }
@@ -234,21 +234,21 @@ LABEL_42:
   return 1;
 }
 
-- (BOOL)containsRange:(TSCERangeCoordinate)a3
+- (BOOL)containsRange:(TSCERangeCoordinate)range
 {
-  bottomRight = a3._bottomRight;
-  topLeft = a3._topLeft;
-  v6 = *&a3._topLeft & 0xFFFF00000000;
-  v7 = *&a3._bottomRight & 0xFFFF00000000;
-  if (a3._topLeft.row != 0x7FFFFFFFLL || v6 == 0x7FFF00000000 || v7 == 0x7FFF00000000)
+  bottomRight = range._bottomRight;
+  topLeft = range._topLeft;
+  v6 = *&range._topLeft & 0xFFFF00000000;
+  v7 = *&range._bottomRight & 0xFFFF00000000;
+  if (range._topLeft.row != 0x7FFFFFFFLL || v6 == 0x7FFF00000000 || v7 == 0x7FFF00000000)
   {
-    if (a3._topLeft.row != 0x7FFFFFFFLL && v6 == 0x7FFF00000000 && v7 == 0x7FFF00000000 && a3._bottomRight.row != 0x7FFFFFFFLL)
+    if (range._topLeft.row != 0x7FFFFFFFLL && v6 == 0x7FFF00000000 && v7 == 0x7FFF00000000 && range._bottomRight.row != 0x7FFFFFFFLL)
     {
       return 0;
     }
   }
 
-  else if (a3._bottomRight.row == 0x7FFFFFFF)
+  else if (range._bottomRight.row == 0x7FFFFFFF)
   {
     return 0;
   }
@@ -487,21 +487,21 @@ LABEL_113:
   return v16;
 }
 
-- (TSCERangeCoordinate)rangeStartingAtCell:(TSUCellCoord)a3 direction:(int)a4
+- (TSCERangeCoordinate)rangeStartingAtCell:(TSUCellCoord)cell direction:(int)direction
 {
-  v5 = a3;
+  cellCopy = cell;
   v7 = 0x7FFF7FFFFFFFLL;
-  v8 = *&a3.column;
-  v9 = objc_msgSend_unionRange(self, a2, *&a3);
+  v8 = *&cell.column;
+  v9 = objc_msgSend_unionRange(self, a2, *&cell);
   v11 = WORD2(v9);
   if (WORD2(v9) <= v8)
   {
     v14 = v9;
     v15 = v10;
-    v12 = v5 & 0xFFFF000000000000;
-    v16 = WORD2(v5);
+    v12 = cellCopy & 0xFFFF000000000000;
+    v16 = WORD2(cellCopy);
     v17 = WORD2(v10);
-    LODWORD(v18) = v5;
+    LODWORD(v18) = cellCopy;
     while (1)
     {
       v13 = 0x7FFF00000000;
@@ -511,12 +511,12 @@ LABEL_113:
         goto LABEL_19;
       }
 
-      if (objc_msgSend_containsCell_(self, v10, v5))
+      if (objc_msgSend_containsCell_(self, v10, cellCopy))
       {
         break;
       }
 
-      if (a4 == 1)
+      if (direction == 1)
       {
         v19 = v8 + 1;
       }
@@ -526,7 +526,7 @@ LABEL_113:
         v19 = v8;
       }
 
-      if (a4 == 2)
+      if (direction == 2)
       {
         v18 = (v18 + 1);
       }
@@ -536,13 +536,13 @@ LABEL_113:
         v18 = v18;
       }
 
-      if (a4 != 2)
+      if (direction != 2)
       {
         v8 = v19;
       }
 
       v16 = v8;
-      v5 = v18 | (v8 << 32) | v12;
+      cellCopy = v18 | (v8 << 32) | v12;
       if (v11 > v8)
       {
         v12 = 0;
@@ -553,8 +553,8 @@ LABEL_19:
       }
     }
 
-    v34 = a4 == 1;
-    if (a4 == 1)
+    v34 = direction == 1;
+    if (direction == 1)
     {
       v23 = v8 + 1;
     }
@@ -569,8 +569,8 @@ LABEL_19:
     LOWORD(v26) = v8;
     if (!v24)
     {
-      v33 = a4 == 2;
-      v27 = a4 == 2 ? (v18 + 1) : v18;
+      v33 = direction == 2;
+      v27 = direction == 2 ? (v18 + 1) : v18;
       v25 = v18;
       LOWORD(v26) = v8;
       if (v27 <= v15)
@@ -643,35 +643,35 @@ LABEL_20:
   return result;
 }
 
-- (TSCERangeCoordinate)rangeStartingAfterCell:(TSUCellCoord)a3 direction:(int)a4
+- (TSCERangeCoordinate)rangeStartingAfterCell:(TSUCellCoord)cell direction:(int)direction
 {
-  column = a3.column;
-  if (a4 == 1)
+  column = cell.column;
+  if (direction == 1)
   {
-    v5 = a3.column + 1;
+    v5 = cell.column + 1;
   }
 
   else
   {
-    v5 = a3.column;
+    v5 = cell.column;
   }
 
-  if (a4 == 2)
+  if (direction == 2)
   {
-    row = a3.row + 1;
+    row = cell.row + 1;
   }
 
   else
   {
-    row = a3.row;
+    row = cell.row;
   }
 
-  if (a4 != 2)
+  if (direction != 2)
   {
     column = v5;
   }
 
-  v7 = objc_msgSend_rangeStartingAtCell_direction_(self, a2, *&a3 & 0xFFFF000000000000 | row | (column << 32));
+  v7 = objc_msgSend_rangeStartingAtCell_direction_(self, a2, *&cell & 0xFFFF000000000000 | row | (column << 32));
   result._bottomRight = v8;
   result._topLeft = v7;
   return result;
@@ -710,10 +710,10 @@ LABEL_20:
   return result;
 }
 
-- (void)enumerateRangesUsingBlock:(id)a3
+- (void)enumerateRangesUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v8 = 0;
     begin = self->_ranges.__begin_;
@@ -723,7 +723,7 @@ LABEL_20:
       v7 = 0;
       do
       {
-        (*(v4 + 2))(v4, *&begin->_topLeft, *&begin->_bottomRight, v7, &v8);
+        (*(blockCopy + 2))(blockCopy, *&begin->_topLeft, *&begin->_bottomRight, v7, &v8);
         if (v8)
         {
           break;
@@ -738,9 +738,9 @@ LABEL_20:
   }
 }
 
-- ($85CD2974BE96D4886BB301820D1C36C2)chartableSizeByDirection:(int)a3
+- ($85CD2974BE96D4886BB301820D1C36C2)chartableSizeByDirection:(int)direction
 {
-  v7 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], a2, *&a3);
+  v7 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], a2, *&direction);
   begin = self->_ranges.__begin_;
   end = self->_ranges.__end_;
   if (begin == end)
@@ -757,7 +757,7 @@ LABEL_20:
     {
       topLeft = begin->_topLeft;
       bottomRight = begin->_bottomRight;
-      if (a3 == 1)
+      if (direction == 1)
       {
         row = topLeft.row;
         v15 = bottomRight.row - topLeft.row;
@@ -808,7 +808,7 @@ LABEL_20:
     while (begin != end);
   }
 
-  if (a3 == 1)
+  if (direction == 1)
   {
     v20 = objc_msgSend_count(v7, v5, v6);
     if (HIDWORD(v20))

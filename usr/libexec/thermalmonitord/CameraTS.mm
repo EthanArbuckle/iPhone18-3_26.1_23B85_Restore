@@ -1,13 +1,13 @@
 @interface CameraTS
-- (CameraTS)initWithFrontCameraSensorIdx:(int)a3 rearCameraSensorIdx:(int)a4;
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3;
-- (__CFString)copyHeaderForIndex:(int)a3;
+- (CameraTS)initWithFrontCameraSensorIdx:(int)idx rearCameraSensorIdx:(int)sensorIdx;
+- (__CFString)copyFieldCurrentValueForIndex:(int)index;
+- (__CFString)copyHeaderForIndex:(int)index;
 - (void)dealloc;
 @end
 
 @implementation CameraTS
 
-- (CameraTS)initWithFrontCameraSensorIdx:(int)a3 rearCameraSensorIdx:(int)a4
+- (CameraTS)initWithFrontCameraSensorIdx:(int)idx rearCameraSensorIdx:(int)sensorIdx
 {
   v29.receiver = self;
   v29.super_class = CameraTS;
@@ -16,8 +16,8 @@
   if (v6)
   {
     v6->_torchState = -1;
-    v6->_rearCameraSensorIdx = a4;
-    v6->_frontCameraSensorIdx = a3;
+    v6->_rearCameraSensorIdx = sensorIdx;
+    v6->_frontCameraSensorIdx = idx;
     v6->_rearCameraTeleSensorIdx = -1;
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v7->_cameraQueue = dispatch_queue_create("com.apple.ThermalMonitor.cameraQueue", v8);
@@ -93,9 +93,9 @@
   [(CameraTS *)&v3 dealloc];
 }
 
-- (__CFString)copyHeaderForIndex:(int)a3
+- (__CFString)copyHeaderForIndex:(int)index
 {
-  if (a3)
+  if (index)
   {
     return 0;
   }
@@ -106,9 +106,9 @@
   }
 }
 
-- (__CFString)copyFieldCurrentValueForIndex:(int)a3
+- (__CFString)copyFieldCurrentValueForIndex:(int)index
 {
-  if (a3)
+  if (index)
   {
     return 0;
   }

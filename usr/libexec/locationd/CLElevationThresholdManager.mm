@@ -1,16 +1,16 @@
 @interface CLElevationThresholdManager
-- (BOOL)removeClient:(id)a3;
-- (BOOL)updateWithAltitude:(float)a3 andAccuracy:(float)a4 upperBound:(float *)a5 lowerBound:(float *)a6;
+- (BOOL)removeClient:(id)client;
+- (BOOL)updateWithAltitude:(float)altitude andAccuracy:(float)accuracy upperBound:(float *)bound lowerBound:(float *)lowerBound;
 - (CLElevationThresholdManager)init;
 - (id).cxx_construct;
 - (void)clearShouldAlert;
-- (void)initializeThresholdsGivenAltitude:(float)a3 andAccuracy:(float)a4;
-- (void)insertClient:(id)a3 withThreshold:(float)a4;
-- (void)sendAnalyticsEventForId:(id)a3;
-- (void)thresholdBoundsForElevation:(float)a3 andAccuracy:(float)a4 upperBound:(float *)a5 lowerBound:(float *)a6;
-- (void)thresholdUpdated:(ThresholdClient *)a3 initialized:(BOOL)a4 above:(BOOL)a5;
-- (void)updateAnalyticsWithAltitude:(float)a3;
-- (void)updateInitializedThresholdsWithAltitude:(float)a3;
+- (void)initializeThresholdsGivenAltitude:(float)altitude andAccuracy:(float)accuracy;
+- (void)insertClient:(id)client withThreshold:(float)threshold;
+- (void)sendAnalyticsEventForId:(id)id;
+- (void)thresholdBoundsForElevation:(float)elevation andAccuracy:(float)accuracy upperBound:(float *)bound lowerBound:(float *)lowerBound;
+- (void)thresholdUpdated:(ThresholdClient *)updated initialized:(BOOL)initialized above:(BOOL)above;
+- (void)updateAnalyticsWithAltitude:(float)altitude;
+- (void)updateInitializedThresholdsWithAltitude:(float)altitude;
 @end
 
 @implementation CLElevationThresholdManager
@@ -68,7 +68,7 @@
   return v2;
 }
 
-- (void)thresholdBoundsForElevation:(float)a3 andAccuracy:(float)a4 upperBound:(float *)a5 lowerBound:(float *)a6
+- (void)thresholdBoundsForElevation:(float)elevation andAccuracy:(float)accuracy upperBound:(float *)bound lowerBound:(float *)lowerBound
 {
   if (self->_elevationThresholdMap.__tree_.__size_)
   {
@@ -79,12 +79,12 @@
       v11 = self->_elevationThresholdMap.__tree_.__begin_node_;
       do
       {
-        if (a4 < 100.0)
+        if (accuracy < 100.0)
         {
           v12 = v11[8];
-          if (v12 < a3 && *(v11 + 40) == 1)
+          if (v12 < elevation && *(v11 + 40) == 1)
           {
-            *a6 = v12;
+            *lowerBound = v12;
           }
         }
 
@@ -119,7 +119,7 @@
       do
       {
         left = p_end_node->__left_;
-        if (a4 < 100.0)
+        if (accuracy < 100.0)
         {
           v17 = p_end_node->__left_;
           v18 = p_end_node;
@@ -146,7 +146,7 @@
             while (v15);
           }
 
-          if (*(v19 + 8) > a3)
+          if (*(v19 + 8) > elevation)
           {
             v20 = p_end_node->__left_;
             v21 = p_end_node;
@@ -200,7 +200,7 @@
                 while (v15);
               }
 
-              *a5 = *(v25 + 8);
+              *bound = *(v25 + 8);
             }
           }
         }
@@ -242,10 +242,10 @@
     v27 = qword_1025D4418;
     if (os_log_type_enabled(qword_1025D4418, OS_LOG_TYPE_DEBUG))
     {
-      v28 = *a6;
-      v29 = *a5;
+      v28 = *lowerBound;
+      v29 = *bound;
       *buf = 134218496;
-      v32 = a3;
+      elevationCopy = elevation;
       v33 = 2048;
       v34 = v28;
       v35 = 2048;
@@ -271,16 +271,16 @@
   }
 }
 
-- (void)insertClient:(id)a3 withThreshold:(float)a4
+- (void)insertClient:(id)client withThreshold:(float)threshold
 {
-  *&v4 = a4;
+  *&v4 = threshold;
   v5 = 0;
-  v6 = a3;
+  clientCopy = client;
   LOBYTE(v7) = 0;
   sub_1008BDBEC();
 }
 
-- (BOOL)removeClient:(id)a3
+- (BOOL)removeClient:(id)client
 {
   p_elevationThresholdMap = &self->_elevationThresholdMap;
   begin_node = self->_elevationThresholdMap.__tree_.__begin_node_;
@@ -292,11 +292,11 @@
 
   else
   {
-    v14 = self;
+    selfCopy = self;
     v7 = 0;
     do
     {
-      if ([begin_node->_elevationThresholdClientAnalyticsMap.__tree_.__end_node_.__left_ isEqual:a3])
+      if ([begin_node->_elevationThresholdClientAnalyticsMap.__tree_.__end_node_.__left_ isEqual:client])
       {
         v8 = sub_10045E8A0(p_elevationThresholdMap, begin_node);
         operator delete(begin_node);
@@ -309,13 +309,13 @@
         if (os_log_type_enabled(qword_1025D4418, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          *&buf[4] = a3;
+          *&buf[4] = client;
           _os_log_impl(dword_100000000, v9, OS_LOG_TYPE_DEFAULT, "threshold client removed,client,%p", buf, 0xCu);
         }
 
         if (sub_10000A100(121, 2))
         {
-          sub_101960EBC(&v15, a3, &v16);
+          sub_101960EBC(&v15, client, &v16);
         }
 
         ++v7;
@@ -351,26 +351,26 @@
 
     while (begin_node != p_end_node);
     v12 = v7 > 0;
-    self = v14;
+    self = selfCopy;
   }
 
-  *buf = a3;
+  *buf = client;
   sub_1002401BC(&self->_elevationThresholdClientAnalyticsMap, buf);
   return v12;
 }
 
-- (void)initializeThresholdsGivenAltitude:(float)a3 andAccuracy:(float)a4
+- (void)initializeThresholdsGivenAltitude:(float)altitude andAccuracy:(float)accuracy
 {
   begin_node = self->_elevationThresholdMap.__tree_.__begin_node_;
   p_end_node = &self->_elevationThresholdMap.__tree_.__end_node_;
   if (begin_node != &self->_elevationThresholdMap.__tree_.__end_node_)
   {
-    v8 = a3;
+    altitudeCopy = altitude;
     do
     {
       v9 = begin_node[8];
       hysteresisBand = self->_hysteresisBand;
-      v12 = v9 <= (hysteresisBand + a3) && v9 >= (a3 - hysteresisBand);
+      v12 = v9 <= (hysteresisBand + altitude) && v9 >= (altitude - hysteresisBand);
       if ((begin_node[10] & 1) == 0 && !v12)
       {
         [CLElevationThresholdManager thresholdUpdated:"thresholdUpdated:initialized:above:" initialized:? above:?];
@@ -391,7 +391,7 @@
           v24 = 2048;
           v25 = v15;
           v26 = 2048;
-          v27 = v8;
+          v27 = altitudeCopy;
           v28 = 2048;
           v29 = v16;
           v30 = 1024;
@@ -448,40 +448,40 @@
   }
 }
 
-- (void)thresholdUpdated:(ThresholdClient *)a3 initialized:(BOOL)a4 above:(BOOL)a5
+- (void)thresholdUpdated:(ThresholdClient *)updated initialized:(BOOL)initialized above:(BOOL)above
 {
-  if (a3->var0 != a4 || a3->var1 != a5)
+  if (updated->var0 != initialized || updated->var1 != above)
   {
-    a3->var0 = a4;
-    a3->var1 = a5;
-    a3->var3 = 1;
+    updated->var0 = initialized;
+    updated->var1 = above;
+    updated->var3 = 1;
   }
 }
 
-- (BOOL)updateWithAltitude:(float)a3 andAccuracy:(float)a4 upperBound:(float *)a5 lowerBound:(float *)a6
+- (BOOL)updateWithAltitude:(float)altitude andAccuracy:(float)accuracy upperBound:(float *)bound lowerBound:(float *)lowerBound
 {
   [(CLElevationThresholdManager *)self clearShouldAlert];
-  *&v11 = a3;
+  *&v11 = altitude;
   [(CLElevationThresholdManager *)self updateAnalyticsWithAltitude:v11];
-  *&v12 = a3;
+  *&v12 = altitude;
   [(CLElevationThresholdManager *)self updateInitializedThresholdsWithAltitude:v12];
-  *&v13 = a3;
-  *&v14 = a4;
+  *&v13 = altitude;
+  *&v14 = accuracy;
   [(CLElevationThresholdManager *)self initializeThresholdsGivenAltitude:v13 andAccuracy:v14];
-  *&v15 = a3;
-  *&v16 = a4;
-  [(CLElevationThresholdManager *)self thresholdBoundsForElevation:a5 andAccuracy:a6 upperBound:v15 lowerBound:v16];
-  if (*a5 == self->_currentElevationThreshold.upper && *a6 == self->_currentElevationThreshold.lower)
+  *&v15 = altitude;
+  *&v16 = accuracy;
+  [(CLElevationThresholdManager *)self thresholdBoundsForElevation:bound andAccuracy:lowerBound upperBound:v15 lowerBound:v16];
+  if (*bound == self->_currentElevationThreshold.upper && *lowerBound == self->_currentElevationThreshold.lower)
   {
     return 0;
   }
 
-  self->_currentElevationThreshold.upper = *a5;
-  self->_currentElevationThreshold.lower = *a6;
+  self->_currentElevationThreshold.upper = *bound;
+  self->_currentElevationThreshold.lower = *lowerBound;
   return 1;
 }
 
-- (void)updateInitializedThresholdsWithAltitude:(float)a3
+- (void)updateInitializedThresholdsWithAltitude:(float)altitude
 {
   begin_node = self->_elevationThresholdMap.__tree_.__begin_node_;
   p_end_node = &self->_elevationThresholdMap.__tree_.__end_node_;
@@ -490,9 +490,9 @@
     do
     {
       v7 = *&begin_node[4].__left_;
-      if (BYTE1(begin_node[5].__left_) != v7 < a3 && LOBYTE(begin_node[5].__left_) == 1)
+      if (BYTE1(begin_node[5].__left_) != v7 < altitude && LOBYTE(begin_node[5].__left_) == 1)
       {
-        [(CLElevationThresholdManager *)self thresholdUpdated:&begin_node[5] initialized:0 above:v7 < a3];
+        [(CLElevationThresholdManager *)self thresholdUpdated:&begin_node[5] initialized:0 above:v7 < altitude];
         [(CLElevationThresholdManager *)self sendAnalyticsEventForId:begin_node[6].__left_];
         sub_1002401BC(&self->_elevationThresholdClientAnalyticsMap, &begin_node[6]);
       }
@@ -528,15 +528,15 @@
   }
 }
 
-- (void)updateAnalyticsWithAltitude:(float)a3
+- (void)updateAnalyticsWithAltitude:(float)altitude
 {
   begin_node = self->_elevationThresholdClientAnalyticsMap.__tree_.__begin_node_;
   if (begin_node != &self->_elevationThresholdClientAnalyticsMap.__tree_.__end_node_)
   {
-    v4 = a3;
+    altitudeCopy = altitude;
     do
     {
-      v5 = vabdd_f64(v4, *&begin_node[8].__left_);
+      v5 = vabdd_f64(altitudeCopy, *&begin_node[8].__left_);
       if (*&begin_node[5].__left_ < 0.0)
       {
         *&begin_node[5].__left_ = v5;
@@ -579,7 +579,7 @@
   }
 }
 
-- (void)sendAnalyticsEventForId:(id)a3
+- (void)sendAnalyticsEventForId:(id)id
 {
   left = self->_elevationThresholdClientAnalyticsMap.__tree_.__end_node_.__left_;
   p_end_node = &self->_elevationThresholdClientAnalyticsMap.__tree_.__end_node_;
@@ -590,8 +590,8 @@
     do
     {
       v7 = *(v4 + 4);
-      v8 = v7 >= a3;
-      v9 = v7 < a3;
+      v8 = v7 >= id;
+      v9 = v7 < id;
       if (v8)
       {
         v6 = v4;
@@ -601,7 +601,7 @@
     }
 
     while (v4);
-    if (v6 != p_end_node && v6[4].__left_ <= a3)
+    if (v6 != p_end_node && v6[4].__left_ <= id)
     {
       *&v6[6].__left_ = CFAbsoluteTimeGetCurrent() - *&v6[9].__left_;
       v10 = *&v6[5].__left_;

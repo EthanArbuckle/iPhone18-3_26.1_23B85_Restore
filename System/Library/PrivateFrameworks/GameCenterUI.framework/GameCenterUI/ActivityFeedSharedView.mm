@@ -1,18 +1,18 @@
 @interface ActivityFeedSharedView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)accessibilityLabel;
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilityTitleLabel;
 - (void)layoutSubviews;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAccessibilityLabel:(id)label;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ActivityFeedSharedView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_24E0941A0(width);
   v7 = v6;
 
@@ -25,20 +25,20 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E0942A8();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E0946F8(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_24E0946F8(change);
 }
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E094A70();
   v4 = v3;
 
@@ -55,9 +55,9 @@
   return v5;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     v4 = sub_24E347CF8();
     v6 = v5;
@@ -69,7 +69,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_24E018BB0(v4, v6);
 }
 

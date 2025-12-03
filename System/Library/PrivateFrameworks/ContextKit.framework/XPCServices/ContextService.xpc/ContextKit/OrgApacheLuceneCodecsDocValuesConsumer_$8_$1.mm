@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneCodecsDocValuesConsumer_$8_$1
 - (BOOL)hasNext;
-- (OrgApacheLuceneCodecsDocValuesConsumer_$8_$1)initWithOrgApacheLuceneCodecsDocValuesConsumer_$8:(id)a3;
+- (OrgApacheLuceneCodecsDocValuesConsumer_$8_$1)initWithOrgApacheLuceneCodecsDocValuesConsumer_$8:(id)8;
 - (id)next;
 - (uint64_t)setNext;
 - (void)dealloc;
@@ -23,19 +23,19 @@
 
 - (uint64_t)setNext
 {
-  v1 = *(a1 + 16);
-  v2 = *(a1 + 8);
+  v1 = *(self + 16);
+  v2 = *(self + 8);
   v3 = (v2 + 8);
   if (v1 == *(v2 + 8))
   {
     return 0;
   }
 
-  v6 = *(a1 + 20);
-  while (v6 == *(a1 + 28))
+  v6 = *(self + 20);
+  while (v6 == *(self + 28))
   {
     v7 = (v1 + 1);
-    *(a1 + 16) = v7;
+    *(self + 16) = v7;
     if (v7 >= *v3)
     {
       v6 = 0;
@@ -61,14 +61,14 @@
         IOSArray_throwOutOfBoundsWithMsg(v10, v7);
       }
 
-      JreStrongAssign((a1 + 32), *(v9 + 24 + 8 * v7));
-      v11 = *(*(*(a1 + 8) + 16) + 96);
+      JreStrongAssign((self + 32), *(v9 + 24 + 8 * v7));
+      v11 = *(*(*(self + 8) + 16) + 96);
       if (!v11)
       {
         goto LABEL_31;
       }
 
-      v12 = *(a1 + 16);
+      v12 = *(self + 16);
       v13 = *(v11 + 8);
       if (v12 < 0 || v12 >= v13)
       {
@@ -76,13 +76,13 @@
       }
 
       v6 = 0;
-      *(a1 + 28) = *(v11 + 12 + 4 * v12);
+      *(self + 28) = *(v11 + 12 + 4 * v12);
     }
 
 LABEL_18:
-    *(a1 + 20) = v6;
-    v1 = *(a1 + 16);
-    v2 = *(a1 + 8);
+    *(self + 20) = v6;
+    v1 = *(self + 16);
+    v2 = *(self + 8);
     v3 = (v2 + 8);
     if (v1 == *(v2 + 8))
     {
@@ -90,7 +90,7 @@ LABEL_18:
     }
   }
 
-  v14 = *(a1 + 32);
+  v14 = *(self + 32);
   if (!v14)
   {
     goto LABEL_23;
@@ -98,20 +98,20 @@ LABEL_18:
 
   if (![v14 getWithInt:?])
   {
-    v6 = *(a1 + 20) + 1;
+    v6 = *(self + 20) + 1;
     goto LABEL_18;
   }
 
-  v2 = *(a1 + 8);
+  v2 = *(self + 8);
 LABEL_23:
-  *(a1 + 40) = 1;
+  *(self + 40) = 1;
   v15 = *(v2 + 24);
   if (!v15)
   {
     goto LABEL_31;
   }
 
-  v16 = *(a1 + 16);
+  v16 = *(self + 16);
   v17 = *(v15 + 8);
   if (v16 < 0 || v16 >= v17)
   {
@@ -125,14 +125,14 @@ LABEL_31:
     JreThrowNullPointerException();
   }
 
-  [v18 setDocumentWithInt:*(a1 + 20)];
-  *(a1 + 24) = 0;
+  [v18 setDocumentWithInt:*(self + 20)];
+  *(self + 24) = 0;
   while ([v18 nextOrd] != -1)
   {
-    ++*(a1 + 24);
+    ++*(self + 24);
   }
 
-  ++*(a1 + 20);
+  ++*(self + 20);
   return 1;
 }
 
@@ -150,9 +150,9 @@ LABEL_31:
   return JavaLangInteger_valueOfWithInt_(nextValue);
 }
 
-- (OrgApacheLuceneCodecsDocValuesConsumer_$8_$1)initWithOrgApacheLuceneCodecsDocValuesConsumer_$8:(id)a3
+- (OrgApacheLuceneCodecsDocValuesConsumer_$8_$1)initWithOrgApacheLuceneCodecsDocValuesConsumer_$8:(id)8
 {
-  JreStrongAssign(&self->this$0_, a3);
+  JreStrongAssign(&self->this$0_, 8);
   self->readerUpto_ = -1;
   return self;
 }

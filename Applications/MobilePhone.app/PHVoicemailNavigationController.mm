@@ -10,29 +10,29 @@
 - (VMAccountProvisioningViewController)accountProvisioningViewController;
 - (VoicemailTabViewController)voicemailTabViewController;
 - (_TtC11MobilePhone34LiveVoicemailWelcomeViewController)liveVoicemailWelcomeViewController;
-- (id)popToRootViewControllerAnimated:(BOOL)a3;
+- (id)popToRootViewControllerAnimated:(BOOL)animated;
 - (id)tabBarIconName;
-- (id)targetViewControllerForAction:(SEL)a3 sender:(id)a4;
+- (id)targetViewControllerForAction:(SEL)action sender:(id)sender;
 - (void)_checkMailboxUsage;
-- (void)_handleMessageWaitingStateChanged:(id)a3;
-- (void)_handleOnlineStateChanged:(id)a3;
-- (void)_handlePhoneActivationChangedNotification:(id)a3;
-- (void)_handleVoicemailsChangedNotification:(id)a3;
-- (void)_updateUIStateForce:(BOOL)a3;
-- (void)accountsViewControllerDidFinish:(id)a3;
+- (void)_handleMessageWaitingStateChanged:(id)changed;
+- (void)_handleOnlineStateChanged:(id)changed;
+- (void)_handlePhoneActivationChangedNotification:(id)notification;
+- (void)_handleVoicemailsChangedNotification:(id)notification;
+- (void)_updateUIStateForce:(BOOL)force;
+- (void)accountsViewControllerDidFinish:(id)finish;
 - (void)addNotificationObservers;
 - (void)dealloc;
-- (void)handleURL:(id)a3;
-- (void)playMessageWithID:(id)a3;
+- (void)handleURL:(id)l;
+- (void)playMessageWithID:(id)d;
 - (void)presentOnboardingIfNeeded;
 - (void)removeNotificationObservers;
-- (void)showViewController:(id)a3 playingMessage:(id)a4;
+- (void)showViewController:(id)controller playingMessage:(id)message;
 - (void)startObservingPreferences;
 - (void)stopObservingPreferences;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PHVoicemailNavigationController
@@ -80,13 +80,13 @@ void __51__PHVoicemailNavigationController__telephonyClient__block_invoke(id a1)
   else
   {
     v4 = objc_opt_new();
-    v5 = [v4 UUIDString];
+    uUIDString = [v4 UUIDString];
 
     v6 = PHDefaultLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v14 = v5;
+      v14 = uUIDString;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "+[VoicemailNavigationController badge] %{public}@ fetching fresh value on queue with QOS_CLASS_UTILITY", buf, 0xCu);
     }
 
@@ -95,9 +95,9 @@ void __51__PHVoicemailNavigationController__telephonyClient__block_invoke(id a1)
     v10[1] = 3221225472;
     v10[2] = __40__PHVoicemailNavigationController_badge__block_invoke;
     v10[3] = &unk_1002852B8;
-    v11 = v5;
-    v12 = a1;
-    v2 = v5;
+    v11 = uUIDString;
+    selfCopy = self;
+    v2 = uUIDString;
     dispatch_async(v7, v10);
   }
 
@@ -505,9 +505,9 @@ __n128 __40__PHVoicemailNavigationController_badge__block_invoke_124(uint64_t a1
   [(PhoneNavigationController *)&v3 dealloc];
 }
 
-- (id)popToRootViewControllerAnimated:(BOOL)a3
+- (id)popToRootViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   +[CATransaction begin];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -517,7 +517,7 @@ __n128 __40__PHVoicemailNavigationController_badge__block_invoke_124(uint64_t a1
   [CATransaction setCompletionBlock:v8];
   v7.receiver = self;
   v7.super_class = PHVoicemailNavigationController;
-  v5 = [(PHVoicemailNavigationController *)&v7 popToRootViewControllerAnimated:v3];
+  v5 = [(PHVoicemailNavigationController *)&v7 popToRootViewControllerAnimated:animatedCopy];
   +[CATransaction commit];
 
   return v5;
@@ -553,23 +553,23 @@ void __67__PHVoicemailNavigationController_popToRootViewControllerAnimated___blo
   v7.receiver = self;
   v7.super_class = PHVoicemailNavigationController;
   [(PHVoicemailNavigationController *)&v7 viewDidLoad];
-  v3 = [(PHVoicemailNavigationController *)self navigationBar];
-  [v3 setPrefersLargeTitles:1];
+  navigationBar = [(PHVoicemailNavigationController *)self navigationBar];
+  [navigationBar setPrefersLargeTitles:1];
 
   [(PHVoicemailNavigationController *)self _updateUIStateForce:1];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"handleApplicationWillEnterForegroundNotification:" name:UIApplicationWillEnterForegroundNotification object:0];
   [(PHVoicemailNavigationController *)self _checkMailboxUsage];
   v5 = objc_opt_new();
-  v6 = [(PHVoicemailNavigationController *)self tabBarItem];
-  [v6 setStandardAppearance:v5];
+  tabBarItem = [(PHVoicemailNavigationController *)self tabBarItem];
+  [tabBarItem setStandardAppearance:v5];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = PHVoicemailNavigationController;
-  [(PHVoicemailNavigationController *)&v8 viewDidAppear:a3];
+  [(PHVoicemailNavigationController *)&v8 viewDidAppear:appear];
   v4 = PHDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -582,19 +582,19 @@ void __67__PHVoicemailNavigationController_popToRootViewControllerAnimated___blo
   [v6 postNotificationName:@"PHPhoneTabBarControllerTabViewDidAppearNotification" object:v5];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PHVoicemailNavigationController;
-  [(PHVoicemailNavigationController *)&v4 viewWillAppear:a3];
+  [(PHVoicemailNavigationController *)&v4 viewWillAppear:appear];
   [(PHVoicemailNavigationController *)self presentOnboardingIfNeeded];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PHVoicemailNavigationController;
-  [(PHVoicemailNavigationController *)&v5 viewWillDisappear:a3];
+  [(PHVoicemailNavigationController *)&v5 viewWillDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:UIApplicationWillEnterForegroundNotification object:0];
 }
@@ -603,66 +603,66 @@ void __67__PHVoicemailNavigationController_popToRootViewControllerAnimated___blo
 {
   if (+[_TtC11MobilePhone34LiveVoicemailWelcomeViewController shouldShowVoicemailOnboarding])
   {
-    v3 = [(PHVoicemailNavigationController *)self presentedViewController];
-    v4 = [(PHVoicemailNavigationController *)self liveVoicemailWelcomeViewController];
+    presentedViewController = [(PHVoicemailNavigationController *)self presentedViewController];
+    liveVoicemailWelcomeViewController = [(PHVoicemailNavigationController *)self liveVoicemailWelcomeViewController];
 
-    if (v3 != v4)
+    if (presentedViewController != liveVoicemailWelcomeViewController)
     {
-      v5 = [(PHVoicemailNavigationController *)self liveVoicemailWelcomeViewController];
-      [(PhoneNavigationController *)self presentViewController:v5 animated:1 completion:0];
+      liveVoicemailWelcomeViewController2 = [(PHVoicemailNavigationController *)self liveVoicemailWelcomeViewController];
+      [(PhoneNavigationController *)self presentViewController:liveVoicemailWelcomeViewController2 animated:1 completion:0];
     }
   }
 }
 
-- (id)targetViewControllerForAction:(SEL)a3 sender:(id)a4
+- (id)targetViewControllerForAction:(SEL)action sender:(id)sender
 {
-  if ("showDetailViewController:sender:" == a3)
+  if ("showDetailViewController:sender:" == action)
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = PHVoicemailNavigationController;
-    v4 = [PHVoicemailNavigationController targetViewControllerForAction:"targetViewControllerForAction:sender:" sender:?];
+    selfCopy = [PHVoicemailNavigationController targetViewControllerForAction:"targetViewControllerForAction:sender:" sender:?];
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)showViewController:(id)a3 playingMessage:(id)a4
+- (void)showViewController:(id)controller playingMessage:(id)message
 {
-  v8 = a4;
-  v6 = [a3 copy];
+  messageCopy = message;
+  v6 = [controller copy];
   [(PhoneNavigationController *)self setViewControllers:v6];
 
-  v7 = [(PHVoicemailNavigationController *)self topViewController];
-  if (v8)
+  topViewController = [(PHVoicemailNavigationController *)self topViewController];
+  if (messageCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v7 playMessage:v8];
+      [topViewController playMessage:messageCopy];
     }
   }
 }
 
-- (void)playMessageWithID:(id)a3
+- (void)playMessageWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_opt_new();
-  v6 = [v5 phoneClassicEnabled];
+  phoneClassicEnabled = [v5 phoneClassicEnabled];
 
-  if (v6)
+  if (phoneClassicEnabled)
   {
-    v7 = [v4 messageUUID];
+    messageUUID = [dCopy messageUUID];
 
-    if (v7)
+    if (messageUUID)
     {
-      v8 = [(PHVoicemailNavigationController *)self voicemailTabViewController];
-      v9 = [v4 messageUUID];
-      [v8 presentVoicemailDetailsForUUID:v9];
+      voicemailTabViewController = [(PHVoicemailNavigationController *)self voicemailTabViewController];
+      messageUUID2 = [dCopy messageUUID];
+      [voicemailTabViewController presentVoicemailDetailsForUUID:messageUUID2];
     }
   }
 
@@ -673,18 +673,18 @@ void __67__PHVoicemailNavigationController_popToRootViewControllerAnimated___blo
     v15[2] = 0x3032000000;
     v15[3] = __Block_byref_object_copy__2;
     v15[4] = __Block_byref_object_dispose__2;
-    v10 = [(PHVoicemailNavigationController *)self inboxViewController];
-    v16 = [NSMutableArray arrayWithObject:v10];
+    inboxViewController = [(PHVoicemailNavigationController *)self inboxViewController];
+    v16 = [NSMutableArray arrayWithObject:inboxViewController];
 
-    v11 = [(PhoneNavigationController *)self voicemailController];
+    voicemailController = [(PhoneNavigationController *)self voicemailController];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = __53__PHVoicemailNavigationController_playMessageWithID___block_invoke;
     v12[3] = &unk_100286158;
     v14 = v15;
     v12[4] = self;
-    v13 = v4;
-    [v11 messageForIdentifier:v13 completionBlock:v12];
+    v13 = dCopy;
+    [voicemailController messageForIdentifier:v13 completionBlock:v12];
 
     _Block_object_dispose(v15, 8);
   }
@@ -758,35 +758,35 @@ LABEL_10:
   return [*(a1 + 40) setQueuedMessage:*(a1 + 48)];
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 voicemailRecordID];
-  v6 = [v4 voicemailMessageUUID];
-  if (v6)
+  lCopy = l;
+  voicemailRecordID = [lCopy voicemailRecordID];
+  voicemailMessageUUID = [lCopy voicemailMessageUUID];
+  if (voicemailMessageUUID)
   {
     v7 = objc_opt_new();
-    v8 = [v7 callScreeningEnabled];
+    callScreeningEnabled = [v7 callScreeningEnabled];
 
-    if ((v8 & 1) == 0)
+    if ((callScreeningEnabled & 1) == 0)
     {
       v9 = PHDefaultLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
       {
-        [(PHVoicemailNavigationController *)v4 handleURL:v9];
+        [(PHVoicemailNavigationController *)lCopy handleURL:v9];
       }
     }
 
-    v10 = [[MPMessageID alloc] initWithUuid:v6];
+    v10 = [[MPMessageID alloc] initWithUuid:voicemailMessageUUID];
   }
 
   else
   {
-    if (v5 < 1)
+    if (voicemailRecordID < 1)
     {
 LABEL_15:
-      v14 = [(PHVoicemailNavigationController *)self inboxViewController];
-      v16 = v14;
+      inboxViewController = [(PHVoicemailNavigationController *)self inboxViewController];
+      v16 = inboxViewController;
       v15 = [NSArray arrayWithObjects:&v16 count:1];
       [(PHVoicemailNavigationController *)self showViewController:v15 playingMessage:0];
 
@@ -794,21 +794,21 @@ LABEL_15:
     }
 
     v11 = objc_opt_new();
-    v12 = [v11 callScreeningEnabled];
+    callScreeningEnabled2 = [v11 callScreeningEnabled];
 
-    if (v12)
+    if (callScreeningEnabled2)
     {
       v13 = PHDefaultLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
       {
-        [(PHVoicemailNavigationController *)v4 handleURL:v13];
+        [(PHVoicemailNavigationController *)lCopy handleURL:v13];
       }
     }
 
-    v10 = [[MPMessageID alloc] initWithValue:v5];
+    v10 = [[MPMessageID alloc] initWithValue:voicemailRecordID];
   }
 
-  v14 = v10;
+  inboxViewController = v10;
   if (!v10)
   {
     goto LABEL_15;
@@ -818,30 +818,30 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)_updateUIStateForce:(BOOL)a3
+- (void)_updateUIStateForce:(BOOL)force
 {
   if ([(PHVoicemailNavigationController *)self isViewLoaded])
   {
     v5 = PHPreferencesGetValue();
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
 
-    v7 = [(PHVoicemailNavigationController *)self isAccountProvisioningRequired];
-    v8 = [(PhoneNavigationController *)self voicemailController];
-    v9 = [v8 accountManager];
-    if ([v9 isAnyAccountSubscribed])
+    isAccountProvisioningRequired = [(PHVoicemailNavigationController *)self isAccountProvisioningRequired];
+    voicemailController = [(PhoneNavigationController *)self voicemailController];
+    accountManager = [voicemailController accountManager];
+    if ([accountManager isAnyAccountSubscribed])
     {
-      v10 = 1;
+      launchedToTest = 1;
     }
 
     else
     {
-      v10 = [UIApp launchedToTest];
+      launchedToTest = [UIApp launchedToTest];
     }
 
     if ([UIApp hasEnhancedVoicemail])
     {
       v11 = 0;
-      if (a3)
+      if (force)
       {
         goto LABEL_12;
       }
@@ -850,39 +850,39 @@ LABEL_16:
     else
     {
       v11 = TUCallScreeningEnabled() ^ 1;
-      if (a3)
+      if (force)
       {
         goto LABEL_12;
       }
     }
 
-    if (v7 != [(PHVoicemailNavigationController *)self previousAccountProvisioningRequired]|| ((v10 ^ [(PHVoicemailNavigationController *)self sharedServiceIsSubscribedPreviousValue]| v6) & 1) != 0 || TUCallScreeningEnabled())
+    if (isAccountProvisioningRequired != [(PHVoicemailNavigationController *)self previousAccountProvisioningRequired]|| ((launchedToTest ^ [(PHVoicemailNavigationController *)self sharedServiceIsSubscribedPreviousValue]| bOOLValue) & 1) != 0 || TUCallScreeningEnabled())
     {
 LABEL_12:
-      if (v7 | v6)
+      if (isAccountProvisioningRequired | bOOLValue)
       {
-        v12 = [(PHVoicemailNavigationController *)self viewControllers];
-        v13 = [(PHVoicemailNavigationController *)self accountProvisioningViewController];
-        v14 = [v12 containsObject:v13];
+        viewControllers = [(PHVoicemailNavigationController *)self viewControllers];
+        accountProvisioningViewController = [(PHVoicemailNavigationController *)self accountProvisioningViewController];
+        v14 = [viewControllers containsObject:accountProvisioningViewController];
 
         if ((v14 & 1) == 0)
         {
           [(PHVoicemailNavigationController *)self setAccountProvisioningViewController:0];
-          v15 = [(PHVoicemailNavigationController *)self accountProvisioningViewController];
-          v35 = v15;
+          accountProvisioningViewController2 = [(PHVoicemailNavigationController *)self accountProvisioningViewController];
+          v35 = accountProvisioningViewController2;
           v16 = &v35;
 LABEL_24:
-          v25 = [NSArray arrayWithObjects:v16 count:1];
-          [(PhoneNavigationController *)self setViewControllers:v25];
+          viewController2 = [NSArray arrayWithObjects:v16 count:1];
+          [(PhoneNavigationController *)self setViewControllers:viewController2];
           goto LABEL_25;
         }
       }
 
       else
       {
-        v17 = [(PhoneNavigationController *)self voicemailController];
-        v18 = [v17 accountManager];
-        if ([v18 isAnyAccountSubscribed] & 1) != 0 || (objc_msgSend(UIApp, "launchedToTest") & 1) != 0 || (TUCallScreeningEnabled())
+        voicemailController2 = [(PhoneNavigationController *)self voicemailController];
+        accountManager2 = [voicemailController2 accountManager];
+        if ([accountManager2 isAnyAccountSubscribed] & 1) != 0 || (objc_msgSend(UIApp, "launchedToTest") & 1) != 0 || (TUCallScreeningEnabled())
         {
         }
 
@@ -891,37 +891,37 @@ LABEL_24:
 
           if ((v11 & 1) == 0)
           {
-            v29 = [(PHVoicemailNavigationController *)self viewControllers];
-            v30 = [(PHVoicemailNavigationController *)self noContentViewController];
-            v31 = [v29 containsObject:v30];
+            viewControllers2 = [(PHVoicemailNavigationController *)self viewControllers];
+            noContentViewController = [(PHVoicemailNavigationController *)self noContentViewController];
+            v31 = [viewControllers2 containsObject:noContentViewController];
 
             if (v31)
             {
               goto LABEL_26;
             }
 
-            v15 = [(PHVoicemailNavigationController *)self noContentViewController];
-            v32 = v15;
+            accountProvisioningViewController2 = [(PHVoicemailNavigationController *)self noContentViewController];
+            v32 = accountProvisioningViewController2;
             v16 = &v32;
             goto LABEL_24;
           }
         }
 
         v19 = objc_opt_new();
-        v20 = [v19 phoneClassicEnabled];
+        phoneClassicEnabled = [v19 phoneClassicEnabled];
 
-        v21 = [(PHVoicemailNavigationController *)self viewControllers];
-        if (v20)
+        viewControllers3 = [(PHVoicemailNavigationController *)self viewControllers];
+        if (phoneClassicEnabled)
         {
-          v22 = [(PHVoicemailNavigationController *)self voicemailTabViewController];
-          v23 = [v22 viewController];
-          v24 = [v21 containsObject:v23];
+          voicemailTabViewController = [(PHVoicemailNavigationController *)self voicemailTabViewController];
+          viewController = [voicemailTabViewController viewController];
+          v24 = [viewControllers3 containsObject:viewController];
 
           if ((v24 & 1) == 0)
           {
-            v15 = [(PHVoicemailNavigationController *)self voicemailTabViewController];
-            v25 = [v15 viewController];
-            v34 = v25;
+            accountProvisioningViewController2 = [(PHVoicemailNavigationController *)self voicemailTabViewController];
+            viewController2 = [accountProvisioningViewController2 viewController];
+            v34 = viewController2;
             v26 = [NSArray arrayWithObjects:&v34 count:1];
             [(PhoneNavigationController *)self setViewControllers:v26];
 
@@ -931,13 +931,13 @@ LABEL_25:
 
         else
         {
-          v27 = [(PHVoicemailNavigationController *)self inboxViewController];
-          v28 = [v21 containsObject:v27];
+          inboxViewController = [(PHVoicemailNavigationController *)self inboxViewController];
+          v28 = [viewControllers3 containsObject:inboxViewController];
 
           if ((v28 & 1) == 0)
           {
-            v15 = [(PHVoicemailNavigationController *)self inboxViewController];
-            v33 = v15;
+            accountProvisioningViewController2 = [(PHVoicemailNavigationController *)self inboxViewController];
+            v33 = accountProvisioningViewController2;
             v16 = &v33;
             goto LABEL_24;
           }
@@ -945,8 +945,8 @@ LABEL_25:
       }
 
 LABEL_26:
-      [(PHVoicemailNavigationController *)self setPreviousAccountProvisioningRequired:v7];
-      [(PHVoicemailNavigationController *)self setSharedServiceIsSubscribedPreviousValue:v10];
+      [(PHVoicemailNavigationController *)self setPreviousAccountProvisioningRequired:isAccountProvisioningRequired];
+      [(PHVoicemailNavigationController *)self setSharedServiceIsSubscribedPreviousValue:launchedToTest];
     }
   }
 }
@@ -966,13 +966,13 @@ LABEL_26:
   [v3 addObserver:self selector:"_handleApplicationResumeNotification:" name:UIApplicationWillEnterForegroundNotification object:0];
   objc_initWeak(&location, self);
   v4 = +[(PHApplicationServices *)MPApplicationServices];
-  v5 = [v4 accountManager];
+  accountManager = [v4 accountManager];
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = __59__PHVoicemailNavigationController_addNotificationObservers__block_invoke;
   v10 = &unk_100285148;
   objc_copyWeak(&v11, &location);
-  v6 = [v5 listenForChangesWithHandler:&v7];
+  v6 = [accountManager listenForChangesWithHandler:&v7];
   [(PHVoicemailNavigationController *)self setListeners:v6, v7, v8, v9, v10];
 
   TUAddTelephonyCenterObserver();
@@ -1027,10 +1027,10 @@ void __59__PHVoicemailNavigationController_addNotificationObservers__block_invok
   [v3 removeObserver:self];
 }
 
-- (void)_handleVoicemailsChangedNotification:(id)a3
+- (void)_handleVoicemailsChangedNotification:(id)notification
 {
-  v4 = a3;
-  v3 = v4;
+  notificationCopy = notification;
+  v3 = notificationCopy;
   TUGuaranteeExecutionOnMainThreadAsync();
 }
 
@@ -1072,10 +1072,10 @@ id __76__PHVoicemailNavigationController__handleVoicemailSubscriptionStatusChang
   return [*(a1 + 32) _updateUIState];
 }
 
-- (void)_handleOnlineStateChanged:(id)a3
+- (void)_handleOnlineStateChanged:(id)changed
 {
-  v4 = a3;
-  v3 = v4;
+  changedCopy = changed;
+  v3 = changedCopy;
   TUGuaranteeExecutionOnMainThreadAsync();
 }
 
@@ -1093,10 +1093,10 @@ id __61__PHVoicemailNavigationController__handleOnlineStateChanged___block_invok
   return [*(a1 + 40) _invalidateBadge];
 }
 
-- (void)_handleMessageWaitingStateChanged:(id)a3
+- (void)_handleMessageWaitingStateChanged:(id)changed
 {
-  v4 = a3;
-  v3 = v4;
+  changedCopy = changed;
+  v3 = changedCopy;
   TUGuaranteeExecutionOnMainThreadAsync();
 }
 
@@ -1114,10 +1114,10 @@ id __69__PHVoicemailNavigationController__handleMessageWaitingStateChanged___blo
   return [*(a1 + 40) _invalidateBadge];
 }
 
-- (void)_handlePhoneActivationChangedNotification:(id)a3
+- (void)_handlePhoneActivationChangedNotification:(id)notification
 {
-  v4 = a3;
-  v3 = v4;
+  notificationCopy = notification;
+  v3 = notificationCopy;
   TUGuaranteeExecutionOnMainThreadAsync();
 }
 
@@ -1184,12 +1184,12 @@ id __75__PHVoicemailNavigationController__handleVoicemailManagerAccountsDidChang
   return [*(a1 + 32) _updateUIState];
 }
 
-- (void)accountsViewControllerDidFinish:(id)a3
+- (void)accountsViewControllerDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = [(PHVoicemailNavigationController *)self accountProvisioningViewController];
+  finishCopy = finish;
+  accountProvisioningViewController = [(PHVoicemailNavigationController *)self accountProvisioningViewController];
 
-  if (v5 == v4)
+  if (accountProvisioningViewController == finishCopy)
   {
     [(PHVoicemailNavigationController *)self setAccountProvisioningViewController:0];
 
@@ -1218,8 +1218,8 @@ id __75__PHVoicemailNavigationController__handleVoicemailManagerAccountsDidChang
   if (!inboxViewController)
   {
     v4 = [PHVoicemailInboxListViewController alloc];
-    v5 = [(PhoneNavigationController *)self voicemailController];
-    v6 = [(PHVoicemailInboxListViewController *)v4 initWithNavigationController:self voicemailController:v5];
+    voicemailController = [(PhoneNavigationController *)self voicemailController];
+    v6 = [(PHVoicemailInboxListViewController *)v4 initWithNavigationController:self voicemailController:voicemailController];
     v7 = self->_inboxViewController;
     self->_inboxViewController = v6;
 
@@ -1235,8 +1235,8 @@ id __75__PHVoicemailNavigationController__handleVoicemailManagerAccountsDidChang
   if (!trashViewController)
   {
     v4 = [PHVoicemailTrashListViewController alloc];
-    v5 = [(PhoneNavigationController *)self voicemailController];
-    v6 = [(MPVoicemailTableViewController *)v4 initWithNavigationController:self voicemailController:v5];
+    voicemailController = [(PhoneNavigationController *)self voicemailController];
+    v6 = [(MPVoicemailTableViewController *)v4 initWithNavigationController:self voicemailController:voicemailController];
     v7 = self->_trashViewController;
     self->_trashViewController = v6;
 
@@ -1252,8 +1252,8 @@ id __75__PHVoicemailNavigationController__handleVoicemailManagerAccountsDidChang
   if (!blockedViewController)
   {
     v4 = [PHVoicemailBlockedListViewController alloc];
-    v5 = [(PhoneNavigationController *)self voicemailController];
-    v6 = [(MPVoicemailTableViewController *)v4 initWithNavigationController:self voicemailController:v5];
+    voicemailController = [(PhoneNavigationController *)self voicemailController];
+    v6 = [(MPVoicemailTableViewController *)v4 initWithNavigationController:self voicemailController:voicemailController];
     v7 = self->_blockedViewController;
     self->_blockedViewController = v6;
 
@@ -1299,9 +1299,9 @@ id __75__PHVoicemailNavigationController__handleVoicemailManagerAccountsDidChang
   if (!accountProvisioningViewController)
   {
     v4 = [VMAccountProvisioningViewController alloc];
-    v5 = [(PhoneNavigationController *)self voicemailController];
-    v6 = [v5 accountManager];
-    v7 = [(VMViewController *)v4 initWithManager:v6];
+    voicemailController = [(PhoneNavigationController *)self voicemailController];
+    accountManager = [voicemailController accountManager];
+    v7 = [(VMViewController *)v4 initWithManager:accountManager];
     v8 = self->_accountProvisioningViewController;
     self->_accountProvisioningViewController = v7;
 
@@ -1314,21 +1314,21 @@ id __75__PHVoicemailNavigationController__handleVoicemailManagerAccountsDidChang
 
 - (void)startObservingPreferences
 {
-  v2 = self;
+  selfCopy = self;
   PHVoicemailNavigationController.startObservingPreferences()();
 }
 
 - (void)stopObservingPreferences
 {
   type metadata accessor for NSMutableArray();
-  v4 = self;
+  selfCopy = self;
   v3 = NSArray.init(arrayLiteral:)();
-  [(PHVoicemailNavigationController *)v4 setObservations:v3];
+  [(PHVoicemailNavigationController *)selfCopy setObservations:v3];
 }
 
 - (BOOL)isAccountProvisioningRequired
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PHVoicemailNavigationController.isAccountProvisioningRequired.getter();
 
   return v3 & 1;

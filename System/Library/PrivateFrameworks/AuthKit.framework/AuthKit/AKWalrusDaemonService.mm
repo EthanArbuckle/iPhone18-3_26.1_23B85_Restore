@@ -1,20 +1,20 @@
 @interface AKWalrusDaemonService
-- (BOOL)shouldAcceptNewConnection:(id)a3;
-- (void)PCSAuthContextForWebSessionIdentifier:(id)a3 serviceName:(id)a4 completion:(id)a5;
-- (void)configureExportedInterface:(id)a3;
-- (void)postWalrusStateUpdateToServerWithContext:(id)a3 urlBagKey:(id)a4 username:(id)a5 password:(id)a6 completion:(id)a7;
-- (void)removeAllPCSAuthCredentialWithCompletion:(id)a3;
-- (void)verifyEnableWalrusAllowedWithContext:(id)a3 completion:(id)a4;
+- (BOOL)shouldAcceptNewConnection:(id)connection;
+- (void)PCSAuthContextForWebSessionIdentifier:(id)identifier serviceName:(id)name completion:(id)completion;
+- (void)configureExportedInterface:(id)interface;
+- (void)postWalrusStateUpdateToServerWithContext:(id)context urlBagKey:(id)key username:(id)username password:(id)password completion:(id)completion;
+- (void)removeAllPCSAuthCredentialWithCompletion:(id)completion;
+- (void)verifyEnableWalrusAllowedWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation AKWalrusDaemonService
 
-- (void)configureExportedInterface:(id)a3
+- (void)configureExportedInterface:(id)interface
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, interface);
   v9[0] = objc_opt_class();
   v9[1] = objc_opt_class();
   v9[2] = objc_opt_class();
@@ -46,16 +46,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)PCSAuthContextForWebSessionIdentifier:(id)a3 serviceName:(id)a4 completion:(id)a5
+- (void)PCSAuthContextForWebSessionIdentifier:(id)identifier serviceName:(id)name completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
+  objc_storeStrong(&v26, name);
   v25 = 0;
-  objc_storeStrong(&v25, a5);
+  objc_storeStrong(&v25, completion);
   v18 = 0;
   v19 = &v18;
   v20 = 838860800;
@@ -85,12 +85,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)removeAllPCSAuthCredentialWithCompletion:(id)a3
+- (void)removeAllPCSAuthCredentialWithCompletion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = [AKPCSAuthController alloc];
   v4 = +[AKWebSessionPCSKeyProvider sharedInstance];
   v5 = [(AKPCSAuthController *)v3 initWithPCSKeyProvider:?];
@@ -101,21 +101,21 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)verifyEnableWalrusAllowedWithContext:(id)a3 completion:(id)a4
+- (void)verifyEnableWalrusAllowedWithContext:(id)context completion:(id)completion
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
-  if ([(AKClient *)v26->_client hasInternalAccess])
+  objc_storeStrong(&v24, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalAccess])
   {
     v4 = [AKWalrusRequestProvider alloc];
     v19 = [(AKWalrusRequestProvider *)v4 initWithContext:location[0] urlBagKey:AKURLBagKeyCustodianDataRecoveryServiceDisable];
-    if (v26->_client)
+    if (selfCopy->_client)
     {
-      [(AKURLRequestProviderImpl *)v19 setClient:v26->_client];
+      [(AKURLRequestProviderImpl *)v19 setClient:selfCopy->_client];
     }
 
     v18 = [[AKServiceControllerImpl alloc] initWithRequestProvider:v19];
@@ -161,21 +161,21 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)postWalrusStateUpdateToServerWithContext:(id)a3 urlBagKey:(id)a4 username:(id)a5 password:(id)a6 completion:(id)a7
+- (void)postWalrusStateUpdateToServerWithContext:(id)context urlBagKey:(id)key username:(id)username password:(id)password completion:(id)completion
 {
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
+  objc_storeStrong(&v34, key);
   v33 = 0;
-  objc_storeStrong(&v33, a5);
+  objc_storeStrong(&v33, username);
   v32 = 0;
-  objc_storeStrong(&v32, a6);
+  objc_storeStrong(&v32, password);
   v31 = 0;
-  objc_storeStrong(&v31, a7);
-  if ([(AKClient *)v36->_client hasInternalAccess])
+  objc_storeStrong(&v31, completion);
+  if ([(AKClient *)selfCopy->_client hasInternalAccess])
   {
     v7 = [AKWalrusRequestProvider alloc];
     v26 = [(AKWalrusRequestProvider *)v7 initWithContext:location[0] urlBagKey:v34];
@@ -184,9 +184,9 @@
     v9 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
     [(AKURLRequestProviderImpl *)v26 setAuthKitBody:?];
     _objc_release(v9);
-    if (v36->_client)
+    if (selfCopy->_client)
     {
-      [(AKURLRequestProviderImpl *)v26 setClient:v36->_client];
+      [(AKURLRequestProviderImpl *)v26 setClient:selfCopy->_client];
     }
 
     v25 = [[AKServiceControllerImpl alloc] initWithRequestProvider:v26];
@@ -235,20 +235,20 @@
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)shouldAcceptNewConnection:(id)a3
+- (BOOL)shouldAcceptNewConnection:(id)connection
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7.receiver = v9;
+  objc_storeStrong(location, connection);
+  v7.receiver = selfCopy;
   v7.super_class = AKWalrusDaemonService;
   if ([(AKWalrusDaemonService *)&v7 shouldAcceptNewConnection:location[0]])
   {
     v3 = [AKClient alloc];
     v4 = [(AKClient *)v3 initWithConnection:location[0]];
-    client = v9->_client;
-    v9->_client = v4;
+    client = selfCopy->_client;
+    selfCopy->_client = v4;
     _objc_release(client);
     v10 = 1;
   }

@@ -1,64 +1,64 @@
 @interface TransparencyDaemon
-- (id)transparencyCheckIDSHealth:(id *)a3;
-- (id)transparencyIDMSDeviceList:(id *)a3;
-- (id)transparencySysDiagnoseData:(id *)a3;
-- (void)changeOptInState:(unint64_t)a3 application:(id)a4 complete:(id)a5;
-- (void)clearEligibilityOverrides:(id)a3;
-- (void)clearOptInStateForURI:(id)a3 application:(id)a4 complete:(id)a5;
-- (void)clearPeerState:(id)a3 uris:(id)a4 block:(id)a5;
-- (void)clearTapToRadarNotification:(id)a3 complete:(id)a4;
-- (void)configurationBagFetch:(id)a3;
-- (void)getAggregateResult:(int64_t)a3 element:(id)a4 complete:(id)a5;
-- (void)getAllOptInStates:(id)a3;
-- (void)getOptInForURI:(id)a3 application:(id)a4 complete:(id)a5;
-- (void)getOptInState:(id)a3 complete:(id)a4;
-- (void)getOptInStateForApplication:(id)a3 complete:(id)a4;
-- (void)insertResultForElement:(id)a3 samplesAgo:(id)a4 success:(BOOL)a5 complete:(id)a6;
-- (void)ktRepair:(id)a3 complete:(id)a4;
-- (void)networkKTQuery:(id)a3 application:(id)a4 complete:(id)a5;
-- (void)networkKTQuery:(id)a3 application:(id)a4 trace:(id)a5 timeout:(double)a6 complete:(id)a7;
-- (void)networkKTQuery:(id)a3 application:(id)a4 traceUUID:(id)a5 timeout:(double)a6 complete:(id)a7;
-- (void)performAndWaitForSelfValidate:(id)a3;
-- (void)replaySelfValidate:(id)a3 application:(id)a4 pcsAccountKey:(id)a5 queryRequest:(id)a6 queryResponse:(id)a7 responseTime:(id)a8 completionHandler:(id)a9;
-- (void)reportEligibility:(id)a3 complete:(id)a4;
-- (void)setOSVersion:(id)a3 complete:(id)a4;
-- (void)setOptInForURI:(id)a3 application:(id)a4 state:(BOOL)a5 smtTimestamp:(id)a6 complete:(id)a7;
-- (void)setOverrideTimeBetweenReports:(double)a3 completion:(id)a4;
-- (void)successInfoForElement:(id)a3 samples:(int64_t)a4 completion:(id)a5;
-- (void)transparencyCheckKTAccountKey:(id)a3 complete:(id)a4;
-- (void)transparencyClearKTRegistrationData:(id)a3;
-- (void)transparencyCloudDeviceAdd:(id)a3 clientData:(id)a4 complete:(id)a5;
-- (void)transparencyCloudDeviceRemove:(id)a3 clientData:(id)a4 complete:(id)a5;
-- (void)transparencyCloudDevices:(id)a3;
-- (void)transparencyDumpKTRegistrationData:(id)a3;
-- (void)transparencyFetchIDMS:(id)a3;
-- (void)transparencyFetchPublicKeys:(id)a3;
-- (void)transparencyFetchSelf:(id)a3;
-- (void)transparencyGetKTSignatures:(id)a3 complete:(id)a4;
-- (void)transparencyIDSRegistration:(id)a3;
-- (void)transparencyIDSRepair:(id)a3;
-- (void)transparencyPerformRegistrationSignature:(id)a3;
-- (void)transparencySysDiagnose:(id)a3;
-- (void)transparencyTriggerIDSRegistration:(id)a3;
-- (void)transparencyTriggerOperation:(id)a3 complete:(id)a4;
-- (void)transparencyTriggerTTR:(id)a3 handle:(id)a4 complete:(id)a5;
-- (void)transparencyValidateSelf:(id)a3;
-- (void)triggerReportAndMaybeOptInWithCompletion:(id)a3;
-- (void)updateIDSRecommendation:(BOOL)a3 complete:(id)a4;
-- (void)validateIDSData:(id)a3 ktQueryData:(id)a4 ktResponseData:(id)a5 complete:(id)a6;
-- (void)validateSelfForThisDeviceForApplication:(id)a3 pushToken:(id)a4 complete:(id)a5;
+- (id)transparencyCheckIDSHealth:(id *)health;
+- (id)transparencyIDMSDeviceList:(id *)list;
+- (id)transparencySysDiagnoseData:(id *)data;
+- (void)changeOptInState:(unint64_t)state application:(id)application complete:(id)complete;
+- (void)clearEligibilityOverrides:(id)overrides;
+- (void)clearOptInStateForURI:(id)i application:(id)application complete:(id)complete;
+- (void)clearPeerState:(id)state uris:(id)uris block:(id)block;
+- (void)clearTapToRadarNotification:(id)notification complete:(id)complete;
+- (void)configurationBagFetch:(id)fetch;
+- (void)getAggregateResult:(int64_t)result element:(id)element complete:(id)complete;
+- (void)getAllOptInStates:(id)states;
+- (void)getOptInForURI:(id)i application:(id)application complete:(id)complete;
+- (void)getOptInState:(id)state complete:(id)complete;
+- (void)getOptInStateForApplication:(id)application complete:(id)complete;
+- (void)insertResultForElement:(id)element samplesAgo:(id)ago success:(BOOL)success complete:(id)complete;
+- (void)ktRepair:(id)repair complete:(id)complete;
+- (void)networkKTQuery:(id)query application:(id)application complete:(id)complete;
+- (void)networkKTQuery:(id)query application:(id)application trace:(id)trace timeout:(double)timeout complete:(id)complete;
+- (void)networkKTQuery:(id)query application:(id)application traceUUID:(id)d timeout:(double)timeout complete:(id)complete;
+- (void)performAndWaitForSelfValidate:(id)validate;
+- (void)replaySelfValidate:(id)validate application:(id)application pcsAccountKey:(id)key queryRequest:(id)request queryResponse:(id)response responseTime:(id)time completionHandler:(id)handler;
+- (void)reportEligibility:(id)eligibility complete:(id)complete;
+- (void)setOSVersion:(id)version complete:(id)complete;
+- (void)setOptInForURI:(id)i application:(id)application state:(BOOL)state smtTimestamp:(id)timestamp complete:(id)complete;
+- (void)setOverrideTimeBetweenReports:(double)reports completion:(id)completion;
+- (void)successInfoForElement:(id)element samples:(int64_t)samples completion:(id)completion;
+- (void)transparencyCheckKTAccountKey:(id)key complete:(id)complete;
+- (void)transparencyClearKTRegistrationData:(id)data;
+- (void)transparencyCloudDeviceAdd:(id)add clientData:(id)data complete:(id)complete;
+- (void)transparencyCloudDeviceRemove:(id)remove clientData:(id)data complete:(id)complete;
+- (void)transparencyCloudDevices:(id)devices;
+- (void)transparencyDumpKTRegistrationData:(id)data;
+- (void)transparencyFetchIDMS:(id)s;
+- (void)transparencyFetchPublicKeys:(id)keys;
+- (void)transparencyFetchSelf:(id)self;
+- (void)transparencyGetKTSignatures:(id)signatures complete:(id)complete;
+- (void)transparencyIDSRegistration:(id)registration;
+- (void)transparencyIDSRepair:(id)repair;
+- (void)transparencyPerformRegistrationSignature:(id)signature;
+- (void)transparencySysDiagnose:(id)diagnose;
+- (void)transparencyTriggerIDSRegistration:(id)registration;
+- (void)transparencyTriggerOperation:(id)operation complete:(id)complete;
+- (void)transparencyTriggerTTR:(id)r handle:(id)handle complete:(id)complete;
+- (void)transparencyValidateSelf:(id)self;
+- (void)triggerReportAndMaybeOptInWithCompletion:(id)completion;
+- (void)updateIDSRecommendation:(BOOL)recommendation complete:(id)complete;
+- (void)validateIDSData:(id)data ktQueryData:(id)queryData ktResponseData:(id)responseData complete:(id)complete;
+- (void)validateSelfForThisDeviceForApplication:(id)application pushToken:(id)token complete:(id)complete;
 @end
 
 @implementation TransparencyDaemon
 
-- (void)configurationBagFetch:(id)a3
+- (void)configurationBagFetch:(id)fetch
 {
-  v3 = a3;
+  fetchCopy = fetch;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__TransparencyDaemon_configurationBagFetch___block_invoke;
   v7[3] = &unk_1E8701848;
-  v8 = v3;
+  v8 = fetchCopy;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __44__TransparencyDaemon_configurationBagFetch___block_invoke_383;
@@ -94,14 +94,14 @@ uint64_t __44__TransparencyDaemon_configurationBagFetch___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)transparencyIDSRepair:(id)a3
+- (void)transparencyIDSRepair:(id)repair
 {
-  v3 = a3;
+  repairCopy = repair;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__TransparencyDaemon_transparencyIDSRepair___block_invoke;
   v7[3] = &unk_1E8701848;
-  v8 = v3;
+  v8 = repairCopy;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __44__TransparencyDaemon_transparencyIDSRepair___block_invoke_2_388;
@@ -142,14 +142,14 @@ uint64_t __44__TransparencyDaemon_transparencyIDSRepair___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)transparencySysDiagnose:(id)a3
+- (void)transparencySysDiagnose:(id)diagnose
 {
-  v3 = a3;
+  diagnoseCopy = diagnose;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__TransparencyDaemon_transparencySysDiagnose___block_invoke;
   v7[3] = &unk_1E8701848;
-  v8 = v3;
+  v8 = diagnoseCopy;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __46__TransparencyDaemon_transparencySysDiagnose___block_invoke_391;
@@ -185,7 +185,7 @@ uint64_t __46__TransparencyDaemon_transparencySysDiagnose___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)transparencySysDiagnoseData:(id *)a3
+- (id)transparencySysDiagnoseData:(id *)data
 {
   v17 = 0;
   v18 = &v17;
@@ -199,7 +199,7 @@ uint64_t __46__TransparencyDaemon_transparencySysDiagnose___block_invoke_2()
   v15[3] = __Block_byref_object_copy__2;
   v15[4] = __Block_byref_object_dispose__2;
   v16 = 0;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __50__TransparencyDaemon_transparencySysDiagnoseData___block_invoke;
@@ -212,13 +212,13 @@ uint64_t __46__TransparencyDaemon_transparencySysDiagnose___block_invoke_2()
   v13[3] = &unk_1E8701788;
   v13[4] = v15;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v14 errorHandler:v13];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __50__TransparencyDaemon_transparencySysDiagnoseData___block_invoke_3;
   v10[3] = &unk_1E87018C0;
   v12 = v15;
-  v6 = v5;
+  v6 = array;
   v11 = v6;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -232,11 +232,11 @@ uint64_t __46__TransparencyDaemon_transparencySysDiagnose___block_invoke_2()
     v6 = 0;
   }
 
-  [v4 setObject:v18[5] forKeyedSubscript:@"stateMachine"];
-  [v4 setObject:v6 forKeyedSubscript:@"registration"];
-  if ([v4 count])
+  [dictionary setObject:v18[5] forKeyedSubscript:@"stateMachine"];
+  [dictionary setObject:v6 forKeyedSubscript:@"registration"];
+  if ([dictionary count])
   {
-    v7 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v4 options:0 error:a3];
+    v7 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:0 error:data];
   }
 
   else
@@ -435,14 +435,14 @@ void __50__TransparencyDaemon_transparencySysDiagnoseData___block_invoke_401(uin
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (void)transparencyFetchIDMS:(id)a3
+- (void)transparencyFetchIDMS:(id)s
 {
-  v3 = a3;
+  sCopy = s;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__TransparencyDaemon_transparencyFetchIDMS___block_invoke;
   v7[3] = &unk_1E8701848;
-  v8 = v3;
+  v8 = sCopy;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __44__TransparencyDaemon_transparencyFetchIDMS___block_invoke_422;
@@ -478,14 +478,14 @@ uint64_t __44__TransparencyDaemon_transparencyFetchIDMS___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)transparencyValidateSelf:(id)a3
+- (void)transparencyValidateSelf:(id)self
 {
-  v3 = a3;
+  selfCopy = self;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__TransparencyDaemon_transparencyValidateSelf___block_invoke;
   v7[3] = &unk_1E8701848;
-  v8 = v3;
+  v8 = selfCopy;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __47__TransparencyDaemon_transparencyValidateSelf___block_invoke_425;
@@ -521,14 +521,14 @@ uint64_t __47__TransparencyDaemon_transparencyValidateSelf___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)transparencyFetchSelf:(id)a3
+- (void)transparencyFetchSelf:(id)self
 {
-  v3 = a3;
+  selfCopy = self;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__TransparencyDaemon_transparencyFetchSelf___block_invoke;
   v7[3] = &unk_1E8701848;
-  v8 = v3;
+  v8 = selfCopy;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __44__TransparencyDaemon_transparencyFetchSelf___block_invoke_428;
@@ -564,14 +564,14 @@ uint64_t __44__TransparencyDaemon_transparencyFetchSelf___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)performAndWaitForSelfValidate:(id)a3
+- (void)performAndWaitForSelfValidate:(id)validate
 {
-  v3 = a3;
+  validateCopy = validate;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__TransparencyDaemon_performAndWaitForSelfValidate___block_invoke;
   v7[3] = &unk_1E8701848;
-  v8 = v3;
+  v8 = validateCopy;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __52__TransparencyDaemon_performAndWaitForSelfValidate___block_invoke_431;
@@ -660,7 +660,7 @@ uint64_t __45__TransparencyDaemon_maybeUpdateMonitorState__block_invoke_2_439()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)transparencyIDMSDeviceList:(id *)a3
+- (id)transparencyIDMSDeviceList:(id *)list
 {
   v14 = 0;
   v15 = &v14;
@@ -681,12 +681,12 @@ uint64_t __45__TransparencyDaemon_maybeUpdateMonitorState__block_invoke_2_439()
   v7[4] = &v14;
   v7[5] = &v8;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v7 errorHandler:&__block_literal_global_448];
-  if (a3)
+  if (list)
   {
     v4 = v9[5];
     if (v4)
     {
-      *a3 = v4;
+      *list = v4;
     }
   }
 
@@ -770,38 +770,38 @@ uint64_t __49__TransparencyDaemon_transparencyIDMSDeviceList___block_invoke_3()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)replaySelfValidate:(id)a3 application:(id)a4 pcsAccountKey:(id)a5 queryRequest:(id)a6 queryResponse:(id)a7 responseTime:(id)a8 completionHandler:(id)a9
+- (void)replaySelfValidate:(id)validate application:(id)application pcsAccountKey:(id)key queryRequest:(id)request queryResponse:(id)response responseTime:(id)time completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  validateCopy = validate;
+  applicationCopy = application;
+  keyCopy = key;
+  requestCopy = request;
+  responseCopy = response;
+  timeCopy = time;
+  handlerCopy = handler;
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __125__TransparencyDaemon_replaySelfValidate_application_pcsAccountKey_queryRequest_queryResponse_responseTime_completionHandler___block_invoke;
   v30[3] = &unk_1E8701930;
-  v31 = v14;
-  v32 = v15;
-  v33 = v16;
-  v34 = v17;
-  v35 = v18;
-  v36 = v19;
-  v37 = v20;
+  v31 = validateCopy;
+  v32 = applicationCopy;
+  v33 = keyCopy;
+  v34 = requestCopy;
+  v35 = responseCopy;
+  v36 = timeCopy;
+  v37 = handlerCopy;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __125__TransparencyDaemon_replaySelfValidate_application_pcsAccountKey_queryRequest_queryResponse_responseTime_completionHandler___block_invoke_453;
   v28[3] = &unk_1E87013C8;
   v29 = v37;
   v21 = v37;
-  v22 = v19;
-  v23 = v18;
-  v24 = v17;
-  v25 = v16;
-  v26 = v15;
-  v27 = v14;
+  v22 = timeCopy;
+  v23 = responseCopy;
+  v24 = requestCopy;
+  v25 = keyCopy;
+  v26 = applicationCopy;
+  v27 = validateCopy;
   [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v30 errorHandler:v28];
 }
 
@@ -831,14 +831,14 @@ uint64_t __125__TransparencyDaemon_replaySelfValidate_application_pcsAccountKey_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)transparencyFetchPublicKeys:(id)a3
+- (void)transparencyFetchPublicKeys:(id)keys
 {
-  v3 = a3;
+  keysCopy = keys;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__TransparencyDaemon_transparencyFetchPublicKeys___block_invoke;
   v7[3] = &unk_1E8701848;
-  v8 = v3;
+  v8 = keysCopy;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __50__TransparencyDaemon_transparencyFetchPublicKeys___block_invoke_456;
@@ -874,14 +874,14 @@ uint64_t __50__TransparencyDaemon_transparencyFetchPublicKeys___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)transparencyTriggerIDSRegistration:(id)a3
+- (void)transparencyTriggerIDSRegistration:(id)registration
 {
-  v3 = a3;
+  registrationCopy = registration;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__TransparencyDaemon_transparencyTriggerIDSRegistration___block_invoke;
   v7[3] = &unk_1E8701848;
-  v8 = v3;
+  v8 = registrationCopy;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __57__TransparencyDaemon_transparencyTriggerIDSRegistration___block_invoke_459;
@@ -917,23 +917,23 @@ uint64_t __57__TransparencyDaemon_transparencyTriggerIDSRegistration___block_inv
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)transparencyCheckKTAccountKey:(id)a3 complete:(id)a4
+- (void)transparencyCheckKTAccountKey:(id)key complete:(id)complete
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  completeCopy = complete;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __61__TransparencyDaemon_transparencyCheckKTAccountKey_complete___block_invoke;
   v11[3] = &unk_1E8701958;
-  v12 = v5;
-  v13 = v6;
+  v12 = keyCopy;
+  v13 = completeCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__TransparencyDaemon_transparencyCheckKTAccountKey_complete___block_invoke_462;
   v9[3] = &unk_1E87013C8;
   v10 = v13;
   v7 = v13;
-  v8 = v5;
+  v8 = keyCopy;
   [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v11 errorHandler:v9];
 }
 
@@ -963,26 +963,26 @@ uint64_t __61__TransparencyDaemon_transparencyCheckKTAccountKey_complete___block
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)transparencyTriggerTTR:(id)a3 handle:(id)a4 complete:(id)a5
+- (void)transparencyTriggerTTR:(id)r handle:(id)handle complete:(id)complete
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  rCopy = r;
+  handleCopy = handle;
+  completeCopy = complete;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __61__TransparencyDaemon_transparencyTriggerTTR_handle_complete___block_invoke;
   v15[3] = &unk_1E8701980;
-  v17 = v8;
-  v18 = v9;
-  v16 = v7;
+  v17 = handleCopy;
+  v18 = completeCopy;
+  v16 = rCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __61__TransparencyDaemon_transparencyTriggerTTR_handle_complete___block_invoke_470;
   v13[3] = &unk_1E87013C8;
   v14 = v18;
   v10 = v18;
-  v11 = v8;
-  v12 = v7;
+  v11 = handleCopy;
+  v12 = rCopy;
   [TransparencyXPCConnection invokeIDSSupportWithBlock:v15 errorHandler:v13];
 }
 
@@ -1092,23 +1092,23 @@ uint64_t __61__TransparencyDaemon_transparencyTriggerTTR_handle_complete___block
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)clearTapToRadarNotification:(id)a3 complete:(id)a4
+- (void)clearTapToRadarNotification:(id)notification complete:(id)complete
 {
-  v5 = a3;
-  v6 = a4;
+  notificationCopy = notification;
+  completeCopy = complete;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__TransparencyDaemon_clearTapToRadarNotification_complete___block_invoke;
   v11[3] = &unk_1E8701958;
-  v12 = v5;
-  v13 = v6;
+  v12 = notificationCopy;
+  v13 = completeCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__TransparencyDaemon_clearTapToRadarNotification_complete___block_invoke_476;
   v9[3] = &unk_1E87013C8;
   v10 = v13;
   v7 = v13;
-  v8 = v5;
+  v8 = notificationCopy;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v11 errorHandler:v9];
 }
 
@@ -1138,7 +1138,7 @@ uint64_t __59__TransparencyDaemon_clearTapToRadarNotification_complete___block_i
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)transparencyCheckIDSHealth:(id *)a3
+- (id)transparencyCheckIDSHealth:(id *)health
 {
   v15 = 0;
   v16 = &v15;
@@ -1164,12 +1164,12 @@ uint64_t __59__TransparencyDaemon_clearTapToRadarNotification_complete___block_i
   v7[3] = &unk_1E8701788;
   v7[4] = &v9;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v8 errorHandler:v7];
-  if (a3)
+  if (health)
   {
     v4 = v10[5];
     if (v4)
     {
-      *a3 = v4;
+      *health = v4;
     }
   }
 
@@ -1234,14 +1234,14 @@ void __49__TransparencyDaemon_transparencyCheckIDSHealth___block_invoke_482(uint
   *(v9 + 40) = v6;
 }
 
-- (void)transparencyIDSRegistration:(id)a3
+- (void)transparencyIDSRegistration:(id)registration
 {
-  v3 = a3;
+  registrationCopy = registration;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__TransparencyDaemon_transparencyIDSRegistration___block_invoke;
   v7[3] = &unk_1E8701848;
-  v8 = v3;
+  v8 = registrationCopy;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __50__TransparencyDaemon_transparencyIDSRegistration___block_invoke_2;
@@ -1251,14 +1251,14 @@ void __49__TransparencyDaemon_transparencyCheckIDSHealth___block_invoke_482(uint
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v7 errorHandler:v5];
 }
 
-- (void)transparencyPerformRegistrationSignature:(id)a3
+- (void)transparencyPerformRegistrationSignature:(id)signature
 {
-  v3 = a3;
+  signatureCopy = signature;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__TransparencyDaemon_transparencyPerformRegistrationSignature___block_invoke;
   v7[3] = &unk_1E8701848;
-  v8 = v3;
+  v8 = signatureCopy;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __63__TransparencyDaemon_transparencyPerformRegistrationSignature___block_invoke_487;
@@ -1294,14 +1294,14 @@ uint64_t __63__TransparencyDaemon_transparencyPerformRegistrationSignature___blo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)transparencyDumpKTRegistrationData:(id)a3
+- (void)transparencyDumpKTRegistrationData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__TransparencyDaemon_transparencyDumpKTRegistrationData___block_invoke;
   v7[3] = &unk_1E8701848;
-  v8 = v3;
+  v8 = dataCopy;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __57__TransparencyDaemon_transparencyDumpKTRegistrationData___block_invoke_490;
@@ -1337,23 +1337,23 @@ uint64_t __57__TransparencyDaemon_transparencyDumpKTRegistrationData___block_inv
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)transparencyGetKTSignatures:(id)a3 complete:(id)a4
+- (void)transparencyGetKTSignatures:(id)signatures complete:(id)complete
 {
-  v5 = a3;
-  v6 = a4;
+  signaturesCopy = signatures;
+  completeCopy = complete;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__TransparencyDaemon_transparencyGetKTSignatures_complete___block_invoke;
   v11[3] = &unk_1E8701958;
-  v12 = v5;
-  v13 = v6;
+  v12 = signaturesCopy;
+  v13 = completeCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__TransparencyDaemon_transparencyGetKTSignatures_complete___block_invoke_493;
   v9[3] = &unk_1E87013C8;
   v10 = v13;
   v7 = v13;
-  v8 = v5;
+  v8 = signaturesCopy;
   [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v11 errorHandler:v9];
 }
 
@@ -1383,14 +1383,14 @@ uint64_t __59__TransparencyDaemon_transparencyGetKTSignatures_complete___block_i
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)transparencyClearKTRegistrationData:(id)a3
+- (void)transparencyClearKTRegistrationData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__TransparencyDaemon_transparencyClearKTRegistrationData___block_invoke;
   v7[3] = &unk_1E8701848;
-  v8 = v3;
+  v8 = dataCopy;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __58__TransparencyDaemon_transparencyClearKTRegistrationData___block_invoke_496;
@@ -1426,14 +1426,14 @@ uint64_t __58__TransparencyDaemon_transparencyClearKTRegistrationData___block_in
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)transparencyCloudDevices:(id)a3
+- (void)transparencyCloudDevices:(id)devices
 {
-  v3 = a3;
+  devicesCopy = devices;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__TransparencyDaemon_transparencyCloudDevices___block_invoke;
   v7[3] = &unk_1E8701848;
-  v8 = v3;
+  v8 = devicesCopy;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __47__TransparencyDaemon_transparencyCloudDevices___block_invoke_499;
@@ -1469,21 +1469,21 @@ uint64_t __47__TransparencyDaemon_transparencyCloudDevices___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)clearPeerState:(id)a3 uris:(id)a4 block:(id)a5
+- (void)clearPeerState:(id)state uris:(id)uris block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  stateCopy = state;
+  urisCopy = uris;
+  blockCopy = block;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __48__TransparencyDaemon_clearPeerState_uris_block___block_invoke;
   v13[3] = &unk_1E87019D0;
-  v14 = v8;
-  v15 = v7;
-  v16 = v9;
-  v10 = v9;
-  v11 = v7;
-  v12 = v8;
+  v14 = urisCopy;
+  v15 = stateCopy;
+  v16 = blockCopy;
+  v10 = blockCopy;
+  v11 = stateCopy;
+  v12 = urisCopy;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v13 errorHandler:v10];
 }
 
@@ -1530,23 +1530,23 @@ uint64_t __48__TransparencyDaemon_clearPeerState_uris_block___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)transparencyTriggerOperation:(id)a3 complete:(id)a4
+- (void)transparencyTriggerOperation:(id)operation complete:(id)complete
 {
-  v5 = a3;
-  v6 = a4;
+  operationCopy = operation;
+  completeCopy = complete;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __60__TransparencyDaemon_transparencyTriggerOperation_complete___block_invoke;
   v11[3] = &unk_1E8701958;
-  v12 = v5;
-  v13 = v6;
+  v12 = operationCopy;
+  v13 = completeCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__TransparencyDaemon_transparencyTriggerOperation_complete___block_invoke_510;
   v9[3] = &unk_1E87013C8;
   v10 = v13;
   v7 = v13;
-  v8 = v5;
+  v8 = operationCopy;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v11 errorHandler:v9];
 }
 
@@ -1576,24 +1576,24 @@ uint64_t __60__TransparencyDaemon_transparencyTriggerOperation_complete___block_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)changeOptInState:(unint64_t)a3 application:(id)a4 complete:(id)a5
+- (void)changeOptInState:(unint64_t)state application:(id)application complete:(id)complete
 {
-  v7 = a4;
-  v8 = a5;
+  applicationCopy = application;
+  completeCopy = complete;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __60__TransparencyDaemon_changeOptInState_application_complete___block_invoke;
   v13[3] = &unk_1E87019F8;
-  v16 = a3;
-  v14 = v7;
-  v15 = v8;
+  stateCopy = state;
+  v14 = applicationCopy;
+  v15 = completeCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __60__TransparencyDaemon_changeOptInState_application_complete___block_invoke_513;
   v11[3] = &unk_1E87013C8;
   v12 = v15;
   v9 = v15;
-  v10 = v7;
+  v10 = applicationCopy;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v13 errorHandler:v11];
 }
 
@@ -1628,23 +1628,23 @@ uint64_t __60__TransparencyDaemon_changeOptInState_application_complete___block_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getOptInState:(id)a3 complete:(id)a4
+- (void)getOptInState:(id)state complete:(id)complete
 {
-  v5 = a3;
-  v6 = a4;
+  stateCopy = state;
+  completeCopy = complete;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __45__TransparencyDaemon_getOptInState_complete___block_invoke;
   v11[3] = &unk_1E8701958;
-  v12 = v5;
-  v13 = v6;
+  v12 = stateCopy;
+  v13 = completeCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __45__TransparencyDaemon_getOptInState_complete___block_invoke_516;
   v9[3] = &unk_1E87013C8;
   v10 = v13;
   v7 = v13;
-  v8 = v5;
+  v8 = stateCopy;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v11 errorHandler:v9];
 }
 
@@ -1681,26 +1681,26 @@ uint64_t __45__TransparencyDaemon_getOptInState_complete___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getOptInForURI:(id)a3 application:(id)a4 complete:(id)a5
+- (void)getOptInForURI:(id)i application:(id)application complete:(id)complete
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  iCopy = i;
+  applicationCopy = application;
+  completeCopy = complete;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __58__TransparencyDaemon_getOptInForURI_application_complete___block_invoke;
   v15[3] = &unk_1E87019D0;
-  v16 = v7;
-  v17 = v8;
-  v18 = v9;
+  v16 = iCopy;
+  v17 = applicationCopy;
+  v18 = completeCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __58__TransparencyDaemon_getOptInForURI_application_complete___block_invoke_519;
   v13[3] = &unk_1E87013C8;
   v14 = v18;
   v10 = v18;
-  v11 = v8;
-  v12 = v7;
+  v11 = applicationCopy;
+  v12 = iCopy;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v15 errorHandler:v13];
 }
 
@@ -1730,30 +1730,30 @@ uint64_t __58__TransparencyDaemon_getOptInForURI_application_complete___block_in
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setOptInForURI:(id)a3 application:(id)a4 state:(BOOL)a5 smtTimestamp:(id)a6 complete:(id)a7
+- (void)setOptInForURI:(id)i application:(id)application state:(BOOL)state smtTimestamp:(id)timestamp complete:(id)complete
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  iCopy = i;
+  applicationCopy = application;
+  timestampCopy = timestamp;
+  completeCopy = complete;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __77__TransparencyDaemon_setOptInForURI_application_state_smtTimestamp_complete___block_invoke;
   v21[3] = &unk_1E8701A20;
-  v22 = v11;
-  v23 = v12;
-  v26 = a5;
-  v24 = v13;
-  v25 = v14;
+  v22 = iCopy;
+  v23 = applicationCopy;
+  stateCopy = state;
+  v24 = timestampCopy;
+  v25 = completeCopy;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __77__TransparencyDaemon_setOptInForURI_application_state_smtTimestamp_complete___block_invoke_522;
   v19[3] = &unk_1E87013C8;
   v20 = v25;
   v15 = v25;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
+  v16 = timestampCopy;
+  v17 = applicationCopy;
+  v18 = iCopy;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v21 errorHandler:v19];
 }
 
@@ -1783,14 +1783,14 @@ uint64_t __77__TransparencyDaemon_setOptInForURI_application_state_smtTimestamp_
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getAllOptInStates:(id)a3
+- (void)getAllOptInStates:(id)states
 {
-  v3 = a3;
+  statesCopy = states;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__TransparencyDaemon_getAllOptInStates___block_invoke;
   v7[3] = &unk_1E8701848;
-  v8 = v3;
+  v8 = statesCopy;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __40__TransparencyDaemon_getAllOptInStates___block_invoke_525;
@@ -1826,23 +1826,23 @@ uint64_t __40__TransparencyDaemon_getAllOptInStates___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getOptInStateForApplication:(id)a3 complete:(id)a4
+- (void)getOptInStateForApplication:(id)application complete:(id)complete
 {
-  v5 = a3;
-  v6 = a4;
+  applicationCopy = application;
+  completeCopy = complete;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __59__TransparencyDaemon_getOptInStateForApplication_complete___block_invoke;
   v11[3] = &unk_1E8701958;
-  v12 = v5;
-  v13 = v6;
+  v12 = applicationCopy;
+  v13 = completeCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__TransparencyDaemon_getOptInStateForApplication_complete___block_invoke_528;
   v9[3] = &unk_1E87013C8;
   v10 = v13;
   v7 = v13;
-  v8 = v5;
+  v8 = applicationCopy;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v11 errorHandler:v9];
 }
 
@@ -1872,26 +1872,26 @@ uint64_t __59__TransparencyDaemon_getOptInStateForApplication_complete___block_i
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)clearOptInStateForURI:(id)a3 application:(id)a4 complete:(id)a5
+- (void)clearOptInStateForURI:(id)i application:(id)application complete:(id)complete
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  iCopy = i;
+  applicationCopy = application;
+  completeCopy = complete;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __65__TransparencyDaemon_clearOptInStateForURI_application_complete___block_invoke;
   v15[3] = &unk_1E87019D0;
-  v16 = v7;
-  v17 = v8;
-  v18 = v9;
+  v16 = iCopy;
+  v17 = applicationCopy;
+  v18 = completeCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __65__TransparencyDaemon_clearOptInStateForURI_application_complete___block_invoke_531;
   v13[3] = &unk_1E87013C8;
   v14 = v18;
   v10 = v18;
-  v11 = v8;
-  v12 = v7;
+  v11 = applicationCopy;
+  v12 = iCopy;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v15 errorHandler:v13];
 }
 
@@ -1921,26 +1921,26 @@ uint64_t __65__TransparencyDaemon_clearOptInStateForURI_application_complete___b
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)transparencyCloudDeviceAdd:(id)a3 clientData:(id)a4 complete:(id)a5
+- (void)transparencyCloudDeviceAdd:(id)add clientData:(id)data complete:(id)complete
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  addCopy = add;
+  dataCopy = data;
+  completeCopy = complete;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __69__TransparencyDaemon_transparencyCloudDeviceAdd_clientData_complete___block_invoke;
   v15[3] = &unk_1E87019D0;
-  v16 = v7;
-  v17 = v8;
-  v18 = v9;
+  v16 = addCopy;
+  v17 = dataCopy;
+  v18 = completeCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __69__TransparencyDaemon_transparencyCloudDeviceAdd_clientData_complete___block_invoke_534;
   v13[3] = &unk_1E87013C8;
   v14 = v18;
   v10 = v18;
-  v11 = v8;
-  v12 = v7;
+  v11 = dataCopy;
+  v12 = addCopy;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v15 errorHandler:v13];
 }
 
@@ -1970,26 +1970,26 @@ uint64_t __69__TransparencyDaemon_transparencyCloudDeviceAdd_clientData_complete
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)transparencyCloudDeviceRemove:(id)a3 clientData:(id)a4 complete:(id)a5
+- (void)transparencyCloudDeviceRemove:(id)remove clientData:(id)data complete:(id)complete
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  removeCopy = remove;
+  dataCopy = data;
+  completeCopy = complete;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __72__TransparencyDaemon_transparencyCloudDeviceRemove_clientData_complete___block_invoke;
   v15[3] = &unk_1E87019D0;
-  v16 = v7;
-  v17 = v8;
-  v18 = v9;
+  v16 = removeCopy;
+  v17 = dataCopy;
+  v18 = completeCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __72__TransparencyDaemon_transparencyCloudDeviceRemove_clientData_complete___block_invoke_537;
   v13[3] = &unk_1E87013C8;
   v14 = v18;
   v10 = v18;
-  v11 = v8;
-  v12 = v7;
+  v11 = dataCopy;
+  v12 = removeCopy;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v15 errorHandler:v13];
 }
 
@@ -2019,15 +2019,15 @@ uint64_t __72__TransparencyDaemon_transparencyCloudDeviceRemove_clientData_compl
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)updateIDSRecommendation:(BOOL)a3 complete:(id)a4
+- (void)updateIDSRecommendation:(BOOL)recommendation complete:(id)complete
 {
-  v5 = a4;
+  completeCopy = complete;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__TransparencyDaemon_updateIDSRecommendation_complete___block_invoke;
   v9[3] = &unk_1E8701618;
-  v11 = a3;
-  v10 = v5;
+  recommendationCopy = recommendation;
+  v10 = completeCopy;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__TransparencyDaemon_updateIDSRecommendation_complete___block_invoke_540;
@@ -2063,23 +2063,23 @@ uint64_t __55__TransparencyDaemon_updateIDSRecommendation_complete___block_invok
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setOSVersion:(id)a3 complete:(id)a4
+- (void)setOSVersion:(id)version complete:(id)complete
 {
-  v5 = a3;
-  v6 = a4;
+  versionCopy = version;
+  completeCopy = complete;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __44__TransparencyDaemon_setOSVersion_complete___block_invoke;
   v11[3] = &unk_1E8701958;
-  v12 = v5;
-  v13 = v6;
+  v12 = versionCopy;
+  v13 = completeCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__TransparencyDaemon_setOSVersion_complete___block_invoke_2_544;
   v9[3] = &unk_1E87013C8;
   v10 = v13;
   v7 = v13;
-  v8 = v5;
+  v8 = versionCopy;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v11 errorHandler:v9];
 }
 
@@ -2115,15 +2115,15 @@ uint64_t __44__TransparencyDaemon_setOSVersion_complete___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setOverrideTimeBetweenReports:(double)a3 completion:(id)a4
+- (void)setOverrideTimeBetweenReports:(double)reports completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __63__TransparencyDaemon_setOverrideTimeBetweenReports_completion___block_invoke;
   v9[3] = &unk_1E8701A70;
-  v11 = a3;
-  v10 = v5;
+  reportsCopy = reports;
+  v10 = completionCopy;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__TransparencyDaemon_setOverrideTimeBetweenReports_completion___block_invoke_547;
@@ -2159,14 +2159,14 @@ uint64_t __63__TransparencyDaemon_setOverrideTimeBetweenReports_completion___blo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)clearEligibilityOverrides:(id)a3
+- (void)clearEligibilityOverrides:(id)overrides
 {
-  v3 = a3;
+  overridesCopy = overrides;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__TransparencyDaemon_clearEligibilityOverrides___block_invoke;
   v7[3] = &unk_1E8701848;
-  v8 = v3;
+  v8 = overridesCopy;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __48__TransparencyDaemon_clearEligibilityOverrides___block_invoke_550;
@@ -2202,23 +2202,23 @@ uint64_t __48__TransparencyDaemon_clearEligibilityOverrides___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)reportEligibility:(id)a3 complete:(id)a4
+- (void)reportEligibility:(id)eligibility complete:(id)complete
 {
-  v5 = a3;
-  v6 = a4;
+  eligibilityCopy = eligibility;
+  completeCopy = complete;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __49__TransparencyDaemon_reportEligibility_complete___block_invoke;
   v11[3] = &unk_1E8701958;
-  v12 = v5;
-  v13 = v6;
+  v12 = eligibilityCopy;
+  v13 = completeCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __49__TransparencyDaemon_reportEligibility_complete___block_invoke_553;
   v9[3] = &unk_1E87013C8;
   v10 = v13;
   v7 = v13;
-  v8 = v5;
+  v8 = eligibilityCopy;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v11 errorHandler:v9];
 }
 
@@ -2248,24 +2248,24 @@ uint64_t __49__TransparencyDaemon_reportEligibility_complete___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)getAggregateResult:(int64_t)a3 element:(id)a4 complete:(id)a5
+- (void)getAggregateResult:(int64_t)result element:(id)element complete:(id)complete
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  completeCopy = complete;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __58__TransparencyDaemon_getAggregateResult_element_complete___block_invoke;
   v13[3] = &unk_1E87019F8;
-  v16 = a3;
-  v14 = v7;
-  v15 = v8;
+  resultCopy = result;
+  v14 = elementCopy;
+  v15 = completeCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __58__TransparencyDaemon_getAggregateResult_element_complete___block_invoke_556;
   v11[3] = &unk_1E87013C8;
   v12 = v15;
   v9 = v15;
-  v10 = v7;
+  v10 = elementCopy;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v13 errorHandler:v11];
 }
 
@@ -2295,27 +2295,27 @@ uint64_t __58__TransparencyDaemon_getAggregateResult_element_complete___block_in
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)insertResultForElement:(id)a3 samplesAgo:(id)a4 success:(BOOL)a5 complete:(id)a6
+- (void)insertResultForElement:(id)element samplesAgo:(id)ago success:(BOOL)success complete:(id)complete
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  elementCopy = element;
+  agoCopy = ago;
+  completeCopy = complete;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __73__TransparencyDaemon_insertResultForElement_samplesAgo_success_complete___block_invoke;
   v17[3] = &unk_1E8701A98;
-  v18 = v9;
-  v19 = v10;
-  v21 = a5;
-  v20 = v11;
+  v18 = elementCopy;
+  v19 = agoCopy;
+  successCopy = success;
+  v20 = completeCopy;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __73__TransparencyDaemon_insertResultForElement_samplesAgo_success_complete___block_invoke_559;
   v15[3] = &unk_1E87013C8;
   v16 = v20;
   v12 = v20;
-  v13 = v10;
-  v14 = v9;
+  v13 = agoCopy;
+  v14 = elementCopy;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v17 errorHandler:v15];
 }
 
@@ -2345,14 +2345,14 @@ uint64_t __73__TransparencyDaemon_insertResultForElement_samplesAgo_success_comp
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)triggerReportAndMaybeOptInWithCompletion:(id)a3
+- (void)triggerReportAndMaybeOptInWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__TransparencyDaemon_triggerReportAndMaybeOptInWithCompletion___block_invoke;
   v7[3] = &unk_1E8701848;
-  v8 = v3;
+  v8 = completionCopy;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __63__TransparencyDaemon_triggerReportAndMaybeOptInWithCompletion___block_invoke_562;
@@ -2388,24 +2388,24 @@ uint64_t __63__TransparencyDaemon_triggerReportAndMaybeOptInWithCompletion___blo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)successInfoForElement:(id)a3 samples:(int64_t)a4 completion:(id)a5
+- (void)successInfoForElement:(id)element samples:(int64_t)samples completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __63__TransparencyDaemon_successInfoForElement_samples_completion___block_invoke;
   v13[3] = &unk_1E87019F8;
-  v14 = v7;
-  v16 = a4;
-  v15 = v8;
+  v14 = elementCopy;
+  samplesCopy = samples;
+  v15 = completionCopy;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __63__TransparencyDaemon_successInfoForElement_samples_completion___block_invoke_565;
   v11[3] = &unk_1E87013C8;
   v12 = v15;
   v9 = v15;
-  v10 = v7;
+  v10 = elementCopy;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v13 errorHandler:v11];
 }
 
@@ -2435,26 +2435,26 @@ uint64_t __63__TransparencyDaemon_successInfoForElement_samples_completion___blo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)networkKTQuery:(id)a3 application:(id)a4 complete:(id)a5
+- (void)networkKTQuery:(id)query application:(id)application complete:(id)complete
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  queryCopy = query;
+  applicationCopy = application;
+  completeCopy = complete;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __58__TransparencyDaemon_networkKTQuery_application_complete___block_invoke;
   v15[3] = &unk_1E87019D0;
-  v16 = v7;
-  v17 = v8;
-  v18 = v9;
+  v16 = queryCopy;
+  v17 = applicationCopy;
+  v18 = completeCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __58__TransparencyDaemon_networkKTQuery_application_complete___block_invoke_2_570;
   v13[3] = &unk_1E87013C8;
   v14 = v18;
   v10 = v18;
-  v11 = v8;
-  v12 = v7;
+  v11 = applicationCopy;
+  v12 = queryCopy;
   [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v15 errorHandler:v13];
 }
 
@@ -2502,30 +2502,30 @@ void __58__TransparencyDaemon_networkKTQuery_application_complete___block_invoke
   (*(v4 + 16))(v4, v8, v7, v5);
 }
 
-- (void)networkKTQuery:(id)a3 application:(id)a4 traceUUID:(id)a5 timeout:(double)a6 complete:(id)a7
+- (void)networkKTQuery:(id)query application:(id)application traceUUID:(id)d timeout:(double)timeout complete:(id)complete
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  queryCopy = query;
+  applicationCopy = application;
+  dCopy = d;
+  completeCopy = complete;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __76__TransparencyDaemon_networkKTQuery_application_traceUUID_timeout_complete___block_invoke;
   v21[3] = &unk_1E8701AE8;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
-  v26 = a6;
-  v25 = v14;
+  v22 = queryCopy;
+  v23 = applicationCopy;
+  v24 = dCopy;
+  timeoutCopy = timeout;
+  v25 = completeCopy;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __76__TransparencyDaemon_networkKTQuery_application_traceUUID_timeout_complete___block_invoke_2_574;
   v19[3] = &unk_1E87013C8;
   v20 = v25;
   v15 = v25;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
+  v16 = dCopy;
+  v17 = applicationCopy;
+  v18 = queryCopy;
   [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v21 errorHandler:v19];
 }
 
@@ -2575,30 +2575,30 @@ void __76__TransparencyDaemon_networkKTQuery_application_traceUUID_timeout_compl
   (*(v4 + 16))(v4, v8, v7, v5);
 }
 
-- (void)networkKTQuery:(id)a3 application:(id)a4 trace:(id)a5 timeout:(double)a6 complete:(id)a7
+- (void)networkKTQuery:(id)query application:(id)application trace:(id)trace timeout:(double)timeout complete:(id)complete
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  queryCopy = query;
+  applicationCopy = application;
+  traceCopy = trace;
+  completeCopy = complete;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __72__TransparencyDaemon_networkKTQuery_application_trace_timeout_complete___block_invoke;
   v21[3] = &unk_1E8701AE8;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
-  v26 = a6;
-  v25 = v14;
+  v22 = queryCopy;
+  v23 = applicationCopy;
+  v24 = traceCopy;
+  timeoutCopy = timeout;
+  v25 = completeCopy;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __72__TransparencyDaemon_networkKTQuery_application_trace_timeout_complete___block_invoke_577;
   v19[3] = &unk_1E87013C8;
   v20 = v25;
   v15 = v25;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
+  v16 = traceCopy;
+  v17 = applicationCopy;
+  v18 = queryCopy;
   [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v21 errorHandler:v19];
 }
 
@@ -2628,26 +2628,26 @@ uint64_t __72__TransparencyDaemon_networkKTQuery_application_trace_timeout_compl
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)validateSelfForThisDeviceForApplication:(id)a3 pushToken:(id)a4 complete:(id)a5
+- (void)validateSelfForThisDeviceForApplication:(id)application pushToken:(id)token complete:(id)complete
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  applicationCopy = application;
+  tokenCopy = token;
+  completeCopy = complete;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __81__TransparencyDaemon_validateSelfForThisDeviceForApplication_pushToken_complete___block_invoke;
   v15[3] = &unk_1E87019D0;
-  v16 = v7;
-  v17 = v8;
-  v18 = v9;
+  v16 = applicationCopy;
+  v17 = tokenCopy;
+  v18 = completeCopy;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __81__TransparencyDaemon_validateSelfForThisDeviceForApplication_pushToken_complete___block_invoke_580;
   v13[3] = &unk_1E87013C8;
   v14 = v18;
   v10 = v18;
-  v11 = v8;
-  v12 = v7;
+  v11 = tokenCopy;
+  v12 = applicationCopy;
   [TransparencyXPCConnection invokeXPCAsynchronousCallWithBlock:v15 errorHandler:v13];
 }
 
@@ -2677,23 +2677,23 @@ uint64_t __81__TransparencyDaemon_validateSelfForThisDeviceForApplication_pushTo
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)ktRepair:(id)a3 complete:(id)a4
+- (void)ktRepair:(id)repair complete:(id)complete
 {
-  v5 = a3;
-  v6 = a4;
+  repairCopy = repair;
+  completeCopy = complete;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __40__TransparencyDaemon_ktRepair_complete___block_invoke;
   v11[3] = &unk_1E8701958;
-  v12 = v5;
-  v13 = v6;
+  v12 = repairCopy;
+  v13 = completeCopy;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __40__TransparencyDaemon_ktRepair_complete___block_invoke_583;
   v9[3] = &unk_1E87013C8;
   v10 = v13;
   v7 = v13;
-  v8 = v5;
+  v8 = repairCopy;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v11 errorHandler:v9];
 }
 
@@ -2723,23 +2723,23 @@ uint64_t __40__TransparencyDaemon_ktRepair_complete___block_invoke_2()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)validateIDSData:(id)a3 ktQueryData:(id)a4 ktResponseData:(id)a5 complete:(id)a6
+- (void)validateIDSData:(id)data ktQueryData:(id)queryData ktResponseData:(id)responseData complete:(id)complete
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  dataCopy = data;
+  completeCopy = complete;
+  responseDataCopy = responseData;
+  queryDataCopy = queryData;
   v13 = objc_alloc_init(KTNetworkResponse);
-  [(KTNetworkResponse *)v13 setRequest:v12];
+  [(KTNetworkResponse *)v13 setRequest:queryDataCopy];
 
-  [(KTNetworkResponse *)v13 setResponse:v11];
+  [(KTNetworkResponse *)v13 setResponse:responseDataCopy];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __74__TransparencyDaemon_validateIDSData_ktQueryData_ktResponseData_complete___block_invoke;
   v19[3] = &unk_1E87019D0;
-  v20 = v9;
+  v20 = dataCopy;
   v21 = v13;
-  v22 = v10;
+  v22 = completeCopy;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __74__TransparencyDaemon_validateIDSData_ktQueryData_ktResponseData_complete___block_invoke_588;
@@ -2747,7 +2747,7 @@ uint64_t __40__TransparencyDaemon_ktRepair_complete___block_invoke_2()
   v18 = v22;
   v14 = v22;
   v15 = v13;
-  v16 = v9;
+  v16 = dataCopy;
   [TransparencyXPCConnection invokeXPCSynchronousCallWithBlock:v19 errorHandler:v17];
 }
 

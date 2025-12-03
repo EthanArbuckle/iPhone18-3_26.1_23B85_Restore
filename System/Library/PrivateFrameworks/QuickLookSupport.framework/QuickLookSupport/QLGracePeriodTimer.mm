@@ -1,5 +1,5 @@
 @interface QLGracePeriodTimer
-- (QLGracePeriodTimer)initWithAction:(id)a3 callbackQueue:(id)a4 delay:(double)a5;
+- (QLGracePeriodTimer)initWithAction:(id)action callbackQueue:(id)queue delay:(double)delay;
 - (void)_createTimer;
 - (void)_suppress;
 - (void)arm;
@@ -8,21 +8,21 @@
 
 @implementation QLGracePeriodTimer
 
-- (QLGracePeriodTimer)initWithAction:(id)a3 callbackQueue:(id)a4 delay:(double)a5
+- (QLGracePeriodTimer)initWithAction:(id)action callbackQueue:(id)queue delay:(double)delay
 {
-  v8 = a3;
-  v9 = a4;
+  actionCopy = action;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = QLGracePeriodTimer;
   v10 = [(QLGracePeriodTimer *)&v14 init];
   if (v10)
   {
-    v11 = MEMORY[0x2667062A0](v8);
+    v11 = MEMORY[0x2667062A0](actionCopy);
     action = v10->_action;
     v10->_action = v11;
 
-    objc_storeStrong(&v10->_callbackQueue, a4);
-    v10->_delay = a5;
+    objc_storeStrong(&v10->_callbackQueue, queue);
+    v10->_delay = delay;
   }
 
   return v10;

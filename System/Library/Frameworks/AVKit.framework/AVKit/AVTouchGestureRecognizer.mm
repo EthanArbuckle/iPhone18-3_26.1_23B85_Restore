@@ -1,20 +1,20 @@
 @interface AVTouchGestureRecognizer
-- (void)_addCandidateGestureIncrementForTouches:(id *)a1;
+- (void)_addCandidateGestureIncrementForTouches:(id *)touches;
 - (void)_evaluateCandidateGestureIncrements;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation AVTouchGestureRecognizer
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   if (self)
   {
-    if ([(AVTouchGestureRecognizer *)self state:a3]== 1)
+    if ([(AVTouchGestureRecognizer *)self state:cancelled]== 1)
     {
       v5 = 4;
     }
@@ -28,11 +28,11 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   if (self)
   {
-    if ([(AVTouchGestureRecognizer *)self state:a3]== 1)
+    if ([(AVTouchGestureRecognizer *)self state:ended]== 1)
     {
       v5 = 3;
     }
@@ -46,9 +46,9 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  [(AVTouchGestureRecognizer *)&self->super.super.isa _addCandidateGestureIncrementForTouches:a3];
+  [(AVTouchGestureRecognizer *)&self->super.super.isa _addCandidateGestureIncrementForTouches:moved];
   if ([(NSMutableArray *)self->_candidateGestureIncrementsMultiTouchInfo count]== 7)
   {
 
@@ -56,14 +56,14 @@
   }
 }
 
-- (void)_addCandidateGestureIncrementForTouches:(id *)a1
+- (void)_addCandidateGestureIncrementForTouches:(id *)touches
 {
   v5 = a2;
-  if (a1)
+  if (touches)
   {
-    v3 = [a1 numberOfTouches] > 1 || objc_msgSend(v5, "count") > 1;
+    v3 = [touches numberOfTouches] > 1 || objc_msgSend(v5, "count") > 1;
     v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-    [a1[36] addObject:v4];
+    [touches[36] addObject:v4];
   }
 }
 
@@ -131,15 +131,15 @@ LABEL_13:
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  beganCopy = began;
+  eventCopy = event;
+  array = [MEMORY[0x1E695DF70] array];
   candidateGestureIncrementsMultiTouchInfo = self->_candidateGestureIncrementsMultiTouchInfo;
-  self->_candidateGestureIncrementsMultiTouchInfo = v8;
+  self->_candidateGestureIncrementsMultiTouchInfo = array;
 
-  [(AVTouchGestureRecognizer *)&self->super.super.isa _addCandidateGestureIncrementForTouches:v6];
+  [(AVTouchGestureRecognizer *)&self->super.super.isa _addCandidateGestureIncrementForTouches:beganCopy];
   objc_initWeak(&location, self);
   v10 = MEMORY[0x1E695DFF0];
   v13[0] = MEMORY[0x1E69E9820];

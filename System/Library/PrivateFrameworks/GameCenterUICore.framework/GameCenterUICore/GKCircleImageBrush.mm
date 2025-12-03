@@ -1,9 +1,9 @@
 @interface GKCircleImageBrush
-- (CGSize)sizeForInput:(id)a3;
+- (CGSize)sizeForInput:(id)input;
 - (CGSize)sizeOverride;
-- (double)scaleForInput:(id)a3;
+- (double)scaleForInput:(id)input;
 - (id)renderedImageIdentifier;
-- (void)drawInRect:(CGRect)a3 withContext:(CGContext *)a4 input:(id)a5;
+- (void)drawInRect:(CGRect)rect withContext:(CGContext *)context input:(id)input;
 @end
 
 @implementation GKCircleImageBrush
@@ -15,15 +15,15 @@
   return NSStringFromCGSize(*&v2);
 }
 
-- (CGSize)sizeForInput:(id)a3
+- (CGSize)sizeForInput:(id)input
 {
   [(GKCircleImageBrush *)self sizeOverride];
   if (v3 == *MEMORY[0x277CBF3A8] && v4 == *(MEMORY[0x277CBF3A8] + 8))
   {
-    v6 = [MEMORY[0x277D75418] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v7 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v3 = 57.0;
       if (*MEMORY[0x277D0C258] != 1)
@@ -50,40 +50,40 @@ LABEL_11:
   return result;
 }
 
-- (double)scaleForInput:(id)a3
+- (double)scaleForInput:(id)input
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v5 = v4;
 
   return v5;
 }
 
-- (void)drawInRect:(CGRect)a3 withContext:(CGContext *)a4 input:(id)a5
+- (void)drawInRect:(CGRect)rect withContext:(CGContext *)context input:(id)input
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a5;
-  if (!a4)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  inputCopy = input;
+  if (!context)
   {
     v11 = MEMORY[0x277CCACA8];
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Assertion failed"];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/CommonUI/GKThemeBrush.m"];
-    v14 = [v13 lastPathComponent];
-    v15 = [v11 stringWithFormat:@"%@ (context != ((void*)0))\n[%s (%s:%d)]", v12, "-[GKCircleImageBrush drawInRect:withContext:input:]", objc_msgSend(v14, "UTF8String"), 499];
+    lastPathComponent = [v13 lastPathComponent];
+    v15 = [v11 stringWithFormat:@"%@ (context != ((void*)0))\n[%s (%s:%d)]", v12, "-[GKCircleImageBrush drawInRect:withContext:input:]", objc_msgSend(lastPathComponent, "UTF8String"), 499];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v15}];
   }
 
-  v16 = v10;
-  CGContextSaveGState(a4);
-  CGContextTranslateCTM(a4, 0.0, height);
-  CGContextScaleCTM(a4, 1.0, -1.0);
-  CGContextSetInterpolationQuality(a4, kCGInterpolationHigh);
-  v17 = [MEMORY[0x277D759A0] mainScreen];
-  [v17 scale];
+  v16 = inputCopy;
+  CGContextSaveGState(context);
+  CGContextTranslateCTM(context, 0.0, height);
+  CGContextScaleCTM(context, 1.0, -1.0);
+  CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v19 = v18;
 
   block[0] = MEMORY[0x277D85DD0];
@@ -114,11 +114,11 @@ LABEL_11:
   v28 = y;
   v29 = width;
   v30 = height;
-  v31 = a4;
+  contextCopy = context;
   v20 = v16;
   v24 = v20;
   [v20 _gkReadAtSize:v23 ARGBHostEndianBytes:{350.0, 350.0}];
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
   if (annotateOnceToken != -1)
   {
     [GKCircleImageBrush drawInRect:withContext:input:];
@@ -128,7 +128,7 @@ LABEL_11:
   {
     v21 = objc_opt_class();
     Name = class_getName(v21);
-    _annotateDrawInRectWithContextAndInput(Name, a4, v20, x, y, width, height);
+    _annotateDrawInRectWithContextAndInput(Name, context, v20, x, y, width, height);
   }
 
   _Block_object_dispose(v32, 8);

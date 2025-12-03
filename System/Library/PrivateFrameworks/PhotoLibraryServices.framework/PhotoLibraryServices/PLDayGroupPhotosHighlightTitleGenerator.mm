@@ -1,63 +1,63 @@
 @interface PLDayGroupPhotosHighlightTitleGenerator
-+ (id)assetsToUseForDayGroupHighlight:(id)a3 withFilter:(unsigned __int16)a4;
-+ (id)titleForHighlight:(id)a3 filter:(unsigned __int16)a4 dateRangeTitleGenerator:(id)a5 options:(unint64_t)a6;
++ (id)assetsToUseForDayGroupHighlight:(id)highlight withFilter:(unsigned __int16)filter;
++ (id)titleForHighlight:(id)highlight filter:(unsigned __int16)filter dateRangeTitleGenerator:(id)generator options:(unint64_t)options;
 @end
 
 @implementation PLDayGroupPhotosHighlightTitleGenerator
 
-+ (id)assetsToUseForDayGroupHighlight:(id)a3 withFilter:(unsigned __int16)a4
++ (id)assetsToUseForDayGroupHighlight:(id)highlight withFilter:(unsigned __int16)filter
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  switch(v4)
+  filterCopy = filter;
+  highlightCopy = highlight;
+  v6 = highlightCopy;
+  switch(filterCopy)
   {
     case 2:
-      v7 = [v5 dayGroupExtendedAssetsShared];
-      if ([v7 count])
+      dayGroupExtendedAssetsShared = [highlightCopy dayGroupExtendedAssetsShared];
+      if ([dayGroupExtendedAssetsShared count])
       {
         goto LABEL_12;
       }
 
-      v8 = [v6 dayGroupAssetsShared];
+      dayGroupAssetsShared = [v6 dayGroupAssetsShared];
       goto LABEL_10;
     case 1:
-      v7 = [v5 dayGroupExtendedAssetsPrivate];
-      if ([v7 count])
+      dayGroupExtendedAssetsShared = [highlightCopy dayGroupExtendedAssetsPrivate];
+      if ([dayGroupExtendedAssetsShared count])
       {
         goto LABEL_12;
       }
 
-      v8 = [v6 dayGroupAssetsPrivate];
+      dayGroupAssetsShared = [v6 dayGroupAssetsPrivate];
       goto LABEL_10;
     case 0:
-      v7 = [v5 dayGroupExtendedAssets];
-      if ([v7 count])
+      dayGroupExtendedAssetsShared = [highlightCopy dayGroupExtendedAssets];
+      if ([dayGroupExtendedAssetsShared count])
       {
         goto LABEL_12;
       }
 
-      v8 = [v6 dayGroupAssets];
+      dayGroupAssetsShared = [v6 dayGroupAssets];
 LABEL_10:
-      v9 = v8;
+      v9 = dayGroupAssetsShared;
 
-      v7 = v9;
+      dayGroupExtendedAssetsShared = v9;
       goto LABEL_12;
   }
 
-  v7 = 0;
+  dayGroupExtendedAssetsShared = 0;
 LABEL_12:
 
-  return v7;
+  return dayGroupExtendedAssetsShared;
 }
 
-+ (id)titleForHighlight:(id)a3 filter:(unsigned __int16)a4 dateRangeTitleGenerator:(id)a5 options:(unint64_t)a6
++ (id)titleForHighlight:(id)highlight filter:(unsigned __int16)filter dateRangeTitleGenerator:(id)generator options:(unint64_t)options
 {
-  v6 = a4;
+  filterCopy = filter;
   v27[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a3;
-  v25 = [PLDayGroupPhotosHighlightTitleGenerator assetsToUseForDayGroupHighlight:v9 withFilter:v6];
+  generatorCopy = generator;
+  highlightCopy = highlight;
+  v25 = [PLDayGroupPhotosHighlightTitleGenerator assetsToUseForDayGroupHighlight:highlightCopy withFilter:filterCopy];
   v10 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"dateCreated" ascending:1];
   v27[0] = v10;
   v11 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"uuid" ascending:1];
@@ -65,19 +65,19 @@ LABEL_12:
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
   v13 = [v25 sortedArrayUsingDescriptors:v12];
 
-  v14 = [v13 firstObject];
-  v15 = [v13 lastObject];
-  v16 = [v14 dateCreated];
-  v17 = [v16 dateByAddingTimeInterval:{objc_msgSend(v9, "startTimeZoneOffset")}];
+  firstObject = [v13 firstObject];
+  lastObject = [v13 lastObject];
+  dateCreated = [firstObject dateCreated];
+  v17 = [dateCreated dateByAddingTimeInterval:{objc_msgSend(highlightCopy, "startTimeZoneOffset")}];
 
-  v18 = [v15 dateCreated];
-  v19 = [v18 dateByAddingTimeInterval:{objc_msgSend(v9, "endTimeZoneOffset")}];
+  dateCreated2 = [lastObject dateCreated];
+  v19 = [dateCreated2 dateByAddingTimeInterval:{objc_msgSend(highlightCopy, "endTimeZoneOffset")}];
 
-  v20 = [v9 category];
-  v21 = [v9 kind];
-  v22 = [v9 type];
+  category = [highlightCopy category];
+  kind = [highlightCopy kind];
+  type = [highlightCopy type];
 
-  v23 = [v8 dateRangeTitleWithStartDate:v17 endDate:v19 category:v20 kind:v21 type:v22 options:a6];
+  v23 = [generatorCopy dateRangeTitleWithStartDate:v17 endDate:v19 category:category kind:kind type:type options:options];
 
   return v23;
 }

@@ -8,28 +8,28 @@
 - (CGPoint)defaultValue;
 - (CGPoint)value;
 - (NSString)gradientCast;
-- (PEPhotoStyleDPad)initWithNibName:(id)a3 bundle:(id)a4;
+- (PEPhotoStyleDPad)initWithNibName:(id)name bundle:(id)bundle;
 - (UIColor)backgroundColor;
 - (id)onValueChanged;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBackgroundImage:(CGImage *)a3;
-- (void)setDefaultValue:(CGPoint)a3;
-- (void)setDefaultValue:(CGPoint)a3 animated:(BOOL)a4;
-- (void)setGradientCast:(id)a3;
-- (void)setIsDottedGridAnimated:(BOOL)a3;
-- (void)setPulsingValueIndicator:(BOOL)a3;
-- (void)setSnapIndicatorToGrid:(BOOL)a3;
-- (void)setStaticDottedGridImage:(CGImage *)a3;
-- (void)setValue:(CGPoint)a3;
-- (void)setValue:(CGPoint)a3 animated:(BOOL)a4;
-- (void)setValue:(CGPoint)a3 notifyObserver:(BOOL)a4;
+- (void)setBackgroundColor:(id)color;
+- (void)setBackgroundImage:(CGImage *)image;
+- (void)setDefaultValue:(CGPoint)value;
+- (void)setDefaultValue:(CGPoint)value animated:(BOOL)animated;
+- (void)setGradientCast:(id)cast;
+- (void)setIsDottedGridAnimated:(BOOL)animated;
+- (void)setPulsingValueIndicator:(BOOL)indicator;
+- (void)setSnapIndicatorToGrid:(BOOL)grid;
+- (void)setStaticDottedGridImage:(CGImage *)image;
+- (void)setValue:(CGPoint)value;
+- (void)setValue:(CGPoint)value animated:(BOOL)animated;
+- (void)setValue:(CGPoint)value notifyObserver:(BOOL)observer;
 @end
 
 @implementation PEPhotoStyleDPad
 
 - (CGPoint)value
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStyleDPad.value.getter();
   v5 = v4;
 
@@ -40,15 +40,15 @@
   return result;
 }
 
-- (void)setValue:(CGPoint)a3
+- (void)setValue:(CGPoint)value
 {
-  v3 = self;
+  selfCopy = self;
   PEPhotoStyleDPad.value.setter();
 }
 
 - (CGPoint)defaultValue
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStyleDPad.defaultValue.getter();
   v5 = v4;
 
@@ -59,75 +59,75 @@
   return result;
 }
 
-- (void)setDefaultValue:(CGPoint)a3
+- (void)setDefaultValue:(CGPoint)value
 {
-  v3 = self;
+  selfCopy = self;
   PEPhotoStyleDPad.defaultValue.setter();
 }
 
 - (CGImage)backgroundImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStyleDPad.backgroundImage.getter();
 
   return v3;
 }
 
-- (void)setBackgroundImage:(CGImage *)a3
+- (void)setBackgroundImage:(CGImage *)image
 {
-  v5 = a3;
-  v6 = self;
-  PEPhotoStyleDPad.backgroundImage.setter(a3);
+  imageCopy = image;
+  selfCopy = self;
+  PEPhotoStyleDPad.backgroundImage.setter(image);
 }
 
 - (UIColor)backgroundColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStyleDPad.backgroundColor.getter();
 
   return v3;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  PEPhotoStyleDPad.backgroundColor.setter(a3);
+  colorCopy = color;
+  selfCopy = self;
+  PEPhotoStyleDPad.backgroundColor.setter(color);
 }
 
 - (NSString)gradientCast
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStyleDPad.gradientCast.getter();
 
   return v3;
 }
 
-- (void)setGradientCast:(id)a3
+- (void)setGradientCast:(id)cast
 {
-  v4 = a3;
-  v5 = self;
-  PEPhotoStyleDPad.gradientCast.setter(v4);
+  castCopy = cast;
+  selfCopy = self;
+  PEPhotoStyleDPad.gradientCast.setter(castCopy);
 }
 
 - (CGImage)staticDottedGridImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStyleDPad.staticDottedGridImage.getter();
 
   return v3;
 }
 
-- (void)setStaticDottedGridImage:(CGImage *)a3
+- (void)setStaticDottedGridImage:(CGImage *)image
 {
-  v5 = a3;
-  v6 = self;
-  PEPhotoStyleDPad.staticDottedGridImage.setter(a3);
+  imageCopy = image;
+  selfCopy = self;
+  PEPhotoStyleDPad.staticDottedGridImage.setter(image);
 }
 
 - (id)onValueChanged
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStyleDPad.onValueChanged.getter();
   v5 = v4;
 
@@ -144,7 +144,7 @@
 
 - (BOOL)isActive
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStyleDPad.isActive.getter();
 
   return v3 & 1;
@@ -152,78 +152,78 @@
 
 - (BOOL)pulsingValueIndicator
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStyleDPad.pulsingValueIndicator.getter();
 
   return v3 & 1;
 }
 
-- (void)setPulsingValueIndicator:(BOOL)a3
+- (void)setPulsingValueIndicator:(BOOL)indicator
 {
-  v3 = self;
+  selfCopy = self;
   PEPhotoStyleDPad.pulsingValueIndicator.setter();
 }
 
 - (BOOL)isDottedGridAnimated
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStyleDPad.isDottedGridAnimated.getter();
 
   return v3;
 }
 
-- (void)setIsDottedGridAnimated:(BOOL)a3
+- (void)setIsDottedGridAnimated:(BOOL)animated
 {
-  v4 = self;
-  PEPhotoStyleDPad.isDottedGridAnimated.setter(a3);
+  selfCopy = self;
+  PEPhotoStyleDPad.isDottedGridAnimated.setter(animated);
 }
 
 - (BOOL)snapIndicatorToGrid
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PEPhotoStyleDPad.snapIndicatorToGrid.getter();
 
   return v3 & 1;
 }
 
-- (void)setSnapIndicatorToGrid:(BOOL)a3
+- (void)setSnapIndicatorToGrid:(BOOL)grid
 {
-  v4 = self;
-  PEPhotoStyleDPad.snapIndicatorToGrid.setter(a3);
+  selfCopy = self;
+  PEPhotoStyleDPad.snapIndicatorToGrid.setter(grid);
 }
 
-- (void)setValue:(CGPoint)a3 animated:(BOOL)a4
+- (void)setValue:(CGPoint)value animated:(BOOL)animated
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = self;
-  PEPhotoStyleDPad.setValue(_:animated:)(__PAIR128__(*&y, *&x), a4);
+  y = value.y;
+  x = value.x;
+  selfCopy = self;
+  PEPhotoStyleDPad.setValue(_:animated:)(__PAIR128__(*&y, *&x), animated);
 }
 
-- (void)setDefaultValue:(CGPoint)a3 animated:(BOOL)a4
+- (void)setDefaultValue:(CGPoint)value animated:(BOOL)animated
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = self;
-  PEPhotoStyleDPad.setDefaultValue(_:animated:)(__PAIR128__(*&y, *&x), a4);
+  y = value.y;
+  x = value.x;
+  selfCopy = self;
+  PEPhotoStyleDPad.setDefaultValue(_:animated:)(__PAIR128__(*&y, *&x), animated);
 }
 
-- (void)setValue:(CGPoint)a3 notifyObserver:(BOOL)a4
+- (void)setValue:(CGPoint)value notifyObserver:(BOOL)observer
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = self;
-  PEPhotoStyleDPad.setValue(_:notifyObserver:)(__PAIR128__(*&y, *&x), a4);
+  y = value.y;
+  x = value.x;
+  selfCopy = self;
+  PEPhotoStyleDPad.setValue(_:notifyObserver:)(__PAIR128__(*&y, *&x), observer);
 }
 
-- (PEPhotoStyleDPad)initWithNibName:(id)a3 bundle:(id)a4
+- (PEPhotoStyleDPad)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_25E756CC8();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   PEPhotoStyleDPad.init(nibName:bundle:)();
 }
 

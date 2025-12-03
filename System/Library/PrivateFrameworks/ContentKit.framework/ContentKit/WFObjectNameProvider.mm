@@ -1,20 +1,20 @@
 @interface WFObjectNameProvider
 + (id)sharedProvider;
 - (WFObjectNameProvider)init;
-- (id)nameForObject:(id)a3;
+- (id)nameForObject:(id)object;
 @end
 
 @implementation WFObjectNameProvider
 
-- (id)nameForObject:(id)a3
+- (id)nameForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = objc_opt_class();
   while (1)
   {
-    v6 = [(WFObjectNameProvider *)self contents];
+    contents = [(WFObjectNameProvider *)self contents];
     v7 = NSStringFromClass(v5);
-    v8 = [v6 objectForKey:v7];
+    v8 = [contents objectForKey:v7];
 
     if (v8)
     {
@@ -29,7 +29,7 @@
     }
   }
 
-  v9 = (v8)[2](v8, v4);
+  v9 = (v8)[2](v8, objectCopy);
 
 LABEL_6:
 

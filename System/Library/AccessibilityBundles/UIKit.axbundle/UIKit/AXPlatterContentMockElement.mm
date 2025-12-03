@@ -5,26 +5,26 @@
 - (id)description;
 - (uint64_t)sourceElement;
 - (uint64_t)sourceView;
-- (void)setSourceElement:(uint64_t)a1;
-- (void)setSourceView:(uint64_t)a1;
+- (void)setSourceElement:(uint64_t)element;
+- (void)setSourceView:(uint64_t)view;
 @end
 
 @implementation AXPlatterContentMockElement
 
 - (id)accessibilityLabel
 {
-  v3 = [(AXPlatterContentMockElement *)self sourceElement];
-  v4 = [v3 accessibilityLabel];
-  MEMORY[0x29EDC9740](v3);
+  sourceElement = [(AXPlatterContentMockElement *)self sourceElement];
+  accessibilityLabel = [sourceElement accessibilityLabel];
+  MEMORY[0x29EDC9740](sourceElement);
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (uint64_t)sourceElement
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 48);
+    return *(self + 48);
   }
 
   else
@@ -35,28 +35,28 @@
 
 - (id)accessibilityValue
 {
-  v3 = [(AXPlatterContentMockElement *)self sourceElement];
-  v4 = [v3 accessibilityValue];
-  MEMORY[0x29EDC9740](v3);
+  sourceElement = [(AXPlatterContentMockElement *)self sourceElement];
+  accessibilityValue = [sourceElement accessibilityValue];
+  MEMORY[0x29EDC9740](sourceElement);
 
-  return v4;
+  return accessibilityValue;
 }
 
 - (CGRect)accessibilityFrame
 {
-  v11 = [(AXPlatterContentMockElement *)self sourceView];
-  v10 = [(AXPlatterContentMockElement *)self sourceElement];
-  [v10 accessibilityFrame];
+  sourceView = [(AXPlatterContentMockElement *)self sourceView];
+  sourceElement = [(AXPlatterContentMockElement *)self sourceElement];
+  [sourceElement accessibilityFrame];
   UIAccessibilityFrameToBounds();
-  MEMORY[0x29EDC9740](v10);
-  MEMORY[0x29EDC9740](v11);
-  v12 = [(AXPlatterContentMockElement *)self accessibilityContainer];
+  MEMORY[0x29EDC9740](sourceElement);
+  MEMORY[0x29EDC9740](sourceView);
+  accessibilityContainer = [(AXPlatterContentMockElement *)self accessibilityContainer];
   UIAccessibilityFrameForBounds();
   v14 = v2;
   v15 = v3;
   v16 = v4;
   v17 = v5;
-  MEMORY[0x29EDC9740](v12);
+  MEMORY[0x29EDC9740](accessibilityContainer);
   v6 = v14;
   v7 = v15;
   v8 = v16;
@@ -70,9 +70,9 @@
 
 - (uint64_t)sourceView
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 56);
+    return *(self + 56);
   }
 
   else
@@ -83,32 +83,32 @@
 
 - (id)description
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6.receiver = self;
   v6.super_class = AXPlatterContentMockElement;
   v4 = [(AXPlatterContentMockElement *)&v6 description];
-  v3 = [(AXPlatterContentMockElement *)v8 sourceElement];
-  v5 = [v4 stringByAppendingFormat:@" - sourceElement: %@", v3];
-  MEMORY[0x29EDC9740](v3);
+  sourceElement = [(AXPlatterContentMockElement *)selfCopy sourceElement];
+  v5 = [v4 stringByAppendingFormat:@" - sourceElement: %@", sourceElement];
+  MEMORY[0x29EDC9740](sourceElement);
   MEMORY[0x29EDC9740](v4);
 
   return v5;
 }
 
-- (void)setSourceElement:(uint64_t)a1
+- (void)setSourceElement:(uint64_t)element
 {
-  if (a1)
+  if (element)
   {
-    objc_storeStrong((a1 + 48), a2);
+    objc_storeStrong((element + 48), a2);
   }
 }
 
-- (void)setSourceView:(uint64_t)a1
+- (void)setSourceView:(uint64_t)view
 {
-  if (a1)
+  if (view)
   {
-    objc_storeStrong((a1 + 56), a2);
+    objc_storeStrong((view + 56), a2);
   }
 }
 

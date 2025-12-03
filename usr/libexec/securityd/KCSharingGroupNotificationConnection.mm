@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (KCSharingGroupNotificationConnection)init;
 - (id)connection;
-- (void)groupsUpdatedWithInfos:(id)a3;
+- (void)groupsUpdatedWithInfos:(id)infos;
 @end
 
 @implementation KCSharingGroupNotificationConnection
@@ -57,12 +57,12 @@
   return v4;
 }
 
-- (void)groupsUpdatedWithInfos:(id)a3
+- (void)groupsUpdatedWithInfos:(id)infos
 {
-  v4 = a3;
-  v5 = [(KCSharingGroupNotificationConnection *)self connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:&stru_100334B48];
-  [v6 groupsUpdatedWithInfos:v4];
+  infosCopy = infos;
+  connection = [(KCSharingGroupNotificationConnection *)self connection];
+  v6 = [connection remoteObjectProxyWithErrorHandler:&stru_100334B48];
+  [v6 groupsUpdatedWithInfos:infosCopy];
 }
 
 - (KCSharingGroupNotificationConnection)init

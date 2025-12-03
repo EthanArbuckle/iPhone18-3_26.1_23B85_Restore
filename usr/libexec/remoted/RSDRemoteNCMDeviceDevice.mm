@@ -1,7 +1,7 @@
 @interface RSDRemoteNCMDeviceDevice
 - (BOOL)isTrusted;
 - (RSDRemoteNCMDeviceDevice)initWithGeneratedName;
-- (RSDRemoteNCMDeviceDevice)initWithInterface:(id)a3;
+- (RSDRemoteNCMDeviceDevice)initWithInterface:(id)interface;
 - (void)attach;
 - (void)createBonjourListener;
 - (void)createPortListener;
@@ -17,7 +17,7 @@
   if (os_log_type_enabled(qword_1000643E0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@> disconnect", buf, 0xCu);
   }
 
@@ -27,7 +27,7 @@
     if (os_log_type_enabled(qword_1000643E0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v8 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@> cancelling bonjour listener", buf, 0xCu);
     }
 
@@ -40,7 +40,7 @@
     if (os_log_type_enabled(qword_1000643E0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v8 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@> cancelling port listener", buf, 0xCu);
     }
 
@@ -65,7 +65,7 @@
     if (os_log_type_enabled(qword_1000643E0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@> Treating ncm host as trusted on research VM", buf, 0xCu);
     }
 
@@ -93,14 +93,14 @@
   return [(RSDRemoteDevice *)&v6 initWithName:__str];
 }
 
-- (RSDRemoteNCMDeviceDevice)initWithInterface:(id)a3
+- (RSDRemoteNCMDeviceDevice)initWithInterface:(id)interface
 {
-  v4 = a3;
-  v5 = [(RSDRemoteNCMDeviceDevice *)self initWithGeneratedName];
-  v6 = v5;
-  if (v5)
+  interfaceCopy = interface;
+  initWithGeneratedName = [(RSDRemoteNCMDeviceDevice *)self initWithGeneratedName];
+  v6 = initWithGeneratedName;
+  if (initWithGeneratedName)
   {
-    [(RSDRemoteNCMDevice *)v5 setInterface:v4];
+    [(RSDRemoteNCMDevice *)initWithGeneratedName setInterface:interfaceCopy];
     v7 = v6;
   }
 
@@ -117,10 +117,10 @@
     [(RSDRemoteNCMDeviceDevice *)self createBonjourListener];
   }
 
-  v3 = [(RSDRemoteNCMDevice *)self interface];
-  v4 = [v3 is_private];
+  interface = [(RSDRemoteNCMDevice *)self interface];
+  is_private = [interface is_private];
 
-  if (v4)
+  if (is_private)
   {
     [(RSDRemoteNCMDeviceDevice *)self createPortListener];
   }
@@ -132,23 +132,23 @@
   if (os_log_type_enabled(qword_1000643E0, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@> needsConnect", &v9, 0xCu);
   }
 
   self->_researchInfraEnforcementDisabled = sub_1000035F0(qword_1000643E0);
   if (self->reestablished_connection)
   {
-    v4 = [(RSDRemoteDevice *)self connection];
+    connection = [(RSDRemoteDevice *)self connection];
 
     v5 = qword_1000643E0;
     v6 = os_log_type_enabled(qword_1000643E0, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (connection)
     {
       if (v6)
       {
         v9 = 138543362;
-        v10 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@> wait for current connection to invalidate before applying reestablished connection", &v9, 0xCu);
       }
     }
@@ -158,7 +158,7 @@
       if (v6)
       {
         v9 = 138543362;
-        v10 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@> Applying re-established connection", &v9, 0xCu);
       }
 
@@ -183,8 +183,8 @@
 
   if (*[(RSDRemoteNCMDevice *)self local_address]|| *([(RSDRemoteNCMDevice *)self local_address]+ 1) || *([(RSDRemoteNCMDevice *)self local_address]+ 2) || *([(RSDRemoteNCMDevice *)self local_address]+ 3))
   {
-    v4 = [(RSDRemoteNCMDevice *)self interface];
-    v5 = sub_100031974([v4 index]);
+    interface = [(RSDRemoteNCMDevice *)self interface];
+    v5 = sub_100031974([interface index]);
 
     if (!v5)
     {
@@ -199,8 +199,8 @@
 
     v6 = nw_parameters_copy_required_interface(v5);
     name = nw_interface_get_name(v6);
-    v8 = [(RSDRemoteNCMDevice *)self interface];
-    v9 = strncmp(name, [v8 name], 0x10uLL);
+    interface2 = [(RSDRemoteNCMDevice *)self interface];
+    v9 = strncmp(name, [interface2 name], 0x10uLL);
 
     if (!v9)
     {
@@ -261,8 +261,8 @@ LABEL_16:
 
     memset(buf, 0, sizeof(buf));
     os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR);
-    v22 = [(RSDRemoteNCMDevice *)self interface];
-    [v22 name];
+    interface3 = [(RSDRemoteNCMDevice *)self interface];
+    [interface3 name];
     _os_log_send_and_compose_impl();
 
     _os_crash_msg();
@@ -295,17 +295,17 @@ LABEL_16:
   if (os_log_type_enabled(qword_1000643E0, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v18 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@> create port listener start", buf, 0xCu);
   }
 
   v16 = -6753;
   v15 = -1;
-  v4 = [(RSDRemoteNCMDevice *)self local_address];
-  v5 = [(RSDRemoteNCMDevice *)self interface];
-  LODWORD(v4) = sub_1000240DC(&v15, v4, &v16, [v5 index], &unk_100049E6C);
+  local_address = [(RSDRemoteNCMDevice *)self local_address];
+  interface = [(RSDRemoteNCMDevice *)self interface];
+  LODWORD(local_address) = sub_1000240DC(&v15, local_address, &v16, [interface index], &unk_100049E6C);
 
-  if (v4)
+  if (local_address)
   {
     if (os_log_type_enabled(qword_1000643E0, OS_LOG_TYPE_ERROR))
     {
@@ -342,7 +342,7 @@ LABEL_16:
     if (os_log_type_enabled(qword_1000643E0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v18 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@> create port listener done", buf, 0xCu);
     }
   }

@@ -1,5 +1,5 @@
 @interface DMDActivationPredicateCompound
-- (DMDActivationPredicateCompound)initWithDelegate:(id)a3 uniqueIdentifier:(id)a4 subPredicateObservers:(id)a5 predicate:(id)a6;
+- (DMDActivationPredicateCompound)initWithDelegate:(id)delegate uniqueIdentifier:(id)identifier subPredicateObservers:(id)observers predicate:(id)predicate;
 - (id)metadata;
 - (void)invalidate;
 - (void)reportActivationPredicateObserverDidTrigger;
@@ -8,15 +8,15 @@
 
 @implementation DMDActivationPredicateCompound
 
-- (DMDActivationPredicateCompound)initWithDelegate:(id)a3 uniqueIdentifier:(id)a4 subPredicateObservers:(id)a5 predicate:(id)a6
+- (DMDActivationPredicateCompound)initWithDelegate:(id)delegate uniqueIdentifier:(id)identifier subPredicateObservers:(id)observers predicate:(id)predicate
 {
-  v10 = a5;
+  observersCopy = observers;
   v15.receiver = self;
   v15.super_class = DMDActivationPredicateCompound;
-  v11 = [(DMDActivationPredicateObserver *)&v15 initWithDelegate:a3 uniqueIdentifier:a4 predicate:a6];
+  v11 = [(DMDActivationPredicateObserver *)&v15 initWithDelegate:delegate uniqueIdentifier:identifier predicate:predicate];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [observersCopy copy];
     subPredicateObservers = v11->_subPredicateObservers;
     v11->_subPredicateObservers = v12;
   }
@@ -33,8 +33,8 @@
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(DMDActivationPredicateCompound *)self subPredicateObservers];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+  subPredicateObservers = [(DMDActivationPredicateCompound *)self subPredicateObservers];
+  v4 = [subPredicateObservers countByEnumeratingWithState:&v8 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -46,7 +46,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subPredicateObservers);
         }
 
         [*(*(&v8 + 1) + 8 * v7) updateObserverRegistration];
@@ -54,7 +54,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+      v5 = [subPredicateObservers countByEnumeratingWithState:&v8 objects:v13 count:16];
     }
 
     while (v5);
@@ -67,8 +67,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(DMDActivationPredicateCompound *)self subPredicateObservers];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  subPredicateObservers = [(DMDActivationPredicateCompound *)self subPredicateObservers];
+  v4 = [subPredicateObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -80,7 +80,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subPredicateObservers);
         }
 
         [*(*(&v9 + 1) + 8 * v7) invalidate];
@@ -88,7 +88,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [subPredicateObservers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -103,16 +103,16 @@
 {
   v17.receiver = self;
   v17.super_class = DMDActivationPredicateCompound;
-  v3 = [(DMDActivationPredicateObserver *)&v17 metadata];
-  v4 = [(DMDActivationPredicateCompound *)self subPredicateObservers];
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  metadata = [(DMDActivationPredicateObserver *)&v17 metadata];
+  subPredicateObservers = [(DMDActivationPredicateCompound *)self subPredicateObservers];
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [subPredicateObservers count]);
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(DMDActivationPredicateCompound *)self subPredicateObservers];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  subPredicateObservers2 = [(DMDActivationPredicateCompound *)self subPredicateObservers];
+  v7 = [subPredicateObservers2 countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -123,17 +123,17 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subPredicateObservers2);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * i) metadata];
-        if (v11)
+        metadata2 = [*(*(&v13 + 1) + 8 * i) metadata];
+        if (metadata2)
         {
-          [v5 addObject:v11];
+          [v5 addObject:metadata2];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v8 = [subPredicateObservers2 countByEnumeratingWithState:&v13 objects:v18 count:16];
     }
 
     while (v8);
@@ -141,10 +141,10 @@
 
   if ([v5 count])
   {
-    [v3 setObject:v5 forKeyedSubscript:DMFDeclarationStatePredicateSubPredicatesKey];
+    [metadata setObject:v5 forKeyedSubscript:DMFDeclarationStatePredicateSubPredicatesKey];
   }
 
-  return v3;
+  return metadata;
 }
 
 - (void)reportActivationPredicateObserverDidTrigger
@@ -156,8 +156,8 @@
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(DMDActivationPredicateCompound *)self subPredicateObservers];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+  subPredicateObservers = [(DMDActivationPredicateCompound *)self subPredicateObservers];
+  v4 = [subPredicateObservers countByEnumeratingWithState:&v8 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -169,7 +169,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subPredicateObservers);
         }
 
         [*(*(&v8 + 1) + 8 * v7) reportActivationPredicateObserverDidTrigger];
@@ -177,7 +177,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+      v5 = [subPredicateObservers countByEnumeratingWithState:&v8 objects:v13 count:16];
     }
 
     while (v5);

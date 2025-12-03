@@ -1,20 +1,20 @@
 @interface DMCEnrollmentManagementDetailsOverviewViewController
-- (DMCEnrollmentManagementDetailsOverviewViewController)initWithDelegate:(id)a3 managedAppleID:(id)a4 profile:(id)a5 requiredAppRequest:(id)a6 requiredAppViewGroup:(id)a7;
+- (DMCEnrollmentManagementDetailsOverviewViewController)initWithDelegate:(id)delegate managedAppleID:(id)d profile:(id)profile requiredAppRequest:(id)request requiredAppViewGroup:(id)group;
 - (DMCEnrollmentManagementDetailsOverviewViewControllerDelegate)delegate;
-- (void)leftBarButtonTapped:(id)a3;
+- (void)leftBarButtonTapped:(id)tapped;
 - (void)loadView;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DMCEnrollmentManagementDetailsOverviewViewController
 
-- (DMCEnrollmentManagementDetailsOverviewViewController)initWithDelegate:(id)a3 managedAppleID:(id)a4 profile:(id)a5 requiredAppRequest:(id)a6 requiredAppViewGroup:(id)a7
+- (DMCEnrollmentManagementDetailsOverviewViewController)initWithDelegate:(id)delegate managedAppleID:(id)d profile:(id)profile requiredAppRequest:(id)request requiredAppViewGroup:(id)group
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  delegateCopy = delegate;
+  dCopy = d;
+  profileCopy = profile;
+  requestCopy = request;
+  groupCopy = group;
   v17 = DMCLocalizedString();
   v33.receiver = self;
   v33.super_class = DMCEnrollmentManagementDetailsOverviewViewController;
@@ -22,13 +22,13 @@
 
   if (v18)
   {
-    objc_storeStrong(&v18->_profile, a5);
-    objc_storeWeak(&v18->_delegate, v12);
+    objc_storeStrong(&v18->_profile, profile);
+    objc_storeWeak(&v18->_delegate, delegateCopy);
     v19 = objc_opt_new();
     v20 = [DMCEnrollmentTableViewTextCell alloc];
     v21 = DMCLocalizedFormat();
-    v22 = [(DMCEnrollmentTableViewTextCell *)v20 initWithText:v21 bold:0, v13];
-    [v19 addObject:v22];
+    dCopy = [(DMCEnrollmentTableViewTextCell *)v20 initWithText:v21 bold:0, dCopy];
+    [v19 addObject:dCopy];
 
     v23 = [[DMCEnrollmentTableViewTextCell alloc] initWithText:&stru_2859FB650 bold:0];
     objc_initWeak(&location, v18);
@@ -40,13 +40,13 @@
     objc_copyWeak(&v31, &location);
     [(DMCEnrollmentTableViewTextCell *)v23 configureLinkText:v24 forceLineBreak:0 linkAction:v30];
 
-    if (v15)
+    if (requestCopy)
     {
       v25 = [DMCEnrollmentTableViewTextCell alloc];
       v26 = DMCLocalizedString();
       v27 = [(DMCEnrollmentTableViewTextCell *)v25 initWithText:v26 bold:0];
 
-      v28 = [[DMCEnrollmentTableViewAppLockupCell alloc] initWithLockupRequest:v15 lockupViewGroup:v16 presentingViewController:v18];
+      v28 = [[DMCEnrollmentTableViewAppLockupCell alloc] initWithLockupRequest:requestCopy lockupViewGroup:groupCopy presentingViewController:v18];
     }
 
     else
@@ -133,21 +133,21 @@ void __64__DMCEnrollmentManagementDetailsOverviewViewController_loadView__block_
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = DMCEnrollmentManagementDetailsOverviewViewController;
-  [(DMCEnrollmentTemplateTableViewController *)&v4 viewWillAppear:a3];
+  [(DMCEnrollmentTemplateTableViewController *)&v4 viewWillAppear:appear];
   if (([(DMCEnrollmentManagementDetailsOverviewViewController *)self isBeingPresented]& 1) != 0 || [(DMCEnrollmentManagementDetailsOverviewViewController *)self isMovingToParentViewController])
   {
     [(DMCEnrollmentManagementDetailsOverviewViewController *)self _setupNavigationBar];
   }
 }
 
-- (void)leftBarButtonTapped:(id)a3
+- (void)leftBarButtonTapped:(id)tapped
 {
-  v4 = [(DMCEnrollmentManagementDetailsOverviewViewController *)self delegate];
-  [v4 managementDetailsOverviewViewController:self didReceiveUserAction:0];
+  delegate = [(DMCEnrollmentManagementDetailsOverviewViewController *)self delegate];
+  [delegate managementDetailsOverviewViewController:self didReceiveUserAction:0];
 }
 
 - (DMCEnrollmentManagementDetailsOverviewViewControllerDelegate)delegate

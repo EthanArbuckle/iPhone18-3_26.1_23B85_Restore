@@ -1,22 +1,22 @@
 @interface FigCapturePipeline
-- (BOOL)addNode:(id)a3 error:(id *)a4;
-- (BOOL)removeNode:(id)a3;
-- (FigCapturePipeline)initWithGraph:(id)a3 name:(id)a4;
+- (BOOL)addNode:(id)node error:(id *)error;
+- (BOOL)removeNode:(id)node;
+- (FigCapturePipeline)initWithGraph:(id)graph name:(id)name;
 - (void)dealloc;
 - (void)removeAllNodes;
 @end
 
 @implementation FigCapturePipeline
 
-- (FigCapturePipeline)initWithGraph:(id)a3 name:(id)a4
+- (FigCapturePipeline)initWithGraph:(id)graph name:(id)name
 {
   v8.receiver = self;
   v8.super_class = FigCapturePipeline;
   v6 = [(FigCapturePipeline *)&v8 init];
   if (v6)
   {
-    v6->_graph = a3;
-    v6->_name = [a4 copy];
+    v6->_graph = graph;
+    v6->_name = [name copy];
     v6->_nodes = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
@@ -30,24 +30,24 @@
   [(FigCapturePipeline *)&v3 dealloc];
 }
 
-- (BOOL)addNode:(id)a3 error:(id *)a4
+- (BOOL)addNode:(id)node error:(id *)error
 {
-  v6 = [(BWGraph *)self->_graph addNode:a3 error:a4];
+  v6 = [(BWGraph *)self->_graph addNode:node error:error];
   if (v6)
   {
-    [(NSMutableArray *)self->_nodes addObject:a3];
-    [a3 setSubgraphName:self->_name];
+    [(NSMutableArray *)self->_nodes addObject:node];
+    [node setSubgraphName:self->_name];
   }
 
   return v6;
 }
 
-- (BOOL)removeNode:(id)a3
+- (BOOL)removeNode:(id)node
 {
   v5 = [(BWGraph *)self->_graph removeNode:?];
   if (v5)
   {
-    [(NSMutableArray *)self->_nodes removeObject:a3];
+    [(NSMutableArray *)self->_nodes removeObject:node];
   }
 
   return v5;

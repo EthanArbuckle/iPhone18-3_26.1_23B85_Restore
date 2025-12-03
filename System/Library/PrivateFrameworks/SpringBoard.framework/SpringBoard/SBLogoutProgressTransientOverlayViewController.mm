@@ -3,28 +3,28 @@
 - (NSString)coverSheetIdentifier;
 - (SBLogoutProgressDataSource)dataSource;
 - (SBLogoutProgressDelegate)delegate;
-- (SBLogoutProgressTransientOverlayViewController)initWithUserAccount:(id)a3;
+- (SBLogoutProgressTransientOverlayViewController)initWithUserAccount:(id)account;
 - (id)newTransientOverlayDismissalTransitionCoordinator;
 - (id)newTransientOverlayPresentationTransitionCoordinator;
 - (int64_t)preferredStatusBarStyle;
 - (void)_updateData;
-- (void)_updateDebugTasksViewControllerSizeFromSize:(CGSize)a3;
+- (void)_updateDebugTasksViewControllerSizeFromSize:(CGSize)size;
 - (void)_updateLegibility;
 - (void)prepareForRestart;
-- (void)setContainerOrientation:(int64_t)a3;
-- (void)setDataSource:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setContainerOrientation:(int64_t)orientation;
+- (void)setDataSource:(id)source;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SBLogoutProgressTransientOverlayViewController
 
-- (SBLogoutProgressTransientOverlayViewController)initWithUserAccount:(id)a3
+- (SBLogoutProgressTransientOverlayViewController)initWithUserAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v13.receiver = self;
   v13.super_class = SBLogoutProgressTransientOverlayViewController;
   v6 = [(SBLogoutProgressTransientOverlayViewController *)&v13 init];
@@ -35,19 +35,19 @@
     v6->_platformController = v7;
 
     v9 = +[SBDefaults localDefaults];
-    v10 = [v9 multiUserDefaults];
+    multiUserDefaults = [v9 multiUserDefaults];
     multiUserDefaults = v6->_multiUserDefaults;
-    v6->_multiUserDefaults = v10;
+    v6->_multiUserDefaults = multiUserDefaults;
 
-    objc_storeStrong(&v6->_user, a3);
+    objc_storeStrong(&v6->_user, account);
   }
 
   return v6;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v5 = obj;
@@ -61,8 +61,8 @@
 
 - (void)prepareForRestart
 {
-  v3 = [(SBLogoutDebugBlockingViewController *)self->_debugTasksViewController view];
-  [v3 setHidden:1];
+  view = [(SBLogoutDebugBlockingViewController *)self->_debugTasksViewController view];
+  [view setHidden:1];
 
   progressView = self->_progressView;
 
@@ -71,17 +71,17 @@
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = [(SBLogoutProgressTransientOverlayViewController *)self _legibilitySettings];
-  v3 = [v2 style];
+  _legibilitySettings = [(SBLogoutProgressTransientOverlayViewController *)self _legibilitySettings];
+  style = [_legibilitySettings style];
 
-  return v3 < 2;
+  return style < 2;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = SBLogoutProgressTransientOverlayViewController;
-  [(SBTransientOverlayViewController *)&v6 viewDidDisappear:a3];
+  [(SBTransientOverlayViewController *)&v6 viewDidDisappear:disappear];
   v4 = +[SBMainStatusBarStateProvider sharedInstance];
   [v4 enableStatusBarItem:8 requestor:@"SBLogoutProgressTransientOverlayViewController"];
 
@@ -97,11 +97,11 @@
   v5.receiver = self;
   v5.super_class = SBLogoutProgressTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v5 viewDidLayoutSubviews];
-  v3 = [(SBTransientOverlayViewController *)self backgroundView];
-  [v3 bounds];
+  backgroundView = [(SBTransientOverlayViewController *)self backgroundView];
+  [backgroundView bounds];
   [(MTMaterialView *)self->_overlayMaterialView setFrame:?];
-  v4 = [(SBTransientOverlayViewController *)self contentView];
-  [v4 bounds];
+  contentView = [(SBTransientOverlayViewController *)self contentView];
+  [contentView bounds];
   [(SBLogoutProgressView *)self->_progressView setFrame:?];
 }
 
@@ -110,8 +110,8 @@
   v29.receiver = self;
   v29.super_class = SBLogoutProgressTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v29 viewDidLoad];
-  v3 = [(SBTransientOverlayViewController *)self contentView];
-  [v3 bounds];
+  contentView = [(SBTransientOverlayViewController *)self contentView];
+  [contentView bounds];
   v8 = [[SBLogoutProgressView alloc] initWithFrame:v4, v5, v6, v7];
   progressView = self->_progressView;
   self->_progressView = v8;
@@ -121,12 +121,12 @@
   [(SBLogoutProgressView *)v10 setUserContact:v11];
 
   v12 = self->_progressView;
-  v13 = [MEMORY[0x277D75348] clearColor];
-  [(SBLogoutProgressView *)v12 setBackgroundColor:v13];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(SBLogoutProgressView *)v12 setBackgroundColor:clearColor];
 
-  [v3 addSubview:self->_progressView];
-  v14 = [(SBTransientOverlayViewController *)self backgroundView];
-  [v14 bounds];
+  [contentView addSubview:self->_progressView];
+  backgroundView = [(SBTransientOverlayViewController *)self backgroundView];
+  [backgroundView bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -138,7 +138,7 @@
   self->_overlayMaterialView = v25;
 
   [(MTMaterialView *)self->_overlayMaterialView setFrame:v16, v18, v20, v22];
-  [v14 addSubview:self->_overlayMaterialView];
+  [backgroundView addSubview:self->_overlayMaterialView];
   if ([(SBLogoutProgressTransientOverlayViewController *)self _supportsDebugUI])
   {
     v27 = objc_alloc_init(SBLogoutDebugBlockingViewController);
@@ -150,17 +150,17 @@
   [(SBLogoutProgressTransientOverlayViewController *)self _updateLegibility];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = SBLogoutProgressTransientOverlayViewController;
-  [(SBLogoutProgressTransientOverlayViewController *)&v13 viewWillAppear:a3];
+  [(SBLogoutProgressTransientOverlayViewController *)&v13 viewWillAppear:appear];
   debugTasksViewController = self->_debugTasksViewController;
   if (debugTasksViewController)
   {
-    v5 = [(SBLogoutDebugBlockingViewController *)debugTasksViewController parentViewController];
+    parentViewController = [(SBLogoutDebugBlockingViewController *)debugTasksViewController parentViewController];
 
-    if (v5 == self)
+    if (parentViewController == self)
     {
       [(SBLogoutProgressView *)self->_progressView frame];
       [(SBLogoutProgressTransientOverlayViewController *)self _updateDebugTasksViewControllerSizeFromSize:v10, v11];
@@ -173,8 +173,8 @@
       [(SBLogoutProgressView *)self->_progressView frame];
       [(SBLogoutProgressTransientOverlayViewController *)self _updateDebugTasksViewControllerSizeFromSize:v6, v7];
       progressView = self->_progressView;
-      v9 = [(SBLogoutDebugBlockingViewController *)self->_debugTasksViewController view];
-      [(SBLogoutProgressView *)progressView addSubview:v9];
+      view = [(SBLogoutDebugBlockingViewController *)self->_debugTasksViewController view];
+      [(SBLogoutProgressView *)progressView addSubview:view];
 
       [(SBLogoutDebugBlockingViewController *)self->_debugTasksViewController didMoveToParentViewController:self];
     }
@@ -184,13 +184,13 @@
   [v12 disableStatusBarItem:8 requestor:@"SBLogoutProgressTransientOverlayViewController"];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7.receiver = self;
   v7.super_class = SBLogoutProgressTransientOverlayViewController;
-  [(SBTransientOverlayViewController *)&v7 viewWillTransitionToSize:a4 withTransitionCoordinator:?];
+  [(SBTransientOverlayViewController *)&v7 viewWillTransitionToSize:coordinator withTransitionCoordinator:?];
   [(SBLogoutProgressTransientOverlayViewController *)self _updateDebugTasksViewControllerSizeFromSize:width, height];
 }
 
@@ -324,11 +324,11 @@ uint64_t __102__SBLogoutProgressTransientOverlayViewController_newTransientOverl
   return result;
 }
 
-- (void)setContainerOrientation:(int64_t)a3
+- (void)setContainerOrientation:(int64_t)orientation
 {
   v3.receiver = self;
   v3.super_class = SBLogoutProgressTransientOverlayViewController;
-  [(SBTransientOverlayViewController *)&v3 setContainerOrientation:a3];
+  [(SBTransientOverlayViewController *)&v3 setContainerOrientation:orientation];
 }
 
 - (NSString)coverSheetIdentifier
@@ -354,19 +354,19 @@ uint64_t __102__SBLogoutProgressTransientOverlayViewController_newTransientOverl
   return v4 & 1;
 }
 
-- (void)_updateDebugTasksViewControllerSizeFromSize:(CGSize)a3
+- (void)_updateDebugTasksViewControllerSizeFromSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(SBLogoutDebugBlockingViewController *)self->_debugTasksViewController view];
-  [v5 setFrame:{0.0, 0.0, width * 0.5, height}];
+  height = size.height;
+  width = size.width;
+  view = [(SBLogoutDebugBlockingViewController *)self->_debugTasksViewController view];
+  [view setFrame:{0.0, 0.0, width * 0.5, height}];
 }
 
 - (void)_updateLegibility
 {
   progressView = self->_progressView;
-  v3 = [(SBLogoutProgressTransientOverlayViewController *)self _legibilitySettings];
-  [(SBLogoutProgressView *)progressView setLegibilitySettings:v3];
+  _legibilitySettings = [(SBLogoutProgressTransientOverlayViewController *)self _legibilitySettings];
+  [(SBLogoutProgressView *)progressView setLegibilitySettings:_legibilitySettings];
 }
 
 - (void)_updateData

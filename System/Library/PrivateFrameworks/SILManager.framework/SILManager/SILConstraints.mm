@@ -1,7 +1,7 @@
 @interface SILConstraints
 - (NSString)constraintsFile;
 - (_TtC10SILManager14SILConstraints)init;
-- (void)setConstraintsFile:(id)a3;
+- (void)setConstraintsFile:(id)file;
 @end
 
 @implementation SILConstraints
@@ -18,7 +18,7 @@
   return v5;
 }
 
-- (void)setConstraintsFile:(id)a3
+- (void)setConstraintsFile:(id)file
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;

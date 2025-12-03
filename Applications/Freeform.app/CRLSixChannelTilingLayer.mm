@@ -1,14 +1,14 @@
 @interface CRLSixChannelTilingLayer
 - (CRLSixChannelTilingLayer)init;
-- (id)p_createSublayerWithCompositingFilter:(id)a3;
+- (id)p_createSublayerWithCompositingFilter:(id)filter;
 - (id)p_internalSublayers;
-- (void)crl_tilingSafeSetSublayers:(id)a3;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
+- (void)crl_tilingSafeSetSublayers:(id)sublayers;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
 - (void)layoutSublayers;
-- (void)setContentsScale:(double)a3;
-- (void)setDrawsAsynchronously:(BOOL)a3;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
-- (void)setShouldRasterize:(BOOL)a3;
+- (void)setContentsScale:(double)scale;
+- (void)setDrawsAsynchronously:(BOOL)asynchronously;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
+- (void)setShouldRasterize:(BOOL)rasterize;
 @end
 
 @implementation CRLSixChannelTilingLayer
@@ -31,21 +31,21 @@
     addLayer = v3->_addLayer;
     v3->_addLayer = v6;
 
-    v8 = [(CRLSixChannelTilingLayer *)v3 p_internalSublayers];
-    [(CRLSixChannelTilingLayer *)v3 setSublayers:v8];
+    p_internalSublayers = [(CRLSixChannelTilingLayer *)v3 p_internalSublayers];
+    [(CRLSixChannelTilingLayer *)v3 setSublayers:p_internalSublayers];
   }
 
   return v3;
 }
 
-- (id)p_createSublayerWithCompositingFilter:(id)a3
+- (id)p_createSublayerWithCompositingFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   v5 = +[CRLTilingLayer layer];
   [v5 setDelegate:self];
   [v5 setAllowsGroupOpacity:0];
   [v5 setAllowsGroupBlending:0];
-  v6 = [CAFilter filterWithType:v4];
+  v6 = [CAFilter filterWithType:filterCopy];
 
   [v5 setCompositingFilter:v6];
 
@@ -62,42 +62,42 @@
   return v3;
 }
 
-- (void)setDrawsAsynchronously:(BOOL)a3
+- (void)setDrawsAsynchronously:(BOOL)asynchronously
 {
-  v3 = a3;
+  asynchronouslyCopy = asynchronously;
   v5.receiver = self;
   v5.super_class = CRLSixChannelTilingLayer;
   [(CRLSixChannelTilingLayer *)&v5 setDrawsAsynchronously:?];
-  [(CRLTilingLayer *)self->_multiplyLayer setDrawsAsynchronously:v3];
-  [(CRLTilingLayer *)self->_addLayer setDrawsAsynchronously:v3];
+  [(CRLTilingLayer *)self->_multiplyLayer setDrawsAsynchronously:asynchronouslyCopy];
+  [(CRLTilingLayer *)self->_addLayer setDrawsAsynchronously:asynchronouslyCopy];
 }
 
-- (void)setShouldRasterize:(BOOL)a3
+- (void)setShouldRasterize:(BOOL)rasterize
 {
-  v3 = a3;
+  rasterizeCopy = rasterize;
   [(CRLTilingLayer *)self->_multiplyLayer setShouldRasterize:?];
   addLayer = self->_addLayer;
 
-  [(CRLTilingLayer *)addLayer setShouldRasterize:v3];
+  [(CRLTilingLayer *)addLayer setShouldRasterize:rasterizeCopy];
 }
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
   v5.receiver = self;
   v5.super_class = CRLSixChannelTilingLayer;
   [(CRLSixChannelTilingLayer *)&v5 setContentsScale:?];
-  [(CRLTilingLayer *)self->_multiplyLayer setContentsScale:a3];
-  [(CRLTilingLayer *)self->_addLayer setContentsScale:a3];
+  [(CRLTilingLayer *)self->_multiplyLayer setContentsScale:scale];
+  [(CRLTilingLayer *)self->_addLayer setContentsScale:scale];
 }
 
-- (void)crl_tilingSafeSetSublayers:(id)a3
+- (void)crl_tilingSafeSetSublayers:(id)sublayers
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 | self->_customSublayers)
+  sublayersCopy = sublayers;
+  v5 = sublayersCopy;
+  if (sublayersCopy | self->_customSublayers)
   {
-    v12 = v4;
-    v6 = [v4 isEqual:?];
+    v12 = sublayersCopy;
+    v6 = [sublayersCopy isEqual:?];
     v5 = v12;
     if ((v6 & 1) == 0)
     {
@@ -105,17 +105,17 @@
       customSublayers = self->_customSublayers;
       self->_customSublayers = v7;
 
-      v9 = [(CRLSixChannelTilingLayer *)self p_internalSublayers];
-      v10 = v9;
+      p_internalSublayers = [(CRLSixChannelTilingLayer *)self p_internalSublayers];
+      v10 = p_internalSublayers;
       if (v12)
       {
-        v11 = [v9 arrayByAddingObjectsFromArray:?];
+        v11 = [p_internalSublayers arrayByAddingObjectsFromArray:?];
         [(CRLSixChannelTilingLayer *)self setSublayers:v11];
       }
 
       else
       {
-        [(CRLSixChannelTilingLayer *)self setSublayers:v9];
+        [(CRLSixChannelTilingLayer *)self setSublayers:p_internalSublayers];
       }
 
       v5 = v12;
@@ -136,12 +136,12 @@
   [(CRLTilingLayer *)self->_addLayer setNeedsLayout];
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8.receiver = self;
   v8.super_class = CRLSixChannelTilingLayer;
   [(CRLSixChannelTilingLayer *)&v8 setNeedsDisplayInRect:?];
@@ -151,21 +151,21 @@
   [(CRLTilingLayer *)self->_addLayer setNeedsDisplayInRect:?];
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
-  v6 = a3;
-  v7 = v6;
-  if (self->_multiplyLayer == v6)
+  layerCopy = layer;
+  v7 = layerCopy;
+  if (self->_multiplyLayer == layerCopy)
   {
-    sub_10050F608(a4, 1);
+    sub_10050F608(context, 1);
 LABEL_14:
-    [(CRLSixChannelTilingLayer *)self drawInContext:a4];
+    [(CRLSixChannelTilingLayer *)self drawInContext:context];
     goto LABEL_15;
   }
 
-  if (self->_addLayer == v6)
+  if (self->_addLayer == layerCopy)
   {
-    sub_10050F73C(a4, 1);
+    sub_10050F73C(context, 1);
     goto LABEL_14;
   }
 

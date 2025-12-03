@@ -1,24 +1,24 @@
 @interface TSTUidCoordsPerRunningCellValue
-- (TSKUIDStructCoord)getUidCoordforRunningAggregate:(SEL)a3 tupleForCoord:(TSTRunningAggregate *)a4 newUidCoord:(id)a5 addNewUidCoordEvenIfNotFound:(const TSKUIDStructCoord *)a6 inContext:(BOOL)a7;
-- (TSKUIDStructCoord)uuidCoordAtIndex:(SEL)a3 templateTuple:(unint64_t)a4 runningLevel:(id)a5;
+- (TSKUIDStructCoord)getUidCoordforRunningAggregate:(SEL)aggregate tupleForCoord:(TSTRunningAggregate *)coord newUidCoord:(id)uidCoord addNewUidCoordEvenIfNotFound:(const TSKUIDStructCoord *)found inContext:(BOOL)context;
+- (TSKUIDStructCoord)uuidCoordAtIndex:(SEL)index templateTuple:(unint64_t)tuple runningLevel:(id)level;
 - (id).cxx_construct;
 @end
 
 @implementation TSTUidCoordsPerRunningCellValue
 
-- (TSKUIDStructCoord)uuidCoordAtIndex:(SEL)a3 templateTuple:(unint64_t)a4 runningLevel:(id)a5
+- (TSKUIDStructCoord)uuidCoordAtIndex:(SEL)index templateTuple:(unint64_t)tuple runningLevel:(id)level
 {
   v6 = a6;
-  v10 = a5;
+  levelCopy = level;
   retstr->_column = 0u;
   retstr->_row = 0u;
   TSKMakeInvalidUIDStructCoord();
   begin = self->_cellValues.__begin_;
-  if (a4 < self->_cellValues.var0 - begin)
+  if (tuple < self->_cellValues.var0 - begin)
   {
-    v12 = begin[a4];
-    v17 = objc_msgSend_groupValueTupleByReplacingValue_atLevel_(v10, v13, v12, v6, v14);
-    v18 = self->_uidCoords.__begin_[a4];
+    v12 = begin[tuple];
+    v17 = objc_msgSend_groupValueTupleByReplacingValue_atLevel_(levelCopy, v13, v12, v6, v14);
+    v18 = self->_uidCoords.__begin_[tuple];
     if (v18)
     {
       objc_msgSend_uuidCoordForGroupTuple_runningLevel_(v18, v15, v17, v6, v16);
@@ -37,21 +37,21 @@
   return result;
 }
 
-- (TSKUIDStructCoord)getUidCoordforRunningAggregate:(SEL)a3 tupleForCoord:(TSTRunningAggregate *)a4 newUidCoord:(id)a5 addNewUidCoordEvenIfNotFound:(const TSKUIDStructCoord *)a6 inContext:(BOOL)a7
+- (TSKUIDStructCoord)getUidCoordforRunningAggregate:(SEL)aggregate tupleForCoord:(TSTRunningAggregate *)coord newUidCoord:(id)uidCoord addNewUidCoordEvenIfNotFound:(const TSKUIDStructCoord *)found inContext:(BOOL)context
 {
-  v13 = a5;
+  uidCoordCopy = uidCoord;
   v14 = a8;
-  v19 = objc_msgSend_numberOfLevels(v13, v15, v16, v17, v18);
+  v19 = objc_msgSend_numberOfLevels(uidCoordCopy, v15, v16, v17, v18);
   v75 = 0;
   retstr->_column = 0u;
   retstr->_row = 0u;
   TSKMakeInvalidUIDStructCoord();
   v24 = objc_msgSend_groupBySet(v14, v20, v21, v22, v23);
-  v28 = objc_msgSend_groupByForUuidCoord_(v24, v25, a6, v26, v27);
+  v28 = objc_msgSend_groupByForUuidCoord_(v24, v25, found, v26, v27);
 
   if (v28)
   {
-    objc_msgSend_groupingColumnLevelsForColumn_(v28, v29, a4, v30, v31);
+    objc_msgSend_groupingColumnLevelsForColumn_(v28, v29, coord, v30, v31);
     if (*(&v74[0] + 1) - *&v74[0] == 1)
     {
       v32 = **&v74[0];
@@ -74,19 +74,19 @@ LABEL_28:
 
     if (v32 != 255 && v32 <= v19)
     {
-      v39 = objc_msgSend_groupValueAtLevel_(v13, v33, v32, v34, v35);
+      v39 = objc_msgSend_groupValueAtLevel_(uidCoordCopy, v33, v32, v34, v35);
       v75 = v39;
       if (v39)
       {
-        v72 = a7;
-        v71 = a6;
+        contextCopy = context;
+        foundCopy = found;
         begin = self->_cellValues.__begin_;
         var0 = self->_cellValues.var0;
         v42 = var0 - begin;
         if (var0 == begin)
         {
           v50 = self->_cellValues.var0;
-          v51 = v72;
+          v51 = contextCopy;
         }
 
         else
@@ -118,7 +118,7 @@ LABEL_16:
           var0 = self->_cellValues.__begin_;
           v50 = self->_cellValues.var0;
           v14 = v70;
-          v51 = v72;
+          v51 = contextCopy;
           v32 = v69;
         }
 
@@ -146,7 +146,7 @@ LABEL_16:
         v66 = v52[v42];
         if (v42)
         {
-          objc_msgSend_uuidCoordAtIndex_templateTuple_runningLevel_(self, v65, v42 - 1, v13, v32);
+          objc_msgSend_uuidCoordAtIndex_templateTuple_runningLevel_(self, v65, v42 - 1, uidCoordCopy, v32);
           v67 = v74[1];
           retstr->_column = v74[0];
           retstr->_row = v67;
@@ -154,7 +154,7 @@ LABEL_16:
 
         if (v51 || *&retstr->_column != 0 && *&retstr->_row != 0)
         {
-          objc_msgSend_addUidCoord_tupleForCoord_atRunningLevel_(v66, v65, v71, v13, v32);
+          objc_msgSend_addUidCoord_tupleForCoord_atRunningLevel_(v66, v65, foundCopy, uidCoordCopy, v32);
         }
 
         v28 = v75;

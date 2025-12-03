@@ -1,18 +1,18 @@
 @interface NSArray
-- (void)enumerateAttributeIDs:(id)a3;
+- (void)enumerateAttributeIDs:(id)ds;
 @end
 
 @implementation NSArray
 
-- (void)enumerateAttributeIDs:(id)a3
+- (void)enumerateAttributeIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = self;
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  selfCopy = self;
+  v6 = [(NSArray *)selfCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -24,15 +24,15 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
-        v4[2](v4, [*(*(&v10 + 1) + 8 * v9) unsignedIntegerValue]);
+        dsCopy[2](dsCopy, [*(*(&v10 + 1) + 8 * v9) unsignedIntegerValue]);
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [(NSArray *)selfCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);

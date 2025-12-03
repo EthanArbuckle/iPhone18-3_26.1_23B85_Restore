@@ -1,16 +1,16 @@
 @interface CFPDObserverOnlyTombstone
-+ (uint64_t)replaceObserved:(uint64_t)a3 withObserved:(_xpc_connection_s *)a4 forConnection:;
-- (BOOL)isEqual:(id)a3;
++ (uint64_t)replaceObserved:(uint64_t)observed withObserved:(_xpc_connection_s *)withObserved forConnection:;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)initMatchingSource:(id)a3;
+- (id)initMatchingSource:(id)source;
 - (unint64_t)hash;
-- (void)_operateOnObservingConnectionsAsMultiple:(uint64_t)a3 asSingle:;
-- (void)_sendNotificationToConnection:(uint64_t)a1;
-- (void)alreadyLocked_transferObservingConnectionsFromSource:(id)a3;
+- (void)_operateOnObservingConnectionsAsMultiple:(uint64_t)multiple asSingle:;
+- (void)_sendNotificationToConnection:(uint64_t)connection;
+- (void)alreadyLocked_transferObservingConnectionsFromSource:(id)source;
 - (void)dealloc;
 - (void)notifyObservers;
-- (void)removeObservingConnection:(id)a3 daemon:(id)a4;
-- (void)transferObservingConnectionsToSource:(id)a3;
+- (void)removeObservingConnection:(id)connection daemon:(id)daemon;
+- (void)transferObservingConnectionsToSource:(id)source;
 @end
 
 @implementation CFPDObserverOnlyTombstone
@@ -59,7 +59,7 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initMatchingSource:(id)a3
+- (id)initMatchingSource:(id)source
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -67,32 +67,32 @@
   v4 = [(CFPDObserverOnlyTombstone *)&v9 init];
   if (v4)
   {
-    v5 = [a3 domain];
-    if (v5)
+    domain = [source domain];
+    if (domain)
     {
-      v4->_domain = CFRetain(v5);
+      v4->_domain = CFRetain(domain);
     }
 
-    v6 = [a3 container];
-    if (v6 || (v6 = [a3 user]) != 0)
+    container = [source container];
+    if (container || (container = [source user]) != 0)
     {
-      v4->_userOrContainer = CFRetain(v6);
+      v4->_userOrContainer = CFRetain(container);
     }
 
-    v4->_shmemIndex = [a3 shmemIndex];
+    v4->_shmemIndex = [source shmemIndex];
     v4->_lock._os_unfair_lock_opaque = 0;
-    *(v4 + 38) = *(v4 + 38) & 0xFE | [a3 managed];
+    *(v4 + 38) = *(v4 + 38) & 0xFE | [source managed];
   }
 
   v7 = *MEMORY[0x1E69E9840];
   return v4;
 }
 
-- (void)alreadyLocked_transferObservingConnectionsFromSource:(id)a3
+- (void)alreadyLocked_transferObservingConnectionsFromSource:(id)source
 {
   v19 = *MEMORY[0x1E69E9840];
-  os_unfair_lock_assert_owner(a3 + 25);
-  v5 = *(a3 + 9);
+  os_unfair_lock_assert_owner(source + 25);
+  v5 = *(source + 9);
   if (v5)
   {
     v13 = 0;
@@ -109,7 +109,7 @@
     v8[1] = 3221225472;
     v8[2] = __82__CFPDObserverOnlyTombstone_alreadyLocked_transferObservingConnectionsFromSource___block_invoke;
     v8[3] = &unk_1E6DD1B58;
-    v8[4] = a3;
+    v8[4] = source;
     v8[5] = self;
     v8[6] = &v13;
     v8[7] = &v9;
@@ -122,7 +122,7 @@
 
     self->_observers._single = v6;
     CFRelease(v5);
-    *(a3 + 9) = 0;
+    *(source + 9) = 0;
     _Block_object_dispose(&v9, 8);
     _Block_object_dispose(&v13, 8);
   }
@@ -159,7 +159,7 @@ void __82__CFPDObserverOnlyTombstone_alreadyLocked_transferObservingConnectionsF
   }
 }
 
-+ (uint64_t)replaceObserved:(uint64_t)a3 withObserved:(_xpc_connection_s *)a4 forConnection:
++ (uint64_t)replaceObserved:(uint64_t)observed withObserved:(_xpc_connection_s *)withObserved forConnection:
 {
   v9[6] = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -168,20 +168,20 @@ void __82__CFPDObserverOnlyTombstone_alreadyLocked_transferObservingConnectionsF
   v9[2] = __72__CFPDObserverOnlyTombstone_replaceObserved_withObserved_forConnection___block_invoke;
   v9[3] = &unk_1E6DD1CB0;
   v9[4] = a2;
-  v9[5] = a3;
-  result = withClientContext(a4, v9);
+  v9[5] = observed;
+  result = withClientContext(withObserved, v9);
   v8 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)_operateOnObservingConnectionsAsMultiple:(uint64_t)a3 asSingle:
+- (void)_operateOnObservingConnectionsAsMultiple:(uint64_t)multiple asSingle:
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 32));
-    v7 = (a1 + 24);
-    v6 = *(a1 + 24);
+    os_unfair_lock_lock((self + 32));
+    v7 = (self + 24);
+    v6 = *(self + 24);
     if (v6)
     {
       v8 = CFGetTypeID(v6);
@@ -221,11 +221,11 @@ void __82__CFPDObserverOnlyTombstone_alreadyLocked_transferObservingConnectionsF
 
       else if (*v7)
       {
-        (*(a3 + 16))(a3, a1 + 24);
+        (*(multiple + 16))(multiple, self + 24);
       }
     }
 
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_unlock((self + 32));
   }
 
   v11 = *MEMORY[0x1E69E9840];
@@ -239,32 +239,32 @@ xpc_object_t __79__CFPDObserverOnlyTombstone__operateOnObservingConnectionsAsMul
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     LOBYTE(v7) = 0;
     return v7;
   }
 
-  if (self == a3)
+  if (self == equal)
   {
     goto LABEL_15;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_shmemIndex != *(a3 + 18))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_shmemIndex != *(equal + 18))
   {
     LOBYTE(v7) = 0;
     return v7;
   }
 
   domain = self->_domain;
-  v6 = *(a3 + 1);
+  v6 = *(equal + 1);
   if (domain == v6 || (LOBYTE(v7) = 0, domain) && v6 && (v7 = CFEqual(self->_domain, v6)) != 0)
   {
     userOrContainer = self->_userOrContainer;
-    v9 = *(a3 + 2);
+    v9 = *(equal + 2);
     if (userOrContainer != v9)
     {
       LOBYTE(v7) = 0;
@@ -283,7 +283,7 @@ LABEL_15:
   return v7;
 }
 
-- (void)removeObservingConnection:(id)a3 daemon:(id)a4
+- (void)removeObservingConnection:(id)connection daemon:(id)daemon
 {
   v6[6] = *MEMORY[0x1E69E9840];
   v6[0] = MEMORY[0x1E69E9820];
@@ -291,10 +291,10 @@ LABEL_15:
   v6[2] = __62__CFPDObserverOnlyTombstone_removeObservingConnection_daemon___block_invoke;
   v6[3] = &unk_1E6DD1C10;
   v6[4] = self;
-  v6[5] = a3;
-  os_unfair_lock_lock(a4 + 12);
-  (__62__CFPDObserverOnlyTombstone_removeObservingConnection_daemon___block_invoke)(v6, *(a4 + 4), *(a4 + 5));
-  os_unfair_lock_unlock(a4 + 12);
+  v6[5] = connection;
+  os_unfair_lock_lock(daemon + 12);
+  (__62__CFPDObserverOnlyTombstone_removeObservingConnection_daemon___block_invoke)(v6, *(daemon + 4), *(daemon + 5));
+  os_unfair_lock_unlock(daemon + 12);
   v5 = *MEMORY[0x1E69E9840];
 }
 
@@ -338,12 +338,12 @@ void __62__CFPDObserverOnlyTombstone_removeObservingConnection_daemon___block_in
   }
 }
 
-- (void)transferObservingConnectionsToSource:(id)a3
+- (void)transferObservingConnectionsToSource:(id)source
 {
   v8[6] = *MEMORY[0x1E69E9840];
-  os_unfair_lock_lock(a3 + 27);
-  os_unfair_lock_lock(a3 + 25);
-  if (*(a3 + 9))
+  os_unfair_lock_lock(source + 27);
+  os_unfair_lock_lock(source + 25);
+  if (*(source + 9))
   {
     [CFPDObserverOnlyTombstone transferObservingConnectionsToSource:];
   }
@@ -353,7 +353,7 @@ void __62__CFPDObserverOnlyTombstone_removeObservingConnection_daemon___block_in
   v8[2] = __66__CFPDObserverOnlyTombstone_transferObservingConnectionsToSource___block_invoke;
   v8[3] = &unk_1E6DD1C38;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = source;
   v6[4] = v8;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -365,8 +365,8 @@ void __62__CFPDObserverOnlyTombstone_removeObservingConnection_daemon___block_in
   v6[2] = __66__CFPDObserverOnlyTombstone_transferObservingConnectionsToSource___block_invoke_3;
   v6[3] = &unk_1E6DD1C88;
   [(CFPDObserverOnlyTombstone *)self _operateOnObservingConnectionsAsMultiple:v7 asSingle:v6];
-  os_unfair_lock_unlock(a3 + 25);
-  os_unfair_lock_unlock(a3 + 27);
+  os_unfair_lock_unlock(source + 25);
+  os_unfair_lock_unlock(source + 27);
   v5 = *MEMORY[0x1E69E9840];
 }
 
@@ -437,31 +437,31 @@ void __72__CFPDObserverOnlyTombstone_replaceObserved_withObserved_forConnection_
   return v3;
 }
 
-- (void)_sendNotificationToConnection:(uint64_t)a1
+- (void)_sendNotificationToConnection:(uint64_t)connection
 {
   location[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (connection)
   {
-    os_unfair_lock_assert_owner((a1 + 32));
-    v4 = *(a1 + 38);
+    os_unfair_lock_assert_owner((connection + 32));
+    v4 = *(connection + 38);
     if ((v4 & 2) != 0)
     {
-      *(a1 + 38) = v4 | 4;
+      *(connection + 38) = v4 | 4;
     }
 
     else
     {
-      *(a1 + 38) = v4 & 0xF9 | 2;
-      objc_initWeak(location, a1);
+      *(connection + 38) = v4 & 0xF9 | 2;
+      objc_initWeak(location, connection);
       keys = "CFPreferencesDomain";
-      values = _CFXPCCreateXPCObjectFromCFObject(*(a1 + 8));
+      values = _CFXPCCreateXPCObjectFromCFObject(*(connection + 8));
       v5 = xpc_dictionary_create(&keys, &values, 1uLL);
       handler[0] = MEMORY[0x1E69E9820];
       handler[1] = 3221225472;
       handler[2] = __59__CFPDObserverOnlyTombstone__sendNotificationToConnection___block_invoke;
       handler[3] = &unk_1E6DD1CD8;
       objc_copyWeak(&v8, location);
-      handler[4] = a1;
+      handler[4] = connection;
       handler[5] = a2;
       xpc_connection_send_message_with_reply(a2, v5, 0, handler);
       xpc_release(values);
@@ -495,8 +495,8 @@ void __59__CFPDObserverOnlyTombstone__sendNotificationToConnection___block_invok
 - (void)notifyObservers
 {
   v9 = *MEMORY[0x1E69E9840];
-  v2 = *(a1 + 8);
-  v3 = *(a1 + 38) & 1;
+  v2 = *(self + 8);
+  v3 = *(self + 38) & 1;
   v5 = 138543618;
   v6 = v2;
   v7 = 1024;

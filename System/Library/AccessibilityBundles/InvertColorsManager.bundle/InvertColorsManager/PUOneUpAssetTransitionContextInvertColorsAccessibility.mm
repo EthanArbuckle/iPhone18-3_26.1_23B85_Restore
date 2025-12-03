@@ -1,15 +1,15 @@
 @interface PUOneUpAssetTransitionContextInvertColorsAccessibility
 - (void)_accessibilityLoadInvertColors;
-- (void)_setSnapshotView:(id)a3;
+- (void)_setSnapshotView:(id)view;
 @end
 
 @implementation PUOneUpAssetTransitionContextInvertColorsAccessibility
 
-- (void)_setSnapshotView:(id)a3
+- (void)_setSnapshotView:(id)view
 {
   v4.receiver = self;
   v4.super_class = PUOneUpAssetTransitionContextInvertColorsAccessibility;
-  [(PUOneUpAssetTransitionContextInvertColorsAccessibility *)&v4 _setSnapshotView:a3];
+  [(PUOneUpAssetTransitionContextInvertColorsAccessibility *)&v4 _setSnapshotView:view];
   [(PUOneUpAssetTransitionContextInvertColorsAccessibility *)self _accessibilityLoadInvertColors];
 }
 

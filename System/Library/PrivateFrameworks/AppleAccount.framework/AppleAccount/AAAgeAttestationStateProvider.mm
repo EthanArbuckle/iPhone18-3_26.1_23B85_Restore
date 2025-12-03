@@ -12,35 +12,35 @@
   v2 = [(AAAgeAttestationStateProvider *)&v47 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E698DD70] sharedManager];
+    mEMORY[0x1E698DD70] = [MEMORY[0x1E698DD70] sharedManager];
     v4 = objc_opt_respondsToSelector();
 
     if (v4)
     {
-      v5 = [MEMORY[0x1E698DD70] sharedManager];
-      v6 = [v5 isAgeAttestationPhase1Enabled];
+      mEMORY[0x1E698DD70]2 = [MEMORY[0x1E698DD70] sharedManager];
+      isAgeAttestationPhase1Enabled = [mEMORY[0x1E698DD70]2 isAgeAttestationPhase1Enabled];
 
       v7 = _AALogSystem();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        [(AAAgeAttestationStateProvider *)v6 init:v7];
+        [(AAAgeAttestationStateProvider *)isAgeAttestationPhase1Enabled init:v7];
       }
     }
 
     else
     {
-      LOBYTE(v6) = 0;
+      LOBYTE(isAgeAttestationPhase1Enabled) = 0;
     }
 
-    v14 = [MEMORY[0x1E698DC80] sharedInstance];
+    mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
     v15 = objc_opt_respondsToSelector();
 
     if (v15)
     {
-      if (v6)
+      if (isAgeAttestationPhase1Enabled)
       {
-        v16 = [MEMORY[0x1E698DC80] sharedInstance];
-        v2->_shieldSignInOrCreateFlows = [v16 shieldSignInOrCreateFlows];
+        mEMORY[0x1E698DC80]2 = [MEMORY[0x1E698DC80] sharedInstance];
+        v2->_shieldSignInOrCreateFlows = [mEMORY[0x1E698DC80]2 shieldSignInOrCreateFlows];
         p_shieldSignInOrCreateFlows = &v2->_shieldSignInOrCreateFlows;
       }
 
@@ -57,24 +57,24 @@
       }
     }
 
-    v25 = [MEMORY[0x1E698DD70] sharedManager];
-    v26 = [v25 isAgeBasedAccountSupportEnabled];
+    mEMORY[0x1E698DD70]3 = [MEMORY[0x1E698DD70] sharedManager];
+    isAgeBasedAccountSupportEnabled = [mEMORY[0x1E698DD70]3 isAgeBasedAccountSupportEnabled];
 
     v27 = _AALogSystem();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
-      [(AAAgeAttestationStateProvider *)v26 init:v27];
+      [(AAAgeAttestationStateProvider *)isAgeBasedAccountSupportEnabled init:v27];
     }
 
-    if (v26)
+    if (isAgeBasedAccountSupportEnabled)
     {
-      v34 = [MEMORY[0x1E698DC80] sharedInstance];
-      v35 = [v34 protoAccount];
-      v36 = [v35 proto_ageRange];
+      mEMORY[0x1E698DC80]3 = [MEMORY[0x1E698DC80] sharedInstance];
+      protoAccount = [mEMORY[0x1E698DC80]3 protoAccount];
+      proto_ageRange = [protoAccount proto_ageRange];
 
       v37 = _AALogSystem();
       v38 = os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG);
-      if (v36 == 2)
+      if (proto_ageRange == 2)
       {
         if (v38)
         {
@@ -88,7 +88,7 @@
       {
         if (v38)
         {
-          [(AAAgeAttestationStateProvider *)v36 init:v37];
+          [(AAAgeAttestationStateProvider *)proto_ageRange init:v37];
         }
 
         v45 = 0;

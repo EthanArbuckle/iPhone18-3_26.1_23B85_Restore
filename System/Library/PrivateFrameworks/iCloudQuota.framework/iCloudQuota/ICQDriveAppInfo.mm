@@ -1,21 +1,21 @@
 @interface ICQDriveAppInfo
-- (ICQDriveAppInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ICQDriveAppInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICQDriveAppInfo
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = ICQDriveAppInfo;
   v5 = [(ICQDriveAppInfo *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"bundleIds"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"bundleIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,18 +30,18 @@
       [(ICQDriveAppInfo *)v5 setBundleIds:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"label"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"label"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [(ICQDriveAppInfo *)v5 setLabel:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"excludeOnClient"];
-    v11 = [v10 BOOLValue];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"excludeOnClient"];
+    bOOLValue = [v10 BOOLValue];
 
-    [(ICQDriveAppInfo *)v5 setExcludeOnClient:v11];
-    v12 = [v4 objectForKeyedSubscript:@"containerId"];
+    [(ICQDriveAppInfo *)v5 setExcludeOnClient:bOOLValue];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"containerId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,7 +62,7 @@ void __38__ICQDriveAppInfo_initFromDictionary___block_invoke(uint64_t a1, void *
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ICQDriveAppInfo);
   [(ICQDriveAppInfo *)v4 setBundleIds:self->_bundleIds];
@@ -72,20 +72,20 @@ void __38__ICQDriveAppInfo_initFromDictionary___block_invoke(uint64_t a1, void *
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleIds = self->_bundleIds;
-  v5 = a3;
-  [v5 encodeObject:bundleIds forKey:@"bundleIds"];
-  [v5 encodeObject:self->_label forKey:@"label"];
-  [v5 encodeBool:self->_excludeOnClient forKey:@"excludeOnClient"];
-  [v5 encodeObject:self->_containerID forKey:@"containerId"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleIds forKey:@"bundleIds"];
+  [coderCopy encodeObject:self->_label forKey:@"label"];
+  [coderCopy encodeBool:self->_excludeOnClient forKey:@"excludeOnClient"];
+  [coderCopy encodeObject:self->_containerID forKey:@"containerId"];
 }
 
-- (ICQDriveAppInfo)initWithCoder:(id)a3
+- (ICQDriveAppInfo)initWithCoder:(id)coder
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = ICQDriveAppInfo;
   v5 = [(ICQDriveAppInfo *)&v17 init];
@@ -97,16 +97,16 @@ void __38__ICQDriveAppInfo_initFromDictionary___block_invoke(uint64_t a1, void *
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"bundleIds"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"bundleIds"];
     bundleIds = v5->_bundleIds;
     v5->_bundleIds = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
     label = v5->_label;
     v5->_label = v11;
 
-    v5->_excludeOnClient = [v4 decodeBoolForKey:@"excludeOnClient"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"containerId"];
+    v5->_excludeOnClient = [coderCopy decodeBoolForKey:@"excludeOnClient"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"containerId"];
     containerID = v5->_containerID;
     v5->_containerID = v13;
   }

@@ -1,27 +1,27 @@
 @interface CNSharingProfileAvatarItem
-- (CNSharingProfileAvatarItem)initWithImageProvider:(id)a3 originalImageProvider:(id)a4 type:(int64_t)a5;
+- (CNSharingProfileAvatarItem)initWithImageProvider:(id)provider originalImageProvider:(id)imageProvider type:(int64_t)type;
 @end
 
 @implementation CNSharingProfileAvatarItem
 
-- (CNSharingProfileAvatarItem)initWithImageProvider:(id)a3 originalImageProvider:(id)a4 type:(int64_t)a5
+- (CNSharingProfileAvatarItem)initWithImageProvider:(id)provider originalImageProvider:(id)imageProvider type:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  providerCopy = provider;
+  imageProviderCopy = imageProvider;
   v17.receiver = self;
   v17.super_class = CNSharingProfileAvatarItem;
   v10 = [(CNSharingProfileAvatarItem *)&v17 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [providerCopy copy];
     imageProvider = v10->_imageProvider;
     v10->_imageProvider = v11;
 
-    v13 = [v9 copy];
+    v13 = [imageProviderCopy copy];
     originalImageProvider = v10->_originalImageProvider;
     v10->_originalImageProvider = v13;
 
-    v10->_type = a5;
+    v10->_type = type;
     v15 = v10;
   }
 

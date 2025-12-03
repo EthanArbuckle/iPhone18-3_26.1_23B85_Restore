@@ -1,25 +1,25 @@
 @interface PHMemoryUpNextHelper
-+ (BOOL)_hasInvalidMemoryTriggerForMemory:(id)a3;
-+ (BOOL)_isAcceptableUserFeedbackForMemory:(id)a3 keyAsset:(id)a4 userFeedbackCalculator:(id)a5;
-+ (BOOL)_isMomentFetchResult:(id)a3 overlappingWithFetchResults:(id)a4;
-+ (BOOL)isMomentFetchResult:(id)a3 overlappingWithFetchResult:(id)a4;
++ (BOOL)_hasInvalidMemoryTriggerForMemory:(id)memory;
++ (BOOL)_isAcceptableUserFeedbackForMemory:(id)memory keyAsset:(id)asset userFeedbackCalculator:(id)calculator;
++ (BOOL)_isMomentFetchResult:(id)result overlappingWithFetchResults:(id)results;
++ (BOOL)isMomentFetchResult:(id)result overlappingWithFetchResult:(id)fetchResult;
 + (id)_memoryTriggerTypesToAvoid;
-+ (id)fetchFallbackMemoriesForMemory:(id)a3 targetCount:(unint64_t)a4 memoryLocalIdentifiersToAvoid:(id)a5 sharingFilter:(unsigned __int16)a6 error:(id *)a7;
-+ (id)fetchFallbackMemoryCandidatesInPhotoLibrary:(id)a3 memoryLocalIdentifiersToAvoid:(id)a4 sharingFilter:(unsigned __int16)a5;
++ (id)fetchFallbackMemoriesForMemory:(id)memory targetCount:(unint64_t)count memoryLocalIdentifiersToAvoid:(id)avoid sharingFilter:(unsigned __int16)filter error:(id *)error;
++ (id)fetchFallbackMemoryCandidatesInPhotoLibrary:(id)library memoryLocalIdentifiersToAvoid:(id)avoid sharingFilter:(unsigned __int16)filter;
 @end
 
 @implementation PHMemoryUpNextHelper
 
-+ (BOOL)_isAcceptableUserFeedbackForMemory:(id)a3 keyAsset:(id)a4 userFeedbackCalculator:(id)a5
++ (BOOL)_isAcceptableUserFeedbackForMemory:(id)memory keyAsset:(id)asset userFeedbackCalculator:(id)calculator
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v24 = a5;
-  v9 = [v7 photoLibrary];
-  v10 = [v9 librarySpecificFetchOptions];
-  [v10 setIncludedDetectionTypes:&unk_1F102DE98];
-  v11 = [PHPerson fetchPersonsInAsset:v8 options:v10];
+  memoryCopy = memory;
+  assetCopy = asset;
+  calculatorCopy = calculator;
+  photoLibrary = [memoryCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F102DE98];
+  v11 = [PHPerson fetchPersonsInAsset:assetCopy options:librarySpecificFetchOptions];
   v12 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v11, "count")}];
   v25 = 0u;
   v26 = 0u;
@@ -41,8 +41,8 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v25 + 1) + 8 * v17) uuid];
-        [v12 addObject:v18];
+        uuid = [*(*(&v25 + 1) + 8 * v17) uuid];
+        [v12 addObject:uuid];
 
         ++v17;
       }
@@ -54,40 +54,40 @@
     while (v15);
   }
 
-  v19 = [v8 uuid];
-  v20 = [v7 blockableFeatures];
-  [v24 scoreForKeyAssetUUID:v19 personsUUIDsInKeyAsset:v12 memoryFeatures:v20];
+  uuid2 = [assetCopy uuid];
+  blockableFeatures = [memoryCopy blockableFeatures];
+  [calculatorCopy scoreForKeyAssetUUID:uuid2 personsUUIDsInKeyAsset:v12 memoryFeatures:blockableFeatures];
   v22 = v21;
 
-  LOBYTE(v19) = [PHUserFeedbackCalculator score:v22 meetsScoreThreshold:-0.1];
-  return v19;
+  LOBYTE(uuid2) = [PHUserFeedbackCalculator score:v22 meetsScoreThreshold:-0.1];
+  return uuid2;
 }
 
-+ (id)fetchFallbackMemoryCandidatesInPhotoLibrary:(id)a3 memoryLocalIdentifiersToAvoid:(id)a4 sharingFilter:(unsigned __int16)a5
++ (id)fetchFallbackMemoryCandidatesInPhotoLibrary:(id)library memoryLocalIdentifiersToAvoid:(id)avoid sharingFilter:(unsigned __int16)filter
 {
-  v5 = a5;
+  filterCopy = filter;
   v25[2] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [a3 librarySpecificFetchOptions];
-  [v8 setWantsIncrementalChangeDetails:0];
-  [v8 setIncludePendingMemories:1];
+  avoidCopy = avoid;
+  librarySpecificFetchOptions = [library librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
+  [librarySpecificFetchOptions setIncludePendingMemories:1];
   v9 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"creationDate" ascending:0];
   v25[0] = v9;
   v10 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"objectID" ascending:0];
   v25[1] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
-  [v8 setSortDescriptors:v11];
+  [librarySpecificFetchOptions setSortDescriptors:v11];
 
-  [v8 setSharingFilter:v5];
+  [librarySpecificFetchOptions setSharingFilter:filterCopy];
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"NOT (localIdentifier IN %@)", v7];
+  avoidCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"NOT (localIdentifier IN %@)", avoidCopy];
 
-  [v12 addObject:v13];
+  [v12 addObject:avoidCopy];
   v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"rejected == NO"];
   [v12 addObject:v14];
 
-  v15 = [MEMORY[0x1E695DF00] date];
-  v16 = [v15 dateByAddingTimeInterval:-31536000.0];
+  date = [MEMORY[0x1E695DF00] date];
+  v16 = [date dateByAddingTimeInterval:-31536000.0];
 
   v17 = [MEMORY[0x1E696AE18] predicateWithFormat:@"creationDate > %@", v16];
   [v12 addObject:v17];
@@ -96,9 +96,9 @@
   [v12 addObject:v18];
 
   v19 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v12];
-  [v8 setPredicate:v19];
+  [librarySpecificFetchOptions setPredicate:v19];
 
-  v20 = [PHAssetCollection fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v8];
+  v20 = [PHAssetCollection fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
   v21 = PLMemoriesGetLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
@@ -129,20 +129,20 @@ uint64_t __50__PHMemoryUpNextHelper__memoryTriggerTypesToAvoid__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)_hasInvalidMemoryTriggerForMemory:(id)a3
++ (BOOL)_hasInvalidMemoryTriggerForMemory:(id)memory
 {
-  v4 = a3;
-  [v4 photosGraphVersion];
+  memoryCopy = memory;
+  [memoryCopy photosGraphVersion];
   if (PLMemoriesAlgorithmsVersionFromPhotosGraphVersion() >= 0x301)
   {
-    v6 = [v4 photosGraphProperties];
-    v7 = [v6 objectForKeyedSubscript:@"triggerTypes"];
+    photosGraphProperties = [memoryCopy photosGraphProperties];
+    v7 = [photosGraphProperties objectForKeyedSubscript:@"triggerTypes"];
 
     if ([v7 count])
     {
       v8 = [MEMORY[0x1E695DFD8] setWithArray:v7];
-      v9 = [a1 _memoryTriggerTypesToAvoid];
-      v5 = [v8 intersectsSet:v9];
+      _memoryTriggerTypesToAvoid = [self _memoryTriggerTypesToAvoid];
+      v5 = [v8 intersectsSet:_memoryTriggerTypesToAvoid];
     }
 
     else
@@ -159,16 +159,16 @@ uint64_t __50__PHMemoryUpNextHelper__memoryTriggerTypesToAvoid__block_invoke()
   return v5;
 }
 
-+ (BOOL)_isMomentFetchResult:(id)a3 overlappingWithFetchResults:(id)a4
++ (BOOL)_isMomentFetchResult:(id)result overlappingWithFetchResults:(id)results
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  resultCopy = result;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  resultsCopy = results;
+  v7 = [resultsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -179,17 +179,17 @@ uint64_t __50__PHMemoryUpNextHelper__memoryTriggerTypesToAvoid__block_invoke()
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(resultsCopy);
         }
 
-        if ([objc_opt_class() isMomentFetchResult:v5 overlappingWithFetchResult:{*(*(&v13 + 1) + 8 * i), v13}])
+        if ([objc_opt_class() isMomentFetchResult:resultCopy overlappingWithFetchResult:{*(*(&v13 + 1) + 8 * i), v13}])
         {
           v11 = 1;
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [resultsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v8)
       {
         continue;
@@ -205,12 +205,12 @@ LABEL_11:
   return v11;
 }
 
-+ (BOOL)isMomentFetchResult:(id)a3 overlappingWithFetchResult:(id)a4
++ (BOOL)isMomentFetchResult:(id)result overlappingWithFetchResult:(id)fetchResult
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 count];
+  resultCopy = result;
+  fetchResultCopy = fetchResult;
+  v7 = [fetchResultCopy count];
   v18 = 0u;
   v19 = 0u;
   if ((v7 - 1) / 3uLL >= 2)
@@ -225,8 +225,8 @@ LABEL_11:
 
   v20 = 0uLL;
   v21 = 0uLL;
-  v9 = [v5 fetchedObjectIDs];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  fetchedObjectIDs = [resultCopy fetchedObjectIDs];
+  v10 = [fetchedObjectIDs countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = 0;
@@ -238,12 +238,12 @@ LABEL_11:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(fetchedObjectIDs);
         }
 
         v15 = *(*(&v18 + 1) + 8 * i);
-        v16 = [v6 fetchedObjectIDs];
-        LODWORD(v15) = [v16 containsObject:v15];
+        fetchedObjectIDs2 = [fetchResultCopy fetchedObjectIDs];
+        LODWORD(v15) = [fetchedObjectIDs2 containsObject:v15];
 
         v11 += v15;
         if (v11 == v12)
@@ -253,7 +253,7 @@ LABEL_11:
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [fetchedObjectIDs countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v10)
       {
         continue;
@@ -268,12 +268,12 @@ LABEL_14:
   return v10;
 }
 
-+ (id)fetchFallbackMemoriesForMemory:(id)a3 targetCount:(unint64_t)a4 memoryLocalIdentifiersToAvoid:(id)a5 sharingFilter:(unsigned __int16)a6 error:(id *)a7
++ (id)fetchFallbackMemoriesForMemory:(id)memory targetCount:(unint64_t)count memoryLocalIdentifiersToAvoid:(id)avoid sharingFilter:(unsigned __int16)filter error:(id *)error
 {
-  v7 = a6;
+  filterCopy = filter;
   v132 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
+  memoryCopy = memory;
+  avoidCopy = avoid;
   v12 = PLMemoriesGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -298,20 +298,20 @@ LABEL_14:
   v93 = v16;
 
   v89 = mach_absolute_time();
-  v17 = [v10 photoLibrary];
+  photoLibrary = [memoryCopy photoLibrary];
   v18 = objc_alloc(MEMORY[0x1E695DF70]);
-  v106 = a1;
-  v19 = [a1 fetchFallbackMemoryCandidatesInPhotoLibrary:v17 memoryLocalIdentifiersToAvoid:v11 sharingFilter:v7];
-  v20 = [v19 fetchedObjects];
-  v21 = [v18 initWithArray:v20];
+  selfCopy = self;
+  v19 = [self fetchFallbackMemoryCandidatesInPhotoLibrary:photoLibrary memoryLocalIdentifiersToAvoid:avoidCopy sharingFilter:filterCopy];
+  fetchedObjects = [v19 fetchedObjects];
+  v21 = [v18 initWithArray:fetchedObjects];
 
   v22 = objc_alloc(MEMORY[0x1E69C0838]);
-  v23 = [v10 localIdentifier];
-  v24 = [v22 initWithSeed:{objc_msgSend(v23, "hash")}];
+  localIdentifier = [memoryCopy localIdentifier];
+  v24 = [v22 initWithSeed:{objc_msgSend(localIdentifier, "hash")}];
 
   v97 = v24;
   PFMutableArrayShuffleWithRandomNumberGenerator();
-  v25 = [v17 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
   v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v92 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %d", @"category", 23];
   [v26 addObject:?];
@@ -319,16 +319,16 @@ LABEL_14:
   [v26 addObject:?];
   v95 = v26;
   v27 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v26];
-  [v25 setPredicate:v27];
+  [librarySpecificFetchOptions setPredicate:v27];
 
-  v98 = v11;
-  v96 = v25;
-  v28 = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:v11 options:v25];
+  v98 = avoidCopy;
+  v96 = librarySpecificFetchOptions;
+  v28 = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:avoidCopy options:librarySpecificFetchOptions];
   v29 = [v28 count];
   v30 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:v29];
   v108 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v104 = v17;
-  v112 = [v17 librarySpecificFetchOptions];
+  v104 = photoLibrary;
+  librarySpecificFetchOptions2 = [photoLibrary librarySpecificFetchOptions];
   v117 = 0u;
   v118 = 0u;
   v119 = 0u;
@@ -350,13 +350,13 @@ LABEL_14:
 
         v35 = *(*(&v117 + 1) + 8 * i);
         v36 = objc_autoreleasePoolPush();
-        v37 = [PHAsset fetchKeyCuratedAssetInAssetCollection:v35 referenceAsset:0 options:v112];
-        v38 = [v37 firstObject];
+        v37 = [PHAsset fetchKeyCuratedAssetInAssetCollection:v35 referenceAsset:0 options:librarySpecificFetchOptions2];
+        firstObject = [v37 firstObject];
 
-        if (v38)
+        if (firstObject)
         {
-          v39 = [v38 localIdentifier];
-          [v30 addObject:v39];
+          localIdentifier2 = [firstObject localIdentifier];
+          [v30 addObject:localIdentifier2];
         }
 
         objc_autoreleasePoolPop(v36);
@@ -370,10 +370,10 @@ LABEL_14:
 
   v107 = v30;
 
-  v102 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:a4];
-  v40 = [v104 librarySpecificFetchOptions];
-  v99 = v10;
-  v41 = [PHAssetCollection fetchMomentsBackingMemory:v10 options:v40];
+  v102 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:count];
+  librarySpecificFetchOptions3 = [v104 librarySpecificFetchOptions];
+  v99 = memoryCopy;
+  v41 = [PHAssetCollection fetchMomentsBackingMemory:memoryCopy options:librarySpecificFetchOptions3];
 
   v42 = v104;
   v90 = v41;
@@ -385,7 +385,7 @@ LABEL_14:
   v116 = 0u;
   v109 = v21;
   v43 = [v109 countByEnumeratingWithState:&v113 objects:v130 count:16];
-  v44 = v106;
+  v44 = selfCopy;
   v45 = v108;
   if (v43)
   {
@@ -403,24 +403,24 @@ LABEL_14:
 
         v48 = *(*(&v113 + 1) + 8 * v47);
         v49 = objc_autoreleasePoolPush();
-        v50 = [v48 title];
-        v51 = [v50 lowercaseString];
+        title = [v48 title];
+        lowercaseString = [title lowercaseString];
 
-        if ([v45 containsObject:v51])
+        if ([v45 containsObject:lowercaseString])
         {
-          v52 = PLMemoriesGetLog();
-          if (!os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
+          firstObject2 = PLMemoriesGetLog();
+          if (!os_log_type_enabled(firstObject2, OS_LOG_TYPE_DEFAULT))
           {
             goto LABEL_35;
           }
 
-          v53 = [v48 localIdentifier];
-          v54 = [v48 title];
+          localIdentifier3 = [v48 localIdentifier];
+          title2 = [v48 title];
           *buf = 138412546;
-          v123 = v53;
+          v123 = localIdentifier3;
           v124 = 2112;
-          v125 = v54;
-          v55 = v52;
+          v125 = title2;
+          v55 = firstObject2;
           v56 = "[PHMemoryUpNextHelper] Same Title (ignoring case), skip memory:%@ - %@";
 LABEL_26:
           _os_log_impl(&dword_19C86F000, v55, OS_LOG_TYPE_DEFAULT, v56, buf, 0x16u);
@@ -430,54 +430,54 @@ LABEL_26:
 
         if ([v44 _hasInvalidMemoryTriggerForMemory:v48])
         {
-          v52 = PLMemoriesGetLog();
-          if (!os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
+          firstObject2 = PLMemoriesGetLog();
+          if (!os_log_type_enabled(firstObject2, OS_LOG_TYPE_DEFAULT))
           {
             goto LABEL_35;
           }
 
-          v53 = [v48 localIdentifier];
-          v54 = [v48 title];
+          localIdentifier3 = [v48 localIdentifier];
+          title2 = [v48 title];
           *buf = 138412546;
-          v123 = v53;
+          v123 = localIdentifier3;
           v124 = 2112;
-          v125 = v54;
-          v55 = v52;
+          v125 = title2;
+          v55 = firstObject2;
           v56 = "[PHMemoryUpNextHelper] invalid trigger type, skip memory:%@ - %@";
           goto LABEL_26;
         }
 
-        v57 = [v42 librarySpecificFetchOptions];
-        v58 = [PHAsset fetchKeyCuratedAssetInAssetCollection:v48 referenceAsset:0 options:v57];
-        v52 = [v58 firstObject];
+        librarySpecificFetchOptions4 = [v42 librarySpecificFetchOptions];
+        v58 = [PHAsset fetchKeyCuratedAssetInAssetCollection:v48 referenceAsset:0 options:librarySpecificFetchOptions4];
+        firstObject2 = [v58 firstObject];
 
-        v59 = [v52 localIdentifier];
-        if (v52 && ![v107 containsObject:v59])
+        localIdentifier4 = [firstObject2 localIdentifier];
+        if (firstObject2 && ![v107 containsObject:localIdentifier4])
         {
-          if ([v44 _isAcceptableUserFeedbackForMemory:v48 keyAsset:v52 userFeedbackCalculator:v105])
+          if ([v44 _isAcceptableUserFeedbackForMemory:v48 keyAsset:firstObject2 userFeedbackCalculator:v105])
           {
-            v65 = [v42 librarySpecificFetchOptions];
-            v66 = [PHAsset fetchAssetsInAssetCollection:v48 options:v65];
+            librarySpecificFetchOptions5 = [v42 librarySpecificFetchOptions];
+            v66 = [PHAsset fetchAssetsInAssetCollection:v48 options:librarySpecificFetchOptions5];
             v67 = [v66 count];
 
             if (v67 > 0xC)
             {
-              v70 = [v104 librarySpecificFetchOptions];
-              v71 = [PHAssetCollection fetchMomentsBackingMemory:v48 options:v70];
+              librarySpecificFetchOptions6 = [v104 librarySpecificFetchOptions];
+              v71 = [PHAssetCollection fetchMomentsBackingMemory:v48 options:librarySpecificFetchOptions6];
 
-              v44 = v106;
+              v44 = selfCopy;
               v103 = v71;
-              if ([v106 _isMomentFetchResult:v71 overlappingWithFetchResults:v101])
+              if ([selfCopy _isMomentFetchResult:v71 overlappingWithFetchResults:v101])
               {
                 v72 = PLMemoriesGetLog();
                 if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
                 {
-                  v73 = [v48 localIdentifier];
-                  v74 = [v48 title];
+                  localIdentifier5 = [v48 localIdentifier];
+                  title3 = [v48 title];
                   *buf = 138412546;
-                  v123 = v73;
+                  v123 = localIdentifier5;
                   v124 = 2112;
-                  v125 = v74;
+                  v125 = title3;
                   _os_log_impl(&dword_19C86F000, v72, OS_LOG_TYPE_DEFAULT, "[PHMemoryUpNextHelper] Overlapped moments, skip memory:%@ - %@", buf, 0x16u);
                 }
 
@@ -486,24 +486,24 @@ LABEL_26:
 
               else
               {
-                [v107 addObject:v59];
-                [v108 addObject:v51];
+                [v107 addObject:localIdentifier4];
+                [v108 addObject:lowercaseString];
                 [v102 addObject:v48];
                 [v101 addObject:v71];
                 v75 = PLMemoriesGetLog();
                 if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
                 {
-                  v76 = [v48 localIdentifier];
-                  v77 = [v48 title];
+                  localIdentifier6 = [v48 localIdentifier];
+                  title4 = [v48 title];
                   *buf = 138412546;
-                  v123 = v76;
+                  v123 = localIdentifier6;
                   v124 = 2112;
-                  v125 = v77;
+                  v125 = title4;
                   _os_log_impl(&dword_19C86F000, v75, OS_LOG_TYPE_DEFAULT, "[PHMemoryUpNextHelper] Found 1 fallback memory:%@ - %@", buf, 0x16u);
                 }
 
                 v42 = v104;
-                if ([v102 count] == a4)
+                if ([v102 count] == count)
                 {
 
                   objc_autoreleasePoolPop(v49);
@@ -517,16 +517,16 @@ LABEL_26:
             v60 = PLMemoriesGetLog();
             if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
             {
-              v68 = [v48 localIdentifier];
-              v69 = [v48 title];
+              localIdentifier7 = [v48 localIdentifier];
+              title5 = [v48 title];
               *buf = 134218754;
               v123 = v67;
               v124 = 2048;
               v125 = 13;
               v126 = 2112;
-              v127 = v68;
+              v127 = localIdentifier7;
               v128 = 2112;
-              v129 = v69;
+              v129 = title5;
               _os_log_impl(&dword_19C86F000, v60, OS_LOG_TYPE_DEFAULT, "[PHMemoryUpNextHelper] Number of assets (%lu) below threshold (%lu), skip memory:%@ - %@", buf, 0x2Au);
             }
 
@@ -540,31 +540,31 @@ LABEL_26:
             goto LABEL_33;
           }
 
-          v61 = [v48 localIdentifier];
-          v62 = [v48 title];
+          localIdentifier8 = [v48 localIdentifier];
+          title6 = [v48 title];
           *buf = 138412546;
-          v123 = v61;
+          v123 = localIdentifier8;
           v124 = 2112;
-          v125 = v62;
+          v125 = title6;
           v63 = v60;
           v64 = "[PHMemoryUpNextHelper] UserFeedbackScore below threshold, skip memory:%@ - %@";
 LABEL_31:
           _os_log_impl(&dword_19C86F000, v63, OS_LOG_TYPE_DEFAULT, v64, buf, 0x16u);
 
 LABEL_32:
-          v44 = v106;
+          v44 = selfCopy;
           goto LABEL_33;
         }
 
         v60 = PLMemoriesGetLog();
         if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
         {
-          v61 = [v48 localIdentifier];
-          v62 = [v48 title];
+          localIdentifier8 = [v48 localIdentifier];
+          title6 = [v48 title];
           *buf = 138412546;
-          v123 = v61;
+          v123 = localIdentifier8;
           v124 = 2112;
-          v125 = v62;
+          v125 = title6;
           v63 = v60;
           v64 = "[PHMemoryUpNextHelper] nil or same keyAsset, skip memory:%@ - %@";
           goto LABEL_31;

@@ -14,8 +14,8 @@
     if (a3)
     {
       v27 = objc_autoreleasePoolPush();
-      v28 = [a1 dictionary];
-      [v28 af_enumerateDigestibleChunksWithOptions:0 usingBlock:v7];
+      dictionary = [self dictionary];
+      [dictionary af_enumerateDigestibleChunksWithOptions:0 usingBlock:v7];
 
       objc_autoreleasePoolPop(v27);
     }
@@ -24,26 +24,26 @@
     {
       v8 = (v6 + 16);
       (*(v6 + 2))(v6, AFSecurityDigestibleChunksProviderType, 4);
-      v9 = [a1 groupIdentifier];
-      [v9 af_enumerateDigestibleChunksWithOptions:1 usingBlock:v7];
+      groupIdentifier = [self groupIdentifier];
+      [groupIdentifier af_enumerateDigestibleChunksWithOptions:1 usingBlock:v7];
 
-      v10 = [a1 encodedClassName];
-      [v10 af_enumerateDigestibleChunksWithOptions:1 usingBlock:v7];
+      encodedClassName = [self encodedClassName];
+      [encodedClassName af_enumerateDigestibleChunksWithOptions:1 usingBlock:v7];
 
       (*v8)(v7, &AFSecurityDigestibleChunksProviderAceId, 4);
-      v11 = [a1 aceId];
-      [v11 af_enumerateDigestibleChunksWithOptions:1 usingBlock:v7];
+      aceId = [self aceId];
+      [aceId af_enumerateDigestibleChunksWithOptions:1 usingBlock:v7];
 
       (*v8)(v7, "!FER", 4);
-      v12 = [a1 refId];
-      [v12 af_enumerateDigestibleChunksWithOptions:1 usingBlock:v7];
+      refId = [self refId];
+      [refId af_enumerateDigestibleChunksWithOptions:1 usingBlock:v7];
 
       v31 = v7;
       (*v8)(v7, AFSecurityDigestibleChunksProviderData, 4);
       context = objc_autoreleasePoolPush();
-      v32 = [a1 dictionary];
-      v13 = [v32 allKeys];
-      v14 = [v13 sortedArrayUsingSelector:sel_compare_];
+      dictionary2 = [self dictionary];
+      allKeys = [dictionary2 allKeys];
+      v14 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
       v35 = 0u;
       v36 = 0u;
@@ -73,7 +73,7 @@
             if (([v23 isEqualToString:v19] & 1) == 0 && (objc_msgSend(v23, "isEqualToString:", v20) & 1) == 0 && (objc_msgSend(v23, "isEqualToString:", @"aceId") & 1) == 0 && (objc_msgSend(v23, "isEqualToString:", v21) & 1) == 0)
             {
               v25 = v21;
-              v26 = [v32 objectForKey:v23];
+              v26 = [dictionary2 objectForKey:v23];
               if (objc_opt_respondsToSelector())
               {
                 [v23 af_enumerateDigestibleChunksWithOptions:0 usingBlock:v31];

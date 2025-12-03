@@ -1,64 +1,64 @@
 @interface SRConnectionManager
 + (id)sharedSRConnectionManager;
 - (BOOL)_isConnectedTo3rdPartyDevice;
-- (BOOL)_isHRMHeadphoneEligibleForTipiV2:(id)a3;
-- (BOOL)_isHRMHeadphonePrerequisiteMet:(id)a3 connectType:(int)a4;
-- (BOOL)_isHeadphoneBackoffFor2HS:(id)a3;
-- (BOOL)_isHeadphoneBackoffFor3rdParty:(id)a3;
-- (BOOL)_isHeadphoneBackoffForRingtone:(id)a3;
-- (BOOL)_isHeadphoneBackoffForSRDisbledSource:(id)a3;
-- (BOOL)_isHeadphoneBackoffForUSBPluggedIn:(id)a3;
-- (BOOL)_isHeadphoneConnected:(id)a3;
-- (BOOL)_isHeadphoneConnectedToNothing:(id)a3;
-- (BOOL)_isHeadphoneConnectedToSomething:(id)a3;
-- (BOOL)_isHeadphoneConnecting:(id)a3;
-- (BOOL)_isHeadphoneEligibleForDirectConnect:(id)a3 andNearbyDevices:(id)a4;
-- (BOOL)_isHeadphoneEligibleForForceDisconnect:(id)a3 andNearbyDevices:(id)a4;
-- (BOOL)_isHeadphoneEligibleForLEPipe:(id)a3;
-- (BOOL)_isHeadphoneEligibleForTakingConnectionFromWatch:(id)a3;
-- (BOOL)_isHeadphoneEligibleForTipiV2:(id)a3 result:(unsigned int *)a4;
-- (BOOL)_isHeadphoneFWSupportForceDisconnect:(id)a3;
-- (BOOL)_isHeadphoneFWSupportTipiScore:(id)a3;
-- (BOOL)_isHeadphoneHasBackoffForDisconnection:(id)a3 withTime:(unsigned int)a4;
-- (BOOL)_isHeadphoneHasRightSubType:(id)a3;
-- (BOOL)_isHeadphoneInAirplaneMode:(id)a3;
-- (BOOL)_isHeadphoneInCase:(id)a3;
-- (BOOL)_isHeadphoneInDisconnectionBackoff:(id)a3;
-- (BOOL)_isHeadphoneLidClosed:(id)a3;
-- (BOOL)_isHeadphoneOnDemandEligible:(id)a3;
-- (BOOL)_isHeadphonePaired:(id)a3;
-- (BOOL)_isHeadphonePrerequisiteMet:(id)a3;
-- (BOOL)_isHeadphonePreviouslyManualDisconnect:(id)a3;
-- (BOOL)_isHeadphoneSRCapable:(id)a3;
-- (BOOL)_isHeadphoneUSBPluggedInLastConnectedToMe:(id)a3;
-- (BOOL)_isOnDemandConnectEligible:(id)a3 result:(id *)a4;
+- (BOOL)_isHRMHeadphoneEligibleForTipiV2:(id)v2;
+- (BOOL)_isHRMHeadphonePrerequisiteMet:(id)met connectType:(int)type;
+- (BOOL)_isHeadphoneBackoffFor2HS:(id)s;
+- (BOOL)_isHeadphoneBackoffFor3rdParty:(id)party;
+- (BOOL)_isHeadphoneBackoffForRingtone:(id)ringtone;
+- (BOOL)_isHeadphoneBackoffForSRDisbledSource:(id)source;
+- (BOOL)_isHeadphoneBackoffForUSBPluggedIn:(id)in;
+- (BOOL)_isHeadphoneConnected:(id)connected;
+- (BOOL)_isHeadphoneConnectedToNothing:(id)nothing;
+- (BOOL)_isHeadphoneConnectedToSomething:(id)something;
+- (BOOL)_isHeadphoneConnecting:(id)connecting;
+- (BOOL)_isHeadphoneEligibleForDirectConnect:(id)connect andNearbyDevices:(id)devices;
+- (BOOL)_isHeadphoneEligibleForForceDisconnect:(id)disconnect andNearbyDevices:(id)devices;
+- (BOOL)_isHeadphoneEligibleForLEPipe:(id)pipe;
+- (BOOL)_isHeadphoneEligibleForTakingConnectionFromWatch:(id)watch;
+- (BOOL)_isHeadphoneEligibleForTipiV2:(id)v2 result:(unsigned int *)result;
+- (BOOL)_isHeadphoneFWSupportForceDisconnect:(id)disconnect;
+- (BOOL)_isHeadphoneFWSupportTipiScore:(id)score;
+- (BOOL)_isHeadphoneHasBackoffForDisconnection:(id)disconnection withTime:(unsigned int)time;
+- (BOOL)_isHeadphoneHasRightSubType:(id)type;
+- (BOOL)_isHeadphoneInAirplaneMode:(id)mode;
+- (BOOL)_isHeadphoneInCase:(id)case;
+- (BOOL)_isHeadphoneInDisconnectionBackoff:(id)backoff;
+- (BOOL)_isHeadphoneLidClosed:(id)closed;
+- (BOOL)_isHeadphoneOnDemandEligible:(id)eligible;
+- (BOOL)_isHeadphonePaired:(id)paired;
+- (BOOL)_isHeadphonePrerequisiteMet:(id)met;
+- (BOOL)_isHeadphonePreviouslyManualDisconnect:(id)disconnect;
+- (BOOL)_isHeadphoneSRCapable:(id)capable;
+- (BOOL)_isHeadphoneUSBPluggedInLastConnectedToMe:(id)me;
+- (BOOL)_isOnDemandConnectEligible:(id)eligible result:(id *)result;
 - (BOOL)_isOngoingHFPCallOnOtherHeadphone;
-- (BOOL)_isSRConnectEligible:(id)a3;
-- (BOOL)_isSourcePrerequisiteMet:(id *)a3;
-- (BOOL)_isSourcePrerequisiteMetForOnDemandEvent:(id *)a3;
+- (BOOL)_isSRConnectEligible:(id)eligible;
+- (BOOL)_isSourcePrerequisiteMet:(id *)met;
+- (BOOL)_isSourcePrerequisiteMetForOnDemandEvent:(id *)event;
 - (BOOL)_isTooSoonToConnect;
-- (BOOL)evaluateNearbyHRMDeviceForConnection:(id)a3;
+- (BOOL)evaluateNearbyHRMDeviceForConnection:(id)connection;
 - (SRConnectionManager)init;
 - (id)_findHeadphoneToConnectStart;
-- (id)_findHeadphoneToConnectWithResult:(id *)a3;
-- (id)_getNearbyConnectedSourceFromWx:(id)a3;
-- (id)_getNearbyDeviceFromWxAdvLastHost:(id)a3 andNearbyDevices:(id)a4;
+- (id)_findHeadphoneToConnectWithResult:(id *)result;
+- (id)_getNearbyConnectedSourceFromWx:(id)wx;
+- (id)_getNearbyDeviceFromWxAdvLastHost:(id)host andNearbyDevices:(id)devices;
 - (id)evaluateNearbyDevicesForConnection;
-- (unint64_t)_getHeadphoneDisconnectBackoffSeconds:(id)a3;
-- (unsigned)_getNearbyHighActivityLevelSourceCount:(id)a3;
+- (unint64_t)_getHeadphoneDisconnectBackoffSeconds:(id)seconds;
+- (unsigned)_getNearbyHighActivityLevelSourceCount:(id)count;
 - (void)_OnDemandEventTimerStart;
-- (void)_postNotification:(const char *)a3;
+- (void)_postNotification:(const char *)notification;
 - (void)_updateNearbyWxCount;
-- (void)audioRouteChanged:(int)a3;
-- (void)bluetoothStateChanged:(int64_t)a3;
-- (void)callStateChanged:(BOOL)a3;
-- (void)localAudioCategoryChanged:(id)a3;
-- (void)nowPlayingStateChanged:(BOOL)a3;
-- (void)pairedDeviceCountChanged:(unsigned int)a3;
-- (void)ringtoneStateChanged:(BOOL)a3;
-- (void)screenLockStateChanged:(BOOL)a3;
-- (void)smartRoutingCapableStateChanged:(BOOL)a3;
-- (void)tipiScoreChanged:(int)a3;
+- (void)audioRouteChanged:(int)changed;
+- (void)bluetoothStateChanged:(int64_t)changed;
+- (void)callStateChanged:(BOOL)changed;
+- (void)localAudioCategoryChanged:(id)changed;
+- (void)nowPlayingStateChanged:(BOOL)changed;
+- (void)pairedDeviceCountChanged:(unsigned int)changed;
+- (void)ringtoneStateChanged:(BOOL)changed;
+- (void)screenLockStateChanged:(BOOL)changed;
+- (void)smartRoutingCapableStateChanged:(BOOL)changed;
+- (void)tipiScoreChanged:(int)changed;
 @end
 
 @implementation SRConnectionManager
@@ -170,18 +170,18 @@ LABEL_6:
   return result;
 }
 
-- (void)audioRouteChanged:(int)a3
+- (void)audioRouteChanged:(int)changed
 {
-  if (self->_currentAudioRoute != a3)
+  if (self->_currentAudioRoute != changed)
   {
-    self->_currentAudioRoute = a3;
+    self->_currentAudioRoute = changed;
   }
 }
 
-- (void)bluetoothStateChanged:(int64_t)a3
+- (void)bluetoothStateChanged:(int64_t)changed
 {
   bluetoothState = self->_bluetoothState;
-  if (bluetoothState != a3)
+  if (bluetoothState != changed)
   {
     if (dword_1002F6E08 <= 30)
     {
@@ -193,9 +193,9 @@ LABEL_4:
           v6 = off_1002BA268[bluetoothState];
         }
 
-        if (a3 <= 0xA)
+        if (changed <= 0xA)
         {
-          v7 = off_1002BA268[a3];
+          v7 = off_1002BA268[changed];
         }
 
         LogPrintF();
@@ -210,13 +210,13 @@ LABEL_4:
     }
 
 LABEL_11:
-    self->_bluetoothState = a3;
+    self->_bluetoothState = changed;
   }
 }
 
-- (void)pairedDeviceCountChanged:(unsigned int)a3
+- (void)pairedDeviceCountChanged:(unsigned int)changed
 {
-  if (self->_pairedDeviceCount != a3)
+  if (self->_pairedDeviceCount != changed)
   {
     if (dword_1002F6E08 <= 30)
     {
@@ -234,34 +234,34 @@ LABEL_11:
     }
 
 LABEL_6:
-    self->_pairedDeviceCount = a3;
+    self->_pairedDeviceCount = changed;
   }
 }
 
-- (BOOL)evaluateNearbyHRMDeviceForConnection:(id)a3
+- (BOOL)evaluateNearbyHRMDeviceForConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   if (![(SRConnectionManager *)self _isBluetoothOn])
   {
     [(BTSmartRoutingDaemon *)self->_srDaemon clearCacheForBluetoothOff];
     goto LABEL_5;
   }
 
-  v5 = [(SRConnectionManager *)self _isHRMHeadphoneEligibleForTipiV2:v4];
+  v5 = [(SRConnectionManager *)self _isHRMHeadphoneEligibleForTipiV2:connectionCopy];
   if (![(SRConnectionManager *)self _isSourceSRCapable]|| [(SRConnectionManager *)self _isOngoingPhoneCall])
   {
-    [(SRConnectionManager *)self _isHRMHeadphonePrerequisiteMet:v4 connectType:1];
+    [(SRConnectionManager *)self _isHRMHeadphonePrerequisiteMet:connectionCopy connectType:1];
 LABEL_5:
     v6 = 0;
     goto LABEL_6;
   }
 
-  v8 = [(SRConnectionManager *)self _isTipiConnectInProgress];
-  v9 = [(SRConnectionManager *)self _isHRMHeadphonePrerequisiteMet:v4 connectType:1];
+  _isTipiConnectInProgress = [(SRConnectionManager *)self _isTipiConnectInProgress];
+  v9 = [(SRConnectionManager *)self _isHRMHeadphonePrerequisiteMet:connectionCopy connectType:1];
   v6 = 0;
-  if ((v8 & 1) == 0 && v9)
+  if ((_isTipiConnectInProgress & 1) == 0 && v9)
   {
-    if ([(SRConnectionManager *)self _isHeadphoneConnectedToNothing:v4])
+    if ([(SRConnectionManager *)self _isHeadphoneConnectedToNothing:connectionCopy])
     {
       if (dword_1002F6E08 <= 30 && (dword_1002F6E08 != -1 || _LogCategory_Initialize()))
       {
@@ -273,18 +273,18 @@ LABEL_5:
     {
       if (v5)
       {
-        v10 = v4;
+        v10 = connectionCopy;
         v11 = 4;
         goto LABEL_16;
       }
 
-      if ([(SRConnectionManager *)self _isHRMHeadphonePrerequisiteMet:v4 connectType:3])
+      if ([(SRConnectionManager *)self _isHRMHeadphonePrerequisiteMet:connectionCopy connectType:3])
       {
         [(SRConnectionManager *)self onDemandEventStarted:1 withEvent:3];
         v13 = 0;
-        if ([(SRConnectionManager *)self _isOnDemandConnectEligible:v4 result:&v13])
+        if ([(SRConnectionManager *)self _isOnDemandConnectEligible:connectionCopy result:&v13])
         {
-          v10 = v4;
+          v10 = connectionCopy;
           v11 = 3;
           goto LABEL_16;
         }
@@ -292,7 +292,7 @@ LABEL_5:
         [(SRConnectionManager *)self onDemandEventStarted:0 withEvent:3];
       }
 
-      if ([v4 nearbyTipiScore1] == 15 || objc_msgSend(v4, "nearbyTipiScore2") == 15)
+      if ([connectionCopy nearbyTipiScore1] == 15 || objc_msgSend(connectionCopy, "nearbyTipiScore2") == 15)
       {
         if (dword_1002F6E08 <= 30 && (dword_1002F6E08 != -1 || _LogCategory_Initialize()))
         {
@@ -302,23 +302,23 @@ LABEL_5:
         goto LABEL_5;
       }
 
-      if ([(SRConnectionManager *)self _isHeadphoneEligibleForLEPipe:v4])
+      if ([(SRConnectionManager *)self _isHeadphoneEligibleForLEPipe:connectionCopy])
       {
-        v10 = v4;
+        v10 = connectionCopy;
         v11 = 6;
         goto LABEL_16;
       }
 
-      if (![(SRConnectionManager *)self _isHeadphoneEligibleForTakingConnectionFromWatch:v4])
+      if (![(SRConnectionManager *)self _isHeadphoneEligibleForTakingConnectionFromWatch:connectionCopy])
       {
-        v12 = [(BTSmartRoutingDaemon *)self->_srDaemon nearbyInfoDevices];
-        if (![(SRConnectionManager *)self _isHeadphoneEligibleForForceDisconnect:v4 andNearbyDevices:v12])
+        nearbyInfoDevices = [(BTSmartRoutingDaemon *)self->_srDaemon nearbyInfoDevices];
+        if (![(SRConnectionManager *)self _isHeadphoneEligibleForForceDisconnect:connectionCopy andNearbyDevices:nearbyInfoDevices])
         {
 
           goto LABEL_5;
         }
 
-        [v4 setTipiConnectType:2];
+        [connectionCopy setTipiConnectType:2];
 
 LABEL_17:
         v6 = 1;
@@ -326,7 +326,7 @@ LABEL_17:
       }
     }
 
-    v10 = v4;
+    v10 = connectionCopy;
     v11 = 7;
 LABEL_16:
     [v10 setTipiConnectType:v11];
@@ -338,12 +338,12 @@ LABEL_6:
   return v6;
 }
 
-- (void)localAudioCategoryChanged:(id)a3
+- (void)localAudioCategoryChanged:(id)changed
 {
-  v4 = a3;
-  if (v4)
+  changedCopy = changed;
+  if (changedCopy)
   {
-    v10 = v4;
+    v10 = changedCopy;
     currentLocalAudioCategory = self->_currentLocalAudioCategory;
     v6 = v10;
     v7 = v6;
@@ -357,7 +357,7 @@ LABEL_6:
       {
         v8 = [(NSNumber *)currentLocalAudioCategory isEqual:v6];
 
-        v4 = v10;
+        changedCopy = v10;
         if (v8)
         {
           goto LABEL_10;
@@ -373,53 +373,53 @@ LABEL_6:
       self->_currentLocalAudioCategory = v9;
     }
 
-    v4 = v10;
+    changedCopy = v10;
   }
 
 LABEL_10:
 }
 
-- (void)nowPlayingStateChanged:(BOOL)a3
+- (void)nowPlayingStateChanged:(BOOL)changed
 {
-  if (self->_NowPlayingPlaybackStarted != a3)
+  if (self->_NowPlayingPlaybackStarted != changed)
   {
-    self->_NowPlayingPlaybackStarted = a3;
+    self->_NowPlayingPlaybackStarted = changed;
   }
 }
 
-- (void)callStateChanged:(BOOL)a3
+- (void)callStateChanged:(BOOL)changed
 {
-  if (self->_callStarted != a3)
+  if (self->_callStarted != changed)
   {
-    self->_callStarted = a3;
+    self->_callStarted = changed;
   }
 }
 
-- (void)smartRoutingCapableStateChanged:(BOOL)a3
+- (void)smartRoutingCapableStateChanged:(BOOL)changed
 {
-  if (self->_isSourceSRCapable != a3)
+  if (self->_isSourceSRCapable != changed)
   {
-    self->_isSourceSRCapable = a3;
+    self->_isSourceSRCapable = changed;
   }
 }
 
-- (void)ringtoneStateChanged:(BOOL)a3
+- (void)ringtoneStateChanged:(BOOL)changed
 {
-  if (self->_ringtoneStarted != a3)
+  if (self->_ringtoneStarted != changed)
   {
-    self->_ringtoneStarted = a3;
+    self->_ringtoneStarted = changed;
   }
 }
 
-- (void)tipiScoreChanged:(int)a3
+- (void)tipiScoreChanged:(int)changed
 {
-  if (self->_currentTipiScore != a3)
+  if (self->_currentTipiScore != changed)
   {
-    self->_currentTipiScore = a3;
+    self->_currentTipiScore = changed;
   }
 }
 
-- (id)_findHeadphoneToConnectWithResult:(id *)a3
+- (id)_findHeadphoneToConnectWithResult:(id *)result
 {
   v19[0] = 0;
   v19[1] = v19;
@@ -433,9 +433,9 @@ LABEL_10:
   v18[3] = &unk_1002B6C00;
   v18[4] = v19;
   v4 = objc_retainBlock(v18);
-  v5 = [(BTSmartRoutingDaemon *)self->_srDaemon srDiscoveredDeviceMap];
-  v6 = [(BTSmartRoutingDaemon *)self->_srDaemon nearbyInfoDevices];
-  self->_nearbyHighActivityLevelSourceCount = [(SRConnectionManager *)self _getNearbyHighActivityLevelSourceCount:v6];
+  srDiscoveredDeviceMap = [(BTSmartRoutingDaemon *)self->_srDaemon srDiscoveredDeviceMap];
+  nearbyInfoDevices = [(BTSmartRoutingDaemon *)self->_srDaemon nearbyInfoDevices];
+  self->_nearbyHighActivityLevelSourceCount = [(SRConnectionManager *)self _getNearbyHighActivityLevelSourceCount:nearbyInfoDevices];
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -453,7 +453,7 @@ LABEL_10:
   v9[4] = self;
   v9[5] = v10;
   v9[6] = &v12;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [srDiscoveredDeviceMap enumerateKeysAndObjectsUsingBlock:v9];
   v7 = v13[5];
   _Block_object_dispose(v10, 8);
   _Block_object_dispose(&v12, 8);
@@ -464,7 +464,7 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)_isHRMHeadphonePrerequisiteMet:(id)a3 connectType:(int)a4
+- (BOOL)_isHRMHeadphonePrerequisiteMet:(id)met connectType:(int)type
 {
   v24 = 0;
   v25 = &v24;
@@ -477,22 +477,22 @@ LABEL_10:
   v20 = sub_10009F560;
   v21 = &unk_1002B6ED8;
   v23 = &v24;
-  v5 = a3;
-  v22 = v5;
+  metCopy = met;
+  v22 = metCopy;
   v6 = objc_retainBlock(&v18);
-  v7 = [v5 aaNearbyDevice];
-  v8 = [v7 heartRateMonitorCapability];
+  aaNearbyDevice = [metCopy aaNearbyDevice];
+  heartRateMonitorCapability = [aaNearbyDevice heartRateMonitorCapability];
 
-  v9 = [v5 aaNearbyDevice];
-  v10 = [v9 healthKitDataWriteAllowed];
+  aaNearbyDevice2 = [metCopy aaNearbyDevice];
+  healthKitDataWriteAllowed = [aaNearbyDevice2 healthKitDataWriteAllowed];
 
   v11 = @"HRM not available";
-  if (v8 != 2 || v10 != 1)
+  if (heartRateMonitorCapability != 2 || healthKitDataWriteAllowed != 1)
   {
     goto LABEL_30;
   }
 
-  if (![v5 isNearby])
+  if (![metCopy isNearby])
   {
     v11 = @"not nearby";
 LABEL_30:
@@ -503,16 +503,16 @@ LABEL_30:
     goto LABEL_17;
   }
 
-  v12 = [v5 btAddress];
+  btAddress = [metCopy btAddress];
 
-  if (!v12)
+  if (!btAddress)
   {
     v11 = @"no btAddress";
     goto LABEL_30;
   }
 
-  v13 = [v5 btAddress];
-  v14 = [(SRConnectionManager *)self _isHeadphonePaired:v13];
+  btAddress2 = [metCopy btAddress];
+  v14 = [(SRConnectionManager *)self _isHeadphonePaired:btAddress2];
 
   if (!v14)
   {
@@ -520,55 +520,55 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  if (![(SRConnectionManager *)self _isHeadphoneSRCapable:v5])
+  if (![(SRConnectionManager *)self _isHeadphoneSRCapable:metCopy])
   {
     v11 = @"headphone not supports SR";
     goto LABEL_30;
   }
 
-  if (![(SRConnectionManager *)self _isHeadphoneHasRightSubType:v5])
+  if (![(SRConnectionManager *)self _isHeadphoneHasRightSubType:metCopy])
   {
     v11 = @"not right subtype";
     goto LABEL_30;
   }
 
-  if ([(SRConnectionManager *)self _isHeadphoneInAirplaneMode:v5])
+  if ([(SRConnectionManager *)self _isHeadphoneInAirplaneMode:metCopy])
   {
     v11 = @"in airplane mode";
     goto LABEL_30;
   }
 
-  if ([(SRConnectionManager *)self _isHeadphoneInCase:v5]&& [(SRConnectionManager *)self _isHeadphoneLidClosed:v5])
+  if ([(SRConnectionManager *)self _isHeadphoneInCase:metCopy]&& [(SRConnectionManager *)self _isHeadphoneLidClosed:metCopy])
   {
     v11 = @"headphone in case nad lid closed";
     goto LABEL_30;
   }
 
-  if ([(SRConnectionManager *)self _isHeadphoneBackoffForSRDisbledSource:v5])
+  if ([(SRConnectionManager *)self _isHeadphoneBackoffForSRDisbledSource:metCopy])
   {
     v11 = @"connected source has SR disabled";
     goto LABEL_30;
   }
 
-  if ([(SRConnectionManager *)self _isHeadphoneBackoffFor3rdParty:v5])
+  if ([(SRConnectionManager *)self _isHeadphoneBackoffFor3rdParty:metCopy])
   {
     v11 = @"backoff for 3rd party";
     goto LABEL_30;
   }
 
-  if ([(SRConnectionManager *)self _isHeadphoneBackoffForUSBPluggedIn:v5])
+  if ([(SRConnectionManager *)self _isHeadphoneBackoffForUSBPluggedIn:metCopy])
   {
     v11 = @"USB plugged in but last connected to another source";
     goto LABEL_30;
   }
 
-  if ([(SRConnectionManager *)self _isHeadphoneConnecting:v5])
+  if ([(SRConnectionManager *)self _isHeadphoneConnecting:metCopy])
   {
     v11 = @"connecting headphone";
     goto LABEL_30;
   }
 
-  if ([(SRConnectionManager *)self _isHeadphoneConnected:v5])
+  if ([(SRConnectionManager *)self _isHeadphoneConnected:metCopy])
   {
     v11 = @"already connected";
     goto LABEL_30;
@@ -582,7 +582,7 @@ LABEL_17:
   return v15;
 }
 
-- (BOOL)_isHeadphonePrerequisiteMet:(id)a3
+- (BOOL)_isHeadphonePrerequisiteMet:(id)met
 {
   v20 = 0;
   v21 = &v20;
@@ -595,26 +595,26 @@ LABEL_17:
   v16[2] = sub_10009F964;
   v16[3] = &unk_1002B8870;
   v19 = &v20;
-  v4 = a3;
-  v17 = v4;
-  v18 = self;
+  metCopy = met;
+  v17 = metCopy;
+  selfCopy = self;
   v5 = objc_retainBlock(v16);
-  if (([v4 isNearby] & 1) == 0)
+  if (([metCopy isNearby] & 1) == 0)
   {
     v10 = @"not nearby";
     goto LABEL_40;
   }
 
-  v6 = [v4 btAddress];
+  btAddress = [metCopy btAddress];
 
-  if (!v6)
+  if (!btAddress)
   {
     v10 = @"no btAddress";
     goto LABEL_40;
   }
 
-  v7 = [v4 btAddress];
-  v8 = [(SRConnectionManager *)self _isHeadphonePaired:v7];
+  btAddress2 = [metCopy btAddress];
+  v8 = [(SRConnectionManager *)self _isHeadphonePaired:btAddress2];
 
   if (!v8)
   {
@@ -625,7 +625,7 @@ LABEL_17:
   onDemandEvent = self->_onDemandEvent;
   if (onDemandEvent)
   {
-    if (onDemandEvent == 1 && ![(SRConnectionManager *)self _isHeadphoneHasBackoffForDisconnection:v4 withTime:10])
+    if (onDemandEvent == 1 && ![(SRConnectionManager *)self _isHeadphoneHasBackoffForDisconnection:metCopy withTime:10])
     {
       v10 = @"too soon since last disconnection for OD media playback";
 LABEL_40:
@@ -639,8 +639,8 @@ LABEL_40:
 
   else
   {
-    v11 = [v4 btAddress];
-    v12 = [(SRConnectionManager *)self _isHeadphoneInDisconnectionBackoff:v11];
+    btAddress3 = [metCopy btAddress];
+    v12 = [(SRConnectionManager *)self _isHeadphoneInDisconnectionBackoff:btAddress3];
 
     if (v12)
     {
@@ -649,73 +649,73 @@ LABEL_40:
     }
   }
 
-  if (![(SRConnectionManager *)self _isHeadphoneSRCapable:v4])
+  if (![(SRConnectionManager *)self _isHeadphoneSRCapable:metCopy])
   {
     v10 = @"headphone not supports SR";
     goto LABEL_40;
   }
 
-  if (![(SRConnectionManager *)self _isHeadphoneHasRightSubType:v4])
+  if (![(SRConnectionManager *)self _isHeadphoneHasRightSubType:metCopy])
   {
     v10 = @"not right subtype";
     goto LABEL_40;
   }
 
-  if ([(SRConnectionManager *)self _isHeadphoneInAirplaneMode:v4])
+  if ([(SRConnectionManager *)self _isHeadphoneInAirplaneMode:metCopy])
   {
     v10 = @"in airplane mode";
     goto LABEL_40;
   }
 
-  if ([(SRConnectionManager *)self _isHeadphoneInCase:v4]&& [(SRConnectionManager *)self _isHeadphoneLidClosed:v4])
+  if ([(SRConnectionManager *)self _isHeadphoneInCase:metCopy]&& [(SRConnectionManager *)self _isHeadphoneLidClosed:metCopy])
   {
     v10 = @"headphone in case nad lid closed";
     goto LABEL_40;
   }
 
-  if ([(SRConnectionManager *)self _isHeadphonePreviouslyManualDisconnect:v4])
+  if ([(SRConnectionManager *)self _isHeadphonePreviouslyManualDisconnect:metCopy])
   {
     v10 = @"manually disconnect previously";
     goto LABEL_40;
   }
 
-  if ([(SRConnectionManager *)self _isHeadphoneConnecting:v4])
+  if ([(SRConnectionManager *)self _isHeadphoneConnecting:metCopy])
   {
     v10 = @"connecting headphone";
     goto LABEL_40;
   }
 
-  if ([(SRConnectionManager *)self _isHeadphoneConnected:v4])
+  if ([(SRConnectionManager *)self _isHeadphoneConnected:metCopy])
   {
     v10 = @"already connected";
     goto LABEL_40;
   }
 
-  if ([(SRConnectionManager *)self _isHeadphoneBackoffFor2HS:v4])
+  if ([(SRConnectionManager *)self _isHeadphoneBackoffFor2HS:metCopy])
   {
     v10 = @"backoff for 2HS";
     goto LABEL_40;
   }
 
-  if ([(SRConnectionManager *)self _isHeadphoneBackoffForRingtone:v4])
+  if ([(SRConnectionManager *)self _isHeadphoneBackoffForRingtone:metCopy])
   {
     v10 = @"backoff for ringtone";
     goto LABEL_40;
   }
 
-  if ([(SRConnectionManager *)self _isHeadphoneBackoffFor3rdParty:v4])
+  if ([(SRConnectionManager *)self _isHeadphoneBackoffFor3rdParty:metCopy])
   {
     v10 = @"backoff for 3rd party";
     goto LABEL_40;
   }
 
-  if ([(SRConnectionManager *)self _isHeadphoneBackoffForUSBPluggedIn:v4])
+  if ([(SRConnectionManager *)self _isHeadphoneBackoffForUSBPluggedIn:metCopy])
   {
     v10 = @"USB plugged in but last connected to another source";
     goto LABEL_40;
   }
 
-  if ([(SRConnectionManager *)self _isHeadphoneBackoffForSRDisbledSource:v4])
+  if ([(SRConnectionManager *)self _isHeadphoneBackoffForSRDisbledSource:metCopy])
   {
     v10 = @"connected source has SR disabled";
     goto LABEL_40;
@@ -733,18 +733,18 @@ LABEL_23:
 {
   self->_wxConnectedCount = 0;
   self->_wxNearbyCount = 0;
-  v3 = [(BTSmartRoutingDaemon *)self->_srDaemon srDiscoveredDeviceMap];
+  srDiscoveredDeviceMap = [(BTSmartRoutingDaemon *)self->_srDaemon srDiscoveredDeviceMap];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10009FAC0;
   v4[3] = &unk_1002B8368;
   v4[4] = self;
-  [v3 enumerateKeysAndObjectsUsingBlock:v4];
+  [srDiscoveredDeviceMap enumerateKeysAndObjectsUsingBlock:v4];
 }
 
-- (unsigned)_getNearbyHighActivityLevelSourceCount:(id)a3
+- (unsigned)_getNearbyHighActivityLevelSourceCount:(id)count
 {
-  v4 = a3;
+  countCopy = count;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -755,39 +755,39 @@ LABEL_23:
   v6[3] = &unk_1002B87A8;
   v6[4] = self;
   v6[5] = &v7;
-  [v4 enumerateKeysAndObjectsUsingBlock:v6];
+  [countCopy enumerateKeysAndObjectsUsingBlock:v6];
   LODWORD(self) = *(v8 + 6);
   _Block_object_dispose(&v7, 8);
 
   return self;
 }
 
-- (void)screenLockStateChanged:(BOOL)a3
+- (void)screenLockStateChanged:(BOOL)changed
 {
-  if (self->_screenLocked != a3)
+  if (self->_screenLocked != changed)
   {
     if (dword_1002F6E08 <= 30 && (dword_1002F6E08 != -1 || _LogCategory_Initialize()))
     {
       sub_1001F3974();
     }
 
-    self->_screenLocked = a3;
+    self->_screenLocked = changed;
   }
 }
 
-- (unint64_t)_getHeadphoneDisconnectBackoffSeconds:(id)a3
+- (unint64_t)_getHeadphoneDisconnectBackoffSeconds:(id)seconds
 {
-  v4 = a3;
-  if (v4)
+  secondsCopy = seconds;
+  if (secondsCopy)
   {
-    v5 = [(BTSmartRoutingDaemon *)self->_srDaemon srDiscoveredDeviceMap];
-    v6 = [v5 objectForKeyedSubscript:v4];
-    v7 = [v6 disconnectionBackoffTick];
+    srDiscoveredDeviceMap = [(BTSmartRoutingDaemon *)self->_srDaemon srDiscoveredDeviceMap];
+    v6 = [srDiscoveredDeviceMap objectForKeyedSubscript:secondsCopy];
+    disconnectionBackoffTick = [v6 disconnectionBackoffTick];
 
-    if (v7)
+    if (disconnectionBackoffTick)
     {
       mach_absolute_time();
-      v8 = [v5 objectForKeyedSubscript:v4];
+      v8 = [srDiscoveredDeviceMap objectForKeyedSubscript:secondsCopy];
       [v8 disconnectionBackoffTick];
       v9 = UpTicksToSeconds();
     }
@@ -811,10 +811,10 @@ LABEL_23:
   return v9;
 }
 
-- (id)_getNearbyConnectedSourceFromWx:(id)a3
+- (id)_getNearbyConnectedSourceFromWx:(id)wx
 {
-  v4 = a3;
-  v5 = [(BTSmartRoutingDaemon *)self->_srDaemon nearbyInfoDevices];
+  wxCopy = wx;
+  nearbyInfoDevices = [(BTSmartRoutingDaemon *)self->_srDaemon nearbyInfoDevices];
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -826,10 +826,10 @@ LABEL_23:
   v9[2] = sub_10009FF84;
   v9[3] = &unk_1002B89A0;
   v9[4] = self;
-  v6 = v4;
+  v6 = wxCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [nearbyInfoDevices enumerateKeysAndObjectsUsingBlock:v9];
   v7 = v13[5];
 
   _Block_object_dispose(&v12, 8);
@@ -843,20 +843,20 @@ LABEL_23:
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(BTSmartRoutingDaemon *)self->_srDaemon srDiscoveredDeviceMap];
+  srDiscoveredDeviceMap = [(BTSmartRoutingDaemon *)self->_srDaemon srDiscoveredDeviceMap];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000A0230;
   v5[3] = &unk_1002B8780;
   v5[4] = &v6;
-  [v2 enumerateKeysAndObjectsUsingBlock:v5];
+  [srDiscoveredDeviceMap enumerateKeysAndObjectsUsingBlock:v5];
   v3 = *(v7 + 24);
 
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (BOOL)_isOnDemandConnectEligible:(id)a3 result:(id *)a4
+- (BOOL)_isOnDemandConnectEligible:(id)eligible result:(id *)result
 {
   v21 = 0;
   v22 = &v21;
@@ -869,10 +869,10 @@ LABEL_23:
   v17 = sub_1000A0504;
   v18 = &unk_1002B6ED8;
   v20 = &v21;
-  v5 = a3;
-  v19 = v5;
+  eligibleCopy = eligible;
+  v19 = eligibleCopy;
   v6 = objc_retainBlock(&v15);
-  if ([v5 nearbyInEar] != 1)
+  if ([eligibleCopy nearbyInEar] != 1)
   {
     v10 = 0;
     v13 = v22;
@@ -895,7 +895,7 @@ LABEL_17:
   onDemandEvent = self->_onDemandEvent;
   if (onDemandEvent == 3)
   {
-    v8 = [v5 nearbyAudioState] != 0;
+    v8 = [eligibleCopy nearbyAudioState] != 0;
     onDemandEvent = self->_onDemandEvent;
   }
 
@@ -906,7 +906,7 @@ LABEL_17:
 
   if (onDemandEvent == 1)
   {
-    if (![v5 nearbyAudioState])
+    if (![eligibleCopy nearbyAudioState])
     {
       goto LABEL_10;
     }
@@ -924,7 +924,7 @@ LABEL_17:
   }
 
 LABEL_10:
-  v9 = [(SRConnectionManager *)self _getNearbyConnectedSourceFromWx:v5];
+  v9 = [(SRConnectionManager *)self _getNearbyConnectedSourceFromWx:eligibleCopy];
   if ([v9 audioRoutingScore])
   {
     v10 = 1;
@@ -932,8 +932,8 @@ LABEL_10:
 
   else
   {
-    v11 = [v9 model];
-    v10 = [v11 hasPrefix:@"Watch"];
+    model = [v9 model];
+    v10 = [model hasPrefix:@"Watch"];
   }
 
 LABEL_13:
@@ -944,26 +944,26 @@ LABEL_13:
   return v10;
 }
 
-- (BOOL)_isSRConnectEligible:(id)a3
+- (BOOL)_isSRConnectEligible:(id)eligible
 {
-  v4 = a3;
-  if (!-[SRConnectionManager _isHeadphoneConnectedToNothing:](self, "_isHeadphoneConnectedToNothing:", v4) && [v4 prevFailedTipiConnectType] != 6)
+  eligibleCopy = eligible;
+  if (!-[SRConnectionManager _isHeadphoneConnectedToNothing:](self, "_isHeadphoneConnectedToNothing:", eligibleCopy) && [eligibleCopy prevFailedTipiConnectType] != 6)
   {
     if (self->_onDemandEvent)
     {
       v12 = 0;
-      if ([(SRConnectionManager *)self _isOnDemandConnectEligible:v4 result:&v12])
+      if ([(SRConnectionManager *)self _isOnDemandConnectEligible:eligibleCopy result:&v12])
       {
-        v5 = v4;
+        v5 = eligibleCopy;
         v6 = 3;
         goto LABEL_4;
       }
     }
 
     v11 = 0;
-    if ([(SRConnectionManager *)self _isHeadphoneEligibleForTipiV2:v4 result:&v11])
+    if ([(SRConnectionManager *)self _isHeadphoneEligibleForTipiV2:eligibleCopy result:&v11])
     {
-      v5 = v4;
+      v5 = eligibleCopy;
       v6 = 4;
       goto LABEL_4;
     }
@@ -975,25 +975,25 @@ LABEL_13:
         sub_1001F3AE0(&v11);
       }
 
-      if ([(SRConnectionManager *)self _isHeadphoneEligibleForLEPipe:v4])
+      if ([(SRConnectionManager *)self _isHeadphoneEligibleForLEPipe:eligibleCopy])
       {
-        v5 = v4;
+        v5 = eligibleCopy;
         v6 = 6;
         goto LABEL_4;
       }
     }
 
-    if (![(SRConnectionManager *)self _isHeadphoneEligibleForTakingConnectionFromWatch:v4])
+    if (![(SRConnectionManager *)self _isHeadphoneEligibleForTakingConnectionFromWatch:eligibleCopy])
     {
-      v9 = [(BTSmartRoutingDaemon *)self->_srDaemon nearbyInfoDevices];
-      if ([(SRConnectionManager *)self _isHeadphoneEligibleForDirectConnect:v4 andNearbyDevices:v9])
+      nearbyInfoDevices = [(BTSmartRoutingDaemon *)self->_srDaemon nearbyInfoDevices];
+      if ([(SRConnectionManager *)self _isHeadphoneEligibleForDirectConnect:eligibleCopy andNearbyDevices:nearbyInfoDevices])
       {
         v10 = 10;
       }
 
       else
       {
-        if (![(SRConnectionManager *)self _isHeadphoneEligibleForForceDisconnect:v4 andNearbyDevices:v9])
+        if (![(SRConnectionManager *)self _isHeadphoneEligibleForForceDisconnect:eligibleCopy andNearbyDevices:nearbyInfoDevices])
         {
           v7 = 0;
           goto LABEL_24;
@@ -1002,7 +1002,7 @@ LABEL_13:
         v10 = 2;
       }
 
-      [v4 setTipiConnectType:v10];
+      [eligibleCopy setTipiConnectType:v10];
       v7 = 1;
 LABEL_24:
 
@@ -1010,7 +1010,7 @@ LABEL_24:
     }
   }
 
-  v5 = v4;
+  v5 = eligibleCopy;
   v6 = 7;
 LABEL_4:
   [v5 setTipiConnectType:v6];
@@ -1020,13 +1020,13 @@ LABEL_5:
   return v7;
 }
 
-- (BOOL)_isHeadphoneConnected:(id)a3
+- (BOOL)_isHeadphoneConnected:(id)connected
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  connectedCopy = connected;
+  v4 = connectedCopy;
+  if (connectedCopy)
   {
-    v5 = [v3 connectionState] == 2;
+    v5 = [connectedCopy connectionState] == 2;
   }
 
   else
@@ -1042,10 +1042,10 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)_isHeadphoneBackoffFor3rdParty:(id)a3
+- (BOOL)_isHeadphoneBackoffFor3rdParty:(id)party
 {
-  v4 = a3;
-  if (!v4)
+  partyCopy = party;
+  if (!partyCopy)
   {
     if (dword_1002F6E08 <= 90 && (dword_1002F6E08 != -1 || _LogCategory_Initialize()))
     {
@@ -1062,16 +1062,16 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v5 = [v4 nearbyInEar] != 1;
+  v5 = [partyCopy nearbyInEar] != 1;
 LABEL_8:
 
   return v5;
 }
 
-- (BOOL)_isHeadphoneBackoffForSRDisbledSource:(id)a3
+- (BOOL)_isHeadphoneBackoffForSRDisbledSource:(id)source
 {
-  v4 = a3;
-  if (!v4)
+  sourceCopy = source;
+  if (!sourceCopy)
   {
     if (dword_1002F6E08 <= 90 && (dword_1002F6E08 != -1 || _LogCategory_Initialize()))
     {
@@ -1081,7 +1081,7 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (-[SRConnectionManager _isHeadphoneUSBPluggedInLastConnectedToMe:](self, "_isHeadphoneUSBPluggedInLastConnectedToMe:", v4) || ([v4 nearbyTipiScore1] != 8 || !objc_msgSend(v4, "nearbyConnectedSourceCount")) && (objc_msgSend(v4, "nearbyTipiScore2") != 8 || objc_msgSend(v4, "nearbyConnectedSourceCount") <= 1))
+  if (-[SRConnectionManager _isHeadphoneUSBPluggedInLastConnectedToMe:](self, "_isHeadphoneUSBPluggedInLastConnectedToMe:", sourceCopy) || ([sourceCopy nearbyTipiScore1] != 8 || !objc_msgSend(sourceCopy, "nearbyConnectedSourceCount")) && (objc_msgSend(sourceCopy, "nearbyTipiScore2") != 8 || objc_msgSend(sourceCopy, "nearbyConnectedSourceCount") <= 1))
   {
 LABEL_11:
     v5 = 0;
@@ -1094,35 +1094,35 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)_isHeadphoneBackoffFor2HS:(id)a3
+- (BOOL)_isHeadphoneBackoffFor2HS:(id)s
 {
-  v4 = a3;
-  if (v4)
+  sCopy = s;
+  if (sCopy)
   {
     v15 = 0;
     v16 = &v15;
     v17 = 0x2020000000;
     v18 = 0;
-    v5 = [(BTSmartRoutingDaemon *)self->_srDaemon _isAnyConnectedWxInEarCheck];
-    v6 = [(BTSmartRoutingDaemon *)self->_srDaemon srDiscoveredDeviceMap];
+    _isAnyConnectedWxInEarCheck = [(BTSmartRoutingDaemon *)self->_srDaemon _isAnyConnectedWxInEarCheck];
+    srDiscoveredDeviceMap = [(BTSmartRoutingDaemon *)self->_srDaemon srDiscoveredDeviceMap];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1000A0BB4;
     v14[3] = &unk_1002B8780;
     v14[4] = &v15;
-    [v6 enumerateKeysAndObjectsUsingBlock:v14];
+    [srDiscoveredDeviceMap enumerateKeysAndObjectsUsingBlock:v14];
     if (v16[6] < 1)
     {
       goto LABEL_16;
     }
 
-    v7 = [v4 btAddress];
-    v8 = [(BTSmartRoutingDaemon *)self->_srDaemon budSwapAddress];
-    v9 = [v7 isEqualToString:v8];
+    btAddress = [sCopy btAddress];
+    budSwapAddress = [(BTSmartRoutingDaemon *)self->_srDaemon budSwapAddress];
+    v9 = [btAddress isEqualToString:budSwapAddress];
 
-    if ([v4 nearbyInEar] == 1 || -[BTSmartRoutingDaemon _bluetoothProductIDNoEarDetect:](self->_srDaemon, "_bluetoothProductIDNoEarDetect:", objc_msgSend(v4, "nearbyProductID")))
+    if ([sCopy nearbyInEar] == 1 || -[BTSmartRoutingDaemon _bluetoothProductIDNoEarDetect:](self->_srDaemon, "_bluetoothProductIDNoEarDetect:", objc_msgSend(sCopy, "nearbyProductID")))
     {
-      v10 = v5;
+      v10 = _isAnyConnectedWxInEarCheck;
     }
 
     else
@@ -1136,7 +1136,7 @@ LABEL_12:
       LogPrintF();
     }
 
-    if ((v9 & 1) == 0 && ((v10 & 1) != 0 || [v4 nearbyAudioState]))
+    if ((v9 & 1) == 0 && ((v10 & 1) != 0 || [sCopy nearbyAudioState]))
     {
       v11 = 1;
     }
@@ -1163,11 +1163,11 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)_isHeadphoneBackoffForRingtone:(id)a3
+- (BOOL)_isHeadphoneBackoffForRingtone:(id)ringtone
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  ringtoneCopy = ringtone;
+  v5 = ringtoneCopy;
+  if (!ringtoneCopy)
   {
     if (dword_1002F6E08 <= 90 && (dword_1002F6E08 != -1 || _LogCategory_Initialize()))
     {
@@ -1177,7 +1177,7 @@ LABEL_16:
     goto LABEL_9;
   }
 
-  if (!self->_ringtoneStarted || [v4 nearbyConnectedSourceCount] < 2 || -[SRConnectionManager _isOngoingPhoneCall](self, "_isOngoingPhoneCall"))
+  if (!self->_ringtoneStarted || [ringtoneCopy nearbyConnectedSourceCount] < 2 || -[SRConnectionManager _isOngoingPhoneCall](self, "_isOngoingPhoneCall"))
   {
 LABEL_9:
     v6 = 0;
@@ -1190,11 +1190,11 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)_isHeadphoneBackoffForUSBPluggedIn:(id)a3
+- (BOOL)_isHeadphoneBackoffForUSBPluggedIn:(id)in
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  inCopy = in;
+  v5 = inCopy;
+  if (!inCopy)
   {
     if (dword_1002F6E08 <= 90 && (dword_1002F6E08 != -1 || _LogCategory_Initialize()))
     {
@@ -1204,7 +1204,7 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (![v4 isUSBPlugIn])
+  if (![inCopy isUSBPlugIn])
   {
 LABEL_7:
     LOBYTE(v6) = 0;
@@ -1217,11 +1217,11 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)_isHeadphoneUSBPluggedInLastConnectedToMe:(id)a3
+- (BOOL)_isHeadphoneUSBPluggedInLastConnectedToMe:(id)me
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  meCopy = me;
+  v4 = meCopy;
+  if (!meCopy)
   {
     if (dword_1002F6E08 <= 90 && (dword_1002F6E08 != -1 || _LogCategory_Initialize()))
     {
@@ -1231,26 +1231,26 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (![v3 isUSBPlugIn] || objc_msgSend(v4, "nearbyConnectedSourceCount") != 1 || objc_msgSend(v4, "nearbyTipiScore1") != 8)
+  if (![meCopy isUSBPlugIn] || objc_msgSend(v4, "nearbyConnectedSourceCount") != 1 || objc_msgSend(v4, "nearbyTipiScore1") != 8)
   {
 LABEL_9:
-    v5 = 0;
+    nearbyIsMeLastRoute = 0;
     goto LABEL_10;
   }
 
-  v5 = [v4 nearbyIsMeLastRoute];
+  nearbyIsMeLastRoute = [v4 nearbyIsMeLastRoute];
 LABEL_10:
 
-  return v5;
+  return nearbyIsMeLastRoute;
 }
 
-- (BOOL)_isHeadphoneConnectedToNothing:(id)a3
+- (BOOL)_isHeadphoneConnectedToNothing:(id)nothing
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nothingCopy = nothing;
+  v5 = nothingCopy;
+  if (nothingCopy)
   {
-    if ([v4 nearbyConnectedSourceCount])
+    if ([nothingCopy nearbyConnectedSourceCount])
     {
       v6 = [(SRConnectionManager *)self _isHeadphoneUSBPluggedInLastConnectedToMe:v5];
     }
@@ -1274,11 +1274,11 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)_isHeadphoneConnectedToSomething:(id)a3
+- (BOOL)_isHeadphoneConnectedToSomething:(id)something
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  somethingCopy = something;
+  v5 = somethingCopy;
+  if (!somethingCopy)
   {
     if (dword_1002F6E08 <= 90 && (dword_1002F6E08 != -1 || _LogCategory_Initialize()))
     {
@@ -1288,7 +1288,7 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (![v4 nearbyConnectedSourceCount])
+  if (![somethingCopy nearbyConnectedSourceCount])
   {
 LABEL_7:
     LOBYTE(v6) = 0;
@@ -1301,13 +1301,13 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)_isHeadphoneConnecting:(id)a3
+- (BOOL)_isHeadphoneConnecting:(id)connecting
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  connectingCopy = connecting;
+  v4 = connectingCopy;
+  if (connectingCopy)
   {
-    v5 = [v3 connectionState] == 1;
+    v5 = [connectingCopy connectionState] == 1;
   }
 
   else
@@ -1323,10 +1323,10 @@ LABEL_8:
   return v5;
 }
 
-- (id)_getNearbyDeviceFromWxAdvLastHost:(id)a3 andNearbyDevices:(id)a4
+- (id)_getNearbyDeviceFromWxAdvLastHost:(id)host andNearbyDevices:(id)devices
 {
-  v6 = a3;
-  v7 = a4;
+  hostCopy = host;
+  devicesCopy = devices;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -1338,10 +1338,10 @@ LABEL_8:
   v11[2] = sub_1001F2EEC;
   v11[3] = &unk_1002B89A0;
   v11[4] = self;
-  v8 = v6;
+  v8 = hostCopy;
   v12 = v8;
   v13 = &v14;
-  [v7 enumerateKeysAndObjectsUsingBlock:v11];
+  [devicesCopy enumerateKeysAndObjectsUsingBlock:v11];
   v9 = v15[5];
 
   _Block_object_dispose(&v14, 8);
@@ -1349,7 +1349,7 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)_isHRMHeadphoneEligibleForTipiV2:(id)a3
+- (BOOL)_isHRMHeadphoneEligibleForTipiV2:(id)v2
 {
   v30 = 0;
   v31 = &v30;
@@ -1362,12 +1362,12 @@ LABEL_8:
   v26 = sub_1000A14B8;
   v27 = &unk_1002B6ED8;
   v29 = &v30;
-  v4 = a3;
-  v28 = v4;
+  v2Copy = v2;
+  v28 = v2Copy;
   v5 = objc_retainBlock(&v24);
-  if ([v4 isFirstConnectionAfterSREnable])
+  if ([v2Copy isFirstConnectionAfterSREnable])
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(fwVersion) = 0;
     v22 = v31;
     v15 = v31[5];
     v23 = @"First connection attemp after SR enabled";
@@ -1376,9 +1376,9 @@ LABEL_33:
     goto LABEL_27;
   }
 
-  v6 = [v4 fwVersion];
+  fwVersion = [v2Copy fwVersion];
 
-  if (!v6)
+  if (!fwVersion)
   {
     v22 = v31;
     v15 = v31[5];
@@ -1386,21 +1386,21 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  v7 = [v4 fwVersion];
-  v8 = [@"5A187" compare:v7 options:64];
+  fwVersion2 = [v2Copy fwVersion];
+  v8 = [@"5A187" compare:fwVersion2 options:64];
 
   if (v8 != -1)
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(fwVersion) = 0;
     v22 = v31;
     v15 = v31[5];
     v23 = @"not eligible fw version";
     goto LABEL_33;
   }
 
-  if ([v4 nearbyTipiScore2] == 15)
+  if ([v2Copy nearbyTipiScore2] == 15)
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(fwVersion) = 0;
     v22 = v31;
     v15 = v31[5];
     v23 = @"2nd source connecting";
@@ -1408,21 +1408,21 @@ LABEL_33:
   }
 
   srDaemon = self->_srDaemon;
-  v10 = [v4 nearbyLastRouteHost];
-  LOBYTE(srDaemon) = [(BTSmartRoutingDaemon *)srDaemon _isDevicePairedCheck:v10];
+  nearbyLastRouteHost = [v2Copy nearbyLastRouteHost];
+  LOBYTE(srDaemon) = [(BTSmartRoutingDaemon *)srDaemon _isDevicePairedCheck:nearbyLastRouteHost];
 
   if ((srDaemon & 1) == 0)
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(fwVersion) = 0;
     v22 = v31;
     v15 = v31[5];
     v23 = @"connected source not signed in with same iCloud";
     goto LABEL_33;
   }
 
-  if ([v4 nearbyTipiScore1])
+  if ([v2Copy nearbyTipiScore1])
   {
-    v11 = [v4 nearbyTipiScore1] < 8;
+    v11 = [v2Copy nearbyTipiScore1] < 8;
   }
 
   else
@@ -1433,8 +1433,8 @@ LABEL_33:
   if (GestaltGetDeviceClass() == 1)
   {
     v12 = self->_srDaemon;
-    v13 = [v4 nearbyLastRouteHost];
-    v14 = [(BTSmartRoutingDaemon *)v12 _isMagnetConnectedDeviceforConnectionCheck:v13];
+    nearbyLastRouteHost2 = [v2Copy nearbyLastRouteHost];
+    v14 = [(BTSmartRoutingDaemon *)v12 _isMagnetConnectedDeviceforConnectionCheck:nearbyLastRouteHost2];
   }
 
   else
@@ -1442,12 +1442,12 @@ LABEL_33:
     v14 = 0;
   }
 
-  v15 = [(SRConnectionManager *)self _getNearbyConnectedSourceFromWx:v4];
-  v16 = [v15 model];
-  if (v16)
+  v15 = [(SRConnectionManager *)self _getNearbyConnectedSourceFromWx:v2Copy];
+  model = [v15 model];
+  if (model)
   {
-    v17 = [v15 model];
-    v18 = [v17 hasPrefix:@"Watch"];
+    model2 = [v15 model];
+    v18 = [model2 hasPrefix:@"Watch"];
 
     if (v18)
     {
@@ -1455,17 +1455,17 @@ LABEL_33:
     }
   }
 
-  if ([v4 nearbyConnectedSourceCount] == 1)
+  if ([v2Copy nearbyConnectedSourceCount] == 1)
   {
-    v19 = [v4 nearbyTipiScore1] == 12 && objc_msgSend(v4, "nearbyOutOfCaseTime") <= 2 && objc_msgSend(v4, "nearbyAudioState") == 0;
-    LOBYTE(v6) = v11 | v19;
+    v19 = [v2Copy nearbyTipiScore1] == 12 && objc_msgSend(v2Copy, "nearbyOutOfCaseTime") <= 2 && objc_msgSend(v2Copy, "nearbyAudioState") == 0;
+    LOBYTE(fwVersion) = v11 | v19;
   }
 
-  else if ([v4 nearbyConnectedSourceCount] == 2)
+  else if ([v2Copy nearbyConnectedSourceCount] == 2)
   {
-    if ([v4 nearbyTipiScore2])
+    if ([v2Copy nearbyTipiScore2])
     {
-      v20 = [v4 nearbyTipiScore2] < 8;
+      v20 = [v2Copy nearbyTipiScore2] < 8;
     }
 
     else
@@ -1473,12 +1473,12 @@ LABEL_33:
       v20 = 0;
     }
 
-    LOBYTE(v6) = v11 & (v20 | ([v4 nearbyTipiScore2] == 9));
+    LOBYTE(fwVersion) = v11 & (v20 | ([v2Copy nearbyTipiScore2] == 9));
   }
 
   else
   {
-    LOBYTE(v6) = 0;
+    LOBYTE(fwVersion) = 0;
   }
 
 LABEL_27:
@@ -1486,10 +1486,10 @@ LABEL_27:
   (v5[2])(v5);
   _Block_object_dispose(&v30, 8);
 
-  return v6 & 1;
+  return fwVersion & 1;
 }
 
-- (BOOL)_isHeadphoneEligibleForTipiV2:(id)a3 result:(unsigned int *)a4
+- (BOOL)_isHeadphoneEligibleForTipiV2:(id)v2 result:(unsigned int *)result
 {
   v33 = 0;
   v34 = &v33;
@@ -1500,13 +1500,13 @@ LABEL_27:
   v29[2] = sub_1000A193C;
   v29[3] = &unk_1002BA220;
   v31 = &v33;
-  v6 = a3;
-  v30 = v6;
-  v32 = a4;
+  v2Copy = v2;
+  v30 = v2Copy;
+  resultCopy = result;
   v7 = objc_retainBlock(v29);
-  if ([v6 isFirstConnectionAfterSREnable])
+  if ([v2Copy isFirstConnectionAfterSREnable])
   {
-    LOBYTE(v8) = 0;
+    LOBYTE(fwVersion) = 0;
     v25 = v34;
     v26 = 1;
 LABEL_39:
@@ -1514,50 +1514,50 @@ LABEL_39:
     goto LABEL_32;
   }
 
-  v8 = [v6 fwVersion];
+  fwVersion = [v2Copy fwVersion];
 
-  if (!v8)
+  if (!fwVersion)
   {
     v25 = v34;
     v26 = 2;
     goto LABEL_39;
   }
 
-  v9 = [v6 fwVersion];
-  v10 = [@"5A187" compare:v9 options:64];
+  fwVersion2 = [v2Copy fwVersion];
+  v10 = [@"5A187" compare:fwVersion2 options:64];
 
   if (v10 != -1)
   {
-    LOBYTE(v8) = 0;
+    LOBYTE(fwVersion) = 0;
     v25 = v34;
     v26 = 3;
     goto LABEL_39;
   }
 
-  if ([v6 nearbyTipiScore2] == 15)
+  if ([v2Copy nearbyTipiScore2] == 15)
   {
-    LOBYTE(v8) = 0;
+    LOBYTE(fwVersion) = 0;
     v25 = v34;
     v26 = 4;
     goto LABEL_39;
   }
 
   currentTipiScore = self->_currentTipiScore;
-  if (currentTipiScore <= [v6 nearbyTipiScore2] && objc_msgSend(v6, "nearbyTipiScore2") <= 7)
+  if (currentTipiScore <= [v2Copy nearbyTipiScore2] && objc_msgSend(v2Copy, "nearbyTipiScore2") <= 7)
   {
-    LOBYTE(v8) = 0;
+    LOBYTE(fwVersion) = 0;
     v25 = v34;
     v26 = 5;
     goto LABEL_39;
   }
 
   srDaemon = self->_srDaemon;
-  v13 = [v6 nearbyLastRouteHost];
-  LOBYTE(srDaemon) = [(BTSmartRoutingDaemon *)srDaemon _isDevicePairedCheck:v13];
+  nearbyLastRouteHost = [v2Copy nearbyLastRouteHost];
+  LOBYTE(srDaemon) = [(BTSmartRoutingDaemon *)srDaemon _isDevicePairedCheck:nearbyLastRouteHost];
 
   if ((srDaemon & 1) == 0)
   {
-    LOBYTE(v8) = 0;
+    LOBYTE(fwVersion) = 0;
     v25 = v34;
     v26 = 6;
     goto LABEL_39;
@@ -1566,8 +1566,8 @@ LABEL_39:
   if (GestaltGetDeviceClass() == 1)
   {
     v14 = self->_srDaemon;
-    v15 = [v6 nearbyLastRouteHost];
-    v16 = [(BTSmartRoutingDaemon *)v14 _isMagnetConnectedDeviceforConnectionCheck:v15];
+    nearbyLastRouteHost2 = [v2Copy nearbyLastRouteHost];
+    v16 = [(BTSmartRoutingDaemon *)v14 _isMagnetConnectedDeviceforConnectionCheck:nearbyLastRouteHost2];
   }
 
   else
@@ -1575,9 +1575,9 @@ LABEL_39:
     v16 = 0;
   }
 
-  if ([v6 nearbyTipiScore1])
+  if ([v2Copy nearbyTipiScore1])
   {
-    v17 = [v6 nearbyTipiScore1] < 8;
+    v17 = [v2Copy nearbyTipiScore1] < 8;
   }
 
   else
@@ -1585,12 +1585,12 @@ LABEL_39:
     v17 = 0;
   }
 
-  v18 = [(SRConnectionManager *)self _getNearbyConnectedSourceFromWx:v6];
-  v19 = [v18 model];
-  if (v19)
+  v18 = [(SRConnectionManager *)self _getNearbyConnectedSourceFromWx:v2Copy];
+  model = [v18 model];
+  if (model)
   {
-    v20 = [v18 model];
-    v21 = [v20 hasPrefix:@"Watch"];
+    model2 = [v18 model];
+    v21 = [model2 hasPrefix:@"Watch"];
 
     if (v21)
     {
@@ -1598,16 +1598,16 @@ LABEL_39:
     }
   }
 
-  if ([v6 nearbyConnectedSourceCount] == 1)
+  if ([v2Copy nearbyConnectedSourceCount] == 1)
   {
-    if ([v6 nearbyTipiScore1])
+    if ([v2Copy nearbyTipiScore1])
     {
-      v22 = [v6 nearbyTipiScore1] == 12 && objc_msgSend(v6, "nearbyOutOfCaseTime") <= 2 && objc_msgSend(v6, "nearbyAudioState") == 0;
-      LOBYTE(v8) = v17 | v22;
+      v22 = [v2Copy nearbyTipiScore1] == 12 && objc_msgSend(v2Copy, "nearbyOutOfCaseTime") <= 2 && objc_msgSend(v2Copy, "nearbyAudioState") == 0;
+      LOBYTE(fwVersion) = v17 | v22;
       goto LABEL_31;
     }
 
-    LOBYTE(v8) = 0;
+    LOBYTE(fwVersion) = 0;
     v27 = v34;
     v28 = 7;
 LABEL_42:
@@ -1615,13 +1615,13 @@ LABEL_42:
     goto LABEL_31;
   }
 
-  if ([v6 nearbyConnectedSourceCount] == 2)
+  if ([v2Copy nearbyConnectedSourceCount] == 2)
   {
-    if ([v6 nearbyTipiScore2])
+    if ([v2Copy nearbyTipiScore2])
     {
-      if ([v6 nearbyTipiScore2])
+      if ([v2Copy nearbyTipiScore2])
       {
-        v23 = [v6 nearbyTipiScore2] < 8;
+        v23 = [v2Copy nearbyTipiScore2] < 8;
       }
 
       else
@@ -1629,46 +1629,46 @@ LABEL_42:
         v23 = 0;
       }
 
-      LOBYTE(v8) = v17 & (v23 | ([v6 nearbyTipiScore2] == 9));
+      LOBYTE(fwVersion) = v17 & (v23 | ([v2Copy nearbyTipiScore2] == 9));
       goto LABEL_31;
     }
 
-    LOBYTE(v8) = 0;
+    LOBYTE(fwVersion) = 0;
     v27 = v34;
     v28 = 8;
     goto LABEL_42;
   }
 
-  LOBYTE(v8) = 0;
+  LOBYTE(fwVersion) = 0;
 LABEL_31:
 
 LABEL_32:
   (v7[2])(v7);
 
   _Block_object_dispose(&v33, 8);
-  return v8 & 1;
+  return fwVersion & 1;
 }
 
-- (BOOL)_isHeadphoneFWSupportForceDisconnect:(id)a3
+- (BOOL)_isHeadphoneFWSupportForceDisconnect:(id)disconnect
 {
-  v3 = [a3 fwVersion];
-  v4 = [@"4A345" compare:v3 options:64] == -1;
+  fwVersion = [disconnect fwVersion];
+  v4 = [@"4A345" compare:fwVersion options:64] == -1;
 
   return v4;
 }
 
-- (BOOL)_isHeadphoneFWSupportTipiScore:(id)a3
+- (BOOL)_isHeadphoneFWSupportTipiScore:(id)score
 {
-  v3 = [a3 fwVersion];
-  v4 = [@"5A274" compare:v3 options:64] == -1;
+  fwVersion = [score fwVersion];
+  v4 = [@"5A274" compare:fwVersion options:64] == -1;
 
   return v4;
 }
 
-- (BOOL)_isHeadphoneEligibleForTakingConnectionFromWatch:(id)a3
+- (BOOL)_isHeadphoneEligibleForTakingConnectionFromWatch:(id)watch
 {
-  v4 = a3;
-  v5 = [(BTSmartRoutingDaemon *)self->_srDaemon nearbyInfoDevices];
+  watchCopy = watch;
+  nearbyInfoDevices = [(BTSmartRoutingDaemon *)self->_srDaemon nearbyInfoDevices];
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -1678,10 +1678,10 @@ LABEL_32:
   v9[2] = sub_1001F34A8;
   v9[3] = &unk_1002B89A0;
   v9[4] = self;
-  v6 = v4;
+  v6 = watchCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [nearbyInfoDevices enumerateKeysAndObjectsUsingBlock:v9];
   if (dword_1002F6E08 <= 30 && (dword_1002F6E08 != -1 || _LogCategory_Initialize()))
   {
     *(v13 + 24);
@@ -1694,18 +1694,18 @@ LABEL_32:
   return v7;
 }
 
-- (BOOL)_isHeadphoneEligibleForLEPipe:(id)a3
+- (BOOL)_isHeadphoneEligibleForLEPipe:(id)pipe
 {
-  v4 = a3;
-  v5 = [(SRConnectionManager *)self _getNearbyConnectedSourceFromWx:v4];
-  v6 = [v5 audioRoutingScore];
-  v7 = [v4 nearbyTipiScore1] == 8 || objc_msgSend(v4, "nearbyConnectedSourceCount") == 2 && objc_msgSend(v4, "nearbyTipiScore2") == 8;
-  v8 = [v5 model];
-  v9 = [v8 hasPrefix:@"Watch"];
+  pipeCopy = pipe;
+  v5 = [(SRConnectionManager *)self _getNearbyConnectedSourceFromWx:pipeCopy];
+  audioRoutingScore = [v5 audioRoutingScore];
+  v7 = [pipeCopy nearbyTipiScore1] == 8 || objc_msgSend(pipeCopy, "nearbyConnectedSourceCount") == 2 && objc_msgSend(pipeCopy, "nearbyTipiScore2") == 8;
+  model = [v5 model];
+  v9 = [model hasPrefix:@"Watch"];
 
   if (v5)
   {
-    v10 = v6 == 0;
+    v10 = audioRoutingScore == 0;
   }
 
   else
@@ -1725,19 +1725,19 @@ LABEL_32:
 
   else
   {
-    [v4 setNearbyLEPipeSourceDevice:v5];
+    [pipeCopy setNearbyLEPipeSourceDevice:v5];
   }
 
   return (v12 & 1) == 0;
 }
 
-- (BOOL)_isHeadphoneHasRightSubType:(id)a3
+- (BOOL)_isHeadphoneHasRightSubType:(id)type
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  typeCopy = type;
+  v4 = typeCopy;
+  if (typeCopy)
   {
-    v5 = [v3 nearbySubtype] == 1;
+    v5 = [typeCopy nearbySubtype] == 1;
   }
 
   else
@@ -1753,13 +1753,13 @@ LABEL_32:
   return v5;
 }
 
-- (BOOL)_isHeadphoneInAirplaneMode:(id)a3
+- (BOOL)_isHeadphoneInAirplaneMode:(id)mode
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  modeCopy = mode;
+  v4 = modeCopy;
+  if (modeCopy)
   {
-    v5 = [v3 nearbyAirplaneMode];
+    nearbyAirplaneMode = [modeCopy nearbyAirplaneMode];
   }
 
   else
@@ -1769,19 +1769,19 @@ LABEL_32:
       sub_1001F3D74();
     }
 
-    v5 = 0;
+    nearbyAirplaneMode = 0;
   }
 
-  return v5;
+  return nearbyAirplaneMode;
 }
 
-- (BOOL)_isHeadphoneInCase:(id)a3
+- (BOOL)_isHeadphoneInCase:(id)case
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  caseCopy = case;
+  v4 = caseCopy;
+  if (caseCopy)
   {
-    v5 = [v3 nearbyInCase] != 0;
+    v5 = [caseCopy nearbyInCase] != 0;
   }
 
   else
@@ -1797,11 +1797,11 @@ LABEL_32:
   return v5;
 }
 
-- (BOOL)_isHeadphoneHasBackoffForDisconnection:(id)a3 withTime:(unsigned int)a4
+- (BOOL)_isHeadphoneHasBackoffForDisconnection:(id)disconnection withTime:(unsigned int)time
 {
-  v5 = a3;
+  disconnectionCopy = disconnection;
   mach_absolute_time();
-  [v5 disconnectionBackoffTick];
+  [disconnectionCopy disconnectionBackoffTick];
 
   v6 = UpTicksToSeconds();
   if (dword_1002F6E08 <= 30 && (dword_1002F6E08 != -1 || _LogCategory_Initialize()))
@@ -1809,17 +1809,17 @@ LABEL_32:
     LogPrintF();
   }
 
-  return v6 >= a4;
+  return v6 >= time;
 }
 
-- (BOOL)_isHeadphoneInDisconnectionBackoff:(id)a3
+- (BOOL)_isHeadphoneInDisconnectionBackoff:(id)backoff
 {
-  v4 = a3;
-  if (v4)
+  backoffCopy = backoff;
+  if (backoffCopy)
   {
-    v5 = [(BTSmartRoutingDaemon *)self->_srDaemon srDiscoveredDeviceMap];
+    srDiscoveredDeviceMap = [(BTSmartRoutingDaemon *)self->_srDaemon srDiscoveredDeviceMap];
     mach_absolute_time();
-    v6 = [v5 objectForKeyedSubscript:v4];
+    v6 = [srDiscoveredDeviceMap objectForKeyedSubscript:backoffCopy];
     [v6 disconnectionBackoffTick];
     v7 = UpTicksToSeconds();
 
@@ -1839,14 +1839,14 @@ LABEL_32:
   return v8;
 }
 
-- (BOOL)_isHeadphoneLidClosed:(id)a3
+- (BOOL)_isHeadphoneLidClosed:(id)closed
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  closedCopy = closed;
+  v4 = closedCopy;
+  if (closedCopy)
   {
-    v5 = [v3 nearbyLidClosed];
-    v6 = v5 != 0;
+    nearbyLidClosed = [closedCopy nearbyLidClosed];
+    v6 = nearbyLidClosed != 0;
   }
 
   else
@@ -1862,16 +1862,16 @@ LABEL_32:
   return v6;
 }
 
-- (BOOL)_isHeadphoneOnDemandEligible:(id)a3
+- (BOOL)_isHeadphoneOnDemandEligible:(id)eligible
 {
-  v4 = a3;
-  if (v4)
+  eligibleCopy = eligible;
+  if (eligibleCopy)
   {
-    v5 = [(NSNumber *)self->_currentLocalAudioCategory intValue];
-    v6 = (self->_NowPlayingPlaybackStarted || -[NSNumber intValue](self->_currentLocalAudioCategory, "intValue") >= 301) && [v4 nearbyAudioState] == 0;
+    intValue = [(NSNumber *)self->_currentLocalAudioCategory intValue];
+    v6 = (self->_NowPlayingPlaybackStarted || -[NSNumber intValue](self->_currentLocalAudioCategory, "intValue") >= 301) && [eligibleCopy nearbyAudioState] == 0;
     callStarted = self->_callStarted;
-    v9 = [v4 nearbyInEar] == 1 && (callStarted || v6);
-    v7 = v5 != 401 && v9;
+    v9 = [eligibleCopy nearbyInEar] == 1 && (callStarted || v6);
+    v7 = intValue != 401 && v9;
   }
 
   else
@@ -1887,14 +1887,14 @@ LABEL_32:
   return v7;
 }
 
-- (BOOL)_isHeadphonePaired:(id)a3
+- (BOOL)_isHeadphonePaired:(id)paired
 {
-  v4 = a3;
-  if (v4)
+  pairedCopy = paired;
+  if (pairedCopy)
   {
-    v5 = [(BTSmartRoutingDaemon *)self->_srDaemon srDiscoveredDeviceMap];
-    v6 = [v5 objectForKeyedSubscript:v4];
-    v7 = [v6 nearbyPaired];
+    srDiscoveredDeviceMap = [(BTSmartRoutingDaemon *)self->_srDaemon srDiscoveredDeviceMap];
+    v6 = [srDiscoveredDeviceMap objectForKeyedSubscript:pairedCopy];
+    nearbyPaired = [v6 nearbyPaired];
   }
 
   else
@@ -1904,19 +1904,19 @@ LABEL_32:
       sub_1001F3E00();
     }
 
-    v7 = 0;
+    nearbyPaired = 0;
   }
 
-  return v7;
+  return nearbyPaired;
 }
 
-- (BOOL)_isHeadphonePreviouslyManualDisconnect:(id)a3
+- (BOOL)_isHeadphonePreviouslyManualDisconnect:(id)disconnect
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  disconnectCopy = disconnect;
+  v4 = disconnectCopy;
+  if (disconnectCopy)
   {
-    v5 = [v3 isManualDisconnectLastTime];
+    isManualDisconnectLastTime = [disconnectCopy isManualDisconnectLastTime];
   }
 
   else
@@ -1926,19 +1926,19 @@ LABEL_32:
       sub_1001F3E1C();
     }
 
-    v5 = 0;
+    isManualDisconnectLastTime = 0;
   }
 
-  return v5;
+  return isManualDisconnectLastTime;
 }
 
-- (BOOL)_isHeadphoneSRCapable:(id)a3
+- (BOOL)_isHeadphoneSRCapable:(id)capable
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  capableCopy = capable;
+  v4 = capableCopy;
+  if (capableCopy)
   {
-    v5 = [v3 isSRCapable];
+    isSRCapable = [capableCopy isSRCapable];
   }
 
   else
@@ -1948,13 +1948,13 @@ LABEL_32:
       sub_1001F3E38();
     }
 
-    v5 = 0;
+    isSRCapable = 0;
   }
 
-  return v5;
+  return isSRCapable;
 }
 
-- (BOOL)_isSourcePrerequisiteMetForOnDemandEvent:(id *)a3
+- (BOOL)_isSourcePrerequisiteMetForOnDemandEvent:(id *)event
 {
   v11 = 0;
   v12 = &v11;
@@ -1967,7 +1967,7 @@ LABEL_32:
   v10[2] = sub_1000A2500;
   v10[3] = &unk_1002BA248;
   v10[4] = &v11;
-  v10[5] = a3;
+  v10[5] = event;
   v4 = objc_retainBlock(v10);
   if (![(SRConnectionManager *)self _isBluetoothOn])
   {
@@ -2004,7 +2004,7 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)_isSourcePrerequisiteMet:(id *)a3
+- (BOOL)_isSourcePrerequisiteMet:(id *)met
 {
   v11 = 0;
   v12 = &v11;
@@ -2017,7 +2017,7 @@ LABEL_5:
   v10[2] = sub_1000A2768;
   v10[3] = &unk_1002BA248;
   v10[4] = &v11;
-  v10[5] = a3;
+  v10[5] = met;
   v4 = objc_retainBlock(v10);
   if (![(SRConnectionManager *)self _isBluetoothOn])
   {
@@ -2080,14 +2080,14 @@ LABEL_9:
 
 - (BOOL)_isTooSoonToConnect
 {
-  v3 = [(SRConnectConfig *)self->_currentConnectConfig connectTick];
-  if (v3)
+  connectTick = [(SRConnectConfig *)self->_currentConnectConfig connectTick];
+  if (connectTick)
   {
     mach_absolute_time();
     [(SRConnectConfig *)self->_currentConnectConfig connectTick];
     if (UpTicksToSeconds() > 0x1DF)
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(connectTick) = 0;
     }
 
     else
@@ -2097,11 +2097,11 @@ LABEL_9:
         sub_1001F3EA0();
       }
 
-      LOBYTE(v3) = 1;
+      LOBYTE(connectTick) = 1;
     }
   }
 
-  return v3;
+  return connectTick;
 }
 
 - (BOOL)_isOngoingHFPCallOnOtherHeadphone
@@ -2119,14 +2119,14 @@ LABEL_9:
   return 1;
 }
 
-- (void)_postNotification:(const char *)a3
+- (void)_postNotification:(const char *)notification
 {
   if (dword_1002F6E08 <= 30 && (dword_1002F6E08 != -1 || _LogCategory_Initialize()))
   {
     sub_1001F3F7C();
   }
 
-  notify_post(a3);
+  notify_post(notification);
 }
 
 - (void)_OnDemandEventTimerStart
@@ -2161,9 +2161,9 @@ LABEL_9:
   }
 }
 
-- (BOOL)_isHeadphoneEligibleForDirectConnect:(id)a3 andNearbyDevices:(id)a4
+- (BOOL)_isHeadphoneEligibleForDirectConnect:(id)connect andNearbyDevices:(id)devices
 {
-  v5 = a3;
+  connectCopy = connect;
   v6 = [sub_100072F04() _getNearbyDeviceFromWxAdvLastHost:? andNearbyDevices:?];
 
   if (v6)
@@ -2179,8 +2179,8 @@ LABEL_32:
   }
 
   srDaemon = self->_srDaemon;
-  v8 = [v5 nearbyLastRouteHost];
-  LOBYTE(srDaemon) = [(BTSmartRoutingDaemon *)srDaemon _isDevicePairedCheck:v8];
+  nearbyLastRouteHost = [connectCopy nearbyLastRouteHost];
+  LOBYTE(srDaemon) = [(BTSmartRoutingDaemon *)srDaemon _isDevicePairedCheck:nearbyLastRouteHost];
 
   if ((srDaemon & 1) == 0)
   {
@@ -2204,21 +2204,21 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  if (![sub_100072F04() _isHeadphoneFWSupportTipiScore:?] || !objc_msgSend(v5, "nearbyTipiScore1") || objc_msgSend(v5, "nearbyInEar") != 1)
+  if (![sub_100072F04() _isHeadphoneFWSupportTipiScore:?] || !objc_msgSend(connectCopy, "nearbyTipiScore1") || objc_msgSend(connectCopy, "nearbyInEar") != 1)
   {
     goto LABEL_33;
   }
 
-  if ([v5 nearbyConnectedSourceCount] != 1 || objc_msgSend(v5, "nearbyTipiScore1") > 3)
+  if ([connectCopy nearbyConnectedSourceCount] != 1 || objc_msgSend(connectCopy, "nearbyTipiScore1") > 3)
   {
-    if ([v5 nearbyConnectedSourceCount] == 2)
+    if ([connectCopy nearbyConnectedSourceCount] == 2)
     {
-      if ([v5 nearbyTipiScore2])
+      if ([connectCopy nearbyTipiScore2])
       {
-        if ([v5 nearbyTipiScore1] <= 3)
+        if ([connectCopy nearbyTipiScore1] <= 3)
         {
           currentTipiScore = self->_currentTipiScore;
-          if (currentTipiScore > [v5 nearbyTipiScore2])
+          if (currentTipiScore > [connectCopy nearbyTipiScore2])
           {
             if (dword_1002F6E08 > 30 || dword_1002F6E08 == -1 && !_LogCategory_Initialize())
             {
@@ -2226,7 +2226,7 @@ LABEL_32:
             }
 
             sub_10009E97C(self->_currentTipiScore);
-            sub_10009E97C([v5 nearbyTipiScore2]);
+            sub_10009E97C([connectCopy nearbyTipiScore2]);
             goto LABEL_19;
           }
         }
@@ -2243,7 +2243,7 @@ LABEL_33:
     goto LABEL_23;
   }
 
-  sub_10009E97C([v5 nearbyTipiScore1]);
+  sub_10009E97C([connectCopy nearbyTipiScore1]);
 LABEL_19:
   LogPrintF();
 LABEL_23:
@@ -2253,9 +2253,9 @@ LABEL_34:
   return v10;
 }
 
-- (BOOL)_isHeadphoneEligibleForForceDisconnect:(id)a3 andNearbyDevices:(id)a4
+- (BOOL)_isHeadphoneEligibleForForceDisconnect:(id)disconnect andNearbyDevices:(id)devices
 {
-  v5 = a3;
+  disconnectCopy = disconnect;
   v6 = [sub_100072F04() _getNearbyDeviceFromWxAdvLastHost:? andNearbyDevices:?];
 
   if (v6)
@@ -2264,24 +2264,24 @@ LABEL_34:
   }
 
   srDaemon = self->_srDaemon;
-  v8 = [v5 nearbyLastRouteHost];
-  v9 = [(BTSmartRoutingDaemon *)srDaemon _isDevicePairedCheck:v8];
+  nearbyLastRouteHost = [disconnectCopy nearbyLastRouteHost];
+  v9 = [(BTSmartRoutingDaemon *)srDaemon _isDevicePairedCheck:nearbyLastRouteHost];
 
   mach_absolute_time();
   [(BTSmartRoutingDaemon *)self->_srDaemon prefSmartRoutingForcedDisconnectionTicks];
   v10 = UpTicksToSeconds();
-  if (![v5 nearbyTipiScore1])
+  if (![disconnectCopy nearbyTipiScore1])
   {
     goto LABEL_13;
   }
 
   v11 = 0;
-  if ([v5 nearbyInEar] != 1 || ((v9 ^ 1) & 1) != 0 || v10 < 2)
+  if ([disconnectCopy nearbyInEar] != 1 || ((v9 ^ 1) & 1) != 0 || v10 < 2)
   {
     goto LABEL_14;
   }
 
-  if (![sub_100072F04() _isHeadphoneFWSupportForceDisconnect:?] || self->_currentTipiScore < 3 || objc_msgSend(v5, "nearbyBLErssi") < -60 || !objc_msgSend(v5, "nearbyForceDisconnectBit"))
+  if (![sub_100072F04() _isHeadphoneFWSupportForceDisconnect:?] || self->_currentTipiScore < 3 || objc_msgSend(disconnectCopy, "nearbyBLErssi") < -60 || !objc_msgSend(disconnectCopy, "nearbyForceDisconnectBit"))
   {
 LABEL_13:
     v11 = 0;

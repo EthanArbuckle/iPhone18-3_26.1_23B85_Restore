@@ -9,8 +9,8 @@
   v8 = a5;
   v9 = a4;
   v10 = a3;
-  v11 = [a1 hk_defaultDistanceQuantityType];
-  v12 = [v9 displayTypeForObjectType:v11];
+  hk_defaultDistanceQuantityType = [self hk_defaultDistanceQuantityType];
+  v12 = [v9 displayTypeForObjectType:hk_defaultDistanceQuantityType];
 
   v13 = [v8 unitForDisplayType:v12];
   v14 = [v12 hk_numberFormatterForUnit:v13 formattingContext:1];

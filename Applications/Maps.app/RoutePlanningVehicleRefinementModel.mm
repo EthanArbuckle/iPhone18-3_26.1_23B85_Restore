@@ -1,19 +1,19 @@
 @interface RoutePlanningVehicleRefinementModel
-+ (BOOL)_isGarage:(id)a3 significantlyDifferentFromGarage:(id)a4;
++ (BOOL)_isGarage:(id)garage significantlyDifferentFromGarage:(id)fromGarage;
 - (BOOL)_shouldDefaultToNoSelection;
 - (BOOL)shouldShowHighlighted;
-- (RoutePlanningVehicleRefinementModel)initWithDelegate:(id)a3 value:(id)a4;
-- (id)_attributedTitleForVehicle:(id)a3;
-- (id)_subtitleForVehicle:(id)a3;
+- (RoutePlanningVehicleRefinementModel)initWithDelegate:(id)delegate value:(id)value;
+- (id)_attributedTitleForVehicle:(id)vehicle;
+- (id)_subtitleForVehicle:(id)vehicle;
 - (id)_titleForDifferentCar;
 - (id)menuOptions;
 - (id)titleText;
 - (id)virtualGarage;
 - (void)_assertValidValue;
 - (void)offlineMapsStateChanged;
-- (void)selectVehicleWithIdentifier:(id)a3;
-- (void)setSelectedVehicle:(id)a3;
-- (void)setValue:(id)a3;
+- (void)selectVehicleWithIdentifier:(id)identifier;
+- (void)setSelectedVehicle:(id)vehicle;
+- (void)setValue:(id)value;
 @end
 
 @implementation RoutePlanningVehicleRefinementModel
@@ -24,10 +24,10 @@
   self->super._menuOptions = 0;
 }
 
-- (id)_subtitleForVehicle:(id)a3
+- (id)_subtitleForVehicle:(id)vehicle
 {
-  v3 = a3;
-  if (!v3)
+  vehicleCopy = vehicle;
+  if (!vehicleCopy)
   {
     v25 = sub_10006D178();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -56,7 +56,7 @@
     }
   }
 
-  if (([v3 isPureElectricVehicle] & 1) == 0)
+  if (([vehicleCopy isPureElectricVehicle] & 1) == 0)
   {
     v28 = sub_10006D178();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -85,7 +85,7 @@
     }
   }
 
-  if (![v3 isPureElectricVehicle])
+  if (![vehicleCopy isPureElectricVehicle])
   {
     v6 = 0;
     goto LABEL_25;
@@ -94,25 +94,25 @@
   v4 = [[NSMutableArray alloc] initWithCapacity:2];
   if (GEOConfigGetBOOL())
   {
-    if (v3)
+    if (vehicleCopy)
     {
-      v5 = [v3 displayedBatteryPercentage];
+      displayedBatteryPercentage = [vehicleCopy displayedBatteryPercentage];
     }
 
     else
     {
-      v5 = 65;
+      displayedBatteryPercentage = 65;
     }
 
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"%lu%%" value:@"localized string not found" table:0];
-    v9 = [NSString localizedStringWithFormat:v8, v5];
+    v9 = [NSString localizedStringWithFormat:v8, displayedBatteryPercentage];
     [v4 addObject:v9];
   }
 
-  if (v3)
+  if (vehicleCopy)
   {
-    [v3 lastStateUpdateDate];
+    [vehicleCopy lastStateUpdateDate];
   }
 
   else
@@ -146,16 +146,16 @@ LABEL_18:
   if ([v4 count])
   {
     v18 = +[UITraitCollection currentTraitCollection];
-    v19 = [v18 layoutDirection];
+    layoutDirection = [v18 layoutDirection];
 
     v20 = +[NSBundle mainBundle];
     v21 = [v20 localizedStringForKey:@" · [List view details separator]" value:@"localized string not found" table:0];
 
-    if (v19 == 1)
+    if (layoutDirection == 1)
     {
-      v22 = [v4 reverseObjectEnumerator];
-      v23 = [v22 allObjects];
-      v6 = [v23 componentsJoinedByString:v21];
+      reverseObjectEnumerator = [v4 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
+      v6 = [allObjects componentsJoinedByString:v21];
     }
 
     else
@@ -174,13 +174,13 @@ LABEL_25:
   return v6;
 }
 
-- (id)_attributedTitleForVehicle:(id)a3
+- (id)_attributedTitleForVehicle:(id)vehicle
 {
-  v4 = a3;
+  vehicleCopy = vehicle;
   v5 = objc_alloc_init(NSMutableAttributedString);
-  if (v4)
+  if (vehicleCopy)
   {
-    [v4 combinedDisplayName];
+    [vehicleCopy combinedDisplayName];
   }
 
   else
@@ -206,7 +206,7 @@ LABEL_25:
   v11 = [NSDictionary dictionaryWithObjects:v36 forKeys:v35 count:2];
   v12 = [NSMutableDictionary dictionaryWithDictionary:v11];
 
-  if (v4)
+  if (vehicleCopy)
   {
     if ([(RoutePlanningVehicleRefinementModel *)self _shouldDefaultToNoSelection])
     {
@@ -228,7 +228,7 @@ LABEL_25:
 
     else
     {
-      if (![v4 isPureElectricVehicle])
+      if (![vehicleCopy isPureElectricVehicle])
       {
         goto LABEL_13;
       }
@@ -236,7 +236,7 @@ LABEL_25:
       v19 = [[NSAttributedString alloc] initWithString:@"\n"];
       [v5 appendAttributedString:v19];
 
-      v15 = +[BatteryIconView batteryIconWithLevel:](BatteryIconView, "batteryIconWithLevel:", [v4 displayedBatteryPercentage]);
+      v15 = +[BatteryIconView batteryIconWithLevel:](BatteryIconView, "batteryIconWithLevel:", [vehicleCopy displayedBatteryPercentage]);
       v17 = objc_alloc_init(NSTextAttachment);
       [v17 setImage:v15];
       [v15 size];
@@ -254,13 +254,13 @@ LABEL_25:
       v27 = [NSAttributedString attributedStringWithAttachment:v17];
       [v5 appendAttributedString:v27];
 
-      v18 = [(RoutePlanningVehicleRefinementModel *)self _subtitleForVehicle:v4];
+      v18 = [(RoutePlanningVehicleRefinementModel *)self _subtitleForVehicle:vehicleCopy];
       if ([v18 length])
       {
         v28 = [[NSAttributedString alloc] initWithString:@" "];
         [v5 appendAttributedString:v28];
 
-        v29 = +[VehicleBatteryView colorForBatteryLevel:](VehicleBatteryView, "colorForBatteryLevel:", [v4 displayedBatteryPercentage]);
+        v29 = +[VehicleBatteryView colorForBatteryLevel:](VehicleBatteryView, "colorForBatteryLevel:", [vehicleCopy displayedBatteryPercentage]);
         [v12 setObject:v29 forKeyedSubscript:NSForegroundColorAttributeName];
 
         v30 = [[NSAttributedString alloc] initWithString:v18 attributes:v12];
@@ -275,18 +275,18 @@ LABEL_13:
   return v31;
 }
 
-- (void)selectVehicleWithIdentifier:(id)a3
+- (void)selectVehicleWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = sub_100798A3C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v21 = v4;
+    v21 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[Options] Selected vehicle identifier: %@", buf, 0xCu);
   }
 
-  if ([v4 isEqual:@"DifferentCar"])
+  if ([identifierCopy isEqual:@"DifferentCar"])
   {
     [(RoutePlanningVehicleRefinementModel *)self setSelectedVehicle:0];
   }
@@ -297,10 +297,10 @@ LABEL_13:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(RoutePlanningVehicleRefinementModel *)self virtualGarage];
-    v7 = [v6 vehicles];
+    virtualGarage = [(RoutePlanningVehicleRefinementModel *)self virtualGarage];
+    vehicles = [virtualGarage vehicles];
 
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v8 = [vehicles countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -311,12 +311,12 @@ LABEL_13:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(vehicles);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
-          v13 = [v12 identifier];
-          v14 = [v13 isEqual:v4];
+          identifier = [v12 identifier];
+          v14 = [identifier isEqual:identifierCopy];
 
           if (v14)
           {
@@ -325,7 +325,7 @@ LABEL_13:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [vehicles countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v9)
         {
           continue;
@@ -344,24 +344,24 @@ LABEL_15:
   menuOptions = self->super._menuOptions;
   if (!menuOptions)
   {
-    v4 = [(RoutePlanningVehicleRefinementModel *)self virtualGarage];
-    if (!v4)
+    virtualGarage = [(RoutePlanningVehicleRefinementModel *)self virtualGarage];
+    if (!virtualGarage)
     {
       goto LABEL_15;
     }
 
-    v5 = v4;
-    v6 = [(NSArray *)v4 vehicles];
+    v5 = virtualGarage;
+    vehicles = [(NSArray *)virtualGarage vehicles];
     v24 = v5;
-    v7 = self;
+    selfCopy = self;
     if ([(RoutePlanningVehicleRefinementModel *)self _shouldDefaultToNoSelection])
     {
-      v8 = 0;
+      selectedVehicle = 0;
     }
 
     else
     {
-      v8 = [(RoutePlanningVehicleRefinementModel *)self selectedVehicle];
+      selectedVehicle = [(RoutePlanningVehicleRefinementModel *)self selectedVehicle];
     }
 
     v9 = objc_opt_new();
@@ -369,7 +369,7 @@ LABEL_15:
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    obj = v6;
+    obj = vehicles;
     v10 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v10)
     {
@@ -386,9 +386,9 @@ LABEL_15:
 
           v14 = *(*(&v26 + 1) + 8 * i);
           v15 = [RoutePlanningMenuOptionModel alloc];
-          v16 = [v14 identifier];
-          v17 = [(RoutePlanningVehicleRefinementModel *)v7 _attributedTitleForVehicle:v14];
-          v18 = -[RoutePlanningMenuOptionModel initWithIdentifier:title:selected:](v15, "initWithIdentifier:title:selected:", v16, v17, [v14 isEqual:v8]);
+          identifier = [v14 identifier];
+          v17 = [(RoutePlanningVehicleRefinementModel *)selfCopy _attributedTitleForVehicle:v14];
+          v18 = -[RoutePlanningMenuOptionModel initWithIdentifier:title:selected:](v15, "initWithIdentifier:title:selected:", identifier, v17, [v14 isEqual:selectedVehicle]);
           [(NSArray *)v9 addObject:v18];
         }
 
@@ -399,29 +399,29 @@ LABEL_15:
     }
 
     v19 = [RoutePlanningMenuOptionModel alloc];
-    v20 = [(RoutePlanningVehicleRefinementModel *)v7 _attributedTitleForVehicle:0];
-    v21 = [(RoutePlanningMenuOptionModel *)v19 initWithIdentifier:@"DifferentCar" title:v20 selected:v8 == 0];
+    v20 = [(RoutePlanningVehicleRefinementModel *)selfCopy _attributedTitleForVehicle:0];
+    v21 = [(RoutePlanningMenuOptionModel *)v19 initWithIdentifier:@"DifferentCar" title:v20 selected:selectedVehicle == 0];
     [(NSArray *)v9 addObject:v21];
 
-    v22 = v7->super._menuOptions;
-    v7->super._menuOptions = v9;
+    v22 = selfCopy->super._menuOptions;
+    selfCopy->super._menuOptions = v9;
 
-    menuOptions = v7->super._menuOptions;
+    menuOptions = selfCopy->super._menuOptions;
   }
 
-  v4 = menuOptions;
+  virtualGarage = menuOptions;
 LABEL_15:
 
-  return v4;
+  return virtualGarage;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = valueCopy;
   }
 
   else
@@ -430,39 +430,39 @@ LABEL_15:
   }
 
   v6 = v5;
-  v7 = [(RoutePlanningVehicleRefinementModel *)self virtualGarage];
-  v8 = [objc_opt_class() _isGarage:v7 significantlyDifferentFromGarage:v6];
-  v9 = sub_100798A3C();
-  v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
+  virtualGarage = [(RoutePlanningVehicleRefinementModel *)self virtualGarage];
+  v8 = [objc_opt_class() _isGarage:virtualGarage significantlyDifferentFromGarage:v6];
+  selectedVehicle = sub_100798A3C();
+  v10 = os_log_type_enabled(selectedVehicle, OS_LOG_TYPE_INFO);
   if (v8)
   {
     if (v10)
     {
       v12 = 138412290;
       v13 = v6;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[Options] Using updated garage: %@", &v12, 0xCu);
+      _os_log_impl(&_mh_execute_header, selectedVehicle, OS_LOG_TYPE_INFO, "[Options] Using updated garage: %@", &v12, 0xCu);
     }
 
     objc_storeStrong(&self->super._value, v5);
     menuOptions = self->super._menuOptions;
     self->super._menuOptions = 0;
 
-    v9 = [v6 selectedVehicle];
-    [(RoutePlanningVehicleRefinementModel *)self setSelectedVehicle:v9];
+    selectedVehicle = [v6 selectedVehicle];
+    [(RoutePlanningVehicleRefinementModel *)self setSelectedVehicle:selectedVehicle];
   }
 
   else if (v10)
   {
     LOWORD(v12) = 0;
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[Options] Garage has not changed; will not update menu", &v12, 2u);
+    _os_log_impl(&_mh_execute_header, selectedVehicle, OS_LOG_TYPE_INFO, "[Options] Garage has not changed; will not update menu", &v12, 2u);
   }
 }
 
-- (void)setSelectedVehicle:(id)a3
+- (void)setSelectedVehicle:(id)vehicle
 {
-  v5 = a3;
+  vehicleCopy = vehicle;
   selectedVehicle = self->_selectedVehicle;
-  v7 = v5;
+  v7 = vehicleCopy;
   v8 = selectedVehicle;
   if (v7 | v8)
   {
@@ -482,20 +482,20 @@ LABEL_15:
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[Options] updating selected vehicle from: %@ to: %@", &v14, 0x16u);
       }
 
-      objc_storeStrong(&self->_selectedVehicle, a3);
-      v13 = [(RoutePlanningRefinementModel *)self delegate];
-      [v13 updatedRefinementModel:self];
+      objc_storeStrong(&self->_selectedVehicle, vehicle);
+      delegate = [(RoutePlanningRefinementModel *)self delegate];
+      [delegate updatedRefinementModel:self];
     }
   }
 }
 
 - (id)virtualGarage
 {
-  v2 = [(RoutePlanningRefinementModel *)self value];
+  value = [(RoutePlanningRefinementModel *)self value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = value;
   }
 
   else
@@ -510,11 +510,11 @@ LABEL_15:
 
 - (void)_assertValidValue
 {
-  v3 = [(RoutePlanningRefinementModel *)self value];
-  if (v3)
+  value = [(RoutePlanningRefinementModel *)self value];
+  if (value)
   {
-    v4 = v3;
-    v5 = [(RoutePlanningRefinementModel *)self value];
+    v4 = value;
+    value2 = [(RoutePlanningRefinementModel *)self value];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -523,7 +523,7 @@ LABEL_15:
       v7 = sub_10006D178();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v8 = [(RoutePlanningRefinementModel *)self value];
+        value3 = [(RoutePlanningRefinementModel *)self value];
         v9 = objc_opt_class();
         v10 = NSStringFromClass(v9);
         v11 = [NSString stringWithFormat:@"Wrong type: %@", v10];
@@ -558,15 +558,15 @@ LABEL_15:
 - (BOOL)_shouldDefaultToNoSelection
 {
   v2 = +[MapsOfflineUIHelper sharedHelper];
-  v3 = [v2 isUsingOfflineMaps];
+  isUsingOfflineMaps = [v2 isUsingOfflineMaps];
 
-  return v3;
+  return isUsingOfflineMaps;
 }
 
 - (BOOL)shouldShowHighlighted
 {
-  v3 = [(RoutePlanningVehicleRefinementModel *)self selectedVehicle];
-  if (v3)
+  selectedVehicle = [(RoutePlanningVehicleRefinementModel *)self selectedVehicle];
+  if (selectedVehicle)
   {
     v4 = ![(RoutePlanningVehicleRefinementModel *)self _shouldDefaultToNoSelection];
   }
@@ -591,41 +591,41 @@ LABEL_15:
 {
   if ([(RoutePlanningVehicleRefinementModel *)self _shouldDefaultToNoSelection])
   {
-    v3 = [(RoutePlanningVehicleRefinementModel *)self _titleForDifferentCar];
+    _titleForDifferentCar = [(RoutePlanningVehicleRefinementModel *)self _titleForDifferentCar];
   }
 
   else
   {
-    v4 = [(RoutePlanningVehicleRefinementModel *)self selectedVehicle];
-    v5 = [v4 combinedDisplayName];
-    v6 = v5;
-    if (v5)
+    selectedVehicle = [(RoutePlanningVehicleRefinementModel *)self selectedVehicle];
+    combinedDisplayName = [selectedVehicle combinedDisplayName];
+    v6 = combinedDisplayName;
+    if (combinedDisplayName)
     {
-      v7 = v5;
+      _titleForDifferentCar2 = combinedDisplayName;
     }
 
     else
     {
-      v7 = [(RoutePlanningVehicleRefinementModel *)self _titleForDifferentCar];
+      _titleForDifferentCar2 = [(RoutePlanningVehicleRefinementModel *)self _titleForDifferentCar];
     }
 
-    v3 = v7;
+    _titleForDifferentCar = _titleForDifferentCar2;
   }
 
-  return v3;
+  return _titleForDifferentCar;
 }
 
-- (RoutePlanningVehicleRefinementModel)initWithDelegate:(id)a3 value:(id)a4
+- (RoutePlanningVehicleRefinementModel)initWithDelegate:(id)delegate value:(id)value
 {
   v10.receiver = self;
   v10.super_class = RoutePlanningVehicleRefinementModel;
-  v4 = [(RoutePlanningRefinementModel *)&v10 initWithDelegate:a3 value:a4];
+  v4 = [(RoutePlanningRefinementModel *)&v10 initWithDelegate:delegate value:value];
   v5 = v4;
   if (v4)
   {
-    v6 = [(RoutePlanningVehicleRefinementModel *)v4 virtualGarage];
-    v7 = [v6 selectedVehicle];
-    [(RoutePlanningVehicleRefinementModel *)v5 setSelectedVehicle:v7];
+    virtualGarage = [(RoutePlanningVehicleRefinementModel *)v4 virtualGarage];
+    selectedVehicle = [virtualGarage selectedVehicle];
+    [(RoutePlanningVehicleRefinementModel *)v5 setSelectedVehicle:selectedVehicle];
 
     v8 = +[NSNotificationCenter defaultCenter];
     [v8 addObserver:v5 selector:"offlineMapsStateChanged" name:@"UsingOfflineMapsStateChangedNotification" object:0];
@@ -634,18 +634,18 @@ LABEL_15:
   return v5;
 }
 
-+ (BOOL)_isGarage:(id)a3 significantlyDifferentFromGarage:(id)a4
++ (BOOL)_isGarage:(id)garage significantlyDifferentFromGarage:(id)fromGarage
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 | v6)
+  garageCopy = garage;
+  fromGarageCopy = fromGarage;
+  if (garageCopy | fromGarageCopy)
   {
-    v7 = [v5 selectedVehicle];
-    v8 = [v7 identifier];
-    v9 = [v6 selectedVehicle];
-    v10 = [v9 identifier];
-    v11 = v8;
-    v12 = v10;
+    selectedVehicle = [garageCopy selectedVehicle];
+    identifier = [selectedVehicle identifier];
+    selectedVehicle2 = [fromGarageCopy selectedVehicle];
+    identifier2 = [selectedVehicle2 identifier];
+    v11 = identifier;
+    v12 = identifier2;
     if (v11 | v12)
     {
       v14 = v12;
@@ -661,18 +661,18 @@ LABEL_15:
     {
     }
 
-    v16 = [v5 vehicles];
-    v17 = [v16 count];
-    v18 = [v6 vehicles];
-    v19 = [v18 count];
+    vehicles = [garageCopy vehicles];
+    v17 = [vehicles count];
+    vehicles2 = [fromGarageCopy vehicles];
+    v19 = [vehicles2 count];
 
     if (v17 == v19)
     {
-      v20 = [v5 selectedVehicle];
-      v21 = [v20 currentVehicleState];
-      v22 = [v6 selectedVehicle];
-      v23 = [v22 currentVehicleState];
-      v13 = [v21 isSignificantlyDifferentFromVehicleState:v23];
+      selectedVehicle3 = [garageCopy selectedVehicle];
+      currentVehicleState = [selectedVehicle3 currentVehicleState];
+      selectedVehicle4 = [fromGarageCopy selectedVehicle];
+      currentVehicleState2 = [selectedVehicle4 currentVehicleState];
+      v13 = [currentVehicleState isSignificantlyDifferentFromVehicleState:currentVehicleState2];
 
       goto LABEL_9;
     }

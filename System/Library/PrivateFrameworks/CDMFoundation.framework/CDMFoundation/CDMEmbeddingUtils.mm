@@ -1,15 +1,15 @@
 @interface CDMEmbeddingUtils
-+ (BOOL)isValidEmbeddingVersionOnlyNumber:(id)a3;
-+ (id)setStringToJSONDictionaryWithError:(id *)a3 stringToConvert:(id)a4;
++ (BOOL)isValidEmbeddingVersionOnlyNumber:(id)number;
++ (id)setStringToJSONDictionaryWithError:(id *)error stringToConvert:(id)convert;
 @end
 
 @implementation CDMEmbeddingUtils
 
-+ (id)setStringToJSONDictionaryWithError:(id *)a3 stringToConvert:(id)a4
++ (id)setStringToJSONDictionaryWithError:(id *)error stringToConvert:(id)convert
 {
   v21 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696ACB0];
-  v6 = [a4 dataUsingEncoding:4];
+  v6 = [convert dataUsingEncoding:4];
   v16 = 0;
   v7 = [v5 JSONObjectWithData:v6 options:0 error:&v16];
   v8 = v16;
@@ -17,11 +17,11 @@
   if (v8)
   {
     v9 = v8;
-    *a3 = v8;
+    *error = v8;
     v10 = CDMOSLoggerForCategory(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v15 = *a3;
+      v15 = *error;
       *buf = 136315394;
       v18 = "+[CDMEmbeddingUtils setStringToJSONDictionaryWithError:stringToConvert:]";
       v19 = 2112;
@@ -44,10 +44,10 @@
   return v12;
 }
 
-+ (BOOL)isValidEmbeddingVersionOnlyNumber:(id)a3
++ (BOOL)isValidEmbeddingVersionOnlyNumber:(id)number
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [a3 componentsSeparatedByString:@"."];
+  v3 = [number componentsSeparatedByString:@"."];
   if ([v3 count] == 3)
   {
     v15 = 0u;

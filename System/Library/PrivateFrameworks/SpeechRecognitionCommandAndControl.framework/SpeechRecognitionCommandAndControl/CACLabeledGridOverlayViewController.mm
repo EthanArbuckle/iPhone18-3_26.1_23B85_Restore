@@ -3,10 +3,10 @@
 - (BOOL)showsNumbersInTopLeft;
 - (void)hide;
 - (void)loadView;
-- (void)setLabeledElements:(id)a3;
-- (void)setShowsNumbersInTopLeft:(BOOL)a3;
+- (void)setLabeledElements:(id)elements;
+- (void)setShowsNumbersInTopLeft:(BOOL)left;
 - (void)show;
-- (void)zoomOverRegion:(CGRect)a3;
+- (void)zoomOverRegion:(CGRect)region;
 @end
 
 @implementation CACLabeledGridOverlayViewController
@@ -14,8 +14,8 @@
 - (void)loadView
 {
   v3 = [CACLabeledGridOverlayView alloc];
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = [(CACLabeledGridOverlayView *)v3 initWithFrame:?];
   gridOverlayView = self->_gridOverlayView;
   self->_gridOverlayView = v5;
@@ -25,62 +25,62 @@
   [(CACLabeledGridOverlayViewController *)self setView:v7];
 }
 
-- (void)setShowsNumbersInTopLeft:(BOOL)a3
+- (void)setShowsNumbersInTopLeft:(BOOL)left
 {
-  v3 = a3;
-  v4 = [(CACLabeledGridOverlayViewController *)self gridOverlayView];
-  [v4 setShowsNumbersInTopLeft:v3];
+  leftCopy = left;
+  gridOverlayView = [(CACLabeledGridOverlayViewController *)self gridOverlayView];
+  [gridOverlayView setShowsNumbersInTopLeft:leftCopy];
 }
 
 - (BOOL)showsNumbersInTopLeft
 {
-  v2 = [(CACLabeledGridOverlayViewController *)self gridOverlayView];
-  v3 = [v2 showsNumbersInTopLeft];
+  gridOverlayView = [(CACLabeledGridOverlayViewController *)self gridOverlayView];
+  showsNumbersInTopLeft = [gridOverlayView showsNumbersInTopLeft];
 
-  return v3;
+  return showsNumbersInTopLeft;
 }
 
 - (BOOL)isSmallEnoughForZooming
 {
-  v2 = [(CACLabeledGridOverlayViewController *)self gridOverlayView];
-  v3 = [v2 isSmallEnoughForZooming];
+  gridOverlayView = [(CACLabeledGridOverlayViewController *)self gridOverlayView];
+  isSmallEnoughForZooming = [gridOverlayView isSmallEnoughForZooming];
 
-  return v3;
+  return isSmallEnoughForZooming;
 }
 
 - (void)show
 {
-  v2 = [(CACLabeledGridOverlayViewController *)self gridOverlayView];
-  [v2 show];
+  gridOverlayView = [(CACLabeledGridOverlayViewController *)self gridOverlayView];
+  [gridOverlayView show];
 }
 
 - (void)hide
 {
-  v2 = [(CACLabeledGridOverlayViewController *)self gridOverlayView];
-  [v2 hide];
+  gridOverlayView = [(CACLabeledGridOverlayViewController *)self gridOverlayView];
+  [gridOverlayView hide];
 }
 
-- (void)setLabeledElements:(id)a3
+- (void)setLabeledElements:(id)elements
 {
-  v4 = a3;
-  v5 = [(CACLabeledGridOverlayViewController *)self gridOverlayView];
-  [v5 clearLabeledElements];
+  elementsCopy = elements;
+  gridOverlayView = [(CACLabeledGridOverlayViewController *)self gridOverlayView];
+  [gridOverlayView clearLabeledElements];
 
-  v6 = [(CACLabeledGridOverlayViewController *)self gridOverlayView];
-  [v6 setShowsElementsAsClickable:{-[CACLabeledGridOverlayViewController showsElementsAsClickable](self, "showsElementsAsClickable")}];
+  gridOverlayView2 = [(CACLabeledGridOverlayViewController *)self gridOverlayView];
+  [gridOverlayView2 setShowsElementsAsClickable:{-[CACLabeledGridOverlayViewController showsElementsAsClickable](self, "showsElementsAsClickable")}];
 
-  v7 = [(CACLabeledGridOverlayViewController *)self gridOverlayView];
-  [v7 addLabeledElements:v4];
+  gridOverlayView3 = [(CACLabeledGridOverlayViewController *)self gridOverlayView];
+  [gridOverlayView3 addLabeledElements:elementsCopy];
 }
 
-- (void)zoomOverRegion:(CGRect)a3
+- (void)zoomOverRegion:(CGRect)region
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(CACLabeledGridOverlayViewController *)self gridOverlayView];
-  [v7 zoomOverRect:{x, y, width, height}];
+  height = region.size.height;
+  width = region.size.width;
+  y = region.origin.y;
+  x = region.origin.x;
+  gridOverlayView = [(CACLabeledGridOverlayViewController *)self gridOverlayView];
+  [gridOverlayView zoomOverRect:{x, y, width, height}];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface ASMessageHandler
 - (SEL)handleErrorSendingMessageAction;
 - (SEL)handleReceiveMessageAction;
-- (void)setHandleErrorSendingMessageAction:(SEL)a3;
-- (void)setHandleReceiveMessageAction:(SEL)a3;
+- (void)setHandleErrorSendingMessageAction:(SEL)action;
+- (void)setHandleReceiveMessageAction:(SEL)action;
 @end
 
 @implementation ASMessageHandler
@@ -20,19 +20,19 @@
   }
 }
 
-- (void)setHandleReceiveMessageAction:(SEL)a3
+- (void)setHandleReceiveMessageAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_handleReceiveMessageAction = v3;
+  self->_handleReceiveMessageAction = actionCopy;
 }
 
 - (SEL)handleErrorSendingMessageAction
@@ -48,19 +48,19 @@
   }
 }
 
-- (void)setHandleErrorSendingMessageAction:(SEL)a3
+- (void)setHandleErrorSendingMessageAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_handleErrorSendingMessageAction = v3;
+  self->_handleErrorSendingMessageAction = actionCopy;
 }
 
 @end

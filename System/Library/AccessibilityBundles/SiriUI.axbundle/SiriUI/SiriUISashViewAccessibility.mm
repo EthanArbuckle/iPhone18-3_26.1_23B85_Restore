@@ -1,18 +1,18 @@
 @interface SiriUISashViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
 @end
 
 @implementation SiriUISashViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SiriUISashView" hasInstanceMethod:@"sashItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SiriUISashItem" isKindOfClass:@"SiriSharedUISashItem"];
-  [v3 validateClass:@"SiriSharedUISashItem" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SiriSharedUISashItem" hasInstanceMethod:@"isHidden" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SiriUISashView" hasInstanceMethod:@"sashItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SiriUISashItem" isKindOfClass:@"SiriSharedUISashItem"];
+  [validationsCopy validateClass:@"SiriSharedUISashItem" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SiriSharedUISashItem" hasInstanceMethod:@"isHidden" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel

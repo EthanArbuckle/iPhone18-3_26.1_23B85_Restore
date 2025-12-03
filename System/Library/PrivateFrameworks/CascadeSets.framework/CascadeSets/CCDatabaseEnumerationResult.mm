@@ -1,6 +1,6 @@
 @interface CCDatabaseEnumerationResult
 - (CCDatabaseEnumerationResult)init;
-- (CCDatabaseEnumerationResult)initWithStatement:(id)a3 database:(id)a4 command:(id)a5 error:(id)a6;
+- (CCDatabaseEnumerationResult)initWithStatement:(id)statement database:(id)database command:(id)command error:(id)error;
 - (id)nextRow;
 - (void)dealloc;
 @end
@@ -13,22 +13,22 @@
   objc_exception_throw(v2);
 }
 
-- (CCDatabaseEnumerationResult)initWithStatement:(id)a3 database:(id)a4 command:(id)a5 error:(id)a6
+- (CCDatabaseEnumerationResult)initWithStatement:(id)statement database:(id)database command:(id)command error:(id)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  statementCopy = statement;
+  databaseCopy = database;
+  commandCopy = command;
+  errorCopy = error;
   v18.receiver = self;
   v18.super_class = CCDatabaseEnumerationResult;
   v15 = [(CCDatabaseEnumerationResult *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_database, a4);
-    objc_storeStrong(&v16->_command, a5);
-    objc_storeStrong(&v16->_statement, a3);
-    objc_storeStrong(&v16->_error, a6);
+    objc_storeStrong(&v15->_database, database);
+    objc_storeStrong(&v16->_command, command);
+    objc_storeStrong(&v16->_statement, statement);
+    objc_storeStrong(&v16->_error, error);
   }
 
   return v16;
@@ -58,11 +58,11 @@
   statement = self->_statement;
   if (statement)
   {
-    v6 = [(CCSQLitePreparedStatement *)statement stmt];
-    v7 = sqlite3_step(v6);
+    stmt = [(CCSQLitePreparedStatement *)statement stmt];
+    v7 = sqlite3_step(stmt);
     if (v7 == 101)
     {
-      sqlite3_reset(v6);
+      sqlite3_reset(stmt);
       v9 = self->_statement;
       self->_statement = 0;
     }
@@ -76,7 +76,7 @@
         goto LABEL_3;
       }
 
-      v10 = [(CCSQLiteDatabase *)self->_database lastExtendedErrorCode];
+      lastExtendedErrorCode = [(CCSQLiteDatabase *)self->_database lastExtendedErrorCode];
       command = self->_command;
       v12 = _errorDescriptionForCommand();
       v13 = objc_alloc(MEMORY[0x1E696ABC0]);
@@ -84,7 +84,7 @@
       v14 = *MEMORY[0x1E696AA08];
       v19[0] = @"command";
       v19[1] = v14;
-      v15 = _createSQLiteAPIErrorFromResultCode(v8, v10);
+      v15 = _createSQLiteAPIErrorFromResultCode(v8, lastExtendedErrorCode);
       v19[2] = *MEMORY[0x1E696A578];
       v20[1] = v15;
       v20[2] = v12;

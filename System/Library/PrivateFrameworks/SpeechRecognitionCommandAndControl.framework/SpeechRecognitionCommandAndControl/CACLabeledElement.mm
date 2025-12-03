@@ -1,7 +1,7 @@
 @interface CACLabeledElement
-- (BOOL)_rect:(CGRect)a3 rouglyEqualTo:(CGRect)a4;
-- (BOOL)isIdenticalTo:(id)a3;
-- (CACLabeledElement)initWithElement:(id)a3 recognitionStrings:(id)a4 rectangle:(CGRect)a5;
+- (BOOL)_rect:(CGRect)_rect rouglyEqualTo:(CGRect)to;
+- (BOOL)isIdenticalTo:(id)to;
+- (CACLabeledElement)initWithElement:(id)element recognitionStrings:(id)strings rectangle:(CGRect)rectangle;
 - (CGPoint)quantizedPosition;
 - (CGRect)frame;
 - (CGRect)interfaceOrientedRectangle;
@@ -14,7 +14,7 @@
 - (NSString)unfilteredRecognitionLabel;
 - (NSString)valueLabel;
 - (id)description;
-- (int64_t)quantizedPositionCompare:(id)a3;
+- (int64_t)quantizedPositionCompare:(id)compare;
 - (unint64_t)traits;
 @end
 
@@ -22,40 +22,40 @@
 
 - (NSString)unfilteredRecognitionLabel
 {
-  v2 = [(CACLabeledElement *)self element];
-  v3 = [v2 speechInputLabel];
+  element = [(CACLabeledElement *)self element];
+  speechInputLabel = [element speechInputLabel];
 
-  return v3;
+  return speechInputLabel;
 }
 
 - (NSString)fullLabel
 {
-  v2 = [(CACLabeledElement *)self element];
-  v3 = [v2 label];
+  element = [(CACLabeledElement *)self element];
+  label = [element label];
 
-  return v3;
+  return label;
 }
 
 - (NSString)valueLabel
 {
-  v2 = [(CACLabeledElement *)self element];
-  v3 = [v2 value];
+  element = [(CACLabeledElement *)self element];
+  value = [element value];
 
-  return v3;
+  return value;
 }
 
 - (unint64_t)traits
 {
-  v2 = [(CACLabeledElement *)self element];
-  v3 = [v2 traits];
+  element = [(CACLabeledElement *)self element];
+  traits = [element traits];
 
-  return v3;
+  return traits;
 }
 
 - (CGRect)frame
 {
-  v2 = [(CACLabeledElement *)self element];
-  [v2 frame];
+  element = [(CACLabeledElement *)self element];
+  [element frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -72,42 +72,42 @@
   return result;
 }
 
-- (CACLabeledElement)initWithElement:(id)a3 recognitionStrings:(id)a4 rectangle:(CGRect)a5
+- (CACLabeledElement)initWithElement:(id)element recognitionStrings:(id)strings rectangle:(CGRect)rectangle
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  v12 = a4;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
+  elementCopy = element;
+  stringsCopy = strings;
   v39.receiver = self;
   v39.super_class = CACLabeledElement;
   v13 = [(CACLabeledElement *)&v39 init];
   v14 = v13;
   if (v13)
   {
-    [(CACLabeledElement *)v13 setElement:v11];
-    [(CACLabeledElement *)v14 setRecognitionStrings:v12];
+    [(CACLabeledElement *)v13 setElement:elementCopy];
+    [(CACLabeledElement *)v14 setRecognitionStrings:stringsCopy];
     [(CACLabeledElement *)v14 setRectangle:x, y, width, height];
-    v15 = [v11 uiElement];
-    v16 = [v15 stringWithAXAttribute:5019];
+    uiElement = [elementCopy uiElement];
+    v16 = [uiElement stringWithAXAttribute:5019];
     [(CACLabeledElement *)v14 setAxIdentifier:v16];
 
-    v14->_displayID = [v11 windowDisplayId];
+    v14->_displayID = [elementCopy windowDisplayId];
     v17 = +[CACDisplayManager sharedManager];
     v18 = [v17 overlayViewForDisplayID:v14->_displayID];
 
     v19 = +[CACDisplayManager sharedManager];
-    v20 = [v19 carPlayConnected];
+    carPlayConnected = [v19 carPlayConnected];
 
-    v21 = [MEMORY[0x277CE6BA0] systemWideElement];
-    v22 = v21;
-    if (v20)
+    systemWideElement = [MEMORY[0x277CE6BA0] systemWideElement];
+    v22 = systemWideElement;
+    if (carPlayConnected)
     {
-      v23 = [v21 elementsForAttribute:1009];
-      v24 = [v23 firstObject];
+      v23 = [systemWideElement elementsForAttribute:1009];
+      firstObject = [v23 firstObject];
 
-      v22 = v24;
+      v22 = firstObject;
     }
 
     [(CACLabeledElement *)v14 rectangle];
@@ -115,8 +115,8 @@
     v28 = v27;
     v30 = v29;
     v32 = v31;
-    v33 = [v18 window];
-    [v22 convertRect:objc_msgSend(v33 toContextId:"_contextId") displayId:{v14->_displayID, v26, v28, v30, v32}];
+    window = [v18 window];
+    [v22 convertRect:objc_msgSend(window toContextId:"_contextId") displayId:{v14->_displayID, v26, v28, v30, v32}];
     v14->_interfaceRectangle.origin.x = v34;
     v14->_interfaceRectangle.origin.y = v35;
     v14->_interfaceRectangle.size.width = v36;
@@ -139,16 +139,16 @@
   return result;
 }
 
-- (int64_t)quantizedPositionCompare:(id)a3
+- (int64_t)quantizedPositionCompare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   [(CACLabeledElement *)self quantizedPosition];
   v6 = v5;
   [(CACLabeledElement *)self quantizedPosition];
   v8 = v6 + v7 / 1000.0;
-  [v4 quantizedPosition];
+  [compareCopy quantizedPosition];
   v10 = v9;
-  [v4 quantizedPosition];
+  [compareCopy quantizedPosition];
   v12 = v11;
 
   if (v8 >= v10 + v12 / 1000.0)
@@ -179,32 +179,32 @@
 {
   v3 = MEMORY[0x277CCACA8];
   recognitionStrings = self->_recognitionStrings;
-  v5 = [(CACLabeledElement *)self numberedLabel];
-  v6 = [v3 stringWithFormat:@"Labeled element: %@, %@, label:(%f, %f, %f, %f), elmt:(%f, %f, %f, %f), %@", recognitionStrings, v5, *&self->_labelRectangle.origin.x, *&self->_labelRectangle.origin.y, *&self->_labelRectangle.size.width, *&self->_labelRectangle.size.height, *&self->_rectangle.origin.x, *&self->_rectangle.origin.y, *&self->_rectangle.size.width, *&self->_rectangle.size.height, self->_element];
+  numberedLabel = [(CACLabeledElement *)self numberedLabel];
+  v6 = [v3 stringWithFormat:@"Labeled element: %@, %@, label:(%f, %f, %f, %f), elmt:(%f, %f, %f, %f), %@", recognitionStrings, numberedLabel, *&self->_labelRectangle.origin.x, *&self->_labelRectangle.origin.y, *&self->_labelRectangle.size.width, *&self->_labelRectangle.size.height, *&self->_rectangle.origin.x, *&self->_rectangle.origin.y, *&self->_rectangle.size.width, *&self->_rectangle.size.height, self->_element];
 
   return v6;
 }
 
 - (NSString)numberedLabel
 {
-  v3 = [(CACLabeledElement *)self number];
-  if (v3)
+  number = [(CACLabeledElement *)self number];
+  if (number)
   {
-    v3 = [CACLocaleUtilities displayStringForOverlayNumber:[(CACLabeledElement *)self number]];
+    number = [CACLocaleUtilities displayStringForOverlayNumber:[(CACLabeledElement *)self number]];
   }
 
-  return v3;
+  return number;
 }
 
 - (NSString)numberedLabelForRecognition
 {
-  v3 = [(CACLabeledElement *)self number];
-  if (v3)
+  number = [(CACLabeledElement *)self number];
+  if (number)
   {
-    v3 = [CACLocaleUtilities recognitionStringForOverlayNumber:[(CACLabeledElement *)self number]];
+    number = [CACLocaleUtilities recognitionStringForOverlayNumber:[(CACLabeledElement *)self number]];
   }
 
-  return v3;
+  return number;
 }
 
 - (CGRect)rectangle
@@ -242,17 +242,17 @@
   return result;
 }
 
-- (BOOL)_rect:(CGRect)a3 rouglyEqualTo:(CGRect)a4
+- (BOOL)_rect:(CGRect)_rect rouglyEqualTo:(CGRect)to
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
-  if (CGRectEqualToRect(a3, a4))
+  height = to.size.height;
+  width = to.size.width;
+  y = to.origin.y;
+  x = to.origin.x;
+  v8 = _rect.size.height;
+  v9 = _rect.size.width;
+  v10 = _rect.origin.y;
+  v11 = _rect.origin.x;
+  if (CGRectEqualToRect(_rect, to))
   {
     return 1;
   }
@@ -267,16 +267,16 @@
   return v14 < 1.0 && v13;
 }
 
-- (BOOL)isIdenticalTo:(id)a3
+- (BOOL)isIdenticalTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(CACLabeledElement *)self element];
-    v7 = [v5 element];
-    v8 = [v6 isEqual:v7];
+    v5 = toCopy;
+    element = [(CACLabeledElement *)self element];
+    element2 = [v5 element];
+    v8 = [element isEqual:element2];
 
     if (v8)
     {
@@ -287,9 +287,9 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v10 = [(CACLabeledElement *)self label];
-    v11 = [v5 label];
-    if ([v10 compare:v11 options:129])
+    label = [(CACLabeledElement *)self label];
+    label2 = [v5 label];
+    if ([label compare:label2 options:129])
     {
     }
 

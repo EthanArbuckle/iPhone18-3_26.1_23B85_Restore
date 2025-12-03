@@ -1,8 +1,8 @@
 @interface VCMediaNegotiatorMultiwayAudioStream
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VCMediaNegotiatorMultiwayAudioStream)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addPayload:(int)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addPayload:(int)payload;
 - (void)dealloc;
 @end
 
@@ -31,7 +31,7 @@
   [(VCMediaNegotiatorMultiwayAudioStream *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -39,22 +39,22 @@
   v5 = [(VCMediaNegotiatorMultiwayMediaStream *)&v8 copyWithZone:?];
   if (v5)
   {
-    v6 = [(NSMutableSet *)self->_supportedAudioPayloads copyWithZone:a3];
+    v6 = [(NSMutableSet *)self->_supportedAudioPayloads copyWithZone:zone];
     [v5 setSupportedAudioPayloads:v6];
   }
 
   return v5;
 }
 
-- (void)addPayload:(int)a3
+- (void)addPayload:(int)payload
 {
   supportedAudioPayloads = self->_supportedAudioPayloads;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&payload];
 
   [(NSMutableSet *)supportedAudioPayloads addObject:v4];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v19 = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -65,13 +65,13 @@
 
   v13.receiver = self;
   v13.super_class = VCMediaNegotiatorMultiwayAudioStream;
-  v5 = [(VCMediaNegotiatorMultiwayMediaStream *)&v13 isEqual:a3];
+  v5 = [(VCMediaNegotiatorMultiwayMediaStream *)&v13 isEqual:equal];
   if (!v5)
   {
     return v5;
   }
 
-  v6 = [objc_msgSend(a3 "supportedAudioPayloads")];
+  v6 = [objc_msgSend(equal "supportedAudioPayloads")];
   if (v6 != [(NSMutableSet *)self->_supportedAudioPayloads count])
   {
 LABEL_13:
@@ -83,8 +83,8 @@ LABEL_13:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [a3 supportedAudioPayloads];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v14 count:16];
+  supportedAudioPayloads = [equal supportedAudioPayloads];
+  v8 = [supportedAudioPayloads countByEnumeratingWithState:&v15 objects:v14 count:16];
   if (v8)
   {
     v9 = v8;
@@ -95,7 +95,7 @@ LABEL_6:
     {
       if (*v16 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(supportedAudioPayloads);
       }
 
       v5 = [(NSMutableSet *)self->_supportedAudioPayloads containsObject:*(*(&v15 + 1) + 8 * v11)];
@@ -106,7 +106,7 @@ LABEL_6:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v14 count:16];
+        v9 = [supportedAudioPayloads countByEnumeratingWithState:&v15 objects:v14 count:16];
         LOBYTE(v5) = 1;
         if (v9)
         {

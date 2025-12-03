@@ -1,7 +1,7 @@
 @interface AXMDataSummary
 - (AXMChartDescriptor)chartDescriptor;
 - (AXMDataSeriesDescriptor)series;
-- (AXMDataSummary)initWithSeries:(id)a3 chartDescriptor:(id)a4;
+- (AXMDataSummary)initWithSeries:(id)series chartDescriptor:(id)descriptor;
 - (AXMDataSummaryCategoryNameProvider)categoryNameDelegate;
 - (NSArray)dataFeatureDescriptions;
 - (NSArray)statsDescriptions;
@@ -13,13 +13,13 @@
 - (NSString)modelDescription;
 - (NSString)outliersDescription;
 - (NSString)slopeDescription;
-- (double)getMean:(id)a3;
-- (double)getMedian:(id)a3;
-- (double)getVariance:(id)a3;
-- (double)positionForXAxisValue:(double)a3;
-- (double)positionForYAxisValue:(double)a3;
+- (double)getMean:(id)mean;
+- (double)getMedian:(id)median;
+- (double)getVariance:(id)variance;
+- (double)positionForXAxisValue:(double)value;
+- (double)positionForYAxisValue:(double)value;
 - (id)description;
-- (id)stringForComponents:(id)a3;
+- (id)stringForComponents:(id)components;
 - (void)compute;
 - (void)computeCovariance;
 - (void)computeLinearRegression;
@@ -27,47 +27,47 @@
 - (void)computeOutliers;
 - (void)computeR;
 - (void)computeRanges;
-- (void)computeRegressionModel:(id)a3;
+- (void)computeRegressionModel:(id)model;
 - (void)computeResiduals;
 - (void)computeVariances;
-- (void)getValues:(double *)a3 fromNSNumberArray:(id)a4;
+- (void)getValues:(double *)values fromNSNumberArray:(id)array;
 @end
 
 @implementation AXMDataSummary
 
-- (AXMDataSummary)initWithSeries:(id)a3 chartDescriptor:(id)a4
+- (AXMDataSummary)initWithSeries:(id)series chartDescriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
+  seriesCopy = series;
+  descriptorCopy = descriptor;
   v30.receiver = self;
   v30.super_class = AXMDataSummary;
   v8 = [(AXMDataSummary *)&v30 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_chartDescriptor, v7);
-    objc_storeWeak(&v9->_series, v6);
-    v10 = [v6 xValues];
-    v11 = [v6 numericalValuesFromDataPointValues:v10];
+    objc_storeWeak(&v8->_chartDescriptor, descriptorCopy);
+    objc_storeWeak(&v9->_series, seriesCopy);
+    xValues = [seriesCopy xValues];
+    v11 = [seriesCopy numericalValuesFromDataPointValues:xValues];
     xValues = v9->_xValues;
     v9->_xValues = v11;
 
-    v13 = [v6 yValues];
-    v14 = [v6 numericalValuesFromDataPointValues:v13];
+    yValues = [seriesCopy yValues];
+    v14 = [seriesCopy numericalValuesFromDataPointValues:yValues];
     yValues = v9->_yValues;
     v9->_yValues = v14;
 
     v9->_numValues = [(NSArray *)v9->_xValues count];
     v28 = MEMORY[0x1E695DEC8];
-    v29 = [v7 xAxis];
-    v16 = [v29 title];
-    v17 = [v7 yAxis];
-    v18 = [v17 title];
-    v19 = [v7 zNumericAxisDescriptor];
-    v20 = [v19 title];
-    v21 = [v7 zCategoricalAxisDescriptor];
-    v22 = [v21 title];
-    v23 = [v28 axmArrayByIgnoringNilElementsWithCount:{4, v16, v18, v20, v22}];
+    xAxis = [descriptorCopy xAxis];
+    title = [xAxis title];
+    yAxis = [descriptorCopy yAxis];
+    title2 = [yAxis title];
+    zNumericAxisDescriptor = [descriptorCopy zNumericAxisDescriptor];
+    title3 = [zNumericAxisDescriptor title];
+    zCategoricalAxisDescriptor = [descriptorCopy zCategoricalAxisDescriptor];
+    title4 = [zCategoricalAxisDescriptor title];
+    v23 = [v28 axmArrayByIgnoringNilElementsWithCount:{4, title, title2, title3, title4}];
     axisTitles = v9->_axisTitles;
     v9->_axisTitles = v23;
 
@@ -82,16 +82,16 @@
   return v9;
 }
 
-- (void)computeRegressionModel:(id)a3
+- (void)computeRegressionModel:(id)model
 {
-  v4 = a3;
-  v5 = [(AXMDataSummary *)self xValues];
-  v6 = [v5 count];
-  v7 = [(AXMDataSummary *)self yValues];
-  if (v6 == [v7 count])
+  modelCopy = model;
+  xValues = [(AXMDataSummary *)self xValues];
+  v6 = [xValues count];
+  yValues = [(AXMDataSummary *)self yValues];
+  if (v6 == [yValues count])
   {
-    v8 = [(AXMDataSummary *)self xValues];
-    v9 = [v8 count];
+    xValues2 = [(AXMDataSummary *)self xValues];
+    v9 = [xValues2 count];
 
     if (v9)
     {
@@ -100,16 +100,16 @@
       v15[2] = 0x3032000000;
       v15[3] = __Block_byref_object_copy__10;
       v15[4] = __Block_byref_object_dispose__10;
-      v10 = self;
-      v16 = v10;
+      selfCopy = self;
+      v16 = selfCopy;
       v11 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __41__AXMDataSummary_computeRegressionModel___block_invoke;
       block[3] = &unk_1E7A1E0E8;
       v14 = v15;
-      block[4] = v10;
-      v13 = v4;
+      block[4] = selfCopy;
+      v13 = modelCopy;
       dispatch_async(v11, block);
 
       _Block_object_dispose(v15, 8);
@@ -168,11 +168,11 @@ void __41__AXMDataSummary_computeRegressionModel___block_invoke_2(void *a1)
   if (!dataFeatureDescriptions)
   {
     v4 = MEMORY[0x1E695DEC8];
-    v5 = [(AXMDataSummary *)self slopeDescription];
-    v6 = [(AXMDataSummary *)self modelDescription];
-    v7 = [(AXMDataSummary *)self confidenceDescription];
-    v8 = [(AXMDataSummary *)self outliersDescription];
-    v9 = [v4 axmArrayByIgnoringNilElementsWithCount:{4, v5, v6, v7, v8}];
+    slopeDescription = [(AXMDataSummary *)self slopeDescription];
+    modelDescription = [(AXMDataSummary *)self modelDescription];
+    confidenceDescription = [(AXMDataSummary *)self confidenceDescription];
+    outliersDescription = [(AXMDataSummary *)self outliersDescription];
+    v9 = [v4 axmArrayByIgnoringNilElementsWithCount:{4, slopeDescription, modelDescription, confidenceDescription, outliersDescription}];
     v10 = self->_dataFeatureDescriptions;
     self->_dataFeatureDescriptions = v9;
 
@@ -188,11 +188,11 @@ void __41__AXMDataSummary_computeRegressionModel___block_invoke_2(void *a1)
   if (!statsDescriptions)
   {
     v4 = MEMORY[0x1E695DEC8];
-    v5 = [(AXMDataSummary *)self minValueDescription];
-    v6 = [(AXMDataSummary *)self maxValueDescription];
-    v7 = [(AXMDataSummary *)self meanValueDescription];
-    v8 = [(AXMDataSummary *)self medianValueDescription];
-    v9 = [v4 axmArrayByIgnoringNilElementsWithCount:{4, v5, v6, v7, v8}];
+    minValueDescription = [(AXMDataSummary *)self minValueDescription];
+    maxValueDescription = [(AXMDataSummary *)self maxValueDescription];
+    meanValueDescription = [(AXMDataSummary *)self meanValueDescription];
+    medianValueDescription = [(AXMDataSummary *)self medianValueDescription];
+    v9 = [v4 axmArrayByIgnoringNilElementsWithCount:{4, minValueDescription, maxValueDescription, meanValueDescription, medianValueDescription}];
     v10 = self->_statsDescriptions;
     self->_statsDescriptions = v9;
 
@@ -204,16 +204,16 @@ void __41__AXMDataSummary_computeRegressionModel___block_invoke_2(void *a1)
 
 - (NSString)modelDescription
 {
-  v2 = [(AXMDataSummary *)self regressionModel];
-  v3 = [v2 modelDescription];
+  regressionModel = [(AXMDataSummary *)self regressionModel];
+  modelDescription = [regressionModel modelDescription];
 
-  return v3;
+  return modelDescription;
 }
 
 - (NSString)slopeDescription
 {
-  v3 = [(AXMDataSummary *)self regressionModel];
-  [v3 confidence];
+  regressionModel = [(AXMDataSummary *)self regressionModel];
+  [regressionModel confidence];
   v5 = v4;
 
   if (v5 <= 0.2)
@@ -244,8 +244,8 @@ void __41__AXMDataSummary_computeRegressionModel___block_invoke_2(void *a1)
 
 - (NSString)confidenceDescription
 {
-  v2 = [(AXMDataSummary *)self regressionModel];
-  [v2 confidence];
+  regressionModel = [(AXMDataSummary *)self regressionModel];
+  [regressionModel confidence];
   v4 = v3;
 
   if (v4 <= 0.9)
@@ -301,15 +301,15 @@ void __41__AXMDataSummary_computeRegressionModel___block_invoke_2(void *a1)
   v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_minY];
   v5 = [(NSArray *)yValues indexOfObject:v4];
 
-  v6 = [(AXMDataSummary *)self series];
-  v7 = [v6 dataPoints];
-  v8 = [v7 objectAtIndexedSubscript:v5];
-  v9 = [v8 valueDescription];
+  series = [(AXMDataSummary *)self series];
+  dataPoints = [series dataPoints];
+  v8 = [dataPoints objectAtIndexedSubscript:v5];
+  valueDescription = [v8 valueDescription];
 
   v10 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
   v11 = [v10 localizedStringForKey:@"chart.series.minvalue.format" value:&stru_1F23EA908 table:@"Accessibility"];
 
-  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:v11, v9];
+  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:v11, valueDescription];
 
   return v12;
 }
@@ -320,15 +320,15 @@ void __41__AXMDataSummary_computeRegressionModel___block_invoke_2(void *a1)
   v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_maxY];
   v5 = [(NSArray *)yValues indexOfObject:v4];
 
-  v6 = [(AXMDataSummary *)self series];
-  v7 = [v6 dataPoints];
-  v8 = [v7 objectAtIndexedSubscript:v5];
-  v9 = [v8 valueDescription];
+  series = [(AXMDataSummary *)self series];
+  dataPoints = [series dataPoints];
+  v8 = [dataPoints objectAtIndexedSubscript:v5];
+  valueDescription = [v8 valueDescription];
 
   v10 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
   v11 = [v10 localizedStringForKey:@"chart.series.maxvalue.format" value:&stru_1F23EA908 table:@"Accessibility"];
 
-  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:v11, v9];
+  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:v11, valueDescription];
 
   return v12;
 }
@@ -338,21 +338,21 @@ void __41__AXMDataSummary_computeRegressionModel___block_invoke_2(void *a1)
   v3 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
   v4 = [v3 localizedStringForKey:@"chart.series.meanvalue.format" value:&stru_1F23EA908 table:@"Accessibility"];
 
-  v5 = [(AXMDataSummary *)self series];
-  v6 = [v5 meanValueDescription];
+  series = [(AXMDataSummary *)self series];
+  meanValueDescription = [series meanValueDescription];
 
-  if (![v6 length])
+  if (![meanValueDescription length])
   {
-    v7 = [(AXMDataSummary *)self numberFormatter];
+    numberFormatter = [(AXMDataSummary *)self numberFormatter];
     v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_meanY];
-    v9 = [v7 stringFromNumber:v8];
+    v9 = [numberFormatter stringFromNumber:v8];
 
-    v6 = v9;
+    meanValueDescription = v9;
   }
 
   v10 = MEMORY[0x1E696AEC0];
   v11 = [(NSArray *)self->_axisTitles objectAtIndexedSubscript:1];
-  v12 = [v10 stringWithFormat:v4, v11, v6];
+  v12 = [v10 stringWithFormat:v4, v11, meanValueDescription];
 
   return v12;
 }
@@ -360,12 +360,12 @@ void __41__AXMDataSummary_computeRegressionModel___block_invoke_2(void *a1)
 - (NSString)outliersDescription
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v22 = self;
+  selfCopy = self;
   obj = self->_outliers;
   v4 = [(NSArray *)obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v4)
@@ -376,24 +376,24 @@ void __41__AXMDataSummary_computeRegressionModel___block_invoke_2(void *a1)
     {
       for (i = 0; i != v5; ++i)
       {
-        v8 = v3;
+        v8 = array;
         if (*v24 != v6)
         {
           objc_enumerationMutation(obj);
         }
 
-        v9 = [*(*(&v23 + 1) + 8 * i) unsignedIntegerValue];
+        unsignedIntegerValue = [*(*(&v23 + 1) + 8 * i) unsignedIntegerValue];
         v10 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
         v11 = [v10 localizedStringForKey:@"chart.series.outlier.format" value:&stru_1F23EA908 table:@"Accessibility"];
 
         v12 = MEMORY[0x1E696AEC0];
-        v13 = [(AXMDataSummary *)v22 series];
-        v14 = [v13 dataPoints];
-        v15 = [v14 objectAtIndexedSubscript:v9];
-        v16 = [v15 valueDescription];
-        v17 = [v12 localizedStringWithFormat:v11, v16];
+        series = [(AXMDataSummary *)selfCopy series];
+        dataPoints = [series dataPoints];
+        v15 = [dataPoints objectAtIndexedSubscript:unsignedIntegerValue];
+        valueDescription = [v15 valueDescription];
+        v17 = [v12 localizedStringWithFormat:v11, valueDescription];
 
-        v3 = v8;
+        array = v8;
         [v8 addObject:v17];
       }
 
@@ -403,9 +403,9 @@ void __41__AXMDataSummary_computeRegressionModel___block_invoke_2(void *a1)
     while (v5);
   }
 
-  if ([v3 count])
+  if ([array count])
   {
-    v18 = [v3 componentsJoinedByString:@"\n"];
+    v18 = [array componentsJoinedByString:@"\n"];
   }
 
   else
@@ -419,9 +419,9 @@ void __41__AXMDataSummary_computeRegressionModel___block_invoke_2(void *a1)
 
 - (NSString)bestFitCurveEquation
 {
-  v3 = [(AXMDataSummary *)self regressionModel];
-  v4 = [(AXMDataSummary *)self regressionModel];
-  v5 = [v3 modelFunctionStringForParameters:objc_msgSend(v4 significantFigures:{"bestFitParameters"), 4}];
+  regressionModel = [(AXMDataSummary *)self regressionModel];
+  regressionModel2 = [(AXMDataSummary *)self regressionModel];
+  v5 = [regressionModel modelFunctionStringForParameters:objc_msgSend(regressionModel2 significantFigures:{"bestFitParameters"), 4}];
 
   return v5;
 }
@@ -450,13 +450,13 @@ void __41__AXMDataSummary_computeRegressionModel___block_invoke_2(void *a1)
     v7 = 1.79769313e308;
     do
     {
-      v8 = [(AXMDataSummary *)self xValues];
-      v9 = [v8 objectAtIndexedSubscript:v3];
+      xValues = [(AXMDataSummary *)self xValues];
+      v9 = [xValues objectAtIndexedSubscript:v3];
       [v9 doubleValue];
       v11 = v10;
 
-      v12 = [(AXMDataSummary *)self yValues];
-      v13 = [v12 objectAtIndexedSubscript:v3];
+      yValues = [(AXMDataSummary *)self yValues];
+      v13 = [yValues objectAtIndexedSubscript:v3];
       [v13 doubleValue];
       v15 = v14;
 
@@ -509,13 +509,13 @@ void __41__AXMDataSummary_computeRegressionModel___block_invoke_2(void *a1)
     v5 = 0.0;
     do
     {
-      v6 = [(AXMDataSummary *)self xValues];
-      v7 = [v6 objectAtIndexedSubscript:v3];
+      xValues = [(AXMDataSummary *)self xValues];
+      v7 = [xValues objectAtIndexedSubscript:v3];
       [v7 doubleValue];
       v9 = v8;
 
-      v10 = [(AXMDataSummary *)self yValues];
-      v11 = [v10 objectAtIndexedSubscript:v3];
+      yValues = [(AXMDataSummary *)self yValues];
+      v11 = [yValues objectAtIndexedSubscript:v3];
       [v11 doubleValue];
       v13 = v12;
 
@@ -548,13 +548,13 @@ void __41__AXMDataSummary_computeRegressionModel___block_invoke_2(void *a1)
     v4 = 0.0;
     do
     {
-      v5 = [(AXMDataSummary *)self xValues];
-      v6 = [v5 objectAtIndexedSubscript:v3];
+      xValues = [(AXMDataSummary *)self xValues];
+      v6 = [xValues objectAtIndexedSubscript:v3];
       [v6 doubleValue];
       v8 = v7;
 
-      v9 = [(AXMDataSummary *)self yValues];
-      v10 = [v9 objectAtIndexedSubscript:v3];
+      yValues = [(AXMDataSummary *)self yValues];
+      v10 = [yValues objectAtIndexedSubscript:v3];
       [v10 doubleValue];
       v12 = v11;
 
@@ -584,13 +584,13 @@ void __41__AXMDataSummary_computeRegressionModel___block_invoke_2(void *a1)
     v5 = 0.0;
     do
     {
-      v6 = [(AXMDataSummary *)self xValues];
-      v7 = [v6 objectAtIndexedSubscript:v3];
+      xValues = [(AXMDataSummary *)self xValues];
+      v7 = [xValues objectAtIndexedSubscript:v3];
       [v7 doubleValue];
       v9 = v8;
 
-      v10 = [(AXMDataSummary *)self yValues];
-      v11 = [v10 objectAtIndexedSubscript:v3];
+      yValues = [(AXMDataSummary *)self yValues];
+      v11 = [yValues objectAtIndexedSubscript:v3];
       [v11 doubleValue];
       v13 = v12;
 
@@ -632,24 +632,24 @@ void __41__AXMDataSummary_computeRegressionModel___block_invoke_2(void *a1)
 
 - (void)computeResiduals
 {
-  v15 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(NSArray *)self->_xValues count])
   {
     v3 = 0;
     do
     {
-      v4 = [(AXMDataSummary *)self xValues];
-      v5 = [v4 objectAtIndexedSubscript:v3];
+      xValues = [(AXMDataSummary *)self xValues];
+      v5 = [xValues objectAtIndexedSubscript:v3];
       [v5 doubleValue];
       v7 = v6;
 
-      v8 = [(AXMDataSummary *)self yValues];
-      v9 = [v8 objectAtIndexedSubscript:v3];
+      yValues = [(AXMDataSummary *)self yValues];
+      v9 = [yValues objectAtIndexedSubscript:v3];
       [v9 doubleValue];
       v11 = v10;
 
       v12 = [MEMORY[0x1E696AD98] numberWithDouble:v11 - (self->_intercept + self->_slope * v7)];
-      [v15 addObject:v12];
+      [array addObject:v12];
 
       ++v3;
     }
@@ -657,14 +657,14 @@ void __41__AXMDataSummary_computeRegressionModel___block_invoke_2(void *a1)
     while (v3 < [(NSArray *)self->_xValues count]);
   }
 
-  v13 = [v15 copy];
+  v13 = [array copy];
   residuals = self->_residuals;
   self->_residuals = v13;
 }
 
 - (void)computeOutliers
 {
-  v15 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (self->_numValues >= 8)
   {
     [(AXMDataSummary *)self getMean:self->_residuals];
@@ -684,7 +684,7 @@ void __41__AXMDataSummary_computeRegressionModel___block_invoke_2(void *a1)
         if (fabs(v11) > 3.0)
         {
           v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
-          [v15 addObject:v12];
+          [array addObject:v12];
         }
 
         ++v7;
@@ -694,7 +694,7 @@ void __41__AXMDataSummary_computeRegressionModel___block_invoke_2(void *a1)
     }
   }
 
-  v13 = [v15 copy];
+  v13 = [array copy];
   outliers = self->_outliers;
   self->_outliers = v13;
 }
@@ -706,21 +706,21 @@ void __41__AXMDataSummary_computeRegressionModel___block_invoke_2(void *a1)
   v11 = *&self->_minX;
   minY = self->_minY;
   maxY = self->_maxY;
-  v7 = [(AXMDataRegressionModel *)self->_regressionModel modelFunction];
+  modelFunction = [(AXMDataRegressionModel *)self->_regressionModel modelFunction];
   v8 = MEMORY[0x1B2700900]();
   v9 = [v3 stringWithFormat:@"<%@ %p x:[%.1f, %.1f] y:[%.1f, %.1f] model=%@ xbar=%.1f ybar=%.1f r=%.4f rSq=%.4f y=%.4fx+%.4f\n\toutliers=%@>", v4, self, v11, *&minY, *&maxY, v8, *&self->_meanX, *&self->_meanY, *&self->_r, *&self->_rSquared, *&self->_slope, *&self->_intercept, self->_outliers];
 
   return v9;
 }
 
-- (id)stringForComponents:(id)a3
+- (id)stringForComponents:(id)components
 {
-  v3 = a3;
+  componentsCopy = components;
   objc_opt_class();
   v4 = [MEMORY[0x1E696AD60] stringWithString:&stru_1F23EA908];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v3;
+    v5 = componentsCopy;
   }
 
   else
@@ -761,17 +761,17 @@ LABEL_15:
   return v4;
 }
 
-- (double)getMean:(id)a3
+- (double)getMean:(id)mean
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  meanCopy = mean;
+  if ([meanCopy count])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = v3;
+    v4 = meanCopy;
     v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
@@ -813,15 +813,15 @@ LABEL_15:
   return v11;
 }
 
-- (double)getMedian:(id)a3
+- (double)getMedian:(id)median
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AEB0];
-  v4 = a3;
+  medianCopy = median;
   v5 = [v3 sortDescriptorWithKey:@"self" ascending:1];
   v16[0] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-  v7 = [v4 sortedArrayUsingDescriptors:v6];
+  v7 = [medianCopy sortedArrayUsingDescriptors:v6];
 
   v8 = [v7 count] >> 1;
   v9 = [v7 count];
@@ -838,20 +838,20 @@ LABEL_15:
   return v12;
 }
 
-- (double)getVariance:(id)a3
+- (double)getVariance:(id)variance
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(AXMDataSummary *)self getMean:v4];
+  varianceCopy = variance;
+  [(AXMDataSummary *)self getMean:varianceCopy];
   v6 = v5;
   v7 = 0.0;
-  if ([v4 count] >= 2)
+  if ([varianceCopy count] >= 2)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = v4;
+    v8 = varianceCopy;
     v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
@@ -885,26 +885,26 @@ LABEL_15:
   return v7;
 }
 
-- (void)getValues:(double *)a3 fromNSNumberArray:(id)a4
+- (void)getValues:(double *)values fromNSNumberArray:(id)array
 {
-  v8 = a4;
-  if ([v8 count])
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
     v5 = 0;
     do
     {
-      v6 = [v8 objectAtIndexedSubscript:v5];
+      v6 = [arrayCopy objectAtIndexedSubscript:v5];
       [v6 doubleValue];
-      a3[v5] = v7;
+      values[v5] = v7;
 
       ++v5;
     }
 
-    while (v5 < [v8 count]);
+    while (v5 < [arrayCopy count]);
   }
 }
 
-- (double)positionForXAxisValue:(double)a3
+- (double)positionForXAxisValue:(double)value
 {
   [(AXMDataSummary *)self maxX];
   v6 = v5;
@@ -916,10 +916,10 @@ LABEL_15:
   }
 
   [(AXMDataSummary *)self minX];
-  return (a3 - v9) / v8;
+  return (value - v9) / v8;
 }
 
-- (double)positionForYAxisValue:(double)a3
+- (double)positionForYAxisValue:(double)value
 {
   [(AXMDataSummary *)self maxY];
   v6 = v5;
@@ -931,7 +931,7 @@ LABEL_15:
   }
 
   [(AXMDataSummary *)self minY];
-  return (a3 - v9) / v8;
+  return (value - v9) / v8;
 }
 
 - (AXMDataSeriesDescriptor)series

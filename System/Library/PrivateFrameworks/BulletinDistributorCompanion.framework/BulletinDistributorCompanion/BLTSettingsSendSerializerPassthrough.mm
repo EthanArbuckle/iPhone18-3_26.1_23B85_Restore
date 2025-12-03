@@ -1,23 +1,23 @@
 @interface BLTSettingsSendSerializerPassthrough
 - (BLTSettingsSendSerializerDelegate)delegate;
-- (void)sendNowWithSent:(id)a3 withAcknowledgement:(id)a4 withTimeout:(id)a5;
+- (void)sendNowWithSent:(id)sent withAcknowledgement:(id)acknowledgement withTimeout:(id)timeout;
 @end
 
 @implementation BLTSettingsSendSerializerPassthrough
 
-- (void)sendNowWithSent:(id)a3 withAcknowledgement:(id)a4 withTimeout:(id)a5
+- (void)sendNowWithSent:(id)sent withAcknowledgement:(id)acknowledgement withTimeout:(id)timeout
 {
-  v9 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v9)
+  sentCopy = sent;
+  acknowledgementCopy = acknowledgement;
+  timeoutCopy = timeout;
+  if (sentCopy)
   {
-    v9[2](v9, 1, 0);
+    sentCopy[2](sentCopy, 1, 0);
   }
 
-  if (v7)
+  if (acknowledgementCopy)
   {
-    v7[2](v7, 1.0);
+    acknowledgementCopy[2](acknowledgementCopy, 1.0);
   }
 }
 

@@ -36,40 +36,40 @@
   v2 = objc_alloc_init(MIBUNetworkInfo);
   v3 = objc_alloc_init(CWFInterface);
   [v3 activate];
-  v4 = [v3 networkName];
-  [(MIBUNetworkInfo *)v2 setNetworkName:v4];
+  networkName = [v3 networkName];
+  [(MIBUNetworkInfo *)v2 setNetworkName:networkName];
 
-  v5 = [v3 BSSID];
-  [(MIBUNetworkInfo *)v2 setBSSID:v5];
+  bSSID = [v3 BSSID];
+  [(MIBUNetworkInfo *)v2 setBSSID:bSSID];
 
   -[MIBUNetworkInfo setRSSI:](v2, "setRSSI:", [v3 RSSI]);
   -[MIBUNetworkInfo setNoise:](v2, "setNoise:", [v3 noise]);
   -[MIBUNetworkInfo setPHYMode:](v2, "setPHYMode:", [v3 PHYMode]);
   -[MIBUNetworkInfo setNumberOfSpatialStreams:](v2, "setNumberOfSpatialStreams:", [v3 numberOfSpatialStreams]);
   -[MIBUNetworkInfo setMCSIndex:](v2, "setMCSIndex:", [v3 MCSIndex]);
-  v6 = [v3 MACAddress];
-  [(MIBUNetworkInfo *)v2 setMACAddress:v6];
+  mACAddress = [v3 MACAddress];
+  [(MIBUNetworkInfo *)v2 setMACAddress:mACAddress];
 
-  v7 = [v3 IPv4Addresses];
-  v8 = [v7 firstObject];
-  [(MIBUNetworkInfo *)v2 setIPV4Address:v8];
+  iPv4Addresses = [v3 IPv4Addresses];
+  firstObject = [iPv4Addresses firstObject];
+  [(MIBUNetworkInfo *)v2 setIPV4Address:firstObject];
 
-  v9 = [v3 IPv6Addresses];
-  v10 = [v9 firstObject];
-  [(MIBUNetworkInfo *)v2 setIPV6Address:v10];
+  iPv6Addresses = [v3 IPv6Addresses];
+  firstObject2 = [iPv6Addresses firstObject];
+  [(MIBUNetworkInfo *)v2 setIPV6Address:firstObject2];
 
-  v11 = [v3 channel];
+  channel = [v3 channel];
 
-  if (v11)
+  if (channel)
   {
-    v12 = [v3 channel];
-    -[MIBUNetworkInfo setChannel:](v2, "setChannel:", [v12 channel]);
+    channel2 = [v3 channel];
+    -[MIBUNetworkInfo setChannel:](v2, "setChannel:", [channel2 channel]);
 
-    v13 = [v3 channel];
-    -[MIBUNetworkInfo setChannelWidth:](v2, "setChannelWidth:", [v13 width]);
+    channel3 = [v3 channel];
+    -[MIBUNetworkInfo setChannelWidth:](v2, "setChannelWidth:", [channel3 width]);
 
-    v14 = [v3 channel];
-    -[MIBUNetworkInfo setChannelBand:](v2, "setChannelBand:", [v14 band]);
+    channel4 = [v3 channel];
+    -[MIBUNetworkInfo setChannelBand:](v2, "setChannelBand:", [channel4 band]);
   }
 
   [v3 invalidate];
@@ -85,12 +85,12 @@
   v6 = [NSString stringWithFormat:@"<%@ : \n", v5];
   [v3 appendString:v6];
 
-  v7 = [(MIBUNetworkInfo *)self networkName];
-  v8 = [NSString stringWithFormat:@"\tNetwork Name : %@\n", v7];
+  networkName = [(MIBUNetworkInfo *)self networkName];
+  v8 = [NSString stringWithFormat:@"\tNetwork Name : %@\n", networkName];
   [v3 appendString:v8];
 
-  v9 = [(MIBUNetworkInfo *)self BSSID];
-  v10 = [NSString stringWithFormat:@"\tBSSID : %@\n", v9];
+  bSSID = [(MIBUNetworkInfo *)self BSSID];
+  v10 = [NSString stringWithFormat:@"\tBSSID : %@\n", bSSID];
   [v3 appendString:v10];
 
   v11 = [NSNumber numberWithInteger:[(MIBUNetworkInfo *)self RSSI]];
@@ -124,16 +124,16 @@
   v25 = [NSString stringWithFormat:@"\tChannel Band: %@\n", v24];
   [v3 appendString:v25];
 
-  v26 = [(MIBUNetworkInfo *)self MACAddress];
-  v27 = [NSString stringWithFormat:@"\tMACAddress : %@\n", v26];
+  mACAddress = [(MIBUNetworkInfo *)self MACAddress];
+  v27 = [NSString stringWithFormat:@"\tMACAddress : %@\n", mACAddress];
   [v3 appendString:v27];
 
-  v28 = [(MIBUNetworkInfo *)self iPV4Address];
-  v29 = [NSString stringWithFormat:@"\tIPv4 : %@\n", v28];
+  iPV4Address = [(MIBUNetworkInfo *)self iPV4Address];
+  v29 = [NSString stringWithFormat:@"\tIPv4 : %@\n", iPV4Address];
   [v3 appendString:v29];
 
-  v30 = [(MIBUNetworkInfo *)self iPV6Address];
-  v31 = [NSString stringWithFormat:@"\tIPv6 : %@\n", v30];
+  iPV6Address = [(MIBUNetworkInfo *)self iPV6Address];
+  v31 = [NSString stringWithFormat:@"\tIPv6 : %@\n", iPV6Address];
   [v3 appendString:v31];
 
   v32 = [NSString stringWithFormat:@">"];

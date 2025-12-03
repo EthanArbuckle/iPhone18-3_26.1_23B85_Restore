@@ -3,83 +3,83 @@
 - (BOOL)hasPostedSetupComplete;
 - (BOOL)isSetupComplete;
 - (IDSDaemonListener)init;
-- (IDSDaemonListener)initWithQueueController:(id)a3 ivarQueue:(id)a4;
+- (IDSDaemonListener)initWithQueueController:(id)controller ivarQueue:(id)queue;
 - (NSString)deviceIdentifier;
-- (id)_uniqueIDForDevice:(id)a3;
-- (id)_updateService:(id)a3 withTinkerDevice:(id)a4 shouldAdd:(BOOL)a5 shouldSwitch:(BOOL)a6;
-- (id)accountDictionariesForService:(id)a3;
-- (id)dependentDevicesForAccount:(id)a3;
-- (id)enabledAccountsForService:(id)a3;
-- (id)familyInfoForService:(id)a3;
+- (id)_uniqueIDForDevice:(id)device;
+- (id)_updateService:(id)service withTinkerDevice:(id)device shouldAdd:(BOOL)add shouldSwitch:(BOOL)switch;
+- (id)accountDictionariesForService:(id)service;
+- (id)dependentDevicesForAccount:(id)account;
+- (id)enabledAccountsForService:(id)service;
+- (id)familyInfoForService:(id)service;
 - (id)getDirectMessagingMetadataDictionary;
 - (id)latestPrivateLoggingSalt;
-- (id)linkedDevicesForService:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (id)pendingInvitationsForService:(id)a3;
-- (id)receivedInvitationsForService:(id)a3;
-- (int64_t)maxEffectivePayloadSizeForService:(id)a3;
+- (id)linkedDevicesForService:(id)service;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (id)pendingInvitationsForService:(id)service;
+- (id)receivedInvitationsForService:(id)service;
+- (int64_t)maxEffectivePayloadSizeForService:(id)service;
 - (int64_t)maxIMLPayloadSize;
-- (unint64_t)restrictionReasonForService:(id)a3;
+- (unint64_t)restrictionReasonForService:(id)service;
 - (void)__postSetupComplete;
-- (void)_callHandlersAsyncWithBlock:(id)a3;
-- (void)_callHandlersWithBlock:(id)a3;
-- (void)_callHandlersWithBlockOnIvarQueue:(id)a3 cleanup:(id)a4;
-- (void)_internalDidSwitchActivePairedDevice:(id)a3 forService:(id)a4;
-- (void)_internalSwitchActivePairedDevice:(id)a3 forAccount:(id)a4;
-- (void)_internalSwitchActivePairedDevice:(id)a3 forService:(id)a4;
+- (void)_callHandlersAsyncWithBlock:(id)block;
+- (void)_callHandlersWithBlock:(id)block;
+- (void)_callHandlersWithBlockOnIvarQueue:(id)queue cleanup:(id)cleanup;
+- (void)_internalDidSwitchActivePairedDevice:(id)device forService:(id)service;
+- (void)_internalSwitchActivePairedDevice:(id)device forAccount:(id)account;
+- (void)_internalSwitchActivePairedDevice:(id)device forService:(id)service;
 - (void)_noteDisconnected;
-- (void)_performSyncBlock:(id)a3;
-- (void)_removeAccountOnIvarQueue:(id)a3;
-- (void)_setHidingDisconnect:(BOOL)a3;
-- (void)account:(id)a3 accountInfoChanged:(id)a4;
-- (void)account:(id)a3 aliasesChanged:(id)a4;
-- (void)account:(id)a3 dependentDevicesUpdated:(id)a4;
-- (void)account:(id)a3 displayNameChanged:(id)a4;
-- (void)account:(id)a3 localDeviceAdded:(id)a4;
-- (void)account:(id)a3 localDeviceRemoved:(id)a4;
-- (void)account:(id)a3 loginChanged:(id)a4;
-- (void)account:(id)a3 profileChanged:(id)a4;
-- (void)account:(id)a3 registrationStatusInfoChanged:(id)a4;
-- (void)account:(id)a3 vettedAliasesChanged:(id)a4;
-- (void)accountAdded:(id)a3;
-- (void)accountDisabled:(id)a3 onService:(id)a4;
-- (void)accountEnabled:(id)a3 onService:(id)a4;
-- (void)accountRemoved:(id)a3;
-- (void)addHandler:(id)a3;
-- (void)connectionComplete:(BOOL)a3 withResponse:(id)a4;
-- (void)continuityDidConnectToPeer:(id)a3 withError:(id)a4;
-- (void)continuityDidDisconnectFromPeer:(id)a3 withError:(id)a4;
-- (void)continuityDidDiscoverPeerWithData:(id)a3 fromPeer:(id)a4;
-- (void)continuityDidDiscoverType:(int64_t)a3 withData:(id)a4 fromPeer:(id)a5;
-- (void)continuityDidFailToStartAdvertisingOfType:(int64_t)a3 withError:(id)a4;
-- (void)continuityDidFailToStartScanningForType:(int64_t)a3 withError:(id)a4;
-- (void)continuityDidLosePeer:(id)a3;
-- (void)continuityDidStartAdvertisingOfType:(int64_t)a3;
-- (void)continuityDidStartScanningForType:(int64_t)a3;
-- (void)continuityDidStopAdvertisingOfType:(int64_t)a3;
-- (void)continuityDidStopAdvertisingOfType:(int64_t)a3 withError:(id)a4;
-- (void)continuityDidStopScanningForType:(int64_t)a3;
-- (void)continuityDidUpdateStateToState:(int64_t)a3;
+- (void)_performSyncBlock:(id)block;
+- (void)_removeAccountOnIvarQueue:(id)queue;
+- (void)_setHidingDisconnect:(BOOL)disconnect;
+- (void)account:(id)account accountInfoChanged:(id)changed;
+- (void)account:(id)account aliasesChanged:(id)changed;
+- (void)account:(id)account dependentDevicesUpdated:(id)updated;
+- (void)account:(id)account displayNameChanged:(id)changed;
+- (void)account:(id)account localDeviceAdded:(id)added;
+- (void)account:(id)account localDeviceRemoved:(id)removed;
+- (void)account:(id)account loginChanged:(id)changed;
+- (void)account:(id)account profileChanged:(id)changed;
+- (void)account:(id)account registrationStatusInfoChanged:(id)changed;
+- (void)account:(id)account vettedAliasesChanged:(id)changed;
+- (void)accountAdded:(id)added;
+- (void)accountDisabled:(id)disabled onService:(id)service;
+- (void)accountEnabled:(id)enabled onService:(id)service;
+- (void)accountRemoved:(id)removed;
+- (void)addHandler:(id)handler;
+- (void)connectionComplete:(BOOL)complete withResponse:(id)response;
+- (void)continuityDidConnectToPeer:(id)peer withError:(id)error;
+- (void)continuityDidDisconnectFromPeer:(id)peer withError:(id)error;
+- (void)continuityDidDiscoverPeerWithData:(id)data fromPeer:(id)peer;
+- (void)continuityDidDiscoverType:(int64_t)type withData:(id)data fromPeer:(id)peer;
+- (void)continuityDidFailToStartAdvertisingOfType:(int64_t)type withError:(id)error;
+- (void)continuityDidFailToStartScanningForType:(int64_t)type withError:(id)error;
+- (void)continuityDidLosePeer:(id)peer;
+- (void)continuityDidStartAdvertisingOfType:(int64_t)type;
+- (void)continuityDidStartScanningForType:(int64_t)type;
+- (void)continuityDidStopAdvertisingOfType:(int64_t)type;
+- (void)continuityDidStopAdvertisingOfType:(int64_t)type withError:(id)error;
+- (void)continuityDidStopScanningForType:(int64_t)type;
+- (void)continuityDidUpdateStateToState:(int64_t)state;
 - (void)deactivatePairedDevices;
-- (void)device:(id)a3 nsuuidChanged:(id)a4;
-- (void)deviceIdentifierDidChange:(id)a3;
-- (void)didGetIdentities:(id)a3 error:(id)a4;
-- (void)didSwitchActivePairedDevice:(id)a3;
-- (void)familyDevicesForService:(id)a3 listenerID:(id)a4 withCompletion:(id)a5;
-- (void)forwardInvocation:(id)a3;
-- (void)refreshRegistrationForAccount:(id)a3;
-- (void)registrationFailedForAccount:(id)a3 needsDeletion:(id)a4;
-- (void)removeHandler:(id)a3;
-- (void)service:(id)a3 familyInfoUpdated:(id)a4;
-- (void)service:(id)a3 restrictionReasonChanged:(unint64_t)a4;
-- (void)service:(id)a3 tinkerDeviceAdded:(id)a4;
-- (void)service:(id)a3 tinkerDeviceRemoved:(id)a4;
-- (void)service:(id)a3 tinkerDeviceUpdated:(id)a4;
-- (void)setupCompleteWithInfo:(id)a3;
-- (void)switchActivePairedDevice:(id)a3 forAccount:(id)a4;
-- (void)switchActivePairedDevice:(id)a3 forService:(id)a4;
-- (void)updateAccount:(id)a3 withAccountInfo:(id)a4;
-- (void)xpcObject:(id)a3 objectContext:(id)a4;
+- (void)device:(id)device nsuuidChanged:(id)changed;
+- (void)deviceIdentifierDidChange:(id)change;
+- (void)didGetIdentities:(id)identities error:(id)error;
+- (void)didSwitchActivePairedDevice:(id)device;
+- (void)familyDevicesForService:(id)service listenerID:(id)d withCompletion:(id)completion;
+- (void)forwardInvocation:(id)invocation;
+- (void)refreshRegistrationForAccount:(id)account;
+- (void)registrationFailedForAccount:(id)account needsDeletion:(id)deletion;
+- (void)removeHandler:(id)handler;
+- (void)service:(id)service familyInfoUpdated:(id)updated;
+- (void)service:(id)service restrictionReasonChanged:(unint64_t)changed;
+- (void)service:(id)service tinkerDeviceAdded:(id)added;
+- (void)service:(id)service tinkerDeviceRemoved:(id)removed;
+- (void)service:(id)service tinkerDeviceUpdated:(id)updated;
+- (void)setupCompleteWithInfo:(id)info;
+- (void)switchActivePairedDevice:(id)device forAccount:(id)account;
+- (void)switchActivePairedDevice:(id)device forService:(id)service;
+- (void)updateAccount:(id)account withAccountInfo:(id)info;
+- (void)xpcObject:(id)object objectContext:(id)context;
 @end
 
 @implementation IDSDaemonListener
@@ -112,7 +112,7 @@
       sub_195B28A4C();
     }
 
-    v4 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -124,10 +124,10 @@
     v8 = +[IDSInternalQueueController sharedInstance];
     self = [(IDSDaemonListener *)self initWithQueueController:v8 ivarQueue:v7];
 
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (void)_noteDisconnected
@@ -163,8 +163,8 @@
 {
   if (!self->_setupInfoComplete)
   {
-    v2 = [MEMORY[0x1E69A6138] registration];
-    if (!os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (!os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_9;
     }
@@ -172,14 +172,14 @@
     *buf = 0;
     v3 = "Setup info is not complete, waiting...";
 LABEL_8:
-    _os_log_impl(&dword_1959FF000, v2, OS_LOG_TYPE_DEFAULT, v3, buf, 2u);
+    _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, v3, buf, 2u);
     goto LABEL_9;
   }
 
   if (!self->_connectionComplete)
   {
-    v2 = [MEMORY[0x1E69A6138] registration];
-    if (!os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (!os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_9;
     }
@@ -195,8 +195,8 @@ LABEL_8:
   v4[2] = sub_195A059B0;
   v4[3] = &unk_1E743E878;
   v4[4] = self;
-  v2 = MEMORY[0x19A8BBEF0](v4, a2);
-  (*(v2 + 16))();
+  registration = MEMORY[0x19A8BBEF0](v4, a2);
+  (*(registration + 16))();
 LABEL_9:
 }
 
@@ -221,10 +221,10 @@ LABEL_9:
   return v2;
 }
 
-- (IDSDaemonListener)initWithQueueController:(id)a3 ivarQueue:(id)a4
+- (IDSDaemonListener)initWithQueueController:(id)controller ivarQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  queueCopy = queue;
   if (_IDSRunningInDaemon())
   {
     v9 = +[IDSLogging DaemonListener];
@@ -245,8 +245,8 @@ LABEL_9:
   v10 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_internalQueueController, a3);
-    objc_storeStrong(&v10->_ivarQueue, a4);
+    objc_storeStrong(&v11->_internalQueueController, controller);
+    objc_storeStrong(&v10->_ivarQueue, queue);
     ivarQueue = v10->_ivarQueue;
     if (ivarQueue)
     {
@@ -284,23 +284,23 @@ LABEL_10:
   return v2;
 }
 
-- (void)_setHidingDisconnect:(BOOL)a3
+- (void)_setHidingDisconnect:(BOOL)disconnect
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_195A2BA60;
   v3[3] = &unk_1E743E8C8;
   v3[4] = self;
-  v4 = a3;
+  disconnectCopy = disconnect;
   [(IDSDaemonListener *)self _performSyncBlock:v3];
 }
 
-- (void)_performSyncBlock:(id)a3
+- (void)_performSyncBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy2 = block;
+  if (blockCopy2)
   {
-    block = v4;
+    block = blockCopy2;
     if (dispatch_get_specific("IDSDaemonListenerContext"))
     {
       block[2]();
@@ -311,46 +311,46 @@ LABEL_10:
       dispatch_sync(self->_ivarQueue, block);
     }
 
-    v4 = block;
+    blockCopy2 = block;
   }
 }
 
-- (void)addHandler:(id)a3
+- (void)addHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = sub_195A2BB84;
     v6[3] = &unk_1E743EA30;
     v6[4] = self;
-    v7 = v4;
+    v7 = handlerCopy;
     [(IDSDaemonListener *)self _performSyncBlock:v6];
   }
 }
 
-- (void)removeHandler:(id)a3
+- (void)removeHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = sub_195A2BC9C;
     v5[3] = &unk_1E743F468;
     v5[4] = self;
-    v5[5] = a3;
-    v4 = a3;
+    v5[5] = handler;
+    handlerCopy = handler;
     [(IDSDaemonListener *)self _performSyncBlock:v5];
   }
 }
 
-- (void)_callHandlersWithBlockOnIvarQueue:(id)a3 cleanup:(id)a4
+- (void)_callHandlersWithBlockOnIvarQueue:(id)queue cleanup:(id)cleanup
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  queueCopy = queue;
+  cleanupCopy = cleanup;
+  if (queueCopy)
   {
     v14[0] = 0;
     v14[1] = v14;
@@ -371,35 +371,35 @@ LABEL_10:
     v9[2] = sub_195A2BEE4;
     v9[3] = &unk_1E743F490;
     v12 = v14;
-    v10 = v6;
-    v11 = v7;
+    v10 = queueCopy;
+    v11 = cleanupCopy;
     [(IDSInternalQueueController *)internalQueueController performBlock:v9];
 
     _Block_object_dispose(v14, 8);
   }
 }
 
-- (void)_callHandlersWithBlock:(id)a3
+- (void)_callHandlersWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = sub_195A2C1AC;
     v6[3] = &unk_1E743EAA8;
     v6[4] = self;
-    v7 = v4;
+    v7 = blockCopy;
     [(IDSDaemonListener *)self _performSyncBlock:v6];
   }
 }
 
-- (void)_callHandlersAsyncWithBlock:(id)a3
+- (void)_callHandlersAsyncWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     ivarQueue = self->_ivarQueue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -407,29 +407,29 @@ LABEL_10:
     v7[2] = sub_195A2C260;
     v7[3] = &unk_1E743EAA8;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_async(ivarQueue, v7);
   }
 }
 
-- (id)accountDictionariesForService:(id)a3
+- (id)accountDictionariesForService:(id)service
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v6 = [v5 isNonUIInstall];
+  serviceCopy = service;
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isNonUIInstall = [mEMORY[0x1E69A60F0] isNonUIInstall];
 
-  if (v6)
+  if (isNonUIInstall)
   {
     goto LABEL_6;
   }
 
-  v7 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
   {
     sub_195B28AD4();
   }
 
-  if (!v4)
+  if (!serviceCopy)
   {
 LABEL_6:
     v8 = 0;
@@ -447,8 +447,8 @@ LABEL_6:
     v10[1] = 3221225472;
     v10[2] = sub_195A2C400;
     v10[3] = &unk_1E743E968;
-    v11 = v4;
-    v12 = self;
+    v11 = serviceCopy;
+    selfCopy = self;
     v13 = &v14;
     [(IDSDaemonListener *)self _performSyncBlock:v10];
     v8 = v15[5];
@@ -459,29 +459,29 @@ LABEL_6:
   return v8;
 }
 
-- (id)enabledAccountsForService:(id)a3
+- (id)enabledAccountsForService:(id)service
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v6 = [v5 isNonUIInstall];
+  serviceCopy = service;
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isNonUIInstall = [mEMORY[0x1E69A60F0] isNonUIInstall];
 
-  if (v6)
+  if (isNonUIInstall)
   {
     goto LABEL_6;
   }
 
-  v7 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v4;
-    _os_log_impl(&dword_1959FF000, v7, OS_LOG_TYPE_DEFAULT, "%@ enabledAccountsForService %@", buf, 0x16u);
+    *&buf[14] = serviceCopy;
+    _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "%@ enabledAccountsForService %@", buf, 0x16u);
   }
 
-  if (!v4)
+  if (!serviceCopy)
   {
 LABEL_6:
     v8 = 0;
@@ -500,7 +500,7 @@ LABEL_6:
     v11[2] = sub_195A2C78C;
     v11[3] = &unk_1E743E968;
     v11[4] = self;
-    v12 = v4;
+    v12 = serviceCopy;
     v13 = buf;
     [(IDSDaemonListener *)self _performSyncBlock:v11];
     v8 = *(*&buf[8] + 40);
@@ -513,11 +513,11 @@ LABEL_6:
   return v8;
 }
 
-- (void)_removeAccountOnIvarQueue:(id)a3
+- (void)_removeAccountOnIvarQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:*MEMORY[0x1E69A5650]];
-  v6 = [v4 objectForKey:*MEMORY[0x1E69A5640]];
+  queueCopy = queue;
+  v5 = [queueCopy objectForKey:*MEMORY[0x1E69A5650]];
+  v6 = [queueCopy objectForKey:*MEMORY[0x1E69A5640]];
   v7 = v6;
   if (v5)
   {
@@ -577,12 +577,12 @@ LABEL_6:
   }
 }
 
-- (void)accountAdded:(id)a3
+- (void)accountAdded:(id)added
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKey:*MEMORY[0x1E69A5650]];
-  v6 = [v4 objectForKey:*MEMORY[0x1E69A5640]];
+  addedCopy = added;
+  v5 = [addedCopy objectForKey:*MEMORY[0x1E69A5650]];
+  v6 = [addedCopy objectForKey:*MEMORY[0x1E69A5640]];
   v7 = v6;
   if (v5)
   {
@@ -605,14 +605,14 @@ LABEL_6:
 
   else
   {
-    v10 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       v20 = "[IDSDaemonListener accountAdded:]";
       v21 = 2112;
       v22 = v5;
-      _os_log_impl(&dword_1959FF000, v10, OS_LOG_TYPE_DEFAULT, "%s: %@", buf, 0x16u);
+      _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "%s: %@", buf, 0x16u);
     }
 
     v16[0] = MEMORY[0x1E69E9820];
@@ -620,7 +620,7 @@ LABEL_6:
     v16[2] = sub_195A2CDA0;
     v16[3] = &unk_1E743E620;
     v16[4] = self;
-    v12 = v4;
+    v12 = addedCopy;
     v17 = v12;
     v18 = v7;
     [(IDSDaemonListener *)self _performSyncBlock:v16];
@@ -635,12 +635,12 @@ LABEL_6:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)accountRemoved:(id)a3
+- (void)accountRemoved:(id)removed
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKey:*MEMORY[0x1E69A5650]];
-  v6 = [v4 objectForKey:*MEMORY[0x1E69A5640]];
+  removedCopy = removed;
+  v5 = [removedCopy objectForKey:*MEMORY[0x1E69A5650]];
+  v6 = [removedCopy objectForKey:*MEMORY[0x1E69A5640]];
   v7 = v6;
   if (v5)
   {
@@ -663,14 +663,14 @@ LABEL_6:
 
   else
   {
-    v10 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315394;
       v19 = "[IDSDaemonListener accountRemoved:]";
       v20 = 2112;
       v21 = v5;
-      _os_log_impl(&dword_1959FF000, v10, OS_LOG_TYPE_DEFAULT, "%s: %@", buf, 0x16u);
+      _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "%s: %@", buf, 0x16u);
     }
 
     v16[0] = MEMORY[0x1E69E9820];
@@ -678,7 +678,7 @@ LABEL_6:
     v16[2] = sub_195A2D0BC;
     v16[3] = &unk_1E743EA30;
     v16[4] = self;
-    v12 = v4;
+    v12 = removedCopy;
     v17 = v12;
     [(IDSDaemonListener *)self _performSyncBlock:v16];
     v14[0] = MEMORY[0x1E69E9820];
@@ -692,20 +692,20 @@ LABEL_6:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)accountEnabled:(id)a3 onService:(id)a4
+- (void)accountEnabled:(id)enabled onService:(id)service
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  enabledCopy = enabled;
+  serviceCopy = service;
+  v8 = serviceCopy;
+  if (enabledCopy && serviceCopy)
   {
-    v9 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = v6;
-      _os_log_impl(&dword_1959FF000, v9, OS_LOG_TYPE_DEFAULT, "Incoming account enabled: %@", buf, 0xCu);
+      v21 = enabledCopy;
+      _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "Incoming account enabled: %@", buf, 0xCu);
     }
 
     v17[0] = MEMORY[0x1E69E9820];
@@ -715,7 +715,7 @@ LABEL_6:
     v17[4] = self;
     v10 = v8;
     v18 = v10;
-    v11 = v6;
+    v11 = enabledCopy;
     v19 = v11;
     [(IDSDaemonListener *)self _performSyncBlock:v17];
     v14[0] = MEMORY[0x1E69E9820];
@@ -739,20 +739,20 @@ LABEL_6:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)accountDisabled:(id)a3 onService:(id)a4
+- (void)accountDisabled:(id)disabled onService:(id)service
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  disabledCopy = disabled;
+  serviceCopy = service;
+  v8 = serviceCopy;
+  if (disabledCopy && serviceCopy)
   {
-    v9 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    registration = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = v6;
-      _os_log_impl(&dword_1959FF000, v9, OS_LOG_TYPE_DEFAULT, "Incoming account disabled: %@", buf, 0xCu);
+      v21 = disabledCopy;
+      _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "Incoming account disabled: %@", buf, 0xCu);
     }
 
     v17[0] = MEMORY[0x1E69E9820];
@@ -762,7 +762,7 @@ LABEL_6:
     v17[4] = self;
     v10 = v8;
     v18 = v10;
-    v11 = v6;
+    v11 = disabledCopy;
     v19 = v11;
     [(IDSDaemonListener *)self _performSyncBlock:v17];
     v14[0] = MEMORY[0x1E69E9820];
@@ -786,50 +786,50 @@ LABEL_6:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (unint64_t)restrictionReasonForService:(id)a3
+- (unint64_t)restrictionReasonForService:(id)service
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  serviceCopy = service;
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NSMutableDictionary *)self->_serviceToRestrictionReason objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_serviceToRestrictionReason objectForKeyedSubscript:serviceCopy];
     v12 = 138412546;
     v13 = v6;
     v14 = 2112;
-    v15 = v4;
-    _os_log_impl(&dword_1959FF000, v5, OS_LOG_TYPE_DEFAULT, "Restriction reason %@ for service %@", &v12, 0x16u);
+    v15 = serviceCopy;
+    _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "Restriction reason %@ for service %@", &v12, 0x16u);
   }
 
-  v7 = [(NSMutableDictionary *)self->_serviceToRestrictionReason objectForKeyedSubscript:v4];
+  v7 = [(NSMutableDictionary *)self->_serviceToRestrictionReason objectForKeyedSubscript:serviceCopy];
 
   if (v7)
   {
-    v8 = [(NSMutableDictionary *)self->_serviceToRestrictionReason objectForKeyedSubscript:v4];
-    v9 = [v8 unsignedIntValue];
+    v8 = [(NSMutableDictionary *)self->_serviceToRestrictionReason objectForKeyedSubscript:serviceCopy];
+    unsignedIntValue = [v8 unsignedIntValue];
   }
 
   else
   {
-    v9 = 0;
+    unsignedIntValue = 0;
   }
 
   v10 = *MEMORY[0x1E69E9840];
-  return v9;
+  return unsignedIntValue;
 }
 
-- (void)service:(id)a3 restrictionReasonChanged:(unint64_t)a4
+- (void)service:(id)service restrictionReasonChanged:(unint64_t)changed
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  serviceCopy = service;
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v17 = v6;
+    v17 = serviceCopy;
     v18 = 2048;
-    v19 = a4;
-    _os_log_impl(&dword_1959FF000, v7, OS_LOG_TYPE_DEFAULT, "Service %@ received restriction reason %lu", buf, 0x16u);
+    changedCopy = changed;
+    _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "Service %@ received restriction reason %lu", buf, 0x16u);
   }
 
   if (!self->_serviceToRestrictionReason)
@@ -839,36 +839,36 @@ LABEL_6:
     self->_serviceToRestrictionReason = v8;
   }
 
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  [(NSMutableDictionary *)self->_serviceToRestrictionReason setObject:v10 forKeyedSubscript:v6];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:changed];
+  [(NSMutableDictionary *)self->_serviceToRestrictionReason setObject:v10 forKeyedSubscript:serviceCopy];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_195A2D9E4;
   v13[3] = &unk_1E743F530;
-  v14 = v6;
-  v15 = a4;
-  v11 = v6;
+  v14 = serviceCopy;
+  changedCopy2 = changed;
+  v11 = serviceCopy;
   [(IDSDaemonListener *)self _callHandlersWithBlock:v13];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateAccount:(id)a3 withAccountInfo:(id)a4
+- (void)updateAccount:(id)account withAccountInfo:(id)info
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKey:*MEMORY[0x1E69A5650]];
-  v9 = [v7 objectForKey:*MEMORY[0x1E69A5640]];
+  accountCopy = account;
+  infoCopy = info;
+  v8 = [infoCopy objectForKey:*MEMORY[0x1E69A5650]];
+  v9 = [infoCopy objectForKey:*MEMORY[0x1E69A5640]];
   if ([v9 isEqualToIgnoringCase:@"com.apple.private.alloy.voicemailsync"])
   {
-    v10 = [MEMORY[0x1E69A6138] voicemailSync];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    voicemailSync = [MEMORY[0x1E69A6138] voicemailSync];
+    if (os_log_type_enabled(voicemailSync, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v7;
-      _os_log_impl(&dword_1959FF000, v10, OS_LOG_TYPE_DEFAULT, "Account info changed %@", buf, 0xCu);
+      v18 = infoCopy;
+      _os_log_impl(&dword_1959FF000, voicemailSync, OS_LOG_TYPE_DEFAULT, "Account info changed %@", buf, 0xCu);
     }
   }
 
@@ -898,7 +898,7 @@ LABEL_6:
     v14[2] = sub_195A2DC24;
     v14[3] = &unk_1E743E620;
     v14[4] = self;
-    v15 = v7;
+    v15 = infoCopy;
     v16 = v9;
     [(IDSDaemonListener *)self _performSyncBlock:v14];
   }
@@ -906,116 +906,116 @@ LABEL_6:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)account:(id)a3 accountInfoChanged:(id)a4
+- (void)account:(id)account accountInfoChanged:(id)changed
 {
-  v6 = a4;
-  [(IDSDaemonListener *)self updateAccount:a3 withAccountInfo:v6];
+  changedCopy = changed;
+  [(IDSDaemonListener *)self updateAccount:account withAccountInfo:changedCopy];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_195A2DD6C;
   v8[3] = &unk_1E743F4E0;
-  v9 = v6;
-  v7 = v6;
+  v9 = changedCopy;
+  v7 = changedCopy;
   [(IDSDaemonListener *)self _callHandlersWithBlock:v8];
 }
 
-- (void)account:(id)a3 registrationStatusInfoChanged:(id)a4
+- (void)account:(id)account registrationStatusInfoChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  changedCopy = changed;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_195A2DE88;
   v10[3] = &unk_1E743F508;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = accountCopy;
+  v12 = changedCopy;
+  v8 = changedCopy;
+  v9 = accountCopy;
   [(IDSDaemonListener *)self _callHandlersWithBlock:v10];
 }
 
-- (void)account:(id)a3 aliasesChanged:(id)a4
+- (void)account:(id)account aliasesChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  changedCopy = changed;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_195A2DFA4;
   v10[3] = &unk_1E743F508;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = accountCopy;
+  v12 = changedCopy;
+  v8 = changedCopy;
+  v9 = accountCopy;
   [(IDSDaemonListener *)self _callHandlersWithBlock:v10];
 }
 
-- (void)account:(id)a3 vettedAliasesChanged:(id)a4
+- (void)account:(id)account vettedAliasesChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  changedCopy = changed;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_195A2E0C0;
   v10[3] = &unk_1E743F508;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = accountCopy;
+  v12 = changedCopy;
+  v8 = changedCopy;
+  v9 = accountCopy;
   [(IDSDaemonListener *)self _callHandlersWithBlock:v10];
 }
 
-- (void)account:(id)a3 profileChanged:(id)a4
+- (void)account:(id)account profileChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  changedCopy = changed;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_195A2E1DC;
   v10[3] = &unk_1E743F508;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = accountCopy;
+  v12 = changedCopy;
+  v8 = changedCopy;
+  v9 = accountCopy;
   [(IDSDaemonListener *)self _callHandlersWithBlock:v10];
 }
 
-- (void)account:(id)a3 loginChanged:(id)a4
+- (void)account:(id)account loginChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  changedCopy = changed;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_195A2E2F8;
   v10[3] = &unk_1E743F508;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = accountCopy;
+  v12 = changedCopy;
+  v8 = changedCopy;
+  v9 = accountCopy;
   [(IDSDaemonListener *)self _callHandlersWithBlock:v10];
 }
 
-- (void)account:(id)a3 displayNameChanged:(id)a4
+- (void)account:(id)account displayNameChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  changedCopy = changed;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_195A2E414;
   v10[3] = &unk_1E743F508;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = accountCopy;
+  v12 = changedCopy;
+  v8 = changedCopy;
+  v9 = accountCopy;
   [(IDSDaemonListener *)self _callHandlersWithBlock:v10];
 }
 
-- (id)_uniqueIDForDevice:(id)a3
+- (id)_uniqueIDForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:*MEMORY[0x1E69A4BE8]];
+  deviceCopy = device;
+  v4 = [deviceCopy objectForKey:*MEMORY[0x1E69A4BE8]];
   if (![v4 length])
   {
-    v5 = [v3 objectForKey:*MEMORY[0x1E69A4C48]];
+    v5 = [deviceCopy objectForKey:*MEMORY[0x1E69A4C48]];
     v6 = [v5 _stringForKey:*MEMORY[0x1E69A4FE0]];
 
     v4 = v6;
@@ -1024,22 +1024,22 @@ LABEL_6:
   return v4;
 }
 
-- (void)account:(id)a3 dependentDevicesUpdated:(id)a4
+- (void)account:(id)account dependentDevicesUpdated:(id)updated
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  updatedCopy = updated;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = sub_195A2E680;
   v17[3] = &unk_1E743EEE8;
   v17[4] = self;
-  v9 = v6;
+  v9 = accountCopy;
   v18 = v9;
-  v19 = v7;
+  v19 = updatedCopy;
   v10 = v8;
   v20 = v10;
-  v11 = v7;
+  v11 = updatedCopy;
   [(IDSDaemonListener *)self _performSyncBlock:v17];
   v12 = v10;
   v14[0] = MEMORY[0x1E69E9820];
@@ -1052,10 +1052,10 @@ LABEL_6:
   [(IDSDaemonListener *)self _callHandlersWithBlock:v14];
 }
 
-- (void)account:(id)a3 localDeviceAdded:(id)a4
+- (void)account:(id)account localDeviceAdded:(id)added
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  addedCopy = added;
   v40 = 0;
   v41 = &v40;
   v42 = 0x3032000000;
@@ -1078,11 +1078,11 @@ LABEL_6:
   v21[1] = 3221225472;
   v21[2] = sub_195A2ED88;
   v21[3] = &unk_1E743F558;
-  v8 = v7;
+  v8 = addedCopy;
   v22 = v8;
-  v9 = v6;
+  v9 = accountCopy;
   v23 = v9;
-  v24 = self;
+  selfCopy = self;
   v25 = &v40;
   v26 = &v28;
   v27 = &v34;
@@ -1117,19 +1117,19 @@ LABEL_6:
   _Block_object_dispose(&v40, 8);
 }
 
-- (void)account:(id)a3 localDeviceRemoved:(id)a4
+- (void)account:(id)account localDeviceRemoved:(id)removed
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  removedCopy = removed;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = sub_195A2F65C;
   v15[3] = &unk_1E743E620;
-  v8 = v6;
+  v8 = accountCopy;
   v16 = v8;
-  v9 = v7;
+  v9 = removedCopy;
   v17 = v9;
-  v18 = self;
+  selfCopy = self;
   [(IDSDaemonListener *)self _performSyncBlock:v15];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -1142,10 +1142,10 @@ LABEL_6:
   [(IDSDaemonListener *)self _callHandlersWithBlock:v12];
 }
 
-- (id)_updateService:(id)a3 withTinkerDevice:(id)a4 shouldAdd:(BOOL)a5 shouldSwitch:(BOOL)a6
+- (id)_updateService:(id)service withTinkerDevice:(id)device shouldAdd:(BOOL)add shouldSwitch:(BOOL)switch
 {
-  v10 = a3;
-  v11 = a4;
+  serviceCopy = service;
+  deviceCopy = device;
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x3032000000;
@@ -1162,13 +1162,13 @@ LABEL_6:
   v16[1] = 3221225472;
   v16[2] = sub_195A2FB20;
   v16[3] = &unk_1E743F5A8;
-  v12 = v11;
+  v12 = deviceCopy;
   v17 = v12;
-  v13 = v10;
+  v13 = serviceCopy;
   v18 = v13;
-  v19 = self;
-  v22 = a5;
-  v23 = a6;
+  selfCopy = self;
+  addCopy = add;
+  switchCopy = switch;
   v20 = v30;
   v21 = &v24;
   [(IDSDaemonListener *)self _performSyncBlock:v16];
@@ -1180,27 +1180,27 @@ LABEL_6:
   return v14;
 }
 
-- (void)service:(id)a3 tinkerDeviceAdded:(id)a4
+- (void)service:(id)service tinkerDeviceAdded:(id)added
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  serviceCopy = service;
+  addedCopy = added;
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v6;
-    _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "tinkerDeviceAdded %@", buf, 0xCu);
+    v20 = serviceCopy;
+    _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "tinkerDeviceAdded %@", buf, 0xCu);
   }
 
-  v9 = [(IDSDaemonListener *)self _updateService:v6 withTinkerDevice:v7 shouldAdd:1 shouldSwitch:1];
+  v9 = [(IDSDaemonListener *)self _updateService:serviceCopy withTinkerDevice:addedCopy shouldAdd:1 shouldSwitch:1];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = sub_195A306FC;
   v16[3] = &unk_1E743F508;
-  v10 = v6;
+  v10 = serviceCopy;
   v17 = v10;
-  v11 = v7;
+  v11 = addedCopy;
   v18 = v11;
   [(IDSDaemonListener *)self _callHandlersWithBlock:v16];
   if ([v9 length])
@@ -1218,116 +1218,116 @@ LABEL_6:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)service:(id)a3 tinkerDeviceRemoved:(id)a4
+- (void)service:(id)service tinkerDeviceRemoved:(id)removed
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  serviceCopy = service;
+  removedCopy = removed;
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v6;
-    _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "tinkerDeviceRemoved %@", buf, 0xCu);
+    v17 = serviceCopy;
+    _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "tinkerDeviceRemoved %@", buf, 0xCu);
   }
 
-  v9 = [(IDSDaemonListener *)self _updateService:v6 withTinkerDevice:v7 shouldAdd:0 shouldSwitch:0];
+  v9 = [(IDSDaemonListener *)self _updateService:serviceCopy withTinkerDevice:removedCopy shouldAdd:0 shouldSwitch:0];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_195A308D0;
   v13[3] = &unk_1E743F508;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = serviceCopy;
+  v15 = removedCopy;
+  v10 = removedCopy;
+  v11 = serviceCopy;
   [(IDSDaemonListener *)self _callHandlersWithBlock:v13];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)service:(id)a3 tinkerDeviceUpdated:(id)a4
+- (void)service:(id)service tinkerDeviceUpdated:(id)updated
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  serviceCopy = service;
+  updatedCopy = updated;
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v17 = v6;
-    _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "tinkerDeviceUpdated %@", buf, 0xCu);
+    v17 = serviceCopy;
+    _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "tinkerDeviceUpdated %@", buf, 0xCu);
   }
 
-  v9 = [(IDSDaemonListener *)self _updateService:v6 withTinkerDevice:v7 shouldAdd:1 shouldSwitch:0];
+  v9 = [(IDSDaemonListener *)self _updateService:serviceCopy withTinkerDevice:updatedCopy shouldAdd:1 shouldSwitch:0];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_195A30A94;
   v13[3] = &unk_1E743F508;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = serviceCopy;
+  v15 = updatedCopy;
+  v10 = updatedCopy;
+  v11 = serviceCopy;
   [(IDSDaemonListener *)self _callHandlersWithBlock:v13];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)service:(id)a3 familyInfoUpdated:(id)a4
+- (void)service:(id)service familyInfoUpdated:(id)updated
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  serviceCopy = service;
+  updatedCopy = updated;
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v6;
-    _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "familyInfoUpdated %@", buf, 0xCu);
+    v24 = serviceCopy;
+    _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "familyInfoUpdated %@", buf, 0xCu);
   }
 
-  if (v7)
+  if (updatedCopy)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v10 = MEMORY[0x1E695DFD8];
     v11 = *MEMORY[0x1E69A4CB0];
-    v12 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69A4CB0]];
+    v12 = [updatedCopy objectForKeyedSubscript:*MEMORY[0x1E69A4CB0]];
     v13 = [v10 setWithArray:v12];
     [v9 setObject:v13 forKeyedSubscript:v11];
 
     v14 = MEMORY[0x1E695DFD8];
     v15 = *MEMORY[0x1E69A4C90];
-    v16 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69A4C90]];
+    v16 = [updatedCopy objectForKeyedSubscript:*MEMORY[0x1E69A4C90]];
     v17 = [v14 setWithArray:v16];
     [v9 setObject:v17 forKeyedSubscript:v15];
 
-    [(NSMutableDictionary *)self->_serviceToFamilyInfo setObject:v9 forKey:v6];
+    [(NSMutableDictionary *)self->_serviceToFamilyInfo setObject:v9 forKey:serviceCopy];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = sub_195A30D64;
     v20[3] = &unk_1E743F508;
-    v21 = v6;
+    v21 = serviceCopy;
     v22 = v9;
-    v18 = v9;
+    registration2 = v9;
     [(IDSDaemonListener *)self _callHandlersWithBlock:v20];
   }
 
   else
   {
-    v18 = [MEMORY[0x1E69A6138] registration];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    registration2 = [MEMORY[0x1E69A6138] registration];
+    if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v24 = v6;
-      _os_log_impl(&dword_1959FF000, v18, OS_LOG_TYPE_DEFAULT, "Family Info was nil %@", buf, 0xCu);
+      v24 = serviceCopy;
+      _os_log_impl(&dword_1959FF000, registration2, OS_LOG_TYPE_DEFAULT, "Family Info was nil %@", buf, 0xCu);
     }
   }
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)familyInfoForService:(id)a3
+- (id)familyInfoForService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -1340,7 +1340,7 @@ LABEL_6:
   v8[3] = &unk_1E743EA08;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = serviceCopy;
   v9 = v5;
   [(IDSDaemonListener *)self _performSyncBlock:v8];
   v6 = v12[5];
@@ -1350,28 +1350,28 @@ LABEL_6:
   return v6;
 }
 
-- (void)familyDevicesForService:(id)a3 listenerID:(id)a4 withCompletion:(id)a5
+- (void)familyDevicesForService:(id)service listenerID:(id)d withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8 && v9)
+  serviceCopy = service;
+  dCopy = d;
+  completionCopy = completion;
+  if (serviceCopy && dCopy)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_195A31040;
     v11[3] = &unk_1E743F318;
     v11[4] = self;
-    v12 = v8;
-    v13 = v9;
-    v14 = v10;
+    v12 = serviceCopy;
+    v13 = dCopy;
+    v14 = completionCopy;
     [(IDSDaemonListener *)self _performSyncBlock:v11];
   }
 }
 
-- (id)pendingInvitationsForService:(id)a3
+- (id)pendingInvitationsForService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -1384,7 +1384,7 @@ LABEL_6:
   v8[3] = &unk_1E743EA08;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = serviceCopy;
   v9 = v5;
   [(IDSDaemonListener *)self _performSyncBlock:v8];
   v6 = v12[5];
@@ -1394,9 +1394,9 @@ LABEL_6:
   return v6;
 }
 
-- (id)receivedInvitationsForService:(id)a3
+- (id)receivedInvitationsForService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -1409,7 +1409,7 @@ LABEL_6:
   v8[3] = &unk_1E743EA08;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = serviceCopy;
   v9 = v5;
   [(IDSDaemonListener *)self _performSyncBlock:v8];
   v6 = v12[5];
@@ -1419,9 +1419,9 @@ LABEL_6:
   return v6;
 }
 
-- (int64_t)maxEffectivePayloadSizeForService:(id)a3
+- (int64_t)maxEffectivePayloadSizeForService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -1432,7 +1432,7 @@ LABEL_6:
   v8[3] = &unk_1E743EA08;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = serviceCopy;
   v9 = v5;
   [(IDSDaemonListener *)self _performSyncBlock:v8];
   v6 = v12[3];
@@ -1480,50 +1480,50 @@ LABEL_6:
   return v2;
 }
 
-- (void)registrationFailedForAccount:(id)a3 needsDeletion:(id)a4
+- (void)registrationFailedForAccount:(id)account needsDeletion:(id)deletion
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  deletionCopy = deletion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_195A32120;
   v10[3] = &unk_1E743F508;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = accountCopy;
+  v12 = deletionCopy;
+  v8 = deletionCopy;
+  v9 = accountCopy;
   [(IDSDaemonListener *)self _callHandlersWithBlock:v10];
 }
 
-- (void)refreshRegistrationForAccount:(id)a3
+- (void)refreshRegistrationForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  accountCopy = account;
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
   {
     sub_195B28F04();
   }
 
-  v6 = [MEMORY[0x1E69A53C0] sharedInstance];
-  [v6 flushCache];
+  mEMORY[0x1E69A53C0] = [MEMORY[0x1E69A53C0] sharedInstance];
+  [mEMORY[0x1E69A53C0] flushCache];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_195A32270;
   v8[3] = &unk_1E743F4E0;
-  v9 = v4;
-  v7 = v4;
+  v9 = accountCopy;
+  v7 = accountCopy;
   [(IDSDaemonListener *)self _callHandlersWithBlock:v8];
 }
 
-- (id)dependentDevicesForAccount:(id)a3
+- (id)dependentDevicesForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v6 = [v5 isNonUIInstall];
+  accountCopy = account;
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isNonUIInstall = [mEMORY[0x1E69A60F0] isNonUIInstall];
 
   v7 = 0;
-  if (v4 && (v6 & 1) == 0)
+  if (accountCopy && (isNonUIInstall & 1) == 0)
   {
     v12 = 0;
     v13 = &v12;
@@ -1537,7 +1537,7 @@ LABEL_6:
     v9[3] = &unk_1E743EA08;
     v11 = &v12;
     v9[4] = self;
-    v10 = v4;
+    v10 = accountCopy;
     [(IDSDaemonListener *)self _performSyncBlock:v9];
     v7 = v13[5];
 
@@ -1547,14 +1547,14 @@ LABEL_6:
   return v7;
 }
 
-- (id)linkedDevicesForService:(id)a3
+- (id)linkedDevicesForService:(id)service
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v6 = [v5 isNonUIInstall];
+  serviceCopy = service;
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isNonUIInstall = [mEMORY[0x1E69A60F0] isNonUIInstall];
 
   v7 = 0;
-  if (v4 && (v6 & 1) == 0)
+  if (serviceCopy && (isNonUIInstall & 1) == 0)
   {
     v12 = 0;
     v13 = &v12;
@@ -1568,7 +1568,7 @@ LABEL_6:
     v9[3] = &unk_1E743EA08;
     v11 = &v12;
     v9[4] = self;
-    v10 = v4;
+    v10 = serviceCopy;
     [(IDSDaemonListener *)self _performSyncBlock:v9];
     v7 = v13[5];
 
@@ -1578,70 +1578,70 @@ LABEL_6:
   return v7;
 }
 
-- (void)device:(id)a3 nsuuidChanged:(id)a4
+- (void)device:(id)device nsuuidChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  deviceCopy = device;
+  changedCopy = changed;
+  if ([deviceCopy length])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_195A3273C;
     v9[3] = &unk_1E743E620;
-    v10 = v7;
-    v11 = v6;
-    v12 = self;
+    v10 = changedCopy;
+    v11 = deviceCopy;
+    selfCopy = self;
     [(IDSDaemonListener *)self _performSyncBlock:v9];
 
-    v8 = v10;
+    nSUUID = v10;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E69A6138] NSUUID];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    nSUUID = [MEMORY[0x1E69A6138] NSUUID];
+    if (os_log_type_enabled(nSUUID, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "No device ID: can't update nsuuid. Bailing...", buf, 2u);
+      _os_log_impl(&dword_1959FF000, nSUUID, OS_LOG_TYPE_DEFAULT, "No device ID: can't update nsuuid. Bailing...", buf, 2u);
     }
   }
 }
 
-- (void)didGetIdentities:(id)a3 error:(id)a4
+- (void)didGetIdentities:(id)identities error:(id)error
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  identitiesCopy = identities;
+  errorCopy = error;
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v5;
+    v10 = identitiesCopy;
     v11 = 2112;
-    v12 = v6;
-    _os_log_impl(&dword_1959FF000, v7, OS_LOG_TYPE_DEFAULT, "Did get identities {identities: %@, error: %@}", &v9, 0x16u);
+    v12 = errorCopy;
+    _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "Did get identities {identities: %@, error: %@}", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)didSwitchActivePairedDevice:(id)a3
+- (void)didSwitchActivePairedDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_195A32D94;
   v6[3] = &unk_1E743EA30;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = deviceCopy;
+  v5 = deviceCopy;
   [(IDSDaemonListener *)self _performSyncBlock:v6];
 }
 
-- (void)_internalDidSwitchActivePairedDevice:(id)a3 forService:(id)a4
+- (void)_internalDidSwitchActivePairedDevice:(id)device forService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  serviceCopy = service;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
@@ -1650,8 +1650,8 @@ LABEL_6:
   v14[1] = 3221225472;
   v14[2] = sub_195A33084;
   v14[3] = &unk_1E743F620;
-  v15 = v6;
-  v16 = v7;
+  v15 = deviceCopy;
+  v16 = serviceCopy;
   v17 = v18;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -1668,19 +1668,19 @@ LABEL_6:
   _Block_object_dispose(v18, 8);
 }
 
-- (void)switchActivePairedDevice:(id)a3 forService:(id)a4
+- (void)switchActivePairedDevice:(id)device forService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 length])
+  deviceCopy = device;
+  serviceCopy = service;
+  if (![deviceCopy length])
   {
-    v8 = [MEMORY[0x1E69A6138] isActive];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    isActive = [MEMORY[0x1E69A6138] isActive];
+    if (os_log_type_enabled(isActive, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v9 = "New active unique ID is nil";
 LABEL_8:
-      _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, v9, buf, 2u);
+      _os_log_impl(&dword_1959FF000, isActive, OS_LOG_TYPE_DEFAULT, v9, buf, 2u);
     }
 
 LABEL_9:
@@ -1688,10 +1688,10 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (![v7 length])
+  if (![serviceCopy length])
   {
-    v8 = [MEMORY[0x1E69A6138] isActive];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    isActive = [MEMORY[0x1E69A6138] isActive];
+    if (os_log_type_enabled(isActive, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v9 = "Account unique ID is nil, can't switch active device ID";
@@ -1706,42 +1706,42 @@ LABEL_9:
   v10[2] = sub_195A335C8;
   v10[3] = &unk_1E743E620;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
+  v11 = deviceCopy;
+  v12 = serviceCopy;
   [(IDSDaemonListener *)self _performSyncBlock:v10];
 
 LABEL_10:
 }
 
-- (void)_internalSwitchActivePairedDevice:(id)a3 forService:(id)a4
+- (void)_internalSwitchActivePairedDevice:(id)device forService:(id)service
 {
   v38 = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69A6138] isActive];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  deviceCopy = device;
+  serviceCopy = service;
+  isActive = [MEMORY[0x1E69A6138] isActive];
+  if (os_log_type_enabled(isActive, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v35 = v28;
+    v35 = deviceCopy;
     v36 = 2112;
-    v37 = v6;
-    _os_log_impl(&dword_1959FF000, v7, OS_LOG_TYPE_DEFAULT, "Switching active device to %@ for service %@", buf, 0x16u);
+    v37 = serviceCopy;
+    _os_log_impl(&dword_1959FF000, isActive, OS_LOG_TYPE_DEFAULT, "Switching active device to %@ for service %@", buf, 0x16u);
   }
 
-  v8 = [(NSMutableDictionary *)self->_serviceToLinkedDevices objectForKey:v6];
+  v8 = [(NSMutableDictionary *)self->_serviceToLinkedDevices objectForKey:serviceCopy];
   v9 = [v8 mutableCopy];
 
-  v10 = [MEMORY[0x1E69A6138] isActive];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  isActive2 = [MEMORY[0x1E69A6138] isActive];
+  if (os_log_type_enabled(isActive2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v35 = v6;
+    v35 = serviceCopy;
     v36 = 2112;
     v37 = v9;
-    _os_log_impl(&dword_1959FF000, v10, OS_LOG_TYPE_DEFAULT, "Current linked devices for service %@: %@", buf, 0x16u);
+    _os_log_impl(&dword_1959FF000, isActive2, OS_LOG_TYPE_DEFAULT, "Current linked devices for service %@: %@", buf, 0x16u);
   }
 
-  v26 = v6;
+  v26 = serviceCopy;
 
   v29 = 0u;
   v30 = 0u;
@@ -1767,7 +1767,7 @@ LABEL_10:
         v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v16];
         [(IDSDaemonListener *)self _uniqueIDForDevice:v17];
         v19 = v18 = self;
-        v20 = [v19 isEqualToIgnoringCase:v28];
+        v20 = [v19 isEqualToIgnoringCase:deviceCopy];
         v21 = [MEMORY[0x1E696AD98] numberWithBool:v20];
         [v17 setObject:v21 forKey:v14];
 
@@ -1786,46 +1786,46 @@ LABEL_10:
   if (v26 && v9)
   {
     [(NSMutableDictionary *)self->_serviceToLinkedDevices setObject:v9 forKey:v26];
-    v22 = [MEMORY[0x1E69A6138] isActive];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    isActive3 = [MEMORY[0x1E69A6138] isActive];
+    if (os_log_type_enabled(isActive3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
       v35 = v26;
       v36 = 2112;
       v37 = v9;
-      _os_log_impl(&dword_1959FF000, v22, OS_LOG_TYPE_DEFAULT, "New linked devices for service %@: %@", buf, 0x16u);
+      _os_log_impl(&dword_1959FF000, isActive3, OS_LOG_TYPE_DEFAULT, "New linked devices for service %@: %@", buf, 0x16u);
     }
   }
 
-  if (v28 && v26)
+  if (deviceCopy && v26)
   {
-    [(NSMutableDictionary *)self->_serviceToActiveDeviceUniqueID setObject:v28 forKey:v26];
-    v23 = [MEMORY[0x1E69A6138] activeID];
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+    [(NSMutableDictionary *)self->_serviceToActiveDeviceUniqueID setObject:deviceCopy forKey:v26];
+    activeID = [MEMORY[0x1E69A6138] activeID];
+    if (os_log_type_enabled(activeID, OS_LOG_TYPE_DEFAULT))
     {
       v24 = [(NSMutableDictionary *)self->_serviceToActiveDeviceUniqueID objectForKey:v26];
       *buf = 138412290;
       v35 = v24;
-      _os_log_impl(&dword_1959FF000, v23, OS_LOG_TYPE_DEFAULT, "Active paired device switched, updating activeDevice ID to %@", buf, 0xCu);
+      _os_log_impl(&dword_1959FF000, activeID, OS_LOG_TYPE_DEFAULT, "Active paired device switched, updating activeDevice ID to %@", buf, 0xCu);
     }
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)switchActivePairedDevice:(id)a3 forAccount:(id)a4
+- (void)switchActivePairedDevice:(id)device forAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 length])
+  deviceCopy = device;
+  accountCopy = account;
+  if (![deviceCopy length])
   {
-    v8 = [MEMORY[0x1E69A6138] isActive];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    isActive = [MEMORY[0x1E69A6138] isActive];
+    if (os_log_type_enabled(isActive, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v9 = "New active unique ID is nil";
 LABEL_8:
-      _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, v9, buf, 2u);
+      _os_log_impl(&dword_1959FF000, isActive, OS_LOG_TYPE_DEFAULT, v9, buf, 2u);
     }
 
 LABEL_9:
@@ -1833,10 +1833,10 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (![v7 length])
+  if (![accountCopy length])
   {
-    v8 = [MEMORY[0x1E69A6138] isActive];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    isActive = [MEMORY[0x1E69A6138] isActive];
+    if (os_log_type_enabled(isActive, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v9 = "Account unique ID is nil, can't switch active device ID";
@@ -1851,42 +1851,42 @@ LABEL_9:
   v10[2] = sub_195A33AFC;
   v10[3] = &unk_1E743E620;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
+  v11 = deviceCopy;
+  v12 = accountCopy;
   [(IDSDaemonListener *)self _performSyncBlock:v10];
 
 LABEL_10:
 }
 
-- (void)_internalSwitchActivePairedDevice:(id)a3 forAccount:(id)a4
+- (void)_internalSwitchActivePairedDevice:(id)device forAccount:(id)account
 {
   v38 = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69A6138] isActive];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  deviceCopy = device;
+  accountCopy = account;
+  isActive = [MEMORY[0x1E69A6138] isActive];
+  if (os_log_type_enabled(isActive, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v35 = v28;
+    v35 = deviceCopy;
     v36 = 2112;
-    v37 = v6;
-    _os_log_impl(&dword_1959FF000, v7, OS_LOG_TYPE_DEFAULT, "Switching active device to %@ for account %@", buf, 0x16u);
+    v37 = accountCopy;
+    _os_log_impl(&dword_1959FF000, isActive, OS_LOG_TYPE_DEFAULT, "Switching active device to %@ for account %@", buf, 0x16u);
   }
 
-  v8 = [(NSMutableDictionary *)self->_accountToDevices objectForKey:v6];
+  v8 = [(NSMutableDictionary *)self->_accountToDevices objectForKey:accountCopy];
   v9 = [v8 mutableCopy];
 
-  v10 = [MEMORY[0x1E69A6138] isActive];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  isActive2 = [MEMORY[0x1E69A6138] isActive];
+  if (os_log_type_enabled(isActive2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v35 = v6;
+    v35 = accountCopy;
     v36 = 2112;
     v37 = v9;
-    _os_log_impl(&dword_1959FF000, v10, OS_LOG_TYPE_DEFAULT, "Current devices for account %@: %@", buf, 0x16u);
+    _os_log_impl(&dword_1959FF000, isActive2, OS_LOG_TYPE_DEFAULT, "Current devices for account %@: %@", buf, 0x16u);
   }
 
-  v26 = v6;
+  v26 = accountCopy;
 
   v29 = 0u;
   v30 = 0u;
@@ -1912,7 +1912,7 @@ LABEL_10:
         v17 = [objc_alloc(MEMORY[0x1E695DF90]) initWithDictionary:v16];
         [(IDSDaemonListener *)self _uniqueIDForDevice:v17];
         v19 = v18 = self;
-        v20 = [v19 isEqualToIgnoringCase:v28];
+        v20 = [v19 isEqualToIgnoringCase:deviceCopy];
         v21 = [MEMORY[0x1E696AD98] numberWithBool:v20];
         [v17 setObject:v21 forKey:v14];
 
@@ -1931,25 +1931,25 @@ LABEL_10:
   if (v26 && v9)
   {
     [(NSMutableDictionary *)self->_accountToDevices setObject:v9 forKey:v26];
-    v22 = [MEMORY[0x1E69A6138] isActive];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    isActive3 = [MEMORY[0x1E69A6138] isActive];
+    if (os_log_type_enabled(isActive3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
       v35 = v26;
-      _os_log_impl(&dword_1959FF000, v22, OS_LOG_TYPE_DEFAULT, "New devices for account %@", buf, 0xCu);
+      _os_log_impl(&dword_1959FF000, isActive3, OS_LOG_TYPE_DEFAULT, "New devices for account %@", buf, 0xCu);
     }
   }
 
-  if (v28 && v26)
+  if (deviceCopy && v26)
   {
-    [(NSMutableDictionary *)self->_accountToActiveDeviceUniqueID setObject:v28 forKey:v26];
-    v23 = [MEMORY[0x1E69A6138] activeID];
-    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+    [(NSMutableDictionary *)self->_accountToActiveDeviceUniqueID setObject:deviceCopy forKey:v26];
+    activeID = [MEMORY[0x1E69A6138] activeID];
+    if (os_log_type_enabled(activeID, OS_LOG_TYPE_DEFAULT))
     {
       v24 = [(NSMutableDictionary *)self->_accountToActiveDeviceUniqueID objectForKey:v26];
       *buf = 138412290;
       v35 = v24;
-      _os_log_impl(&dword_1959FF000, v23, OS_LOG_TYPE_DEFAULT, "Active paired device switched, updating activeDevice ID to %@", buf, 0xCu);
+      _os_log_impl(&dword_1959FF000, activeID, OS_LOG_TYPE_DEFAULT, "Active paired device switched, updating activeDevice ID to %@", buf, 0xCu);
     }
   }
 
@@ -1966,23 +1966,23 @@ LABEL_10:
   [(IDSDaemonListener *)self _performSyncBlock:v2];
 }
 
-- (void)setupCompleteWithInfo:(id)a3
+- (void)setupCompleteWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  infoCopy = info;
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_1959FF000, v5, OS_LOG_TYPE_DEFAULT, "Setup complete with info", buf, 2u);
+    _os_log_impl(&dword_1959FF000, registration, OS_LOG_TYPE_DEFAULT, "Setup complete with info", buf, 2u);
   }
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A3483C;
   v7[3] = &unk_1E743EA30;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = infoCopy;
+  selfCopy = self;
+  v6 = infoCopy;
   [(IDSDaemonListener *)self _performSyncBlock:v7];
 }
 
@@ -2007,31 +2007,31 @@ LABEL_10:
   return v2;
 }
 
-- (void)connectionComplete:(BOOL)a3 withResponse:(id)a4
+- (void)connectionComplete:(BOOL)complete withResponse:(id)response
 {
-  v5 = a4;
+  responseCopy = response;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_195A35DD4;
   v7[3] = &unk_1E743EA30;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = responseCopy;
+  v6 = responseCopy;
   [(IDSDaemonListener *)self _performSyncBlock:v7];
 }
 
-- (void)xpcObject:(id)a3 objectContext:(id)a4
+- (void)xpcObject:(id)object objectContext:(id)context
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v8 = +[IDSLogging DaemonListener];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v16 = v6;
+    v16 = objectCopy;
     v17 = 2112;
-    v18 = v7;
+    v18 = contextCopy;
     _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_DEFAULT, "XPC object received %@:%@", buf, 0x16u);
   }
 
@@ -2039,16 +2039,16 @@ LABEL_10:
   v12[1] = 3221225472;
   v12[2] = sub_195A35FBC;
   v12[3] = &unk_1E743F508;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = objectCopy;
+  v14 = contextCopy;
+  v9 = contextCopy;
+  v10 = objectCopy;
   [(IDSDaemonListener *)self _callHandlersWithBlockOnIvarQueue:v12 cleanup:&unk_1F09E5DE0];
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v6 = 0;
   v7 = &v6;
@@ -2062,7 +2062,7 @@ LABEL_10:
   v5[3] = &unk_1E743F670;
   v5[4] = self;
   v5[5] = &v6;
-  v5[6] = a3;
+  v5[6] = selector;
   [(IDSDaemonListener *)self _performSyncBlock:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -2070,22 +2070,22 @@ LABEL_10:
   return v3;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  [v4 retainArguments];
+  invocationCopy = invocation;
+  [invocationCopy retainArguments];
   v5 = +[IDSDaemonController sharedInstance];
-  v6 = [v5 localObject];
-  v7 = [v6 _currentMessageContext];
+  localObject = [v5 localObject];
+  _currentMessageContext = [localObject _currentMessageContext];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = sub_195A36318;
   v14[3] = &unk_1E743F698;
   v14[4] = self;
-  v8 = v4;
+  v8 = invocationCopy;
   v15 = v8;
-  v9 = v7;
+  v9 = _currentMessageContext;
   v16 = v9;
   v10 = MEMORY[0x19A8BBEF0](v14);
   if ([v9 isReply] && _os_feature_enabled_impl())
@@ -2105,183 +2105,183 @@ LABEL_10:
   }
 }
 
-- (void)continuityDidUpdateStateToState:(int64_t)a3
+- (void)continuityDidUpdateStateToState:(int64_t)state
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_195A36878;
   v3[3] = &unk_1E743F6B8;
-  v3[4] = a3;
+  v3[4] = state;
   [(IDSDaemonListener *)self _callHandlersAsyncWithBlock:v3];
 }
 
-- (void)continuityDidLosePeer:(id)a3
+- (void)continuityDidLosePeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_195A3696C;
   v6[3] = &unk_1E743F4E0;
-  v7 = v4;
-  v5 = v4;
+  v7 = peerCopy;
+  v5 = peerCopy;
   [(IDSDaemonListener *)self _callHandlersAsyncWithBlock:v6];
 }
 
-- (void)continuityDidStartAdvertisingOfType:(int64_t)a3
+- (void)continuityDidStartAdvertisingOfType:(int64_t)type
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_195A36A38;
   v3[3] = &unk_1E743F6B8;
-  v3[4] = a3;
+  v3[4] = type;
   [(IDSDaemonListener *)self _callHandlersAsyncWithBlock:v3];
 }
 
-- (void)continuityDidStopAdvertisingOfType:(int64_t)a3
+- (void)continuityDidStopAdvertisingOfType:(int64_t)type
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_195A36B04;
   v3[3] = &unk_1E743F6B8;
-  v3[4] = a3;
+  v3[4] = type;
   [(IDSDaemonListener *)self _callHandlersAsyncWithBlock:v3];
 }
 
-- (void)continuityDidStopAdvertisingOfType:(int64_t)a3 withError:(id)a4
+- (void)continuityDidStopAdvertisingOfType:(int64_t)type withError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_195A36BFC;
   v8[3] = &unk_1E743F530;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
+  v9 = errorCopy;
+  typeCopy = type;
+  v7 = errorCopy;
   [(IDSDaemonListener *)self _callHandlersAsyncWithBlock:v8];
 }
 
-- (void)continuityDidFailToStartAdvertisingOfType:(int64_t)a3 withError:(id)a4
+- (void)continuityDidFailToStartAdvertisingOfType:(int64_t)type withError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_195A36CF4;
   v8[3] = &unk_1E743F530;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
+  v9 = errorCopy;
+  typeCopy = type;
+  v7 = errorCopy;
   [(IDSDaemonListener *)self _callHandlersAsyncWithBlock:v8];
 }
 
-- (void)continuityDidStartScanningForType:(int64_t)a3
+- (void)continuityDidStartScanningForType:(int64_t)type
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_195A36DC0;
   v3[3] = &unk_1E743F6B8;
-  v3[4] = a3;
+  v3[4] = type;
   [(IDSDaemonListener *)self _callHandlersAsyncWithBlock:v3];
 }
 
-- (void)continuityDidStopScanningForType:(int64_t)a3
+- (void)continuityDidStopScanningForType:(int64_t)type
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_195A36E8C;
   v3[3] = &unk_1E743F6B8;
-  v3[4] = a3;
+  v3[4] = type;
   [(IDSDaemonListener *)self _callHandlersAsyncWithBlock:v3];
 }
 
-- (void)continuityDidFailToStartScanningForType:(int64_t)a3 withError:(id)a4
+- (void)continuityDidFailToStartScanningForType:(int64_t)type withError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_195A36F84;
   v8[3] = &unk_1E743F530;
-  v9 = v6;
-  v10 = a3;
-  v7 = v6;
+  v9 = errorCopy;
+  typeCopy = type;
+  v7 = errorCopy;
   [(IDSDaemonListener *)self _callHandlersAsyncWithBlock:v8];
 }
 
-- (void)continuityDidDiscoverType:(int64_t)a3 withData:(id)a4 fromPeer:(id)a5
+- (void)continuityDidDiscoverType:(int64_t)type withData:(id)data fromPeer:(id)peer
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  peerCopy = peer;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = sub_195A370A8;
   v12[3] = &unk_1E743F6E0;
-  v14 = v9;
-  v15 = a3;
-  v13 = v8;
-  v10 = v9;
-  v11 = v8;
+  v14 = peerCopy;
+  typeCopy = type;
+  v13 = dataCopy;
+  v10 = peerCopy;
+  v11 = dataCopy;
   [(IDSDaemonListener *)self _callHandlersAsyncWithBlock:v12];
 }
 
-- (void)continuityDidDiscoverPeerWithData:(id)a3 fromPeer:(id)a4
+- (void)continuityDidDiscoverPeerWithData:(id)data fromPeer:(id)peer
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  peerCopy = peer;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_195A371C8;
   v10[3] = &unk_1E743F508;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = dataCopy;
+  v12 = peerCopy;
+  v8 = peerCopy;
+  v9 = dataCopy;
   [(IDSDaemonListener *)self _callHandlersAsyncWithBlock:v10];
 }
 
-- (void)continuityDidConnectToPeer:(id)a3 withError:(id)a4
+- (void)continuityDidConnectToPeer:(id)peer withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  peerCopy = peer;
+  errorCopy = error;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_195A372E4;
   v10[3] = &unk_1E743F508;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = peerCopy;
+  v12 = errorCopy;
+  v8 = errorCopy;
+  v9 = peerCopy;
   [(IDSDaemonListener *)self _callHandlersAsyncWithBlock:v10];
 }
 
-- (void)continuityDidDisconnectFromPeer:(id)a3 withError:(id)a4
+- (void)continuityDidDisconnectFromPeer:(id)peer withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  peerCopy = peer;
+  errorCopy = error;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_195A37400;
   v10[3] = &unk_1E743F508;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = peerCopy;
+  v12 = errorCopy;
+  v8 = errorCopy;
+  v9 = peerCopy;
   [(IDSDaemonListener *)self _callHandlersAsyncWithBlock:v10];
 }
 
-- (void)deviceIdentifierDidChange:(id)a3
+- (void)deviceIdentifierDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A6138] registration];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  changeCopy = change;
+  registration = [MEMORY[0x1E69A6138] registration];
+  if (os_log_type_enabled(registration, OS_LOG_TYPE_DEBUG))
   {
     sub_195B29114(self);
   }
 
-  if ([v4 isEqualToIgnoringCase:self->_deviceIdentifier])
+  if ([changeCopy isEqualToIgnoringCase:self->_deviceIdentifier])
   {
-    v6 = [MEMORY[0x1E69A6138] warning];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    warning = [MEMORY[0x1E69A6138] warning];
+    if (os_log_type_enabled(warning, OS_LOG_TYPE_ERROR))
     {
-      sub_195B2918C(v6);
+      sub_195B2918C(warning);
     }
   }
 
@@ -2292,7 +2292,7 @@ LABEL_10:
     v10[2] = sub_195A375DC;
     v10[3] = &unk_1E743EA30;
     v10[4] = self;
-    v7 = v4;
+    v7 = changeCopy;
     v11 = v7;
     [(IDSDaemonListener *)self _performSyncBlock:v10];
     v8[0] = MEMORY[0x1E69E9820];

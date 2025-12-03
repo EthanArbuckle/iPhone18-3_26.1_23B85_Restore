@@ -1,8 +1,8 @@
 @interface _UINavigationBarContents
 - (_UINavigationBarContents)init;
-- (void)setCancelBarButtonItems:(id)a3;
-- (void)setOtherBarButtonItems:(id)a3;
-- (void)setViewsRepresentingBackButton:(id)a3;
+- (void)setCancelBarButtonItems:(id)items;
+- (void)setOtherBarButtonItems:(id)items;
+- (void)setViewsRepresentingBackButton:(id)button;
 @end
 
 @implementation _UINavigationBarContents
@@ -29,12 +29,12 @@
   return v3;
 }
 
-- (void)setViewsRepresentingBackButton:(id)a3
+- (void)setViewsRepresentingBackButton:(id)button
 {
-  v4 = a3;
-  if (v4)
+  buttonCopy = button;
+  if (buttonCopy)
   {
-    v5 = v4;
+    v5 = buttonCopy;
   }
 
   else
@@ -51,12 +51,12 @@
   }
 }
 
-- (void)setCancelBarButtonItems:(id)a3
+- (void)setCancelBarButtonItems:(id)items
 {
-  v4 = a3;
-  if (v4)
+  itemsCopy = items;
+  if (itemsCopy)
   {
-    v5 = v4;
+    v5 = itemsCopy;
   }
 
   else
@@ -73,12 +73,12 @@
   }
 }
 
-- (void)setOtherBarButtonItems:(id)a3
+- (void)setOtherBarButtonItems:(id)items
 {
-  v4 = a3;
-  if (v4)
+  itemsCopy = items;
+  if (itemsCopy)
   {
-    v5 = v4;
+    v5 = itemsCopy;
   }
 
   else

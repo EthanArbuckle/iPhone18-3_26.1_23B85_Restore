@@ -1,10 +1,10 @@
 @interface _UIDismissInteraction
 - (UIView)view;
 - (_UIDismissInteractionDelegate)delegate;
-- (void)didMoveToView:(id)a3;
-- (void)setIsEnabled:(BOOL)a3;
-- (void)setStyles:(unint64_t)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)setIsEnabled:(BOOL)enabled;
+- (void)setStyles:(unint64_t)styles;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation _UIDismissInteraction
@@ -16,24 +16,24 @@
   return Strong;
 }
 
-- (void)setIsEnabled:(BOOL)a3
+- (void)setIsEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_188C86B14(a3);
+  selfCopy = self;
+  sub_188C86B14(enabled);
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_188C86D34(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188C86D34(view);
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_188C86F08(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_188C86F08(view);
 }
 
 - (_UIDismissInteractionDelegate)delegate
@@ -43,10 +43,10 @@
   return Strong;
 }
 
-- (void)setStyles:(unint64_t)a3
+- (void)setStyles:(unint64_t)styles
 {
-  *(self + OBJC_IVAR____UIDismissInteraction_styles) = a3;
-  v3 = self;
+  *(self + OBJC_IVAR____UIDismissInteraction_styles) = styles;
+  selfCopy = self;
   sub_188C8549C();
 }
 

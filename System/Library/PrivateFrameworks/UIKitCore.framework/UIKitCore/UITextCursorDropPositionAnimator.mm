@@ -1,38 +1,38 @@
 @interface UITextCursorDropPositionAnimator
 - (BOOL)_hasActiveCaretSelection;
 - (CGRect)_currentCaretRect;
-- (UITextCursorDropPositionAnimator)initWithTextCursorView:(id)a3 textInput:(id)a4;
+- (UITextCursorDropPositionAnimator)initWithTextCursorView:(id)view textInput:(id)input;
 - (id)_cursorColor;
-- (void)_performWithAnimation:(BOOL)a3 :(id)a4 completion:(id)a5;
-- (void)animateAlongsideChanges:(id)a3 completion:(id)a4;
-- (void)placeCursorAtPosition:(id)a3 animated:(BOOL)a4;
-- (void)setCursorVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)_performWithAnimation:(BOOL)animation :(id)a4 completion:(id)completion;
+- (void)animateAlongsideChanges:(id)changes completion:(id)completion;
+- (void)placeCursorAtPosition:(id)position animated:(BOOL)animated;
+- (void)setCursorVisible:(BOOL)visible animated:(BOOL)animated;
 @end
 
 @implementation UITextCursorDropPositionAnimator
 
-- (UITextCursorDropPositionAnimator)initWithTextCursorView:(id)a3 textInput:(id)a4
+- (UITextCursorDropPositionAnimator)initWithTextCursorView:(id)view textInput:(id)input
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  inputCopy = input;
   v12.receiver = self;
   v12.super_class = UITextCursorDropPositionAnimator;
   v9 = [(UITextCursorDropPositionAnimator *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cursorView, a3);
-    objc_storeStrong(&v10->_textInput, a4);
+    objc_storeStrong(&v9->_cursorView, view);
+    objc_storeStrong(&v10->_textInput, input);
   }
 
   return v10;
 }
 
-- (void)_performWithAnimation:(BOOL)a3 :(id)a4 completion:(id)a5
+- (void)_performWithAnimation:(BOOL)animation :(id)a4 completion:(id)completion
 {
-  v6 = a3;
+  animationCopy = animation;
   v8 = a4;
-  v9 = a5;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __70__UITextCursorDropPositionAnimator__performWithAnimation::completion___block_invoke;
@@ -45,7 +45,7 @@
   v21[3] = &unk_1E70F3590;
   v21[4] = self;
   v11 = _Block_copy(v21);
-  if (v6)
+  if (animationCopy)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -57,7 +57,7 @@
     v13 = 3221225472;
     v14 = __70__UITextCursorDropPositionAnimator__performWithAnimation::completion___block_invoke_4;
     v15 = &unk_1E711FF40;
-    v16 = v9;
+    v16 = completionCopy;
     v17 = v11;
     [UIView _animateUsingSpringWithTension:1 friction:v18 interactive:&v12 animations:400.0 completion:35.0];
   }
@@ -67,9 +67,9 @@
     v8[2](v8);
     v10[2](v10);
     v11[2](v11);
-    if (v9)
+    if (completionCopy)
     {
-      v9[2](v9);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -168,11 +168,11 @@ uint64_t __70__UITextCursorDropPositionAnimator__performWithAnimation::completio
   return v3();
 }
 
-- (void)animateAlongsideChanges:(id)a3 completion:(id)a4
+- (void)animateAlongsideChanges:(id)changes completion:(id)completion
 {
-  v17 = a3;
-  v6 = a4;
-  if (v17)
+  changesCopy = changes;
+  completionCopy = completion;
+  if (changesCopy)
   {
     alongsideAnimations = self->_alongsideAnimations;
     if (!alongsideAnimations)
@@ -184,12 +184,12 @@ uint64_t __70__UITextCursorDropPositionAnimator__performWithAnimation::completio
       alongsideAnimations = self->_alongsideAnimations;
     }
 
-    v10 = [v17 copy];
+    v10 = [changesCopy copy];
     v11 = _Block_copy(v10);
     [(NSMutableArray *)alongsideAnimations addObject:v11];
   }
 
-  if (v6)
+  if (completionCopy)
   {
     alongsideCompletions = self->_alongsideCompletions;
     if (!alongsideCompletions)
@@ -201,31 +201,31 @@ uint64_t __70__UITextCursorDropPositionAnimator__performWithAnimation::completio
       alongsideCompletions = self->_alongsideCompletions;
     }
 
-    v15 = [v6 copy];
+    v15 = [completionCopy copy];
     v16 = _Block_copy(v15);
     [(NSMutableArray *)alongsideCompletions addObject:v16];
   }
 }
 
-- (void)placeCursorAtPosition:(id)a3 animated:(BOOL)a4
+- (void)placeCursorAtPosition:(id)position animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  positionCopy = position;
   if (![(UITextCursorDropPositionAnimator *)self _hasActiveCaretSelection])
   {
-    v4 &= self->_didPerformInitialUpdate;
+    animatedCopy &= self->_didPerformInitialUpdate;
   }
 
   self->_didPerformInitialUpdate = 1;
-  [(UITextInput *)self->_textInput caretRectForPosition:v6];
+  [(UITextInput *)self->_textInput caretRectForPosition:positionCopy];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(UITextCursorDropPositionAnimator *)self _hostView];
-  v16 = [(UITextInput *)self->_textInput textInputView];
-  [v15 convertRect:v16 fromView:{v8, v10, v12, v14}];
+  _hostView = [(UITextCursorDropPositionAnimator *)self _hostView];
+  textInputView = [(UITextInput *)self->_textInput textInputView];
+  [_hostView convertRect:textInputView fromView:{v8, v10, v12, v14}];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -240,19 +240,19 @@ uint64_t __70__UITextCursorDropPositionAnimator__performWithAnimation::completio
   v25[6] = v20;
   v25[7] = v22;
   v25[8] = v24;
-  [(UITextCursorDropPositionAnimator *)self _performWithAnimation:v4];
+  [(UITextCursorDropPositionAnimator *)self _performWithAnimation:animatedCopy];
 }
 
-- (void)setCursorVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setCursorVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_isCursorVisible != a3)
+  if (self->_isCursorVisible != visible)
   {
     v14 = v4;
     v15 = v5;
-    self->_isCursorVisible = a3;
-    if (a4)
+    self->_isCursorVisible = visible;
+    if (animated)
     {
-      if (a3)
+      if (visible)
       {
         [(UITextCursorView *)self->_cursorView setHidden:0];
         [(UITextCursorView *)self->_cursorView setAlpha:0.0];
@@ -285,12 +285,12 @@ uint64_t __70__UITextCursorDropPositionAnimator__performWithAnimation::completio
 
     else
     {
-      [(UITextCursorView *)self->_cursorView setHidden:!a3];
-      if (a3)
+      [(UITextCursorView *)self->_cursorView setHidden:!visible];
+      if (visible)
       {
 LABEL_8:
-        v9 = [(UITextCursorDropPositionAnimator *)self _cursorColor];
-        [(UITextCursorView *)self->_cursorView setTintColor:v9];
+        _cursorColor = [(UITextCursorDropPositionAnimator *)self _cursorColor];
+        [(UITextCursorView *)self->_cursorView setTintColor:_cursorColor];
 
         return;
       }
@@ -345,14 +345,14 @@ uint64_t __62__UITextCursorDropPositionAnimator_setCursorVisible_animated___bloc
 
 - (BOOL)_hasActiveCaretSelection
 {
-  v3 = [(UITextInput *)self->_textInput isFirstResponder];
-  if (v3)
+  isFirstResponder = [(UITextInput *)self->_textInput isFirstResponder];
+  if (isFirstResponder)
   {
     [(UITextCursorDropPositionAnimator *)self _currentCaretRect];
-    LOBYTE(v3) = !CGRectIsEmpty(v5);
+    LOBYTE(isFirstResponder) = !CGRectIsEmpty(v5);
   }
 
-  return v3;
+  return isFirstResponder;
 }
 
 - (id)_cursorColor

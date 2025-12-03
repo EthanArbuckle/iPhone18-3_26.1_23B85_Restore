@@ -6,12 +6,12 @@
 
 - (uint64_t)sruif_range
 {
-  v2 = [a1 start];
-  v3 = [v2 unsignedIntegerValue];
-  v4 = [a1 length];
+  start = [self start];
+  unsignedIntegerValue = [start unsignedIntegerValue];
+  v4 = [self length];
   [v4 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface HUCCMosaicArranger
-- (HUCCMosaicArranger)initWithCCMosaicType:(unint64_t)a3;
-- (id)calculateOrderingForItems:(id)a3;
+- (HUCCMosaicArranger)initWithCCMosaicType:(unint64_t)type;
+- (id)calculateOrderingForItems:(id)items;
 - (void)_configureForLandscapeGrid;
 - (void)_configureForPortraitGrid;
 @end
 
 @implementation HUCCMosaicArranger
 
-- (HUCCMosaicArranger)initWithCCMosaicType:(unint64_t)a3
+- (HUCCMosaicArranger)initWithCCMosaicType:(unint64_t)type
 {
   v8.receiver = self;
   v8.super_class = HUCCMosaicArranger;
   v4 = [(HUCCMosaicArranger *)&v8 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     layouts = v4->_layouts;
-    v4->_layouts = v5;
+    v4->_layouts = array;
 
-    if (a3 == 1)
+    if (type == 1)
     {
       [(HUCCMosaicArranger *)v4 _configureForLandscapeGrid];
     }
@@ -52,22 +52,22 @@
   [(HUCCMosaicArranger *)self setNumberOfItemsNeeded:v4];
 }
 
-- (id)calculateOrderingForItems:(id)a3
+- (id)calculateOrderingForItems:(id)items
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
     v5 = 0;
     while (v5 < [(HUCCMosaicArranger *)self numberOfItemsNeeded])
     {
-      v6 = [v4 objectAtIndexedSubscript:v5];
+      v6 = [itemsCopy objectAtIndexedSubscript:v5];
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v7 = [(HUCCMosaicArranger *)self layouts];
-      v8 = [v7 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      layouts = [(HUCCMosaicArranger *)self layouts];
+      v8 = [layouts countByEnumeratingWithState:&v20 objects:v26 count:16];
       if (v8)
       {
         v9 = v8;
@@ -78,7 +78,7 @@ LABEL_6:
         {
           if (*v21 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(layouts);
           }
 
           v12 = *(*(&v20 + 1) + 8 * v11);
@@ -90,7 +90,7 @@ LABEL_6:
 
           if (v9 == ++v11)
           {
-            v9 = [v7 countByEnumeratingWithState:&v20 objects:v26 count:16];
+            v9 = [layouts countByEnumeratingWithState:&v20 objects:v26 count:16];
             if (v9)
             {
               goto LABEL_6;
@@ -100,9 +100,9 @@ LABEL_6:
           }
         }
 
-        v13 = v12;
+        lastObject = v12;
 
-        if (!v13)
+        if (!lastObject)
         {
           goto LABEL_15;
         }
@@ -111,7 +111,7 @@ LABEL_6:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v25 = v13;
+          v25 = lastObject;
           _os_log_impl(&dword_20CEB6000, v19, OS_LOG_TYPE_DEFAULT, "Mosaic Layout %@ filled, breaking.", buf, 0xCu);
         }
 
@@ -121,15 +121,15 @@ LABEL_6:
 LABEL_13:
 
 LABEL_15:
-      if (++v5 >= [v4 count])
+      if (++v5 >= [itemsCopy count])
       {
         break;
       }
     }
   }
 
-  v14 = [(HUCCMosaicArranger *)self layouts];
-  v13 = [v14 lastObject];
+  layouts2 = [(HUCCMosaicArranger *)self layouts];
+  lastObject = [layouts2 lastObject];
 
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -144,24 +144,24 @@ LABEL_18:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = v13;
+    v25 = lastObject;
     _os_log_impl(&dword_20CEB6000, v15, OS_LOG_TYPE_DEFAULT, "Mosaic Layout chosen is %@", buf, 0xCu);
   }
 
-  if (v13)
+  if (lastObject)
   {
-    v16 = [v13 layoutType];
+    layoutType = [lastObject layoutType];
   }
 
   else
   {
-    v16 = 0;
+    layoutType = 0;
   }
 
-  [(HUCCMosaicArranger *)self setChosenLayoutType:v16];
-  v17 = [v13 arrangedItems];
+  [(HUCCMosaicArranger *)self setChosenLayoutType:layoutType];
+  arrangedItems = [lastObject arrangedItems];
 
-  return v17;
+  return arrangedItems;
 }
 
 @end

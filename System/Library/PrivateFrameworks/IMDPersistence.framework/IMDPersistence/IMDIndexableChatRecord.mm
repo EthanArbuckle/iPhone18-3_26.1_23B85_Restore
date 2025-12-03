@@ -1,53 +1,53 @@
 @interface IMDIndexableChatRecord
-- (IMDIndexableChatRecord)initWithChatRecord:(id)a3 copyLastMessageDate:(BOOL)a4;
-- (IMDIndexableChatRecord)initWithDictionaryRepresentation:(id)a3;
+- (IMDIndexableChatRecord)initWithChatRecord:(id)record copyLastMessageDate:(BOOL)date;
+- (IMDIndexableChatRecord)initWithDictionaryRepresentation:(id)representation;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation IMDIndexableChatRecord
 
-- (IMDIndexableChatRecord)initWithChatRecord:(id)a3 copyLastMessageDate:(BOOL)a4
+- (IMDIndexableChatRecord)initWithChatRecord:(id)record copyLastMessageDate:(BOOL)date
 {
-  v4 = a4;
-  v6 = a3;
+  dateCopy = date;
+  recordCopy = record;
   v84.receiver = self;
   v84.super_class = IMDIndexableChatRecord;
   v9 = [(IMDIndexableChatRecord *)&v84 init];
   if (v9)
   {
-    v10 = objc_msgSend_guid(v6, v7, v8);
+    v10 = objc_msgSend_guid(recordCopy, v7, v8);
     guid = v9->_guid;
     v9->_guid = v10;
 
-    v14 = objc_msgSend_groupName(v6, v12, v13);
+    v14 = objc_msgSend_groupName(recordCopy, v12, v13);
     groupName = v9->_groupName;
     v9->_groupName = v14;
 
-    v18 = objc_msgSend_accountLogin(v6, v16, v17);
+    v18 = objc_msgSend_accountLogin(recordCopy, v16, v17);
     loginID = v9->_loginID;
     v9->_loginID = v18;
 
-    v22 = objc_msgSend_accountID(v6, v20, v21);
+    v22 = objc_msgSend_accountID(recordCopy, v20, v21);
     accountID = v9->_accountID;
     v9->_accountID = v22;
 
-    v26 = objc_msgSend_properties(v6, v24, v25);
+    v26 = objc_msgSend_properties(recordCopy, v24, v25);
     properties = v9->_properties;
     v9->_properties = v26;
 
-    v30 = objc_msgSend_chatIdentifier(v6, v28, v29);
+    v30 = objc_msgSend_chatIdentifier(recordCopy, v28, v29);
     chatIdentifier = v9->_chatIdentifier;
     v9->_chatIdentifier = v30;
 
-    v34 = objc_msgSend_groupID(v6, v32, v33);
+    v34 = objc_msgSend_groupID(recordCopy, v32, v33);
     groupID = v9->_groupID;
     v9->_groupID = v34;
 
-    v38 = objc_msgSend_originalGroupID(v6, v36, v37);
+    v38 = objc_msgSend_originalGroupID(recordCopy, v36, v37);
     originalGroupID = v9->_originalGroupID;
     v9->_originalGroupID = v38;
 
-    v42 = objc_msgSend_lastAddressedHandle(v6, v40, v41);
+    v42 = objc_msgSend_lastAddressedHandle(recordCopy, v40, v41);
     lastAddressedLocalHandle = v9->_lastAddressedLocalHandle;
     v9->_lastAddressedLocalHandle = v42;
 
@@ -72,21 +72,21 @@
       }
     }
 
-    v64 = objc_msgSend_handleRecords(v6, v56, v57);
+    v64 = objc_msgSend_handleRecords(recordCopy, v56, v57);
     v66 = objc_msgSend___imArrayByApplyingBlock_(v64, v65, &unk_1F2FA0510);
     participants = v9->_participants;
     v9->_participants = v66;
 
-    v9->_filtered = objc_msgSend_isFiltered(v6, v68, v69);
-    v9->_blackholed = objc_msgSend_isBlackholed(v6, v70, v71);
-    v9->_syndicationType = objc_msgSend_syndicationType(v6, v72, v73);
-    v76 = objc_msgSend_syndicationDate(v6, v74, v75);
+    v9->_filtered = objc_msgSend_isFiltered(recordCopy, v68, v69);
+    v9->_blackholed = objc_msgSend_isBlackholed(recordCopy, v70, v71);
+    v9->_syndicationType = objc_msgSend_syndicationType(recordCopy, v72, v73);
+    v76 = objc_msgSend_syndicationDate(recordCopy, v74, v75);
     syndicationDate = v9->_syndicationDate;
     v9->_syndicationDate = v76;
 
-    if (v4)
+    if (dateCopy)
     {
-      Message = IMDChatRecordCopyLastMessage(v6);
+      Message = IMDChatRecordCopyLastMessage(recordCopy);
       v81 = objc_msgSend_date(Message, v79, v80);
       lastMessageDate = v9->_lastMessageDate;
       v9->_lastMessageDate = v81;
@@ -96,79 +96,79 @@
   return v9;
 }
 
-- (IMDIndexableChatRecord)initWithDictionaryRepresentation:(id)a3
+- (IMDIndexableChatRecord)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v65.receiver = self;
   v65.super_class = IMDIndexableChatRecord;
   v6 = [(IMDIndexableChatRecord *)&v65 init];
   if (v6)
   {
-    v7 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"guid");
+    v7 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v5, @"guid");
     guid = v6->_guid;
     v6->_guid = v7;
 
-    v10 = objc_msgSend_objectForKeyedSubscript_(v4, v9, @"groupName");
+    v10 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v9, @"groupName");
     groupName = v6->_groupName;
     v6->_groupName = v10;
 
-    v13 = objc_msgSend_objectForKeyedSubscript_(v4, v12, @"style");
+    v13 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v12, @"style");
     v6->_chatStyle = objc_msgSend_integerValue(v13, v14, v15);
 
-    v17 = objc_msgSend_objectForKeyedSubscript_(v4, v16, @"loginID");
+    v17 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v16, @"loginID");
     loginID = v6->_loginID;
     v6->_loginID = v17;
 
-    v20 = objc_msgSend_objectForKeyedSubscript_(v4, v19, @"properties");
+    v20 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v19, @"properties");
     properties = v6->_properties;
     v6->_properties = v20;
 
-    v23 = objc_msgSend_objectForKeyedSubscript_(v4, v22, @"chatIdentifier");
+    v23 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v22, @"chatIdentifier");
     chatIdentifier = v6->_chatIdentifier;
     v6->_chatIdentifier = v23;
 
-    v26 = objc_msgSend_objectForKeyedSubscript_(v4, v25, @"groupID");
+    v26 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v25, @"groupID");
     groupID = v6->_groupID;
     v6->_groupID = v26;
 
-    v29 = objc_msgSend_objectForKeyedSubscript_(v4, v28, @"originalGroupID");
+    v29 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v28, @"originalGroupID");
     originalGroupID = v6->_originalGroupID;
     v6->_originalGroupID = v29;
 
-    v32 = objc_msgSend_objectForKeyedSubscript_(v4, v31, @"accountID");
+    v32 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v31, @"accountID");
     accountID = v6->_accountID;
     v6->_accountID = v32;
 
-    v35 = objc_msgSend_objectForKeyedSubscript_(v4, v34, @"lalh");
+    v35 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v34, @"lalh");
     lastAddressedLocalHandle = v6->_lastAddressedLocalHandle;
     v6->_lastAddressedLocalHandle = v35;
 
-    v38 = objc_msgSend_objectForKeyedSubscript_(v4, v37, @"groupPhotoGUID");
+    v38 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v37, @"groupPhotoGUID");
     groupPhotoGUID = v6->_groupPhotoGUID;
     v6->_groupPhotoGUID = v38;
 
-    v41 = objc_msgSend_objectForKeyedSubscript_(v4, v40, @"groupPhotoPath");
+    v41 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v40, @"groupPhotoPath");
     groupPhotoPath = v6->_groupPhotoPath;
     v6->_groupPhotoPath = v41;
 
-    v44 = objc_msgSend_objectForKeyedSubscript_(v4, v43, @"participants");
+    v44 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v43, @"participants");
     participants = v6->_participants;
     v6->_participants = v44;
 
-    v47 = objc_msgSend_objectForKeyedSubscript_(v4, v46, @"isFiltered");
+    v47 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v46, @"isFiltered");
     v6->_filtered = objc_msgSend_integerValue(v47, v48, v49);
 
-    v51 = objc_msgSend_objectForKeyedSubscript_(v4, v50, @"isBlackholed");
+    v51 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v50, @"isBlackholed");
     v6->_blackholed = objc_msgSend_integerValue(v51, v52, v53) != 0;
 
-    v55 = objc_msgSend_objectForKeyedSubscript_(v4, v54, @"syndicationType");
+    v55 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v54, @"syndicationType");
     v6->_syndicationType = objc_msgSend_integerValue(v55, v56, v57);
 
-    v59 = objc_msgSend_objectForKeyedSubscript_(v4, v58, @"syndicationDate");
+    v59 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v58, @"syndicationDate");
     syndicationDate = v6->_syndicationDate;
     v6->_syndicationDate = v59;
 
-    v62 = objc_msgSend_objectForKeyedSubscript_(v4, v61, @"lastMessageDate");
+    v62 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v61, @"lastMessageDate");
     lastMessageDate = v6->_lastMessageDate;
     v6->_lastMessageDate = v62;
   }

@@ -1,14 +1,14 @@
 @interface MapsSuggestionsDaemonMemory
 - (BOOL)hasSourceData;
-- (BOOL)removeEntries:(id)a3 sourceName:(id)a4;
-- (BOOL)replaceEntries:(id)a3 sourceName:(id)a4;
-- (BOOL)setETA:(id)a3 destinationKey:(id)a4;
-- (BOOL)setSignalPack:(id)a3;
+- (BOOL)removeEntries:(id)entries sourceName:(id)name;
+- (BOOL)replaceEntries:(id)entries sourceName:(id)name;
+- (BOOL)setETA:(id)a destinationKey:(id)key;
+- (BOOL)setSignalPack:(id)pack;
 - (MapsSuggestionsDaemonMemory)init;
 - (NSString)uniqueName;
 - (id).cxx_construct;
-- (id)entriesForSourceName:(id)a3;
-- (id)getETAForDestinationKey:(id)a3;
+- (id)entriesForSourceName:(id)name;
+- (id)getETAForDestinationKey:(id)key;
 - (id)signalPack;
 - (id)sourceNames;
 - (void)clear;
@@ -119,26 +119,26 @@
   return v2;
 }
 
-- (id)entriesForSourceName:(id)a3
+- (id)entriesForSourceName:(id)name
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100024D60;
   v6[3] = &unk_100075A80;
-  v7 = self;
-  v8 = a3;
-  v3 = v8;
-  v4 = sub_1000034C8(&v7->_queue, v6);
+  selfCopy = self;
+  nameCopy = name;
+  v3 = nameCopy;
+  v4 = sub_1000034C8(&selfCopy->_queue, v6);
 
   return v4;
 }
 
-- (BOOL)replaceEntries:(id)a3 sourceName:(id)a4
+- (BOOL)replaceEntries:(id)entries sourceName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  entriesCopy = entries;
+  nameCopy = name;
+  v8 = nameCopy;
+  if (!entriesCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -157,7 +157,7 @@
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!nameCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -184,7 +184,7 @@ LABEL_9:
   v12[2] = sub_100025018;
   v12[3] = &unk_100075AA8;
   v12[4] = self;
-  v13 = v6;
+  v13 = entriesCopy;
   v14 = v8;
   v9 = sub_10000313C(&self->_queue, v12);
 
@@ -192,12 +192,12 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)removeEntries:(id)a3 sourceName:(id)a4
+- (BOOL)removeEntries:(id)entries sourceName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  entriesCopy = entries;
+  nameCopy = name;
+  v8 = nameCopy;
+  if (!entriesCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -220,7 +220,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v7)
+  if (!nameCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -244,8 +244,8 @@ LABEL_9:
   v13[1] = 3221225472;
   v13[2] = sub_1000252C8;
   v13[3] = &unk_100075AA8;
-  v14 = v6;
-  v15 = self;
+  v14 = entriesCopy;
+  selfCopy = self;
   v16 = v8;
   v9 = sub_10000313C(&self->_queue, v13);
 
@@ -255,19 +255,19 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)setETA:(id)a3 destinationKey:(id)a4
+- (BOOL)setETA:(id)a destinationKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  aCopy = a;
+  keyCopy = key;
+  if (keyCopy)
   {
-    v8 = [v6 copy];
+    v8 = [aCopy copy];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000255E0;
     v12[3] = &unk_100075AA8;
     v12[4] = self;
-    v13 = v7;
+    v13 = keyCopy;
     v14 = v8;
     v9 = v8;
     v10 = sub_10000313C(&self->_queue, v12);
@@ -295,18 +295,18 @@ LABEL_10:
   return v10;
 }
 
-- (id)getETAForDestinationKey:(id)a3
+- (id)getETAForDestinationKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  keyCopy = key;
+  v5 = keyCopy;
+  if (keyCopy)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000259BC;
     v9[3] = &unk_100075AD0;
     v9[4] = self;
-    v10 = v4;
+    v10 = keyCopy;
     v6 = sub_100005974(&self->_queue, v9);
   }
 
@@ -344,25 +344,25 @@ LABEL_10:
   sub_100025A5C(&self->_queue, self, &stru_100075B10);
 }
 
-- (BOOL)setSignalPack:(id)a3
+- (BOOL)setSignalPack:(id)pack
 {
-  v4 = self;
-  v5 = a3;
-  objc_sync_enter(v4);
-  v6 = [v5 copy];
+  selfCopy = self;
+  packCopy = pack;
+  objc_sync_enter(selfCopy);
+  v6 = [packCopy copy];
 
-  LOBYTE(v5) = [v6 mergeIntoSignalPack:v4->_signalPack];
-  objc_sync_exit(v4);
+  LOBYTE(packCopy) = [v6 mergeIntoSignalPack:selfCopy->_signalPack];
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return packCopy;
 }
 
 - (id)signalPack
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MapsSuggestionsMutableSignalPack *)v2->_signalPack copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(MapsSuggestionsMutableSignalPack *)selfCopy->_signalPack copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

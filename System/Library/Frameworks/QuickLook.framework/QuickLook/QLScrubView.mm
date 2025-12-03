@@ -1,22 +1,22 @@
 @interface QLScrubView
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (CGRect)_thumbnailFrameForPageAtIndex:(int64_t)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (CGRect)_thumbnailFrameForPageAtIndex:(int64_t)index;
 - (QLScrubView)init;
 - (QLScrubViewDataSource)dataSource;
 - (QLScrubViewDelegate)delegate;
-- (void)_handleSwipAtLocation:(CGPoint)a3;
+- (void)_handleSwipAtLocation:(CGPoint)location;
 - (void)_notifyPageChanged;
 - (void)_removeThumbviews;
 - (void)_showPageLabel;
 - (void)_updatePageLabelPosition;
 - (void)_updateSelectedThumbnailView;
 - (void)layoutSubviews;
-- (void)longTapReceived:(id)a3;
-- (void)panReceived:(id)a3;
+- (void)longTapReceived:(id)received;
+- (void)panReceived:(id)received;
 - (void)reloadThumbnails;
-- (void)selectPageNumber:(int64_t)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)tapReceived:(id)a3;
+- (void)selectPageNumber:(int64_t)number;
+- (void)setFrame:(CGRect)frame;
+- (void)tapReceived:(id)received;
 @end
 
 @implementation QLScrubView
@@ -29,8 +29,8 @@
   v2 = [(QLScrubView *)&v22 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D75348] clearColor];
-    [(QLScrubView *)v2 setBackgroundColor:v3];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(QLScrubView *)v2 setBackgroundColor:clearColor];
 
     v4 = [MEMORY[0x277D75210] effectWithStyle:1200];
     v5 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v4];
@@ -127,11 +127,11 @@
   [(QLScrubView *)self layoutSubviews];
 }
 
-- (void)selectPageNumber:(int64_t)a3
+- (void)selectPageNumber:(int64_t)number
 {
-  if ((a3 & 0x8000000000000000) == 0 && self->_pageCount > a3)
+  if ((number & 0x8000000000000000) == 0 && self->_pageCount > number)
   {
-    self->_selectedPage = a3;
+    self->_selectedPage = number;
     [(QLScrubView *)self _updateSelectedThumbnailView];
   }
 }
@@ -148,12 +148,12 @@
   }
 }
 
-- (void)_handleSwipAtLocation:(CGPoint)a3
+- (void)_handleSwipAtLocation:(CGPoint)location
 {
   pageCount = self->_pageCount;
   if (pageCount)
   {
-    v5 = ((a3.y - self->_thumbOrigin) / ((self->_thumbEnd - self->_thumbOrigin) / pageCount));
+    v5 = ((location.y - self->_thumbOrigin) / ((self->_thumbEnd - self->_thumbOrigin) / pageCount));
     if ((v5 & 0x8000000000000000) == 0 && pageCount > v5 && self->_selectedPage != v5)
     {
       self->_selectedPage = v5;
@@ -166,68 +166,68 @@
   }
 }
 
-- (void)panReceived:(id)a3
+- (void)panReceived:(id)received
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  receivedCopy = received;
+  if ([receivedCopy state] == 1)
   {
     [(QLScrubView *)self _showPageLabel];
   }
 
-  [v4 locationInView:self];
+  [receivedCopy locationInView:self];
   [(QLScrubView *)self _handleSwipAtLocation:?];
-  v5 = [v4 state];
+  state = [receivedCopy state];
 
-  if (v5 == 3)
+  if (state == 3)
   {
 
     [(QLScrubView *)self _hidePageLabel];
   }
 }
 
-- (void)tapReceived:(id)a3
+- (void)tapReceived:(id)received
 {
-  [a3 locationInView:self];
+  [received locationInView:self];
 
   [(QLScrubView *)self _handleSwipAtLocation:?];
 }
 
-- (void)longTapReceived:(id)a3
+- (void)longTapReceived:(id)received
 {
-  v4 = a3;
-  if ([v4 state] == 1)
+  receivedCopy = received;
+  if ([receivedCopy state] == 1)
   {
     [(QLScrubView *)self _showPageLabel];
   }
 
-  [v4 locationInView:self];
+  [receivedCopy locationInView:self];
   [(QLScrubView *)self _handleSwipAtLocation:?];
-  v5 = [v4 state];
+  state = [receivedCopy state];
 
-  if (v5 == 3)
+  if (state == 3)
   {
 
     [(QLScrubView *)self _hidePageLabel];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = [a4 view];
-  LOBYTE(self) = v5 == self;
+  view = [gestureRecognizer view];
+  LOBYTE(self) = view == self;
 
   return self;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   self->_needsThumbLayout = 1;
   v3.receiver = self;
   v3.super_class = QLScrubView;
-  [(QLScrubView *)&v3 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(QLScrubView *)&v3 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (CGRect)_thumbnailFrameForPageAtIndex:(int64_t)a3
+- (CGRect)_thumbnailFrameForPageAtIndex:(int64_t)index
 {
   v5 = [(NSMutableArray *)self->_visibleThumbIndexes count];
   if (v5 < 1)
@@ -243,14 +243,14 @@ LABEL_6:
     while (1)
     {
       v8 = [(NSMutableArray *)self->_visibleThumbIndexes objectAtIndex:v7];
-      v9 = [v8 integerValue];
+      integerValue = [v8 integerValue];
 
-      if (v9 == a3)
+      if (integerValue == index)
       {
         break;
       }
 
-      if (v9 > a3)
+      if (integerValue > index)
       {
         v14 = v7;
         if (v7)
@@ -260,12 +260,12 @@ LABEL_6:
 
         v15 = v7 - v14;
         v16 = [(NSMutableArray *)self->_visibleThumbIndexes objectAtIndex:(v7 - v14)];
-        v17 = [v16 integerValue];
+        integerValue2 = [v16 integerValue];
 
         if (v7 != v15)
         {
           thumbHeight = self->_thumbHeight;
-          v11 = self->_thumbOrigin + v15 * (thumbHeight + 8.0) + floor((self->_thumbOrigin + v7 * (thumbHeight + 8.0) - (self->_thumbOrigin + v15 * (thumbHeight + 8.0))) * (a3 - v17) / (v9 - v17));
+          v11 = self->_thumbOrigin + v15 * (thumbHeight + 8.0) + floor((self->_thumbOrigin + v7 * (thumbHeight + 8.0) - (self->_thumbOrigin + v15 * (thumbHeight + 8.0))) * (index - integerValue2) / (integerValue - integerValue2));
           goto LABEL_8;
         }
 
@@ -459,18 +459,18 @@ LABEL_8:
                 }
 
                 v45 = *(*(&v65 + 1) + 8 * j);
-                v46 = [v45 integerValue];
+                integerValue = [v45 integerValue];
                 v47 = [(NSMutableDictionary *)self->_thumbViews objectForKey:v45];
                 if (!v47)
                 {
                   v47 = [[QLThumbnailView alloc] initWithFrame:v60, v41, v42, v43];
-                  [(QLThumbnailView *)v47 setPageNumber:v46];
+                  [(QLThumbnailView *)v47 setPageNumber:integerValue];
                   [(NSMutableDictionary *)self->_thumbViews setObject:v47 forKey:v45];
                 }
 
-                v48 = [(QLThumbnailView *)v47 image];
+                image = [(QLThumbnailView *)v47 image];
 
-                if (!v48)
+                if (!image)
                 {
                   v49 = objc_loadWeakRetained(&self->_dataSource);
                   thumbHeight = self->_thumbHeight;
@@ -479,17 +479,17 @@ LABEL_8:
                   v62[0] = __29__QLScrubView_layoutSubviews__block_invoke;
                   v62[1] = &unk_278B57918;
                   v63 = v47;
-                  v64 = v46;
-                  [v49 scrubView:self thumbnailForPage:v46 size:v61 withCompletionBlock:{32.0, thumbHeight}];
+                  v64 = integerValue;
+                  [v49 scrubView:self thumbnailForPage:integerValue size:v61 withCompletionBlock:{32.0, thumbHeight}];
                 }
 
-                [(QLScrubView *)self _thumbnailFrameForPageAtIndex:v46];
+                [(QLScrubView *)self _thumbnailFrameForPageAtIndex:integerValue];
                 v52 = v51;
                 v54 = v53;
                 v56 = v55;
                 v58 = v57;
                 [(QLThumbnailView *)v47 setUnselectedFrame:?];
-                if (v46 == self->_selectedPage)
+                if (integerValue == self->_selectedPage)
                 {
                   v76.origin.x = v52;
                   v76.origin.y = v54;
@@ -558,9 +558,9 @@ uint64_t __29__QLScrubView_layoutSubviews__block_invoke_2(uint64_t a1)
   if ((selectedPage & 0x8000000000000000) == 0 && (selectedPage != [(QLThumbnailView *)self->_selectedThumbnailView pageNumber]|| !self->_selectedThumbnailView))
   {
     v4 = [MEMORY[0x277CCABB0] numberWithInteger:self->_selectedPage];
-    v5 = [(QLThumbnailView *)self->_selectedThumbnailView alwaysVisible];
+    alwaysVisible = [(QLThumbnailView *)self->_selectedThumbnailView alwaysVisible];
     selectedThumbnailView = self->_selectedThumbnailView;
-    if (v5)
+    if (alwaysVisible)
     {
       [(QLThumbnailView *)selectedThumbnailView unselectedFrame];
       [(QLThumbnailView *)self->_selectedThumbnailView setFrame:?];
@@ -610,9 +610,9 @@ uint64_t __29__QLScrubView_layoutSubviews__block_invoke_2(uint64_t a1)
       [(NSMutableDictionary *)self->_thumbViews setObject:self->_selectedThumbnailView forKey:v4];
     }
 
-    v24 = [(QLThumbnailView *)self->_selectedThumbnailView image];
+    image = [(QLThumbnailView *)self->_selectedThumbnailView image];
 
-    if (!v24)
+    if (!image)
     {
       WeakRetained = objc_loadWeakRetained(&self->_dataSource);
       v26 = self->_selectedPage;

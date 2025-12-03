@@ -1,24 +1,24 @@
 @interface PXStoryAnimation
 - (NSString)shortDescription;
-- (PXStoryAnimation)initWithIdentifier:(id)a3;
+- (PXStoryAnimation)initWithIdentifier:(id)identifier;
 - (id)description;
 - (void)_invalidateTime;
 - (void)_updateTime;
 - (void)didPerformChanges;
-- (void)performChanges:(id)a3;
-- (void)setElapsedTime:(id *)a3;
-- (void)setIsPaused:(BOOL)a3;
-- (void)setIsStopped:(BOOL)a3;
-- (void)setLastElapsedTime:(id *)a3;
-- (void)setTime:(id *)a3;
+- (void)performChanges:(id)changes;
+- (void)setElapsedTime:(id *)time;
+- (void)setIsPaused:(BOOL)paused;
+- (void)setIsStopped:(BOOL)stopped;
+- (void)setLastElapsedTime:(id *)time;
+- (void)setTime:(id *)time;
 @end
 
 @implementation PXStoryAnimation
 
-- (void)setLastElapsedTime:(id *)a3
+- (void)setLastElapsedTime:(id *)time
 {
-  var3 = a3->var3;
-  *&self->_lastElapsedTime.value = *&a3->var0;
+  var3 = time->var3;
+  *&self->_lastElapsedTime.value = *&time->var0;
   self->_lastElapsedTime.epoch = var3;
 }
 
@@ -158,8 +158,8 @@ LABEL_17:
 
 - (void)_invalidateTime
 {
-  v2 = [(PXStoryAnimation *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateTime];
+  updater = [(PXStoryAnimation *)self updater];
+  [updater setNeedsUpdateOf:sel__updateTime];
 }
 
 - (NSString)shortDescription
@@ -186,9 +186,9 @@ LABEL_17:
   [(PXStoryAnimation *)self time];
   time = v12;
   Seconds = CMTimeGetSeconds(&time);
-  v7 = [(PXStoryAnimation *)self isStopped];
+  isStopped = [(PXStoryAnimation *)self isStopped];
   v8 = @"NO";
-  if (v7)
+  if (isStopped)
   {
     v8 = @"YES";
   }
@@ -199,11 +199,11 @@ LABEL_17:
   return v10;
 }
 
-- (void)setIsStopped:(BOOL)a3
+- (void)setIsStopped:(BOOL)stopped
 {
-  if (self->_isStopped != a3)
+  if (self->_isStopped != stopped)
   {
-    self->_isStopped = a3;
+    self->_isStopped = stopped;
     [(PXStoryAnimation *)self signalChange:2];
     if (self->_isStopped)
     {
@@ -213,39 +213,39 @@ LABEL_17:
   }
 }
 
-- (void)setTime:(id *)a3
+- (void)setTime:(id *)time
 {
   p_time = &self->_time;
-  time1 = *a3;
+  time1 = *time;
   time = self->_time;
   if (CMTimeCompare(&time1, &time))
   {
-    v6 = *&a3->var0;
-    p_time->epoch = a3->var3;
+    v6 = *&time->var0;
+    p_time->epoch = time->var3;
     *&p_time->value = v6;
     [(PXStoryAnimation *)self signalChange:1];
     [(PXStoryAnimation *)self timeDidChange];
   }
 }
 
-- (void)setIsPaused:(BOOL)a3
+- (void)setIsPaused:(BOOL)paused
 {
-  if (self->_isPaused != a3)
+  if (self->_isPaused != paused)
   {
-    self->_isPaused = a3;
+    self->_isPaused = paused;
     [(PXStoryAnimation *)self _invalidateTime];
   }
 }
 
-- (void)setElapsedTime:(id *)a3
+- (void)setElapsedTime:(id *)time
 {
   p_elapsedTime = &self->_elapsedTime;
-  time1 = *a3;
+  time1 = *time;
   elapsedTime = self->_elapsedTime;
   if (CMTimeCompare(&time1, &elapsedTime))
   {
-    v6 = *&a3->var0;
-    p_elapsedTime->epoch = a3->var3;
+    v6 = *&time->var0;
+    p_elapsedTime->epoch = time->var3;
     *&p_elapsedTime->value = v6;
     [(PXStoryAnimation *)self _invalidateTime];
   }
@@ -256,34 +256,34 @@ LABEL_17:
   v4.receiver = self;
   v4.super_class = PXStoryAnimation;
   [(PXStoryAnimation *)&v4 didPerformChanges];
-  v3 = [(PXStoryAnimation *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXStoryAnimation *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXStoryAnimation;
-  [(PXStoryAnimation *)&v3 performChanges:a3];
+  [(PXStoryAnimation *)&v3 performChanges:changes];
 }
 
-- (PXStoryAnimation)initWithIdentifier:(id)a3
+- (PXStoryAnimation)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = PXStoryAnimation;
   v6 = [(PXStoryAnimation *)&v16 init];
   if (v6)
   {
-    v7 = [v5 copy];
-    v8 = v7;
+    v7 = [identifierCopy copy];
+    uUIDString = v7;
     if (!v7)
     {
-      v3 = [MEMORY[0x1E696AFB0] UUID];
-      v8 = [v3 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
     }
 
-    objc_storeStrong(&v6->_identifier, v8);
+    objc_storeStrong(&v6->_identifier, uUIDString);
     if (!v7)
     {
     }

@@ -1,29 +1,29 @@
 @interface MOEventTravel
-- (MOEventTravel)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MOEventTravel)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOEventTravel
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   tripTitle = self->_tripTitle;
-  v5 = a3;
-  [v5 encodeObject:tripTitle forKey:@"tripTitle"];
-  [v5 encodeObject:self->_tripParts forKey:@"tripParts"];
+  coderCopy = coder;
+  [coderCopy encodeObject:tripTitle forKey:@"tripTitle"];
+  [coderCopy encodeObject:self->_tripParts forKey:@"tripParts"];
 }
 
-- (MOEventTravel)initWithCoder:(id)a3
+- (MOEventTravel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = MOEventTravel;
   v5 = [(MOEventTravel *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tripTitle"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tripTitle"];
     tripTitle = v5->_tripTitle;
     v5->_tripTitle = v6;
 
@@ -34,7 +34,7 @@
     v12 = objc_opt_class();
     v13 = [v9 initWithObjects:{v10, v11, v12, objc_opt_class(), 0}];
     objc_autoreleasePoolPop(v8);
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"tripParts"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"tripParts"];
     tripParts = v5->_tripParts;
     v5->_tripParts = v14;
   }
@@ -42,7 +42,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MOEventTravel);
   objc_storeStrong(&v4->_tripParts, self->_tripParts);
@@ -53,9 +53,9 @@
 - (id)description
 {
   v3 = [NSString alloc];
-  v4 = [(MOEventTravel *)self tripTitle];
-  v5 = [v4 mask];
-  v6 = [v3 initWithFormat:@"tripTitle, %@", v5];
+  tripTitle = [(MOEventTravel *)self tripTitle];
+  mask = [tripTitle mask];
+  v6 = [v3 initWithFormat:@"tripTitle, %@", mask];
 
   return v6;
 }

@@ -1,14 +1,14 @@
 @interface ReviewNetworkPolicyTask
 - (BOOL)accessWasUnblocked;
 - (_TtC9appstored23ReviewNetworkPolicyTask)init;
-- (_TtC9appstored23ReviewNetworkPolicyTask)initWithDownload:(id)a3 shouldSuppressDialogs:(BOOL)a4 shouldShowLaterButton:(BOOL)a5;
-- (_TtC9appstored23ReviewNetworkPolicyTask)initWithLogKey:(id)a3;
+- (_TtC9appstored23ReviewNetworkPolicyTask)initWithDownload:(id)download shouldSuppressDialogs:(BOOL)dialogs shouldShowLaterButton:(BOOL)button;
+- (_TtC9appstored23ReviewNetworkPolicyTask)initWithLogKey:(id)key;
 - (_TtC9appstored23ReviewNetworkPolicyTask)initWithoutKeepAlive;
 - (int64_t)constrainedResult;
 - (int64_t)expensiveResult;
 - (unint64_t)interfaceMask;
-- (void)mainWithCompletionHandler:(id)a3;
-- (void)setValuesOnInstallPolicy:(id)a3;
+- (void)mainWithCompletionHandler:(id)handler;
+- (void)setValuesOnInstallPolicy:(id)policy;
 @end
 
 @implementation ReviewNetworkPolicyTask
@@ -16,7 +16,7 @@
 - (BOOL)accessWasUnblocked
 {
   v2 = (self + OBJC_IVAR____TtC9appstored23ReviewNetworkPolicyTask_output);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2);
   os_unfair_lock_opaque_low = LOBYTE(v2[2]._os_unfair_lock_opaque);
   if (os_unfair_lock_opaque_low == 2)
@@ -37,7 +37,7 @@
 - (int64_t)constrainedResult
 {
   v2 = self + OBJC_IVAR____TtC9appstored23ReviewNetworkPolicyTask_output;
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2);
   if (v2[8] == 2)
   {
@@ -58,7 +58,7 @@
 - (int64_t)expensiveResult
 {
   v2 = self + OBJC_IVAR____TtC9appstored23ReviewNetworkPolicyTask_output;
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2);
   if (v2[8] == 2)
   {
@@ -79,7 +79,7 @@
 - (unint64_t)interfaceMask
 {
   v2 = self + OBJC_IVAR____TtC9appstored23ReviewNetworkPolicyTask_output;
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2);
   if (v2[8] == 2)
   {
@@ -97,7 +97,7 @@
   return result;
 }
 
-- (_TtC9appstored23ReviewNetworkPolicyTask)initWithDownload:(id)a3 shouldSuppressDialogs:(BOOL)a4 shouldShowLaterButton:(BOOL)a5
+- (_TtC9appstored23ReviewNetworkPolicyTask)initWithDownload:(id)download shouldSuppressDialogs:(BOOL)dialogs shouldShowLaterButton:(BOOL)button
 {
   ObjectType = swift_getObjectType();
   v10 = self + OBJC_IVAR____TtC9appstored23ReviewNetworkPolicyTask_output;
@@ -107,21 +107,21 @@
   *(v10 + 3) = 0;
   *(v10 + 4) = 0;
   v11 = self + OBJC_IVAR____TtC9appstored23ReviewNetworkPolicyTask_input;
-  *v11 = a3;
-  v11[8] = a4;
-  v11[9] = a5;
+  *v11 = download;
+  v11[8] = dialogs;
+  v11[9] = button;
   v14.receiver = self;
   v14.super_class = ObjectType;
-  v12 = a3;
+  downloadCopy = download;
   return [(Task *)&v14 init];
 }
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
   v5 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -137,15 +137,15 @@
   v12[3] = 0;
   v12[4] = &unk_1004366D0;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v7, &unk_1004344E0, v12);
 }
 
-- (void)setValuesOnInstallPolicy:(id)a3
+- (void)setValuesOnInstallPolicy:(id)policy
 {
   v4 = self + OBJC_IVAR____TtC9appstored23ReviewNetworkPolicyTask_output;
-  v5 = a3;
-  v8 = self;
+  policyCopy = policy;
+  selfCopy = self;
   os_unfair_lock_lock(v4);
   if (v4[8] == 2)
   {
@@ -156,9 +156,9 @@
   {
     v7 = *(v4 + 3);
     v6 = *(v4 + 4);
-    sub_1003B6764(v5, *(v4 + 2));
-    sub_1003B6820(v5, v7);
-    sub_1003B66A8(v5, v6);
+    sub_1003B6764(policyCopy, *(v4 + 2));
+    sub_1003B6820(policyCopy, v7);
+    sub_1003B66A8(policyCopy, v6);
     os_unfair_lock_unlock(v4);
   }
 }
@@ -170,7 +170,7 @@
   return result;
 }
 
-- (_TtC9appstored23ReviewNetworkPolicyTask)initWithLogKey:(id)a3
+- (_TtC9appstored23ReviewNetworkPolicyTask)initWithLogKey:(id)key
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

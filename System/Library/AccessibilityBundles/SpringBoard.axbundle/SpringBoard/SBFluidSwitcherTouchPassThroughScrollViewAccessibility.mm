@@ -1,33 +1,33 @@
 @interface SBFluidSwitcherTouchPassThroughScrollViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_forwardsToParentScroller;
 - (id)focusGroupIdentifier;
 @end
 
 @implementation SBFluidSwitcherTouchPassThroughScrollViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBFluidSwitcherTouchPassThroughScrollView" isKindOfClass:@"UIScrollView"];
-  [v3 validateClass:@"UIScrollView" hasInstanceMethod:@"_forwardsToParentScroller" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBFluidSwitcherTouchPassThroughScrollView" isKindOfClass:@"UIScrollView"];
+  [validationsCopy validateClass:@"UIScrollView" hasInstanceMethod:@"_forwardsToParentScroller" withFullSignature:{"B", 0}];
 }
 
 - (id)focusGroupIdentifier
 {
   if (([(SBFluidSwitcherTouchPassThroughScrollViewAccessibility *)self _accessibilityIsFKARunningForFocusItem]& 1) != 0)
   {
-    v3 = 0;
+    focusGroupIdentifier = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SBFluidSwitcherTouchPassThroughScrollViewAccessibility;
-    v3 = [(SBFluidSwitcherTouchPassThroughScrollViewAccessibility *)&v5 focusGroupIdentifier];
+    focusGroupIdentifier = [(SBFluidSwitcherTouchPassThroughScrollViewAccessibility *)&v5 focusGroupIdentifier];
   }
 
-  return v3;
+  return focusGroupIdentifier;
 }
 
 - (BOOL)_forwardsToParentScroller

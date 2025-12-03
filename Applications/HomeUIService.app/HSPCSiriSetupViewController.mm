@@ -1,18 +1,18 @@
 @interface HSPCSiriSetupViewController
 - (BOOL)_siriEnabledOnCurrentDevice;
-- (HSPCSiriSetupViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCSiriSetupViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)_disableVoiceRecognition;
-- (void)_handleFooterLabelTouchForOpenURL:(id)a3;
+- (void)_handleFooterLabelTouchForOpenURL:(id)l;
 - (void)_launchSiriPrivacySheet;
 - (void)viewDidLoad;
 @end
 
 @implementation HSPCSiriSetupViewController
 
-- (HSPCSiriSetupViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCSiriSetupViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v8 = objc_alloc_init(UIView);
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
   v25 = 0;
@@ -43,8 +43,8 @@
   v13 = v12;
   if (v12)
   {
-    [(HSPCSiriSetupViewController *)v12 setConfig:v7];
-    [(HSPCSiriSetupViewController *)v13 setCoordinator:v6];
+    [(HSPCSiriSetupViewController *)v12 setConfig:configCopy];
+    [(HSPCSiriSetupViewController *)v13 setCoordinator:coordinatorCopy];
     [(HSPCSiriSetupViewController *)v13 setSiriOrbView:v11];
     [(HSPCSiriSetupViewController *)v13 setSiriOrbContainerView:v8];
     [(HSPCSiriSetupViewController *)v13 _siriEnabledOnCurrentDevice];
@@ -58,7 +58,7 @@
     v18 = [(HSPCSiriSetupViewController *)v13 addOptionalButtonWithLocalizedTitle:v17 target:v13 futureSelector:"_disableVoiceRecognition"];
 
     [(HSPCSiriSetupViewController *)v13 _siriEnabledOnCurrentDevice];
-    v19 = [v7 home];
+    home = [configCopy home];
     v20 = HULocalizedSiriTriggerPhrase();
     v21 = HULocalizedStringWithFormat();
     [(HSPCSiriSetupViewController *)v13 setSubtitle:v21, v20];
@@ -101,63 +101,63 @@
   v55 = [v12 initWithTarget:self action:"_handleFooterLabelTouchForOpenURL:" hitBoxString:v4 userInfo:v14];
 
   [v11 addGestureRecognizer:v55];
-  v15 = [(HSPCSiriSetupViewController *)self contentView];
-  [v15 addSubview:v11];
+  contentView = [(HSPCSiriSetupViewController *)self contentView];
+  [contentView addSubview:v11];
 
-  v54 = [(HSPCSiriSetupViewController *)self siriOrbView];
-  v52 = [v54 centerXAnchor];
-  v53 = [(HSPCSiriSetupViewController *)self contentView];
-  v51 = [v53 mainContentGuide];
-  v50 = [v51 centerXAnchor];
-  v49 = [v52 constraintEqualToAnchor:v50];
+  siriOrbView = [(HSPCSiriSetupViewController *)self siriOrbView];
+  centerXAnchor = [siriOrbView centerXAnchor];
+  contentView2 = [(HSPCSiriSetupViewController *)self contentView];
+  mainContentGuide = [contentView2 mainContentGuide];
+  centerXAnchor2 = [mainContentGuide centerXAnchor];
+  v49 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v60[0] = v49;
-  v48 = [(HSPCSiriSetupViewController *)self siriOrbView];
-  v46 = [v48 topAnchor];
-  v47 = [(HSPCSiriSetupViewController *)self contentView];
-  v45 = [v47 subtitleLabel];
-  v44 = [v45 bottomAnchor];
-  v43 = [v46 constraintEqualToAnchor:v44 constant:-20.0];
+  siriOrbView2 = [(HSPCSiriSetupViewController *)self siriOrbView];
+  topAnchor = [siriOrbView2 topAnchor];
+  contentView3 = [(HSPCSiriSetupViewController *)self contentView];
+  subtitleLabel = [contentView3 subtitleLabel];
+  bottomAnchor = [subtitleLabel bottomAnchor];
+  v43 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:-20.0];
   v60[1] = v43;
-  v42 = [(HSPCSiriSetupViewController *)self siriOrbView];
-  v41 = [v42 widthAnchor];
-  v40 = [v41 constraintEqualToConstant:198.0];
+  siriOrbView3 = [(HSPCSiriSetupViewController *)self siriOrbView];
+  widthAnchor = [siriOrbView3 widthAnchor];
+  v40 = [widthAnchor constraintEqualToConstant:198.0];
   v60[2] = v40;
-  v39 = [(HSPCSiriSetupViewController *)self siriOrbView];
-  v38 = [v39 heightAnchor];
-  v36 = [v38 constraintEqualToConstant:198.0];
+  siriOrbView4 = [(HSPCSiriSetupViewController *)self siriOrbView];
+  heightAnchor = [siriOrbView4 heightAnchor];
+  v36 = [heightAnchor constraintEqualToConstant:198.0];
   v60[3] = v36;
-  v34 = [v11 centerXAnchor];
-  v35 = [(HSPCSiriSetupViewController *)self contentView];
-  v33 = [v35 mainContentGuide];
-  v32 = [v33 centerXAnchor];
-  v31 = [v34 constraintEqualToAnchor:v32];
+  centerXAnchor3 = [v11 centerXAnchor];
+  contentView4 = [(HSPCSiriSetupViewController *)self contentView];
+  mainContentGuide2 = [contentView4 mainContentGuide];
+  centerXAnchor4 = [mainContentGuide2 centerXAnchor];
+  v31 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v60[4] = v31;
-  v29 = [v11 topAnchor];
-  v30 = [(HSPCSiriSetupViewController *)self siriOrbView];
-  v28 = [v30 bottomAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28 constant:-20.0];
+  topAnchor2 = [v11 topAnchor];
+  siriOrbView5 = [(HSPCSiriSetupViewController *)self siriOrbView];
+  bottomAnchor2 = [siriOrbView5 bottomAnchor];
+  v27 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2 constant:-20.0];
   v60[5] = v27;
   v37 = v11;
-  v26 = [v11 bottomAnchor];
-  v16 = [(HSPCSiriSetupViewController *)self contentView];
-  v17 = [v16 mainContentGuide];
-  v18 = [v17 bottomAnchor];
-  v19 = [v26 constraintEqualToAnchor:v18];
+  bottomAnchor3 = [v11 bottomAnchor];
+  contentView5 = [(HSPCSiriSetupViewController *)self contentView];
+  mainContentGuide3 = [contentView5 mainContentGuide];
+  bottomAnchor4 = [mainContentGuide3 bottomAnchor];
+  v19 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v60[6] = v19;
-  v20 = [v11 widthAnchor];
-  v21 = [(HSPCSiriSetupViewController *)self contentView];
-  v22 = [v21 mainContentGuide];
-  v23 = [v22 widthAnchor];
-  v24 = [v20 constraintLessThanOrEqualToAnchor:v23];
+  widthAnchor2 = [v11 widthAnchor];
+  contentView6 = [(HSPCSiriSetupViewController *)self contentView];
+  mainContentGuide4 = [contentView6 mainContentGuide];
+  widthAnchor3 = [mainContentGuide4 widthAnchor];
+  v24 = [widthAnchor2 constraintLessThanOrEqualToAnchor:widthAnchor3];
   v60[7] = v24;
   v25 = [NSArray arrayWithObjects:v60 count:8];
   [NSLayoutConstraint activateConstraints:v25];
 }
 
-- (void)_handleFooterLabelTouchForOpenURL:(id)a3
+- (void)_handleFooterLabelTouchForOpenURL:(id)l
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"URL_KEY"];
+  userInfo = [l userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"URL_KEY"];
 
   if (v5)
   {
@@ -191,19 +191,19 @@
 
 - (void)_launchSiriPrivacySheet
 {
-  v3 = [(HSPCSiriSetupViewController *)self navigationController];
-  v4 = v3;
-  if (v3)
+  navigationController = [(HSPCSiriSetupViewController *)self navigationController];
+  v4 = navigationController;
+  if (navigationController)
   {
-    v5 = v3;
+    selfCopy = navigationController;
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   v7 = [OBPrivacyPresenter presenterForPrivacySplashWithIdentifer:OBPrivacySiriIdentifier];
   [v7 setPresentingViewController:v6];
@@ -213,12 +213,12 @@
 
 - (id)_disableVoiceRecognition
 {
-  v4 = [(HSPCSiriSetupViewController *)self config];
-  v5 = [v4 home];
+  config = [(HSPCSiriSetupViewController *)self config];
+  home = [config home];
 
   v6 = [HFUserItem alloc];
-  v7 = [v5 currentUser];
-  v8 = [v6 initWithHome:v5 user:v7 nameStyle:0];
+  currentUser = [home currentUser];
+  v8 = [v6 initWithHome:home user:currentUser nameStyle:0];
 
   v9 = [v8 setEnableIdentifyVoice:0];
   v10 = HFLogForCategory();
@@ -230,8 +230,8 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@ Disabling voice recognition", &v21, 0xCu);
   }
 
-  v12 = [(HSPCSiriSetupViewController *)self config];
-  [v12 setShouldSkipVoiceProfileSetup:1];
+  config2 = [(HSPCSiriSetupViewController *)self config];
+  [config2 setShouldSkipVoiceProfileSetup:1];
 
   v13 = HFLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -242,10 +242,10 @@
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%@ User has opted to not enable voice recognition. Setting flag to skip voice profile setup flow.", &v21, 0xCu);
   }
 
-  v15 = [(HSPCSiriSetupViewController *)self config];
-  v16 = [v15 delegate];
-  v17 = [(HSPCSiriSetupViewController *)self config];
-  v18 = [v16 stateMachineConfigurationGetLaunchReason:v17];
+  config3 = [(HSPCSiriSetupViewController *)self config];
+  delegate = [config3 delegate];
+  config4 = [(HSPCSiriSetupViewController *)self config];
+  v18 = [delegate stateMachineConfigurationGetLaunchReason:config4];
 
   if (v18 == 3)
   {
@@ -264,22 +264,22 @@
 - (BOOL)_siriEnabledOnCurrentDevice
 {
   v4 = +[AFPreferences sharedPreferences];
-  v5 = [v4 assistantIsEnabled];
+  assistantIsEnabled = [v4 assistantIsEnabled];
 
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
     v9 = 138412802;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
     v12 = v7;
     v13 = 1024;
-    v14 = v5;
+    v14 = assistantIsEnabled;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@:%@ Is Siri enabled on this device? %{BOOL}d", &v9, 0x1Cu);
   }
 
-  return v5;
+  return assistantIsEnabled;
 }
 
 @end

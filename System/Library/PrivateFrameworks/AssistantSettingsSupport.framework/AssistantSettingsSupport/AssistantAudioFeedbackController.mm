@@ -1,26 +1,26 @@
 @interface AssistantAudioFeedbackController
 + (id)bundle;
 - (BOOL)_isDeviceSpeakerSupportedForBluetoothAudioRoute;
-- (id)_localizeTriggerString:(id)a3;
+- (id)_localizeTriggerString:(id)string;
 - (id)alwaysShowRecognizedSpeech;
-- (id)isAlwaysPrintSiriResponseEnabled:(id)a3;
+- (id)isAlwaysPrintSiriResponseEnabled:(id)enabled;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_hideSiriBluetoothVehicleAudioRouteSettingsIfNeeded:(id)a3;
-- (void)_refreshFooterForPreferredAudioRouteSpecifier:(id)a3;
-- (void)_refreshFooterForSpecifier:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_hideSiriBluetoothVehicleAudioRouteSettingsIfNeeded:(id)needed;
+- (void)_refreshFooterForPreferredAudioRouteSpecifier:(id)specifier;
+- (void)_refreshFooterForSpecifier:(id)specifier;
 - (void)_refreshFooterForUpdateDeviceSpeaker;
-- (void)_updateDeviceSpeakerForTTSPreferenceIfNeeded:(id)a3;
+- (void)_updateDeviceSpeakerForTTSPreferenceIfNeeded:(id)needed;
 - (void)_updateDeviceSpeakerForTTSSpecifiersFromPreferences;
 - (void)_updatePreferedAudioRouteFromPreferences;
-- (void)_updatePreferencesIfNeeded:(id)a3;
-- (void)_updatePreferredAudioRouteIfNeeded:(id)a3;
+- (void)_updatePreferencesIfNeeded:(id)needed;
+- (void)_updatePreferredAudioRouteIfNeeded:(id)needed;
 - (void)_updateSpecifiersFromPreferences;
-- (void)preferencesDidChange:(id)a3;
-- (void)registerUndoActionWithKey:(id)a3 urlString:(id)a4 undoAction:(id)a5;
-- (void)setAlwaysPrintSiriResponseEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setAlwaysShowRecognizedSpeech:(id)a3 forSpecifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)preferencesDidChange:(id)change;
+- (void)registerUndoActionWithKey:(id)key urlString:(id)string undoAction:(id)action;
+- (void)setAlwaysPrintSiriResponseEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setAlwaysShowRecognizedSpeech:(id)speech forSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation AssistantAudioFeedbackController
@@ -40,14 +40,14 @@
   return v2;
 }
 
-- (void)preferencesDidChange:(id)a3
+- (void)preferencesDidChange:(id)change
 {
-  v4 = [MEMORY[0x277CEF368] sharedPreferences];
-  v5 = [v4 useDeviceSpeakerForTTS];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  useDeviceSpeakerForTTS = [mEMORY[0x277CEF368] useDeviceSpeakerForTTS];
 
-  if (v5 != self->_useDeviceSpeakerForTTSPreference)
+  if (useDeviceSpeakerForTTS != self->_useDeviceSpeakerForTTSPreference)
   {
-    self->_useDeviceSpeakerForTTSPreference = v5;
+    self->_useDeviceSpeakerForTTSPreference = useDeviceSpeakerForTTS;
   }
 
   [(AssistantAudioFeedbackController *)self reloadSpecifiers];
@@ -127,10 +127,10 @@
   return v4;
 }
 
-- (void)_hideSiriBluetoothVehicleAudioRouteSettingsIfNeeded:(id)a3
+- (void)_hideSiriBluetoothVehicleAudioRouteSettingsIfNeeded:(id)needed
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  neededCopy = needed;
   if (!CFPreferencesGetAppBooleanValue(@"showBTAudioRouteSetting", @"com.apple.siri.CarBluetooth", 0))
   {
     v5 = *MEMORY[0x277CEF098];
@@ -141,10 +141,10 @@
       _os_log_impl(&dword_2413B9000, v5, OS_LOG_TYPE_DEFAULT, "%s Hiding the BT Car Audio Route Settings.", &v7, 0xCu);
     }
 
-    [v4 removeObject:self->_preferredAudioRouteGroupSpecifier];
-    [v4 removeObject:self->_preferredAudioRoutePhoneSpeakerSpecifier];
-    [v4 removeObject:self->_preferredAudioRouteBluetoothSpecifier];
-    [v4 removeObject:self->_preferredAudioRouteCarRadioSpecifier];
+    [neededCopy removeObject:self->_preferredAudioRouteGroupSpecifier];
+    [neededCopy removeObject:self->_preferredAudioRoutePhoneSpeakerSpecifier];
+    [neededCopy removeObject:self->_preferredAudioRouteBluetoothSpecifier];
+    [neededCopy removeObject:self->_preferredAudioRouteCarRadioSpecifier];
   }
 
   v6 = *MEMORY[0x277D85DE8];
@@ -159,8 +159,8 @@
 
 - (void)_updateDeviceSpeakerForTTSSpecifiersFromPreferences
 {
-  v3 = [MEMORY[0x277CEF368] sharedPreferences];
-  self->_useDeviceSpeakerForTTSPreference = [v3 useDeviceSpeakerForTTS];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  self->_useDeviceSpeakerForTTSPreference = [mEMORY[0x277CEF368] useDeviceSpeakerForTTS];
 
   v4 = self->_useDeviceSpeakerForTTSPreference - 1;
   if (v4 > 2)
@@ -180,10 +180,10 @@
 
 - (void)_updatePreferedAudioRouteFromPreferences
 {
-  v3 = [MEMORY[0x277CEF368] sharedPreferences];
-  v4 = [v3 bluetoothPreferredCarAudioRoute];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  bluetoothPreferredCarAudioRoute = [mEMORY[0x277CEF368] bluetoothPreferredCarAudioRoute];
   preferredCarAudioRoute = self->_preferredCarAudioRoute;
-  self->_preferredCarAudioRoute = v4;
+  self->_preferredCarAudioRoute = bluetoothPreferredCarAudioRoute;
 
   if (([(NSString *)self->_preferredCarAudioRoute isEqual:@"A2DP"]& 1) != 0)
   {
@@ -205,11 +205,11 @@
   [(AssistantAudioFeedbackController *)self _refreshFooterForSpecifier:v7];
 }
 
-- (void)_refreshFooterForSpecifier:(id)a3
+- (void)_refreshFooterForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   [(AssistantAudioFeedbackController *)self _refreshFooterForUpdateDeviceSpeaker];
-  [(AssistantAudioFeedbackController *)self _refreshFooterForPreferredAudioRouteSpecifier:v4];
+  [(AssistantAudioFeedbackController *)self _refreshFooterForPreferredAudioRouteSpecifier:specifierCopy];
 }
 
 - (void)_refreshFooterForUpdateDeviceSpeaker
@@ -220,20 +220,20 @@
   [(PSSpecifier *)groupSpecifier setProperty:v3 forKey:*MEMORY[0x277D3FF88]];
 }
 
-- (void)_refreshFooterForPreferredAudioRouteSpecifier:(id)a3
+- (void)_refreshFooterForPreferredAudioRouteSpecifier:(id)specifier
 {
-  v7 = a3;
-  if (self->_preferredAudioRouteCarRadioSpecifier == v7)
+  specifierCopy = specifier;
+  if (self->_preferredAudioRouteCarRadioSpecifier == specifierCopy)
   {
     v4 = @"PREFERRED_AUDIO_ROUTE_CAR_RADIO_FOOTER_TEXT";
   }
 
-  else if ([(AssistantAudioFeedbackController *)self _isDeviceSpeakerSupportedForBluetoothAudioRoute]&& self->_preferredAudioRoutePhoneSpeakerSpecifier == v7)
+  else if ([(AssistantAudioFeedbackController *)self _isDeviceSpeakerSupportedForBluetoothAudioRoute]&& self->_preferredAudioRoutePhoneSpeakerSpecifier == specifierCopy)
   {
     v4 = @"PREFERRED_AUDIO_ROUTE_PHONE_SPEAKER_FOOTER_TEXT";
   }
 
-  else if (self->_preferredAudioRouteBluetoothSpecifier == v7)
+  else if (self->_preferredAudioRouteBluetoothSpecifier == specifierCopy)
   {
     v4 = @"PREFFERED_AUDIO_ROUTE_BLUETOOTH_AUDIO_FOOTER_TEXT";
   }
@@ -256,45 +256,45 @@
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = AssistantAudioFeedbackController;
-  v6 = a4;
-  [(AssistantAudioFeedbackController *)&v10 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(AssistantAudioFeedbackController *)self indexForIndexPath:v6, v10.receiver, v10.super_class];
+  pathCopy = path;
+  [(AssistantAudioFeedbackController *)&v10 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(AssistantAudioFeedbackController *)self indexForIndexPath:pathCopy, v10.receiver, v10.super_class];
 
   v8 = [(AssistantAudioFeedbackController *)self specifierAtIndex:v7];
   [(AssistantAudioFeedbackController *)self _refreshFooterForSpecifier:v8];
   [(AssistantAudioFeedbackController *)self _updatePreferencesIfNeeded:v8];
-  v9 = [MEMORY[0x277CEF368] sharedPreferences];
-  [v9 synchronize];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  [mEMORY[0x277CEF368] synchronize];
 }
 
-- (void)_updatePreferencesIfNeeded:(id)a3
+- (void)_updatePreferencesIfNeeded:(id)needed
 {
-  v4 = a3;
-  [(AssistantAudioFeedbackController *)self _updateDeviceSpeakerForTTSPreferenceIfNeeded:v4];
-  [(AssistantAudioFeedbackController *)self _updatePreferredAudioRouteIfNeeded:v4];
+  neededCopy = needed;
+  [(AssistantAudioFeedbackController *)self _updateDeviceSpeakerForTTSPreferenceIfNeeded:neededCopy];
+  [(AssistantAudioFeedbackController *)self _updatePreferredAudioRouteIfNeeded:neededCopy];
 }
 
-- (void)_updateDeviceSpeakerForTTSPreferenceIfNeeded:(id)a3
+- (void)_updateDeviceSpeakerForTTSPreferenceIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_preferSilentResponsesSpecifier == v4)
+  neededCopy = needed;
+  v5 = neededCopy;
+  if (self->_preferSilentResponsesSpecifier == neededCopy)
   {
     v6 = 3;
   }
 
-  else if (self->_automaticSpecifier == v4)
+  else if (self->_automaticSpecifier == neededCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    if (self->_preferSpokenResponsesSpecifier != v4)
+    if (self->_preferSpokenResponsesSpecifier != neededCopy)
     {
       goto LABEL_8;
     }
@@ -304,20 +304,20 @@
 
   self->_useDeviceSpeakerForTTSPreference = v6;
 LABEL_8:
-  v7 = [MEMORY[0x277CEF368] sharedPreferences];
-  v8 = [v7 useDeviceSpeakerForTTS];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  useDeviceSpeakerForTTS = [mEMORY[0x277CEF368] useDeviceSpeakerForTTS];
 
-  if (v8 != self->_useDeviceSpeakerForTTSPreference)
+  if (useDeviceSpeakerForTTS != self->_useDeviceSpeakerForTTSPreference)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __81__AssistantAudioFeedbackController__updateDeviceSpeakerForTTSPreferenceIfNeeded___block_invoke;
     v10[3] = &unk_278CD1EA8;
     v10[4] = self;
-    v10[5] = v8;
+    v10[5] = useDeviceSpeakerForTTS;
     [(AssistantAudioFeedbackController *)self registerUndoActionWithKey:@"VOICE_FEEDBACK" urlString:@"prefs:root=SIRI&path=VOICE_FEEDBACK_ID" undoAction:v10];
-    v9 = [MEMORY[0x277CEF368] sharedPreferences];
-    [v9 setUseDeviceSpeakerForTTS:self->_useDeviceSpeakerForTTSPreference];
+    mEMORY[0x277CEF368]2 = [MEMORY[0x277CEF368] sharedPreferences];
+    [mEMORY[0x277CEF368]2 setUseDeviceSpeakerForTTS:self->_useDeviceSpeakerForTTSPreference];
   }
 }
 
@@ -331,15 +331,15 @@ uint64_t __81__AssistantAudioFeedbackController__updateDeviceSpeakerForTTSPrefer
   return [v3 reloadSpecifiers];
 }
 
-- (void)_updatePreferredAudioRouteIfNeeded:(id)a3
+- (void)_updatePreferredAudioRouteIfNeeded:(id)needed
 {
-  v4 = a3;
-  if (self->_preferredAudioRouteBluetoothSpecifier == v4)
+  neededCopy = needed;
+  if (self->_preferredAudioRouteBluetoothSpecifier == neededCopy)
   {
     v5 = @"A2DP";
   }
 
-  else if ([(AssistantAudioFeedbackController *)self _isDeviceSpeakerSupportedForBluetoothAudioRoute]&& self->_preferredAudioRoutePhoneSpeakerSpecifier == v4)
+  else if ([(AssistantAudioFeedbackController *)self _isDeviceSpeakerSupportedForBluetoothAudioRoute]&& self->_preferredAudioRoutePhoneSpeakerSpecifier == neededCopy)
   {
     v5 = @"DeviceSpeaker";
   }
@@ -352,20 +352,20 @@ uint64_t __81__AssistantAudioFeedbackController__updateDeviceSpeakerForTTSPrefer
   preferredCarAudioRoute = self->_preferredCarAudioRoute;
   self->_preferredCarAudioRoute = &v5->isa;
 
-  v7 = [MEMORY[0x277CEF368] sharedPreferences];
-  v8 = [v7 bluetoothPreferredCarAudioRoute];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  bluetoothPreferredCarAudioRoute = [mEMORY[0x277CEF368] bluetoothPreferredCarAudioRoute];
 
-  if (self->_preferredCarAudioRoute != v8)
+  if (self->_preferredCarAudioRoute != bluetoothPreferredCarAudioRoute)
   {
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
     v12 = __71__AssistantAudioFeedbackController__updatePreferredAudioRouteIfNeeded___block_invoke;
     v13 = &unk_278CD1708;
-    v14 = v8;
-    v15 = self;
+    v14 = bluetoothPreferredCarAudioRoute;
+    selfCopy = self;
     [(AssistantAudioFeedbackController *)self registerUndoActionWithKey:@"PREFERRED_AUDIO_ROUTE_TITLE" urlString:@"prefs:root=SIRI&path=PREFERRED_AUDIO_GROUP_ID" undoAction:&v10];
-    v9 = [MEMORY[0x277CEF368] sharedPreferences];
-    [v9 setBluetoothPreferredCarAudioRoute:self->_preferredCarAudioRoute];
+    mEMORY[0x277CEF368]2 = [MEMORY[0x277CEF368] sharedPreferences];
+    [mEMORY[0x277CEF368]2 setBluetoothPreferredCarAudioRoute:self->_preferredCarAudioRoute];
   }
 }
 
@@ -379,58 +379,58 @@ uint64_t __71__AssistantAudioFeedbackController__updatePreferredAudioRouteIfNeed
   return [v3 reloadSpecifiers];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = AssistantAudioFeedbackController;
-  v4 = [(AssistantAudioFeedbackController *)&v7 tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 textLabel];
-  [v5 setNumberOfLines:0];
+  v4 = [(AssistantAudioFeedbackController *)&v7 tableView:view cellForRowAtIndexPath:path];
+  textLabel = [v4 textLabel];
+  [textLabel setNumberOfLines:0];
 
   return v4;
 }
 
-- (id)_localizeTriggerString:(id)a3
+- (id)_localizeTriggerString:(id)string
 {
   v3 = MEMORY[0x277D7A8D0];
-  v4 = a3;
-  v5 = [v3 sharedPreferences];
-  v6 = [MEMORY[0x277CEF368] sharedPreferences];
-  v7 = [v6 languageCode];
-  v8 = [v5 localizedTriggerPhraseForLanguageCode:v7];
+  stringCopy = string;
+  sharedPreferences = [v3 sharedPreferences];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
+  v8 = [sharedPreferences localizedTriggerPhraseForLanguageCode:languageCode];
 
   v9 = [v8 stringByReplacingOccurrencesOfString:@" " withString:@" "];
   v10 = MEMORY[0x277CCACA8];
   v11 = +[AssistantAudioFeedbackController bundle];
-  v12 = [v11 localizedStringForKey:v4 value:&stru_285317CF0 table:@"AssistantAudioFeedback"];
+  v12 = [v11 localizedStringForKey:stringCopy value:&stru_285317CF0 table:@"AssistantAudioFeedback"];
 
   v13 = [v10 stringWithFormat:v12, v9];
 
   return v13;
 }
 
-- (id)isAlwaysPrintSiriResponseEnabled:(id)a3
+- (id)isAlwaysPrintSiriResponseEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [MEMORY[0x277CEF368] sharedPreferences];
-  v5 = [v3 numberWithBool:{objc_msgSend(v4, "siriResponseShouldAlwaysPrint")}];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  v5 = [v3 numberWithBool:{objc_msgSend(mEMORY[0x277CEF368], "siriResponseShouldAlwaysPrint")}];
 
   return v5;
 }
 
-- (void)setAlwaysPrintSiriResponseEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setAlwaysPrintSiriResponseEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __83__AssistantAudioFeedbackController_setAlwaysPrintSiriResponseEnabled_forSpecifier___block_invoke;
   v11 = &unk_278CD1708;
-  v12 = v5;
-  v13 = self;
-  v6 = v5;
+  v12 = enabledCopy;
+  selfCopy = self;
+  v6 = enabledCopy;
   [(AssistantAudioFeedbackController *)self registerUndoActionWithKey:@"ALWAYS_PRINT_RESPONSE" urlString:@"prefs:root=SIRI&path=VOICE_FEEDBACK_ID/ALWAYS_PRINT_RESPONSE_GROUP_ID" undoAction:&v8];
-  v7 = [MEMORY[0x277CEF368] sharedPreferences];
-  [v7 setSiriResponseShouldAlwaysPrint:{objc_msgSend(v6, "BOOLValue")}];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  [mEMORY[0x277CEF368] setSiriResponseShouldAlwaysPrint:{objc_msgSend(v6, "BOOLValue")}];
 }
 
 uint64_t __83__AssistantAudioFeedbackController_setAlwaysPrintSiriResponseEnabled_forSpecifier___block_invoke(uint64_t a1)
@@ -446,8 +446,8 @@ uint64_t __83__AssistantAudioFeedbackController_setAlwaysPrintSiriResponseEnable
 - (BOOL)_isDeviceSpeakerSupportedForBluetoothAudioRoute
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D26E58] sharedAVSystemController];
-  v3 = [v2 pickableRoutesForCategory:*MEMORY[0x277CEF5D8] andMode:@"Default"];
+  mEMORY[0x277D26E58] = [MEMORY[0x277D26E58] sharedAVSystemController];
+  v3 = [mEMORY[0x277D26E58] pickableRoutesForCategory:*MEMORY[0x277CEF5D8] andMode:@"Default"];
 
   v15 = 0u;
   v16 = 0u;
@@ -469,9 +469,9 @@ uint64_t __83__AssistantAudioFeedbackController_setAlwaysPrintSiriResponseEnable
         }
 
         v9 = [*(*(&v13 + 1) + 8 * i) objectForKeyedSubscript:{*v7, v13}];
-        v10 = [v9 BOOLValue];
+        bOOLValue = [v9 BOOLValue];
 
-        if (v10)
+        if (bOOLValue)
         {
           LOBYTE(v5) = 1;
           goto LABEL_11;
@@ -497,25 +497,25 @@ LABEL_11:
 - (id)alwaysShowRecognizedSpeech
 {
   v2 = MEMORY[0x277CCABB0];
-  v3 = [MEMORY[0x277CEF368] sharedPreferences];
-  v4 = [v2 numberWithBool:{objc_msgSend(v3, "alwaysShowRecognizedSpeech")}];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  v4 = [v2 numberWithBool:{objc_msgSend(mEMORY[0x277CEF368], "alwaysShowRecognizedSpeech")}];
 
   return v4;
 }
 
-- (void)setAlwaysShowRecognizedSpeech:(id)a3 forSpecifier:(id)a4
+- (void)setAlwaysShowRecognizedSpeech:(id)speech forSpecifier:(id)specifier
 {
-  v5 = a3;
+  speechCopy = speech;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __79__AssistantAudioFeedbackController_setAlwaysShowRecognizedSpeech_forSpecifier___block_invoke;
   v11 = &unk_278CD1708;
-  v12 = v5;
-  v13 = self;
-  v6 = v5;
+  v12 = speechCopy;
+  selfCopy = self;
+  v6 = speechCopy;
   [(AssistantAudioFeedbackController *)self registerUndoActionWithKey:@"ALWAYS_SHOW_RECOGNIZED_SPEECH" urlString:@"prefs:root=SIRI&path=VOICE_FEEDBACK_ID/ALWAYS_SHOW_RECOGNIZED_SPEECH_GROUP_ID" undoAction:&v8];
-  v7 = [MEMORY[0x277CEF368] sharedPreferences];
-  [v7 setAlwaysShowRecognizedSpeech:{objc_msgSend(v6, "BOOLValue")}];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  [mEMORY[0x277CEF368] setAlwaysShowRecognizedSpeech:{objc_msgSend(v6, "BOOLValue")}];
 }
 
 uint64_t __79__AssistantAudioFeedbackController_setAlwaysShowRecognizedSpeech_forSpecifier___block_invoke(uint64_t a1)
@@ -528,21 +528,21 @@ uint64_t __79__AssistantAudioFeedbackController_setAlwaysShowRecognizedSpeech_fo
   return [v3 reloadSpecifiers];
 }
 
-- (void)registerUndoActionWithKey:(id)a3 urlString:(id)a4 undoAction:(id)a5
+- (void)registerUndoActionWithKey:(id)key urlString:(id)string undoAction:(id)action
 {
   v8 = MEMORY[0x277CCAEB8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  actionCopy = action;
+  stringCopy = string;
+  keyCopy = key;
   v12 = [v8 alloc];
-  v13 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v15 = [v14 bundleURL];
-  v17 = [v12 initWithKey:v11 table:@"AssistantAudioFeedback" locale:v13 bundleURL:v15];
+  bundleURL = [v14 bundleURL];
+  v17 = [v12 initWithKey:keyCopy table:@"AssistantAudioFeedback" locale:currentLocale bundleURL:bundleURL];
 
-  v16 = [MEMORY[0x277CBEBC0] URLWithString:v10];
+  v16 = [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
 
-  [(AssistantAudioFeedbackController *)self pe_registerUndoActionName:v17 associatedDeepLink:v16 undoAction:v9];
+  [(AssistantAudioFeedbackController *)self pe_registerUndoActionName:v17 associatedDeepLink:v16 undoAction:actionCopy];
 }
 
 @end

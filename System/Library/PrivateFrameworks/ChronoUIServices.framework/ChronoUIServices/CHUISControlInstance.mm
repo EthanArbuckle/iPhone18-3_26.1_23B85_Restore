@@ -3,8 +3,8 @@
 - (CHSControlIdentity)control;
 - (CHUISControlIconView)iconView;
 - (CHUISControlInstance)init;
-- (CHUISControlInstance)initWithControl:(id)a3 contentType:(unint64_t)a4;
-- (CHUISControlInstance)initWithInstanceIdentity:(id)a3;
+- (CHUISControlInstance)initWithControl:(id)control contentType:(unint64_t)type;
+- (CHUISControlInstance)initWithInstanceIdentity:(id)identity;
 - (CHUISControlInstanceConfiguration)configuration;
 - (CHUISControlInstanceDelegate)delegate;
 - (NSString)title;
@@ -13,32 +13,32 @@
 - (unint64_t)visibility;
 - (void)activate;
 - (void)invalidate;
-- (void)modifyConfiguration:(id)a3;
-- (void)performControlActionWithCompletion:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setVisibility:(unint64_t)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)modifyConfiguration:(id)configuration;
+- (void)performControlActionWithCompletion:(id)completion;
+- (void)registerObserver:(id)observer;
+- (void)setConfiguration:(id)configuration;
+- (void)setVisibility:(unint64_t)visibility;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CHUISControlInstance
 
 - (CHSControlIdentity)control
 {
-  v2 = self;
-  v3 = [(CHUISControlInstance *)v2 instanceIdentity];
-  v4 = [(CHSControlInstanceIdentity *)v3 control];
+  selfCopy = self;
+  instanceIdentity = [(CHUISControlInstance *)selfCopy instanceIdentity];
+  control = [(CHSControlInstanceIdentity *)instanceIdentity control];
 
-  return v4;
+  return control;
 }
 
 - (unint64_t)contentType
 {
-  v2 = self;
-  v3 = [(CHUISControlInstance *)v2 instanceIdentity];
-  v4 = [(CHSControlInstanceIdentity *)v3 contentType];
+  selfCopy = self;
+  instanceIdentity = [(CHUISControlInstance *)selfCopy instanceIdentity];
+  contentType = [(CHSControlInstanceIdentity *)instanceIdentity contentType];
 
-  return v4;
+  return contentType;
 }
 
 - (unint64_t)visibility
@@ -48,19 +48,19 @@
   return *(self + v3);
 }
 
-- (void)setVisibility:(unint64_t)a3
+- (void)setVisibility:(unint64_t)visibility
 {
   v5 = OBJC_IVAR___CHUISControlInstance_visibility;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = visibility;
   v6 = self + OBJC_IVAR___CHUISControlInstance__adapter;
   swift_beginAccess();
   v7 = *(v6 + 3);
   v8 = *(v6 + 4);
   __swift_mutable_project_boxed_opaque_existential_1(v6, v7);
   v9 = *(v8 + 88);
-  v10 = self;
-  v9(a3, v7, v8);
+  selfCopy = self;
+  v9(visibility, v7, v8);
   swift_endAccess();
 }
 
@@ -72,7 +72,7 @@
   v5 = v3[4];
   __swift_project_boxed_opaque_existential_1(v3, v4);
   v6 = *(v5 + 56);
-  v7 = self;
+  selfCopy = self;
   v6(v15, v4, v5);
   LOBYTE(v4) = v15[0];
   LOBYTE(v5) = BYTE1(v15[0]);
@@ -95,14 +95,14 @@
   return v11;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v5 = *(a3 + OBJC_IVAR___CHUISControlInstanceConfiguration__configuration);
-  v6 = *(a3 + OBJC_IVAR___CHUISControlInstanceConfiguration__configuration + 1);
-  v7 = *(a3 + OBJC_IVAR___CHUISControlInstanceConfiguration__configuration + 8);
-  v8 = *(a3 + OBJC_IVAR___CHUISControlInstanceConfiguration__configuration + 16);
-  v9 = *(a3 + OBJC_IVAR___CHUISControlInstanceConfiguration__configuration + 32);
-  v16 = *(a3 + OBJC_IVAR___CHUISControlInstanceConfiguration__configuration + 24);
+  v5 = *(configuration + OBJC_IVAR___CHUISControlInstanceConfiguration__configuration);
+  v6 = *(configuration + OBJC_IVAR___CHUISControlInstanceConfiguration__configuration + 1);
+  v7 = *(configuration + OBJC_IVAR___CHUISControlInstanceConfiguration__configuration + 8);
+  v8 = *(configuration + OBJC_IVAR___CHUISControlInstanceConfiguration__configuration + 16);
+  v9 = *(configuration + OBJC_IVAR___CHUISControlInstanceConfiguration__configuration + 32);
+  v16 = *(configuration + OBJC_IVAR___CHUISControlInstanceConfiguration__configuration + 24);
   v10 = self + OBJC_IVAR___CHUISControlInstance__adapter;
   swift_beginAccess();
   v11 = *(v10 + 3);
@@ -116,8 +116,8 @@
   v21 = v9;
   v13 = *(v12 + 64);
 
-  v14 = a3;
-  v15 = self;
+  configurationCopy = configuration;
+  selfCopy = self;
   v13(v17, v11, v12);
   swift_endAccess();
 }
@@ -130,7 +130,7 @@
   v5 = v3[4];
   __swift_project_boxed_opaque_existential_1(v3, v4);
   v6 = *(v5 + 32);
-  v7 = self;
+  selfCopy = self;
   v8 = v6(v4, v5);
   swift_endAccess();
 
@@ -166,17 +166,17 @@
   return result;
 }
 
-- (CHUISControlInstance)initWithControl:(id)a3 contentType:(unint64_t)a4
+- (CHUISControlInstance)initWithControl:(id)control contentType:(unint64_t)type
 {
   v7 = objc_allocWithZone(MEMORY[0x1E6994270]);
-  v8 = a3;
-  v9 = [v7 initWithControl:v8 contentType:a4 hostIdentifier:0 configurationIdentifier:0];
+  controlCopy = control;
+  v9 = [v7 initWithControl:controlCopy contentType:type hostIdentifier:0 configurationIdentifier:0];
   v10 = [(CHUISControlInstance *)self initWithInstanceIdentity:v9];
 
   return v10;
 }
 
-- (CHUISControlInstance)initWithInstanceIdentity:(id)a3
+- (CHUISControlInstance)initWithInstanceIdentity:(id)identity
 {
   swift_unknownObjectWeakInit();
   *(self + OBJC_IVAR___CHUISControlInstance__implicitlyActivateOnObserverRegistration) = 0;
@@ -186,11 +186,11 @@
   v7[3] = v5;
   v7[4] = &off_1F54C1CA0;
   *v7 = v6;
-  *(self + OBJC_IVAR___CHUISControlInstance_instanceIdentity) = a3;
+  *(self + OBJC_IVAR___CHUISControlInstance_instanceIdentity) = identity;
   *(self + OBJC_IVAR___CHUISControlInstance_visibility) = 0;
   v10.receiver = self;
   v10.super_class = CHUISControlInstance;
-  v8 = a3;
+  identityCopy = identity;
   return [(CHUISControlInstance *)&v10 init];
 }
 
@@ -218,19 +218,19 @@
   __swift_destroy_boxed_opaque_existential_1Tm(v6);
 }
 
-- (void)modifyConfiguration:(id)a3
+- (void)modifyConfiguration:(id)configuration
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(configuration);
   _Block_copy(v4);
-  v5 = self;
-  sub_1D9300C2C(v5, v4);
+  selfCopy = self;
+  sub_1D9300C2C(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
-- (void)performControlActionWithCompletion:(id)a3
+- (void)performControlActionWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -252,14 +252,14 @@
   v10 = v15;
   __swift_project_boxed_opaque_existential_1(v13, v14);
   v11 = *(v10 + 128);
-  v12 = self;
+  selfCopy = self;
   v11(v7, v6, v9, v10);
 
   sub_1D92E5F4C(v7);
   __swift_destroy_boxed_opaque_existential_1Tm(v13);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
   v5 = OBJC_IVAR___CHUISControlInstance__adapter;
   swift_beginAccess();
@@ -269,14 +269,14 @@
   __swift_project_boxed_opaque_existential_1(v10, v11);
   v8 = *(v7 + 136);
   swift_unknownObjectRetain();
-  v9 = self;
-  v8(a3, v6, v7);
+  selfCopy = self;
+  v8(observer, v6, v7);
   swift_unknownObjectRelease();
 
   __swift_destroy_boxed_opaque_existential_1Tm(v10);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   v5 = OBJC_IVAR___CHUISControlInstance__adapter;
   swift_beginAccess();
@@ -286,8 +286,8 @@
   __swift_project_boxed_opaque_existential_1(v10, v11);
   v8 = *(v7 + 144);
   swift_unknownObjectRetain();
-  v9 = self;
-  v8(a3, v6, v7);
+  selfCopy = self;
+  v8(observer, v6, v7);
   swift_unknownObjectRelease();
 
   __swift_destroy_boxed_opaque_existential_1Tm(v10);

@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneIndexMultiTermsEnum_TermsEnumIndex
 + (void)initialize;
-- (OrgApacheLuceneIndexMultiTermsEnum_TermsEnumIndex)initWithOrgApacheLuceneIndexTermsEnum:(id)a3 withInt:(int)a4;
+- (OrgApacheLuceneIndexMultiTermsEnum_TermsEnumIndex)initWithOrgApacheLuceneIndexTermsEnum:(id)enum withInt:(int)int;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexMultiTermsEnum_TermsEnumIndex
 
-- (OrgApacheLuceneIndexMultiTermsEnum_TermsEnumIndex)initWithOrgApacheLuceneIndexTermsEnum:(id)a3 withInt:(int)a4
+- (OrgApacheLuceneIndexMultiTermsEnum_TermsEnumIndex)initWithOrgApacheLuceneIndexTermsEnum:(id)enum withInt:(int)int
 {
-  JreStrongAssign(&self->termsEnum_, a3);
-  self->subIndex_ = a4;
+  JreStrongAssign(&self->termsEnum_, enum);
+  self->subIndex_ = int;
   return self;
 }
 
@@ -22,7 +22,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [IOSObjectArray newArrayWithLength:0 type:OrgApacheLuceneIndexMultiTermsEnum_TermsEnumIndex_class_()];
     JreStrongAssignAndConsume(&OrgApacheLuceneIndexMultiTermsEnum_TermsEnumIndex_EMPTY_ARRAY_, v2);

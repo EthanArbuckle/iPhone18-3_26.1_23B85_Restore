@@ -1,7 +1,7 @@
 @interface SBSInCallPresentationRequest
 + (id)identifiersForRequestedPresentations;
-+ (void)notePresentationEndForRequestWithIdentifier:(id)a3;
-+ (void)performPresentationWithConfiguration:(id)a3 completion:(id)a4;
++ (void)notePresentationEndForRequestWithIdentifier:(id)identifier;
++ (void)performPresentationWithConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation SBSInCallPresentationRequest
@@ -14,11 +14,11 @@
   return v2;
 }
 
-+ (void)notePresentationEndForRequestWithIdentifier:(id)a3
++ (void)notePresentationEndForRequestWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   BSDispatchQueueAssertMain();
-  [SBSInCallIdentifiersForRequestedPresentations removeObject:v3];
+  [SBSInCallIdentifiersForRequestedPresentations removeObject:identifierCopy];
 
   if (![SBSInCallIdentifiersForRequestedPresentations count])
   {
@@ -27,16 +27,16 @@
   }
 }
 
-+ (void)performPresentationWithConfiguration:(id)a3 completion:(id)a4
++ (void)performPresentationWithConfiguration:(id)configuration completion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v8 = SBLogInCallPresentation();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v33 = v6;
+    v33 = configurationCopy;
     _os_log_impl(&dword_19169D000, v8, OS_LOG_TYPE_DEFAULT, "performPresentationWithConfiguration: %{public}@", buf, 0xCu);
   }
 
@@ -50,13 +50,13 @@
     v9 = SBSInCallIdentifiersForRequestedPresentations;
   }
 
-  v12 = [v6 identifier];
-  [v9 addObject:v12];
+  identifier = [configurationCopy identifier];
+  [v9 addObject:identifier];
 
   v13 = MEMORY[0x1E698F498];
-  v14 = [MEMORY[0x1E698F498] defaultShellMachName];
+  defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
   v15 = +[SBSInCallPresentationServiceInterfaceSpecification identifier];
-  v16 = [v13 endpointForMachName:v14 service:v15 instance:0];
+  v16 = [v13 endpointForMachName:defaultShellMachName service:v15 instance:0];
 
   v17 = [MEMORY[0x1E698F490] connectionWithEndpoint:v16];
   v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -67,7 +67,7 @@
   v29[2] = __80__SBSInCallPresentationRequest_performPresentationWithConfiguration_completion___block_invoke;
   v29[3] = &unk_1E7360370;
   v30 = v19;
-  v31 = a1;
+  selfCopy = self;
   v20 = v19;
   [v17 configureConnection:v29];
   v21 = SBLogInCallPresentation();
@@ -80,16 +80,16 @@
 
   [v17 activate];
   v22 = v17;
-  v23 = [v22 remoteTarget];
+  remoteTarget = [v22 remoteTarget];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __80__SBSInCallPresentationRequest_performPresentationWithConfiguration_completion___block_invoke_13;
   v26[3] = &unk_1E735FEC0;
   v27 = v22;
-  v28 = v7;
+  v28 = completionCopy;
   v24 = v22;
-  v25 = v7;
-  [v23 presentWithConfiguration:v6 completion:v26];
+  v25 = completionCopy;
+  [remoteTarget presentWithConfiguration:configurationCopy completion:v26];
 }
 
 void __80__SBSInCallPresentationRequest_performPresentationWithConfiguration_completion___block_invoke(uint64_t a1, void *a2)

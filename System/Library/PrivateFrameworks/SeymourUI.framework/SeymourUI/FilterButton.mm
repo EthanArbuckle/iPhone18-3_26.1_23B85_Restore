@@ -1,13 +1,13 @@
 @interface FilterButton
 - (BOOL)isHighlighted;
-- (_TtC9SeymourUI12FilterButton)initWithCoder:(id)a3;
-- (void)handleTouchDown:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (_TtC9SeymourUI12FilterButton)initWithCoder:(id)coder;
+- (void)handleTouchDown:(id)down;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation FilterButton
 
-- (_TtC9SeymourUI12FilterButton)initWithCoder:(id)a3
+- (_TtC9SeymourUI12FilterButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI12FilterButton_highlightTimer) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI12FilterButton_shouldShowHighlight) = 0;
@@ -23,19 +23,19 @@
   return [(FilterButton *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_20B881704(a3);
+  selfCopy = self;
+  sub_20B881704(highlighted);
 }
 
-- (void)handleTouchDown:(id)a3
+- (void)handleTouchDown:(id)down
 {
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 scheduledTimerWithTimeInterval:v5 target:sel_handleTimer_ selector:0 userInfo:0 repeats:0.12];
-  v7 = *(&v5->super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI12FilterButton_highlightTimer);
-  *(&v5->super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI12FilterButton_highlightTimer) = v6;
+  selfCopy = self;
+  v6 = [v4 scheduledTimerWithTimeInterval:selfCopy target:sel_handleTimer_ selector:0 userInfo:0 repeats:0.12];
+  v7 = *(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI12FilterButton_highlightTimer);
+  *(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI12FilterButton_highlightTimer) = v6;
 }
 
 @end

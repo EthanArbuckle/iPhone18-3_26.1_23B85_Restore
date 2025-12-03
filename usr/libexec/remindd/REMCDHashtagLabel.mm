@@ -1,6 +1,6 @@
 @interface REMCDHashtagLabel
-- (BOOL)validateForInsert:(id *)a3;
-- (BOOL)validateForInsert_Swift:(id *)a3;
+- (BOOL)validateForInsert:(id *)insert;
+- (BOOL)validateForInsert_Swift:(id *)swift;
 - (id)remChangedObjectID;
 - (void)didSave;
 - (void)willSave;
@@ -9,7 +9,7 @@
 
 @implementation REMCDHashtagLabel
 
-- (BOOL)validateForInsert:(id *)a3
+- (BOOL)validateForInsert:(id *)insert
 {
   v12.receiver = self;
   v12.super_class = REMCDHashtagLabel;
@@ -18,8 +18,8 @@
     return 0;
   }
 
-  v5 = [(REMCDHashtagLabel *)self accountIdentifier];
-  v6 = [v5 length];
+  accountIdentifier = [(REMCDHashtagLabel *)self accountIdentifier];
+  v6 = [accountIdentifier length];
 
   if (!v6)
   {
@@ -35,14 +35,14 @@
     return 1;
   }
 
-  v8 = self;
-  v9 = [(REMCDHashtagLabel *)v8 validateForInsert_Swift:a3];
-  if (a3 && *a3)
+  selfCopy = self;
+  v9 = [(REMCDHashtagLabel *)selfCopy validateForInsert_Swift:insert];
+  if (insert && *insert)
   {
     v10 = +[REMLogStore write];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_100769730(v8, a3, v10);
+      sub_100769730(selfCopy, insert, v10);
     }
   }
 
@@ -54,9 +54,9 @@
   v5.receiver = self;
   v5.super_class = REMCDHashtagLabel;
   [(REMCDHashtagLabel *)&v5 willSave];
-  v3 = [(REMCDHashtagLabel *)self uuidForChangeTracking];
+  uuidForChangeTracking = [(REMCDHashtagLabel *)self uuidForChangeTracking];
 
-  if (!v3)
+  if (!uuidForChangeTracking)
   {
     v4 = +[NSUUID UUID];
     [(REMCDHashtagLabel *)self setUuidForChangeTracking:v4];
@@ -81,12 +81,12 @@
 
 - (id)remChangedObjectID
 {
-  v3 = [(REMCDHashtagLabel *)self uuidForChangeTracking];
-  if (v3)
+  uuidForChangeTracking = [(REMCDHashtagLabel *)self uuidForChangeTracking];
+  if (uuidForChangeTracking)
   {
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [REMObjectID objectIDWithUUID:v3 entityName:v5];
+    v6 = [REMObjectID objectIDWithUUID:uuidForChangeTracking entityName:v5];
   }
 
   else
@@ -105,20 +105,20 @@
 
 - (void)willSave_Swift
 {
-  v2 = self;
-  if (![(REMCDHashtagLabel *)v2 didCleanUpManualSortHintOnDeletion])
+  selfCopy = self;
+  if (![(REMCDHashtagLabel *)selfCopy didCleanUpManualSortHintOnDeletion])
   {
-    [(REMCDHashtagLabel *)v2 setDidCleanUpManualSortHintOnDeletion:1];
+    [(REMCDHashtagLabel *)selfCopy setDidCleanUpManualSortHintOnDeletion:1];
     sub_100471CB8();
   }
 }
 
-- (BOOL)validateForInsert_Swift:(id *)a3
+- (BOOL)validateForInsert_Swift:(id *)swift
 {
-  v3 = self;
-  if (![(REMCDHashtagLabel *)v3 didEnqueueApprovalCascade])
+  selfCopy = self;
+  if (![(REMCDHashtagLabel *)selfCopy didEnqueueApprovalCascade])
   {
-    [(REMCDHashtagLabel *)v3 setDidEnqueueApprovalCascade:1];
+    [(REMCDHashtagLabel *)selfCopy setDidEnqueueApprovalCascade:1];
     sub_100472C1C();
   }
 

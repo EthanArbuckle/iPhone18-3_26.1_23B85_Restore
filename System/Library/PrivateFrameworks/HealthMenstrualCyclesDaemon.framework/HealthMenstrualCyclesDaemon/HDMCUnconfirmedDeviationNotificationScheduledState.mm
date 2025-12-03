@@ -1,36 +1,36 @@
 @interface HDMCUnconfirmedDeviationNotificationScheduledState
-+ (id)notificationStateFromDictionaryRepresentation:(id)a3;
-- (HDMCUnconfirmedDeviationNotificationScheduledState)initWithFireDayIndex:(id)a3;
-- (id)computeFiredStateWithCurrentDayIndex:(int64_t)a3;
-- (id)computeNewStateFromMaxEnd:(int64_t)a3 dismissalDayIndex:(id)a4 scheduledFireDayIndex:(int64_t)a5;
++ (id)notificationStateFromDictionaryRepresentation:(id)representation;
+- (HDMCUnconfirmedDeviationNotificationScheduledState)initWithFireDayIndex:(id)index;
+- (id)computeFiredStateWithCurrentDayIndex:(int64_t)index;
+- (id)computeNewStateFromMaxEnd:(int64_t)end dismissalDayIndex:(id)index scheduledFireDayIndex:(int64_t)dayIndex;
 @end
 
 @implementation HDMCUnconfirmedDeviationNotificationScheduledState
 
-- (HDMCUnconfirmedDeviationNotificationScheduledState)initWithFireDayIndex:(id)a3
+- (HDMCUnconfirmedDeviationNotificationScheduledState)initWithFireDayIndex:(id)index
 {
-  v5 = a3;
-  if (!v5)
+  indexCopy = index;
+  if (!indexCopy)
   {
     [(HDMCUnconfirmedDeviationNotificationScheduledState *)a2 initWithFireDayIndex:?];
   }
 
   v8.receiver = self;
   v8.super_class = HDMCUnconfirmedDeviationNotificationScheduledState;
-  v6 = [(HDMCUnconfirmedDeviationNotificationStateMachineState *)&v8 initWithFireDayIndex:v5];
+  v6 = [(HDMCUnconfirmedDeviationNotificationStateMachineState *)&v8 initWithFireDayIndex:indexCopy];
 
   return v6;
 }
 
-+ (id)notificationStateFromDictionaryRepresentation:(id)a3
++ (id)notificationStateFromDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"FireDayIndex"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"FireDayIndex"];
 
   if (v5)
   {
-    v6 = [a1 alloc];
-    v7 = [v4 objectForKeyedSubscript:@"FireDayIndex"];
+    v6 = [self alloc];
+    v7 = [representationCopy objectForKeyedSubscript:@"FireDayIndex"];
     v8 = [v6 initWithFireDayIndex:v7];
   }
 
@@ -49,30 +49,30 @@
   return v8;
 }
 
-- (id)computeFiredStateWithCurrentDayIndex:(int64_t)a3
+- (id)computeFiredStateWithCurrentDayIndex:(int64_t)index
 {
   v4 = [HDMCUnconfirmedDeviationNotificationWaitingState alloc];
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:index];
   v6 = [(HDMCUnconfirmedDeviationNotificationStateMachineState *)v4 initWithFireDayIndex:v5];
 
   return v6;
 }
 
-- (id)computeNewStateFromMaxEnd:(int64_t)a3 dismissalDayIndex:(id)a4 scheduledFireDayIndex:(int64_t)a5
+- (id)computeNewStateFromMaxEnd:(int64_t)end dismissalDayIndex:(id)index scheduledFireDayIndex:(int64_t)dayIndex
 {
-  v8 = a4;
-  v9 = v8;
-  if (v8 && [v8 integerValue] <= a5 && objc_msgSend(v9, "integerValue") >= a3)
+  indexCopy = index;
+  v9 = indexCopy;
+  if (indexCopy && [indexCopy integerValue] <= dayIndex && objc_msgSend(v9, "integerValue") >= end)
   {
-    v10 = [(HDMCUnconfirmedDeviationNotificationStateMachineState *)[HDMCUnconfirmedDeviationNotificationWaitingState alloc] initWithFireDayIndex:0];
+    selfCopy = [(HDMCUnconfirmedDeviationNotificationStateMachineState *)[HDMCUnconfirmedDeviationNotificationWaitingState alloc] initWithFireDayIndex:0];
   }
 
   else
   {
-    v10 = self;
+    selfCopy = self;
   }
 
-  v11 = v10;
+  v11 = selfCopy;
 
   return v11;
 }

@@ -1,45 +1,45 @@
 @interface ScrollEdgeEffectView.TouchBlocker
-- (_TtCC5UIKit20ScrollEdgeEffectViewP33_A8A62288E15893CDC14B9FB558CFED1E12TouchBlocker)initWithCoder:(id)a3;
-- (_TtCC5UIKit20ScrollEdgeEffectViewP33_A8A62288E15893CDC14B9FB558CFED1E12TouchBlocker)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtCC5UIKit20ScrollEdgeEffectViewP33_A8A62288E15893CDC14B9FB558CFED1E12TouchBlocker)initWithCoder:(id)coder;
+- (_TtCC5UIKit20ScrollEdgeEffectViewP33_A8A62288E15893CDC14B9FB558CFED1E12TouchBlocker)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation ScrollEdgeEffectView.TouchBlocker
 
-- (_TtCC5UIKit20ScrollEdgeEffectViewP33_A8A62288E15893CDC14B9FB558CFED1E12TouchBlocker)initWithFrame:(CGRect)a3
+- (_TtCC5UIKit20ScrollEdgeEffectViewP33_A8A62288E15893CDC14B9FB558CFED1E12TouchBlocker)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = swift_getObjectType();
-  v7 = [(UIView *)&v10 initWithFrame:x, y, width, height];
-  v8 = [(UIView *)v7 layer];
-  [(CALayer *)v8 setHitTestsAsOpaque:1];
+  height = [(UIView *)&v10 initWithFrame:x, y, width, height];
+  layer = [(UIView *)height layer];
+  [(CALayer *)layer setHitTestsAsOpaque:1];
 
-  return v7;
+  return height;
 }
 
-- (_TtCC5UIKit20ScrollEdgeEffectViewP33_A8A62288E15893CDC14B9FB558CFED1E12TouchBlocker)initWithCoder:(id)a3
+- (_TtCC5UIKit20ScrollEdgeEffectViewP33_A8A62288E15893CDC14B9FB558CFED1E12TouchBlocker)initWithCoder:(id)coder
 {
   result = sub_18A4A8398();
   __break(1u);
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = self;
-  if (![(UIView *)v7 pointInside:a4 withEvent:x, y])
+  y = test.y;
+  x = test.x;
+  selfCopy = self;
+  if (![(UIView *)selfCopy pointInside:event withEvent:x, y])
   {
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

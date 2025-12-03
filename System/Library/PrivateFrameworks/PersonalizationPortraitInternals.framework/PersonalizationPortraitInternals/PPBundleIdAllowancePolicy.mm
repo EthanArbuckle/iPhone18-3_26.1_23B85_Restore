@@ -1,13 +1,13 @@
 @interface PPBundleIdAllowancePolicy
 + (id)defaultPolicy;
-- (BOOL)bundleIdentifierIsAllowed:(id)a3 blocklist:(id)a4 allowlist:(id)a5;
-- (BOOL)bundleIdentifierIsAllowedForNotifications:(id)a3;
-- (BOOL)bundleIdentifierIsAllowedForSearchableItems:(id)a3;
-- (PPBundleIdAllowancePolicy)initWithNotificationBlocklist:(id)a3 notificationAllowlist:(id)a4 searchableItemBlocklist:(id)a5 searchableItemAllowlist:(id)a6;
-- (id)_readAssetData:(id)a3;
+- (BOOL)bundleIdentifierIsAllowed:(id)allowed blocklist:(id)blocklist allowlist:(id)allowlist;
+- (BOOL)bundleIdentifierIsAllowedForNotifications:(id)notifications;
+- (BOOL)bundleIdentifierIsAllowedForSearchableItems:(id)items;
+- (PPBundleIdAllowancePolicy)initWithNotificationBlocklist:(id)blocklist notificationAllowlist:(id)allowlist searchableItemBlocklist:(id)itemBlocklist searchableItemAllowlist:(id)itemAllowlist;
+- (id)_readAssetData:(id)data;
 - (id)init_;
 - (void)_loadAssetData;
-- (void)_setGuardedDataWithNotificationBlocklist:(id)a3 notificationAllowlist:(id)a4 searchableItemBlocklist:(id)a5 searchableItemAllowlist:(id)a6;
+- (void)_setGuardedDataWithNotificationBlocklist:(id)blocklist notificationAllowlist:(id)allowlist searchableItemBlocklist:(id)itemBlocklist searchableItemAllowlist:(id)itemAllowlist;
 - (void)dealloc;
 @end
 
@@ -25,24 +25,24 @@
   return v3;
 }
 
-- (BOOL)bundleIdentifierIsAllowed:(id)a3 blocklist:(id)a4 allowlist:(id)a5
+- (BOOL)bundleIdentifierIsAllowed:(id)allowed blocklist:(id)blocklist allowlist:(id)allowlist
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![v8 count] && !objc_msgSend(v9, "count"))
+  allowedCopy = allowed;
+  blocklistCopy = blocklist;
+  allowlistCopy = allowlist;
+  if (![blocklistCopy count] && !objc_msgSend(allowlistCopy, "count"))
   {
     v12 = 1;
     goto LABEL_10;
   }
 
-  if (![v8 count])
+  if (![blocklistCopy count])
   {
     goto LABEL_7;
   }
 
-  v10 = [v9 count];
-  v11 = [v8 containsObject:v7];
+  v10 = [allowlistCopy count];
+  v11 = [blocklistCopy containsObject:allowedCopy];
   if (!v10)
   {
     v12 = v11 ^ 1;
@@ -57,7 +57,7 @@
   else
   {
 LABEL_7:
-    v12 = [v9 containsObject:v7];
+    v12 = [allowlistCopy containsObject:allowedCopy];
   }
 
 LABEL_10:
@@ -65,9 +65,9 @@ LABEL_10:
   return v12;
 }
 
-- (BOOL)bundleIdentifierIsAllowedForSearchableItems:(id)a3
+- (BOOL)bundleIdentifierIsAllowedForSearchableItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -88,7 +88,7 @@ LABEL_10:
   v7[4] = &v14;
   v7[5] = &v8;
   [(_PASLock *)allowancePolicyLock runWithLockAcquired:v7];
-  LOBYTE(self) = [(PPBundleIdAllowancePolicy *)self bundleIdentifierIsAllowed:v4 blocklist:v15[5] allowlist:v9[5]];
+  LOBYTE(self) = [(PPBundleIdAllowancePolicy *)self bundleIdentifierIsAllowed:itemsCopy blocklist:v15[5] allowlist:v9[5]];
   _Block_object_dispose(&v8, 8);
 
   _Block_object_dispose(&v14, 8);
@@ -102,9 +102,9 @@ void __73__PPBundleIdAllowancePolicy_bundleIdentifierIsAllowedForSearchableItems
   objc_storeStrong((*(*(a1 + 40) + 8) + 40), v4[4]);
 }
 
-- (BOOL)bundleIdentifierIsAllowedForNotifications:(id)a3
+- (BOOL)bundleIdentifierIsAllowedForNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -125,7 +125,7 @@ void __73__PPBundleIdAllowancePolicy_bundleIdentifierIsAllowedForSearchableItems
   v7[4] = &v14;
   v7[5] = &v8;
   [(_PASLock *)allowancePolicyLock runWithLockAcquired:v7];
-  LOBYTE(self) = [(PPBundleIdAllowancePolicy *)self bundleIdentifierIsAllowed:v4 blocklist:v15[5] allowlist:v9[5]];
+  LOBYTE(self) = [(PPBundleIdAllowancePolicy *)self bundleIdentifierIsAllowed:notificationsCopy blocklist:v15[5] allowlist:v9[5]];
   _Block_object_dispose(&v8, 8);
 
   _Block_object_dispose(&v14, 8);
@@ -159,25 +159,25 @@ void __46__PPBundleIdAllowancePolicy__resetGuardedData__block_invoke(uint64_t a1
   v2[4] = v9;
 }
 
-- (void)_setGuardedDataWithNotificationBlocklist:(id)a3 notificationAllowlist:(id)a4 searchableItemBlocklist:(id)a5 searchableItemAllowlist:(id)a6
+- (void)_setGuardedDataWithNotificationBlocklist:(id)blocklist notificationAllowlist:(id)allowlist searchableItemBlocklist:(id)itemBlocklist searchableItemAllowlist:(id)itemAllowlist
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  blocklistCopy = blocklist;
+  allowlistCopy = allowlist;
+  itemBlocklistCopy = itemBlocklist;
+  itemAllowlistCopy = itemAllowlist;
   allowancePolicyLock = self->_allowancePolicyLock;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __140__PPBundleIdAllowancePolicy__setGuardedDataWithNotificationBlocklist_notificationAllowlist_searchableItemBlocklist_searchableItemAllowlist___block_invoke;
   v19[3] = &unk_278971A50;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = blocklistCopy;
+  v21 = allowlistCopy;
+  v22 = itemBlocklistCopy;
+  v23 = itemAllowlistCopy;
+  v15 = itemAllowlistCopy;
+  v16 = itemBlocklistCopy;
+  v17 = allowlistCopy;
+  v18 = blocklistCopy;
   [(_PASLock *)allowancePolicyLock runWithLockAcquired:v19];
 }
 
@@ -190,7 +190,7 @@ void __140__PPBundleIdAllowancePolicy__setGuardedDataWithNotificationBlocklist_n
   objc_storeStrong(v4 + 4, a1[7]);
 }
 
-- (id)_readAssetData:(id)a3
+- (id)_readAssetData:(id)data
 {
   v30 = *MEMORY[0x277D85DE8];
   v3 = +[PPTrialWrapper sharedInstance];
@@ -344,12 +344,12 @@ void __140__PPBundleIdAllowancePolicy__setGuardedDataWithNotificationBlocklist_n
   [(PPBundleIdAllowancePolicy *)self _setGuardedDataWithNotificationBlocklist:v3 notificationAllowlist:v4 searchableItemBlocklist:v5 searchableItemAllowlist:v6];
 }
 
-- (PPBundleIdAllowancePolicy)initWithNotificationBlocklist:(id)a3 notificationAllowlist:(id)a4 searchableItemBlocklist:(id)a5 searchableItemAllowlist:(id)a6
+- (PPBundleIdAllowancePolicy)initWithNotificationBlocklist:(id)blocklist notificationAllowlist:(id)allowlist searchableItemBlocklist:(id)itemBlocklist searchableItemAllowlist:(id)itemAllowlist
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  blocklistCopy = blocklist;
+  allowlistCopy = allowlist;
+  itemBlocklistCopy = itemBlocklist;
+  itemAllowlistCopy = itemAllowlist;
   v20.receiver = self;
   v20.super_class = PPBundleIdAllowancePolicy;
   v14 = [(PPBundleIdAllowancePolicy *)&v20 init];
@@ -361,7 +361,7 @@ void __140__PPBundleIdAllowancePolicy__setGuardedDataWithNotificationBlocklist_n
     allowancePolicyLock = v14->_allowancePolicyLock;
     v14->_allowancePolicyLock = v17;
 
-    [(PPBundleIdAllowancePolicy *)v14 _setGuardedDataWithNotificationBlocklist:v10 notificationAllowlist:v11 searchableItemBlocklist:v12 searchableItemAllowlist:v13];
+    [(PPBundleIdAllowancePolicy *)v14 _setGuardedDataWithNotificationBlocklist:blocklistCopy notificationAllowlist:allowlistCopy searchableItemBlocklist:itemBlocklistCopy searchableItemAllowlist:itemAllowlistCopy];
   }
 
   return v14;

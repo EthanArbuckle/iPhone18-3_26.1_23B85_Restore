@@ -1,28 +1,28 @@
 @interface SharePlayProvider
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToProvider:(id)a3;
-- (SharePlayProvider)initWithBundleIdentifier:(id)a3;
-- (SharePlayProvider)initWithCoder:(id)a3;
-- (SharePlayProvider)initWithProvider:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToProvider:(id)provider;
+- (SharePlayProvider)initWithBundleIdentifier:(id)identifier;
+- (SharePlayProvider)initWithCoder:(id)coder;
+- (SharePlayProvider)initWithProvider:(id)provider;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SharePlayProvider
 
-- (SharePlayProvider)initWithBundleIdentifier:(id)a3
+- (SharePlayProvider)initWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SharePlayProvider;
   v5 = [(SharePlayProvider *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
   }
@@ -30,20 +30,20 @@
   return v5;
 }
 
-- (SharePlayProvider)initWithProvider:(id)a3
+- (SharePlayProvider)initWithProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = SharePlayProvider;
   v5 = [(SharePlayProvider *)&v11 init];
   if (v5)
   {
-    v6 = [*(v4 + 2) copy];
+    v6 = [*(providerCopy + 2) copy];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
 
-    v5->_enabled = *(v4 + 8);
-    v8 = [*(v4 + 3) copy];
+    v5->_enabled = *(providerCopy + 8);
+    v8 = [*(providerCopy + 3) copy];
     localizedName = v5->_localizedName;
     v5->_localizedName = v8;
   }
@@ -51,39 +51,39 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [SharePlayProvider allocWithZone:a3];
+  v4 = [SharePlayProvider allocWithZone:zone];
 
   return [(SharePlayProvider *)v4 initWithProvider:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [SharePlayMutableProvider allocWithZone:a3];
+  v4 = [SharePlayMutableProvider allocWithZone:zone];
 
   return [(SharePlayProvider *)v4 initWithProvider:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleIdentifier = self->_bundleIdentifier;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector("bundleIdentifier");
-  [v5 encodeObject:bundleIdentifier forKey:v6];
+  [coderCopy encodeObject:bundleIdentifier forKey:v6];
 
   enabled = self->_enabled;
   v8 = NSStringFromSelector("isEnabled");
-  [v5 encodeBool:enabled forKey:v8];
+  [coderCopy encodeBool:enabled forKey:v8];
 
   localizedName = self->_localizedName;
   v10 = NSStringFromSelector("localizedName");
-  [v5 encodeObject:localizedName forKey:v10];
+  [coderCopy encodeObject:localizedName forKey:v10];
 }
 
-- (SharePlayProvider)initWithCoder:(id)a3
+- (SharePlayProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = SharePlayProvider;
   v5 = [(SharePlayProvider *)&v16 init];
@@ -91,16 +91,16 @@
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector("bundleIdentifier");
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v8;
 
     v10 = NSStringFromSelector("isEnabled");
-    v5->_enabled = [v4 decodeBoolForKey:v10];
+    v5->_enabled = [coderCopy decodeBoolForKey:v10];
 
     v11 = objc_opt_class();
     v12 = NSStringFromSelector("localizedName");
-    v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+    v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
     localizedName = v5->_localizedName;
     v5->_localizedName = v13;
   }
@@ -113,13 +113,13 @@
   v3 = objc_alloc_init(NSMutableString);
   [v3 appendFormat:@"<%@ %p ", objc_opt_class(), self];
   v4 = NSStringFromSelector("bundleIdentifier");
-  v5 = [(SharePlayProvider *)self bundleIdentifier];
-  [v3 appendFormat:@"%@=%@", v4, v5];
+  bundleIdentifier = [(SharePlayProvider *)self bundleIdentifier];
+  [v3 appendFormat:@"%@=%@", v4, bundleIdentifier];
 
   [v3 appendFormat:@", "];
   v6 = NSStringFromSelector("localizedName");
-  v7 = [(SharePlayProvider *)self localizedName];
-  [v3 appendFormat:@"%@=%@", v6, v7];
+  localizedName = [(SharePlayProvider *)self localizedName];
+  [v3 appendFormat:@"%@=%@", v6, localizedName];
 
   [v3 appendFormat:@", "];
   v8 = NSStringFromSelector("enabled");
@@ -136,8 +136,8 @@
   v3 = objc_alloc_init(NSMutableString);
   [v3 appendFormat:@"<%@ %p ", objc_opt_class(), self];
   v4 = NSStringFromSelector("bundleIdentifier");
-  v5 = [(SharePlayProvider *)self bundleIdentifier];
-  [v3 appendFormat:@"%@=%@", v4, v5];
+  bundleIdentifier = [(SharePlayProvider *)self bundleIdentifier];
+  [v3 appendFormat:@"%@=%@", v4, bundleIdentifier];
 
   [v3 appendFormat:@", "];
   v6 = NSStringFromSelector("enabled");
@@ -149,10 +149,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -162,7 +162,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(SharePlayProvider *)self isEqualToProvider:v4];
+      v5 = [(SharePlayProvider *)self isEqualToProvider:equalCopy];
     }
 
     else
@@ -176,8 +176,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SharePlayProvider *)self bundleIdentifier];
-  v4 = [v3 hash];
+  bundleIdentifier = [(SharePlayProvider *)self bundleIdentifier];
+  v4 = [bundleIdentifier hash];
   if ([(SharePlayProvider *)self isEnabled])
   {
     v5 = 1231;
@@ -188,24 +188,24 @@
     v5 = 1237;
   }
 
-  v6 = [(SharePlayProvider *)self localizedName];
-  v7 = v4 ^ [v6 hash];
+  localizedName = [(SharePlayProvider *)self localizedName];
+  v7 = v4 ^ [localizedName hash];
 
   return v5 ^ v7;
 }
 
-- (BOOL)isEqualToProvider:(id)a3
+- (BOOL)isEqualToProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(SharePlayProvider *)self isEnabled];
-  if (v5 == [v4 isEnabled])
+  providerCopy = provider;
+  isEnabled = [(SharePlayProvider *)self isEnabled];
+  if (isEnabled == [providerCopy isEnabled])
   {
-    v7 = [(SharePlayProvider *)self bundleIdentifier];
-    v8 = [v4 bundleIdentifier];
+    bundleIdentifier = [(SharePlayProvider *)self bundleIdentifier];
+    bundleIdentifier2 = [providerCopy bundleIdentifier];
     if (TUStringsAreEqualOrNil())
     {
-      v9 = [(SharePlayProvider *)self localizedName];
-      v10 = [v4 localizedName];
+      localizedName = [(SharePlayProvider *)self localizedName];
+      localizedName2 = [providerCopy localizedName];
       v6 = TUStringsAreEqualOrNil();
     }
 

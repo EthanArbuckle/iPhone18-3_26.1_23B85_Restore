@@ -1,12 +1,12 @@
 @interface GKRemoveFriendNetworkRequest
-- (BOOL)isDuplicateRequest:(id)a3;
-- (GKRemoveFriendNetworkRequest)initWithFriendPlayerID:(id)a3;
-- (GKRemoveFriendNetworkRequest)initWithTask:(id)a3;
+- (BOOL)isDuplicateRequest:(id)request;
+- (GKRemoveFriendNetworkRequest)initWithFriendPlayerID:(id)d;
+- (GKRemoveFriendNetworkRequest)initWithTask:(id)task;
 - (NSString)description;
 - (id)postBody;
 - (id)requestIdentifier;
 - (id)taskInfo;
-- (void)updateWithTaskInfo:(id)a3;
+- (void)updateWithTaskInfo:(id)info;
 @end
 
 @implementation GKRemoveFriendNetworkRequest
@@ -14,46 +14,46 @@
 - (id)postBody
 {
   v5 = @"player-id";
-  v2 = [(GKRemoveFriendNetworkRequest *)self friendID];
-  v6 = v2;
+  friendID = [(GKRemoveFriendNetworkRequest *)self friendID];
+  v6 = friendID;
   v3 = [NSDictionary dictionaryWithObjects:&v6 forKeys:&v5 count:1];
 
   return v3;
 }
 
-- (GKRemoveFriendNetworkRequest)initWithTask:(id)a3
+- (GKRemoveFriendNetworkRequest)initWithTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v9.receiver = self;
   v9.super_class = GKRemoveFriendNetworkRequest;
   v5 = [(GKRemoveFriendNetworkRequest *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(GKRemoveFriendNetworkRequest *)v5 setNsurlTask:v4];
-    v7 = [GKNetworkRequestManager dictionaryFromTaskDescription:v4];
+    [(GKRemoveFriendNetworkRequest *)v5 setNsurlTask:taskCopy];
+    v7 = [GKNetworkRequestManager dictionaryFromTaskDescription:taskCopy];
     [(GKRemoveFriendNetworkRequest *)v6 updateWithTaskInfo:v7];
   }
 
   return v6;
 }
 
-- (GKRemoveFriendNetworkRequest)initWithFriendPlayerID:(id)a3
+- (GKRemoveFriendNetworkRequest)initWithFriendPlayerID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = GKRemoveFriendNetworkRequest;
   v5 = [(GKRemoveFriendNetworkRequest *)&v10 init];
   if (v5)
   {
     v6 = +[NSUUID UUID];
-    v7 = [v6 UUIDString];
-    [(GKRemoveFriendNetworkRequest *)v5 setUuid:v7];
+    uUIDString = [v6 UUIDString];
+    [(GKRemoveFriendNetworkRequest *)v5 setUuid:uUIDString];
 
     v8 = _localPlayerID();
     [(GKRemoveFriendNetworkRequest *)v5 setPlayerID:v8];
 
-    [(GKRemoveFriendNetworkRequest *)v5 setFriendID:v4];
+    [(GKRemoveFriendNetworkRequest *)v5 setFriendID:dCopy];
   }
 
   return v5;
@@ -62,41 +62,41 @@
 - (id)taskInfo
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(GKRemoveFriendNetworkRequest *)self playerID];
-  [v3 setObject:v4 forKeyedSubscript:@"PlayerIDKey"];
+  playerID = [(GKRemoveFriendNetworkRequest *)self playerID];
+  [v3 setObject:playerID forKeyedSubscript:@"PlayerIDKey"];
 
-  v5 = [(GKRemoveFriendNetworkRequest *)self friendID];
-  [v3 setObject:v5 forKeyedSubscript:@"FriendPlayerIDKey"];
+  friendID = [(GKRemoveFriendNetworkRequest *)self friendID];
+  [v3 setObject:friendID forKeyedSubscript:@"FriendPlayerIDKey"];
 
-  v6 = [objc_opt_class() bagKey];
-  [v3 setObject:v6 forKeyedSubscript:@"BagKeyKey"];
+  bagKey = [objc_opt_class() bagKey];
+  [v3 setObject:bagKey forKeyedSubscript:@"BagKeyKey"];
 
-  v7 = [(GKRemoveFriendNetworkRequest *)self uuid];
-  [v3 setObject:v7 forKeyedSubscript:@"UUIDKey"];
+  uuid = [(GKRemoveFriendNetworkRequest *)self uuid];
+  [v3 setObject:uuid forKeyedSubscript:@"UUIDKey"];
 
   return v3;
 }
 
-- (void)updateWithTaskInfo:(id)a3
+- (void)updateWithTaskInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"UUIDKey"];
+  infoCopy = info;
+  v5 = [infoCopy objectForKeyedSubscript:@"UUIDKey"];
   [(GKRemoveFriendNetworkRequest *)self setUuid:v5];
 
-  v6 = [v4 objectForKeyedSubscript:@"FriendPlayerIDKey"];
+  v6 = [infoCopy objectForKeyedSubscript:@"FriendPlayerIDKey"];
   [(GKRemoveFriendNetworkRequest *)self setFriendID:v6];
 
-  v7 = [v4 objectForKeyedSubscript:@"PlayerIDKey"];
+  v7 = [infoCopy objectForKeyedSubscript:@"PlayerIDKey"];
 
   [(GKRemoveFriendNetworkRequest *)self setPlayerID:v7];
 }
 
 - (id)requestIdentifier
 {
-  v3 = [(GKRemoveFriendNetworkRequest *)self friendID];
-  v4 = [(GKRemoveFriendNetworkRequest *)self playerID];
-  v5 = [objc_opt_class() bagKey];
-  v6 = [NSString stringWithFormat:@"%@+%@+%@", v3, v4, v5];
+  friendID = [(GKRemoveFriendNetworkRequest *)self friendID];
+  playerID = [(GKRemoveFriendNetworkRequest *)self playerID];
+  bagKey = [objc_opt_class() bagKey];
+  v6 = [NSString stringWithFormat:@"%@+%@+%@", friendID, playerID, bagKey];
 
   return v6;
 }
@@ -104,21 +104,21 @@
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(GKRemoveFriendNetworkRequest *)self playerID];
-  v5 = [(GKRemoveFriendNetworkRequest *)self friendID];
-  v6 = [NSString stringWithFormat:@"%@: PlayerID: %@ FriendPlayerID: %@", v3, v4, v5];
+  playerID = [(GKRemoveFriendNetworkRequest *)self playerID];
+  friendID = [(GKRemoveFriendNetworkRequest *)self friendID];
+  v6 = [NSString stringWithFormat:@"%@: PlayerID: %@ FriendPlayerID: %@", v3, playerID, friendID];
 
   return v6;
 }
 
-- (BOOL)isDuplicateRequest:(id)a3
+- (BOOL)isDuplicateRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(GKRemoveFriendNetworkRequest *)self friendID];
-  v6 = [v4 friendID];
+  requestCopy = request;
+  friendID = [(GKRemoveFriendNetworkRequest *)self friendID];
+  friendID2 = [requestCopy friendID];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(requestCopy) = [friendID isEqualToString:friendID2];
+  return requestCopy;
 }
 
 @end

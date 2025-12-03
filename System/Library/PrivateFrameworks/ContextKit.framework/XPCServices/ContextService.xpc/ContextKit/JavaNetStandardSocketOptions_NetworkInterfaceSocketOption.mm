@@ -1,31 +1,31 @@
 @interface JavaNetStandardSocketOptions_NetworkInterfaceSocketOption
-- (JavaNetStandardSocketOptions_NetworkInterfaceSocketOption)initWithNSString:(id)a3 withInt:(int)a4;
-- (id)validateAndConvertValueAfterGetWithJavaIoFileDescriptor:(id)a3 withId:(id)a4;
-- (id)validateAndConvertValueBeforeSetWithJavaIoFileDescriptor:(id)a3 withId:(id)a4;
+- (JavaNetStandardSocketOptions_NetworkInterfaceSocketOption)initWithNSString:(id)string withInt:(int)int;
+- (id)validateAndConvertValueAfterGetWithJavaIoFileDescriptor:(id)descriptor withId:(id)id;
+- (id)validateAndConvertValueBeforeSetWithJavaIoFileDescriptor:(id)descriptor withId:(id)id;
 @end
 
 @implementation JavaNetStandardSocketOptions_NetworkInterfaceSocketOption
 
-- (JavaNetStandardSocketOptions_NetworkInterfaceSocketOption)initWithNSString:(id)a3 withInt:(int)a4
+- (JavaNetStandardSocketOptions_NetworkInterfaceSocketOption)initWithNSString:(id)string withInt:(int)int
 {
   v7 = JavaNetNetworkInterface_class_();
-  JreStrongAssign(&self->super.name_, a3);
+  JreStrongAssign(&self->super.name_, string);
   JreStrongAssign(&self->super.type_, v7);
-  self->super.socketOption_ = a4;
+  self->super.socketOption_ = int;
   return self;
 }
 
-- (id)validateAndConvertValueBeforeSetWithJavaIoFileDescriptor:(id)a3 withId:(id)a4
+- (id)validateAndConvertValueBeforeSetWithJavaIoFileDescriptor:(id)descriptor withId:(id)id
 {
-  if (!a4)
+  if (!id)
   {
     name = self->super.name_;
-    v10 = JreStrcat("$$$", a2, a3, 0, v4, v5, v6, v7, @"value for ");
+    v10 = JreStrcat("$$$", a2, descriptor, 0, v4, v5, v6, v7, @"value for ");
     goto LABEL_8;
   }
 
-  v8 = [a4 getIndex];
-  if (v8 == -1)
+  getIndex = [id getIndex];
+  if (getIndex == -1)
   {
     v10 = @"The NetworkInterface must have a valid index";
 LABEL_8:
@@ -33,12 +33,12 @@ LABEL_8:
     objc_exception_throw(v11);
   }
 
-  return JavaLangInteger_valueOfWithInt_(v8);
+  return JavaLangInteger_valueOfWithInt_(getIndex);
 }
 
-- (id)validateAndConvertValueAfterGetWithJavaIoFileDescriptor:(id)a3 withId:(id)a4
+- (id)validateAndConvertValueAfterGetWithJavaIoFileDescriptor:(id)descriptor withId:(id)id
 {
-  if (!a4)
+  if (!id)
   {
     return 0;
   }
@@ -58,7 +58,7 @@ LABEL_8:
     JreThrowClassCastException();
   }
 
-  return JavaNetNetworkInterface_getByIndexWithInt_([a4 intValue]);
+  return JavaNetNetworkInterface_getByIndexWithInt_([id intValue]);
 }
 
 @end

@@ -1,81 +1,81 @@
 @interface TSTTableDataList
-+ (Class)classForUnarchiver:(id)a3;
-+ (id)stringForListType:(int)a3;
++ (Class)classForUnarchiver:(id)unarchiver;
++ (id)stringForListType:(int)type;
 - (BOOL)containsControlCellSpecs;
 - (BOOL)containsFormulas;
 - (BOOL)containsRatingFormats;
 - (BOOL)repairStyleDatalistStylesheetIfNecessary;
-- (TSTTableDataList)initWithType:(int)a3 context:(id)a4;
+- (TSTTableDataList)initWithType:(int)type context:(id)context;
 - (id).cxx_construct;
 - (id)allRichTextStorages;
-- (id)cellFormatForKey:(unsigned int)a3;
-- (id)commentStorageForKey:(unsigned int)a3;
-- (id)conditionalStyleSetForKey:(unsigned int)a3;
-- (id)controlCellSpecForKey:(unsigned int)a3;
-- (id)copyWithContext:(id)a3;
-- (id)formulaErrorForKey:(unsigned int)a3;
-- (id)formulaForKey:(unsigned int)a3;
+- (id)cellFormatForKey:(unsigned int)key;
+- (id)commentStorageForKey:(unsigned int)key;
+- (id)conditionalStyleSetForKey:(unsigned int)key;
+- (id)controlCellSpecForKey:(unsigned int)key;
+- (id)copyWithContext:(id)context;
+- (id)formulaErrorForKey:(unsigned int)key;
+- (id)formulaForKey:(unsigned int)key;
 - (id)getRefCountsFromDataList;
-- (id)importWarningSetForKey:(unsigned int)a3;
+- (id)importWarningSetForKey:(unsigned int)key;
 - (id)listTypeString;
-- (id)multipleChoiceListFormatForKey:(unsigned int)a3;
-- (id)p_objectForPayload:(id)a3;
-- (id)p_setPayload:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5;
-- (id)reassignCustomFormatUIDForPaste:(id)a3;
-- (id)richTextForKey:(unsigned int)a3;
-- (id)stringForKey:(unsigned int)a3;
-- (id)stringForKey:(unsigned int)a3 outShouldWrap:(BOOL *)a4 outIsShared:(BOOL *)a5;
-- (id)styleForKey:(unsigned int)a3;
-- (id)wrappedObjectForPayload:(id)a3;
+- (id)multipleChoiceListFormatForKey:(unsigned int)key;
+- (id)p_objectForPayload:(id)payload;
+- (id)p_setPayload:(id)payload atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify;
+- (id)reassignCustomFormatUIDForPaste:(id)paste;
+- (id)richTextForKey:(unsigned int)key;
+- (id)stringForKey:(unsigned int)key;
+- (id)stringForKey:(unsigned int)key outShouldWrap:(BOOL *)wrap outIsShared:(BOOL *)shared;
+- (id)styleForKey:(unsigned int)key;
+- (id)wrappedObjectForPayload:(id)payload;
 - (unint64_t)archivingCompatibilityVersion;
 - (unint64_t)p_objectCount;
-- (unsigned)addCellFormat:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5;
-- (unsigned)addCommentStorage:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5;
-- (unsigned)addConditionalStyleSet:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5;
-- (unsigned)addControlCellSpec:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5;
-- (unsigned)addFormula:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5;
-- (unsigned)addFormulaError:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5;
-- (unsigned)addImportWarningSet:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5;
-- (unsigned)addMultipleChoiceListFormat:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5;
-- (unsigned)addRichText:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5;
-- (unsigned)addString:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5;
-- (unsigned)addStyle:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5;
+- (unsigned)addCellFormat:(id)format atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify;
+- (unsigned)addCommentStorage:(id)storage atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify;
+- (unsigned)addConditionalStyleSet:(id)set atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify;
+- (unsigned)addControlCellSpec:(id)spec atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify;
+- (unsigned)addFormula:(id)formula atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify;
+- (unsigned)addFormulaError:(id)error atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify;
+- (unsigned)addImportWarningSet:(id)set atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify;
+- (unsigned)addMultipleChoiceListFormat:(id)format atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify;
+- (unsigned)addRichText:(id)text atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify;
+- (unsigned)addString:(id)string atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify;
+- (unsigned)addStyle:(id)style atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify;
 - (unsigned)p_nextAvailableKey;
-- (unsigned)refCountForKey:(unsigned int)a3;
-- (void)dropReferences:(unsigned int)a3 forKey:(unsigned int)a4 callWillModify:(BOOL)a5;
-- (void)enumerateFormatsUsingBlock:(id)a3;
-- (void)enumerateKeysAndCountsUsingBlock:(id)a3;
-- (void)enumerateLegacyCustomFormatsUsingBlock:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
+- (unsigned)refCountForKey:(unsigned int)key;
+- (void)dropReferences:(unsigned int)references forKey:(unsigned int)key callWillModify:(BOOL)modify;
+- (void)enumerateFormatsUsingBlock:(id)block;
+- (void)enumerateKeysAndCountsUsingBlock:(id)block;
+- (void)enumerateLegacyCustomFormatsUsingBlock:(id)block;
+- (void)loadFromUnarchiver:(id)unarchiver;
 - (void)p_addInitialSegment;
-- (void)p_clearReverseMapForObject:(id)a3 atKey:(unsigned int)a4;
-- (void)p_replaceCustomFormatsWithBlock:(id)a3;
-- (void)p_replaceObjectAtKey:(unsigned int)a3 withObject:(id)a4;
-- (void)p_setObject:(id)a3 atKey:(unsigned int)a4 updateReverseMap:(BOOL)a5;
-- (void)p_setupWithType:(int)a3 nextKeyID:(unsigned int)a4;
-- (void)removeObjectForKey:(unsigned int)a3;
-- (void)replaceCommentStoragesUsingBlock:(id)a3;
-- (void)replaceConditionalStyleSetsUsingBlock:(id)a3;
-- (void)replaceFormatsUsingBlock:(id)a3;
-- (void)replaceFormulaErrorsUsingBlock:(id)a3;
-- (void)replaceFormulasUsingBlock:(id)a3;
-- (void)replaceRichTextUsingBlock:(id)a3;
-- (void)replaceStylesUsingBlock:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setIsNewForBraveNewCell:(BOOL)a3;
-- (void)setRichTextParentInfo:(id)a3;
-- (void)takeReferences:(unsigned int)a3 forKey:(unsigned int)a4 callWillModify:(BOOL)a5;
-- (void)updateCustomFormatsAtKey:(id)a3;
+- (void)p_clearReverseMapForObject:(id)object atKey:(unsigned int)key;
+- (void)p_replaceCustomFormatsWithBlock:(id)block;
+- (void)p_replaceObjectAtKey:(unsigned int)key withObject:(id)object;
+- (void)p_setObject:(id)object atKey:(unsigned int)key updateReverseMap:(BOOL)map;
+- (void)p_setupWithType:(int)type nextKeyID:(unsigned int)d;
+- (void)removeObjectForKey:(unsigned int)key;
+- (void)replaceCommentStoragesUsingBlock:(id)block;
+- (void)replaceConditionalStyleSetsUsingBlock:(id)block;
+- (void)replaceFormatsUsingBlock:(id)block;
+- (void)replaceFormulaErrorsUsingBlock:(id)block;
+- (void)replaceFormulasUsingBlock:(id)block;
+- (void)replaceRichTextUsingBlock:(id)block;
+- (void)replaceStylesUsingBlock:(id)block;
+- (void)saveToArchiver:(id)archiver;
+- (void)setIsNewForBraveNewCell:(BOOL)cell;
+- (void)setRichTextParentInfo:(id)info;
+- (void)takeReferences:(unsigned int)references forKey:(unsigned int)key callWillModify:(BOOL)modify;
+- (void)updateCustomFormatsAtKey:(id)key;
 - (void)upgradeCellFormatsU2_0;
-- (void)upgradeConditionalStylesToLinkedRefWithTableUID:(const TSKUIDStruct *)a3;
+- (void)upgradeConditionalStylesToLinkedRefWithTableUID:(const TSKUIDStruct *)d;
 @end
 
 @implementation TSTTableDataList
 
-- (void)setRichTextParentInfo:(id)a3
+- (void)setRichTextParentInfo:(id)info
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   if (objc_msgSend_listType(self, v5, v6, v7, v8) != 8)
   {
     v13 = MEMORY[0x277D81150];
@@ -86,9 +86,9 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
   }
 
-  if (self->_richTextParentInfo != v4)
+  if (self->_richTextParentInfo != infoCopy)
   {
-    self->_richTextParentInfo = v4;
+    self->_richTextParentInfo = infoCopy;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
@@ -120,12 +120,12 @@
   }
 }
 
-- (void)setIsNewForBraveNewCell:(BOOL)a3
+- (void)setIsNewForBraveNewCell:(BOOL)cell
 {
-  if (self->_isNewForBraveNewCell != a3)
+  if (self->_isNewForBraveNewCell != cell)
   {
-    objc_msgSend_willModify(self, a2, a3, v3, v4);
-    self->_isNewForBraveNewCell = a3;
+    objc_msgSend_willModify(self, a2, cell, v3, v4);
+    self->_isNewForBraveNewCell = cell;
   }
 }
 
@@ -143,10 +143,10 @@
   self->_cachedSegment = v16;
 }
 
-- (void)p_setupWithType:(int)a3 nextKeyID:(unsigned int)a4
+- (void)p_setupWithType:(int)type nextKeyID:(unsigned int)d
 {
-  self->_listType = a3;
-  self->_nextID = a4;
+  self->_listType = type;
+  self->_nextID = d;
   v6 = objc_msgSend_indexSetWithIndexesInRange_(MEMORY[0x277CCAB58], a2, 1, 0xFFFFFFFFLL, v4);
   unusedKeySet = self->_unusedKeySet;
   self->_unusedKeySet = v6;
@@ -158,13 +158,13 @@
   self->_useReverseMap = objc_msgSend_p_shouldUseReverseMap(self, v14, v15, v16, v17);
 }
 
-- (TSTTableDataList)initWithType:(int)a3 context:(id)a4
+- (TSTTableDataList)initWithType:(int)type context:(id)context
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&type;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = TSTTableDataList;
-  v7 = [(TSTTableDataList *)&v16 initWithContext:v6];
+  v7 = [(TSTTableDataList *)&v16 initWithContext:contextCopy];
   v10 = v7;
   if (v7)
   {
@@ -175,29 +175,29 @@
   return v10;
 }
 
-+ (Class)classForUnarchiver:(id)a3
++ (Class)classForUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v8 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812E4498[38], v6, v7);
+  v8 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812E4498[38], v6, v7);
 
   if (*(v8 + 80) == 6)
   {
-    a1 = objc_opt_class();
+    self = objc_opt_class();
   }
 
-  v9 = a1;
+  selfCopy = self;
 
-  return a1;
+  return self;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v8 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812E4498[38], v6, v7);
+  v8 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812E4498[38], v6, v7);
 
-  if (objc_msgSend_fileFormatVersion(v4, v9, v10, v11, v12) <= 0x4000100000005)
+  if (objc_msgSend_fileFormatVersion(unarchiverCopy, v9, v10, v11, v12) <= 0x4000100000005)
   {
     objc_msgSend_willModifyForUpgrade(self, v13, v14, v15, v16);
   }
@@ -208,7 +208,7 @@
     self->_isNewForBraveNewCell = *(v8 + 76);
   }
 
-  else if (objc_msgSend_fileFormatVersion(v4, v17, v18, v19, v20) <= 0xC000200000000 && objc_msgSend_messageVersion(v4, v21, v22, v23, v24) == 0x300020000000ALL)
+  else if (objc_msgSend_fileFormatVersion(unarchiverCopy, v17, v18, v19, v20) <= 0xC000200000000 && objc_msgSend_messageVersion(unarchiverCopy, v21, v22, v23, v24) == 0x300020000000ALL)
   {
     listType = self->_listType;
     if (listType == 12 || listType == 2)
@@ -225,7 +225,7 @@
     v46 = objc_msgSend_context(self, v42, v43, v44, v45);
     v48 = objc_msgSend_initWithType_keyRange_context_(v40, v47, v41, 1, 4294967294, v46);
 
-    objc_msgSend_loadObjectsFromDataListArchive_unarchiver_(v48, v49, v8, v4, v50);
+    objc_msgSend_loadObjectsFromDataListArchive_unarchiver_(v48, v49, v8, unarchiverCopy, v50);
     v54 = objc_msgSend_arrayWithObject_(MEMORY[0x277CBEB18], v51, v48, v52, v53);
     segments = self->_segments;
     self->_segments = v54;
@@ -240,16 +240,16 @@
     v68[2] = sub_2211708CC;
     v68[3] = &unk_27845D8D8;
     v68[4] = self;
-    v33 = v4;
+    v33 = unarchiverCopy;
     v34 = objc_opt_class();
     objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v33, v35, v8 + 48, v34, 0, v68);
   }
 
   if (self->_listType == 2)
   {
-    v56 = objc_msgSend_fileFormatVersion(v4, v36, v37, v38, v39);
+    v56 = objc_msgSend_fileFormatVersion(unarchiverCopy, v36, v37, v38, v39);
     v57 = UnsafePointer();
-    v62 = objc_msgSend_isFromCopy(v4, v58, v59, v60, v61);
+    v62 = objc_msgSend_isFromCopy(unarchiverCopy, v58, v59, v60, v61);
     v63 = v56 < v57;
     v64 = v62 ^ 1;
   }
@@ -267,18 +267,18 @@
   v65[4] = self;
   v66 = v64;
   v67 = v63;
-  objc_msgSend_addFinalizeHandler_(v4, v36, v65, v38, v39);
+  objc_msgSend_addFinalizeHandler_(unarchiverCopy, v36, v65, v38, v39);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   if (objc_msgSend_isNewForBraveNewCell(self, v5, v6, v7, v8))
   {
-    objc_msgSend_setMessageVersion_(v4, v9, 0x300020000000ALL, v10, v11);
+    objc_msgSend_setMessageVersion_(archiverCopy, v9, 0x300020000000ALL, v10, v11);
   }
 
-  v36 = v4;
+  v36 = archiverCopy;
   google::protobuf::internal::AssignDescriptors();
   v14 = objc_msgSend_messageWithNewFunction_descriptor_(v36, v12, sub_2211778D4, off_2812E4498[38], v13);
 
@@ -327,18 +327,18 @@
   }
 }
 
-- (void)p_setObject:(id)a3 atKey:(unsigned int)a4 updateReverseMap:(BOOL)a5
+- (void)p_setObject:(id)object atKey:(unsigned int)key updateReverseMap:(BOOL)map
 {
-  v5 = a5;
-  v6 = *&a4;
-  v27 = a3;
+  mapCopy = map;
+  v6 = *&key;
+  objectCopy = object;
   cachedSegment = self->_cachedSegment;
   if (!cachedSegment)
   {
-    cachedSegment = sub_221171338(self, a4);
+    cachedSegment = sub_221171338(self, key);
   }
 
-  objc_msgSend_setObject_atIndexedSubscript_(cachedSegment, a2, a3, v6, a5);
+  objc_msgSend_setObject_atIndexedSubscript_(cachedSegment, a2, object, v6, map);
   if (objc_msgSend_shouldSplit(cachedSegment, v10, v11, v12, v13))
   {
     v21 = objc_msgSend_split(cachedSegment, v14, v15, v16, v17);
@@ -350,10 +350,10 @@
     }
   }
 
-  if (v5 && self->_useReverseMap)
+  if (mapCopy && self->_useReverseMap)
   {
-    v26 = objc_msgSend_payload(a3, v14, v15, v16, v17);
-    sub_221177940(&self->_payloadToObjectMap.__table_.__bucket_list_.__ptr_, &v26, &v26, &v27, v25);
+    v26 = objc_msgSend_payload(object, v14, v15, v16, v17);
+    sub_221177940(&self->_payloadToObjectMap.__table_.__bucket_list_.__ptr_, &v26, &v26, &objectCopy, v25);
   }
 
   objc_msgSend_removeIndex_(self->_unusedKeySet, v14, v6, v16, v17);
@@ -363,14 +363,14 @@
   }
 }
 
-- (void)p_clearReverseMapForObject:(id)a3 atKey:(unsigned int)a4
+- (void)p_clearReverseMapForObject:(id)object atKey:(unsigned int)key
 {
-  v15 = objc_msgSend_payload(a3, a2, a3, *&a4, v4);
+  v15 = objc_msgSend_payload(object, a2, object, *&key, v4);
   v10 = sub_221177BBC(&self->_payloadToObjectMap.__table_.__bucket_list_.__ptr_, &v15, v7, v8, v9);
 
   if (v10)
   {
-    if (objc_msgSend_key(v10[3], v11, v12, v13, v14) == a4)
+    if (objc_msgSend_key(v10[3], v11, v12, v13, v14) == key)
     {
       sub_221177CB8(&self->_payloadToObjectMap.__table_.__bucket_list_.__ptr_, v10);
     }
@@ -440,9 +440,9 @@
   }
 }
 
-- (id)wrappedObjectForPayload:(id)a3
+- (id)wrappedObjectForPayload:(id)payload
 {
-  v7 = objc_msgSend_listType(self, a2, a3, v3, v4);
+  v7 = objc_msgSend_listType(self, a2, payload, v3, v4);
   if (v7 > 6)
   {
     if (v7 > 9)
@@ -631,7 +631,7 @@ LABEL_42:
   v74 = MEMORY[0x277D81150];
   v75 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSTTableDataList wrappedObjectForPayload:]", v9, v10);
   v83 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v76, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTTableDataList.mm", v77, v78);
-  if (a3)
+  if (payload)
   {
     v84 = objc_opt_class();
     v85 = NSStringFromClass(v84);
@@ -645,7 +645,7 @@ LABEL_42:
   v86 = objc_msgSend_listTypeString(self, v79, v80, v81, v82);
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v74, v87, v75, v83, 518, 0, "Nil object for %{public}@ payload in %{public}@ datalist!", v85, v86);
 
-  if (a3)
+  if (payload)
   {
   }
 
@@ -656,12 +656,12 @@ LABEL_48:
   return v67;
 }
 
-- (id)p_objectForPayload:(id)a3
+- (id)p_objectForPayload:(id)payload
 {
-  v7 = a3;
+  payloadCopy = payload;
   if (self->_useReverseMap)
   {
-    v5 = sub_221177BBC(&self->_payloadToObjectMap.__table_.__bucket_list_.__ptr_, &v7, a3, v3, v4);
+    v5 = sub_221177BBC(&self->_payloadToObjectMap.__table_.__bucket_list_.__ptr_, &payloadCopy, payload, v3, v4);
     if (v5)
     {
       v5 = v5[3];
@@ -676,11 +676,11 @@ LABEL_48:
   return v5;
 }
 
-- (id)p_setPayload:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5
+- (id)p_setPayload:(id)payload atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify
 {
-  v5 = a5;
-  AvailableKey = *&a4;
-  v9 = objc_msgSend_p_objectForPayload_(self, a2, a3, *&a4, a5);
+  modifyCopy = modify;
+  AvailableKey = *&key;
+  v9 = objc_msgSend_p_objectForPayload_(self, a2, payload, *&key, modify);
   v14 = v9;
   if (v9)
   {
@@ -708,7 +708,7 @@ LABEL_48:
       v14 = sub_221172150(self, AvailableKey, v11, v12, v13);
 
       v21 = objc_msgSend_payload(v14, v17, v18, v19, v20);
-      IsEqual = objc_msgSend_tst_dataObjectIsEqual_(a3, v22, v21, v23, v24);
+      IsEqual = objc_msgSend_tst_dataObjectIsEqual_(payload, v22, v21, v23, v24);
 
       if (IsEqual)
       {
@@ -722,14 +722,14 @@ LABEL_48:
 LABEL_11:
   v16 = 1;
 LABEL_12:
-  if (v5)
+  if (modifyCopy)
   {
     objc_msgSend_willModify(self, v10, v11, v12, v13);
   }
 
   if (v16)
   {
-    v14 = objc_msgSend_wrappedObjectForPayload_(self, v10, a3, v12, v13);
+    v14 = objc_msgSend_wrappedObjectForPayload_(self, v10, payload, v12, v13);
     objc_msgSend_p_setObject_atKey_updateReverseMap_(self, v26, v14, AvailableKey, 1);
   }
 
@@ -752,12 +752,12 @@ LABEL_12:
   return v14;
 }
 
-- (void)p_replaceObjectAtKey:(unsigned int)a3 withObject:(id)a4
+- (void)p_replaceObjectAtKey:(unsigned int)key withObject:(id)object
 {
-  v6 = *&a3;
-  objc_msgSend_removeObjectForKey_(self, a2, *&a3, a4, v4);
-  v23 = objc_msgSend_payload(a4, v8, v9, v10, v11);
-  v16 = objc_msgSend_refCount(a4, v12, v13, v14, v15);
+  v6 = *&key;
+  objc_msgSend_removeObjectForKey_(self, a2, *&key, object, v4);
+  v23 = objc_msgSend_payload(object, v8, v9, v10, v11);
+  v16 = objc_msgSend_refCount(object, v12, v13, v14, v15);
   v18 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, v17, v23, v6, 1);
   v22 = v18;
   if (v16 >= 2)
@@ -766,10 +766,10 @@ LABEL_12:
   }
 }
 
-- (void)removeObjectForKey:(unsigned int)a3
+- (void)removeObjectForKey:(unsigned int)key
 {
-  v5 = *&a3;
-  v27 = sub_221172150(self, *&a3, *&a3, v3, v4);
+  v5 = *&key;
+  v27 = sub_221172150(self, *&key, *&key, v3, v4);
   if (v27)
   {
     objc_msgSend_willModify(self, v7, v8, v9, v10);
@@ -797,10 +797,10 @@ LABEL_12:
   }
 }
 
-- (void)enumerateFormatsUsingBlock:(id)a3
+- (void)enumerateFormatsUsingBlock:(id)block
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  blockCopy = block;
   if (self->_listType == 2)
   {
     v36 = 0;
@@ -830,7 +830,7 @@ LABEL_4:
         v29[1] = 3221225472;
         v29[2] = sub_22117272C;
         v29[3] = &unk_27845FF90;
-        v30 = v7;
+        v30 = blockCopy;
         v31 = &v36;
         objc_msgSend_enumerateObjectsWithBlock_(v13, v14, v29, v15, v16);
         LOBYTE(v13) = *(v37 + 24);
@@ -867,10 +867,10 @@ LABEL_4:
   }
 }
 
-- (void)enumerateLegacyCustomFormatsUsingBlock:(id)a3
+- (void)enumerateLegacyCustomFormatsUsingBlock:(id)block
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  blockCopy = block;
   if (self->_listType == 6)
   {
     v36 = 0;
@@ -900,7 +900,7 @@ LABEL_4:
         v29[1] = 3221225472;
         v29[2] = sub_221172A90;
         v29[3] = &unk_27845FF90;
-        v30 = v7;
+        v30 = blockCopy;
         v31 = &v36;
         objc_msgSend_enumerateObjectsWithBlock_(v13, v14, v29, v15, v16);
         LOBYTE(v13) = *(v37 + 24);
@@ -937,10 +937,10 @@ LABEL_4:
   }
 }
 
-- (void)enumerateKeysAndCountsUsingBlock:(id)a3
+- (void)enumerateKeysAndCountsUsingBlock:(id)block
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -968,7 +968,7 @@ LABEL_3:
       v15[1] = 3221225472;
       v15[2] = sub_221172D50;
       v15[3] = &unk_27845FF90;
-      v16 = v4;
+      v16 = blockCopy;
       v17 = &v22;
       objc_msgSend_enumerateObjectsWithBlock_(v10, v11, v15, v12, v13);
       LOBYTE(v10) = *(v23 + 24);
@@ -994,9 +994,9 @@ LABEL_3:
   _Block_object_dispose(&v22, 8);
 }
 
-- (void)replaceFormulasUsingBlock:(id)a3
+- (void)replaceFormulasUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_listType != 3)
   {
     TSUSetCrashReporterInfo();
@@ -1017,7 +1017,7 @@ LABEL_3:
   v16[1] = 3221225472;
   v16[2] = sub_221172FB8;
   v16[3] = &unk_27845FFB8;
-  v5 = v4;
+  v5 = blockCopy;
   v17 = v5;
   v18 = v19;
   v16[4] = self;
@@ -1026,9 +1026,9 @@ LABEL_3:
   _Block_object_dispose(v19, 8);
 }
 
-- (void)replaceConditionalStyleSetsUsingBlock:(id)a3
+- (void)replaceConditionalStyleSetsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_listType != 9)
   {
     TSUSetCrashReporterInfo();
@@ -1050,7 +1050,7 @@ LABEL_3:
   v17[1] = 3221225472;
   v17[2] = sub_221173404;
   v17[3] = &unk_27845FFE0;
-  v6 = v4;
+  v6 = blockCopy;
   v18 = v6;
   v19 = v21;
   v17[4] = self;
@@ -1060,9 +1060,9 @@ LABEL_3:
   _Block_object_dispose(v21, 8);
 }
 
-- (void)replaceCommentStoragesUsingBlock:(id)a3
+- (void)replaceCommentStoragesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_listType != 10)
   {
     TSUSetCrashReporterInfo();
@@ -1083,7 +1083,7 @@ LABEL_3:
   v16[1] = 3221225472;
   v16[2] = sub_221173750;
   v16[3] = &unk_27845FFB8;
-  v5 = v4;
+  v5 = blockCopy;
   v17 = v5;
   v18 = v19;
   v16[4] = self;
@@ -1092,9 +1092,9 @@ LABEL_3:
   _Block_object_dispose(v19, 8);
 }
 
-- (void)replaceStylesUsingBlock:(id)a3
+- (void)replaceStylesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_listType != 4)
   {
     TSUSetCrashReporterInfo();
@@ -1115,7 +1115,7 @@ LABEL_3:
   v16[1] = 3221225472;
   v16[2] = sub_221173A80;
   v16[3] = &unk_27845FFB8;
-  v5 = v4;
+  v5 = blockCopy;
   v17 = v5;
   v18 = v19;
   v16[4] = self;
@@ -1124,9 +1124,9 @@ LABEL_3:
   _Block_object_dispose(v19, 8);
 }
 
-- (void)replaceFormulaErrorsUsingBlock:(id)a3
+- (void)replaceFormulaErrorsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_listType != 5)
   {
     TSUSetCrashReporterInfo();
@@ -1147,7 +1147,7 @@ LABEL_3:
   v16[1] = 3221225472;
   v16[2] = sub_221173DB4;
   v16[3] = &unk_27845FFB8;
-  v5 = v4;
+  v5 = blockCopy;
   v17 = v5;
   v18 = v19;
   v16[4] = self;
@@ -1156,9 +1156,9 @@ LABEL_3:
   _Block_object_dispose(v19, 8);
 }
 
-- (void)replaceRichTextUsingBlock:(id)a3
+- (void)replaceRichTextUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_listType != 8)
   {
     TSUSetCrashReporterInfo();
@@ -1179,7 +1179,7 @@ LABEL_3:
   v16[1] = 3221225472;
   v16[2] = sub_2211740E8;
   v16[3] = &unk_27845FFB8;
-  v5 = v4;
+  v5 = blockCopy;
   v17 = v5;
   v18 = v19;
   v16[4] = self;
@@ -1188,9 +1188,9 @@ LABEL_3:
   _Block_object_dispose(v19, 8);
 }
 
-- (void)replaceFormatsUsingBlock:(id)a3
+- (void)replaceFormatsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self->_listType != 2)
   {
     TSUSetCrashReporterInfo();
@@ -1211,7 +1211,7 @@ LABEL_3:
   v16[1] = 3221225472;
   v16[2] = sub_221174444;
   v16[3] = &unk_27845FFB8;
-  v5 = v4;
+  v5 = blockCopy;
   v17 = v5;
   v18 = v19;
   v16[4] = self;
@@ -1243,7 +1243,7 @@ LABEL_3:
     v15[2] = sub_221174788;
     v15[3] = &unk_278460008;
     v16 = v12;
-    v17 = self;
+    selfCopy = self;
     v20 = useReverseMap;
     v18 = v21;
     v19 = &v23;
@@ -1258,9 +1258,9 @@ LABEL_3:
   return v13;
 }
 
-- (unsigned)refCountForKey:(unsigned int)a3
+- (unsigned)refCountForKey:(unsigned int)key
 {
-  v5 = sub_221172150(self, *&a3, *&a3, v3, v4);
+  v5 = sub_221172150(self, *&key, *&key, v3, v4);
   if (v5)
   {
 
@@ -1270,12 +1270,12 @@ LABEL_3:
   return v5;
 }
 
-- (void)takeReferences:(unsigned int)a3 forKey:(unsigned int)a4 callWillModify:(BOOL)a5
+- (void)takeReferences:(unsigned int)references forKey:(unsigned int)key callWillModify:(BOOL)modify
 {
-  v5 = a5;
-  v6 = *&a4;
-  v7 = *&a3;
-  v9 = sub_221172150(self, *&a4, *&a3, *&a4, a5);
+  modifyCopy = modify;
+  v6 = *&key;
+  v7 = *&references;
+  v9 = sub_221172150(self, *&key, *&references, *&key, modify);
   if (v9)
   {
     v13 = v9;
@@ -1290,7 +1290,7 @@ LABEL_3:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
     }
 
-    if (v5)
+    if (modifyCopy)
     {
       objc_msgSend_willModify(self, v14, v15, v16, v17);
     }
@@ -1312,11 +1312,11 @@ LABEL_3:
   }
 }
 
-- (void)dropReferences:(unsigned int)a3 forKey:(unsigned int)a4 callWillModify:(BOOL)a5
+- (void)dropReferences:(unsigned int)references forKey:(unsigned int)key callWillModify:(BOOL)modify
 {
-  v5 = *&a4;
-  v6 = *&a3;
-  v8 = sub_221172150(self, *&a4, *&a3, *&a4, a5);
+  v5 = *&key;
+  v6 = *&references;
+  v8 = sub_221172150(self, *&key, *&references, *&key, modify);
   if (v8)
   {
     v13 = v8;
@@ -1345,16 +1345,16 @@ LABEL_3:
   }
 }
 
-+ (id)stringForListType:(int)a3
++ (id)stringForListType:(int)type
 {
-  if ((a3 - 1) > 0xB)
+  if ((type - 1) > 0xB)
   {
     return 0;
   }
 
   else
   {
-    return off_278460160[a3 - 1];
+    return off_278460160[type - 1];
   }
 }
 
@@ -1366,12 +1366,12 @@ LABEL_3:
   return MEMORY[0x2821F9670](v3, sel_stringForListType_, listType, v4, v5);
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc(objc_opt_class());
-  v9 = objc_msgSend_initWithContext_(v5, v6, v4, v7, v8);
+  v9 = objc_msgSend_initWithContext_(v5, v6, contextCopy, v7, v8);
   objc_msgSend_p_setupWithType_nextKeyID_(v9, v10, self->_listType, self->_nextID, v11);
   v36 = 0u;
   v37 = 0u;
@@ -1392,7 +1392,7 @@ LABEL_3:
         }
 
         v20 = *(v9 + 64);
-        v21 = objc_msgSend_copyWithContext_(*(*(&v34 + 1) + 8 * i), v14, v4, v15, v16);
+        v21 = objc_msgSend_copyWithContext_(*(*(&v34 + 1) + 8 * i), v14, contextCopy, v15, v16);
         objc_msgSend_addObject_(v20, v22, v21, v23, v24);
       }
 
@@ -1509,23 +1509,23 @@ LABEL_3:
   return v20;
 }
 
-- (void)p_replaceCustomFormatsWithBlock:(id)a3
+- (void)p_replaceCustomFormatsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (objc_msgSend_mightHaveCustomFormats(self, v5, v6, v7, v8))
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = sub_2211759C0;
     v12[3] = &unk_278460080;
-    v13 = v4;
+    v13 = blockCopy;
     objc_msgSend_replaceFormatsUsingBlock_(self, v9, v12, v10, v11);
   }
 }
 
-- (void)updateCustomFormatsAtKey:(id)a3
+- (void)updateCustomFormatsAtKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v9 = objc_msgSend_documentRoot(self, v5, v6, v7, v8);
   v14 = objc_msgSend_customFormatList(v9, v10, v11, v12, v13);
 
@@ -1533,103 +1533,103 @@ LABEL_3:
   v20[1] = 3221225472;
   v20[2] = sub_221175B68;
   v20[3] = &unk_2784600A8;
-  v15 = v4;
+  v15 = keyCopy;
   v21 = v15;
   v22 = v14;
   v16 = v14;
   objc_msgSend_p_replaceCustomFormatsWithBlock_(self, v17, v20, v18, v19);
 }
 
-- (unsigned)addCellFormat:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5
+- (unsigned)addCellFormat:(id)format atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify
 {
-  v5 = a5;
-  v6 = *&a4;
-  v9 = objc_msgSend_asCustomFormatWrapper(a3, a2, a3, *&a4, a5);
+  modifyCopy = modify;
+  v6 = *&key;
+  v9 = objc_msgSend_asCustomFormatWrapper(format, a2, format, *&key, modify);
 
   if (v9)
   {
     self->_mightHaveCustomFormats = 1;
   }
 
-  v11 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, v10, a3, v6, v5);
+  v11 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, v10, format, v6, modifyCopy);
 
   return objc_msgSend_key(v11, v12, v13, v14, v15);
 }
 
-- (unsigned)addCommentStorage:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5
+- (unsigned)addCommentStorage:(id)storage atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify
 {
-  v5 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, a2, a3, *&a4, a5);
+  v5 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, a2, storage, *&key, modify);
 
   return objc_msgSend_key(v5, v6, v7, v8, v9);
 }
 
-- (unsigned)addConditionalStyleSet:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5
+- (unsigned)addConditionalStyleSet:(id)set atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify
 {
-  v5 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, a2, a3, *&a4, a5);
+  v5 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, a2, set, *&key, modify);
 
   return objc_msgSend_key(v5, v6, v7, v8, v9);
 }
 
-- (unsigned)addFormula:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5
+- (unsigned)addFormula:(id)formula atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify
 {
-  v5 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, a2, a3, *&a4, a5);
+  v5 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, a2, formula, *&key, modify);
 
   return objc_msgSend_key(v5, v6, v7, v8, v9);
 }
 
-- (unsigned)addControlCellSpec:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5
+- (unsigned)addControlCellSpec:(id)spec atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify
 {
-  v5 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, a2, a3, *&a4, a5);
+  v5 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, a2, spec, *&key, modify);
 
   return objc_msgSend_key(v5, v6, v7, v8, v9);
 }
 
-- (unsigned)addFormulaError:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5
+- (unsigned)addFormulaError:(id)error atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify
 {
-  v5 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, a2, a3, *&a4, a5);
+  v5 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, a2, error, *&key, modify);
 
   return objc_msgSend_key(v5, v6, v7, v8, v9);
 }
 
-- (unsigned)addImportWarningSet:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5
+- (unsigned)addImportWarningSet:(id)set atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify
 {
-  v5 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, a2, a3, *&a4, a5);
+  v5 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, a2, set, *&key, modify);
 
   return objc_msgSend_key(v5, v6, v7, v8, v9);
 }
 
-- (unsigned)addMultipleChoiceListFormat:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5
+- (unsigned)addMultipleChoiceListFormat:(id)format atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify
 {
-  v5 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, a2, a3, *&a4, a5);
+  v5 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, a2, format, *&key, modify);
 
   return objc_msgSend_key(v5, v6, v7, v8, v9);
 }
 
-- (unsigned)addRichText:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5
+- (unsigned)addRichText:(id)text atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify
 {
-  v5 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, a2, a3, *&a4, a5);
+  v5 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, a2, text, *&key, modify);
 
   return objc_msgSend_key(v5, v6, v7, v8, v9);
 }
 
-- (unsigned)addString:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5
+- (unsigned)addString:(id)string atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify
 {
-  v5 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, a2, a3, *&a4, a5);
+  v5 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, a2, string, *&key, modify);
 
   return objc_msgSend_key(v5, v6, v7, v8, v9);
 }
 
-- (unsigned)addStyle:(id)a3 atSuggestedKey:(unsigned int)a4 callWillModify:(BOOL)a5
+- (unsigned)addStyle:(id)style atSuggestedKey:(unsigned int)key callWillModify:(BOOL)modify
 {
-  v5 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, a2, a3, *&a4, a5);
+  v5 = objc_msgSend_p_setPayload_atSuggestedKey_callWillModify_(self, a2, style, *&key, modify);
 
   return objc_msgSend_key(v5, v6, v7, v8, v9);
 }
 
-- (id)cellFormatForKey:(unsigned int)a3
+- (id)cellFormatForKey:(unsigned int)key
 {
-  v5 = *&a3;
-  if (objc_msgSend_listType(self, a2, *&a3, v3, v4) != 2)
+  v5 = *&key;
+  if (objc_msgSend_listType(self, a2, *&key, v3, v4) != 2)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSTTableDataList(Type_Specific_API) cellFormatForKey:]", v8, v9);
@@ -1646,10 +1646,10 @@ LABEL_3:
   return v25;
 }
 
-- (id)commentStorageForKey:(unsigned int)a3
+- (id)commentStorageForKey:(unsigned int)key
 {
-  v5 = *&a3;
-  if (objc_msgSend_listType(self, a2, *&a3, v3, v4) != 10)
+  v5 = *&key;
+  if (objc_msgSend_listType(self, a2, *&key, v3, v4) != 10)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSTTableDataList(Type_Specific_API) commentStorageForKey:]", v9, v10);
@@ -1665,10 +1665,10 @@ LABEL_3:
   return v27;
 }
 
-- (id)conditionalStyleSetForKey:(unsigned int)a3
+- (id)conditionalStyleSetForKey:(unsigned int)key
 {
-  v5 = *&a3;
-  if (objc_msgSend_listType(self, a2, *&a3, v3, v4) != 9)
+  v5 = *&key;
+  if (objc_msgSend_listType(self, a2, *&key, v3, v4) != 9)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSTTableDataList(Type_Specific_API) conditionalStyleSetForKey:]", v9, v10);
@@ -1684,10 +1684,10 @@ LABEL_3:
   return v27;
 }
 
-- (id)formulaForKey:(unsigned int)a3
+- (id)formulaForKey:(unsigned int)key
 {
-  v5 = *&a3;
-  if (objc_msgSend_listType(self, a2, *&a3, v3, v4) != 3)
+  v5 = *&key;
+  if (objc_msgSend_listType(self, a2, *&key, v3, v4) != 3)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSTTableDataList(Type_Specific_API) formulaForKey:]", v9, v10);
@@ -1703,10 +1703,10 @@ LABEL_3:
   return v27;
 }
 
-- (id)controlCellSpecForKey:(unsigned int)a3
+- (id)controlCellSpecForKey:(unsigned int)key
 {
-  v5 = *&a3;
-  if (objc_msgSend_listType(self, a2, *&a3, v3, v4) != 12)
+  v5 = *&key;
+  if (objc_msgSend_listType(self, a2, *&key, v3, v4) != 12)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSTTableDataList(Type_Specific_API) controlCellSpecForKey:]", v9, v10);
@@ -1722,10 +1722,10 @@ LABEL_3:
   return v27;
 }
 
-- (id)formulaErrorForKey:(unsigned int)a3
+- (id)formulaErrorForKey:(unsigned int)key
 {
-  v5 = *&a3;
-  if (objc_msgSend_listType(self, a2, *&a3, v3, v4) != 5)
+  v5 = *&key;
+  if (objc_msgSend_listType(self, a2, *&key, v3, v4) != 5)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSTTableDataList(Type_Specific_API) formulaErrorForKey:]", v9, v10);
@@ -1741,10 +1741,10 @@ LABEL_3:
   return v27;
 }
 
-- (id)importWarningSetForKey:(unsigned int)a3
+- (id)importWarningSetForKey:(unsigned int)key
 {
-  v5 = *&a3;
-  if (objc_msgSend_listType(self, a2, *&a3, v3, v4) != 11)
+  v5 = *&key;
+  if (objc_msgSend_listType(self, a2, *&key, v3, v4) != 11)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSTTableDataList(Type_Specific_API) importWarningSetForKey:]", v9, v10);
@@ -1760,10 +1760,10 @@ LABEL_3:
   return v27;
 }
 
-- (id)multipleChoiceListFormatForKey:(unsigned int)a3
+- (id)multipleChoiceListFormatForKey:(unsigned int)key
 {
-  v5 = *&a3;
-  if (objc_msgSend_listType(self, a2, *&a3, v3, v4) != 7)
+  v5 = *&key;
+  if (objc_msgSend_listType(self, a2, *&key, v3, v4) != 7)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSTTableDataList(Type_Specific_API) multipleChoiceListFormatForKey:]", v9, v10);
@@ -1779,10 +1779,10 @@ LABEL_3:
   return v27;
 }
 
-- (id)richTextForKey:(unsigned int)a3
+- (id)richTextForKey:(unsigned int)key
 {
-  v5 = *&a3;
-  if (objc_msgSend_listType(self, a2, *&a3, v3, v4) != 8)
+  v5 = *&key;
+  if (objc_msgSend_listType(self, a2, *&key, v3, v4) != 8)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSTTableDataList(Type_Specific_API) richTextForKey:]", v9, v10);
@@ -1798,10 +1798,10 @@ LABEL_3:
   return v27;
 }
 
-- (id)stringForKey:(unsigned int)a3
+- (id)stringForKey:(unsigned int)key
 {
-  v5 = *&a3;
-  if (objc_msgSend_listType(self, a2, *&a3, v3, v4) != 1)
+  v5 = *&key;
+  if (objc_msgSend_listType(self, a2, *&key, v3, v4) != 1)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSTTableDataList(Type_Specific_API) stringForKey:]", v9, v10);
@@ -1817,10 +1817,10 @@ LABEL_3:
   return v27;
 }
 
-- (id)stringForKey:(unsigned int)a3 outShouldWrap:(BOOL *)a4 outIsShared:(BOOL *)a5
+- (id)stringForKey:(unsigned int)key outShouldWrap:(BOOL *)wrap outIsShared:(BOOL *)shared
 {
-  v7 = *&a3;
-  if (objc_msgSend_listType(self, a2, *&a3, a4, a5) != 1)
+  v7 = *&key;
+  if (objc_msgSend_listType(self, a2, *&key, wrap, shared) != 1)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSTTableDataList(Type_Specific_API) stringForKey:outShouldWrap:outIsShared:]", v11, v12);
@@ -1832,23 +1832,23 @@ LABEL_3:
 
   v24 = sub_221172150(self, v7, v10, v11, v12);
   v33 = objc_msgSend_string(v24, v25, v26, v27, v28);
-  if (a4)
+  if (wrap)
   {
-    *a4 = objc_msgSend_shouldWrap(v24, v29, v30, v31, v32);
+    *wrap = objc_msgSend_shouldWrap(v24, v29, v30, v31, v32);
   }
 
-  if (a5)
+  if (shared)
   {
-    *a5 = objc_msgSend_refCount(v24, v29, v30, v31, v32) > 1;
+    *shared = objc_msgSend_refCount(v24, v29, v30, v31, v32) > 1;
   }
 
   return v33;
 }
 
-- (id)styleForKey:(unsigned int)a3
+- (id)styleForKey:(unsigned int)key
 {
-  v5 = *&a3;
-  if (objc_msgSend_listType(self, a2, *&a3, v3, v4) != 4)
+  v5 = *&key;
+  if (objc_msgSend_listType(self, a2, *&key, v3, v4) != 4)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSTTableDataList(Type_Specific_API) styleForKey:]", v9, v10);
@@ -1887,7 +1887,7 @@ LABEL_3:
     v65 = v66;
     v30 = v24;
     v62 = v30;
-    v63 = self;
+    selfCopy = self;
     v31 = v29;
     v64 = v31;
     sub_221170F5C(self, v61);
@@ -1936,14 +1936,14 @@ LABEL_3:
   }
 }
 
-- (void)upgradeConditionalStylesToLinkedRefWithTableUID:(const TSKUIDStruct *)a3
+- (void)upgradeConditionalStylesToLinkedRefWithTableUID:(const TSKUIDStruct *)d
 {
   if (self->_listType == 9)
   {
-    if (objc_msgSend_count(self, a2, a3, v3, v4))
+    if (objc_msgSend_count(self, a2, d, v3, v4))
     {
       objc_msgSend_willModifyForUpgrade(self, v7, v8, v9, v10);
-      v27 = *a3;
+      v27 = *d;
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = sub_22117728C;
@@ -1966,19 +1966,19 @@ LABEL_3:
   }
 }
 
-- (id)reassignCustomFormatUIDForPaste:(id)a3
+- (id)reassignCustomFormatUIDForPaste:(id)paste
 {
-  v4 = a3;
-  if (!v4)
+  pasteCopy = paste;
+  if (!pasteCopy)
   {
-    v4 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v5, v6, v7, v8);
+    pasteCopy = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v5, v6, v7, v8);
   }
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_22117738C;
   v14[3] = &unk_278460118;
-  v9 = v4;
+  v9 = pasteCopy;
   v15 = v9;
   objc_msgSend_p_replaceCustomFormatsWithBlock_(self, v10, v14, v11, v12);
 

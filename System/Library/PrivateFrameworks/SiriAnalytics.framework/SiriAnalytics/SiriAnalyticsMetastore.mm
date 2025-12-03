@@ -1,5 +1,5 @@
 @interface SiriAnalyticsMetastore
-- (id)createTagWithShim:(id)a3 onClock:(id)a4;
+- (id)createTagWithShim:(id)shim onClock:(id)clock;
 - (void)bootstrap;
 - (void)checkpoint;
 - (void)prune;
@@ -9,23 +9,23 @@
 
 - (void)bootstrap
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D9898A84();
 }
 
 - (void)prune
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D9898E24();
 }
 
 - (void)checkpoint
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D989912C();
 }
 
-- (id)createTagWithShim:(id)a3 onClock:(id)a4
+- (id)createTagWithShim:(id)shim onClock:(id)clock
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1ECB481D0, &qword_1D992F9F0);
   v7 = *(*(v6 - 8) + 64);
@@ -37,9 +37,9 @@
   MEMORY[0x1EEE9AC00](v10);
   v14 = &v20 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D992AE64();
-  v15 = a3;
-  v16 = self;
-  Metastore.createTag(shim:onClock:)(v15, v14);
+  shimCopy = shim;
+  selfCopy = self;
+  Metastore.createTag(shim:onClock:)(shimCopy, v14);
 
   v17 = *(v11 + 8);
   v17(v14, v10);

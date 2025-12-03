@@ -1,14 +1,14 @@
 @interface CAAnimation
-+ (BOOL)CA_encodesPropertyConditionally:(unsigned int)a3 type:(int)a4;
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)CA_encodesPropertyConditionally:(unsigned int)conditionally type:(int)type;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 + (CAAnimation)animation;
 + (id)defaultValueForKey:(NSString *)key;
-+ (void)CAMLParserStartElement:(id)a3;
-- (BOOL)CAMLTypeSupportedForKey:(id)a3;
-- (BOOL)_setCARenderAnimation:(void *)a3 layer:(id)a4;
++ (void)CAMLParserStartElement:(id)element;
+- (BOOL)CAMLTypeSupportedForKey:(id)key;
+- (BOOL)_setCARenderAnimation:(void *)animation layer:(id)layer;
 - (BOOL)autoreverses;
 - (BOOL)discretizesTime;
-- (BOOL)isCompleteForTime:(double)a3;
+- (BOOL)isCompleteForTime:(double)time;
 - (BOOL)isEnabled;
 - (BOOL)isRemovedOnCompletion;
 - (BOOL)shouldArchiveValueForKey:(NSString *)key;
@@ -26,37 +26,37 @@
 - (float)preferredFrameRateRangePreferred;
 - (float)repeatCount;
 - (float)speed;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)delegate;
-- (id)valueForKey:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)valueForKey:(id)key;
+- (id)valueForUndefinedKey:(id)key;
 - (unsigned)highFrameRateReason;
 - (void)dealloc;
-- (void)setAutoreverses:(BOOL)a3;
-- (void)setBeginTime:(double)a3;
-- (void)setBeginTimeMode:(id)a3;
-- (void)setDefaultDuration:(double)a3;
+- (void)setAutoreverses:(BOOL)autoreverses;
+- (void)setBeginTime:(double)time;
+- (void)setBeginTimeMode:(id)mode;
+- (void)setDefaultDuration:(double)duration;
 - (void)setDelegate:(id)delegate;
-- (void)setDiscretizesTime:(BOOL)a3;
-- (void)setDuration:(double)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFillMode:(id)a3;
-- (void)setFrameInterval:(double)a3;
-- (void)setHighFrameRateReason:(unsigned int)a3;
+- (void)setDiscretizesTime:(BOOL)time;
+- (void)setDuration:(double)duration;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFillMode:(id)mode;
+- (void)setFrameInterval:(double)interval;
+- (void)setHighFrameRateReason:(unsigned int)reason;
 - (void)setPreferredFrameRateRange:(CAFrameRateRange)preferredFrameRateRange;
-- (void)setPreferredFrameRateRangeMaximum:(float)a3;
-- (void)setPreferredFrameRateRangeMinimum:(float)a3;
-- (void)setPreferredFrameRateRangePreferred:(float)a3;
-- (void)setPreferredFramesPerSecond:(int64_t)a3;
+- (void)setPreferredFrameRateRangeMaximum:(float)maximum;
+- (void)setPreferredFrameRateRangeMinimum:(float)minimum;
+- (void)setPreferredFrameRateRangePreferred:(float)preferred;
+- (void)setPreferredFramesPerSecond:(int64_t)second;
 - (void)setRemovedOnCompletion:(BOOL)removedOnCompletion;
-- (void)setRepeatCount:(float)a3;
-- (void)setRepeatDuration:(double)a3;
-- (void)setSpeed:(float)a3;
-- (void)setTimeOffset:(double)a3;
+- (void)setRepeatCount:(float)count;
+- (void)setRepeatDuration:(double)duration;
+- (void)setSpeed:(float)speed;
+- (void)setTimeOffset:(double)offset;
 - (void)setTimingFunction:(CAMediaTimingFunction *)timingFunction;
-- (void)setValue:(id)a3 forKey:(id)a4;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setValue:(id)value forKey:(id)key;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation CAAnimation
@@ -87,7 +87,7 @@
 
 + (CAAnimation)animation
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -262,25 +262,25 @@
   return v3 != 0;
 }
 
-- (void)setPreferredFrameRateRangePreferred:(float)a3
+- (void)setPreferredFrameRateRangePreferred:(float)preferred
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CAAnimation_setter(self, 0x23F, 17, &v3);
+  preferredCopy = preferred;
+  CAAnimation_setter(self, 0x23F, 17, &preferredCopy);
 }
 
-- (void)setPreferredFrameRateRangeMaximum:(float)a3
+- (void)setPreferredFrameRateRangeMaximum:(float)maximum
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CAAnimation_setter(self, 0x23D, 17, &v3);
+  maximumCopy = maximum;
+  CAAnimation_setter(self, 0x23D, 17, &maximumCopy);
 }
 
-- (void)setPreferredFrameRateRangeMinimum:(float)a3
+- (void)setPreferredFrameRateRangeMinimum:(float)minimum
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CAAnimation_setter(self, 0x23E, 17, &v3);
+  minimumCopy = minimum;
+  CAAnimation_setter(self, 0x23E, 17, &minimumCopy);
 }
 
 - (void)setDelegate:(id)delegate
@@ -304,59 +304,59 @@
   CAAnimation_setter(self, 0x259, 7, &v3);
 }
 
-- (void)setFillMode:(id)a3
+- (void)setFillMode:(id)mode
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = mode;
   CAAnimation_setter(self, 0xFA, 3, v3);
 }
 
-- (void)setAutoreverses:(BOOL)a3
+- (void)setAutoreverses:(BOOL)autoreverses
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CAAnimation_setter(self, 0x38, 7, &v3);
+  autoreversesCopy = autoreverses;
+  CAAnimation_setter(self, 0x38, 7, &autoreversesCopy);
 }
 
-- (void)setRepeatDuration:(double)a3
+- (void)setRepeatDuration:(double)duration
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *v3 = a3;
+  *v3 = duration;
   CAAnimation_setter(self, 0x25D, 18, v3);
 }
 
-- (void)setRepeatCount:(float)a3
+- (void)setRepeatCount:(float)count
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CAAnimation_setter(self, 0x25C, 17, &v3);
+  countCopy = count;
+  CAAnimation_setter(self, 0x25C, 17, &countCopy);
 }
 
-- (void)setSpeed:(float)a3
+- (void)setSpeed:(float)speed
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CAAnimation_setter(self, 0x29F, 17, &v3);
+  speedCopy = speed;
+  CAAnimation_setter(self, 0x29F, 17, &speedCopy);
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *v3 = a3;
+  *v3 = duration;
   CAAnimation_setter(self, 0xD3, 18, v3);
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *v3 = a3;
+  *v3 = offset;
   CAAnimation_setter(self, 0x2C1, 18, v3);
 }
 
-- (void)setBeginTime:(double)a3
+- (void)setBeginTime:(double)time
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *v3 = a3;
+  *v3 = time;
   CAAnimation_setter(self, 0x41, 18, v3);
 }
 
@@ -368,9 +368,9 @@
     v3 = CA::Transaction::create(self);
   }
 
-  v4 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v5 = objc_opt_class();
-  [(__CFString *)v4 appendFormat:@"<%@:%p; ", NSStringFromClass(v5), self];
+  [(__CFString *)string appendFormat:@"<%@:%p; ", NSStringFromClass(v5), self];
   v6 = *(v3 + 29);
   *(v3 + 29) = v6 + 1;
   if (!v6)
@@ -381,17 +381,17 @@
   attr = self->_attr;
   if (attr)
   {
-    CA::AttrList::append_description(*attr, v4);
+    CA::AttrList::append_description(*attr, string);
   }
 
   CA::Transaction::unlock(v3);
-  [(__CFString *)v4 appendString:@">"];
-  return v4;
+  [(__CFString *)string appendString:@">"];
+  return string;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v4;
   if (v4)
   {
@@ -437,18 +437,18 @@
   return v6;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v10[0] = a3;
+  v10[0] = value;
   v6 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v6)
   {
     v6 = CA::Transaction::create(self);
   }
 
-  v7 = CAInternAtom(a4, 1);
-  [(CAAnimation *)self willChangeValueForKey:a4, v10[0]];
+  v7 = CAInternAtom(key, 1);
+  [(CAAnimation *)self willChangeValueForKey:key, v10[0]];
   v8 = *(v6 + 29);
   *(v6 + 29) = v8 + 1;
   if (!v8)
@@ -470,10 +470,10 @@
   self->_attr = CA::AttrList::set(attr, v7, 2, v10);
   CA::Transaction::unlock(v6);
 
-  [(CAAnimation *)self didChangeValueForKey:a4];
+  [(CAAnimation *)self didChangeValueForKey:key];
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v5 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
@@ -482,7 +482,7 @@
     v5 = CA::Transaction::create(self);
   }
 
-  v6 = CAInternAtom(a3, 1);
+  v6 = CAInternAtom(key, 1);
   v7 = *(v5 + 29);
   *(v5 + 29) = v7 + 1;
   if (!v7)
@@ -514,18 +514,18 @@
   }
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
   v7 = +[CAAnimation superclass];
 
-  CAObject_setValueForKey(self, v7, a3, a4);
+  CAObject_setValueForKey(self, v7, value, key);
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
   v5 = +[CAAnimation superclass];
 
-  return CAObject_valueForKey(self, v5, a3);
+  return CAObject_valueForKey(self, v5, key);
 }
 
 - (BOOL)shouldArchiveValueForKey:(NSString *)key
@@ -580,8 +580,8 @@
   minimum = preferredFrameRateRange.minimum;
   if (!CAFrameRateRangeIsValid(preferredFrameRateRange.minimum, preferredFrameRateRange.maximum, preferredFrameRateRange.preferred))
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid range (minimum: %.2f maximum: %.2f preferred: %.2f)", minimum, maximum, preferred];
-    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v10 userInfo:0]);
+    preferred = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid range (minimum: %.2f maximum: %.2f preferred: %.2f)", minimum, maximum, preferred];
+    objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:preferred userInfo:0]);
   }
 
   *&v7 = minimum;
@@ -593,16 +593,16 @@
   [(CAAnimation *)self setPreferredFrameRateRangePreferred:v9];
 }
 
-- (BOOL)_setCARenderAnimation:(void *)a3 layer:(id)a4
+- (BOOL)_setCARenderAnimation:(void *)animation layer:(id)layer
 {
   v25 = *MEMORY[0x1E69E9840];
   v23 = 0u;
   v24 = 0u;
-  *(a3 + 2) = self;
+  *(animation + 2) = self;
   v6 = CAMediaTimingCopyRenderTiming(self);
   if (v6)
   {
-    v7 = *(a3 + 5);
+    v7 = *(animation + 5);
     if (v7 != v6)
     {
       if (v7 && atomic_fetch_add(v7 + 2, 0xFFFFFFFF) == 1)
@@ -617,7 +617,7 @@
         atomic_fetch_add(v6 + 2, 0xFFFFFFFF);
       }
 
-      *(a3 + 5) = v8;
+      *(animation + 5) = v8;
     }
   }
 
@@ -632,12 +632,12 @@
     v10 = v9;
   }
 
-  v11 = [(CAAnimation *)self timingFunction];
-  if (v11)
+  timingFunction = [(CAAnimation *)self timingFunction];
+  if (timingFunction)
   {
-    [(CAMediaTimingFunction *)v11 _getPoints:&v23];
+    [(CAMediaTimingFunction *)timingFunction _getPoints:&v23];
     v13 = CA::Render::Vector::new_vector(4, &v23, v12);
-    v14 = *(a3 + 6);
+    v14 = *(animation + 6);
     if (v14 != v13)
     {
       if (v14 && atomic_fetch_add(v14 + 2, 0xFFFFFFFF) == 1)
@@ -660,7 +660,7 @@
         v15 = 0;
       }
 
-      *(a3 + 6) = v15;
+      *(animation + 6) = v15;
     }
 
     if (v13 && atomic_fetch_add(v13 + 2, 0xFFFFFFFF) == 1)
@@ -670,9 +670,9 @@
   }
 
   [(CAAnimation *)self preferredFrameRateRange];
-  *(a3 + 6) = v16;
-  *(a3 + 7) = v17;
-  *(a3 + 8) = v18;
+  *(animation + 6) = v16;
+  *(animation + 7) = v17;
+  *(animation + 8) = v18;
   if (CAHighFrameRateRestrictionEnabled(void)::once != -1)
   {
     dispatch_once(&CAHighFrameRateRestrictionEnabled(void)::once, &__block_literal_global_6_18959);
@@ -680,9 +680,9 @@
 
   if (CAHighFrameRateRestrictionEnabled(void)::enabled == 1)
   {
-    v19 = [(CAAnimation *)self highFrameRateReason];
+    highFrameRateReason = [(CAAnimation *)self highFrameRateReason];
     v10 |= 0x8000u;
-    if (!v19)
+    if (!highFrameRateReason)
     {
       if (CADeviceDisableMinimumFrameDurationOnPhone::once != -1)
       {
@@ -691,38 +691,38 @@
 
       if (CADeviceDisableMinimumFrameDurationOnPhone::disabled)
       {
-        v19 = 65537;
+        highFrameRateReason = 65537;
       }
 
       else
       {
-        v19 = 0;
+        highFrameRateReason = 0;
       }
     }
 
-    *(a3 + 22) = v19;
+    *(animation + 22) = highFrameRateReason;
   }
 
   if (byte_1ED4E9848 == 1)
   {
-    *(a3 + 3) = vdup_n_s32(0x42F00000u);
-    *(a3 + 8) = 1123024896;
-    if (!*(a3 + 22))
+    *(animation + 3) = vdup_n_s32(0x42F00000u);
+    *(animation + 8) = 1123024896;
+    if (!*(animation + 22))
     {
-      *(a3 + 22) = 1;
+      *(animation + 22) = 1;
     }
   }
 
-  v20 = [(CAAnimation *)self discretizesTime];
+  discretizesTime = [(CAAnimation *)self discretizesTime];
   v21 = v10 | 0x80;
-  if (!v20)
+  if (!discretizesTime)
   {
     v21 = v10;
   }
 
   if (v21)
   {
-    *(a3 + 3) |= v21 << 8;
+    *(animation + 3) |= v21 << 8;
   }
 
   if (v6 && atomic_fetch_add(v6 + 2, 0xFFFFFFFF) == 1)
@@ -733,22 +733,22 @@
   return 1;
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
   v4 = objc_opt_class();
 
-  return CAObject_automaticallyNotifiesObserversForKey(v4, a3);
+  return CAObject_automaticallyNotifiesObserversForKey(v4, key);
 }
 
-+ (BOOL)CA_encodesPropertyConditionally:(unsigned int)a3 type:(int)a4
++ (BOOL)CA_encodesPropertyConditionally:(unsigned int)conditionally type:(int)type
 {
-  v4 = a3 == 182;
-  if (a4 == 4)
+  v4 = conditionally == 182;
+  if (type == 4)
   {
     v4 = 1;
   }
 
-  return a4 == 1 || v4;
+  return type == 1 || v4;
 }
 
 + (id)defaultValueForKey:(NSString *)key
@@ -821,46 +821,46 @@ LABEL_15:
   return @"non-zero";
 }
 
-- (BOOL)isCompleteForTime:(double)a3
+- (BOOL)isCompleteForTime:(double)time
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v5[0] = a3;
+  v5[0] = time;
   return mapAnimationTime(self, v5, &v4) ^ 1;
 }
 
-- (void)setHighFrameRateReason:(unsigned int)a3
+- (void)setHighFrameRateReason:(unsigned int)reason
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CAAnimation_setter(self, 0x12C, 12, &v3);
+  reasonCopy = reason;
+  CAAnimation_setter(self, 0x12C, 12, &reasonCopy);
 }
 
-- (void)setBeginTimeMode:(id)a3
+- (void)setBeginTimeMode:(id)mode
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = mode;
   CAAnimation_setter(self, 0x42, 3, v3);
 }
 
-- (void)setDiscretizesTime:(BOOL)a3
+- (void)setDiscretizesTime:(BOOL)time
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CAAnimation_setter(self, 0xC9, 7, &v3);
+  timeCopy = time;
+  CAAnimation_setter(self, 0xC9, 7, &timeCopy);
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CAAnimation_setter(self, 0xEA, 7, &v3);
+  enabledCopy = enabled;
+  CAAnimation_setter(self, 0xEA, 7, &enabledCopy);
 }
 
-- (void)setPreferredFramesPerSecond:(int64_t)a3
+- (void)setPreferredFramesPerSecond:(int64_t)second
 {
-  *&v3 = a3;
-  *&v4 = a3;
-  *&v5 = a3;
+  *&v3 = second;
+  *&v4 = second;
+  *&v5 = second;
   [(CAAnimation *)self setPreferredFrameRateRange:v3, v4, v5];
 }
 
@@ -878,27 +878,27 @@ LABEL_15:
   }
 }
 
-- (void)setFrameInterval:(double)a3
+- (void)setFrameInterval:(double)interval
 {
   v5 = 0.0;
-  if (a3 != 0.0)
+  if (interval != 0.0)
   {
     v3 = 1.0;
-    v5 = 1.0 / a3;
-    a3 = round(1.0 / a3);
+    v5 = 1.0 / interval;
+    interval = round(1.0 / interval);
     LODWORD(v5) = 1.0;
-    if (a3 >= 1.0)
+    if (interval >= 1.0)
     {
-      *&v5 = a3;
+      *&v5 = interval;
     }
   }
 
-  LODWORD(a3) = LODWORD(v5);
+  LODWORD(interval) = LODWORD(v5);
   LODWORD(v3) = LODWORD(v5);
-  [(CAAnimation *)self setPreferredFrameRateRange:v5, a3, v3];
+  [(CAAnimation *)self setPreferredFrameRateRange:v5, interval, v3];
 }
 
-- (BOOL)CAMLTypeSupportedForKey:(id)a3
+- (BOOL)CAMLTypeSupportedForKey:(id)key
 {
   os_unfair_lock_lock(&[CAAnimation(CAAnimationPrivate) CAMLTypeSupportedForKey:]::lock);
   v5 = [CAAnimation(CAAnimationPrivate) CAMLTypeSupportedForKey:]::keys;
@@ -908,15 +908,15 @@ LABEL_15:
     [CAAnimation(CAAnimationPrivate) CAMLTypeSupportedForKey:]::keys = v5;
   }
 
-  if (([v5 containsObject:a3] & 1) == 0)
+  if (([v5 containsObject:key] & 1) == 0)
   {
-    if (!CAObject_CAMLTypeSupportedForKey(self, a3))
+    if (!CAObject_CAMLTypeSupportedForKey(self, key))
     {
       v6 = 0;
       goto LABEL_8;
     }
 
-    [-[CAAnimation(CAAnimationPrivate) CAMLTypeSupportedForKey:]::keys addObject:a3];
+    [-[CAAnimation(CAAnimationPrivate) CAMLTypeSupportedForKey:]::keys addObject:key];
   }
 
   v6 = 1;
@@ -925,20 +925,20 @@ LABEL_8:
   return v6;
 }
 
-- (void)setDefaultDuration:(double)a3
+- (void)setDefaultDuration:(double)duration
 {
   [(CAAnimation *)self duration];
   if (v5 <= 0.0)
   {
 
-    [(CAAnimation *)self setDuration:a3];
+    [(CAAnimation *)self setDuration:duration];
   }
 }
 
-+ (void)CAMLParserStartElement:(id)a3
++ (void)CAMLParserStartElement:(id)element
 {
-  v4 = objc_alloc_init(a1);
-  [a3 setElementValue:v4];
+  v4 = objc_alloc_init(self);
+  [element setElementValue:v4];
 }
 
 @end

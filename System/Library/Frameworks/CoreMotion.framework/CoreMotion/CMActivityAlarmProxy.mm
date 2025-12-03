@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (CMActivityAlarmProxy)init;
 - (void)dealloc;
-- (void)listenForActivityAlarm:(id)a3;
-- (void)stopListeningForActivityAlarm:(id)a3;
+- (void)listenForActivityAlarm:(id)alarm;
+- (void)stopListeningForActivityAlarm:(id)alarm;
 @end
 
 @implementation CMActivityAlarmProxy
@@ -50,7 +50,7 @@
   block[1] = 3221225472;
   block[2] = sub_19B75B438;
   block[3] = &unk_1E7532988;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED71D760 != -1)
   {
     dispatch_once(&qword_1ED71D760, block);
@@ -59,7 +59,7 @@
   return qword_1ED71D768;
 }
 
-- (void)listenForActivityAlarm:(id)a3
+- (void)listenForActivityAlarm:(id)alarm
 {
   buf[205] = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
@@ -67,10 +67,10 @@
   {
     fAlarms = self->fAlarms;
     v9 = objc_msgSend_numberWithInt_(MEMORY[0x1E696AD98], v7, self->fAlarmCounter);
-    objc_msgSend_setObject_forKey_(fAlarms, v10, a3, v9);
+    objc_msgSend_setObject_forKey_(fAlarms, v10, alarm, v9);
     sub_19B431640(buf);
-    LODWORD(v20) = objc_msgSend_trigger(a3, v11, v12);
-    objc_msgSend_duration(a3, v13, v14);
+    LODWORD(v20) = objc_msgSend_trigger(alarm, v11, v12);
+    objc_msgSend_duration(alarm, v13, v14);
     v21 = v15;
     sub_19B6E74A8(&self->fAlarmCounter, &v20, &v21, buf);
     LOBYTE(v21) = 1;
@@ -113,7 +113,7 @@
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopListeningForActivityAlarm:(id)a3
+- (void)stopListeningForActivityAlarm:(id)alarm
 {
   v48 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
@@ -136,7 +136,7 @@
         }
 
         v11 = *(*(&v39 + 1) + 8 * i);
-        if (objc_msgSend_objectForKeyedSubscript_(self->fAlarms, v7, v11) == a3)
+        if (objc_msgSend_objectForKeyedSubscript_(self->fAlarms, v7, v11) == alarm)
         {
           v13 = v11;
           if (v13)
@@ -144,8 +144,8 @@
             objc_msgSend_removeObjectForKey_(self->fAlarms, v12, v13);
             sub_19B431640(&buf);
             LODWORD(v37) = objc_msgSend_intValue(v13, v14, v15);
-            v38 = objc_msgSend_trigger(a3, v16, v17);
-            objc_msgSend_duration(a3, v18, v19);
+            v38 = objc_msgSend_trigger(alarm, v16, v17);
+            objc_msgSend_duration(alarm, v18, v19);
             v43 = v20;
             sub_19B6E74A8(&v37, &v38, &v43, &buf);
             LOBYTE(v43) = 0;
@@ -177,8 +177,8 @@ LABEL_12:
   v21 = qword_1EAFE2878;
   if (os_log_type_enabled(qword_1EAFE2878, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = objc_msgSend_trigger(a3, v22, v23);
-    objc_msgSend_duration(a3, v25, v26);
+    v24 = objc_msgSend_trigger(alarm, v22, v23);
+    objc_msgSend_duration(alarm, v25, v26);
     LODWORD(buf) = 67109376;
     HIDWORD(buf) = v24;
     LOWORD(v46[0]) = 2048;
@@ -195,8 +195,8 @@ LABEL_12:
       dispatch_once(&qword_1EAFE2858, &unk_1F0E3B5B8);
     }
 
-    v31 = objc_msgSend_trigger(a3, v29, v30);
-    objc_msgSend_duration(a3, v32, v33);
+    v31 = objc_msgSend_trigger(alarm, v29, v30);
+    objc_msgSend_duration(alarm, v32, v33);
     LODWORD(v43) = 67109376;
     HIDWORD(v43) = v31;
     v44[0] = 2048;

@@ -1,12 +1,12 @@
 @interface SBDodgingTester
-- (SBDodgingTester)initWithDodgingResolverController:(id)a3;
+- (SBDodgingTester)initWithDodgingResolverController:(id)controller;
 @end
 
 @implementation SBDodgingTester
 
-- (SBDodgingTester)initWithDodgingResolverController:(id)a3
+- (SBDodgingTester)initWithDodgingResolverController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = SBDodgingTester;
   v5 = [(SBDodgingTester *)&v12 init];
@@ -17,7 +17,7 @@
     v10[1] = 3221225472;
     v10[2] = __53__SBDodgingTester_initWithDodgingResolverController___block_invoke;
     v10[3] = &unk_2783A8C18;
-    v11 = v4;
+    v11 = controllerCopy;
     v7 = [v6 recipeWithTitle:@"Add Dodging Item" action:v10];
     testRecipe = v5->_testRecipe;
     v5->_testRecipe = v7;

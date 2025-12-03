@@ -7,8 +7,8 @@
 
 - (__CFString)_ui_bulletStringWithFont:()SecureTextEntry
 {
-  v4 = a1;
-  GlyphsForCharacters = CTFontGetGlyphsForCharacters(a1, kBullets, &glyphs, 2);
+  selfCopy = self;
+  GlyphsForCharacters = CTFontGetGlyphsForCharacters(self, kBullets, &glyphs, 2);
   if (glyphs)
   {
     v6 = 1;
@@ -50,17 +50,17 @@
 
     if (v10)
     {
-      v11 = v4;
+      v11 = selfCopy;
     }
 
     else
     {
-      [v4 pointSize];
-      v4 = [off_1E70ECC18 systemFontOfSize:?];
-      v12 = v4;
+      [selfCopy pointSize];
+      selfCopy = [off_1E70ECC18 systemFontOfSize:?];
+      v12 = selfCopy;
     }
 
-    *a3 = v4;
+    *a3 = selfCopy;
   }
 
   if (v9)
@@ -82,7 +82,7 @@
 {
   v25 = *MEMORY[0x1E69E9840];
   v6 = a3;
-  GlyphsForCharacters = CTFontGetGlyphsForCharacters(a1, kBullets, &glyphs, 5);
+  GlyphsForCharacters = CTFontGetGlyphsForCharacters(self, kBullets, &glyphs, 5);
   if (glyphs)
   {
     v8 = 1;
@@ -108,7 +108,7 @@
   v11 = v10;
   if (v6 && (!v8 ? (v12 = v9 == 0) : (v12 = 0), v12))
   {
-    if (([(__CTFont *)a1 isEqual:v6]& 1) == 0 && ([(__CTFont *)a1 isEqual:v6]& 1) == 0)
+    if (([(__CTFont *)self isEqual:v6]& 1) == 0 && ([(__CTFont *)self isEqual:v6]& 1) == 0)
     {
       v13 = CTFontGetGlyphsForCharacters(v6, kBullets, &glyphs, 5);
       if (glyphs)
@@ -129,9 +129,9 @@
       else
       {
         v22 = 0;
-        v15 = [(__CTFont *)a1 _ui_bulletStringWithFont:&v22];
+        v15 = [(__CTFont *)self _ui_bulletStringWithFont:&v22];
         v16 = v22;
-        if (v16 && ([(__CTFont *)a1 isEqual:v16]& 1) == 0)
+        if (v16 && ([(__CTFont *)self isEqual:v16]& 1) == 0)
         {
           v17 = v16;
         }

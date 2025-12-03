@@ -1,19 +1,19 @@
 @interface ARCamera
-- (ARCamera)initWithCoder:(id)a3;
-- (ARCamera)initWithIntrinsics:(__n128)a3 imageResolution:(__n128)a4 devicePosition:(CGFloat)a5 radialDistortion:(CGFloat)a6 tangentialDistortion:(__n128)a7 exposureDuration:(double)a8 calibrationData:(uint64_t)a9 extrinsicsMap:(int64_t)a10 captureLens:(__int128 *)a11;
-- (BOOL)isEqual:(id)a3;
+- (ARCamera)initWithCoder:(id)coder;
+- (ARCamera)initWithIntrinsics:(__n128)intrinsics imageResolution:(__n128)resolution devicePosition:(CGFloat)position radialDistortion:(CGFloat)distortion tangentialDistortion:(__n128)tangentialDistortion exposureDuration:(double)duration calibrationData:(uint64_t)data extrinsicsMap:(int64_t)self0 captureLens:(__int128 *)self1;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)focalLength;
 - (CGPoint)principalPoint;
 - (CGPoint)projectPoint:(simd_float3)point orientation:(UIInterfaceOrientation)orientation viewportSize:(CGSize)viewportSize;
 - (CGSize)imageResolution;
-- (__n128)extrinsicMatrix4x4ToDeviceType:(uint64_t)a1;
+- (__n128)extrinsicMatrix4x4ToDeviceType:(uint64_t)type;
 - (__n128)radialDistortion;
-- (__n128)setIntrinsics:(__n128)a3;
-- (__n128)setTransform:(__n128)a3;
+- (__n128)setIntrinsics:(__n128)intrinsics;
+- (__n128)setTransform:(__n128)transform;
 - (double)displayCenterTransform;
-- (id)_description:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromImageData:(id)a3;
+- (id)_description:(BOOL)_description;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromImageData:(id)data;
 - (simd_float3)eulerAngles;
 - (simd_float3)unprojectPoint:(CGPoint)point ontoPlaneWithTransform:(simd_float4x4)planeTransform orientation:(UIInterfaceOrientation)orientation viewportSize:(CGSize)viewportSize;
 - (simd_float3x3)intrinsics;
@@ -21,45 +21,45 @@
 - (simd_float4x4)projectionMatrixForOrientation:(UIInterfaceOrientation)orientation viewportSize:(CGSize)viewportSize zNear:(CGFloat)zNear zFar:(CGFloat)zFar;
 - (simd_float4x4)transform;
 - (simd_float4x4)viewMatrixForOrientation:(UIInterfaceOrientation)orientation;
-- (uint64_t)extrinsicMatrixToDeviceType:(void *)a1;
-- (uint64_t)initWithIntrinsics:(double)a3 imageResolution:(double)a4;
-- (void)encodeWithCoder:(id)a3;
+- (uint64_t)extrinsicMatrixToDeviceType:(void *)type;
+- (uint64_t)initWithIntrinsics:(double)intrinsics imageResolution:(double)resolution;
+- (void)encodeWithCoder:(id)coder;
 - (void)setRadialDistortion:(ARCamera *)self;
 @end
 
 @implementation ARCamera
 
-- (uint64_t)initWithIntrinsics:(double)a3 imageResolution:(double)a4
+- (uint64_t)initWithIntrinsics:(double)intrinsics imageResolution:(double)resolution
 {
   v9 = objc_opt_new();
   memset(v15, 0, sizeof(v15));
-  v10 = [a1 initWithIntrinsics:0 imageResolution:v15 devicePosition:0 radialDistortion:v9 tangentialDistortion:0 exposureDuration:a2 calibrationData:a3 extrinsicsMap:a4 captureLens:{a5, a6, 0.0, 0.0}];
+  v10 = [self initWithIntrinsics:0 imageResolution:v15 devicePosition:0 radialDistortion:v9 tangentialDistortion:0 exposureDuration:a2 calibrationData:intrinsics extrinsicsMap:resolution captureLens:{a5, a6, 0.0, 0.0}];
 
   return v10;
 }
 
-- (ARCamera)initWithIntrinsics:(__n128)a3 imageResolution:(__n128)a4 devicePosition:(CGFloat)a5 radialDistortion:(CGFloat)a6 tangentialDistortion:(__n128)a7 exposureDuration:(double)a8 calibrationData:(uint64_t)a9 extrinsicsMap:(int64_t)a10 captureLens:(__int128 *)a11
+- (ARCamera)initWithIntrinsics:(__n128)intrinsics imageResolution:(__n128)resolution devicePosition:(CGFloat)position radialDistortion:(CGFloat)distortion tangentialDistortion:(__n128)tangentialDistortion exposureDuration:(double)duration calibrationData:(uint64_t)data extrinsicsMap:(int64_t)self0 captureLens:(__int128 *)self1
 {
-  v35 = a11[1];
-  v36 = *a11;
+  v35 = lens[1];
+  v36 = *lens;
   v22 = a12;
   v23 = a13;
-  v38.receiver = a1;
+  v38.receiver = self;
   v38.super_class = ARCamera;
   v24 = [(ARCamera *)&v38 init];
   v25 = v24;
   if (v24)
   {
-    v24->_imageResolution.width = a5;
-    v24->_imageResolution.height = a6;
-    *&v24->_anon_90[16] = a3;
-    *&v24->_anon_90[32] = a4;
-    v24->_devicePosition = a10;
+    v24->_imageResolution.width = position;
+    v24->_imageResolution.height = distortion;
+    *&v24->_anon_90[16] = intrinsics;
+    *&v24->_anon_90[32] = resolution;
+    v24->_devicePosition = map;
     *&v24->_radialDistortion[16] = v35;
     *v24->_anon_90 = a2;
-    *v24->_tangentialDistortion = a7;
+    *v24->_tangentialDistortion = tangentialDistortion;
     *v24->_radialDistortion = v36;
-    v24->_exposureDuration = a8;
+    v24->_exposureDuration = duration;
     objc_storeStrong(&v24->_calibrationData, a12);
     v26 = [v23 copy];
     extrinsicsMap = v25->_extrinsicsMap;
@@ -80,62 +80,62 @@
   return v25;
 }
 
-- (ARCamera)initWithCoder:(id)a3
+- (ARCamera)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ARCamera *)self init];
   if (v5)
   {
-    [v4 decodeSizeForKey:@"imageResolution"];
+    [coderCopy decodeSizeForKey:@"imageResolution"];
     v5->_imageResolution.width = v6;
     v5->_imageResolution.height = v7;
-    [v4 decodeDoubleForKey:@"exposureDuration"];
+    [coderCopy decodeDoubleForKey:@"exposureDuration"];
     v5->_exposureDuration = v8;
-    [v4 decodeFloatForKey:@"exposureOffset"];
+    [coderCopy decodeFloatForKey:@"exposureOffset"];
     v5->_exposureOffset = v9;
-    [v4 ar_decodeMatrix3x3ForKey:@"intrinsics"];
+    [coderCopy ar_decodeMatrix3x3ForKey:@"intrinsics"];
     *&v5->_anon_90[8] = v10;
     *&v5->_anon_90[24] = v11;
     *v5->_anon_90 = v12;
     *&v5->_anon_90[16] = v13;
     *&v5->_anon_90[40] = v14;
     *&v5->_anon_90[32] = v15;
-    [v4 ar_decodeMatrix4x4ForKey:@"transform"];
+    [coderCopy ar_decodeMatrix4x4ForKey:@"transform"];
     *&v5[1].super.isa = v16;
     *&v5[1]._trackingState = v17;
     *&v5[1]._exposureDuration = v18;
     *&v5[1]._devicePosition = v19;
-    v5->_trackingState = [v4 decodeIntegerForKey:@"trackingState"];
-    v5->_trackingStateReason = [v4 decodeIntegerForKey:@"trackingStateReason"];
+    v5->_trackingState = [coderCopy decodeIntegerForKey:@"trackingState"];
+    v5->_trackingStateReason = [coderCopy decodeIntegerForKey:@"trackingStateReason"];
     v20 = MEMORY[0x1E695DFD8];
     v21 = objc_opt_class();
     v22 = objc_opt_class();
     v23 = [v20 setWithObjects:{v21, v22, objc_opt_class(), 0}];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"extrinsicsMap"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"extrinsicsMap"];
     extrinsicsMap = v5->_extrinsicsMap;
     v5->_extrinsicsMap = v24;
 
-    v5->_captureLens = [v4 decodeIntegerForKey:@"captureLens"];
+    v5->_captureLens = [coderCopy decodeIntegerForKey:@"captureLens"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   width = self->_imageResolution.width;
   height = self->_imageResolution.height;
-  v7 = a3;
-  [v7 encodeSize:@"imageResolution" forKey:{width, height}];
-  [v7 encodeDouble:@"exposureDuration" forKey:self->_exposureDuration];
+  coderCopy = coder;
+  [coderCopy encodeSize:@"imageResolution" forKey:{width, height}];
+  [coderCopy encodeDouble:@"exposureDuration" forKey:self->_exposureDuration];
   *&v6 = self->_exposureOffset;
-  [v7 encodeFloat:@"exposureOffset" forKey:v6];
-  [v7 ar_encodeMatrix3x3:@"intrinsics" forKey:{*self->_anon_90, *&self->_anon_90[16], *&self->_anon_90[32]}];
-  [v7 ar_encodeMatrix4x4:@"transform" forKey:{*&self[1].super.isa, *&self[1]._trackingState, self[1]._exposureDuration, *&self[1]._devicePosition}];
-  [v7 encodeInteger:self->_trackingState forKey:@"trackingState"];
-  [v7 encodeInteger:self->_trackingStateReason forKey:@"trackingStateReason"];
-  [v7 encodeObject:self->_extrinsicsMap forKey:@"extrinsicsMap"];
-  [v7 encodeInteger:self->_captureLens forKey:@"captureLens"];
+  [coderCopy encodeFloat:@"exposureOffset" forKey:v6];
+  [coderCopy ar_encodeMatrix3x3:@"intrinsics" forKey:{*self->_anon_90, *&self->_anon_90[16], *&self->_anon_90[32]}];
+  [coderCopy ar_encodeMatrix4x4:@"transform" forKey:{*&self[1].super.isa, *&self[1]._trackingState, self[1]._exposureDuration, *&self[1]._devicePosition}];
+  [coderCopy encodeInteger:self->_trackingState forKey:@"trackingState"];
+  [coderCopy encodeInteger:self->_trackingStateReason forKey:@"trackingStateReason"];
+  [coderCopy encodeObject:self->_extrinsicsMap forKey:@"extrinsicsMap"];
+  [coderCopy encodeInteger:self->_captureLens forKey:@"captureLens"];
 }
 
 - (simd_float3)eulerAngles
@@ -166,9 +166,9 @@
 
 - (double)displayCenterTransform
 {
-  v1 = [a1 devicePosition];
+  devicePosition = [self devicePosition];
 
-  *&result = ARDisplayCenterTransformForCaptureDevicePosition(v1).n128_u64[0];
+  *&result = ARDisplayCenterTransformForCaptureDevicePosition(devicePosition).n128_u64[0];
   return result;
 }
 
@@ -186,9 +186,9 @@
   return result;
 }
 
-- (id)_description:(BOOL)a3
+- (id)_description:(BOOL)_description
 {
-  v3 = a3;
+  _descriptionCopy = _description;
   trackingState = self->_trackingState;
   if (trackingState)
   {
@@ -234,19 +234,19 @@
   v15 = *&self->_anon_90[20];
   v16 = COERCE_FLOAT(*&self->_anon_90[32]);
   v17 = COERCE_FLOAT(HIDWORD(*&self->_anon_90[32]));
-  v18 = ARMatrix4x4Description(v3, *&self[1].super.isa, *&self[1]._trackingState, *&self[1]._exposureDuration, *&self[1]._devicePosition);
+  v18 = ARMatrix4x4Description(_descriptionCopy, *&self[1].super.isa, *&self[1]._trackingState, *&self[1]._exposureDuration, *&self[1]._devicePosition);
   v19 = [v9 stringWithFormat:@"<%@: %p imageResolution=(%.f, %.f) exposureDuration=%.f exposureOffset=%.f focalLength=(%.03f, %.03f) principalPoint=(%.03f, %.03f) trackingState=%@ transform=%@>", v11, self, imageResolution, *&exposureDuration, *&exposureOffset, *&v14, *&v15, *&v16, *&v17, v8, v18];
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     v7 = self->_imageResolution.width == *&v5[4].i64[1] && self->_imageResolution.height == *v5[5].i64;
     v10 = v7 && self->_exposureDuration == *v5[2].i64 && self->_exposureOffset == v5->f32[2] && (v8.i64[0] = 0x3400000034000000, v8.i64[1] = 0x3400000034000000, v9 = vandq_s8(vandq_s8(vcgeq_f32(v8, vabdq_f32(*&self->_anon_90[16], v5[10])), vcgeq_f32(v8, vabdq_f32(*self->_anon_90, v5[9]))), vcgeq_f32(v8, vabdq_f32(*&self->_anon_90[32], v5[11]))), v9.i32[3] = v9.i32[2], (vminvq_u32(v9) & 0x80000000) != 0) && AREqualTransforms(*&self[1].super.isa, *&self[1]._trackingState, *&self[1]._exposureDuration, *&self[1]._devicePosition, v5[12], v5[13], v5[14], v5[15]) && self->_trackingState == v6[2] && self->_trackingStateReason == v6[3] && [(NSDictionary *)self->_extrinsicsMap isEqualToDictionary:v6[5]]&& self->_captureLens == v6[8];
@@ -415,16 +415,16 @@
   return __invert_f4(v16);
 }
 
-- (uint64_t)extrinsicMatrixToDeviceType:(void *)a1
+- (uint64_t)extrinsicMatrixToDeviceType:(void *)type
 {
-  [a1 extrinsicMatrix4x4ToDeviceType:?];
+  [type extrinsicMatrix4x4ToDeviceType:?];
 
   return ARMatrix4x3FromMatrix4x4(v1, v2, v3, v4);
 }
 
-- (__n128)extrinsicMatrix4x4ToDeviceType:(uint64_t)a1
+- (__n128)extrinsicMatrix4x4ToDeviceType:(uint64_t)type
 {
-  v1 = [*(a1 + 40) objectForKeyedSubscript:?];
+  v1 = [*(type + 40) objectForKeyedSubscript:?];
   v2 = v1;
   if (v1)
   {
@@ -440,9 +440,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithIntrinsics:imageResolution:", *self->_anon_90, *&self->_anon_90[16], *&self->_anon_90[32], self->_imageResolution.width, self->_imageResolution.height}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithIntrinsics:imageResolution:", *self->_anon_90, *&self->_anon_90[16], *&self->_anon_90[32], self->_imageResolution.width, self->_imageResolution.height}];
   v5 = v4;
   if (v4)
   {
@@ -483,10 +483,10 @@
   return result;
 }
 
-- (__n128)setTransform:(__n128)a3
+- (__n128)setTransform:(__n128)transform
 {
   result[12] = a2;
-  result[13] = a3;
+  result[13] = transform;
   result[14] = a4;
   result[15] = a5;
   return result;
@@ -503,10 +503,10 @@
   return result;
 }
 
-- (__n128)setIntrinsics:(__n128)a3
+- (__n128)setIntrinsics:(__n128)intrinsics
 {
   result[9] = a2;
-  result[10] = a3;
+  result[10] = intrinsics;
   result[11] = a4;
   return result;
 }
@@ -522,8 +522,8 @@
 
 - (__n128)radialDistortion
 {
-  result = *(a1 + 112);
-  v3 = *(a1 + 128);
+  result = *(self + 112);
+  v3 = *(self + 128);
   *a2 = result;
   *(a2 + 16) = v3;
   return result;
@@ -536,21 +536,21 @@
   *&self->_radialDistortion[16] = v3;
 }
 
-- (id)initFromImageData:(id)a3
+- (id)initFromImageData:(id)data
 {
-  v4 = a3;
-  [v4 cameraIntrinsics];
+  dataCopy = data;
+  [dataCopy cameraIntrinsics];
   v24 = v6;
   v25 = v5;
   v23 = v7;
-  [v4 imageResolution];
+  [dataCopy imageResolution];
   v9 = v8;
   v11 = v10;
-  v12 = [v4 cameraPosition];
-  if (v4)
+  cameraPosition = [dataCopy cameraPosition];
+  if (dataCopy)
   {
-    [v4 radialDistortion];
-    [v4 tangentialDistortion];
+    [dataCopy radialDistortion];
+    [dataCopy tangentialDistortion];
   }
 
   else
@@ -559,13 +559,13 @@
   }
 
   v22 = v13;
-  [v4 exposureDuration];
+  [dataCopy exposureDuration];
   v15 = v14;
-  v16 = [v4 calibrationData];
-  v17 = [v4 extrinsicsMap];
+  calibrationData = [dataCopy calibrationData];
+  extrinsicsMap = [dataCopy extrinsicsMap];
   v26[0] = v21;
   v26[1] = v20;
-  v18 = -[ARCamera initWithIntrinsics:imageResolution:devicePosition:radialDistortion:tangentialDistortion:exposureDuration:calibrationData:extrinsicsMap:captureLens:](self, "initWithIntrinsics:imageResolution:devicePosition:radialDistortion:tangentialDistortion:exposureDuration:calibrationData:extrinsicsMap:captureLens:", v12, v26, v16, v17, [v4 captureLens], v25, v24, v23, v9, v11, v22, v15);
+  v18 = -[ARCamera initWithIntrinsics:imageResolution:devicePosition:radialDistortion:tangentialDistortion:exposureDuration:calibrationData:extrinsicsMap:captureLens:](self, "initWithIntrinsics:imageResolution:devicePosition:radialDistortion:tangentialDistortion:exposureDuration:calibrationData:extrinsicsMap:captureLens:", cameraPosition, v26, calibrationData, extrinsicsMap, [dataCopy captureLens], v25, v24, v23, v9, v11, v22, v15);
 
   return v18;
 }

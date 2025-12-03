@@ -10,8 +10,8 @@
   if (a3)
   {
     v4 = a3;
-    v5 = [a1 allKeys];
-    v6 = [v5 sortedArrayUsingSelector:sel_compare_];
+    allKeys = [self allKeys];
+    v6 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
     v7 = [v6 indexOfObject:v4];
     if (v7 + 1 >= [v6 count])
@@ -35,12 +35,12 @@
 
 - (id)firstKey
 {
-  v1 = [a1 allKeys];
-  v2 = [v1 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [self allKeys];
+  v2 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 @end

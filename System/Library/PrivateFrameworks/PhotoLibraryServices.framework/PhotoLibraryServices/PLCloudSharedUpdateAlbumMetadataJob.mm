@@ -1,28 +1,28 @@
 @interface PLCloudSharedUpdateAlbumMetadataJob
-+ (void)updateAlbumMetadata:(id)a3;
-- (id)_argumentsDictionaryAsData:(id)a3;
-- (id)_argumentsDictionaryFromXPCEvent:(id)a3;
++ (void)updateAlbumMetadata:(id)metadata;
+- (id)_argumentsDictionaryAsData:(id)data;
+- (id)_argumentsDictionaryFromXPCEvent:(id)event;
 - (id)description;
-- (id)initFromXPCObject:(id)a3 libraryServicesManager:(id)a4;
-- (void)_updateCloudSharedAlbumWithArgumentsDictionary:(id)a3 photoLibrary:(id)a4;
-- (void)_updateSharedStreamCollectionShareWithArgumentsDictionary:(id)a3 photoLibrary:(id)a4;
-- (void)encodeToXPCObject:(id)a3;
+- (id)initFromXPCObject:(id)object libraryServicesManager:(id)manager;
+- (void)_updateCloudSharedAlbumWithArgumentsDictionary:(id)dictionary photoLibrary:(id)library;
+- (void)_updateSharedStreamCollectionShareWithArgumentsDictionary:(id)dictionary photoLibrary:(id)library;
+- (void)encodeToXPCObject:(id)object;
 - (void)runDaemonSide;
 @end
 
 @implementation PLCloudSharedUpdateAlbumMetadataJob
 
-- (void)_updateSharedStreamCollectionShareWithArgumentsDictionary:(id)a3 photoLibrary:(id)a4
+- (void)_updateSharedStreamCollectionShareWithArgumentsDictionary:(id)dictionary photoLibrary:(id)library
 {
   v103 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKey:@"album-guid"];
+  dictionaryCopy = dictionary;
+  libraryCopy = library;
+  v7 = [dictionaryCopy objectForKey:@"album-guid"];
   if (v7)
   {
-    v8 = [v5 objectForKey:@"album-relationshipState"];
-    v9 = [v6 managedObjectContext];
-    v10 = [(PLShare *)PLCollectionShare shareWithScopeIdentifier:v7 includeTrashed:0 inManagedObjectContext:v9];
+    v8 = [dictionaryCopy objectForKey:@"album-relationshipState"];
+    managedObjectContext = [libraryCopy managedObjectContext];
+    v10 = [(PLShare *)PLCollectionShare shareWithScopeIdentifier:v7 includeTrashed:0 inManagedObjectContext:managedObjectContext];
 
     if ([v8 intValue]== 1)
     {
@@ -40,20 +40,20 @@
       }
 
       v77 = v7;
-      v76 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
     }
 
     else
     {
-      v76 = 0;
+      date = 0;
       v77 = v7;
     }
 
-    v12 = [v8 intValue];
+    intValue = [v8 intValue];
     v13 = v10;
     if (!v10)
     {
-      v13 = [(PLShare *)PLCollectionShare insertInPhotoLibrary:v6];
+      v13 = [(PLShare *)PLCollectionShare insertInPhotoLibrary:libraryCopy];
       [v13 setCollectionShareKind:2];
       [v13 setScopeIdentifier:v77];
       v14 = [MEMORY[0x1E695DF00] now];
@@ -66,7 +66,7 @@
 
       [v13 setCustomSortKey:6];
       [v13 setCustomSortAscending:0];
-      if (!v12)
+      if (!intValue)
       {
         [v13 setStatus:1];
       }
@@ -75,7 +75,7 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v17 = @"NO";
-        if (!v12)
+        if (!intValue)
         {
           v17 = @"YES";
         }
@@ -88,13 +88,13 @@
       }
     }
 
-    v80 = [v5 objectForKey:@"kPLAlbumOwnerDictionaryKey"];
+    v80 = [dictionaryCopy objectForKey:@"kPLAlbumOwnerDictionaryKey"];
     v78 = v8;
-    v79 = v6;
+    v79 = libraryCopy;
     v75 = v10;
     if ([v80 count])
     {
-      v71 = v12;
+      v71 = intValue;
       v73 = [v80 objectForKey:@"kPLAlbumOwnerHashedPersonIDKey"];
       [v13 participants];
       v87 = 0u;
@@ -146,8 +146,8 @@ LABEL_23:
 LABEL_29:
       }
 
-      v25 = [v6 managedObjectContext];
-      v24 = [PLShareParticipant insertInManagedObjectContext:v25];
+      managedObjectContext2 = [libraryCopy managedObjectContext];
+      v24 = [PLShareParticipant insertInManagedObjectContext:managedObjectContext2];
 
       [v24 setRole:1];
       [v24 setPermission:3];
@@ -199,16 +199,16 @@ LABEL_32:
       [v24 setIsCurrentUser:v71 == 0];
 
       v8 = v78;
-      v6 = v79;
+      libraryCopy = v79;
       v10 = v75;
     }
 
     if (v8)
     {
-      v33 = [v8 intValue];
-      if (v33 < 3)
+      intValue2 = [v8 intValue];
+      if (intValue2 < 3)
       {
-        v34 = v33 + 1;
+        v34 = intValue2 + 1;
       }
 
       else
@@ -219,13 +219,13 @@ LABEL_32:
       [v13 setStatus:v34];
     }
 
-    v35 = [v5 objectForKey:@"album-name"];
+    v35 = [dictionaryCopy objectForKey:@"album-name"];
     if (v35)
     {
       [v13 setTitle:v35];
     }
 
-    v36 = [v5 objectForKey:@"album-metadata"];
+    v36 = [dictionaryCopy objectForKey:@"album-metadata"];
     v37 = v36;
     if (v36)
     {
@@ -236,7 +236,7 @@ LABEL_32:
       [v13 setClientBundleIdentifier:v39];
     }
 
-    v40 = [v5 objectForKey:@"album-isPublic"];
+    v40 = [dictionaryCopy objectForKey:@"album-isPublic"];
     v41 = v40;
     if (v40)
     {
@@ -251,7 +251,7 @@ LABEL_32:
       }
 
       [v13 setPublicURLState:v42];
-      v43 = [v5 objectForKey:@"album-publicURLString"];
+      v43 = [dictionaryCopy objectForKey:@"album-publicURLString"];
       if (v43)
       {
         v44 = [MEMORY[0x1E695DFF8] URLWithString:v43];
@@ -262,13 +262,13 @@ LABEL_32:
     v70 = v41;
     v72 = v37;
     v74 = v35;
-    v45 = [v5 objectForKey:@"album-allowsMultipleContributors"];
+    v45 = [dictionaryCopy objectForKey:@"album-allowsMultipleContributors"];
     if (v45)
     {
-      v46 = [v13 publicPermission];
+      publicPermission = [v13 publicPermission];
       v69 = v45;
-      v47 = [v45 BOOLValue];
-      if (v47)
+      bOOLValue = [v45 BOOLValue];
+      if (bOOLValue)
       {
         v48 = 3;
       }
@@ -279,12 +279,12 @@ LABEL_32:
       }
 
       [v13 setPublicPermission:v48];
-      v49 = [v13 participants];
+      participants = [v13 participants];
       v83 = 0u;
       v84 = 0u;
       v85 = 0u;
       v86 = 0u;
-      v50 = [v49 countByEnumeratingWithState:&v83 objects:v101 count:16];
+      v50 = [participants countByEnumeratingWithState:&v83 objects:v101 count:16];
       if (v50)
       {
         v51 = v50;
@@ -295,7 +295,7 @@ LABEL_32:
           {
             if (*v84 != v52)
             {
-              objc_enumerationMutation(v49);
+              objc_enumerationMutation(participants);
             }
 
             v54 = *(*(&v83 + 1) + 8 * i);
@@ -305,44 +305,44 @@ LABEL_32:
             }
           }
 
-          v51 = [v49 countByEnumeratingWithState:&v83 objects:v101 count:16];
+          v51 = [participants countByEnumeratingWithState:&v83 objects:v101 count:16];
         }
 
         while (v51);
       }
 
-      if ((((v46 != 3) ^ v47) & 1) == 0 && [v13 status] == 3)
+      if ((((publicPermission != 3) ^ bOOLValue) & 1) == 0 && [v13 status] == 3)
       {
         v55 = +[PLNotificationManager sharedManager];
-        v56 = [v5 objectForKey:@"mstreamd-info"];
+        v56 = [dictionaryCopy objectForKey:@"mstreamd-info"];
         [v55 noteMultipleContributorStatusChangedForCollectionShare:v13 mstreamdInfo:v56];
       }
 
-      v6 = v79;
+      libraryCopy = v79;
       v10 = v75;
       v45 = v69;
     }
 
-    v57 = [v5 objectForKey:@"album-creationDate"];
+    v57 = [dictionaryCopy objectForKey:@"album-creationDate"];
     if (v57)
     {
       [v13 setCreationDate:v57];
       [v13 setLastModifiedDate:v57];
     }
 
-    v58 = [v5 objectForKey:@"album-isFamilySharedAlbum"];
+    v58 = [dictionaryCopy objectForKey:@"album-isFamilySharedAlbum"];
     [v13 setCreationType:{objc_msgSend(v58, "BOOLValue")}];
     if (([v13 isCurrentUserOwner] & 1) == 0)
     {
-      v59 = [v13 status];
-      if (!v10 && v59 == 2)
+      status = [v13 status];
+      if (!v10 && status == 2)
       {
         [v13 setUnseenContentState:2];
         v60 = +[PLNotificationManager sharedManager];
         [v60 noteDidReceiveInvitationForCollectionShare:v13];
 
-        [v13 setLastModifiedDate:v76];
-        v61 = [v5 objectForKey:@"album-autoAcceptInvitation"];
+        [v13 setLastModifiedDate:date];
+        v61 = [dictionaryCopy objectForKey:@"album-autoAcceptInvitation"];
         v62 = v61;
         if (v61 && [v61 BOOLValue])
         {
@@ -359,22 +359,22 @@ LABEL_32:
     v63 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
     {
-      v64 = [v13 scopeIdentifier];
-      v65 = [v13 title];
-      v66 = [v13 isCurrentUserOwner];
-      v67 = [v13 publicURLState];
-      v68 = [v13 status];
+      scopeIdentifier = [v13 scopeIdentifier];
+      title = [v13 title];
+      isCurrentUserOwner = [v13 isCurrentUserOwner];
+      publicURLState = [v13 publicURLState];
+      status2 = [v13 status];
       *buf = 138413314;
-      v92 = v64;
+      v92 = scopeIdentifier;
       v93 = 2112;
-      v94 = v65;
+      v94 = title;
       v95 = 1024;
-      v96 = v66;
-      v6 = v79;
+      v96 = isCurrentUserOwner;
+      libraryCopy = v79;
       v97 = 1024;
-      v98 = v67;
+      v98 = publicURLState;
       v99 = 1024;
-      v100 = v68;
+      v100 = status2;
       _os_log_impl(&dword_19BF1F000, v63, OS_LOG_TYPE_DEFAULT, "PLCloudSharedUpdateAlbumMetadataJob finished processing sharedstream collectionshare scopeIdentifier:%@ title:%@ isCurrentUserOwner:%i isPublic:%i relationshipState:%i", buf, 0x28u);
     }
 
@@ -411,16 +411,16 @@ void __110__PLCloudSharedUpdateAlbumMetadataJob__updateSharedStreamCollectionSha
   }
 }
 
-- (void)_updateCloudSharedAlbumWithArgumentsDictionary:(id)a3 photoLibrary:(id)a4
+- (void)_updateCloudSharedAlbumWithArgumentsDictionary:(id)dictionary photoLibrary:(id)library
 {
   v115 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKey:@"album-guid"];
+  dictionaryCopy = dictionary;
+  libraryCopy = library;
+  v7 = [dictionaryCopy objectForKey:@"album-guid"];
   if (v7)
   {
-    v8 = [v5 objectForKey:@"album-relationshipState"];
-    v9 = [PLCloudSharedAlbum cloudSharedAlbumWithGUID:v7 inLibrary:v6];
+    v8 = [dictionaryCopy objectForKey:@"album-relationshipState"];
+    v9 = [PLCloudSharedAlbum cloudSharedAlbumWithGUID:v7 inLibrary:libraryCopy];
     if ([v8 intValue]== 1)
     {
       if (v9 && [(__CFString *)v9 cloudRelationshipStateLocalValue]== 2)
@@ -436,33 +436,33 @@ void __110__PLCloudSharedUpdateAlbumMetadataJob__updateSharedStreamCollectionSha
         goto LABEL_75;
       }
 
-      v89 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
     }
 
     else
     {
-      v89 = 0;
+      date = 0;
     }
 
     v11 = v9;
     v91 = v7;
-    v87 = v6;
+    v87 = libraryCopy;
     v88 = v8;
     v85 = v9;
     if (!v9)
     {
-      v82 = v5;
-      v11 = [PLGenericAlbum insertNewCloudSharedAlbumWithTitle:0 lastInterestingDate:v89 intoLibrary:v6];
+      v82 = dictionaryCopy;
+      v11 = [PLGenericAlbum insertNewCloudSharedAlbumWithTitle:0 lastInterestingDate:date intoLibrary:libraryCopy];
       [v11 setCloudGUID:v7];
-      v12 = [v8 intValue];
-      v13 = [MEMORY[0x1E696AD98] numberWithBool:v12 == 0];
+      intValue = [v8 intValue];
+      v13 = [MEMORY[0x1E696AD98] numberWithBool:intValue == 0];
       [v11 setIsOwned:v13];
 
       v14 = PLPhotoSharingGetLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v15 = @"NO";
-        if (!v12)
+        if (!intValue)
         {
           v15 = @"YES";
         }
@@ -474,7 +474,7 @@ void __110__PLCloudSharedUpdateAlbumMetadataJob__updateSharedStreamCollectionSha
         _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "inserting shared album with GUID %@ isOwned %@", buf, 0x16u);
       }
 
-      v16 = [PLCloudSharedAlbumInvitationRecord cloudSharedAlbumInvitationRecordsWithAlbumGUID:v7 inLibrary:v6];
+      v16 = [PLCloudSharedAlbumInvitationRecord cloudSharedAlbumInvitationRecordsWithAlbumGUID:v7 inLibrary:libraryCopy];
       v94 = 0u;
       v95 = 0u;
       v96 = 0u;
@@ -513,12 +513,12 @@ void __110__PLCloudSharedUpdateAlbumMetadataJob__updateSharedStreamCollectionSha
         while (v18);
       }
 
-      v5 = v82;
+      dictionaryCopy = v82;
       v9 = 0;
-      v6 = v87;
+      libraryCopy = v87;
     }
 
-    v23 = [v5 objectForKey:@"kPLAlbumOwnerDictionaryKey"];
+    v23 = [dictionaryCopy objectForKey:@"kPLAlbumOwnerDictionaryKey"];
     v90 = v23;
     if ([(__CFString *)v23 count])
     {
@@ -581,46 +581,46 @@ void __110__PLCloudSharedUpdateAlbumMetadataJob__updateSharedStreamCollectionSha
       v33 = PLPhotoSharingGetLog();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
       {
-        v34 = [v5 objectForKey:@"album-name"];
-        v35 = [v11 cloudOwnerFirstName];
-        v36 = [v11 cloudOwnerLastName];
-        v37 = [v11 cloudOwnerFullName];
-        v38 = [v11 cloudOwnerEmail];
-        v39 = [v11 cloudOwnerHashedPersonID];
-        v40 = [v11 cloudOwnerIsWhitelisted];
+        v34 = [dictionaryCopy objectForKey:@"album-name"];
+        cloudOwnerFirstName = [v11 cloudOwnerFirstName];
+        cloudOwnerLastName = [v11 cloudOwnerLastName];
+        cloudOwnerFullName = [v11 cloudOwnerFullName];
+        cloudOwnerEmail = [v11 cloudOwnerEmail];
+        cloudOwnerHashedPersonID = [v11 cloudOwnerHashedPersonID];
+        cloudOwnerIsWhitelisted = [v11 cloudOwnerIsWhitelisted];
         *buf = 138414082;
         v41 = @"NO";
         v99 = v34;
         v100 = 2112;
-        if (v40)
+        if (cloudOwnerIsWhitelisted)
         {
           v41 = @"YES";
         }
 
         v101 = v91;
         v102 = 2112;
-        v103 = v35;
+        v103 = cloudOwnerFirstName;
         v104 = 2112;
-        v105 = v36;
+        v105 = cloudOwnerLastName;
         v106 = 2112;
-        v107 = v37;
+        v107 = cloudOwnerFullName;
         v108 = 2112;
-        v109 = v38;
+        v109 = cloudOwnerEmail;
         v110 = 2112;
-        v111 = v39;
+        v111 = cloudOwnerHashedPersonID;
         v112 = 2112;
         v113 = v41;
         _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_DEFAULT, "setting person info for album '%@' (%@): %@, %@, %@, %@, hashedPersonID %@, whitelist: %@", buf, 0x52u);
       }
 
-      v6 = v87;
-      v42 = [v87 personInfoManager];
-      v43 = [v11 cloudOwnerFirstName];
-      v44 = [v11 cloudOwnerLastName];
-      v45 = [v11 cloudOwnerFullName];
-      v46 = [v11 cloudOwnerEmail];
-      v47 = [v11 cloudOwnerHashedPersonID];
-      [v42 setFirstName:v43 lastName:v44 fullName:v45 email:v46 forPersonID:v47];
+      libraryCopy = v87;
+      personInfoManager = [v87 personInfoManager];
+      cloudOwnerFirstName2 = [v11 cloudOwnerFirstName];
+      cloudOwnerLastName2 = [v11 cloudOwnerLastName];
+      cloudOwnerFullName2 = [v11 cloudOwnerFullName];
+      cloudOwnerEmail2 = [v11 cloudOwnerEmail];
+      cloudOwnerHashedPersonID2 = [v11 cloudOwnerHashedPersonID];
+      [personInfoManager setFirstName:cloudOwnerFirstName2 lastName:cloudOwnerLastName2 fullName:cloudOwnerFullName2 email:cloudOwnerEmail2 forPersonID:cloudOwnerHashedPersonID2];
 
       v7 = v91;
       v8 = v88;
@@ -632,24 +632,24 @@ void __110__PLCloudSharedUpdateAlbumMetadataJob__updateSharedStreamCollectionSha
       [v11 setCloudRelationshipState:v8];
     }
 
-    v48 = [v5 objectForKey:@"album-name"];
+    v48 = [dictionaryCopy objectForKey:@"album-name"];
     if (v48)
     {
       [v11 setTitle:v48];
     }
 
-    v49 = [v5 objectForKey:@"album-metadata"];
+    v49 = [dictionaryCopy objectForKey:@"album-metadata"];
     if (v49)
     {
       [v11 setCloudMetadata:v49];
     }
 
-    v50 = [v5 objectForKey:@"album-isPublic"];
+    v50 = [dictionaryCopy objectForKey:@"album-isPublic"];
     if (v50)
     {
       [v11 setCloudPublicURLEnabled:v50];
       [v11 setCloudPublicURLEnabledLocal:v50];
-      v51 = [v5 objectForKey:@"album-publicURLString"];
+      v51 = [dictionaryCopy objectForKey:@"album-publicURLString"];
       if (v51)
       {
         [v11 setPublicURL:v51];
@@ -659,42 +659,42 @@ void __110__PLCloudSharedUpdateAlbumMetadataJob__updateSharedStreamCollectionSha
     v79 = v50;
     v81 = v49;
     v84 = v48;
-    v52 = [v11 cloudRelationshipStateValue];
-    v53 = [v5 objectForKey:@"album-allowsMultipleContributors"];
+    cloudRelationshipStateValue = [v11 cloudRelationshipStateValue];
+    v53 = [dictionaryCopy objectForKey:@"album-allowsMultipleContributors"];
     if (v53)
     {
-      v54 = [v11 cloudMultipleContributorsEnabled];
-      v55 = [v54 BOOLValue];
+      cloudMultipleContributorsEnabled = [v11 cloudMultipleContributorsEnabled];
+      bOOLValue = [cloudMultipleContributorsEnabled BOOLValue];
 
-      LODWORD(v54) = [v53 BOOLValue];
+      LODWORD(cloudMultipleContributorsEnabled) = [v53 BOOLValue];
       [v11 setCloudMultipleContributorsEnabled:v53];
       [v11 setCloudMultipleContributorsEnabledLocal:v53];
-      if (v55 != v54 && v52 == 2)
+      if (bOOLValue != cloudMultipleContributorsEnabled && cloudRelationshipStateValue == 2)
       {
         v56 = +[PLNotificationManager sharedManager];
-        v57 = [v5 objectForKey:@"mstreamd-info"];
+        v57 = [dictionaryCopy objectForKey:@"mstreamd-info"];
         [v56 noteMultipleContributorStatusChangedForAlbum:v11 mstreamdInfo:v57];
       }
     }
 
-    v58 = [v5 objectForKey:@"album-isFamilySharedAlbum"];
+    v58 = [dictionaryCopy objectForKey:@"album-isFamilySharedAlbum"];
     [v11 setCloudAlbumSubtype:{objc_msgSend(v58, "BOOLValue")}];
-    v59 = [v5 objectForKey:@"album-creationDate"];
+    v59 = [dictionaryCopy objectForKey:@"album-creationDate"];
     if (v59)
     {
       [v11 setCloudCreationDate:v59];
     }
 
-    v60 = [v11 isOwnedCloudSharedAlbum];
-    if (!v9 && (v60 & 1) == 0 && v52 == 1)
+    isOwnedCloudSharedAlbum = [v11 isOwnedCloudSharedAlbum];
+    if (!v9 && (isOwnedCloudSharedAlbum & 1) == 0 && cloudRelationshipStateValue == 1)
     {
       v61 = v59;
       [v11 setHasUnseenContentBoolValue:1];
       v62 = +[PLNotificationManager sharedManager];
       [v62 noteDidReceiveInvitationForSharedAlbum:v11];
 
-      [v11 updateCloudLastInterestingChangeDateWithDate:v89];
-      v63 = [v5 objectForKey:@"album-autoAcceptInvitation"];
+      [v11 updateCloudLastInterestingChangeDateWithDate:date];
+      v63 = [dictionaryCopy objectForKey:@"album-autoAcceptInvitation"];
       v64 = v63;
       if (v63 && [v63 BOOLValue])
       {
@@ -712,29 +712,29 @@ void __110__PLCloudSharedUpdateAlbumMetadataJob__updateSharedStreamCollectionSha
     v65 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
     {
-      v66 = [v11 cloudGUID];
-      v67 = [v11 title];
+      cloudGUID = [v11 cloudGUID];
+      title = [v11 title];
       [v11 isOwned];
       v68 = v86 = v59;
-      v69 = [v11 cloudPublicURLEnabled];
+      cloudPublicURLEnabled = [v11 cloudPublicURLEnabled];
       [v11 cloudRelationshipState];
       v77 = v58;
       v70 = v53;
-      v72 = v71 = v6;
-      v73 = [v72 intValue];
+      v72 = v71 = libraryCopy;
+      intValue2 = [v72 intValue];
       *buf = 138413314;
-      v99 = v66;
+      v99 = cloudGUID;
       v100 = 2112;
-      v101 = v67;
+      v101 = title;
       v102 = 2112;
       v103 = v68;
       v104 = 2112;
-      v105 = v69;
+      v105 = cloudPublicURLEnabled;
       v106 = 1024;
-      LODWORD(v107) = v73;
+      LODWORD(v107) = intValue2;
       _os_log_impl(&dword_19BF1F000, v65, OS_LOG_TYPE_DEFAULT, "PLCloudSharedUpdateAlbumMetadataJob finished processing album GUID:%@ title:%@ isOwned:%@ isPublic:%@ relationshipState:%i", buf, 0x30u);
 
-      v6 = v71;
+      libraryCopy = v71;
       v53 = v70;
       v58 = v77;
 
@@ -776,11 +776,11 @@ void __99__PLCloudSharedUpdateAlbumMetadataJob__updateCloudSharedAlbumWithArgume
   }
 }
 
-- (id)_argumentsDictionaryFromXPCEvent:(id)a3
+- (id)_argumentsDictionaryFromXPCEvent:(id)event
 {
   v13 = *MEMORY[0x1E69E9840];
   length = 0;
-  data = xpc_dictionary_get_data(a3, "arguments-dictionary", &length);
+  data = xpc_dictionary_get_data(event, "arguments-dictionary", &length);
   if (data)
   {
     v4 = [MEMORY[0x1E695DEF0] dataWithBytes:data length:length];
@@ -814,14 +814,14 @@ void __99__PLCloudSharedUpdateAlbumMetadataJob__updateCloudSharedAlbumWithArgume
   return v5;
 }
 
-- (id)_argumentsDictionaryAsData:(id)a3
+- (id)_argumentsDictionaryAsData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v6 = 0;
-  v4 = [MEMORY[0x1E696AE40] dataWithPropertyList:v3 format:200 options:0 error:&v6];
+  v4 = [MEMORY[0x1E696AE40] dataWithPropertyList:dataCopy format:200 options:0 error:&v6];
   if (!v4)
   {
-    NSLog(&cfstr_ErrorArguments.isa, v3, v6);
+    NSLog(&cfstr_ErrorArguments.isa, dataCopy, v6);
   }
 
   return v4;
@@ -830,7 +830,7 @@ void __99__PLCloudSharedUpdateAlbumMetadataJob__updateCloudSharedAlbumWithArgume
 - (void)runDaemonSide
 {
   v3 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudSharedUpdateAlbumMetadataJob runDaemonSide]"];
-  v4 = [objc_opt_class() lowPriorityOperationQueue];
+  lowPriorityOperationQueue = [objc_opt_class() lowPriorityOperationQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__PLCloudSharedUpdateAlbumMetadataJob_runDaemonSide__block_invoke;
@@ -838,7 +838,7 @@ void __99__PLCloudSharedUpdateAlbumMetadataJob__updateCloudSharedAlbumWithArgume
   v6[4] = self;
   v7 = v3;
   v5 = v3;
-  [v4 addOperationWithBlock:v6];
+  [lowPriorityOperationQueue addOperationWithBlock:v6];
 }
 
 void __52__PLCloudSharedUpdateAlbumMetadataJob_runDaemonSide__block_invoke(uint64_t a1)
@@ -882,23 +882,23 @@ void __52__PLCloudSharedUpdateAlbumMetadataJob_runDaemonSide__block_invoke_37(ui
   v7.receiver = self;
   v7.super_class = PLCloudSharedUpdateAlbumMetadataJob;
   v3 = [(PLDaemonJob *)&v7 description];
-  v4 = [(PLCloudSharedUpdateAlbumMetadataJob *)self metadata];
-  v5 = [v3 stringByAppendingFormat:@" metadata %@", v4];
+  metadata = [(PLCloudSharedUpdateAlbumMetadataJob *)self metadata];
+  v5 = [v3 stringByAppendingFormat:@" metadata %@", metadata];
 
   return v5;
 }
 
-- (id)initFromXPCObject:(id)a3 libraryServicesManager:(id)a4
+- (id)initFromXPCObject:(id)object libraryServicesManager:(id)manager
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  objectCopy = object;
   v13.receiver = self;
   v13.super_class = PLCloudSharedUpdateAlbumMetadataJob;
-  v7 = [(PLCloudSharingJob *)&v13 initFromXPCObject:v6 libraryServicesManager:a4];
+  v7 = [(PLCloudSharingJob *)&v13 initFromXPCObject:objectCopy libraryServicesManager:manager];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 _argumentsDictionaryFromXPCEvent:v6];
+    v9 = [v7 _argumentsDictionaryFromXPCEvent:objectCopy];
     if (!v9)
     {
       v10 = PLPhotoSharingGetLog();
@@ -923,21 +923,21 @@ void __52__PLCloudSharedUpdateAlbumMetadataJob_runDaemonSide__block_invoke_37(ui
   return v8;
 }
 
-- (void)encodeToXPCObject:(id)a3
+- (void)encodeToXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = PLCloudSharedUpdateAlbumMetadataJob;
-  [(PLDaemonJob *)&v9 encodeToXPCObject:v4];
-  v5 = [(PLCloudSharedUpdateAlbumMetadataJob *)self metadata];
-  if ([v5 count])
+  [(PLDaemonJob *)&v9 encodeToXPCObject:objectCopy];
+  metadata = [(PLCloudSharedUpdateAlbumMetadataJob *)self metadata];
+  if ([metadata count])
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [(PLCloudSharedUpdateAlbumMetadataJob *)self _argumentsDictionaryAsData:v5];
+    v7 = [(PLCloudSharedUpdateAlbumMetadataJob *)self _argumentsDictionaryAsData:metadata];
     v8 = v7;
     if (v7)
     {
-      xpc_dictionary_set_data(v4, "arguments-dictionary", [v7 bytes], objc_msgSend(v7, "length"));
+      xpc_dictionary_set_data(objectCopy, "arguments-dictionary", [v7 bytes], objc_msgSend(v7, "length"));
     }
 
     else
@@ -949,11 +949,11 @@ void __52__PLCloudSharedUpdateAlbumMetadataJob_runDaemonSide__block_invoke_37(ui
   }
 }
 
-+ (void)updateAlbumMetadata:(id)a3
++ (void)updateAlbumMetadata:(id)metadata
 {
-  v3 = a3;
+  metadataCopy = metadata;
   v4 = objc_opt_new();
-  [v4 setMetadata:v3];
+  [v4 setMetadata:metadataCopy];
 
   [v4 runAndWaitForMessageToBeSent];
 }

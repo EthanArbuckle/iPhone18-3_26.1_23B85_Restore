@@ -1,28 +1,28 @@
 @interface SCSchemaSCCheckCorrectionResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SCSchemaSCCheckCorrectionResult)initWithDictionary:(id)a3;
-- (SCSchemaSCCheckCorrectionResult)initWithJSON:(id)a3;
+- (SCSchemaSCCheckCorrectionResult)initWithDictionary:(id)dictionary;
+- (SCSchemaSCCheckCorrectionResult)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addIncomingEntities:(id)a3;
-- (void)addReferredEntities:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addIncomingEntities:(id)entities;
+- (void)addReferredEntities:(id)entities;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SCSchemaSCCheckCorrectionResult
 
-- (SCSchemaSCCheckCorrectionResult)initWithDictionary:(id)a3
+- (SCSchemaSCCheckCorrectionResult)initWithDictionary:(id)dictionary
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v38.receiver = self;
   v38.super_class = SCSchemaSCCheckCorrectionResult;
   v5 = [(SCSchemaSCCheckCorrectionResult *)&v38 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"correctedAttribute"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"correctedAttribute"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,14 +30,14 @@
       [(SCSchemaSCCheckCorrectionResult *)v5 setCorrectedAttribute:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"correctionType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"correctionType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SCSchemaSCCheckCorrectionResult setCorrectionType:](v5, "setCorrectionType:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"referredEntities"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"referredEntities"];
     objc_opt_class();
     v29 = v8;
     if (objc_opt_isKindOfClass())
@@ -85,7 +85,7 @@
       v8 = v29;
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"incomingEntities"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"incomingEntities"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -138,30 +138,30 @@
   return v5;
 }
 
-- (SCSchemaSCCheckCorrectionResult)initWithJSON:(id)a3
+- (SCSchemaSCCheckCorrectionResult)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SCSchemaSCCheckCorrectionResult *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SCSchemaSCCheckCorrectionResult *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SCSchemaSCCheckCorrectionResult *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -174,12 +174,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_correctedAttribute)
   {
-    v4 = [(SCSchemaSCCheckCorrectionResult *)self correctedAttribute];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"correctedAttribute"];
+    correctedAttribute = [(SCSchemaSCCheckCorrectionResult *)self correctedAttribute];
+    v5 = [correctedAttribute copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"correctedAttribute"];
   }
 
   if (*&self->_has)
@@ -195,26 +195,26 @@
       v7 = off_1E78E2AE0[v6];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"correctionType"];
+    [dictionary setObject:v7 forKeyedSubscript:@"correctionType"];
   }
 
   if (self->_incomingEntities)
   {
-    v8 = [(SCSchemaSCCheckCorrectionResult *)self incomingEntities];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"incomingEntities"];
+    incomingEntities = [(SCSchemaSCCheckCorrectionResult *)self incomingEntities];
+    v9 = [incomingEntities copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"incomingEntities"];
   }
 
   if (self->_referredEntities)
   {
-    v10 = [(SCSchemaSCCheckCorrectionResult *)self referredEntities];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"referredEntities"];
+    referredEntities = [(SCSchemaSCCheckCorrectionResult *)self referredEntities];
+    v11 = [referredEntities copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"referredEntities"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -235,28 +235,28 @@
   return v5 ^ v6 ^ [(NSArray *)self->_incomingEntities hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(SCSchemaSCCheckCorrectionResult *)self correctedAttribute];
-  v6 = [v4 correctedAttribute];
-  if ((v5 != 0) == (v6 == 0))
+  correctedAttribute = [(SCSchemaSCCheckCorrectionResult *)self correctedAttribute];
+  correctedAttribute2 = [equalCopy correctedAttribute];
+  if ((correctedAttribute != 0) == (correctedAttribute2 == 0))
   {
     goto LABEL_19;
   }
 
-  v7 = [(SCSchemaSCCheckCorrectionResult *)self correctedAttribute];
-  if (v7)
+  correctedAttribute3 = [(SCSchemaSCCheckCorrectionResult *)self correctedAttribute];
+  if (correctedAttribute3)
   {
-    v8 = v7;
-    v9 = [(SCSchemaSCCheckCorrectionResult *)self correctedAttribute];
-    v10 = [v4 correctedAttribute];
-    v11 = [v9 isEqual:v10];
+    v8 = correctedAttribute3;
+    correctedAttribute4 = [(SCSchemaSCCheckCorrectionResult *)self correctedAttribute];
+    correctedAttribute5 = [equalCopy correctedAttribute];
+    v11 = [correctedAttribute4 isEqual:correctedAttribute5];
 
     if (!v11)
     {
@@ -268,7 +268,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[40] & 1))
+  if ((*&self->_has & 1) != (equalCopy[40] & 1))
   {
     goto LABEL_20;
   }
@@ -276,26 +276,26 @@
   if (*&self->_has)
   {
     correctionType = self->_correctionType;
-    if (correctionType != [v4 correctionType])
+    if (correctionType != [equalCopy correctionType])
     {
       goto LABEL_20;
     }
   }
 
-  v5 = [(SCSchemaSCCheckCorrectionResult *)self referredEntities];
-  v6 = [v4 referredEntities];
-  if ((v5 != 0) == (v6 == 0))
+  correctedAttribute = [(SCSchemaSCCheckCorrectionResult *)self referredEntities];
+  correctedAttribute2 = [equalCopy referredEntities];
+  if ((correctedAttribute != 0) == (correctedAttribute2 == 0))
   {
     goto LABEL_19;
   }
 
-  v13 = [(SCSchemaSCCheckCorrectionResult *)self referredEntities];
-  if (v13)
+  referredEntities = [(SCSchemaSCCheckCorrectionResult *)self referredEntities];
+  if (referredEntities)
   {
-    v14 = v13;
-    v15 = [(SCSchemaSCCheckCorrectionResult *)self referredEntities];
-    v16 = [v4 referredEntities];
-    v17 = [v15 isEqual:v16];
+    v14 = referredEntities;
+    referredEntities2 = [(SCSchemaSCCheckCorrectionResult *)self referredEntities];
+    referredEntities3 = [equalCopy referredEntities];
+    v17 = [referredEntities2 isEqual:referredEntities3];
 
     if (!v17)
     {
@@ -307,12 +307,12 @@
   {
   }
 
-  v5 = [(SCSchemaSCCheckCorrectionResult *)self incomingEntities];
-  v6 = [v4 incomingEntities];
-  if ((v5 != 0) != (v6 == 0))
+  correctedAttribute = [(SCSchemaSCCheckCorrectionResult *)self incomingEntities];
+  correctedAttribute2 = [equalCopy incomingEntities];
+  if ((correctedAttribute != 0) != (correctedAttribute2 == 0))
   {
-    v18 = [(SCSchemaSCCheckCorrectionResult *)self incomingEntities];
-    if (!v18)
+    incomingEntities = [(SCSchemaSCCheckCorrectionResult *)self incomingEntities];
+    if (!incomingEntities)
     {
 
 LABEL_23:
@@ -320,10 +320,10 @@ LABEL_23:
       goto LABEL_21;
     }
 
-    v19 = v18;
-    v20 = [(SCSchemaSCCheckCorrectionResult *)self incomingEntities];
-    v21 = [v4 incomingEntities];
-    v22 = [v20 isEqual:v21];
+    v19 = incomingEntities;
+    incomingEntities2 = [(SCSchemaSCCheckCorrectionResult *)self incomingEntities];
+    incomingEntities3 = [equalCopy incomingEntities];
+    v22 = [incomingEntities2 isEqual:incomingEntities3];
 
     if (v22)
     {
@@ -343,13 +343,13 @@ LABEL_21:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SCSchemaSCCheckCorrectionResult *)self correctedAttribute];
+  toCopy = to;
+  correctedAttribute = [(SCSchemaSCCheckCorrectionResult *)self correctedAttribute];
 
-  if (v5)
+  if (correctedAttribute)
   {
     PBDataWriterWriteStringField();
   }
@@ -422,40 +422,40 @@ LABEL_21:
   }
 }
 
-- (void)addIncomingEntities:(id)a3
+- (void)addIncomingEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   incomingEntities = self->_incomingEntities;
-  v8 = v4;
+  v8 = entitiesCopy;
   if (!incomingEntities)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_incomingEntities;
-    self->_incomingEntities = v6;
+    self->_incomingEntities = array;
 
-    v4 = v8;
+    entitiesCopy = v8;
     incomingEntities = self->_incomingEntities;
   }
 
-  [(NSArray *)incomingEntities addObject:v4];
+  [(NSArray *)incomingEntities addObject:entitiesCopy];
 }
 
-- (void)addReferredEntities:(id)a3
+- (void)addReferredEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   referredEntities = self->_referredEntities;
-  v8 = v4;
+  v8 = entitiesCopy;
   if (!referredEntities)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_referredEntities;
-    self->_referredEntities = v6;
+    self->_referredEntities = array;
 
-    v4 = v8;
+    entitiesCopy = v8;
     referredEntities = self->_referredEntities;
   }
 
-  [(NSArray *)referredEntities addObject:v4];
+  [(NSArray *)referredEntities addObject:entitiesCopy];
 }
 
 - (id)suppressMessageUnderConditions

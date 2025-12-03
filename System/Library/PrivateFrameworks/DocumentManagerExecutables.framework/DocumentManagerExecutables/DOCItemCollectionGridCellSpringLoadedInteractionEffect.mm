@@ -1,16 +1,16 @@
 @interface DOCItemCollectionGridCellSpringLoadedInteractionEffect
 - (_TtC26DocumentManagerExecutables54DOCItemCollectionGridCellSpringLoadedInteractionEffect)init;
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4;
+- (void)interaction:(id)interaction didChangeWithContext:(id)context;
 @end
 
 @implementation DOCItemCollectionGridCellSpringLoadedInteractionEffect
 
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4
+- (void)interaction:(id)interaction didChangeWithContext:(id)context
 {
-  v6 = a3;
+  interactionCopy = interaction;
   swift_unknownObjectRetain();
-  v7 = self;
-  specialized DOCItemCollectionGridCellSpringLoadedInteractionEffect.interaction(_:didChangeWith:)(a4);
+  selfCopy = self;
+  specialized DOCItemCollectionGridCellSpringLoadedInteractionEffect.interaction(_:didChangeWith:)(context);
 
   swift_unknownObjectRelease();
 }

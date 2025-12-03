@@ -1,6 +1,6 @@
 @interface THWAudioLayout
 - (THWMovieInfo)movieInfo;
-- (id)layoutGeometryForLayout:(id)a3;
+- (id)layoutGeometryForLayout:(id)layout;
 - (void)updateChildrenFromInfo;
 @end
 
@@ -39,13 +39,13 @@
   }
 }
 
-- (id)layoutGeometryForLayout:(id)a3
+- (id)layoutGeometryForLayout:(id)layout
 {
-  v5 = [a3 info];
-  if (v5 == [(THWMovieInfo *)[(THWAudioLayout *)self movieInfo] posterImageInfo])
+  info = [layout info];
+  if (info == [(THWMovieInfo *)[(THWAudioLayout *)self movieInfo] posterImageInfo])
   {
     v7 = [TSDLayoutGeometry alloc];
-    [objc_msgSend(objc_msgSend(a3 "info")];
+    [objc_msgSend(objc_msgSend(layout "info")];
     v8 = *&CGAffineTransformIdentity.c;
     v10[0] = *&CGAffineTransformIdentity.a;
     v10[1] = v8;
@@ -57,7 +57,7 @@
   {
     v9.receiver = self;
     v9.super_class = THWAudioLayout;
-    return [(THWMovieLayout *)&v9 layoutGeometryForLayout:a3];
+    return [(THWMovieLayout *)&v9 layoutGeometryForLayout:layout];
   }
 }
 

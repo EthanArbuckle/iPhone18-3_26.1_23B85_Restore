@@ -1,40 +1,40 @@
 @interface QLImageItemTransformerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)transformedContentsFromData:(id)a3 context:(id)a4 error:(id *)a5;
-- (id)transformedContentsFromURL:(id)a3 context:(id)a4 error:(id *)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)transformedContentsFromData:(id)data context:(id)context error:(id *)error;
+- (id)transformedContentsFromURL:(id)l context:(id)context error:(id *)error;
 @end
 
 @implementation QLImageItemTransformerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateProtocol:@"QLItemTransformerProtocol" hasOptionalInstanceMethod:@"transformedContentsFromData:context:error:"];
-  [v3 validateProtocol:@"QLItemTransformerProtocol" hasOptionalInstanceMethod:@"transformedContentsFromURL:context:error:"];
+  validationsCopy = validations;
+  [validationsCopy validateProtocol:@"QLItemTransformerProtocol" hasOptionalInstanceMethod:@"transformedContentsFromData:context:error:"];
+  [validationsCopy validateProtocol:@"QLItemTransformerProtocol" hasOptionalInstanceMethod:@"transformedContentsFromURL:context:error:"];
 }
 
-- (id)transformedContentsFromData:(id)a3 context:(id)a4 error:(id *)a5
+- (id)transformedContentsFromData:(id)data context:(id)context error:(id *)error
 {
   v11.receiver = self;
   v11.super_class = QLImageItemTransformerAccessibility;
-  v7 = a4;
-  v8 = [(QLImageItemTransformerAccessibility *)&v11 transformedContentsFromData:a3 context:v7 error:a5];
-  v9 = [v7 accessibilityLabel];
+  contextCopy = context;
+  v8 = [(QLImageItemTransformerAccessibility *)&v11 transformedContentsFromData:data context:contextCopy error:error];
+  accessibilityLabel = [contextCopy accessibilityLabel];
 
-  [v8 setAccessibilityLabel:v9];
+  [v8 setAccessibilityLabel:accessibilityLabel];
 
   return v8;
 }
 
-- (id)transformedContentsFromURL:(id)a3 context:(id)a4 error:(id *)a5
+- (id)transformedContentsFromURL:(id)l context:(id)context error:(id *)error
 {
   v11.receiver = self;
   v11.super_class = QLImageItemTransformerAccessibility;
-  v7 = a4;
-  v8 = [(QLImageItemTransformerAccessibility *)&v11 transformedContentsFromURL:a3 context:v7 error:a5];
-  v9 = [v7 accessibilityLabel];
+  contextCopy = context;
+  v8 = [(QLImageItemTransformerAccessibility *)&v11 transformedContentsFromURL:l context:contextCopy error:error];
+  accessibilityLabel = [contextCopy accessibilityLabel];
 
-  [v8 setAccessibilityLabel:v9];
+  [v8 setAccessibilityLabel:accessibilityLabel];
 
   return v8;
 }

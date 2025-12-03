@@ -1,6 +1,6 @@
 @interface APAMSNetworkFacade
-+ (id)dataTaskWithRequest:(id)a3;
-+ (id)encodeUrlRequest:(id)a3;
++ (id)dataTaskWithRequest:(id)request;
++ (id)encodeUrlRequest:(id)request;
 + (uint64_t)prewarm;
 - (APAMSNetworkFacade)init;
 @end
@@ -25,8 +25,8 @@
     _os_log_impl(&_mh_execute_header, v1, v2, "[APAMSNetworkFacade] Prewarming AMSNetworkFacade", v3, 2u);
   }
 
-  v4 = [objc_opt_self() processInfo];
-  [v4 isRunningTests];
+  processInfo = [objc_opt_self() processInfo];
+  [processInfo isRunningTests];
 
   if (qword_1004DD700 != -1)
   {
@@ -48,7 +48,7 @@
   return result;
 }
 
-+ (id)encodeUrlRequest:(id)a3
++ (id)encodeUrlRequest:(id)request
 {
   v3 = sub_100397068();
   v4 = *(v3 - 8);
@@ -61,10 +61,10 @@
   return v7;
 }
 
-+ (id)dataTaskWithRequest:(id)a3
++ (id)dataTaskWithRequest:(id)request
 {
-  v3 = a3;
-  v4 = _sSo18APAMSNetworkFacadeC21MediaServiceInterfaceE8dataTask4withSo10AMSPromiseCySo12AMSURLResultCGSo13AMSURLRequestC_tFZ_0(v3);
+  requestCopy = request;
+  v4 = _sSo18APAMSNetworkFacadeC21MediaServiceInterfaceE8dataTask4withSo10AMSPromiseCySo12AMSURLResultCGSo13AMSURLRequestC_tFZ_0(requestCopy);
 
   return v4;
 }

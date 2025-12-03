@@ -1,8 +1,8 @@
 @interface PHVideoRequest
-- (PHVideoRequest)initWithRequestID:(int)a3 requestIndex:(unint64_t)a4 contextType:(int64_t)a5 managerID:(unint64_t)a6 asset:(id)a7 displaySpec:(id)a8 behaviorSpec:(id)a9 delegate:(id)a10;
+- (PHVideoRequest)initWithRequestID:(int)d requestIndex:(unint64_t)index contextType:(int64_t)type managerID:(unint64_t)iD asset:(id)asset displaySpec:(id)spec behaviorSpec:(id)behaviorSpec delegate:(id)self0;
 - (void)_finish;
-- (void)_handleResultVideoURL:(id)a3 mediaItemMakerData:(id)a4 fingerPrint:(id)a5 info:(id)a6 error:(id)a7;
-- (void)configureWithError:(id)a3;
+- (void)_handleResultVideoURL:(id)l mediaItemMakerData:(id)data fingerPrint:(id)print info:(id)info error:(id)error;
+- (void)configureWithError:(id)error;
 - (void)startRequest;
 @end
 
@@ -21,47 +21,47 @@
   v3 = PLImageManagerGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(PHMediaRequest *)self identifierString];
-    v5 = [(PHMediaRequest *)self asset];
-    v6 = [v5 uuid];
+    identifierString = [(PHMediaRequest *)self identifierString];
+    asset = [(PHMediaRequest *)self asset];
+    uuid = [asset uuid];
     *buf = 138412546;
-    v41 = v4;
+    v41 = identifierString;
     v42 = 2112;
-    v43 = v6;
+    v43 = uuid;
     _os_log_impl(&dword_19C86F000, v3, OS_LOG_TYPE_DEBUG, "[RM]: %@ Video request running for asset %@", buf, 0x16u);
   }
 
-  v7 = [(PHMediaRequest *)self asset];
-  if (![v7 isPhotoIris])
+  asset2 = [(PHMediaRequest *)self asset];
+  if (![asset2 isPhotoIris])
   {
     goto LABEL_11;
   }
 
-  v8 = [(PHMediaRequest *)self asset];
-  if ([v8 canPlayPhotoIris])
+  asset3 = [(PHMediaRequest *)self asset];
+  if ([asset3 canPlayPhotoIris])
   {
     goto LABEL_10;
   }
 
-  v35 = [(PHVideoRequest *)self behaviorSpec];
-  v36 = [v35 version];
+  behaviorSpec = [(PHVideoRequest *)self behaviorSpec];
+  version = [behaviorSpec version];
 
-  if (v36)
+  if (version)
   {
     goto LABEL_12;
   }
 
-  v7 = PLImageManagerGetLog();
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+  asset2 = PLImageManagerGetLog();
+  if (os_log_type_enabled(asset2, OS_LOG_TYPE_ERROR))
   {
-    v8 = [(PHMediaRequest *)self identifierString];
-    v37 = [(PHMediaRequest *)self asset];
-    v38 = [v37 uuid];
+    asset3 = [(PHMediaRequest *)self identifierString];
+    asset4 = [(PHMediaRequest *)self asset];
+    uuid2 = [asset4 uuid];
     *buf = 138543618;
-    v41 = v8;
+    v41 = asset3;
     v42 = 2114;
-    v43 = v38;
-    _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_ERROR, "[RM] %{public}@ video request for unplayable live photo (uuid: %{public}@) will likely fail", buf, 0x16u);
+    v43 = uuid2;
+    _os_log_impl(&dword_19C86F000, asset2, OS_LOG_TYPE_ERROR, "[RM] %{public}@ video request for unplayable live photo (uuid: %{public}@) will likely fail", buf, 0x16u);
 
 LABEL_10:
   }
@@ -78,20 +78,20 @@ LABEL_12:
   else
   {
     displaySpec = self->_displaySpec;
-    v12 = [(PHMediaRequest *)self asset];
-    v13 = [v12 pixelWidth];
-    v14 = [(PHMediaRequest *)self asset];
-    -[PHImageDisplaySpec requestSizeFromFullSizedWidth:height:](displaySpec, "requestSizeFromFullSizedWidth:height:", v13, [v14 pixelHeight]);
+    asset5 = [(PHMediaRequest *)self asset];
+    pixelWidth = [asset5 pixelWidth];
+    asset6 = [(PHMediaRequest *)self asset];
+    -[PHImageDisplaySpec requestSizeFromFullSizedWidth:height:](displaySpec, "requestSizeFromFullSizedWidth:height:", pixelWidth, [asset6 pixelHeight]);
     v9 = v15;
     v10 = v16;
 
     v17 = PLImageManagerGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v18 = [(PHMediaRequest *)self identifierString];
+      identifierString2 = [(PHMediaRequest *)self identifierString];
       v19 = DCIM_NSStringFromCGSize();
       *buf = 138412546;
-      v41 = v18;
+      v41 = identifierString2;
       v42 = 2112;
       v43 = v19;
       _os_log_impl(&dword_19C86F000, v17, OS_LOG_TYPE_DEBUG, "[RM]: %@ request sized to %@", buf, 0x16u);
@@ -99,42 +99,42 @@ LABEL_12:
   }
 
   v20 = [PHVideoXPCRequest alloc];
-  v21 = [(PHMediaRequest *)self identifierString];
-  v22 = [(PHMediaRequest *)self asset];
-  v23 = [v22 objectID];
-  v24 = [(PHVideoXPCRequest *)v20 initWithTaskIdentifier:v21 assetObjectID:v23 size:self->_behaviorSpec behavior:v9, v10];
+  identifierString3 = [(PHMediaRequest *)self identifierString];
+  asset7 = [(PHMediaRequest *)self asset];
+  objectID = [asset7 objectID];
+  v24 = [(PHVideoXPCRequest *)v20 initWithTaskIdentifier:identifierString3 assetObjectID:objectID size:self->_behaviorSpec behavior:v9, v10];
 
   [(PLResourceXPCRequest *)v24 setWantsProgress:[(PHMediaRequest *)self wantsProgress]];
   v25 = PLImageManagerGetLog();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
   {
-    v26 = [(PHMediaRequest *)self identifierString];
-    v27 = [(PHMediaRequest *)self asset];
-    v28 = [v27 uuid];
+    identifierString4 = [(PHMediaRequest *)self identifierString];
+    asset8 = [(PHMediaRequest *)self asset];
+    uuid3 = [asset8 uuid];
     *buf = 138412546;
-    v41 = v26;
+    v41 = identifierString4;
     v42 = 2112;
-    v43 = v28;
+    v43 = uuid3;
     _os_log_impl(&dword_19C86F000, v25, OS_LOG_TYPE_DEBUG, "[RM] %@ sending video request for asset: %@", buf, 0x16u);
   }
 
-  v29 = [(PHMediaRequest *)self asset];
-  v30 = [v29 photoLibrary];
-  v31 = [v30 assetsdClient];
-  v32 = [v31 resourceAvailabilityClient];
+  asset9 = [(PHMediaRequest *)self asset];
+  photoLibrary = [asset9 photoLibrary];
+  assetsdClient = [photoLibrary assetsdClient];
+  resourceAvailabilityClient = [assetsdClient resourceAvailabilityClient];
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __30__PHVideoRequest_startRequest__block_invoke;
   v39[3] = &unk_1E75A42B8;
   v39[4] = self;
-  v33 = [v32 sendVideoRequest:v24 reply:v39];
+  v33 = [resourceAvailabilityClient sendVideoRequest:v24 reply:v39];
 
   if (v33)
   {
     if ([(PHMediaRequest *)self addProgressIfNotCanceled:v33])
     {
-      v34 = [(PHMediaRequest *)self lazyProgressContainer];
-      [v34 setRequestProgress:v33];
+      lazyProgressContainer = [(PHMediaRequest *)self lazyProgressContainer];
+      [lazyProgressContainer setRequestProgress:v33];
     }
 
     else
@@ -268,29 +268,29 @@ uint64_t __30__PHVideoRequest_startRequest__block_invoke_2(uint64_t a1, void *a2
   }
 }
 
-- (void)configureWithError:(id)a3
+- (void)configureWithError:(id)error
 {
   v5.receiver = self;
   v5.super_class = PHVideoRequest;
-  v4 = a3;
-  [(PHMediaRequest *)&v5 configureWithError:v4];
-  [(PHCompositeMediaResult *)self->_videoResult setError:v4, v5.receiver, v5.super_class];
+  errorCopy = error;
+  [(PHMediaRequest *)&v5 configureWithError:errorCopy];
+  [(PHCompositeMediaResult *)self->_videoResult setError:errorCopy, v5.receiver, v5.super_class];
 }
 
-- (void)_handleResultVideoURL:(id)a3 mediaItemMakerData:(id)a4 fingerPrint:(id)a5 info:(id)a6 error:(id)a7
+- (void)_handleResultVideoURL:(id)l mediaItemMakerData:(id)data fingerPrint:(id)print info:(id)info error:(id)error
 {
-  v16 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  lCopy = l;
+  dataCopy = data;
+  printCopy = print;
+  infoCopy = info;
+  errorCopy = error;
   if (![(PHMediaRequest *)self isCancelled])
   {
-    [(PHVideoResult *)self->_videoResult setVideoURL:v16];
-    [(PHVideoResult *)self->_videoResult setVideoMediaItemMakerData:v12];
-    [(PHVideoResult *)self->_videoResult setFingerPrint:v13];
-    [(PHCompositeMediaResult *)self->_videoResult setError:v15];
-    [(PHCompositeMediaResult *)self->_videoResult addInfoFromDictionary:v14];
+    [(PHVideoResult *)self->_videoResult setVideoURL:lCopy];
+    [(PHVideoResult *)self->_videoResult setVideoMediaItemMakerData:dataCopy];
+    [(PHVideoResult *)self->_videoResult setFingerPrint:printCopy];
+    [(PHCompositeMediaResult *)self->_videoResult setError:errorCopy];
+    [(PHCompositeMediaResult *)self->_videoResult addInfoFromDictionary:infoCopy];
   }
 
   [(PHVideoRequest *)self _finish];
@@ -303,23 +303,23 @@ uint64_t __30__PHVideoRequest_startRequest__block_invoke_2(uint64_t a1, void *a2
     [(PHCompositeMediaResult *)self->_videoResult setCancelled:1];
   }
 
-  v3 = [(PHMediaRequest *)self delegate];
-  [v3 mediaRequest:self didFinishWithResult:self->_videoResult];
+  delegate = [(PHMediaRequest *)self delegate];
+  [delegate mediaRequest:self didFinishWithResult:self->_videoResult];
 }
 
-- (PHVideoRequest)initWithRequestID:(int)a3 requestIndex:(unint64_t)a4 contextType:(int64_t)a5 managerID:(unint64_t)a6 asset:(id)a7 displaySpec:(id)a8 behaviorSpec:(id)a9 delegate:(id)a10
+- (PHVideoRequest)initWithRequestID:(int)d requestIndex:(unint64_t)index contextType:(int64_t)type managerID:(unint64_t)iD asset:(id)asset displaySpec:(id)spec behaviorSpec:(id)behaviorSpec delegate:(id)self0
 {
-  v15 = *&a3;
-  v23 = a8;
-  v17 = a9;
+  v15 = *&d;
+  specCopy = spec;
+  behaviorSpecCopy = behaviorSpec;
   v24.receiver = self;
   v24.super_class = PHVideoRequest;
-  v18 = [(PHMediaRequest *)&v24 initWithRequestID:v15 requestIndex:a4 contextType:a5 managerID:a6 asset:a7 delegate:a10];
+  v18 = [(PHMediaRequest *)&v24 initWithRequestID:v15 requestIndex:index contextType:type managerID:iD asset:asset delegate:delegate];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_displaySpec, a8);
-    objc_storeStrong(&v19->_behaviorSpec, a9);
+    objc_storeStrong(&v18->_displaySpec, spec);
+    objc_storeStrong(&v19->_behaviorSpec, behaviorSpec);
     v20 = [(PHCompositeMediaResult *)[PHVideoResult alloc] initWithRequestID:v15];
     videoResult = v19->_videoResult;
     v19->_videoResult = v20;

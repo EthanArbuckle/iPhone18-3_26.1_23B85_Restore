@@ -1,16 +1,16 @@
 @interface DiagnosticCaseSummaryAnalytics
-+ (id)listSummaryItemFromCaseSummaryDictionary:(id)a3;
-+ (id)pbRequestForCases:(id)a3;
-+ (id)stringRepresentationOfAttachmentsWithSize:(id)a3;
-+ (void)extractPbAttachmentsFromString:(id)a3 completion:(id)a4;
++ (id)listSummaryItemFromCaseSummaryDictionary:(id)dictionary;
++ (id)pbRequestForCases:(id)cases;
++ (id)stringRepresentationOfAttachmentsWithSize:(id)size;
++ (void)extractPbAttachmentsFromString:(id)string completion:(id)completion;
 - (DiagnosticCaseSummaryAnalytics)init;
-- (id)diagnosticCaseSummaryDictionaryForIdentifier:(id)a3 properties:(id)a4;
-- (id)fetchCaseSummariesOfType:(id)a3 fromIdentifier:(id)a4 count:(unint64_t)a5;
-- (id)fetchCaseSummariesWithIdentifiers:(id)a3;
+- (id)diagnosticCaseSummaryDictionaryForIdentifier:(id)identifier properties:(id)properties;
+- (id)fetchCaseSummariesOfType:(id)type fromIdentifier:(id)identifier count:(unint64_t)count;
+- (id)fetchCaseSummariesWithIdentifiers:(id)identifiers;
 - (int64_t)removeAllDiagnosticCaseSummaries;
-- (int64_t)removeDiagnosticCaseSummariesWithState:(signed __int16)a3 olderThan:(unint64_t)a4;
-- (void)insertEntityForDiagnosticCase:(id)a3;
-- (void)updateSubmittedCases:(id)a3;
+- (int64_t)removeDiagnosticCaseSummariesWithState:(signed __int16)state olderThan:(unint64_t)than;
+- (void)insertEntityForDiagnosticCase:(id)case;
+- (void)updateSubmittedCases:(id)cases;
 @end
 
 @implementation DiagnosticCaseSummaryAnalytics
@@ -25,73 +25,73 @@
   return v4;
 }
 
-- (void)insertEntityForDiagnosticCase:(id)a3
+- (void)insertEntityForDiagnosticCase:(id)case
 {
-  v4 = a3;
-  v22 = [(ObjectAnalytics *)self createEntity];
-  v5 = [v4 caseStorage];
-  v6 = [v5 caseID];
-  [v22 setCaseID:v6];
+  caseCopy = case;
+  createEntity = [(ObjectAnalytics *)self createEntity];
+  caseStorage = [caseCopy caseStorage];
+  caseID = [caseStorage caseID];
+  [createEntity setCaseID:caseID];
 
-  v7 = [v5 caseGroupID];
-  [v22 setCaseGroupID:v7];
+  caseGroupID = [caseStorage caseGroupID];
+  [createEntity setCaseGroupID:caseGroupID];
 
-  v8 = [v5 timeStamp];
-  [v22 setCaseCreatedTime:v8];
+  timeStamp = [caseStorage timeStamp];
+  [createEntity setCaseCreatedTime:timeStamp];
 
-  v9 = [v5 caseClosedTime];
-  [v22 setCaseClosedTime:v9];
+  caseClosedTime = [caseStorage caseClosedTime];
+  [createEntity setCaseClosedTime:caseClosedTime];
 
-  v10 = [v5 caseDomain];
-  [v22 setCaseDomain:v10];
+  caseDomain = [caseStorage caseDomain];
+  [createEntity setCaseDomain:caseDomain];
 
-  v11 = [v5 caseType];
-  [v22 setCaseType:v11];
+  caseType = [caseStorage caseType];
+  [createEntity setCaseType:caseType];
 
-  v12 = [v5 caseSubtype];
-  [v22 setCaseSubtype:v12];
+  caseSubtype = [caseStorage caseSubtype];
+  [createEntity setCaseSubtype:caseSubtype];
 
-  v13 = [v5 caseSubtypeContext];
-  [v22 setCaseSubtypeContext:v13];
+  caseSubtypeContext = [caseStorage caseSubtypeContext];
+  [createEntity setCaseSubtypeContext:caseSubtypeContext];
 
-  v14 = [v5 caseDetectedProcess];
-  [v22 setCaseDetectedProcess:v14];
+  caseDetectedProcess = [caseStorage caseDetectedProcess];
+  [createEntity setCaseDetectedProcess:caseDetectedProcess];
 
-  v15 = [v5 caseEffectiveProcess];
-  [v22 setCaseEffectiveProcess:v15];
+  caseEffectiveProcess = [caseStorage caseEffectiveProcess];
+  [createEntity setCaseEffectiveProcess:caseEffectiveProcess];
 
-  v16 = [v5 caseRelatedProcesses];
-  [v22 setCaseRelatedProcesses:v16];
+  caseRelatedProcesses = [caseStorage caseRelatedProcesses];
+  [createEntity setCaseRelatedProcesses:caseRelatedProcesses];
 
-  v17 = [v5 caseThresholdValues];
-  [v22 setCaseThresholdValues:v17];
+  caseThresholdValues = [caseStorage caseThresholdValues];
+  [createEntity setCaseThresholdValues:caseThresholdValues];
 
-  [v22 setCaseClosureType:{objc_msgSend(v5, "caseClosureType")}];
-  [v22 setCaseDampeningType:{objc_msgSend(v5, "caseDampeningType")}];
-  v18 = [v5 caseContext];
-  [v22 setCaseContext:v18];
+  [createEntity setCaseClosureType:{objc_msgSend(caseStorage, "caseClosureType")}];
+  [createEntity setCaseDampeningType:{objc_msgSend(caseStorage, "caseDampeningType")}];
+  caseContext = [caseStorage caseContext];
+  [createEntity setCaseContext:caseContext];
 
-  [v22 setRemoteTrigger:{objc_msgSend(v5, "remoteTrigger")}];
-  v19 = [v5 buildVariant];
-  [v22 setBuildVariant:v19];
+  [createEntity setRemoteTrigger:{objc_msgSend(caseStorage, "remoteTrigger")}];
+  buildVariant = [caseStorage buildVariant];
+  [createEntity setBuildVariant:buildVariant];
 
-  v20 = [v5 buildVersion];
-  [v22 setBuildVersion:v20];
+  buildVersion = [caseStorage buildVersion];
+  [createEntity setBuildVersion:buildVersion];
 
-  v21 = [v4 stringRepresentationOfAttachmentsWithSize];
+  stringRepresentationOfAttachmentsWithSize = [caseCopy stringRepresentationOfAttachmentsWithSize];
 
-  [v22 setCaseAttachments:v21];
+  [createEntity setCaseAttachments:stringRepresentationOfAttachmentsWithSize];
 }
 
-- (void)updateSubmittedCases:(id)a3
+- (void)updateSubmittedCases:(id)cases
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  casesCopy = cases;
   v4 = summaryLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v17 = [v3 count];
+    v17 = [casesCopy count];
     _os_log_impl(&dword_241804000, v4, OS_LOG_TYPE_DEFAULT, "DiagnosticCaseSummaryLog: Update caseSummaryState to Submitted for %ld case(s)", buf, 0xCu);
   }
 
@@ -99,7 +99,7 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = v3;
+  v5 = casesCopy;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -128,19 +128,19 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)removeDiagnosticCaseSummariesWithState:(signed __int16)a3 olderThan:(unint64_t)a4
+- (int64_t)removeDiagnosticCaseSummariesWithState:(signed __int16)state olderThan:(unint64_t)than
 {
-  v4 = a3;
+  stateCopy = state;
   v17[2] = *MEMORY[0x277D85DE8];
-  v6 = (86400 * a4);
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v7 dateByAddingTimeInterval:-v6];
+  v6 = (86400 * than);
+  date = [MEMORY[0x277CBEAA8] date];
+  v8 = [date dateByAddingTimeInterval:-v6];
 
   v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K <= %@", @"caseCreatedTime", v8];
-  v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"caseSummaryState == %d", v4];
+  stateCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"caseSummaryState == %d", stateCopy];
   v11 = MEMORY[0x277CCA920];
   v17[0] = v9;
-  v17[1] = v10;
+  v17[1] = stateCopy;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
   v13 = [v11 andPredicateWithSubpredicates:v12];
 
@@ -156,16 +156,16 @@
   return [(ObjectAnalytics *)&v3 removeEntitiesMatching:0];
 }
 
-- (id)fetchCaseSummariesWithIdentifiers:(id)a3
+- (id)fetchCaseSummariesWithIdentifiers:(id)identifiers
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v4;
+  v6 = identifiersCopy;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v7)
   {
@@ -214,15 +214,15 @@
   return v17;
 }
 
-- (id)fetchCaseSummariesOfType:(id)a3 fromIdentifier:(id)a4 count:(unint64_t)a5
+- (id)fetchCaseSummariesOfType:(id)type fromIdentifier:(id)identifier count:(unint64_t)count
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  typeCopy = type;
+  identifierCopy = identifier;
   v10 = objc_opt_new();
-  if ([v8 caseInsensitiveCompare:@"pending"])
+  if ([typeCopy caseInsensitiveCompare:@"pending"])
   {
-    if ([v8 caseInsensitiveCompare:@"submitted"])
+    if ([typeCopy caseInsensitiveCompare:@"submitted"])
     {
       goto LABEL_6;
     }
@@ -240,16 +240,16 @@
 
 LABEL_6:
   v13 = +[DiagnosticCaseSummaryAnalytics listCaseSummaryProperties];
-  if ([v9 length])
+  if ([identifierCopy length])
   {
-    v14 = [(DiagnosticCaseSummaryAnalytics *)self diagnosticCaseSummaryDictionaryForIdentifier:v9 properties:v13];
+    v14 = [(DiagnosticCaseSummaryAnalytics *)self diagnosticCaseSummaryDictionaryForIdentifier:identifierCopy properties:v13];
     if ([v14 count])
     {
-      v15 = [v14 firstObject];
-      v16 = v15;
-      if (v15)
+      firstObject = [v14 firstObject];
+      v16 = firstObject;
+      if (firstObject)
       {
-        v17 = [v15 objectForKeyedSubscript:@"caseCreatedTime"];
+        v17 = [firstObject objectForKeyedSubscript:@"caseCreatedTime"];
         v18 = [MEMORY[0x277CCAC30] predicateWithFormat:@"caseCreatedTime < %@", v17];
         [v10 addObject:v18];
       }
@@ -269,27 +269,27 @@ LABEL_6:
   v20 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"caseCreatedTime" ascending:0];
   v25[0] = v20;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
-  v22 = [(ObjectAnalytics *)self fetchEntityDictionariesWithProperties:v13 predicate:v19 sortDescriptors:v21 limit:a5];
+  v22 = [(ObjectAnalytics *)self fetchEntityDictionariesWithProperties:v13 predicate:v19 sortDescriptors:v21 limit:count];
 
   v23 = *MEMORY[0x277D85DE8];
 
   return v22;
 }
 
-- (id)diagnosticCaseSummaryDictionaryForIdentifier:(id)a3 properties:(id)a4
+- (id)diagnosticCaseSummaryDictionaryForIdentifier:(id)identifier properties:(id)properties
 {
   v6 = MEMORY[0x277CCAC30];
-  v7 = a4;
-  v8 = [v6 predicateWithFormat:@"caseID == %@", a3];
-  v9 = [(ObjectAnalytics *)self fetchEntityDictionariesWithProperties:v7 predicate:v8];
+  propertiesCopy = properties;
+  identifier = [v6 predicateWithFormat:@"caseID == %@", identifier];
+  v9 = [(ObjectAnalytics *)self fetchEntityDictionariesWithProperties:propertiesCopy predicate:identifier];
 
   return v9;
 }
 
-+ (id)listSummaryItemFromCaseSummaryDictionary:(id)a3
++ (id)listSummaryItemFromCaseSummaryDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_new();
   context = objc_autoreleasePoolPush();
   v19 = 0u;
@@ -312,16 +312,16 @@ LABEL_6:
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v3 objectForKey:v10];
+        v11 = [dictionaryCopy objectForKey:v10];
         if (v11)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v12 = [(__CFString *)v11 integerValue];
+            integerValue = [(__CFString *)v11 integerValue];
             if ([v10 isEqualToString:@"caseDampeningType"])
             {
-              v13 = [DiagnosticCase descriptionForDampeningType:v12];
+              v13 = [DiagnosticCase descriptionForDampeningType:integerValue];
               [v4 setObject:v13 forKeyedSubscript:v10];
 
               goto LABEL_19;
@@ -329,7 +329,7 @@ LABEL_6:
 
             if ([v10 isEqualToString:@"caseSummaryState"])
             {
-              if (v12)
+              if (integerValue)
               {
                 v15 = @"Submitted";
               }
@@ -372,29 +372,29 @@ LABEL_19:
   return v4;
 }
 
-+ (id)pbRequestForCases:(id)a3
++ (id)pbRequestForCases:(id)cases
 {
   v85 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  casesCopy = cases;
   v4 = +[SystemProperties sharedInstance];
   v5 = objc_opt_new();
   [v5 setVer:1];
-  v6 = [v4 productType];
-  [v5 setDeviceModel:v6];
+  productType = [v4 productType];
+  [v5 setDeviceModel:productType];
 
-  v7 = [v4 buildPlatform];
-  [v5 setBuildPlatform:v7];
+  buildPlatform = [v4 buildPlatform];
+  [v5 setBuildPlatform:buildPlatform];
 
   v55 = v4;
-  v8 = [v4 deviceClassString];
+  deviceClassString = [v4 deviceClassString];
   v59 = v5;
-  [v5 setDeviceCategory:v8];
+  [v5 setDeviceCategory:deviceClassString];
 
   v66 = 0u;
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  obj = v3;
+  obj = casesCopy;
   v60 = [obj countByEnumeratingWithState:&v64 objects:v84 count:16];
   if (v60)
   {
@@ -413,37 +413,37 @@ LABEL_19:
         v61 = v10;
         v11 = *(*(&v64 + 1) + 8 * v10);
         v12 = objc_opt_new();
-        v13 = [v11 buildVersion];
-        [v12 setBuild:v13];
+        buildVersion = [v11 buildVersion];
+        [v12 setBuild:buildVersion];
 
-        v14 = [v11 buildVariant];
-        [v12 setBuildVariant:v14];
+        buildVariant = [v11 buildVariant];
+        [v12 setBuildVariant:buildVariant];
 
-        v15 = [v11 caseDomain];
-        [v12 setDomain:v15];
+        caseDomain = [v11 caseDomain];
+        [v12 setDomain:caseDomain];
 
-        v16 = [v11 caseType];
-        [v12 setType:v16];
+        caseType = [v11 caseType];
+        [v12 setType:caseType];
 
-        v17 = [v11 caseSubtype];
-        [v12 setSubtype:v17];
+        caseSubtype = [v11 caseSubtype];
+        [v12 setSubtype:caseSubtype];
 
-        v18 = [v11 caseSubtypeContext];
-        [v12 setSubtypeContext:v18];
+        caseSubtypeContext = [v11 caseSubtypeContext];
+        [v12 setSubtypeContext:caseSubtypeContext];
 
-        v19 = [v11 caseDetectedProcess];
-        [v12 setProcess:v19];
+        caseDetectedProcess = [v11 caseDetectedProcess];
+        [v12 setProcess:caseDetectedProcess];
 
-        v20 = [v11 caseID];
-        [v12 setCaseIdentifier:v20];
+        caseID = [v11 caseID];
+        [v12 setCaseIdentifier:caseID];
 
         [v12 setRemoteTrigger:{objc_msgSend(v11, "remoteTrigger")}];
-        v21 = [v11 caseCreatedTime];
-        [v21 timeIntervalSince1970];
+        caseCreatedTime = [v11 caseCreatedTime];
+        [caseCreatedTime timeIntervalSince1970];
         [v12 setCaseStartTime:?];
 
-        v22 = [v11 caseClosedTime];
-        [v22 timeIntervalSince1970];
+        caseClosedTime = [v11 caseClosedTime];
+        [caseClosedTime timeIntervalSince1970];
         [v12 setCaseClosedTime:?];
 
         v23 = +[DiagnosticCase descriptionForClosureType:](DiagnosticCase, "descriptionForClosureType:", [v11 caseClosureType]);
@@ -452,95 +452,95 @@ LABEL_19:
         v24 = +[DiagnosticCase descriptionForDampeningType:](DiagnosticCase, "descriptionForDampeningType:", [v11 caseDampeningType]);
         [v12 setCaseDampeningType:v24];
 
-        v25 = [v11 caseContext];
-        v26 = [v25 length];
+        caseContext = [v11 caseContext];
+        v26 = [caseContext length];
 
         if (v26)
         {
-          v27 = [v11 caseContext];
-          [v12 setCaseContext:v27];
+          caseContext2 = [v11 caseContext];
+          [v12 setCaseContext:caseContext2];
         }
 
-        v28 = [v11 caseEffectiveProcess];
-        v29 = [v28 length];
+        caseEffectiveProcess = [v11 caseEffectiveProcess];
+        v29 = [caseEffectiveProcess length];
 
         if (v29)
         {
-          v30 = [v11 caseEffectiveProcess];
-          [v12 setCaseEffectiveProcess:v30];
+          caseEffectiveProcess2 = [v11 caseEffectiveProcess];
+          [v12 setCaseEffectiveProcess:caseEffectiveProcess2];
         }
 
-        v31 = [v11 caseGroupID];
-        v32 = [v31 length];
+        caseGroupID = [v11 caseGroupID];
+        v32 = [caseGroupID length];
 
         if (v32)
         {
-          v33 = [v11 caseGroupID];
-          [v12 setCaseGroupIdentifier:v33];
+          caseGroupID2 = [v11 caseGroupID];
+          [v12 setCaseGroupIdentifier:caseGroupID2];
         }
 
-        v34 = [v11 caseRelatedProcesses];
-        v35 = [v34 length];
+        caseRelatedProcesses = [v11 caseRelatedProcesses];
+        v35 = [caseRelatedProcesses length];
 
         if (v35)
         {
-          v36 = [v11 caseRelatedProcesses];
-          [v12 setCaseRelatedProcesses:v36];
+          caseRelatedProcesses2 = [v11 caseRelatedProcesses];
+          [v12 setCaseRelatedProcesses:caseRelatedProcesses2];
         }
 
-        v37 = [v11 caseThresholdValues];
-        v38 = [v37 length];
+        caseThresholdValues = [v11 caseThresholdValues];
+        v38 = [caseThresholdValues length];
 
         if (v38)
         {
-          v39 = [v11 caseThresholdValues];
-          [v12 setCaseThresholdValues:v39];
+          caseThresholdValues2 = [v11 caseThresholdValues];
+          [v12 setCaseThresholdValues:caseThresholdValues2];
         }
 
-        v40 = [v11 caseAttachments];
+        caseAttachments = [v11 caseAttachments];
         v62[0] = MEMORY[0x277D85DD0];
         v62[1] = 3221225472;
         v62[2] = __52__DiagnosticCaseSummaryAnalytics_pbRequestForCases___block_invoke;
         v62[3] = &unk_278CF0D80;
         v41 = v12;
         v63 = v41;
-        [DiagnosticCaseSummaryAnalytics extractPbAttachmentsFromString:v40 completion:v62];
+        [DiagnosticCaseSummaryAnalytics extractPbAttachmentsFromString:caseAttachments completion:v62];
 
         v42 = summaryLogHandle();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
         {
-          v43 = [v11 caseID];
-          v44 = [v11 caseGroupID];
-          v45 = v44;
+          caseID2 = [v11 caseID];
+          caseGroupID3 = [v11 caseGroupID];
+          v45 = caseGroupID3;
           v46 = @"(no grpID)";
-          if (v44)
+          if (caseGroupID3)
           {
-            v46 = v44;
+            v46 = caseGroupID3;
           }
 
           v58 = v46;
-          v47 = [v11 caseDomain];
-          v48 = [v11 caseType];
-          v49 = [v11 caseSubtype];
-          v50 = [v11 caseSubtypeContext];
-          v51 = [v11 caseDetectedProcess];
-          v52 = [v11 caseAttachments];
+          caseDomain2 = [v11 caseDomain];
+          caseType2 = [v11 caseType];
+          caseSubtype2 = [v11 caseSubtype];
+          caseSubtypeContext2 = [v11 caseSubtypeContext];
+          caseDetectedProcess2 = [v11 caseDetectedProcess];
+          caseAttachments2 = [v11 caseAttachments];
           *buf = 138479619;
-          v69 = v43;
+          v69 = caseID2;
           v70 = 2113;
           v71 = v58;
           v72 = 2113;
-          v73 = v47;
+          v73 = caseDomain2;
           v74 = 2113;
-          v75 = v48;
+          v75 = caseType2;
           v76 = 2113;
-          v77 = v49;
+          v77 = caseSubtype2;
           v78 = 2113;
-          v79 = v50;
+          v79 = caseSubtypeContext2;
           v80 = 2113;
-          v81 = v51;
+          v81 = caseDetectedProcess2;
           v82 = 2113;
-          v83 = v52;
+          v83 = caseAttachments2;
           _os_log_impl(&dword_241804000, v42, OS_LOG_TYPE_DEBUG, "DiagnosticCaseSummaryLog: Processed case: %{private}@/%{private}@ {%{private}@/%{private}@/%{private}@/%{private}@/%{private}@-%{private}@}", buf, 0x52u);
 
           v9 = v56;
@@ -572,9 +572,9 @@ void __52__DiagnosticCaseSummaryAnalytics_pbRequestForCases___block_invoke(uint6
   }
 }
 
-+ (id)stringRepresentationOfAttachmentsWithSize:(id)a3
++ (id)stringRepresentationOfAttachmentsWithSize:(id)size
 {
-  v3 = a3;
+  sizeCopy = size;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -586,7 +586,7 @@ void __52__DiagnosticCaseSummaryAnalytics_pbRequestForCases___block_invoke(uint6
   v6[2] = __76__DiagnosticCaseSummaryAnalytics_stringRepresentationOfAttachmentsWithSize___block_invoke;
   v6[3] = &unk_278CF0DA8;
   v6[4] = &v7;
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [sizeCopy enumerateKeysAndObjectsUsingBlock:v6];
   v4 = [v8[5] copy];
   _Block_object_dispose(&v7, 8);
 
@@ -605,14 +605,14 @@ void __76__DiagnosticCaseSummaryAnalytics_stringRepresentationOfAttachmentsWithS
   [*(*(*(a1 + 32) + 8) + 40) appendFormat:@"%@:%@", v6, v5];
 }
 
-+ (void)extractPbAttachmentsFromString:(id)a3 completion:(id)a4
++ (void)extractPbAttachmentsFromString:(id)string completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v18 = a4;
-  v19 = v5;
+  stringCopy = string;
+  completionCopy = completion;
+  v19 = stringCopy;
   v20 = objc_opt_new();
-  v6 = [v5 componentsSeparatedByString:{@", "}];
+  v6 = [stringCopy componentsSeparatedByString:{@", "}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -635,18 +635,18 @@ void __76__DiagnosticCaseSummaryAnalytics_stringRepresentationOfAttachmentsWithS
         v12 = [*(*(&v21 + 1) + 8 * i) componentsSeparatedByString:@":"];
         if ([v12 count])
         {
-          v13 = [v12 firstObject];
-          v14 = [v12 lastObject];
-          v15 = [v14 longLongValue];
+          firstObject = [v12 firstObject];
+          lastObject = [v12 lastObject];
+          longLongValue = [lastObject longLongValue];
 
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && v15)
+          if ((objc_opt_isKindOfClass() & 1) != 0 && longLongValue)
           {
             v16 = objc_opt_new();
-            [v16 setFileName:v13];
-            [v16 setFileSize:v15];
+            [v16 setFileName:firstObject];
+            [v16 setFileSize:longLongValue];
             [v20 addObject:v16];
-            v9 = (v9 + v15);
+            v9 = (v9 + longLongValue);
           }
         }
       }
@@ -662,9 +662,9 @@ void __76__DiagnosticCaseSummaryAnalytics_stringRepresentationOfAttachmentsWithS
     v9 = 0;
   }
 
-  if (v18)
+  if (completionCopy)
   {
-    v18[2](v18, v20, v9);
+    completionCopy[2](completionCopy, v20, v9);
   }
 
   v17 = *MEMORY[0x277D85DE8];

@@ -1,9 +1,9 @@
 @interface ACCCommunicationsFeaturePlugin
-- (BOOL)acceptCallWithAction:(int)a3 callUUID:(id)a4;
+- (BOOL)acceptCallWithAction:(int)action callUUID:(id)d;
 - (BOOL)currentMuteStatus;
 - (BOOL)endAllCalls;
-- (BOOL)endCallWithAction:(int)a3 callUUID:(id)a4;
-- (BOOL)initiateCallToDestination:(id)a3 withService:(int)a4 addressBookID:(id)a5;
+- (BOOL)endCallWithAction:(int)action callUUID:(id)d;
+- (BOOL)initiateCallToDestination:(id)destination withService:(int)service addressBookID:(id)d;
 - (BOOL)initiateCallToVoicemail;
 - (BOOL)initiateRedial;
 - (BOOL)isAirplaneModeEnabled;
@@ -16,32 +16,32 @@
 - (BOOL)isMergeAvailable;
 - (BOOL)isSwapAvailable;
 - (BOOL)mergeCalls;
-- (BOOL)sendDTMF:(int)a3 forCallWithUUID:(id)a4;
+- (BOOL)sendDTMF:(int)f forCallWithUUID:(id)d;
 - (BOOL)swapCalls;
-- (BOOL)updateHoldStatus:(BOOL)a3 forCallWithUUID:(id)a4;
-- (BOOL)updateMuteStatus:(BOOL)a3;
+- (BOOL)updateHoldStatus:(BOOL)status forCallWithUUID:(id)d;
+- (BOOL)updateMuteStatus:(BOOL)status;
 - (NSString)description;
 - (NSString)pluginName;
 - (id)currentAudioAndVideoCalls;
 - (id)currentCallStates;
 - (id)currentCarrierName;
 - (id)currentCommunicationsStatus;
-- (id)currentFavoritesListWithLimit:(unint64_t)a3;
+- (id)currentFavoritesListWithLimit:(unint64_t)limit;
 - (id)currentLocalizedCarrierName;
-- (id)currentRecentsListWithCoalescing:(BOOL)a3 limit:(unint64_t)a4;
+- (id)currentRecentsListWithCoalescing:(BOOL)coalescing limit:(unint64_t)limit;
 - (int)currentRegistrationStatus;
 - (int)currentSignalStrength;
 - (unint64_t)currentCallCount;
 - (void)addNotificationObservers;
 - (void)airplaneModeChanged;
-- (void)callStateDidChangeForCall:(id)a3;
-- (void)callStateDidChangeNotification:(id)a3;
-- (void)commStatusDidChangeNotification:(id)a3;
+- (void)callStateDidChangeForCall:(id)call;
+- (void)callStateDidChangeNotification:(id)notification;
+- (void)commStatusDidChangeNotification:(id)notification;
 - (void)currentSignalStrength;
-- (void)favoritesListDidChangeNotification:(id)a3;
+- (void)favoritesListDidChangeNotification:(id)notification;
 - (void)initPlugin;
 - (void)initiateRedial;
-- (void)recentsListDidChangeNotification:(id)a3;
+- (void)recentsListDidChangeNotification:(id)notification;
 - (void)removeNotificationObservers;
 - (void)startPlugin;
 - (void)stopPlugin;
@@ -59,16 +59,16 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(ACCCommunicationsFeaturePlugin *)self pluginName];
+  pluginName = [(ACCCommunicationsFeaturePlugin *)self pluginName];
   v5 = obfuscatedPointer(self);
-  v6 = [(ACCCommunicationsFeaturePlugin *)self isRunning];
+  isRunning = [(ACCCommunicationsFeaturePlugin *)self isRunning];
   v7 = "NO";
-  if (v6)
+  if (isRunning)
   {
     v7 = "YES";
   }
 
-  v8 = [v3 stringWithFormat:@"<%@: %p> isRunning: %s", v4, v5, v7];
+  v8 = [v3 stringWithFormat:@"<%@: %p> isRunning: %s", pluginName, v5, v7];
 
   return v8;
 }
@@ -77,8 +77,8 @@
 {
   init_logging();
   [(ACCCommunicationsFeaturePlugin *)self setIsRunning:0];
-  v3 = [(ACCCommunicationsFeaturePlugin *)self pluginName];
-  v4 = dispatch_queue_create([v3 UTF8String], 0);
+  pluginName = [(ACCCommunicationsFeaturePlugin *)self pluginName];
+  v4 = dispatch_queue_create([pluginName UTF8String], 0);
   [(ACCCommunicationsFeaturePlugin *)self setQueue:v4];
 
   [(ACCCommunicationsFeaturePlugin *)self setCommCenter:0];
@@ -130,8 +130,8 @@
     _os_log_impl(&dword_2335B8000, v5, OS_LOG_TYPE_DEFAULT, "Stopping Communications feature plugin...", v7, 2u);
   }
 
-  v6 = [(ACCCommunicationsFeaturePlugin *)self commCenter];
-  [v6 setCallStateDelegate:0];
+  commCenter = [(ACCCommunicationsFeaturePlugin *)self commCenter];
+  [commCenter setCallStateDelegate:0];
 
   [(ACCCommunicationsFeaturePlugin *)self setCommCenter:0];
   [(ACCCommunicationsFeaturePlugin *)self setVmManager:0];
@@ -142,13 +142,13 @@
 
 - (void)addNotificationObservers
 {
-  v3 = [(ACCCommunicationsFeaturePlugin *)self queue];
+  queue = [(ACCCommunicationsFeaturePlugin *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__ACCCommunicationsFeaturePlugin_addNotificationObservers__block_invoke;
   block[3] = &unk_2789E2020;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 void __58__ACCCommunicationsFeaturePlugin_addNotificationObservers__block_invoke(uint64_t a1)
@@ -253,13 +253,13 @@ void __58__ACCCommunicationsFeaturePlugin_addNotificationObservers__block_invoke
 
 - (void)removeNotificationObservers
 {
-  v3 = [(ACCCommunicationsFeaturePlugin *)self queue];
+  queue = [(ACCCommunicationsFeaturePlugin *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__ACCCommunicationsFeaturePlugin_removeNotificationObservers__block_invoke;
   block[3] = &unk_2789E2020;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 void __61__ACCCommunicationsFeaturePlugin_removeNotificationObservers__block_invoke(uint64_t a1)
@@ -353,10 +353,10 @@ void __61__ACCCommunicationsFeaturePlugin_removeNotificationObservers__block_inv
   [v24 removeObserver:*(a1 + 32) name:*MEMORY[0x277CBD1C8] object:0];
 }
 
-- (void)callStateDidChangeForCall:(id)a3
+- (void)callStateDidChangeForCall:(id)call
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  callCopy = call;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -386,20 +386,20 @@ void __61__ACCCommunicationsFeaturePlugin_removeNotificationObservers__block_inv
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = callCopy;
     _os_log_impl(&dword_2335B8000, v7, OS_LOG_TYPE_DEFAULT, "Sending call state update:\n%@", &v10, 0xCu);
   }
 
-  v8 = [(ACCCommunicationsFeaturePlugin *)self commCenter];
-  [v8 callStateDidChange:v4];
+  commCenter = [(ACCCommunicationsFeaturePlugin *)self commCenter];
+  [commCenter callStateDidChange:callCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)commStatusDidChangeNotification:(id)a3
+- (void)commStatusDidChangeNotification:(id)notification
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -429,19 +429,19 @@ void __61__ACCCommunicationsFeaturePlugin_removeNotificationObservers__block_inv
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = notificationCopy;
     _os_log_impl(&dword_2335B8000, v7, OS_LOG_TYPE_INFO, "Notification received:\n%@", buf, 0xCu);
   }
 
-  v8 = [(ACCCommunicationsFeaturePlugin *)self queue];
+  queue = [(ACCCommunicationsFeaturePlugin *)self queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __66__ACCCommunicationsFeaturePlugin_commStatusDidChangeNotification___block_invoke;
   v11[3] = &unk_2789E2048;
-  v12 = v4;
-  v13 = self;
-  v9 = v4;
-  dispatch_async(v8, v11);
+  v12 = notificationCopy;
+  selfCopy = self;
+  v9 = notificationCopy;
+  dispatch_async(queue, v11);
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -646,10 +646,10 @@ LABEL_21:
   v55 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recentsListDidChangeNotification:(id)a3
+- (void)recentsListDidChangeNotification:(id)notification
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -679,17 +679,17 @@ LABEL_21:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = notificationCopy;
     _os_log_impl(&dword_2335B8000, v7, OS_LOG_TYPE_INFO, "Notification received:\n%@", buf, 0xCu);
   }
 
-  v8 = [(ACCCommunicationsFeaturePlugin *)self queue];
+  queue = [(ACCCommunicationsFeaturePlugin *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__ACCCommunicationsFeaturePlugin_recentsListDidChangeNotification___block_invoke;
   block[3] = &unk_2789E2020;
   block[4] = self;
-  dispatch_async(v8, block);
+  dispatch_async(queue, block);
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -700,10 +700,10 @@ void __67__ACCCommunicationsFeaturePlugin_recentsListDidChangeNotification___blo
   [v1 recentsListDidChange];
 }
 
-- (void)favoritesListDidChangeNotification:(id)a3
+- (void)favoritesListDidChangeNotification:(id)notification
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 1;
@@ -733,17 +733,17 @@ void __67__ACCCommunicationsFeaturePlugin_recentsListDidChangeNotification___blo
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = notificationCopy;
     _os_log_impl(&dword_2335B8000, v7, OS_LOG_TYPE_INFO, "Notification received:\n%@", buf, 0xCu);
   }
 
-  v8 = [(ACCCommunicationsFeaturePlugin *)self queue];
+  queue = [(ACCCommunicationsFeaturePlugin *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__ACCCommunicationsFeaturePlugin_favoritesListDidChangeNotification___block_invoke;
   block[3] = &unk_2789E2020;
   block[4] = self;
-  dispatch_async(v8, block);
+  dispatch_async(queue, block);
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -757,13 +757,13 @@ void __69__ACCCommunicationsFeaturePlugin_favoritesListDidChangeNotification___b
 - (id)currentCallStates
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(ACCCommunicationsFeaturePlugin *)self currentAudioAndVideoCalls];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  currentAudioAndVideoCalls = [(ACCCommunicationsFeaturePlugin *)self currentAudioAndVideoCalls];
+  v5 = [currentAudioAndVideoCalls countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -774,22 +774,22 @@ void __69__ACCCommunicationsFeaturePlugin_favoritesListDidChangeNotification___b
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(currentAudioAndVideoCalls);
         }
 
         v9 = _callStateDictionaryForCall(*(*(&v13 + 1) + 8 * i));
-        [v3 addObject:v9];
+        [array addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [currentAudioAndVideoCalls countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 
-  if (v3 && [v3 count])
+  if (array && [array count])
   {
-    v10 = [v3 copy];
+    v10 = [array copy];
   }
 
   else
@@ -804,61 +804,61 @@ void __69__ACCCommunicationsFeaturePlugin_favoritesListDidChangeNotification___b
 
 - (id)currentCommunicationsStatus
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithInt:{-[ACCCommunicationsFeaturePlugin currentSignalStrength](self, "currentSignalStrength")}];
-  [v3 setObject:v4 forKey:*MEMORY[0x277CE81E0]];
+  [dictionary setObject:v4 forKey:*MEMORY[0x277CE81E0]];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInt:{-[ACCCommunicationsFeaturePlugin currentRegistrationStatus](self, "currentRegistrationStatus")}];
-  [v3 setObject:v5 forKey:*MEMORY[0x277CE81D8]];
+  [dictionary setObject:v5 forKey:*MEMORY[0x277CE81D8]];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACCCommunicationsFeaturePlugin isAirplaneModeEnabled](self, "isAirplaneModeEnabled")}];
-  [v3 setObject:v6 forKey:*MEMORY[0x277CE8170]];
+  [dictionary setObject:v6 forKey:*MEMORY[0x277CE8170]];
 
-  v7 = [(ACCCommunicationsFeaturePlugin *)self currentLocalizedCarrierName];
-  [v3 setObject:v7 forKey:*MEMORY[0x277CE8178]];
+  currentLocalizedCarrierName = [(ACCCommunicationsFeaturePlugin *)self currentLocalizedCarrierName];
+  [dictionary setObject:currentLocalizedCarrierName forKey:*MEMORY[0x277CE8178]];
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACCCommunicationsFeaturePlugin isCellularSupported](self, "isCellularSupported")}];
-  [v3 setObject:v8 forKey:*MEMORY[0x277CE8180]];
+  [dictionary setObject:v8 forKey:*MEMORY[0x277CE8180]];
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACCCommunicationsFeaturePlugin isTelephonyEnabled](self, "isTelephonyEnabled")}];
-  [v3 setObject:v9 forKey:*MEMORY[0x277CE81F0]];
+  [dictionary setObject:v9 forKey:*MEMORY[0x277CE81F0]];
 
   v10 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACCCommunicationsFeaturePlugin isFaceTimeAudioEnabled](self, "isFaceTimeAudioEnabled")}];
-  [v3 setObject:v10 forKey:*MEMORY[0x277CE8198]];
+  [dictionary setObject:v10 forKey:*MEMORY[0x277CE8198]];
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACCCommunicationsFeaturePlugin isFaceTimeVideoEnabled](self, "isFaceTimeVideoEnabled")}];
-  [v3 setObject:v11 forKey:*MEMORY[0x277CE81A0]];
+  [dictionary setObject:v11 forKey:*MEMORY[0x277CE81A0]];
 
   v12 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACCCommunicationsFeaturePlugin currentMuteStatus](self, "currentMuteStatus")}];
-  [v3 setObject:v12 forKey:*MEMORY[0x277CE81C8]];
+  [dictionary setObject:v12 forKey:*MEMORY[0x277CE81C8]];
 
   v13 = [MEMORY[0x277CCABB0] numberWithChar:{-[ACCCommunicationsFeaturePlugin currentCallCount](self, "currentCallCount")}];
-  [v3 setObject:v13 forKey:*MEMORY[0x277CE8188]];
+  [dictionary setObject:v13 forKey:*MEMORY[0x277CE8188]];
 
   v14 = [MEMORY[0x277CCABB0] numberWithChar:{-[ACCCommunicationsFeaturePlugin currentUnreadVoicemailCount](self, "currentUnreadVoicemailCount")}];
-  [v3 setObject:v14 forKey:*MEMORY[0x277CE81D0]];
+  [dictionary setObject:v14 forKey:*MEMORY[0x277CE81D0]];
 
   v15 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACCCommunicationsFeaturePlugin isInitiateCallAllowed](self, "isInitiateCallAllowed")}];
-  [v3 setObject:v15 forKey:*MEMORY[0x277CE81B8]];
+  [dictionary setObject:v15 forKey:*MEMORY[0x277CE81B8]];
 
   v16 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACCCommunicationsFeaturePlugin isEndAndAcceptAvailable](self, "isEndAndAcceptAvailable")}];
-  [v3 setObject:v16 forKey:*MEMORY[0x277CE8190]];
+  [dictionary setObject:v16 forKey:*MEMORY[0x277CE8190]];
 
   v17 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACCCommunicationsFeaturePlugin isHoldAndAcceptAvailable](self, "isHoldAndAcceptAvailable")}];
-  [v3 setObject:v17 forKey:*MEMORY[0x277CE81A8]];
+  [dictionary setObject:v17 forKey:*MEMORY[0x277CE81A8]];
 
   v18 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACCCommunicationsFeaturePlugin isSwapAvailable](self, "isSwapAvailable")}];
-  [v3 setObject:v18 forKey:*MEMORY[0x277CE81E8]];
+  [dictionary setObject:v18 forKey:*MEMORY[0x277CE81E8]];
 
   v19 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACCCommunicationsFeaturePlugin isMergeAvailable](self, "isMergeAvailable")}];
-  [v3 setObject:v19 forKey:*MEMORY[0x277CE81C0]];
+  [dictionary setObject:v19 forKey:*MEMORY[0x277CE81C0]];
 
   v20 = [MEMORY[0x277CCABB0] numberWithBool:{-[ACCCommunicationsFeaturePlugin isHoldAvailable](self, "isHoldAvailable")}];
-  [v3 setObject:v20 forKey:*MEMORY[0x277CE81B0]];
+  [dictionary setObject:v20 forKey:*MEMORY[0x277CE81B0]];
 
-  if (v3 && [v3 count])
+  if (dictionary && [dictionary count])
   {
-    v21 = [v3 copy];
+    v21 = [dictionary copy];
   }
 
   else
@@ -900,10 +900,10 @@ void __69__ACCCommunicationsFeaturePlugin_favoritesListDidChangeNotification___b
 
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(ACCCommunicationsFeaturePlugin *)self radiosPreferences];
-    v7 = [v6 airplaneMode];
+    radiosPreferences = [(ACCCommunicationsFeaturePlugin *)self radiosPreferences];
+    airplaneMode = [radiosPreferences airplaneMode];
     v8 = "NO";
-    if (v7)
+    if (airplaneMode)
     {
       v8 = "YES";
     }
@@ -965,10 +965,10 @@ void __69__ACCCommunicationsFeaturePlugin_favoritesListDidChangeNotification___b
 
 - (BOOL)isAirplaneModeEnabled
 {
-  v2 = [(ACCCommunicationsFeaturePlugin *)self radiosPreferences];
-  v3 = [v2 airplaneMode];
+  radiosPreferences = [(ACCCommunicationsFeaturePlugin *)self radiosPreferences];
+  airplaneMode = [radiosPreferences airplaneMode];
 
-  return v3;
+  return airplaneMode;
 }
 
 - (id)currentCarrierName
@@ -982,10 +982,10 @@ void __69__ACCCommunicationsFeaturePlugin_favoritesListDidChangeNotification___b
 - (id)currentLocalizedCarrierName
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(ACCCommunicationsFeaturePlugin *)self currentCarrierName];
-  v4 = [(ACCCommunicationsFeaturePlugin *)self currentRegistrationStatus];
-  v5 = [(ACCCommunicationsFeaturePlugin *)self isAirplaneModeEnabled];
-  if (v5)
+  currentCarrierName = [(ACCCommunicationsFeaturePlugin *)self currentCarrierName];
+  currentRegistrationStatus = [(ACCCommunicationsFeaturePlugin *)self currentRegistrationStatus];
+  isAirplaneModeEnabled = [(ACCCommunicationsFeaturePlugin *)self isAirplaneModeEnabled];
+  if (isAirplaneModeEnabled)
   {
     v6 = @"Airplane Mode";
 LABEL_8:
@@ -1002,13 +1002,13 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (v4 <= 6 && ((1 << v4) & 0x4A) != 0)
+  if (currentRegistrationStatus <= 6 && ((1 << currentRegistrationStatus) & 0x4A) != 0)
   {
     v6 = @"No Service";
     goto LABEL_8;
   }
 
-  if ((v4 & 0xFFFFFFFD) == 0 || (v9 = v3, [v3 isEqualToString:&stru_2848E51E8]))
+  if ((currentRegistrationStatus & 0xFFFFFFFD) == 0 || (v9 = currentCarrierName, [currentCarrierName isEqualToString:&stru_2848E51E8]))
   {
     v6 = @"Searching...";
     goto LABEL_8;
@@ -1037,14 +1037,14 @@ LABEL_9:
     v15 = 138413058;
     v16 = v9;
     v17 = 2112;
-    if (v5)
+    if (isAirplaneModeEnabled)
     {
       v14 = "YES";
     }
 
-    v18 = v3;
+    v18 = currentCarrierName;
     v19 = 1024;
-    v20 = v4;
+    v20 = currentRegistrationStatus;
     v21 = 2080;
     v22 = v14;
     _os_log_debug_impl(&dword_2335B8000, v10, OS_LOG_TYPE_DEBUG, "Generated localized carrier name: '%@' (origCarrierName: %@, registrationStatus: %{coreacc:ACCCommunications_CommunicationsUpdate_RegistrationStatus_t}d, airplaneMode: %s)", &v15, 0x26u);
@@ -1057,16 +1057,16 @@ LABEL_9:
 
 - (BOOL)isFaceTimeAudioEnabled
 {
-  v2 = [MEMORY[0x277D07D70] sharedInstance];
-  v3 = [v2 availabilityForListenerID:@"com.apple.accessories.features.Communications" forService:2] == 1;
+  mEMORY[0x277D07D70] = [MEMORY[0x277D07D70] sharedInstance];
+  v3 = [mEMORY[0x277D07D70] availabilityForListenerID:@"com.apple.accessories.features.Communications" forService:2] == 1;
 
   return v3;
 }
 
 - (BOOL)isFaceTimeVideoEnabled
 {
-  v2 = [MEMORY[0x277D07D70] sharedInstance];
-  v3 = [v2 availabilityForListenerID:@"com.apple.accessories.features.Communications" forService:0] == 1;
+  mEMORY[0x277D07D70] = [MEMORY[0x277D07D70] sharedInstance];
+  v3 = [mEMORY[0x277D07D70] availabilityForListenerID:@"com.apple.accessories.features.Communications" forService:0] == 1;
 
   return v3;
 }
@@ -1330,9 +1330,9 @@ void __57__ACCCommunicationsFeaturePlugin_isEndAndAcceptAvailable__block_invoke(
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(ACCCommunicationsFeaturePlugin *)self isEndAndAcceptAvailable];
-  *(v7 + 24) = v2;
-  if (v2)
+  isEndAndAcceptAvailable = [(ACCCommunicationsFeaturePlugin *)self isEndAndAcceptAvailable];
+  *(v7 + 24) = isEndAndAcceptAvailable;
+  if (isEndAndAcceptAvailable)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
@@ -1567,28 +1567,28 @@ void __49__ACCCommunicationsFeaturePlugin_isHoldAvailable__block_invoke(uint64_t
 LABEL_12:
 }
 
-- (BOOL)initiateCallToDestination:(id)a3 withService:(int)a4 addressBookID:(id)a5
+- (BOOL)initiateCallToDestination:(id)destination withService:(int)service addressBookID:(id)d
 {
   v34 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(ACCCommunicationsFeaturePlugin *)self currentCallCount];
+  destinationCopy = destination;
+  dCopy = d;
+  currentCallCount = [(ACCCommunicationsFeaturePlugin *)self currentCallCount];
   if ([(ACCCommunicationsFeaturePlugin *)self isInitiateCallAllowed])
   {
     v11 = objc_alloc_init(MEMORY[0x277D6EE28]);
-    switch(a4)
+    switch(service)
     {
       case 3:
-        if (!v10)
+        if (!currentCallCount)
         {
           v19 = objc_alloc(MEMORY[0x277D6EED0]);
-          v20 = [v11 faceTimeProvider];
-          v14 = [v19 initWithProvider:v20];
+          faceTimeProvider = [v11 faceTimeProvider];
+          v14 = [v19 initWithProvider:faceTimeProvider];
 
           [v14 setVideo:1];
-          if (v9 && [v9 length])
+          if (dCopy && [dCopy length])
           {
-            [v14 setContactIdentifier:v9];
+            [v14 setContactIdentifier:dCopy];
           }
 
           if (gLogObjects && gNumLogObjects >= 1)
@@ -1613,7 +1613,7 @@ LABEL_12:
           }
 
           v32 = 138477827;
-          v33 = v8;
+          v33 = destinationCopy;
           v22 = "Initiating FaceTime Video call to: %{private}@...";
           goto LABEL_49;
         }
@@ -1632,16 +1632,16 @@ LABEL_51:
         v31 = "Cannot add FaceTime Video call if there is already an active call - ignoring request";
         break;
       case 2:
-        if (!v10)
+        if (!currentCallCount)
         {
           v17 = objc_alloc(MEMORY[0x277D6EED0]);
-          v18 = [v11 faceTimeProvider];
-          v14 = [v17 initWithProvider:v18];
+          faceTimeProvider2 = [v11 faceTimeProvider];
+          v14 = [v17 initWithProvider:faceTimeProvider2];
 
           [v14 setVideo:0];
-          if (v9 && [v9 length])
+          if (dCopy && [dCopy length])
           {
-            [v14 setContactIdentifier:v9];
+            [v14 setContactIdentifier:dCopy];
           }
 
           if (gLogObjects && gNumLogObjects >= 1)
@@ -1666,7 +1666,7 @@ LABEL_51:
           }
 
           v32 = 138477827;
-          v33 = v8;
+          v33 = destinationCopy;
           v22 = "Initiating FaceTime Audio call to: %{private}@...";
           goto LABEL_49;
         }
@@ -1682,15 +1682,15 @@ LABEL_51:
         break;
       case 1:
         v12 = objc_alloc(MEMORY[0x277D6EED0]);
-        v13 = [v11 telephonyProvider];
-        v14 = [v12 initWithProvider:v13];
+        telephonyProvider = [v11 telephonyProvider];
+        v14 = [v12 initWithProvider:telephonyProvider];
 
-        if (v9 && [v9 length])
+        if (dCopy && [dCopy length])
         {
-          [v14 setContactIdentifier:v9];
+          [v14 setContactIdentifier:dCopy];
         }
 
-        v15 = [MEMORY[0x277D6EEE8] handleWithDestinationID:v8];
+        v15 = [MEMORY[0x277D6EEE8] handleWithDestinationID:destinationCopy];
         [v14 setHandle:v15];
 
         if (gLogObjects && gNumLogObjects >= 1)
@@ -1715,15 +1715,15 @@ LABEL_51:
         }
 
         v32 = 138477827;
-        v33 = v8;
+        v33 = destinationCopy;
         v22 = "Initiating telephony call to: %{private}@...";
 LABEL_49:
         _os_log_impl(&dword_2335B8000, v16, OS_LOG_TYPE_DEFAULT, v22, &v32, 0xCu);
 LABEL_50:
 
-        v27 = [MEMORY[0x277CC1E80] defaultWorkspace];
+        defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
         v28 = [v14 URL];
-        v24 = [v27 openURL:v28 withOptions:0];
+        v24 = [defaultWorkspace openURL:v28 withOptions:0];
 
         goto LABEL_51;
       default:
@@ -1810,13 +1810,13 @@ LABEL_52:
 
   v6 = objc_alloc_init(MEMORY[0x277D6EE28]);
   v7 = objc_alloc(MEMORY[0x277D6EED0]);
-  v8 = [v6 voicemailProvider];
-  v9 = [v7 initWithProvider:v8];
+  voicemailProvider = [v6 voicemailProvider];
+  v9 = [v7 initWithProvider:voicemailProvider];
 
   [v9 setDialType:2];
-  v10 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v11 = [v9 URL];
-  v12 = [v10 openURL:v11 withOptions:0];
+  v12 = [defaultWorkspace openURL:v11 withOptions:0];
 
   return v12;
 }
@@ -1856,7 +1856,7 @@ LABEL_52:
     _os_log_impl(&dword_2335B8000, v5, OS_LOG_TYPE_DEFAULT, "Initiating redial...", buf, 2u);
   }
 
-  v6 = [(ACCCommunicationsFeaturePlugin *)self chManager];
+  chManager = [(ACCCommunicationsFeaturePlugin *)self chManager];
   v7 = [MEMORY[0x277CF7D48] predicateForCallsWithStatusOriginated:1];
   *buf = v7;
   v8 = [MEMORY[0x277CF7D48] predicateForCallsWithAnyMediaTypes:&unk_2848E5A68];
@@ -1872,7 +1872,7 @@ LABEL_52:
 
   v14 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v13];
 
-  v15 = [v6 callsWithPredicate:v14 limit:1 offset:0 batchSize:0];
+  v15 = [chManager callsWithPredicate:v14 limit:1 offset:0 batchSize:0];
 
   if (![v15 count])
   {
@@ -1926,8 +1926,8 @@ LABEL_30:
     [(ACCCommunicationsFeaturePlugin *)v17 initiateRedial:v18];
   }
 
-  v26 = [v17 remoteParticipantHandles];
-  v27 = [v26 count];
+  remoteParticipantHandles = [v17 remoteParticipantHandles];
+  v27 = [remoteParticipantHandles count];
 
   if (v27 != 1)
   {
@@ -1937,25 +1937,25 @@ LABEL_30:
 
   v28 = objc_alloc_init(MEMORY[0x277D6EE28]);
   v29 = [v28 dialRequestForRecentCall:v17];
-  v30 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
   v31 = [v29 URL];
-  v32 = [v30 openURL:v31 withOptions:0];
+  v32 = [defaultWorkspace openURL:v31 withOptions:0];
 
 LABEL_23:
   v33 = *MEMORY[0x277D85DE8];
   return v32;
 }
 
-- (BOOL)acceptCallWithAction:(int)a3 callUUID:(id)a4
+- (BOOL)acceptCallWithAction:(int)action callUUID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  v7 = [(ACCCommunicationsFeaturePlugin *)self currentCallCount];
-  v8 = [(ACCCommunicationsFeaturePlugin *)self isEndAndAcceptAvailable];
-  v9 = [(ACCCommunicationsFeaturePlugin *)self isHoldAndAcceptAvailable];
+  currentCallCount = [(ACCCommunicationsFeaturePlugin *)self currentCallCount];
+  isEndAndAcceptAvailable = [(ACCCommunicationsFeaturePlugin *)self isEndAndAcceptAvailable];
+  isHoldAndAcceptAvailable = [(ACCCommunicationsFeaturePlugin *)self isHoldAndAcceptAvailable];
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -1966,29 +1966,29 @@ LABEL_23:
   v21[1] = 3221225472;
   v21[2] = __64__ACCCommunicationsFeaturePlugin_acceptCallWithAction_callUUID___block_invoke;
   v21[3] = &unk_2789E2098;
-  v10 = v6;
+  v10 = dCopy;
   v22 = v10;
   v23 = &v24;
   executeOnMainThreadSync(v21);
   if (v25[5])
   {
-    v11 = v7 < 2;
-    if (v7 >= 2)
+    v11 = currentCallCount < 2;
+    if (currentCallCount >= 2)
     {
-      v12 = a3;
+      actionCopy = action;
     }
 
     else
     {
-      v12 = 0;
+      actionCopy = 0;
     }
 
-    if (v12)
+    if (actionCopy)
     {
       v11 = 1;
     }
 
-    if (!v11 && !v9)
+    if (!v11 && !isHoldAndAcceptAvailable)
     {
       if (gLogObjects && gNumLogObjects >= 1)
       {
@@ -2012,18 +2012,18 @@ LABEL_23:
         _os_log_impl(&dword_2335B8000, v13, OS_LOG_TYPE_INFO, "Cannot hold and accept - ending and accepting instead", buf, 2u);
       }
 
-      v12 = 1;
+      actionCopy = 1;
     }
 
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __64__ACCCommunicationsFeaturePlugin_acceptCallWithAction_callUUID___block_invoke_90;
     v17[3] = &unk_2789E20C0;
-    v18 = v12;
+    v18 = actionCopy;
     v17[4] = &v24;
     v17[5] = &v30;
-    v17[6] = v7;
-    v19 = v8;
+    v17[6] = currentCallCount;
+    v19 = isEndAndAcceptAvailable;
     executeOnMainThreadSync(v17);
   }
 
@@ -2457,9 +2457,9 @@ LABEL_91:
   *(*(*(a1 + 40) + 8) + 24) = 1;
 }
 
-- (BOOL)endCallWithAction:(int)a3 callUUID:(id)a4
+- (BOOL)endCallWithAction:(int)action callUUID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -2474,7 +2474,7 @@ LABEL_91:
   v11[1] = 3221225472;
   v11[2] = __61__ACCCommunicationsFeaturePlugin_endCallWithAction_callUUID___block_invoke;
   v11[3] = &unk_2789E2098;
-  v6 = v5;
+  v6 = dCopy;
   v12 = v6;
   v13 = &v14;
   executeOnMainThreadSync(v11);
@@ -2484,7 +2484,7 @@ LABEL_91:
     v9[1] = 3221225472;
     v9[2] = __61__ACCCommunicationsFeaturePlugin_endCallWithAction_callUUID___block_invoke_91;
     v9[3] = &unk_2789E20E8;
-    v10 = a3;
+    actionCopy = action;
     v9[4] = &v14;
     v9[5] = &v20;
     executeOnMainThreadSync(v9);
@@ -2971,11 +2971,11 @@ void __44__ACCCommunicationsFeaturePlugin_mergeCalls__block_invoke(uint64_t a1)
   *(*(*(a1 + 32) + 8) + 24) = 1;
 }
 
-- (BOOL)updateHoldStatus:(BOOL)a3 forCallWithUUID:(id)a4
+- (BOOL)updateHoldStatus:(BOOL)status forCallWithUUID:(id)d
 {
-  v4 = a3;
+  statusCopy = status;
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dCopy = d;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 1;
@@ -3005,7 +3005,7 @@ void __44__ACCCommunicationsFeaturePlugin_mergeCalls__block_invoke(uint64_t a1)
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = "NO";
-    if (v4)
+    if (statusCopy)
     {
       v10 = "YES";
     }
@@ -3025,7 +3025,7 @@ void __44__ACCCommunicationsFeaturePlugin_mergeCalls__block_invoke(uint64_t a1)
   v18[1] = 3221225472;
   v18[2] = __67__ACCCommunicationsFeaturePlugin_updateHoldStatus_forCallWithUUID___block_invoke;
   v18[3] = &unk_2789E2098;
-  v11 = v6;
+  v11 = dCopy;
   v19 = v11;
   p_buf = &buf;
   executeOnMainThreadSync(v18);
@@ -3034,7 +3034,7 @@ void __44__ACCCommunicationsFeaturePlugin_mergeCalls__block_invoke(uint64_t a1)
     v16[0] = 0;
     v16[1] = v16;
     v16[2] = 0x2020000000;
-    v17 = [(ACCCommunicationsFeaturePlugin *)self isHoldAvailable];
+    isHoldAvailable = [(ACCCommunicationsFeaturePlugin *)self isHoldAvailable];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __67__ACCCommunicationsFeaturePlugin_updateHoldStatus_forCallWithUUID___block_invoke_92;
@@ -3042,7 +3042,7 @@ void __44__ACCCommunicationsFeaturePlugin_mergeCalls__block_invoke(uint64_t a1)
     v14[5] = &buf;
     v14[6] = v16;
     v14[4] = self;
-    v15 = v4;
+    v15 = statusCopy;
     executeOnMainThreadSync(v14);
     _Block_object_dispose(v16, 8);
   }
@@ -3239,9 +3239,9 @@ LABEL_10:
   }
 }
 
-- (BOOL)updateMuteStatus:(BOOL)a3
+- (BOOL)updateMuteStatus:(BOOL)status
 {
-  v3 = a3;
+  statusCopy = status;
   v19 = *MEMORY[0x277D85DE8];
   v13 = 0;
   v14 = &v13;
@@ -3276,7 +3276,7 @@ LABEL_10:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = "NO";
-    if (v3)
+    if (statusCopy)
     {
       v7 = "YES";
     }
@@ -3290,7 +3290,7 @@ LABEL_10:
   v11[1] = 3221225472;
   v11[2] = __51__ACCCommunicationsFeaturePlugin_updateMuteStatus___block_invoke;
   v11[3] = &unk_2789E2138;
-  v12 = v3;
+  v12 = statusCopy;
   v11[4] = &v13;
   executeOnMainThreadSync(v11);
   v8 = *(v14 + 24);
@@ -3313,13 +3313,13 @@ void __51__ACCCommunicationsFeaturePlugin_updateMuteStatus___block_invoke(uint64
   }
 }
 
-- (BOOL)sendDTMF:(int)a3 forCallWithUUID:(id)a4
+- (BOOL)sendDTMF:(int)f forCallWithUUID:(id)d
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 >= 0xC)
+  dCopy = d;
+  v6 = dCopy;
+  if (f >= 0xC)
   {
-    [ACCCommunicationsFeaturePlugin sendDTMF:a3 forCallWithUUID:?];
+    [ACCCommunicationsFeaturePlugin sendDTMF:f forCallWithUUID:?];
   }
 
   else
@@ -3334,7 +3334,7 @@ void __51__ACCCommunicationsFeaturePlugin_updateMuteStatus___block_invoke(uint64
     v10[1] = 3221225472;
     v10[2] = __59__ACCCommunicationsFeaturePlugin_sendDTMF_forCallWithUUID___block_invoke;
     v10[3] = &unk_2789E2098;
-    v11 = v5;
+    v11 = dCopy;
     v12 = &v13;
     executeOnMainThreadSync(v10);
     if (v14[5])
@@ -3344,7 +3344,7 @@ void __51__ACCCommunicationsFeaturePlugin_updateMuteStatus___block_invoke(uint64
       v8[2] = __59__ACCCommunicationsFeaturePlugin_sendDTMF_forCallWithUUID___block_invoke_93;
       v8[3] = &unk_2789E2160;
       v8[4] = &v13;
-      v9 = a3;
+      fCopy = f;
       executeOnMainThreadSync(v8);
     }
 
@@ -3582,30 +3582,30 @@ void __59__ACCCommunicationsFeaturePlugin_sendDTMF_forCallWithUUID___block_invok
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)currentRecentsListWithCoalescing:(BOOL)a3 limit:(unint64_t)a4
+- (id)currentRecentsListWithCoalescing:(BOOL)coalescing limit:(unint64_t)limit
 {
-  v5 = a3;
+  coalescingCopy = coalescing;
   v87 = *MEMORY[0x277D85DE8];
-  v68 = [MEMORY[0x277CBEB18] array];
-  if (v5)
+  array = [MEMORY[0x277CBEB18] array];
+  if (coalescingCopy)
   {
     v7 = *MEMORY[0x277CF7DE8];
-    v8 = [(ACCCommunicationsFeaturePlugin *)self chManager];
-    [v8 setCoalescingStrategy:v7];
+    chManager = [(ACCCommunicationsFeaturePlugin *)self chManager];
+    [chManager setCoalescingStrategy:v7];
 
-    v9 = [(ACCCommunicationsFeaturePlugin *)self chManager];
+    chManager2 = [(ACCCommunicationsFeaturePlugin *)self chManager];
     v10 = _recentCallsPredicate();
-    [v9 coalescedCallsWithPredicate:v10 limit:a4 offset:0 batchSize:0];
+    [chManager2 coalescedCallsWithPredicate:v10 limit:limit offset:0 batchSize:0];
   }
 
   else
   {
-    v11 = [(ACCCommunicationsFeaturePlugin *)self chManager];
-    [v11 setCoalescingStrategy:0];
+    chManager3 = [(ACCCommunicationsFeaturePlugin *)self chManager];
+    [chManager3 setCoalescingStrategy:0];
 
-    v9 = [(ACCCommunicationsFeaturePlugin *)self chManager];
+    chManager2 = [(ACCCommunicationsFeaturePlugin *)self chManager];
     v10 = _recentCallsPredicate();
-    [v9 callsWithPredicate:v10 limit:a4 offset:0 batchSize:0];
+    [chManager2 callsWithPredicate:v10 limit:limit offset:0 batchSize:0];
   }
   v12 = ;
 
@@ -3631,7 +3631,7 @@ void __59__ACCCommunicationsFeaturePlugin_sendDTMF_forCallWithUUID___block_invok
     v16 = "NO";
     *buf = 134218498;
     v82 = v15;
-    if (v5)
+    if (coalescingCopy)
     {
       v16 = "YES";
     }
@@ -3639,7 +3639,7 @@ void __59__ACCCommunicationsFeaturePlugin_sendDTMF_forCallWithUUID___block_invok
     v83 = 2080;
     v84 = v16;
     v85 = 2048;
-    v86 = a4;
+    limitCopy = limit;
     _os_log_impl(&dword_2335B8000, v13, OS_LOG_TYPE_INFO, "recentCalls.count: %lu (coalesce: %s, limit: %lu)", buf, 0x20u);
   }
 
@@ -3680,11 +3680,11 @@ void __59__ACCCommunicationsFeaturePlugin_sendDTMF_forCallWithUUID___block_invok
 
         v18 = *(*(&v74 + 1) + 8 * i);
         v78[0] = v66;
-        v19 = [v18 callerId];
-        v73 = v19;
-        if (v19)
+        callerId = [v18 callerId];
+        v73 = callerId;
+        if (callerId)
         {
-          v20 = v19;
+          v20 = callerId;
         }
 
         else
@@ -3694,8 +3694,8 @@ void __59__ACCCommunicationsFeaturePlugin_sendDTMF_forCallWithUUID___block_invok
 
         v79[0] = v20;
         v78[1] = v65;
-        v72 = [v18 callerNameForDisplay];
-        v21 = removeBidirectionalUnicodeCharacters(v72);
+        callerNameForDisplay = [v18 callerNameForDisplay];
+        v21 = removeBidirectionalUnicodeCharacters(callerNameForDisplay);
         v71 = v21;
         if (v21)
         {
@@ -3709,11 +3709,11 @@ void __59__ACCCommunicationsFeaturePlugin_sendDTMF_forCallWithUUID___block_invok
 
         v79[1] = v22;
         v78[2] = v64;
-        v23 = [v18 callerIdSubStringForDisplay];
-        v70 = v23;
-        if (v23)
+        callerIdSubStringForDisplay = [v18 callerIdSubStringForDisplay];
+        v70 = callerIdSubStringForDisplay;
+        if (callerIdSubStringForDisplay)
         {
-          v24 = v23;
+          v24 = callerIdSubStringForDisplay;
         }
 
         else
@@ -3723,11 +3723,11 @@ void __59__ACCCommunicationsFeaturePlugin_sendDTMF_forCallWithUUID___block_invok
 
         v79[2] = v24;
         v78[3] = v63;
-        v25 = [v18 contactIdentifier];
-        v26 = v25;
-        if (v25)
+        contactIdentifier = [v18 contactIdentifier];
+        v26 = contactIdentifier;
+        if (contactIdentifier)
         {
-          v27 = v25;
+          v27 = contactIdentifier;
         }
 
         else
@@ -3738,10 +3738,10 @@ void __59__ACCCommunicationsFeaturePlugin_sendDTMF_forCallWithUUID___block_invok
         v79[3] = v27;
         v78[4] = v62;
         v28 = MEMORY[0x277CCABB0];
-        v29 = [v18 callType];
-        if ((v61 & v29) == 0 && (v60 & v29) == 0 && (v59 & v29) == 0)
+        callType = [v18 callType];
+        if ((v61 & callType) == 0 && (v60 & callType) == 0 && (v59 & callType) == 0)
         {
-          if (v51 == v29)
+          if (v51 == callType)
           {
             v33 = 3;
           }
@@ -3751,7 +3751,7 @@ void __59__ACCCommunicationsFeaturePlugin_sendDTMF_forCallWithUUID___block_invok
             v33 = 0;
           }
 
-          if (v52 == v29)
+          if (v52 == callType)
           {
             v32 = 2;
           }
@@ -3771,28 +3771,28 @@ void __59__ACCCommunicationsFeaturePlugin_sendDTMF_forCallWithUUID___block_invok
         v79[4] = v34;
         v78[5] = v58;
         v35 = MEMORY[0x277CCABB0];
-        v36 = [v18 callStatus];
-        if ((v57 & v36) != 0)
+        callStatus = [v18 callStatus];
+        if ((v57 & callStatus) != 0)
         {
           v37 = 3;
         }
 
-        else if ((HIDWORD(v50) & v36) != 0)
+        else if ((HIDWORD(v50) & callStatus) != 0)
         {
           v37 = 1;
         }
 
         else
         {
-          v37 = 2 * ((v50 & v36) != 0);
+          v37 = 2 * ((v50 & callStatus) != 0);
         }
 
         v38 = [v35 numberWithUnsignedInt:v37];
         v79[5] = v38;
         v78[6] = v56;
         v39 = MEMORY[0x277CCABB0];
-        v40 = [v18 date];
-        [v40 timeIntervalSince1970];
+        date = [v18 date];
+        [date timeIntervalSince1970];
         v42 = [v39 numberWithLongLong:v41];
         v79[6] = v42;
         v78[7] = v55;
@@ -3805,7 +3805,7 @@ void __59__ACCCommunicationsFeaturePlugin_sendDTMF_forCallWithUUID___block_invok
         v79[8] = v46;
         v47 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v79 forKeys:v78 count:9];
 
-        [v68 addObject:v47];
+        [array addObject:v47];
       }
 
       v69 = [obj countByEnumeratingWithState:&v74 objects:v80 count:16];
@@ -3816,22 +3816,22 @@ void __59__ACCCommunicationsFeaturePlugin_sendDTMF_forCallWithUUID___block_invok
 
   v48 = *MEMORY[0x277D85DE8];
 
-  return v68;
+  return array;
 }
 
-- (id)currentFavoritesListWithLimit:(unint64_t)a3
+- (id)currentFavoritesListWithLimit:(unint64_t)limit
 {
   v83 = *MEMORY[0x277D85DE8];
-  v68 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v3 = [MEMORY[0x277CBDAF8] sharedInstance];
-  v4 = [v3 entries];
+  mEMORY[0x277CBDAF8] = [MEMORY[0x277CBDAF8] sharedInstance];
+  entries = [mEMORY[0x277CBDAF8] entries];
 
-  obj = v4;
-  v5 = [v4 countByEnumeratingWithState:&v76 objects:v82 count:16];
+  obj = entries;
+  v5 = [entries countByEnumeratingWithState:&v76 objects:v82 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3861,13 +3861,13 @@ void __59__ACCCommunicationsFeaturePlugin_sendDTMF_forCallWithUUID___block_invok
         }
 
         v10 = *(*(&v76 + 1) + 8 * v9);
-        v11 = [v10 actionType];
-        v12 = [v11 isEqual:v8];
+        actionType = [v10 actionType];
+        v12 = [actionType isEqual:v8];
 
         if (v12)
         {
-          v13 = [v10 bundleIdentifier];
-          v14 = [v13 isEqual:v64];
+          bundleIdentifier = [v10 bundleIdentifier];
+          v14 = [bundleIdentifier isEqual:v64];
 
           if (v14)
           {
@@ -3880,8 +3880,8 @@ void __59__ACCCommunicationsFeaturePlugin_sendDTMF_forCallWithUUID___block_invok
 
         else
         {
-          v16 = [v10 actionType];
-          v17 = [v16 isEqual:v65];
+          actionType2 = [v10 actionType];
+          v17 = [actionType2 isEqual:v65];
 
           if (!v17)
           {
@@ -3891,8 +3891,8 @@ void __59__ACCCommunicationsFeaturePlugin_sendDTMF_forCallWithUUID___block_invok
           v15 = 3;
         }
 
-        v18 = [v10 bundleIdentifier];
-        v19 = [v18 isEqual:v63];
+        bundleIdentifier2 = [v10 bundleIdentifier];
+        v19 = [bundleIdentifier2 isEqual:v63];
 
         if (!v19)
         {
@@ -3903,15 +3903,15 @@ LABEL_13:
 
         v80[0] = v62;
         v20 = v10;
-        v21 = [v20 contactProperty];
-        v22 = [v21 key];
+        contactProperty = [v20 contactProperty];
+        v22 = [contactProperty key];
         v23 = [v22 isEqual:v61];
 
-        v24 = [v20 contactProperty];
-        v25 = v24;
+        contactProperty2 = [v20 contactProperty];
+        v25 = contactProperty2;
         if (v23)
         {
-          v26 = [v24 value];
+          value = [contactProperty2 value];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -3920,15 +3920,15 @@ LABEL_13:
             goto LABEL_20;
           }
 
-          v28 = [v20 contactProperty];
-          v29 = [v28 value];
+          contactProperty3 = [v20 contactProperty];
+          value2 = [contactProperty3 value];
 
-          v30 = [v29 stringValue];
+          stringValue = [value2 stringValue];
         }
 
         else
         {
-          v31 = [v24 key];
+          v31 = [contactProperty2 key];
           v32 = [v31 isEqual:v56];
 
           if (!v32)
@@ -3936,8 +3936,8 @@ LABEL_13:
             goto LABEL_20;
           }
 
-          v33 = [v20 contactProperty];
-          v34 = [v33 value];
+          contactProperty4 = [v20 contactProperty];
+          value3 = [contactProperty4 value];
           objc_opt_class();
           v35 = objc_opt_isKindOfClass();
 
@@ -3948,11 +3948,11 @@ LABEL_20:
             goto LABEL_21;
           }
 
-          v29 = [v20 contactProperty];
-          v30 = [v29 value];
+          value2 = [v20 contactProperty];
+          stringValue = [value2 value];
         }
 
-        v36 = v30;
+        v36 = stringValue;
 
 LABEL_21:
         v71 = v36;
@@ -3969,8 +3969,8 @@ LABEL_21:
 
         v81[0] = v37;
         v80[1] = v60;
-        v75 = [v20 name];
-        v38 = removeBidirectionalUnicodeCharacters(v75);
+        name = [v20 name];
+        v38 = removeBidirectionalUnicodeCharacters(name);
         v39 = v38;
         if (v38)
         {
@@ -3985,11 +3985,11 @@ LABEL_21:
         v81[1] = v40;
         v80[2] = v59;
         v41 = MEMORY[0x277CBDB20];
-        v74 = [v20 contactProperty];
-        v72 = [v74 label];
-        v73 = [v20 contactProperty];
-        v42 = [v73 key];
-        v43 = [v41 localizedDisplayStringForLabel:v72 propertyName:v42];
+        contactProperty5 = [v20 contactProperty];
+        label = [contactProperty5 label];
+        contactProperty6 = [v20 contactProperty];
+        v42 = [contactProperty6 key];
+        v43 = [v41 localizedDisplayStringForLabel:label propertyName:v42];
         v44 = _overrideLabelForFaceTime(v43, v15);
         v45 = v44;
         if (v44)
@@ -4004,14 +4004,14 @@ LABEL_21:
 
         v81[2] = v46;
         v80[3] = v58;
-        v47 = [v20 contactProperty];
-        v48 = [v47 contact];
-        v49 = [v48 identifier];
+        contactProperty7 = [v20 contactProperty];
+        contact = [contactProperty7 contact];
+        identifier = [contact identifier];
         v50 = v15;
-        v51 = v49;
-        if (v49)
+        v51 = identifier;
+        if (identifier)
         {
-          v52 = v49;
+          v52 = identifier;
         }
 
         else
@@ -4025,7 +4025,7 @@ LABEL_21:
         v81[4] = v53;
         v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v81 forKeys:v80 count:5];
 
-        [v68 addObject:v10];
+        [array addObject:v10];
         v8 = v66;
         v7 = v67;
         v6 = v69;
@@ -4043,13 +4043,13 @@ LABEL_34:
 
   v54 = *MEMORY[0x277D85DE8];
 
-  return v68;
+  return array;
 }
 
-- (void)callStateDidChangeNotification:(id)a3
+- (void)callStateDidChangeNotification:(id)notification
 {
   v92 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = gLogObjects;
   v6 = gNumLogObjects;
   if (gLogObjects)
@@ -4085,23 +4085,23 @@ LABEL_34:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v89 = v4;
+    v89 = notificationCopy;
     _os_log_impl(&dword_2335B8000, v10, OS_LOG_TYPE_INFO, "Notification received:\n%@", buf, 0xCu);
   }
 
-  v11 = [v4 name];
+  name = [notificationCopy name];
   v12 = *MEMORY[0x277D6EFF0];
-  v13 = [v11 isEqualToString:*MEMORY[0x277D6EFF0]];
+  v13 = [name isEqualToString:*MEMORY[0x277D6EFF0]];
   v14 = MEMORY[0x277D6F038];
   v15 = MEMORY[0x277D6EFD8];
-  v76 = v4;
+  v76 = notificationCopy;
   if (v13)
   {
     goto LABEL_16;
   }
 
-  v16 = [v4 name];
-  if ([v16 isEqualToString:*v14])
+  name2 = [notificationCopy name];
+  if ([name2 isEqualToString:*v14])
   {
 LABEL_15:
 
@@ -4110,23 +4110,23 @@ LABEL_16:
   }
 
   v17 = v14;
-  v18 = [v4 name];
-  if ([v18 isEqualToString:*v15])
+  name3 = [notificationCopy name];
+  if ([name3 isEqualToString:*v15])
   {
 
     v14 = v17;
     goto LABEL_15;
   }
 
-  v47 = [v4 name];
-  v48 = [v47 isEqualToString:*MEMORY[0x277D6F020]];
+  name4 = [notificationCopy name];
+  v48 = [name4 isEqualToString:*MEMORY[0x277D6F020]];
 
   v14 = v17;
   if ((v48 & 1) == 0)
   {
     v19 = v76;
-    v49 = [v76 name];
-    v50 = [v49 isEqualToString:*MEMORY[0x277D6F000]];
+    name5 = [v76 name];
+    v50 = [name5 isEqualToString:*MEMORY[0x277D6F000]];
 
     if (!v50)
     {
@@ -4137,8 +4137,8 @@ LABEL_16:
     v82 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v23 = [(ACCCommunicationsFeaturePlugin *)self currentAudioAndVideoCalls];
-    v51 = [v23 countByEnumeratingWithState:&v79 objects:v87 count:16];
+    currentAudioAndVideoCalls = [(ACCCommunicationsFeaturePlugin *)self currentAudioAndVideoCalls];
+    v51 = [currentAudioAndVideoCalls countByEnumeratingWithState:&v79 objects:v87 count:16];
     if (v51)
     {
       v52 = v51;
@@ -4149,14 +4149,14 @@ LABEL_16:
         {
           if (*v80 != v53)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(currentAudioAndVideoCalls);
           }
 
           v55 = *(*(&v79 + 1) + 8 * i);
           if ([v55 status] == 1)
           {
             v56 = _callStateDictionaryForCall(v55);
-            v57 = [(ACCCommunicationsFeaturePlugin *)self queue];
+            queue = [(ACCCommunicationsFeaturePlugin *)self queue];
             v77[0] = MEMORY[0x277D85DD0];
             v77[1] = 3221225472;
             v77[2] = __65__ACCCommunicationsFeaturePlugin_callStateDidChangeNotification___block_invoke_3;
@@ -4164,11 +4164,11 @@ LABEL_16:
             v77[4] = self;
             v78 = v56;
             v58 = v56;
-            dispatch_async(v57, v77);
+            dispatch_async(queue, v77);
           }
         }
 
-        v52 = [v23 countByEnumeratingWithState:&v79 objects:v87 count:16];
+        v52 = [currentAudioAndVideoCalls countByEnumeratingWithState:&v79 objects:v87 count:16];
       }
 
       while (v52);
@@ -4180,20 +4180,20 @@ LABEL_16:
 
 LABEL_17:
   v19 = v76;
-  v20 = [v76 object];
+  object = [v76 object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v22 = [v76 object];
-    v23 = v22;
-    if (!v22)
+    object2 = [v76 object];
+    currentAudioAndVideoCalls = object2;
+    if (!object2)
     {
       goto LABEL_61;
     }
 
-    if ([v22 status] == 3 || objc_msgSend(v23, "status") == 4 || objc_msgSend(v23, "status") == 6 || objc_msgSend(v23, "status") == 1 && (objc_msgSend(v23, "isScreening") & 1) != 0 || objc_msgSend(v23, "status") == 1 && (objc_msgSend(v23, "isScreening") & 1) == 0 && objc_msgSend(v23, "wasScreened"))
+    if ([object2 status] == 3 || objc_msgSend(currentAudioAndVideoCalls, "status") == 4 || objc_msgSend(currentAudioAndVideoCalls, "status") == 6 || objc_msgSend(currentAudioAndVideoCalls, "status") == 1 && (objc_msgSend(currentAudioAndVideoCalls, "isScreening") & 1) != 0 || objc_msgSend(currentAudioAndVideoCalls, "status") == 1 && (objc_msgSend(currentAudioAndVideoCalls, "isScreening") & 1) == 0 && objc_msgSend(currentAudioAndVideoCalls, "wasScreened"))
     {
       v24 = gNumLogObjects;
       if (gLogObjects && gNumLogObjects >= 1)
@@ -4224,29 +4224,29 @@ LABEL_17:
       [(ACCCommunicationsFeaturePlugin *)self commStatusDidChangeNotification:v27];
     }
 
-    v28 = [v76 name];
-    if ([v28 isEqualToString:v12])
+    name6 = [v76 name];
+    if ([name6 isEqualToString:v12])
     {
     }
 
     else
     {
-      v29 = [v76 name];
-      v30 = [v29 isEqualToString:*v14];
+      name7 = [v76 name];
+      v30 = [name7 isEqualToString:*v14];
 
       if (!v30)
       {
 LABEL_43:
-        v35 = [v76 name];
-        if (![v35 isEqualToString:*v15] || objc_msgSend(v23, "status") == 1)
+        name8 = [v76 name];
+        if (![name8 isEqualToString:*v15] || objc_msgSend(currentAudioAndVideoCalls, "status") == 1)
         {
 
           goto LABEL_47;
         }
 
-        v36 = [v23 isScreening];
+        isScreening = [currentAudioAndVideoCalls isScreening];
 
-        if (v36)
+        if (isScreening)
         {
 LABEL_47:
           v37 = gNumLogObjects;
@@ -4270,19 +4270,19 @@ LABEL_47:
 
           if (OUTLINED_FUNCTION_16())
           {
-            v59 = [v76 name];
+            name9 = [v76 name];
             *buf = 138412290;
-            v89 = v59;
+            v89 = name9;
             OUTLINED_FUNCTION_11();
             _os_log_debug_impl(v60, v61, v62, v63, v64, 0xCu);
           }
 
-          v40 = _callStateDictionaryForCall(v23);
-          if (acc_userDefaults_copyIntegerForKey(@"LiveVoicemailFakeRinging") && [v23 status] == 1 && (objc_msgSend(v23, "isScreening") & 1) == 0 && objc_msgSend(v23, "wasScreened"))
+          v40 = _callStateDictionaryForCall(currentAudioAndVideoCalls);
+          if (acc_userDefaults_copyIntegerForKey(@"LiveVoicemailFakeRinging") && [currentAudioAndVideoCalls status] == 1 && (objc_msgSend(currentAudioAndVideoCalls, "isScreening") & 1) == 0 && objc_msgSend(currentAudioAndVideoCalls, "wasScreened"))
           {
             v41 = [v40 mutableCopy];
             [v41 setValue:&unk_2848E59D8 forKey:*MEMORY[0x277CE8168]];
-            v42 = [(ACCCommunicationsFeaturePlugin *)self queue];
+            queue2 = [(ACCCommunicationsFeaturePlugin *)self queue];
             block[0] = MEMORY[0x277D85DD0];
             block[1] = 3221225472;
             block[2] = __65__ACCCommunicationsFeaturePlugin_callStateDidChangeNotification___block_invoke;
@@ -4290,10 +4290,10 @@ LABEL_47:
             block[4] = self;
             v86 = v41;
             v43 = v41;
-            dispatch_async(v42, block);
+            dispatch_async(queue2, block);
           }
 
-          v44 = [(ACCCommunicationsFeaturePlugin *)self queue];
+          queue3 = [(ACCCommunicationsFeaturePlugin *)self queue];
           v83[0] = MEMORY[0x277D85DD0];
           v83[1] = 3221225472;
           v83[2] = __65__ACCCommunicationsFeaturePlugin_callStateDidChangeNotification___block_invoke_2;
@@ -4301,7 +4301,7 @@ LABEL_47:
           v83[4] = self;
           v84 = v40;
           v45 = v40;
-          dispatch_async(v44, v83);
+          dispatch_async(queue3, v83);
         }
 
 LABEL_61:
@@ -4351,7 +4351,7 @@ LABEL_62:
 {
   CTIndicatorsGetSignalStrength();
   v2 = [MEMORY[0x277CCABB0] numberWithInt:0];
-  *a1 = _convertCTGradedSignalToCommSignal(v2);
+  *self = _convertCTGradedSignalToCommSignal(v2);
 }
 
 - (void)initiateCallToDestination:withService:addressBookID:.cold.5()

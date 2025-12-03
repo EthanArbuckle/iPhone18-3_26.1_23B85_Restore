@@ -1,22 +1,22 @@
 @interface _ICTransientLexicon
-- (BOOL)containsEntity:(id)a3;
-- (BOOL)entityIsHyphenatedWord:(id)a3;
-- (_ICTransientLexicon)initWithName:(id)a3 typeFlags:(unsigned __int8)a4;
+- (BOOL)containsEntity:(id)entity;
+- (BOOL)entityIsHyphenatedWord:(id)word;
+- (_ICTransientLexicon)initWithName:(id)name typeFlags:(unsigned __int8)flags;
 - (id)getEntries;
-- (id)getEntryRefCount:(id)a3;
-- (id)getUsageCount:(id)a3;
-- (id)namedEntitiesForEntry:(id)a3;
-- (id)sortKeyEquivalents:(id)a3;
+- (id)getEntryRefCount:(id)count;
+- (id)getUsageCount:(id)count;
+- (id)namedEntitiesForEntry:(id)entry;
+- (id)sortKeyEquivalents:(id)equivalents;
 - (uint64_t)_tokenIdentiferForEntry:(uint64_t)TokenID;
-- (void)_mutableNamedEntitiesForEntry:(void *)a1;
-- (void)_mutableNamedEntitiesForLXEntry:(void *)a1;
-- (void)addEntity:(id)a3 asAliasOfEntity:(id)a4;
-- (void)addEntity:(id)a3 forEntry:(id)a4;
-- (void)createAdditionalDataForEntityIfNeeded:(id)a3;
+- (void)_mutableNamedEntitiesForEntry:(void *)entry;
+- (void)_mutableNamedEntitiesForLXEntry:(void *)entry;
+- (void)addEntity:(id)entity asAliasOfEntity:(id)ofEntity;
+- (void)addEntity:(id)entity forEntry:(id)entry;
+- (void)createAdditionalDataForEntityIfNeeded:(id)needed;
 - (void)dealloc;
 - (void)removeAllEntities;
-- (void)removeEntity:(id)a3;
-- (void)setIsHyphenatedWord:(BOOL)a3 forEntity:(id)a4;
+- (void)removeEntity:(id)entity;
+- (void)setIsHyphenatedWord:(BOOL)word forEntity:(id)entity;
 @end
 
 @implementation _ICTransientLexicon
@@ -29,9 +29,9 @@
   [(_ICTransientLexicon *)&v3 dealloc];
 }
 
-- (_ICTransientLexicon)initWithName:(id)a3 typeFlags:(unsigned __int8)a4
+- (_ICTransientLexicon)initWithName:(id)name typeFlags:(unsigned __int8)flags
 {
-  v7 = a3;
+  nameCopy = name;
   v22.receiver = self;
   v22.super_class = _ICTransientLexicon;
   v8 = [(_ICTransientLexicon *)&v22 init];
@@ -41,8 +41,8 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v8->_name, a3);
-  v9->_typeFlags = a4;
+  objc_storeStrong(&v8->_name, name);
+  v9->_typeFlags = flags;
   v9->_identifier = ++generateIdentifier_count;
   v10 = objc_opt_new();
   tokenIdentifierToEntitiesMap = v9->_tokenIdentifierToEntitiesMap;
@@ -53,7 +53,7 @@
   v9->_entityToTokenIdentifiersMap = v12;
 
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-  CFDictionaryAddValue(Mutable, *MEMORY[0x277D23178], v7);
+  CFDictionaryAddValue(Mutable, *MEMORY[0x277D23178], nameCopy);
   v21 = 0;
   v9->_lexicon = LXLexiconCreateTransient();
   CFRelease(Mutable);
@@ -73,7 +73,7 @@ LABEL_4:
   v19 = _ICPersNamedEntityOSLogFacility();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
-    [(_ICTransientLexicon *)v7 initWithName:v19 typeFlags:?];
+    [(_ICTransientLexicon *)nameCopy initWithName:v19 typeFlags:?];
   }
 
   v18 = 0;
@@ -82,22 +82,22 @@ LABEL_8:
   return v18;
 }
 
-- (void)createAdditionalDataForEntityIfNeeded:(id)a3
+- (void)createAdditionalDataForEntityIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   entityToAdditionalDataMap = self->_entityToAdditionalDataMap;
-  v9 = v4;
+  v9 = neededCopy;
   if (!entityToAdditionalDataMap)
   {
     v6 = objc_opt_new();
     v7 = self->_entityToAdditionalDataMap;
     self->_entityToAdditionalDataMap = v6;
 
-    v4 = v9;
+    neededCopy = v9;
     entityToAdditionalDataMap = self->_entityToAdditionalDataMap;
   }
 
-  v8 = [(NSMutableDictionary *)entityToAdditionalDataMap objectForKeyedSubscript:v4];
+  v8 = [(NSMutableDictionary *)entityToAdditionalDataMap objectForKeyedSubscript:neededCopy];
 
   if (!v8)
   {
@@ -105,34 +105,34 @@ LABEL_8:
   }
 }
 
-- (BOOL)entityIsHyphenatedWord:(id)a3
+- (BOOL)entityIsHyphenatedWord:(id)word
 {
-  v3 = [(NSMutableDictionary *)self->_entityToAdditionalDataMap objectForKeyedSubscript:a3];
-  v4 = [v3 unsignedIntegerValue];
+  v3 = [(NSMutableDictionary *)self->_entityToAdditionalDataMap objectForKeyedSubscript:word];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4 & 1;
+  return unsignedIntegerValue & 1;
 }
 
-- (void)setIsHyphenatedWord:(BOOL)a3 forEntity:(id)a4
+- (void)setIsHyphenatedWord:(BOOL)word forEntity:(id)entity
 {
-  v4 = a3;
-  v6 = a4;
-  [(_ICTransientLexicon *)self createAdditionalDataForEntityIfNeeded:v6];
-  v7 = [(NSMutableDictionary *)self->_entityToAdditionalDataMap objectForKeyedSubscript:v6];
-  v8 = [v7 unsignedIntegerValue];
+  wordCopy = word;
+  entityCopy = entity;
+  [(_ICTransientLexicon *)self createAdditionalDataForEntityIfNeeded:entityCopy];
+  v7 = [(NSMutableDictionary *)self->_entityToAdditionalDataMap objectForKeyedSubscript:entityCopy];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8 & 0xFFFFFFFFFFFFFFFELL | v4];
-  [(NSMutableDictionary *)self->_entityToAdditionalDataMap setObject:v9 forKeyedSubscript:v6];
+  wordCopy = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue & 0xFFFFFFFFFFFFFFFELL | wordCopy];
+  [(NSMutableDictionary *)self->_entityToAdditionalDataMap setObject:wordCopy forKeyedSubscript:entityCopy];
 }
 
-- (void)addEntity:(id)a3 asAliasOfEntity:(id)a4
+- (void)addEntity:(id)entity asAliasOfEntity:(id)ofEntity
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_entityToTokenIdentifiersMap objectForKey:a4];
+  entityCopy = entity;
+  v7 = [(NSMutableDictionary *)self->_entityToTokenIdentifiersMap objectForKey:ofEntity];
   entityToTokenIdentifiersMap = self->_entityToTokenIdentifiersMap;
   v9 = [v7 mutableCopy];
-  [(NSMutableDictionary *)entityToTokenIdentifiersMap setObject:v9 forKey:v6];
+  [(NSMutableDictionary *)entityToTokenIdentifiersMap setObject:v9 forKey:entityCopy];
 
   v19 = 0u;
   v20 = 0u;
@@ -155,7 +155,7 @@ LABEL_8:
         }
 
         v15 = [(NSMutableDictionary *)self->_tokenIdentifierToEntitiesMap objectForKeyedSubscript:*(*(&v17 + 1) + 8 * v14), v17];
-        [v15 addObject:v6];
+        [v15 addObject:entityCopy];
 
         ++v14;
       }
@@ -170,11 +170,11 @@ LABEL_8:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeEntity:(id)a3
+- (void)removeEntity:(id)entity
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_entityToTokenIdentifiersMap objectForKey:v4];
+  entityCopy = entity;
+  v5 = [(NSMutableDictionary *)self->_entityToTokenIdentifiersMap objectForKey:entityCopy];
   v6 = v5;
   if (v5)
   {
@@ -198,7 +198,7 @@ LABEL_8:
 
           v11 = *(*(&v15 + 1) + 8 * i);
           v12 = [(NSMutableDictionary *)self->_tokenIdentifierToEntitiesMap objectForKeyedSubscript:v11];
-          [v12 removeObject:v4];
+          [v12 removeObject:entityCopy];
           if (![v12 count])
           {
             [(NSMutableDictionary *)self->_tokenIdentifierToEntitiesMap removeObjectForKey:v11];
@@ -214,8 +214,8 @@ LABEL_8:
       while (v8);
     }
 
-    [(NSMutableDictionary *)self->_entityToTokenIdentifiersMap removeObjectForKey:v4];
-    [(NSMutableDictionary *)self->_entityToAdditionalDataMap removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_entityToTokenIdentifiersMap removeObjectForKey:entityCopy];
+    [(NSMutableDictionary *)self->_entityToAdditionalDataMap removeObjectForKey:entityCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -232,20 +232,20 @@ LABEL_8:
   [(NSMutableDictionary *)entityToAdditionalDataMap removeAllObjects];
 }
 
-- (BOOL)containsEntity:(id)a3
+- (BOOL)containsEntity:(id)entity
 {
-  v3 = [(NSMutableDictionary *)self->_entityToTokenIdentifiersMap objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_entityToTokenIdentifiersMap objectForKey:entity];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)sortKeyEquivalents:(id)a3
+- (id)sortKeyEquivalents:(id)equivalents
 {
-  v4 = a3;
+  equivalentsCopy = equivalents;
   v5 = objc_opt_new();
   lexicon = self->_lexicon;
-  v7 = [v4 name];
+  name = [equivalentsCopy name];
 
   v10 = v5;
   LXLexiconEnumerateEntriesForString();
@@ -266,12 +266,12 @@ LABEL_8:
   return v7;
 }
 
-- (id)getEntryRefCount:(id)a3
+- (id)getEntryRefCount:(id)count
 {
-  v4 = a3;
-  if ([v4 length])
+  countCopy = count;
+  if ([countCopy length])
   {
-    [(_ICTransientLexicon(TestingSupport) *)self getEntryRefCount:v4, &v7];
+    [(_ICTransientLexicon(TestingSupport) *)self getEntryRefCount:countCopy, &v7];
     v5 = v7;
   }
 
@@ -283,10 +283,10 @@ LABEL_8:
   return v5;
 }
 
-- (id)getUsageCount:(id)a3
+- (id)getUsageCount:(id)count
 {
-  v4 = a3;
-  if ([v4 length] && (v5 = +[_ICLexiconUtilities copyEntry:forString:](_ICLexiconUtilities, "copyEntry:forString:", self->_lexicon, v4)) != 0)
+  countCopy = count;
+  if ([countCopy length] && (v5 = +[_ICLexiconUtilities copyEntry:forString:](_ICLexiconUtilities, "copyEntry:forString:", self->_lexicon, countCopy)) != 0)
   {
     v6 = v5;
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:LXEntryGetUsageCount()];
@@ -301,18 +301,18 @@ LABEL_8:
   return v7;
 }
 
-- (void)_mutableNamedEntitiesForLXEntry:(void *)a1
+- (void)_mutableNamedEntitiesForLXEntry:(void *)entry
 {
-  v1 = a1;
-  if (a1)
+  entryCopy = entry;
+  if (entry)
   {
     TokenID = LXEntryGetTokenID();
-    v3 = v1[2];
+    v3 = entryCopy[2];
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:TokenID];
-    v1 = [v3 objectForKeyedSubscript:v4];
+    entryCopy = [v3 objectForKeyedSubscript:v4];
   }
 
-  return v1;
+  return entryCopy;
 }
 
 - (uint64_t)_tokenIdentiferForEntry:(uint64_t)TokenID
@@ -337,47 +337,47 @@ LABEL_8:
   return TokenID;
 }
 
-- (void)_mutableNamedEntitiesForEntry:(void *)a1
+- (void)_mutableNamedEntitiesForEntry:(void *)entry
 {
   v3 = a2;
-  if (a1)
+  if (entry)
   {
-    v4 = [_ICLexiconUtilities copyEntry:a1[1] forString:v3];
+    v4 = [_ICLexiconUtilities copyEntry:entry[1] forString:v3];
     if (v4)
     {
       v6 = v4;
-      a1 = [_ICTransientLexicon _mutableNamedEntitiesForLXEntry:a1];
+      entry = [_ICTransientLexicon _mutableNamedEntitiesForLXEntry:entry];
       CFRelease(v6);
     }
 
     else
     {
-      a1 = 0;
+      entry = 0;
     }
   }
 
-  return a1;
+  return entry;
 }
 
-- (id)namedEntitiesForEntry:(id)a3
+- (id)namedEntitiesForEntry:(id)entry
 {
-  v3 = [(_ICTransientLexicon *)self _mutableNamedEntitiesForEntry:a3];
+  v3 = [(_ICTransientLexicon *)self _mutableNamedEntitiesForEntry:entry];
   v4 = [v3 copy];
 
   return v4;
 }
 
-- (void)addEntity:(id)a3 forEntry:(id)a4
+- (void)addEntity:(id)entity forEntry:(id)entry
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  entityCopy = entity;
+  entryCopy = entry;
   v8 = _ICPersNamedEntityOSLogFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     name = self->_name;
     *buf = 138412546;
-    v24 = v7;
+    v24 = entryCopy;
     v25 = 2112;
     v26 = name;
     _os_log_debug_impl(&dword_254BD0000, v8, OS_LOG_TYPE_DEBUG, "Add: %@ to: %@", buf, 0x16u);
@@ -393,7 +393,7 @@ LABEL_8:
     v10 = 2;
   }
 
-  v11 = [(_ICTransientLexicon *)self _mutableNamedEntitiesForEntry:v7];
+  v11 = [(_ICTransientLexicon *)self _mutableNamedEntitiesForEntry:entryCopy];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __42___ICTransientLexicon_addEntity_forEntry___block_invoke;
@@ -403,16 +403,16 @@ LABEL_8:
   v12 = MEMORY[0x259C27030](v21);
   if (v11)
   {
-    [v11 addObject:v6];
-    v14 = [(_ICTransientLexicon *)self _tokenIdentiferForEntry:v7];
+    [v11 addObject:entityCopy];
+    v14 = [(_ICTransientLexicon *)self _tokenIdentiferForEntry:entryCopy];
   }
 
   else
   {
     v11 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:v10];
-    [v11 addObject:v6];
+    [v11 addObject:entityCopy];
     lexicon = self->_lexicon;
-    [v6 timestamp];
+    [entityCopy timestamp];
     v14 = LXLexiconAddWithCreationTime();
     v15 = self->_lexicon;
     LXLexiconIncrementUsageCount();
@@ -424,7 +424,7 @@ LABEL_8:
     [(NSMutableDictionary *)tokenIdentifierToEntitiesMap setObject:v11 forKeyedSubscript:v19];
   }
 
-  (v12)[2](v12, v6, v14);
+  (v12)[2](v12, entityCopy, v14);
 
   v20 = *MEMORY[0x277D85DE8];
 }

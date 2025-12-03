@@ -1,18 +1,18 @@
 @interface MPCItemBookmarker
-- (MPCItemBookmarker)initWithPlaybackEngine:(id)a3 translator:(id)a4;
+- (MPCItemBookmarker)initWithPlaybackEngine:(id)engine translator:(id)translator;
 - (MPCPlaybackEngine)engine;
-- (void)currentItemWillChangeFromItem:(id)a3 toItem:(id)a4 time:(double)a5;
-- (void)itemDidBecomeCurrent:(id)a3 time:(double)a4 rate:(float)a5;
-- (void)itemDidPlayToEnd:(id)a3 time:(double)a4;
-- (void)itemSmartTransitionDidEnd:(id)a3 time:(double)a4;
-- (void)itemSmartTransitionWillBeginFrom:(id)a3 outgoingItemAveragePrePivotTransitionRate:(double)a4 time:(double)a5;
-- (void)itemTransitionDidReachPivotPoint:(id)a3 to:(id)a4 incomingItemAveragePostPivotTransitionRate:(double)a5 time:(double)a6;
-- (void)itemTransitionWillBeginFrom:(id)a3 to:(id)a4 type:(int64_t)a5 timeStamp:(id)a6;
-- (void)playbackDidStartForItem:(id)a3 time:(double)a4 rate:(float)a5;
-- (void)playbackDidStopForItem:(id)a3 time:(double)a4;
-- (void)playbackRateDidChangeToRate:(float)a3 forItem:(id)a4 time:(double)a5;
-- (void)playbackStateDidChangeFromState:(int64_t)a3 toState:(int64_t)a4 forItem:(id)a5 time:(double)a6 rate:(float)a7;
-- (void)updateDurationSnapshotWithTime:(double)a3 forItem:(id)a4 rate:(float)a5;
+- (void)currentItemWillChangeFromItem:(id)item toItem:(id)toItem time:(double)time;
+- (void)itemDidBecomeCurrent:(id)current time:(double)time rate:(float)rate;
+- (void)itemDidPlayToEnd:(id)end time:(double)time;
+- (void)itemSmartTransitionDidEnd:(id)end time:(double)time;
+- (void)itemSmartTransitionWillBeginFrom:(id)from outgoingItemAveragePrePivotTransitionRate:(double)rate time:(double)time;
+- (void)itemTransitionDidReachPivotPoint:(id)point to:(id)to incomingItemAveragePostPivotTransitionRate:(double)rate time:(double)time;
+- (void)itemTransitionWillBeginFrom:(id)from to:(id)to type:(int64_t)type timeStamp:(id)stamp;
+- (void)playbackDidStartForItem:(id)item time:(double)time rate:(float)rate;
+- (void)playbackDidStopForItem:(id)item time:(double)time;
+- (void)playbackRateDidChangeToRate:(float)rate forItem:(id)item time:(double)time;
+- (void)playbackStateDidChangeFromState:(int64_t)state toState:(int64_t)toState forItem:(id)item time:(double)time rate:(float)rate;
+- (void)updateDurationSnapshotWithTime:(double)time forItem:(id)item rate:(float)rate;
 @end
 
 @implementation MPCItemBookmarker
@@ -24,174 +24,174 @@
   return WeakRetained;
 }
 
-- (void)updateDurationSnapshotWithTime:(double)a3 forItem:(id)a4 rate:(float)a5
+- (void)updateDurationSnapshotWithTime:(double)time forItem:(id)item rate:(float)rate
 {
-  v9 = a4;
-  if (v9)
+  itemCopy = item;
+  if (itemCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v17 handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"item == nil || [(MPAVItem *)item isKindOfClass:[MPAVItem class]]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:146 description:{@"Invalid parameter not satisfying: %@", @"item == nil || [(MPAVItem *)item isKindOfClass:[MPAVItem class]]"}];
     }
   }
 
-  v10 = [(MPCItemBookmarker *)self engine];
-  v18 = v9;
-  *&v11 = a5;
+  engine = [(MPCItemBookmarker *)self engine];
+  v18 = itemCopy;
+  *&v11 = rate;
   [v18 _setCurrentPlaybackRate:v11];
   if ([v18 conformsToProtocol:&unk_1F459C8B8])
   {
-    v13 = [v10 player];
-    v14 = [v13 state];
-    *&v15 = a5;
-    [v18 pod_updateDurationSnapshotWithElapsedTime:v14 playbackRate:a3 playbackState:v15];
+    player = [engine player];
+    state = [player state];
+    *&v15 = rate;
+    [v18 pod_updateDurationSnapshotWithElapsedTime:state playbackRate:time playbackState:v15];
   }
 
   else
   {
-    *&v12 = a5;
-    [v18 _updateDurationSnapshotWithElapsedTime:a3 playbackRate:v12];
+    *&v12 = rate;
+    [v18 _updateDurationSnapshotWithElapsedTime:time playbackRate:v12];
   }
 
-  v16 = [v10 mediaRemotePublisher];
-  [v16 publishIfNeeded];
+  mediaRemotePublisher = [engine mediaRemotePublisher];
+  [mediaRemotePublisher publishIfNeeded];
 }
 
-- (void)playbackStateDidChangeFromState:(int64_t)a3 toState:(int64_t)a4 forItem:(id)a5 time:(double)a6 rate:(float)a7
+- (void)playbackStateDidChangeFromState:(int64_t)state toState:(int64_t)toState forItem:(id)item time:(double)time rate:(float)rate
 {
-  v14 = a5;
-  if (v14)
+  itemCopy = item;
+  if (itemCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"item == nil || [(MPAVItem *)item isKindOfClass:[MPAVItem class]]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"item == nil || [(MPAVItem *)item isKindOfClass:[MPAVItem class]]"}];
     }
   }
 
-  if (a3 != 1 && a4 == 1)
+  if (state != 1 && toState == 1)
   {
-    *&v12 = a7;
-    [v14 _setCurrentPlaybackRate:v12];
+    *&v12 = rate;
+    [itemCopy _setCurrentPlaybackRate:v12];
   }
 }
 
-- (void)playbackRateDidChangeToRate:(float)a3 forItem:(id)a4 time:(double)a5
+- (void)playbackRateDidChangeToRate:(float)rate forItem:(id)item time:(double)time
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if (a3 == 0.0 || a3 == 1.0)
+  itemCopy = item;
+  if (rate == 0.0 || rate == 1.0)
   {
     v11 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = 134218498;
-      v13 = self;
+      selfCopy = self;
       v14 = 2048;
-      v15 = a3;
+      rateCopy = rate;
       v16 = 2114;
-      v17 = v8;
+      v17 = itemCopy;
       _os_log_impl(&dword_1C5C61000, v11, OS_LOG_TYPE_ERROR, "MPCItemBookmarker %p - Unexpected rate change to %.1f received [Should be handled by playbackDidStart/Stop] - item=%{public}@", &v12, 0x20u);
     }
   }
 
   else
   {
-    *&v9 = a3;
-    [(MPCItemBookmarker *)self updateDurationSnapshotWithTime:v8 forItem:a5 rate:v9];
+    *&v9 = rate;
+    [(MPCItemBookmarker *)self updateDurationSnapshotWithTime:itemCopy forItem:time rate:v9];
   }
 }
 
-- (void)playbackDidStopForItem:(id)a3 time:(double)a4
+- (void)playbackDidStopForItem:(id)item time:(double)time
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  itemCopy = item;
   v7 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218498;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
-    v11 = v6;
+    v11 = itemCopy;
     v12 = 2048;
-    v13 = a4;
+    timeCopy = time;
     _os_log_impl(&dword_1C5C61000, v7, OS_LOG_TYPE_DEFAULT, "MPCItemBookmarker %p - playbackDidStopForItem - item=%{public}@ - time:%.2fs", &v8, 0x20u);
   }
 
-  [(MPCItemBookmarker *)self updateDurationSnapshotWithTime:v6 forItem:a4 rate:0.0];
+  [(MPCItemBookmarker *)self updateDurationSnapshotWithTime:itemCopy forItem:time rate:0.0];
 }
 
-- (void)playbackDidStartForItem:(id)a3 time:(double)a4 rate:(float)a5
+- (void)playbackDidStartForItem:(id)item time:(double)time rate:(float)rate
 {
   v19 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  itemCopy = item;
   v10 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
-    v16 = v9;
+    v16 = itemCopy;
     v17 = 2048;
-    v18 = a4;
+    timeCopy = time;
     _os_log_impl(&dword_1C5C61000, v10, OS_LOG_TYPE_DEFAULT, "MPCItemBookmarker %p - playbackDidStartForItem - item=%{public}@ - time:%.2fs", buf, 0x20u);
   }
 
-  if (v9)
+  if (itemCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"item == nil || [(MPAVItem *)item isKindOfClass:[MPAVItem class]]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"item == nil || [(MPAVItem *)item isKindOfClass:[MPAVItem class]]"}];
     }
   }
 
-  *&v11 = a5;
-  [(MPCItemBookmarker *)self updateDurationSnapshotWithTime:v9 forItem:a4 rate:v11];
+  *&v11 = rate;
+  [(MPCItemBookmarker *)self updateDurationSnapshotWithTime:itemCopy forItem:time rate:v11];
 }
 
-- (void)itemSmartTransitionDidEnd:(id)a3 time:(double)a4
+- (void)itemSmartTransitionDidEnd:(id)end time:(double)time
 {
-  v7 = a3;
-  v11 = v7;
-  if (v7)
+  endCopy = end;
+  v11 = endCopy;
+  if (endCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v7 = v11;
+    endCopy = v11;
     if ((isKindOfClass & 1) == 0)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"incomingItem == nil || [(MPAVItem *)incomingItem isKindOfClass:[MPAVItem class]]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:113 description:{@"Invalid parameter not satisfying: %@", @"incomingItem == nil || [(MPAVItem *)incomingItem isKindOfClass:[MPAVItem class]]"}];
 
-      v7 = v11;
+      endCopy = v11;
     }
   }
 
   LODWORD(v8) = 1.0;
-  [(MPCItemBookmarker *)self updateDurationSnapshotWithTime:v7 forItem:a4 rate:v8];
+  [(MPCItemBookmarker *)self updateDurationSnapshotWithTime:endCopy forItem:time rate:v8];
 }
 
-- (void)itemTransitionDidReachPivotPoint:(id)a3 to:(id)a4 incomingItemAveragePostPivotTransitionRate:(double)a5 time:(double)a6
+- (void)itemTransitionDidReachPivotPoint:(id)point to:(id)to incomingItemAveragePostPivotTransitionRate:(double)rate time:(double)time
 {
-  v15 = a3;
-  v11 = a4;
-  if (v15 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  pointCopy = point;
+  toCopy = to;
+  if (pointCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"outgoingItem == nil || [(MPAVItem *)outgoingItem isKindOfClass:[MPAVItem class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:105 description:{@"Invalid parameter not satisfying: %@", @"outgoingItem == nil || [(MPAVItem *)outgoingItem isKindOfClass:[MPAVItem class]]"}];
 
-    if (!v11)
+    if (!toCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (!v11)
+  else if (!toCopy)
   {
     goto LABEL_6;
   }
@@ -199,138 +199,138 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"incomingItem == nil || [(MPAVItem *)incomingItem isKindOfClass:[MPAVItem class]]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:106 description:{@"Invalid parameter not satisfying: %@", @"incomingItem == nil || [(MPAVItem *)incomingItem isKindOfClass:[MPAVItem class]]"}];
   }
 
 LABEL_6:
-  *&v12 = a5;
-  [(MPCItemBookmarker *)self updateDurationSnapshotWithTime:v11 forItem:a6 rate:v12];
-  [v15 notePlaybackFinishedByHittingEnd];
+  *&v12 = rate;
+  [(MPCItemBookmarker *)self updateDurationSnapshotWithTime:toCopy forItem:time rate:v12];
+  [pointCopy notePlaybackFinishedByHittingEnd];
 }
 
-- (void)itemSmartTransitionWillBeginFrom:(id)a3 outgoingItemAveragePrePivotTransitionRate:(double)a4 time:(double)a5
+- (void)itemSmartTransitionWillBeginFrom:(id)from outgoingItemAveragePrePivotTransitionRate:(double)rate time:(double)time
 {
-  v9 = a3;
-  v13 = v9;
-  if (v9)
+  fromCopy = from;
+  v13 = fromCopy;
+  if (fromCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v9 = v13;
+    fromCopy = v13;
     if ((isKindOfClass & 1) == 0)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"outgoingItem == nil || [(MPAVItem *)outgoingItem isKindOfClass:[MPAVItem class]]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:100 description:{@"Invalid parameter not satisfying: %@", @"outgoingItem == nil || [(MPAVItem *)outgoingItem isKindOfClass:[MPAVItem class]]"}];
 
-      v9 = v13;
+      fromCopy = v13;
     }
   }
 
-  *&v10 = a4;
-  [(MPCItemBookmarker *)self updateDurationSnapshotWithTime:v9 forItem:a5 rate:v10];
+  *&v10 = rate;
+  [(MPCItemBookmarker *)self updateDurationSnapshotWithTime:fromCopy forItem:time rate:v10];
 }
 
-- (void)itemTransitionWillBeginFrom:(id)a3 to:(id)a4 type:(int64_t)a5 timeStamp:(id)a6
+- (void)itemTransitionWillBeginFrom:(id)from to:(id)to type:(int64_t)type timeStamp:(id)stamp
 {
-  v16 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = v16;
-  v13 = v11;
-  if (v16)
+  fromCopy = from;
+  toCopy = to;
+  stampCopy = stamp;
+  v12 = fromCopy;
+  v13 = stampCopy;
+  if (fromCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v12 = v16;
+    v12 = fromCopy;
     if ((isKindOfClass & 1) == 0)
     {
-      v15 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v15 handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"fromItem == nil || [(MPAVItem *)fromItem isKindOfClass:[MPAVItem class]]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"fromItem == nil || [(MPAVItem *)fromItem isKindOfClass:[MPAVItem class]]"}];
 
-      v12 = v16;
+      v12 = fromCopy;
     }
   }
 
   [v12 notePlaybackFinishedByHittingEnd];
 }
 
-- (void)itemDidPlayToEnd:(id)a3 time:(double)a4
+- (void)itemDidPlayToEnd:(id)end time:(double)time
 {
-  v6 = a3;
-  v9 = v6;
-  if (v6)
+  endCopy = end;
+  v9 = endCopy;
+  if (endCopy)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v6 = v9;
+    endCopy = v9;
     if ((isKindOfClass & 1) == 0)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"item == nil || [(MPAVItem *)item isKindOfClass:[MPAVItem class]]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:88 description:{@"Invalid parameter not satisfying: %@", @"item == nil || [(MPAVItem *)item isKindOfClass:[MPAVItem class]]"}];
 
-      v6 = v9;
+      endCopy = v9;
     }
   }
 
-  [v6 notePlaybackFinishedByHittingEnd];
+  [endCopy notePlaybackFinishedByHittingEnd];
 }
 
-- (void)itemDidBecomeCurrent:(id)a3 time:(double)a4 rate:(float)a5
+- (void)itemDidBecomeCurrent:(id)current time:(double)time rate:(float)rate
 {
   v23 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (v9)
+  currentCopy = current;
+  if (currentCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"item == nil || [(MPAVItem *)item isKindOfClass:[MPAVItem class]]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"item == nil || [(MPAVItem *)item isKindOfClass:[MPAVItem class]]"}];
     }
   }
 
-  v10 = v9;
+  v10 = currentCopy;
   if ([v10 isAssetLoaded])
   {
     [v10 reevaluateType];
     [v10 reevaluateHasProtectedContent];
-    v11 = [v10 contentItem];
-    *&v12 = a5;
-    [v10 _updateDurationSnapshotWithElapsedTime:a4 playbackRate:v12];
+    contentItem = [v10 contentItem];
+    *&v12 = rate;
+    [v10 _updateDurationSnapshotWithElapsedTime:time playbackRate:v12];
     v13 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218754;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = v10;
       v19 = 2048;
-      v20 = a4;
+      timeCopy = time;
       v21 = 2048;
-      v22 = a5;
+      rateCopy = rate;
       _os_log_impl(&dword_1C5C61000, v13, OS_LOG_TYPE_DEFAULT, "MPCItemBookmarker %p - Current loaded item bookmark data updated %{public}@ time:%.2fs rate:%.2f", buf, 0x2Au);
     }
   }
 }
 
-- (void)currentItemWillChangeFromItem:(id)a3 toItem:(id)a4 time:(double)a5
+- (void)currentItemWillChangeFromItem:(id)item toItem:(id)toItem time:(double)time
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  itemCopy = item;
+  toItemCopy = toItem;
+  if (itemCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"fromItem == nil || [(MPAVItem *)fromItem isKindOfClass:[MPAVItem class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"fromItem == nil || [(MPAVItem *)fromItem isKindOfClass:[MPAVItem class]]"}];
 
-    if (!v9)
+    if (!toItemCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (!v9)
+  else if (!toItemCopy)
   {
     goto LABEL_6;
   }
@@ -338,19 +338,19 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"toItem == nil || [(MPAVItem *)toItem isKindOfClass:[MPAVItem class]]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"MPCItemBookmarker.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"toItem == nil || [(MPAVItem *)toItem isKindOfClass:[MPAVItem class]]"}];
   }
 
 LABEL_6:
-  v10 = v8;
+  v10 = itemCopy;
   if ([v10 isAssetLoaded])
   {
-    v11 = [v10 asset];
+    asset = [v10 asset];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v11 URL];
+      v12 = [asset URL];
       if (v12)
       {
         v13 = v12;
@@ -358,11 +358,11 @@ LABEL_6:
       }
     }
 
-    v14 = [v10 playerItem];
-    v15 = v14;
-    if (v14)
+    playerItem = [v10 playerItem];
+    v15 = playerItem;
+    if (playerItem)
     {
-      [v14 currentTime];
+      [playerItem currentTime];
     }
 
     else
@@ -374,14 +374,14 @@ LABEL_6:
 
     if (Seconds == 0.0)
     {
-      v17 = [v10 contentItem];
-      [v17 elapsedTime];
+      contentItem = [v10 contentItem];
+      [contentItem elapsedTime];
       v19 = v18;
 
       if (v19 > 0.0)
       {
-        v20 = [v10 contentItem];
-        [v20 elapsedTime];
+        contentItem2 = [v10 contentItem];
+        [contentItem2 elapsedTime];
         Seconds = v21;
       }
     }
@@ -400,10 +400,10 @@ LABEL_6:
       _os_log_impl(&dword_1C5C61000, v22, OS_LOG_TYPE_DEFAULT, "MPCItemBookmarker %p - Previous loaded item bookmark data updated %{public}@ - PlaybackStoppedTime:%.2fs", &time, 0x20u);
     }
 
-    v23 = v9;
-    v24 = [v23 contentItemID];
-    v25 = [v10 contentItemID];
-    v26 = [v24 isEqualToString:v25];
+    v23 = toItemCopy;
+    contentItemID = [v23 contentItemID];
+    contentItemID2 = [v10 contentItemID];
+    v26 = [contentItemID isEqualToString:contentItemID2];
 
     if (v26)
     {
@@ -412,18 +412,18 @@ LABEL_6:
   }
 }
 
-- (MPCItemBookmarker)initWithPlaybackEngine:(id)a3 translator:(id)a4
+- (MPCItemBookmarker)initWithPlaybackEngine:(id)engine translator:(id)translator
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  translatorCopy = translator;
   v11.receiver = self;
   v11.super_class = MPCItemBookmarker;
   v8 = [(MPCItemBookmarker *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_engine, v6);
-    objc_storeStrong(&v9->_translator, a4);
+    objc_storeWeak(&v8->_engine, engineCopy);
+    objc_storeStrong(&v9->_translator, translator);
   }
 
   return v9;

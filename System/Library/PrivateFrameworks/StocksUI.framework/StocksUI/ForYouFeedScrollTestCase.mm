@@ -1,7 +1,7 @@
 @interface ForYouFeedScrollTestCase
 - (NSString)testName;
 - (_TtC8StocksUI24ForYouFeedScrollTestCase)init;
-- (id)scrollViewWithContext:(id)a3;
+- (id)scrollViewWithContext:(id)context;
 @end
 
 @implementation ForYouFeedScrollTestCase
@@ -30,11 +30,11 @@
   return [(ForYouFeedScrollTestCase *)&v6 init];
 }
 
-- (id)scrollViewWithContext:(id)a3
+- (id)scrollViewWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_2205A194C(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_2205A194C(contextCopy);
   v7 = v6;
 
   return v7;

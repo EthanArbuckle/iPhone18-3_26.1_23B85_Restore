@@ -1,22 +1,22 @@
 @interface ThreadNetworkfinder
-- (id)getAgentDescriptionForIndex:(unint64_t)a3;
-- (id)getBorderAgentForIndex:(unint64_t)a3;
+- (id)getAgentDescriptionForIndex:(unint64_t)index;
+- (id)getBorderAgentForIndex:(unint64_t)index;
 - (int64_t)findNWs;
 - (void)agentChanged;
-- (void)agentResolved:(id)a3;
+- (void)agentResolved:(id)resolved;
 - (void)clear;
-- (void)printServer:(id)a3;
-- (void)startScan:(id)a3 queue:(id)a4 timeInSec:(unsigned __int8)a5;
+- (void)printServer:(id)server;
+- (void)startScan:(id)scan queue:(id)queue timeInSec:(unsigned __int8)sec;
 - (void)stopScan;
 @end
 
 @implementation ThreadNetworkfinder
 
-- (void)startScan:(id)a3 queue:(id)a4 timeInSec:(unsigned __int8)a5
+- (void)startScan:(id)scan queue:(id)queue timeInSec:(unsigned __int8)sec
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  secCopy = sec;
+  scanCopy = scan;
+  queueCopy = queue;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -32,8 +32,8 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Starting dispatch After", v12, 2u);
   }
 
-  v11 = dispatch_time(0, 1000000000 * v5);
-  dispatch_after(v11, v9, v8);
+  v11 = dispatch_time(0, 1000000000 * secCopy);
+  dispatch_after(v11, queueCopy, scanCopy);
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
@@ -99,24 +99,24 @@ void __28__ThreadNetworkfinder_clear__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)getBorderAgentForIndex:(unint64_t)a3
+- (id)getBorderAgentForIndex:(unint64_t)index
 {
   borderAgentFinder = self->_borderAgentFinder;
   if (borderAgentFinder)
   {
-    borderAgentFinder = [borderAgentFinder getBorderAgentAtIndex:a3];
+    borderAgentFinder = [borderAgentFinder getBorderAgentAtIndex:index];
     v3 = vars8;
   }
 
   return borderAgentFinder;
 }
 
-- (id)getAgentDescriptionForIndex:(unint64_t)a3
+- (id)getAgentDescriptionForIndex:(unint64_t)index
 {
   borderAgentFinder = self->_borderAgentFinder;
   if (borderAgentFinder)
   {
-    borderAgentFinder = [borderAgentFinder getAgentDescription:a3];
+    borderAgentFinder = [borderAgentFinder getAgentDescription:index];
     v3 = vars8;
   }
 
@@ -133,15 +133,15 @@ void __28__ThreadNetworkfinder_clear__block_invoke(uint64_t a1)
   }
 }
 
-- (void)printServer:(id)a3
+- (void)printServer:(id)server
 {
-  v3 = a3;
-  v4 = [v3 addresses];
+  serverCopy = server;
+  addresses = [serverCopy addresses];
 
-  if (v4)
+  if (addresses)
   {
-    v5 = [v3 TXTRecordData];
-    v6 = [NSNetService dictionaryFromTXTRecordData:v5];
+    tXTRecordData = [serverCopy TXTRecordData];
+    v6 = [NSNetService dictionaryFromTXTRecordData:tXTRecordData];
 
     if (!v6)
     {
@@ -307,20 +307,20 @@ LABEL_41:
 LABEL_42:
 }
 
-- (void)agentResolved:(id)a3
+- (void)agentResolved:(id)resolved
 {
-  v4 = a3;
+  resolvedCopy = resolved;
   v5 = log_get_logging_obg("com.apple.wpantund.tnm", "commissioning");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = resolvedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Agent Resolved ! Server : %@", &v7, 0xCu);
   }
 
-  if (v4)
+  if (resolvedCopy)
   {
-    [(ThreadNetworkfinder *)self printServer:v4];
+    [(ThreadNetworkfinder *)self printServer:resolvedCopy];
   }
 
   else

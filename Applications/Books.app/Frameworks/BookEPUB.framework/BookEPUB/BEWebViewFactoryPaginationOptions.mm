@@ -1,41 +1,41 @@
 @interface BEWebViewFactoryPaginationOptions
-- (BEWebViewFactoryPaginationOptions)initWithMode:(unint64_t)a3 usePaginationLineGrid:(BOOL)a4 respectPageBreaks:(BOOL)a5 isHorizontalScroll:(BOOL)a6 contentLayoutSize:(CGSize)a7 gapBetweenPages:(double)a8 viewportWidth:(double)a9 fixedLayoutSize:(CGSize)a10 pageLength:(double)a11 fontSize:(double)a12 developerExtrasEnabled:(BOOL)a13;
-- (BOOL)isEqual:(id)a3;
+- (BEWebViewFactoryPaginationOptions)initWithMode:(unint64_t)mode usePaginationLineGrid:(BOOL)grid respectPageBreaks:(BOOL)breaks isHorizontalScroll:(BOOL)scroll contentLayoutSize:(CGSize)size gapBetweenPages:(double)pages viewportWidth:(double)width fixedLayoutSize:(CGSize)self0 pageLength:(double)self1 fontSize:(double)self2 developerExtrasEnabled:(BOOL)self3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)contentLayoutSize;
 - (CGSize)fixedLayoutSize;
 - (double)scrollPageLength;
 - (id)dictionaryRepresentation;
 - (id)jsonRepresentation;
 - (int64_t)wkPaginationMode;
-- (void)applyToWebView:(id)a3;
+- (void)applyToWebView:(id)view;
 @end
 
 @implementation BEWebViewFactoryPaginationOptions
 
-- (BEWebViewFactoryPaginationOptions)initWithMode:(unint64_t)a3 usePaginationLineGrid:(BOOL)a4 respectPageBreaks:(BOOL)a5 isHorizontalScroll:(BOOL)a6 contentLayoutSize:(CGSize)a7 gapBetweenPages:(double)a8 viewportWidth:(double)a9 fixedLayoutSize:(CGSize)a10 pageLength:(double)a11 fontSize:(double)a12 developerExtrasEnabled:(BOOL)a13
+- (BEWebViewFactoryPaginationOptions)initWithMode:(unint64_t)mode usePaginationLineGrid:(BOOL)grid respectPageBreaks:(BOOL)breaks isHorizontalScroll:(BOOL)scroll contentLayoutSize:(CGSize)size gapBetweenPages:(double)pages viewportWidth:(double)width fixedLayoutSize:(CGSize)self0 pageLength:(double)self1 fontSize:(double)self2 developerExtrasEnabled:(BOOL)self3
 {
-  height = a10.height;
-  width = a10.width;
-  v23 = a7.height;
-  v24 = a7.width;
+  height = layoutSize.height;
+  width = layoutSize.width;
+  v23 = size.height;
+  v24 = size.width;
   v27.receiver = self;
   v27.super_class = BEWebViewFactoryPaginationOptions;
   result = [(BEWebViewFactoryPaginationOptions *)&v27 init];
   if (result)
   {
-    result->_mode = a3;
-    result->_usePaginationLineGrid = a4;
-    result->_respectPageBreaks = a5;
-    result->_isHorizontalScroll = a6;
+    result->_mode = mode;
+    result->_usePaginationLineGrid = grid;
+    result->_respectPageBreaks = breaks;
+    result->_isHorizontalScroll = scroll;
     result->_contentLayoutSize.width = v24;
     result->_contentLayoutSize.height = v23;
-    result->_gapBetweenPages = a8;
-    result->_viewportWidth = a9;
+    result->_gapBetweenPages = pages;
+    result->_viewportWidth = width;
     result->_fixedLayoutSize.width = width;
     result->_fixedLayoutSize.height = height;
-    result->_pageLength = a11;
-    result->_fontSize = a12;
-    result->_developerExtrasEnabled = a13;
+    result->_pageLength = length;
+    result->_fontSize = fontSize;
+    result->_developerExtrasEnabled = enabled;
   }
 
   return result;
@@ -57,9 +57,9 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = BUDynamicCast();
 
@@ -74,26 +74,26 @@
     goto LABEL_9;
   }
 
-  v6 = [(BEWebViewFactoryPaginationOptions *)v5 mode];
-  if (v6 != [(BEWebViewFactoryPaginationOptions *)self mode])
+  mode = [(BEWebViewFactoryPaginationOptions *)v5 mode];
+  if (mode != [(BEWebViewFactoryPaginationOptions *)self mode])
   {
     goto LABEL_7;
   }
 
-  v7 = [(BEWebViewFactoryPaginationOptions *)v5 usePaginationLineGrid];
-  if (v7 != [(BEWebViewFactoryPaginationOptions *)self usePaginationLineGrid])
+  usePaginationLineGrid = [(BEWebViewFactoryPaginationOptions *)v5 usePaginationLineGrid];
+  if (usePaginationLineGrid != [(BEWebViewFactoryPaginationOptions *)self usePaginationLineGrid])
   {
     goto LABEL_7;
   }
 
-  v8 = [(BEWebViewFactoryPaginationOptions *)v5 respectPageBreaks];
-  if (v8 != [(BEWebViewFactoryPaginationOptions *)self respectPageBreaks])
+  respectPageBreaks = [(BEWebViewFactoryPaginationOptions *)v5 respectPageBreaks];
+  if (respectPageBreaks != [(BEWebViewFactoryPaginationOptions *)self respectPageBreaks])
   {
     goto LABEL_7;
   }
 
-  v9 = [(BEWebViewFactoryPaginationOptions *)v5 isHorizontalScroll];
-  if (v9 != [(BEWebViewFactoryPaginationOptions *)self isHorizontalScroll])
+  isHorizontalScroll = [(BEWebViewFactoryPaginationOptions *)v5 isHorizontalScroll];
+  if (isHorizontalScroll != [(BEWebViewFactoryPaginationOptions *)self isHorizontalScroll])
   {
     goto LABEL_7;
   }
@@ -136,13 +136,13 @@ LABEL_9:
 
 - (double)scrollPageLength
 {
-  v3 = [(BEWebViewFactoryPaginationOptions *)self mode];
+  mode = [(BEWebViewFactoryPaginationOptions *)self mode];
   result = 0.0;
-  if (!v3)
+  if (!mode)
   {
-    v5 = [(BEWebViewFactoryPaginationOptions *)self isHorizontalScroll];
+    isHorizontalScroll = [(BEWebViewFactoryPaginationOptions *)self isHorizontalScroll];
     [(BEWebViewFactoryPaginationOptions *)self contentLayoutSize];
-    if (!v5)
+    if (!isHorizontalScroll)
     {
       return v6;
     }
@@ -151,14 +151,14 @@ LABEL_9:
   return result;
 }
 
-- (void)applyToWebView:(id)a3
+- (void)applyToWebView:(id)view
 {
-  v4 = a3;
-  [v4 _setPaginationMode:{-[BEWebViewFactoryPaginationOptions wkPaginationMode](self, "wkPaginationMode")}];
-  [v4 _setPageLength:self->_pageLength];
-  [v4 _setGapBetweenPages:self->_gapBetweenPages];
-  [v4 _setPaginationBehavesLikeColumns:!self->_respectPageBreaks];
-  [v4 _setPaginationLineGridEnabled:self->_usePaginationLineGrid];
+  viewCopy = view;
+  [viewCopy _setPaginationMode:{-[BEWebViewFactoryPaginationOptions wkPaginationMode](self, "wkPaginationMode")}];
+  [viewCopy _setPageLength:self->_pageLength];
+  [viewCopy _setGapBetweenPages:self->_gapBetweenPages];
+  [viewCopy _setPaginationBehavesLikeColumns:!self->_respectPageBreaks];
+  [viewCopy _setPaginationLineGridEnabled:self->_usePaginationLineGrid];
 }
 
 - (CGSize)contentLayoutSize
@@ -199,9 +199,9 @@ LABEL_9:
 
 - (id)jsonRepresentation
 {
-  v2 = [(BEWebViewFactoryPaginationOptions *)self dictionaryRepresentation];
+  dictionaryRepresentation = [(BEWebViewFactoryPaginationOptions *)self dictionaryRepresentation];
   v6 = 0;
-  v3 = [NSJSONSerialization dataWithJSONObject:v2 options:0 error:&v6];
+  v3 = [NSJSONSerialization dataWithJSONObject:dictionaryRepresentation options:0 error:&v6];
 
   if ([v3 length])
   {

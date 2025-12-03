@@ -1,19 +1,19 @@
 @interface FKTextCandidate
-- (FKTextCandidate)initWithText:(id)a3 confidence:(float)a4;
+- (FKTextCandidate)initWithText:(id)text confidence:(float)confidence;
 - (void)dealloc;
 @end
 
 @implementation FKTextCandidate
 
-- (FKTextCandidate)initWithText:(id)a3 confidence:(float)a4
+- (FKTextCandidate)initWithText:(id)text confidence:(float)confidence
 {
   v8.receiver = self;
   v8.super_class = FKTextCandidate;
   v6 = [(FKTextCandidate *)&v8 init];
   if (v6)
   {
-    v6->_text = a3;
-    v6->_confidence = a4;
+    v6->_text = text;
+    v6->_confidence = confidence;
   }
 
   return v6;

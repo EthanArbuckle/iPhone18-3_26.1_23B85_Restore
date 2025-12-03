@@ -1,72 +1,72 @@
 @interface PSKeychainSyncManager
 + (id)sharedManager;
-+ (void)getStatusWithCompletion:(id)a3;
-- (BOOL)_changeSecurityCode:(id)a3 type:(int)a4 smsTarget:(id)a5 smsTargetCountryInfo:(id)a6 username:(id)a7 passwordOrEquivalentToken:(id)a8 error:(id *)a9;
-- (BOOL)_errorRequiresPasswordPrompt:(id)a3;
-- (BOOL)_registerUserCredentialsName:(id)a3 rawPassword:(id)a4 error:(id *)a5;
-- (BOOL)_resetCircleAndDisableBackupWithError:(id *)a3;
++ (void)getStatusWithCompletion:(id)completion;
+- (BOOL)_changeSecurityCode:(id)code type:(int)type smsTarget:(id)target smsTargetCountryInfo:(id)info username:(id)username passwordOrEquivalentToken:(id)token error:(id *)error;
+- (BOOL)_errorRequiresPasswordPrompt:(id)prompt;
+- (BOOL)_registerUserCredentialsName:(id)name rawPassword:(id)password error:(id *)error;
+- (BOOL)_resetCircleAndDisableBackupWithError:(id *)error;
 - (PSKeychainSyncManager)init;
 - (UIViewController)hostViewController;
 - (id)navigationController;
 - (id)preferencesApp;
 - (id)viewControllerForPresentingAlerts;
-- (void)_autoVetSMSValidationWithToken:(id)a3;
-- (void)_callCompletionWithStatus:(int)a3 error:(id)a4;
-- (void)_changeToNewSecurityCode:(id)a3 type:(int)a4 smsTarget:(id)a5 smsTargetCountryInfo:(id)a6;
-- (void)_circleJoinAfterRecoveryTimerFired:(id)a3;
+- (void)_autoVetSMSValidationWithToken:(id)token;
+- (void)_callCompletionWithStatus:(int)status error:(id)error;
+- (void)_changeToNewSecurityCode:(id)code type:(int)type smsTarget:(id)target smsTargetCountryInfo:(id)info;
+- (void)_circleJoinAfterRecoveryTimerFired:(id)fired;
 - (void)_cleanup;
 - (void)_cleanupAppleIDCredentials;
-- (void)_disableCDPKeychainSyncOverController:(id)a3 deletingSafariPasswords:(BOOL)a4 withCompletion:(id)a5;
-- (void)_disableKeychainSyncOverController:(id)a3 deletingSafariPasswords:(BOOL)a4 withCompletion:(id)a5;
-- (void)_enableSecureBackupWithPhoneNumber:(id)a3 countryInfo:(id)a4;
-- (void)_finishedWithStatus:(int)a3 error:(id)a4;
+- (void)_disableCDPKeychainSyncOverController:(id)controller deletingSafariPasswords:(BOOL)passwords withCompletion:(id)completion;
+- (void)_disableKeychainSyncOverController:(id)controller deletingSafariPasswords:(BOOL)passwords withCompletion:(id)completion;
+- (void)_enableSecureBackupWithPhoneNumber:(id)number countryInfo:(id)info;
+- (void)_finishedWithStatus:(int)status error:(id)error;
 - (void)_peerApprovalFromRecoveryFlow;
 - (void)_preSetupCancelledWithCurrentStatus;
-- (void)_presentAuthControllerWithPresentingVC:(id)a3 completion:(id)a4;
-- (void)_promptUserToDeleteSafariSavedContentWithCompletion:(id)a3;
-- (void)_recoverWithSecurityCode:(id)a3 verificationCode:(id)a4;
+- (void)_presentAuthControllerWithPresentingVC:(id)c completion:(id)completion;
+- (void)_promptUserToDeleteSafariSavedContentWithCompletion:(id)completion;
+- (void)_recoverWithSecurityCode:(id)code verificationCode:(id)verificationCode;
 - (void)_registerForCircleChangeNotifications;
-- (void)_registerForCircleChangeNotificationsWithCompletion:(id)a3;
+- (void)_registerForCircleChangeNotificationsWithCompletion:(id)completion;
 - (void)_resetFromRecoveryFlow;
-- (void)_showGenericFlowErrorAlertWithDismissalHandler:(id)a3;
-- (void)_showInvalidPhoneNumberAlertWithDigits:(id)a3 countryInfo:(id)a4;
-- (void)_showResetFlowOverController:(id)a3 withEnableBackupText:(BOOL)a4 withCompletion:(id)a5;
+- (void)_showGenericFlowErrorAlertWithDismissalHandler:(id)handler;
+- (void)_showInvalidPhoneNumberAlertWithDigits:(id)digits countryInfo:(id)info;
+- (void)_showResetFlowOverController:(id)controller withEnableBackupText:(BOOL)text withCompletion:(id)completion;
 - (void)_startCircleJoinAfterRecoveryTimer;
 - (void)_stopCircleJoinAfterRecoveryTimer;
 - (void)dealloc;
-- (void)disableKeychainSyncOverController:(id)a3 withCompletion:(id)a4;
-- (void)dismissAppleSupportPane:(id)a3;
+- (void)disableKeychainSyncOverController:(id)controller withCompletion:(id)completion;
+- (void)dismissAppleSupportPane:(id)pane;
 - (void)handleCircleChangedNotification;
-- (void)joinCircleAfterRecovery:(BOOL)a3 withCompletion:(id)a4;
-- (void)joinCircleAndEnableSecureBackupWithPhoneNumber:(id)a3 countryInfo:(id)a4;
-- (void)keychainSyncController:(id)a3 didFinishWithResult:(id)a4 error:(id)a5;
-- (void)keychainSyncControllerCancel:(id)a3;
-- (void)keychainSyncPhoneNumberController:(id)a3 didCompleteWithPhoneNumber:(id)a4 countryInfo:(id)a5;
-- (void)makeSettingsSetupControllerWithSpecifier:(id)a3 parent:(id)a4 initialController:(id)a5;
-- (void)pinChoiceAlertDidChooseToUseDevicePasscode:(BOOL)a3;
-- (void)promptForDevicePasscodeChangeToPasscode:(id)a3 overController:(id)a4 completion:(id)a5;
-- (void)promptForPasswordIfCredentialsNotCachedOverController:(id)a3 withCompletion:(id)a4;
-- (void)promptForPasswordIfNeededForWritingOverController:(id)a3 withCompletion:(id)a4;
-- (void)promptForPasswordIfNeededOverController:(id)a3 withCompletion:(id)a4;
-- (void)promptForPasswordIfNeededWithCompletion:(id)a3;
-- (void)promptForPasswordOverController:(id)a3 withCompletion:(id)a4;
-- (void)setAppleIDRawPassword:(id)a3 equivalentToken:(id)a4;
-- (void)setCompletion:(id)a3;
-- (void)setStagedSecurityCode:(id)a3 type:(int)a4;
-- (void)showAlert:(id)a3;
-- (void)showChangeSecurityCodeFlowWithSpecifier:(id)a3 overController:(id)a4 completion:(id)a5;
+- (void)joinCircleAfterRecovery:(BOOL)recovery withCompletion:(id)completion;
+- (void)joinCircleAndEnableSecureBackupWithPhoneNumber:(id)number countryInfo:(id)info;
+- (void)keychainSyncController:(id)controller didFinishWithResult:(id)result error:(id)error;
+- (void)keychainSyncControllerCancel:(id)cancel;
+- (void)keychainSyncPhoneNumberController:(id)controller didCompleteWithPhoneNumber:(id)number countryInfo:(id)info;
+- (void)makeSettingsSetupControllerWithSpecifier:(id)specifier parent:(id)parent initialController:(id)controller;
+- (void)pinChoiceAlertDidChooseToUseDevicePasscode:(BOOL)passcode;
+- (void)promptForDevicePasscodeChangeToPasscode:(id)passcode overController:(id)controller completion:(id)completion;
+- (void)promptForPasswordIfCredentialsNotCachedOverController:(id)controller withCompletion:(id)completion;
+- (void)promptForPasswordIfNeededForWritingOverController:(id)controller withCompletion:(id)completion;
+- (void)promptForPasswordIfNeededOverController:(id)controller withCompletion:(id)completion;
+- (void)promptForPasswordIfNeededWithCompletion:(id)completion;
+- (void)promptForPasswordOverController:(id)controller withCompletion:(id)completion;
+- (void)setAppleIDRawPassword:(id)password equivalentToken:(id)token;
+- (void)setCompletion:(id)completion;
+- (void)setStagedSecurityCode:(id)code type:(int)type;
+- (void)showAlert:(id)alert;
+- (void)showChangeSecurityCodeFlowWithSpecifier:(id)specifier overController:(id)controller completion:(id)completion;
 - (void)showContactAppleSupportPane;
-- (void)showController:(id)a3;
-- (void)showEnableEscrowFlowWithSpecifier:(id)a3 overController:(id)a4 completion:(id)a5;
-- (void)showEnableFlowWithNavigationController:(id)a3 completion:(id)a4;
-- (void)showEnableSyncFlowWithSpecifier:(id)a3 overController:(id)a4 completion:(id)a5;
+- (void)showController:(id)controller;
+- (void)showEnableEscrowFlowWithSpecifier:(id)specifier overController:(id)controller completion:(id)completion;
+- (void)showEnableFlowWithNavigationController:(id)controller completion:(id)completion;
+- (void)showEnableSyncFlowWithSpecifier:(id)specifier overController:(id)controller completion:(id)completion;
 - (void)showNetworkReachabilityError;
 - (void)showPinChoiceAlert;
-- (void)showRecoveryFlowWithNavigationController:(id)a3 completion:(id)a4;
-- (void)showRecoveryFlowWithSpecifier:(id)a3 overController:(id)a4 completion:(id)a5;
-- (void)showResetAcknowledgementIfNeededWithCompletion:(id)a3;
-- (void)showResetAndJoinFlowOverController:(id)a3 withCompletion:(id)a4;
-- (void)startNavigationSpinnerInViewController:(id)a3;
+- (void)showRecoveryFlowWithNavigationController:(id)controller completion:(id)completion;
+- (void)showRecoveryFlowWithSpecifier:(id)specifier overController:(id)controller completion:(id)completion;
+- (void)showResetAcknowledgementIfNeededWithCompletion:(id)completion;
+- (void)showResetAndJoinFlowOverController:(id)controller withCompletion:(id)completion;
+- (void)startNavigationSpinnerInViewController:(id)controller;
 - (void)stopNavigationSpinner;
 @end
 
@@ -101,17 +101,17 @@
   return v2;
 }
 
-+ (void)getStatusWithCompletion:(id)a3
++ (void)getStatusWithCompletion:(id)completion
 {
-  v3 = a3;
-  if (v3)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v4 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __49__PSKeychainSyncManager_getStatusWithCompletion___block_invoke;
     block[3] = &unk_1E71DC0D8;
-    v6 = v3;
+    v6 = completionCopy;
     dispatch_async(v4, block);
   }
 }
@@ -133,37 +133,37 @@ void __49__PSKeychainSyncManager_getStatusWithCompletion___block_invoke(uint64_t
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (void)showEnableSyncFlowWithSpecifier:(id)a3 overController:(id)a4 completion:(id)a5
+- (void)showEnableSyncFlowWithSpecifier:(id)specifier overController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
-  v12 = [v11 isNetworkReachable];
+  specifierCopy = specifier;
+  controllerCopy = controller;
+  completionCopy = completion;
+  mEMORY[0x1E698B6A0] = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
+  isNetworkReachable = [mEMORY[0x1E698B6A0] isNetworkReachable];
 
-  if (v12)
+  if (isNetworkReachable)
   {
     self->_flow = 1;
-    [(PSKeychainSyncManager *)self setCompletion:v10];
-    [(PSKeychainSyncManager *)self setHostViewController:v9];
+    [(PSKeychainSyncManager *)self setCompletion:completionCopy];
+    [(PSKeychainSyncManager *)self setHostViewController:controllerCopy];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __83__PSKeychainSyncManager_showEnableSyncFlowWithSpecifier_overController_completion___block_invoke;
     v14[3] = &unk_1E71DD028;
     v14[4] = self;
-    v17 = v10;
-    v15 = v8;
-    v16 = v9;
+    v17 = completionCopy;
+    v15 = specifierCopy;
+    v16 = controllerCopy;
     [(PSKeychainSyncManager *)self promptForPasswordIfNeededForWritingOverController:v16 withCompletion:v14];
   }
 
   else
   {
     [(PSKeychainSyncManager *)self showNetworkReachabilityError];
-    if (v10)
+    if (completionCopy)
     {
       v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.Preferences.KeychainSync" code:4 userInfo:0];
-      (*(v10 + 2))(v10, 1, v13);
+      (*(completionCopy + 2))(completionCopy, 1, v13);
     }
   }
 }
@@ -315,22 +315,22 @@ void __83__PSKeychainSyncManager_showEnableSyncFlowWithSpecifier_overController_
   }
 }
 
-- (void)showEnableEscrowFlowWithSpecifier:(id)a3 overController:(id)a4 completion:(id)a5
+- (void)showEnableEscrowFlowWithSpecifier:(id)specifier overController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  specifierCopy = specifier;
+  controllerCopy = controller;
   self->_flow = 2;
-  [(PSKeychainSyncManager *)self setCompletion:a5];
-  [(PSKeychainSyncManager *)self setHostViewController:v9];
+  [(PSKeychainSyncManager *)self setCompletion:completion];
+  [(PSKeychainSyncManager *)self setHostViewController:controllerCopy];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __85__PSKeychainSyncManager_showEnableEscrowFlowWithSpecifier_overController_completion___block_invoke;
   v12[3] = &unk_1E71DD000;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = specifierCopy;
+  v14 = controllerCopy;
+  v10 = controllerCopy;
+  v11 = specifierCopy;
   [(PSKeychainSyncManager *)self promptForPasswordIfNeededForWritingOverController:v10 withCompletion:v12];
 }
 
@@ -374,36 +374,36 @@ uint64_t __85__PSKeychainSyncManager_showEnableEscrowFlowWithSpecifier_overContr
   }
 }
 
-- (void)showRecoveryFlowWithSpecifier:(id)a3 overController:(id)a4 completion:(id)a5
+- (void)showRecoveryFlowWithSpecifier:(id)specifier overController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
-  v12 = [v11 isNetworkReachable];
+  specifierCopy = specifier;
+  controllerCopy = controller;
+  completionCopy = completion;
+  mEMORY[0x1E698B6A0] = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
+  isNetworkReachable = [mEMORY[0x1E698B6A0] isNetworkReachable];
 
-  if (v12)
+  if (isNetworkReachable)
   {
     self->_flow = 4;
-    [(PSKeychainSyncManager *)self setCompletion:v10];
-    [(PSKeychainSyncManager *)self setHostViewController:v9];
+    [(PSKeychainSyncManager *)self setCompletion:completionCopy];
+    [(PSKeychainSyncManager *)self setHostViewController:controllerCopy];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __81__PSKeychainSyncManager_showRecoveryFlowWithSpecifier_overController_completion___block_invoke;
     v14[3] = &unk_1E71DD000;
     v14[4] = self;
-    v15 = v8;
-    v16 = v9;
+    v15 = specifierCopy;
+    v16 = controllerCopy;
     [(PSKeychainSyncManager *)self promptForPasswordIfNeededForWritingOverController:v16 withCompletion:v14];
   }
 
   else
   {
     [(PSKeychainSyncManager *)self showNetworkReachabilityError];
-    if (v10)
+    if (completionCopy)
     {
       v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.Preferences.KeychainSync" code:4 userInfo:0];
-      v10[2](v10, 1, v13);
+      completionCopy[2](completionCopy, 1, v13);
     }
   }
 }
@@ -483,34 +483,34 @@ void __81__PSKeychainSyncManager_showRecoveryFlowWithSpecifier_overController_co
   }
 }
 
-- (void)showRecoveryFlowWithNavigationController:(id)a3 completion:(id)a4
+- (void)showRecoveryFlowWithNavigationController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
-  v9 = [v8 isNetworkReachable];
+  controllerCopy = controller;
+  completionCopy = completion;
+  mEMORY[0x1E698B6A0] = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
+  isNetworkReachable = [mEMORY[0x1E698B6A0] isNetworkReachable];
 
-  if (v9)
+  if (isNetworkReachable)
   {
     self->_flow = 4;
-    [(PSKeychainSyncManager *)self setCompletion:v7];
-    [(PSKeychainSyncManager *)self setBuddyNavigationController:v6];
-    v10 = [v6 topViewController];
+    [(PSKeychainSyncManager *)self setCompletion:completionCopy];
+    [(PSKeychainSyncManager *)self setBuddyNavigationController:controllerCopy];
+    topViewController = [controllerCopy topViewController];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __77__PSKeychainSyncManager_showRecoveryFlowWithNavigationController_completion___block_invoke;
     v12[3] = &unk_1E71DCE98;
     v12[4] = self;
-    [(PSKeychainSyncManager *)self promptForPasswordIfNeededForWritingOverController:v10 withCompletion:v12];
+    [(PSKeychainSyncManager *)self promptForPasswordIfNeededForWritingOverController:topViewController withCompletion:v12];
   }
 
   else
   {
     [(PSKeychainSyncManager *)self showNetworkReachabilityError];
-    if (v7)
+    if (completionCopy)
     {
       v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.Preferences.KeychainSync" code:4 userInfo:0];
-      v7[2](v7, 1, v11);
+      completionCopy[2](completionCopy, 1, v11);
     }
   }
 }
@@ -582,22 +582,22 @@ void __77__PSKeychainSyncManager_showRecoveryFlowWithNavigationController_comple
   }
 }
 
-- (void)showChangeSecurityCodeFlowWithSpecifier:(id)a3 overController:(id)a4 completion:(id)a5
+- (void)showChangeSecurityCodeFlowWithSpecifier:(id)specifier overController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  specifierCopy = specifier;
+  controllerCopy = controller;
   self->_flow = 3;
-  [(PSKeychainSyncManager *)self setChangeSecurityCodeCompletion:a5];
-  [(PSKeychainSyncManager *)self setHostViewController:v9];
+  [(PSKeychainSyncManager *)self setChangeSecurityCodeCompletion:completion];
+  [(PSKeychainSyncManager *)self setHostViewController:controllerCopy];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __91__PSKeychainSyncManager_showChangeSecurityCodeFlowWithSpecifier_overController_completion___block_invoke;
   v12[3] = &unk_1E71DD000;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = specifierCopy;
+  v14 = controllerCopy;
+  v10 = controllerCopy;
+  v11 = specifierCopy;
   [(PSKeychainSyncManager *)self promptForPasswordIfNeededForWritingOverController:v10 withCompletion:v12];
 }
 
@@ -627,46 +627,46 @@ uint64_t __91__PSKeychainSyncManager_showChangeSecurityCodeFlowWithSpecifier_ove
   }
 }
 
-- (void)showEnableFlowWithNavigationController:(id)a3 completion:(id)a4
+- (void)showEnableFlowWithNavigationController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
-  v9 = [v8 isNetworkReachable];
+  controllerCopy = controller;
+  completionCopy = completion;
+  mEMORY[0x1E698B6A0] = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
+  isNetworkReachable = [mEMORY[0x1E698B6A0] isNetworkReachable];
 
-  if (v9)
+  if (isNetworkReachable)
   {
     if (PSKeychainSyncCircleExists())
     {
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, 2, 0);
+        completionCopy[2](completionCopy, 2, 0);
       }
     }
 
     else
     {
       self->_flow = 1;
-      [(PSKeychainSyncManager *)self setCompletion:v7];
-      [(PSKeychainSyncManager *)self setBuddyNavigationController:v6];
-      v11 = [v6 topViewController];
+      [(PSKeychainSyncManager *)self setCompletion:completionCopy];
+      [(PSKeychainSyncManager *)self setBuddyNavigationController:controllerCopy];
+      topViewController = [controllerCopy topViewController];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __75__PSKeychainSyncManager_showEnableFlowWithNavigationController_completion___block_invoke;
       v12[3] = &unk_1E71DC638;
       v12[4] = self;
-      v13 = v6;
-      [(PSKeychainSyncManager *)self promptForPasswordIfNeededForWritingOverController:v11 withCompletion:v12];
+      v13 = controllerCopy;
+      [(PSKeychainSyncManager *)self promptForPasswordIfNeededForWritingOverController:topViewController withCompletion:v12];
     }
   }
 
   else
   {
     [(PSKeychainSyncManager *)self showNetworkReachabilityError];
-    if (v7)
+    if (completionCopy)
     {
       v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.Preferences.KeychainSync" code:4 userInfo:0];
-      (v7)[2](v7, 1, v10);
+      (completionCopy)[2](completionCopy, 1, v10);
     }
   }
 }
@@ -709,22 +709,22 @@ uint64_t __75__PSKeychainSyncManager_showEnableFlowWithNavigationController_comp
   }
 }
 
-- (void)_showResetFlowOverController:(id)a3 withEnableBackupText:(BOOL)a4 withCompletion:(id)a5
+- (void)_showResetFlowOverController:(id)controller withEnableBackupText:(BOOL)text withCompletion:(id)completion
 {
   self->_flow = 5;
-  v8 = a5;
-  v9 = a3;
-  [(PSKeychainSyncManager *)self setResetPromptControllerHost:v9];
-  [(PSKeychainSyncManager *)self setResetCompletion:v8];
+  completionCopy = completion;
+  controllerCopy = controller;
+  [(PSKeychainSyncManager *)self setResetPromptControllerHost:controllerCopy];
+  [(PSKeychainSyncManager *)self setResetCompletion:completionCopy];
 
-  [(PSKeychainSyncManager *)self setHostViewController:v9];
+  [(PSKeychainSyncManager *)self setHostViewController:controllerCopy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __90__PSKeychainSyncManager__showResetFlowOverController_withEnableBackupText_withCompletion___block_invoke;
   v10[3] = &unk_1E71DD050;
-  v11 = a4;
+  textCopy = text;
   v10[4] = self;
-  [(PSKeychainSyncManager *)self promptForPasswordIfNeededForWritingOverController:v9 withCompletion:v10];
+  [(PSKeychainSyncManager *)self promptForPasswordIfNeededForWritingOverController:controllerCopy withCompletion:v10];
 }
 
 void __90__PSKeychainSyncManager__showResetFlowOverController_withEnableBackupText_withCompletion___block_invoke(uint64_t a1, int a2)
@@ -822,20 +822,20 @@ uint64_t __90__PSKeychainSyncManager__showResetFlowOverController_withEnableBack
   return [v2 setResetCompletion:0];
 }
 
-- (void)showResetAndJoinFlowOverController:(id)a3 withCompletion:(id)a4
+- (void)showResetAndJoinFlowOverController:(id)controller withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  [(PSKeychainSyncManager *)self setHostViewController:v6];
+  controllerCopy = controller;
+  completionCopy = completion;
+  [(PSKeychainSyncManager *)self setHostViewController:controllerCopy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __75__PSKeychainSyncManager_showResetAndJoinFlowOverController_withCompletion___block_invoke;
   v10[3] = &unk_1E71DCF88;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = controllerCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = controllerCopy;
   [(PSKeychainSyncManager *)self _showResetFlowOverController:v9 withEnableBackupText:0 withCompletion:v10];
 }
 
@@ -883,11 +883,11 @@ void __75__PSKeychainSyncManager_showResetAndJoinFlowOverController_withCompleti
   [*(a1 + 32) setCircleWasReset:0];
 }
 
-- (void)disableKeychainSyncOverController:(id)a3 withCompletion:(id)a4
+- (void)disableKeychainSyncOverController:(id)controller withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  [(PSKeychainSyncManager *)self setHostViewController:v6];
+  controllerCopy = controller;
+  completionCopy = completion;
+  [(PSKeychainSyncManager *)self setHostViewController:controllerCopy];
   if (PSKeychainSyncIsUsingICDP())
   {
     v8[0] = MEMORY[0x1E69E9820];
@@ -895,41 +895,41 @@ void __75__PSKeychainSyncManager_showResetAndJoinFlowOverController_withCompleti
     v8[2] = __74__PSKeychainSyncManager_disableKeychainSyncOverController_withCompletion___block_invoke;
     v8[3] = &unk_1E71DCF88;
     v8[4] = self;
-    v9 = v6;
-    v10 = v7;
+    v9 = controllerCopy;
+    v10 = completionCopy;
     [(PSKeychainSyncManager *)self _promptUserToDeleteSafariSavedContentWithCompletion:v8];
   }
 
   else
   {
     PSKeychainSyncGetStatus(0);
-    [(PSKeychainSyncManager *)self _disableKeychainSyncOverController:v6 deletingSafariPasswords:0 withCompletion:v7];
+    [(PSKeychainSyncManager *)self _disableKeychainSyncOverController:controllerCopy deletingSafariPasswords:0 withCompletion:completionCopy];
   }
 }
 
-- (void)_promptUserToDeleteSafariSavedContentWithCompletion:(id)a3
+- (void)_promptUserToDeleteSafariSavedContentWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 0, 0);
+    (*(completion + 2))(completion, 0, 0);
   }
 }
 
-- (void)_disableCDPKeychainSyncOverController:(id)a3 deletingSafariPasswords:(BOOL)a4 withCompletion:(id)a5
+- (void)_disableCDPKeychainSyncOverController:(id)controller deletingSafariPasswords:(BOOL)passwords withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  controllerCopy = controller;
+  completionCopy = completion;
   CDPKeychainSyncClass = getCDPKeychainSyncClass();
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __102__PSKeychainSyncManager__disableCDPKeychainSyncOverController_deletingSafariPasswords_withCompletion___block_invoke;
   v13[3] = &unk_1E71DD0A0;
-  v14 = v8;
-  v15 = self;
-  v17 = a4;
-  v16 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = controllerCopy;
+  selfCopy = self;
+  passwordsCopy = passwords;
+  v16 = completionCopy;
+  v11 = completionCopy;
+  v12 = controllerCopy;
   [CDPKeychainSyncClass setUserVisibleKeychainSyncEnabled:0 withCompletion:v13];
 }
 
@@ -1065,19 +1065,19 @@ uint64_t __102__PSKeychainSyncManager__disableCDPKeychainSyncOverController_dele
   return MEMORY[0x1EEE66BE0]();
 }
 
-- (void)_disableKeychainSyncOverController:(id)a3 deletingSafariPasswords:(BOOL)a4 withCompletion:(id)a5
+- (void)_disableKeychainSyncOverController:(id)controller deletingSafariPasswords:(BOOL)passwords withCompletion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  controllerCopy = controller;
   v10 = objc_opt_new();
-  v11 = [v10 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v10 aa_primaryAppleAccount];
   v12 = objc_alloc_init(getAKAppleIDAuthenticationInAppContextClass_0());
-  v13 = [v11 username];
-  [v12 setUsername:v13];
+  username = [aa_primaryAppleAccount username];
+  [v12 setUsername:username];
 
   [v12 setAuthenticationType:2];
   [v12 setIsUsernameEditable:0];
-  [v12 setPresentingViewController:v9];
+  [v12 setPresentingViewController:controllerCopy];
 
   v14 = objc_alloc_init(getAKAppleIDAuthenticationControllerClass());
   v16[0] = MEMORY[0x1E69E9820];
@@ -1085,9 +1085,9 @@ uint64_t __102__PSKeychainSyncManager__disableCDPKeychainSyncOverController_dele
   v16[2] = __99__PSKeychainSyncManager__disableKeychainSyncOverController_deletingSafariPasswords_withCompletion___block_invoke;
   v16[3] = &unk_1E71DD140;
   v16[4] = self;
-  v17 = v8;
-  v18 = a4;
-  v15 = v8;
+  v17 = completionCopy;
+  passwordsCopy = passwords;
+  v15 = completionCopy;
   [v14 authenticateWithContext:v12 completion:v16];
 }
 
@@ -1298,9 +1298,9 @@ void __99__PSKeychainSyncManager__disableKeychainSyncOverController_deletingSafa
 
 - (id)navigationController
 {
-  v3 = [(PSKeychainSyncManager *)self isRunningInBuddy];
+  isRunningInBuddy = [(PSKeychainSyncManager *)self isRunningInBuddy];
   v4 = 200;
-  if (v3)
+  if (isRunningInBuddy)
   {
     v4 = 208;
   }
@@ -1310,11 +1310,11 @@ void __99__PSKeychainSyncManager__disableKeychainSyncOverController_deletingSafa
   return v5;
 }
 
-- (void)setCompletion:(id)a3
+- (void)setCompletion:(id)completion
 {
-  if (self->_completion != a3)
+  if (self->_completion != completion)
   {
-    v5 = [a3 copy];
+    v5 = [completion copy];
     completion = self->_completion;
     self->_completion = v5;
   }
@@ -1338,19 +1338,19 @@ void __99__PSKeychainSyncManager__disableKeychainSyncOverController_deletingSafa
   NSLog(&cfstr_ClearedCredent.isa);
 }
 
-- (void)setAppleIDRawPassword:(id)a3 equivalentToken:(id)a4
+- (void)setAppleIDRawPassword:(id)password equivalentToken:(id)token
 {
-  v11 = a3;
-  v7 = a4;
-  if (*&self->_appleIDRawPassword != __PAIR128__(v7, v11))
+  passwordCopy = password;
+  tokenCopy = token;
+  if (*&self->_appleIDRawPassword != __PAIR128__(tokenCopy, passwordCopy))
   {
-    objc_storeStrong(&self->_appleIDRawPassword, a3);
-    objc_storeStrong(&self->_appleIDPasswordOrEquivalentToken, a4);
+    objc_storeStrong(&self->_appleIDRawPassword, password);
+    objc_storeStrong(&self->_appleIDPasswordOrEquivalentToken, token);
     [(NSTimer *)self->_credentialExpirationTimer invalidate];
-    v8 = [(PSKeychainSyncManager *)self isRunningInBuddy];
+    isRunningInBuddy = [(PSKeychainSyncManager *)self isRunningInBuddy];
     if (self->_appleIDRawPassword)
     {
-      if (!v8)
+      if (!isRunningInBuddy)
       {
         v9 = [MEMORY[0x1E695DFF0] scheduledTimerWithTimeInterval:self target:sel__cleanupAppleIDCredentials selector:0 userInfo:0 repeats:600.0];
         credentialExpirationTimer = self->_credentialExpirationTimer;
@@ -1360,67 +1360,67 @@ void __99__PSKeychainSyncManager__disableKeychainSyncOverController_deletingSafa
   }
 }
 
-- (BOOL)_registerUserCredentialsName:(id)a3 rawPassword:(id)a4 error:(id *)a5
+- (BOOL)_registerUserCredentialsName:(id)name rawPassword:(id)password error:(id *)error
 {
-  v6 = a3;
-  [a4 dataUsingEncoding:4];
-  LOBYTE(a4) = SOSCCSetUserCredentials();
+  nameCopy = name;
+  [password dataUsingEncoding:4];
+  LOBYTE(password) = SOSCCSetUserCredentials();
 
-  return a4;
+  return password;
 }
 
-- (void)promptForPasswordOverController:(id)a3 withCompletion:(id)a4
+- (void)promptForPasswordOverController:(id)controller withCompletion:(id)completion
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
-  v9 = [v8 isNetworkReachable];
+  controllerCopy = controller;
+  completionCopy = completion;
+  mEMORY[0x1E698B6A0] = [MEMORY[0x1E698B6A0] sharedNetworkObserver];
+  isNetworkReachable = [mEMORY[0x1E698B6A0] isNetworkReachable];
 
-  if (v9)
+  if (isNetworkReachable)
   {
     v36 = 0;
     v37 = &v36;
     v38 = 0x3032000000;
     v39 = __Block_byref_object_copy__5;
     v40 = __Block_byref_object_dispose__5;
-    v41 = [MEMORY[0x1E6959A48] defaultStore];
-    v10 = [v37[5] aa_primaryAppleAccount];
-    if (v10)
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+    aa_primaryAppleAccount = [v37[5] aa_primaryAppleAccount];
+    if (aa_primaryAppleAccount)
     {
-      v11 = [(PSKeychainSyncManager *)self appleIDRawPassword];
-      v12 = v11;
-      if (v11)
+      appleIDRawPassword = [(PSKeychainSyncManager *)self appleIDRawPassword];
+      v12 = appleIDRawPassword;
+      if (appleIDRawPassword)
       {
-        v13 = v11;
+        _aa_rawPassword = appleIDRawPassword;
       }
 
       else
       {
-        v13 = [v10 _aa_rawPassword];
+        _aa_rawPassword = [aa_primaryAppleAccount _aa_rawPassword];
       }
 
-      v15 = v13;
+      v15 = _aa_rawPassword;
 
-      v16 = [(PSKeychainSyncManager *)self appleIDPasswordOrEquivalentToken];
-      v17 = v16;
-      if (v16)
+      appleIDPasswordOrEquivalentToken = [(PSKeychainSyncManager *)self appleIDPasswordOrEquivalentToken];
+      v17 = appleIDPasswordOrEquivalentToken;
+      if (appleIDPasswordOrEquivalentToken)
       {
-        v18 = v16;
+        aa_password = appleIDPasswordOrEquivalentToken;
       }
 
       else
       {
-        v18 = [v10 aa_password];
+        aa_password = [aa_primaryAppleAccount aa_password];
       }
 
-      v19 = v18;
+      v19 = aa_password;
 
       if (v15)
       {
-        if (v6)
+        if (controllerCopy)
         {
-          [(PSKeychainSyncManager *)self startNavigationSpinnerInViewController:v6];
+          [(PSKeychainSyncManager *)self startNavigationSpinnerInViewController:controllerCopy];
         }
 
         v20 = dispatch_get_global_queue(0, 0);
@@ -1429,11 +1429,11 @@ void __99__PSKeychainSyncManager__disableKeychainSyncOverController_deletingSafa
         block[2] = __72__PSKeychainSyncManager_promptForPasswordOverController_withCompletion___block_invoke;
         block[3] = &unk_1E71DD190;
         block[4] = self;
-        v30 = v10;
+        v30 = aa_primaryAppleAccount;
         v31 = v15;
-        v32 = v6;
+        v32 = controllerCopy;
         v33 = v19;
-        v34 = v7;
+        v34 = completionCopy;
         v35 = &v36;
         dispatch_async(v20, block);
       }
@@ -1445,9 +1445,9 @@ void __99__PSKeychainSyncManager__disableKeychainSyncOverController_deletingSafa
 
       else
       {
-        if (v6)
+        if (controllerCopy)
         {
-          [(PSKeychainSyncManager *)self startNavigationSpinnerInViewController:v6];
+          [(PSKeychainSyncManager *)self startNavigationSpinnerInViewController:controllerCopy];
         }
 
         v42 = *MEMORY[0x1E6959AA8];
@@ -1458,10 +1458,10 @@ void __99__PSKeychainSyncManager__disableKeychainSyncOverController_deletingSafa
         v23[1] = 3221225472;
         v23[2] = __72__PSKeychainSyncManager_promptForPasswordOverController_withCompletion___block_invoke_3;
         v23[3] = &unk_1E71DD208;
-        v24 = v10;
-        v25 = self;
-        v26 = v6;
-        v27 = v7;
+        v24 = aa_primaryAppleAccount;
+        selfCopy = self;
+        v26 = controllerCopy;
+        v27 = completionCopy;
         v28 = &v36;
         [v22 renewCredentialsForAccount:v24 options:v21 completion:v23];
       }
@@ -1469,7 +1469,7 @@ void __99__PSKeychainSyncManager__disableKeychainSyncOverController_deletingSafa
 
     else
     {
-      if (!v7)
+      if (!completionCopy)
       {
 LABEL_24:
 
@@ -1478,17 +1478,17 @@ LABEL_24:
       }
 
       v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.Preferences.KeychainSync" code:3 userInfo:0];
-      (*(v7 + 2))(v7, 0, v15);
+      (*(completionCopy + 2))(completionCopy, 0, v15);
     }
 
     goto LABEL_24;
   }
 
   [(PSKeychainSyncManager *)self showNetworkReachabilityError];
-  if (v7)
+  if (completionCopy)
   {
     v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.Preferences.KeychainSync" code:4 userInfo:0];
-    (*(v7 + 2))(v7, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 
 LABEL_25:
@@ -1690,35 +1690,35 @@ void __72__PSKeychainSyncManager_promptForPasswordOverController_withCompletion_
   *(v8 + 40) = 0;
 }
 
-- (void)promptForPasswordIfNeededForWritingOverController:(id)a3 withCompletion:(id)a4
+- (void)promptForPasswordIfNeededForWritingOverController:(id)controller withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   if (SOSCCCanAuthenticate())
   {
-    v7[2](v7, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
   {
-    [(PSKeychainSyncManager *)self promptForPasswordOverController:v6 withCompletion:v7];
+    [(PSKeychainSyncManager *)self promptForPasswordOverController:controllerCopy withCompletion:completionCopy];
   }
 }
 
-- (void)promptForPasswordIfNeededOverController:(id)a3 withCompletion:(id)a4
+- (void)promptForPasswordIfNeededOverController:(id)controller withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   v8 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__PSKeychainSyncManager_promptForPasswordIfNeededOverController_withCompletion___block_invoke;
   block[3] = &unk_1E71DC5E8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = controllerCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = controllerCopy;
   dispatch_async(v8, block);
 }
 
@@ -1755,25 +1755,25 @@ void __80__PSKeychainSyncManager_promptForPasswordIfNeededOverController_withCom
   }
 }
 
-- (void)promptForPasswordIfNeededWithCompletion:(id)a3
+- (void)promptForPasswordIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(PSKeychainSyncManager *)self navigationController];
-  v5 = [v6 topViewController];
-  [(PSKeychainSyncManager *)self promptForPasswordIfNeededOverController:v5 withCompletion:v4];
+  completionCopy = completion;
+  navigationController = [(PSKeychainSyncManager *)self navigationController];
+  topViewController = [navigationController topViewController];
+  [(PSKeychainSyncManager *)self promptForPasswordIfNeededOverController:topViewController withCompletion:completionCopy];
 }
 
-- (void)promptForPasswordIfCredentialsNotCachedOverController:(id)a3 withCompletion:(id)a4
+- (void)promptForPasswordIfCredentialsNotCachedOverController:(id)controller withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSKeychainSyncManager *)self appleIDUsername];
-  v9 = [(PSKeychainSyncManager *)self appleIDRawPassword];
-  if ([v8 length] && objc_msgSend(v9, "length"))
+  controllerCopy = controller;
+  completionCopy = completion;
+  appleIDUsername = [(PSKeychainSyncManager *)self appleIDUsername];
+  appleIDRawPassword = [(PSKeychainSyncManager *)self appleIDRawPassword];
+  if ([appleIDUsername length] && objc_msgSend(appleIDRawPassword, "length"))
   {
     v10 = objc_alloc_init(getAKAppleIDAuthenticationInAppContextClass_0());
-    [v10 setUsername:v8];
-    [v10 _setPassword:v9];
+    [v10 setUsername:appleIDUsername];
+    [v10 _setPassword:appleIDRawPassword];
     [v10 setAuthenticationType:1];
     v11 = objc_alloc_init(getAKAppleIDAuthenticationControllerClass());
     v12[0] = MEMORY[0x1E69E9820];
@@ -1781,14 +1781,14 @@ void __80__PSKeychainSyncManager_promptForPasswordIfNeededOverController_withCom
     v12[2] = __94__PSKeychainSyncManager_promptForPasswordIfCredentialsNotCachedOverController_withCompletion___block_invoke;
     v12[3] = &unk_1E71DD280;
     v12[4] = self;
-    v13 = v9;
-    v14 = v7;
+    v13 = appleIDRawPassword;
+    v14 = completionCopy;
     [v11 authenticateWithContext:v10 completion:v12];
   }
 
   else
   {
-    [(PSKeychainSyncManager *)self promptForPasswordOverController:v6 withCompletion:v7];
+    [(PSKeychainSyncManager *)self promptForPasswordOverController:controllerCopy withCompletion:completionCopy];
   }
 }
 
@@ -1860,13 +1860,13 @@ void __94__PSKeychainSyncManager_promptForPasswordIfCredentialsNotCachedOverCont
   }
 }
 
-- (BOOL)_errorRequiresPasswordPrompt:(id)a3
+- (BOOL)_errorRequiresPasswordPrompt:(id)prompt
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x1E697AB38]])
+  promptCopy = prompt;
+  domain = [promptCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x1E697AB38]])
   {
-    v5 = [v3 code] == 1 || objc_msgSend(v3, "code") == 2;
+    v5 = [promptCopy code] == 1 || objc_msgSend(promptCopy, "code") == 2;
   }
 
   else
@@ -1877,26 +1877,26 @@ void __94__PSKeychainSyncManager_promptForPasswordIfCredentialsNotCachedOverCont
   return v5;
 }
 
-- (void)makeSettingsSetupControllerWithSpecifier:(id)a3 parent:(id)a4 initialController:(id)a5
+- (void)makeSettingsSetupControllerWithSpecifier:(id)specifier parent:(id)parent initialController:(id)controller
 {
-  v12 = a5;
-  v8 = a4;
-  v9 = a3;
+  controllerCopy = controller;
+  parentCopy = parent;
+  specifierCopy = specifier;
   v10 = [[KeychainSyncSetupController alloc] initWithManager:self];
   [(PSKeychainSyncManager *)self setSettingsSetupController:v10];
 
-  [(PSRootController *)self->_settingsSetupController setSpecifier:v9];
-  [(PSSetupController *)self->_settingsSetupController setParentController:v8];
+  [(PSRootController *)self->_settingsSetupController setSpecifier:specifierCopy];
+  [(PSSetupController *)self->_settingsSetupController setParentController:parentCopy];
 
-  [v12 setParentController:self->_settingsSetupController];
-  [v12 setRootController:self->_settingsSetupController];
-  [v12 setSpecifier:v9];
+  [controllerCopy setParentController:self->_settingsSetupController];
+  [controllerCopy setRootController:self->_settingsSetupController];
+  [controllerCopy setSpecifier:specifierCopy];
 
-  v11 = v12;
-  if (v12)
+  v11 = controllerCopy;
+  if (controllerCopy)
   {
-    [(PSRootController *)self->_settingsSetupController showController:v12];
-    v11 = v12;
+    [(PSRootController *)self->_settingsSetupController showController:controllerCopy];
+    v11 = controllerCopy;
   }
 }
 
@@ -1916,9 +1916,9 @@ void __94__PSKeychainSyncManager_promptForPasswordIfCredentialsNotCachedOverCont
   }
 }
 
-- (void)_registerForCircleChangeNotificationsWithCompletion:(id)a3
+- (void)_registerForCircleChangeNotificationsWithCompletion:(id)completion
 {
-  [(PSKeychainSyncManager *)self setCircleJoinCompletion:a3];
+  [(PSKeychainSyncManager *)self setCircleJoinCompletion:completion];
 
   [(PSKeychainSyncManager *)self _registerForCircleChangeNotifications];
 }
@@ -1953,25 +1953,25 @@ void __94__PSKeychainSyncManager_promptForPasswordIfCredentialsNotCachedOverCont
   [(PSKeychainSyncManager *)self showAlert:v6];
 }
 
-- (void)setStagedSecurityCode:(id)a3 type:(int)a4
+- (void)setStagedSecurityCode:(id)code type:(int)type
 {
-  v7 = a3;
-  if (self->_stagedSecurityCode != v7)
+  codeCopy = code;
+  if (self->_stagedSecurityCode != codeCopy)
   {
-    v8 = v7;
-    objc_storeStrong(&self->_stagedSecurityCode, a3);
-    v7 = v8;
-    self->_stagedSecurityCodeType = a4;
+    v8 = codeCopy;
+    objc_storeStrong(&self->_stagedSecurityCode, code);
+    codeCopy = v8;
+    self->_stagedSecurityCodeType = type;
   }
 }
 
 - (id)preferencesApp
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   NSClassFromString(&cfstr_Preferencesapp.isa);
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = mEMORY[0x1E69DC668];
   }
 
   else
@@ -1984,20 +1984,20 @@ void __94__PSKeychainSyncManager_promptForPasswordIfCredentialsNotCachedOverCont
   return v3;
 }
 
-- (void)startNavigationSpinnerInViewController:(id)a3
+- (void)startNavigationSpinnerInViewController:(id)controller
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  controllerCopy = controller;
+  v5 = controllerCopy;
+  if (controllerCopy)
   {
     spinningView = self->_spinningView;
-    v21 = v4;
+    v21 = controllerCopy;
     if (spinningView)
     {
-      v7 = [v4 view];
+      view = [controllerCopy view];
 
       v5 = v21;
-      if (spinningView != v7)
+      if (spinningView != view)
       {
         goto LABEL_10;
       }
@@ -2015,32 +2015,32 @@ void __94__PSKeychainSyncManager_promptForPasswordIfCredentialsNotCachedOverCont
       ++self->_spinnerCount;
     }
 
-    v9 = [v5 navigationController];
-    v10 = [v9 view];
+    navigationController = [v5 navigationController];
+    view2 = [navigationController view];
     v11 = self->_spinningView;
-    self->_spinningView = v10;
+    self->_spinningView = view2;
 
     v12 = +[PSNavBarSpinnerManager sharedSpinnerManager];
-    v13 = [v21 navigationItem];
-    [v12 startAnimatingInNavItem:v13 forIdentifier:@"KeychainSync"];
+    navigationItem = [v21 navigationItem];
+    [v12 startAnimatingInNavItem:navigationItem forIdentifier:@"KeychainSync"];
 
     [(UIView *)self->_spinningView setUserInteractionEnabled:0];
-    v14 = [(PSKeychainSyncManager *)self isRunningInBuddy];
+    isRunningInBuddy = [(PSKeychainSyncManager *)self isRunningInBuddy];
     v5 = v21;
-    if (!v14)
+    if (!isRunningInBuddy)
     {
-      v15 = [MEMORY[0x1E69DC938] currentDevice];
-      v16 = [v15 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
       v5 = v21;
-      if (v16 == 1)
+      if (userInterfaceIdiom == 1)
       {
-        v17 = [(PSKeychainSyncManager *)self preferencesApp];
-        v18 = [v17 rootController];
+        preferencesApp = [(PSKeychainSyncManager *)self preferencesApp];
+        rootController = [preferencesApp rootController];
 
-        v19 = [v18 rootListController];
-        v20 = [v19 view];
-        [v20 setUserInteractionEnabled:0];
+        rootListController = [rootController rootListController];
+        view3 = [rootListController view];
+        [view3 setUserInteractionEnabled:0];
 
         v5 = v21;
       }
@@ -2067,30 +2067,30 @@ LABEL_10:
 
       if (![(PSKeychainSyncManager *)self isRunningInBuddy])
       {
-        v6 = [MEMORY[0x1E69DC938] currentDevice];
-        v7 = [v6 userInterfaceIdiom];
+        currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+        userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-        if (v7 == 1)
+        if (userInterfaceIdiom == 1)
         {
-          v8 = [(PSKeychainSyncManager *)self preferencesApp];
-          v11 = [v8 rootController];
+          preferencesApp = [(PSKeychainSyncManager *)self preferencesApp];
+          rootController = [preferencesApp rootController];
 
-          v9 = [v11 rootListController];
-          v10 = [v9 view];
-          [v10 setUserInteractionEnabled:1];
+          rootListController = [rootController rootListController];
+          view = [rootListController view];
+          [view setUserInteractionEnabled:1];
         }
       }
     }
   }
 }
 
-- (BOOL)_changeSecurityCode:(id)a3 type:(int)a4 smsTarget:(id)a5 smsTargetCountryInfo:(id)a6 username:(id)a7 passwordOrEquivalentToken:(id)a8 error:(id *)a9
+- (BOOL)_changeSecurityCode:(id)code type:(int)type smsTarget:(id)target smsTargetCountryInfo:(id)info username:(id)username passwordOrEquivalentToken:(id)token error:(id *)error
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v77 = a8;
+  codeCopy = code;
+  targetCopy = target;
+  infoCopy = info;
+  usernameCopy = username;
+  tokenCopy = token;
   v18 = objc_alloc_init(getSecureBackupClass_0());
   v78[0] = 0;
   v19 = [v18 getAccountInfoWithInfo:0 results:v78];
@@ -2101,15 +2101,15 @@ LABEL_10:
     v24 = [v20 objectForKey:v23];
     v76 = [v24 mutableCopy];
 
-    v25 = [v15 length];
-    v71 = v17;
+    v25 = [targetCopy length];
+    v71 = usernameCopy;
     v75 = v20;
-    if (v16 && v25)
+    if (infoCopy && v25)
     {
-      v74 = v15;
+      v74 = targetCopy;
       v26 = 0;
       v27 = 0;
-      v28 = v14;
+      v28 = codeCopy;
     }
 
     else
@@ -2118,10 +2118,10 @@ LABEL_10:
       v31 = [v20 objectForKey:v30];
 
       objc_opt_class();
-      v28 = v14;
+      v28 = codeCopy;
       if (objc_opt_isKindOfClass())
       {
-        v32 = v16;
+        v32 = infoCopy;
         v33 = getkSecureBackupSMSTargetPhoneNumberKey();
         v34 = [v31 objectForKey:v33];
 
@@ -2143,32 +2143,32 @@ LABEL_10:
         }
 
         v74 = v34;
-        v16 = v32;
-        v17 = v71;
+        infoCopy = v32;
+        usernameCopy = v71;
       }
 
       else
       {
-        v74 = v15;
+        v74 = targetCopy;
         v27 = 0;
         v38 = 0;
       }
 
       v26 = v38;
-      if (!v16)
+      if (!infoCopy)
       {
 LABEL_17:
         v72 = v26;
         v73 = v27;
-        v42 = [MEMORY[0x1E696AD98] numberWithInt:a4 != 0];
+        v42 = [MEMORY[0x1E696AD98] numberWithInt:type != 0];
         v43 = getkSecureBackupUsesComplexPassphraseKey();
         [v76 setObject:v42 forKey:v43];
 
-        v44 = [MEMORY[0x1E696AD98] numberWithInt:a4 == 0];
+        v44 = [MEMORY[0x1E696AD98] numberWithInt:type == 0];
         v45 = getkSecureBackupUsesNumericPassphraseKey();
         [v76 setObject:v44 forKey:v45];
 
-        if (!a4)
+        if (!type)
         {
           v46 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v28, "length")}];
           v47 = getkSecureBackupNumericPassphraseLengthKey();
@@ -2177,17 +2177,17 @@ LABEL_17:
 
         v48 = getkSecureBackupIsEnabledKey();
         v49 = [v75 objectForKey:v48];
-        v50 = [v49 BOOLValue];
+        bOOLValue = [v49 BOOLValue];
 
-        v29 = v77;
-        if (v50 && ([v18 disableWithInfo:0], (v51 = objc_claimAutoreleasedReturnValue()) != 0))
+        v29 = tokenCopy;
+        if (bOOLValue && ([v18 disableWithInfo:0], (v51 = objc_claimAutoreleasedReturnValue()) != 0))
         {
           v52 = 0;
           v22 = 0;
           v19 = 0;
           v53 = v51;
-          v15 = v74;
-          if (!a9)
+          targetCopy = v74;
+          if (!error)
           {
             goto LABEL_33;
           }
@@ -2196,18 +2196,18 @@ LABEL_17:
         else
         {
           v69 = v18;
-          v70 = v16;
+          v70 = infoCopy;
           v54 = MEMORY[0x1E695DF90];
           v55 = getkSecureBackupPassphraseKey();
           v56 = getkSecureBackupAuthenticationAppleID();
           v57 = getkSecureBackupAuthenticationPassword();
-          v58 = [MEMORY[0x1E696AD98] numberWithInt:a4 == 2];
+          v58 = [MEMORY[0x1E696AD98] numberWithInt:type == 2];
           getkSecureBackupUsesRandomPassphraseKey();
           v60 = v59 = v28;
           v61 = getkSecureBackupMetadataKey_0();
           v62 = v54;
           v63 = v59;
-          v53 = [v62 dictionaryWithObjectsAndKeys:{v59, v55, v17, v56, v77, v57, v58, v60, v76, v61, 0}];
+          v53 = [v62 dictionaryWithObjectsAndKeys:{v59, v55, usernameCopy, v56, tokenCopy, v57, v58, v60, v76, v61, 0}];
 
           if ([v74 length])
           {
@@ -2222,9 +2222,9 @@ LABEL_17:
           }
 
           v28 = v63;
-          v16 = v70;
-          v17 = v71;
-          v29 = v77;
+          infoCopy = v70;
+          usernameCopy = v71;
+          v29 = tokenCopy;
           v18 = v69;
           if ([v72 length])
           {
@@ -2237,8 +2237,8 @@ LABEL_17:
 
           v51 = [v69 enableWithInfo:v53];
           v22 = v51 == 0;
-          v15 = v74;
-          if (!a9)
+          targetCopy = v74;
+          if (!error)
           {
             v19 = v51;
             goto LABEL_33;
@@ -2255,26 +2255,26 @@ LABEL_33:
           }
         }
 
-        *a9 = v51;
+        *error = v51;
         v19 = v52;
         goto LABEL_33;
       }
     }
 
-    v40 = [v16 countryCode];
+    countryCode = [infoCopy countryCode];
 
-    v41 = [v16 dialingPrefix];
+    dialingPrefix = [infoCopy dialingPrefix];
 
-    v27 = v41;
-    v26 = v40;
+    v27 = dialingPrefix;
+    v26 = countryCode;
     goto LABEL_17;
   }
 
-  if (a9)
+  if (error)
   {
     v21 = v19;
     v22 = 0;
-    *a9 = v19;
+    *error = v19;
   }
 
   else
@@ -2282,41 +2282,41 @@ LABEL_33:
     v22 = 0;
   }
 
-  v28 = v14;
-  v29 = v77;
+  v28 = codeCopy;
+  v29 = tokenCopy;
 LABEL_34:
 
   return v22;
 }
 
-- (void)_changeToNewSecurityCode:(id)a3 type:(int)a4 smsTarget:(id)a5 smsTargetCountryInfo:(id)a6
+- (void)_changeToNewSecurityCode:(id)code type:(int)type smsTarget:(id)target smsTargetCountryInfo:(id)info
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(PSKeychainSyncManager *)self navigationController];
-  v14 = [v13 topViewController];
-  [(PSKeychainSyncManager *)self startNavigationSpinnerInViewController:v14];
+  codeCopy = code;
+  targetCopy = target;
+  infoCopy = info;
+  navigationController = [(PSKeychainSyncManager *)self navigationController];
+  topViewController = [navigationController topViewController];
+  [(PSKeychainSyncManager *)self startNavigationSpinnerInViewController:topViewController];
 
-  v15 = [(PSKeychainSyncManager *)self appleIDUsername];
-  v16 = [(PSKeychainSyncManager *)self appleIDPasswordOrEquivalentToken];
+  appleIDUsername = [(PSKeychainSyncManager *)self appleIDUsername];
+  appleIDPasswordOrEquivalentToken = [(PSKeychainSyncManager *)self appleIDPasswordOrEquivalentToken];
   v17 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __86__PSKeychainSyncManager__changeToNewSecurityCode_type_smsTarget_smsTargetCountryInfo___block_invoke;
   block[3] = &unk_1E71DD2F8;
   block[4] = self;
-  v24 = v10;
-  v29 = a4;
-  v25 = v11;
-  v26 = v12;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v12;
-  v21 = v11;
-  v22 = v10;
+  v24 = codeCopy;
+  typeCopy = type;
+  v25 = targetCopy;
+  v26 = infoCopy;
+  v27 = appleIDUsername;
+  v28 = appleIDPasswordOrEquivalentToken;
+  v18 = appleIDPasswordOrEquivalentToken;
+  v19 = appleIDUsername;
+  v20 = infoCopy;
+  v21 = targetCopy;
+  v22 = codeCopy;
   dispatch_async(v17, block);
 }
 
@@ -2389,27 +2389,27 @@ LABEL_7:
   *(*(a1 + 32) + 16) = 0;
 }
 
-- (void)promptForDevicePasscodeChangeToPasscode:(id)a3 overController:(id)a4 completion:(id)a5
+- (void)promptForDevicePasscodeChangeToPasscode:(id)passcode overController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [getCDPAccountClass() sharedInstance];
-  v12 = [v11 primaryAccountSecurityLevel];
+  passcodeCopy = passcode;
+  controllerCopy = controller;
+  completionCopy = completion;
+  sharedInstance = [getCDPAccountClass() sharedInstance];
+  primaryAccountSecurityLevel = [sharedInstance primaryAccountSecurityLevel];
 
   v13 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __91__PSKeychainSyncManager_promptForDevicePasscodeChangeToPasscode_overController_completion___block_invoke;
   block[3] = &unk_1E71DD410;
-  v18 = v9;
-  v19 = v8;
-  v20 = self;
-  v21 = v10;
-  v22 = v12 == 5;
-  v14 = v10;
-  v15 = v8;
-  v16 = v9;
+  v18 = controllerCopy;
+  v19 = passcodeCopy;
+  selfCopy = self;
+  v21 = completionCopy;
+  v22 = primaryAccountSecurityLevel == 5;
+  v14 = completionCopy;
+  v15 = passcodeCopy;
+  v16 = controllerCopy;
   dispatch_async(v13, block);
 }
 
@@ -2688,33 +2688,33 @@ uint64_t __91__PSKeychainSyncManager_promptForDevicePasscodeChangeToPasscode_ove
   return result;
 }
 
-- (void)_presentAuthControllerWithPresentingVC:(id)a3 completion:(id)a4
+- (void)_presentAuthControllerWithPresentingVC:(id)c completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  cCopy = c;
   v7 = objc_opt_new();
-  v8 = [v7 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v7 aa_primaryAppleAccount];
   v9 = objc_alloc_init(getAKAppleIDAuthenticationInAppContextClass_0());
-  v10 = [v8 username];
-  [v9 setUsername:v10];
+  username = [aa_primaryAppleAccount username];
+  [v9 setUsername:username];
 
   [v9 setAuthenticationType:2];
   [v9 setIsUsernameEditable:0];
-  [v9 setPresentingViewController:v6];
+  [v9 setPresentingViewController:cCopy];
 
   v11 = objc_alloc_init(getAKAppleIDAuthenticationControllerClass());
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __75__PSKeychainSyncManager__presentAuthControllerWithPresentingVC_completion___block_invoke;
   v13[3] = &unk_1E71DD438;
-  v14 = v5;
-  v12 = v5;
+  v14 = completionCopy;
+  v12 = completionCopy;
   [v11 authenticateWithContext:v9 completion:v13];
 }
 
-- (void)_showGenericFlowErrorAlertWithDismissalHandler:(id)a3
+- (void)_showGenericFlowErrorAlertWithDismissalHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = self->_flow - 1;
   if (v5 > 4)
   {
@@ -2736,8 +2736,8 @@ uint64_t __91__PSKeychainSyncManager_promptForDevicePasscodeChangeToPasscode_ove
   v14[1] = 3221225472;
   v14[2] = __72__PSKeychainSyncManager__showGenericFlowErrorAlertWithDismissalHandler___block_invoke;
   v14[3] = &unk_1E71DD348;
-  v15 = v4;
-  v12 = v4;
+  v15 = handlerCopy;
+  v12 = handlerCopy;
   v13 = [v10 actionWithTitle:v11 style:1 handler:v14];
   [v9 addAction:v13];
 
@@ -2755,13 +2755,13 @@ uint64_t __72__PSKeychainSyncManager__showGenericFlowErrorAlertWithDismissalHand
   return result;
 }
 
-- (void)_showInvalidPhoneNumberAlertWithDigits:(id)a3 countryInfo:(id)a4
+- (void)_showInvalidPhoneNumberAlertWithDigits:(id)digits countryInfo:(id)info
 {
-  v15 = [PSKeychainSyncPhoneNumber phoneNumberWithDigits:a3 countryInfo:a4];
+  v15 = [PSKeychainSyncPhoneNumber phoneNumberWithDigits:digits countryInfo:info];
   v5 = MEMORY[0x1E696AEC0];
   v6 = PS_LocalizedStringForKeychainSync(@"INVALID_PHONE_NUMBER");
-  v7 = [v15 formattedStringWithDialingPrefix];
-  v8 = [v5 stringWithFormat:v6, v7];
+  formattedStringWithDialingPrefix = [v15 formattedStringWithDialingPrefix];
+  v8 = [v5 stringWithFormat:v6, formattedStringWithDialingPrefix];
 
   v9 = MEMORY[0x1E69DC650];
   v10 = PS_LocalizedStringForKeychainSync(@"KEYCHAIN_VERIFICATION");
@@ -2775,9 +2775,9 @@ uint64_t __72__PSKeychainSyncManager__showGenericFlowErrorAlertWithDismissalHand
   [(PSKeychainSyncManager *)self showAlert:v11];
 }
 
-- (void)showResetAcknowledgementIfNeededWithCompletion:(id)a3
+- (void)showResetAcknowledgementIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(PSKeychainSyncManager *)self circleWasReset])
   {
     v5 = MEMORY[0x1E69DC650];
@@ -2791,16 +2791,16 @@ uint64_t __72__PSKeychainSyncManager__showGenericFlowErrorAlertWithDismissalHand
     v12[1] = 3221225472;
     v12[2] = __72__PSKeychainSyncManager_showResetAcknowledgementIfNeededWithCompletion___block_invoke;
     v12[3] = &unk_1E71DD348;
-    v13 = v4;
+    v13 = completionCopy;
     v11 = [v9 actionWithTitle:v10 style:0 handler:v12];
     [v8 addAction:v11];
 
     [(PSKeychainSyncManager *)self showAlert:v8];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
   [(PSKeychainSyncManager *)self setCircleWasReset:0];
@@ -2817,7 +2817,7 @@ uint64_t __72__PSKeychainSyncManager_showResetAcknowledgementIfNeededWithComplet
   return result;
 }
 
-- (BOOL)_resetCircleAndDisableBackupWithError:(id *)a3
+- (BOOL)_resetCircleAndDisableBackupWithError:(id *)error
 {
   v5 = SOSCCResetToEmpty();
   [(PSKeychainSyncManager *)self setCircleWasReset:v5];
@@ -2830,9 +2830,9 @@ uint64_t __72__PSKeychainSyncManager_showResetAcknowledgementIfNeededWithComplet
     LOBYTE(v5) = 0;
   }
 
-  if (a3 && v8)
+  if (error && v8)
   {
-    *a3 = v8;
+    *error = v8;
   }
 
   return v5;
@@ -2840,9 +2840,9 @@ uint64_t __72__PSKeychainSyncManager_showResetAcknowledgementIfNeededWithComplet
 
 - (void)_resetFromRecoveryFlow
 {
-  v3 = [(PSKeychainSyncManager *)self navigationController];
-  v4 = [v3 topViewController];
-  [(PSKeychainSyncManager *)self startNavigationSpinnerInViewController:v4];
+  navigationController = [(PSKeychainSyncManager *)self navigationController];
+  topViewController = [navigationController topViewController];
+  [(PSKeychainSyncManager *)self startNavigationSpinnerInViewController:topViewController];
 
   v5 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
@@ -2927,9 +2927,9 @@ void __47__PSKeychainSyncManager__resetFromRecoveryFlow__block_invoke_4(uint64_t
 
 - (void)_peerApprovalFromRecoveryFlow
 {
-  v3 = [(PSKeychainSyncManager *)self navigationController];
-  v4 = [v3 topViewController];
-  [(PSKeychainSyncManager *)self startNavigationSpinnerInViewController:v4];
+  navigationController = [(PSKeychainSyncManager *)self navigationController];
+  topViewController = [navigationController topViewController];
+  [(PSKeychainSyncManager *)self startNavigationSpinnerInViewController:topViewController];
 
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -2997,24 +2997,24 @@ void __54__PSKeychainSyncManager__peerApprovalFromRecoveryFlow__block_invoke(uin
   [(PSKeychainSyncManager *)self setHostViewController:0];
 }
 
-- (void)showController:(id)a3
+- (void)showController:(id)controller
 {
-  v4 = a3;
-  [v4 setDelegate:self];
+  controllerCopy = controller;
+  [controllerCopy setDelegate:self];
   if ([(PSKeychainSyncManager *)self isRunningInBuddy])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v4 setRootController:self->_buddyNavigationController];
+      [controllerCopy setRootController:self->_buddyNavigationController];
     }
 
-    [(PSRootController *)self->_buddyNavigationController pushViewController:v4 animated:1];
+    [(PSRootController *)self->_buddyNavigationController pushViewController:controllerCopy animated:1];
   }
 
   else
   {
-    [(PSRootController *)self->_settingsSetupController showController:v4];
+    [(PSRootController *)self->_settingsSetupController showController:controllerCopy];
   }
 }
 
@@ -3027,9 +3027,9 @@ void __54__PSKeychainSyncManager__peerApprovalFromRecoveryFlow__block_invoke(uin
 
   else
   {
-    v4 = [(PSKeychainSyncManager *)self navigationController];
-    v5 = [v4 presentingViewController];
-    if (v5)
+    navigationController = [(PSKeychainSyncManager *)self navigationController];
+    presentingViewController = [navigationController presentingViewController];
+    if (presentingViewController)
     {
       [(PSKeychainSyncManager *)self navigationController];
     }
@@ -3044,19 +3044,19 @@ void __54__PSKeychainSyncManager__peerApprovalFromRecoveryFlow__block_invoke(uin
   return v3;
 }
 
-- (void)showAlert:(id)a3
+- (void)showAlert:(id)alert
 {
-  v4 = a3;
-  v5 = [(PSKeychainSyncManager *)self viewControllerForPresentingAlerts];
-  [v5 presentViewController:v4 animated:1 completion:0];
+  alertCopy = alert;
+  viewControllerForPresentingAlerts = [(PSKeychainSyncManager *)self viewControllerForPresentingAlerts];
+  [viewControllerForPresentingAlerts presentViewController:alertCopy animated:1 completion:0];
 }
 
 - (void)showNetworkReachabilityError
 {
   v3 = objc_alloc_init(MEMORY[0x1E698B6B0]);
-  v4 = [v3 airplaneMode];
+  airplaneMode = [v3 airplaneMode];
 
-  if (v4)
+  if (airplaneMode)
   {
     v5 = SFLocalizableWAPIStringKeyForKey();
     v10 = PS_LocalizedStringForKeychainSync(v5);
@@ -3080,43 +3080,43 @@ void __54__PSKeychainSyncManager__peerApprovalFromRecoveryFlow__block_invoke(uin
 {
   if ([(PSKeychainSyncManager *)self isRunningInBuddy])
   {
-    v11 = objc_alloc_init(MEMORY[0x1E69DCCD8]);
-    v3 = [v11 navigationBar];
-    [v3 _setHidesShadow:1];
+    mEMORY[0x1E69DC668] = objc_alloc_init(MEMORY[0x1E69DCCD8]);
+    navigationBar = [mEMORY[0x1E69DC668] navigationBar];
+    [navigationBar _setHidesShadow:1];
 
-    v4 = [v11 navigationBar];
+    navigationBar2 = [mEMORY[0x1E69DC668] navigationBar];
     v5 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.96];
-    [v4 setBarTintColor:v5];
+    [navigationBar2 setBarTintColor:v5];
 
     v6 = [[KeychainSyncAppleSupportController alloc] initWithNibName:0 bundle:0];
     v7 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel_dismissAppleSupportPane_];
-    v8 = [(KeychainSyncAppleSupportController *)v6 navigationItem];
-    [v8 setRightBarButtonItem:v7];
+    navigationItem = [(KeychainSyncAppleSupportController *)v6 navigationItem];
+    [navigationItem setRightBarButtonItem:v7];
 
-    [v11 pushViewController:v6 animated:0];
-    [v11 setModalPresentationStyle:2];
-    v9 = [(PSKeychainSyncManager *)self navigationController];
-    v10 = [v9 topViewController];
-    [v10 presentViewController:v11 animated:1 completion:0];
+    [mEMORY[0x1E69DC668] pushViewController:v6 animated:0];
+    [mEMORY[0x1E69DC668] setModalPresentationStyle:2];
+    navigationController = [(PSKeychainSyncManager *)self navigationController];
+    topViewController = [navigationController topViewController];
+    [topViewController presentViewController:mEMORY[0x1E69DC668] animated:1 completion:0];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69DC668] sharedApplication];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
     v6 = [MEMORY[0x1E695DFF8] URLWithString:@"http://apple.com/support/icloud/keychain"];
-    [v11 openURL:v6 options:MEMORY[0x1E695E0F8] completionHandler:0];
+    [mEMORY[0x1E69DC668] openURL:v6 options:MEMORY[0x1E695E0F8] completionHandler:0];
   }
 }
 
-- (void)dismissAppleSupportPane:(id)a3
+- (void)dismissAppleSupportPane:(id)pane
 {
-  v4 = [(PSKeychainSyncManager *)self navigationController];
+  navigationController = [(PSKeychainSyncManager *)self navigationController];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __49__PSKeychainSyncManager_dismissAppleSupportPane___block_invoke;
   v5[3] = &unk_1E71DBE20;
   v5[4] = self;
-  [v4 dismissViewControllerAnimated:1 completion:v5];
+  [navigationController dismissViewControllerAnimated:1 completion:v5];
 }
 
 void __49__PSKeychainSyncManager_dismissAppleSupportPane___block_invoke(uint64_t a1)
@@ -3126,21 +3126,21 @@ void __49__PSKeychainSyncManager_dismissAppleSupportPane___block_invoke(uint64_t
   [v1 becomeFirstResponder];
 }
 
-- (void)joinCircleAfterRecovery:(BOOL)a3 withCompletion:(id)a4
+- (void)joinCircleAfterRecovery:(BOOL)recovery withCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  recoveryCopy = recovery;
+  completionCopy = completion;
   v22 = 0;
   Status = PSKeychainSyncGetStatus(&v22);
   v8 = v22;
   v9 = v8;
-  v10 = Status != 3 || v4;
+  v10 = Status != 3 || recoveryCopy;
   if (Status == 2 || (v10 & 1) == 0)
   {
-    if (v6)
+    if (completionCopy)
     {
-      v11 = v6[2];
-      v12 = v6;
+      v11 = completionCopy[2];
+      v12 = completionCopy;
       v13 = Status;
       v14 = 0;
       goto LABEL_12;
@@ -3150,10 +3150,10 @@ void __49__PSKeychainSyncManager_dismissAppleSupportPane___block_invoke(uint64_t
   else if (v8)
   {
     NSLog(&cfstr_ErrorCheckingC_1.isa, v8);
-    if (v6)
+    if (completionCopy)
     {
-      v11 = v6[2];
-      v12 = v6;
+      v11 = completionCopy[2];
+      v12 = completionCopy;
       v13 = 0;
 LABEL_9:
       v14 = v9;
@@ -3164,11 +3164,11 @@ LABEL_12:
 
   else
   {
-    [(PSKeychainSyncManager *)self _registerForCircleChangeNotificationsWithCompletion:v6];
+    [(PSKeychainSyncManager *)self _registerForCircleChangeNotificationsWithCompletion:completionCopy];
     self->_joiningCircle = 1;
-    self->_joiningCircleAfterRecovery = v4;
+    self->_joiningCircleAfterRecovery = recoveryCopy;
     v21 = 0;
-    if (v4)
+    if (recoveryCopy)
     {
       v15 = SOSCCRequestToJoinCircleAfterRestore();
     }
@@ -3191,23 +3191,23 @@ LABEL_12:
 
     if ([(PSKeychainSyncManager *)self _errorRequiresPasswordPrompt:v9])
     {
-      v17 = [(PSKeychainSyncManager *)self navigationController];
-      v18 = [v17 topViewController];
+      navigationController = [(PSKeychainSyncManager *)self navigationController];
+      topViewController = [navigationController topViewController];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __64__PSKeychainSyncManager_joinCircleAfterRecovery_withCompletion___block_invoke;
       v19[3] = &unk_1E71DD3C0;
       v19[4] = self;
-      v20 = v6;
-      [(PSKeychainSyncManager *)self promptForPasswordOverController:v18 withCompletion:v19];
+      v20 = completionCopy;
+      [(PSKeychainSyncManager *)self promptForPasswordOverController:topViewController withCompletion:v19];
 
       goto LABEL_13;
     }
 
-    if (v6 && v16 != 1)
+    if (completionCopy && v16 != 1)
     {
-      v11 = v6[2];
-      v12 = v6;
+      v11 = completionCopy[2];
+      v12 = completionCopy;
       v13 = 1;
       goto LABEL_9;
     }
@@ -3236,13 +3236,13 @@ uint64_t __64__PSKeychainSyncManager_joinCircleAfterRecovery_withCompletion___bl
   return MEMORY[0x1EEE66BE0]();
 }
 
-- (void)_recoverWithSecurityCode:(id)a3 verificationCode:(id)a4
+- (void)_recoverWithSecurityCode:(id)code verificationCode:(id)verificationCode
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSKeychainSyncManager *)self navigationController];
-  v9 = [v8 topViewController];
-  [(PSKeychainSyncManager *)self startNavigationSpinnerInViewController:v9];
+  codeCopy = code;
+  verificationCodeCopy = verificationCode;
+  navigationController = [(PSKeychainSyncManager *)self navigationController];
+  topViewController = [navigationController topViewController];
+  [(PSKeychainSyncManager *)self startNavigationSpinnerInViewController:topViewController];
 
   v10 = MEMORY[0x1E695DF20];
   v11 = getkSecureBackupPassphraseKey();
@@ -3272,7 +3272,7 @@ uint64_t __64__PSKeychainSyncManager_joinCircleAfterRecovery_withCompletion___bl
     _Unwind_Resume(v17);
   }
 
-  v14 = [v10 dictionaryWithObjectsAndKeys:{v6, v11, v7, *v12, 0}];
+  v14 = [v10 dictionaryWithObjectsAndKeys:{codeCopy, v11, verificationCodeCopy, *v12, 0}];
 
   v15 = objc_alloc_init(getSecureBackupClass_0());
   v18[0] = MEMORY[0x1E69E9820];
@@ -3280,8 +3280,8 @@ uint64_t __64__PSKeychainSyncManager_joinCircleAfterRecovery_withCompletion___bl
   v18[2] = __67__PSKeychainSyncManager__recoverWithSecurityCode_verificationCode___block_invoke;
   v18[3] = &unk_1E71DC548;
   v18[4] = self;
-  v19 = v7;
-  v16 = v7;
+  v19 = verificationCodeCopy;
+  v16 = verificationCodeCopy;
   [v15 recoverWithInfo:v14 completionBlockWithResults:v18];
 }
 
@@ -3561,7 +3561,7 @@ void __67__PSKeychainSyncManager__recoverWithSecurityCode_verificationCode___blo
   [*(a1 + 32) _finishedWithStatus:a2 error:v5];
 }
 
-- (void)_circleJoinAfterRecoveryTimerFired:(id)a3
+- (void)_circleJoinAfterRecoveryTimerFired:(id)fired
 {
   v10 = 0;
   Status = PSKeychainSyncGetStatus(&v10);
@@ -3669,14 +3669,14 @@ uint64_t __60__PSKeychainSyncManager__circleJoinAfterRecoveryTimerFired___block_
 
   if (!SOSCCThisDeviceIsInCircle())
   {
-    v4 = [(PSKeychainSyncManager *)self viewControllerForPresentingAlerts];
-    v5 = [v4 presentedViewController];
+    viewControllerForPresentingAlerts = [(PSKeychainSyncManager *)self viewControllerForPresentingAlerts];
+    presentedViewController = [viewControllerForPresentingAlerts presentedViewController];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(PSKeychainSyncManager *)self navigationController];
-      [v6 dismissViewControllerAnimated:1 completion:0];
+      navigationController = [(PSKeychainSyncManager *)self navigationController];
+      [navigationController dismissViewControllerAnimated:1 completion:0];
     }
 
     [(PSKeychainSyncSecurityCodeController *)self->_securityCodeRecoveryController dismissAlerts];
@@ -3687,12 +3687,12 @@ uint64_t __60__PSKeychainSyncManager__circleJoinAfterRecoveryTimerFired___block_
 LABEL_21:
 }
 
-- (void)_callCompletionWithStatus:(int)a3 error:(id)a4
+- (void)_callCompletionWithStatus:(int)status error:(id)error
 {
   completion = self->_completion;
   if (completion)
   {
-    v6 = a4;
+    errorCopy = error;
     v9 = _Block_copy(completion);
     (*(self->_completion + 2))();
 
@@ -3706,16 +3706,16 @@ LABEL_21:
   }
 }
 
-- (void)_finishedWithStatus:(int)a3 error:(id)a4
+- (void)_finishedWithStatus:(int)status error:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __51__PSKeychainSyncManager__finishedWithStatus_error___block_invoke;
   aBlock[3] = &unk_1E71DD4B0;
   aBlock[4] = self;
-  v15 = a3;
-  v7 = v6;
+  statusCopy = status;
+  v7 = errorCopy;
   v14 = v7;
   v8 = _Block_copy(aBlock);
   if (![(PSKeychainSyncManager *)self isRunningInBuddy])
@@ -3723,16 +3723,16 @@ LABEL_21:
     goto LABEL_6;
   }
 
-  v9 = [v7 domain];
-  if (([v9 isEqualToString:@"com.apple.Preferences.KeychainSync"] & 1) == 0)
+  domain = [v7 domain];
+  if (([domain isEqualToString:@"com.apple.Preferences.KeychainSync"] & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v10 = [v7 code];
+  code = [v7 code];
 
-  if (v10 != 5)
+  if (code != 5)
   {
 LABEL_6:
     v11[0] = MEMORY[0x1E69E9820];
@@ -3833,61 +3833,61 @@ LABEL_11:
   self->_flow = 0;
 }
 
-- (void)keychainSyncControllerCancel:(id)a3
+- (void)keychainSyncControllerCancel:(id)cancel
 {
   if (![(PSKeychainSyncManager *)self isRunningInBuddy])
   {
-    v4 = [(PSRootController *)self->_settingsSetupController rootController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    rootController = [(PSRootController *)self->_settingsSetupController rootController];
+    [rootController dismissViewControllerAnimated:1 completion:0];
   }
 
   [(PSKeychainSyncManager *)self _preSetupCancelledWithCurrentStatus];
 }
 
-- (void)_autoVetSMSValidationWithToken:(id)a3
+- (void)_autoVetSMSValidationWithToken:(id)token
 {
-  v7 = a3;
-  v4 = [(PSKeychainSyncManager *)self navigationController];
-  v5 = [v4 topViewController];
+  tokenCopy = token;
+  navigationController = [(PSKeychainSyncManager *)self navigationController];
+  topViewController = [navigationController topViewController];
   smsValidationController = self->_smsValidationController;
 
-  if (v5 == smsValidationController)
+  if (topViewController == smsValidationController)
   {
-    NSLog(&cfstr_AutoVettingKey.isa, v7);
-    [(PSKeychainSyncTextEntryController *)self->_smsValidationController setTextEntryText:v7];
+    NSLog(&cfstr_AutoVettingKey.isa, tokenCopy);
+    [(PSKeychainSyncTextEntryController *)self->_smsValidationController setTextEntryText:tokenCopy];
   }
 
   PSHSAAuthenticationUnregisterIncomingAuthenticationTokenBlockWithIdentifier();
 }
 
-- (void)keychainSyncController:(id)a3 didFinishWithResult:(id)a4 error:(id)a5
+- (void)keychainSyncController:(id)controller didFinishWithResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (self->_securityCodeRecoveryController == v8)
+  controllerCopy = controller;
+  resultCopy = result;
+  errorCopy = error;
+  if (self->_securityCodeRecoveryController == controllerCopy)
   {
-    if (@"usePeerApproval" == v9)
+    if (@"usePeerApproval" == resultCopy)
     {
       [(PSKeychainSyncManager *)self _peerApprovalFromRecoveryFlow];
       goto LABEL_66;
     }
 
-    if (@"resetKeychain" == v9)
+    if (@"resetKeychain" == resultCopy)
     {
       [(PSKeychainSyncManager *)self _resetFromRecoveryFlow];
       goto LABEL_66;
     }
 
-    if (@"setUpLater" == v9)
+    if (@"setUpLater" == resultCopy)
     {
 LABEL_29:
       [(PSKeychainSyncManager *)self _finishedWithStatus:1 error:0];
       goto LABEL_66;
     }
 
-    v11 = v9;
-    v12 = [(__CFString *)v11 objectForKey:@"securityCode"];
+    securityCodeRecoveryAttempt = resultCopy;
+    v12 = [(__CFString *)securityCodeRecoveryAttempt objectForKey:@"securityCode"];
     [(PSKeychainSyncManager *)self setSecurityCodeRecoveryAttempt:v12];
 
     [(PSKeychainSyncManager *)self startNavigationSpinnerInViewController:self->_securityCodeRecoveryController];
@@ -3905,7 +3905,7 @@ LABEL_63:
       goto LABEL_64;
     }
 
-    v76 = v11;
+    v76 = securityCodeRecoveryAttempt;
     v96 = 0;
     v97 = &v96;
     v98 = 0x2020000000;
@@ -3930,7 +3930,7 @@ LABEL_63:
     if (v43)
     {
       v47 = [v15 objectForKey:*v43];
-      v48 = [v47 BOOLValue];
+      bOOLValue = [v47 BOOLValue];
 
       v96 = 0;
       v97 = &v96;
@@ -3952,12 +3952,12 @@ LABEL_63:
         v49 = v97[3];
       }
 
-      v74 = v48;
+      v74 = bOOLValue;
       _Block_object_dispose(&v96, 8);
       if (v49)
       {
         v52 = [v15 objectForKey:*v49];
-        v72 = [v52 BOOLValue];
+        bOOLValue2 = [v52 BOOLValue];
 
         v53 = getkSecureBackupSMSTargetInfoKey();
         v77 = v15;
@@ -3997,7 +3997,7 @@ LABEL_63:
 
         if ((v74 & 1) == 0)
         {
-          v62 = v72;
+          v62 = bOOLValue2;
           if (!v56)
           {
             v62 = 0;
@@ -4010,12 +4010,12 @@ LABEL_63:
             v75 = v13;
             v63 = v54;
             v65 = v64 = v61;
-            v66 = [v65 isTelephonyDevice];
+            isTelephonyDevice = [v65 isTelephonyDevice];
 
             v61 = v64;
             v54 = v63;
             v13 = v75;
-            if (v66 && [(PSKeychainSyncManager *)self isRunningInBuddy])
+            if (isTelephonyDevice && [(PSKeychainSyncManager *)self isRunningInBuddy])
             {
               objc_initWeak(&location, self);
               v88[0] = MEMORY[0x1E69E9820];
@@ -4042,7 +4042,7 @@ LABEL_63:
             goto LABEL_62;
           }
 
-          if (v72 && (!v56 || !v61))
+          if (bOOLValue2 && (!v56 || !v61))
           {
             NSLog(&cfstr_RequiresVerifi.isa);
           }
@@ -4052,7 +4052,7 @@ LABEL_63:
         [(PSKeychainSyncManager *)self _recoverWithSecurityCode:self->_securityCodeRecoveryAttempt verificationCode:0];
 LABEL_62:
 
-        v11 = v76;
+        securityCodeRecoveryAttempt = v76;
         v15 = v77;
         goto LABEL_63;
       }
@@ -4069,17 +4069,17 @@ LABEL_62:
     _Unwind_Resume(v67);
   }
 
-  if (self->_advancedSecurityCodeChoiceController == v8)
+  if (self->_advancedSecurityCodeChoiceController == controllerCopy)
   {
-    v19 = [(__CFString *)v9 intValue];
-    if (v19 == 3)
+    intValue = [(__CFString *)resultCopy intValue];
+    if (intValue == 3)
     {
-      v20 = [(PSKeychainSyncManager *)self navigationController];
-      v21 = [v20 topViewController];
-      [(PSKeychainSyncManager *)self startNavigationSpinnerInViewController:v21];
+      navigationController = [(PSKeychainSyncManager *)self navigationController];
+      topViewController = [navigationController topViewController];
+      [(PSKeychainSyncManager *)self startNavigationSpinnerInViewController:topViewController];
 
-      v11 = objc_alloc_init(getSecureBackupClass_0());
-      [(__CFString *)v11 disableWithInfo:0 completionBlock:&__block_literal_global_17];
+      securityCodeRecoveryAttempt = objc_alloc_init(getSecureBackupClass_0());
+      [(__CFString *)securityCodeRecoveryAttempt disableWithInfo:0 completionBlock:&__block_literal_global_17];
       v83[0] = MEMORY[0x1E69E9820];
       v83[1] = 3221225472;
       v83[2] = __74__PSKeychainSyncManager_keychainSyncController_didFinishWithResult_error___block_invoke_7;
@@ -4089,7 +4089,7 @@ LABEL_62:
       goto LABEL_65;
     }
 
-    v22 = v19;
+    v22 = intValue;
     v23 = objc_alloc_init(PSKeychainSyncSecurityCodeController);
     complexSecurityCodeController = self->_complexSecurityCodeController;
     self->_complexSecurityCodeController = v23;
@@ -4111,30 +4111,30 @@ LABEL_62:
     goto LABEL_36;
   }
 
-  if (self->_simpleSecurityCodeController == v8 || self->_complexSecurityCodeController == v8)
+  if (self->_simpleSecurityCodeController == controllerCopy || self->_complexSecurityCodeController == controllerCopy)
   {
-    if (@"advancedOptions" != v9)
+    if (@"advancedOptions" != resultCopy)
     {
-      v11 = [(__CFString *)v9 objectForKey:@"securityCodeType"];
-      v16 = [(__CFString *)v11 intValue];
-      v17 = [(__CFString *)v9 objectForKey:@"securityCode"];
-      [(PSKeychainSyncManager *)self setStagedSecurityCode:v17 type:v16];
+      securityCodeRecoveryAttempt = [(__CFString *)resultCopy objectForKey:@"securityCodeType"];
+      intValue2 = [(__CFString *)securityCodeRecoveryAttempt intValue];
+      v17 = [(__CFString *)resultCopy objectForKey:@"securityCode"];
+      [(PSKeychainSyncManager *)self setStagedSecurityCode:v17 type:intValue2];
 
       if (self->_flow == 3)
       {
-        [(PSKeychainSyncManager *)self startNavigationSpinnerInViewController:v8];
+        [(PSKeychainSyncManager *)self startNavigationSpinnerInViewController:controllerCopy];
         v18 = dispatch_get_global_queue(0, 0);
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __74__PSKeychainSyncManager_keychainSyncController_didFinishWithResult_error___block_invoke_8;
         block[3] = &unk_1E71DD4B0;
-        v82 = v16;
+        v82 = intValue2;
         block[4] = self;
-        v81 = v8;
+        v81 = controllerCopy;
         dispatch_async(v18, block);
       }
 
-      else if (v16 == 2)
+      else if (intValue2 == 2)
       {
         [(PSKeychainSyncManager *)self joinCircleAndEnableSecureBackupWithPhoneNumber:0 countryInfo:0];
       }
@@ -4169,11 +4169,11 @@ LABEL_36:
     goto LABEL_66;
   }
 
-  if (self->_devicePinController == v8)
+  if (self->_devicePinController == controllerCopy)
   {
     LOBYTE(location) = 0;
     PSIsUsingPasscode(&location);
-    [(PSKeychainSyncManager *)self setStagedSecurityCode:v9 type:location ^ 1u];
+    [(PSKeychainSyncManager *)self setStagedSecurityCode:resultCopy type:location ^ 1u];
     if (!self->_phoneNumberController)
     {
       v29 = objc_alloc_init(KeychainSyncPhoneNumberController);
@@ -4190,7 +4190,7 @@ LABEL_36:
         v31 = MEMORY[0x1E69DC650];
         v32 = PS_LocalizedStringForKeychainSync(@"DEVICE_PASSCODE_TOO_WEAK");
         v33 = PS_LocalizedStringForKeychainSync(@"DEVICE_PASSCODE_TOO_WEAK_DETAILS");
-        v11 = [v31 alertControllerWithTitle:v32 message:v33 preferredStyle:1];
+        securityCodeRecoveryAttempt = [v31 alertControllerWithTitle:v32 message:v33 preferredStyle:1];
 
         v34 = MEMORY[0x1E69DC648];
         v35 = PS_LocalizedStringForKeychainSync(@"CANCEL");
@@ -4200,7 +4200,7 @@ LABEL_36:
         v79[3] = &unk_1E71DC288;
         v79[4] = self;
         v36 = [v34 actionWithTitle:v35 style:1 handler:v79];
-        [(__CFString *)v11 addAction:v36];
+        [(__CFString *)securityCodeRecoveryAttempt addAction:v36];
 
         v37 = MEMORY[0x1E69DC648];
         v38 = PS_LocalizedStringForKeychainSync(@"USE_CODE");
@@ -4210,9 +4210,9 @@ LABEL_36:
         v78[3] = &unk_1E71DC288;
         v78[4] = self;
         v39 = [v37 actionWithTitle:v38 style:0 handler:v78];
-        [(__CFString *)v11 addAction:v39];
+        [(__CFString *)securityCodeRecoveryAttempt addAction:v39];
 
-        [(PSKeychainSyncManager *)self showAlert:v11];
+        [(PSKeychainSyncManager *)self showAlert:securityCodeRecoveryAttempt];
         goto LABEL_65;
       }
     }
@@ -4221,22 +4221,22 @@ LABEL_36:
     goto LABEL_36;
   }
 
-  if (self->_phoneNumberController == v8)
+  if (self->_phoneNumberController == controllerCopy)
   {
-    v11 = [(__CFString *)v9 objectForKey:@"phoneNumber"];
-    v13 = [(__CFString *)v9 objectForKey:@"countryInfo"];
-    [(PSKeychainSyncManager *)self keychainSyncPhoneNumberController:v8 didCompleteWithPhoneNumber:v11 countryInfo:v13];
+    securityCodeRecoveryAttempt = [(__CFString *)resultCopy objectForKey:@"phoneNumber"];
+    v13 = [(__CFString *)resultCopy objectForKey:@"countryInfo"];
+    [(PSKeychainSyncManager *)self keychainSyncPhoneNumberController:controllerCopy didCompleteWithPhoneNumber:securityCodeRecoveryAttempt countryInfo:v13];
 LABEL_64:
 
     goto LABEL_65;
   }
 
-  if (self->_smsValidationController == v8)
+  if (self->_smsValidationController == controllerCopy)
   {
-    if (v9)
+    if (resultCopy)
     {
-      v11 = [(PSKeychainSyncManager *)self securityCodeRecoveryAttempt];
-      [(PSKeychainSyncManager *)self _recoverWithSecurityCode:v11 verificationCode:v9];
+      securityCodeRecoveryAttempt = [(PSKeychainSyncManager *)self securityCodeRecoveryAttempt];
+      [(PSKeychainSyncManager *)self _recoverWithSecurityCode:securityCodeRecoveryAttempt verificationCode:resultCopy];
 LABEL_65:
 
       goto LABEL_66;
@@ -4528,20 +4528,20 @@ void __74__PSKeychainSyncManager_keychainSyncController_didFinishWithResult_erro
 LABEL_9:
 }
 
-- (void)_enableSecureBackupWithPhoneNumber:(id)a3 countryInfo:(id)a4
+- (void)_enableSecureBackupWithPhoneNumber:(id)number countryInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  numberCopy = number;
+  infoCopy = info;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v9 = MEMORY[0x1E695DF90];
   v10 = getkSecureBackupMetadataKey_0();
-  v11 = [v9 dictionaryWithObject:v8 forKey:v10];
+  v11 = [v9 dictionaryWithObject:dictionary forKey:v10];
 
-  if (v7)
+  if (infoCopy)
   {
-    v12 = [v7 countryCode];
+    countryCode = [infoCopy countryCode];
     v13 = getkSecureBackupCountryCodeKey_0();
-    [v8 setObject:v12 forKey:v13];
+    [dictionary setObject:countryCode forKey:v13];
   }
 
   if (-[PSKeychainSyncManager isRunningInBuddy](self, "isRunningInBuddy") && (-[PSKeychainSyncManager stagedSecurityCode](self, "stagedSecurityCode"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 length], v14, !v15))
@@ -4577,17 +4577,17 @@ LABEL_9:
     PSIsUsingPasscode(&v69);
     v30 = [MEMORY[0x1E696AD98] numberWithInt:v69 ^ 1u];
     v31 = getkSecureBackupUsesComplexPassphraseKey();
-    [v8 setObject:v30 forKey:v31];
+    [dictionary setObject:v30 forKey:v31];
 
     v32 = [MEMORY[0x1E696AD98] numberWithInt:v69];
     v33 = getkSecureBackupUsesNumericPassphraseKey();
-    [v8 setObject:v32 forKey:v33];
+    [dictionary setObject:v32 forKey:v33];
 
     if (v69 == 1)
     {
       *buf = -1;
-      v34 = [MEMORY[0x1E69ADFB8] sharedConnection];
-      [v34 unlockScreenTypeWithOutSimplePasscodeType:buf];
+      mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+      [mEMORY[0x1E69ADFB8] unlockScreenTypeWithOutSimplePasscodeType:buf];
 
       if (*buf)
       {
@@ -4601,15 +4601,15 @@ LABEL_9:
 
       v36 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v35];
       v37 = getkSecureBackupNumericPassphraseLengthKey();
-      [v8 setObject:v36 forKey:v37];
+      [dictionary setObject:v36 forKey:v37];
     }
   }
 
   else
   {
-    v16 = [(PSKeychainSyncManager *)self stagedSecurityCode];
+    stagedSecurityCode = [(PSKeychainSyncManager *)self stagedSecurityCode];
     v17 = getkSecureBackupPassphraseKey();
-    [v11 setObject:v16 forKey:v17];
+    [v11 setObject:stagedSecurityCode forKey:v17];
 
     v18 = [MEMORY[0x1E696AD98] numberWithInt:self->_stagedSecurityCodeType == 2];
     v19 = getkSecureBackupUsesRandomPassphraseKey();
@@ -4617,25 +4617,25 @@ LABEL_9:
 
     v20 = [MEMORY[0x1E696AD98] numberWithInt:self->_stagedSecurityCodeType != 0];
     v21 = getkSecureBackupUsesComplexPassphraseKey();
-    [v8 setObject:v20 forKey:v21];
+    [dictionary setObject:v20 forKey:v21];
 
     v22 = [MEMORY[0x1E696AD98] numberWithInt:self->_stagedSecurityCodeType == 0];
     v23 = getkSecureBackupUsesNumericPassphraseKey();
-    [v8 setObject:v22 forKey:v23];
+    [dictionary setObject:v22 forKey:v23];
 
     if (!self->_stagedSecurityCodeType)
     {
       v24 = MEMORY[0x1E696AD98];
-      v25 = [(PSKeychainSyncManager *)self stagedSecurityCode];
-      v26 = [v24 numberWithUnsignedInteger:{objc_msgSend(v25, "length")}];
+      stagedSecurityCode2 = [(PSKeychainSyncManager *)self stagedSecurityCode];
+      v26 = [v24 numberWithUnsignedInteger:{objc_msgSend(stagedSecurityCode2, "length")}];
       v27 = getkSecureBackupNumericPassphraseLengthKey();
-      [v8 setObject:v26 forKey:v27];
+      [dictionary setObject:v26 forKey:v27];
     }
   }
 
-  v38 = [(PSKeychainSyncManager *)self appleIDPasswordOrEquivalentToken];
+  appleIDPasswordOrEquivalentToken = [(PSKeychainSyncManager *)self appleIDPasswordOrEquivalentToken];
 
-  if (!v38)
+  if (!appleIDPasswordOrEquivalentToken)
   {
     v39 = _PSLoggingFacility();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -4645,39 +4645,39 @@ LABEL_9:
     }
   }
 
-  if (v6)
+  if (numberCopy)
   {
-    if (v7)
+    if (infoCopy)
     {
-      v40 = [(PSKeychainSyncManager *)self appleIDPasswordOrEquivalentToken];
+      appleIDPasswordOrEquivalentToken2 = [(PSKeychainSyncManager *)self appleIDPasswordOrEquivalentToken];
 
-      if (v40)
+      if (appleIDPasswordOrEquivalentToken2)
       {
         v41 = getkSecureBackupSMSTargetPhoneNumberKey();
-        [v11 setObject:v6 forKey:v41];
+        [v11 setObject:numberCopy forKey:v41];
 
-        v42 = [v7 dialingPrefix];
+        dialingPrefix = [infoCopy dialingPrefix];
         v43 = getkSecureBackupCountryDialCodeKey();
-        [v11 setObject:v42 forKey:v43];
+        [v11 setObject:dialingPrefix forKey:v43];
 
-        v44 = [v7 countryCode];
+        countryCode2 = [infoCopy countryCode];
         v45 = getkSecureBackupCountryCodeKey_0();
-        [v11 setObject:v44 forKey:v45];
+        [v11 setObject:countryCode2 forKey:v45];
 
-        v46 = [(PSKeychainSyncManager *)self appleIDUsername];
+        appleIDUsername = [(PSKeychainSyncManager *)self appleIDUsername];
         v47 = getkSecureBackupAuthenticationAppleID();
-        [v11 setObject:v46 forKey:v47];
+        [v11 setObject:appleIDUsername forKey:v47];
 
-        v48 = [(PSKeychainSyncManager *)self appleIDPasswordOrEquivalentToken];
+        appleIDPasswordOrEquivalentToken3 = [(PSKeychainSyncManager *)self appleIDPasswordOrEquivalentToken];
         v49 = getkSecureBackupAuthenticationPassword();
-        [v11 setObject:v48 forKey:v49];
+        [v11 setObject:appleIDPasswordOrEquivalentToken3 forKey:v49];
       }
     }
   }
 
-  v50 = [(PSKeychainSyncManager *)self navigationController];
-  v51 = [v50 topViewController];
-  [(PSKeychainSyncManager *)self startNavigationSpinnerInViewController:v51];
+  navigationController = [(PSKeychainSyncManager *)self navigationController];
+  topViewController = [navigationController topViewController];
+  [(PSKeychainSyncManager *)self startNavigationSpinnerInViewController:topViewController];
 
   v52 = objc_alloc_init(getSecureBackupClass_0());
   v58[0] = MEMORY[0x1E69E9820];
@@ -4686,11 +4686,11 @@ LABEL_9:
   v58[3] = &unk_1E71DD5F0;
   v59 = v52;
   v60 = v11;
-  v61 = self;
-  v62 = v6;
-  v63 = v7;
-  v53 = v7;
-  v54 = v6;
+  selfCopy = self;
+  v62 = numberCopy;
+  v63 = infoCopy;
+  v53 = infoCopy;
+  v54 = numberCopy;
   v55 = v11;
   v56 = v52;
   [v56 disableWithInfo:0 completionBlock:v58];
@@ -4776,23 +4776,23 @@ uint64_t __72__PSKeychainSyncManager__enableSecureBackupWithPhoneNumber_countryI
   }
 }
 
-- (void)joinCircleAndEnableSecureBackupWithPhoneNumber:(id)a3 countryInfo:(id)a4
+- (void)joinCircleAndEnableSecureBackupWithPhoneNumber:(id)number countryInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PSKeychainSyncManager *)self navigationController];
-  v9 = [v8 topViewController];
-  [(PSKeychainSyncManager *)self startNavigationSpinnerInViewController:v9];
+  numberCopy = number;
+  infoCopy = info;
+  navigationController = [(PSKeychainSyncManager *)self navigationController];
+  topViewController = [navigationController topViewController];
+  [(PSKeychainSyncManager *)self startNavigationSpinnerInViewController:topViewController];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __84__PSKeychainSyncManager_joinCircleAndEnableSecureBackupWithPhoneNumber_countryInfo___block_invoke;
   v12[3] = &unk_1E71DD618;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = numberCopy;
+  v14 = infoCopy;
+  v10 = infoCopy;
+  v11 = numberCopy;
   [(PSKeychainSyncManager *)self joinCircleWithCompletion:v12];
 }
 
@@ -4833,20 +4833,20 @@ uint64_t __84__PSKeychainSyncManager_joinCircleAndEnableSecureBackupWithPhoneNum
   return result;
 }
 
-- (void)keychainSyncPhoneNumberController:(id)a3 didCompleteWithPhoneNumber:(id)a4 countryInfo:(id)a5
+- (void)keychainSyncPhoneNumberController:(id)controller didCompleteWithPhoneNumber:(id)number countryInfo:(id)info
 {
-  v8 = a4;
-  v9 = a5;
+  numberCopy = number;
+  infoCopy = info;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __98__PSKeychainSyncManager_keychainSyncPhoneNumberController_didCompleteWithPhoneNumber_countryInfo___block_invoke;
   v12[3] = &unk_1E71DD000;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [(PSKeychainSyncManager *)self promptForPasswordIfCredentialsNotCachedOverController:a3 withCompletion:v12];
+  v13 = numberCopy;
+  v14 = infoCopy;
+  v10 = infoCopy;
+  v11 = numberCopy;
+  [(PSKeychainSyncManager *)self promptForPasswordIfCredentialsNotCachedOverController:controller withCompletion:v12];
 }
 
 void __98__PSKeychainSyncManager_keychainSyncPhoneNumberController_didCompleteWithPhoneNumber_countryInfo___block_invoke(uint64_t a1, int a2, void *a3)
@@ -4877,12 +4877,12 @@ void __98__PSKeychainSyncManager_keychainSyncPhoneNumberController_didCompleteWi
   }
 }
 
-- (void)pinChoiceAlertDidChooseToUseDevicePasscode:(BOOL)a3
+- (void)pinChoiceAlertDidChooseToUseDevicePasscode:(BOOL)passcode
 {
-  v3 = a3;
+  passcodeCopy = passcode;
   if ([(PSKeychainSyncManager *)self isRunningInBuddy])
   {
-    if (v3)
+    if (passcodeCopy)
     {
       phoneNumberController = self->_phoneNumberController;
       if (!phoneNumberController)
@@ -4912,7 +4912,7 @@ void __98__PSKeychainSyncManager_keychainSyncPhoneNumberController_didCompleteWi
 
   else
   {
-    if (v3)
+    if (passcodeCopy)
     {
       objc_opt_class();
       v14 = objc_opt_new();
@@ -4952,8 +4952,8 @@ LABEL_13:
   else
   {
     [(PSRootController *)self->_settingsSetupController showController:v14];
-    v13 = [(PSSetupController *)self->_settingsSetupController parentController];
-    [v13 presentViewController:self->_settingsSetupController animated:1 completion:0];
+    parentController = [(PSSetupController *)self->_settingsSetupController parentController];
+    [parentController presentViewController:self->_settingsSetupController animated:1 completion:0];
   }
 }
 

@@ -1,9 +1,9 @@
 @interface WFWorkflowImportQuestion
 - (WFAction)action;
 - (WFParameter)parameter;
-- (WFWorkflowImportQuestion)initWithAction:(id)a3 parameter:(id)a4 question:(id)a5 defaultState:(id)a6;
-- (WFWorkflowImportQuestion)initWithSerializedRepresentation:(id)a3 workflowActions:(id)a4;
-- (id)serializedRepresentationWithWorkflowActions:(id)a3;
+- (WFWorkflowImportQuestion)initWithAction:(id)action parameter:(id)parameter question:(id)question defaultState:(id)state;
+- (WFWorkflowImportQuestion)initWithSerializedRepresentation:(id)representation workflowActions:(id)actions;
+- (id)serializedRepresentationWithWorkflowActions:(id)actions;
 @end
 
 @implementation WFWorkflowImportQuestion
@@ -22,16 +22,16 @@
   return WeakRetained;
 }
 
-- (id)serializedRepresentationWithWorkflowActions:(id)a3
+- (id)serializedRepresentationWithWorkflowActions:(id)actions
 {
-  v4 = a3;
-  v5 = [(WFWorkflowImportQuestion *)self action];
-  v6 = [(WFWorkflowImportQuestion *)self parameter];
-  v7 = v6;
+  actionsCopy = actions;
+  action = [(WFWorkflowImportQuestion *)self action];
+  parameter = [(WFWorkflowImportQuestion *)self parameter];
+  v7 = parameter;
   v8 = 0;
-  if (v5 && v6)
+  if (action && parameter)
   {
-    v9 = [v4 indexOfObject:v5];
+    v9 = [actionsCopy indexOfObject:action];
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v8 = 0;
@@ -48,55 +48,55 @@
       v12 = [v7 key];
       [v8 setObject:v12 forKey:@"ParameterKey"];
 
-      v13 = [(WFWorkflowImportQuestion *)self question];
-      [v8 setValue:v13 forKey:@"Text"];
+      question = [(WFWorkflowImportQuestion *)self question];
+      [v8 setValue:question forKey:@"Text"];
 
-      v14 = [(WFWorkflowImportQuestion *)self defaultState];
-      v15 = [v14 serializedRepresentation];
-      [v8 setValue:v15 forKey:@"DefaultValue"];
+      defaultState = [(WFWorkflowImportQuestion *)self defaultState];
+      serializedRepresentation = [defaultState serializedRepresentation];
+      [v8 setValue:serializedRepresentation forKey:@"DefaultValue"];
     }
   }
 
   return v8;
 }
 
-- (WFWorkflowImportQuestion)initWithSerializedRepresentation:(id)a3 workflowActions:(id)a4
+- (WFWorkflowImportQuestion)initWithSerializedRepresentation:(id)representation workflowActions:(id)actions
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKey:@"Category"];
+  actionsCopy = actions;
+  representationCopy = representation;
+  v8 = [representationCopy objectForKey:@"Category"];
   v9 = objc_opt_class();
   v10 = WFEnforceClass_74017(v8, v9);
 
-  v11 = [v7 objectForKey:@"ActionIndex"];
+  v11 = [representationCopy objectForKey:@"ActionIndex"];
   v12 = objc_opt_class();
   v13 = WFEnforceClass_74017(v11, v12);
 
-  v14 = [v7 objectForKey:@"ParameterKey"];
+  v14 = [representationCopy objectForKey:@"ParameterKey"];
   v15 = objc_opt_class();
   v16 = WFEnforceClass_74017(v14, v15);
 
-  v17 = [v7 objectForKey:@"Text"];
+  v17 = [representationCopy objectForKey:@"Text"];
   v18 = objc_opt_class();
   v19 = WFEnforceClass_74017(v17, v18);
 
-  v20 = [v7 objectForKey:@"DefaultValue"];
+  v20 = [representationCopy objectForKey:@"DefaultValue"];
 
   v21 = [v10 isEqualToString:@"Parameter"];
   v22 = 0;
   if (v16 && v13 && v21)
   {
-    v23 = [v13 unsignedIntegerValue];
-    if (v23 >= [v6 count])
+    unsignedIntegerValue = [v13 unsignedIntegerValue];
+    if (unsignedIntegerValue >= [actionsCopy count])
     {
       v22 = 0;
     }
 
     else
     {
-      v33 = self;
-      v24 = [v6 objectAtIndex:{objc_msgSend(v13, "unsignedIntegerValue")}];
+      selfCopy = self;
+      v24 = [actionsCopy objectAtIndex:{objc_msgSend(v13, "unsignedIntegerValue")}];
       v25 = [v24 parameterForKey:v16];
       if (v25)
       {
@@ -104,8 +104,8 @@
         v34[0] = @"Hidden";
         v34[1] = @"NotSupported";
         v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
-        v27 = [v25 importQuestionBehavior];
-        v28 = [v26 containsObject:v27];
+        importQuestionBehavior = [v25 importQuestionBehavior];
+        v28 = [v26 containsObject:importQuestionBehavior];
 
         if (v28)
         {
@@ -127,7 +127,7 @@
         v22 = 0;
       }
 
-      self = v33;
+      self = selfCopy;
     }
   }
 
@@ -135,28 +135,28 @@
   return v22;
 }
 
-- (WFWorkflowImportQuestion)initWithAction:(id)a3 parameter:(id)a4 question:(id)a5 defaultState:(id)a6
+- (WFWorkflowImportQuestion)initWithAction:(id)action parameter:(id)parameter question:(id)question defaultState:(id)state
 {
   v33 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 parameters];
-  if ([v14 containsObject:v11])
+  actionCopy = action;
+  parameterCopy = parameter;
+  questionCopy = question;
+  stateCopy = state;
+  parameters = [actionCopy parameters];
+  if ([parameters containsObject:parameterCopy])
   {
     v15 = 0;
   }
 
   else
   {
-    v16 = [v10 visibleParametersWithProcessing:0];
-    v17 = [v16 containsObject:v11];
+    v16 = [actionCopy visibleParametersWithProcessing:0];
+    v17 = [v16 containsObject:parameterCopy];
 
     v15 = v17 ^ 1;
   }
 
-  if (!v10 || !v11 || v15)
+  if (!actionCopy || !parameterCopy || v15)
   {
     v23 = getWFEditorLogObject();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -164,9 +164,9 @@
       *buf = 136315650;
       v28 = "[WFWorkflowImportQuestion initWithAction:parameter:question:defaultState:]";
       v29 = 2114;
-      v30 = v11;
+      v30 = parameterCopy;
       v31 = 2114;
-      v32 = v10;
+      v32 = actionCopy;
       _os_log_impl(&dword_1CA256000, v23, OS_LOG_TYPE_ERROR, "%s Import Question unable to find parameter %{public}@ on action %{public}@", buf, 0x20u);
     }
 
@@ -180,13 +180,13 @@
   v19 = v18;
   if (v18)
   {
-    objc_storeWeak(&v18->_action, v10);
-    objc_storeWeak(&v19->_parameter, v11);
-    v20 = [v12 copy];
+    objc_storeWeak(&v18->_action, actionCopy);
+    objc_storeWeak(&v19->_parameter, parameterCopy);
+    v20 = [questionCopy copy];
     question = v19->_question;
     v19->_question = v20;
 
-    v22 = v13;
+    v22 = stateCopy;
     self = v19->_defaultState;
     v19->_defaultState = v22;
 LABEL_12:

@@ -1,7 +1,7 @@
 @interface ASMPeripheral
 - (ASMPeripheral)init;
-- (BOOL)updateWithAADevice:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
+- (BOOL)updateWithAADevice:(id)device;
+- (id)descriptionWithLevel:(int)level;
 @end
 
 @implementation ASMPeripheral
@@ -20,7 +20,7 @@
   return v3;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v12 = [objc_opt_class() description];
   NSAppendPrintF_safe();
@@ -46,7 +46,7 @@
     v5 = v9;
   }
 
-  if (a3 < 21)
+  if (level < 21)
   {
     NSAppendPrintF_safe();
     v10 = v5;
@@ -57,12 +57,12 @@
   return v5;
 }
 
-- (BOOL)updateWithAADevice:(id)a3
+- (BOOL)updateWithAADevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 bluetoothAddressData];
+  deviceCopy = device;
+  bluetoothAddressData = [deviceCopy bluetoothAddressData];
   bluetoothAddress = self->_bluetoothAddressData;
-  v7 = v5;
+  v7 = bluetoothAddressData;
   v8 = v7;
   v9 = bluetoothAddress != v7;
   if (bluetoothAddress == v7)
@@ -86,16 +86,16 @@
     {
     }
 
-    objc_storeStrong(&self->_bluetoothAddressData, v5);
+    objc_storeStrong(&self->_bluetoothAddressData, bluetoothAddressData);
     v11 = CUPrintNSDataAddress();
     bluetoothAddress = self->_bluetoothAddress;
     self->_bluetoothAddress = v11;
   }
 
 LABEL_9:
-  v12 = [v4 identifier];
+  identifier = [deviceCopy identifier];
   bluetoothUUID = self->_bluetoothUUID;
-  v14 = v12;
+  v14 = identifier;
   v15 = v14;
   if (bluetoothUUID == v14)
   {

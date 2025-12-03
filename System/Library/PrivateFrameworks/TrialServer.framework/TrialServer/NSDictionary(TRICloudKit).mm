@@ -12,7 +12,7 @@
 
 - (id)triValueFromNestedField:()TRICloudKit
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   v2 = [v1 objectForKeyedSubscript:@"value"];
 
   return v2;
@@ -24,12 +24,12 @@
   v6 = a3;
   if (a4)
   {
-    [a1 triValueFromNestedField:v6];
+    [self triValueFromNestedField:v6];
   }
 
   else
   {
-    [a1 objectForKeyedSubscript:v6];
+    [self objectForKeyedSubscript:v6];
   }
   v7 = ;
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -62,12 +62,12 @@
   v6 = a3;
   if (a4)
   {
-    [a1 triValueFromNestedField:v6];
+    [self triValueFromNestedField:v6];
   }
 
   else
   {
-    [a1 objectForKeyedSubscript:v6];
+    [self objectForKeyedSubscript:v6];
   }
   v7 = ;
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -100,12 +100,12 @@
   v6 = a3;
   if (a4)
   {
-    [a1 triValueFromNestedField:v6];
+    [self triValueFromNestedField:v6];
   }
 
   else
   {
-    [a1 objectForKeyedSubscript:v6];
+    [self objectForKeyedSubscript:v6];
   }
   v7 = ;
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -137,7 +137,7 @@
 - (id)triDataForField:()TRICloudKit
 {
   v9 = *MEMORY[0x277D85DE8];
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   if (v1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v3 = TRILogCategory_Server();
@@ -165,7 +165,7 @@
 - (id)triDateForField:()TRICloudKit
 {
   v9 = *MEMORY[0x277D85DE8];
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   if (v1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v3 = TRILogCategory_Server();
@@ -192,7 +192,7 @@
 
 - (id)triDataValueFromBase64StringForField:()TRICloudKit
 {
-  v1 = [a1 triValueFromNestedField:?];
+  v1 = [self triValueFromNestedField:?];
   if (v1)
   {
     v2 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v1 options:0];

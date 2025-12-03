@@ -1,44 +1,44 @@
 @interface MCSessionHandler
 - (DynamicArray<re::SharedPtr<(anonymous)handles;
-- (MCSessionHandler)initWithSession:(id)a3 protocolLayer:(MultipeerProtocolLayer *)a4;
+- (MCSessionHandler)initWithSession:(id)session protocolLayer:(MultipeerProtocolLayer *)layer;
 - (MCSessionPrivateDelegate)nextDelegate;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)session:(id)a3 didFinishReceivingResourceWithName:(id)a4 fromPeer:(id)a5 atURL:(id)a6 withError:(id)a7 propagate:(BOOL *)a8;
-- (void)session:(id)a3 didReceiveData:(id)a4 fromPeer:(id)a5 propagate:(BOOL *)a6;
-- (void)session:(id)a3 didReceiveStream:(id)a4 withName:(id)a5 fromPeer:(id)a6 propagate:(BOOL *)a7;
-- (void)session:(id)a3 didStartReceivingResourceWithName:(id)a4 fromPeer:(id)a5 withProgress:(id)a6 propagate:(BOOL *)a7;
-- (void)session:(id)a3 peer:(id)a4 didChangeState:(int64_t)a5 propagate:(BOOL *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)session:(id)session didFinishReceivingResourceWithName:(id)name fromPeer:(id)peer atURL:(id)l withError:(id)error propagate:(BOOL *)propagate;
+- (void)session:(id)session didReceiveData:(id)data fromPeer:(id)peer propagate:(BOOL *)propagate;
+- (void)session:(id)session didReceiveStream:(id)stream withName:(id)name fromPeer:(id)peer propagate:(BOOL *)propagate;
+- (void)session:(id)session didStartReceivingResourceWithName:(id)name fromPeer:(id)peer withProgress:(id)progress propagate:(BOOL *)propagate;
+- (void)session:(id)session peer:(id)peer didChangeState:(int64_t)state propagate:(BOOL *)propagate;
 - (void)setHandles:(DynamicArray<re::SharedPtr<(anonymous)namespace;
 @end
 
 @implementation MCSessionHandler
 
-- (MCSessionHandler)initWithSession:(id)a3 protocolLayer:(MultipeerProtocolLayer *)a4
+- (MCSessionHandler)initWithSession:(id)session protocolLayer:(MultipeerProtocolLayer *)layer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  sessionCopy = session;
   v22.receiver = self;
   v22.super_class = MCSessionHandler;
   v7 = [(MCSessionHandler *)&v22 init];
-  [(MCSessionHandler *)v7 setSession:v6];
-  [(MCSessionHandler *)v7 setProtocolLayer:a4];
-  [(MCSessionHandler *)v7 setListener:a4->var3];
+  [(MCSessionHandler *)v7 setSession:sessionCopy];
+  [(MCSessionHandler *)v7 setProtocolLayer:layer];
+  [(MCSessionHandler *)v7 setListener:layer->var3];
   v8 = objc_opt_new();
   [(MCSessionHandler *)v7 setHandlesLock:v8];
 
-  v9 = [v6 privateDelegate];
-  [(MCSessionHandler *)v7 setNextDelegate:v9];
+  privateDelegate = [sessionCopy privateDelegate];
+  [(MCSessionHandler *)v7 setNextDelegate:privateDelegate];
 
-  [v6 setPrivateDelegate:v7];
-  [v6 addObserver:v7 forKeyPath:@"privateDelegate" options:1 context:0];
+  [sessionCopy setPrivateDelegate:v7];
+  [sessionCopy addObserver:v7 forKeyPath:@"privateDelegate" options:1 context:0];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [v6 connectedPeers];
-  v11 = [v10 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  connectedPeers = [sessionCopy connectedPeers];
+  v11 = [connectedPeers countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -50,7 +50,7 @@
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(connectedPeers);
         }
 
         if (v17)
@@ -61,7 +61,7 @@
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v12 = [connectedPeers countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v12);
@@ -83,32 +83,32 @@
   [(MCSessionHandler *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = [(MCSession *)self->_session privateDelegate:a3];
+  v7 = [(MCSession *)self->_session privateDelegate:path];
 
   if (v7 != self)
   {
-    v8 = [(MCSession *)self->_session privateDelegate];
+    privateDelegate = [(MCSession *)self->_session privateDelegate];
     [(MCSession *)self->_session setPrivateDelegate:self];
-    [(MCSessionHandler *)self setNextDelegate:v8];
+    [(MCSessionHandler *)self setNextDelegate:privateDelegate];
   }
 }
 
-- (void)session:(id)a3 didReceiveData:(id)a4 fromPeer:(id)a5 propagate:(BOOL *)a6
+- (void)session:(id)session didReceiveData:(id)data fromPeer:(id)peer propagate:(BOOL *)propagate
 {
   v61 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v11 bytes];
-  v14 = [v11 length];
+  sessionCopy = session;
+  dataCopy = data;
+  peerCopy = peer;
+  bytes = [dataCopy bytes];
+  v14 = [dataCopy length];
   if (v14 >= 0xA)
   {
     v15 = v14;
     if (SignatureUnsafe)
     {
-      v17 = v13[8];
+      v17 = bytes[8];
       if (v17 < 0xA)
       {
         v20 = v17 | 0x100;
@@ -136,7 +136,7 @@
         goto LABEL_46;
       }
 
-      v21 = v13[8];
+      v21 = bytes[8];
       v19 = v21 > 0xFD;
       if (v21 <= 0xFD)
       {
@@ -145,11 +145,11 @@
 
       else
       {
-        v20 = v13[8];
+        v20 = bytes[8];
       }
     }
 
-    *a6 = 0;
+    *propagate = 0;
     [(NSLock *)self->_handlesLock lock];
     m_size = self->_handles.m_size;
     if (m_size)
@@ -160,7 +160,7 @@
       {
         v25 = *m_data;
         v26 = *(*m_data + 1768);
-        if (v26 && v26 == v12)
+        if (v26 && v26 == peerCopy)
         {
           break;
         }
@@ -180,7 +180,7 @@
         {
           if ((*(v25 + 1776) & 1) == 0)
           {
-            [REMultipeerHelper makeAddressFromPeerID:v12];
+            [REMultipeerHelper makeAddressFromPeerID:peerCopy];
             protocolLayer = self->_protocolLayer;
             v39 = *m_data;
             v40 = (*self->_listener->var0)();
@@ -210,14 +210,14 @@
             }
           }
 
-          (*(self->_listener->var0 + 3))(self->_listener, self->_protocolLayer, *m_data, v20, [v11 bytes] + 9, objc_msgSend(v11, "length") - 9);
+          (*(self->_listener->var0 + 3))(self->_listener, self->_protocolLayer, *m_data, v20, [dataCopy bytes] + 9, objc_msgSend(dataCopy, "length") - 9);
         }
 
         else
         {
           if ((*(v25 + 1776) & 1) == 0)
           {
-            [REMultipeerHelper makeAddressFromPeerID:v12];
+            [REMultipeerHelper makeAddressFromPeerID:peerCopy];
             v29 = self->_protocolLayer;
             v30 = *m_data;
             (*self->_listener->var0)();
@@ -231,10 +231,10 @@
 
           if (v20 == 0xFF)
           {
-            [v11 bytes];
-            [v11 length];
+            [dataCopy bytes];
+            [dataCopy length];
             qmemcpy(v60 + 1, "com.apple.rekit.hello.ack", 25);
-            v31 = v10;
+            v31 = sessionCopy;
             LOBYTE(v60[0]) = -2;
             v32 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:buf length:34 freeWhenDone:0];
             v58 = *(v25 + 1768);
@@ -252,13 +252,13 @@
               {
                 v47 = v37;
                 v48 = [v52 description];
-                v49 = [v48 UTF8String];
+                uTF8String = [v48 UTF8String];
                 v50 = [v52 description];
-                v51 = [v50 UTF8String];
+                uTF8String2 = [v50 UTF8String];
                 *v54 = 136315394;
-                v55 = v49;
+                v55 = uTF8String;
                 v56 = 2080;
-                v57 = v51;
+                v57 = uTF8String2;
                 _os_log_error_impl(&dword_26168F000, v47, OS_LOG_TYPE_ERROR, "MPC: Error sending handshake ack: %s, reason: %s", v54, 0x16u);
               }
             }
@@ -282,25 +282,25 @@ LABEL_45:
   }
 
 LABEL_46:
-  v44 = [(MCSessionHandler *)self nextDelegate];
+  nextDelegate = [(MCSessionHandler *)self nextDelegate];
 
-  if (v44)
+  if (nextDelegate)
   {
-    v45 = [(MCSessionHandler *)self nextDelegate];
-    [v45 session:v10 didReceiveData:v11 fromPeer:v12 propagate:a6];
+    nextDelegate2 = [(MCSessionHandler *)self nextDelegate];
+    [nextDelegate2 session:sessionCopy didReceiveData:dataCopy fromPeer:peerCopy propagate:propagate];
   }
 
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (void)session:(id)a3 peer:(id)a4 didChangeState:(int64_t)a5 propagate:(BOOL *)a6
+- (void)session:(id)session peer:(id)peer didChangeState:(int64_t)state propagate:(BOOL *)propagate
 {
-  v10 = a3;
-  v11 = a4;
+  sessionCopy = session;
+  peerCopy = peer;
   [(NSLock *)self->_handlesLock lock];
-  if (a5)
+  if (state)
   {
-    if (a5 == 2)
+    if (state == 2)
     {
       if (v19)
       {
@@ -318,7 +318,7 @@ LABEL_46:
       while (1)
       {
         v15 = *(*m_data + 1768);
-        if (v15 && v15 == v11)
+        if (v15 && v15 == peerCopy)
         {
           break;
         }
@@ -335,7 +335,7 @@ LABEL_46:
 
       if (*(*m_data + 1776) == 1)
       {
-        [REMultipeerHelper makeAddressFromPeerID:v11];
+        [REMultipeerHelper makeAddressFromPeerID:peerCopy];
         (*(self->_listener->var0 + 1))(self->_listener, self->_protocolLayer, *m_data, &v19);
         if (v19)
         {
@@ -350,58 +350,58 @@ LABEL_46:
 
 LABEL_17:
   [(NSLock *)self->_handlesLock unlock];
-  v17 = [(MCSessionHandler *)self nextDelegate];
+  nextDelegate = [(MCSessionHandler *)self nextDelegate];
 
-  if (v17)
+  if (nextDelegate)
   {
-    v18 = [(MCSessionHandler *)self nextDelegate];
-    [v18 session:v10 peer:v11 didChangeState:a5 propagate:a6];
+    nextDelegate2 = [(MCSessionHandler *)self nextDelegate];
+    [nextDelegate2 session:sessionCopy peer:peerCopy didChangeState:state propagate:propagate];
   }
 }
 
-- (void)session:(id)a3 didStartReceivingResourceWithName:(id)a4 fromPeer:(id)a5 withProgress:(id)a6 propagate:(BOOL *)a7
+- (void)session:(id)session didStartReceivingResourceWithName:(id)name fromPeer:(id)peer withProgress:(id)progress propagate:(BOOL *)propagate
 {
-  v17 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(MCSessionHandler *)self nextDelegate];
+  sessionCopy = session;
+  nameCopy = name;
+  peerCopy = peer;
+  progressCopy = progress;
+  nextDelegate = [(MCSessionHandler *)self nextDelegate];
 
-  if (v15)
+  if (nextDelegate)
   {
-    v16 = [(MCSessionHandler *)self nextDelegate];
-    [v16 session:v17 didStartReceivingResourceWithName:v12 fromPeer:v13 withProgress:v14 propagate:a7];
+    nextDelegate2 = [(MCSessionHandler *)self nextDelegate];
+    [nextDelegate2 session:sessionCopy didStartReceivingResourceWithName:nameCopy fromPeer:peerCopy withProgress:progressCopy propagate:propagate];
   }
 }
 
-- (void)session:(id)a3 didFinishReceivingResourceWithName:(id)a4 fromPeer:(id)a5 atURL:(id)a6 withError:(id)a7 propagate:(BOOL *)a8
+- (void)session:(id)session didFinishReceivingResourceWithName:(id)name fromPeer:(id)peer atURL:(id)l withError:(id)error propagate:(BOOL *)propagate
 {
-  v20 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = [(MCSessionHandler *)self nextDelegate];
+  sessionCopy = session;
+  nameCopy = name;
+  peerCopy = peer;
+  lCopy = l;
+  errorCopy = error;
+  nextDelegate = [(MCSessionHandler *)self nextDelegate];
 
-  if (v18)
+  if (nextDelegate)
   {
-    v19 = [(MCSessionHandler *)self nextDelegate];
-    [v19 session:v20 didFinishReceivingResourceWithName:v14 fromPeer:v15 atURL:v16 withError:v17 propagate:a8];
+    nextDelegate2 = [(MCSessionHandler *)self nextDelegate];
+    [nextDelegate2 session:sessionCopy didFinishReceivingResourceWithName:nameCopy fromPeer:peerCopy atURL:lCopy withError:errorCopy propagate:propagate];
   }
 }
 
-- (void)session:(id)a3 didReceiveStream:(id)a4 withName:(id)a5 fromPeer:(id)a6 propagate:(BOOL *)a7
+- (void)session:(id)session didReceiveStream:(id)stream withName:(id)name fromPeer:(id)peer propagate:(BOOL *)propagate
 {
-  v17 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [(MCSessionHandler *)self nextDelegate];
+  sessionCopy = session;
+  streamCopy = stream;
+  nameCopy = name;
+  peerCopy = peer;
+  nextDelegate = [(MCSessionHandler *)self nextDelegate];
 
-  if (v15)
+  if (nextDelegate)
   {
-    v16 = [(MCSessionHandler *)self nextDelegate];
-    [v16 session:v17 didReceiveStream:v12 withName:v13 fromPeer:v14 propagate:a7];
+    nextDelegate2 = [(MCSessionHandler *)self nextDelegate];
+    [nextDelegate2 session:sessionCopy didReceiveStream:streamCopy withName:nameCopy fromPeer:peerCopy propagate:propagate];
   }
 }
 

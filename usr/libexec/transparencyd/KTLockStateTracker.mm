@@ -1,15 +1,15 @@
 @interface KTLockStateTracker
 + (id)globalTracker;
-- (BOOL)checkErrorChainForLockState:(id)a3;
+- (BOOL)checkErrorChainForLockState:(id)state;
 - (BOOL)hasBeenUnlocked;
 - (BOOL)isLocked;
-- (BOOL)isLockedError:(id)a3;
-- (BOOL)lockedError:(id)a3;
-- (KTLockStateTracker)initWithProvider:(id)a3;
+- (BOOL)isLockedError:(id)error;
+- (BOOL)lockedError:(id)error;
+- (KTLockStateTracker)initWithProvider:(id)provider;
 - (NSDate)lastUnlockTime;
 - (id)description;
 - (void)_onqueueRecheck;
-- (void)addLockStateObserver:(id)a3;
+- (void)addLockStateObserver:(id)observer;
 - (void)dealloc;
 - (void)recheck;
 - (void)resetUnlockDependency;
@@ -19,14 +19,14 @@
 
 - (void)_onqueueRecheck
 {
-  v3 = [(KTLockStateTracker *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(KTLockStateTracker *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(KTLockStateTracker *)self queueIsLocked];
-  v5 = [(KTLockStateTracker *)self lockStateProvider];
-  -[KTLockStateTracker setQueueIsLocked:](self, "setQueueIsLocked:", [v5 queryAKSLocked]);
+  queueIsLocked = [(KTLockStateTracker *)self queueIsLocked];
+  lockStateProvider = [(KTLockStateTracker *)self lockStateProvider];
+  -[KTLockStateTracker setQueueIsLocked:](self, "setQueueIsLocked:", [lockStateProvider queryAKSLocked]);
 
-  if (v4 == [(KTLockStateTracker *)self queueIsLocked]&& (byte_10039CA70 & 1) != 0)
+  if (queueIsLocked == [(KTLockStateTracker *)self queueIsLocked]&& (byte_10039CA70 & 1) != 0)
   {
     return;
   }
@@ -35,7 +35,7 @@
   if ([(KTLockStateTracker *)self queueIsLocked])
   {
     [(KTLockStateTracker *)self resetUnlockDependency];
-    if ((v4 & 1) == 0)
+    if ((queueIsLocked & 1) == 0)
     {
       goto LABEL_8;
     }
@@ -43,9 +43,9 @@
 
   else
   {
-    v6 = [(KTLockStateTracker *)self operationQueue];
-    v7 = [(KTLockStateTracker *)self unlockDependency];
-    [v6 addOperation:v7];
+    operationQueue = [(KTLockStateTracker *)self operationQueue];
+    unlockDependency = [(KTLockStateTracker *)self unlockDependency];
+    [operationQueue addOperation:unlockDependency];
 
     [(KTLockStateTracker *)self setUnlockDependency:0];
   }
@@ -54,7 +54,7 @@
   [(KTLockStateTracker *)self setLastUnlockedTime:v8];
 
 LABEL_8:
-  v9 = [(KTLockStateTracker *)self queueIsLocked];
+  queueIsLocked2 = [(KTLockStateTracker *)self queueIsLocked];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -64,7 +64,7 @@ LABEL_8:
   if (v11)
   {
     v12 = v11;
-    v13 = v9 ^ 1;
+    v13 = queueIsLocked2 ^ 1;
     v14 = *v22;
 LABEL_10:
     v15 = 0;
@@ -107,22 +107,22 @@ LABEL_10:
 
 - (BOOL)hasBeenUnlocked
 {
-  v2 = [(KTLockStateTracker *)self lockStateProvider];
-  v3 = [v2 hasBeenUnlocked];
+  lockStateProvider = [(KTLockStateTracker *)self lockStateProvider];
+  hasBeenUnlocked = [lockStateProvider hasBeenUnlocked];
 
-  return v3;
+  return hasBeenUnlocked;
 }
 
-- (KTLockStateTracker)initWithProvider:(id)a3
+- (KTLockStateTracker)initWithProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v23.receiver = self;
   v23.super_class = KTLockStateTracker;
   v6 = [(KTLockStateTracker *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lockStateProvider, a3);
+    objc_storeStrong(&v6->_lockStateProvider, provider);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("lock-state-tracker", v8);
     queue = v7->_queue;
@@ -202,14 +202,14 @@ LABEL_10:
   v10 = sub_1001E799C;
   v11 = sub_1001E79AC;
   v12 = 0;
-  v3 = [(KTLockStateTracker *)self queue];
+  queue = [(KTLockStateTracker *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001E79B4;
   v6[3] = &unk_10031A9E0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -219,9 +219,9 @@ LABEL_10:
 
 - (id)description
 {
-  v3 = [(KTLockStateTracker *)self isLocked];
-  v4 = [(KTLockStateTracker *)self hasBeenUnlocked];
-  if (v3)
+  isLocked = [(KTLockStateTracker *)self isLocked];
+  hasBeenUnlocked = [(KTLockStateTracker *)self hasBeenUnlocked];
+  if (isLocked)
   {
     v5 = @"locked";
   }
@@ -231,24 +231,24 @@ LABEL_10:
     v5 = @"unlocked";
   }
 
-  if (v3)
+  if (isLocked)
   {
-    v6 = [(KTLockStateTracker *)self lastUnlockedTime];
+    lastUnlockedTime = [(KTLockStateTracker *)self lastUnlockedTime];
   }
 
   else
   {
-    v6 = @"now";
+    lastUnlockedTime = @"now";
   }
 
   v7 = @" stillLocked";
-  if (v4)
+  if (hasBeenUnlocked)
   {
     v7 = &stru_10032E8E8;
   }
 
-  v8 = [NSString stringWithFormat:@"<KTLockStateTracker: %@ last:%@%@>", v5, v6, v7];
-  if (v3)
+  v8 = [NSString stringWithFormat:@"<KTLockStateTracker: %@ last:%@%@>", v5, lastUnlockedTime, v7];
+  if (isLocked)
   {
   }
 
@@ -257,8 +257,8 @@ LABEL_10:
 
 - (void)resetUnlockDependency
 {
-  v3 = [(KTLockStateTracker *)self unlockDependency];
-  if (!v3 || (v4 = v3, -[KTLockStateTracker unlockDependency](self, "unlockDependency"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isPending], v5, v4, (v6 & 1) == 0))
+  unlockDependency = [(KTLockStateTracker *)self unlockDependency];
+  if (!unlockDependency || (v4 = unlockDependency, -[KTLockStateTracker unlockDependency](self, "unlockDependency"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isPending], v5, v4, (v6 & 1) == 0))
   {
     v7 = [KTResultOperation named:@"keybag-unlocked-dependency" withBlock:&stru_100328580];
     [v7 setDescriptionErrorCode:2];
@@ -268,30 +268,30 @@ LABEL_10:
 
 - (void)recheck
 {
-  v3 = [(KTLockStateTracker *)self queue];
+  queue = [(KTLockStateTracker *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001E7C94;
   block[3] = &unk_100316FE0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
-- (BOOL)lockedError:(id)a3
+- (BOOL)lockedError:(id)error
 {
-  v3 = a3;
-  if ([v3 code] == -25308)
+  errorCopy = error;
+  if ([errorCopy code] == -25308)
   {
-    v4 = [v3 domain];
-    if ([v4 isEqualToString:@"securityd"])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:@"securityd"])
     {
       v5 = 1;
     }
 
     else
     {
-      v6 = [v3 domain];
-      v5 = [v6 isEqualToString:kCFErrorDomainOSStatus];
+      domain2 = [errorCopy domain];
+      v5 = [domain2 isEqualToString:kCFErrorDomainOSStatus];
     }
   }
 
@@ -303,15 +303,15 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)checkErrorChainForLockState:(id)a3
+- (BOOL)checkErrorChainForLockState:(id)state
 {
-  v4 = a3;
-  if (!v4)
+  stateCopy = state;
+  if (!stateCopy)
   {
     return 0;
   }
 
-  v5 = v4;
+  v5 = stateCopy;
   do
   {
     v6 = [(KTLockStateTracker *)self lockedError:v5];
@@ -320,8 +320,8 @@ LABEL_10:
       break;
     }
 
-    v7 = [v5 userInfo];
-    v8 = [v7 objectForKeyedSubscript:NSUnderlyingErrorKey];
+    userInfo = [v5 userInfo];
+    v8 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
     v5 = v8;
   }
@@ -331,35 +331,35 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)isLockedError:(id)a3
+- (BOOL)isLockedError:(id)error
 {
-  v4 = [(KTLockStateTracker *)self checkErrorChainForLockState:a3];
+  v4 = [(KTLockStateTracker *)self checkErrorChainForLockState:error];
   if (v4)
   {
-    v5 = [(KTLockStateTracker *)self queue];
+    queue = [(KTLockStateTracker *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001E7E7C;
     block[3] = &unk_100316FE0;
     block[4] = self;
-    dispatch_sync(v5, block);
+    dispatch_sync(queue, block);
   }
 
   return v4;
 }
 
-- (void)addLockStateObserver:(id)a3
+- (void)addLockStateObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(KTLockStateTracker *)self queue];
+  observerCopy = observer;
+  queue = [(KTLockStateTracker *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001E7F7C;
   v7[3] = &unk_1003180E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_async(queue, v7);
 }
 
 + (id)globalTracker

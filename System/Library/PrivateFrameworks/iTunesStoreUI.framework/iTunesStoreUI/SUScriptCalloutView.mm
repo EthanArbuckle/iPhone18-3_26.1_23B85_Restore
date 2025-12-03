@@ -1,19 +1,19 @@
 @interface SUScriptCalloutView
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSString)subtitle;
 - (NSString)title;
 - (SUScriptCalloutView)init;
 - (id)scriptAttributeKeys;
-- (void)_menuDidHideNotification:(id)a3;
+- (void)_menuDidHideNotification:(id)notification;
 - (void)_reloadUntructedString;
 - (void)_resetCalloutBar;
 - (void)_setupCalloutBar;
 - (void)dealloc;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitle:(id)a3 subtitle:(id)a4;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
+- (void)setTitle:(id)title subtitle:(id)subtitle;
 @end
 
 @implementation SUScriptCalloutView
@@ -25,8 +25,8 @@
   v2 = [(SUScriptObject *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__menuDidHideNotification_ name:*MEMORY[0x1E69DE0E0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__menuDidHideNotification_ name:*MEMORY[0x1E69DE0E0] object:0];
   }
 
   return v2;
@@ -34,8 +34,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DE0E0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE0E0] object:0];
   v4.receiver = self;
   v4.super_class = SUScriptCalloutView;
   [(SUScriptObject *)&v4 dealloc];
@@ -53,21 +53,21 @@ uint64_t __49__SUScriptCalloutView_setTargetX_y_width_height___block_invoke(uint
   return [v3 setTargetRect:v2 inView:{v4, v5, v6, v7}];
 }
 
-- (void)setTitle:(id)a3 subtitle:(id)a4
+- (void)setTitle:(id)title subtitle:(id)subtitle
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a3 = 0;
+    title = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    a4 = 0;
+    subtitle = 0;
   }
 
-  if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || a4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (title && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || subtitle && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v6 = MEMORY[0x1E69E2F88];
 
@@ -135,10 +135,10 @@ uint64_t __43__SUScriptCalloutView_setVisible_animated___block_invoke(uint64_t r
   return result;
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !subtitle) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -167,10 +167,10 @@ uint64_t __35__SUScriptCalloutView_setSubtitle___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !title) || (isKindOfClass & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     WebThreadRunOnMainThread();
   }
@@ -241,7 +241,7 @@ uint64_t __28__SUScriptCalloutView_title__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_menuDidHideNotification:(id)a3
+- (void)_menuDidHideNotification:(id)notification
 {
   if (self->_isVisible)
   {
@@ -267,30 +267,30 @@ uint64_t __28__SUScriptCalloutView_title__block_invoke(uint64_t a1)
       goto LABEL_9;
     }
 
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"\n%@", subtitle];
+    subtitle = [MEMORY[0x1E696AEC0] stringWithFormat:@"\n%@", subtitle];
     goto LABEL_8;
   }
 
   if (subtitle)
   {
-    v5 = [(NSString *)title stringByAppendingFormat:@"\n%@", self->_subtitle];
+    subtitle = [(NSString *)title stringByAppendingFormat:@"\n%@", self->_subtitle];
 LABEL_8:
-    title = v5;
+    title = subtitle;
   }
 
 LABEL_9:
-  v6 = [MEMORY[0x1E69DC770] sharedCalloutBar];
+  mEMORY[0x1E69DC770] = [MEMORY[0x1E69DC770] sharedCalloutBar];
 
-  [v6 setUntruncatedString:title];
+  [mEMORY[0x1E69DC770] setUntruncatedString:title];
 }
 
 - (void)_resetCalloutBar
 {
-  v2 = [MEMORY[0x1E69DC770] sharedCalloutBar];
-  [v2 clearSupressesHorizontalMovementFrame];
-  [v2 setSupressesHorizontalMovement:0];
+  mEMORY[0x1E69DC770] = [MEMORY[0x1E69DC770] sharedCalloutBar];
+  [mEMORY[0x1E69DC770] clearSupressesHorizontalMovementFrame];
+  [mEMORY[0x1E69DC770] setSupressesHorizontalMovement:0];
 
-  [v2 setUntruncatedString:0];
+  [mEMORY[0x1E69DC770] setUntruncatedString:0];
 }
 
 - (void)_setupCalloutBar
@@ -300,27 +300,27 @@ LABEL_9:
   [(SUScriptCalloutView *)self _reloadUntructedString];
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_79 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptCalloutView;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_58, 3);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_58, 3);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptCalloutView;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -330,14 +330,14 @@ LABEL_9:
 {
   v4.receiver = self;
   v4.super_class = SUScriptCalloutView;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_79 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_79 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_58 = sel_setTargetX_y_width_height_;
     *algn_1EBF3B988 = @"setTargetRect";

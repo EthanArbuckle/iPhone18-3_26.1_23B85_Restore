@@ -1,19 +1,19 @@
 @interface ATXSleepStream
-- (BOOL)hasAlreadyDetectedSleepEventOnGivenDay:(id)a3 sleepEvents:(id)a4 withCalendar:(id)a5;
-- (BOOL)isFirstBacklightOnAfterWakeup:(id)a3 sleepStartTime:(id)a4 existingSleepEventsToday:(id)a5 withCalendar:(id)a6;
-- (BOOL)isTimeInEligibleNotificationWindow:(id)a3 withCalendar:(id)a4;
-- (id)backlightPublisherWithStartDate:(id)a3 endDate:(id)a4;
-- (id)screenLockedPublisherWithStartDate:(id)a3 endDate:(id)a4;
-- (void)enumerateSleepEventsFromStartDate:(id)a3 endDate:(id)a4 limit:(unint64_t)a5 block:(id)a6;
+- (BOOL)hasAlreadyDetectedSleepEventOnGivenDay:(id)day sleepEvents:(id)events withCalendar:(id)calendar;
+- (BOOL)isFirstBacklightOnAfterWakeup:(id)wakeup sleepStartTime:(id)time existingSleepEventsToday:(id)today withCalendar:(id)calendar;
+- (BOOL)isTimeInEligibleNotificationWindow:(id)window withCalendar:(id)calendar;
+- (id)backlightPublisherWithStartDate:(id)date endDate:(id)endDate;
+- (id)screenLockedPublisherWithStartDate:(id)date endDate:(id)endDate;
+- (void)enumerateSleepEventsFromStartDate:(id)date endDate:(id)endDate limit:(unint64_t)limit block:(id)block;
 @end
 
 @implementation ATXSleepStream
 
-- (void)enumerateSleepEventsFromStartDate:(id)a3 endDate:(id)a4 limit:(unint64_t)a5 block:(id)a6
+- (void)enumerateSleepEventsFromStartDate:(id)date endDate:(id)endDate limit:(unint64_t)limit block:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dateCopy = date;
+  endDateCopy = endDate;
+  blockCopy = block;
   v13 = __atxlog_handle_sleep_schedule();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -36,26 +36,26 @@
   v30[2] = 0x3032000000;
   v30[3] = __Block_byref_object_copy__3;
   v30[4] = __Block_byref_object_dispose__3;
-  v31 = [MEMORY[0x277CBEB18] array];
-  v14 = [(ATXSleepStream *)self backlightPublisherWithStartDate:v10 endDate:v11];
-  v15 = [(ATXSleepStream *)self screenLockedPublisherWithStartDate:v10 endDate:v11];
+  array = [MEMORY[0x277CBEB18] array];
+  v14 = [(ATXSleepStream *)self backlightPublisherWithStartDate:dateCopy endDate:endDateCopy];
+  v15 = [(ATXSleepStream *)self screenLockedPublisherWithStartDate:dateCopy endDate:endDateCopy];
   v16 = [v14 orderedMergeWithOther:v15 comparator:&__block_literal_global_6];
-  v17 = [MEMORY[0x277CBEA80] currentCalendar];
-  v18 = [MEMORY[0x277CBEBB0] defaultTimeZone];
-  [v17 setTimeZone:v18];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  defaultTimeZone = [MEMORY[0x277CBEBB0] defaultTimeZone];
+  [currentCalendar setTimeZone:defaultTimeZone];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __72__ATXSleepStream_enumerateSleepEventsFromStartDate_endDate_limit_block___block_invoke_17;
   v22[3] = &unk_278590438;
-  v29 = a5;
+  limitCopy = limit;
   v26 = v38;
   v27 = v30;
-  v19 = v17;
+  v19 = currentCalendar;
   v28 = buf;
   v23 = v19;
-  v24 = self;
-  v20 = v12;
+  selfCopy = self;
+  v20 = blockCopy;
   v25 = v20;
   v21 = [v16 sinkWithCompletion:&__block_literal_global_16 shouldContinue:v22];
 
@@ -209,40 +209,40 @@ LABEL_26:
   return v18;
 }
 
-- (id)backlightPublisherWithStartDate:(id)a3 endDate:(id)a4
+- (id)backlightPublisherWithStartDate:(id)date endDate:(id)endDate
 {
-  v5 = a4;
-  v6 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v7 = BiomeLibrary();
-  v8 = [v7 Device];
-  v9 = [v8 Display];
-  v10 = [v9 Backlight];
-  v11 = [v10 atx_publisherWithStartDate:v6 endDate:v5 maxEvents:0 lastN:0 reversed:0];
+  device = [v7 Device];
+  display = [device Display];
+  backlight = [display Backlight];
+  v11 = [backlight atx_publisherWithStartDate:dateCopy endDate:endDateCopy maxEvents:0 lastN:0 reversed:0];
 
   return v11;
 }
 
-- (id)screenLockedPublisherWithStartDate:(id)a3 endDate:(id)a4
+- (id)screenLockedPublisherWithStartDate:(id)date endDate:(id)endDate
 {
-  v5 = a4;
-  v6 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v7 = BiomeLibrary();
-  v8 = [v7 Device];
-  v9 = [v8 ScreenLocked];
-  v10 = [v9 atx_publisherWithStartDate:v6 endDate:v5 maxEvents:0 lastN:0 reversed:0];
+  device = [v7 Device];
+  screenLocked = [device ScreenLocked];
+  v10 = [screenLocked atx_publisherWithStartDate:dateCopy endDate:endDateCopy maxEvents:0 lastN:0 reversed:0];
 
   return v10;
 }
 
-- (BOOL)isFirstBacklightOnAfterWakeup:(id)a3 sleepStartTime:(id)a4 existingSleepEventsToday:(id)a5 withCalendar:(id)a6
+- (BOOL)isFirstBacklightOnAfterWakeup:(id)wakeup sleepStartTime:(id)time existingSleepEventsToday:(id)today withCalendar:(id)calendar
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (-[ATXSleepStream isTimeInEligibleNotificationWindow:withCalendar:](self, "isTimeInEligibleNotificationWindow:withCalendar:", v10, v13) && ([v10 timeIntervalSinceDate:v11], -[ATXSleepStream isIdlePeriodLongEnough:](self, "isIdlePeriodLongEnough:")))
+  wakeupCopy = wakeup;
+  timeCopy = time;
+  todayCopy = today;
+  calendarCopy = calendar;
+  if (-[ATXSleepStream isTimeInEligibleNotificationWindow:withCalendar:](self, "isTimeInEligibleNotificationWindow:withCalendar:", wakeupCopy, calendarCopy) && ([wakeupCopy timeIntervalSinceDate:timeCopy], -[ATXSleepStream isIdlePeriodLongEnough:](self, "isIdlePeriodLongEnough:")))
   {
-    v14 = ![(ATXSleepStream *)self hasAlreadyDetectedSleepEventOnGivenDay:v10 sleepEvents:v12 withCalendar:v13];
+    v14 = ![(ATXSleepStream *)self hasAlreadyDetectedSleepEventOnGivenDay:wakeupCopy sleepEvents:todayCopy withCalendar:calendarCopy];
   }
 
   else
@@ -253,34 +253,34 @@ LABEL_26:
   return v14;
 }
 
-- (BOOL)isTimeInEligibleNotificationWindow:(id)a3 withCalendar:(id)a4
+- (BOOL)isTimeInEligibleNotificationWindow:(id)window withCalendar:(id)calendar
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 dateBySettingHour:3 minute:0 second:0 ofDate:v6 options:0];
-  v8 = [v5 dateBySettingHour:13 minute:0 second:0 ofDate:v6 options:0];
+  calendarCopy = calendar;
+  windowCopy = window;
+  v7 = [calendarCopy dateBySettingHour:3 minute:0 second:0 ofDate:windowCopy options:0];
+  v8 = [calendarCopy dateBySettingHour:13 minute:0 second:0 ofDate:windowCopy options:0];
 
   v9 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v7 endDate:v8];
-  v10 = [v9 containsDate:v6];
+  v10 = [v9 containsDate:windowCopy];
 
   return v10;
 }
 
-- (BOOL)hasAlreadyDetectedSleepEventOnGivenDay:(id)a3 sleepEvents:(id)a4 withCalendar:(id)a5
+- (BOOL)hasAlreadyDetectedSleepEventOnGivenDay:(id)day sleepEvents:(id)events withCalendar:(id)calendar
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 count])
+  dayCopy = day;
+  eventsCopy = events;
+  calendarCopy = calendar;
+  if ([eventsCopy count])
   {
-    v10 = [v9 dateBySettingHour:3 minute:0 second:0 ofDate:v7 options:0];
-    v11 = [v9 dateBySettingHour:13 minute:0 second:0 ofDate:v7 options:0];
+    v10 = [calendarCopy dateBySettingHour:3 minute:0 second:0 ofDate:dayCopy options:0];
+    v11 = [calendarCopy dateBySettingHour:13 minute:0 second:0 ofDate:dayCopy options:0];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = v8;
+    v12 = eventsCopy;
     v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v13)
     {
@@ -294,9 +294,9 @@ LABEL_26:
             objc_enumerationMutation(v12);
           }
 
-          v16 = [*(*(&v20 + 1) + 8 * i) wakeUpTime];
-          v17 = v16;
-          if (v16 && [v16 compare:v10] != -1 && objc_msgSend(v17, "compare:", v11) == -1)
+          wakeUpTime = [*(*(&v20 + 1) + 8 * i) wakeUpTime];
+          v17 = wakeUpTime;
+          if (wakeUpTime && [wakeUpTime compare:v10] != -1 && objc_msgSend(v17, "compare:", v11) == -1)
           {
 
             LOBYTE(v13) = 1;

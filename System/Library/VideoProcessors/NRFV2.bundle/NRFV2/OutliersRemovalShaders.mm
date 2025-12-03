@@ -1,12 +1,12 @@
 @interface OutliersRemovalShaders
-- (OutliersRemovalShaders)initWithMetal:(id)a3;
+- (OutliersRemovalShaders)initWithMetal:(id)metal;
 @end
 
 @implementation OutliersRemovalShaders
 
-- (OutliersRemovalShaders)initWithMetal:(id)a3
+- (OutliersRemovalShaders)initWithMetal:(id)metal
 {
-  v4 = a3;
+  metalCopy = metal;
   v11.receiver = self;
   v11.super_class = OutliersRemovalShaders;
   v6 = [(OutliersRemovalShaders *)&v11 init];
@@ -18,13 +18,13 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  if (!v4)
+  if (!metalCopy)
   {
     sub_2958CBC34();
     goto LABEL_9;
   }
 
-  v7 = objc_msgSend_computePipelineStateFor_constants_(v4, v5, @"OutliersRemoval", 0);
+  v7 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v5, @"OutliersRemoval", 0);
   outiersRemovalFilter = v6->_outiersRemovalFilter;
   v6->_outiersRemovalFilter = v7;
 

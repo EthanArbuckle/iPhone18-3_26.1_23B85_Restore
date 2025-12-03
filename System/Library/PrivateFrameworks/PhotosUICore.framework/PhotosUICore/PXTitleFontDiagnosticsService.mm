@@ -1,6 +1,6 @@
 @interface PXTitleFontDiagnosticsService
-+ (id)_statisticsDescriptionForAssetCollections:(id)a3 usingFontIndexBlock:(id)a4;
-+ (id)diagnosticsDescriptionForAssetCollections:(id)a3;
++ (id)_statisticsDescriptionForAssetCollections:(id)collections usingFontIndexBlock:(id)block;
++ (id)diagnosticsDescriptionForAssetCollections:(id)collections;
 - (BOOL)canProvideContextualViewController;
 - (id)contextualViewController;
 @end
@@ -10,13 +10,13 @@
 - (id)contextualViewController
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(PXDiagnosticsService *)self itemProviders];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  itemProviders = [(PXDiagnosticsService *)self itemProviders];
+  v5 = [itemProviders countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -27,24 +27,24 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemProviders);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
         if ([v9 hasItemForIdentifier:@"PXDiagnosticsItemIdentifierAssetCollection"])
         {
           v10 = [v9 itemForIdentifier:@"PXDiagnosticsItemIdentifierAssetCollection"];
-          [v3 addObject:v10];
+          [array addObject:v10];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [itemProviders countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
   }
 
-  v11 = [MEMORY[0x1E6978760] transientCollectionListWithCollections:v3 title:0];
+  v11 = [MEMORY[0x1E6978760] transientCollectionListWithCollections:array title:0];
   v12 = MEMORY[0x1E69DD258];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -69,9 +69,9 @@ id __57__PXTitleFontDiagnosticsService_contextualViewController__block_invoke(ui
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = +[PXDiagnosticsSettings sharedInstance];
-  v4 = [v3 enableTitleFontService];
+  enableTitleFontService = [v3 enableTitleFontService];
 
-  if (!v4)
+  if (!enableTitleFontService)
   {
     return 0;
   }
@@ -80,8 +80,8 @@ id __57__PXTitleFontDiagnosticsService_contextualViewController__block_invoke(ui
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(PXDiagnosticsService *)self itemProviders];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  itemProviders = [(PXDiagnosticsService *)self itemProviders];
+  v6 = [itemProviders countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -92,7 +92,7 @@ id __57__PXTitleFontDiagnosticsService_contextualViewController__block_invoke(ui
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(itemProviders);
         }
 
         if ([*(*(&v12 + 1) + 8 * i) hasItemForIdentifier:@"PXDiagnosticsItemIdentifierAssetCollection"])
@@ -102,7 +102,7 @@ id __57__PXTitleFontDiagnosticsService_contextualViewController__block_invoke(ui
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [itemProviders countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v7)
       {
         continue;
@@ -118,20 +118,20 @@ LABEL_13:
   return v10;
 }
 
-+ (id)_statisticsDescriptionForAssetCollections:(id)a3 usingFontIndexBlock:(id)a4
++ (id)_statisticsDescriptionForAssetCollections:(id)collections usingFontIndexBlock:(id)block
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E6978650] defaultTitleFontNames];
-  v8 = [v7 count];
+  collectionsCopy = collections;
+  blockCopy = block;
+  defaultTitleFontNames = [MEMORY[0x1E6978650] defaultTitleFontNames];
+  v8 = [defaultTitleFontNames count];
 
   v9 = objc_alloc_init(MEMORY[0x1E696AB50]);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v5;
+  obj = collectionsCopy;
   v10 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   v11 = 0x1E696A000uLL;
   if (v10)
@@ -149,7 +149,7 @@ LABEL_13:
           objc_enumerationMutation(obj);
         }
 
-        v16 = v6[2](v6, *(*(&v35 + 1) + 8 * i));
+        v16 = blockCopy[2](blockCopy, *(*(&v35 + 1) + 8 * i));
         if (v16 >= v8)
         {
           [v9 addObject:@"Other"];
@@ -177,7 +177,7 @@ LABEL_13:
     v13 = 0;
   }
 
-  v19 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __95__PXTitleFontDiagnosticsService__statisticsDescriptionForAssetCollections_usingFontIndexBlock___block_invoke;
@@ -185,7 +185,7 @@ LABEL_13:
   v29 = v9;
   v32 = v29;
   v34 = v13;
-  v20 = v19;
+  v20 = string;
   v33 = v20;
   v21 = _Block_copy(aBlock);
   if (v8)
@@ -223,24 +223,24 @@ void __95__PXTitleFontDiagnosticsService__statisticsDescriptionForAssetCollectio
   [*(a1 + 40) appendString:@"\n"];
 }
 
-+ (id)diagnosticsDescriptionForAssetCollections:(id)a3
++ (id)diagnosticsDescriptionForAssetCollections:(id)collections
 {
   v56 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD60] string];
-  if ([v4 count] >= 2)
+  collectionsCopy = collections;
+  string = [MEMORY[0x1E696AD60] string];
+  if ([collectionsCopy count] >= 2)
   {
-    v6 = [MEMORY[0x1E6978650] defaultTitleFontNames];
-    [v5 appendFormat:@"Count: %li\n\n", objc_msgSend(v4, "count")];
+    defaultTitleFontNames = [MEMORY[0x1E6978650] defaultTitleFontNames];
+    [string appendFormat:@"Count: %li\n\n", objc_msgSend(collectionsCopy, "count")];
     v53[0] = MEMORY[0x1E69E9820];
     v53[1] = 3221225472;
     v53[2] = __75__PXTitleFontDiagnosticsService_diagnosticsDescriptionForAssetCollections___block_invoke;
     v53[3] = &unk_1E77405B8;
-    v7 = v6;
+    v7 = defaultTitleFontNames;
     v54 = v7;
-    v8 = [a1 _statisticsDescriptionForAssetCollections:v4 usingFontIndexBlock:v53];
-    v9 = [v8 px_stringByIndentingNewLines];
-    [v5 appendFormat:@"Font Distribution:\n\t%@\n", v9];
+    v8 = [self _statisticsDescriptionForAssetCollections:collectionsCopy usingFontIndexBlock:v53];
+    px_stringByIndentingNewLines = [v8 px_stringByIndentingNewLines];
+    [string appendFormat:@"Font Distribution:\n\t%@\n", px_stringByIndentingNewLines];
 
     v51[0] = MEMORY[0x1E69E9820];
     v51[1] = 3221225472;
@@ -248,9 +248,9 @@ void __95__PXTitleFontDiagnosticsService__statisticsDescriptionForAssetCollectio
     v51[3] = &unk_1E77405B8;
     v10 = v7;
     v52 = v10;
-    v11 = [a1 _statisticsDescriptionForAssetCollections:v4 usingFontIndexBlock:v51];
-    v12 = [v11 px_stringByIndentingNewLines];
-    [v5 appendFormat:@"Creation Date Hash Distribution:\n\t%@\n", v12];
+    v11 = [self _statisticsDescriptionForAssetCollections:collectionsCopy usingFontIndexBlock:v51];
+    px_stringByIndentingNewLines2 = [v11 px_stringByIndentingNewLines];
+    [string appendFormat:@"Creation Date Hash Distribution:\n\t%@\n", px_stringByIndentingNewLines2];
 
     v49[0] = MEMORY[0x1E69E9820];
     v49[1] = 3221225472;
@@ -258,16 +258,16 @@ void __95__PXTitleFontDiagnosticsService__statisticsDescriptionForAssetCollectio
     v49[3] = &unk_1E77405B8;
     v50 = v10;
     v13 = v10;
-    v14 = [a1 _statisticsDescriptionForAssetCollections:v4 usingFontIndexBlock:v49];
-    v15 = [v14 px_stringByIndentingNewLines];
-    [v5 appendFormat:@"Title Hash Distribution:\n\t%@\n", v15];
+    v14 = [self _statisticsDescriptionForAssetCollections:collectionsCopy usingFontIndexBlock:v49];
+    px_stringByIndentingNewLines3 = [v14 px_stringByIndentingNewLines];
+    [string appendFormat:@"Title Hash Distribution:\n\t%@\n", px_stringByIndentingNewLines3];
 
-    [v5 appendString:@"Font Names:\n"];
+    [string appendString:@"Font Names:\n"];
     v47[0] = MEMORY[0x1E69E9820];
     v47[1] = 3221225472;
     v47[2] = __75__PXTitleFontDiagnosticsService_diagnosticsDescriptionForAssetCollections___block_invoke_4;
     v47[3] = &unk_1E7744F28;
-    v16 = v5;
+    v16 = string;
     v48 = v16;
     [v13 enumerateObjectsUsingBlock:v47];
     [v16 appendString:@"\n"];
@@ -277,7 +277,7 @@ void __95__PXTitleFontDiagnosticsService__statisticsDescriptionForAssetCollectio
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v4;
+  obj = collectionsCopy;
   v17 = [obj countByEnumeratingWithState:&v43 objects:v55 count:16];
   if (v17)
   {
@@ -295,47 +295,47 @@ void __95__PXTitleFontDiagnosticsService__statisticsDescriptionForAssetCollectio
         }
 
         v23 = *(*(&v43 + 1) + 8 * i);
-        [v5 appendFormat:v19, v23];
+        [string appendFormat:v19, v23];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
           v24 = v23;
-          v42 = [v24 photosGraphProperties];
-          [v42 objectForKeyedSubscript:@"titleCategory"];
+          photosGraphProperties = [v24 photosGraphProperties];
+          [photosGraphProperties objectForKeyedSubscript:@"titleCategory"];
           v26 = v25 = v19;
-          [v5 appendFormat:@"Title Category (from Graph data): %@\n", v26];
+          [string appendFormat:@"Title Category (from Graph data): %@\n", v26];
 
           v27 = *(v20 + 2288);
           [v24 movieData];
           v28 = v18;
           v30 = v29 = v20;
           v31 = [v27 titleFontNameFromMovieData:v30];
-          [v5 appendFormat:@"Font Name (from Movie data): %@\n", v31];
+          [string appendFormat:@"Font Name (from Movie data): %@\n", v31];
 
           v19 = v25;
           v20 = v29;
           v18 = v28;
         }
 
-        v32 = [v23 titleCategory];
+        titleCategory = [v23 titleCategory];
         v33 = [MEMORY[0x1E6978650] descriptionOfTitleCategory:{objc_msgSend(v23, "titleCategory")}];
-        [v5 appendFormat:@"Title Category: %i “%@”\n", v32, v33];
+        [string appendFormat:@"Title Category: %i “%@”\n", titleCategory, v33];
 
-        v34 = [v23 creationDate];
-        [v5 appendFormat:@"Creation Date: %@\n", v34];
+        creationDate = [v23 creationDate];
+        [string appendFormat:@"Creation Date: %@\n", creationDate];
 
         v35 = MEMORY[0x1E6978650];
-        v36 = [v23 creationDate];
-        [v5 appendFormat:@"Creation Date Hash: %li\n", objc_msgSend(v35, "titleFontNameHashFromDate:", v36)];
+        creationDate2 = [v23 creationDate];
+        [string appendFormat:@"Creation Date Hash: %li\n", objc_msgSend(v35, "titleFontNameHashFromDate:", creationDate2)];
 
         v37 = MEMORY[0x1E6978650];
-        v38 = [v23 title];
-        [v5 appendFormat:@"Title Hash: %li\n", objc_msgSend(v37, "titleFontNameHashFromString:", v38)];
+        title = [v23 title];
+        [string appendFormat:@"Title Hash: %li\n", objc_msgSend(v37, "titleFontNameHashFromString:", title)];
 
-        v39 = [v23 titleFontName];
-        [v5 appendFormat:@"Font Name: %@\n", v39];
+        titleFontName = [v23 titleFontName];
+        [string appendFormat:@"Font Name: %@\n", titleFontName];
 
-        [v5 appendString:@"\n"];
+        [string appendString:@"\n"];
       }
 
       v18 = [obj countByEnumeratingWithState:&v43 objects:v55 count:16];
@@ -344,7 +344,7 @@ void __95__PXTitleFontDiagnosticsService__statisticsDescriptionForAssetCollectio
     while (v18);
   }
 
-  return v5;
+  return string;
 }
 
 uint64_t __75__PXTitleFontDiagnosticsService_diagnosticsDescriptionForAssetCollections___block_invoke(uint64_t a1, void *a2)

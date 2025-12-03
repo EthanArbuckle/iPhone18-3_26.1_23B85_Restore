@@ -3,7 +3,7 @@
 - (id)debugDescription;
 - (id)description;
 - (id)operationStateString;
-- (id)pendingDependenciesString:(id)a3;
+- (id)pendingDependenciesString:(id)string;
 - (id)selfname;
 @end
 
@@ -17,9 +17,9 @@
   if (v2)
   {
     v3 = +[NSUUID UUID];
-    v4 = [v3 UUIDString];
+    uUIDString = [v3 UUIDString];
     operationUUID = v2->_operationUUID;
-    v2->_operationUUID = v4;
+    v2->_operationUUID = uUIDString;
   }
 
   return v2;
@@ -27,21 +27,21 @@
 
 - (id)selfname
 {
-  v3 = [(PCSRegistryOperation *)self name];
+  name = [(PCSRegistryOperation *)self name];
 
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  if (v3)
+  if (name)
   {
-    v6 = [(PCSRegistryOperation *)self name];
-    v7 = [(PCSRegistryOperation *)self operationUUID];
-    v8 = [NSString stringWithFormat:@"%@(%@, %@)", v5, v6, v7];
+    name2 = [(PCSRegistryOperation *)self name];
+    operationUUID = [(PCSRegistryOperation *)self operationUUID];
+    v8 = [NSString stringWithFormat:@"%@(%@, %@)", v5, name2, operationUUID];
   }
 
   else
   {
-    v6 = [(PCSRegistryOperation *)self operationUUID];
-    v8 = [NSString stringWithFormat:@"%@(%@)", v5, v6];
+    name2 = [(PCSRegistryOperation *)self operationUUID];
+    v8 = [NSString stringWithFormat:@"%@(%@)", v5, name2];
   }
 
   return v8;
@@ -79,20 +79,20 @@
 
 - (id)description
 {
-  v3 = [(PCSRegistryOperation *)self operationStateString];
-  v4 = [(PCSRegistryOperation *)self error];
+  operationStateString = [(PCSRegistryOperation *)self operationStateString];
+  error = [(PCSRegistryOperation *)self error];
 
-  v5 = [(PCSRegistryOperation *)self selfname];
-  if (v4)
+  selfname = [(PCSRegistryOperation *)self selfname];
+  if (error)
   {
-    v6 = [(PCSRegistryOperation *)self error];
-    [NSString stringWithFormat:@"<%@: %@ error:%@>", v5, v3, v6];
+    error2 = [(PCSRegistryOperation *)self error];
+    [NSString stringWithFormat:@"<%@: %@ error:%@>", selfname, operationStateString, error2];
   }
 
   else
   {
-    v6 = [(PCSRegistryOperation *)self pendingDependenciesString:@" dep:"];
-    [NSString stringWithFormat:@"<%@: %@%@>", v5, v3, v6];
+    error2 = [(PCSRegistryOperation *)self pendingDependenciesString:@" dep:"];
+    [NSString stringWithFormat:@"<%@: %@%@>", selfname, operationStateString, error2];
   }
   v7 = ;
 
@@ -101,31 +101,31 @@
 
 - (id)debugDescription
 {
-  v3 = [(PCSRegistryOperation *)self operationStateString];
-  v4 = [(PCSRegistryOperation *)self error];
+  operationStateString = [(PCSRegistryOperation *)self operationStateString];
+  error = [(PCSRegistryOperation *)self error];
 
-  v5 = [(PCSRegistryOperation *)self selfname];
-  if (v4)
+  selfname = [(PCSRegistryOperation *)self selfname];
+  if (error)
   {
-    v6 = [(PCSRegistryOperation *)self error];
-    [NSString stringWithFormat:@"<%@ (%p): %@ error:%@>", v5, self, v3, v6];
+    error2 = [(PCSRegistryOperation *)self error];
+    [NSString stringWithFormat:@"<%@ (%p): %@ error:%@>", selfname, self, operationStateString, error2];
   }
 
   else
   {
-    v6 = [(PCSRegistryOperation *)self pendingDependenciesString:@" dep:"];
-    [NSString stringWithFormat:@"<%@ (%p): %@%@>", v5, self, v3, v6];
+    error2 = [(PCSRegistryOperation *)self pendingDependenciesString:@" dep:"];
+    [NSString stringWithFormat:@"<%@ (%p): %@%@>", selfname, self, operationStateString, error2];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)pendingDependenciesString:(id)a3
+- (id)pendingDependenciesString:(id)string
 {
-  v4 = a3;
-  v5 = [(PCSRegistryOperation *)self dependencies];
-  v6 = [v5 copy];
+  stringCopy = string;
+  dependencies = [(PCSRegistryOperation *)self dependencies];
+  v6 = [dependencies copy];
 
   v7 = [v6 indexesOfObjectsPassingTest:&stru_100039170];
   v8 = [v6 objectsAtIndexes:v7];
@@ -133,7 +133,7 @@
   if ([v8 count])
   {
     v9 = [v8 componentsJoinedByString:{@", "}];
-    v10 = [NSString stringWithFormat:@"%@%@", v4, v9];
+    v10 = [NSString stringWithFormat:@"%@%@", stringCopy, v9];
   }
 
   else

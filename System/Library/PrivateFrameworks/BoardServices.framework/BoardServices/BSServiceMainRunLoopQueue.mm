@@ -1,13 +1,13 @@
 @interface BSServiceMainRunLoopQueue
 + (id)commonModesQueue;
-+ (id)queueWithModes:(id)a3;
-- (CFRunLoopSourceContext)_initWithModes:(CFIndex)a1;
++ (id)queueWithModes:(id)modes;
+- (CFRunLoopSourceContext)_initWithModes:(CFIndex)modes;
 - (id)description;
 - (void)_queue_performAsync:(id)obj;
 - (void)assertBarrierOnQueue;
 - (void)dealloc;
-- (void)performAfter:(double)a3 withBlock:(id)a4;
-- (void)performAsync:(id)a3;
+- (void)performAfter:(double)after withBlock:(id)block;
+- (void)performAsync:(id)async;
 @end
 
 @implementation BSServiceMainRunLoopQueue
@@ -73,7 +73,7 @@ void __58__BSServiceMainRunLoopQueue__performNextFromRunLoopSource__block_invoke
       v12 = 2114;
       v13 = v8;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = @"BSServiceQueue.m";
       v18 = 1024;
@@ -93,11 +93,11 @@ void __58__BSServiceMainRunLoopQueue__performNextFromRunLoopSource__block_invoke
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (CFRunLoopSourceContext)_initWithModes:(CFIndex)a1
+- (CFRunLoopSourceContext)_initWithModes:(CFIndex)modes
 {
   v47 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (modes)
   {
     if (qos_class_main() == QOS_CLASS_USER_INTERACTIVE)
     {
@@ -109,15 +109,15 @@ void __58__BSServiceMainRunLoopQueue__performNextFromRunLoopSource__block_invoke
       v4 = MEMORY[0x1E695E4C0];
     }
 
-    v33.version = a1;
+    v33.version = modes;
     v33.info = BSServiceQueue;
     v5 = [(CFRunLoopSourceContext *)&v33 init];
     v6 = v5;
     if (v5)
     {
       v5->info = *v4;
-      v7 = [MEMORY[0x1E698E698] serial];
-      v8 = [v7 serviceClass:33];
+      serial = [MEMORY[0x1E698E698] serial];
+      v8 = [serial serviceClass:33];
       v9 = BSDispatchQueueCreate();
       release = v6->release;
       v6->release = v9;
@@ -218,11 +218,11 @@ void __58__BSServiceMainRunLoopQueue__performNextFromRunLoopSource__block_invoke
   [(BSServiceMainRunLoopQueue *)&v3 dealloc];
 }
 
-+ (id)queueWithModes:(id)a3
++ (id)queueWithModes:(id)modes
 {
   v74 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  modesCopy = modes;
+  if (!modesCopy)
   {
     v33 = MEMORY[0x1E696AEC0];
     v34 = objc_opt_class();
@@ -239,7 +239,7 @@ void __58__BSServiceMainRunLoopQueue__performNextFromRunLoopSource__block_invoke
       v64 = 2114;
       v65 = v39;
       v66 = 2048;
-      v67 = a1;
+      selfCopy5 = self;
       v68 = 2114;
       v69 = @"BSServiceQueue.m";
       v70 = 1024;
@@ -260,13 +260,13 @@ void __58__BSServiceMainRunLoopQueue__performNextFromRunLoopSource__block_invoke
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v41 = MEMORY[0x1E696AEC0];
-    v42 = [v4 classForCoder];
-    if (!v42)
+    classForCoder = [modesCopy classForCoder];
+    if (!classForCoder)
     {
-      v42 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v43 = NSStringFromClass(v42);
+    v43 = NSStringFromClass(classForCoder);
     v44 = objc_opt_class();
     v45 = NSStringFromClass(v44);
     v46 = [v41 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"modes", v43, v45];
@@ -281,7 +281,7 @@ void __58__BSServiceMainRunLoopQueue__performNextFromRunLoopSource__block_invoke
       v64 = 2114;
       v65 = v49;
       v66 = 2048;
-      v67 = a1;
+      selfCopy5 = self;
       v68 = 2114;
       v69 = @"BSServiceQueue.m";
       v70 = 1024;
@@ -298,7 +298,7 @@ void __58__BSServiceMainRunLoopQueue__performNextFromRunLoopSource__block_invoke
     JUMPOUT(0x19A85532CLL);
   }
 
-  if (![v4 count])
+  if (![modesCopy count])
   {
     v51 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"[modes count] > 0"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -311,7 +311,7 @@ void __58__BSServiceMainRunLoopQueue__performNextFromRunLoopSource__block_invoke
       v64 = 2114;
       v65 = v54;
       v66 = 2048;
-      v67 = a1;
+      selfCopy5 = self;
       v68 = 2114;
       v69 = @"BSServiceQueue.m";
       v70 = 1024;
@@ -328,12 +328,12 @@ void __58__BSServiceMainRunLoopQueue__performNextFromRunLoopSource__block_invoke
     JUMPOUT(0x19A855434);
   }
 
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(modesCopy, "count")}];
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v6 = v4;
+  v6 = modesCopy;
   v7 = [v6 countByEnumeratingWithState:&v57 objects:v61 count:16];
   if (v7)
   {
@@ -365,7 +365,7 @@ void __58__BSServiceMainRunLoopQueue__performNextFromRunLoopSource__block_invoke
             v64 = 2114;
             v65 = v21;
             v66 = 2048;
-            v67 = a1;
+            selfCopy5 = self;
             v68 = 2114;
             v69 = @"BSServiceQueue.m";
             v70 = 1024;
@@ -386,13 +386,13 @@ void __58__BSServiceMainRunLoopQueue__performNextFromRunLoopSource__block_invoke
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           v23 = MEMORY[0x1E696AEC0];
-          v24 = [v10 classForCoder];
-          if (!v24)
+          classForCoder2 = [v10 classForCoder];
+          if (!classForCoder2)
           {
-            v24 = objc_opt_class();
+            classForCoder2 = objc_opt_class();
           }
 
-          v25 = NSStringFromClass(v24);
+          v25 = NSStringFromClass(classForCoder2);
           v26 = objc_opt_class();
           v27 = NSStringFromClass(v26);
           v28 = [v23 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"mode", v25, v27];
@@ -407,7 +407,7 @@ void __58__BSServiceMainRunLoopQueue__performNextFromRunLoopSource__block_invoke
             v64 = 2114;
             v65 = v31;
             v66 = 2048;
-            v67 = a1;
+            selfCopy5 = self;
             v68 = 2114;
             v69 = @"BSServiceQueue.m";
             v70 = 1024;
@@ -440,11 +440,11 @@ void __58__BSServiceMainRunLoopQueue__performNextFromRunLoopSource__block_invoke
   return v13;
 }
 
-- (void)performAsync:(id)a3
+- (void)performAsync:(id)async
 {
-  if (a3)
+  if (async)
   {
-    v4 = dispatch_block_create(DISPATCH_BLOCK_NO_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, a3);
+    v4 = dispatch_block_create(DISPATCH_BLOCK_NO_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, async);
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
@@ -474,12 +474,12 @@ void __58__BSServiceMainRunLoopQueue__performNextFromRunLoopSource__block_invoke
   }
 }
 
-- (void)performAfter:(double)a3 withBlock:(id)a4
+- (void)performAfter:(double)after withBlock:(id)block
 {
-  if (a4)
+  if (block)
   {
-    v6 = dispatch_block_create(DISPATCH_BLOCK_NO_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, a4);
-    v7 = dispatch_time(0, (a3 * 1000000000.0));
+    v6 = dispatch_block_create(DISPATCH_BLOCK_NO_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
+    v7 = dispatch_time(0, (after * 1000000000.0));
     queue = self->_queue;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -505,11 +505,11 @@ void __58__BSServiceMainRunLoopQueue__performNextFromRunLoopSource__block_invoke
   v13 = &unk_1E75209E8;
   v7 = v3;
   v14 = v7;
-  v15 = self;
+  selfCopy = self;
   dispatch_async_and_wait(queue, &v10);
-  v8 = [v7 build];
+  build = [v7 build];
 
-  return v8;
+  return build;
 }
 
 @end

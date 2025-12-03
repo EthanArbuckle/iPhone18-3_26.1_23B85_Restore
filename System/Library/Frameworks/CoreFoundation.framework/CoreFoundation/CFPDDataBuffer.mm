@@ -1,11 +1,11 @@
 @interface CFPDDataBuffer
-+ (id)newBufferFromCFData:(__CFData *)a3;
-+ (id)newBufferFromPropertyList:(void *)a3;
++ (id)newBufferFromCFData:(__CFData *)data;
++ (id)newBufferFromPropertyList:(void *)list;
 - (BOOL)validatePlist;
 - (__CFData)copyCFData;
 - (id)copyXPCData;
-- (void)copyPropertyListWithMutability:(unint64_t)a3 error:(__CFError *)a4;
-- (void)quicklyValidatePlistAndOnFailureInvokeBlock:(id)a3;
+- (void)copyPropertyListWithMutability:(unint64_t)mutability error:(__CFError *)error;
+- (void)quicklyValidatePlistAndOnFailureInvokeBlock:(id)block;
 @end
 
 @implementation CFPDDataBuffer
@@ -33,38 +33,38 @@
 
 - (id)copyXPCData
 {
-  v3 = [(CFPDDataBuffer *)self bytes];
+  bytes = [(CFPDDataBuffer *)self bytes];
   v4 = [(CFPDDataBuffer *)self length];
 
-  return xpc_data_create(v3, v4);
+  return xpc_data_create(bytes, v4);
 }
 
-+ (id)newBufferFromCFData:(__CFData *)a3
++ (id)newBufferFromCFData:(__CFData *)data
 {
   v4 = [CFPDCFDataBuffer alloc];
 
-  return [(CFPDCFDataBuffer *)v4 initWithCFData:a3];
+  return [(CFPDCFDataBuffer *)v4 initWithCFData:data];
 }
 
-+ (id)newBufferFromPropertyList:(void *)a3
++ (id)newBufferFromPropertyList:(void *)list
 {
   v4 = [CFPDPurgeableBuffer alloc];
 
-  return [(CFPDPurgeableBuffer *)v4 initWithPropertyList:a3];
+  return [(CFPDPurgeableBuffer *)v4 initWithPropertyList:list];
 }
 
 - (__CFData)copyCFData
 {
-  v3 = [(CFPDDataBuffer *)self bytes];
+  bytes = [(CFPDDataBuffer *)self bytes];
   v4 = [(CFPDDataBuffer *)self length];
 
-  return CFDataCreate(&__kCFAllocatorSystemDefault, v3, v4);
+  return CFDataCreate(&__kCFAllocatorSystemDefault, bytes, v4);
 }
 
-- (void)copyPropertyListWithMutability:(unint64_t)a3 error:(__CFError *)a4
+- (void)copyPropertyListWithMutability:(unint64_t)mutability error:(__CFError *)error
 {
   v6 = CFDataCreateWithBytesNoCopy(&__kCFAllocatorSystemDefault, [(CFPDDataBuffer *)self bytes], [(CFPDDataBuffer *)self length], &__kCFAllocatorNull);
-  v7 = CFPropertyListCreateWithData(&__kCFAllocatorSystemDefault, v6, a3, 0, a4);
+  v7 = CFPropertyListCreateWithData(&__kCFAllocatorSystemDefault, v6, mutability, 0, error);
   CFRelease(v6);
   if (v7 && CFGetTypeID(v7) != 18)
   {
@@ -76,20 +76,20 @@
 
     CFRelease(v7);
     v7 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = 0;
+      *error = 0;
     }
   }
 
   return v7;
 }
 
-- (void)quicklyValidatePlistAndOnFailureInvokeBlock:(id)a3
+- (void)quicklyValidatePlistAndOnFailureInvokeBlock:(id)block
 {
   if ([(CFPDDataBuffer *)self length]< 8 || (v5 = [(CFPDDataBuffer *)self bytes], strncmp(v5, "bplist00", 8uLL)) && strncmp(v5, "<?xml", 5uLL))
   {
-    (*(a3 + 2))(a3);
+    (*(block + 2))(block);
     v6 = CFDataCreateWithBytesNoCopy(&__kCFAllocatorSystemDefault, [(CFPDDataBuffer *)self bytes], [(CFPDDataBuffer *)self length], &__kCFAllocatorNull);
     if (os_variant_has_internal_diagnostics())
     {

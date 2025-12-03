@@ -1,7 +1,7 @@
 @interface HMDSharedUserInviteOwnerResponseLogEventBuilder
 + (id)logCategory;
 - (BOOL)isReady;
-- (HMDSharedUserInviteOwnerResponseLogEventBuilder)initWithHome:(id)a3 sessionIdentifier:(id)a4 invitationType:(unint64_t)a5 invitationAge:(double)a6 invitationSource:(unint64_t)a7;
+- (HMDSharedUserInviteOwnerResponseLogEventBuilder)initWithHome:(id)home sessionIdentifier:(id)identifier invitationType:(unint64_t)type invitationAge:(double)age invitationSource:(unint64_t)source;
 - (void)cancel;
 - (void)markAddUserToHomeBegin;
 - (void)markAddUserToHomeEnd;
@@ -21,13 +21,13 @@
   if (!self->super.submitted)
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = self;
+    selfCopy = self;
     v5 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = HMFGetLogIdentifier();
-      Property = objc_getProperty(v4, v7, 112, 1);
-      v10 = [objc_getProperty(v4 v9];
+      Property = objc_getProperty(selfCopy, v7, 112, 1);
+      v10 = [objc_getProperty(selfCopy v9];
       *buf = 138543874;
       v16 = v6;
       v17 = 2112;
@@ -38,14 +38,14 @@
     }
 
     objc_autoreleasePoolPop(v3);
-    v14.receiver = v4;
+    v14.receiver = selfCopy;
     v14.super_class = HMDSharedUserInviteOwnerResponseLogEventBuilder;
     [(HMDSharedUserInviteLogEventBuilder *)&v14 submit];
-    WeakRetained = objc_loadWeakRetained(&v4->_home);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_home);
     v12 = WeakRetained;
     if (WeakRetained)
     {
-      [WeakRetained removeSharedUserResponseEventBuilder:v4];
+      [WeakRetained removeSharedUserResponseEventBuilder:selfCopy];
     }
   }
 
@@ -57,8 +57,8 @@
   os_unfair_lock_assert_owner(&self->super._lock);
   v14.receiver = self;
   v14.super_class = HMDSharedUserInviteOwnerResponseLogEventBuilder;
-  v3 = [(HMDSharedUserInviteLogEventBuilder *)&v14 isReady];
-  if (v3)
+  isReady = [(HMDSharedUserInviteLogEventBuilder *)&v14 isReady];
+  if (isReady)
   {
     if (self)
     {
@@ -70,12 +70,12 @@
       Property = 0;
     }
 
-    v6 = [Property error];
+    error = [Property error];
 
-    LOBYTE(v3) = v6 || (!self ? (v8 = 0) : (v8 = objc_getProperty(self, v7, 112, 1)), [v8 authenticateUserMS] >= 1 && (!self ? (v10 = 0) : (v10 = objc_getProperty(self, v9, 112, 1)), objc_msgSend(v10, "joiningReverseShareMS") >= 1 && (!self ? (v12 = 0) : (v12 = objc_getProperty(self, v11, 112, 1)), objc_msgSend(v12, "addUserToHomeMS") > 0)));
+    LOBYTE(isReady) = error || (!self ? (v8 = 0) : (v8 = objc_getProperty(self, v7, 112, 1)), [v8 authenticateUserMS] >= 1 && (!self ? (v10 = 0) : (v10 = objc_getProperty(self, v9, 112, 1)), objc_msgSend(v10, "joiningReverseShareMS") >= 1 && (!self ? (v12 = 0) : (v12 = objc_getProperty(self, v11, 112, 1)), objc_msgSend(v12, "addUserToHomeMS") > 0)));
   }
 
-  return v3;
+  return isReady;
 }
 
 - (void)cancel
@@ -103,7 +103,7 @@
 {
   v27 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -115,19 +115,19 @@
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->super.submitted)
+  if (!selfCopy->super.submitted)
   {
-    if (v4->addUserToHomeBeginTime)
+    if (selfCopy->addUserToHomeBeginTime)
     {
-      v8 = objc_getProperty(v4, v7, 112, 1);
+      v8 = objc_getProperty(selfCopy, v7, 112, 1);
       v9 = [v8 addUserToHomeMS] == -1;
 
       if (v9)
       {
-        v10 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-        v11 = v10[2]();
-        addUserToHomeBeginTime = v4->addUserToHomeBeginTime;
-        v14 = objc_getProperty(v4, v13, 112, 1);
+        currentUpTicksBlock = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+        v11 = currentUpTicksBlock[2]();
+        addUserToHomeBeginTime = selfCopy->addUserToHomeBeginTime;
+        v14 = objc_getProperty(selfCopy, v13, 112, 1);
         v15 = v14;
         if (v11 == addUserToHomeBeginTime)
         {
@@ -141,10 +141,10 @@
 
         [v14 setAddUserToHomeMS:v16];
 
-        v17 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-        v18 = v17[2]();
-        eventCreatedTime = v4->super.eventCreatedTime;
-        v21 = objc_getProperty(v4, v20, 112, 1);
+        currentUpTicksBlock2 = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+        v18 = currentUpTicksBlock2[2]();
+        eventCreatedTime = selfCopy->super.eventCreatedTime;
+        v21 = objc_getProperty(selfCopy, v20, 112, 1);
         v22 = v21;
         if (v18 == eventCreatedTime)
         {
@@ -158,12 +158,12 @@
 
         [v21 setTotalOwnerResidentResponseMS:v23];
 
-        [(HMDSharedUserInviteLogEventBuilder *)v4 submitIfReady];
+        [(HMDSharedUserInviteLogEventBuilder *)selfCopy submitIfReady];
       }
     }
   }
 
-  os_unfair_lock_unlock(&v4->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v24 = *MEMORY[0x277D85DE8];
 }
 
@@ -171,7 +171,7 @@
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -183,16 +183,16 @@
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->super.submitted && !v4->addUserToHomeBeginTime)
+  if (!selfCopy->super.submitted && !selfCopy->addUserToHomeBeginTime)
   {
-    v7 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-    v4->addUserToHomeBeginTime = v7[2]();
+    currentUpTicksBlock = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+    selfCopy->addUserToHomeBeginTime = currentUpTicksBlock[2]();
 
-    v9 = objc_getProperty(v4, v8, 112, 1);
+    v9 = objc_getProperty(selfCopy, v8, 112, 1);
     [v9 setAddUserToHomeMS:-1];
   }
 
-  os_unfair_lock_unlock(&v4->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v10 = *MEMORY[0x277D85DE8];
 }
 
@@ -200,7 +200,7 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -212,19 +212,19 @@
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->super.submitted)
+  if (!selfCopy->super.submitted)
   {
-    if (v4->joiningReverseShareBeginTime)
+    if (selfCopy->joiningReverseShareBeginTime)
     {
-      v8 = objc_getProperty(v4, v7, 112, 1);
+      v8 = objc_getProperty(selfCopy, v7, 112, 1);
       v9 = [v8 joiningReverseShareMS] == -1;
 
       if (v9)
       {
-        v10 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-        v11 = v10[2]();
-        joiningReverseShareBeginTime = v4->joiningReverseShareBeginTime;
-        v14 = objc_getProperty(v4, v13, 112, 1);
+        currentUpTicksBlock = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+        v11 = currentUpTicksBlock[2]();
+        joiningReverseShareBeginTime = selfCopy->joiningReverseShareBeginTime;
+        v14 = objc_getProperty(selfCopy, v13, 112, 1);
         v15 = v14;
         if (v11 == joiningReverseShareBeginTime)
         {
@@ -238,12 +238,12 @@
 
         [v14 setJoiningReverseShareMS:v16];
 
-        [(HMDSharedUserInviteLogEventBuilder *)v4 submitIfReady];
+        [(HMDSharedUserInviteLogEventBuilder *)selfCopy submitIfReady];
       }
     }
   }
 
-  os_unfair_lock_unlock(&v4->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v17 = *MEMORY[0x277D85DE8];
 }
 
@@ -251,7 +251,7 @@
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -263,16 +263,16 @@
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->super.submitted && !v4->joiningReverseShareBeginTime)
+  if (!selfCopy->super.submitted && !selfCopy->joiningReverseShareBeginTime)
   {
-    v7 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-    v4->joiningReverseShareBeginTime = v7[2]();
+    currentUpTicksBlock = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+    selfCopy->joiningReverseShareBeginTime = currentUpTicksBlock[2]();
 
-    v9 = objc_getProperty(v4, v8, 112, 1);
+    v9 = objc_getProperty(selfCopy, v8, 112, 1);
     [v9 setJoiningReverseShareMS:-1];
   }
 
-  os_unfair_lock_unlock(&v4->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v10 = *MEMORY[0x277D85DE8];
 }
 
@@ -280,7 +280,7 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -292,19 +292,19 @@
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->super.submitted)
+  if (!selfCopy->super.submitted)
   {
-    if (v4->authenticateUserBeginTime)
+    if (selfCopy->authenticateUserBeginTime)
     {
-      v8 = objc_getProperty(v4, v7, 112, 1);
+      v8 = objc_getProperty(selfCopy, v7, 112, 1);
       v9 = [v8 authenticateUserMS] == -1;
 
       if (v9)
       {
-        v10 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-        v11 = v10[2]();
-        authenticateUserBeginTime = v4->authenticateUserBeginTime;
-        v14 = objc_getProperty(v4, v13, 112, 1);
+        currentUpTicksBlock = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+        v11 = currentUpTicksBlock[2]();
+        authenticateUserBeginTime = selfCopy->authenticateUserBeginTime;
+        v14 = objc_getProperty(selfCopy, v13, 112, 1);
         v15 = v14;
         if (v11 == authenticateUserBeginTime)
         {
@@ -318,12 +318,12 @@
 
         [v14 setAuthenticateUserMS:v16];
 
-        [(HMDSharedUserInviteLogEventBuilder *)v4 submitIfReady];
+        [(HMDSharedUserInviteLogEventBuilder *)selfCopy submitIfReady];
       }
     }
   }
 
-  os_unfair_lock_unlock(&v4->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v17 = *MEMORY[0x277D85DE8];
 }
 
@@ -331,7 +331,7 @@
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -343,44 +343,44 @@
 
   objc_autoreleasePoolPop(v3);
   os_unfair_lock_lock_with_options();
-  if (!v4->super.submitted && !v4->authenticateUserBeginTime)
+  if (!selfCopy->super.submitted && !selfCopy->authenticateUserBeginTime)
   {
-    v7 = [(HMDSharedUserInviteLogEventBuilder *)v4 currentUpTicksBlock];
-    v4->authenticateUserBeginTime = v7[2]();
+    currentUpTicksBlock = [(HMDSharedUserInviteLogEventBuilder *)selfCopy currentUpTicksBlock];
+    selfCopy->authenticateUserBeginTime = currentUpTicksBlock[2]();
 
-    v9 = objc_getProperty(v4, v8, 112, 1);
+    v9 = objc_getProperty(selfCopy, v8, 112, 1);
     [v9 setAuthenticateUserMS:-1];
   }
 
-  os_unfair_lock_unlock(&v4->super._lock);
+  os_unfair_lock_unlock(&selfCopy->super._lock);
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDSharedUserInviteOwnerResponseLogEventBuilder)initWithHome:(id)a3 sessionIdentifier:(id)a4 invitationType:(unint64_t)a5 invitationAge:(double)a6 invitationSource:(unint64_t)a7
+- (HMDSharedUserInviteOwnerResponseLogEventBuilder)initWithHome:(id)home sessionIdentifier:(id)identifier invitationType:(unint64_t)type invitationAge:(double)age invitationSource:(unint64_t)source
 {
-  v12 = a4;
-  v13 = a3;
+  identifierCopy = identifier;
+  homeCopy = home;
   v14 = +[HMDMetricsManager sharedLogEventSubmitter];
-  v15 = v13;
-  v16 = v12;
+  v15 = homeCopy;
+  v16 = identifierCopy;
   v17 = v14;
   v18 = &__block_literal_global_181908;
   v19 = &__block_literal_global_4_181909;
   if (self)
   {
     v20 = [HMDSharedUserInviteOwnerResponseLogEvent alloc];
-    v21 = [v15 uuid];
-    v22 = [(HMDSharedUserInviteOwnerResponseLogEvent *)v20 initWithHomeUUID:v21];
+    uuid = [v15 uuid];
+    v22 = [(HMDSharedUserInviteOwnerResponseLogEvent *)v20 initWithHomeUUID:uuid];
 
     if (v22)
     {
-      v23 = [v15 homeManager];
-      v24 = [v15 wifiManager];
-      v25 = a7;
-      v26 = v24;
+      homeManager = [v15 homeManager];
+      wifiManager = [v15 wifiManager];
+      sourceCopy = source;
+      v26 = wifiManager;
       v30.receiver = self;
       v30.super_class = HMDSharedUserInviteOwnerResponseLogEventBuilder;
-      v27 = [(HMDSharedUserInviteLogEventBuilder *)&v30 initWithLogEvent:v22 homeManager:v23 sessionIdentifier:v16 invitationType:a5 invitationAge:v25 invitationSource:v17 logEventSubmitter:a6 wifiManager:v24 currentUpTicksBlock:&__block_literal_global_181908 submissionTimerFactory:&__block_literal_global_4_181909];
+      v27 = [(HMDSharedUserInviteLogEventBuilder *)&v30 initWithLogEvent:v22 homeManager:homeManager sessionIdentifier:v16 invitationType:type invitationAge:sourceCopy invitationSource:v17 logEventSubmitter:age wifiManager:wifiManager currentUpTicksBlock:&__block_literal_global_181908 submissionTimerFactory:&__block_literal_global_4_181909];
 
       if (v27)
       {
@@ -389,21 +389,21 @@
       }
 
       self = v27;
-      v28 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v28 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v28 = 0;
+    selfCopy = 0;
   }
 
-  return v28;
+  return selfCopy;
 }
 
 id __128__HMDSharedUserInviteOwnerResponseLogEventBuilder_initWithHome_sessionIdentifier_invitationType_invitationAge_invitationSource___block_invoke_2()

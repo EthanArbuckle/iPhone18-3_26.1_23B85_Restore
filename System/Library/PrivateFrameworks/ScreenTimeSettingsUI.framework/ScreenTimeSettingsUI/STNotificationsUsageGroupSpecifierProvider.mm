@@ -1,12 +1,12 @@
 @interface STNotificationsUsageGroupSpecifierProvider
 - (STNotificationsUsageGroupSpecifierProvider)init;
-- (id)_usageDetailsCoordinator:(id)a3;
-- (id)newSpecifierWithUsageItem:(id)a3;
-- (void)_selectedUsageReportDidChangeFrom:(id)a3 to:(id)a4;
-- (void)_specifierIdentifierDidChange:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCoordinator:(id)a3;
-- (void)updateSpecifier:(id)a3 usageItem:(id)a4;
+- (id)_usageDetailsCoordinator:(id)coordinator;
+- (id)newSpecifierWithUsageItem:(id)item;
+- (void)_selectedUsageReportDidChangeFrom:(id)from to:(id)to;
+- (void)_specifierIdentifierDidChange:(id)change;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCoordinator:(id)coordinator;
+- (void)updateSpecifier:(id)specifier usageItem:(id)item;
 @end
 
 @implementation STNotificationsUsageGroupSpecifierProvider
@@ -38,39 +38,39 @@
   notificationSettingsGateway = v2->_notificationSettingsGateway;
   v2->_notificationSettingsGateway = v12;
 
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v14 addObserver:v2 selector:sel__specifierIdentifierDidChange_ name:0x2876740E8 object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v2 selector:sel__specifierIdentifierDidChange_ name:0x2876740E8 object:0];
 
   return v2;
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STUsageGroupSpecifierProvider *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.hasUsageData" context:"KVOContextNotificationUsageGroupSpecifierProvider"];
-  [v5 removeObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.selectedUsageReport" context:"KVOContextNotificationUsageGroupSpecifierProvider"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STUsageGroupSpecifierProvider *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.hasUsageData" context:"KVOContextNotificationUsageGroupSpecifierProvider"];
+  [coordinator removeObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.selectedUsageReport" context:"KVOContextNotificationUsageGroupSpecifierProvider"];
   v6.receiver = self;
   v6.super_class = STNotificationsUsageGroupSpecifierProvider;
-  [(STUsageGroupSpecifierProvider *)&v6 setCoordinator:v4];
-  [v4 addObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.hasUsageData" options:5 context:"KVOContextNotificationUsageGroupSpecifierProvider"];
-  [v4 addObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.selectedUsageReport" options:7 context:"KVOContextNotificationUsageGroupSpecifierProvider"];
+  [(STUsageGroupSpecifierProvider *)&v6 setCoordinator:coordinatorCopy];
+  [coordinatorCopy addObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.hasUsageData" options:5 context:"KVOContextNotificationUsageGroupSpecifierProvider"];
+  [coordinatorCopy addObserver:self forKeyPath:@"usageDetailsCoordinator.viewModel.selectedUsageReport" options:7 context:"KVOContextNotificationUsageGroupSpecifierProvider"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a5;
-  if (a6 == "KVOContextNotificationUsageGroupSpecifierProvider")
+  pathCopy = path;
+  changeCopy = change;
+  if (context == "KVOContextNotificationUsageGroupSpecifierProvider")
   {
     [(STUsageGroupSpecifierProvider *)self coordinator];
 
-    if ([v10 isEqualToString:@"usageDetailsCoordinator.viewModel.hasUsageData"])
+    if ([pathCopy isEqualToString:@"usageDetailsCoordinator.viewModel.hasUsageData"])
     {
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v13 = [MEMORY[0x277CBEB68] null];
+      v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v12 == v13)
+      if (v12 == null)
       {
 
         v12 = 0;
@@ -83,24 +83,24 @@
     {
       [(STUsageGroupSpecifierProvider *)self coordinator];
 
-      if (![v10 isEqualToString:@"usageDetailsCoordinator.viewModel.selectedUsageReport"])
+      if (![pathCopy isEqualToString:@"usageDetailsCoordinator.viewModel.selectedUsageReport"])
       {
         goto LABEL_14;
       }
 
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
-      v14 = [MEMORY[0x277CBEB68] null];
+      v12 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+      null2 = [MEMORY[0x277CBEB68] null];
 
-      if (v12 == v14)
+      if (v12 == null2)
       {
 
         v12 = 0;
       }
 
-      v15 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v16 = [MEMORY[0x277CBEB68] null];
+      v15 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null3 = [MEMORY[0x277CBEB68] null];
 
-      if (v15 == v16)
+      if (v15 == null3)
       {
 
         v15 = 0;
@@ -114,41 +114,41 @@
 
   v17.receiver = self;
   v17.super_class = STNotificationsUsageGroupSpecifierProvider;
-  [(STNotificationsUsageGroupSpecifierProvider *)&v17 observeValueForKeyPath:v10 ofObject:a4 change:v11 context:a6];
+  [(STNotificationsUsageGroupSpecifierProvider *)&v17 observeValueForKeyPath:pathCopy ofObject:object change:changeCopy context:context];
 LABEL_14:
 }
 
-- (void)_selectedUsageReportDidChangeFrom:(id)a3 to:(id)a4
+- (void)_selectedUsageReportDidChangeFrom:(id)from to:(id)to
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6 != v7 && ([v6 isEqual:v7] & 1) == 0)
+  fromCopy = from;
+  toCopy = to;
+  if (fromCopy != toCopy && ([fromCopy isEqual:toCopy] & 1) == 0)
   {
-    v45 = v6;
-    v8 = [v6 type];
-    v9 = v8 == [v7 type];
-    v10 = [(STShowMoreUsageGroupSpecifierProvider *)self summarySpecifier];
-    [(STGroupSpecifierProvider *)self reloadSpecifier:v10 animated:v9];
+    v45 = fromCopy;
+    type = [fromCopy type];
+    v9 = type == [toCopy type];
+    summarySpecifier = [(STShowMoreUsageGroupSpecifierProvider *)self summarySpecifier];
+    [(STGroupSpecifierProvider *)self reloadSpecifier:summarySpecifier animated:v9];
 
-    v11 = [(STNotificationsUsageGroupSpecifierProvider *)self notificationSectionByBundleID];
-    v12 = [v7 notificationsByTrustIdentifier];
-    v13 = [v12 allKeys];
-    v14 = [v13 valueForKeyPath:@"identifier"];
+    notificationSectionByBundleID = [(STNotificationsUsageGroupSpecifierProvider *)self notificationSectionByBundleID];
+    notificationsByTrustIdentifier = [toCopy notificationsByTrustIdentifier];
+    allKeys = [notificationsByTrustIdentifier allKeys];
+    v14 = [allKeys valueForKeyPath:@"identifier"];
 
     v42 = v14;
     v15 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:v14];
     v16 = MEMORY[0x277CBEB98];
-    v17 = [(STNotificationsUsageGroupSpecifierProvider *)self notificationSectionByBundleID];
-    v18 = [v17 allKeys];
-    v19 = [v16 setWithArray:v18];
+    notificationSectionByBundleID2 = [(STNotificationsUsageGroupSpecifierProvider *)self notificationSectionByBundleID];
+    allKeys2 = [notificationSectionByBundleID2 allKeys];
+    v19 = [v16 setWithArray:allKeys2];
     [v15 minusSet:v19];
 
     v46 = v15;
     if ([v15 count])
     {
-      v20 = [(STNotificationsUsageGroupSpecifierProvider *)self notificationSettingsGateway];
-      v21 = [v20 sectionInfoForSectionIDs:v15];
+      notificationSettingsGateway = [(STNotificationsUsageGroupSpecifierProvider *)self notificationSettingsGateway];
+      v21 = [notificationSettingsGateway sectionInfoForSectionIDs:v15];
 
       v53 = 0u;
       v54 = 0u;
@@ -170,8 +170,8 @@ LABEL_14:
             }
 
             v27 = *(*(&v51 + 1) + 8 * i);
-            v28 = [v27 sectionID];
-            [v11 setObject:v27 forKeyedSubscript:v28];
+            sectionID = [v27 sectionID];
+            [notificationSectionByBundleID setObject:v27 forKeyedSubscript:sectionID];
           }
 
           v24 = [v22 countByEnumeratingWithState:&v51 objects:v56 count:16];
@@ -181,19 +181,19 @@ LABEL_14:
       }
     }
 
-    v43 = self;
-    v29 = [(STUsageGroupSpecifierProvider *)self coordinator];
-    v30 = [v29 viewModel];
-    v31 = [v30 installedBundleIDs];
+    selfCopy = self;
+    coordinator = [(STUsageGroupSpecifierProvider *)self coordinator];
+    viewModel = [coordinator viewModel];
+    installedBundleIDs = [viewModel installedBundleIDs];
 
-    v44 = v7;
-    v32 = [v7 notifications];
-    v33 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v32, "count")}];
+    v44 = toCopy;
+    notifications = [toCopy notifications];
+    v33 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(notifications, "count")}];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v34 = v32;
+    v34 = notifications;
     v35 = [v34 countByEnumeratingWithState:&v47 objects:v55 count:16];
     if (v35)
     {
@@ -209,8 +209,8 @@ LABEL_14:
           }
 
           v39 = *(*(&v47 + 1) + 8 * j);
-          v40 = [v39 budgetItemIdentifier];
-          v41 = [v31 containsObject:v40];
+          budgetItemIdentifier = [v39 budgetItemIdentifier];
+          v41 = [installedBundleIDs containsObject:budgetItemIdentifier];
 
           if (v41)
           {
@@ -224,21 +224,21 @@ LABEL_14:
       while (v36);
     }
 
-    [(STShowMoreUsageGroupSpecifierProvider *)v43 setUsageItems:v33];
-    v7 = v44;
-    v6 = v45;
+    [(STShowMoreUsageGroupSpecifierProvider *)selfCopy setUsageItems:v33];
+    toCopy = v44;
+    fromCopy = v45;
   }
 }
 
-- (id)newSpecifierWithUsageItem:(id)a3
+- (id)newSpecifierWithUsageItem:(id)item
 {
-  v4 = a3;
-  v5 = [(STNotificationsUsageGroupSpecifierProvider *)self notificationSectionByBundleID];
-  v6 = [v4 budgetItemIdentifier];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  itemCopy = item;
+  notificationSectionByBundleID = [(STNotificationsUsageGroupSpecifierProvider *)self notificationSectionByBundleID];
+  budgetItemIdentifier = [itemCopy budgetItemIdentifier];
+  v7 = [notificationSectionByBundleID objectForKeyedSubscript:budgetItemIdentifier];
 
   v8 = MEMORY[0x277D3FAD8];
-  v9 = [v4 displayName];
+  displayName = [itemCopy displayName];
   if (v7)
   {
     if ([v7 suppressFromSettings])
@@ -257,7 +257,7 @@ LABEL_14:
     v10 = -1;
   }
 
-  v11 = [v8 preferenceSpecifierNamed:v9 target:self set:0 get:sel_getNotificationsInfo_ detail:0 cell:v10 edit:0];
+  v11 = [v8 preferenceSpecifierNamed:displayName target:self set:0 get:sel_getNotificationsInfo_ detail:0 cell:v10 edit:0];
 
   v12 = PSBundlePathForPreferenceBundle();
   [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x277D40000]];
@@ -266,52 +266,52 @@ LABEL_14:
   [v11 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FE00]];
   [v11 setControllerLoadAction:sel_lazyLoadBundle_];
   [v11 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
-  v13 = [MEMORY[0x277D75348] systemGray4Color];
-  [v11 setObject:v13 forKeyedSubscript:0x2876778C8];
+  systemGray4Color = [MEMORY[0x277D75348] systemGray4Color];
+  [v11 setObject:systemGray4Color forKeyedSubscript:0x2876778C8];
 
   [v11 setObject:v7 forKeyedSubscript:*MEMORY[0x277D4BE18]];
-  [v11 setUserInfo:v4];
-  v14 = [v7 sectionID];
-  if (v14)
+  [v11 setUserInfo:itemCopy];
+  sectionID = [v7 sectionID];
+  if (sectionID)
   {
-    [v11 setIdentifier:v14];
+    [v11 setIdentifier:sectionID];
   }
 
   else
   {
-    v15 = [v4 identifier];
-    [v11 setIdentifier:v15];
+    identifier = [itemCopy identifier];
+    [v11 setIdentifier:identifier];
   }
 
   return v11;
 }
 
-- (void)updateSpecifier:(id)a3 usageItem:(id)a4
+- (void)updateSpecifier:(id)specifier usageItem:(id)item
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [v15 userInfo];
+  specifierCopy = specifier;
+  itemCopy = item;
+  userInfo = [specifierCopy userInfo];
 
-  if (v7 != v6)
+  if (userInfo != itemCopy)
   {
-    v8 = [v6 displayName];
-    [v15 setName:v8];
+    displayName = [itemCopy displayName];
+    [specifierCopy setName:displayName];
 
-    [v15 setUserInfo:v6];
-    v9 = [(STNotificationsUsageGroupSpecifierProvider *)self notificationSectionByBundleID];
-    v10 = [v6 budgetItemIdentifier];
-    v11 = [v9 objectForKeyedSubscript:v10];
+    [specifierCopy setUserInfo:itemCopy];
+    notificationSectionByBundleID = [(STNotificationsUsageGroupSpecifierProvider *)self notificationSectionByBundleID];
+    budgetItemIdentifier = [itemCopy budgetItemIdentifier];
+    v11 = [notificationSectionByBundleID objectForKeyedSubscript:budgetItemIdentifier];
 
-    v12 = [v11 sectionID];
-    if (v12)
+    sectionID = [v11 sectionID];
+    if (sectionID)
     {
-      [v15 setIdentifier:v12];
+      [specifierCopy setIdentifier:sectionID];
     }
 
     else
     {
-      v13 = [v6 identifier];
-      [v15 setIdentifier:v13];
+      identifier = [itemCopy identifier];
+      [specifierCopy setIdentifier:identifier];
     }
 
     if (v11)
@@ -324,25 +324,25 @@ LABEL_14:
       v14 = -1;
     }
 
-    [v15 setCellType:v14];
-    [v15 setObject:v11 forKeyedSubscript:*MEMORY[0x277D4BE18]];
+    [specifierCopy setCellType:v14];
+    [specifierCopy setObject:v11 forKeyedSubscript:*MEMORY[0x277D4BE18]];
   }
 }
 
-- (id)_usageDetailsCoordinator:(id)a3
+- (id)_usageDetailsCoordinator:(id)coordinator
 {
-  v3 = [(STUsageGroupSpecifierProvider *)self coordinator];
-  v4 = [v3 usageDetailsCoordinator];
+  coordinator = [(STUsageGroupSpecifierProvider *)self coordinator];
+  usageDetailsCoordinator = [coordinator usageDetailsCoordinator];
 
-  return v4;
+  return usageDetailsCoordinator;
 }
 
-- (void)_specifierIdentifierDidChange:(id)a3
+- (void)_specifierIdentifierDidChange:(id)change
 {
-  v6 = [a3 userInfo];
-  v4 = [v6 objectForKeyedSubscript:0x287674108];
-  v5 = [(STShowMoreUsageGroupSpecifierProvider *)self summarySpecifier];
-  [v5 setIdentifier:v4];
+  userInfo = [change userInfo];
+  v4 = [userInfo objectForKeyedSubscript:0x287674108];
+  summarySpecifier = [(STShowMoreUsageGroupSpecifierProvider *)self summarySpecifier];
+  [summarySpecifier setIdentifier:v4];
 }
 
 @end

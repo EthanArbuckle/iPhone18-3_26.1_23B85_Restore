@@ -1,5 +1,5 @@
 @interface CarouselItemModuleHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
@@ -14,16 +14,16 @@
   sub_1004D9544(v4);
   sub_10002A400(v4, v4[3]);
   LayoutMarginsAware<>.layoutFrame.getter();
-  v3 = [v2 traitCollection];
+  traitCollection = [v2 traitCollection];
   dispatch thunk of Placeable.place(at:with:)();
 
   sub_100007000(v4);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
-  v4 = [(CarouselItemModuleHeaderView *)v3 traitCollection];
+  selfCopy = self;
+  traitCollection = [(CarouselItemModuleHeaderView *)selfCopy traitCollection];
   sub_1004D9544(v11);
   sub_10002A400(v11, v11[3]);
   dispatch thunk of Placeable.measure(toFit:with:)();

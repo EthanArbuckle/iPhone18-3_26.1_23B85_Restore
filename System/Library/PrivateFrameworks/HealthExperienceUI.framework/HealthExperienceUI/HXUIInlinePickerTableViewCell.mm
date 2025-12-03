@@ -1,38 +1,38 @@
 @interface HXUIInlinePickerTableViewCell
 - (CGRect)_contentLabelFrame;
 - (CGRect)_pickerFrame;
-- (CGSize)contentLabelHeightForBoundsSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (HXUIInlinePickerTableViewCell)initWithTitle:(id)a3;
+- (CGSize)contentLabelHeightForBoundsSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (HXUIInlinePickerTableViewCell)initWithTitle:(id)title;
 - (void)layoutSubviews;
-- (void)setExpanded:(BOOL)a3;
+- (void)setExpanded:(BOOL)expanded;
 @end
 
 @implementation HXUIInlinePickerTableViewCell
 
-- (HXUIInlinePickerTableViewCell)initWithTitle:(id)a3
+- (HXUIInlinePickerTableViewCell)initWithTitle:(id)title
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v6 = [v5 UUIDString];
+  titleCopy = title;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v19.receiver = self;
   v19.super_class = HXUIInlinePickerTableViewCell;
-  v7 = [(HXUIInlinePickerTableViewCell *)&v19 initWithStyle:0 reuseIdentifier:v6];
+  v7 = [(HXUIInlinePickerTableViewCell *)&v19 initWithStyle:0 reuseIdentifier:uUIDString];
   if (v7)
   {
-    v8 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-    [(HXUIInlinePickerTableViewCell *)v7 setBackgroundColor:v8];
+    secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+    [(HXUIInlinePickerTableViewCell *)v7 setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
     [(HXUIInlinePickerTableViewCell *)v7 setSelectionStyle:0];
     v9 = objc_alloc_init(HXUIPickerLabelView);
     contentLabel = v7->_contentLabel;
     v7->_contentLabel = v9;
 
-    [(HXUIPickerLabelView *)v7->_contentLabel setText:v4];
-    v11 = [(HXUIInlinePickerTableViewCell *)v7 contentView];
-    [v11 addSubview:v7->_contentLabel];
+    [(HXUIPickerLabelView *)v7->_contentLabel setText:titleCopy];
+    contentView = [(HXUIInlinePickerTableViewCell *)v7 contentView];
+    [contentView addSubview:v7->_contentLabel];
 
     [(HXUIInlinePickerTableViewCell *)v7 _contentLabelFrame];
     [(HXUIPickerLabelView *)v7->_contentLabel setFrame:?];
@@ -41,8 +41,8 @@
     v7->_picker = v12;
 
     [(UIPickerView *)v7->_picker setAlpha:0.0];
-    v14 = [(HXUIInlinePickerTableViewCell *)v7 contentView];
-    [v14 addSubview:v7->_picker];
+    contentView2 = [(HXUIInlinePickerTableViewCell *)v7 contentView];
+    [contentView2 addSubview:v7->_picker];
 
     [(HXUIInlinePickerTableViewCell *)v7 _pickerFrame];
     [(UIPickerView *)v7->_picker setFrame:?];
@@ -100,17 +100,17 @@
   [(UIPickerView *)self->_picker setFrame:?];
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  self->_expanded = a3;
+  self->_expanded = expanded;
   v5 = 0.0;
-  if (a3)
+  if (expanded)
   {
     v5 = 1.0;
   }
 
   [(UIPickerView *)self->_picker setAlpha:v5];
-  if (a3)
+  if (expanded)
   {
     [MEMORY[0x1E69DC888] systemBlueColor];
   }
@@ -123,24 +123,24 @@
   [(HXUIPickerLabelView *)self->_contentLabel setDetailTextColor:v6];
 }
 
-- (CGSize)contentLabelHeightForBoundsSize:(CGSize)a3
+- (CGSize)contentLabelHeightForBoundsSize:(CGSize)size
 {
-  v3 = a3.width + 16.0 * -2.0;
+  v3 = size.width + 16.0 * -2.0;
   if (v3 < 52.0)
   {
     v3 = 52.0;
   }
 
-  [(HXUIPickerLabelView *)self->_contentLabel sizeThatFits:v3, a3.height];
+  [(HXUIPickerLabelView *)self->_contentLabel sizeThatFits:v3, size.height];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(HXUIInlinePickerTableViewCell *)self contentLabelHeightForBoundsSize:?];
   v7 = v6;
   v9 = v8;

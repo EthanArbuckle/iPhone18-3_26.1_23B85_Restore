@@ -1,21 +1,21 @@
 @interface _DPZeroConcentratedDP
-- (_DPZeroConcentratedDP)initWithRho:(double)a3 error:(id *)a4;
-- (id)approximateDPForEpsilon:(double)a3 error:(id *)a4;
+- (_DPZeroConcentratedDP)initWithRho:(double)rho error:(id *)error;
+- (id)approximateDPForEpsilon:(double)epsilon error:(id *)error;
 @end
 
 @implementation _DPZeroConcentratedDP
 
-- (_DPZeroConcentratedDP)initWithRho:(double)a3 error:(id *)a4
+- (_DPZeroConcentratedDP)initWithRho:(double)rho error:(id *)error
 {
-  v5 = self;
-  v7 = (*&a3 & 0x7FFFFFFFFFFFFFFFuLL) - 1 < 0xFFFFFFFFFFFFFLL;
-  v8 = a3 < 0.0 && ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF;
-  if (a3 >= 0.0)
+  selfCopy = self;
+  v7 = (*&rho & 0x7FFFFFFFFFFFFFFFuLL) - 1 < 0xFFFFFFFFFFFFFLL;
+  v8 = rho < 0.0 && ((*&rho & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 < 0x3FF;
+  if (rho >= 0.0)
   {
     v7 = 0;
   }
 
-  v9 = (*&a3 & 0x7FFFFFFFFFFFFFFFLL) == 0x7FF0000000000000 || v7;
+  v9 = (*&rho & 0x7FFFFFFFFFFFFFFFLL) == 0x7FF0000000000000 || v7;
   if ((v9 | v8) == 1)
   {
     v10 = _DPPrivacyBudgetError(1, @"Zero Concentrated-DP rho must be finite, and not NAN, and at least 0.");
@@ -25,10 +25,10 @@
       [_DPSemanticVersion initWithString:v10 error:v11];
     }
 
-    if (a4)
+    if (error)
     {
       v12 = v10;
-      *a4 = v10;
+      *error = v10;
     }
 
     v13 = 0;
@@ -41,17 +41,17 @@
     v14 = [(_DPZeroConcentratedDP *)&v16 init];
     if (v14)
     {
-      v14->_rho = a3;
+      v14->_rho = rho;
     }
 
-    v5 = v14;
-    v13 = v5;
+    selfCopy = v14;
+    v13 = selfCopy;
   }
 
   return v13;
 }
 
-- (id)approximateDPForEpsilon:(double)a3 error:(id *)a4
+- (id)approximateDPForEpsilon:(double)epsilon error:(id *)error
 {
   if ([_DPApproximateDP isValidEpsilon:"isValidEpsilon:error:" error:?])
   {
@@ -60,9 +60,9 @@
     if (v8 != 0.0)
     {
       [(_DPZeroConcentratedDP *)self rho];
-      v10 = (a3 + 1.0) / (v9 + v9) + 2.0;
-      v22 = a3;
-      v11 = -a3;
+      v10 = (epsilon + 1.0) / (v9 + v9) + 2.0;
+      epsilonCopy = epsilon;
+      v11 = -epsilon;
       v12 = 1.01;
       v13 = 1000;
       do
@@ -97,10 +97,10 @@
         v7 = 1.0;
       }
 
-      a3 = v22;
+      epsilon = epsilonCopy;
     }
 
-    v20 = [[_DPApproximateDP alloc] initWithEpsilon:a4 delta:a3 error:v7];
+    v20 = [[_DPApproximateDP alloc] initWithEpsilon:error delta:epsilon error:v7];
   }
 
   else

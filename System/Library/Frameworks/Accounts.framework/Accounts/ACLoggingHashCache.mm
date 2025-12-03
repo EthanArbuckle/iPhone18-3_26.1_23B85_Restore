@@ -1,7 +1,7 @@
 @interface ACLoggingHashCache
 + (id)sharedCache;
-- (ACLoggingHashCache)initWithMaxCapacity:(unint64_t)a3;
-- (id)hashedString:(id)a3;
+- (ACLoggingHashCache)initWithMaxCapacity:(unint64_t)capacity;
+- (id)hashedString:(id)string;
 @end
 
 @implementation ACLoggingHashCache
@@ -25,7 +25,7 @@ uint64_t __33__ACLoggingHashCache_sharedCache__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (ACLoggingHashCache)initWithMaxCapacity:(unint64_t)a3
+- (ACLoggingHashCache)initWithMaxCapacity:(unint64_t)capacity
 {
   v11.receiver = self;
   v11.super_class = ACLoggingHashCache;
@@ -33,13 +33,13 @@ uint64_t __33__ACLoggingHashCache_sharedCache__block_invoke()
   v5 = v4;
   if (v4)
   {
-    v4->_maxCapacity = a3;
+    v4->_maxCapacity = capacity;
     v4->_cacheLock._os_unfair_lock_opaque = 0;
-    v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:a3];
+    v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:capacity];
     cacheDictionary = v5->_cacheDictionary;
     v5->_cacheDictionary = v6;
 
-    v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:a3];
+    v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:capacity];
     oldestKeys = v5->_oldestKeys;
     v5->_oldestKeys = v8;
   }
@@ -47,14 +47,14 @@ uint64_t __33__ACLoggingHashCache_sharedCache__block_invoke()
   return v5;
 }
 
-- (id)hashedString:(id)a3
+- (id)hashedString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
     if (_os_feature_enabled_impl())
     {
-      v5 = v4;
+      v5 = stringCopy;
     }
 
     else
@@ -63,8 +63,8 @@ uint64_t __33__ACLoggingHashCache_sharedCache__block_invoke()
       v8[1] = 3221225472;
       v9 = __35__ACLoggingHashCache_hashedString___block_invoke;
       v10 = &unk_1E7975450;
-      v11 = self;
-      v12 = v4;
+      selfCopy = self;
+      v12 = stringCopy;
       v6 = v8;
       os_unfair_lock_lock(&self->_cacheLock);
       v5 = v9(v6);

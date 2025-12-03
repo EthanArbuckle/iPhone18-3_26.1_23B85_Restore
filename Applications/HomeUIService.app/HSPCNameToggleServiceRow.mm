@@ -1,24 +1,24 @@
 @interface HSPCNameToggleServiceRow
-- (HSPCNameToggleServiceRow)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)setSelected:(BOOL)a3;
+- (HSPCNameToggleServiceRow)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation HSPCNameToggleServiceRow
 
-- (HSPCNameToggleServiceRow)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HSPCNameToggleServiceRow)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v13.receiver = self;
   v13.super_class = HSPCNameToggleServiceRow;
-  v4 = [(HSPCNameServiceRow *)&v13 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HSPCNameServiceRow *)&v13 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(HSPCRow *)v4 leftView];
+    leftView = [(HSPCRow *)v4 leftView];
 
-    if (v6)
+    if (leftView)
     {
-      v7 = [(HSPCRow *)v5 leftView];
-      [v7 removeFromSuperview];
+      leftView2 = [(HSPCRow *)v5 leftView];
+      [leftView2 removeFromSuperview];
     }
 
     v8 = [UIImageView alloc];
@@ -26,8 +26,8 @@
     v10 = [v8 initWithImage:v9 highlightedImage:0];
 
     [v10 setUserInteractionEnabled:1];
-    v11 = [(HSPCNameToggleServiceRow *)v5 contentView];
-    [v11 addSubview:v10];
+    contentView = [(HSPCNameToggleServiceRow *)v5 contentView];
+    [contentView addSubview:v10];
 
     [(HSPCRow *)v5 setLeftView:v10];
   }
@@ -35,17 +35,17 @@
   return v5;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v11.receiver = self;
   v11.super_class = HSPCNameToggleServiceRow;
   [(HSPCNameToggleServiceRow *)&v11 setSelected:?];
   objc_opt_class();
-  v5 = [(HSPCRow *)self leftView];
+  leftView = [(HSPCRow *)self leftView];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = leftView;
   }
 
   else
@@ -55,7 +55,7 @@
 
   v7 = v6;
 
-  if (v3)
+  if (selectedCopy)
   {
     v8 = [UIImage systemImageNamed:@"checkmark.circle.fill"];
     [v7 setImage:v8];

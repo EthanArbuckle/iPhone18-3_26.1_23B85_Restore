@@ -1,30 +1,30 @@
 @interface MADAVAssetResourceLoaderDelegate
-+ (void)unimplementedExceptionForMethodName:(id)a3;
-- (void)resourceLoader:(id)a3 didCancelAuthenticationChallenge:(id)a4;
-- (void)resourceLoader:(id)a3 didCancelLoadingRequest:(id)a4;
++ (void)unimplementedExceptionForMethodName:(id)name;
+- (void)resourceLoader:(id)loader didCancelAuthenticationChallenge:(id)challenge;
+- (void)resourceLoader:(id)loader didCancelLoadingRequest:(id)request;
 @end
 
 @implementation MADAVAssetResourceLoaderDelegate
 
-+ (void)unimplementedExceptionForMethodName:(id)a3
++ (void)unimplementedExceptionForMethodName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = MEMORY[0x1E695DF30];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[MADAVAssetResourceLoaderDelegate %@] should not be called", v3];
-  v6 = [v4 exceptionWithName:@"NotImplementedException" reason:v5 userInfo:0];
+  nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"[MADAVAssetResourceLoaderDelegate %@] should not be called", nameCopy];
+  v6 = [v4 exceptionWithName:@"NotImplementedException" reason:nameCopy userInfo:0];
   v7 = v6;
 
   objc_exception_throw(v6);
 }
 
-- (void)resourceLoader:(id)a3 didCancelLoadingRequest:(id)a4
+- (void)resourceLoader:(id)loader didCancelLoadingRequest:(id)request
 {
   v4 = objc_opt_class();
 
   [v4 unimplementedExceptionForMethodName:@"didCancelLoadingRequest"];
 }
 
-- (void)resourceLoader:(id)a3 didCancelAuthenticationChallenge:(id)a4
+- (void)resourceLoader:(id)loader didCancelAuthenticationChallenge:(id)challenge
 {
   v4 = objc_opt_class();
 

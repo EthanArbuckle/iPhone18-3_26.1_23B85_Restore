@@ -1,18 +1,18 @@
 @interface JSVideoDetailViewController
-- (_TtC16MusicApplication27JSVideoDetailViewController)initWithCoder:(id)a3;
-- (_TtC16MusicApplication27JSVideoDetailViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC16MusicApplication27JSVideoDetailViewController)initWithCoder:(id)coder;
+- (_TtC16MusicApplication27JSVideoDetailViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation JSVideoDetailViewController
 
-- (_TtC16MusicApplication27JSVideoDetailViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MusicApplication27JSVideoDetailViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_AB92A0();
     *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication27JSVideoDetailViewController_modelResponse) = 0;
     *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication27JSVideoDetailViewController_modelResponseInvalidationObserver) = 0;
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_AB9260();
   }
 
@@ -20,25 +20,25 @@
   {
     *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication27JSVideoDetailViewController_modelResponse) = 0;
     *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication27JSVideoDetailViewController_modelResponseInvalidationObserver) = 0;
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for JSVideoDetailViewController();
-  v9 = [(JSVideoDetailViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(JSVideoDetailViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC16MusicApplication27JSVideoDetailViewController)initWithCoder:(id)a3
+- (_TtC16MusicApplication27JSVideoDetailViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication27JSVideoDetailViewController_modelResponse) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication27JSVideoDetailViewController_modelResponseInvalidationObserver) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for JSVideoDetailViewController();
-  v4 = a3;
-  v5 = [(JSVideoDetailViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(JSVideoDetailViewController *)&v7 initWithCoder:coderCopy];
 
   return v5;
 }

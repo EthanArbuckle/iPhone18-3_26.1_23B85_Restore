@@ -1,6 +1,6 @@
 @interface CoreThemeConstantEnumerator
-+ (id)enumeratorForGlobalListAtAddress:(void *)a3;
-- (CoreThemeConstantEnumerator)initWithGlobalListAtAddress:(void *)a3;
++ (id)enumeratorForGlobalListAtAddress:(void *)address;
+- (CoreThemeConstantEnumerator)initWithGlobalListAtAddress:(void *)address;
 - (id)firstConstantHelper;
 - (id)lastConstantHelper;
 - (id)nextConstantHelper;
@@ -11,20 +11,20 @@
 
 @implementation CoreThemeConstantEnumerator
 
-- (CoreThemeConstantEnumerator)initWithGlobalListAtAddress:(void *)a3
+- (CoreThemeConstantEnumerator)initWithGlobalListAtAddress:(void *)address
 {
   v5.receiver = self;
   v5.super_class = CoreThemeConstantEnumerator;
   result = [(CoreThemeConstantEnumerator *)&v5 init];
-  result->_globalListPointer = a3;
+  result->_globalListPointer = address;
   result->_listIndex = -1;
   result->_indexOfLastEntry = -1;
   return result;
 }
 
-+ (id)enumeratorForGlobalListAtAddress:(void *)a3
++ (id)enumeratorForGlobalListAtAddress:(void *)address
 {
-  v3 = [[a1 alloc] initWithGlobalListAtAddress:a3];
+  v3 = [[self alloc] initWithGlobalListAtAddress:address];
 
   return v3;
 }
@@ -34,10 +34,10 @@
   self->_listIndex = -1;
   do
   {
-    v3 = [(CoreThemeConstantEnumerator *)self nextConstantHelper];
+    nextConstantHelper = [(CoreThemeConstantEnumerator *)self nextConstantHelper];
   }
 
-  while (v3 && [objc_msgSend(v3 "label")]);
+  while (nextConstantHelper && [objc_msgSend(nextConstantHelper "label")]);
   v4 = self->_listIndex - 1;
   self->_listIndex = v4;
   self->_indexOfLastEntry = v4;
@@ -71,13 +71,13 @@
     self->_listIndex = 1;
   }
 
-  v2 = [(CoreThemeConstantEnumerator *)self currentConstantHelper];
-  if (![objc_msgSend(v2 "label")])
+  currentConstantHelper = [(CoreThemeConstantEnumerator *)self currentConstantHelper];
+  if (![objc_msgSend(currentConstantHelper "label")])
   {
     self->_isPastLastEntry = 1;
   }
 
-  return v2;
+  return currentConstantHelper;
 }
 
 - (id)previousConstantHelper
@@ -96,13 +96,13 @@
 - (id)firstConstantHelper
 {
   self->_listIndex = 0;
-  v3 = [(CoreThemeConstantEnumerator *)self currentConstantHelper];
-  if (![objc_msgSend(v3 "label")])
+  currentConstantHelper = [(CoreThemeConstantEnumerator *)self currentConstantHelper];
+  if (![objc_msgSend(currentConstantHelper "label")])
   {
     self->_isPastLastEntry = 1;
   }
 
-  return v3;
+  return currentConstantHelper;
 }
 
 - (id)lastConstantHelper

@@ -1,6 +1,6 @@
 @interface WBSPasswordWarning
 - (BOOL)hasBeenHidden;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)shouldShowWarningsWhenLoggingIn;
 - (NSString)localizedAlertWarningForSharingReusedPassword;
 - (NSString)localizedBody;
@@ -8,49 +8,49 @@
 - (NSString)localizedInformationTextForWarningWhenLoggingIn;
 - (NSString)localizedShortDescriptionOfProblemType;
 - (NSString)localizedShortDescriptivePhrase;
-- (WBSPasswordWarning)initWithSavedAccount:(id)a3 issueTypes:(unint64_t)a4 weakPasswordEvaluation:(id)a5 titlesOfSavedAccountsWithReusedPassword:(id)a6 savedAccountIsOnlySavedAccountForHighLevelDomain:(BOOL)a7;
-- (id)_localizedLongWarningStringsForClient:(unint64_t)a3;
-- (id)_localizedShortDescriptionOfMultipleIssuesWithFullDescriptivePhrase:(BOOL)a3;
-- (id)_localizedShortDescriptionOfSingleIssueWithFullDescriptivePhrase:(BOOL)a3;
-- (id)localizedLongDescriptionForClient:(unint64_t)a3;
-- (int64_t)compare:(id)a3;
+- (WBSPasswordWarning)initWithSavedAccount:(id)account issueTypes:(unint64_t)types weakPasswordEvaluation:(id)evaluation titlesOfSavedAccountsWithReusedPassword:(id)password savedAccountIsOnlySavedAccountForHighLevelDomain:(BOOL)domain;
+- (id)_localizedLongWarningStringsForClient:(unint64_t)client;
+- (id)_localizedShortDescriptionOfMultipleIssuesWithFullDescriptivePhrase:(BOOL)phrase;
+- (id)_localizedShortDescriptionOfSingleIssueWithFullDescriptivePhrase:(BOOL)phrase;
+- (id)localizedLongDescriptionForClient:(unint64_t)client;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hashForUserAcknowlegement;
 - (unint64_t)severity;
-- (void)_addFormerlySharedWarningStringToWarningStrings:(id)a3;
-- (void)_addReusedWarningStringToWarningStrings:(id)a3;
+- (void)_addFormerlySharedWarningStringToWarningStrings:(id)strings;
+- (void)_addReusedWarningStringToWarningStrings:(id)strings;
 @end
 
 @implementation WBSPasswordWarning
 
-- (WBSPasswordWarning)initWithSavedAccount:(id)a3 issueTypes:(unint64_t)a4 weakPasswordEvaluation:(id)a5 titlesOfSavedAccountsWithReusedPassword:(id)a6 savedAccountIsOnlySavedAccountForHighLevelDomain:(BOOL)a7
+- (WBSPasswordWarning)initWithSavedAccount:(id)account issueTypes:(unint64_t)types weakPasswordEvaluation:(id)evaluation titlesOfSavedAccountsWithReusedPassword:(id)password savedAccountIsOnlySavedAccountForHighLevelDomain:(BOOL)domain
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  accountCopy = account;
+  evaluationCopy = evaluation;
+  passwordCopy = password;
   v22.receiver = self;
   v22.super_class = WBSPasswordWarning;
   v16 = [(WBSPasswordWarning *)&v22 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_savedAccount, a3);
-    v17->_issueTypes = a4;
-    objc_storeStrong(&v17->_weakPasswordEvaluation, a5);
-    v18 = [v15 copy];
+    objc_storeStrong(&v16->_savedAccount, account);
+    v17->_issueTypes = types;
+    objc_storeStrong(&v17->_weakPasswordEvaluation, evaluation);
+    v18 = [passwordCopy copy];
     titlesOfSavedAccountsWithReusedPassword = v17->_titlesOfSavedAccountsWithReusedPassword;
     v17->_titlesOfSavedAccountsWithReusedPassword = v18;
 
-    v17->_savedAccountIsOnlySavedAccountForHighLevelDomain = a7;
+    v17->_savedAccountIsOnlySavedAccountForHighLevelDomain = domain;
     v20 = v17;
   }
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -60,7 +60,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(WBSSavedAccount *)self->_savedAccount isEqual:v5->_savedAccount]&& self->_issueTypes == v5->_issueTypes && [(WBSPasswordEvaluation *)self->_weakPasswordEvaluation isEqual:v5->_weakPasswordEvaluation]&& self->_savedAccountIsOnlySavedAccountForHighLevelDomain == v5->_savedAccountIsOnlySavedAccountForHighLevelDomain;
     }
 
@@ -123,14 +123,14 @@
   return [(WBSPasswordWarning *)self _localizedShortDescriptionWithFullDescriptivePhrase:0 shouldDescribeMultipleIssues:v3];
 }
 
-- (id)_localizedShortDescriptionOfMultipleIssuesWithFullDescriptivePhrase:(BOOL)a3
+- (id)_localizedShortDescriptionOfMultipleIssuesWithFullDescriptivePhrase:(BOOL)phrase
 {
   issueTypes = self->_issueTypes;
   if ((issueTypes & 0xC) != 0)
   {
     if ((~issueTypes & 0x30) == 0)
     {
-      if (a3)
+      if (phrase)
       {
         v5 = @"Compromised password, previously shared passkey and password";
         goto LABEL_34;
@@ -143,7 +143,7 @@ LABEL_33:
 
     if ((issueTypes & 0x10) != 0)
     {
-      if (a3)
+      if (phrase)
       {
         v5 = @"Compromised, previously shared password";
         goto LABEL_34;
@@ -154,7 +154,7 @@ LABEL_33:
 
     if ((issueTypes & 0x20) != 0)
     {
-      if (a3)
+      if (phrase)
       {
         v5 = @"Compromised password, previously shared passkey";
         goto LABEL_34;
@@ -165,7 +165,7 @@ LABEL_33:
 
     if (issueTypes)
     {
-      if (a3)
+      if (phrase)
       {
         v5 = @"Compromised, reused password";
       }
@@ -178,7 +178,7 @@ LABEL_33:
 
     else if ((issueTypes & 2) != 0)
     {
-      if (a3)
+      if (phrase)
       {
         v5 = @"Compromised, easily guessed password";
       }
@@ -189,7 +189,7 @@ LABEL_33:
       }
     }
 
-    else if (a3)
+    else if (phrase)
     {
       v5 = @"Compromised password";
     }
@@ -207,7 +207,7 @@ LABEL_34:
 
   if ((~issueTypes & 3) == 0)
   {
-    if (a3)
+    if (phrase)
     {
       v5 = @"Easily guessed, reused password";
     }
@@ -222,7 +222,7 @@ LABEL_34:
 
   if ((issueTypes & 2) != 0)
   {
-    if (a3)
+    if (phrase)
     {
       v5 = @"Easily guessed password";
     }
@@ -237,7 +237,7 @@ LABEL_34:
 
   if (issueTypes)
   {
-    if (a3)
+    if (phrase)
     {
       v5 = @"Reused password";
     }
@@ -252,7 +252,7 @@ LABEL_34:
 
   if ((~issueTypes & 0x30) == 0)
   {
-    if (a3)
+    if (phrase)
     {
       v5 = @"Previously shared passkey and password";
       goto LABEL_34;
@@ -265,7 +265,7 @@ LABEL_53:
 
   if ((issueTypes & 0x10) != 0)
   {
-    if (a3)
+    if (phrase)
     {
       v5 = @"Previously shared password";
       goto LABEL_34;
@@ -276,7 +276,7 @@ LABEL_53:
 
   if ((issueTypes & 0x20) != 0)
   {
-    if (a3)
+    if (phrase)
     {
       v5 = @"Previously shared passkey";
       goto LABEL_34;
@@ -290,12 +290,12 @@ LABEL_53:
   return v6;
 }
 
-- (id)_localizedShortDescriptionOfSingleIssueWithFullDescriptivePhrase:(BOOL)a3
+- (id)_localizedShortDescriptionOfSingleIssueWithFullDescriptivePhrase:(BOOL)phrase
 {
   issueTypes = self->_issueTypes;
   if ((issueTypes & 0xC) != 0)
   {
-    if (a3)
+    if (phrase)
     {
       v5 = @"Compromised password";
     }
@@ -310,7 +310,7 @@ LABEL_53:
 
   if ((issueTypes & 2) != 0)
   {
-    if (a3)
+    if (phrase)
     {
       v5 = @"Easily guessed password";
     }
@@ -328,7 +328,7 @@ LABEL_27:
 
   if (issueTypes)
   {
-    if (a3)
+    if (phrase)
     {
       v5 = @"Reused password";
     }
@@ -343,7 +343,7 @@ LABEL_27:
 
   if ((~issueTypes & 0x30) == 0)
   {
-    if (a3)
+    if (phrase)
     {
       v5 = @"Previously shared passkey and password";
       goto LABEL_27;
@@ -356,7 +356,7 @@ LABEL_26:
 
   if ((issueTypes & 0x10) != 0)
   {
-    if (a3)
+    if (phrase)
     {
       v5 = @"Previously shared password";
       goto LABEL_27;
@@ -367,7 +367,7 @@ LABEL_26:
 
   if ((issueTypes & 0x20) != 0)
   {
-    if (a3)
+    if (phrase)
     {
       v5 = @"Previously shared passkey";
       goto LABEL_27;
@@ -381,7 +381,7 @@ LABEL_26:
   return v6;
 }
 
-- (id)_localizedLongWarningStringsForClient:(unint64_t)a3
+- (id)_localizedLongWarningStringsForClient:(unint64_t)client
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   issueTypes = self->_issueTypes;
@@ -413,7 +413,7 @@ LABEL_26:
 
   if (!v11)
   {
-    v12 = [(WBSPasswordEvaluation *)self->_weakPasswordEvaluation userFeedbackStringWithPasswordVisibility:[(WBSPasswordWarning *)self _passwordVisibilityForClient:a3]];
+    v12 = [(WBSPasswordEvaluation *)self->_weakPasswordEvaluation userFeedbackStringWithPasswordVisibility:[(WBSPasswordWarning *)self _passwordVisibilityForClient:client]];
     if (v12)
     {
       [v5 addObject:v12];
@@ -447,19 +447,19 @@ LABEL_26:
   return v13;
 }
 
-- (void)_addReusedWarningStringToWarningStrings:(id)a3
+- (void)_addReusedWarningStringToWarningStrings:(id)strings
 {
-  v26 = a3;
+  stringsCopy = strings;
   v4 = [(NSArray *)self->_titlesOfSavedAccountsWithReusedPassword count];
   if (v4 > 1)
   {
     if (v4 != 2)
     {
       v5 = v4 == 3;
-      v6 = v26;
+      v6 = stringsCopy;
       if (v5)
       {
-        v10 = [v26 count];
+        v10 = [stringsCopy count];
         v11 = MEMORY[0x1E696AEC0];
         if (v10)
         {
@@ -476,7 +476,7 @@ LABEL_26:
         v20 = [(NSArray *)self->_titlesOfSavedAccountsWithReusedPassword objectAtIndexedSubscript:1];
         v24 = [(NSArray *)self->_titlesOfSavedAccountsWithReusedPassword objectAtIndexedSubscript:2];
         v25 = [v11 stringWithFormat:v18, v19, v20, v24];
-        [v26 addObject:v25];
+        [stringsCopy addObject:v25];
 
         goto LABEL_26;
       }
@@ -484,7 +484,7 @@ LABEL_26:
       goto LABEL_12;
     }
 
-    v16 = [v26 count];
+    v16 = [stringsCopy count];
     v8 = MEMORY[0x1E696AEC0];
     if (v16)
     {
@@ -510,7 +510,7 @@ LABEL_26:
     }
 
     v5 = v4 == 1;
-    v6 = v26;
+    v6 = stringsCopy;
     if (!v5)
     {
 LABEL_12:
@@ -533,7 +533,7 @@ LABEL_12:
       goto LABEL_25;
     }
 
-    v7 = [v26 count];
+    v7 = [stringsCopy count];
     v8 = MEMORY[0x1E696AEC0];
     if (v7)
     {
@@ -555,25 +555,25 @@ LABEL_12:
   v21 = [v8 stringWithFormat:v18, v19, v20];
 LABEL_25:
   v24 = v21;
-  [v26 addObject:v21];
+  [stringsCopy addObject:v21];
 LABEL_26:
 
 LABEL_27:
 }
 
-- (void)_addFormerlySharedWarningStringToWarningStrings:(id)a3
+- (void)_addFormerlySharedWarningStringToWarningStrings:(id)strings
 {
-  v23 = a3;
+  stringsCopy = strings;
   v4 = (self->_issueTypes >> 4) & 3;
   if (v4 > 1)
   {
     if (v4 == 2)
     {
-      v11 = [(WBSSavedAccount *)self->_savedAccount formerlySharedPasskeyMarker];
-      v6 = [v11 nameOfGroupCredentialWasLastSharedIn];
+      formerlySharedPasskeyMarker = [(WBSSavedAccount *)self->_savedAccount formerlySharedPasskeyMarker];
+      nameOfGroupCredentialWasLastSharedIn = [formerlySharedPasskeyMarker nameOfGroupCredentialWasLastSharedIn];
 
-      v12 = [v23 count];
-      v13 = [v6 length];
+      v12 = [stringsCopy count];
+      v13 = [nameOfGroupCredentialWasLastSharedIn length];
       if (v12)
       {
         if (v13)
@@ -601,22 +601,22 @@ LABEL_27:
 
     else
     {
-      v14 = [(WBSSavedAccount *)self->_savedAccount formerlySharedPasswordMarker];
-      v15 = [v14 nameOfGroupCredentialWasLastSharedIn];
-      v16 = v15;
-      if (v15)
+      formerlySharedPasswordMarker = [(WBSSavedAccount *)self->_savedAccount formerlySharedPasswordMarker];
+      nameOfGroupCredentialWasLastSharedIn2 = [formerlySharedPasswordMarker nameOfGroupCredentialWasLastSharedIn];
+      v16 = nameOfGroupCredentialWasLastSharedIn2;
+      if (nameOfGroupCredentialWasLastSharedIn2)
       {
-        v6 = v15;
+        nameOfGroupCredentialWasLastSharedIn = nameOfGroupCredentialWasLastSharedIn2;
       }
 
       else
       {
-        v17 = [(WBSSavedAccount *)self->_savedAccount formerlySharedPasskeyMarker];
-        v6 = [v17 nameOfGroupCredentialWasLastSharedIn];
+        formerlySharedPasskeyMarker2 = [(WBSSavedAccount *)self->_savedAccount formerlySharedPasskeyMarker];
+        nameOfGroupCredentialWasLastSharedIn = [formerlySharedPasskeyMarker2 nameOfGroupCredentialWasLastSharedIn];
       }
 
-      v18 = [v23 count];
-      v19 = [v6 length];
+      v18 = [stringsCopy count];
+      v19 = [nameOfGroupCredentialWasLastSharedIn length];
       if (v18)
       {
         if (v19)
@@ -644,7 +644,7 @@ LABEL_27:
 
 LABEL_29:
     v20 = _WBSLocalizedString(v22, &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
-    [v23 addObject:v20];
+    [stringsCopy addObject:v20];
     goto LABEL_30;
   }
 
@@ -653,11 +653,11 @@ LABEL_29:
     goto LABEL_31;
   }
 
-  v5 = [(WBSSavedAccount *)self->_savedAccount formerlySharedPasswordMarker];
-  v6 = [v5 nameOfGroupCredentialWasLastSharedIn];
+  formerlySharedPasswordMarker2 = [(WBSSavedAccount *)self->_savedAccount formerlySharedPasswordMarker];
+  nameOfGroupCredentialWasLastSharedIn = [formerlySharedPasswordMarker2 nameOfGroupCredentialWasLastSharedIn];
 
-  v7 = [v23 count];
-  v8 = [v6 length];
+  v7 = [stringsCopy count];
+  v8 = [nameOfGroupCredentialWasLastSharedIn length];
   if (!v7)
   {
     if (v8)
@@ -681,8 +681,8 @@ LABEL_29:
   v10 = @"You also previously shared this password with the group “%@”. You should change this password if you want to ensure that members of that group no longer have access to this account.";
 LABEL_22:
   v20 = _WBSLocalizedString(v10, &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
-  v21 = [v9 localizedStringWithFormat:v20, v6];
-  [v23 addObject:v21];
+  v21 = [v9 localizedStringWithFormat:v20, nameOfGroupCredentialWasLastSharedIn];
+  [stringsCopy addObject:v21];
 
 LABEL_30:
 LABEL_31:
@@ -729,8 +729,8 @@ LABEL_9:
     v4 = @"Your “%@” password was detected in a data leak and may be compromised. Passwords can create and save a new one to help keep your account safe.";
 LABEL_9:
     v7 = _WBSLocalizedString(v4, &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
-    v8 = [(WBSSavedAccount *)self->_savedAccount effectiveTitle];
-    v9 = [v3 localizedStringWithFormat:v7, v8];
+    effectiveTitle = [(WBSSavedAccount *)self->_savedAccount effectiveTitle];
+    v9 = [v3 localizedStringWithFormat:v7, effectiveTitle];
 LABEL_10:
 
     goto LABEL_11;
@@ -753,10 +753,10 @@ LABEL_10:
       {
         v18 = MEMORY[0x1E696AEC0];
         v7 = _WBSLocalizedString(@"Youʼre already using the password for “%@” with “%@” and “%@”. Passwords can create and save a new one to help keep your account safe.", &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
-        v8 = [(WBSSavedAccount *)self->_savedAccount effectiveTitle];
+        effectiveTitle = [(WBSSavedAccount *)self->_savedAccount effectiveTitle];
         v13 = [(NSArray *)self->_titlesOfSavedAccountsWithReusedPassword objectAtIndexedSubscript:0];
         v15 = [(NSArray *)self->_titlesOfSavedAccountsWithReusedPassword objectAtIndexedSubscript:1];
-        [v18 localizedStringWithFormat:v7, v8, v13, v15, v19];
+        [v18 localizedStringWithFormat:v7, effectiveTitle, v13, v15, v19];
         goto LABEL_25;
       }
 
@@ -764,11 +764,11 @@ LABEL_10:
       {
         v14 = MEMORY[0x1E696AEC0];
         v7 = _WBSLocalizedString(@"Youʼre already using the password for “%@” with “%@”, “%@”, and “%@”. Passwords can create and save a new one to help keep your account safe.", &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
-        v8 = [(WBSSavedAccount *)self->_savedAccount effectiveTitle];
+        effectiveTitle = [(WBSSavedAccount *)self->_savedAccount effectiveTitle];
         v13 = [(NSArray *)self->_titlesOfSavedAccountsWithReusedPassword objectAtIndexedSubscript:0];
         v15 = [(NSArray *)self->_titlesOfSavedAccountsWithReusedPassword objectAtIndexedSubscript:1];
         v16 = [(NSArray *)self->_titlesOfSavedAccountsWithReusedPassword objectAtIndexedSubscript:2];
-        v9 = [v14 localizedStringWithFormat:v7, v8, v13, v15, v16];
+        v9 = [v14 localizedStringWithFormat:v7, effectiveTitle, v13, v15, v16];
 
 LABEL_26:
         goto LABEL_27;
@@ -786,9 +786,9 @@ LABEL_26:
       {
         v12 = MEMORY[0x1E696AEC0];
         v7 = _WBSLocalizedString(@"Youʼre already using the password for “%@” with “%@”. Passwords can create and save a new one to help keep your account safe.", &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
-        v8 = [(WBSSavedAccount *)self->_savedAccount effectiveTitle];
+        effectiveTitle = [(WBSSavedAccount *)self->_savedAccount effectiveTitle];
         v13 = [(NSArray *)self->_titlesOfSavedAccountsWithReusedPassword objectAtIndexedSubscript:0];
-        v9 = [v12 localizedStringWithFormat:v7, v8, v13];
+        v9 = [v12 localizedStringWithFormat:v7, effectiveTitle, v13];
 LABEL_27:
 
         goto LABEL_10;
@@ -797,19 +797,19 @@ LABEL_27:
 
     v17 = MEMORY[0x1E696AEC0];
     v7 = _WBSLocalizedString(@"Youʼre already using the password for “%@” with “%@”, “%@”, and %lu more. Passwords can create and save a new one to help keep your account safe.", &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
-    v8 = [(WBSSavedAccount *)self->_savedAccount effectiveTitle];
+    effectiveTitle = [(WBSSavedAccount *)self->_savedAccount effectiveTitle];
     v13 = [(NSArray *)self->_titlesOfSavedAccountsWithReusedPassword objectAtIndexedSubscript:0];
     v15 = [(NSArray *)self->_titlesOfSavedAccountsWithReusedPassword objectAtIndexedSubscript:1];
-    [v17 localizedStringWithFormat:v7, v8, v13, v15, -[NSArray count](self->_titlesOfSavedAccountsWithReusedPassword, "count") - 2];
+    [v17 localizedStringWithFormat:v7, effectiveTitle, v13, v15, -[NSArray count](self->_titlesOfSavedAccountsWithReusedPassword, "count") - 2];
     v9 = LABEL_25:;
     goto LABEL_26;
   }
 
   if ((issueTypes & 0x30) != 0)
   {
-    v6 = [(WBSSavedAccount *)self->_savedAccount credentialTypes];
+    credentialTypes = [(WBSSavedAccount *)self->_savedAccount credentialTypes];
     v3 = MEMORY[0x1E696AEC0];
-    if (v6)
+    if (credentialTypes)
     {
       v4 = @"Your “%@” password was previously shared with other people and should be changed if you want to ensure they no longer have access to this account. Passwords can create and save a new one to help keep your account safe.";
     }
@@ -829,12 +829,12 @@ LABEL_11:
   return v9;
 }
 
-- (id)localizedLongDescriptionForClient:(unint64_t)a3
+- (id)localizedLongDescriptionForClient:(unint64_t)client
 {
-  if (a3 == 1)
+  if (client == 1)
   {
     v3 = [(WBSPasswordWarning *)self _localizedLongWarningStringsForClient:?];
-    v4 = [v3 componentsJoinedByString:@"\n\n"];
+    firstObject = [v3 componentsJoinedByString:@"\n\n"];
   }
 
   else
@@ -846,10 +846,10 @@ LABEL_11:
     }
 
     v3 = [(WBSPasswordWarning *)self _localizedLongWarningStringsForClient:?];
-    v4 = [v3 firstObject];
+    firstObject = [v3 firstObject];
   }
 
-  v5 = v4;
+  v5 = firstObject;
 
 LABEL_7:
 
@@ -858,12 +858,12 @@ LABEL_7:
 
 - (NSString)localizedInformationTextForWarningWhenLoggingIn
 {
-  v2 = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
+  highLevelDomain = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
   v3 = +[WBSDevice currentDevice];
-  v4 = [v3 deviceClass];
+  deviceClass = [v3 deviceClass];
 
   v5 = MEMORY[0x1E696AEC0];
-  if (v4 == 3)
+  if (deviceClass == 3)
   {
     v6 = @"iPad can create a strong password for you. Would you like to change your password for “%@”?";
   }
@@ -874,7 +874,7 @@ LABEL_7:
   }
 
   v7 = _WBSLocalizedString(v6, &_WBSLocalizableStringsBundleOnceToken, &_WBSLocalizableStringsBundle);
-  v8 = [v5 stringWithFormat:v7, v2];
+  v8 = [v5 stringWithFormat:v7, highLevelDomain];
 
   return v8;
 }
@@ -940,16 +940,16 @@ LABEL_14:
   return v7;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v4[6]];
+  compareCopy = compare;
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:compareCopy[6]];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_severityScore];
   v7 = [v5 compare:v6];
 
   if (!v7)
   {
-    v7 = [(WBSSavedAccount *)self->_savedAccount compare:v4[4]];
+    v7 = [(WBSSavedAccount *)self->_savedAccount compare:compareCopy[4]];
   }
 
   return v7;
@@ -957,8 +957,8 @@ LABEL_14:
 
 - (unint64_t)hashForUserAcknowlegement
 {
-  v3 = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
-  v4 = [v3 hash];
+  highLevelDomain = [(WBSSavedAccount *)self->_savedAccount highLevelDomain];
+  v4 = [highLevelDomain hash];
   issueTypes = self->_issueTypes;
 
   return issueTypes ^ v4;
@@ -966,14 +966,14 @@ LABEL_14:
 
 - (BOOL)hasBeenHidden
 {
-  v3 = [(WBSSavedAccount *)self->_savedAccount hideWarningMarker];
-  v4 = v3;
-  if (!v3)
+  hideWarningMarker = [(WBSSavedAccount *)self->_savedAccount hideWarningMarker];
+  v4 = hideWarningMarker;
+  if (!hideWarningMarker)
   {
     goto LABEL_6;
   }
 
-  if (!self->_issueTypes || (v5 = [v3 issueTypes], (self->_issueTypes | v5) != v5))
+  if (!self->_issueTypes || (v5 = [hideWarningMarker issueTypes], (self->_issueTypes | v5) != v5))
   {
     v7 = +[WBSSavedAccountStore sharedStore];
     [v7 removeHideWarningMarkerForSavedAccount:self->_savedAccount];

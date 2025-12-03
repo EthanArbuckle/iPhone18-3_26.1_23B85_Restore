@@ -1,24 +1,24 @@
 @interface PVNoneEffect
 - (BOOL)loadEffect;
 - (CGSize)outputSize;
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 inputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6;
+- (HGRef<HGNode>)hgNodeForTime:(id *)time inputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context;
 @end
 
 @implementation PVNoneEffect
 
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 inputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6
+- (HGRef<HGNode>)hgNodeForTime:(id *)time inputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v8 = v6;
-  v9 = [(PVEffect *)self effectID:a3];
+  v9 = [(PVEffect *)self effectID:time];
   NSLog(&cfstr_RenderingANone.isa, v9);
 
-  return PVInputHGNodeMap<unsigned int>::GetNode(a4, 0, v8);
+  return PVInputHGNodeMap<unsigned int>::GetNode(inputs, 0, v8);
 }
 
 - (BOOL)loadEffect
 {
-  v3 = [(PVEffect *)self effectID];
-  NSLog(&cfstr_LoadingANoneEf.isa, v3);
+  effectID = [(PVEffect *)self effectID];
+  NSLog(&cfstr_LoadingANoneEf.isa, effectID);
 
   v5.receiver = self;
   v5.super_class = PVNoneEffect;
@@ -27,8 +27,8 @@
 
 - (CGSize)outputSize
 {
-  v3 = [(PVEffect *)self effectID];
-  NSLog(&cfstr_QueryingANoneE.isa, v3);
+  effectID = [(PVEffect *)self effectID];
+  NSLog(&cfstr_QueryingANoneE.isa, effectID);
 
   v6.receiver = self;
   v6.super_class = PVNoneEffect;

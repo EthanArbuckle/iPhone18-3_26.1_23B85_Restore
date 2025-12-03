@@ -1,39 +1,39 @@
 @interface AVVoiceTriggerClient
 + (BOOL)isAPIAvailable;
 + (BOOL)supportsDuckingOnSpeakerOutput;
-+ (id)sharedInstance:(int64_t)a3;
++ (id)sharedInstance:(int64_t)instance;
 - (BOOL)speakerStateActive;
 - (BOOL)speakerStateMuted;
 - (NSXPCConnection)voiceTriggerServerConnection;
-- (id)activateSecureSession:(BOOL)a3;
-- (id)init:(int64_t)a3;
+- (id)activateSecureSession:(BOOL)session;
+- (id)init:(int64_t)init;
 - (id)recordingPIDList;
 - (unint64_t)voiceTriggerPastDataFramesAvailable;
 - (void)callServerCrashedBlock;
 - (void)callServerResetBlock;
 - (void)closeServerConnection;
 - (void)dealloc;
-- (void)enableBargeInMode:(BOOL)a3 completionBlock:(id)a4;
-- (void)enableListeningOnPorts:(id)a3 completionBlock:(id)a4;
-- (void)enableSpeakerStateListening:(BOOL)a3 completionBlock:(id)a4;
-- (void)enableVoiceTriggerListening:(BOOL)a3 completionBlock:(id)a4;
-- (void)getInputChannelInfoCompletion:(id)a3;
-- (void)listeningEnabledCompletionBlock:(id)a3;
-- (void)portStateActiveCompletionBlock:(id)a3;
-- (void)portStateChangedNotification:(id)a3;
+- (void)enableBargeInMode:(BOOL)mode completionBlock:(id)block;
+- (void)enableListeningOnPorts:(id)ports completionBlock:(id)block;
+- (void)enableSpeakerStateListening:(BOOL)listening completionBlock:(id)block;
+- (void)enableVoiceTriggerListening:(BOOL)listening completionBlock:(id)block;
+- (void)getInputChannelInfoCompletion:(id)completion;
+- (void)listeningEnabledCompletionBlock:(id)block;
+- (void)portStateActiveCompletionBlock:(id)block;
+- (void)portStateChangedNotification:(id)notification;
 - (void)removeAudioServerUpNotificationHandler;
-- (void)setAVVCServerCrashedBlock:(id)a3;
-- (void)setAVVCServerResetBlock:(id)a3;
-- (void)setAggressiveECMode:(BOOL)a3 completionBlock:(id)a4;
+- (void)setAVVCServerCrashedBlock:(id)block;
+- (void)setAVVCServerResetBlock:(id)block;
+- (void)setAggressiveECMode:(BOOL)mode completionBlock:(id)block;
 - (void)setAudioServerUpNotificationHandler;
-- (void)setListeningProperty:(BOOL)a3 completionBlock:(id)a4;
-- (void)siriClientsRecordingCompletionBlock:(id)a3;
-- (void)speakerStateActiveCompletionBlock:(id)a3;
-- (void)speakerStateChangedNotification:(id)a3;
-- (void)speakerStateMutedCompletionBlock:(id)a3;
-- (void)updateVoiceTriggerConfiguration:(id)a3 completionBlock:(id)a4;
-- (void)voiceTriggerNotification:(id)a3;
-- (void)voiceTriggerPastDataFramesAvailableCompletion:(id)a3;
+- (void)setListeningProperty:(BOOL)property completionBlock:(id)block;
+- (void)siriClientsRecordingCompletionBlock:(id)block;
+- (void)speakerStateActiveCompletionBlock:(id)block;
+- (void)speakerStateChangedNotification:(id)notification;
+- (void)speakerStateMutedCompletionBlock:(id)block;
+- (void)updateVoiceTriggerConfiguration:(id)configuration completionBlock:(id)block;
+- (void)voiceTriggerNotification:(id)notification;
+- (void)voiceTriggerPastDataFramesAvailableCompletion:(id)completion;
 @end
 
 @implementation AVVoiceTriggerClient
@@ -168,10 +168,10 @@ LABEL_11:
   return v2;
 }
 
-- (void)portStateChangedNotification:(id)a3
+- (void)portStateChangedNotification:(id)notification
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   if (!+[AVVoiceTriggerClient isAPIAvailable])
   {
     goto LABEL_18;
@@ -199,7 +199,7 @@ LABEL_11:
     v13 = 1024;
     v14 = 2801;
     v15 = 2112;
-    v16 = v4;
+    v16 = notificationCopy;
     _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d port state changed : %@", &v11, 0x1Cu);
   }
 
@@ -207,7 +207,7 @@ LABEL_9:
   portStateChangedBlock = self->_portStateChangedBlock;
   if (portStateChangedBlock)
   {
-    portStateChangedBlock[2](portStateChangedBlock, v4);
+    portStateChangedBlock[2](portStateChangedBlock, notificationCopy);
   }
 
   else
@@ -242,10 +242,10 @@ LABEL_18:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)speakerStateChangedNotification:(id)a3
+- (void)speakerStateChangedNotification:(id)notification
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   if (!+[AVVoiceTriggerClient isAPIAvailable])
   {
     goto LABEL_18;
@@ -273,7 +273,7 @@ LABEL_18:
     v13 = 1024;
     v14 = 2764;
     v15 = 2112;
-    v16 = v4;
+    v16 = notificationCopy;
     _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_DEBUG, "%25s:%-5d speaker state changed : %@", &v11, 0x1Cu);
   }
 
@@ -281,7 +281,7 @@ LABEL_9:
   speakerStateChangedBlock = self->_speakerStateChangedBlock;
   if (speakerStateChangedBlock)
   {
-    speakerStateChangedBlock[2](speakerStateChangedBlock, v4);
+    speakerStateChangedBlock[2](speakerStateChangedBlock, notificationCopy);
   }
 
   else
@@ -316,10 +316,10 @@ LABEL_18:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)voiceTriggerNotification:(id)a3
+- (void)voiceTriggerNotification:(id)notification
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   if (!+[AVVoiceTriggerClient isAPIAvailable])
   {
     goto LABEL_25;
@@ -343,7 +343,7 @@ LABEL_6:
       v14 = 1024;
       v15 = 2744;
       v16 = 2112;
-      v17 = v4;
+      v17 = notificationCopy;
       _os_log_impl(&dword_1BA5AC000, v5, OS_LOG_TYPE_DEBUG, "%25s:%-5d voice trigger occured : %@", &v12, 0x1Cu);
     }
   }
@@ -407,7 +407,7 @@ LABEL_25:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)activateSecureSession:(BOOL)a3
+- (id)activateSecureSession:(BOOL)session
 {
   v25 = *MEMORY[0x1E69E9840];
   v15 = 0;
@@ -423,7 +423,7 @@ LABEL_25:
     block[1] = 3221225472;
     block[2] = __46__AVVoiceTriggerClient_activateSecureSession___block_invoke;
     block[3] = &unk_1E7EF68F0;
-    v14 = a3;
+    sessionCopy = session;
     block[4] = self;
     block[5] = &v15;
     dispatch_sync(workQueue, block);
@@ -657,9 +657,9 @@ LABEL_9:
   return v2;
 }
 
-- (void)setAggressiveECMode:(BOOL)a3 completionBlock:(id)a4
+- (void)setAggressiveECMode:(BOOL)mode completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   TraceMethod::TraceMethod(v12, "setAggressiveECMode:completionBlock:");
   if (+[AVVoiceTriggerClient isAPIAvailable])
   {
@@ -669,15 +669,15 @@ LABEL_9:
     v9[2] = __60__AVVoiceTriggerClient_setAggressiveECMode_completionBlock___block_invoke;
     v9[3] = &unk_1E7EF67D8;
     v9[4] = self;
-    v11 = a3;
-    v10 = v6;
+    modeCopy = mode;
+    v10 = blockCopy;
     dispatch_async(workQueue, v9);
   }
 
-  else if (v6)
+  else if (blockCopy)
   {
     v8 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11794 userInfo:0];
-    (*(v6 + 2))(v6, v8);
+    (*(blockCopy + 2))(blockCopy, v8);
   }
 
   TraceMethod::~TraceMethod(v12);
@@ -934,9 +934,9 @@ LABEL_21:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)siriClientsRecordingCompletionBlock:(id)a3
+- (void)siriClientsRecordingCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   TraceMethod::TraceMethod(v9, "siriClientRunningCountCompletionBlock:");
   if (+[AVVoiceTriggerClient isAPIAvailable])
   {
@@ -946,14 +946,14 @@ LABEL_21:
     block[2] = __60__AVVoiceTriggerClient_siriClientsRecordingCompletionBlock___block_invoke;
     block[3] = &unk_1E7EF6710;
     block[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_async(workQueue, block);
   }
 
-  else if (v4)
+  else if (blockCopy)
   {
     v6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11794 userInfo:0];
-    (*(v4 + 2))(v4, 0, v6);
+    (*(blockCopy + 2))(blockCopy, 0, v6);
   }
 
   TraceMethod::~TraceMethod(v9);
@@ -1140,9 +1140,9 @@ LABEL_16:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)listeningEnabledCompletionBlock:(id)a3
+- (void)listeningEnabledCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   TraceMethod::TraceMethod(v9, "listeningEnabledCompletionBlock:");
   if (+[AVVoiceTriggerClient isAPIAvailable])
   {
@@ -1152,14 +1152,14 @@ LABEL_16:
     block[2] = __56__AVVoiceTriggerClient_listeningEnabledCompletionBlock___block_invoke;
     block[3] = &unk_1E7EF6710;
     block[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_async(workQueue, block);
   }
 
-  else if (v4)
+  else if (blockCopy)
   {
     v6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11794 userInfo:0];
-    (*(v4 + 2))(v4, 0, v6);
+    (*(blockCopy + 2))(blockCopy, 0, v6);
   }
 
   TraceMethod::~TraceMethod(v9);
@@ -1346,10 +1346,10 @@ LABEL_16:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateVoiceTriggerConfiguration:(id)a3 completionBlock:(id)a4
+- (void)updateVoiceTriggerConfiguration:(id)configuration completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  blockCopy = block;
   TraceMethod::TraceMethod(v13, "updateVoiceTriggerConfiguration:completionBlock:");
   if (+[AVVoiceTriggerClient isAPIAvailable])
   {
@@ -1359,15 +1359,15 @@ LABEL_16:
     v10[2] = __72__AVVoiceTriggerClient_updateVoiceTriggerConfiguration_completionBlock___block_invoke;
     v10[3] = &unk_1E7EF6878;
     v10[4] = self;
-    v12 = v7;
-    v11 = v6;
+    v12 = blockCopy;
+    v11 = configurationCopy;
     dispatch_async(workQueue, v10);
   }
 
-  else if (v7)
+  else if (blockCopy)
   {
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11794 userInfo:0];
-    (*(v7 + 2))(v7, v9);
+    (*(blockCopy + 2))(blockCopy, v9);
   }
 
   TraceMethod::~TraceMethod(v13);
@@ -1605,9 +1605,9 @@ LABEL_16:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enableBargeInMode:(BOOL)a3 completionBlock:(id)a4
+- (void)enableBargeInMode:(BOOL)mode completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   TraceMethod::TraceMethod(v12, "enableBargeInMode:completionBlock:");
   if (+[AVVoiceTriggerClient isAPIAvailable])
   {
@@ -1617,15 +1617,15 @@ LABEL_16:
     v9[2] = __58__AVVoiceTriggerClient_enableBargeInMode_completionBlock___block_invoke;
     v9[3] = &unk_1E7EF67D8;
     v9[4] = self;
-    v11 = a3;
-    v10 = v6;
+    modeCopy = mode;
+    v10 = blockCopy;
     dispatch_async(workQueue, v9);
   }
 
-  else if (v6)
+  else if (blockCopy)
   {
     v8 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11794 userInfo:0];
-    (*(v6 + 2))(v6, v8);
+    (*(blockCopy + 2))(blockCopy, v8);
   }
 
   TraceMethod::~TraceMethod(v12);
@@ -1882,9 +1882,9 @@ LABEL_21:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)portStateActiveCompletionBlock:(id)a3
+- (void)portStateActiveCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   TraceMethod::TraceMethod(v9, "portStateActiveCompletionBlock:");
   if (+[AVVoiceTriggerClient isAPIAvailable])
   {
@@ -1894,14 +1894,14 @@ LABEL_21:
     block[2] = __55__AVVoiceTriggerClient_portStateActiveCompletionBlock___block_invoke;
     block[3] = &unk_1E7EF6710;
     block[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_async(workQueue, block);
   }
 
-  else if (v4)
+  else if (blockCopy)
   {
     v6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11794 userInfo:0];
-    (*(v4 + 2))(v4, 0, v6);
+    (*(blockCopy + 2))(blockCopy, 0, v6);
   }
 
   TraceMethod::~TraceMethod(v9);
@@ -2089,10 +2089,10 @@ LABEL_16:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enableListeningOnPorts:(id)a3 completionBlock:(id)a4
+- (void)enableListeningOnPorts:(id)ports completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  portsCopy = ports;
+  blockCopy = block;
   TraceMethod::TraceMethod(v13, "enablePortStateListening:completionBlock:");
   if (+[AVVoiceTriggerClient isAPIAvailable])
   {
@@ -2102,15 +2102,15 @@ LABEL_16:
     v10[2] = __63__AVVoiceTriggerClient_enableListeningOnPorts_completionBlock___block_invoke;
     v10[3] = &unk_1E7EF6878;
     v10[4] = self;
-    v11 = v6;
-    v12 = v7;
+    v11 = portsCopy;
+    v12 = blockCopy;
     dispatch_async(workQueue, v10);
   }
 
-  else if (v7)
+  else if (blockCopy)
   {
     v9 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11794 userInfo:0];
-    (*(v7 + 2))(v7, v9);
+    (*(blockCopy + 2))(blockCopy, v9);
   }
 
   TraceMethod::~TraceMethod(v13);
@@ -2388,9 +2388,9 @@ LABEL_9:
   return v8 & 1;
 }
 
-- (void)speakerStateMutedCompletionBlock:(id)a3
+- (void)speakerStateMutedCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   TraceMethod::TraceMethod(v9, "speakerStateMutedCompletionBlock:");
   if (+[AVVoiceTriggerClient isAPIAvailable])
   {
@@ -2400,14 +2400,14 @@ LABEL_9:
     block[2] = __57__AVVoiceTriggerClient_speakerStateMutedCompletionBlock___block_invoke;
     block[3] = &unk_1E7EF6710;
     block[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_async(workQueue, block);
   }
 
-  else if (v4)
+  else if (blockCopy)
   {
     v6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11794 userInfo:0];
-    (*(v4 + 2))(v4, 0, v6);
+    (*(blockCopy + 2))(blockCopy, 0, v6);
   }
 
   TraceMethod::~TraceMethod(v9);
@@ -2648,9 +2648,9 @@ LABEL_9:
   return v8 & 1;
 }
 
-- (void)speakerStateActiveCompletionBlock:(id)a3
+- (void)speakerStateActiveCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   TraceMethod::TraceMethod(v9, "speakerStateActiveCompletionBlock:");
   if (+[AVVoiceTriggerClient isAPIAvailable])
   {
@@ -2660,14 +2660,14 @@ LABEL_9:
     block[2] = __58__AVVoiceTriggerClient_speakerStateActiveCompletionBlock___block_invoke;
     block[3] = &unk_1E7EF6710;
     block[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     dispatch_async(workQueue, block);
   }
 
-  else if (v4)
+  else if (blockCopy)
   {
     v6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11794 userInfo:0];
-    (*(v4 + 2))(v4, 0, v6);
+    (*(blockCopy + 2))(blockCopy, 0, v6);
   }
 
   TraceMethod::~TraceMethod(v9);
@@ -2854,9 +2854,9 @@ LABEL_16:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enableSpeakerStateListening:(BOOL)a3 completionBlock:(id)a4
+- (void)enableSpeakerStateListening:(BOOL)listening completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   TraceMethod::TraceMethod(v12, "enableSpeakerStateListening:completionBlock:");
   if (+[AVVoiceTriggerClient isAPIAvailable])
   {
@@ -2866,15 +2866,15 @@ LABEL_16:
     v9[2] = __68__AVVoiceTriggerClient_enableSpeakerStateListening_completionBlock___block_invoke;
     v9[3] = &unk_1E7EF67D8;
     v9[4] = self;
-    v11 = a3;
-    v10 = v6;
+    listeningCopy = listening;
+    v10 = blockCopy;
     dispatch_async(workQueue, v9);
   }
 
-  else if (v6)
+  else if (blockCopy)
   {
     v8 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11794 userInfo:0];
-    (*(v6 + 2))(v6, v8);
+    (*(blockCopy + 2))(blockCopy, v8);
   }
 
   TraceMethod::~TraceMethod(v12);
@@ -3131,32 +3131,32 @@ LABEL_21:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setListeningProperty:(BOOL)a3 completionBlock:(id)a4
+- (void)setListeningProperty:(BOOL)property completionBlock:(id)block
 {
-  v4 = a4;
+  blockCopy = block;
   TraceMethod::TraceMethod(v6, "setListeningProperty:completionBlock:");
   if (+[AVVoiceTriggerClient isAPIAvailable])
   {
-    if (v4)
+    if (blockCopy)
     {
-      v4[2](v4, 0);
+      blockCopy[2](blockCopy, 0);
     }
   }
 
-  else if (v4)
+  else if (blockCopy)
   {
     v5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11794 userInfo:0];
-    (v4)[2](v4, v5);
+    (blockCopy)[2](blockCopy, v5);
   }
 
   TraceMethod::~TraceMethod(v6);
 }
 
-- (void)enableVoiceTriggerListening:(BOOL)a3 completionBlock:(id)a4
+- (void)enableVoiceTriggerListening:(BOOL)listening completionBlock:(id)block
 {
-  v4 = a3;
+  listeningCopy = listening;
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  blockCopy = block;
   TraceMethod::TraceMethod(v16, "enableVoiceTriggerListening:completionBlock:");
   if (kAVVCScope)
   {
@@ -3178,7 +3178,7 @@ LABEL_21:
     v9 = "Disable";
     v18 = "AVVoiceTriggerClient.mm";
     *buf = 136315650;
-    if (v4)
+    if (listeningCopy)
     {
       v9 = "Enable";
     }
@@ -3199,15 +3199,15 @@ LABEL_10:
     v13[2] = __68__AVVoiceTriggerClient_enableVoiceTriggerListening_completionBlock___block_invoke;
     v13[3] = &unk_1E7EF67D8;
     v13[4] = self;
-    v15 = v4;
-    v14 = v6;
+    v15 = listeningCopy;
+    v14 = blockCopy;
     dispatch_async(workQueue, v13);
   }
 
-  else if (v6)
+  else if (blockCopy)
   {
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11794 userInfo:0];
-    (*(v6 + 2))(v6, v11);
+    (*(blockCopy + 2))(blockCopy, v11);
   }
 
   TraceMethod::~TraceMethod(v16);
@@ -3439,11 +3439,11 @@ LABEL_21:
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v3 = [(AVVoiceTriggerClient *)self voiceTriggerServerConnection];
-  v4 = v3;
-  if (v3)
+  voiceTriggerServerConnection = [(AVVoiceTriggerClient *)self voiceTriggerServerConnection];
+  v4 = voiceTriggerServerConnection;
+  if (voiceTriggerServerConnection)
   {
-    v5 = [v3 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_193];
+    v5 = [voiceTriggerServerConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_193];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __59__AVVoiceTriggerClient_voiceTriggerPastDataFramesAvailable__block_invoke_194;
@@ -3546,25 +3546,25 @@ LABEL_8:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAVVCServerResetBlock:(id)a3
+- (void)setAVVCServerResetBlock:(id)block
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  blockCopy = block;
+  v4 = [blockCopy copy];
   avvcServerResetBlock = self->_avvcServerResetBlock;
   self->_avvcServerResetBlock = v4;
 }
 
-- (void)setAVVCServerCrashedBlock:(id)a3
+- (void)setAVVCServerCrashedBlock:(id)block
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  blockCopy = block;
+  v4 = [blockCopy copy];
   avvcServerCrashedBlock = self->_avvcServerCrashedBlock;
   self->_avvcServerCrashedBlock = v4;
 }
 
-- (void)getInputChannelInfoCompletion:(id)a3
+- (void)getInputChannelInfoCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   TraceMethod::TraceMethod(v9, "getInputChannelInfoCompletion");
   if (+[AVVoiceTriggerClient isAPIAvailable])
   {
@@ -3574,14 +3574,14 @@ LABEL_8:
     block[2] = __54__AVVoiceTriggerClient_getInputChannelInfoCompletion___block_invoke;
     block[3] = &unk_1E7EF6710;
     block[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(workQueue, block);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11794 userInfo:0];
-    (*(v4 + 2))(v4, 0, v6);
+    (*(completionCopy + 2))(completionCopy, 0, v6);
   }
 
   TraceMethod::~TraceMethod(v9);
@@ -3743,9 +3743,9 @@ LABEL_9:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)voiceTriggerPastDataFramesAvailableCompletion:(id)a3
+- (void)voiceTriggerPastDataFramesAvailableCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   TraceMethod::TraceMethod(v9, "voiceTriggerPastDataFramesAvailableCompletion");
   if (+[AVVoiceTriggerClient isAPIAvailable])
   {
@@ -3755,14 +3755,14 @@ LABEL_9:
     block[2] = __70__AVVoiceTriggerClient_voiceTriggerPastDataFramesAvailableCompletion___block_invoke;
     block[3] = &unk_1E7EF6710;
     block[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(workQueue, block);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:-11794 userInfo:0];
-    (*(v4 + 2))(v4, 0, v6);
+    (*(completionCopy + 2))(completionCopy, 0, v6);
   }
 
   TraceMethod::~TraceMethod(v9);
@@ -4261,7 +4261,7 @@ void __59__AVVoiceTriggerClient_setAudioServerUpNotificationHandler__block_invok
     v12 = 1024;
     v13 = 1537;
     v14 = 2112;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BA5AC000, v3, OS_LOG_TYPE_DEFAULT, "%25s:%-5d AVVoiceTriggerClient dealloc %@", buf, 0x1Cu);
   }
 
@@ -4275,11 +4275,11 @@ LABEL_8:
 
     if (isAudioSessionAvailable(void)::audioSessionAvailable == 1)
     {
-      v5 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v5 removeObserver:self name:*MEMORY[0x1E698D5A8] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self name:*MEMORY[0x1E698D5A8] object:0];
 
-      v6 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v6 removeObserver:self name:*MEMORY[0x1E698D5B8] object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 removeObserver:self name:*MEMORY[0x1E698D5B8] object:0];
     }
 
     else
@@ -4305,7 +4305,7 @@ LABEL_8:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)init:(int64_t)a3
+- (id)init:(int64_t)init
 {
   v33 = *MEMORY[0x1E69E9840];
   Initialize_Logging();
@@ -4337,14 +4337,14 @@ LABEL_8:
     v29 = 2112;
     v30 = v5;
     v31 = 1024;
-    v32 = a3;
+    initCopy = init;
     _os_log_impl(&dword_1BA5AC000, v6, OS_LOG_TYPE_DEFAULT, "%25s:%-5d AVVoiceTriggerClient init %@, clientType: %d", buf, 0x22u);
   }
 
 LABEL_8:
   if (v5)
   {
-    v8 = a3 == 2 ? 1 : a3;
+    v8 = init == 2 ? 1 : init;
     v5->_clientType = v8;
     if (+[AVVoiceTriggerClient isAPIAvailable])
     {
@@ -4355,15 +4355,15 @@ LABEL_8:
 
       if (isAudioSessionAvailable(void)::audioSessionAvailable == 1)
       {
-        v9 = [MEMORY[0x1E696AD88] defaultCenter];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
         v10 = NSSelectorFromString(&cfstr_Callservercras.isa);
-        v11 = [MEMORY[0x1E698D708] sharedInstance];
-        [v9 addObserver:v5 selector:v10 name:*MEMORY[0x1E698D5A8] object:v11];
+        mEMORY[0x1E698D708] = [MEMORY[0x1E698D708] sharedInstance];
+        [defaultCenter addObserver:v5 selector:v10 name:*MEMORY[0x1E698D5A8] object:mEMORY[0x1E698D708]];
 
-        v12 = [MEMORY[0x1E696AD88] defaultCenter];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
         v13 = NSSelectorFromString(&cfstr_Callserverrese.isa);
-        v14 = [MEMORY[0x1E698D708] sharedInstance];
-        [v12 addObserver:v5 selector:v13 name:*MEMORY[0x1E698D5B8] object:v14];
+        mEMORY[0x1E698D708]2 = [MEMORY[0x1E698D708] sharedInstance];
+        [defaultCenter2 addObserver:v5 selector:v13 name:*MEMORY[0x1E698D5B8] object:mEMORY[0x1E698D708]2];
       }
 
       else
@@ -4399,14 +4399,14 @@ LABEL_8:
   return v5;
 }
 
-+ (id)sharedInstance:(int64_t)a3
++ (id)sharedInstance:(int64_t)instance
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __39__AVVoiceTriggerClient_sharedInstance___block_invoke;
   v5[3] = &__block_descriptor_48_e5_v8__0l;
-  v5[4] = a1;
-  v5[5] = a3;
+  v5[4] = self;
+  v5[5] = instance;
   if (+[AVVoiceTriggerClient sharedInstance:]::onceToken != -1)
   {
     dispatch_once(&+[AVVoiceTriggerClient sharedInstance:]::onceToken, v5);

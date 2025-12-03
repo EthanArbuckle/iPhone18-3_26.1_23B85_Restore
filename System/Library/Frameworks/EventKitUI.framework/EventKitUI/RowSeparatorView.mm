@@ -8,8 +8,8 @@
 {
   if ([(RowSeparatorView *)self vibrant])
   {
-    v3 = [(RowSeparatorView *)self tintColor];
-    [(RowSeparatorView *)self setBackgroundColor:v3];
+    tintColor = [(RowSeparatorView *)self tintColor];
+    [(RowSeparatorView *)self setBackgroundColor:tintColor];
   }
 }
 

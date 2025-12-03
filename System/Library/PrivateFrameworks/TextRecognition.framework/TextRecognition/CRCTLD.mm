@@ -1,54 +1,54 @@
 @interface CRCTLD
-- (CRCTLD)initWithDelegate:(id)a3;
+- (CRCTLD)initWithDelegate:(id)delegate;
 - (CRCTLDDelegate)delegate;
-- (CTLDRegion)CTLDRegionFromCRRegion:(SEL)a3 index:(id)a4 imageSize:(int)a5 rotationAngle:(CGSize)a6 mainDirection:(float)a7;
-- (double)getBaselineAngle:(id)a3;
-- (double)getQuadrantOrientation:(id)a3;
-- (float)getFeaturesGlobalAngle:(id)a3;
-- (id)groupAndOrderRegions:(id)a3 config:(id)a4;
-- (id)groupAndOrderRegions:(id)a3 config:(id)a4 delegate:(id)a5;
-- (id)singleCTLDGroupingPass:(CRConstrainedTextLineDetectionImpl *)a3 textRegions:(id)a4;
-- (unint64_t)getFeaturesMainLayoutDirection:(id)a3;
-- (void)enforceQuadrilateralOrder:(CGPoint *)a3;
-- (void)mirrorAxisX:(CGPoint *)a3;
+- (CTLDRegion)CTLDRegionFromCRRegion:(SEL)region index:(id)index imageSize:(int)size rotationAngle:(CGSize)angle mainDirection:(float)direction;
+- (double)getBaselineAngle:(id)angle;
+- (double)getQuadrantOrientation:(id)orientation;
+- (float)getFeaturesGlobalAngle:(id)angle;
+- (id)groupAndOrderRegions:(id)regions config:(id)config;
+- (id)groupAndOrderRegions:(id)regions config:(id)config delegate:(id)delegate;
+- (id)singleCTLDGroupingPass:(CRConstrainedTextLineDetectionImpl *)pass textRegions:(id)regions;
+- (unint64_t)getFeaturesMainLayoutDirection:(id)direction;
+- (void)enforceQuadrilateralOrder:(CGPoint *)order;
+- (void)mirrorAxisX:(CGPoint *)x;
 @end
 
 @implementation CRCTLD
 
-- (CRCTLD)initWithDelegate:(id)a3
+- (CRCTLD)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = CRCTLD;
   v5 = [(CRCTLD *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)enforceQuadrilateralOrder:(CGPoint *)a3
+- (void)enforceQuadrilateralOrder:(CGPoint *)order
 {
   v3 = 1;
   v4 = 16;
   do
   {
-    v5 = a3[v3];
+    v5 = order[v3];
     v6 = v4;
     v7 = v3;
     while (1)
     {
       v8 = v7 - 1;
-      v9 = &a3[(v7 - 1)];
+      v9 = &order[(v7 - 1)];
       if (v9->x <= v5.x)
       {
         break;
       }
 
-      *(a3 + v6) = *v9;
+      *(order + v6) = *v9;
       v6 -= 16;
       --v7;
       if (v8 + 1 <= 1)
@@ -58,69 +58,69 @@
       }
     }
 
-    a3[v7] = v5;
+    order[v7] = v5;
     ++v3;
     v4 += 16;
   }
 
   while (v3 != 4);
-  y = a3->y;
-  v11 = a3 + 1;
-  v12 = a3[1].y;
+  y = order->y;
+  orderCopy2 = order + 1;
+  v12 = order[1].y;
   if (y >= v12)
   {
-    v13 = a3 + 1;
+    orderCopy = order + 1;
   }
 
   else
   {
-    v13 = a3;
+    orderCopy = order;
   }
 
   if (y >= v12)
   {
-    v11 = a3;
+    orderCopy2 = order;
   }
 
-  v14 = *v11;
-  v15 = a3 + 2;
-  v16 = a3[2].y;
-  v17 = a3[3].y;
+  v14 = *orderCopy2;
+  v15 = order + 2;
+  v16 = order[2].y;
+  v17 = order[3].y;
   if (v16 >= v17)
   {
-    v18 = a3 + 3;
+    v18 = order + 3;
   }
 
   else
   {
-    v18 = a3 + 2;
+    v18 = order + 2;
   }
 
   if (v16 < v17)
   {
-    v15 = a3 + 3;
+    v15 = order + 3;
   }
 
   v19 = *v15;
   v20 = *v18;
-  *a3 = *v13;
-  a3[1] = v20;
-  a3[2] = v14;
-  a3[3] = v19;
+  *order = *orderCopy;
+  order[1] = v20;
+  order[2] = v14;
+  order[3] = v19;
 }
 
-- (double)getBaselineAngle:(id)a3
+- (double)getBaselineAngle:(id)angle
 {
-  v3 = a3;
-  v4 = [v3 boundingQuad];
-  v5 = [v4 denormalizedQuad];
-  [v5 bottomLeft];
+  angleCopy = angle;
+  boundingQuad = [angleCopy boundingQuad];
+  denormalizedQuad = [boundingQuad denormalizedQuad];
+  [denormalizedQuad bottomLeft];
   v7 = v6;
   v9 = v8;
 
-  v10 = [v3 boundingQuad];
-  v11 = [v10 denormalizedQuad];
-  [v11 bottomRight];
+  boundingQuad2 = [angleCopy boundingQuad];
+  denormalizedQuad2 = [boundingQuad2 denormalizedQuad];
+  [denormalizedQuad2 bottomRight];
   v13 = v12;
   v15 = v14;
 
@@ -128,46 +128,46 @@
   return v16;
 }
 
-- (void)mirrorAxisX:(CGPoint *)a3
+- (void)mirrorAxisX:(CGPoint *)x
 {
   for (i = 0; i != 4; ++i)
   {
-    a3[i].x = -a3[i].x;
+    x[i].x = -x[i].x;
   }
 
-  v4 = *a3;
-  *a3 = a3[1];
-  a3[1] = v4;
-  v5 = a3[2];
-  a3[2] = a3[3];
-  a3[3] = v5;
+  v4 = *x;
+  *x = x[1];
+  x[1] = v4;
+  v5 = x[2];
+  x[2] = x[3];
+  x[3] = v5;
 }
 
-- (CTLDRegion)CTLDRegionFromCRRegion:(SEL)a3 index:(id)a4 imageSize:(int)a5 rotationAngle:(CGSize)a6 mainDirection:(float)a7
+- (CTLDRegion)CTLDRegionFromCRRegion:(SEL)region index:(id)index imageSize:(int)size rotationAngle:(CGSize)angle mainDirection:(float)direction
 {
-  height = a6.height;
-  width = a6.width;
+  height = angle.height;
+  width = angle.width;
   v32 = *MEMORY[0x1E69E9840];
-  v15 = a4;
-  v16 = [v15 boundingQuad];
-  v17 = [v16 denormalizedQuad];
+  indexCopy = index;
+  boundingQuad = [indexCopy boundingQuad];
+  denormalizedQuad = [boundingQuad denormalizedQuad];
 
-  [v17 topLeft];
+  [denormalizedQuad topLeft];
   *&v28 = v18;
   *(&v28 + 1) = v19;
-  [v17 topRight];
+  [denormalizedQuad topRight];
   *&v29 = v20;
   *(&v29 + 1) = v21;
-  [v17 bottomLeft];
+  [denormalizedQuad bottomLeft];
   *&v30 = v22;
   *(&v30 + 1) = v23;
-  [v17 bottomRight];
+  [denormalizedQuad bottomRight];
   *&v31 = v24;
   *(&v31 + 1) = v25;
   [(CRCTLD *)self angleThresholdForRotationCorrection];
-  if (v26 < fabsf(a7))
+  if (v26 < fabsf(direction))
   {
-    rotatePolygon(&v28, &v28, width * 0.5, height * 0.5, a7);
+    rotatePolygon(&v28, &v28, width * 0.5, height * 0.5, direction);
   }
 
   [(CRCTLD *)self enforceQuadrilateralOrder:&v28];
@@ -176,12 +176,12 @@
     [(CRCTLD *)self mirrorAxisX:&v28];
   }
 
-  CRTextRecognition::CRCTLD::CTLDRegion::CTLDRegion(retstr, &v28, &v29, &v30, &v31, a5, v15);
+  CRTextRecognition::CRCTLD::CTLDRegion::CTLDRegion(retstr, &v28, &v29, &v30, &v31, size, indexCopy);
 
   return result;
 }
 
-- (double)getQuadrantOrientation:(id)a3
+- (double)getQuadrantOrientation:(id)orientation
 {
   v19[2] = *MEMORY[0x1E69E9840];
   v19[0] = 0;
@@ -190,8 +190,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  orientationCopy = orientation;
+  v5 = [orientationCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = *v15;
@@ -201,7 +201,7 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(orientationCopy);
         }
 
         [(CRCTLD *)self getBaselineAngle:*(*(&v14 + 1) + 8 * i), v14];
@@ -232,7 +232,7 @@
         ++*(v19 + v10);
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [orientationCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -255,20 +255,20 @@
   return v12 * 1.57079633 + -3.14159265;
 }
 
-- (float)getFeaturesGlobalAngle:(id)a3
+- (float)getFeaturesGlobalAngle:(id)angle
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  angleCopy = angle;
+  if ([angleCopy count])
   {
-    [(CRCTLD *)self getQuadrantOrientation:v4];
+    [(CRCTLD *)self getQuadrantOrientation:angleCopy];
     v6 = v5;
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = v4;
+    v8 = angleCopy;
     v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v9)
     {
@@ -338,7 +338,7 @@
 
           *&v13 = v13;
           v15 = [MEMORY[0x1E696AD98] numberWithFloat:v13];
-          [v7 addObject:v15];
+          [array addObject:v15];
         }
 
         v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -347,7 +347,7 @@
       while (v9);
     }
 
-    v16 = [v7 sortedArrayUsingSelector:sel_compare_];
+    v16 = [array sortedArrayUsingSelector:sel_compare_];
     v17 = [v16 objectAtIndexedSubscript:{objc_msgSend(v16, "count") >> 1}];
     [v17 floatValue];
     v19 = v6 + v18;
@@ -379,16 +379,16 @@ LABEL_34:
   return v21;
 }
 
-- (unint64_t)getFeaturesMainLayoutDirection:(id)a3
+- (unint64_t)getFeaturesMainLayoutDirection:(id)direction
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  directionCopy = direction;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = v3;
+  v5 = directionCopy;
   v6 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v6)
   {
@@ -415,9 +415,9 @@ LABEL_34:
         else
         {
           v12 = [v4 objectForKeyedSubscript:v9];
-          v13 = [v12 integerValue];
+          integerValue = [v12 integerValue];
 
-          v14 = v13 + 1;
+          v14 = integerValue + 1;
         }
 
         v15 = [MEMORY[0x1E696AD98] numberWithInteger:v14];
@@ -466,18 +466,18 @@ void __41__CRCTLD_getFeaturesMainLayoutDirection___block_invoke(uint64_t a1, voi
   }
 }
 
-- (id)singleCTLDGroupingPass:(CRConstrainedTextLineDetectionImpl *)a3 textRegions:(id)a4
+- (id)singleCTLDGroupingPass:(CRConstrainedTextLineDetectionImpl *)pass textRegions:(id)regions
 {
   v64 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  [(CRCTLD *)self getFeaturesGlobalAngle:v8];
+  regionsCopy = regions;
+  [(CRCTLD *)self getFeaturesGlobalAngle:regionsCopy];
   v10 = v9;
-  v11 = [(CRCTLD *)self getFeaturesMainLayoutDirection:v8];
-  if ([v8 count])
+  v11 = [(CRCTLD *)self getFeaturesMainLayoutDirection:regionsCopy];
+  if ([regionsCopy count])
   {
-    v12 = [v8 objectAtIndexedSubscript:0];
-    v13 = [v12 boundingQuad];
-    [v13 normalizationSize];
+    v12 = [regionsCopy objectAtIndexedSubscript:0];
+    boundingQuad = [v12 boundingQuad];
+    [boundingQuad normalizationSize];
     v4 = v14;
     v5 = v15;
   }
@@ -485,10 +485,10 @@ void __41__CRCTLD_getFeaturesMainLayoutDirection___block_invoke(uint64_t a1, voi
   v52 = 0;
   v53 = 0;
   v54 = 0;
-  std::vector<CRTextRecognition::CRCTLD::CTLDRegion>::reserve(&v52, [v8 count]);
-  for (i = 0; [v8 count] > i; ++i)
+  std::vector<CRTextRecognition::CRCTLD::CTLDRegion>::reserve(&v52, [regionsCopy count]);
+  for (i = 0; [regionsCopy count] > i; ++i)
   {
-    v17 = [v8 objectAtIndexedSubscript:i];
+    v17 = [regionsCopy objectAtIndexedSubscript:i];
     *&v18 = v10;
     [(CRCTLD *)self CTLDRegionFromCRRegion:v17 index:i imageSize:v11 rotationAngle:v4 mainDirection:v5, v18];
     v19 = v53;
@@ -529,7 +529,7 @@ void __41__CRCTLD_getFeaturesMainLayoutDirection___block_invoke(uint64_t a1, voi
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  CRTextRecognition::CRCTLD::CRConstrainedTextLineDetectionImpl::groupRegions(a3, &v52, v11, WeakRetained, &v50);
+  CRTextRecognition::CRCTLD::CRConstrainedTextLineDetectionImpl::groupRegions(pass, &v52, v11, WeakRetained, &v50);
 
   v48 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v27 = v50;
@@ -569,7 +569,7 @@ void __41__CRCTLD_getFeaturesMainLayoutDirection___block_invoke(uint64_t a1, voi
         v40 = 0;
         do
         {
-          v41 = [v8 objectAtIndexedSubscript:*&v38[v39]];
+          v41 = [regionsCopy objectAtIndexedSubscript:*&v38[v39]];
           [v37 addObject:v41];
 
           ++v40;
@@ -629,55 +629,55 @@ LABEL_25:
   return v48;
 }
 
-- (id)groupAndOrderRegions:(id)a3 config:(id)a4 delegate:(id)a5
+- (id)groupAndOrderRegions:(id)regions config:(id)config delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v9 allowedOverlap];
+  regionsCopy = regions;
+  configCopy = config;
+  delegateCopy = delegate;
+  [configCopy allowedOverlap];
   v12 = v11;
-  v13 = [v9 maxRegions];
-  v14 = [v9 maxQueueCapacity];
-  [v9 minWhitespaceWidth];
+  maxRegions = [configCopy maxRegions];
+  maxQueueCapacity = [configCopy maxQueueCapacity];
+  [configCopy minWhitespaceWidth];
   v16 = v15;
-  [v9 minWhitespaceHeight];
+  [configCopy minWhitespaceHeight];
   v18 = v17;
-  v19 = [v9 numLookupElements];
-  v20 = [v9 numPointsForSegmentsIntersection];
-  [v9 qualityHeightFactor];
+  numLookupElements = [configCopy numLookupElements];
+  numPointsForSegmentsIntersection = [configCopy numPointsForSegmentsIntersection];
+  [configCopy qualityHeightFactor];
   v22 = v21;
-  [v9 qualityWidthFactor];
+  [configCopy qualityWidthFactor];
   v24 = v23;
-  [v9 minSubRectangleSize];
+  [configCopy minSubRectangleSize];
   v26 = v25;
-  [v9 minQuadrilateralRotation];
+  [configCopy minQuadrilateralRotation];
   v28 = v27;
-  v29 = [v9 flatMergeJumps];
-  [v9 minWhitespaceHeightForReadingOrder];
+  flatMergeJumps = [configCopy flatMergeJumps];
+  [configCopy minWhitespaceHeightForReadingOrder];
   v34[0] = v12;
-  v34[1] = v13;
-  v34[2] = v14;
+  v34[1] = maxRegions;
+  v34[2] = maxQueueCapacity;
   v34[3] = v16;
   v34[4] = v18;
   v34[5] = v26;
   v34[6] = v28;
   v34[7] = v30;
-  v34[8] = v19;
-  v34[9] = v20;
+  v34[8] = numLookupElements;
+  v34[9] = numPointsForSegmentsIntersection;
   v34[10] = v22;
   v34[11] = v24;
-  v35 = v29;
-  [v9 angleThresholdForRotationCorrection];
+  v35 = flatMergeJumps;
+  [configCopy angleThresholdForRotationCorrection];
   self->_angleThresholdForRotationCorrection = v31;
-  objc_storeWeak(&self->_delegate, v10);
-  v32 = [(CRCTLD *)self singleCTLDGroupingPass:v34 textRegions:v8];
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  v32 = [(CRCTLD *)self singleCTLDGroupingPass:v34 textRegions:regionsCopy];
 
   return v32;
 }
 
-- (id)groupAndOrderRegions:(id)a3 config:(id)a4
+- (id)groupAndOrderRegions:(id)regions config:(id)config
 {
-  v4 = [(CRCTLD *)self groupAndOrderRegions:a3 config:a4 delegate:0];
+  v4 = [(CRCTLD *)self groupAndOrderRegions:regions config:config delegate:0];
 
   return v4;
 }

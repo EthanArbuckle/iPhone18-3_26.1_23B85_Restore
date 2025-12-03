@@ -1,6 +1,6 @@
 @interface SCUIReportAuthority
 - (SCUIReportAuthority)init;
-- (SCUIReportAuthority)initWithLocale:(id)a3 moreHelpMenuOptions:(int64_t)a4 interventionType:(int64_t)a5;
+- (SCUIReportAuthority)initWithLocale:(id)locale moreHelpMenuOptions:(int64_t)options interventionType:(int64_t)type;
 - (unint64_t)kind;
 @end
 
@@ -24,9 +24,9 @@
   return v8;
 }
 
-- (SCUIReportAuthority)initWithLocale:(id)a3 moreHelpMenuOptions:(int64_t)a4 interventionType:(int64_t)a5
+- (SCUIReportAuthority)initWithLocale:(id)locale moreHelpMenuOptions:(int64_t)options interventionType:(int64_t)type
 {
-  v5 = a4;
+  optionsCopy = options;
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBCDC6E8, &qword_1BC761EF8);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
@@ -41,7 +41,7 @@
   sub_1BC759960();
   ObjectType = swift_getObjectType();
   (*(v12 + 16))(v16, v18, v11);
-  sub_1BC681900(v16, v5, v10);
+  sub_1BC681900(v16, optionsCopy, v10);
   v20 = (*(ObjectType + 96))(v10);
   (*(v12 + 8))(v18, v11);
   v21 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0x30);

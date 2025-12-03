@@ -1,16 +1,16 @@
 @interface MPDetailScrubController
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
 - (BOOL)durationAllowsForDetailedScrubbing;
 - (MPDetailScrubController)init;
-- (MPDetailScrubController)initWithScrubbingControl:(id)a3;
+- (MPDetailScrubController)initWithScrubbingControl:(id)control;
 - (MPDetailScrubControllerDelegate)delegate;
 - (MPDetailedScrubbing)scrubbingControl;
 - (float)_minimumScale;
-- (float)_scaleForIdealValueForVerticalPosition:(double)a3;
-- (float)scaleForVerticalPosition:(double)a3;
+- (float)_scaleForIdealValueForVerticalPosition:(double)position;
+- (float)scaleForVerticalPosition:(double)position;
 - (void)_beginScrubbing;
-- (void)_commitValue:(float)a3;
+- (void)_commitValue:(float)value;
 - (void)_endScrubbing;
 @end
 
@@ -30,7 +30,7 @@
   return WeakRetained;
 }
 
-- (void)_commitValue:(float)a3
+- (void)_commitValue:(float)value
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = WeakRetained;
@@ -41,7 +41,7 @@
     v7 = v9;
     if (WeakRetained)
     {
-      v8 = self->_duration * a3;
+      v8 = self->_duration * value;
       *&v8 = v8;
       WeakRetained = [v9 detailScrubController:self didChangeValue:v8];
       v7 = v9;
@@ -84,10 +84,10 @@
   }
 }
 
-- (float)_scaleForIdealValueForVerticalPosition:(double)a3
+- (float)_scaleForIdealValueForVerticalPosition:(double)position
 {
   scrubbingVerticalRange = self->_scrubbingVerticalRange;
-  v4 = vabdd_f64(a3, self->_beginLocationInView.y);
+  v4 = vabdd_f64(position, self->_beginLocationInView.y);
   if (scrubbingVerticalRange < v4)
   {
     v4 = self->_scrubbingVerticalRange;
@@ -126,19 +126,19 @@
   return v6;
 }
 
-- (float)scaleForVerticalPosition:(double)a3
+- (float)scaleForVerticalPosition:(double)position
 {
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   scrubbingVerticalRange = self->_scrubbingVerticalRange;
-  v8 = vabdd_f64(a3, self->_beginLocationInView.y);
+  v8 = vabdd_f64(position, self->_beginLocationInView.y);
   if (scrubbingVerticalRange >= v8)
   {
     scrubbingVerticalRange = v8;
   }
 
-  if (v6 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v9 = 20.0;
   }
@@ -158,8 +158,8 @@
     v10 = scrubbingVerticalRange;
   }
 
-  v11 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v11 userInterfaceIdiom] == 1)
+  currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice2 userInterfaceIdiom] == 1)
   {
     v12 = 20.0;
   }
@@ -173,8 +173,8 @@
 
   v14 = v13;
   v15 = self->_scrubbingVerticalRange;
-  v16 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v16 userInterfaceIdiom] == 1)
+  currentDevice3 = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice3 userInterfaceIdiom] == 1)
   {
     v17 = 20.0;
   }
@@ -200,11 +200,11 @@
   return v4;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = a3;
+  touchCopy = touch;
   WeakRetained = objc_loadWeakRetained(&self->_scrubbingControl);
-  [v5 locationInView:WeakRetained];
+  [touchCopy locationInView:WeakRetained];
   v8 = v7;
   v10 = v9;
 
@@ -322,12 +322,12 @@ LABEL_35:
   return 1;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
   self->_didBeginTracking = 0;
-  v5 = a3;
+  touchCopy = touch;
   WeakRetained = objc_loadWeakRetained(&self->_scrubbingControl);
-  [v5 locationInView:WeakRetained];
+  [touchCopy locationInView:WeakRetained];
   v8 = v7;
   v10 = v9;
 
@@ -365,16 +365,16 @@ LABEL_35:
   return 0;
 }
 
-- (MPDetailScrubController)initWithScrubbingControl:(id)a3
+- (MPDetailScrubController)initWithScrubbingControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   v8.receiver = self;
   v8.super_class = MPDetailScrubController;
   v5 = [(MPDetailScrubController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scrubbingControl, v4);
+    objc_storeWeak(&v5->_scrubbingControl, controlCopy);
     v6->_scrubbingVerticalRange = 220.0;
     v6->_detailedScrubbingEnabled = 1;
   }

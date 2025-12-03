@@ -1,6 +1,6 @@
 @interface PKFPANCardDescriptor
-+ (PKFPANCardDescriptor)descriptorWithCardNickname:(id)a3 credential:(id)a4;
-+ (PKFPANCardDescriptor)descriptorWithCardNickname:(id)a3 displayableLastFour:(id)a4 credentialType:(unint64_t)a5;
++ (PKFPANCardDescriptor)descriptorWithCardNickname:(id)nickname credential:(id)credential;
++ (PKFPANCardDescriptor)descriptorWithCardNickname:(id)nickname displayableLastFour:(id)four credentialType:(unint64_t)type;
 + (id)_createTaggedDescriptor;
 @end
 
@@ -10,42 +10,42 @@
 {
   v2 = [(PKAutoFillCardDescriptor *)[PKFPANCardDescriptor alloc] _initWithType:1];
   v3 = objc_alloc_init(MEMORY[0x1E696AFB0]);
-  v4 = [v3 UUIDString];
-  [v2 setIdentifier:v4];
+  uUIDString = [v3 UUIDString];
+  [v2 setIdentifier:uUIDString];
 
   return v2;
 }
 
-+ (PKFPANCardDescriptor)descriptorWithCardNickname:(id)a3 displayableLastFour:(id)a4 credentialType:(unint64_t)a5
++ (PKFPANCardDescriptor)descriptorWithCardNickname:(id)nickname displayableLastFour:(id)four credentialType:(unint64_t)type
 {
-  v7 = a4;
-  v8 = a3;
+  fourCopy = four;
+  nicknameCopy = nickname;
   v9 = +[PKFPANCardDescriptor _createTaggedDescriptor];
-  v10 = [v8 copy];
+  v10 = [nicknameCopy copy];
 
   [(PKAutoFillCardDescriptor *)v9 setCardNickname:v10];
-  v11 = [v7 copy];
+  v11 = [fourCopy copy];
 
   [(PKAutoFillCardDescriptor *)v9 setDisplayableLastFour:v11];
-  [(PKAutoFillCardDescriptor *)v9 setCredentialType:a5];
+  [(PKAutoFillCardDescriptor *)v9 setCredentialType:type];
   return v9;
 }
 
-+ (PKFPANCardDescriptor)descriptorWithCardNickname:(id)a3 credential:(id)a4
++ (PKFPANCardDescriptor)descriptorWithCardNickname:(id)nickname credential:(id)credential
 {
-  v5 = a4;
-  v6 = a3;
+  credentialCopy = credential;
+  nicknameCopy = nickname;
   v7 = +[PKFPANCardDescriptor _createTaggedDescriptor];
-  v8 = [v6 copy];
+  v8 = [nicknameCopy copy];
 
   [(PKAutoFillCardDescriptor *)v7 setCardNickname:v8];
-  v9 = [v5 primaryAccountNumber];
-  v10 = PKFPANSuffixFromFPAN(v9);
+  primaryAccountNumber = [credentialCopy primaryAccountNumber];
+  v10 = PKFPANSuffixFromFPAN(primaryAccountNumber);
   [(PKAutoFillCardDescriptor *)v7 setDisplayableLastFour:v10];
 
-  v11 = [v5 primaryAccountNumber];
+  primaryAccountNumber2 = [credentialCopy primaryAccountNumber];
 
-  [(PKAutoFillCardDescriptor *)v7 setCredentialType:PKAutoFillCredentialTypeFromFPAN(v11)];
+  [(PKAutoFillCardDescriptor *)v7 setCredentialType:PKAutoFillCredentialTypeFromFPAN(primaryAccountNumber2)];
   return v7;
 }
 

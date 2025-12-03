@@ -1,6 +1,6 @@
 @interface SSRemoteAlertMonitor
-- (SSRemoteAlertMonitor)initWithBundleID:(id)a3 dismissHandler:(id)a4;
-- (void)_handleLayoutUpdate:(id)a3;
+- (SSRemoteAlertMonitor)initWithBundleID:(id)d dismissHandler:(id)handler;
+- (void)_handleLayoutUpdate:(id)update;
 - (void)_startObserving;
 - (void)_stopObserving;
 - (void)dealloc;
@@ -8,26 +8,26 @@
 
 @implementation SSRemoteAlertMonitor
 
-- (SSRemoteAlertMonitor)initWithBundleID:(id)a3 dismissHandler:(id)a4
+- (SSRemoteAlertMonitor)initWithBundleID:(id)d dismissHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if ([v6 length])
+    if ([dCopy length])
     {
-      v8 = v6;
+      bundleIdentifier = dCopy;
     }
 
     else
     {
       v11 = +[NSBundle mainBundle];
-      v8 = [v11 bundleIdentifier];
+      bundleIdentifier = [v11 bundleIdentifier];
 
       v12 = sub_10000C1BC();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        sub_10000F558(v8, v12);
+        sub_10000F558(bundleIdentifier, v12);
       }
     }
 
@@ -36,18 +36,18 @@
     v13 = [(SSRemoteAlertMonitor *)&v17 init];
     if (v13)
     {
-      v14 = objc_retainBlock(v7);
+      v14 = objc_retainBlock(handlerCopy);
       dismissHandler = v13->_dismissHandler;
       v13->_dismissHandler = v14;
 
       v13->_displayState = 0;
-      objc_storeStrong(&v13->_bundleID, v8);
+      objc_storeStrong(&v13->_bundleID, bundleIdentifier);
       [(SSRemoteAlertMonitor *)v13 _startObserving];
     }
 
     self = v13;
-    v6 = v8;
-    v10 = self;
+    dCopy = bundleIdentifier;
+    selfCopy = self;
   }
 
   else
@@ -58,10 +58,10 @@
       sub_10000F5E4(v9);
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -119,14 +119,14 @@
   self->_monitor = 0;
 }
 
-- (void)_handleLayoutUpdate:(id)a3
+- (void)_handleLayoutUpdate:(id)update
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  updateCopy = update;
+  v5 = updateCopy;
+  if (updateCopy)
   {
-    v6 = [v4 elements];
-    v7 = [v6 count];
+    elements = [updateCopy elements];
+    v7 = [elements count];
 
     if (v7)
     {
@@ -134,8 +134,8 @@
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v8 = [v5 elements];
-      v9 = [v8 countByEnumeratingWithState:&v32 objects:v42 count:16];
+      elements2 = [v5 elements];
+      v9 = [elements2 countByEnumeratingWithState:&v32 objects:v42 count:16];
       if (v9)
       {
         v11 = v9;
@@ -148,31 +148,31 @@
           {
             if (*v33 != v12)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(elements2);
             }
 
             v14 = *(*(&v32 + 1) + 8 * i);
-            v15 = [v14 isUIApplicationElement];
+            isUIApplicationElement = [v14 isUIApplicationElement];
             v16 = sub_10000C1BC();
             v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-            if (v15)
+            if (isUIApplicationElement)
             {
               if (v17)
               {
-                v18 = [v14 bundleIdentifier];
-                v19 = [v14 level];
+                bundleIdentifier = [v14 bundleIdentifier];
+                level = [v14 level];
                 *buf = v31;
-                v37 = v18;
+                v37 = bundleIdentifier;
                 v38 = 2048;
-                v39 = v19;
+                v39 = level;
                 v40 = 2080;
                 v41 = "[SSRemoteAlertMonitor _handleLayoutUpdate:]";
                 _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%@ lvl:%ld @%s", buf, 0x20u);
               }
 
               bundleID = self->_bundleID;
-              v21 = [v14 bundleIdentifier];
-              LOBYTE(bundleID) = [(NSString *)bundleID isEqualToString:v21];
+              bundleIdentifier2 = [v14 bundleIdentifier];
+              LOBYTE(bundleID) = [(NSString *)bundleID isEqualToString:bundleIdentifier2];
 
               if (bundleID)
               {
@@ -190,20 +190,20 @@ LABEL_27:
             {
               if (v17)
               {
-                v22 = [v14 identifier];
-                v23 = [v14 level];
+                identifier = [v14 identifier];
+                level2 = [v14 level];
                 *buf = v31;
-                v37 = v22;
+                v37 = identifier;
                 v38 = 2048;
-                v39 = v23;
+                v39 = level2;
                 v40 = 2080;
                 v41 = "[SSRemoteAlertMonitor _handleLayoutUpdate:]";
                 _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%@ lvl:%ld @%s", buf, 0x20u);
               }
 
               v24 = self->_bundleID;
-              v25 = [v14 identifier];
-              LOBYTE(v24) = [(NSString *)v24 isEqualToString:v25];
+              identifier2 = [v14 identifier];
+              LOBYTE(v24) = [(NSString *)v24 isEqualToString:identifier2];
 
               if (v24)
               {
@@ -213,7 +213,7 @@ LABEL_27:
             }
           }
 
-          v11 = [v8 countByEnumeratingWithState:&v32 objects:v42 count:16];
+          v11 = [elements2 countByEnumeratingWithState:&v32 objects:v42 count:16];
           if (v11)
           {
             continue;

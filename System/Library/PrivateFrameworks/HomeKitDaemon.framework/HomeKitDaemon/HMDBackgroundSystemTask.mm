@@ -1,5 +1,5 @@
 @interface HMDBackgroundSystemTask
-- (HMDBackgroundSystemTask)initWithUnderlyingTask:(id)a3;
+- (HMDBackgroundSystemTask)initWithUnderlyingTask:(id)task;
 - (void)setTaskCompleted;
 @end
 
@@ -7,20 +7,20 @@
 
 - (void)setTaskCompleted
 {
-  v2 = [(HMDBackgroundSystemTask *)self underlyingTask];
-  [v2 setTaskCompleted];
+  underlyingTask = [(HMDBackgroundSystemTask *)self underlyingTask];
+  [underlyingTask setTaskCompleted];
 }
 
-- (HMDBackgroundSystemTask)initWithUnderlyingTask:(id)a3
+- (HMDBackgroundSystemTask)initWithUnderlyingTask:(id)task
 {
-  v5 = a3;
+  taskCopy = task;
   v9.receiver = self;
   v9.super_class = HMDBackgroundSystemTask;
   v6 = [(HMDBackgroundSystemTask *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingTask, a3);
+    objc_storeStrong(&v6->_underlyingTask, task);
   }
 
   return v7;

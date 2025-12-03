@@ -1,33 +1,33 @@
 @interface BWDepthConverterNode
 + (void)initialize;
-- (BWDepthConverterNode)initWithStillImageNodeConfiguration:(id)a3 cameraInfoByPortType:(id)a4 sensorIDDictionary:(id)a5 rgbPersonSegmentationEnabled:(BOOL)a6 depthIsAlwaysHighQuality:(BOOL)a7 depthOriginatesFromNeuralNetwork:(BOOL)a8 backPressureDrivenPipelining:(BOOL)a9;
-- (uint64_t)_computeConversionParametersFromSampleBuffer:(uint64_t)a3 convertOptionsOut:;
-- (uint64_t)_convertDepthDisparityToFloat_C:(__CVBuffer *)a3 dst:(uint64_t)a4 options:;
-- (uint64_t)_convertDepthDisparityToFloat_NEON:(__CVBuffer *)a3 dst:(int *)a4 options:;
-- (uint64_t)_depthMetadataDictionaryFromSampleBuffer:(int)a3 orientation:(int)a4 stillFilteringRequested:;
-- (uint64_t)_generateAndAttachUnfilteredDepthToSampleBuffer:(__CVBuffer *)a3 depthOutputPixelBuffer:(opaqueCMSampleBuffer *)a4 depthOutputSampleBuffer:;
+- (BWDepthConverterNode)initWithStillImageNodeConfiguration:(id)configuration cameraInfoByPortType:(id)type sensorIDDictionary:(id)dictionary rgbPersonSegmentationEnabled:(BOOL)enabled depthIsAlwaysHighQuality:(BOOL)quality depthOriginatesFromNeuralNetwork:(BOOL)network backPressureDrivenPipelining:(BOOL)pipelining;
+- (uint64_t)_computeConversionParametersFromSampleBuffer:(uint64_t)buffer convertOptionsOut:;
+- (uint64_t)_convertDepthDisparityToFloat_C:(__CVBuffer *)c dst:(uint64_t)dst options:;
+- (uint64_t)_convertDepthDisparityToFloat_NEON:(__CVBuffer *)n dst:(int *)dst options:;
+- (uint64_t)_depthMetadataDictionaryFromSampleBuffer:(int)buffer orientation:(int)orientation stillFilteringRequested:;
+- (uint64_t)_generateAndAttachUnfilteredDepthToSampleBuffer:(__CVBuffer *)buffer depthOutputPixelBuffer:(opaqueCMSampleBuffer *)pixelBuffer depthOutputSampleBuffer:;
 - (uint64_t)_loadAndConfigureDepthProcessorClass:(uint64_t)result;
 - (uint64_t)_parseCameraInfo;
 - (uint64_t)_resolveFilteringTypeWithStillFilteringRequested:(uint64_t)result;
-- (uint64_t)_scaleDepthValues:(void *)a3 depthMetadata:(uint64_t)a4 sbuf:;
+- (uint64_t)_scaleDepthValues:(void *)values depthMetadata:(uint64_t)metadata sbuf:;
 - (uint64_t)_updateOutputRequirements;
-- (uint64_t)convertToFloatAndRotateAndCrop:(__CVBuffer *)a3 outputPixelBuffer:;
-- (uint64_t)filterDepthPixelBuffer:(__CVBuffer *)a3 outputDepthPixelBuffer:(CMSampleBufferRef)sbuf yuvImageSampleBuffer:(uint64_t)a5 depthSampleBuffer:(unsigned int)a6 filteringType:;
-- (uint64_t)rotateAndScaleAndCropImagePixelBuffer:(uint64_t)a1 depthPixelBuffer:(__CVBuffer *)a2 to:(__CVBuffer *)a3 rotationAngle:(uint64_t)a4 flip:(int)a5;
-- (void)_removeConsumedAttachedMediaFromSampleBuffer:(uint64_t)a1;
+- (uint64_t)convertToFloatAndRotateAndCrop:(__CVBuffer *)crop outputPixelBuffer:;
+- (uint64_t)filterDepthPixelBuffer:(__CVBuffer *)buffer outputDepthPixelBuffer:(CMSampleBufferRef)sbuf yuvImageSampleBuffer:(uint64_t)sampleBuffer depthSampleBuffer:(unsigned int)depthSampleBuffer filteringType:;
+- (uint64_t)rotateAndScaleAndCropImagePixelBuffer:(uint64_t)buffer depthPixelBuffer:(__CVBuffer *)pixelBuffer to:(__CVBuffer *)to rotationAngle:(uint64_t)angle flip:(int)flip;
+- (void)_removeConsumedAttachedMediaFromSampleBuffer:(uint64_t)buffer;
 - (void)dealloc;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setOutputDimensions:(id)a3;
-- (void)setOutputFormat:(unsigned int)a3;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setOutputDimensions:(id)dimensions;
+- (void)setOutputFormat:(unsigned int)format;
 @end
 
 @implementation BWDepthConverterNode
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -36,9 +36,9 @@
   }
 }
 
-- (BWDepthConverterNode)initWithStillImageNodeConfiguration:(id)a3 cameraInfoByPortType:(id)a4 sensorIDDictionary:(id)a5 rgbPersonSegmentationEnabled:(BOOL)a6 depthIsAlwaysHighQuality:(BOOL)a7 depthOriginatesFromNeuralNetwork:(BOOL)a8 backPressureDrivenPipelining:(BOOL)a9
+- (BWDepthConverterNode)initWithStillImageNodeConfiguration:(id)configuration cameraInfoByPortType:(id)type sensorIDDictionary:(id)dictionary rgbPersonSegmentationEnabled:(BOOL)enabled depthIsAlwaysHighQuality:(BOOL)quality depthOriginatesFromNeuralNetwork:(BOOL)network backPressureDrivenPipelining:(BOOL)pipelining
 {
-  v11 = a6;
+  enabledCopy = enabled;
   v31.receiver = self;
   v31.super_class = BWDepthConverterNode;
   v15 = [(BWNode *)&v31 init];
@@ -46,17 +46,17 @@
   if (v15)
   {
     [(BWNode *)v15 setSupportsLiveReconfiguration:1];
-    v16->_stillImageNodeConfiguration = a3;
-    v16->_cameraInfoByPortType = a4;
-    v16->_sensorIDDictionary = a5;
-    v16->_depthIsAlwaysHighQuality = a7;
-    v16->_depthOriginatesFromNeuralNetwork = a8;
-    v16->_backPressureDrivenPipelining = a9;
+    v16->_stillImageNodeConfiguration = configuration;
+    v16->_cameraInfoByPortType = type;
+    v16->_sensorIDDictionary = dictionary;
+    v16->_depthIsAlwaysHighQuality = quality;
+    v16->_depthOriginatesFromNeuralNetwork = network;
+    v16->_backPressureDrivenPipelining = pipelining;
     v17 = *(MEMORY[0x1E695F050] + 16);
     v16->_inputCropRect.origin = *MEMORY[0x1E695F050];
     v16->_inputCropRect.size = v17;
     v16->_depthProcessingEnabled = [(BWStillImageNodeConfiguration *)v16->_stillImageNodeConfiguration depthDataType]!= 10;
-    v16->_disparityAPSScaling = -[BWDisparityAPSScaling initWithDepthScalingTuningParameters:]([BWDisparityAPSScaling alloc], "initWithDepthScalingTuningParameters:", [objc_msgSend(a5 objectForKeyedSubscript:{@"DepthProcessingParameters", "objectForKeyedSubscript:", @"DepthScalingParameters"}]);
+    v16->_disparityAPSScaling = -[BWDisparityAPSScaling initWithDepthScalingTuningParameters:]([BWDisparityAPSScaling alloc], "initWithDepthScalingTuningParameters:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"DepthProcessingParameters", "objectForKeyedSubscript:", @"DepthScalingParameters"}]);
     v18 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v16];
     v19 = objc_alloc_init(BWVideoFormatRequirements);
     [(BWVideoFormatRequirements *)v19 setSupportedPixelFormats:FigCapturePixelFormatsByAddingCompressedVariants(&unk_1F2249258, 3)];
@@ -80,7 +80,7 @@
     [(BWNodeInputMediaConfiguration *)v20 setFormatRequirements:v22];
     [(BWNodeInputMediaConfiguration *)v20 setPassthroughMode:0];
     [(BWNodeInput *)v18 setMediaConfiguration:v20 forAttachedMediaKey:@"Depth"];
-    if (v11)
+    if (enabledCopy)
     {
       v24 = objc_alloc_init(BWNodeInputMediaConfiguration);
       v25 = objc_alloc_init(BWVideoFormatRequirements);
@@ -187,26 +187,26 @@
   [(BWNode *)&v14 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
-  if ([a5 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
     output = self->super._output;
 
-    [(BWNodeOutput *)output setFormat:a3];
+    [(BWNodeOutput *)output setFormat:format];
   }
 
-  else if ([a5 isEqualToString:@"Depth"])
+  else if ([key isEqualToString:@"Depth"])
   {
-    v10 = [a3 dimensions];
-    self->_inputDepthDimensions = v10;
+    dimensions = [format dimensions];
+    self->_inputDepthDimensions = dimensions;
     if (!self->_depthProcessingEnabled)
     {
       baseRotationDegrees = self->_baseRotationDegrees;
-      v16 = __ROR8__(v10, 32);
+      v16 = __ROR8__(dimensions, 32);
       if (baseRotationDegrees == 180)
       {
-        v16 = v10;
+        v16 = dimensions;
       }
 
       if (baseRotationDegrees)
@@ -216,7 +216,7 @@
 
       else
       {
-        v17 = v10;
+        v17 = dimensions;
       }
 
       self->_outputDimensions = v17;
@@ -240,28 +240,28 @@
     }
   }
 
-  else if (([a5 isEqualToString:0x1F21AAC70] & 1) == 0 && (objc_msgSend(a5, "isEqualToString:", 0x1F21AAC90) & 1) == 0)
+  else if (([key isEqualToString:0x1F21AAC70] & 1) == 0 && (objc_msgSend(key, "isEqualToString:", 0x1F21AAC90) & 1) == 0)
   {
     v18.receiver = self;
     v18.super_class = BWDepthConverterNode;
-    [(BWNode *)&v18 didSelectFormat:a3 forInput:a4 forAttachedMediaKey:a5];
+    [(BWNode *)&v18 didSelectFormat:format forInput:input forAttachedMediaKey:key];
   }
 }
 
-- (void)setOutputFormat:(unsigned int)a3
+- (void)setOutputFormat:(unsigned int)format
 {
-  if (self->_outputFormat != a3)
+  if (self->_outputFormat != format)
   {
-    self->_outputFormat = a3;
+    self->_outputFormat = format;
     [(BWDepthConverterNode *)self _updateOutputRequirements];
   }
 }
 
-- (void)setOutputDimensions:(id)a3
+- (void)setOutputDimensions:(id)dimensions
 {
-  if (self->_outputDimensions.width != a3.var0 || self->_outputDimensions.height != a3.var1)
+  if (self->_outputDimensions.width != dimensions.var0 || self->_outputDimensions.height != dimensions.var1)
   {
-    self->_outputDimensions = a3;
+    self->_outputDimensions = dimensions;
     [(BWDepthConverterNode *)self _updateOutputRequirements];
   }
 }
@@ -456,9 +456,9 @@ LABEL_76:
       OUTLINED_FUNCTION_33();
       if (v27)
       {
-        v39 = [(BWNodeConnection *)[(BWNodeInput *)self->super._input connection] pipelineStage];
+        pipelineStage = [(BWNodeConnection *)[(BWNodeInput *)self->super._input connection] pipelineStage];
         v18 = MEMORY[0x1E695E480];
-        if (v39)
+        if (pipelineStage)
         {
           [(BWPipelineStage *)[(BWNodeConnection *)[(BWNodeInput *)self->super._input connection] pipelineStage] priority];
         }
@@ -616,12 +616,12 @@ LABEL_17:
       return 0;
     }
 
-    v24 = [v23 bytes];
+    bytes = [v23 bytes];
     result = 0;
-    v25 = v24[3];
-    v27 = *v24;
-    v26 = v24[1];
-    *(v1 + 376) = v24[2];
+    v25 = bytes[3];
+    v27 = *bytes;
+    v26 = bytes[1];
+    *(v1 + 376) = bytes[2];
     *(v1 + 392) = v25;
     *(v1 + 344) = v27;
     *(v1 + 360) = v26;
@@ -648,9 +648,9 @@ LABEL_17:
     *(result + 600) = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters depthProcessorVersion];
     if (*(v3 + 600))
     {
-      v4 = [*(v3 + 624) pearlModuleType];
+      pearlModuleType = [*(v3 + 624) pearlModuleType];
       v5 = *(v3 + 600);
-      if (v4 == 2 && v5 < 2)
+      if (pearlModuleType == 2 && v5 < 2)
       {
         return 4294954516;
       }
@@ -731,9 +731,9 @@ LABEL_17:
   return result;
 }
 
-- (uint64_t)_computeConversionParametersFromSampleBuffer:(uint64_t)a3 convertOptionsOut:
+- (uint64_t)_computeConversionParametersFromSampleBuffer:(uint64_t)buffer convertOptionsOut:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -742,31 +742,31 @@ LABEL_17:
   Width = CVPixelBufferGetWidth(ImageBuffer);
   Height = CVPixelBufferGetHeight(ImageBuffer);
   BytesPerRow = CVPixelBufferGetBytesPerRow(ImageBuffer);
-  if (Width && Height && BytesPerRow && *(a1 + 188) && *(a1 + 192))
+  if (Width && Height && BytesPerRow && *(self + 188) && *(self + 192))
   {
     v10 = CMGetAttachment(sbuf, @"DepthPixelBufferType", 0);
     Attributes = CVPixelBufferGetAttributes();
-    *(a3 + 12) = [objc_msgSend(Attributes objectForKeyedSubscript:{*MEMORY[0x1E69660A8]), "shortValue"}];
+    *(buffer + 12) = [objc_msgSend(Attributes objectForKeyedSubscript:{*MEMORY[0x1E69660A8]), "shortValue"}];
     if ([v10 isEqualToString:*off_1E798ABB0])
     {
       FixedPointFractionalBits = CVPixelBufferGetFixedPointFractionalBits();
       v13 = 1;
       v14 = (1.0 / (1 << FixedPointFractionalBits)) * 0.001;
-      *(a3 + 4) = 0;
+      *(buffer + 4) = 0;
     }
 
     else
     {
       v15 = CMGetAttachment(sbuf, *off_1E798A328, 0);
       [objc_msgSend(v15 objectForKeyedSubscript:{*off_1E798ABC0), "floatValue"}];
-      *(a3 + 4) = v16;
+      *(buffer + 4) = v16;
       [objc_msgSend(v15 objectForKeyedSubscript:{*off_1E798ABB8), "floatValue"}];
       v13 = 0;
     }
 
-    *(a3 + 8) = v14;
-    *(a3 + 16) = v13;
-    v17 = FigCaptureNormalizeAngle(*(a1 + 412) + [objc_msgSend(Attributes objectForKeyedSubscript:{*MEMORY[0x1E69661F0]), "intValue"}] - *(a1 + 416));
+    *(buffer + 8) = v14;
+    *(buffer + 16) = v13;
+    v17 = FigCaptureNormalizeAngle(*(self + 412) + [objc_msgSend(Attributes objectForKeyedSubscript:{*MEMORY[0x1E69661F0]), "intValue"}] - *(self + 416));
     if (v17)
     {
       v18 = 360 - v17;
@@ -777,14 +777,14 @@ LABEL_17:
       v18 = 0;
     }
 
-    *a3 = FigCaptureConvertRotationAndMirroringToExifOrientation(v18, *(a1 + 420));
+    *buffer = FigCaptureConvertRotationAndMirroringToExifOrientation(v18, *(self + 420));
     return 0;
   }
 
   return FigSignalErrorAtGM();
 }
 
-- (uint64_t)_depthMetadataDictionaryFromSampleBuffer:(int)a3 orientation:(int)a4 stillFilteringRequested:
+- (uint64_t)_depthMetadataDictionaryFromSampleBuffer:(int)buffer orientation:(int)orientation stillFilteringRequested:
 {
   if (!result)
   {
@@ -810,7 +810,7 @@ LABEL_17:
     }
 
     v13 = v12 | (FigDepthDataGetCurrentMajorVersion() << 16);
-    v14 = 1;
+    figDepthQuality = 1;
   }
 
   else
@@ -835,13 +835,13 @@ LABEL_17:
     }
 
     v13 = v16 | (FigDepthDataGetCurrentMajorVersion() << 16);
-    v14 = *(v7 + 489);
+    figDepthQuality = *(v7 + 489);
   }
 
-  v17 = v11 & a4;
+  v17 = v11 & orientation;
   if (*(v7 + 488) & 1) == 0 && (*(v7 + 136) & v17)
   {
-    v14 = [*(v7 + 592) figDepthQuality];
+    figDepthQuality = [*(v7 + 592) figDepthQuality];
   }
 
   *&time.value = *MEMORY[0x1E695F060];
@@ -887,7 +887,7 @@ LABEL_48:
   }
 
   v26 = v25;
-  v47 = a3;
+  bufferCopy = buffer;
   AttachedMedia = BWSampleBufferGetAttachedMedia(target, @"Depth");
   v28 = CMGetAttachment(AttachedMedia, v8, 0);
   v29 = *off_1E798CFD0;
@@ -902,25 +902,25 @@ LABEL_48:
     v30 = *(v7 + 137) | v17;
   }
 
-  v31 = [MEMORY[0x1E695DF90] dictionary];
-  [v31 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v14), *off_1E798D008}];
-  [v31 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", v30 & 1), v29}];
-  [v31 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", *(v7 + 272)), *off_1E798CFC0}];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", figDepthQuality), *off_1E798D008}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", v30 & 1), v29}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", *(v7 + 272)), *off_1E798CFC0}];
   *&v32 = *(v7 + 408) * 0.001;
-  [v31 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v32), *off_1E798D000}];
-  [v31 setObject:v26 forKeyedSubscript:*off_1E798CFD8];
-  [v31 setObject:v19 forKeyedSubscript:*off_1E798CFE0];
-  [v31 setObject:objc_msgSend(MEMORY[0x1E695DEF0] forKeyedSubscript:{"dataWithBytes:length:", v7 + 208, 64), *off_1E798CFC8}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v32), *off_1E798D000}];
+  [dictionary setObject:v26 forKeyedSubscript:*off_1E798CFD8];
+  [dictionary setObject:v19 forKeyedSubscript:*off_1E798CFE0];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E695DEF0] forKeyedSubscript:{"dataWithBytes:length:", v7 + 208, 64), *off_1E798CFC8}];
   OUTLINED_FUNCTION_33();
   if (v15)
   {
-    [v31 setObject:CGPointCreateDictionaryRepresentation(v52) forKeyedSubscript:*off_1E798CFF0];
-    [v31 setObject:objc_msgSend(MEMORY[0x1E695DEF0] forKeyedSubscript:{"dataWithBytes:length:", v51, 32), *off_1E798CFF8}];
-    [v31 setObject:objc_msgSend(MEMORY[0x1E695DEF0] forKeyedSubscript:{"dataWithBytes:length:", v50, 32), *off_1E798CFE8}];
+    [dictionary setObject:CGPointCreateDictionaryRepresentation(v52) forKeyedSubscript:*off_1E798CFF0];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E695DEF0] forKeyedSubscript:{"dataWithBytes:length:", v51, 32), *off_1E798CFF8}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E695DEF0] forKeyedSubscript:{"dataWithBytes:length:", v50, 32), *off_1E798CFE8}];
   }
 
-  [v31 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v13), *off_1E798D010}];
-  if (FigDepthRotateMetadataDictionary(v31, v47, 1))
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", v13), *off_1E798D010}];
+  if (FigDepthRotateMetadataDictionary(dictionary, bufferCopy, 1))
   {
     FigSignalErrorAtGM();
     return 0;
@@ -931,7 +931,7 @@ LABEL_48:
     v33 = 1.0;
     if (*(v7 + 136) == 1)
     {
-      v34 = [OUTLINED_FUNCTION_6_63() disparityQualityIsHigh];
+      disparityQualityIsHigh = [OUTLINED_FUNCTION_6_63() disparityQualityIsHigh];
       if (*(v7 + 136))
       {
         [OUTLINED_FUNCTION_6_63() disparityQualityScore];
@@ -941,12 +941,12 @@ LABEL_48:
 
     else
     {
-      v34 = 1;
+      disparityQualityIsHigh = 1;
     }
 
-    [v31 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", v34), *off_1E798D020}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", disparityQualityIsHigh), *off_1E798D020}];
     *&v36 = v33;
-    [v31 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v36), *off_1E798D018}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v36), *off_1E798D018}];
   }
 
   v48 = *MEMORY[0x1E695F050];
@@ -954,7 +954,7 @@ LABEL_48:
   v37 = *off_1E798A598;
   if (FigCFDictionaryGetCGRectIfPresent())
   {
-    FigCaptureMetadataUtilitiesUpdateDepthDataMetadataForStillImageCropAndScale(v31, *&v48, *(&v48 + 1), *&v49, *(&v49 + 1), 1.0);
+    FigCaptureMetadataUtilitiesUpdateDepthDataMetadataForStillImageCropAndScale(dictionary, *&v48, *(&v48 + 1), *&v49, *(&v49 + 1), 1.0);
     [v28 removeObjectForKey:v37];
   }
 
@@ -963,15 +963,15 @@ LABEL_48:
   {
     v38 = OUTLINED_FUNCTION_8_48(v7 + 424);
     FigCaptureMetadataUtilitiesNormalizeCropRect(v38, v39, v40, v41);
-    FigCaptureMetadataUtilitiesUpdateDepthDataMetadataForStillImageCropAndScale(v31, v42, v43, v44, v45, 1.0);
+    FigCaptureMetadataUtilitiesUpdateDepthDataMetadataForStillImageCropAndScale(dictionary, v42, v43, v44, v45, 1.0);
   }
 
-  return [MEMORY[0x1E695DF20] dictionaryWithDictionary:v31];
+  return [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
 }
 
-- (uint64_t)convertToFloatAndRotateAndCrop:(__CVBuffer *)a3 outputPixelBuffer:
+- (uint64_t)convertToFloatAndRotateAndCrop:(__CVBuffer *)crop outputPixelBuffer:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -987,7 +987,7 @@ LABEL_48:
   v26[1] = 0;
   v27 = 0;
   ImageBuffer = CMSampleBufferGetImageBuffer(a2);
-  v8 = [(BWDepthConverterNode *)a1 _computeConversionParametersFromSampleBuffer:a2 convertOptionsOut:v26];
+  v8 = [(BWDepthConverterNode *)self _computeConversionParametersFromSampleBuffer:a2 convertOptionsOut:v26];
   if (v8)
   {
     v24 = v8;
@@ -996,7 +996,7 @@ LABEL_48:
 
   else
   {
-    if ((*(a1 + 160) & 1) != 0 || (Width = CVPixelBufferGetWidth(ImageBuffer), Height = CVPixelBufferGetHeight(ImageBuffer), BytesPerRow = CVPixelBufferGetBytesPerRow(ImageBuffer), v12 = CVPixelBufferGetWidth(a3), v13 = CVPixelBufferGetHeight(a3), v14 = CVPixelBufferGetBytesPerRow(a3), ((Width | Height) & 7) != 0) || (v12 & 7) != 0 || (v13 & 7) != 0 || (BytesPerRow & 0xF) != 0 || (v14 & 0xF) != 0)
+    if ((*(self + 160) & 1) != 0 || (Width = CVPixelBufferGetWidth(ImageBuffer), Height = CVPixelBufferGetHeight(ImageBuffer), BytesPerRow = CVPixelBufferGetBytesPerRow(ImageBuffer), v12 = CVPixelBufferGetWidth(crop), v13 = CVPixelBufferGetHeight(crop), v14 = CVPixelBufferGetBytesPerRow(crop), ((Width | Height) & 7) != 0) || (v12 & 7) != 0 || (v13 & 7) != 0 || (BytesPerRow & 0xF) != 0 || (v14 & 0xF) != 0)
     {
       v20 = OUTLINED_FUNCTION_14_34();
       v19 = [(BWDepthConverterNode *)v20 _convertDepthDisparityToFloat_C:v21 dst:v22 options:v23];
@@ -1029,9 +1029,9 @@ LABEL_15:
   return v24;
 }
 
-- (uint64_t)_convertDepthDisparityToFloat_NEON:(__CVBuffer *)a3 dst:(int *)a4 options:
+- (uint64_t)_convertDepthDisparityToFloat_NEON:(__CVBuffer *)n dst:(int *)dst options:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -1040,10 +1040,10 @@ LABEL_15:
   pixelFormatType = CVPixelBufferGetPixelFormatType(pixelBuffer);
   Width = CVPixelBufferGetWidth(v6);
   Height = CVPixelBufferGetHeight(v6);
-  v10 = CVPixelBufferGetWidth(a3);
-  v11 = CVPixelBufferGetHeight(a3);
+  v10 = CVPixelBufferGetWidth(n);
+  v11 = CVPixelBufferGetHeight(n);
   v13 = v11;
-  v14 = *a4;
+  v14 = *dst;
   v16 = Width != v10 || Height != v11;
   if (v14 != 1 || v16)
   {
@@ -1074,33 +1074,33 @@ LABEL_15:
       LOBYTE(v16) = v19;
     }
 
-    if (v16 || (v33.origin.x = OUTLINED_FUNCTION_8_48(a1 + 424), !CGRectIsNull(v33)))
+    if (v16 || (v33.origin.x = OUTLINED_FUNCTION_8_48(self + 424), !CGRectIsNull(v33)))
     {
-      v22 = *(a1 + 496);
-      if (!v22 || CVPixelBufferGetWidth(v22) != v20 || CVPixelBufferGetHeight(*(a1 + 496)) != v21 || CVPixelBufferGetPixelFormatType(*(a1 + 496)) != pixelFormatType)
+      v22 = *(self + 496);
+      if (!v22 || CVPixelBufferGetWidth(v22) != v20 || CVPixelBufferGetHeight(*(self + 496)) != v21 || CVPixelBufferGetPixelFormatType(*(self + 496)) != pixelFormatType)
       {
-        CVPixelBufferRelease(*(a1 + 496));
-        *(a1 + 496) = 0;
-        v23 = CVPixelBufferCreate(0, v20, v21, pixelFormatType, 0, (a1 + 496));
+        CVPixelBufferRelease(*(self + 496));
+        *(self + 496) = 0;
+        v23 = CVPixelBufferCreate(0, v20, v21, pixelFormatType, 0, (self + 496));
         if (v23)
         {
           goto LABEL_46;
         }
       }
 
-      v34.origin.x = OUTLINED_FUNCTION_8_48(a1 + 424);
+      v34.origin.x = OUTLINED_FUNCTION_8_48(self + 424);
       if (CGRectIsNull(v34))
       {
-        FigDepthScaleBuffer(v6, *(a1 + 496));
+        FigDepthScaleBuffer(v6, *(self + 496));
       }
 
       else
       {
-        v24 = OUTLINED_FUNCTION_8_48(a1 + 424);
+        v24 = OUTLINED_FUNCTION_8_48(self + 424);
         FigDepthScaleBufferWithCrop(v6, v25, v24, v26, v27, v28);
       }
 
-      v6 = *(a1 + 496);
+      v6 = *(self + 496);
     }
 
     if (v14 == 1)
@@ -1108,13 +1108,13 @@ LABEL_15:
       goto LABEL_43;
     }
 
-    v29 = *(a1 + 504);
-    if (v29 && CVPixelBufferGetWidth(v29) == v10 && CVPixelBufferGetHeight(*(a1 + 504)) == v13 && CVPixelBufferGetPixelFormatType(*(a1 + 504)) == pixelFormatType || (CVPixelBufferRelease(*(a1 + 504)), *(a1 + 504) = 0, v23 = CVPixelBufferCreate(0, v10, v13, pixelFormatType, 0, (a1 + 504)), !v23))
+    v29 = *(self + 504);
+    if (v29 && CVPixelBufferGetWidth(v29) == v10 && CVPixelBufferGetHeight(*(self + 504)) == v13 && CVPixelBufferGetPixelFormatType(*(self + 504)) == pixelFormatType || (CVPixelBufferRelease(*(self + 504)), *(self + 504) = 0, v23 = CVPixelBufferCreate(0, v10, v13, pixelFormatType, 0, (self + 504)), !v23))
     {
-      v23 = FigDepthRotateBuffer(v6, *(a1 + 504), v14);
+      v23 = FigDepthRotateBuffer(v6, *(self + 504), v14);
       if (!v23)
       {
-        v6 = *(a1 + 504);
+        v6 = *(self + 504);
         goto LABEL_43;
       }
     }
@@ -1126,7 +1126,7 @@ LABEL_46:
   }
 
 LABEL_43:
-  v30 = dcn_convertU16toFloatForImage_NEON(v6, a3, a4, v12);
+  v30 = dcn_convertU16toFloatForImage_NEON(v6, n, dst, v12);
   if (v30)
   {
     OUTLINED_FUNCTION_1_8();
@@ -1137,9 +1137,9 @@ LABEL_47:
   return v30;
 }
 
-- (uint64_t)_convertDepthDisparityToFloat_C:(__CVBuffer *)a3 dst:(uint64_t)a4 options:
+- (uint64_t)_convertDepthDisparityToFloat_C:(__CVBuffer *)c dst:(uint64_t)dst options:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -1147,9 +1147,9 @@ LABEL_47:
   v6 = pixelBuffer;
   Width = CVPixelBufferGetWidth(pixelBuffer);
   Height = CVPixelBufferGetHeight(v6);
-  v10 = CVPixelBufferGetWidth(a3);
-  v11 = CVPixelBufferGetHeight(a3);
-  v12 = *a4 - 5;
+  v10 = CVPixelBufferGetWidth(c);
+  v11 = CVPixelBufferGetHeight(c);
+  v12 = *dst - 5;
   if (v12 >= 4)
   {
     v13 = v11;
@@ -1175,36 +1175,36 @@ LABEL_47:
   if (Width != v14 || Height != v13)
   {
     PixelFormatType = CVPixelBufferGetPixelFormatType(v6);
-    v17 = *(a1 + 496);
-    if (!v17 || CVPixelBufferGetWidth(v17) != v14 || CVPixelBufferGetHeight(*(a1 + 496)) != v13 || CVPixelBufferGetPixelFormatType(*(a1 + 496)) != PixelFormatType)
+    v17 = *(self + 496);
+    if (!v17 || CVPixelBufferGetWidth(v17) != v14 || CVPixelBufferGetHeight(*(self + 496)) != v13 || CVPixelBufferGetPixelFormatType(*(self + 496)) != PixelFormatType)
     {
-      v18 = *(a1 + 496);
+      v18 = *(self + 496);
       if (v18)
       {
         CFRelease(v18);
-        *(a1 + 496) = 0;
+        *(self + 496) = 0;
       }
 
-      v19 = CVPixelBufferCreate(0, v14, v13, PixelFormatType, 0, (a1 + 496));
+      v19 = CVPixelBufferCreate(0, v14, v13, PixelFormatType, 0, (self + 496));
       if (v19)
       {
         goto LABEL_65;
       }
     }
 
-    v67.origin.x = OUTLINED_FUNCTION_8_48(a1 + 424);
+    v67.origin.x = OUTLINED_FUNCTION_8_48(self + 424);
     if (CGRectIsNull(v67))
     {
-      FigDepthScaleBuffer(v6, *(a1 + 496));
+      FigDepthScaleBuffer(v6, *(self + 496));
     }
 
     else
     {
-      v20 = OUTLINED_FUNCTION_8_48(a1 + 424);
+      v20 = OUTLINED_FUNCTION_8_48(self + 424);
       FigDepthScaleBufferWithCrop(v6, v21, v20, v22, v23, v24);
     }
 
-    v6 = *(a1 + 496);
+    v6 = *(self + 496);
   }
 
   v19 = CVPixelBufferLockBaseAddress(v6, 1uLL);
@@ -1217,32 +1217,32 @@ LABEL_65:
     return v55;
   }
 
-  v25 = CVPixelBufferLockBaseAddress(a3, 0);
+  v25 = CVPixelBufferLockBaseAddress(c, 0);
   if (v25)
   {
     v55 = v25;
     OUTLINED_FUNCTION_1_5();
     FigDebugAssert3();
-    v56 = v6;
+    cCopy2 = v6;
     v57 = 1;
   }
 
   else
   {
     BaseAddress = CVPixelBufferGetBaseAddress(v6);
-    if (BaseAddress && (v27 = BaseAddress, (v28 = CVPixelBufferGetBaseAddress(a3)) != 0))
+    if (BaseAddress && (v27 = BaseAddress, (v28 = CVPixelBufferGetBaseAddress(c)) != 0))
     {
       v65 = v28;
       v29 = CVPixelBufferGetWidth(v6);
       v30 = CVPixelBufferGetHeight(v6);
       BytesPerRow = CVPixelBufferGetBytesPerRow(v6);
-      v61 = CVPixelBufferGetBytesPerRow(a3);
-      v32 = CVPixelBufferGetPixelFormatType(a3);
+      v61 = CVPixelBufferGetBytesPerRow(c);
+      v32 = CVPixelBufferGetPixelFormatType(c);
       v33 = FigDepthBytesPerPixelForDepthFormat(v32);
-      v34 = *(a4 + 12);
+      v34 = *(dst + 12);
       if (FigDepthFormatIsDepth(v32))
       {
-        v35 = *(a4 + 16) ^ 1u;
+        v35 = *(dst + 16) ^ 1u;
       }
 
       else
@@ -1251,11 +1251,11 @@ LABEL_65:
       }
 
       v36 = 0;
-      v38 = *(a4 + 4);
-      v37 = *(a4 + 8);
-      LODWORD(v39) = *a4;
+      v38 = *(dst + 4);
+      v37 = *(dst + 8);
+      LODWORD(v39) = *dst;
       LODWORD(v40) = BytesPerRow;
-      switch(*a4)
+      switch(*dst)
       {
         case 1:
           v36 = 0;
@@ -1270,7 +1270,7 @@ LABEL_65:
           v40 = -BytesPerRow;
           v36 = (v30 - 1) * BytesPerRow + 2 * v29 - 2;
           LODWORD(v39) = -2;
-          if (*a4 == 4)
+          if (*dst == 4)
           {
             goto LABEL_37;
           }
@@ -1281,7 +1281,7 @@ LABEL_65:
           v39 = -BytesPerRow;
           v36 = (v30 - 1) * BytesPerRow;
           LODWORD(v40) = 2;
-          if (*a4 == 5)
+          if (*dst == 5)
           {
             goto LABEL_37;
           }
@@ -1312,7 +1312,7 @@ LABEL_40:
 LABEL_41:
           if (v63)
           {
-            v59 = a3;
+            cCopy = c;
             v60 = v6;
             v43 = 0;
             v44 = &v65[v41];
@@ -1381,7 +1381,7 @@ LABEL_41:
 
             while (v66 + 1 != v63);
             v55 = 0;
-            a3 = v59;
+            c = cCopy;
             v6 = v60;
           }
 
@@ -1406,15 +1406,15 @@ LABEL_41:
     }
 
     CVPixelBufferUnlockBaseAddress(v6, 1uLL);
-    v56 = a3;
+    cCopy2 = c;
     v57 = 0;
   }
 
-  CVPixelBufferUnlockBaseAddress(v56, v57);
+  CVPixelBufferUnlockBaseAddress(cCopy2, v57);
   return v55;
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   v46 = 0;
   v6 = MEMORY[0x1E695FF58];
@@ -1425,12 +1425,12 @@ LABEL_41:
   }
 
   v7 = &OBJC_IVAR___BWVISNode__frameMotionTensorsRingBuffer;
-  sbuf = a3;
+  sbuf = buffer;
   if (self)
   {
     if (self->_stillGDRFilteringSupportEnabled)
     {
-      v8 = CMGetAttachment(a3, @"BWStillImageCaptureSettings", 0);
+      v8 = CMGetAttachment(buffer, @"BWStillImageCaptureSettings", 0);
       if (!v8)
       {
         FrameworkRadarComponent = FigCaptureGetFrameworkRadarComponent();
@@ -1457,7 +1457,7 @@ LABEL_36:
     }
 
     v11 = @"Depth";
-    target = BWSampleBufferGetAttachedMedia(a3, @"Depth");
+    target = BWSampleBufferGetAttachedMedia(buffer, @"Depth");
     if (!target)
     {
       OUTLINED_FUNCTION_9_49();
@@ -1471,7 +1471,7 @@ LABEL_36:
       goto LABEL_20;
     }
 
-    if (([(opaqueCMSampleBuffer *)v8 captureFlags]& 0x800) == 0 || (BWStillImageProcessingFlagsForSampleBuffer(a3) & 0x200000) != 0 && self->_skipSmartStyleBuffer)
+    if (([(opaqueCMSampleBuffer *)v8 captureFlags]& 0x800) == 0 || (BWStillImageProcessingFlagsForSampleBuffer(buffer) & 0x200000) != 0 && self->_skipSmartStyleBuffer)
     {
       OUTLINED_FUNCTION_9_49();
 LABEL_14:
@@ -1479,7 +1479,7 @@ LABEL_14:
       goto LABEL_37;
     }
 
-    v12 = CMGetAttachment(a3, @"StillImageSettings", 0);
+    v12 = CMGetAttachment(buffer, @"StillImageSettings", 0);
     if (v12)
     {
       v13 = ([v12 depthDataFiltered] & 1) != 0 || self->_depthOriginatesFromNeuralNetwork;
@@ -1508,7 +1508,7 @@ LABEL_14:
 
 LABEL_20:
       v14 = [(BWDepthConverterNode *)self _resolveFilteringTypeWithStillFilteringRequested:v13];
-      v15 = [(BWStillImageNodeConfiguration *)self->_stillImageNodeConfiguration depthDataType];
+      depthDataType = [(BWStillImageNodeConfiguration *)self->_stillImageNodeConfiguration depthDataType];
       if ((0x80u >> v14))
       {
         v11 = 0;
@@ -1517,20 +1517,20 @@ LABEL_29:
         FigCaptureConvertRotationAndMirroringToExifOrientation(self->_rotationDegrees, self->_mirroringEnabled);
         v19 = OUTLINED_FUNCTION_13_33();
         v23 = [(BWDepthConverterNode *)v19 _depthMetadataDictionaryFromSampleBuffer:v20 orientation:v21 stillFilteringRequested:v22];
-        if (v15 != 10 || (v32 = [(BWDepthConverterNode *)self _scaleDepthValues:v8 depthMetadata:v23 sbuf:a3]) == 0)
+        if (depthDataType != 10 || (v32 = [(BWDepthConverterNode *)self _scaleDepthValues:v8 depthMetadata:v23 sbuf:buffer]) == 0)
         {
           v7 = &OBJC_IVAR___BWVISNode__frameMotionTensorsRingBuffer;
           if (self->_stillGDRFilteringSupportEnabled)
           {
-            v24 = a3;
+            bufferCopy = buffer;
           }
 
           else
           {
-            v24 = v8;
+            bufferCopy = v8;
           }
 
-          CMSetAttachment(v24, *off_1E798D2B8, v23, 1u);
+          CMSetAttachment(bufferCopy, *off_1E798D2B8, v23, 1u);
           CMRemoveAttachment(v8, @"OriginalCameraIntrinsicMatrix");
           if (self->_providesUnfilteredDepthAsAttachedMedia)
           {
@@ -1631,7 +1631,7 @@ LABEL_27:
         if (!v18)
         {
           v8 = v46;
-          a3 = sbuf;
+          buffer = sbuf;
           goto LABEL_29;
         }
 
@@ -1643,7 +1643,7 @@ LABEL_81:
       FigDebugAssert3();
 LABEL_82:
       v8 = 0;
-      a3 = sbuf;
+      buffer = sbuf;
       goto LABEL_83;
     }
 
@@ -1653,7 +1653,7 @@ LABEL_82:
 
   else
   {
-    target = BWSampleBufferGetAttachedMedia(a3, @"Depth");
+    target = BWSampleBufferGetAttachedMedia(buffer, @"Depth");
     if (target)
     {
       v13 = 0;
@@ -1691,20 +1691,20 @@ LABEL_37:
     os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
     OUTLINED_FUNCTION_12_39();
     fig_log_call_emit_and_clean_up_after_send_and_compose();
-    a3 = sbuf;
+    buffer = sbuf;
   }
 
   if (v26)
   {
     if (v8 != target)
     {
-      BWSampleBufferSetAttachedMedia(a3, @"Depth", v8);
+      BWSampleBufferSetAttachedMedia(buffer, @"Depth", v8);
     }
   }
 
   else if (target)
   {
-    BWSampleBufferRemoveAttachedMedia(a3, @"Depth");
+    BWSampleBufferRemoveAttachedMedia(buffer, @"Depth");
   }
 
   if (*(&self->super.super.isa + v27) == 1)
@@ -1723,7 +1723,7 @@ LABEL_37:
     CFRelease(v11);
   }
 
-  [(BWNodeOutput *)self->super._output emitSampleBuffer:a3, v43];
+  [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer, v43];
 }
 
 - (uint64_t)_resolveFilteringTypeWithStillFilteringRequested:(uint64_t)result
@@ -1791,22 +1791,22 @@ LABEL_37:
   return result;
 }
 
-- (uint64_t)filterDepthPixelBuffer:(__CVBuffer *)a3 outputDepthPixelBuffer:(CMSampleBufferRef)sbuf yuvImageSampleBuffer:(uint64_t)a5 depthSampleBuffer:(unsigned int)a6 filteringType:
+- (uint64_t)filterDepthPixelBuffer:(__CVBuffer *)buffer outputDepthPixelBuffer:(CMSampleBufferRef)sbuf yuvImageSampleBuffer:(uint64_t)sampleBuffer depthSampleBuffer:(unsigned int)depthSampleBuffer filteringType:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   ImageBuffer = CMSampleBufferGetImageBuffer(sbuf);
   v12 = CMGetAttachment(sbuf, *off_1E798A3C8, 0);
-  if (!a6)
+  if (!depthSampleBuffer)
   {
     return 4294954516;
   }
 
-  v13 = a6 - 4;
-  if (a6 - 4 > 2)
+  v13 = depthSampleBuffer - 4;
+  if (depthSampleBuffer - 4 > 2)
   {
     v53 = 0;
     v54 = 0;
@@ -1818,7 +1818,7 @@ LABEL_37:
 
   v14 = v12;
   v50 = ImageBuffer;
-  v15 = a3;
+  bufferCopy = buffer;
   AttachedInference = BWInferenceGetAttachedInference(sbuf, 801, 0x1F219E5F0);
   if ([AttachedInference count])
   {
@@ -1830,25 +1830,25 @@ LABEL_37:
     v17 = 0;
   }
 
-  [*(a1 + 592) setFaceLandmarksArray:v17];
+  [*(self + 592) setFaceLandmarksArray:v17];
   v18 = *off_1E798A5B0;
   v19 = [v14 objectForKeyedSubscript:*off_1E798A5B0];
   v55 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v19, v18, CMGetAttachment(sbuf, *off_1E798D340, 0), *off_1E798D340, 0}];
-  if ((a6 & 6) != 4)
+  if ((depthSampleBuffer & 6) != 4)
   {
     v53 = 0;
     v54 = 0;
     v24 = 0;
     v52 = 0;
-    v13 = a6 - 4;
+    v13 = depthSampleBuffer - 4;
 LABEL_18:
-    a3 = v15;
+    buffer = bufferCopy;
     ImageBuffer = v50;
     goto LABEL_19;
   }
 
   AttachedMedia = BWSampleBufferGetAttachedMedia(sbuf, 0x1F21AAC70);
-  if (a6 == 5)
+  if (depthSampleBuffer == 5)
   {
     v21 = BWSampleBufferGetAttachedMedia(sbuf, 0x1F219E750);
     LowResPersonInstanceMasksFromSampleBuffer = BWInferenceGetLowResPersonInstanceMasksFromSampleBuffer(sbuf);
@@ -1864,7 +1864,7 @@ LABEL_18:
     v21 = 0;
   }
 
-  v13 = a6 - 4;
+  v13 = depthSampleBuffer - 4;
   v54 = v25;
   if (!(AttachedMedia | v21))
   {
@@ -1892,7 +1892,7 @@ LABEL_18:
     v53 = 0;
   }
 
-  a3 = v15;
+  buffer = bufferCopy;
   ImageBuffer = v50;
   if (v21)
   {
@@ -1905,15 +1905,15 @@ LABEL_18:
   }
 
 LABEL_19:
-  v26 = *(a1 + 520);
-  if (v26 && (v27 = *(a1 + 528)) != 0)
+  v26 = *(self + 520);
+  if (v26 && (bufferCopy2 = *(self + 528)) != 0)
   {
     if (*MEMORY[0x1E695FF58] == 1)
     {
       OUTLINED_FUNCTION_9_29();
       kdebug_trace();
-      v26 = *(a1 + 520);
-      v27 = *(a1 + 528);
+      v26 = *(self + 520);
+      bufferCopy2 = *(self + 528);
     }
 
     v28 = FigDepthScaleBuffer(a2, v26);
@@ -1931,27 +1931,27 @@ LABEL_19:
 
   else
   {
-    v27 = a3;
+    bufferCopy2 = buffer;
     v26 = a2;
   }
 
-  if (a6 <= 6 && ((1 << a6) & 0x7A) != 0)
+  if (depthSampleBuffer <= 6 && ((1 << depthSampleBuffer) & 0x7A) != 0)
   {
     v29 = [CMGetAttachment(ImageBuffer @"RotationDegrees"];
-    v51 = a3;
+    bufferCopy3 = buffer;
     v30 = v13;
     v31 = [CMGetAttachment(ImageBuffer @"MirroredVertical"];
     v32 = v24;
     v33 = [CMGetAttachment(ImageBuffer @"MirroredHorizontal"];
-    v34 = FigCaptureNormalizeAngle(v29 - *(a1 + 416)) % 180;
+    v34 = FigCaptureNormalizeAngle(v29 - *(self + 416)) % 180;
     v35 = v34 ? 0 : v31;
     v13 = v30;
-    a3 = v51;
+    buffer = bufferCopy3;
     v36 = v33 & (v34 == 90);
     v24 = v32;
     v37 = v35 | v36 ? v29 + 180 : v29;
-    v38 = FigCaptureNormalizeAngle(*(a1 + 416) - v37);
-    v39 = [BWDepthConverterNode rotateAndScaleAndCropImagePixelBuffer:a1 depthPixelBuffer:ImageBuffer to:v26 rotationAngle:*(a1 + 536) flip:v38];
+    v38 = FigCaptureNormalizeAngle(*(self + 416) - v37);
+    v39 = [BWDepthConverterNode rotateAndScaleAndCropImagePixelBuffer:self depthPixelBuffer:ImageBuffer to:v26 rotationAngle:*(self + 536) flip:v38];
     if (v39)
     {
       v28 = v39;
@@ -1969,23 +1969,23 @@ LABEL_19:
     v40 = v43;
   }
 
-  if (a6 <= 6 && ((1 << a6) & 0x4F) != 0)
+  if (depthSampleBuffer <= 6 && ((1 << depthSampleBuffer) & 0x4F) != 0)
   {
-    v44 = [*(a1 + 592) processDepthBuffer:v26 yuvBuffer:*(a1 + *(v40 + 1156)) parametersDictionary:v55 outputDisparityBuffer:v27];
+    v44 = [*(self + 592) processDepthBuffer:v26 yuvBuffer:*(self + *(v40 + 1156)) parametersDictionary:v55 outputDisparityBuffer:bufferCopy2];
   }
 
   else
   {
-    v47 = *(a1 + 592);
-    v48 = *(a1 + *(v40 + 1156));
-    if (a6 == 5)
+    v47 = *(self + 592);
+    v48 = *(self + *(v40 + 1156));
+    if (depthSampleBuffer == 5)
     {
-      v44 = [v47 processDepthBuffer:v26 yuvBuffer:v48 personSegmentationMaskBuffer:v52 instanceSegmentationMaskBufferArray:v24 instanceSegmentationConfidences:v54 parametersDictionary:v55 outputDisparityBuffer:v27];
+      v44 = [v47 processDepthBuffer:v26 yuvBuffer:v48 personSegmentationMaskBuffer:v52 instanceSegmentationMaskBufferArray:v24 instanceSegmentationConfidences:v54 parametersDictionary:v55 outputDisparityBuffer:bufferCopy2];
     }
 
     else
     {
-      v44 = [v47 processDepthBuffer:v26 yuvBuffer:v48 rgbSegmentationMaskBuffer:v53 parametersDictionary:v55 outputDisparityBuffer:v27];
+      v44 = [v47 processDepthBuffer:v26 yuvBuffer:v48 rgbSegmentationMaskBuffer:v53 parametersDictionary:v55 outputDisparityBuffer:bufferCopy2];
     }
   }
 
@@ -2003,7 +2003,7 @@ LABEL_19:
     goto LABEL_58;
   }
 
-  if (!*(a1 + 520) || !*(a1 + 528))
+  if (!*(self + 520) || !*(self + 528))
   {
     v28 = 0;
     goto LABEL_58;
@@ -2016,7 +2016,7 @@ LABEL_19:
     kdebug_trace();
   }
 
-  v28 = FigDepthScaleBuffer(v27, a3);
+  v28 = FigDepthScaleBuffer(bufferCopy2, buffer);
   OUTLINED_FUNCTION_18();
   if (v41)
   {
@@ -2037,21 +2037,21 @@ LABEL_58:
   if (v13 <= 2)
   {
 LABEL_59:
-    [*(a1 + 592) setFaceLandmarksArray:{0, v49}];
+    [*(self + 592) setFaceLandmarksArray:{0, v49}];
   }
 
   return v28;
 }
 
-- (uint64_t)_scaleDepthValues:(void *)a3 depthMetadata:(uint64_t)a4 sbuf:
+- (uint64_t)_scaleDepthValues:(void *)values depthMetadata:(uint64_t)metadata sbuf:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   *&v17 = NAN;
-  v7 = FigDepthComputeNormalizedFocalLength(a3, &v17);
+  v7 = FigDepthComputeNormalizedFocalLength(values, &v17);
   if (v7)
   {
     return v7;
@@ -2065,16 +2065,16 @@ LABEL_59:
   }
 
   v10 = *&v17;
-  *&v11 = v10 * FigCaptureLongerDimensionForDimensions(*(a1 + 164));
-  [*(a1 + 640) getMetricScaleFactorForEFL:v11];
+  *&v11 = v10 * FigCaptureLongerDimensionForDimensions(*(self + 164));
+  [*(self + 640) getMetricScaleFactorForEFL:v11];
   if (*&v12 <= 0.1)
   {
     *&v12 = 0.1;
   }
 
-  [*(a1 + 648) stillImageScalingFactorWithDisparityBuffer:v9 sbuf:a4 scaleFactorFromEFL:v12];
+  [*(self + 648) stillImageScalingFactorWithDisparityBuffer:v9 sbuf:metadata scaleFactorFromEFL:v12];
   LODWORD(v14) = v13;
-  v15 = [*(a1 + 568) depthValueInputPixelBuffer:v9 bias:0.0 scaleFactor:v14];
+  v15 = [*(self + 568) depthValueInputPixelBuffer:v9 bias:0.0 scaleFactor:v14];
   if (v9)
   {
     CFRelease(v9);
@@ -2083,26 +2083,26 @@ LABEL_59:
   return v15;
 }
 
-- (uint64_t)_generateAndAttachUnfilteredDepthToSampleBuffer:(__CVBuffer *)a3 depthOutputPixelBuffer:(opaqueCMSampleBuffer *)a4 depthOutputSampleBuffer:
+- (uint64_t)_generateAndAttachUnfilteredDepthToSampleBuffer:(__CVBuffer *)buffer depthOutputPixelBuffer:(opaqueCMSampleBuffer *)pixelBuffer depthOutputSampleBuffer:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   cf = 0;
-  v8 = [objc_msgSend(objc_msgSend(*(a1 + 16) mediaPropertiesForAttachedMediaKey:{0x1F21AAAB0), "livePixelBufferPool"), "newPixelBuffer"}];
+  v8 = [objc_msgSend(objc_msgSend(*(self + 16) mediaPropertiesForAttachedMediaKey:{0x1F21AAAB0), "livePixelBufferPool"), "newPixelBuffer"}];
   if (!v8)
   {
     return 0;
   }
 
   v9 = v8;
-  if ((*(a1 + 138) & 1) != 0 || (*(a1 + 137) & 1) != 0 || *(a1 + 139) == 1)
+  if ((*(self + 138) & 1) != 0 || (*(self + 137) & 1) != 0 || *(self + 139) == 1)
   {
-    if (*(a1 + 552) == 1)
+    if (*(self + 552) == 1)
     {
-      v10 = FigDepthConvertBuffer(*(a1 + 512), v8);
+      v10 = FigDepthConvertBuffer(*(self + 512), v8);
       if (!v10)
       {
         goto LABEL_8;
@@ -2113,25 +2113,25 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v12 = *(a1 + 480);
+    v12 = *(self + 480);
     if (v12)
     {
-      a3 = *(a1 + 512);
+      buffer = *(self + 512);
       goto LABEL_13;
     }
   }
 
   else
   {
-    v12 = *(a1 + 480);
+    v12 = *(self + 480);
     if (v12)
     {
 LABEL_13:
-      v10 = VTPixelTransferSessionTransferImage(v12, a3, v9);
+      v10 = VTPixelTransferSessionTransferImage(v12, buffer, v9);
       if (!v10)
       {
 LABEL_8:
-        CopyWithNewPixelBuffer = BWCMSampleBufferCreateCopyWithNewPixelBuffer(a4, v9, (a1 + 472), &cf);
+        CopyWithNewPixelBuffer = BWCMSampleBufferCreateCopyWithNewPixelBuffer(pixelBuffer, v9, (self + 472), &cf);
         if (!CopyWithNewPixelBuffer)
         {
           BWSampleBufferSetAttachedMedia(a2, 0x1F21AAAB0, cf);
@@ -2155,9 +2155,9 @@ LABEL_15:
   return CopyWithNewPixelBuffer;
 }
 
-- (void)_removeConsumedAttachedMediaFromSampleBuffer:(uint64_t)a1
+- (void)_removeConsumedAttachedMediaFromSampleBuffer:(uint64_t)buffer
 {
-  if (a1)
+  if (buffer)
   {
     BWSampleBufferRemoveAttachedMedia(a2, 0x1F21AAC70);
     BWSampleBufferRemoveAttachedMedia(a2, 0x1F21AAC90);
@@ -2170,10 +2170,10 @@ LABEL_15:
   }
 }
 
-- (uint64_t)rotateAndScaleAndCropImagePixelBuffer:(uint64_t)a1 depthPixelBuffer:(__CVBuffer *)a2 to:(__CVBuffer *)a3 rotationAngle:(uint64_t)a4 flip:(int)a5
+- (uint64_t)rotateAndScaleAndCropImagePixelBuffer:(uint64_t)buffer depthPixelBuffer:(__CVBuffer *)pixelBuffer to:(__CVBuffer *)to rotationAngle:(uint64_t)angle flip:(int)flip
 {
-  v18[1] = a4;
-  if (!a1)
+  v18[1] = angle;
+  if (!buffer)
   {
     return 0;
   }
@@ -2185,7 +2185,7 @@ LABEL_15:
     kdebug_trace();
   }
 
-  if (!a2 || !a3 || !a4)
+  if (!pixelBuffer || !to || !angle)
   {
     OUTLINED_FUNCTION_5_69();
     FigDebugAssert3();
@@ -2193,24 +2193,24 @@ LABEL_15:
     goto LABEL_13;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  v19.origin.x = OUTLINED_FUNCTION_8_48(a1 + 424);
+  Width = CVPixelBufferGetWidth(to);
+  Height = CVPixelBufferGetHeight(to);
+  v19.origin.x = OUTLINED_FUNCTION_8_48(buffer + 424);
   if (!CGRectIsNull(v19))
   {
-    v13 = CVPixelBufferGetWidth(a2);
-    v14 = v13 | (CVPixelBufferGetHeight(a2) << 32);
+    v13 = CVPixelBufferGetWidth(pixelBuffer);
+    v14 = v13 | (CVPixelBufferGetHeight(pixelBuffer) << 32);
     v18[0] = v14;
-    FigCaptureSwapVideoDimensionsFor90Or270Rotation(v18, a5);
+    FigCaptureSwapVideoDimensionsFor90Or270Rotation(v18, flip);
     if (!FigCaptureVideoAspectRatiosAreEqual(*v18, Width | (Height << 32), 0.01))
     {
       FigCaptureMakeRectWithAspectRatioInsideDimensions(v14, 1, Width / Height);
     }
   }
 
-  if (!(FigCaptureNormalizeAngle(-a5) % 90) || (FigDebugAssert3(), v16 = FigSignalErrorAtGM(), !v16))
+  if (!(FigCaptureNormalizeAngle(-flip) % 90) || (FigDebugAssert3(), v16 = FigSignalErrorAtGM(), !v16))
   {
-    CVPixelBufferGetPixelFormatType(a2);
+    CVPixelBufferGetPixelFormatType(pixelBuffer);
     v15 = CMPhotoScaleAndRotateSessionTransformForMaxSideLength();
 LABEL_13:
     v16 = v15;

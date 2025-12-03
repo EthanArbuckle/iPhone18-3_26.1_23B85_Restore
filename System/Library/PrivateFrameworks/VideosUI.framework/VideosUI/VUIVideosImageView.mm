@@ -1,48 +1,48 @@
 @interface VUIVideosImageView
-+ (id)imageWithImage:(id)a3 existingImageView:(id)a4;
++ (id)imageWithImage:(id)image existingImageView:(id)view;
 - (void)_updateImage;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image;
 @end
 
 @implementation VUIVideosImageView
 
-+ (id)imageWithImage:(id)a3 existingImageView:(id)a4
++ (id)imageWithImage:(id)image existingImageView:(id)view
 {
-  v5 = a3;
-  v6 = a4;
+  imageCopy = image;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    [v7 setImage:v5];
+    v7 = viewCopy;
+    [v7 setImage:imageCopy];
   }
 
   else
   {
-    v7 = [objc_alloc(objc_opt_class()) initWithImage:v5];
+    v7 = [objc_alloc(objc_opt_class()) initWithImage:imageCopy];
   }
 
   return v7;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v7.receiver = self;
   v7.super_class = VUIVideosImageView;
-  v4 = a3;
-  [(VUIVideosImageView *)&v7 setImage:v4];
-  v5 = [v4 copy];
+  imageCopy = image;
+  [(VUIVideosImageView *)&v7 setImage:imageCopy];
+  v5 = [imageCopy copy];
 
   flatImage = self->_flatImage;
   self->_flatImage = v5;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = VUIVideosImageView;
-  [(VUIVideosImageView *)&v4 setHighlighted:a3];
+  [(VUIVideosImageView *)&v4 setHighlighted:highlighted];
   [(VUIVideosImageView *)self _updateImage];
 }
 

@@ -1,21 +1,21 @@
 @interface WFHKSampleContentItem
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3;
-+ (id)itemWithQuantitySample:(id)a3 unit:(id)a4;
-+ (id)itemWithQuantitySamples:(id)a3 unit:(id)a4;
-+ (id)localizedFilterDescriptionWithContext:(id)a3;
-+ (id)localizedPluralFilterDescriptionWithContext:(id)a3;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance;
++ (id)itemWithQuantitySample:(id)sample unit:(id)unit;
++ (id)itemWithQuantitySamples:(id)samples unit:(id)unit;
++ (id)localizedFilterDescriptionWithContext:(id)context;
++ (id)localizedPluralFilterDescriptionWithContext:(id)context;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 + (id)stringConversionBehavior;
-+ (void)runQuery:(id)a3 withItems:(id)a4 permissionRequestor:(id)a5 completionHandler:(id)a6;
-- (BOOL)canGenerateRepresentationForType:(id)a3;
-- (BOOL)getListAltText:(id)a3;
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4;
++ (void)runQuery:(id)query withItems:(id)items permissionRequestor:(id)requestor completionHandler:(id)handler;
+- (BOOL)canGenerateRepresentationForType:(id)type;
+- (BOOL)getListAltText:(id)text;
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size;
 - (id)categorySample;
-- (id)defaultSourceForRepresentation:(id)a3;
+- (id)defaultSourceForRepresentation:(id)representation;
 - (id)duration;
 - (id)endDate;
 - (id)localizedCategorySampleValue;
@@ -26,53 +26,53 @@
 - (id)sourceName;
 - (id)startDate;
 - (id)unit;
-- (void)generateObjectRepresentations:(id)a3 options:(id)a4 forClass:(Class)a5;
+- (void)generateObjectRepresentations:(id)representations options:(id)options forClass:(Class)class;
 @end
 
 @implementation WFHKSampleContentItem
 
-- (id)defaultSourceForRepresentation:(id)a3
+- (id)defaultSourceForRepresentation:(id)representation
 {
   v4 = objc_alloc(MEMORY[0x277CD3A58]);
   v5 = [v4 initWithBundleIdentifier:*MEMORY[0x277D7A250]];
-  v6 = [MEMORY[0x277CD3A88] sharedResolver];
-  v7 = [v6 resolvedAppMatchingDescriptor:v5];
+  mEMORY[0x277CD3A88] = [MEMORY[0x277CD3A88] sharedResolver];
+  v7 = [mEMORY[0x277CD3A88] resolvedAppMatchingDescriptor:v5];
 
   v8 = MEMORY[0x277CFC2D0];
-  v9 = [(WFHKSampleContentItem *)self cachingIdentifier];
-  v10 = [v8 attributionSetWithAppDescriptor:v7 disclosureLevel:1 originalItemIdentifier:v9];
+  cachingIdentifier = [(WFHKSampleContentItem *)self cachingIdentifier];
+  v10 = [v8 attributionSetWithAppDescriptor:v7 disclosureLevel:1 originalItemIdentifier:cachingIdentifier];
 
   return v10;
 }
 
-- (BOOL)canGenerateRepresentationForType:(id)a3
+- (BOOL)canGenerateRepresentationForType:(id)type
 {
-  v4 = a3;
-  if ([v4 isEqualToClass:objc_opt_class()])
+  typeCopy = type;
+  if ([typeCopy isEqualToClass:objc_opt_class()])
   {
-    v5 = [(WFHKSampleContentItem *)self quantitySampleContainer];
-    if (v5)
+    quantitySampleContainer = [(WFHKSampleContentItem *)self quantitySampleContainer];
+    if (quantitySampleContainer)
     {
-      v6 = [(WFHKSampleContentItem *)self unit];
-      v7 = v6 != 0;
+      unit = [(WFHKSampleContentItem *)self unit];
+      hasSubsamples = unit != 0;
     }
 
     else
     {
-      v7 = 0;
+      hasSubsamples = 0;
     }
 
     goto LABEL_9;
   }
 
-  if ([v4 isEqualToClass:objc_opt_class()])
+  if ([typeCopy isEqualToClass:objc_opt_class()])
   {
-    v8 = [(WFHKSampleContentItem *)self quantitySampleContainer];
+    quantitySampleContainer2 = [(WFHKSampleContentItem *)self quantitySampleContainer];
 
-    if (v8)
+    if (quantitySampleContainer2)
     {
-      v5 = [(WFHKSampleContentItem *)self quantitySampleContainer];
-      v7 = [v5 hasSubsamples];
+      quantitySampleContainer = [(WFHKSampleContentItem *)self quantitySampleContainer];
+      hasSubsamples = [quantitySampleContainer hasSubsamples];
 LABEL_9:
 
       goto LABEL_10;
@@ -81,46 +81,46 @@ LABEL_9:
 
   v10.receiver = self;
   v10.super_class = WFHKSampleContentItem;
-  v7 = [(WFHKSampleContentItem *)&v10 canGenerateRepresentationForType:v4];
+  hasSubsamples = [(WFHKSampleContentItem *)&v10 canGenerateRepresentationForType:typeCopy];
 LABEL_10:
 
-  return v7;
+  return hasSubsamples;
 }
 
-- (BOOL)getListAltText:(id)a3
+- (BOOL)getListAltText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = MEMORY[0x277CCA968];
-    v5 = a3;
+    textCopy = text;
     v6 = objc_alloc_init(v4);
     [v6 setDoesRelativeDateFormatting:1];
     [v6 setDateStyle:1];
     [v6 setTimeStyle:1];
-    v7 = [(WFHKSampleContentItem *)self quantitySample];
-    v8 = [v7 startDate];
-    v9 = [v6 stringFromDate:v8];
-    v5[2](v5, v9);
+    quantitySample = [(WFHKSampleContentItem *)self quantitySample];
+    startDate = [quantitySample startDate];
+    v9 = [v6 stringFromDate:startDate];
+    textCopy[2](textCopy, v9);
   }
 
   return 1;
 }
 
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size
 {
-  v5 = a3;
-  v6 = [(WFHKSampleContentItem *)self quantitySample];
-  v7 = [v6 quantityType];
-  v8 = v7;
-  if (v7)
+  thumbnailCopy = thumbnail;
+  quantitySample = [(WFHKSampleContentItem *)self quantitySample];
+  quantityType = [quantitySample quantityType];
+  v8 = quantityType;
+  if (quantityType)
   {
-    v9 = v7;
+    categoryType = quantityType;
   }
 
   else
   {
-    v10 = [(WFHKSampleContentItem *)self categorySample];
-    v9 = [v10 categoryType];
+    categorySample = [(WFHKSampleContentItem *)self categorySample];
+    categoryType = [categorySample categoryType];
   }
 
   v26 = 0;
@@ -141,23 +141,23 @@ LABEL_10:
 
   v12 = v11;
   _Block_object_dispose(&v26, 8);
-  v13 = [MEMORY[0x277CCD4D8] wf_shortcutsAppHealthStore];
-  v14 = [v11 sharedInstanceForHealthStore:v13];
-  v15 = [v14 displayTypeForObjectTypeUnifyingBloodPressureTypes:v9];
+  wf_shortcutsAppHealthStore = [MEMORY[0x277CCD4D8] wf_shortcutsAppHealthStore];
+  v14 = [v11 sharedInstanceForHealthStore:wf_shortcutsAppHealthStore];
+  v15 = [v14 displayTypeForObjectTypeUnifyingBloodPressureTypes:categoryType];
 
   v16 = objc_alloc(MEMORY[0x277D79E20]);
-  v17 = [v15 displayCategory];
-  v18 = [v17 color];
-  v19 = [v16 initWithPlatformColor:v18];
+  displayCategory = [v15 displayCategory];
+  color = [displayCategory color];
+  v19 = [v16 initWithPlatformColor:color];
 
   v20 = objc_alloc(MEMORY[0x277D79FC8]);
-  v21 = [v15 listIcon];
-  v22 = [v20 initWithPlatformImage:v21];
+  listIcon = [v15 listIcon];
+  v22 = [v20 initWithPlatformImage:listIcon];
   v23 = [v22 imageWithTintColor:v19];
 
   if (v23)
   {
-    v5[2](v5, v23, 0);
+    thumbnailCopy[2](thumbnailCopy, v23, 0);
   }
 
   return v23 != 0;
@@ -165,21 +165,21 @@ LABEL_10:
 
 - (id)sourceName
 {
-  v2 = [(WFHKSampleContentItem *)self quantitySample];
-  v3 = [v2 sourceRevision];
-  v4 = [v3 source];
+  quantitySample = [(WFHKSampleContentItem *)self quantitySample];
+  sourceRevision = [quantitySample sourceRevision];
+  source = [sourceRevision source];
 
-  v5 = [v4 name];
-  v6 = [v5 stringByReplacingOccurrencesOfString:@" " withString:@" "];
+  name = [source name];
+  v6 = [name stringByReplacingOccurrencesOfString:@" " withString:@" "];
 
   return v6;
 }
 
 - (id)duration
 {
-  v3 = [(WFHKSampleContentItem *)self endDate];
-  v4 = [(WFHKSampleContentItem *)self startDate];
-  [v3 timeIntervalSinceDate:v4];
+  endDate = [(WFHKSampleContentItem *)self endDate];
+  startDate = [(WFHKSampleContentItem *)self startDate];
+  [endDate timeIntervalSinceDate:startDate];
   v6 = v5;
 
   v7 = [objc_alloc(MEMORY[0x277CFC540]) initWithTimeInterval:224 allowedUnits:0 unitsStyle:1 zeroFormattingBehavior:v6];
@@ -189,8 +189,8 @@ LABEL_10:
 
 - (id)endDate
 {
-  v3 = [(WFHKSampleContentItem *)self quantitySample];
-  if (v3)
+  quantitySample = [(WFHKSampleContentItem *)self quantitySample];
+  if (quantitySample)
   {
     [(WFHKSampleContentItem *)self quantitySample];
   }
@@ -200,15 +200,15 @@ LABEL_10:
     [(WFHKSampleContentItem *)self categorySample];
   }
   v4 = ;
-  v5 = [v4 endDate];
+  endDate = [v4 endDate];
 
-  return v5;
+  return endDate;
 }
 
 - (id)startDate
 {
-  v3 = [(WFHKSampleContentItem *)self quantitySample];
-  if (v3)
+  quantitySample = [(WFHKSampleContentItem *)self quantitySample];
+  if (quantitySample)
   {
     [(WFHKSampleContentItem *)self quantitySample];
   }
@@ -218,9 +218,9 @@ LABEL_10:
     [(WFHKSampleContentItem *)self categorySample];
   }
   v4 = ;
-  v5 = [v4 startDate];
+  startDate = [v4 startDate];
 
-  return v5;
+  return startDate;
 }
 
 - (id)categorySample
@@ -232,21 +232,21 @@ LABEL_10:
 
 - (id)unit
 {
-  v2 = [(WFHKSampleContentItem *)self quantitySampleContainer];
-  v3 = [v2 unit];
+  quantitySampleContainer = [(WFHKSampleContentItem *)self quantitySampleContainer];
+  unit = [quantitySampleContainer unit];
 
-  return v3;
+  return unit;
 }
 
 - (id)localizedCategorySampleValue
 {
-  v2 = [(WFHKSampleContentItem *)self categorySample];
-  v3 = [v2 categoryType];
+  categorySample = [(WFHKSampleContentItem *)self categorySample];
+  categoryType = [categorySample categoryType];
   v4 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCB8E0]];
 
-  if (v3 == v4)
+  if (categoryType == v4)
   {
-    v5 = +[WFHealthKitHelper readableAppleStandingHourFromEnum:](WFHealthKitHelper, "readableAppleStandingHourFromEnum:", [v2 value]);
+    v5 = +[WFHealthKitHelper readableAppleStandingHourFromEnum:](WFHealthKitHelper, "readableAppleStandingHourFromEnum:", [categorySample value]);
   }
 
   else
@@ -254,55 +254,55 @@ LABEL_10:
     v5 = 0;
   }
 
-  v6 = [v2 categoryType];
+  categoryType2 = [categorySample categoryType];
   v7 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCB918]];
 
-  if (v6 == v7)
+  if (categoryType2 == v7)
   {
-    v8 = +[WFHealthKitHelper readableCervicalMucusQualityFromEnum:](WFHealthKitHelper, "readableCervicalMucusQualityFromEnum:", [v2 value]);
+    v8 = +[WFHealthKitHelper readableCervicalMucusQualityFromEnum:](WFHealthKitHelper, "readableCervicalMucusQualityFromEnum:", [categorySample value]);
 
     v5 = v8;
   }
 
-  v9 = [v2 categoryType];
+  categoryType3 = [categorySample categoryType];
   v10 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCBA28]];
 
-  if (v9 == v10)
+  if (categoryType3 == v10)
   {
-    v11 = +[WFHealthKitHelper readableMenstrualFlowFromEnum:](WFHealthKitHelper, "readableMenstrualFlowFromEnum:", [v2 value]);
+    v11 = +[WFHealthKitHelper readableMenstrualFlowFromEnum:](WFHealthKitHelper, "readableMenstrualFlowFromEnum:", [categorySample value]);
 
     v5 = v11;
   }
 
-  v12 = [v2 categoryType];
+  categoryType4 = [categorySample categoryType];
   v13 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCBA50]];
 
-  if (v12 == v13)
+  if (categoryType4 == v13)
   {
-    v14 = +[WFHealthKitHelper readableOvulationTestResultFromEnum:](WFHealthKitHelper, "readableOvulationTestResultFromEnum:", [v2 value]);
+    v14 = +[WFHealthKitHelper readableOvulationTestResultFromEnum:](WFHealthKitHelper, "readableOvulationTestResultFromEnum:", [categorySample value]);
 
     v5 = v14;
   }
 
-  v15 = [v2 categoryType];
+  categoryType5 = [categorySample categoryType];
   v16 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCBAB8]];
 
-  if (v15 == v16)
+  if (categoryType5 == v16)
   {
-    v21 = +[WFHealthKitHelper readableSleepAnalysisFromEnum:](WFHealthKitHelper, "readableSleepAnalysisFromEnum:", [v2 value]);
+    v21 = +[WFHealthKitHelper readableSleepAnalysisFromEnum:](WFHealthKitHelper, "readableSleepAnalysisFromEnum:", [categorySample value]);
 LABEL_25:
     v34 = v21;
 
     goto LABEL_26;
   }
 
-  v17 = [v2 categoryType];
+  categoryType6 = [categorySample categoryType];
   v18 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCBA98]];
 
-  if (v17 == v18)
+  if (categoryType6 == v18)
   {
-    v19 = [v2 metadata];
-    v20 = [v19 objectForKeyedSubscript:*MEMORY[0x277CCC508]];
+    metadata = [categorySample metadata];
+    v20 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCC508]];
 
     if (v20)
     {
@@ -318,42 +318,42 @@ LABEL_25:
     v5 = v22;
   }
 
-  v23 = [v2 categoryType];
+  categoryType7 = [categorySample categoryType];
   v24 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCB8D8]];
 
-  if (v23 == v24)
+  if (categoryType7 == v24)
   {
-    v21 = +[WFHealthKitHelper readableAppetiteChangesValueFromEnum:](WFHealthKitHelper, "readableAppetiteChangesValueFromEnum:", [v2 value]);
+    v21 = +[WFHealthKitHelper readableAppetiteChangesValueFromEnum:](WFHealthKitHelper, "readableAppetiteChangesValueFromEnum:", [categorySample value]);
     goto LABEL_25;
   }
 
-  v25 = [v2 categoryType];
+  categoryType8 = [categorySample categoryType];
   v26 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCBA38]];
   v27 = v26;
-  if (v25 == v26)
+  if (categoryType8 == v26)
   {
 
     goto LABEL_24;
   }
 
-  v28 = [v2 categoryType];
+  categoryType9 = [categorySample categoryType];
   v29 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCBAC8]];
 
-  if (v28 == v29)
+  if (categoryType9 == v29)
   {
 LABEL_24:
-    v21 = +[WFHealthKitHelper readablePresenceValueFromEnum:](WFHealthKitHelper, "readablePresenceValueFromEnum:", [v2 value]);
+    v21 = +[WFHealthKitHelper readablePresenceValueFromEnum:](WFHealthKitHelper, "readablePresenceValueFromEnum:", [categorySample value]);
     goto LABEL_25;
   }
 
   v30 = WFHealthKitSymptomsTypeIdentifiers();
-  v31 = [v2 categoryType];
-  v32 = [v31 identifier];
-  v33 = [v30 containsObject:v32];
+  categoryType10 = [categorySample categoryType];
+  identifier = [categoryType10 identifier];
+  v33 = [v30 containsObject:identifier];
 
   if (v33)
   {
-    v21 = +[WFHealthKitHelper readableSeverityValueFromEnum:](WFHealthKitHelper, "readableSeverityValueFromEnum:", [v2 value]);
+    v21 = +[WFHealthKitHelper readableSeverityValueFromEnum:](WFHealthKitHelper, "readableSeverityValueFromEnum:", [categorySample value]);
     goto LABEL_25;
   }
 
@@ -371,71 +371,71 @@ LABEL_26:
 
 - (id)sampleValue
 {
-  v3 = [(WFHKSampleContentItem *)self quantitySampleContainer];
+  quantitySampleContainer = [(WFHKSampleContentItem *)self quantitySampleContainer];
 
-  if (v3)
+  if (quantitySampleContainer)
   {
-    v4 = [(WFHKSampleContentItem *)self unit];
+    unit = [(WFHKSampleContentItem *)self unit];
 
-    if (v4)
+    if (unit)
     {
-      v5 = [(WFHKSampleContentItem *)self quantitySample];
-      v6 = [(WFHKSampleContentItem *)self quantitySample];
+      quantitySample = [(WFHKSampleContentItem *)self quantitySample];
+      quantitySample2 = [(WFHKSampleContentItem *)self quantitySample];
 
-      if (v6)
+      if (quantitySample2)
       {
         v7 = MEMORY[0x277CCABB0];
-        v8 = [v5 quantity];
-        v9 = [(WFHKSampleContentItem *)self unit];
-        [v8 wf_normalizedDoubleValueForUnit:v9];
+        quantity = [quantitySample quantity];
+        unit2 = [(WFHKSampleContentItem *)self unit];
+        [quantity wf_normalizedDoubleValueForUnit:unit2];
         v10 = [v7 numberWithDouble:?];
-        v11 = [v10 stringValue];
+        stringValue = [v10 stringValue];
 
         goto LABEL_8;
       }
     }
 
-    v11 = &stru_2850323E8;
+    stringValue = &stru_2850323E8;
   }
 
   else
   {
-    v11 = [(WFHKSampleContentItem *)self localizedCategorySampleValue];
+    stringValue = [(WFHKSampleContentItem *)self localizedCategorySampleValue];
   }
 
 LABEL_8:
 
-  return v11;
+  return stringValue;
 }
 
 - (id)readableTypeIdentifier
 {
-  v3 = [(WFHKSampleContentItem *)self quantitySample];
-  if (v3)
+  quantitySample = [(WFHKSampleContentItem *)self quantitySample];
+  if (quantitySample)
   {
-    v4 = [(WFHKSampleContentItem *)self quantitySample];
-    [v4 quantityType];
+    quantitySample2 = [(WFHKSampleContentItem *)self quantitySample];
+    [quantitySample2 quantityType];
   }
 
   else
   {
-    v4 = [(WFHKSampleContentItem *)self categorySample];
-    [v4 categoryType];
+    quantitySample2 = [(WFHKSampleContentItem *)self categorySample];
+    [quantitySample2 categoryType];
   }
   v5 = ;
-  v6 = [v5 identifier];
+  identifier = [v5 identifier];
 
-  v7 = [WFHealthKitHelper readableSampleTypeIdentifierFromSampleTypeIdentifier:v6];
+  v7 = [WFHealthKitHelper readableSampleTypeIdentifierFromSampleTypeIdentifier:identifier];
 
   return v7;
 }
 
 - (id)quantitySample
 {
-  v2 = [(WFHKSampleContentItem *)self quantitySampleContainer];
-  v3 = [v2 quantitySample];
+  quantitySampleContainer = [(WFHKSampleContentItem *)self quantitySampleContainer];
+  quantitySample = [quantitySampleContainer quantitySample];
 
-  return v3;
+  return quantitySample;
 }
 
 - (id)quantitySampleContainer
@@ -445,75 +445,75 @@ LABEL_8:
   return [(WFHKSampleContentItem *)self objectForClass:v3];
 }
 
-- (void)generateObjectRepresentations:(id)a3 options:(id)a4 forClass:(Class)a5
+- (void)generateObjectRepresentations:(id)representations options:(id)options forClass:(Class)class
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (objc_opt_class() == a5)
+  representationsCopy = representations;
+  if (objc_opt_class() == class)
   {
-    v8 = objc_opt_new();
-    v9 = [(WFHKSampleContentItem *)self quantitySample];
-    v10 = [v9 startDate];
+    quantitySampleContainer = objc_opt_new();
+    quantitySample = [(WFHKSampleContentItem *)self quantitySample];
+    startDate = [quantitySample startDate];
 
-    v11 = [(WFHKSampleContentItem *)self quantitySample];
-    v12 = [v11 endDate];
+    quantitySample2 = [(WFHKSampleContentItem *)self quantitySample];
+    endDate = [quantitySample2 endDate];
 
-    if ([v10 isEqualToDate:v12])
+    if ([startDate isEqualToDate:endDate])
     {
       v13 = MEMORY[0x277CFC488];
       v14 = @"Sample Date";
-      v15 = v10;
+      v15 = startDate;
     }
 
     else
     {
-      if (v10)
+      if (startDate)
       {
-        v20 = [MEMORY[0x277CFC488] object:v10 named:@"Sample Start Date"];
-        [v8 addObject:v20];
+        v20 = [MEMORY[0x277CFC488] object:startDate named:@"Sample Start Date"];
+        [quantitySampleContainer addObject:v20];
       }
 
-      if (!v12)
+      if (!endDate)
       {
         goto LABEL_14;
       }
 
       v13 = MEMORY[0x277CFC488];
       v14 = @"Sample End Date";
-      v15 = v12;
+      v15 = endDate;
     }
 
     v21 = [v13 object:v15 named:v14];
-    [v8 addObject:v21];
+    [quantitySampleContainer addObject:v21];
 
 LABEL_14:
-    v22 = [v8 copy];
-    v7[2](v7, v22, 0);
+    v22 = [quantitySampleContainer copy];
+    representationsCopy[2](representationsCopy, v22, 0);
 
     goto LABEL_16;
   }
 
-  if (objc_opt_class() != a5)
+  if (objc_opt_class() != class)
   {
-    if (objc_opt_class() != a5)
+    if (objc_opt_class() != class)
     {
-      if (objc_opt_class() == a5)
+      if (objc_opt_class() == class)
       {
         v29 = MEMORY[0x277CFC488];
         v30 = [WFConcreteStatisticsSampleProvider alloc];
-        v8 = [(WFHKSampleContentItem *)self quantitySampleContainer];
-        v31 = [(WFConcreteStatisticsSampleProvider *)v30 initWithSampleProvider:v8];
-        v32 = [(WFHKSampleContentItem *)self name];
-        v33 = [v29 object:v31 named:v32];
+        quantitySampleContainer = [(WFHKSampleContentItem *)self quantitySampleContainer];
+        v31 = [(WFConcreteStatisticsSampleProvider *)v30 initWithSampleProvider:quantitySampleContainer];
+        name = [(WFHKSampleContentItem *)self name];
+        v33 = [v29 object:v31 named:name];
         v35 = v33;
         v34 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:1];
-        v7[2](v7, v34, 0);
+        representationsCopy[2](representationsCopy, v34, 0);
       }
 
       else
       {
-        v8 = [objc_opt_class() badCoercionErrorForObjectClass:a5];
-        (v7)[2](v7, 0, v8);
+        quantitySampleContainer = [objc_opt_class() badCoercionErrorForObjectClass:class];
+        (representationsCopy)[2](representationsCopy, 0, quantitySampleContainer);
       }
 
       goto LABEL_17;
@@ -521,15 +521,15 @@ LABEL_14:
 
     v23 = MEMORY[0x277CFC488];
     v24 = MEMORY[0x277CCABB0];
-    v8 = [(WFHKSampleContentItem *)self quantitySample];
-    v10 = [v8 quantity];
-    v12 = [(WFHKSampleContentItem *)self unit];
-    [v10 wf_normalizedDoubleValueForUnit:v12];
+    quantitySampleContainer = [(WFHKSampleContentItem *)self quantitySample];
+    startDate = [quantitySampleContainer quantity];
+    endDate = [(WFHKSampleContentItem *)self unit];
+    [startDate wf_normalizedDoubleValueForUnit:endDate];
     v25 = [v24 numberWithDouble:?];
     v26 = [v23 object:v25];
     v36 = v26;
     v27 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
-    v7[2](v7, v27, 0);
+    representationsCopy[2](representationsCopy, v27, 0);
 
 LABEL_16:
 LABEL_17:
@@ -538,48 +538,48 @@ LABEL_17:
   }
 
   v16 = MEMORY[0x277CFC488];
-  v17 = [(WFHKSampleContentItem *)self sampleValue];
-  v18 = [v16 object:v17];
+  sampleValue = [(WFHKSampleContentItem *)self sampleValue];
+  v18 = [v16 object:sampleValue];
   v37[0] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:1];
-  v7[2](v7, v19, 0);
+  representationsCopy[2](representationsCopy, v19, 0);
 
 LABEL_18:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)localizedPluralFilterDescriptionWithContext:(id)a3
++ (id)localizedPluralFilterDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Health Samples", @"Health Samples");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedFilterDescriptionWithContext:(id)a3
++ (id)localizedFilterDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Health Sample", @"Health Sample");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Health samples", @"Health samples");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Health sample", @"Health sample");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -606,44 +606,44 @@ LABEL_18:
   return v5;
 }
 
-+ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)a3
++ (BOOL)supportedTypeMustBeDeterminedByInstance:(id)instance
 {
-  v4 = a3;
-  if ([v4 isEqualToClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v4, "isEqualToClass:", objc_opt_class()))
+  instanceCopy = instance;
+  if ([instanceCopy isEqualToClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(instanceCopy, "isEqualToClass:", objc_opt_class()))
   {
     v5 = 1;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___WFHKSampleContentItem;
-    v5 = objc_msgSendSuper2(&v7, sel_supportedTypeMustBeDeterminedByInstance_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_supportedTypeMustBeDeterminedByInstance_, instanceCopy);
   }
 
   return v5;
 }
 
-+ (void)runQuery:(id)a3 withItems:(id)a4 permissionRequestor:(id)a5 completionHandler:(id)a6
++ (void)runQuery:(id)query withItems:(id)items permissionRequestor:(id)requestor completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (![v11 count])
+  queryCopy = query;
+  itemsCopy = items;
+  requestorCopy = requestor;
+  handlerCopy = handler;
+  if (![itemsCopy count])
   {
-    v14 = [WFHealthKitHelper extractHKDataFromContentQuery:v10];
-    v15 = [v14 startDate];
-    if (v15)
+    v14 = [WFHealthKitHelper extractHKDataFromContentQuery:queryCopy];
+    startDate = [v14 startDate];
+    if (startDate)
     {
-      v16 = v15;
-      v17 = [v14 endDate];
-      if (v17)
+      v16 = startDate;
+      endDate = [v14 endDate];
+      if (endDate)
       {
-        v18 = v17;
-        v19 = [v14 sampleType];
+        v18 = endDate;
+        sampleType = [v14 sampleType];
 
-        if (v19)
+        if (sampleType)
         {
           aBlock[0] = MEMORY[0x277D85DD0];
           aBlock[1] = 3221225472;
@@ -651,10 +651,10 @@ LABEL_18:
           aBlock[3] = &unk_278C1A9E8;
           v20 = v14;
           v37 = v20;
-          v40 = v13;
-          v38 = v10;
-          v39 = v12;
-          v41 = a1;
+          v40 = handlerCopy;
+          v38 = queryCopy;
+          v39 = requestorCopy;
+          selfCopy = self;
           v21 = _Block_copy(aBlock);
           v34[0] = 0;
           v34[1] = v34;
@@ -663,20 +663,20 @@ LABEL_18:
           v34[4] = __Block_byref_object_dispose__12147;
           v35 = 0;
           v22 = dispatch_group_create();
-          v23 = [v20 sourceName];
+          sourceName = [v20 sourceName];
 
-          if (v23)
+          if (sourceName)
           {
             dispatch_group_enter(v22);
-            v24 = [v20 sourceName];
-            v25 = [v20 sampleType];
+            sourceName2 = [v20 sourceName];
+            sampleType2 = [v20 sampleType];
             v31[0] = MEMORY[0x277D85DD0];
             v31[1] = 3221225472;
             v31[2] = __82__WFHKSampleContentItem_runQuery_withItems_permissionRequestor_completionHandler___block_invoke_519;
             v31[3] = &unk_278C1AA10;
             v33 = v34;
             v32 = v22;
-            [WFHealthKitHelper sourcesWithName:v24 ofSampleType:v25 completion:v31];
+            [WFHealthKitHelper sourcesWithName:sourceName2 ofSampleType:sampleType2 completion:v31];
           }
 
           block[0] = MEMORY[0x277D85DD0];
@@ -700,17 +700,17 @@ LABEL_12:
       }
     }
 
-    if (v13)
+    if (handlerCopy)
     {
-      (*(v13 + 2))(v13, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
 
     goto LABEL_12;
   }
 
-  v27.receiver = a1;
+  v27.receiver = self;
   v27.super_class = &OBJC_METACLASS___WFHKSampleContentItem;
-  objc_msgSendSuper2(&v27, sel_runQuery_withItems_permissionRequestor_completionHandler_, v10, v11, v12, v13);
+  objc_msgSendSuper2(&v27, sel_runQuery_withItems_permissionRequestor_completionHandler_, queryCopy, itemsCopy, requestorCopy, handlerCopy);
 LABEL_13:
 }
 
@@ -857,7 +857,7 @@ id __82__WFHKSampleContentItem_runQuery_withItems_permissionRequestor_completion
 + (id)stringConversionBehavior
 {
   v2 = MEMORY[0x277CFC310];
-  v3 = [a1 propertyForName:@"Value"];
+  v3 = [self propertyForName:@"Value"];
   v4 = [v2 accessingProperty:v3];
 
   return v4;
@@ -913,22 +913,22 @@ id __82__WFHKSampleContentItem_runQuery_withItems_permissionRequestor_completion
   return v21;
 }
 
-+ (id)itemWithQuantitySamples:(id)a3 unit:(id)a4
++ (id)itemWithQuantitySamples:(id)samples unit:(id)unit
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[WFHKQuantitySampleContainer alloc] initWithSubsamples:v6 unit:v5];
+  unitCopy = unit;
+  samplesCopy = samples;
+  v7 = [[WFHKQuantitySampleContainer alloc] initWithSubsamples:samplesCopy unit:unitCopy];
 
   v8 = [(WFContentItem *)WFHKSampleContentItem itemWithObject:v7];
 
   return v8;
 }
 
-+ (id)itemWithQuantitySample:(id)a3 unit:(id)a4
++ (id)itemWithQuantitySample:(id)sample unit:(id)unit
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[WFHKQuantitySampleContainer alloc] initWithSample:v6 unit:v5];
+  unitCopy = unit;
+  sampleCopy = sample;
+  v7 = [[WFHKQuantitySampleContainer alloc] initWithSample:sampleCopy unit:unitCopy];
 
   v8 = [(WFContentItem *)WFHKSampleContentItem itemWithObject:v7];
 

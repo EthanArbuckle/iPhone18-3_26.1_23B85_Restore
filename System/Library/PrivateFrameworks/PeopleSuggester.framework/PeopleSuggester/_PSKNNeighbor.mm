@@ -1,18 +1,18 @@
 @interface _PSKNNeighbor
-- (_PSKNNeighbor)initWithNodeData:(id)a3 distance:(double)a4;
+- (_PSKNNeighbor)initWithNodeData:(id)data distance:(double)distance;
 @end
 
 @implementation _PSKNNeighbor
 
-- (_PSKNNeighbor)initWithNodeData:(id)a3 distance:(double)a4
+- (_PSKNNeighbor)initWithNodeData:(id)data distance:(double)distance
 {
-  v7 = a3;
+  dataCopy = data;
   v8 = [(_PSKNNeighbor *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_nodeData, a3);
-    v9->_distance = a4;
+    objc_storeStrong(&v8->_nodeData, data);
+    v9->_distance = distance;
   }
 
   return v9;

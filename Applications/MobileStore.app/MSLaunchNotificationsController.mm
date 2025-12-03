@@ -1,15 +1,15 @@
 @interface MSLaunchNotificationsController
 - (BOOL)_hasDisplayedFamilySetup;
-- (MSLaunchNotificationsController)initWithParentViewController:(id)a3;
+- (MSLaunchNotificationsController)initWithParentViewController:(id)controller;
 - (void)_showFamilySetupPrompt;
 - (void)checkForNotifications;
 @end
 
 @implementation MSLaunchNotificationsController
 
-- (MSLaunchNotificationsController)initWithParentViewController:(id)a3
+- (MSLaunchNotificationsController)initWithParentViewController:(id)controller
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, controller);
   v7.receiver = self;
   v7.super_class = MSLaunchNotificationsController;
   v4 = [(MSLaunchNotificationsController *)&v7 init];
@@ -43,9 +43,9 @@
 - (void)_showFamilySetupPrompt
 {
   v3 = +[SSAccountStore defaultStore];
-  v10 = [v3 activeAccount];
+  activeAccount = [v3 activeAccount];
 
-  if (v10)
+  if (activeAccount)
   {
     v4 = sub_100003088();
     v5 = [objc_alloc(sub_100003150(@"AAUIFamilySetupPrompter" v4))];

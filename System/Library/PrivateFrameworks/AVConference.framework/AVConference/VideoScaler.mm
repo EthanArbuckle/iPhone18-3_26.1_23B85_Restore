@@ -1,6 +1,6 @@
 @interface VideoScaler
 - (VideoScaler)init;
-- (int)convertAndScalePixelBuffer:(__CVBuffer *)a3 toWidth:(int)a4 toHeight:(int)a5 withPixelFormat:(unsigned int)a6 usingPixelBufferPool:(__CVPixelBufferPool *)a7 andStoreTo:(__CVBuffer *)a8;
+- (int)convertAndScalePixelBuffer:(__CVBuffer *)buffer toWidth:(int)width toHeight:(int)height withPixelFormat:(unsigned int)format usingPixelBufferPool:(__CVPixelBufferPool *)pool andStoreTo:(__CVBuffer *)to;
 - (void)dealloc;
 @end
 
@@ -29,11 +29,11 @@
   [(VideoScaler *)&v3 dealloc];
 }
 
-- (int)convertAndScalePixelBuffer:(__CVBuffer *)a3 toWidth:(int)a4 toHeight:(int)a5 withPixelFormat:(unsigned int)a6 usingPixelBufferPool:(__CVPixelBufferPool *)a7 andStoreTo:(__CVBuffer *)a8
+- (int)convertAndScalePixelBuffer:(__CVBuffer *)buffer toWidth:(int)width toHeight:(int)height withPixelFormat:(unsigned int)format usingPixelBufferPool:(__CVPixelBufferPool *)pool andStoreTo:(__CVBuffer *)to
 {
   v37 = *MEMORY[0x1E69E9840];
   pixelBufferOut = 0;
-  if (CVPixelBufferPoolCreatePixelBuffer(*MEMORY[0x1E695E480], a7, &pixelBufferOut))
+  if (CVPixelBufferPoolCreatePixelBuffer(*MEMORY[0x1E695E480], pool, &pixelBufferOut))
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -52,9 +52,9 @@
     CVBufferSetAttachment(pixelBufferOut, *MEMORY[0x1E6965D88], *MEMORY[0x1E6965DB8], kCVAttachmentMode_ShouldPropagate);
     CVBufferSetAttachment(pixelBufferOut, *MEMORY[0x1E6965F30], *MEMORY[0x1E6965F50], kCVAttachmentMode_ShouldPropagate);
     CVBufferSetAttachment(pixelBufferOut, *MEMORY[0x1E6965F98], *MEMORY[0x1E6965FD0], kCVAttachmentMode_ShouldPropagate);
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
-    v14 = VCPixelTransferSession_TransferPixelBuffer(self->_pixelTransferSession, a3, pixelBufferOut);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
+    v14 = VCPixelTransferSession_TransferPixelBuffer(self->_pixelTransferSession, buffer, pixelBufferOut);
     if (v14)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -76,9 +76,9 @@
           v31 = 2048;
           v32 = Height;
           v33 = 1024;
-          v34 = a4;
+          widthCopy = width;
           v35 = 1024;
-          v36 = a5;
+          heightCopy = height;
           _os_log_error_impl(&dword_1DB56E000, v19, OS_LOG_TYPE_ERROR, " [%s] %s:%d VTPixelTransferSessionTransferImage failed %d input widthxheight(%zux%zu) new widthxheight(%dx%d)", buf, 0x42u);
         }
       }
@@ -86,7 +86,7 @@
 
     else
     {
-      *a8 = pixelBufferOut;
+      *to = pixelBufferOut;
     }
   }
 

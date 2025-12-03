@@ -1,15 +1,15 @@
 @interface PLModelMigrationAction_RepairTrashHiddenDuplicateAssetVisibilityState
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_RepairTrashHiddenDuplicateAssetVisibilityState
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v75[2] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696AB28];
   v6 = MEMORY[0x1E696AE18];
-  v7 = a3;
+  contextCopy = context;
   v8 = [v6 predicateWithFormat:@"%K != %d", @"duplicateAssetVisibilityState", 0];
   v75[0] = v8;
   v9 = MEMORY[0x1E696AB28];
@@ -28,7 +28,7 @@
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v73 forKeys:&v72 count:1];
   v17 = +[PLManagedAsset entityName];
   v36 = 0;
-  LOBYTE(v10) = [PLModelMigrator executeBatchUpdateWithEntityName:v17 predicate:v15 propertiesToUpdate:v16 managedObjectContext:v7 error:&v36];
+  LOBYTE(v10) = [PLModelMigrator executeBatchUpdateWithEntityName:v17 predicate:v15 propertiesToUpdate:v16 managedObjectContext:contextCopy error:&v36];
 
   v18 = v36;
   if (v10)
@@ -45,9 +45,9 @@
 
     if (v22)
     {
-      v23 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v23)
+      if (logger)
       {
         v70 = 0u;
         v71 = 0u;
@@ -118,9 +118,9 @@
 
     [(PLModelMigrationActionCore *)self finalizeProgress];
     v32 = v18;
-    if (a4)
+    if (error)
     {
-      *a4 = v32;
+      *error = v32;
     }
 
     v20 = 3;

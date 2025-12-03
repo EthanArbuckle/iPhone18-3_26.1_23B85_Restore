@@ -1,70 +1,70 @@
 @interface CRLiOSShapePresetProvider
 + (id)p_placeholderLocalizedString;
-- (BOOL)isDefaultLocalizedNameForPresetAtIndexPath:(id)a3 context:(id)a4;
-- (CRLiOSShapePresetProvider)initWithShapeCollectionDataSource:(id)a3 searchResultsCollection:(id)a4;
+- (BOOL)isDefaultLocalizedNameForPresetAtIndexPath:(id)path context:(id)context;
+- (CRLiOSShapePresetProvider)initWithShapeCollectionDataSource:(id)source searchResultsCollection:(id)collection;
 - (UIEdgeInsets)swatchInsets;
-- (id)defaultLocalizedNameForPresetAtIndexPath:(id)a3 context:(id)a4;
-- (id)localizedAccessibilityNameForPresetAtIndexPath:(id)a3 context:(id)a4;
-- (id)p_localizedNameForPresetAtIndexPath:(id)a3 context:(id)a4 isUserDefinedShape:(BOOL *)a5;
-- (id)p_shapeAtIndexPath:(id)a3 context:(id)a4;
-- (id)swatchOperationWithSize:(CGSize)a3 atIndexPath:(id)a4 context:(id)a5;
+- (id)defaultLocalizedNameForPresetAtIndexPath:(id)path context:(id)context;
+- (id)localizedAccessibilityNameForPresetAtIndexPath:(id)path context:(id)context;
+- (id)p_localizedNameForPresetAtIndexPath:(id)path context:(id)context isUserDefinedShape:(BOOL *)shape;
+- (id)p_shapeAtIndexPath:(id)path context:(id)context;
+- (id)swatchOperationWithSize:(CGSize)size atIndexPath:(id)path context:(id)context;
 @end
 
 @implementation CRLiOSShapePresetProvider
 
-- (CRLiOSShapePresetProvider)initWithShapeCollectionDataSource:(id)a3 searchResultsCollection:(id)a4
+- (CRLiOSShapePresetProvider)initWithShapeCollectionDataSource:(id)source searchResultsCollection:(id)collection
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  collectionCopy = collection;
   v12.receiver = self;
   v12.super_class = CRLiOSShapePresetProvider;
   v9 = [(CRLiOSShapePresetProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_shapeCollectionDataSource, a3);
-    objc_storeStrong(&v10->_searchResultsCollection, a4);
+    objc_storeStrong(&v9->_shapeCollectionDataSource, source);
+    objc_storeStrong(&v10->_searchResultsCollection, collection);
   }
 
   return v10;
 }
 
-- (id)p_localizedNameForPresetAtIndexPath:(id)a3 context:(id)a4 isUserDefinedShape:(BOOL *)a5
+- (id)p_localizedNameForPresetAtIndexPath:(id)path context:(id)context isUserDefinedShape:(BOOL *)shape
 {
-  v8 = a4;
-  v9 = [(CRLiOSShapePresetProvider *)self p_shapeAtIndexPath:a3 context:v8];
-  v10 = [v9 name];
-  if ([v8 isSearching])
+  contextCopy = context;
+  v9 = [(CRLiOSShapePresetProvider *)self p_shapeAtIndexPath:path context:contextCopy];
+  name = [v9 name];
+  if ([contextCopy isSearching])
   {
-    v11 = [(CRLiOSShapePresetProvider *)self p_searchResultsCollection];
-    v12 = [v11 displayNameForShape:v9];
+    p_searchResultsCollection = [(CRLiOSShapePresetProvider *)self p_searchResultsCollection];
+    v12 = [p_searchResultsCollection displayNameForShape:v9];
 
-    v10 = v12;
+    name = v12;
   }
 
-  v13 = [v8 pageIndex];
-  v14 = [(CRLiOSShapePresetProvider *)self p_shapeCollectionDataSource];
-  v15 = [v14 indexOfUserDefinedLibraryCategory];
+  pageIndex = [contextCopy pageIndex];
+  p_shapeCollectionDataSource = [(CRLiOSShapePresetProvider *)self p_shapeCollectionDataSource];
+  indexOfUserDefinedLibraryCategory = [p_shapeCollectionDataSource indexOfUserDefinedLibraryCategory];
 
-  if (a5)
+  if (shape)
   {
-    *a5 = v13 == v15;
+    *shape = pageIndex == indexOfUserDefinedLibraryCategory;
   }
 
-  if (![v10 length] && v13 == v15)
+  if (![name length] && pageIndex == indexOfUserDefinedLibraryCategory)
   {
     v16 = +[CRLiOSShapePresetProvider p_placeholderLocalizedString];
 
-    v10 = v16;
+    name = v16;
   }
 
-  return v10;
+  return name;
 }
 
-- (BOOL)isDefaultLocalizedNameForPresetAtIndexPath:(id)a3 context:(id)a4
+- (BOOL)isDefaultLocalizedNameForPresetAtIndexPath:(id)path context:(id)context
 {
   v8 = 0;
-  v4 = [(CRLiOSShapePresetProvider *)self p_localizedNameForPresetAtIndexPath:a3 context:a4 isUserDefinedShape:&v8];
+  v4 = [(CRLiOSShapePresetProvider *)self p_localizedNameForPresetAtIndexPath:path context:context isUserDefinedShape:&v8];
   v5 = 0;
   if (v8 == 1)
   {
@@ -75,13 +75,13 @@
   return v5;
 }
 
-- (id)defaultLocalizedNameForPresetAtIndexPath:(id)a3 context:(id)a4
+- (id)defaultLocalizedNameForPresetAtIndexPath:(id)path context:(id)context
 {
-  v5 = [a4 pageIndex];
-  v6 = [(CRLiOSShapePresetProvider *)self p_shapeCollectionDataSource];
-  v7 = [v6 indexOfUserDefinedLibraryCategory];
+  pageIndex = [context pageIndex];
+  p_shapeCollectionDataSource = [(CRLiOSShapePresetProvider *)self p_shapeCollectionDataSource];
+  indexOfUserDefinedLibraryCategory = [p_shapeCollectionDataSource indexOfUserDefinedLibraryCategory];
 
-  if (v5 == v7)
+  if (pageIndex == indexOfUserDefinedLibraryCategory)
   {
     v8 = +[CRLiOSShapePresetProvider p_placeholderLocalizedString];
   }
@@ -94,27 +94,27 @@
   return v8;
 }
 
-- (id)localizedAccessibilityNameForPresetAtIndexPath:(id)a3 context:(id)a4
+- (id)localizedAccessibilityNameForPresetAtIndexPath:(id)path context:(id)context
 {
-  v6 = a4;
-  v7 = [(CRLiOSShapePresetProvider *)self p_shapeAtIndexPath:a3 context:v6];
-  v8 = [v7 accessibilityName];
-  if (![v8 length])
+  contextCopy = context;
+  v7 = [(CRLiOSShapePresetProvider *)self p_shapeAtIndexPath:path context:contextCopy];
+  accessibilityName = [v7 accessibilityName];
+  if (![accessibilityName length])
   {
-    v9 = [v6 pageIndex];
-    v10 = [(CRLiOSShapePresetProvider *)self p_shapeCollectionDataSource];
-    v11 = [v10 indexOfUserDefinedLibraryCategory];
+    pageIndex = [contextCopy pageIndex];
+    p_shapeCollectionDataSource = [(CRLiOSShapePresetProvider *)self p_shapeCollectionDataSource];
+    indexOfUserDefinedLibraryCategory = [p_shapeCollectionDataSource indexOfUserDefinedLibraryCategory];
 
-    if (v9 == v11)
+    if (pageIndex == indexOfUserDefinedLibraryCategory)
     {
       v12 = +[NSBundle mainBundle];
       v13 = [v12 localizedStringForKey:@"Shape" value:0 table:0];
 
-      v8 = v13;
+      accessibilityName = v13;
     }
   }
 
-  return v8;
+  return accessibilityName;
 }
 
 - (UIEdgeInsets)swatchInsets
@@ -135,15 +135,15 @@
   return result;
 }
 
-- (id)swatchOperationWithSize:(CGSize)a3 atIndexPath:(id)a4 context:(id)a5
+- (id)swatchOperationWithSize:(CGSize)size atIndexPath:(id)path context:(id)context
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
-  v10 = [(CRLiOSShapePresetProvider *)self p_shapeAtIndexPath:a4 context:v9];
-  v11 = [v10 shapeType];
-  v12 = [v9 editingCoordinator];
-  if (v11 > 0x14 || ((1 << v11) & 0x1D8006) == 0)
+  height = size.height;
+  width = size.width;
+  contextCopy = context;
+  v10 = [(CRLiOSShapePresetProvider *)self p_shapeAtIndexPath:path context:contextCopy];
+  shapeType = [v10 shapeType];
+  editingCoordinator = [contextCopy editingCoordinator];
+  if (shapeType > 0x14 || ((1 << shapeType) & 0x1D8006) == 0)
   {
     v14 = 0.0;
   }
@@ -153,22 +153,22 @@
     v14 = 45.0;
   }
 
-  v15 = [v9 isInDarkContainer];
-  v16 = [v9 isInTranslucentContainer];
+  isInDarkContainer = [contextCopy isInDarkContainer];
+  isInTranslucentContainer = [contextCopy isInTranslucentContainer];
   v17 = 2;
-  if (v16)
+  if (isInTranslucentContainer)
   {
     v17 = 3;
   }
 
-  if (v15)
+  if (isInDarkContainer)
   {
     v18 = v17;
   }
 
   else
   {
-    v18 = v16;
+    v18 = isInTranslucentContainer;
   }
 
   v19 = objc_alloc_init(CRLSwatchRenderingContext);
@@ -178,27 +178,27 @@
   +[UIScreen crl_screenScale];
   v22 = v21;
   v23 = [v10 pathSourceWithSize:{width, height}];
-  v24 = [(CRLShapeRenderingOperation *)v20 initWithImageSize:v11 imageScale:v23 shapeType:v12 shapePathSource:v19 angle:width editingCoordinator:height swatchCacheRenderingContext:v22, v14];
+  v24 = [(CRLShapeRenderingOperation *)v20 initWithImageSize:shapeType imageScale:v23 shapeType:editingCoordinator shapePathSource:v19 angle:width editingCoordinator:height swatchCacheRenderingContext:v22, v14];
 
   return v24;
 }
 
-- (id)p_shapeAtIndexPath:(id)a3 context:(id)a4
+- (id)p_shapeAtIndexPath:(id)path context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v6 isSearching])
+  contextCopy = context;
+  pathCopy = path;
+  if ([contextCopy isSearching])
   {
-    v8 = [(CRLiOSShapePresetProvider *)self p_searchResultsCollection];
-    v9 = [v8 shapeAtIndexPath:v7];
+    p_searchResultsCollection = [(CRLiOSShapePresetProvider *)self p_searchResultsCollection];
+    v9 = [p_searchResultsCollection shapeAtIndexPath:pathCopy];
   }
 
   else
   {
-    v8 = [(CRLiOSShapePresetProvider *)self p_shapeCollectionDataSource];
-    v10 = [v7 row];
+    p_searchResultsCollection = [(CRLiOSShapePresetProvider *)self p_shapeCollectionDataSource];
+    v10 = [pathCopy row];
 
-    v9 = [v8 shapeAtIndex:v10 categoryIndex:{objc_msgSend(v6, "pageIndex")}];
+    v9 = [p_searchResultsCollection shapeAtIndex:v10 categoryIndex:{objc_msgSend(contextCopy, "pageIndex")}];
   }
 
   return v9;

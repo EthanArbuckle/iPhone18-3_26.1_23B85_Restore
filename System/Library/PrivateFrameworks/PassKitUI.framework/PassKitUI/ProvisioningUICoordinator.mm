@@ -1,10 +1,10 @@
 @interface ProvisioningUICoordinator
 - (_TtC9PassKitUI25ProvisioningUICoordinator)init;
 - (id)provisionedPass;
-- (void)continueWithFieldModel:(id)a3;
+- (void)continueWithFieldModel:(id)model;
 - (void)dealloc;
-- (void)disambiguationViewController:(id)a3 didSelectProduct:(id)a4;
-- (void)disambiguationViewControllerSetUpLater:(id)a3;
+- (void)disambiguationViewController:(id)controller didSelectProduct:(id)product;
+- (void)disambiguationViewControllerSetUpLater:(id)later;
 - (void)terminate;
 @end
 
@@ -12,23 +12,23 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD81679C();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for ProvisioningUICoordinator();
   [(ProvisioningUICoordinator *)&v3 dealloc];
 }
 
-- (void)continueWithFieldModel:(id)a3
+- (void)continueWithFieldModel:(id)model
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BD8145A8(v4);
+  modelCopy = model;
+  selfCopy = self;
+  sub_1BD8145A8(modelCopy);
 }
 
 - (void)terminate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD81521C();
 }
 
@@ -37,7 +37,7 @@
   v2 = *(&self->super.isa + OBJC_IVAR____TtC9PassKitUI25ProvisioningUICoordinator_provisionedPasses);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = v2;
     v2 = sub_1BE04BC84();
   }
@@ -52,13 +52,13 @@
   return result;
 }
 
-- (void)disambiguationViewController:(id)a3 didSelectProduct:(id)a4
+- (void)disambiguationViewController:(id)controller didSelectProduct:(id)product
 {
-  if (a4)
+  if (product)
   {
-    v6 = self;
-    v5 = a4;
-    sub_1BD81C7FC(v5);
+    selfCopy = self;
+    productCopy = product;
+    sub_1BD81C7FC(productCopy);
   }
 
   else
@@ -67,15 +67,15 @@
   }
 }
 
-- (void)disambiguationViewControllerSetUpLater:(id)a3
+- (void)disambiguationViewControllerSetUpLater:(id)later
 {
-  if (a3)
+  if (later)
   {
-    v5 = a3;
-    v3 = [v5 navigationController];
-    if (v3)
+    laterCopy = later;
+    navigationController = [laterCopy navigationController];
+    if (navigationController)
     {
-      v4 = v3;
+      v4 = navigationController;
     }
   }
 

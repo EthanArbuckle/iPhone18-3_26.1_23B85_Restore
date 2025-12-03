@@ -1,22 +1,22 @@
 @interface HMDMediaPlaybackActionAsCharacteristicWriteRequests
 - (HMDMediaPlaybackActionAsCharacteristicWriteRequests)init;
-- (HMDMediaPlaybackActionAsCharacteristicWriteRequests)initWithAction:(id)a3 characteristicWriteRequests:(id)a4;
+- (HMDMediaPlaybackActionAsCharacteristicWriteRequests)initWithAction:(id)action characteristicWriteRequests:(id)requests;
 @end
 
 @implementation HMDMediaPlaybackActionAsCharacteristicWriteRequests
 
-- (HMDMediaPlaybackActionAsCharacteristicWriteRequests)initWithAction:(id)a3 characteristicWriteRequests:(id)a4
+- (HMDMediaPlaybackActionAsCharacteristicWriteRequests)initWithAction:(id)action characteristicWriteRequests:(id)requests
 {
-  v7 = a3;
-  v8 = a4;
+  actionCopy = action;
+  requestsCopy = requests;
   v12.receiver = self;
   v12.super_class = HMDMediaPlaybackActionAsCharacteristicWriteRequests;
   v9 = [(HMDMediaPlaybackActionAsCharacteristicWriteRequests *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_residualAction, a3);
-    objc_storeStrong(&v10->_characteristicWriteRequests, a4);
+    objc_storeStrong(&v9->_residualAction, action);
+    objc_storeStrong(&v10->_characteristicWriteRequests, requests);
   }
 
   return v10;

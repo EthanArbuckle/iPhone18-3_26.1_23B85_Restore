@@ -1,16 +1,16 @@
 @interface JurassicShareViewController
-- (_TtC21JournalShareExtension27JurassicShareViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)cancelTapped:(id)a3;
+- (_TtC21JournalShareExtension27JurassicShareViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)cancelTapped:(id)tapped;
 - (void)dealloc;
-- (void)doneTapped:(id)a3;
+- (void)doneTapped:(id)tapped;
 - (void)extensionWillEnterForeground;
 - (void)presentKeyboard;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation JurassicShareViewController
@@ -18,38 +18,38 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for JurassicShareViewController();
   [(JurassicShareViewController *)&v6 dealloc];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100033B64();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for JurassicShareViewController();
   v4 = v5.receiver;
-  [(JurassicShareViewController *)&v5 viewWillAppear:v3];
+  [(JurassicShareViewController *)&v5 viewWillAppear:appearCopy];
   sub_1000352E0();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for JurassicShareViewController();
   v4 = v6.receiver;
-  [(JurassicShareViewController *)&v6 viewDidAppear:v3];
+  [(JurassicShareViewController *)&v6 viewDidAppear:appearCopy];
   v4[OBJC_IVAR____TtC21JournalShareExtension27JurassicShareViewController_hasAppeared] = 1;
   v5 = OBJC_IVAR____TtC21JournalShareExtension27JurassicShareViewController_presentsKeyboardAutomatically;
   if (v4[OBJC_IVAR____TtC21JournalShareExtension27JurassicShareViewController_presentsKeyboardAutomatically] == 1)
@@ -61,7 +61,7 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100035EA8();
 }
 
@@ -73,18 +73,18 @@
   v6 = sub_100101324();
   (*(*(v6 - 8) + 56))(v5, 1, 1, v6);
   sub_100101304();
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1001012F4();
   v9 = swift_allocObject();
   v9[2] = v8;
   v9[3] = &protocol witness table for MainActor;
-  v9[4] = v7;
+  v9[4] = selfCopy;
   sub_1000D73F8(0, 0, v5, &unk_10010CBD0, v9);
 }
 
-- (_TtC21JournalShareExtension27JurassicShareViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC21JournalShareExtension27JurassicShareViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_100100FD4();
     v7 = v6;
@@ -96,24 +96,24 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100036548(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100036548(v5, v7, bundle);
 }
 
-- (void)doneTapped:(id)a3
+- (void)doneTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   sub_10003CE18();
 }
 
-- (void)cancelTapped:(id)a3
+- (void)cancelTapped:(id)tapped
 {
   v5 = swift_allocObject();
   *(v5 + 16) = self;
-  v7 = self;
-  v6 = a3;
-  sub_1000D24E8(v7, a3, sub_10003C854, v5);
+  selfCopy = self;
+  tappedCopy = tapped;
+  sub_1000D24E8(selfCopy, tapped, sub_10003C854, v5);
 }
 
 - (void)presentKeyboard
@@ -129,14 +129,14 @@
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC21JournalShareExtension27JurassicShareViewController_photoAssets);
   if (v4 >> 62)
   {
-    v10 = self;
+    selfCopy = self;
     v5 = sub_100101DA4();
-    self = v10;
+    self = selfCopy;
   }
 
   else
@@ -145,12 +145,12 @@
   }
 
   v6 = qword_10014B6B8;
-  v7 = self;
+  selfCopy2 = self;
   if (v6 != -1)
   {
-    v11 = v7;
+    v11 = selfCopy2;
     swift_once();
-    v7 = v11;
+    selfCopy2 = v11;
   }
 
   v8 = qword_100158620;
@@ -166,16 +166,16 @@
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = sub_1000FFA44();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v15 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1000FFA24();
-  v10 = a3;
-  v11 = self;
-  sub_10003C368(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_10003C368(viewCopy);
   v13 = v12;
 
   (*(v7 + 8))(v9, v6);

@@ -5,7 +5,7 @@
 - (BOOL)cancelRenderingIfPossible;
 - (BOOL)needToStartRender;
 - (CGPDFPage)page;
-- (ICPDFAttachmentView)initWithFrame:(CGRect)a3 textAttachment:(id)a4 textContainer:(id)a5 forManualRendering:(BOOL)a6;
+- (ICPDFAttachmentView)initWithFrame:(CGRect)frame textAttachment:(id)attachment textContainer:(id)container forManualRendering:(BOOL)rendering;
 - (NSOperation)renderOperation;
 - (id)accessibilityLabel;
 - (id)pdfURL;
@@ -16,27 +16,27 @@
 - (void)didScrollIntoVisibleRange;
 - (void)didScrollOutOfVisibleRange;
 - (void)prepareForPrinting;
-- (void)setAttachment:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlightColor:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setRendering:(BOOL)a3;
-- (void)setupBorderForLayer:(id)a3;
+- (void)setAttachment:(id)attachment;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlightColor:(id)color;
+- (void)setImage:(id)image;
+- (void)setRendering:(BOOL)rendering;
+- (void)setupBorderForLayer:(id)layer;
 - (void)startImageRenderIfNeeded;
 - (void)startProgress;
 - (void)stopProgress;
-- (void)updateLayerContentsWithFade:(BOOL)a3;
+- (void)updateLayerContentsWithFade:(BOOL)fade;
 @end
 
 @implementation ICPDFAttachmentView
 
 - (id)accessibilityLabel
 {
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 localizedStringForKey:@"PDF attachment" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v4 = [mainBundle localizedStringForKey:@"PDF attachment" value:&stru_282757698 table:0];
 
-  v7 = [(ICAttachmentView *)self icaxAttachmentViewTypeDescription];
+  icaxAttachmentViewTypeDescription = [(ICAttachmentView *)self icaxAttachmentViewTypeDescription];
   v5 = __ICAccessibilityStringForVariables();
 
   return v5;
@@ -66,11 +66,11 @@ uint64_t __37__ICPDFAttachmentView_renderingQueue__block_invoke()
   return [v2 setMaxConcurrentOperationCount:1];
 }
 
-- (ICPDFAttachmentView)initWithFrame:(CGRect)a3 textAttachment:(id)a4 textContainer:(id)a5 forManualRendering:(BOOL)a6
+- (ICPDFAttachmentView)initWithFrame:(CGRect)frame textAttachment:(id)attachment textContainer:(id)container forManualRendering:(BOOL)rendering
 {
   v7.receiver = self;
   v7.super_class = ICPDFAttachmentView;
-  return [(ICAttachmentView *)&v7 initWithFrame:a4 textAttachment:a5 textContainer:a6 forManualRendering:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(ICAttachmentView *)&v7 initWithFrame:attachment textAttachment:container textContainer:rendering forManualRendering:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 - (void)dealloc
@@ -116,29 +116,29 @@ uint64_t __37__ICPDFAttachmentView_renderingQueue__block_invoke()
 
 - (id)pdfURL
 {
-  v2 = [(ICPDFAttachmentView *)self attachment];
-  v3 = [v2 media];
-  v4 = [v3 mediaURL];
+  attachment = [(ICPDFAttachmentView *)self attachment];
+  media = [attachment media];
+  mediaURL = [media mediaURL];
 
-  return v4;
+  return mediaURL;
 }
 
 - (CGPDFPage)page
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_page)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_page)
   {
-    v3 = [(ICPDFAttachmentView *)v2 pdfURL];
-    v4 = v3;
-    if (v3)
+    pdfURL = [(ICPDFAttachmentView *)selfCopy pdfURL];
+    v4 = pdfURL;
+    if (pdfURL)
     {
-      v5 = CGPDFDocumentCreateWithURL(v3);
-      v2->_pdf = v5;
+      v5 = CGPDFDocumentCreateWithURL(pdfURL);
+      selfCopy->_pdf = v5;
       if (v5)
       {
         Page = CGPDFDocumentGetPage(v5, 1uLL);
-        v2->_page = Page;
+        selfCopy->_page = Page;
         if (Page)
         {
           CGPDFPageRetain(Page);
@@ -147,29 +147,29 @@ uint64_t __37__ICPDFAttachmentView_renderingQueue__block_invoke()
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v2->_page;
+  return selfCopy->_page;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v8 = a3;
-  objc_storeStrong(&self->_image, a3);
-  if (v8)
+  imageCopy = image;
+  objc_storeStrong(&self->_image, image);
+  if (imageCopy)
   {
     if (![(ICPDFAttachmentView *)self isManaullyGeneratingImage])
     {
-      v5 = [(ICPDFAttachmentView *)self attachment];
-      [v5 setCachedImage:v8];
+      attachment = [(ICPDFAttachmentView *)self attachment];
+      [attachment setCachedImage:imageCopy];
 
       [(ICPDFAttachmentView *)self startImageRenderIfNeeded];
     }
 
     if (![(ICAttachmentView *)self forManualRendering])
     {
-      v6 = [(ICPDFAttachmentView *)self progressView];
-      [(ICPDFAttachmentView *)self updateLayerContentsWithFade:v6 != 0];
+      progressView = [(ICPDFAttachmentView *)self progressView];
+      [(ICPDFAttachmentView *)self updateLayerContentsWithFade:progressView != 0];
 
       goto LABEL_8;
     }
@@ -182,23 +182,23 @@ uint64_t __37__ICPDFAttachmentView_renderingQueue__block_invoke()
 
   [(ICPDFAttachmentView *)self updateLayerContentsWithFade:0];
 LABEL_8:
-  v7 = [(ICPDFAttachmentView *)self layer];
-  [(ICPDFAttachmentView *)self setupBorderForLayer:v7];
+  layer = [(ICPDFAttachmentView *)self layer];
+  [(ICPDFAttachmentView *)self setupBorderForLayer:layer];
 }
 
-- (void)setAttachment:(id)a3
+- (void)setAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [(ICPDFAttachmentView *)self attachment];
+  attachmentCopy = attachment;
+  attachment = [(ICPDFAttachmentView *)self attachment];
 
-  if (v5 != v4)
+  if (attachment != attachmentCopy)
   {
     v8.receiver = self;
     v8.super_class = ICPDFAttachmentView;
-    [(ICPDFAttachmentView *)&v8 setAttachment:v4];
-    v6 = [(ICPDFAttachmentView *)self attachment];
-    v7 = [v6 cachedImage];
-    [(ICPDFAttachmentView *)self setImage:v7];
+    [(ICPDFAttachmentView *)&v8 setAttachment:attachmentCopy];
+    attachment2 = [(ICPDFAttachmentView *)self attachment];
+    cachedImage = [attachment2 cachedImage];
+    [(ICPDFAttachmentView *)self setImage:cachedImage];
 
     [(ICPDFAttachmentView *)self startImageRenderIfNeeded];
   }
@@ -212,8 +212,8 @@ LABEL_8:
   image = self->_image;
   self->_image = 0;
 
-  v4 = [(ICPDFAttachmentView *)self attachment];
-  [v4 setCachedImage:0];
+  attachment = [(ICPDFAttachmentView *)self attachment];
+  [attachment setCachedImage:0];
 
   [(ICPDFAttachmentView *)self cleanupPDFDocument];
   [(ICPDFAttachmentView *)self startImageRenderIfNeeded];
@@ -234,9 +234,9 @@ LABEL_8:
 
 - (BOOL)cancelDidScrollIntoVisibleRange
 {
-  v3 = [(ICPDFAttachmentView *)self image];
+  image = [(ICPDFAttachmentView *)self image];
 
-  if (v3)
+  if (image)
   {
     return 0;
   }
@@ -246,9 +246,9 @@ LABEL_8:
 
 - (void)didScrollIntoVisibleRange
 {
-  v3 = [(ICPDFAttachmentView *)self attachment];
-  v4 = [v3 cachedImage];
-  [(ICPDFAttachmentView *)self setImage:v4];
+  attachment = [(ICPDFAttachmentView *)self attachment];
+  cachedImage = [attachment cachedImage];
+  [(ICPDFAttachmentView *)self setImage:cachedImage];
 
   [(ICPDFAttachmentView *)self startImageRenderIfNeeded];
 }
@@ -259,52 +259,52 @@ LABEL_8:
   v4.super_class = ICPDFAttachmentView;
   [(ICAttachmentView *)&v4 didMoveToWindow];
   [(ICPDFAttachmentView *)self startImageRenderIfNeeded];
-  v3 = [(ICPDFAttachmentView *)self layer];
-  [(ICPDFAttachmentView *)self setupBorderForLayer:v3];
+  layer = [(ICPDFAttachmentView *)self layer];
+  [(ICPDFAttachmentView *)self setupBorderForLayer:layer];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = ICPDFAttachmentView;
-  [(ICPDFAttachmentView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(ICPDFAttachmentView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(ICPDFAttachmentView *)self startImageRenderIfNeeded];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = ICPDFAttachmentView;
-  [(ICPDFAttachmentView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(ICPDFAttachmentView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(ICPDFAttachmentView *)self startImageRenderIfNeeded];
 }
 
-- (void)setHighlightColor:(id)a3
+- (void)setHighlightColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = ICPDFAttachmentView;
-  [(ICPDFAttachmentView *)&v5 setHighlightColor:a3];
-  v4 = [(ICPDFAttachmentView *)self layer];
-  [(ICPDFAttachmentView *)self setupBorderForLayer:v4];
+  [(ICPDFAttachmentView *)&v5 setHighlightColor:color];
+  layer = [(ICPDFAttachmentView *)self layer];
+  [(ICPDFAttachmentView *)self setupBorderForLayer:layer];
 }
 
 - (BOOL)availableImageIsAcceptable
 {
-  v3 = [(ICPDFAttachmentView *)self image];
+  image = [(ICPDFAttachmentView *)self image];
 
-  if (!v3)
+  if (!image)
   {
     return 0;
   }
 
   [(ICPDFAttachmentView *)self bounds];
   v5 = v4;
-  v6 = [(ICPDFAttachmentView *)self image];
-  [v6 size];
+  image2 = [(ICPDFAttachmentView *)self image];
+  [image2 size];
   v8 = vabdd_f64(v7, v5) < 1.0;
 
-  v9 = [(ICPDFAttachmentView *)self image];
-  [v9 size];
+  image3 = [(ICPDFAttachmentView *)self image];
+  [image3 size];
   v11 = vabdd_f64(v10, v5);
 
   return v11 < 1.0 && v8;
@@ -319,14 +319,14 @@ LABEL_8:
 
   else
   {
-    v4 = [(ICPDFAttachmentView *)self superview];
-    if (v4)
+    superview = [(ICPDFAttachmentView *)self superview];
+    if (superview)
     {
-      v5 = [(ICPDFAttachmentView *)self window];
-      if (v5)
+      window = [(ICPDFAttachmentView *)self window];
+      if (window)
       {
-        v6 = [(ICPDFAttachmentView *)self renderOperation];
-        if (v6)
+        renderOperation = [(ICPDFAttachmentView *)self renderOperation];
+        if (renderOperation)
         {
           LOBYTE(v3) = 0;
         }
@@ -354,15 +354,15 @@ LABEL_8:
 
 - (void)startImageRenderIfNeeded
 {
-  v3 = [(ICPDFAttachmentView *)self needToStartRender];
-  if (![(ICPDFAttachmentView *)self isManaullyGeneratingImage]&& (v3 || [(ICAttachmentView *)self forManualRendering]))
+  needToStartRender = [(ICPDFAttachmentView *)self needToStartRender];
+  if (![(ICPDFAttachmentView *)self isManaullyGeneratingImage]&& (needToStartRender || [(ICAttachmentView *)self forManualRendering]))
   {
     v5 = [[ICPDFAttachmentRenderOperation alloc] initWithView:self];
     if ([(ICAttachmentView *)self forManualRendering])
     {
       [(ICPDFAttachmentView *)self setIsManaullyGeneratingImage:1];
-      v4 = [(ICPDFAttachmentRenderOperation *)v5 generateImageForPrinting];
-      [(ICPDFAttachmentView *)self setImage:v4];
+      generateImageForPrinting = [(ICPDFAttachmentRenderOperation *)v5 generateImageForPrinting];
+      [(ICPDFAttachmentView *)self setImage:generateImageForPrinting];
       [(ICPDFAttachmentView *)self setIsManaullyGeneratingImage:0];
     }
 
@@ -370,104 +370,104 @@ LABEL_8:
     {
       [(ICPDFAttachmentView *)self setRenderOperation:v5];
       [(ICPDFAttachmentView *)self setRendering:1];
-      v4 = [objc_opt_class() renderingQueue];
-      [v4 addOperation:v5];
+      generateImageForPrinting = [objc_opt_class() renderingQueue];
+      [generateImageForPrinting addOperation:v5];
     }
   }
 }
 
-- (void)updateLayerContentsWithFade:(BOOL)a3
+- (void)updateLayerContentsWithFade:(BOOL)fade
 {
-  if (a3)
+  if (fade)
   {
     v4 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"opacity"];
     [v4 setFromValue:&unk_28277E660];
     [v4 setToValue:&unk_28277E670];
     [v4 setDuration:0.1];
-    v5 = [(ICPDFAttachmentView *)self layer];
-    [v5 addAnimation:v4 forKey:@"opacity"];
+    layer = [(ICPDFAttachmentView *)self layer];
+    [layer addAnimation:v4 forKey:@"opacity"];
   }
 
-  v6 = [(UIImage *)self->_image CGImage];
-  v7 = [(ICPDFAttachmentView *)self layer];
-  [v7 setContents:v6];
+  cGImage = [(UIImage *)self->_image CGImage];
+  layer2 = [(ICPDFAttachmentView *)self layer];
+  [layer2 setContents:cGImage];
 }
 
-- (void)setupBorderForLayer:(id)a3
+- (void)setupBorderForLayer:(id)layer
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICPDFAttachmentView *)self highlightColor];
+  layerCopy = layer;
+  highlightColor = [(ICPDFAttachmentView *)self highlightColor];
 
-  if (v5)
+  if (highlightColor)
   {
-    v6 = [(ICPDFAttachmentView *)self highlightColor];
-    [v4 setBorderColor:{objc_msgSend(v6, "CGColor")}];
+    highlightColor2 = [(ICPDFAttachmentView *)self highlightColor];
+    [layerCopy setBorderColor:{objc_msgSend(highlightColor2, "CGColor")}];
 
     v7 = *MEMORY[0x277D364B0];
   }
 
   else
   {
-    v8 = [(ICPDFAttachmentView *)self image];
+    image = [(ICPDFAttachmentView *)self image];
 
-    if (!v8)
+    if (!image)
     {
       DeviceGray = CGColorSpaceCreateDeviceGray();
       v12 = xmmword_2154BC1C0;
       v11 = CGColorCreate(DeviceGray, &v12);
-      [v4 setBorderColor:v11];
+      [layerCopy setBorderColor:v11];
       [(ICPDFAttachmentView *)self ic_hairlineWidth];
-      [v4 setBorderWidth:?];
+      [layerCopy setBorderWidth:?];
       CGColorRelease(v11);
       CGColorSpaceRelease(DeviceGray);
       goto LABEL_6;
     }
 
-    v9 = [MEMORY[0x277D75348] tertiaryLabelColor];
-    [v4 setBorderColor:{objc_msgSend(v9, "CGColor")}];
+    tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+    [layerCopy setBorderColor:{objc_msgSend(tertiaryLabelColor, "CGColor")}];
 
     [(ICPDFAttachmentView *)self ic_hairlineWidth];
   }
 
-  [v4 setBorderWidth:v7];
+  [layerCopy setBorderWidth:v7];
 LABEL_6:
 }
 
 - (BOOL)cancelRenderingIfPossible
 {
-  v3 = [objc_opt_class() renderingQueue];
-  [v3 setSuspended:1];
+  renderingQueue = [objc_opt_class() renderingQueue];
+  [renderingQueue setSuspended:1];
 
-  v4 = [(ICPDFAttachmentView *)self renderOperation];
-  if ([v4 isExecuting] & 1) != 0 || (objc_msgSend(v4, "isFinished"))
+  renderOperation = [(ICPDFAttachmentView *)self renderOperation];
+  if ([renderOperation isExecuting] & 1) != 0 || (objc_msgSend(renderOperation, "isFinished"))
   {
     v5 = 0;
   }
 
   else
   {
-    [v4 cancel];
+    [renderOperation cancel];
     [(ICPDFAttachmentView *)self setRenderOperation:0];
     v5 = 1;
   }
 
-  v6 = [objc_opt_class() renderingQueue];
-  [v6 setSuspended:0];
+  renderingQueue2 = [objc_opt_class() renderingQueue];
+  [renderingQueue2 setSuspended:0];
 
   [(ICPDFAttachmentView *)self setRendering:!v5];
   return v5;
 }
 
-- (void)setRendering:(BOOL)a3
+- (void)setRendering:(BOOL)rendering
 {
-  if (!a3 || self->_rendering)
+  if (!rendering || self->_rendering)
   {
-    if (self->_rendering && !a3)
+    if (self->_rendering && !rendering)
     {
-      self->_rendering = a3;
-      v6 = [(ICPDFAttachmentView *)self startProgressSelectorDelayer];
-      [v6 cancelPreviousFireRequests];
+      self->_rendering = rendering;
+      startProgressSelectorDelayer = [(ICPDFAttachmentView *)self startProgressSelectorDelayer];
+      [startProgressSelectorDelayer cancelPreviousFireRequests];
 
       [(ICPDFAttachmentView *)self stopProgress];
     }
@@ -475,49 +475,49 @@ LABEL_6:
 
   else
   {
-    self->_rendering = a3;
-    v4 = [(ICPDFAttachmentView *)self startProgressSelectorDelayer];
+    self->_rendering = rendering;
+    startProgressSelectorDelayer2 = [(ICPDFAttachmentView *)self startProgressSelectorDelayer];
 
-    if (!v4)
+    if (!startProgressSelectorDelayer2)
     {
       v5 = [objc_alloc(MEMORY[0x277D36258]) initWithTarget:self selector:sel_startProgress delay:0 waitToFireUntilRequestsStop:1 callOnMainThread:0.3];
       [(ICPDFAttachmentView *)self setStartProgressSelectorDelayer:v5];
     }
 
-    v7 = [(ICPDFAttachmentView *)self startProgressSelectorDelayer];
-    [v7 requestFire];
+    startProgressSelectorDelayer3 = [(ICPDFAttachmentView *)self startProgressSelectorDelayer];
+    [startProgressSelectorDelayer3 requestFire];
   }
 }
 
 - (void)startProgress
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v3 = [(ICPDFAttachmentView *)self progressView];
+  progressView = [(ICPDFAttachmentView *)self progressView];
 
-  if (!v3)
+  if (!progressView)
   {
     v4 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
     [(ICPDFAttachmentView *)self setProgressView:v4];
 
-    v5 = [(ICPDFAttachmentView *)self progressView];
-    [v5 startAnimating];
+    progressView2 = [(ICPDFAttachmentView *)self progressView];
+    [progressView2 startAnimating];
 
-    v6 = [(ICPDFAttachmentView *)self progressView];
-    [v6 setHidden:0];
+    progressView3 = [(ICPDFAttachmentView *)self progressView];
+    [progressView3 setHidden:0];
 
-    v7 = [(ICPDFAttachmentView *)self progressView];
-    [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+    progressView4 = [(ICPDFAttachmentView *)self progressView];
+    [progressView4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v8 = [(ICPDFAttachmentView *)self progressView];
-    [(ICPDFAttachmentView *)self addSubview:v8];
+    progressView5 = [(ICPDFAttachmentView *)self progressView];
+    [(ICPDFAttachmentView *)self addSubview:progressView5];
 
     v9 = MEMORY[0x277CCAAD0];
-    v10 = [(ICPDFAttachmentView *)self progressView];
-    v11 = [v9 constraintWithItem:self attribute:9 relatedBy:0 toItem:v10 attribute:9 multiplier:1.0 constant:0.0];
+    progressView6 = [(ICPDFAttachmentView *)self progressView];
+    v11 = [v9 constraintWithItem:self attribute:9 relatedBy:0 toItem:progressView6 attribute:9 multiplier:1.0 constant:0.0];
     v16[0] = v11;
     v12 = MEMORY[0x277CCAAD0];
-    v13 = [(ICPDFAttachmentView *)self progressView];
-    v14 = [v12 constraintWithItem:self attribute:10 relatedBy:0 toItem:v13 attribute:10 multiplier:1.0 constant:0.0];
+    progressView7 = [(ICPDFAttachmentView *)self progressView];
+    v14 = [v12 constraintWithItem:self attribute:10 relatedBy:0 toItem:progressView7 attribute:10 multiplier:1.0 constant:0.0];
     v16[1] = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
 
@@ -527,12 +527,12 @@ LABEL_6:
 
 - (void)stopProgress
 {
-  v3 = [(ICPDFAttachmentView *)self progressView];
+  progressView = [(ICPDFAttachmentView *)self progressView];
 
-  if (v3)
+  if (progressView)
   {
-    v4 = [(ICPDFAttachmentView *)self progressView];
-    [v4 removeFromSuperview];
+    progressView2 = [(ICPDFAttachmentView *)self progressView];
+    [progressView2 removeFromSuperview];
 
     [(ICPDFAttachmentView *)self setProgressView:0];
   }

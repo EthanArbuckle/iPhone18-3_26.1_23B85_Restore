@@ -1,21 +1,21 @@
 @interface CMIDeepZoomTransferMetalStageV2
-- (CMIDeepZoomTransferMetalStageV2)initWithMetalContext:(id)a3 options:(id)a4;
+- (CMIDeepZoomTransferMetalStageV2)initWithMetalContext:(id)context options:(id)options;
 - (__n128)tileOverlap;
 - (__n128)tileSize;
-- (int)clearBuffer:(__CVBuffer *)a3;
-- (int)cutTilesFrom:(id)a3 to:(id)a4 params:(id *)a5 outCommandBuffer:(id *)a6;
-- (int)pasteTilesFrom:(id)a3 with:(id)a4 inputFullPixelBuffers:(id)a5 to:(__CVBuffer *)a6 params:(id *)a7 outCommandBuffer:(id *)a8;
-- (int)updateMetadata:(id)a3 forInputFullPixelBuffer:(__CVBuffer *)a4;
+- (int)clearBuffer:(__CVBuffer *)buffer;
+- (int)cutTilesFrom:(id)from to:(id)to params:(id *)params outCommandBuffer:(id *)buffer;
+- (int)pasteTilesFrom:(id)from with:(id)with inputFullPixelBuffers:(id)buffers to:(__CVBuffer *)to params:(id *)params outCommandBuffer:(id *)buffer;
+- (int)updateMetadata:(id)metadata forInputFullPixelBuffer:(__CVBuffer *)buffer;
 - (void)dealloc;
 - (void)finishProcessing;
 @end
 
 @implementation CMIDeepZoomTransferMetalStageV2
 
-- (CMIDeepZoomTransferMetalStageV2)initWithMetalContext:(id)a3 options:(id)a4
+- (CMIDeepZoomTransferMetalStageV2)initWithMetalContext:(id)context options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  optionsCopy = options;
   v62[0] = kCVPixelBufferMetalCompatibilityKey;
   v62[1] = kCVPixelBufferIOSurfaceCoreAnimationCompatibilityKey;
   v63[0] = &__kCFBooleanTrue;
@@ -31,16 +31,16 @@
     goto LABEL_2;
   }
 
-  v13 = [v8 objectForKeyedSubscript:@"DeepTransferNetwork"];
-  v14 = [v13 intValue];
+  v13 = [optionsCopy objectForKeyedSubscript:@"DeepTransferNetwork"];
+  intValue = [v13 intValue];
 
-  if (v14 == 2)
+  if (intValue == 2)
   {
     v16 = *(v10 + 23);
     v17 = @"deep_transfer_stereo_photo-v2";
   }
 
-  else if (v14 == 1)
+  else if (intValue == 1)
   {
     v16 = *(v10 + 23);
     v17 = @"deep_transfer_zoom-v2";
@@ -48,7 +48,7 @@
 
   else
   {
-    if (v14)
+    if (intValue)
     {
 LABEL_27:
       sub_B4F8(v10);
@@ -76,7 +76,7 @@ LABEL_27:
   *(v10 + 11) = v18;
 
   v20 = *(v10 + 11);
-  v21 = [v8 objectForKeyedSubscript:@"TuningParameters"];
+  v21 = [optionsCopy objectForKeyedSubscript:@"TuningParameters"];
   LODWORD(v20) = [v20 readPlist:v21];
 
   if (v20)
@@ -114,7 +114,7 @@ LABEL_27:
 
   *(v10 + 2) = 0x10001001C001F0;
   *(v10 + 172) = 0x10001001C001F0;
-  objc_storeStrong(v10 + 1, a3);
+  objc_storeStrong(v10 + 1, context);
   if (!*(v10 + 1))
   {
     v37 = [NSBundle bundleForClass:objc_opt_class()];
@@ -146,20 +146,20 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v44 = [*(v10 + 1) device];
-  v45 = [v44 newCommandQueue];
-  [*(v10 + 20) setObject:v45 atIndexedSubscript:0];
+  device = [*(v10 + 1) device];
+  newCommandQueue = [device newCommandQueue];
+  [*(v10 + 20) setObject:newCommandQueue atIndexedSubscript:0];
 
-  v46 = [*(v10 + 1) device];
-  v47 = [v46 newCommandQueue];
-  [*(v10 + 20) setObject:v47 atIndexedSubscript:1];
+  device2 = [*(v10 + 1) device];
+  newCommandQueue2 = [device2 newCommandQueue];
+  [*(v10 + 20) setObject:newCommandQueue2 atIndexedSubscript:1];
 
   if (sub_ABD4(v10))
   {
     goto LABEL_27;
   }
 
-  v48 = [[CMIDeepZoomTransferPreProcMetalStageV2 alloc] initWithMetalContext:v7 withTileConfiguration:v10 + 16];
+  v48 = [[CMIDeepZoomTransferPreProcMetalStageV2 alloc] initWithMetalContext:contextCopy withTileConfiguration:v10 + 16];
   v49 = *(v10 + 18);
   *(v10 + 18) = v48;
 
@@ -168,7 +168,7 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v50 = [[CMIDeepZoomTransferPostProcMetalStageV2 alloc] initWithMetalContext:v7 withTileConfiguration:v10 + 16];
+  v50 = [[CMIDeepZoomTransferPostProcMetalStageV2 alloc] initWithMetalContext:contextCopy withTileConfiguration:v10 + 16];
   v51 = *(v10 + 19);
   *(v10 + 19) = v50;
 
@@ -180,8 +180,8 @@ LABEL_27:
   v59 = kCVMetalTextureCacheMaximumTextureAgeKey;
   v60 = &off_19010;
   v52 = [NSDictionary dictionaryWithObjects:&v60 forKeys:&v59 count:1];
-  v53 = [*(v10 + 1) device];
-  v54 = CVMetalTextureCacheCreate(kCFAllocatorDefault, v52, v53, 0, v10 + 3);
+  device3 = [*(v10 + 1) device];
+  v54 = CVMetalTextureCacheCreate(kCFAllocatorDefault, v52, device3, 0, v10 + 3);
 
   if (v54)
   {
@@ -212,12 +212,12 @@ LABEL_3:
   return v11;
 }
 
-- (int)updateMetadata:(id)a3 forInputFullPixelBuffer:(__CVBuffer *)a4
+- (int)updateMetadata:(id)metadata forInputFullPixelBuffer:(__CVBuffer *)buffer
 {
   metadataForPixelBuffers = self->_metadataForPixelBuffers;
-  v6 = a3;
-  v7 = [NSNumber numberWithLong:a4];
-  [(NSMutableDictionary *)metadataForPixelBuffers setObject:v6 forKeyedSubscript:v7];
+  metadataCopy = metadata;
+  v7 = [NSNumber numberWithLong:buffer];
+  [(NSMutableDictionary *)metadataForPixelBuffers setObject:metadataCopy forKeyedSubscript:v7];
 
   return 0;
 }
@@ -248,8 +248,8 @@ LABEL_3:
 
 - (__n128)tileSize
 {
-  LOWORD(v1) = *(a1 + 172);
-  WORD2(v1) = *(a1 + 174);
+  LOWORD(v1) = *(self + 172);
+  WORD2(v1) = *(self + 174);
   result.n128_u32[0] = v1;
   result.n128_u16[2] = WORD2(v1);
   return result;
@@ -257,8 +257,8 @@ LABEL_3:
 
 - (__n128)tileOverlap
 {
-  LOWORD(v1) = *(a1 + 176);
-  WORD2(v1) = *(a1 + 178);
+  LOWORD(v1) = *(self + 176);
+  WORD2(v1) = *(self + 178);
   result.n128_u32[0] = v1;
   result.n128_u16[2] = WORD2(v1);
   return result;
@@ -272,9 +272,9 @@ LABEL_3:
   [(CMIDeepZoomTransferMetalStageV2 *)&v3 dealloc];
 }
 
-- (int)clearBuffer:(__CVBuffer *)a3
+- (int)clearBuffer:(__CVBuffer *)buffer
 {
-  if (!a3)
+  if (!buffer)
   {
     sub_275C();
     v39 = -12780;
@@ -306,8 +306,8 @@ LABEL_7:
       goto LABEL_12;
     }
 
-    v27 = [p_tileOutputPixelBuffer computeCommandEncoder];
-    if (!v27)
+    computeCommandEncoder = [p_tileOutputPixelBuffer computeCommandEncoder];
+    if (!computeCommandEncoder)
     {
       sub_1F20();
       FigDebugAssert3();
@@ -319,8 +319,8 @@ LABEL_7:
       goto LABEL_12;
     }
 
-    v4 = v27;
-    v5 = sub_B168(self, a3, 2);
+    v4 = computeCommandEncoder;
+    v5 = sub_B168(self, buffer, 2);
     if ([v5 count] != &dword_0 + 2)
     {
       v39 = -12786;
@@ -332,26 +332,26 @@ LABEL_7:
     objc_claimAutoreleasedReturnValue();
     [sub_1F54() setTexture:? atIndex:?];
 
-    v28 = [(MTLComputePipelineState *)self->_clearTexturePipelineState threadExecutionWidth];
-    v29 = [(MTLComputePipelineState *)self->_clearTexturePipelineState maxTotalThreadsPerThreadgroup]/ v28;
+    threadExecutionWidth = [(MTLComputePipelineState *)self->_clearTexturePipelineState threadExecutionWidth];
+    v29 = [(MTLComputePipelineState *)self->_clearTexturePipelineState maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
     v30 = [sub_2740() objectAtIndexedSubscript:?];
     [v30 width];
     v31 = [sub_2740() objectAtIndexedSubscript:?];
-    v32 = [v31 height];
-    sub_2080(v32, v33);
+    height = [v31 height];
+    sub_2080(height, v33);
 
     [(__CFAllocator *)v4 setComputePipelineState:self->_clearTexturePipelineState];
     [sub_2734() objectAtIndexedSubscript:?];
     objc_claimAutoreleasedReturnValue();
     [sub_1F54() setTexture:? atIndex:?];
 
-    v34 = [(MTLComputePipelineState *)self->_clearTexturePipelineState threadExecutionWidth];
-    v35 = [(MTLComputePipelineState *)self->_clearTexturePipelineState maxTotalThreadsPerThreadgroup]/ v34;
+    threadExecutionWidth2 = [(MTLComputePipelineState *)self->_clearTexturePipelineState threadExecutionWidth];
+    v35 = [(MTLComputePipelineState *)self->_clearTexturePipelineState maxTotalThreadsPerThreadgroup]/ threadExecutionWidth2;
     v36 = [sub_2734() objectAtIndexedSubscript:?];
     [v36 width];
     v37 = [sub_2734() objectAtIndexedSubscript:?];
-    v41 = [v37 height];
-    sub_2080(v41, v38);
+    height2 = [v37 height];
+    sub_2080(height2, v38);
 
     [(__CFAllocator *)v4 endEncoding];
     [p_tileOutputPixelBuffer commit];
@@ -361,14 +361,14 @@ LABEL_7:
   v4 = kCFAllocatorDefault;
   v11 = *self->_anon_10;
   v12 = *&self->_anon_10[2];
-  CVPixelBufferGetPixelFormatType(a3);
+  CVPixelBufferGetPixelFormatType(buffer);
   CVPixelBufferGetAttributes();
   v13 = sub_2784();
   if (!CVPixelBufferCreate(v13, v14, v15, v16, v17, v18))
   {
     v19 = *self->_anon_10;
     v20 = *&self->_anon_10[2];
-    CVPixelBufferGetPixelFormatType(a3);
+    CVPixelBufferGetPixelFormatType(buffer);
     CVPixelBufferGetAttributes();
     v21 = sub_2784();
     if (!CVPixelBufferCreate(v21, v22, v23, v24, v25, p_tileOutputPixelBuffer))
@@ -386,31 +386,31 @@ LABEL_12:
   return v39;
 }
 
-- (int)cutTilesFrom:(id)a3 to:(id)a4 params:(id *)a5 outCommandBuffer:(id *)a6
+- (int)cutTilesFrom:(id)from to:(id)to params:(id *)params outCommandBuffer:(id *)buffer
 {
-  v10 = a3;
-  v11 = a4;
-  v114 = v10;
-  if ([v10 count] != &dword_0 + 2)
+  fromCopy = from;
+  toCopy = to;
+  v114 = fromCopy;
+  if ([fromCopy count] != &dword_0 + 2)
   {
     v13 = -12780;
     goto LABEL_34;
   }
 
-  v12 = [v11 count];
+  v12 = [toCopy count];
   v13 = -12780;
-  if (a5 && v12)
+  if (params && v12)
   {
-    v14 = sub_C2B8(self, v10, a5);
+    v14 = sub_C2B8(self, fromCopy, params);
     if (!v14)
     {
       v15 = [(NSMutableArray *)self->_commandQueues objectAtIndexedSubscript:self->_currentCommandQueueIndex];
-      v16 = [v15 commandBuffer];
+      commandBuffer = [v15 commandBuffer];
 
-      if (v16)
+      if (commandBuffer)
       {
-        v17 = [v16 computeCommandEncoder];
-        if (!v17)
+        computeCommandEncoder = [commandBuffer computeCommandEncoder];
+        if (!computeCommandEncoder)
         {
           sub_358C();
           sub_34CC();
@@ -422,9 +422,9 @@ LABEL_12:
           goto LABEL_34;
         }
 
-        v18 = v17;
-        v19 = *(a5 + 1);
-        v132 = *a5;
+        v18 = computeCommandEncoder;
+        v19 = *(params + 1);
+        v132 = *params;
         v133 = v19;
         v20 = [sub_3520() objectAtIndexedSubscript:?];
         Width = CVPixelBufferGetWidth(v20);
@@ -439,23 +439,23 @@ LABEL_12:
         v129 = 0u;
         v130 = 0u;
         v131 = 0u;
-        obj = [v11 allKeys];
+        obj = [toCopy allKeys];
         v113 = [obj countByEnumeratingWithState:&v128 objects:v127 count:16];
         if (!v113)
         {
 LABEL_29:
 
           [v18 endEncoding];
-          v95 = v16;
-          *a6 = v16;
+          v95 = commandBuffer;
+          *buffer = commandBuffer;
 
           v13 = 0;
           goto LABEL_34;
         }
 
-        v106 = a5;
-        v100 = a6;
-        v101 = v16;
+        paramsCopy = params;
+        bufferCopy = buffer;
+        v101 = commandBuffer;
         v25 = 0;
         v26 = 0;
         *&v24 = vdiv_f32(vcvt_f32_u32(vand_s8(v116, 0xFFFF0000FFFFLL)), vcvt_f32_u32(__PAIR64__(Height, Width)));
@@ -467,7 +467,7 @@ LABEL_29:
         v108 = matrix_identity_float3x3.columns[2];
         __asm { FMOV            V9.2S, #1.0 }
 
-        v107 = v11;
+        v107 = toCopy;
 LABEL_9:
         v32 = 0;
         v33 = v25;
@@ -576,11 +576,11 @@ LABEL_33:
           if ([v26 count] != &dword_0 + 2)
           {
             v34 = v26;
-            v11 = v107;
+            toCopy = v107;
             goto LABEL_33;
           }
 
-          v11 = v107;
+          toCopy = v107;
           v55 = [v107 objectForKeyedSubscript:v35];
           v25 = sub_B168(self, v55, 2);
 
@@ -615,7 +615,7 @@ LABEL_33:
             [sub_34BC() setTexture:? atIndex:?];
 
             v56 = sub_354C();
-            sub_356C(v56, v57, v58, v59, v60, v61, v62, v63, v97, v98, v99, v100, v101, v102, v103, *(&v103 + 1), v104, obj, v106, v107, v108.i64[0], v108.i64[1], v109.i64[0], v109.i64[1], v110.i64[0], v110.i64[1], v111, v112, v113, v114, v115, *(&v115 + 1), v117, *(&v117 + 1), Width, v119, v120, v121, *&v122.f64[0], *&v122.f64[1], *&v123.f64[0], *&v123.f64[1], v124.i8[0]);
+            sub_356C(v56, v57, v58, v59, v60, v61, v62, v63, v97, v98, v99, bufferCopy, v101, v102, v103, *(&v103 + 1), v104, obj, paramsCopy, v107, v108.i64[0], v108.i64[1], v109.i64[0], v109.i64[1], v110.i64[0], v110.i64[1], v111, v112, v113, v114, v115, *(&v115 + 1), v117, *(&v117 + 1), Width, v119, v120, v121, *&v122.f64[0], *&v122.f64[1], *&v123.f64[0], *&v123.f64[1], v124.i8[0]);
             v64 = 80;
             if (Width)
             {
@@ -623,7 +623,7 @@ LABEL_33:
             }
 
             [v18 setSamplerState:*(&self->super.isa + v64) atIndex:0];
-            v65 = [(MTLComputePipelineState *)self->_tileCutInSlicesPipelineState threadExecutionWidth];
+            threadExecutionWidth = [(MTLComputePipelineState *)self->_tileCutInSlicesPipelineState threadExecutionWidth];
             tileCutInSlicesPipelineState = self->_tileCutInSlicesPipelineState;
           }
 
@@ -643,7 +643,7 @@ LABEL_33:
             [sub_34BC() setTexture:? atIndex:?];
 
             v67 = sub_354C();
-            sub_356C(v67, v68, v69, v70, v71, v72, v73, v74, v97, v98, v99, v100, v101, v102, v103, *(&v103 + 1), v104, obj, v106, v107, v108.i64[0], v108.i64[1], v109.i64[0], v109.i64[1], v110.i64[0], v110.i64[1], v111, v112, v113, v114, v115, *(&v115 + 1), v117, *(&v117 + 1), Width, v119, v120, v121, *&v122.f64[0], *&v122.f64[1], *&v123.f64[0], *&v123.f64[1], v124.i8[0]);
+            sub_356C(v67, v68, v69, v70, v71, v72, v73, v74, v97, v98, v99, bufferCopy, v101, v102, v103, *(&v103 + 1), v104, obj, paramsCopy, v107, v108.i64[0], v108.i64[1], v109.i64[0], v109.i64[1], v110.i64[0], v110.i64[1], v111, v112, v113, v114, v115, *(&v115 + 1), v117, *(&v117 + 1), Width, v119, v120, v121, *&v122.f64[0], *&v122.f64[1], *&v123.f64[0], *&v123.f64[1], v124.i8[0]);
             v75 = 80;
             if (Width)
             {
@@ -651,17 +651,17 @@ LABEL_33:
             }
 
             [v18 setSamplerState:*(&self->super.isa + v75) atIndex:0];
-            v65 = [(MTLComputePipelineState *)self->_tileCutPipelineState threadExecutionWidth];
+            threadExecutionWidth = [(MTLComputePipelineState *)self->_tileCutPipelineState threadExecutionWidth];
             tileCutInSlicesPipelineState = self->_tileCutPipelineState;
           }
 
-          v76 = [(MTLComputePipelineState *)tileCutInSlicesPipelineState maxTotalThreadsPerThreadgroup];
-          *&v77 = *(v106 + 1);
-          *&v122.f64[0] = *v106;
+          maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)tileCutInSlicesPipelineState maxTotalThreadsPerThreadgroup];
+          *&v77 = *(paramsCopy + 1);
+          *&v122.f64[0] = *paramsCopy;
           v122.f64[1] = v77;
           *&v123.f64[0] = 1;
-          v119 = v65;
-          v120 = v76 / v65;
+          v119 = threadExecutionWidth;
+          v120 = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
           v121 = 1;
           [v18 dispatchThreads:&v122 threadsPerThreadgroup:&v119];
           v32 = v32 + 1;
@@ -674,8 +674,8 @@ LABEL_33:
             if (!v94)
             {
 
-              a6 = v100;
-              v16 = v101;
+              buffer = bufferCopy;
+              commandBuffer = v101;
               goto LABEL_29;
             }
 
@@ -700,44 +700,44 @@ LABEL_34:
   return v13;
 }
 
-- (int)pasteTilesFrom:(id)a3 with:(id)a4 inputFullPixelBuffers:(id)a5 to:(__CVBuffer *)a6 params:(id *)a7 outCommandBuffer:(id *)a8
+- (int)pasteTilesFrom:(id)from with:(id)with inputFullPixelBuffers:(id)buffers to:(__CVBuffer *)to params:(id *)params outCommandBuffer:(id *)buffer
 {
-  v10 = v9;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v47 = v17;
-  v45 = v19;
-  v46 = v18;
-  if (![v17 count] || !objc_msgSend(v18, "count"))
+  commandBuffer = v9;
+  fromCopy = from;
+  withCopy = with;
+  buffersCopy = buffers;
+  v47 = fromCopy;
+  v45 = buffersCopy;
+  v46 = withCopy;
+  if (![fromCopy count] || !objc_msgSend(withCopy, "count"))
   {
     v20 = 0;
     v48 = 0;
-    v10 = 0;
+    commandBuffer = 0;
     sub_2798();
     v21 = -12780;
     goto LABEL_17;
   }
 
-  [v19 count];
+  [buffersCopy count];
   v20 = 0;
   v21 = -12780;
-  if (!a7 || !a6)
+  if (!params || !to)
   {
     sub_2718();
     goto LABEL_17;
   }
 
-  v43 = a8;
+  bufferCopy = buffer;
   sub_2718();
   if (v22)
   {
     v23 = [(NSMutableArray *)self->_commandQueues objectAtIndexedSubscript:self->_currentCommandQueueIndex];
-    v10 = [v23 commandBuffer];
+    commandBuffer = [v23 commandBuffer];
 
-    if (!v10)
+    if (!commandBuffer)
     {
-      v19 = "com.apple.cameracapture";
+      buffersCopy = "com.apple.cameracapture";
       sub_1FB4();
       sub_34CC();
       FigDebugAssert3();
@@ -751,7 +751,7 @@ LABEL_34:
     }
 
     v24 = [(NSArray *)self->_modelInputBindingNames objectAtIndexedSubscript:0];
-    [v17 objectForKeyedSubscript:v24];
+    [fromCopy objectForKeyedSubscript:v24];
     objc_claimAutoreleasedReturnValue();
     v25 = sub_3538();
     v8 = sub_B168(v25, v26, v27);
@@ -772,24 +772,24 @@ LABEL_34:
           v44 = sub_B168(self, self->_tileOutputPixelBuffer, 3);
           if ([v44 count] == &dword_0 + 2)
           {
-            v48 = sub_B168(self, a6, 3);
+            v48 = sub_B168(self, to, 3);
             if ([v48 count] == &dword_0 + 2)
             {
-              v33 = [(CMIDeepZoomTransferPostProcMetalStageV2 *)self->_deepZoomPostProcStage processTileFrom:v8 with:v20 to:v32 commandBuffer:v10];
+              v33 = [(CMIDeepZoomTransferPostProcMetalStageV2 *)self->_deepZoomPostProcStage processTileFrom:v8 with:v20 to:v32 commandBuffer:commandBuffer];
               if (v33)
               {
                 v21 = v33;
-                v19 = v10;
+                buffersCopy = commandBuffer;
               }
 
               else
               {
-                v34 = [v10 computeCommandEncoder];
-                v19 = v10;
-                if (v34)
+                computeCommandEncoder = [commandBuffer computeCommandEncoder];
+                buffersCopy = commandBuffer;
+                if (computeCommandEncoder)
                 {
-                  v35 = v34;
-                  [v34 setComputePipelineState:self->_tileMergePipelineState];
+                  v35 = computeCommandEncoder;
+                  [computeCommandEncoder setComputePipelineState:self->_tileMergePipelineState];
                   [v32 objectAtIndexedSubscript:0];
                   objc_claimAutoreleasedReturnValue();
                   [sub_1F54() setTexture:? atIndex:?];
@@ -808,7 +808,7 @@ LABEL_34:
                   objc_claimAutoreleasedReturnValue();
                   [sub_1F54() setTexture:? atIndex:?];
 
-                  v17 = v44;
+                  fromCopy = v44;
                   [sub_2740() objectAtIndexedSubscript:?];
                   objc_claimAutoreleasedReturnValue();
                   [sub_1F54() setTexture:? atIndex:?];
@@ -817,21 +817,21 @@ LABEL_34:
                   objc_claimAutoreleasedReturnValue();
                   [sub_1F54() setTexture:? atIndex:?];
 
-                  [v35 setBytes:a7 length:24 atIndex:0];
-                  v36 = [(MTLComputePipelineState *)self->_tileMergePipelineState threadExecutionWidth];
+                  [v35 setBytes:params length:24 atIndex:0];
+                  threadExecutionWidth = [(MTLComputePipelineState *)self->_tileMergePipelineState threadExecutionWidth];
                   [(MTLComputePipelineState *)self->_tileMergePipelineState maxTotalThreadsPerThreadgroup];
                   sub_276C();
                   v53 = 1;
-                  v49 = v36;
-                  v50 = v37 / v36;
+                  v49 = threadExecutionWidth;
+                  v50 = v37 / threadExecutionWidth;
                   v51 = 1;
                   [v35 dispatchThreads:v52 threadsPerThreadgroup:&v49];
                   [v35 endEncoding];
-                  a8 = [v10 computeCommandEncoder];
+                  buffer = [commandBuffer computeCommandEncoder];
 
-                  if (a8)
+                  if (buffer)
                   {
-                    [a8 setComputePipelineState:self->_tilePastePipelineState];
+                    [buffer setComputePipelineState:self->_tilePastePipelineState];
                     [sub_2740() objectAtIndexedSubscript:?];
                     objc_claimAutoreleasedReturnValue();
                     [sub_2708() setTexture:? atIndex:?];
@@ -848,19 +848,19 @@ LABEL_34:
                     objc_claimAutoreleasedReturnValue();
                     [sub_2708() setTexture:? atIndex:?];
 
-                    [a8 setBytes:a7 length:24 atIndex:0];
-                    v38 = [(MTLComputePipelineState *)self->_tilePastePipelineState threadExecutionWidth];
+                    [buffer setBytes:params length:24 atIndex:0];
+                    threadExecutionWidth2 = [(MTLComputePipelineState *)self->_tilePastePipelineState threadExecutionWidth];
                     [(MTLComputePipelineState *)self->_tilePastePipelineState maxTotalThreadsPerThreadgroup];
                     sub_276C();
                     v53 = 1;
-                    v49 = v38;
-                    v50 = v39 / v38;
+                    v49 = threadExecutionWidth2;
+                    v50 = v39 / threadExecutionWidth2;
                     v51 = 1;
-                    [a8 dispatchThreads:v52 threadsPerThreadgroup:&v49];
-                    [a8 endEncoding];
-                    v40 = v10;
+                    [buffer dispatchThreads:v52 threadsPerThreadgroup:&v49];
+                    [buffer endEncoding];
+                    v40 = commandBuffer;
                     v21 = 0;
-                    *v43 = v10;
+                    *bufferCopy = commandBuffer;
                     self->_currentCommandQueueIndex = (self->_currentCommandQueueIndex & 1) == 0;
                   }
 
@@ -874,7 +874,7 @@ LABEL_34:
                     v21 = FigSignalErrorAtGM();
                   }
 
-                  v10 = v42;
+                  commandBuffer = v42;
                   goto LABEL_17;
                 }
 
@@ -886,10 +886,10 @@ LABEL_34:
                 v21 = FigSignalErrorAtGM();
               }
 
-              v10 = v32;
-              a8 = 0;
+              commandBuffer = v32;
+              buffer = 0;
 LABEL_30:
-              v17 = v44;
+              fromCopy = v44;
               goto LABEL_17;
             }
           }
@@ -899,19 +899,19 @@ LABEL_30:
             v48 = 0;
           }
 
-          v19 = v10;
-          v10 = v32;
-          a8 = 0;
+          buffersCopy = commandBuffer;
+          commandBuffer = v32;
+          buffer = 0;
           v21 = -12786;
           goto LABEL_30;
         }
 
         v48 = 0;
-        v17 = 0;
-        v19 = v10;
-        v10 = v32;
+        fromCopy = 0;
+        buffersCopy = commandBuffer;
+        commandBuffer = v32;
 LABEL_24:
-        a8 = 0;
+        buffer = 0;
         v21 = -12786;
         goto LABEL_17;
       }
@@ -923,9 +923,9 @@ LABEL_24:
     }
 
     v48 = 0;
-    v19 = v10;
-    v10 = 0;
-    v17 = 0;
+    buffersCopy = commandBuffer;
+    commandBuffer = 0;
+    fromCopy = 0;
     goto LABEL_24;
   }
 

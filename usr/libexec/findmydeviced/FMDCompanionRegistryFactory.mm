@@ -2,7 +2,7 @@
 + (BOOL)isAutomationActive;
 + (BOOL)isBlackMagic;
 + (BOOL)isTinkerPaired;
-+ (id)companionRegistryWithDelegate:(id)a3;
++ (id)companionRegistryWithDelegate:(id)delegate;
 @end
 
 @implementation FMDCompanionRegistryFactory
@@ -31,9 +31,9 @@
   return v3;
 }
 
-+ (id)companionRegistryWithDelegate:(id)a3
++ (id)companionRegistryWithDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   if (+[FMDCompanionRegistryFactory isAutomationActive])
   {
     v4 = +[FMDAutomationHelperFactory sharedFactory];
@@ -46,7 +46,7 @@
   }
 
   v6 = objc_alloc_init(v5);
-  [v6 setDelegate:v3];
+  [v6 setDelegate:delegateCopy];
 
   return v6;
 }
@@ -57,20 +57,20 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5[0] = 67109120;
-    v5[1] = [a1 isTinkerPaired];
+    v5[1] = [self isTinkerPaired];
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Tinker paired: %d", v5, 8u);
   }
 
-  return [a1 isTinkerPaired];
+  return [self isTinkerPaired];
 }
 
 + (BOOL)isTinkerPaired
 {
   v2 = [FMDCompanionRegistryFactory companionRegistryWithDelegate:0];
-  v3 = [v2 activePairedDevice];
-  v4 = [v3 tinkerPaired];
+  activePairedDevice = [v2 activePairedDevice];
+  tinkerPaired = [activePairedDevice tinkerPaired];
 
-  return v4;
+  return tinkerPaired;
 }
 
 @end

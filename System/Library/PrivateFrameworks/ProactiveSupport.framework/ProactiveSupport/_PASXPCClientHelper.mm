@@ -1,8 +1,8 @@
 @interface _PASXPCClientHelper
-- (_PASXPCClientHelper)initWithServiceName:(id)a3 connectionOptions:(unint64_t)a4 allowlistedServerInterface:(id)a5 allowlistedClientInterface:(id)a6 serverInitiatedRequestHandler:(id)a7 allowSystemToUserConnection:(BOOL)a8 interruptionHandler:(id)a9 invalidationHandler:(id)a10 logHandle:(id)a11;
+- (_PASXPCClientHelper)initWithServiceName:(id)name connectionOptions:(unint64_t)options allowlistedServerInterface:(id)interface allowlistedClientInterface:(id)clientInterface serverInitiatedRequestHandler:(id)handler allowSystemToUserConnection:(BOOL)connection interruptionHandler:(id)interruptionHandler invalidationHandler:(id)self0 logHandle:(id)self1;
 - (id)remoteObjectProxy;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
 - (void)_locked_establishConnection;
 - (void)dealloc;
 @end
@@ -46,7 +46,7 @@
     if (self->_allowSystemToUserConnection && xpc_user_sessions_enabled())
     {
       xpc_user_sessions_get_foreground_uid();
-      v7 = [(NSXPCConnection *)self->_conn _xpcConnection];
+      _xpcConnection = [(NSXPCConnection *)self->_conn _xpcConnection];
       xpc_connection_set_target_user_session_uid();
     }
 
@@ -72,45 +72,45 @@
 {
   pthread_mutex_lock(&self->_connLock);
   [(_PASXPCClientHelper *)self _locked_establishConnection];
-  v3 = [(NSXPCConnection *)self->_conn remoteObjectProxy];
+  remoteObjectProxy = [(NSXPCConnection *)self->_conn remoteObjectProxy];
   pthread_mutex_unlock(&self->_connLock);
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   pthread_mutex_lock(&self->_connLock);
   [(_PASXPCClientHelper *)self _locked_establishConnection];
-  v5 = [(NSXPCConnection *)self->_conn synchronousRemoteObjectProxyWithErrorHandler:v4];
+  v5 = [(NSXPCConnection *)self->_conn synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   pthread_mutex_unlock(&self->_connLock);
 
   return v5;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   pthread_mutex_lock(&self->_connLock);
   [(_PASXPCClientHelper *)self _locked_establishConnection];
-  v5 = [(NSXPCConnection *)self->_conn remoteObjectProxyWithErrorHandler:v4];
+  v5 = [(NSXPCConnection *)self->_conn remoteObjectProxyWithErrorHandler:handlerCopy];
 
   pthread_mutex_unlock(&self->_connLock);
 
   return v5;
 }
 
-- (_PASXPCClientHelper)initWithServiceName:(id)a3 connectionOptions:(unint64_t)a4 allowlistedServerInterface:(id)a5 allowlistedClientInterface:(id)a6 serverInitiatedRequestHandler:(id)a7 allowSystemToUserConnection:(BOOL)a8 interruptionHandler:(id)a9 invalidationHandler:(id)a10 logHandle:(id)a11
+- (_PASXPCClientHelper)initWithServiceName:(id)name connectionOptions:(unint64_t)options allowlistedServerInterface:(id)interface allowlistedClientInterface:(id)clientInterface serverInitiatedRequestHandler:(id)handler allowSystemToUserConnection:(BOOL)connection interruptionHandler:(id)interruptionHandler invalidationHandler:(id)self0 logHandle:(id)self1
 {
-  v31 = a3;
-  v30 = a5;
-  v29 = a6;
-  v28 = a7;
-  v17 = a9;
-  v18 = a10;
-  v19 = a11;
+  nameCopy = name;
+  interfaceCopy = interface;
+  clientInterfaceCopy = clientInterface;
+  handlerCopy = handler;
+  interruptionHandlerCopy = interruptionHandler;
+  invalidationHandlerCopy = invalidationHandler;
+  handleCopy = handle;
   v32.receiver = self;
   v32.super_class = _PASXPCClientHelper;
   v20 = [(_PASXPCClientHelper *)&v32 init];
@@ -118,21 +118,21 @@
   if (v20)
   {
     pthread_mutex_init(&v20->_connLock, 0);
-    objc_storeStrong(&v21->_serviceName, a3);
-    v21->_connectionOptions = a4;
-    objc_storeStrong(&v21->_allowlistedServerInterface, a5);
-    objc_storeStrong(&v21->_allowlistedClientInterface, a6);
-    objc_storeStrong(&v21->_serverInitiatedRequestHandler, a7);
-    v22 = MEMORY[0x1AC566DD0](v17);
+    objc_storeStrong(&v21->_serviceName, name);
+    v21->_connectionOptions = options;
+    objc_storeStrong(&v21->_allowlistedServerInterface, interface);
+    objc_storeStrong(&v21->_allowlistedClientInterface, clientInterface);
+    objc_storeStrong(&v21->_serverInitiatedRequestHandler, handler);
+    v22 = MEMORY[0x1AC566DD0](interruptionHandlerCopy);
     interruptionHandler = v21->_interruptionHandler;
     v21->_interruptionHandler = v22;
 
-    v24 = MEMORY[0x1AC566DD0](v18);
+    v24 = MEMORY[0x1AC566DD0](invalidationHandlerCopy);
     invalidationHandler = v21->_invalidationHandler;
     v21->_invalidationHandler = v24;
 
-    objc_storeStrong(&v21->_logHandle, a11);
-    v21->_allowSystemToUserConnection = a8;
+    objc_storeStrong(&v21->_logHandle, handle);
+    v21->_allowSystemToUserConnection = connection;
   }
 
   return v21;

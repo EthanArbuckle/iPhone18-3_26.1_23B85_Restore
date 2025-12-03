@@ -1,44 +1,44 @@
 @interface DADeviceAccessoryServiceInfo
-- (BOOL)isEqual:(id)a3;
-- (DADeviceAccessoryServiceInfo)initWithCoder:(id)a3;
-- (DADeviceAccessoryServiceInfo)initWithName:(id)a3 authorizationLevel:(unint64_t)a4 bundleID:(id)a5 deviceID:(id)a6;
-- (DADeviceAccessoryServiceInfo)initWithPersistentDictionaryRepresentation:(id)a3 deviceID:(id)a4 error:(id *)a5;
-- (DADeviceAccessoryServiceInfo)initWithXPCObject:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithLevel:(int)a3;
+- (BOOL)isEqual:(id)equal;
+- (DADeviceAccessoryServiceInfo)initWithCoder:(id)coder;
+- (DADeviceAccessoryServiceInfo)initWithName:(id)name authorizationLevel:(unint64_t)level bundleID:(id)d deviceID:(id)iD;
+- (DADeviceAccessoryServiceInfo)initWithPersistentDictionaryRepresentation:(id)representation deviceID:(id)d error:(id *)error;
+- (DADeviceAccessoryServiceInfo)initWithXPCObject:(id)object error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithLevel:(int)level;
 - (id)persistentDictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation DADeviceAccessoryServiceInfo
 
-- (DADeviceAccessoryServiceInfo)initWithName:(id)a3 authorizationLevel:(unint64_t)a4 bundleID:(id)a5 deviceID:(id)a6
+- (DADeviceAccessoryServiceInfo)initWithName:(id)name authorizationLevel:(unint64_t)level bundleID:(id)d deviceID:(id)iD
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  dCopy = d;
+  iDCopy = iD;
   v18.receiver = self;
   v18.super_class = DADeviceAccessoryServiceInfo;
   v14 = [(DADeviceAccessoryServiceInfo *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    v14->_authorizationLevel = a4;
-    objc_storeStrong(&v14->_associatedBundleID, a5);
-    objc_storeStrong(&v15->_associatedDeviceID, a6);
-    objc_storeStrong(&v15->_name, a3);
+    v14->_authorizationLevel = level;
+    objc_storeStrong(&v14->_associatedBundleID, d);
+    objc_storeStrong(&v15->_associatedDeviceID, iD);
+    objc_storeStrong(&v15->_name, name);
     v16 = v15;
   }
 
   return v15;
 }
 
-- (DADeviceAccessoryServiceInfo)initWithPersistentDictionaryRepresentation:(id)a3 deviceID:(id)a4 error:(id *)a5
+- (DADeviceAccessoryServiceInfo)initWithPersistentDictionaryRepresentation:(id)representation deviceID:(id)d error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  representationCopy = representation;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = DADeviceAccessoryServiceInfo;
   v10 = [(DADeviceAccessoryServiceInfo *)&v17 init];
@@ -50,7 +50,7 @@
     associatedBundleID = v10->_associatedBundleID;
     v10->_associatedBundleID = v11;
 
-    objc_storeStrong(&v10->_associatedDeviceID, a4);
+    objc_storeStrong(&v10->_associatedDeviceID, d);
     CFStringGetTypeID();
     v13 = CFDictionaryGetTypedValue();
     name = v10->_name;
@@ -61,7 +61,7 @@
 
   else
   {
-    [DADeviceAppAccessInfo initWithPersistentDictionaryRepresentation:a5 error:?];
+    [DADeviceAppAccessInfo initWithPersistentDictionaryRepresentation:error error:?];
   }
 
   return v10;
@@ -90,13 +90,13 @@
   return v7;
 }
 
-- (DADeviceAccessoryServiceInfo)initWithCoder:(id)a3
+- (DADeviceAccessoryServiceInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(DADeviceAccessoryServiceInfo *)self init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     if ([v6 containsValueForKey:@"auL"])
     {
       v5->_authorizationLevel = [v6 decodeIntegerForKey:@"auL"];
@@ -119,24 +119,24 @@
 
   else
   {
-    [DADeviceAccessoryServiceInfo initWithCoder:v4];
+    [DADeviceAccessoryServiceInfo initWithCoder:coderCopy];
   }
 
   return v5;
 }
 
-- (DADeviceAccessoryServiceInfo)initWithXPCObject:(id)a3 error:(id *)a4
+- (DADeviceAccessoryServiceInfo)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(DADeviceAccessoryServiceInfo *)self init];
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       v23 = objc_opt_class();
       DAErrorF(350001, "%@ init failed", v16, v17, v18, v19, v20, v21, v23);
 LABEL_11:
-      *a4 = v14 = 0;
+      *error = v14 = 0;
       goto LABEL_6;
     }
 
@@ -145,9 +145,9 @@ LABEL_12:
     goto LABEL_6;
   }
 
-  if (MEMORY[0x24C1DC9E0](v6) != MEMORY[0x277D86468])
+  if (MEMORY[0x24C1DC9E0](objectCopy) != MEMORY[0x277D86468])
   {
-    if (a4)
+    if (error)
     {
       DAErrorF(350004, "XPC non-dict", v8, v9, v10, v11, v12, v13, v22);
       goto LABEL_11;
@@ -170,100 +170,100 @@ LABEL_6:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   authorizationLevel = self->_authorizationLevel;
-  v9 = v4;
+  v9 = coderCopy;
   if (authorizationLevel)
   {
-    [v4 encodeInteger:authorizationLevel forKey:@"auL"];
-    v4 = v9;
+    [coderCopy encodeInteger:authorizationLevel forKey:@"auL"];
+    coderCopy = v9;
   }
 
   associatedBundleID = self->_associatedBundleID;
   if (associatedBundleID)
   {
     [v9 encodeObject:associatedBundleID forKey:@"bndI"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   associatedDeviceID = self->_associatedDeviceID;
   if (associatedDeviceID)
   {
     [v9 encodeObject:associatedDeviceID forKey:@"asdID"];
-    v4 = v9;
+    coderCopy = v9;
   }
 
   name = self->_name;
   if (name)
   {
     [v9 encodeObject:name forKey:@"name"];
-    v4 = v9;
+    coderCopy = v9;
   }
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
-  v5 = v4;
+  objectCopy = object;
+  v5 = objectCopy;
   authorizationLevel = self->_authorizationLevel;
   if (authorizationLevel)
   {
-    xpc_dictionary_set_uint64(v4, "auL", authorizationLevel);
+    xpc_dictionary_set_uint64(objectCopy, "auL", authorizationLevel);
   }
 
   associatedBundleID = self->_associatedBundleID;
   v8 = v5;
-  v9 = [(NSString *)associatedBundleID UTF8String];
-  if (v9)
+  uTF8String = [(NSString *)associatedBundleID UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(v8, "bndI", v9);
+    xpc_dictionary_set_string(v8, "bndI", uTF8String);
   }
 
   associatedDeviceID = self->_associatedDeviceID;
   v11 = v8;
-  v12 = [(NSString *)associatedDeviceID UTF8String];
-  if (v12)
+  uTF8String2 = [(NSString *)associatedDeviceID UTF8String];
+  if (uTF8String2)
   {
-    xpc_dictionary_set_string(v11, "asdID", v12);
+    xpc_dictionary_set_string(v11, "asdID", uTF8String2);
   }
 
   name = self->_name;
   xdict = v11;
-  v14 = [(NSString *)name UTF8String];
-  if (v14)
+  uTF8String3 = [(NSString *)name UTF8String];
+  if (uTF8String3)
   {
-    xpc_dictionary_set_string(xdict, "name", v14);
+    xpc_dictionary_set_string(xdict, "name", uTF8String3);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[2] = self->_authorizationLevel;
-  v6 = [(NSString *)self->_associatedBundleID copyWithZone:a3];
+  v6 = [(NSString *)self->_associatedBundleID copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSString *)self->_associatedDeviceID copyWithZone:a3];
+  v8 = [(NSString *)self->_associatedDeviceID copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSString *)self->_name copyWithZone:a3];
+  v10 = [(NSString *)self->_name copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     authorizationLevel = self->_authorizationLevel;
     if (authorizationLevel != [(DADeviceAccessoryServiceInfo *)v6 authorizationLevel])
     {
@@ -274,9 +274,9 @@ LABEL_27:
     }
 
     associatedBundleID = self->_associatedBundleID;
-    v9 = [(DADeviceAccessoryServiceInfo *)v6 associatedBundleID];
+    associatedBundleID = [(DADeviceAccessoryServiceInfo *)v6 associatedBundleID];
     v10 = associatedBundleID;
-    v11 = v9;
+    v11 = associatedBundleID;
     v12 = v11;
     if (v10 == v11)
     {
@@ -305,9 +305,9 @@ LABEL_26:
     }
 
     associatedDeviceID = self->_associatedDeviceID;
-    v16 = [(DADeviceAccessoryServiceInfo *)v6 associatedDeviceID];
+    associatedDeviceID = [(DADeviceAccessoryServiceInfo *)v6 associatedDeviceID];
     v17 = associatedDeviceID;
-    v18 = v16;
+    v18 = associatedDeviceID;
     v10 = v18;
     if (v17 == v18)
     {
@@ -336,9 +336,9 @@ LABEL_25:
     }
 
     name = self->_name;
-    v21 = [(DADeviceAccessoryServiceInfo *)v6 name];
+    name = [(DADeviceAccessoryServiceInfo *)v6 name];
     v22 = name;
-    v23 = v21;
+    v23 = name;
     v17 = v23;
     if (v22 == v23)
     {
@@ -364,9 +364,9 @@ LABEL_28:
   return v14;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }

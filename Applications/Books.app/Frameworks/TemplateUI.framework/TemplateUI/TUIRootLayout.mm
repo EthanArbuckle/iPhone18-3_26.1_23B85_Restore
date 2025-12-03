@@ -1,26 +1,26 @@
 @interface TUIRootLayout
-- (TUIRootLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5;
+- (TUIRootLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller;
 - (UIEdgeInsets)safeAreaInsets;
 - (void)computeLayout;
-- (void)onChildRenderModelInvalidate:(id)a3;
-- (void)setSafeAreaInsets:(UIEdgeInsets)a3;
+- (void)onChildRenderModelInvalidate:(id)invalidate;
+- (void)setSafeAreaInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation TUIRootLayout
 
-- (TUIRootLayout)initWithModel:(id)a3 parent:(id)a4 controller:(id)a5
+- (TUIRootLayout)initWithModel:(id)model parent:(id)parent controller:(id)controller
 {
-  v8 = a5;
+  controllerCopy = controller;
   v19.receiver = self;
   v19.super_class = TUIRootLayout;
-  v9 = [(TUILayout *)&v19 initWithModel:a3 parent:a4 controller:v8];
+  v9 = [(TUILayout *)&v19 initWithModel:model parent:parent controller:controllerCopy];
   v10 = v9;
   if (v9)
   {
     p_safeAreaInsets = &v9->_safeAreaInsets;
-    v12 = [v8 instantiateContext];
-    v13 = [v12 environment];
-    [v13 viewSafeAreaInsets];
+    instantiateContext = [controllerCopy instantiateContext];
+    environment = [instantiateContext environment];
+    [environment viewSafeAreaInsets];
     *&p_safeAreaInsets->top = v14;
     v10->_safeAreaInsets.left = v15;
     v10->_safeAreaInsets.bottom = v16;
@@ -30,15 +30,15 @@
   return v10;
 }
 
-- (void)setSafeAreaInsets:(UIEdgeInsets)a3
+- (void)setSafeAreaInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_safeAreaInsets.top, v3), vceqq_f64(*&self->_safeAreaInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_safeAreaInsets = a3;
+    self->_safeAreaInsets = insets;
     [(TUILayout *)self onViewSafeAreaInsetsDidChange];
   }
 }
@@ -46,24 +46,24 @@
 - (void)computeLayout
 {
   v3 = [(TUILayout *)self box];
-  v4 = [v3 contentModels];
-  v5 = [v4 count];
+  contentModels = [v3 contentModels];
+  v5 = [contentModels count];
 
   if (v5 >= 2)
   {
-    v6 = [(TUILayout *)self controller];
+    controller = [(TUILayout *)self controller];
     v30 = NSLocalizedDescriptionKey;
     v31 = @"More than one root boxes in template";
     v7 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     v8 = [NSError errorWithDomain:@"TUIErrorDomain" code:1015 userInfo:v7];
-    [v6 addError:v8];
+    [controller addError:v8];
   }
 
   v9 = [(TUILayout *)self box];
-  v10 = [v9 contentModel];
+  contentModel = [v9 contentModel];
 
-  v11 = [(TUILayout *)self controller];
-  v12 = [v11 layoutForModel:v10];
+  controller2 = [(TUILayout *)self controller];
+  v12 = [controller2 layoutForModel:contentModel];
 
   [(TUILayout *)self containingWidth];
   [v12 setContainingWidth:?];
@@ -75,9 +75,9 @@
   v25 = 0u;
   v26 = 0u;
   v13 = [(TUILayout *)self box];
-  v14 = [v13 navBarModels];
+  navBarModels = [v13 navBarModels];
 
-  v15 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v15 = [navBarModels countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v15)
   {
     v16 = v15;
@@ -89,12 +89,12 @@
       {
         if (*v26 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(navBarModels);
         }
 
         v19 = *(*(&v25 + 1) + 8 * v18);
-        v20 = [(TUILayout *)self controller];
-        v21 = [v20 layoutForModel:v19];
+        controller3 = [(TUILayout *)self controller];
+        v21 = [controller3 layoutForModel:v19];
 
         [(TUILayout *)self containingWidth];
         [v21 setContainingWidth:?];
@@ -105,7 +105,7 @@
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v16 = [navBarModels countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v16);
@@ -117,25 +117,25 @@
   [(TUILayout *)self setComputedNaturalSize:v23, v24];
 }
 
-- (void)onChildRenderModelInvalidate:(id)a3
+- (void)onChildRenderModelInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   v5 = [(TUILayout *)self box];
-  v6 = [v5 navBarModels];
-  v7 = [v4 model];
-  v8 = [v6 containsObject:v7];
+  navBarModels = [v5 navBarModels];
+  model = [invalidateCopy model];
+  v8 = [navBarModels containsObject:model];
 
   if (v8)
   {
-    v9 = [(TUILayout *)self controller];
-    [v9 invalidateAuxiliaryRenderModel];
+    controller = [(TUILayout *)self controller];
+    [controller invalidateAuxiliaryRenderModel];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = TUIRootLayout;
-    [(TUILayout *)&v10 onChildRenderModelInvalidate:v4];
+    [(TUILayout *)&v10 onChildRenderModelInvalidate:invalidateCopy];
   }
 }
 

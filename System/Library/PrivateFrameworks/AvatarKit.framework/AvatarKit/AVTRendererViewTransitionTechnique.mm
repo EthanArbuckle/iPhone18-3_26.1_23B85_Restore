@@ -1,16 +1,16 @@
 @interface AVTRendererViewTransitionTechnique
-- (AVTRendererViewTransitionTechnique)initWithWorldRenderer:(id)a3;
-- (void)encodeTechniqueCommandsForRenderer:(id)a3 atTime:(double)a4 helper:(id)a5;
-- (void)rebuildRenderPipelineStateIfNeededForPixelFormat:(unint64_t)a3;
-- (void)setFramebufferTextureOpacity:(float)a3;
-- (void)setSnapshotTexture:(id)a3;
+- (AVTRendererViewTransitionTechnique)initWithWorldRenderer:(id)renderer;
+- (void)encodeTechniqueCommandsForRenderer:(id)renderer atTime:(double)time helper:(id)helper;
+- (void)rebuildRenderPipelineStateIfNeededForPixelFormat:(unint64_t)format;
+- (void)setFramebufferTextureOpacity:(float)opacity;
+- (void)setSnapshotTexture:(id)texture;
 @end
 
 @implementation AVTRendererViewTransitionTechnique
 
-- (AVTRendererViewTransitionTechnique)initWithWorldRenderer:(id)a3
+- (AVTRendererViewTransitionTechnique)initWithWorldRenderer:(id)renderer
 {
-  v4 = a3;
+  rendererCopy = renderer;
   v20.receiver = self;
   v20.super_class = AVTRendererViewTransitionTechnique;
   v5 = [(AVTRendererViewTransitionTechnique *)&v20 init];
@@ -22,20 +22,20 @@
       [AVTRendererViewTransitionTechnique initWithWorldRenderer:];
     }
 
-    v6 = v4;
-    v7 = [v6 backgroundColor];
-    v8 = [v7 CGColor];
+    v6 = rendererCopy;
+    backgroundColor = [v6 backgroundColor];
+    cGColor = [backgroundColor CGColor];
 
-    Components = CGColorGetComponents(v8);
-    ColorSpace = CGColorGetColorSpace(v8);
+    Components = CGColorGetComponents(cGColor);
+    ColorSpace = CGColorGetColorSpace(cGColor);
     Model = CGColorSpaceGetModel(ColorSpace);
     if (Model)
     {
       if (Model != kCGColorSpaceModelRGB)
       {
 LABEL_8:
-        v13 = [v6 device];
-        v14 = [AVTMetalHelper helperForDevice:v13];
+        device = [v6 device];
+        v14 = [AVTMetalHelper helperForDevice:device];
         helper = v5->_helper;
         v5->_helper = v14;
 
@@ -46,8 +46,8 @@ LABEL_8:
         fragmentFunctionName = v5->_renderPipelineStateDescriptor.fragmentFunctionName;
         v5->_renderPipelineStateDescriptor.fragmentFunctionName = @"avt_view_transition_generic_fragment";
 
-        v18 = [v6 pixelFormat];
-        [(AVTRendererViewTransitionTechnique *)v5 rebuildRenderPipelineStateIfNeededForPixelFormat:v18];
+        pixelFormat = [v6 pixelFormat];
+        [(AVTRendererViewTransitionTechnique *)v5 rebuildRenderPipelineStateIfNeededForPixelFormat:pixelFormat];
 
         goto LABEL_9;
       }
@@ -69,34 +69,34 @@ LABEL_9:
   return v5;
 }
 
-- (void)setFramebufferTextureOpacity:(float)a3
+- (void)setFramebufferTextureOpacity:(float)opacity
 {
-  if (self->_framebufferTextureOpacity != a3)
+  if (self->_framebufferTextureOpacity != opacity)
   {
-    self->_framebufferTextureOpacity = a3;
+    self->_framebufferTextureOpacity = opacity;
   }
 }
 
-- (void)setSnapshotTexture:(id)a3
+- (void)setSnapshotTexture:(id)texture
 {
-  v5 = a3;
+  textureCopy = texture;
   snapshotTexture = self->_snapshotTexture;
   p_snapshotTexture = &self->_snapshotTexture;
-  if (snapshotTexture != v5)
+  if (snapshotTexture != textureCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_snapshotTexture, a3);
-    v5 = v8;
+    v8 = textureCopy;
+    objc_storeStrong(p_snapshotTexture, texture);
+    textureCopy = v8;
   }
 }
 
-- (void)rebuildRenderPipelineStateIfNeededForPixelFormat:(unint64_t)a3
+- (void)rebuildRenderPipelineStateIfNeededForPixelFormat:(unint64_t)format
 {
-  if (self->_renderPipelineStateDescriptor.color0PixelFormat != a3)
+  if (self->_renderPipelineStateDescriptor.color0PixelFormat != format)
   {
     v20 = v3;
     v21 = v4;
-    self->_renderPipelineStateDescriptor.color0PixelFormat = a3;
+    self->_renderPipelineStateDescriptor.color0PixelFormat = format;
     helper = self->_helper;
     v7 = *&self->_renderPipelineStateDescriptor.colorAlphaBlendOperation;
     v15[2] = *&self->_renderPipelineStateDescriptor.colorSourceRGBBlendFactor;
@@ -128,26 +128,26 @@ LABEL_9:
   }
 }
 
-- (void)encodeTechniqueCommandsForRenderer:(id)a3 atTime:(double)a4 helper:(id)a5
+- (void)encodeTechniqueCommandsForRenderer:(id)renderer atTime:(double)time helper:(id)helper
 {
-  v6 = a5;
+  helperCopy = helper;
   if ([(AVTRendererViewTransitionTechnique *)self techniqueIsActive])
   {
-    v7 = [v6 destinationTexture];
-    -[AVTRendererViewTransitionTechnique rebuildRenderPipelineStateIfNeededForPixelFormat:](self, "rebuildRenderPipelineStateIfNeededForPixelFormat:", [v7 pixelFormat]);
+    destinationTexture = [helperCopy destinationTexture];
+    -[AVTRendererViewTransitionTechnique rebuildRenderPipelineStateIfNeededForPixelFormat:](self, "rebuildRenderPipelineStateIfNeededForPixelFormat:", [destinationTexture pixelFormat]);
 
     v10 = 0;
     LOBYTE(v10) = self->_viewIsOpaque;
     HIDWORD(v10) = LODWORD(self->_framebufferTextureOpacity);
-    v8 = [v6 renderCommandEncoder];
-    v9 = [v6 mainPassColorTextureAtIndex:0];
-    [v8 pushDebugGroup:@"[AvatarKit] View transition"];
-    [v8 setRenderPipelineState:self->_renderPipelineState];
-    [v8 setFragmentTexture:self->_snapshotTexture atIndex:0];
-    [v8 setFragmentTexture:v9 atIndex:1];
-    [v8 setFragmentBytes:&v10 length:8 atIndex:0];
-    [v8 drawPrimitives:4 vertexStart:0 vertexCount:4];
-    [v8 popDebugGroup];
+    renderCommandEncoder = [helperCopy renderCommandEncoder];
+    v9 = [helperCopy mainPassColorTextureAtIndex:0];
+    [renderCommandEncoder pushDebugGroup:@"[AvatarKit] View transition"];
+    [renderCommandEncoder setRenderPipelineState:self->_renderPipelineState];
+    [renderCommandEncoder setFragmentTexture:self->_snapshotTexture atIndex:0];
+    [renderCommandEncoder setFragmentTexture:v9 atIndex:1];
+    [renderCommandEncoder setFragmentBytes:&v10 length:8 atIndex:0];
+    [renderCommandEncoder drawPrimitives:4 vertexStart:0 vertexCount:4];
+    [renderCommandEncoder popDebugGroup];
   }
 }
 

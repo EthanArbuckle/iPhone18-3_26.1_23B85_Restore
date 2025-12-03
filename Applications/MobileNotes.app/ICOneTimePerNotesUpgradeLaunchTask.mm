@@ -4,7 +4,7 @@
 - (NSString)taskIdentifier;
 - (int64_t)lastRunNotesVersion;
 - (void)runLaunchTask;
-- (void)setLastRunNotesVersion:(int64_t)a3;
+- (void)setLastRunNotesVersion:(int64_t)version;
 @end
 
 @implementation ICOneTimePerNotesUpgradeLaunchTask
@@ -31,8 +31,8 @@
 
 - (NSString)lastRunNotesVersionKey
 {
-  v2 = [(ICOneTimePerNotesUpgradeLaunchTask *)self taskIdentifier];
-  v3 = [NSString stringWithFormat:@"NotesVersionOfLastRun_%@", v2];
+  taskIdentifier = [(ICOneTimePerNotesUpgradeLaunchTask *)self taskIdentifier];
+  v3 = [NSString stringWithFormat:@"NotesVersionOfLastRun_%@", taskIdentifier];
 
   return v3;
 }
@@ -40,17 +40,17 @@
 - (int64_t)lastRunNotesVersion
 {
   v3 = +[NSUserDefaults standardUserDefaults];
-  v4 = [(ICOneTimePerNotesUpgradeLaunchTask *)self lastRunNotesVersionKey];
-  v5 = [v3 integerForKey:v4];
+  lastRunNotesVersionKey = [(ICOneTimePerNotesUpgradeLaunchTask *)self lastRunNotesVersionKey];
+  v5 = [v3 integerForKey:lastRunNotesVersionKey];
 
   return v5;
 }
 
-- (void)setLastRunNotesVersion:(int64_t)a3
+- (void)setLastRunNotesVersion:(int64_t)version
 {
   v6 = +[NSUserDefaults standardUserDefaults];
-  v5 = [(ICOneTimePerNotesUpgradeLaunchTask *)self lastRunNotesVersionKey];
-  [v6 setInteger:a3 forKey:v5];
+  lastRunNotesVersionKey = [(ICOneTimePerNotesUpgradeLaunchTask *)self lastRunNotesVersionKey];
+  [v6 setInteger:version forKey:lastRunNotesVersionKey];
 }
 
 - (void)runLaunchTask
@@ -58,11 +58,11 @@
   v3 = os_log_create("com.apple.notes", "LaunchTask");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ICOneTimePerNotesUpgradeLaunchTask *)self taskIdentifier];
+    taskIdentifier = [(ICOneTimePerNotesUpgradeLaunchTask *)self taskIdentifier];
     v5 = [NSNumber numberWithLongLong:[(ICOneTimePerNotesUpgradeLaunchTask *)self lastRunNotesVersion]];
     v6 = [NSNumber numberWithLongLong:[(ICOneTimePerNotesUpgradeLaunchTask *)self currentNotesVersion]];
     *buf = 138413314;
-    v18 = v4;
+    v18 = taskIdentifier;
     v19 = 2112;
     v20 = v5;
     v21 = 2112;
@@ -85,13 +85,13 @@
     [(ICOneTimePerNotesUpgradeLaunchTask *)self setLastRunNotesVersion:8];
   }
 
-  v8 = [(ICOneTimePerNotesUpgradeLaunchTask *)self lastRunNotesVersion];
-  v9 = [(ICOneTimePerNotesUpgradeLaunchTask *)self currentNotesVersion];
-  v10 = [(ICOneTimePerNotesUpgradeLaunchTask *)self lastRunNotesVersion];
-  v11 = [(ICOneTimePerNotesUpgradeLaunchTask *)self currentNotesVersion];
-  if (v8 >= v9)
+  lastRunNotesVersion = [(ICOneTimePerNotesUpgradeLaunchTask *)self lastRunNotesVersion];
+  currentNotesVersion = [(ICOneTimePerNotesUpgradeLaunchTask *)self currentNotesVersion];
+  lastRunNotesVersion2 = [(ICOneTimePerNotesUpgradeLaunchTask *)self lastRunNotesVersion];
+  currentNotesVersion2 = [(ICOneTimePerNotesUpgradeLaunchTask *)self currentNotesVersion];
+  if (lastRunNotesVersion >= currentNotesVersion)
   {
-    if (v10 == v11)
+    if (lastRunNotesVersion2 == currentNotesVersion2)
     {
       v15 = os_log_create("com.apple.notes", "LaunchTask");
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -102,8 +102,8 @@
 
     else
     {
-      v16 = [(ICOneTimePerNotesUpgradeLaunchTask *)self lastRunNotesVersion];
-      if (v16 <= [(ICOneTimePerNotesUpgradeLaunchTask *)self currentNotesVersion])
+      lastRunNotesVersion3 = [(ICOneTimePerNotesUpgradeLaunchTask *)self lastRunNotesVersion];
+      if (lastRunNotesVersion3 <= [(ICOneTimePerNotesUpgradeLaunchTask *)self currentNotesVersion])
       {
         return;
       }
@@ -116,28 +116,28 @@
     }
   }
 
-  else if (v10 < v11)
+  else if (lastRunNotesVersion2 < currentNotesVersion2)
   {
     do
     {
-      ++v10;
+      ++lastRunNotesVersion2;
       v12 = os_log_create("com.apple.notes", "LaunchTask");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        v13 = [(ICOneTimePerNotesUpgradeLaunchTask *)self taskIdentifier];
-        v14 = [NSNumber numberWithInteger:v10];
+        taskIdentifier2 = [(ICOneTimePerNotesUpgradeLaunchTask *)self taskIdentifier];
+        v14 = [NSNumber numberWithInteger:lastRunNotesVersion2];
         *buf = 138412546;
-        v18 = v13;
+        v18 = taskIdentifier2;
         v19 = 2112;
         v20 = v14;
         _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Running launch task for Notes version… {taskIdentifier: %@, notesVersion: %@}", buf, 0x16u);
       }
 
-      [(ICOneTimePerNotesUpgradeLaunchTask *)self runTaskForNotesVersion:v10];
-      [(ICOneTimePerNotesUpgradeLaunchTask *)self setLastRunNotesVersion:v10];
+      [(ICOneTimePerNotesUpgradeLaunchTask *)self runTaskForNotesVersion:lastRunNotesVersion2];
+      [(ICOneTimePerNotesUpgradeLaunchTask *)self setLastRunNotesVersion:lastRunNotesVersion2];
     }
 
-    while (v10 < [(ICOneTimePerNotesUpgradeLaunchTask *)self currentNotesVersion]);
+    while (lastRunNotesVersion2 < [(ICOneTimePerNotesUpgradeLaunchTask *)self currentNotesVersion]);
   }
 }
 

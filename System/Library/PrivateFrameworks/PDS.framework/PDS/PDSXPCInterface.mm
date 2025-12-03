@@ -1,27 +1,27 @@
 @interface PDSXPCInterface
-+ (id)_standardInterfaceFromVendor:(id)a3;
-+ (id)handShakeInterfaceFromVendor:(id)a3;
++ (id)_standardInterfaceFromVendor:(id)vendor;
++ (id)handShakeInterfaceFromVendor:(id)vendor;
 @end
 
 @implementation PDSXPCInterface
 
-+ (id)handShakeInterfaceFromVendor:(id)a3
++ (id)handShakeInterfaceFromVendor:(id)vendor
 {
-  v4 = a3;
-  v5 = [v4 interfaceWithProtocol:&unk_286FB7C18];
-  v6 = [a1 _standardInterfaceFromVendor:v4];
+  vendorCopy = vendor;
+  v5 = [vendorCopy interfaceWithProtocol:&unk_286FB7C18];
+  v6 = [self _standardInterfaceFromVendor:vendorCopy];
   [v5 setInterface:v6 forSelector:sel_connectWithClientID_completion_ argumentIndex:0 ofReply:1];
 
-  v7 = [a1 _internalInterfaceFromVendor:v4];
+  v7 = [self _internalInterfaceFromVendor:vendorCopy];
 
   [v5 setInterface:v7 forSelector:sel_connectInternalWithCompletion_ argumentIndex:0 ofReply:1];
 
   return v5;
 }
 
-+ (id)_standardInterfaceFromVendor:(id)a3
++ (id)_standardInterfaceFromVendor:(id)vendor
 {
-  v3 = [a3 interfaceWithProtocol:&unk_286FB7C78];
+  v3 = [vendor interfaceWithProtocol:&unk_286FB7C78];
   v4 = MEMORY[0x277CBEB98];
   v5 = objc_opt_class();
   v6 = [v4 setWithObjects:{v5, objc_opt_class(), 0}];

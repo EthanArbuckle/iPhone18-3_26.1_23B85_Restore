@@ -1,34 +1,34 @@
 @interface _TVNonFocusSwipeUpCapture
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (SEL)action;
-- (_TVNonFocusSwipeUpCapture)initWithTarget:(id)a3 action:(SEL)a4;
+- (_TVNonFocusSwipeUpCapture)initWithTarget:(id)target action:(SEL)action;
 - (id)target;
-- (void)_onPan:(id)a3;
+- (void)_onPan:(id)pan;
 @end
 
 @implementation _TVNonFocusSwipeUpCapture
 
-- (_TVNonFocusSwipeUpCapture)initWithTarget:(id)a3 action:(SEL)a4
+- (_TVNonFocusSwipeUpCapture)initWithTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v13.receiver = self;
   v13.super_class = _TVNonFocusSwipeUpCapture;
   v7 = [(_TVNonFocusSwipeUpCapture *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_target, v6);
-    if (a4)
+    objc_storeWeak(&v7->_target, targetCopy);
+    if (action)
     {
-      v9 = a4;
+      actionCopy = action;
     }
 
     else
     {
-      v9 = 0;
+      actionCopy = 0;
     }
 
-    v8->_action = v9;
+    v8->_action = actionCopy;
     v10 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:v8 action:sel__onPan_];
     [(UIPanGestureRecognizer *)v10 setDelegate:v8];
     [(UIPanGestureRecognizer *)v10 setEnabled:0];
@@ -39,39 +39,39 @@
   return v8;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a4;
-  v6 = [a3 view];
-  v7 = [v5 view];
+  gestureRecognizerCopy = gestureRecognizer;
+  view = [recognizer view];
+  view2 = [gestureRecognizerCopy view];
 
-  LOBYTE(v5) = [v6 isDescendantOfView:v7];
-  return v5;
+  LOBYTE(gestureRecognizerCopy) = [view isDescendantOfView:view2];
+  return gestureRecognizerCopy;
 }
 
-- (void)_onPan:(id)a3
+- (void)_onPan:(id)pan
 {
-  v4 = a3;
-  v5 = [v4 view];
-  [v4 translationInView:v5];
+  panCopy = pan;
+  view = [panCopy view];
+  [panCopy translationInView:view];
   self->_translation.x = v6;
   p_translation = &self->_translation;
   self->_translation.y = v8;
 
-  v9 = [v4 view];
-  [v4 velocityInView:v9];
+  view2 = [panCopy view];
+  [panCopy velocityInView:view2];
   self->_velocity.x = v10;
   self->_velocity.y = v11;
   p_velocity = &self->_velocity;
 
-  v13 = [v4 state];
-  if (v13 == 3)
+  state = [panCopy state];
+  if (state == 3)
   {
     WeakRetained = objc_loadWeakRetained(&self->_initiallyFocusedView);
-    v16 = [MEMORY[0x277D759A0] mainScreen];
-    v17 = [v16 focusedView];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    focusedView = [mainScreen focusedView];
 
-    if (WeakRetained != v17)
+    if (WeakRetained != focusedView)
     {
       goto LABEL_17;
     }
@@ -93,16 +93,16 @@
       goto LABEL_17;
     }
 
-    v20 = [(_TVNonFocusSwipeUpCapture *)self target];
-    v21 = [v20 methodSignatureForSelector:{-[_TVNonFocusSwipeUpCapture action](self, "action")}];
+    target = [(_TVNonFocusSwipeUpCapture *)self target];
+    v21 = [target methodSignatureForSelector:{-[_TVNonFocusSwipeUpCapture action](self, "action")}];
 
-    v22 = [(_TVNonFocusSwipeUpCapture *)self target];
-    v23 = [v22 methodForSelector:{-[_TVNonFocusSwipeUpCapture action](self, "action")}];
+    target2 = [(_TVNonFocusSwipeUpCapture *)self target];
+    v23 = [target2 methodForSelector:{-[_TVNonFocusSwipeUpCapture action](self, "action")}];
 
     if ([v21 numberOfArguments] == 2)
     {
-      v24 = [(_TVNonFocusSwipeUpCapture *)self target];
-      v23(v24, [(_TVNonFocusSwipeUpCapture *)self action]);
+      target3 = [(_TVNonFocusSwipeUpCapture *)self target];
+      v23(target3, [(_TVNonFocusSwipeUpCapture *)self action]);
     }
 
     else
@@ -119,18 +119,18 @@ LABEL_17:
         return;
       }
 
-      v24 = [(_TVNonFocusSwipeUpCapture *)self target];
-      (v23)(v24, [(_TVNonFocusSwipeUpCapture *)self action], self);
+      target3 = [(_TVNonFocusSwipeUpCapture *)self target];
+      (v23)(target3, [(_TVNonFocusSwipeUpCapture *)self action], self);
     }
 
     goto LABEL_16;
   }
 
-  if (v13 == 1)
+  if (state == 1)
   {
-    v26 = [MEMORY[0x277D759A0] mainScreen];
-    v14 = [v26 focusedView];
-    objc_storeWeak(&self->_initiallyFocusedView, v14);
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    focusedView2 = [mainScreen2 focusedView];
+    objc_storeWeak(&self->_initiallyFocusedView, focusedView2);
   }
 }
 

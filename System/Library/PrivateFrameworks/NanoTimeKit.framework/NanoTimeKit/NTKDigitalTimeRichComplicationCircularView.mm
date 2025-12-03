@@ -1,8 +1,8 @@
 @interface NTKDigitalTimeRichComplicationCircularView
 - (NTKDigitalTimeRichComplicationCircularView)init;
-- (id)_createLabelViewWithFont:(id)a3;
+- (id)_createLabelViewWithFont:(id)font;
 - (void)dealloc;
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4;
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated;
 - (void)timeOffsetChanged;
 - (void)updateDate;
 @end
@@ -16,8 +16,8 @@
   v2 = [(NTKRichComplicationCircularBaseTextView *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_timeOffsetChanged name:@"NTKTimeOffsetChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_timeOffsetChanged name:@"NTKTimeOffsetChangedNotification" object:0];
 
     v4 = v2;
   }
@@ -27,24 +27,24 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = NTKDigitalTimeRichComplicationCircularView;
   [(NTKDigitalTimeRichComplicationCircularView *)&v4 dealloc];
 }
 
-- (id)_createLabelViewWithFont:(id)a3
+- (id)_createLabelViewWithFont:(id)font
 {
-  v4 = a3;
-  v5 = [(CDRichComplicationView *)self device];
-  v6 = [(CLKUITimeLabel *)NTKDigitalTimeLabel labelWithOptions:0 forDevice:v5];
+  fontCopy = font;
+  device = [(CDRichComplicationView *)self device];
+  v6 = [(CLKUITimeLabel *)NTKDigitalTimeLabel labelWithOptions:0 forDevice:device];
   timeLabel = self->_timeLabel;
   self->_timeLabel = v6;
 
   [(CLKUITimeLabel *)self->_timeLabel setShowSeconds:1];
-  [(CLKUITimeLabel *)self->_timeLabel setFont:v4];
+  [(CLKUITimeLabel *)self->_timeLabel setFont:fontCopy];
 
   [(NTKDigitalTimeRichComplicationCircularView *)self timeOffsetChanged];
   v8 = self->_timeLabel;
@@ -62,28 +62,28 @@
 
 - (void)updateDate
 {
-  v3 = [(CDRichComplicationTemplateView *)self template];
-  v10 = [v3 metadata];
+  template = [(CDRichComplicationTemplateView *)self template];
+  metadata = [template metadata];
 
-  v4 = [v10 objectForKeyedSubscript:@"NTKTimerComplicationMetadataShouldDisplayIdealizedStateKey"];
-  v5 = [v4 BOOLValue];
+  v4 = [metadata objectForKeyedSubscript:@"NTKTimerComplicationMetadataShouldDisplayIdealizedStateKey"];
+  bOOLValue = [v4 BOOLValue];
 
-  v6 = [(CDRichComplicationView *)self timeTravelDate];
+  timeTravelDate = [(CDRichComplicationView *)self timeTravelDate];
 
   timeLabel = self->_timeLabel;
-  if (v6)
+  if (timeTravelDate)
   {
-    v8 = [(CDRichComplicationView *)self timeTravelDate];
+    timeTravelDate2 = [(CDRichComplicationView *)self timeTravelDate];
 LABEL_5:
-    v9 = v8;
-    [(NTKDigitalTimeLabel *)timeLabel setOverrideDate:v8 duration:0.0];
+    v9 = timeTravelDate2;
+    [(NTKDigitalTimeLabel *)timeLabel setOverrideDate:timeTravelDate2 duration:0.0];
 
     goto LABEL_6;
   }
 
-  if (v5)
+  if (bOOLValue)
   {
-    v8 = NTKIdealizedDate();
+    timeTravelDate2 = NTKIdealizedDate();
     goto LABEL_5;
   }
 
@@ -91,17 +91,17 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setTimeTravelDate:(id)a3 animated:(BOOL)a4
+- (void)setTimeTravelDate:(id)date animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  dateCopy = date;
   v7 = +[NTKTimeOffsetManager sharedManager];
   [v7 timeOffset];
-  v8 = [v6 dateByAddingTimeInterval:?];
+  v8 = [dateCopy dateByAddingTimeInterval:?];
 
   v9.receiver = self;
   v9.super_class = NTKDigitalTimeRichComplicationCircularView;
-  [(CDRichComplicationTemplateView *)&v9 setTimeTravelDate:v8 animated:v4];
+  [(CDRichComplicationTemplateView *)&v9 setTimeTravelDate:v8 animated:animatedCopy];
   [(NTKDigitalTimeRichComplicationCircularView *)self updateDate];
 }
 

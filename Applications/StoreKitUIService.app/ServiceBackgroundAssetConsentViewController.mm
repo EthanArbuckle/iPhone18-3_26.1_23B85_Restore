@@ -1,10 +1,10 @@
 @interface ServiceBackgroundAssetConsentViewController
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3;
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_dismissViewService;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)handleButtonActions:(id)a3;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)handleButtonActions:(id)actions;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation ServiceBackgroundAssetConsentViewController
@@ -12,9 +12,9 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 30;
   }
@@ -25,10 +25,10 @@
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   if (!+[_TtC17StoreKitUIService21objc_LockscreenStatus isDeviceUnlocked])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -39,28 +39,28 @@
     exit(0);
   }
 
-  v8 = [v6 actions];
-  v9 = [v8 allObjects];
-  v10 = [v9 firstObject];
-  [(ServiceBackgroundAssetConsentViewController *)self setDidProvideConsentAction:v10];
+  actions = [contextCopy actions];
+  allObjects = [actions allObjects];
+  firstObject = [allObjects firstObject];
+  [(ServiceBackgroundAssetConsentViewController *)self setDidProvideConsentAction:firstObject];
 
-  v11 = [(ServiceBackgroundAssetConsentViewController *)self _remoteViewControllerProxy];
-  [v11 setDesiredHardwareButtonEvents:16];
-  [v11 setAllowsMenuButtonDismissal:1];
-  [v11 setAllowsBanners:1];
-  [v11 setWallpaperTunnelActive:1];
-  [v11 setAllowsAlertStacking:1];
-  [v11 setDismissalAnimationStyle:2];
-  [v11 setReachabilityDisabled:1];
+  _remoteViewControllerProxy = [(ServiceBackgroundAssetConsentViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:16];
+  [_remoteViewControllerProxy setAllowsMenuButtonDismissal:1];
+  [_remoteViewControllerProxy setAllowsBanners:1];
+  [_remoteViewControllerProxy setWallpaperTunnelActive:1];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
+  [_remoteViewControllerProxy setDismissalAnimationStyle:2];
+  [_remoteViewControllerProxy setReachabilityDisabled:1];
   v12 = +[UIDevice currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  userInterfaceIdiom = [v12 userInterfaceIdiom];
 
-  if ((v13 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v14 = +[UIApplication sharedApplication];
-    v15 = [v14 statusBarOrientation];
+    statusBarOrientation = [v14 statusBarOrientation];
 
-    [v11 setLaunchingInterfaceOrientation:v15];
+    [_remoteViewControllerProxy setLaunchingInterfaceOrientation:statusBarOrientation];
   }
 
   v16 = objc_alloc_init(SKBackgroundAssetConsentViewController);
@@ -72,27 +72,27 @@
   objc_copyWeak(&v22, &location);
   [v16 setResponseBlock:&v18];
   [(ServiceBackgroundAssetConsentViewController *)self setChildViewController:v16, v18, v19, v20, v21];
-  v17 = [(ServiceBackgroundAssetConsentViewController *)self childViewController];
-  [v17 setModalPresentationStyle:2];
+  childViewController = [(ServiceBackgroundAssetConsentViewController *)self childViewController];
+  [childViewController setModalPresentationStyle:2];
 
   [(ServiceBackgroundAssetConsentViewController *)self presentViewController:v16 animated:1 completion:&stru_100051120];
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -104,7 +104,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         if (([*(*(&v9 + 1) + 8 * v8) events] & 0x10) != 0)
@@ -116,27 +116,27 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 30;
   }
@@ -149,37 +149,37 @@
 
 - (void)_dismissViewService
 {
-  v3 = [(ServiceBackgroundAssetConsentViewController *)self didProvideConsentAction];
-  v4 = [v3 canSendResponse];
+  didProvideConsentAction = [(ServiceBackgroundAssetConsentViewController *)self didProvideConsentAction];
+  canSendResponse = [didProvideConsentAction canSendResponse];
 
-  if (v4)
+  if (canSendResponse)
   {
     v5 = objc_alloc_init(BSMutableSettings);
-    v6 = [(ServiceBackgroundAssetConsentViewController *)self consentProvided];
-    [v5 setObject:v6 forSetting:1];
+    consentProvided = [(ServiceBackgroundAssetConsentViewController *)self consentProvided];
+    [v5 setObject:consentProvided forSetting:1];
 
-    v7 = [(ServiceBackgroundAssetConsentViewController *)self didProvideConsentAction];
+    didProvideConsentAction2 = [(ServiceBackgroundAssetConsentViewController *)self didProvideConsentAction];
     v8 = [BSActionResponse responseWithInfo:v5];
-    [v7 sendResponse:v8];
+    [didProvideConsentAction2 sendResponse:v8];
   }
 
-  v9 = [(ServiceBackgroundAssetConsentViewController *)self childViewController];
+  childViewController = [(ServiceBackgroundAssetConsentViewController *)self childViewController];
 
-  if (v9)
+  if (childViewController)
   {
-    v10 = [(ServiceBackgroundAssetConsentViewController *)self childViewController];
+    childViewController2 = [(ServiceBackgroundAssetConsentViewController *)self childViewController];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100006C90;
     v12[3] = &unk_100051148;
     v12[4] = self;
-    [v10 dismissViewControllerAnimated:1 completion:v12];
+    [childViewController2 dismissViewControllerAnimated:1 completion:v12];
   }
 
   else
   {
-    v11 = [(ServiceBackgroundAssetConsentViewController *)self _remoteViewControllerProxy];
-    [v11 deactivate];
+    _remoteViewControllerProxy = [(ServiceBackgroundAssetConsentViewController *)self _remoteViewControllerProxy];
+    [_remoteViewControllerProxy deactivate];
   }
 }
 

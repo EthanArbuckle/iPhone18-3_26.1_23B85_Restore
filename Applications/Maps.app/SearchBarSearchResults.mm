@@ -1,8 +1,8 @@
 @interface SearchBarSearchResults
 - (SearchBarSearchResults)init;
 - (id)copy;
-- (id)filteredResultsWithBackfill:(int64_t)a3;
-- (void)addResultSet:(id)a3 withMaxCount:(unint64_t)a4;
+- (id)filteredResultsWithBackfill:(int64_t)backfill;
+- (void)addResultSet:(id)set withMaxCount:(unint64_t)count;
 @end
 
 @implementation SearchBarSearchResults
@@ -14,12 +14,12 @@
   return v3;
 }
 
-- (void)addResultSet:(id)a3 withMaxCount:(unint64_t)a4
+- (void)addResultSet:(id)set withMaxCount:(unint64_t)count
 {
   resultSets = self->_resultSets;
-  v7 = a3;
+  setCopy = set;
   v11 = [NSMutableArray arrayWithArray:resultSets];
-  v8 = [[SearchBarSearchResultSet alloc] initWithResults:v7 maxCount:a4];
+  v8 = [[SearchBarSearchResultSet alloc] initWithResults:setCopy maxCount:count];
 
   [v11 addObject:v8];
   v9 = [v11 copy];
@@ -27,7 +27,7 @@
   self->_resultSets = v9;
 }
 
-- (id)filteredResultsWithBackfill:(int64_t)a3
+- (id)filteredResultsWithBackfill:(int64_t)backfill
 {
   if (self->_resultSets)
   {
@@ -62,8 +62,8 @@
           }
 
           v13 = *(*(&v47 + 1) + 8 * v11);
-          v14 = [v13 results];
-          v15 = [v14 count];
+          results = [v13 results];
+          v15 = [results count];
 
           v16 = [v13 count];
           if (v15 >= v16)
@@ -91,7 +91,7 @@
     }
 
     v18 = v35[0];
-    if (a3 >= 1)
+    if (backfill >= 1)
     {
       v19 = v36 + 8;
       do
@@ -109,7 +109,7 @@
           v23 = *v22;
           if (*v22)
           {
-            v24 = a3 < 1;
+            v24 = backfill < 1;
           }
 
           else
@@ -122,7 +122,7 @@
             v21 = 0;
             ++*(v22 - 1);
             *v22 = v23 - 1;
-            --a3;
+            --backfill;
           }
 
           ++v20;
@@ -132,7 +132,7 @@
         while (v20 < [*(v18 + 8) count]);
       }
 
-      while (!(v21 & 1 | (a3 < 1)));
+      while (!(v21 & 1 | (backfill < 1)));
     }
 
     v45 = 0u;
@@ -160,14 +160,14 @@
 
           v31 = *v30;
           v30 += 16;
-          v32 = [*(*(&v43 + 1) + 8 * v29) results];
+          results2 = [*(*(&v43 + 1) + 8 * v29) results];
           v40[0] = _NSConcreteStackBlock;
           v40[1] = 3221225472;
           v40[2] = sub_1006B567C;
           v40[3] = &unk_1016262D0;
           v42 = v31;
           v41 = v39;
-          [v32 enumerateObjectsUsingBlock:v40];
+          [results2 enumerateObjectsUsingBlock:v40];
 
           v29 = v29 + 1;
         }

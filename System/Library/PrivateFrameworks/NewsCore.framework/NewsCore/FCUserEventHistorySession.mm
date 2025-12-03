@@ -1,7 +1,7 @@
 @interface FCUserEventHistorySession
-+ (id)dateFromSessionID:(id)a3;
++ (id)dateFromSessionID:(id)d;
 - (FCUserEventHistorySession)init;
-- (FCUserEventHistorySession)initWithSessionID:(id)a3 path:(id)a4;
+- (FCUserEventHistorySession)initWithSessionID:(id)d path:(id)path;
 - (NSDate)date;
 - (NSString)path;
 - (int64_t)size;
@@ -23,7 +23,7 @@
   return v8;
 }
 
-+ (id)dateFromSessionID:(id)a3
++ (id)dateFromSessionID:(id)d
 {
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EB94B328, &qword_1B6815370);
   v4 = *(*(v3 - 8) + 64);
@@ -46,7 +46,7 @@
   return v15;
 }
 
-- (FCUserEventHistorySession)initWithSessionID:(id)a3 path:(id)a4
+- (FCUserEventHistorySession)initWithSessionID:(id)d path:(id)path
 {
   v4 = sub_1B67D964C();
   v6 = v5;
@@ -87,10 +87,10 @@
 
   v4 = *(self + OBJC_IVAR___FCUserEventHistorySession_kind + 8);
   v5 = objc_opt_self();
-  v6 = self;
-  v7 = [v5 defaultManager];
+  selfCopy = self;
+  defaultManager = [v5 defaultManager];
   v8 = sub_1B67D963C();
-  v2 = [v7 fc:v8 sizeOfItemAtPath:0 error:?];
+  v2 = [defaultManager fc:v8 sizeOfItemAtPath:0 error:?];
 
   if ((v2 & 0x8000000000000000) == 0)
   {

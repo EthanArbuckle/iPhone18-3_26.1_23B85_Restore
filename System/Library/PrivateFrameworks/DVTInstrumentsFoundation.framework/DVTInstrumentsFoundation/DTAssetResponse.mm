@@ -1,88 +1,88 @@
 @interface DTAssetResponse
-+ (id)completedResponseWithIdentifier:(id)a3;
-+ (id)responseWithIdentifier:(id)a3 data:(id)a4;
-- (DTAssetResponse)initWithCoder:(id)a3;
-- (DTAssetResponse)initWithIdentifier:(id)a3 data:(id)a4 completed:(BOOL)a5;
++ (id)completedResponseWithIdentifier:(id)identifier;
++ (id)responseWithIdentifier:(id)identifier data:(id)data;
+- (DTAssetResponse)initWithCoder:(id)coder;
+- (DTAssetResponse)initWithIdentifier:(id)identifier data:(id)data completed:(BOOL)completed;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DTAssetResponse
 
-+ (id)responseWithIdentifier:(id)a3 data:(id)a4
++ (id)responseWithIdentifier:(id)identifier data:(id)data
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithIdentifier:v7 data:v6 completed:0];
+  dataCopy = data;
+  identifierCopy = identifier;
+  v8 = [[self alloc] initWithIdentifier:identifierCopy data:dataCopy completed:0];
 
   return v8;
 }
 
-+ (id)completedResponseWithIdentifier:(id)a3
++ (id)completedResponseWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentifier:v4 data:0 completed:1];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithIdentifier:identifierCopy data:0 completed:1];
 
   return v5;
 }
 
-- (DTAssetResponse)initWithIdentifier:(id)a3 data:(id)a4 completed:(BOOL)a5
+- (DTAssetResponse)initWithIdentifier:(id)identifier data:(id)data completed:(BOOL)completed
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = DTAssetResponse;
   v10 = [(DTAssetResponse *)&v14 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     identifier = v10->_identifier;
     v10->_identifier = v11;
 
-    objc_storeStrong(&v10->_data, a4);
-    v10->_completed = a5;
+    objc_storeStrong(&v10->_data, data);
+    v10->_completed = completed;
   }
 
   return v10;
 }
 
-- (DTAssetResponse)initWithCoder:(id)a3
+- (DTAssetResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
-  v7 = [v4 decodeBoolForKey:@"completed"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  v7 = [coderCopy decodeBoolForKey:@"completed"];
 
   v8 = [(DTAssetResponse *)self initWithIdentifier:v5 data:v6 completed:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(DTAssetResponse *)self identifier];
-  [v6 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(DTAssetResponse *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(DTAssetResponse *)self data];
-  [v6 encodeObject:v5 forKey:@"data"];
+  data = [(DTAssetResponse *)self data];
+  [coderCopy encodeObject:data forKey:@"data"];
 
-  [v6 encodeBool:-[DTAssetResponse isCompleted](self forKey:{"isCompleted"), @"completed"}];
+  [coderCopy encodeBool:-[DTAssetResponse isCompleted](self forKey:{"isCompleted"), @"completed"}];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(DTAssetResponse *)self identifier];
-  v5 = [(DTAssetResponse *)self data];
-  v6 = [v5 length];
-  v7 = [(DTAssetResponse *)self isCompleted];
+  identifier = [(DTAssetResponse *)self identifier];
+  data = [(DTAssetResponse *)self data];
+  v6 = [data length];
+  isCompleted = [(DTAssetResponse *)self isCompleted];
   v8 = "NO";
-  if (v7)
+  if (isCompleted)
   {
     v8 = "YES";
   }
 
-  v9 = [v3 stringWithFormat:@"<DTAssetResponse:%@ dataLength=%lu completed:%s>", v4, v6, v8];
+  v9 = [v3 stringWithFormat:@"<DTAssetResponse:%@ dataLength=%lu completed:%s>", identifier, v6, v8];
 
   return v9;
 }

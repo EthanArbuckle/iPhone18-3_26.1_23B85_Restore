@@ -1,7 +1,7 @@
 @interface QSSKeyword
 - (NSString)keyword_orthography;
-- (Offset<siri::speech::schema_fb::Keyword>)addObjectToBuffer:(void *)a3;
-- (QSSKeyword)initWithFlatbuffData:(id)a3 root:(const Keyword *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::Keyword>)addObjectToBuffer:(void *)buffer;
+- (QSSKeyword)initWithFlatbuffData:(id)data root:(const Keyword *)root verify:(BOOL)verify;
 - (double)posterior;
 - (id)flatbuffData;
 @end
@@ -37,29 +37,29 @@ flatbuffers::DetachedBuffer *__26__QSSKeyword_flatbuffData__block_invoke(uint64_
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::Keyword>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::Keyword>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(QSSKeyword *)self keyword_orthography];
-  v6 = v5;
-  if (!v5)
+  keyword_orthography = [(QSSKeyword *)self keyword_orthography];
+  v6 = keyword_orthography;
+  if (!keyword_orthography)
   {
-    v5 = &stru_2879AE8E0;
+    keyword_orthography = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  LODWORD(v7) = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)keyword_orthography UTF8String];
+  v8 = strlen(uTF8String);
+  LODWORD(uTF8String) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
   [(QSSKeyword *)self posterior];
   v10 = v9;
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v11 = *(a3 + 10);
-  v12 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, v7);
-  flatbuffers::FlatBufferBuilder::AddElement<double>(a3, 6, v10);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v11 = *(buffer + 10);
+  v12 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, uTF8String);
+  flatbuffers::FlatBufferBuilder::AddElement<double>(buffer, 6, v10);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v12 + v11);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v12 + v11);
 }
 
 - (double)posterior
@@ -102,42 +102,42 @@ flatbuffers::DetachedBuffer *__26__QSSKeyword_flatbuffData__block_invoke(uint64_
   return v6;
 }
 
-- (QSSKeyword)initWithFlatbuffData:(id)a3 root:(const Keyword *)a4 verify:(BOOL)a5
+- (QSSKeyword)initWithFlatbuffData:(id)data root:(const Keyword *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSKeyword;
   v10 = [(QSSKeyword *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -159,9 +159,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

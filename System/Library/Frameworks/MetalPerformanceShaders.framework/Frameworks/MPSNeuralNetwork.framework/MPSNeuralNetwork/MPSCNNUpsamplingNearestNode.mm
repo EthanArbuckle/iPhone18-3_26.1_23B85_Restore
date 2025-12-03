@@ -7,7 +7,7 @@
 
 + (MPSCNNUpsamplingNearestNode)nodeWithSource:(MPSNNImageNode *)sourceNode integerScaleFactorX:(NSUInteger)integerScaleFactorX integerScaleFactorY:(NSUInteger)integerScaleFactorY
 {
-  v8 = [a1 alloc];
+  v8 = [self alloc];
   v13 = objc_msgSend_initWithSource_integerScaleFactorX_integerScaleFactorY_(v8, v9, sourceNode, integerScaleFactorX, integerScaleFactorY, v10, v11, v12);
 
   return v13;

@@ -1,33 +1,33 @@
 @interface PCObservedSpeedETAEstimator
-- (PCObservedSpeedETAEstimator)initWithConfig:(id)a3;
-- (id)computeScaleForCandidates:(id)a3 locationHistory:(id)a4 motionActivity:(id)a5 currentLocation:(id)a6 currentTime:(double)a7 lastVisitExitTime:(double)a8 isInTransition:(BOOL)a9;
+- (PCObservedSpeedETAEstimator)initWithConfig:(id)config;
+- (id)computeScaleForCandidates:(id)candidates locationHistory:(id)history motionActivity:(id)activity currentLocation:(id)location currentTime:(double)time lastVisitExitTime:(double)exitTime isInTransition:(BOOL)transition;
 @end
 
 @implementation PCObservedSpeedETAEstimator
 
-- (PCObservedSpeedETAEstimator)initWithConfig:(id)a3
+- (PCObservedSpeedETAEstimator)initWithConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v10.receiver = self;
   v10.super_class = PCObservedSpeedETAEstimator;
   v6 = [(PCObservedSpeedETAEstimator *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cfg, a3);
+    objc_storeStrong(&v6->_cfg, config);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)computeScaleForCandidates:(id)a3 locationHistory:(id)a4 motionActivity:(id)a5 currentLocation:(id)a6 currentTime:(double)a7 lastVisitExitTime:(double)a8 isInTransition:(BOOL)a9
+- (id)computeScaleForCandidates:(id)candidates locationHistory:(id)history motionActivity:(id)activity currentLocation:(id)location currentTime:(double)time lastVisitExitTime:(double)exitTime isInTransition:(BOOL)transition
 {
   v141 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v110 = a6;
-  if ([v16 count] <= 1)
+  candidatesCopy = candidates;
+  historyCopy = history;
+  locationCopy = location;
+  if ([historyCopy count] <= 1)
   {
     v17 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -36,7 +36,7 @@
       *buf = 138412546;
       v119 = v18;
       v120 = 2048;
-      v121 = [v16 count];
+      v121 = [historyCopy count];
       v19 = "[%@] skip ETA scal factor, not enough buffered location, location count, %lu";
       v20 = v17;
       v21 = 22;
@@ -49,7 +49,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!a9)
+  if (!transition)
   {
     v17 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -65,7 +65,7 @@ LABEL_10:
 
 LABEL_11:
 
-    v43 = [PCDynamicsUtils neutralScaleFactorsForDataMap:v15];
+    v43 = [PCDynamicsUtils neutralScaleFactorsForDataMap:candidatesCopy];
     goto LABEL_22;
   }
 
@@ -78,7 +78,7 @@ LABEL_11:
   v28 = v27;
   v29 = [(PCObservedSpeedETAEstimator *)self cfg];
   [v29 maxLocationUncertaintyM];
-  v31 = [(PCDynamicsWindowContext *)v22 initWithRawHistory:v16 currentTime:a7 lastVisitExitTime:a8 minTravelTime:v25 fullEffectTime:v28 maxUncertainty:v30];
+  v31 = [(PCDynamicsWindowContext *)v22 initWithRawHistory:historyCopy currentTime:time lastVisitExitTime:exitTime minTravelTime:v25 fullEffectTime:v28 maxUncertainty:v30];
 
   [(PCDynamicsWindowContext *)v31 travelTimeSec];
   v33 = v32;
@@ -88,22 +88,22 @@ LABEL_11:
 
   if (v33 >= v36)
   {
-    v44 = [(PCDynamicsWindowContext *)v31 startFix];
+    startFix = [(PCDynamicsWindowContext *)v31 startFix];
 
-    if (v44)
+    if (startFix)
     {
-      v45 = [(PCDynamicsWindowContext *)v31 startFix];
-      [v45 timeCFAbsolute];
-      v47 = a7 - v46;
+      startFix2 = [(PCDynamicsWindowContext *)v31 startFix];
+      [startFix2 timeCFAbsolute];
+      v47 = time - v46;
 
       if (v47 >= 1.0)
       {
-        v50 = [(PCDynamicsWindowContext *)v31 startFix];
-        v51 = [v50 location];
-        v52 = [PCLocationUtils cartesianFromProtoLocation:v51];
+        startFix3 = [(PCDynamicsWindowContext *)v31 startFix];
+        location = [startFix3 location];
+        v52 = [PCLocationUtils cartesianFromProtoLocation:location];
 
         v112 = v52;
-        [v52 distanceTo:v110];
+        [v52 distanceTo:locationCopy];
         v54 = v53 / v47;
         v55 = [(PCObservedSpeedETAEstimator *)self cfg];
         [v55 minReliableSpeedM_Sec];
@@ -112,23 +112,23 @@ LABEL_11:
         if (v54 >= v57)
         {
           v109 = v31;
-          v104 = v16;
-          v43 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v15, "count")}];
+          v104 = historyCopy;
+          v43 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(candidatesCopy, "count")}];
           v114 = 0u;
           v115 = 0u;
           v116 = 0u;
           v117 = 0u;
-          v105 = v15;
-          v60 = [v15 objectEnumerator];
-          v61 = [v60 countByEnumeratingWithState:&v114 objects:v140 count:16];
-          v62 = v110;
+          v105 = candidatesCopy;
+          objectEnumerator = [candidatesCopy objectEnumerator];
+          v61 = [objectEnumerator countByEnumeratingWithState:&v114 objects:v140 count:16];
+          v62 = locationCopy;
           if (v61)
           {
             v63 = v61;
             v64 = *v115;
             v65 = 0.1;
             v66 = 1.0;
-            v107 = v60;
+            v107 = objectEnumerator;
             v108 = v43;
             do
             {
@@ -138,12 +138,12 @@ LABEL_11:
               {
                 if (*v115 != v64)
                 {
-                  objc_enumerationMutation(v60);
+                  objc_enumerationMutation(objectEnumerator);
                 }
 
                 v68 = *(*(&v114 + 1) + 8 * v67);
-                v69 = [v68 coordinate];
-                [v62 distanceTo:v69];
+                coordinate = [v68 coordinate];
+                [v62 distanceTo:coordinate];
                 v71 = v70;
 
                 v72 = [(PCObservedSpeedETAEstimator *)self cfg];
@@ -153,8 +153,8 @@ LABEL_11:
                 v75 = 1.0;
                 if (v71 >= v74)
                 {
-                  v76 = [v68 coordinate];
-                  [v112 distanceTo:v76];
+                  coordinate2 = [v68 coordinate];
+                  [v112 distanceTo:coordinate2];
                   v78 = v77;
 
                   v79 = v78 / v54;
@@ -189,8 +189,8 @@ LABEL_11:
                     if (os_log_type_enabled(v90, OS_LOG_TYPE_INFO))
                     {
                       v91 = NSStringFromSelector(a2);
-                      v92 = [v68 loiIdentifier];
-                      v93 = [PCAlgorithmsCommonUtils uuidStringFromData:v92];
+                      loiIdentifier = [v68 loiIdentifier];
+                      v93 = [PCAlgorithmsCommonUtils uuidStringFromData:loiIdentifier];
                       [(PCDynamicsWindowContext *)v109 travelTimeSec];
                       v94 = v65;
                       v96 = v95;
@@ -226,10 +226,10 @@ LABEL_11:
                       v139 = v75;
                       _os_log_impl(&dword_1CEE74000, v90, OS_LOG_TYPE_INFO, "[%@] LOI %@: travelTime, %.0f, windowStart, %.0f, speed, %.2f, currentETA, %.0f, originalETA, %.0f, eta growth, %.2f, initial scale factor, %.2f, travel time weight, %.2f, final factor, %.2f", buf, 0x70u);
 
-                      v62 = v110;
+                      v62 = locationCopy;
                     }
 
-                    v60 = v107;
+                    objectEnumerator = v107;
                     v43 = v108;
                   }
 
@@ -237,21 +237,21 @@ LABEL_11:
                 }
 
                 v102 = [MEMORY[0x1E696AD98] numberWithDouble:v75];
-                v103 = [v68 visitIdentifier];
-                [v43 setObject:v102 forKeyedSubscript:v103];
+                visitIdentifier = [v68 visitIdentifier];
+                [v43 setObject:v102 forKeyedSubscript:visitIdentifier];
 
                 ++v67;
               }
 
               while (v63 != v67);
-              v63 = [v60 countByEnumeratingWithState:&v114 objects:v140 count:16];
+              v63 = [objectEnumerator countByEnumeratingWithState:&v114 objects:v140 count:16];
             }
 
             while (v63);
           }
 
-          v16 = v104;
-          v15 = v105;
+          historyCopy = v104;
+          candidatesCopy = v105;
           v31 = v109;
         }
 
@@ -266,7 +266,7 @@ LABEL_11:
             _os_log_impl(&dword_1CEE74000, v58, OS_LOG_TYPE_INFO, "[%@] skip ETA scal factor, observed speed too low", buf, 0xCu);
           }
 
-          v43 = [PCDynamicsUtils neutralScaleFactorsForDataMap:v15];
+          v43 = [PCDynamicsUtils neutralScaleFactorsForDataMap:candidatesCopy];
         }
 
         goto LABEL_21;
@@ -321,7 +321,7 @@ LABEL_19:
 
 LABEL_20:
 
-  v43 = [PCDynamicsUtils neutralScaleFactorsForDataMap:v15];
+  v43 = [PCDynamicsUtils neutralScaleFactorsForDataMap:candidatesCopy];
 LABEL_21:
 
 LABEL_22:

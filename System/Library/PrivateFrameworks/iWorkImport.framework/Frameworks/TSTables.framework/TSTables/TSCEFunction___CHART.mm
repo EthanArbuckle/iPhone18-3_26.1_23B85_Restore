@@ -1,18 +1,18 @@
 @interface TSCEFunction___CHART
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction___CHART
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  if (*(a5 + 1) == *a5)
+  if (*(arguments + 1) == *arguments)
   {
-    v7 = objc_msgSend_nilValue(TSCENilValue, a2, a3, a4, a5);
+    v7 = objc_msgSend_nilValue(TSCENilValue, a2, context, spec, arguments);
     goto LABEL_9;
   }
 
-  v7 = **a5;
+  v7 = **arguments;
   if (!objc_msgSend_isReferenceValue(v7, v8, v9, v10, v11))
   {
     v18 = 0;
@@ -24,7 +24,7 @@ LABEL_7:
   }
 
   v81 = 0;
-  v13 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v7, v12, a3, a4, 0, &v81);
+  v13 = objc_msgSend_asReference_functionSpec_argumentIndex_outError_(v7, v12, context, spec, 0, &v81);
   v18 = v81;
   if (!v18)
   {
@@ -48,7 +48,7 @@ LABEL_7:
     if (v34 && (TSCETableResolverWrapper::isPivotTable(v34, v35, v36, v37, v38) & 1) == 0 && (objc_msgSend_evalRef(v13, v39, v40, v41, v42), v43 = objc_claimAutoreleasedReturnValue(), v48 = objc_msgSend_tableRangeOfTable(v43, v44, v45, v46, v47), v67 = v49, v50 = v48, v43, TSCETableResolverWrapper::apparentTractRefForTractRef(v34, &v78, 0, v51, &v75), TSUIndexSet::operator=(), TSUIndexSet::operator=(), *v80 = *v77, *&v80[13] = *&v77[13], TSUIndexSet::~TSUIndexSet(&v76), TSUIndexSet::~TSUIndexSet(&v75), sub_2210EE8F8(&v78)))
     {
       v74 = 0;
-      v53 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v7, v52, a3, a4, 0, 0, &v74);
+      v53 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v7, v52, context, spec, 0, 0, &v74);
       v54 = v74;
       v59 = v54 == 0;
       if (v54)
@@ -106,7 +106,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v19 = objc_msgSend_raiseErrorOrConvert_(a3, v14, v18, v16, v17);
+  v19 = objc_msgSend_raiseErrorOrConvert_(context, v14, v18, v16, v17);
 
   v20 = v7;
   v7 = v19;

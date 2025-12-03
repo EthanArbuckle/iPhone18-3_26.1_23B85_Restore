@@ -1,54 +1,54 @@
 @interface GKAchievement
-+ (BOOL)instancesRespondToSelector:(SEL)a3;
-+ (BOOL)shouldShowBannerOnReport:(id)a3 achievementDescription:(id)a4 reportedAchievements:(id)a5 uiFrameworkMethodsRequired:(BOOL)a6;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
++ (BOOL)shouldShowBannerOnReport:(id)report achievementDescription:(id)description reportedAchievements:(id)achievements uiFrameworkMethodsRequired:(BOOL)required;
 + (BOOL)showBannerIsSupported;
-+ (id)descriptionForAchievement:(id)a3 achievementDescriptions:(id)a4;
-+ (id)instanceMethodSignatureForSelector:(SEL)a3;
-+ (void)loadAchievementWithID:(id)a3 forGame:(id)a4 players:(id)a5 complete:(id)a6;
-+ (void)loadAchievementsForGameV2:(id)a3 players:(id)a4 includeUnreported:(BOOL)a5 includeHidden:(BOOL)a6 withCompletionHandler:(id)a7;
++ (id)descriptionForAchievement:(id)achievement achievementDescriptions:(id)descriptions;
++ (id)instanceMethodSignatureForSelector:(SEL)selector;
++ (void)loadAchievementWithID:(id)d forGame:(id)game players:(id)players complete:(id)complete;
++ (void)loadAchievementsForGameV2:(id)v2 players:(id)players includeUnreported:(BOOL)unreported includeHidden:(BOOL)hidden withCompletionHandler:(id)handler;
 + (void)loadAchievementsWithCompletionHandler:(void *)completionHandler;
-+ (void)reportAchievements:(id)a3 whileScreeningChallenges:(BOOL)a4 withEligibleChallenges:(id)a5 withCompletionHandler:(id)a6;
++ (void)reportAchievements:(id)achievements whileScreeningChallenges:(BOOL)challenges withEligibleChallenges:(id)eligibleChallenges withCompletionHandler:(id)handler;
 + (void)resetAchievementsWithCompletionHandler:(void *)completionHandler;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (GKAchievement)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (GKAchievement)initWithCoder:(id)coder;
 - (GKAchievement)initWithIdentifier:(NSString *)identifier;
 - (GKAchievement)initWithIdentifier:(NSString *)identifier forPlayer:(NSString *)playerID;
 - (GKAchievement)initWithIdentifier:(NSString *)identifier player:(GKPlayer *)player;
-- (GKAchievement)initWithIdentifier:(id)a3 player:(id)a4 percentComplete:(double)a5 lastReportedDate:(id)a6;
-- (GKAchievement)initWithInternalRepresentation:(id)a3 playerID:(id)a4;
+- (GKAchievement)initWithIdentifier:(id)identifier player:(id)player percentComplete:(double)complete lastReportedDate:(id)date;
+- (GKAchievement)initWithInternalRepresentation:(id)representation playerID:(id)d;
 - (GKPlayer)player;
 - (NSString)playerID;
 - (id)_achievementDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (id)valueForUndefinedKey:(id)key;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)player;
 - (void)playerID;
 - (void)reportAchievementWithCompletionHandler:(void *)completionHandler;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation GKAchievement
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(GKAchievement *)self percentComplete];
     v7 = v6;
     [v5 percentComplete];
     if (v7 == v8)
     {
-      v9 = [(GKAchievement *)self internal];
-      v10 = [v5 internal];
-      v11 = [v9 isEqual:v10];
+      internal = [(GKAchievement *)self internal];
+      internal2 = [v5 internal];
+      v11 = [internal isEqual:internal2];
     }
 
     else
@@ -67,19 +67,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(GKAchievement *)self internal];
-  v3 = [v2 hash];
+  internal = [(GKAchievement *)self internal];
+  v3 = [internal hash];
 
   return v3;
 }
 
-- (GKAchievement)initWithInternalRepresentation:(id)a3 playerID:(id)a4
+- (GKAchievement)initWithInternalRepresentation:(id)representation playerID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  representationCopy = representation;
+  dCopy = d;
+  if (!representationCopy)
   {
-    v6 = +[(GKInternalRepresentation *)GKAchievementInternal];
+    representationCopy = +[(GKInternalRepresentation *)GKAchievementInternal];
   }
 
   v22.receiver = self;
@@ -88,13 +88,13 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_internal, v6);
+    objc_storeStrong(&v8->_internal, representationCopy);
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ([v6 gameHint], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ([representationCopy gameHint], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
     {
       v11 = [GKGame alloc];
-      v12 = [v6 gameHint];
-      v13 = [(GKGame *)v11 initWithInternalRepresentation:v12];
+      gameHint = [representationCopy gameHint];
+      v13 = [(GKGame *)v11 initWithInternalRepresentation:gameHint];
       game = v9->_game;
       v9->_game = v13;
     }
@@ -102,32 +102,32 @@
     else
     {
       v15 = +[GKGame currentGame];
-      v12 = v9->_game;
+      gameHint = v9->_game;
       v9->_game = v15;
     }
 
     v9->_showsCompletionBanner = 1;
-    v16 = [(GKAchievementInternal *)v9->_internal player];
+    player = [(GKAchievementInternal *)v9->_internal player];
 
-    if (!v16)
+    if (!player)
     {
-      if (v7)
+      if (dCopy)
       {
-        v17 = 0;
+        alias = 0;
       }
 
       else
       {
         v18 = +[GKLocalPlayer localPlayer];
-        v19 = [v18 internal];
-        v7 = [v19 playerID];
+        internal = [v18 internal];
+        dCopy = [internal playerID];
 
-        v17 = [v18 alias];
+        alias = [v18 alias];
       }
 
       v20 = +[(GKInternalRepresentation *)GKPlayerInternal];
-      [v20 setPlayerID:v7];
-      [v20 setAlias:v17];
+      [v20 setPlayerID:dCopy];
+      [v20 setAlias:alias];
       [(GKAchievementInternal *)v9->_internal setPlayer:v20];
     }
   }
@@ -141,8 +141,8 @@
   v5 = +[(GKInternalRepresentation *)GKAchievementInternal];
   [v5 setIdentifier:v4];
 
-  v6 = [MEMORY[0x277CBEAA8] date];
-  [v5 setLastReportedDate:v6];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v5 setLastReportedDate:date];
 
   v7 = [(GKAchievement *)self initWithInternalRepresentation:v5];
   return v7;
@@ -159,35 +159,35 @@
 
   v8 = +[(GKInternalRepresentation *)GKAchievementInternal];
   [v8 setIdentifier:v6];
-  v9 = [MEMORY[0x277CBEAA8] date];
-  [v8 setLastReportedDate:v9];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v8 setLastReportedDate:date];
 
-  v10 = [(GKPlayer *)v7 internal];
-  v11 = [v10 minimalInternal];
-  [v8 setPlayer:v11];
+  internal = [(GKPlayer *)v7 internal];
+  minimalInternal = [internal minimalInternal];
+  [v8 setPlayer:minimalInternal];
 
   v12 = [(GKAchievement *)self initWithInternalRepresentation:v8];
   return v12;
 }
 
-- (GKAchievement)initWithIdentifier:(id)a3 player:(id)a4 percentComplete:(double)a5 lastReportedDate:(id)a6
+- (GKAchievement)initWithIdentifier:(id)identifier player:(id)player percentComplete:(double)complete lastReportedDate:(id)date
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!v11)
+  identifierCopy = identifier;
+  playerCopy = player;
+  dateCopy = date;
+  if (!playerCopy)
   {
-    v11 = +[GKLocalPlayer localPlayer];
+    playerCopy = +[GKLocalPlayer localPlayer];
   }
 
   v13 = +[(GKInternalRepresentation *)GKAchievementInternal];
-  [v13 setIdentifier:v10];
-  [v13 setLastReportedDate:v12];
-  v14 = [v11 internal];
-  v15 = [v14 minimalInternal];
-  [v13 setPlayer:v15];
+  [v13 setIdentifier:identifierCopy];
+  [v13 setLastReportedDate:dateCopy];
+  internal = [playerCopy internal];
+  minimalInternal = [internal minimalInternal];
+  [v13 setPlayer:minimalInternal];
 
-  [v13 setPercentComplete:a5];
+  [v13 setPercentComplete:complete];
   v16 = [(GKAchievement *)self initWithInternalRepresentation:v13];
 
   return v16;
@@ -209,21 +209,21 @@
       [GKAchievement initWithIdentifier:forPlayer:];
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v10 = +[(GKInternalRepresentation *)GKAchievementInternal];
     [v10 setIdentifier:v6];
-    v11 = [MEMORY[0x277CBEAA8] date];
-    [v10 setLastReportedDate:v11];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v10 setLastReportedDate:date];
 
     self = [(GKAchievement *)self initWithInternalRepresentation:v10 playerID:v7];
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (NSString)playerID
@@ -240,25 +240,25 @@
       [GKAchievement playerID];
     }
 
-    v4 = @"playerID is no longer available";
+    playerID = @"playerID is no longer available";
   }
 
   else
   {
-    v5 = [(GKAchievementInternal *)self->_internal player];
-    v4 = [v5 playerID];
+    player = [(GKAchievementInternal *)self->_internal player];
+    playerID = [player playerID];
   }
 
-  return v4;
+  return playerID;
 }
 
 - (GKPlayer)player
 {
-  v2 = [(GKAchievementInternal *)self->_internal player];
-  v3 = [v2 playerID];
-  if (v3 && (v4 = v3, [v2 alias], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  player = [(GKAchievementInternal *)self->_internal player];
+  playerID = [player playerID];
+  if (playerID && (v4 = playerID, [player alias], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
-    v6 = [GKPlayer canonicalizedPlayerForInternal:v2];
+    v6 = [GKPlayer canonicalizedPlayerForInternal:player];
   }
 
   else
@@ -279,46 +279,46 @@
   return v6;
 }
 
-- (GKAchievement)initWithCoder:(id)a3
+- (GKAchievement)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"internal"];
-  v6 = [(GKAchievement *)self initWithInternalRepresentation:v5];
+  coderCopy = coder;
+  internal = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"internal"];
+  v6 = [(GKAchievement *)self initWithInternalRepresentation:internal];
   v7 = v6;
   if (v6)
   {
-    if (!v5)
+    if (!internal)
     {
-      v5 = [(GKAchievement *)v6 internal];
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-      [v5 setIdentifier:v8];
+      internal = [(GKAchievement *)v6 internal];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+      [internal setIdentifier:v8];
 
-      [v4 decodeDoubleForKey:@"percentComplete"];
-      [v5 setPercentComplete:?];
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastReportedDate"];
-      [v5 setLastReportedDate:v9];
+      [coderCopy decodeDoubleForKey:@"percentComplete"];
+      [internal setPercentComplete:?];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastReportedDate"];
+      [internal setLastReportedDate:v9];
     }
 
-    -[GKAchievement setShowsCompletionBanner:](v7, "setShowsCompletionBanner:", [v4 decodeBoolForKey:@"showsCompletionBanner"]);
+    -[GKAchievement setShowsCompletionBanner:](v7, "setShowsCompletionBanner:", [coderCopy decodeBoolForKey:@"showsCompletionBanner"]);
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(GKAchievement *)self internal];
-  [v5 encodeObject:v4 forKey:@"internal"];
+  coderCopy = coder;
+  internal = [(GKAchievement *)self internal];
+  [coderCopy encodeObject:internal forKey:@"internal"];
 
-  [v5 encodeBool:-[GKAchievement showsCompletionBanner](self forKey:{"showsCompletionBanner"), @"showsCompletionBanner"}];
+  [coderCopy encodeBool:-[GKAchievement showsCompletionBanner](self forKey:{"showsCompletionBanner"), @"showsCompletionBanner"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [GKAchievement alloc];
-  v5 = [(GKAchievement *)self internal];
-  v6 = [v5 copy];
+  internal = [(GKAchievement *)self internal];
+  v6 = [internal copy];
   v7 = [(GKAchievement *)v4 initWithInternalRepresentation:v6];
 
   return v7;
@@ -329,9 +329,9 @@
   v8.receiver = self;
   v8.super_class = GKAchievement;
   v3 = [(GKAchievement *)&v8 description];
-  v4 = [(GKAchievement *)self identifier];
+  identifier = [(GKAchievement *)self identifier];
   [(GKAchievement *)self percentComplete];
-  v6 = [v3 stringByAppendingFormat:@"id: %@\t%f", v4, v5];
+  v6 = [v3 stringByAppendingFormat:@"id: %@\t%f", identifier, v5];
 
   return v6;
 }
@@ -347,7 +347,7 @@
   v8[3] = &unk_2785DDCB0;
   v9 = v4;
   v7 = v4;
-  [a1 loadAchievementsForGameV2:v6 player:v5 includeUnreported:0 includeHidden:1 withCompletionHandler:v8];
+  [self loadAchievementsForGameV2:v6 player:v5 includeUnreported:0 includeHidden:1 withCompletionHandler:v8];
 }
 
 void __55__GKAchievement_loadAchievementsWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -391,12 +391,12 @@ void __104__GKAchievement_loadAchievementsForGameV2_player_includeUnreported_inc
   }
 }
 
-+ (void)loadAchievementsForGameV2:(id)a3 players:(id)a4 includeUnreported:(BOOL)a5 includeHidden:(BOOL)a6 withCompletionHandler:(id)a7
++ (void)loadAchievementsForGameV2:(id)v2 players:(id)players includeUnreported:(BOOL)unreported includeHidden:(BOOL)hidden withCompletionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = [v12 count];
+  v2Copy = v2;
+  playersCopy = players;
+  handlerCopy = handler;
+  v14 = [playersCopy count];
   v15 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:v14];
   v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKAchievement.m", 261, "+[GKAchievement loadAchievementsForGameV2:players:includeUnreported:includeHidden:withCompletionHandler:]"];
   v17 = [GKDispatchGroup dispatchGroupWithName:v16];
@@ -405,24 +405,24 @@ void __104__GKAchievement_loadAchievementsForGameV2_player_includeUnreported_inc
   v26[1] = 3221225472;
   v26[2] = __105__GKAchievement_loadAchievementsForGameV2_players_includeUnreported_includeHidden_withCompletionHandler___block_invoke;
   v26[3] = &unk_2785DE280;
-  v18 = v11;
+  v18 = v2Copy;
   v27 = v18;
-  v19 = v12;
+  v19 = playersCopy;
   v28 = v19;
-  v31 = a5;
-  v32 = a6;
+  unreportedCopy = unreported;
+  hiddenCopy = hidden;
   v20 = v15;
   v29 = v20;
   v21 = v17;
   v30 = v21;
   [v21 perform:v26];
-  if (v13)
+  if (handlerCopy)
   {
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __105__GKAchievement_loadAchievementsForGameV2_players_includeUnreported_includeHidden_withCompletionHandler___block_invoke_5;
     v22[3] = &unk_2785DD8C0;
-    v25 = v13;
+    v25 = handlerCopy;
     v23 = v20;
     v24 = v21;
     [v24 notifyOnMainQueueWithBlock:v22];
@@ -537,40 +537,40 @@ void __105__GKAchievement_loadAchievementsForGameV2_players_includeUnreported_in
   (*(v2 + 16))(v2, v1, v3);
 }
 
-+ (void)loadAchievementWithID:(id)a3 forGame:(id)a4 players:(id)a5 complete:(id)a6
++ (void)loadAchievementWithID:(id)d forGame:(id)game players:(id)players complete:(id)complete
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  gameCopy = game;
+  playersCopy = players;
+  completeCopy = complete;
   v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKAchievement.m", 300, "+[GKAchievement loadAchievementWithID:forGame:players:complete:]"];
   v15 = [GKDispatchGroup dispatchGroupWithName:v14];
 
-  v16 = [v12 count];
+  v16 = [playersCopy count];
   v17 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v16];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __64__GKAchievement_loadAchievementWithID_forGame_players_complete___block_invoke;
   v27[3] = &unk_2785DE2D0;
-  v33 = a1;
-  v18 = v11;
+  selfCopy = self;
+  v18 = gameCopy;
   v28 = v18;
-  v19 = v12;
+  v19 = playersCopy;
   v29 = v19;
-  v20 = v10;
+  v20 = dCopy;
   v30 = v20;
   v21 = v17;
   v31 = v21;
   v22 = v15;
   v32 = v22;
   [v22 perform:v27];
-  if (v13)
+  if (completeCopy)
   {
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __64__GKAchievement_loadAchievementWithID_forGame_players_complete___block_invoke_3;
     v23[3] = &unk_2785DD8C0;
-    v26 = v13;
+    v26 = completeCopy;
     v24 = v21;
     v25 = v22;
     [v25 notifyOnMainQueueWithBlock:v23];
@@ -688,9 +688,9 @@ void __64__GKAchievement_loadAchievementWithID_forGame_players_complete___block_
 {
   v3 = completionHandler;
   v4 = +[GKPreferences shared];
-  v5 = [v4 isStoreDemoModeEnabled];
+  isStoreDemoModeEnabled = [v4 isStoreDemoModeEnabled];
 
-  if (v5)
+  if (isStoreDemoModeEnabled)
   {
     if (v3)
     {
@@ -701,13 +701,13 @@ void __64__GKAchievement_loadAchievementWithID_forGame_players_complete___block_
   else
   {
     v6 = +[GKDaemonProxy proxyForLocalPlayer];
-    v7 = [v6 gameStatService];
+    gameStatService = [v6 gameStatService];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __56__GKAchievement_resetAchievementsWithCompletionHandler___block_invoke;
     v8[3] = &unk_2785DE008;
     v9 = v3;
-    [v7 resetAchievementsWithHandler:v8];
+    [gameStatService resetAchievementsWithHandler:v8];
   }
 }
 
@@ -722,32 +722,32 @@ uint64_t __56__GKAchievement_resetAchievementsWithCompletionHandler___block_invo
   return result;
 }
 
-+ (void)reportAchievements:(id)a3 whileScreeningChallenges:(BOOL)a4 withEligibleChallenges:(id)a5 withCompletionHandler:(id)a6
++ (void)reportAchievements:(id)achievements whileScreeningChallenges:(BOOL)challenges withEligibleChallenges:(id)eligibleChallenges withCompletionHandler:(id)handler
 {
   v52 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  achievementsCopy = achievements;
+  eligibleChallengesCopy = eligibleChallenges;
+  handlerCopy = handler;
   v12 = +[GKPreferences shared];
-  v13 = [v12 isStoreDemoModeEnabled];
+  isStoreDemoModeEnabled = [v12 isStoreDemoModeEnabled];
 
-  if (v13)
+  if (isStoreDemoModeEnabled)
   {
-    if (v11)
+    if (handlerCopy)
     {
-      v11[2](v11, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
   else
   {
-    v34 = a4;
-    v35 = v10;
+    challengesCopy = challenges;
+    v35 = eligibleChallengesCopy;
     v47 = 0u;
     v48 = 0u;
     v46 = 0u;
     v45 = 0u;
-    v14 = v9;
+    v14 = achievementsCopy;
     v15 = [v14 countByEnumeratingWithState:&v45 objects:v51 count:16];
     if (v15)
     {
@@ -763,21 +763,21 @@ uint64_t __56__GKAchievement_resetAchievementsWithCompletionHandler___block_invo
           }
 
           v19 = *(*(&v45 + 1) + 8 * i);
-          v20 = [v19 player];
-          if (v20)
+          player = [v19 player];
+          if (player)
           {
-            v21 = v20;
-            v22 = [v19 player];
-            v23 = [v22 isLocalPlayer];
+            v21 = player;
+            player2 = [v19 player];
+            isLocalPlayer = [player2 isLocalPlayer];
 
-            if ((v23 & 1) == 0)
+            if ((isLocalPlayer & 1) == 0)
             {
               if (!os_log_GKGeneral)
               {
                 v29 = GKOSLoggers();
               }
 
-              v10 = v35;
+              eligibleChallengesCopy = v35;
               if (os_log_type_enabled(os_log_GKError, OS_LOG_TYPE_ERROR))
               {
                 +[GKAchievement reportAchievements:whileScreeningChallenges:withEligibleChallenges:withCompletionHandler:];
@@ -791,7 +791,7 @@ uint64_t __56__GKAchievement_resetAchievementsWithCompletionHandler___block_invo
               v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v49 count:2];
               v32 = [v30 userErrorForCode:17 userInfo:v31];
 
-              (v11)[2](v11, v32);
+              (handlerCopy)[2](handlerCopy, v32);
               goto LABEL_21;
             }
           }
@@ -820,17 +820,17 @@ uint64_t __56__GKAchievement_resetAchievementsWithCompletionHandler___block_invo
     v28 = v25;
     v41 = v28;
     v42 = v14;
-    v44 = v34;
-    v10 = v35;
+    v44 = challengesCopy;
+    eligibleChallengesCopy = v35;
     v43 = v35;
     [v28 perform:v39];
-    if (v11)
+    if (handlerCopy)
     {
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
       v36[2] = __106__GKAchievement_reportAchievements_whileScreeningChallenges_withEligibleChallenges_withCompletionHandler___block_invoke_5;
       v36[3] = &unk_2785DDC10;
-      v38 = v11;
+      v38 = handlerCopy;
       v37 = v28;
       [v37 notifyOnMainQueueWithBlock:v36];
     }
@@ -968,15 +968,15 @@ void __106__GKAchievement_reportAchievements_whileScreeningChallenges_withEligib
   (*(v1 + 16))(v1, v2);
 }
 
-+ (id)descriptionForAchievement:(id)a3 achievementDescriptions:(id)a4
++ (id)descriptionForAchievement:(id)achievement achievementDescriptions:(id)descriptions
 {
-  v5 = a3;
+  achievementCopy = achievement;
   v6 = MEMORY[0x277CCAC30];
-  v7 = a4;
-  v8 = [v5 identifier];
-  v9 = [v6 predicateWithFormat:@"identifier == %@", v8];
+  descriptionsCopy = descriptions;
+  identifier = [achievementCopy identifier];
+  v9 = [v6 predicateWithFormat:@"identifier == %@", identifier];
 
-  v10 = [v7 filteredArrayUsingPredicate:v9];
+  v10 = [descriptionsCopy filteredArrayUsingPredicate:v9];
 
   if ([v10 count])
   {
@@ -990,11 +990,11 @@ void __106__GKAchievement_reportAchievements_whileScreeningChallenges_withEligib
       v12 = os_log_GKError;
       if (os_log_type_enabled(os_log_GKError, OS_LOG_TYPE_ERROR))
       {
-        [GKAchievement descriptionForAchievement:v12 achievementDescriptions:v5];
+        [GKAchievement descriptionForAchievement:v12 achievementDescriptions:achievementCopy];
       }
     }
 
-    v13 = [v10 firstObject];
+    firstObject = [v10 firstObject];
   }
 
   else
@@ -1007,13 +1007,13 @@ void __106__GKAchievement_reportAchievements_whileScreeningChallenges_withEligib
     v15 = os_log_GKError;
     if (os_log_type_enabled(os_log_GKError, OS_LOG_TYPE_ERROR))
     {
-      [GKAchievement descriptionForAchievement:v15 achievementDescriptions:v5];
+      [GKAchievement descriptionForAchievement:v15 achievementDescriptions:achievementCopy];
     }
 
-    v13 = 0;
+    firstObject = 0;
   }
 
-  return v13;
+  return firstObject;
 }
 
 + (BOOL)showBannerIsSupported
@@ -1033,14 +1033,14 @@ uint64_t __38__GKAchievement_showBannerIsSupported__block_invoke()
   return result;
 }
 
-+ (BOOL)shouldShowBannerOnReport:(id)a3 achievementDescription:(id)a4 reportedAchievements:(id)a5 uiFrameworkMethodsRequired:(BOOL)a6
++ (BOOL)shouldShowBannerOnReport:(id)report achievementDescription:(id)description reportedAchievements:(id)achievements uiFrameworkMethodsRequired:(BOOL)required
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v11 && [v11 isReplayable] && +[GKUtils applicationLinkedOnOrAfter:macVersion:](GKUtils, "applicationLinkedOnOrAfter:macVersion:", 1179648, 983040);
-  if ([v10 showsCompletionBanner] && objc_msgSend(v10, "isCompleted") && (!v6 || objc_msgSend(a1, "showBannerIsSupported")))
+  requiredCopy = required;
+  reportCopy = report;
+  descriptionCopy = description;
+  achievementsCopy = achievements;
+  v13 = descriptionCopy && [descriptionCopy isReplayable] && +[GKUtils applicationLinkedOnOrAfter:macVersion:](GKUtils, "applicationLinkedOnOrAfter:macVersion:", 1179648, 983040);
+  if ([reportCopy showsCompletionBanner] && objc_msgSend(reportCopy, "isCompleted") && (!requiredCopy || objc_msgSend(self, "showBannerIsSupported")))
   {
     v20 = 0;
     v21 = &v20;
@@ -1050,10 +1050,10 @@ uint64_t __38__GKAchievement_showBannerIsSupported__block_invoke()
     v16[1] = 3221225472;
     v16[2] = __113__GKAchievement_shouldShowBannerOnReport_achievementDescription_reportedAchievements_uiFrameworkMethodsRequired___block_invoke;
     v16[3] = &unk_2785DE370;
-    v17 = v10;
+    v17 = reportCopy;
     v18 = &v20;
     v19 = v13;
-    [v12 enumerateObjectsUsingBlock:v16];
+    [achievementsCopy enumerateObjectsUsingBlock:v16];
     v14 = *(v21 + 24);
 
     _Block_object_dispose(&v20, 8);
@@ -1098,9 +1098,9 @@ void __113__GKAchievement_shouldShowBannerOnReport_achievementDescription_report
   [GKAchievement reportAchievements:v6 withCompletionHandler:v5];
 }
 
-+ (id)instanceMethodSignatureForSelector:(SEL)a3
++ (id)instanceMethodSignatureForSelector:(SEL)selector
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___GKAchievement;
   v4 = objc_msgSendSuper2(&v9, sel_instanceMethodSignatureForSelector_);
   v5 = v4;
@@ -1111,7 +1111,7 @@ void __113__GKAchievement_shouldShowBannerOnReport_achievementDescription_report
 
   else
   {
-    v6 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+    v6 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   }
 
   v7 = v6;
@@ -1119,7 +1119,7 @@ void __113__GKAchievement_shouldShowBannerOnReport_achievementDescription_report
   return v7;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v10.receiver = self;
   v10.super_class = GKAchievement;
@@ -1132,14 +1132,14 @@ void __113__GKAchievement_shouldShowBannerOnReport_achievementDescription_report
 
   else
   {
-    v8 = [(GKAchievement *)self forwardingTargetForSelector:a3];
-    v7 = [v8 methodSignatureForSelector:a3];
+    v8 = [(GKAchievement *)self forwardingTargetForSelector:selector];
+    v7 = [v8 methodSignatureForSelector:selector];
   }
 
   return v7;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = GKAchievement;
@@ -1150,18 +1150,18 @@ void __113__GKAchievement_shouldShowBannerOnReport_achievementDescription_report
 
   else
   {
-    v6 = [(GKAchievement *)self forwardingTargetForSelector:a3];
+    v6 = [(GKAchievement *)self forwardingTargetForSelector:selector];
     v5 = objc_opt_respondsToSelector();
   }
 
   return v5 & 1;
 }
 
-+ (BOOL)instancesRespondToSelector:(SEL)a3
++ (BOOL)instancesRespondToSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    if (class_respondsToSelector(a1, a3))
+    if (class_respondsToSelector(self, selector))
     {
       LOBYTE(v4) = 1;
     }
@@ -1172,7 +1172,7 @@ void __113__GKAchievement_shouldShowBannerOnReport_achievementDescription_report
       if (v4)
       {
 
-        LOBYTE(v4) = [GKAchievementInternal instancesRespondToSelector:a3];
+        LOBYTE(v4) = [GKAchievementInternal instancesRespondToSelector:selector];
       }
     }
   }
@@ -1185,39 +1185,39 @@ void __113__GKAchievement_shouldShowBannerOnReport_achievementDescription_report
   return v4;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GKAchievement *)self internal];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  internal = [(GKAchievement *)self internal];
+  v6 = [internal valueForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKAchievement *)self internal];
-  [v8 setValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  internal = [(GKAchievement *)self internal];
+  [internal setValue:valueCopy forKey:keyCopy];
 }
 
 - (id)_achievementDescription
 {
-  v3 = [(GKAchievement *)self game];
-  v4 = [v3 gameDescriptorDictionary];
-  v5 = [GKContentPropertyList localPropertyListForGameDescriptor:v4];
+  game = [(GKAchievement *)self game];
+  gameDescriptorDictionary = [game gameDescriptorDictionary];
+  v5 = [GKContentPropertyList localPropertyListForGameDescriptor:gameDescriptorDictionary];
 
-  if (v5 && (-[GKAchievement identifier](self, "identifier"), v6 = objc_claimAutoreleasedReturnValue(), [v5 achievementDescriptionForIdentifier:v6], v7 = objc_claimAutoreleasedReturnValue(), v6, v7))
+  if (v5 && (-[GKAchievement identifier](self, "identifier"), v6 = objc_claimAutoreleasedReturnValue(), [v5 achievementDescriptionForIdentifier:v6], internal = objc_claimAutoreleasedReturnValue(), v6, internal))
   {
-    v8 = [GKAchievementDescription _achievementDescriptionFromGame:v3 propertyListDictionary:v7];
+    v8 = [GKAchievementDescription _achievementDescriptionFromGame:game propertyListDictionary:internal];
   }
 
   else
   {
     v9 = [GKAchievementDescription alloc];
-    v7 = [(GKAchievement *)self internal];
-    v8 = [(GKAchievementDescription *)v9 initWithInternalRepresentation:v7];
+    internal = [(GKAchievement *)self internal];
+    v8 = [(GKAchievementDescription *)v9 initWithInternalRepresentation:internal];
   }
 
   v10 = v8;

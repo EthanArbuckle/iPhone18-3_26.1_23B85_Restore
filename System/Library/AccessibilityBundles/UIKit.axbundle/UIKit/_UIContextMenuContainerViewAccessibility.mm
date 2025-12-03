@@ -1,28 +1,28 @@
 @interface _UIContextMenuContainerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityScrollDownPage;
 - (BOOL)accessibilityScrollDownPageSupported;
-- (BOOL)accessibilityScrollToVisibleWithChild:(id)a3;
+- (BOOL)accessibilityScrollToVisibleWithChild:(id)child;
 - (BOOL)accessibilityScrollUpPage;
 - (BOOL)accessibilityScrollUpPageSupported;
-- (double)_axTranslationForDetentIndex:(void *)a3 currentDetentIndex:(id)obj detents:;
-- (id)_axDetentsForPanController:(uint64_t)a1;
+- (double)_axTranslationForDetentIndex:(void *)index currentDetentIndex:(id)obj detents:;
+- (id)_axDetentsForPanController:(uint64_t)controller;
 - (id)_axPanController;
-- (uint64_t)_axCurrentDetentIndexForPanController:(uint64_t)a1;
-- (void)_axApplyTranslation:(id)obj forDetentIndex:(double)a4 panController:(double)a5;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (uint64_t)_axCurrentDetentIndexForPanController:(uint64_t)controller;
+- (void)_axApplyTranslation:(id)obj forDetentIndex:(double)index panController:(double)controller;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation _UIContextMenuContainerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v10 = location;
   v9 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"_UIContextMenuContainerView";
   v8 = "v";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -44,8 +44,8 @@
 - (id)_axPanController
 {
   v30 = *MEMORY[0x29EDCA608];
-  v26[1] = a1;
-  if (a1)
+  v26[1] = self;
+  if (self)
   {
     v26[0] = 0;
     v24 = 0;
@@ -157,12 +157,12 @@
   return v1;
 }
 
-- (id)_axDetentsForPanController:(uint64_t)a1
+- (id)_axDetentsForPanController:(uint64_t)controller
 {
-  v5 = a1;
+  controllerCopy = controller;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v5)
+  if (controllerCopy)
   {
     v6 = [location safeArrayForKey:@"detents"];
   }
@@ -178,12 +178,12 @@
   return v2;
 }
 
-- (uint64_t)_axCurrentDetentIndexForPanController:(uint64_t)a1
+- (uint64_t)_axCurrentDetentIndexForPanController:(uint64_t)controller
 {
-  v4 = a1;
+  controllerCopy = controller;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v4)
+  if (controllerCopy)
   {
     v5 = [location safeUnsignedIntegerForKey:@"_currentDetentIndex"];
   }
@@ -197,16 +197,16 @@
   return v5;
 }
 
-- (double)_axTranslationForDetentIndex:(void *)a3 currentDetentIndex:(id)obj detents:
+- (double)_axTranslationForDetentIndex:(void *)index currentDetentIndex:(id)obj detents:
 {
-  v14 = a1;
+  selfCopy = self;
   v13 = a2;
-  location[1] = a3;
+  location[1] = index;
   location[0] = 0;
   objc_storeStrong(location, obj);
   v15 = 0.0;
   v16 = 0;
-  if (v14)
+  if (selfCopy)
   {
     v10 = 0;
     objc_opt_class();
@@ -226,15 +226,15 @@
   return v15;
 }
 
-- (void)_axApplyTranslation:(id)obj forDetentIndex:(double)a4 panController:(double)a5
+- (void)_axApplyTranslation:(id)obj forDetentIndex:(double)index panController:(double)controller
 {
-  *&v27 = a4;
-  *(&v27 + 1) = a5;
-  v26 = a1;
+  *&v27 = index;
+  *(&v27 + 1) = controller;
+  selfCopy = self;
   v25 = a2;
   location = 0;
   objc_storeStrong(&location, obj);
-  if (v26)
+  if (selfCopy)
   {
     v22 = [location safeIvarForKey:@"_currentDetentIndex"];
     if (v22)
@@ -273,41 +273,41 @@
   objc_storeStrong(&location, 0);
 }
 
-- (BOOL)accessibilityScrollToVisibleWithChild:(id)a3
+- (BOOL)accessibilityScrollToVisibleWithChild:(id)child
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, child);
   v18 = 0;
   [location[0] accessibilityFrame];
   v17.origin.x = v3;
   v17.origin.y = v4;
   v17.size.width = v5;
   v17.size.height = v6;
-  [(_UIContextMenuContainerViewAccessibility *)v20 accessibilityFrame];
+  [(_UIContextMenuContainerViewAccessibility *)selfCopy accessibilityFrame];
   v16 = v21;
   if (!CGRectContainsRect(v21, v17))
   {
-    v15 = [(_UIContextMenuContainerViewAccessibility *)v20 _axPanController];
-    v14 = [(_UIContextMenuContainerViewAccessibility *)v20 _axDetentsForPanController:v15];
-    v13 = [(_UIContextMenuContainerViewAccessibility *)v20 _axCurrentDetentIndexForPanController:v15];
+    _axPanController = [(_UIContextMenuContainerViewAccessibility *)selfCopy _axPanController];
+    v14 = [(_UIContextMenuContainerViewAccessibility *)selfCopy _axDetentsForPanController:_axPanController];
+    v13 = [(_UIContextMenuContainerViewAccessibility *)selfCopy _axCurrentDetentIndexForPanController:_axPanController];
     for (i = v13; i < [v14 count]; ++i)
     {
-      v10 = [(_UIContextMenuContainerViewAccessibility *)v20 _axTranslationForDetentIndex:v13 currentDetentIndex:v14 detents:?];
+      v10 = [(_UIContextMenuContainerViewAccessibility *)selfCopy _axTranslationForDetentIndex:v13 currentDetentIndex:v14 detents:?];
       v11 = v7;
       v22.origin.x = v17.origin.x + v10;
       v22.origin.y = v17.origin.y + v7;
       v22.size = v17.size;
       if (CGRectContainsRect(v16, v22))
       {
-        [(_UIContextMenuContainerViewAccessibility *)v20 _axApplyTranslation:v15 forDetentIndex:v10 panController:v11];
+        [(_UIContextMenuContainerViewAccessibility *)selfCopy _axApplyTranslation:_axPanController forDetentIndex:v10 panController:v11];
         v18 = 1;
       }
     }
 
     objc_storeStrong(&v14, 0);
-    objc_storeStrong(&v15, 0);
+    objc_storeStrong(&_axPanController, 0);
   }
 
   v9 = v18;
@@ -317,11 +317,11 @@
 
 - (BOOL)accessibilityScrollUpPageSupported
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
   v6[0] = [(_UIContextMenuContainerViewAccessibility *)self _axPanController];
-  v5 = [(_UIContextMenuContainerViewAccessibility *)v7 _axDetentsForPanController:?];
-  v3 = [(_UIContextMenuContainerViewAccessibility *)v7 _axCurrentDetentIndexForPanController:?];
+  v5 = [(_UIContextMenuContainerViewAccessibility *)selfCopy _axDetentsForPanController:?];
+  v3 = [(_UIContextMenuContainerViewAccessibility *)selfCopy _axCurrentDetentIndexForPanController:?];
   v4 = v3 < [v5 count] - 1;
   objc_storeStrong(&v5, 0);
   objc_storeStrong(v6, 0);
@@ -330,16 +330,16 @@
 
 - (BOOL)accessibilityScrollUpPage
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   v11 = 0;
-  v10 = [(_UIContextMenuContainerViewAccessibility *)self _axPanController];
-  location = [(_UIContextMenuContainerViewAccessibility *)v13 _axDetentsForPanController:v10];
-  v8 = [(_UIContextMenuContainerViewAccessibility *)v13 _axCurrentDetentIndexForPanController:v10];
+  _axPanController = [(_UIContextMenuContainerViewAccessibility *)self _axPanController];
+  location = [(_UIContextMenuContainerViewAccessibility *)selfCopy _axDetentsForPanController:_axPanController];
+  v8 = [(_UIContextMenuContainerViewAccessibility *)selfCopy _axCurrentDetentIndexForPanController:_axPanController];
   if (v8 < [location count] - 1)
   {
-    v7 = [(_UIContextMenuContainerViewAccessibility *)v13 _axTranslationForDetentIndex:v8 currentDetentIndex:location detents:?];
-    [(_UIContextMenuContainerViewAccessibility *)v13 _axApplyTranslation:v10 forDetentIndex:v7 panController:v2];
+    v7 = [(_UIContextMenuContainerViewAccessibility *)selfCopy _axTranslationForDetentIndex:v8 currentDetentIndex:location detents:?];
+    [(_UIContextMenuContainerViewAccessibility *)selfCopy _axApplyTranslation:_axPanController forDetentIndex:v7 panController:v2];
     notification = *MEMORY[0x29EDC7EF0];
     v6 = accessibilityLocalizedString(@"context.menu.scrolled.up");
     UIAccessibilityPostNotification(notification, v6);
@@ -349,17 +349,17 @@
 
   v4 = v11;
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&_axPanController, 0);
   return v4 & 1;
 }
 
 - (BOOL)accessibilityScrollDownPageSupported
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
   v6[0] = [(_UIContextMenuContainerViewAccessibility *)self _axPanController];
-  location = [(_UIContextMenuContainerViewAccessibility *)v7 _axDetentsForPanController:?];
-  v4 = [(_UIContextMenuContainerViewAccessibility *)v7 _axCurrentDetentIndexForPanController:?];
+  location = [(_UIContextMenuContainerViewAccessibility *)selfCopy _axDetentsForPanController:?];
+  v4 = [(_UIContextMenuContainerViewAccessibility *)selfCopy _axCurrentDetentIndexForPanController:?];
   v3 = 0;
   if (v4)
   {
@@ -373,16 +373,16 @@
 
 - (BOOL)accessibilityScrollDownPage
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   v11 = 0;
-  v10 = [(_UIContextMenuContainerViewAccessibility *)self _axPanController];
-  location = [(_UIContextMenuContainerViewAccessibility *)v13 _axDetentsForPanController:v10];
-  v8 = [(_UIContextMenuContainerViewAccessibility *)v13 _axCurrentDetentIndexForPanController:v10];
+  _axPanController = [(_UIContextMenuContainerViewAccessibility *)self _axPanController];
+  location = [(_UIContextMenuContainerViewAccessibility *)selfCopy _axDetentsForPanController:_axPanController];
+  v8 = [(_UIContextMenuContainerViewAccessibility *)selfCopy _axCurrentDetentIndexForPanController:_axPanController];
   if (v8 && v8 < [location count])
   {
-    v7 = [(_UIContextMenuContainerViewAccessibility *)v13 _axTranslationForDetentIndex:v8 currentDetentIndex:location detents:?];
-    [(_UIContextMenuContainerViewAccessibility *)v13 _axApplyTranslation:v10 forDetentIndex:v7 panController:v2];
+    v7 = [(_UIContextMenuContainerViewAccessibility *)selfCopy _axTranslationForDetentIndex:v8 currentDetentIndex:location detents:?];
+    [(_UIContextMenuContainerViewAccessibility *)selfCopy _axApplyTranslation:_axPanController forDetentIndex:v7 panController:v2];
     notification = *MEMORY[0x29EDC7EF0];
     v6 = accessibilityLocalizedString(@"context.menu.scrolled.down");
     UIAccessibilityPostNotification(notification, v6);
@@ -392,31 +392,31 @@
 
   v4 = v11;
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&_axPanController, 0);
   return v4 & 1;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
-  v22.receiver = v25;
+  objc_storeStrong(&v23, coordinator);
+  v22.receiver = selfCopy;
   v22.super_class = _UIContextMenuContainerViewAccessibility;
   [(_UIContextMenuContainerViewAccessibility *)&v22 didUpdateFocusInContext:location[0] withAnimationCoordinator:v23];
   v17 = 0;
   v15 = 0;
   v7 = 0;
-  if (([(_UIContextMenuContainerViewAccessibility *)v25 _accessibilityIsFKARunningForFocusItem]& 1) != 0)
+  if (([(_UIContextMenuContainerViewAccessibility *)selfCopy _accessibilityIsFKARunningForFocusItem]& 1) != 0)
   {
     v21 = 0;
     objc_opt_class();
-    v5 = [location[0] nextFocusedItem];
+    nextFocusedItem = [location[0] nextFocusedItem];
     v20 = __UIAccessibilityCastAsClass();
-    MEMORY[0x29EDC9740](v5);
+    MEMORY[0x29EDC9740](nextFocusedItem);
     v19 = MEMORY[0x29EDC9748](v20);
     objc_storeStrong(&v20, 0);
     v18 = v19;
@@ -444,7 +444,7 @@
     v10 = 0;
     v11 = __93___UIContextMenuContainerViewAccessibility_didUpdateFocusInContext_withAnimationCoordinator___block_invoke;
     v12 = &unk_29F30E430;
-    v13 = MEMORY[0x29EDC9748](v25);
+    v13 = MEMORY[0x29EDC9748](selfCopy);
     v14 = MEMORY[0x29EDC9748](location[0]);
     [v4 addCoordinatedFocusingAnimations:&v8 completion:?];
     objc_storeStrong(&v14, 0);

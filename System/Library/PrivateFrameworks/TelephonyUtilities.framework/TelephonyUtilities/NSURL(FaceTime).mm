@@ -89,8 +89,8 @@
 
 - (uint64_t)isShowInCallUIURL
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"showInCallUI"];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"showInCallUI"];
   if ([v2 isEqualToString:@"1"])
   {
     v3 = 1;
@@ -98,7 +98,7 @@
 
   else
   {
-    v4 = [v1 objectForKey:@"showCarPlayInCallUI"];
+    v4 = [tuQueryParameters objectForKey:@"showCarPlayInCallUI"];
     v3 = [v4 isEqualToString:@"1"];
   }
 
@@ -107,8 +107,8 @@
 
 - (uint64_t)isShowKeypadURL
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"showKeypad"];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"showKeypad"];
   v3 = [v2 isEqualToString:@"1"];
 
   return v3;
@@ -116,8 +116,8 @@
 
 - (uint64_t)isShowSystemCallControlsURL
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"showSystemCallControls"];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"showSystemCallControls"];
   v3 = [v2 isEqualToString:@"1"];
 
   return v3;
@@ -125,8 +125,8 @@
 
 - (uint64_t)isShowIncomingTransmissionNoticeURL
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"showIncomingTransmissionNotice"];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"showIncomingTransmissionNotice"];
   v3 = [v2 isEqualToString:@"1"];
 
   return v3;
@@ -134,8 +134,8 @@
 
 - (uint64_t)isRefreshShareableContentURL
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"refreshShareableContent"];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"refreshShareableContent"];
   v3 = [v2 isEqualToString:@"1"];
 
   return v3;
@@ -143,17 +143,17 @@
 
 - (uint64_t)isFaceTimeMultiwayURL
 {
-  v1 = [a1 scheme];
-  v2 = [MEMORY[0x1E695DFF8] faceTimeMultiwayScheme];
-  v3 = [v1 isEqualToString:v2];
+  scheme = [self scheme];
+  faceTimeMultiwayScheme = [MEMORY[0x1E695DFF8] faceTimeMultiwayScheme];
+  v3 = [scheme isEqualToString:faceTimeMultiwayScheme];
 
   return v3;
 }
 
 - (uint64_t)isLaunchForScreeningURL
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"launchForScreening"];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"launchForScreening"];
   v3 = [v2 isEqualToString:@"1"];
 
   return v3;
@@ -161,8 +161,8 @@
 
 - (uint64_t)isShowHandoffEligibleNearbyURL
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"showHandoffEligibleNearby"];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"showHandoffEligibleNearby"];
   v3 = [v2 isEqualToString:@"1"];
 
   return v3;
@@ -170,8 +170,8 @@
 
 - (uint64_t)isShowLagunaPullConversationURL
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"showLagunaPullConversation"];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"showLagunaPullConversation"];
   v3 = [v2 isEqualToString:@"1"];
 
   return v3;
@@ -179,16 +179,16 @@
 
 - (uint64_t)isShowScreenSharingURL
 {
-  v1 = [a1 scheme];
-  v2 = [v1 isEqualToString:@"system-screen-sharing"];
+  scheme = [self scheme];
+  v2 = [scheme isEqualToString:@"system-screen-sharing"];
 
   return v2;
 }
 
 - (uint64_t)isShowAccessoryButtonEventsNoticeURL
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"showAccessoryButtonEventsNotice"];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"showAccessoryButtonEventsNotice"];
   v3 = [v2 isEqualToString:@"1"];
 
   return v3;
@@ -196,8 +196,8 @@
 
 - (uint64_t)isUpdateForegroundAppURL
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"updateForegroundApp"];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"updateForegroundApp"];
   v3 = [v2 isEqualToString:@"1"];
 
   return v3;
@@ -205,17 +205,17 @@
 
 - (uint64_t)isFaceTimeOpenLinkURL
 {
-  v1 = [a1 scheme];
-  v2 = [MEMORY[0x1E695DFF8] faceTimeOpenLinkScheme];
-  v3 = [v1 isEqualToString:v2];
+  scheme = [self scheme];
+  faceTimeOpenLinkScheme = [MEMORY[0x1E695DFF8] faceTimeOpenLinkScheme];
+  v3 = [scheme isEqualToString:faceTimeOpenLinkScheme];
 
   return v3;
 }
 
 - (uint64_t)isLaunchForIncomingCallURL
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"launchForIncomingCall"];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"launchForIncomingCall"];
   v3 = [v2 isEqualToString:@"1"];
 
   return v3;
@@ -223,8 +223,8 @@
 
 - (BOOL)isAnswerRequestURL
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"answerSourceIdentifier"];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"answerSourceIdentifier"];
   v3 = v2 != 0;
 
   return v3;
@@ -232,8 +232,8 @@
 
 - (uint64_t)isFaceTimeNeedsBackgroundLaunchURL
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"shouldBackgroundLaunch"];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"shouldBackgroundLaunch"];
   v3 = [v2 isEqualToString:@"1"];
 
   return v3;
@@ -241,11 +241,11 @@
 
 - (uint64_t)isVideoMessagePlaybackURL
 {
-  v2 = [a1 scheme];
-  if ([v2 isEqualToString:@"facetime-video-message"])
+  scheme = [self scheme];
+  if ([scheme isEqualToString:@"facetime-video-message"])
   {
-    v3 = [a1 host];
-    v4 = [v3 isEqualToString:@"player"];
+    host = [self host];
+    v4 = [host isEqualToString:@"player"];
   }
 
   else
@@ -260,8 +260,8 @@
 {
   v0 = MEMORY[0x1E695DFF8];
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [MEMORY[0x1E695DFF8] faceTimeScheme];
-  v3 = [v1 stringWithFormat:@"%@://", v2];
+  faceTimeScheme = [MEMORY[0x1E695DFF8] faceTimeScheme];
+  v3 = [v1 stringWithFormat:@"%@://", faceTimeScheme];
   v4 = [v0 URLWithString:v3];
   v5 = [v4 URLBySettingQueryParameterValue:@"1" forKey:@"showInCallUI"];
 
@@ -270,8 +270,8 @@
 
 - (uint64_t)isShowCarPlayInCallUIURL
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"showCarPlayInCallUI"];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"showCarPlayInCallUI"];
   v3 = [v2 isEqualToString:@"1"];
 
   return v3;
@@ -279,33 +279,33 @@
 
 - (id)faceTimeDestinationAccount
 {
-  v1 = [a1 resourceSpecifier];
-  v2 = [v1 stringByRemovingPercentEncoding];
+  resourceSpecifier = [self resourceSpecifier];
+  stringByRemovingPercentEncoding = [resourceSpecifier stringByRemovingPercentEncoding];
 
-  if ([v2 hasPrefix:@"//"])
+  if ([stringByRemovingPercentEncoding hasPrefix:@"//"])
   {
-    v3 = [v2 substringFromIndex:2];
+    v3 = [stringByRemovingPercentEncoding substringFromIndex:2];
 
-    v2 = v3;
+    stringByRemovingPercentEncoding = v3;
   }
 
-  v4 = [v2 rangeOfString:@"/"];
+  v4 = [stringByRemovingPercentEncoding rangeOfString:@"/"];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [v2 substringToIndex:v4];
+    v5 = [stringByRemovingPercentEncoding substringToIndex:v4];
 
-    v2 = v5;
+    stringByRemovingPercentEncoding = v5;
   }
 
-  v6 = [v2 rangeOfString:@"?"];
+  v6 = [stringByRemovingPercentEncoding rangeOfString:@"?"];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [v2 substringToIndex:v6];
+    v7 = [stringByRemovingPercentEncoding substringToIndex:v6];
 
-    v2 = v7;
+    stringByRemovingPercentEncoding = v7;
   }
 
-  return v2;
+  return stringByRemovingPercentEncoding;
 }
 
 - (BOOL)_isPhoneNumberID:()FaceTime
@@ -321,7 +321,7 @@
 + (id)_faceTimeURLWithDestinationID:()FaceTime addressBookUID:audioOnly:
 {
   v8 = [TUHandle handleWithDestinationID:?];
-  v9 = [a1 _faceTimeURLWithHandle:v8 addressBookUID:a4 audioOnly:a5];
+  v9 = [self _faceTimeURLWithHandle:v8 addressBookUID:a4 audioOnly:a5];
 
   return v9;
 }
@@ -341,26 +341,26 @@
   v8 = ;
   v9 = objc_alloc_init(MEMORY[0x1E696AF20]);
   [v9 setScheme:v8];
-  v10 = [v7 value];
-  v11 = _FormatDestinationID(v10);
+  value = [v7 value];
+  v11 = _FormatDestinationID(value);
   [v9 setHost:v11];
 
-  v12 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = [MEMORY[0x1E696AF60] queryItemForHandleType:{objc_msgSend(v7, "type")}];
-  [v12 addObject:v13];
+  [array addObject:v13];
 
   if (a4 != -1)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithInt:a4];
-    v15 = [v14 stringValue];
+    stringValue = [v14 stringValue];
 
-    v16 = [MEMORY[0x1E696AF60] queryItemWithName:@"uid" value:v15];
-    [v12 addObject:v16];
+    v16 = [MEMORY[0x1E696AF60] queryItemWithName:@"uid" value:stringValue];
+    [array addObject:v16];
   }
 
-  if ([v12 count])
+  if ([array count])
   {
-    v17 = [v12 copy];
+    v17 = [array copy];
     [v9 setQueryItems:v17];
   }
 
@@ -374,8 +374,8 @@
   v11 = [MEMORY[0x1E695DFF8] faceTimeURLWithDestinationID:a3 addressBookUID:a4 audioOnly:a8];
   v12 = [MEMORY[0x1E696AF20] componentsWithURL:v11 resolvingAgainstBaseURL:0];
   v13 = MEMORY[0x1E695DF70];
-  v14 = [v12 queryItems];
-  v15 = [v13 arrayWithArray:v14];
+  queryItems = [v12 queryItems];
+  v15 = [v13 arrayWithArray:queryItems];
 
   if ((a5 & 1) != 0 || a6)
   {
@@ -406,8 +406,8 @@
   v5 = TUURLHostForTelephoneNumber(a3);
   if ([v5 length])
   {
-    v6 = [MEMORY[0x1E696AB08] URLHostAllowedCharacterSet];
-    v7 = [v5 stringByAddingPercentEncodingWithAllowedCharacters:v6];
+    uRLHostAllowedCharacterSet = [MEMORY[0x1E696AB08] URLHostAllowedCharacterSet];
+    v7 = [v5 stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet];
 
     v5 = v7;
   }
@@ -430,19 +430,19 @@
 {
   v5 = a3;
   v6 = a4;
-  v7 = [v6 isFaceTimeURL];
-  v8 = [v6 isFaceTimeAudioURL];
-  if ((v7 & 1) != 0 || v8)
+  isFaceTimeURL = [v6 isFaceTimeURL];
+  isFaceTimeAudioURL = [v6 isFaceTimeAudioURL];
+  if ((isFaceTimeURL & 1) != 0 || isFaceTimeAudioURL)
   {
-    v9 = [v6 resourceSpecifier];
-    if ([v9 hasPrefix:@"//"])
+    resourceSpecifier = [v6 resourceSpecifier];
+    if ([resourceSpecifier hasPrefix:@"//"])
     {
-      v10 = [v9 substringFromIndex:2];
+      v10 = [resourceSpecifier substringFromIndex:2];
 
-      v9 = v10;
+      resourceSpecifier = v10;
     }
 
-    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@://%@", v5, v9];
+    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@://%@", v5, resourceSpecifier];
     v12 = [MEMORY[0x1E695DFF8] URLWithString:v11];
 
     v6 = v12;
@@ -455,8 +455,8 @@
 {
   v3 = MEMORY[0x1E695DFF8];
   v4 = a3;
-  v5 = [v3 faceTimeScheme];
-  v6 = [v3 _applyFaceTimeScheme:v5 toFaceTimeURL:v4];
+  faceTimeScheme = [v3 faceTimeScheme];
+  v6 = [v3 _applyFaceTimeScheme:faceTimeScheme toFaceTimeURL:v4];
 
   return v6;
 }
@@ -464,9 +464,9 @@
 + (id)faceTimePromptURLWithURL:()FaceTime
 {
   v3 = a3;
-  v4 = [v3 isFaceTimeAudioURL];
+  isFaceTimeAudioURL = [v3 isFaceTimeAudioURL];
   v5 = @"facetime-prompt";
-  if (v4)
+  if (isFaceTimeAudioURL)
   {
     v5 = @"facetime-audio-prompt";
   }
@@ -483,8 +483,8 @@
 {
   v0 = MEMORY[0x1E695DFF8];
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [MEMORY[0x1E695DFF8] phoneAppScheme];
-  v3 = [v1 stringWithFormat:@"%@://", v2];
+  phoneAppScheme = [MEMORY[0x1E695DFF8] phoneAppScheme];
+  v3 = [v1 stringWithFormat:@"%@://", phoneAppScheme];
   v4 = [v0 URLWithString:v3];
   v5 = [v4 URLBySettingQueryParameterValue:@"1" forKey:@"launchForIncomingCall"];
 
@@ -495,8 +495,8 @@
 {
   v0 = MEMORY[0x1E695DFF8];
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [MEMORY[0x1E695DFF8] faceTimeScheme];
-  v3 = [v1 stringWithFormat:@"%@://", v2];
+  faceTimeScheme = [MEMORY[0x1E695DFF8] faceTimeScheme];
+  v3 = [v1 stringWithFormat:@"%@://", faceTimeScheme];
   v4 = [v0 URLWithString:v3];
   v5 = [v4 URLBySettingQueryParameterValue:@"1" forKey:@"launchForIncomingCall"];
 
@@ -507,8 +507,8 @@
 {
   v0 = MEMORY[0x1E695DFF8];
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [MEMORY[0x1E695DFF8] phoneAppScheme];
-  v3 = [v1 stringWithFormat:@"%@://", v2];
+  phoneAppScheme = [MEMORY[0x1E695DFF8] phoneAppScheme];
+  v3 = [v1 stringWithFormat:@"%@://", phoneAppScheme];
   v4 = [v0 URLWithString:v3];
   v5 = [v4 URLBySettingQueryParameterValue:@"1" forKey:@"launchForOutgoingConversation"];
 
@@ -519,8 +519,8 @@
 {
   v0 = MEMORY[0x1E695DFF8];
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [MEMORY[0x1E695DFF8] faceTimeMultiwayScheme];
-  v3 = [v1 stringWithFormat:@"%@://", v2];
+  faceTimeMultiwayScheme = [MEMORY[0x1E695DFF8] faceTimeMultiwayScheme];
+  v3 = [v1 stringWithFormat:@"%@://", faceTimeMultiwayScheme];
   v4 = [v0 URLWithString:v3];
   v5 = [v4 URLBySettingQueryParameterValue:@"1" forKey:@"launchForOutgoingConversation"];
 
@@ -531,8 +531,8 @@
 {
   v0 = MEMORY[0x1E695DFF8];
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [MEMORY[0x1E695DFF8] faceTimeScheme];
-  v3 = [v1 stringWithFormat:@"%@://", v2];
+  faceTimeScheme = [MEMORY[0x1E695DFF8] faceTimeScheme];
+  v3 = [v1 stringWithFormat:@"%@://", faceTimeScheme];
   v4 = [v0 URLWithString:v3];
   v5 = [v4 URLBySettingQueryParameterValue:@"1" forKey:@"launchForScreening"];
 
@@ -543,8 +543,8 @@
 {
   v0 = MEMORY[0x1E695DFF8];
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [MEMORY[0x1E695DFF8] phoneAppScheme];
-  v3 = [v1 stringWithFormat:@"%@://", v2];
+  phoneAppScheme = [MEMORY[0x1E695DFF8] phoneAppScheme];
+  v3 = [v1 stringWithFormat:@"%@://", phoneAppScheme];
   v4 = [v0 URLWithString:v3];
   v5 = [v4 URLBySettingQueryParameterValue:@"1" forKey:@"showInCallUI"];
 
@@ -555,8 +555,8 @@
 {
   v0 = MEMORY[0x1E695DFF8];
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [MEMORY[0x1E695DFF8] faceTimeScheme];
-  v3 = [v1 stringWithFormat:@"%@://", v2];
+  faceTimeScheme = [MEMORY[0x1E695DFF8] faceTimeScheme];
+  v3 = [v1 stringWithFormat:@"%@://", faceTimeScheme];
   v4 = [v0 URLWithString:v3];
   v5 = [v4 URLBySettingQueryParameterValue:@"1" forKey:@"showInCallUI"];
 
@@ -567,8 +567,8 @@
 {
   v0 = MEMORY[0x1E695DFF8];
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [MEMORY[0x1E695DFF8] faceTimeScheme];
-  v3 = [v1 stringWithFormat:@"%@://", v2];
+  faceTimeScheme = [MEMORY[0x1E695DFF8] faceTimeScheme];
+  v3 = [v1 stringWithFormat:@"%@://", faceTimeScheme];
   v4 = [v0 URLWithString:v3];
   v5 = [v4 URLBySettingQueryParameterValue:@"1" forKey:@"showInCallUI"];
 
@@ -579,8 +579,8 @@
 {
   v0 = MEMORY[0x1E695DFF8];
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [MEMORY[0x1E695DFF8] faceTimeScheme];
-  v3 = [v1 stringWithFormat:@"%@://", v2];
+  faceTimeScheme = [MEMORY[0x1E695DFF8] faceTimeScheme];
+  v3 = [v1 stringWithFormat:@"%@://", faceTimeScheme];
   v4 = [v0 URLWithString:v3];
   v5 = [v4 URLBySettingQueryParameterValue:@"1" forKey:@"showKeypad"];
 
@@ -591,8 +591,8 @@
 {
   v0 = MEMORY[0x1E695DFF8];
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [MEMORY[0x1E695DFF8] faceTimeScheme];
-  v3 = [v1 stringWithFormat:@"%@://", v2];
+  faceTimeScheme = [MEMORY[0x1E695DFF8] faceTimeScheme];
+  v3 = [v1 stringWithFormat:@"%@://", faceTimeScheme];
   v4 = [v0 URLWithString:v3];
   v5 = [v4 URLBySettingQueryParameterValue:@"1" forKey:@"showCarPlayInCallUI"];
 
@@ -603,8 +603,8 @@
 {
   v0 = MEMORY[0x1E695DFF8];
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [MEMORY[0x1E695DFF8] faceTimeSystemCallControlsScheme];
-  v3 = [v1 stringWithFormat:@"%@://", v2];
+  faceTimeSystemCallControlsScheme = [MEMORY[0x1E695DFF8] faceTimeSystemCallControlsScheme];
+  v3 = [v1 stringWithFormat:@"%@://", faceTimeSystemCallControlsScheme];
   v4 = [v0 URLWithString:v3];
   v5 = [v4 URLBySettingQueryParameterValue:@"1" forKey:@"showSystemCallControls"];
 
@@ -615,8 +615,8 @@
 {
   v0 = MEMORY[0x1E695DFF8];
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [MEMORY[0x1E695DFF8] faceTimeSystemCallControlsScheme];
-  v3 = [v1 stringWithFormat:@"%@://", v2];
+  faceTimeSystemCallControlsScheme = [MEMORY[0x1E695DFF8] faceTimeSystemCallControlsScheme];
+  v3 = [v1 stringWithFormat:@"%@://", faceTimeSystemCallControlsScheme];
   v4 = [v0 URLWithString:v3];
   v5 = [v4 URLBySettingQueryParameterValue:@"1" forKey:@"showHandoffEligibleNearby"];
 
@@ -627,8 +627,8 @@
 {
   v0 = MEMORY[0x1E695DFF8];
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [MEMORY[0x1E695DFF8] faceTimeSystemCallControlsScheme];
-  v3 = [v1 stringWithFormat:@"%@://", v2];
+  faceTimeSystemCallControlsScheme = [MEMORY[0x1E695DFF8] faceTimeSystemCallControlsScheme];
+  v3 = [v1 stringWithFormat:@"%@://", faceTimeSystemCallControlsScheme];
   v4 = [v0 URLWithString:v3];
   v5 = [v4 URLBySettingQueryParameterValue:@"1" forKey:@"showLagunaPullConversation"];
 
@@ -639,8 +639,8 @@
 {
   v0 = MEMORY[0x1E695DFF8];
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [MEMORY[0x1E695DFF8] faceTimeScheme];
-  v3 = [v1 stringWithFormat:@"%@://", v2];
+  faceTimeScheme = [MEMORY[0x1E695DFF8] faceTimeScheme];
+  v3 = [v1 stringWithFormat:@"%@://", faceTimeScheme];
   v4 = [v0 URLWithString:v3];
   v5 = [v4 URLBySettingQueryParameterValue:@"1" forKey:@"showIncomingTransmissionNotice"];
 
@@ -651,8 +651,8 @@
 {
   v0 = MEMORY[0x1E695DFF8];
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [MEMORY[0x1E695DFF8] faceTimeScheme];
-  v3 = [v1 stringWithFormat:@"%@://", v2];
+  faceTimeScheme = [MEMORY[0x1E695DFF8] faceTimeScheme];
+  v3 = [v1 stringWithFormat:@"%@://", faceTimeScheme];
   v4 = [v0 URLWithString:v3];
   v5 = [v4 URLBySettingQueryParameterValue:@"1" forKey:@"showAccessoryButtonEventsNotice"];
 
@@ -663,8 +663,8 @@
 {
   v0 = MEMORY[0x1E695DFF8];
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [MEMORY[0x1E695DFF8] faceTimeSystemCallControlsScheme];
-  v3 = [v1 stringWithFormat:@"%@://", v2];
+  faceTimeSystemCallControlsScheme = [MEMORY[0x1E695DFF8] faceTimeSystemCallControlsScheme];
+  v3 = [v1 stringWithFormat:@"%@://", faceTimeSystemCallControlsScheme];
   v4 = [v0 URLWithString:v3];
   v5 = [v4 URLBySettingQueryParameterValue:@"1" forKey:@"updateForegroundApp"];
 
@@ -695,8 +695,8 @@
 {
   v0 = MEMORY[0x1E695DFF8];
   v1 = MEMORY[0x1E696AEC0];
-  v2 = [MEMORY[0x1E695DFF8] faceTimeScheme];
-  v3 = [v1 stringWithFormat:@"%@://", v2];
+  faceTimeScheme = [MEMORY[0x1E695DFF8] faceTimeScheme];
+  v3 = [v1 stringWithFormat:@"%@://", faceTimeScheme];
   v4 = [v0 URLWithString:v3];
   v5 = [v4 URLBySettingQueryParameterValue:@"1" forKey:@"shouldBackgroundLaunch"];
 
@@ -717,8 +717,8 @@
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v2 = objc_alloc_init(MEMORY[0x1E696AF20]);
-  v3 = [a1 faceTimeSystemCallControlsScheme];
-  [v2 setScheme:v3];
+  faceTimeSystemCallControlsScheme = [self faceTimeSystemCallControlsScheme];
+  [v2 setScheme:faceTimeSystemCallControlsScheme];
 
   v4 = [MEMORY[0x1E696AF60] queryItemWithName:@"refreshShareableContent" value:@"1"];
   v9[0] = v4;
@@ -738,10 +738,10 @@
   v6 = MEMORY[0x1E696AF20];
   v7 = a3;
   v8 = [v6 alloc];
-  v9 = [a1 faceTimeUpdateForegroundAppURL];
-  v10 = [v8 initWithURL:v9 resolvingAgainstBaseURL:0];
+  faceTimeUpdateForegroundAppURL = [self faceTimeUpdateForegroundAppURL];
+  v10 = [v8 initWithURL:faceTimeUpdateForegroundAppURL resolvingAgainstBaseURL:0];
 
-  v11 = [v10 queryItems];
+  queryItems = [v10 queryItems];
   v12 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"bundleIdentifier" value:v7];
 
   v13 = objc_alloc(MEMORY[0x1E696AF60]);
@@ -749,7 +749,7 @@
   v15 = [v13 initWithName:@"applicationType" value:v14];
   v21[1] = v15;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
-  v17 = [v11 arrayByAddingObjectsFromArray:v16];
+  v17 = [queryItems arrayByAddingObjectsFromArray:v16];
   [v10 setQueryItems:v17];
 
   v18 = [v10 URL];
@@ -765,10 +765,10 @@
   v6 = MEMORY[0x1E696AF20];
   v7 = a3;
   v8 = [v6 alloc];
-  v9 = [a1 faceTimeUpdateForegroundAppURL];
-  v10 = [v8 initWithURL:v9 resolvingAgainstBaseURL:0];
+  faceTimeUpdateForegroundAppURL = [self faceTimeUpdateForegroundAppURL];
+  v10 = [v8 initWithURL:faceTimeUpdateForegroundAppURL resolvingAgainstBaseURL:0];
 
-  v11 = [v10 queryItems];
+  queryItems = [v10 queryItems];
   v12 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"bundleIdentifier" value:v7];
 
   v22[0] = v12;
@@ -779,7 +779,7 @@
   v16 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"nearbyType" value:@"wagoneer"];
   v22[2] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:3];
-  v18 = [v11 arrayByAddingObjectsFromArray:v17];
+  v18 = [queryItems arrayByAddingObjectsFromArray:v17];
   [v10 setQueryItems:v18];
 
   v19 = [v10 URL];
@@ -794,8 +794,8 @@
   v3 = MEMORY[0x1E695DFF8];
   v4 = MEMORY[0x1E696AEC0];
   v5 = a3;
-  v6 = [v3 faceTimeScheme];
-  v7 = [v4 stringWithFormat:@"%@://", v6];
+  faceTimeScheme = [v3 faceTimeScheme];
+  v7 = [v4 stringWithFormat:@"%@://", faceTimeScheme];
   v8 = [v3 URLWithString:v7];
   v9 = [v8 URLBySettingQueryParameterValue:v5 forKey:@"answerSourceIdentifier"];
 
@@ -808,15 +808,15 @@
   v4 = MEMORY[0x1E696AF20];
   v5 = a3;
   v6 = [v4 alloc];
-  v7 = [a1 faceTimeAppViewLinkDetailsURL];
-  v8 = [v6 initWithURL:v7 resolvingAgainstBaseURL:0];
+  faceTimeAppViewLinkDetailsURL = [self faceTimeAppViewLinkDetailsURL];
+  v8 = [v6 initWithURL:faceTimeAppViewLinkDetailsURL resolvingAgainstBaseURL:0];
 
-  v9 = [v8 queryItems];
+  queryItems = [v8 queryItems];
   v10 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"pseudonym" value:v5];
 
   v16[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-  v12 = [v9 arrayByAddingObjectsFromArray:v11];
+  v12 = [queryItems arrayByAddingObjectsFromArray:v11];
   [v8 setQueryItems:v12];
 
   v13 = [v8 URL];
@@ -829,8 +829,8 @@
 + (id)facetimeAppViewLinkRequestDetailsURL
 {
   v2 = objc_alloc(MEMORY[0x1E696AF20]);
-  v3 = [a1 faceTimeAppViewLinkRequesetDetailsURL];
-  v4 = [v2 initWithURL:v3 resolvingAgainstBaseURL:0];
+  faceTimeAppViewLinkRequesetDetailsURL = [self faceTimeAppViewLinkRequesetDetailsURL];
+  v4 = [v2 initWithURL:faceTimeAppViewLinkRequesetDetailsURL resolvingAgainstBaseURL:0];
 
   v5 = [v4 URL];
 
@@ -843,17 +843,17 @@
   v4 = MEMORY[0x1E696AF20];
   v5 = a3;
   v6 = [v4 alloc];
-  v7 = [a1 faceTimeAppJoinConversationLinkURL];
-  v8 = [v6 initWithURL:v7 resolvingAgainstBaseURL:0];
+  faceTimeAppJoinConversationLinkURL = [self faceTimeAppJoinConversationLinkURL];
+  v8 = [v6 initWithURL:faceTimeAppJoinConversationLinkURL resolvingAgainstBaseURL:0];
 
-  v9 = [v8 queryItems];
+  queryItems = [v8 queryItems];
   v10 = objc_alloc(MEMORY[0x1E696AF60]);
-  v11 = [v5 absoluteString];
+  absoluteString = [v5 absoluteString];
 
-  v12 = [v10 initWithName:@"conversationLink" value:v11];
+  v12 = [v10 initWithName:@"conversationLink" value:absoluteString];
   v18[0] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-  v14 = [v9 arrayByAddingObjectsFromArray:v13];
+  v14 = [queryItems arrayByAddingObjectsFromArray:v13];
   [v8 setQueryItems:v14];
 
   v15 = [v8 URL];
@@ -867,13 +867,13 @@
 {
   v4 = MEMORY[0x1E696AF20];
   v5 = a3;
-  v6 = [a1 faceTimeRefreshShareableContentURL];
-  v7 = [v4 componentsWithURL:v6 resolvingAgainstBaseURL:0];
+  faceTimeRefreshShareableContentURL = [self faceTimeRefreshShareableContentURL];
+  v7 = [v4 componentsWithURL:faceTimeRefreshShareableContentURL resolvingAgainstBaseURL:0];
 
-  v8 = [v7 queryItems];
+  queryItems = [v7 queryItems];
   v9 = [MEMORY[0x1E696AF60] queryItemWithName:@"bundleIdentifier" value:v5];
 
-  v10 = [v8 arrayByAddingObject:v9];
+  v10 = [queryItems arrayByAddingObject:v9];
   [v7 setQueryItems:v10];
 
   v11 = [v7 URL];
@@ -887,14 +887,14 @@
   v3 = MEMORY[0x1E696AF20];
   v4 = a3;
   v5 = objc_alloc_init(v3);
-  v6 = [MEMORY[0x1E695DFF8] faceTimeVideoMessageScheme];
-  [v5 setScheme:v6];
+  faceTimeVideoMessageScheme = [MEMORY[0x1E695DFF8] faceTimeVideoMessageScheme];
+  [v5 setScheme:faceTimeVideoMessageScheme];
 
   [v5 setHost:@"player"];
   v7 = MEMORY[0x1E696AF60];
-  v8 = [v4 UUIDString];
+  uUIDString = [v4 UUIDString];
 
-  v9 = [v7 queryItemWithName:@"uuid" value:v8];
+  v9 = [v7 queryItemWithName:@"uuid" value:uUIDString];
   v14[0] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   [v5 setQueryItems:v10];
@@ -915,9 +915,9 @@
   [v5 setScheme:@"facetimeapp"];
   [v5 setHost:@"player"];
   v6 = MEMORY[0x1E696AF60];
-  v7 = [v4 UUIDString];
+  uUIDString = [v4 UUIDString];
 
-  v8 = [v6 queryItemWithName:@"uuid" value:v7];
+  v8 = [v6 queryItemWithName:@"uuid" value:uUIDString];
   v13[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   [v5 setQueryItems:v9];
@@ -938,9 +938,9 @@
   [v5 setScheme:@"applenotes"];
   [v5 setHost:@"showNote"];
   v6 = MEMORY[0x1E696AF60];
-  v7 = [v4 callUUID];
+  callUUID = [v4 callUUID];
 
-  v8 = [v6 queryItemWithName:@"identifier" value:v7];
+  v8 = [v6 queryItemWithName:@"identifier" value:callUUID];
   v13[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   [v5 setQueryItems:v9];
@@ -954,16 +954,16 @@
 
 - (uint64_t)isFaceTimeURL
 {
-  v1 = [a1 scheme];
-  v2 = [MEMORY[0x1E695DFF8] faceTimeScheme];
-  if ([v1 isEqualToIgnoringCase:v2])
+  scheme = [self scheme];
+  faceTimeScheme = [MEMORY[0x1E695DFF8] faceTimeScheme];
+  if ([scheme isEqualToIgnoringCase:faceTimeScheme])
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v1 isEqualToIgnoringCase:@"facetime-prompt"];
+    v3 = [scheme isEqualToIgnoringCase:@"facetime-prompt"];
   }
 
   return v3;
@@ -971,24 +971,24 @@
 
 - (uint64_t)isFaceTimePromptURL
 {
-  v1 = [a1 scheme];
-  v2 = [v1 isEqualToIgnoringCase:@"facetime-prompt"];
+  scheme = [self scheme];
+  v2 = [scheme isEqualToIgnoringCase:@"facetime-prompt"];
 
   return v2;
 }
 
 - (uint64_t)isFaceTimeAudioURL
 {
-  v1 = [a1 scheme];
-  v2 = [MEMORY[0x1E695DFF8] faceTimeAudioScheme];
-  if ([v1 isEqualToIgnoringCase:v2])
+  scheme = [self scheme];
+  faceTimeAudioScheme = [MEMORY[0x1E695DFF8] faceTimeAudioScheme];
+  if ([scheme isEqualToIgnoringCase:faceTimeAudioScheme])
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v1 isEqualToIgnoringCase:@"facetime-audio-prompt"];
+    v3 = [scheme isEqualToIgnoringCase:@"facetime-audio-prompt"];
   }
 
   return v3;
@@ -996,25 +996,25 @@
 
 - (uint64_t)isFaceTimeAudioPromptURL
 {
-  v1 = [a1 scheme];
-  v2 = [v1 isEqualToIgnoringCase:@"facetime-audio-prompt"];
+  scheme = [self scheme];
+  v2 = [scheme isEqualToIgnoringCase:@"facetime-audio-prompt"];
 
   return v2;
 }
 
 - (uint64_t)isSystemCallControlsURL
 {
-  v1 = [a1 scheme];
-  v2 = [MEMORY[0x1E695DFF8] faceTimeSystemCallControlsScheme];
-  v3 = [v1 isEqualToString:v2];
+  scheme = [self scheme];
+  faceTimeSystemCallControlsScheme = [MEMORY[0x1E695DFF8] faceTimeSystemCallControlsScheme];
+  v3 = [scheme isEqualToString:faceTimeSystemCallControlsScheme];
 
   return v3;
 }
 
 - (uint64_t)isFaceTimeAppViewLinkDetailsURL
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"viewLinkDetails"];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"viewLinkDetails"];
   v3 = [v2 isEqualToString:@"1"];
 
   return v3;
@@ -1022,8 +1022,8 @@
 
 - (uint64_t)isFaceTimeAppViewLinkRequestDetailsURL
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"viewLinkRequestDetails"];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"viewLinkRequestDetails"];
   v3 = [v2 isEqualToString:@"1"];
 
   return v3;
@@ -1032,16 +1032,16 @@
 - (id)pseudonymForLinkDetailsView
 {
   v27 = *MEMORY[0x1E69E9840];
-  if ([a1 isFaceTimeAppViewLinkDetailsURL])
+  if ([self isFaceTimeAppViewLinkDetailsURL])
   {
-    v2 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:a1 resolvingAgainstBaseURL:0];
-    v3 = [v2 queryItems];
+    v2 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:self resolvingAgainstBaseURL:0];
+    queryItems = [v2 queryItems];
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v4 = v3;
+    v4 = queryItems;
     v5 = [v4 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v5)
     {
@@ -1057,12 +1057,12 @@
           }
 
           v9 = *(*(&v22 + 1) + 8 * i);
-          v10 = [v9 name];
-          v11 = [v10 isEqualToString:@"pseudonym"];
+          name = [v9 name];
+          v11 = [name isEqualToString:@"pseudonym"];
 
           if (v11)
           {
-            v19 = [v9 value];
+            value = [v9 value];
             v12 = v4;
             goto LABEL_15;
           }
@@ -1081,36 +1081,36 @@
     v12 = TUDefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(NSURL(FaceTime) *)a1 pseudonymForLinkDetailsView:v12];
+      [(NSURL(FaceTime) *)self pseudonymForLinkDetailsView:v12];
     }
 
-    v19 = 0;
+    value = 0;
 LABEL_15:
   }
 
   else
   {
-    v19 = 0;
+    value = 0;
   }
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v19;
+  return value;
 }
 
 - (id)conversationLinkURLForOpenLinkURL
 {
   v29 = *MEMORY[0x1E69E9840];
-  if ([a1 isFaceTimeOpenLinkURL])
+  if ([self isFaceTimeOpenLinkURL])
   {
-    v2 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:a1 resolvingAgainstBaseURL:0];
-    v3 = [v2 queryItems];
+    v2 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:self resolvingAgainstBaseURL:0];
+    queryItems = [v2 queryItems];
 
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v4 = v3;
+    v4 = queryItems;
     v5 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v5)
     {
@@ -1126,14 +1126,14 @@ LABEL_15:
           }
 
           v9 = *(*(&v24 + 1) + 8 * i);
-          v10 = [v9 name];
-          v11 = [v10 isEqualToString:@"link"];
+          name = [v9 name];
+          v11 = [name isEqualToString:@"link"];
 
           if (v11)
           {
             v20 = MEMORY[0x1E695DFF8];
-            v21 = [v9 value];
-            v19 = [v20 URLWithString:v21];
+            value = [v9 value];
+            v19 = [v20 URLWithString:value];
 
             v12 = v4;
             goto LABEL_15;
@@ -1153,7 +1153,7 @@ LABEL_15:
     v12 = TUDefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(NSURL(FaceTime) *)a1 conversationLinkURLForOpenLinkURL:v12];
+      [(NSURL(FaceTime) *)self conversationLinkURLForOpenLinkURL:v12];
     }
 
     v19 = 0;
@@ -1172,8 +1172,8 @@ LABEL_15:
 
 - (uint64_t)isFaceTimeAppJoinConversationLinkURL
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"joinConversationLink"];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"joinConversationLink"];
   v3 = [v2 isEqualToString:@"1"];
 
   return v3;
@@ -1182,16 +1182,16 @@ LABEL_15:
 - (id)conversationLinkURLForJoinConversation
 {
   v29 = *MEMORY[0x1E69E9840];
-  if ([a1 isFaceTimeAppJoinConversationLinkURL])
+  if ([self isFaceTimeAppJoinConversationLinkURL])
   {
-    v2 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:a1 resolvingAgainstBaseURL:0];
-    v3 = [v2 queryItems];
+    v2 = [objc_alloc(MEMORY[0x1E696AF20]) initWithURL:self resolvingAgainstBaseURL:0];
+    queryItems = [v2 queryItems];
 
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v4 = v3;
+    v4 = queryItems;
     v5 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v5)
     {
@@ -1207,14 +1207,14 @@ LABEL_15:
           }
 
           v9 = *(*(&v24 + 1) + 8 * i);
-          v10 = [v9 name];
-          v11 = [v10 isEqualToString:@"conversationLink"];
+          name = [v9 name];
+          v11 = [name isEqualToString:@"conversationLink"];
 
           if (v11)
           {
             v20 = MEMORY[0x1E695DFF8];
-            v21 = [v9 value];
-            v19 = [v20 URLWithString:v21];
+            value = [v9 value];
+            v19 = [v20 URLWithString:value];
 
             v12 = v4;
             goto LABEL_15;
@@ -1234,7 +1234,7 @@ LABEL_15:
     v12 = TUDefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(NSURL(FaceTime) *)a1 conversationLinkURLForOpenLinkURL:v12];
+      [(NSURL(FaceTime) *)self conversationLinkURLForOpenLinkURL:v12];
     }
 
     v19 = 0;
@@ -1253,34 +1253,34 @@ LABEL_15:
 
 - (BOOL)hasNoPromptOption
 {
-  if ([a1 isFaceTimePromptURL] & 1) != 0 || (objc_msgSend(a1, "isFaceTimeAudioPromptURL"))
+  if ([self isFaceTimePromptURL] & 1) != 0 || (objc_msgSend(self, "isFaceTimeAudioPromptURL"))
   {
     return 0;
   }
 
-  v3 = [a1 scheme];
-  v2 = [v3 caseInsensitiveCompare:@"telprompt"] != 0;
+  scheme = [self scheme];
+  v2 = [scheme caseInsensitiveCompare:@"telprompt"] != 0;
 
   return v2;
 }
 
 - (uint64_t)isDialCallURL
 {
-  if ([a1 isLaunchForIncomingCallURL])
+  if ([self isLaunchForIncomingCallURL])
   {
     return 0;
   }
 
   else
   {
-    return [a1 isShowInCallUIURL] ^ 1;
+    return [self isShowInCallUIURL] ^ 1;
   }
 }
 
 - (uint64_t)isLaunchForOutgoingConversationURL
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"launchForOutgoingConversation"];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"launchForOutgoingConversation"];
   v3 = [v2 isEqualToString:@"1"];
 
   return v3;
@@ -1288,11 +1288,11 @@ LABEL_15:
 
 - (uint64_t)isFaceTimeAppVideoMessagePlaybackURL
 {
-  v2 = [a1 scheme];
-  if ([v2 isEqualToString:@"facetimeapp"])
+  scheme = [self scheme];
+  if ([scheme isEqualToString:@"facetimeapp"])
   {
-    v3 = [a1 host];
-    v4 = [v3 isEqualToString:@"player"];
+    host = [self host];
+    v4 = [host isEqualToString:@"player"];
   }
 
   else
@@ -1305,23 +1305,23 @@ LABEL_15:
 
 - (id)videoMessageUUID
 {
-  if (([a1 isVideoMessagePlaybackURL] & 1) != 0 || objc_msgSend(a1, "isFaceTimeAppVideoMessagePlaybackURL"))
+  if (([self isVideoMessagePlaybackURL] & 1) != 0 || objc_msgSend(self, "isFaceTimeAppVideoMessagePlaybackURL"))
   {
     v2 = objc_alloc(MEMORY[0x1E696AF20]);
-    v3 = [a1 absoluteString];
-    v4 = [v2 initWithString:v3];
+    absoluteString = [self absoluteString];
+    v4 = [v2 initWithString:absoluteString];
 
-    v5 = [v4 queryItems];
-    v6 = [v5 firstObject];
+    queryItems = [v4 queryItems];
+    firstObject = [queryItems firstObject];
 
-    v7 = [v6 name];
-    v8 = [v7 isEqualToString:@"uuid"];
+    name = [firstObject name];
+    v8 = [name isEqualToString:@"uuid"];
 
     if (v8)
     {
       v9 = objc_alloc(MEMORY[0x1E696AFB0]);
-      v10 = [v6 value];
-      v11 = [v9 initWithUUIDString:v10];
+      value = [firstObject value];
+      v11 = [v9 initWithUUIDString:value];
     }
 
     else
@@ -1340,11 +1340,11 @@ LABEL_15:
 
 - (BOOL)isFaceTimeRecentsDetailsViewURL
 {
-  v2 = [a1 scheme];
-  if ([v2 isEqualToString:@"facetime-recents"])
+  scheme = [self scheme];
+  if ([scheme isEqualToString:@"facetime-recents"])
   {
-    v3 = [a1 recentsUniqueID];
-    v4 = [v3 length] != 0;
+    recentsUniqueID = [self recentsUniqueID];
+    v4 = [recentsUniqueID length] != 0;
   }
 
   else
@@ -1358,20 +1358,20 @@ LABEL_15:
 - (id)recentsUniqueID
 {
   v2 = objc_alloc(MEMORY[0x1E696AF20]);
-  v3 = [a1 absoluteString];
-  v4 = [v2 initWithString:v3];
+  absoluteString = [self absoluteString];
+  v4 = [v2 initWithString:absoluteString];
 
-  v5 = [v4 queryItems];
-  v6 = [v5 firstObject];
+  queryItems = [v4 queryItems];
+  firstObject = [queryItems firstObject];
 
-  v7 = [v6 name];
-  if ([v7 isEqualToString:@"uniqueId"])
+  name = [firstObject name];
+  if ([name isEqualToString:@"uniqueId"])
   {
-    v8 = [v6 value];
+    value = [firstObject value];
 
-    if (v8)
+    if (value)
     {
-      v9 = [v6 value];
+      value2 = [firstObject value];
       goto LABEL_6;
     }
   }
@@ -1380,41 +1380,41 @@ LABEL_15:
   {
   }
 
-  v9 = 0;
+  value2 = 0;
 LABEL_6:
 
-  return v9;
+  return value2;
 }
 
 - (id)foregroundAppBundleIdentifier
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"bundleIdentifier"];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"bundleIdentifier"];
 
   return v2;
 }
 
 - (id)nearbyOption
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"nearbyType"];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"nearbyType"];
 
   return v2;
 }
 
 - (uint64_t)foregroundAppApplicationType
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"applicationType"];
-  v3 = [v2 integerValue];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"applicationType"];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (id)answerRequestSourceIdentifier
 {
-  v1 = [a1 tuQueryParameters];
-  v2 = [v1 objectForKey:@"answerSourceIdentifier"];
+  tuQueryParameters = [self tuQueryParameters];
+  v2 = [tuQueryParameters objectForKey:@"answerSourceIdentifier"];
 
   return v2;
 }

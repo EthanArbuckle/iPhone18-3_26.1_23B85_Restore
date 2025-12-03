@@ -48,7 +48,7 @@
 - (BOOL)_contentsExclusivelyInCharacterSet:()KSExtras
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [a1 length];
+  v2 = [self length];
   if (v2 >= 0x7D0)
   {
     v3 = 2000;
@@ -59,7 +59,7 @@
     v3 = v2;
   }
 
-  if ([a1 _fastCharacterContents])
+  if ([self _fastCharacterContents])
   {
     v4 = uset_containsAllCodePoints();
   }
@@ -67,7 +67,7 @@
   else
   {
     MEMORY[0x28223BE20]();
-    [a1 getCharacters:v8 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0) range:{0, v3}];
+    [self getCharacters:v8 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0) range:{0, v3}];
     v4 = uset_containsAllCodePoints();
   }
 
@@ -82,13 +82,13 @@
   block[1] = 3221225472;
   block[2] = __55__NSString_KSExtras___containsCJKSymbolsAndPunctuation__block_invoke;
   block[3] = &unk_2797F6310;
-  block[4] = a1;
+  block[4] = self;
   if (_containsCJKSymbolsAndPunctuation___onceToken != -1)
   {
     dispatch_once(&_containsCJKSymbolsAndPunctuation___onceToken, block);
   }
 
-  return [a1 _contentsExclusivelyInCharacterSet:_containsCJKSymbolsAndPunctuation___nonCJKSymbolsSet] ^ 1;
+  return [self _contentsExclusivelyInCharacterSet:_containsCJKSymbolsAndPunctuation___nonCJKSymbolsSet] ^ 1;
 }
 
 + (uint64_t)_nonIdeographicCharacterSet
@@ -97,7 +97,7 @@
   block[1] = 3221225472;
   block[2] = __49__NSString_KSExtras___nonIdeographicCharacterSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_nonIdeographicCharacterSet___onceToken != -1)
   {
     dispatch_once(&_nonIdeographicCharacterSet___onceToken, block);
@@ -112,7 +112,7 @@
   block[1] = 3221225472;
   block[2] = __55__NSString_KSExtras___nonHiraganaKatakanaOrBopomofoSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_nonHiraganaKatakanaOrBopomofoSet___onceToken != -1)
   {
     dispatch_once(&_nonHiraganaKatakanaOrBopomofoSet___onceToken, block);

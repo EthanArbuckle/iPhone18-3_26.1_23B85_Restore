@@ -1,17 +1,17 @@
 @interface BKToolbarButton
 - (CGRect)popoverPresentationRect;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)popoverPresentationEdgeInsets;
-- (void)setTitle:(id)a3 forState:(unint64_t)a4 allowAnimation:(BOOL)a5;
+- (void)setTitle:(id)title forState:(unint64_t)state allowAnimation:(BOOL)animation;
 @end
 
 @implementation BKToolbarButton
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v11.receiver = self;
   v11.super_class = BKToolbarButton;
-  [(BKToolbarButton *)&v11 sizeThatFits:a3.width, a3.height];
+  [(BKToolbarButton *)&v11 sizeThatFits:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
   if (self->_inMiniBar)
@@ -40,13 +40,13 @@
   return result;
 }
 
-- (void)setTitle:(id)a3 forState:(unint64_t)a4 allowAnimation:(BOOL)a5
+- (void)setTitle:(id)title forState:(unint64_t)state allowAnimation:(BOOL)animation
 {
-  v5 = a5;
-  v8 = a3;
+  animationCopy = animation;
+  titleCopy = title;
   v9 = +[UIView areAnimationsEnabled];
-  [UIView setAnimationsEnabled:v5];
-  [(BKToolbarButton *)self setTitle:v8 forState:a4];
+  [UIView setAnimationsEnabled:animationCopy];
+  [(BKToolbarButton *)self setTitle:titleCopy forState:state];
 
   [(BKToolbarButton *)self layoutIfNeeded];
 
@@ -55,8 +55,8 @@
 
 - (CGRect)popoverPresentationRect
 {
-  v3 = [(BKToolbarButton *)self imageView];
-  [v3 frame];
+  imageView = [(BKToolbarButton *)self imageView];
+  [imageView frame];
   top = self->_popoverPresentationEdgeInsets.top;
   left = self->_popoverPresentationEdgeInsets.left;
   v7 = v6 + left;

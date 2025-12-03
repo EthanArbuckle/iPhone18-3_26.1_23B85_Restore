@@ -1,19 +1,19 @@
 @interface FAFamilyCloudKitProperties
-- (FAFamilyCloudKitProperties)initWithCoder:(id)a3;
-- (FAFamilyCloudKitProperties)initWithDictionaryRepresentation:(id)a3;
+- (FAFamilyCloudKitProperties)initWithCoder:(id)coder;
+- (FAFamilyCloudKitProperties)initWithDictionaryRepresentation:(id)representation;
 @end
 
 @implementation FAFamilyCloudKitProperties
 
-- (FAFamilyCloudKitProperties)initWithDictionaryRepresentation:(id)a3
+- (FAFamilyCloudKitProperties)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v9.receiver = self;
   v9.super_class = FAFamilyCloudKitProperties;
   v5 = [(FAFamilyCloudKitProperties *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [representationCopy copy];
     dictionary = v5->_dictionary;
     v5->_dictionary = v6;
   }
@@ -21,9 +21,9 @@
   return v5;
 }
 
-- (FAFamilyCloudKitProperties)initWithCoder:(id)a3
+- (FAFamilyCloudKitProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(FAFamilyCloudKitProperties *)self init];
   if (v5)
   {
@@ -32,7 +32,7 @@
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"_dictionary"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"_dictionary"];
     dictionary = v5->_dictionary;
     v5->_dictionary = v11;
   }

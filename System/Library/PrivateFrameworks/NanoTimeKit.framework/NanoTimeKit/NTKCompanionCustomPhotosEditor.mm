@@ -1,31 +1,31 @@
 @interface NTKCompanionCustomPhotosEditor
-- (BOOL)addAssetsFromAssetList:(id)a3 maxPhotosCount:(unint64_t)a4;
-- (BOOL)addPhotosFromUIImagePicker:(id)a3;
-- (BOOL)isPhotoInPhotoLibraryAtIndex:(int64_t)a3;
-- (BOOL)setOriginalCrop:(CGRect)a3 forPhotoAtIndex:(int64_t)a4;
-- (CGRect)originalCropForPhotoAtIndex:(int64_t)a3;
-- (CGSize)minimumNormalizedCropSizeForPhotoAtIndex:(int64_t)a3;
-- (NTKCompanionCustomPhotosEditor)initWithResourceDirectory:(id)a3 forDevice:(id)a4;
-- (id)_copyOrTranscodePhotosTo:(id)a3;
-- (id)_fetchAssetsForNewPhotos:(id)a3;
+- (BOOL)addAssetsFromAssetList:(id)list maxPhotosCount:(unint64_t)count;
+- (BOOL)addPhotosFromUIImagePicker:(id)picker;
+- (BOOL)isPhotoInPhotoLibraryAtIndex:(int64_t)index;
+- (BOOL)setOriginalCrop:(CGRect)crop forPhotoAtIndex:(int64_t)index;
+- (CGRect)originalCropForPhotoAtIndex:(int64_t)index;
+- (CGSize)minimumNormalizedCropSizeForPhotoAtIndex:(int64_t)index;
+- (NTKCompanionCustomPhotosEditor)initWithResourceDirectory:(id)directory forDevice:(id)device;
+- (id)_copyOrTranscodePhotosTo:(id)to;
+- (id)_fetchAssetsForNewPhotos:(id)photos;
 - (void)_fetchAssetsForPickedPhotos;
-- (void)_readPickedPhotosFrom:(id)a3;
-- (void)_reinitializeWithImageList:(id)a3 andResourceDirectory:(id)a4;
-- (void)deletePhotoAtIndex:(int64_t)a3;
-- (void)finalizeWithCompletion:(id)a3;
-- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)a3;
-- (void)imageAndCropForPhotoAtIndex:(int64_t)a3 completion:(id)a4;
-- (void)imageInPhotoLibraryForPhotoAtIndex:(int64_t)a3 completion:(id)a4;
-- (void)movePhotoAtIndex:(int64_t)a3 toIndex:(int64_t)a4;
+- (void)_readPickedPhotosFrom:(id)from;
+- (void)_reinitializeWithImageList:(id)list andResourceDirectory:(id)directory;
+- (void)deletePhotoAtIndex:(int64_t)index;
+- (void)finalizeWithCompletion:(id)completion;
+- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)completion;
+- (void)imageAndCropForPhotoAtIndex:(int64_t)index completion:(id)completion;
+- (void)imageInPhotoLibraryForPhotoAtIndex:(int64_t)index completion:(id)completion;
+- (void)movePhotoAtIndex:(int64_t)index toIndex:(int64_t)toIndex;
 @end
 
 @implementation NTKCompanionCustomPhotosEditor
 
-- (NTKCompanionCustomPhotosEditor)initWithResourceDirectory:(id)a3 forDevice:(id)a4
+- (NTKCompanionCustomPhotosEditor)initWithResourceDirectory:(id)directory forDevice:(id)device
 {
   v16.receiver = self;
   v16.super_class = NTKCompanionCustomPhotosEditor;
-  v4 = [(NTKCompanionResourceDirectoryEditor *)&v16 initWithResourceDirectory:a3 forDevice:a4];
+  v4 = [(NTKCompanionResourceDirectoryEditor *)&v16 initWithResourceDirectory:directory forDevice:device];
   if (v4)
   {
     v5 = objc_opt_new();
@@ -45,12 +45,12 @@
     v4->_scaledImageCache = v11;
 
     v4->_previewIsValid = 0;
-    v13 = [(NTKCompanionResourceDirectoryEditor *)v4 resourceDirectory];
+    resourceDirectory = [(NTKCompanionResourceDirectoryEditor *)v4 resourceDirectory];
 
-    if (v13)
+    if (resourceDirectory)
     {
-      v14 = [(NTKCompanionResourceDirectoryEditor *)v4 resourceDirectory];
-      [(NTKCompanionCustomPhotosEditor *)v4 _readPickedPhotosFrom:v14];
+      resourceDirectory2 = [(NTKCompanionResourceDirectoryEditor *)v4 resourceDirectory];
+      [(NTKCompanionCustomPhotosEditor *)v4 _readPickedPhotosFrom:resourceDirectory2];
 
       [(NTKCompanionCustomPhotosEditor *)v4 _fetchAssetsForPickedPhotos];
     }
@@ -61,9 +61,9 @@
   return v4;
 }
 
-- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)a3
+- (void)generateGalleryPreviewResourceDirectoryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -77,22 +77,22 @@
   v23 = __Block_byref_object_copy__7;
   v24 = __Block_byref_object_dispose__7;
   v25 = 0;
-  v6 = [(NTKCompanionResourceDirectoryEditor *)self state];
+  state = [(NTKCompanionResourceDirectoryEditor *)self state];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __88__NTKCompanionCustomPhotosEditor_generateGalleryPreviewResourceDirectoryWithCompletion___block_invoke;
   aBlock[3] = &unk_27877FEC0;
   v18 = buf;
-  v19 = v6;
+  v19 = state;
   aBlock[4] = self;
-  v7 = v4;
+  v7 = completionCopy;
   v17 = v7;
   v8 = _Block_copy(aBlock);
   if ([(NTKCompanionResourceDirectoryEditor *)self state]&& [(NTKCompanionResourceDirectoryEditor *)self state]<= 2)
   {
     if ([(NTKCompanionResourceDirectoryEditor *)self state]== 1)
     {
-      v10 = [(NTKCompanionResourceDirectoryEditor *)self resourceDirectory];
+      resourceDirectory = [(NTKCompanionResourceDirectoryEditor *)self resourceDirectory];
     }
 
     else
@@ -113,11 +113,11 @@
         goto LABEL_12;
       }
 
-      v10 = [(NTKCompanionResourceDirectoryEditor *)self galleryPreviewResourceDirectory];
+      resourceDirectory = [(NTKCompanionResourceDirectoryEditor *)self galleryPreviewResourceDirectory];
     }
 
     v11 = *(v21 + 5);
-    *(v21 + 5) = v10;
+    *(v21 + 5) = resourceDirectory;
 
     v9 = 1;
   }
@@ -249,9 +249,9 @@ LABEL_15:
   v11();
 }
 
-- (void)finalizeWithCompletion:(id)a3
+- (void)finalizeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([(NTKCompanionResourceDirectoryEditor *)self state]&& [(NTKCompanionResourceDirectoryEditor *)self state]< 3)
   {
     if ([(NTKCompanionResourceDirectoryEditor *)self state]== 1)
@@ -261,7 +261,7 @@ LABEL_15:
       v9[2] = __57__NTKCompanionCustomPhotosEditor_finalizeWithCompletion___block_invoke_2;
       v9[3] = &unk_27877E570;
       v9[4] = self;
-      v10 = v4;
+      v10 = completionCopy;
       dispatch_async(MEMORY[0x277D85CD0], v9);
       v5 = v10;
     }
@@ -275,7 +275,7 @@ LABEL_15:
       v7[2] = __57__NTKCompanionCustomPhotosEditor_finalizeWithCompletion___block_invoke_3;
       v7[3] = &unk_27877FF60;
       v7[4] = self;
-      v8 = v4;
+      v8 = completionCopy;
       dispatch_async(v6, v7);
 
       v5 = v8;
@@ -288,7 +288,7 @@ LABEL_15:
     block[1] = 3221225472;
     block[2] = __57__NTKCompanionCustomPhotosEditor_finalizeWithCompletion___block_invoke;
     block[3] = &unk_27877E960;
-    v12 = v4;
+    v12 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
     v5 = v12;
   }
@@ -384,12 +384,12 @@ uint64_t __57__NTKCompanionCustomPhotosEditor_finalizeWithCompletion___block_inv
   return v2();
 }
 
-- (BOOL)addPhotosFromUIImagePicker:(id)a3
+- (BOOL)addPhotosFromUIImagePicker:(id)picker
 {
-  v4 = a3;
-  if (-[NTKCompanionResourceDirectoryEditor state](self, "state") && -[NTKCompanionResourceDirectoryEditor state](self, "state") <= 2 && (v5 = -[NTKCompanionCustomPhotosEditor photosCount](self, "photosCount"), ([v4 count] + v5) <= 0x18))
+  pickerCopy = picker;
+  if (-[NTKCompanionResourceDirectoryEditor state](self, "state") && -[NTKCompanionResourceDirectoryEditor state](self, "state") <= 2 && (v5 = -[NTKCompanionCustomPhotosEditor photosCount](self, "photosCount"), ([pickerCopy count] + v5) <= 0x18))
   {
-    v8 = [(NTKCompanionCustomPhotosEditor *)self _fetchAssetsForNewPhotos:v4];
+    v8 = [(NTKCompanionCustomPhotosEditor *)self _fetchAssetsForNewPhotos:pickerCopy];
     v6 = [(NTKCompanionCustomPhotosEditor *)self addAssetsFromAssetList:v8];
   }
 
@@ -401,23 +401,23 @@ uint64_t __57__NTKCompanionCustomPhotosEditor_finalizeWithCompletion___block_inv
   return v6;
 }
 
-- (BOOL)addAssetsFromAssetList:(id)a3 maxPhotosCount:(unint64_t)a4
+- (BOOL)addAssetsFromAssetList:(id)list maxPhotosCount:(unint64_t)count
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!-[NTKCompanionResourceDirectoryEditor state](self, "state") || -[NTKCompanionResourceDirectoryEditor state](self, "state") > 2 || (v7 = -[NTKCompanionCustomPhotosEditor photosCount](self, "photosCount"), [v6 count] + v7 > a4))
+  listCopy = list;
+  if (!-[NTKCompanionResourceDirectoryEditor state](self, "state") || -[NTKCompanionResourceDirectoryEditor state](self, "state") > 2 || (v7 = -[NTKCompanionCustomPhotosEditor photosCount](self, "photosCount"), [listCopy count] + v7 > count))
   {
     v8 = 0;
     goto LABEL_5;
   }
 
-  v39 = [(NSMutableArray *)self->_orderList firstObject];
-  v40 = v6;
+  firstObject = [(NSMutableArray *)self->_orderList firstObject];
+  v40 = listCopy;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v6;
+  obj = listCopy;
   v10 = [obj countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (!v10)
   {
@@ -436,24 +436,24 @@ uint64_t __57__NTKCompanionCustomPhotosEditor_finalizeWithCompletion___block_inv
       }
 
       v13 = *(*(&v43 + 1) + 8 * i);
-      v14 = [v13 localIdentifier];
+      localIdentifier = [v13 localIdentifier];
       v15 = objc_opt_new();
-      v16 = [(NTKCompanionResourceDirectoryEditor *)self device];
-      NTKPhotosDefaultCropForAsset(v13, v16);
+      device = [(NTKCompanionResourceDirectoryEditor *)self device];
+      NTKPhotosDefaultCropForAsset(v13, device);
       [v15 setCrop:?];
 
       [v15 setAsset:v13];
       [v15 setSubsampleFactor:_subsampleFactorForAsset(v13)];
-      v17 = [(NSMutableDictionary *)self->_pickedPhotos objectForKeyedSubscript:v14];
+      v17 = [(NSMutableDictionary *)self->_pickedPhotos objectForKeyedSubscript:localIdentifier];
       v18 = v17;
       if (v17)
       {
-        v19 = [v17 photo];
-        v20 = [v19 modificationDate];
-        v21 = [v13 modificationDate];
-        [v20 timeIntervalSince1970];
+        photo = [v17 photo];
+        modificationDate = [photo modificationDate];
+        modificationDate2 = [v13 modificationDate];
+        [modificationDate timeIntervalSince1970];
         v23 = v22;
-        [v21 timeIntervalSince1970];
+        [modificationDate2 timeIntervalSince1970];
         v25 = vabdd_f64(v23, v24);
 
         v26 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
@@ -462,24 +462,24 @@ uint64_t __57__NTKCompanionCustomPhotosEditor_finalizeWithCompletion___block_inv
         {
           if (v27)
           {
-            v28 = [v18 photo];
-            v29 = [v28 imageURL];
+            photo2 = [v18 photo];
+            imageURL = [photo2 imageURL];
             *buf = 138412290;
-            v48 = v29;
+            v48 = imageURL;
             _os_log_impl(&dword_22D9C5000, v26, OS_LOG_TYPE_DEFAULT, "addAssetsFromAssetList: replacing existing photo %@ because it was modified", buf, 0xCu);
           }
 
-          [(NSMutableDictionary *)self->_pickedPhotos removeObjectForKey:v14];
-          [(NSMutableDictionary *)self->_newPhotos setObject:v15 forKeyedSubscript:v14];
+          [(NSMutableDictionary *)self->_pickedPhotos removeObjectForKey:localIdentifier];
+          [(NSMutableDictionary *)self->_newPhotos setObject:v15 forKeyedSubscript:localIdentifier];
           goto LABEL_26;
         }
 
         if (v27)
         {
-          v32 = [v18 photo];
-          v33 = [v32 imageURL];
+          photo3 = [v18 photo];
+          imageURL2 = [photo3 imageURL];
           *buf = 138412290;
-          v48 = v33;
+          v48 = imageURL2;
           v34 = v26;
           v35 = "addAssetsFromAssetList: not adding existing photo %@";
 LABEL_21:
@@ -489,7 +489,7 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v30 = [(NSMutableDictionary *)self->_newPhotos objectForKeyedSubscript:v14];
+      v30 = [(NSMutableDictionary *)self->_newPhotos objectForKeyedSubscript:localIdentifier];
 
       v26 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
       v31 = os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT);
@@ -497,10 +497,10 @@ LABEL_21:
       {
         if (v31)
         {
-          v32 = [v15 asset];
-          v33 = [v32 localIdentifier];
+          photo3 = [v15 asset];
+          imageURL2 = [photo3 localIdentifier];
           *buf = 138412290;
-          v48 = v33;
+          v48 = imageURL2;
           v34 = v26;
           v35 = "addAssetsFromAssetList: not adding new asset again %@";
           goto LABEL_21;
@@ -513,15 +513,15 @@ LABEL_22:
 
       if (v31)
       {
-        v36 = [v15 asset];
-        v37 = [v36 localIdentifier];
+        asset = [v15 asset];
+        localIdentifier2 = [asset localIdentifier];
         *buf = 138412290;
-        v48 = v37;
+        v48 = localIdentifier2;
         _os_log_impl(&dword_22D9C5000, v26, OS_LOG_TYPE_DEFAULT, "addAssetsFromAssetList: adding new asset %@", buf, 0xCu);
       }
 
-      [(NSMutableDictionary *)self->_newPhotos setObject:v15 forKeyedSubscript:v14];
-      [(NSMutableArray *)self->_orderList addObject:v14];
+      [(NSMutableDictionary *)self->_newPhotos setObject:v15 forKeyedSubscript:localIdentifier];
+      [(NSMutableArray *)self->_orderList addObject:localIdentifier];
 LABEL_26:
     }
 
@@ -533,28 +533,28 @@ LABEL_28:
 
   if (self->_previewIsValid)
   {
-    v38 = [(NSMutableArray *)self->_orderList firstObject];
-    self->_previewIsValid = NTKEqualStrings(v39, v38);
+    firstObject2 = [(NSMutableArray *)self->_orderList firstObject];
+    self->_previewIsValid = NTKEqualStrings(firstObject, firstObject2);
   }
 
   [(NTKCompanionResourceDirectoryEditor *)self setState:2];
 
   v8 = 1;
-  v6 = v40;
+  listCopy = v40;
 LABEL_5:
 
   return v8;
 }
 
-- (void)deletePhotoAtIndex:(int64_t)a3
+- (void)deletePhotoAtIndex:(int64_t)index
 {
   v24 = *MEMORY[0x277D85DE8];
   if ([(NTKCompanionResourceDirectoryEditor *)self state])
   {
-    v5 = [(NTKCompanionResourceDirectoryEditor *)self state];
-    if ((a3 & 0x8000000000000000) == 0 && v5 <= 2 && [(NSMutableArray *)self->_orderList count]> a3)
+    state = [(NTKCompanionResourceDirectoryEditor *)self state];
+    if ((index & 0x8000000000000000) == 0 && state <= 2 && [(NSMutableArray *)self->_orderList count]> index)
     {
-      v6 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:a3];
+      v6 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:index];
       [(NSMutableArray *)self->_orderList removeObject:v6];
       v7 = [(NSMutableDictionary *)self->_pickedPhotos objectForKeyedSubscript:v6];
 
@@ -564,12 +564,12 @@ LABEL_5:
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
           v9 = [(NSMutableDictionary *)self->_pickedPhotos objectForKeyedSubscript:v6];
-          v10 = [v9 photo];
-          v11 = [v10 imageURL];
+          photo = [v9 photo];
+          imageURL = [photo imageURL];
           v20 = 138412546;
-          v21 = v11;
+          v21 = imageURL;
           v22 = 2048;
-          v23 = a3;
+          indexCopy2 = index;
           _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "deletePhotoAtIndex: deleting existing photo %@ at index %ld", &v20, 0x16u);
         }
 
@@ -583,26 +583,26 @@ LABEL_5:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           v14 = [(NSMutableDictionary *)self->_newPhotos objectForKeyedSubscript:v6];
-          v15 = [v14 asset];
-          v16 = [v15 localIdentifier];
+          asset = [v14 asset];
+          localIdentifier = [asset localIdentifier];
           v20 = 138412546;
-          v21 = v16;
+          v21 = localIdentifier;
           v22 = 2048;
-          v23 = a3;
+          indexCopy2 = index;
           _os_log_impl(&dword_22D9C5000, v13, OS_LOG_TYPE_DEFAULT, "deletePhotoAtIndex: deleting new asset id %@ at index %ld", &v20, 0x16u);
         }
 
         scaledImageCache = self->_scaledImageCache;
-        v18 = [v12 asset];
-        v19 = [v18 localIdentifier];
-        [(NSCache *)scaledImageCache removeObjectForKey:v19];
+        asset2 = [v12 asset];
+        localIdentifier2 = [asset2 localIdentifier];
+        [(NSCache *)scaledImageCache removeObjectForKey:localIdentifier2];
 
         [(NSMutableDictionary *)self->_newPhotos removeObjectForKey:v6];
       }
 
       if (self->_previewIsValid)
       {
-        self->_previewIsValid = a3 != 0;
+        self->_previewIsValid = index != 0;
       }
 
       [(NTKCompanionResourceDirectoryEditor *)self setState:2];
@@ -610,35 +610,35 @@ LABEL_5:
   }
 }
 
-- (void)movePhotoAtIndex:(int64_t)a3 toIndex:(int64_t)a4
+- (void)movePhotoAtIndex:(int64_t)index toIndex:(int64_t)toIndex
 {
   v18 = *MEMORY[0x277D85DE8];
   if ([(NTKCompanionResourceDirectoryEditor *)self state])
   {
-    v7 = [(NTKCompanionResourceDirectoryEditor *)self state];
-    if ((a3 & 0x8000000000000000) == 0 && v7 <= 2)
+    state = [(NTKCompanionResourceDirectoryEditor *)self state];
+    if ((index & 0x8000000000000000) == 0 && state <= 2)
     {
       v8 = [(NSMutableArray *)self->_orderList count];
-      if ((a4 & 0x8000000000000000) == 0 && v8 > a3 && [(NSMutableArray *)self->_orderList count]> a4)
+      if ((toIndex & 0x8000000000000000) == 0 && v8 > index && [(NSMutableArray *)self->_orderList count]> toIndex)
       {
-        v9 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:a3];
+        v9 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:index];
         v10 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           v14 = 134218240;
-          v15 = a3;
+          indexCopy = index;
           v16 = 2048;
-          v17 = a4;
+          toIndexCopy = toIndex;
           _os_log_impl(&dword_22D9C5000, v10, OS_LOG_TYPE_DEFAULT, "movePhotoAtIndex: moving photo from index %ld to index %ld", &v14, 0x16u);
         }
 
-        [(NSMutableArray *)self->_orderList removeObjectAtIndex:a3];
-        [(NSMutableArray *)self->_orderList insertObject:v9 atIndex:a4];
+        [(NSMutableArray *)self->_orderList removeObjectAtIndex:index];
+        [(NSMutableArray *)self->_orderList insertObject:v9 atIndex:toIndex];
         if (self->_previewIsValid)
         {
-          if (a3)
+          if (index)
           {
-            v11 = a4 == 0;
+            v11 = toIndex == 0;
           }
 
           else
@@ -646,7 +646,7 @@ LABEL_5:
             v11 = 1;
           }
 
-          v13 = !v11 || a3 == a4;
+          v13 = !v11 || index == toIndex;
           self->_previewIsValid = v13;
         }
 
@@ -656,35 +656,35 @@ LABEL_5:
   }
 }
 
-- (BOOL)setOriginalCrop:(CGRect)a3 forPhotoAtIndex:(int64_t)a4
+- (BOOL)setOriginalCrop:(CGRect)crop forPhotoAtIndex:(int64_t)index
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(NTKCompanionResourceDirectoryEditor *)self state];
-  if (v10)
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  state = [(NTKCompanionResourceDirectoryEditor *)self state];
+  if (state)
   {
-    v11 = [(NTKCompanionResourceDirectoryEditor *)self state];
-    LOBYTE(v10) = 0;
-    if ((a4 & 0x8000000000000000) == 0 && v11 <= 2)
+    state2 = [(NTKCompanionResourceDirectoryEditor *)self state];
+    LOBYTE(state) = 0;
+    if ((index & 0x8000000000000000) == 0 && state2 <= 2)
     {
-      if ([(NSMutableArray *)self->_orderList count]<= a4)
+      if ([(NSMutableArray *)self->_orderList count]<= index)
       {
-        LOBYTE(v10) = 0;
-        return v10;
+        LOBYTE(state) = 0;
+        return state;
       }
 
-      LODWORD(v10) = [(NTKCompanionCustomPhotosEditor *)self canChangeOriginalCropOfPhotoAtIndex:a4];
-      if (v10)
+      LODWORD(state) = [(NTKCompanionCustomPhotosEditor *)self canChangeOriginalCropOfPhotoAtIndex:index];
+      if (state)
       {
-        v12 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:a4];
+        v12 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:index];
         v13 = [(NSMutableDictionary *)self->_pickedPhotos objectForKeyedSubscript:v12];
         v14 = v13;
         if (v13)
         {
-          v15 = [v13 photo];
-          [v15 originalCrop];
+          photo = [v13 photo];
+          [photo originalCrop];
           v16 = CLKRectEqualsRect();
 
           if (v16)
@@ -694,8 +694,8 @@ LABEL_5:
 
           [(NSMutableDictionary *)self->_pickedPhotos removeObjectForKey:v12];
           v17 = objc_opt_new();
-          v18 = [v14 asset];
-          [v17 setAsset:v18];
+          asset = [v14 asset];
+          [v17 setAsset:asset];
 
           [v17 setSubsampleFactor:{objc_msgSend(v14, "subsampleFactor")}];
           [(NSMutableDictionary *)self->_newPhotos setObject:v17 forKeyedSubscript:v12];
@@ -709,9 +709,9 @@ LABEL_5:
         if (v17)
         {
           scaledImageCache = self->_scaledImageCache;
-          v20 = [v17 asset];
-          v21 = [v20 localIdentifier];
-          [(NSCache *)scaledImageCache removeObjectForKey:v21];
+          asset2 = [v17 asset];
+          localIdentifier = [asset2 localIdentifier];
+          [(NSCache *)scaledImageCache removeObjectForKey:localIdentifier];
 
           CGAffineTransformMakeScale(&v24, [v17 subsampleFactor], objc_msgSend(v17, "subsampleFactor"));
           v25.origin.x = x;
@@ -730,8 +730,8 @@ LABEL_14:
 
           [(NTKCompanionResourceDirectoryEditor *)self setState:2];
 
-          LOBYTE(v10) = 1;
-          return v10;
+          LOBYTE(state) = 1;
+          return state;
         }
 
 LABEL_13:
@@ -741,20 +741,20 @@ LABEL_13:
     }
   }
 
-  return v10;
+  return state;
 }
 
-- (BOOL)isPhotoInPhotoLibraryAtIndex:(int64_t)a3
+- (BOOL)isPhotoInPhotoLibraryAtIndex:(int64_t)index
 {
-  if (a3 < 0 || [(NSMutableArray *)self->_orderList count]<= a3)
+  if (index < 0 || [(NSMutableArray *)self->_orderList count]<= index)
   {
     return 0;
   }
 
-  v5 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:a3];
+  v5 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:index];
   v6 = [(NSMutableDictionary *)self->_pickedPhotos objectForKeyedSubscript:v5];
-  v7 = [v6 asset];
-  if (v7)
+  asset = [v6 asset];
+  if (asset)
   {
     v8 = 1;
   }
@@ -768,36 +768,36 @@ LABEL_13:
   return v8;
 }
 
-- (void)imageAndCropForPhotoAtIndex:(int64_t)a3 completion:(id)a4
+- (void)imageAndCropForPhotoAtIndex:(int64_t)index completion:(id)completion
 {
-  v6 = a4;
-  if (a3 < 0 || [(NSMutableArray *)self->_orderList count]<= a3)
+  completionCopy = completion;
+  if (index < 0 || [(NSMutableArray *)self->_orderList count]<= index)
   {
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
     v50[2] = __73__NTKCompanionCustomPhotosEditor_imageAndCropForPhotoAtIndex_completion___block_invoke;
     v50[3] = &unk_27877E960;
-    v51 = v6;
+    v51 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], v50);
     v7 = v51;
   }
 
   else
   {
-    v7 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:a3];
+    v7 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:index];
     v8 = [(NSMutableDictionary *)self->_pickedPhotos objectForKeyedSubscript:v7];
-    v9 = [v8 photo];
+    photo = [v8 photo];
 
-    if (v9)
+    if (photo)
     {
-      v10 = NTKPhotosImageForPhoto(v9);
+      v10 = NTKPhotosImageForPhoto(photo);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __73__NTKCompanionCustomPhotosEditor_imageAndCropForPhotoAtIndex_completion___block_invoke_2;
       block[3] = &unk_27877FF88;
-      v49 = v6;
+      v49 = completionCopy;
       v47 = v10;
-      v48 = v9;
+      v48 = photo;
       v11 = v10;
       dispatch_async(MEMORY[0x277D85CD0], block);
 
@@ -808,9 +808,9 @@ LABEL_13:
     {
       v11 = [(NSMutableDictionary *)self->_newPhotos objectForKeyedSubscript:v7];
       scaledImageCache = self->_scaledImageCache;
-      v14 = [v11 asset];
-      v15 = [v14 localIdentifier];
-      v12 = [(NSCache *)scaledImageCache objectForKey:v15];
+      asset = [v11 asset];
+      localIdentifier = [asset localIdentifier];
+      v12 = [(NSCache *)scaledImageCache objectForKey:localIdentifier];
 
       [objc_opt_class() _watchPhotoImageSize];
       v17 = v16;
@@ -821,7 +821,7 @@ LABEL_13:
         v39[1] = 3221225472;
         v39[2] = __73__NTKCompanionCustomPhotosEditor_imageAndCropForPhotoAtIndex_completion___block_invoke_3;
         v39[3] = &unk_27877FFB0;
-        v41 = v6;
+        v41 = completionCopy;
         v12 = v12;
         v42 = 0;
         v43 = 0;
@@ -835,7 +835,7 @@ LABEL_13:
 
       else
       {
-        v21 = [v11 asset];
+        asset2 = [v11 asset];
         [v11 crop];
         v23 = v22;
         v25 = v24;
@@ -852,7 +852,7 @@ LABEL_13:
         v33 = v11;
         v37 = v17;
         v38 = v19;
-        v34 = v6;
+        v34 = completionCopy;
         v30 = v32;
         v52[0] = MEMORY[0x277D85DD0];
         v52[1] = 3221225472;
@@ -862,9 +862,9 @@ LABEL_13:
         v56 = v25;
         v57 = v27;
         v58 = v29;
-        v53 = v21;
+        v53 = asset2;
         v54 = v30;
-        v31 = v21;
+        v31 = asset2;
         [(NTKCompanionResourceDirectoryEditor *)NTKCompanionCustomPhotosEditor _imageDataForAsset:v31 completion:v52];
 
         v20 = v33;
@@ -914,44 +914,44 @@ void __73__NTKCompanionCustomPhotosEditor_imageAndCropForPhotoAtIndex_completion
   dispatch_async(MEMORY[0x277D85CD0], v11);
 }
 
-- (void)imageInPhotoLibraryForPhotoAtIndex:(int64_t)a3 completion:(id)a4
+- (void)imageInPhotoLibraryForPhotoAtIndex:(int64_t)index completion:(id)completion
 {
-  v6 = a4;
-  if (a3 < 0 || [(NSMutableArray *)self->_orderList count]<= a3)
+  completionCopy = completion;
+  if (index < 0 || [(NSMutableArray *)self->_orderList count]<= index)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __80__NTKCompanionCustomPhotosEditor_imageInPhotoLibraryForPhotoAtIndex_completion___block_invoke;
     block[3] = &unk_27877E960;
-    v20 = v6;
+    v20 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
     v7 = v20;
   }
 
   else
   {
-    v7 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:a3];
+    v7 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:index];
     v8 = [(NSMutableDictionary *)self->_pickedPhotos objectForKeyedSubscript:v7];
-    v9 = [v8 asset];
+    asset = [v8 asset];
 
     v10 = [(NSMutableDictionary *)self->_pickedPhotos objectForKeyedSubscript:v7];
-    v11 = [v10 subsampleFactor];
+    subsampleFactor = [v10 subsampleFactor];
 
-    if (v9 || (-[NSMutableDictionary objectForKeyedSubscript:](self->_newPhotos, "objectForKeyedSubscript:", v7), v12 = objc_claimAutoreleasedReturnValue(), [v12 asset], v9 = objc_claimAutoreleasedReturnValue(), v12, -[NSMutableDictionary objectForKeyedSubscript:](self->_newPhotos, "objectForKeyedSubscript:", v7), v13 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v13, "subsampleFactor"), v13, v9))
+    if (asset || (-[NSMutableDictionary objectForKeyedSubscript:](self->_newPhotos, "objectForKeyedSubscript:", v7), v12 = objc_claimAutoreleasedReturnValue(), [v12 asset], asset = objc_claimAutoreleasedReturnValue(), v12, -[NSMutableDictionary objectForKeyedSubscript:](self->_newPhotos, "objectForKeyedSubscript:", v7), v13 = objc_claimAutoreleasedReturnValue(), subsampleFactor = objc_msgSend(v13, "subsampleFactor"), v13, asset))
     {
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __80__NTKCompanionCustomPhotosEditor_imageInPhotoLibraryForPhotoAtIndex_completion___block_invoke_3;
       v15[3] = &unk_278780000;
-      v16 = v6;
+      v16 = completionCopy;
       v14 = v15;
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = ___fullSizeImageForAsset_block_invoke;
       v21[3] = &unk_278780050;
       v22 = v14;
-      v23 = v11;
-      [(NTKCompanionResourceDirectoryEditor *)NTKCompanionCustomPhotosEditor _imageDataForAsset:v9 completion:v21];
+      v23 = subsampleFactor;
+      [(NTKCompanionResourceDirectoryEditor *)NTKCompanionCustomPhotosEditor _imageDataForAsset:asset completion:v21];
     }
 
     else
@@ -960,9 +960,9 @@ void __73__NTKCompanionCustomPhotosEditor_imageAndCropForPhotoAtIndex_completion
       v17[1] = 3221225472;
       v17[2] = __80__NTKCompanionCustomPhotosEditor_imageInPhotoLibraryForPhotoAtIndex_completion___block_invoke_2;
       v17[3] = &unk_27877E960;
-      v18 = v6;
+      v18 = completionCopy;
       dispatch_async(MEMORY[0x277D85CD0], v17);
-      v9 = v18;
+      asset = v18;
     }
   }
 }
@@ -981,9 +981,9 @@ void __80__NTKCompanionCustomPhotosEditor_imageInPhotoLibraryForPhotoAtIndex_com
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (CGRect)originalCropForPhotoAtIndex:(int64_t)a3
+- (CGRect)originalCropForPhotoAtIndex:(int64_t)index
 {
-  if (a3 < 0 || [(NSMutableArray *)self->_orderList count]<= a3)
+  if (index < 0 || [(NSMutableArray *)self->_orderList count]<= index)
   {
     x = *MEMORY[0x277CBF398];
     y = *(MEMORY[0x277CBF398] + 8);
@@ -992,7 +992,7 @@ void __80__NTKCompanionCustomPhotosEditor_imageInPhotoLibraryForPhotoAtIndex_com
     goto LABEL_17;
   }
 
-  v5 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:a3];
+  v5 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:index];
   v6 = [(NSMutableDictionary *)self->_pickedPhotos objectForKeyedSubscript:v5];
   v7 = v6;
   if (v6)
@@ -1001,25 +1001,25 @@ void __80__NTKCompanionCustomPhotosEditor_imageInPhotoLibraryForPhotoAtIndex_com
     y = *(MEMORY[0x277CBF398] + 8);
     width = *(MEMORY[0x277CBF398] + 16);
     height = *(MEMORY[0x277CBF398] + 24);
-    v12 = [v6 asset];
-    if (!v12)
+    asset = [v6 asset];
+    if (!asset)
     {
-      v36 = 1;
+      subsampleFactor = 1;
       goto LABEL_14;
     }
 
-    v13 = [v7 photo];
-    v14 = [v13 modificationDate];
-    v15 = [v12 modificationDate];
-    [v14 timeIntervalSince1970];
+    photo = [v7 photo];
+    modificationDate = [photo modificationDate];
+    modificationDate2 = [asset modificationDate];
+    [modificationDate timeIntervalSince1970];
     v17 = v16;
-    [v15 timeIntervalSince1970];
+    [modificationDate2 timeIntervalSince1970];
     v19 = vabdd_f64(v17, v18);
 
     if (v19 <= 2.0)
     {
-      v20 = [v7 photo];
-      [v20 originalCrop];
+      photo2 = [v7 photo];
+      [photo2 originalCrop];
       x = v21;
       y = v22;
       width = v23;
@@ -1032,8 +1032,8 @@ void __80__NTKCompanionCustomPhotosEditor_imageInPhotoLibraryForPhotoAtIndex_com
     v42.size.height = height;
     if (CGRectIsEmpty(v42))
     {
-      v25 = [(NTKCompanionResourceDirectoryEditor *)self device];
-      NTKPhotosDefaultCropForAsset(v12, v25);
+      device = [(NTKCompanionResourceDirectoryEditor *)self device];
+      NTKPhotosDefaultCropForAsset(asset, device);
       x = v26;
       y = v27;
       width = v28;
@@ -1053,10 +1053,10 @@ void __80__NTKCompanionCustomPhotosEditor_imageInPhotoLibraryForPhotoAtIndex_com
     height = v35;
 
     v30 = [(NSMutableDictionary *)self->_newPhotos objectForKeyedSubscript:v5];
-    v12 = v30;
+    asset = v30;
   }
 
-  v36 = [v30 subsampleFactor];
+  subsampleFactor = [v30 subsampleFactor];
 LABEL_14:
 
   v43.origin.x = x;
@@ -1065,7 +1065,7 @@ LABEL_14:
   v43.size.height = height;
   if (!CGRectIsEmpty(v43))
   {
-    CGAffineTransformMakeScale(&v41, 1.0 / v36, 1.0 / v36);
+    CGAffineTransformMakeScale(&v41, 1.0 / subsampleFactor, 1.0 / subsampleFactor);
     v44.origin.x = x;
     v44.origin.y = y;
     v44.size.width = width;
@@ -1089,10 +1089,10 @@ LABEL_17:
   return result;
 }
 
-- (CGSize)minimumNormalizedCropSizeForPhotoAtIndex:(int64_t)a3
+- (CGSize)minimumNormalizedCropSizeForPhotoAtIndex:(int64_t)index
 {
   v3 = 1.0;
-  if (a3 < 0)
+  if (index < 0)
   {
     v6 = 1.0;
   }
@@ -1100,25 +1100,25 @@ LABEL_17:
   else
   {
     v6 = 1.0;
-    if ([(NSMutableArray *)self->_orderList count]> a3)
+    if ([(NSMutableArray *)self->_orderList count]> index)
     {
-      v7 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:a3];
+      v7 = [(NSMutableArray *)self->_orderList objectAtIndexedSubscript:index];
       v8 = [(NSMutableDictionary *)self->_newPhotos objectForKeyedSubscript:v7];
-      v9 = [v8 asset];
+      asset = [v8 asset];
 
       v10 = [(NSMutableDictionary *)self->_newPhotos objectForKeyedSubscript:v7];
-      v11 = [v10 subsampleFactor];
+      subsampleFactor = [v10 subsampleFactor];
 
-      if (v9 || (-[NSMutableDictionary objectForKeyedSubscript:](self->_pickedPhotos, "objectForKeyedSubscript:", v7), v12 = objc_claimAutoreleasedReturnValue(), [v12 asset], v9 = objc_claimAutoreleasedReturnValue(), v12, -[NSMutableDictionary objectForKeyedSubscript:](self->_pickedPhotos, "objectForKeyedSubscript:", v7), v13 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v13, "subsampleFactor"), v13, v9))
+      if (asset || (-[NSMutableDictionary objectForKeyedSubscript:](self->_pickedPhotos, "objectForKeyedSubscript:", v7), v12 = objc_claimAutoreleasedReturnValue(), [v12 asset], asset = objc_claimAutoreleasedReturnValue(), v12, -[NSMutableDictionary objectForKeyedSubscript:](self->_pickedPhotos, "objectForKeyedSubscript:", v7), v13 = objc_claimAutoreleasedReturnValue(), subsampleFactor = objc_msgSend(v13, "subsampleFactor"), v13, asset))
       {
-        v14 = [v9 pixelWidth];
-        v15 = [v9 pixelHeight];
+        pixelWidth = [asset pixelWidth];
+        pixelHeight = [asset pixelHeight];
         [objc_opt_class() _watchPhotoImageSize];
-        v17 = v16 * v11 / v14;
-        v19 = v18 * v11 / v15;
-        if (NTKPhotosIsPHAssetIris(v9))
+        v17 = v16 * subsampleFactor / pixelWidth;
+        v19 = v18 * subsampleFactor / pixelHeight;
+        if (NTKPhotosIsPHAssetIris(asset))
         {
-          v20 = [objc_opt_class() _videoAssetOf:v9];
+          v20 = [objc_opt_class() _videoAssetOf:asset];
           v21 = NTKPhotosVideoDimensions(v20);
           v23 = v22;
           [objc_opt_class() _watchPhotoVideoSize];
@@ -1164,10 +1164,10 @@ LABEL_17:
   return result;
 }
 
-- (void)_readPickedPhotosFrom:(id)a3
+- (void)_readPickedPhotosFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  [NTKPhotosReader readerForResourceDirectory:a3];
+  [NTKPhotosReader readerForResourceDirectory:from];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1187,12 +1187,12 @@ LABEL_17:
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 localIdentifier];
+        localIdentifier = [v8 localIdentifier];
         v10 = objc_opt_new();
         [v10 setPhoto:v8];
         [v10 setSubsampleFactor:1];
-        [(NSMutableDictionary *)self->_pickedPhotos setObject:v10 forKeyedSubscript:v9];
-        [(NSMutableArray *)self->_orderList addObject:v9];
+        [(NSMutableDictionary *)self->_pickedPhotos setObject:v10 forKeyedSubscript:localIdentifier];
+        [(NSMutableArray *)self->_orderList addObject:localIdentifier];
       }
 
       v5 = [obj countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -1210,8 +1210,8 @@ LABEL_17:
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v4 = [(NSMutableDictionary *)self->_pickedPhotos allValues];
-  v5 = [v4 countByEnumeratingWithState:&v37 objects:v43 count:16];
+  allValues = [(NSMutableDictionary *)self->_pickedPhotos allValues];
+  v5 = [allValues countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1222,19 +1222,19 @@ LABEL_17:
       {
         if (*v38 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
-        v9 = [*(*(&v37 + 1) + 8 * i) photo];
-        v10 = [v9 localIdentifier];
+        photo = [*(*(&v37 + 1) + 8 * i) photo];
+        localIdentifier = [photo localIdentifier];
 
-        if (v10)
+        if (localIdentifier)
         {
-          [v3 addObject:v10];
+          [v3 addObject:localIdentifier];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v37 objects:v43 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v37 objects:v43 count:16];
     }
 
     while (v6);
@@ -1262,8 +1262,8 @@ LABEL_17:
         }
 
         v18 = *(*(&v33 + 1) + 8 * j);
-        v19 = [v18 localIdentifier];
-        [v12 setObject:v18 forKeyedSubscript:v19];
+        localIdentifier2 = [v18 localIdentifier];
+        [v12 setObject:v18 forKeyedSubscript:localIdentifier2];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v33 objects:v42 count:16];
@@ -1276,8 +1276,8 @@ LABEL_17:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v20 = [(NSMutableDictionary *)self->_pickedPhotos allValues];
-  v21 = [v20 countByEnumeratingWithState:&v29 objects:v41 count:16];
+  allValues2 = [(NSMutableDictionary *)self->_pickedPhotos allValues];
+  v21 = [allValues2 countByEnumeratingWithState:&v29 objects:v41 count:16];
   if (v21)
   {
     v22 = v21;
@@ -1288,38 +1288,38 @@ LABEL_17:
       {
         if (*v30 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(allValues2);
         }
 
         v25 = *(*(&v29 + 1) + 8 * k);
-        v26 = [v25 photo];
-        v27 = [v26 localIdentifier];
+        photo2 = [v25 photo];
+        localIdentifier3 = [photo2 localIdentifier];
 
-        if (v27)
+        if (localIdentifier3)
         {
-          v28 = [v12 objectForKeyedSubscript:v27];
+          v28 = [v12 objectForKeyedSubscript:localIdentifier3];
           [v25 setAsset:v28];
           [v25 setSubsampleFactor:_subsampleFactorForAsset(v28)];
         }
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v29 objects:v41 count:16];
+      v22 = [allValues2 countByEnumeratingWithState:&v29 objects:v41 count:16];
     }
 
     while (v22);
   }
 }
 
-- (id)_fetchAssetsForNewPhotos:(id)a3
+- (id)_fetchAssetsForNewPhotos:(id)photos
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  photosCopy = photos;
   v4 = objc_opt_new();
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v3;
+  v5 = photosCopy;
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
@@ -1340,8 +1340,8 @@ LABEL_17:
         v12 = v11;
         if (v11)
         {
-          v13 = [v11 localIdentifier];
-          [v4 addObject:v13];
+          localIdentifier = [v11 localIdentifier];
+          [v4 addObject:localIdentifier];
         }
 
         ++v10;
@@ -1380,9 +1380,9 @@ LABEL_17:
   return v17;
 }
 
-- (id)_copyOrTranscodePhotosTo:(id)a3
+- (id)_copyOrTranscodePhotosTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1395,7 +1395,7 @@ LABEL_17:
   v9[2] = __59__NTKCompanionCustomPhotosEditor__copyOrTranscodePhotosTo___block_invoke;
   v9[3] = &unk_278780028;
   v9[4] = self;
-  v6 = v4;
+  v6 = toCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableArray *)orderList enumerateObjectsUsingBlock:v9];
@@ -1448,18 +1448,18 @@ void __59__NTKCompanionCustomPhotosEditor__copyOrTranscodePhotosTo___block_invok
   }
 }
 
-- (void)_reinitializeWithImageList:(id)a3 andResourceDirectory:(id)a4
+- (void)_reinitializeWithImageList:(id)list andResourceDirectory:(id)directory
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v28 = a4;
+  listCopy = list;
+  directoryCopy = directory;
   v27 = objc_opt_new();
   v7 = objc_opt_new();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v6;
+  obj = listCopy;
   v8 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v8)
   {
@@ -1475,32 +1475,32 @@ void __59__NTKCompanionCustomPhotosEditor__copyOrTranscodePhotosTo___block_invok
           objc_enumerationMutation(obj);
         }
 
-        v12 = [NTKPhoto decodeFromDictionary:*(*(&v29 + 1) + 8 * v11) forResourceDirectory:v28];
-        v13 = [v12 localIdentifier];
-        v14 = [(NSMutableDictionary *)self->_pickedPhotos objectForKeyedSubscript:v13];
+        v12 = [NTKPhoto decodeFromDictionary:*(*(&v29 + 1) + 8 * v11) forResourceDirectory:directoryCopy];
+        localIdentifier = [v12 localIdentifier];
+        asset = [(NSMutableDictionary *)self->_pickedPhotos objectForKeyedSubscript:localIdentifier];
 
-        if (v14)
+        if (asset)
         {
-          v15 = [(NSMutableDictionary *)self->_pickedPhotos objectForKeyedSubscript:v13];
-          v14 = [v15 asset];
+          v15 = [(NSMutableDictionary *)self->_pickedPhotos objectForKeyedSubscript:localIdentifier];
+          asset = [v15 asset];
         }
 
-        v16 = [(NSMutableDictionary *)self->_newPhotos objectForKeyedSubscript:v13];
+        v16 = [(NSMutableDictionary *)self->_newPhotos objectForKeyedSubscript:localIdentifier];
 
         if (v16)
         {
-          v17 = [(NSMutableDictionary *)self->_newPhotos objectForKeyedSubscript:v13];
-          v18 = [v17 asset];
+          v17 = [(NSMutableDictionary *)self->_newPhotos objectForKeyedSubscript:localIdentifier];
+          asset2 = [v17 asset];
 
-          v14 = v18;
+          asset = asset2;
         }
 
         v19 = objc_opt_new();
         [v19 setPhoto:v12];
-        [v19 setAsset:v14];
-        [v19 setSubsampleFactor:_subsampleFactorForAsset(v14)];
-        [(NSMutableDictionary *)v27 setObject:v19 forKeyedSubscript:v13];
-        [(NSMutableArray *)v7 addObject:v13];
+        [v19 setAsset:asset];
+        [v19 setSubsampleFactor:_subsampleFactorForAsset(asset)];
+        [(NSMutableDictionary *)v27 setObject:v19 forKeyedSubscript:localIdentifier];
+        [(NSMutableArray *)v7 addObject:localIdentifier];
 
         ++v11;
       }

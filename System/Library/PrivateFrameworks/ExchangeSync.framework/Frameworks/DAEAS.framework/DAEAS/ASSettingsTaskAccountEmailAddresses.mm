@@ -7,9 +7,9 @@
 + (id)asParseRules;
 - (id)description;
 - (id)emailAddresses;
-- (void)addEmailAddress:(id)a3;
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8;
-- (void)setPrimarySMTPAddress:(id)a3;
+- (void)addEmailAddress:(id)address;
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account;
+- (void)setPrimarySMTPAddress:(id)address;
 @end
 
 @implementation ASSettingsTaskAccountEmailAddresses
@@ -23,7 +23,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_95 = v2;
     acceptsTopLevelLeaves___haveChecked_94 = 1;
   }
@@ -40,7 +40,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_97 = v2;
     parsingLeafNode___haveChecked_96 = 1;
   }
@@ -57,7 +57,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_99 = v2;
     parsingWithSubItems___haveChecked_98 = 1;
   }
@@ -74,7 +74,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_101 = v2;
     frontingBasicTypes___haveChecked_100 = 1;
   }
@@ -91,7 +91,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_103 = v2;
     notifyOfUnknownTokens___haveChecked_102 = 1;
   }
@@ -101,35 +101,35 @@
 
 - (id)emailAddresses
 {
-  v2 = [(ASSettingsTaskAccountEmailAddresses *)self mEmailAddresses];
-  v3 = [v2 allObjects];
+  mEmailAddresses = [(ASSettingsTaskAccountEmailAddresses *)self mEmailAddresses];
+  allObjects = [mEmailAddresses allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (void)addEmailAddress:(id)a3
+- (void)addEmailAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(ASSettingsTaskAccountEmailAddresses *)self mEmailAddresses];
+  addressCopy = address;
+  mEmailAddresses = [(ASSettingsTaskAccountEmailAddresses *)self mEmailAddresses];
 
-  if (!v5)
+  if (!mEmailAddresses)
   {
     v6 = objc_opt_new();
     [(ASSettingsTaskAccountEmailAddresses *)self setMEmailAddresses:v6];
   }
 
-  v7 = [(ASSettingsTaskAccountEmailAddresses *)self mEmailAddresses];
-  [v7 addObject:v4];
+  mEmailAddresses2 = [(ASSettingsTaskAccountEmailAddresses *)self mEmailAddresses];
+  [mEmailAddresses2 addObject:addressCopy];
 }
 
-- (void)setPrimarySMTPAddress:(id)a3
+- (void)setPrimarySMTPAddress:(id)address
 {
-  v5 = a3;
-  if (self->_primarySMTPAddress != v5)
+  addressCopy = address;
+  if (self->_primarySMTPAddress != addressCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_primarySMTPAddress, a3);
-    v5 = v6;
+    v6 = addressCopy;
+    objc_storeStrong(&self->_primarySMTPAddress, address);
+    addressCopy = v6;
   }
 }
 
@@ -138,8 +138,8 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ASSettingsTaskAccountEmailAddresses *)self mEmailAddresses];
-  v7 = [v3 stringWithFormat:@"%@ %p: emailAddresses: %@ primary address %@", v5, self, v6, self->_primarySMTPAddress];
+  mEmailAddresses = [(ASSettingsTaskAccountEmailAddresses *)self mEmailAddresses];
+  v7 = [v3 stringWithFormat:@"%@ %p: emailAddresses: %@ primary address %@", v5, self, mEmailAddresses, self->_primarySMTPAddress];
 
   return v7;
 }
@@ -147,7 +147,7 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -160,19 +160,19 @@
     v5 = [v6 dictionaryWithObjectsAndKeys:{v7, v8, v9, v10, 0}];
 
     v11 = +[ASItem parseRuleCache];
-    v12 = NSStringFromClass(a1);
+    v12 = NSStringFromClass(self);
     [v11 setObject:v5 forKey:v12];
   }
 
   return v5;
 }
 
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account
 {
   v16 = *MEMORY[0x277D85DE8];
   v13.receiver = self;
   v13.super_class = ASSettingsTaskAccountEmailAddresses;
-  [(ASItem *)&v13 parseASParseContext:a3 root:a4 parent:a5 callbackDict:a6 streamCallbackDict:a7 account:a8];
+  [(ASItem *)&v13 parseASParseContext:context root:root parent:parent callbackDict:dict streamCallbackDict:callbackDict account:account];
   parsingState = self->super._parsingState;
   if (parsingState >= 2)
   {
@@ -188,7 +188,7 @@
       if (os_log_type_enabled(v10, v11))
       {
         *buf = 138412290;
-        v15 = self;
+        selfCopy = self;
         _os_log_impl(&dword_24A0AC000, v10, v11, "%@ Parsed its context.", buf, 0xCu);
       }
     }

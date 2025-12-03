@@ -1,7 +1,7 @@
 @interface PUBarsController
-- (BOOL)isLocationFromProviderInBarsArea:(id)a3;
+- (BOOL)isLocationFromProviderInBarsArea:(id)area;
 - (PUBarsController)init;
-- (PUBarsController)initWithViewController:(id)a3 delegate:(id)a4;
+- (PUBarsController)initWithViewController:(id)controller delegate:(id)delegate;
 - (PUBarsControllerDelegate)delegate;
 - (UIEdgeInsets)contentGuideInsets;
 - (UIViewController)viewController;
@@ -11,10 +11,10 @@
 - (void)_updateBars;
 - (void)_updateGestureRecognizers;
 - (void)_updateNowIfNeeded;
-- (void)disableUpdateBarsForDuration:(double)a3;
+- (void)disableUpdateBarsForDuration:(double)duration;
 - (void)invalidateBars;
 - (void)invalidateContentGuideInsets;
-- (void)setContentGuideInsets:(UIEdgeInsets)a3;
+- (void)setContentGuideInsets:(UIEdgeInsets)insets;
 - (void)updateIfNeeded;
 @end
 
@@ -58,11 +58,11 @@
   }
 }
 
-- (void)disableUpdateBarsForDuration:(double)a3
+- (void)disableUpdateBarsForDuration:(double)duration
 {
   [(PUBarsController *)self setUpdateBarsDisabledCount:[(PUBarsController *)self updateBarsDisabledCount]+ 1];
   objc_initWeak(&location, self);
-  v5 = dispatch_time(0, (a3 * 1000000000.0));
+  v5 = dispatch_time(0, (duration * 1000000000.0));
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__PUBarsController_disableUpdateBarsForDuration___block_invoke;
@@ -82,8 +82,8 @@ void __49__PUBarsController_disableUpdateBarsForDuration___block_invoke(uint64_t
 - (void)_updateNowIfNeeded
 {
   [(PUBarsController *)self setUpdateScheduled:0];
-  v3 = [(PUBarsController *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PUBarsController *)self updater];
+  [updater updateIfNeeded];
 }
 
 - (void)_setNeedsUpdate
@@ -111,16 +111,16 @@ void __35__PUBarsController__setNeedsUpdate__block_invoke(uint64_t a1)
 
 - (void)invalidateContentGuideInsets
 {
-  v2 = [(PUBarsController *)self updater];
-  [v2 setNeedsUpdateOf:sel_updateContentGuideInsets];
+  updater = [(PUBarsController *)self updater];
+  [updater setNeedsUpdateOf:sel_updateContentGuideInsets];
 }
 
 - (void)_updateGestureRecognizers
 {
   if (self->_delegateFlags.respondsToViewHostingGestureRecognizers)
   {
-    v3 = [(PUBarsController *)self delegate];
-    v4 = [v3 barsControllerViewHostingGestureRecognizers:self];
+    delegate = [(PUBarsController *)self delegate];
+    v4 = [delegate barsControllerViewHostingGestureRecognizers:self];
   }
 
   else
@@ -133,8 +133,8 @@ void __35__PUBarsController__setNeedsUpdate__block_invoke(uint64_t a1)
 
 - (void)_invalidateGestureRecognizers
 {
-  v2 = [(PUBarsController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateGestureRecognizers];
+  updater = [(PUBarsController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateGestureRecognizers];
 }
 
 - (void)_updateBars
@@ -148,15 +148,15 @@ void __35__PUBarsController__setNeedsUpdate__block_invoke(uint64_t a1)
 
 - (void)invalidateBars
 {
-  v2 = [(PUBarsController *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateBars];
+  updater = [(PUBarsController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateBars];
 }
 
-- (BOOL)isLocationFromProviderInBarsArea:(id)a3
+- (BOOL)isLocationFromProviderInBarsArea:(id)area
 {
-  v4 = a3;
-  v5 = [(PUBarsController *)self viewController];
-  if ([v5 px_isVisible])
+  areaCopy = area;
+  viewController = [(PUBarsController *)self viewController];
+  if ([viewController px_isVisible])
   {
     [(PUBarsController *)self contentGuideInsets];
     v7 = v6;
@@ -169,13 +169,13 @@ void __35__PUBarsController__setNeedsUpdate__block_invoke(uint64_t a1)
 
     v17 = v7 + v16;
     v18 = v11 + v16;
-    v19 = [v5 view];
-    [v19 bounds];
+    view = [viewController view];
+    [view bounds];
     v21 = v9 + v20;
     v23 = v17 + v22;
     v25 = v24 - (v9 + v13);
     v27 = v26 - (v17 + v18);
-    [v4 locationInView:v19];
+    [areaCopy locationInView:view];
     v32.x = v28;
     v32.y = v29;
     v33.origin.x = v21;
@@ -195,39 +195,39 @@ void __35__PUBarsController__setNeedsUpdate__block_invoke(uint64_t a1)
 
 - (void)updateIfNeeded
 {
-  v2 = [(PUBarsController *)self updater];
-  [v2 updateIfNeeded];
+  updater = [(PUBarsController *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)setContentGuideInsets:(UIEdgeInsets)a3
+- (void)setContentGuideInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_contentGuideInsets.top), vceqq_f64(v4, *&self->_contentGuideInsets.bottom)))) & 1) == 0)
   {
-    self->_contentGuideInsets = a3;
+    self->_contentGuideInsets = insets;
     if (self->_delegateFlags.respondsToContentGuideInsetsDidChange)
     {
-      v6 = [(PUBarsController *)self delegate];
-      [v6 barsControllerContentGuideInsetsDidChange:self];
+      delegate = [(PUBarsController *)self delegate];
+      [delegate barsControllerContentGuideInsetsDidChange:self];
     }
   }
 }
 
 - (PUBarsController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUBarsController.m" lineNumber:51 description:{@"%s is not available as initializer", "-[PUBarsController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUBarsController.m" lineNumber:51 description:{@"%s is not available as initializer", "-[PUBarsController init]"}];
 
   abort();
 }
 
-- (PUBarsController)initWithViewController:(id)a3 delegate:(id)a4
+- (PUBarsController)initWithViewController:(id)controller delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = PUBarsController;
   v8 = [(PUBarsController *)&v12 init];
@@ -240,10 +240,10 @@ void __35__PUBarsController__setNeedsUpdate__block_invoke(uint64_t a1)
     [(PXUpdater *)v8->_updater addUpdateSelector:sel__updateGestureRecognizers needsUpdate:1];
     [(PXUpdater *)v8->_updater addUpdateSelector:sel_updateContentGuideInsets needsUpdate:1];
     [(PXUpdater *)v8->_updater addUpdateSelector:sel__updateBars needsUpdate:1];
-    objc_storeWeak(&v8->_delegate, v7);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v8->_delegateFlags.respondsToViewHostingGestureRecognizers = objc_opt_respondsToSelector() & 1;
     v8->_delegateFlags.respondsToContentGuideInsetsDidChange = objc_opt_respondsToSelector() & 1;
-    objc_storeWeak(&v8->_viewController, v6);
+    objc_storeWeak(&v8->_viewController, controllerCopy);
   }
 
   return v8;

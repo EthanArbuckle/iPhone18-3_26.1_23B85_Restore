@@ -6,16 +6,16 @@
 
 - (CGSize)naturalSizeForAnnotation
 {
-  v2 = [(AKAnnotationEventHandler *)self annotation];
-  v3 = [v2 drawing];
+  annotation = [(AKAnnotationEventHandler *)self annotation];
+  drawing = [annotation drawing];
 
-  if (v3)
+  if (drawing)
   {
-    v4 = [v2 drawing];
-    v5 = v4;
-    if (v4)
+    drawing2 = [annotation drawing];
+    v5 = drawing2;
+    if (drawing2)
     {
-      [v4 bounds];
+      [drawing2 bounds];
       v7 = v6;
       v9 = v8;
       if ([AKGeometryHelper isUnpresentableRect:?])

@@ -1,7 +1,7 @@
 @interface PKNavigationItemHandle
 - (_BYTE)consume;
 - (uint64_t)updateItem;
-- (void)_deactivateFromDisconnect:(uint64_t)a1;
+- (void)_deactivateFromDisconnect:(uint64_t)disconnect;
 - (void)dealloc;
 @end
 
@@ -9,31 +9,31 @@
 
 - (_BYTE)consume
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if (a1[24] == 1)
+    if (self[24] == 1)
     {
-      v2 = a1;
-      WeakRetained = objc_loadWeakRetained(v2 + 1);
-      v4 = objc_loadWeakRetained(v2 + 2);
-      v1[24] = 0;
-      objc_storeWeak(v2 + 1, 0);
-      objc_storeWeak(v2 + 2, 0);
+      selfCopy2 = self;
+      WeakRetained = objc_loadWeakRetained(selfCopy2 + 1);
+      v4 = objc_loadWeakRetained(selfCopy2 + 2);
+      selfCopy[24] = 0;
+      objc_storeWeak(selfCopy2 + 1, 0);
+      objc_storeWeak(selfCopy2 + 2, 0);
       if (v4)
       {
-        [v4 endProvidingForNavigationItemHandle:v2];
+        [v4 endProvidingForNavigationItemHandle:selfCopy2];
       }
 
       if (WeakRetained)
       {
-        [(PKNavigationItemController *)WeakRetained _consumeHandle:v2];
-        v1 = v5;
+        [(PKNavigationItemController *)WeakRetained _consumeHandle:selfCopy2];
+        selfCopy = v5;
       }
 
       else
       {
-        v1 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -43,7 +43,7 @@
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -70,57 +70,57 @@
 
 - (uint64_t)updateItem
 {
-  if (!a1 || a1[24] != 1)
+  if (!self || self[24] != 1)
   {
     return 0;
   }
 
-  v1 = a1;
-  WeakRetained = objc_loadWeakRetained(v1 + 1);
+  selfCopy = self;
+  WeakRetained = objc_loadWeakRetained(selfCopy + 1);
   if (WeakRetained)
   {
-    v3 = objc_loadWeakRetained(v1 + 2);
-    v4 = [v3 configurationForNavigationItemHandle:v1];
+    v3 = objc_loadWeakRetained(selfCopy + 2);
+    v4 = [v3 configurationForNavigationItemHandle:selfCopy];
 
     if (v4)
     {
-      [(PKNavigationItemController *)WeakRetained _updateItemWithConfiguration:v4 forHandle:v1];
+      [(PKNavigationItemController *)WeakRetained _updateItemWithConfiguration:v4 forHandle:selfCopy];
       v6 = v5;
     }
 
     else
     {
-      [(PKNavigationItemHandle *)v1 _deactivateFromDisconnect:?];
+      [(PKNavigationItemHandle *)selfCopy _deactivateFromDisconnect:?];
       v6 = 0;
     }
   }
 
   else
   {
-    [(PKNavigationItemHandle *)v1 _deactivateFromDisconnect:?];
+    [(PKNavigationItemHandle *)selfCopy _deactivateFromDisconnect:?];
     v6 = 0;
   }
 
   return v6;
 }
 
-- (void)_deactivateFromDisconnect:(uint64_t)a1
+- (void)_deactivateFromDisconnect:(uint64_t)disconnect
 {
-  if (a1 && *(a1 + 24) == 1)
+  if (disconnect && *(disconnect + 24) == 1)
   {
-    *(a1 + 24) = 0;
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v4 = objc_loadWeakRetained((a1 + 16));
-    objc_storeWeak((a1 + 8), 0);
-    objc_storeWeak((a1 + 16), 0);
+    *(disconnect + 24) = 0;
+    WeakRetained = objc_loadWeakRetained((disconnect + 8));
+    v4 = objc_loadWeakRetained((disconnect + 16));
+    objc_storeWeak((disconnect + 8), 0);
+    objc_storeWeak((disconnect + 16), 0);
     if (v4)
     {
-      [v4 endProvidingForNavigationItemHandle:a1];
+      [v4 endProvidingForNavigationItemHandle:disconnect];
     }
 
     if ((a2 & 1) == 0)
     {
-      [(PKNavigationItemController *)WeakRetained _disconnectHandle:a1];
+      [(PKNavigationItemController *)WeakRetained _disconnectHandle:disconnect];
     }
   }
 }

@@ -1,7 +1,7 @@
 @interface HUPieProgressView
-- (HUPieProgressView)initWithFrame:(CGRect)a3;
-- (HUPieProgressView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (HUPieProgressView)initWithStyle:(int64_t)a3;
+- (HUPieProgressView)initWithFrame:(CGRect)frame;
+- (HUPieProgressView)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (HUPieProgressView)initWithStyle:(int64_t)style;
 - (HUPieProgressViewDelegate)delegate;
 - (double)outlineLineWidth;
 - (double)progress;
@@ -13,22 +13,22 @@
 - (void)_updateLayerPaths;
 - (void)_updateProgressLayerLineWidth;
 - (void)layoutSubviews;
-- (void)setHidesWhenStopped:(BOOL)a3;
-- (void)setIndeterminateMaxProgress:(double)a3;
-- (void)setIsAnimating:(BOOL)a3;
-- (void)setOutlineLineWidth:(double)a3;
-- (void)setProgress:(double)a3;
-- (void)startWithFuture:(id)a3;
+- (void)setHidesWhenStopped:(BOOL)stopped;
+- (void)setIndeterminateMaxProgress:(double)progress;
+- (void)setIsAnimating:(BOOL)animating;
+- (void)setOutlineLineWidth:(double)width;
+- (void)setProgress:(double)progress;
+- (void)startWithFuture:(id)future;
 - (void)tintColorDidChange;
 @end
 
 @implementation HUPieProgressView
 
-- (void)startWithFuture:(id)a3
+- (void)startWithFuture:(id)future
 {
-  v4 = a3;
-  v5 = [(HUPieProgressView *)self progressLayer];
-  [v5 removeAllAnimations];
+  futureCopy = future;
+  progressLayer = [(HUPieProgressView *)self progressLayer];
+  [progressLayer removeAllAnimations];
 
   if ([(HUPieProgressView *)self hidesWhenStopped])
   {
@@ -54,21 +54,21 @@
   v13 = [MEMORY[0x277CD9EF8] functionWithControlPoints:v9 :v10 :v11 :v12];
   [v6 setTimingFunction:v13];
 
-  v14 = [(HUPieProgressView *)self progressLayer];
-  [v14 addAnimation:v6 forKey:@"HUPieProgressViewStartingAnimation"];
+  progressLayer2 = [(HUPieProgressView *)self progressLayer];
+  [progressLayer2 addAnimation:v6 forKey:@"HUPieProgressViewStartingAnimation"];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __37__HUPieProgressView_startWithFuture___block_invoke;
   v18[3] = &unk_277DB8BD8;
   v18[4] = self;
-  v15 = [v4 addSuccessBlock:v18];
+  v15 = [futureCopy addSuccessBlock:v18];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __37__HUPieProgressView_startWithFuture___block_invoke_3;
   v17[3] = &unk_277DB8C00;
   v17[4] = self;
-  v16 = [v4 addFailureBlock:v17];
+  v16 = [futureCopy addFailureBlock:v17];
 }
 
 void __37__HUPieProgressView_startWithFuture___block_invoke(uint64_t a1)
@@ -150,44 +150,44 @@ uint64_t __37__HUPieProgressView_startWithFuture___block_invoke_3(uint64_t a1)
   return result;
 }
 
-- (void)setIndeterminateMaxProgress:(double)a3
+- (void)setIndeterminateMaxProgress:(double)progress
 {
-  if (a3 < 0.0 || a3 > 1.0)
+  if (progress < 0.0 || progress > 1.0)
   {
     NSLog(&cfstr_Hupieprogressv_1.isa, a2);
   }
 
-  v6 = 0.0;
-  if (a3 >= 0.0)
+  progressCopy = 0.0;
+  if (progress >= 0.0)
   {
-    v6 = a3;
+    progressCopy = progress;
   }
 
-  self->_indeterminateMaxProgress = fmin(v6, 1.0);
+  self->_indeterminateMaxProgress = fmin(progressCopy, 1.0);
 }
 
 - (double)outlineLineWidth
 {
-  v2 = [(HUPieProgressView *)self outlineLayer];
-  [v2 lineWidth];
+  outlineLayer = [(HUPieProgressView *)self outlineLayer];
+  [outlineLayer lineWidth];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setOutlineLineWidth:(double)a3
+- (void)setOutlineLineWidth:(double)width
 {
-  v4 = [(HUPieProgressView *)self outlineLayer];
-  [v4 setLineWidth:a3];
+  outlineLayer = [(HUPieProgressView *)self outlineLayer];
+  [outlineLayer setLineWidth:width];
 }
 
-- (void)setHidesWhenStopped:(BOOL)a3
+- (void)setHidesWhenStopped:(BOOL)stopped
 {
-  v3 = a3;
-  self->_hidesWhenStopped = a3;
+  stoppedCopy = stopped;
+  self->_hidesWhenStopped = stopped;
   if (![(HUPieProgressView *)self isAnimating])
   {
-    if (v3)
+    if (stoppedCopy)
     {
       v5 = 0.0;
     }
@@ -197,18 +197,18 @@ uint64_t __37__HUPieProgressView_startWithFuture___block_invoke_3(uint64_t a1)
       v5 = 1.0;
     }
 
-    [(HUPieProgressView *)self setHidden:v3];
+    [(HUPieProgressView *)self setHidden:stoppedCopy];
 
     [(HUPieProgressView *)self setAlpha:v5];
   }
 }
 
-- (void)setIsAnimating:(BOOL)a3
+- (void)setIsAnimating:(BOOL)animating
 {
-  v3 = a3;
-  self->_isAnimating = a3;
-  v5 = [(HUPieProgressView *)self delegate];
-  if (v3)
+  animatingCopy = animating;
+  self->_isAnimating = animating;
+  delegate = [(HUPieProgressView *)self delegate];
+  if (animatingCopy)
   {
     v6 = objc_opt_respondsToSelector();
 
@@ -217,8 +217,8 @@ uint64_t __37__HUPieProgressView_startWithFuture___block_invoke_3(uint64_t a1)
       return;
     }
 
-    v8 = [(HUPieProgressView *)self delegate];
-    [v8 pieProgressViewDidStartAnimating:self];
+    delegate2 = [(HUPieProgressView *)self delegate];
+    [delegate2 pieProgressViewDidStartAnimating:self];
   }
 
   else
@@ -230,47 +230,47 @@ uint64_t __37__HUPieProgressView_startWithFuture___block_invoke_3(uint64_t a1)
       return;
     }
 
-    v8 = [(HUPieProgressView *)self delegate];
-    [v8 pieProgressViewDidFinishAnimating:self];
+    delegate2 = [(HUPieProgressView *)self delegate];
+    [delegate2 pieProgressViewDidFinishAnimating:self];
   }
 }
 
 - (double)progress
 {
-  v2 = [(HUPieProgressView *)self progressLayer];
-  [v2 strokeEnd];
+  progressLayer = [(HUPieProgressView *)self progressLayer];
+  [progressLayer strokeEnd];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  v4 = [(HUPieProgressView *)self progressLayer];
-  [v4 setStrokeEnd:a3];
+  progressLayer = [(HUPieProgressView *)self progressLayer];
+  [progressLayer setStrokeEnd:progress];
 }
 
-- (HUPieProgressView)initWithFrame:(CGRect)a3
+- (HUPieProgressView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = HUPieProgressView;
-  v3 = [(HUPieProgressView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUPieProgressView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(HUPieProgressView *)v3 _setupOutlineLayer];
-    [(HUPieProgressView *)v4 setOutlineLayer:v5];
+    _setupOutlineLayer = [(HUPieProgressView *)v3 _setupOutlineLayer];
+    [(HUPieProgressView *)v4 setOutlineLayer:_setupOutlineLayer];
 
-    v6 = [(HUPieProgressView *)v4 layer];
-    v7 = [(HUPieProgressView *)v4 outlineLayer];
-    [v6 addSublayer:v7];
+    layer = [(HUPieProgressView *)v4 layer];
+    outlineLayer = [(HUPieProgressView *)v4 outlineLayer];
+    [layer addSublayer:outlineLayer];
 
-    v8 = [(HUPieProgressView *)v4 _setupProgressLayer];
-    [(HUPieProgressView *)v4 setProgressLayer:v8];
+    _setupProgressLayer = [(HUPieProgressView *)v4 _setupProgressLayer];
+    [(HUPieProgressView *)v4 setProgressLayer:_setupProgressLayer];
 
-    v9 = [(HUPieProgressView *)v4 layer];
-    v10 = [(HUPieProgressView *)v4 progressLayer];
-    [v9 addSublayer:v10];
+    layer2 = [(HUPieProgressView *)v4 layer];
+    progressLayer = [(HUPieProgressView *)v4 progressLayer];
+    [layer2 addSublayer:progressLayer];
 
     [(HUPieProgressView *)v4 _setDefaults];
     [(HUPieProgressView *)v4 _updateLayerPaths];
@@ -279,25 +279,25 @@ uint64_t __37__HUPieProgressView_startWithFuture___block_invoke_3(uint64_t a1)
   return v4;
 }
 
-- (HUPieProgressView)initWithStyle:(int64_t)a3
+- (HUPieProgressView)initWithStyle:(int64_t)style
 {
   v4 = [(HUPieProgressView *)self init];
   v5 = v4;
   if (v4)
   {
-    [(HUPieProgressView *)v4 setStyle:a3];
+    [(HUPieProgressView *)v4 setStyle:style];
   }
 
   return v5;
 }
 
-- (HUPieProgressView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (HUPieProgressView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
-  v5 = [(HUPieProgressView *)self initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(HUPieProgressView *)self initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    [(HUPieProgressView *)v5 setStyle:a4];
+    [(HUPieProgressView *)v5 setStyle:style];
   }
 
   return v6;
@@ -308,18 +308,18 @@ uint64_t __37__HUPieProgressView_startWithFuture___block_invoke_3(uint64_t a1)
   v14.receiver = self;
   v14.super_class = HUPieProgressView;
   [(HUPieProgressView *)&v14 layoutSubviews];
-  v3 = [(HUPieProgressView *)self layer];
-  [v3 bounds];
+  layer = [(HUPieProgressView *)self layer];
+  [layer bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(HUPieProgressView *)self outlineLayer];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  outlineLayer = [(HUPieProgressView *)self outlineLayer];
+  [outlineLayer setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(HUPieProgressView *)self progressLayer];
-  [v13 setFrame:{v5, v7, v9, v11}];
+  progressLayer = [(HUPieProgressView *)self progressLayer];
+  [progressLayer setFrame:{v5, v7, v9, v11}];
 
   [(HUPieProgressView *)self _updateLayerPaths];
 }
@@ -329,40 +329,40 @@ uint64_t __37__HUPieProgressView_startWithFuture___block_invoke_3(uint64_t a1)
   v6.receiver = self;
   v6.super_class = HUPieProgressView;
   [(HUPieProgressView *)&v6 tintColorDidChange];
-  v3 = [(HUPieProgressView *)self tintColor];
-  v4 = [v3 CGColor];
-  v5 = [(HUPieProgressView *)self progressLayer];
-  [v5 setStrokeColor:v4];
+  tintColor = [(HUPieProgressView *)self tintColor];
+  cGColor = [tintColor CGColor];
+  progressLayer = [(HUPieProgressView *)self progressLayer];
+  [progressLayer setStrokeColor:cGColor];
 }
 
 - (id)_setupOutlineLayer
 {
-  v2 = [MEMORY[0x277CD9F90] layer];
-  v3 = [MEMORY[0x277D75348] clearColor];
-  [v2 setFillColor:{objc_msgSend(v3, "CGColor")}];
+  layer = [MEMORY[0x277CD9F90] layer];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [layer setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
-  v4 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v2 setStrokeColor:{objc_msgSend(v4, "CGColor")}];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [layer setStrokeColor:{objc_msgSend(secondaryLabelColor, "CGColor")}];
 
-  return v2;
+  return layer;
 }
 
 - (id)_setupProgressLayer
 {
-  v3 = [MEMORY[0x277CD9F90] layer];
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v3 setFillColor:{objc_msgSend(v4, "CGColor")}];
+  layer = [MEMORY[0x277CD9F90] layer];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [layer setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
-  v5 = [(HUPieProgressView *)self tintColor];
-  [v3 setStrokeColor:{objc_msgSend(v5, "CGColor")}];
+  tintColor = [(HUPieProgressView *)self tintColor];
+  [layer setStrokeColor:{objc_msgSend(tintColor, "CGColor")}];
 
-  return v3;
+  return layer;
 }
 
 - (void)_setDefaults
 {
-  v3 = [MEMORY[0x277D75348] clearColor];
-  [(HUPieProgressView *)self setBackgroundColor:v3];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(HUPieProgressView *)self setBackgroundColor:clearColor];
 
   [(HUPieProgressView *)self setStyle:0];
   [(HUPieProgressView *)self setIndeterminateMaxProgress:0.8];
@@ -377,19 +377,19 @@ uint64_t __37__HUPieProgressView_startWithFuture___block_invoke_3(uint64_t a1)
 
 - (void)_updateProgressLayerLineWidth
 {
-  v3 = [(HUPieProgressView *)self style];
-  if (v3 != 1)
+  style = [(HUPieProgressView *)self style];
+  if (style != 1)
   {
-    if (!v3)
+    if (!style)
     {
-      v4 = [(HUPieProgressView *)self progressLayer];
-      [v4 frame];
+      progressLayer = [(HUPieProgressView *)self progressLayer];
+      [progressLayer frame];
       Width = CGRectGetWidth(v15);
-      v6 = [(HUPieProgressView *)self outlineLayer];
-      [v6 lineWidth];
+      outlineLayer = [(HUPieProgressView *)self outlineLayer];
+      [outlineLayer lineWidth];
       v8 = (Width - v7) * 0.5;
-      v9 = [(HUPieProgressView *)self progressLayer];
-      [v9 setLineWidth:v8];
+      progressLayer2 = [(HUPieProgressView *)self progressLayer];
+      [progressLayer2 setLineWidth:v8];
 
       goto LABEL_6;
     }
@@ -399,19 +399,19 @@ uint64_t __37__HUPieProgressView_startWithFuture___block_invoke_3(uint64_t a1)
 
   [(HUPieProgressView *)self progressLineWidth];
   v11 = v10;
-  v4 = [(HUPieProgressView *)self progressLayer];
-  [v4 setLineWidth:v11];
+  progressLayer = [(HUPieProgressView *)self progressLayer];
+  [progressLayer setLineWidth:v11];
 LABEL_6:
 
-  v13 = [(HUPieProgressView *)self progressLayer];
-  [v13 lineWidth];
-  [v13 setLineWidth:v12 + 0.1];
+  progressLayer3 = [(HUPieProgressView *)self progressLayer];
+  [progressLayer3 lineWidth];
+  [progressLayer3 setLineWidth:v12 + 0.1];
 }
 
 - (void)_updateLayerPaths
 {
-  v3 = [(HUPieProgressView *)self layer];
-  [v3 bounds];
+  layer = [(HUPieProgressView *)self layer];
+  [layer bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -444,24 +444,24 @@ LABEL_6:
 
   v16 = Height * 0.5;
   v17 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{v5, v7, v9, v11}];
-  v18 = [v17 CGPath];
-  v19 = [(HUPieProgressView *)self outlineLayer];
-  [v19 setPath:v18];
+  cGPath = [v17 CGPath];
+  outlineLayer = [(HUPieProgressView *)self outlineLayer];
+  [outlineLayer setPath:cGPath];
 
   [(HUPieProgressView *)self _updateProgressLayerLineWidth];
   v27 = [MEMORY[0x277D75208] bezierPathWithArcCenter:1 radius:MidX startAngle:MidY endAngle:v16 clockwise:{-1.57079633, 4.71238898}];
   v20 = v27;
-  v21 = [v27 CGPath];
-  v22 = [(HUPieProgressView *)self progressLayer];
-  [v22 setPath:v21];
+  cGPath2 = [v27 CGPath];
+  progressLayer = [(HUPieProgressView *)self progressLayer];
+  [progressLayer setPath:cGPath2];
 
   v23 = *MEMORY[0x277CDA780];
-  v24 = [(HUPieProgressView *)self progressLayer];
-  [v24 setLineCap:v23];
+  progressLayer2 = [(HUPieProgressView *)self progressLayer];
+  [progressLayer2 setLineCap:v23];
 
   v25 = *MEMORY[0x277CDA7A0];
-  v26 = [(HUPieProgressView *)self progressLayer];
-  [v26 setLineJoin:v25];
+  progressLayer3 = [(HUPieProgressView *)self progressLayer];
+  [progressLayer3 setLineJoin:v25];
 }
 
 - (void)_fadeIn

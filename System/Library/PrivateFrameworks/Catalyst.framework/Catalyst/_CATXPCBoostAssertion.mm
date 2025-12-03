@@ -6,12 +6,12 @@
 
 - (void)dealloc
 {
-  v3 = [(_CATXPCBoostAssertion *)self block];
+  block = [(_CATXPCBoostAssertion *)self block];
 
-  if (v3)
+  if (block)
   {
-    v4 = [(_CATXPCBoostAssertion *)self block];
-    v4[2]();
+    block2 = [(_CATXPCBoostAssertion *)self block];
+    block2[2]();
   }
 
   v5.receiver = self;

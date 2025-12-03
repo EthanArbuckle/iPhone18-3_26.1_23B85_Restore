@@ -1,20 +1,20 @@
 @interface AddToLibraryResponseParserDelegate
 - (AddToLibraryResponseParserDelegate)init;
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4;
-- (void)parser:(id)a3 didEndContainerCode:(unsigned int)a4;
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6;
-- (void)parser:(id)a3 didStartContainerCode:(unsigned int)a4 contentLength:(unsigned int)a5;
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code;
+- (void)parser:(id)parser didEndContainerCode:(unsigned int)code;
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length;
+- (void)parser:(id)parser didStartContainerCode:(unsigned int)code contentLength:(unsigned int)length;
 @end
 
 @implementation AddToLibraryResponseParserDelegate
 
-- (void)parser:(id)a3 didEndContainerCode:(unsigned int)a4
+- (void)parser:(id)parser didEndContainerCode:(unsigned int)code
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4 == 1835821428 && self->_currentCloudID)
+  parserCopy = parser;
+  v7 = parserCopy;
+  if (code == 1835821428 && self->_currentCloudID)
   {
-    v12 = v6;
+    v12 = parserCopy;
     if (self->_currentAdamID)
     {
       addedItems = self->_addedItems;
@@ -25,9 +25,9 @@
 
     else
     {
-      v6 = [(NSString *)self->_currentGlobalID length];
+      parserCopy = [(NSString *)self->_currentGlobalID length];
       v7 = v12;
-      if (!v6)
+      if (!parserCopy)
       {
         goto LABEL_8;
       }
@@ -42,66 +42,66 @@
 
 LABEL_8:
 
-  _objc_release_x1(v6, v7);
+  _objc_release_x1(parserCopy, v7);
 }
 
-- (void)parser:(id)a3 didParseDataCode:(unsigned int)a4 bytes:(char *)a5 contentLength:(unsigned int)a6
+- (void)parser:(id)parser didParseDataCode:(unsigned int)code bytes:(char *)bytes contentLength:(unsigned int)length
 {
-  v10 = a3;
-  if (a4 > 1835624803)
+  parserCopy = parser;
+  if (code > 1835624803)
   {
-    if (a4 == 1836413042)
+    if (code == 1836413042)
     {
-      self->_updateRequired = *a5 != 0;
+      self->_updateRequired = *bytes != 0;
     }
 
     else
     {
-      if (a4 != 1835624804)
+      if (code != 1835624804)
       {
         goto LABEL_14;
       }
 
-      if (a6 == 8)
+      if (length == 8)
       {
-        v13 = ((*a5 << 56) | (a5[1] << 48) | (a5[2] << 40) | (a5[3] << 32) | (a5[4] << 24) | (a5[5] << 16) | (a5[6] << 8)) + a5[7];
+        v13 = ((*bytes << 56) | (bytes[1] << 48) | (bytes[2] << 40) | (bytes[3] << 32) | (bytes[4] << 24) | (bytes[5] << 16) | (bytes[6] << 8)) + bytes[7];
       }
 
       else
       {
-        if (a6 != 4)
+        if (length != 4)
         {
           goto LABEL_14;
         }
 
-        v13 = bswap32(*a5);
+        v13 = bswap32(*bytes);
       }
 
       self->_currentCloudID = v13;
     }
   }
 
-  else if (a4 == 1634025833)
+  else if (code == 1634025833)
   {
-    self->_currentAdamID = ((*a5 << 56) | (a5[1] << 48) | (a5[2] << 40) | (a5[3] << 32) | (a5[4] << 24) | (a5[5] << 16) | (a5[6] << 8)) + a5[7];
+    self->_currentAdamID = ((*bytes << 56) | (bytes[1] << 48) | (bytes[2] << 40) | (bytes[3] << 32) | (bytes[4] << 24) | (bytes[5] << 16) | (bytes[6] << 8)) + bytes[7];
   }
 
-  else if (a4 == 1634357319)
+  else if (code == 1634357319)
   {
-    v14 = v10;
-    v11 = [[NSString alloc] initWithBytes:a5 length:a6 encoding:4];
+    v14 = parserCopy;
+    v11 = [[NSString alloc] initWithBytes:bytes length:length encoding:4];
     currentGlobalID = self->_currentGlobalID;
     self->_currentGlobalID = v11;
 
-    v10 = v14;
+    parserCopy = v14;
   }
 
 LABEL_14:
 }
 
-- (void)parser:(id)a3 didStartContainerCode:(unsigned int)a4 contentLength:(unsigned int)a5
+- (void)parser:(id)parser didStartContainerCode:(unsigned int)code contentLength:(unsigned int)length
 {
-  if (a4 == 1835821428)
+  if (code == 1835821428)
   {
     self->_currentCloudID = 0;
     self->_currentAdamID = 0;
@@ -111,14 +111,14 @@ LABEL_14:
   }
 }
 
-- (BOOL)parser:(id)a3 shouldParseCode:(unsigned int)a4
+- (BOOL)parser:(id)parser shouldParseCode:(unsigned int)code
 {
   result = 1;
-  if (a4 > 1835624803)
+  if (code > 1835624803)
   {
-    if (a4 > 1835821427)
+    if (code > 1835821427)
     {
-      if (a4 == 1835821428)
+      if (code == 1835821428)
       {
         return result;
       }
@@ -128,7 +128,7 @@ LABEL_14:
 
     else
     {
-      if (a4 == 1835624804)
+      if (code == 1835624804)
       {
         return result;
       }
@@ -139,11 +139,11 @@ LABEL_14:
     goto LABEL_10;
   }
 
-  if (a4 != 1634025833 && a4 != 1634353989)
+  if (code != 1634025833 && code != 1634353989)
   {
     v5 = 1634357319;
 LABEL_10:
-    if (a4 != v5)
+    if (code != v5)
     {
       return 0;
     }

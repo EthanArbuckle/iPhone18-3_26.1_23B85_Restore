@@ -1,19 +1,19 @@
 @interface MPUBorderedImageStackItemView
-- (MPUBorderedImageStackItemView)initWithFrame:(CGRect)a3;
+- (MPUBorderedImageStackItemView)initWithFrame:(CGRect)frame;
 - (void)_updateBorderImageView;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBorderConfiguration:(id)a3;
-- (void)setBorderDrawingCache:(id)a3;
+- (void)setBorderConfiguration:(id)configuration;
+- (void)setBorderDrawingCache:(id)cache;
 @end
 
 @implementation MPUBorderedImageStackItemView
 
-- (MPUBorderedImageStackItemView)initWithFrame:(CGRect)a3
+- (MPUBorderedImageStackItemView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = MPUBorderedImageStackItemView;
-  v3 = [(MPUImageStackItemView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MPUImageStackItemView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D755E8]);
@@ -32,8 +32,8 @@
 {
   if (self->_borderDrawingCache)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self name:@"MPUBorderDrawingCacheDidInvalidateNotification" object:self->_borderDrawingCache];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:@"MPUBorderDrawingCacheDidInvalidateNotification" object:self->_borderDrawingCache];
   }
 
   v4.receiver = self;
@@ -54,15 +54,15 @@
   [(UIImageView *)borderImageView setFrame:v8.origin.x, v8.origin.y, v8.size.width, v8.size.height];
 }
 
-- (void)setBorderConfiguration:(id)a3
+- (void)setBorderConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   borderConfiguration = self->_borderConfiguration;
-  if (borderConfiguration != v4)
+  if (borderConfiguration != configurationCopy)
   {
-    v8 = v4;
-    borderConfiguration = [borderConfiguration isEqual:v4];
-    v4 = v8;
+    v8 = configurationCopy;
+    borderConfiguration = [borderConfiguration isEqual:configurationCopy];
+    configurationCopy = v8;
     if ((borderConfiguration & 1) == 0)
     {
       v6 = [v8 copy];
@@ -70,27 +70,27 @@
       self->_borderConfiguration = v6;
 
       borderConfiguration = [(MPUBorderedImageStackItemView *)self _updateBorderImageView];
-      v4 = v8;
+      configurationCopy = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](borderConfiguration, v4);
+  MEMORY[0x2821F96F8](borderConfiguration, configurationCopy);
 }
 
-- (void)setBorderDrawingCache:(id)a3
+- (void)setBorderDrawingCache:(id)cache
 {
-  v5 = a3;
-  if (self->_borderDrawingCache != v5)
+  cacheCopy = cache;
+  if (self->_borderDrawingCache != cacheCopy)
   {
-    v8 = v5;
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    v7 = v6;
+    v8 = cacheCopy;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v7 = defaultCenter;
     if (self->_borderDrawingCache)
     {
-      [v6 removeObserver:self name:@"MPUBorderDrawingCacheDidInvalidateNotification" object:?];
+      [defaultCenter removeObserver:self name:@"MPUBorderDrawingCacheDidInvalidateNotification" object:?];
     }
 
-    objc_storeStrong(&self->_borderDrawingCache, a3);
+    objc_storeStrong(&self->_borderDrawingCache, cache);
     if (self->_borderDrawingCache)
     {
       [v7 addObserver:self selector:sel__borderDrawingCacheWasInvalidated_ name:@"MPUBorderDrawingCacheDidInvalidateNotification" object:?];
@@ -98,7 +98,7 @@
 
     [(MPUBorderedImageStackItemView *)self _updateBorderImageView];
 
-    v5 = v8;
+    cacheCopy = v8;
   }
 }
 
@@ -114,10 +114,10 @@
     v5 = 0;
   }
 
-  v3 = [(UIImageView *)self->_borderImageView image];
+  image = [(UIImageView *)self->_borderImageView image];
 
   v4 = v5;
-  if (v3 != v5)
+  if (image != v5)
   {
     [(UIImageView *)self->_borderImageView setImage:v5];
     v4 = v5;

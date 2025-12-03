@@ -1,30 +1,30 @@
 @interface SpotlightDaemonClientConnection
-- (BOOL)addClientConnectionIfAllowedForConnection:(id)a3;
-- (SpotlightDaemonClientConnection)initWithClient:(id)a3 forServiceName:(id)a4;
+- (BOOL)addClientConnectionIfAllowedForConnection:(id)connection;
+- (SpotlightDaemonClientConnection)initWithClient:(id)client forServiceName:(id)name;
 @end
 
 @implementation SpotlightDaemonClientConnection
 
-- (SpotlightDaemonClientConnection)initWithClient:(id)a3 forServiceName:(id)a4
+- (SpotlightDaemonClientConnection)initWithClient:(id)client forServiceName:(id)name
 {
-  v7 = a3;
+  clientCopy = client;
   v11.receiver = self;
   v11.super_class = SpotlightDaemonClientConnection;
-  v8 = [(CSXPCConnection *)&v11 initMachServiceListenerWithName:a4];
+  v8 = [(CSXPCConnection *)&v11 initMachServiceListenerWithName:name];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 7, a3);
+    objc_storeStrong(v8 + 7, client);
   }
 
   return v9;
 }
 
-- (BOOL)addClientConnectionIfAllowedForConnection:(id)a3
+- (BOOL)addClientConnectionIfAllowedForConnection:(id)connection
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  pid = xpc_connection_get_pid(v3);
+  connectionCopy = connection;
+  pid = xpc_connection_get_pid(connectionCopy);
   xpc_connection_get_audit_token();
 
   v5 = *MEMORY[0x277CBECE8];
@@ -34,10 +34,10 @@
   {
     v7 = v6;
     v8 = SecTaskCopyValueForEntitlement(v6, @"com.apple.private.corespotlight.sender", 0);
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
     v10 = logForCSLogCategoryDefault();
     v11 = v10;
-    if (v9)
+    if (bOOLValue)
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
@@ -69,11 +69,11 @@
 
   else
   {
-    LOBYTE(v9) = 0;
+    LOBYTE(bOOLValue) = 0;
   }
 
   v15 = *MEMORY[0x277D85DE8];
-  return v9;
+  return bOOLValue;
 }
 
 - (void)addClientConnectionIfAllowedForConnection:(int)a1 .cold.1(int a1, NSObject *a2)

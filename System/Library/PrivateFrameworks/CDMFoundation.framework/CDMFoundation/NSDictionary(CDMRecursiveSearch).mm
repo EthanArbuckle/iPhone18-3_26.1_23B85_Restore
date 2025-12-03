@@ -8,7 +8,7 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 objectForKey:v6];
+  v8 = [self objectForKey:v6];
   v9 = [v8 isEqualToString:v7];
 
   if (v9)
@@ -29,7 +29,7 @@
     v15 = &v16;
     v13 = v6;
     v14 = v7;
-    [a1 enumerateKeysAndObjectsUsingBlock:v12];
+    [self enumerateKeysAndObjectsUsingBlock:v12];
     v10 = *(v17 + 24);
 
     _Block_object_dispose(&v16, 8);

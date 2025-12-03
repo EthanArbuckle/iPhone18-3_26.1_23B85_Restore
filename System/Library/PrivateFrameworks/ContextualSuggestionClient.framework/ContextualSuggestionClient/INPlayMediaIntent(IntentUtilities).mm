@@ -7,7 +7,7 @@
 - (id)atx_nonNilParametersByName
 {
   v22 = *MEMORY[0x277D85DE8];
-  v20.receiver = a1;
+  v20.receiver = self;
   v20.super_class = &off_28579B5E8;
   v1 = objc_msgSendSuper2(&v20, sel_atx_nonNilParametersByName);
   v2 = [v1 mutableCopy];

@@ -1,5 +1,5 @@
 @interface __NSOrderedSetArrayProxy
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -15,9 +15,9 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NSArray allocWithZone:a3];
+  v4 = [NSArray allocWithZone:zone];
   v5 = [(__NSOrderedSetArrayProxy *)self count];
 
   return [(NSArray *)v4 initWithArray:self range:0 copyItems:v5, 0];

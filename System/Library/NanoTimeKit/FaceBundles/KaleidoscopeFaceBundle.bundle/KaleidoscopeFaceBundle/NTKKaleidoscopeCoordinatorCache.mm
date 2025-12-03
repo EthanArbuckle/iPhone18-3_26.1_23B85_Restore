@@ -1,10 +1,10 @@
 @interface NTKKaleidoscopeCoordinatorCache
 + (id)sharedCache;
-- (id)provideAtlasBacking:(id)a3 uuid:(id)a4 uuidLuma:(id)a5 uuidChroma:(id)a6;
+- (id)provideAtlasBacking:(id)backing uuid:(id)uuid uuidLuma:(id)luma uuidChroma:(id)chroma;
 - (void)_computeKaleidoscopeFaceCount;
-- (void)faceCollection:(id)a3 didAddFace:(id)a4 atIndex:(unint64_t)a5;
-- (void)faceCollection:(id)a3 didRemoveFace:(id)a4 atIndex:(unint64_t)a5;
-- (void)setLibraryCollection:(id)a3;
+- (void)faceCollection:(id)collection didAddFace:(id)face atIndex:(unint64_t)index;
+- (void)faceCollection:(id)collection didRemoveFace:(id)face atIndex:(unint64_t)index;
+- (void)setLibraryCollection:(id)collection;
 @end
 
 @implementation NTKKaleidoscopeCoordinatorCache
@@ -21,15 +21,15 @@
   return v3;
 }
 
-- (void)setLibraryCollection:(id)a3
+- (void)setLibraryCollection:(id)collection
 {
-  v5 = a3;
-  if (self->_libraryCollection != v5)
+  collectionCopy = collection;
+  if (self->_libraryCollection != collectionCopy)
   {
-    v11 = v5;
-    [(NTKFaceCollection *)v5 addObserver:self];
+    v11 = collectionCopy;
+    [(NTKFaceCollection *)collectionCopy addObserver:self];
     [(NTKFaceCollection *)self->_libraryCollection removeObserver:self];
-    objc_storeStrong(&self->_libraryCollection, a3);
+    objc_storeStrong(&self->_libraryCollection, collection);
     [(NTKKaleidoscopeCoordinatorCache *)self _computeKaleidoscopeFaceCount];
     if (self->_libraryCollection)
     {
@@ -51,20 +51,20 @@
     pathsToWrite = self->_pathsToWrite;
     self->_pathsToWrite = v8;
 
-    v5 = v11;
+    collectionCopy = v11;
   }
 }
 
-- (id)provideAtlasBacking:(id)a3 uuid:(id)a4 uuidLuma:(id)a5 uuidChroma:(id)a6
+- (id)provideAtlasBacking:(id)backing uuid:(id)uuid uuidLuma:(id)luma uuidChroma:(id)chroma
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  backingCopy = backing;
+  uuidCopy = uuid;
+  lumaCopy = luma;
+  chromaCopy = chroma;
   v13 = objc_autoreleasePoolPush();
-  v14 = [CLKUIAtlasBacking atlasBackingWithImage:v9 uuid:v10 mipmap:1];
-  v15 = v11;
-  v16 = v12;
+  v14 = [CLKUIAtlasBacking atlasBackingWithImage:backingCopy uuid:uuidCopy mipmap:1];
+  v15 = lumaCopy;
+  v16 = chromaCopy;
   if (!v14)
   {
     v19 = _NTKLoggingObjectForDomain();
@@ -143,9 +143,9 @@ LABEL_20:
   return 0;
 }
 
-- (void)faceCollection:(id)a3 didAddFace:(id)a4 atIndex:(unint64_t)a5
+- (void)faceCollection:(id)collection didAddFace:(id)face atIndex:(unint64_t)index
 {
-  v6 = a4;
+  faceCopy = face;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -156,9 +156,9 @@ LABEL_20:
   }
 }
 
-- (void)faceCollection:(id)a3 didRemoveFace:(id)a4 atIndex:(unint64_t)a5
+- (void)faceCollection:(id)collection didRemoveFace:(id)face atIndex:(unint64_t)index
 {
-  v6 = a4;
+  faceCopy = face;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -171,10 +171,10 @@ LABEL_20:
 
 - (void)_computeKaleidoscopeFaceCount
 {
-  v3 = [(NTKFaceCollection *)self->_libraryCollection numberOfFaces];
-  if (v3)
+  numberOfFaces = [(NTKFaceCollection *)self->_libraryCollection numberOfFaces];
+  if (numberOfFaces)
   {
-    v4 = v3;
+    v4 = numberOfFaces;
     v5 = 0;
     for (i = 0; i != v4; ++i)
     {

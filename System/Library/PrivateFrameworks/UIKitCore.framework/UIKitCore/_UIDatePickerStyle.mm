@@ -1,12 +1,12 @@
 @interface _UIDatePickerStyle
 - (CGSize)compactLabelBackgroundPadding;
-- (CGSize)idealLayoutFittingSizeForDatePickerMode:(int64_t)a3;
-- (UIEdgeInsets)maximumWidthOverhangForProposedLayoutMargins:(UIEdgeInsets)a3;
-- (UIOffset)overlayPlatterPaddingForAppliedInsets:(UIEdgeInsets)a3 datePickerMode:(int64_t)a4;
-- (id)compactLabelBackgroundColorForEnabledState:(BOOL)a3;
-- (id)compactLabelTextColorForEditingState:(BOOL)a3;
+- (CGSize)idealLayoutFittingSizeForDatePickerMode:(int64_t)mode;
+- (UIEdgeInsets)maximumWidthOverhangForProposedLayoutMargins:(UIEdgeInsets)margins;
+- (UIOffset)overlayPlatterPaddingForAppliedInsets:(UIEdgeInsets)insets datePickerMode:(int64_t)mode;
+- (id)compactLabelBackgroundColorForEnabledState:(BOOL)state;
+- (id)compactLabelTextColorForEditingState:(BOOL)state;
 - (id)createOverlayBackgroundView;
-- (int64_t)titleAlignmentForCalendarUnit:(unint64_t)a3 datePickerMode:(int64_t)a4 dayIsBeforeMonth:(BOOL)a5;
+- (int64_t)titleAlignmentForCalendarUnit:(unint64_t)unit datePickerMode:(int64_t)mode dayIsBeforeMonth:(BOOL)month;
 @end
 
 @implementation _UIDatePickerStyle
@@ -18,7 +18,7 @@
   return v2;
 }
 
-- (CGSize)idealLayoutFittingSizeForDatePickerMode:(int64_t)a3
+- (CGSize)idealLayoutFittingSizeForDatePickerMode:(int64_t)mode
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -27,7 +27,7 @@
   return result;
 }
 
-- (UIEdgeInsets)maximumWidthOverhangForProposedLayoutMargins:(UIEdgeInsets)a3
+- (UIEdgeInsets)maximumWidthOverhangForProposedLayoutMargins:(UIEdgeInsets)margins
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -40,11 +40,11 @@
   return result;
 }
 
-- (UIOffset)overlayPlatterPaddingForAppliedInsets:(UIEdgeInsets)a3 datePickerMode:(int64_t)a4
+- (UIOffset)overlayPlatterPaddingForAppliedInsets:(UIEdgeInsets)insets datePickerMode:(int64_t)mode
 {
-  left = a3.left;
-  top = a3.top;
-  [(_UIDatePickerStyle *)self overlayPlatterDefaultMargin:a4];
+  left = insets.left;
+  top = insets.top;
+  [(_UIDatePickerStyle *)self overlayPlatterDefaultMargin:mode];
   v8 = v7 - left;
   [(_UIDatePickerStyle *)self overlayPlatterDefaultMargin];
   v10 = v9 - top;
@@ -63,9 +63,9 @@
   return result;
 }
 
-- (id)compactLabelTextColorForEditingState:(BOOL)a3
+- (id)compactLabelTextColorForEditingState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     +[UIColor blackColor];
   }
@@ -79,9 +79,9 @@
   return v3;
 }
 
-- (id)compactLabelBackgroundColorForEnabledState:(BOOL)a3
+- (id)compactLabelBackgroundColorForEnabledState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v4 = +[UIColor tertiarySystemFillColor];
   }
@@ -94,32 +94,32 @@
   return v4;
 }
 
-- (int64_t)titleAlignmentForCalendarUnit:(unint64_t)a3 datePickerMode:(int64_t)a4 dayIsBeforeMonth:(BOOL)a5
+- (int64_t)titleAlignmentForCalendarUnit:(unint64_t)unit datePickerMode:(int64_t)mode dayIsBeforeMonth:(BOOL)month
 {
   v5 = 2;
   v6 = 1;
   v7 = 2;
-  if (a5)
+  if (month)
   {
     v7 = 0;
   }
 
-  if (a3 == 8)
+  if (unit == 8)
   {
     v6 = v7;
   }
 
-  if (a3 == 16)
+  if (unit == 16)
   {
     v6 = 2;
   }
 
-  if (a3 != 32)
+  if (unit != 32)
   {
     v5 = v6;
   }
 
-  if (a4 == 3)
+  if (mode == 3)
   {
     return 2;
   }

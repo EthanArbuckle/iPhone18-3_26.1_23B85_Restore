@@ -1,17 +1,17 @@
 @interface SDAutoUnlockNotificationsManager
 + (id)sharedManager;
 - (SDAutoUnlockNotificationsManager)init;
-- (void)addObserver:(id)a3;
-- (void)clearPhoneAutoUnlockUpsellNotification:(BOOL)a3;
+- (void)addObserver:(id)observer;
+- (void)clearPhoneAutoUnlockUpsellNotification:(BOOL)notification;
 - (void)dealloc;
 - (void)invalidateNotificationTimer;
-- (void)notifyObservers:(SEL)a3;
-- (void)removeObserver:(id)a3;
-- (void)restartNotificationTimer:(unint64_t)a3;
-- (void)showAuthenticatedSiriForDeviceID:(id)a3;
+- (void)notifyObservers:(SEL)observers;
+- (void)removeObserver:(id)observer;
+- (void)restartNotificationTimer:(unint64_t)timer;
+- (void)showAuthenticatedSiriForDeviceID:(id)d;
 - (void)showPhoneAutoRelockNotification;
 - (void)showRequestToUnlockNotification;
-- (void)showUnlockedByDeviceNotificationWithDeviceID:(id)a3;
+- (void)showUnlockedByDeviceNotificationWithDeviceID:(id)d;
 @end
 
 @implementation SDAutoUnlockNotificationsManager
@@ -54,49 +54,49 @@
   [(SDAutoUnlockNotificationsManager *)&v2 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v6 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    [(NSHashTable *)v5->_observers addObject:v6];
-    objc_sync_exit(v5);
+    v6 = observerCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSHashTable *)selfCopy->_observers addObject:v6];
+    objc_sync_exit(selfCopy);
 
-    v4 = v6;
+    observerCopy = v6;
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v6 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    [(NSHashTable *)v5->_observers removeObject:v6];
-    objc_sync_exit(v5);
+    v6 = observerCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSHashTable *)selfCopy->_observers removeObject:v6];
+    objc_sync_exit(selfCopy);
 
-    v4 = v6;
+    observerCopy = v6;
   }
 }
 
-- (void)notifyObservers:(SEL)a3
+- (void)notifyObservers:(SEL)observers
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(SDAutoUnlockNotificationsManager *)v4 observers];
-  v6 = [v5 allObjects];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  observers = [(SDAutoUnlockNotificationsManager *)selfCopy observers];
+  allObjects = [observers allObjects];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = v6;
+  v7 = allObjects;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -114,7 +114,7 @@
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          ([v11 methodForSelector:{a3, v12}])(v11, a3);
+          ([v11 methodForSelector:{observers, v12}])(v11, observers);
         }
 
         v10 = v10 + 1;
@@ -128,11 +128,11 @@
   }
 }
 
-- (void)showAuthenticatedSiriForDeviceID:(id)a3
+- (void)showAuthenticatedSiriForDeviceID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[SDAutoUnlockTransport sharedTransport];
-  v5 = [v4 deviceNameForDeviceID:v3];
+  v5 = [v4 deviceNameForDeviceID:dCopy];
 
   v6 = auto_unlock_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -140,16 +140,16 @@
     v7 = 138412546;
     v8 = v5;
     v9 = 2112;
-    v10 = v3;
+    v10 = dCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Posting %@ authenticated Siri by Apple Watch (device ID: %@)", &v7, 0x16u);
   }
 }
 
-- (void)showUnlockedByDeviceNotificationWithDeviceID:(id)a3
+- (void)showUnlockedByDeviceNotificationWithDeviceID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[SDAutoUnlockTransport sharedTransport];
-  v5 = [v4 deviceNameForDeviceID:v3];
+  v5 = [v4 deviceNameForDeviceID:dCopy];
 
   v6 = auto_unlock_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -157,19 +157,19 @@
     v7 = 138412546;
     v8 = v5;
     v9 = 2112;
-    v10 = v3;
+    v10 = dCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Posting %@ unlocked by Apple Watch (device ID: %@)", &v7, 0x16u);
   }
 }
 
-- (void)clearPhoneAutoUnlockUpsellNotification:(BOOL)a3
+- (void)clearPhoneAutoUnlockUpsellNotification:(BOOL)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v5 = auto_unlock_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v3)
+    if (notificationCopy)
     {
       v6 = @"YES";
     }
@@ -184,7 +184,7 @@
   v8[1] = 3221225472;
   v8[2] = sub_10008E06C;
   v8[3] = &unk_1008CE558;
-  v9 = v3;
+  v9 = notificationCopy;
   v8[4] = self;
   [(FLFollowUpController *)coreFollowUpController pendingFollowUpItemsWithCompletion:v8];
 }
@@ -221,7 +221,7 @@
   dispatch_async(v4, v7);
 }
 
-- (void)restartNotificationTimer:(unint64_t)a3
+- (void)restartNotificationTimer:(unint64_t)timer
 {
   v5 = auto_unlock_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -230,9 +230,9 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Restarting notification timer", buf, 2u);
   }
 
-  v6 = [(SDAutoUnlockNotificationsManager *)self notificationTimer];
+  notificationTimer = [(SDAutoUnlockNotificationsManager *)self notificationTimer];
 
-  if (!v6)
+  if (!notificationTimer)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
@@ -242,12 +242,12 @@
     v7 = sub_1001F0548(0, &_dispatch_main_q, v10);
     [(SDAutoUnlockNotificationsManager *)self setNotificationTimer:v7];
 
-    v8 = [(SDAutoUnlockNotificationsManager *)self notificationTimer];
-    dispatch_resume(v8);
+    notificationTimer2 = [(SDAutoUnlockNotificationsManager *)self notificationTimer];
+    dispatch_resume(notificationTimer2);
   }
 
-  v9 = [(SDAutoUnlockNotificationsManager *)self notificationTimer];
-  sub_1001F05F0(v9, a3);
+  notificationTimer3 = [(SDAutoUnlockNotificationsManager *)self notificationTimer];
+  sub_1001F05F0(notificationTimer3, timer);
 }
 
 - (void)invalidateNotificationTimer
@@ -259,12 +259,12 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Invaliding suggestion scan timer", v6, 2u);
   }
 
-  v4 = [(SDAutoUnlockNotificationsManager *)self notificationTimer];
+  notificationTimer = [(SDAutoUnlockNotificationsManager *)self notificationTimer];
 
-  if (v4)
+  if (notificationTimer)
   {
-    v5 = [(SDAutoUnlockNotificationsManager *)self notificationTimer];
-    dispatch_source_cancel(v5);
+    notificationTimer2 = [(SDAutoUnlockNotificationsManager *)self notificationTimer];
+    dispatch_source_cancel(notificationTimer2);
 
     [(SDAutoUnlockNotificationsManager *)self setNotificationTimer:0];
   }

@@ -3,8 +3,8 @@
 + (AVCaptureEventSound)cameraShutterSound;
 + (AVCaptureEventSound)endVideoRecordingSound;
 + (id)_defaultCaptureSound;
-- (AVCaptureEventSound)initWithSystemSoundID:(unsigned int)a3;
-- (AVCaptureEventSound)initWithURL:(id)a3 error:(id *)a4;
+- (AVCaptureEventSound)initWithSystemSoundID:(unsigned int)d;
+- (AVCaptureEventSound)initWithURL:(id)l error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -22,35 +22,35 @@
   [(AVCaptureEventSound *)&v3 dealloc];
 }
 
-- (AVCaptureEventSound)initWithSystemSoundID:(unsigned int)a3
+- (AVCaptureEventSound)initWithSystemSoundID:(unsigned int)d
 {
   v5.receiver = self;
   v5.super_class = AVCaptureEventSound;
   result = [(AVCaptureEventSound *)&v5 init];
   if (result)
   {
-    result->__identifier = a3;
+    result->__identifier = d;
   }
 
   return result;
 }
 
-- (AVCaptureEventSound)initWithURL:(id)a3 error:(id *)a4
+- (AVCaptureEventSound)initWithURL:(id)l error:(id *)error
 {
-  v5 = self;
+  selfCopy = self;
   outSystemSoundID = 0;
   self->isCustomSound = 1;
-  v6 = AudioServicesCreateSystemSoundID(a3, &outSystemSoundID);
+  v6 = AudioServicesCreateSystemSoundID(l, &outSystemSoundID);
   if (v6)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v6 userInfo:0];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else
   {
-    v7 = [(AVCaptureEventSound *)v5 initWithSystemSoundID:outSystemSoundID];
-    v5 = v7;
+    v7 = [(AVCaptureEventSound *)selfCopy initWithSystemSoundID:outSystemSoundID];
+    selfCopy = v7;
   }
 
   return v7;

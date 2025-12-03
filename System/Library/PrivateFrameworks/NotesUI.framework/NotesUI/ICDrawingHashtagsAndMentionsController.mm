@@ -1,45 +1,45 @@
 @interface ICDrawingHashtagsAndMentionsController
 - (CKShare)share;
 - (ICAttachment)attachment;
-- (ICDrawingHashtagsAndMentionsController)initWithAttachment:(id)a3;
+- (ICDrawingHashtagsAndMentionsController)initWithAttachment:(id)attachment;
 - (ICNote)note;
 - (NSArray)eligibleShareParticipants;
 - (NSManagedObjectContext)managedObjectContext;
-- (id)allConfirmedHashtagsForAttachmentView:(id)a3;
-- (id)allConfirmedMentionsForAttachmentView:(id)a3;
-- (id)attachmentView:(id)a3 participantMatchesForMentionText:(id)a4;
-- (void)allPossibleParticipantNameTokensForAttachmentView:(id)a3 completion:(id)a4;
-- (void)attachmentView:(id)a3 userConfirmedHashtagWithUUID:(id)a4 displayText:(id)a5;
-- (void)attachmentView:(id)a3 userConfirmedMentionWithUUID:(id)a4 participantIdentifier:(id)a5;
-- (void)attachmentView:(id)a3 userDeletedHashtagWithUUID:(id)a4;
-- (void)attachmentView:(id)a3 userDeletedMentionWithUUID:(id)a4;
-- (void)fetchMentionTokensForParticipants:(id)a3 completion:(id)a4;
+- (id)allConfirmedHashtagsForAttachmentView:(id)view;
+- (id)allConfirmedMentionsForAttachmentView:(id)view;
+- (id)attachmentView:(id)view participantMatchesForMentionText:(id)text;
+- (void)allPossibleParticipantNameTokensForAttachmentView:(id)view completion:(id)completion;
+- (void)attachmentView:(id)view userConfirmedHashtagWithUUID:(id)d displayText:(id)text;
+- (void)attachmentView:(id)view userConfirmedMentionWithUUID:(id)d participantIdentifier:(id)identifier;
+- (void)attachmentView:(id)view userDeletedHashtagWithUUID:(id)d;
+- (void)attachmentView:(id)view userDeletedMentionWithUUID:(id)d;
+- (void)fetchMentionTokensForParticipants:(id)participants completion:(id)completion;
 @end
 
 @implementation ICDrawingHashtagsAndMentionsController
 
-- (ICDrawingHashtagsAndMentionsController)initWithAttachment:(id)a3
+- (ICDrawingHashtagsAndMentionsController)initWithAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   v8.receiver = self;
   v8.super_class = ICDrawingHashtagsAndMentionsController;
   v5 = [(ICDrawingHashtagsAndMentionsController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_attachment, v4);
+    objc_storeWeak(&v5->_attachment, attachmentCopy);
   }
 
   return v6;
 }
 
-- (void)allPossibleParticipantNameTokensForAttachmentView:(id)a3 completion:(id)a4
+- (void)allPossibleParticipantNameTokensForAttachmentView:(id)view completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  completionCopy = completion;
   v8 = objc_opt_new();
   objc_initWeak(&location, self);
-  v9 = [(ICDrawingHashtagsAndMentionsController *)self eligibleShareParticipants];
+  eligibleShareParticipants = [(ICDrawingHashtagsAndMentionsController *)self eligibleShareParticipants];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __103__ICDrawingHashtagsAndMentionsController_allPossibleParticipantNameTokensForAttachmentView_completion___block_invoke;
@@ -47,9 +47,9 @@
   objc_copyWeak(&v15, &location);
   v10 = v8;
   v13 = v10;
-  v11 = v7;
+  v11 = completionCopy;
   v14 = v11;
-  [(ICDrawingHashtagsAndMentionsController *)self fetchMentionTokensForParticipants:v9 completion:v12];
+  [(ICDrawingHashtagsAndMentionsController *)self fetchMentionTokensForParticipants:eligibleShareParticipants completion:v12];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -126,24 +126,24 @@ void __103__ICDrawingHashtagsAndMentionsController_allPossibleParticipantNameTok
   }
 }
 
-- (id)allConfirmedMentionsForAttachmentView:(id)a3
+- (id)allConfirmedMentionsForAttachmentView:(id)view
 {
   v46 = *MEMORY[0x1E69E9840];
   v4 = objc_opt_new();
-  v38 = self;
-  v5 = [(ICDrawingHashtagsAndMentionsController *)self share];
+  selfCopy = self;
+  share = [(ICDrawingHashtagsAndMentionsController *)self share];
 
-  if (v5)
+  if (share)
   {
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v6 = self;
-    v7 = [(ICDrawingHashtagsAndMentionsController *)self attachment];
-    v8 = [v7 visibleInlineAttachments];
+    selfCopy2 = self;
+    attachment = [(ICDrawingHashtagsAndMentionsController *)self attachment];
+    visibleInlineAttachments = [attachment visibleInlineAttachments];
 
-    v9 = [v8 countByEnumeratingWithState:&v41 objects:v45 count:16];
+    v9 = [visibleInlineAttachments countByEnumeratingWithState:&v41 objects:v45 count:16];
     if (!v9)
     {
       goto LABEL_16;
@@ -153,7 +153,7 @@ void __103__ICDrawingHashtagsAndMentionsController_allPossibleParticipantNameTok
     v11 = 0x1E69B7000uLL;
     v12 = *v42;
     v39 = *v42;
-    v37 = v8;
+    v37 = visibleInlineAttachments;
     while (1)
     {
       v13 = 0;
@@ -162,55 +162,55 @@ void __103__ICDrawingHashtagsAndMentionsController_allPossibleParticipantNameTok
       {
         if (*v42 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(visibleInlineAttachments);
         }
 
         v14 = *(*(&v41 + 1) + 8 * v13);
         if ([v14 isMentionAttachment])
         {
-          v15 = [v14 tokenContentIdentifier];
-          v16 = [*(v11 + 2024) allUserRecordName];
-          v17 = [v15 isEqualToString:v16];
+          tokenContentIdentifier = [v14 tokenContentIdentifier];
+          allUserRecordName = [*(v11 + 2024) allUserRecordName];
+          v17 = [tokenContentIdentifier isEqualToString:allUserRecordName];
 
           if (v17)
           {
             v18 = objc_alloc(MEMORY[0x1E696AFB0]);
-            v19 = [v14 identifier];
-            v20 = [v18 initWithUUIDString:v19];
+            identifier = [v14 identifier];
+            v20 = [v18 initWithUUIDString:identifier];
 
-            v21 = [*(v11 + 2024) allKeyword];
-            v22 = [MEMORY[0x1E69DC888] tintColor];
-            v23 = [MEMORY[0x1E69784B0] mentionWithDisplayName:v21 identifier:v15 color:v22];
+            allKeyword = [*(v11 + 2024) allKeyword];
+            tintColor = [MEMORY[0x1E69DC888] tintColor];
+            v23 = [MEMORY[0x1E69784B0] mentionWithDisplayName:allKeyword identifier:tokenContentIdentifier color:tintColor];
             [v4 setObject:v23 forKeyedSubscript:v20];
             goto LABEL_12;
           }
 
-          v24 = [(ICDrawingHashtagsAndMentionsController *)v6 note];
-          v20 = [v24 participantForUserID:v15];
+          note = [(ICDrawingHashtagsAndMentionsController *)selfCopy2 note];
+          v20 = [note participantForUserID:tokenContentIdentifier];
 
           if (v20)
           {
             v25 = objc_alloc(MEMORY[0x1E696AFB0]);
-            v26 = [v14 identifier];
-            v21 = [v25 initWithUUIDString:v26];
+            identifier2 = [v14 identifier];
+            allKeyword = [v25 initWithUUIDString:identifier2];
 
             v27 = MEMORY[0x1E695BAD8];
-            v28 = [(ICDrawingHashtagsAndMentionsController *)v6 note];
-            v22 = [v27 ic_participantNameOrFallbackForUserRecordName:v15 note:v28];
+            note2 = [(ICDrawingHashtagsAndMentionsController *)selfCopy2 note];
+            tintColor = [v27 ic_participantNameOrFallbackForUserRecordName:tokenContentIdentifier note:note2];
 
-            [(ICDrawingHashtagsAndMentionsController *)v6 note];
+            [(ICDrawingHashtagsAndMentionsController *)selfCopy2 note];
             v30 = v29 = v4;
-            v31 = [v30 collaborationColorManager];
-            v32 = [(ICDrawingHashtagsAndMentionsController *)v6 note];
-            v23 = [v31 highlightColorForUserID:v15 note:v32];
+            collaborationColorManager = [v30 collaborationColorManager];
+            note3 = [(ICDrawingHashtagsAndMentionsController *)selfCopy2 note];
+            v23 = [collaborationColorManager highlightColorForUserID:tokenContentIdentifier note:note3];
 
-            v6 = v38;
+            selfCopy2 = selfCopy;
             v4 = v29;
             v11 = 0x1E69B7000;
-            v33 = [MEMORY[0x1E69784B0] mentionWithDisplayName:v22 identifier:v15 color:v23];
-            [v4 setObject:v33 forKeyedSubscript:v21];
+            v33 = [MEMORY[0x1E69784B0] mentionWithDisplayName:tintColor identifier:tokenContentIdentifier color:v23];
+            [v4 setObject:v33 forKeyedSubscript:allKeyword];
 
-            v8 = v37;
+            visibleInlineAttachments = v37;
 LABEL_12:
 
             v12 = v39;
@@ -223,7 +223,7 @@ LABEL_12:
       }
 
       while (v10 != v13);
-      v10 = [v8 countByEnumeratingWithState:&v41 objects:v45 count:16];
+      v10 = [visibleInlineAttachments countByEnumeratingWithState:&v41 objects:v45 count:16];
       if (!v10)
       {
 LABEL_16:
@@ -244,27 +244,27 @@ LABEL_16:
   return v35;
 }
 
-- (id)attachmentView:(id)a3 participantMatchesForMentionText:(id)a4
+- (id)attachmentView:(id)view participantMatchesForMentionText:(id)text
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 ic_tokenSafeText];
+  textCopy = text;
+  ic_tokenSafeText = [textCopy ic_tokenSafeText];
   v7 = objc_opt_new();
-  v8 = [(ICDrawingHashtagsAndMentionsController *)self share];
+  share = [(ICDrawingHashtagsAndMentionsController *)self share];
 
-  if (v8)
+  if (share)
   {
-    v9 = [MEMORY[0x1E69B77E8] allKeyword];
-    v10 = [v9 ic_tokenSafeText];
-    v11 = [v6 isEqualToString:v10];
+    allKeyword = [MEMORY[0x1E69B77E8] allKeyword];
+    ic_tokenSafeText2 = [allKeyword ic_tokenSafeText];
+    v11 = [ic_tokenSafeText isEqualToString:ic_tokenSafeText2];
 
     if (v11)
     {
       v12 = MEMORY[0x1E69784B0];
-      v13 = [MEMORY[0x1E69B77E8] allKeyword];
-      v14 = [MEMORY[0x1E69B77E8] allUserRecordName];
-      v15 = [MEMORY[0x1E69DC888] tintColor];
-      v16 = [v12 mentionWithDisplayName:v13 identifier:v14 color:v15];
+      allKeyword2 = [MEMORY[0x1E69B77E8] allKeyword];
+      allUserRecordName = [MEMORY[0x1E69B77E8] allUserRecordName];
+      tintColor = [MEMORY[0x1E69DC888] tintColor];
+      v16 = [v12 mentionWithDisplayName:allKeyword2 identifier:allUserRecordName color:tintColor];
 
       [v7 addObject:v16];
     }
@@ -272,7 +272,7 @@ LABEL_16:
     else
     {
       v44 = v7;
-      v41 = v6;
+      v41 = ic_tokenSafeText;
       v48 = 0u;
       v49 = 0u;
       v46 = 0u;
@@ -284,7 +284,7 @@ LABEL_16:
         v18 = v17;
         v19 = *v47;
         v42 = *v47;
-        v43 = v5;
+        v43 = textCopy;
         do
         {
           for (i = 0; i != v18; ++i)
@@ -295,38 +295,38 @@ LABEL_16:
             }
 
             v21 = *(*(&v46 + 1) + 8 * i);
-            v22 = [(ICDrawingHashtagsAndMentionsController *)self mentionTokensForParticipants];
-            v23 = [v22 objectForKeyedSubscript:v21];
+            mentionTokensForParticipants = [(ICDrawingHashtagsAndMentionsController *)self mentionTokensForParticipants];
+            v23 = [mentionTokensForParticipants objectForKeyedSubscript:v21];
 
-            v24 = [v5 ic_tokenSafeText];
-            v25 = [v23 containsObject:v24];
+            ic_tokenSafeText3 = [textCopy ic_tokenSafeText];
+            v25 = [v23 containsObject:ic_tokenSafeText3];
 
             if (v25)
             {
-              v26 = [(ICDrawingHashtagsAndMentionsController *)self note];
-              v27 = [v21 ic_userRecordNameInNote:v26];
+              note = [(ICDrawingHashtagsAndMentionsController *)self note];
+              v27 = [v21 ic_userRecordNameInNote:note];
 
-              v28 = [v21 ic_participantNameMatchingString:v5 returnFullName:1];
+              v28 = [v21 ic_participantNameMatchingString:textCopy returnFullName:1];
               v29 = v28;
               if ((!v28 || ![v28 length]) && (objc_msgSend(v21, "ic_cachedDisplayNameFromContacts"), v30 = objc_claimAutoreleasedReturnValue(), v29, (v29 = v30) == 0) || !objc_msgSend(v29, "length"))
               {
                 v31 = MEMORY[0x1E695BAD8];
-                v32 = [(ICDrawingHashtagsAndMentionsController *)self note];
-                v33 = [v31 ic_participantNameOrFallbackForUserRecordName:v27 note:v32];
+                note2 = [(ICDrawingHashtagsAndMentionsController *)self note];
+                v33 = [v31 ic_participantNameOrFallbackForUserRecordName:v27 note:note2];
 
                 v29 = v33;
               }
 
-              v34 = [(ICDrawingHashtagsAndMentionsController *)self note];
-              v35 = [v34 collaborationColorManager];
-              v36 = [(ICDrawingHashtagsAndMentionsController *)self note];
-              v37 = [v35 highlightColorForUserID:v27 note:v36];
+              note3 = [(ICDrawingHashtagsAndMentionsController *)self note];
+              collaborationColorManager = [note3 collaborationColorManager];
+              note4 = [(ICDrawingHashtagsAndMentionsController *)self note];
+              v37 = [collaborationColorManager highlightColorForUserID:v27 note:note4];
 
               v38 = [MEMORY[0x1E69784B0] mentionWithDisplayName:v29 identifier:v27 color:v37];
               [v44 addObject:v38];
 
               v19 = v42;
-              v5 = v43;
+              textCopy = v43;
             }
           }
 
@@ -336,7 +336,7 @@ LABEL_16:
         while (v18);
       }
 
-      v6 = v41;
+      ic_tokenSafeText = v41;
       v7 = v44;
     }
   }
@@ -346,41 +346,41 @@ LABEL_16:
   return v39;
 }
 
-- (void)attachmentView:(id)a3 userConfirmedMentionWithUUID:(id)a4 participantIdentifier:(id)a5
+- (void)attachmentView:(id)view userConfirmedMentionWithUUID:(id)d participantIdentifier:(id)identifier
 {
   v57 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x1E69B77E8] allUserRecordName];
-  v10 = [v8 isEqualToString:v9];
+  dCopy = d;
+  identifierCopy = identifier;
+  allUserRecordName = [MEMORY[0x1E69B77E8] allUserRecordName];
+  v10 = [identifierCopy isEqualToString:allUserRecordName];
 
-  v11 = [(ICDrawingHashtagsAndMentionsController *)self note];
-  v12 = [v11 participantForUserID:v8];
+  note = [(ICDrawingHashtagsAndMentionsController *)self note];
+  v12 = [note participantForUserID:identifierCopy];
 
   if ((v10 & 1) != 0 || v12)
   {
     v41 = v12;
-    v42 = v8;
+    v42 = identifierCopy;
     if (v10)
     {
-      v40 = [MEMORY[0x1E69B77E8] allKeyword];
+      allKeyword = [MEMORY[0x1E69B77E8] allKeyword];
     }
 
     else
     {
       v15 = MEMORY[0x1E695BAD8];
-      v16 = [(ICDrawingHashtagsAndMentionsController *)self note];
-      v40 = [v15 ic_participantNameOrFallbackForUserRecordName:v8 note:v16];
+      note2 = [(ICDrawingHashtagsAndMentionsController *)self note];
+      allKeyword = [v15 ic_participantNameOrFallbackForUserRecordName:identifierCopy note:note2];
     }
 
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v17 = [(ICDrawingHashtagsAndMentionsController *)self attachment];
-    v18 = [v17 inlineAttachments];
+    attachment = [(ICDrawingHashtagsAndMentionsController *)self attachment];
+    inlineAttachments = [attachment inlineAttachments];
 
-    v19 = [v18 countByEnumeratingWithState:&v43 objects:v56 count:16];
+    v19 = [inlineAttachments countByEnumeratingWithState:&v43 objects:v56 count:16];
     if (v19)
     {
       v20 = v19;
@@ -391,13 +391,13 @@ LABEL_11:
       {
         if (*v44 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(inlineAttachments);
         }
 
         v23 = *(*(&v43 + 1) + 8 * v22);
-        v24 = [v23 identifier];
-        v25 = [v7 UUIDString];
-        v26 = [v24 isEqualToString:v25];
+        identifier = [v23 identifier];
+        uUIDString = [dCopy UUIDString];
+        v26 = [identifier isEqualToString:uUIDString];
 
         if (v26)
         {
@@ -406,7 +406,7 @@ LABEL_11:
 
         if (v20 == ++v22)
         {
-          v20 = [v18 countByEnumeratingWithState:&v43 objects:v56 count:16];
+          v20 = [inlineAttachments countByEnumeratingWithState:&v43 objects:v56 count:16];
           if (v20)
           {
             goto LABEL_11;
@@ -422,7 +422,7 @@ LABEL_11:
         [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"inlineAttachment.attachmentType == ICInlineAttachmentTypeMention" functionName:"-[ICDrawingHashtagsAndMentionsController attachmentView:userConfirmedMentionWithUUID:participantIdentifier:]" simulateCrash:1 showAlert:1 format:@"Found existing inline attachment for a drawing but it is not a mention"];
       }
 
-      v14 = v40;
+      v14 = allKeyword;
       if ([v13 markedForDeletion])
       {
         [v13 unmarkForDeletion];
@@ -438,14 +438,14 @@ LABEL_11:
     {
 LABEL_17:
 
-      v14 = v40;
+      v14 = allKeyword;
     }
 
     v27 = MEMORY[0x1E69B7778];
-    v28 = [v7 UUIDString];
-    v29 = [(ICDrawingHashtagsAndMentionsController *)self note];
-    v30 = [(ICDrawingHashtagsAndMentionsController *)self attachment];
-    v13 = [v27 newMentionAttachmentWithIdentifier:v28 mentionText:v14 userRecordName:v42 note:v29 parentAttachment:v30];
+    uUIDString2 = [dCopy UUIDString];
+    note3 = [(ICDrawingHashtagsAndMentionsController *)self note];
+    attachment2 = [(ICDrawingHashtagsAndMentionsController *)self attachment];
+    v13 = [v27 newMentionAttachmentWithIdentifier:uUIDString2 mentionText:v14 userRecordName:v42 note:note3 parentAttachment:attachment2];
 
     [v13 setMentionNotificationState:1];
 LABEL_24:
@@ -456,20 +456,20 @@ LABEL_24:
       [ICDrawingHashtagsAndMentionsController attachmentView:v13 userConfirmedMentionWithUUID:? participantIdentifier:?];
     }
 
-    v32 = [v13 note];
-    v33 = [v13 note];
+    note4 = [v13 note];
+    note5 = [v13 note];
     v55 = v13;
     v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v55 count:1];
-    v35 = [v32 persistMentionActivityEventForObject:v33 mentionAttachments:v34];
+    v35 = [note4 persistMentionActivityEventForObject:note5 mentionAttachments:v34];
 
-    v36 = [(ICDrawingHashtagsAndMentionsController *)self managedObjectContext];
-    [v36 ic_save];
+    managedObjectContext = [(ICDrawingHashtagsAndMentionsController *)self managedObjectContext];
+    [managedObjectContext ic_save];
 
     v37 = +[ICMentionNotificationController sharedController];
     [v37 sendPendingNotifications];
 
     v12 = v41;
-    v8 = v42;
+    identifierCopy = v42;
   }
 
   else
@@ -477,16 +477,16 @@ LABEL_24:
     v13 = os_log_create("com.apple.notes", "PencilKit");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v38 = [v7 UUIDString];
-      v39 = [(ICDrawingHashtagsAndMentionsController *)self share];
+      uUIDString3 = [dCopy UUIDString];
+      share = [(ICDrawingHashtagsAndMentionsController *)self share];
       *buf = 138413058;
-      v48 = v38;
+      v48 = uUIDString3;
       v49 = 2112;
-      v50 = v39;
+      v50 = share;
       v51 = 2112;
       v52 = 0;
       v53 = 2112;
-      v54 = v8;
+      v54 = identifierCopy;
       _os_log_error_impl(&dword_1D4171000, v13, OS_LOG_TYPE_ERROR, "Unable to confirm mention (%@) for share (%@) participant (%@; identifier %@)", buf, 0x2Au);
     }
 
@@ -494,16 +494,16 @@ LABEL_24:
   }
 }
 
-- (void)attachmentView:(id)a3 userDeletedMentionWithUUID:(id)a4
+- (void)attachmentView:(id)view userDeletedMentionWithUUID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v6 = MEMORY[0x1E69B7778];
-  v7 = [v5 UUIDString];
-  v8 = [(ICDrawingHashtagsAndMentionsController *)self managedObjectContext];
-  v9 = [v6 attachmentWithIdentifier:v7 context:v8];
+  uUIDString = [dCopy UUIDString];
+  managedObjectContext = [(ICDrawingHashtagsAndMentionsController *)self managedObjectContext];
+  v9 = [v6 attachmentWithIdentifier:uUIDString context:managedObjectContext];
 
   v10 = os_log_create("com.apple.notes", "PencilKit");
-  v11 = v10;
+  managedObjectContext2 = v10;
   if (v9)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -512,8 +512,8 @@ LABEL_24:
     }
 
     [MEMORY[0x1E69B7778] deleteAttachment:v9];
-    v11 = [v9 managedObjectContext];
-    [v11 ic_save];
+    managedObjectContext2 = [v9 managedObjectContext];
+    [managedObjectContext2 ic_save];
   }
 
   else
@@ -525,7 +525,7 @@ LABEL_24:
   }
 }
 
-- (id)allConfirmedHashtagsForAttachmentView:(id)a3
+- (id)allConfirmedHashtagsForAttachmentView:(id)view
 {
   v23 = *MEMORY[0x1E69E9840];
   v4 = objc_opt_new();
@@ -533,10 +533,10 @@ LABEL_24:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(ICDrawingHashtagsAndMentionsController *)self attachment];
-  v6 = [v5 visibleInlineAttachments];
+  attachment = [(ICDrawingHashtagsAndMentionsController *)self attachment];
+  visibleInlineAttachments = [attachment visibleInlineAttachments];
 
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v7 = [visibleInlineAttachments countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -547,21 +547,21 @@ LABEL_24:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(visibleInlineAttachments);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
         if ([v11 isHashtagAttachment])
         {
           v12 = objc_alloc(MEMORY[0x1E696AFB0]);
-          v13 = [v11 identifier];
-          v14 = [v12 initWithUUIDString:v13];
+          identifier = [v11 identifier];
+          v14 = [v12 initWithUUIDString:identifier];
 
           [v4 ic_addNonNilObject:v14];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [visibleInlineAttachments countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
@@ -578,19 +578,19 @@ LABEL_24:
   return v16;
 }
 
-- (void)attachmentView:(id)a3 userConfirmedHashtagWithUUID:(id)a4 displayText:(id)a5
+- (void)attachmentView:(id)view userConfirmedHashtagWithUUID:(id)d displayText:(id)text
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v26 = a5;
+  dCopy = d;
+  textCopy = text;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = [(ICDrawingHashtagsAndMentionsController *)self attachment];
-  v9 = [v8 inlineAttachments];
+  attachment = [(ICDrawingHashtagsAndMentionsController *)self attachment];
+  inlineAttachments = [attachment inlineAttachments];
 
-  v10 = [v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v10 = [inlineAttachments countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v10)
   {
     v11 = v10;
@@ -601,13 +601,13 @@ LABEL_3:
     {
       if (*v28 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(inlineAttachments);
       }
 
       v14 = *(*(&v27 + 1) + 8 * v13);
-      v15 = [v14 identifier];
-      v16 = [v7 UUIDString];
-      v17 = [v15 isEqualToString:v16];
+      identifier = [v14 identifier];
+      uUIDString = [dCopy UUIDString];
+      v17 = [identifier isEqualToString:uUIDString];
 
       if (v17)
       {
@@ -616,7 +616,7 @@ LABEL_3:
 
       if (v11 == ++v13)
       {
-        v11 = [v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v11 = [inlineAttachments countByEnumeratingWithState:&v27 objects:v31 count:16];
         if (v11)
         {
           goto LABEL_3;
@@ -632,7 +632,7 @@ LABEL_3:
       [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"inlineAttachment.attachmentType == ICInlineAttachmentTypeHashtag" functionName:"-[ICDrawingHashtagsAndMentionsController attachmentView:userConfirmedHashtagWithUUID:displayText:]" simulateCrash:1 showAlert:1 format:@"Found existing inline attachment for a drawing but it is not a hashtag"];
     }
 
-    v18 = v26;
+    v18 = textCopy;
     if ([v19 markedForDeletion])
     {
       [v19 unmarkForDeletion];
@@ -648,14 +648,14 @@ LABEL_3:
   {
 LABEL_9:
 
-    v18 = v26;
+    v18 = textCopy;
   }
 
   v20 = MEMORY[0x1E69B7778];
-  v21 = [v7 UUIDString];
-  v22 = [(ICDrawingHashtagsAndMentionsController *)self note];
-  v23 = [(ICDrawingHashtagsAndMentionsController *)self attachment];
-  v19 = [v20 newHashtagAttachmentWithIdentifier:v21 hashtagText:v18 creatingHashtagIfNecessary:1 note:v22 parentAttachment:v23];
+  uUIDString2 = [dCopy UUIDString];
+  note = [(ICDrawingHashtagsAndMentionsController *)self note];
+  attachment2 = [(ICDrawingHashtagsAndMentionsController *)self attachment];
+  v19 = [v20 newHashtagAttachmentWithIdentifier:uUIDString2 hashtagText:v18 creatingHashtagIfNecessary:1 note:note parentAttachment:attachment2];
 
 LABEL_16:
   [v19 updateChangeCountWithReason:@"Confirmed tag"];
@@ -665,20 +665,20 @@ LABEL_16:
     [ICDrawingHashtagsAndMentionsController attachmentView:v19 userConfirmedHashtagWithUUID:? displayText:?];
   }
 
-  v25 = [(ICDrawingHashtagsAndMentionsController *)self managedObjectContext];
-  [v25 ic_save];
+  managedObjectContext = [(ICDrawingHashtagsAndMentionsController *)self managedObjectContext];
+  [managedObjectContext ic_save];
 }
 
-- (void)attachmentView:(id)a3 userDeletedHashtagWithUUID:(id)a4
+- (void)attachmentView:(id)view userDeletedHashtagWithUUID:(id)d
 {
-  v5 = a4;
+  dCopy = d;
   v6 = MEMORY[0x1E69B7778];
-  v7 = [v5 UUIDString];
-  v8 = [(ICDrawingHashtagsAndMentionsController *)self managedObjectContext];
-  v9 = [v6 attachmentWithIdentifier:v7 context:v8];
+  uUIDString = [dCopy UUIDString];
+  managedObjectContext = [(ICDrawingHashtagsAndMentionsController *)self managedObjectContext];
+  v9 = [v6 attachmentWithIdentifier:uUIDString context:managedObjectContext];
 
   v10 = os_log_create("com.apple.notes", "PencilKit");
-  v11 = v10;
+  managedObjectContext2 = v10;
   if (v9)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -687,8 +687,8 @@ LABEL_16:
     }
 
     [MEMORY[0x1E69B7778] deleteAttachment:v9];
-    v11 = [v9 managedObjectContext];
-    [v11 ic_save];
+    managedObjectContext2 = [v9 managedObjectContext];
+    [managedObjectContext2 ic_save];
   }
 
   else
@@ -702,37 +702,37 @@ LABEL_16:
 
 - (NSManagedObjectContext)managedObjectContext
 {
-  v2 = [(ICDrawingHashtagsAndMentionsController *)self attachment];
-  v3 = [v2 managedObjectContext];
+  attachment = [(ICDrawingHashtagsAndMentionsController *)self attachment];
+  managedObjectContext = [attachment managedObjectContext];
 
-  return v3;
+  return managedObjectContext;
 }
 
 - (ICNote)note
 {
-  v2 = [(ICDrawingHashtagsAndMentionsController *)self attachment];
-  v3 = [v2 note];
+  attachment = [(ICDrawingHashtagsAndMentionsController *)self attachment];
+  note = [attachment note];
 
-  return v3;
+  return note;
 }
 
 - (CKShare)share
 {
-  v2 = [(ICDrawingHashtagsAndMentionsController *)self note];
-  v3 = [v2 serverShareCheckingParent];
+  note = [(ICDrawingHashtagsAndMentionsController *)self note];
+  serverShareCheckingParent = [note serverShareCheckingParent];
 
-  return v3;
+  return serverShareCheckingParent;
 }
 
 - (NSArray)eligibleShareParticipants
 {
-  v2 = [(ICDrawingHashtagsAndMentionsController *)self note];
-  v3 = [v2 serverShareCheckingParent];
-  v4 = [v3 ic_acceptedParticipants];
-  v5 = v4;
-  if (v4)
+  note = [(ICDrawingHashtagsAndMentionsController *)self note];
+  serverShareCheckingParent = [note serverShareCheckingParent];
+  ic_acceptedParticipants = [serverShareCheckingParent ic_acceptedParticipants];
+  v5 = ic_acceptedParticipants;
+  if (ic_acceptedParticipants)
   {
-    v6 = v4;
+    v6 = ic_acceptedParticipants;
   }
 
   else
@@ -745,10 +745,10 @@ LABEL_16:
   return v6;
 }
 
-- (void)fetchMentionTokensForParticipants:(id)a3 completion:(id)a4
+- (void)fetchMentionTokensForParticipants:(id)participants completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  participantsCopy = participants;
+  completionCopy = completion;
   contactsRequestQueue = self->_contactsRequestQueue;
   if (!contactsRequestQueue)
   {
@@ -764,10 +764,10 @@ LABEL_16:
   v14[1] = 3221225472;
   v14[2] = __87__ICDrawingHashtagsAndMentionsController_fetchMentionTokensForParticipants_completion___block_invoke;
   v14[3] = &unk_1E8468CF8;
-  v15 = v6;
-  v16 = v7;
-  v12 = v7;
-  v13 = v6;
+  v15 = participantsCopy;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = participantsCopy;
   dispatch_async(contactsRequestQueue, v14);
 }
 

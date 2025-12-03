@@ -1,35 +1,35 @@
 @interface SGQuickResponsesConfig
-+ (id)_cacheKeyForLanguage:(id)a3 mode:(unint64_t)a4 plistPath:(id)a5 vocabPath:(id)a6;
-+ (id)_dictionaryForPlistPath:(id)a3 mode:(unint64_t)a4;
++ (id)_cacheKeyForLanguage:(id)language mode:(unint64_t)mode plistPath:(id)path vocabPath:(id)vocabPath;
++ (id)_dictionaryForPlistPath:(id)path mode:(unint64_t)mode;
 + (id)_sharedCache;
-+ (id)_vocabForVocabPath:(id)a3 mode:(unint64_t)a4;
-+ (id)configWithLanguage:(id)a3 mode:(unint64_t)a4 plistPath:(id)a5 vocabPath:(id)a6;
-+ (id)modelTypeAndSubModelKeyForLanguage:(id)a3 plistPath:(id)a4 vocabPath:(id)a5 warmupBlock:(id)a6;
++ (id)_vocabForVocabPath:(id)path mode:(unint64_t)mode;
++ (id)configWithLanguage:(id)language mode:(unint64_t)mode plistPath:(id)path vocabPath:(id)vocabPath;
++ (id)modelTypeAndSubModelKeyForLanguage:(id)language plistPath:(id)path vocabPath:(id)vocabPath warmupBlock:(id)block;
 + (void)_addModelAssetUpdateHandler;
-- (BOOL)isValidConfigForWordPieceWithLazyVocab:(id)a3;
-- (SGQuickResponsesConfig)initWithLanguage:(id)a3 mode:(unint64_t)a4 dictionary:(id)a5 lazyVocab:(id)a6;
-- (SGQuickResponsesConfig)initWithLanguage:(id)a3 mode:(unint64_t)a4 dictionary:(id)a5 vocab:(id)a6;
-- (SGQuickResponsesConfig)initWithLanguage:(id)a3 mode:(unint64_t)a4 plistPath:(id)a5 vocabPath:(id)a6;
+- (BOOL)isValidConfigForWordPieceWithLazyVocab:(id)vocab;
+- (SGQuickResponsesConfig)initWithLanguage:(id)language mode:(unint64_t)mode dictionary:(id)dictionary lazyVocab:(id)vocab;
+- (SGQuickResponsesConfig)initWithLanguage:(id)language mode:(unint64_t)mode dictionary:(id)dictionary vocab:(id)vocab;
+- (SGQuickResponsesConfig)initWithLanguage:(id)language mode:(unint64_t)mode plistPath:(id)path vocabPath:(id)vocabPath;
 @end
 
 @implementation SGQuickResponsesConfig
 
-- (BOOL)isValidConfigForWordPieceWithLazyVocab:(id)a3
+- (BOOL)isValidConfigForWordPieceWithLazyVocab:(id)vocab
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  vocabCopy = vocab;
   if ([(SGModelHyperparameters *)self->_modelHyperparameters vectorizerStrategy]== 6)
   {
-    v6 = [v5 getObject];
+    getObject = [vocabCopy getObject];
     vocab = self->_vocab;
-    self->_vocab = v6;
+    self->_vocab = getObject;
 
     if (self->_vocab)
     {
       if ([(NSArray *)self->_preprocessingMethods count]<= 1)
       {
-        v13 = [MEMORY[0x277CCA890] currentHandler];
-        [v13 handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:1165 description:{@"Invalid parameter not satisfying: %@", @"_preprocessingMethods.count >= 2"}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:1165 description:{@"Invalid parameter not satisfying: %@", @"_preprocessingMethods.count >= 2"}];
       }
 
       v8 = [(NSArray *)self->_preprocessingMethods objectAtIndexedSubscript:[(NSArray *)self->_preprocessingMethods count]- 2];
@@ -68,13 +68,13 @@
   return v10 & 1;
 }
 
-- (SGQuickResponsesConfig)initWithLanguage:(id)a3 mode:(unint64_t)a4 dictionary:(id)a5 lazyVocab:(id)a6
+- (SGQuickResponsesConfig)initWithLanguage:(id)language mode:(unint64_t)mode dictionary:(id)dictionary lazyVocab:(id)vocab
 {
   v119 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = v12;
+  languageCopy = language;
+  dictionaryCopy = dictionary;
+  vocabCopy = vocab;
+  v14 = dictionaryCopy;
   v15 = v14;
   if (v14)
   {
@@ -91,11 +91,11 @@
       }
 
       v16 = objc_autoreleasePoolPush();
-      if (a4 == 1)
+      if (mode == 1)
       {
-        v108 = a3;
+        languageCopy2 = language;
         v17 = [v15 objectForKeyedSubscript:@"PREDICTION_REPLIES"];
-        v18 = [v17 objectForKeyedSubscript:v11];
+        v18 = [v17 objectForKeyedSubscript:languageCopy];
         if (v18)
         {
         }
@@ -103,7 +103,7 @@
         else
         {
           v50 = [v15 objectForKeyedSubscript:@"MODEL_HEADS"];
-          v51 = [v50 objectForKeyedSubscript:v11];
+          v51 = [v50 objectForKeyedSubscript:languageCopy];
 
           if (!v51)
           {
@@ -114,7 +114,7 @@ LABEL_39:
             }
 
             *buf = 138412290;
-            v118 = v11;
+            v118 = languageCopy;
             v89 = MEMORY[0x277D86220];
             v90 = "SGQuickResponses: no available configuration found to support prediction for language %@";
 LABEL_65:
@@ -124,12 +124,12 @@ LABEL_65:
         }
 
         v52 = [v15 objectForKeyedSubscript:@"PREDICTION_MODEL_HYPERPARAMETERS"];
-        v53 = [v52 objectForKeyedSubscript:v11];
+        v53 = [v52 objectForKeyedSubscript:languageCopy];
         if (v53)
         {
           v54 = v53;
           v55 = [v15 objectForKeyedSubscript:@"PREDICTION_PREPROCESSING_METHODS"];
-          v56 = [v55 objectForKeyedSubscript:v11];
+          v56 = [v55 objectForKeyedSubscript:languageCopy];
 
           if (v56)
           {
@@ -144,9 +144,9 @@ LABEL_65:
 
               v61 = [SGModelHyperparameters alloc];
               v62 = [v15 objectForKeyedSubscript:@"PREDICTION_MODEL_HYPERPARAMETERS"];
-              v63 = [v62 objectForKeyedSubscript:v11];
-              v64 = [(SGQuickResponsesPredictionParameters *)self->_predictionParams modelTypeName];
-              v65 = [(SGModelHyperparameters *)v61 initWithDictionary:v63 modelTypeName:v64];
+              v63 = [v62 objectForKeyedSubscript:languageCopy];
+              modelTypeName = [(SGQuickResponsesPredictionParameters *)self->_predictionParams modelTypeName];
+              v65 = [(SGModelHyperparameters *)v61 initWithDictionary:v63 modelTypeName:modelTypeName];
 
               if (v65)
               {
@@ -154,9 +154,9 @@ LABEL_65:
                 self->_modelHyperparameters = v65;
 
                 v67 = [v15 objectAssertedForKey:@"PREDICTION_PREPROCESSING_METHODS"];
-                v68 = [v67 arrayAssertedForKey:v11];
+                v68 = [v67 arrayAssertedForKey:languageCopy];
 
-                v47 = v108;
+                v47 = languageCopy2;
                 if (!v68)
                 {
                   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
@@ -182,19 +182,19 @@ LABEL_65:
 
                 v71 = v70;
                 v72 = [v15 objectForKeyedSubscript:@"MODEL_HEADS"];
-                v73 = [v72 objectForKeyedSubscript:v11];
+                v73 = [v72 objectForKeyedSubscript:languageCopy];
 
                 if (v73)
                 {
-                  v104 = v13;
-                  v105 = self;
+                  v104 = vocabCopy;
+                  selfCopy = self;
                   v74 = objc_opt_new();
                   v111 = 0u;
                   v112 = 0u;
                   v113 = 0u;
                   v114 = 0u;
                   v75 = [v15 objectForKeyedSubscript:@"MODEL_HEADS"];
-                  v76 = [v75 objectForKeyedSubscript:v11];
+                  v76 = [v75 objectForKeyedSubscript:languageCopy];
 
                   obj = v76;
                   v77 = [v76 countByEnumeratingWithState:&v111 objects:v116 count:16];
@@ -212,13 +212,13 @@ LABEL_65:
                         }
 
                         v81 = *(*(&v111 + 1) + 8 * i);
-                        v82 = [v15 objectForKeyedSubscript:{@"MODEL_HEADS", v104, v105}];
-                        [v82 objectForKeyedSubscript:v11];
+                        v82 = [v15 objectForKeyedSubscript:{@"MODEL_HEADS", v104, selfCopy}];
+                        [v82 objectForKeyedSubscript:languageCopy];
                         v83 = v15;
-                        v85 = v84 = v11;
+                        v85 = v84 = languageCopy;
                         v86 = [v85 objectForKeyedSubscript:v81];
 
-                        v11 = v84;
+                        languageCopy = v84;
                         v15 = v83;
 
                         v87 = [[SGModelHead alloc] initWithDictionary:v86 key:v81];
@@ -232,16 +232,16 @@ LABEL_65:
                   }
 
                   v88 = 40;
-                  v13 = v104;
-                  self = v105;
-                  v47 = v108;
+                  vocabCopy = v104;
+                  self = selfCopy;
+                  v47 = languageCopy2;
                 }
 
                 else
                 {
 LABEL_55:
                   v94 = [v15 objectForKeyedSubscript:@"PREDICTION_REPLIES"];
-                  v95 = [v94 objectForKeyedSubscript:v11];
+                  v95 = [v94 objectForKeyedSubscript:languageCopy];
                   v74 = [SGQuickResponsesReplies repliesWithArray:v95];
 
                   if (!v74)
@@ -301,38 +301,38 @@ LABEL_55:
       }
 
       v21 = [v15 objectForKeyedSubscript:@"CLASSIFICATION_LABELS"];
-      v22 = [v21 objectForKeyedSubscript:v11];
+      v22 = [v21 objectForKeyedSubscript:languageCopy];
       if (v22)
       {
         v23 = v22;
-        v107 = a4;
-        v109 = a3;
+        modeCopy = mode;
+        languageCopy3 = language;
         v24 = [v15 objectForKeyedSubscript:@"CLASSIFICATION_MODEL_HYPERPARAMETERS"];
-        v25 = [v24 objectForKeyedSubscript:v11];
+        v25 = [v24 objectForKeyedSubscript:languageCopy];
         if (v25)
         {
           v26 = v25;
           [v15 objectForKeyedSubscript:@"CLASSIFICATION_PREPROCESSING_METHODS"];
           v27 = context = v16;
-          v28 = [v27 objectForKeyedSubscript:v11];
+          v28 = [v27 objectForKeyedSubscript:languageCopy];
 
           v16 = context;
           if (v28)
           {
             v29 = [SGQuickResponsesClassificationParameters alloc];
             v30 = [v15 objectForKeyedSubscript:@"CLASSIFICATION_PARAMETERS"];
-            v31 = [(SGQuickResponsesClassificationParameters *)v29 initWithDictionary:v30 language:v11];
+            v31 = [(SGQuickResponsesClassificationParameters *)v29 initWithDictionary:v30 language:languageCopy];
 
             if (v31)
             {
               v32 = v15;
-              v33 = v13;
+              v33 = vocabCopy;
               classificationParams = self->_classificationParams;
               self->_classificationParams = v31;
 
               v35 = [SGModelHyperparameters alloc];
               v36 = [v32 objectForKeyedSubscript:@"CLASSIFICATION_MODEL_HYPERPARAMETERS"];
-              v37 = [v36 objectForKeyedSubscript:v11];
+              v37 = [v36 objectForKeyedSubscript:languageCopy];
               v38 = [(SGModelHyperparameters *)v35 initWithDictionary:v37 modelTypeName:@"quickResponsesEspressoClassifierMultiLabel"];
 
               if (v38)
@@ -341,9 +341,9 @@ LABEL_55:
                 self->_modelHyperparameters = v38;
 
                 v40 = [v32 objectAssertedForKey:@"CLASSIFICATION_PREPROCESSING_METHODS"];
-                v41 = [v40 arrayAssertedForKey:v11];
+                v41 = [v40 arrayAssertedForKey:languageCopy];
 
-                v13 = v33;
+                vocabCopy = v33;
                 if (!v41)
                 {
                   v15 = v32;
@@ -363,7 +363,7 @@ LABEL_55:
                 self->_preprocessingMethods = v41;
 
                 v43 = [v32 objectAssertedForKey:@"CLASSIFICATION_LABELS"];
-                v44 = [v43 arrayAssertedForKey:v11];
+                v44 = [v43 arrayAssertedForKey:languageCopy];
 
                 v15 = v32;
                 if (!v44)
@@ -383,12 +383,12 @@ LABEL_55:
                 labels = self->_labels;
                 self->_labels = v44;
 
-                v46 = v107;
-                v47 = v109;
+                v46 = modeCopy;
+                v47 = languageCopy3;
                 if ([(NSArray *)self->_labels count]<= 0x1000)
                 {
 LABEL_58:
-                  v97 = [v15 objectForKeyedSubscript:{@"CUSTOM_RESPONSES_PARAMETERS", v104, v105}];
+                  v97 = [v15 objectForKeyedSubscript:{@"CUSTOM_RESPONSES_PARAMETERS", v104, selfCopy}];
 
                   if (v97)
                   {
@@ -418,7 +418,7 @@ LABEL_44:
                     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
                     {
                       *buf = 138412290;
-                      v118 = v11;
+                      v118 = languageCopy;
                       _os_log_debug_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "SGQuickResponses: no available configuration found to support custom responses for language %@", buf, 0xCu);
                     }
 
@@ -431,11 +431,11 @@ LABEL_44:
 
                   objc_storeStrong(&self->_language, v47);
                   self->_mode = v46;
-                  v102 = [(SGModelHyperparameters *)self->_modelHyperparameters sessionDescriptorForLanguage:v11];
+                  v102 = [(SGModelHyperparameters *)self->_modelHyperparameters sessionDescriptorForLanguage:languageCopy];
                   sessionDescriptor = self->_sessionDescriptor;
                   self->_sessionDescriptor = v102;
 
-                  if (![(SGQuickResponsesConfig *)self isValidConfigForWordPieceWithLazyVocab:v13])
+                  if (![(SGQuickResponsesConfig *)self isValidConfigForWordPieceWithLazyVocab:vocabCopy])
                   {
                     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
                     {
@@ -451,7 +451,7 @@ LABEL_44:
                   objc_autoreleasePoolPop(v16);
 LABEL_73:
                   self = self;
-                  v91 = self;
+                  selfCopy2 = self;
                   goto LABEL_46;
                 }
 
@@ -468,7 +468,7 @@ LABEL_73:
 
               else
               {
-                v13 = v33;
+                vocabCopy = v33;
                 v15 = v32;
                 v16 = context;
                 if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
@@ -511,7 +511,7 @@ LABEL_43:
       }
 
       *buf = 138412290;
-      v118 = v11;
+      v118 = languageCopy;
       v89 = MEMORY[0x277D86220];
       v90 = "SGQuickResponses: no available configuration found to support training for language %@";
       goto LABEL_65;
@@ -536,44 +536,44 @@ LABEL_11:
   }
 
 LABEL_45:
-  v91 = 0;
+  selfCopy2 = 0;
 LABEL_46:
 
   v92 = *MEMORY[0x277D85DE8];
-  return v91;
+  return selfCopy2;
 }
 
-- (SGQuickResponsesConfig)initWithLanguage:(id)a3 mode:(unint64_t)a4 dictionary:(id)a5 vocab:(id)a6
+- (SGQuickResponsesConfig)initWithLanguage:(id)language mode:(unint64_t)mode dictionary:(id)dictionary vocab:(id)vocab
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  vocabCopy = vocab;
+  dictionaryCopy = dictionary;
+  languageCopy = language;
   v13 = [SGLazyInit alloc];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __65__SGQuickResponsesConfig_initWithLanguage_mode_dictionary_vocab___block_invoke;
   v18[3] = &unk_278EB74D8;
-  v19 = v10;
-  v14 = v10;
+  v19 = vocabCopy;
+  v14 = vocabCopy;
   v15 = [(SGLazyInit *)v13 initWithInitializer:v18 destructor:0];
-  v16 = [(SGQuickResponsesConfig *)self initWithLanguage:v12 mode:a4 dictionary:v11 lazyVocab:v15];
+  v16 = [(SGQuickResponsesConfig *)self initWithLanguage:languageCopy mode:mode dictionary:dictionaryCopy lazyVocab:v15];
 
   return v16;
 }
 
-- (SGQuickResponsesConfig)initWithLanguage:(id)a3 mode:(unint64_t)a4 plistPath:(id)a5 vocabPath:(id)a6
+- (SGQuickResponsesConfig)initWithLanguage:(id)language mode:(unint64_t)mode plistPath:(id)path vocabPath:(id)vocabPath
 {
   v20 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [SGQuickResponsesConfig _dictionaryForPlistPath:v11 mode:a4];
-  v14 = [SGQuickResponsesConfig _vocabForVocabPath:v12 mode:a4];
+  languageCopy = language;
+  pathCopy = path;
+  vocabPathCopy = vocabPath;
+  v13 = [SGQuickResponsesConfig _dictionaryForPlistPath:pathCopy mode:mode];
+  v14 = [SGQuickResponsesConfig _vocabForVocabPath:vocabPathCopy mode:mode];
 
   if (v13)
   {
-    self = [(SGQuickResponsesConfig *)self initWithLanguage:v10 mode:a4 dictionary:v13 lazyVocab:v14];
-    v15 = self;
+    self = [(SGQuickResponsesConfig *)self initWithLanguage:languageCopy mode:mode dictionary:v13 lazyVocab:v14];
+    selfCopy = self;
   }
 
   else
@@ -581,30 +581,30 @@ LABEL_46:
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
     {
       v18 = 138412290;
-      v19 = v11;
+      v19 = pathCopy;
       _os_log_fault_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_FAULT, "SGQuickResponses: Invalid plist path %@", &v18, 0xCu);
     }
 
-    v15 = 0;
+    selfCopy = 0;
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return v15;
+  return selfCopy;
 }
 
-+ (id)configWithLanguage:(id)a3 mode:(unint64_t)a4 plistPath:(id)a5 vocabPath:(id)a6
++ (id)configWithLanguage:(id)language mode:(unint64_t)mode plistPath:(id)path vocabPath:(id)vocabPath
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (![v11 length])
+  languageCopy = language;
+  pathCopy = path;
+  vocabPathCopy = vocabPath;
+  if (![languageCopy length])
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"SGQuickResponsesConfig.m" lineNumber:1047 description:{@"Invalid parameter not satisfying: %@", @"language.length"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:1047 description:{@"Invalid parameter not satisfying: %@", @"language.length"}];
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = [SGQuickResponsesConfig _cacheKeyForLanguage:v11 mode:a4 plistPath:v12 vocabPath:v13];
+  v15 = [SGQuickResponsesConfig _cacheKeyForLanguage:languageCopy mode:mode plistPath:pathCopy vocabPath:vocabPathCopy];
   v16 = +[SGQuickResponsesConfig _sharedCache];
   v17 = [v16 objectForKey:v15];
 
@@ -615,7 +615,7 @@ LABEL_46:
 
   else
   {
-    v18 = [[SGQuickResponsesConfig alloc] initWithLanguage:v11 mode:a4 plistPath:v12 vocabPath:v13];
+    v18 = [[SGQuickResponsesConfig alloc] initWithLanguage:languageCopy mode:mode plistPath:pathCopy vocabPath:vocabPathCopy];
     if (v18)
     {
       v19 = +[SGQuickResponsesConfig _sharedCache];
@@ -628,42 +628,42 @@ LABEL_46:
   return v18;
 }
 
-+ (id)modelTypeAndSubModelKeyForLanguage:(id)a3 plistPath:(id)a4 vocabPath:(id)a5 warmupBlock:(id)a6
++ (id)modelTypeAndSubModelKeyForLanguage:(id)language plistPath:(id)path vocabPath:(id)vocabPath warmupBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (![v11 length])
+  languageCopy = language;
+  pathCopy = path;
+  vocabPathCopy = vocabPath;
+  blockCopy = block;
+  if (![languageCopy length])
   {
-    v35 = [MEMORY[0x277CCA890] currentHandler];
-    [v35 handleFailureInMethod:a2 object:a1 file:@"SGQuickResponsesConfig.m" lineNumber:1008 description:{@"Invalid parameter not satisfying: %@", @"language.length"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SGQuickResponsesConfig.m" lineNumber:1008 description:{@"Invalid parameter not satisfying: %@", @"language.length"}];
   }
 
   v15 = objc_autoreleasePoolPush();
-  v16 = [SGQuickResponsesConfig _cacheKeyForLanguage:v11 mode:1 plistPath:v12 vocabPath:v13];
+  v16 = [SGQuickResponsesConfig _cacheKeyForLanguage:languageCopy mode:1 plistPath:pathCopy vocabPath:vocabPathCopy];
   v17 = +[SGQuickResponsesConfig _sharedCache];
   v18 = [v17 objectForKey:v16];
 
-  v38 = v12;
-  v39 = v13;
-  v37 = v14;
+  v38 = pathCopy;
+  v39 = vocabPathCopy;
+  v37 = blockCopy;
   if (v18)
   {
     v19 = objc_alloc(MEMORY[0x277D42648]);
-    v20 = [v18 predictionParams];
-    [v20 modelTypeName];
+    predictionParams = [v18 predictionParams];
+    [predictionParams modelTypeName];
     v22 = v21 = v15;
-    v23 = [v18 predictionParams];
-    v24 = [v23 subModelKeyString];
-    v25 = [v19 initWithFirst:v22 second:v24];
+    predictionParams2 = [v18 predictionParams];
+    subModelKeyString = [predictionParams2 subModelKeyString];
+    v25 = [v19 initWithFirst:v22 second:subModelKeyString];
 
     v15 = v21;
   }
 
   else
   {
-    v26 = [SGQuickResponsesConfig _dictionaryForPlistPath:v12 mode:1];
+    v26 = [SGQuickResponsesConfig _dictionaryForPlistPath:pathCopy mode:1];
     if (v26)
     {
       v36 = v15;
@@ -678,12 +678,12 @@ LABEL_46:
       block[2] = __93__SGQuickResponsesConfig_modelTypeAndSubModelKeyForLanguage_plistPath_vocabPath_warmupBlock___block_invoke_2;
       block[3] = &unk_278EB7490;
       v41 = v16;
-      v42 = v13;
+      v42 = vocabPathCopy;
       v46 = 1;
-      v43 = v11;
+      v43 = languageCopy;
       v28 = v26;
       v44 = v28;
-      v45 = v14;
+      v45 = blockCopy;
       v29 = v27;
       v30 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, block);
       dispatch_async(v29, v30);
@@ -741,24 +741,24 @@ void __93__SGQuickResponsesConfig_modelTypeAndSubModelKeyForLanguage_plistPath_v
   objc_autoreleasePoolPop(v0);
 }
 
-+ (id)_vocabForVocabPath:(id)a3 mode:(unint64_t)a4
++ (id)_vocabForVocabPath:(id)path mode:(unint64_t)mode
 {
-  v5 = a3;
-  if (v5)
+  pathCopy = path;
+  if (pathCopy)
   {
     v6 = [SGLazyInit alloc];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __50__SGQuickResponsesConfig__vocabForVocabPath_mode___block_invoke;
     v10[3] = &unk_278EB74D8;
-    v11 = v5;
+    v11 = pathCopy;
     v7 = [(SGLazyInit *)v6 initWithInitializer:v10 destructor:0];
   }
 
   else
   {
     v8 = [SGLazyInit alloc];
-    if (a4 == 1)
+    if (mode == 1)
     {
       v7 = [(SGLazyInit *)v8 initWithInitializer:&__block_literal_global_740 destructor:0];
     }
@@ -773,18 +773,18 @@ void __93__SGQuickResponsesConfig_modelTypeAndSubModelKeyForLanguage_plistPath_v
   return v7;
 }
 
-+ (id)_dictionaryForPlistPath:(id)a3 mode:(unint64_t)a4
++ (id)_dictionaryForPlistPath:(id)path mode:(unint64_t)mode
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v6 = [SGDefaultAssets dictionaryWithPlistAssetPath:v5];
+    v6 = [SGDefaultAssets dictionaryWithPlistAssetPath:pathCopy];
   }
 
   else
   {
-    if (a4 != 1)
+    if (mode != 1)
     {
       v7 = +[SGModelAsset quickResponses];
       +[SGQuickResponsesConfig _addModelAssetUpdateHandler];
@@ -809,7 +809,7 @@ LABEL_6:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     v10 = 138412290;
-    v11 = v5;
+    v11 = pathCopy;
     _os_log_fault_impl(&dword_24799E000, MEMORY[0x277D86220], OS_LOG_TYPE_FAULT, "SGQuickResponses: Invalid plist path %@", &v10, 0xCu);
   }
 
@@ -863,17 +863,17 @@ id __38__SGQuickResponsesConfig__sharedCache__block_invoke_2()
   return v0;
 }
 
-+ (id)_cacheKeyForLanguage:(id)a3 mode:(unint64_t)a4 plistPath:(id)a5 vocabPath:(id)a6
++ (id)_cacheKeyForLanguage:(id)language mode:(unint64_t)mode plistPath:(id)path vocabPath:(id)vocabPath
 {
   v9 = MEMORY[0x277CCACA8];
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  vocabPathCopy = vocabPath;
+  pathCopy = path;
+  languageCopy = language;
   v13 = [v9 alloc];
   v14 = &stru_285992FC0;
-  if (v11)
+  if (pathCopy)
   {
-    v15 = v11;
+    v15 = pathCopy;
   }
 
   else
@@ -881,12 +881,12 @@ id __38__SGQuickResponsesConfig__sharedCache__block_invoke_2()
     v15 = &stru_285992FC0;
   }
 
-  if (v10)
+  if (vocabPathCopy)
   {
-    v14 = v10;
+    v14 = vocabPathCopy;
   }
 
-  v16 = [v13 initWithFormat:@"%@-%lu-%@-%@", v12, a4, v15, v14];
+  v16 = [v13 initWithFormat:@"%@-%lu-%@-%@", languageCopy, mode, v15, v14];
 
   return v16;
 }

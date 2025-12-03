@@ -1,6 +1,6 @@
 @interface WFBooleanSubstitutableState
 + (Class)processingValueClass;
-- (WFBooleanSubstitutableState)initWithNumberSubstitutableState:(id)a3;
+- (WFBooleanSubstitutableState)initWithNumberSubstitutableState:(id)state;
 - (id)numberSubstitutableState;
 @end
 
@@ -14,19 +14,19 @@
   return v3;
 }
 
-- (WFBooleanSubstitutableState)initWithNumberSubstitutableState:(id)a3
+- (WFBooleanSubstitutableState)initWithNumberSubstitutableState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 variable];
-  if (v5)
+  stateCopy = state;
+  variable = [stateCopy variable];
+  if (variable)
   {
-    v6 = [(WFVariableSubstitutableParameterState *)self initWithVariable:v5];
+    v6 = [(WFVariableSubstitutableParameterState *)self initWithVariable:variable];
   }
 
   else
   {
-    v7 = [v4 value];
-    v6 = [(WFVariableSubstitutableParameterState *)self initWithValue:v7];
+    value = [stateCopy value];
+    v6 = [(WFVariableSubstitutableParameterState *)self initWithValue:value];
   }
 
   return v6;
@@ -34,18 +34,18 @@
 
 - (id)numberSubstitutableState
 {
-  v3 = [(WFVariableSubstitutableParameterState *)self variable];
+  variable = [(WFVariableSubstitutableParameterState *)self variable];
   v4 = [WFNumberSubstitutableState alloc];
   v5 = v4;
-  if (v3)
+  if (variable)
   {
-    v6 = [(WFVariableSubstitutableParameterState *)v4 initWithVariable:v3];
+    v6 = [(WFVariableSubstitutableParameterState *)v4 initWithVariable:variable];
   }
 
   else
   {
-    v7 = [(WFVariableSubstitutableParameterState *)self value];
-    v6 = [(WFVariableSubstitutableParameterState *)v5 initWithValue:v7];
+    value = [(WFVariableSubstitutableParameterState *)self value];
+    v6 = [(WFVariableSubstitutableParameterState *)v5 initWithValue:value];
   }
 
   return v6;

@@ -1,17 +1,17 @@
 @interface ULAnchorAppearanceMapMO
-+ (id)createFromDO:(const void *)a3 withLoiMO:(id)a4 inManagedObjectContext:(id)a5;
++ (id)createFromDO:(const void *)o withLoiMO:(id)mO inManagedObjectContext:(id)context;
 - (optional<ULAnchorAppearanceMapDO>)convertToDO;
 @end
 
 @implementation ULAnchorAppearanceMapMO
 
-+ (id)createFromDO:(const void *)a3 withLoiMO:(id)a4 inManagedObjectContext:(id)a5
++ (id)createFromDO:(const void *)o withLoiMO:(id)mO inManagedObjectContext:(id)context
 {
-  v7 = a4;
-  v8 = [[ULAnchorAppearanceMapMO alloc] initWithContext:a5];
-  [(ULAnchorAppearanceMapMO *)v8 setLoi:v7];
-  [(ULAnchorAppearanceMapMO *)v8 setTimestamp:*a3];
-  CLMicroLocationProto::AnchorAppearanceConfiguration::ByteSize((a3 + 24));
+  mOCopy = mO;
+  v8 = [[ULAnchorAppearanceMapMO alloc] initWithContext:context];
+  [(ULAnchorAppearanceMapMO *)v8 setLoi:mOCopy];
+  [(ULAnchorAppearanceMapMO *)v8 setTimestamp:*o];
+  CLMicroLocationProto::AnchorAppearanceConfiguration::ByteSize((o + 24));
   operator new[]();
 }
 
@@ -21,11 +21,11 @@
   [(ULAnchorAppearanceMapMO *)self timestamp];
   v17 = v4;
   v5 = [(ULAnchorAppearanceMapMO *)self loi];
-  v6 = [v5 loiId];
-  v7 = v6;
-  if (v6)
+  loiId = [v5 loiId];
+  v7 = loiId;
+  if (loiId)
   {
-    [v6 boostUUID];
+    [loiId boostUUID];
   }
 
   else
@@ -55,14 +55,14 @@
     }
   }
 
-  v9 = [(ULAnchorAppearanceMapMO *)self anchorAppearance];
-  v10 = v9;
-  v11 = [v9 bytes];
-  v12 = [(ULAnchorAppearanceMapMO *)self anchorAppearance];
-  [v12 length];
-  LOBYTE(v11) = wireless_diagnostics::google::protobuf::MessageLite::ParseFromArray(v16, v11);
+  anchorAppearance = [(ULAnchorAppearanceMapMO *)self anchorAppearance];
+  v10 = anchorAppearance;
+  bytes = [anchorAppearance bytes];
+  anchorAppearance2 = [(ULAnchorAppearanceMapMO *)self anchorAppearance];
+  [anchorAppearance2 length];
+  LOBYTE(bytes) = wireless_diagnostics::google::protobuf::MessageLite::ParseFromArray(v16, bytes);
 
-  if (v11)
+  if (bytes)
   {
     if ((v21 & 1) == 0)
     {

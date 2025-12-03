@@ -7,11 +7,11 @@
 - (BOOL)showsNodeCount;
 - (BOOL)showsPhysics;
 - (BOOL)showsQuadCount;
-- (SKRenderer)initWithSKCRenderer:(void *)a3;
+- (SKRenderer)initWithSKCRenderer:(void *)renderer;
 - (id)_getOptions;
 - (void)_initialize;
 - (void)_notifyWillRenderContent;
-- (void)_update:(double)a3;
+- (void)_update:(double)_update;
 - (void)dealloc;
 - (void)renderWithViewport:(CGRect)viewport commandBuffer:(id)commandBuffer renderPassDescriptor:(MTLRenderPassDescriptor *)renderPassDescriptor;
 - (void)renderWithViewport:(CGRect)viewport renderCommandEncoder:(id)renderCommandEncoder renderPassDescriptor:(MTLRenderPassDescriptor *)renderPassDescriptor commandQueue:(id)commandQueue;
@@ -40,7 +40,7 @@
   operator new();
 }
 
-- (SKRenderer)initWithSKCRenderer:(void *)a3
+- (SKRenderer)initWithSKCRenderer:(void *)renderer
 {
   v7.receiver = self;
   v7.super_class = SKRenderer;
@@ -48,7 +48,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_skcRenderer = a3;
+    v4->_skcRenderer = renderer;
     [(SKRenderer *)v4 _initialize];
   }
 
@@ -60,9 +60,9 @@
   [(SKRenderer *)self setScene:0];
   self->_hasRenderedForCurrentUpdate = 0;
   *&self->_needsInitialUpdate = 1;
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   renderOptions = self->_renderOptions;
-  self->_renderOptions = v3;
+  self->_renderOptions = dictionary;
 
   v5 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.3];
   [(NSMutableDictionary *)self->_renderOptions setObject:v5 forKeyedSubscript:@"debugDrawStats_BGColor"];
@@ -144,10 +144,10 @@ LABEL_7:
   x = viewport.origin.x;
   v14 = commandBuffer;
   v11 = renderPassDescriptor;
-  v12 = [v14 commandQueue];
+  commandQueue = [v14 commandQueue];
   v13 = [v14 renderCommandEncoderWithDescriptor:v11];
   [v13 setLabel:@"SKRenderer Pass"];
-  [(SKRenderer *)self renderWithViewport:v13 renderCommandEncoder:v11 renderPassDescriptor:v12 commandQueue:x, y, width, height];
+  [(SKRenderer *)self renderWithViewport:v13 renderCommandEncoder:v11 renderPassDescriptor:commandQueue commandQueue:x, y, width, height];
   [v13 endEncoding];
 }
 
@@ -156,17 +156,17 @@ LABEL_7:
   scene = self->_scene;
   if (scene)
   {
-    v4 = [(SKScene *)scene delegate];
-    if (v4)
+    delegate = [(SKScene *)scene delegate];
+    if (delegate)
     {
-      v11 = v4;
-      v5 = [(SKScene *)self->_scene delegate];
+      v11 = delegate;
+      delegate2 = [(SKScene *)self->_scene delegate];
       v6 = objc_opt_respondsToSelector();
 
       if (v6)
       {
-        v12 = [(SKScene *)self->_scene delegate];
-        [v12 willRenderContentForScene:self->_scene];
+        delegate3 = [(SKScene *)self->_scene delegate];
+        [delegate3 willRenderContentForScene:self->_scene];
       }
     }
   }
@@ -174,17 +174,17 @@ LABEL_7:
   nextScene = self->_nextScene;
   if (nextScene)
   {
-    v8 = [(SKScene *)nextScene delegate];
-    if (v8)
+    delegate4 = [(SKScene *)nextScene delegate];
+    if (delegate4)
     {
-      v13 = v8;
-      v9 = [(SKScene *)self->_nextScene delegate];
+      v13 = delegate4;
+      delegate5 = [(SKScene *)self->_nextScene delegate];
       v10 = objc_opt_respondsToSelector();
 
       if (v10)
       {
-        v14 = [(SKScene *)self->_nextScene delegate];
-        [v14 willRenderContentForScene:self->_nextScene];
+        delegate6 = [(SKScene *)self->_nextScene delegate];
+        [delegate6 willRenderContentForScene:self->_nextScene];
       }
     }
   }
@@ -207,7 +207,7 @@ LABEL_7:
   kdebug_trace();
 }
 
-- (void)_update:(double)a3
+- (void)_update:(double)_update
 {
   p_scene = &self->_scene;
   if ([(SKScene *)self->_scene scaleMode]== SKSceneScaleModeResizeFill)
@@ -228,7 +228,7 @@ LABEL_7:
     }
   }
 
-  v10 = a3 - self->_previousTime;
+  v10 = _update - self->_previousTime;
   if (v10 < 0.0)
   {
     return;
@@ -237,7 +237,7 @@ LABEL_7:
   if (v10 <= 1.0)
   {
     currentTime = self->_currentTime;
-    self->_currentTime = a3;
+    self->_currentTime = _update;
     self->_previousTime = currentTime;
     goto LABEL_21;
   }
@@ -246,18 +246,18 @@ LABEL_7:
   nextScene = self->_nextScene;
   if (!scene)
   {
-    v13 = 0;
+    isPaused = 0;
     if (nextScene)
     {
       goto LABEL_13;
     }
 
 LABEL_16:
-    v14 = 0;
+    isPaused2 = 0;
     goto LABEL_17;
   }
 
-  v13 = [(SKNode *)self->_scene isPaused];
+  isPaused = [(SKNode *)self->_scene isPaused];
   [(SKScene *)*p_scene setPaused:1];
   if (!nextScene)
   {
@@ -265,33 +265,33 @@ LABEL_16:
   }
 
 LABEL_13:
-  v14 = [(SKNode *)self->_nextScene isPaused];
+  isPaused2 = [(SKNode *)self->_nextScene isPaused];
   [(SKScene *)self->_nextScene setPaused:1];
 LABEL_17:
   v16 = self->_currentTime;
-  self->_currentTime = a3;
+  self->_currentTime = _update;
   self->_previousTime = v16;
   if (scene)
   {
     [(SKScene *)*p_scene setPaused:0];
-    [(SKScene *)*p_scene setPaused:v13];
+    [(SKScene *)*p_scene setPaused:isPaused];
   }
 
   if (nextScene)
   {
     [(SKScene *)self->_nextScene setPaused:0];
-    [(SKScene *)self->_nextScene setPaused:v14];
+    [(SKScene *)self->_nextScene setPaused:isPaused2];
   }
 
 LABEL_21:
   transition = self->_transition;
   if (transition)
   {
-    v18 = [(SKTransition *)transition _backingNode];
-    *(v18 + 584) = *(v18 + 584) + v10;
-    v19 = [(SKTransition *)self->_transition _backingNode];
+    _backingNode = [(SKTransition *)transition _backingNode];
+    *(_backingNode + 584) = *(_backingNode + 584) + v10;
+    _backingNode2 = [(SKTransition *)self->_transition _backingNode];
     v20 = *([(SKTransition *)self->_transition _backingNode]+ 584);
-    v19[180] = v20 / *([(SKTransition *)self->_transition _backingNode]+ 580);
+    _backingNode2[180] = v20 / *([(SKTransition *)self->_transition _backingNode]+ 580);
     v21 = *([(SKTransition *)self->_transition _backingNode]+ 584);
     if (v21 >= *([(SKTransition *)self->_transition _backingNode]+ 580))
     {
@@ -337,7 +337,7 @@ LABEL_21:
     if (![(SKScene *)v26 _usesExplicitUpdate])
     {
 LABEL_36:
-      [(SKScene *)v26 _update:a3];
+      [(SKScene *)v26 _update:_update];
       self->_hasRenderedForCurrentUpdate = 0;
       goto LABEL_38;
     }
@@ -357,7 +357,7 @@ LABEL_38:
     if (![(SKScene *)v28 _usesExplicitUpdate])
     {
 LABEL_43:
-      [(SKScene *)v28 _update:a3];
+      [(SKScene *)v28 _update:_update];
       self->_hasRenderedForCurrentUpdate = 0;
       goto LABEL_44;
     }
@@ -411,9 +411,9 @@ LABEL_50:
 - (BOOL)shouldCullNonVisibleNodes
 {
   v2 = [(NSMutableDictionary *)self->_renderOptions objectForKeyedSubscript:@"cullNonVisibleNodes"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)setIgnoresSiblingOrder:(BOOL)ignoresSiblingOrder
@@ -425,9 +425,9 @@ LABEL_50:
 - (BOOL)ignoresSiblingOrder
 {
   v2 = [(NSMutableDictionary *)self->_renderOptions objectForKeyedSubscript:@"ignoresSiblingOrder"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)setShowsPhysics:(BOOL)showsPhysics
@@ -439,9 +439,9 @@ LABEL_50:
 - (BOOL)showsPhysics
 {
   v2 = [(NSMutableDictionary *)self->_renderOptions valueForKey:@"debugDrawPhysics"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)setShowsFields:(BOOL)showsFields
@@ -453,9 +453,9 @@ LABEL_50:
 - (BOOL)showsFields
 {
   v2 = [(NSMutableDictionary *)self->_renderOptions objectForKeyedSubscript:@"debugDrawPhysicsFields"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)setShowsQuadCount:(BOOL)showsQuadCount
@@ -467,9 +467,9 @@ LABEL_50:
 - (BOOL)showsQuadCount
 {
   v2 = [(NSMutableDictionary *)self->_renderOptions objectForKeyedSubscript:@"debugDrawStats_QuadCount"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)setShowsNodeCount:(BOOL)showsNodeCount
@@ -481,9 +481,9 @@ LABEL_50:
 - (BOOL)showsNodeCount
 {
   v2 = [(NSMutableDictionary *)self->_renderOptions objectForKeyedSubscript:@"debugDrawStats_NodeCount"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)setShowsDrawCount:(BOOL)showsDrawCount
@@ -495,9 +495,9 @@ LABEL_50:
 - (BOOL)showsDrawCount
 {
   v2 = [(NSMutableDictionary *)self->_renderOptions objectForKeyedSubscript:@"debugDrawStats_DrawCount"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

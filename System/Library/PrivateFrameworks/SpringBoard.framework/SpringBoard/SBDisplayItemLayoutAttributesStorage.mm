@@ -1,11 +1,11 @@
 @interface SBDisplayItemLayoutAttributesStorage
 - (SBDisplayItemLayoutAttributesStorage)init;
-- (id)bestEffortLayoutAttributesForKey:(id)a3;
+- (id)bestEffortLayoutAttributesForKey:(id)key;
 - (id)layoutAttributesMap;
-- (int64_t)lasInteractionTimeForDisplayItem:(id)a3;
-- (void)enumarateLayoutAttributesForDisplayItem:(id)a3 block:(id)a4;
-- (void)setLayoutAttributes:(id)a3 forKey:(id)a4;
-- (void)updateEntriesWithBlock:(id)a3;
+- (int64_t)lasInteractionTimeForDisplayItem:(id)item;
+- (void)enumarateLayoutAttributesForDisplayItem:(id)item block:(id)block;
+- (void)setLayoutAttributes:(id)attributes forKey:(id)key;
+- (void)updateEntriesWithBlock:(id)block;
 @end
 
 @implementation SBDisplayItemLayoutAttributesStorage
@@ -36,15 +36,15 @@
   return v2;
 }
 
-- (id)bestEffortLayoutAttributesForKey:(id)a3
+- (id)bestEffortLayoutAttributesForKey:(id)key
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 orientation] || (-[SBDisplayItemLayoutAttributesStorage layoutAttributesForKey:](self, "layoutAttributesForKey:", v4), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  keyCopy = key;
+  if (![keyCopy orientation] || (-[SBDisplayItemLayoutAttributesStorage layoutAttributesForKey:](self, "layoutAttributesForKey:", keyCopy), (v5 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     cachedKeySets = self->_cachedKeySets;
-    v7 = [v4 displayItem];
-    v8 = [(NSMapTable *)cachedKeySets objectForKey:v7];
+    displayItem = [keyCopy displayItem];
+    v8 = [(NSMapTable *)cachedKeySets objectForKey:displayItem];
 
     if (v8)
     {
@@ -85,9 +85,9 @@ LABEL_6:
           }
         }
 
-        v15 = v14;
+        anyObject = v14;
 
-        if (v15)
+        if (anyObject)
         {
           goto LABEL_15;
         }
@@ -98,9 +98,9 @@ LABEL_6:
 LABEL_12:
       }
 
-      v15 = [v9 anyObject];
+      anyObject = [v9 anyObject];
 LABEL_15:
-      v5 = [(SBDisplayItemLayoutAttributesStorage *)self layoutAttributesForKey:v15];
+      v5 = [(SBDisplayItemLayoutAttributesStorage *)self layoutAttributesForKey:anyObject];
     }
 
     else
@@ -112,12 +112,12 @@ LABEL_15:
   return v5;
 }
 
-- (void)setLayoutAttributes:(id)a3 forKey:(id)a4
+- (void)setLayoutAttributes:(id)attributes forKey:(id)key
 {
-  v11 = a4;
-  [(NSMapTable *)self->_layoutAttributesMap setObject:a3 forKey:v11];
-  v6 = [v11 displayItem];
-  v7 = [(NSMapTable *)self->_cachedKeySets objectForKey:v6];
+  keyCopy = key;
+  [(NSMapTable *)self->_layoutAttributesMap setObject:attributes forKey:keyCopy];
+  displayItem = [keyCopy displayItem];
+  v7 = [(NSMapTable *)self->_cachedKeySets objectForKey:displayItem];
   v8 = v7;
   if (v7)
   {
@@ -131,15 +131,15 @@ LABEL_15:
 
   v10 = v9;
 
-  [v10 addObject:v11];
-  [(NSMapTable *)self->_cachedKeySets setObject:v10 forKey:v6];
+  [v10 addObject:keyCopy];
+  [(NSMapTable *)self->_cachedKeySets setObject:v10 forKey:displayItem];
 }
 
-- (void)enumarateLayoutAttributesForDisplayItem:(id)a3 block:(id)a4
+- (void)enumarateLayoutAttributesForDisplayItem:(id)item block:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(NSMapTable *)self->_cachedKeySets objectForKey:a3];
+  blockCopy = block;
+  v7 = [(NSMapTable *)self->_cachedKeySets objectForKey:item];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -163,7 +163,7 @@ LABEL_15:
         v14 = [(SBDisplayItemLayoutAttributesStorage *)self layoutAttributesForKey:v13];
         if (v14)
         {
-          v6[2](v6, v13, v14);
+          blockCopy[2](blockCopy, v13, v14);
         }
       }
 
@@ -174,11 +174,11 @@ LABEL_15:
   }
 }
 
-- (int64_t)lasInteractionTimeForDisplayItem:(id)a3
+- (int64_t)lasInteractionTimeForDisplayItem:(id)item
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [(NSMapTable *)self->_cachedKeySets objectForKey:a3];
-  v5 = 0;
+  v4 = [(NSMapTable *)self->_cachedKeySets objectForKey:item];
+  queue = 0;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -199,9 +199,9 @@ LABEL_15:
         }
 
         v10 = [(SBDisplayItemLayoutAttributesStorage *)self layoutAttributesForKey:*(*(&v12 + 1) + 8 * v9)];
-        if ([(SBHomeScreenConfigurationServer *)v10 queue]> v5)
+        if ([(SBHomeScreenConfigurationServer *)v10 queue]> queue)
         {
-          v5 = [(SBHomeScreenConfigurationServer *)v10 queue];
+          queue = [(SBHomeScreenConfigurationServer *)v10 queue];
         }
 
         ++v9;
@@ -214,13 +214,13 @@ LABEL_15:
     while (v7);
   }
 
-  return v5;
+  return queue;
 }
 
-- (void)updateEntriesWithBlock:(id)a3
+- (void)updateEntriesWithBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -242,7 +242,7 @@ LABEL_15:
 
         v10 = *(*(&v13 + 1) + 8 * i);
         v11 = [(NSMapTable *)self->_layoutAttributesMap objectForKey:v10];
-        v12 = v4[2](v4, v10, v11);
+        v12 = blockCopy[2](blockCopy, v10, v11);
         [(NSMapTable *)self->_layoutAttributesMap setObject:v12 forKey:v10];
       }
 

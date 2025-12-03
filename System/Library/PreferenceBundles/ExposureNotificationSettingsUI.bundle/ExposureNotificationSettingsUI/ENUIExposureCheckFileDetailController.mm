@@ -12,10 +12,10 @@
 
 - (void)viewDidLoad
 {
-  v3 = [(ENUIExposureCheckFileDetailController *)self specifier];
+  specifier = [(ENUIExposureCheckFileDetailController *)self specifier];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [v3 propertyForKey:v5];
+  v6 = [specifier propertyForKey:v5];
   file = self->_file;
   self->_file = v6;
 
@@ -45,9 +45,9 @@
     v11 = [PSSpecifier preferenceSpecifierNamed:v10 target:self set:0 get:"providedKeyText" detail:0 cell:4 edit:0];
     [v6 addObject:v11];
 
-    v12 = [(ENExposureDetectionHistoryFile *)self->_file matchCount];
+    matchCount = [(ENExposureDetectionHistoryFile *)self->_file matchCount];
 
-    if (v12)
+    if (matchCount)
     {
       v13 = ENUILocalizedString();
       v14 = [PSSpecifier preferenceSpecifierNamed:v13 target:self set:0 get:"matchedKeyText" detail:0 cell:4 edit:0];
@@ -62,8 +62,8 @@
     v18 = [PSSpecifier groupSpecifierWithName:v17];
     [v6 addObject:v18];
 
-    v19 = [(ENUIExposureCheckFileDetailController *)self _hashTextSpecifier];
-    [v6 addObject:v19];
+    _hashTextSpecifier = [(ENUIExposureCheckFileDetailController *)self _hashTextSpecifier];
+    [v6 addObject:_hashTextSpecifier];
 
     v20 = [v6 copy];
     v21 = *&self->PSListController_opaque[v3];
@@ -77,8 +77,8 @@
 
 - (id)_hashTextSpecifier
 {
-  v3 = [(ENUIExposureCheckFileDetailController *)self hashText];
-  v4 = [PSSpecifier preferenceSpecifierNamed:v3 target:self set:0 get:0 detail:0 cell:8 edit:0];
+  hashText = [(ENUIExposureCheckFileDetailController *)self hashText];
+  v4 = [PSSpecifier preferenceSpecifierNamed:hashText target:self set:0 get:0 detail:0 cell:8 edit:0];
 
   [v4 setProperty:objc_opt_class() forKey:PSCellClassKey];
 
@@ -94,8 +94,8 @@
 
   file = self->_file;
   v4 = qword_34110;
-  v5 = [(ENExposureDetectionHistoryFile *)file processDate];
-  v6 = [v4 stringFromDate:v5];
+  processDate = [(ENExposureDetectionHistoryFile *)file processDate];
+  v6 = [v4 stringFromDate:processDate];
 
   return v6;
 }
@@ -103,8 +103,8 @@
 - (id)providedKeyText
 {
   v3 = sub_1760C();
-  v4 = [(ENExposureDetectionHistoryFile *)self->_file keyCount];
-  v5 = [v3 stringFromNumber:v4];
+  keyCount = [(ENExposureDetectionHistoryFile *)self->_file keyCount];
+  v5 = [v3 stringFromNumber:keyCount];
 
   return v5;
 }
@@ -112,11 +112,11 @@
 - (id)matchedKeyText
 {
   v3 = sub_1760C();
-  v4 = [(ENExposureDetectionHistoryFile *)self->_file matchCount];
-  v5 = v4;
-  if (v4)
+  matchCount = [(ENExposureDetectionHistoryFile *)self->_file matchCount];
+  v5 = matchCount;
+  if (matchCount)
   {
-    v6 = v4;
+    v6 = matchCount;
   }
 
   else
@@ -131,31 +131,31 @@
 
 - (id)dataSource
 {
-  v3 = [(ENExposureDetectionHistoryFile *)self->_file sourceAppBundleIdentifier];
-  if (v3)
+  sourceAppBundleIdentifier = [(ENExposureDetectionHistoryFile *)self->_file sourceAppBundleIdentifier];
+  if (sourceAppBundleIdentifier)
   {
-    v4 = [LSApplicationProxy applicationProxyForIdentifier:v3];
-    v5 = [v4 appState];
-    if ([v5 isValid])
+    sourceRegion = [LSApplicationProxy applicationProxyForIdentifier:sourceAppBundleIdentifier];
+    appState = [sourceRegion appState];
+    if ([appState isValid])
     {
-      v6 = [v4 localizedName];
+      localizedName = [sourceRegion localizedName];
     }
 
     else
     {
-      v6 = v3;
+      localizedName = sourceAppBundleIdentifier;
     }
 
-    v7 = v6;
+    regionCode = localizedName;
   }
 
   else
   {
-    v4 = [(ENExposureDetectionHistoryFile *)self->_file sourceRegion];
-    v7 = [v4 regionCode];
+    sourceRegion = [(ENExposureDetectionHistoryFile *)self->_file sourceRegion];
+    regionCode = [sourceRegion regionCode];
   }
 
-  return v7;
+  return regionCode;
 }
 
 @end

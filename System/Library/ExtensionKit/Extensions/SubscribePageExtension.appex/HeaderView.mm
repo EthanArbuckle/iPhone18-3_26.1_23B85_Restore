@@ -1,14 +1,14 @@
 @interface HeaderView
-- (_TtC22SubscribePageExtensionP33_59D788B89EC47DDFEEBB94FF9EFA27D710HeaderView)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtensionP33_59D788B89EC47DDFEEBB94FF9EFA27D710HeaderView)initWithReuseIdentifier:(id)a3;
-- (_TtC22SubscribePageExtensionP33_8767515069BB09BCE0E30A883EC3EF0710HeaderView)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtensionP33_8767515069BB09BCE0E30A883EC3EF0710HeaderView)initWithFrame:(CGRect)a3;
+- (_TtC22SubscribePageExtensionP33_59D788B89EC47DDFEEBB94FF9EFA27D710HeaderView)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtensionP33_59D788B89EC47DDFEEBB94FF9EFA27D710HeaderView)initWithReuseIdentifier:(id)identifier;
+- (_TtC22SubscribePageExtensionP33_8767515069BB09BCE0E30A883EC3EF0710HeaderView)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtensionP33_8767515069BB09BCE0E30A883EC3EF0710HeaderView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation HeaderView
 
-- (_TtC22SubscribePageExtensionP33_8767515069BB09BCE0E30A883EC3EF0710HeaderView)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtensionP33_8767515069BB09BCE0E30A883EC3EF0710HeaderView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC22SubscribePageExtensionP33_8767515069BB09BCE0E30A883EC3EF0710HeaderView_mediaView;
   type metadata accessor for StoryCardMediaView();
@@ -23,20 +23,20 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004D0D3C();
 }
 
-- (_TtC22SubscribePageExtensionP33_8767515069BB09BCE0E30A883EC3EF0710HeaderView)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtensionP33_8767515069BB09BCE0E30A883EC3EF0710HeaderView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC22SubscribePageExtensionP33_59D788B89EC47DDFEEBB94FF9EFA27D710HeaderView)initWithReuseIdentifier:(id)a3
+- (_TtC22SubscribePageExtensionP33_59D788B89EC47DDFEEBB94FF9EFA27D710HeaderView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     sub_100753094();
     v4 = sub_100753064();
@@ -54,12 +54,12 @@
   return v5;
 }
 
-- (_TtC22SubscribePageExtensionP33_59D788B89EC47DDFEEBB94FF9EFA27D710HeaderView)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtensionP33_59D788B89EC47DDFEEBB94FF9EFA27D710HeaderView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = _s22SubscribePageExtension10HeaderViewCMa_0();
-  v4 = a3;
-  v5 = [(HeaderView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(HeaderView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

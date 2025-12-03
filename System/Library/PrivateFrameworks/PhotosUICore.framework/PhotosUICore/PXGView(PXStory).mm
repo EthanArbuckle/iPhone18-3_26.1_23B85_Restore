@@ -6,7 +6,7 @@
 
 - (id)storyHitTestResultAtPoint:()PXStory
 {
-  v1 = [a1 hitTestResultAtPoint:?];
+  v1 = [self hitTestResultAtPoint:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

@@ -1,14 +1,14 @@
 @interface EMSearchableIndex
 + (NSString)protectionClass;
 + (OS_os_log)log;
-+ (id)attachmentPersistentIDFromItemIdentifier:(id)a3;
-+ (id)persistentIDForSearchableItem:(id)a3;
++ (id)attachmentPersistentIDFromItemIdentifier:(id)identifier;
++ (id)persistentIDForSearchableItem:(id)item;
 + (id)remoteInterface;
-+ (id)richLinkItemIdentifierFromSearchableItemIdentifier:(id)a3;
-- (EMSearchableIndex)initWithRemoteConnection:(id)a3;
-- (void)indexSummaries:(id)a3;
-- (void)reindexAllSearchableItemsWithAcknowledgementHandler:(id)a3;
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3 acknowledgementHandler:(id)a4;
++ (id)richLinkItemIdentifierFromSearchableItemIdentifier:(id)identifier;
+- (EMSearchableIndex)initWithRemoteConnection:(id)connection;
+- (void)indexSummaries:(id)summaries;
+- (void)reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler;
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler;
 @end
 
 @implementation EMSearchableIndex
@@ -30,7 +30,7 @@
   block[1] = 3221225472;
   block[2] = __24__EMSearchableIndex_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_35 != -1)
   {
     dispatch_once(&log_onceToken_35, block);
@@ -55,10 +55,10 @@ void __24__EMSearchableIndex_log__block_invoke(uint64_t a1)
   v3 = MEMORY[0x1E696A388];
   if ((v2 & 1) == 0)
   {
-    v4 = [MEMORY[0x1E699B7B0] currentDevice];
-    v5 = [v4 isAppleSilicon];
+    currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+    isAppleSilicon = [currentDevice isAppleSilicon];
 
-    if (!v5)
+    if (!isAppleSilicon)
     {
       v3 = MEMORY[0x1E696A378];
     }
@@ -69,27 +69,27 @@ void __24__EMSearchableIndex_log__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (EMSearchableIndex)initWithRemoteConnection:(id)a3
+- (EMSearchableIndex)initWithRemoteConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = EMSearchableIndex;
   v6 = [(EMSearchableIndex *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-+ (id)attachmentPersistentIDFromItemIdentifier:(id)a3
++ (id)attachmentPersistentIDFromItemIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"attachment:"])
+  identifierCopy = identifier;
+  if ([identifierCopy hasPrefix:@"attachment:"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"attachment:", "length")}];
+    v4 = [identifierCopy substringFromIndex:{objc_msgSend(@"attachment:", "length")}];
   }
 
   else
@@ -100,12 +100,12 @@ void __24__EMSearchableIndex_log__block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (id)richLinkItemIdentifierFromSearchableItemIdentifier:(id)a3
++ (id)richLinkItemIdentifierFromSearchableItemIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"richLink:"])
+  identifierCopy = identifier;
+  if ([identifierCopy hasPrefix:@"richLink:"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"richLink:", "length")}];
+    v4 = [identifierCopy substringFromIndex:{objc_msgSend(@"richLink:", "length")}];
   }
 
   else
@@ -116,18 +116,18 @@ void __24__EMSearchableIndex_log__block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (id)persistentIDForSearchableItem:(id)a3
++ (id)persistentIDForSearchableItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 uniqueIdentifier];
-  v5 = [EMSearchableIndex attachmentPersistentIDFromItemIdentifier:v4];
+  itemCopy = item;
+  uniqueIdentifier = [itemCopy uniqueIdentifier];
+  v5 = [EMSearchableIndex attachmentPersistentIDFromItemIdentifier:uniqueIdentifier];
   if (v5)
   {
   }
 
   else
   {
-    v6 = [EMSearchableIndex richLinkItemIdentifierFromSearchableItemIdentifier:v4];
+    v6 = [EMSearchableIndex richLinkItemIdentifierFromSearchableItemIdentifier:uniqueIdentifier];
 
     if (!v6)
     {
@@ -135,15 +135,15 @@ void __24__EMSearchableIndex_log__block_invoke(uint64_t a1)
     }
   }
 
-  v7 = [v3 attributeSet];
-  v8 = [v7 relatedUniqueIdentifier];
+  attributeSet = [itemCopy attributeSet];
+  relatedUniqueIdentifier = [attributeSet relatedUniqueIdentifier];
 
-  if (v8)
+  if (relatedUniqueIdentifier)
   {
-    v9 = [v3 attributeSet];
-    v10 = [v9 relatedUniqueIdentifier];
+    attributeSet2 = [itemCopy attributeSet];
+    relatedUniqueIdentifier2 = [attributeSet2 relatedUniqueIdentifier];
 
-    v4 = v10;
+    uniqueIdentifier = relatedUniqueIdentifier2;
   }
 
   else
@@ -151,40 +151,40 @@ void __24__EMSearchableIndex_log__block_invoke(uint64_t a1)
     v11 = +[EMSearchableIndex log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(EMSearchableIndex *)v4 persistentIDForSearchableItem:v11];
+      [(EMSearchableIndex *)uniqueIdentifier persistentIDForSearchableItem:v11];
     }
 
-    v4 = 0;
+    uniqueIdentifier = 0;
   }
 
 LABEL_9:
 
-  return v4;
+  return uniqueIdentifier;
 }
 
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3 acknowledgementHandler:(id)a4
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(EMSearchableIndex *)self connection];
-  v8 = [v7 reattemptingRemoteObjectProxy];
-  [v8 reindexSearchableItemsWithIdentifiers:v9 acknowledgementHandler:v6];
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  connection = [(EMSearchableIndex *)self connection];
+  reattemptingRemoteObjectProxy = [connection reattemptingRemoteObjectProxy];
+  [reattemptingRemoteObjectProxy reindexSearchableItemsWithIdentifiers:identifiersCopy acknowledgementHandler:handlerCopy];
 }
 
-- (void)reindexAllSearchableItemsWithAcknowledgementHandler:(id)a3
+- (void)reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler
 {
-  v6 = a3;
-  v4 = [(EMSearchableIndex *)self connection];
-  v5 = [v4 reattemptingRemoteObjectProxy];
-  [v5 reindexAllSearchableItemsWithAcknowledgementHandler:v6];
+  handlerCopy = handler;
+  connection = [(EMSearchableIndex *)self connection];
+  reattemptingRemoteObjectProxy = [connection reattemptingRemoteObjectProxy];
+  [reattemptingRemoteObjectProxy reindexAllSearchableItemsWithAcknowledgementHandler:handlerCopy];
 }
 
-- (void)indexSummaries:(id)a3
+- (void)indexSummaries:(id)summaries
 {
-  v6 = a3;
-  v4 = [(EMSearchableIndex *)self connection];
-  v5 = [v4 reattemptingRemoteObjectProxy];
-  [v5 indexSummaries:v6];
+  summariesCopy = summaries;
+  connection = [(EMSearchableIndex *)self connection];
+  reattemptingRemoteObjectProxy = [connection reattemptingRemoteObjectProxy];
+  [reattemptingRemoteObjectProxy indexSummaries:summariesCopy];
 }
 
 + (void)persistentIDForSearchableItem:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

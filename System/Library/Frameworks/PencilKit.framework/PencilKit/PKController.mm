@@ -1,31 +1,31 @@
 @interface PKController
-- (id)initWithPixelSize:(uint64_t)a3 actualSize:(int)a4 singleComponent:(void *)a5 sixChannelBlendingMode:(double)a6 wantsExtendedDynamicRangeContent:(double)a7 metalConfig:(double)a8;
+- (id)initWithPixelSize:(uint64_t)size actualSize:(int)actualSize singleComponent:(void *)component sixChannelBlendingMode:(double)mode wantsExtendedDynamicRangeContent:(double)content metalConfig:(double)config;
 - (id)renderedStrokes;
 - (id)teardown;
-- (void)_addNewStrokes:(int)a3 wasAddedEarly:(int)a4 hidden:(void *)a5 preDrawingChangedBlock:;
+- (void)_addNewStrokes:(int)strokes wasAddedEarly:(int)early hidden:(void *)hidden preDrawingChangedBlock:;
 - (void)_didUpdateMutableRenderedStrokes;
-- (void)_setDrawing:(void *)a3 imageTexture:;
-- (void)addLiveStrokeEarly:(void *)a3 completionBlock:;
-- (void)addNewRenderedStrokes:(int)a3 wasAddedEarly:(int)a4 hidden:(void *)a5 preDrawingChangedBlock:;
+- (void)_setDrawing:(void *)drawing imageTexture:;
+- (void)addLiveStrokeEarly:(void *)early completionBlock:;
+- (void)addNewRenderedStrokes:(int)strokes wasAddedEarly:(int)early hidden:(void *)hidden preDrawingChangedBlock:;
 - (void)cancelLiveStroke;
 - (void)didStartLiveInteraction;
-- (void)hideStrokesWithoutUpdating:(void *)a3 completion:;
+- (void)hideStrokesWithoutUpdating:(void *)updating completion:;
 - (void)inputController;
-- (void)performAsyncInteractBlock:(uint64_t)a1;
-- (void)setDrawing:(void *)a3 imageTexture:(void *)a4 completion:;
-- (void)setDrawing:(void *)a3 tiles:(__int128 *)a4 tileTransform:(void *)a5 contentImageTexture:(__int128 *)a6 contentImageTextureTransform:(void *)a7 completionBlock:;
-- (void)setLiveInteractionDrawing:(uint64_t)a1;
-- (void)updateDrawingWithErasedStrokes:(uint64_t)a1;
+- (void)performAsyncInteractBlock:(uint64_t)block;
+- (void)setDrawing:(void *)drawing imageTexture:(void *)texture completion:;
+- (void)setDrawing:(void *)drawing tiles:(__int128 *)tiles tileTransform:(void *)transform contentImageTexture:(__int128 *)texture contentImageTextureTransform:(void *)textureTransform completionBlock:;
+- (void)setLiveInteractionDrawing:(uint64_t)drawing;
+- (void)updateDrawingWithErasedStrokes:(uint64_t)strokes;
 @end
 
 @implementation PKController
 
-- (id)initWithPixelSize:(uint64_t)a3 actualSize:(int)a4 singleComponent:(void *)a5 sixChannelBlendingMode:(double)a6 wantsExtendedDynamicRangeContent:(double)a7 metalConfig:(double)a8
+- (id)initWithPixelSize:(uint64_t)size actualSize:(int)actualSize singleComponent:(void *)component sixChannelBlendingMode:(double)mode wantsExtendedDynamicRangeContent:(double)content metalConfig:(double)config
 {
-  v18 = a5;
-  if (a1 && +[PKMetalUtility isMetalAvailable])
+  componentCopy = component;
+  if (self && +[PKMetalUtility isMetalAvailable])
   {
-    v44.receiver = a1;
+    v44.receiver = self;
     v44.super_class = PKController;
     v19 = objc_msgSendSuper2(&v44, sel_init);
     if (v19)
@@ -33,7 +33,7 @@
       v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v21 = dispatch_queue_attr_make_with_qos_class(v20, QOS_CLASS_USER_INTERACTIVE, 0);
 
-      objc_storeStrong(v19 + 3, a5);
+      objc_storeStrong(v19 + 3, component);
       v22 = dispatch_queue_create("com.apple.pencilkit.draw-interact", v21);
       v23 = *(v19 + 11);
       *(v19 + 11) = v22;
@@ -42,9 +42,9 @@
       v25 = *(v19 + 12);
       *(v19 + 12) = v24;
 
-      v26 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v27 = *(v19 + 5);
-      *(v19 + 5) = v26;
+      *(v19 + 5) = array;
 
       v28 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v29 = dispatch_queue_attr_make_with_qos_class(v28, QOS_CLASS_UTILITY, 0);
@@ -58,7 +58,7 @@
       *(v19 + 10) = v32;
 
       *(v19 + 49) = 0;
-      objc_storeStrong(v19 + 3, a5);
+      objc_storeStrong(v19 + 3, component);
       v34 = [PKMetalRendererController alloc];
       if (a2)
       {
@@ -70,7 +70,7 @@
         v35 = 80;
       }
 
-      v36 = [(PKMetalRendererController *)v34 initWithPixelSize:v35 actualSize:a3 pixelFormat:a4 sixChannelBlendingMode:v18 wantsExtendedDynamicRangeContent:a6 metalConfig:a7, a8, a9];
+      v36 = [(PKMetalRendererController *)v34 initWithPixelSize:v35 actualSize:size pixelFormat:actualSize sixChannelBlendingMode:componentCopy wantsExtendedDynamicRangeContent:mode metalConfig:content, config, a9];
       v37 = *(v19 + 8);
       *(v19 + 8) = v36;
 
@@ -86,23 +86,23 @@
       [(PKController *)v19 _didUpdateMutableRenderedStrokes];
     }
 
-    a1 = v19;
-    v42 = a1;
+    self = v19;
+    selfCopy = self;
   }
 
   else
   {
-    v42 = 0;
+    selfCopy = 0;
   }
 
-  return v42;
+  return selfCopy;
 }
 
 - (void)_didUpdateMutableRenderedStrokes
 {
-  if (a1)
+  if (self)
   {
-    obj = a1;
+    obj = self;
     objc_sync_enter(obj);
     v1 = [obj[2] copy];
     v2 = obj[1];
@@ -128,12 +128,12 @@
 
 - (id)renderedStrokes
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    objc_sync_enter(v1);
-    v2 = [v1[1] copy];
-    objc_sync_exit(v1);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v2 = [selfCopy[1] copy];
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -146,31 +146,31 @@
 
 - (void)inputController
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[8];
+    v2 = self[8];
     if (v2)
     {
       v2 = v2[70];
     }
 
-    a1 = v2;
+    self = v2;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)didStartLiveInteraction
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 88);
+    v1 = *(self + 88);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __39__PKController_didStartLiveInteraction__block_invoke;
     block[3] = &unk_1E82D6388;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v1, block);
   }
 }
@@ -188,38 +188,38 @@ intptr_t __39__PKController_didStartLiveInteraction__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setLiveInteractionDrawing:(uint64_t)a1
+- (void)setLiveInteractionDrawing:(uint64_t)drawing
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (drawing)
   {
     v5 = [v3 copy];
 
-    v6 = *(a1 + 96);
+    v6 = *(drawing + 96);
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __42__PKController_setLiveInteractionDrawing___block_invoke;
     v7[3] = &unk_1E82D6890;
-    v7[4] = a1;
+    v7[4] = drawing;
     v4 = v5;
     v8 = v4;
     dispatch_async(v6, v7);
   }
 }
 
-- (void)setDrawing:(void *)a3 tiles:(__int128 *)a4 tileTransform:(void *)a5 contentImageTexture:(__int128 *)a6 contentImageTextureTransform:(void *)a7 completionBlock:
+- (void)setDrawing:(void *)drawing tiles:(__int128 *)tiles tileTransform:(void *)transform contentImageTexture:(__int128 *)texture contentImageTextureTransform:(void *)textureTransform completionBlock:
 {
   v13 = a2;
-  v14 = a3;
-  v15 = a5;
-  v16 = a7;
-  if (a1)
+  drawingCopy = drawing;
+  transformCopy = transform;
+  textureTransformCopy = textureTransform;
+  if (self)
   {
-    objc_initWeak(location, a1);
+    objc_initWeak(location, self);
     v17 = [v13 copy];
 
-    v18 = a1[11];
+    v18 = self[11];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __112__PKController_setDrawing_tiles_tileTransform_contentImageTexture_contentImageTextureTransform_completionBlock___block_invoke;
@@ -227,17 +227,17 @@ intptr_t __39__PKController_didStartLiveInteraction__block_invoke(uint64_t a1)
     objc_copyWeak(&v26, location);
     v13 = v17;
     v22 = v13;
-    v23 = v15;
-    v19 = a6[1];
-    v27 = *a6;
+    v23 = transformCopy;
+    v19 = texture[1];
+    v27 = *texture;
     v28 = v19;
-    v29 = a6[2];
-    v24 = v14;
-    v20 = a4[1];
-    v30 = *a4;
+    v29 = texture[2];
+    v24 = drawingCopy;
+    v20 = tiles[1];
+    v30 = *tiles;
     v31 = v20;
-    v32 = a4[2];
-    v25 = v16;
+    v32 = tiles[2];
+    v25 = textureTransformCopy;
     dispatch_async(v18, block);
 
     objc_destroyWeak(&v26);
@@ -274,12 +274,12 @@ uint64_t __112__PKController_setDrawing_tiles_tileTransform_contentImageTexture_
   return v9();
 }
 
-- (void)_setDrawing:(void *)a3 imageTexture:
+- (void)_setDrawing:(void *)drawing imageTexture:
 {
   v13 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  drawingCopy = drawing;
+  if (self)
   {
     v7 = os_log_create("com.apple.pencilkit", "Sketching");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -289,28 +289,28 @@ uint64_t __112__PKController_setDrawing_tiles_tileTransform_contentImageTexture_
       _os_log_debug_impl(&dword_1C7CCA000, v7, OS_LOG_TYPE_DEBUG, "Set async drawing %p", buf, 0xCu);
     }
 
-    v8 = *(a1 + 96);
+    v8 = *(self + 96);
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __41__PKController__setDrawing_imageTexture___block_invoke;
     v9[3] = &unk_1E82D6890;
-    v9[4] = a1;
+    v9[4] = self;
     v10 = v5;
     dispatch_sync(v8, v9);
-    if (v6)
+    if (drawingCopy)
     {
-      [(PKMetalRendererController *)*(a1 + 64) drawTexture:v6];
+      [(PKMetalRendererController *)*(self + 64) drawTexture:drawingCopy];
     }
   }
 }
 
-- (void)setDrawing:(void *)a3 imageTexture:(void *)a4 completion:
+- (void)setDrawing:(void *)drawing imageTexture:(void *)texture completion:
 {
   v19 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  drawingCopy = drawing;
+  textureCopy = texture;
+  if (self)
   {
     v10 = os_log_create("com.apple.pencilkit", "Sketching");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -321,16 +321,16 @@ uint64_t __112__PKController_setDrawing_tiles_tileTransform_contentImageTexture_
     }
 
     v11 = [v7 copy];
-    v12 = *(a1 + 88);
+    v12 = *(self + 88);
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __51__PKController_setDrawing_imageTexture_completion___block_invoke;
     v13[3] = &unk_1E82D67F0;
-    v13[4] = a1;
+    v13[4] = self;
     v7 = v11;
     v14 = v7;
-    v15 = v8;
-    v16 = v9;
+    v15 = drawingCopy;
+    v16 = textureCopy;
     dispatch_async(v12, v13);
   }
 }
@@ -372,18 +372,18 @@ void __41__PKController__setDrawing_imageTexture___block_invoke(uint64_t a1)
   *(v5 + 16) = v4;
 }
 
-- (void)performAsyncInteractBlock:(uint64_t)a1
+- (void)performAsyncInteractBlock:(uint64_t)block
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (block)
   {
-    v5 = *(a1 + 88);
+    v5 = *(block + 88);
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __42__PKController_performAsyncInteractBlock___block_invoke;
     v6[3] = &unk_1E82D63D8;
-    v6[4] = a1;
+    v6[4] = block;
     v7 = v3;
     dispatch_async(v5, v6);
   }
@@ -401,20 +401,20 @@ intptr_t __42__PKController_performAsyncInteractBlock___block_invoke(uint64_t a1
   return dispatch_semaphore_wait(*(*(a1 + 32) + 80), 0xFFFFFFFFFFFFFFFFLL);
 }
 
-- (void)hideStrokesWithoutUpdating:(void *)a3 completion:
+- (void)hideStrokesWithoutUpdating:(void *)updating completion:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  updatingCopy = updating;
+  if (self)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __54__PKController_hideStrokesWithoutUpdating_completion___block_invoke;
     v7[3] = &unk_1E82D6688;
-    v7[4] = a1;
+    v7[4] = self;
     v8 = v5;
-    v9 = v6;
-    [(PKController *)a1 performAsyncInteractBlock:v7];
+    v9 = updatingCopy;
+    [(PKController *)self performAsyncInteractBlock:v7];
   }
 }
 
@@ -453,19 +453,19 @@ void __54__PKController_hideStrokesWithoutUpdating_completion___block_invoke_2(u
   *(v3 + 16) = v2;
 }
 
-- (void)updateDrawingWithErasedStrokes:(uint64_t)a1
+- (void)updateDrawingWithErasedStrokes:(uint64_t)strokes
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (strokes)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __47__PKController_updateDrawingWithErasedStrokes___block_invoke;
     v5[3] = &unk_1E82D66B0;
     v6 = v3;
-    v7 = a1;
-    [(PKController *)a1 performAsyncInteractBlock:v5];
+    strokesCopy = strokes;
+    [(PKController *)strokes performAsyncInteractBlock:v5];
   }
 }
 
@@ -597,20 +597,20 @@ void __47__PKController_updateDrawingWithErasedStrokes___block_invoke(uint64_t a
   [(PKMetalRendererController *)v32 drawStrokesAfterClear:v20 clippedToStrokeSpaceRect:&v38 strokeTransform:1 useLayerContext:v36 completion:x, y, width, height];
 }
 
-- (void)addLiveStrokeEarly:(void *)a3 completionBlock:
+- (void)addLiveStrokeEarly:(void *)early completionBlock:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  earlyCopy = early;
+  if (self)
   {
-    v7 = *(a1 + 96);
+    v7 = *(self + 96);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __51__PKController_addLiveStrokeEarly_completionBlock___block_invoke;
     block[3] = &unk_1E82D6840;
-    block[4] = a1;
+    block[4] = self;
     v9 = v5;
-    v10 = v6;
+    v10 = earlyCopy;
     dispatch_async(v7, block);
   }
 }
@@ -633,14 +633,14 @@ void __51__PKController_addLiveStrokeEarly_completionBlock___block_invoke(void *
 
 - (void)cancelLiveStroke
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 96);
+    v1 = *(self + 96);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __32__PKController_cancelLiveStroke__block_invoke;
     block[3] = &unk_1E82D6388;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v1, block);
   }
 }
@@ -657,33 +657,33 @@ void __32__PKController_cancelLiveStroke__block_invoke(uint64_t a1)
   }
 }
 
-- (void)addNewRenderedStrokes:(int)a3 wasAddedEarly:(int)a4 hidden:(void *)a5 preDrawingChangedBlock:
+- (void)addNewRenderedStrokes:(int)strokes wasAddedEarly:(int)early hidden:(void *)hidden preDrawingChangedBlock:
 {
   v9 = a2;
-  v10 = a5;
-  if (a1)
+  hiddenCopy = hidden;
+  if (self)
   {
-    if (*(a1 + 50))
+    if (*(self + 50))
     {
-      [(PKController *)a1 _addNewStrokes:v9 wasAddedEarly:a3 hidden:a4 preDrawingChangedBlock:v10];
+      [(PKController *)self _addNewStrokes:v9 wasAddedEarly:strokes hidden:early preDrawingChangedBlock:hiddenCopy];
     }
 
     else
     {
-      if (*(a1 + 48))
+      if (*(self + 48))
       {
-        v11 = *(a1 + 96);
+        v11 = *(self + 96);
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __82__PKController_addNewRenderedStrokes_wasAddedEarly_hidden_preDrawingChangedBlock___block_invoke;
         block[3] = &unk_1E82D66D8;
-        block[4] = a1;
+        block[4] = self;
         v12 = &v20;
         v20 = v9;
-        v22 = a3;
-        v23 = a4;
+        strokesCopy = strokes;
+        earlyCopy = early;
         v13 = &v21;
-        v21 = v10;
+        v21 = hiddenCopy;
         dispatch_sync(v11, block);
       }
 
@@ -693,48 +693,48 @@ void __32__PKController_cancelLiveStroke__block_invoke(uint64_t a1)
         v14[1] = 3221225472;
         v14[2] = __82__PKController_addNewRenderedStrokes_wasAddedEarly_hidden_preDrawingChangedBlock___block_invoke_2;
         v14[3] = &unk_1E82D6778;
-        v14[4] = a1;
+        v14[4] = self;
         v12 = &v15;
         v15 = v9;
-        v17 = a3;
-        v18 = a4;
+        strokesCopy2 = strokes;
+        earlyCopy2 = early;
         v13 = &v16;
-        v16 = v10;
-        [(PKController *)a1 performAsyncInteractBlock:v14];
+        v16 = hiddenCopy;
+        [(PKController *)self performAsyncInteractBlock:v14];
       }
     }
   }
 }
 
-- (void)_addNewStrokes:(int)a3 wasAddedEarly:(int)a4 hidden:(void *)a5 preDrawingChangedBlock:
+- (void)_addNewStrokes:(int)strokes wasAddedEarly:(int)early hidden:(void *)hidden preDrawingChangedBlock:
 {
   v48 = *MEMORY[0x1E69E9840];
   v32 = a2;
-  v33 = a5;
-  if (a1)
+  hiddenCopy = hidden;
+  if (self)
   {
-    if (!a3)
+    if (!strokes)
     {
       goto LABEL_7;
     }
 
     if ([v32 count] == 1)
     {
-      v8 = *(a1 + 72);
+      v8 = *(self + 72);
       v9 = [v32 objectAtIndexedSubscript:0];
-      [v8 updateStroke:v9 indexHint:{objc_msgSend(*(a1 + 72), "_rootStrokesCount") - 1}];
+      [v8 updateStroke:v9 indexHint:{objc_msgSend(*(self + 72), "_rootStrokesCount") - 1}];
     }
 
-    if ([*(a1 + 40) count])
+    if ([*(self + 40) count])
     {
-      v31 = [*(a1 + 40) firstObject];
-      [*(a1 + 40) removeObjectAtIndex:0];
+      firstObject = [*(self + 40) firstObject];
+      [*(self + 40) removeObjectAtIndex:0];
     }
 
     else
     {
 LABEL_7:
-      v31 = 0;
+      firstObject = 0;
     }
 
     v34 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v32, "count")}];
@@ -757,12 +757,12 @@ LABEL_7:
           }
 
           v14 = *(*(&v39 + 1) + 8 * i);
-          v15 = [v14 _strokeUUID];
-          v16 = v15 == 0;
+          _strokeUUID = [v14 _strokeUUID];
+          v16 = _strokeUUID == 0;
 
           if (!v16)
           {
-            v17 = [*(a1 + 72) visibleStrokeForInsertingStroke:v14];
+            v17 = [*(self + 72) visibleStrokeForInsertingStroke:v14];
             if (v17)
             {
               [v34 addObject:v17];
@@ -770,26 +770,26 @@ LABEL_7:
               if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412546;
-                v44 = a1;
+                selfCopy = self;
                 v45 = 2112;
                 v46 = v14;
                 _os_log_debug_impl(&dword_1C7CCA000, v18, OS_LOG_TYPE_DEBUG, "Drawing %@ add stroke %@", buf, 0x16u);
               }
 
               v19 = [v14 ink];
-              v20 = [v19 behavior];
-              v21 = [v20 isEraser];
+              behavior = [v19 behavior];
+              isEraser = [behavior isEraser];
 
-              if (v21)
+              if (isEraser)
               {
-                v22 = *(a1 + 104);
+                v22 = *(self + 104);
                 block[0] = MEMORY[0x1E69E9820];
                 block[1] = 3221225472;
                 block[2] = __75__PKController__addNewStrokes_wasAddedEarly_hidden_preDrawingChangedBlock___block_invoke;
                 block[3] = &unk_1E82D6840;
-                block[4] = a1;
+                block[4] = self;
                 v37 = v17;
-                v38 = v33;
+                v38 = hiddenCopy;
                 dispatch_async(v22, block);
               }
             }
@@ -804,16 +804,16 @@ LABEL_7:
 
     if ([v34 count])
     {
-      v23 = v31;
+      v23 = firstObject;
       if (!v23)
       {
-        v23 = [*(a1 + 72) undoableAddNewStrokes:v34];
+        v23 = [*(self + 72) undoableAddNewStrokes:v34];
       }
 
       v24 = v23;
-      if (a4)
+      if (early)
       {
-        v25 = [*(a1 + 72) undoableDeleteStrokes:v34];
+        v25 = [*(self + 72) undoableDeleteStrokes:v34];
       }
 
       else
@@ -821,28 +821,28 @@ LABEL_7:
         v25 = 0;
       }
 
-      v26 = *(a1 + 72);
-      v27 = *(a1 + 104);
+      v26 = *(self + 72);
+      v27 = *(self + 104);
       v35[0] = MEMORY[0x1E69E9820];
       v35[1] = 3221225472;
       v35[2] = __75__PKController__addNewStrokes_wasAddedEarly_hidden_preDrawingChangedBlock___block_invoke_4;
       v35[3] = &unk_1E82D67C8;
-      v35[4] = a1;
+      v35[4] = self;
       [v26 clipStrokesIfNeededOnQueue:v27 completion:v35];
       v28 = v34;
       if ([v28 count])
       {
-        [*(a1 + 16) addObjectsFromArray:v28];
-        [(PKController *)a1 _didUpdateMutableRenderedStrokes];
+        [*(self + 16) addObjectsFromArray:v28];
+        [(PKController *)self _didUpdateMutableRenderedStrokes];
       }
 
-      *(a1 + 50) = 1;
-      (*(v33 + 2))(v33, v24, v25, 0);
-      *(a1 + 50) = 0;
+      *(self + 50) = 1;
+      (*(hiddenCopy + 2))(hiddenCopy, v24, v25, 0);
+      *(self + 50) = 0;
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 56));
-    [WeakRetained drawingChanged:*(a1 + 72)];
+    WeakRetained = objc_loadWeakRetained((self + 56));
+    [WeakRetained drawingChanged:*(self + 72)];
   }
 }
 

@@ -1,18 +1,18 @@
 @interface _UISceneShortcutItemBSActionsHandler
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 @end
 
 @implementation _UISceneShortcutItemBSActionsHandler
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   v56 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v44 = a4;
-  v12 = a5;
-  v13 = a6;
-  v43 = [UIApp _appAdoptsUISceneLifecycle];
+  actionsCopy = actions;
+  sceneCopy = scene;
+  iSceneCopy = iScene;
+  contextCopy = context;
+  _appAdoptsUISceneLifecycle = [UIApp _appAdoptsUISceneLifecycle];
   v14 = 0x1E695D000uLL;
   v15 = [MEMORY[0x1E695DFA8] set];
   v16 = objc_opt_self();
@@ -20,14 +20,14 @@
 
   if ((isKindOfClass & 1) == 0)
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:a2 object:self file:@"_UISceneShortcutItemBSActionsHandler.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene self]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UISceneShortcutItemBSActionsHandler.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene self]]"}];
   }
 
-  v18 = v12;
-  if ([v13 isUISubclass])
+  v18 = iSceneCopy;
+  if ([contextCopy isUISubclass])
   {
-    v19 = v13;
+    v19 = contextCopy;
   }
 
   else
@@ -40,7 +40,7 @@
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v21 = v11;
+  v21 = actionsCopy;
   v22 = [v21 countByEnumeratingWithState:&v47 objects:v55 count:16];
   if (v22)
   {
@@ -67,8 +67,8 @@
           v28 = v46;
 
           v45 = v23;
-          v29 = [v27 uiShortcutItem];
-          __119___UISceneCloudKitShareMetadataBSActionHandler__launchOptionsFromActions_forFBSScene_uiSceneSession_transitionContext___block_invoke(&v45, v29);
+          uiShortcutItem = [v27 uiShortcutItem];
+          __119___UISceneCloudKitShareMetadataBSActionHandler__launchOptionsFromActions_forFBSScene_uiSceneSession_transitionContext___block_invoke(&v45, uiShortcutItem);
           v30 = v45;
 
           v23 = v30;
@@ -87,22 +87,22 @@
       v23 = v23;
       v18 = v42;
       v31 = v42;
-      v32 = [UIApp _appAdoptsUISceneLifecycle];
-      v33 = [v31 delegate];
+      _appAdoptsUISceneLifecycle2 = [UIApp _appAdoptsUISceneLifecycle];
+      delegate = [v31 delegate];
       v34 = objc_opt_respondsToSelector();
 
       if (v34)
       {
-        v35 = [v31 delegate];
-        v36 = [v23 anyObject];
+        delegate2 = [v31 delegate];
+        anyObject = [v23 anyObject];
         v51[0] = MEMORY[0x1E69E9820];
         v51[1] = 3221225472;
         v51[2] = ___UIWindowSceneSendShortcutItemCallbackForWindowScene_block_invoke;
         v51[3] = &unk_1E70F8A60;
-        v54 = v32;
+        v54 = _appAdoptsUISceneLifecycle2;
         v52 = v22;
         v53 = v31;
-        [v35 windowScene:v53 performActionForShortcutItem:v36 completionHandler:v51];
+        [delegate2 windowScene:v53 performActionForShortcutItem:anyObject completionHandler:v51];
       }
 
       v14 = 0x1E695D000;
@@ -124,7 +124,7 @@
     v23 = 0;
   }
 
-  if (v43)
+  if (_appAdoptsUISceneLifecycle)
   {
     v37 = [*(v14 + 4008) setWithSet:v21];
     [v37 minusSet:v15];
@@ -139,19 +139,19 @@
   return v38;
 }
 
-- (id)_launchOptionsFromActions:(id)a3 forFBSScene:(id)a4 uiSceneSession:(id)a5 transitionContext:(id)a6
+- (id)_launchOptionsFromActions:(id)actions forFBSScene:(id)scene uiSceneSession:(id)session transitionContext:(id)context
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v24 = a4;
-  v10 = a5;
-  v11 = a6;
+  actionsCopy = actions;
+  sceneCopy = scene;
+  sessionCopy = session;
+  contextCopy = context;
   v12 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v13 = v9;
+  v13 = actionsCopy;
   v14 = 0;
   v15 = [v13 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v15)
@@ -170,8 +170,8 @@
         if ([v18 UIActionType] == 17)
         {
           v33 = v14;
-          v19 = [v18 uiShortcutItem];
-          __119___UISceneCloudKitShareMetadataBSActionHandler__launchOptionsFromActions_forFBSScene_uiSceneSession_transitionContext___block_invoke(&v33, v19);
+          uiShortcutItem = [v18 uiShortcutItem];
+          __119___UISceneCloudKitShareMetadataBSActionHandler__launchOptionsFromActions_forFBSScene_uiSceneSession_transitionContext___block_invoke(&v33, uiShortcutItem);
           v20 = v33;
 
           v14 = v20;
@@ -181,7 +181,7 @@
         {
           v32 = v12;
           __119___UISceneCloudKitShareMetadataBSActionHandler__launchOptionsFromActions_forFBSScene_uiSceneSession_transitionContext___block_invoke(&v32, v18);
-          v19 = v12;
+          uiShortcutItem = v12;
           v12 = v32;
         }
       }

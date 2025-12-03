@@ -1,29 +1,29 @@
 @interface HWBalloonController
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CKTranscriptPluginView)pluginContentView;
-- (HWBalloonController)initWithDataSource:(id)a3 isFromMe:(BOOL)a4;
-- (void)_applicationDidBecomeActive:(id)a3;
+- (HWBalloonController)initWithDataSource:(id)source isFromMe:(BOOL)me;
+- (void)_applicationDidBecomeActive:(id)active;
 - (void)cancelPlayback;
 - (void)dealloc;
-- (void)playbackWithCompletionBlock:(id)a3;
+- (void)playbackWithCompletionBlock:(id)block;
 @end
 
 @implementation HWBalloonController
 
-- (HWBalloonController)initWithDataSource:(id)a3 isFromMe:(BOOL)a4
+- (HWBalloonController)initWithDataSource:(id)source isFromMe:(BOOL)me
 {
-  v4 = a4;
-  v6 = a3;
+  meCopy = me;
+  sourceCopy = source;
   v12.receiver = self;
   v12.super_class = HWBalloonController;
   v7 = [(HWBalloonController *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    [(HWAbstractBalloonController *)v7 setBalloonPluginDatasource:v6];
-    [(HWAbstractBalloonController *)v8 setDatasourceIsFromMe:v4];
-    v9 = [(HWAbstractBalloonController *)v8 balloonPluginDatasource];
-    [v9 setBalloonController:v8];
+    [(HWAbstractBalloonController *)v7 setBalloonPluginDatasource:sourceCopy];
+    [(HWAbstractBalloonController *)v8 setDatasourceIsFromMe:meCopy];
+    balloonPluginDatasource = [(HWAbstractBalloonController *)v8 balloonPluginDatasource];
+    [balloonPluginDatasource setBalloonController:v8];
 
     v10 = +[NSNotificationCenter defaultCenter];
     [v10 addObserver:v8 selector:"_applicationDidBecomeActive:" name:UIApplicationDidBecomeActiveNotification object:0];
@@ -48,12 +48,12 @@
   if (!pluginContentView)
   {
     v4 = [[HWPluginContentView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-    v5 = [(HWAbstractBalloonController *)self balloonPluginDatasource];
-    [(HWPluginContentView *)v4 setDataSource:v5];
+    balloonPluginDatasource = [(HWAbstractBalloonController *)self balloonPluginDatasource];
+    [(HWPluginContentView *)v4 setDataSource:balloonPluginDatasource];
 
-    v6 = [(HWAbstractBalloonController *)self balloonPluginDatasource];
-    v7 = [v6 handwritingFromPayload];
-    [(HWPluginContentView *)v4 setHandwriting:v7];
+    balloonPluginDatasource2 = [(HWAbstractBalloonController *)self balloonPluginDatasource];
+    handwritingFromPayload = [balloonPluginDatasource2 handwritingFromPayload];
+    [(HWPluginContentView *)v4 setHandwriting:handwritingFromPayload];
 
     [(HWBalloonController *)self setPluginContentView:v4];
     pluginContentView = self->_pluginContentView;
@@ -62,12 +62,12 @@
   return pluginContentView;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(HWAbstractBalloonController *)self balloonPluginDatasource];
-  [v5 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  balloonPluginDatasource = [(HWAbstractBalloonController *)self balloonPluginDatasource];
+  [balloonPluginDatasource sizeThatFits:{width, height}];
   v7 = v6;
   v9 = v8;
 
@@ -78,35 +78,35 @@
   return result;
 }
 
-- (void)_applicationDidBecomeActive:(id)a3
+- (void)_applicationDidBecomeActive:(id)active
 {
-  v8 = a3;
+  activeCopy = active;
   v4 = self->_pluginContentView;
   v5 = v4;
   if (v4)
   {
-    v6 = [(CKTranscriptPluginView *)v4 imageView];
-    v7 = [v6 image];
+    imageView = [(CKTranscriptPluginView *)v4 imageView];
+    image = [imageView image];
 
-    if (!v7)
+    if (!image)
     {
       [(CKTranscriptPluginView *)v5 setNeedsLayout];
     }
   }
 }
 
-- (void)playbackWithCompletionBlock:(id)a3
+- (void)playbackWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HWAbstractBalloonController *)self datasourceIsFromMe];
-  v6 = [(HWBalloonController *)self pluginContentView];
-  v7 = v6;
-  if (v5)
+  blockCopy = block;
+  datasourceIsFromMe = [(HWAbstractBalloonController *)self datasourceIsFromMe];
+  pluginContentView = [(HWBalloonController *)self pluginContentView];
+  v7 = pluginContentView;
+  if (datasourceIsFromMe)
   {
-    [v6 cleanupAfterAnimation];
-    if (v4)
+    [pluginContentView cleanupAfterAnimation];
+    if (blockCopy)
     {
-      v4[2](v4);
+      blockCopy[2](blockCopy);
     }
   }
 
@@ -116,15 +116,15 @@
     v8[1] = 3221225472;
     v8[2] = sub_1385C;
     v8[3] = &unk_28628;
-    v9 = v4;
+    v9 = blockCopy;
     [v7 replayDrawingWithCompletionBlock:v8];
   }
 }
 
 - (void)cancelPlayback
 {
-  v2 = [(HWBalloonController *)self pluginContentView];
-  [v2 cleanupAfterAnimation];
+  pluginContentView = [(HWBalloonController *)self pluginContentView];
+  [pluginContentView cleanupAfterAnimation];
 }
 
 @end

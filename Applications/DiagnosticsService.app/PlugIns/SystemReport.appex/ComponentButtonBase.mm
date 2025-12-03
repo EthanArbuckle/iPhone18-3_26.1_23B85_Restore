@@ -1,7 +1,7 @@
 @interface ComponentButtonBase
 - (ComponentButtonBase)init;
 - (NSArray)buttonsDetected;
-- (id)parseStringToArray:(char *)a3 length:(unint64_t)a4;
+- (id)parseStringToArray:(char *)array length:(unint64_t)length;
 @end
 
 @implementation ComponentButtonBase
@@ -14,35 +14,35 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(ComponentButtonBase *)v2 buttonsDetected];
+    buttonsDetected = [(ComponentButtonBase *)v2 buttonsDetected];
     buttonsDetected = v3->_buttonsDetected;
-    v3->_buttonsDetected = v4;
+    v3->_buttonsDetected = buttonsDetected;
   }
 
   return v3;
 }
 
-- (id)parseStringToArray:(char *)a3 length:(unint64_t)a4
+- (id)parseStringToArray:(char *)array length:(unint64_t)length
 {
   v6 = objc_alloc_init(NSMutableArray);
-  if (a4)
+  if (length)
   {
-    v7 = a3 + 1;
+    v7 = array + 1;
     do
     {
       if (!*(v7 - 1))
       {
-        v8 = [NSString stringWithUTF8String:a3];
+        v8 = [NSString stringWithUTF8String:array];
         [v6 addObject:v8];
 
-        a3 = v7;
+        array = v7;
       }
 
       ++v7;
-      --a4;
+      --length;
     }
 
-    while (a4);
+    while (length);
   }
 
   return v6;

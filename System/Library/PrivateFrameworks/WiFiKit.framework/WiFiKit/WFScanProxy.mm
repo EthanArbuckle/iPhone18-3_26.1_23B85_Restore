@@ -1,33 +1,33 @@
 @interface WFScanProxy
-+ (id)scanProxyWithClient:(id)a3;
-- (BOOL)isChannel6GHzPSC:(id)a3;
++ (id)scanProxyWithClient:(id)client;
+- (BOOL)isChannel6GHzPSC:(id)c;
 - (BOOL)isScanningAllowed;
 - (NSArray)scannableChannels;
-- (WFScanProxy)initWithClient:(id)a3;
+- (WFScanProxy)initWithClient:(id)client;
 - (void)initiateNoNetworksSoftError;
-- (void)performScanWithRequest:(id)a3 reply:(id)a4;
+- (void)performScanWithRequest:(id)request reply:(id)reply;
 @end
 
 @implementation WFScanProxy
 
-+ (id)scanProxyWithClient:(id)a3
++ (id)scanProxyWithClient:(id)client
 {
-  v3 = a3;
-  v4 = [[WFScanProxy alloc] initWithClient:v3];
+  clientCopy = client;
+  v4 = [[WFScanProxy alloc] initWithClient:clientCopy];
 
   return v4;
 }
 
-- (WFScanProxy)initWithClient:(id)a3
+- (WFScanProxy)initWithClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v9.receiver = self;
   v9.super_class = WFScanProxy;
   v6 = [(WFScanProxy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_client, a3);
+    objc_storeStrong(&v6->_client, client);
   }
 
   return v7;
@@ -35,26 +35,26 @@
 
 - (BOOL)isScanningAllowed
 {
-  v2 = [(WFScanProxy *)self client];
-  v3 = [v2 powered];
+  client = [(WFScanProxy *)self client];
+  powered = [client powered];
 
-  return v3;
+  return powered;
 }
 
-- (BOOL)isChannel6GHzPSC:(id)a3
+- (BOOL)isChannel6GHzPSC:(id)c
 {
-  v3 = a3;
-  if (([v3 flags] & 0x2000) != 0)
+  cCopy = c;
+  if (([cCopy flags] & 0x2000) != 0)
   {
-    v5 = [v3 channel];
+    channel = [cCopy channel];
     v6 = 0;
     do
     {
       v7 = isChannel6GHzPSC__pscChannels[v6];
-      v4 = v5 == v7;
+      v4 = channel == v7;
     }
 
-    while (v5 != v7 && v6++ != 14);
+    while (channel != v7 && v6++ != 14);
   }
 
   else
@@ -68,18 +68,18 @@
 - (NSArray)scannableChannels
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(WFScanProxy *)self client];
-  v4 = [v3 cInterface];
-  v5 = [v4 supported20MHzChannels];
+  client = [(WFScanProxy *)self client];
+  cInterface = [client cInterface];
+  supported20MHzChannels = [cInterface supported20MHzChannels];
 
-  if (v5)
+  if (supported20MHzChannels)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = v5;
+    v7 = supported20MHzChannels;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
@@ -97,7 +97,7 @@
           v12 = *(*(&v15 + 1) + 8 * i);
           if (([v12 flags] & 0x2000) == 0 || -[WFScanProxy isChannel6GHzPSC:](self, "isChannel6GHzPSC:", v12))
           {
-            [v6 addObject:v12];
+            [array addObject:v12];
           }
         }
 
@@ -110,36 +110,36 @@
 
   else
   {
-    v6 = 0;
+    array = 0;
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return array;
 }
 
 - (void)initiateNoNetworksSoftError
 {
-  v3 = [(WFScanProxy *)self client];
-  v2 = [v3 interface];
-  [v2 notifyNoNetworksFound];
+  client = [(WFScanProxy *)self client];
+  interface = [client interface];
+  [interface notifyNoNetworksFound];
 }
 
-- (void)performScanWithRequest:(id)a3 reply:(id)a4
+- (void)performScanWithRequest:(id)request reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFScanProxy *)self client];
-  v9 = [v8 cInterface];
-  v10 = [v7 cScanParameters];
+  replyCopy = reply;
+  requestCopy = request;
+  client = [(WFScanProxy *)self client];
+  cInterface = [client cInterface];
+  cScanParameters = [requestCopy cScanParameters];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __44__WFScanProxy_performScanWithRequest_reply___block_invoke;
   v12[3] = &unk_279EBDA70;
-  v13 = v6;
-  v11 = v6;
-  [v9 performScanWithParameters:v10 reply:v12];
+  v13 = replyCopy;
+  v11 = replyCopy;
+  [cInterface performScanWithParameters:cScanParameters reply:v12];
 }
 
 void __44__WFScanProxy_performScanWithRequest_reply___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -1,34 +1,34 @@
 @interface _UIDynamicButton
-+ (void)_dynamicButtonFromHIDEvent:(uint64_t)a1;
++ (void)_dynamicButtonFromHIDEvent:(uint64_t)event;
 - (CGPoint)_position;
 - (CGPoint)_positionDelta;
 - (NSString)debugDescription;
 - (NSString)description;
 - (_UIDynamicButton)init;
 - (_UIEventComponentPhaseValue)_eventComponentPhase;
-- (id)_eventComponentPhaseForValue:(int64_t)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_eventComponentPhaseForValue:(int64_t)value;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (uint64_t)_appendProemDescriptionSansSelfToFormatter:(uint64_t)result;
-- (void)_appendDebugBodyDescriptionToFormatter:(uint64_t)a1;
-- (void)_updateWithHIDEvent:(uint64_t)a1;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)_appendDebugBodyDescriptionToFormatter:(uint64_t)formatter;
+- (void)_updateWithHIDEvent:(uint64_t)event;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation _UIDynamicButton
 
 - (_UIDynamicButton)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIDynamicButton.m" lineNumber:228 description:{@"%s: init is not allowed on %@", "-[_UIDynamicButton init]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDynamicButton.m" lineNumber:228 description:{@"%s: init is not allowed on %@", "-[_UIDynamicButton init]", objc_opt_class()}];
 
   return 0;
 }
 
-+ (void)_dynamicButtonFromHIDEvent:(uint64_t)a1
++ (void)_dynamicButtonFromHIDEvent:(uint64_t)event
 {
   objc_opt_self();
   v3 = [_UIDynamicButton alloc];
@@ -58,26 +58,26 @@
   return v4;
 }
 
-- (void)_updateWithHIDEvent:(uint64_t)a1
+- (void)_updateWithHIDEvent:(uint64_t)event
 {
-  if (a1)
+  if (event)
   {
     if (_UIEventHIDIsDynamicButtonEvent(a2))
     {
-      v30 = BKSHIDEventGetBaseAttributes();
+      currentHandler = BKSHIDEventGetBaseAttributes();
       v4 = _UIEventHIDUIWindowForHIDEvent();
-      v5 = *(a1 + 16);
-      *(a1 + 16) = v4;
+      v5 = *(event + 16);
+      *(event + 16) = v4;
 
-      *(a1 + 10) = IOHIDEventGetIntegerValue();
-      *(a1 + 12) = IOHIDEventGetIntegerValue();
-      *(a1 + 8) = IOHIDEventGetIntegerValue() > 0;
+      *(event + 10) = IOHIDEventGetIntegerValue();
+      *(event + 12) = IOHIDEventGetIntegerValue();
+      *(event + 8) = IOHIDEventGetIntegerValue() > 0;
       IOHIDEventGetDoubleValue();
       v7 = v6;
       IOHIDEventGetDoubleValue();
       v9 = v8;
-      *(a1 + 40) = _UITouchSensitiveButtonRadiusInPointsFromMM(*(a1 + 16), v7);
-      *(a1 + 48) = _UITouchSensitiveButtonRadiusInPointsFromMM(*(a1 + 16), v9);
+      *(event + 40) = _UITouchSensitiveButtonRadiusInPointsFromMM(*(event + 16), v7);
+      *(event + 48) = _UITouchSensitiveButtonRadiusInPointsFromMM(*(event + 16), v9);
       IOHIDEventGetDoubleValue();
       v11 = v10;
       IOHIDEventGetDoubleValue();
@@ -85,11 +85,11 @@
       IOHIDEventGetDoubleValue();
       v15 = v14;
       IOHIDEventGetDoubleValue();
-      *(a1 + 144) = v11;
-      *(a1 + 152) = v13;
-      *(a1 + 160) = v15;
-      *(a1 + 168) = v16;
-      *(a1 + 56) = IOHIDEventGetIntegerValue() & 0x1FF;
+      *(event + 144) = v11;
+      *(event + 152) = v13;
+      *(event + 160) = v15;
+      *(event + 168) = v16;
+      *(event + 56) = IOHIDEventGetIntegerValue() & 0x1FF;
       _UIEventHIDGetChildForceStageEvent(a2);
       IntegerValue = IOHIDEventGetIntegerValue();
       v18 = IOHIDEventGetIntegerValue();
@@ -101,29 +101,29 @@
         v21 = v19;
       }
 
-      *(a1 + 64) = IntegerValue & ~(IntegerValue >> 63);
-      *(a1 + 72) = v21;
+      *(event + 64) = IntegerValue & ~(IntegerValue >> 63);
+      *(event + 72) = v21;
       IOHIDEventGetDoubleValue();
-      *(a1 + 88) = v22;
+      *(event + 88) = v22;
       IOHIDEventGetDoubleValue();
-      *(a1 + 96) = v23;
+      *(event + 96) = v23;
       IOHIDEventGetDoubleValue();
-      *(a1 + 104) = v24;
+      *(event + 104) = v24;
       IOHIDEventGetDoubleValue();
-      *(a1 + 112) = v25;
+      *(event + 112) = v25;
       IOHIDEventGetDoubleValue();
-      *(a1 + 120) = v26;
+      *(event + 120) = v26;
       TimeStamp = IOHIDEventGetTimeStamp();
-      *(a1 + 128) = _UIMediaTimeForMachTime(TimeStamp);
-      v28 = [v30 copy];
-      v29 = *(a1 + 136);
-      *(a1 + 136) = v28;
+      *(event + 128) = _UIMediaTimeForMachTime(TimeStamp);
+      v28 = [currentHandler copy];
+      v29 = *(event + 136);
+      *(event + 136) = v28;
     }
 
     else
     {
-      v30 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v30 handleFailureInMethod:sel__updateWithHIDEvent_ object:a1 file:@"_UIDynamicButton.m" lineNumber:249 description:{@"Invalid hidEvent type for %@: %@", objc_opt_class(), a2}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__updateWithHIDEvent_ object:event file:@"_UIDynamicButton.m" lineNumber:249 description:{@"Invalid hidEvent type for %@: %@", objc_opt_class(), a2}];
     }
   }
 }
@@ -137,10 +137,10 @@
   return v4;
 }
 
-- (id)_eventComponentPhaseForValue:(int64_t)a3
+- (id)_eventComponentPhaseForValue:(int64_t)value
 {
   v4 = _eventComponentPhaseMapping();
-  v5 = _eventComponentPhaseForValue(a3, v4);
+  v5 = _eventComponentPhaseForValue(value, v4);
 
   return v5;
 }
@@ -191,34 +191,34 @@
   return result;
 }
 
-- (void)_appendDebugBodyDescriptionToFormatter:(uint64_t)a1
+- (void)_appendDebugBodyDescriptionToFormatter:(uint64_t)formatter
 {
-  if (a1)
+  if (formatter)
   {
-    v4 = [a2 appendBool:*(a1 + 8) withName:@"isTouching"];
-    v5 = [a2 appendFloat:@"touchMajorRadius" withName:1 decimalPrecision:*(a1 + 40)];
-    v6 = [a2 appendFloat:@"touchMinorRadius" withName:1 decimalPrecision:*(a1 + 48)];
+    v4 = [a2 appendBool:*(formatter + 8) withName:@"isTouching"];
+    v5 = [a2 appendFloat:@"touchMajorRadius" withName:1 decimalPrecision:*(formatter + 40)];
+    v6 = [a2 appendFloat:@"touchMinorRadius" withName:1 decimalPrecision:*(formatter + 48)];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __59___UIDynamicButton__appendDebugBodyDescriptionToFormatter___block_invoke;
     v22[3] = &unk_1E70FA340;
-    v22[4] = a1;
+    v22[4] = formatter;
     [a2 appendCustomFormatWithName:@"position" block:v22];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __59___UIDynamicButton__appendDebugBodyDescriptionToFormatter___block_invoke_2;
     v21[3] = &unk_1E70FA340;
-    v21[4] = a1;
+    v21[4] = formatter;
     [a2 appendCustomFormatWithName:@"positionDelta" block:v21];
-    v7 = _NSStringFromUITouchSenstiveButtonPositionHint(*(a1 + 56));
+    v7 = _NSStringFromUITouchSenstiveButtonPositionHint(*(formatter + 56));
     v8 = [a2 appendObject:v7 withName:@"touchPositionHints"];
 
-    v9 = [a2 appendFloat:@"normalizedForce" withName:3 decimalPrecision:*(a1 + 88)];
-    v10 = [a2 appendFloat:@"normalizedForceVelocity" withName:3 decimalPrecision:*(a1 + 96)];
-    v11 = [a2 appendFloat:@"releaseStageForceThreshold" withName:3 decimalPrecision:*(a1 + 104)];
-    v12 = [a2 appendFloat:@"pressedStageForceThreshold" withName:3 decimalPrecision:*(a1 + 112)];
-    v13 = [a2 appendFloat:@"nextStageForceThreshold" withName:3 decimalPrecision:*(a1 + 120)];
-    v14 = *(a1 + 16);
+    v9 = [a2 appendFloat:@"normalizedForce" withName:3 decimalPrecision:*(formatter + 88)];
+    v10 = [a2 appendFloat:@"normalizedForceVelocity" withName:3 decimalPrecision:*(formatter + 96)];
+    v11 = [a2 appendFloat:@"releaseStageForceThreshold" withName:3 decimalPrecision:*(formatter + 104)];
+    v12 = [a2 appendFloat:@"pressedStageForceThreshold" withName:3 decimalPrecision:*(formatter + 112)];
+    v13 = [a2 appendFloat:@"nextStageForceThreshold" withName:3 decimalPrecision:*(formatter + 120)];
+    v14 = *(formatter + 16);
     if (v14)
     {
       v15 = MEMORY[0x1E696AEC0];
@@ -237,23 +237,23 @@
   }
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __49___UIDynamicButton_appendDescriptionToFormatter___block_invoke;
   v3[3] = &unk_1E70F35B8;
   v3[4] = self;
-  v3[5] = a3;
-  [a3 appendProem:self block:v3];
+  v3[5] = formatter;
+  [formatter appendProem:self block:v3];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(_UIDynamicButton *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_UIDynamicButton *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -264,26 +264,26 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIDynamicButton *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIDynamicButton *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIDynamicButton *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIDynamicButton *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
-  [v5 setActiveMultilinePrefix:a3];
+  [v5 setActiveMultilinePrefix:prefix];
   v6 = _NSStringFromUIPhysicalButton(self->_physicalButton);
   [v5 appendString:v6 withName:@"button"];
 
@@ -313,7 +313,7 @@
   v16[3] = &unk_1E70F35B8;
   v12 = v5;
   v17 = v12;
-  v18 = self;
+  selfCopy = self;
   v13 = [v12 modifyBody:v16];
   v14 = v12;
 

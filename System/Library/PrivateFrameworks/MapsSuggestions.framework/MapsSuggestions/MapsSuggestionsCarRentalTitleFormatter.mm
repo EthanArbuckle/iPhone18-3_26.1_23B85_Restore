@@ -1,16 +1,16 @@
 @interface MapsSuggestionsCarRentalTitleFormatter
-- (BOOL)formatTitlesForEntry:(id)a3 eta:(id)a4;
+- (BOOL)formatTitlesForEntry:(id)entry eta:(id)eta;
 @end
 
 @implementation MapsSuggestionsCarRentalTitleFormatter
 
-- (BOOL)formatTitlesForEntry:(id)a3 eta:(id)a4
+- (BOOL)formatTitlesForEntry:(id)entry eta:(id)eta
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  entryCopy = entry;
+  etaCopy = eta;
+  v8 = etaCopy;
+  if (!entryCopy)
   {
     v18 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -32,7 +32,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!v7)
+  if (!etaCopy)
   {
     v18 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -52,7 +52,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if ([v6 type] != 14)
+  if ([entryCopy type] != 14)
   {
     v18 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -77,8 +77,8 @@ LABEL_18:
 
   [v8 seconds];
   v10 = NSStringFromMapsSuggestionsShortETA(v9);
-  v11 = [v6 undecoratedSubtitle];
-  if (([v6 BOOLeanForKey:@"MapsSuggestionsCalendarCarRentalIsPickupDayKey"] & 1) == 0 && -[MapsSuggestionsEventETATitleFormatter shouldDecorateEntry:withETA:](self, "shouldDecorateEntry:withETA:", v6, v8) && objc_msgSend(v10, "length"))
+  undecoratedSubtitle = [entryCopy undecoratedSubtitle];
+  if (([entryCopy BOOLeanForKey:@"MapsSuggestionsCalendarCarRentalIsPickupDayKey"] & 1) == 0 && -[MapsSuggestionsEventETATitleFormatter shouldDecorateEntry:withETA:](self, "shouldDecorateEntry:withETA:", entryCopy, v8) && objc_msgSend(v10, "length"))
   {
     v12 = MapsSuggestionsLocalizedStringFromGEOTransportType([v8 transportType]);
     v13 = _localizedSubtitleString_s_onceToken;
@@ -90,11 +90,11 @@ LABEL_18:
 
     v15 = (*(_localizedSubtitleString_s_formatter + 16))(_localizedSubtitleString_s_formatter, v14, v12);
 
-    v11 = v15;
+    undecoratedSubtitle = v15;
   }
 
-  v16 = [v6 title];
-  v17 = [(MapsSuggestionsBaseTitleFormatter *)self updateMyChangedTitlesForEntry:v6 title:v16 subtitle:v11 includeLockedVersions:0];
+  title = [entryCopy title];
+  v17 = [(MapsSuggestionsBaseTitleFormatter *)self updateMyChangedTitlesForEntry:entryCopy title:title subtitle:undecoratedSubtitle includeLockedVersions:0];
 
 LABEL_19:
   return v17;

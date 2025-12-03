@@ -1,15 +1,15 @@
 @interface JavaTextDecimalFormatSymbols
 + (id)getInstance;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (JavaTextDecimalFormatSymbols)init;
 - (NSString)description;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setCurrencyWithJavaUtilCurrency:(id)a3;
-- (void)setExponentSeparatorWithNSString:(id)a3;
-- (void)setInternationalCurrencySymbolWithNSString:(id)a3;
+- (void)setCurrencyWithJavaUtilCurrency:(id)currency;
+- (void)setExponentSeparatorWithNSString:(id)string;
+- (void)setInternationalCurrencySymbolWithNSString:(id)string;
 @end
 
 @implementation JavaTextDecimalFormatSymbols
@@ -35,9 +35,9 @@
   return [(JavaTextDecimalFormatSymbols *)&v3 clone];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v6) = 1;
     return v6;
@@ -50,7 +50,7 @@
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     currency = self->currency_;
     JreThrowNullPointerException();
@@ -67,7 +67,7 @@
     goto LABEL_29;
   }
 
-  v6 = [(JavaUtilCurrency *)v5 isEqual:*(a3 + 8)];
+  v6 = [(JavaUtilCurrency *)v5 isEqual:*(equal + 8)];
   if (!v6)
   {
     return v6;
@@ -79,13 +79,13 @@
     goto LABEL_29;
   }
 
-  v6 = [(NSString *)currencySymbol isEqual:*(a3 + 6)];
+  v6 = [(NSString *)currencySymbol isEqual:*(equal + 6)];
   if (!v6)
   {
     return v6;
   }
 
-  if (self->decimalSeparator_ != *(a3 + 6) || self->digit_ != *(a3 + 5))
+  if (self->decimalSeparator_ != *(equal + 6) || self->digit_ != *(equal + 5))
   {
     goto LABEL_26;
   }
@@ -96,13 +96,13 @@
     goto LABEL_29;
   }
 
-  v6 = [(NSString *)exponentSeparator isEqual:*(a3 + 10)];
+  v6 = [(NSString *)exponentSeparator isEqual:*(equal + 10)];
   if (!v6)
   {
     return v6;
   }
 
-  if (self->groupingSeparator_ != *(a3 + 7))
+  if (self->groupingSeparator_ != *(equal + 7))
   {
     goto LABEL_26;
   }
@@ -113,7 +113,7 @@
     goto LABEL_29;
   }
 
-  v6 = [(NSString *)infinity isEqual:*(a3 + 4)];
+  v6 = [(NSString *)infinity isEqual:*(equal + 4)];
   if (!v6)
   {
     return v6;
@@ -125,13 +125,13 @@
     goto LABEL_29;
   }
 
-  v6 = [(NSString *)intlCurrencySymbol isEqual:*(a3 + 7)];
+  v6 = [(NSString *)intlCurrencySymbol isEqual:*(equal + 7)];
   if (!v6)
   {
     return v6;
   }
 
-  if (self->minusSign_ != *(a3 + 12) || self->monetarySeparator_ != *(a3 + 11))
+  if (self->minusSign_ != *(equal + 12) || self->monetarySeparator_ != *(equal + 11))
   {
     goto LABEL_26;
   }
@@ -143,20 +143,20 @@ LABEL_29:
     JreThrowNullPointerException();
   }
 
-  v6 = [(NSString *)NaN isEqual:*(a3 + 5)];
+  v6 = [(NSString *)NaN isEqual:*(equal + 5)];
   if (!v6)
   {
     return v6;
   }
 
-  if (self->patternSeparator_ != *(a3 + 8) || self->perMill_ != *(a3 + 10) || self->percent_ != *(a3 + 9))
+  if (self->patternSeparator_ != *(equal + 8) || self->perMill_ != *(equal + 10) || self->percent_ != *(equal + 9))
   {
 LABEL_26:
     LOBYTE(v6) = 0;
     return v6;
   }
 
-  LOBYTE(v6) = self->zeroDigit_ == *(a3 + 4);
+  LOBYTE(v6) = self->zeroDigit_ == *(equal + 4);
   return v6;
 }
 
@@ -221,9 +221,9 @@ LABEL_7:
   return ([(NSString *)intlCurrencySymbol hash]- v25 + 32 * v25 - 141423023);
 }
 
-- (void)setCurrencyWithJavaUtilCurrency:(id)a3
+- (void)setCurrencyWithJavaUtilCurrency:(id)currency
 {
-  if (!a3)
+  if (!currency)
   {
     v8 = new_JavaLangNullPointerException_initWithNSString_(@"currency == null");
     objc_exception_throw(v8);
@@ -231,26 +231,26 @@ LABEL_7:
 
   currency = self->currency_;
   p_currency = &self->currency_;
-  if (currency != a3)
+  if (currency != currency)
   {
-    JreStrongAssign(p_currency, a3);
-    JreStrongAssign(&self->intlCurrencySymbol_, [a3 getCurrencyCode]);
-    v7 = [a3 getSymbolWithJavaUtilLocale:self->locale_];
+    JreStrongAssign(p_currency, currency);
+    JreStrongAssign(&self->intlCurrencySymbol_, [currency getCurrencyCode]);
+    v7 = [currency getSymbolWithJavaUtilLocale:self->locale_];
 
     JreStrongAssign(&self->currencySymbol_, v7);
   }
 }
 
-- (void)setInternationalCurrencySymbolWithNSString:(id)a3
+- (void)setInternationalCurrencySymbolWithNSString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    if ([a3 isEqual:self->intlCurrencySymbol_])
+    if ([string isEqual:self->intlCurrencySymbol_])
     {
       return;
     }
 
-    InstanceWithNSString = JavaUtilCurrency_getInstanceWithNSString_(a3);
+    InstanceWithNSString = JavaUtilCurrency_getInstanceWithNSString_(string);
     JreStrongAssign(&self->currency_, InstanceWithNSString);
     currency = self->currency_;
     if (!currency)
@@ -260,22 +260,22 @@ LABEL_7:
 
     JreStrongAssign(&self->currencySymbol_, [(JavaUtilCurrency *)currency getSymbolWithJavaUtilLocale:self->locale_]);
     p_intlCurrencySymbol = &self->intlCurrencySymbol_;
-    v6 = a3;
+    stringCopy = string;
   }
 
   else
   {
     JreStrongAssign(&self->currency_, 0);
     p_intlCurrencySymbol = &self->intlCurrencySymbol_;
-    v6 = 0;
+    stringCopy = 0;
   }
 
-  JreStrongAssign(p_intlCurrencySymbol, v6);
+  JreStrongAssign(p_intlCurrencySymbol, stringCopy);
 }
 
-- (void)setExponentSeparatorWithNSString:(id)a3
+- (void)setExponentSeparatorWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     v5 = new_JavaLangNullPointerException_initWithNSString_(@"value == null");
     objc_exception_throw(v5);
@@ -283,7 +283,7 @@ LABEL_7:
 
   p_exponentSeparator = &self->exponentSeparator_;
 
-  JreStrongAssign(p_exponentSeparator, a3);
+  JreStrongAssign(p_exponentSeparator, string);
 }
 
 - (void)dealloc
@@ -293,11 +293,11 @@ LABEL_7:
   [(JavaTextDecimalFormatSymbols *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(JavaTextDecimalFormatSymbols *)self clone];
+  clone = [(JavaTextDecimalFormatSymbols *)self clone];
 
-  return v3;
+  return clone;
 }
 
 @end

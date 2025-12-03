@@ -1,57 +1,57 @@
 @interface CEKApertureSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
-- (unint64_t)_axValidApertureIndexForDiscreteIndex:(unint64_t)a3;
-- (void)_axAdjustValue:(BOOL)a3;
-- (void)scrollViewDidScroll:(id)a3;
+- (unint64_t)_axValidApertureIndexForDiscreteIndex:(unint64_t)index;
+- (void)_axAdjustValue:(BOOL)value;
+- (void)scrollViewDidScroll:(id)scroll;
 @end
 
 @implementation CEKApertureSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"_titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"_valueLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CEKApertureSlider" isKindOfClass:@"CEKDiscreteSlider"];
-  [v3 validateClass:@"CEKApertureSlider" hasInstanceMethod:@"apertureValue" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"CEKApertureSlider" hasInstanceMethod:@"markedApertureValue" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"CEKApertureSlider" hasInstanceMethod:@"setApertureValueClosestTo:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"scrollViewDidScroll:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"selectedIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"markedIndex" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CEKApertureSlider" hasInstanceMethod:@"_validApertureIndexForDiscreteIndex:" withFullSignature:{"Q", "Q", 0}];
-  [v3 validateClass:@"CEKApertureStops"];
-  [v3 validateClass:@"CEKApertureStops" hasClassMethod:@"validApertureValues" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"_titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"_valueLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CEKApertureSlider" isKindOfClass:@"CEKDiscreteSlider"];
+  [validationsCopy validateClass:@"CEKApertureSlider" hasInstanceMethod:@"apertureValue" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"CEKApertureSlider" hasInstanceMethod:@"markedApertureValue" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"CEKApertureSlider" hasInstanceMethod:@"setApertureValueClosestTo:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"scrollViewDidScroll:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"selectedIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CEKDiscreteSlider" hasInstanceMethod:@"markedIndex" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CEKApertureSlider" hasInstanceMethod:@"_validApertureIndexForDiscreteIndex:" withFullSignature:{"Q", "Q", 0}];
+  [validationsCopy validateClass:@"CEKApertureStops"];
+  [validationsCopy validateClass:@"CEKApertureStops" hasClassMethod:@"validApertureValues" withFullSignature:{"@", 0}];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   [(CEKApertureSliderAccessibility *)self safeDoubleForKey:@"apertureValue"];
   v6 = v5;
   v10.receiver = self;
   v10.super_class = CEKApertureSliderAccessibility;
-  [(CEKApertureSliderAccessibility *)&v10 scrollViewDidScroll:v4];
+  [(CEKApertureSliderAccessibility *)&v10 scrollViewDidScroll:scrollCopy];
 
   [(CEKApertureSliderAccessibility *)self safeDoubleForKey:@"apertureValue"];
   if (v6 != v7)
   {
     v8 = [(CEKApertureSliderAccessibility *)self safeUIViewForKey:@"_valueLabel"];
-    v9 = [v8 accessibilityLabel];
+    accessibilityLabel = [v8 accessibilityLabel];
     UIAccessibilitySpeak();
   }
 }
 
-- (void)_axAdjustValue:(BOOL)a3
+- (void)_axAdjustValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   v5 = [MEMORY[0x29C2CE830](@"CEKApertureStops" a2)];
   v6 = [(CEKApertureSliderAccessibility *)self _axValidApertureIndexForDiscreteIndex:[(CEKApertureSliderAccessibility *)self safeUnsignedIntegerForKey:@"selectedIndex"]];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = v3 ? v6 + 1 : v6 - 1;
+    v7 = valueCopy ? v6 + 1 : v6 - 1;
     if (v7 < [v5 count])
     {
       v14 = v5;
@@ -116,12 +116,12 @@ void __49__CEKApertureSliderAccessibility__axAdjustValue___block_invoke_5(uint64
 - (id)accessibilityLabel
 {
   v2 = [(CEKApertureSliderAccessibility *)self safeUIViewForKey:@"_titleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
-- (unint64_t)_axValidApertureIndexForDiscreteIndex:(unint64_t)a3
+- (unint64_t)_axValidApertureIndexForDiscreteIndex:(unint64_t)index
 {
   v5 = 0;
   v6 = &v5;
@@ -143,7 +143,7 @@ uint64_t __72__CEKApertureSliderAccessibility__axValidApertureIndexForDiscreteIn
 - (id)accessibilityValue
 {
   v3 = [(CEKApertureSliderAccessibility *)self safeUIViewForKey:@"_valueLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v5 = [(CEKApertureSliderAccessibility *)self _axValidApertureIndexForDiscreteIndex:[(CEKApertureSliderAccessibility *)self safeUnsignedIntegerForKey:@"selectedIndex"]];
   if (v5 == [(CEKApertureSliderAccessibility *)self _axValidApertureIndexForDiscreteIndex:[(CEKApertureSliderAccessibility *)self safeUnsignedIntegerForKey:@"markedIndex"]])
@@ -151,10 +151,10 @@ uint64_t __72__CEKApertureSliderAccessibility__axValidApertureIndexForDiscreteIn
     v8 = accessibilityCameraEditKitD2xLocalizedString(@"original.depth");
     v6 = __UIAXStringForVariables();
 
-    v4 = v6;
+    accessibilityLabel = v6;
   }
 
-  return v4;
+  return accessibilityLabel;
 }
 
 @end

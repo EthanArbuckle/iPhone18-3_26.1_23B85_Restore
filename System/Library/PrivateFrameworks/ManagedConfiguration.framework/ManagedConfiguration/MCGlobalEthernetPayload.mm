@@ -1,10 +1,10 @@
 @interface MCGlobalEthernetPayload
 + (id)nonPrivateEAPKeys;
-- (BOOL)_eapConfigIsValid:(id)a3 error:(id *)a4;
-- (BOOL)_payloadIsValid:(id)a3 error:(id *)a4;
-- (MCGlobalEthernetPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
-- (id)_eapPasswordFromConfig:(id)a3 isRequired:(BOOL *)a4;
-- (id)_eapUsernameFromConfig:(id)a3 isRequired:(BOOL *)a4;
+- (BOOL)_eapConfigIsValid:(id)valid error:(id *)error;
+- (BOOL)_payloadIsValid:(id)valid error:(id *)error;
+- (MCGlobalEthernetPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
+- (id)_eapPasswordFromConfig:(id)config isRequired:(BOOL *)required;
+- (id)_eapUsernameFromConfig:(id)config isRequired:(BOOL *)required;
 - (id)eapSettingsSection;
 - (id)payloadDescriptionKeyValueSections;
 - (id)stubDictionary;
@@ -13,18 +13,18 @@
 
 @implementation MCGlobalEthernetPayload
 
-- (MCGlobalEthernetPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCGlobalEthernetPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v42.receiver = self;
   v42.super_class = MCGlobalEthernetPayload;
-  v9 = [(MCPayload *)&v42 initWithDictionary:v8 profile:a4 outError:a5];
+  v9 = [(MCPayload *)&v42 initWithDictionary:dictionaryCopy profile:profile outError:error];
   v10 = v9;
   if (v9)
   {
     v41 = 0;
-    [(MCGlobalEthernetPayload *)v9 _payloadIsValid:v8 error:&v41];
+    [(MCGlobalEthernetPayload *)v9 _payloadIsValid:dictionaryCopy error:&v41];
     v11 = v41;
     if (v11)
     {
@@ -35,7 +35,7 @@
     else
     {
       v40 = 0;
-      v13 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"EAPClientConfiguration" isRequired:1 outError:&v40];
+      v13 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"EAPClientConfiguration" isRequired:1 outError:&v40];
       v12 = v40;
       if (!v12)
       {
@@ -74,7 +74,7 @@
             else
             {
               v37 = 0;
-              v25 = [v8 MCValidateAndRemoveNonZeroLengthStringWithKey:@"PayloadCertificateUUID" isRequired:0 outError:&v37];
+              v25 = [dictionaryCopy MCValidateAndRemoveNonZeroLengthStringWithKey:@"PayloadCertificateUUID" isRequired:0 outError:&v37];
               v12 = v37;
               certificateUUID = v10->_certificateUUID;
               v10->_certificateUUID = v25;
@@ -96,10 +96,10 @@
 
     v27 = [(MCPayload *)v10 malformedPayloadErrorWithError:v12];
     v28 = v27;
-    if (a5)
+    if (error)
     {
       v29 = v27;
-      *a5 = v28;
+      *error = v28;
     }
 
     v30 = _MCLogObjects;
@@ -108,11 +108,11 @@
       v31 = v30;
       v32 = objc_opt_class();
       v33 = v32;
-      v34 = [v28 MCVerboseDescription];
+      mCVerboseDescription = [v28 MCVerboseDescription];
       *buf = 138543618;
       v44 = v32;
       v45 = 2114;
-      v46 = v34;
+      v46 = mCVerboseDescription;
       _os_log_impl(&dword_1A795B000, v31, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
     }
 
@@ -125,17 +125,17 @@ LABEL_18:
   return v10;
 }
 
-- (BOOL)_payloadIsValid:(id)a3 error:(id *)a4
+- (BOOL)_payloadIsValid:(id)valid error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 mutableCopy];
-  v8 = [v7 MCValidateAndRemoveNonZeroLengthStringWithKey:@"Interface" isRequired:1 outError:a4];
+  validCopy = valid;
+  v7 = [validCopy mutableCopy];
+  v8 = [v7 MCValidateAndRemoveNonZeroLengthStringWithKey:@"Interface" isRequired:1 outError:error];
   interface = self->_interface;
   self->_interface = v8;
 
   if (!self->_interface || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ![(NSString *)self->_interface isEqualToString:@"GlobalEthernet"])
   {
-    if (a4)
+    if (error)
     {
       v16 = [MCPayload badFieldValueErrorWithField:@"Interface"];
 LABEL_10:
@@ -149,7 +149,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v10 = [v6 objectForKey:@"SetupModes"];
+  v10 = [validCopy objectForKey:@"SetupModes"];
   setupModes = self->_setupModes;
   self->_setupModes = v10;
 
@@ -157,7 +157,7 @@ LABEL_14:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v16 = [MCPayload badFieldTypeErrorWithField:@"SetupModes"];
       goto LABEL_10;
@@ -175,11 +175,11 @@ LABEL_14:
   v18[4] = self;
   [(NSArray *)v13 enumerateObjectsUsingBlock:v18];
   isSystemMode = self->_isSystemMode;
-  if (a4 && !isSystemMode)
+  if (error && !isSystemMode)
   {
     v15 = [MCPayload badFieldValueErrorWithField:@"SetupModes"];
 LABEL_11:
-    *a4 = v15;
+    *error = v15;
   }
 
 LABEL_15:
@@ -198,23 +198,23 @@ void __49__MCGlobalEthernetPayload__payloadIsValid_error___block_invoke(uint64_t
   }
 }
 
-- (id)_eapUsernameFromConfig:(id)a3 isRequired:(BOOL *)a4
+- (id)_eapUsernameFromConfig:(id)config isRequired:(BOOL *)required
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  configCopy = config;
+  v6 = configCopy;
+  if (configCopy)
   {
-    v7 = [v5 objectForKey:@"AcceptEAPTypes"];
+    v7 = [configCopy objectForKey:@"AcceptEAPTypes"];
     if (v7)
     {
       v8 = [MEMORY[0x1E696AD98] numberWithInt:13];
       v9 = [v7 containsObject:v8];
 
-      if (a4)
+      if (required)
       {
         if ((v9 & 1) == 0)
         {
-          *a4 = 1;
+          *required = 1;
         }
       }
     }
@@ -230,23 +230,23 @@ void __49__MCGlobalEthernetPayload__payloadIsValid_error___block_invoke(uint64_t
   return v10;
 }
 
-- (id)_eapPasswordFromConfig:(id)a3 isRequired:(BOOL *)a4
+- (id)_eapPasswordFromConfig:(id)config isRequired:(BOOL *)required
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  configCopy = config;
+  v6 = configCopy;
+  if (configCopy)
   {
-    v7 = [v5 objectForKey:@"AcceptEAPTypes"];
+    v7 = [configCopy objectForKey:@"AcceptEAPTypes"];
     if (v7)
     {
       v8 = [MEMORY[0x1E696AD98] numberWithInt:13];
       v9 = [v7 containsObject:v8];
 
-      if (a4)
+      if (required)
       {
         if ((v9 & 1) == 0)
         {
-          *a4 = 1;
+          *required = 1;
         }
       }
     }
@@ -262,10 +262,10 @@ void __49__MCGlobalEthernetPayload__payloadIsValid_error___block_invoke(uint64_t
   return v10;
 }
 
-- (BOOL)_eapConfigIsValid:(id)a3 error:(id *)a4
+- (BOOL)_eapConfigIsValid:(id)valid error:(id *)error
 {
   v72 = *MEMORY[0x1E69E9840];
-  v6 = [a3 mutableCopy];
+  v6 = [valid mutableCopy];
   v64 = 0;
   v7 = [v6 MCValidateAndRemoveNonZeroLengthStringWithKey:@"UserName" isRequired:0 outError:&v64];
   v8 = v64;
@@ -491,9 +491,9 @@ LABEL_28:
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEFAULT))
     {
       v31 = v30;
-      v32 = [(MCPayload *)self friendlyName];
+      friendlyName = [(MCPayload *)self friendlyName];
       *buf = 138543618;
-      v66 = v32;
+      v66 = friendlyName;
       v67 = 2114;
       v68 = v6;
       _os_log_impl(&dword_1A795B000, v31, OS_LOG_TYPE_DEFAULT, "Payload “%{public}@” contains unexpected fields in EAP Configuration. They are: %{public}@", buf, 0x16u);
@@ -503,10 +503,10 @@ LABEL_28:
   v10 = 0;
   v11 = 1;
 LABEL_7:
-  if (a4)
+  if (error)
   {
     v16 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   v17 = *MEMORY[0x1E69E9840];
@@ -517,12 +517,12 @@ LABEL_7:
 {
   v17.receiver = self;
   v17.super_class = MCGlobalEthernetPayload;
-  v3 = [(MCPayload *)&v17 stubDictionary];
-  v4 = v3;
+  stubDictionary = [(MCPayload *)&v17 stubDictionary];
+  v4 = stubDictionary;
   interface = self->_interface;
   if (interface)
   {
-    [v3 setObject:interface forKey:@"Interface"];
+    [stubDictionary setObject:interface forKey:@"Interface"];
   }
 
   setupModes = self->_setupModes;
@@ -636,9 +636,9 @@ void __44__MCGlobalEthernetPayload_nonPrivateEAPKeys__block_invoke()
     [v3 addObject:v14];
   }
 
-  v15 = [(MCGlobalEthernetPayload *)self certificateUUID];
+  certificateUUID = [(MCGlobalEthernetPayload *)self certificateUUID];
 
-  if (v15)
+  if (certificateUUID)
   {
     v16 = [MCKeyValue alloc];
     v17 = MCLocalizedString(@"PRESENT");
@@ -648,8 +648,8 @@ void __44__MCGlobalEthernetPayload_nonPrivateEAPKeys__block_invoke()
     [v3 addObject:v19];
   }
 
-  v20 = [(MCGlobalEthernetPayload *)self payloadCertificateAnchorUUIDs];
-  v21 = [v20 count];
+  payloadCertificateAnchorUUIDs = [(MCGlobalEthernetPayload *)self payloadCertificateAnchorUUIDs];
+  v21 = [payloadCertificateAnchorUUIDs count];
 
   if (v21)
   {
@@ -713,15 +713,15 @@ void __44__MCGlobalEthernetPayload_nonPrivateEAPKeys__block_invoke()
   eapClientConfiguration = self->_eapClientConfiguration;
   if (eapClientConfiguration)
   {
-    v9 = [(NSDictionary *)eapClientConfiguration allKeys];
-    v10 = [v9 count];
+    allKeys = [(NSDictionary *)eapClientConfiguration allKeys];
+    v10 = [allKeys count];
 
     if (v10)
     {
-      v11 = [(MCGlobalEthernetPayload *)self eapSettingsSection];
-      if ([v11 count])
+      eapSettingsSection = [(MCGlobalEthernetPayload *)self eapSettingsSection];
+      if ([eapSettingsSection count])
       {
-        [v4 addObjectsFromArray:v11];
+        [v4 addObjectsFromArray:eapSettingsSection];
       }
     }
   }
@@ -732,18 +732,18 @@ void __44__MCGlobalEthernetPayload_nonPrivateEAPKeys__block_invoke()
     [v3 addObject:v12];
   }
 
-  v13 = [(MCGlobalEthernetPayload *)self eapTypes];
-  v14 = [v13 count];
+  eapTypes = [(MCGlobalEthernetPayload *)self eapTypes];
+  v14 = [eapTypes count];
 
   if (v14)
   {
-    v15 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v16 = [(MCGlobalEthernetPayload *)self eapTypes];
-    v17 = [v16 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    eapTypes2 = [(MCGlobalEthernetPayload *)self eapTypes];
+    v17 = [eapTypes2 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (!v17)
     {
       goto LABEL_29;
@@ -757,19 +757,19 @@ void __44__MCGlobalEthernetPayload_nonPrivateEAPKeys__block_invoke()
       {
         if (*v28 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(eapTypes2);
         }
 
-        v21 = [*(*(&v27 + 1) + 8 * i) intValue];
-        if (v21 <= 20)
+        intValue = [*(*(&v27 + 1) + 8 * i) intValue];
+        if (intValue <= 20)
         {
           v22 = @"EAP-TLS";
-          if (v21 == 13)
+          if (intValue == 13)
           {
             goto LABEL_27;
           }
 
-          if (v21 == 17)
+          if (intValue == 17)
           {
             v22 = @"LEAP";
             goto LABEL_27;
@@ -778,7 +778,7 @@ void __44__MCGlobalEthernetPayload_nonPrivateEAPKeys__block_invoke()
 
         else
         {
-          switch(v21)
+          switch(intValue)
           {
             case 21:
               v22 = @"EAP-TTLS";
@@ -794,16 +794,16 @@ void __44__MCGlobalEthernetPayload_nonPrivateEAPKeys__block_invoke()
 
         v22 = @"Unknown";
 LABEL_27:
-        [v15 addObject:v22];
+        [array addObject:v22];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v18 = [eapTypes2 countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (!v18)
       {
 LABEL_29:
 
         v23 = MCLocalizedString(@"GLOBAL_ETHERNET_EAP_TYPES");
-        v24 = [MCKeyValueSection sectionWithLocalizedArray:v15 title:v23 footer:0];
+        v24 = [MCKeyValueSection sectionWithLocalizedArray:array title:v23 footer:0];
 
         [v3 addObject:v24];
         break;
@@ -827,28 +827,28 @@ LABEL_29:
   v3 = MEMORY[0x1E696AD60];
   v15.receiver = self;
   v15.super_class = MCGlobalEthernetPayload;
-  v4 = [(MCPayload *)&v15 verboseDescription];
-  v5 = [v3 stringWithString:v4];
+  verboseDescription = [(MCPayload *)&v15 verboseDescription];
+  v5 = [v3 stringWithString:verboseDescription];
 
   if ([(MCGlobalEthernetPayload *)self isSystemMode])
   {
     [v5 appendString:@"Setup Mode : System\n"];
   }
 
-  v6 = [(MCGlobalEthernetPayload *)self interface];
+  interface = [(MCGlobalEthernetPayload *)self interface];
 
-  if (v6)
+  if (interface)
   {
-    v7 = [(MCGlobalEthernetPayload *)self interface];
-    [v5 appendFormat:@"Interface : %@\n", v7];
+    interface2 = [(MCGlobalEthernetPayload *)self interface];
+    [v5 appendFormat:@"Interface : %@\n", interface2];
   }
 
-  v8 = [(MCPayload *)self displayName];
+  displayName = [(MCPayload *)self displayName];
 
-  if (v8)
+  if (displayName)
   {
-    v9 = [(MCPayload *)self displayName];
-    [v5 appendFormat:@"Display Name : %@\n", v9];
+    displayName2 = [(MCPayload *)self displayName];
+    [v5 appendFormat:@"Display Name : %@\n", displayName2];
   }
 
   v10 = [(MCPayload *)self description];
@@ -859,12 +859,12 @@ LABEL_29:
     [v5 appendFormat:@"Description: %@\n", v11];
   }
 
-  v12 = [(MCGlobalEthernetPayload *)self eapClientConfiguration];
+  eapClientConfiguration = [(MCGlobalEthernetPayload *)self eapClientConfiguration];
 
-  if (v12)
+  if (eapClientConfiguration)
   {
-    v13 = [(MCGlobalEthernetPayload *)self eapClientConfiguration];
-    [v5 appendFormat:@"EAP Configuration : %@\n", v13];
+    eapClientConfiguration2 = [(MCGlobalEthernetPayload *)self eapClientConfiguration];
+    [v5 appendFormat:@"EAP Configuration : %@\n", eapClientConfiguration2];
   }
 
   return v5;

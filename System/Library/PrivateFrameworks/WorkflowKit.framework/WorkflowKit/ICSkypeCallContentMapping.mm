@@ -1,16 +1,16 @@
 @interface ICSkypeCallContentMapping
-- (void)getStringRepresentation:(id)a3 withInput:(id)a4 parameters:(id)a5;
-- (void)getStringRepresentationWithoutContact:(id)a3 withInput:(id)a4 parameters:(id)a5;
+- (void)getStringRepresentation:(id)representation withInput:(id)input parameters:(id)parameters;
+- (void)getStringRepresentationWithoutContact:(id)contact withInput:(id)input parameters:(id)parameters;
 @end
 
 @implementation ICSkypeCallContentMapping
 
-- (void)getStringRepresentationWithoutContact:(id)a3 withInput:(id)a4 parameters:(id)a5
+- (void)getStringRepresentationWithoutContact:(id)contact withInput:(id)input parameters:(id)parameters
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  contactCopy = contact;
+  parametersCopy = parameters;
+  inputCopy = input;
   v19[0] = objc_opt_class();
   v19[1] = objc_opt_class();
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
@@ -18,12 +18,12 @@
   v15[1] = 3221225472;
   v15[2] = __88__ICSkypeCallContentMapping_getStringRepresentationWithoutContact_withInput_parameters___block_invoke;
   v15[3] = &unk_1E837FF18;
-  v17 = self;
-  v18 = v8;
-  v16 = v9;
-  v12 = v9;
-  v13 = v8;
-  [v10 generateCollectionByCoercingToItemClasses:v11 completionHandler:v15];
+  selfCopy = self;
+  v18 = contactCopy;
+  v16 = parametersCopy;
+  v12 = parametersCopy;
+  v13 = contactCopy;
+  [inputCopy generateCollectionByCoercingToItemClasses:v11 completionHandler:v15];
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -37,22 +37,22 @@ id __88__ICSkypeCallContentMapping_getStringRepresentationWithoutContact_withInp
   return objc_msgSendSuper2(&v5, sel_getStringRepresentation_withInput_parameters_, v2, a2, v3);
 }
 
-- (void)getStringRepresentation:(id)a3 withInput:(id)a4 parameters:(id)a5
+- (void)getStringRepresentation:(id)representation withInput:(id)input parameters:(id)parameters
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationCopy = representation;
+  inputCopy = input;
+  parametersCopy = parameters;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __74__ICSkypeCallContentMapping_getStringRepresentation_withInput_parameters___block_invoke;
   v14[3] = &unk_1E837D3E0;
   v14[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v17 = v8;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = inputCopy;
+  v16 = parametersCopy;
+  v17 = representationCopy;
+  v11 = parametersCopy;
+  v12 = inputCopy;
+  v13 = representationCopy;
   [(WFInterchangeContentMapping *)self getContentCollection:v14 withInput:v12 parameters:v11];
 }
 

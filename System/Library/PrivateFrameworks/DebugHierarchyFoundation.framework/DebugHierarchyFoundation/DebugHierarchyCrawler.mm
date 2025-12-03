@@ -1,6 +1,6 @@
 @interface DebugHierarchyCrawler
-+ (id)crawlerWithRequestContext:(id)a3 knownObjectsMap:(id)a4;
-- (DebugHierarchyCrawler)initWithRequestContext:(id)a3 knownObjectsMap:(id)a4;
++ (id)crawlerWithRequestContext:(id)context knownObjectsMap:(id)map;
+- (DebugHierarchyCrawler)initWithRequestContext:(id)context knownObjectsMap:(id)map;
 - (DebugHierarchyCrawlerOptions)options;
 - (id)_entryPointClasses;
 - (void)crawlEntryPointClasses;
@@ -8,27 +8,27 @@
 
 @implementation DebugHierarchyCrawler
 
-+ (id)crawlerWithRequestContext:(id)a3 knownObjectsMap:(id)a4
++ (id)crawlerWithRequestContext:(id)context knownObjectsMap:(id)map
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithRequestContext:v7 knownObjectsMap:v6];
+  mapCopy = map;
+  contextCopy = context;
+  v8 = [[self alloc] initWithRequestContext:contextCopy knownObjectsMap:mapCopy];
 
   return v8;
 }
 
-- (DebugHierarchyCrawler)initWithRequestContext:(id)a3 knownObjectsMap:(id)a4
+- (DebugHierarchyCrawler)initWithRequestContext:(id)context knownObjectsMap:(id)map
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  mapCopy = map;
   v12.receiver = self;
   v12.super_class = DebugHierarchyCrawler;
   v9 = [(DebugHierarchyCrawler *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_knownObjectsMap, a4);
-    objc_storeStrong(&v10->_requestContext, a3);
+    objc_storeStrong(&v9->_knownObjectsMap, map);
+    objc_storeStrong(&v10->_requestContext, context);
   }
 
   return v10;
@@ -75,11 +75,11 @@
               }
 
               v9 = *(*(&v20 + 1) + 8 * j);
-              v10 = [(DebugHierarchyCrawler *)self options];
-              if (v10)
+              options = [(DebugHierarchyCrawler *)self options];
+              if (options)
               {
-                v11 = [(DebugHierarchyCrawler *)self options];
-                v12 = [v11 shouldCrawlGroupWithID:v9];
+                options2 = [(DebugHierarchyCrawler *)self options];
+                v12 = [options2 shouldCrawlGroupWithID:v9];
 
                 if (!v12)
                 {
@@ -109,11 +109,11 @@
 
 - (DebugHierarchyCrawlerOptions)options
 {
-  v2 = [(DebugHierarchyCrawler *)self requestContext];
-  v3 = [v2 request];
-  v4 = [v3 crawlerOptions];
+  requestContext = [(DebugHierarchyCrawler *)self requestContext];
+  request = [requestContext request];
+  crawlerOptions = [request crawlerOptions];
 
-  return v4;
+  return crawlerOptions;
 }
 
 - (id)_entryPointClasses

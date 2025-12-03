@@ -1,7 +1,7 @@
 @interface SGNode
-+ (SGNode)nodeWithConstantString:(id)a3 type:(unint64_t)a4 name:(id)a5 error:(id *)a6;
-+ (SGNode)nodeWithGraph:(id)a3 name:(id)a4 error:(id *)a5;
-+ (SGNode)nodeWithNodeDefName:(id)a3 name:(id)a4 error:(id *)a5;
++ (SGNode)nodeWithConstantString:(id)string type:(unint64_t)type name:(id)name error:(id *)error;
++ (SGNode)nodeWithGraph:(id)graph name:(id)name error:(id *)error;
++ (SGNode)nodeWithNodeDefName:(id)name name:(id)a4 error:(id *)error;
 - (NSString)description;
 - (NSString)name;
 - (SGNode)init;
@@ -26,10 +26,10 @@
   return result;
 }
 
-+ (SGNode)nodeWithNodeDefName:(id)a3 name:(id)a4 error:(id *)a5
++ (SGNode)nodeWithNodeDefName:(id)name name:(id)a4 error:(id *)error
 {
   v5 = a4;
-  if (a3)
+  if (name)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
@@ -66,9 +66,9 @@ LABEL_6:
   return v11;
 }
 
-+ (SGNode)nodeWithGraph:(id)a3 name:(id)a4 error:(id *)a5
++ (SGNode)nodeWithGraph:(id)graph name:(id)name error:(id *)error
 {
-  if (a4)
+  if (name)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
@@ -80,26 +80,26 @@ LABEL_6:
     v8 = 0;
   }
 
-  v9 = a3;
+  graphCopy = graph;
   v13._countAndFlagsBits = v6;
   v13._object = v8;
-  v10 = specialized static SGNode.create(graph:name:)(a3, v13);
+  v10 = specialized static SGNode.create(graph:name:)(graph, v13);
 
   return v10;
 }
 
-+ (SGNode)nodeWithConstantString:(id)a3 type:(unint64_t)a4 name:(id)a5 error:(id *)a6
++ (SGNode)nodeWithConstantString:(id)string type:(unint64_t)type name:(id)name error:(id *)error
 {
-  v6 = a5;
-  if (a3)
+  nameCopy = name;
+  if (string)
   {
     v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = v9;
-    if (v6)
+    if (nameCopy)
     {
 LABEL_3:
       v11._countAndFlagsBits = static String._unconditionallyBridgeFromObjectiveC(_:)();
-      v6 = v12;
+      nameCopy = v12;
       goto LABEL_6;
     }
   }
@@ -108,7 +108,7 @@ LABEL_3:
   {
     v8 = 0;
     v10 = 0;
-    if (a5)
+    if (name)
     {
       goto LABEL_3;
     }
@@ -116,8 +116,8 @@ LABEL_3:
 
   v11._countAndFlagsBits = 0;
 LABEL_6:
-  v11._object = v6;
-  v13 = specialized static SGNode.create(value:type:name:)(v8, v10, a4, v11);
+  v11._object = nameCopy;
+  v13 = specialized static SGNode.create(value:type:name:)(v8, v10, type, v11);
 
   return v13;
 }

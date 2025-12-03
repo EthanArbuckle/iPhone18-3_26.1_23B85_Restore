@@ -1,28 +1,28 @@
 @interface CNCollationLanguage
-- (CNCollationLanguage)initWithSections:(id)a3 lastCharacter:(id)a4 firstCharacterAfterLanguage:(id)a5;
+- (CNCollationLanguage)initWithSections:(id)sections lastCharacter:(id)character firstCharacterAfterLanguage:(id)language;
 @end
 
 @implementation CNCollationLanguage
 
-- (CNCollationLanguage)initWithSections:(id)a3 lastCharacter:(id)a4 firstCharacterAfterLanguage:(id)a5
+- (CNCollationLanguage)initWithSections:(id)sections lastCharacter:(id)character firstCharacterAfterLanguage:(id)language
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sectionsCopy = sections;
+  characterCopy = character;
+  languageCopy = language;
   v20.receiver = self;
   v20.super_class = CNCollationLanguage;
   v11 = [(CNCollationLanguage *)&v20 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [sectionsCopy copy];
     sections = v11->_sections;
     v11->_sections = v12;
 
-    v14 = [v9 copy];
+    v14 = [characterCopy copy];
     lastCharacter = v11->_lastCharacter;
     v11->_lastCharacter = v14;
 
-    v16 = [v10 copy];
+    v16 = [languageCopy copy];
     firstCharacterAfterLanguage = v11->_firstCharacterAfterLanguage;
     v11->_firstCharacterAfterLanguage = v16;
 

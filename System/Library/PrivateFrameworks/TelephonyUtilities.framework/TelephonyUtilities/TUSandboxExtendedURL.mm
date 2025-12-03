@@ -1,47 +1,47 @@
 @interface TUSandboxExtendedURL
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSandboxExtendedURL:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSandboxExtendedURL:(id)l;
 - (NSURL)URL;
 - (TUSandboxExtendedURL)init;
-- (TUSandboxExtendedURL)initWithCoder:(id)a3;
-- (TUSandboxExtendedURL)initWithURL:(id)a3;
-- (TUSandboxExtendedURL)initWithURL:(id)a3 withExtensionType:(int64_t)a4;
+- (TUSandboxExtendedURL)initWithCoder:(id)coder;
+- (TUSandboxExtendedURL)initWithURL:(id)l;
+- (TUSandboxExtendedURL)initWithURL:(id)l withExtensionType:(int64_t)type;
 - (id)description;
 - (unint64_t)hash;
 - (void)URL;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUSandboxExtendedURL
 
-- (TUSandboxExtendedURL)initWithURL:(id)a3
+- (TUSandboxExtendedURL)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = TUSandboxExtendedURL;
   v6 = [(TUSandboxExtendedURL *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_URL, a3);
+    objc_storeStrong(&v6->_URL, l);
   }
 
   return v7;
 }
 
-- (TUSandboxExtendedURL)initWithURL:(id)a3 withExtensionType:(int64_t)a4
+- (TUSandboxExtendedURL)initWithURL:(id)l withExtensionType:(int64_t)type
 {
-  v5 = [(TUSandboxExtendedURL *)self initWithURL:a3];
+  v5 = [(TUSandboxExtendedURL *)self initWithURL:l];
   if (v5)
   {
-    if (!a4)
+    if (!type)
     {
       v6 = MEMORY[0x1E69E9BA8];
       goto LABEL_6;
     }
 
-    if (a4 == 1)
+    if (type == 1)
     {
       v6 = MEMORY[0x1E69E9BB0];
 LABEL_6:
@@ -56,8 +56,8 @@ LABEL_6:
 
 - (TUSandboxExtendedURL)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"TUSandboxExtendedURL.m" lineNumber:52 description:{@"%s is not available. Use a designated initializer instead.", "-[TUSandboxExtendedURL init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"TUSandboxExtendedURL.m" lineNumber:52 description:{@"%s is not available. Use a designated initializer instead.", "-[TUSandboxExtendedURL init]"}];
 
   return 0;
 }
@@ -65,7 +65,7 @@ LABEL_6:
 - (void)dealloc
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = *(a1 + 16);
+  v2 = *(self + 16);
   v4 = 138412290;
   v5 = v2;
   _os_log_debug_impl(&dword_1956FD000, a2, OS_LOG_TYPE_DEBUG, "Releasing sandbox handle for URL: %@", &v4, 0xCu);
@@ -77,9 +77,9 @@ LABEL_6:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   URL = self->_URL;
-  v6 = [(TUSandboxExtendedURL *)self sandboxExtensionClass];
-  v7 = [(TUSandboxExtendedURL *)self sandboxExtensionToken];
-  v8 = [v3 stringWithFormat:@"<%@ %p URL=%@ sandboxExtensionClass=%@ sandboxExtensionToken=%@ sandboxExtensionHandle=%lld>", v4, self, URL, v6, v7, -[TUSandboxExtendedURL sandboxExtensionHandle](self, "sandboxExtensionHandle")];
+  sandboxExtensionClass = [(TUSandboxExtendedURL *)self sandboxExtensionClass];
+  sandboxExtensionToken = [(TUSandboxExtendedURL *)self sandboxExtensionToken];
+  v8 = [v3 stringWithFormat:@"<%@ %p URL=%@ sandboxExtensionClass=%@ sandboxExtensionToken=%@ sandboxExtensionHandle=%lld>", v4, self, URL, sandboxExtensionClass, sandboxExtensionToken, -[TUSandboxExtendedURL sandboxExtensionHandle](self, "sandboxExtensionHandle")];
 
   return v8;
 }
@@ -87,22 +87,22 @@ LABEL_6:
 - (NSURL)URL
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(TUSandboxExtendedURL *)self sandboxExtensionToken];
-  if (v3)
+  sandboxExtensionToken = [(TUSandboxExtendedURL *)self sandboxExtensionToken];
+  if (sandboxExtensionToken)
   {
-    v4 = v3;
-    v5 = [(TUSandboxExtendedURL *)self sandboxExtensionHandle];
+    v4 = sandboxExtensionToken;
+    sandboxExtensionHandle = [(TUSandboxExtendedURL *)self sandboxExtensionHandle];
 
-    if (!v5)
+    if (!sandboxExtensionHandle)
     {
-      v6 = [(TUSandboxExtendedURL *)self sandboxExtensionToken];
-      [v6 UTF8String];
+      sandboxExtensionToken2 = [(TUSandboxExtendedURL *)self sandboxExtensionToken];
+      [sandboxExtensionToken2 UTF8String];
       [(TUSandboxExtendedURL *)self setSandboxExtensionHandle:sandbox_extension_consume()];
 
-      v7 = [(TUSandboxExtendedURL *)self sandboxExtensionHandle];
+      sandboxExtensionHandle2 = [(TUSandboxExtendedURL *)self sandboxExtensionHandle];
       v8 = TUDefaultLog();
       v9 = v8;
-      if (v7 < 0)
+      if (sandboxExtensionHandle2 < 0)
       {
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
@@ -128,28 +128,28 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUSandboxExtendedURL *)self isEqualToSandboxExtendedURL:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUSandboxExtendedURL *)self isEqualToSandboxExtendedURL:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToSandboxExtendedURL:(id)a3
+- (BOOL)isEqualToSandboxExtendedURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [(TUSandboxExtendedURL *)self URL];
-  v6 = [v4 URL];
+  v6 = [lCopy URL];
   if (TUObjectsAreEqualOrNil(v5, v6))
   {
-    v7 = [(TUSandboxExtendedURL *)self sandboxExtensionToken];
-    v8 = [v4 sandboxExtensionToken];
-    if (TUStringsAreEqualOrNil(v7, v8))
+    sandboxExtensionToken = [(TUSandboxExtendedURL *)self sandboxExtensionToken];
+    sandboxExtensionToken2 = [lCopy sandboxExtensionToken];
+    if (TUStringsAreEqualOrNil(sandboxExtensionToken, sandboxExtensionToken2))
     {
-      v9 = [(TUSandboxExtendedURL *)self sandboxExtensionHandle];
-      v10 = v9 == [v4 sandboxExtensionHandle];
+      sandboxExtensionHandle = [(TUSandboxExtendedURL *)self sandboxExtensionHandle];
+      v10 = sandboxExtensionHandle == [lCopy sandboxExtensionHandle];
     }
 
     else
@@ -170,26 +170,26 @@ LABEL_6:
 {
   v3 = [(TUSandboxExtendedURL *)self URL];
   v4 = [v3 hash];
-  v5 = [(TUSandboxExtendedURL *)self sandboxExtensionToken];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(TUSandboxExtendedURL *)self sandboxExtensionHandle];
+  sandboxExtensionToken = [(TUSandboxExtendedURL *)self sandboxExtensionToken];
+  v6 = [sandboxExtensionToken hash] ^ v4;
+  sandboxExtensionHandle = [(TUSandboxExtendedURL *)self sandboxExtensionHandle];
 
-  return v6 ^ v7;
+  return v6 ^ sandboxExtensionHandle;
 }
 
-- (TUSandboxExtendedURL)initWithCoder:(id)a3
+- (TUSandboxExtendedURL)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector("URL");
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
   v8 = [(TUSandboxExtendedURL *)self initWithURL:v7];
 
   if (v8)
   {
     v9 = objc_opt_class();
     v10 = NSStringFromSelector(sel_sandboxExtensionToken);
-    v11 = [v4 decodeObjectOfClass:v9 forKey:v10];
+    v11 = [coderCopy decodeObjectOfClass:v9 forKey:v10];
     sandboxExtensionToken = v8->_sandboxExtensionToken;
     v8->_sandboxExtensionToken = v11;
   }
@@ -197,23 +197,23 @@ LABEL_6:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(TUSandboxExtendedURL *)self URL];
   v6 = NSStringFromSelector("URL");
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 
-  v7 = [(TUSandboxExtendedURL *)self sandboxExtensionClass];
+  sandboxExtensionClass = [(TUSandboxExtendedURL *)self sandboxExtensionClass];
 
-  if (v7)
+  if (sandboxExtensionClass)
   {
     v8 = [(TUSandboxExtendedURL *)self pid];
-    v9 = [(TUSandboxExtendedURL *)self sandboxExtensionClass];
-    [v9 UTF8String];
+    sandboxExtensionClass2 = [(TUSandboxExtendedURL *)self sandboxExtensionClass];
+    [sandboxExtensionClass2 UTF8String];
     v10 = [(TUSandboxExtendedURL *)self URL];
-    v11 = [v10 path];
-    [v11 fileSystemRepresentation];
+    path = [v10 path];
+    [path fileSystemRepresentation];
     if (v8)
     {
       [(TUSandboxExtendedURL *)self pid];
@@ -231,7 +231,7 @@ LABEL_6:
     {
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v13];
       v15 = NSStringFromSelector(sel_sandboxExtensionToken);
-      [v4 encodeObject:v14 forKey:v15];
+      [coderCopy encodeObject:v14 forKey:v15];
 
       free(v13);
     }
@@ -250,8 +250,8 @@ LABEL_6:
 - (void)URL
 {
   v10 = *MEMORY[0x1E69E9840];
-  v2 = [a1 sandboxExtensionToken];
-  [a1 sandboxExtensionHandle];
+  sandboxExtensionToken = [self sandboxExtensionToken];
+  [self sandboxExtensionHandle];
   OUTLINED_FUNCTION_1_2(&dword_1956FD000, v3, v4, "Unable to consume sandbox extension with token %@, received handle %lld", v5, v6, v7, v8, 2u);
 
   v9 = *MEMORY[0x1E69E9840];

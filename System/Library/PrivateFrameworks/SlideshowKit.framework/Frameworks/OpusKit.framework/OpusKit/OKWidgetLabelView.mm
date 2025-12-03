@@ -2,30 +2,30 @@
 + (id)supportedSettings;
 - (BOOL)settingAdjustsFontSizeToFitWidth;
 - (CGSize)settingTextShadowOffset;
-- (OKWidgetLabelView)initWithWidget:(id)a3;
+- (OKWidgetLabelView)initWithWidget:(id)widget;
 - (id)settingAttributedText;
 - (id)settingTextShadowColor;
 - (int64_t)settingBaselineAdjustment;
 - (int64_t)settingLineBreakMode;
 - (int64_t)settingNumberOfLine;
-- (void)setSettingAdjustsFontSizeToFitWidth:(BOOL)a3;
-- (void)setSettingAttributedText:(id)a3;
-- (void)setSettingBaselineAdjustment:(int64_t)a3;
-- (void)setSettingFontFileName:(id)a3;
-- (void)setSettingLineBreakMode:(int64_t)a3;
-- (void)setSettingMinimumScaleFactor:(float)a3;
-- (void)setSettingNumberOfLines:(int64_t)a3;
-- (void)setSettingTextShadowColor:(id)a3;
-- (void)setSettingTextShadowOffset:(CGSize)a3;
+- (void)setSettingAdjustsFontSizeToFitWidth:(BOOL)width;
+- (void)setSettingAttributedText:(id)text;
+- (void)setSettingBaselineAdjustment:(int64_t)adjustment;
+- (void)setSettingFontFileName:(id)name;
+- (void)setSettingLineBreakMode:(int64_t)mode;
+- (void)setSettingMinimumScaleFactor:(float)factor;
+- (void)setSettingNumberOfLines:(int64_t)lines;
+- (void)setSettingTextShadowColor:(id)color;
+- (void)setSettingTextShadowOffset:(CGSize)offset;
 @end
 
 @implementation OKWidgetLabelView
 
-- (OKWidgetLabelView)initWithWidget:(id)a3
+- (OKWidgetLabelView)initWithWidget:(id)widget
 {
   v6.receiver = self;
   v6.super_class = OKWidgetLabelView;
-  v3 = [(OKWidgetLabelViewProxy *)&v6 initWithWidget:a3];
+  v3 = [(OKWidgetLabelViewProxy *)&v6 initWithWidget:widget];
   v4 = v3;
   if (v3)
   {
@@ -38,7 +38,7 @@
 + (id)supportedSettings
 {
   v16[5] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKWidgetLabelView;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v15[0] = @"baselineAdjustment";
@@ -79,25 +79,25 @@
   return v2;
 }
 
-- (void)setSettingFontFileName:(id)a3
+- (void)setSettingFontFileName:(id)name
 {
   v5 = [MEMORY[0x277CBEBC0] URLWithString:?];
   v6 = objc_alloc_init(MEMORY[0x277CCAA00]);
   if (([v6 fileExistsAtPath:{objc_msgSend(v5, "path")}] & 1) == 0)
   {
     v7 = [objc_msgSend(objc_msgSend(-[OKWidgetViewProxy pageViewController](self "pageViewController")];
-    v8 = [a3 stringByDeletingPathExtension];
-    if ([objc_msgSend(a3 "pathExtension")])
+    stringByDeletingPathExtension = [name stringByDeletingPathExtension];
+    if ([objc_msgSend(name "pathExtension")])
     {
-      v9 = [a3 pathExtension];
+      pathExtension = [name pathExtension];
     }
 
     else
     {
-      v9 = @"ttf";
+      pathExtension = @"ttf";
     }
 
-    v5 = [v7 URLForResource:v8 withExtension:v9];
+    v5 = [v7 URLForResource:stringByDeletingPathExtension withExtension:pathExtension];
   }
 
   if (v6)
@@ -114,116 +114,116 @@
   [-[OKWidgetLabelViewProxy label](self "label")];
 }
 
-- (void)setSettingBaselineAdjustment:(int64_t)a3
+- (void)setSettingBaselineAdjustment:(int64_t)adjustment
 {
-  v4 = [(OKWidgetLabelViewProxy *)self label];
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  [v4 setBaselineAdjustment:a3];
+  [label setBaselineAdjustment:adjustment];
 }
 
 - (int64_t)settingBaselineAdjustment
 {
-  v2 = [(OKWidgetLabelViewProxy *)self label];
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  return [v2 baselineAdjustment];
+  return [label baselineAdjustment];
 }
 
 - (id)settingTextShadowColor
 {
-  v2 = [(OKWidgetLabelViewProxy *)self label];
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  return [v2 shadowColor];
+  return [label shadowColor];
 }
 
-- (void)setSettingTextShadowColor:(id)a3
+- (void)setSettingTextShadowColor:(id)color
 {
-  v4 = [(OKWidgetLabelViewProxy *)self label];
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  [v4 setShadowColor:a3];
+  [label setShadowColor:color];
 }
 
 - (CGSize)settingTextShadowOffset
 {
-  v2 = [(OKWidgetLabelViewProxy *)self label];
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  [v2 shadowOffset];
+  [label shadowOffset];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (void)setSettingTextShadowOffset:(CGSize)a3
+- (void)setSettingTextShadowOffset:(CGSize)offset
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(OKWidgetLabelViewProxy *)self label];
+  height = offset.height;
+  width = offset.width;
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  [v5 setShadowOffset:{width, height}];
+  [label setShadowOffset:{width, height}];
 }
 
 - (int64_t)settingNumberOfLine
 {
-  v2 = [(OKWidgetLabelViewProxy *)self label];
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  return [v2 numberOfLines];
+  return [label numberOfLines];
 }
 
-- (void)setSettingNumberOfLines:(int64_t)a3
+- (void)setSettingNumberOfLines:(int64_t)lines
 {
-  v4 = [(OKWidgetLabelViewProxy *)self label];
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  [v4 setNumberOfLines:a3];
+  [label setNumberOfLines:lines];
 }
 
 - (BOOL)settingAdjustsFontSizeToFitWidth
 {
-  v2 = [(OKWidgetLabelViewProxy *)self label];
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  return [v2 adjustsFontSizeToFitWidth];
+  return [label adjustsFontSizeToFitWidth];
 }
 
-- (void)setSettingAdjustsFontSizeToFitWidth:(BOOL)a3
+- (void)setSettingAdjustsFontSizeToFitWidth:(BOOL)width
 {
-  v3 = a3;
-  v4 = [(OKWidgetLabelViewProxy *)self label];
+  widthCopy = width;
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  [v4 setAdjustsFontSizeToFitWidth:v3];
+  [label setAdjustsFontSizeToFitWidth:widthCopy];
 }
 
 - (int64_t)settingLineBreakMode
 {
-  v2 = [(OKWidgetLabelViewProxy *)self label];
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  return [v2 lineBreakMode];
+  return [label lineBreakMode];
 }
 
-- (void)setSettingLineBreakMode:(int64_t)a3
+- (void)setSettingLineBreakMode:(int64_t)mode
 {
-  v4 = [(OKWidgetLabelViewProxy *)self label];
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  [v4 setLineBreakMode:a3];
+  [label setLineBreakMode:mode];
 }
 
-- (void)setSettingMinimumScaleFactor:(float)a3
+- (void)setSettingMinimumScaleFactor:(float)factor
 {
-  v3 = a3;
-  v4 = [(OKWidgetLabelViewProxy *)self label];
+  factorCopy = factor;
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  [v4 setMinimumScaleFactor:v3];
+  [label setMinimumScaleFactor:factorCopy];
 }
 
 - (id)settingAttributedText
 {
-  v2 = [(OKWidgetLabelViewProxy *)self label];
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  return [v2 attributedText];
+  return [label attributedText];
 }
 
-- (void)setSettingAttributedText:(id)a3
+- (void)setSettingAttributedText:(id)text
 {
-  v4 = [(OKWidgetLabelViewProxy *)self label];
+  label = [(OKWidgetLabelViewProxy *)self label];
 
-  [v4 setAttributedText:a3];
+  [label setAttributedText:text];
 }
 
 @end

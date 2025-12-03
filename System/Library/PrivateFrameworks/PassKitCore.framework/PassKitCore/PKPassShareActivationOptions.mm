@@ -1,32 +1,32 @@
 @interface PKPassShareActivationOptions
-+ (id)optionsFromRemoteOptions:(id)a3 localOptions:(id)a4;
-- (BOOL)containsOptionOfType:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPassShareActivationOptions:(id)a3;
++ (id)optionsFromRemoteOptions:(id)options localOptions:(id)localOptions;
+- (BOOL)containsOptionOfType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPassShareActivationOptions:(id)options;
 - (NSString)activationCode;
 - (NSString)localizationKeyPostfixForInitiation;
 - (PKPassShareActivationOption)primaryOption;
-- (PKPassShareActivationOptions)initWithCarKeyIdentifiers:(id)a3;
-- (PKPassShareActivationOptions)initWithCoder:(id)a3;
-- (PKPassShareActivationOptions)initWithDefaultIdentifierForType:(unint64_t)a3;
-- (PKPassShareActivationOptions)initWithOptions:(id)a3;
+- (PKPassShareActivationOptions)initWithCarKeyIdentifiers:(id)identifiers;
+- (PKPassShareActivationOptions)initWithCoder:(id)coder;
+- (PKPassShareActivationOptions)initWithDefaultIdentifierForType:(unint64_t)type;
+- (PKPassShareActivationOptions)initWithOptions:(id)options;
 - (PKPassShareActivationOptions)optionsWithoutValues;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)optionOfType:(unint64_t)a3;
-- (id)optionOfTypes:(id)a3;
-- (id)optionsExcludingIdentifier:(id)a3 type:(unint64_t)a4;
-- (id)optionsOfType:(unint64_t)a3;
-- (id)optionsOfTypes:(id)a3;
+- (id)optionOfType:(unint64_t)type;
+- (id)optionOfTypes:(id)types;
+- (id)optionsExcludingIdentifier:(id)identifier type:(unint64_t)type;
+- (id)optionsOfType:(unint64_t)type;
+- (id)optionsOfTypes:(id)types;
 - (unint64_t)hash;
 @end
 
 @implementation PKPassShareActivationOptions
 
-- (PKPassShareActivationOptions)initWithOptions:(id)a3
+- (PKPassShareActivationOptions)initWithOptions:(id)options
 {
-  v5 = a3;
-  if ([v5 count])
+  optionsCopy = options;
+  if ([optionsCopy count])
   {
     v10.receiver = self;
     v10.super_class = PKPassShareActivationOptions;
@@ -34,37 +34,37 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_options, a3);
+      objc_storeStrong(&v6->_options, options);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (PKPassShareActivationOptions)initWithCarKeyIdentifiers:(id)a3
+- (PKPassShareActivationOptions)initWithCarKeyIdentifiers:(id)identifiers
 {
-  if (a3)
+  if (identifiers)
   {
-    v4 = [a3 pk_arrayBySafelyApplyingBlock:&__block_literal_global_38];
+    v4 = [identifiers pk_arrayBySafelyApplyingBlock:&__block_literal_global_38];
     self = [(PKPassShareActivationOptions *)self initWithOptions:v4];
 
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 PKPassShareActivationOption *__58__PKPassShareActivationOptions_initWithCarKeyIdentifiers___block_invoke(uint64_t a1, void *a2)
@@ -75,10 +75,10 @@ PKPassShareActivationOption *__58__PKPassShareActivationOptions_initWithCarKeyId
   return v3;
 }
 
-- (PKPassShareActivationOptions)initWithDefaultIdentifierForType:(unint64_t)a3
+- (PKPassShareActivationOptions)initWithDefaultIdentifierForType:(unint64_t)type
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v4 = [[PKPassShareActivationOption alloc] initWithDefaultIdentifierForType:a3];
+  v4 = [[PKPassShareActivationOption alloc] initWithDefaultIdentifierForType:type];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   v6 = [(PKPassShareActivationOptions *)self initWithOptions:v5];
@@ -86,39 +86,39 @@ PKPassShareActivationOption *__58__PKPassShareActivationOptions_initWithCarKeyId
   return v6;
 }
 
-+ (id)optionsFromRemoteOptions:(id)a3 localOptions:(id)a4
++ (id)optionsFromRemoteOptions:(id)options localOptions:(id)localOptions
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!(v5 | v6))
+  optionsCopy = options;
+  localOptionsCopy = localOptions;
+  v7 = localOptionsCopy;
+  if (!(optionsCopy | localOptionsCopy))
   {
     v8 = 0;
     goto LABEL_13;
   }
 
-  if (v5 && !v6)
+  if (optionsCopy && !localOptionsCopy)
   {
-    v6 = v5;
+    localOptionsCopy = optionsCopy;
 LABEL_8:
-    v8 = [v6 copy];
+    v8 = [localOptionsCopy copy];
     goto LABEL_13;
   }
 
-  if (!v5 && v6)
+  if (!optionsCopy && localOptionsCopy)
   {
     goto LABEL_8;
   }
 
   v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v10 = [v7 identifiers];
-  v11 = [v10 containsObject:@"sharingPasswordActivation"];
+  identifiers = [v7 identifiers];
+  v11 = [identifiers containsObject:@"sharingPasswordActivation"];
 
-  v12 = [v5 identifiers];
-  v13 = [v12 containsObject:@"sharingPasswordActivation"];
+  identifiers2 = [optionsCopy identifiers];
+  v13 = [identifiers2 containsObject:@"sharingPasswordActivation"];
 
-  v14 = [v5 options];
-  [v9 addObjectsFromArray:v14];
+  options = [optionsCopy options];
+  [v9 addObjectsFromArray:options];
 
   if (v11 && (v13 & 1) == 0)
   {
@@ -127,8 +127,8 @@ LABEL_8:
   }
 
   v16 = [PKPassShareActivationOptions alloc];
-  v17 = [v9 allObjects];
-  v8 = [(PKPassShareActivationOptions *)v16 initWithOptions:v17];
+  allObjects = [v9 allObjects];
+  v8 = [(PKPassShareActivationOptions *)v16 initWithOptions:allObjects];
 
 LABEL_13:
 
@@ -138,9 +138,9 @@ LABEL_13:
 - (NSString)activationCode
 {
   v2 = [(NSArray *)self->_options pk_firstObjectPassingTest:&__block_literal_global_187];
-  v3 = [v2 value];
+  value = [v2 value];
 
-  return v3;
+  return value;
 }
 
 BOOL __46__PKPassShareActivationOptions_activationCode__block_invoke(uint64_t a1, void *a2)
@@ -167,30 +167,30 @@ BOOL __46__PKPassShareActivationOptions_activationCode__block_invoke(uint64_t a1
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    firstObject = v3;
   }
 
   else
   {
-    v5 = [(NSArray *)self->_options firstObject];
+    firstObject = [(NSArray *)self->_options firstObject];
   }
 
-  v6 = v5;
+  v6 = firstObject;
 
   return v6;
 }
 
-- (id)optionsExcludingIdentifier:(id)a3 type:(unint64_t)a4
+- (id)optionsExcludingIdentifier:(id)identifier type:(unint64_t)type
 {
-  v6 = a3;
+  identifierCopy = identifier;
   options = self->_options;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __64__PKPassShareActivationOptions_optionsExcludingIdentifier_type___block_invoke;
   v14[3] = &unk_1E79CC168;
-  v15 = v6;
-  v16 = a4;
-  v8 = v6;
+  v15 = identifierCopy;
+  typeCopy = type;
+  v8 = identifierCopy;
   v9 = [(NSArray *)options pk_objectsPassingTest:v14];
   v10 = v9;
   if (v9)
@@ -264,40 +264,40 @@ BOOL __46__PKPassShareActivationOptions_containsKeyFob__block_invoke(uint64_t a1
   return v5;
 }
 
-- (BOOL)containsOptionOfType:(unint64_t)a3
+- (BOOL)containsOptionOfType:(unint64_t)type
 {
   options = self->_options;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __53__PKPassShareActivationOptions_containsOptionOfType___block_invoke;
   v5[3] = &__block_descriptor_40_e37_B16__0__PKPassShareActivationOption_8l;
-  v5[4] = a3;
+  v5[4] = type;
   return [(NSArray *)options pk_containsObjectPassingTest:v5];
 }
 
-- (id)optionOfType:(unint64_t)a3
+- (id)optionOfType:(unint64_t)type
 {
   options = self->_options;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__PKPassShareActivationOptions_optionOfType___block_invoke;
   v6[3] = &__block_descriptor_40_e37_B16__0__PKPassShareActivationOption_8l;
-  v6[4] = a3;
+  v6[4] = type;
   v4 = [(NSArray *)options pk_firstObjectPassingTest:v6];
 
   return v4;
 }
 
-- (id)optionOfTypes:(id)a3
+- (id)optionOfTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   options = self->_options;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __46__PKPassShareActivationOptions_optionOfTypes___block_invoke;
   v9[3] = &unk_1E79CC1B0;
-  v10 = v4;
-  v6 = v4;
+  v10 = typesCopy;
+  v6 = typesCopy;
   v7 = [(NSArray *)options pk_firstObjectPassingTest:v9];
 
   return v7;
@@ -312,16 +312,16 @@ uint64_t __46__PKPassShareActivationOptions_optionOfTypes___block_invoke(uint64_
   return v4;
 }
 
-- (id)optionsOfTypes:(id)a3
+- (id)optionsOfTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   options = self->_options;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __47__PKPassShareActivationOptions_optionsOfTypes___block_invoke;
   v11[3] = &unk_1E79CC1D8;
-  v12 = v4;
-  v6 = v4;
+  v12 = typesCopy;
+  v6 = typesCopy;
   v7 = [(NSArray *)options pk_objectsPassingTest:v11];
   if ([v7 count])
   {
@@ -347,14 +347,14 @@ uint64_t __47__PKPassShareActivationOptions_optionsOfTypes___block_invoke(uint64
   return v4;
 }
 
-- (id)optionsOfType:(unint64_t)a3
+- (id)optionsOfType:(unint64_t)type
 {
   options = self->_options;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __46__PKPassShareActivationOptions_optionsOfType___block_invoke;
   v8[3] = &__block_descriptor_40_e44_B32__0__PKPassShareActivationOption_8Q16_B24l;
-  v8[4] = a3;
+  v8[4] = type;
   v4 = [(NSArray *)options pk_objectsPassingTest:v8];
   if ([v4 count])
   {
@@ -395,11 +395,11 @@ uint64_t __47__PKPassShareActivationOptions_optionsOfTypes___block_invoke(uint64
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 value];
-        v10 = v9;
-        if (v9)
+        value = [v8 value];
+        v10 = value;
+        if (value)
         {
-          [v8 setValueLength:{objc_msgSend(v9, "length")}];
+          [v8 setValueLength:{objc_msgSend(value, "length")}];
         }
 
         [v8 setValue:0];
@@ -502,13 +502,13 @@ uint64_t __67__PKPassShareActivationOptions_localizationKeyPostfixForInitiation_
   return v7;
 }
 
-- (PKPassShareActivationOptions)initWithCoder:(id)a3
+- (PKPassShareActivationOptions)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"options"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"options"];
 
   v9 = [(PKPassShareActivationOptions *)self initWithOptions:v8];
   return v9;
@@ -530,11 +530,11 @@ uint64_t __67__PKPassShareActivationOptions_localizationKeyPostfixForInitiation_
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_options)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   v5 = PKCombinedHash(17, v4);
@@ -542,32 +542,32 @@ uint64_t __67__PKPassShareActivationOptions_localizationKeyPostfixForInitiation_
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPassShareActivationOptions *)self isEqualToPassShareActivationOptions:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPassShareActivationOptions *)self isEqualToPassShareActivationOptions:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPassShareActivationOptions:(id)a3
+- (BOOL)isEqualToPassShareActivationOptions:(id)options
 {
-  if (!a3)
+  if (!options)
   {
     return 0;
   }
 
   options = self->_options;
-  v4 = *(a3 + 1);
+  v4 = *(options + 1);
   if (options)
   {
     v5 = v4 == 0;
@@ -589,7 +589,7 @@ uint64_t __67__PKPassShareActivationOptions_localizationKeyPostfixForInitiation_
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = [(NSArray *)self->_options pk_arrayByApplyingBlock:&__block_literal_global_216];
   v4 = [[PKPassShareActivationOptions alloc] initWithOptions:v3];

@@ -38,7 +38,7 @@
   v4 = MEMORY[0x1E695BA98];
   v5 = a3;
   v6 = [v4 alloc];
-  v7 = [a1 safari_tabGroupSecondaryRecordZoneNameWithRootRecordName:v5];
+  v7 = [self safari_tabGroupSecondaryRecordZoneNameWithRootRecordName:v5];
 
   v8 = [v6 initWithZoneName:v7 ownerName:*MEMORY[0x1E695B730]];
 
@@ -47,24 +47,24 @@
 
 - (uint64_t)safari_isTabGroupSecondaryRecordZoneID
 {
-  v1 = [a1 zoneName];
-  v2 = [v1 hasPrefix:@"TabGroup_"];
+  zoneName = [self zoneName];
+  v2 = [zoneName hasPrefix:@"TabGroup_"];
 
   return v2;
 }
 
 - (id)safari_tabGroupRootRecordName
 {
-  v1 = [a1 zoneName];
-  v2 = [v1 safari_substringFromPrefix:@"TabGroup_"];
+  zoneName = [self zoneName];
+  v2 = [zoneName safari_substringFromPrefix:@"TabGroup_"];
 
   return v2;
 }
 
 - (uint64_t)safari_isInPrivateDatabase
 {
-  v1 = [a1 ownerName];
-  v2 = [v1 isEqualToString:*MEMORY[0x1E695B730]];
+  ownerName = [self ownerName];
+  v2 = [ownerName isEqualToString:*MEMORY[0x1E695B730]];
 
   return v2;
 }

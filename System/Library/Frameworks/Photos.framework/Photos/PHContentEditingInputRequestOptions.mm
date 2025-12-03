@@ -1,7 +1,7 @@
 @interface PHContentEditingInputRequestOptions
 - (CGSize)targetSize;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setOriginalChoice:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setOriginalChoice:(unint64_t)choice;
 @end
 
 @implementation PHContentEditingInputRequestOptions
@@ -15,36 +15,36 @@
   return result;
 }
 
-- (void)setOriginalChoice:(unint64_t)a3
+- (void)setOriginalChoice:(unint64_t)choice
 {
   self->_forceRunAsUnadjustedAsset = 1;
   self->_shouldForceOriginalChoice = 1;
-  self->_originalChoice = a3;
+  self->_originalChoice = choice;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(PHContentEditingInputRequestOptions *)self canHandleAdjustmentData];
-  [v4 setCanHandleAdjustmentData:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  canHandleAdjustmentData = [(PHContentEditingInputRequestOptions *)self canHandleAdjustmentData];
+  [v4 setCanHandleAdjustmentData:canHandleAdjustmentData];
 
   [v4 setNetworkAccessAllowed:{-[PHContentEditingInputRequestOptions isNetworkAccessAllowed](self, "isNetworkAccessAllowed")}];
-  v6 = [(PHContentEditingInputRequestOptions *)self progressHandler];
-  [v4 setProgressHandler:v6];
+  progressHandler = [(PHContentEditingInputRequestOptions *)self progressHandler];
+  [v4 setProgressHandler:progressHandler];
 
   [(PHContentEditingInputRequestOptions *)self targetSize];
   [v4 setTargetSize:?];
   [v4 setContentMode:{-[PHContentEditingInputRequestOptions contentMode](self, "contentMode")}];
   [v4 setDontAllowRAW:{-[PHContentEditingInputRequestOptions dontAllowRAW](self, "dontAllowRAW")}];
-  v7 = [(PHContentEditingInputRequestOptions *)self canHandleRAW];
-  [v4 setCanHandleRAW:v7];
+  canHandleRAW = [(PHContentEditingInputRequestOptions *)self canHandleRAW];
+  [v4 setCanHandleRAW:canHandleRAW];
 
   [v4 setOriginalChoice:{-[PHContentEditingInputRequestOptions originalChoice](self, "originalChoice")}];
   [v4 setForceRunAsUnadjustedAsset:{-[PHContentEditingInputRequestOptions forceRunAsUnadjustedAsset](self, "forceRunAsUnadjustedAsset")}];
   [v4 setForceReturnFullLivePhoto:{-[PHContentEditingInputRequestOptions forceReturnFullLivePhoto](self, "forceReturnFullLivePhoto")}];
   [v4 setForcePrepareCurrentBaseVersionInAddition:{-[PHContentEditingInputRequestOptions forcePrepareCurrentBaseVersionInAddition](self, "forcePrepareCurrentBaseVersionInAddition")}];
-  v8 = [(PHContentEditingInputRequestOptions *)self resultHandlerQueue];
-  [v4 setResultHandlerQueue:v8];
+  resultHandlerQueue = [(PHContentEditingInputRequestOptions *)self resultHandlerQueue];
+  [v4 setResultHandlerQueue:resultHandlerQueue];
 
   [v4 setShouldForceOriginalChoice:{-[PHContentEditingInputRequestOptions shouldForceOriginalChoice](self, "shouldForceOriginalChoice")}];
   [v4 setDisallowFallbackAdjustmentBase:{-[PHContentEditingInputRequestOptions disallowFallbackAdjustmentBase](self, "disallowFallbackAdjustmentBase")}];

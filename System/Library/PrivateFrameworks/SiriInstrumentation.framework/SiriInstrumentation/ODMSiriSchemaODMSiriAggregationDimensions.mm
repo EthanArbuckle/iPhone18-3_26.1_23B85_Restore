@@ -1,27 +1,27 @@
 @interface ODMSiriSchemaODMSiriAggregationDimensions
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODMSiriSchemaODMSiriAggregationDimensions)initWithDictionary:(id)a3;
-- (ODMSiriSchemaODMSiriAggregationDimensions)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODMSiriSchemaODMSiriAggregationDimensions)initWithDictionary:(id)dictionary;
+- (ODMSiriSchemaODMSiriAggregationDimensions)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAggregationIntervalStartTimestampInSecondsSince2001:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAggregationIntervalStartTimestampInSecondsSince2001:(BOOL)since2001;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODMSiriSchemaODMSiriAggregationDimensions
 
-- (ODMSiriSchemaODMSiriAggregationDimensions)initWithDictionary:(id)a3
+- (ODMSiriSchemaODMSiriAggregationDimensions)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ODMSiriSchemaODMSiriAggregationDimensions;
   v5 = [(ODMSiriSchemaODMSiriAggregationDimensions *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"siriInputLocale"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"siriInputLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,14 +29,14 @@
       [(ODMSiriSchemaODMSiriAggregationDimensions *)v5 setSiriInputLocale:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"aggregationIntervalInDays"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"aggregationIntervalInDays"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODMSiriSchemaODMSiriAggregationDimensions setAggregationIntervalInDays:](v5, "setAggregationIntervalInDays:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"aggregationIntervalStartTimestampInSecondsSince2001"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"aggregationIntervalStartTimestampInSecondsSince2001"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (ODMSiriSchemaODMSiriAggregationDimensions)initWithJSON:(id)a3
+- (ODMSiriSchemaODMSiriAggregationDimensions)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODMSiriSchemaODMSiriAggregationDimensions *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODMSiriSchemaODMSiriAggregationDimensions *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODMSiriSchemaODMSiriAggregationDimensions *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,12 +86,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODMSiriSchemaODMSiriAggregationDimensions aggregationIntervalInDays](self, "aggregationIntervalInDays")}];
-    [v3 setObject:v5 forKeyedSubscript:@"aggregationIntervalInDays"];
+    [dictionary setObject:v5 forKeyedSubscript:@"aggregationIntervalInDays"];
 
     has = self->_has;
   }
@@ -101,28 +101,28 @@
     v6 = MEMORY[0x1E696AD98];
     [(ODMSiriSchemaODMSiriAggregationDimensions *)self aggregationIntervalStartTimestampInSecondsSince2001];
     v7 = [v6 numberWithDouble:?];
-    [v3 setObject:v7 forKeyedSubscript:@"aggregationIntervalStartTimestampInSecondsSince2001"];
+    [dictionary setObject:v7 forKeyedSubscript:@"aggregationIntervalStartTimestampInSecondsSince2001"];
   }
 
   if (self->_siriInputLocale)
   {
-    v8 = [(ODMSiriSchemaODMSiriAggregationDimensions *)self siriInputLocale];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    siriInputLocale = [(ODMSiriSchemaODMSiriAggregationDimensions *)self siriInputLocale];
+    dictionaryRepresentation = [siriInputLocale dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"siriInputLocale"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"siriInputLocale"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"siriInputLocale"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"siriInputLocale"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -176,26 +176,26 @@ LABEL_3:
   return v6 ^ v3 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = [(ODMSiriSchemaODMSiriAggregationDimensions *)self siriInputLocale];
-  v6 = [v4 siriInputLocale];
-  v7 = v6;
-  if ((v5 != 0) != (v6 == 0))
+  siriInputLocale = [(ODMSiriSchemaODMSiriAggregationDimensions *)self siriInputLocale];
+  siriInputLocale2 = [equalCopy siriInputLocale];
+  v7 = siriInputLocale2;
+  if ((siriInputLocale != 0) != (siriInputLocale2 == 0))
   {
-    v8 = [(ODMSiriSchemaODMSiriAggregationDimensions *)self siriInputLocale];
-    if (v8)
+    siriInputLocale3 = [(ODMSiriSchemaODMSiriAggregationDimensions *)self siriInputLocale];
+    if (siriInputLocale3)
     {
-      v9 = v8;
-      v10 = [(ODMSiriSchemaODMSiriAggregationDimensions *)self siriInputLocale];
-      v11 = [v4 siriInputLocale];
-      v12 = [v10 isEqual:v11];
+      v9 = siriInputLocale3;
+      siriInputLocale4 = [(ODMSiriSchemaODMSiriAggregationDimensions *)self siriInputLocale];
+      siriInputLocale5 = [equalCopy siriInputLocale];
+      v12 = [siriInputLocale4 isEqual:siriInputLocale5];
 
       if (!v12)
       {
@@ -208,25 +208,25 @@ LABEL_3:
     }
 
     has = self->_has;
-    v14 = v4[32];
+    v14 = equalCopy[32];
     if ((*&has & 1) == (v14 & 1))
     {
       if (*&has)
       {
         aggregationIntervalInDays = self->_aggregationIntervalInDays;
-        if (aggregationIntervalInDays != [v4 aggregationIntervalInDays])
+        if (aggregationIntervalInDays != [equalCopy aggregationIntervalInDays])
         {
           goto LABEL_15;
         }
 
         has = self->_has;
-        v14 = v4[32];
+        v14 = equalCopy[32];
       }
 
       v16 = (*&has >> 1) & 1;
       if (v16 == ((v14 >> 1) & 1))
       {
-        if (!v16 || (aggregationIntervalStartTimestampInSecondsSince2001 = self->_aggregationIntervalStartTimestampInSecondsSince2001, [v4 aggregationIntervalStartTimestampInSecondsSince2001], aggregationIntervalStartTimestampInSecondsSince2001 == v18))
+        if (!v16 || (aggregationIntervalStartTimestampInSecondsSince2001 = self->_aggregationIntervalStartTimestampInSecondsSince2001, [equalCopy aggregationIntervalStartTimestampInSecondsSince2001], aggregationIntervalStartTimestampInSecondsSince2001 == v18))
         {
           v19 = 1;
           goto LABEL_16;
@@ -246,14 +246,14 @@ LABEL_16:
   return v19;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(ODMSiriSchemaODMSiriAggregationDimensions *)self siriInputLocale];
+  toCopy = to;
+  siriInputLocale = [(ODMSiriSchemaODMSiriAggregationDimensions *)self siriInputLocale];
 
-  if (v4)
+  if (siriInputLocale)
   {
-    v5 = [(ODMSiriSchemaODMSiriAggregationDimensions *)self siriInputLocale];
+    siriInputLocale2 = [(ODMSiriSchemaODMSiriAggregationDimensions *)self siriInputLocale];
     PBDataWriterWriteSubmessage();
   }
 
@@ -264,17 +264,17 @@ LABEL_16:
     has = self->_has;
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteDoubleField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasAggregationIntervalStartTimestampInSecondsSince2001:(BOOL)a3
+- (void)setHasAggregationIntervalStartTimestampInSecondsSince2001:(BOOL)since2001
 {
-  if (a3)
+  if (since2001)
   {
     v3 = 2;
   }
@@ -287,17 +287,17 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ODMSiriSchemaODMSiriAggregationDimensions;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ODMSiriSchemaODMSiriAggregationDimensions *)self siriInputLocale:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ODMSiriSchemaODMSiriAggregationDimensions *)self deleteSiriInputLocale];
   }

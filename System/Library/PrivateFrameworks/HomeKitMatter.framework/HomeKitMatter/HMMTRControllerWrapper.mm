@@ -2,16 +2,16 @@
 + (id)logCategory;
 + (id)shortDescription;
 - (HMMTRControllerFactory)factory;
-- (HMMTRControllerWrapper)initWithWorkQueue:(id)a3 factory:(id)a4 startupParams:(id)a5 name:(id)a6 entityIdentifier:(id)a7;
+- (HMMTRControllerWrapper)initWithWorkQueue:(id)queue factory:(id)factory startupParams:(id)params name:(id)name entityIdentifier:(id)identifier;
 - (MTRDeviceController)controller;
 - (id)attributeDescriptions;
 - (id)logIdentifier;
 - (id)privateDescription;
-- (void)_revokeAvailable:(BOOL)a3;
-- (void)deregisterRevokeHandlersWithQueue:(id)a3;
-- (void)registerRevokeHandlerWithQueue:(id)a3 handler:(id)a4;
+- (void)_revokeAvailable:(BOOL)available;
+- (void)deregisterRevokeHandlersWithQueue:(id)queue;
+- (void)registerRevokeHandlerWithQueue:(id)queue handler:(id)handler;
 - (void)remove;
-- (void)replaceStartupParams:(id)a3;
+- (void)replaceStartupParams:(id)params;
 - (void)resume;
 - (void)shutdown;
 - (void)suspend;
@@ -30,8 +30,8 @@
 - (id)logIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMMTRControllerWrapper *)self name];
-  v5 = [v3 stringWithFormat:@"%@/%p", v4, self];
+  name = [(HMMTRControllerWrapper *)self name];
+  v5 = [v3 stringWithFormat:@"%@/%p", name, self];
 
   return v5;
 }
@@ -40,8 +40,8 @@
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMMTRControllerWrapper *)self name];
-  v5 = [v3 initWithName:@"Name" value:v4];
+  name = [(HMMTRControllerWrapper *)self name];
+  v5 = [v3 initWithName:@"Name" value:name];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -53,14 +53,14 @@
 - (id)privateDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMMTRControllerWrapper *)self name];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  shortDescription = [objc_opt_class() shortDescription];
+  name = [(HMMTRControllerWrapper *)self name];
+  v6 = [v3 stringWithFormat:@"%@ %@", shortDescription, name];
 
   return v6;
 }
 
-- (void)_revokeAvailable:(BOOL)a3
+- (void)_revokeAvailable:(BOOL)available
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
@@ -83,15 +83,15 @@
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 queue];
+        queue = [v9 queue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __43__HMMTRControllerWrapper__revokeAvailable___block_invoke;
         block[3] = &unk_2786F0418;
         block[4] = v9;
         block[5] = self;
-        v14 = a3;
-        dispatch_async(v10, block);
+        availableCopy = available;
+        dispatch_async(queue, block);
       }
 
       v6 = [obj countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -126,47 +126,47 @@ void __43__HMMTRControllerWrapper__revokeAvailable___block_invoke_2(uint64_t a1)
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (HMMTRControllerWrapper)initWithWorkQueue:(id)a3 factory:(id)a4 startupParams:(id)a5 name:(id)a6 entityIdentifier:(id)a7
+- (HMMTRControllerWrapper)initWithWorkQueue:(id)queue factory:(id)factory startupParams:(id)params name:(id)name entityIdentifier:(id)identifier
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  queueCopy = queue;
+  factoryCopy = factory;
+  paramsCopy = params;
+  nameCopy = name;
+  identifierCopy = identifier;
   v25.receiver = self;
   v25.super_class = HMMTRControllerWrapper;
   v18 = [(HMMTRControllerWrapper *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_workQueue, a3);
-    objc_storeWeak(&v19->_factory, v14);
-    v20 = [v15 copy];
+    objc_storeStrong(&v18->_workQueue, queue);
+    objc_storeWeak(&v19->_factory, factoryCopy);
+    v20 = [paramsCopy copy];
     startupParams = v19->_startupParams;
     v19->_startupParams = v20;
 
-    objc_storeStrong(&v19->_name, a6);
-    objc_storeStrong(&v19->_entityIdentifier, a7);
-    v22 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v19->_name, name);
+    objc_storeStrong(&v19->_entityIdentifier, identifier);
+    array = [MEMORY[0x277CBEB18] array];
     revokeHandlers = v19->_revokeHandlers;
-    v19->_revokeHandlers = v22;
+    v19->_revokeHandlers = array;
   }
 
   return v19;
 }
 
-- (void)deregisterRevokeHandlersWithQueue:(id)a3
+- (void)deregisterRevokeHandlersWithQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(HMMTRControllerWrapper *)self workQueue];
+  queueCopy = queue;
+  workQueue = [(HMMTRControllerWrapper *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__HMMTRControllerWrapper_deregisterRevokeHandlersWithQueue___block_invoke;
   v7[3] = &unk_2786EF328;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = queueCopy;
+  v6 = queueCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __60__HMMTRControllerWrapper_deregisterRevokeHandlersWithQueue___block_invoke(uint64_t a1)
@@ -191,21 +191,21 @@ BOOL __60__HMMTRControllerWrapper_deregisterRevokeHandlersWithQueue___block_invo
   return v4;
 }
 
-- (void)registerRevokeHandlerWithQueue:(id)a3 handler:(id)a4
+- (void)registerRevokeHandlerWithQueue:(id)queue handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMMTRControllerWrapper *)self workQueue];
+  queueCopy = queue;
+  handlerCopy = handler;
+  workQueue = [(HMMTRControllerWrapper *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__HMMTRControllerWrapper_registerRevokeHandlerWithQueue_handler___block_invoke;
   block[3] = &unk_2786F0EA8;
-  v12 = v6;
-  v13 = v7;
+  v12 = queueCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = queueCopy;
+  v10 = handlerCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __65__HMMTRControllerWrapper_registerRevokeHandlerWithQueue_handler___block_invoke(uint64_t a1)
@@ -219,7 +219,7 @@ void __65__HMMTRControllerWrapper_registerRevokeHandlerWithQueue_handler___block
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -230,13 +230,13 @@ void __65__HMMTRControllerWrapper_registerRevokeHandlerWithQueue_handler___block
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMMTRControllerWrapper *)v4 workQueue];
+  workQueue = [(HMMTRControllerWrapper *)selfCopy workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__HMMTRControllerWrapper_shutdown__block_invoke;
   block[3] = &unk_2786F0CA8;
-  block[4] = v4;
-  dispatch_async(v7, block);
+  block[4] = selfCopy;
+  dispatch_async(workQueue, block);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -279,7 +279,7 @@ void __34__HMMTRControllerWrapper_shutdown__block_invoke(uint64_t a1)
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -290,13 +290,13 @@ void __34__HMMTRControllerWrapper_shutdown__block_invoke(uint64_t a1)
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMMTRControllerWrapper *)v4 workQueue];
+  workQueue = [(HMMTRControllerWrapper *)selfCopy workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __33__HMMTRControllerWrapper_suspend__block_invoke;
   block[3] = &unk_2786F0CA8;
-  block[4] = v4;
-  dispatch_async(v7, block);
+  block[4] = selfCopy;
+  dispatch_async(workQueue, block);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -340,13 +340,13 @@ void __33__HMMTRControllerWrapper_suspend__block_invoke(uint64_t a1)
 {
   if (isFeatureMatterRVCEnabled())
   {
-    v3 = [(HMMTRControllerWrapper *)self workQueue];
+    workQueue = [(HMMTRControllerWrapper *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __32__HMMTRControllerWrapper_resume__block_invoke;
     block[3] = &unk_2786F0CA8;
     block[4] = self;
-    dispatch_async(v3, block);
+    dispatch_async(workQueue, block);
   }
 }
 
@@ -379,12 +379,12 @@ void __32__HMMTRControllerWrapper_resume__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)replaceStartupParams:(id)a3
+- (void)replaceStartupParams:(id)params
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  paramsCopy = params;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -395,23 +395,23 @@ void __32__HMMTRControllerWrapper_resume__block_invoke(uint64_t a1)
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMMTRControllerWrapper *)v6 workQueue];
+  workQueue = [(HMMTRControllerWrapper *)selfCopy workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__HMMTRControllerWrapper_replaceStartupParams___block_invoke;
   block[3] = &unk_2786EF328;
-  block[4] = v6;
-  v15 = v4;
-  v10 = v4;
-  dispatch_sync(v9, block);
+  block[4] = selfCopy;
+  v15 = paramsCopy;
+  v10 = paramsCopy;
+  dispatch_sync(workQueue, block);
 
-  v11 = [(HMMTRControllerWrapper *)v6 workQueue];
+  workQueue2 = [(HMMTRControllerWrapper *)selfCopy workQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __47__HMMTRControllerWrapper_replaceStartupParams___block_invoke_90;
   v13[3] = &unk_2786F0CA8;
-  v13[4] = v6;
-  dispatch_async(v11, v13);
+  v13[4] = selfCopy;
+  dispatch_async(workQueue2, v13);
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -468,7 +468,7 @@ void __47__HMMTRControllerWrapper_replaceStartupParams___block_invoke(uint64_t a
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -479,13 +479,13 @@ void __47__HMMTRControllerWrapper_replaceStartupParams___block_invoke(uint64_t a
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMMTRControllerWrapper *)v4 workQueue];
+  workQueue = [(HMMTRControllerWrapper *)selfCopy workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__HMMTRControllerWrapper_remove__block_invoke;
   block[3] = &unk_2786F0CA8;
-  block[4] = v4;
-  dispatch_async(v7, block);
+  block[4] = selfCopy;
+  dispatch_async(workQueue, block);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -532,7 +532,7 @@ void __32__HMMTRControllerWrapper_remove__block_invoke(uint64_t a1)
 {
   v26 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -549,17 +549,17 @@ void __32__HMMTRControllerWrapper_remove__block_invoke(uint64_t a1)
   v23 = __Block_byref_object_copy__3457;
   v24 = __Block_byref_object_dispose__3458;
   v25 = 0;
-  v7 = [(HMMTRControllerWrapper *)v4 workQueue];
+  workQueue = [(HMMTRControllerWrapper *)selfCopy workQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __36__HMMTRControllerWrapper_controller__block_invoke;
   v16[3] = &unk_2786EDE38;
-  v16[4] = v4;
+  v16[4] = selfCopy;
   v16[5] = &buf;
-  dispatch_sync(v7, v16);
+  dispatch_sync(workQueue, v16);
 
   v8 = objc_autoreleasePoolPush();
-  v9 = v4;
+  v9 = selfCopy;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {

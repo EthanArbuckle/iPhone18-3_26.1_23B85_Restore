@@ -1,19 +1,19 @@
 @interface CPSInformationScrollView
 - (CPSInformationScrollViewDelegate)scrollviewDelegate;
-- (void)setContentSize:(CGSize)a3;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation CPSInformationScrollView
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  v16 = a3;
-  v15 = self;
+  sizeCopy = size;
+  selfCopy = self;
   v14[3] = a2;
   [(CPSInformationScrollView *)self contentSize];
   v14[1] = v3;
   v14[2] = v4;
-  if (!__CGSizeEqualToSize_0(v16.width, v16.height, *&v3, *&v4))
+  if (!__CGSizeEqualToSize_0(sizeCopy.width, sizeCopy.height, *&v3, *&v4))
   {
     v6 = MEMORY[0x277D85CD0];
     v5 = MEMORY[0x277D85CD0];
@@ -23,15 +23,15 @@
     v11 = 0;
     v12 = __43__CPSInformationScrollView_setContentSize___block_invoke;
     v13 = &unk_278D913E8;
-    v14[0] = MEMORY[0x277D82BE0](v15);
+    v14[0] = MEMORY[0x277D82BE0](selfCopy);
     dispatch_async(queue, &v9);
     MEMORY[0x277D82BD8](queue);
     objc_storeStrong(v14, 0);
   }
 
-  v8.receiver = v15;
+  v8.receiver = selfCopy;
   v8.super_class = CPSInformationScrollView;
-  [(CPSInformationScrollView *)&v8 setContentSize:v16.width, v16.height];
+  [(CPSInformationScrollView *)&v8 setContentSize:sizeCopy.width, sizeCopy.height];
 }
 
 double __43__CPSInformationScrollView_setContentSize___block_invoke(uint64_t a1)

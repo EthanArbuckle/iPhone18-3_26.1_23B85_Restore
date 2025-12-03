@@ -1,34 +1,34 @@
 @interface CategoriesDataSource
-- (BOOL)isGroupRow:(int64_t)a3;
-- (BOOL)rowHasClearButton:(int64_t)a3;
-- (CategoriesDataSource)initWithSearchModel:(id)a3;
+- (BOOL)isGroupRow:(int64_t)row;
+- (BOOL)rowHasClearButton:(int64_t)button;
+- (CategoriesDataSource)initWithSearchModel:(id)model;
 - (STSCategorySelectionDelegate)selectionDelegate;
 - (STSSearchModelUpdateDelegate)updateDelegate;
-- (id)_searchResultIdentifierForSuggestion:(id)a3 recent:(BOOL)a4;
-- (id)headerTitleForRow:(int64_t)a3;
+- (id)_searchResultIdentifierForSuggestion:(id)suggestion recent:(BOOL)recent;
+- (id)headerTitleForRow:(int64_t)row;
 - (id)recentQueries;
-- (id)stringValueForRowAtIndex:(int64_t)a3;
-- (id)visibleResultsForIndexPaths:(id)a3;
+- (id)stringValueForRowAtIndex:(int64_t)index;
+- (id)visibleResultsForIndexPaths:(id)paths;
 - (void)_commitClearRecents;
-- (void)addQueryToRecents:(id)a3;
-- (void)didSelectItemAtIndex:(int64_t)a3;
+- (void)addQueryToRecents:(id)recents;
+- (void)didSelectItemAtIndex:(int64_t)index;
 - (void)sendRankSectionsFeedback;
 - (void)updateModel;
-- (void)updateRecents:(id)a3;
+- (void)updateRecents:(id)recents;
 @end
 
 @implementation CategoriesDataSource
 
-- (CategoriesDataSource)initWithSearchModel:(id)a3
+- (CategoriesDataSource)initWithSearchModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v21.receiver = self;
   v21.super_class = CategoriesDataSource;
   v6 = [(CategoriesDataSource *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_searchModel, a3);
+    objc_storeStrong(&v6->_searchModel, model);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     model = v7->_model;
     v7->_model = v8;
@@ -36,8 +36,8 @@
     categories = v7->_categories;
     v7->_categories = MEMORY[0x277CBEBF8];
 
-    v11 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v12 = [v11 objectForKey:@"STSRecentQueries"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v12 = [standardUserDefaults objectForKey:@"STSRecentQueries"];
     v13 = [v12 mutableCopy];
     recents = v7->_recents;
     v7->_recents = v13;
@@ -91,14 +91,14 @@
 
   [(STSCategoryResult *)v7 setClearButtonHidden:1];
   [(NSMutableArray *)self->_model addObject:v7];
-  v9 = [(STSSearchModel *)self->_searchModel categoryList];
-  v10 = [v9 copy];
+  categoryList = [(STSSearchModel *)self->_searchModel categoryList];
+  v10 = [categoryList copy];
 
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __35__CategoriesDataSource_updateModel__block_invoke_2;
   v16 = &unk_279B8A9D8;
-  v17 = self;
+  selfCopy = self;
   v18 = v3;
   v11 = v3;
   [v10 enumerateObjectsUsingBlock:&v13];
@@ -178,9 +178,9 @@ void __35__CategoriesDataSource_updateModel__block_invoke_2(uint64_t a1, void *a
 
 - (void)_commitClearRecents
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   recents = self->_recents;
-  self->_recents = v3;
+  self->_recents = array;
 
   [(CategoriesDataSource *)self updateModel];
   [(CategoriesDataSource *)self sendRankSectionsFeedback];
@@ -188,13 +188,13 @@ void __35__CategoriesDataSource_updateModel__block_invoke_2(uint64_t a1, void *a
   [WeakRetained sendVisibleResultsFeedback];
 }
 
-- (id)_searchResultIdentifierForSuggestion:(id)a3 recent:(BOOL)a4
+- (id)_searchResultIdentifierForSuggestion:(id)suggestion recent:(BOOL)recent
 {
-  v4 = a4;
-  v5 = a3;
-  if ([v5 length])
+  recentCopy = recent;
+  suggestionCopy = suggestion;
+  if ([suggestionCopy length])
   {
-    if (v4)
+    if (recentCopy)
     {
       v6 = @"msgscat-recent:%@";
     }
@@ -204,15 +204,15 @@ void __35__CategoriesDataSource_updateModel__block_invoke_2(uint64_t a1, void *a
       v6 = @"msgscat-cat:%@";
     }
 
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:v6, v5];
+    suggestionCopy = [MEMORY[0x277CCACA8] stringWithFormat:v6, suggestionCopy];
   }
 
   else
   {
-    v7 = 0;
+    suggestionCopy = 0;
   }
 
-  return v7;
+  return suggestionCopy;
 }
 
 - (id)recentQueries
@@ -222,17 +222,17 @@ void __35__CategoriesDataSource_updateModel__block_invoke_2(uint64_t a1, void *a
   return v2;
 }
 
-- (void)updateRecents:(id)a3
+- (void)updateRecents:(id)recents
 {
-  v4 = a3;
-  if ([v4 count] < 4)
+  recentsCopy = recents;
+  if ([recentsCopy count] < 4)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [recentsCopy mutableCopy];
   }
 
   else
   {
-    v5 = [v4 subarrayWithRange:{0, 3}];
+    v5 = [recentsCopy subarrayWithRange:{0, 3}];
     v6 = [v5 mutableCopy];
   }
 
@@ -280,12 +280,12 @@ void __38__CategoriesDataSource_updateRecents___block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)addQueryToRecents:(id)a3
+- (void)addQueryToRecents:(id)recents
 {
   v4 = MEMORY[0x277CCA900];
-  v5 = a3;
-  v6 = [v4 whitespaceCharacterSet];
-  v7 = [v5 stringByTrimmingCharactersInSet:v6];
+  recentsCopy = recents;
+  whitespaceCharacterSet = [v4 whitespaceCharacterSet];
+  v7 = [recentsCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   if ([v7 length])
   {
@@ -315,16 +315,16 @@ void __38__CategoriesDataSource_updateRecents___block_invoke(uint64_t a1, void *
     }
 
     [(CategoriesDataSource *)self updateModel];
-    v13 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    [v13 setObject:self->_recents forKey:@"STSRecentQueries"];
-    [v13 synchronize];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    [standardUserDefaults setObject:self->_recents forKey:@"STSRecentQueries"];
+    [standardUserDefaults synchronize];
     [(CategoriesDataSource *)self updateModel];
   }
 }
 
-- (id)headerTitleForRow:(int64_t)a3
+- (id)headerTitleForRow:(int64_t)row
 {
-  if (a3 || ![(NSMutableArray *)self->_recents count])
+  if (row || ![(NSMutableArray *)self->_recents count])
   {
     v3 = @"CATEGORIES";
   }
@@ -339,48 +339,48 @@ void __38__CategoriesDataSource_updateRecents___block_invoke(uint64_t a1, void *
   return v4;
 }
 
-- (BOOL)isGroupRow:(int64_t)a3
+- (BOOL)isGroupRow:(int64_t)row
 {
-  if (!a3)
+  if (!row)
   {
     return 1;
   }
 
-  return [(NSMutableArray *)self->_recents count]&& [(NSMutableArray *)self->_recents count]+ 1 == a3;
+  return [(NSMutableArray *)self->_recents count]&& [(NSMutableArray *)self->_recents count]+ 1 == row;
 }
 
-- (id)stringValueForRowAtIndex:(int64_t)a3
+- (id)stringValueForRowAtIndex:(int64_t)index
 {
-  v3 = [(NSMutableArray *)self->_model objectAtIndex:a3];
-  v4 = [v3 title];
+  v3 = [(NSMutableArray *)self->_model objectAtIndex:index];
+  title = [v3 title];
 
-  return v4;
+  return title;
 }
 
-- (void)didSelectItemAtIndex:(int64_t)a3
+- (void)didSelectItemAtIndex:(int64_t)index
 {
-  v13 = [(NSMutableArray *)self->_model objectAtIndex:a3];
-  v4 = [v13 title];
-  [(CategoriesDataSource *)self addQueryToRecents:v4];
+  v13 = [(NSMutableArray *)self->_model objectAtIndex:index];
+  title = [v13 title];
+  [(CategoriesDataSource *)self addQueryToRecents:title];
 
-  v5 = [v13 searchResult];
+  searchResult = [v13 searchResult];
 
-  if (v5)
+  if (searchResult)
   {
     v6 = +[STSFeedbackReporter sharedInstance];
-    v7 = [v13 searchResult];
-    v8 = [v13 suggestion];
-    [v6 didEngageCategoryResult:v7 suggestion:v8];
+    searchResult2 = [v13 searchResult];
+    suggestion = [v13 suggestion];
+    [v6 didEngageCategoryResult:searchResult2 suggestion:suggestion];
   }
 
   if ([v13 type] == 1)
   {
-    v9 = [v13 suggestion];
-    v10 = [v9 prediction];
+    suggestion2 = [v13 suggestion];
+    prediction = [suggestion2 prediction];
 
-    v11 = [(CategoriesDataSource *)self selectionDelegate];
-    v12 = [v13 title];
-    [v11 categoryViewController:self didSelectCategory:v12 suggested:v10 != 0];
+    selectionDelegate = [(CategoriesDataSource *)self selectionDelegate];
+    title2 = [v13 title];
+    [selectionDelegate categoryViewController:self didSelectCategory:title2 suggested:prediction != 0];
   }
 
   else
@@ -390,20 +390,20 @@ void __38__CategoriesDataSource_updateRecents___block_invoke(uint64_t a1, void *
       goto LABEL_8;
     }
 
-    v11 = [(CategoriesDataSource *)self selectionDelegate];
-    v12 = [v13 title];
-    [v11 categoryViewController:self didSelectRecent:v12];
+    selectionDelegate = [(CategoriesDataSource *)self selectionDelegate];
+    title2 = [v13 title];
+    [selectionDelegate categoryViewController:self didSelectRecent:title2];
   }
 
 LABEL_8:
 }
 
-- (BOOL)rowHasClearButton:(int64_t)a3
+- (BOOL)rowHasClearButton:(int64_t)button
 {
-  v3 = [(NSMutableArray *)self->_model objectAtIndex:a3];
-  v4 = [v3 clearButtonHidden];
+  v3 = [(NSMutableArray *)self->_model objectAtIndex:button];
+  clearButtonHidden = [v3 clearButtonHidden];
 
-  return v4 ^ 1;
+  return clearButtonHidden ^ 1;
 }
 
 - (void)sendRankSectionsFeedback
@@ -442,10 +442,10 @@ void __48__CategoriesDataSource_sendRankSectionsFeedback__block_invoke(uint64_t 
   }
 }
 
-- (id)visibleResultsForIndexPaths:(id)a3
+- (id)visibleResultsForIndexPaths:(id)paths
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
+  pathsCopy = paths;
   v6 = objc_alloc_init(v4);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -454,7 +454,7 @@ void __48__CategoriesDataSource_sendRankSectionsFeedback__block_invoke(uint64_t 
   v11[4] = self;
   v7 = v6;
   v12 = v7;
-  [v5 enumerateObjectsUsingBlock:v11];
+  [pathsCopy enumerateObjectsUsingBlock:v11];
 
   v8 = v12;
   v9 = v7;

@@ -1,15 +1,15 @@
 @interface BMFindMyLocationChange
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMFindMyLocationChange)initWithIdsHandle:(id)a3 stateChange:(int)a4 activityState:(int)a5 name:(id)a6;
-- (BMFindMyLocationChange)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMFindMyLocationChange)initWithIdsHandle:(id)handle stateChange:(int)change activityState:(int)state name:(id)name;
+- (BMFindMyLocationChange)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMFindMyLocationChange
@@ -32,25 +32,25 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMFindMyLocationChange *)self idsHandle];
-    v7 = [v5 idsHandle];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    idsHandle = [(BMFindMyLocationChange *)self idsHandle];
+    idsHandle2 = [v5 idsHandle];
+    v8 = idsHandle2;
+    if (idsHandle == idsHandle2)
     {
     }
 
     else
     {
-      v9 = [(BMFindMyLocationChange *)self idsHandle];
-      v10 = [v5 idsHandle];
-      v11 = [v9 isEqual:v10];
+      idsHandle3 = [(BMFindMyLocationChange *)self idsHandle];
+      idsHandle4 = [v5 idsHandle];
+      v11 = [idsHandle3 isEqual:idsHandle4];
 
       if (!v11)
       {
@@ -58,24 +58,24 @@
       }
     }
 
-    v13 = [(BMFindMyLocationChange *)self stateChange];
-    if (v13 == [v5 stateChange])
+    stateChange = [(BMFindMyLocationChange *)self stateChange];
+    if (stateChange == [v5 stateChange])
     {
-      v14 = [(BMFindMyLocationChange *)self activityState];
-      if (v14 == [v5 activityState])
+      activityState = [(BMFindMyLocationChange *)self activityState];
+      if (activityState == [v5 activityState])
       {
-        v15 = [(BMFindMyLocationChange *)self name];
-        v16 = [v5 name];
-        if (v15 == v16)
+        name = [(BMFindMyLocationChange *)self name];
+        name2 = [v5 name];
+        if (name == name2)
         {
           v12 = 1;
         }
 
         else
         {
-          v17 = [(BMFindMyLocationChange *)self name];
-          v18 = [v5 name];
-          v12 = [v17 isEqual:v18];
+          name3 = [(BMFindMyLocationChange *)self name];
+          name4 = [v5 name];
+          v12 = [name3 isEqual:name4];
         }
 
         goto LABEL_12;
@@ -98,44 +98,44 @@ LABEL_13:
 - (id)jsonDictionary
 {
   v15[4] = *MEMORY[0x1E69E9840];
-  v3 = [(BMFindMyLocationChange *)self idsHandle];
+  idsHandle = [(BMFindMyLocationChange *)self idsHandle];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMFindMyLocationChange stateChange](self, "stateChange")}];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMFindMyLocationChange activityState](self, "activityState")}];
-  v6 = [(BMFindMyLocationChange *)self name];
+  name = [(BMFindMyLocationChange *)self name];
   v14[0] = @"idsHandle";
-  v7 = v3;
-  if (!v3)
+  null = idsHandle;
+  if (!idsHandle)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v7;
+  v15[0] = null;
   v14[1] = @"stateChange";
-  v8 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v8;
+  v15[1] = null2;
   v14[2] = @"activityState";
-  v9 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[2] = v9;
+  v15[2] = null3;
   v14[3] = @"name";
-  v10 = v6;
-  if (!v6)
+  null4 = name;
+  if (!name)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[3] = v10;
+  v15[3] = null4;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:4];
-  if (v6)
+  if (name)
   {
     if (v5)
     {
@@ -156,7 +156,7 @@ LABEL_11:
 
 LABEL_18:
 
-      if (v3)
+      if (idsHandle)
       {
         goto LABEL_13;
       }
@@ -171,7 +171,7 @@ LABEL_18:
   }
 
 LABEL_12:
-  if (v3)
+  if (idsHandle)
   {
     goto LABEL_13;
   }
@@ -184,16 +184,16 @@ LABEL_13:
   return v11;
 }
 
-- (BMFindMyLocationChange)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMFindMyLocationChange)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"idsHandle"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"idsHandle"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v33 = 0;
 LABEL_4:
-    v8 = [v6 objectForKeyedSubscript:@"stateChange"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"stateChange"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -207,10 +207,10 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v9 = 0;
-            v13 = 0;
+            selfCopy2 = 0;
             goto LABEL_30;
           }
 
@@ -222,8 +222,8 @@ LABEL_4:
           v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
           v26 = [v24 initWithDomain:v25 code:2 userInfo:v14];
           v9 = 0;
-          v13 = 0;
-          *a4 = v26;
+          selfCopy2 = 0;
+          *error = v26;
           goto LABEL_29;
         }
 
@@ -238,11 +238,11 @@ LABEL_4:
       v9 = 0;
     }
 
-    v14 = [v6 objectForKeyedSubscript:@"activityState"];
-    v32 = self;
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"activityState"];
+    selfCopy = self;
     if (v14 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      v15 = a4;
+      errorCopy2 = error;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -254,11 +254,11 @@ LABEL_4:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v16 = 0;
-            v13 = 0;
-            self = v32;
+            selfCopy2 = 0;
+            self = selfCopy;
             goto LABEL_29;
           }
 
@@ -270,8 +270,8 @@ LABEL_4:
           v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
           v28 = [v31 initWithDomain:v27 code:2 userInfo:v18];
           v16 = 0;
-          v13 = 0;
-          *v15 = v28;
+          selfCopy2 = 0;
+          *errorCopy2 = v28;
           goto LABEL_41;
         }
 
@@ -283,17 +283,17 @@ LABEL_4:
 
     else
     {
-      v15 = a4;
+      errorCopy2 = error;
       v16 = 0;
     }
 
-    v18 = [v6 objectForKeyedSubscript:@"name"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     if (!v18 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v19 = 0;
 LABEL_27:
-      self = -[BMFindMyLocationChange initWithIdsHandle:stateChange:activityState:name:](v32, "initWithIdsHandle:stateChange:activityState:name:", v33, [v9 intValue], objc_msgSend(v16, "intValue"), v19);
-      v13 = self;
+      self = -[BMFindMyLocationChange initWithIdsHandle:stateChange:activityState:name:](selfCopy, "initWithIdsHandle:stateChange:activityState:name:", v33, [v9 intValue], objc_msgSend(v16, "intValue"), v19);
+      selfCopy2 = self;
 LABEL_28:
 
 LABEL_29:
@@ -307,7 +307,7 @@ LABEL_29:
       goto LABEL_27;
     }
 
-    if (v15)
+    if (errorCopy2)
     {
       v30 = objc_alloc(MEMORY[0x1E696ABC0]);
       v29 = *MEMORY[0x1E698F240];
@@ -315,13 +315,13 @@ LABEL_29:
       v22 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"name"];
       v35 = v22;
       v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
-      *v15 = [v30 initWithDomain:v29 code:2 userInfo:v23];
+      *errorCopy2 = [v30 initWithDomain:v29 code:2 userInfo:v23];
     }
 
     v19 = 0;
-    v13 = 0;
+    selfCopy2 = 0;
 LABEL_41:
-    self = v32;
+    self = selfCopy;
     goto LABEL_28;
   }
 
@@ -332,10 +332,10 @@ LABEL_41:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v33 = 0;
-    v13 = 0;
+    selfCopy2 = 0;
     goto LABEL_31;
   }
 
@@ -346,27 +346,27 @@ LABEL_41:
   v41[0] = v9;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:&v40 count:1];
   v33 = 0;
-  v13 = 0;
-  *a4 = [v11 initWithDomain:v12 code:2 userInfo:v8];
+  selfCopy2 = 0;
+  *error = [v11 initWithDomain:v12 code:2 userInfo:v8];
 LABEL_30:
 
 LABEL_31:
   v20 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy2;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMFindMyLocationChange *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (self->_idsHandle)
   {
     PBDataWriterWriteStringField();
@@ -382,9 +382,9 @@ LABEL_31:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v35.receiver = self;
   v35.super_class = BMFindMyLocationChange;
   v5 = [(BMEventBase *)&v35 init];
@@ -393,12 +393,12 @@ LABEL_31:
     goto LABEL_58;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -409,18 +409,18 @@ LABEL_31:
       while (1)
       {
         v36 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v36 & 0x7F) << v7;
@@ -437,9 +437,9 @@ LABEL_31:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -466,18 +466,18 @@ LABEL_41:
           while (1)
           {
             v36 = 0;
-            v25 = [v4 position] + 1;
-            if (v25 >= [v4 position] && (v26 = objc_msgSend(v4, "position") + 1, v26 <= objc_msgSend(v4, "length")))
+            v25 = [fromCopy position] + 1;
+            if (v25 >= [fromCopy position] && (v26 = objc_msgSend(fromCopy, "position") + 1, v26 <= objc_msgSend(fromCopy, "length")))
             {
-              v27 = [v4 data];
-              [v27 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v36 & 0x7F) << v23;
@@ -494,7 +494,7 @@ LABEL_41:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v18 > 5)
+          if (([fromCopy hasError] & 1) != 0 || v18 > 5)
           {
 LABEL_52:
             LODWORD(v18) = 0;
@@ -523,18 +523,18 @@ LABEL_52:
           while (1)
           {
             v36 = 0;
-            v19 = [v4 position] + 1;
-            if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+            v19 = [fromCopy position] + 1;
+            if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
             {
-              v21 = [v4 data];
-              [v21 getBytes:&v36 range:{objc_msgSend(v4, "position"), 1}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v36 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v36 & 0x7F) << v16;
@@ -551,7 +551,7 @@ LABEL_52:
             }
           }
 
-          if (([v4 hasError] & 1) != 0 || v18 > 3)
+          if (([fromCopy hasError] & 1) != 0 || v18 > 3)
           {
 LABEL_48:
             LODWORD(v18) = 0;
@@ -571,13 +571,13 @@ LABEL_54:
       *(&v5->super.super.isa + v29) = v28;
 
 LABEL_55:
-      v32 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v32 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_57:
     v33 = 0;
@@ -595,29 +595,29 @@ LABEL_58:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMFindMyLocationChange *)self idsHandle];
+  idsHandle = [(BMFindMyLocationChange *)self idsHandle];
   v5 = BMFindMyLocationChangeStateChangeAsString([(BMFindMyLocationChange *)self stateChange]);
   v6 = BMFindMyLocationChangeActivityStateAsString([(BMFindMyLocationChange *)self activityState]);
-  v7 = [(BMFindMyLocationChange *)self name];
-  v8 = [v3 initWithFormat:@"BMFindMyLocationChange with idsHandle: %@, stateChange: %@, activityState: %@, name: %@", v4, v5, v6, v7];
+  name = [(BMFindMyLocationChange *)self name];
+  v8 = [v3 initWithFormat:@"BMFindMyLocationChange with idsHandle: %@, stateChange: %@, activityState: %@, name: %@", idsHandle, v5, v6, name];
 
   return v8;
 }
 
-- (BMFindMyLocationChange)initWithIdsHandle:(id)a3 stateChange:(int)a4 activityState:(int)a5 name:(id)a6
+- (BMFindMyLocationChange)initWithIdsHandle:(id)handle stateChange:(int)change activityState:(int)state name:(id)name
 {
-  v11 = a3;
-  v12 = a6;
+  handleCopy = handle;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = BMFindMyLocationChange;
   v13 = [(BMEventBase *)&v15 init];
   if (v13)
   {
     v13->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v13->_idsHandle, a3);
-    v13->_stateChange = a4;
-    v13->_activityState = a5;
-    objc_storeStrong(&v13->_name, a6);
+    objc_storeStrong(&v13->_idsHandle, handle);
+    v13->_stateChange = change;
+    v13->_activityState = state;
+    objc_storeStrong(&v13->_name, name);
   }
 
   return v13;
@@ -641,24 +641,24 @@ LABEL_58:
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  if (a4)
+  dataCopy = data;
+  if (version)
   {
-    if (a4 != 1)
+    if (version != 1)
     {
       v9 = 0;
       goto LABEL_9;
     }
 
-    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:v5];
+    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:dataCopy];
     v7 = BMFindMyLocationChange;
   }
 
   else
   {
-    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:v5];
+    v6 = [objc_alloc(MEMORY[0x1E69C65B8]) initWithData:dataCopy];
     v7 = BMFindMyLocationChange_v0;
   }
 
@@ -666,7 +666,7 @@ LABEL_58:
   v9 = v8;
   if (v8)
   {
-    *(v8 + 16) = a4;
+    *(v8 + 16) = version;
   }
 
 LABEL_9:

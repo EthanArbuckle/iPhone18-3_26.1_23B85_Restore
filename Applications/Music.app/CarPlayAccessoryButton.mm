@@ -1,12 +1,12 @@
 @interface CarPlayAccessoryButton
 - (CGSize)intrinsicContentSize;
-- (_TtC5Music22CarPlayAccessoryButton)initWithCoder:(id)a3;
-- (_TtC5Music22CarPlayAccessoryButton)initWithFrame:(CGRect)a3;
+- (_TtC5Music22CarPlayAccessoryButton)initWithCoder:(id)coder;
+- (_TtC5Music22CarPlayAccessoryButton)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CarPlayAccessoryButton
 
-- (_TtC5Music22CarPlayAccessoryButton)initWithCoder:(id)a3
+- (_TtC5Music22CarPlayAccessoryButton)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (_TtC5Music22CarPlayAccessoryButton)initWithFrame:(CGRect)a3
+- (_TtC5Music22CarPlayAccessoryButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

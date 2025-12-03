@@ -1,13 +1,13 @@
 @interface SBVoiceOverTouchLabelElementAlertItem
 - (SBVoiceOverTouchLabelElementAlertItemDelegate)voiceOverAlertItemDelegate;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 @end
 
 @implementation SBVoiceOverTouchLabelElementAlertItem
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v5 = [(SBAlertItem *)self alertController:a3];
+  v5 = [(SBAlertItem *)self alertController:configure];
   [v5 setAccessibilityIdentifier:@"VOLabelElement"];
   v6 = accessibilityLocalizedString(@"element.label.title");
   [v5 setTitle:v6];

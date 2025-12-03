@@ -1,14 +1,14 @@
 @interface GKCollectionViewFlowLayoutAttributes
-+ (id)layoutAttributesForDecorationViewOfKind:(id)a3 withIndexPath:(id)a4;
++ (id)layoutAttributesForDecorationViewOfKind:(id)kind withIndexPath:(id)path;
 @end
 
 @implementation GKCollectionViewFlowLayoutAttributes
 
-+ (id)layoutAttributesForDecorationViewOfKind:(id)a3 withIndexPath:(id)a4
++ (id)layoutAttributesForDecorationViewOfKind:(id)kind withIndexPath:(id)path
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___GKCollectionViewFlowLayoutAttributes;
-  v4 = objc_msgSendSuper2(&v7, "layoutAttributesForDecorationViewOfKind:withIndexPath:", a3, a4);
+  v4 = objc_msgSendSuper2(&v7, "layoutAttributesForDecorationViewOfKind:withIndexPath:", kind, path);
   v5 = +[UIColor siriui_snippetBackgroundColor];
   [v4 setColor:v5];
 

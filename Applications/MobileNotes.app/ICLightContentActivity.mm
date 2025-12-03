@@ -1,21 +1,21 @@
 @interface ICLightContentActivity
-- (ICLightContentActivity)initWithNote:(id)a3;
+- (ICLightContentActivity)initWithNote:(id)note;
 - (id)activityTitle;
-- (void)performActivityWithCompletion:(id)a3;
+- (void)performActivityWithCompletion:(id)completion;
 @end
 
 @implementation ICLightContentActivity
 
-- (ICLightContentActivity)initWithNote:(id)a3
+- (ICLightContentActivity)initWithNote:(id)note
 {
-  v5 = a3;
+  noteCopy = note;
   v9.receiver = self;
   v9.super_class = ICLightContentActivity;
   v6 = [(ICLightContentActivity *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_note, a3);
+    objc_storeStrong(&v6->_note, note);
   }
 
   return v7;
@@ -23,11 +23,11 @@
 
 - (id)activityTitle
 {
-  v2 = [(ICLightContentActivity *)self note];
-  v3 = [v2 prefersLightBackground];
+  note = [(ICLightContentActivity *)self note];
+  prefersLightBackground = [note prefersLightBackground];
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3)
+  if (prefersLightBackground)
   {
     v6 = @"Use Dark Background";
   }
@@ -42,24 +42,24 @@
   return v7;
 }
 
-- (void)performActivityWithCompletion:(id)a3
+- (void)performActivityWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICLightContentActivity *)self note];
-  [v5 managedObjectContext];
+  completionCopy = completion;
+  note = [(ICLightContentActivity *)self note];
+  [note managedObjectContext];
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_100138C5C;
   v12 = &unk_100645BA0;
-  v14 = v13 = v5;
+  v14 = v13 = note;
   v6 = v14;
-  v7 = v5;
+  v7 = note;
   [v6 performBlockAndWait:&v9];
   [(ICLightContentActivity *)self activityDidFinish:1, v9, v10, v11, v12];
-  if (v4)
+  if (completionCopy)
   {
-    v8 = [(ICLightContentActivity *)self activityType];
-    v4[2](v4, 1, v8);
+    activityType = [(ICLightContentActivity *)self activityType];
+    completionCopy[2](completionCopy, 1, activityType);
   }
 }
 

@@ -1,17 +1,17 @@
 @interface ConfusionPair
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPunctuationEdit;
-- (ConfusionPair)initWithUttId:(id)a3;
+- (ConfusionPair)initWithUttId:(id)id;
 - (unint64_t)hash;
-- (void)addRecognizedToken:(id)a3 correctedToken:(id)a4;
+- (void)addRecognizedToken:(id)token correctedToken:(id)correctedToken;
 @end
 
 @implementation ConfusionPair
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -21,18 +21,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       uttId = self->_uttId;
-      v7 = [(ConfusionPair *)v5 uttId];
-      if ([(NSString *)uttId isEqualToString:v7])
+      uttId = [(ConfusionPair *)v5 uttId];
+      if ([(NSString *)uttId isEqualToString:uttId])
       {
         recognizedTokens = self->_recognizedTokens;
-        v9 = [(ConfusionPair *)v5 recognizedTokens];
-        if ([(NSMutableArray *)recognizedTokens isEqualToArray:v9])
+        recognizedTokens = [(ConfusionPair *)v5 recognizedTokens];
+        if ([(NSMutableArray *)recognizedTokens isEqualToArray:recognizedTokens])
         {
           correctedTokens = self->_correctedTokens;
-          v11 = [(ConfusionPair *)v5 correctedTokens];
-          v12 = [(NSMutableArray *)correctedTokens isEqualToArray:v11];
+          correctedTokens = [(ConfusionPair *)v5 correctedTokens];
+          v12 = [(NSMutableArray *)correctedTokens isEqualToArray:correctedTokens];
         }
 
         else
@@ -73,15 +73,15 @@
   return [(ConfusionPair *)self isPunctuationSubstitution];
 }
 
-- (void)addRecognizedToken:(id)a3 correctedToken:(id)a4
+- (void)addRecognizedToken:(id)token correctedToken:(id)correctedToken
 {
-  v14 = a3;
-  v6 = a4;
-  if ([v14 isEqualToString:@"~"])
+  tokenCopy = token;
+  correctedTokenCopy = correctedToken;
+  if ([tokenCopy isEqualToString:@"~"])
   {
     ++self->_numInsertion;
     ++self->_placeholderCount;
-    [(NSMutableArray *)self->_correctedTokens addObject:v6];
+    [(NSMutableArray *)self->_correctedTokens addObject:correctedTokenCopy];
     isCorrectedTextPunctuation = self->_isCorrectedTextPunctuation;
     p_isCorrectedTextPunctuation = &self->_isCorrectedTextPunctuation;
     if (!isCorrectedTextPunctuation)
@@ -92,14 +92,14 @@
     goto LABEL_11;
   }
 
-  if (![v6 isEqualToString:@"~"])
+  if (![correctedTokenCopy isEqualToString:@"~"])
   {
     ++self->_numSubstitution;
-    [(NSMutableArray *)self->_recognizedTokens addObject:v14];
-    [(NSMutableArray *)self->_correctedTokens addObject:v6];
+    [(NSMutableArray *)self->_recognizedTokens addObject:tokenCopy];
+    [(NSMutableArray *)self->_correctedTokens addObject:correctedTokenCopy];
     if (self->_isRecognizedTextPunctuation)
     {
-      v11 = sub_100004C98(v14);
+      v11 = sub_100004C98(tokenCopy);
     }
 
     else
@@ -116,17 +116,17 @@
     }
 
 LABEL_11:
-    v10 = v6;
+    v10 = correctedTokenCopy;
     goto LABEL_12;
   }
 
   ++self->_numDeletion;
-  [(NSMutableArray *)self->_recognizedTokens addObject:v14];
+  [(NSMutableArray *)self->_recognizedTokens addObject:tokenCopy];
   isRecognizedTextPunctuation = self->_isRecognizedTextPunctuation;
   p_isCorrectedTextPunctuation = &self->_isRecognizedTextPunctuation;
   if (isRecognizedTextPunctuation)
   {
-    v10 = v14;
+    v10 = tokenCopy;
 LABEL_12:
     v13 = sub_100004C98(v10);
     goto LABEL_14;
@@ -138,15 +138,15 @@ LABEL_14:
   *p_isCorrectedTextPunctuation = v13;
 }
 
-- (ConfusionPair)initWithUttId:(id)a3
+- (ConfusionPair)initWithUttId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v15.receiver = self;
   v15.super_class = ConfusionPair;
   v5 = [(ConfusionPair *)&v15 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [idCopy copy];
     v7 = *(v5 + 2);
     *(v5 + 2) = v6;
 

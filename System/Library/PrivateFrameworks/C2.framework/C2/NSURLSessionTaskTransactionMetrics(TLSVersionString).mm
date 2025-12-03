@@ -8,8 +8,8 @@
 - (id)c2_NegotiatedTLSProtocolVersionString
 {
   v2 = objc_opt_class();
-  v3 = [a1 negotiatedTLSProtocolVersion];
-  v4 = [v2 _c2_stringForTLSProtocolVersion:{objc_msgSend(v3, "unsignedLongLongValue")}];
+  negotiatedTLSProtocolVersion = [self negotiatedTLSProtocolVersion];
+  v4 = [v2 _c2_stringForTLSProtocolVersion:{objc_msgSend(negotiatedTLSProtocolVersion, "unsignedLongLongValue")}];
 
   return v4;
 }

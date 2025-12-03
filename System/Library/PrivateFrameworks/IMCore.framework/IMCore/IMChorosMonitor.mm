@@ -1,7 +1,7 @@
 @interface IMChorosMonitor
-+ (id)roadsideProviderIDFromChatIdentifier:(id)a3;
++ (id)roadsideProviderIDFromChatIdentifier:(id)identifier;
 + (id)sharedInstance;
-+ (int64_t)serviceFromChatIdentifier:(id)a3;
++ (int64_t)serviceFromChatIdentifier:(id)identifier;
 - (BOOL)isMessagingActiveOverSatellite;
 - (BOOL)isSatelliteConnectionActive;
 - (BOOL)isStewieActive;
@@ -13,20 +13,20 @@
 - (IMChorosMonitor)init;
 - (NSDictionary)emergencyHandles;
 - (id)mostRecentlyUsedRoadsideChatIdentifier;
-- (id)roadsideBusinessIDForChatIdentifier:(id)a3;
-- (id)roadsideBusinessIDForProviderId:(int64_t)a3;
-- (id)roadsideProviderForProviderId:(int64_t)a3;
-- (id)roadsideProviderNameForChatIdentifier:(id)a3;
-- (id)roadsideProviderNameForProviderId:(int64_t)a3;
-- (void)_setStewieRoadsideContext:(id)a3 forChat:(id)a4;
-- (void)launchStewieForMessagingWithAppForegrounded:(BOOL)a3;
-- (void)openStewieAppForChatIdentifier:(id)a3 completion:(id)a4;
-- (void)placeEmergencyCallToHandle:(id)a3 completion:(id)a4;
-- (void)presentSatelliteConnectionBannerIfNecessaryWithChat:(id)a3 withReason:(id)a4 ignoreTimerLimit:(BOOL)a5;
+- (id)roadsideBusinessIDForChatIdentifier:(id)identifier;
+- (id)roadsideBusinessIDForProviderId:(int64_t)id;
+- (id)roadsideProviderForProviderId:(int64_t)id;
+- (id)roadsideProviderNameForChatIdentifier:(id)identifier;
+- (id)roadsideProviderNameForProviderId:(int64_t)id;
+- (void)_setStewieRoadsideContext:(id)context forChat:(id)chat;
+- (void)launchStewieForMessagingWithAppForegrounded:(BOOL)foregrounded;
+- (void)openStewieAppForChatIdentifier:(id)identifier completion:(id)completion;
+- (void)placeEmergencyCallToHandle:(id)handle completion:(id)completion;
+- (void)presentSatelliteConnectionBannerIfNecessaryWithChat:(id)chat withReason:(id)reason ignoreTimerLimit:(BOOL)limit;
 - (void)reset;
 - (void)startMonitor;
-- (void)startMonitorIfNeededForReason:(int64_t)a3 withOffer:(BOOL)a4 callInBackground:(BOOL)a5;
-- (void)stateChanged:(id)a3;
+- (void)startMonitorIfNeededForReason:(int64_t)reason withOffer:(BOOL)offer callInBackground:(BOOL)background;
+- (void)stateChanged:(id)changed;
 @end
 
 @implementation IMChorosMonitor
@@ -110,12 +110,12 @@
   return isActiveService;
 }
 
-- (void)presentSatelliteConnectionBannerIfNecessaryWithChat:(id)a3 withReason:(id)a4 ignoreTimerLimit:(BOOL)a5
+- (void)presentSatelliteConnectionBannerIfNecessaryWithChat:(id)chat withReason:(id)reason ignoreTimerLimit:(BOOL)limit
 {
-  v5 = a5;
+  limitCopy = limit;
   v104 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  chatCopy = chat;
+  reasonCopy = reason;
   if (objc_msgSend_needsShowConnectionUI(self, v10, v11) && objc_msgSend_monitorStarted(self, v12, v13))
   {
     v14 = IMLogHandleForCategory();
@@ -133,14 +133,14 @@
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v101 = v9;
+    v101 = reasonCopy;
     _os_log_impl(&dword_1A823F000, v16, OS_LOG_TYPE_INFO, "Try to present offer for reason: %@", buf, 0xCu);
   }
 
-  if (!v8 || objc_msgSend_isSatelliteMessagingCompatible(v8, v17, v18))
+  if (!chatCopy || objc_msgSend_isSatelliteMessagingCompatible(chatCopy, v17, v18))
   {
-    v92 = v5;
-    v96 = v9;
+    v92 = limitCopy;
+    v96 = reasonCopy;
     v19 = objc_msgSend_sharedInstanceForBagType_(MEMORY[0x1E69A53F0], v17, 1);
     v21 = objc_msgSend_objectForKey_(v19, v20, @"when-to-first-show-OTG-banner");
     v23 = objc_msgSend_objectForKey_(v19, v22, @"how-often-to-show-OTG-banner");
@@ -167,7 +167,7 @@
         {
           v52 = IMLogHandleForCategory();
           v21 = v93;
-          v9 = v96;
+          reasonCopy = v96;
           if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
           {
             v55 = objc_msgSend_integerValue(v49, v53, v54);
@@ -187,7 +187,7 @@ LABEL_24:
         else
         {
           v21 = v93;
-          v9 = v96;
+          reasonCopy = v96;
           if (objc_msgSend_integerValue(v93, v50, v51) - 1 <= v31)
           {
             v67 = objc_msgSend_objectForKey_(v19, v57, @"limit-to-start-showing-OTG-banner");
@@ -318,7 +318,7 @@ LABEL_29:
       v49 = v23;
     }
 
-    v9 = v96;
+    reasonCopy = v96;
     goto LABEL_29;
   }
 
@@ -341,32 +341,32 @@ LABEL_30:
   objc_msgSend_startMonitorWithOffer_(self, v4, 1, v5, v6, v7);
 }
 
-- (void)startMonitorIfNeededForReason:(int64_t)a3 withOffer:(BOOL)a4 callInBackground:(BOOL)a5
+- (void)startMonitorIfNeededForReason:(int64_t)reason withOffer:(BOOL)offer callInBackground:(BOOL)background
 {
-  v5 = a5;
-  if ((objc_msgSend_monitorStarted(self, a2, a3) & 1) == 0)
+  backgroundCopy = background;
+  if ((objc_msgSend_monitorStarted(self, a2, reason) & 1) == 0)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = sub_1A8308120;
     aBlock[3] = &unk_1E7812208;
     aBlock[4] = self;
-    aBlock[5] = a3;
-    v22 = a4;
+    aBlock[5] = reason;
+    offerCopy = offer;
     v9 = _Block_copy(aBlock);
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = sub_1A83081D0;
     v16[3] = &unk_1E7812230;
-    v19 = a4;
-    v20 = v5;
-    v18 = a3;
+    offerCopy2 = offer;
+    v20 = backgroundCopy;
+    reasonCopy = reason;
     v16[4] = self;
     v10 = v9;
     v17 = v10;
     v11 = _Block_copy(v16);
     v12 = v11;
-    if (v5)
+    if (backgroundCopy)
     {
       v13 = dispatch_get_global_queue(9, 0);
       v14[0] = MEMORY[0x1E69E9820];
@@ -425,23 +425,23 @@ LABEL_30:
   }
 }
 
-- (void)stateChanged:(id)a3
+- (void)stateChanged:(id)changed
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  changedCopy = changed;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v18 = 134218752;
-      active = objc_msgSend_activeServices(v3, v7, v8);
+      active = objc_msgSend_activeServices(changedCopy, v7, v8);
       v20 = 2048;
-      v21 = objc_msgSend_allowedServices(v3, v9, v10);
+      v21 = objc_msgSend_allowedServices(changedCopy, v9, v10);
       v22 = 2048;
-      v23 = objc_msgSend_status(v3, v11, v12);
+      v23 = objc_msgSend_status(changedCopy, v11, v12);
       v24 = 2048;
-      v25 = objc_msgSend_transportType(v3, v13, v14);
+      v25 = objc_msgSend_transportType(changedCopy, v13, v14);
       _os_log_impl(&dword_1A823F000, v6, OS_LOG_TYPE_INFO, "Stewie status changed to: activeServices: %ld - allowedServices: %ld - status: %ld - transport: %ld", &v18, 0x2Au);
     }
   }
@@ -476,21 +476,21 @@ LABEL_30:
   return isAllowedService;
 }
 
-- (void)_setStewieRoadsideContext:(id)a3 forChat:(id)a4
+- (void)_setStewieRoadsideContext:(id)context forChat:(id)chat
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v8 = objc_msgSend_roadsideProviderIDFromChatIdentifier_(IMChorosMonitor, v7, v6);
+  contextCopy = context;
+  chatCopy = chat;
+  v8 = objc_msgSend_roadsideProviderIDFromChatIdentifier_(IMChorosMonitor, v7, chatCopy);
   v10 = v8;
   if (v8)
   {
     v16 = *MEMORY[0x1E69654B8];
     v17[0] = v8;
     v11 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v9, v17, &v16, 1);
-    objc_msgSend_setMetadata_(v5, v12, v11);
+    objc_msgSend_setMetadata_(contextCopy, v12, v11);
 
-    objc_msgSend_setReason_(v5, v13, 7);
+    objc_msgSend_setReason_(contextCopy, v13, 7);
   }
 
   else
@@ -505,10 +505,10 @@ LABEL_30:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)openStewieAppForChatIdentifier:(id)a3 completion:(id)a4
+- (void)openStewieAppForChatIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = objc_alloc_init(MEMORY[0x1E6965078]);
   if (IMIsStringStewieEmergency())
   {
@@ -529,16 +529,16 @@ LABEL_5:
     v17[1] = 3221225472;
     v17[2] = sub_1A8308B08;
     v17[3] = &unk_1E7812258;
-    v18 = v7;
+    v18 = completionCopy;
     objc_msgSend_requestStewieWithContext_completion_(v14, v15, v8, v17);
 
     v16 = v18;
     goto LABEL_12;
   }
 
-  if (objc_msgSend_isStewieRoadsideChat_(IMChorosMonitor, v9, v6))
+  if (objc_msgSend_isStewieRoadsideChat_(IMChorosMonitor, v9, identifierCopy))
   {
-    objc_msgSend__setStewieRoadsideContext_forChat_(self, v10, v8, v6);
+    objc_msgSend__setStewieRoadsideContext_forChat_(self, v10, v8, identifierCopy);
     goto LABEL_5;
   }
 
@@ -551,20 +551,20 @@ LABEL_5:
 LABEL_12:
 }
 
-- (void)placeEmergencyCallToHandle:(id)a3 completion:(id)a4
+- (void)placeEmergencyCallToHandle:(id)handle completion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  handleCopy = handle;
+  completionCopy = completion;
   v7 = objc_alloc_init(MEMORY[0x1E69D8A90]);
   v8 = objc_alloc(MEMORY[0x1E69D8BD0]);
   v11 = objc_msgSend_emergencyProvider(v7, v9, v10);
   v13 = objc_msgSend_initWithProvider_(v8, v12, v11);
 
   objc_msgSend_setDialType_(v13, v14, 1);
-  if (v5)
+  if (handleCopy)
   {
-    objc_msgSend_setHandle_(v13, v15, v5);
+    objc_msgSend_setHandle_(v13, v15, handleCopy);
     if (IMOSLoggingEnabled())
     {
       v16 = OSLogHandleForIMFoundationCategory();
@@ -592,7 +592,7 @@ LABEL_12:
     v34[1] = 3221225472;
     v34[2] = sub_1A8308EB8;
     v34[3] = &unk_1E7812258;
-    v35 = v6;
+    v35 = completionCopy;
     objc_msgSend_launchAppForDialRequest_completion_(v28, v29, v13, v34);
 
     v30 = v35;
@@ -607,9 +607,9 @@ LABEL_12:
     }
 
     v30 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], v32, @"IMChorosMonitorPlaceEmergencyCallErrorDomain", 1, 0);
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, v30);
+      (*(completionCopy + 2))(completionCopy, v30);
     }
   }
 
@@ -692,15 +692,15 @@ LABEL_12:
   return emergencyHandles;
 }
 
-+ (int64_t)serviceFromChatIdentifier:(id)a3
++ (int64_t)serviceFromChatIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (IMIsStringStewieEmergency())
   {
     v5 = 1;
   }
 
-  else if (objc_msgSend_isStewieRoadsideChat_(IMChorosMonitor, v4, v3))
+  else if (objc_msgSend_isStewieRoadsideChat_(IMChorosMonitor, v4, identifierCopy))
   {
     v5 = 8;
   }
@@ -744,12 +744,12 @@ LABEL_12:
   return MEMORY[0x1EEE66B58](IMChorosMonitor, sel_chatIdentifierForRoadside_, v2);
 }
 
-+ (id)roadsideProviderIDFromChatIdentifier:(id)a3
++ (id)roadsideProviderIDFromChatIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (objc_msgSend_serviceFromChatIdentifier_(IMChorosMonitor, v4, v3) == 8)
+  identifierCopy = identifier;
+  if (objc_msgSend_serviceFromChatIdentifier_(IMChorosMonitor, v4, identifierCopy) == 8)
   {
-    v6 = objc_msgSend_componentsSeparatedByString_(v3, v5, @":");
+    v6 = objc_msgSend_componentsSeparatedByString_(identifierCopy, v5, @":");
     if (objc_msgSend_count(v6, v7, v8) >= 3)
     {
       v10 = objc_opt_new();
@@ -771,9 +771,9 @@ LABEL_12:
   return v9;
 }
 
-- (id)roadsideProviderForProviderId:(int64_t)a3
+- (id)roadsideProviderForProviderId:(int64_t)id
 {
-  v4 = objc_msgSend_telephonyClient(self, a2, a3);
+  v4 = objc_msgSend_telephonyClient(self, a2, id);
   v5 = objc_opt_new();
   v17 = 0;
   v7 = objc_msgSend_fetchRoadsideProvidersWithContext_error_(v4, v6, v5, &v17);
@@ -804,7 +804,7 @@ LABEL_4:
   }
 
   v11 = objc_msgSend_providers(v7, v9, v10);
-  v14 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v13, a3);
+  v14 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v13, id);
   v12 = objc_msgSend_objectForKeyedSubscript_(v11, v15, v14);
 
 LABEL_7:
@@ -812,17 +812,17 @@ LABEL_7:
   return v12;
 }
 
-- (id)roadsideProviderNameForProviderId:(int64_t)a3
+- (id)roadsideProviderNameForProviderId:(int64_t)id
 {
-  v3 = objc_msgSend_roadsideProviderForProviderId_(self, a2, a3);
+  v3 = objc_msgSend_roadsideProviderForProviderId_(self, a2, id);
   v6 = objc_msgSend_providerName(v3, v4, v5);
 
   return v6;
 }
 
-- (id)roadsideBusinessIDForProviderId:(int64_t)a3
+- (id)roadsideBusinessIDForProviderId:(int64_t)id
 {
-  v3 = objc_msgSend_roadsideProviderForProviderId_(self, a2, a3);
+  v3 = objc_msgSend_roadsideProviderForProviderId_(self, a2, id);
   v6 = objc_msgSend_bizId(v3, v4, v5);
 
   if (objc_msgSend__appearsToBeBusinessID(v6, v7, v8))
@@ -840,11 +840,11 @@ LABEL_7:
   return v9;
 }
 
-- (id)roadsideProviderNameForChatIdentifier:(id)a3
+- (id)roadsideProviderNameForChatIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v7 = objc_msgSend_sharedRegistry(IMChatRegistry, v5, v6);
-  v9 = objc_msgSend_existingChatWithChatIdentifier_(v7, v8, v4);
+  v9 = objc_msgSend_existingChatWithChatIdentifier_(v7, v8, identifierCopy);
 
   v12 = objc_msgSend_displayName(v9, v10, v11);
   if (v12)
@@ -855,7 +855,7 @@ LABEL_7:
 
   else
   {
-    v16 = objc_msgSend_roadsideProviderIDFromChatIdentifier_(IMChorosMonitor, v13, v4);
+    v16 = objc_msgSend_roadsideProviderIDFromChatIdentifier_(IMChorosMonitor, v13, identifierCopy);
     v19 = v16;
     if (v16 && (v20 = objc_msgSend_integerValue(v16, v17, v18), objc_msgSend_roadsideProviderNameForProviderId_(self, v21, v20), (v22 = objc_claimAutoreleasedReturnValue()) != 0))
     {
@@ -875,11 +875,11 @@ LABEL_7:
   return v15;
 }
 
-- (id)roadsideBusinessIDForChatIdentifier:(id)a3
+- (id)roadsideBusinessIDForChatIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v7 = objc_msgSend_sharedRegistry(IMChatRegistry, v5, v6);
-  v9 = objc_msgSend_existingChatWithChatIdentifier_(v7, v8, v4);
+  v9 = objc_msgSend_existingChatWithChatIdentifier_(v7, v8, identifierCopy);
 
   v12 = objc_msgSend_associatedBusinessID(v9, v10, v11);
   if (v12)
@@ -889,7 +889,7 @@ LABEL_7:
 
   else
   {
-    v15 = objc_msgSend_roadsideProviderIDFromChatIdentifier_(IMChorosMonitor, v13, v4);
+    v15 = objc_msgSend_roadsideProviderIDFromChatIdentifier_(IMChorosMonitor, v13, identifierCopy);
     v18 = v15;
     if (v15)
     {
@@ -903,10 +903,10 @@ LABEL_7:
   return v14;
 }
 
-- (void)launchStewieForMessagingWithAppForegrounded:(BOOL)a3
+- (void)launchStewieForMessagingWithAppForegrounded:(BOOL)foregrounded
 {
-  v4 = self;
-  IMChorosMonitor.launchStewieForMessaging(withAppForegrounded:)(a3);
+  selfCopy = self;
+  IMChorosMonitor.launchStewieForMessaging(withAppForegrounded:)(foregrounded);
 }
 
 @end

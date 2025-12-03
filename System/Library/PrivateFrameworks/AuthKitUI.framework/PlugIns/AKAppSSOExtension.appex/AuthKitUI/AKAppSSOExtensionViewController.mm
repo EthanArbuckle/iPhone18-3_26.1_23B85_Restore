@@ -1,14 +1,14 @@
 @interface AKAppSSOExtensionViewController
 - (AKAppSSOExtensionViewController)init;
-- (BOOL)_auditTokenFromData:(id)a3 auditToken:(id *)a4;
-- (BOOL)_canProcessRequestForFirstParty:(id)a3;
-- (BOOL)checkEntitlementForAuditToken:(id *)a3 entitlement:(id)a4;
-- (id)topPresentedViewControllerForController:(id)a3;
-- (void)_handleUnknowRequest:(id)a3;
-- (void)_performAuthorizationWithRequest:(id)a3;
-- (void)_performPasswordResetNativeTakeOverWithRequest:(id)a3;
-- (void)beginAuthorizationWithRequest:(id)a3;
-- (void)cancelAuthorizationWithRequest:(id)a3;
+- (BOOL)_auditTokenFromData:(id)data auditToken:(id *)token;
+- (BOOL)_canProcessRequestForFirstParty:(id)party;
+- (BOOL)checkEntitlementForAuditToken:(id *)token entitlement:(id)entitlement;
+- (id)topPresentedViewControllerForController:(id)controller;
+- (void)_handleUnknowRequest:(id)request;
+- (void)_performAuthorizationWithRequest:(id)request;
+- (void)_performPasswordResetNativeTakeOverWithRequest:(id)request;
+- (void)beginAuthorizationWithRequest:(id)request;
+- (void)cancelAuthorizationWithRequest:(id)request;
 - (void)viewDidLoad;
 @end
 
@@ -36,22 +36,22 @@
 
 - (void)viewDidLoad
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v4.receiver = self;
   v4.super_class = AKAppSSOExtensionViewController;
   [(AKAppSSOExtensionViewController *)&v4 viewDidLoad];
   v3 = +[UIColor clearColor];
-  v2 = [(AKAppSSOExtensionViewController *)v6 view];
-  [v2 setBackgroundColor:v3];
+  view = [(AKAppSSOExtensionViewController *)selfCopy view];
+  [view setBackgroundColor:v3];
 }
 
-- (void)beginAuthorizationWithRequest:(id)a3
+- (void)beginAuthorizationWithRequest:(id)request
 {
-  v46 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v44 = _AKLogSystem();
   v43 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
@@ -62,13 +62,13 @@
   }
 
   objc_storeStrong(&v44, 0);
-  proxy = v46->_proxy;
+  proxy = selfCopy->_proxy;
   v16 = [location[0] url];
   v42 = [(AKWebAuthorizationController *)proxy _parseURLQueryParams:?];
 
   v41 = [location[0] url];
-  v17 = [location[0] authorizationOptions];
-  v18 = [v17 objectForKeyedSubscript:SOAuthorizationOptionInitiatorOrigin];
+  authorizationOptions = [location[0] authorizationOptions];
+  v18 = [authorizationOptions objectForKeyedSubscript:SOAuthorizationOptionInitiatorOrigin];
   v19 = [NSURL URLWithString:?];
   v38 = 0;
   v36 = 0;
@@ -107,7 +107,7 @@
 
   v35 = v4;
   v34 = [AKAuthorizationController isURLFromAppleOwnedDomain:v4];
-  if ((v34 & 1) == 0 || [(AKAppSSOExtensionViewController *)v46 _canProcessRequestForFirstParty:location[0]])
+  if ((v34 & 1) == 0 || [(AKAppSSOExtensionViewController *)selfCopy _canProcessRequestForFirstParty:location[0]])
   {
     v11 = [location[0] url];
     v12 = [AKAuthorizationController appSSORequestTypeForURL:?];
@@ -128,7 +128,7 @@
         }
 
         objc_storeStrong(v29, 0);
-        [(AKAppSSOExtensionViewController *)v46 _performAuthorizationWithRequest:location[0]];
+        [(AKAppSSOExtensionViewController *)selfCopy _performAuthorizationWithRequest:location[0]];
       }
 
       else if (v12 == 2)
@@ -144,7 +144,7 @@
         }
 
         objc_storeStrong(&v26, 0);
-        [(AKAppSSOExtensionViewController *)v46 _performPasswordResetNativeTakeOverWithRequest:location[0]];
+        [(AKAppSSOExtensionViewController *)selfCopy _performPasswordResetNativeTakeOverWithRequest:location[0]];
       }
     }
 
@@ -161,7 +161,7 @@
       }
 
       objc_storeStrong(&v23, 0);
-      [(AKAppSSOExtensionViewController *)v46 _handleUnknowRequest:location[0]];
+      [(AKAppSSOExtensionViewController *)selfCopy _handleUnknowRequest:location[0]];
     }
 
     v30 = 0;
@@ -191,12 +191,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)cancelAuthorizationWithRequest:(id)a3
+- (void)cancelAuthorizationWithRequest:(id)request
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v7 = _AKLogSystem();
   v6 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -211,26 +211,26 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_performAuthorizationWithRequest:(id)a3
+- (void)_performAuthorizationWithRequest:(id)request
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKWebAuthorizationController *)v4->_proxy beginAuthorizationWithRequest:location[0]];
+  objc_storeStrong(location, request);
+  [(AKWebAuthorizationController *)selfCopy->_proxy beginAuthorizationWithRequest:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)_performPasswordResetNativeTakeOverWithRequest:(id)a3
+- (void)_performPasswordResetNativeTakeOverWithRequest:(id)request
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v7 = +[AKFeatureManager sharedManager];
-  v8 = [v7 isForgotPasswordNativeTakeoverEnabled];
+  isForgotPasswordNativeTakeoverEnabled = [v7 isForgotPasswordNativeTakeoverEnabled];
 
-  if (v8)
+  if (isForgotPasswordNativeTakeoverEnabled)
   {
     v16 = objc_alloc_init(AKPasswordResetController);
     v4 = v16;
@@ -262,44 +262,44 @@
     }
 
     objc_storeStrong(&v20, 0);
-    [(AKAppSSOExtensionViewController *)v22 _handleUnknowRequest:location[0]];
+    [(AKAppSSOExtensionViewController *)selfCopy _handleUnknowRequest:location[0]];
     v17 = 1;
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleUnknowRequest:(id)a3
+- (void)_handleUnknowRequest:(id)request
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v3 = [NSError errorWithDomain:AKAppleIDAuthenticationErrorDomain code:-7111 userInfo:0];
   [location[0] completeWithError:v3];
   objc_storeStrong(&v3, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)topPresentedViewControllerForController:(id)a3
+- (id)topPresentedViewControllerForController:(id)controller
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v8 = location[0];
   while (1)
   {
-    v7 = [v8 presentedViewController];
+    presentedViewController = [v8 presentedViewController];
 
-    if (!v7)
+    if (!presentedViewController)
     {
       break;
     }
 
-    v3 = [v8 presentedViewController];
+    presentedViewController2 = [v8 presentedViewController];
     v4 = v8;
-    v8 = v3;
+    v8 = presentedViewController2;
   }
 
   v6 = v8;
@@ -309,16 +309,16 @@
   return v6;
 }
 
-- (BOOL)_canProcessRequestForFirstParty:(id)a3
+- (BOOL)_canProcessRequestForFirstParty:(id)party
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, party);
   v7 = +[AKURLBag sharedBag];
-  v8 = [v7 isFirstPartyURLEntitlementCheckDisabled];
+  isFirstPartyURLEntitlementCheckDisabled = [v7 isFirstPartyURLEntitlementCheckDisabled];
 
-  if (v8 == 1)
+  if (isFirstPartyURLEntitlementCheckDisabled == 1)
   {
     v16 = _AKLogSystem();
     v15 = OS_LOG_TYPE_DEFAULT;
@@ -337,16 +337,16 @@
 
   else
   {
-    v4 = [location[0] authorizationRequest];
-    v12 = [v4 auditTokenData];
+    authorizationRequest = [location[0] authorizationRequest];
+    auditTokenData = [authorizationRequest auditTokenData];
 
     v10 = 0u;
     v11 = 0u;
-    if ([(AKAppSSOExtensionViewController *)v18 _auditTokenFromData:v12 auditToken:&v10])
+    if ([(AKAppSSOExtensionViewController *)selfCopy _auditTokenFromData:auditTokenData auditToken:&v10])
     {
       v9[0] = v10;
       v9[1] = v11;
-      v19 = [(AKAppSSOExtensionViewController *)v18 checkEntitlementForAuditToken:v9 entitlement:@"com.apple.developer.web-browser"];
+      v19 = [(AKAppSSOExtensionViewController *)selfCopy checkEntitlementForAuditToken:v9 entitlement:@"com.apple.developer.web-browser"];
     }
 
     else
@@ -355,25 +355,25 @@
     }
 
     v13 = 1;
-    objc_storeStrong(&v12, 0);
+    objc_storeStrong(&auditTokenData, 0);
   }
 
   objc_storeStrong(location, 0);
   return v19 & 1;
 }
 
-- (BOOL)_auditTokenFromData:(id)a3 auditToken:(id *)a4
+- (BOOL)_auditTokenFromData:(id)data auditToken:(id *)token
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = a4;
+  objc_storeStrong(location, data);
+  tokenCopy = token;
   if (location[0])
   {
     if ([location[0] length] == 32)
     {
-      if (v10)
+      if (tokenCopy)
       {
         v6 = location[0];
         v4 = location[0];
@@ -410,14 +410,14 @@
   return v12 & 1;
 }
 
-- (BOOL)checkEntitlementForAuditToken:(id *)a3 entitlement:(id)a4
+- (BOOL)checkEntitlementForAuditToken:(id *)token entitlement:(id)entitlement
 {
   location[3] = self;
   location[2] = a2;
-  location[1] = a3;
+  location[1] = token;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  token = *a3;
+  objc_storeStrong(location, entitlement);
+  token = *token;
   v21 = SecTaskCreateWithAuditToken(kCFAllocatorDefault, &token);
   v19 = 0;
   error = 0;

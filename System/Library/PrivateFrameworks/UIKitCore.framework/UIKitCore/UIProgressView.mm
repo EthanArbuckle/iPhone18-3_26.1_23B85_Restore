@@ -1,21 +1,21 @@
 @interface UIProgressView
 + (CGSize)defaultSize;
-+ (Class)visualElementClassForTraitCollection:(id)a3;
-+ (id)visualElementForTraitCollection:(id)a3;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
++ (Class)visualElementClassForTraitCollection:(id)collection;
++ (id)visualElementForTraitCollection:(id)collection;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
 - (UIEdgeInsets)alignmentRectInsets;
 - (UIProgressView)initWithCoder:(NSCoder *)coder;
 - (UIProgressView)initWithFrame:(CGRect)frame;
 - (UIProgressView)initWithProgressViewStyle:(UIProgressViewStyle)style;
-- (void)_populateArchivedSubviews:(id)a3;
+- (void)_populateArchivedSubviews:(id)subviews;
 - (void)_refreshVisualElement;
-- (void)_refreshVisualElementForTraitCollection:(id)a3 populatingAPIProperties:(BOOL)a4;
-- (void)_setProgressAnimated:(float)a3 duration:(double)a4 delay:(double)a5 options:(unint64_t)a6;
-- (void)encodeWithCoder:(id)a3;
+- (void)_refreshVisualElementForTraitCollection:(id)collection populatingAPIProperties:(BOOL)properties;
+- (void)_setProgressAnimated:(float)animated duration:(double)duration delay:(double)delay options:(unint64_t)options;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)setBarStyle:(int64_t)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBarStyle:(int64_t)style;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 - (void)setObservedProgress:(NSProgress *)observedProgress;
 - (void)setProgress:(float)progress;
 - (void)setProgress:(float)progress animated:(BOOL)animated;
@@ -30,8 +30,8 @@
 
 - (void)_refreshVisualElement
 {
-  v3 = [(UIView *)self traitCollection];
-  [(UIProgressView *)self _refreshVisualElementForTraitCollection:v3 populatingAPIProperties:0];
+  traitCollection = [(UIView *)self traitCollection];
+  [(UIProgressView *)self _refreshVisualElementForTraitCollection:traitCollection populatingAPIProperties:0];
 }
 
 - (UIProgressView)initWithFrame:(CGRect)frame
@@ -110,71 +110,71 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = UIProgressView;
-  [(UIView *)&v10 encodeWithCoder:v4];
+  [(UIView *)&v10 encodeWithCoder:coderCopy];
   progressViewStyle = self->_progressViewStyle;
   if (progressViewStyle)
   {
-    [v4 encodeInteger:progressViewStyle forKey:@"UIProgressViewStyle"];
+    [coderCopy encodeInteger:progressViewStyle forKey:@"UIProgressViewStyle"];
   }
 
   if (self->_progress != 0.0)
   {
-    [v4 encodeFloat:@"UIProgress" forKey:?];
+    [coderCopy encodeFloat:@"UIProgress" forKey:?];
   }
 
   trackTintColor = self->_trackTintColor;
   if (trackTintColor)
   {
-    [v4 encodeObject:trackTintColor forKey:@"UIProgressTrackTintColor"];
+    [coderCopy encodeObject:trackTintColor forKey:@"UIProgressTrackTintColor"];
   }
 
   progressTintColor = self->_progressTintColor;
   if (progressTintColor)
   {
-    [v4 encodeObject:progressTintColor forKey:@"UIProgressProgressTintColor"];
+    [coderCopy encodeObject:progressTintColor forKey:@"UIProgressProgressTintColor"];
   }
 
   trackImage = self->_trackImage;
   if (trackImage)
   {
-    [v4 encodeObject:trackImage forKey:@"UIProgressTrackImage"];
+    [coderCopy encodeObject:trackImage forKey:@"UIProgressTrackImage"];
   }
 
   progressImage = self->_progressImage;
   if (progressImage)
   {
-    [v4 encodeObject:progressImage forKey:@"UIProgressProgressImage"];
+    [coderCopy encodeObject:progressImage forKey:@"UIProgressProgressImage"];
   }
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   v5.receiver = self;
   v5.super_class = UIProgressView;
-  [(UIView *)&v5 _populateArchivedSubviews:v4];
+  [(UIView *)&v5 _populateArchivedSubviews:subviewsCopy];
   if (self->_visualElement)
   {
     if ([objc_opt_class() usesLegacySubviewStructure])
     {
-      [(UIProgressViewVisualElement *)self->_visualElement removeLegacySubviewsForArchive:v4];
+      [(UIProgressViewVisualElement *)self->_visualElement removeLegacySubviewsForArchive:subviewsCopy];
     }
 
-    [v4 removeObject:self->_visualElement];
+    [subviewsCopy removeObject:self->_visualElement];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (![(UIView *)self _canDrawContent])
   {
     [(UIProgressView *)self sizeThatFits:width, height];
@@ -203,12 +203,12 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if (![(UIView *)self _canDrawContent]&& (*(&self->super._viewFlags + 7) & 2) == 0)
   {
     [(UIProgressView *)self sizeThatFits:width, height];
@@ -237,10 +237,10 @@
   }
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (self && (visualElement = self->_visualElement) != 0)
   {
 
@@ -250,8 +250,8 @@
   else
   {
     v9 = objc_opt_class();
-    v10 = [(UIView *)self traitCollection];
-    [objc_msgSend(v9 visualElementClassForTraitCollection:{v10), "intrinsicSizeWithinSize:control:", self, width, height}];
+    traitCollection = [(UIView *)self traitCollection];
+    [objc_msgSend(v9 visualElementClassForTraitCollection:{traitCollection), "intrinsicSizeWithinSize:control:", self, width, height}];
     v12 = v11;
     v14 = v13;
 
@@ -479,10 +479,10 @@ LABEL_5:
   }
 }
 
-+ (Class)visualElementClassForTraitCollection:(id)a3
++ (Class)visualElementClassForTraitCollection:(id)collection
 {
-  v3 = [a3 userInterfaceIdiom];
-  if (v3 < 2 || v3 == 8)
+  userInterfaceIdiom = [collection userInterfaceIdiom];
+  if (userInterfaceIdiom < 2 || userInterfaceIdiom == 8)
   {
     v4 = objc_opt_class();
   }
@@ -495,27 +495,27 @@ LABEL_5:
   return v4;
 }
 
-+ (id)visualElementForTraitCollection:(id)a3
++ (id)visualElementForTraitCollection:(id)collection
 {
-  v3 = [a1 visualElementClassForTraitCollection:a3];
+  v3 = [self visualElementClassForTraitCollection:collection];
   v4 = [objc_msgSend(v3 "alloc")];
 
   return v4;
 }
 
-- (void)_refreshVisualElementForTraitCollection:(id)a3 populatingAPIProperties:(BOOL)a4
+- (void)_refreshVisualElementForTraitCollection:(id)collection populatingAPIProperties:(BOOL)properties
 {
-  v4 = a4;
+  propertiesCopy = properties;
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [objc_opt_class() visualElementForTraitCollection:v7];
+  collectionCopy = collection;
+  v8 = [objc_opt_class() visualElementForTraitCollection:collectionCopy];
   if (!v8)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"UIProgressView.m" lineNumber:376 description:@"Nil UIProgressView visual element"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIProgressView.m" lineNumber:376 description:@"Nil UIProgressView visual element"];
   }
 
-  v9 = [objc_opt_class() usesLegacySubviewStructure];
+  usesLegacySubviewStructure = [objc_opt_class() usesLegacySubviewStructure];
   if (self)
   {
     [(UIProgressViewVisualElement *)self->_visualElement removeFromSuperview];
@@ -529,14 +529,14 @@ LABEL_5:
   }
 
   [(UIProgressViewVisualElement *)visualElement setProgressControlView:0];
-  if (v9)
+  if (usesLegacySubviewStructure)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = [(UIView *)self subviews];
-    v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    subviews = [(UIView *)self subviews];
+    v12 = [subviews countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v12)
     {
       v13 = v12;
@@ -547,13 +547,13 @@ LABEL_5:
         {
           if (*v20 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(subviews);
           }
 
           [*(*(&v19 + 1) + 8 * i) removeFromSuperview];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v13 = [subviews countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v13);
@@ -565,11 +565,11 @@ LABEL_5:
     objc_storeStrong(&self->_visualElement, v8);
   }
 
-  v16 = [objc_opt_class() usesLegacySubviewStructure];
+  usesLegacySubviewStructure2 = [objc_opt_class() usesLegacySubviewStructure];
   [v8 setAutoresizingMask:18];
   [(UIView *)self bounds];
   [v8 setFrame:?];
-  if (v16)
+  if (usesLegacySubviewStructure2)
   {
     [v8 setProgressControlView:self];
     [(UIView *)self addSubview:v8];
@@ -586,7 +586,7 @@ LABEL_5:
   [(UIView *)self setNeedsDisplay];
   *&v17 = self->_progress;
   [v8 setProgress:0 animated:0 duration:v17 delay:0.0 options:0.0];
-  if (v4)
+  if (propertiesCopy)
   {
     [v8 setProgressViewStyle:self->_progressViewStyle];
     [v8 setProgressImage:self->_progressImage];
@@ -597,18 +597,18 @@ LABEL_5:
   }
 }
 
-- (void)setBarStyle:(int64_t)a3
+- (void)setBarStyle:(int64_t)style
 {
-  if (self->_barStyle != a3)
+  if (self->_barStyle != style)
   {
-    self->_barStyle = a3;
+    self->_barStyle = style;
     [(UIProgressViewVisualElement *)self->_visualElement setBarStyle:?];
   }
 }
 
-- (void)_setProgressAnimated:(float)a3 duration:(double)a4 delay:(double)a5 options:(unint64_t)a6
+- (void)_setProgressAnimated:(float)animated duration:(double)duration delay:(double)delay options:(unint64_t)options
 {
-  v7 = fmin(a3, 1.0);
+  v7 = fmin(animated, 1.0);
   if (v7 < 0.0)
   {
     v7 = 0.0;
@@ -622,7 +622,7 @@ LABEL_5:
     visualElement = self->_visualElement;
     *&v12 = v8;
 
-    [(UIProgressViewVisualElement *)visualElement setProgress:1 animated:a6 duration:v12 delay:a4 options:0.0];
+    [(UIProgressViewVisualElement *)visualElement setProgress:1 animated:options duration:v12 delay:duration options:0.0];
   }
 }
 

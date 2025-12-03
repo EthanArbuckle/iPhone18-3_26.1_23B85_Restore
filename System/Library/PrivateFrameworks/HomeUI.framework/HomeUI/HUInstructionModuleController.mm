@@ -1,18 +1,18 @@
 @interface HUInstructionModuleController
-- (Class)collectionCellClassForItem:(id)a3;
-- (HUInstructionModuleController)initWithModule:(id)a3;
-- (void)configureCell:(id)a3 forItem:(id)a4;
+- (Class)collectionCellClassForItem:(id)item;
+- (HUInstructionModuleController)initWithModule:(id)module;
+- (void)configureCell:(id)cell forItem:(id)item;
 @end
 
 @implementation HUInstructionModuleController
 
-- (Class)collectionCellClassForItem:(id)a3
+- (Class)collectionCellClassForItem:(id)item
 {
   sub_20CECF940(0, &qword_27C820E40);
   ObjCClassFromMetadata = swift_getObjCClassFromMetadata();
-  v6 = a3;
-  v7 = self;
-  if ([v6 isKindOfClass_])
+  itemCopy = item;
+  selfCopy = self;
+  if ([itemCopy isKindOfClass_])
   {
 
     sub_20CECF940(0, &qword_27C81E2B8);
@@ -20,9 +20,9 @@
 
   else
   {
-    v9.receiver = v7;
+    v9.receiver = selfCopy;
     v9.super_class = type metadata accessor for InstructionModuleController();
-    [(HUItemModuleController *)&v9 collectionCellClassForItem:v6];
+    [(HUItemModuleController *)&v9 collectionCellClassForItem:itemCopy];
 
     swift_getObjCClassMetadata();
   }
@@ -30,19 +30,19 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)configureCell:(id)a3 forItem:(id)a4
+- (void)configureCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_20CFD77C8(v6, v7);
+  cellCopy = cell;
+  itemCopy = item;
+  selfCopy = self;
+  sub_20CFD77C8(cellCopy, itemCopy);
 }
 
-- (HUInstructionModuleController)initWithModule:(id)a3
+- (HUInstructionModuleController)initWithModule:(id)module
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for InstructionModuleController();
-  return [(HUItemModuleController *)&v5 initWithModule:a3];
+  return [(HUItemModuleController *)&v5 initWithModule:module];
 }
 
 @end

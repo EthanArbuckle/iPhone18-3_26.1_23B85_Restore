@@ -1,67 +1,67 @@
 @interface PMSharedAccountsGroupMemberPickerViewController
-- (BOOL)_atleastOneRecipientIneligibleForSharing:(id)a3;
-- (BOOL)_cachedIsRecipientEligible:(id)a3;
-- (BOOL)_doesGroupOnlyContainKnownContacts:(id)a3;
-- (BOOL)_hasEligibilityCachedForRecipient:(id)a3;
-- (BOOL)_isAddressAlreadyPartOfGroupOrInvitedAddresses:(id)a3;
-- (BOOL)_isEveryMemberInContactsGroupAlreadyInSharingGroup:(id)a3;
-- (BOOL)_isEveryRecipientEligibleForSharing:(id)a3;
-- (BOOL)_isEveryRecipientIneligibleForSharing:(id)a3;
-- (PMSharedAccountsGroupMemberPickerViewController)initWithAlreadyAddedAddresses:(id)a3;
+- (BOOL)_atleastOneRecipientIneligibleForSharing:(id)sharing;
+- (BOOL)_cachedIsRecipientEligible:(id)eligible;
+- (BOOL)_doesGroupOnlyContainKnownContacts:(id)contacts;
+- (BOOL)_hasEligibilityCachedForRecipient:(id)recipient;
+- (BOOL)_isAddressAlreadyPartOfGroupOrInvitedAddresses:(id)addresses;
+- (BOOL)_isEveryMemberInContactsGroupAlreadyInSharingGroup:(id)group;
+- (BOOL)_isEveryRecipientEligibleForSharing:(id)sharing;
+- (BOOL)_isEveryRecipientIneligibleForSharing:(id)sharing;
+- (PMSharedAccountsGroupMemberPickerViewController)initWithAlreadyAddedAddresses:(id)addresses;
 - (PMSharedAccountsGroupMemberPickerViewControllerDelegate)delegate;
-- (id)_eligibleRecipientsFromRecipients:(id)a3;
-- (id)_recipientsWithEligibleAddressesAsDefaultAddressesIfPossible:(id)a3;
-- (unint64_t)presentationOptionsForRecipient:(id)a3;
+- (id)_eligibleRecipientsFromRecipients:(id)recipients;
+- (id)_recipientsWithEligibleAddressesAsDefaultAddressesIfPossible:(id)possible;
+- (unint64_t)presentationOptionsForRecipient:(id)recipient;
 - (void)_addMembersButtonPressed;
-- (void)_addRecipient:(id)a3;
+- (void)_addRecipient:(id)recipient;
 - (void)_cancelButtonPressed;
-- (void)_fetchEligibilityForRecipient:(id)a3 completionHandler:(id)a4;
-- (void)_handleSelectionForMultipleRecipientsInGroup:(id)a3;
-- (void)_handleSelectionForSingleRecipient:(id)a3;
-- (void)_presentAlertForIneligileRecipient:(id)a3;
+- (void)_fetchEligibilityForRecipient:(id)recipient completionHandler:(id)handler;
+- (void)_handleSelectionForMultipleRecipientsInGroup:(id)group;
+- (void)_handleSelectionForSingleRecipient:(id)recipient;
+- (void)_presentAlertForIneligileRecipient:(id)recipient;
 - (void)_presentAlertWhenAllRecipientAreIneligible;
-- (void)_presentAlertWhenSubsetOfRecipientsAreIneligible:(id)a3;
+- (void)_presentAlertWhenSubsetOfRecipientsAreIneligible:(id)ineligible;
 - (void)_resetSearchQuery;
-- (void)_updatePreferredHandleForRecipientIfNecessary:(id)a3;
+- (void)_updatePreferredHandleForRecipientIfNecessary:(id)necessary;
 - (void)_updateRecipientTextViewHeight;
-- (void)autocompleteResultsController:(id)a3 didRequestInfoAboutRecipient:(id)a4;
-- (void)autocompleteResultsController:(id)a3 didSelectRecipient:(id)a4 atIndex:(unint64_t)a5;
-- (void)autocompleteResultsController:(id)a3 tintColorForRecipient:(id)a4 completion:(id)a5;
-- (void)composeRecipientView:(id)a3 didRemoveRecipient:(id)a4;
-- (void)composeRecipientView:(id)a3 textDidChange:(id)a4;
-- (void)consumeAutocompleteSearchResults:(id)a3 taskID:(id)a4;
+- (void)autocompleteResultsController:(id)controller didRequestInfoAboutRecipient:(id)recipient;
+- (void)autocompleteResultsController:(id)controller didSelectRecipient:(id)recipient atIndex:(unint64_t)index;
+- (void)autocompleteResultsController:(id)controller tintColorForRecipient:(id)recipient completion:(id)completion;
+- (void)composeRecipientView:(id)view didRemoveRecipient:(id)recipient;
+- (void)composeRecipientView:(id)view textDidChange:(id)change;
+- (void)consumeAutocompleteSearchResults:(id)results taskID:(id)d;
 - (void)finishedSearchingForAutocompleteResults;
 - (void)viewDidLoad;
 @end
 
 @implementation PMSharedAccountsGroupMemberPickerViewController
 
-- (PMSharedAccountsGroupMemberPickerViewController)initWithAlreadyAddedAddresses:(id)a3
+- (PMSharedAccountsGroupMemberPickerViewController)initWithAlreadyAddedAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   v29.receiver = self;
   v29.super_class = PMSharedAccountsGroupMemberPickerViewController;
   v5 = [(PMSharedAccountsGroupMemberPickerViewController *)&v29 init];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:v5 action:sel__cancelButtonPressed];
-    v7 = [(PMSharedAccountsGroupMemberPickerViewController *)v5 navigationItem];
-    [v7 setLeftBarButtonItem:v6];
+    navigationItem = [(PMSharedAccountsGroupMemberPickerViewController *)v5 navigationItem];
+    [navigationItem setLeftBarButtonItem:v6];
 
     v8 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:v5 action:sel__addMembersButtonPressed];
     v9 = _WBSLocalizedString();
     [v8 setAccessibilityLabel:v9];
 
-    v10 = [(PMSharedAccountsGroupMemberPickerViewController *)v5 navigationItem];
-    [v10 setRightBarButtonItem:v8];
+    navigationItem2 = [(PMSharedAccountsGroupMemberPickerViewController *)v5 navigationItem];
+    [navigationItem2 setRightBarButtonItem:v8];
 
-    v11 = [(PMSharedAccountsGroupMemberPickerViewController *)v5 navigationItem];
-    v12 = [v11 rightBarButtonItem];
-    [v12 setEnabled:0];
+    navigationItem3 = [(PMSharedAccountsGroupMemberPickerViewController *)v5 navigationItem];
+    rightBarButtonItem = [navigationItem3 rightBarButtonItem];
+    [rightBarButtonItem setEnabled:0];
 
     v13 = _WBSLocalizedString();
-    v14 = [(PMSharedAccountsGroupMemberPickerViewController *)v5 navigationItem];
-    [v14 setTitle:v13];
+    navigationItem4 = [(PMSharedAccountsGroupMemberPickerViewController *)v5 navigationItem];
+    [navigationItem4 setTitle:v13];
 
     v15 = [objc_alloc(MEMORY[0x277CFBC98]) initWithAutocompleteSearchType:1];
     contactsSearchManager = v5->_contactsSearchManager;
@@ -73,21 +73,21 @@
     addressesThatHaveBeenFetched = v5->_addressesThatHaveBeenFetched;
     v5->_addressesThatHaveBeenFetched = v17;
 
-    v19 = [v4 copy];
+    v19 = [addressesCopy copy];
     alreadyAddedAddresses = v5->_alreadyAddedAddresses;
     v5->_alreadyAddedAddresses = v19;
 
-    v21 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     addressToEligibility = v5->_addressToEligibility;
-    v5->_addressToEligibility = v21;
+    v5->_addressToEligibility = dictionary;
 
     v23 = [MEMORY[0x277CBEB58] set];
     addressesCurrentlyBeingCheckedForAvailability = v5->_addressesCurrentlyBeingCheckedForAvailability;
     v5->_addressesCurrentlyBeingCheckedForAvailability = v23;
 
-    v25 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     otherRecipientsAwaitingEligibilityForAddress = v5->_otherRecipientsAwaitingEligibilityForAddress;
-    v5->_otherRecipientsAwaitingEligibilityForAddress = v25;
+    v5->_otherRecipientsAwaitingEligibilityForAddress = dictionary2;
 
     v27 = v5;
   }
@@ -101,9 +101,9 @@
   v44.receiver = self;
   v44.super_class = PMSharedAccountsGroupMemberPickerViewController;
   [(PMSharedAccountsGroupMemberPickerViewController *)&v44 viewDidLoad];
-  v3 = [(PMSharedAccountsGroupMemberPickerViewController *)self view];
-  v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PMSharedAccountsGroupMemberPickerViewController *)self view];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
   v5 = objc_alloc_init(MEMORY[0x277CFBCB0]);
   recipientTextView = self->_recipientTextView;
@@ -115,57 +115,57 @@
   v7 = _WBSLocalizedString();
   [(CNComposeRecipientTextView *)self->_recipientTextView setLabel:v7];
 
-  [v3 addSubview:self->_recipientTextView];
+  [view addSubview:self->_recipientTextView];
   v8 = objc_alloc_init(MEMORY[0x277CFBC80]);
   contactsResultsTableViewController = self->_contactsResultsTableViewController;
   self->_contactsResultsTableViewController = v8;
 
   [(CNAutocompleteResultsTableViewController *)self->_contactsResultsTableViewController setDelegate:self];
-  v10 = [(CNAutocompleteResultsTableViewController *)self->_contactsResultsTableViewController view];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view2 = [(CNAutocompleteResultsTableViewController *)self->_contactsResultsTableViewController view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(CNAutocompleteResultsTableViewController *)self->_contactsResultsTableViewController view];
-  v11 = v43 = v3;
-  [v3 addSubview:?];
-  v12 = [(CNComposeRecipientTextView *)self->_recipientTextView heightAnchor];
+  v11 = v43 = view;
+  [view addSubview:?];
+  heightAnchor = [(CNComposeRecipientTextView *)self->_recipientTextView heightAnchor];
   [MEMORY[0x277CFBCB0] preferredHeight];
-  v13 = [v12 constraintEqualToConstant:?];
+  v13 = [heightAnchor constraintEqualToConstant:?];
   recipientTextViewHeightConstraint = self->_recipientTextViewHeightConstraint;
   self->_recipientTextViewHeightConstraint = v13;
 
-  v15 = [v3 safeAreaLayoutGuide];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
   v33 = MEMORY[0x277CCAAD0];
-  v42 = [(CNComposeRecipientTextView *)self->_recipientTextView topAnchor];
-  v41 = [v15 topAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  topAnchor = [(CNComposeRecipientTextView *)self->_recipientTextView topAnchor];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v40 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v45[0] = v40;
-  v39 = [(CNComposeRecipientTextView *)self->_recipientTextView leadingAnchor];
-  v38 = [v15 leadingAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  leadingAnchor = [(CNComposeRecipientTextView *)self->_recipientTextView leadingAnchor];
+  leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+  v37 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v45[1] = v37;
-  v36 = [(CNComposeRecipientTextView *)self->_recipientTextView trailingAnchor];
-  v35 = [v15 trailingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  trailingAnchor = [(CNComposeRecipientTextView *)self->_recipientTextView trailingAnchor];
+  trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
+  v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v16 = self->_recipientTextViewHeightConstraint;
   v45[2] = v34;
   v45[3] = v16;
   v17 = v11;
-  v31 = [v11 bottomAnchor];
-  v30 = [v15 bottomAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  bottomAnchor = [v11 bottomAnchor];
+  bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+  v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v45[4] = v29;
-  v28 = [v11 leadingAnchor];
-  v27 = [v15 leadingAnchor];
-  v18 = [v28 constraintEqualToAnchor:v27];
+  leadingAnchor3 = [v11 leadingAnchor];
+  leadingAnchor4 = [safeAreaLayoutGuide leadingAnchor];
+  v18 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v45[5] = v18;
   v32 = v11;
-  v19 = [v11 trailingAnchor];
-  v20 = [v15 trailingAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  trailingAnchor3 = [v11 trailingAnchor];
+  trailingAnchor4 = [safeAreaLayoutGuide trailingAnchor];
+  v21 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v45[6] = v21;
-  v22 = [v17 topAnchor];
-  v23 = [(CNComposeRecipientTextView *)self->_recipientTextView bottomAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  topAnchor3 = [v17 topAnchor];
+  bottomAnchor3 = [(CNComposeRecipientTextView *)self->_recipientTextView bottomAnchor];
+  v24 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3];
   v45[7] = v24;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:8];
   [v33 activateConstraints:v25];
@@ -176,29 +176,29 @@
 
 - (void)_addMembersButtonPressed
 {
-  v5 = [(CNComposeRecipientTextView *)self->_recipientTextView recipients];
+  recipients = [(CNComposeRecipientTextView *)self->_recipientTextView recipients];
   if ([(PMSharedAccountsGroupMemberPickerViewController *)self _isEveryRecipientIneligibleForSharing:?])
   {
-    if ([v5 count] != 1)
+    if ([recipients count] != 1)
     {
       [(PMSharedAccountsGroupMemberPickerViewController *)self _presentAlertWhenAllRecipientAreIneligible];
       goto LABEL_9;
     }
 
-    WeakRetained = [v5 firstObject];
+    WeakRetained = [recipients firstObject];
     [(PMSharedAccountsGroupMemberPickerViewController *)self _presentAlertForIneligileRecipient:WeakRetained];
   }
 
   else
   {
-    if ([(PMSharedAccountsGroupMemberPickerViewController *)self _atleastOneRecipientIneligibleForSharing:v5])
+    if ([(PMSharedAccountsGroupMemberPickerViewController *)self _atleastOneRecipientIneligibleForSharing:recipients])
     {
-      [(PMSharedAccountsGroupMemberPickerViewController *)self _presentAlertWhenSubsetOfRecipientsAreIneligible:v5];
+      [(PMSharedAccountsGroupMemberPickerViewController *)self _presentAlertWhenSubsetOfRecipientsAreIneligible:recipients];
       goto LABEL_9;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v4 = [(PMSharedAccountsGroupMemberPickerViewController *)self _eligibleRecipientsFromRecipients:v5];
+    v4 = [(PMSharedAccountsGroupMemberPickerViewController *)self _eligibleRecipientsFromRecipients:recipients];
     [WeakRetained memberPickerViewController:self addedRecipients:v4];
   }
 
@@ -211,10 +211,10 @@ LABEL_9:
   [WeakRetained memberPickerViewController:self addedRecipients:0];
 }
 
-- (BOOL)_doesGroupOnlyContainKnownContacts:(id)a3
+- (BOOL)_doesGroupOnlyContainKnownContacts:(id)contacts
 {
-  v3 = [a3 children];
-  v4 = [v3 safari_allObjectsPassTest:&__block_literal_global_2];
+  children = [contacts children];
+  v4 = [children safari_allObjectsPassTest:&__block_literal_global_2];
 
   return v4;
 }
@@ -227,15 +227,15 @@ BOOL __86__PMSharedAccountsGroupMemberPickerViewController__doesGroupOnlyContain
   return v3;
 }
 
-- (BOOL)_isEveryMemberInContactsGroupAlreadyInSharingGroup:(id)a3
+- (BOOL)_isEveryMemberInContactsGroupAlreadyInSharingGroup:(id)group
 {
-  v4 = [a3 children];
+  children = [group children];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __102__PMSharedAccountsGroupMemberPickerViewController__isEveryMemberInContactsGroupAlreadyInSharingGroup___block_invoke;
   v6[3] = &unk_27831CC28;
   v6[4] = self;
-  LOBYTE(self) = [v4 safari_allObjectsPassTest:v6];
+  LOBYTE(self) = [children safari_allObjectsPassTest:v6];
 
   return self;
 }
@@ -249,39 +249,39 @@ uint64_t __102__PMSharedAccountsGroupMemberPickerViewController__isEveryMemberIn
   return v4;
 }
 
-- (BOOL)_isAddressAlreadyPartOfGroupOrInvitedAddresses:(id)a3
+- (BOOL)_isAddressAlreadyPartOfGroupOrInvitedAddresses:(id)addresses
 {
-  v4 = a3;
-  v5 = [(CNComposeRecipientTextView *)self->_recipientTextView uncommentedAddresses];
-  v6 = ([v5 containsObject:v4] & 1) != 0 || -[NSSet containsObject:](self->_alreadyAddedAddresses, "containsObject:", v4);
+  addressesCopy = addresses;
+  uncommentedAddresses = [(CNComposeRecipientTextView *)self->_recipientTextView uncommentedAddresses];
+  v6 = ([uncommentedAddresses containsObject:addressesCopy] & 1) != 0 || -[NSSet containsObject:](self->_alreadyAddedAddresses, "containsObject:", addressesCopy);
 
   return v6;
 }
 
-- (BOOL)_hasEligibilityCachedForRecipient:(id)a3
+- (BOOL)_hasEligibilityCachedForRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = [v4 children];
-  v6 = [v5 count];
+  recipientCopy = recipient;
+  children = [recipientCopy children];
+  v6 = [children count];
 
   if (v6)
   {
-    v7 = [v4 children];
+    children2 = [recipientCopy children];
 
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __85__PMSharedAccountsGroupMemberPickerViewController__hasEligibilityCachedForRecipient___block_invoke;
     v12[3] = &unk_27831CC28;
     v12[4] = self;
-    v8 = [v7 safari_allObjectsPassTest:v12];
+    v8 = [children2 safari_allObjectsPassTest:v12];
   }
 
   else
   {
     addressToEligibility = self->_addressToEligibility;
-    v7 = [v4 normalizedAddress];
+    children2 = [recipientCopy normalizedAddress];
 
-    v10 = [(NSMutableDictionary *)addressToEligibility objectForKeyedSubscript:v7];
+    v10 = [(NSMutableDictionary *)addressToEligibility objectForKeyedSubscript:children2];
     v8 = v10 != 0;
   }
 
@@ -298,14 +298,14 @@ BOOL __85__PMSharedAccountsGroupMemberPickerViewController__hasEligibilityCached
   return v5;
 }
 
-- (BOOL)_isEveryRecipientEligibleForSharing:(id)a3
+- (BOOL)_isEveryRecipientEligibleForSharing:(id)sharing
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __87__PMSharedAccountsGroupMemberPickerViewController__isEveryRecipientEligibleForSharing___block_invoke;
   v4[3] = &unk_27831CC28;
   v4[4] = self;
-  return [a3 safari_allObjectsPassTest:v4];
+  return [sharing safari_allObjectsPassTest:v4];
 }
 
 uint64_t __87__PMSharedAccountsGroupMemberPickerViewController__isEveryRecipientEligibleForSharing___block_invoke(uint64_t a1, void *a2)
@@ -327,14 +327,14 @@ uint64_t __87__PMSharedAccountsGroupMemberPickerViewController__isEveryRecipient
   return v5;
 }
 
-- (BOOL)_isEveryRecipientIneligibleForSharing:(id)a3
+- (BOOL)_isEveryRecipientIneligibleForSharing:(id)sharing
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __89__PMSharedAccountsGroupMemberPickerViewController__isEveryRecipientIneligibleForSharing___block_invoke;
   v4[3] = &unk_27831CC28;
   v4[4] = self;
-  return [a3 safari_allObjectsPassTest:v4];
+  return [sharing safari_allObjectsPassTest:v4];
 }
 
 uint64_t __89__PMSharedAccountsGroupMemberPickerViewController__isEveryRecipientIneligibleForSharing___block_invoke(uint64_t a1, void *a2)
@@ -356,14 +356,14 @@ uint64_t __89__PMSharedAccountsGroupMemberPickerViewController__isEveryRecipient
   return v5;
 }
 
-- (BOOL)_atleastOneRecipientIneligibleForSharing:(id)a3
+- (BOOL)_atleastOneRecipientIneligibleForSharing:(id)sharing
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __92__PMSharedAccountsGroupMemberPickerViewController__atleastOneRecipientIneligibleForSharing___block_invoke;
   v4[3] = &unk_27831CC28;
   v4[4] = self;
-  return [a3 safari_containsObjectPassingTest:v4];
+  return [sharing safari_containsObjectPassingTest:v4];
 }
 
 uint64_t __92__PMSharedAccountsGroupMemberPickerViewController__atleastOneRecipientIneligibleForSharing___block_invoke(uint64_t a1, void *a2)
@@ -385,14 +385,14 @@ uint64_t __92__PMSharedAccountsGroupMemberPickerViewController__atleastOneRecipi
   return v5;
 }
 
-- (id)_eligibleRecipientsFromRecipients:(id)a3
+- (id)_eligibleRecipientsFromRecipients:(id)recipients
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __85__PMSharedAccountsGroupMemberPickerViewController__eligibleRecipientsFromRecipients___block_invoke;
   v5[3] = &unk_27831CC28;
   v5[4] = self;
-  v3 = [a3 safari_filterObjectsUsingBlock:v5];
+  v3 = [recipients safari_filterObjectsUsingBlock:v5];
 
   return v3;
 }
@@ -416,36 +416,36 @@ uint64_t __85__PMSharedAccountsGroupMemberPickerViewController__eligibleRecipien
   return v5;
 }
 
-- (void)_fetchEligibilityForRecipient:(id)a3 completionHandler:(id)a4
+- (void)_fetchEligibilityForRecipient:(id)recipient completionHandler:(id)handler
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v31 = a4;
+  recipientCopy = recipient;
+  handlerCopy = handler;
   v7 = [MEMORY[0x277CBEB58] set];
-  v8 = [v6 children];
-  v9 = [v8 count];
+  children = [recipientCopy children];
+  v9 = [children count];
 
-  v10 = v6;
+  v10 = recipientCopy;
   if (v9)
   {
-    v11 = [v6 children];
-    v12 = [v11 safari_mapObjectsUsingBlock:&__block_literal_global_29];
+    children2 = [recipientCopy children];
+    v12 = [children2 safari_mapObjectsUsingBlock:&__block_literal_global_29];
     [v7 addObjectsFromArray:v12];
   }
 
   else
   {
-    v11 = [v6 normalizedAddress];
-    [v7 addObject:v11];
+    children2 = [recipientCopy normalizedAddress];
+    [v7 addObject:children2];
   }
 
-  v13 = [v7 allObjects];
+  allObjects = [v7 allObjects];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __99__PMSharedAccountsGroupMemberPickerViewController__fetchEligibilityForRecipient_completionHandler___block_invoke_2;
   v41[3] = &unk_27831CC70;
   v41[4] = self;
-  v30 = [v13 safari_filterObjectsUsingBlock:v41];
+  v30 = [allObjects safari_filterObjectsUsingBlock:v41];
 
   v39 = 0u;
   v40 = 0u;
@@ -505,7 +505,7 @@ uint64_t __85__PMSharedAccountsGroupMemberPickerViewController__eligibleRecipien
     _os_log_impl(&dword_21C6E5000, v23, OS_LOG_TYPE_DEFAULT, "PMSharedAccountsGroupMemberPickerViewController has tried to fetch %lu unique handles so far.", buf, 0xCu);
   }
 
-  v25 = [MEMORY[0x277CDBD30] sharedInstance];
+  mEMORY[0x277CDBD30] = [MEMORY[0x277CDBD30] sharedInstance];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __99__PMSharedAccountsGroupMemberPickerViewController__fetchEligibilityForRecipient_completionHandler___block_invoke_33;
@@ -513,11 +513,11 @@ uint64_t __85__PMSharedAccountsGroupMemberPickerViewController__eligibleRecipien
   v33[4] = self;
   v34 = v30;
   v35 = v10;
-  v36 = v31;
+  v36 = handlerCopy;
   v26 = v10;
-  v27 = v31;
+  v27 = handlerCopy;
   v28 = v30;
-  [v25 checkAvailabilityForHandles:v28 completion:v33];
+  [mEMORY[0x277CDBD30] checkAvailabilityForHandles:v28 completion:v33];
 
   v29 = *MEMORY[0x277D85DE8];
 }
@@ -674,21 +674,21 @@ uint64_t __99__PMSharedAccountsGroupMemberPickerViewController__fetchEligibility
   return result;
 }
 
-- (void)_handleSelectionForSingleRecipient:(id)a3
+- (void)_handleSelectionForSingleRecipient:(id)recipient
 {
-  v4 = a3;
-  v5 = [v4 normalizedAddress];
-  v6 = [(PMSharedAccountsGroupMemberPickerViewController *)self _isAddressAlreadyPartOfGroupOrInvitedAddresses:v5];
+  recipientCopy = recipient;
+  normalizedAddress = [recipientCopy normalizedAddress];
+  v6 = [(PMSharedAccountsGroupMemberPickerViewController *)self _isAddressAlreadyPartOfGroupOrInvitedAddresses:normalizedAddress];
 
   if (!v6)
   {
-    [(PMSharedAccountsGroupMemberPickerViewController *)self _addRecipient:v4];
+    [(PMSharedAccountsGroupMemberPickerViewController *)self _addRecipient:recipientCopy];
   }
 
-  v7 = [(CNComposeRecipientTextView *)self->_recipientTextView atomViewForRecipient:v4];
-  if ([(PMSharedAccountsGroupMemberPickerViewController *)self _hasEligibilityCachedForRecipient:v4])
+  v7 = [(CNComposeRecipientTextView *)self->_recipientTextView atomViewForRecipient:recipientCopy];
+  if ([(PMSharedAccountsGroupMemberPickerViewController *)self _hasEligibilityCachedForRecipient:recipientCopy])
   {
-    if ([(PMSharedAccountsGroupMemberPickerViewController *)self _cachedIsRecipientEligible:v4])
+    if ([(PMSharedAccountsGroupMemberPickerViewController *)self _cachedIsRecipientEligible:recipientCopy])
     {
       [MEMORY[0x277D75348] tintColor];
     }
@@ -700,21 +700,21 @@ uint64_t __99__PMSharedAccountsGroupMemberPickerViewController__fetchEligibility
     v9 = ;
     [v7 setTintColor:v9];
 
-    [(CNComposeRecipientTextView *)self->_recipientTextView invalidateAtomPresentationOptionsForRecipient:v4];
+    [(CNComposeRecipientTextView *)self->_recipientTextView invalidateAtomPresentationOptionsForRecipient:recipientCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75348] grayColor];
-    [v7 setTintColor:v8];
+    grayColor = [MEMORY[0x277D75348] grayColor];
+    [v7 setTintColor:grayColor];
 
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __86__PMSharedAccountsGroupMemberPickerViewController__handleSelectionForSingleRecipient___block_invoke;
     v10[3] = &unk_27831CCE8;
     v11 = v7;
-    v12 = self;
-    v13 = v4;
+    selfCopy = self;
+    v13 = recipientCopy;
     [(PMSharedAccountsGroupMemberPickerViewController *)self _fetchEligibilityForRecipient:v13 completionHandler:v10];
   }
 }
@@ -734,15 +734,15 @@ void __86__PMSharedAccountsGroupMemberPickerViewController__handleSelectionForSi
   [*(a1 + 32) setTintColor:v2];
 }
 
-- (void)_handleSelectionForMultipleRecipientsInGroup:(id)a3
+- (void)_handleSelectionForMultipleRecipientsInGroup:(id)group
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [a3 children];
+  children = [group children];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -754,14 +754,14 @@ void __86__PMSharedAccountsGroupMemberPickerViewController__handleSelectionForSi
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(children);
         }
 
         [(PMSharedAccountsGroupMemberPickerViewController *)self _handleSelectionForSingleRecipient:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -770,21 +770,21 @@ void __86__PMSharedAccountsGroupMemberPickerViewController__handleSelectionForSi
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addRecipient:(id)a3
+- (void)_addRecipient:(id)recipient
 {
-  [(CNComposeRecipientTextView *)self->_recipientTextView addRecipient:a3];
+  [(CNComposeRecipientTextView *)self->_recipientTextView addRecipient:recipient];
   [(PMSharedAccountsGroupMemberPickerViewController *)self _resetSearchQuery];
-  v4 = [(PMSharedAccountsGroupMemberPickerViewController *)self navigationItem];
-  v5 = [v4 rightBarButtonItem];
-  [v5 setEnabled:1];
+  navigationItem = [(PMSharedAccountsGroupMemberPickerViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:1];
 
   [(PMSharedAccountsGroupMemberPickerViewController *)self _updateRecipientTextViewHeight];
 }
 
 - (void)_updateRecipientTextViewHeight
 {
-  v3 = [(CNComposeRecipientTextView *)self->_recipientTextView textView];
-  [v3 contentSize];
+  textView = [(CNComposeRecipientTextView *)self->_recipientTextView textView];
+  [textView contentSize];
   v5 = v4;
 
   [MEMORY[0x277CFBCB0] preferredHeight];
@@ -810,22 +810,22 @@ void __86__PMSharedAccountsGroupMemberPickerViewController__handleSelectionForSi
   v3 = [(CNAutocompleteSearchManager *)self->_contactsSearchManager searchForText:&stru_282E5F078 consumer:self];
 }
 
-- (BOOL)_cachedIsRecipientEligible:(id)a3
+- (BOOL)_cachedIsRecipientEligible:(id)eligible
 {
-  v4 = a3;
-  v5 = [v4 children];
-  v6 = [v5 count];
+  eligibleCopy = eligible;
+  children = [eligibleCopy children];
+  v6 = [children count];
 
   if (v6)
   {
-    v7 = [v4 children];
+    children2 = [eligibleCopy children];
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __78__PMSharedAccountsGroupMemberPickerViewController__cachedIsRecipientEligible___block_invoke;
     v14[3] = &unk_27831CC28;
     v14[4] = self;
-    v8 = [v7 safari_containsObjectPassingTest:v14];
+    v8 = [children2 safari_containsObjectPassingTest:v14];
 
     return v8;
   }
@@ -833,12 +833,12 @@ void __86__PMSharedAccountsGroupMemberPickerViewController__handleSelectionForSi
   else
   {
     addressToEligibility = self->_addressToEligibility;
-    v11 = [v4 normalizedAddress];
+    normalizedAddress = [eligibleCopy normalizedAddress];
 
-    v12 = [(NSMutableDictionary *)addressToEligibility objectForKeyedSubscript:v11];
-    v13 = [v12 BOOLValue];
+    v12 = [(NSMutableDictionary *)addressToEligibility objectForKeyedSubscript:normalizedAddress];
+    bOOLValue = [v12 BOOLValue];
 
-    return v13;
+    return bOOLValue;
   }
 }
 
@@ -852,30 +852,30 @@ uint64_t __78__PMSharedAccountsGroupMemberPickerViewController__cachedIsRecipien
   return v5;
 }
 
-- (void)_updatePreferredHandleForRecipientIfNecessary:(id)a3
+- (void)_updatePreferredHandleForRecipientIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([(PMSharedAccountsGroupMemberPickerViewController *)self _cachedIsRecipientEligible:v4])
+    if ([(PMSharedAccountsGroupMemberPickerViewController *)self _cachedIsRecipientEligible:necessaryCopy])
     {
       addressToEligibility = self->_addressToEligibility;
-      v6 = [v4 normalizedAddress];
-      v7 = [(NSMutableDictionary *)addressToEligibility objectForKeyedSubscript:v6];
-      v8 = [v7 BOOLValue];
+      normalizedAddress = [necessaryCopy normalizedAddress];
+      v7 = [(NSMutableDictionary *)addressToEligibility objectForKeyedSubscript:normalizedAddress];
+      bOOLValue = [v7 BOOLValue];
 
-      if ((v8 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
-        v9 = [v4 children];
+        children = [necessaryCopy children];
         v11[0] = MEMORY[0x277D85DD0];
         v11[1] = 3221225472;
         v11[2] = __97__PMSharedAccountsGroupMemberPickerViewController__updatePreferredHandleForRecipientIfNecessary___block_invoke;
         v11[3] = &unk_27831CC28;
         v11[4] = self;
-        v10 = [v9 safari_firstObjectPassingTest:v11];
+        v10 = [children safari_firstObjectPassingTest:v11];
 
-        [(CNAutocompleteResultsTableViewController *)self->_contactsResultsTableViewController setPreferredRecipient:v10 forRecipient:v4];
+        [(CNAutocompleteResultsTableViewController *)self->_contactsResultsTableViewController setPreferredRecipient:v10 forRecipient:necessaryCopy];
       }
     }
   }
@@ -891,17 +891,17 @@ uint64_t __97__PMSharedAccountsGroupMemberPickerViewController__updatePreferredH
   return v5;
 }
 
-- (void)_presentAlertForIneligileRecipient:(id)a3
+- (void)_presentAlertForIneligileRecipient:(id)recipient
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
+  recipientCopy = recipient;
   v6 = _WBSLocalizedString();
-  v7 = [v5 displayString];
-  v8 = [v4 stringWithFormat:v6, v7];
+  displayString = [recipientCopy displayString];
+  v8 = [v4 stringWithFormat:v6, displayString];
 
-  v9 = [v5 displayString];
+  displayString2 = [recipientCopy displayString];
 
-  v10 = [PMOngoingCredentialSharingStrings unableToInviteContactBecauseOfUnsupportedDevicesAlertMessageWithContactName:v9];
+  v10 = [PMOngoingCredentialSharingStrings unableToInviteContactBecauseOfUnsupportedDevicesAlertMessageWithContactName:displayString2];
 
   v11 = [MEMORY[0x277D75110] alertControllerWithTitle:v8 message:v10 preferredStyle:1];
   v12 = MEMORY[0x277D750F8];
@@ -938,9 +938,9 @@ uint64_t __97__PMSharedAccountsGroupMemberPickerViewController__updatePreferredH
   [(PMSharedAccountsGroupMemberPickerViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)_presentAlertWhenSubsetOfRecipientsAreIneligible:(id)a3
+- (void)_presentAlertWhenSubsetOfRecipientsAreIneligible:(id)ineligible
 {
-  v4 = a3;
+  ineligibleCopy = ineligible;
   v5 = _WBSLocalizedString();
   v6 = +[PMOngoingCredentialSharingStrings unableToInviteMultipleContactsBecauseOfUnsupportedDevicesAlertMessage];
   v7 = [MEMORY[0x277D75110] alertControllerWithTitle:v5 message:v6 preferredStyle:1];
@@ -951,8 +951,8 @@ uint64_t __97__PMSharedAccountsGroupMemberPickerViewController__updatePreferredH
   v16[2] = __100__PMSharedAccountsGroupMemberPickerViewController__presentAlertWhenSubsetOfRecipientsAreIneligible___block_invoke;
   v16[3] = &unk_27831CD38;
   v16[4] = self;
-  v17 = v4;
-  v10 = v4;
+  v17 = ineligibleCopy;
+  v10 = ineligibleCopy;
   v11 = [v8 actionWithTitle:v9 style:0 handler:v16];
   [v7 addAction:v11];
 
@@ -979,13 +979,13 @@ void __100__PMSharedAccountsGroupMemberPickerViewController__presentAlertWhenSub
   }
 }
 
-- (void)autocompleteResultsController:(id)a3 tintColorForRecipient:(id)a4 completion:(id)a5
+- (void)autocompleteResultsController:(id)controller tintColorForRecipient:(id)recipient completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  if ([(PMSharedAccountsGroupMemberPickerViewController *)self _hasEligibilityCachedForRecipient:v7])
+  recipientCopy = recipient;
+  completionCopy = completion;
+  if ([(PMSharedAccountsGroupMemberPickerViewController *)self _hasEligibilityCachedForRecipient:recipientCopy])
   {
-    if ([(PMSharedAccountsGroupMemberPickerViewController *)self _cachedIsRecipientEligible:v7])
+    if ([(PMSharedAccountsGroupMemberPickerViewController *)self _cachedIsRecipientEligible:recipientCopy])
     {
       [MEMORY[0x277D75348] tintColor];
     }
@@ -995,21 +995,21 @@ void __100__PMSharedAccountsGroupMemberPickerViewController__presentAlertWhenSub
       [MEMORY[0x277D75348] secondaryLabelColor];
     }
     v10 = ;
-    v8[2](v8, v10);
+    completionCopy[2](completionCopy, v10);
   }
 
   else
   {
-    v9 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v8[2](v8, v9);
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    completionCopy[2](completionCopy, secondaryLabelColor);
 
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __114__PMSharedAccountsGroupMemberPickerViewController_autocompleteResultsController_tintColorForRecipient_completion___block_invoke;
     v11[3] = &unk_27831CD60;
-    v13 = v8;
+    v13 = completionCopy;
     v11[4] = self;
-    v12 = v7;
+    v12 = recipientCopy;
     [(PMSharedAccountsGroupMemberPickerViewController *)self _fetchEligibilityForRecipient:v12 completionHandler:v11];
   }
 }
@@ -1030,38 +1030,38 @@ void __114__PMSharedAccountsGroupMemberPickerViewController_autocompleteResultsC
   (*(v1 + 16))(v1);
 }
 
-- (void)autocompleteResultsController:(id)a3 didSelectRecipient:(id)a4 atIndex:(unint64_t)a5
+- (void)autocompleteResultsController:(id)controller didSelectRecipient:(id)recipient atIndex:(unint64_t)index
 {
-  v6 = a4;
+  recipientCopy = recipient;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(PMSharedAccountsGroupMemberPickerViewController *)self _handleSelectionForMultipleRecipientsInGroup:v6];
+    [(PMSharedAccountsGroupMemberPickerViewController *)self _handleSelectionForMultipleRecipientsInGroup:recipientCopy];
   }
 
   else
   {
-    [(PMSharedAccountsGroupMemberPickerViewController *)self _handleSelectionForSingleRecipient:v6];
+    [(PMSharedAccountsGroupMemberPickerViewController *)self _handleSelectionForSingleRecipient:recipientCopy];
   }
 
   [(PMSharedAccountsGroupMemberPickerViewController *)self _resetSearchQuery];
 }
 
-- (void)autocompleteResultsController:(id)a3 didRequestInfoAboutRecipient:(id)a4
+- (void)autocompleteResultsController:(id)controller didRequestInfoAboutRecipient:(id)recipient
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 contact];
+  recipientCopy = recipient;
+  contact = [recipientCopy contact];
 
   v7 = MEMORY[0x277CBDC48];
-  if (v6)
+  if (contact)
   {
-    v8 = [v5 contact];
+    contact2 = [recipientCopy contact];
 
-    v18 = [v7 viewControllerForContact:v8];
+    v18 = [v7 viewControllerForContact:contact2];
 
-    v9 = [(PMSharedAccountsGroupMemberPickerViewController *)self navigationController];
-    [v9 pushViewController:v18 animated:1];
+    navigationController = [(PMSharedAccountsGroupMemberPickerViewController *)self navigationController];
+    [navigationController pushViewController:v18 animated:1];
 
     v10 = *MEMORY[0x277D85DE8];
   }
@@ -1069,57 +1069,57 @@ void __114__PMSharedAccountsGroupMemberPickerViewController_autocompleteResultsC
   else
   {
     v11 = MEMORY[0x277CBDA58];
-    v12 = [v5 normalizedAddress];
+    normalizedAddress = [recipientCopy normalizedAddress];
 
-    v19[0] = v12;
+    v19[0] = normalizedAddress;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
     v14 = [v11 contactWithDisplayName:0 handleStrings:v13];
     v15 = [v7 viewControllerForUnknownContact:v14];
 
-    v16 = [(PMSharedAccountsGroupMemberPickerViewController *)self navigationController];
-    [v16 pushViewController:v15 animated:1];
+    navigationController2 = [(PMSharedAccountsGroupMemberPickerViewController *)self navigationController];
+    [navigationController2 pushViewController:v15 animated:1];
 
     v17 = *MEMORY[0x277D85DE8];
   }
 }
 
-- (void)composeRecipientView:(id)a3 textDidChange:(id)a4
+- (void)composeRecipientView:(id)view textDidChange:(id)change
 {
-  v7 = a4;
+  changeCopy = change;
   if (self->_currentSearchTaskID)
   {
     [(CNAutocompleteSearchManager *)self->_contactsSearchManager cancelTaskWithID:?];
   }
 
-  v5 = [(CNAutocompleteSearchManager *)self->_contactsSearchManager searchForText:v7 consumer:self];
+  v5 = [(CNAutocompleteSearchManager *)self->_contactsSearchManager searchForText:changeCopy consumer:self];
   currentSearchTaskID = self->_currentSearchTaskID;
   self->_currentSearchTaskID = v5;
 }
 
-- (void)composeRecipientView:(id)a3 didRemoveRecipient:(id)a4
+- (void)composeRecipientView:(id)view didRemoveRecipient:(id)recipient
 {
-  v5 = [(CNComposeRecipientTextView *)self->_recipientTextView recipients:a3];
+  v5 = [(CNComposeRecipientTextView *)self->_recipientTextView recipients:view];
   v6 = [v5 count] != 0;
-  v7 = [(PMSharedAccountsGroupMemberPickerViewController *)self navigationItem];
-  v8 = [v7 rightBarButtonItem];
-  [v8 setEnabled:v6];
+  navigationItem = [(PMSharedAccountsGroupMemberPickerViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:v6];
 
   [(PMSharedAccountsGroupMemberPickerViewController *)self _updateRecipientTextViewHeight];
 }
 
-- (unint64_t)presentationOptionsForRecipient:(id)a3
+- (unint64_t)presentationOptionsForRecipient:(id)recipient
 {
-  v4 = a3;
+  recipientCopy = recipient;
   addressesCurrentlyBeingCheckedForAvailability = self->_addressesCurrentlyBeingCheckedForAvailability;
-  v6 = [v4 address];
-  LOBYTE(addressesCurrentlyBeingCheckedForAvailability) = [(NSMutableSet *)addressesCurrentlyBeingCheckedForAvailability containsObject:v6];
+  address = [recipientCopy address];
+  LOBYTE(addressesCurrentlyBeingCheckedForAvailability) = [(NSMutableSet *)addressesCurrentlyBeingCheckedForAvailability containsObject:address];
 
   if (addressesCurrentlyBeingCheckedForAvailability)
   {
     v7 = 4;
   }
 
-  else if ([(PMSharedAccountsGroupMemberPickerViewController *)self _cachedIsRecipientEligible:v4])
+  else if ([(PMSharedAccountsGroupMemberPickerViewController *)self _cachedIsRecipientEligible:recipientCopy])
   {
     v7 = 0;
   }
@@ -1132,9 +1132,9 @@ void __114__PMSharedAccountsGroupMemberPickerViewController_autocompleteResultsC
   return v7;
 }
 
-- (void)consumeAutocompleteSearchResults:(id)a3 taskID:(id)a4
+- (void)consumeAutocompleteSearchResults:(id)results taskID:(id)d
 {
-  v5 = [a3 mutableCopy];
+  v5 = [results mutableCopy];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __91__PMSharedAccountsGroupMemberPickerViewController_consumeAutocompleteSearchResults_taskID___block_invoke;
@@ -1181,15 +1181,15 @@ uint64_t __91__PMSharedAccountsGroupMemberPickerViewController_consumeAutocomple
   return v4;
 }
 
-- (id)_recipientsWithEligibleAddressesAsDefaultAddressesIfPossible:(id)a3
+- (id)_recipientsWithEligibleAddressesAsDefaultAddressesIfPossible:(id)possible
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 mutableCopy];
-  if ([v4 count])
+  possibleCopy = possible;
+  v5 = [possibleCopy mutableCopy];
+  if ([possibleCopy count])
   {
     v6 = 0;
-    v22 = v4;
+    v22 = possibleCopy;
     v23 = v5;
     do
     {
@@ -1198,12 +1198,12 @@ uint64_t __91__PMSharedAccountsGroupMemberPickerViewController_consumeAutocomple
       if (objc_opt_isKindOfClass())
       {
         v24 = v7;
-        v8 = [v7 children];
+        children = [v7 children];
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v9 = v8;
+        v9 = children;
         v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v10)
         {
@@ -1220,11 +1220,11 @@ uint64_t __91__PMSharedAccountsGroupMemberPickerViewController_consumeAutocomple
 
               v14 = *(*(&v25 + 1) + 8 * i);
               addressToEligibility = self->_addressToEligibility;
-              v16 = [v14 normalizedAddress];
-              v17 = [(NSMutableDictionary *)addressToEligibility objectForKeyedSubscript:v16];
-              v18 = [v17 BOOLValue];
+              normalizedAddress = [v14 normalizedAddress];
+              v17 = [(NSMutableDictionary *)addressToEligibility objectForKeyedSubscript:normalizedAddress];
+              bOOLValue = [v17 BOOLValue];
 
-              if (v18)
+              if (bOOLValue)
               {
                 v19 = [objc_alloc(MEMORY[0x277CFBCB8]) initWithChildren:v9 defaultChild:v14];
                 v5 = v23;
@@ -1247,14 +1247,14 @@ uint64_t __91__PMSharedAccountsGroupMemberPickerViewController_consumeAutocomple
 
 LABEL_14:
 
-        v4 = v22;
+        possibleCopy = v22;
         v7 = v24;
       }
 
       ++v6;
     }
 
-    while (v6 < [v4 count]);
+    while (v6 < [possibleCopy count]);
   }
 
   v20 = *MEMORY[0x277D85DE8];

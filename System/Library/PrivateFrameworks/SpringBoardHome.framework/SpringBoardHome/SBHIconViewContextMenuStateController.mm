@@ -2,17 +2,17 @@
 + (SBHIconViewContextMenuStateController)sharedInstance;
 - (SBHIconViewContextMenuStateController)init;
 - (void)_firePendingIconAnimationBlocks;
-- (void)containerViewDidScrollHiddenIconViewAway:(id)a3;
-- (void)dismissAppIconForceTouchControllers:(id)a3;
+- (void)containerViewDidScrollHiddenIconViewAway:(id)away;
+- (void)dismissAppIconForceTouchControllers:(id)controllers;
 - (void)earlyTerminateAnyContextMenuAnimations;
-- (void)iconViewDidAnimateContextMenu:(id)a3;
-- (void)iconViewWillAnimateContextMenu:(id)a3;
-- (void)iconViewWillDismissContextMenu:(id)a3;
-- (void)iconViewWillPresentContextMenu:(id)a3;
-- (void)noteFolderControllerWillClose:(id)a3;
-- (void)performAfterContextMenuAnimationsHaveCompleted:(id)a3;
-- (void)registerIconView:(id)a3;
-- (void)unregisterIconView:(id)a3;
+- (void)iconViewDidAnimateContextMenu:(id)menu;
+- (void)iconViewWillAnimateContextMenu:(id)menu;
+- (void)iconViewWillDismissContextMenu:(id)menu;
+- (void)iconViewWillPresentContextMenu:(id)menu;
+- (void)noteFolderControllerWillClose:(id)close;
+- (void)performAfterContextMenuAnimationsHaveCompleted:(id)completed;
+- (void)registerIconView:(id)view;
+- (void)unregisterIconView:(id)view;
 @end
 
 @implementation SBHIconViewContextMenuStateController
@@ -33,9 +33,9 @@
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = [(NSMutableArray *)self->_pendingIconAnimationCompletionBlocks copy];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   pendingIconAnimationCompletionBlocks = self->_pendingIconAnimationCompletionBlocks;
-  self->_pendingIconAnimationCompletionBlocks = v4;
+  self->_pendingIconAnimationCompletionBlocks = array;
 
   v13 = 0u;
   v14 = 0u;
@@ -80,24 +80,24 @@
     presentedWidgetsBundleIdentifiers = v2->_presentedWidgetsBundleIdentifiers;
     v2->_presentedWidgetsBundleIdentifiers = v3;
 
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     iconViewsPresentingContextMenues = v2->_iconViewsPresentingContextMenues;
-    v2->_iconViewsPresentingContextMenues = v5;
+    v2->_iconViewsPresentingContextMenues = weakObjectsHashTable;
 
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     iconViewsAnimatingContextMenues = v2->_iconViewsAnimatingContextMenues;
-    v2->_iconViewsAnimatingContextMenues = v7;
+    v2->_iconViewsAnimatingContextMenues = weakObjectsHashTable2;
 
-    v9 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     iconViews = v2->_iconViews;
-    v2->_iconViews = v9;
+    v2->_iconViews = weakObjectsHashTable3;
 
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     pendingIconAnimationCompletionBlocks = v2->_pendingIconAnimationCompletionBlocks;
-    v2->_pendingIconAnimationCompletionBlocks = v11;
+    v2->_pendingIconAnimationCompletionBlocks = array;
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v2 selector:sel_containerViewDidScrollHiddenIconViewAway_ name:@"SBHScrollableContainerDidScrollHiddenIconViewOutsideClippingBoundsNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_containerViewDidScrollHiddenIconViewAway_ name:@"SBHScrollableContainerDidScrollHiddenIconViewOutsideClippingBoundsNotification" object:0];
   }
 
   return v2;
@@ -110,16 +110,16 @@ uint64_t __55__SBHIconViewContextMenuStateController_sharedInstance__block_invok
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)registerIconView:(id)a3
+- (void)registerIconView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   iconViews = self->_iconViews;
-  v9 = v4;
+  v9 = viewCopy;
   if (!iconViews)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_iconViews;
-    self->_iconViews = v6;
+    self->_iconViews = weakObjectsHashTable;
 
     goto LABEL_5;
   }
@@ -128,45 +128,45 @@ uint64_t __55__SBHIconViewContextMenuStateController_sharedInstance__block_invok
   {
 LABEL_5:
     [(NSHashTable *)self->_iconViews addObject:v9];
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:self selector:sel_iconViewWillPresentContextMenu_ name:@"SBIconViewWillPresentContextMenuNotification" object:v9];
-    [v8 addObserver:self selector:sel_iconViewWillDismissContextMenu_ name:@"SBIconViewWillDismissContextMenuNotification" object:v9];
-    [v8 addObserver:self selector:sel_iconViewWillAnimateContextMenu_ name:@"SBIconViewWillAnimateContextMenuNotification" object:v9];
-    [v8 addObserver:self selector:sel_iconViewDidAnimateContextMenu_ name:@"SBIconViewDidAnimateContextMenuNotification" object:v9];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_iconViewWillPresentContextMenu_ name:@"SBIconViewWillPresentContextMenuNotification" object:v9];
+    [defaultCenter addObserver:self selector:sel_iconViewWillDismissContextMenu_ name:@"SBIconViewWillDismissContextMenuNotification" object:v9];
+    [defaultCenter addObserver:self selector:sel_iconViewWillAnimateContextMenu_ name:@"SBIconViewWillAnimateContextMenuNotification" object:v9];
+    [defaultCenter addObserver:self selector:sel_iconViewDidAnimateContextMenu_ name:@"SBIconViewDidAnimateContextMenuNotification" object:v9];
   }
 }
 
-- (void)unregisterIconView:(id)a3
+- (void)unregisterIconView:(id)view
 {
   iconViews = self->_iconViews;
-  v5 = a3;
-  [(NSHashTable *)iconViews removeObject:v5];
-  [(NSHashTable *)self->_iconViewsPresentingContextMenues removeObject:v5];
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 removeObserver:self name:@"SBIconViewWillPresentContextMenuNotification" object:v5];
-  [v6 removeObserver:self name:@"SBIconViewWillDismissContextMenuNotification" object:v5];
-  [v6 removeObserver:self name:@"SBIconViewWillAnimateContextMenuNotification" object:v5];
-  [v6 removeObserver:self name:@"SBIconViewDidAnimateContextMenuNotification" object:v5];
+  viewCopy = view;
+  [(NSHashTable *)iconViews removeObject:viewCopy];
+  [(NSHashTable *)self->_iconViewsPresentingContextMenues removeObject:viewCopy];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SBIconViewWillPresentContextMenuNotification" object:viewCopy];
+  [defaultCenter removeObserver:self name:@"SBIconViewWillDismissContextMenuNotification" object:viewCopy];
+  [defaultCenter removeObserver:self name:@"SBIconViewWillAnimateContextMenuNotification" object:viewCopy];
+  [defaultCenter removeObserver:self name:@"SBIconViewDidAnimateContextMenuNotification" object:viewCopy];
 }
 
-- (void)iconViewWillPresentContextMenu:(id)a3
+- (void)iconViewWillPresentContextMenu:(id)menu
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v8 = [v5 objectForKey:@"presentedWidgetBundleIdentifier"];
+  menuCopy = menu;
+  userInfo = [menuCopy userInfo];
+  v8 = [userInfo objectForKey:@"presentedWidgetBundleIdentifier"];
 
   [(NSMutableSet *)self->_presentedWidgetsBundleIdentifiers bs_safeAddObject:v8];
   iconViewsPresentingContextMenues = self->_iconViewsPresentingContextMenues;
-  v7 = [v4 object];
+  object = [menuCopy object];
 
-  [(NSHashTable *)iconViewsPresentingContextMenues addObject:v7];
+  [(NSHashTable *)iconViewsPresentingContextMenues addObject:object];
 }
 
-- (void)iconViewWillDismissContextMenu:(id)a3
+- (void)iconViewWillDismissContextMenu:(id)menu
 {
-  v8 = a3;
-  v4 = [v8 userInfo];
-  v5 = [v4 objectForKey:@"presentedWidgetBundleIdentifier"];
+  menuCopy = menu;
+  userInfo = [menuCopy userInfo];
+  v5 = [userInfo objectForKey:@"presentedWidgetBundleIdentifier"];
 
   if (v5)
   {
@@ -174,22 +174,22 @@ LABEL_5:
   }
 
   iconViewsPresentingContextMenues = self->_iconViewsPresentingContextMenues;
-  v7 = [v8 object];
-  [(NSHashTable *)iconViewsPresentingContextMenues removeObject:v7];
+  object = [menuCopy object];
+  [(NSHashTable *)iconViewsPresentingContextMenues removeObject:object];
 }
 
-- (void)iconViewWillAnimateContextMenu:(id)a3
+- (void)iconViewWillAnimateContextMenu:(id)menu
 {
   iconViewsAnimatingContextMenues = self->_iconViewsAnimatingContextMenues;
-  v4 = [a3 object];
-  [(NSHashTable *)iconViewsAnimatingContextMenues addObject:v4];
+  object = [menu object];
+  [(NSHashTable *)iconViewsAnimatingContextMenues addObject:object];
 }
 
-- (void)iconViewDidAnimateContextMenu:(id)a3
+- (void)iconViewDidAnimateContextMenu:(id)menu
 {
   iconViewsAnimatingContextMenues = self->_iconViewsAnimatingContextMenues;
-  v5 = [a3 object];
-  [(NSHashTable *)iconViewsAnimatingContextMenues removeObject:v5];
+  object = [menu object];
+  [(NSHashTable *)iconViewsAnimatingContextMenues removeObject:object];
 
   if (![(NSHashTable *)self->_iconViewsAnimatingContextMenues count])
   {
@@ -198,10 +198,10 @@ LABEL_5:
   }
 }
 
-- (void)containerViewDidScrollHiddenIconViewAway:(id)a3
+- (void)containerViewDidScrollHiddenIconViewAway:(id)away
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"SBHHiddenIconViewUserInfoKey"];
+  userInfo = [away userInfo];
+  v5 = [userInfo objectForKey:@"SBHHiddenIconViewUserInfoKey"];
 
   if ([(NSHashTable *)self->_iconViewsAnimatingContextMenues containsObject:v5])
   {
@@ -214,10 +214,10 @@ LABEL_5:
   }
 }
 
-- (void)dismissAppIconForceTouchControllers:(id)a3
+- (void)dismissAppIconForceTouchControllers:(id)controllers
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  controllersCopy = controllers;
   v47[0] = 0;
   v47[1] = v47;
   v47[2] = 0x2020000000;
@@ -228,18 +228,18 @@ LABEL_5:
   aBlock[3] = &unk_1E80898B0;
   v46 = v47;
   aBlock[4] = self;
-  v25 = v4;
+  v25 = controllersCopy;
   v45 = v25;
   v26 = _Block_copy(aBlock);
   v27 = objc_opt_new();
   v5 = MEMORY[0x1E695DFD8];
-  v6 = [(NSHashTable *)self->_iconViewsAnimatingContextMenues allObjects];
-  v7 = [v5 setWithArray:v6];
+  allObjects = [(NSHashTable *)self->_iconViewsAnimatingContextMenues allObjects];
+  v7 = [v5 setWithArray:allObjects];
   [v27 unionSet:v7];
 
   v8 = MEMORY[0x1E695DFD8];
-  v9 = [(NSHashTable *)self->_iconViewsPresentingContextMenues allObjects];
-  v10 = [v8 setWithArray:v9];
+  allObjects2 = [(NSHashTable *)self->_iconViewsPresentingContextMenues allObjects];
+  v10 = [v8 setWithArray:allObjects2];
   [v27 unionSet:v10];
 
   v28 = [v27 mutableCopy];
@@ -436,9 +436,9 @@ void __77__SBHIconViewContextMenuStateController_dismissAppIconForceTouchControl
   }
 }
 
-- (void)performAfterContextMenuAnimationsHaveCompleted:(id)a3
+- (void)performAfterContextMenuAnimationsHaveCompleted:(id)completed
 {
-  aBlock = a3;
+  aBlock = completed;
   if ([(SBHIconViewContextMenuStateController *)self areAnyIconViewContextMenusAnimating])
   {
     pendingIconAnimationCompletionBlocks = self->_pendingIconAnimationCompletionBlocks;
@@ -489,14 +489,14 @@ void __77__SBHIconViewContextMenuStateController_dismissAppIconForceTouchControl
   }
 }
 
-- (void)noteFolderControllerWillClose:(id)a3
+- (void)noteFolderControllerWillClose:(id)close
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __71__SBHIconViewContextMenuStateController_noteFolderControllerWillClose___block_invoke;
   v3[3] = &unk_1E8089928;
   v3[4] = self;
-  [a3 enumerateDisplayedIconViewsUsingBlock:v3];
+  [close enumerateDisplayedIconViewsUsingBlock:v3];
 }
 
 void __71__SBHIconViewContextMenuStateController_noteFolderControllerWillClose___block_invoke(uint64_t a1, void *a2)

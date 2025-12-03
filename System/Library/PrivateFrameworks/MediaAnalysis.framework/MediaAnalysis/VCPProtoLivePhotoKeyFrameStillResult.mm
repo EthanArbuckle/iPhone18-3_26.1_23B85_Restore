@@ -1,14 +1,14 @@
 @interface VCPProtoLivePhotoKeyFrameStillResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoLivePhotoKeyFrameStillResult
@@ -19,53 +19,53 @@
   v8.receiver = self;
   v8.super_class = VCPProtoLivePhotoKeyFrameStillResult;
   v4 = [(VCPProtoLivePhotoKeyFrameStillResult *)&v8 description];
-  v5 = [(VCPProtoLivePhotoKeyFrameStillResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoLivePhotoKeyFrameStillResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   *&v4 = self->_sharpness;
   v5 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v5 forKey:@"sharpness"];
+  [dictionary setObject:v5 forKey:@"sharpness"];
 
   *&v6 = self->_textureness;
   v7 = [MEMORY[0x1E696AD98] numberWithFloat:v6];
-  [v3 setObject:v7 forKey:@"textureness"];
+  [dictionary setObject:v7 forKey:@"textureness"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_hasFlash];
-  [v3 setObject:v8 forKey:@"hasFlash"];
+  [dictionary setObject:v8 forKey:@"hasFlash"];
 
   *&v9 = self->_stillTime;
   v10 = [MEMORY[0x1E696AD98] numberWithFloat:v9];
-  [v3 setObject:v10 forKey:@"stillTime"];
+  [dictionary setObject:v10 forKey:@"stillTime"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteFloatField();
   PBDataWriterWriteFloatField();
   PBDataWriterWriteBOOLField();
   PBDataWriterWriteFloatField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 2) = LODWORD(self->_sharpness);
-  *(a3 + 4) = LODWORD(self->_textureness);
-  *(a3 + 20) = self->_hasFlash;
-  *(a3 + 3) = LODWORD(self->_stillTime);
+  *(to + 2) = LODWORD(self->_sharpness);
+  *(to + 4) = LODWORD(self->_textureness);
+  *(to + 20) = self->_hasFlash;
+  *(to + 3) = LODWORD(self->_stillTime);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 2) = LODWORD(self->_sharpness);
   *(result + 4) = LODWORD(self->_textureness);
   *(result + 20) = self->_hasFlash;
@@ -73,27 +73,27 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()] || self->_sharpness != *(v4 + 2) || self->_textureness != *(v4 + 4))
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()] || self->_sharpness != *(equalCopy + 2) || self->_textureness != *(equalCopy + 4))
   {
     goto LABEL_6;
   }
 
   if (!self->_hasFlash)
   {
-    if (*(v4 + 20))
+    if (*(equalCopy + 20))
     {
       goto LABEL_6;
     }
 
 LABEL_9:
-    v5 = self->_stillTime == *(v4 + 3);
+    v5 = self->_stillTime == *(equalCopy + 3);
     goto LABEL_7;
   }
 
-  if (*(v4 + 20))
+  if (*(equalCopy + 20))
   {
     goto LABEL_9;
   }
@@ -183,21 +183,21 @@ LABEL_7:
   return v20 ^ v13 ^ (2654435761 * self->_hasFlash) ^ v25;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_sharpness = *(a3 + 2);
-  self->_textureness = *(a3 + 4);
-  self->_hasFlash = *(a3 + 20);
-  self->_stillTime = *(a3 + 3);
+  self->_sharpness = *(from + 2);
+  self->_textureness = *(from + 4);
+  self->_hasFlash = *(from + 20);
+  self->_stillTime = *(from + 3);
 }
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  v4 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"attributes"];
+    v5 = [dictionaryCopy objectForKeyedSubscript:@"attributes"];
     if (v5)
     {
       v6 = objc_alloc_init(VCPProtoLivePhotoKeyFrameStillResult);

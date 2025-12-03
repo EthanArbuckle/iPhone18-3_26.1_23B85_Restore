@@ -1,30 +1,30 @@
 @interface LNUpdateAppShortcutParametersOperation
-- (LNUpdateAppShortcutParametersOperation)initWithConnectionInterface:(id)a3 queue:(id)a4 completionHandler:(id)a5;
-- (void)finishWithError:(id)a3;
+- (LNUpdateAppShortcutParametersOperation)initWithConnectionInterface:(id)interface queue:(id)queue completionHandler:(id)handler;
+- (void)finishWithError:(id)error;
 - (void)start;
 @end
 
 @implementation LNUpdateAppShortcutParametersOperation
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(LNUpdateAppShortcutParametersOperation *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(LNUpdateAppShortcutParametersOperation *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(LNConnectionOperation *)self validatingResult:0 error:v4];
+    v6 = [(LNConnectionOperation *)self validatingResult:0 error:errorCopy];
 
-    v7 = [(LNUpdateAppShortcutParametersOperation *)self completionHandler];
-    v7[2](v7, v6);
+    completionHandler2 = [(LNUpdateAppShortcutParametersOperation *)self completionHandler];
+    completionHandler2[2](completionHandler2, v6);
 
     [(LNUpdateAppShortcutParametersOperation *)self setCompletionHandler:0];
-    v4 = v6;
+    errorCopy = v6;
   }
 
   v8.receiver = self;
   v8.super_class = LNUpdateAppShortcutParametersOperation;
-  [(LNConnectionOperation *)&v8 finishWithError:v4];
+  [(LNConnectionOperation *)&v8 finishWithError:errorCopy];
 }
 
 - (void)start
@@ -39,13 +39,13 @@
     _os_log_impl(&dword_19763D000, v3, OS_LOG_TYPE_INFO, "Updating App Shortcuts parameters", buf, 2u);
   }
 
-  v4 = [(LNInterfaceConnectionOperation *)self connectionInterface];
+  connectionInterface = [(LNInterfaceConnectionOperation *)self connectionInterface];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __47__LNUpdateAppShortcutParametersOperation_start__block_invoke;
   v5[3] = &unk_1E74B1B90;
   v5[4] = self;
-  [v4 updateAppShortcutParametersWithCompletionHandler:v5];
+  [connectionInterface updateAppShortcutParametersWithCompletionHandler:v5];
 }
 
 void __47__LNUpdateAppShortcutParametersOperation_start__block_invoke(uint64_t a1, void *a2)
@@ -58,15 +58,15 @@ void __47__LNUpdateAppShortcutParametersOperation_start__block_invoke(uint64_t a
   os_activity_scope_leave(&v5);
 }
 
-- (LNUpdateAppShortcutParametersOperation)initWithConnectionInterface:(id)a3 queue:(id)a4 completionHandler:(id)a5
+- (LNUpdateAppShortcutParametersOperation)initWithConnectionInterface:(id)interface queue:(id)queue completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  interfaceCopy = interface;
+  queueCopy = queue;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  if (interfaceCopy)
   {
-    if (v11)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -74,8 +74,8 @@ void __47__LNUpdateAppShortcutParametersOperation_start__block_invoke(uint64_t a
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"LNUpdateAppShortcutParametersOperation.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNUpdateAppShortcutParametersOperation.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
 
     if (v12)
     {
@@ -83,14 +83,14 @@ void __47__LNUpdateAppShortcutParametersOperation_start__block_invoke(uint64_t a
     }
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"LNUpdateAppShortcutParametersOperation.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNUpdateAppShortcutParametersOperation.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
-  v13 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v21.receiver = self;
   v21.super_class = LNUpdateAppShortcutParametersOperation;
-  v14 = [(LNInterfaceConnectionOperation *)&v21 initWithIdentifier:v13 connectionInterface:v9 priority:1 queue:v10 activity:&__block_literal_global_4225];
+  v14 = [(LNInterfaceConnectionOperation *)&v21 initWithIdentifier:uUID connectionInterface:interfaceCopy priority:1 queue:queueCopy activity:&__block_literal_global_4225];
 
   if (v14)
   {

@@ -1,44 +1,44 @@
 @interface TPSAnalyticsEventNotificationPosted
-+ (id)eventWithContentID:(id)a3 collectionID:(id)a4 correlationID:(id)a5 remainingNotificationsCount:(id)a6 errorCode:(id)a7;
++ (id)eventWithContentID:(id)d collectionID:(id)iD correlationID:(id)correlationID remainingNotificationsCount:(id)count errorCode:(id)code;
 - (NSNumber)notificationsPosted;
-- (TPSAnalyticsEventNotificationPosted)initWithCoder:(id)a3;
-- (id)_initWithContentID:(id)a3 collectionID:(id)a4 correlationID:(id)a5 remainingNotificationsCount:(id)a6 errorCode:(id)a7;
+- (TPSAnalyticsEventNotificationPosted)initWithCoder:(id)coder;
+- (id)_initWithContentID:(id)d collectionID:(id)iD correlationID:(id)correlationID remainingNotificationsCount:(id)count errorCode:(id)code;
 - (id)mutableAnalyticsEventRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)persistKeys;
 @end
 
 @implementation TPSAnalyticsEventNotificationPosted
 
-- (TPSAnalyticsEventNotificationPosted)initWithCoder:(id)a3
+- (TPSAnalyticsEventNotificationPosted)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = TPSAnalyticsEventNotificationPosted;
-  v5 = [(TPSAnalyticsEvent *)&v19 initWithCoder:v4];
+  v5 = [(TPSAnalyticsEvent *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"seq_num"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"seq_num"];
     posted = v5->_posted;
     v5->_posted = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tip_ID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tip_ID"];
     contentID = v5->_contentID;
     v5->_contentID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"collection_ID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"collection_ID"];
     collectionID = v5->_collectionID;
     v5->_collectionID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tip_correlation_ID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tip_correlation_ID"];
     correlationID = v5->_correlationID;
     v5->_correlationID = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"error_code"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"error_code"];
     errorCode = v5->_errorCode;
     v5->_errorCode = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remaining"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remaining"];
     remaining = v5->_remaining;
     v5->_remaining = v16;
   }
@@ -46,24 +46,24 @@
   return v5;
 }
 
-- (id)_initWithContentID:(id)a3 collectionID:(id)a4 correlationID:(id)a5 remainingNotificationsCount:(id)a6 errorCode:(id)a7
+- (id)_initWithContentID:(id)d collectionID:(id)iD correlationID:(id)correlationID remainingNotificationsCount:(id)count errorCode:(id)code
 {
-  v13 = a3;
-  v21 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  correlationIDCopy = correlationID;
+  countCopy = count;
+  codeCopy = code;
   v22.receiver = self;
   v22.super_class = TPSAnalyticsEventNotificationPosted;
   v17 = [(TPSAnalyticsEvent *)&v22 initWithDate:0];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_contentID, a3);
-    objc_storeStrong(&v18->_collectionID, a4);
-    objc_storeStrong(&v18->_correlationID, a5);
-    objc_storeStrong(&v18->_errorCode, a7);
-    objc_storeStrong(&v18->_remaining, a6);
+    objc_storeStrong(&v17->_contentID, d);
+    objc_storeStrong(&v18->_collectionID, iD);
+    objc_storeStrong(&v18->_correlationID, correlationID);
+    objc_storeStrong(&v18->_errorCode, code);
+    objc_storeStrong(&v18->_remaining, count);
     v19 = [(NSString *)v18->_contentID isEqualToString:@"collection"];
     if (v19)
     {
@@ -76,40 +76,40 @@
   return v18;
 }
 
-+ (id)eventWithContentID:(id)a3 collectionID:(id)a4 correlationID:(id)a5 remainingNotificationsCount:(id)a6 errorCode:(id)a7
++ (id)eventWithContentID:(id)d collectionID:(id)iD correlationID:(id)correlationID remainingNotificationsCount:(id)count errorCode:(id)code
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[a1 alloc] _initWithContentID:v16 collectionID:v15 correlationID:v14 remainingNotificationsCount:v13 errorCode:v12];
+  codeCopy = code;
+  countCopy = count;
+  correlationIDCopy = correlationID;
+  iDCopy = iD;
+  dCopy = d;
+  v17 = [[self alloc] _initWithContentID:dCopy collectionID:iDCopy correlationID:correlationIDCopy remainingNotificationsCount:countCopy errorCode:codeCopy];
 
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = TPSAnalyticsEventNotificationPosted;
-  v4 = a3;
-  [(TPSAnalyticsEvent *)&v10 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(TPSAnalyticsEvent *)&v10 encodeWithCoder:coderCopy];
   v5 = [(TPSAnalyticsEventNotificationPosted *)self notificationsPosted:v10.receiver];
-  [v4 encodeObject:v5 forKey:@"seq_num"];
+  [coderCopy encodeObject:v5 forKey:@"seq_num"];
 
-  v6 = [(TPSAnalyticsEventNotificationPosted *)self contentID];
-  [v4 encodeObject:v6 forKey:@"tip_ID"];
+  contentID = [(TPSAnalyticsEventNotificationPosted *)self contentID];
+  [coderCopy encodeObject:contentID forKey:@"tip_ID"];
 
-  v7 = [(TPSAnalyticsEventNotificationPosted *)self collectionID];
-  [v4 encodeObject:v7 forKey:@"collection_ID"];
+  collectionID = [(TPSAnalyticsEventNotificationPosted *)self collectionID];
+  [coderCopy encodeObject:collectionID forKey:@"collection_ID"];
 
-  v8 = [(TPSAnalyticsEventNotificationPosted *)self correlationID];
-  [v4 encodeObject:v8 forKey:@"tip_correlation_ID"];
+  correlationID = [(TPSAnalyticsEventNotificationPosted *)self correlationID];
+  [coderCopy encodeObject:correlationID forKey:@"tip_correlation_ID"];
 
-  v9 = [(TPSAnalyticsEventNotificationPosted *)self errorCode];
-  [v4 encodeObject:v9 forKey:@"error_code"];
+  errorCode = [(TPSAnalyticsEventNotificationPosted *)self errorCode];
+  [coderCopy encodeObject:errorCode forKey:@"error_code"];
 
-  [v4 encodeObject:self->_remaining forKey:@"remaining"];
+  [coderCopy encodeObject:self->_remaining forKey:@"remaining"];
 }
 
 - (NSNumber)notificationsPosted
@@ -134,33 +134,33 @@
 
 - (id)mutableAnalyticsEventRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(TPSAnalyticsEventNotificationPosted *)self notificationsPosted];
-  [v3 setObject:v4 forKeyedSubscript:@"seq_num"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  notificationsPosted = [(TPSAnalyticsEventNotificationPosted *)self notificationsPosted];
+  [dictionary setObject:notificationsPosted forKeyedSubscript:@"seq_num"];
 
-  [v3 setObject:self->_remaining forKeyedSubscript:@"num_until_optout"];
-  [v3 setObject:self->_contentID forKeyedSubscript:@"tip_ID"];
-  [v3 setObject:self->_collectionID forKeyedSubscript:@"collection_ID"];
-  [v3 setObject:self->_correlationID forKeyedSubscript:@"tip_correlation_ID"];
-  [v3 setObject:self->_errorCode forKeyedSubscript:@"error_code"];
+  [dictionary setObject:self->_remaining forKeyedSubscript:@"num_until_optout"];
+  [dictionary setObject:self->_contentID forKeyedSubscript:@"tip_ID"];
+  [dictionary setObject:self->_collectionID forKeyedSubscript:@"collection_ID"];
+  [dictionary setObject:self->_correlationID forKeyedSubscript:@"tip_correlation_ID"];
+  [dictionary setObject:self->_errorCode forKeyedSubscript:@"error_code"];
   v5 = MEMORY[0x1E696AD98];
   v6 = +[TPSCommonDefines sharedInstance];
   v7 = [v5 numberWithInteger:{objc_msgSend(v6, "daysSinceLastMajorVersionUpdate")}];
-  [v3 setObject:v7 forKeyedSubscript:@"time_since_os_install"];
+  [dictionary setObject:v7 forKeyedSubscript:@"time_since_os_install"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{+[TPSCommonDefines isSeniorUser](TPSCommonDefines, "isSeniorUser")}];
-  [v3 setObject:v8 forKeyedSubscript:@"u65_flag"];
+  [dictionary setObject:v8 forKeyedSubscript:@"u65_flag"];
 
-  return v3;
+  return dictionary;
 }
 
 - (void)persistKeys
 {
-  v2 = [(TPSAnalyticsEventNotificationPosted *)self notificationsPosted];
-  [TPSAnalyticsPersistenceController persistObject:v2 forKey:@"TPSNotificationCount"];
+  notificationsPosted = [(TPSAnalyticsEventNotificationPosted *)self notificationsPosted];
+  [TPSAnalyticsPersistenceController persistObject:notificationsPosted forKey:@"TPSNotificationCount"];
 
-  v3 = [MEMORY[0x1E695DF00] date];
-  [TPSAnalyticsPersistenceController persistObject:v3 forKey:@"TPSLastNotificationTime"];
+  date = [MEMORY[0x1E695DF00] date];
+  [TPSAnalyticsPersistenceController persistObject:date forKey:@"TPSLastNotificationTime"];
 }
 
 @end

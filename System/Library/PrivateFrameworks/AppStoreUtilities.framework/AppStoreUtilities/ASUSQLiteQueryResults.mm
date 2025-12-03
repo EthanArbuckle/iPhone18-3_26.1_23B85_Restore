@@ -1,34 +1,34 @@
 @interface ASUSQLiteQueryResults
 - (BOOL)hasRows;
 - (NSNumber)firstNumberValue;
-- (id)initWithStatement:(id *)a1;
+- (id)initWithStatement:(id *)statement;
 - (int64_t)firstInt64Value;
-- (void)enumerateRowsUsingBlock:(id)a3;
+- (void)enumerateRowsUsingBlock:(id)block;
 @end
 
 @implementation ASUSQLiteQueryResults
 
-- (id)initWithStatement:(id *)a1
+- (id)initWithStatement:(id *)statement
 {
   v4 = a2;
-  if (a1)
+  if (statement)
   {
-    v7.receiver = a1;
+    v7.receiver = statement;
     v7.super_class = ASUSQLiteQueryResults;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    statement = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
     }
   }
 
-  return a1;
+  return statement;
 }
 
-- (void)enumerateRowsUsingBlock:(id)a3
+- (void)enumerateRowsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [[ASUSQLiteCursor alloc] initWithStatement:?];
   statement = self->_statement;
   if (statement)
@@ -50,7 +50,7 @@
   v15[2] = __49__ASUSQLiteQueryResults_enumerateRowsUsingBlock___block_invoke;
   v15[3] = &unk_278C977E0;
   v18 = v7;
-  v10 = v4;
+  v10 = blockCopy;
   v17 = v10;
   v11 = v5;
   v16 = v11;

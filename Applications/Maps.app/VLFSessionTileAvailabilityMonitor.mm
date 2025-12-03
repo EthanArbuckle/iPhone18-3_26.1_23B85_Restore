@@ -2,7 +2,7 @@
 + (BOOL)affectsBannerVisibility;
 + (BOOL)affectsPuckVisibility;
 - (NSString)debugDescription;
-- (VLFSessionTileAvailabilityMonitor)initWithObserver:(id)a3 tileObserver:(id)a4;
+- (VLFSessionTileAvailabilityMonitor)initWithObserver:(id)observer tileObserver:(id)tileObserver;
 - (void)dealloc;
 - (void)updateState;
 @end
@@ -45,14 +45,14 @@
   }
 
   v9 = v8;
-  v10 = [(VLFSessionMonitor *)self state];
+  state = [(VLFSessionMonitor *)self state];
   v11 = @"Hide";
-  if (v10 == 1)
+  if (state == 1)
   {
     v11 = @"EnablePuck";
   }
 
-  if (v10 == 2)
+  if (state == 2)
   {
     v12 = @"EnablePuckAndBanner";
   }
@@ -62,14 +62,14 @@
     v12 = v11;
   }
 
-  v13 = [(VLFSessionTileAvailabilityMonitor *)self tileObserver];
-  [v13 distanceThreshold];
+  tileObserver = [(VLFSessionTileAvailabilityMonitor *)self tileObserver];
+  [tileObserver distanceThreshold];
   v15 = v14;
-  v16 = [(VLFSessionTileAvailabilityMonitor *)self tileObserver];
-  [v16 errorTimeoutThreshold];
+  tileObserver2 = [(VLFSessionTileAvailabilityMonitor *)self tileObserver];
+  [tileObserver2 errorTimeoutThreshold];
   v18 = v17;
-  v19 = [(VLFSessionTileAvailabilityMonitor *)self tileObserver];
-  if ([v19 isNavigatingInUnsupportedTransportType])
+  tileObserver3 = [(VLFSessionTileAvailabilityMonitor *)self tileObserver];
+  if ([tileObserver3 isNavigatingInUnsupportedTransportType])
   {
     v20 = @"YES";
   }
@@ -86,17 +86,17 @@
 
 - (void)updateState
 {
-  v3 = [(VLFSessionTileAvailabilityMonitor *)self tileObserver];
-  v4 = [v3 areTilesAvailable];
+  tileObserver = [(VLFSessionTileAvailabilityMonitor *)self tileObserver];
+  areTilesAvailable = [tileObserver areTilesAvailable];
 
   v5 = sub_100C573F8();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-  if (v4)
+  if (areTilesAvailable)
   {
     if (v6)
     {
       v8 = 134349056;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Tiles are available", &v8, 0xCu);
     }
 
@@ -108,7 +108,7 @@
     if (v6)
     {
       v8 = 134349056;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Tiles are not available", &v8, 0xCu);
     }
 
@@ -124,7 +124,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Deallocing", buf, 0xCu);
   }
 
@@ -134,11 +134,11 @@
   [(VLFSessionTileAvailabilityMonitor *)&v4 dealloc];
 }
 
-- (VLFSessionTileAvailabilityMonitor)initWithObserver:(id)a3 tileObserver:(id)a4
+- (VLFSessionTileAvailabilityMonitor)initWithObserver:(id)observer tileObserver:(id)tileObserver
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  observerCopy = observer;
+  tileObserverCopy = tileObserver;
+  if (!tileObserverCopy)
   {
     v11 = sub_10006D178();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -169,7 +169,7 @@
 
   v14.receiver = self;
   v14.super_class = VLFSessionTileAvailabilityMonitor;
-  v8 = [(VLFSessionMonitor *)&v14 initWithObserver:v6];
+  v8 = [(VLFSessionMonitor *)&v14 initWithObserver:observerCopy];
   if (v8)
   {
     v9 = sub_100C573F8();
@@ -180,7 +180,7 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    objc_storeStrong(&v8->_tileObserver, a4);
+    objc_storeStrong(&v8->_tileObserver, tileObserver);
     [(VLFTileObserver *)v8->_tileObserver addAvailabilityObserver:v8];
     [(VLFSessionTileAvailabilityMonitor *)v8 updateState];
   }

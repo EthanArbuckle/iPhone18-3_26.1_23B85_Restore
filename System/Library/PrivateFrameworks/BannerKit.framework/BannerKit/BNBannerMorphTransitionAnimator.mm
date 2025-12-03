@@ -1,54 +1,54 @@
 @interface BNBannerMorphTransitionAnimator
-- (id)_contentViewForViewController:(id)a3;
-- (id)_materialGroupNameBaseForView:(id)a3;
-- (id)_materialGroupNameBaseForViewController:(id)a3;
-- (id)_shadowViewForViewController:(id)a3;
-- (id)initForStateChange:(BOOL)a3;
-- (void)_addGaussianBlurToViewIfNeeded:(id)a3 inputRadius:(double)a4;
-- (void)actionsForTransition:(id)a3;
+- (id)_contentViewForViewController:(id)controller;
+- (id)_materialGroupNameBaseForView:(id)view;
+- (id)_materialGroupNameBaseForViewController:(id)controller;
+- (id)_shadowViewForViewController:(id)controller;
+- (id)initForStateChange:(BOOL)change;
+- (void)_addGaussianBlurToViewIfNeeded:(id)needed inputRadius:(double)radius;
+- (void)actionsForTransition:(id)transition;
 @end
 
 @implementation BNBannerMorphTransitionAnimator
 
-- (id)initForStateChange:(BOOL)a3
+- (id)initForStateChange:(BOOL)change
 {
   v5.receiver = self;
   v5.super_class = BNBannerMorphTransitionAnimator;
   result = [(BNBannerAnimator *)&v5 init];
   if (result)
   {
-    *(result + 32) = a3;
+    *(result + 32) = change;
   }
 
   return result;
 }
 
-- (void)actionsForTransition:(id)a3
+- (void)actionsForTransition:(id)transition
 {
   v4 = *MEMORY[0x1E69DE768];
-  v5 = a3;
-  v6 = [v5 viewControllerForKey:v4];
-  v7 = [v5 viewControllerForKey:*MEMORY[0x1E69DE778]];
-  v8 = [v6 view];
-  v9 = [v7 view];
-  [v5 initialFrameForViewController:v7];
+  transitionCopy = transition;
+  v6 = [transitionCopy viewControllerForKey:v4];
+  v7 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE778]];
+  view = [v6 view];
+  view2 = [v7 view];
+  [transitionCopy initialFrameForViewController:v7];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  [v5 finalFrameForViewController:v7];
+  [transitionCopy finalFrameForViewController:v7];
   v51 = v18;
   v52 = v19;
   v21 = v20;
   v23 = v22;
 
-  v24 = [v8 layer];
-  v25 = [v24 valueForKeyPath:@"transform.scale.x"];
+  layer = [view layer];
+  v25 = [layer valueForKeyPath:@"transform.scale.x"];
   [v25 doubleValue];
   v27 = v26;
 
-  v28 = [v8 layer];
-  v29 = [v28 valueForKeyPath:@"transform.scale.y"];
+  layer2 = [view layer];
+  v29 = [layer2 valueForKeyPath:@"transform.scale.y"];
   [v29 doubleValue];
   v31 = v30;
 
@@ -59,15 +59,15 @@
     v69[1] = 3221225472;
     v69[2] = __56__BNBannerMorphTransitionAnimator_actionsForTransition___block_invoke;
     v69[3] = &unk_1E81E4E00;
-    v70 = v8;
-    v71 = v9;
+    v70 = view;
+    v71 = view2;
     v72 = v27;
     v73 = v31;
     v74 = v11;
     v75 = v13;
     v76 = v15;
     v77 = v17;
-    v33 = v9;
+    v33 = view2;
     [v32 performWithoutAnimation:v69];
 
     v34 = v70;
@@ -88,8 +88,8 @@
     v54[1] = 3221225472;
     v54[2] = __56__BNBannerMorphTransitionAnimator_actionsForTransition___block_invoke_2;
     v54[3] = &unk_1E81E4E28;
-    v55 = v9;
-    v56 = self;
+    v55 = view2;
+    selfCopy = self;
     v57 = v42;
     v58 = v41;
     v59 = v39;
@@ -104,15 +104,15 @@
     v68 = v37;
     v44 = v41;
     v34 = v42;
-    v45 = v9;
+    v45 = view2;
     [v43 performWithoutAnimation:v54];
     [v45 setAlpha:1.0];
-    [v8 setAlpha:0.0];
-    v46 = [v34 layer];
-    [v46 setValue:&unk_1F43BBDF0 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+    [view setAlpha:0.0];
+    layer3 = [v34 layer];
+    [layer3 setValue:&unk_1F43BBDF0 forKeyPath:@"filters.gaussianBlur.inputRadius"];
 
-    v47 = [v44 layer];
-    [v47 setValue:&unk_1F43BBE00 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+    layer4 = [v44 layer];
+    [layer4 setValue:&unk_1F43BBE00 forKeyPath:@"filters.gaussianBlur.inputRadius"];
 
     [(UIViewFloatAnimatableProperty *)self->_blurProgressProperty setValue:0.0];
     v48 = v51 + v21 * 0.5;
@@ -124,8 +124,8 @@
     [v45 setTransform:&v53];
     [v45 setCenter:{v48, v49}];
     CGAffineTransformMakeScale(&v53, 1.0 / v40, 1.0 / v37);
-    [v8 setTransform:&v53];
-    [v8 setCenter:{v48, v49}];
+    [view setTransform:&v53];
+    [view setCenter:{v48, v49}];
   }
 }
 
@@ -156,65 +156,65 @@ uint64_t __56__BNBannerMorphTransitionAnimator_actionsForTransition___block_invo
   return [*(a1 + 32) layoutIfNeeded];
 }
 
-- (id)_materialGroupNameBaseForView:(id)a3
+- (id)_materialGroupNameBaseForView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 subviews];
+  viewCopy = view;
+  subviews = [viewCopy subviews];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v3 materialGroupNameBase];
+    materialGroupNameBase = [viewCopy materialGroupNameBase];
     goto LABEL_8;
   }
 
-  if ([v4 count] == 1)
+  if ([subviews count] == 1)
   {
-    v6 = [v4 lastObject];
+    lastObject = [subviews lastObject];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v6 materialGroupNameBase];
+      materialGroupNameBase = [lastObject materialGroupNameBase];
 
       goto LABEL_8;
     }
   }
 
-  v5 = 0;
+  materialGroupNameBase = 0;
 LABEL_8:
 
-  return v5;
+  return materialGroupNameBase;
 }
 
-- (id)_materialGroupNameBaseForViewController:(id)a3
+- (id)_materialGroupNameBaseForViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 materialGroupNameBase];
+    materialGroupNameBase = [controllerCopy materialGroupNameBase];
   }
 
   else
   {
-    v6 = [v4 view];
+    view = [controllerCopy view];
 
-    v5 = [(BNBannerMorphTransitionAnimator *)self _materialGroupNameBaseForView:v6];
-    v4 = v6;
+    materialGroupNameBase = [(BNBannerMorphTransitionAnimator *)self _materialGroupNameBaseForView:view];
+    controllerCopy = view;
   }
 
-  return v5;
+  return materialGroupNameBase;
 }
 
-- (id)_shadowViewForViewController:(id)a3
+- (id)_shadowViewForViewController:(id)controller
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [a3 view];
-  v4 = [v3 subviews];
-  v5 = [v4 lastObject];
-  v6 = [v5 subviews];
+  view = [controller view];
+  subviews = [view subviews];
+  lastObject = [subviews lastObject];
+  subviews2 = [lastObject subviews];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = v6;
+  v7 = subviews2;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -252,19 +252,19 @@ LABEL_11:
   return v8;
 }
 
-- (id)_contentViewForViewController:(id)a3
+- (id)_contentViewForViewController:(id)controller
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [a3 view];
-  v4 = [v3 subviews];
-  v5 = [v4 lastObject];
-  v6 = [v5 subviews];
+  view = [controller view];
+  subviews = [view subviews];
+  lastObject = [subviews lastObject];
+  subviews2 = [lastObject subviews];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v6;
+  v7 = subviews2;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -315,12 +315,12 @@ LABEL_14:
   return v14;
 }
 
-- (void)_addGaussianBlurToViewIfNeeded:(id)a3 inputRadius:(double)a4
+- (void)_addGaussianBlurToViewIfNeeded:(id)needed inputRadius:(double)radius
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [v6 bn_addGaussianBlurIfNeededWithInputRadius:a4];
-  if (a4 > 0.0)
+  neededCopy = needed;
+  [neededCopy bn_addGaussianBlurIfNeededWithInputRadius:radius];
+  if (radius > 0.0)
   {
     blurProgressProperty = self->_blurProgressProperty;
     if (!blurProgressProperty)
@@ -341,7 +341,7 @@ LABEL_14:
     v12[2] = __78__BNBannerMorphTransitionAnimator__addGaussianBlurToViewIfNeeded_inputRadius___block_invoke;
     v12[3] = &unk_1E81E47B0;
     objc_copyWeak(&v14, &location);
-    v13 = v6;
+    v13 = neededCopy;
     [v10 _createTransformerWithInputAnimatableProperties:v11 presentationValueChangedCallback:v12];
 
     objc_destroyWeak(&v14);

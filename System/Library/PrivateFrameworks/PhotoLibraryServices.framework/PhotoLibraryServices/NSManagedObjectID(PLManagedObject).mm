@@ -6,8 +6,8 @@
 
 - (id)pl_shortURI
 {
-  v1 = [a1 URIRepresentation];
-  v2 = PLShortObjectIDFromURL(v1);
+  uRIRepresentation = [self URIRepresentation];
+  v2 = PLShortObjectIDFromURL(uRIRepresentation);
 
   return v2;
 }

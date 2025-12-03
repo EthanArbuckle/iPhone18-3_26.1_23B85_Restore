@@ -2,20 +2,20 @@
 - (CGPoint)preferredCenter;
 - (CGSize)minimumSize;
 - (CGSize)preferredSize;
-- (SBDodgingItemPreference)initWithPreferredSize:(CGSize)a3 preferredCenter:(CGPoint)a4 updateInteractively:(BOOL)a5 dodgingAxisMask:(unint64_t)a6 minimumSize:(CGSize)a7 canBePositionedOutsideContainerBounds:(BOOL)a8 excludedDodgingIdentifiers:(id)a9;
+- (SBDodgingItemPreference)initWithPreferredSize:(CGSize)size preferredCenter:(CGPoint)center updateInteractively:(BOOL)interactively dodgingAxisMask:(unint64_t)mask minimumSize:(CGSize)minimumSize canBePositionedOutsideContainerBounds:(BOOL)bounds excludedDodgingIdentifiers:(id)identifiers;
 @end
 
 @implementation SBDodgingItemPreference
 
-- (SBDodgingItemPreference)initWithPreferredSize:(CGSize)a3 preferredCenter:(CGPoint)a4 updateInteractively:(BOOL)a5 dodgingAxisMask:(unint64_t)a6 minimumSize:(CGSize)a7 canBePositionedOutsideContainerBounds:(BOOL)a8 excludedDodgingIdentifiers:(id)a9
+- (SBDodgingItemPreference)initWithPreferredSize:(CGSize)size preferredCenter:(CGPoint)center updateInteractively:(BOOL)interactively dodgingAxisMask:(unint64_t)mask minimumSize:(CGSize)minimumSize canBePositionedOutsideContainerBounds:(BOOL)bounds excludedDodgingIdentifiers:(id)identifiers
 {
-  height = a7.height;
-  width = a7.width;
-  y = a4.y;
-  x = a4.x;
-  v16 = a3.height;
-  v17 = a3.width;
-  v19 = a9;
+  height = minimumSize.height;
+  width = minimumSize.width;
+  y = center.y;
+  x = center.x;
+  v16 = size.height;
+  v17 = size.width;
+  identifiersCopy = identifiers;
   v25.receiver = self;
   v25.super_class = SBDodgingItemPreference;
   v20 = [(SBDodgingItemPreference *)&v25 init];
@@ -26,12 +26,12 @@
     v20->_preferredSize.height = v16;
     v20->_preferredCenter.x = x;
     v20->_preferredCenter.y = y;
-    v20->_updateInteractively = a5;
-    v20->_dodgingAxisMask = a6;
+    v20->_updateInteractively = interactively;
+    v20->_dodgingAxisMask = mask;
     v20->_minimumSize.width = width;
     v20->_minimumSize.height = height;
-    v20->_canBePositionedOutsideContainerBounds = a8;
-    v22 = [v19 copy];
+    v20->_canBePositionedOutsideContainerBounds = bounds;
+    v22 = [identifiersCopy copy];
     excludedDodgingIdentifiers = v21->_excludedDodgingIdentifiers;
     v21->_excludedDodgingIdentifiers = v22;
   }

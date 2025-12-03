@@ -1,22 +1,22 @@
 @interface SGMISaliencyModel
 + (double)saliencyThreshold;
 + (id)defaultModel;
-+ (id)getSaliencyOutputOf:(id)a3 forArray:(id)a4;
-+ (id)saliencyForFeatureVector:(id)a3;
-+ (int64_t)ruleBasedInferenceFor:(id)a3;
-+ (int64_t)ruleBasedInferenceFor:(id)a3 config:(id)a4;
++ (id)getSaliencyOutputOf:(id)of forArray:(id)array;
++ (id)saliencyForFeatureVector:(id)vector;
++ (int64_t)ruleBasedInferenceFor:(id)for;
++ (int64_t)ruleBasedInferenceFor:(id)for config:(id)config;
 @end
 
 @implementation SGMISaliencyModel
 
-+ (id)getSaliencyOutputOf:(id)a3 forArray:(id)a4
++ (id)getSaliencyOutputOf:(id)of forArray:(id)array
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  ofCopy = of;
+  arrayCopy = array;
   v7 = objc_alloc(MEMORY[0x277CBFF48]);
   v27[0] = &unk_284749590;
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "count")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(arrayCopy, "count")}];
   v27[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:2];
   v25 = 0;
@@ -25,12 +25,12 @@
 
   if (v10)
   {
-    if ([v6 count])
+    if ([arrayCopy count])
     {
       v12 = 0;
       do
       {
-        v13 = [v6 objectAtIndexedSubscript:v12];
+        v13 = [arrayCopy objectAtIndexedSubscript:v12];
         v26[0] = &unk_284749578;
         v14 = [MEMORY[0x277CCABB0] numberWithInt:v12];
         v26[1] = v14;
@@ -40,22 +40,22 @@
         ++v12;
       }
 
-      while ([v6 count] > v12);
+      while ([arrayCopy count] > v12);
     }
 
     v16 = [[SGMISaliencyModelFeatureProvider alloc] initWithData:v10];
     v24 = v11;
-    v17 = [v5 predictionFromFeatures:v16 error:&v24];
+    v17 = [ofCopy predictionFromFeatures:v16 error:&v24];
     v18 = v24;
 
     if (v17)
     {
       v19 = [v17 featureValueForName:@"Identity"];
-      v20 = [v19 multiArrayValue];
+      multiArrayValue = [v19 multiArrayValue];
 
-      if (v20)
+      if (multiArrayValue)
       {
-        v21 = [[SGMISaliencyModelOutput alloc] initWithData:v20];
+        v21 = [[SGMISaliencyModelOutput alloc] initWithData:multiArrayValue];
       }
 
       else
@@ -88,8 +88,8 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 threshold];
-    [v4 doubleValue];
+    threshold = [v2 threshold];
+    [threshold doubleValue];
     v6 = v5;
   }
 
@@ -101,27 +101,27 @@
   return v6;
 }
 
-+ (id)saliencyForFeatureVector:(id)a3
++ (id)saliencyForFeatureVector:(id)vector
 {
   v76 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  vectorCopy = vector;
   v5 = +[SGMISaliencyModelConfig defaultConfig];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 featureNames];
-    v8 = [a1 defaultModel];
-    if (v8)
+    featureNames = [v5 featureNames];
+    defaultModel = [self defaultModel];
+    if (defaultModel)
     {
-      v66 = a1;
-      v9 = [v4 flatVectorForFeatureNames:v7];
-      v67 = v8;
-      v10 = [v8 modelDescription];
-      v11 = [v10 inputDescriptionsByName];
-      v12 = [v11 objectForKeyedSubscript:@"featureVector"];
-      v13 = [v12 multiArrayConstraint];
-      v14 = [v13 shape];
-      v15 = [v14 objectAtIndexedSubscript:1];
+      selfCopy = self;
+      v9 = [vectorCopy flatVectorForFeatureNames:featureNames];
+      v67 = defaultModel;
+      modelDescription = [defaultModel modelDescription];
+      inputDescriptionsByName = [modelDescription inputDescriptionsByName];
+      v12 = [inputDescriptionsByName objectForKeyedSubscript:@"featureVector"];
+      multiArrayConstraint = [v12 multiArrayConstraint];
+      shape = [multiArrayConstraint shape];
+      v15 = [shape objectAtIndexedSubscript:1];
 
       v16 = v15;
       v17 = [v9 count];
@@ -149,8 +149,8 @@
               [v24 doubleValue];
               v26 = v25;
 
-              v27 = [v6 mean];
-              v28 = [v27 objectAtIndexedSubscript:v23];
+              mean = [v6 mean];
+              v28 = [mean objectAtIndexedSubscript:v23];
               [v28 doubleValue];
               v30 = v29;
 
@@ -174,31 +174,31 @@
 
           v38 = [[SGMISaliencyModelFeatureProvider alloc] initWithData:v21];
           v68 = v64;
-          v8 = v67;
+          defaultModel = v67;
           v39 = [v67 predictionFromFeatures:v38 error:&v68];
           v63 = v68;
 
           if (v39)
           {
             v40 = [v39 featureValueForName:@"Identity"];
-            v41 = [v40 multiArrayValue];
+            multiArrayValue = [v40 multiArrayValue];
 
             v62 = v39;
-            if (v41)
+            if (multiArrayValue)
             {
-              v42 = [[SGMISaliencyModelOutput alloc] initWithData:v41];
+              v42 = [[SGMISaliencyModelOutput alloc] initWithData:multiArrayValue];
               [(SGMISaliencyModelOutput *)v42 regularScore];
               v44 = exp(v43);
               [(SGMISaliencyModelOutput *)v42 salientScore];
               v46 = exp(v45);
               v47 = v46 / (v44 + v46);
-              [v66 saliencyThreshold];
+              [selfCopy saliencyThreshold];
               v49 = v47 > v48;
               v50 = [MEMORY[0x277CCABB0] numberWithDouble:v47];
               v51 = v49;
-              v8 = v67;
-              [v4 saliencyWithScore:v50 isSalient:v51];
-              v53 = v52 = v41;
+              defaultModel = v67;
+              [vectorCopy saliencyWithScore:v50 isSalient:v51];
+              defaultSaliencyOnError = v52 = multiArrayValue;
             }
 
             else
@@ -210,7 +210,7 @@
                 _os_log_error_impl(&dword_231E60000, v59, OS_LOG_TYPE_ERROR, "SGMISaliencyModel: Error while parsing SGMISaliencyModel inference.", buf, 2u);
               }
 
-              v53 = [v4 defaultSaliencyOnError];
+              defaultSaliencyOnError = [vectorCopy defaultSaliencyOnError];
               v52 = 0;
             }
 
@@ -231,7 +231,7 @@
               _os_log_error_impl(&dword_231E60000, v58, OS_LOG_TYPE_ERROR, "SGMISaliencyModel: Error while running SGMISaliencyModel inference: %@", buf, 0xCu);
             }
 
-            v53 = [v4 defaultSaliencyOnError];
+            defaultSaliencyOnError = [vectorCopy defaultSaliencyOnError];
             v16 = v65;
           }
         }
@@ -246,8 +246,8 @@
             _os_log_error_impl(&dword_231E60000, v57, OS_LOG_TYPE_ERROR, "SGMISaliencyModel: Error while initializing MLMultiArray for SGMISaliencyModel inference: %@", buf, 0xCu);
           }
 
-          v53 = [v4 defaultSaliencyOnError];
-          v8 = v67;
+          defaultSaliencyOnError = [vectorCopy defaultSaliencyOnError];
+          defaultModel = v67;
         }
       }
 
@@ -263,8 +263,8 @@
           _os_log_error_impl(&dword_231E60000, v56, OS_LOG_TYPE_ERROR, "Error while preparing feature vector for mlmodel: dimension mismatch, expecting %@ got %lu", buf, 0x16u);
         }
 
-        v53 = [v4 defaultSaliencyOnError];
-        v8 = v67;
+        defaultSaliencyOnError = [vectorCopy defaultSaliencyOnError];
+        defaultModel = v67;
       }
     }
 
@@ -277,7 +277,7 @@
         _os_log_error_impl(&dword_231E60000, v55, OS_LOG_TYPE_ERROR, "Error - Couldn't get default saliency model when trying to run inference.", buf, 2u);
       }
 
-      v53 = [v4 defaultSaliencyOnError];
+      defaultSaliencyOnError = [vectorCopy defaultSaliencyOnError];
     }
   }
 
@@ -290,33 +290,33 @@
       _os_log_error_impl(&dword_231E60000, v54, OS_LOG_TYPE_ERROR, "SGMISaliencyModel: Unable to load SGMISaliencyModelConfig defaultConfig", buf, 2u);
     }
 
-    v53 = [v4 defaultSaliencyOnError];
+    defaultSaliencyOnError = [vectorCopy defaultSaliencyOnError];
   }
 
   v60 = *MEMORY[0x277D85DE8];
 
-  return v53;
+  return defaultSaliencyOnError;
 }
 
-+ (int64_t)ruleBasedInferenceFor:(id)a3 config:(id)a4
++ (int64_t)ruleBasedInferenceFor:(id)for config:(id)config
 {
-  if (!a4)
+  if (!config)
   {
     return 2;
   }
 
-  v5 = a3;
-  v6 = [a4 saliencyOverrideRules];
-  v7 = [v5 evaluateFirstMatchAmong:v6 defaultValue:2];
+  forCopy = for;
+  saliencyOverrideRules = [config saliencyOverrideRules];
+  v7 = [forCopy evaluateFirstMatchAmong:saliencyOverrideRules defaultValue:2];
 
   return v7;
 }
 
-+ (int64_t)ruleBasedInferenceFor:(id)a3
++ (int64_t)ruleBasedInferenceFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   v4 = +[SGMISaliencyModelConfig defaultConfig];
-  v5 = [SGMISaliencyModel ruleBasedInferenceFor:v3 config:v4];
+  v5 = [SGMISaliencyModel ruleBasedInferenceFor:forCopy config:v4];
 
   return v5;
 }
@@ -332,9 +332,9 @@
   }
 
   v3 = +[SGMITrialClientWrapper sharedInstance];
-  v4 = [v3 modelPath];
-  v5 = v4;
-  if (!v4 || ![v4 length])
+  modelPath = [v3 modelPath];
+  v5 = modelPath;
+  if (!modelPath || ![modelPath length])
   {
     v8 = sgMailIntelligenceLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))

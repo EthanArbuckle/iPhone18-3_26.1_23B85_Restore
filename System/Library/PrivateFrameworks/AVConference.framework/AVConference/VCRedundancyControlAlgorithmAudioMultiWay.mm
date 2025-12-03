@@ -1,10 +1,10 @@
 @interface VCRedundancyControlAlgorithmAudioMultiWay
 - (VCRedundancyControlAlgorithmAudioMultiWay)init;
-- (unsigned)updateRedundancyPercentageWithPLRThresholds:(unsigned int *)a3;
+- (unsigned)updateRedundancyPercentageWithPLRThresholds:(unsigned int *)thresholds;
 - (void)computeRedundancyInfo;
-- (void)processNWConnectionStatistics:(tagVCStatisticsMessage *)a3;
-- (void)processRCNetworkStatistics:(tagVCStatisticsMessage *)a3;
-- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)a3;
+- (void)processNWConnectionStatistics:(tagVCStatisticsMessage *)statistics;
+- (void)processRCNetworkStatistics:(tagVCStatisticsMessage *)statistics;
+- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)statistics;
 @end
 
 @implementation VCRedundancyControlAlgorithmAudioMultiWay
@@ -24,63 +24,63 @@
   return result;
 }
 
-- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)a3
+- (void)updateRedundancyStrategyWithNetworkStatistics:(tagVCStatisticsMessage *)statistics
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a3->type == 11)
+  if (statistics->type == 11)
   {
-    v9 = *(&a3->var0.addRemoveEndPoint + 19);
-    v25 = *(&a3->var0.addRemoveEndPoint + 17);
+    v9 = *(&statistics->var0.addRemoveEndPoint + 19);
+    v25 = *(&statistics->var0.addRemoveEndPoint + 17);
     v26 = v9;
-    v27 = *(&a3->var0.addRemoveEndPoint + 21);
-    v10 = *(&a3->var0.addRemoveEndPoint + 11);
-    v21 = *(&a3->var0.addRemoveEndPoint + 9);
+    v27 = *(&statistics->var0.addRemoveEndPoint + 21);
+    v10 = *(&statistics->var0.addRemoveEndPoint + 11);
+    v21 = *(&statistics->var0.addRemoveEndPoint + 9);
     v22 = v10;
-    v11 = *(&a3->var0.addRemoveEndPoint + 15);
-    v23 = *(&a3->var0.addRemoveEndPoint + 13);
+    v11 = *(&statistics->var0.addRemoveEndPoint + 15);
+    v23 = *(&statistics->var0.addRemoveEndPoint + 13);
     v24 = v11;
-    v12 = *(&a3->var0.addRemoveEndPoint + 3);
-    v17 = *&a3->var0.rtcpRR.lastSequenceNumber;
+    v12 = *(&statistics->var0.addRemoveEndPoint + 3);
+    v17 = *&statistics->var0.rtcpRR.lastSequenceNumber;
     v18 = v12;
-    v13 = *(&a3->var0.addRemoveEndPoint + 7);
-    v19 = *(&a3->var0.addRemoveEndPoint + 5);
+    v13 = *(&statistics->var0.addRemoveEndPoint + 7);
+    v19 = *(&statistics->var0.addRemoveEndPoint + 5);
     v20 = v13;
-    v14 = *&a3->isVCRCInternal;
-    v15 = *&a3->type;
+    v14 = *&statistics->isVCRCInternal;
+    v15 = *&statistics->type;
     v16 = v14;
     [(VCRedundancyControlAlgorithmAudioMultiWay *)self processNWConnectionStatistics:&v15];
   }
 
-  else if (a3->type == 3)
+  else if (statistics->type == 3)
   {
-    v3 = *(&a3->var0.addRemoveEndPoint + 19);
-    v25 = *(&a3->var0.addRemoveEndPoint + 17);
+    v3 = *(&statistics->var0.addRemoveEndPoint + 19);
+    v25 = *(&statistics->var0.addRemoveEndPoint + 17);
     v26 = v3;
-    v27 = *(&a3->var0.addRemoveEndPoint + 21);
-    v4 = *(&a3->var0.addRemoveEndPoint + 11);
-    v21 = *(&a3->var0.addRemoveEndPoint + 9);
+    v27 = *(&statistics->var0.addRemoveEndPoint + 21);
+    v4 = *(&statistics->var0.addRemoveEndPoint + 11);
+    v21 = *(&statistics->var0.addRemoveEndPoint + 9);
     v22 = v4;
-    v5 = *(&a3->var0.addRemoveEndPoint + 15);
-    v23 = *(&a3->var0.addRemoveEndPoint + 13);
+    v5 = *(&statistics->var0.addRemoveEndPoint + 15);
+    v23 = *(&statistics->var0.addRemoveEndPoint + 13);
     v24 = v5;
-    v6 = *(&a3->var0.addRemoveEndPoint + 3);
-    v17 = *&a3->var0.rtcpRR.lastSequenceNumber;
+    v6 = *(&statistics->var0.addRemoveEndPoint + 3);
+    v17 = *&statistics->var0.rtcpRR.lastSequenceNumber;
     v18 = v6;
-    v7 = *(&a3->var0.addRemoveEndPoint + 7);
-    v19 = *(&a3->var0.addRemoveEndPoint + 5);
+    v7 = *(&statistics->var0.addRemoveEndPoint + 7);
+    v19 = *(&statistics->var0.addRemoveEndPoint + 5);
     v20 = v7;
-    v8 = *&a3->isVCRCInternal;
-    v15 = *&a3->type;
+    v8 = *&statistics->isVCRCInternal;
+    v15 = *&statistics->type;
     v16 = v8;
     [(VCRedundancyControlAlgorithmAudioMultiWay *)self processRCNetworkStatistics:&v15];
   }
 }
 
-- (void)processNWConnectionStatistics:(tagVCStatisticsMessage *)a3
+- (void)processNWConnectionStatistics:(tagVCStatisticsMessage *)statistics
 {
-  if (a3->type == 11)
+  if (statistics->type == 11)
   {
-    offChannelTimeRatio = a3->var0.nwConnection.var0.wifi.offChannelTimeRatio;
+    offChannelTimeRatio = statistics->var0.nwConnection.var0.wifi.offChannelTimeRatio;
     self->_offChannelTimeRatio = offChannelTimeRatio;
     if (self->_isOffChannelActivityHigh)
     {
@@ -105,13 +105,13 @@
   }
 }
 
-- (void)processRCNetworkStatistics:(tagVCStatisticsMessage *)a3
+- (void)processRCNetworkStatistics:(tagVCStatisticsMessage *)statistics
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a3->type == 3)
+  if (statistics->type == 3)
   {
-    p_statisticsID = &a3->var0.network.statisticsID;
-    if (a3->var0.network.statisticsID)
+    p_statisticsID = &statistics->var0.network.statisticsID;
+    if (statistics->var0.network.statisticsID)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 8)
       {
@@ -144,7 +144,7 @@
 
     else
     {
-      packetLossPercentage = a3->var0.network.packetLossPercentage;
+      packetLossPercentage = statistics->var0.network.packetLossPercentage;
       packetLossPercentageThreshold = self->_packetLossPercentageThreshold;
       plrEnvelope = self->_plrEnvelope;
       v13 = dbl_1DBD49B40[plrEnvelope < packetLossPercentage];
@@ -152,8 +152,8 @@
       self->_plrEnvelope = v14;
       self->_isPacketLossIncreasing = v14 >= packetLossPercentageThreshold;
       self->_packetLossPercentage = packetLossPercentage;
-      self->_burstLossPacketCount = a3->var0.baseband.transmittedBytes;
-      self->_isUplinkRecentlyCongested = a3->var0.feedback.videoReceivedPackets != 0;
+      self->_burstLossPacketCount = statistics->var0.baseband.transmittedBytes;
+      self->_isUplinkRecentlyCongested = statistics->var0.feedback.videoReceivedPackets != 0;
 
       [(VCRedundancyControlAlgorithmAudioMultiWay *)self computeRedundancyInfo];
     }
@@ -200,14 +200,14 @@ LABEL_6:
   self->_redundancyInterval = v5;
 }
 
-- (unsigned)updateRedundancyPercentageWithPLRThresholds:(unsigned int *)a3
+- (unsigned)updateRedundancyPercentageWithPLRThresholds:(unsigned int *)thresholds
 {
   v5 = 0;
   v32 = *MEMORY[0x1E69E9840];
   plrEnvelope = self->_plrEnvelope;
   do
   {
-    LODWORD(v3) = a3[v5];
+    LODWORD(v3) = thresholds[v5];
     v3 = *&v3;
     if (plrEnvelope < v3)
     {
@@ -227,7 +227,7 @@ LABEL_6:
       v8 = 2;
     }
 
-    LODWORD(plrEnvelope) = a3[v8];
+    LODWORD(plrEnvelope) = thresholds[v8];
     self->_packetLossPercentageThreshold = *&plrEnvelope;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {

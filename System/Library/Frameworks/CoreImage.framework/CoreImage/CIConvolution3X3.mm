@@ -131,35 +131,35 @@
       height = v48.size.height;
     }
 
-    v14 = [(CIVector *)self->inputWeights _values];
-    v17 = *v14;
-    if (*v14 != v14[2])
+    _values = [(CIVector *)self->inputWeights _values];
+    v17 = *_values;
+    if (*_values != _values[2])
     {
       goto LABEL_34;
     }
 
-    if (v17 != v14[6])
+    if (v17 != _values[6])
     {
       goto LABEL_34;
     }
 
-    if (v17 != v14[8])
+    if (v17 != _values[8])
     {
       goto LABEL_34;
     }
 
-    v18 = v14[1];
-    if (v18 != v14[3])
+    v18 = _values[1];
+    if (v18 != _values[3])
     {
       goto LABEL_34;
     }
 
-    if (v18 != v14[5])
+    if (v18 != _values[5])
     {
       goto LABEL_34;
     }
 
-    v15.i64[0] = v14[7];
+    v15.i64[0] = _values[7];
     if (v18 != *v15.i64)
     {
       goto LABEL_34;
@@ -179,7 +179,7 @@
       goto LABEL_34;
     }
 
-    v24 = v14[4];
+    v24 = _values[4];
     *v22.i32 = v24;
     LODWORD(v25) = vbslq_s8(v19, v15, v22).u32[0];
     if (*v22.i32 == 0.0)

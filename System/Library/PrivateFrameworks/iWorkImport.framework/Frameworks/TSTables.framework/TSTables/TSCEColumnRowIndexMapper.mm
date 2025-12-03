@@ -1,9 +1,9 @@
 @interface TSCEColumnRowIndexMapper
 - (TSCEColumnRowIndexMapper)init;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initAsCompressionMapForIndexes:(id)a3;
-- (unsigned)mappedIndexForSourceIndex:(unsigned int)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initAsCompressionMapForIndexes:(id)indexes;
+- (unsigned)mappedIndexForSourceIndex:(unsigned int)index;
 @end
 
 @implementation TSCEColumnRowIndexMapper
@@ -15,9 +15,9 @@
   return [(TSCEColumnRowIndexMapper *)&v3 init];
 }
 
-- (id)initAsCompressionMapForIndexes:(id)a3
+- (id)initAsCompressionMapForIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   v16.receiver = self;
   v16.super_class = TSCEColumnRowIndexMapper;
   v5 = [(TSCEColumnRowIndexMapper *)&v16 init];
@@ -34,7 +34,7 @@
     v11[3] = &unk_278462D78;
     v13 = v14;
     v12 = v5;
-    objc_msgSend_enumerateIndexesUsingBlock_(v4, v7, v11, v8, v9);
+    objc_msgSend_enumerateIndexesUsingBlock_(indexesCopy, v7, v11, v8, v9);
 
     _Block_object_dispose(v14, 8);
   }
@@ -42,7 +42,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v5 = v4;
@@ -55,14 +55,14 @@
   return v5;
 }
 
-- (unsigned)mappedIndexForSourceIndex:(unsigned int)a3
+- (unsigned)mappedIndexForSourceIndex:(unsigned int)index
 {
-  v6 = a3;
-  v3 = sub_2211DC534(&self->_indexMap.__table_.__bucket_list_.__ptr_, &v6);
+  indexCopy = index;
+  v3 = sub_2211DC534(&self->_indexMap.__table_.__bucket_list_.__ptr_, &indexCopy);
   v4 = v3 + 5;
   if (!v3)
   {
-    v4 = &v6;
+    v4 = &indexCopy;
   }
 
   return *v4;

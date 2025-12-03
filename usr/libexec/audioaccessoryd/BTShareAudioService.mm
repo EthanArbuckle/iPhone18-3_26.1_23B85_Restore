@@ -1,9 +1,9 @@
 @interface BTShareAudioService
 - (BTShareAudioService)init;
-- (void)_handleSessionEnded:(id)a3 error:(id)a4;
-- (void)_handleSessionStarted:(id)a3;
-- (void)_handleShareAudioPairingCompleted:(id)a3 error:(id)a4;
-- (void)_handleShareAudioRequest:(id)a3 responseHandler:(id)a4;
+- (void)_handleSessionEnded:(id)ended error:(id)error;
+- (void)_handleSessionStarted:(id)started;
+- (void)_handleShareAudioPairingCompleted:(id)completed error:(id)error;
+- (void)_handleShareAudioRequest:(id)request responseHandler:(id)handler;
 - (void)_handleShareAudioSearchTimeout;
 - (void)_invalidate;
 - (void)_sfServiceStart;
@@ -115,60 +115,60 @@
   [(SFService *)v5 activateWithCompletion:v6];
 }
 
-- (void)_handleSessionStarted:(id)a3
+- (void)_handleSessionStarted:(id)started
 {
-  v5 = a3;
+  startedCopy = started;
   sfSession = self->_sfSession;
   if (sfSession)
   {
-    sub_1001EF2E8(dword_1002F6AD8, &self->_sfSession, sfSession, v5);
+    sub_1001EF2E8(dword_1002F6AD8, &self->_sfSession, sfSession, startedCopy);
   }
 
   else
   {
     if (dword_1002F6AD8 <= 30 && (dword_1002F6AD8 != -1 || _LogCategory_Initialize()))
     {
-      sub_1001EF3B4(v5);
+      sub_1001EF3B4(startedCopy);
     }
 
-    [v5 setStatusMonitor:self->_statusMonitor];
-    objc_storeStrong(&self->_sfSession, a3);
+    [startedCopy setStatusMonitor:self->_statusMonitor];
+    objc_storeStrong(&self->_sfSession, started);
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10007DB2C;
     v9[3] = &unk_1002B95A0;
     v9[4] = self;
-    [v5 registerRequestID:@"_shAu" options:&off_1002CBE00 handler:v9];
+    [startedCopy registerRequestID:@"_shAu" options:&off_1002CBE00 handler:v9];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10007DB34;
     v8[3] = &unk_1002B95A0;
     v8[4] = self;
-    [v5 registerRequestID:@"_shCf" options:&off_1002CBE28 handler:v8];
+    [startedCopy registerRequestID:@"_shCf" options:&off_1002CBE28 handler:v8];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10007DC44;
     v7[3] = &unk_1002B95A0;
     v7[4] = self;
-    [v5 registerRequestID:@"_shCn" options:&off_1002CBE50 handler:v7];
+    [startedCopy registerRequestID:@"_shCn" options:&off_1002CBE50 handler:v7];
   }
 }
 
-- (void)_handleSessionEnded:(id)a3 error:(id)a4
+- (void)_handleSessionEnded:(id)ended error:(id)error
 {
-  v19 = a3;
-  v6 = a4;
+  endedCopy = ended;
+  errorCopy = error;
   sfSession = self->_sfSession;
-  if (sfSession == v19)
+  if (sfSession == endedCopy)
   {
-    if (v19)
+    if (endedCopy)
     {
       if (dword_1002F6AD8 <= 30)
       {
         if (dword_1002F6AD8 != -1 || (v8 = _LogCategory_Initialize(), sfSession = self->_sfSession, v8))
         {
-          v17 = [(SFSession *)sfSession peer];
-          v18 = v6;
+          peer = [(SFSession *)sfSession peer];
+          v18 = errorCopy;
           LogPrintF();
 
           sfSession = self->_sfSession;
@@ -191,7 +191,7 @@
       self->_searchTimer = 0;
     }
 
-    [(CUBluetoothClient *)self->_searchBTClient invalidate:v17];
+    [(CUBluetoothClient *)self->_searchBTClient invalidate:peer];
     searchBTClient = self->_searchBTClient;
     self->_searchBTClient = 0;
 
@@ -211,10 +211,10 @@
   }
 }
 
-- (void)_handleShareAudioRequest:(id)a3 responseHandler:(id)a4
+- (void)_handleShareAudioRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (dword_1002F6AD8 <= 30 && (dword_1002F6AD8 != -1 || _LogCategory_Initialize()))
   {
     sub_1001EF488();
@@ -231,7 +231,7 @@
   v16[2] = sub_10007E178;
   v16[3] = &unk_1002B74D0;
   v18 = &v19;
-  v8 = v7;
+  v8 = handlerCopy;
   v17 = v8;
   v9 = objc_retainBlock(v16);
   if (self->_responseHandler)
@@ -266,10 +266,10 @@
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)_handleShareAudioPairingCompleted:(id)a3 error:(id)a4
+- (void)_handleShareAudioPairingCompleted:(id)completed error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  completedCopy = completed;
+  errorCopy = error;
   [(SFBluetoothPairingSession *)self->_pairingSession invalidate];
   pairingSession = self->_pairingSession;
   self->_pairingSession = 0;
@@ -280,14 +280,14 @@
     responseHandler = self->_responseHandler;
     self->_responseHandler = 0;
 
-    if (v7)
+    if (errorCopy)
     {
       if (dword_1002F6AD8 <= 90 && (dword_1002F6AD8 != -1 || _LogCategory_Initialize()))
       {
         sub_1001EF4C8();
       }
 
-      (*(v9 + 2))(v9, v7, 0, 0);
+      (*(v9 + 2))(v9, errorCopy, 0, 0);
     }
 
     else
@@ -296,17 +296,17 @@
       if (v11)
       {
         v12 = objc_alloc_init(NSMutableDictionary);
-        v13 = [v6 colorCodeBest];
-        if (v13)
+        colorCodeBest = [completedCopy colorCodeBest];
+        if (colorCodeBest)
         {
-          v14 = [NSNumber numberWithUnsignedChar:v13];
+          v14 = [NSNumber numberWithUnsignedChar:colorCodeBest];
           [v12 setObject:v14 forKeyedSubscript:@"colorCode"];
         }
 
-        v15 = [v6 productID];
-        if (v15)
+        productID = [completedCopy productID];
+        if (productID)
         {
-          v16 = [NSNumber numberWithUnsignedInt:v15];
+          v16 = [NSNumber numberWithUnsignedInt:productID];
           [v12 setObject:v16 forKeyedSubscript:@"productID"];
         }
 

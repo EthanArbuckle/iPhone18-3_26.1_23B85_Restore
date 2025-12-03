@@ -8,21 +8,21 @@
 {
   if (!_Failover)
   {
-    v2 = [MEMORY[0x29EDBD6E8] sharedInstance];
+    mEMORY[0x29EDBD6E8] = [MEMORY[0x29EDBD6E8] sharedInstance];
     v6[0] = MEMORY[0x29EDCA5F8];
     v6[1] = 3221225472;
     v6[2] = __56__AXBluetoothSettingsGlue_accessibilityInitializeBundle__block_invoke_2;
     v6[3] = &unk_29F2A8978;
     v7 = @"BluetoothSettings";
     v8 = @"BluetoothSettings";
-    [v2 performValidations:&__block_literal_global withPreValidationHandler:v6 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_297];
+    [mEMORY[0x29EDBD6E8] performValidations:&__block_literal_global withPreValidationHandler:v6 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_297];
 
     v3 = [objc_allocWithZone(AXBluetoothSettingsGlue) init];
     v4 = _Failover;
     _Failover = v3;
 
-    v5 = [MEMORY[0x29EDBD6E8] sharedInstance];
-    [v5 installSafeCategories:&__block_literal_global_306 afterDelay:@"BluetoothSettings" validationTargetName:@"BluetoothSettings" overrideProcessName:0.0];
+    mEMORY[0x29EDBD6E8]2 = [MEMORY[0x29EDBD6E8] sharedInstance];
+    [mEMORY[0x29EDBD6E8]2 installSafeCategories:&__block_literal_global_306 afterDelay:@"BluetoothSettings" validationTargetName:@"BluetoothSettings" overrideProcessName:0.0];
   }
 }
 

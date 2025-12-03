@@ -1,25 +1,25 @@
 @interface CSLUIInertialUpdater
 - (BOOL)_needsDisplayLink;
-- (CGPoint)_constrainedOffset:(CGPoint)a3;
+- (CGPoint)_constrainedOffset:(CGPoint)offset;
 - (void)_beginDraggingIfNecessary;
 - (void)_computeDecelerationTarget;
-- (void)_decelerate:(double)a3;
-- (void)_displayLinkFired:(id)a3;
+- (void)_decelerate:(double)_decelerate;
+- (void)_displayLinkFired:(id)fired;
 - (void)_finalizeOffset;
-- (void)_handleDragDelta:(CGPoint)a3;
-- (void)_updateDelegateWithDelta:(CGPoint)a3;
+- (void)_handleDragDelta:(CGPoint)delta;
+- (void)_updateDelegateWithDelta:(CGPoint)delta;
 - (void)_updateDisplayLink;
-- (void)addDragDelta:(CGPoint)a3;
+- (void)addDragDelta:(CGPoint)delta;
 - (void)endDragging;
 - (void)endUpdating;
 @end
 
 @implementation CSLUIInertialUpdater
 
-- (void)addDragDelta:(CGPoint)a3
+- (void)addDragDelta:(CGPoint)delta
 {
-  y = a3.y;
-  x = a3.x;
+  y = delta.y;
+  x = delta.x;
   [(CSLUIInertialUpdater *)self _beginDraggingIfNecessary];
 
   [(CSLUIInertialUpdater *)self _handleDragDelta:x, y];
@@ -74,9 +74,9 @@
 
 - (void)_updateDisplayLink
 {
-  v3 = [(CSLUIInertialUpdater *)self _needsDisplayLink];
+  _needsDisplayLink = [(CSLUIInertialUpdater *)self _needsDisplayLink];
   displayLink = self->_displayLink;
-  if (v3)
+  if (_needsDisplayLink)
   {
     if (displayLink)
     {
@@ -106,10 +106,10 @@
   }
 }
 
-- (void)_updateDelegateWithDelta:(CGPoint)a3
+- (void)_updateDelegateWithDelta:(CGPoint)delta
 {
-  y = a3.y;
-  x = a3.x;
+  y = delta.y;
+  x = delta.x;
   v6 = cslprf_ui_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -119,12 +119,12 @@
   [(CSLUIInertialUpdaterDelegate *)self->_delegate inertialUpdater:self scrolledWithDelta:x, y];
 }
 
-- (CGPoint)_constrainedOffset:(CGPoint)a3
+- (CGPoint)_constrainedOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v6 = self->_clientTarget.x;
-  if (a3.x > v6 && self->_target.x >= a3.x || a3.x < v6 && self->_target.x <= a3.x)
+  if (offset.x > v6 && self->_target.x >= offset.x || offset.x < v6 && self->_target.x <= offset.x)
   {
     v7 = 1;
   }
@@ -132,28 +132,28 @@
   else
   {
     v7 = 0;
-    v6 = a3.x;
+    v6 = offset.x;
   }
 
   v8 = self->_clientTarget.y;
-  if (a3.y <= v8 || self->_target.y < a3.y)
+  if (offset.y <= v8 || self->_target.y < offset.y)
   {
-    if (a3.y >= v8)
+    if (offset.y >= v8)
     {
-      v8 = a3.y;
+      v8 = offset.y;
       if (!v7)
       {
 LABEL_14:
-        v8 = a3.y;
+        v8 = offset.y;
         goto LABEL_19;
       }
     }
 
     else
     {
-      if (self->_target.y > a3.y)
+      if (self->_target.y > offset.y)
       {
-        v8 = a3.y;
+        v8 = offset.y;
       }
 
       else
@@ -202,11 +202,11 @@ LABEL_19:
   return result;
 }
 
-- (void)_decelerate:(double)a3
+- (void)_decelerate:(double)_decelerate
 {
   x = self->_offset.x;
   y = self->_offset.y;
-  v6 = a3 * 1000.0;
+  v6 = _decelerate * 1000.0;
   v7 = powf(0.975, v6);
   v8 = 1.0 - v7;
   v9 = x * v7 + (1.0 - v7) * self->_target.x;
@@ -303,9 +303,9 @@ LABEL_19:
   }
 }
 
-- (void)_displayLinkFired:(id)a3
+- (void)_displayLinkFired:(id)fired
 {
-  [a3 timestamp];
+  [fired timestamp];
   v5 = v4 - self->_lastDecelerationUpdate;
   self->_lastDecelerationUpdate = v4;
   [(CSLUIInertialUpdater *)self _decelerate:v5];
@@ -336,10 +336,10 @@ LABEL_19:
   }
 }
 
-- (void)_handleDragDelta:(CGPoint)a3
+- (void)_handleDragDelta:(CGPoint)delta
 {
-  y = a3.y;
-  x = a3.x;
+  y = delta.y;
+  x = delta.x;
   v6 = CACurrentMediaTime();
   self->_lastVelocity = self->_velocity;
   v7 = v6 - self->_lastInteractionTime;

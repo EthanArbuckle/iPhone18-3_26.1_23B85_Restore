@@ -1,35 +1,35 @@
 @interface _MTStaticVisualStylingMaterialView
-- (id)_coreMaterialVisualStylingProviderForCategory:(id)a3;
-- (id)_initWithCoreMaterialRecipe:(id)a3 fromBundle:(id)a4 options:(unint64_t)a5 initialWeighting:(double)a6 scaleAdjustment:(id)a7;
+- (id)_coreMaterialVisualStylingProviderForCategory:(id)category;
+- (id)_initWithCoreMaterialRecipe:(id)recipe fromBundle:(id)bundle options:(unint64_t)options initialWeighting:(double)weighting scaleAdjustment:(id)adjustment;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)_invalidateContentVisualStyling;
-- (void)_setCoreMaterialVisualStylingProvider:(id)a3 ForCategory:(id)a4;
+- (void)_setCoreMaterialVisualStylingProvider:(id)provider ForCategory:(id)category;
 - (void)_updateContentVisualStylingIfNecessary;
-- (void)_updateContentVisualStylingWithProvider:(id)a3;
+- (void)_updateContentVisualStylingWithProvider:(id)provider;
 - (void)_updateCoreMaterialVisualStylingProviders;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
-- (void)setBackdropScaleAdjustment:(id)a3;
-- (void)setBlurEnabled:(BOOL)a3;
-- (void)setCaptureOnly:(BOOL)a3;
-- (void)setContentReplacedWithSnapshot:(BOOL)a3;
-- (void)setIgnoresScreenClip:(BOOL)a3;
-- (void)setRecipe:(int64_t)a3;
-- (void)setRecipeName:(id)a3;
-- (void)setShouldCrossfade:(BOOL)a3;
-- (void)setUseBuiltInAlphaTransformerAndBackdropScaleAdjustment:(BOOL)a3;
-- (void)setUseBuiltInAlphaTransformerAndBackdropScaleAdjustmentIfNecessary:(BOOL)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
-- (void)setZoomEnabled:(BOOL)a3;
+- (void)setBackdropScaleAdjustment:(id)adjustment;
+- (void)setBlurEnabled:(BOOL)enabled;
+- (void)setCaptureOnly:(BOOL)only;
+- (void)setContentReplacedWithSnapshot:(BOOL)snapshot;
+- (void)setIgnoresScreenClip:(BOOL)clip;
+- (void)setRecipe:(int64_t)recipe;
+- (void)setRecipeName:(id)name;
+- (void)setShouldCrossfade:(BOOL)crossfade;
+- (void)setUseBuiltInAlphaTransformerAndBackdropScaleAdjustment:(BOOL)adjustment;
+- (void)setUseBuiltInAlphaTransformerAndBackdropScaleAdjustmentIfNecessary:(BOOL)necessary;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
+- (void)setZoomEnabled:(BOOL)enabled;
 @end
 
 @implementation _MTStaticVisualStylingMaterialView
 
-- (void)setRecipe:(int64_t)a3
+- (void)setRecipe:(int64_t)recipe
 {
   v4.receiver = self;
   v4.super_class = _MTStaticVisualStylingMaterialView;
-  [(MTMaterialView *)&v4 setRecipe:a3];
+  [(MTMaterialView *)&v4 setRecipe:recipe];
   [(_MTStaticVisualStylingMaterialView *)self _invalidateContentVisualStyling];
 }
 
@@ -60,20 +60,20 @@
   [(_MTStaticVisualStylingMaterialView *)self _updateContentVisualStylingIfNecessary];
 }
 
-- (void)setRecipeName:(id)a3
+- (void)setRecipeName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   recipeName = self->_recipeName;
-  if (recipeName != v5 && ![(NSString *)recipeName isEqualToString:v5])
+  if (recipeName != nameCopy && ![(NSString *)recipeName isEqualToString:nameCopy])
   {
-    objc_storeStrong(&self->_recipeName, a3);
+    objc_storeStrong(&self->_recipeName, name);
     [(_MTStaticVisualStylingMaterialView *)self _invalidateContentVisualStyling];
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setBlurEnabled:(BOOL)a3
+- (void)setBlurEnabled:(BOOL)enabled
 {
   if (os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_ERROR))
   {
@@ -81,7 +81,7 @@
   }
 }
 
-- (void)setZoomEnabled:(BOOL)a3
+- (void)setZoomEnabled:(BOOL)enabled
 {
   if (os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_ERROR))
   {
@@ -89,7 +89,7 @@
   }
 }
 
-- (void)setCaptureOnly:(BOOL)a3
+- (void)setCaptureOnly:(BOOL)only
 {
   if (os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_ERROR))
   {
@@ -97,7 +97,7 @@
   }
 }
 
-- (void)setBackdropScaleAdjustment:(id)a3
+- (void)setBackdropScaleAdjustment:(id)adjustment
 {
   if (os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_ERROR))
   {
@@ -105,7 +105,7 @@
   }
 }
 
-- (void)setShouldCrossfade:(BOOL)a3
+- (void)setShouldCrossfade:(BOOL)crossfade
 {
   if (os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_ERROR))
   {
@@ -113,7 +113,7 @@
   }
 }
 
-- (void)setUseBuiltInAlphaTransformerAndBackdropScaleAdjustment:(BOOL)a3
+- (void)setUseBuiltInAlphaTransformerAndBackdropScaleAdjustment:(BOOL)adjustment
 {
   if (os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_ERROR))
   {
@@ -121,7 +121,7 @@
   }
 }
 
-- (void)setUseBuiltInAlphaTransformerAndBackdropScaleAdjustmentIfNecessary:(BOOL)a3
+- (void)setUseBuiltInAlphaTransformerAndBackdropScaleAdjustmentIfNecessary:(BOOL)necessary
 {
   if (os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_ERROR))
   {
@@ -129,7 +129,7 @@
   }
 }
 
-- (void)setIgnoresScreenClip:(BOOL)a3
+- (void)setIgnoresScreenClip:(BOOL)clip
 {
   if (os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_ERROR))
   {
@@ -137,7 +137,7 @@
   }
 }
 
-- (void)setContentReplacedWithSnapshot:(BOOL)a3
+- (void)setContentReplacedWithSnapshot:(BOOL)snapshot
 {
   if (os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_ERROR))
   {
@@ -145,26 +145,26 @@
   }
 }
 
-- (id)_initWithCoreMaterialRecipe:(id)a3 fromBundle:(id)a4 options:(unint64_t)a5 initialWeighting:(double)a6 scaleAdjustment:(id)a7
+- (id)_initWithCoreMaterialRecipe:(id)recipe fromBundle:(id)bundle options:(unint64_t)options initialWeighting:(double)weighting scaleAdjustment:(id)adjustment
 {
-  v12 = a3;
+  recipeCopy = recipe;
   v16.receiver = self;
   v16.super_class = _MTStaticVisualStylingMaterialView;
-  v13 = [(MTMaterialView *)&v16 _initWithCoreMaterialRecipe:v12 fromBundle:a4 options:a5 initialWeighting:a7 scaleAdjustment:a6];
+  v13 = [(MTMaterialView *)&v16 _initWithCoreMaterialRecipe:recipeCopy fromBundle:bundle options:options initialWeighting:adjustment scaleAdjustment:weighting];
   v14 = v13;
   if (v13)
   {
-    [v13 setRecipeName:v12];
+    [v13 setRecipeName:recipeCopy];
   }
 
   return v14;
 }
 
-- (void)_setCoreMaterialVisualStylingProvider:(id)a3 ForCategory:(id)a4
+- (void)_setCoreMaterialVisualStylingProvider:(id)provider ForCategory:(id)category
 {
-  v10 = a3;
-  v6 = a4;
-  if (v10 && v6 && *MEMORY[0x277CFFF88] != v6)
+  providerCopy = provider;
+  categoryCopy = category;
+  if (providerCopy && categoryCopy && *MEMORY[0x277CFFF88] != categoryCopy)
   {
     visualStyleCategoriesToCoreMaterialProviders = self->_visualStyleCategoriesToCoreMaterialProviders;
     if (!visualStyleCategoriesToCoreMaterialProviders)
@@ -176,20 +176,20 @@
       visualStyleCategoriesToCoreMaterialProviders = self->_visualStyleCategoriesToCoreMaterialProviders;
     }
 
-    [(NSMutableDictionary *)visualStyleCategoriesToCoreMaterialProviders setObject:v10 forKey:v6];
+    [(NSMutableDictionary *)visualStyleCategoriesToCoreMaterialProviders setObject:providerCopy forKey:categoryCopy];
   }
 }
 
-- (id)_coreMaterialVisualStylingProviderForCategory:(id)a3
+- (id)_coreMaterialVisualStylingProviderForCategory:(id)category
 {
-  v4 = a3;
-  v5 = v4;
+  categoryCopy = category;
+  v5 = categoryCopy;
   v6 = 0;
-  if (v4)
+  if (categoryCopy)
   {
-    if (*MEMORY[0x277CFFF88] != v4)
+    if (*MEMORY[0x277CFFF88] != categoryCopy)
     {
-      v6 = [(NSMutableDictionary *)self->_visualStyleCategoriesToCoreMaterialProviders objectForKey:v4];
+      v6 = [(NSMutableDictionary *)self->_visualStyleCategoriesToCoreMaterialProviders objectForKey:categoryCopy];
       if (!v6)
       {
         v6 = objc_alloc_init(MEMORY[0x277CFFF98]);
@@ -202,11 +202,11 @@
   return v6;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v7 = [a3 _coreMaterialVisualStylingProvider];
-  v6 = MTCoreMaterialVisualStyleCategoryForVisualStyleCategory(a4);
-  [(_MTStaticVisualStylingMaterialView *)self _setCoreMaterialVisualStylingProvider:v7 ForCategory:v6];
+  _coreMaterialVisualStylingProvider = [provider _coreMaterialVisualStylingProvider];
+  v6 = MTCoreMaterialVisualStyleCategoryForVisualStyleCategory(category);
+  [(_MTStaticVisualStylingMaterialView *)self _setCoreMaterialVisualStylingProvider:_coreMaterialVisualStylingProvider ForCategory:v6];
 }
 
 - (void)_updateCoreMaterialVisualStylingProviders
@@ -236,16 +236,16 @@
 
         v8 = *(*(&v19 + 1) + 8 * v7);
         v9 = [*(&self->super.super.super.super.isa + v3) objectForKey:{v8, v17}];
-        v10 = [(MTMaterialView *)self recipe];
-        v11 = [(_MTStaticVisualStylingMaterialView *)self recipeName];
-        if (v10)
+        recipe = [(MTMaterialView *)self recipe];
+        recipeName = [(_MTStaticVisualStylingMaterialView *)self recipeName];
+        if (recipe)
         {
           if ([(MTMaterialView *)self isRecipeDynamic])
           {
             [(_MTStaticVisualStylingMaterialView *)self traitCollection];
             v12 = v6;
             v14 = v13 = v3;
-            v15 = [v14 userInterfaceStyle];
+            userInterfaceStyle = [v14 userInterfaceStyle];
 
             v3 = v13;
             v6 = v12;
@@ -254,17 +254,17 @@
 
           else
           {
-            v15 = 0;
+            userInterfaceStyle = 0;
           }
 
-          v16 = MTCoreMaterialRecipeForMaterialRecipeAndUserInterfaceStyle(v10, v15);
+          v16 = MTCoreMaterialRecipeForMaterialRecipeAndUserInterfaceStyle(recipe, userInterfaceStyle);
 
-          v11 = v16;
+          recipeName = v16;
         }
 
-        if (v11)
+        if (recipeName)
         {
-          [v9 updateVisualStyleSetFromRecipe:v11 andCategory:v8];
+          [v9 updateVisualStyleSetFromRecipe:recipeName andCategory:v8];
         }
 
         ++v7;
@@ -295,28 +295,28 @@
     self->_contentVisualStylingProvider = v3;
 
     [(MTCoreMaterialVisualStylingProvider *)self->_contentVisualStylingProvider addObserver:self];
-    v5 = [MEMORY[0x277D75348] whiteColor];
-    [(_MTStaticVisualStylingMaterialView *)self setBackgroundColor:v5];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(_MTStaticVisualStylingMaterialView *)self setBackgroundColor:whiteColor];
   }
 
-  v6 = [(MTMaterialView *)self recipe];
-  v7 = [(_MTStaticVisualStylingMaterialView *)self recipeName];
-  v8 = v7;
-  if (v6)
+  recipe = [(MTMaterialView *)self recipe];
+  recipeName = [(_MTStaticVisualStylingMaterialView *)self recipeName];
+  v8 = recipeName;
+  if (recipe)
   {
-    v12 = v7;
+    v12 = recipeName;
     if ([(MTMaterialView *)self isRecipeDynamic])
     {
-      v9 = [(_MTStaticVisualStylingMaterialView *)self traitCollection];
-      v10 = [v9 userInterfaceStyle];
+      traitCollection = [(_MTStaticVisualStylingMaterialView *)self traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
     }
 
     else
     {
-      v10 = 0;
+      userInterfaceStyle = 0;
     }
 
-    v11 = MTCoreMaterialRecipeForMaterialRecipeAndUserInterfaceStyle(v6, v10);
+    v11 = MTCoreMaterialRecipeForMaterialRecipeAndUserInterfaceStyle(recipe, userInterfaceStyle);
 
     v8 = v11;
   }
@@ -324,25 +324,25 @@
   if (v8)
   {
     v13 = v8;
-    v7 = [(MTCoreMaterialVisualStylingProvider *)self->_contentVisualStylingProvider updateVisualStyleSetGeneratedFromRecipe:v8];
+    recipeName = [(MTCoreMaterialVisualStylingProvider *)self->_contentVisualStylingProvider updateVisualStyleSetGeneratedFromRecipe:v8];
     v8 = v13;
-    if (v7)
+    if (recipeName)
     {
-      v7 = [(_MTStaticVisualStylingMaterialView *)self _updateContentVisualStylingWithProvider:self->_contentVisualStylingProvider];
+      recipeName = [(_MTStaticVisualStylingMaterialView *)self _updateContentVisualStylingWithProvider:self->_contentVisualStylingProvider];
       v8 = v13;
     }
   }
 
-  MEMORY[0x2821F96F8](v7, v8);
+  MEMORY[0x2821F96F8](recipeName, v8);
 }
 
-- (void)_updateContentVisualStylingWithProvider:(id)a3
+- (void)_updateContentVisualStylingWithProvider:(id)provider
 {
-  v7 = [a3 visualStylingForStyle:*MEMORY[0x277CFFF90]];
+  v7 = [provider visualStylingForStyle:*MEMORY[0x277CFFF90]];
   [(_MTStaticVisualStylingMaterialView *)self alpha];
   v5 = v4;
-  v6 = [(_MTStaticVisualStylingMaterialView *)self layer];
-  [v6 mt_replaceAllVisualStylingWithStyling:v7];
+  layer = [(_MTStaticVisualStylingMaterialView *)self layer];
+  [layer mt_replaceAllVisualStylingWithStyling:v7];
 
   [(_MTStaticVisualStylingMaterialView *)self setAlpha:v5];
 }

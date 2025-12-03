@@ -1,15 +1,15 @@
 @interface PHAnimatedImageRequestOptions
 - (PHAnimatedImageRequestOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PHAnimatedImageRequestOptions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PHAnimatedImageRequestOptions;
-  v4 = [(PHImageRequestOptions *)&v6 copyWithZone:a3];
+  v4 = [(PHImageRequestOptions *)&v6 copyWithZone:zone];
   [v4 setAllowPreCaching:self->_allowPreCaching];
   [v4 setUseSharedImageDecoding:self->_useSharedImageDecoding];
   return v4;

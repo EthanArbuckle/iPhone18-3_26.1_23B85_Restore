@@ -1,24 +1,24 @@
 @interface CHWorkoutDetailSummaryTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation CHWorkoutDetailSummaryTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CHWorkoutDetailSummaryTableViewCell" hasInstanceVariable:@"_currentWorkout" withType:"HKWorkout"];
-  [v3 validateClass:@"CHWorkoutDetailSummaryTableViewCell" hasInstanceVariable:@"_fitnessAppContext" withType:"CHFitnessAppContext"];
-  [v3 validateClass:@"CHFitnessAppContext" hasInstanceMethod:@"seymourCatalogItemDataProvider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FitnessApp.SeymourCatalogItemDataProvider" hasInstanceMethod:@"isSeymourWorkout:" withFullSignature:{"B", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CHWorkoutDetailSummaryTableViewCell" hasInstanceVariable:@"_currentWorkout" withType:"HKWorkout"];
+  [validationsCopy validateClass:@"CHWorkoutDetailSummaryTableViewCell" hasInstanceVariable:@"_fitnessAppContext" withType:"CHFitnessAppContext"];
+  [validationsCopy validateClass:@"CHFitnessAppContext" hasInstanceMethod:@"seymourCatalogItemDataProvider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FitnessApp.SeymourCatalogItemDataProvider" hasInstanceMethod:@"isSeymourWorkout:" withFullSignature:{"B", "@", 0}];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v14.receiver = self;
   v14.super_class = CHWorkoutDetailSummaryTableViewCellAccessibility;
-  v3 = [(CHWorkoutDetailSummaryTableViewCellAccessibility *)&v14 accessibilityTraits];
+  accessibilityTraits = [(CHWorkoutDetailSummaryTableViewCellAccessibility *)&v14 accessibilityTraits];
   objc_opt_class();
   v4 = [(CHWorkoutDetailSummaryTableViewCellAccessibility *)self safeValueForKey:@"_currentWorkout"];
   v5 = __UIAccessibilityCastAsClass();
@@ -43,7 +43,7 @@
     v8 = 0;
   }
 
-  return v8 | v3;
+  return v8 | accessibilityTraits;
 }
 
 id __71__CHWorkoutDetailSummaryTableViewCellAccessibility_accessibilityTraits__block_invoke(uint64_t a1)

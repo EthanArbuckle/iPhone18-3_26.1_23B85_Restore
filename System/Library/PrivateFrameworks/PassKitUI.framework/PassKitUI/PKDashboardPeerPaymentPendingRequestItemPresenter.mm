@@ -1,13 +1,13 @@
 @interface PKDashboardPeerPaymentPendingRequestItemPresenter
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6;
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path;
 - (PKDashboardPeerPaymentPendingRequestItemPresenter)init;
 - (id)_defaultImageData;
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5;
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path;
 - (id)collectionViewCellClasses;
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6 forSizing:(BOOL)a7;
-- (void)_updateAvatarOnTransactionCell:(id)a3 contact:(id)a4;
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7;
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5;
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path forSizing:(BOOL)sizing;
+- (void)_updateAvatarOnTransactionCell:(id)cell contact:(id)contact;
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present;
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view;
 @end
 
 @implementation PKDashboardPeerPaymentPendingRequestItemPresenter
@@ -38,61 +38,61 @@
   return v2;
 }
 
-- (void)didSelectItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5 navigationController:(id)a6 canPresent:(id)a7
+- (void)didSelectItem:(id)item inCollectionView:(id)view atIndexPath:(id)path navigationController:(id)controller canPresent:(id)present
 {
-  v8 = a6;
-  v9 = a3;
-  v13 = [v9 pendingRequest];
+  controllerCopy = controller;
+  itemCopy = item;
+  pendingRequest = [itemCopy pendingRequest];
   v10 = [PKPeerPaymentGroupedPaymentsViewController alloc];
-  v11 = [v9 transactionSourceCollection];
+  transactionSourceCollection = [itemCopy transactionSourceCollection];
 
-  v12 = [(PKPeerPaymentGroupedPaymentsViewController *)v10 initWithRequest:v13 transactionSourceCollection:v11 context:0];
-  [v8 pushViewController:v12 animated:1];
+  v12 = [(PKPeerPaymentGroupedPaymentsViewController *)v10 initWithRequest:pendingRequest transactionSourceCollection:transactionSourceCollection context:0];
+  [controllerCopy pushViewController:v12 animated:1];
 }
 
-- (id)cellForItem:(id)a3 inCollectionView:(id)a4 atIndexPath:(id)a5
+- (id)cellForItem:(id)item inCollectionView:(id)view atIndexPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 dequeueReusableCellWithReuseIdentifier:@"PKDashboardPeerPaymentPendingRequestItemPresenterIdentifier" forIndexPath:v8];
-  [(PKDashboardPeerPaymentPendingRequestItemPresenter *)self _configureCell:v11 forItem:v10 inCollectionView:v9 forIndexPath:v8 forSizing:0];
+  pathCopy = path;
+  viewCopy = view;
+  itemCopy = item;
+  v11 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"PKDashboardPeerPaymentPendingRequestItemPresenterIdentifier" forIndexPath:pathCopy];
+  [(PKDashboardPeerPaymentPendingRequestItemPresenter *)self _configureCell:v11 forItem:itemCopy inCollectionView:viewCopy forIndexPath:pathCopy forSizing:0];
 
   return v11;
 }
 
-- (CGSize)sizeForItem:(id)a3 inCollectionView:(id)a4 safeAreaWidth:(double)a5 atIndexPath:(id)a6
+- (CGSize)sizeForItem:(id)item inCollectionView:(id)view safeAreaWidth:(double)width atIndexPath:(id)path
 {
-  [(PKDashboardPeerPaymentPendingRequestItemPresenter *)self _configureCell:self->_sampleCell forItem:a3 inCollectionView:a4 forIndexPath:a6 forSizing:1];
+  [(PKDashboardPeerPaymentPendingRequestItemPresenter *)self _configureCell:self->_sampleCell forItem:item inCollectionView:view forIndexPath:path forSizing:1];
   sampleCell = self->_sampleCell;
 
-  [(PKPaymentTransactionCollectionViewCell *)sampleCell sizeThatFits:a5, 3.40282347e38];
+  [(PKPaymentTransactionCollectionViewCell *)sampleCell sizeThatFits:width, 3.40282347e38];
   result.height = v10;
   result.width = v9;
   return result;
 }
 
-- (void)_configureCell:(id)a3 forItem:(id)a4 inCollectionView:(id)a5 forIndexPath:(id)a6 forSizing:(BOOL)a7
+- (void)_configureCell:(id)cell forItem:(id)item inCollectionView:(id)view forIndexPath:(id)path forSizing:(BOOL)sizing
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  cellCopy = cell;
+  itemCopy = item;
+  viewCopy = view;
+  pathCopy = path;
+  if (!cellCopy)
   {
     goto LABEL_15;
   }
 
-  v37 = a7;
-  v36 = v14;
-  v15 = [v12 pendingRequest];
-  v16 = [v11 transactionView];
-  [v16 setShowsDisclosureView:1];
+  sizingCopy = sizing;
+  v36 = pathCopy;
+  pendingRequest = [itemCopy pendingRequest];
+  transactionView = [cellCopy transactionView];
+  [transactionView setShowsDisclosureView:1];
   v35 = PKLocalizedPeerPaymentString(&cfstr_GroupedPayment_3.isa);
-  [v16 setPrimaryString:?];
-  v17 = [v15 memo];
-  v18 = PKPeerPaymentTotalAmountReceivedForPendingRequest(v15);
-  v19 = [v17 length];
+  [transactionView setPrimaryString:?];
+  memo = [pendingRequest memo];
+  v18 = PKPeerPaymentTotalAmountReceivedForPendingRequest(pendingRequest);
+  v19 = [memo length];
   v20 = v19;
   if (!v18)
   {
@@ -105,52 +105,52 @@
     goto LABEL_4;
   }
 
-  v21 = [v18 minimalFormattedStringValue];
-  v22 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentPen.isa, &stru_1F3BD5BF0.isa, v21);
+  minimalFormattedStringValue = [v18 minimalFormattedStringValue];
+  v22 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentPen.isa, &stru_1F3BD5BF0.isa, minimalFormattedStringValue);
 
   if (v20)
   {
 LABEL_4:
     v20 = v22;
-    v22 = v17;
+    v22 = memo;
   }
 
 LABEL_5:
   v33 = v18;
-  [v16 setSecondaryString:v22];
+  [transactionView setSecondaryString:v22];
   v32 = v20;
-  [v16 setTertiaryString:v20];
-  v23 = [v15 currencyAmount];
-  if (v23)
+  [transactionView setTertiaryString:v20];
+  currencyAmount = [pendingRequest currencyAmount];
+  if (currencyAmount)
   {
     v24 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v25 = [v23 formattedStringValue];
-    v26 = [v24 initWithString:v25 attributes:0];
+    formattedStringValue = [currencyAmount formattedStringValue];
+    v26 = [v24 initWithString:formattedStringValue attributes:0];
 
-    [v16 setTransactionValueAttributedText:v26];
+    [transactionView setTransactionValueAttributedText:v26];
   }
 
   else
   {
-    [v16 setTransactionValueAttributedText:0];
+    [transactionView setTransactionValueAttributedText:0];
   }
 
-  v34 = v17;
-  v27 = [v15 groupID];
-  [v16 setShowsAvatarView:1];
-  [v16 setPrimaryImage:0];
+  v34 = memo;
+  groupID = [pendingRequest groupID];
+  [transactionView setShowsAvatarView:1];
+  [transactionView setPrimaryImage:0];
   objc_initWeak(&location, self);
-  if (v37 || !v27)
+  if (sizingCopy || !groupID)
   {
-    v28 = v13;
-    v29 = v12;
+    v28 = viewCopy;
+    v29 = itemCopy;
     v30 = objc_alloc_init(MEMORY[0x1E695CF18]);
-    v31 = [(PKDashboardPeerPaymentPendingRequestItemPresenter *)self _defaultImageData];
-    [v30 setImageData:v31];
+    _defaultImageData = [(PKDashboardPeerPaymentPendingRequestItemPresenter *)self _defaultImageData];
+    [v30 setImageData:_defaultImageData];
 
-    [(PKDashboardPeerPaymentPendingRequestItemPresenter *)self _updateAvatarOnTransactionCell:v11 contact:v30];
-    v12 = v29;
-    v13 = v28;
+    [(PKDashboardPeerPaymentPendingRequestItemPresenter *)self _updateAvatarOnTransactionCell:cellCopy contact:v30];
+    itemCopy = v29;
+    viewCopy = v28;
   }
 
   else
@@ -160,15 +160,15 @@ LABEL_5:
     v39[2] = __116__PKDashboardPeerPaymentPendingRequestItemPresenter__configureCell_forItem_inCollectionView_forIndexPath_forSizing___block_invoke;
     v39[3] = &unk_1E80113E0;
     objc_copyWeak(&v41, &location);
-    v40 = v11;
-    PKPeerPaymentMessagesChatNameAndImageDataForGroupIdentifier(v27, v39);
+    v40 = cellCopy;
+    PKPeerPaymentMessagesChatNameAndImageDataForGroupIdentifier(groupID, v39);
 
     objc_destroyWeak(&v41);
   }
 
   objc_destroyWeak(&location);
 
-  v14 = v36;
+  pathCopy = v36;
 LABEL_15:
 }
 
@@ -196,16 +196,16 @@ void __116__PKDashboardPeerPaymentPendingRequestItemPresenter__configureCell_for
   }
 }
 
-- (void)_updateAvatarOnTransactionCell:(id)a3 contact:(id)a4
+- (void)_updateAvatarOnTransactionCell:(id)cell contact:(id)contact
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 transactionView];
-  v7 = [v6 avatarView];
+  contactCopy = contact;
+  transactionView = [cell transactionView];
+  avatarView = [transactionView avatarView];
 
-  if (v5)
+  if (contactCopy)
   {
-    v16[0] = v5;
+    v16[0] = contactCopy;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   }
 
@@ -221,10 +221,10 @@ void __116__PKDashboardPeerPaymentPendingRequestItemPresenter__configureCell_for
   block[1] = 3221225472;
   block[2] = __92__PKDashboardPeerPaymentPendingRequestItemPresenter__updateAvatarOnTransactionCell_contact___block_invoke;
   block[3] = &unk_1E8010A10;
-  v13 = v7;
+  v13 = avatarView;
   v14 = v8;
   v10 = v8;
-  v11 = v7;
+  v11 = avatarView;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -240,11 +240,11 @@ void __116__PKDashboardPeerPaymentPendingRequestItemPresenter__configureCell_for
   {
     v5 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:16.0];
     v6 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"person.3.fill" withConfiguration:v5];
-    v7 = [MEMORY[0x1E69DC888] systemGrayColor];
-    v8 = [v6 imageWithTintColor:v7];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    v8 = [v6 imageWithTintColor:systemGrayColor];
 
-    v9 = [MEMORY[0x1E69DC888] systemGray5Color];
-    v10 = PKUIImageWithBackgroundAndCornerRadius(v8, v9, 45.0, 45.0, 0.0);
+    systemGray5Color = [MEMORY[0x1E69DC888] systemGray5Color];
+    v10 = PKUIImageWithBackgroundAndCornerRadius(v8, systemGray5Color, 45.0, 45.0, 0.0);
 
     v11 = UIImagePNGRepresentation(v10);
     v12 = self->_defaultImageData;
@@ -256,24 +256,24 @@ void __116__PKDashboardPeerPaymentPendingRequestItemPresenter__configureCell_for
   return v3;
 }
 
-- (void)traitCollectionDidChangeFromTrait:(id)a3 toTrait:(id)a4 inCollectionView:(id)a5
+- (void)traitCollectionDidChangeFromTrait:(id)trait toTrait:(id)toTrait inCollectionView:(id)view
 {
-  v15 = a3;
-  v7 = a4;
-  if (v15 && v7)
+  traitCopy = trait;
+  toTraitCopy = toTrait;
+  if (traitCopy && toTraitCopy)
   {
-    v8 = [v15 preferredContentSizeCategory];
-    v9 = [v7 preferredContentSizeCategory];
-    if (UIContentSizeCategoryCompareToCategory(v8, v9))
+    preferredContentSizeCategory = [traitCopy preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [toTraitCopy preferredContentSizeCategory];
+    if (UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2))
     {
     }
 
     else
     {
-      v10 = [v15 legibilityWeight];
-      v11 = [v7 legibilityWeight];
+      legibilityWeight = [traitCopy legibilityWeight];
+      legibilityWeight2 = [toTraitCopy legibilityWeight];
 
-      if (v10 == v11)
+      if (legibilityWeight == legibilityWeight2)
       {
         goto LABEL_7;
       }

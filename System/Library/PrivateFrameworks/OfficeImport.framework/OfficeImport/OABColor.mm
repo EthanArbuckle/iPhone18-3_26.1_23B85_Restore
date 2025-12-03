@@ -1,20 +1,20 @@
 @interface OABColor
-+ (EshColor)propertyColor:(int)a3 colorPropertiesManager:(id)a4;
-+ (id)readColor:(const EshColor *)a3 colorPropertiesManager:(id)a4 state:(id)a5;
-+ (int)readColorAdjustmentType:(int)a3;
-+ (int)readSystemColorID:(int)a3;
-+ (int)writeSystemColorID:(int)a3;
++ (EshColor)propertyColor:(int)color colorPropertiesManager:(id)manager;
++ (id)readColor:(const EshColor *)color colorPropertiesManager:(id)manager state:(id)state;
++ (int)readColorAdjustmentType:(int)type;
++ (int)readSystemColorID:(int)d;
++ (int)writeSystemColorID:(int)d;
 @end
 
 @implementation OABColor
 
-+ (id)readColor:(const EshColor *)a3 colorPropertiesManager:(id)a4 state:(id)a5
++ (id)readColor:(const EshColor *)color colorPropertiesManager:(id)manager state:(id)state
 {
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  stateCopy = state;
   v10 = 0;
-  var0 = a3->var0.var0;
-  if (a3->var0.var0 <= 7)
+  var0 = color->var0.var0;
+  if (color->var0.var0 <= 7)
   {
     if (var0)
     {
@@ -32,9 +32,9 @@
     }
 
     v14 = [OADRgbColor alloc];
-    Red = EshColor::getRed(a3);
-    Green = EshColor::getGreen(a3);
-    Blue = EshColor::getBlue(a3);
+    Red = EshColor::getRed(color);
+    Green = EshColor::getGreen(color);
+    Blue = EshColor::getBlue(color);
     *&v18 = Red;
     *&v19 = Green;
     *&v20 = Blue;
@@ -45,12 +45,12 @@
   switch(var0)
   {
     case 8:
-      SchemeIndex = EshColor::getSchemeIndex(a3);
-      v24 = [v9 colorPalette];
-      v25 = v24;
-      if (v24)
+      SchemeIndex = EshColor::getSchemeIndex(color);
+      colorPalette = [stateCopy colorPalette];
+      v25 = colorPalette;
+      if (colorPalette)
       {
-        v26 = [v24 colorWithIndex:SchemeIndex];
+        v26 = [colorPalette colorWithIndex:SchemeIndex];
         v27 = [OADRgbColor alloc];
         [v26 redComponent];
         v29 = v28;
@@ -66,12 +66,12 @@
 
       else
       {
-        v10 = -[OADSchemeColor initWithSchemeColorIndex:]([OADSchemeColor alloc], "initWithSchemeColorIndex:", [objc_msgSend(v9 "client")]);
+        v10 = -[OADSchemeColor initWithSchemeColorIndex:]([OADSchemeColor alloc], "initWithSchemeColorIndex:", [objc_msgSend(stateCopy "client")]);
       }
 
       break;
     case 33:
-      [a1 propertyColor:EshColor::getRed(a3) colorPropertiesManager:v8];
+      [self propertyColor:EshColor::getRed(color) colorPropertiesManager:managerCopy];
       if (v43 == 33)
       {
         v36 = +[OADRgbColor white];
@@ -80,20 +80,20 @@
 
       else
       {
-        v36 = [a1 readColor:&v43 colorPropertiesManager:v8 state:v9];
-        v38 = [a1 readColorAdjustmentType:EshColor::getAdjustmentType(a3)];
+        v36 = [self readColor:&v43 colorPropertiesManager:managerCopy state:stateCopy];
+        v38 = [self readColorAdjustmentType:EshColor::getAdjustmentType(color)];
         v39 = [OADAdjustedColor alloc];
-        v40 = EshColor::getGreen(a3);
-        isInvert = EshColor::isInvert(a3);
-        isInvert128 = EshColor::isInvert128(a3);
-        v37 = [(OADAdjustedColor *)v39 initWithBaseColor:v36 adjustmentType:v38 adjustmentParam:v40 invert:isInvert invert128:isInvert128 gray:EshColor::isGray(a3)];
+        v40 = EshColor::getGreen(color);
+        isInvert = EshColor::isInvert(color);
+        isInvert128 = EshColor::isInvert128(color);
+        v37 = [(OADAdjustedColor *)v39 initWithBaseColor:v36 adjustmentType:v38 adjustmentParam:v40 invert:isInvert invert128:isInvert128 gray:EshColor::isGray(color)];
       }
 
       v10 = v37;
 
       break;
     case 34:
-      v21 = -[OADSystemColor initWithSystemColorID:]([OADSystemColor alloc], "initWithSystemColorID:", [a1 readSystemColorID:EshColor::getRed(a3)]);
+      v21 = -[OADSystemColor initWithSystemColorID:]([OADSystemColor alloc], "initWithSystemColorID:", [self readSystemColorID:EshColor::getRed(color)]);
 LABEL_15:
       v10 = v21;
       break;
@@ -104,70 +104,70 @@ LABEL_16:
   return v10;
 }
 
-+ (int)writeSystemColorID:(int)a3
++ (int)writeSystemColorID:(int)d
 {
-  if ((a3 - 1) > 0x1A)
+  if ((d - 1) > 0x1A)
   {
     return 0;
   }
 
   else
   {
-    return dword_25D6FB70C[a3 - 1];
+    return dword_25D6FB70C[d - 1];
   }
 }
 
-+ (int)readSystemColorID:(int)a3
++ (int)readSystemColorID:(int)d
 {
-  if (a3 > 0x18)
+  if (d > 0x18)
   {
     return 0;
   }
 
   else
   {
-    return dword_25D6FB778[a3];
+    return dword_25D6FB778[d];
   }
 }
 
-+ (int)readColorAdjustmentType:(int)a3
++ (int)readColorAdjustmentType:(int)type
 {
-  if ((a3 - 1) >= 6)
+  if ((type - 1) >= 6)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-+ (EshColor)propertyColor:(int)a3 colorPropertiesManager:(id)a4
++ (EshColor)propertyColor:(int)color colorPropertiesManager:(id)manager
 {
   v6 = v4;
-  v7 = a4;
-  v12 = v7;
-  if (a3 > 242)
+  managerCopy = manager;
+  v12 = managerCopy;
+  if (color > 242)
   {
-    if (a3 <= 245)
+    if (color <= 245)
     {
-      if (a3 == 243)
+      if (color == 243)
       {
-        if (v7)
+        if (managerCopy)
         {
-          [v7 shadowColor];
+          [managerCopy shadowColor];
           goto LABEL_28;
         }
 
         goto LABEL_27;
       }
 
-      if (a3 == 245)
+      if (color == 245)
       {
-        if (v7)
+        if (managerCopy)
         {
-          [v7 fillBgColor];
+          [managerCopy fillBgColor];
           goto LABEL_28;
         }
 
@@ -179,40 +179,40 @@ LABEL_19:
       goto LABEL_28;
     }
 
-    if (a3 == 246)
+    if (color == 246)
     {
-      if (v7)
+      if (managerCopy)
       {
-        [v7 strokeBgColor];
+        [managerCopy strokeBgColor];
         goto LABEL_28;
       }
 
       goto LABEL_27;
     }
 
-    if (a3 != 247)
+    if (color != 247)
     {
       goto LABEL_19;
     }
 
-    v8 = [v7 isFilled];
+    isFilled = [managerCopy isFilled];
     v9 = v12;
-    if (v8)
+    if (isFilled)
     {
 LABEL_15:
-      v7 = v9;
+      managerCopy = v9;
       if (!v9)
       {
         goto LABEL_27;
       }
 
 LABEL_18:
-      [v7 fillFgColor];
+      [managerCopy fillFgColor];
       goto LABEL_28;
     }
 
 LABEL_25:
-    v7 = v9;
+    managerCopy = v9;
     if (v9)
     {
       goto LABEL_26;
@@ -221,9 +221,9 @@ LABEL_25:
     goto LABEL_27;
   }
 
-  if (a3 == 240)
+  if (color == 240)
   {
-    if (v7)
+    if (managerCopy)
     {
       goto LABEL_18;
     }
@@ -231,11 +231,11 @@ LABEL_25:
     goto LABEL_27;
   }
 
-  if (a3 == 241)
+  if (color == 241)
   {
-    v10 = [v7 isStroked];
+    isStroked = [managerCopy isStroked];
     v9 = v12;
-    if (!v10)
+    if (!isStroked)
     {
       goto LABEL_15;
     }
@@ -243,15 +243,15 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  if (a3 != 242)
+  if (color != 242)
   {
     goto LABEL_19;
   }
 
-  if (v7)
+  if (managerCopy)
   {
 LABEL_26:
-    [v7 strokeFgColor];
+    [managerCopy strokeFgColor];
     goto LABEL_28;
   }
 

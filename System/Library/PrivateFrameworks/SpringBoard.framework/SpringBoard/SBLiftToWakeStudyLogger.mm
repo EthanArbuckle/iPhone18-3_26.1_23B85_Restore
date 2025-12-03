@@ -1,18 +1,18 @@
 @interface SBLiftToWakeStudyLogger
-- (SBLiftToWakeStudyLogger)initWithController:(id)a3;
+- (SBLiftToWakeStudyLogger)initWithController:(id)controller;
 - (void)dealloc;
-- (void)liftToWakeController:(id)a3 didObserveTransition:(int64_t)a4 deviceOrientation:(int64_t)a5;
+- (void)liftToWakeController:(id)controller didObserveTransition:(int64_t)transition deviceOrientation:(int64_t)orientation;
 @end
 
 @implementation SBLiftToWakeStudyLogger
 
-- (SBLiftToWakeStudyLogger)initWithController:(id)a3
+- (SBLiftToWakeStudyLogger)initWithController:(id)controller
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277D6A798] sharedInstance];
-  v7 = [v6 isEnabled];
+  controllerCopy = controller;
+  mEMORY[0x277D6A798] = [MEMORY[0x277D6A798] sharedInstance];
+  isEnabled = [mEMORY[0x277D6A798] isEnabled];
 
-  if (v7)
+  if (isEnabled)
   {
     v13.receiver = self;
     v13.super_class = SBLiftToWakeStudyLogger;
@@ -20,12 +20,12 @@
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_controller, a3);
-      v10 = [MEMORY[0x277D6A798] sharedInstance];
+      objc_storeStrong(&v8->_controller, controller);
+      mEMORY[0x277D6A798]2 = [MEMORY[0x277D6A798] sharedInstance];
       logger = v9->_logger;
-      v9->_logger = v10;
+      v9->_logger = mEMORY[0x277D6A798]2;
 
-      [v5 addObserver:v9];
+      [controllerCopy addObserver:v9];
     }
   }
 
@@ -46,15 +46,15 @@
   [(SBLiftToWakeStudyLogger *)&v3 dealloc];
 }
 
-- (void)liftToWakeController:(id)a3 didObserveTransition:(int64_t)a4 deviceOrientation:(int64_t)a5
+- (void)liftToWakeController:(id)controller didObserveTransition:(int64_t)transition deviceOrientation:(int64_t)orientation
 {
   logger = self->_logger;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __87__SBLiftToWakeStudyLogger_liftToWakeController_didObserveTransition_deviceOrientation___block_invoke;
   v6[3] = &__block_descriptor_48_e5__8__0l;
-  v6[4] = a4;
-  v6[5] = a5;
+  v6[4] = transition;
+  v6[5] = orientation;
   [(SLGLog *)logger logBlock:v6 domain:@"com.apple.SpringBoard.liftToWake"];
 }
 

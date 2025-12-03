@@ -1,51 +1,51 @@
 @interface HMDSParticipantObject
-+ (id)homeParticipantObjectWithAccessCode:(id)a3;
-+ (id)homeParticipantObjectWithOutgoingInvitation:(id)a3;
-+ (id)homeParticipantObjectWithUser:(id)a3;
-- (HMDSParticipantObject)initWithUser:(id)a3 accessCode:(id)a4 outgoingInvitation:(id)a5;
++ (id)homeParticipantObjectWithAccessCode:(id)code;
++ (id)homeParticipantObjectWithOutgoingInvitation:(id)invitation;
++ (id)homeParticipantObjectWithUser:(id)user;
+- (HMDSParticipantObject)initWithUser:(id)user accessCode:(id)code outgoingInvitation:(id)invitation;
 @end
 
 @implementation HMDSParticipantObject
 
-- (HMDSParticipantObject)initWithUser:(id)a3 accessCode:(id)a4 outgoingInvitation:(id)a5
+- (HMDSParticipantObject)initWithUser:(id)user accessCode:(id)code outgoingInvitation:(id)invitation
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  userCopy = user;
+  codeCopy = code;
+  invitationCopy = invitation;
   v15.receiver = self;
   v15.super_class = HMDSParticipantObject;
   v12 = [(HMDSParticipantObject *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_user, a3);
-    objc_storeStrong(&v13->_accessCode, a4);
-    objc_storeStrong(&v13->_outgoingInvitation, a5);
+    objc_storeStrong(&v12->_user, user);
+    objc_storeStrong(&v13->_accessCode, code);
+    objc_storeStrong(&v13->_outgoingInvitation, invitation);
   }
 
   return v13;
 }
 
-+ (id)homeParticipantObjectWithOutgoingInvitation:(id)a3
++ (id)homeParticipantObjectWithOutgoingInvitation:(id)invitation
 {
-  v3 = a3;
-  v4 = [[HMDSParticipantObject alloc] initWithUser:0 accessCode:0 outgoingInvitation:v3];
+  invitationCopy = invitation;
+  v4 = [[HMDSParticipantObject alloc] initWithUser:0 accessCode:0 outgoingInvitation:invitationCopy];
 
   return v4;
 }
 
-+ (id)homeParticipantObjectWithAccessCode:(id)a3
++ (id)homeParticipantObjectWithAccessCode:(id)code
 {
-  v3 = a3;
-  v4 = [[HMDSParticipantObject alloc] initWithUser:0 accessCode:v3 outgoingInvitation:0];
+  codeCopy = code;
+  v4 = [[HMDSParticipantObject alloc] initWithUser:0 accessCode:codeCopy outgoingInvitation:0];
 
   return v4;
 }
 
-+ (id)homeParticipantObjectWithUser:(id)a3
++ (id)homeParticipantObjectWithUser:(id)user
 {
-  v3 = a3;
-  v4 = [[HMDSParticipantObject alloc] initWithUser:v3 accessCode:0 outgoingInvitation:0];
+  userCopy = user;
+  v4 = [[HMDSParticipantObject alloc] initWithUser:userCopy accessCode:0 outgoingInvitation:0];
 
   return v4;
 }

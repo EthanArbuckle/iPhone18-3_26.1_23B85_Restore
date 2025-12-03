@@ -1,21 +1,21 @@
 @interface CDStorePurchaseGetAuthInfoResponse
-- (CDStorePurchaseGetAuthInfoResponse)initWithRapportDictionary:(id)a3;
+- (CDStorePurchaseGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary;
 - (NSString)description;
 - (id)makeRapportDictionary;
 @end
 
 @implementation CDStorePurchaseGetAuthInfoResponse
 
-- (CDStorePurchaseGetAuthInfoResponse)initWithRapportDictionary:(id)a3
+- (CDStorePurchaseGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = CDStorePurchaseGetAuthInfoResponse;
   v5 = [(CDStorePurchaseGetAuthInfoResponse *)&v12 init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = v4;
+    v7 = dictionaryCopy;
     v8 = [NSSet setWithObject:v6];
     v9 = sub_100017500(v7, @"purchaseRequest", v8);
 
@@ -41,9 +41,9 @@
 {
   v3 = [BSDescriptionBuilder builderWithObject:self];
   v4 = [v3 appendObject:self->_purchaseRequest withName:@"purchaseRequest" skipIfNil:1];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

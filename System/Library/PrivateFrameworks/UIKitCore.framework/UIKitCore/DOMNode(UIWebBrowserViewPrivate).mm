@@ -10,7 +10,7 @@
 
 - (uint64_t)_startAssistingDocumentView:()UIWebBrowserViewPrivate
 {
-  result = [a1 isContentEditable];
+  result = [self isContentEditable];
   if (result)
   {
 
@@ -22,7 +22,7 @@
 
 - (uint64_t)_stopAssistingDocumentView:()UIWebBrowserViewPrivate
 {
-  result = [a1 isContentEditable];
+  result = [self isContentEditable];
   if (result)
   {
 
@@ -36,14 +36,14 @@
 {
   while (1)
   {
-    v1 = [a1 nextFocusNode];
-    v2 = v1;
-    if (!v1 || ([v1 nodeCanBecomeFirstResponder] & 1) != 0)
+    nextFocusNode = [self nextFocusNode];
+    v2 = nextFocusNode;
+    if (!nextFocusNode || ([nextFocusNode nodeCanBecomeFirstResponder] & 1) != 0)
     {
       break;
     }
 
-    a1 = v2;
+    self = v2;
   }
 
   return v2;
@@ -53,14 +53,14 @@
 {
   while (1)
   {
-    v1 = [a1 previousFocusNode];
-    v2 = v1;
-    if (!v1 || ([v1 nodeCanBecomeFirstResponder] & 1) != 0)
+    previousFocusNode = [self previousFocusNode];
+    v2 = previousFocusNode;
+    if (!previousFocusNode || ([previousFocusNode nodeCanBecomeFirstResponder] & 1) != 0)
     {
       break;
     }
 
-    a1 = v2;
+    self = v2;
   }
 
   return v2;
@@ -68,9 +68,9 @@
 
 - (void)_textFormElement
 {
-  if ([a1 isContentEditable])
+  if ([self isContentEditable])
   {
-    return a1;
+    return self;
   }
 
   else

@@ -1,11 +1,11 @@
 @interface MPCVocalAttenuationThermalPressurePolicy
 - (MPCVocalAttenuationPolicyDelegate)delegate;
-- (MPCVocalAttenuationThermalPressurePolicy)initWithCalloutQueue:(id)a3 delegate:(id)a4;
-- (MPCVocalAttenuationThermalPressurePolicy)initWithThermalMonitor:(id)a3 calloutQueue:(id)a4 delegate:(id)a5;
+- (MPCVocalAttenuationThermalPressurePolicy)initWithCalloutQueue:(id)queue delegate:(id)delegate;
+- (MPCVocalAttenuationThermalPressurePolicy)initWithThermalMonitor:(id)monitor calloutQueue:(id)queue delegate:(id)delegate;
 - (id)evaluation;
-- (void)environmentMonitorDidChangeThermalLevel:(id)a3;
-- (void)thermalStateDidChange:(int64_t)a3;
-- (void)updateEvaluationWithReason:(id)a3;
+- (void)environmentMonitorDidChangeThermalLevel:(id)level;
+- (void)thermalStateDidChange:(int64_t)change;
+- (void)updateEvaluationWithReason:(id)reason;
 @end
 
 @implementation MPCVocalAttenuationThermalPressurePolicy
@@ -17,22 +17,22 @@
   return WeakRetained;
 }
 
-- (void)updateEvaluationWithReason:(id)a3
+- (void)updateEvaluationWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(MPCVocalAttenuationThermalPressurePolicy *)self evaluation];
-  v6 = [v5 explanation];
-  v7 = [v6 stringByAppendingFormat:@" [%@]", v4];
+  reasonCopy = reason;
+  evaluation = [(MPCVocalAttenuationThermalPressurePolicy *)self evaluation];
+  explanation = [evaluation explanation];
+  reasonCopy = [explanation stringByAppendingFormat:@" [%@]", reasonCopy];
 
-  [v5 setExplanation:v7];
+  [evaluation setExplanation:reasonCopy];
   calloutQueue = self->_calloutQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__MPCVocalAttenuationThermalPressurePolicy_updateEvaluationWithReason___block_invoke;
   block[3] = &unk_1E82392C0;
   block[4] = self;
-  v11 = v5;
-  v9 = v5;
+  v11 = evaluation;
+  v9 = evaluation;
   dispatch_async(calloutQueue, block);
 }
 
@@ -42,7 +42,7 @@ void __71__MPCVocalAttenuationThermalPressurePolicy_updateEvaluationWithReason__
   [v2 vocalAttenuationPolicy:*(a1 + 32) didChangeEvaluation:*(a1 + 40)];
 }
 
-- (void)thermalStateDidChange:(int64_t)a3
+- (void)thermalStateDidChange:(int64_t)change
 {
   v20 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_dataLock);
@@ -51,24 +51,24 @@ void __71__MPCVocalAttenuationThermalPressurePolicy_updateEvaluationWithReason__
   {
     currentThermalLevel = self->_currentThermalLevel;
     v14 = 138543874;
-    v15 = self;
+    selfCopy4 = self;
     v16 = 2048;
     v17 = currentThermalLevel;
     v18 = 2048;
-    v19 = a3;
+    changeCopy2 = change;
     _os_log_impl(&dword_1C5C61000, v5, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Thermal pressure level changed: %ld -> %ld", &v14, 0x20u);
   }
 
   if (![(MPCVocalAttenuationThermalPressurePolicy *)self shouldDisableVocalAttenuation])
   {
-    if (self->_cutoffThermalLevel <= a3)
+    if (self->_cutoffThermalLevel <= change)
     {
       v7 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         cutoffThermalLevel = self->_cutoffThermalLevel;
         v14 = 138543618;
-        v15 = self;
+        selfCopy4 = self;
         v16 = 2048;
         v17 = cutoffThermalLevel;
         _os_log_impl(&dword_1C5C61000, v7, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Thermal pressure >= %ld: disabling vocal attenuation", &v14, 0x16u);
@@ -83,7 +83,7 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  if (self->_reenablementThermalLevel < a3)
+  if (self->_reenablementThermalLevel < change)
   {
     goto LABEL_9;
   }
@@ -93,7 +93,7 @@ LABEL_9:
   {
     reenablementThermalLevel = self->_reenablementThermalLevel;
     v14 = 138543618;
-    v15 = self;
+    selfCopy4 = self;
     v16 = 2048;
     v17 = reenablementThermalLevel;
     _os_log_impl(&dword_1C5C61000, v7, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Thermal pressure < %ld: allowing vocal attenuation", &v14, 0x16u);
@@ -110,15 +110,15 @@ LABEL_14:
   {
     v13 = self->_currentThermalLevel;
     v14 = 138543874;
-    v15 = self;
+    selfCopy4 = self;
     v16 = 2048;
     v17 = v13;
     v18 = 2048;
-    v19 = a3;
+    changeCopy2 = change;
     _os_log_impl(&dword_1C5C61000, v12, OS_LOG_TYPE_DEFAULT, "[AP] - %{public}@ - Thermal pressure level changed: %ld -> %ld", &v14, 0x20u);
   }
 
-  self->_currentThermalLevel = a3;
+  self->_currentThermalLevel = change;
   os_unfair_lock_unlock(&self->_dataLock);
   if (v10)
   {
@@ -126,10 +126,10 @@ LABEL_14:
   }
 }
 
-- (void)environmentMonitorDidChangeThermalLevel:(id)a3
+- (void)environmentMonitorDidChangeThermalLevel:(id)level
 {
-  v4 = [(MPCVocalAttenuationThermalPressurePolicy *)self thermalMonitor];
-  -[MPCVocalAttenuationThermalPressurePolicy thermalStateDidChange:](self, "thermalStateDidChange:", [v4 currentThermalPressureLevel]);
+  thermalMonitor = [(MPCVocalAttenuationThermalPressurePolicy *)self thermalMonitor];
+  -[MPCVocalAttenuationThermalPressurePolicy thermalStateDidChange:](self, "thermalStateDidChange:", [thermalMonitor currentThermalPressureLevel]);
 }
 
 - (id)evaluation
@@ -138,9 +138,9 @@ LABEL_14:
   v3 = objc_opt_new();
   [v3 setDisableVocalAttenuation:{-[MPCVocalAttenuationThermalPressurePolicy shouldDisableVocalAttenuation](self, "shouldDisableVocalAttenuation")}];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(MPCVocalAttenuationThermalPressurePolicy *)self shouldDisableVocalAttenuation];
+  shouldDisableVocalAttenuation = [(MPCVocalAttenuationThermalPressurePolicy *)self shouldDisableVocalAttenuation];
   v6 = @"off";
-  if (v5)
+  if (shouldDisableVocalAttenuation)
   {
     v6 = @"on";
   }
@@ -155,11 +155,11 @@ LABEL_14:
   return v3;
 }
 
-- (MPCVocalAttenuationThermalPressurePolicy)initWithThermalMonitor:(id)a3 calloutQueue:(id)a4 delegate:(id)a5
+- (MPCVocalAttenuationThermalPressurePolicy)initWithThermalMonitor:(id)monitor calloutQueue:(id)queue delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  monitorCopy = monitor;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = MPCVocalAttenuationThermalPressurePolicy;
   v12 = [(MPCVocalAttenuationThermalPressurePolicy *)&v16 init];
@@ -167,28 +167,28 @@ LABEL_14:
   if (v12)
   {
     v12->_type = 0;
-    objc_storeStrong(&v12->_thermalMonitor, a3);
+    objc_storeStrong(&v12->_thermalMonitor, monitor);
     [(ICEnvironmentMonitor *)v13->_thermalMonitor registerObserver:v13];
-    objc_storeStrong(&v13->_calloutQueue, a4);
-    objc_storeWeak(&v13->_delegate, v11);
-    v14 = [(ICEnvironmentMonitor *)v13->_thermalMonitor currentThermalPressureLevel];
-    v13->_currentThermalLevel = v14;
+    objc_storeStrong(&v13->_calloutQueue, queue);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    currentThermalPressureLevel = [(ICEnvironmentMonitor *)v13->_thermalMonitor currentThermalPressureLevel];
+    v13->_currentThermalLevel = currentThermalPressureLevel;
     *&v13->_cutoffThermalLevel = xmmword_1C60451C0;
     v13->_disableVocalAttenuation = 0;
     v13->_dataLock._os_unfair_lock_opaque = 0;
-    [(MPCVocalAttenuationThermalPressurePolicy *)v13 thermalStateDidChange:v14];
+    [(MPCVocalAttenuationThermalPressurePolicy *)v13 thermalStateDidChange:currentThermalPressureLevel];
   }
 
   return v13;
 }
 
-- (MPCVocalAttenuationThermalPressurePolicy)initWithCalloutQueue:(id)a3 delegate:(id)a4
+- (MPCVocalAttenuationThermalPressurePolicy)initWithCalloutQueue:(id)queue delegate:(id)delegate
 {
   v6 = MEMORY[0x1E69E4428];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 sharedMonitor];
-  v10 = [(MPCVocalAttenuationThermalPressurePolicy *)self initWithThermalMonitor:v9 calloutQueue:v8 delegate:v7];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  sharedMonitor = [v6 sharedMonitor];
+  v10 = [(MPCVocalAttenuationThermalPressurePolicy *)self initWithThermalMonitor:sharedMonitor calloutQueue:queueCopy delegate:delegateCopy];
 
   return v10;
 }

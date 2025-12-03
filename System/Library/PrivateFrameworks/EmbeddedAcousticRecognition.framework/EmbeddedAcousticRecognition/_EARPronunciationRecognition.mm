@@ -1,35 +1,35 @@
 @interface _EARPronunciationRecognition
-- (_EARPronunciationRecognition)initWithConfiguration:(id)a3;
+- (_EARPronunciationRecognition)initWithConfiguration:(id)configuration;
 - (__n128)transcribeMultipleFromJsonResultsPath:;
 - (id).cxx_construct;
-- (id)transcribePronunciation:(id)a3;
+- (id)transcribePronunciation:(id)pronunciation;
 - (uint64_t)transcribeMultipleFromJsonResultsPath:;
-- (void)transcribeMultipleFromJsonResultsPath:(id)a3;
+- (void)transcribeMultipleFromJsonResultsPath:(id)path;
 @end
 
 @implementation _EARPronunciationRecognition
 
-- (_EARPronunciationRecognition)initWithConfiguration:(id)a3
+- (_EARPronunciationRecognition)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v6.receiver = self;
   v6.super_class = _EARPronunciationRecognition;
   if ([(_EARPronunciationRecognition *)&v6 init])
   {
-    [v4 fileSystemRepresentation];
+    [configurationCopy fileSystemRepresentation];
     std::make_unique[abi:ne200100]<quasar::SystemConfig,char const*,0>();
   }
 
   return 0;
 }
 
-- (id)transcribePronunciation:(id)a3
+- (id)transcribePronunciation:(id)pronunciation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  pronunciationCopy = pronunciation;
+  v5 = pronunciationCopy;
+  if (pronunciationCopy)
   {
-    [v4 ear_toString];
+    [pronunciationCopy ear_toString];
   }
 
   else
@@ -73,10 +73,10 @@
   return v8;
 }
 
-- (void)transcribeMultipleFromJsonResultsPath:(id)a3
+- (void)transcribeMultipleFromJsonResultsPath:(id)path
 {
   v5[7] = *MEMORY[0x1E69E9840];
-  std::string::basic_string[abi:ne200100]<0>(v3, [a3 fileSystemRepresentation]);
+  std::string::basic_string[abi:ne200100]<0>(v3, [path fileSystemRepresentation]);
   quasar::filesystem::Path::Path(v4, v3);
   v5[0] = 0;
   v5[1] = 0;
@@ -94,8 +94,8 @@
 - (__n128)transcribeMultipleFromJsonResultsPath:
 {
   *a2 = &unk_1F2D2DF68;
-  result = *(a1 + 8);
-  *(a2 + 24) = *(a1 + 24);
+  result = *(self + 8);
+  *(a2 + 24) = *(self + 24);
   *(a2 + 8) = result;
   return result;
 }
@@ -103,7 +103,7 @@
 - (uint64_t)transcribeMultipleFromJsonResultsPath:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

@@ -1,16 +1,16 @@
 @interface UIPreviewTarget
 + (UIPreviewTarget)new;
-+ (id)_targetWithContainer:(id)a3 center:(CGPoint)a4 transform3D:(CATransform3D *)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)_targetWithContainer:(id)container center:(CGPoint)center transform3D:(CATransform3D *)d;
+- (BOOL)isEqual:(id)equal;
 - (CATransform3D)_transform3D;
-- (CATransform3D)_transform3DRelativeToWindow:(SEL)a3;
+- (CATransform3D)_transform3DRelativeToWindow:(SEL)window;
 - (CGAffineTransform)transform;
 - (CGPoint)center;
 - (UIPreviewTarget)init;
 - (UIPreviewTarget)initWithContainer:(UIView *)container center:(CGPoint)center;
 - (UIPreviewTarget)initWithContainer:(UIView *)container center:(CGPoint)center transform:(CGAffineTransform *)transform;
 - (id)description;
-- (void)_setContentScale:(double)a3;
+- (void)_setContentScale:(double)scale;
 @end
 
 @implementation UIPreviewTarget
@@ -60,9 +60,9 @@
     v13 = v10;
     if (!v13)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void BUG_IN_CLIENT_OF_TARGETED_PREVIEW__NIL_CONTAINER(void)"];
-      [v14 handleFailureInFunction:v15 file:@"UITargetedPreview.m" lineNumber:47 description:@"The preview target must have a valid container."];
+      [currentHandler handleFailureInFunction:v15 file:@"UITargetedPreview.m" lineNumber:47 description:@"The preview target must have a valid container."];
     }
 
     [(UIView *)v13 frame];
@@ -70,14 +70,14 @@
     {
       v16 = MEMORY[0x1E696AAA8];
       v17 = v13;
-      v18 = [v16 currentHandler];
+      currentHandler2 = [v16 currentHandler];
       v19 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void BUG_IN_CLIENT_OF_TARGETED_PREVIEW__INVALID_CONTAINER(UIView * _Nonnull __strong)"];
-      [v18 handleFailureInFunction:v19 file:@"UITargetedPreview.m" lineNumber:57 description:{@"Attempting to create a UIPreviewTarget with an invalid container: %@", v17}];
+      [currentHandler2 handleFailureInFunction:v19 file:@"UITargetedPreview.m" lineNumber:57 description:{@"Attempting to create a UIPreviewTarget with an invalid container: %@", v17}];
     }
 
-    v20 = [(UIView *)v13 _window];
+    _window = [(UIView *)v13 _window];
 
-    if (v20)
+    if (_window)
     {
       goto LABEL_14;
     }
@@ -86,10 +86,10 @@
     v22 = v13;
     if (dyld_program_sdk_at_least())
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
-      v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void BUG_IN_CLIENT_OF_TARGETED_PREVIEW__CONTAINER_IS_NOT_IN_A_WINDOW(Class  _Nonnull __unsafe_unretained, UIView * _Nonnull __strong)"}];
-      v25 = [(UIView *)v22 _conciseParentDescription];
-      [v23 handleFailureInFunction:v24 file:@"UITargetedPreview.m" lineNumber:64 description:@"%@ requires that the container view is in a window, but it is not. (container: %@)", v21, v25];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      _conciseParentDescription2 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void BUG_IN_CLIENT_OF_TARGETED_PREVIEW__CONTAINER_IS_NOT_IN_A_WINDOW(Class  _Nonnull __unsafe_unretained, UIView * _Nonnull __strong)"}];
+      _conciseParentDescription = [(UIView *)v22 _conciseParentDescription];
+      [currentHandler3 handleFailureInFunction:_conciseParentDescription2 file:@"UITargetedPreview.m" lineNumber:64 description:@"%@ requires that the container view is in a window, but it is not. (container: %@)", v21, _conciseParentDescription];
     }
 
     else
@@ -123,13 +123,13 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v23 = v26;
-      v24 = [(UIView *)v22 _conciseParentDescription];
+      currentHandler3 = v26;
+      _conciseParentDescription2 = [(UIView *)v22 _conciseParentDescription];
       LODWORD(m.a) = 138412546;
       *(&m.a + 4) = v21;
       WORD2(m.b) = 2112;
-      *(&m.b + 6) = v24;
-      _os_log_impl(&dword_188A29000, v23, OS_LOG_TYPE_ERROR, "%@ requires that the container view is in a window, but it is not. (container: %@)", &m, 0x16u);
+      *(&m.b + 6) = _conciseParentDescription2;
+      _os_log_impl(&dword_188A29000, currentHandler3, OS_LOG_TYPE_ERROR, "%@ requires that the container view is in a window, but it is not. (container: %@)", &m, 0x16u);
     }
 
     goto LABEL_13;
@@ -149,24 +149,24 @@ LABEL_15:
   return [(UIPreviewTarget *)self initWithContainer:container center:v6 transform:center.x, center.y];
 }
 
-+ (id)_targetWithContainer:(id)a3 center:(CGPoint)a4 transform3D:(CATransform3D *)a5
++ (id)_targetWithContainer:(id)container center:(CGPoint)center transform3D:(CATransform3D *)d
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithContainer:v9 center:{x, y}];
+  y = center.y;
+  x = center.x;
+  containerCopy = container;
+  v10 = [[self alloc] initWithContainer:containerCopy center:{x, y}];
 
-  v11 = *&a5->m11;
-  v12 = *&a5->m13;
-  v13 = *&a5->m23;
-  v10[4] = *&a5->m21;
+  v11 = *&d->m11;
+  v12 = *&d->m13;
+  v13 = *&d->m23;
+  v10[4] = *&d->m21;
   v10[5] = v13;
   v10[2] = v11;
   v10[3] = v12;
-  v14 = *&a5->m31;
-  v15 = *&a5->m33;
-  v16 = *&a5->m43;
-  v10[8] = *&a5->m41;
+  v14 = *&d->m31;
+  v15 = *&d->m33;
+  v16 = *&d->m43;
+  v10[8] = *&d->m41;
   v10[9] = v16;
   v10[6] = v14;
   v10[7] = v15;
@@ -176,30 +176,30 @@ LABEL_15:
 
 - (UIPreviewTarget)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UITargetedPreview.m" lineNumber:118 description:@"not implemented"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UITargetedPreview.m" lineNumber:118 description:@"not implemented"];
 
   return 0;
 }
 
 + (UIPreviewTarget)new
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"UITargetedPreview.m" lineNumber:124 description:@"not implemented"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UITargetedPreview.m" lineNumber:124 description:@"not implemented"];
 
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 container];
-    v7 = [(UIPreviewTarget *)self container];
-    if (v6 == v7)
+    v5 = equalCopy;
+    container = [v5 container];
+    container2 = [(UIPreviewTarget *)self container];
+    if (container == container2)
     {
       [v5 center];
       v10 = v9;
@@ -254,13 +254,13 @@ LABEL_15:
 {
   v3 = MEMORY[0x1E696AD60];
   v4 = objc_opt_class();
-  v5 = [(UIPreviewTarget *)self container];
-  if (v5)
+  container = [(UIPreviewTarget *)self container];
+  if (container)
   {
     v6 = MEMORY[0x1E696AEC0];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v6 stringWithFormat:@"<%@: %p>", v8, v5];
+    v9 = [v6 stringWithFormat:@"<%@: %p>", v8, container];
   }
 
   else
@@ -303,7 +303,7 @@ LABEL_15:
   return CATransform3DGetAffineTransform(retstr, &v8);
 }
 
-- (CATransform3D)_transform3DRelativeToWindow:(SEL)a3
+- (CATransform3D)_transform3DRelativeToWindow:(SEL)window
 {
   v4 = a4;
   *&retstr->m41 = 0u;
@@ -317,8 +317,8 @@ LABEL_15:
   result = [(UIPreviewTarget *)self _transform3D];
   if (v4)
   {
-    v8 = [(UIPreviewTarget *)self container];
-    [v8 frame];
+    container = [(UIPreviewTarget *)self container];
+    [container frame];
     IsEmpty = CGRectIsEmpty(v28);
 
     if (!IsEmpty)
@@ -326,10 +326,10 @@ LABEL_15:
       v26 = 0u;
       v27 = 0u;
       v25 = 0u;
-      v10 = [(UIPreviewTarget *)self container];
-      v11 = [(UIPreviewTarget *)self container];
-      v12 = [v11 _window];
-      _UIGetTransformBetweenViews(v10, v12, 1, &v25);
+      container2 = [(UIPreviewTarget *)self container];
+      container3 = [(UIPreviewTarget *)self container];
+      _window = [container3 _window];
+      _UIGetTransformBetweenViews(container2, _window, 1, &v25);
 
       memset(&v24, 0, sizeof(v24));
       *&m.m11 = v25;
@@ -368,13 +368,13 @@ LABEL_15:
   return result;
 }
 
-- (void)_setContentScale:(double)a3
+- (void)_setContentScale:(double)scale
 {
-  if (vabdd_f64(a3, self->_contentScale) > 2.22044605e-16)
+  if (vabdd_f64(scale, self->_contentScale) > 2.22044605e-16)
   {
     v11 = v3;
     v12 = v4;
-    self->_contentScale = a3;
+    self->_contentScale = scale;
     _UICATransform3DCombiningScale(v10);
     v6 = v10[5];
     *&self->_transform3D.m31 = v10[4];

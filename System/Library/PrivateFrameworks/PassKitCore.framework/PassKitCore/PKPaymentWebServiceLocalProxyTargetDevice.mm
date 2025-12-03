@@ -2,114 +2,114 @@
 - (BOOL)areAliroAccessPassesSupported;
 - (BOOL)areUnifiedAccessPassesSupported;
 - (BOOL)claimSecureElementForCurrentUser;
-- (BOOL)meetsProvisioningRequirements:(id)a3 missingRequirements:(id *)a4;
-- (BOOL)paymentWebService:(id)a3 canProvisionPaymentPassWithPrimaryAccountIdentifier:(id)a4;
-- (BOOL)paymentWebService:(id)a3 hasPassesOfType:(unint64_t)a4;
-- (BOOL)paymentWebServiceSupportsAccounts:(id)a3;
-- (BOOL)paymentWebServiceSupportsPeerPaymentRegistration:(id)a3;
+- (BOOL)meetsProvisioningRequirements:(id)requirements missingRequirements:(id *)missingRequirements;
+- (BOOL)paymentWebService:(id)service canProvisionPaymentPassWithPrimaryAccountIdentifier:(id)identifier;
+- (BOOL)paymentWebService:(id)service hasPassesOfType:(unint64_t)type;
+- (BOOL)paymentWebServiceSupportsAccounts:(id)accounts;
+- (BOOL)paymentWebServiceSupportsPeerPaymentRegistration:(id)registration;
 - (BOOL)secureElementIsAvailable;
 - (BOOL)supportsLowPowerExpressMode;
-- (BOOL)willPassWithUniqueIdentifierAutomaticallyBecomeDefault:(id)a3;
-- (PKPaymentWebServiceLocalProxyTargetDevice)initWithConnection:(id)a3;
-- (id)_proxyWithErrorHandler:(id)a3;
-- (id)_synchronousProxyWithErrorHandler:(id)a3;
+- (BOOL)willPassWithUniqueIdentifierAutomaticallyBecomeDefault:(id)default;
+- (PKPaymentWebServiceLocalProxyTargetDevice)initWithConnection:(id)connection;
+- (id)_proxyWithErrorHandler:(id)handler;
+- (id)_synchronousProxyWithErrorHandler:(id)handler;
 - (id)allPaymentApplicationUsageSummaries;
 - (id)appleAccountInformation;
 - (id)context;
-- (id)passesWithPrimaryPaymentApplicationStates:(id)a3;
-- (id)passesWithReaderIdentifier:(id)a3;
-- (id)paymentWebService:(id)a3 passesOfType:(unint64_t)a4;
-- (id)supportedFeatureIdentifiersForAccountProvisioningWithPaymentWebService:(id)a3;
-- (id)supportedFeatureIdentifiersWithPaymentWebService:(id)a3;
+- (id)passesWithPrimaryPaymentApplicationStates:(id)states;
+- (id)passesWithReaderIdentifier:(id)identifier;
+- (id)paymentWebService:(id)service passesOfType:(unint64_t)type;
+- (id)supportedFeatureIdentifiersForAccountProvisioningWithPaymentWebService:(id)service;
+- (id)supportedFeatureIdentifiersWithPaymentWebService:(id)service;
 - (unint64_t)maximumPaymentCards;
-- (unint64_t)paymentSupportedInCurrentRegionForWebService:(id)a3;
-- (unint64_t)registrationSupportedInCurrentRegionForWebService:(id)a3;
+- (unint64_t)paymentSupportedInCurrentRegionForWebService:(id)service;
+- (unint64_t)registrationSupportedInCurrentRegionForWebService:(id)service;
 - (unint64_t)secureElementOwnershipStateForCurrentUser;
 - (void)_invalidateConnection;
-- (void)activeFPANCardsWithOptions:(unint64_t)a3 completion:(id)a4;
-- (void)addISO18013Blobs:(id)a3 cardType:(int64_t)a4 completion:(id)a5;
-- (void)addISO18013BlobsFromCredentials:(id)a3 cardType:(int64_t)a4 completion:(id)a5;
-- (void)addPendingProvisionings:(id)a3 completion:(id)a4;
-- (void)applePayTrustKeyForIdentifier:(id)a3 completion:(id)a4;
-- (void)archiveBackgroundContext:(id)a3;
-- (void)archiveContext:(id)a3;
-- (void)availableHomeKeyPassesWithCompletionHandler:(id)a3;
-- (void)cachedFeatureApplicationsForProvisioningWithCompletion:(id)a3;
-- (void)canSaveFPANCardWithDescriptor:(id)a3 credential:(id)a4 completion:(id)a5;
-- (void)checkFidoKeyPresenceForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 completion:(id)a6;
-- (void)claimSecureElementForCurrentUserWithCompletion:(id)a3;
-- (void)contextWithCompletion:(id)a3;
-- (void)createApplePayTrustKeyWithRequest:(id)a3 completion:(id)a4;
-- (void)createFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 challenge:(id)a5 externalizedAuth:(id)a6 completion:(id)a7;
-- (void)credentialForFPANCard:(id)a3 authorization:(id)a4 options:(unint64_t)a5 merchantHost:(id)a6 completion:(id)a7;
-- (void)currentPasscodeMeetsUpgradedPasscodePolicy:(id)a3;
-- (void)currentSecureElementSnapshot:(id)a3;
+- (void)activeFPANCardsWithOptions:(unint64_t)options completion:(id)completion;
+- (void)addISO18013Blobs:(id)blobs cardType:(int64_t)type completion:(id)completion;
+- (void)addISO18013BlobsFromCredentials:(id)credentials cardType:(int64_t)type completion:(id)completion;
+- (void)addPendingProvisionings:(id)provisionings completion:(id)completion;
+- (void)applePayTrustKeyForIdentifier:(id)identifier completion:(id)completion;
+- (void)archiveBackgroundContext:(id)context;
+- (void)archiveContext:(id)context;
+- (void)availableHomeKeyPassesWithCompletionHandler:(id)handler;
+- (void)cachedFeatureApplicationsForProvisioningWithCompletion:(id)completion;
+- (void)canSaveFPANCardWithDescriptor:(id)descriptor credential:(id)credential completion:(id)completion;
+- (void)checkFidoKeyPresenceForRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash completion:(id)completion;
+- (void)claimSecureElementForCurrentUserWithCompletion:(id)completion;
+- (void)contextWithCompletion:(id)completion;
+- (void)createApplePayTrustKeyWithRequest:(id)request completion:(id)completion;
+- (void)createFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash challenge:(id)challenge externalizedAuth:(id)auth completion:(id)completion;
+- (void)credentialForFPANCard:(id)card authorization:(id)authorization options:(unint64_t)options merchantHost:(id)host completion:(id)completion;
+- (void)currentPasscodeMeetsUpgradedPasscodePolicy:(id)policy;
+- (void)currentSecureElementSnapshot:(id)snapshot;
 - (void)dealloc;
-- (void)deleteApplePayTrustKeyWithIdentifier:(id)a3 completion:(id)a4;
-- (void)deleteFPANCardWithDescriptor:(id)a3 completion:(id)a4;
-- (void)deleteKeyMaterialForSubCredentialId:(id)a3;
-- (void)deleteReservation:(id)a3 completion:(id)a4;
-- (void)downloadAllPaymentPassesForPaymentWebService:(id)a3;
-- (void)encryptedServiceProviderDataForSecureElementPass:(id)a3 completion:(id)a4;
+- (void)deleteApplePayTrustKeyWithIdentifier:(id)identifier completion:(id)completion;
+- (void)deleteFPANCardWithDescriptor:(id)descriptor completion:(id)completion;
+- (void)deleteKeyMaterialForSubCredentialId:(id)id;
+- (void)deleteReservation:(id)reservation completion:(id)completion;
+- (void)downloadAllPaymentPassesForPaymentWebService:(id)service;
+- (void)encryptedServiceProviderDataForSecureElementPass:(id)pass completion:(id)completion;
 - (void)endRequiringUpgradedPasscodeIfNecessary;
-- (void)enforceUpgradedPasscodePolicyWithCompletion:(id)a3;
-- (void)familyMembersWithCompletion:(id)a3;
-- (void)featureApplicationsForProvisioningWithCompletion:(id)a3;
-- (void)fpanCredentialForPrimaryAccountIdentifier:(id)a3 passUniqueID:(id)a4 credential:(id *)a5 error:(id *)a6;
-- (void)fpanDescriptorAndCredentialForFPAN:(id)a3 descriptor:(id *)a4 credential:(id *)a5 error:(id *)a6;
-- (void)generateAuxiliaryCapabilitiesForRequirements:(id)a3 completion:(id)a4;
-- (void)generateISOEncryptionCertificateForSubCredentialId:(id)a3 completion:(id)a4;
-- (void)generateSEEncryptionCertificateForSubCredentialId:(id)a3 completion:(id)a4;
-- (void)longTermPrivacyKeyForCredentialGroupIdentifier:(id)a3 reuseExisting:(BOOL)a4 completion:(id)a5;
-- (void)meetsProvisioningRequirements:(id)a3 completion:(id)a4;
+- (void)enforceUpgradedPasscodePolicyWithCompletion:(id)completion;
+- (void)familyMembersWithCompletion:(id)completion;
+- (void)featureApplicationsForProvisioningWithCompletion:(id)completion;
+- (void)fpanCredentialForPrimaryAccountIdentifier:(id)identifier passUniqueID:(id)d credential:(id *)credential error:(id *)error;
+- (void)fpanDescriptorAndCredentialForFPAN:(id)n descriptor:(id *)descriptor credential:(id *)credential error:(id *)error;
+- (void)generateAuxiliaryCapabilitiesForRequirements:(id)requirements completion:(id)completion;
+- (void)generateISOEncryptionCertificateForSubCredentialId:(id)id completion:(id)completion;
+- (void)generateSEEncryptionCertificateForSubCredentialId:(id)id completion:(id)completion;
+- (void)longTermPrivacyKeyForCredentialGroupIdentifier:(id)identifier reuseExisting:(BOOL)existing completion:(id)completion;
+- (void)meetsProvisioningRequirements:(id)requirements completion:(id)completion;
 - (void)notePasscodeUpgradeFlowDidEnd;
-- (void)notePasscodeUpgradeFlowWillBeginWithCompletion:(id)a3;
+- (void)notePasscodeUpgradeFlowWillBeginWithCompletion:(id)completion;
 - (void)noteProvisioningDidBegin;
 - (void)noteProvisioningDidEnd;
-- (void)passesOfCardType:(int64_t)a3 withCompletionHandler:(id)a4;
-- (void)paymentWebService:(id)a3 addPaymentPass:(id)a4 withCompletionHandler:(id)a5;
-- (void)paymentWebService:(id)a3 addPaymentPass:(id)a4 withCompletionHandlerV2:(id)a5;
-- (void)paymentWebService:(id)a3 configurationDataWithCompletionHandler:(id)a4;
-- (void)paymentWebService:(id)a3 deleteApplicationWithAID:(id)a4;
-- (void)paymentWebService:(id)a3 deviceMetadataWithFields:(unint64_t)a4 completion:(id)a5;
-- (void)paymentWebService:(id)a3 didRegisterWithRegionMap:(id)a4 primaryRegionTopic:(id)a5;
-- (void)paymentWebService:(id)a3 generateTransactionKeyWithParameters:(id)a4 withCompletion:(id)a5;
-- (void)paymentWebService:(id)a3 handlePotentialExpressPass:(id)a4 withCompletionHandler:(id)a5;
-- (void)paymentWebService:(id)a3 passOwnershipTokenWithIdentifier:(id)a4 completion:(id)a5;
-- (void)paymentWebService:(id)a3 provisioningDataIncludingDeviceMetadata:(BOOL)a4 withCompletionHandler:(id)a5;
-- (void)paymentWebService:(id)a3 queueConnectionToTrustedServiceManagerForPushTopic:(id)a4 withCompletion:(id)a5;
-- (void)paymentWebService:(id)a3 registrationDataWithCompletionHandler:(id)a4;
-- (void)paymentWebService:(id)a3 removePass:(id)a4 withCompletionHandler:(id)a5;
-- (void)paymentWebService:(id)a3 requestPassUpgrade:(id)a4 pass:(id)a5 completion:(id)a6;
-- (void)paymentWebService:(id)a3 setDefaultPaymentPassUniqueIdentifier:(id)a4;
-- (void)paymentWebService:(id)a3 setNewAuthRandom:(id)a4;
-- (void)paymentWebService:(id)a3 setNewAuthRandomIfNecessaryReturningPairingState:(id)a4;
-- (void)paymentWebService:(id)a3 signData:(id)a4 signatureEntanglementMode:(unint64_t)a5 withCompletionHandler:(id)a6;
-- (void)paymentWebService:(id)a3 storePassOwnershipToken:(id)a4 withIdentifier:(id)a5;
-- (void)paymentWebService:(id)a3 updateAccountWithIdentifier:(id)a4 completion:(id)a5;
-- (void)paymentWebService:(id)a3 validateAddPreconditionsWithCompletion:(id)a4;
-- (void)paymentWebService:(id)a3 validateTransferPreconditionsWithCompletion:(id)a4;
-- (void)performDeviceCheckInWithCompletion:(id)a3;
-- (void)performDeviceRegistrationReturningContextForReason:(id)a3 brokerURL:(id)a4 completion:(id)a5;
-- (void)prepareProvisioningTarget:(id)a3 checkFamilyCircle:(BOOL)a4 completion:(id)a5;
-- (void)provisionHomeKeyPassForSerialNumbers:(id)a3 completionHandler:(id)a4;
-- (void)renewAppleAccountWithCompletionHandler:(id)a3;
-- (void)reserveStorageForAppletTypes:(id)a3 metadata:(id)a4 completion:(id)a5;
-- (void)signWithFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 challenge:(id)a6 publicKeyIdentifier:(id)a7 externalizedAuth:(id)a8 completion:(id)a9;
-- (void)startRequiringUpgradedPasscodeWithCompletion:(id)a3;
-- (void)startRequiringUpgradedPasscodeWithPasscodeMeetsPolicy:(BOOL)a3;
-- (void)statusForShareableCredentials:(id)a3 completion:(id)a4;
-- (void)triggerCloudStoreZoneCreationForAccount:(id)a3 withCompletion:(id)a4;
-- (void)updateFPANCardWithDescriptor:(id)a3 credential:(id)a4 completion:(id)a5;
-- (void)updatedAccountsForProvisioningWithCompletion:(id)a3;
+- (void)passesOfCardType:(int64_t)type withCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service addPaymentPass:(id)pass withCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service addPaymentPass:(id)pass withCompletionHandlerV2:(id)v2;
+- (void)paymentWebService:(id)service configurationDataWithCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service deleteApplicationWithAID:(id)d;
+- (void)paymentWebService:(id)service deviceMetadataWithFields:(unint64_t)fields completion:(id)completion;
+- (void)paymentWebService:(id)service didRegisterWithRegionMap:(id)map primaryRegionTopic:(id)topic;
+- (void)paymentWebService:(id)service generateTransactionKeyWithParameters:(id)parameters withCompletion:(id)completion;
+- (void)paymentWebService:(id)service handlePotentialExpressPass:(id)pass withCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service passOwnershipTokenWithIdentifier:(id)identifier completion:(id)completion;
+- (void)paymentWebService:(id)service provisioningDataIncludingDeviceMetadata:(BOOL)metadata withCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service queueConnectionToTrustedServiceManagerForPushTopic:(id)topic withCompletion:(id)completion;
+- (void)paymentWebService:(id)service registrationDataWithCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service removePass:(id)pass withCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service requestPassUpgrade:(id)upgrade pass:(id)pass completion:(id)completion;
+- (void)paymentWebService:(id)service setDefaultPaymentPassUniqueIdentifier:(id)identifier;
+- (void)paymentWebService:(id)service setNewAuthRandom:(id)random;
+- (void)paymentWebService:(id)service setNewAuthRandomIfNecessaryReturningPairingState:(id)state;
+- (void)paymentWebService:(id)service signData:(id)data signatureEntanglementMode:(unint64_t)mode withCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service storePassOwnershipToken:(id)token withIdentifier:(id)identifier;
+- (void)paymentWebService:(id)service updateAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)paymentWebService:(id)service validateAddPreconditionsWithCompletion:(id)completion;
+- (void)paymentWebService:(id)service validateTransferPreconditionsWithCompletion:(id)completion;
+- (void)performDeviceCheckInWithCompletion:(id)completion;
+- (void)performDeviceRegistrationReturningContextForReason:(id)reason brokerURL:(id)l completion:(id)completion;
+- (void)prepareProvisioningTarget:(id)target checkFamilyCircle:(BOOL)circle completion:(id)completion;
+- (void)provisionHomeKeyPassForSerialNumbers:(id)numbers completionHandler:(id)handler;
+- (void)renewAppleAccountWithCompletionHandler:(id)handler;
+- (void)reserveStorageForAppletTypes:(id)types metadata:(id)metadata completion:(id)completion;
+- (void)signWithFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash challenge:(id)challenge publicKeyIdentifier:(id)identifier externalizedAuth:(id)auth completion:(id)completion;
+- (void)startRequiringUpgradedPasscodeWithCompletion:(id)completion;
+- (void)startRequiringUpgradedPasscodeWithPasscodeMeetsPolicy:(BOOL)policy;
+- (void)statusForShareableCredentials:(id)credentials completion:(id)completion;
+- (void)triggerCloudStoreZoneCreationForAccount:(id)account withCompletion:(id)completion;
+- (void)updateFPANCardWithDescriptor:(id)descriptor credential:(id)credential completion:(id)completion;
+- (void)updatedAccountsForProvisioningWithCompletion:(id)completion;
 @end
 
 @implementation PKPaymentWebServiceLocalProxyTargetDevice
 
-- (PKPaymentWebServiceLocalProxyTargetDevice)initWithConnection:(id)a3
+- (PKPaymentWebServiceLocalProxyTargetDevice)initWithConnection:(id)connection
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  connectionCopy = connection;
   v27.receiver = self;
   v27.super_class = PKPaymentWebServiceLocalProxyTargetDevice;
   v6 = [(PKPaymentWebServiceLocalProxyTargetDevice *)&v27 init];
@@ -119,27 +119,27 @@
     handlerQueue = v6->_handlerQueue;
     v6->_handlerQueue = v7;
 
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     connection = v6->_connection;
     v10 = PKPaymentWebServiceProxyObjectInterface();
     [(NSXPCConnection *)connection setRemoteObjectInterface:v10];
 
-    v11 = [(NSXPCConnection *)v6->_connection invalidationHandler];
+    invalidationHandler = [(NSXPCConnection *)v6->_connection invalidationHandler];
     v12 = v6->_connection;
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __64__PKPaymentWebServiceLocalProxyTargetDevice_initWithConnection___block_invoke;
     v25[3] = &unk_1E79C4428;
-    v13 = v11;
+    v13 = invalidationHandler;
     v26 = v13;
     [(NSXPCConnection *)v12 setInvalidationHandler:v25];
-    v14 = [(NSXPCConnection *)v6->_connection interruptionHandler];
+    interruptionHandler = [(NSXPCConnection *)v6->_connection interruptionHandler];
     v15 = v6->_connection;
     v20 = MEMORY[0x1E69E9820];
     v21 = 3221225472;
     v22 = __64__PKPaymentWebServiceLocalProxyTargetDevice_initWithConnection___block_invoke_294;
     v23 = &unk_1E79C4428;
-    v16 = v14;
+    v16 = interruptionHandler;
     v24 = v16;
     [(NSXPCConnection *)v15 setInterruptionHandler:&v20];
     [(NSXPCConnection *)v6->_connection resume:v20];
@@ -206,8 +206,8 @@ void __64__PKPaymentWebServiceLocalProxyTargetDevice_initWithConnection___block_
 - (void)_invalidateConnection
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
-  [v3 invalidateRemoteProxyTargetDevice];
+  _proxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
+  [_proxy invalidateRemoteProxyTargetDevice];
 
   [(NSXPCConnection *)self->_connection invalidate];
   v4 = PKLogFacilityTypeGetObject(7uLL);
@@ -223,15 +223,15 @@ void __64__PKPaymentWebServiceLocalProxyTargetDevice_initWithConnection___block_
   self->_connection = 0;
 }
 
-- (id)_proxyWithErrorHandler:(id)a3
+- (id)_proxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   connection = self->_connection;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__PKPaymentWebServiceLocalProxyTargetDevice__proxyWithErrorHandler___block_invoke;
   v11[3] = &unk_1E79C4450;
-  v6 = v4;
+  v6 = handlerCopy;
   v12 = v6;
   v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v11];
   if (!v7)
@@ -268,15 +268,15 @@ void __68__PKPaymentWebServiceLocalProxyTargetDevice__proxyWithErrorHandler___bl
   }
 }
 
-- (id)_synchronousProxyWithErrorHandler:(id)a3
+- (id)_synchronousProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   connection = self->_connection;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __79__PKPaymentWebServiceLocalProxyTargetDevice__synchronousProxyWithErrorHandler___block_invoke;
   v11[3] = &unk_1E79C4450;
-  v6 = v4;
+  v6 = handlerCopy;
   v12 = v6;
   v7 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:v11];
   if (!v7)
@@ -345,14 +345,14 @@ void __52__PKPaymentWebServiceLocalProxyTargetDevice_context__block_invoke(uint6
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)contextWithCompletion:(id)a3
+- (void)contextWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __67__PKPaymentWebServiceLocalProxyTargetDevice_contextWithCompletion___block_invoke;
   v10[3] = &unk_1E79C4450;
-  v5 = v4;
+  v5 = completionCopy;
   v11 = v5;
   v6 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v10];
   v8[0] = MEMORY[0x1E69E9820];
@@ -402,16 +402,16 @@ uint64_t __67__PKPaymentWebServiceLocalProxyTargetDevice_contextWithCompletion__
   return result;
 }
 
-- (void)encryptedServiceProviderDataForSecureElementPass:(id)a3 completion:(id)a4
+- (void)encryptedServiceProviderDataForSecureElementPass:(id)pass completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __105__PKPaymentWebServiceLocalProxyTargetDevice_encryptedServiceProviderDataForSecureElementPass_completion___block_invoke;
   v13[3] = &unk_1E79C4450;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  passCopy = pass;
   v9 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -420,7 +420,7 @@ uint64_t __67__PKPaymentWebServiceLocalProxyTargetDevice_contextWithCompletion__
   v11[4] = self;
   v12 = v7;
   v10 = v7;
-  [v9 getEncryptedServiceProviderDataForSecureElementPass:v8 completion:v11];
+  [v9 getEncryptedServiceProviderDataForSecureElementPass:passCopy completion:v11];
 }
 
 uint64_t __105__PKPaymentWebServiceLocalProxyTargetDevice_encryptedServiceProviderDataForSecureElementPass_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -463,16 +463,16 @@ uint64_t __105__PKPaymentWebServiceLocalProxyTargetDevice_encryptedServiceProvid
   return result;
 }
 
-- (void)paymentWebService:(id)a3 queueConnectionToTrustedServiceManagerForPushTopic:(id)a4 withCompletion:(id)a5
+- (void)paymentWebService:(id)service queueConnectionToTrustedServiceManagerForPushTopic:(id)topic withCompletion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __129__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_queueConnectionToTrustedServiceManagerForPushTopic_withCompletion___block_invoke;
   v14[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v15 = v8;
-  v9 = a4;
+  topicCopy = topic;
   v10 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -481,7 +481,7 @@ uint64_t __105__PKPaymentWebServiceLocalProxyTargetDevice_encryptedServiceProvid
   v12[4] = self;
   v13 = v8;
   v11 = v8;
-  [v10 queueConnectionToTrustedServiceManagerForPushTopic:v9 withCompletion:v12];
+  [v10 queueConnectionToTrustedServiceManagerForPushTopic:topicCopy withCompletion:v12];
 }
 
 uint64_t __129__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_queueConnectionToTrustedServiceManagerForPushTopic_withCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -522,14 +522,14 @@ uint64_t __129__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_queu
   return result;
 }
 
-- (void)paymentWebService:(id)a3 configurationDataWithCompletionHandler:(id)a4
+- (void)paymentWebService:(id)service configurationDataWithCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __102__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_configurationDataWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E79C4450;
-  v6 = v5;
+  v6 = handlerCopy;
   v12 = v6;
   v7 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];
@@ -582,14 +582,14 @@ uint64_t __102__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_conf
   return result;
 }
 
-- (void)paymentWebService:(id)a3 registrationDataWithCompletionHandler:(id)a4
+- (void)paymentWebService:(id)service registrationDataWithCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __101__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_registrationDataWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E79C4450;
-  v6 = v5;
+  v6 = handlerCopy;
   v12 = v6;
   v7 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];
@@ -623,16 +623,16 @@ uint64_t __101__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_regi
   return result;
 }
 
-- (void)paymentWebService:(id)a3 signData:(id)a4 signatureEntanglementMode:(unint64_t)a5 withCompletionHandler:(id)a6
+- (void)paymentWebService:(id)service signData:(id)data signatureEntanglementMode:(unint64_t)mode withCompletionHandler:(id)handler
 {
-  v9 = a6;
+  handlerCopy = handler;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __120__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_signData_signatureEntanglementMode_withCompletionHandler___block_invoke;
   v16[3] = &unk_1E79C4450;
-  v10 = v9;
+  v10 = handlerCopy;
   v17 = v10;
-  v11 = a4;
+  dataCopy = data;
   v12 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v16];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -641,7 +641,7 @@ uint64_t __101__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_regi
   v14[4] = self;
   v15 = v10;
   v13 = v10;
-  [v12 signData:v11 signatureEntanglementMode:a5 withCompletion:v14];
+  [v12 signData:dataCopy signatureEntanglementMode:mode withCompletion:v14];
 }
 
 uint64_t __120__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_signData_signatureEntanglementMode_withCompletionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -687,15 +687,15 @@ uint64_t __120__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_sign
   return result;
 }
 
-- (void)paymentWebService:(id)a3 provisioningDataIncludingDeviceMetadata:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)paymentWebService:(id)service provisioningDataIncludingDeviceMetadata:(BOOL)metadata withCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v7 = a5;
+  metadataCopy = metadata;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __125__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_provisioningDataIncludingDeviceMetadata_withCompletionHandler___block_invoke;
   v13[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = handlerCopy;
   v14 = v8;
   v9 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
@@ -705,7 +705,7 @@ uint64_t __120__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_sign
   v11[4] = self;
   v12 = v8;
   v10 = v8;
-  [v9 getProvisioningDataIncludingDeviceMetadata:v5 withCompletion:v11];
+  [v9 getProvisioningDataIncludingDeviceMetadata:metadataCopy withCompletion:v11];
 }
 
 uint64_t __125__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_provisioningDataIncludingDeviceMetadata_withCompletionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -748,36 +748,36 @@ uint64_t __125__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_prov
   return result;
 }
 
-- (void)paymentWebService:(id)a3 deleteApplicationWithAID:(id)a4
+- (void)paymentWebService:(id)service deleteApplicationWithAID:(id)d
 {
-  v5 = a4;
-  v6 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
-  [v6 deleteApplicationWithAID:v5];
+  dCopy = d;
+  _proxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
+  [_proxy deleteApplicationWithAID:dCopy];
 }
 
-- (void)deleteKeyMaterialForSubCredentialId:(id)a3
+- (void)deleteKeyMaterialForSubCredentialId:(id)id
 {
-  v4 = a3;
-  v5 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
-  [v5 deleteKeyMaterialForSubCredentialId:v4];
+  idCopy = id;
+  _proxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
+  [_proxy deleteKeyMaterialForSubCredentialId:idCopy];
 }
 
-- (void)paymentWebService:(id)a3 didRegisterWithRegionMap:(id)a4 primaryRegionTopic:(id)a5
+- (void)paymentWebService:(id)service didRegisterWithRegionMap:(id)map primaryRegionTopic:(id)topic
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
-  [v9 didRegisterWithRegionMap:v8 primaryRegionTopic:v7];
+  topicCopy = topic;
+  mapCopy = map;
+  _proxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
+  [_proxy didRegisterWithRegionMap:mapCopy primaryRegionTopic:topicCopy];
 }
 
-- (void)renewAppleAccountWithCompletionHandler:(id)a3
+- (void)renewAppleAccountWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __84__PKPaymentWebServiceLocalProxyTargetDevice_renewAppleAccountWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E79C4450;
-  v5 = v4;
+  v5 = handlerCopy;
   v11 = v5;
   v6 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v10];
   v8[0] = MEMORY[0x1E69E9820];
@@ -835,13 +835,13 @@ uint64_t __84__PKPaymentWebServiceLocalProxyTargetDevice_renewAppleAccountWithCo
   v9 = __Block_byref_object_copy_;
   v10 = __Block_byref_object_dispose_;
   v11 = 0;
-  v2 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __68__PKPaymentWebServiceLocalProxyTargetDevice_appleAccountInformation__block_invoke;
   v5[3] = &unk_1E79C46A8;
   v5[4] = &v6;
-  [v2 appleAccountInformationWithCompletion:v5];
+  [_synchronousProxy appleAccountInformationWithCompletion:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -849,20 +849,20 @@ uint64_t __84__PKPaymentWebServiceLocalProxyTargetDevice_renewAppleAccountWithCo
   return v3;
 }
 
-- (unint64_t)paymentSupportedInCurrentRegionForWebService:(id)a3
+- (unint64_t)paymentSupportedInCurrentRegionForWebService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __90__PKPaymentWebServiceLocalProxyTargetDevice_paymentSupportedInCurrentRegionForWebService___block_invoke;
   v8[3] = &unk_1E79C46D0;
   v8[4] = &v9;
-  [v5 paymentSupportedInCurrentRegion:v8];
+  [_synchronousProxy paymentSupportedInCurrentRegion:v8];
 
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
@@ -870,20 +870,20 @@ uint64_t __84__PKPaymentWebServiceLocalProxyTargetDevice_renewAppleAccountWithCo
   return v6;
 }
 
-- (unint64_t)registrationSupportedInCurrentRegionForWebService:(id)a3
+- (unint64_t)registrationSupportedInCurrentRegionForWebService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __95__PKPaymentWebServiceLocalProxyTargetDevice_registrationSupportedInCurrentRegionForWebService___block_invoke;
   v8[3] = &unk_1E79C46D0;
   v8[4] = &v9;
-  [v5 registrationSupportedInCurrentRegionWithCompletion:v8];
+  [_synchronousProxy registrationSupportedInCurrentRegionWithCompletion:v8];
 
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
@@ -893,25 +893,25 @@ uint64_t __84__PKPaymentWebServiceLocalProxyTargetDevice_renewAppleAccountWithCo
 
 - (void)noteProvisioningDidBegin
 {
-  v2 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
-  [v2 noteProvisioningDidBegin];
+  _proxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
+  [_proxy noteProvisioningDidBegin];
 }
 
 - (void)noteProvisioningDidEnd
 {
-  v2 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
-  [v2 noteProvisioningDidEnd];
+  _proxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
+  [_proxy noteProvisioningDidEnd];
 }
 
-- (void)notePasscodeUpgradeFlowWillBeginWithCompletion:(id)a3
+- (void)notePasscodeUpgradeFlowWillBeginWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __92__PKPaymentWebServiceLocalProxyTargetDevice_notePasscodeUpgradeFlowWillBeginWithCompletion___block_invoke;
   v7[3] = &unk_1E79C4450;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v7];
   [v6 notePasscodeUpgradeFlowWillBeginWithCompletion:v5];
 }
@@ -929,19 +929,19 @@ uint64_t __92__PKPaymentWebServiceLocalProxyTargetDevice_notePasscodeUpgradeFlow
 
 - (void)notePasscodeUpgradeFlowDidEnd
 {
-  v2 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
-  [v2 notePasscodeUpgradeFlowDidEnd];
+  _proxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
+  [_proxy notePasscodeUpgradeFlowDidEnd];
 }
 
-- (void)enforceUpgradedPasscodePolicyWithCompletion:(id)a3
+- (void)enforceUpgradedPasscodePolicyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __89__PKPaymentWebServiceLocalProxyTargetDevice_enforceUpgradedPasscodePolicyWithCompletion___block_invoke;
   v7[3] = &unk_1E79C4450;
-  v8 = v4;
-  v5 = v4;
+  v8 = completionCopy;
+  v5 = completionCopy;
   v6 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v7];
   [v6 enforceUpgradedPasscodePolicyWithCompletion:v5];
 }
@@ -957,15 +957,15 @@ uint64_t __89__PKPaymentWebServiceLocalProxyTargetDevice_enforceUpgradedPasscode
   return result;
 }
 
-- (void)currentPasscodeMeetsUpgradedPasscodePolicy:(id)a3
+- (void)currentPasscodeMeetsUpgradedPasscodePolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __88__PKPaymentWebServiceLocalProxyTargetDevice_currentPasscodeMeetsUpgradedPasscodePolicy___block_invoke;
   v7[3] = &unk_1E79C4450;
-  v8 = v4;
-  v5 = v4;
+  v8 = policyCopy;
+  v5 = policyCopy;
   v6 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v7];
   [v6 currentPasscodeMeetsUpgradedPasscodePolicy:v5];
 }
@@ -981,21 +981,21 @@ uint64_t __88__PKPaymentWebServiceLocalProxyTargetDevice_currentPasscodeMeetsUpg
   return result;
 }
 
-- (void)startRequiringUpgradedPasscodeWithPasscodeMeetsPolicy:(BOOL)a3
+- (void)startRequiringUpgradedPasscodeWithPasscodeMeetsPolicy:(BOOL)policy
 {
-  v3 = a3;
-  v4 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
-  [v4 startRequiringUpgradedPasscodeWithPasscodeMeetsPolicy:v3];
+  policyCopy = policy;
+  _proxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
+  [_proxy startRequiringUpgradedPasscodeWithPasscodeMeetsPolicy:policyCopy];
 }
 
-- (void)startRequiringUpgradedPasscodeWithCompletion:(id)a3
+- (void)startRequiringUpgradedPasscodeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __90__PKPaymentWebServiceLocalProxyTargetDevice_startRequiringUpgradedPasscodeWithCompletion___block_invoke;
   v10[3] = &unk_1E79C4450;
-  v5 = v4;
+  v5 = completionCopy;
   v11 = v5;
   v6 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v10];
   v8[0] = MEMORY[0x1E69E9820];
@@ -1048,18 +1048,18 @@ uint64_t __90__PKPaymentWebServiceLocalProxyTargetDevice_startRequiringUpgradedP
 
 - (void)endRequiringUpgradedPasscodeIfNecessary
 {
-  v2 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
-  [v2 endRequiringUpgradedPasscodeIfNecessary];
+  _proxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
+  [_proxy endRequiringUpgradedPasscodeIfNecessary];
 }
 
-- (void)paymentWebService:(id)a3 setNewAuthRandomIfNecessaryReturningPairingState:(id)a4
+- (void)paymentWebService:(id)service setNewAuthRandomIfNecessaryReturningPairingState:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __112__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_setNewAuthRandomIfNecessaryReturningPairingState___block_invoke;
   v11[3] = &unk_1E79C4450;
-  v6 = v5;
+  v6 = stateCopy;
   v12 = v6;
   v7 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];
@@ -1113,14 +1113,14 @@ uint64_t __112__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_setN
   return result;
 }
 
-- (void)paymentWebService:(id)a3 setNewAuthRandom:(id)a4
+- (void)paymentWebService:(id)service setNewAuthRandom:(id)random
 {
-  v5 = a4;
+  randomCopy = random;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __80__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_setNewAuthRandom___block_invoke;
   v11[3] = &unk_1E79C4450;
-  v6 = v5;
+  v6 = randomCopy;
   v12 = v6;
   v7 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];
@@ -1167,43 +1167,43 @@ uint64_t __80__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_setNe
   return result;
 }
 
-- (BOOL)paymentWebService:(id)a3 hasPassesOfType:(unint64_t)a4
+- (BOOL)paymentWebService:(id)service hasPassesOfType:(unint64_t)type
 {
-  v6 = a3;
+  serviceCopy = service;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v7 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __79__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_hasPassesOfType___block_invoke;
   v9[3] = &unk_1E79C4798;
   v9[4] = &v10;
-  [v7 hasPassesOfType:a4 completion:v9];
+  [_synchronousProxy hasPassesOfType:type completion:v9];
 
-  LOBYTE(a4) = *(v11 + 24);
+  LOBYTE(type) = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
 
-  return a4;
+  return type;
 }
 
-- (id)paymentWebService:(id)a3 passesOfType:(unint64_t)a4
+- (id)paymentWebService:(id)service passesOfType:(unint64_t)type
 {
-  v6 = a3;
+  serviceCopy = service;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy_;
   v15 = __Block_byref_object_dispose_;
   v16 = 0;
-  v7 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __76__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_passesOfType___block_invoke;
   v10[3] = &unk_1E79C47C0;
   v10[4] = &v11;
-  [v7 passesOfType:a4 completion:v10];
+  [_synchronousProxy passesOfType:type completion:v10];
 
   v8 = v12[5];
   _Block_object_dispose(&v11, 8);
@@ -1257,22 +1257,22 @@ void __76__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_passesOfT
   *(v14 + 40) = v5;
 }
 
-- (id)passesWithReaderIdentifier:(id)a3
+- (id)passesWithReaderIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy_;
   v13 = __Block_byref_object_dispose_;
   v14 = 0;
-  v5 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __72__PKPaymentWebServiceLocalProxyTargetDevice_passesWithReaderIdentifier___block_invoke;
   v8[3] = &unk_1E79C47E8;
   v8[4] = &v9;
-  [v5 passesWithReaderIdentifier:v4 completion:v8];
+  [_synchronousProxy passesWithReaderIdentifier:identifierCopy completion:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -1326,22 +1326,22 @@ void __72__PKPaymentWebServiceLocalProxyTargetDevice_passesWithReaderIdentifier_
   *(v14 + 40) = v5;
 }
 
-- (id)passesWithPrimaryPaymentApplicationStates:(id)a3
+- (id)passesWithPrimaryPaymentApplicationStates:(id)states
 {
-  v4 = a3;
+  statesCopy = states;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy_;
   v13 = __Block_byref_object_dispose_;
   v14 = 0;
-  v5 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __87__PKPaymentWebServiceLocalProxyTargetDevice_passesWithPrimaryPaymentApplicationStates___block_invoke;
   v8[3] = &unk_1E79C47E8;
   v8[4] = &v9;
-  [v5 passesWithPrimaryPaymentApplicationStates:v4 completion:v8];
+  [_synchronousProxy passesWithPrimaryPaymentApplicationStates:statesCopy completion:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -1395,36 +1395,36 @@ void __87__PKPaymentWebServiceLocalProxyTargetDevice_passesWithPrimaryPaymentApp
   *(v14 + 40) = v5;
 }
 
-- (BOOL)paymentWebService:(id)a3 canProvisionPaymentPassWithPrimaryAccountIdentifier:(id)a4
+- (BOOL)paymentWebService:(id)service canProvisionPaymentPassWithPrimaryAccountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v8 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __115__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_canProvisionPaymentPassWithPrimaryAccountIdentifier___block_invoke;
   v10[3] = &unk_1E79C4798;
   v10[4] = &v11;
-  [v8 canProvisionPaymentPassWithPrimaryAccountIdentifier:v7 completion:v10];
+  [_synchronousProxy canProvisionPaymentPassWithPrimaryAccountIdentifier:identifierCopy completion:v10];
 
-  LOBYTE(v8) = *(v12 + 24);
+  LOBYTE(_synchronousProxy) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
 
-  return v8;
+  return _synchronousProxy;
 }
 
-- (void)paymentWebService:(id)a3 validateAddPreconditionsWithCompletion:(id)a4
+- (void)paymentWebService:(id)service validateAddPreconditionsWithCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __102__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_validateAddPreconditionsWithCompletion___block_invoke;
   v11[3] = &unk_1E79C4450;
-  v6 = v5;
+  v6 = completionCopy;
   v12 = v6;
   v7 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];
@@ -1474,16 +1474,16 @@ uint64_t __102__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_vali
   return result;
 }
 
-- (void)paymentWebService:(id)a3 handlePotentialExpressPass:(id)a4 withCompletionHandler:(id)a5
+- (void)paymentWebService:(id)service handlePotentialExpressPass:(id)pass withCompletionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __112__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_handlePotentialExpressPass_withCompletionHandler___block_invoke;
   v14[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = handlerCopy;
   v15 = v8;
-  v9 = a4;
+  passCopy = pass;
   v10 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -1492,7 +1492,7 @@ uint64_t __102__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_vali
   v12[4] = self;
   v13 = v8;
   v11 = v8;
-  [v10 handlePotentialExpressPass:v9 withCompletion:v12];
+  [v10 handlePotentialExpressPass:passCopy withCompletion:v12];
 }
 
 uint64_t __112__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_handlePotentialExpressPass_withCompletionHandler___block_invoke(uint64_t a1)
@@ -1532,14 +1532,14 @@ uint64_t __112__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_hand
   return result;
 }
 
-- (void)passesOfCardType:(int64_t)a3 withCompletionHandler:(id)a4
+- (void)passesOfCardType:(int64_t)type withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __84__PKPaymentWebServiceLocalProxyTargetDevice_passesOfCardType_withCompletionHandler___block_invoke;
   v12[3] = &unk_1E79C4450;
-  v7 = v6;
+  v7 = handlerCopy;
   v13 = v7;
   v8 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v12];
   v10[0] = MEMORY[0x1E69E9820];
@@ -1549,7 +1549,7 @@ uint64_t __112__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_hand
   v10[4] = self;
   v11 = v7;
   v9 = v7;
-  [v8 passesOfCardType:a3 completion:v10];
+  [v8 passesOfCardType:type completion:v10];
 }
 
 uint64_t __84__PKPaymentWebServiceLocalProxyTargetDevice_passesOfCardType_withCompletionHandler___block_invoke(uint64_t a1)
@@ -1589,19 +1589,19 @@ uint64_t __84__PKPaymentWebServiceLocalProxyTargetDevice_passesOfCardType_withCo
   return result;
 }
 
-- (void)paymentWebService:(id)a3 addPaymentPass:(id)a4 withCompletionHandler:(id)a5
+- (void)paymentWebService:(id)service addPaymentPass:(id)pass withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  passCopy = pass;
+  handlerCopy = handler;
   v11 = objc_autoreleasePoolPush();
-  v12 = [v9 archiveData];
+  archiveData = [passCopy archiveData];
   objc_autoreleasePoolPop(v11);
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __100__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_addPaymentPass_withCompletionHandler___block_invoke;
   v18[3] = &unk_1E79C4450;
-  v13 = v10;
+  v13 = handlerCopy;
   v19 = v13;
   v14 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v18];
   v16[0] = MEMORY[0x1E69E9820];
@@ -1611,7 +1611,7 @@ uint64_t __84__PKPaymentWebServiceLocalProxyTargetDevice_passesOfCardType_withCo
   v16[4] = self;
   v17 = v13;
   v15 = v13;
-  [v14 addPassData:v12 completion:v16];
+  [v14 addPassData:archiveData completion:v16];
 }
 
 uint64_t __100__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_addPaymentPass_withCompletionHandler___block_invoke(uint64_t a1)
@@ -1647,10 +1647,10 @@ uint64_t __100__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_addP
   return result;
 }
 
-- (void)downloadAllPaymentPassesForPaymentWebService:(id)a3
+- (void)downloadAllPaymentPassesForPaymentWebService:(id)service
 {
-  v3 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
-  [v3 downloadAllPaymentPasses];
+  _proxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
+  [_proxy downloadAllPaymentPasses];
 }
 
 - (BOOL)supportsLowPowerExpressMode
@@ -1659,17 +1659,17 @@ uint64_t __100__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_addP
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v2 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __72__PKPaymentWebServiceLocalProxyTargetDevice_supportsLowPowerExpressMode__block_invoke;
   v4[3] = &unk_1E79C4798;
   v4[4] = &v5;
-  [v2 supportsLowPowerExpressModeWithCompletion:v4];
+  [_synchronousProxy supportsLowPowerExpressModeWithCompletion:v4];
 
-  LOBYTE(v2) = *(v6 + 24);
+  LOBYTE(_synchronousProxy) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return _synchronousProxy;
 }
 
 - (BOOL)claimSecureElementForCurrentUser
@@ -1678,27 +1678,27 @@ uint64_t __100__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_addP
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v2 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __77__PKPaymentWebServiceLocalProxyTargetDevice_claimSecureElementForCurrentUser__block_invoke;
   v4[3] = &unk_1E79C4798;
   v4[4] = &v5;
-  [v2 claimSecureElementForCurrentUserWithCompletion:v4];
+  [_synchronousProxy claimSecureElementForCurrentUserWithCompletion:v4];
 
-  LOBYTE(v2) = *(v6 + 24);
+  LOBYTE(_synchronousProxy) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return _synchronousProxy;
 }
 
-- (void)claimSecureElementForCurrentUserWithCompletion:(id)a3
+- (void)claimSecureElementForCurrentUserWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __92__PKPaymentWebServiceLocalProxyTargetDevice_claimSecureElementForCurrentUserWithCompletion___block_invoke;
   v10[3] = &unk_1E79C4860;
-  v5 = v4;
+  v5 = completionCopy;
   v10[4] = self;
   v11 = v5;
   v6 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v10];
@@ -1749,27 +1749,27 @@ void __92__PKPaymentWebServiceLocalProxyTargetDevice_claimSecureElementForCurren
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __86__PKPaymentWebServiceLocalProxyTargetDevice_secureElementOwnershipStateForCurrentUser__block_invoke;
   v5[3] = &unk_1E79C46D0;
   v5[4] = &v6;
-  [v2 secureElementOwnershipStateForCurrentUserWithCompletion:v5];
+  [_synchronousProxy secureElementOwnershipStateForCurrentUserWithCompletion:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (void)paymentWebService:(id)a3 validateTransferPreconditionsWithCompletion:(id)a4
+- (void)paymentWebService:(id)service validateTransferPreconditionsWithCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __107__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_validateTransferPreconditionsWithCompletion___block_invoke;
   v11[3] = &unk_1E79C4450;
-  v6 = v5;
+  v6 = completionCopy;
   v12 = v6;
   v7 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];
@@ -1819,31 +1819,31 @@ uint64_t __107__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_vali
   return result;
 }
 
-- (void)paymentWebService:(id)a3 addPaymentPass:(id)a4 withCompletionHandlerV2:(id)a5
+- (void)paymentWebService:(id)service addPaymentPass:(id)pass withCompletionHandlerV2:(id)v2
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  passCopy = pass;
+  v2Copy = v2;
   v11 = objc_autoreleasePoolPush();
-  v12 = [v9 archiveData];
+  archiveData = [passCopy archiveData];
   objc_autoreleasePoolPop(v11);
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __102__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_addPaymentPass_withCompletionHandlerV2___block_invoke;
   v20[3] = &unk_1E79C4450;
-  v13 = v10;
+  v13 = v2Copy;
   v21 = v13;
   v14 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v20];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __102__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_addPaymentPass_withCompletionHandlerV2___block_invoke_2;
   v17[3] = &unk_1E79C48B0;
-  v18 = v9;
+  v18 = passCopy;
   v19 = v13;
   v17[4] = self;
-  v15 = v9;
+  v15 = passCopy;
   v16 = v13;
-  [v14 addPassData:v12 completion:v17];
+  [v14 addPassData:archiveData completion:v17];
 }
 
 uint64_t __102__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_addPaymentPass_withCompletionHandlerV2___block_invoke(uint64_t a1)
@@ -1891,16 +1891,16 @@ uint64_t __102__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_addP
   return result;
 }
 
-- (void)paymentWebService:(id)a3 removePass:(id)a4 withCompletionHandler:(id)a5
+- (void)paymentWebService:(id)service removePass:(id)pass withCompletionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __96__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_removePass_withCompletionHandler___block_invoke;
   v14[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = handlerCopy;
   v15 = v8;
-  v9 = a4;
+  passCopy = pass;
   v10 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -1909,7 +1909,7 @@ uint64_t __102__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_addP
   v12[4] = self;
   v13 = v8;
   v11 = v8;
-  [v10 removePass:v9 completion:v12];
+  [v10 removePass:passCopy completion:v12];
 }
 
 uint64_t __96__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_removePass_withCompletionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -1950,64 +1950,64 @@ uint64_t __96__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_remov
   return result;
 }
 
-- (BOOL)paymentWebServiceSupportsPeerPaymentRegistration:(id)a3
+- (BOOL)paymentWebServiceSupportsPeerPaymentRegistration:(id)registration
 {
-  v4 = a3;
+  registrationCopy = registration;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __94__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebServiceSupportsPeerPaymentRegistration___block_invoke;
   v7[3] = &unk_1E79C4798;
   v7[4] = &v8;
-  [v5 supportsPeerPaymentRegistrationWithCompletion:v7];
+  [_synchronousProxy supportsPeerPaymentRegistrationWithCompletion:v7];
 
-  LOBYTE(v5) = *(v9 + 24);
+  LOBYTE(_synchronousProxy) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
 
-  return v5;
+  return _synchronousProxy;
 }
 
-- (BOOL)paymentWebServiceSupportsAccounts:(id)a3
+- (BOOL)paymentWebServiceSupportsAccounts:(id)accounts
 {
-  v4 = a3;
+  accountsCopy = accounts;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __79__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebServiceSupportsAccounts___block_invoke;
   v7[3] = &unk_1E79C4798;
   v7[4] = &v8;
-  [v5 supportsAccountsWithCompletion:v7];
+  [_synchronousProxy supportsAccountsWithCompletion:v7];
 
-  LOBYTE(v5) = *(v9 + 24);
+  LOBYTE(_synchronousProxy) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
 
-  return v5;
+  return _synchronousProxy;
 }
 
-- (id)supportedFeatureIdentifiersWithPaymentWebService:(id)a3
+- (id)supportedFeatureIdentifiersWithPaymentWebService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy_;
   v13 = __Block_byref_object_dispose_;
   v14 = [MEMORY[0x1E695DFD8] set];
-  v5 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __94__PKPaymentWebServiceLocalProxyTargetDevice_supportedFeatureIdentifiersWithPaymentWebService___block_invoke;
   v8[3] = &unk_1E79C47E8;
   v8[4] = &v9;
-  [v5 supportedFeatureIdentifiersWithCompletion:v8];
+  [_synchronousProxy supportedFeatureIdentifiersWithCompletion:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -2015,22 +2015,22 @@ uint64_t __96__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_remov
   return v6;
 }
 
-- (id)supportedFeatureIdentifiersForAccountProvisioningWithPaymentWebService:(id)a3
+- (id)supportedFeatureIdentifiersForAccountProvisioningWithPaymentWebService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy_;
   v13 = __Block_byref_object_dispose_;
   v14 = [MEMORY[0x1E695DFD8] set];
-  v5 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __116__PKPaymentWebServiceLocalProxyTargetDevice_supportedFeatureIdentifiersForAccountProvisioningWithPaymentWebService___block_invoke;
   v8[3] = &unk_1E79C47E8;
   v8[4] = &v9;
-  [v5 supportedFeatureIdentifiersForAccountProvisioningWithCompletion:v8];
+  [_synchronousProxy supportedFeatureIdentifiersForAccountProvisioningWithCompletion:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -2038,17 +2038,17 @@ uint64_t __96__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_remov
   return v6;
 }
 
-- (void)updatedAccountsForProvisioningWithCompletion:(id)a3
+- (void)updatedAccountsForProvisioningWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __90__PKPaymentWebServiceLocalProxyTargetDevice_updatedAccountsForProvisioningWithCompletion___block_invoke;
     v10[3] = &unk_1E79C4450;
-    v6 = v4;
+    v6 = completionCopy;
     v11 = v6;
     v7 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v10];
     v8[0] = MEMORY[0x1E69E9820];
@@ -2079,19 +2079,19 @@ void __90__PKPaymentWebServiceLocalProxyTargetDevice_updatedAccountsForProvision
   dispatch_async(v7, block);
 }
 
-- (void)triggerCloudStoreZoneCreationForAccount:(id)a3 withCompletion:(id)a4
+- (void)triggerCloudStoreZoneCreationForAccount:(id)account withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (completionCopy)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __100__PKPaymentWebServiceLocalProxyTargetDevice_triggerCloudStoreZoneCreationForAccount_withCompletion___block_invoke;
     v13[3] = &unk_1E79C4450;
-    v8 = v6;
+    v8 = completionCopy;
     v14 = v8;
-    v9 = a3;
+    accountCopy = account;
     v10 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v13];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -2099,7 +2099,7 @@ void __90__PKPaymentWebServiceLocalProxyTargetDevice_updatedAccountsForProvision
     v11[3] = &unk_1E79C4770;
     v11[4] = self;
     v12 = v8;
-    [v10 triggerCloudStoreZoneCreationForAccount:v9 withCompletion:v11];
+    [v10 triggerCloudStoreZoneCreationForAccount:accountCopy withCompletion:v11];
   }
 }
 
@@ -2115,17 +2115,17 @@ void __100__PKPaymentWebServiceLocalProxyTargetDevice_triggerCloudStoreZoneCreat
   dispatch_async(v3, v4);
 }
 
-- (void)cachedFeatureApplicationsForProvisioningWithCompletion:(id)a3
+- (void)cachedFeatureApplicationsForProvisioningWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __100__PKPaymentWebServiceLocalProxyTargetDevice_cachedFeatureApplicationsForProvisioningWithCompletion___block_invoke;
     v10[3] = &unk_1E79C4450;
-    v6 = v4;
+    v6 = completionCopy;
     v11 = v6;
     v7 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v10];
     v8[0] = MEMORY[0x1E69E9820];
@@ -2153,17 +2153,17 @@ void __100__PKPaymentWebServiceLocalProxyTargetDevice_cachedFeatureApplicationsF
   dispatch_async(v4, v7);
 }
 
-- (void)featureApplicationsForProvisioningWithCompletion:(id)a3
+- (void)featureApplicationsForProvisioningWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __94__PKPaymentWebServiceLocalProxyTargetDevice_featureApplicationsForProvisioningWithCompletion___block_invoke;
     v10[3] = &unk_1E79C4450;
-    v6 = v4;
+    v6 = completionCopy;
     v11 = v6;
     v7 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v10];
     v8[0] = MEMORY[0x1E69E9820];
@@ -2191,17 +2191,17 @@ void __94__PKPaymentWebServiceLocalProxyTargetDevice_featureApplicationsForProvi
   dispatch_async(v4, v7);
 }
 
-- (void)paymentWebService:(id)a3 deviceMetadataWithFields:(unint64_t)a4 completion:(id)a5
+- (void)paymentWebService:(id)service deviceMetadataWithFields:(unint64_t)fields completion:(id)completion
 {
-  v7 = a5;
-  v8 = v7;
-  if (v7)
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __99__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_deviceMetadataWithFields_completion___block_invoke;
     v13[3] = &unk_1E79C4450;
-    v9 = v7;
+    v9 = completionCopy;
     v14 = v9;
     v10 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v13];
     v11[0] = MEMORY[0x1E69E9820];
@@ -2210,7 +2210,7 @@ void __94__PKPaymentWebServiceLocalProxyTargetDevice_featureApplicationsForProvi
     v11[3] = &unk_1E79C4900;
     v11[4] = self;
     v12 = v9;
-    [v10 deviceMetadataWithFields:a4 completion:v11];
+    [v10 deviceMetadataWithFields:fields completion:v11];
   }
 }
 
@@ -2229,19 +2229,19 @@ void __99__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_deviceMet
   dispatch_async(v4, v7);
 }
 
-- (void)paymentWebService:(id)a3 updateAccountWithIdentifier:(id)a4 completion:(id)a5
+- (void)paymentWebService:(id)service updateAccountWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a5;
-  v8 = v7;
-  if (v7)
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __102__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_updateAccountWithIdentifier_completion___block_invoke;
     v14[3] = &unk_1E79C4450;
-    v9 = v7;
+    v9 = completionCopy;
     v15 = v9;
-    v10 = a4;
+    identifierCopy = identifier;
     v11 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v14];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -2249,7 +2249,7 @@ void __99__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_deviceMet
     v12[3] = &unk_1E79C4928;
     v12[4] = self;
     v13 = v9;
-    [v11 updateAccountWithIdentifier:v10 completion:v12];
+    [v11 updateAccountWithIdentifier:identifierCopy completion:v12];
   }
 }
 
@@ -2271,19 +2271,19 @@ void __102__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_updateAc
   dispatch_async(v7, block);
 }
 
-- (void)applePayTrustKeyForIdentifier:(id)a3 completion:(id)a4
+- (void)applePayTrustKeyForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (completionCopy)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __86__PKPaymentWebServiceLocalProxyTargetDevice_applePayTrustKeyForIdentifier_completion___block_invoke;
     v13[3] = &unk_1E79C4450;
-    v8 = v6;
+    v8 = completionCopy;
     v14 = v8;
-    v9 = a3;
+    identifierCopy = identifier;
     v10 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v13];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -2291,7 +2291,7 @@ void __102__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_updateAc
     v11[3] = &unk_1E79C4950;
     v11[4] = self;
     v12 = v8;
-    [v10 applePayTrustKeyForIdentifier:v9 completion:v11];
+    [v10 applePayTrustKeyForIdentifier:identifierCopy completion:v11];
   }
 }
 
@@ -2310,16 +2310,16 @@ void __86__PKPaymentWebServiceLocalProxyTargetDevice_applePayTrustKeyForIdentifi
   dispatch_async(v4, v7);
 }
 
-- (void)createApplePayTrustKeyWithRequest:(id)a3 completion:(id)a4
+- (void)createApplePayTrustKeyWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __90__PKPaymentWebServiceLocalProxyTargetDevice_createApplePayTrustKeyWithRequest_completion___block_invoke;
   v13[3] = &unk_1E79C4450;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  requestCopy = request;
   v9 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -2328,7 +2328,7 @@ void __86__PKPaymentWebServiceLocalProxyTargetDevice_applePayTrustKeyForIdentifi
   v11[4] = self;
   v12 = v7;
   v10 = v7;
-  [v9 createApplePayTrustKeyWithRequest:v8 completion:v11];
+  [v9 createApplePayTrustKeyWithRequest:requestCopy completion:v11];
 }
 
 uint64_t __90__PKPaymentWebServiceLocalProxyTargetDevice_createApplePayTrustKeyWithRequest_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -2361,16 +2361,16 @@ void __90__PKPaymentWebServiceLocalProxyTargetDevice_createApplePayTrustKeyWithR
   }
 }
 
-- (void)deleteApplePayTrustKeyWithIdentifier:(id)a3 completion:(id)a4
+- (void)deleteApplePayTrustKeyWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __93__PKPaymentWebServiceLocalProxyTargetDevice_deleteApplePayTrustKeyWithIdentifier_completion___block_invoke;
   v13[3] = &unk_1E79C4450;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  identifierCopy = identifier;
   v9 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -2379,7 +2379,7 @@ void __90__PKPaymentWebServiceLocalProxyTargetDevice_createApplePayTrustKeyWithR
   v11[4] = self;
   v12 = v7;
   v10 = v7;
-  [v9 deleteApplePayTrustKeyWithIdentifier:v8 completion:v11];
+  [v9 deleteApplePayTrustKeyWithIdentifier:identifierCopy completion:v11];
 }
 
 uint64_t __93__PKPaymentWebServiceLocalProxyTargetDevice_deleteApplePayTrustKeyWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -2409,18 +2409,18 @@ void __93__PKPaymentWebServiceLocalProxyTargetDevice_deleteApplePayTrustKeyWithI
   }
 }
 
-- (void)meetsProvisioningRequirements:(id)a3 completion:(id)a4
+- (void)meetsProvisioningRequirements:(id)requirements completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requirementsCopy = requirements;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __86__PKPaymentWebServiceLocalProxyTargetDevice_meetsProvisioningRequirements_completion___block_invoke;
   v14[3] = &unk_1E79C4860;
-  v8 = v7;
-  v15 = v6;
+  v8 = completionCopy;
+  v15 = requirementsCopy;
   v16 = v8;
-  v9 = v6;
+  v9 = requirementsCopy;
   v10 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -2448,9 +2448,9 @@ void __86__PKPaymentWebServiceLocalProxyTargetDevice_meetsProvisioningRequiremen
   dispatch_async(v6, block);
 }
 
-- (BOOL)meetsProvisioningRequirements:(id)a3 missingRequirements:(id *)a4
+- (BOOL)meetsProvisioningRequirements:(id)requirements missingRequirements:(id *)missingRequirements
 {
-  v6 = a3;
+  requirementsCopy = requirements;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -2461,18 +2461,18 @@ void __86__PKPaymentWebServiceLocalProxyTargetDevice_meetsProvisioningRequiremen
   v14 = __Block_byref_object_copy_;
   v15 = __Block_byref_object_dispose_;
   v16 = 0;
-  v7 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __95__PKPaymentWebServiceLocalProxyTargetDevice_meetsProvisioningRequirements_missingRequirements___block_invoke;
   v10[3] = &unk_1E79C49C8;
   v10[4] = &v17;
   v10[5] = &v11;
-  [v7 usingSynchronousProxy:1 meetsProvisioningRequirements:v6 completion:v10];
+  [_synchronousProxy usingSynchronousProxy:1 meetsProvisioningRequirements:requirementsCopy completion:v10];
 
-  if (a4)
+  if (missingRequirements)
   {
-    *a4 = v12[5];
+    *missingRequirements = v12[5];
   }
 
   v8 = *(v18 + 24);
@@ -2482,14 +2482,14 @@ void __86__PKPaymentWebServiceLocalProxyTargetDevice_meetsProvisioningRequiremen
   return v8;
 }
 
-- (void)currentSecureElementSnapshot:(id)a3
+- (void)currentSecureElementSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __74__PKPaymentWebServiceLocalProxyTargetDevice_currentSecureElementSnapshot___block_invoke;
   v10[3] = &unk_1E79C4450;
-  v5 = v4;
+  v5 = snapshotCopy;
   v11 = v5;
   v6 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v10];
   v8[0] = MEMORY[0x1E69E9820];
@@ -2520,17 +2520,17 @@ void __74__PKPaymentWebServiceLocalProxyTargetDevice_currentSecureElementSnapsho
   dispatch_async(v7, block);
 }
 
-- (void)reserveStorageForAppletTypes:(id)a3 metadata:(id)a4 completion:(id)a5
+- (void)reserveStorageForAppletTypes:(id)types metadata:(id)metadata completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __94__PKPaymentWebServiceLocalProxyTargetDevice_reserveStorageForAppletTypes_metadata_completion___block_invoke;
   v16[3] = &unk_1E79C4450;
-  v9 = v8;
+  v9 = completionCopy;
   v17 = v9;
-  v10 = a4;
-  v11 = a3;
+  metadataCopy = metadata;
+  typesCopy = types;
   v12 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v16];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -2539,7 +2539,7 @@ void __74__PKPaymentWebServiceLocalProxyTargetDevice_currentSecureElementSnapsho
   v14[4] = self;
   v15 = v9;
   v13 = v9;
-  [v12 reserveStorageForAppletTypes:v11 metadata:v10 completion:v14];
+  [v12 reserveStorageForAppletTypes:typesCopy metadata:metadataCopy completion:v14];
 }
 
 void __94__PKPaymentWebServiceLocalProxyTargetDevice_reserveStorageForAppletTypes_metadata_completion___block_invoke_2(uint64_t a1, void *a2, char a3, void *a4)
@@ -2561,16 +2561,16 @@ void __94__PKPaymentWebServiceLocalProxyTargetDevice_reserveStorageForAppletType
   dispatch_async(v9, v13);
 }
 
-- (void)deleteReservation:(id)a3 completion:(id)a4
+- (void)deleteReservation:(id)reservation completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __74__PKPaymentWebServiceLocalProxyTargetDevice_deleteReservation_completion___block_invoke;
   v13[3] = &unk_1E79C4450;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  reservationCopy = reservation;
   v9 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -2579,7 +2579,7 @@ void __94__PKPaymentWebServiceLocalProxyTargetDevice_reserveStorageForAppletType
   v11[4] = self;
   v12 = v7;
   v10 = v7;
-  [v9 deleteReservation:v8 completion:v11];
+  [v9 deleteReservation:reservationCopy completion:v11];
 }
 
 void __74__PKPaymentWebServiceLocalProxyTargetDevice_deleteReservation_completion___block_invoke_2(uint64_t a1)
@@ -2599,13 +2599,13 @@ void __74__PKPaymentWebServiceLocalProxyTargetDevice_deleteReservation_completio
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __64__PKPaymentWebServiceLocalProxyTargetDevice_maximumPaymentCards__block_invoke;
   v5[3] = &unk_1E79C46D0;
   v5[4] = &v6;
-  [v2 maximumPaymentCardsWithCompletion:v5];
+  [_synchronousProxy maximumPaymentCardsWithCompletion:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -2620,13 +2620,13 @@ void __74__PKPaymentWebServiceLocalProxyTargetDevice_deleteReservation_completio
   v9 = __Block_byref_object_copy_;
   v10 = __Block_byref_object_dispose_;
   v11 = 0;
-  v2 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __80__PKPaymentWebServiceLocalProxyTargetDevice_allPaymentApplicationUsageSummaries__block_invoke;
   v5[3] = &unk_1E79C47C0;
   v5[4] = &v6;
-  [v2 allPaymentApplicationUsageSummariesWithCompletion:v5];
+  [_synchronousProxy allPaymentApplicationUsageSummariesWithCompletion:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -2634,16 +2634,16 @@ void __74__PKPaymentWebServiceLocalProxyTargetDevice_deleteReservation_completio
   return v3;
 }
 
-- (void)addPendingProvisionings:(id)a3 completion:(id)a4
+- (void)addPendingProvisionings:(id)provisionings completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __80__PKPaymentWebServiceLocalProxyTargetDevice_addPendingProvisionings_completion___block_invoke;
   v13[3] = &unk_1E79C4450;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  provisioningsCopy = provisionings;
   v9 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -2652,7 +2652,7 @@ void __74__PKPaymentWebServiceLocalProxyTargetDevice_deleteReservation_completio
   v11[4] = self;
   v12 = v7;
   v10 = v7;
-  [v9 addPendingProvisionings:v8 completion:v11];
+  [v9 addPendingProvisionings:provisioningsCopy completion:v11];
 }
 
 uint64_t __80__PKPaymentWebServiceLocalProxyTargetDevice_addPendingProvisionings_completion___block_invoke(uint64_t a1)
@@ -2689,63 +2689,63 @@ void __80__PKPaymentWebServiceLocalProxyTargetDevice_addPendingProvisionings_com
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v2 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __69__PKPaymentWebServiceLocalProxyTargetDevice_secureElementIsAvailable__block_invoke;
   v4[3] = &unk_1E79C4798;
   v4[4] = &v5;
-  [v2 secureElementIsAvailableWithCompletion:v4];
+  [_synchronousProxy secureElementIsAvailableWithCompletion:v4];
 
-  LOBYTE(v2) = *(v6 + 24);
+  LOBYTE(_synchronousProxy) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return _synchronousProxy;
 }
 
-- (BOOL)willPassWithUniqueIdentifierAutomaticallyBecomeDefault:(id)a3
+- (BOOL)willPassWithUniqueIdentifierAutomaticallyBecomeDefault:(id)default
 {
-  v4 = a3;
+  defaultCopy = default;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v5 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __100__PKPaymentWebServiceLocalProxyTargetDevice_willPassWithUniqueIdentifierAutomaticallyBecomeDefault___block_invoke;
   v7[3] = &unk_1E79C4798;
   v7[4] = &v8;
-  [v5 willPassWithUniqueIdentifierAutomaticallyBecomeDefault:v4 completion:v7];
+  [_synchronousProxy willPassWithUniqueIdentifierAutomaticallyBecomeDefault:defaultCopy completion:v7];
 
-  LOBYTE(v5) = *(v9 + 24);
+  LOBYTE(_synchronousProxy) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
 
-  return v5;
+  return _synchronousProxy;
 }
 
-- (void)paymentWebService:(id)a3 setDefaultPaymentPassUniqueIdentifier:(id)a4
+- (void)paymentWebService:(id)service setDefaultPaymentPassUniqueIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
-  [v6 setDefaultPaymentPassUniqueIdentifier:v5];
+  identifierCopy = identifier;
+  _proxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
+  [_proxy setDefaultPaymentPassUniqueIdentifier:identifierCopy];
 }
 
-- (void)paymentWebService:(id)a3 requestPassUpgrade:(id)a4 pass:(id)a5 completion:(id)a6
+- (void)paymentWebService:(id)service requestPassUpgrade:(id)upgrade pass:(id)pass completion:(id)completion
 {
-  if (a6)
+  if (completion)
   {
-    (*(a6 + 2))(a6, 0, a5);
+    (*(completion + 2))(completion, 0, pass);
   }
 }
 
-- (void)performDeviceCheckInWithCompletion:(id)a3
+- (void)performDeviceCheckInWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __80__PKPaymentWebServiceLocalProxyTargetDevice_performDeviceCheckInWithCompletion___block_invoke;
   v10[3] = &unk_1E79C4450;
-  v5 = v4;
+  v5 = completionCopy;
   v11 = v5;
   v6 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v10];
   v8[0] = MEMORY[0x1E69E9820];
@@ -2787,17 +2787,17 @@ void __80__PKPaymentWebServiceLocalProxyTargetDevice_performDeviceCheckInWithCom
   }
 }
 
-- (void)performDeviceRegistrationReturningContextForReason:(id)a3 brokerURL:(id)a4 completion:(id)a5
+- (void)performDeviceRegistrationReturningContextForReason:(id)reason brokerURL:(id)l completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __117__PKPaymentWebServiceLocalProxyTargetDevice_performDeviceRegistrationReturningContextForReason_brokerURL_completion___block_invoke;
   v16[3] = &unk_1E79C4450;
-  v9 = v8;
+  v9 = completionCopy;
   v17 = v9;
-  v10 = a4;
-  v11 = a3;
+  lCopy = l;
+  reasonCopy = reason;
   v12 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v16];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -2806,7 +2806,7 @@ void __80__PKPaymentWebServiceLocalProxyTargetDevice_performDeviceCheckInWithCom
   v14[4] = self;
   v15 = v9;
   v13 = v9;
-  [v12 performDeviceRegistrationReturningContextForReason:v11 brokerURL:v10 completion:v14];
+  [v12 performDeviceRegistrationReturningContextForReason:reasonCopy brokerURL:lCopy completion:v14];
 }
 
 uint64_t __117__PKPaymentWebServiceLocalProxyTargetDevice_performDeviceRegistrationReturningContextForReason_brokerURL_completion___block_invoke(uint64_t a1)
@@ -2840,24 +2840,24 @@ void __117__PKPaymentWebServiceLocalProxyTargetDevice_performDeviceRegistrationR
   }
 }
 
-- (void)paymentWebService:(id)a3 storePassOwnershipToken:(id)a4 withIdentifier:(id)a5
+- (void)paymentWebService:(id)service storePassOwnershipToken:(id)token withIdentifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
-  [v9 storePassOwnershipToken:v8 withIdentifier:v7];
+  identifierCopy = identifier;
+  tokenCopy = token;
+  _proxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
+  [_proxy storePassOwnershipToken:tokenCopy withIdentifier:identifierCopy];
 }
 
-- (void)paymentWebService:(id)a3 passOwnershipTokenWithIdentifier:(id)a4 completion:(id)a5
+- (void)paymentWebService:(id)service passOwnershipTokenWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __107__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_passOwnershipTokenWithIdentifier_completion___block_invoke;
   v14[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v15 = v8;
-  v9 = a4;
+  identifierCopy = identifier;
   v10 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -2866,7 +2866,7 @@ void __117__PKPaymentWebServiceLocalProxyTargetDevice_performDeviceRegistrationR
   v12[4] = self;
   v13 = v8;
   v11 = v8;
-  [v10 passOwnershipTokenWithIdentifier:v9 completion:v12];
+  [v10 passOwnershipTokenWithIdentifier:identifierCopy completion:v12];
 }
 
 uint64_t __107__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_passOwnershipTokenWithIdentifier_completion___block_invoke(uint64_t a1)
@@ -2897,14 +2897,14 @@ void __107__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_passOwne
   }
 }
 
-- (void)familyMembersWithCompletion:(id)a3
+- (void)familyMembersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __73__PKPaymentWebServiceLocalProxyTargetDevice_familyMembersWithCompletion___block_invoke;
   v10[3] = &unk_1E79C4450;
-  v5 = v4;
+  v5 = completionCopy;
   v11 = v5;
   v6 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v10];
   v8[0] = MEMORY[0x1E69E9820];
@@ -2945,16 +2945,16 @@ void __73__PKPaymentWebServiceLocalProxyTargetDevice_familyMembersWithCompletion
   }
 }
 
-- (void)paymentWebService:(id)a3 generateTransactionKeyWithParameters:(id)a4 withCompletion:(id)a5
+- (void)paymentWebService:(id)service generateTransactionKeyWithParameters:(id)parameters withCompletion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __115__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_generateTransactionKeyWithParameters_withCompletion___block_invoke;
   v14[3] = &unk_1E79C4450;
-  v8 = v7;
+  v8 = completionCopy;
   v15 = v8;
-  v9 = a4;
+  parametersCopy = parameters;
   v10 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -2963,7 +2963,7 @@ void __73__PKPaymentWebServiceLocalProxyTargetDevice_familyMembersWithCompletion
   v12[4] = self;
   v13 = v8;
   v11 = v8;
-  [v10 generateTransactionKeyWithParameters:v9 withCompletion:v12];
+  [v10 generateTransactionKeyWithParameters:parametersCopy withCompletion:v12];
 }
 
 uint64_t __115__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_generateTransactionKeyWithParameters_withCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3001,16 +3001,16 @@ void __115__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_generate
   dispatch_async(v13, block);
 }
 
-- (void)statusForShareableCredentials:(id)a3 completion:(id)a4
+- (void)statusForShareableCredentials:(id)credentials completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __86__PKPaymentWebServiceLocalProxyTargetDevice_statusForShareableCredentials_completion___block_invoke;
   v13[3] = &unk_1E79C4450;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  credentialsCopy = credentials;
   v9 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -3019,7 +3019,7 @@ void __115__PKPaymentWebServiceLocalProxyTargetDevice_paymentWebService_generate
   v11[4] = self;
   v12 = v7;
   v10 = v7;
-  [v9 statusForShareableCredentials:v8 completion:v11];
+  [v9 statusForShareableCredentials:credentialsCopy completion:v11];
 }
 
 uint64_t __86__PKPaymentWebServiceLocalProxyTargetDevice_statusForShareableCredentials_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3051,17 +3051,17 @@ void __86__PKPaymentWebServiceLocalProxyTargetDevice_statusForShareableCredentia
   dispatch_async(v9, v12);
 }
 
-- (void)prepareProvisioningTarget:(id)a3 checkFamilyCircle:(BOOL)a4 completion:(id)a5
+- (void)prepareProvisioningTarget:(id)target checkFamilyCircle:(BOOL)circle completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
+  circleCopy = circle;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __100__PKPaymentWebServiceLocalProxyTargetDevice_prepareProvisioningTarget_checkFamilyCircle_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v9 = v8;
+  v9 = completionCopy;
   v16 = v9;
-  v10 = a3;
+  targetCopy = target;
   v11 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v15];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -3070,7 +3070,7 @@ void __86__PKPaymentWebServiceLocalProxyTargetDevice_statusForShareableCredentia
   v13[4] = self;
   v14 = v9;
   v12 = v9;
-  [v11 prepareProvisioningTarget:v10 checkFamilyCircle:v5 completion:v13];
+  [v11 prepareProvisioningTarget:targetCopy checkFamilyCircle:circleCopy completion:v13];
 }
 
 uint64_t __100__PKPaymentWebServiceLocalProxyTargetDevice_prepareProvisioningTarget_checkFamilyCircle_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3103,16 +3103,16 @@ void __100__PKPaymentWebServiceLocalProxyTargetDevice_prepareProvisioningTarget_
   dispatch_async(v9, v13);
 }
 
-- (void)provisionHomeKeyPassForSerialNumbers:(id)a3 completionHandler:(id)a4
+- (void)provisionHomeKeyPassForSerialNumbers:(id)numbers completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __100__PKPaymentWebServiceLocalProxyTargetDevice_provisionHomeKeyPassForSerialNumbers_completionHandler___block_invoke;
   v13[3] = &unk_1E79C4450;
-  v7 = v6;
+  v7 = handlerCopy;
   v14 = v7;
-  v8 = a3;
+  numbersCopy = numbers;
   v9 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -3121,7 +3121,7 @@ void __100__PKPaymentWebServiceLocalProxyTargetDevice_prepareProvisioningTarget_
   v11[4] = self;
   v12 = v7;
   v10 = v7;
-  [v9 provisionHomeKeyPassForSerialNumbers:v8 completionHandler:v11];
+  [v9 provisionHomeKeyPassForSerialNumbers:numbersCopy completionHandler:v11];
 }
 
 uint64_t __100__PKPaymentWebServiceLocalProxyTargetDevice_provisionHomeKeyPassForSerialNumbers_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -3153,14 +3153,14 @@ void __100__PKPaymentWebServiceLocalProxyTargetDevice_provisionHomeKeyPassForSer
   dispatch_async(v7, block);
 }
 
-- (void)availableHomeKeyPassesWithCompletionHandler:(id)a3
+- (void)availableHomeKeyPassesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __89__PKPaymentWebServiceLocalProxyTargetDevice_availableHomeKeyPassesWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E79C4450;
-  v5 = v4;
+  v5 = handlerCopy;
   v11 = v5;
   v6 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v10];
   v8[0] = MEMORY[0x1E69E9820];
@@ -3191,19 +3191,19 @@ void __89__PKPaymentWebServiceLocalProxyTargetDevice_availableHomeKeyPassesWithC
   dispatch_async(v7, block);
 }
 
-- (void)createFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 challenge:(id)a5 externalizedAuth:(id)a6 completion:(id)a7
+- (void)createFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash challenge:(id)challenge externalizedAuth:(id)auth completion:(id)completion
 {
-  v12 = a7;
+  completionCopy = completion;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __136__PKPaymentWebServiceLocalProxyTargetDevice_createFidoKeyForRelyingParty_relyingPartyAccountHash_challenge_externalizedAuth_completion___block_invoke;
   v22[3] = &unk_1E79C4450;
-  v13 = v12;
+  v13 = completionCopy;
   v23 = v13;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  authCopy = auth;
+  challengeCopy = challenge;
+  hashCopy = hash;
+  partyCopy = party;
   v18 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v22];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -3212,7 +3212,7 @@ void __89__PKPaymentWebServiceLocalProxyTargetDevice_availableHomeKeyPassesWithC
   v20[4] = self;
   v21 = v13;
   v19 = v13;
-  [v18 createFidoKeyForRelyingParty:v17 relyingPartyAccountHash:v16 challenge:v15 externalizedAuth:v14 completion:v20];
+  [v18 createFidoKeyForRelyingParty:partyCopy relyingPartyAccountHash:hashCopy challenge:challengeCopy externalizedAuth:authCopy completion:v20];
 }
 
 void __136__PKPaymentWebServiceLocalProxyTargetDevice_createFidoKeyForRelyingParty_relyingPartyAccountHash_challenge_externalizedAuth_completion___block_invoke_2(uint64_t a1, void *a2, void *a3, void *a4, void *a5)
@@ -3239,18 +3239,18 @@ void __136__PKPaymentWebServiceLocalProxyTargetDevice_createFidoKeyForRelyingPar
   dispatch_async(v13, block);
 }
 
-- (void)checkFidoKeyPresenceForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 completion:(id)a6
+- (void)checkFidoKeyPresenceForRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __128__PKPaymentWebServiceLocalProxyTargetDevice_checkFidoKeyPresenceForRelyingParty_relyingPartyAccountHash_fidoKeyHash_completion___block_invoke;
   v19[3] = &unk_1E79C4450;
-  v11 = v10;
+  v11 = completionCopy;
   v20 = v11;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  keyHashCopy = keyHash;
+  hashCopy = hash;
+  partyCopy = party;
   v15 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v19];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -3259,7 +3259,7 @@ void __136__PKPaymentWebServiceLocalProxyTargetDevice_createFidoKeyForRelyingPar
   v17[4] = self;
   v18 = v11;
   v16 = v11;
-  [v15 checkFidoKeyPresenceForRelyingParty:v14 relyingPartyAccountHash:v13 fidoKeyHash:v12 completion:v17];
+  [v15 checkFidoKeyPresenceForRelyingParty:partyCopy relyingPartyAccountHash:hashCopy fidoKeyHash:keyHashCopy completion:v17];
 }
 
 void __128__PKPaymentWebServiceLocalProxyTargetDevice_checkFidoKeyPresenceForRelyingParty_relyingPartyAccountHash_fidoKeyHash_completion___block_invoke_2(uint64_t a1, char a2)
@@ -3274,21 +3274,21 @@ void __128__PKPaymentWebServiceLocalProxyTargetDevice_checkFidoKeyPresenceForRel
   dispatch_async(v3, v4);
 }
 
-- (void)signWithFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 challenge:(id)a6 publicKeyIdentifier:(id)a7 externalizedAuth:(id)a8 completion:(id)a9
+- (void)signWithFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash challenge:(id)challenge publicKeyIdentifier:(id)identifier externalizedAuth:(id)auth completion:(id)completion
 {
-  v16 = a9;
+  completionCopy = completion;
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __170__PKPaymentWebServiceLocalProxyTargetDevice_signWithFidoKeyForRelyingParty_relyingPartyAccountHash_fidoKeyHash_challenge_publicKeyIdentifier_externalizedAuth_completion___block_invoke;
   v28[3] = &unk_1E79C4450;
-  v17 = v16;
+  v17 = completionCopy;
   v29 = v17;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
+  authCopy = auth;
+  identifierCopy = identifier;
+  challengeCopy = challenge;
+  keyHashCopy = keyHash;
+  hashCopy = hash;
+  partyCopy = party;
   v24 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v28];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
@@ -3297,7 +3297,7 @@ void __128__PKPaymentWebServiceLocalProxyTargetDevice_checkFidoKeyPresenceForRel
   v26[4] = self;
   v27 = v17;
   v25 = v17;
-  [v24 signWithFidoKeyForRelyingParty:v23 relyingPartyAccountHash:v22 fidoKeyHash:v21 challenge:v20 publicKeyIdentifier:v19 externalizedAuth:v18 completion:v26];
+  [v24 signWithFidoKeyForRelyingParty:partyCopy relyingPartyAccountHash:hashCopy fidoKeyHash:keyHashCopy challenge:challengeCopy publicKeyIdentifier:identifierCopy externalizedAuth:authCopy completion:v26];
 }
 
 void __170__PKPaymentWebServiceLocalProxyTargetDevice_signWithFidoKeyForRelyingParty_relyingPartyAccountHash_fidoKeyHash_challenge_publicKeyIdentifier_externalizedAuth_completion___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -3318,16 +3318,16 @@ void __170__PKPaymentWebServiceLocalProxyTargetDevice_signWithFidoKeyForRelyingP
   dispatch_async(v7, block);
 }
 
-- (void)generateSEEncryptionCertificateForSubCredentialId:(id)a3 completion:(id)a4
+- (void)generateSEEncryptionCertificateForSubCredentialId:(id)id completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __106__PKPaymentWebServiceLocalProxyTargetDevice_generateSEEncryptionCertificateForSubCredentialId_completion___block_invoke;
   v13[3] = &unk_1E79C4450;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  idCopy = id;
   v9 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -3336,7 +3336,7 @@ void __170__PKPaymentWebServiceLocalProxyTargetDevice_signWithFidoKeyForRelyingP
   v11[4] = self;
   v12 = v7;
   v10 = v7;
-  [v9 generateSEEncryptionCertificateForSubCredentialId:v8 completion:v11];
+  [v9 generateSEEncryptionCertificateForSubCredentialId:idCopy completion:v11];
 }
 
 void __106__PKPaymentWebServiceLocalProxyTargetDevice_generateSEEncryptionCertificateForSubCredentialId_completion___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -3357,16 +3357,16 @@ void __106__PKPaymentWebServiceLocalProxyTargetDevice_generateSEEncryptionCertif
   dispatch_async(v7, block);
 }
 
-- (void)generateISOEncryptionCertificateForSubCredentialId:(id)a3 completion:(id)a4
+- (void)generateISOEncryptionCertificateForSubCredentialId:(id)id completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __107__PKPaymentWebServiceLocalProxyTargetDevice_generateISOEncryptionCertificateForSubCredentialId_completion___block_invoke;
   v13[3] = &unk_1E79C4450;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  idCopy = id;
   v9 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -3375,7 +3375,7 @@ void __106__PKPaymentWebServiceLocalProxyTargetDevice_generateSEEncryptionCertif
   v11[4] = self;
   v12 = v7;
   v10 = v7;
-  [v9 generateISOEncryptionCertificateForSubCredentialId:v8 completion:v11];
+  [v9 generateISOEncryptionCertificateForSubCredentialId:idCopy completion:v11];
 }
 
 void __107__PKPaymentWebServiceLocalProxyTargetDevice_generateISOEncryptionCertificateForSubCredentialId_completion___block_invoke_2(uint64_t a1, void *a2, void *a3, void *a4)
@@ -3401,30 +3401,30 @@ void __107__PKPaymentWebServiceLocalProxyTargetDevice_generateISOEncryptionCerti
 
 - (BOOL)areUnifiedAccessPassesSupported
 {
-  v2 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
-  v3 = [v2 areUnifiedAccessPassesSupported];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  areUnifiedAccessPassesSupported = [_synchronousProxy areUnifiedAccessPassesSupported];
 
-  return v3;
+  return areUnifiedAccessPassesSupported;
 }
 
 - (BOOL)areAliroAccessPassesSupported
 {
-  v2 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
-  v3 = [v2 areAliroAccessPassesSupported];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  areAliroAccessPassesSupported = [_synchronousProxy areAliroAccessPassesSupported];
 
-  return v3;
+  return areAliroAccessPassesSupported;
 }
 
-- (void)addISO18013Blobs:(id)a3 cardType:(int64_t)a4 completion:(id)a5
+- (void)addISO18013Blobs:(id)blobs cardType:(int64_t)type completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __82__PKPaymentWebServiceLocalProxyTargetDevice_addISO18013Blobs_cardType_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v9 = v8;
+  v9 = completionCopy;
   v16 = v9;
-  v10 = a3;
+  blobsCopy = blobs;
   v11 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v15];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -3433,7 +3433,7 @@ void __107__PKPaymentWebServiceLocalProxyTargetDevice_generateISOEncryptionCerti
   v13[4] = self;
   v14 = v9;
   v12 = v9;
-  [v11 addISO18013Blobs:v10 cardType:a4 completion:v13];
+  [v11 addISO18013Blobs:blobsCopy cardType:type completion:v13];
 }
 
 void __82__PKPaymentWebServiceLocalProxyTargetDevice_addISO18013Blobs_cardType_completion___block_invoke_2(uint64_t a1, void *a2)
@@ -3451,16 +3451,16 @@ void __82__PKPaymentWebServiceLocalProxyTargetDevice_addISO18013Blobs_cardType_c
   dispatch_async(v4, v7);
 }
 
-- (void)addISO18013BlobsFromCredentials:(id)a3 cardType:(int64_t)a4 completion:(id)a5
+- (void)addISO18013BlobsFromCredentials:(id)credentials cardType:(int64_t)type completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __97__PKPaymentWebServiceLocalProxyTargetDevice_addISO18013BlobsFromCredentials_cardType_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v9 = v8;
+  v9 = completionCopy;
   v16 = v9;
-  v10 = a3;
+  credentialsCopy = credentials;
   v11 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v15];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -3469,7 +3469,7 @@ void __82__PKPaymentWebServiceLocalProxyTargetDevice_addISO18013Blobs_cardType_c
   v13[4] = self;
   v14 = v9;
   v12 = v9;
-  [v11 addISO18013BlobsFromCredentials:v10 cardType:a4 completion:v13];
+  [v11 addISO18013BlobsFromCredentials:credentialsCopy cardType:type completion:v13];
 }
 
 void __97__PKPaymentWebServiceLocalProxyTargetDevice_addISO18013BlobsFromCredentials_cardType_completion___block_invoke_2(uint64_t a1, void *a2)
@@ -3487,17 +3487,17 @@ void __97__PKPaymentWebServiceLocalProxyTargetDevice_addISO18013BlobsFromCredent
   dispatch_async(v4, v7);
 }
 
-- (void)longTermPrivacyKeyForCredentialGroupIdentifier:(id)a3 reuseExisting:(BOOL)a4 completion:(id)a5
+- (void)longTermPrivacyKeyForCredentialGroupIdentifier:(id)identifier reuseExisting:(BOOL)existing completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
+  existingCopy = existing;
+  completionCopy = completion;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __117__PKPaymentWebServiceLocalProxyTargetDevice_longTermPrivacyKeyForCredentialGroupIdentifier_reuseExisting_completion___block_invoke;
   v15[3] = &unk_1E79C4450;
-  v9 = v8;
+  v9 = completionCopy;
   v16 = v9;
-  v10 = a3;
+  identifierCopy = identifier;
   v11 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v15];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -3506,7 +3506,7 @@ void __97__PKPaymentWebServiceLocalProxyTargetDevice_addISO18013BlobsFromCredent
   v13[4] = self;
   v14 = v9;
   v12 = v9;
-  [v11 longTermPrivacyKeyForCredentialGroupIdentifier:v10 reuseExisting:v5 completion:v13];
+  [v11 longTermPrivacyKeyForCredentialGroupIdentifier:identifierCopy reuseExisting:existingCopy completion:v13];
 }
 
 void __117__PKPaymentWebServiceLocalProxyTargetDevice_longTermPrivacyKeyForCredentialGroupIdentifier_reuseExisting_completion___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -3527,16 +3527,16 @@ void __117__PKPaymentWebServiceLocalProxyTargetDevice_longTermPrivacyKeyForCrede
   dispatch_async(v7, block);
 }
 
-- (void)generateAuxiliaryCapabilitiesForRequirements:(id)a3 completion:(id)a4
+- (void)generateAuxiliaryCapabilitiesForRequirements:(id)requirements completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __101__PKPaymentWebServiceLocalProxyTargetDevice_generateAuxiliaryCapabilitiesForRequirements_completion___block_invoke;
   v13[3] = &unk_1E79C4450;
-  v7 = v6;
+  v7 = completionCopy;
   v14 = v7;
-  v8 = a3;
+  requirementsCopy = requirements;
   v9 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v13];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -3545,7 +3545,7 @@ void __117__PKPaymentWebServiceLocalProxyTargetDevice_longTermPrivacyKeyForCrede
   v11[4] = self;
   v12 = v7;
   v10 = v7;
-  [v9 generateAuxiliaryCapabilitiesForRequirements:v8 completion:v11];
+  [v9 generateAuxiliaryCapabilitiesForRequirements:requirementsCopy completion:v11];
 }
 
 void __101__PKPaymentWebServiceLocalProxyTargetDevice_generateAuxiliaryCapabilitiesForRequirements_completion___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -3566,17 +3566,17 @@ void __101__PKPaymentWebServiceLocalProxyTargetDevice_generateAuxiliaryCapabilit
   dispatch_async(v7, block);
 }
 
-- (void)canSaveFPANCardWithDescriptor:(id)a3 credential:(id)a4 completion:(id)a5
+- (void)canSaveFPANCardWithDescriptor:(id)descriptor credential:(id)credential completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __97__PKPaymentWebServiceLocalProxyTargetDevice_canSaveFPANCardWithDescriptor_credential_completion___block_invoke;
   v16[3] = &unk_1E79C4450;
-  v9 = v8;
+  v9 = completionCopy;
   v17 = v9;
-  v10 = a4;
-  v11 = a3;
+  credentialCopy = credential;
+  descriptorCopy = descriptor;
   v12 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v16];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -3585,7 +3585,7 @@ void __101__PKPaymentWebServiceLocalProxyTargetDevice_generateAuxiliaryCapabilit
   v14[4] = self;
   v15 = v9;
   v13 = v9;
-  [v12 canSaveFPANCardWithDescriptor:v11 credential:v10 completion:v14];
+  [v12 canSaveFPANCardWithDescriptor:descriptorCopy credential:credentialCopy completion:v14];
 }
 
 void __97__PKPaymentWebServiceLocalProxyTargetDevice_canSaveFPANCardWithDescriptor_credential_completion___block_invoke_2(uint64_t a1, void *a2)
@@ -3603,14 +3603,14 @@ void __97__PKPaymentWebServiceLocalProxyTargetDevice_canSaveFPANCardWithDescript
   dispatch_async(v4, v7);
 }
 
-- (void)activeFPANCardsWithOptions:(unint64_t)a3 completion:(id)a4
+- (void)activeFPANCardsWithOptions:(unint64_t)options completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __83__PKPaymentWebServiceLocalProxyTargetDevice_activeFPANCardsWithOptions_completion___block_invoke;
   v12[3] = &unk_1E79C4450;
-  v7 = v6;
+  v7 = completionCopy;
   v13 = v7;
   v8 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v12];
   v10[0] = MEMORY[0x1E69E9820];
@@ -3620,7 +3620,7 @@ void __97__PKPaymentWebServiceLocalProxyTargetDevice_canSaveFPANCardWithDescript
   v10[4] = self;
   v11 = v7;
   v9 = v7;
-  [v8 activeFPANCardsWithOptions:a3 completion:v10];
+  [v8 activeFPANCardsWithOptions:options completion:v10];
 }
 
 void __83__PKPaymentWebServiceLocalProxyTargetDevice_activeFPANCardsWithOptions_completion___block_invoke_2(uint64_t a1, void *a2)
@@ -3638,18 +3638,18 @@ void __83__PKPaymentWebServiceLocalProxyTargetDevice_activeFPANCardsWithOptions_
   dispatch_async(v4, v7);
 }
 
-- (void)credentialForFPANCard:(id)a3 authorization:(id)a4 options:(unint64_t)a5 merchantHost:(id)a6 completion:(id)a7
+- (void)credentialForFPANCard:(id)card authorization:(id)authorization options:(unint64_t)options merchantHost:(id)host completion:(id)completion
 {
-  v12 = a7;
+  completionCopy = completion;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __113__PKPaymentWebServiceLocalProxyTargetDevice_credentialForFPANCard_authorization_options_merchantHost_completion___block_invoke;
   v21[3] = &unk_1E79C4450;
-  v13 = v12;
+  v13 = completionCopy;
   v22 = v13;
-  v14 = a6;
-  v15 = a4;
-  v16 = a3;
+  hostCopy = host;
+  authorizationCopy = authorization;
+  cardCopy = card;
   v17 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v21];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -3658,7 +3658,7 @@ void __83__PKPaymentWebServiceLocalProxyTargetDevice_activeFPANCardsWithOptions_
   v19[4] = self;
   v20 = v13;
   v18 = v13;
-  [v17 credentialForFPANCard:v16 authorization:v15 options:a5 merchantHost:v14 completion:v19];
+  [v17 credentialForFPANCard:cardCopy authorization:authorizationCopy options:options merchantHost:hostCopy completion:v19];
 }
 
 void __113__PKPaymentWebServiceLocalProxyTargetDevice_credentialForFPANCard_authorization_options_merchantHost_completion___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -3679,39 +3679,39 @@ void __113__PKPaymentWebServiceLocalProxyTargetDevice_credentialForFPANCard_auth
   dispatch_async(v7, block);
 }
 
-- (void)updateFPANCardWithDescriptor:(id)a3 credential:(id)a4 completion:(id)a5
+- (void)updateFPANCardWithDescriptor:(id)descriptor credential:(id)credential completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __96__PKPaymentWebServiceLocalProxyTargetDevice_updateFPANCardWithDescriptor_credential_completion___block_invoke;
   v13[3] = &unk_1E79C4450;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  credentialCopy = credential;
+  descriptorCopy = descriptor;
   v12 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v13];
-  [v12 updateFPANCardWithDescriptor:v11 credential:v10 completion:v9];
+  [v12 updateFPANCardWithDescriptor:descriptorCopy credential:credentialCopy completion:v9];
 }
 
-- (void)deleteFPANCardWithDescriptor:(id)a3 completion:(id)a4
+- (void)deleteFPANCardWithDescriptor:(id)descriptor completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __85__PKPaymentWebServiceLocalProxyTargetDevice_deleteFPANCardWithDescriptor_completion___block_invoke;
   v10[3] = &unk_1E79C4450;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  descriptorCopy = descriptor;
   v9 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxyWithErrorHandler:v10];
-  [v9 deleteFPANCardWithDescriptor:v8 completion:v7];
+  [v9 deleteFPANCardWithDescriptor:descriptorCopy completion:v7];
 }
 
-- (void)fpanCredentialForPrimaryAccountIdentifier:(id)a3 passUniqueID:(id)a4 credential:(id *)a5 error:(id *)a6
+- (void)fpanCredentialForPrimaryAccountIdentifier:(id)identifier passUniqueID:(id)d credential:(id *)credential error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  identifierCopy = identifier;
+  dCopy = d;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -3724,7 +3724,7 @@ void __113__PKPaymentWebServiceLocalProxyTargetDevice_credentialForFPANCard_auth
   v17 = __Block_byref_object_copy_;
   v18 = __Block_byref_object_dispose_;
   v19 = 0;
-  v12 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __117__PKPaymentWebServiceLocalProxyTargetDevice_fpanCredentialForPrimaryAccountIdentifier_passUniqueID_credential_error___block_invoke;
@@ -3732,16 +3732,16 @@ void __113__PKPaymentWebServiceLocalProxyTargetDevice_credentialForFPANCard_auth
   v13[5] = &v20;
   v13[6] = &v14;
   v13[4] = self;
-  [v12 fpanCredentialForPrimaryAccountIdentifier:v10 passUniqueID:v11 completion:v13];
+  [_synchronousProxy fpanCredentialForPrimaryAccountIdentifier:identifierCopy passUniqueID:dCopy completion:v13];
 
-  if (a6)
+  if (error)
   {
-    objc_storeStrong(a6, v15[5]);
+    objc_storeStrong(error, v15[5]);
   }
 
-  if (a5)
+  if (credential)
   {
-    objc_storeStrong(a5, v21[5]);
+    objc_storeStrong(credential, v21[5]);
   }
 
   _Block_object_dispose(&v14, 8);
@@ -3763,9 +3763,9 @@ void __117__PKPaymentWebServiceLocalProxyTargetDevice_fpanCredentialForPrimaryAc
   *(v9 + 40) = v6;
 }
 
-- (void)fpanDescriptorAndCredentialForFPAN:(id)a3 descriptor:(id *)a4 credential:(id *)a5 error:(id *)a6
+- (void)fpanDescriptorAndCredentialForFPAN:(id)n descriptor:(id *)descriptor credential:(id *)credential error:(id *)error
 {
-  v10 = a3;
+  nCopy = n;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -3784,7 +3784,7 @@ void __117__PKPaymentWebServiceLocalProxyTargetDevice_fpanCredentialForPrimaryAc
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  v11 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
+  _synchronousProxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _synchronousProxy];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __108__PKPaymentWebServiceLocalProxyTargetDevice_fpanDescriptorAndCredentialForFPAN_descriptor_credential_error___block_invoke;
@@ -3793,21 +3793,21 @@ void __117__PKPaymentWebServiceLocalProxyTargetDevice_fpanCredentialForPrimaryAc
   v12[7] = &v13;
   v12[4] = self;
   v12[5] = &v25;
-  [v11 fpanDescriptorAndCredentialForFPAN:v10 completion:v12];
+  [_synchronousProxy fpanDescriptorAndCredentialForFPAN:nCopy completion:v12];
 
-  if (a6)
+  if (error)
   {
-    objc_storeStrong(a6, v14[5]);
+    objc_storeStrong(error, v14[5]);
   }
 
-  if (a4)
+  if (descriptor)
   {
-    objc_storeStrong(a4, v26[5]);
+    objc_storeStrong(descriptor, v26[5]);
   }
 
-  if (a5)
+  if (credential)
   {
-    objc_storeStrong(a5, v20[5]);
+    objc_storeStrong(credential, v20[5]);
   }
 
   _Block_object_dispose(&v13, 8);
@@ -3836,18 +3836,18 @@ void __108__PKPaymentWebServiceLocalProxyTargetDevice_fpanDescriptorAndCredentia
   *(v15 + 40) = v9;
 }
 
-- (void)archiveContext:(id)a3
+- (void)archiveContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
-  [v5 archiveContext:v4];
+  contextCopy = context;
+  _proxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
+  [_proxy archiveContext:contextCopy];
 }
 
-- (void)archiveBackgroundContext:(id)a3
+- (void)archiveBackgroundContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
-  [v5 archiveBackgroundContext:v4];
+  contextCopy = context;
+  _proxy = [(PKPaymentWebServiceLocalProxyTargetDevice *)self _proxy];
+  [_proxy archiveBackgroundContext:contextCopy];
 }
 
 @end

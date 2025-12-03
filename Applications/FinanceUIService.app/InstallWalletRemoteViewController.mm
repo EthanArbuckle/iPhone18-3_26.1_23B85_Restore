@@ -1,14 +1,14 @@
 @interface InstallWalletRemoteViewController
-- (_TtC16FinanceUIService33InstallWalletRemoteViewController)initWithCoder:(id)a3;
-- (_TtC16FinanceUIService33InstallWalletRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC16FinanceUIService33InstallWalletRemoteViewController)initWithCoder:(id)coder;
+- (_TtC16FinanceUIService33InstallWalletRemoteViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)dealloc;
 - (void)loadView;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation InstallWalletRemoteViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -18,8 +18,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = self;
-  sub_100004918(a3);
+  selfCopy = self;
+  sub_100004918(appear);
 }
 
 - (void)loadView
@@ -33,15 +33,15 @@
   }
 
   v3 = objc_allocWithZone(UIView);
-  v7 = self;
+  selfCopy = self;
   v4 = [v3 init];
-  [(InstallWalletRemoteViewController *)v7 setView:v4];
+  [(InstallWalletRemoteViewController *)selfCopy setView:v4];
 
-  v5 = [(InstallWalletRemoteViewController *)v7 view];
-  if (v5)
+  view = [(InstallWalletRemoteViewController *)selfCopy view];
+  if (view)
   {
-    v6 = v5;
-    [v5 setHidden:1];
+    v6 = view;
+    [view setHidden:1];
   }
 
   else
@@ -55,7 +55,7 @@
   if (*&self->_anon_0[OBJC_IVAR____TtC16FinanceUIService33InstallWalletRemoteViewController_daemonConnection])
   {
     v6 = *&self->_anon_0[OBJC_IVAR____TtC16FinanceUIService33InstallWalletRemoteViewController_daemonConnection];
-    v3 = self;
+    selfCopy = self;
     sub_100003FFC(&qword_100019190, &qword_10000FDB0);
     sub_100005904();
     FinanceXPCConnection.invalidate()();
@@ -63,7 +63,7 @@
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
   }
 
   v5.receiver = self;
@@ -71,7 +71,7 @@
   [(InstallWalletRemoteViewController *)&v5 dealloc];
 }
 
-- (_TtC16FinanceUIService33InstallWalletRemoteViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16FinanceUIService33InstallWalletRemoteViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -81,10 +81,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a3 = v7;
+    name = v7;
   }
 
   else
@@ -92,13 +92,13 @@
     v6 = 0;
   }
 
-  v8 = a4;
-  v9 = sub_100005530(v6, a3, a4);
+  bundleCopy = bundle;
+  v9 = sub_100005530(v6, name, bundle);
 
   return v9;
 }
 
-- (_TtC16FinanceUIService33InstallWalletRemoteViewController)initWithCoder:(id)a3
+- (_TtC16FinanceUIService33InstallWalletRemoteViewController)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -108,7 +108,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = sub_1000056F4(a3);
+  v4 = sub_1000056F4(coder);
 
   return v4;
 }

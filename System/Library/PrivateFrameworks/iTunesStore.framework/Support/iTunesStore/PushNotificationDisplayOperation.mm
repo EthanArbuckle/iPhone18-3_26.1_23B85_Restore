@@ -1,24 +1,24 @@
 @interface PushNotificationDisplayOperation
-+ (BOOL)_shouldUseBulletinBoardForNotification:(id)a3;
++ (BOOL)_shouldUseBulletinBoardForNotification:(id)notification;
 - (BOOL)_URLHandlerExists;
-- (BOOL)_clientExistsWithIdentifier:(id)a3;
-- (PushNotificationDisplayOperation)initWithNotificationUserInfo:(id)a3;
-- (id)_clientIdentifierForDownloadKinds:(id)a3;
+- (BOOL)_clientExistsWithIdentifier:(id)identifier;
+- (PushNotificationDisplayOperation)initWithNotificationUserInfo:(id)info;
+- (id)_clientIdentifierForDownloadKinds:(id)kinds;
 - (int64_t)_notificationClass;
 - (void)_displayAlert;
 - (void)_displayBadge;
 - (void)_loadNotificationDownloadManifest;
 - (void)_openNotificationURL;
-- (void)_performNotificationAction:(BOOL)a3;
+- (void)_performNotificationAction:(BOOL)action;
 - (void)run;
 @end
 
 @implementation PushNotificationDisplayOperation
 
-- (PushNotificationDisplayOperation)initWithNotificationUserInfo:(id)a3
+- (PushNotificationDisplayOperation)initWithNotificationUserInfo:(id)info
 {
-  v5 = a3;
-  if (!v5)
+  infoCopy = info;
+  if (!infoCopy)
   {
     sub_1002722A4(a2, self);
   }
@@ -28,7 +28,7 @@
   v6 = [(PushNotificationDisplayOperation *)&v10 init];
   if (v6)
   {
-    v7 = [[SSRemoteNotification alloc] initWithNotificationUserInfo:v5];
+    v7 = [[SSRemoteNotification alloc] initWithNotificationUserInfo:infoCopy];
     notification = v6->_notification;
     v6->_notification = v7;
   }
@@ -46,25 +46,25 @@
 
     if (![(PushNotificationDisplayOperation *)self _clientExistsWithIdentifier:v3])
     {
-      v6 = +[SSLogConfig sharedDaemonConfig];
-      if (!v6)
+      alertBodyString = +[SSLogConfig sharedDaemonConfig];
+      if (!alertBodyString)
       {
-        v6 = +[SSLogConfig sharedConfig];
+        alertBodyString = +[SSLogConfig sharedConfig];
       }
 
-      v7 = [v6 shouldLog];
-      if ([v6 shouldLogToDisk])
+      shouldLog = [alertBodyString shouldLog];
+      if ([alertBodyString shouldLogToDisk])
       {
-        v8 = v7 | 2;
+        v8 = shouldLog | 2;
       }
 
       else
       {
-        v8 = v7;
+        v8 = shouldLog;
       }
 
-      v9 = [v6 OSLogObject];
-      if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [alertBodyString OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v8 &= 2u;
       }
@@ -95,8 +95,8 @@
     {
       [(PushNotificationDisplayOperation *)self _displayBadge];
 LABEL_47:
-      v6 = [(SSRemoteNotification *)self->_notification alertBodyString];
-      if (-[SSRemoteNotification actionType](self->_notification, "actionType") == 12 || ![v6 length])
+      alertBodyString = [(SSRemoteNotification *)self->_notification alertBodyString];
+      if (-[SSRemoteNotification actionType](self->_notification, "actionType") == 12 || ![alertBodyString length])
       {
         [(PushNotificationDisplayOperation *)self _performNotificationAction:0];
       }
@@ -111,25 +111,25 @@ LABEL_47:
 
     if (!v3)
     {
-      v6 = +[SSLogConfig sharedDaemonConfig];
-      if (!v6)
+      alertBodyString = +[SSLogConfig sharedDaemonConfig];
+      if (!alertBodyString)
       {
-        v6 = +[SSLogConfig sharedConfig];
+        alertBodyString = +[SSLogConfig sharedConfig];
       }
 
-      v25 = [v6 shouldLog];
-      if ([v6 shouldLogToDisk])
+      shouldLog2 = [alertBodyString shouldLog];
+      if ([alertBodyString shouldLogToDisk])
       {
-        v26 = v25 | 2;
+        v26 = shouldLog2 | 2;
       }
 
       else
       {
-        v26 = v25;
+        v26 = shouldLog2;
       }
 
-      v9 = [v6 OSLogObject];
-      if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [alertBodyString OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v26 &= 2u;
       }
@@ -165,19 +165,19 @@ LABEL_12:
       v13 = +[SSLogConfig sharedConfig];
     }
 
-    v14 = [v13 shouldLog];
+    shouldLog3 = [v13 shouldLog];
     if ([v13 shouldLogToDisk])
     {
-      v15 = v14 | 2;
+      v15 = shouldLog3 | 2;
     }
 
     else
     {
-      v15 = v14;
+      v15 = shouldLog3;
     }
 
-    v16 = [v13 OSLogObject];
-    if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v13 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v15 &= 2u;
     }
@@ -200,9 +200,9 @@ LABEL_12:
         goto LABEL_32;
       }
 
-      v16 = [NSString stringWithCString:v18 encoding:4, v29, v28, *v29, *&v29[16], v30];
+      oSLogObject2 = [NSString stringWithCString:v18 encoding:4, v29, v28, *v29, *&v29[16], v30];
       free(v18);
-      v27 = v16;
+      v27 = oSLogObject2;
       SSFileLog();
     }
 
@@ -215,25 +215,25 @@ LABEL_32:
     goto LABEL_47;
   }
 
-  v6 = +[SSLogConfig sharedDaemonConfig];
-  if (!v6)
+  alertBodyString = +[SSLogConfig sharedDaemonConfig];
+  if (!alertBodyString)
   {
-    v6 = +[SSLogConfig sharedConfig];
+    alertBodyString = +[SSLogConfig sharedConfig];
   }
 
-  v19 = [v6 shouldLog];
-  if ([v6 shouldLogToDisk])
+  shouldLog4 = [alertBodyString shouldLog];
+  if ([alertBodyString shouldLogToDisk])
   {
-    v20 = v19 | 2;
+    v20 = shouldLog4 | 2;
   }
 
   else
   {
-    v20 = v19;
+    v20 = shouldLog4;
   }
 
-  v9 = [v6 OSLogObject];
-  if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [alertBodyString OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v20 &= 2u;
   }
@@ -257,7 +257,7 @@ LABEL_32:
 LABEL_43:
   if (v11)
   {
-    v9 = [NSString stringWithCString:v11 encoding:4, v29, v28];
+    oSLogObject = [NSString stringWithCString:v11 encoding:4, v29, v28];
     free(v11);
     SSFileLog();
 LABEL_45:
@@ -268,23 +268,23 @@ LABEL_51:
 LABEL_52:
 }
 
-- (BOOL)_clientExistsWithIdentifier:(id)a3
+- (BOOL)_clientExistsWithIdentifier:(id)identifier
 {
-  v3 = [LSApplicationProxy applicationProxyForIdentifier:a3 placeholder:0];
-  v4 = [v3 foundBackingBundle];
+  v3 = [LSApplicationProxy applicationProxyForIdentifier:identifier placeholder:0];
+  foundBackingBundle = [v3 foundBackingBundle];
 
-  return v4;
+  return foundBackingBundle;
 }
 
-- (id)_clientIdentifierForDownloadKinds:(id)a3
+- (id)_clientIdentifierForDownloadKinds:(id)kinds
 {
-  v3 = a3;
-  if ([v3 containsObject:SSDownloadKindSoftwareApplication])
+  kindsCopy = kinds;
+  if ([kindsCopy containsObject:SSDownloadKindSoftwareApplication])
   {
     v4 = @"com.apple.AppStore";
   }
 
-  else if ([v3 containsObject:SSDownloadKindEBook])
+  else if ([kindsCopy containsObject:SSDownloadKindEBook])
   {
     v4 = @"com.apple.iBooks";
   }
@@ -295,7 +295,7 @@ LABEL_52:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = v3;
+    v5 = kindsCopy;
     v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
@@ -341,29 +341,29 @@ LABEL_17:
 
 - (void)_displayAlert
 {
-  v3 = [(SSRemoteNotification *)self->_notification alertBodyString];
-  if ([v3 length])
+  alertBodyString = [(SSRemoteNotification *)self->_notification alertBodyString];
+  if ([alertBodyString length])
   {
-    v4 = [(SSRemoteNotification *)self->_notification alertTitleString];
+    alertTitleString = [(SSRemoteNotification *)self->_notification alertTitleString];
     v5 = [objc_opt_class() _shouldUseBulletinBoardForNotification:self->_notification];
     notification = self->_notification;
     if (v5)
     {
-      v7 = [(SSRemoteNotification *)notification valueForKey:SSRemoteNotificationKeyURLString];
-      if ([v7 length])
+      alertCancelString = [(SSRemoteNotification *)notification valueForKey:SSRemoteNotificationKeyURLString];
+      if ([alertCancelString length])
       {
-        v8 = [NSURL URLWithString:v7];
+        alertOKString2 = [NSURL URLWithString:alertCancelString];
       }
 
       else
       {
-        v8 = 0;
+        alertOKString2 = 0;
       }
 
       v9 = [(SSRemoteNotification *)self->_notification valueForKey:SSRemoteNotificationKeyClientIdentifier];
-      v16 = [(SSRemoteNotification *)self->_notification alertOKString];
-      v20 = [v9 lowercaseString];
-      v21 = [v20 isEqualToString:@"com.apple.appstore"];
+      alertOKString = [(SSRemoteNotification *)self->_notification alertOKString];
+      lowercaseString = [v9 lowercaseString];
+      v21 = [lowercaseString isEqualToString:@"com.apple.appstore"];
 
       if (v21)
       {
@@ -372,20 +372,20 @@ LABEL_17:
         v26[2] = sub_100119C48;
         v26[3] = &unk_100327538;
         v26[4] = self;
-        [AppStoreUtility postBulletinWithTitle:v4 message:v3 destinations:12 actionButtonTitle:v16 actionButtonURL:v8 launchURL:v8 completionBlock:v26];
+        [AppStoreUtility postBulletinWithTitle:alertTitleString message:alertBodyString destinations:12 actionButtonTitle:alertOKString actionButtonURL:alertOKString2 launchURL:alertOKString2 completionBlock:v26];
       }
     }
 
     else
     {
-      v24 = v4;
-      v7 = [(SSRemoteNotification *)notification alertCancelString];
-      v8 = [(SSRemoteNotification *)self->_notification alertOKString];
+      v24 = alertTitleString;
+      alertCancelString = [(SSRemoteNotification *)notification alertCancelString];
+      alertOKString2 = [(SSRemoteNotification *)self->_notification alertOKString];
       v9 = objc_alloc_init(ISDialog);
       v10 = [NSArray alloc];
       v11 = ISDialogButton;
-      v12 = v7;
-      if (!v7)
+      v12 = alertCancelString;
+      if (!alertCancelString)
       {
         v23 = [NSBundle bundleForClass:objc_opt_class()];
         v12 = [v23 localizedStringForKey:@"CANCEL" value:&stru_10033CC30 table:0];
@@ -393,40 +393,40 @@ LABEL_17:
 
       v22 = v12;
       v13 = [ISDialogButton buttonWithTitle:v12];
-      v14 = v8;
-      if (!v8)
+      v14 = alertOKString2;
+      if (!alertOKString2)
       {
         v11 = [NSBundle bundleForClass:objc_opt_class()];
         v14 = [v11 localizedStringForKey:@"OK" value:&stru_10033CC30 table:0];
       }
 
       v15 = [ISDialogButton buttonWithTitle:v14];
-      v16 = [v10 initWithObjects:{v13, v15, 0}];
+      alertOKString = [v10 initWithObjects:{v13, v15, 0}];
 
-      if (!v8)
+      if (!alertOKString2)
       {
       }
 
-      if (!v7)
+      if (!alertCancelString)
       {
       }
 
-      [v9 setButtons:v16];
+      [v9 setButtons:alertOKString];
       [v9 setDismissOnLock:1];
-      [v9 setMessage:v3];
+      [v9 setMessage:alertBodyString];
       [v9 setShouldDismissAfterUnlock:1];
       [v9 setShouldDisplayAsTopMost:1];
-      v4 = v24;
+      alertTitleString = v24;
       [v9 setTitle:v24];
       [v9 setUnlockActionButtonIndex:1];
-      v17 = [v9 copyUserNotification];
+      copyUserNotification = [v9 copyUserNotification];
       v18 = +[UserNotificationCenter defaultCenter];
       v25[0] = _NSConcreteStackBlock;
       v25[1] = 3221225472;
       v25[2] = sub_100119DF0;
       v25[3] = &unk_100328FC0;
       v25[4] = self;
-      v19 = [v18 showUserNotification:v17 withCompletionBlock:v25];
+      v19 = [v18 showUserNotification:copyUserNotification withCompletionBlock:v25];
     }
   }
 }
@@ -438,8 +438,8 @@ LABEL_17:
   {
     v6 = v3;
     v4 = +[SpringBoardUtility sharedInstance];
-    v5 = [(SSRemoteNotification *)self->_notification badgeValue];
-    [v4 setBadgeValue:v5 forIdentifier:v6];
+    badgeValue = [(SSRemoteNotification *)self->_notification badgeValue];
+    [v4 setBadgeValue:badgeValue forIdentifier:v6];
 
     v3 = v6;
   }
@@ -469,9 +469,9 @@ LABEL_17:
 - (int64_t)_notificationClass
 {
   v2 = [(SSRemoteNotification *)self->_notification valueForKey:SSRemoteNotificationKeyNotificationClass];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (void)_openNotificationURL
@@ -492,14 +492,14 @@ LABEL_17:
   }
 }
 
-- (void)_performNotificationAction:(BOOL)a3
+- (void)_performNotificationAction:(BOOL)action
 {
-  v3 = a3;
+  actionCopy = action;
   switch([(SSRemoteNotification *)self->_notification actionType])
   {
     case 1uLL:
     case 4uLL:
-      if (v3)
+      if (actionCopy)
       {
 
         [(PushNotificationDisplayOperation *)self _openNotificationURL];
@@ -507,19 +507,19 @@ LABEL_17:
 
       return;
     case 2uLL:
-      v71 = +[StoreDownloadQueue sharedDownloadQueue];
-      [v71 checkAutomaticDownloadQueue];
+      notificationUserInfo = +[StoreDownloadQueue sharedDownloadQueue];
+      [notificationUserInfo checkAutomaticDownloadQueue];
       goto LABEL_123;
     case 3uLL:
-      if (!v3)
+      if (!actionCopy)
       {
         return;
       }
 
-      v71 = [(SSRemoteNotification *)self->_notification valueForKey:SSRemoteNotificationKeyDownloadKinds];
+      notificationUserInfo = [(SSRemoteNotification *)self->_notification valueForKey:SSRemoteNotificationKeyDownloadKinds];
       v27 = [SetAutomaticDownloadKindsOperation alloc];
       v28 = v27;
-      if (v71)
+      if (notificationUserInfo)
       {
         v29 = [NSSet setWithArray:?];
         v30 = [v28 initWithDownloadKinds:v29];
@@ -568,19 +568,19 @@ LABEL_17:
         v20 = +[SSLogConfig sharedConfig];
       }
 
-      v21 = [v20 shouldLog];
+      shouldLog = [v20 shouldLog];
       if ([v20 shouldLogToDisk])
       {
-        v22 = v21 | 2;
+        v22 = shouldLog | 2;
       }
 
       else
       {
-        v22 = v21;
+        v22 = shouldLog;
       }
 
-      v23 = [v20 OSLogObject];
-      if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v20 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v22 &= 2u;
       }
@@ -592,7 +592,7 @@ LABEL_17:
 
       v24 = objc_opt_class();
       v72 = v24;
-      v25 = [v19 accountName];
+      accountName = [v19 accountName];
       SSHashIfNeeded();
       v74 = 138543618;
       v75 = v24;
@@ -602,7 +602,7 @@ LABEL_17:
 
       if (v26)
       {
-        v23 = [NSString stringWithCString:v26 encoding:4, &v74, v70];
+        oSLogObject = [NSString stringWithCString:v26 encoding:4, &v74, v70];
         free(v26);
         SSFileLog();
 LABEL_45:
@@ -618,16 +618,16 @@ LABEL_48:
     case 9uLL:
     case 0xAuLL:
       v5 = ISWeakLinkedClassForString();
-      v71 = [(SSRemoteNotification *)self->_notification notificationUserInfo];
+      notificationUserInfo = [(SSRemoteNotification *)self->_notification notificationUserInfo];
       [v5 didReceiveStorePushNotificationWithPayload:?];
       goto LABEL_123;
     case 0xBuLL:
       v33 = +[SSAccountStore defaultStore];
-      v34 = [v33 activeAccount];
-      v71 = [v34 uniqueIdentifier];
+      activeAccount = [v33 activeAccount];
+      notificationUserInfo = [activeAccount uniqueIdentifier];
 
-      v35 = +[StoreDownloadQueue sharedDownloadQueue];
-      [v35 checkQueuesWithReason:@"trigger-download" accountID:v71];
+      notificationUserInfo3 = +[StoreDownloadQueue sharedDownloadQueue];
+      [notificationUserInfo3 checkQueuesWithReason:@"trigger-download" accountID:notificationUserInfo];
       goto LABEL_60;
     case 0xCuLL:
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -647,19 +647,19 @@ LABEL_48:
         v11 = +[SSLogConfig sharedConfig];
       }
 
-      v12 = [v11 shouldLog];
+      shouldLog2 = [v11 shouldLog];
       if ([v11 shouldLogToDisk])
       {
-        v13 = v12 | 2;
+        v13 = shouldLog2 | 2;
       }
 
       else
       {
-        v13 = v12;
+        v13 = shouldLog2;
       }
 
-      v14 = [v11 OSLogObject];
-      if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
+      oSLogObject2 = [v11 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
       {
         v13 &= 2u;
       }
@@ -679,7 +679,7 @@ LABEL_48:
 
       if (v16)
       {
-        v14 = [NSString stringWithCString:v16 encoding:4, &v74, v70];
+        oSLogObject2 = [NSString stringWithCString:v16 encoding:4, &v74, v70];
         free(v16);
         SSFileLog();
 LABEL_30:
@@ -690,9 +690,9 @@ LABEL_30:
     case 0xEuLL:
       v8 = objc_alloc_init(SubscriptionStatusOperation);
       [(SubscriptionStatusOperation *)v8 setCarrierBundleProvisioningStyle:1];
-      v9 = [(SSRemoteNotification *)self->_notification notificationUserInfo];
+      notificationUserInfo2 = [(SSRemoteNotification *)self->_notification notificationUserInfo];
 
-      if (v9)
+      if (notificationUserInfo2)
       {
         v73[0] = _NSConcreteStackBlock;
         v73[1] = 3221225472;
@@ -741,19 +741,19 @@ LABEL_63:
         v36 = +[SSLogConfig sharedConfig];
       }
 
-      v37 = [v36 shouldLog];
+      shouldLog3 = [v36 shouldLog];
       if ([v36 shouldLogToDisk])
       {
-        v38 = v37 | 2;
+        v38 = shouldLog3 | 2;
       }
 
       else
       {
-        v38 = v37;
+        v38 = shouldLog3;
       }
 
-      v39 = [v36 OSLogObject];
-      if (!os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [v36 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
         v38 &= 2u;
       }
@@ -772,9 +772,9 @@ LABEL_63:
 
       if (v41)
       {
-        v39 = [NSString stringWithCString:v41 encoding:4, &v74, v70];
+        oSLogObject3 = [NSString stringWithCString:v41 encoding:4, &v74, v70];
         free(v41);
-        v68 = v39;
+        v68 = oSLogObject3;
         SSFileLog();
 LABEL_74:
       }
@@ -805,19 +805,19 @@ LABEL_80:
         v45 = +[SSLogConfig sharedConfig];
       }
 
-      v46 = [v45 shouldLog];
+      shouldLog4 = [v45 shouldLog];
       if ([v45 shouldLogToDisk])
       {
-        v47 = v46 | 2;
+        v47 = shouldLog4 | 2;
       }
 
       else
       {
-        v47 = v46;
+        v47 = shouldLog4;
       }
 
-      v48 = [v45 OSLogObject];
-      if (!os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
+      oSLogObject4 = [v45 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
       {
         v47 &= 2u;
       }
@@ -837,9 +837,9 @@ LABEL_80:
 
       if (v51)
       {
-        v48 = [NSString stringWithCString:v51 encoding:4, &v74, v70];
+        oSLogObject4 = [NSString stringWithCString:v51 encoding:4, &v74, v70];
         free(v51);
-        v69 = v48;
+        v69 = oSLogObject4;
         SSFileLog();
 LABEL_91:
       }
@@ -861,19 +861,19 @@ LABEL_93:
             v53 = +[SSLogConfig sharedConfig];
           }
 
-          v54 = [v53 shouldLog];
+          shouldLog5 = [v53 shouldLog];
           if ([v53 shouldLogToDisk])
           {
-            v55 = v54 | 2;
+            v55 = shouldLog5 | 2;
           }
 
           else
           {
-            v55 = v54;
+            v55 = shouldLog5;
           }
 
-          v56 = [v53 OSLogObject];
-          if (!os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
+          oSLogObject5 = [v53 OSLogObject];
+          if (!os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
           {
             v55 &= 2u;
           }
@@ -891,14 +891,14 @@ LABEL_93:
             {
 LABEL_106:
 
-              v60 = [[PurchaseOperation alloc] initWithPurchase:v52];
+              oSLogObject6 = [[PurchaseOperation alloc] initWithPurchase:v52];
               v61 = +[ISOperationQueue mainQueue];
-              [v61 addOperation:v60];
+              [v61 addOperation:oSLogObject6];
 
               goto LABEL_117;
             }
 
-            v56 = [NSString stringWithCString:v59 encoding:4, &v74, v70];
+            oSLogObject5 = [NSString stringWithCString:v59 encoding:4, &v74, v70];
             free(v59);
             SSFileLog();
           }
@@ -913,19 +913,19 @@ LABEL_106:
         v52 = +[SSLogConfig sharedConfig];
       }
 
-      v62 = [v52 shouldLog];
+      shouldLog6 = [v52 shouldLog];
       if ([v52 shouldLogToDisk])
       {
-        v63 = v62 | 2;
+        v63 = shouldLog6 | 2;
       }
 
       else
       {
-        v63 = v62;
+        v63 = shouldLog6;
       }
 
-      v60 = [v52 OSLogObject];
-      if (!os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
+      oSLogObject6 = [v52 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_ERROR))
       {
         v63 &= 2u;
       }
@@ -944,7 +944,7 @@ LABEL_106:
           goto LABEL_118;
         }
 
-        v60 = [NSString stringWithCString:v66 encoding:4, &v74, v70];
+        oSLogObject6 = [NSString stringWithCString:v66 encoding:4, &v74, v70];
         free(v66);
         SSFileLog();
       }
@@ -956,14 +956,14 @@ LABEL_119:
 
       return;
     default:
-      if (!v3)
+      if (!actionCopy)
       {
         return;
       }
 
-      v71 = +[PushNotificationController sharedInstance];
-      v35 = [(SSRemoteNotification *)self->_notification notificationUserInfo];
-      [v71 postClientNotificationWithUserInfo:v35];
+      notificationUserInfo = +[PushNotificationController sharedInstance];
+      notificationUserInfo3 = [(SSRemoteNotification *)self->_notification notificationUserInfo];
+      [notificationUserInfo postClientNotificationWithUserInfo:notificationUserInfo3];
 LABEL_60:
 
 LABEL_123:
@@ -972,26 +972,26 @@ LABEL_123:
   }
 }
 
-+ (BOOL)_shouldUseBulletinBoardForNotification:(id)a3
++ (BOOL)_shouldUseBulletinBoardForNotification:(id)notification
 {
-  v3 = a3;
-  v4 = [v3 valueForKey:SSRemoteNotificationKeyClientIdentifier];
+  notificationCopy = notification;
+  v4 = [notificationCopy valueForKey:SSRemoteNotificationKeyClientIdentifier];
   if ([v4 length])
   {
-    v5 = [v3 valueForKey:SSRemoteNotificationKeyAlertType];
-    v6 = [v5 integerValue];
+    v5 = [notificationCopy valueForKey:SSRemoteNotificationKeyAlertType];
+    integerValue = [v5 integerValue];
 
-    if (v6 == 1)
+    if (integerValue == 1)
     {
       v7 = 1;
     }
 
     else
     {
-      v8 = [v3 actionType];
-      if (v8 <= 0x16)
+      actionType = [notificationCopy actionType];
+      if (actionType <= 0x16)
       {
-        v7 = 0x440002u >> v8;
+        v7 = 0x440002u >> actionType;
       }
 
       else
@@ -1011,10 +1011,10 @@ LABEL_123:
 
 - (BOOL)_URLHandlerExists
 {
-  v2 = [(SSRemoteNotification *)self->_notification tapUrl];
-  if (v2)
+  tapUrl = [(SSRemoteNotification *)self->_notification tapUrl];
+  if (tapUrl)
   {
-    v3 = [[NSURL alloc] initWithString:v2];
+    v3 = [[NSURL alloc] initWithString:tapUrl];
     v4 = +[LSApplicationWorkspace defaultWorkspace];
     v5 = [v4 applicationsAvailableForOpeningURL:v3];
 

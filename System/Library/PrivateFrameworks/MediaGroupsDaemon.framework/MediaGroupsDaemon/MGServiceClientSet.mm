@@ -1,9 +1,9 @@
 @interface MGServiceClientSet
 - (MGServiceClientSet)init;
-- (id)serviceClientForXPCConnection:(id)a3;
-- (void)addClientService:(id)a3;
-- (void)enumerateClientsUsingBlock:(id)a3;
-- (void)removeClientService:(id)a3;
+- (id)serviceClientForXPCConnection:(id)connection;
+- (void)addClientService:(id)service;
+- (void)enumerateClientsUsingBlock:(id)block;
+- (void)removeClientService:(id)service;
 @end
 
 @implementation MGServiceClientSet
@@ -25,9 +25,9 @@
   return v3;
 }
 
-- (id)serviceClientForXPCConnection:(id)a3
+- (id)serviceClientForXPCConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -40,7 +40,7 @@
   v8[3] = &unk_27989EEF8;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = connectionCopy;
   v9 = v5;
   [(MGServiceClient *)self _withLock:v8];
   v6 = v12[5];
@@ -59,16 +59,16 @@ void __52__MGServiceClientSet_serviceClientForXPCConnection___block_invoke(uint6
   *(v3 + 40) = v2;
 }
 
-- (void)addClientService:(id)a3
+- (void)addClientService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__MGServiceClientSet_addClientService___block_invoke;
   v6[3] = &unk_27989EE80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = serviceCopy;
+  v5 = serviceCopy;
   [(MGServiceClient *)self _withLock:v6];
 }
 
@@ -80,16 +80,16 @@ void __39__MGServiceClientSet_addClientService___block_invoke(uint64_t a1)
   [v4 setObject:v2 forKey:v3];
 }
 
-- (void)removeClientService:(id)a3
+- (void)removeClientService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__MGServiceClientSet_removeClientService___block_invoke;
   v6[3] = &unk_27989EE80;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = serviceCopy;
+  v5 = serviceCopy;
   [(MGServiceClient *)self _withLock:v6];
 }
 
@@ -100,9 +100,9 @@ void __42__MGServiceClientSet_removeClientService___block_invoke(uint64_t a1)
   [v3 removeObjectForKey:v2];
 }
 
-- (void)enumerateClientsUsingBlock:(id)a3
+- (void)enumerateClientsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -121,7 +121,7 @@ void __42__MGServiceClientSet_removeClientService___block_invoke(uint64_t a1)
   v7[1] = 3221225472;
   v7[2] = __49__MGServiceClientSet_enumerateClientsUsingBlock___block_invoke_2;
   v7[3] = &unk_27989F9B8;
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
   [v5 enumerateObjectsUsingBlock:v7];
 

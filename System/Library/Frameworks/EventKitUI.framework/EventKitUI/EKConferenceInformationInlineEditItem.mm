@@ -1,6 +1,6 @@
 @interface EKConferenceInformationInlineEditItem
 - (BOOL)shouldAppear;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (void)reset;
 @end
 
@@ -8,19 +8,19 @@
 
 - (BOOL)shouldAppear
 {
-  v3 = [(EKEventEditItem *)self event];
-  v4 = [v3 virtualConference];
-  if (v4)
+  event = [(EKEventEditItem *)self event];
+  virtualConference = [event virtualConference];
+  if (virtualConference)
   {
-    v5 = [(EKEventEditItem *)self event];
-    v6 = [v5 virtualConference];
-    v7 = [v6 joinMethods];
-    if ([v7 count] <= 1)
+    event2 = [(EKEventEditItem *)self event];
+    virtualConference2 = [event2 virtualConference];
+    joinMethods = [virtualConference2 joinMethods];
+    if ([joinMethods count] <= 1)
     {
-      v9 = [(EKEventEditItem *)self event];
-      v10 = [v9 virtualConference];
-      v11 = [v10 conferenceDetails];
-      v8 = [v11 length] != 0;
+      event3 = [(EKEventEditItem *)self event];
+      virtualConference3 = [event3 virtualConference];
+      conferenceDetails = [virtualConference3 conferenceDetails];
+      v8 = [conferenceDetails length] != 0;
     }
 
     else
@@ -43,7 +43,7 @@
   self->_cell = 0;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   cell = self->_cell;
   if (!cell)
@@ -52,18 +52,18 @@
     v6 = self->_cell;
     self->_cell = v5;
 
-    v7 = [(CalendarNotesCell *)self->_cell textView];
-    [v7 setEditable:0];
+    textView = [(CalendarNotesCell *)self->_cell textView];
+    [textView setEditable:0];
 
-    v8 = [(CalendarNotesCell *)self->_cell textView];
-    [v8 setDataDetectorTypes:-1];
+    textView2 = [(CalendarNotesCell *)self->_cell textView];
+    [textView2 setDataDetectorTypes:-1];
 
-    v9 = [(EKEventEditItem *)self event];
-    v10 = [v9 virtualConferenceTextRepresentation];
-    v11 = [(CalendarNotesCell *)self->_cell textView];
-    [v11 setText:v10];
+    event = [(EKEventEditItem *)self event];
+    virtualConferenceTextRepresentation = [event virtualConferenceTextRepresentation];
+    textView3 = [(CalendarNotesCell *)self->_cell textView];
+    [textView3 setText:virtualConferenceTextRepresentation];
 
-    v12 = [(CalendarNotesCell *)self->_cell textView];
+    textView4 = [(CalendarNotesCell *)self->_cell textView];
     CalDisableFocusRingForView();
 
     cell = self->_cell;

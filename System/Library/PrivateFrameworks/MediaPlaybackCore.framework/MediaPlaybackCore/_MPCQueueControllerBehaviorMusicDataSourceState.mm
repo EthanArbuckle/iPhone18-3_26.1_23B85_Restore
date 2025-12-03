@@ -1,30 +1,30 @@
 @interface _MPCQueueControllerBehaviorMusicDataSourceState
-- (BOOL)canJumpToItem:(id)a3 reason:(id *)a4;
-- (BOOL)canSkipItem:(id)a3 reason:(id *)a4;
-- (BOOL)isPlayableItem:(id)a3 inSection:(id)a4;
+- (BOOL)canJumpToItem:(id)item reason:(id *)reason;
+- (BOOL)canSkipItem:(id)item reason:(id *)reason;
+- (BOOL)isPlayableItem:(id)item inSection:(id)section;
 - (BOOL)isRadioDataSource;
-- (BOOL)section:(id)a3 shouldShuffleExcludeItem:(id)a4;
-- (BOOL)section:(id)a3 supportsShuffleType:(int64_t)a4;
+- (BOOL)section:(id)section shouldShuffleExcludeItem:(id)item;
+- (BOOL)section:(id)section supportsShuffleType:(int64_t)type;
 - (BOOL)shouldRequestAdditionalItemsAtTail;
-- (BOOL)shouldUsePlaceholderForItem:(id)a3 inSection:(id)a4;
+- (BOOL)shouldUsePlaceholderForItem:(id)item inSection:(id)section;
 - (MPCPlaybackEngineEventStream)eventStream;
 - (MPPlaceholderAVItem)tailPlaceholderItem;
 - (NSString)description;
 - (NSString)preferredStartContentItemID;
-- (_MPCQueueControllerBehaviorMusicDataSourceState)initWithCoder:(id)a3;
-- (_MPCQueueControllerBehaviorMusicDataSourceState)initWithPlaybackContext:(id)a3;
+- (_MPCQueueControllerBehaviorMusicDataSourceState)initWithCoder:(id)coder;
+- (_MPCQueueControllerBehaviorMusicDataSourceState)initWithPlaybackContext:(id)context;
 - (id)_rtcSourceServiceName;
-- (id)cloneWithNewStartItemIdentifiers:(id)a3 identifierRegistry:(id)a4;
-- (id)firstItemIntersectingIdentifierSet:(id)a3;
-- (id)getTailPlaceholderItemAndState:(int64_t *)a3;
+- (id)cloneWithNewStartItemIdentifiers:(id)identifiers identifierRegistry:(id)registry;
+- (id)firstItemIntersectingIdentifierSet:(id)set;
+- (id)getTailPlaceholderItemAndState:(int64_t *)state;
 - (id)playbackEngineID;
 - (int64_t)prefetchThreshold;
 - (void)_buildPlaceholder;
 - (void)_inLock_buildPlaceholder;
-- (void)encodeWithCoder:(id)a3;
-- (void)itemDidBeginPlayback:(id)a3;
-- (void)loadAdditionalItemsIfNeededWithCount:(int64_t)a3 completion:(id)a4;
-- (void)reloadSection:(id)a3 completion:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)itemDidBeginPlayback:(id)playback;
+- (void)loadAdditionalItemsIfNeededWithCount:(int64_t)count completion:(id)completion;
+- (void)reloadSection:(id)section completion:(id)completion;
 - (void)updatePlaybackContext;
 @end
 
@@ -45,21 +45,21 @@
 
 - (NSString)preferredStartContentItemID
 {
-  v3 = [(_MPCQueueControllerBehaviorMusicDataSourceState *)self preferredStartItemIdentifier];
-  if (v3)
+  preferredStartItemIdentifier = [(_MPCQueueControllerBehaviorMusicDataSourceState *)self preferredStartItemIdentifier];
+  if (preferredStartItemIdentifier)
   {
-    v4 = [(_MPCQueueControllerBehaviorMusicDataSourceState *)self sectionIdentifier];
-    v5 = [MPCQueueControllerBehaviorMusicIdentifierComponents itemComponentsWithSectionID:v4 itemID:v3];
+    sectionIdentifier = [(_MPCQueueControllerBehaviorMusicDataSourceState *)self sectionIdentifier];
+    v5 = [MPCQueueControllerBehaviorMusicIdentifierComponents itemComponentsWithSectionID:sectionIdentifier itemID:preferredStartItemIdentifier];
 
-    v6 = [v5 contentItemID];
+    contentItemID = [v5 contentItemID];
   }
 
   else
   {
-    v6 = 0;
+    contentItemID = 0;
   }
 
-  return v6;
+  return contentItemID;
 }
 
 - (MPCPlaybackEngineEventStream)eventStream
@@ -72,18 +72,18 @@
 - (id)playbackEngineID
 {
   WeakRetained = objc_loadWeakRetained(&self->_eventStream);
-  v3 = [WeakRetained engineID];
+  engineID = [WeakRetained engineID];
 
-  return v3;
+  return engineID;
 }
 
 - (id)_rtcSourceServiceName
 {
   if ([(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource conformsToProtocol:&unk_1F45B70A8])
   {
-    v3 = [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource rtcReportingPlayQueueSourceIdentifier];
+    rtcReportingPlayQueueSourceIdentifier = [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource rtcReportingPlayQueueSourceIdentifier];
     v4 = [MPCRTCEventConsumer playerServiceNameWithPlayerID:self->_playerID];
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v4, v3];
+    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v4, rtcReportingPlayQueueSourceIdentifier];
   }
 
   else
@@ -103,10 +103,10 @@
   }
 
   v8 = [MPCQueueControllerBehaviorMusicIdentifierComponents placeholderComponentsWithLoadingSectionID:self->_sectionIdentifier];
-  v4 = [v8 contentItemID];
-  v5 = [v8 sectionID];
-  v6 = [v8 itemID];
-  [v3 setContentItemID:v4 queueSectionID:v5 queueItemID:v6];
+  contentItemID = [v8 contentItemID];
+  sectionID = [v8 sectionID];
+  itemID = [v8 itemID];
+  [v3 setContentItemID:contentItemID queueSectionID:sectionID queueItemID:itemID];
 
   tailPlaceholderItem = self->_tailPlaceholderItem;
   self->_tailPlaceholderItem = v3;
@@ -120,11 +120,11 @@
   os_unfair_lock_unlock(&self->_stateLock);
 }
 
-- (BOOL)section:(id)a3 shouldShuffleExcludeItem:(id)a4
+- (BOOL)section:(id)section shouldShuffleExcludeItem:(id)item
 {
   if ((*&self->_supportedMethods & 0x800) != 0)
   {
-    return [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource section:a3 shouldShuffleExcludeItem:a4];
+    return [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource section:section shouldShuffleExcludeItem:item];
   }
 
   else
@@ -133,38 +133,38 @@
   }
 }
 
-- (BOOL)section:(id)a3 supportsShuffleType:(int64_t)a4
+- (BOOL)section:(id)section supportsShuffleType:(int64_t)type
 {
   if (self->_frozen)
   {
-    return a4 == 1;
+    return type == 1;
   }
 
   else
   {
-    return [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource section:a3 supportsShuffleType:a4];
+    return [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource section:section supportsShuffleType:type];
   }
 }
 
-- (void)reloadSection:(id)a3 completion:(id)a4
+- (void)reloadSection:(id)section completion:(id)completion
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 sectionIdentifier];
-  v10 = v9;
-  if (v9 != self->_sectionIdentifier)
+  sectionCopy = section;
+  completionCopy = completion;
+  sectionIdentifier = [sectionCopy sectionIdentifier];
+  currentHandler = sectionIdentifier;
+  if (sectionIdentifier != self->_sectionIdentifier)
   {
-    v11 = [(NSString *)v9 isEqual:?];
+    v11 = [(NSString *)sectionIdentifier isEqual:?];
 
     if (v11)
     {
       goto LABEL_5;
     }
 
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    v12 = [v7 sectionIdentifier];
-    [v10 handleFailureInMethod:a2 object:self file:@"_MPCQueueControllerBehaviorMusicDataSourceState.m" lineNumber:438 description:{@"Attempt to connect section for different ID | %@ != %@", v12, self->_sectionIdentifier}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    sectionIdentifier2 = [sectionCopy sectionIdentifier];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_MPCQueueControllerBehaviorMusicDataSourceState.m" lineNumber:438 description:{@"Attempt to connect section for different ID | %@ != %@", sectionIdentifier2, self->_sectionIdentifier}];
   }
 
 LABEL_5:
@@ -179,18 +179,18 @@ LABEL_5:
     sectionIdentifier = self->_sectionIdentifier;
     if (state >= 5)
     {
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown[%ld]", state];
+      state = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown[%ld]", state];
     }
 
     else
     {
-      v16 = off_1E8232DD0[state];
+      state = off_1E8232DD0[state];
     }
 
     *buf = 138543618;
     v38 = sectionIdentifier;
     v39 = 2114;
-    v40 = v16;
+    v40 = state;
     _os_log_impl(&dword_1C5C61000, v14, OS_LOG_TYPE_DEFAULT, "[DASOS:%{public}@] reloadSection:… | changing state [starting reloadSection] oldState=%{public}@ newState=Loading", buf, 0x16u);
   }
 
@@ -201,8 +201,8 @@ LABEL_5:
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:&v43 count:1];
   [WeakRetained emitEventType:@"queue-load-begin" payload:v19];
 
-  v20 = [(_MPCQueueControllerBehaviorMusicDataSourceState *)self playbackContext];
-  v21 = [v20 copy];
+  playbackContext = [(_MPCQueueControllerBehaviorMusicDataSourceState *)self playbackContext];
+  v21 = [playbackContext copy];
 
   v22 = os_log_create("com.apple.amp.mediaplaybackcore", "QueueController_Oversize");
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -225,17 +225,17 @@ LABEL_5:
   aBlock[4] = self;
   v25 = v21;
   v34 = v25;
-  v26 = v8;
+  v26 = completionCopy;
   v36 = v26;
-  v27 = v7;
+  v27 = sectionCopy;
   v35 = v27;
   v28 = _Block_copy(aBlock);
-  v29 = [MEMORY[0x1E69708A8] standardUserDefaults];
-  v30 = [v29 delayQueueLoadDuration];
+  standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+  delayQueueLoadDuration = [standardUserDefaults delayQueueLoadDuration];
 
-  if (v30)
+  if (delayQueueLoadDuration)
   {
-    [v30 doubleValue];
+    [delayQueueLoadDuration doubleValue];
     v32 = dispatch_time(0, (v31 * 1000000000.0));
     dispatch_after(v32, MEMORY[0x1E69E96A0], v28);
   }
@@ -253,17 +253,17 @@ LABEL_5:
   }
 }
 
-- (id)cloneWithNewStartItemIdentifiers:(id)a3 identifierRegistry:(id)a4
+- (id)cloneWithNewStartItemIdentifiers:(id)identifiers identifierRegistry:(id)registry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_MPCQueueControllerBehaviorMusicDataSourceState *)self playbackContext];
-  v9 = [v8 copy];
+  identifiersCopy = identifiers;
+  registryCopy = registry;
+  playbackContext = [(_MPCQueueControllerBehaviorMusicDataSourceState *)self playbackContext];
+  v9 = [playbackContext copy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v9 setStartItemIdentifiers:v6];
+    [v9 setStartItemIdentifiers:identifiersCopy];
   }
 
   v10 = [[_MPCQueueControllerBehaviorMusicDataSourceState alloc] initWithPlaybackContext:v9];
@@ -281,9 +281,9 @@ LABEL_5:
   os_unfair_lock_lock(&self->_stateLock);
   objc_storeStrong(&v10->_tailPlaceholderItem, self->_tailPlaceholderItem);
   os_unfair_lock_unlock(&self->_stateLock);
-  if (v7 && [objc_opt_class() usesIdentifierRegistry])
+  if (registryCopy && [objc_opt_class() usesIdentifierRegistry])
   {
-    [(MPCQueueControllerBehaviorMusicDataSource *)v10->_dataSource replaceIdentifierRegistry:v7];
+    [(MPCQueueControllerBehaviorMusicDataSource *)v10->_dataSource replaceIdentifierRegistry:registryCopy];
   }
 
   return v10;
@@ -294,18 +294,18 @@ LABEL_5:
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   if ((*&self->_supportedMethods & 0x1000) != 0)
   {
-    v4 = [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource updatedPlaybackContext];
+    updatedPlaybackContext = [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource updatedPlaybackContext];
     v5 = objc_opt_class();
     if (v5 != objc_opt_class())
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = objc_opt_class();
-      [v7 handleFailureInMethod:a2 object:self file:@"_MPCQueueControllerBehaviorMusicDataSourceState.m" lineNumber:394 description:{@"UpdatedPlaybackContext changed types %@ != %@", v8, objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_MPCQueueControllerBehaviorMusicDataSourceState.m" lineNumber:394 description:{@"UpdatedPlaybackContext changed types %@ != %@", v8, objc_opt_class()}];
     }
 
-    objc_storeStrong(&self->_playbackContext, v4);
+    objc_storeStrong(&self->_playbackContext, updatedPlaybackContext);
     originalPlaybackContext = self->_originalPlaybackContext;
-    self->_originalPlaybackContext = v4;
+    self->_originalPlaybackContext = updatedPlaybackContext;
   }
 }
 
@@ -318,10 +318,10 @@ LABEL_5:
   return v3;
 }
 
-- (void)loadAdditionalItemsIfNeededWithCount:(int64_t)a3 completion:(id)a4
+- (void)loadAdditionalItemsIfNeededWithCount:(int64_t)count completion:(id)completion
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_stateLock);
   state = self->_state;
   os_unfair_lock_unlock(&self->_stateLock);
@@ -353,7 +353,7 @@ LABEL_5:
       *buf = 138543618;
       v28 = v9;
       v29 = 2048;
-      *v30 = a3;
+      *v30 = count;
       v10 = "[DASOS:%{public}@] loadAdditionalItemsIfNeededWithCount:%ld… | additional loading skipped [data source doesn't support loading more]";
 LABEL_15:
       _os_log_impl(&dword_1C5C61000, v8, OS_LOG_TYPE_DEFAULT, v10, buf, 0x16u);
@@ -372,7 +372,7 @@ LABEL_15:
       *buf = 138543618;
       v28 = v21;
       v29 = 2048;
-      *v30 = a3;
+      *v30 = count;
       v10 = "[DASOS:%{public}@] loadAdditionalItemsIfNeededWithCount:%ld… | additional loading skipped [data source doesn't want to load more]";
       goto LABEL_15;
     }
@@ -380,7 +380,7 @@ LABEL_15:
 LABEL_16:
 
 LABEL_17:
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_18;
   }
 
@@ -413,7 +413,7 @@ LABEL_17:
     *buf = 138543874;
     v28 = v19;
     v29 = 2048;
-    *v30 = a3;
+    *v30 = count;
     *&v30[8] = 2114;
     *&v30[10] = v20;
     _os_log_impl(&dword_1C5C61000, v18, OS_LOG_TYPE_DEFAULT, "[DASOS:%{public}@] loadAdditionalItemsIfNeededWithCount:%ld… | changing state [start loading additional] oldState=%{public}@ newState=LoadingAdditionalItems", buf, 0x20u);
@@ -426,18 +426,18 @@ LABEL_17:
   v24[2] = __99___MPCQueueControllerBehaviorMusicDataSourceState_loadAdditionalItemsIfNeededWithCount_completion___block_invoke;
   v24[3] = &unk_1E8236C20;
   v24[4] = self;
-  v26 = a3;
-  v25 = v6;
-  [(MPCQueueControllerBehaviorMusicDataSource *)dataSource loadAdditionalItemsWithCount:a3 forSection:v23 completion:v24];
+  countCopy = count;
+  v25 = completionCopy;
+  [(MPCQueueControllerBehaviorMusicDataSource *)dataSource loadAdditionalItemsWithCount:count forSection:v23 completion:v24];
 
 LABEL_18:
 }
 
-- (BOOL)isPlayableItem:(id)a3 inSection:(id)a4
+- (BOOL)isPlayableItem:(id)item inSection:(id)section
 {
   if ((*&self->_supportedMethods & 0x400) != 0)
   {
-    return [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource isPlayableItem:a3 inSection:a4];
+    return [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource isPlayableItem:item inSection:section];
   }
 
   else
@@ -446,11 +446,11 @@ LABEL_18:
   }
 }
 
-- (BOOL)shouldUsePlaceholderForItem:(id)a3 inSection:(id)a4
+- (BOOL)shouldUsePlaceholderForItem:(id)item inSection:(id)section
 {
   if ((*&self->_supportedMethods & 0x200) != 0)
   {
-    return [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource shouldUsePlaceholderForItem:a3 inSection:a4];
+    return [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource shouldUsePlaceholderForItem:item inSection:section];
   }
 
   else
@@ -472,11 +472,11 @@ LABEL_18:
   }
 }
 
-- (void)itemDidBeginPlayback:(id)a3
+- (void)itemDidBeginPlayback:(id)playback
 {
   if ((*&self->_supportedMethods & 0x40) != 0)
   {
-    [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource itemDidBeginPlayback:a3];
+    [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource itemDidBeginPlayback:playback];
   }
 }
 
@@ -493,11 +493,11 @@ LABEL_18:
   }
 }
 
-- (id)firstItemIntersectingIdentifierSet:(id)a3
+- (id)firstItemIntersectingIdentifierSet:(id)set
 {
   if ((*&self->_supportedMethods & 0x20) != 0)
   {
-    v5 = [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource firstItemIntersectingIdentifierSet:a3, v3];
+    v5 = [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource firstItemIntersectingIdentifierSet:set, v3];
   }
 
   else
@@ -508,11 +508,11 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)canSkipItem:(id)a3 reason:(id *)a4
+- (BOOL)canSkipItem:(id)item reason:(id *)reason
 {
   if ((*&self->_supportedMethods & 0x10) != 0)
   {
-    return [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource canSkipItem:a3 reason:a4];
+    return [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource canSkipItem:item reason:reason];
   }
 
   else
@@ -521,11 +521,11 @@ LABEL_18:
   }
 }
 
-- (BOOL)canJumpToItem:(id)a3 reason:(id *)a4
+- (BOOL)canJumpToItem:(id)item reason:(id *)reason
 {
   if ((*&self->_supportedMethods & 8) != 0)
   {
-    return [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource canJumpToItem:a3 reason:a4];
+    return [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource canJumpToItem:item reason:reason];
   }
 
   else
@@ -534,13 +534,13 @@ LABEL_18:
   }
 }
 
-- (id)getTailPlaceholderItemAndState:(int64_t *)a3
+- (id)getTailPlaceholderItemAndState:(int64_t *)state
 {
   os_unfair_lock_lock(&self->_stateLock);
   v5 = self->_tailPlaceholderItem;
-  if (a3)
+  if (state)
   {
-    *a3 = self->_state;
+    *state = self->_state;
   }
 
   os_unfair_lock_unlock(&self->_stateLock);
@@ -548,14 +548,14 @@ LABEL_18:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   frozen = self->_frozen;
-  v18 = v4;
+  v18 = coderCopy;
   if ((self->_supplementalPlaybackContextBehavior & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    [v4 encodeObject:self->_playbackContext forKey:@"pc"];
+    [coderCopy encodeObject:self->_playbackContext forKey:@"pc"];
     goto LABEL_20;
   }
 
@@ -598,11 +598,11 @@ LABEL_10:
     supportedMethods = self->_supportedMethods;
     if ((supportedMethods & 2) != 0)
     {
-      v11 = [v18 msv_userInfo];
-      v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E6970358]];
-      v13 = [v12 integerValue];
+      msv_userInfo = [v18 msv_userInfo];
+      v12 = [msv_userInfo objectForKeyedSubscript:*MEMORY[0x1E6970358]];
+      integerValue = [v12 integerValue];
 
-      v14 = [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource supplementalPlaybackContextWithReason:v13];
+      v14 = [(MPCQueueControllerBehaviorMusicDataSource *)self->_dataSource supplementalPlaybackContextWithReason:integerValue];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -635,13 +635,13 @@ LABEL_20:
   }
 }
 
-- (_MPCQueueControllerBehaviorMusicDataSourceState)initWithCoder:(id)a3
+- (_MPCQueueControllerBehaviorMusicDataSourceState)initWithCoder:(id)coder
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"si"];
-  v7 = [v5 msv_userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"SOD.sectionID"];
+  coderCopy = coder;
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"si"];
+  msv_userInfo = [coderCopy msv_userInfo];
+  v8 = [msv_userInfo objectForKeyedSubscript:@"SOD.sectionID"];
   v9 = v8;
   if (v6 == v8)
   {
@@ -654,7 +654,7 @@ LABEL_20:
   if (v10)
   {
 LABEL_5:
-    v11 = [v7 mutableCopy];
+    v11 = [msv_userInfo mutableCopy];
     v12 = [v11 objectForKeyedSubscript:@"QC.SOD.personID"];
     [v11 setObject:v12 forKeyedSubscript:@"SPIR.SOD.personID"];
 
@@ -664,13 +664,13 @@ LABEL_5:
     v14 = [v11 objectForKeyedSubscript:@"QC.SOD.containerPayloadData"];
     [v11 setObject:v14 forKeyedSubscript:@"SPIR.SOD.containerPayloadData"];
 
-    [v5 msv_setUserInfo:v11];
+    [coderCopy msv_setUserInfo:v11];
   }
 
-  v15 = [v5 decodeIntegerForKey:@"spcb"];
-  v16 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"spc"];
-  v17 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"pc"];
-  [v5 msv_setUserInfo:v7];
+  v15 = [coderCopy decodeIntegerForKey:@"spcb"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"spc"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pc"];
+  [coderCopy msv_setUserInfo:msv_userInfo];
   if ((v15 & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     LOBYTE(v18) = 1;
@@ -694,8 +694,8 @@ LABEL_5:
   v20 = v19;
   if (!v20)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"_MPCQueueControllerBehaviorMusicDataSourceState.m" lineNumber:150 description:{@"No active context for datasoure state for section: %@", v6}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_MPCQueueControllerBehaviorMusicDataSourceState.m" lineNumber:150 description:{@"No active context for datasoure state for section: %@", v6}];
   }
 
   v21 = [(_MPCQueueControllerBehaviorMusicDataSourceState *)self initWithPlaybackContext:v20];
@@ -716,10 +716,10 @@ LABEL_5:
     objc_storeStrong(&v22->_originalPlaybackContext, v17);
     objc_storeStrong(&v22->_supplementalPlaybackContext, v16);
     v22->_supplementalPlaybackContextBehavior = v15;
-    v22->_frozen = [v5 decodeBoolForKey:@"f"];
+    v22->_frozen = [coderCopy decodeBoolForKey:@"f"];
     if ([objc_opt_class() usesIdentifierRegistry] && objc_msgSend(objc_opt_class(), "restoresIdentifierRegistry"))
     {
-      v25 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"reg"];
+      v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reg"];
       [(MPCQueueControllerBehaviorMusicDataSource *)v22->_dataSource replaceIdentifierRegistry:v25];
     }
   }
@@ -730,31 +730,31 @@ LABEL_5:
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_MPCQueueControllerBehaviorMusicDataSourceState *)self playbackContext];
-  v5 = [(_MPCQueueControllerBehaviorMusicDataSourceState *)self originalPlaybackContext];
-  v6 = [(_MPCQueueControllerBehaviorMusicDataSourceState *)self supplementalPlaybackContext];
-  v7 = [v3 stringWithFormat:@"<_MPCQueueControllerDataSourceState %p> playbackContext: %@ - originalContext: %@ - supplementalContext: %@", self, v4, v5, v6];
+  playbackContext = [(_MPCQueueControllerBehaviorMusicDataSourceState *)self playbackContext];
+  originalPlaybackContext = [(_MPCQueueControllerBehaviorMusicDataSourceState *)self originalPlaybackContext];
+  supplementalPlaybackContext = [(_MPCQueueControllerBehaviorMusicDataSourceState *)self supplementalPlaybackContext];
+  v7 = [v3 stringWithFormat:@"<_MPCQueueControllerDataSourceState %p> playbackContext: %@ - originalContext: %@ - supplementalContext: %@", self, playbackContext, originalPlaybackContext, supplementalPlaybackContext];
 
   return v7;
 }
 
-- (_MPCQueueControllerBehaviorMusicDataSourceState)initWithPlaybackContext:(id)a3
+- (_MPCQueueControllerBehaviorMusicDataSourceState)initWithPlaybackContext:(id)context
 {
-  v6 = a3;
+  contextCopy = context;
   v30.receiver = self;
   v30.super_class = _MPCQueueControllerBehaviorMusicDataSourceState;
   v7 = [(_MPCQueueControllerBehaviorMusicDataSourceState *)&v30 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_playbackContext, a3);
-    objc_storeStrong(&v8->_originalPlaybackContext, a3);
-    v9 = [v6 queueFeederClass];
-    v10 = objc_alloc_init(v9);
+    objc_storeStrong(&v7->_playbackContext, context);
+    objc_storeStrong(&v8->_originalPlaybackContext, context);
+    queueFeederClass = [contextCopy queueFeederClass];
+    v10 = objc_alloc_init(queueFeederClass);
     if (!v10)
     {
-      v29 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v29 handleFailureInMethod:a2 object:v8 file:@"_MPCQueueControllerBehaviorMusicDataSourceState.m" lineNumber:80 description:{@"Failed to instantiate queueFeederClass: %@", v9}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v8 file:@"_MPCQueueControllerBehaviorMusicDataSourceState.m" lineNumber:80 description:{@"Failed to instantiate queueFeederClass: %@", queueFeederClass}];
     }
 
     if (objc_opt_respondsToSelector())
@@ -763,12 +763,12 @@ LABEL_5:
     }
 
     objc_storeStrong(&v8->_dataSource, v10);
-    v11 = [v6 overrideSILSectionID];
-    v12 = [v11 length];
+    overrideSILSectionID = [contextCopy overrideSILSectionID];
+    v12 = [overrideSILSectionID length];
 
     if (v12)
     {
-      [v6 overrideSILSectionID];
+      [contextCopy overrideSILSectionID];
     }
 
     else

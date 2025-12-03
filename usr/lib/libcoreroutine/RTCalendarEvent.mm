@@ -1,75 +1,75 @@
 @interface RTCalendarEvent
-+ (id)eventAvailabilityToString:(int64_t)a3;
-+ (id)participantStatusToString:(unint64_t)a3;
-- (RTCalendarEvent)initWithEventIdentifier:(id)a3 allDay:(BOOL)a4 startDate:(id)a5 endDate:(id)a6 participantStatus:(unint64_t)a7 availability:(int64_t)a8 location:(id)a9 locationTitle:(id)a10 locationMapItemHandle:(id)a11;
++ (id)eventAvailabilityToString:(int64_t)string;
++ (id)participantStatusToString:(unint64_t)string;
+- (RTCalendarEvent)initWithEventIdentifier:(id)identifier allDay:(BOOL)day startDate:(id)date endDate:(id)endDate participantStatus:(unint64_t)status availability:(int64_t)availability location:(id)location locationTitle:(id)self0 locationMapItemHandle:(id)self1;
 - (id)description;
 @end
 
 @implementation RTCalendarEvent
 
-+ (id)participantStatusToString:(unint64_t)a3
++ (id)participantStatusToString:(unint64_t)string
 {
-  if (a3 > 7)
+  if (string > 7)
   {
     return @"Unhandled";
   }
 
   else
   {
-    return off_2788C6960[a3];
+    return off_2788C6960[string];
   }
 }
 
-+ (id)eventAvailabilityToString:(int64_t)a3
++ (id)eventAvailabilityToString:(int64_t)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return @"Not Supported";
   }
 
   else
   {
-    return off_2788C69A0[a3];
+    return off_2788C69A0[string];
   }
 }
 
-- (RTCalendarEvent)initWithEventIdentifier:(id)a3 allDay:(BOOL)a4 startDate:(id)a5 endDate:(id)a6 participantStatus:(unint64_t)a7 availability:(int64_t)a8 location:(id)a9 locationTitle:(id)a10 locationMapItemHandle:(id)a11
+- (RTCalendarEvent)initWithEventIdentifier:(id)identifier allDay:(BOOL)day startDate:(id)date endDate:(id)endDate participantStatus:(unint64_t)status availability:(int64_t)availability location:(id)location locationTitle:(id)self0 locationMapItemHandle:(id)self1
 {
-  v17 = a3;
-  v18 = a5;
-  v19 = a6;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
+  identifierCopy = identifier;
+  dateCopy = date;
+  endDateCopy = endDate;
+  locationCopy = location;
+  titleCopy = title;
+  handleCopy = handle;
   v37.receiver = self;
   v37.super_class = RTCalendarEvent;
   v23 = [(RTCalendarEvent *)&v37 init];
   if (v23)
   {
-    v24 = [v17 copy];
+    v24 = [identifierCopy copy];
     eventIdentifier = v23->_eventIdentifier;
     v23->_eventIdentifier = v24;
 
-    v23->_allDay = a4;
-    v26 = [v18 copy];
+    v23->_allDay = day;
+    v26 = [dateCopy copy];
     startDate = v23->_startDate;
     v23->_startDate = v26;
 
-    v28 = [v19 copy];
+    v28 = [endDateCopy copy];
     endDate = v23->_endDate;
     v23->_endDate = v28;
 
-    v23->_participantStatus = a7;
-    v23->_availability = a8;
-    v30 = [v20 copy];
+    v23->_participantStatus = status;
+    v23->_availability = availability;
+    v30 = [locationCopy copy];
     location = v23->_location;
     v23->_location = v30;
 
-    v32 = [v21 copy];
+    v32 = [titleCopy copy];
     locationTitle = v23->_locationTitle;
     v23->_locationTitle = v32;
 
-    v34 = [v22 copy];
+    v34 = [handleCopy copy];
     locationMapItemHandle = v23->_locationMapItemHandle;
     v23->_locationMapItemHandle = v34;
   }
@@ -91,8 +91,8 @@
   }
 
   eventIdentifier = self->_eventIdentifier;
-  v6 = [(NSDate *)self->_startDate stringFromDate];
-  v7 = [(NSDate *)self->_endDate stringFromDate];
+  stringFromDate = [(NSDate *)self->_startDate stringFromDate];
+  stringFromDate2 = [(NSDate *)self->_endDate stringFromDate];
   v8 = [objc_opt_class() participantStatusToString:self->_participantStatus];
   v9 = [objc_opt_class() eventAvailabilityToString:self->_availability];
   v10 = v9;
@@ -126,7 +126,7 @@
     v13 = @"NO";
   }
 
-  v14 = [v3 stringWithFormat:@"eventIdentifier, %@, allDay, %@, startDate, %@, endDate, %@, particpantStatus, %@, availability, %@, location, %@, locationTitle, %@, locationMapItemHandle, %@", eventIdentifier, v4, v6, v7, v8, v9, v11, v12, v13];
+  v14 = [v3 stringWithFormat:@"eventIdentifier, %@, allDay, %@, startDate, %@, endDate, %@, particpantStatus, %@, availability, %@, location, %@, locationTitle, %@, locationMapItemHandle, %@", eventIdentifier, v4, stringFromDate, stringFromDate2, v8, v9, v11, v12, v13];
 
   return v14;
 }

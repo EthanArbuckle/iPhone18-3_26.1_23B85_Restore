@@ -1,23 +1,23 @@
 @interface IMRichActionFooterChatItem
 - (BOOL)isFromMe;
-- (id)_initWithItem:(id)a3;
+- (id)_initWithItem:(id)item;
 @end
 
 @implementation IMRichActionFooterChatItem
 
-- (id)_initWithItem:(id)a3
+- (id)_initWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v17.receiver = self;
   v17.super_class = IMRichActionFooterChatItem;
-  v7 = [(IMChatItem *)&v17 _initWithItem:v4];
+  v7 = [(IMChatItem *)&v17 _initWithItem:itemCopy];
   if (v7)
   {
-    v8 = objc_msgSend_guid(v4, v5, v6);
+    v8 = objc_msgSend_guid(itemCopy, v5, v6);
     v10 = objc_msgSend_stringByAppendingString_(v8, v9, @"IMRichActionFooter");
     objc_msgSend__setGUID_(v7, v11, v10);
 
-    v14 = objc_msgSend__senderHandle(v4, v12, v13);
+    v14 = objc_msgSend__senderHandle(itemCopy, v12, v13);
     v15 = v7[7];
     v7[7] = v14;
   }

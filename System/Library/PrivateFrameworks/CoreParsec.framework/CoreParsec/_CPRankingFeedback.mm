@@ -1,13 +1,13 @@
 @interface _CPRankingFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPRankingFeedback)init;
-- (_CPRankingFeedback)initWithFacade:(id)a3;
+- (_CPRankingFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)addHiddenResults:(id)a3;
-- (void)addSections:(id)a3;
-- (void)setHiddenResults:(id)a3;
-- (void)setSections:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addHiddenResults:(id)results;
+- (void)addSections:(id)sections;
+- (void)setHiddenResults:(id)results;
+- (void)setSections:(id)sections;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPRankingFeedback
@@ -30,41 +30,41 @@
   return v9 ^ [(NSArray *)self->_hiddenResults hash]^ v7 ^ (2654435761 * self->_spotlightQueryIntent) ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_14;
   }
 
   blendingDuration = self->_blendingDuration;
-  [v4 blendingDuration];
+  [equalCopy blendingDuration];
   if (blendingDuration != v7)
   {
     goto LABEL_14;
   }
 
-  v8 = [(_CPRankingFeedback *)self sections];
-  v9 = [v4 sections];
-  if ((v8 != 0) == (v9 == 0))
+  sections = [(_CPRankingFeedback *)self sections];
+  sections2 = [equalCopy sections];
+  if ((sections != 0) == (sections2 == 0))
   {
     goto LABEL_13;
   }
 
-  v10 = [(_CPRankingFeedback *)self sections];
-  if (v10)
+  sections3 = [(_CPRankingFeedback *)self sections];
+  if (sections3)
   {
-    v11 = v10;
-    v12 = [(_CPRankingFeedback *)self sections];
-    v13 = [v4 sections];
-    v14 = [v12 isEqual:v13];
+    v11 = sections3;
+    sections4 = [(_CPRankingFeedback *)self sections];
+    sections5 = [equalCopy sections];
+    v14 = [sections4 isEqual:sections5];
 
     if (!v14)
     {
@@ -76,24 +76,24 @@
   {
   }
 
-  v8 = [(_CPRankingFeedback *)self hiddenResults];
-  v9 = [v4 hiddenResults];
-  if ((v8 != 0) != (v9 == 0))
+  sections = [(_CPRankingFeedback *)self hiddenResults];
+  sections2 = [equalCopy hiddenResults];
+  if ((sections != 0) != (sections2 == 0))
   {
-    v15 = [(_CPRankingFeedback *)self hiddenResults];
-    if (!v15)
+    hiddenResults = [(_CPRankingFeedback *)self hiddenResults];
+    if (!hiddenResults)
     {
 
 LABEL_17:
       spotlightQueryIntent = self->_spotlightQueryIntent;
-      v20 = spotlightQueryIntent == [v4 spotlightQueryIntent];
+      v20 = spotlightQueryIntent == [equalCopy spotlightQueryIntent];
       goto LABEL_15;
     }
 
-    v16 = v15;
-    v17 = [(_CPRankingFeedback *)self hiddenResults];
-    v18 = [v4 hiddenResults];
-    v19 = [v17 isEqual:v18];
+    v16 = hiddenResults;
+    hiddenResults2 = [(_CPRankingFeedback *)self hiddenResults];
+    hiddenResults3 = [equalCopy hiddenResults];
+    v19 = [hiddenResults2 isEqual:hiddenResults3];
 
     if (v19)
     {
@@ -113,10 +113,10 @@ LABEL_15:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if ([(_CPRankingFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
@@ -203,54 +203,54 @@ LABEL_15:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addHiddenResults:(id)a3
+- (void)addHiddenResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   hiddenResults = self->_hiddenResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!hiddenResults)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_hiddenResults;
-    self->_hiddenResults = v6;
+    self->_hiddenResults = array;
 
-    v4 = v8;
+    resultsCopy = v8;
     hiddenResults = self->_hiddenResults;
   }
 
-  [(NSArray *)hiddenResults addObject:v4];
+  [(NSArray *)hiddenResults addObject:resultsCopy];
 }
 
-- (void)setHiddenResults:(id)a3
+- (void)setHiddenResults:(id)results
 {
-  v4 = [a3 mutableCopy];
+  v4 = [results mutableCopy];
   hiddenResults = self->_hiddenResults;
   self->_hiddenResults = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addSections:(id)a3
+- (void)addSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   sections = self->_sections;
-  v8 = v4;
+  v8 = sectionsCopy;
   if (!sections)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_sections;
-    self->_sections = v6;
+    self->_sections = array;
 
-    v4 = v8;
+    sectionsCopy = v8;
     sections = self->_sections;
   }
 
-  [(NSArray *)sections addObject:v4];
+  [(NSArray *)sections addObject:sectionsCopy];
 }
 
-- (void)setSections:(id)a3
+- (void)setSections:(id)sections
 {
-  v4 = [a3 mutableCopy];
+  v4 = [sections mutableCopy];
   sections = self->_sections;
   self->_sections = v4;
 
@@ -271,20 +271,20 @@ LABEL_15:
   return v2;
 }
 
-- (_CPRankingFeedback)initWithFacade:(id)a3
+- (_CPRankingFeedback)initWithFacade:(id)facade
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v33.receiver = self;
   v33.super_class = _CPRankingFeedback;
   v5 = [(_CPRankingFeedback *)&v33 init];
   if (v5)
   {
-    -[_CPRankingFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    [v4 blendingDuration];
+    -[_CPRankingFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    [facadeCopy blendingDuration];
     [(_CPRankingFeedback *)v5 setBlendingDuration:?];
-    v6 = [v4 sections];
-    if (v6)
+    sections = [facadeCopy sections];
+    if (sections)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -298,8 +298,8 @@ LABEL_15:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v8 = [v4 sections];
-    v9 = [v8 countByEnumeratingWithState:&v29 objects:v35 count:16];
+    sections2 = [facadeCopy sections];
+    v9 = [sections2 countByEnumeratingWithState:&v29 objects:v35 count:16];
     if (v9)
     {
       v10 = v9;
@@ -310,22 +310,22 @@ LABEL_15:
         {
           if (*v30 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(sections2);
           }
 
           v13 = [[_CPSectionRankingFeedback alloc] initWithFacade:*(*(&v29 + 1) + 8 * i)];
           [v7 addObject:v13];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v29 objects:v35 count:16];
+        v10 = [sections2 countByEnumeratingWithState:&v29 objects:v35 count:16];
       }
 
       while (v10);
     }
 
     [(_CPRankingFeedback *)v5 setSections:v7];
-    v14 = [v4 hiddenResults];
-    if (v14)
+    hiddenResults = [facadeCopy hiddenResults];
+    if (hiddenResults)
     {
       v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -339,8 +339,8 @@ LABEL_15:
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v16 = [v4 hiddenResults];
-    v17 = [v16 countByEnumeratingWithState:&v25 objects:v34 count:16];
+    hiddenResults2 = [facadeCopy hiddenResults];
+    v17 = [hiddenResults2 countByEnumeratingWithState:&v25 objects:v34 count:16];
     if (v17)
     {
       v18 = v17;
@@ -351,21 +351,21 @@ LABEL_15:
         {
           if (*v26 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(hiddenResults2);
           }
 
           v21 = [[_CPSearchResultForFeedback alloc] initWithFacade:*(*(&v25 + 1) + 8 * j)];
           [v15 addObject:v21];
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v25 objects:v34 count:16];
+        v18 = [hiddenResults2 countByEnumeratingWithState:&v25 objects:v34 count:16];
       }
 
       while (v18);
     }
 
     [(_CPRankingFeedback *)v5 setHiddenResults:v15];
-    -[_CPRankingFeedback setSpotlightQueryIntent:](v5, "setSpotlightQueryIntent:", [v4 spotlightQueryIntent]);
+    -[_CPRankingFeedback setSpotlightQueryIntent:](v5, "setSpotlightQueryIntent:", [facadeCopy spotlightQueryIntent]);
     v22 = v5;
   }
 

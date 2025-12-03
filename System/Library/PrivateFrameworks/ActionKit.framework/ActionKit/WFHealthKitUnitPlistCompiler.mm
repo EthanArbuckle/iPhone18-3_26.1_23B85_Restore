@@ -1,13 +1,13 @@
 @interface WFHealthKitUnitPlistCompiler
-+ (void)compileUnitDataIntoPlistAtPath:(id)a3;
++ (void)compileUnitDataIntoPlistAtPath:(id)path;
 @end
 
 @implementation WFHealthKitUnitPlistCompiler
 
-+ (void)compileUnitDataIntoPlistAtPath:(id)a3
++ (void)compileUnitDataIntoPlistAtPath:(id)path
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  pathCopy = path;
   v4 = [&unk_28509CBF0 mutableCopy];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
@@ -59,7 +59,7 @@
   [v16 addObjectsFromArray:&unk_28509CC20];
   v19 = 0;
   v17 = [MEMORY[0x277CCAC58] dataWithPropertyList:v16 format:100 options:0 error:&v19];
-  [v17 writeToFile:v3 atomically:1];
+  [v17 writeToFile:pathCopy atomically:1];
 
   v18 = *MEMORY[0x277D85DE8];
 }

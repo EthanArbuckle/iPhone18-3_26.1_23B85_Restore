@@ -32,7 +32,7 @@
   v18 = *MEMORY[0x277D85DE8];
   v4 = a3;
   v11 = 0;
-  v5 = [a1 numberForKey:v4 error:&v11];
+  v5 = [self numberForKey:v4 error:&v11];
   v6 = v11;
   if (v6)
   {
@@ -41,23 +41,23 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v13 = a1;
+      selfCopy = self;
       v14 = 2114;
       v15 = v4;
       v16 = 2114;
       v17 = v6;
     }
 
-    v8 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
-    v8 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v8;
+  return bOOLValue;
 }
 
 @end

@@ -1,81 +1,81 @@
 @interface _UIEventDeferringManager
 + (uint64_t)isAnySceneBufferingEvents;
-+ (void)setSystemShellBehaviorDelegate:(id)a3;
-+ (void)targetOfEventDeferringEnvironmentsDidUpdateForScene:(uint64_t)a1;
-- (BOOL)_shouldDisableNewRecord:(void *)a3 outRecreationReasons:;
++ (void)setSystemShellBehaviorDelegate:(id)delegate;
++ (void)targetOfEventDeferringEnvironmentsDidUpdateForScene:(uint64_t)scene;
+- (BOOL)_shouldDisableNewRecord:(void *)record outRecreationReasons:;
 - (UIScene)_scene;
-- (_BYTE)beginAndEndLocalEventDeferringForToken:(void *)a3 withReason:;
-- (_BYTE)beginLocalEventDeferringInEnvironments:(void *)a3 forOwningInterfaceElement:(void *)a4 withReason:;
-- (_BYTE)beginRemoteEventDeferringInEnvironments:(void *)a3 forOwningInterfaceElement:(void *)a4 toTarget:(void *)a5 withReason:;
-- (_UIEventDeferringManager)initWithScene:(id)a3;
+- (_BYTE)beginAndEndLocalEventDeferringForToken:(void *)token withReason:;
+- (_BYTE)beginLocalEventDeferringInEnvironments:(void *)environments forOwningInterfaceElement:(void *)element withReason:;
+- (_BYTE)beginRemoteEventDeferringInEnvironments:(void *)environments forOwningInterfaceElement:(void *)element toTarget:(void *)target withReason:;
+- (_UIEventDeferringManager)initWithScene:(id)scene;
 - (_UISceneUIWindowHosting)windowHostingScene;
-- (id)_currentLocalOrCompatibilityRecordForEnvironment:(int)a3 forcePreviousHardwareIdentifier:;
-- (id)_currentLocalRecordsMatchingEnvironment:(int)a3 forcePreviousHardwareIdentifier:;
-- (id)_descriptorForCompatibility:(void *)a3 environment:(uint64_t)a4 deferringToken:;
-- (id)_displayHardwareIndentifierAccountingForNotFinalizedChange:(id *)a1;
-- (id)_environmentsForLocalTargetWindowPointer:(uint64_t)a1;
-- (id)_localRecordForEnvironment:(id *)a1;
-- (id)_localTargetWindowForEnvironment:(int)a3 consultingFallbackIfPermitted:;
+- (id)_currentLocalOrCompatibilityRecordForEnvironment:(int)environment forcePreviousHardwareIdentifier:;
+- (id)_currentLocalRecordsMatchingEnvironment:(int)environment forcePreviousHardwareIdentifier:;
+- (id)_descriptorForCompatibility:(void *)compatibility environment:(uint64_t)environment deferringToken:;
+- (id)_displayHardwareIndentifierAccountingForNotFinalizedChange:(id *)change;
+- (id)_environmentsForLocalTargetWindowPointer:(uint64_t)pointer;
+- (id)_localRecordForEnvironment:(id *)environment;
+- (id)_localTargetWindowForEnvironment:(int)environment consultingFallbackIfPermitted:;
 - (id)_localTargetWindowPointersUnderObservation;
-- (id)_predicateForDescriptor:(uint64_t)a1;
-- (id)_remoteDeferringRecordStackForEnvironment:(uint64_t)a1;
-- (id)_remoteRecordsInStackMatchingEnvironment:(uint64_t)a3 passingTest:;
-- (id)_targetForDescriptor:(uint64_t)a1;
-- (id)_topRemoteRecordInStackForEnvironment:(uint64_t)a1;
-- (id)_trackedLocalTargetWindowPointerForEnvironment:(uint64_t)a1;
+- (id)_predicateForDescriptor:(uint64_t)descriptor;
+- (id)_remoteDeferringRecordStackForEnvironment:(uint64_t)environment;
+- (id)_remoteRecordsInStackMatchingEnvironment:(uint64_t)environment passingTest:;
+- (id)_targetForDescriptor:(uint64_t)descriptor;
+- (id)_topRemoteRecordInStackForEnvironment:(uint64_t)environment;
+- (id)_trackedLocalTargetWindowPointerForEnvironment:(uint64_t)environment;
 - (id)_trackedLocalTargetWindowPointers;
 - (id)_transactionAssertion;
-- (id)bufferKeyboardFocusEnvironmentEventsWithReason:(uint64_t)a1;
-- (id)currentLocalDeferringTargetWindowMatchingEnvironment:(id)a3 deferringToken:;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)fallbackLocalDeferringTargetWindowIfPermittedForEnvironment:(id *)a1;
+- (id)bufferKeyboardFocusEnvironmentEventsWithReason:(uint64_t)reason;
+- (id)currentLocalDeferringTargetWindowMatchingEnvironment:(id)environment deferringToken:;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)fallbackLocalDeferringTargetWindowIfPermittedForEnvironment:(id *)environment;
 - (id)internalBehavior;
-- (id)localEventDeferringTargetWindowForEnvironment:(id)a3;
+- (id)localEventDeferringTargetWindowForEnvironment:(id)environment;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (uint64_t)_displayHardwareIndentifierHasNotFinalizedChange;
-- (uint64_t)_isRemoteRuleOwningElement:(id)a3 visibleForLocalTargetWindow:;
+- (uint64_t)_isRemoteRuleOwningElement:(id)element visibleForLocalTargetWindow:;
 - (uint64_t)_removeLocalRecordForEnvironment:(uint64_t)result;
-- (uint64_t)compareRemoteRuleOwningElement:(uint64_t)a3 toTopElementInEnvironment:;
+- (uint64_t)compareRemoteRuleOwningElement:(uint64_t)element toTopElementInEnvironment:;
 - (void)_allEnvironments;
-- (void)_currentLocalOrCompatibilityRecordMatchingEnvironment:(uint64_t)a3 recordingManagerPointer:(int)a4 forcePreviousHardwareIdentifier:;
-- (void)_disableEventDeferringRecordsInEnvironment:(void *)a3 addingRecreationReason:(void *)a4 forReason:;
-- (void)_localTargetWindowDidAttachContext:(id)a3;
-- (void)_localTargetWindowDidDetachContext:(id)a3;
-- (void)_processEventDeferringActions:(uint64_t)a3 actionsCount:(uint64_t)a4 inScope:(void *)a5 forDeferringToken:(void *)a6 environments:(void *)a7 target:(void *)a8 addingRecreationReason:(void *)a9 removingRecreationReason:(void *)a10 forReason:;
-- (void)_pushRemoteRecordOnStack:(uint64_t)a3 forEnvironment:;
-- (void)_recreateEventDeferringRecordsInEnvironment:(void *)a3 removingRecreationReason:(void *)a4 forReason:;
-- (void)_removeRemoteRecord:(uint64_t)a3 forEnvironment:;
-- (void)_sceneWillInvalidate:(id)a3;
-- (void)_screenUniqueIdDidChange:(id)a3;
-- (void)_screenUniqueIdWillChange:(id)a3;
-- (void)_setLocalRecord:(uint64_t)a3 forEnvironment:;
-- (void)_setTransactionAssertion:(uint64_t)a1;
-- (void)_stopObservingContextForLocalTargetWindowInEnvironment:(uint64_t)a1;
+- (void)_currentLocalOrCompatibilityRecordMatchingEnvironment:(uint64_t)environment recordingManagerPointer:(int)pointer forcePreviousHardwareIdentifier:;
+- (void)_disableEventDeferringRecordsInEnvironment:(void *)environment addingRecreationReason:(void *)reason forReason:;
+- (void)_localTargetWindowDidAttachContext:(id)context;
+- (void)_localTargetWindowDidDetachContext:(id)context;
+- (void)_processEventDeferringActions:(uint64_t)actions actionsCount:(uint64_t)count inScope:(void *)scope forDeferringToken:(void *)token environments:(void *)environments target:(void *)target addingRecreationReason:(void *)reason removingRecreationReason:(void *)self0 forReason:;
+- (void)_pushRemoteRecordOnStack:(uint64_t)stack forEnvironment:;
+- (void)_recreateEventDeferringRecordsInEnvironment:(void *)environment removingRecreationReason:(void *)reason forReason:;
+- (void)_removeRemoteRecord:(uint64_t)record forEnvironment:;
+- (void)_sceneWillInvalidate:(id)invalidate;
+- (void)_screenUniqueIdDidChange:(id)change;
+- (void)_screenUniqueIdWillChange:(id)change;
+- (void)_setLocalRecord:(uint64_t)record forEnvironment:;
+- (void)_setTransactionAssertion:(uint64_t)assertion;
+- (void)_stopObservingContextForLocalTargetWindowInEnvironment:(uint64_t)environment;
 - (void)_targetProvidersByEnvironment;
-- (void)_windowHostingScene:(id)a3 didMoveFromScreen:(id)a4 toScreen:(id)a5;
+- (void)_windowHostingScene:(id)scene didMoveFromScreen:(id)screen toScreen:(id)toScreen;
 - (void)dealloc;
-- (void)endEventDeferringForToken:(id)a3 withReason:;
-- (void)eventDeferringManager:(id)a3 didRemoveLocalCompatibilityRecordForDescriptor:(id)a4;
-- (void)registerTargetProvider:(uint64_t)a3 forEnvironment:;
-- (void)removeEventDeferringRulesIfNeededForDeallocatingWindow:(id *)a1;
-- (void)setNeedsRemoteEventDeferringRuleComparisonInEnvironments:(id)a3 forBehaviorDelegate:(id)a4 withReason:(id)a5;
+- (void)endEventDeferringForToken:(id)token withReason:;
+- (void)eventDeferringManager:(id)manager didRemoveLocalCompatibilityRecordForDescriptor:(id)descriptor;
+- (void)registerTargetProvider:(uint64_t)provider forEnvironment:;
+- (void)removeEventDeferringRulesIfNeededForDeallocatingWindow:(id *)window;
+- (void)setNeedsRemoteEventDeferringRuleComparisonInEnvironments:(id)environments forBehaviorDelegate:(id)delegate withReason:(id)reason;
 @end
 
 @implementation _UIEventDeferringManager
 
 - (id)_localTargetWindowPointersUnderObservation
 {
-  v2 = *(a1 + 48);
+  v2 = *(self + 48);
   if (!v2)
   {
     v3 = objc_opt_new();
-    v4 = *(a1 + 48);
-    *(a1 + 48) = v3;
+    v4 = *(self + 48);
+    *(self + 48) = v3;
 
-    v2 = *(a1 + 48);
+    v2 = *(self + 48);
   }
 
   return v2;
@@ -90,14 +90,14 @@
 
 - (id)_trackedLocalTargetWindowPointers
 {
-  v2 = *(a1 + 40);
+  v2 = *(self + 40);
   if (!v2)
   {
     v3 = objc_opt_new();
-    v4 = *(a1 + 40);
-    *(a1 + 40) = v3;
+    v4 = *(self + 40);
+    *(self + 40) = v3;
 
-    v2 = *(a1 + 40);
+    v2 = *(self + 40);
   }
 
   return v2;
@@ -105,17 +105,17 @@
 
 - (uint64_t)_displayHardwareIndentifierHasNotFinalizedChange
 {
-  v1 = a1;
-  v2 = [a1 windowHostingScene];
-  v3 = [v2 _screen];
+  selfCopy = self;
+  windowHostingScene = [self windowHostingScene];
+  _screen = [windowHostingScene _screen];
 
-  v4 = [v3 displayConfiguration];
-  v5 = [v4 isExternal];
+  displayConfiguration = [_screen displayConfiguration];
+  isExternal = [displayConfiguration isExternal];
 
-  LOBYTE(v1) = v1[80];
-  if ((v1 & 0x30) == 0x10)
+  LOBYTE(selfCopy) = selfCopy[80];
+  if ((selfCopy & 0x30) == 0x10)
   {
-    return v5;
+    return isExternal;
   }
 
   else
@@ -126,61 +126,61 @@
 
 - (id)_transactionAssertion
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[12];
+    self = self[12];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_targetProvidersByEnvironment
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[4];
+    selfCopy = self;
+    v3 = self[4];
     if (!v3)
     {
-      v4 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
-      v5 = v2[4];
-      v2[4] = v4;
+      strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+      v5 = selfCopy[4];
+      selfCopy[4] = strongToWeakObjectsMapTable;
 
-      v3 = v2[4];
+      v3 = selfCopy[4];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)internalBehavior
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[13];
+    self = self[13];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_allEnvironments
 {
-  v1 = a1;
+  selfCopy = self;
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = objc_opt_new();
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(_UIEventDeferringManager *)v1 _targetProvidersByEnvironment];
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    _targetProvidersByEnvironment = [(_UIEventDeferringManager *)selfCopy _targetProvidersByEnvironment];
+    v4 = [_targetProvidersByEnvironment countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -191,106 +191,106 @@
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(_targetProvidersByEnvironment);
           }
 
           [v2 addObject:{*(*(&v9 + 1) + 8 * i), v9}];
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [_targetProvidersByEnvironment countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v5);
     }
 
-    v1 = [v2 copy];
+    selfCopy = [v2 copy];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
   v6[4] = *MEMORY[0x1E69E9840];
   [(BSInvalidatable *)self->_stateCaptureToken invalidate];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = @"_UIScreenUniqueIdWillChangeNotification";
   v6[1] = @"_UIScreenUniqueIdDidChangeNotification";
   v6[2] = _UIWindowDidAttachContextNotification;
   v6[3] = _UIWindowDidDetachContextNotification;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:4];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   v5.receiver = self;
   v5.super_class = _UIEventDeferringManager;
   [(_UIEventDeferringManager *)&v5 dealloc];
 }
 
-- (id)_topRemoteRecordInStackForEnvironment:(uint64_t)a1
+- (id)_topRemoteRecordInStackForEnvironment:(uint64_t)environment
 {
-  if (a1)
+  if (environment)
   {
-    v2 = [(_UIEventDeferringManager *)a1 _remoteDeferringRecordStackForEnvironment:a2];
+    v2 = [(_UIEventDeferringManager *)environment _remoteDeferringRecordStackForEnvironment:a2];
     if ([v2 count])
     {
-      v3 = [v2 lastObject];
+      lastObject = [v2 lastObject];
     }
 
     else
     {
-      v3 = 0;
+      lastObject = 0;
     }
   }
 
   else
   {
-    v3 = 0;
+    lastObject = 0;
   }
 
-  return v3;
+  return lastObject;
 }
 
-- (void)_setTransactionAssertion:(uint64_t)a1
+- (void)_setTransactionAssertion:(uint64_t)assertion
 {
-  if (a1)
+  if (assertion)
   {
-    if (obj && *(a1 + 96))
+    if (obj && *(assertion + 96))
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:sel__setTransactionAssertion_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:2154 description:{@"[%p] %s: Invalid to set a transaction assertion with one already present", a1, "-[_UIEventDeferringManager _setTransactionAssertion:]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__setTransactionAssertion_ object:assertion file:@"_UIEventDeferringManager.m" lineNumber:2154 description:{@"[%p] %s: Invalid to set a transaction assertion with one already present", assertion, "-[_UIEventDeferringManager _setTransactionAssertion:]"}];
     }
 
-    objc_storeStrong((a1 + 96), obj);
+    objc_storeStrong((assertion + 96), obj);
   }
 }
 
-- (id)_localRecordForEnvironment:(id *)a1
+- (id)_localRecordForEnvironment:(id *)environment
 {
-  if (a1)
+  if (environment)
   {
-    a1 = [a1[2] objectForKey:a2];
+    environment = [environment[2] objectForKey:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return environment;
 }
 
-- (id)_descriptorForCompatibility:(void *)a3 environment:(uint64_t)a4 deferringToken:
+- (id)_descriptorForCompatibility:(void *)compatibility environment:(uint64_t)environment deferringToken:
 {
   v56 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if (a4)
+    if (environment)
     {
-      v7 = *(a4 + 56);
+      v7 = *(environment + 56);
       v8 = v7 != 0;
-      v46 = [(_UIEventDeferringManager *)a1 _displayHardwareIndentifierAccountingForNotFinalizedChange:?];
+      v46 = [(_UIEventDeferringManager *)self _displayHardwareIndentifierAccountingForNotFinalizedChange:?];
       if (v7 == 1)
       {
-        v9 = [(_UIEventDeferringManager *)a1 _localTargetWindowForEnvironment:a3 consultingFallbackIfPermitted:0];
-        if ([a1[13] shouldAllowFallbackWindowForEnvironment:a3])
+        v9 = [(_UIEventDeferringManager *)self _localTargetWindowForEnvironment:compatibility consultingFallbackIfPermitted:0];
+        if ([self[13] shouldAllowFallbackWindowForEnvironment:compatibility])
         {
-          v10 = [(_UIEventDeferringManager *)a1 _currentLocalOrCompatibilityRecordForEnvironment:a3 forcePreviousHardwareIdentifier:0];
+          v10 = [(_UIEventDeferringManager *)self _currentLocalOrCompatibilityRecordForEnvironment:compatibility forcePreviousHardwareIdentifier:0];
           if (!v10 || ((v11 = v10, v12 = *(v10 + 16), (v13 = v12) == 0) ? (v14 = 0) : (v14 = *(v12 + 9)), v15 = v14, v13, v11, !v15))
           {
             v15 = v9;
@@ -304,11 +304,11 @@
             {
               v18 = v17;
               *buf = 134349826;
-              v49 = a1;
+              selfCopy3 = self;
               v50 = 2114;
-              v51 = a3;
+              compatibilityCopy3 = compatibility;
               v52 = 1026;
-              v53 = [v9 _contextId];
+              _contextId = [v9 _contextId];
               v54 = 2114;
               v55 = v9;
               _os_log_impl(&dword_188A29000, v18, OS_LOG_TYPE_ERROR, "[%{public}p] [%{public}@] Returning fallback remote predicate window: contextID: 0x%{public}X; %{public}@", buf, 0x26u);
@@ -326,11 +326,11 @@
             {
               v44 = v43;
               *buf = 134349826;
-              v49 = a1;
+              selfCopy3 = self;
               v50 = 2114;
-              v51 = a3;
+              compatibilityCopy3 = compatibility;
               v52 = 1026;
-              v53 = [v9 _contextId];
+              _contextId = [v9 _contextId];
               v54 = 2114;
               v55 = v9;
               _os_log_impl(&dword_188A29000, v44, OS_LOG_TYPE_ERROR, "[%{public}p] [%{public}@] Returning remote predicate window: contextID: 0x%{public}X; %{public}@", buf, 0x26u);
@@ -340,23 +340,23 @@
           v15 = v9;
         }
 
-        v45 = [v15 _contextId];
+        _contextId2 = [v15 _contextId];
         v19 = 1;
 LABEL_18:
-        v21 = 0;
+        stringRepresentation = 0;
         if (!v8 && (a2 & 1) == 0)
         {
-          v22 = [a1 windowHostingScene];
-          v23 = [v22 _FBSScene];
-          v24 = [v23 identityToken];
-          v21 = [v24 stringRepresentation];
+          windowHostingScene = [self windowHostingScene];
+          _FBSScene = [windowHostingScene _FBSScene];
+          identityToken = [_FBSScene identityToken];
+          stringRepresentation = [identityToken stringRepresentation];
         }
 
         if (v19)
         {
-          if (a4)
+          if (environment)
           {
-            v25 = *(a4 + 72);
+            v25 = *(environment + 72);
           }
 
           else
@@ -379,11 +379,11 @@ LABEL_18:
           if (!v8)
           {
 LABEL_25:
-            v28 = [(_UIEventDeferringManager *)a1 _localTargetWindowForEnvironment:a3 consultingFallbackIfPermitted:1];
+            v28 = [(_UIEventDeferringManager *)self _localTargetWindowForEnvironment:compatibility consultingFallbackIfPermitted:1];
             if (!v28)
             {
-              v39 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v39 handleFailureInMethod:sel__descriptorForCompatibility_environment_deferringToken_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:3011 description:{@"[%p] [%@] %s: Missing target window for environment", a1, a3, "-[_UIEventDeferringManager _descriptorForCompatibility:environment:deferringToken:]"}];
+              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler handleFailureInMethod:sel__descriptorForCompatibility_environment_deferringToken_ object:self file:@"_UIEventDeferringManager.m" lineNumber:3011 description:{@"[%p] [%@] %s: Missing target window for environment", self, compatibility, "-[_UIEventDeferringManager _descriptorForCompatibility:environment:deferringToken:]"}];
             }
 
             v29 = __UILogGetCategoryCachedImpl("EventDeferring", &qword_1ED49CE78);
@@ -393,28 +393,28 @@ LABEL_25:
               if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
               {
                 v41 = v40;
-                v42 = [v28 _contextId];
+                _contextId3 = [v28 _contextId];
                 *buf = 134349826;
-                v49 = a1;
+                selfCopy3 = self;
                 v50 = 2114;
-                v51 = a3;
+                compatibilityCopy3 = compatibility;
                 v52 = 1026;
-                v53 = v42;
+                _contextId = _contextId3;
                 v54 = 2114;
                 v55 = v28;
                 _os_log_impl(&dword_188A29000, v41, OS_LOG_TYPE_ERROR, "[%{public}p] [%{public}@] Local target window: contextID: 0x%{public}X; %{public}@", buf, 0x26u);
               }
             }
 
-            v30 = [v28 _contextId];
-            v31 = 0;
+            _contextId4 = [v28 _contextId];
+            _string = 0;
             goto LABEL_39;
           }
         }
 
-        if (a4)
+        if (environment)
         {
-          v32 = *(a4 + 72);
+          v32 = *(environment + 72);
         }
 
         else
@@ -423,27 +423,27 @@ LABEL_25:
         }
 
         v33 = v32;
-        v34 = [v33 token];
+        token = [v33 token];
 
-        if ([v34 _isIdentifierOfCAContext])
+        if ([token _isIdentifierOfCAContext])
         {
-          v30 = [v34 _identifierOfCAContext];
+          _contextId4 = [token _identifierOfCAContext];
         }
 
         else
         {
-          if ([v34 _isString])
+          if ([token _isString])
           {
-            v31 = [v34 _string];
-            v30 = 0;
+            _string = [token _string];
+            _contextId4 = 0;
 LABEL_38:
 
             v28 = 0;
 LABEL_39:
             v35 = [_UIEventDeferringDescriptor alloc];
-            if (a4)
+            if (environment)
             {
-              v36 = *(a4 + 56);
+              v36 = *(environment + 56);
             }
 
             else
@@ -451,15 +451,15 @@ LABEL_39:
               v36 = 0;
             }
 
-            v37 = [(_UIEventDeferringDescriptor *)v35 _initWithScope:v36 compatibility:a2 environment:a3 displayHardwareIdentifier:v46 predicateSceneIdentityString:v21 predicateWindowPointer:v15 predicateContextID:v45 targetPID:v27 targetSceneIdentityString:v31 targetWindowPointer:v28 targetContextID:v30];
+            v37 = [(_UIEventDeferringDescriptor *)v35 _initWithScope:v36 compatibility:a2 environment:compatibility displayHardwareIdentifier:v46 predicateSceneIdentityString:stringRepresentation predicateWindowPointer:v15 predicateContextID:_contextId2 targetPID:v27 targetSceneIdentityString:_string targetWindowPointer:v28 targetContextID:_contextId4];
 
             goto LABEL_42;
           }
 
-          v30 = 0;
+          _contextId4 = 0;
         }
 
-        v31 = 0;
+        _string = 0;
         goto LABEL_38;
       }
 
@@ -468,13 +468,13 @@ LABEL_39:
 
     else
     {
-      v46 = [(_UIEventDeferringManager *)a1 _displayHardwareIndentifierAccountingForNotFinalizedChange:?];
+      v46 = [(_UIEventDeferringManager *)self _displayHardwareIndentifierAccountingForNotFinalizedChange:?];
       v19 = 0;
       v8 = 0;
     }
 
     v15 = 0;
-    v45 = 0;
+    _contextId2 = 0;
     goto LABEL_18;
   }
 
@@ -484,9 +484,9 @@ LABEL_42:
   return v37;
 }
 
-- (id)_predicateForDescriptor:(uint64_t)a1
+- (id)_predicateForDescriptor:(uint64_t)descriptor
 {
-  if (!a1)
+  if (!descriptor)
   {
     v5 = 0;
     goto LABEL_27;
@@ -503,7 +503,7 @@ LABEL_42:
     v8 = MEMORY[0x1E698E3C8];
     if (v7)
     {
-      v9 = [MEMORY[0x1E698E3C8] displayWithHardwareIdentifier:v7];
+      builtinDisplay = [MEMORY[0x1E698E3C8] displayWithHardwareIdentifier:v7];
       goto LABEL_8;
     }
   }
@@ -514,10 +514,10 @@ LABEL_42:
     v8 = MEMORY[0x1E698E3C8];
   }
 
-  v9 = [v8 builtinDisplay];
+  builtinDisplay = [v8 builtinDisplay];
   v7 = 0;
 LABEL_8:
-  [v5 setDisplay:v9];
+  [v5 setDisplay:builtinDisplay];
 
   if (a2)
   {
@@ -565,8 +565,8 @@ LABEL_8:
     }
 
 LABEL_35:
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:sel__predicateForDescriptor_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:3066 description:{@"[%p] %s: Invalid descriptor: %@", a1, "-[_UIEventDeferringManager _predicateForDescriptor:]", a2}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__predicateForDescriptor_ object:descriptor file:@"_UIEventDeferringManager.m" lineNumber:3066 description:{@"[%p] %s: Invalid descriptor: %@", descriptor, "-[_UIEventDeferringManager _predicateForDescriptor:]", a2}];
 
     if (!a2)
     {
@@ -627,9 +627,9 @@ LABEL_27:
   return v5;
 }
 
-- (id)_targetForDescriptor:(uint64_t)a1
+- (id)_targetForDescriptor:(uint64_t)descriptor
 {
-  if (a1)
+  if (descriptor)
   {
     v4 = objc_alloc_init(MEMORY[0x1E698E3F8]);
     v5 = v4;
@@ -646,8 +646,8 @@ LABEL_27:
 
         if (v6)
         {
-          v7 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v7 handleFailureInMethod:sel__targetForDescriptor_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:3087 description:{@"[%p] %s: Descriptor should not specify a target contextId and a target scene identity: %@", a1, "-[_UIEventDeferringManager _targetForDescriptor:]", a2}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:sel__targetForDescriptor_ object:descriptor file:@"_UIEventDeferringManager.m" lineNumber:3087 description:{@"[%p] %s: Descriptor should not specify a target contextId and a target scene identity: %@", descriptor, "-[_UIEventDeferringManager _targetForDescriptor:]", a2}];
         }
 
         if (*(a2 + 20))
@@ -701,8 +701,8 @@ LABEL_27:
     v3 = result;
     if (!*(result + 96))
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:sel__removeLocalRecordForEnvironment_ object:v3 file:@"_UIEventDeferringManager.m" lineNumber:2429 description:{@"[%p] %s: Invalid state. Removing records without a transaction: %@", v3, "-[_UIEventDeferringManager _removeLocalRecordForEnvironment:]", v3}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__removeLocalRecordForEnvironment_ object:v3 file:@"_UIEventDeferringManager.m" lineNumber:2429 description:{@"[%p] %s: Invalid state. Removing records without a transaction: %@", v3, "-[_UIEventDeferringManager _removeLocalRecordForEnvironment:]", v3}];
     }
 
     v4 = *(v3 + 16);
@@ -713,67 +713,67 @@ LABEL_27:
   return result;
 }
 
-- (void)_setLocalRecord:(uint64_t)a3 forEnvironment:
+- (void)_setLocalRecord:(uint64_t)record forEnvironment:
 {
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 96))
+    if (!*(self + 96))
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v9 handleFailureInMethod:sel__setLocalRecord_forEnvironment_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:2416 description:{@"[%p] %s: Invalid state. Saving records without a transaction: %@", a1, "-[_UIEventDeferringManager _setLocalRecord:forEnvironment:]", a1}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__setLocalRecord_forEnvironment_ object:self file:@"_UIEventDeferringManager.m" lineNumber:2416 description:{@"[%p] %s: Invalid state. Saving records without a transaction: %@", self, "-[_UIEventDeferringManager _setLocalRecord:forEnvironment:]", self}];
     }
 
-    v11 = [*(a1 + 16) objectForKey:a3];
+    v11 = [*(self + 16) objectForKey:record];
     if (v11)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:sel__setLocalRecord_forEnvironment_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:2420 description:{@"[%p] %s: Invalid to set a new local record when one already exists for the environment: %@", a1, "-[_UIEventDeferringManager _setLocalRecord:forEnvironment:]", a3}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:sel__setLocalRecord_forEnvironment_ object:self file:@"_UIEventDeferringManager.m" lineNumber:2420 description:{@"[%p] %s: Invalid to set a new local record when one already exists for the environment: %@", self, "-[_UIEventDeferringManager _setLocalRecord:forEnvironment:]", record}];
     }
 
-    v6 = *(a1 + 16);
+    v6 = *(self + 16);
     if (!v6)
     {
       v7 = objc_opt_new();
-      v8 = *(a1 + 16);
-      *(a1 + 16) = v7;
+      v8 = *(self + 16);
+      *(self + 16) = v7;
 
-      v6 = *(a1 + 16);
+      v6 = *(self + 16);
     }
 
-    [v6 setObject:a2 forKey:a3];
+    [v6 setObject:a2 forKey:record];
   }
 }
 
-- (id)_displayHardwareIndentifierAccountingForNotFinalizedChange:(id *)a1
+- (id)_displayHardwareIndentifierAccountingForNotFinalizedChange:(id *)change
 {
-  v2 = a1;
-  if (a1)
+  changeCopy = change;
+  if (change)
   {
-    HasNotFinalized = [(_UIEventDeferringManager *)a1 _displayHardwareIndentifierHasNotFinalizedChange];
+    HasNotFinalized = [(_UIEventDeferringManager *)change _displayHardwareIndentifierHasNotFinalizedChange];
     if (a2 && HasNotFinalized)
     {
-      v2 = v2[7];
+      changeCopy = changeCopy[7];
     }
 
     else
     {
-      v5 = [v2 windowHostingScene];
-      v6 = [v5 _screen];
+      windowHostingScene = [changeCopy windowHostingScene];
+      _screen = [windowHostingScene _screen];
 
-      v7 = [v6 displayConfiguration];
-      v2 = [v7 hardwareIdentifier];
+      displayConfiguration = [_screen displayConfiguration];
+      changeCopy = [displayConfiguration hardwareIdentifier];
     }
   }
 
-  return v2;
+  return changeCopy;
 }
 
-- (id)_trackedLocalTargetWindowPointerForEnvironment:(uint64_t)a1
+- (id)_trackedLocalTargetWindowPointerForEnvironment:(uint64_t)environment
 {
-  if (a1)
+  if (environment)
   {
-    v3 = [(_UIEventDeferringManager *)a1 _trackedLocalTargetWindowPointers];
-    v4 = [v3 objectForKey:a2];
+    _trackedLocalTargetWindowPointers = [(_UIEventDeferringManager *)environment _trackedLocalTargetWindowPointers];
+    v4 = [_trackedLocalTargetWindowPointers objectForKey:a2];
   }
 
   else
@@ -784,13 +784,13 @@ LABEL_27:
   return v4;
 }
 
-- (void)_stopObservingContextForLocalTargetWindowInEnvironment:(uint64_t)a1
+- (void)_stopObservingContextForLocalTargetWindowInEnvironment:(uint64_t)environment
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (environment)
   {
     v4 = [a2 description];
-    v5 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
 
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("EventDeferring", &_stopObservingContextForLocalTargetWindowInEnvironment____s_category);
     if (*CategoryCachedImpl)
@@ -799,9 +799,9 @@ LABEL_27:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 134349314;
-        v20 = a1;
+        environmentCopy = environment;
         v21 = 2082;
-        v22 = v5;
+        v22 = uTF8String;
         _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "[%{public}p] [%{public}s] Stop observing context for local target window", buf, 0x16u);
       }
     }
@@ -810,19 +810,19 @@ LABEL_27:
     v14 = 3221225472;
     v15 = __83___UIEventDeferringManager__stopObservingContextForLocalTargetWindowInEnvironment___block_invoke;
     v16 = &unk_1E70FCC60;
-    v17 = a1;
-    v18 = v5;
-    v7 = [(_UIEventDeferringManager *)a1 _trackedLocalTargetWindowPointerForEnvironment:a2];
+    environmentCopy2 = environment;
+    v18 = uTF8String;
+    v7 = [(_UIEventDeferringManager *)environment _trackedLocalTargetWindowPointerForEnvironment:a2];
     if (v7)
     {
-      v8 = [(_UIEventDeferringManager *)a1 _trackedLocalTargetWindowPointers];
-      [v8 removeObjectForKey:{a2, v13, v14}];
+      _trackedLocalTargetWindowPointers = [(_UIEventDeferringManager *)environment _trackedLocalTargetWindowPointers];
+      [_trackedLocalTargetWindowPointers removeObjectForKey:{a2, v13, v14}];
 
-      v9 = [(_UIEventDeferringManager *)a1 _localTargetWindowPointersUnderObservation];
-      [v9 removeObject:v7];
+      _localTargetWindowPointersUnderObservation = [(_UIEventDeferringManager *)environment _localTargetWindowPointersUnderObservation];
+      [_localTargetWindowPointersUnderObservation removeObject:v7];
 
-      v10 = [(_UIEventDeferringManager *)a1 _localTargetWindowPointersUnderObservation];
-      v11 = [v10 countForObject:v7];
+      _localTargetWindowPointersUnderObservation2 = [(_UIEventDeferringManager *)environment _localTargetWindowPointersUnderObservation];
+      v11 = [_localTargetWindowPointersUnderObservation2 countForObject:v7];
 
       if (!v11)
       {
@@ -832,33 +832,33 @@ LABEL_27:
   }
 }
 
-- (void)_removeRemoteRecord:(uint64_t)a3 forEnvironment:
+- (void)_removeRemoteRecord:(uint64_t)record forEnvironment:
 {
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 96))
+    if (!*(self + 96))
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:sel__removeRemoteRecord_forEnvironment_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:2497 description:{@"[%p] %s: Invalid state. Removing records without a transaction: %@", a1, "-[_UIEventDeferringManager _removeRemoteRecord:forEnvironment:]", a1}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__removeRemoteRecord_forEnvironment_ object:self file:@"_UIEventDeferringManager.m" lineNumber:2497 description:{@"[%p] %s: Invalid state. Removing records without a transaction: %@", self, "-[_UIEventDeferringManager _removeRemoteRecord:forEnvironment:]", self}];
     }
 
-    v7 = [(_UIEventDeferringManager *)a1 _remoteDeferringRecordStackForEnvironment:a3];
+    v7 = [(_UIEventDeferringManager *)self _remoteDeferringRecordStackForEnvironment:record];
     [v7 removeObjectIdenticalTo:a2];
   }
 }
 
-- (BOOL)_shouldDisableNewRecord:(void *)a3 outRecreationReasons:
+- (BOOL)_shouldDisableNewRecord:(void *)record outRecreationReasons:
 {
-  if (a1)
+  if (self)
   {
-    if (!a3)
+    if (!record)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v13 handleFailureInMethod:sel__shouldDisableNewRecord_outRecreationReasons_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:3100 description:{@"Invalid parameter not satisfying: %@", @"outRecreationReasons"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__shouldDisableNewRecord_outRecreationReasons_ object:self file:@"_UIEventDeferringManager.m" lineNumber:3100 description:{@"Invalid parameter not satisfying: %@", @"outRecreationReasons"}];
     }
 
     v6 = objc_opt_new();
-    if ([(_UIEventDeferringManager *)a1 _displayHardwareIndentifierHasNotFinalizedChange])
+    if ([(_UIEventDeferringManager *)self _displayHardwareIndentifierHasNotFinalizedChange])
     {
       [v6 addObject:@"_UIEventDeferringRecreationReasonChangingScreenIdentifier"];
     }
@@ -927,7 +927,7 @@ LABEL_20:
       goto LABEL_37;
     }
 
-    v16 = *(a1 + 104);
+    v16 = *(self + 104);
     if (a2)
     {
       WeakRetained = objc_loadWeakRetained((a2 + 32));
@@ -983,13 +983,13 @@ LABEL_28:
 LABEL_34:
         v28 = v27;
 
-        if (([(_UIEventDeferringManager *)a1 _isRemoteRuleOwningElement:v28 visibleForLocalTargetWindow:v12]& 1) == 0)
+        if (([(_UIEventDeferringManager *)self _isRemoteRuleOwningElement:v28 visibleForLocalTargetWindow:v12]& 1) == 0)
         {
           [v6 addObject:@"_UIEventDeferringRecreationReasonTopRemoteElementNotVisible"];
         }
 
 LABEL_37:
-        *a3 = [v6 copy];
+        *record = [v6 copy];
         v14 = [v6 count] != 0;
 
         return v14;
@@ -1008,25 +1008,25 @@ LABEL_37:
   return 0;
 }
 
-- (id)_remoteDeferringRecordStackForEnvironment:(uint64_t)a1
+- (id)_remoteDeferringRecordStackForEnvironment:(uint64_t)environment
 {
-  if (a1)
+  if (environment)
   {
-    v4 = *(a1 + 24);
+    v4 = *(environment + 24);
     if (!v4)
     {
       v5 = objc_opt_new();
-      v6 = *(a1 + 24);
-      *(a1 + 24) = v5;
+      v6 = *(environment + 24);
+      *(environment + 24) = v5;
 
-      v4 = *(a1 + 24);
+      v4 = *(environment + 24);
     }
 
     v7 = [v4 objectForKey:a2];
     if (!v7)
     {
       v7 = objc_opt_new();
-      [*(a1 + 24) setObject:v7 forKey:a2];
+      [*(environment + 24) setObject:v7 forKey:a2];
     }
   }
 
@@ -1038,45 +1038,45 @@ LABEL_37:
   return v7;
 }
 
-- (id)_currentLocalOrCompatibilityRecordForEnvironment:(int)a3 forcePreviousHardwareIdentifier:
+- (id)_currentLocalOrCompatibilityRecordForEnvironment:(int)environment forcePreviousHardwareIdentifier:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v4 = [(_UIEventDeferringManager *)a1 _currentLocalRecordsMatchingEnvironment:a2 forcePreviousHardwareIdentifier:a3];
-    if ([v3[13] wantsLocalIdealRules])
+    v4 = [(_UIEventDeferringManager *)self _currentLocalRecordsMatchingEnvironment:a2 forcePreviousHardwareIdentifier:environment];
+    if ([selfCopy[13] wantsLocalIdealRules])
     {
       v5 = @"LocalIdealRecord";
     }
 
     else
     {
-      if (![v3[13] wantsLocalCompatibilityRules])
+      if (![selfCopy[13] wantsLocalCompatibilityRules])
       {
-        v3 = 0;
+        selfCopy = 0;
         goto LABEL_8;
       }
 
       v5 = @"LocalCompatibilityRecord";
     }
 
-    v3 = [v4 objectForKey:v5];
+    selfCopy = [v4 objectForKey:v5];
 LABEL_8:
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (uint64_t)_isRemoteRuleOwningElement:(id)a3 visibleForLocalTargetWindow:
+- (uint64_t)_isRemoteRuleOwningElement:(id)element visibleForLocalTargetWindow:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   if (a2)
   {
-    if (a3)
+    if (element)
     {
       goto LABEL_4;
     }
@@ -1084,30 +1084,30 @@ LABEL_8:
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:sel__isRemoteRuleOwningElement_visibleForLocalTargetWindow_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:3158 description:{@"Invalid parameter not satisfying: %@", @"remoteRuleElement"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__isRemoteRuleOwningElement_visibleForLocalTargetWindow_ object:self file:@"_UIEventDeferringManager.m" lineNumber:3158 description:{@"Invalid parameter not satisfying: %@", @"remoteRuleElement"}];
 
-    if (a3)
+    if (element)
     {
       goto LABEL_4;
     }
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:sel__isRemoteRuleOwningElement_visibleForLocalTargetWindow_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:3159 description:{@"Invalid parameter not satisfying: %@", @"localTargetWindow"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:sel__isRemoteRuleOwningElement_visibleForLocalTargetWindow_ object:self file:@"_UIEventDeferringManager.m" lineNumber:3159 description:{@"Invalid parameter not satisfying: %@", @"localTargetWindow"}];
 
 LABEL_4:
-  v6 = a1[13];
-  v7 = [a2 interfaceElementCategory];
-  if (v7 != 1)
+  v6 = self[13];
+  interfaceElementCategory = [a2 interfaceElementCategory];
+  if (interfaceElementCategory != 1)
   {
-    v8 = v7;
-    if (v7 == 3)
+    v8 = interfaceElementCategory;
+    if (interfaceElementCategory == 3)
     {
-      v11 = [a2 _existingView];
-      v9 = [v11 window];
+      _existingView = [a2 _existingView];
+      window = [_existingView window];
 
-      if (!v9)
+      if (!window)
       {
         goto LABEL_8;
       }
@@ -1115,15 +1115,15 @@ LABEL_4:
 
     else
     {
-      if (v7 != 2)
+      if (interfaceElementCategory != 2)
       {
         v10 = 0;
-        v9 = 0;
+        window = 0;
         goto LABEL_15;
       }
 
-      v9 = a2;
-      if (!v9)
+      window = a2;
+      if (!window)
       {
 LABEL_8:
         v10 = 0;
@@ -1131,7 +1131,7 @@ LABEL_8:
       }
     }
 
-    v12 = [v6 isRemoteRuleOwningElement:a2 andContainingWindow:v9 visibleComparedToLocalTargetWindow:a3];
+    v12 = [v6 isRemoteRuleOwningElement:a2 andContainingWindow:window visibleComparedToLocalTargetWindow:element];
     if (v12)
     {
       v13 = v12 == 1;
@@ -1142,7 +1142,7 @@ LABEL_28:
 
     v10 = 1;
 LABEL_15:
-    IsElementOccludedByWindow = _UIEventDeferringBehaviorIsElementOccludedByWindow(a2, a3);
+    IsElementOccludedByWindow = _UIEventDeferringBehaviorIsElementOccludedByWindow(a2, element);
     if (IsElementOccludedByWindow != 1)
     {
       if (IsElementOccludedByWindow)
@@ -1163,21 +1163,21 @@ LABEL_29:
       if ((v8 & 0xFFFFFFFFFFFFFFFELL) == 2)
       {
 LABEL_20:
-        if ((v10 & 1) != 0 && v9 != a3)
+        if ((v10 & 1) != 0 && window != element)
         {
           if (([v6 wantsLocalIdealRules] & 1) != 0 || !objc_msgSend(v6, "wantsLocalCompatibilityRules"))
           {
-            v16 = [a1 windowHostingScene];
+            windowHostingScene = [self windowHostingScene];
             v21[0] = MEMORY[0x1E69E9820];
             v21[1] = 3221225472;
             v21[2] = __83___UIEventDeferringManager__isRemoteRuleOwningElement_visibleForLocalTargetWindow___block_invoke;
             v21[3] = &unk_1E70FCC88;
-            v21[4] = a3;
-            v9 = v9;
-            v22 = v9;
-            v17 = [v16 _topVisibleWindowPassingTest:v21];
+            v21[4] = element;
+            window = window;
+            v22 = window;
+            v17 = [windowHostingScene _topVisibleWindowPassingTest:v21];
 
-            v23 = !v17 || v17 != a3;
+            v23 = !v17 || v17 != element;
             goto LABEL_29;
           }
 
@@ -1196,22 +1196,22 @@ LABEL_30:
   return v14;
 }
 
-- (void)_pushRemoteRecordOnStack:(uint64_t)a3 forEnvironment:
+- (void)_pushRemoteRecordOnStack:(uint64_t)stack forEnvironment:
 {
-  if (a1)
+  if (self)
   {
-    if (!*(a1 + 96))
+    if (!*(self + 96))
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:sel__pushRemoteRecordOnStack_forEnvironment_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:2491 description:{@"[%p] %s: Invalid state. Saving records without a transaction: %@", a1, "-[_UIEventDeferringManager _pushRemoteRecordOnStack:forEnvironment:]", a1}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__pushRemoteRecordOnStack_forEnvironment_ object:self file:@"_UIEventDeferringManager.m" lineNumber:2491 description:{@"[%p] %s: Invalid state. Saving records without a transaction: %@", self, "-[_UIEventDeferringManager _pushRemoteRecordOnStack:forEnvironment:]", self}];
     }
 
-    v7 = [(_UIEventDeferringManager *)a1 _remoteDeferringRecordStackForEnvironment:a3];
+    v7 = [(_UIEventDeferringManager *)self _remoteDeferringRecordStackForEnvironment:stack];
     [v7 addObject:a2];
   }
 }
 
-- (_UIEventDeferringManager)initWithScene:(id)a3
+- (_UIEventDeferringManager)initWithScene:(id)scene
 {
   v62 = *MEMORY[0x1E69E9840];
   v47.receiver = self;
@@ -1219,13 +1219,13 @@ LABEL_30:
   v5 = [(_UIEventDeferringManager *)&v47 init];
   if (v5)
   {
-    if (([a3 _hostsWindows] & 1) == 0)
+    if (([scene _hostsWindows] & 1) == 0)
     {
-      v43 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v43 handleFailureInMethod:a2 object:v5 file:@"_UIEventDeferringManager.m" lineNumber:1901 description:{@"Invalid parameter not satisfying: %@", @"[scene _hostsWindows]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v5 file:@"_UIEventDeferringManager.m" lineNumber:1901 description:{@"Invalid parameter not satisfying: %@", @"[scene _hostsWindows]"}];
     }
 
-    objc_storeWeak(&v5->_scene, a3);
+    objc_storeWeak(&v5->_scene, scene);
     v5->_currentState = 1;
     v6 = _UIEventDeferringBehaviorForManager(v5);
     behavior = v5->_behavior;
@@ -1271,11 +1271,11 @@ LABEL_30:
       if ((*&v5->_deferringManagerFlags & 4) == 0)
       {
         *&v5->_deferringManagerFlags |= 4u;
-        v20 = [(_UIEventDeferringManager *)v5 windowHostingScene];
-        v21 = [v20 _screen];
+        windowHostingScene = [(_UIEventDeferringManager *)v5 windowHostingScene];
+        _screen = [windowHostingScene _screen];
 
-        v22 = [v21 displayConfiguration];
-        v23 = [v22 isExternal];
+        displayConfiguration = [_screen displayConfiguration];
+        isExternal = [displayConfiguration isExternal];
 
         v24 = [(_UIEventDeferringManager *)&v5->super.isa _displayHardwareIndentifierAccountingForNotFinalizedChange:?];
         if (v24)
@@ -1285,15 +1285,15 @@ LABEL_30:
 
         else
         {
-          v25 = v23;
+          v25 = isExternal;
         }
 
         if (v25 == 1)
         {
           *&v5->_deferringManagerFlags |= 0x10u;
-          if (v21)
+          if (_screen)
           {
-            v26 = v21[32];
+            v26 = _screen[32];
           }
 
           else
@@ -1305,30 +1305,30 @@ LABEL_30:
         }
       }
 
-      v27 = [MEMORY[0x1E698E398] keyboardFocusEnvironment];
-      [(_UIEventDeferringManager *)v5 registerTargetProvider:v5 forEnvironment:v27];
+      keyboardFocusEnvironment = [MEMORY[0x1E698E398] keyboardFocusEnvironment];
+      [(_UIEventDeferringManager *)v5 registerTargetProvider:v5 forEnvironment:keyboardFocusEnvironment];
 
       v28 = v5->_behavior;
-      LODWORD(v27) = [(_UIEventDeferringBehavior *)v28 wantsSystemKeyCommandOverlayRules];
+      LODWORD(keyboardFocusEnvironment) = [(_UIEventDeferringBehavior *)v28 wantsSystemKeyCommandOverlayRules];
 
-      if (v27)
+      if (keyboardFocusEnvironment)
       {
-        v29 = [MEMORY[0x1E698E398] ui_systemKeyCommandOverlayEnvironment];
-        [(_UIEventDeferringManager *)v5 registerTargetProvider:v5 forEnvironment:v29];
+        ui_systemKeyCommandOverlayEnvironment = [MEMORY[0x1E698E398] ui_systemKeyCommandOverlayEnvironment];
+        [(_UIEventDeferringManager *)v5 registerTargetProvider:v5 forEnvironment:ui_systemKeyCommandOverlayEnvironment];
       }
 
-      v30 = [(_UIEventDeferringManager *)v5 windowHostingScene];
-      v31 = [v30 _screen];
+      windowHostingScene2 = [(_UIEventDeferringManager *)v5 windowHostingScene];
+      _screen2 = [windowHostingScene2 _screen];
 
-      v32 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v32 addObserver:v5 selector:sel__screenUniqueIdWillChange_ name:@"_UIScreenUniqueIdWillChangeNotification" object:v31];
-      [v32 addObserver:v5 selector:sel__screenUniqueIdDidChange_ name:@"_UIScreenUniqueIdDidChangeNotification" object:v31];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v5 selector:sel__screenUniqueIdWillChange_ name:@"_UIScreenUniqueIdWillChangeNotification" object:_screen2];
+      [defaultCenter addObserver:v5 selector:sel__screenUniqueIdDidChange_ name:@"_UIScreenUniqueIdDidChangeNotification" object:_screen2];
 
       objc_initWeak(buf, v5);
       v33 = MEMORY[0x1E696AEC0];
-      v34 = [(_UIEventDeferringManager *)v5 windowHostingScene];
-      v35 = [v34 _sceneIdentifier];
-      v36 = [v33 stringWithFormat:@"UIKit - EventDeferringState - %@", v35];
+      windowHostingScene3 = [(_UIEventDeferringManager *)v5 windowHostingScene];
+      _sceneIdentifier = [windowHostingScene3 _sceneIdentifier];
+      v36 = [v33 stringWithFormat:@"UIKit - EventDeferringState - %@", _sceneIdentifier];
 
       v37 = MEMORY[0x1E69E96A0];
       v45[1] = MEMORY[0x1E69E9820];
@@ -1341,9 +1341,9 @@ LABEL_30:
       v5->_stateCaptureToken = v38;
 
       v40 = objc_loadWeakRetained(&v5->_scene);
-      LODWORD(v35) = [v40 _isTargetOfKeyboardEventDeferringEnvironment];
+      LODWORD(_sceneIdentifier) = [v40 _isTargetOfKeyboardEventDeferringEnvironment];
 
-      if (v35)
+      if (_sceneIdentifier)
       {
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
@@ -1365,22 +1365,22 @@ LABEL_30:
   return v5;
 }
 
-- (void)registerTargetProvider:(uint64_t)a3 forEnvironment:
+- (void)registerTargetProvider:(uint64_t)provider forEnvironment:
 {
-  if (a1)
+  if (self)
   {
-    v6 = [(_UIEventDeferringManager *)a1 _targetProvidersByEnvironment];
-    v7 = [v6 objectForKey:a3];
+    _targetProvidersByEnvironment = [(_UIEventDeferringManager *)self _targetProvidersByEnvironment];
+    v7 = [_targetProvidersByEnvironment objectForKey:provider];
 
     if (!v7)
     {
-      v8 = [(_UIEventDeferringManager *)a1 _targetProvidersByEnvironment];
-      [v8 setObject:a2 forKey:a3];
+      _targetProvidersByEnvironment2 = [(_UIEventDeferringManager *)self _targetProvidersByEnvironment];
+      [_targetProvidersByEnvironment2 setObject:a2 forKey:provider];
     }
   }
 }
 
-+ (void)targetOfEventDeferringEnvironmentsDidUpdateForScene:(uint64_t)a1
++ (void)targetOfEventDeferringEnvironmentsDidUpdateForScene:(uint64_t)scene
 {
   v64 = *MEMORY[0x1E69E9840];
   v38 = objc_opt_self();
@@ -1410,37 +1410,37 @@ LABEL_30:
 
           v42 = v4;
           v6 = *(*(&v50 + 1) + 8 * v4);
-          v7 = [v6 _eventDeferringManager];
-          if (v7 && ([v3 containsObject:v7] & 1) == 0)
+          _eventDeferringManager = [v6 _eventDeferringManager];
+          if (_eventDeferringManager && ([v3 containsObject:_eventDeferringManager] & 1) == 0)
           {
             if (!v3)
             {
               v3 = objc_opt_new();
             }
 
-            [v3 addObject:v7];
-            v8 = [v7[13] systemShellManagesKeyboardFocus];
+            [v3 addObject:_eventDeferringManager];
+            systemShellManagesKeyboardFocus = [_eventDeferringManager[13] systemShellManagesKeyboardFocus];
             v9 = _UISceneSystemShellManagesKeyboardFocusForScene(v6);
-            v10 = [v7[13] eligibleForLocalCompatibilityRuleRemoval];
+            eligibleForLocalCompatibilityRuleRemoval = [_eventDeferringManager[13] eligibleForLocalCompatibilityRuleRemoval];
             v11 = *(__UILogGetCategoryCachedImpl("EventDeferring", &qword_1ED49CE50) + 8);
             if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
             {
               v12 = v11;
-              v13 = [v7 windowHostingScene];
+              windowHostingScene = [_eventDeferringManager windowHostingScene];
               *buf = 134350080;
-              *&buf[4] = v7;
+              *&buf[4] = _eventDeferringManager;
               *&buf[12] = 2050;
-              *&buf[14] = v13;
+              *&buf[14] = windowHostingScene;
               *&buf[22] = 1026;
-              LODWORD(v57) = v8;
+              LODWORD(v57) = systemShellManagesKeyboardFocus;
               WORD2(v57) = 1026;
               *(&v57 + 6) = v9;
               WORD5(v57) = 1026;
-              HIDWORD(v57) = v10;
+              HIDWORD(v57) = eligibleForLocalCompatibilityRuleRemoval;
               _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}p] Scene target of event deferring environments did update: scene: %{public}p; current systemShellManagesKeyboardFocus: %{public}d; systemShellManagesKeyboardFocusForScene: %{public}d; eligibleForRecordRemoval: %{public}d;", buf, 0x28u);
             }
 
-            if (!(v8 & 1 | ((v9 & 1) == 0)) && ((v10 ^ 1) & 1) == 0)
+            if (!(systemShellManagesKeyboardFocus & 1 | ((v9 & 1) == 0)) && ((eligibleForLocalCompatibilityRuleRemoval ^ 1) & 1) == 0)
             {
               v14 = *(__UILogGetCategoryCachedImpl("EventDeferring", &qword_1ED49CE58) + 8);
               if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -1452,13 +1452,13 @@ LABEL_30:
                 _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}p] Updating system shell management of keyboard focus to: %{public}d", buf, 0x12u);
               }
 
-              [v7[13] setSystemShellManagesKeyboardFocus:1];
+              [_eventDeferringManager[13] setSystemShellManagesKeyboardFocus:1];
               v48 = 0u;
               v49 = 0u;
               v46 = 0u;
               v47 = 0u;
-              v43 = [(_UIEventDeferringManager *)v7 _allEnvironments];
-              v45 = [v43 countByEnumeratingWithState:&v46 objects:v54 count:16];
+              _allEnvironments = [(_UIEventDeferringManager *)_eventDeferringManager _allEnvironments];
+              v45 = [_allEnvironments countByEnumeratingWithState:&v46 objects:v54 count:16];
               if (v45)
               {
                 v44 = *v47;
@@ -1469,37 +1469,37 @@ LABEL_30:
                   {
                     if (*v47 != v44)
                     {
-                      objc_enumerationMutation(v43);
+                      objc_enumerationMutation(_allEnvironments);
                     }
 
                     v16 = *(*(&v46 + 1) + 8 * v15);
-                    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %p: Removing local compatibility record for system shell managing keyboard focus in %@", objc_opt_class(), v7, v16];
-                    if (([v7[13] eligibleForLocalCompatibilityRuleRemoval] & 1) == 0)
+                    v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %p: Removing local compatibility record for system shell managing keyboard focus in %@", objc_opt_class(), _eventDeferringManager, v16];
+                    if (([_eventDeferringManager[13] eligibleForLocalCompatibilityRuleRemoval] & 1) == 0)
                     {
-                      v35 = [MEMORY[0x1E696AAA8] currentHandler];
-                      v36 = [v7 windowHostingScene];
-                      [v35 handleFailureInMethod:sel__removeLocalCompatibilityEventDeferringForSystemShellKeyboardFocusInEnvironment_withReason_ object:v7 file:@"_UIEventDeferringManager.m" lineNumber:3488 description:{@"[%p] %s: Invalid to request compatibility record removal on this scene: %@", v7, "-[_UIEventDeferringManager _removeLocalCompatibilityEventDeferringForSystemShellKeyboardFocusInEnvironment:withReason:]", v36}];
+                      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+                      windowHostingScene2 = [_eventDeferringManager windowHostingScene];
+                      [currentHandler handleFailureInMethod:sel__removeLocalCompatibilityEventDeferringForSystemShellKeyboardFocusInEnvironment_withReason_ object:_eventDeferringManager file:@"_UIEventDeferringManager.m" lineNumber:3488 description:{@"[%p] %s: Invalid to request compatibility record removal on this scene: %@", _eventDeferringManager, "-[_UIEventDeferringManager _removeLocalCompatibilityEventDeferringForSystemShellKeyboardFocusInEnvironment:withReason:]", windowHostingScene2}];
                     }
 
                     v18 = [v16 description];
                     v19 = v18;
-                    v20 = [v18 UTF8String];
+                    uTF8String = [v18 UTF8String];
 
                     v21 = v17;
-                    v22 = [v17 UTF8String];
+                    uTF8String2 = [v17 UTF8String];
                     v23 = *(__UILogGetCategoryCachedImpl("EventDeferring", &qword_1ED49CEB0) + 8);
                     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
                     {
                       *v60 = 134349570;
-                      *&v60[4] = v7;
+                      *&v60[4] = _eventDeferringManager;
                       *&v60[12] = 2082;
-                      *&v60[14] = v20;
+                      *&v60[14] = uTF8String;
                       *&v60[22] = 2082;
-                      v61 = v22;
+                      v61 = uTF8String2;
                       _os_log_impl(&dword_188A29000, v23, OS_LOG_TYPE_DEFAULT, "[%{public}p] [%{public}s] Removing all local compatibility event deferring rules for reason: %{public}s", v60, 0x20u);
                     }
 
-                    v24 = [(_UIEventDeferringManager *)v7 _displayHardwareIndentifierAccountingForNotFinalizedChange:?];
+                    v24 = [(_UIEventDeferringManager *)_eventDeferringManager _displayHardwareIndentifierAccountingForNotFinalizedChange:?];
                     if (v24)
                     {
                       [MEMORY[0x1E698E3C8] displayWithHardwareIdentifier:v24];
@@ -1546,7 +1546,7 @@ LABEL_30:
                       }
 
                       v34 = v33;
-                      [(_UIEventDeferringManager *)v7 _processEventDeferringActions:2 actionsCount:v32 inScope:WeakRetained forDeferringToken:v30 environments:v34 target:0 addingRecreationReason:0 removingRecreationReason:v17 forReason:?];
+                      [(_UIEventDeferringManager *)_eventDeferringManager _processEventDeferringActions:2 actionsCount:v32 inScope:WeakRetained forDeferringToken:v30 environments:v34 target:0 addingRecreationReason:0 removingRecreationReason:v17 forReason:?];
                       v3 = v31;
                     }
 
@@ -1555,7 +1555,7 @@ LABEL_30:
                   }
 
                   while (v45 != v15);
-                  v37 = [v43 countByEnumeratingWithState:&v46 objects:v54 count:16];
+                  v37 = [_allEnvironments countByEnumeratingWithState:&v46 objects:v54 count:16];
                   v45 = v37;
                 }
 
@@ -1581,21 +1581,21 @@ LABEL_30:
   }
 }
 
-- (void)_sceneWillInvalidate:(id)a3
+- (void)_sceneWillInvalidate:(id)invalidate
 {
   v38 = *MEMORY[0x1E69E9840];
   deferringManagerFlags = self->_deferringManagerFlags;
-  v6 = [(_UIEventDeferringManager *)self windowHostingScene];
-  v7 = [v6 _hasInvalidated];
+  windowHostingScene = [(_UIEventDeferringManager *)self windowHostingScene];
+  _hasInvalidated = [windowHostingScene _hasInvalidated];
 
-  if (v7)
+  if (_hasInvalidated)
   {
     if (*&self->_deferringManagerFlags & 2 | deferringManagerFlags & 1)
     {
       if ((*&self->_deferringManagerFlags & 2) == 0)
       {
-        v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %p: removing all deferring rules due to scene invalidation: %p", objc_opt_class(), self, a3];
-        v8 = [(_UIEventDeferringManager *)self _allEnvironments];
+        invalidate = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %p: removing all deferring rules due to scene invalidation: %p", objc_opt_class(), self, invalidate];
+        _allEnvironments = [(_UIEventDeferringManager *)self _allEnvironments];
         objc_initWeak(&location, self);
         v9 = [_UIEventDeferringOwnershipToken alloc];
         v31[0] = MEMORY[0x1E69E9820];
@@ -1603,16 +1603,16 @@ LABEL_30:
         v31[2] = __103___UIEventDeferringManager__removeEventDeferringRecordsForAllEnvironmentsWithOwningElement_withReason___block_invoke;
         v31[3] = &unk_1E70FCD28;
         objc_copyWeak(&v32, &location);
-        v10 = [(_UIEventDeferringOwnershipToken *)v9 _initWithOwner:1 scope:v8 environments:0 target:v26 reason:v31 endDeferringBlock:?];
-        v11 = v26;
-        v12 = [v26 UTF8String];
+        v10 = [(_UIEventDeferringOwnershipToken *)v9 _initWithOwner:1 scope:_allEnvironments environments:0 target:invalidate reason:v31 endDeferringBlock:?];
+        v11 = invalidate;
+        uTF8String = [invalidate UTF8String];
         v13 = *(__UILogGetCategoryCachedImpl("EventDeferring", &_removeEventDeferringRecordsForAllEnvironmentsWithOwningElement_withReason____s_category) + 8);
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134349314;
-          v35 = self;
+          selfCopy = self;
           v36 = 2082;
-          v37 = v12;
+          v37 = uTF8String;
           _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}p] Removing all event deferring rules for reason: %{public}s", buf, 0x16u);
         }
 
@@ -1631,13 +1631,13 @@ LABEL_30:
         }
 
         v17 = v16;
-        [(_UIEventDeferringManager *)self _processEventDeferringActions:3 actionsCount:v14 inScope:v10 forDeferringToken:v15 environments:v17 target:0 addingRecreationReason:0 removingRecreationReason:v26 forReason:?];
+        [(_UIEventDeferringManager *)self _processEventDeferringActions:3 actionsCount:v14 inScope:v10 forDeferringToken:v15 environments:v17 target:0 addingRecreationReason:0 removingRecreationReason:invalidate forReason:?];
 
         v29 = 0u;
         v30 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v18 = v8;
+        v18 = _allEnvironments;
         v19 = [v18 countByEnumeratingWithState:&v27 objects:buf count:16];
         if (v19)
         {
@@ -1670,13 +1670,13 @@ LABEL_30:
         objc_destroyWeak(&v32);
         objc_destroyWeak(&location);
 
-        v22 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v22 removeObserver:self];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter removeObserver:self];
 
         v23 = self->_behavior;
-        v24 = [(_UIEventDeferringBehavior *)v23 systemShellBehaviorDelegate];
+        systemShellBehaviorDelegate = [(_UIEventDeferringBehavior *)v23 systemShellBehaviorDelegate];
 
-        if (v24)
+        if (systemShellBehaviorDelegate)
         {
           v25 = self->_behavior;
           [(_UIEventDeferringBehavior *)v25 setSystemShellBehaviorDelegate:0];
@@ -1693,21 +1693,21 @@ LABEL_30:
   }
 }
 
-+ (void)setSystemShellBehaviorDelegate:(id)a3
++ (void)setSystemShellBehaviorDelegate:(id)delegate
 {
   v31 = *MEMORY[0x1E69E9840];
   if ((_UIEventDeferringSystemShellBehaviorIsAllowedForProcess() & 1) == 0)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"_UIEventDeferringManager.m" lineNumber:2172 description:{@"%s: A system shell behavior delegate is not allowed for this process", "+[_UIEventDeferringManager setSystemShellBehaviorDelegate:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIEventDeferringManager.m" lineNumber:2172 description:{@"%s: A system shell behavior delegate is not allowed for this process", "+[_UIEventDeferringManager setSystemShellBehaviorDelegate:]"}];
   }
 
   v6 = qword_1ED49CE40;
   v7 = v6;
-  if (a3 && v6)
+  if (delegate && v6)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"_UIEventDeferringManager.m" lineNumber:2175 description:{@"%s: Invalid to set a system shell behavior delegate with one already present", "+[_UIEventDeferringManager setSystemShellBehaviorDelegate:]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIEventDeferringManager.m" lineNumber:2175 description:{@"%s: Invalid to set a system shell behavior delegate with one already present", "+[_UIEventDeferringManager setSystemShellBehaviorDelegate:]"}];
   }
 
   v8 = objc_opt_class();
@@ -1724,7 +1724,7 @@ LABEL_30:
     _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_DEFAULT, "Setting system shell behavior delegate: existing: %{public}s; new: %{public}s", buf, 0x16u);
   }
 
-  objc_storeStrong(&qword_1ED49CE40, a3);
+  objc_storeStrong(&qword_1ED49CE40, delegate);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
@@ -1745,16 +1745,16 @@ LABEL_30:
           objc_enumerationMutation(v13);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * i) _eventDeferringManager];
-        if (v19 && ([v16 containsObject:v19] & 1) == 0)
+        _eventDeferringManager = [*(*(&v22 + 1) + 8 * i) _eventDeferringManager];
+        if (_eventDeferringManager && ([v16 containsObject:_eventDeferringManager] & 1) == 0)
         {
           if (!v16)
           {
             v16 = objc_opt_new();
           }
 
-          [v16 addObject:v19];
-          [v19[13] setSystemShellBehaviorDelegate:qword_1ED49CE40];
+          [v16 addObject:_eventDeferringManager];
+          [_eventDeferringManager[13] setSystemShellBehaviorDelegate:qword_1ED49CE40];
         }
       }
 
@@ -1770,11 +1770,11 @@ LABEL_30:
   }
 }
 
-- (void)eventDeferringManager:(id)a3 didRemoveLocalCompatibilityRecordForDescriptor:(id)a4
+- (void)eventDeferringManager:(id)manager didRemoveLocalCompatibilityRecordForDescriptor:(id)descriptor
 {
-  if (a4)
+  if (descriptor)
   {
-    v6 = *(a4 + 4);
+    v6 = *(descriptor + 4);
   }
 
   else
@@ -1787,9 +1787,9 @@ LABEL_30:
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 pointerValue];
-    v10 = a4 ? *(a4 + 9) : 0;
-    if (v9 == v10)
+    pointerValue = [v7 pointerValue];
+    v10 = descriptor ? *(descriptor + 9) : 0;
+    if (pointerValue == v10)
     {
       [(_UIEventDeferringManager *)self _stopObservingContextForLocalTargetWindowInEnvironment:v11];
     }
@@ -1798,10 +1798,10 @@ LABEL_30:
 
 - (id)succinctDescription
 {
-  v2 = [(_UIEventDeferringManager *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_UIEventDeferringManager *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -1809,33 +1809,33 @@ LABEL_30:
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   [v3 appendString:_NSStringFromUIDeferringState[self->_currentState] withName:@"currentState"];
   v4 = [v3 appendObject:self->_transactionAssertion withName:@"transactionAssertion"];
-  v5 = [(_UIEventDeferringManager *)&self->super.isa internalBehavior];
-  v6 = [v5 succinctDescription];
-  v7 = [v3 appendObject:v6 withName:@"behavior"];
+  internalBehavior = [(_UIEventDeferringManager *)&self->super.isa internalBehavior];
+  succinctDescription = [internalBehavior succinctDescription];
+  v7 = [v3 appendObject:succinctDescription withName:@"behavior"];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIEventDeferringManager *)self succinctDescriptionBuilder];
-  v4 = [v3 build];
+  succinctDescriptionBuilder = [(_UIEventDeferringManager *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIEventDeferringManager *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIEventDeferringManager *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
-  [v5 setActiveMultilinePrefix:a3];
+  [v5 setActiveMultilinePrefix:prefix];
   [v5 appendString:_NSStringFromUIDeferringState[self->_currentState] withName:@"currentState"];
   v6 = [v5 appendObject:self->_transactionAssertion withName:@"transactionAssertion"];
   v7 = atomic_load(&self->_bufferingAssertionCount);
@@ -1851,30 +1851,30 @@ LABEL_30:
   v18[3] = &unk_1E70F35B8;
   v14 = v5;
   v19 = v14;
-  v20 = self;
+  selfCopy = self;
   v15 = [v14 modifyBody:v18];
   v16 = v14;
 
   return v14;
 }
 
-- (id)_currentLocalRecordsMatchingEnvironment:(int)a3 forcePreviousHardwareIdentifier:
+- (id)_currentLocalRecordsMatchingEnvironment:(int)environment forcePreviousHardwareIdentifier:
 {
-  v6 = [a1[2] objectForKey:a2];
+  v6 = [self[2] objectForKey:a2];
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__33;
   v24 = __Block_byref_object_dispose__33;
   v25 = 0;
-  if (a3)
+  if (environment)
   {
-    v7 = a1[7];
+    v7 = self[7];
   }
 
   else
   {
-    v7 = [(_UIEventDeferringManager *)a1 _displayHardwareIndentifierAccountingForNotFinalizedChange:?];
+    v7 = [(_UIEventDeferringManager *)self _displayHardwareIndentifierAccountingForNotFinalizedChange:?];
   }
 
   v8 = v7;
@@ -1925,13 +1925,13 @@ LABEL_30:
   return v13;
 }
 
-- (void)_currentLocalOrCompatibilityRecordMatchingEnvironment:(uint64_t)a3 recordingManagerPointer:(int)a4 forcePreviousHardwareIdentifier:
+- (void)_currentLocalOrCompatibilityRecordMatchingEnvironment:(uint64_t)environment recordingManagerPointer:(int)pointer forcePreviousHardwareIdentifier:
 {
-  v5 = [(_UIEventDeferringManager *)a1 _currentLocalOrCompatibilityRecordForEnvironment:a2 forcePreviousHardwareIdentifier:a4];
+  v5 = [(_UIEventDeferringManager *)self _currentLocalOrCompatibilityRecordForEnvironment:a2 forcePreviousHardwareIdentifier:pointer];
   v6 = v5;
   if (v5)
   {
-    if (*(v5 + 40) == a3)
+    if (*(v5 + 40) == environment)
     {
       v7 = v5;
     }
@@ -1952,10 +1952,10 @@ LABEL_30:
   return v7;
 }
 
-- (id)_remoteRecordsInStackMatchingEnvironment:(uint64_t)a3 passingTest:
+- (id)_remoteRecordsInStackMatchingEnvironment:(uint64_t)environment passingTest:
 {
   v18 = *MEMORY[0x1E69E9840];
-  [(_UIEventDeferringManager *)a1 _remoteDeferringRecordStackForEnvironment:a2];
+  [(_UIEventDeferringManager *)self _remoteDeferringRecordStackForEnvironment:a2];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1977,7 +1977,7 @@ LABEL_3:
 
       v10 = *(*(&v13 + 1) + 8 * v9);
       v12 = 0;
-      if ((*(a3 + 16))(a3, v10, &v12))
+      if ((*(environment + 16))(environment, v10, &v12))
       {
         if (!v7)
         {
@@ -2012,17 +2012,17 @@ LABEL_3:
   return v7;
 }
 
-- (id)_environmentsForLocalTargetWindowPointer:(uint64_t)a1
+- (id)_environmentsForLocalTargetWindowPointer:(uint64_t)pointer
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (pointer)
   {
-    v3 = [(_UIEventDeferringManager *)a1 _trackedLocalTargetWindowPointers];
+    _trackedLocalTargetWindowPointers = [(_UIEventDeferringManager *)pointer _trackedLocalTargetWindowPointers];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v4 = [_trackedLocalTargetWindowPointers countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v4)
     {
       v5 = v4;
@@ -2034,11 +2034,11 @@ LABEL_3:
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(_trackedLocalTargetWindowPointers);
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          v10 = [v3 objectForKeyedSubscript:v9];
+          v10 = [_trackedLocalTargetWindowPointers objectForKeyedSubscript:v9];
           v11 = [a2 isEqualToValue:v10];
 
           if (v11)
@@ -2052,7 +2052,7 @@ LABEL_3:
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v5 = [_trackedLocalTargetWindowPointers countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v5);
@@ -2072,38 +2072,38 @@ LABEL_3:
   return v6;
 }
 
-- (void)_localTargetWindowDidAttachContext:(id)a3
+- (void)_localTargetWindowDidAttachContext:(id)context
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [a3 object];
+  object = [context object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [a3 object];
+    object2 = [context object];
   }
 
   else
   {
-    v6 = 0;
+    object2 = 0;
   }
 
-  v7 = [(_UIEventDeferringManager *)self windowHostingScene];
-  v8 = v7;
-  if (v6)
+  windowHostingScene = [(_UIEventDeferringManager *)self windowHostingScene];
+  v8 = windowHostingScene;
+  if (object2)
   {
-    if (v7)
+    if (windowHostingScene)
     {
-      v9 = [v6 _windowHostingScene];
+      _windowHostingScene = [object2 _windowHostingScene];
 
-      if (v9 == v8)
+      if (_windowHostingScene == v8)
       {
-        v10 = [MEMORY[0x1E696B098] valueWithPointer:v6];
+        v10 = [MEMORY[0x1E696B098] valueWithPointer:object2];
         v11 = [(_UIEventDeferringManager *)self _environmentsForLocalTargetWindowPointer:v10];
         if (v11)
         {
           v20 = v10;
           v21 = v8;
-          v12 = [v6 _contextId];
+          _contextId = [object2 _contextId];
           v23 = 0u;
           v24 = 0u;
           v25 = 0u;
@@ -2126,7 +2126,7 @@ LABEL_3:
                 }
 
                 v17 = *(*(&v23 + 1) + 8 * v16);
-                v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %p: recreating %@: context attached for window: %p contextID: 0x%X", objc_opt_class(), self, v17, v6, v12];;
+                v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %p: recreating %@: context attached for window: %p contextID: 0x%X", objc_opt_class(), self, v17, object2, _contextId];;
                 [(_UIEventDeferringManager *)self _recreateEventDeferringRecordsInEnvironment:v17 removingRecreationReason:@"_UIEventDeferringRecreationReasonDetachedContext" forReason:v18];
 
                 ++v16;
@@ -2148,17 +2148,17 @@ LABEL_3:
   }
 }
 
-- (void)_recreateEventDeferringRecordsInEnvironment:(void *)a3 removingRecreationReason:(void *)a4 forReason:
+- (void)_recreateEventDeferringRecordsInEnvironment:(void *)environment removingRecreationReason:(void *)reason forReason:
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v8 = [a2 description];
-    v9 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
 
-    if (a3)
+    if (environment)
     {
-      v10 = _UIEventDeferringShorterRecreationReasonStringForReason(a3);
+      v10 = _UIEventDeferringShorterRecreationReasonStringForReason(environment);
     }
 
     else
@@ -2166,34 +2166,34 @@ LABEL_3:
       v10 = @"(nil)";
     }
 
-    v11 = [(__CFString *)v10 UTF8String];
-    v12 = [a4 UTF8String];
+    uTF8String2 = [(__CFString *)v10 UTF8String];
+    uTF8String3 = [reason UTF8String];
     v13 = *(__UILogGetCategoryCachedImpl("EventDeferring", &qword_1ED49CE90) + 8);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134349826;
-      v27 = a1;
+      selfCopy2 = self;
       v28 = 2082;
-      v29 = v9;
+      v29 = uTF8String;
       v30 = 2082;
-      v31 = v11;
+      v31 = uTF8String2;
       v32 = 2082;
-      v33 = v12;
+      v33 = uTF8String3;
       _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}p] [%{public}s] Recreation of event deferring records requested: removing recreation reason: %{public}s; for reason: %{public}s", buf, 0x2Au);
     }
 
-    v14 = [(_UIEventDeferringManager *)a1 _currentLocalOrCompatibilityRecordMatchingEnvironment:a2 recordingManagerPointer:a1 forcePreviousHardwareIdentifier:(*(a1 + 80) >> 5) & 1];
+    v14 = [(_UIEventDeferringManager *)self _currentLocalOrCompatibilityRecordMatchingEnvironment:a2 recordingManagerPointer:self forcePreviousHardwareIdentifier:(*(self + 80) >> 5) & 1];
     v15 = v14;
-    if (a3 && v14)
+    if (environment && v14)
     {
-      v16 = [(_UIEventDeferringRecord *)v14 recreationReasons];
-      v17 = [v16 containsObject:a3];
+      recreationReasons = [(_UIEventDeferringRecord *)v14 recreationReasons];
+      v17 = [recreationReasons containsObject:environment];
 
       if ((v17 & 1) == 0)
       {
-        v18 = [MEMORY[0x1E696AAA8] currentHandler];
-        v19 = [(_UIEventDeferringRecord *)v15 recreationReasons];
-        [v18 handleFailureInMethod:sel__recreateEventDeferringRecordsInEnvironment_removingRecreationReason_forReason_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:3411 description:{@"[%p] %s: Invalid state for recreating record. Recreation reason should be present but is not: %@; reasons: %@; record: %@", a1, "-[_UIEventDeferringManager _recreateEventDeferringRecordsInEnvironment:removingRecreationReason:forReason:]", a3, v19, v15}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        recreationReasons2 = [(_UIEventDeferringRecord *)v15 recreationReasons];
+        [currentHandler handleFailureInMethod:sel__recreateEventDeferringRecordsInEnvironment_removingRecreationReason_forReason_ object:self file:@"_UIEventDeferringManager.m" lineNumber:3411 description:{@"[%p] %s: Invalid state for recreating record. Recreation reason should be present but is not: %@; reasons: %@; record: %@", self, "-[_UIEventDeferringManager _recreateEventDeferringRecordsInEnvironment:removingRecreationReason:forReason:]", environment, recreationReasons2, v15}];
       }
     }
 
@@ -2203,9 +2203,9 @@ LABEL_3:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349314;
-        v27 = a1;
+        selfCopy2 = self;
         v28 = 2082;
-        v29 = v9;
+        v29 = uTF8String;
         _os_log_impl(&dword_188A29000, v25, OS_LOG_TYPE_DEFAULT, "[%{public}p] [%{public}s] No records. Exiting event deferring records recreation request.", buf, 0x16u);
       }
 
@@ -2227,30 +2227,30 @@ LABEL_3:
     }
 
     v24 = v23;
-    [(_UIEventDeferringManager *)a1 _processEventDeferringActions:3 actionsCount:v22 inScope:WeakRetained forDeferringToken:v21 environments:v24 target:0 addingRecreationReason:a3 removingRecreationReason:a4 forReason:?];
+    [(_UIEventDeferringManager *)self _processEventDeferringActions:3 actionsCount:v22 inScope:WeakRetained forDeferringToken:v21 environments:v24 target:0 addingRecreationReason:environment removingRecreationReason:reason forReason:?];
 
 LABEL_15:
   }
 }
 
-- (void)_localTargetWindowDidDetachContext:(id)a3
+- (void)_localTargetWindowDidDetachContext:(id)context
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = [a3 object];
+  object = [context object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [a3 object];
+    object2 = [context object];
   }
 
   else
   {
-    v6 = 0;
+    object2 = 0;
   }
 
-  if ([v6 allowsWeakReference])
+  if ([object2 allowsWeakReference])
   {
-    v7 = v6;
+    v7 = object2;
   }
 
   else
@@ -2259,11 +2259,11 @@ LABEL_15:
   }
 
   v8 = v7;
-  v9 = [(_UIEventDeferringManager *)self windowHostingScene];
-  v10 = v9;
+  windowHostingScene = [(_UIEventDeferringManager *)self windowHostingScene];
+  v10 = windowHostingScene;
   if (v8)
   {
-    v11 = v9 == 0;
+    v11 = windowHostingScene == 0;
   }
 
   else
@@ -2273,9 +2273,9 @@ LABEL_15:
 
   if (!v11)
   {
-    v12 = [v8 _windowHostingScene];
+    _windowHostingScene = [v8 _windowHostingScene];
 
-    if (v12 == v10)
+    if (_windowHostingScene == v10)
     {
       v13 = [MEMORY[0x1E696B098] valueWithPointer:v8];
       v14 = [(_UIEventDeferringManager *)self _environmentsForLocalTargetWindowPointer:v13];
@@ -2283,10 +2283,10 @@ LABEL_15:
       {
         v25 = v13;
         v26 = v10;
-        v27 = v6;
-        v15 = [a3 userInfo];
-        v16 = [v15 objectForKeyedSubscript:@"contextId"];
-        v17 = [v16 unsignedIntValue];
+        v27 = object2;
+        userInfo = [context userInfo];
+        v16 = [userInfo objectForKeyedSubscript:@"contextId"];
+        unsignedIntValue = [v16 unsignedIntValue];
 
         v31 = 0u;
         v32 = 0u;
@@ -2310,7 +2310,7 @@ LABEL_15:
               }
 
               v22 = *(*(&v29 + 1) + 8 * v21);
-              v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %p: disabling %@: context detached for window: %p contextID: 0x%X", objc_opt_class(), self, v22, v8, v17];;
+              v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %p: disabling %@: context detached for window: %p contextID: 0x%X", objc_opt_class(), self, v22, v8, unsignedIntValue];;
               [(_UIEventDeferringManager *)&self->super.isa _disableEventDeferringRecordsInEnvironment:v22 addingRecreationReason:@"_UIEventDeferringRecreationReasonDetachedContext" forReason:v23];
 
               ++v21;
@@ -2324,7 +2324,7 @@ LABEL_15:
         }
 
         v10 = v26;
-        v6 = v27;
+        object2 = v27;
         v14 = v24;
         v13 = v25;
       }
@@ -2332,44 +2332,44 @@ LABEL_15:
   }
 }
 
-- (void)_disableEventDeferringRecordsInEnvironment:(void *)a3 addingRecreationReason:(void *)a4 forReason:
+- (void)_disableEventDeferringRecordsInEnvironment:(void *)environment addingRecreationReason:(void *)reason forReason:
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v8 = [a2 description];
-    v9 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
 
-    v10 = _UIEventDeferringShorterRecreationReasonStringForReason(a3);
-    v11 = [v10 UTF8String];
+    v10 = _UIEventDeferringShorterRecreationReasonStringForReason(environment);
+    uTF8String2 = [v10 UTF8String];
 
-    v12 = [a4 UTF8String];
+    uTF8String3 = [reason UTF8String];
     v13 = *(__UILogGetCategoryCachedImpl("EventDeferring", &qword_1ED49CEA0) + 8);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134349826;
-      v27 = a1;
+      selfCopy2 = self;
       v28 = 2082;
-      v29 = v9;
+      v29 = uTF8String;
       v30 = 2082;
-      v31 = v11;
+      v31 = uTF8String2;
       v32 = 2082;
-      v33 = v12;
+      v33 = uTF8String3;
       _os_log_impl(&dword_188A29000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}p] [%{public}s] Disabling event deferring records requested: adding recreation reason: %{public}s; for reason: %{public}s", buf, 0x2Au);
     }
 
-    v14 = [(_UIEventDeferringManager *)a1 _currentLocalOrCompatibilityRecordMatchingEnvironment:a2 recordingManagerPointer:a1 forcePreviousHardwareIdentifier:0];
+    v14 = [(_UIEventDeferringManager *)self _currentLocalOrCompatibilityRecordMatchingEnvironment:a2 recordingManagerPointer:self forcePreviousHardwareIdentifier:0];
     v15 = v14;
     if (v14)
     {
-      v16 = [(_UIEventDeferringRecord *)v14 recreationReasons];
-      v17 = [v16 containsObject:a3];
+      recreationReasons = [(_UIEventDeferringRecord *)v14 recreationReasons];
+      v17 = [recreationReasons containsObject:environment];
 
       if (v17)
       {
-        v24 = [MEMORY[0x1E696AAA8] currentHandler];
-        v25 = [(_UIEventDeferringRecord *)v15 recreationReasons];
-        [v24 handleFailureInMethod:sel__disableEventDeferringRecordsInEnvironment_addingRecreationReason_forReason_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:3456 description:{@"[%p] %s: Invalid state for disabling. Recreation reason should not be present but is: %@; reasons: %@; record: %@", a1, "-[_UIEventDeferringManager _disableEventDeferringRecordsInEnvironment:addingRecreationReason:forReason:]", a3, v25, v15}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        recreationReasons2 = [(_UIEventDeferringRecord *)v15 recreationReasons];
+        [currentHandler handleFailureInMethod:sel__disableEventDeferringRecordsInEnvironment_addingRecreationReason_forReason_ object:self file:@"_UIEventDeferringManager.m" lineNumber:3456 description:{@"[%p] %s: Invalid state for disabling. Recreation reason should not be present but is: %@; reasons: %@; record: %@", self, "-[_UIEventDeferringManager _disableEventDeferringRecordsInEnvironment:addingRecreationReason:forReason:]", environment, recreationReasons2, v15}];
       }
 
       WeakRetained = objc_loadWeakRetained(v15 + 4);
@@ -2387,7 +2387,7 @@ LABEL_15:
       }
 
       v22 = v21;
-      [(_UIEventDeferringManager *)a1 _processEventDeferringActions:3 actionsCount:v20 inScope:WeakRetained forDeferringToken:v19 environments:v22 target:a3 addingRecreationReason:0 removingRecreationReason:a4 forReason:?];
+      [(_UIEventDeferringManager *)self _processEventDeferringActions:3 actionsCount:v20 inScope:WeakRetained forDeferringToken:v19 environments:v22 target:environment addingRecreationReason:0 removingRecreationReason:reason forReason:?];
     }
 
     else
@@ -2396,45 +2396,45 @@ LABEL_15:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134349314;
-        v27 = a1;
+        selfCopy2 = self;
         v28 = 2082;
-        v29 = v9;
+        v29 = uTF8String;
         _os_log_impl(&dword_188A29000, v23, OS_LOG_TYPE_DEFAULT, "[%{public}p] [%{public}s] No records. Exiting event deferring records disable request.", buf, 0x16u);
       }
     }
   }
 }
 
-- (void)_screenUniqueIdWillChange:(id)a3
+- (void)_screenUniqueIdWillChange:(id)change
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = [a3 object];
+  object = [change object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [a3 object];
+    object2 = [change object];
   }
 
   else
   {
-    v6 = 0;
+    object2 = 0;
   }
 
-  v7 = [(_UIEventDeferringManager *)self windowHostingScene];
-  v8 = v7;
-  if (v6)
+  windowHostingScene = [(_UIEventDeferringManager *)self windowHostingScene];
+  v8 = windowHostingScene;
+  if (object2)
   {
-    if (v7)
+    if (windowHostingScene)
     {
-      v9 = [v7 _screen];
+      _screen = [windowHostingScene _screen];
 
-      v10 = [v6 displayConfiguration];
-      v11 = [v10 isExternal];
+      displayConfiguration = [object2 displayConfiguration];
+      isExternal = [displayConfiguration isExternal];
 
-      if (v9 == v6 && v11 && (*&self->_deferringManagerFlags & 0x10) == 0)
+      if (_screen == object2 && isExternal && (*&self->_deferringManagerFlags & 0x10) == 0)
       {
         v31 = v8;
-        v33 = v6;
+        v33 = object2;
         *&self->_deferringManagerFlags |= 8u;
         v12 = [(_UIEventDeferringManager *)&self->super.isa _displayHardwareIndentifierAccountingForNotFinalizedChange:?];
         previousExternalScreenIdentifier = self->_previousExternalScreenIdentifier;
@@ -2447,8 +2447,8 @@ LABEL_15:
         }
 
         v15 = v14;
-        v16 = [a3 userInfo];
-        v17 = [v16 objectForKeyedSubscript:@"_UIScreenNewUniqueIdUserInfoKey"];
+        userInfo = [change userInfo];
+        v17 = [userInfo objectForKeyedSubscript:@"_UIScreenNewUniqueIdUserInfoKey"];
         v18 = v17;
         if (v17)
         {
@@ -2463,9 +2463,9 @@ LABEL_15:
         v20 = v19;
 
         v30 = v15;
-        v21 = [(__CFString *)v15 UTF8String];
+        uTF8String = [(__CFString *)v15 UTF8String];
         v29 = v20;
-        v22 = [(__CFString *)v20 UTF8String];
+        uTF8String2 = [(__CFString *)v20 UTF8String];
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
@@ -2486,7 +2486,7 @@ LABEL_15:
               }
 
               v27 = *(*(&v34 + 1) + 8 * i);
-              v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %p: disabling %@: screen identifier will change for screen: %p current: %s; new: %s", objc_opt_class(), self, v27, v33, v21, v22];;
+              v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %p: disabling %@: screen identifier will change for screen: %p current: %s; new: %s", objc_opt_class(), self, v27, v33, uTF8String, uTF8String2];;
               [(_UIEventDeferringManager *)&self->super.isa _disableEventDeferringRecordsInEnvironment:v27 addingRecreationReason:@"_UIEventDeferringRecreationReasonChangingScreenIdentifier" forReason:v28];
             }
 
@@ -2497,34 +2497,34 @@ LABEL_15:
         }
 
         *&self->_deferringManagerFlags = *&self->_deferringManagerFlags & 0xE7 | 0x10;
-        v6 = v33;
+        object2 = v33;
         v8 = v31;
       }
     }
   }
 }
 
-- (void)_screenUniqueIdDidChange:(id)a3
+- (void)_screenUniqueIdDidChange:(id)change
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = [a3 object];
+  object = [change object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [a3 object];
+    object2 = [change object];
   }
 
   else
   {
-    v6 = 0;
+    object2 = 0;
   }
 
-  v7 = [(_UIEventDeferringManager *)self windowHostingScene];
-  v8 = v7;
-  if (v6 && v7)
+  windowHostingScene = [(_UIEventDeferringManager *)self windowHostingScene];
+  v8 = windowHostingScene;
+  if (object2 && windowHostingScene)
   {
-    v9 = [v7 _screen];
-    if (v9 == v6)
+    _screen = [windowHostingScene _screen];
+    if (_screen == object2)
     {
       deferringManagerFlags = self->_deferringManagerFlags;
 
@@ -2542,9 +2542,9 @@ LABEL_15:
           }
 
           v22 = previousExternalScreenIdentifier;
-          v13 = [(__CFString *)v22 UTF8String];
+          uTF8String = [(__CFString *)v22 UTF8String];
           v23 = v11;
-          v14 = [v11 UTF8String];
+          uTF8String2 = [v11 UTF8String];
           v26 = 0u;
           v27 = 0u;
           v28 = 0u;
@@ -2566,7 +2566,7 @@ LABEL_15:
                 }
 
                 v19 = *(*(&v26 + 1) + 8 * v18);
-                v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %p: recreating %@: screen identifier changed for screen: %p current: %s; new: %s", objc_opt_class(), self, v19, v6, v13, v14];;
+                v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %p: recreating %@: screen identifier changed for screen: %p current: %s; new: %s", objc_opt_class(), self, v19, object2, uTF8String, uTF8String2];;
                 [(_UIEventDeferringManager *)self _recreateEventDeferringRecordsInEnvironment:v19 removingRecreationReason:@"_UIEventDeferringRecreationReasonChangingScreenIdentifier" forReason:v20];
 
                 ++v18;
@@ -2595,26 +2595,26 @@ LABEL_15:
   }
 }
 
-- (void)_windowHostingScene:(id)a3 didMoveFromScreen:(id)a4 toScreen:(id)a5
+- (void)_windowHostingScene:(id)scene didMoveFromScreen:(id)screen toScreen:(id)toScreen
 {
   v42 = *MEMORY[0x1E69E9840];
-  v10 = [(_UIEventDeferringManager *)self windowHostingScene];
-  if (v10 == a3)
+  windowHostingScene = [(_UIEventDeferringManager *)self windowHostingScene];
+  if (windowHostingScene == scene)
   {
-    obja = v10;
-    v11 = [(_UIEventDeferringManager *)self windowHostingScene];
-    v12 = [v11 _screen];
+    obja = windowHostingScene;
+    windowHostingScene2 = [(_UIEventDeferringManager *)self windowHostingScene];
+    _screen = [windowHostingScene2 _screen];
 
-    if (v12 == a5)
+    if (_screen == toScreen)
     {
       if ((*&self->_deferringManagerFlags & 0x10) != 0)
       {
-        v13 = [a4 displayConfiguration];
-        v14 = [v13 hardwareIdentifier];
-        v15 = v14;
-        if (v14)
+        displayConfiguration = [screen displayConfiguration];
+        hardwareIdentifier = [displayConfiguration hardwareIdentifier];
+        v15 = hardwareIdentifier;
+        if (hardwareIdentifier)
         {
-          v16 = v14;
+          v16 = hardwareIdentifier;
         }
 
         else
@@ -2624,12 +2624,12 @@ LABEL_15:
 
         v17 = v16;
 
-        v18 = [a5 displayConfiguration];
-        v19 = [v18 hardwareIdentifier];
-        v20 = v19;
-        if (v19)
+        displayConfiguration2 = [toScreen displayConfiguration];
+        hardwareIdentifier2 = [displayConfiguration2 hardwareIdentifier];
+        v20 = hardwareIdentifier2;
+        if (hardwareIdentifier2)
         {
-          v21 = v19;
+          v21 = hardwareIdentifier2;
         }
 
         else
@@ -2639,13 +2639,13 @@ LABEL_15:
 
         v22 = v21;
 
-        v23 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v23 handleFailureInMethod:a2 object:self file:@"_UIEventDeferringManager.m" lineNumber:2790 description:{@"Invalid state: window hosting scene moved screens while a screen hardware identifier change is in process: previousExternalScreenIdentifier: %@; oldScreenHardwareIdentifier: %@; newScreenHardwareIdentifier: %@; self: %@", self->_previousExternalScreenIdentifier, v17, v22, self}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_UIEventDeferringManager.m" lineNumber:2790 description:{@"Invalid state: window hosting scene moved screens while a screen hardware identifier change is in process: previousExternalScreenIdentifier: %@; oldScreenHardwareIdentifier: %@; newScreenHardwareIdentifier: %@; self: %@", self->_previousExternalScreenIdentifier, v17, v22, self}];
       }
 
-      v24 = a4;
-      v25 = a5;
-      v26 = a3;
+      screenCopy = screen;
+      toScreenCopy = toScreen;
+      sceneCopy = scene;
       v27 = objc_opt_class();
       Name = class_getName(v27);
       v37 = 0u;
@@ -2668,8 +2668,8 @@ LABEL_15:
             }
 
             v33 = *(*(&v37 + 1) + 8 * i);
-            v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %p: recreating %@: window hosting scene moved screens: scene: <%s: %p> oldScreen: %p; newScreen: %p", objc_opt_class(), self, v33, Name, v26, v24, v25];;
-            [(_UIEventDeferringManager *)self _recreateEventDeferringRecordsInEnvironment:v33 removingRecreationReason:0 forReason:v34];
+            toScreenCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %p: recreating %@: window hosting scene moved screens: scene: <%s: %p> oldScreen: %p; newScreen: %p", objc_opt_class(), self, v33, Name, sceneCopy, screenCopy, toScreenCopy];;
+            [(_UIEventDeferringManager *)self _recreateEventDeferringRecordsInEnvironment:v33 removingRecreationReason:0 forReason:toScreenCopy];
           }
 
           v30 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
@@ -2685,15 +2685,15 @@ LABEL_15:
   }
 }
 
-- (id)localEventDeferringTargetWindowForEnvironment:(id)a3
+- (id)localEventDeferringTargetWindowForEnvironment:(id)environment
 {
   if (self)
   {
-    v3 = [(_UIEventDeferringManager *)self windowHostingScene];
+    windowHostingScene = [(_UIEventDeferringManager *)self windowHostingScene];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = windowHostingScene;
     }
 
     else
@@ -2709,18 +2709,18 @@ LABEL_15:
     v5 = 0;
   }
 
-  v6 = [(UIWindowScene *)v5 _keyWindow];
+  _keyWindow = [(UIWindowScene *)v5 _keyWindow];
 
-  return v6;
+  return _keyWindow;
 }
 
-- (id)currentLocalDeferringTargetWindowMatchingEnvironment:(id)a3 deferringToken:
+- (id)currentLocalDeferringTargetWindowMatchingEnvironment:(id)environment deferringToken:
 {
-  if (a1)
+  if (self)
   {
-    v4 = [(_UIEventDeferringManager *)a1 _currentLocalOrCompatibilityRecordForEnvironment:a2 forcePreviousHardwareIdentifier:0];
+    v4 = [(_UIEventDeferringManager *)self _currentLocalOrCompatibilityRecordForEnvironment:a2 forcePreviousHardwareIdentifier:0];
     v5 = v4;
-    if (v4 && (WeakRetained = objc_loadWeakRetained((v4 + 32)), WeakRetained, WeakRetained == a3))
+    if (v4 && (WeakRetained = objc_loadWeakRetained((v4 + 32)), WeakRetained, WeakRetained == environment))
     {
       v8 = v5[2];
       v9 = v8;
@@ -2751,16 +2751,16 @@ LABEL_15:
   return v7;
 }
 
-- (id)_localTargetWindowForEnvironment:(int)a3 consultingFallbackIfPermitted:
+- (id)_localTargetWindowForEnvironment:(int)environment consultingFallbackIfPermitted:
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = [(_UIEventDeferringManager *)a1 _targetProvidersByEnvironment];
-  v7 = [v6 objectForKey:a2];
+  _targetProvidersByEnvironment = [(_UIEventDeferringManager *)self _targetProvidersByEnvironment];
+  v7 = [_targetProvidersByEnvironment objectForKey:a2];
 
   if (!v7)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:sel__targetProviderForEnvironment_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:2819 description:{@"[%p] [%@] %s: No registered target provider for this environment", a1, a2, "-[_UIEventDeferringManager _targetProviderForEnvironment:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__targetProviderForEnvironment_ object:self file:@"_UIEventDeferringManager.m" lineNumber:2819 description:{@"[%p] [%@] %s: No registered target provider for this environment", self, a2, "-[_UIEventDeferringManager _targetProviderForEnvironment:]"}];
   }
 
   v8 = [v7 localEventDeferringTargetWindowForEnvironment:a2];
@@ -2772,7 +2772,7 @@ LABEL_15:
     {
       v13 = v12;
       *buf = 134350082;
-      v16 = a1;
+      selfCopy = self;
       v17 = 2114;
       v18 = a2;
       v19 = 2114;
@@ -2786,11 +2786,11 @@ LABEL_15:
     }
   }
 
-  if (!v8 && a3)
+  if (!v8 && environment)
   {
-    if ([*(a1 + 104) shouldAllowFallbackWindowForEnvironment:a2])
+    if ([*(self + 104) shouldAllowFallbackWindowForEnvironment:a2])
     {
-      v8 = [(_UIEventDeferringManager *)a1 fallbackLocalDeferringTargetWindowIfPermittedForEnvironment:a2];
+      v8 = [(_UIEventDeferringManager *)self fallbackLocalDeferringTargetWindowIfPermittedForEnvironment:a2];
     }
 
     else
@@ -2802,23 +2802,23 @@ LABEL_15:
   return v8;
 }
 
-- (id)fallbackLocalDeferringTargetWindowIfPermittedForEnvironment:(id *)a1
+- (id)fallbackLocalDeferringTargetWindowIfPermittedForEnvironment:(id *)environment
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a1 && [a1[13] shouldAllowFallbackWindowForEnvironment:a2])
+  if (environment && [environment[13] shouldAllowFallbackWindowForEnvironment:a2])
   {
-    v4 = [MEMORY[0x1E698E398] keyboardFocusEnvironment];
-    v5 = [a2 isEqual:v4];
+    keyboardFocusEnvironment = [MEMORY[0x1E698E398] keyboardFocusEnvironment];
+    v5 = [a2 isEqual:keyboardFocusEnvironment];
 
     if (v5)
     {
-      v6 = [a1 windowHostingScene];
+      windowHostingScene = [environment windowHostingScene];
       v7 = UIApp;
-      v8 = [v6 _screen];
-      v9 = [v7 _keyWindowForScreen:v8];
+      _screen = [windowHostingScene _screen];
+      v9 = [v7 _keyWindowForScreen:_screen];
 
-      v10 = [v9 _windowHostingScene];
-      if (v10 == v6)
+      _windowHostingScene = [v9 _windowHostingScene];
+      if (_windowHostingScene == windowHostingScene)
       {
         v11 = v9;
       }
@@ -2843,7 +2843,7 @@ LABEL_15:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v16 = 134349570;
-        v17 = a1;
+        environmentCopy = environment;
         v18 = 2114;
         v19 = a2;
         v20 = 2114;
@@ -2861,24 +2861,24 @@ LABEL_15:
   return v12;
 }
 
-- (void)_processEventDeferringActions:(uint64_t)a3 actionsCount:(uint64_t)a4 inScope:(void *)a5 forDeferringToken:(void *)a6 environments:(void *)a7 target:(void *)a8 addingRecreationReason:(void *)a9 removingRecreationReason:(void *)a10 forReason:
+- (void)_processEventDeferringActions:(uint64_t)actions actionsCount:(uint64_t)count inScope:(void *)scope forDeferringToken:(void *)token environments:(void *)environments target:(void *)target addingRecreationReason:(void *)reason removingRecreationReason:(void *)self0 forReason:
 {
   v80 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  if (![a6 count])
+  if (![token count])
   {
-    v40 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v40 handleFailureInMethod:sel__processEventDeferringActions_actionsCount_inScope_forDeferringToken_environments_target_addingRecreationReason_removingRecreationReason_forReason_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:3269 description:{@"Invalid parameter not satisfying: %@", @"environments.count > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__processEventDeferringActions_actionsCount_inScope_forDeferringToken_environments_target_addingRecreationReason_removingRecreationReason_forReason_ object:self file:@"_UIEventDeferringManager.m" lineNumber:3269 description:{@"Invalid parameter not satisfying: %@", @"environments.count > 0"}];
   }
 
-  if (![a10 length])
+  if (![recreationReason length])
   {
-    v41 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v41 handleFailureInMethod:sel__processEventDeferringActions_actionsCount_inScope_forDeferringToken_environments_target_addingRecreationReason_removingRecreationReason_forReason_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:3270 description:{@"Invalid parameter not satisfying: %@", @"reason.length > 0"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel__processEventDeferringActions_actionsCount_inScope_forDeferringToken_environments_target_addingRecreationReason_removingRecreationReason_forReason_ object:self file:@"_UIEventDeferringManager.m" lineNumber:3270 description:{@"Invalid parameter not satisfying: %@", @"reason.length > 0"}];
   }
 
   v16 = 0;
@@ -2888,16 +2888,16 @@ LABEL_15:
     v17 |= 1 << LODWORD(a2[v16++]);
   }
 
-  while (a3 != v16);
+  while (actions != v16);
   if ((*&v17 & 0x28003) != 0)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:sel__processEventDeferringActions_actionsCount_inScope_forDeferringToken_environments_target_addingRecreationReason_removingRecreationReason_forReason_ object:a1 file:"-[_UIEventDeferringManager _processEventDeferringActions:actionsCount:inScope:forDeferringToken:environments:target:addingRecreationReason:removingRecreationReason:forReason:]" lineNumber:? description:?];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:sel__processEventDeferringActions_actionsCount_inScope_forDeferringToken_environments_target_addingRecreationReason_removingRecreationReason_forReason_ object:self file:"-[_UIEventDeferringManager _processEventDeferringActions:actionsCount:inScope:forDeferringToken:environments:target:addingRecreationReason:removingRecreationReason:forReason:]" lineNumber:? description:?];
   }
 
-  if (a5)
+  if (scope)
   {
-    v19 = a5[6];
+    v19 = scope[6];
   }
 
   else
@@ -2905,8 +2905,8 @@ LABEL_15:
     v19 = 0;
   }
 
-  v20 = v19 != a1 && (v17 & 0x84) != 0;
-  if (v19 == a1)
+  v20 = v19 != self && (v17 & 0x84) != 0;
+  if (v19 == self)
   {
     LOBYTE(v21) = 0;
   }
@@ -2918,52 +2918,52 @@ LABEL_15:
 
   v58 = v21;
   v59 = v20;
-  if (a4 && (v17 & 4) != 0)
+  if (count && (v17 & 4) != 0)
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:sel__processEventDeferringActions_actionsCount_inScope_forDeferringToken_environments_target_addingRecreationReason_removingRecreationReason_forReason_ object:a1 file:"-[_UIEventDeferringManager _processEventDeferringActions:actionsCount:inScope:forDeferringToken:environments:target:addingRecreationReason:removingRecreationReason:forReason:]" lineNumber:? description:?];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:sel__processEventDeferringActions_actionsCount_inScope_forDeferringToken_environments_target_addingRecreationReason_removingRecreationReason_forReason_ object:self file:"-[_UIEventDeferringManager _processEventDeferringActions:actionsCount:inScope:forDeferringToken:environments:target:addingRecreationReason:removingRecreationReason:forReason:]" lineNumber:? description:?];
   }
 
-  if (a4 != 1 && (v17 & 0x80) != 0)
+  if (count != 1 && (v17 & 0x80) != 0)
   {
-    v43 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v43 handleFailureInMethod:sel__processEventDeferringActions_actionsCount_inScope_forDeferringToken_environments_target_addingRecreationReason_removingRecreationReason_forReason_ object:a1 file:"-[_UIEventDeferringManager _processEventDeferringActions:actionsCount:inScope:forDeferringToken:environments:target:addingRecreationReason:removingRecreationReason:forReason:]" lineNumber:? description:?];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler5 handleFailureInMethod:sel__processEventDeferringActions_actionsCount_inScope_forDeferringToken_environments_target_addingRecreationReason_removingRecreationReason_forReason_ object:self file:"-[_UIEventDeferringManager _processEventDeferringActions:actionsCount:inScope:forDeferringToken:environments:target:addingRecreationReason:removingRecreationReason:forReason:]" lineNumber:? description:?];
 
-    if (a4)
+    if (count)
     {
       goto LABEL_25;
     }
   }
 
-  else if (a4)
+  else if (count)
   {
     goto LABEL_25;
   }
 
-  if (a7)
+  if (environments)
   {
-    v44 = [MEMORY[0x1E696AAA8] currentHandler];
-    v22 = a1;
-    [v44 handleFailureInMethod:sel__processEventDeferringActions_actionsCount_inScope_forDeferringToken_environments_target_addingRecreationReason_removingRecreationReason_forReason_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:3319 description:{@"[%p] %s: It is invalid to specify a target when deferring events locally", a1, "-[_UIEventDeferringManager _processEventDeferringActions:actionsCount:inScope:forDeferringToken:environments:target:addingRecreationReason:removingRecreationReason:forReason:]"}];
+    currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+    selfCopy4 = self;
+    [currentHandler6 handleFailureInMethod:sel__processEventDeferringActions_actionsCount_inScope_forDeferringToken_environments_target_addingRecreationReason_removingRecreationReason_forReason_ object:self file:@"_UIEventDeferringManager.m" lineNumber:3319 description:{@"[%p] %s: It is invalid to specify a target when deferring events locally", self, "-[_UIEventDeferringManager _processEventDeferringActions:actionsCount:inScope:forDeferringToken:environments:target:addingRecreationReason:removingRecreationReason:forReason:]"}];
 
     goto LABEL_26;
   }
 
 LABEL_25:
-  v22 = a1;
-  if (!a7)
+  selfCopy4 = self;
+  if (!environments)
   {
     goto LABEL_28;
   }
 
 LABEL_26:
-  if ([a7 pid] >= 1)
+  if ([environments pid] >= 1)
   {
-    v23 = [a7 pid];
+    v23 = [environments pid];
     if (v23 != getpid())
     {
 LABEL_28:
-      if (a8)
+      if (target)
       {
         goto LABEL_29;
       }
@@ -2972,38 +2972,38 @@ LABEL_28:
     }
   }
 
-  v39 = [MEMORY[0x1E696AAA8] currentHandler];
-  v22 = a1;
-  [v39 handleFailureInMethod:sel__processEventDeferringActions_actionsCount_inScope_forDeferringToken_environments_target_addingRecreationReason_removingRecreationReason_forReason_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:3320 description:{@"[%p] %s: Remote event deferring cannot be pointed at the originating process", a1, "-[_UIEventDeferringManager _processEventDeferringActions:actionsCount:inScope:forDeferringToken:environments:target:addingRecreationReason:removingRecreationReason:forReason:]"}];
+  currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
+  selfCopy4 = self;
+  [currentHandler7 handleFailureInMethod:sel__processEventDeferringActions_actionsCount_inScope_forDeferringToken_environments_target_addingRecreationReason_removingRecreationReason_forReason_ object:self file:@"_UIEventDeferringManager.m" lineNumber:3320 description:{@"[%p] %s: Remote event deferring cannot be pointed at the originating process", self, "-[_UIEventDeferringManager _processEventDeferringActions:actionsCount:inScope:forDeferringToken:environments:target:addingRecreationReason:removingRecreationReason:forReason:]"}];
 
-  if (a8)
+  if (target)
   {
 LABEL_29:
-    if (a9)
+    if (reason)
     {
-      v57 = [MEMORY[0x1E696AAA8] currentHandler];
-      v22 = a1;
-      [v57 handleFailureInMethod:sel__processEventDeferringActions_actionsCount_inScope_forDeferringToken_environments_target_addingRecreationReason_removingRecreationReason_forReason_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:3327 description:{@"[%p] %s: Invalid combination of recreation reasons: add: %@; remove: %@", a1, "-[_UIEventDeferringManager _processEventDeferringActions:actionsCount:inScope:forDeferringToken:environments:target:addingRecreationReason:removingRecreationReason:forReason:]", a8, a9}];
+      currentHandler8 = [MEMORY[0x1E696AAA8] currentHandler];
+      selfCopy4 = self;
+      [currentHandler8 handleFailureInMethod:sel__processEventDeferringActions_actionsCount_inScope_forDeferringToken_environments_target_addingRecreationReason_removingRecreationReason_forReason_ object:self file:@"_UIEventDeferringManager.m" lineNumber:3327 description:{@"[%p] %s: Invalid combination of recreation reasons: add: %@; remove: %@", self, "-[_UIEventDeferringManager _processEventDeferringActions:actionsCount:inScope:forDeferringToken:environments:target:addingRecreationReason:removingRecreationReason:forReason:]", target, reason}];
     }
   }
 
 LABEL_31:
-  v24 = [v22 windowHostingScene];
+  windowHostingScene = [selfCopy4 windowHostingScene];
 
-  if (!v24)
+  if (!windowHostingScene)
   {
-    v45 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v45 handleFailureInMethod:sel__processEventDeferringActions_actionsCount_inScope_forDeferringToken_environments_target_addingRecreationReason_removingRecreationReason_forReason_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:3330 description:{@"[%p] %s: Invalid %@ object. There is no scene", a1, "-[_UIEventDeferringManager _processEventDeferringActions:actionsCount:inScope:forDeferringToken:environments:target:addingRecreationReason:removingRecreationReason:forReason:]", objc_opt_class()}];
+    currentHandler9 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler9 handleFailureInMethod:sel__processEventDeferringActions_actionsCount_inScope_forDeferringToken_environments_target_addingRecreationReason_removingRecreationReason_forReason_ object:self file:@"_UIEventDeferringManager.m" lineNumber:3330 description:{@"[%p] %s: Invalid %@ object. There is no scene", self, "-[_UIEventDeferringManager _processEventDeferringActions:actionsCount:inScope:forDeferringToken:environments:target:addingRecreationReason:removingRecreationReason:forReason:]", objc_opt_class()}];
   }
 
-  v25 = a1;
-  v26 = [(_UIEventDeferringManager *)a1 _transactionAssertion];
+  selfCopy6 = self;
+  _transactionAssertion = [(_UIEventDeferringManager *)self _transactionAssertion];
 
-  if (v26)
+  if (_transactionAssertion)
   {
-    v46 = [MEMORY[0x1E696AAA8] currentHandler];
-    v25 = a1;
-    [v46 handleFailureInMethod:sel__processEventDeferringActions_actionsCount_inScope_forDeferringToken_environments_target_addingRecreationReason_removingRecreationReason_forReason_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:3333 description:{@"[%p] %s: Invalid state. Processing actions with an existing transaction: %@", a1, "-[_UIEventDeferringManager _processEventDeferringActions:actionsCount:inScope:forDeferringToken:environments:target:addingRecreationReason:removingRecreationReason:forReason:]", a1}];
+    currentHandler10 = [MEMORY[0x1E696AAA8] currentHandler];
+    selfCopy6 = self;
+    [currentHandler10 handleFailureInMethod:sel__processEventDeferringActions_actionsCount_inScope_forDeferringToken_environments_target_addingRecreationReason_removingRecreationReason_forReason_ object:self file:@"_UIEventDeferringManager.m" lineNumber:3333 description:{@"[%p] %s: Invalid state. Processing actions with an existing transaction: %@", self, "-[_UIEventDeferringManager _processEventDeferringActions:actionsCount:inScope:forDeferringToken:environments:target:addingRecreationReason:removingRecreationReason:forReason:]", self}];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -3011,12 +3011,12 @@ LABEL_31:
   aBlock[2] = __175___UIEventDeferringManager__processEventDeferringActions_actionsCount_inScope_forDeferringToken_environments_target_addingRecreationReason_removingRecreationReason_forReason___block_invoke;
   aBlock[3] = &unk_1E70FCD00;
   aBlock[9] = a2;
-  aBlock[10] = a3;
-  aBlock[4] = v25;
-  aBlock[5] = a5;
-  aBlock[6] = a6;
-  aBlock[7] = a7;
-  aBlock[8] = a10;
+  aBlock[10] = actions;
+  aBlock[4] = selfCopy6;
+  aBlock[5] = scope;
+  aBlock[6] = token;
+  aBlock[7] = environments;
+  aBlock[8] = recreationReason;
   v60 = _Block_copy(aBlock);
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("EventDeferring", &qword_1ED49CE80);
   if (*CategoryCachedImpl)
@@ -3024,24 +3024,24 @@ LABEL_31:
     v47 = *(CategoryCachedImpl + 8);
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
     {
-      v48 = a8;
+      targetCopy = target;
       v49 = v60[2];
       v50 = v47;
       v49(v60, @"Processing actions");
       v51 = v50;
-      v52 = a8 = v48;
-      v53 = [v52 build];
+      v52 = target = targetCopy;
+      build = [v52 build];
       *buf = 134349314;
-      *&buf[4] = a1;
+      *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v53;
+      *&buf[14] = build;
       _os_log_impl(&dword_188A29000, v51, OS_LOG_TYPE_ERROR, "[%{public}p] State before processing actions:\n%{public}@", buf, 0x16u);
     }
   }
 
-  if ((*(a1 + 80) & 0x20) != 0)
+  if ((*(self + 80) & 0x20) != 0)
   {
-    v28 = *(a1 + 56);
+    v28 = *(self + 56);
   }
 
   else
@@ -3051,25 +3051,25 @@ LABEL_31:
 
   v29 = v28;
   v78 = 0;
-  *buf = a1;
-  *&buf[8] = a5;
+  *buf = self;
+  *&buf[8] = scope;
   *&buf[16] = 0;
-  v75 = a8;
-  v76 = a9;
-  v77 = a10;
+  targetCopy2 = target;
+  reasonCopy = reason;
+  recreationReasonCopy = recreationReason;
   LOBYTE(v78) = v58;
   BYTE1(v78) = v59;
-  BYTE2(v78) = (*(a1 + 80) & 0x20) != 0;
+  BYTE2(v78) = (*(self + 80) & 0x20) != 0;
   v61 = v29;
   v79 = v61;
-  v30 = (a1 + 8);
-  handleEvent(stateMachineSpec, *(a1 + 8), 0, buf, (a1 + 8));
+  v30 = (self + 8);
+  handleEvent(stateMachineSpec, *(self + 8), 0, buf, (self + 8));
   v66 = 0u;
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v31 = a6;
-  v32 = [v31 countByEnumeratingWithState:&v64 objects:v73 count:16];
+  tokenCopy = token;
+  v32 = [tokenCopy countByEnumeratingWithState:&v64 objects:v73 count:16];
   if (v32)
   {
     v33 = *v65;
@@ -3079,25 +3079,25 @@ LABEL_31:
       {
         if (*v65 != v33)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(tokenCopy);
         }
 
         objc_storeStrong(&buf[16], *(*(&v64 + 1) + 8 * i));
         handleEvent(stateMachineSpec, *v30, 1, buf, v30);
         v35 = a2;
-        v36 = a3;
+        actionsCopy = actions;
         do
         {
           v37 = *v35++;
           handleEvent(stateMachineSpec, *v30, v37, buf, v30);
-          --v36;
+          --actionsCopy;
         }
 
-        while (v36);
+        while (actionsCopy);
         handleEvent(stateMachineSpec, *v30, 15, buf, v30);
       }
 
-      v32 = [v31 countByEnumeratingWithState:&v64 objects:v73 count:16];
+      v32 = [tokenCopy countByEnumeratingWithState:&v64 objects:v73 count:16];
     }
 
     while (v32);
@@ -3111,11 +3111,11 @@ LABEL_31:
     if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
     {
       v55 = (v60[2])(v60, @"Processed actions");
-      v56 = [v55 build];
+      build2 = [v55 build];
       *v69 = 134349314;
-      v70 = a1;
+      selfCopy7 = self;
       v71 = 2114;
-      v72 = v56;
+      v72 = build2;
       _os_log_impl(&dword_188A29000, v54, OS_LOG_TYPE_ERROR, "[%{public}p] State after processing actions:\n%{public}@", v69, 0x16u);
     }
   }
@@ -3123,17 +3123,17 @@ LABEL_31:
   __destructor_8_s8_s16_s24_s32_s40_s56(buf);
 }
 
-- (void)removeEventDeferringRulesIfNeededForDeallocatingWindow:(id *)a1
+- (void)removeEventDeferringRulesIfNeededForDeallocatingWindow:(id *)window
 {
   v111 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!window)
   {
     return;
   }
 
   v4 = objc_opt_class();
   Name = class_getName(v4);
-  v6 = [a2 _windowHostingScene];
+  _windowHostingScene = [a2 _windowHostingScene];
   v7 = objc_opt_class();
   v8 = class_getName(v7);
 
@@ -3143,9 +3143,9 @@ LABEL_31:
     if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
     {
       v65 = v64;
-      v66 = [a2 _windowHostingScene];
+      _windowHostingScene2 = [a2 _windowHostingScene];
       *buf = 134350082;
-      v97 = a1;
+      windowCopy5 = window;
       v98 = 2082;
       v99 = Name;
       v100 = 2050;
@@ -3153,7 +3153,7 @@ LABEL_31:
       v102 = 2082;
       v103 = v8;
       v104 = 2050;
-      v105 = v66;
+      v105 = _windowHostingScene2;
       _os_log_impl(&dword_188A29000, v65, OS_LOG_TYPE_DEFAULT, "[%{public}p] Removing all event deferring rules (if needed) for deallocating window: <%{public}s: %{public}p>; scene: <%{public}s: %{public}p>", buf, 0x34u);
     }
   }
@@ -3162,7 +3162,7 @@ LABEL_31:
   v93 = 0u;
   v90 = 0u;
   v91 = 0u;
-  obj = [(_UIEventDeferringManager *)a1 _allEnvironments];
+  obj = [(_UIEventDeferringManager *)window _allEnvironments];
   v77 = [obj countByEnumeratingWithState:&v90 objects:v110 count:16];
   if (!v77)
   {
@@ -3185,7 +3185,7 @@ LABEL_31:
       }
 
       v10 = *(*(&v90 + 1) + 8 * v9);
-      v11 = [(_UIEventDeferringManager *)a1 _trackedLocalTargetWindowPointerForEnvironment:v10];
+      v11 = [(_UIEventDeferringManager *)window _trackedLocalTargetWindowPointerForEnvironment:v10];
       v12 = v11;
       if (v11 && [v11 pointerValue] == a2)
       {
@@ -3199,13 +3199,13 @@ LABEL_31:
         [v13 addObject:v10];
       }
 
-      v14 = [(_UIEventDeferringManager *)a1 _currentLocalOrCompatibilityRecordMatchingEnvironment:v10 recordingManagerPointer:a1 forcePreviousHardwareIdentifier:0];
-      v15 = [(_UIEventDeferringManager *)a1 _currentLocalOrCompatibilityRecordForEnvironment:v10 forcePreviousHardwareIdentifier:0];
+      v14 = [(_UIEventDeferringManager *)window _currentLocalOrCompatibilityRecordMatchingEnvironment:v10 recordingManagerPointer:window forcePreviousHardwareIdentifier:0];
+      v15 = [(_UIEventDeferringManager *)window _currentLocalOrCompatibilityRecordForEnvironment:v10 forcePreviousHardwareIdentifier:0];
       if (os_variant_has_internal_diagnostics())
       {
         v26 = [v10 description];
         v27 = v26;
-        v72 = [v26 UTF8String];
+        uTF8String = [v26 UTF8String];
 
         if (v15)
         {
@@ -3227,7 +3227,7 @@ LABEL_31:
 LABEL_36:
         v31 = v30;
         v32 = v31;
-        v71 = [v31 UTF8String];
+        uTF8String2 = [v31 UTF8String];
 
         v33 = *(__UILogGetCategoryCachedImpl("EventDeferring", &qword_1ED49CEC0) + 8);
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -3243,11 +3243,11 @@ LABEL_36:
             v35 = 0;
           }
 
-          v36 = [v12 pointerValue];
+          pointerValue = [v12 pointerValue];
           *buf = 134350594;
-          v97 = a1;
+          windowCopy5 = window;
           v98 = 2082;
-          v99 = v72;
+          v99 = uTF8String;
           v100 = 2050;
           v101 = v14;
           v102 = 2050;
@@ -3255,9 +3255,9 @@ LABEL_36:
           v104 = 2050;
           v105 = v35;
           v106 = 2082;
-          v107 = v71;
+          v107 = uTF8String2;
           v108 = 2050;
-          v109 = v36;
+          v109 = pointerValue;
           _os_log_impl(&dword_188A29000, v34, OS_LOG_TYPE_DEFAULT, "[%{public}p] [%{public}s] Record matching manager: %{public}p; wild card match: %{public}p; wild card match recording manager: %{public}p; wild card match reason: %{public}s; target window for environment: %{public}p", buf, 0x48u);
         }
       }
@@ -3270,8 +3270,8 @@ LABEL_36:
 
         if (v18)
         {
-          v37 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v37 handleFailureInMethod:sel_removeEventDeferringRulesIfNeededForDeallocatingWindow_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:3557 description:{@"[%p] %s: Bug in event deferring client: owning interface element is deallocating before deferring has ended: %@", a1, "-[_UIEventDeferringManager removeEventDeferringRulesIfNeededForDeallocatingWindow:]", v14}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:sel_removeEventDeferringRulesIfNeededForDeallocatingWindow_ object:window file:@"_UIEventDeferringManager.m" lineNumber:3557 description:{@"[%p] %s: Bug in event deferring client: owning interface element is deallocating before deferring has ended: %@", window, "-[_UIEventDeferringManager removeEventDeferringRulesIfNeededForDeallocatingWindow:]", v14}];
         }
       }
 
@@ -3280,12 +3280,12 @@ LABEL_36:
       v89[2] = __83___UIEventDeferringManager_removeEventDeferringRulesIfNeededForDeallocatingWindow___block_invoke;
       v89[3] = &unk_1E70FCC10;
       v89[4] = a2;
-      v19 = [(_UIEventDeferringManager *)a1 _remoteRecordsInStackMatchingEnvironment:v10 passingTest:v89];
+      v19 = [(_UIEventDeferringManager *)window _remoteRecordsInStackMatchingEnvironment:v10 passingTest:v89];
       v20 = v19;
       if (v19 && [v19 count])
       {
-        v38 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v38 handleFailureInMethod:sel_removeEventDeferringRulesIfNeededForDeallocatingWindow_ object:a1 file:@"_UIEventDeferringManager.m" lineNumber:3564 description:{@"[%p] %s: Bug in event deferring client: owning interface element is deallocating before deferring has ended: %@", a1, "-[_UIEventDeferringManager removeEventDeferringRulesIfNeededForDeallocatingWindow:]", v20}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:sel_removeEventDeferringRulesIfNeededForDeallocatingWindow_ object:window file:@"_UIEventDeferringManager.m" lineNumber:3564 description:{@"[%p] %s: Bug in event deferring client: owning interface element is deallocating before deferring has ended: %@", window, "-[_UIEventDeferringManager removeEventDeferringRulesIfNeededForDeallocatingWindow:]", v20}];
       }
 
       if (v14)
@@ -3343,7 +3343,7 @@ LABEL_48:
       v69 = [v75 count];
       v70 = [v73 count];
       *buf = 134349568;
-      v97 = a1;
+      windowCopy5 = window;
       v98 = 2050;
       v99 = v69;
       v100 = 2050;
@@ -3354,25 +3354,25 @@ LABEL_48:
 
   if (v75)
   {
-    v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %p: removing deferring rules for deallocating window: %p", objc_opt_class(), a1, a2];
-    objc_initWeak(&location, a1);
+    v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: %p: removing deferring rules for deallocating window: %p", objc_opt_class(), window, a2];
+    objc_initWeak(&location, window);
     v41 = [_UIEventDeferringOwnershipToken alloc];
     v86[0] = MEMORY[0x1E69E9820];
     v86[1] = 3221225472;
     v86[2] = __83___UIEventDeferringManager_removeEventDeferringRulesIfNeededForDeallocatingWindow___block_invoke_522;
     v86[3] = &unk_1E70FCD28;
     objc_copyWeak(&v87, &location);
-    v42 = [(_UIEventDeferringOwnershipToken *)v41 _initWithOwner:a1 scope:0 environments:v75 target:0 reason:v40 endDeferringBlock:v86];
+    v42 = [(_UIEventDeferringOwnershipToken *)v41 _initWithOwner:window scope:0 environments:v75 target:0 reason:v40 endDeferringBlock:v86];
     v43 = *(__UILogGetCategoryCachedImpl("EventDeferring", &qword_1ED49CED0) + 8);
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
     {
-      v44 = [a2 _contextId];
+      _contextId = [a2 _contextId];
       *buf = 134349568;
-      v97 = a1;
+      windowCopy5 = window;
       v98 = 2050;
       v99 = a2;
       v100 = 1026;
-      LODWORD(v101) = v44;
+      LODWORD(v101) = _contextId;
       _os_log_impl(&dword_188A29000, v43, OS_LOG_TYPE_DEFAULT, "[%{public}p] Removing all event deferring rules for deallocating window: %{public}p; contextId: 0x%{public}X", buf, 0x1Cu);
     }
 
@@ -3391,7 +3391,7 @@ LABEL_48:
     }
 
     v48 = v47;
-    [(_UIEventDeferringManager *)a1 _processEventDeferringActions:2 actionsCount:v45 inScope:v42 forDeferringToken:v46 environments:v48 target:0 addingRecreationReason:0 removingRecreationReason:v40 forReason:?];
+    [(_UIEventDeferringManager *)window _processEventDeferringActions:2 actionsCount:v45 inScope:v42 forDeferringToken:v46 environments:v48 target:0 addingRecreationReason:0 removingRecreationReason:v40 forReason:?];
 
     v84 = 0u;
     v85 = 0u;
@@ -3456,7 +3456,7 @@ LABEL_48:
           v58 = *(*(&v78 + 1) + 8 * v57);
           v59 = [v58 description];
           v60 = v59;
-          v61 = [v59 UTF8String];
+          uTF8String3 = [v59 UTF8String];
 
           if (os_variant_has_internal_diagnostics())
           {
@@ -3464,16 +3464,16 @@ LABEL_48:
             if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134349570;
-              v97 = a1;
+              windowCopy5 = window;
               v98 = 2082;
-              v99 = v61;
+              v99 = uTF8String3;
               v100 = 2050;
               v101 = a2;
               _os_log_impl(&dword_188A29000, v62, OS_LOG_TYPE_DEFAULT, "[%{public}p] [%{public}s] Ending observation of deallocating window: [%{public}p", buf, 0x20u);
             }
           }
 
-          [(_UIEventDeferringManager *)a1 _stopObservingContextForLocalTargetWindowInEnvironment:v58];
+          [(_UIEventDeferringManager *)window _stopObservingContextForLocalTargetWindowInEnvironment:v58];
           ++v57;
         }
 
@@ -3489,15 +3489,15 @@ LABEL_48:
   }
 }
 
-- (void)endEventDeferringForToken:(id)a3 withReason:
+- (void)endEventDeferringForToken:(id)token withReason:
 {
   v79 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v5 = a1;
+  selfCopy = self;
   if (a2)
   {
     if (*(a2 + 24))
@@ -3508,20 +3508,20 @@ LABEL_48:
     v6 = *(a2 + 56);
     if (v6 == 1)
     {
-      v7 = [a3 UTF8String];
+      uTF8String = [token UTF8String];
       v8 = *(__UILogGetCategoryCachedImpl("EventDeferring", &qword_1ED49CF18) + 8);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v9 = v8;
         v10 = *(a2 + 64);
         *buf = 134349826;
-        v64 = v5;
+        v64 = selfCopy;
         v65 = 2050;
         v66 = a2;
         v67 = 2048;
         v68 = [v10 count];
         v69 = 2082;
-        v70 = v7;
+        v70 = uTF8String;
         _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}p] End remote event deferring requested for token: %{public}p; environments: %lu; reason: %{public}s", buf, 0x2Au);
       }
 
@@ -3531,7 +3531,7 @@ LABEL_48:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134349312;
-          v64 = v5;
+          v64 = selfCopy;
           v65 = 2050;
           v66 = a2;
           v12 = buf;
@@ -3546,7 +3546,7 @@ LABEL_20:
         v44 = *(a2 + 56);
         v45 = *(a2 + 64);
         v46 = *(a2 + 72);
-        [(_UIEventDeferringManager *)v5 _processEventDeferringActions:3 actionsCount:v44 inScope:a2 forDeferringToken:v45 environments:v46 target:0 addingRecreationReason:0 removingRecreationReason:a3 forReason:?];
+        [(_UIEventDeferringManager *)selfCopy _processEventDeferringActions:3 actionsCount:v44 inScope:a2 forDeferringToken:v45 environments:v46 target:0 addingRecreationReason:0 removingRecreationReason:token forReason:?];
 
 LABEL_60:
       }
@@ -3556,12 +3556,12 @@ LABEL_60:
 
     if (v6)
     {
-      v50 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v50 handleFailureInMethod:sel_endLocalEventDeferringForToken_withReason_ object:v5 file:@"_UIEventDeferringManager.m" lineNumber:3853 description:{@"[%p] %s: Wrong method for deferring token: %@", v5, "-[_UIEventDeferringManager endLocalEventDeferringForToken:withReason:]", a2}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_endLocalEventDeferringForToken_withReason_ object:selfCopy file:@"_UIEventDeferringManager.m" lineNumber:3853 description:{@"[%p] %s: Wrong method for deferring token: %@", selfCopy, "-[_UIEventDeferringManager endLocalEventDeferringForToken:withReason:]", a2}];
     }
   }
 
-  v13 = [a3 UTF8String];
+  uTF8String2 = [token UTF8String];
   v14 = *(__UILogGetCategoryCachedImpl("EventDeferring", &qword_1ED49CF00) + 8);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -3578,19 +3578,19 @@ LABEL_60:
 
     v17 = v16;
     *v71 = 134349826;
-    v72 = v5;
+    v72 = selfCopy;
     v73 = 2050;
     v74 = a2;
     v75 = 2048;
     v76 = [v17 count];
     v77 = 2082;
-    v78 = v13;
+    v78 = uTF8String2;
     _os_log_impl(&dword_188A29000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}p] End local event deferring requested for token: %{public}p; environments: %lu; reason: %{public}s", v71, 0x2Au);
   }
 
   if (!a2)
   {
-    v51 = a3;
+    tokenCopy2 = token;
     v18 = 0;
     v60 = 0u;
     v61 = 0u;
@@ -3601,7 +3601,7 @@ LABEL_60:
 
   if (*(a2 + 24) != 1)
   {
-    v51 = a3;
+    tokenCopy2 = token;
     v60 = 0u;
     v61 = 0u;
     v58 = 0u;
@@ -3626,7 +3626,7 @@ LABEL_22:
             objc_enumerationMutation(obj);
           }
 
-          v24 = [(_UIEventDeferringManager *)v5 _currentLocalRecordsMatchingEnvironment:0 forcePreviousHardwareIdentifier:?];
+          v24 = [(_UIEventDeferringManager *)selfCopy _currentLocalRecordsMatchingEnvironment:0 forcePreviousHardwareIdentifier:?];
           if ([v24 count])
           {
             v25 = objc_opt_new();
@@ -3647,13 +3647,13 @@ LABEL_22:
             if (v29)
             {
               v31 = v21;
-              v32 = v5;
+              v32 = selfCopy;
               v33 = v22;
               v34 = objc_loadWeakRetained((v29 + 32));
 
               v35 = v34 == a2;
               v22 = v33;
-              v5 = v32;
+              selfCopy = v32;
               v21 = v31;
               v20 = v52;
               if (v35)
@@ -3687,7 +3687,7 @@ LABEL_22:
             }
 
             v49 = v48;
-            [(_UIEventDeferringManager *)v5 _processEventDeferringActions:2 actionsCount:v47 inScope:a2 forDeferringToken:v45 environments:v49 target:0 addingRecreationReason:0 removingRecreationReason:v51 forReason:?];
+            [(_UIEventDeferringManager *)selfCopy _processEventDeferringActions:2 actionsCount:v47 inScope:a2 forDeferringToken:v45 environments:v49 target:0 addingRecreationReason:0 removingRecreationReason:tokenCopy2 forReason:?];
 
             goto LABEL_60;
           }
@@ -3710,7 +3710,7 @@ LABEL_22:
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
       *v71 = 134349312;
-      v72 = v5;
+      v72 = selfCopy;
       v73 = 2050;
       v74 = a2;
       _os_log_impl(&dword_188A29000, v37, OS_LOG_TYPE_DEFAULT, "[%{public}p] No existing records found, invalidating token for all environments: %{public}p", v71, 0x16u);
@@ -3768,7 +3768,7 @@ LABEL_22:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *v71 = 134349312;
-    v72 = v5;
+    v72 = selfCopy;
     v73 = 2050;
     v74 = a2;
     v12 = v71;
@@ -3776,17 +3776,17 @@ LABEL_22:
   }
 }
 
-- (_BYTE)beginLocalEventDeferringInEnvironments:(void *)a3 forOwningInterfaceElement:(void *)a4 withReason:
+- (_BYTE)beginLocalEventDeferringInEnvironments:(void *)environments forOwningInterfaceElement:(void *)element withReason:
 {
   v47 = *MEMORY[0x1E69E9840];
-  if (!a1 || (a1[80] & 2) != 0)
+  if (!self || (self[80] & 2) != 0)
   {
     v18 = 0;
   }
 
   else
   {
-    _UIEventDeferringAssertForInvalidOwningInterfaceElement(a3);
+    _UIEventDeferringAssertForInvalidOwningInterfaceElement(environments);
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
@@ -3807,7 +3807,7 @@ LABEL_22:
           }
 
           v12 = *(*(&v34 + 1) + 8 * i);
-          v13 = [(_UIEventDeferringManager *)a1 _localTargetWindowForEnvironment:v12 consultingFallbackIfPermitted:1];
+          v13 = [(_UIEventDeferringManager *)self _localTargetWindowForEnvironment:v12 consultingFallbackIfPermitted:1];
           v14 = v13 == 0;
 
           if (v14)
@@ -3827,19 +3827,19 @@ LABEL_22:
       while (v9);
     }
 
-    v15 = a4;
-    v16 = [a4 UTF8String];
+    elementCopy = element;
+    uTF8String = [element UTF8String];
     if (v8 && [v8 count])
     {
       v17 = *(__UILogGetCategoryCachedImpl("EventDeferring", &qword_1ED49CEE0) + 8);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         *buf = 134349570;
-        v39 = a1;
+        selfCopy2 = self;
         v40 = 2114;
         v41 = v8;
         v42 = 2082;
-        v43 = v16;
+        v43 = uTF8String;
         _os_log_impl(&dword_188A29000, v17, OS_LOG_TYPE_ERROR, "[%{public}p] Exiting request to begin local event deferring as environments are missing local target windows: %{public}@; request reason: %{public}s", buf, 0x20u);
       }
 
@@ -3848,14 +3848,14 @@ LABEL_22:
 
     else
     {
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       v19 = [_UIEventDeferringOwnershipToken alloc];
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __104___UIEventDeferringManager_beginLocalEventDeferringInEnvironments_forOwningInterfaceElement_withReason___block_invoke;
       v31[3] = &unk_1E70FCD28;
       objc_copyWeak(&v32, &location);
-      v18 = [(_UIEventDeferringOwnershipToken *)v19 _initWithOwner:a3 scope:0 environments:v7 target:0 reason:a4 endDeferringBlock:v31];
+      v18 = [(_UIEventDeferringOwnershipToken *)v19 _initWithOwner:environments scope:0 environments:v7 target:0 reason:element endDeferringBlock:v31];
       v20 = *(__UILogGetCategoryCachedImpl("EventDeferring", &qword_1ED49CEE8) + 8);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
@@ -3872,13 +3872,13 @@ LABEL_22:
         v22 = v21;
         v23 = [v22 count];
         *buf = 134349826;
-        v39 = a1;
+        selfCopy2 = self;
         v40 = 2050;
         v41 = v18;
         v42 = 2048;
         v43 = v23;
         v44 = 2082;
-        v45 = v16;
+        v45 = uTF8String;
         _os_log_impl(&dword_188A29000, v20, OS_LOG_TYPE_DEFAULT, "[%{public}p] Begin local event deferring requested for token: %{public}p; environments: %lu; reason: %{public}s", buf, 0x2Au);
       }
 
@@ -3899,7 +3899,7 @@ LABEL_22:
       }
 
       v28 = v27;
-      [(_UIEventDeferringManager *)a1 _processEventDeferringActions:5 actionsCount:v24 inScope:v18 forDeferringToken:v25 environments:v26 target:@"_UIEventDeferringRecreationReasonTopRemoteElementNotVisible" addingRecreationReason:0 removingRecreationReason:v28 forReason:?];
+      [(_UIEventDeferringManager *)self _processEventDeferringActions:5 actionsCount:v24 inScope:v18 forDeferringToken:v25 environments:v26 target:@"_UIEventDeferringRecreationReasonTopRemoteElementNotVisible" addingRecreationReason:0 removingRecreationReason:v28 forReason:?];
 
       objc_destroyWeak(&v32);
       objc_destroyWeak(&location);
@@ -3909,13 +3909,13 @@ LABEL_22:
   return v18;
 }
 
-- (_BYTE)beginAndEndLocalEventDeferringForToken:(void *)a3 withReason:
+- (_BYTE)beginAndEndLocalEventDeferringForToken:(void *)token withReason:
 {
-  v3 = a1;
+  selfCopy = self;
   v67 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if ((a1[80] & 2) != 0)
+    if ((self[80] & 2) != 0)
     {
       v53 = 0u;
       v54 = 0u;
@@ -3932,13 +3932,13 @@ LABEL_22:
       }
 
       v9 = v14;
-      v3 = [v9 countByEnumeratingWithState:&v51 objects:v66 count:16];
-      if (v3)
+      selfCopy = [v9 countByEnumeratingWithState:&v51 objects:v66 count:16];
+      if (selfCopy)
       {
         v15 = *v52;
         do
         {
-          for (i = 0; i != v3; ++i)
+          for (i = 0; i != selfCopy; ++i)
           {
             if (*v52 != v15)
             {
@@ -3955,10 +3955,10 @@ LABEL_22:
             }
           }
 
-          v3 = [v9 countByEnumeratingWithState:&v51 objects:v66 count:16];
+          selfCopy = [v9 countByEnumeratingWithState:&v51 objects:v66 count:16];
         }
 
-        while (v3);
+        while (selfCopy);
       }
     }
 
@@ -3968,8 +3968,8 @@ LABEL_22:
       {
         if (*(a2 + 56))
         {
-          v37 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v37 handleFailureInMethod:sel_beginAndEndLocalEventDeferringForToken_withReason_ object:v3 file:@"_UIEventDeferringManager.m" lineNumber:3752 description:{@"[%p] %s: Attempting to begin and end local event deferring for a non-local token: %@", v3, "-[_UIEventDeferringManager beginAndEndLocalEventDeferringForToken:withReason:]", a2}];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:sel_beginAndEndLocalEventDeferringForToken_withReason_ object:selfCopy file:@"_UIEventDeferringManager.m" lineNumber:3752 description:{@"[%p] %s: Attempting to begin and end local event deferring for a non-local token: %@", selfCopy, "-[_UIEventDeferringManager beginAndEndLocalEventDeferringForToken:withReason:]", a2}];
         }
 
         v49 = 0u;
@@ -4005,7 +4005,7 @@ LABEL_22:
             }
 
             v12 = *(*(&v47 + 1) + 8 * j);
-            v13 = [(_UIEventDeferringManager *)v3 _localTargetWindowForEnvironment:v12 consultingFallbackIfPermitted:1];
+            v13 = [(_UIEventDeferringManager *)selfCopy _localTargetWindowForEnvironment:v12 consultingFallbackIfPermitted:1];
 
             if (!v13)
             {
@@ -4029,18 +4029,18 @@ LABEL_22:
         v9 = 0;
       }
 
-      v17 = [a3 UTF8String];
+      uTF8String = [token UTF8String];
       if (v9 && [v9 count])
       {
         v18 = *(__UILogGetCategoryCachedImpl("EventDeferring", &qword_1ED49CEF0) + 8);
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
           *buf = 134349570;
-          v57 = v3;
+          v57 = selfCopy;
           v58 = 2114;
           v59 = v9;
           v60 = 2082;
-          v61 = v17;
+          v61 = uTF8String;
           _os_log_impl(&dword_188A29000, v18, OS_LOG_TYPE_ERROR, "[%{public}p] Exiting request to begin and end local event deferring as environments are missing local target windows: %{public}@; request reason: %{public}s", buf, 0x20u);
         }
 
@@ -4059,13 +4059,13 @@ LABEL_22:
         }
 
         v20 = v19;
-        v3 = [v20 countByEnumeratingWithState:&v43 objects:v64 count:16];
-        if (v3)
+        selfCopy = [v20 countByEnumeratingWithState:&v43 objects:v64 count:16];
+        if (selfCopy)
         {
           v21 = *v44;
           do
           {
-            for (k = 0; k != v3; ++k)
+            for (k = 0; k != selfCopy; ++k)
             {
               if (*v44 != v21)
               {
@@ -4082,10 +4082,10 @@ LABEL_22:
               }
             }
 
-            v3 = [v20 countByEnumeratingWithState:&v43 objects:v64 count:16];
+            selfCopy = [v20 countByEnumeratingWithState:&v43 objects:v64 count:16];
           }
 
-          while (v3);
+          while (selfCopy);
         }
       }
 
@@ -4108,13 +4108,13 @@ LABEL_22:
           v26 = v25;
           v27 = [v26 count];
           *buf = 134349826;
-          v57 = v3;
+          v57 = selfCopy;
           v58 = 2050;
           v59 = a2;
           v60 = 2048;
           v61 = v27;
           v62 = 2082;
-          v63 = v17;
+          v63 = uTF8String;
           _os_log_impl(&dword_188A29000, v24, OS_LOG_TYPE_DEFAULT, "[%{public}p] Beginning and ending local event deferring requested for token: %{public}p; environments: %lu; reason: %{public}s", buf, 0x2Au);
         }
 
@@ -4131,7 +4131,7 @@ LABEL_22:
         }
 
         v29 = v28;
-        v3 = [(_UIEventDeferringManager *)v3 beginLocalEventDeferringInEnvironments:v29 forOwningInterfaceElement:v20 withReason:a3];
+        selfCopy = [(_UIEventDeferringManager *)selfCopy beginLocalEventDeferringInEnvironments:v29 forOwningInterfaceElement:v20 withReason:token];
 
         v41 = 0u;
         v42 = 0u;
@@ -4181,30 +4181,30 @@ LABEL_22:
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (_BYTE)beginRemoteEventDeferringInEnvironments:(void *)a3 forOwningInterfaceElement:(void *)a4 toTarget:(void *)a5 withReason:
+- (_BYTE)beginRemoteEventDeferringInEnvironments:(void *)environments forOwningInterfaceElement:(void *)element toTarget:(void *)target withReason:
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (!a1 || (a1[80] & 2) != 0)
+  if (!self || (self[80] & 2) != 0)
   {
     v11 = 0;
   }
 
   else
   {
-    _UIEventDeferringAssertForInvalidOwningInterfaceElement(a3);
-    objc_initWeak(&location, a1);
+    _UIEventDeferringAssertForInvalidOwningInterfaceElement(environments);
+    objc_initWeak(&location, self);
     v10 = [_UIEventDeferringOwnershipToken alloc];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __114___UIEventDeferringManager_beginRemoteEventDeferringInEnvironments_forOwningInterfaceElement_toTarget_withReason___block_invoke;
     v24[3] = &unk_1E70FCD28;
     objc_copyWeak(&v25, &location);
-    v11 = [(_UIEventDeferringOwnershipToken *)v10 _initWithOwner:a3 scope:1 environments:a2 target:a4 reason:a5 endDeferringBlock:v24];
-    v12 = a5;
-    v13 = [a5 UTF8String];
+    v11 = [(_UIEventDeferringOwnershipToken *)v10 _initWithOwner:environments scope:1 environments:a2 target:element reason:target endDeferringBlock:v24];
+    targetCopy = target;
+    uTF8String = [target UTF8String];
     v14 = *(__UILogGetCategoryCachedImpl("EventDeferring", &beginRemoteEventDeferringInEnvironments_forOwningInterfaceElement_toTarget_withReason____s_category) + 8);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -4221,13 +4221,13 @@ LABEL_22:
       v16 = v15;
       v17 = [v16 count];
       *buf = 134349826;
-      v28 = a1;
+      selfCopy = self;
       v29 = 2050;
       v30 = v11;
       v31 = 2048;
       v32 = v17;
       v33 = 2082;
-      v34 = v13;
+      v34 = uTF8String;
       _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}p] Begin remote event deferring requested for token: %{public}p; environments: %lu; reason: %{public}s", buf, 0x2Au);
     }
 
@@ -4248,7 +4248,7 @@ LABEL_22:
     }
 
     v22 = v21;
-    [(_UIEventDeferringManager *)a1 _processEventDeferringActions:5 actionsCount:v18 inScope:v11 forDeferringToken:v19 environments:v20 target:@"_UIEventDeferringRecreationReasonNoLongerTopRemoteRecord" addingRecreationReason:0 removingRecreationReason:v22 forReason:?];
+    [(_UIEventDeferringManager *)self _processEventDeferringActions:5 actionsCount:v18 inScope:v11 forDeferringToken:v19 environments:v20 target:@"_UIEventDeferringRecreationReasonNoLongerTopRemoteRecord" addingRecreationReason:0 removingRecreationReason:v22 forReason:?];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(&location);
@@ -4257,39 +4257,39 @@ LABEL_22:
   return v11;
 }
 
-- (void)setNeedsRemoteEventDeferringRuleComparisonInEnvironments:(id)a3 forBehaviorDelegate:(id)a4 withReason:(id)a5
+- (void)setNeedsRemoteEventDeferringRuleComparisonInEnvironments:(id)environments forBehaviorDelegate:(id)delegate withReason:(id)reason
 {
   v43 = *MEMORY[0x1E69E9840];
   if ((*&self->_deferringManagerFlags & 2) == 0)
   {
     if ((_UIEventDeferringSystemShellBehaviorIsAllowedForProcess() & 1) == 0)
     {
-      v27 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v27 handleFailureInMethod:a2 object:self file:@"_UIEventDeferringManager.m" lineNumber:3949 description:{@"[%p] %s: System shell behavior is not allowed for this process", self, "-[_UIEventDeferringManager setNeedsRemoteEventDeferringRuleComparisonInEnvironments:forBehaviorDelegate:withReason:]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIEventDeferringManager.m" lineNumber:3949 description:{@"[%p] %s: System shell behavior is not allowed for this process", self, "-[_UIEventDeferringManager setNeedsRemoteEventDeferringRuleComparisonInEnvironments:forBehaviorDelegate:withReason:]"}];
     }
 
     v10 = +[_UIEventDeferringManager systemShellBehaviorDelegate];
 
-    if (v10 != a4)
+    if (v10 != delegate)
     {
-      v28 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v28 handleFailureInMethod:a2 object:self file:@"_UIEventDeferringManager.m" lineNumber:3952 description:{@"[%p] %s: Incoming delegate does not match existing delegate: %@", self, "-[_UIEventDeferringManager setNeedsRemoteEventDeferringRuleComparisonInEnvironments:forBehaviorDelegate:withReason:]", a4}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIEventDeferringManager.m" lineNumber:3952 description:{@"[%p] %s: Incoming delegate does not match existing delegate: %@", self, "-[_UIEventDeferringManager setNeedsRemoteEventDeferringRuleComparisonInEnvironments:forBehaviorDelegate:withReason:]", delegate}];
     }
 
     v11 = objc_opt_class();
     Name = class_getName(v11);
-    v13 = [a5 UTF8String];
+    uTF8String = [reason UTF8String];
     v14 = *(__UILogGetCategoryCachedImpl("EventDeferring", &setNeedsRemoteEventDeferringRuleComparisonInEnvironments_forBehaviorDelegate_withReason____s_category) + 8);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134349826;
-      v36 = self;
+      selfCopy = self;
       v37 = 2082;
       v38 = Name;
       v39 = 2050;
-      v40 = a4;
+      delegateCopy = delegate;
       v41 = 2082;
-      v42 = v13;
+      v42 = uTF8String;
       _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}p] Remote event deferring rule comparison requested by system shell behavior delegate: <%{public}s: %{public}p>; reason: %{public}s", buf, 0x2Au);
     }
 
@@ -4300,7 +4300,7 @@ LABEL_22:
     v33[2] = __116___UIEventDeferringManager_setNeedsRemoteEventDeferringRuleComparisonInEnvironments_forBehaviorDelegate_withReason___block_invoke;
     v33[3] = &unk_1E70FCD50;
     v33[4] = self;
-    v16 = [(_UIEventDeferringOwnershipToken *)v15 _initWithOwner:1 scope:a3 environments:0 target:a5 reason:v33 endDeferringBlock:?];
+    v16 = [(_UIEventDeferringOwnershipToken *)v15 _initWithOwner:1 scope:environments environments:0 target:reason reason:v33 endDeferringBlock:?];
     v17 = v16;
     if (v16)
     {
@@ -4325,8 +4325,8 @@ LABEL_22:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v23 = a3;
-    v24 = [v23 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    environmentsCopy = environments;
+    v24 = [environmentsCopy countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v24)
     {
       v25 = *v30;
@@ -4336,7 +4336,7 @@ LABEL_22:
         {
           if (*v30 != v25)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(environmentsCopy);
           }
 
           if (v17)
@@ -4349,7 +4349,7 @@ LABEL_22:
           }
         }
 
-        v24 = [v23 countByEnumeratingWithState:&v29 objects:v34 count:16];
+        v24 = [environmentsCopy countByEnumeratingWithState:&v29 objects:v34 count:16];
       }
 
       while (v24);
@@ -4359,14 +4359,14 @@ LABEL_22:
   }
 }
 
-- (uint64_t)compareRemoteRuleOwningElement:(uint64_t)a3 toTopElementInEnvironment:
+- (uint64_t)compareRemoteRuleOwningElement:(uint64_t)element toTopElementInEnvironment:
 {
-  if (!a1 || (*(a1 + 80) & 2) != 0)
+  if (!self || (*(self + 80) & 2) != 0)
   {
     return 0;
   }
 
-  v6 = [(_UIEventDeferringManager *)a1 _topRemoteRecordInStackForEnvironment:a3];
+  v6 = [(_UIEventDeferringManager *)self _topRemoteRecordInStackForEnvironment:element];
   v7 = v6;
   if (v6)
   {
@@ -4391,7 +4391,7 @@ LABEL_22:
 
     else
     {
-      v12 = [*(a1 + 104) compareRemoteRuleOwningElement:v11 toElement:a2 inEnvironment:a3];
+      v12 = [*(self + 104) compareRemoteRuleOwningElement:v11 toElement:a2 inEnvironment:element];
     }
   }
 
@@ -4425,10 +4425,10 @@ LABEL_22:
           objc_enumerationMutation(v0);
         }
 
-        v4 = [*(*(&v7 + 1) + 8 * i) _eventDeferringManager];
-        if (v4)
+        _eventDeferringManager = [*(*(&v7 + 1) + 8 * i) _eventDeferringManager];
+        if (_eventDeferringManager)
         {
-          v5 = atomic_load(v4 + 9);
+          v5 = atomic_load(_eventDeferringManager + 9);
 
           if (v5 > 0)
           {
@@ -4453,34 +4453,34 @@ LABEL_12:
   return v1;
 }
 
-- (id)bufferKeyboardFocusEnvironmentEventsWithReason:(uint64_t)a1
+- (id)bufferKeyboardFocusEnvironmentEventsWithReason:(uint64_t)reason
 {
   v40 = *MEMORY[0x1E69E9840];
-  if (a1 && (*(a1 + 80) & 2) == 0 && ([a1 _scene], v4 = objc_claimAutoreleasedReturnValue(), v5 = _UISceneSystemShellManagesKeyboardFocusForScene(v4), v4, v5))
+  if (reason && (*(reason + 80) & 2) == 0 && ([reason _scene], v4 = objc_claimAutoreleasedReturnValue(), v5 = _UISceneSystemShellManagesKeyboardFocusForScene(v4), v4, v5))
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 88));
+    WeakRetained = objc_loadWeakRetained((reason + 88));
     v7 = objc_opt_class();
     Name = class_getName(v7);
 
-    v9 = [a2 UTF8String];
+    uTF8String = [a2 UTF8String];
     v10 = *(__UILogGetCategoryCachedImpl("EventDeferring", &bufferKeyboardFocusEnvironmentEventsWithReason____s_category) + 8);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = objc_loadWeakRetained((a1 + 88));
+      v12 = objc_loadWeakRetained((reason + 88));
       *buf = 134349826;
-      v33 = a1;
+      reasonCopy = reason;
       v34 = 2082;
       v35 = Name;
       v36 = 2050;
       v37 = v12;
       v38 = 2082;
-      v39 = v9;
+      v39 = uTF8String;
       _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}p] Buffer events for keyboard focus environment in scene: <%{public}s: %{public}p>; reason: %{public}s", buf, 0x2Au);
     }
 
     v13 = objc_alloc_init(MEMORY[0x1E698E3F0]);
-    v14 = [(_UIEventDeferringManager *)a1 _displayHardwareIndentifierAccountingForNotFinalizedChange:?];
+    v14 = [(_UIEventDeferringManager *)reason _displayHardwareIndentifierAccountingForNotFinalizedChange:?];
     if (v14)
     {
       [MEMORY[0x1E698E3C8] displayWithHardwareIdentifier:v14];
@@ -4492,19 +4492,19 @@ LABEL_12:
     }
     v16 = ;
     [v13 setDisplay:v16];
-    v17 = [MEMORY[0x1E698E398] keyboardFocusEnvironment];
-    [v13 setEnvironment:v17];
+    keyboardFocusEnvironment = [MEMORY[0x1E698E398] keyboardFocusEnvironment];
+    [v13 setEnvironment:keyboardFocusEnvironment];
 
-    v18 = [a1 windowHostingScene];
-    v19 = [v18 _FBSScene];
-    v20 = [v19 identityToken];
-    v21 = [v20 stringRepresentation];
+    windowHostingScene = [reason windowHostingScene];
+    _FBSScene = [windowHostingScene _FBSScene];
+    identityToken = [_FBSScene identityToken];
+    stringRepresentation = [identityToken stringRepresentation];
 
-    v22 = [MEMORY[0x1E698E3A0] tokenForString:v21];
+    v22 = [MEMORY[0x1E698E3A0] tokenForString:stringRepresentation];
     [v13 setToken:v22];
 
-    v23 = [MEMORY[0x1E698E3B0] sharedInstance];
-    v24 = [v23 bufferEventsMatchingPredicate:v13 withReason:a2];
+    mEMORY[0x1E698E3B0] = [MEMORY[0x1E698E3B0] sharedInstance];
+    v24 = [mEMORY[0x1E698E3B0] bufferEventsMatchingPredicate:v13 withReason:a2];
 
     v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%p> - Wrapper", v24];
     v26 = objc_alloc(MEMORY[0x1E698E778]);
@@ -4513,10 +4513,10 @@ LABEL_12:
     v29[2] = __75___UIEventDeferringManager_bufferKeyboardFocusEnvironmentEventsWithReason___block_invoke;
     v29[3] = &unk_1E70FCD78;
     v30 = v24;
-    v31 = a1;
+    reasonCopy2 = reason;
     v27 = v24;
     v15 = [v26 initWithIdentifier:v25 forReason:a2 invalidationBlock:v29];
-    atomic_fetch_add((a1 + 72), 1uLL);
+    atomic_fetch_add((reason + 72), 1uLL);
   }
 
   else

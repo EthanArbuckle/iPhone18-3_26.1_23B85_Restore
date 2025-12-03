@@ -1,7 +1,7 @@
 @interface CPLEngineScopedTask
-- (BOOL)checkScopeIsValidInTransaction:(id)a3;
-- (BOOL)isScopeValidInTransaction:(id)a3;
-- (CPLEngineScopedTask)initWithEngineLibrary:(id)a3 session:(id)a4 clientCacheIdentifier:(id)a5 scope:(id)a6 transportScope:(id)a7;
+- (BOOL)checkScopeIsValidInTransaction:(id)transaction;
+- (BOOL)isScopeValidInTransaction:(id)transaction;
+- (CPLEngineScopedTask)initWithEngineLibrary:(id)library session:(id)session clientCacheIdentifier:(id)identifier scope:(id)scope transportScope:(id)transportScope;
 - (id)scopesForTask;
 @end
 
@@ -10,8 +10,8 @@
 - (id)scopesForTask
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(CPLEngineScopedTask *)self scope];
-  v6[0] = v2;
+  scope = [(CPLEngineScopedTask *)self scope];
+  v6[0] = scope;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -19,23 +19,23 @@
   return v3;
 }
 
-- (BOOL)checkScopeIsValidInTransaction:(id)a3
+- (BOOL)checkScopeIsValidInTransaction:(id)transaction
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 error];
+  transactionCopy = transaction;
+  error = [transactionCopy error];
 
-  if (v5)
+  if (error)
   {
 LABEL_15:
     v11 = 0;
     goto LABEL_16;
   }
 
-  v6 = [(CPLEngineSyncTask *)self session];
-  v7 = [v6 shouldDefer];
+  session = [(CPLEngineSyncTask *)self session];
+  shouldDefer = [session shouldDefer];
 
-  if (v7)
+  if (shouldDefer)
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
@@ -50,21 +50,21 @@ LABEL_15:
     }
 
     v10 = +[CPLErrors sessionHasBeenDeferredError];
-    [v4 setError:v10];
+    [transactionCopy setError:v10];
 
     goto LABEL_15;
   }
 
-  if (![(CPLEngineScopedTask *)self isScopeValidInTransaction:v4])
+  if (![(CPLEngineScopedTask *)self isScopeValidInTransaction:transactionCopy])
   {
     if ((_CPLSilentLogging & 1) == 0)
     {
       v12 = __CPLTaskOSLogDomain_15620();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(CPLEngineScopedTask *)self scope];
+        scope = [(CPLEngineScopedTask *)self scope];
         *v16 = 138412290;
-        *&v16[4] = v13;
+        *&v16[4] = scope;
         _os_log_impl(&dword_1DC05A000, v12, OS_LOG_TYPE_DEFAULT, "%@ is not valid anymore - stopping here", v16, 0xCu);
       }
     }
@@ -80,15 +80,15 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)isScopeValidInTransaction:(id)a3
+- (BOOL)isScopeValidInTransaction:(id)transaction
 {
   v41 = *MEMORY[0x1E69E9840];
   v4 = self->_clientCacheIdentifier;
-  v5 = [(CPLEngineStore *)self->_store clientCacheIdentifier];
-  v6 = v5;
+  clientCacheIdentifier = [(CPLEngineStore *)self->_store clientCacheIdentifier];
+  v6 = clientCacheIdentifier;
   if (v4)
   {
-    v7 = v5 == 0;
+    v7 = clientCacheIdentifier == 0;
   }
 
   else
@@ -102,15 +102,15 @@ LABEL_16:
     if (!(v4 | v6))
     {
 LABEL_12:
-      v12 = [(CPLEngineStore *)self->_store scopes];
-      v8 = [v12 validLocalScopeIndexes];
+      scopes = [(CPLEngineStore *)self->_store scopes];
+      validLocalScopeIndexes = [scopes validLocalScopeIndexes];
 
       v32 = 0u;
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v13 = [(CPLEngineScopedTask *)self scopesForTask];
-      v14 = [v13 countByEnumeratingWithState:&v30 objects:v40 count:16];
+      scopesForTask = [(CPLEngineScopedTask *)self scopesForTask];
+      v14 = [scopesForTask countByEnumeratingWithState:&v30 objects:v40 count:16];
       if (v14)
       {
         v15 = v14;
@@ -121,18 +121,18 @@ LABEL_14:
         {
           if (*v31 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(scopesForTask);
           }
 
           v18 = *(*(&v30 + 1) + 8 * v17);
-          if (([v8 containsIndex:[(CPLEngineScope *)v18 localIndex]]& 1) == 0)
+          if (([validLocalScopeIndexes containsIndex:[(CPLEngineScope *)v18 localIndex]]& 1) == 0)
           {
             break;
           }
 
           if (v15 == ++v17)
           {
-            v15 = [v13 countByEnumeratingWithState:&v30 objects:v40 count:16];
+            v15 = [scopesForTask countByEnumeratingWithState:&v30 objects:v40 count:16];
             if (v15)
             {
               goto LABEL_14;
@@ -206,7 +206,7 @@ LABEL_31:
 
   else
   {
-    v11 = [v4 isEqual:v5];
+    v11 = [v4 isEqual:clientCacheIdentifier];
 
     if (v11)
     {
@@ -220,13 +220,13 @@ LABEL_31:
     goto LABEL_33;
   }
 
-  v8 = __CPLTaskOSLogDomain_15620();
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  validLocalScopeIndexes = __CPLTaskOSLogDomain_15620();
+  if (os_log_type_enabled(validLocalScopeIndexes, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
     v35 = objc_opt_class();
     v9 = v35;
-    _os_log_impl(&dword_1DC05A000, v8, OS_LOG_TYPE_DEFAULT, "Client cache has been reset. Stopping %@ for now", buf, 0xCu);
+    _os_log_impl(&dword_1DC05A000, validLocalScopeIndexes, OS_LOG_TYPE_DEFAULT, "Client cache has been reset. Stopping %@ for now", buf, 0xCu);
   }
 
   v10 = 0;
@@ -237,25 +237,25 @@ LABEL_33:
   return v10;
 }
 
-- (CPLEngineScopedTask)initWithEngineLibrary:(id)a3 session:(id)a4 clientCacheIdentifier:(id)a5 scope:(id)a6 transportScope:(id)a7
+- (CPLEngineScopedTask)initWithEngineLibrary:(id)library session:(id)session clientCacheIdentifier:(id)identifier scope:(id)scope transportScope:(id)transportScope
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  libraryCopy = library;
+  identifierCopy = identifier;
+  scopeCopy = scope;
+  transportScopeCopy = transportScope;
   v23.receiver = self;
   v23.super_class = CPLEngineScopedTask;
-  v16 = [(CPLEngineSyncTask *)&v23 initWithEngineLibrary:v12 session:a4];
+  v16 = [(CPLEngineSyncTask *)&v23 initWithEngineLibrary:libraryCopy session:session];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_scope, a6);
-    objc_storeStrong(&v17->_transportScope, a7);
-    v18 = [v12 store];
+    objc_storeStrong(&v16->_scope, scope);
+    objc_storeStrong(&v17->_transportScope, transportScope);
+    store = [libraryCopy store];
     store = v17->_store;
-    v17->_store = v18;
+    v17->_store = store;
 
-    v20 = [v13 copy];
+    v20 = [identifierCopy copy];
     clientCacheIdentifier = v17->_clientCacheIdentifier;
     v17->_clientCacheIdentifier = v20;
   }

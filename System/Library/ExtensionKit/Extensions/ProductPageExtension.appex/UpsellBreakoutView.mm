@@ -1,17 +1,17 @@
 @interface UpsellBreakoutView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)didTapVideo;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UpsellBreakoutView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_10047E948(width);
   v7 = v6;
 
@@ -24,27 +24,27 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10047EBD0();
 }
 
 - (void)didTapVideo
 {
-  v2 = self;
+  selfCopy = self;
   sub_10047F094();
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_100480764(v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = sub_100480764(touchCopy);
 
   return v9 & 1;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   ObjectType = swift_getObjectType();
   v6 = sub_100761D8C();
@@ -53,13 +53,13 @@
   v9 = &v15 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   v16.receiver = self;
   v16.super_class = ObjectType;
-  v10 = a3;
-  v11 = self;
-  [(UpsellBreakoutView *)&v16 traitCollectionDidChange:v10];
-  v12 = *(&v11->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension18UpsellBreakoutView_buttonDetailsView);
+  changeCopy = change;
+  selfCopy = self;
+  [(UpsellBreakoutView *)&v16 traitCollectionDidChange:changeCopy];
+  v12 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension18UpsellBreakoutView_buttonDetailsView);
   v13 = OBJC_IVAR____TtC20ProductPageExtension18UpsellBreakoutView_buttonDetailsTextAlignment;
   swift_beginAccess();
-  (*(v7 + 16))(v9, v11 + v13, v6);
+  (*(v7 + 16))(v9, selfCopy + v13, v6);
   v14 = sub_100761D7C();
   (*(v7 + 8))(v9, v6);
   [v12 setTextAlignment:v14];

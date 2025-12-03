@@ -2,38 +2,38 @@
 - (ParkedCarViewControllerDelegate)parkedCarDelegate;
 - (UIScrollView)scrollView;
 - (UIScrollViewDelegate)scrollViewDelegate;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
 - (void)_editLocationTapped;
 - (void)_getDirections;
 - (void)_handlePhotoTap;
-- (void)_imagePickerDidRetake:(id)a3;
+- (void)_imagePickerDidRetake:(id)retake;
 - (void)_loadStackViewIfNeeded;
-- (void)_locationApprovalDidChange:(id)a3;
+- (void)_locationApprovalDidChange:(id)change;
 - (void)_showCamera;
 - (void)_showLocationRefinement;
-- (void)_updateContentAlpha:(double)a3;
+- (void)_updateContentAlpha:(double)alpha;
 - (void)_updatePocketInsets;
-- (void)_updateSectionControllerState:(BOOL)a3;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)imagePickerControllerDidCancel:(id)a3;
+- (void)_updateSectionControllerState:(BOOL)state;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)imagePickerControllerDidCancel:(id)cancel;
 - (void)instrumentDismissAction;
-- (void)locationRefinementViewController:(id)a3 didSelectCoordinate:(CLLocationCoordinate2D)a4;
-- (void)parkedCarDetailsSectionControllerDidRemovePhoto:(id)a3;
-- (void)parkedCarFooterActionsSectionControllerDidRemoveParkedCar:(id)a3;
-- (void)parkedCarFooterActionsSectionControllerDidShareLocation:(id)a3;
-- (void)parkedCarManager:(id)a3 didUpdateParkedCar:(id)a4;
-- (void)performAction:(int64_t)a3;
-- (void)setContentAlpha:(double)a3;
-- (void)setParkedCar:(id)a3;
-- (void)setScrollViewDelegate:(id)a3;
-- (void)textFieldRowViewDidBeginEditing:(id)a3;
-- (void)textFieldRowViewDidChange:(id)a3;
-- (void)textFieldRowViewDidEndEditing:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)locationRefinementViewController:(id)controller didSelectCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)parkedCarDetailsSectionControllerDidRemovePhoto:(id)photo;
+- (void)parkedCarFooterActionsSectionControllerDidRemoveParkedCar:(id)car;
+- (void)parkedCarFooterActionsSectionControllerDidShareLocation:(id)location;
+- (void)parkedCarManager:(id)manager didUpdateParkedCar:(id)car;
+- (void)performAction:(int64_t)action;
+- (void)setContentAlpha:(double)alpha;
+- (void)setParkedCar:(id)car;
+- (void)setScrollViewDelegate:(id)delegate;
+- (void)textFieldRowViewDidBeginEditing:(id)editing;
+- (void)textFieldRowViewDidChange:(id)change;
+- (void)textFieldRowViewDidEndEditing:(id)editing;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ParkedCarViewController
@@ -51,7 +51,7 @@
   [v2 captureUserAction:4 onTarget:201 eventValue:0];
 }
 
-- (void)parkedCarFooterActionsSectionControllerDidRemoveParkedCar:(id)a3
+- (void)parkedCarFooterActionsSectionControllerDidRemoveParkedCar:(id)car
 {
   v4 = +[MKMapService sharedService];
   LODWORD(v6) = 1;
@@ -60,28 +60,28 @@
   v5 = +[ParkedCarManager sharedManager];
   [v5 removeParkedCar];
 
-  v7 = [(ParkedCarViewController *)self parkedCarDelegate];
-  [v7 parkedCarViewControllerDidRequestDismissal:self];
+  parkedCarDelegate = [(ParkedCarViewController *)self parkedCarDelegate];
+  [parkedCarDelegate parkedCarViewControllerDidRequestDismissal:self];
 }
 
-- (void)parkedCarFooterActionsSectionControllerDidShareLocation:(id)a3
+- (void)parkedCarFooterActionsSectionControllerDidShareLocation:(id)location
 {
-  v4 = [(ParkedCarViewController *)self parkedCarDelegate];
-  [v4 parkedCarViewControllerDidSelectShare:self];
+  parkedCarDelegate = [(ParkedCarViewController *)self parkedCarDelegate];
+  [parkedCarDelegate parkedCarViewControllerDidSelectShare:self];
 }
 
-- (void)parkedCarDetailsSectionControllerDidRemovePhoto:(id)a3
+- (void)parkedCarDetailsSectionControllerDidRemovePhoto:(id)photo
 {
   v5 = +[ParkedCarManager sharedManager];
-  v4 = [(ParkedCarViewController *)self parkedCar];
-  [v5 removeImageForParkedCar:v4];
+  parkedCar = [(ParkedCarViewController *)self parkedCar];
+  [v5 removeImageForParkedCar:parkedCar];
 }
 
-- (void)locationRefinementViewController:(id)a3 didSelectCoordinate:(CLLocationCoordinate2D)a4
+- (void)locationRefinementViewController:(id)controller didSelectCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  if ([GEOLocationShifter isLocationShiftRequiredForCoordinate:a3])
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  if ([GEOLocationShifter isLocationShiftRequiredForCoordinate:controller])
   {
     v7 = 2;
   }
@@ -95,80 +95,80 @@
   [v8 setCoordinate:v7 referenceFrame:self->_parkedCar forParkedCar:{latitude, longitude}];
 }
 
-- (void)imagePickerControllerDidCancel:(id)a3
+- (void)imagePickerControllerDidCancel:(id)cancel
 {
-  v6 = a3;
+  cancelCopy = cancel;
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:_UIImagePickerControllerUserDidRejectItemNotification object:0];
 
   v5 = +[MKMapService sharedService];
   [v5 captureUserAction:18 onTarget:620 eventValue:0];
 
-  [v6 dismissViewControllerAnimated:1 completion:0];
+  [cancelCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
-  v6 = a4;
-  v7 = a3;
+  infoCopy = info;
+  controllerCopy = controller;
   v8 = +[NSNotificationCenter defaultCenter];
   [v8 removeObserver:self name:_UIImagePickerControllerUserDidRejectItemNotification object:0];
 
   v9 = +[MKMapService sharedService];
   [v9 captureUserAction:17 onTarget:620 eventValue:0];
 
-  v11 = [v6 objectForKeyedSubscript:UIImagePickerControllerOriginalImage];
+  v11 = [infoCopy objectForKeyedSubscript:UIImagePickerControllerOriginalImage];
 
   v10 = +[ParkedCarManager sharedManager];
   [v10 setImage:v11 forParkedCar:self->_parkedCar];
 
-  [v7 dismissViewControllerAnimated:1 completion:0];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)textFieldRowViewDidChange:(id)a3
+- (void)textFieldRowViewDidChange:(id)change
 {
   contentStackView = self->_contentStackView;
-  v4 = [a3 textView];
-  [(MUScrollableStackView *)contentStackView _maps_scrollTextViewSelectedRangeVisible:v4];
+  textView = [change textView];
+  [(MUScrollableStackView *)contentStackView _maps_scrollTextViewSelectedRangeVisible:textView];
 }
 
-- (void)textFieldRowViewDidEndEditing:(id)a3
+- (void)textFieldRowViewDidEndEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   v6 = +[ParkedCarManager sharedManager];
-  v5 = [v4 currentTextFieldValue];
+  currentTextFieldValue = [editingCopy currentTextFieldValue];
 
-  [v6 setNotes:v5 forParkedCar:self->_parkedCar];
+  [v6 setNotes:currentTextFieldValue forParkedCar:self->_parkedCar];
 }
 
-- (void)textFieldRowViewDidBeginEditing:(id)a3
+- (void)textFieldRowViewDidBeginEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   v5 = +[MKMapService sharedService];
   LODWORD(v8) = 1;
   [v5 capturePlaceCardUserAction:6032 onTarget:201 eventValue:0 mapItem:0 timestamp:0xFFFFFFFFLL resultIndex:0 targetID:CFAbsoluteTimeGetCurrent() providerID:0 animationID:0 actionURL:0 photoID:0 placeCardType:v8 localizedMapItemCategory:0 availableActions:0 unactionableUIElements:0];
 
-  v6 = [(ParkedCarViewController *)self parkedCarDelegate];
-  [v6 parkedCarViewControllerDidBeginEditing:self];
+  parkedCarDelegate = [(ParkedCarViewController *)self parkedCarDelegate];
+  [parkedCarDelegate parkedCarViewControllerDidBeginEditing:self];
 
   contentStackView = self->_contentStackView;
-  v9 = [v4 textView];
+  textView = [editingCopy textView];
 
-  [v9 frame];
+  [textView frame];
   [(MUScrollableStackView *)contentStackView scrollRectToVisible:1 animated:?];
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     v6 = [FullscreenImageViewControllerZoomAnimationController alloc];
-    v7 = [(ParkedCarDetailsSectionController *)self->_detailsSectionController photoImageView];
-    v8 = [(FullscreenImageViewControllerZoomAnimationController *)v6 initWithOriginalImageView:v7];
+    photoImageView = [(ParkedCarDetailsSectionController *)self->_detailsSectionController photoImageView];
+    v8 = [(FullscreenImageViewControllerZoomAnimationController *)v6 initWithOriginalImageView:photoImageView];
   }
 
   else
@@ -179,17 +179,17 @@
   return v8;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
-  v6 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
     v8 = [FullscreenImageViewControllerZoomAnimationController alloc];
-    v9 = [(ParkedCarDetailsSectionController *)self->_detailsSectionController photoImageView];
-    v10 = [(FullscreenImageViewControllerZoomAnimationController *)v8 initWithOriginalImageView:v9];
+    photoImageView = [(ParkedCarDetailsSectionController *)self->_detailsSectionController photoImageView];
+    v10 = [(FullscreenImageViewControllerZoomAnimationController *)v8 initWithOriginalImageView:photoImageView];
   }
 
   else
@@ -216,11 +216,11 @@
   [v3 capturePlaceCardUserAction:6003 onTarget:201 eventValue:0 mapItem:0 timestamp:0xFFFFFFFFLL resultIndex:0 targetID:CFAbsoluteTimeGetCurrent() providerID:0 animationID:0 actionURL:0 photoID:0 placeCardType:v10 localizedMapItemCategory:0 availableActions:0 unactionableUIElements:0];
 
   v4 = +[MKLocationManager sharedLocationManager];
-  v11 = [v4 lastLocation];
+  lastLocation = [v4 lastLocation];
 
-  if (v11 && (+[MKLocationManager sharedLocationManager](MKLocationManager, "sharedLocationManager"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isAuthorizedForPreciseLocation], v5, v6))
+  if (lastLocation && (+[MKLocationManager sharedLocationManager](MKLocationManager, "sharedLocationManager"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isAuthorizedForPreciseLocation], v5, v6))
   {
-    [v11 coordinate];
+    [lastLocation coordinate];
     [(ParkedCar *)self->_parkedCar coordinate];
     GEOCalculateDistance();
     v8 = 2 * (v7 <= 5000.0);
@@ -231,11 +231,11 @@
     v8 = 0;
   }
 
-  v9 = [(ParkedCarViewController *)self parkedCarDelegate];
-  [v9 parkerCarViewControllerDidSelectDoDirections:self transportType:v8];
+  parkedCarDelegate = [(ParkedCarViewController *)self parkedCarDelegate];
+  [parkedCarDelegate parkerCarViewControllerDidSelectDoDirections:self transportType:v8];
 }
 
-- (void)_imagePickerDidRetake:(id)a3
+- (void)_imagePickerDidRetake:(id)retake
 {
   v3 = +[MKMapService sharedService];
   [v3 captureUserAction:6031 onTarget:620 eventValue:0];
@@ -267,8 +267,8 @@
 
 - (void)_handlePhotoTap
 {
-  v3 = [(ParkedCar *)self->_parkedCar image];
-  if (v3)
+  image = [(ParkedCar *)self->_parkedCar image];
+  if (image)
   {
     v4 = 6006;
   }
@@ -282,13 +282,13 @@
   LODWORD(v11) = 1;
   [v5 capturePlaceCardUserAction:v4 onTarget:201 eventValue:0 mapItem:0 timestamp:0xFFFFFFFFLL resultIndex:0 targetID:CFAbsoluteTimeGetCurrent() providerID:0 animationID:0 actionURL:0 photoID:0 placeCardType:v11 localizedMapItemCategory:0 availableActions:0 unactionableUIElements:0];
 
-  v6 = [(ParkedCar *)self->_parkedCar image];
+  image2 = [(ParkedCar *)self->_parkedCar image];
 
-  if (v6)
+  if (image2)
   {
     v7 = [FullscreenImageViewController alloc];
-    v8 = [(ParkedCar *)self->_parkedCar image];
-    v12 = [(FullscreenImageViewController *)v7 initWithImage:v8 scrollable:1];
+    image3 = [(ParkedCar *)self->_parkedCar image];
+    v12 = [(FullscreenImageViewController *)v7 initWithImage:image3 scrollable:1];
 
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"Parked Car [Photo Viewer]" value:@"localized string not found" table:0];
@@ -306,9 +306,9 @@
   }
 }
 
-- (void)performAction:(int64_t)a3
+- (void)performAction:(int64_t)action
 {
-  switch(a3)
+  switch(action)
   {
     case 3:
       [(ParkedCarViewController *)self _showLocationRefinement];
@@ -322,9 +322,9 @@
   }
 }
 
-- (void)parkedCarManager:(id)a3 didUpdateParkedCar:(id)a4
+- (void)parkedCarManager:(id)manager didUpdateParkedCar:(id)car
 {
-  if (self->_parkedCar == a4)
+  if (self->_parkedCar == car)
   {
     block[5] = v4;
     block[6] = v5;
@@ -337,19 +337,19 @@
   }
 }
 
-- (void)setParkedCar:(id)a3
+- (void)setParkedCar:(id)car
 {
-  v5 = a3;
-  v6 = v5;
+  carCopy = car;
+  v6 = carCopy;
   parkedCar = self->_parkedCar;
-  if (parkedCar == v5)
+  if (parkedCar == carCopy)
   {
     goto LABEL_17;
   }
 
-  if (!v5 || parkedCar)
+  if (!carCopy || parkedCar)
   {
-    if (v5 || !parkedCar)
+    if (carCopy || !parkedCar)
     {
       goto LABEL_9;
     }
@@ -365,7 +365,7 @@
   }
 
 LABEL_9:
-  objc_storeStrong(&self->_parkedCar, a3);
+  objc_storeStrong(&self->_parkedCar, car);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
@@ -394,25 +394,25 @@ LABEL_9:
     while (v11);
   }
 
-  v14 = [(ParkedCarViewController *)self view];
-  [v14 _maps_annotateViewWithParkedCarViewController:self];
+  view = [(ParkedCarViewController *)self view];
+  [view _maps_annotateViewWithParkedCarViewController:self];
 
 LABEL_17:
 }
 
-- (void)_locationApprovalDidChange:(id)a3
+- (void)_locationApprovalDidChange:(id)change
 {
   v5 = +[MKLocationManager sharedLocationManager];
   if (([v5 isAuthorizedForPreciseLocation] & 1) == 0)
   {
-    v4 = [(ParkedCarViewController *)self parkedCarDelegate];
-    [v4 parkedCarViewControllerDidRequestDismissal:self];
+    parkedCarDelegate = [(ParkedCarViewController *)self parkedCarDelegate];
+    [parkedCarDelegate parkedCarViewControllerDidRequestDismissal:self];
   }
 }
 
-- (void)_updateSectionControllerState:(BOOL)a3
+- (void)_updateSectionControllerState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -433,7 +433,7 @@ LABEL_17:
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v9 + 1) + 8 * v8) setActive:{v3, v9}];
+        [*(*(&v9 + 1) + 8 * v8) setActive:{stateCopy, v9}];
         v8 = v8 + 1;
       }
 
@@ -445,19 +445,19 @@ LABEL_17:
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = ParkedCarViewController;
-  [(ParkedCarViewController *)&v4 viewDidDisappear:a3];
+  [(ParkedCarViewController *)&v4 viewDidDisappear:disappear];
   [(ParkedCarViewController *)self _updateSectionControllerState:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ParkedCarViewController;
-  [(ParkedCarViewController *)&v4 viewWillAppear:a3];
+  [(ParkedCarViewController *)&v4 viewWillAppear:appear];
   [(ParkedCarViewController *)self _updateSectionControllerState:1];
 }
 
@@ -466,8 +466,8 @@ LABEL_17:
   v4.receiver = self;
   v4.super_class = ParkedCarViewController;
   [(ParkedCarViewController *)&v4 viewDidLayoutSubviews];
-  v3 = [(ParkedCarViewController *)self view];
-  [v3 bounds];
+  view = [(ParkedCarViewController *)self view];
+  [view bounds];
   [(MUScrollableStackView *)self->_contentStackView setFrame:?];
 }
 
@@ -475,8 +475,8 @@ LABEL_17:
 {
   [(ParkedCarViewController *)self heightForContentAboveTitle];
   v4 = v3 + 72.0;
-  v5 = [(ParkedCarViewController *)self scrollView];
-  [v5 _setPocketInsets:{v4, 0.0, 0.0, 0.0}];
+  scrollView = [(ParkedCarViewController *)self scrollView];
+  [scrollView _setPocketInsets:{v4, 0.0, 0.0, 0.0}];
 }
 
 - (void)_loadStackViewIfNeeded
@@ -502,11 +502,11 @@ LABEL_17:
   v29.super_class = ParkedCarViewController;
   [(ParkedCarViewController *)&v29 viewDidLoad];
   [(ParkedCarViewController *)self _loadStackViewIfNeeded];
-  v3 = [(ParkedCarViewController *)self view];
-  [v3 addSubview:self->_contentStackView];
+  view = [(ParkedCarViewController *)self view];
+  [view addSubview:self->_contentStackView];
 
-  v4 = [(ParkedCarViewController *)self view];
-  [v4 setAccessibilityIdentifier:@"ParkedCarView"];
+  view2 = [(ParkedCarViewController *)self view];
+  [view2 setAccessibilityIdentifier:@"ParkedCarView"];
 
   v5 = [[NSMutableArray alloc] initWithCapacity:4];
   v23 = [[ParkedCarHeaderSectionController alloc] initWithParkedCar:self->_parkedCar];
@@ -543,8 +543,8 @@ LABEL_17:
         }
 
         contentStackView = self->_contentStackView;
-        v15 = [*(*(&v25 + 1) + 8 * v13) sectionView];
-        [(MUScrollableStackView *)contentStackView addArrangedSubview:v15];
+        sectionView = [*(*(&v25 + 1) + 8 * v13) sectionView];
+        [(MUScrollableStackView *)contentStackView addArrangedSubview:sectionView];
 
         v13 = v13 + 1;
       }
@@ -574,7 +574,7 @@ LABEL_17:
   [(ParkedCarViewController *)self _updatePocketInsets];
 }
 
-- (void)_updateContentAlpha:(double)a3
+- (void)_updateContentAlpha:(double)alpha
 {
   v12 = 0u;
   v13 = 0u;
@@ -599,8 +599,8 @@ LABEL_17:
         v10 = *(*(&v12 + 1) + 8 * v9);
         if (v10 != self->_headerSectionController)
         {
-          v11 = [(ParkedCarHeaderSectionController *)v10 sectionView];
-          [v11 setAlpha:a3];
+          sectionView = [(ParkedCarHeaderSectionController *)v10 sectionView];
+          [sectionView setAlpha:alpha];
         }
 
         v9 = v9 + 1;
@@ -614,11 +614,11 @@ LABEL_17:
   }
 }
 
-- (void)setContentAlpha:(double)a3
+- (void)setContentAlpha:(double)alpha
 {
-  if (self->_contentAlpha != a3)
+  if (self->_contentAlpha != alpha)
   {
-    self->_contentAlpha = a3;
+    self->_contentAlpha = alpha;
     [(ParkedCarViewController *)self _loadStackViewIfNeeded];
     contentAlpha = self->_contentAlpha;
 
@@ -634,19 +634,19 @@ LABEL_17:
   return contentStackView;
 }
 
-- (void)setScrollViewDelegate:(id)a3
+- (void)setScrollViewDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(ParkedCarViewController *)self scrollView];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  scrollView = [(ParkedCarViewController *)self scrollView];
+  [scrollView setDelegate:delegateCopy];
 }
 
 - (UIScrollViewDelegate)scrollViewDelegate
 {
-  v2 = [(ParkedCarViewController *)self scrollView];
-  v3 = [v2 delegate];
+  scrollView = [(ParkedCarViewController *)self scrollView];
+  delegate = [scrollView delegate];
 
-  return v3;
+  return delegate;
 }
 
 @end

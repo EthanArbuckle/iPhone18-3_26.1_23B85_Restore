@@ -1,16 +1,16 @@
 @interface PXMessagesStackPresentationAnimationController
-- (PXMessagesStackPresentationAnimationController)initWithStackView:(id)a3;
-- (id)_bestAssetReferenceForStack:(uint64_t)a1;
-- (void)_animateCrossfadeFallback:(void *)a3 gridViewController:;
-- (void)animateTransition:(id)a3;
+- (PXMessagesStackPresentationAnimationController)initWithStackView:(id)view;
+- (id)_bestAssetReferenceForStack:(uint64_t)stack;
+- (void)_animateCrossfadeFallback:(void *)fallback gridViewController:;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation PXMessagesStackPresentationAnimationController
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:*MEMORY[0x1E69DE778]];
+  transitionCopy = transition;
+  v5 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE778]];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -18,7 +18,7 @@ LABEL_6:
     PXAssertGetLog();
   }
 
-  v6 = [v5 topViewController];
+  topViewController = [v5 topViewController];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -26,39 +26,39 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if (!v6)
+  if (!topViewController)
   {
     goto LABEL_6;
   }
 
-  v7 = [v4 containerView];
-  [v4 finalFrameForViewController:v5];
+  containerView = [transitionCopy containerView];
+  [transitionCopy finalFrameForViewController:v5];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v5 view];
-  [v7 addSubview:v16];
+  view = [v5 view];
+  [containerView addSubview:view];
 
-  v17 = [v5 view];
-  [v17 setFrame:{v9, v11, v13, v15}];
+  view2 = [v5 view];
+  [view2 setFrame:{v9, v11, v13, v15}];
 
-  v18 = [v6 view];
-  [v18 setAlpha:0.0];
+  view3 = [topViewController view];
+  [view3 setAlpha:0.0];
 
-  v19 = [v5 view];
-  [v19 layoutIfNeeded];
+  view4 = [v5 view];
+  [view4 layoutIfNeeded];
 
-  v20 = [(PXMessagesStackPresentationAnimationController *)self stackView];
-  v21 = [(PXMessagesStackPresentationAnimationController *)self _bestAssetReferenceForStack:v20];
+  stackView = [(PXMessagesStackPresentationAnimationController *)self stackView];
+  v21 = [(PXMessagesStackPresentationAnimationController *)self _bestAssetReferenceForStack:stackView];
   objc_initWeak(location, self);
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __68__PXMessagesStackPresentationAnimationController_animateTransition___block_invoke;
   v24[3] = &unk_1E774B5E0;
   objc_copyWeak(&v28, location);
-  v25 = v4;
-  v22 = v6;
+  v25 = transitionCopy;
+  v22 = topViewController;
   v26 = v22;
   v23 = v21;
   v27 = v23;
@@ -68,29 +68,29 @@ LABEL_6:
   objc_destroyWeak(location);
 }
 
-- (void)_animateCrossfadeFallback:(void *)a3 gridViewController:
+- (void)_animateCrossfadeFallback:(void *)fallback gridViewController:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  fallbackCopy = fallback;
+  if (self)
   {
     v7 = [v5 viewControllerForKey:*MEMORY[0x1E69DE778]];
-    v8 = [v5 containerView];
+    containerView = [v5 containerView];
     [v5 finalFrameForViewController:v7];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [v7 view];
-    [v8 addSubview:v17];
+    view = [v7 view];
+    [containerView addSubview:view];
 
-    v18 = [v7 view];
-    [v18 setFrame:{v10, v12, v14, v16}];
+    view2 = [v7 view];
+    [view2 setFrame:{v10, v12, v14, v16}];
 
-    v19 = [v7 view];
-    [v19 setAlpha:0.0];
+    view3 = [v7 view];
+    [view3 setAlpha:0.0];
 
-    v20 = *(a1 + 24);
+    v20 = *(self + 24);
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __95__PXMessagesStackPresentationAnimationController__animateCrossfadeFallback_gridViewController___block_invoke;
@@ -98,64 +98,64 @@ LABEL_6:
     v27 = v7;
     v21 = v7;
     [v20 addAnimations:v26];
-    v22 = *(a1 + 24);
+    v22 = *(self + 24);
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __95__PXMessagesStackPresentationAnimationController__animateCrossfadeFallback_gridViewController___block_invoke_2;
     v23[3] = &unk_1E774B608;
     v24 = v5;
-    v25 = v6;
+    v25 = fallbackCopy;
     [v22 addCompletion:v23];
-    [*(a1 + 24) startAnimation];
+    [*(self + 24) startAnimation];
   }
 }
 
-- (id)_bestAssetReferenceForStack:(uint64_t)a1
+- (id)_bestAssetReferenceForStack:(uint64_t)stack
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (stack)
   {
-    v5 = [v3 currentAssetReference];
-    v6 = v5;
-    if (v5)
+    currentAssetReference = [v3 currentAssetReference];
+    v6 = currentAssetReference;
+    if (currentAssetReference)
     {
-      v7 = v5;
+      v7 = currentAssetReference;
 LABEL_17:
 
       goto LABEL_18;
     }
 
-    v8 = [v4 currentIndex];
-    if (v8 == 0x7FFFFFFFFFFFFFFFLL)
+    currentIndex = [v4 currentIndex];
+    if (currentIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = 0;
       goto LABEL_17;
     }
 
-    v9 = v8;
-    v10 = [v4 dataSourceManager];
-    v11 = [v10 dataSource];
+    v9 = currentIndex;
+    dataSourceManager = [v4 dataSourceManager];
+    dataSource = [dataSourceManager dataSource];
 
-    if ([v11 numberOfSections] >= 1)
+    if ([dataSource numberOfSections] >= 1)
     {
-      v12 = [v4 dataSourceManager];
-      v13 = [v12 dataSource];
-      v14 = [v13 numberOfItemsInSection:0];
+      dataSourceManager2 = [v4 dataSourceManager];
+      dataSource2 = [dataSourceManager2 dataSource];
+      v14 = [dataSource2 numberOfItemsInSection:0];
 
       if (v9 >= v14 && v14 >= 1)
       {
         v17 = 0u;
         v18 = 0u;
-        if (v11)
+        if (dataSource)
         {
-          [v11 lastItemIndexPath];
+          [dataSource lastItemIndexPath];
         }
 
 LABEL_14:
         v16[0] = v17;
         v16[1] = v18;
-        v7 = [v11 assetReferenceAtItemIndexPath:v16];
+        v7 = [dataSource assetReferenceAtItemIndexPath:v16];
 LABEL_16:
 
         goto LABEL_17;
@@ -165,9 +165,9 @@ LABEL_16:
       {
         v17 = 0u;
         v18 = 0u;
-        if (v11)
+        if (dataSource)
         {
-          [v11 firstItemIndexPath];
+          [dataSource firstItemIndexPath];
         }
 
         goto LABEL_14;
@@ -337,16 +337,16 @@ uint64_t __95__PXMessagesStackPresentationAnimationController__animateCrossfadeF
   return [v2 ensureSwipeDismissalInteraction];
 }
 
-- (PXMessagesStackPresentationAnimationController)initWithStackView:(id)a3
+- (PXMessagesStackPresentationAnimationController)initWithStackView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v19.receiver = self;
   v19.super_class = PXMessagesStackPresentationAnimationController;
   v6 = [(PXMessagesStackPresentationAnimationController *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_stackView, a3);
+    objc_storeStrong(&v6->_stackView, view);
     v8 = +[PXMessagesUISettings sharedInstance];
     [v8 transitionDuration];
     v7->_transitionDuration = v9;

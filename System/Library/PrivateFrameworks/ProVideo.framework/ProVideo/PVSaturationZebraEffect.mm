@@ -1,39 +1,39 @@
 @interface PVSaturationZebraEffect
-+ (void)registerEffectWithID:(id)a3 displayName:(id)a4;
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 inputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6;
++ (void)registerEffectWithID:(id)d displayName:(id)name;
+- (HGRef<HGNode>)hgNodeForTime:(id *)time inputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context;
 @end
 
 @implementation PVSaturationZebraEffect
 
-+ (void)registerEffectWithID:(id)a3 displayName:(id)a4
++ (void)registerEffectWithID:(id)d displayName:(id)name
 {
   v14[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  nameCopy = name;
   v7 = @"effect.video.filter";
   v13[0] = @"FFEffectProperty_DisplayName";
   v13[1] = @"FFEffectProperty_Category";
-  v14[0] = v6;
+  v14[0] = nameCopy;
   v14[1] = @"Helium";
   v13[2] = @"FFEffectProperty_EffectType";
   v14[2] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
-  [PVEffect registerEffectClass:objc_opt_class() forEffectID:v5 withProperties:v8];
+  [PVEffect registerEffectClass:objc_opt_class() forEffectID:dCopy withProperties:v8];
   v11[0] = @"displayName";
   v11[1] = @"contentGroup";
-  v12[0] = v6;
+  v12[0] = nameCopy;
   v12[1] = @"BuiltIn";
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v10 = +[PVContentRegistry sharedInstance];
-  [v10 registerContentClass:objc_opt_class() forID:v5 type:v7 withProperties:v9];
+  [v10 registerContentClass:objc_opt_class() forID:dCopy type:v7 withProperties:v9];
 }
 
-- (HGRef<HGNode>)hgNodeForTime:(id *)a3 inputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6
+- (HGRef<HGNode>)hgNodeForTime:(id *)time inputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v9 = v6;
-  PVInputHGNodeMap<unsigned int>::GetNode(a4, 0, &v59);
-  v10 = PVInstructionGraphContext::WorkingColorSpace(*a6.m_Obj);
-  v11 = [v10 isRec2020LinearColorSpace];
+  PVInputHGNodeMap<unsigned int>::GetNode(inputs, 0, &v59);
+  v10 = PVInstructionGraphContext::WorkingColorSpace(*context.m_Obj);
+  isRec2020LinearColorSpace = [v10 isRec2020LinearColorSpace];
 
   v12 = HGObject::operator new(0x1A0uLL);
   HgcOverexposureCheck::HgcOverexposureCheck(v12);
@@ -56,7 +56,7 @@
     PCGetLuminanceCoefficients(flt_280C5CCC0, [PVSaturationZebraEffect hgNodeForTime:inputs:renderer:igContext:]::luminanceCoefficientsHDR, v13.n128_f64[0], v14.n128_f64[0], v46, v47, v48, v49, v50);
   }
 
-  if (v11)
+  if (isRec2020LinearColorSpace)
   {
     v15 = [PVSaturationZebraEffect hgNodeForTime:inputs:renderer:igContext:]::luminanceCoefficientsHDR;
   }
@@ -68,13 +68,13 @@
 
   v13.n128_u32[0] = *v15;
   v16 = &[PVSaturationZebraEffect hgNodeForTime:inputs:renderer:igContext:]::luminanceCoefficientsHDR[1];
-  if (!v11)
+  if (!isRec2020LinearColorSpace)
   {
     v16 = &[PVSaturationZebraEffect hgNodeForTime:inputs:renderer:igContext:]::luminanceCoefficientsSDR[1];
   }
 
   v17 = &[PVSaturationZebraEffect hgNodeForTime:inputs:renderer:igContext:]::luminanceCoefficientsHDR[2];
-  if (!v11)
+  if (!isRec2020LinearColorSpace)
   {
     v17 = &[PVSaturationZebraEffect hgNodeForTime:inputs:renderer:igContext:]::luminanceCoefficientsSDR[2];
   }
@@ -91,7 +91,7 @@
   if (!v19)
   {
     v53 = xmmword_2603431B0;
-    if (!v11)
+    if (!isRec2020LinearColorSpace)
     {
       goto LABEL_19;
     }
@@ -101,17 +101,17 @@
 
   [v19 SIMDFloat4Value];
   v53 = v21;
-  if (v11)
+  if (isRec2020LinearColorSpace)
   {
 LABEL_18:
     v22 = CGColorSpaceCreateWithName(*MEMORY[0x277CBF4B8]);
-    v23 = PVInstructionGraphContext::WorkingColorSpace(*a6.m_Obj);
-    v24 = [v23 cgColorSpace];
+    v23 = PVInstructionGraphContext::WorkingColorSpace(*context.m_Obj);
+    cgColorSpace = [v23 cgColorSpace];
 
     v55 = v53.n128_u64[0];
     v56 = v53.n128_u32[2];
     v54 = 2;
-    PCColorUtil::transform(&v54, &v55, v22, 0, v24, 1, &v57);
+    PCColorUtil::transform(&v54, &v55, v22, 0, cgColorSpace, 1, &v57);
     v52 = v57;
     *&v25 = __PAIR64__(HIDWORD(v57), v58);
     v51 = v25;
@@ -159,7 +159,7 @@ LABEL_19:
 
   [(NSLock *)self->super.super._inspectablePropertiesLock unlock];
   v39 = 1.0;
-  if (v11)
+  if (isRec2020LinearColorSpace)
   {
     v39 = 12.0;
   }

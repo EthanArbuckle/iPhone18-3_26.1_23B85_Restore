@@ -7,7 +7,7 @@
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_22078DE90();
   v4 = v3;
 
@@ -27,11 +27,11 @@
 - (NSString)tsaxAccessibilityLabelForReordering
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8StocksUI9StockView_companyLabel);
-  v3 = self;
-  v4 = [v2 text];
-  if (v4)
+  selfCopy = self;
+  text = [v2 text];
+  if (text)
   {
-    v5 = v4;
+    v5 = text;
     sub_22089136C();
 
     v6 = sub_22089132C();

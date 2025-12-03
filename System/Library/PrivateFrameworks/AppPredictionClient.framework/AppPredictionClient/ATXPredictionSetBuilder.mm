@@ -2,7 +2,7 @@
 - (ATXPredictionSetBuilder)init;
 - (id)finish;
 - (void)finish;
-- (void)recordPrediction:(id)a3 score:(float)a4;
+- (void)recordPrediction:(id)prediction score:(float)score;
 @end
 
 @implementation ATXPredictionSetBuilder
@@ -42,10 +42,10 @@
   return v2;
 }
 
-- (void)recordPrediction:(id)a3 score:(float)a4
+- (void)recordPrediction:(id)prediction score:(float)score
 {
-  v7 = a3;
-  v13 = a4;
+  predictionCopy = prediction;
+  scoreCopy = score;
   if (self->_finished)
   {
     [ATXPredictionSetBuilder recordPrediction:a2 score:self];
@@ -57,13 +57,13 @@
   v9 = objc_autoreleasePoolPush();
   if (isKindOfClass)
   {
-    v10 = [v7 dataUsingEncoding:4];
+    v10 = [predictionCopy dataUsingEncoding:4];
   }
 
   else
   {
     v12 = 0;
-    v10 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:&v12];
+    v10 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:predictionCopy requiringSecureCoding:1 error:&v12];
     v11 = v12;
     if (!v10)
     {
@@ -73,7 +73,7 @@
 
   objc_autoreleasePoolPop(v9);
   ATXCacheAppendData(self->_data, v10);
-  ATXCacheAppendFloats(self->_data, &v13, 1);
+  ATXCacheAppendFloats(self->_data, &scoreCopy, 1);
 }
 
 - (void)recordPrediction:(uint64_t)a1 score:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)
@@ -90,8 +90,8 @@
 
 - (void)finish
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"ATXPredictionSet.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"!_finished"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"ATXPredictionSet.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"!_finished"}];
 }
 
 @end

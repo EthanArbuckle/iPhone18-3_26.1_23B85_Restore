@@ -13,7 +13,7 @@
     a3 = a5;
   }
 
-  return [a1 setObject:a3 forKey:?];
+  return [self setObject:a3 forKey:?];
 }
 
 - (void)copyToKey:()Utilities fromKey:inDictionary:objectIfNil:
@@ -32,7 +32,7 @@
     v13 = v10;
   }
 
-  [a1 setObject:v13 forKey:v11];
+  [self setObject:v13 forKey:v11];
 }
 
 + (id)dictionaryOfChangesBetween:()Utilities and:

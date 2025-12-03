@@ -1,7 +1,7 @@
 @interface SystemApertureIncomingCallControlsView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (void)gameControllerDidChangeContext;
 - (void)layoutSubviews;
 @end
@@ -10,21 +10,21 @@
 
 - (void)gameControllerDidChangeContext
 {
-  v2 = self;
+  selfCopy = self;
   SystemApertureIncomingCallControlsView.gameControllerDidChangeContext()();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SystemApertureIncomingCallControlsView.layoutSubviews()();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = SystemApertureIncomingCallControlsView.sizeThatFits(_:)(__PAIR128__(*&height, *&width));
 
   v7 = v6.width;
@@ -34,11 +34,11 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   v10 = SystemApertureIncomingCallControlsView.systemLayoutSizeFitting(_:withHorizontalFittingPriority:verticalFittingPriority:)(__PAIR128__(*&height, *&width), v8, v9);
 
   v11 = v10.width;
@@ -50,7 +50,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   SystemApertureIncomingCallControlsView.intrinsicContentSize.getter();
   v4 = v3;
   v6 = v5;

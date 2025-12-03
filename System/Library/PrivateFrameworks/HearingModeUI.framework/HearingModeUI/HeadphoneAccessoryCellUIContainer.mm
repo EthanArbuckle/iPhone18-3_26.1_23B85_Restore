@@ -2,10 +2,10 @@
 + (NSString)deviceKey;
 + (NSString)embeddedViewKey;
 + (NSString)fullBoundsTreatmentKey;
-- (_TtC13HearingModeUI33HeadphoneAccessoryCellUIContainer)initWithCoder:(id)a3;
-- (_TtC13HearingModeUI33HeadphoneAccessoryCellUIContainer)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC13HearingModeUI33HeadphoneAccessoryCellUIContainer)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (_TtC13HearingModeUI33HeadphoneAccessoryCellUIContainer)initWithCoder:(id)coder;
+- (_TtC13HearingModeUI33HeadphoneAccessoryCellUIContainer)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC13HearingModeUI33HeadphoneAccessoryCellUIContainer)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation HeadphoneAccessoryCellUIContainer
@@ -31,9 +31,9 @@
   return v2;
 }
 
-- (_TtC13HearingModeUI33HeadphoneAccessoryCellUIContainer)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC13HearingModeUI33HeadphoneAccessoryCellUIContainer)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  if (a4)
+  if (identifier)
   {
     v7 = sub_252064724();
     v9 = v8;
@@ -45,15 +45,15 @@
     v9 = 0;
   }
 
-  v10 = a5;
-  return sub_25204467C(a3, v7, v9, a5);
+  specifierCopy = specifier;
+  return sub_25204467C(style, v7, v9, specifier);
 }
 
-- (_TtC13HearingModeUI33HeadphoneAccessoryCellUIContainer)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC13HearingModeUI33HeadphoneAccessoryCellUIContainer)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_252064724();
+    identifier = sub_252064724();
     v6 = v5;
   }
 
@@ -62,10 +62,10 @@
     v6 = 0;
   }
 
-  return sub_252044950(a3, a4, v6);
+  return sub_252044950(style, identifier, v6);
 }
 
-- (_TtC13HearingModeUI33HeadphoneAccessoryCellUIContainer)initWithCoder:(id)a3
+- (_TtC13HearingModeUI33HeadphoneAccessoryCellUIContainer)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC13HearingModeUI33HeadphoneAccessoryCellUIContainer____lazy_storage___stackView) = 0;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC13HearingModeUI33HeadphoneAccessoryCellUIContainer_traiRegestration) = 0;
@@ -74,11 +74,11 @@
   return result;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = self;
-  sub_252044C34(a3);
+  specifierCopy = specifier;
+  selfCopy = self;
+  sub_252044C34(specifier);
 }
 
 @end

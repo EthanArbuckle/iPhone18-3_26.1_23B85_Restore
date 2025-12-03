@@ -1,75 +1,75 @@
 @interface UIActivityIndicatorView
-+ (CGSize)defaultSizeForStyle:(int64_t)a3;
-+ (id)_imageSetNameForArtworkBasedStyle:(int64_t)a3 outImageCount:(int64_t *)a4;
-+ (id)_loadResourcesForArtworkBasedStyle:(int64_t)a3;
++ (CGSize)defaultSizeForStyle:(int64_t)style;
++ (id)_imageSetNameForArtworkBasedStyle:(int64_t)style outImageCount:(int64_t *)count;
++ (id)_loadResourcesForArtworkBasedStyle:(int64_t)style;
 - (BOOL)_colorRequiresDynamicTinting;
 - (BOOL)_hasClientSetColor;
 - (BOOL)_hasShadow;
 - (BOOL)_isArtworkBasedStyle;
 - (BOOL)_shouldGoBackToBaseStyle;
 - (BOOL)_shouldGoToCustomStyle;
-- (CGRect)_animatingImageViewFrameForBounds:(CGRect)a3;
-- (CGRect)_messageLabelFrameForBounds:(CGRect)a3;
+- (CGRect)_animatingImageViewFrameForBounds:(CGRect)bounds;
+- (CGRect)_messageLabelFrameForBounds:(CGRect)bounds;
 - (CGSize)_defaultSizeConsultingCustomWidthIfApplicable;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
 - (CGSize)shadowOffset;
 - (UIActivityIndicatorView)initWithActivityIndicatorStyle:(UIActivityIndicatorViewStyle)style;
 - (UIActivityIndicatorView)initWithCoder:(NSCoder *)coder;
 - (UIActivityIndicatorView)initWithFrame:(CGRect)frame;
 - (UIColor)color;
-- (double)_alphaValueForStep:(int64_t)a3;
+- (double)_alphaValueForStep:(int64_t)step;
 - (double)_effectiveCustomWidth;
-- (double)_spokeLengthForGearWidth:(double)a3;
-- (double)_spokeWidthForGearWidth:(double)a3;
+- (double)_spokeLengthForGearWidth:(double)width;
+- (double)_spokeWidthForGearWidth:(double)width;
 - (double)_widthForGearWidth:(double)result;
-- (id)_artCacheKeyWithStyle:(int64_t)a3 color:(id)a4;
-- (id)_defaultColorForStyle:(int64_t)a3;
-- (id)_generateImagesForColor:(id)a3 highlight:(BOOL)a4;
-- (id)_generateModernImagesForImages:(id)a3 color:(id)a4;
-- (id)_highlightColorForStyle:(int64_t)a3;
-- (id)_imageForStep:(int64_t)a3 withColor:(id)a4;
-- (id)_imagesForStyle:(int64_t)a3 color:(id)a4 highlight:(BOOL)a5;
-- (int64_t)_actualStyleByResolvingAutoUpdatingStyle:(int64_t)a3;
-- (int64_t)_customStyleForStyle:(int64_t)a3;
+- (id)_artCacheKeyWithStyle:(int64_t)style color:(id)color;
+- (id)_defaultColorForStyle:(int64_t)style;
+- (id)_generateImagesForColor:(id)color highlight:(BOOL)highlight;
+- (id)_generateModernImagesForImages:(id)images color:(id)color;
+- (id)_highlightColorForStyle:(int64_t)style;
+- (id)_imageForStep:(int64_t)step withColor:(id)color;
+- (id)_imagesForStyle:(int64_t)style color:(id)color highlight:(BOOL)highlight;
+- (int64_t)_actualStyleByResolvingAutoUpdatingStyle:(int64_t)style;
+- (int64_t)_customStyleForStyle:(int64_t)style;
 - (int64_t)_defaultStyle;
-- (int64_t)_externalStyleForStyle:(int64_t)a3;
-- (int64_t)_sizeForStyle:(int64_t)a3;
+- (int64_t)_externalStyleForStyle:(int64_t)style;
+- (int64_t)_sizeForStyle:(int64_t)style;
 - (unint64_t)_indexOfFirstImageForStartingAnimation;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_applicationWillEnterForeground:(id)a3;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_applicationWillEnterForeground:(id)foreground;
 - (void)_commonInit;
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4;
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3;
-- (void)_populateArchivedSubviews:(id)a3;
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow;
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view;
+- (void)_populateArchivedSubviews:(id)subviews;
 - (void)_refreshStyle;
-- (void)_removeAllAnimations:(BOOL)a3;
+- (void)_removeAllAnimations:(BOOL)animations;
 - (void)_restoreRemovedAnimationsIncludingSubviews;
-- (void)_setCustomWidth:(double)a3;
-- (void)_setMessage:(id)a3;
+- (void)_setCustomWidth:(double)width;
+- (void)_setMessage:(id)message;
 - (void)_setUpAnimation;
 - (void)_tearDownAnimation;
 - (void)_updateLayoutInfo;
-- (void)_updateMessageForStyle:(int64_t)a3;
-- (void)_updateSubviewFramesWithBounds:(CGRect)a3;
+- (void)_updateMessageForStyle:(int64_t)style;
+- (void)_updateSubviewFramesWithBounds:(CGRect)bounds;
 - (void)_updateVisualStyleProperties;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)setActivityIndicatorViewStyle:(UIActivityIndicatorViewStyle)activityIndicatorViewStyle;
-- (void)setAnimating:(BOOL)a3;
-- (void)setAnimationDuration:(double)a3;
-- (void)setBounds:(CGRect)a3;
+- (void)setAnimating:(BOOL)animating;
+- (void)setAnimationDuration:(double)duration;
+- (void)setBounds:(CGRect)bounds;
 - (void)setColor:(UIColor *)color;
-- (void)setFrame:(CGRect)a3;
+- (void)setFrame:(CGRect)frame;
 - (void)setHidesWhenStopped:(BOOL)hidesWhenStopped;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setShadowColor:(id)a3;
-- (void)setShadowOffset:(CGSize)a3;
-- (void)setWidth:(double)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setShadowColor:(id)color;
+- (void)setShadowOffset:(CGSize)offset;
+- (void)setWidth:(double)width;
 - (void)startAnimating;
 - (void)stopAnimating;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UIActivityIndicatorView
@@ -100,9 +100,9 @@
   self->_activityIndicatorViewStyle = v3;
   self->_actualActivityIndicatorViewStyle = [(UIActivityIndicatorView *)self _actualStyleByResolvingAutoUpdatingStyle:v3];
   [(UIView *)self setNeedsLayout];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__applicationDidEnterBackground_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
-  [v4 addObserver:self selector:sel__applicationWillEnterForeground_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__applicationDidEnterBackground_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__applicationWillEnterForeground_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
 }
 
 - (void)_updateVisualStyleProperties
@@ -135,10 +135,10 @@
   styleView = self->_styleView;
   self->_styleView = 0;
 
-  v4 = [(UIView *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  v6 = [_UIVisualStyleRegistry registryForIdiom:v5];
+  v6 = [_UIVisualStyleRegistry registryForIdiom:userInterfaceIdiom];
   v7 = [v6 visualStyleClassForStylableClass:objc_opt_class()];
 
   if (v7)
@@ -171,14 +171,14 @@
 
   else
   {
-    v4 = [(UIActivityIndicatorView *)self _indexOfFirstImageForStartingAnimation];
-    v5 = _reorderImagesToStartAtIndex(self->_spokeImages, v4);
+    _indexOfFirstImageForStartingAnimation = [(UIActivityIndicatorView *)self _indexOfFirstImageForStartingAnimation];
+    v5 = _reorderImagesToStartAtIndex(self->_spokeImages, _indexOfFirstImageForStartingAnimation);
     [(UIImageView *)self->_animatingImageView setAnimationImages:v5];
 
     spokeHighlightImages = self->_spokeHighlightImages;
     if (spokeHighlightImages)
     {
-      v7 = _reorderImagesToStartAtIndex(spokeHighlightImages, v4);
+      v7 = _reorderImagesToStartAtIndex(spokeHighlightImages, _indexOfFirstImageForStartingAnimation);
       [(UIImageView *)self->_animatingImageView setHighlightedAnimationImages:v7];
     }
 
@@ -208,25 +208,25 @@
 
 - (unint64_t)_indexOfFirstImageForStartingAnimation
 {
-  v3 = [(UIActivityIndicatorView *)self isHighlighted];
+  isHighlighted = [(UIActivityIndicatorView *)self isHighlighted];
   animatingImageView = self->_animatingImageView;
-  if (v3)
+  if (isHighlighted)
   {
-    v5 = [(UIImageView *)animatingImageView highlightedImage];
-    v6 = v5;
-    if (v5)
+    highlightedImage = [(UIImageView *)animatingImageView highlightedImage];
+    v6 = highlightedImage;
+    if (highlightedImage)
     {
-      v7 = v5;
+      image = highlightedImage;
     }
 
     else
     {
-      v7 = [(UIImageView *)self->_animatingImageView image];
+      image = [(UIImageView *)self->_animatingImageView image];
     }
 
-    v8 = v7;
+    image2 = image;
 
-    if (!v8)
+    if (!image2)
     {
       goto LABEL_22;
     }
@@ -234,8 +234,8 @@
 
   else
   {
-    v8 = [(UIImageView *)animatingImageView image];
-    if (!v8)
+    image2 = [(UIImageView *)animatingImageView image];
+    if (!image2)
     {
 LABEL_22:
       v11 = 0;
@@ -244,7 +244,7 @@ LABEL_22:
   }
 
   v9 = 13;
-  if (v3)
+  if (isHighlighted)
   {
     v9 = 12;
   }
@@ -255,17 +255,17 @@ LABEL_22:
     v10 = self->_spokeImages;
   }
 
-  v11 = [(NSArray *)v10 indexOfObject:v8];
+  v11 = [(NSArray *)v10 indexOfObject:image2];
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = 12;
-    if (v3)
+    if (isHighlighted)
     {
       v12 = 13;
     }
 
     v13 = *(&self->super.super.super.isa + OBJC_IVAR___UIActivityIndicatorView__shadowOffset[v12]);
-    v14 = [v13 indexOfObject:v8];
+    v14 = [v13 indexOfObject:image2];
     if (v14)
     {
       v15 = v14 == 0x7FFFFFFFFFFFFFFFLL;
@@ -326,63 +326,63 @@ LABEL_23:
     }
 
     v5 = spokeHighlightImages;
-    v6 = [(UIActivityIndicatorView *)self isHighlighted];
-    v7 = [(UIImageView *)self->_animatingImageView _currentAnimationKeyframeImage];
-    v8 = v7;
-    if (v6)
+    isHighlighted = [(UIActivityIndicatorView *)self isHighlighted];
+    _currentAnimationKeyframeImage = [(UIImageView *)self->_animatingImageView _currentAnimationKeyframeImage];
+    v8 = _currentAnimationKeyframeImage;
+    if (isHighlighted)
     {
-      if (v7)
+      if (_currentAnimationKeyframeImage)
       {
-        v9 = v7;
+        firstObject = _currentAnimationKeyframeImage;
       }
 
       else
       {
-        v9 = [(NSArray *)v5 firstObject];
+        firstObject = [(NSArray *)v5 firstObject];
       }
 
-      v11 = v9;
+      v11 = firstObject;
 
       v12 = [(NSArray *)v5 indexOfObject:v11];
       if (v12 == 0x7FFFFFFFFFFFFFFFLL || (v13 = v12, v12 >= [(NSArray *)self->_spokeImages count]))
       {
-        v14 = [(NSArray *)self->_spokeImages firstObject];
+        firstObject2 = [(NSArray *)self->_spokeImages firstObject];
       }
 
       else
       {
-        v14 = [(NSArray *)self->_spokeImages objectAtIndexedSubscript:v13];
+        firstObject2 = [(NSArray *)self->_spokeImages objectAtIndexedSubscript:v13];
       }
 
-      v19 = v14;
+      v19 = firstObject2;
     }
 
     else
     {
-      if (v7)
+      if (_currentAnimationKeyframeImage)
       {
-        v10 = v7;
+        firstObject3 = _currentAnimationKeyframeImage;
       }
 
       else
       {
-        v10 = [(NSArray *)self->_spokeImages firstObject];
+        firstObject3 = [(NSArray *)self->_spokeImages firstObject];
       }
 
-      v19 = v10;
+      v19 = firstObject3;
 
       v15 = [(NSArray *)self->_spokeImages indexOfObject:v19];
       if (v15 == 0x7FFFFFFFFFFFFFFFLL || (v16 = v15, v15 >= [(NSArray *)v5 count]))
       {
-        v17 = [(NSArray *)v5 firstObject];
+        firstObject4 = [(NSArray *)v5 firstObject];
       }
 
       else
       {
-        v17 = [(NSArray *)v5 objectAtIndexedSubscript:v16];
+        firstObject4 = [(NSArray *)v5 objectAtIndexedSubscript:v16];
       }
 
-      v11 = v17;
+      v11 = firstObject4;
     }
 
     [(UIImageView *)self->_animatingImageView stopAnimating];
@@ -531,9 +531,9 @@ LABEL_27:
   {
     if (self->_restartAnimationOnNextLayout && self->_animating)
     {
-      v3 = [(UIView *)self window];
+      window = [(UIView *)self window];
 
-      if (v3)
+      if (window)
       {
         [(UIActivityIndicatorView *)self _setUpAnimation];
         self->_restartAnimationOnNextLayout = 0;
@@ -581,8 +581,8 @@ LABEL_16:
 
   actualActivityIndicatorViewStyle = self->_actualActivityIndicatorViewStyle;
 LABEL_18:
-  v8 = [(UIActivityIndicatorView *)self color];
-  v9 = [(UIActivityIndicatorView *)self _artCacheKeyWithStyle:actualActivityIndicatorViewStyle color:v8];
+  color = [(UIActivityIndicatorView *)self color];
+  v9 = [(UIActivityIndicatorView *)self _artCacheKeyWithStyle:actualActivityIndicatorViewStyle color:color];
   v10 = self->_lastArtCacheKey;
   v11 = v9;
   v12 = v11;
@@ -612,7 +612,7 @@ LABEL_18:
     v16 = [layoutSubviews___AIVArtCache objectForKey:v12];
     if (!v16)
     {
-      v16 = [(UIActivityIndicatorView *)self _imagesForStyle:actualActivityIndicatorViewStyle color:v8 highlight:0];
+      v16 = [(UIActivityIndicatorView *)self _imagesForStyle:actualActivityIndicatorViewStyle color:color highlight:0];
       [layoutSubviews___AIVArtCache setObject:v16 forKey:v12];
     }
 
@@ -693,17 +693,17 @@ LABEL_42:
       [(UIActivityIndicatorView *)self _tearDownAnimation];
     }
 
-    v32 = [(NSArray *)self->_spokeImages firstObject];
-    [(UIImageView *)self->_animatingImageView setImage:v32];
+    firstObject = [(NSArray *)self->_spokeImages firstObject];
+    [(UIImageView *)self->_animatingImageView setImage:firstObject];
 
-    v33 = [(NSArray *)self->_spokeHighlightImages firstObject];
-    [(UIImageView *)self->_animatingImageView setHighlightedImage:v33];
+    firstObject2 = [(NSArray *)self->_spokeHighlightImages firstObject];
+    [(UIImageView *)self->_animatingImageView setHighlightedImage:firstObject2];
 
     if (animating)
     {
-      v34 = [(UIView *)self window];
+      window2 = [(UIView *)self window];
 
-      if (v34)
+      if (window2)
       {
         [(UIActivityIndicatorView *)self _setUpAnimation];
         self->_restartAnimationOnNextLayout = 0;
@@ -734,10 +734,10 @@ LABEL_42:
     return 1;
   }
 
-  v4 = [(UIActivityIndicatorView *)self color];
-  v5 = [v4 _isDynamic];
+  color = [(UIActivityIndicatorView *)self color];
+  _isDynamic = [color _isDynamic];
 
-  return v5;
+  return _isDynamic;
 }
 
 - (BOOL)_shouldGoToCustomStyle
@@ -766,8 +766,8 @@ LABEL_42:
 {
   if (self->_activityIndicatorViewStyle != 16)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"UIActivityIndicatorView.m" lineNumber:667 description:@"_effectiveCustomWidth only valid for UIActivityIndicatorViewStyleCustom"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIActivityIndicatorView.m" lineNumber:667 description:@"_effectiveCustomWidth only valid for UIActivityIndicatorViewStyleCustom"];
   }
 
   result = self->_customWidth;
@@ -794,11 +794,11 @@ LABEL_42:
 - (void)dealloc
 {
   v6[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = @"UIApplicationDidEnterBackgroundNotification";
   v6[1] = @"UIApplicationWillEnterForegroundNotification";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:2];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   v5.receiver = self;
   v5.super_class = UIActivityIndicatorView;
@@ -867,9 +867,9 @@ LABEL_42:
       v5->_hidesWhenStopped = [(NSCoder *)v4 decodeBoolForKey:@"UIHidesWhenStopped"];
     }
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v5 selector:sel__applicationDidEnterBackground_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
-    [v8 addObserver:v5 selector:sel__applicationWillEnterForeground_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__applicationDidEnterBackground_ name:@"UIApplicationDidEnterBackgroundNotification" object:0];
+    [defaultCenter addObserver:v5 selector:sel__applicationWillEnterForeground_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
     v5->_animating = [(NSCoder *)v4 decodeBoolForKey:@"UIAnimating"];
     if ([(NSCoder *)v4 containsValueForKey:@"UIColor"])
     {
@@ -893,89 +893,89 @@ LABEL_42:
   return v5;
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
   v5.receiver = self;
   v5.super_class = UIActivityIndicatorView;
-  v4 = a3;
-  [(UIView *)&v5 _populateArchivedSubviews:v4];
-  [v4 removeObject:{self->_animatingImageView, v5.receiver, v5.super_class}];
+  subviewsCopy = subviews;
+  [(UIView *)&v5 _populateArchivedSubviews:subviewsCopy];
+  [subviewsCopy removeObject:{self->_animatingImageView, v5.receiver, v5.super_class}];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = UIActivityIndicatorView;
-  [(UIView *)&v9 encodeWithCoder:v4];
+  [(UIView *)&v9 encodeWithCoder:coderCopy];
   activityIndicatorViewStyle = self->_activityIndicatorViewStyle;
-  [v4 encodeInteger:activityIndicatorViewStyle forKey:@"UIActivityIndicatorViewStyle-Modern"];
+  [coderCopy encodeInteger:activityIndicatorViewStyle forKey:@"UIActivityIndicatorViewStyle-Modern"];
   v6 = self->_color;
   if (activityIndicatorViewStyle == 101)
   {
-    [v4 encodeInteger:0 forKey:@"UIActivityIndicatorViewStyle"];
+    [coderCopy encodeInteger:0 forKey:@"UIActivityIndicatorViewStyle"];
     if (v6)
     {
       goto LABEL_9;
     }
 
-    v7 = self;
+    selfCopy2 = self;
     v8 = 101;
     goto LABEL_7;
   }
 
   if (activityIndicatorViewStyle == 100)
   {
-    [v4 encodeInteger:1 forKey:@"UIActivityIndicatorViewStyle"];
+    [coderCopy encodeInteger:1 forKey:@"UIActivityIndicatorViewStyle"];
     if (v6)
     {
       goto LABEL_9;
     }
 
-    v7 = self;
+    selfCopy2 = self;
     v8 = 100;
 LABEL_7:
-    v6 = [(UIActivityIndicatorView *)v7 _defaultColorForStyle:v8];
+    v6 = [(UIActivityIndicatorView *)selfCopy2 _defaultColorForStyle:v8];
     goto LABEL_9;
   }
 
-  [v4 encodeInteger:activityIndicatorViewStyle forKey:@"UIActivityIndicatorViewStyle"];
+  [coderCopy encodeInteger:activityIndicatorViewStyle forKey:@"UIActivityIndicatorViewStyle"];
 LABEL_9:
   if (!self->_hidesWhenStopped)
   {
-    [v4 encodeBool:0 forKey:@"UIHidesWhenStopped"];
+    [coderCopy encodeBool:0 forKey:@"UIHidesWhenStopped"];
   }
 
   if (self->_animating)
   {
-    [v4 encodeBool:1 forKey:@"UIAnimating"];
+    [coderCopy encodeBool:1 forKey:@"UIAnimating"];
   }
 
-  [v4 encodeObject:self->_color forKey:@"UIColor"];
+  [coderCopy encodeObject:self->_color forKey:@"UIColor"];
   if (v6)
   {
-    [v4 encodeObject:v6 forKey:@"UITintColor"];
+    [coderCopy encodeObject:v6 forKey:@"UITintColor"];
   }
 
   if (self->_disableUpdateColorOnTraitCollectionChange)
   {
-    [v4 encodeBool:1 forKey:@"UIDisableUpdateColorOnTraitCollectionChange"];
+    [coderCopy encodeBool:1 forKey:@"UIDisableUpdateColorOnTraitCollectionChange"];
   }
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
   styleView = self->_styleView;
   if (styleView)
   {
-    [(_UIActivityIndicatorViewStyleView *)styleView sizeThatFits:a3.width, a3.height];
+    [(_UIActivityIndicatorViewStyleView *)styleView sizeThatFits:size.width, size.height];
     v6 = v5;
     v8 = v7;
   }
 
   else
   {
-    [(UIActivityIndicatorView *)self _defaultSizeConsultingCustomWidthIfApplicable:a3.width];
+    [(UIActivityIndicatorView *)self _defaultSizeConsultingCustomWidthIfApplicable:size.width];
     v6 = v10;
     v8 = v9;
     width = self->_shadowOffset.width;
@@ -1008,25 +1008,25 @@ LABEL_9:
   return result;
 }
 
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view
 {
   v6.receiver = self;
   v6.super_class = UIActivityIndicatorView;
-  v4 = a3;
-  [(UIView *)&v6 _intrinsicContentSizeInvalidatedForChildView:v4];
+  viewCopy = view;
+  [(UIView *)&v6 _intrinsicContentSizeInvalidatedForChildView:viewCopy];
   styleView = self->_styleView;
 
-  if (styleView == v4)
+  if (styleView == viewCopy)
   {
     [(UIView *)self invalidateIntrinsicContentSize:v6.receiver];
   }
 }
 
-- (void)_setMessage:(id)a3
+- (void)_setMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = self->_message;
-  v7 = v5;
+  v7 = messageCopy;
   v14 = v7;
   if (v6 == v7)
   {
@@ -1048,7 +1048,7 @@ LABEL_9:
   {
   }
 
-  objc_storeStrong(&self->_message, a3);
+  objc_storeStrong(&self->_message, message);
   if ([(NSString *)v14 length])
   {
     if (!self->_messageLabel)
@@ -1062,8 +1062,8 @@ LABEL_9:
       [(UIView *)self addSubview:self->_messageLabel];
     }
 
-    v13 = [(NSString *)v14 localizedUppercaseString];
-    [(_UIActivityIndicatorMessageLabel *)self->_messageLabel setText:v13];
+    localizedUppercaseString = [(NSString *)v14 localizedUppercaseString];
+    [(_UIActivityIndicatorMessageLabel *)self->_messageLabel setText:localizedUppercaseString];
   }
 
   [(UIView *)self setNeedsLayout];
@@ -1071,9 +1071,9 @@ LABEL_9:
 LABEL_13:
 }
 
-- (void)_updateMessageForStyle:(int64_t)a3
+- (void)_updateMessageForStyle:(int64_t)style
 {
-  if (a3 == 22)
+  if (style == 22)
   {
     v4 = _UINSLocalizedStringWithDefaultValue(@"Loading", @"Loading");
     [(UIActivityIndicatorView *)self _setMessage:v4];
@@ -1110,11 +1110,11 @@ LABEL_13:
   }
 }
 
-- (void)setAnimationDuration:(double)a3
+- (void)setAnimationDuration:(double)duration
 {
-  if (self->_duration != a3)
+  if (self->_duration != duration)
   {
-    self->_duration = a3;
+    self->_duration = duration;
     if (self->_animating)
     {
       [(UIActivityIndicatorView *)self stopAnimating];
@@ -1135,13 +1135,13 @@ LABEL_13:
   [(UIActivityIndicatorView *)self _updateVisualStyleProperties];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   if ([(UIImageView *)self->_animatingImageView isAnimating])
   {
     [(UIActivityIndicatorView *)self _tearDownAnimation];
-    [(UIImageView *)self->_animatingImageView setHighlighted:v3];
+    [(UIImageView *)self->_animatingImageView setHighlighted:highlightedCopy];
 
     [(UIActivityIndicatorView *)self _setUpAnimation];
   }
@@ -1150,7 +1150,7 @@ LABEL_13:
   {
     animatingImageView = self->_animatingImageView;
 
-    [(UIImageView *)animatingImageView setHighlighted:v3];
+    [(UIImageView *)animatingImageView setHighlighted:highlightedCopy];
   }
 }
 
@@ -1167,17 +1167,17 @@ LABEL_13:
   [(UIView *)&v3 _restoreRemovedAnimationsIncludingSubviews];
 }
 
-- (void)_removeAllAnimations:(BOOL)a3
+- (void)_removeAllAnimations:(BOOL)animations
 {
-  v3 = a3;
+  animationsCopy = animations;
   self->_wasAnimatingWhenAnimationsRemoved = [(UIActivityIndicatorView *)self isAnimating];
   [(UIActivityIndicatorView *)self stopAnimating];
   v5.receiver = self;
   v5.super_class = UIActivityIndicatorView;
-  [(UIView *)&v5 _removeAllAnimations:v3];
+  [(UIView *)&v5 _removeAllAnimations:animationsCopy];
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
   if (self->_animating)
   {
@@ -1185,7 +1185,7 @@ LABEL_13:
   }
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
   if (self->_animating)
   {
@@ -1193,10 +1193,10 @@ LABEL_13:
   }
 }
 
-- (void)_didMoveFromWindow:(id)a3 toWindow:(id)a4
+- (void)_didMoveFromWindow:(id)window toWindow:(id)toWindow
 {
-  v6 = a3;
-  v7 = a4;
+  windowCopy = window;
+  toWindowCopy = toWindow;
   animating = self->_animating;
   if (animating)
   {
@@ -1205,22 +1205,22 @@ LABEL_13:
 
   v9.receiver = self;
   v9.super_class = UIActivityIndicatorView;
-  [(UIView *)&v9 _didMoveFromWindow:v6 toWindow:v7];
-  if (v7 && animating)
+  [(UIView *)&v9 _didMoveFromWindow:windowCopy toWindow:toWindowCopy];
+  if (toWindowCopy && animating)
   {
     self->_restartAnimationOnNextLayout = 1;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)_setCustomWidth:(double)a3
+- (void)_setCustomWidth:(double)width
 {
   if (self->_activityIndicatorViewStyle != 16)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"_customWidth property only modifiable for UIActivityIndicatorViewStyleCustom"];
   }
 
-  v5 = fmax(a3, 0.0);
+  v5 = fmax(width, 0.0);
   if (v5 != self->_customWidth)
   {
     self->_customWidth = v5;
@@ -1231,11 +1231,11 @@ LABEL_13:
   }
 }
 
-- (void)setWidth:(double)a3
+- (void)setWidth:(double)width
 {
-  if (self->_width != a3)
+  if (self->_width != width)
   {
-    self->_width = a3;
+    self->_width = width;
     [(UIView *)self setNeedsLayout];
   }
 }
@@ -1254,15 +1254,15 @@ LABEL_13:
   }
 }
 
-- (void)setShadowColor:(id)a3
+- (void)setShadowColor:(id)color
 {
-  v4 = a3;
-  if (self->_shadowColor != v4)
+  colorCopy = color;
+  if (self->_shadowColor != colorCopy)
   {
-    v7 = v4;
-    if (v4)
+    v7 = colorCopy;
+    if (colorCopy)
     {
-      v5 = v4;
+      v5 = colorCopy;
     }
 
     else
@@ -1274,31 +1274,31 @@ LABEL_13:
     self->_shadowColor = v5;
 
     [(UIView *)self setNeedsLayout];
-    v4 = v7;
+    colorCopy = v7;
   }
 }
 
-- (void)setShadowOffset:(CGSize)a3
+- (void)setShadowOffset:(CGSize)offset
 {
-  if (self->_shadowOffset.width != a3.width || self->_shadowOffset.height != a3.height)
+  if (self->_shadowOffset.width != offset.width || self->_shadowOffset.height != offset.height)
   {
-    self->_shadowOffset = a3;
+    self->_shadowOffset = offset;
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (double)_spokeWidthForGearWidth:(double)a3
+- (double)_spokeWidthForGearWidth:(double)width
 {
   actualActivityIndicatorViewStyle = self->_actualActivityIndicatorViewStyle;
-  v5 = a3 < 20.0 && actualActivityIndicatorViewStyle == 16;
+  v5 = width < 20.0 && actualActivityIndicatorViewStyle == 16;
   v6 = 1.0;
-  if (a3 == 14.0 || v5)
+  if (width == 14.0 || v5)
   {
     return v6;
   }
 
-  v8 = a3 < 30.0 && actualActivityIndicatorViewStyle == 16;
-  if (a3 == 20.0 || v8)
+  v8 = width < 30.0 && actualActivityIndicatorViewStyle == 16;
+  if (width == 20.0 || v8)
   {
     v10 = self->_spokeCount == 12;
     v11 = 1.25;
@@ -1306,17 +1306,17 @@ LABEL_13:
     goto LABEL_20;
   }
 
-  v14 = a3 < 32.0 && actualActivityIndicatorViewStyle == 16;
+  v14 = width < 32.0 && actualActivityIndicatorViewStyle == 16;
   v6 = 1.75;
-  if (a3 != 30.0 && !v14)
+  if (width != 30.0 && !v14)
   {
-    v15 = a3 < 37.0 && actualActivityIndicatorViewStyle == 16;
+    v15 = width < 37.0 && actualActivityIndicatorViewStyle == 16;
     v16 = v15;
     v6 = 2.0;
-    if (a3 != 32.0 && !v16)
+    if (width != 32.0 && !v16)
     {
-      v18 = a3 < 42.75 && actualActivityIndicatorViewStyle == 16;
-      if (a3 == 37.0 || v18)
+      v18 = width < 42.75 && actualActivityIndicatorViewStyle == 16;
+      if (width == 37.0 || v18)
       {
         v10 = self->_spokeCount == 12;
         v11 = 2.5;
@@ -1324,12 +1324,12 @@ LABEL_13:
         goto LABEL_20;
       }
 
-      if (a3 < 60.0 && actualActivityIndicatorViewStyle == 16)
+      if (width < 60.0 && actualActivityIndicatorViewStyle == 16)
       {
-        if (a3 >= 48.5)
+        if (width >= 48.5)
         {
           v10 = self->_spokeCount == 12;
-          if (a3 >= 54.25)
+          if (width >= 54.25)
           {
             v11 = 3.5;
             v6 = 3.0;
@@ -1359,9 +1359,9 @@ LABEL_20:
       }
 
       v6 = 3.5;
-      if (a3 != 60.0)
+      if (width != 60.0)
       {
-        v19 = a3 / 7.5;
+        v19 = width / 7.5;
         v20 = nearbyintf(v19) * 0.5;
         v6 = 1.0;
         if (v20 >= 1.0)
@@ -1375,20 +1375,20 @@ LABEL_20:
   return v6;
 }
 
-- (double)_spokeLengthForGearWidth:(double)a3
+- (double)_spokeLengthForGearWidth:(double)width
 {
   actualActivityIndicatorViewStyle = self->_actualActivityIndicatorViewStyle;
-  if (a3 > 14.0 || actualActivityIndicatorViewStyle != 16)
+  if (width > 14.0 || actualActivityIndicatorViewStyle != 16)
   {
     v5 = 4.0;
-    if (a3 == 14.0)
+    if (width == 14.0)
     {
       return v5;
     }
 
-    if (a3 > 20.0 || actualActivityIndicatorViewStyle != 16)
+    if (width > 20.0 || actualActivityIndicatorViewStyle != 16)
     {
-      if (a3 == 20.0)
+      if (width == 20.0)
       {
         v5 = 5.0;
         if (self->_spokeCount == 12)
@@ -1399,32 +1399,32 @@ LABEL_20:
 
       else
       {
-        v8 = a3 <= 24.0 && actualActivityIndicatorViewStyle == 16;
-        if (!v8 && a3 != 24.0 && (a3 > 30.0 || actualActivityIndicatorViewStyle != 16) && a3 != 30.0 && (a3 > 32.0 || actualActivityIndicatorViewStyle != 16))
+        v8 = width <= 24.0 && actualActivityIndicatorViewStyle == 16;
+        if (!v8 && width != 24.0 && (width > 30.0 || actualActivityIndicatorViewStyle != 16) && width != 30.0 && (width > 32.0 || actualActivityIndicatorViewStyle != 16))
         {
           v5 = 10.0;
-          if (a3 == 32.0)
+          if (width == 32.0)
           {
             return v5;
           }
 
-          if (a3 > 40.0 || actualActivityIndicatorViewStyle != 16)
+          if (width > 40.0 || actualActivityIndicatorViewStyle != 16)
           {
             v5 = 14.0;
-            if (a3 == 40.0)
+            if (width == 40.0)
             {
               return v5;
             }
 
-            if (a3 > 60.0 || actualActivityIndicatorViewStyle != 16)
+            if (width > 60.0 || actualActivityIndicatorViewStyle != 16)
             {
               v5 = 19.0;
-              if (a3 == 60.0)
+              if (width == 60.0)
               {
                 return v5;
               }
 
-              if ((a3 > 64.0 || actualActivityIndicatorViewStyle != 16) && a3 != 64.0 && actualActivityIndicatorViewStyle != 16)
+              if ((width > 64.0 || actualActivityIndicatorViewStyle != 16) && width != 64.0 && actualActivityIndicatorViewStyle != 16)
               {
                 v5 = 10.0;
                 if (self->_spokeCount != 12)
@@ -1455,14 +1455,14 @@ LABEL_20:
   return result;
 }
 
-- (double)_alphaValueForStep:(int64_t)a3
+- (double)_alphaValueForStep:(int64_t)step
 {
-  v5 = [(UIActivityIndicatorView *)self _spokeCount];
-  v6 = [(UIActivityIndicatorView *)self _spokeFrameRatio];
+  _spokeCount = [(UIActivityIndicatorView *)self _spokeCount];
+  _spokeFrameRatio = [(UIActivityIndicatorView *)self _spokeFrameRatio];
   result = 1.0;
-  if ((v6 * v5 - 2) <= 0xFFFFFFFFFFFFFFFCLL)
+  if ((_spokeFrameRatio * _spokeCount - 2) <= 0xFFFFFFFFFFFFFFFCLL)
   {
-    result = -0.68 / (v6 * v5 / 2) * a3 + 1.0;
+    result = -0.68 / (_spokeFrameRatio * _spokeCount / 2) * step + 1.0;
     if (result < 0.32)
     {
       return 0.32;
@@ -1472,9 +1472,9 @@ LABEL_20:
   return result;
 }
 
-- (id)_imageForStep:(int64_t)a3 withColor:(id)a4
+- (id)_imageForStep:(int64_t)step withColor:(id)color
 {
-  v6 = a4;
+  colorCopy = color;
   [(UIActivityIndicatorView *)self _spokeWidthForGearWidth:self->_width];
   v8 = v7;
   [(UIActivityIndicatorView *)self _spokeLengthForGearWidth:self->_width];
@@ -1555,8 +1555,8 @@ LABEL_20:
     CGContextRestoreGState(v29);
   }
 
-  NumberOfComponents = CGColorGetNumberOfComponents([v6 CGColor]);
-  Components = CGColorGetComponents([v6 CGColor]);
+  NumberOfComponents = CGColorGetNumberOfComponents([colorCopy CGColor]);
+  Components = CGColorGetComponents([colorCopy CGColor]);
   if (NumberOfComponents)
   {
     v34 = *(Components + (((NumberOfComponents << 32) - 0x100000000) >> 29));
@@ -1569,15 +1569,15 @@ LABEL_20:
 
   CGContextSaveGState(v29);
   CGContextTranslateCTM(v29, v14, v24);
-  v35 = [(UIActivityIndicatorView *)self _spokeFrameRatio];
-  v36 = [(UIActivityIndicatorView *)self _spokeFrameRatio];
+  _spokeFrameRatio = [(UIActivityIndicatorView *)self _spokeFrameRatio];
+  _spokeFrameRatio2 = [(UIActivityIndicatorView *)self _spokeFrameRatio];
   if (spokeCount >= 1)
   {
     v37 = 0;
-    v38 = a3 % v35;
+    v38 = step % _spokeFrameRatio;
     v39 = -v30;
     v40 = spokeCount;
-    v41 = a3 / v36;
+    v41 = step / _spokeFrameRatio2;
     do
     {
       v42 = v38 + [(UIActivityIndicatorView *)self _spokeFrameRatio]* v41;
@@ -1587,7 +1587,7 @@ LABEL_20:
       CGContextRotateCTM(v29, v39 * v37);
       CGContextTranslateCTM(v29, -v13, -v13);
       [(UIActivityIndicatorView *)self _alphaValueForStep:v43];
-      v45 = [v6 colorWithAlphaComponent:v34 * v44];
+      v45 = [colorCopy colorWithAlphaComponent:v34 * v44];
       [v45 set];
 
       [v15 fillWithBlendMode:17 alpha:0.85];
@@ -1608,24 +1608,24 @@ LABEL_20:
   return v46;
 }
 
-- (id)_artCacheKeyWithStyle:(int64_t)a3 color:(id)a4
+- (id)_artCacheKeyWithStyle:(int64_t)style color:(id)color
 {
-  v7 = a4;
-  v8 = -[_UIActivityIndicatorViewArtworkCacheKey initWithStyle:width:spokeCount:spokeFrameRatio:shadowOffset:color:shadowColor:]([_UIActivityIndicatorViewArtworkCacheKey alloc], "initWithStyle:width:spokeCount:spokeFrameRatio:shadowOffset:color:shadowColor:", a3, self->_spokeCount, self->_spokeFrameRatio, [a4 CGColor], -[UIColor CGColor](self->_shadowColor, "CGColor"), self->_width, self->_shadowOffset.width, self->_shadowOffset.height);
+  colorCopy = color;
+  v8 = -[_UIActivityIndicatorViewArtworkCacheKey initWithStyle:width:spokeCount:spokeFrameRatio:shadowOffset:color:shadowColor:]([_UIActivityIndicatorViewArtworkCacheKey alloc], "initWithStyle:width:spokeCount:spokeFrameRatio:shadowOffset:color:shadowColor:", style, self->_spokeCount, self->_spokeFrameRatio, [color CGColor], -[UIColor CGColor](self->_shadowColor, "CGColor"), self->_width, self->_shadowOffset.width, self->_shadowOffset.height);
 
   return v8;
 }
 
-- (id)_generateImagesForColor:(id)a3 highlight:(BOOL)a4
+- (id)_generateImagesForColor:(id)color highlight:(BOOL)highlight
 {
-  v5 = a3;
+  colorCopy = color;
   v6 = self->_spokeCount * self->_spokeFrameRatio;
   v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:v6];
   if (v6 >= 1)
   {
     for (i = 0; i != v6; ++i)
     {
-      v9 = [(UIActivityIndicatorView *)self _imageForStep:i withColor:v5];
+      v9 = [(UIActivityIndicatorView *)self _imageForStep:i withColor:colorCopy];
       [v7 addObject:v9];
     }
   }
@@ -1633,17 +1633,17 @@ LABEL_20:
   return v7;
 }
 
-- (id)_generateModernImagesForImages:(id)a3 color:(id)a4
+- (id)_generateModernImagesForImages:(id)images color:(id)color
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  imagesCopy = images;
+  colorCopy = color;
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(imagesCopy, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v5;
+  v8 = imagesCopy;
   v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
@@ -1658,7 +1658,7 @@ LABEL_20:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * i) _flatImageWithColor:{v6, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * i) _flatImageWithColor:{colorCopy, v15}];
         [v7 addObject:v13];
       }
 
@@ -1671,26 +1671,26 @@ LABEL_20:
   return v7;
 }
 
-- (id)_imagesForStyle:(int64_t)a3 color:(id)a4 highlight:(BOOL)a5
+- (id)_imagesForStyle:(int64_t)style color:(id)color highlight:(BOOL)highlight
 {
-  v5 = a5;
-  v8 = a4;
+  highlightCopy = highlight;
+  colorCopy = color;
   if ([(UIActivityIndicatorView *)self _isStatusBarStyle]&& [(UIActivityIndicatorView *)self _colorRequiresDynamicTinting])
   {
-    v9 = [objc_opt_class() _loadResourcesForArtworkBasedStyle:a3];
-    v10 = [(UIActivityIndicatorView *)self _generateModernImagesForImages:v9 color:v8];
+    v9 = [objc_opt_class() _loadResourcesForArtworkBasedStyle:style];
+    v10 = [(UIActivityIndicatorView *)self _generateModernImagesForImages:v9 color:colorCopy];
   }
 
   else
   {
     if ([(UIActivityIndicatorView *)self _isArtworkBasedStyle])
     {
-      [objc_opt_class() _loadResourcesForArtworkBasedStyle:a3];
+      [objc_opt_class() _loadResourcesForArtworkBasedStyle:style];
     }
 
     else
     {
-      [(UIActivityIndicatorView *)self _generateImagesForColor:v8 highlight:v5];
+      [(UIActivityIndicatorView *)self _generateImagesForColor:colorCopy highlight:highlightCopy];
     }
     v10 = ;
   }
@@ -1698,11 +1698,11 @@ LABEL_20:
   return v10;
 }
 
-+ (id)_imageSetNameForArtworkBasedStyle:(int64_t)a3 outImageCount:(int64_t *)a4
++ (id)_imageSetNameForArtworkBasedStyle:(int64_t)style outImageCount:(int64_t *)count
 {
   v4 = 0;
   result = 0;
-  switch(a3)
+  switch(style)
   {
     case 0:
       goto LABEL_5;
@@ -1721,7 +1721,7 @@ LABEL_20:
       result = @"UIActivityIndicatorViewStyleForBlueBackgroundSmall";
 LABEL_13:
       v4 = 16;
-      if (!a4)
+      if (!count)
       {
         return result;
       }
@@ -1751,7 +1751,7 @@ LABEL_13:
       result = @"UIActivityIndicatorViewStyleStatusBarExternal";
 LABEL_26:
       v4 = 8;
-      if (!a4)
+      if (!count)
       {
         return result;
       }
@@ -1769,13 +1769,13 @@ LABEL_21:
       result = @"UIActivityIndicatorViewStyleWhiteLargeATV";
       goto LABEL_16;
     default:
-      if (a3 == 100)
+      if (style == 100)
       {
 LABEL_6:
         result = @"UIActivityIndicatorViewStyleWhite";
 LABEL_16:
         v4 = 12;
-        if (!a4)
+        if (!count)
         {
           return result;
         }
@@ -1784,7 +1784,7 @@ LABEL_16:
       }
 
       result = 0;
-      if (a3 == 101)
+      if (style == 101)
       {
 LABEL_5:
         result = @"UIActivityIndicatorViewStyleWhiteLarge";
@@ -1792,21 +1792,21 @@ LABEL_5:
       }
 
 LABEL_22:
-      if (!a4)
+      if (!count)
       {
         return result;
       }
 
 LABEL_23:
-      *a4 = v4;
+      *count = v4;
       return result;
   }
 }
 
-+ (id)_loadResourcesForArtworkBasedStyle:(int64_t)a3
++ (id)_loadResourcesForArtworkBasedStyle:(int64_t)style
 {
   v9 = 0;
-  v3 = [a1 _imageSetNameForArtworkBasedStyle:a3 outImageCount:&v9];
+  v3 = [self _imageSetNameForArtworkBasedStyle:style outImageCount:&v9];
   v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:v9];
   if (v9 >= 1)
   {
@@ -1824,12 +1824,12 @@ LABEL_23:
   return v4;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6.receiver = self;
   v6.super_class = UIActivityIndicatorView;
-  [(UIView *)&v6 traitCollectionDidChange:v4];
+  [(UIView *)&v6 traitCollectionDidChange:changeCopy];
   v5 = [(UIActivityIndicatorView *)self _actualStyleByResolvingAutoUpdatingStyle:self->_activityIndicatorViewStyle];
   if (v5 != self->_actualActivityIndicatorViewStyle)
   {
@@ -1845,30 +1845,30 @@ LABEL_23:
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = UIActivityIndicatorView;
-  [(UIView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(UIView *)self bounds];
   [(UIActivityIndicatorView *)self _updateSubviewFramesWithBounds:?];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = UIActivityIndicatorView;
-  [(UIView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(UIView *)self bounds];
   [(UIActivityIndicatorView *)self _updateSubviewFramesWithBounds:?];
 }
 
-- (void)_updateSubviewFramesWithBounds:(CGRect)a3
+- (void)_updateSubviewFramesWithBounds:(CGRect)bounds
 {
   styleView = self->_styleView;
   if (styleView)
   {
-    [(UIView *)self bounds:a3.origin.x];
+    [(UIView *)self bounds:bounds.origin.x];
     messageLabel = styleView;
 LABEL_7:
 
@@ -1876,10 +1876,10 @@ LABEL_7:
     return;
   }
 
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if (!self->_animatingImageView)
   {
     v10 = [UIImageView alloc];
@@ -1904,11 +1904,11 @@ LABEL_7:
   self->_messageLabel = 0;
 }
 
-- (CGRect)_animatingImageViewFrameForBounds:(CGRect)a3
+- (CGRect)_animatingImageViewFrameForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(UIActivityIndicatorView *)self _defaultSizeConsultingCustomWidthIfApplicable:a3.origin.x];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  [(UIActivityIndicatorView *)self _defaultSizeConsultingCustomWidthIfApplicable:bounds.origin.x];
   v7 = v6;
   v9 = self->_shadowOffset.width;
   v8 = self->_shadowOffset.height;
@@ -1940,12 +1940,12 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)_messageLabelFrameForBounds:(CGRect)a3
+- (CGRect)_messageLabelFrameForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ([(UIActivityIndicatorView *)self _isShowingMessage])
   {
     [(UIActivityIndicatorView *)self _animatingImageViewFrameForBounds:x, y, width, height];
@@ -1975,10 +1975,10 @@ LABEL_7:
   return result;
 }
 
-- (id)_defaultColorForStyle:(int64_t)a3
+- (id)_defaultColorForStyle:(int64_t)style
 {
   v28 = *MEMORY[0x1E69E9840];
-  switch(a3)
+  switch(style)
   {
     case 0:
     case 1:
@@ -2021,7 +2021,7 @@ LABEL_9:
 
       goto LABEL_10;
     default:
-      if ((a3 - 100) >= 2)
+      if ((style - 100) >= 2)
       {
 LABEL_14:
         if (os_variant_has_internal_diagnostics())
@@ -2030,7 +2030,7 @@ LABEL_14:
           if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
           {
             v26 = 134217984;
-            v27 = a3;
+            styleCopy2 = style;
             _os_log_fault_impl(&dword_188A29000, v25, OS_LOG_TYPE_FAULT, "Unknown UIActivityIndicatorViewStyle: %ld", &v26, 0xCu);
           }
         }
@@ -2041,7 +2041,7 @@ LABEL_14:
           if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
           {
             v26 = 134217984;
-            v27 = a3;
+            styleCopy2 = style;
             _os_log_impl(&dword_188A29000, v24, OS_LOG_TYPE_ERROR, "Unknown UIActivityIndicatorViewStyle: %ld", &v26, 0xCu);
           }
         }
@@ -2053,9 +2053,9 @@ LABEL_2:
       else
       {
         v5 = +[_UIActivityIndicatorSettingsDomain rootSettings];
-        v6 = [v5 customColor];
+        customColor = [v5 customColor];
 
-        if (v6)
+        if (customColor)
         {
           v7 = [UIColor alloc];
           v8 = +[_UIActivityIndicatorSettingsDomain rootSettings];
@@ -2085,9 +2085,9 @@ LABEL_11:
   }
 }
 
-- (id)_highlightColorForStyle:(int64_t)a3
+- (id)_highlightColorForStyle:(int64_t)style
 {
-  if (a3 == 21)
+  if (style == 21)
   {
     v5 = +[UIColor _externalSystemExtraDarkGrayColor];
   }
@@ -2100,13 +2100,13 @@ LABEL_11:
   return v5;
 }
 
-- (int64_t)_actualStyleByResolvingAutoUpdatingStyle:(int64_t)a3
+- (int64_t)_actualStyleByResolvingAutoUpdatingStyle:(int64_t)style
 {
-  if (a3 == 22)
+  if (style == 22)
   {
-    v3 = [(UIView *)self traitCollection];
-    v4 = [v3 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+    traitCollection = [(UIView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
@@ -2119,21 +2119,21 @@ LABEL_11:
     }
   }
 
-  return a3;
+  return style;
 }
 
-- (int64_t)_customStyleForStyle:(int64_t)a3
+- (int64_t)_customStyleForStyle:(int64_t)style
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = 10;
-  if (a3 > 99)
+  if (style > 99)
   {
-    if (a3 == 101)
+    if (style == 101)
     {
       return v4;
     }
 
-    if (a3 == 100)
+    if (style == 100)
     {
       return 9;
     }
@@ -2141,25 +2141,25 @@ LABEL_11:
 
   else
   {
-    if (a3 <= 0x16)
+    if (style <= 0x16)
     {
-      if (((1 << a3) & 0x7F3FC0) != 0)
+      if (((1 << style) & 0x7F3FC0) != 0)
       {
-        return a3;
+        return style;
       }
 
-      if (((1 << a3) & 0x38) != 0)
+      if (((1 << style) & 0x38) != 0)
       {
         return 8;
       }
 
-      if (((1 << a3) & 6) != 0)
+      if (((1 << style) & 6) != 0)
       {
         return 9;
       }
     }
 
-    if (!a3)
+    if (!style)
     {
       return v4;
     }
@@ -2171,7 +2171,7 @@ LABEL_11:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
       v8 = 134217984;
-      v9 = a3;
+      styleCopy2 = style;
       _os_log_fault_impl(&dword_188A29000, v7, OS_LOG_TYPE_FAULT, "Unknown UIActivityIndicatorViewStyle: %ld", &v8, 0xCu);
     }
 
@@ -2185,7 +2185,7 @@ LABEL_11:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v8 = 134217984;
-      v9 = a3;
+      styleCopy2 = style;
       v4 = 16;
       _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_ERROR, "Unknown UIActivityIndicatorViewStyle: %ld", &v8, 0xCu);
     }
@@ -2194,10 +2194,10 @@ LABEL_11:
   return v4;
 }
 
-- (int64_t)_sizeForStyle:(int64_t)a3
+- (int64_t)_sizeForStyle:(int64_t)style
 {
   v3 = 4;
-  switch(a3)
+  switch(style)
   {
     case 0:
       return 5;
@@ -2234,9 +2234,9 @@ LABEL_11:
     case 21:
       return 11;
     case 22:
-      v4 = [(UIView *)self traitCollection];
-      v5 = [v4 preferredContentSizeCategory];
-      if (UIContentSizeCategoryIsAccessibilityCategory(v5))
+      traitCollection = [(UIView *)self traitCollection];
+      preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+      if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
       {
         v3 = 4;
       }
@@ -2248,12 +2248,12 @@ LABEL_11:
 
       return v3;
     default:
-      if (a3 == 100)
+      if (style == 100)
       {
         return 2;
       }
 
-      if (a3 != 101)
+      if (style != 101)
       {
         return 0;
       }
@@ -2279,18 +2279,18 @@ LABEL_11:
 
 - (BOOL)_shouldGoBackToBaseStyle
 {
-  v3 = [(UIActivityIndicatorView *)self _isArtworkBasedStyle];
-  if (v3)
+  _isArtworkBasedStyle = [(UIActivityIndicatorView *)self _isArtworkBasedStyle];
+  if (_isArtworkBasedStyle)
   {
-    LOBYTE(v3) = ![(UIActivityIndicatorView *)self _shouldGoToCustomStyle];
+    LOBYTE(_isArtworkBasedStyle) = ![(UIActivityIndicatorView *)self _shouldGoToCustomStyle];
   }
 
-  return v3;
+  return _isArtworkBasedStyle;
 }
 
-- (int64_t)_externalStyleForStyle:(int64_t)a3
+- (int64_t)_externalStyleForStyle:(int64_t)style
 {
-  if (a3 == 20)
+  if (style == 20)
   {
     if (dyld_program_sdk_at_least())
     {
@@ -2305,8 +2305,8 @@ LABEL_11:
 
   else
   {
-    result = a3;
-    if (a3 == 19)
+    result = style;
+    if (style == 19)
     {
       if (dyld_program_sdk_at_least())
       {
@@ -2323,12 +2323,12 @@ LABEL_11:
   return result;
 }
 
-+ (CGSize)defaultSizeForStyle:(int64_t)a3
++ (CGSize)defaultSizeForStyle:(int64_t)style
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = 37.0;
   v5 = 37.0;
-  switch(a3)
+  switch(style)
   {
     case 0:
     case 10:
@@ -2349,8 +2349,8 @@ LABEL_11:
       v4 = 14.0;
       break;
     case 6:
-      v10 = [objc_opt_self() mainScreen];
-      [v10 scale];
+      mainScreen = [objc_opt_self() mainScreen];
+      [mainScreen scale];
       if (v11 <= 1.0)
       {
         v4 = 12.0;
@@ -2363,8 +2363,8 @@ LABEL_11:
 
       goto LABEL_21;
     case 7:
-      v7 = [objc_opt_self() mainScreen];
-      [v7 scale];
+      mainScreen2 = [objc_opt_self() mainScreen];
+      [mainScreen2 scale];
       if (v8 <= 1.0)
       {
         v4 = 13.0;
@@ -2381,8 +2381,8 @@ LABEL_11:
       v4 = 12.0;
       break;
     case 12:
-      v7 = [objc_opt_self() mainScreen];
-      [v7 scale];
+      mainScreen2 = [objc_opt_self() mainScreen];
+      [mainScreen2 scale];
       if (v12 <= 1.0)
       {
         v4 = 17.0;
@@ -2423,9 +2423,9 @@ LABEL_30:
       v5 = v4;
       break;
     default:
-      if (a3 != 101)
+      if (style != 101)
       {
-        if (a3 == 100)
+        if (style == 100)
         {
 LABEL_5:
           v4 = 20.0;
@@ -2442,7 +2442,7 @@ LABEL_7:
             if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
             {
               v15 = 134217984;
-              v16 = a3;
+              styleCopy2 = style;
               _os_log_fault_impl(&dword_188A29000, v14, OS_LOG_TYPE_FAULT, "Unknown UIActivityIndicatorViewStyle: %ld", &v15, 0xCu);
             }
           }
@@ -2453,7 +2453,7 @@ LABEL_7:
             if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
             {
               v15 = 134217984;
-              v16 = a3;
+              styleCopy2 = style;
               _os_log_impl(&dword_188A29000, v6, OS_LOG_TYPE_ERROR, "Unknown UIActivityIndicatorViewStyle: %ld", &v15, 0xCu);
             }
           }
@@ -2472,9 +2472,9 @@ LABEL_7:
   return result;
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
-  if (a3)
+  if (animating)
   {
     [(UIActivityIndicatorView *)self startAnimating];
   }

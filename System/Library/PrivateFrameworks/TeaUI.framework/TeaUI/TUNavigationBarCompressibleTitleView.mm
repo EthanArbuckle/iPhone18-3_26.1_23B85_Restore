@@ -1,25 +1,25 @@
 @interface TUNavigationBarCompressibleTitleView
-- (TUNavigationBarCompressibleTitleView)initWithCustomTitleView:(id)a3;
-- (TUNavigationBarCompressibleTitleView)initWithRegularTitleView:(id)a3;
+- (TUNavigationBarCompressibleTitleView)initWithCustomTitleView:(id)view;
+- (TUNavigationBarCompressibleTitleView)initWithRegularTitleView:(id)view;
 - (UIView)view;
 - (double)contentAlpha;
 - (double)verticalOffset;
-- (void)setContentAlpha:(double)a3;
-- (void)setVerticalOffset:(double)a3;
+- (void)setContentAlpha:(double)alpha;
+- (void)setVerticalOffset:(double)offset;
 @end
 
 @implementation TUNavigationBarCompressibleTitleView
 
-- (TUNavigationBarCompressibleTitleView)initWithCustomTitleView:(id)a3
+- (TUNavigationBarCompressibleTitleView)initWithCustomTitleView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = TUNavigationBarCompressibleTitleView;
   v6 = [(TUNavigationBarCompressibleTitleView *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_customTitleView, a3);
+    objc_storeStrong(&v6->_customTitleView, view);
     regularTitleView = v7->_regularTitleView;
     v7->_regularTitleView = 0;
   }
@@ -27,16 +27,16 @@
   return v7;
 }
 
-- (TUNavigationBarCompressibleTitleView)initWithRegularTitleView:(id)a3
+- (TUNavigationBarCompressibleTitleView)initWithRegularTitleView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = TUNavigationBarCompressibleTitleView;
   v6 = [(TUNavigationBarCompressibleTitleView *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_regularTitleView, a3);
+    objc_storeStrong(&v6->_regularTitleView, view);
     customTitleView = v7->_customTitleView;
     v7->_customTitleView = 0;
   }
@@ -46,37 +46,37 @@
 
 - (UIView)view
 {
-  v3 = [(TUNavigationBarCompressibleTitleView *)self customTitleView];
-  v4 = v3;
-  if (v3)
+  customTitleView = [(TUNavigationBarCompressibleTitleView *)self customTitleView];
+  v4 = customTitleView;
+  if (customTitleView)
   {
-    v5 = v3;
+    regularTitleView = customTitleView;
   }
 
   else
   {
-    v5 = [(TUNavigationBarCompressibleTitleView *)self regularTitleView];
+    regularTitleView = [(TUNavigationBarCompressibleTitleView *)self regularTitleView];
   }
 
-  v6 = v5;
+  v6 = regularTitleView;
 
   return v6;
 }
 
 - (double)contentAlpha
 {
-  v3 = [(TUNavigationBarCompressibleTitleView *)self customTitleView];
+  customTitleView = [(TUNavigationBarCompressibleTitleView *)self customTitleView];
 
-  if (v3)
+  if (customTitleView)
   {
-    v4 = [(TUNavigationBarCompressibleTitleView *)self customTitleView];
-    [v4 contentAlpha];
+    customTitleView2 = [(TUNavigationBarCompressibleTitleView *)self customTitleView];
+    [customTitleView2 contentAlpha];
   }
 
   else
   {
-    v4 = [(TUNavigationBarCompressibleTitleView *)self regularTitleView];
-    [v4 alpha];
+    customTitleView2 = [(TUNavigationBarCompressibleTitleView *)self regularTitleView];
+    [customTitleView2 alpha];
   }
 
   v6 = v5;
@@ -84,32 +84,32 @@
   return v6;
 }
 
-- (void)setContentAlpha:(double)a3
+- (void)setContentAlpha:(double)alpha
 {
-  v5 = [(TUNavigationBarCompressibleTitleView *)self customTitleView];
+  customTitleView = [(TUNavigationBarCompressibleTitleView *)self customTitleView];
 
-  if (v5)
+  if (customTitleView)
   {
-    v6 = [(TUNavigationBarCompressibleTitleView *)self customTitleView];
-    [v6 setContentAlpha:a3];
+    customTitleView2 = [(TUNavigationBarCompressibleTitleView *)self customTitleView];
+    [customTitleView2 setContentAlpha:alpha];
   }
 
-  v7 = [(TUNavigationBarCompressibleTitleView *)self regularTitleView];
+  regularTitleView = [(TUNavigationBarCompressibleTitleView *)self regularTitleView];
 
-  if (v7)
+  if (regularTitleView)
   {
-    v8 = [(TUNavigationBarCompressibleTitleView *)self regularTitleView];
-    [v8 setAlpha:a3];
+    regularTitleView2 = [(TUNavigationBarCompressibleTitleView *)self regularTitleView];
+    [regularTitleView2 setAlpha:alpha];
   }
 }
 
 - (double)verticalOffset
 {
-  v2 = [(TUNavigationBarCompressibleTitleView *)self view];
-  v3 = v2;
-  if (v2)
+  view = [(TUNavigationBarCompressibleTitleView *)self view];
+  v3 = view;
+  if (view)
   {
-    [v2 transform];
+    [view transform];
     v4 = v6;
   }
 
@@ -121,11 +121,11 @@
   return v4;
 }
 
-- (void)setVerticalOffset:(double)a3
+- (void)setVerticalOffset:(double)offset
 {
-  v4 = [(TUNavigationBarCompressibleTitleView *)self view];
-  CATransform3DMakeTranslation(&v5, 0.0, a3, 0.0);
-  [v4 setTransform3D:&v5];
+  view = [(TUNavigationBarCompressibleTitleView *)self view];
+  CATransform3DMakeTranslation(&v5, 0.0, offset, 0.0);
+  [view setTransform3D:&v5];
 }
 
 @end

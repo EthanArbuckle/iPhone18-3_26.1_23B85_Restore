@@ -1,17 +1,17 @@
 @interface EKUIDeclineCommentController
-+ (id)_newDeclineCommentControllerWithCompletionBlock:(id)a3;
-+ (id)presentDeclineCommentAlertWithOrganizer:(id)a3 currentComment:(id)a4 viewController:(id)a5 completionBlock:(id)a6;
-- (void)_completeWithButton:(unint64_t)a3;
-- (void)_presentAlertWithOrganizer:(id)a3 currentComment:(id)a4 viewController:(id)a5;
++ (id)_newDeclineCommentControllerWithCompletionBlock:(id)block;
++ (id)presentDeclineCommentAlertWithOrganizer:(id)organizer currentComment:(id)comment viewController:(id)controller completionBlock:(id)block;
+- (void)_completeWithButton:(unint64_t)button;
+- (void)_presentAlertWithOrganizer:(id)organizer currentComment:(id)comment viewController:(id)controller;
 - (void)dealloc;
-- (void)dismissAnimated:(BOOL)a3;
+- (void)dismissAnimated:(BOOL)animated;
 @end
 
 @implementation EKUIDeclineCommentController
 
-+ (id)_newDeclineCommentControllerWithCompletionBlock:(id)a3
++ (id)_newDeclineCommentControllerWithCompletionBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   if (_newDeclineCommentControllerWithCompletionBlock__onceToken != -1)
   {
     +[EKUIDeclineCommentController _newDeclineCommentControllerWithCompletionBlock:];
@@ -24,8 +24,8 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __80__EKUIDeclineCommentController__newDeclineCommentControllerWithCompletionBlock___block_invoke_2;
   aBlock[3] = &unk_1E8440A20;
-  v10 = v3;
-  v5 = v3;
+  v10 = blockCopy;
+  v5 = blockCopy;
   objc_copyWeak(&v11, &location);
   v6 = _Block_copy(aBlock);
   v7 = v4[3];
@@ -63,13 +63,13 @@ void __80__EKUIDeclineCommentController__newDeclineCommentControllerWithCompleti
   }
 }
 
-+ (id)presentDeclineCommentAlertWithOrganizer:(id)a3 currentComment:(id)a4 viewController:(id)a5 completionBlock:(id)a6
++ (id)presentDeclineCommentAlertWithOrganizer:(id)organizer currentComment:(id)comment viewController:(id)controller completionBlock:(id)block
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [a1 _newDeclineCommentControllerWithCompletionBlock:a6];
-  [v13 _presentAlertWithOrganizer:v12 currentComment:v11 viewController:v10];
+  controllerCopy = controller;
+  commentCopy = comment;
+  organizerCopy = organizer;
+  v13 = [self _newDeclineCommentControllerWithCompletionBlock:block];
+  [v13 _presentAlertWithOrganizer:organizerCopy currentComment:commentCopy viewController:controllerCopy];
 
   return v13;
 }
@@ -82,18 +82,18 @@ void __80__EKUIDeclineCommentController__newDeclineCommentControllerWithCompleti
   [(EKUIDeclineCommentController *)&v3 dealloc];
 }
 
-- (void)_presentAlertWithOrganizer:(id)a3 currentComment:(id)a4 viewController:(id)a5
+- (void)_presentAlertWithOrganizer:(id)organizer currentComment:(id)comment viewController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  organizerCopy = organizer;
+  commentCopy = comment;
+  controllerCopy = controller;
   v11 = MEMORY[0x1E69DC650];
   v12 = EventKitUIBundle();
   v13 = [v12 localizedStringForKey:@"Decline Event" value:&stru_1F4EF6790 table:0];
   v14 = MEMORY[0x1E696AEC0];
   v15 = EventKitUIBundle();
   v16 = [v15 localizedStringForKey:@"Enter an optional comment to %@." value:&stru_1F4EF6790 table:0];
-  v33 = v8;
+  v33 = organizerCopy;
   v17 = CUIKDisplayStringForNotificationIdentity();
   v18 = [v14 localizedStringWithFormat:v16, v17];
   v19 = [v11 alertControllerWithTitle:v13 message:v18 preferredStyle:1];
@@ -106,7 +106,7 @@ void __80__EKUIDeclineCommentController__newDeclineCommentControllerWithCompleti
   v38[1] = 3221225472;
   v38[2] = __89__EKUIDeclineCommentController__presentAlertWithOrganizer_currentComment_viewController___block_invoke;
   v38[3] = &unk_1E8440A48;
-  v22 = v9;
+  v22 = commentCopy;
   v39 = v22;
   objc_copyWeak(&v40, location);
   [(UIAlertController *)v21 addTextFieldWithConfigurationHandler:v38];
@@ -134,7 +134,7 @@ void __80__EKUIDeclineCommentController__newDeclineCommentControllerWithCompleti
   v32 = [v29 actionWithTitle:v31 style:0 handler:v34];
   [(UIAlertController *)v28 addAction:v32];
 
-  [v10 presentViewController:self->_alertController animated:1 completion:0];
+  [controllerCopy presentViewController:self->_alertController animated:1 completion:0];
   objc_destroyWeak(&v35);
   objc_destroyWeak(&v37);
   objc_destroyWeak(&v40);
@@ -170,14 +170,14 @@ void __89__EKUIDeclineCommentController__presentAlertWithOrganizer_currentCommen
   [WeakRetained _completeWithButton:1];
 }
 
-- (void)_completeWithButton:(unint64_t)a3
+- (void)_completeWithButton:(unint64_t)button
 {
   completionBlock = self->_completionBlock;
   if (completionBlock)
   {
-    v5 = a3 == 0;
+    v5 = button == 0;
     v10 = _Block_copy(completionBlock);
-    v6 = [(UITextField *)self->_alertTextField text];
+    text = [(UITextField *)self->_alertTextField text];
     v7 = self->_completionBlock;
     self->_completionBlock = 0;
 
@@ -187,13 +187,13 @@ void __89__EKUIDeclineCommentController__presentAlertWithOrganizer_currentCommen
     alertTextField = self->_alertTextField;
     self->_alertTextField = 0;
 
-    v10[2](v10, v6, v5);
+    v10[2](v10, text, v5);
   }
 }
 
-- (void)dismissAnimated:(BOOL)a3
+- (void)dismissAnimated:(BOOL)animated
 {
-  [(UIAlertController *)self->_alertController dismissViewControllerAnimated:a3 completion:0];
+  [(UIAlertController *)self->_alertController dismissViewControllerAnimated:animated completion:0];
 
   [(EKUIDeclineCommentController *)self _completeWithButton:0];
 }

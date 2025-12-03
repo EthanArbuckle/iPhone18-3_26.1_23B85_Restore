@@ -1,7 +1,7 @@
 @interface SBIconSimpleLabelView
 - (SBIconLabelImageParameters)imageParameters;
 - (SBIconView)iconView;
-- (void)updateIconLabelWithSettings:(id)a3 imageParameters:(id)a4;
+- (void)updateIconLabelWithSettings:(id)settings imageParameters:(id)parameters;
 @end
 
 @implementation SBIconSimpleLabelView
@@ -15,28 +15,28 @@
 
 - (SBIconLabelImageParameters)imageParameters
 {
-  v2 = [(SBIconSimpleLabelView *)self image];
-  v3 = [v2 parameters];
+  image = [(SBIconSimpleLabelView *)self image];
+  parameters = [image parameters];
 
-  return v3;
+  return parameters;
 }
 
-- (void)updateIconLabelWithSettings:(id)a3 imageParameters:(id)a4
+- (void)updateIconLabelWithSettings:(id)settings imageParameters:(id)parameters
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if (v5)
+  parametersCopy = parameters;
+  if (parametersCopy)
   {
-    v6 = [(SBIconSimpleLabelView *)self image];
-    v7 = [v6 parameters];
-    v8 = v7;
-    if (!v6 || ([v7 isEqual:v5] & 1) == 0)
+    image = [(SBIconSimpleLabelView *)self image];
+    parameters = [image parameters];
+    v8 = parameters;
+    if (!image || ([parameters isEqual:parametersCopy] & 1) == 0)
     {
-      v9 = [(SBIconSimpleLabelView *)self iconView];
-      v10 = v9;
-      if (v9)
+      iconView = [(SBIconSimpleLabelView *)self iconView];
+      v10 = iconView;
+      if (iconView)
       {
-        v11 = [v9 labelImageWithParameters:v5];
+        v11 = [iconView labelImageWithParameters:parametersCopy];
       }
 
       else
@@ -47,22 +47,22 @@
       [(SBIconSimpleLabelView *)self setImage:v11];
     }
 
-    if ([v5 isColorspaceGrayscale])
+    if ([parametersCopy isColorspaceGrayscale])
     {
       v12 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CB0]];
-      v13 = [v5 textColor];
-      [v12 setValue:objc_msgSend(v13 forKey:{"CGColor"), @"inputColor"}];
+      textColor = [parametersCopy textColor];
+      [v12 setValue:objc_msgSend(textColor forKey:{"CGColor"), @"inputColor"}];
 
-      v14 = [(SBIconSimpleLabelView *)self layer];
+      layer = [(SBIconSimpleLabelView *)self layer];
       v17[0] = v12;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-      [v14 setFilters:v15];
+      [layer setFilters:v15];
     }
 
     else
     {
-      v16 = [(SBIconSimpleLabelView *)self layer];
-      [v16 setFilters:0];
+      layer2 = [(SBIconSimpleLabelView *)self layer];
+      [layer2 setFilters:0];
     }
   }
 

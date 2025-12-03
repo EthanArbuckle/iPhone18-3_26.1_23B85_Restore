@@ -1,35 +1,35 @@
 @interface WFInstapaperAction
-- (BOOL)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4;
+- (BOOL)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index;
 - (IKEngine)engine;
 - (id)folders;
-- (id)possibleStatesForEnumeration:(id)a3;
+- (id)possibleStatesForEnumeration:(id)enumeration;
 - (void)dealloc;
-- (void)engine:(id)a3 connection:(id)a4 didReceiveFolders:(id)a5;
-- (void)engine:(id)a3 didFinishConnection:(id)a4;
-- (void)engine:(id)a3 willStartConnection:(id)a4;
-- (void)finishRunningWithError:(id)a3;
+- (void)engine:(id)engine connection:(id)connection didReceiveFolders:(id)folders;
+- (void)engine:(id)engine didFinishConnection:(id)connection;
+- (void)engine:(id)engine willStartConnection:(id)connection;
+- (void)finishRunningWithError:(id)error;
 - (void)initializeParameters;
-- (void)runAsynchronouslyWithInput:(id)a3;
-- (void)runAsynchronouslyWithInput:(id)a3 selectedFolder:(id)a4;
+- (void)runAsynchronouslyWithInput:(id)input;
+- (void)runAsynchronouslyWithInput:(id)input selectedFolder:(id)folder;
 - (void)updateFolders;
-- (void)wasAddedToWorkflow:(id)a3;
-- (void)wasRemovedFromWorkflow:(id)a3;
+- (void)wasAddedToWorkflow:(id)workflow;
+- (void)wasRemovedFromWorkflow:(id)workflow;
 @end
 
 @implementation WFInstapaperAction
 
-- (id)possibleStatesForEnumeration:(id)a3
+- (id)possibleStatesForEnumeration:(id)enumeration
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  enumerationCopy = enumeration;
   v5 = objc_alloc(MEMORY[0x277CBEB18]);
-  v6 = [(WFInstapaperAction *)self folders];
-  v7 = [v6 allKeys];
-  v8 = [v5 initWithArray:v7];
+  folders = [(WFInstapaperAction *)self folders];
+  allKeys = [folders allKeys];
+  v8 = [v5 initWithArray:allKeys];
 
   if (![(WFInstapaperAction *)self includeSpecialFolders])
   {
-    v21 = v4;
+    v21 = enumerationCopy;
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
@@ -50,11 +50,11 @@
           }
 
           v14 = *(*(&v22 + 1) + 8 * i);
-          v15 = [(WFInstapaperAction *)self folders];
-          v16 = [v15 objectForKey:v14];
-          v17 = [v16 integerValue];
+          folders2 = [(WFInstapaperAction *)self folders];
+          v16 = [folders2 objectForKey:v14];
+          integerValue = [v16 integerValue];
 
-          if (v17 < 0)
+          if (integerValue < 0)
           {
             [v8 removeObject:v14];
           }
@@ -66,11 +66,11 @@
       while (v11);
     }
 
-    v4 = v21;
+    enumerationCopy = v21;
   }
 
   v18 = [v8 if_map:&__block_literal_global_9991];
-  [v4 setHidden:{objc_msgSend(v18, "count") == 0}];
+  [enumerationCopy setHidden:{objc_msgSend(v18, "count") == 0}];
 
   v19 = *MEMORY[0x277D85DE8];
 
@@ -86,17 +86,17 @@ id __51__WFInstapaperAction_possibleStatesForEnumeration___block_invoke(uint64_t
   return v4;
 }
 
-- (void)engine:(id)a3 connection:(id)a4 didReceiveFolders:(id)a5
+- (void)engine:(id)engine connection:(id)connection didReceiveFolders:(id)folders
 {
   v38 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  engineCopy = engine;
+  foldersCopy = folders;
   v9 = objc_opt_new();
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v10 = v8;
+  v10 = foldersCopy;
   v11 = [v10 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v11)
   {
@@ -113,8 +113,8 @@ id __51__WFInstapaperAction_possibleStatesForEnumeration___block_invoke(uint64_t
 
         v15 = *(*(&v33 + 1) + 8 * i);
         v16 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v15, "folderID")}];
-        v17 = [v15 title];
-        [v9 setObject:v16 forKey:v17];
+        title = [v15 title];
+        [v9 setObject:v16 forKey:title];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v33 objects:v37 count:16];
@@ -144,8 +144,8 @@ id __51__WFInstapaperAction_possibleStatesForEnumeration___block_invoke(uint64_t
   block[3] = &unk_278C21F68;
   block[4] = self;
   v31 = v9;
-  v32 = v7;
-  v27 = v7;
+  v32 = engineCopy;
+  v27 = engineCopy;
   v28 = v9;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
@@ -169,19 +169,19 @@ void __58__WFInstapaperAction_engine_connection_didReceiveFolders___block_invoke
   }
 }
 
-- (void)engine:(id)a3 didFinishConnection:(id)a4
+- (void)engine:(id)engine didFinishConnection:(id)connection
 {
-  v9 = a4;
-  v5 = [(WFInstapaperAction *)self identifiers];
-  if ([v5 count])
+  connectionCopy = connection;
+  identifiers = [(WFInstapaperAction *)self identifiers];
+  if ([identifiers count])
   {
   }
 
   else
   {
-    v6 = [(WFInstapaperAction *)self connectionTypes];
-    v7 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v9, "type")}];
-    v8 = [v6 containsObject:v7];
+    connectionTypes = [(WFInstapaperAction *)self connectionTypes];
+    v7 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(connectionCopy, "type")}];
+    v8 = [connectionTypes containsObject:v7];
 
     if (v8)
     {
@@ -190,68 +190,68 @@ void __58__WFInstapaperAction_engine_connection_didReceiveFolders___block_invoke
   }
 }
 
-- (void)engine:(id)a3 willStartConnection:(id)a4
+- (void)engine:(id)engine willStartConnection:(id)connection
 {
-  v11 = a4;
-  v5 = [(WFInstapaperAction *)self connectionTypes];
-  v6 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v11, "type")}];
-  v7 = [v5 containsObject:v6];
+  connectionCopy = connection;
+  connectionTypes = [(WFInstapaperAction *)self connectionTypes];
+  v6 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(connectionCopy, "type")}];
+  v7 = [connectionTypes containsObject:v6];
 
   if (v7)
   {
-    v8 = [(WFInstapaperAction *)self identifiers];
-    v9 = [(WFInstapaperAction *)self engine];
-    v10 = [v9 identifierForConnection:v11];
-    [v8 addObject:v10];
+    identifiers = [(WFInstapaperAction *)self identifiers];
+    engine = [(WFInstapaperAction *)self engine];
+    v10 = [engine identifierForConnection:connectionCopy];
+    [identifiers addObject:v10];
   }
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3 selectedFolder:(id)a4
+- (void)runAsynchronouslyWithInput:(id)input selectedFolder:(id)folder
 {
   v5 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7CB30] code:3 userInfo:0];
   [(WFInstapaperAction *)self finishRunningWithError:v5];
 }
 
-- (BOOL)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4
+- (BOOL)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index
 {
-  if (a4 == 1)
+  if (index == 1)
   {
-    v5 = [MEMORY[0x277CFC248] sharedContext];
+    mEMORY[0x277CFC248] = [MEMORY[0x277CFC248] sharedContext];
     v6 = [MEMORY[0x277CBEBC0] URLWithString:@"https://www.instapaper.com/premium"];
-    v7 = [(WFInstapaperAction *)self userInterface];
-    [v5 openURL:v6 userInterface:v7 completionHandler:0];
+    userInterface = [(WFInstapaperAction *)self userInterface];
+    [mEMORY[0x277CFC248] openURL:v6 userInterface:userInterface completionHandler:0];
   }
 
   return 1;
 }
 
-- (void)finishRunningWithError:(id)a3
+- (void)finishRunningWithError:(id)error
 {
   engine = self->_engine;
   self->_engine = 0;
-  v5 = a3;
+  errorCopy = error;
 
   identifiers = self->_identifiers;
   self->_identifiers = 0;
 
   v7.receiver = self;
   v7.super_class = WFInstapaperAction;
-  [(WFInstapaperAction *)&v7 finishRunningWithError:v5];
+  [(WFInstapaperAction *)&v7 finishRunningWithError:errorCopy];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v10 = [(WFInstapaperAction *)self parameterValueForKey:@"WFInstapaperFolder" ofClass:objc_opt_class()];
-  v5 = [(WFInstapaperAction *)self folders];
-  v6 = [v5 objectForKey:v10];
+  folders = [(WFInstapaperAction *)self folders];
+  v6 = [folders objectForKey:v10];
   v7 = +[IKFolder folderWithFolderID:](IKFolder, "folderWithFolderID:", [v6 integerValue]);
 
   v8 = objc_opt_new();
   identifiers = self->_identifiers;
   self->_identifiers = v8;
 
-  [(WFInstapaperAction *)self runAsynchronouslyWithInput:v4 selectedFolder:v7];
+  [(WFInstapaperAction *)self runAsynchronouslyWithInput:inputCopy selectedFolder:v7];
 }
 
 - (IKEngine)engine
@@ -277,8 +277,8 @@ void __58__WFInstapaperAction_engine_connection_didReceiveFolders___block_invoke
 
 - (id)folders
 {
-  v2 = [MEMORY[0x277CBEBD0] workflowUserDefaults];
-  v3 = [v2 objectForKey:@"WFInstapaperFolders"];
+  workflowUserDefaults = [MEMORY[0x277CBEBD0] workflowUserDefaults];
+  v3 = [workflowUserDefaults objectForKey:@"WFInstapaperFolders"];
 
   return v3;
 }
@@ -287,34 +287,34 @@ void __58__WFInstapaperAction_engine_connection_didReceiveFolders___block_invoke
 {
   if (![(WFInstapaperAction *)self hasFetchedFolders])
   {
-    v3 = [(WFInstapaperAction *)self resourceManager];
-    v4 = [v3 resourcesAvailable];
+    resourceManager = [(WFInstapaperAction *)self resourceManager];
+    resourcesAvailable = [resourceManager resourcesAvailable];
 
-    if (v4)
+    if (resourcesAvailable)
     {
-      v6 = [(WFInstapaperAction *)self engine];
-      v5 = [v6 foldersWithUserInfo:0];
+      engine = [(WFInstapaperAction *)self engine];
+      v5 = [engine foldersWithUserInfo:0];
     }
   }
 }
 
-- (void)wasRemovedFromWorkflow:(id)a3
+- (void)wasRemovedFromWorkflow:(id)workflow
 {
   v5.receiver = self;
   v5.super_class = WFInstapaperAction;
-  [(WFInstapaperAction *)&v5 wasRemovedFromWorkflow:a3];
-  v4 = [(WFInstapaperAction *)self resourceManager];
-  [v4 removeTarget:self selector:sel_updateFolders];
+  [(WFInstapaperAction *)&v5 wasRemovedFromWorkflow:workflow];
+  resourceManager = [(WFInstapaperAction *)self resourceManager];
+  [resourceManager removeTarget:self selector:sel_updateFolders];
 }
 
-- (void)wasAddedToWorkflow:(id)a3
+- (void)wasAddedToWorkflow:(id)workflow
 {
   v5.receiver = self;
   v5.super_class = WFInstapaperAction;
-  [(WFInstapaperAction *)&v5 wasAddedToWorkflow:a3];
+  [(WFInstapaperAction *)&v5 wasAddedToWorkflow:workflow];
   [(WFInstapaperAction *)self updateFolders];
-  v4 = [(WFInstapaperAction *)self resourceManager];
-  [v4 addTarget:self selector:sel_updateFolders];
+  resourceManager = [(WFInstapaperAction *)self resourceManager];
+  [resourceManager addTarget:self selector:sel_updateFolders];
 }
 
 - (void)initializeParameters
@@ -328,11 +328,11 @@ void __58__WFInstapaperAction_engine_connection_didReceiveFolders___block_invoke
 
 - (void)dealloc
 {
-  v3 = [(WFInstapaperAction *)self engine];
-  [v3 setDelegate:0];
+  engine = [(WFInstapaperAction *)self engine];
+  [engine setDelegate:0];
 
-  v4 = [(WFInstapaperAction *)self engine];
-  [v4 cancelAllConnections];
+  engine2 = [(WFInstapaperAction *)self engine];
+  [engine2 cancelAllConnections];
 
   v5.receiver = self;
   v5.super_class = WFInstapaperAction;

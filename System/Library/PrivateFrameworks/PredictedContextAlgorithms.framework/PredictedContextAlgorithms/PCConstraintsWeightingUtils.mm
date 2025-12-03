@@ -1,135 +1,135 @@
 @interface PCConstraintsWeightingUtils
-+ (BOOL)_isGeneratedCurrentContext:(id)a3;
-+ (double)_estimatedTransitionDurationFromTransitions:(id)a3 originVisitId:(id)a4 destinationVisitId:(id)a5;
-+ (double)_estimatedTransitionDurationInSecondsForDistance:(double)a3 drivingProbability:(double *)a4;
++ (BOOL)_isGeneratedCurrentContext:(id)context;
++ (double)_estimatedTransitionDurationFromTransitions:(id)transitions originVisitId:(id)id destinationVisitId:(id)visitId;
++ (double)_estimatedTransitionDurationInSecondsForDistance:(double)distance drivingProbability:(double *)probability;
 + (double)_minimumStayAtCurrentContextInSec;
-+ (id)_aggregateMergeResults:(id)a3;
-+ (id)_allLOIFromBins:(id)a3;
-+ (id)_currentContextPredictionFromMergeResults:(id)a3 currentLoiIdentifier:(id)a4 currentTime:(double)a5;
-+ (id)_earliestSignificantMergeResultAfterTime:(double)a3 excludingLoiId:(id)a4 inMergeResults:(id)a5 confidenceThreshold:(double)a6;
-+ (id)_estimatedTransportsFromTransitions:(id)a3 originVisitId:(id)a4 destinationVisitId:(id)a5;
-+ (id)_movingAverageForSeries:(id)a3 windowSize:(int64_t)a4 loiIdForPadding:(id)a5 currentContextId:(id)a6 bins:(id)a7;
-+ (id)_predictedTransitionInfoFromHistoricalTransitions:(id)a3 originVisitId:(id)a4 destinationVisitId:(id)a5;
-+ (id)_probabilitySeriesFromBins:(id)a3 loiId:(id)a4;
-+ (id)_transitionEstimationInfoWithNextResult:(id)a3 currentLoiIdentifier:(id)a4 transitionHistory:(id)a5 loiToLocation:(id)a6;
-+ (id)adaptMergedClusters:(id)a3 bins:(id)a4 loiToColMap:(id)a5;
-+ (id)applyMovingAverage:(id)a3 windowSize:(int64_t)a4 currentContextId:(id)a5;
-+ (id)convertBinsToPredSample:(id)a3 loiToColMap:(id)a4;
-+ (id)convertMergeResultToLocation:(id)a3 withLocationMap:(id)a4;
-+ (id)convertMergeResultToTransition:(id)a3;
-+ (id)deduplicateSources:(id)a3;
-+ (id)loiIdOfCurrentContextFromVisitHistory:(id)a3 transitionHistory:(id)a4 currentTime:(double)a5;
-+ (id)mapLOIToLocationsFromPredictedVisits:(id)a3 currentLoiIdentifier:(id)a4 visitHistory:(id)a5;
-+ (id)mergeTransportArrays:(id)a3;
-+ (id)normalizeBins:(id)a3;
-+ (id)rasterizeCandidateVisitPredictions:(id)a3 transitPredictions:(id)a4 currentTimeInSec:(double)a5 windowInHours:(double)a6 binSizeMin:(double)a7;
++ (id)_aggregateMergeResults:(id)results;
++ (id)_allLOIFromBins:(id)bins;
++ (id)_currentContextPredictionFromMergeResults:(id)results currentLoiIdentifier:(id)identifier currentTime:(double)time;
++ (id)_earliestSignificantMergeResultAfterTime:(double)time excludingLoiId:(id)id inMergeResults:(id)results confidenceThreshold:(double)threshold;
++ (id)_estimatedTransportsFromTransitions:(id)transitions originVisitId:(id)id destinationVisitId:(id)visitId;
++ (id)_movingAverageForSeries:(id)series windowSize:(int64_t)size loiIdForPadding:(id)padding currentContextId:(id)id bins:(id)bins;
++ (id)_predictedTransitionInfoFromHistoricalTransitions:(id)transitions originVisitId:(id)id destinationVisitId:(id)visitId;
++ (id)_probabilitySeriesFromBins:(id)bins loiId:(id)id;
++ (id)_transitionEstimationInfoWithNextResult:(id)result currentLoiIdentifier:(id)identifier transitionHistory:(id)history loiToLocation:(id)location;
++ (id)adaptMergedClusters:(id)clusters bins:(id)bins loiToColMap:(id)map;
++ (id)applyMovingAverage:(id)average windowSize:(int64_t)size currentContextId:(id)id;
++ (id)convertBinsToPredSample:(id)sample loiToColMap:(id)map;
++ (id)convertMergeResultToLocation:(id)location withLocationMap:(id)map;
++ (id)convertMergeResultToTransition:(id)transition;
++ (id)deduplicateSources:(id)sources;
++ (id)loiIdOfCurrentContextFromVisitHistory:(id)history transitionHistory:(id)transitionHistory currentTime:(double)time;
++ (id)mapLOIToLocationsFromPredictedVisits:(id)visits currentLoiIdentifier:(id)identifier visitHistory:(id)history;
++ (id)mergeTransportArrays:(id)arrays;
++ (id)normalizeBins:(id)bins;
++ (id)rasterizeCandidateVisitPredictions:(id)predictions transitPredictions:(id)transitPredictions currentTimeInSec:(double)sec windowInHours:(double)hours binSizeMin:(double)min;
 + (id)transitionDummyLOI;
-+ (void)_addConstraintSourceToBin:(id)a3 loiId:(id)a4;
-+ (void)_calculateRasterizationWindowWithVisits:(id)a3 transitions:(id)a4 currentTimeInSec:(double)a5 windowInHours:(double)a6 windowStartOut:(double *)a7 windowEndOut:(double *)a8;
-+ (void)_distributeProbabilityToBins:(id)a3 loiId:(id)a4 fullProb:(double)a5 effectiveStart:(double)a6 rampUpEnd:(double)a7 rampDownStart:(double)a8 effectiveEnd:(double)a9 sources:(id)a10 transports:(id)a11;
-+ (void)_finalizeMergeResults:(id)a3 currentTime:(double)a4 windowEndTime:(double)a5 currentContext:(id)a6 currentExitTime:(double)a7 currentExitUnc:(double)a8;
-+ (void)_insertTransitionPredictionWithNextResult:(id)a3 currentExitTime:(double)a4 currentExitUnc:(double)a5 transitionInfo:(id)a6 mergeResults:(id)a7;
-+ (void)_logMergeResults:(id)a3 withDescription:(id)a4;
-+ (void)_removeExistingTransitionPredictionsFromMergeResults:(id)a3 beforeMergeResult:(id)a4;
-+ (void)_trimResults:(id)a3 currentTime:(double)a4 windowEndTime:(double)a5;
-+ (void)_updateBins:(id)a3 withFilteredSeries:(id)a4 loiId:(id)a5;
-+ (void)_updateExitTimeAndUncertaintyOfCurrentContextWithNextResult:(id)a3 currentTime:(double)a4 defaultDurationAtCurrentContext:(double)a5 transitionDuration:(double)a6 inOutExitTime:(double *)a7 inOutExitUnc:(double *)a8 isGeneratedCurrentContext:(BOOL)a9;
-+ (void)postprocessMergeResults:(id)a3 currentLoiIdentifier:(id)a4 currentTime:(double)a5 windowEndTime:(double)a6 transitionHistory:(id)a7 loiToLocation:(id)a8;
-+ (void)validateCandidateTransitions:(id)a3 validTransitions:(id)a4 invalidTransitions:(id)a5;
-+ (void)validateCandidateVisits:(id)a3 validVisits:(id)a4 invalidVisits:(id)a5;
++ (void)_addConstraintSourceToBin:(id)bin loiId:(id)id;
++ (void)_calculateRasterizationWindowWithVisits:(id)visits transitions:(id)transitions currentTimeInSec:(double)sec windowInHours:(double)hours windowStartOut:(double *)out windowEndOut:(double *)endOut;
++ (void)_distributeProbabilityToBins:(id)bins loiId:(id)id fullProb:(double)prob effectiveStart:(double)start rampUpEnd:(double)end rampDownStart:(double)downStart effectiveEnd:(double)effectiveEnd sources:(id)self0 transports:(id)self1;
++ (void)_finalizeMergeResults:(id)results currentTime:(double)time windowEndTime:(double)endTime currentContext:(id)context currentExitTime:(double)exitTime currentExitUnc:(double)unc;
++ (void)_insertTransitionPredictionWithNextResult:(id)result currentExitTime:(double)time currentExitUnc:(double)unc transitionInfo:(id)info mergeResults:(id)results;
++ (void)_logMergeResults:(id)results withDescription:(id)description;
++ (void)_removeExistingTransitionPredictionsFromMergeResults:(id)results beforeMergeResult:(id)result;
++ (void)_trimResults:(id)results currentTime:(double)time windowEndTime:(double)endTime;
++ (void)_updateBins:(id)bins withFilteredSeries:(id)series loiId:(id)id;
++ (void)_updateExitTimeAndUncertaintyOfCurrentContextWithNextResult:(id)result currentTime:(double)time defaultDurationAtCurrentContext:(double)context transitionDuration:(double)duration inOutExitTime:(double *)exitTime inOutExitUnc:(double *)unc isGeneratedCurrentContext:(BOOL)currentContext;
++ (void)postprocessMergeResults:(id)results currentLoiIdentifier:(id)identifier currentTime:(double)time windowEndTime:(double)endTime transitionHistory:(id)history loiToLocation:(id)location;
++ (void)validateCandidateTransitions:(id)transitions validTransitions:(id)validTransitions invalidTransitions:(id)invalidTransitions;
++ (void)validateCandidateVisits:(id)visits validVisits:(id)validVisits invalidVisits:(id)invalidVisits;
 @end
 
 @implementation PCConstraintsWeightingUtils
 
-+ (id)convertMergeResultToLocation:(id)a3 withLocationMap:(id)a4
++ (id)convertMergeResultToLocation:(id)location withLocationMap:(id)map
 {
-  v5 = a4;
-  v6 = a3;
+  mapCopy = map;
+  locationCopy = location;
   v7 = objc_alloc_init(PCPPredictedContextLocation);
   v8 = objc_alloc_init(PCPLocationOfInterest);
   [(PCPPredictedContextLocation *)v7 setLocationOfInterest:v8];
 
-  v9 = [v6 loiId];
-  v10 = [(PCPPredictedContextLocation *)v7 locationOfInterest];
-  [v10 setLoiIdentifier:v9];
+  loiId = [locationCopy loiId];
+  locationOfInterest = [(PCPPredictedContextLocation *)v7 locationOfInterest];
+  [locationOfInterest setLoiIdentifier:loiId];
 
   v11 = objc_alloc_init(PCPPredictedContext);
   [(PCPPredictedContextLocation *)v7 setPredictedContext:v11];
 
-  [v6 confidence];
+  [locationCopy confidence];
   v13 = v12;
-  v14 = [(PCPPredictedContextLocation *)v7 predictedContext];
-  [v14 setProbability:v13];
+  predictedContext = [(PCPPredictedContextLocation *)v7 predictedContext];
+  [predictedContext setProbability:v13];
 
   v15 = objc_alloc_init(PCPPredictedContextDate);
-  [v6 entryTime];
+  [locationCopy entryTime];
   [(PCPPredictedContextDate *)v15 setDate:?];
-  [v6 entryUnc];
+  [locationCopy entryUnc];
   [(PCPPredictedContextDate *)v15 setConfidenceInterval:?];
   v16 = objc_alloc_init(PCPPredictedContextDate);
-  [v6 exitTime];
+  [locationCopy exitTime];
   [(PCPPredictedContextDate *)v16 setDate:?];
-  [v6 exitUnc];
+  [locationCopy exitUnc];
   [(PCPPredictedContextDate *)v16 setConfidenceInterval:?];
   v17 = objc_alloc_init(PCPPredictedContextDateInterval);
   [(PCPPredictedContextDateInterval *)v17 setStartDate:v15];
   [(PCPPredictedContextDateInterval *)v17 setEndDate:v16];
-  v18 = [(PCPPredictedContextLocation *)v7 predictedContext];
-  [v18 setDateInterval:v17];
+  predictedContext2 = [(PCPPredictedContextLocation *)v7 predictedContext];
+  [predictedContext2 setDateInterval:v17];
 
-  v19 = [v6 sources];
-  v20 = [v19 allObjects];
-  v21 = [v20 mutableCopy];
-  v22 = [(PCPPredictedContextLocation *)v7 predictedContext];
-  [v22 setSources:v21];
+  sources = [locationCopy sources];
+  allObjects = [sources allObjects];
+  v21 = [allObjects mutableCopy];
+  predictedContext3 = [(PCPPredictedContextLocation *)v7 predictedContext];
+  [predictedContext3 setSources:v21];
 
-  v23 = [v6 loiId];
+  loiId2 = [locationCopy loiId];
 
-  v24 = [v5 objectForKeyedSubscript:v23];
+  v24 = [mapCopy objectForKeyedSubscript:loiId2];
 
-  v25 = [(PCPPredictedContextLocation *)v7 locationOfInterest];
-  [v25 setLocation:v24];
+  locationOfInterest2 = [(PCPPredictedContextLocation *)v7 locationOfInterest];
+  [locationOfInterest2 setLocation:v24];
 
   return v7;
 }
 
-+ (id)convertMergeResultToTransition:(id)a3
++ (id)convertMergeResultToTransition:(id)transition
 {
-  v3 = a3;
+  transitionCopy = transition;
   v4 = objc_alloc_init(PCPPredictedContextTransition);
   v5 = objc_alloc_init(PCPPredictedContext);
   [(PCPPredictedContextTransition *)v4 setPredictedContext:v5];
 
-  [v3 confidence];
+  [transitionCopy confidence];
   v7 = v6;
-  v8 = [(PCPPredictedContextTransition *)v4 predictedContext];
-  [v8 setProbability:v7];
+  predictedContext = [(PCPPredictedContextTransition *)v4 predictedContext];
+  [predictedContext setProbability:v7];
 
   v9 = objc_alloc_init(PCPPredictedContextDate);
-  [v3 entryTime];
+  [transitionCopy entryTime];
   [(PCPPredictedContextDate *)v9 setDate:?];
-  [v3 entryUnc];
+  [transitionCopy entryUnc];
   [(PCPPredictedContextDate *)v9 setConfidenceInterval:?];
   v10 = objc_alloc_init(PCPPredictedContextDate);
-  [v3 exitTime];
+  [transitionCopy exitTime];
   [(PCPPredictedContextDate *)v10 setDate:?];
-  [v3 exitUnc];
+  [transitionCopy exitUnc];
   [(PCPPredictedContextDate *)v10 setConfidenceInterval:?];
   v11 = objc_alloc_init(PCPPredictedContextDateInterval);
   [(PCPPredictedContextDateInterval *)v11 setStartDate:v9];
   [(PCPPredictedContextDateInterval *)v11 setEndDate:v10];
-  v12 = [(PCPPredictedContextTransition *)v4 predictedContext];
-  [v12 setDateInterval:v11];
+  predictedContext2 = [(PCPPredictedContextTransition *)v4 predictedContext];
+  [predictedContext2 setDateInterval:v11];
 
-  v13 = [v3 sources];
-  v14 = [v13 allObjects];
-  v15 = [v14 mutableCopy];
-  v16 = [(PCPPredictedContextTransition *)v4 predictedContext];
-  [v16 setSources:v15];
+  sources = [transitionCopy sources];
+  allObjects = [sources allObjects];
+  v15 = [allObjects mutableCopy];
+  predictedContext3 = [(PCPPredictedContextTransition *)v4 predictedContext];
+  [predictedContext3 setSources:v15];
 
-  v17 = [v3 transports];
+  transports = [transitionCopy transports];
 
-  v18 = [v17 mutableCopy];
+  v18 = [transports mutableCopy];
   [(PCPPredictedContextTransition *)v4 setPredictedContextTransports:v18];
 
   return v4;
@@ -154,18 +154,18 @@ uint64_t __49__PCConstraintsWeightingUtils_transitionDummyLOI__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)rasterizeCandidateVisitPredictions:(id)a3 transitPredictions:(id)a4 currentTimeInSec:(double)a5 windowInHours:(double)a6 binSizeMin:(double)a7
++ (id)rasterizeCandidateVisitPredictions:(id)predictions transitPredictions:(id)transitPredictions currentTimeInSec:(double)sec windowInHours:(double)hours binSizeMin:(double)min
 {
   v124 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  if ([v12 count] || v13 && objc_msgSend(v13, "count"))
+  predictionsCopy = predictions;
+  transitPredictionsCopy = transitPredictions;
+  if ([predictionsCopy count] || transitPredictionsCopy && objc_msgSend(transitPredictionsCopy, "count"))
   {
     v110 = 0.0;
     v111 = 0.0;
-    v98 = v13;
-    [PCConstraintsWeightingUtils _calculateRasterizationWindowWithVisits:v12 transitions:v13 currentTimeInSec:&v111 windowInHours:&v110 windowStartOut:a5 windowEndOut:a6];
-    v14 = a7 * 60.0;
+    v98 = transitPredictionsCopy;
+    [PCConstraintsWeightingUtils _calculateRasterizationWindowWithVisits:predictionsCopy transitions:transitPredictionsCopy currentTimeInSec:&v111 windowInHours:&v110 windowStartOut:sec windowEndOut:hours];
+    v14 = min * 60.0;
     v15 = ((v110 - v111) / v14);
     v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:v15];
     if (v15)
@@ -186,8 +186,8 @@ uint64_t __49__PCConstraintsWeightingUtils_transitionDummyLOI__block_invoke()
     v109 = 0u;
     v106 = 0u;
     v107 = 0u;
-    v97 = v12;
-    obj = v12;
+    v97 = predictionsCopy;
+    obj = predictionsCopy;
     v19 = [obj countByEnumeratingWithState:&v106 objects:v123 count:16];
     v101 = v16;
     if (v19)
@@ -204,32 +204,32 @@ uint64_t __49__PCConstraintsWeightingUtils_transitionDummyLOI__block_invoke()
           }
 
           v23 = *(*(&v106 + 1) + 8 * i);
-          v24 = [v23 locationOfInterest];
-          v25 = [v24 loiIdentifier];
+          locationOfInterest = [v23 locationOfInterest];
+          loiIdentifier = [locationOfInterest loiIdentifier];
 
-          v26 = [v23 predictedContext];
-          [v26 probability];
+          predictedContext = [v23 predictedContext];
+          [predictedContext probability];
           v28 = v27;
 
-          v29 = [v23 predictedContext];
-          v30 = [v29 dateInterval];
-          v31 = [v30 startDate];
-          [v31 date];
+          predictedContext2 = [v23 predictedContext];
+          dateInterval = [predictedContext2 dateInterval];
+          startDate = [dateInterval startDate];
+          [startDate date];
           v33 = v32;
 
-          v34 = [v23 predictedContext];
-          v35 = [v34 dateInterval];
-          v36 = [v35 endDate];
-          [v36 date];
+          predictedContext3 = [v23 predictedContext];
+          dateInterval2 = [predictedContext3 dateInterval];
+          endDate = [dateInterval2 endDate];
+          [endDate date];
           v38 = v37;
 
-          v39 = [v23 predictedContext];
-          v40 = [v39 dateInterval];
-          v41 = [v40 startDate];
-          [v41 confidenceInterval];
+          predictedContext4 = [v23 predictedContext];
+          dateInterval3 = [predictedContext4 dateInterval];
+          startDate2 = [dateInterval3 startDate];
+          [startDate2 confidenceInterval];
           v43 = v42;
 
-          if (v33 <= a5)
+          if (v33 <= sec)
           {
             v44 = 0.0;
           }
@@ -239,10 +239,10 @@ uint64_t __49__PCConstraintsWeightingUtils_transitionDummyLOI__block_invoke()
             v44 = v43;
           }
 
-          v45 = [v23 predictedContext];
-          v46 = [v45 dateInterval];
-          v47 = [v46 endDate];
-          [v47 confidenceInterval];
+          predictedContext5 = [v23 predictedContext];
+          dateInterval4 = [predictedContext5 dateInterval];
+          endDate2 = [dateInterval4 endDate];
+          [endDate2 confidenceInterval];
           v49 = v48;
 
           v50 = v33 - v44;
@@ -265,10 +265,10 @@ uint64_t __49__PCConstraintsWeightingUtils_transitionDummyLOI__block_invoke()
             _os_log_impl(&dword_1CEE74000, v54, OS_LOG_TYPE_DEBUG, "Visit effective start, %.2f, effective end, %2f, rampUpEnd, %2f, rampDwonStart, %.2f, full prob, %.2f", buf, 0x34u);
           }
 
-          v55 = [v23 predictedContext];
-          v56 = [v55 sources];
+          predictedContext6 = [v23 predictedContext];
+          sources = [predictedContext6 sources];
           v16 = v101;
-          [a1 _distributeProbabilityToBins:v101 loiId:v25 fullProb:v56 effectiveStart:0 rampUpEnd:v28 rampDownStart:v50 effectiveEnd:v51 sources:v52 transports:v53];
+          [self _distributeProbabilityToBins:v101 loiId:loiIdentifier fullProb:sources effectiveStart:0 rampUpEnd:v28 rampDownStart:v50 effectiveEnd:v51 sources:v52 transports:v53];
         }
 
         v20 = [obj countByEnumeratingWithState:&v106 objects:v123 count:16];
@@ -297,36 +297,36 @@ uint64_t __49__PCConstraintsWeightingUtils_transitionDummyLOI__block_invoke()
           }
 
           v61 = *(*(&v102 + 1) + 8 * j);
-          v62 = [a1 transitionDummyLOI];
-          v63 = [v61 predictedContext];
-          [v63 probability];
+          transitionDummyLOI = [self transitionDummyLOI];
+          predictedContext7 = [v61 predictedContext];
+          [predictedContext7 probability];
           v65 = v64;
 
-          v66 = [v61 predictedContext];
-          v67 = [v66 dateInterval];
-          v68 = [v67 startDate];
-          [v68 date];
+          predictedContext8 = [v61 predictedContext];
+          dateInterval5 = [predictedContext8 dateInterval];
+          startDate3 = [dateInterval5 startDate];
+          [startDate3 date];
           v70 = v69;
 
-          v71 = [v61 predictedContext];
-          v72 = [v71 dateInterval];
-          v73 = [v72 endDate];
-          [v73 date];
+          predictedContext9 = [v61 predictedContext];
+          dateInterval6 = [predictedContext9 dateInterval];
+          endDate3 = [dateInterval6 endDate];
+          [endDate3 date];
           v75 = v74;
 
-          v76 = [v61 predictedContext];
-          v77 = [v76 dateInterval];
-          v78 = [v77 startDate];
-          [v78 confidenceInterval];
+          predictedContext10 = [v61 predictedContext];
+          dateInterval7 = [predictedContext10 dateInterval];
+          startDate4 = [dateInterval7 startDate];
+          [startDate4 confidenceInterval];
           v80 = v79;
 
-          v81 = [v61 predictedContext];
-          v82 = [v81 dateInterval];
-          v83 = [v82 endDate];
-          [v83 confidenceInterval];
+          predictedContext11 = [v61 predictedContext];
+          dateInterval8 = [predictedContext11 dateInterval];
+          endDate4 = [dateInterval8 endDate];
+          [endDate4 confidenceInterval];
           v85 = v84;
 
-          if (v70 <= a5)
+          if (v70 <= sec)
           {
             v86 = 0.0;
           }
@@ -356,11 +356,11 @@ uint64_t __49__PCConstraintsWeightingUtils_transitionDummyLOI__block_invoke()
             _os_log_impl(&dword_1CEE74000, v91, OS_LOG_TYPE_DEBUG, "Transition effective start, %.2f, effective end, %2f, rampUpEnd, %2f, rampDwonStart, %.2f, full prob, %.2f", buf, 0x34u);
           }
 
-          v92 = [v61 predictedContext];
-          v93 = [v92 sources];
-          v94 = [v61 predictedContextTransports];
+          predictedContext12 = [v61 predictedContext];
+          sources2 = [predictedContext12 sources];
+          predictedContextTransports = [v61 predictedContextTransports];
           v16 = v101;
-          [a1 _distributeProbabilityToBins:v101 loiId:v62 fullProb:v93 effectiveStart:v94 rampUpEnd:v65 rampDownStart:v87 effectiveEnd:v88 sources:v89 transports:v90];
+          [self _distributeProbabilityToBins:v101 loiId:transitionDummyLOI fullProb:sources2 effectiveStart:predictedContextTransports rampUpEnd:v65 rampDownStart:v87 effectiveEnd:v88 sources:v89 transports:v90];
         }
 
         v58 = [obja countByEnumeratingWithState:&v102 objects:v112 count:16];
@@ -369,8 +369,8 @@ uint64_t __49__PCConstraintsWeightingUtils_transitionDummyLOI__block_invoke()
       while (v58);
     }
 
-    v12 = v97;
-    v13 = v98;
+    predictionsCopy = v97;
+    transitPredictionsCopy = v98;
   }
 
   else
@@ -383,12 +383,12 @@ uint64_t __49__PCConstraintsWeightingUtils_transitionDummyLOI__block_invoke()
   return v16;
 }
 
-+ (id)applyMovingAverage:(id)a3 windowSize:(int64_t)a4 currentContextId:(id)a5
++ (id)applyMovingAverage:(id)average windowSize:(int64_t)size currentContextId:(id)id
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  [a1 _allLOIFromBins:v8];
+  averageCopy = average;
+  idCopy = id;
+  [self _allLOIFromBins:averageCopy];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -408,9 +408,9 @@ uint64_t __49__PCConstraintsWeightingUtils_transitionDummyLOI__block_invoke()
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [a1 _probabilitySeriesFromBins:v8 loiId:v14];
-        v16 = [a1 _movingAverageForSeries:v15 windowSize:a4 loiIdForPadding:v14 currentContextId:v9 bins:v8];
-        [a1 _updateBins:v8 withFilteredSeries:v16 loiId:v14];
+        v15 = [self _probabilitySeriesFromBins:averageCopy loiId:v14];
+        v16 = [self _movingAverageForSeries:v15 windowSize:size loiIdForPadding:v14 currentContextId:idCopy bins:averageCopy];
+        [self _updateBins:averageCopy withFilteredSeries:v16 loiId:v14];
       }
 
       v11 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -421,24 +421,24 @@ uint64_t __49__PCConstraintsWeightingUtils_transitionDummyLOI__block_invoke()
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return averageCopy;
 }
 
-+ (id)normalizeBins:(id)a3
++ (id)normalizeBins:(id)bins
 {
   v51 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  binsCopy = bins;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v44 objects:v50 count:16];
+  v4 = [binsCopy countByEnumeratingWithState:&v44 objects:v50 count:16];
   if (v4)
   {
     v5 = v4;
     v6 = *v45;
     v32 = *v45;
-    v33 = v3;
+    v33 = binsCopy;
     do
     {
       v7 = 0;
@@ -447,7 +447,7 @@ uint64_t __49__PCConstraintsWeightingUtils_transitionDummyLOI__block_invoke()
       {
         if (*v45 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(binsCopy);
         }
 
         v8 = *(*(&v44 + 1) + 8 * v7);
@@ -455,10 +455,10 @@ uint64_t __49__PCConstraintsWeightingUtils_transitionDummyLOI__block_invoke()
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v9 = [v8 loiProbs];
-        v10 = [v9 allValues];
+        loiProbs = [v8 loiProbs];
+        allValues = [loiProbs allValues];
 
-        v11 = [v10 countByEnumeratingWithState:&v40 objects:v49 count:16];
+        v11 = [allValues countByEnumeratingWithState:&v40 objects:v49 count:16];
         if (!v11)
         {
           goto LABEL_22;
@@ -473,14 +473,14 @@ uint64_t __49__PCConstraintsWeightingUtils_transitionDummyLOI__block_invoke()
           {
             if (*v41 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(allValues);
             }
 
             [*(*(&v40 + 1) + 8 * i) doubleValue];
             v14 = v14 + v16;
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v40 objects:v49 count:16];
+          v12 = [allValues countByEnumeratingWithState:&v40 objects:v49 count:16];
         }
 
         while (v12);
@@ -491,10 +491,10 @@ uint64_t __49__PCConstraintsWeightingUtils_transitionDummyLOI__block_invoke()
           v39 = 0u;
           v36 = 0u;
           v37 = 0u;
-          v17 = [v8 loiProbs];
-          v10 = [v17 allKeys];
+          loiProbs2 = [v8 loiProbs];
+          allValues = [loiProbs2 allKeys];
 
-          v18 = [v10 countByEnumeratingWithState:&v36 objects:v48 count:16];
+          v18 = [allValues countByEnumeratingWithState:&v36 objects:v48 count:16];
           if (v18)
           {
             v19 = v18;
@@ -507,25 +507,25 @@ uint64_t __49__PCConstraintsWeightingUtils_transitionDummyLOI__block_invoke()
               {
                 if (*v37 != v20)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(allValues);
                 }
 
                 v23 = *(*(&v36 + 1) + 8 * j);
                 v24 = MEMORY[0x1E696AD98];
-                v25 = [v8 loiProbs];
-                v26 = [v25 objectForKeyedSubscript:v23];
+                loiProbs3 = [v8 loiProbs];
+                v26 = [loiProbs3 objectForKeyedSubscript:v23];
                 [v26 doubleValue];
                 v28 = [v24 numberWithDouble:v21 * v27];
-                v29 = [v8 loiProbs];
-                [v29 setObject:v28 forKeyedSubscript:v23];
+                loiProbs4 = [v8 loiProbs];
+                [loiProbs4 setObject:v28 forKeyedSubscript:v23];
               }
 
-              v19 = [v10 countByEnumeratingWithState:&v36 objects:v48 count:16];
+              v19 = [allValues countByEnumeratingWithState:&v36 objects:v48 count:16];
             }
 
             while (v19);
             v6 = v32;
-            v3 = v33;
+            binsCopy = v33;
             v5 = v34;
             v7 = v35;
           }
@@ -537,7 +537,7 @@ LABEL_22:
       }
 
       while (v7 != v5);
-      v5 = [v3 countByEnumeratingWithState:&v44 objects:v50 count:16];
+      v5 = [binsCopy countByEnumeratingWithState:&v44 objects:v50 count:16];
     }
 
     while (v5);
@@ -545,17 +545,17 @@ LABEL_22:
 
   v30 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return binsCopy;
 }
 
-+ (id)convertBinsToPredSample:(id)a3 loiToColMap:(id)a4
++ (id)convertBinsToPredSample:(id)sample loiToColMap:(id)map
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v29 = [a1 _allLOIFromBins:v6];
-  v8 = [v29 allObjects];
-  v9 = [v8 sortedArrayUsingComparator:&__block_literal_global_14];
+  sampleCopy = sample;
+  mapCopy = map;
+  v29 = [self _allLOIFromBins:sampleCopy];
+  allObjects = [v29 allObjects];
+  v9 = [allObjects sortedArrayUsingComparator:&__block_literal_global_14];
 
   if ([v9 count])
   {
@@ -564,7 +564,7 @@ LABEL_22:
     {
       v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v10];
       v12 = [v9 objectAtIndexedSubscript:v10];
-      [v7 setObject:v11 forKeyedSubscript:v12];
+      [mapCopy setObject:v11 forKeyedSubscript:v12];
 
       ++v10;
     }
@@ -572,13 +572,13 @@ LABEL_22:
     while (v10 < [v9 count]);
   }
 
-  v30 = v7;
-  v34 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  v30 = mapCopy;
+  v34 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(sampleCopy, "count")}];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v6;
+  obj = sampleCopy;
   v35 = [obj countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v35)
   {
@@ -617,8 +617,8 @@ LABEL_22:
               }
 
               v21 = *(*(&v37 + 1) + 8 * i);
-              v22 = [v14 loiProbs];
-              v23 = [v22 objectForKeyedSubscript:v21];
+              loiProbs = [v14 loiProbs];
+              v23 = [loiProbs objectForKeyedSubscript:v21];
               v24 = v23;
               if (v23)
               {
@@ -668,25 +668,25 @@ uint64_t __67__PCConstraintsWeightingUtils_convertBinsToPredSample_loiToColMap__
   return v7;
 }
 
-+ (id)adaptMergedClusters:(id)a3 bins:(id)a4 loiToColMap:(id)a5
++ (id)adaptMergedClusters:(id)clusters bins:(id)bins loiToColMap:(id)map
 {
   v107 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v80 = a4;
-  v8 = a5;
-  v79 = [MEMORY[0x1E695DF70] array];
+  clustersCopy = clusters;
+  binsCopy = bins;
+  mapCopy = map;
+  array = [MEMORY[0x1E695DF70] array];
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
   v100 = 0u;
-  obj = v7;
+  obj = clustersCopy;
   v83 = [obj countByEnumeratingWithState:&v97 objects:v106 count:16];
   if (v83)
   {
     v82 = *v98;
     *&v9 = 134217984;
     v76 = v9;
-    v77 = v8;
+    v77 = mapCopy;
     do
     {
       v10 = 0;
@@ -703,7 +703,7 @@ uint64_t __67__PCConstraintsWeightingUtils_convertBinsToPredSample_loiToColMap__
         v94 = 0u;
         v95 = 0u;
         v96 = 0u;
-        v12 = v8;
+        v12 = mapCopy;
         v13 = [v12 countByEnumeratingWithState:&v93 objects:v105 count:16];
         if (v13)
         {
@@ -720,10 +720,10 @@ LABEL_8:
 
             v17 = *(*(&v93 + 1) + 8 * v16);
             v18 = [v12 objectForKeyedSubscript:{v17, v76}];
-            v19 = [v18 intValue];
-            v20 = [v11 visitLoiIdx];
+            intValue = [v18 intValue];
+            visitLoiIdx = [v11 visitLoiIdx];
 
-            if (v20 == v19)
+            if (visitLoiIdx == intValue)
             {
               break;
             }
@@ -747,12 +747,12 @@ LABEL_8:
             goto LABEL_42;
           }
 
-          v22 = [MEMORY[0x1E695DF70] array];
+          array2 = [MEMORY[0x1E695DF70] array];
           v89 = 0u;
           v90 = 0u;
           v91 = 0u;
           v92 = 0u;
-          v23 = v80;
+          v23 = binsCopy;
           v24 = [v23 countByEnumeratingWithState:&v89 objects:v102 count:16];
           if (v24)
           {
@@ -780,13 +780,13 @@ LABEL_8:
                   [v11 visitExitTime];
                   if (v34 <= v36)
                   {
-                    v37 = [v28 loiSources];
-                    v38 = [v37 objectForKeyedSubscript:v21];
+                    loiSources = [v28 loiSources];
+                    v38 = [loiSources objectForKeyedSubscript:v21];
 
                     if (v38)
                     {
-                      v39 = [v38 allObjects];
-                      [v22 addObjectsFromArray:v39];
+                      allObjects = [v38 allObjects];
+                      [array2 addObjectsFromArray:allObjects];
                     }
                   }
                 }
@@ -798,9 +798,9 @@ LABEL_8:
             while (v25);
           }
 
-          v40 = [MEMORY[0x1E695DF70] array];
-          v41 = [a1 transitionDummyLOI];
-          v42 = [v21 isEqualToData:v41];
+          array3 = [MEMORY[0x1E695DF70] array];
+          transitionDummyLOI = [self transitionDummyLOI];
+          v42 = [v21 isEqualToData:transitionDummyLOI];
 
           if (v42)
           {
@@ -836,12 +836,12 @@ LABEL_8:
                     [v11 visitExitTime];
                     if (v54 <= v56)
                     {
-                      v57 = [v48 predictedTransports];
+                      predictedTransports = [v48 predictedTransports];
 
-                      if (v57)
+                      if (predictedTransports)
                       {
-                        v58 = [v48 predictedTransports];
-                        [v40 addObject:v58];
+                        predictedTransports2 = [v48 predictedTransports];
+                        [array3 addObject:predictedTransports2];
                       }
                     }
                   }
@@ -865,12 +865,12 @@ LABEL_8:
           v67 = v66;
           [v11 visitExitUnc];
           v69 = v68;
-          v70 = [PCConstraintsWeightingUtils deduplicateSources:v22];
-          v71 = [PCConstraintsWeightingUtils mergeTransportArrays:v40];
+          v70 = [PCConstraintsWeightingUtils deduplicateSources:array2];
+          v71 = [PCConstraintsWeightingUtils mergeTransportArrays:array3];
           v72 = [(PCMergeResult *)v59 initWithLoiId:v21 confidence:v70 entryTime:v71 exitTime:v61 entryUnc:v63 exitUnc:v65 sources:v67 transports:v69];
 
-          [v79 addObject:v72];
-          v8 = v77;
+          [array addObject:v72];
+          mapCopy = v77;
         }
 
         else
@@ -881,9 +881,9 @@ LABEL_42:
           v21 = _plc_log_get_normal_handle(PCLogCategoryConstraintsWeighting);
           if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
-            v73 = [v11 visitLoiIdx];
+            visitLoiIdx2 = [v11 visitLoiIdx];
             *buf = v76;
-            v104 = v73;
+            v104 = visitLoiIdx2;
             _os_log_impl(&dword_1CEE74000, v21, OS_LOG_TYPE_ERROR, "LOI id not found for cluster with index %ld", buf, 0xCu);
           }
         }
@@ -900,15 +900,15 @@ LABEL_42:
 
   v74 = *MEMORY[0x1E69E9840];
 
-  return v79;
+  return array;
 }
 
-+ (id)deduplicateSources:(id)a3
++ (id)deduplicateSources:(id)sources
 {
-  v3 = a3;
-  if ([v3 count])
+  sourcesCopy = sources;
+  if ([sourcesCopy count])
   {
-    [MEMORY[0x1E695DFD8] setWithArray:v3];
+    [MEMORY[0x1E695DFD8] setWithArray:sourcesCopy];
   }
 
   else
@@ -920,16 +920,16 @@ LABEL_42:
   return v4;
 }
 
-+ (id)mergeTransportArrays:(id)a3
++ (id)mergeTransportArrays:(id)arrays
 {
   v61 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  arraysCopy = arrays;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v3;
+  obj = arraysCopy;
   v40 = [obj countByEnumeratingWithState:&v53 objects:v60 count:16];
   if (v40)
   {
@@ -965,13 +965,13 @@ LABEL_42:
 
               v12 = *(*(&v49 + 1) + 8 * j);
               v13 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v12, "transportMode")}];
-              v14 = [v4 objectForKeyedSubscript:v13];
+              v14 = [dictionary objectForKeyedSubscript:v13];
               [v14 doubleValue];
               v16 = v15;
 
               [v12 probability];
               v18 = [MEMORY[0x1E696AD98] numberWithDouble:v16 + v17];
-              [v4 setObject:v18 forKeyedSubscript:v13];
+              [dictionary setObject:v18 forKeyedSubscript:v13];
             }
 
             v9 = [v7 countByEnumeratingWithState:&v49 objects:v59 count:16];
@@ -991,11 +991,11 @@ LABEL_42:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v19 = [v4 allValues];
-  v20 = [v19 countByEnumeratingWithState:&v45 objects:v58 count:16];
+  allValues = [dictionary allValues];
+  v20 = [allValues countByEnumeratingWithState:&v45 objects:v58 count:16];
   if (!v20)
   {
-    v26 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
 LABEL_32:
 
     goto LABEL_34;
@@ -1010,27 +1010,27 @@ LABEL_32:
     {
       if (*v46 != v22)
       {
-        objc_enumerationMutation(v19);
+        objc_enumerationMutation(allValues);
       }
 
       [*(*(&v45 + 1) + 8 * k) doubleValue];
       v23 = v23 + v25;
     }
 
-    v21 = [v19 countByEnumeratingWithState:&v45 objects:v58 count:16];
+    v21 = [allValues countByEnumeratingWithState:&v45 objects:v58 count:16];
   }
 
   while (v21);
 
   if (v23 > 0.0)
   {
-    v26 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v19 = v4;
-    v27 = [v19 countByEnumeratingWithState:&v41 objects:v57 count:16];
+    allValues = dictionary;
+    v27 = [allValues countByEnumeratingWithState:&v41 objects:v57 count:16];
     if (v27)
     {
       v28 = v27;
@@ -1041,21 +1041,21 @@ LABEL_32:
         {
           if (*v42 != v29)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(allValues);
           }
 
           v31 = *(*(&v41 + 1) + 8 * m);
-          v32 = [v19 objectForKeyedSubscript:v31];
+          v32 = [allValues objectForKeyedSubscript:v31];
           [v32 doubleValue];
           v34 = v33 / v23;
 
           v35 = objc_alloc_init(PCPPredictedContextTransport);
           -[PCPPredictedContextTransport setTransportMode:](v35, "setTransportMode:", [v31 intValue]);
           [(PCPPredictedContextTransport *)v35 setProbability:v34];
-          [v26 addObject:v35];
+          [array addObject:v35];
         }
 
-        v28 = [v19 countByEnumeratingWithState:&v41 objects:v57 count:16];
+        v28 = [allValues countByEnumeratingWithState:&v41 objects:v57 count:16];
       }
 
       while (v28);
@@ -1064,30 +1064,30 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  v26 = MEMORY[0x1E695E0F0];
+  array = MEMORY[0x1E695E0F0];
 LABEL_34:
 
   v36 = *MEMORY[0x1E69E9840];
 
-  return v26;
+  return array;
 }
 
-+ (void)validateCandidateVisits:(id)a3 validVisits:(id)a4 invalidVisits:(id)a5
++ (void)validateCandidateVisits:(id)visits validVisits:(id)validVisits invalidVisits:(id)invalidVisits
 {
   v62 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v55 = a4;
-  v8 = a5;
+  visitsCopy = visits;
+  validVisitsCopy = validVisits;
+  invalidVisitsCopy = invalidVisits;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v9 = [v7 countByEnumeratingWithState:&v57 objects:v61 count:16];
+  v9 = [visitsCopy countByEnumeratingWithState:&v57 objects:v61 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v58;
-    v56 = v7;
+    v56 = visitsCopy;
     do
     {
       v12 = 0;
@@ -1095,7 +1095,7 @@ LABEL_34:
       {
         if (*v58 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(visitsCopy);
         }
 
         v13 = *(*(&v57 + 1) + 8 * v12);
@@ -1104,62 +1104,62 @@ LABEL_34:
           goto LABEL_28;
         }
 
-        v14 = [v13 predictedContext];
-        if (![v14 hasContextType] || !objc_msgSend(v13, "hasLocationOfInterest"))
+        predictedContext = [v13 predictedContext];
+        if (![predictedContext hasContextType] || !objc_msgSend(v13, "hasLocationOfInterest"))
         {
           goto LABEL_27;
         }
 
-        v15 = [v13 locationOfInterest];
-        if (![v15 hasLocation])
+        locationOfInterest = [v13 locationOfInterest];
+        if (![locationOfInterest hasLocation])
         {
           goto LABEL_26;
         }
 
-        v16 = [v13 locationOfInterest];
-        if (([v16 hasLoiIdentifier] & 1) == 0)
+        locationOfInterest2 = [v13 locationOfInterest];
+        if (([locationOfInterest2 hasLoiIdentifier] & 1) == 0)
         {
 
 LABEL_26:
 LABEL_27:
 
 LABEL_28:
-          v19 = [v13 predictedContext];
+          predictedContext2 = [v13 predictedContext];
 LABEL_29:
-          v39 = v8;
+          v39 = invalidVisitsCopy;
           goto LABEL_30;
         }
 
-        v17 = [v13 locationOfInterest];
-        v18 = [v17 loiIdentifier];
+        locationOfInterest3 = [v13 locationOfInterest];
+        loiIdentifier = [locationOfInterest3 loiIdentifier];
 
-        v7 = v56;
-        if (!v18)
+        visitsCopy = v56;
+        if (!loiIdentifier)
         {
           goto LABEL_28;
         }
 
-        v19 = [v13 predictedContext];
-        if ([v19 contextType] != 1 || !objc_msgSend(v19, "hasProbability") || !objc_msgSend(v19, "hasDateInterval"))
+        predictedContext2 = [v13 predictedContext];
+        if ([predictedContext2 contextType] != 1 || !objc_msgSend(predictedContext2, "hasProbability") || !objc_msgSend(predictedContext2, "hasDateInterval"))
         {
           goto LABEL_29;
         }
 
-        v20 = [v19 dateInterval];
-        if (([v20 hasStartDate] & 1) == 0)
+        dateInterval = [predictedContext2 dateInterval];
+        if (([dateInterval hasStartDate] & 1) == 0)
         {
           goto LABEL_34;
         }
 
-        v21 = [v19 dateInterval];
-        if (([v21 hasEndDate] & 1) == 0)
+        dateInterval2 = [predictedContext2 dateInterval];
+        if (([dateInterval2 hasEndDate] & 1) == 0)
         {
           goto LABEL_33;
         }
 
-        v54 = [v19 dateInterval];
-        v22 = [v54 startDate];
-        if (![v22 hasDate])
+        dateInterval3 = [predictedContext2 dateInterval];
+        startDate = [dateInterval3 startDate];
+        if (![startDate hasDate])
         {
 
 LABEL_33:
@@ -1168,24 +1168,24 @@ LABEL_34:
           goto LABEL_29;
         }
 
-        v52 = [v19 dateInterval];
-        v23 = [v52 endDate];
-        v53 = [v23 hasDate];
+        dateInterval4 = [predictedContext2 dateInterval];
+        endDate = [dateInterval4 endDate];
+        hasDate = [endDate hasDate];
 
-        if (!v53)
+        if (!hasDate)
         {
-          v39 = v8;
-          v7 = v56;
+          v39 = invalidVisitsCopy;
+          visitsCopy = v56;
           goto LABEL_30;
         }
 
-        v24 = [v19 dateInterval];
-        v25 = [v24 endDate];
-        [v25 date];
+        dateInterval5 = [predictedContext2 dateInterval];
+        endDate2 = [dateInterval5 endDate];
+        [endDate2 date];
         v27 = v26;
-        v28 = [v19 dateInterval];
-        v29 = [v28 startDate];
-        [v29 date];
+        dateInterval6 = [predictedContext2 dateInterval];
+        startDate2 = [dateInterval6 startDate];
+        [startDate2 date];
         v31 = v27 - v30;
 
         if (v31 * 0.2 >= 1.0)
@@ -1198,22 +1198,22 @@ LABEL_34:
           v32 = 1.0;
         }
 
-        v33 = [v19 dateInterval];
-        v34 = [v33 startDate];
-        if (([v34 hasConfidenceInterval] & 1) == 0)
+        dateInterval7 = [predictedContext2 dateInterval];
+        startDate3 = [dateInterval7 startDate];
+        if (([startDate3 hasConfidenceInterval] & 1) == 0)
         {
 
 LABEL_37:
-          v40 = [v19 dateInterval];
-          v41 = [v40 startDate];
-          [v41 setConfidenceInterval:v32];
+          dateInterval8 = [predictedContext2 dateInterval];
+          startDate4 = [dateInterval8 startDate];
+          [startDate4 setConfidenceInterval:v32];
 
           goto LABEL_38;
         }
 
-        v35 = [v19 dateInterval];
-        v36 = [v35 startDate];
-        [v36 confidenceInterval];
+        dateInterval9 = [predictedContext2 dateInterval];
+        startDate5 = [dateInterval9 startDate];
+        [startDate5 confidenceInterval];
         v38 = v37;
 
         if (v38 <= 0.0)
@@ -1222,16 +1222,16 @@ LABEL_37:
         }
 
 LABEL_38:
-        v42 = [v19 dateInterval];
-        v43 = [v42 endDate];
-        if ([v43 hasConfidenceInterval])
+        dateInterval10 = [predictedContext2 dateInterval];
+        endDate3 = [dateInterval10 endDate];
+        if ([endDate3 hasConfidenceInterval])
         {
-          v44 = [v19 dateInterval];
-          v45 = [v44 endDate];
-          [v45 confidenceInterval];
+          dateInterval11 = [predictedContext2 dateInterval];
+          endDate4 = [dateInterval11 endDate];
+          [endDate4 confidenceInterval];
           v47 = v46;
 
-          v7 = v56;
+          visitsCopy = v56;
           if (v47 > 0.0)
           {
             goto LABEL_43;
@@ -1241,15 +1241,15 @@ LABEL_38:
         else
         {
 
-          v7 = v56;
+          visitsCopy = v56;
         }
 
-        v48 = [v19 dateInterval];
-        v49 = [v48 endDate];
-        [v49 setConfidenceInterval:v32];
+        dateInterval12 = [predictedContext2 dateInterval];
+        endDate5 = [dateInterval12 endDate];
+        [endDate5 setConfidenceInterval:v32];
 
 LABEL_43:
-        v39 = v55;
+        v39 = validVisitsCopy;
 LABEL_30:
         [v39 addObject:v13];
 
@@ -1257,7 +1257,7 @@ LABEL_30:
       }
 
       while (v10 != v12);
-      v50 = [v7 countByEnumeratingWithState:&v57 objects:v61 count:16];
+      v50 = [visitsCopy countByEnumeratingWithState:&v57 objects:v61 count:16];
       v10 = v50;
     }
 
@@ -1267,17 +1267,17 @@ LABEL_30:
   v51 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)validateCandidateTransitions:(id)a3 validTransitions:(id)a4 invalidTransitions:(id)a5
++ (void)validateCandidateTransitions:(id)transitions validTransitions:(id)validTransitions invalidTransitions:(id)invalidTransitions
 {
   v58 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v45 = a4;
-  v8 = a5;
+  transitionsCopy = transitions;
+  validTransitionsCopy = validTransitions;
+  invalidTransitionsCopy = invalidTransitions;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v9 = [v7 countByEnumeratingWithState:&v53 objects:v57 count:16];
+  v9 = [transitionsCopy countByEnumeratingWithState:&v53 objects:v57 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1289,63 +1289,63 @@ LABEL_30:
       {
         if (*v54 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(transitionsCopy);
         }
 
         v13 = *(*(&v53 + 1) + 8 * v12);
         if (![v13 hasPredictedContext] || (objc_msgSend(v13, "predictedContext"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "hasContextType"), v14, (v15 & 1) == 0))
         {
-          v16 = [v13 predictedContext];
+          predictedContext = [v13 predictedContext];
           goto LABEL_22;
         }
 
-        v16 = [v13 predictedContext];
-        if ([v16 contextType] != 2 || !objc_msgSend(v16, "hasProbability") || !objc_msgSend(v16, "hasDateInterval"))
+        predictedContext = [v13 predictedContext];
+        if ([predictedContext contextType] != 2 || !objc_msgSend(predictedContext, "hasProbability") || !objc_msgSend(predictedContext, "hasDateInterval"))
         {
           goto LABEL_22;
         }
 
-        v17 = [v16 dateInterval];
-        if (([v17 hasStartDate] & 1) == 0)
+        dateInterval = [predictedContext dateInterval];
+        if (([dateInterval hasStartDate] & 1) == 0)
         {
           goto LABEL_27;
         }
 
-        v18 = [v16 dateInterval];
-        if (([v18 hasEndDate] & 1) == 0)
+        dateInterval2 = [predictedContext dateInterval];
+        if (([dateInterval2 hasEndDate] & 1) == 0)
         {
           goto LABEL_26;
         }
 
-        v49 = [v16 dateInterval];
-        v19 = [v49 startDate];
-        if (![v19 hasDate])
+        dateInterval3 = [predictedContext dateInterval];
+        startDate = [dateInterval3 startDate];
+        if (![startDate hasDate])
         {
 
 LABEL_26:
 LABEL_27:
 
 LABEL_22:
-          v33 = v8;
+          v33 = invalidTransitionsCopy;
           goto LABEL_23;
         }
 
-        v47 = [v16 dateInterval];
-        v46 = [v47 endDate];
-        v48 = [v46 hasDate];
+        dateInterval4 = [predictedContext dateInterval];
+        endDate = [dateInterval4 endDate];
+        hasDate = [endDate hasDate];
 
-        if (!v48)
+        if (!hasDate)
         {
           goto LABEL_22;
         }
 
-        v50 = [v16 dateInterval];
-        v20 = [v50 endDate];
-        [v20 date];
+        dateInterval5 = [predictedContext dateInterval];
+        endDate2 = [dateInterval5 endDate];
+        [endDate2 date];
         v22 = v21;
-        v23 = [v16 dateInterval];
-        v24 = [v23 startDate];
-        [v24 date];
+        dateInterval6 = [predictedContext dateInterval];
+        startDate2 = [dateInterval6 startDate];
+        [startDate2 date];
         v26 = v22 - v25;
 
         if (v26 * 0.2 >= 1.0)
@@ -1358,22 +1358,22 @@ LABEL_22:
           v27 = 1.0;
         }
 
-        v28 = [v16 dateInterval];
-        v29 = [v28 startDate];
-        if (([v29 hasConfidenceInterval] & 1) == 0)
+        dateInterval7 = [predictedContext dateInterval];
+        startDate3 = [dateInterval7 startDate];
+        if (([startDate3 hasConfidenceInterval] & 1) == 0)
         {
 
 LABEL_29:
-          v34 = [v16 dateInterval];
-          v35 = [v34 startDate];
-          [v35 setConfidenceInterval:v27];
+          dateInterval8 = [predictedContext dateInterval];
+          startDate4 = [dateInterval8 startDate];
+          [startDate4 setConfidenceInterval:v27];
 
           goto LABEL_30;
         }
 
-        v51 = [v16 dateInterval];
-        v30 = [v51 startDate];
-        [v30 confidenceInterval];
+        dateInterval9 = [predictedContext dateInterval];
+        startDate5 = [dateInterval9 startDate];
+        [startDate5 confidenceInterval];
         v32 = v31;
 
         if (v32 <= 0.0)
@@ -1382,13 +1382,13 @@ LABEL_29:
         }
 
 LABEL_30:
-        v36 = [v16 dateInterval];
-        v37 = [v36 endDate];
-        if ([v37 hasConfidenceInterval])
+        dateInterval10 = [predictedContext dateInterval];
+        endDate3 = [dateInterval10 endDate];
+        if ([endDate3 hasConfidenceInterval])
         {
-          v52 = [v16 dateInterval];
-          v38 = [v52 endDate];
-          [v38 confidenceInterval];
+          dateInterval11 = [predictedContext dateInterval];
+          endDate4 = [dateInterval11 endDate];
+          [endDate4 confidenceInterval];
           v40 = v39;
 
           if (v40 > 0.0)
@@ -1401,12 +1401,12 @@ LABEL_30:
         {
         }
 
-        v41 = [v16 dateInterval];
-        v42 = [v41 endDate];
-        [v42 setConfidenceInterval:v27];
+        dateInterval12 = [predictedContext dateInterval];
+        endDate5 = [dateInterval12 endDate];
+        [endDate5 setConfidenceInterval:v27];
 
 LABEL_35:
-        v33 = v45;
+        v33 = validTransitionsCopy;
 LABEL_23:
         [v33 addObject:v13];
 
@@ -1414,7 +1414,7 @@ LABEL_23:
       }
 
       while (v10 != v12);
-      v43 = [v7 countByEnumeratingWithState:&v53 objects:v57 count:16];
+      v43 = [transitionsCopy countByEnumeratingWithState:&v53 objects:v57 count:16];
       v10 = v43;
     }
 
@@ -1424,18 +1424,18 @@ LABEL_23:
   v44 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)mapLOIToLocationsFromPredictedVisits:(id)a3 currentLoiIdentifier:(id)a4 visitHistory:(id)a5
++ (id)mapLOIToLocationsFromPredictedVisits:(id)visits currentLoiIdentifier:(id)identifier visitHistory:(id)history
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v35 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x1E695DF90] dictionary];
+  visitsCopy = visits;
+  identifierCopy = identifier;
+  historyCopy = history;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v10 = v7;
+  v10 = visitsCopy;
   v11 = [v10 countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v11)
   {
@@ -1451,16 +1451,16 @@ LABEL_23:
         }
 
         v15 = *(*(&v40 + 1) + 8 * i);
-        v16 = [v15 locationOfInterest];
-        v17 = [v16 loiIdentifier];
+        locationOfInterest = [v15 locationOfInterest];
+        loiIdentifier = [locationOfInterest loiIdentifier];
 
-        v18 = [v9 objectForKeyedSubscript:v17];
+        v18 = [dictionary objectForKeyedSubscript:loiIdentifier];
 
         if (!v18)
         {
-          v19 = [v15 locationOfInterest];
-          v20 = [v19 location];
-          [v9 setObject:v20 forKeyedSubscript:v17];
+          locationOfInterest2 = [v15 locationOfInterest];
+          location = [locationOfInterest2 location];
+          [dictionary setObject:location forKeyedSubscript:loiIdentifier];
         }
       }
 
@@ -1474,9 +1474,9 @@ LABEL_23:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v21 = v8;
+  v21 = historyCopy;
   v22 = [v21 countByEnumeratingWithState:&v36 objects:v44 count:16];
-  v23 = v35;
+  v23 = identifierCopy;
   if (v22)
   {
     v24 = v22;
@@ -1493,21 +1493,21 @@ LABEL_23:
         v27 = *(*(&v36 + 1) + 8 * j);
         if ([v27 hasLoiIdentifier])
         {
-          v28 = [v27 loiIdentifier];
-          if ([v28 isEqualToData:v23] && objc_msgSend(v27, "hasLocation"))
+          loiIdentifier2 = [v27 loiIdentifier];
+          if ([loiIdentifier2 isEqualToData:v23] && objc_msgSend(v27, "hasLocation"))
           {
-            v29 = [v27 loiIdentifier];
-            v30 = [v9 objectForKeyedSubscript:v29];
+            loiIdentifier3 = [v27 loiIdentifier];
+            v30 = [dictionary objectForKeyedSubscript:loiIdentifier3];
 
-            v23 = v35;
+            v23 = identifierCopy;
             if (v30)
             {
               continue;
             }
 
-            v28 = [v27 location];
-            v31 = [v27 loiIdentifier];
-            [v9 setObject:v28 forKeyedSubscript:v31];
+            loiIdentifier2 = [v27 location];
+            loiIdentifier4 = [v27 loiIdentifier];
+            [dictionary setObject:loiIdentifier2 forKeyedSubscript:loiIdentifier4];
           }
         }
       }
@@ -1518,39 +1518,39 @@ LABEL_23:
     while (v24);
   }
 
-  v32 = [v9 copy];
+  v32 = [dictionary copy];
   v33 = *MEMORY[0x1E69E9840];
 
   return v32;
 }
 
-+ (id)loiIdOfCurrentContextFromVisitHistory:(id)a3 transitionHistory:(id)a4 currentTime:(double)a5
++ (id)loiIdOfCurrentContextFromVisitHistory:(id)history transitionHistory:(id)transitionHistory currentTime:(double)time
 {
   v47 = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  v27 = a4;
+  historyCopy = history;
+  transitionHistoryCopy = transitionHistory;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
   v41 = __Block_byref_object_copy__1;
   v42 = __Block_byref_object_dispose__1;
   v43 = 0;
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __99__PCConstraintsWeightingUtils_loiIdOfCurrentContextFromVisitHistory_transitionHistory_currentTime___block_invoke;
   v37[3] = &unk_1E83B8078;
-  *&v37[5] = a5;
+  *&v37[5] = time;
   v37[4] = &v38;
-  [v28 enumerateObjectsUsingBlock:v37];
+  [historyCopy enumerateObjectsUsingBlock:v37];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __99__PCConstraintsWeightingUtils_loiIdOfCurrentContextFromVisitHistory_transitionHistory_currentTime___block_invoke_2;
   v34[3] = &unk_1E83B8698;
-  v36 = a5;
-  v29 = v7;
+  timeCopy = time;
+  v29 = array;
   v35 = v29;
-  [v27 enumerateObjectsUsingBlock:v34];
+  [transitionHistoryCopy enumerateObjectsUsingBlock:v34];
   if (v39[5] && [v29 count])
   {
     v8 = _plc_log_get_normal_handle(PCLogCategoryConstraintsWeighting);
@@ -1607,12 +1607,12 @@ LABEL_23:
   v17 = v39[5];
   if (v17)
   {
-    v18 = [v17 loiIdentifier];
-    v19 = v18 == 0;
+    loiIdentifier = [v17 loiIdentifier];
+    v19 = loiIdentifier == 0;
 
     if (!v19)
     {
-      v20 = [v39[5] loiIdentifier];
+      loiIdentifier2 = [v39[5] loiIdentifier];
       goto LABEL_28;
     }
 
@@ -1645,9 +1645,9 @@ LABEL_25:
   }
 
 LABEL_27:
-  v20 = [a1 transitionDummyLOI];
+  loiIdentifier2 = [self transitionDummyLOI];
 LABEL_28:
-  v23 = v20;
+  v23 = loiIdentifier2;
 
   _Block_object_dispose(&v38, 8);
   v24 = *MEMORY[0x1E69E9840];
@@ -1733,29 +1733,29 @@ void __99__PCConstraintsWeightingUtils_loiIdOfCurrentContextFromVisitHistory_tra
   }
 }
 
-+ (void)postprocessMergeResults:(id)a3 currentLoiIdentifier:(id)a4 currentTime:(double)a5 windowEndTime:(double)a6 transitionHistory:(id)a7 loiToLocation:(id)a8
++ (void)postprocessMergeResults:(id)results currentLoiIdentifier:(id)identifier currentTime:(double)time windowEndTime:(double)endTime transitionHistory:(id)history loiToLocation:(id)location
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
-  [a1 _logMergeResults:v14 withDescription:@"Initial"];
-  v18 = [a1 _currentContextPredictionFromMergeResults:v14 currentLoiIdentifier:v15 currentTime:a5];
-  [a1 _logMergeResults:v14 withDescription:@"After inject current context"];
+  resultsCopy = results;
+  identifierCopy = identifier;
+  historyCopy = history;
+  locationCopy = location;
+  [self _logMergeResults:resultsCopy withDescription:@"Initial"];
+  v18 = [self _currentContextPredictionFromMergeResults:resultsCopy currentLoiIdentifier:identifierCopy currentTime:time];
+  [self _logMergeResults:resultsCopy withDescription:@"After inject current context"];
   [v18 confidence];
   v20 = fmin(v19, 0.5);
   [v18 exitTime];
   v22 = v21;
   [v18 exitUnc];
-  v24 = [a1 _earliestSignificantMergeResultAfterTime:v15 excludingLoiId:v14 inMergeResults:v22 - v23 confidenceThreshold:v20];
+  v24 = [self _earliestSignificantMergeResultAfterTime:identifierCopy excludingLoiId:resultsCopy inMergeResults:v22 - v23 confidenceThreshold:v20];
   [v18 exitTime];
-  v40 = v25;
+  endTimeCopy = v25;
   [v18 exitUnc];
   v39 = v26;
   if (v24)
   {
-    v27 = [a1 transitionDummyLOI];
-    if ([v15 isEqualToData:v27])
+    transitionDummyLOI = [self transitionDummyLOI];
+    if ([identifierCopy isEqualToData:transitionDummyLOI])
     {
 
       v28 = 0;
@@ -1764,137 +1764,137 @@ void __99__PCConstraintsWeightingUtils_loiIdOfCurrentContextFromVisitHistory_tra
 
     else
     {
-      v38 = v17;
-      v31 = v16;
-      v32 = [v24 loiId];
-      v33 = [a1 transitionDummyLOI];
-      v34 = [v32 isEqualToData:v33];
+      v38 = locationCopy;
+      v31 = historyCopy;
+      loiId = [v24 loiId];
+      transitionDummyLOI2 = [self transitionDummyLOI];
+      v34 = [loiId isEqualToData:transitionDummyLOI2];
 
       if (v34)
       {
         v28 = 0;
         v29 = 0.0;
-        v16 = v31;
-        v17 = v38;
+        historyCopy = v31;
+        locationCopy = v38;
       }
 
       else
       {
-        v16 = v31;
+        historyCopy = v31;
         v35 = v31;
-        v17 = v38;
-        v28 = [a1 _transitionEstimationInfoWithNextResult:v24 currentLoiIdentifier:v15 transitionHistory:v35 loiToLocation:v38];
+        locationCopy = v38;
+        v28 = [self _transitionEstimationInfoWithNextResult:v24 currentLoiIdentifier:identifierCopy transitionHistory:v35 loiToLocation:v38];
         [v28 durationInSec];
         v29 = v36;
       }
     }
 
-    if (([a1 _isGeneratedCurrentContext:v18] & 1) != 0 || v29 != 0.0)
+    if (([self _isGeneratedCurrentContext:v18] & 1) != 0 || v29 != 0.0)
     {
-      [a1 _minimumStayAtCurrentContextInSec];
-      [a1 _updateExitTimeAndUncertaintyOfCurrentContextWithNextResult:v24 currentTime:&v40 defaultDurationAtCurrentContext:&v39 transitionDuration:objc_msgSend(a1 inOutExitTime:"_isGeneratedCurrentContext:" inOutExitUnc:v18) isGeneratedCurrentContext:{a5, v37, v29}];
-      [a1 _logMergeResults:v14 withDescription:@"After updating current context"];
+      [self _minimumStayAtCurrentContextInSec];
+      [self _updateExitTimeAndUncertaintyOfCurrentContextWithNextResult:v24 currentTime:&endTimeCopy defaultDurationAtCurrentContext:&v39 transitionDuration:objc_msgSend(self inOutExitTime:"_isGeneratedCurrentContext:" inOutExitUnc:v18) isGeneratedCurrentContext:{time, v37, v29}];
+      [self _logMergeResults:resultsCopy withDescription:@"After updating current context"];
     }
 
     if (v28)
     {
-      [a1 _insertTransitionPredictionWithNextResult:v24 currentExitTime:v28 currentExitUnc:v14 transitionInfo:v40 mergeResults:v39];
-      [a1 _logMergeResults:v14 withDescription:@"After inserting transition"];
+      [self _insertTransitionPredictionWithNextResult:v24 currentExitTime:v28 currentExitUnc:resultsCopy transitionInfo:endTimeCopy mergeResults:v39];
+      [self _logMergeResults:resultsCopy withDescription:@"After inserting transition"];
     }
 
-    v30 = v40;
+    endTimeCopy2 = endTimeCopy;
   }
 
   else
   {
-    v39 = a6 - a5;
-    v40 = a6;
-    v30 = a6;
+    v39 = endTime - time;
+    endTimeCopy = endTime;
+    endTimeCopy2 = endTime;
   }
 
-  [a1 _finalizeMergeResults:v14 currentTime:v18 windowEndTime:a5 currentContext:a6 currentExitTime:v30 currentExitUnc:?];
-  [a1 _logMergeResults:v14 withDescription:@"After post processing"];
+  [self _finalizeMergeResults:resultsCopy currentTime:v18 windowEndTime:time currentContext:endTime currentExitTime:endTimeCopy2 currentExitUnc:?];
+  [self _logMergeResults:resultsCopy withDescription:@"After post processing"];
 }
 
-+ (void)_distributeProbabilityToBins:(id)a3 loiId:(id)a4 fullProb:(double)a5 effectiveStart:(double)a6 rampUpEnd:(double)a7 rampDownStart:(double)a8 effectiveEnd:(double)a9 sources:(id)a10 transports:(id)a11
++ (void)_distributeProbabilityToBins:(id)bins loiId:(id)id fullProb:(double)prob effectiveStart:(double)start rampUpEnd:(double)end rampDownStart:(double)downStart effectiveEnd:(double)effectiveEnd sources:(id)self0 transports:(id)self1
 {
   v58 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v19 = a4;
-  v52 = a10;
-  v20 = a11;
+  binsCopy = bins;
+  idCopy = id;
+  sourcesCopy = sources;
+  transportsCopy = transports;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v21 = [v18 countByEnumeratingWithState:&v53 objects:v57 count:16];
+  v21 = [binsCopy countByEnumeratingWithState:&v53 objects:v57 count:16];
   if (v21)
   {
     v22 = v21;
     v23 = *v54;
-    v24 = a7 - a6;
+    v24 = end - start;
     do
     {
       for (i = 0; i != v22; ++i)
       {
         if (*v54 != v23)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(binsCopy);
         }
 
         v26 = *(*(&v53 + 1) + 8 * i);
         [v26 binStart];
         v28 = v27;
         [v26 binEnd];
-        if (v28 >= a6)
+        if (v28 >= start)
         {
-          v30 = v28;
+          startCopy = v28;
         }
 
         else
         {
-          v30 = a6;
+          startCopy = start;
         }
 
-        if (v29 >= a9)
+        if (effectiveEndCopy >= effectiveEnd)
         {
-          v29 = a9;
+          effectiveEndCopy = effectiveEnd;
         }
 
-        if (v30 < v29)
+        if (startCopy < effectiveEndCopy)
         {
-          v31 = v30 + (v29 - v30) * 0.5;
-          v32 = 0.0;
-          if (v31 >= a6)
+          v31 = startCopy + (effectiveEndCopy - startCopy) * 0.5;
+          probCopy2 = 0.0;
+          if (v31 >= start)
           {
-            if (v31 >= a7)
+            if (v31 >= end)
             {
-              v32 = a5;
-              if (v31 > a8)
+              probCopy2 = prob;
+              if (v31 > downStart)
               {
-                v32 = 0.0;
-                if (v31 <= a9)
+                probCopy2 = 0.0;
+                if (v31 <= effectiveEnd)
                 {
-                  v33 = (a9 - v31) / (a9 - a8);
+                  v33 = (effectiveEnd - v31) / (effectiveEnd - downStart);
 LABEL_19:
-                  v32 = v33 * a5;
+                  probCopy2 = v33 * prob;
                 }
               }
             }
 
             else
             {
-              v32 = a5;
+              probCopy2 = prob;
               if (v24 > 0.0)
               {
-                v33 = (v31 - a6) / v24;
+                v33 = (v31 - start) / v24;
                 goto LABEL_19;
               }
             }
           }
 
-          v34 = [v26 loiProbs];
-          v35 = [v34 objectForKeyedSubscript:v19];
+          loiProbs = [v26 loiProbs];
+          v35 = [loiProbs objectForKeyedSubscript:idCopy];
           v36 = v35;
           v37 = &unk_1F4BDDF88;
           if (v35)
@@ -1908,40 +1908,40 @@ LABEL_19:
           [v38 doubleValue];
           v41 = v40;
 
-          v42 = [v39 numberWithDouble:v32 + v41];
-          v43 = [v26 loiProbs];
-          [v43 setObject:v42 forKeyedSubscript:v19];
+          v42 = [v39 numberWithDouble:probCopy2 + v41];
+          loiProbs2 = [v26 loiProbs];
+          [loiProbs2 setObject:v42 forKeyedSubscript:idCopy];
 
-          v44 = [v26 loiSources];
-          v45 = [v44 objectForKeyedSubscript:v19];
+          loiSources = [v26 loiSources];
+          v45 = [loiSources objectForKeyedSubscript:idCopy];
 
           if (!v45)
           {
             v45 = [MEMORY[0x1E695DFA8] set];
-            v46 = [v26 loiSources];
-            [v46 setObject:v45 forKeyedSubscript:v19];
+            loiSources2 = [v26 loiSources];
+            [loiSources2 setObject:v45 forKeyedSubscript:idCopy];
           }
 
-          [v45 addObjectsFromArray:v52];
-          if (v20 && [v20 count])
+          [v45 addObjectsFromArray:sourcesCopy];
+          if (transportsCopy && [transportsCopy count])
           {
-            v47 = [v26 predictedTransports];
+            predictedTransports = [v26 predictedTransports];
 
-            if (!v47)
+            if (!predictedTransports)
             {
-              v48 = [MEMORY[0x1E695DF70] array];
-              [v26 setPredictedTransports:v48];
+              array = [MEMORY[0x1E695DF70] array];
+              [v26 setPredictedTransports:array];
             }
 
-            v49 = [v26 predictedTransports];
-            [v49 addObjectsFromArray:v20];
+            predictedTransports2 = [v26 predictedTransports];
+            [predictedTransports2 addObjectsFromArray:transportsCopy];
           }
 
           continue;
         }
       }
 
-      v22 = [v18 countByEnumeratingWithState:&v53 objects:v57 count:16];
+      v22 = [binsCopy countByEnumeratingWithState:&v53 objects:v57 count:16];
     }
 
     while (v22);
@@ -1950,16 +1950,16 @@ LABEL_19:
   v50 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_allLOIFromBins:(id)a3
++ (id)_allLOIFromBins:(id)bins
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  binsCopy = bins;
   v4 = [MEMORY[0x1E695DFA8] set];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = binsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -1974,9 +1974,9 @@ LABEL_19:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) loiProbs];
-        v11 = [v10 allKeys];
-        [v4 addObjectsFromArray:v11];
+        loiProbs = [*(*(&v15 + 1) + 8 * i) loiProbs];
+        allKeys = [loiProbs allKeys];
+        [v4 addObjectsFromArray:allKeys];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -1991,17 +1991,17 @@ LABEL_19:
   return v12;
 }
 
-+ (void)_calculateRasterizationWindowWithVisits:(id)a3 transitions:(id)a4 currentTimeInSec:(double)a5 windowInHours:(double)a6 windowStartOut:(double *)a7 windowEndOut:(double *)a8
++ (void)_calculateRasterizationWindowWithVisits:(id)visits transitions:(id)transitions currentTimeInSec:(double)sec windowInHours:(double)hours windowStartOut:(double *)out windowEndOut:(double *)endOut
 {
   v58 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5 + a6 * 3600.0;
+  visitsCopy = visits;
+  transitionsCopy = transitions;
+  v14 = sec + hours * 3600.0;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v15 = [v12 countByEnumeratingWithState:&v52 objects:v57 count:16];
+  v15 = [visitsCopy countByEnumeratingWithState:&v52 objects:v57 count:16];
   if (v15)
   {
     v16 = v15;
@@ -2012,25 +2012,25 @@ LABEL_19:
       {
         if (*v53 != v17)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(visitsCopy);
         }
 
         v19 = *(*(&v52 + 1) + 8 * i);
-        v20 = [v19 predictedContext];
-        v21 = [v20 dateInterval];
-        v22 = [v21 startDate];
-        [v22 date];
+        predictedContext = [v19 predictedContext];
+        dateInterval = [predictedContext dateInterval];
+        startDate = [dateInterval startDate];
+        [startDate date];
         v24 = v23;
 
-        v25 = [v19 predictedContext];
-        v26 = [v25 dateInterval];
-        v27 = [v26 endDate];
-        [v27 date];
+        predictedContext2 = [v19 predictedContext];
+        dateInterval2 = [predictedContext2 dateInterval];
+        endDate = [dateInterval2 endDate];
+        [endDate date];
         v29 = v28;
 
-        if (a5 >= v24)
+        if (sec >= v24)
         {
-          a5 = v24;
+          sec = v24;
         }
 
         if (v14 < v29)
@@ -2039,7 +2039,7 @@ LABEL_19:
         }
       }
 
-      v16 = [v12 countByEnumeratingWithState:&v52 objects:v57 count:16];
+      v16 = [visitsCopy countByEnumeratingWithState:&v52 objects:v57 count:16];
     }
 
     while (v16);
@@ -2049,7 +2049,7 @@ LABEL_19:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v30 = v13;
+  v30 = transitionsCopy;
   v31 = [v30 countByEnumeratingWithState:&v48 objects:v56 count:16];
   if (v31)
   {
@@ -2065,21 +2065,21 @@ LABEL_19:
         }
 
         v35 = *(*(&v48 + 1) + 8 * j);
-        v36 = [v35 predictedContext];
-        v37 = [v36 dateInterval];
-        v38 = [v37 startDate];
-        [v38 date];
+        predictedContext3 = [v35 predictedContext];
+        dateInterval3 = [predictedContext3 dateInterval];
+        startDate2 = [dateInterval3 startDate];
+        [startDate2 date];
         v40 = v39;
 
-        v41 = [v35 predictedContext];
-        v42 = [v41 dateInterval];
-        v43 = [v42 endDate];
-        [v43 date];
+        predictedContext4 = [v35 predictedContext];
+        dateInterval4 = [predictedContext4 dateInterval];
+        endDate2 = [dateInterval4 endDate];
+        [endDate2 date];
         v45 = v44;
 
-        if (a5 >= v40)
+        if (sec >= v40)
         {
-          a5 = v40;
+          sec = v40;
         }
 
         if (v14 < v45)
@@ -2094,23 +2094,23 @@ LABEL_19:
     while (v32);
   }
 
-  *a7 = a5;
-  *a8 = v14;
+  *out = sec;
+  *endOut = v14;
 
   v46 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_aggregateMergeResults:(id)a3
++ (id)_aggregateMergeResults:(id)results
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  resultsCopy = results;
   v4 = [MEMORY[0x1E695DFA8] set];
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v6 = v3;
+  v6 = resultsCopy;
   v7 = [v6 countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v7)
   {
@@ -2154,15 +2154,15 @@ LABEL_19:
           v10 = v19;
         }
 
-        v20 = [v15 sources];
-        [v4 unionSet:v20];
+        sources = [v15 sources];
+        [v4 unionSet:sources];
 
-        v21 = [v15 transports];
+        transports = [v15 transports];
 
-        if (v21)
+        if (transports)
         {
-          v22 = [v15 transports];
-          [v5 addObject:v22];
+          transports2 = [v15 transports];
+          [array addObject:transports2];
         }
       }
 
@@ -2181,26 +2181,26 @@ LABEL_19:
   }
 
   v23 = [PCMergeResult alloc];
-  v24 = [v6 firstObject];
-  v25 = [v24 loiId];
-  v26 = [PCConstraintsWeightingUtils mergeTransportArrays:v5];
-  v27 = [(PCMergeResult *)v23 initWithLoiId:v25 confidence:v4 entryTime:v26 exitTime:1.0 entryUnc:v11 exitUnc:v12 sources:v13 transports:v10];
+  firstObject = [v6 firstObject];
+  loiId = [firstObject loiId];
+  v26 = [PCConstraintsWeightingUtils mergeTransportArrays:array];
+  v27 = [(PCMergeResult *)v23 initWithLoiId:loiId confidence:v4 entryTime:v26 exitTime:1.0 entryUnc:v11 exitUnc:v12 sources:v13 transports:v10];
 
   v28 = *MEMORY[0x1E69E9840];
 
   return v27;
 }
 
-+ (id)_earliestSignificantMergeResultAfterTime:(double)a3 excludingLoiId:(id)a4 inMergeResults:(id)a5 confidenceThreshold:(double)a6
++ (id)_earliestSignificantMergeResultAfterTime:(double)time excludingLoiId:(id)id inMergeResults:(id)results confidenceThreshold:(double)threshold
 {
   v45 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  resultsCopy = results;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v40 objects:v44 count:16];
+  v11 = [resultsCopy countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2213,19 +2213,19 @@ LABEL_19:
       {
         if (*v41 != v15)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(resultsCopy);
         }
 
         v17 = *(*(&v40 + 1) + 8 * i);
-        v18 = [v17 loiId];
-        v19 = [v18 isEqualToData:v9];
+        loiId = [v17 loiId];
+        v19 = [loiId isEqualToData:idCopy];
 
         if ((v19 & 1) == 0)
         {
           [v17 entryTime];
           v21 = v20;
           [v17 entryUnc];
-          if (v21 + v22 > a3 || ([v17 confidence], v23 >= a6))
+          if (v21 + v22 > time || ([v17 confidence], v23 >= threshold))
           {
             if (!v13 || ([v17 entryTime], v25 = v24, objc_msgSend(v13, "entryTime"), v25 < v26))
             {
@@ -2235,12 +2235,12 @@ LABEL_19:
             }
 
             [v17 confidence];
-            if (v28 >= a6)
+            if (v28 >= threshold)
             {
-              v29 = [v17 loiId];
-              v30 = [a1 transitionDummyLOI];
+              loiId2 = [v17 loiId];
+              transitionDummyLOI = [self transitionDummyLOI];
 
-              if (v29 != v30)
+              if (loiId2 != transitionDummyLOI)
               {
                 if (!v14 || ([v17 entryTime], v32 = v31, objc_msgSend(v14, "entryTime"), v32 < v33))
                 {
@@ -2254,7 +2254,7 @@ LABEL_19:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v40 objects:v44 count:16];
+      v12 = [resultsCopy countByEnumeratingWithState:&v40 objects:v44 count:16];
     }
 
     while (v12);
@@ -2282,23 +2282,23 @@ LABEL_19:
   return v35;
 }
 
-+ (void)_removeExistingTransitionPredictionsFromMergeResults:(id)a3 beforeMergeResult:(id)a4
++ (void)_removeExistingTransitionPredictionsFromMergeResults:(id)results beforeMergeResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 entryTime];
+  resultCopy = result;
+  resultsCopy = results;
+  [resultCopy entryTime];
   v9 = v8;
-  [v6 entryUnc];
+  [resultCopy entryUnc];
   v11 = v10;
 
   v13[1] = 3221225472;
   v13[0] = MEMORY[0x1E69E9820];
   v13[2] = __102__PCConstraintsWeightingUtils__removeExistingTransitionPredictionsFromMergeResults_beforeMergeResult___block_invoke;
   v13[3] = &__block_descriptor_48_e30_B32__0__PCMergeResult_8Q16_B24l;
-  v13[4] = a1;
+  v13[4] = self;
   *&v13[5] = v9 + v11;
-  v12 = [v7 indexesOfObjectsPassingTest:v13];
-  [v7 removeObjectsAtIndexes:v12];
+  v12 = [resultsCopy indexesOfObjectsPassingTest:v13];
+  [resultsCopy removeObjectsAtIndexes:v12];
 }
 
 BOOL __102__PCConstraintsWeightingUtils__removeExistingTransitionPredictionsFromMergeResults_beforeMergeResult___block_invoke(uint64_t a1, void *a2)
@@ -2322,14 +2322,14 @@ BOOL __102__PCConstraintsWeightingUtils__removeExistingTransitionPredictionsFrom
   return v8;
 }
 
-+ (id)_predictedTransitionInfoFromHistoricalTransitions:(id)a3 originVisitId:(id)a4 destinationVisitId:(id)a5
++ (id)_predictedTransitionInfoFromHistoricalTransitions:(id)transitions originVisitId:(id)id destinationVisitId:(id)visitId
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [a1 _estimatedTransitionDurationFromTransitions:v10 originVisitId:v9 destinationVisitId:v8];
+  visitIdCopy = visitId;
+  idCopy = id;
+  transitionsCopy = transitions;
+  [self _estimatedTransitionDurationFromTransitions:transitionsCopy originVisitId:idCopy destinationVisitId:visitIdCopy];
   v12 = v11;
-  v13 = [a1 _estimatedTransportsFromTransitions:v10 originVisitId:v9 destinationVisitId:v8];
+  v13 = [self _estimatedTransportsFromTransitions:transitionsCopy originVisitId:idCopy destinationVisitId:visitIdCopy];
 
   if (v12 >= 0.0 && [v13 count])
   {
@@ -2346,18 +2346,18 @@ BOOL __102__PCConstraintsWeightingUtils__removeExistingTransitionPredictionsFrom
   return v14;
 }
 
-+ (double)_estimatedTransitionDurationFromTransitions:(id)a3 originVisitId:(id)a4 destinationVisitId:(id)a5
++ (double)_estimatedTransitionDurationFromTransitions:(id)transitions originVisitId:(id)id destinationVisitId:(id)visitId
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v32 = [MEMORY[0x1E695DF70] array];
+  transitionsCopy = transitions;
+  idCopy = id;
+  visitIdCopy = visitId;
+  array = [MEMORY[0x1E695DF70] array];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v10 = v7;
+  v10 = transitionsCopy;
   v11 = [v10 countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v11)
   {
@@ -2373,15 +2373,15 @@ BOOL __102__PCConstraintsWeightingUtils__removeExistingTransitionPredictionsFrom
         }
 
         v15 = *(*(&v37 + 1) + 8 * i);
-        v16 = [v15 visitIdentifierOrigin];
-        if ([v16 isEqualToData:v8])
+        visitIdentifierOrigin = [v15 visitIdentifierOrigin];
+        if ([visitIdentifierOrigin isEqualToData:idCopy])
         {
-          v17 = [v15 visitIdentifierDestination];
-          if ([v17 isEqualToData:v9] && (objc_msgSend(v15, "hasStartTimeCFAbsolute") & 1) != 0)
+          visitIdentifierDestination = [v15 visitIdentifierDestination];
+          if ([visitIdentifierDestination isEqualToData:visitIdCopy] && (objc_msgSend(v15, "hasStartTimeCFAbsolute") & 1) != 0)
           {
-            v18 = [v15 hasStopTimeCFAbsolute];
+            hasStopTimeCFAbsolute = [v15 hasStopTimeCFAbsolute];
 
-            if (!v18)
+            if (!hasStopTimeCFAbsolute)
             {
               continue;
             }
@@ -2389,8 +2389,8 @@ BOOL __102__PCConstraintsWeightingUtils__removeExistingTransitionPredictionsFrom
             [v15 stopTimeCFAbsolute];
             v20 = v19;
             [v15 startTimeCFAbsolute];
-            v16 = [MEMORY[0x1E696AD98] numberWithDouble:v20 - v21];
-            [v32 addObject:v16];
+            visitIdentifierOrigin = [MEMORY[0x1E696AD98] numberWithDouble:v20 - v21];
+            [array addObject:visitIdentifierOrigin];
           }
 
           else
@@ -2405,13 +2405,13 @@ BOOL __102__PCConstraintsWeightingUtils__removeExistingTransitionPredictionsFrom
     while (v12);
   }
 
-  if ([v32 count])
+  if ([array count])
   {
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v22 = v32;
+    v22 = array;
     v23 = [v22 countByEnumeratingWithState:&v33 objects:v41 count:16];
     if (v23)
     {
@@ -2454,18 +2454,18 @@ BOOL __102__PCConstraintsWeightingUtils__removeExistingTransitionPredictionsFrom
   return v29;
 }
 
-+ (id)_estimatedTransportsFromTransitions:(id)a3 originVisitId:(id)a4 destinationVisitId:(id)a5
++ (id)_estimatedTransportsFromTransitions:(id)transitions originVisitId:(id)id destinationVisitId:(id)visitId
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v37 = a5;
-  v9 = [MEMORY[0x1E695DF90] dictionary];
+  transitionsCopy = transitions;
+  idCopy = id;
+  visitIdCopy = visitId;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v10 = v7;
+  v10 = transitionsCopy;
   v11 = [v10 countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v11)
   {
@@ -2483,53 +2483,53 @@ BOOL __102__PCConstraintsWeightingUtils__removeExistingTransitionPredictionsFrom
         }
 
         v16 = *(*(&v41 + 1) + 8 * v15);
-        v17 = [v16 visitIdentifierOrigin];
-        if (![v17 isEqualToData:v8])
+        visitIdentifierOrigin = [v16 visitIdentifierOrigin];
+        if (![visitIdentifierOrigin isEqualToData:idCopy])
         {
           goto LABEL_16;
         }
 
-        v18 = [v16 visitIdentifierDestination];
-        v19 = [v18 isEqualToData:v37];
+        visitIdentifierDestination = [v16 visitIdentifierDestination];
+        v19 = [visitIdentifierDestination isEqualToData:visitIdCopy];
 
         if (!v19)
         {
           goto LABEL_17;
         }
 
-        v20 = 0.0;
+        motionActivityConfidence = 0.0;
         if (![v16 hasPredominantMotionActivity])
         {
           goto LABEL_14;
         }
 
-        v21 = [v16 predominantMotionActivity];
-        v22 = [v21 hasMotionActivityType];
+        predominantMotionActivity = [v16 predominantMotionActivity];
+        hasMotionActivityType = [predominantMotionActivity hasMotionActivityType];
 
-        if (!v22)
+        if (!hasMotionActivityType)
         {
           goto LABEL_14;
         }
 
-        v23 = [v16 predominantMotionActivity];
-        v24 = [v23 motionActivityType];
+        predominantMotionActivity2 = [v16 predominantMotionActivity];
+        motionActivityType = [predominantMotionActivity2 motionActivityType];
 
-        v25 = [v16 predominantMotionActivity];
-        v20 = [v25 motionActivityConfidence];
+        predominantMotionActivity3 = [v16 predominantMotionActivity];
+        motionActivityConfidence = [predominantMotionActivity3 motionActivityConfidence];
 
-        if ((v24 - 2) < 2)
+        if ((motionActivityType - 2) < 2)
         {
           v26 = 1;
           goto LABEL_15;
         }
 
-        if (v24 == 5)
+        if (motionActivityType == 5)
         {
           v26 = 3;
           goto LABEL_15;
         }
 
-        if (v24 == 4)
+        if (motionActivityType == 4)
         {
           v26 = 2;
         }
@@ -2541,15 +2541,15 @@ LABEL_14:
         }
 
 LABEL_15:
-        v17 = [MEMORY[0x1E696AD98] numberWithInteger:v26];
-        v27 = [v9 objectForKeyedSubscript:v17];
+        visitIdentifierOrigin = [MEMORY[0x1E696AD98] numberWithInteger:v26];
+        v27 = [dictionary objectForKeyedSubscript:visitIdentifierOrigin];
         [v27 doubleValue];
         v29 = v28;
 
-        v30 = [MEMORY[0x1E696AD98] numberWithDouble:v20 + v29];
-        [v9 setObject:v30 forKeyedSubscript:v17];
+        v30 = [MEMORY[0x1E696AD98] numberWithDouble:motionActivityConfidence + v29];
+        [dictionary setObject:v30 forKeyedSubscript:visitIdentifierOrigin];
 
-        v14 = v14 + v20;
+        v14 = v14 + motionActivityConfidence;
 LABEL_16:
 
 LABEL_17:
@@ -2569,17 +2569,17 @@ LABEL_17:
   v14 = 0.0;
 LABEL_24:
 
-  if ([v9 count])
+  if ([dictionary count])
   {
-    v32 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __100__PCConstraintsWeightingUtils__estimatedTransportsFromTransitions_originVisitId_destinationVisitId___block_invoke;
     v38[3] = &unk_1E83B86E0;
     v40 = v14;
-    v39 = v32;
-    v33 = v32;
-    [v9 enumerateKeysAndObjectsUsingBlock:v38];
+    v39 = array;
+    v33 = array;
+    [dictionary enumerateKeysAndObjectsUsingBlock:v38];
     v34 = [v33 copy];
   }
 
@@ -2606,37 +2606,37 @@ void __100__PCConstraintsWeightingUtils__estimatedTransportsFromTransitions_orig
   [*(a1 + 32) addObject:v9];
 }
 
-+ (double)_estimatedTransitionDurationInSecondsForDistance:(double)a3 drivingProbability:(double *)a4
++ (double)_estimatedTransitionDurationInSecondsForDistance:(double)distance drivingProbability:(double *)probability
 {
-  v6 = 1.0 / (exp((a3 + -1.0) * -8.0) + 1.0);
-  if (a4)
+  v6 = 1.0 / (exp((distance + -1.0) * -8.0) + 1.0);
+  if (probability)
   {
-    *a4 = v6;
+    *probability = v6;
   }
 
   v7 = 40.0;
-  if (a3 > 10.0)
+  if (distance > 10.0)
   {
     v7 = 70.0;
   }
 
-  if (a3 > 30.0)
+  if (distance > 30.0)
   {
     v7 = 100.0;
   }
 
-  return a3 / (v7 * v6 + (1.0 - v6) * 5.0) * 3600.0;
+  return distance / (v7 * v6 + (1.0 - v6) * 5.0) * 3600.0;
 }
 
-+ (void)_trimResults:(id)a3 currentTime:(double)a4 windowEndTime:(double)a5
++ (void)_trimResults:(id)results currentTime:(double)time windowEndTime:(double)endTime
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  resultsCopy = results;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v8 = [resultsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2647,26 +2647,26 @@ void __100__PCConstraintsWeightingUtils__estimatedTransportsFromTransitions_orig
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(resultsCopy);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
         [v12 entryTime];
-        if (v13 < a4)
+        if (v13 < time)
         {
-          [v12 setEntryTime:a4];
+          [v12 setEntryTime:time];
           [v12 setEntryUnc:1.0];
         }
 
         [v12 exitTime];
-        if (v14 > a5)
+        if (v14 > endTime)
         {
-          [v12 setExitTime:a5];
+          [v12 setExitTime:endTime];
           [v12 setExitUnc:1.0];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [resultsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -2675,17 +2675,17 @@ void __100__PCConstraintsWeightingUtils__estimatedTransportsFromTransitions_orig
   v15 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_currentContextPredictionFromMergeResults:(id)a3 currentLoiIdentifier:(id)a4 currentTime:(double)a5
++ (id)_currentContextPredictionFromMergeResults:(id)results currentLoiIdentifier:(id)identifier currentTime:(double)time
 {
   v67 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x1E695DF70] array];
+  resultsCopy = results;
+  identifierCopy = identifier;
+  array = [MEMORY[0x1E695DF70] array];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v11 = v8;
+  v11 = resultsCopy;
   v12 = [v11 countByEnumeratingWithState:&v61 objects:v66 count:16];
   if (v12)
   {
@@ -2702,15 +2702,15 @@ void __100__PCConstraintsWeightingUtils__estimatedTransportsFromTransitions_orig
         }
 
         v16 = *(*(&v61 + 1) + 8 * v15);
-        v17 = [v16 loiId];
-        if ([v17 isEqualToData:v9] && (objc_msgSend(v16, "entryTime"), v18 <= a5))
+        loiId = [v16 loiId];
+        if ([loiId isEqualToData:identifierCopy] && (objc_msgSend(v16, "entryTime"), v18 <= time))
         {
           [v16 exitTime];
           v20 = v19;
 
-          if (v20 > a5)
+          if (v20 > time)
           {
-            [v10 addObject:v16];
+            [array addObject:v16];
           }
         }
 
@@ -2729,46 +2729,46 @@ void __100__PCConstraintsWeightingUtils__estimatedTransportsFromTransitions_orig
     while (v21);
   }
 
-  if ([v10 count] < 2)
+  if ([array count] < 2)
   {
-    if ([v10 count] == 1)
+    if ([array count] == 1)
     {
-      v22 = [v10 firstObject];
+      firstObject = [array firstObject];
     }
 
     else
     {
-      [a1 _minimumStayAtCurrentContextInSec];
-      v24 = a5 - v23;
-      [a1 _minimumStayAtCurrentContextInSec];
-      v26 = v25 + a5;
-      v27 = [MEMORY[0x1E695DF70] array];
+      [self _minimumStayAtCurrentContextInSec];
+      v24 = time - v23;
+      [self _minimumStayAtCurrentContextInSec];
+      v26 = v25 + time;
+      array2 = [MEMORY[0x1E695DF70] array];
       v28 = objc_opt_new();
       v29 = objc_opt_class();
       v30 = NSStringFromClass(v29);
       [v28 setIdentifier:v30];
 
-      v31 = [a1 transitionDummyLOI];
-      v32 = [v9 isEqualToData:v31];
+      transitionDummyLOI = [self transitionDummyLOI];
+      v32 = [identifierCopy isEqualToData:transitionDummyLOI];
 
       if (v32)
       {
         v33 = objc_opt_new();
         [v33 setProbability:1.0];
         [v33 setTransportMode:0];
-        [v27 addObject:v33];
+        [array2 addObject:v33];
       }
 
       v34 = [PCMergeResult alloc];
-      v53 = a1;
-      [a1 _minimumStayAtCurrentContextInSec];
+      selfCopy = self;
+      [self _minimumStayAtCurrentContextInSec];
       v36 = v35;
       v55 = v28;
       v37 = [MEMORY[0x1E695DFD8] setWithObject:v28];
-      v56 = v27;
-      v54 = [(PCMergeResult *)v34 initWithLoiId:v9 confidence:v37 entryTime:v27 exitTime:1.0 entryUnc:v24 exitUnc:v26 sources:0.0 transports:v36];
+      v56 = array2;
+      v54 = [(PCMergeResult *)v34 initWithLoiId:identifierCopy confidence:v37 entryTime:array2 exitTime:1.0 entryUnc:v24 exitUnc:v26 sources:0.0 transports:v36];
 
-      v38 = [MEMORY[0x1E695DF70] array];
+      array3 = [MEMORY[0x1E695DF70] array];
       v57 = 0u;
       v58 = 0u;
       v59 = 0u;
@@ -2790,15 +2790,15 @@ void __100__PCConstraintsWeightingUtils__estimatedTransportsFromTransitions_orig
             }
 
             v44 = *(*(&v57 + 1) + 8 * v43);
-            v45 = [v44 loiId];
-            if ([v45 isEqualToData:v9] && (objc_msgSend(v44, "entryTime"), v46 <= v26))
+            loiId2 = [v44 loiId];
+            if ([loiId2 isEqualToData:identifierCopy] && (objc_msgSend(v44, "entryTime"), v46 <= v26))
             {
               [v44 exitTime];
               v48 = v47;
 
               if (v48 >= v24)
               {
-                [v38 addObject:v44];
+                [array3 addObject:v44];
               }
             }
 
@@ -2817,18 +2817,18 @@ void __100__PCConstraintsWeightingUtils__estimatedTransportsFromTransitions_orig
         while (v49);
       }
 
-      if ([v38 count])
+      if ([array3 count])
       {
-        [v39 removeObjectsInArray:v38];
-        v22 = v54;
-        [v38 addObject:v54];
-        v50 = [v53 _aggregateMergeResults:v38];
+        [v39 removeObjectsInArray:array3];
+        firstObject = v54;
+        [array3 addObject:v54];
+        v50 = [selfCopy _aggregateMergeResults:array3];
         [v39 addObject:v50];
       }
 
       else
       {
-        v22 = v54;
+        firstObject = v54;
         [v39 addObject:v54];
       }
     }
@@ -2836,25 +2836,25 @@ void __100__PCConstraintsWeightingUtils__estimatedTransportsFromTransitions_orig
 
   else
   {
-    v22 = [a1 _aggregateMergeResults:v10];
-    [v11 removeObjectsInArray:v10];
-    [v11 addObject:v22];
+    firstObject = [self _aggregateMergeResults:array];
+    [v11 removeObjectsInArray:array];
+    [v11 addObject:firstObject];
   }
 
   v51 = *MEMORY[0x1E69E9840];
 
-  return v22;
+  return firstObject;
 }
 
-+ (id)_transitionEstimationInfoWithNextResult:(id)a3 currentLoiIdentifier:(id)a4 transitionHistory:(id)a5 loiToLocation:(id)a6
++ (id)_transitionEstimationInfoWithNextResult:(id)result currentLoiIdentifier:(id)identifier transitionHistory:(id)history loiToLocation:(id)location
 {
   v38 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  v14 = [v10 loiId];
-  v15 = [a1 _predictedTransitionInfoFromHistoricalTransitions:v13 originVisitId:v11 destinationVisitId:v14];
+  resultCopy = result;
+  identifierCopy = identifier;
+  locationCopy = location;
+  historyCopy = history;
+  loiId = [resultCopy loiId];
+  v15 = [self _predictedTransitionInfoFromHistoricalTransitions:historyCopy originVisitId:identifierCopy destinationVisitId:loiId];
 
   if (v15)
   {
@@ -2863,16 +2863,16 @@ void __100__PCConstraintsWeightingUtils__estimatedTransportsFromTransitions_orig
 
   else
   {
-    v17 = [v12 objectForKeyedSubscript:v11];
-    v18 = [v10 loiId];
-    v19 = [v12 objectForKeyedSubscript:v18];
+    v17 = [locationCopy objectForKeyedSubscript:identifierCopy];
+    loiId2 = [resultCopy loiId];
+    v19 = [locationCopy objectForKeyedSubscript:loiId2];
 
     v35 = 0.0;
-    v20 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if (v17 && v19)
     {
       [PCLocationUtils distanceInMetersBetweenLocation:v17 andLocation:v19];
-      [a1 _estimatedTransitionDurationInSecondsForDistance:&v35 drivingProbability:v21 / 1000.0];
+      [self _estimatedTransitionDurationInSecondsForDistance:&v35 drivingProbability:v21 / 1000.0];
       v23 = v22;
     }
 
@@ -2883,16 +2883,16 @@ void __100__PCConstraintsWeightingUtils__estimatedTransportsFromTransitions_orig
       {
         if (v17)
         {
-          v25 = [v10 loiId];
+          loiId3 = [resultCopy loiId];
         }
 
         else
         {
-          v25 = v11;
+          loiId3 = identifierCopy;
         }
 
         *buf = 138412290;
-        v37 = v25;
+        v37 = loiId3;
         _os_log_impl(&dword_1CEE74000, v24, OS_LOG_TYPE_ERROR, "Unknown location for LOI with id %@", buf, 0xCu);
         if (v17)
         {
@@ -2906,8 +2906,8 @@ void __100__PCConstraintsWeightingUtils__estimatedTransportsFromTransitions_orig
     v31 = 3221225472;
     v32 = __124__PCConstraintsWeightingUtils__transitionEstimationInfoWithNextResult_currentLoiIdentifier_transitionHistory_loiToLocation___block_invoke;
     v33 = &unk_1E83B8708;
-    v34 = v20;
-    v26 = v20;
+    v34 = array;
+    v26 = array;
     v27 = _Block_copy(&v30);
     v27[2](v27, 2, v35);
     v27[2](v27, 1, 1.0 - v35);
@@ -2939,40 +2939,40 @@ void __124__PCConstraintsWeightingUtils__transitionEstimationInfoWithNextResult_
   return *&qword_1EE04AF00;
 }
 
-+ (void)_updateExitTimeAndUncertaintyOfCurrentContextWithNextResult:(id)a3 currentTime:(double)a4 defaultDurationAtCurrentContext:(double)a5 transitionDuration:(double)a6 inOutExitTime:(double *)a7 inOutExitUnc:(double *)a8 isGeneratedCurrentContext:(BOOL)a9
++ (void)_updateExitTimeAndUncertaintyOfCurrentContextWithNextResult:(id)result currentTime:(double)time defaultDurationAtCurrentContext:(double)context transitionDuration:(double)duration inOutExitTime:(double *)exitTime inOutExitUnc:(double *)unc isGeneratedCurrentContext:(BOOL)currentContext
 {
-  v9 = a9;
+  currentContextCopy = currentContext;
   v34 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  [v15 entryTime];
+  resultCopy = result;
+  [resultCopy entryTime];
   v17 = v16;
-  [v15 entryUnc];
-  v18 = *a7;
-  v20 = v17 - v19 - a6;
-  v21 = v20 - *a7;
+  [resultCopy entryUnc];
+  v18 = *exitTime;
+  v20 = v17 - v19 - duration;
+  v21 = v20 - *exitTime;
   if (v21 < 0.0)
   {
     v22 = _plc_log_get_normal_handle(PCLogCategoryConstraintsWeighting);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v30 = 134218240;
-      v31 = a4;
+      timeCopy = time;
       v32 = 2048;
-      v33 = a6;
+      durationCopy = duration;
       _os_log_impl(&dword_1CEE74000, v22, OS_LOG_TYPE_DEFAULT, "Formed uncertainty less than 0.0, current time, %.2f, transition duration, %.2f", &v30, 0x16u);
     }
 
     v21 = 0.0;
   }
 
-  v23 = a6 * 0.1;
+  v23 = duration * 0.1;
   v24 = v20 - v23;
-  if (!v9)
+  if (!currentContextCopy)
   {
     v24 = v18;
   }
 
-  v25 = a4 + a5;
+  v25 = time + context;
   if (v24 >= v25)
   {
     v25 = v24;
@@ -2981,11 +2981,11 @@ void __124__PCConstraintsWeightingUtils__transitionEstimationInfoWithNextResult_
   else
   {
     v26 = v25 - v24;
-    [v15 entryTime];
-    [v15 setEntryTime:v26 + v27];
+    [resultCopy entryTime];
+    [resultCopy setEntryTime:v26 + v27];
   }
 
-  if (v9)
+  if (currentContextCopy)
   {
     v28 = v23;
   }
@@ -2995,50 +2995,50 @@ void __124__PCConstraintsWeightingUtils__transitionEstimationInfoWithNextResult_
     v28 = v21;
   }
 
-  *a7 = v25;
-  *a8 = v28;
+  *exitTime = v25;
+  *unc = v28;
 
   v29 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_insertTransitionPredictionWithNextResult:(id)a3 currentExitTime:(double)a4 currentExitUnc:(double)a5 transitionInfo:(id)a6 mergeResults:(id)a7
++ (void)_insertTransitionPredictionWithNextResult:(id)result currentExitTime:(double)time currentExitUnc:(double)unc transitionInfo:(id)info mergeResults:(id)results
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a3;
-  [a1 _removeExistingTransitionPredictionsFromMergeResults:v12 beforeMergeResult:v14];
+  resultsCopy = results;
+  infoCopy = info;
+  resultCopy = result;
+  [self _removeExistingTransitionPredictionsFromMergeResults:resultsCopy beforeMergeResult:resultCopy];
   v29 = objc_opt_new();
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
   [v29 setIdentifier:v16];
 
   v17 = [PCMergeResult alloc];
-  v18 = [a1 transitionDummyLOI];
-  [v14 confidence];
+  transitionDummyLOI = [self transitionDummyLOI];
+  [resultCopy confidence];
   v20 = v19;
-  [v14 entryTime];
+  [resultCopy entryTime];
   v22 = v21;
-  [v14 entryUnc];
+  [resultCopy entryUnc];
   v24 = v23;
 
   v25 = [MEMORY[0x1E695DFD8] setWithObject:v29];
-  v26 = [v13 predictedTransports];
+  predictedTransports = [infoCopy predictedTransports];
 
-  v27 = [v26 copy];
-  v28 = [(PCMergeResult *)v17 initWithLoiId:v18 confidence:v25 entryTime:v27 exitTime:v20 entryUnc:a4 exitUnc:v22 sources:a5 transports:v24];
+  v27 = [predictedTransports copy];
+  v28 = [(PCMergeResult *)v17 initWithLoiId:transitionDummyLOI confidence:v25 entryTime:v27 exitTime:v20 entryUnc:time exitUnc:v22 sources:unc transports:v24];
 
-  [v12 addObject:v28];
+  [resultsCopy addObject:v28];
 }
 
-+ (BOOL)_isGeneratedCurrentContext:(id)a3
++ (BOOL)_isGeneratedCurrentContext:(id)context
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [a3 sources];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  sources = [context sources];
+  v4 = [sources countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = *v14;
@@ -3048,13 +3048,13 @@ void __124__PCConstraintsWeightingUtils__transitionEstimationInfoWithNextResult_
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sources);
         }
 
-        v7 = [*(*(&v13 + 1) + 8 * i) identifier];
+        identifier = [*(*(&v13 + 1) + 8 * i) identifier];
         v8 = objc_opt_class();
         v9 = NSStringFromClass(v8);
-        v10 = [v7 isEqualToString:v9];
+        v10 = [identifier isEqualToString:v9];
 
         if (v10)
         {
@@ -3063,7 +3063,7 @@ void __124__PCConstraintsWeightingUtils__transitionEstimationInfoWithNextResult_
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [sources countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v4)
       {
         continue;
@@ -3079,33 +3079,33 @@ LABEL_11:
   return v4;
 }
 
-+ (void)_finalizeMergeResults:(id)a3 currentTime:(double)a4 windowEndTime:(double)a5 currentContext:(id)a6 currentExitTime:(double)a7 currentExitUnc:(double)a8
++ (void)_finalizeMergeResults:(id)results currentTime:(double)time windowEndTime:(double)endTime currentContext:(id)context currentExitTime:(double)exitTime currentExitUnc:(double)unc
 {
-  v14 = a6;
-  v15 = a3;
-  [v14 setExitTime:a7];
-  [v14 setExitUnc:a8];
-  [v14 setConfidence:1.0];
+  contextCopy = context;
+  resultsCopy = results;
+  [contextCopy setExitTime:exitTime];
+  [contextCopy setExitUnc:unc];
+  [contextCopy setConfidence:1.0];
 
-  [a1 _trimResults:v15 currentTime:a4 windowEndTime:a5];
+  [self _trimResults:resultsCopy currentTime:time windowEndTime:endTime];
 }
 
-+ (void)_logMergeResults:(id)a3 withDescription:(id)a4
++ (void)_logMergeResults:(id)results withDescription:(id)description
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  resultsCopy = results;
+  descriptionCopy = description;
   v7 = _plc_log_get_normal_handle(PCLogCategoryConstraintsWeighting);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = descriptionCopy;
     v11 = 2048;
-    v12 = [v5 count];
+    v12 = [resultsCopy count];
     _os_log_impl(&dword_1CEE74000, v7, OS_LOG_TYPE_DEBUG, "%@, Merge Results (%lu):", &v9, 0x16u);
   }
 
-  [v5 enumerateObjectsUsingBlock:&__block_literal_global_47];
+  [resultsCopy enumerateObjectsUsingBlock:&__block_literal_global_47];
   v8 = *MEMORY[0x1E69E9840];
 }
 
@@ -3127,17 +3127,17 @@ void __64__PCConstraintsWeightingUtils__logMergeResults_withDescription___block_
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_probabilitySeriesFromBins:(id)a3 loiId:(id)a4
++ (id)_probabilitySeriesFromBins:(id)bins loiId:(id)id
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  binsCopy = bins;
+  idCopy = id;
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(binsCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v5;
+  v8 = binsCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -3152,8 +3152,8 @@ void __64__PCConstraintsWeightingUtils__logMergeResults_withDescription___block_
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v19 + 1) + 8 * i) loiProbs];
-        v14 = [v13 objectForKeyedSubscript:v6];
+        loiProbs = [*(*(&v19 + 1) + 8 * i) loiProbs];
+        v14 = [loiProbs objectForKeyedSubscript:idCopy];
         v15 = v14;
         if (v14)
         {
@@ -3179,20 +3179,20 @@ void __64__PCConstraintsWeightingUtils__logMergeResults_withDescription___block_
   return v7;
 }
 
-+ (id)_movingAverageForSeries:(id)a3 windowSize:(int64_t)a4 loiIdForPadding:(id)a5 currentContextId:(id)a6 bins:(id)a7
++ (id)_movingAverageForSeries:(id)series windowSize:(int64_t)size loiIdForPadding:(id)padding currentContextId:(id)id bins:(id)bins
 {
-  v28 = a1;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v29 = a7;
-  v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v11, "count")}];
-  if ([v11 count])
+  selfCopy = self;
+  seriesCopy = series;
+  paddingCopy = padding;
+  idCopy = id;
+  binsCopy = bins;
+  v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(seriesCopy, "count")}];
+  if ([seriesCopy count])
   {
     v15 = 0;
-    v16 = a4 / 2;
+    v16 = size / 2;
     v30 = v14;
-    v31 = (2 * (a4 / 2)) | 1;
+    v31 = (2 * (size / 2)) | 1;
     do
     {
       v17 = v15 - v16;
@@ -3206,7 +3206,7 @@ void __64__PCConstraintsWeightingUtils__logMergeResults_withDescription___block_
         {
           if ((v17 & 0x8000000000000000) != 0)
           {
-            if ([v12 isEqualToData:{v13, v18}])
+            if ([paddingCopy isEqualToData:{idCopy, v18}])
             {
               v22 = 1.0;
             }
@@ -3216,15 +3216,15 @@ void __64__PCConstraintsWeightingUtils__logMergeResults_withDescription___block_
               v22 = 0.0;
             }
 
-            v20 |= [v12 isEqualToData:{v13, v28}];
+            v20 |= [paddingCopy isEqualToData:{idCopy, selfCopy}];
           }
 
           else
           {
             v22 = 0.0;
-            if (v17 < [v11 count])
+            if (v17 < [seriesCopy count])
             {
-              v23 = [v11 objectAtIndexedSubscript:v17];
+              v23 = [seriesCopy objectAtIndexedSubscript:v17];
               [v23 doubleValue];
               v22 = v24;
             }
@@ -3238,39 +3238,39 @@ void __64__PCConstraintsWeightingUtils__logMergeResults_withDescription___block_
         while (v21);
         if (v20)
         {
-          v25 = [v29 objectAtIndexedSubscript:v15];
-          [v28 _addConstraintSourceToBin:v25 loiId:v13];
+          v25 = [binsCopy objectAtIndexedSubscript:v15];
+          [selfCopy _addConstraintSourceToBin:v25 loiId:idCopy];
         }
 
         v18 = v31;
         v14 = v30;
       }
 
-      v26 = [MEMORY[0x1E696AD98] numberWithDouble:{v19 / v18, v28}];
+      v26 = [MEMORY[0x1E696AD98] numberWithDouble:{v19 / v18, selfCopy}];
       [v14 addObject:v26];
 
       ++v15;
     }
 
-    while (v15 < [v11 count]);
+    while (v15 < [seriesCopy count]);
   }
 
   return v14;
 }
 
-+ (void)_updateBins:(id)a3 withFilteredSeries:(id)a4 loiId:(id)a5
++ (void)_updateBins:(id)bins withFilteredSeries:(id)series loiId:(id)id
 {
-  v7 = a4;
-  v8 = a5;
+  seriesCopy = series;
+  idCopy = id;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__PCConstraintsWeightingUtils__updateBins_withFilteredSeries_loiId___block_invoke;
   v11[3] = &unk_1E83B8750;
-  v12 = v8;
-  v13 = v7;
-  v9 = v7;
-  v10 = v8;
-  [a3 enumerateObjectsUsingBlock:v11];
+  v12 = idCopy;
+  v13 = seriesCopy;
+  v9 = seriesCopy;
+  v10 = idCopy;
+  [bins enumerateObjectsUsingBlock:v11];
 }
 
 void __68__PCConstraintsWeightingUtils__updateBins_withFilteredSeries_loiId___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -3283,23 +3283,23 @@ void __68__PCConstraintsWeightingUtils__updateBins_withFilteredSeries_loiId___bl
   [v7 setObject:v8 forKeyedSubscript:*(a1 + 32)];
 }
 
-+ (void)_addConstraintSourceToBin:(id)a3 loiId:(id)a4
++ (void)_addConstraintSourceToBin:(id)bin loiId:(id)id
 {
-  v12 = a3;
-  v5 = a4;
+  binCopy = bin;
+  idCopy = id;
   v6 = objc_opt_new();
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   [v6 setIdentifier:v8];
 
-  v9 = [v12 loiSources];
-  v10 = [v9 objectForKeyedSubscript:v5];
+  loiSources = [binCopy loiSources];
+  v10 = [loiSources objectForKeyedSubscript:idCopy];
 
   if (!v10)
   {
     v10 = [MEMORY[0x1E695DFA8] set];
-    v11 = [v12 loiSources];
-    [v11 setObject:v10 forKeyedSubscript:v5];
+    loiSources2 = [binCopy loiSources];
+    [loiSources2 setObject:v10 forKeyedSubscript:idCopy];
   }
 
   [v10 addObject:v6];

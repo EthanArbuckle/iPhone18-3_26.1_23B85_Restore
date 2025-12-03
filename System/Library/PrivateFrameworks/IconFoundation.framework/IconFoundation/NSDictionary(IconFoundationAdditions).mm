@@ -22,7 +22,7 @@
 
 - (id)_IF_objectOfClass:()IconFoundationAdditions forKey:
 {
-  v4 = [a1 objectForKey:a4];
+  v4 = [self objectForKey:a4];
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -39,7 +39,7 @@
 - (id)_IF_stringForKey:()IconFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 _IF_objectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self _IF_objectOfClass:objc_opt_class() forKey:v4];
 
   return v5;
 }
@@ -47,7 +47,7 @@
 - (id)_IF_numberForKey:()IconFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 _IF_objectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self _IF_objectOfClass:objc_opt_class() forKey:v4];
 
   return v5;
 }
@@ -55,7 +55,7 @@
 - (id)_IF_arrayForKey:()IconFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 _IF_objectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self _IF_objectOfClass:objc_opt_class() forKey:v4];
 
   return v5;
 }
@@ -63,7 +63,7 @@
 - (id)_IF_dictionaryForKey:()IconFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 _IF_objectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self _IF_objectOfClass:objc_opt_class() forKey:v4];
 
   return v5;
 }
@@ -71,7 +71,7 @@
 - (id)_IF_dataForKey:()IconFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 _IF_objectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self _IF_objectOfClass:objc_opt_class() forKey:v4];
 
   return v5;
 }
@@ -79,16 +79,16 @@
 - (uint64_t)_IF_BOOLForKey:()IconFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 _IF_objectOfClass:objc_opt_class() forKey:v4];
+  v5 = [self _IF_objectOfClass:objc_opt_class() forKey:v4];
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 - (uint64_t)_IF_BOOLForKey:()IconFoundationAdditions defaultValue:
 {
   v6 = a3;
-  v7 = [a1 _IF_objectOfClass:objc_opt_class() forKey:v6];
+  v7 = [self _IF_objectOfClass:objc_opt_class() forKey:v6];
 
   if (v7)
   {
@@ -120,7 +120,7 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      v10 = [a1 objectForKey:{*(*(&v12 + 1) + 8 * v9), v12}];
+      v10 = [self objectForKey:{*(*(&v12 + 1) + 8 * v9), v12}];
       if (objc_opt_isKindOfClass())
       {
         break;
@@ -151,7 +151,7 @@ LABEL_9:
 - (id)_IF_stringForKeys:()IconFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 _IF_objectOfClass:objc_opt_class() forKeys:v4];
+  v5 = [self _IF_objectOfClass:objc_opt_class() forKeys:v4];
 
   return v5;
 }
@@ -159,7 +159,7 @@ LABEL_9:
 - (id)_IF_numberForKeys:()IconFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 _IF_objectOfClass:objc_opt_class() forKeys:v4];
+  v5 = [self _IF_objectOfClass:objc_opt_class() forKeys:v4];
 
   return v5;
 }
@@ -167,7 +167,7 @@ LABEL_9:
 - (id)_IF_arrayForKeys:()IconFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 _IF_objectOfClass:objc_opt_class() forKeys:v4];
+  v5 = [self _IF_objectOfClass:objc_opt_class() forKeys:v4];
 
   return v5;
 }
@@ -175,7 +175,7 @@ LABEL_9:
 - (id)_IF_dictionaryForKeys:()IconFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 _IF_objectOfClass:objc_opt_class() forKeys:v4];
+  v5 = [self _IF_objectOfClass:objc_opt_class() forKeys:v4];
 
   return v5;
 }
@@ -183,16 +183,16 @@ LABEL_9:
 - (uint64_t)_IF_BOOLForKeys:()IconFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 _IF_objectOfClass:objc_opt_class() forKeys:v4];
+  v5 = [self _IF_objectOfClass:objc_opt_class() forKeys:v4];
 
-  v6 = [v5 BOOLValue];
-  return v6;
+  bOOLValue = [v5 BOOLValue];
+  return bOOLValue;
 }
 
 - (uint64_t)_IF_BOOLForKeys:()IconFoundationAdditions defaultValue:
 {
   v6 = a3;
-  v7 = [a1 _IF_objectOfClass:objc_opt_class() forKeys:v6];
+  v7 = [self _IF_objectOfClass:objc_opt_class() forKeys:v6];
 
   if (v7)
   {
@@ -206,7 +206,7 @@ LABEL_9:
 {
   v4 = MEMORY[0x1E695DF90];
   v5 = a3;
-  v6 = [[v4 alloc] initWithDictionary:a1];
+  v6 = [[v4 alloc] initWithDictionary:self];
   [v6 addEntriesFromDictionary:v5];
 
   v7 = [v6 copy];
@@ -239,11 +239,11 @@ LABEL_9:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [a1 objectForKeyedSubscript:{v11, v16}];
+        v12 = [self objectForKeyedSubscript:{v11, v16}];
 
         if (v12)
         {
-          v13 = [a1 objectForKeyedSubscript:v11];
+          v13 = [self objectForKeyedSubscript:v11];
           [v5 setObject:v13 forKey:v11];
         }
       }

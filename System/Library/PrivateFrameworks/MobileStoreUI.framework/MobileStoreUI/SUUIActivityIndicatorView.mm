@@ -1,30 +1,30 @@
 @interface SUUIActivityIndicatorView
 + (CGSize)_activityIndicatorSize;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringWithLabel:(id)a3 context:(id)a4;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringWithLabel:(id)label context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
 - (BOOL)_isAnimating;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)_startAnimating;
 - (void)_stopAnimating;
 - (void)_updateSpinnerAnimation;
 - (void)didMoveToSuperview;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation SUUIActivityIndicatorView
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  contextCopy = context;
+  elementCopy = element;
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v9 = v8;
   v11 = v10;
 
@@ -35,30 +35,30 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v11 = a5;
-  v8 = [a3 text];
-  if (v8)
+  contextCopy = context;
+  text = [element text];
+  if (text)
   {
-    v9 = [a1 _attributedStringWithLabel:v8 context:v11];
-    v10 = [v11 labelLayoutCache];
-    [v10 requestLayoutForLabel:v8 attributedString:v9 width:a4];
+    v9 = [self _attributedStringWithLabel:text context:contextCopy];
+    labelLayoutCache = [contextCopy labelLayoutCache];
+    [labelLayoutCache requestLayoutForLabel:text attributedString:v9 width:width];
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v8 = a5;
-  v9 = a4;
-  [a1 _activityIndicatorSize];
+  contextCopy = context;
+  elementCopy = element;
+  [self _activityIndicatorSize];
   v11 = v10;
   v13 = v12;
-  v14 = [v9 text];
+  text = [elementCopy text];
 
-  if (v14)
+  if (text)
   {
-    [v8 sizeForViewElement:v14 width:a3];
+    [contextCopy sizeForViewElement:text width:width];
     v13 = v13 + v16;
     if (v11 < v15)
     {
@@ -73,20 +73,20 @@
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __65__SUUIActivityIndicatorView_reloadWithViewElement_width_context___block_invoke;
   v15 = &unk_2798F5EF0;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = a4;
-  v10 = v9;
-  v11 = v8;
+  v16 = elementCopy;
+  selfCopy = self;
+  v18 = contextCopy;
+  widthCopy = width;
+  v10 = contextCopy;
+  v11 = elementCopy;
   [(SUUIViewReuseView *)self modifyUsingBlock:&v12];
   [(SUUIActivityIndicatorView *)self _updateSpinnerAnimation:v12];
 }
@@ -160,15 +160,15 @@ void __65__SUUIActivityIndicatorView_reloadWithViewElement_width_context___block
   *(*(a1 + 40) + 424) = SUUIViewElementAlignmentForStyle(v20);
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SUUIActivityIndicatorView *)self setNeedsLayout];
   }
 }
@@ -195,12 +195,12 @@ void __65__SUUIActivityIndicatorView_reloadWithViewElement_width_context___block
   [(SUUIActivityIndicatorView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(SUUIViewReuseView *)self allExistingViews];
+  allExistingViews = [(SUUIViewReuseView *)self allExistingViews];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v8 = [allExistingViews countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v8)
   {
     v9 = v8;
@@ -213,7 +213,7 @@ void __65__SUUIActivityIndicatorView_reloadWithViewElement_width_context___block
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allExistingViews);
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
@@ -221,7 +221,7 @@ void __65__SUUIActivityIndicatorView_reloadWithViewElement_width_context___block
         [v14 setFrame:{v11, v12, v15, v16}];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v9 = [allExistingViews countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v9);
@@ -251,24 +251,24 @@ void __65__SUUIActivityIndicatorView_reloadWithViewElement_width_context___block
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v4.receiver = self;
   v4.super_class = SUUIActivityIndicatorView;
-  [(SUUIActivityIndicatorView *)&v4 setHidden:a3];
+  [(SUUIActivityIndicatorView *)&v4 setHidden:hidden];
   [(SUUIActivityIndicatorView *)self _updateSpinnerAnimation];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = *MEMORY[0x277CBF3A8];
   v7 = *(MEMORY[0x277CBF3A8] + 8);
   imageView = self->_imageView;
   if (imageView || (imageView = self->_indicatorView) != 0)
   {
-    [imageView sizeThatFits:{a3.width, a3.height}];
+    [imageView sizeThatFits:{fits.width, fits.height}];
     v7 = v7 + v10;
     if (v9 >= v6)
     {
@@ -316,27 +316,27 @@ void __51__SUUIActivityIndicatorView__activityIndicatorSize__block_invoke()
   _activityIndicatorSize_sIndicatorSize_1 = v1;
 }
 
-+ (id)_attributedStringWithLabel:(id)a3 context:(id)a4
++ (id)_attributedStringWithLabel:(id)label context:(id)context
 {
-  v4 = a3;
-  v5 = [v4 style];
-  v6 = SUUIViewElementFontWithStyle(v5);
+  labelCopy = label;
+  style = [labelCopy style];
+  v6 = SUUIViewElementFontWithStyle(style);
   if (!v6)
   {
     v7 = SUUIFontPreferredFontForTextStyle(8);
     v6 = [v7 fontWithSize:11.0];
   }
 
-  v8 = [v5 ikColor];
-  v9 = [v8 color];
+  ikColor = [style ikColor];
+  color = [ikColor color];
 
-  if (!v9)
+  if (!color)
   {
-    v9 = [MEMORY[0x277D75348] secondaryLabelColor];
+    color = [MEMORY[0x277D75348] secondaryLabelColor];
   }
 
-  v10 = [v4 text];
-  v11 = [v10 attributedStringWithDefaultFont:v6 foregroundColor:v9 style:v5];
+  text = [labelCopy text];
+  v11 = [text attributedStringWithDefaultFont:v6 foregroundColor:color style:style];
 
   return v11;
 }
@@ -376,8 +376,8 @@ void __51__SUUIActivityIndicatorView__activityIndicatorSize__block_invoke()
       [v8 setFromValue:v5];
       v6 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:6.28318531];
       [v8 setToValue:v6];
-      v7 = [(UIImageView *)self->_imageView layer];
-      [v7 addAnimation:v8 forKey:@"transform"];
+      layer = [(UIImageView *)self->_imageView layer];
+      [layer addAnimation:v8 forKey:@"transform"];
     }
   }
 }
@@ -396,16 +396,16 @@ void __51__SUUIActivityIndicatorView__activityIndicatorSize__block_invoke()
     else
     {
       self->_animating = 0;
-      v4 = [(UIImageView *)self->_imageView layer];
-      [v4 removeAnimationForKey:@"transform"];
+      layer = [(UIImageView *)self->_imageView layer];
+      [layer removeAnimationForKey:@"transform"];
     }
   }
 }
 
 - (void)_updateSpinnerAnimation
 {
-  v3 = [(SUUIActivityIndicatorView *)self window];
-  if (v3 && (v4 = v3, v5 = [(SUUIActivityIndicatorView *)self isHidden], v4, (v5 & 1) == 0))
+  window = [(SUUIActivityIndicatorView *)self window];
+  if (window && (v4 = window, v5 = [(SUUIActivityIndicatorView *)self isHidden], v4, (v5 & 1) == 0))
   {
 
     [(SUUIActivityIndicatorView *)self _startAnimating];

@@ -1,23 +1,23 @@
 @interface PCPCalendarEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsStatus:(id)a3;
+- (int)StringAsStatus:(id)status;
 - (int)status;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasStartTimeCFAbsolute:(BOOL)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasStartTimeCFAbsolute:(BOOL)absolute;
+- (void)setHasStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPCalendarEvent
 
-- (void)setHasStartTimeCFAbsolute:(BOOL)a3
+- (void)setHasStartTimeCFAbsolute:(BOOL)absolute
 {
-  if (a3)
+  if (absolute)
   {
     v3 = 2;
   }
@@ -43,9 +43,9 @@
   }
 }
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 4;
   }
@@ -58,45 +58,45 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsStatus:(id)a3
+- (int)StringAsStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Pending"])
+  else if ([statusCopy isEqualToString:@"Pending"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Accepted"])
+  else if ([statusCopy isEqualToString:@"Accepted"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Declined"])
+  else if ([statusCopy isEqualToString:@"Declined"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Tentative"])
+  else if ([statusCopy isEqualToString:@"Tentative"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Delegated"])
+  else if ([statusCopy isEqualToString:@"Delegated"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Completed"])
+  else if ([statusCopy isEqualToString:@"Completed"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"InProcess"])
+  else if ([statusCopy isEqualToString:@"InProcess"])
   {
     v4 = 7;
   }
@@ -115,20 +115,20 @@
   v8.receiver = self;
   v8.super_class = PCPCalendarEvent;
   v4 = [(PCPCalendarEvent *)&v8 description];
-  v5 = [(PCPCalendarEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPCalendarEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   calendarId = self->_calendarId;
   if (calendarId)
   {
-    [v3 setObject:calendarId forKey:@"calendarId"];
+    [dictionary setObject:calendarId forKey:@"calendarId"];
   }
 
   titleOfEvent = self->_titleOfEvent;
@@ -199,39 +199,39 @@ LABEL_19:
   location = self->_location;
   if (location)
   {
-    v15 = [(PCPLocation *)location dictionaryRepresentation];
-    [v4 setObject:v15 forKey:@"location"];
+    dictionaryRepresentation = [(PCPLocation *)location dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"location"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_calendarId)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_titleOfEvent)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_eventId)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_locationTitle)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   has = self->_has;
@@ -239,7 +239,7 @@ LABEL_19:
   {
     startTimeCFAbsolute = self->_startTimeCFAbsolute;
     PBDataWriterWriteDoubleField();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -260,56 +260,56 @@ LABEL_11:
 
   endTimeCFAbsolute = self->_endTimeCFAbsolute;
   PBDataWriterWriteDoubleField();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_12:
     status = self->_status;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_13:
   if (self->_location)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_calendarId)
   {
-    [v4 setCalendarId:?];
-    v4 = v6;
+    [toCopy setCalendarId:?];
+    toCopy = v6;
   }
 
   if (self->_titleOfEvent)
   {
     [v6 setTitleOfEvent:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_eventId)
   {
     [v6 setEventId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_locationTitle)
   {
     [v6 setLocationTitle:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_startTimeCFAbsolute;
-    *(v4 + 72) |= 2u;
+    *(toCopy + 2) = *&self->_startTimeCFAbsolute;
+    *(toCopy + 72) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -328,39 +328,39 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(v4 + 1) = *&self->_endTimeCFAbsolute;
-  *(v4 + 72) |= 1u;
+  *(toCopy + 1) = *&self->_endTimeCFAbsolute;
+  *(toCopy + 72) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_12:
-    *(v4 + 14) = self->_status;
-    *(v4 + 72) |= 4u;
+    *(toCopy + 14) = self->_status;
+    *(toCopy + 72) |= 4u;
   }
 
 LABEL_13:
   if (self->_location)
   {
     [v6 setLocation:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_calendarId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_calendarId copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_titleOfEvent copyWithZone:a3];
+  v8 = [(NSString *)self->_titleOfEvent copyWithZone:zone];
   v9 = *(v5 + 64);
   *(v5 + 64) = v8;
 
-  v10 = [(NSString *)self->_eventId copyWithZone:a3];
+  v10 = [(NSString *)self->_eventId copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
-  v12 = [(NSString *)self->_locationTitle copyWithZone:a3];
+  v12 = [(NSString *)self->_locationTitle copyWithZone:zone];
   v13 = *(v5 + 48);
   *(v5 + 48) = v12;
 
@@ -400,23 +400,23 @@ LABEL_4:
   }
 
 LABEL_5:
-  v15 = [(PCPLocation *)self->_location copyWithZone:a3];
+  v15 = [(PCPLocation *)self->_location copyWithZone:zone];
   v16 = *(v5 + 40);
   *(v5 + 40) = v15;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
   calendarId = self->_calendarId;
-  if (calendarId | *(v4 + 3))
+  if (calendarId | *(equalCopy + 3))
   {
     if (![(NSString *)calendarId isEqual:?])
     {
@@ -425,7 +425,7 @@ LABEL_5:
   }
 
   titleOfEvent = self->_titleOfEvent;
-  if (titleOfEvent | *(v4 + 8))
+  if (titleOfEvent | *(equalCopy + 8))
   {
     if (![(NSString *)titleOfEvent isEqual:?])
     {
@@ -434,7 +434,7 @@ LABEL_5:
   }
 
   eventId = self->_eventId;
-  if (eventId | *(v4 + 4))
+  if (eventId | *(equalCopy + 4))
   {
     if (![(NSString *)eventId isEqual:?])
     {
@@ -443,7 +443,7 @@ LABEL_5:
   }
 
   locationTitle = self->_locationTitle;
-  if (locationTitle | *(v4 + 6))
+  if (locationTitle | *(equalCopy + 6))
   {
     if (![(NSString *)locationTitle isEqual:?])
     {
@@ -451,16 +451,16 @@ LABEL_5:
     }
   }
 
-  v9 = *(v4 + 72);
+  v9 = *(equalCopy + 72);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_startTimeCFAbsolute != *(v4 + 2))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_startTimeCFAbsolute != *(equalCopy + 2))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 72) & 2) != 0)
+  else if ((*(equalCopy + 72) & 2) != 0)
   {
 LABEL_27:
     v11 = 0;
@@ -469,32 +469,32 @@ LABEL_27:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_endTimeCFAbsolute != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_endTimeCFAbsolute != *(equalCopy + 1))
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_27;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 72) & 4) == 0 || self->_status != *(v4 + 14))
+    if ((*(equalCopy + 72) & 4) == 0 || self->_status != *(equalCopy + 14))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 72) & 4) != 0)
+  else if ((*(equalCopy + 72) & 4) != 0)
   {
     goto LABEL_27;
   }
 
   location = self->_location;
-  if (location | *(v4 + 5))
+  if (location | *(equalCopy + 5))
   {
     v11 = [(PCPLocation *)location isEqual:?];
   }
@@ -595,40 +595,40 @@ LABEL_28:
   return v4 ^ v3 ^ v5 ^ v6 ^ v9 ^ v13 ^ v17 ^ [(PCPLocation *)self->_location hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v8 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(PCPCalendarEvent *)self setCalendarId:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(PCPCalendarEvent *)self setTitleOfEvent:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PCPCalendarEvent *)self setEventId:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(PCPCalendarEvent *)self setLocationTitle:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v5 = *(v4 + 72);
+  v5 = *(fromCopy + 72);
   if ((v5 & 2) != 0)
   {
-    self->_startTimeCFAbsolute = *(v4 + 2);
+    self->_startTimeCFAbsolute = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 72);
+    v5 = *(fromCopy + 72);
     if ((v5 & 1) == 0)
     {
 LABEL_11:
@@ -641,23 +641,23 @@ LABEL_11:
     }
   }
 
-  else if ((*(v4 + 72) & 1) == 0)
+  else if ((*(fromCopy + 72) & 1) == 0)
   {
     goto LABEL_11;
   }
 
-  self->_endTimeCFAbsolute = *(v4 + 1);
+  self->_endTimeCFAbsolute = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 72) & 4) != 0)
+  if ((*(fromCopy + 72) & 4) != 0)
   {
 LABEL_12:
-    self->_status = *(v4 + 14);
+    self->_status = *(fromCopy + 14);
     *&self->_has |= 4u;
   }
 
 LABEL_13:
   location = self->_location;
-  v7 = *(v4 + 5);
+  v7 = *(fromCopy + 5);
   if (location)
   {
     if (v7)

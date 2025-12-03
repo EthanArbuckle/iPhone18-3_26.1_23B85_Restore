@@ -1,61 +1,61 @@
 @interface _INPBPaymentRecord
-- (BOOL)isEqual:(id)a3;
-- (_INPBPaymentRecord)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBPaymentRecord)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsStatus:(id)a3;
+- (int)StringAsStatus:(id)status;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setStatus:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setStatus:(int)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBPaymentRecord
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBPaymentRecord *)self currencyAmount];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"currencyAmount"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  currencyAmount = [(_INPBPaymentRecord *)self currencyAmount];
+  dictionaryRepresentation = [currencyAmount dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"currencyAmount"];
 
-  v6 = [(_INPBPaymentRecord *)self feeAmount];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"feeAmount"];
+  feeAmount = [(_INPBPaymentRecord *)self feeAmount];
+  dictionaryRepresentation2 = [feeAmount dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"feeAmount"];
 
-  v8 = [(_INPBPaymentRecord *)self note];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"note"];
+  note = [(_INPBPaymentRecord *)self note];
+  dictionaryRepresentation3 = [note dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"note"];
 
-  v10 = [(_INPBPaymentRecord *)self payee];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"payee"];
+  payee = [(_INPBPaymentRecord *)self payee];
+  dictionaryRepresentation4 = [payee dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"payee"];
 
-  v12 = [(_INPBPaymentRecord *)self payer];
-  v13 = [v12 dictionaryRepresentation];
-  [v3 setObject:v13 forKeyedSubscript:@"payer"];
+  payer = [(_INPBPaymentRecord *)self payer];
+  dictionaryRepresentation5 = [payer dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"payer"];
 
-  v14 = [(_INPBPaymentRecord *)self paymentMethod];
-  v15 = [v14 dictionaryRepresentation];
-  [v3 setObject:v15 forKeyedSubscript:@"paymentMethod"];
+  paymentMethod = [(_INPBPaymentRecord *)self paymentMethod];
+  dictionaryRepresentation6 = [paymentMethod dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"paymentMethod"];
 
   if ([(_INPBPaymentRecord *)self hasStatus])
   {
-    v16 = [(_INPBPaymentRecord *)self status];
-    if ((v16 - 1) >= 5)
+    status = [(_INPBPaymentRecord *)self status];
+    if ((status - 1) >= 5)
     {
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v16];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", status];
     }
 
     else
     {
-      v17 = off_1E727F448[(v16 - 1)];
+      v17 = off_1E727F448[(status - 1)];
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"status"];
+    [dictionary setObject:v17 forKeyedSubscript:@"status"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -79,28 +79,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
-  v5 = [(_INPBPaymentRecord *)self currencyAmount];
-  v6 = [v4 currencyAmount];
-  if ((v5 != 0) == (v6 == 0))
+  currencyAmount = [(_INPBPaymentRecord *)self currencyAmount];
+  currencyAmount2 = [equalCopy currencyAmount];
+  if ((currencyAmount != 0) == (currencyAmount2 == 0))
   {
     goto LABEL_31;
   }
 
-  v7 = [(_INPBPaymentRecord *)self currencyAmount];
-  if (v7)
+  currencyAmount3 = [(_INPBPaymentRecord *)self currencyAmount];
+  if (currencyAmount3)
   {
-    v8 = v7;
-    v9 = [(_INPBPaymentRecord *)self currencyAmount];
-    v10 = [v4 currencyAmount];
-    v11 = [v9 isEqual:v10];
+    v8 = currencyAmount3;
+    currencyAmount4 = [(_INPBPaymentRecord *)self currencyAmount];
+    currencyAmount5 = [equalCopy currencyAmount];
+    v11 = [currencyAmount4 isEqual:currencyAmount5];
 
     if (!v11)
     {
@@ -112,20 +112,20 @@
   {
   }
 
-  v5 = [(_INPBPaymentRecord *)self feeAmount];
-  v6 = [v4 feeAmount];
-  if ((v5 != 0) == (v6 == 0))
+  currencyAmount = [(_INPBPaymentRecord *)self feeAmount];
+  currencyAmount2 = [equalCopy feeAmount];
+  if ((currencyAmount != 0) == (currencyAmount2 == 0))
   {
     goto LABEL_31;
   }
 
-  v12 = [(_INPBPaymentRecord *)self feeAmount];
-  if (v12)
+  feeAmount = [(_INPBPaymentRecord *)self feeAmount];
+  if (feeAmount)
   {
-    v13 = v12;
-    v14 = [(_INPBPaymentRecord *)self feeAmount];
-    v15 = [v4 feeAmount];
-    v16 = [v14 isEqual:v15];
+    v13 = feeAmount;
+    feeAmount2 = [(_INPBPaymentRecord *)self feeAmount];
+    feeAmount3 = [equalCopy feeAmount];
+    v16 = [feeAmount2 isEqual:feeAmount3];
 
     if (!v16)
     {
@@ -137,20 +137,20 @@
   {
   }
 
-  v5 = [(_INPBPaymentRecord *)self note];
-  v6 = [v4 note];
-  if ((v5 != 0) == (v6 == 0))
+  currencyAmount = [(_INPBPaymentRecord *)self note];
+  currencyAmount2 = [equalCopy note];
+  if ((currencyAmount != 0) == (currencyAmount2 == 0))
   {
     goto LABEL_31;
   }
 
-  v17 = [(_INPBPaymentRecord *)self note];
-  if (v17)
+  note = [(_INPBPaymentRecord *)self note];
+  if (note)
   {
-    v18 = v17;
-    v19 = [(_INPBPaymentRecord *)self note];
-    v20 = [v4 note];
-    v21 = [v19 isEqual:v20];
+    v18 = note;
+    note2 = [(_INPBPaymentRecord *)self note];
+    note3 = [equalCopy note];
+    v21 = [note2 isEqual:note3];
 
     if (!v21)
     {
@@ -162,20 +162,20 @@
   {
   }
 
-  v5 = [(_INPBPaymentRecord *)self payee];
-  v6 = [v4 payee];
-  if ((v5 != 0) == (v6 == 0))
+  currencyAmount = [(_INPBPaymentRecord *)self payee];
+  currencyAmount2 = [equalCopy payee];
+  if ((currencyAmount != 0) == (currencyAmount2 == 0))
   {
     goto LABEL_31;
   }
 
-  v22 = [(_INPBPaymentRecord *)self payee];
-  if (v22)
+  payee = [(_INPBPaymentRecord *)self payee];
+  if (payee)
   {
-    v23 = v22;
-    v24 = [(_INPBPaymentRecord *)self payee];
-    v25 = [v4 payee];
-    v26 = [v24 isEqual:v25];
+    v23 = payee;
+    payee2 = [(_INPBPaymentRecord *)self payee];
+    payee3 = [equalCopy payee];
+    v26 = [payee2 isEqual:payee3];
 
     if (!v26)
     {
@@ -187,20 +187,20 @@
   {
   }
 
-  v5 = [(_INPBPaymentRecord *)self payer];
-  v6 = [v4 payer];
-  if ((v5 != 0) == (v6 == 0))
+  currencyAmount = [(_INPBPaymentRecord *)self payer];
+  currencyAmount2 = [equalCopy payer];
+  if ((currencyAmount != 0) == (currencyAmount2 == 0))
   {
     goto LABEL_31;
   }
 
-  v27 = [(_INPBPaymentRecord *)self payer];
-  if (v27)
+  payer = [(_INPBPaymentRecord *)self payer];
+  if (payer)
   {
-    v28 = v27;
-    v29 = [(_INPBPaymentRecord *)self payer];
-    v30 = [v4 payer];
-    v31 = [v29 isEqual:v30];
+    v28 = payer;
+    payer2 = [(_INPBPaymentRecord *)self payer];
+    payer3 = [equalCopy payer];
+    v31 = [payer2 isEqual:payer3];
 
     if (!v31)
     {
@@ -212,22 +212,22 @@
   {
   }
 
-  v5 = [(_INPBPaymentRecord *)self paymentMethod];
-  v6 = [v4 paymentMethod];
-  if ((v5 != 0) == (v6 == 0))
+  currencyAmount = [(_INPBPaymentRecord *)self paymentMethod];
+  currencyAmount2 = [equalCopy paymentMethod];
+  if ((currencyAmount != 0) == (currencyAmount2 == 0))
   {
 LABEL_31:
 
     goto LABEL_32;
   }
 
-  v32 = [(_INPBPaymentRecord *)self paymentMethod];
-  if (v32)
+  paymentMethod = [(_INPBPaymentRecord *)self paymentMethod];
+  if (paymentMethod)
   {
-    v33 = v32;
-    v34 = [(_INPBPaymentRecord *)self paymentMethod];
-    v35 = [v4 paymentMethod];
-    v36 = [v34 isEqual:v35];
+    v33 = paymentMethod;
+    paymentMethod2 = [(_INPBPaymentRecord *)self paymentMethod];
+    paymentMethod3 = [equalCopy paymentMethod];
+    v36 = [paymentMethod2 isEqual:paymentMethod3];
 
     if (!v36)
     {
@@ -239,10 +239,10 @@ LABEL_31:
   {
   }
 
-  v39 = [(_INPBPaymentRecord *)self hasStatus];
-  if (v39 == [v4 hasStatus])
+  hasStatus = [(_INPBPaymentRecord *)self hasStatus];
+  if (hasStatus == [equalCopy hasStatus])
   {
-    if (!-[_INPBPaymentRecord hasStatus](self, "hasStatus") || ![v4 hasStatus] || (status = self->_status, status == objc_msgSend(v4, "status")))
+    if (!-[_INPBPaymentRecord hasStatus](self, "hasStatus") || ![equalCopy hasStatus] || (status = self->_status, status == objc_msgSend(equalCopy, "status")))
     {
       v37 = 1;
       goto LABEL_33;
@@ -256,25 +256,25 @@ LABEL_33:
   return v37;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBPaymentRecord allocWithZone:](_INPBPaymentRecord init];
-  v6 = [(_INPBCurrencyAmount *)self->_currencyAmount copyWithZone:a3];
+  v6 = [(_INPBCurrencyAmount *)self->_currencyAmount copyWithZone:zone];
   [(_INPBPaymentRecord *)v5 setCurrencyAmount:v6];
 
-  v7 = [(_INPBCurrencyAmount *)self->_feeAmount copyWithZone:a3];
+  v7 = [(_INPBCurrencyAmount *)self->_feeAmount copyWithZone:zone];
   [(_INPBPaymentRecord *)v5 setFeeAmount:v7];
 
-  v8 = [(_INPBString *)self->_note copyWithZone:a3];
+  v8 = [(_INPBString *)self->_note copyWithZone:zone];
   [(_INPBPaymentRecord *)v5 setNote:v8];
 
-  v9 = [(_INPBContact *)self->_payee copyWithZone:a3];
+  v9 = [(_INPBContact *)self->_payee copyWithZone:zone];
   [(_INPBPaymentRecord *)v5 setPayee:v9];
 
-  v10 = [(_INPBContact *)self->_payer copyWithZone:a3];
+  v10 = [(_INPBContact *)self->_payer copyWithZone:zone];
   [(_INPBPaymentRecord *)v5 setPayer:v10];
 
-  v11 = [(_INPBPaymentMethodValue *)self->_paymentMethod copyWithZone:a3];
+  v11 = [(_INPBPaymentMethodValue *)self->_paymentMethod copyWithZone:zone];
   [(_INPBPaymentRecord *)v5 setPaymentMethod:v11];
 
   if ([(_INPBPaymentRecord *)self hasStatus])
@@ -285,78 +285,78 @@ LABEL_33:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBPaymentRecord *)self data];
+  coderCopy = coder;
+  data = [(_INPBPaymentRecord *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBPaymentRecord)initWithCoder:(id)a3
+- (_INPBPaymentRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBPaymentRecord *)self initWithData:v6];
+    self = [(_INPBPaymentRecord *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v17 = a3;
-  v4 = [(_INPBPaymentRecord *)self currencyAmount];
+  toCopy = to;
+  currencyAmount = [(_INPBPaymentRecord *)self currencyAmount];
 
-  if (v4)
+  if (currencyAmount)
   {
-    v5 = [(_INPBPaymentRecord *)self currencyAmount];
+    currencyAmount2 = [(_INPBPaymentRecord *)self currencyAmount];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBPaymentRecord *)self feeAmount];
+  feeAmount = [(_INPBPaymentRecord *)self feeAmount];
 
-  if (v6)
+  if (feeAmount)
   {
-    v7 = [(_INPBPaymentRecord *)self feeAmount];
+    feeAmount2 = [(_INPBPaymentRecord *)self feeAmount];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBPaymentRecord *)self note];
+  note = [(_INPBPaymentRecord *)self note];
 
-  if (v8)
+  if (note)
   {
-    v9 = [(_INPBPaymentRecord *)self note];
+    note2 = [(_INPBPaymentRecord *)self note];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBPaymentRecord *)self payee];
+  payee = [(_INPBPaymentRecord *)self payee];
 
-  if (v10)
+  if (payee)
   {
-    v11 = [(_INPBPaymentRecord *)self payee];
+    payee2 = [(_INPBPaymentRecord *)self payee];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(_INPBPaymentRecord *)self payer];
+  payer = [(_INPBPaymentRecord *)self payer];
 
-  if (v12)
+  if (payer)
   {
-    v13 = [(_INPBPaymentRecord *)self payer];
+    payer2 = [(_INPBPaymentRecord *)self payer];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(_INPBPaymentRecord *)self paymentMethod];
+  paymentMethod = [(_INPBPaymentRecord *)self paymentMethod];
 
-  if (v14)
+  if (paymentMethod)
   {
-    v15 = [(_INPBPaymentRecord *)self paymentMethod];
+    paymentMethod2 = [(_INPBPaymentRecord *)self paymentMethod];
     PBDataWriterWriteSubmessage();
   }
 
@@ -367,30 +367,30 @@ LABEL_33:
   }
 }
 
-- (int)StringAsStatus:(id)a3
+- (int)StringAsStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PENDING"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"PENDING"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"COMPLETED"])
+  else if ([statusCopy isEqualToString:@"COMPLETED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CANCELED"])
+  else if ([statusCopy isEqualToString:@"CANCELED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"FAILED"])
+  else if ([statusCopy isEqualToString:@"FAILED"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"UNPAID"])
+  else if ([statusCopy isEqualToString:@"UNPAID"])
   {
     v4 = 5;
   }
@@ -403,10 +403,10 @@ LABEL_33:
   return v4;
 }
 
-- (void)setStatus:(int)a3
+- (void)setStatus:(int)status
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (status == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -414,7 +414,7 @@ LABEL_33:
   else
   {
     *&self->_has = has | 1;
-    self->_status = a3;
+    self->_status = status;
   }
 }
 

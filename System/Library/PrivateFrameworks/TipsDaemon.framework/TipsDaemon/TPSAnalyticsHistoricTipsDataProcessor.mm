@@ -2,10 +2,10 @@
 - (BOOL)_shouldProceedWithCrunching;
 - (TPSAnalyticsHistoricTipsDataProcessor)init;
 - (id)_furthestLookbackDate;
-- (unint64_t)_daysBetweenDate:(id)a3 andOtherDate:(id)a4;
-- (void)processAnalytics:(id)a3;
+- (unint64_t)_daysBetweenDate:(id)date andOtherDate:(id)otherDate;
+- (void)processAnalytics:(id)analytics;
 - (void)resetAnalytics;
-- (void)updateDisplayedCount:(int64_t *)a3 andFrequencyControlCount:(int64_t *)a4 forTipStatus:(id)a5 andLookbackDate:(id)a6;
+- (void)updateDisplayedCount:(int64_t *)count andFrequencyControlCount:(int64_t *)controlCount forTipStatus:(id)status andLookbackDate:(id)date;
 @end
 
 @implementation TPSAnalyticsHistoricTipsDataProcessor
@@ -17,36 +17,36 @@
   v2 = [(TPSAnalyticsProcessor *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     currentDate = v2->_currentDate;
-    v2->_currentDate = v3;
+    v2->_currentDate = date;
   }
 
   return v2;
 }
 
-- (void)processAnalytics:(id)a3
+- (void)processAnalytics:(id)analytics
 {
   v69 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  analyticsCopy = analytics;
   if ([(TPSAnalyticsHistoricTipsDataProcessor *)self _shouldProceedWithCrunching])
   {
     [(TPSAnalyticsProcessor *)self setDateLastRun:self->_currentDate];
-    v5 = [(TPSAnalyticsHistoricTipsDataProcessor *)self _furthestLookbackDate];
-    v6 = [MEMORY[0x277CBEB18] array];
+    _furthestLookbackDate = [(TPSAnalyticsHistoricTipsDataProcessor *)self _furthestLookbackDate];
+    array = [MEMORY[0x277CBEB18] array];
     v62 = 0;
     v63 = 0;
-    v7 = [(TPSAnalyticsProcessor *)self dataSource];
-    v8 = [v7 allTipStatus];
+    dataSource = [(TPSAnalyticsProcessor *)self dataSource];
+    allTipStatus = [dataSource allTipStatus];
 
-    v48 = v8;
-    if ([v8 count])
+    v48 = allTipStatus;
+    if ([allTipStatus count])
     {
       v60 = 0u;
       v61 = 0u;
       v58 = 0u;
       v59 = 0u;
-      v9 = v8;
+      v9 = allTipStatus;
       v10 = [v9 countByEnumeratingWithState:&v58 objects:v68 count:16];
       if (v10)
       {
@@ -64,7 +64,7 @@
             v14 = *(*(&v58 + 1) + 8 * i);
             if ([v14 displayType] == 1)
             {
-              [(TPSAnalyticsHistoricTipsDataProcessor *)self updateDisplayedCount:&v63 andFrequencyControlCount:&v62 forTipStatus:v14 andLookbackDate:v5];
+              [(TPSAnalyticsHistoricTipsDataProcessor *)self updateDisplayedCount:&v63 andFrequencyControlCount:&v62 forTipStatus:v14 andLookbackDate:_furthestLookbackDate];
             }
           }
 
@@ -80,30 +80,30 @@
       v18 = [MEMORY[0x277CCABB0] numberWithInteger:v62];
       v19 = [v15 initWithDisplayType:v16 displayCount:v17 notDisplayedDueToFrequencyControlCount:v18];
 
-      [v6 addObject:v19];
-      v8 = v48;
+      [array addObject:v19];
+      allTipStatus = v48;
     }
 
-    v20 = [MEMORY[0x277D71778] analytics];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
+    analytics = [MEMORY[0x277D71778] analytics];
+    if (os_log_type_enabled(analytics, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
       v67 = v63;
-      _os_log_impl(&dword_232D6F000, v20, OS_LOG_TYPE_INFO, "countDisplayedOnLockScreen: %ld", buf, 0xCu);
+      _os_log_impl(&dword_232D6F000, analytics, OS_LOG_TYPE_INFO, "countDisplayedOnLockScreen: %ld", buf, 0xCu);
     }
 
     if (!v63)
     {
-      v45 = v6;
+      v45 = array;
       v21 = [MEMORY[0x277CBEB58] set];
       v54 = 0u;
       v55 = 0u;
       v56 = 0u;
       v57 = 0u;
-      v22 = [(TPSAnalyticsProcessor *)self dataSource];
-      v23 = [v22 allContextualInfo];
+      dataSource2 = [(TPSAnalyticsProcessor *)self dataSource];
+      allContextualInfo = [dataSource2 allContextualInfo];
 
-      v24 = [v23 countByEnumeratingWithState:&v54 objects:v65 count:16];
+      v24 = [allContextualInfo countByEnumeratingWithState:&v54 objects:v65 count:16];
       if (v24)
       {
         v25 = v24;
@@ -114,26 +114,26 @@
           {
             if (*v55 != v26)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(allContextualInfo);
             }
 
             v28 = *(*(&v54 + 1) + 8 * j);
-            v29 = [v28 triggerEventIdentifiers];
-            [v21 addObjectsFromArray:v29];
+            triggerEventIdentifiers = [v28 triggerEventIdentifiers];
+            [v21 addObjectsFromArray:triggerEventIdentifiers];
 
-            v30 = [v28 desiredOutcomeEventIdentifiers];
-            [v21 addObjectsFromArray:v30];
+            desiredOutcomeEventIdentifiers = [v28 desiredOutcomeEventIdentifiers];
+            [v21 addObjectsFromArray:desiredOutcomeEventIdentifiers];
           }
 
-          v25 = [v23 countByEnumeratingWithState:&v54 objects:v65 count:16];
+          v25 = [allContextualInfo countByEnumeratingWithState:&v54 objects:v65 count:16];
         }
 
         while (v25);
       }
 
-      v31 = self;
-      v46 = v5;
-      v47 = v4;
+      selfCopy = self;
+      v46 = _furthestLookbackDate;
+      v47 = analyticsCopy;
 
       v52 = 0u;
       v53 = 0u;
@@ -155,12 +155,12 @@
             }
 
             v36 = *(*(&v50 + 1) + 8 * k);
-            v37 = [(TPSAnalyticsProcessor *)v31 dataSource];
-            v38 = [v37 contextualEventForIdentifier:v36];
+            dataSource3 = [(TPSAnalyticsProcessor *)selfCopy dataSource];
+            v38 = [dataSource3 contextualEventForIdentifier:v36];
 
-            v39 = [v38 currentObservationCount];
+            currentObservationCount = [v38 currentObservationCount];
             v40 = MEMORY[0x277D71680];
-            v41 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v39];
+            v41 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:currentObservationCount];
             v42 = [v40 eventWithEventID:v36 eventCount:v41];
             [v42 log];
           }
@@ -171,20 +171,20 @@
         while (v33);
       }
 
-      v5 = v46;
-      v4 = v47;
-      v6 = v45;
-      v8 = v48;
+      _furthestLookbackDate = v46;
+      analyticsCopy = v47;
+      array = v45;
+      allTipStatus = v48;
     }
 
-    if ([v6 count])
+    if ([array count])
     {
-      v43 = [MEMORY[0x277D71620] sharedInstance];
-      [v43 logAnalyticsEvents:v6];
+      mEMORY[0x277D71620] = [MEMORY[0x277D71620] sharedInstance];
+      [mEMORY[0x277D71620] logAnalyticsEvents:array];
     }
   }
 
-  v4[2](v4);
+  analyticsCopy[2](analyticsCopy);
 
   v44 = *MEMORY[0x277D85DE8];
 }
@@ -197,24 +197,24 @@
   [(TPSAnalyticsProcessor *)self setDateLastRun:0];
 }
 
-- (void)updateDisplayedCount:(int64_t *)a3 andFrequencyControlCount:(int64_t *)a4 forTipStatus:(id)a5 andLookbackDate:(id)a6
+- (void)updateDisplayedCount:(int64_t *)count andFrequencyControlCount:(int64_t *)controlCount forTipStatus:(id)status andLookbackDate:(id)date
 {
   v28 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a6;
-  if (([v9 overrideHoldout] & 1) == 0)
+  statusCopy = status;
+  dateCopy = date;
+  if (([statusCopy overrideHoldout] & 1) == 0)
   {
-    v11 = [v9 hintDisplayedDates];
-    v12 = [v11 firstObject];
-    v13 = [v12 compare:v10];
+    hintDisplayedDates = [statusCopy hintDisplayedDates];
+    firstObject = [hintDisplayedDates firstObject];
+    v13 = [firstObject compare:dateCopy];
 
     if (v13 == 1)
     {
-      ++*a3;
+      ++*count;
     }
 
-    v14 = [v9 hintNotDisplayedDueToFrequencyControlDates];
-    v15 = [v14 count];
+    hintNotDisplayedDueToFrequencyControlDates = [statusCopy hintNotDisplayedDueToFrequencyControlDates];
+    v15 = [hintNotDisplayedDueToFrequencyControlDates count];
 
     if (v15)
     {
@@ -222,10 +222,10 @@
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v16 = [v9 hintNotDisplayedDueToFrequencyControlDates];
-      v17 = [v16 reverseObjectEnumerator];
+      hintNotDisplayedDueToFrequencyControlDates2 = [statusCopy hintNotDisplayedDueToFrequencyControlDates];
+      reverseObjectEnumerator = [hintNotDisplayedDueToFrequencyControlDates2 reverseObjectEnumerator];
 
-      v18 = [v17 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v18 = [reverseObjectEnumerator countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v18)
       {
         v19 = v18;
@@ -236,18 +236,18 @@ LABEL_7:
         {
           if (*v24 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
-          if ([*(*(&v23 + 1) + 8 * v21) compare:v10] != 1)
+          if ([*(*(&v23 + 1) + 8 * v21) compare:dateCopy] != 1)
           {
             break;
           }
 
-          ++*a4;
+          ++*controlCount;
           if (v19 == ++v21)
           {
-            v19 = [v17 countByEnumeratingWithState:&v23 objects:v27 count:16];
+            v19 = [reverseObjectEnumerator countByEnumeratingWithState:&v23 objects:v27 count:16];
             if (v19)
             {
               goto LABEL_7;
@@ -263,13 +263,13 @@ LABEL_7:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)_daysBetweenDate:(id)a3 andOtherDate:(id)a4
+- (unint64_t)_daysBetweenDate:(id)date andOtherDate:(id)otherDate
 {
   v5 = MEMORY[0x277CBEA80];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 currentCalendar];
-  v9 = [v8 components:120 fromDate:v7 toDate:v6 options:0];
+  otherDateCopy = otherDate;
+  dateCopy = date;
+  currentCalendar = [v5 currentCalendar];
+  v9 = [currentCalendar components:120 fromDate:dateCopy toDate:otherDateCopy options:0];
 
   v10 = [v9 day];
   return v10;
@@ -277,22 +277,22 @@ LABEL_7:
 
 - (BOOL)_shouldProceedWithCrunching
 {
-  v3 = [MEMORY[0x277D71740] crunchingIntervalInDays];
-  if (!v3)
+  crunchingIntervalInDays = [MEMORY[0x277D71740] crunchingIntervalInDays];
+  if (!crunchingIntervalInDays)
   {
     return 1;
   }
 
-  v4 = v3;
-  v5 = [(TPSAnalyticsProcessor *)self dateLastRun];
-  if (v5)
+  v4 = crunchingIntervalInDays;
+  dateLastRun = [(TPSAnalyticsProcessor *)self dateLastRun];
+  if (dateLastRun)
   {
     if (v4 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v4 = 20;
     }
 
-    v6 = [(TPSAnalyticsHistoricTipsDataProcessor *)self _daysBetweenDate:v5 andOtherDate:self->_currentDate]>= v4;
+    v6 = [(TPSAnalyticsHistoricTipsDataProcessor *)self _daysBetweenDate:dateLastRun andOtherDate:self->_currentDate]>= v4;
   }
 
   else
@@ -308,8 +308,8 @@ LABEL_7:
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEAB8]);
   [v3 setDay:-20];
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
-  v5 = [v4 dateByAddingComponents:v3 toDate:self->_currentDate options:0];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v5 = [currentCalendar dateByAddingComponents:v3 toDate:self->_currentDate options:0];
 
   return v5;
 }

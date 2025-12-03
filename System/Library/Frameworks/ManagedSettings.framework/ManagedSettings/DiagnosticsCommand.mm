@@ -1,14 +1,14 @@
 @interface DiagnosticsCommand
-- (BOOL)runWithOptions:(id)a3;
+- (BOOL)runWithOptions:(id)options;
 @end
 
 @implementation DiagnosticsCommand
 
-- (BOOL)runWithOptions:(id)a3
+- (BOOL)runWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_100001714(v4);
+  optionsCopy = options;
+  selfCopy = self;
+  LOBYTE(self) = sub_100001714(optionsCopy);
 
   return self & 1;
 }

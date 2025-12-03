@@ -7,7 +7,7 @@
 - (void)tc_addMessageEntry:()TCMessageEntryAdditions
 {
   v6 = a3;
-  v4 = [a1 member:?];
+  v4 = [self member:?];
   v5 = v4;
   if (v4)
   {
@@ -16,8 +16,8 @@
 
   else
   {
-    [a1 addObject:v6];
-    [v6 setTimeStamp:{objc_msgSend(a1, "count")}];
+    [self addObject:v6];
+    [v6 setTimeStamp:{objc_msgSend(self, "count")}];
   }
 }
 

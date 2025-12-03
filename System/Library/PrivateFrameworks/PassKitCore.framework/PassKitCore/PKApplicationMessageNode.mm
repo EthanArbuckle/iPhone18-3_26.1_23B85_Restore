@@ -1,25 +1,25 @@
 @interface PKApplicationMessageNode
-+ (id)_createForType:(uint64_t)a1;
-+ (id)createForMessages:(id)a3;
-+ (id)messageKeysForNode:(id)a3 localKeys:(id *)a4;
++ (id)_createForType:(uint64_t)type;
++ (id)createForMessages:(id)messages;
++ (id)messageKeysForNode:(id)node localKeys:(id *)keys;
 - (NSArray)children;
 - (NSObject)key;
 - (PKApplicationMessageNode)parent;
 - (PKApplicationMessageNode)root;
-- (id)_ancestorPassingTest:(id *)a1;
+- (id)_ancestorPassingTest:(id *)test;
 - (unint64_t)numberOfChildren;
-- (void)_visitPostOrder:(uint64_t)a1;
-- (void)_visitPreOrder:(uint64_t)a1;
+- (void)_visitPostOrder:(uint64_t)order;
+- (void)_visitPreOrder:(uint64_t)order;
 @end
 
 @implementation PKApplicationMessageNode
 
-+ (id)createForMessages:(id)a3
++ (id)createForMessages:(id)messages
 {
   v64 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || ![v3 count])
+  messagesCopy = messages;
+  v4 = messagesCopy;
+  if (!messagesCopy || ![messagesCopy count])
   {
     v34 = 0;
     goto LABEL_48;
@@ -160,9 +160,9 @@ LABEL_26:
   while (v30);
 LABEL_33:
 
-  v31 = [v5 allValues];
+  allValues = [v5 allValues];
   v32 = @"summary";
-  v33 = v31;
+  v33 = allValues;
   objc_opt_self();
   if (v33 && [v33 count])
   {
@@ -269,16 +269,16 @@ void __46__PKApplicationMessageNode_createForMessages___block_invoke(uint64_t a1
 LABEL_6:
 }
 
-- (void)_visitPostOrder:(uint64_t)a1
+- (void)_visitPostOrder:(uint64_t)order
 {
   v3 = a2;
-  if (!a1)
+  if (!order)
   {
     goto LABEL_14;
   }
 
   v4 = objc_autoreleasePoolPush();
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{a1, 0}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{order, 0}];
   if (![v5 count])
   {
     goto LABEL_13;
@@ -286,20 +286,20 @@ LABEL_6:
 
   while (1)
   {
-    v6 = [v5 lastObject];
-    v7 = v6;
-    if (*(v6 + 8))
+    lastObject = [v5 lastObject];
+    v7 = lastObject;
+    if (*(lastObject + 8))
     {
       break;
     }
 
-    *(v6 + 8) = 1;
-    v8 = *(v6 + 16);
+    *(lastObject + 8) = 1;
+    v8 = *(lastObject + 16);
     if (v8 == 1)
     {
       v9 = &OBJC_IVAR___PKApplicationMessageNodeGroupBranch__children;
 LABEL_10:
-      v10 = [*(v6 + *v9) copy];
+      v10 = [*(lastObject + *v9) copy];
       if (v10)
       {
         v11 = v10;
@@ -332,16 +332,16 @@ LABEL_12:
   }
 
 LABEL_13:
-  [(PKApplicationMessageNode *)a1 _visitPreOrder:?];
+  [(PKApplicationMessageNode *)order _visitPreOrder:?];
 
   objc_autoreleasePoolPop(v4);
 LABEL_14:
 }
 
-+ (id)messageKeysForNode:(id)a3 localKeys:(id *)a4
++ (id)messageKeysForNode:(id)node localKeys:(id *)keys
 {
-  v5 = a3;
-  if (v5)
+  nodeCopy = node;
+  if (nodeCopy)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -355,12 +355,12 @@ LABEL_14:
     v21 = v9;
     v10 = _Block_copy(aBlock);
     v11 = v10;
-    v12 = v5[2];
+    v12 = nodeCopy[2];
     if ((v12 - 1) >= 2)
     {
       if (!v12)
       {
-        (*(v10 + 2))(v10, v5[5]);
+        (*(v10 + 2))(v10, nodeCopy[5]);
       }
     }
 
@@ -371,14 +371,14 @@ LABEL_14:
       v17[2] = __57__PKApplicationMessageNode_messageKeysForNode_localKeys___block_invoke_2;
       v17[3] = &unk_1E79D5AD8;
       v18 = v10;
-      [(PKApplicationMessageNode *)v5 _visitPreOrder:v17];
+      [(PKApplicationMessageNode *)nodeCopy _visitPreOrder:v17];
     }
 
-    if (a4 && [v8 count])
+    if (keys && [v8 count])
     {
       v14 = [v8 copy];
-      v15 = *a4;
-      *a4 = v14;
+      v15 = *keys;
+      *keys = v14;
     }
 
     if ([v9 count])
@@ -439,16 +439,16 @@ uint64_t __57__PKApplicationMessageNode_messageKeysForNode_localKeys___block_inv
   return result;
 }
 
-- (void)_visitPreOrder:(uint64_t)a1
+- (void)_visitPreOrder:(uint64_t)order
 {
   v3 = a2;
-  if (!a1)
+  if (!order)
   {
     goto LABEL_18;
   }
 
   v4 = objc_autoreleasePoolPush();
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{a1, 0}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{order, 0}];
   if (![v5 count])
   {
     goto LABEL_17;
@@ -456,27 +456,27 @@ uint64_t __57__PKApplicationMessageNode_messageKeysForNode_localKeys___block_inv
 
   while (1)
   {
-    v6 = [v5 lastObject];
+    lastObject = [v5 lastObject];
     [v5 removeLastObject];
     v13 = 1;
     v12 = 0;
-    v3[2](v3, v6, &v13, &v12);
+    v3[2](v3, lastObject, &v13, &v12);
     if (v12 == 1)
     {
       break;
     }
 
-    if (v13 != 1 || v6 == 0)
+    if (v13 != 1 || lastObject == 0)
     {
       goto LABEL_14;
     }
 
-    v8 = v6[2];
+    v8 = lastObject[2];
     if (v8 == 1)
     {
       v9 = &OBJC_IVAR___PKApplicationMessageNodeGroupBranch__children;
 LABEL_12:
-      v10 = [*(v6 + *v9) copy];
+      v10 = [*(lastObject + *v9) copy];
       if (v10)
       {
         v11 = v10;
@@ -505,7 +505,7 @@ LABEL_17:
 LABEL_18:
 }
 
-+ (id)_createForType:(uint64_t)a1
++ (id)_createForType:(uint64_t)type
 {
   objc_opt_self();
   v3 = objc_alloc(*off_1E79D5B68[a2]);
@@ -646,21 +646,21 @@ LABEL_8:
   return self;
 }
 
-- (id)_ancestorPassingTest:(id *)a1
+- (id)_ancestorPassingTest:(id *)test
 {
   v3 = a2;
-  if (a1)
+  if (test)
   {
-    v4 = a1;
-    a1 = 0;
+    testCopy = test;
+    test = 0;
     while (1)
     {
       v8 = 0;
-      if (!v3 || v3[2](v3, v4, &v8))
+      if (!v3 || v3[2](v3, testCopy, &v8))
       {
-        v5 = v4;
+        v5 = testCopy;
 
-        a1 = v5;
+        test = v5;
       }
 
       if (v8 == 1)
@@ -668,9 +668,9 @@ LABEL_8:
         break;
       }
 
-      WeakRetained = objc_loadWeakRetained(v4 + 3);
+      WeakRetained = objc_loadWeakRetained(testCopy + 3);
 
-      v4 = WeakRetained;
+      testCopy = WeakRetained;
       if (!WeakRetained)
       {
         goto LABEL_10;
@@ -680,7 +680,7 @@ LABEL_8:
 
 LABEL_10:
 
-  return a1;
+  return test;
 }
 
 - (PKApplicationMessageNode)parent

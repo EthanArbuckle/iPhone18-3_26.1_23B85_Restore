@@ -1,29 +1,29 @@
 @interface AWDCFNetworkTaskMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSchedulingTier:(id)a3;
-- (int)StringAsTaskType:(id)a3;
+- (int)StringAsSchedulingTier:(id)tier;
+- (int)StringAsTaskType:(id)type;
 - (int)schedulingTier;
 - (int)taskType;
 - (unint64_t)hash;
-- (void)addTransactionMetrics:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addTransactionMetrics:(id)metrics;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasError:(BOOL)a3;
-- (void)setHasIsBackground:(BOOL)a3;
-- (void)setHasNumberOfRedirects:(BOOL)a3;
-- (void)setHasNumberOfRetries:(BOOL)a3;
-- (void)setHasSchedulingTier:(BOOL)a3;
-- (void)setHasTaskResume:(BOOL)a3;
-- (void)setHasTaskType:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasUnderlyingError:(BOOL)a3;
-- (void)setHasUnderlyingErrorDomain:(BOOL)a3;
-- (void)setHasUnused:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasError:(BOOL)error;
+- (void)setHasIsBackground:(BOOL)background;
+- (void)setHasNumberOfRedirects:(BOOL)redirects;
+- (void)setHasNumberOfRetries:(BOOL)retries;
+- (void)setHasSchedulingTier:(BOOL)tier;
+- (void)setHasTaskResume:(BOOL)resume;
+- (void)setHasTaskType:(BOOL)type;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasUnderlyingError:(BOOL)error;
+- (void)setHasUnderlyingErrorDomain:(BOOL)domain;
+- (void)setHasUnused:(BOOL)unused;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCFNetworkTaskMetrics
@@ -37,9 +37,9 @@
   [(AWDCFNetworkTaskMetrics *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 32;
   }
@@ -52,9 +52,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasTaskResume:(BOOL)a3
+- (void)setHasTaskResume:(BOOL)resume
 {
-  if (a3)
+  if (resume)
   {
     v3 = 16;
   }
@@ -67,9 +67,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasNumberOfRetries:(BOOL)a3
+- (void)setHasNumberOfRetries:(BOOL)retries
 {
-  if (a3)
+  if (retries)
   {
     v3 = 8;
   }
@@ -82,9 +82,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasNumberOfRedirects:(BOOL)a3
+- (void)setHasNumberOfRedirects:(BOOL)redirects
 {
-  if (a3)
+  if (redirects)
   {
     v3 = 4;
   }
@@ -97,9 +97,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasError:(BOOL)a3
+- (void)setHasError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 2;
   }
@@ -112,9 +112,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasUnderlyingError:(BOOL)a3
+- (void)setHasUnderlyingError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 64;
   }
@@ -127,9 +127,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasUnderlyingErrorDomain:(BOOL)a3
+- (void)setHasUnderlyingErrorDomain:(BOOL)domain
 {
-  if (a3)
+  if (domain)
   {
     v3 = 128;
   }
@@ -155,9 +155,9 @@
   }
 }
 
-- (void)setHasTaskType:(BOOL)a3
+- (void)setHasTaskType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 512;
   }
@@ -170,29 +170,29 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (int)StringAsTaskType:(id)a3
+- (int)StringAsTaskType:(id)type
 {
-  if ([a3 isEqualToString:@"UNKNOWN_TASK_TYPE"])
+  if ([type isEqualToString:@"UNKNOWN_TASK_TYPE"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"DATA_TASK"])
+  if ([type isEqualToString:@"DATA_TASK"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"UPLOAD_TASK"])
+  if ([type isEqualToString:@"UPLOAD_TASK"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"DOWNLOAD_TASK"])
+  if ([type isEqualToString:@"DOWNLOAD_TASK"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"STREAM_TASK"])
+  if ([type isEqualToString:@"STREAM_TASK"])
   {
     return 5;
   }
@@ -200,9 +200,9 @@
   return 1;
 }
 
-- (void)setHasIsBackground:(BOOL)a3
+- (void)setHasIsBackground:(BOOL)background
 {
-  if (a3)
+  if (background)
   {
     v3 = 1024;
   }
@@ -215,7 +215,7 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)addTransactionMetrics:(id)a3
+- (void)addTransactionMetrics:(id)metrics
 {
   transactionMetrics = self->_transactionMetrics;
   if (!transactionMetrics)
@@ -224,7 +224,7 @@
     self->_transactionMetrics = transactionMetrics;
   }
 
-  [(NSMutableArray *)transactionMetrics addObject:a3];
+  [(NSMutableArray *)transactionMetrics addObject:metrics];
 }
 
 - (int)schedulingTier
@@ -240,9 +240,9 @@
   }
 }
 
-- (void)setHasSchedulingTier:(BOOL)a3
+- (void)setHasSchedulingTier:(BOOL)tier
 {
-  if (a3)
+  if (tier)
   {
     v3 = 256;
   }
@@ -255,29 +255,29 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (int)StringAsSchedulingTier:(id)a3
+- (int)StringAsSchedulingTier:(id)tier
 {
-  if ([a3 isEqualToString:@"DEFAULT"])
+  if ([tier isEqualToString:@"DEFAULT"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"DISCRETIONARY"])
+  if ([tier isEqualToString:@"DISCRETIONARY"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"INFERS_DISCRETIONARY"])
+  if ([tier isEqualToString:@"INFERS_DISCRETIONARY"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"USER_INITIATED"])
+  if ([tier isEqualToString:@"USER_INITIATED"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"BACKGROUND_PLUS"])
+  if ([tier isEqualToString:@"BACKGROUND_PLUS"])
   {
     return 5;
   }
@@ -285,9 +285,9 @@
   return 1;
 }
 
-- (void)setHasUnused:(BOOL)a3
+- (void)setHasUnused:(BOOL)unused
 {
-  if (a3)
+  if (unused)
   {
     v3 = 2048;
   }
@@ -310,22 +310,22 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if ((*&self->_has & 0x20) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   activityUUID = self->_activityUUID;
   if (activityUUID)
   {
-    [v3 setObject:activityUUID forKey:@"activityUUID"];
+    [dictionary setObject:activityUUID forKey:@"activityUUID"];
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_taskResume), @"taskResume"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_taskResume), @"taskResume"}];
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -344,7 +344,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_didCompleteWithError), @"didCompleteWithError"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_didCompleteWithError), @"didCompleteWithError"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -358,7 +358,7 @@ LABEL_8:
   }
 
 LABEL_29:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_numberOfRetries), @"numberOfRetries"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_numberOfRetries), @"numberOfRetries"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -372,7 +372,7 @@ LABEL_9:
   }
 
 LABEL_30:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_numberOfRedirects), @"numberOfRedirects"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_numberOfRedirects), @"numberOfRedirects"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -386,7 +386,7 @@ LABEL_10:
   }
 
 LABEL_31:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_error), @"error"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_error), @"error"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -400,7 +400,7 @@ LABEL_11:
   }
 
 LABEL_32:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_underlyingError), @"underlyingError"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_underlyingError), @"underlyingError"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -414,7 +414,7 @@ LABEL_12:
   }
 
 LABEL_33:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_underlyingErrorDomain), @"underlyingErrorDomain"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithLongLong:", self->_underlyingErrorDomain), @"underlyingErrorDomain"}];
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -439,11 +439,11 @@ LABEL_34:
     v16 = off_29EE324A0[v15];
   }
 
-  [v3 setObject:v16 forKey:@"taskType"];
+  [dictionary setObject:v16 forKey:@"taskType"];
   if ((*&self->_has & 0x400) != 0)
   {
 LABEL_14:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isBackground), @"isBackground"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_isBackground), @"isBackground"}];
   }
 
 LABEL_15:
@@ -478,7 +478,7 @@ LABEL_15:
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"transactionMetrics"];
+    [dictionary setObject:v6 forKey:@"transactionMetrics"];
   }
 
   v12 = self->_has;
@@ -495,20 +495,20 @@ LABEL_15:
       v14 = off_29EE324C8[v13];
     }
 
-    [v3 setObject:v14 forKey:@"schedulingTier"];
+    [dictionary setObject:v14 forKey:@"schedulingTier"];
     v12 = self->_has;
   }
 
   if ((v12 & 0x800) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_unused), @"unused"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_unused), @"unused"}];
   }
 
   v17 = *MEMORY[0x29EDCA608];
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v30 = *MEMORY[0x29EDCA608];
   if ((*&self->_has & 0x20) != 0)
@@ -691,24 +691,24 @@ LABEL_15:
   v16 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 0x20) != 0)
   {
-    *(a3 + 6) = self->_timestamp;
-    *(a3 + 50) |= 0x20u;
+    *(to + 6) = self->_timestamp;
+    *(to + 50) |= 0x20u;
   }
 
   if (self->_activityUUID)
   {
-    [a3 setActivityUUID:?];
+    [to setActivityUUID:?];
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    *(a3 + 5) = self->_taskResume;
-    *(a3 + 50) |= 0x10u;
+    *(to + 5) = self->_taskResume;
+    *(to + 50) |= 0x10u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -727,8 +727,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 1) = self->_didCompleteWithError;
-  *(a3 + 50) |= 1u;
+  *(to + 1) = self->_didCompleteWithError;
+  *(to + 50) |= 1u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -742,8 +742,8 @@ LABEL_8:
   }
 
 LABEL_26:
-  *(a3 + 4) = self->_numberOfRetries;
-  *(a3 + 50) |= 8u;
+  *(to + 4) = self->_numberOfRetries;
+  *(to + 50) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -757,8 +757,8 @@ LABEL_9:
   }
 
 LABEL_27:
-  *(a3 + 3) = self->_numberOfRedirects;
-  *(a3 + 50) |= 4u;
+  *(to + 3) = self->_numberOfRedirects;
+  *(to + 50) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -772,8 +772,8 @@ LABEL_10:
   }
 
 LABEL_28:
-  *(a3 + 2) = self->_error;
-  *(a3 + 50) |= 2u;
+  *(to + 2) = self->_error;
+  *(to + 50) |= 2u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -787,8 +787,8 @@ LABEL_11:
   }
 
 LABEL_29:
-  *(a3 + 7) = self->_underlyingError;
-  *(a3 + 50) |= 0x40u;
+  *(to + 7) = self->_underlyingError;
+  *(to + 50) |= 0x40u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -799,8 +799,8 @@ LABEL_12:
     }
 
 LABEL_31:
-    *(a3 + 21) = self->_taskType;
-    *(a3 + 50) |= 0x200u;
+    *(to + 21) = self->_taskType;
+    *(to + 50) |= 0x200u;
     if ((*&self->_has & 0x400) == 0)
     {
       goto LABEL_15;
@@ -810,8 +810,8 @@ LABEL_31:
   }
 
 LABEL_30:
-  *(a3 + 8) = self->_underlyingErrorDomain;
-  *(a3 + 50) |= 0x80u;
+  *(to + 8) = self->_underlyingErrorDomain;
+  *(to + 50) |= 0x80u;
   has = self->_has;
   if ((has & 0x200) != 0)
   {
@@ -822,21 +822,21 @@ LABEL_13:
   if ((has & 0x400) != 0)
   {
 LABEL_14:
-    *(a3 + 96) = self->_isBackground;
-    *(a3 + 50) |= 0x400u;
+    *(to + 96) = self->_isBackground;
+    *(to + 50) |= 0x400u;
   }
 
 LABEL_15:
   if ([(AWDCFNetworkTaskMetrics *)self transactionMetricsCount])
   {
-    [a3 clearTransactionMetrics];
-    v6 = [(AWDCFNetworkTaskMetrics *)self transactionMetricsCount];
-    if (v6)
+    [to clearTransactionMetrics];
+    transactionMetricsCount = [(AWDCFNetworkTaskMetrics *)self transactionMetricsCount];
+    if (transactionMetricsCount)
     {
-      v7 = v6;
+      v7 = transactionMetricsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addTransactionMetrics:{-[AWDCFNetworkTaskMetrics transactionMetricsAtIndex:](self, "transactionMetricsAtIndex:", i)}];
+        [to addTransactionMetrics:{-[AWDCFNetworkTaskMetrics transactionMetricsAtIndex:](self, "transactionMetricsAtIndex:", i)}];
       }
     }
   }
@@ -844,22 +844,22 @@ LABEL_15:
   v9 = self->_has;
   if ((v9 & 0x100) != 0)
   {
-    *(a3 + 20) = self->_schedulingTier;
-    *(a3 + 50) |= 0x100u;
+    *(to + 20) = self->_schedulingTier;
+    *(to + 50) |= 0x100u;
     v9 = self->_has;
   }
 
   if ((v9 & 0x800) != 0)
   {
-    *(a3 + 97) = self->_unused;
-    *(a3 + 50) |= 0x800u;
+    *(to + 97) = self->_unused;
+    *(to + 50) |= 0x800u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x20) != 0)
   {
@@ -867,7 +867,7 @@ LABEL_15:
     *(v5 + 100) |= 0x20u;
   }
 
-  *(v6 + 72) = [(NSString *)self->_activityUUID copyWithZone:a3];
+  *(v6 + 72) = [(NSString *)self->_activityUUID copyWithZone:zone];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -1010,7 +1010,7 @@ LABEL_13:
           objc_enumerationMutation(transactionMetrics);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v17 + 1) + 8 * i) copyWithZone:zone];
         [v6 addTransactionMetrics:v13];
       }
 
@@ -1038,16 +1038,16 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 50);
+    v7 = *(equal + 50);
     if ((has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_timestamp != *(a3 + 6))
+      if ((v7 & 0x20) == 0 || self->_timestamp != *(equal + 6))
       {
         goto LABEL_70;
       }
@@ -1059,7 +1059,7 @@ LABEL_13:
     }
 
     activityUUID = self->_activityUUID;
-    if (activityUUID | *(a3 + 9))
+    if (activityUUID | *(equal + 9))
     {
       v5 = [(NSString *)activityUUID isEqual:?];
       if (!v5)
@@ -1070,10 +1070,10 @@ LABEL_13:
       has = self->_has;
     }
 
-    v9 = *(a3 + 50);
+    v9 = *(equal + 50);
     if ((has & 0x10) != 0)
     {
-      if ((v9 & 0x10) == 0 || self->_taskResume != *(a3 + 5))
+      if ((v9 & 0x10) == 0 || self->_taskResume != *(equal + 5))
       {
         goto LABEL_70;
       }
@@ -1086,7 +1086,7 @@ LABEL_13:
 
     if (has)
     {
-      if ((v9 & 1) == 0 || self->_didCompleteWithError != *(a3 + 1))
+      if ((v9 & 1) == 0 || self->_didCompleteWithError != *(equal + 1))
       {
         goto LABEL_70;
       }
@@ -1099,7 +1099,7 @@ LABEL_13:
 
     if ((has & 8) != 0)
     {
-      if ((v9 & 8) == 0 || self->_numberOfRetries != *(a3 + 4))
+      if ((v9 & 8) == 0 || self->_numberOfRetries != *(equal + 4))
       {
         goto LABEL_70;
       }
@@ -1112,7 +1112,7 @@ LABEL_13:
 
     if ((has & 4) != 0)
     {
-      if ((v9 & 4) == 0 || self->_numberOfRedirects != *(a3 + 3))
+      if ((v9 & 4) == 0 || self->_numberOfRedirects != *(equal + 3))
       {
         goto LABEL_70;
       }
@@ -1125,7 +1125,7 @@ LABEL_13:
 
     if ((has & 2) != 0)
     {
-      if ((v9 & 2) == 0 || self->_error != *(a3 + 2))
+      if ((v9 & 2) == 0 || self->_error != *(equal + 2))
       {
         goto LABEL_70;
       }
@@ -1138,7 +1138,7 @@ LABEL_13:
 
     if ((has & 0x40) != 0)
     {
-      if ((v9 & 0x40) == 0 || self->_underlyingError != *(a3 + 7))
+      if ((v9 & 0x40) == 0 || self->_underlyingError != *(equal + 7))
       {
         goto LABEL_70;
       }
@@ -1151,7 +1151,7 @@ LABEL_13:
 
     if ((has & 0x80) != 0)
     {
-      if ((v9 & 0x80) == 0 || self->_underlyingErrorDomain != *(a3 + 8))
+      if ((v9 & 0x80) == 0 || self->_underlyingErrorDomain != *(equal + 8))
       {
         goto LABEL_70;
       }
@@ -1164,46 +1164,46 @@ LABEL_13:
 
     if ((has & 0x200) != 0)
     {
-      if ((*(a3 + 50) & 0x200) == 0 || self->_taskType != *(a3 + 21))
+      if ((*(equal + 50) & 0x200) == 0 || self->_taskType != *(equal + 21))
       {
         goto LABEL_70;
       }
     }
 
-    else if ((*(a3 + 50) & 0x200) != 0)
+    else if ((*(equal + 50) & 0x200) != 0)
     {
       goto LABEL_70;
     }
 
     if ((has & 0x400) != 0)
     {
-      if ((*(a3 + 50) & 0x400) == 0)
+      if ((*(equal + 50) & 0x400) == 0)
       {
         goto LABEL_70;
       }
 
-      v11 = *(a3 + 96);
+      v11 = *(equal + 96);
       if (self->_isBackground)
       {
-        if ((*(a3 + 96) & 1) == 0)
+        if ((*(equal + 96) & 1) == 0)
         {
           goto LABEL_70;
         }
       }
 
-      else if (*(a3 + 96))
+      else if (*(equal + 96))
       {
         goto LABEL_70;
       }
     }
 
-    else if ((*(a3 + 50) & 0x400) != 0)
+    else if ((*(equal + 50) & 0x400) != 0)
     {
       goto LABEL_70;
     }
 
     transactionMetrics = self->_transactionMetrics;
-    if (transactionMetrics | *(a3 + 11))
+    if (transactionMetrics | *(equal + 11))
     {
       v5 = [(NSMutableArray *)transactionMetrics isEqual:?];
       if (!v5)
@@ -1216,31 +1216,31 @@ LABEL_13:
 
     if ((has & 0x100) != 0)
     {
-      if ((*(a3 + 50) & 0x100) == 0 || self->_schedulingTier != *(a3 + 20))
+      if ((*(equal + 50) & 0x100) == 0 || self->_schedulingTier != *(equal + 20))
       {
         goto LABEL_70;
       }
     }
 
-    else if ((*(a3 + 50) & 0x100) != 0)
+    else if ((*(equal + 50) & 0x100) != 0)
     {
       goto LABEL_70;
     }
 
-    LOBYTE(v5) = (*(a3 + 50) & 0x800) == 0;
+    LOBYTE(v5) = (*(equal + 50) & 0x800) == 0;
     if ((has & 0x800) != 0)
     {
-      if ((*(a3 + 50) & 0x800) != 0)
+      if ((*(equal + 50) & 0x800) != 0)
       {
         if (self->_unused)
         {
-          if (*(a3 + 97))
+          if (*(equal + 97))
           {
             goto LABEL_73;
           }
         }
 
-        else if (!*(a3 + 97))
+        else if (!*(equal + 97))
         {
 LABEL_73:
           LOBYTE(v5) = 1;
@@ -1415,26 +1415,26 @@ LABEL_25:
   return v18 ^ v19 ^ v17 ^ v16 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x29EDCA608];
-  if ((*(a3 + 50) & 0x20) != 0)
+  if ((*(from + 50) & 0x20) != 0)
   {
-    self->_timestamp = *(a3 + 6);
+    self->_timestamp = *(from + 6);
     *&self->_has |= 0x20u;
   }
 
-  if (*(a3 + 9))
+  if (*(from + 9))
   {
     [(AWDCFNetworkTaskMetrics *)self setActivityUUID:?];
   }
 
-  v5 = *(a3 + 50);
+  v5 = *(from + 50);
   if ((v5 & 0x10) != 0)
   {
-    self->_taskResume = *(a3 + 5);
+    self->_taskResume = *(from + 5);
     *&self->_has |= 0x10u;
-    v5 = *(a3 + 50);
+    v5 = *(from + 50);
     if ((v5 & 1) == 0)
     {
 LABEL_7:
@@ -1452,9 +1452,9 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  self->_didCompleteWithError = *(a3 + 1);
+  self->_didCompleteWithError = *(from + 1);
   *&self->_has |= 1u;
-  v5 = *(a3 + 50);
+  v5 = *(from + 50);
   if ((v5 & 8) == 0)
   {
 LABEL_8:
@@ -1467,9 +1467,9 @@ LABEL_8:
   }
 
 LABEL_29:
-  self->_numberOfRetries = *(a3 + 4);
+  self->_numberOfRetries = *(from + 4);
   *&self->_has |= 8u;
-  v5 = *(a3 + 50);
+  v5 = *(from + 50);
   if ((v5 & 4) == 0)
   {
 LABEL_9:
@@ -1482,9 +1482,9 @@ LABEL_9:
   }
 
 LABEL_30:
-  self->_numberOfRedirects = *(a3 + 3);
+  self->_numberOfRedirects = *(from + 3);
   *&self->_has |= 4u;
-  v5 = *(a3 + 50);
+  v5 = *(from + 50);
   if ((v5 & 2) == 0)
   {
 LABEL_10:
@@ -1497,9 +1497,9 @@ LABEL_10:
   }
 
 LABEL_31:
-  self->_error = *(a3 + 2);
+  self->_error = *(from + 2);
   *&self->_has |= 2u;
-  v5 = *(a3 + 50);
+  v5 = *(from + 50);
   if ((v5 & 0x40) == 0)
   {
 LABEL_11:
@@ -1512,9 +1512,9 @@ LABEL_11:
   }
 
 LABEL_32:
-  self->_underlyingError = *(a3 + 7);
+  self->_underlyingError = *(from + 7);
   *&self->_has |= 0x40u;
-  v5 = *(a3 + 50);
+  v5 = *(from + 50);
   if ((v5 & 0x80) == 0)
   {
 LABEL_12:
@@ -1527,9 +1527,9 @@ LABEL_12:
   }
 
 LABEL_33:
-  self->_underlyingErrorDomain = *(a3 + 8);
+  self->_underlyingErrorDomain = *(from + 8);
   *&self->_has |= 0x80u;
-  v5 = *(a3 + 50);
+  v5 = *(from + 50);
   if ((v5 & 0x200) == 0)
   {
 LABEL_13:
@@ -1542,12 +1542,12 @@ LABEL_13:
   }
 
 LABEL_34:
-  self->_taskType = *(a3 + 21);
+  self->_taskType = *(from + 21);
   *&self->_has |= 0x200u;
-  if ((*(a3 + 50) & 0x400) != 0)
+  if ((*(from + 50) & 0x400) != 0)
   {
 LABEL_14:
-    self->_isBackground = *(a3 + 96);
+    self->_isBackground = *(from + 96);
     *&self->_has |= 0x400u;
   }
 
@@ -1556,7 +1556,7 @@ LABEL_15:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = *(a3 + 11);
+  v6 = *(from + 11);
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -1580,17 +1580,17 @@ LABEL_15:
     while (v8);
   }
 
-  v11 = *(a3 + 50);
+  v11 = *(from + 50);
   if ((v11 & 0x100) != 0)
   {
-    self->_schedulingTier = *(a3 + 20);
+    self->_schedulingTier = *(from + 20);
     *&self->_has |= 0x100u;
-    v11 = *(a3 + 50);
+    v11 = *(from + 50);
   }
 
   if ((v11 & 0x800) != 0)
   {
-    self->_unused = *(a3 + 97);
+    self->_unused = *(from + 97);
     *&self->_has |= 0x800u;
   }
 

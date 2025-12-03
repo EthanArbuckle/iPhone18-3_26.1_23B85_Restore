@@ -1,13 +1,13 @@
 @interface ActionParameter
-- (ActionParameter)initWithCoder:(id)a3;
-- (ActionParameter)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5;
+- (ActionParameter)initWithCoder:(id)coder;
+- (ActionParameter)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint;
 @end
 
 @implementation ActionParameter
 
-- (ActionParameter)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5
+- (ActionParameter)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint
 {
-  if (a3)
+  if (identifier)
   {
     v6 = sub_266EC1E78();
     v8 = v7;
@@ -21,7 +21,7 @@
 
   v9 = sub_266EC1E78();
   v11 = v10;
-  if (a5)
+  if (hint)
   {
     v12 = sub_266EC1E78();
     v14 = v13;
@@ -36,12 +36,12 @@
   return ActionParameter.init(identifier:display:pronunciationHint:)(v6, v8, v9, v11, v12, v14);
 }
 
-- (ActionParameter)initWithCoder:(id)a3
+- (ActionParameter)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ActionParameter();
-  v4 = a3;
-  v5 = [(ActionParameter *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ActionParameter *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

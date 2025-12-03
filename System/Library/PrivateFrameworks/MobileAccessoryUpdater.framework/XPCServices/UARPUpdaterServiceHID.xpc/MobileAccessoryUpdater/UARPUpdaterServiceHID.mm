@@ -1,19 +1,19 @@
 @interface UARPUpdaterServiceHID
-- (BOOL)automaticUpdatesDisabledForIdentifier:(id)a3;
+- (BOOL)automaticUpdatesDisabledForIdentifier:(id)identifier;
 - (UARPUpdaterServiceHID)init;
 - (id)getMatchingServicesList;
-- (id)registryEntryIDsForIdentifier:(id)a3;
-- (void)assetSolicitationComplete:(id)a3 assetID:(id)a4 withStatus:(unint64_t)a5;
+- (id)registryEntryIDsForIdentifier:(id)identifier;
+- (void)assetSolicitationComplete:(id)complete assetID:(id)d withStatus:(unint64_t)status;
 - (void)findAndHandleConnectedHIDAccessories;
-- (void)firmwareStagingComplete:(id)a3 withStatus:(unint64_t)a4;
-- (void)getMatchingServicesListWithReply:(id)a3;
-- (void)ioKitRuleMatched:(id)a3;
-- (void)matchingService:(unsigned int)a3 identifier:(id)a4;
-- (void)qProcessStandaloneDynamicAssetSolicitation:(id)a3 modelNumbers:(id)a4 notifyService:(id)a5;
-- (void)queryPendingTssRequests:(id)a3;
-- (void)standaloneDynamicAssetSolicitation:(id)a3 modelNumber:(id)a4 notifyService:(id)a5 reply:(id)a6;
-- (void)standaloneDynamicAssetSolicitation:(id)a3 modelNumbers:(id)a4 notifyService:(id)a5 reply:(id)a6;
-- (void)tssResponse:(id)a3;
+- (void)firmwareStagingComplete:(id)complete withStatus:(unint64_t)status;
+- (void)getMatchingServicesListWithReply:(id)reply;
+- (void)ioKitRuleMatched:(id)matched;
+- (void)matchingService:(unsigned int)service identifier:(id)identifier;
+- (void)qProcessStandaloneDynamicAssetSolicitation:(id)solicitation modelNumbers:(id)numbers notifyService:(id)service;
+- (void)queryPendingTssRequests:(id)requests;
+- (void)standaloneDynamicAssetSolicitation:(id)solicitation modelNumber:(id)number notifyService:(id)service reply:(id)reply;
+- (void)standaloneDynamicAssetSolicitation:(id)solicitation modelNumbers:(id)numbers notifyService:(id)service reply:(id)reply;
+- (void)tssResponse:(id)response;
 @end
 
 @implementation UARPUpdaterServiceHID
@@ -75,14 +75,14 @@
 
         v25 = v3;
         v4 = *(*(&v33 + 1) + 8 * v3);
-        v5 = [v4 hardwareID];
+        hardwareID = [v4 hardwareID];
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v24 = v5;
-        v27 = [v5 personalities];
-        v6 = [v27 countByEnumeratingWithState:&v29 objects:v41 count:16];
+        v24 = hardwareID;
+        personalities = [hardwareID personalities];
+        v6 = [personalities countByEnumeratingWithState:&v29 objects:v41 count:16];
         if (v6)
         {
           v7 = v6;
@@ -93,7 +93,7 @@
             {
               if (*v30 != v8)
               {
-                objc_enumerationMutation(v27);
+                objc_enumerationMutation(personalities);
               }
 
               v10 = *(*(&v29 + 1) + 8 * i);
@@ -104,8 +104,8 @@
 
               if (v14)
               {
-                v15 = [v4 identifier];
-                v16 = [v10 personalityIdentifier:v15];
+                identifier = [v4 identifier];
+                v16 = [v10 personalityIdentifier:identifier];
 
                 v17 = [[UARPServiceUpdaterAccessoryMatchingRule alloc] initWithIdentifier:v16 xpcEventStream:@"com.apple.iokit.matching" matchingDictionary:v14];
                 if (v17)
@@ -115,7 +115,7 @@
               }
             }
 
-            v7 = [v27 countByEnumeratingWithState:&v29 objects:v41 count:16];
+            v7 = [personalities countByEnumeratingWithState:&v29 objects:v41 count:16];
           }
 
           while (v7);
@@ -146,9 +146,9 @@
   return v19;
 }
 
-- (void)getMatchingServicesListWithReply:(id)a3
+- (void)getMatchingServicesListWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -157,17 +157,17 @@
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s:", &v7, 0xCu);
   }
 
-  v6 = [(UARPUpdaterServiceHID *)self getMatchingServicesList];
-  v4[2](v4, v6);
+  getMatchingServicesList = [(UARPUpdaterServiceHID *)self getMatchingServicesList];
+  replyCopy[2](replyCopy, getMatchingServicesList);
 }
 
-- (id)registryEntryIDsForIdentifier:(id)a3
+- (id)registryEntryIDsForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[NSMutableArray array];
   hidUpdater = self->_hidUpdater;
-  v7 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [v4 vendorID]);
-  v8 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [v4 productID]);
+  v7 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [identifierCopy vendorID]);
+  v8 = +[NSNumber numberWithUnsignedShort:](NSNumber, "numberWithUnsignedShort:", [identifierCopy productID]);
   v9 = [(UARPHIDUpdater *)hidUpdater matchingDictionaryForVendorID:v7 productID:v8];
 
   existing = 0;
@@ -208,15 +208,15 @@
   return v15;
 }
 
-- (BOOL)automaticUpdatesDisabledForIdentifier:(id)a3
+- (BOOL)automaticUpdatesDisabledForIdentifier:(id)identifier
 {
-  v3 = [a3 componentsSeparatedByString:@"."];
+  v3 = [identifier componentsSeparatedByString:@"."];
   v4 = CFPreferencesCopyAppValue(@"disabledProductIdentifiers", @"com.apple.mobileaccessoryupdater");
   v5 = [v3 objectAtIndex:0];
   v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (void)findAndHandleConnectedHIDAccessories
@@ -243,14 +243,14 @@
 
         v27 = v3;
         v30 = *(*(&v43 + 1) + 8 * v3);
-        v4 = [v30 hardwareID];
+        hardwareID = [v30 hardwareID];
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
         v42 = 0u;
-        v26 = v4;
-        v28 = [v4 personalities];
-        v31 = [v28 countByEnumeratingWithState:&v39 objects:v52 count:16];
+        v26 = hardwareID;
+        personalities = [hardwareID personalities];
+        v31 = [personalities countByEnumeratingWithState:&v39 objects:v52 count:16];
         if (v31)
         {
           v29 = *v40;
@@ -260,12 +260,12 @@
             {
               if (*v40 != v29)
               {
-                objc_enumerationMutation(v28);
+                objc_enumerationMutation(personalities);
               }
 
               v6 = *(*(&v39 + 1) + 8 * i);
-              v7 = [v30 identifier];
-              v8 = [v6 personalityIdentifier:v7];
+              identifier = [v30 identifier];
+              v8 = [v6 personalityIdentifier:identifier];
 
               v9 = [(UARPUpdaterServiceHID *)self registryEntryIDsForIdentifier:v6];
               if ([v9 count])
@@ -295,8 +295,8 @@
                       v16 = v15;
                       if (v15)
                       {
-                        v17 = [v15 modelNumber];
-                        v18 = [(UARPUpdaterServiceHID *)self automaticUpdatesDisabledForIdentifier:v17];
+                        modelNumber = [v15 modelNumber];
+                        v18 = [(UARPUpdaterServiceHID *)self automaticUpdatesDisabledForIdentifier:modelNumber];
 
                         if (v18)
                         {
@@ -329,7 +329,7 @@
               }
             }
 
-            v31 = [v28 countByEnumeratingWithState:&v39 objects:v52 count:16];
+            v31 = [personalities countByEnumeratingWithState:&v39 objects:v52 count:16];
           }
 
           while (v31);
@@ -363,23 +363,23 @@
   }
 }
 
-- (void)ioKitRuleMatched:(id)a3
+- (void)ioKitRuleMatched:(id)matched
 {
-  v4 = a3;
+  matchedCopy = matched;
   log = self->_log;
-  if (v4)
+  if (matchedCopy)
   {
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_INFO))
     {
       v27 = 136315394;
       v28 = "[UARPUpdaterServiceHID ioKitRuleMatched:]";
       v29 = 2112;
-      v30 = v4;
+      v30 = matchedCopy;
       _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: %@", &v27, 0x16u);
     }
 
-    v6 = [v4 identifier];
-    if (!v6)
+    identifier = [matchedCopy identifier];
+    if (!identifier)
     {
       v11 = self->_log;
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -390,8 +390,8 @@
       goto LABEL_17;
     }
 
-    v7 = [v4 registryEntryID];
-    if (!v7)
+    registryEntryID = [matchedCopy registryEntryID];
+    if (!registryEntryID)
     {
       v19 = self->_log;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -402,7 +402,7 @@
       goto LABEL_17;
     }
 
-    v8 = [(UARPHIDUpdater *)self->_hidUpdater getAccessoryForIORegEntryID:v7 identifier:v6];
+    v8 = [(UARPHIDUpdater *)self->_hidUpdater getAccessoryForIORegEntryID:registryEntryID identifier:identifier];
     if (os_log_type_enabled(self->_log, OS_LOG_TYPE_DEBUG))
     {
       sub_10001DD48();
@@ -438,109 +438,109 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)matchingService:(unsigned int)a3 identifier:(id)a4
+- (void)matchingService:(unsigned int)service identifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   entryID = 0;
-  if (!IORegistryEntryGetRegistryEntryID(a3, &entryID) && entryID)
+  if (!IORegistryEntryGetRegistryEntryID(service, &entryID) && entryID)
   {
     v7 = [UARPServiceUpdaterMatchedIOKitRule alloc];
-    v8 = [v7 initWithIdentifier:v6 registryEntryID:entryID];
+    v8 = [v7 initWithIdentifier:identifierCopy registryEntryID:entryID];
     [(UARPUpdaterServiceHID *)self ioKitRuleMatched:v8];
   }
 }
 
-- (void)firmwareStagingComplete:(id)a3 withStatus:(unint64_t)a4
+- (void)firmwareStagingComplete:(id)complete withStatus:(unint64_t)status
 {
-  if (!a4)
+  if (!status)
   {
-    [(UARPHIDUpdater *)self->_hidUpdater applyStagedAssets:a3];
+    [(UARPHIDUpdater *)self->_hidUpdater applyStagedAssets:complete];
   }
 }
 
-- (void)assetSolicitationComplete:(id)a3 assetID:(id)a4 withStatus:(unint64_t)a5
+- (void)assetSolicitationComplete:(id)complete assetID:(id)d withStatus:(unint64_t)status
 {
-  v8 = a3;
-  v9 = a4;
+  completeCopy = complete;
+  dCopy = d;
   serviceQueue = self->_serviceQueue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10000F920;
   v13[3] = &unk_10002C700;
-  v14 = v9;
-  v15 = self;
-  v16 = v8;
-  v17 = a5;
-  v11 = v8;
-  v12 = v9;
+  v14 = dCopy;
+  selfCopy = self;
+  v16 = completeCopy;
+  statusCopy = status;
+  v11 = completeCopy;
+  v12 = dCopy;
   dispatch_async(serviceQueue, v13);
 }
 
-- (void)standaloneDynamicAssetSolicitation:(id)a3 modelNumber:(id)a4 notifyService:(id)a5 reply:(id)a6
+- (void)standaloneDynamicAssetSolicitation:(id)solicitation modelNumber:(id)number notifyService:(id)service reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  solicitationCopy = solicitation;
+  numberCopy = number;
+  serviceCopy = service;
   serviceQueue = self->_serviceQueue;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10000FDD4;
   v18[3] = &unk_10002C548;
   v18[4] = self;
-  v19 = v11;
-  v20 = v12;
-  v21 = v10;
-  v14 = v10;
-  v15 = v12;
-  v16 = v11;
-  v17 = a6;
+  v19 = numberCopy;
+  v20 = serviceCopy;
+  v21 = solicitationCopy;
+  v14 = solicitationCopy;
+  v15 = serviceCopy;
+  v16 = numberCopy;
+  replyCopy = reply;
   dispatch_async(serviceQueue, v18);
-  v17[2](v17, 1);
+  replyCopy[2](replyCopy, 1);
 }
 
-- (void)standaloneDynamicAssetSolicitation:(id)a3 modelNumbers:(id)a4 notifyService:(id)a5 reply:(id)a6
+- (void)standaloneDynamicAssetSolicitation:(id)solicitation modelNumbers:(id)numbers notifyService:(id)service reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  solicitationCopy = solicitation;
+  numbersCopy = numbers;
+  serviceCopy = service;
   serviceQueue = self->_serviceQueue;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10001008C;
   v18[3] = &unk_10002C548;
   v18[4] = self;
-  v19 = v11;
-  v20 = v12;
-  v21 = v10;
-  v14 = v10;
-  v15 = v12;
-  v16 = v11;
-  v17 = a6;
+  v19 = numbersCopy;
+  v20 = serviceCopy;
+  v21 = solicitationCopy;
+  v14 = solicitationCopy;
+  v15 = serviceCopy;
+  v16 = numbersCopy;
+  replyCopy = reply;
   dispatch_async(serviceQueue, v18);
-  v17[2](v17, 1);
+  replyCopy[2](replyCopy, 1);
 }
 
-- (void)qProcessStandaloneDynamicAssetSolicitation:(id)a3 modelNumbers:(id)a4 notifyService:(id)a5
+- (void)qProcessStandaloneDynamicAssetSolicitation:(id)solicitation modelNumbers:(id)numbers notifyService:(id)service
 {
-  v54 = a3;
-  v7 = a4;
-  v8 = a5;
+  solicitationCopy = solicitation;
+  numbersCopy = numbers;
+  serviceCopy = service;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = v7;
-  v51 = [v7 countByEnumeratingWithState:&v60 objects:v70 count:16];
+  obj = numbersCopy;
+  v51 = [numbersCopy countByEnumeratingWithState:&v60 objects:v70 count:16];
   if (!v51)
   {
 LABEL_23:
-    v33 = [[UARPStandaloneCommandManagerReply alloc] initWithRemoteServiceEndpoint:v8];
+    v33 = [[UARPStandaloneCommandManagerReply alloc] initWithRemoteServiceEndpoint:serviceCopy];
     v34 = v33;
     if (v33)
     {
       legacyStandaloneDynamicAssetSolicitation = self->_legacyStandaloneDynamicAssetSolicitation;
-      v36 = [(UARPStandaloneCommandManagerReply *)v33 remoteObject];
-      v37 = v36;
+      remoteObject = [(UARPStandaloneCommandManagerReply *)v33 remoteObject];
+      v37 = remoteObject;
       if (legacyStandaloneDynamicAssetSolicitation)
       {
         v38 = [obj objectAtIndexedSubscript:0];
@@ -549,7 +549,7 @@ LABEL_23:
 
       else
       {
-        [v36 dynamicAssetSolicitationComplete:&__NSArray0__struct];
+        [remoteObject dynamicAssetSolicitationComplete:&__NSArray0__struct];
       }
 
       pendingAssetSolicitationRequest = self->_pendingAssetSolicitationRequest;
@@ -573,7 +573,7 @@ LABEL_23:
     goto LABEL_32;
   }
 
-  v48 = v8;
+  v48 = serviceCopy;
   v53 = 0;
   v50 = *v61;
   do
@@ -607,33 +607,33 @@ LABEL_23:
             }
 
             v15 = *(*(&v56 + 1) + 8 * i);
-            v16 = [v15 accessoryID];
-            if (v16)
+            accessoryID = [v15 accessoryID];
+            if (accessoryID)
             {
-              v17 = v16;
-              v18 = [v15 accessoryID];
-              v19 = [v18 modelNumber];
-              if (v19)
+              v17 = accessoryID;
+              accessoryID2 = [v15 accessoryID];
+              modelNumber = [accessoryID2 modelNumber];
+              if (modelNumber)
               {
-                v20 = v19;
-                v21 = [v15 accessoryID];
-                v22 = [v21 serialNumber];
+                v20 = modelNumber;
+                accessoryID3 = [v15 accessoryID];
+                serialNumber = [accessoryID3 serialNumber];
 
-                if (v22)
+                if (serialNumber)
                 {
-                  v23 = [v15 accessoryID];
-                  v24 = [v23 serialNumber];
-                  v25 = [NSString stringWithFormat:@"LOGS-%@.uarp", v24];
+                  accessoryID4 = [v15 accessoryID];
+                  serialNumber2 = [accessoryID4 serialNumber];
+                  v25 = [NSString stringWithFormat:@"LOGS-%@.uarp", serialNumber2];
 
                   v26 = UARPStringDynamicAssetsFilepath();
                   v27 = [NSURL fileURLWithPath:v26];
                   v28 = [v27 URLByAppendingPathComponent:v25];
 
-                  v29 = [[UARPAssetID alloc] initWithLocationType:10 assetTag:v54 url:v28];
+                  v29 = [[UARPAssetID alloc] initWithLocationType:10 assetTag:solicitationCopy url:v28];
                   [(UARPUpdaterServiceDynamicAssetSolicitationRecord *)self->_pendingAssetSolicitationRequest addExpectedSolicitationResponse];
                   hidUpdater = self->_hidUpdater;
-                  v31 = [v15 accessoryID];
-                  v64 = v31;
+                  accessoryID5 = [v15 accessoryID];
+                  v64 = accessoryID5;
                   v53 = 1;
                   v32 = [NSArray arrayWithObjects:&v64 count:1];
                   [(UARPHIDUpdater *)hidUpdater solicitDynamicAssetForAccessories:v32 assetID:v29];
@@ -671,7 +671,7 @@ LABEL_23:
   }
 
   while (v51);
-  v8 = v48;
+  serviceCopy = v48;
   if ((v53 & 1) == 0)
   {
     goto LABEL_23;
@@ -680,9 +680,9 @@ LABEL_23:
 LABEL_32:
 }
 
-- (void)queryPendingTssRequests:(id)a3
+- (void)queryPendingTssRequests:(id)requests
 {
-  v4 = a3;
+  requestsCopy = requests;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -691,34 +691,34 @@ LABEL_32:
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s:", &v8, 0xCu);
   }
 
-  v6 = [(UARPHIDUpdater *)self->_hidUpdater pendingTatsuRequests];
+  pendingTatsuRequests = [(UARPHIDUpdater *)self->_hidUpdater pendingTatsuRequests];
   v7 = self->_log;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = 136315394;
     v9 = "[UARPUpdaterServiceHID queryPendingTssRequests:]";
     v10 = 2112;
-    v11 = v6;
+    v11 = pendingTatsuRequests;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s: HID Updater responded with these pending TSS Requests %@", &v8, 0x16u);
   }
 
-  v4[2](v4, v6);
+  requestsCopy[2](requestsCopy, pendingTatsuRequests);
 }
 
-- (void)tssResponse:(id)a3
+- (void)tssResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v6 = 136315394;
     v7 = "[UARPUpdaterServiceHID tssResponse:]";
     v8 = 2112;
-    v9 = v4;
+    v9 = responseCopy;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: TSS Response %@", &v6, 0x16u);
   }
 
-  [(UARPHIDUpdater *)self->_hidUpdater tssResponse:v4];
+  [(UARPHIDUpdater *)self->_hidUpdater tssResponse:responseCopy];
 }
 
 @end

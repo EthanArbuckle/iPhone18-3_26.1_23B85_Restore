@@ -1,18 +1,18 @@
 @interface NRDOrphanedConnection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation NRDOrphanedConnection
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self)
     {
       nrUUID = self->_nrUUID;
@@ -77,7 +77,7 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     nrUUID = self->_nrUUID;
@@ -90,12 +90,12 @@ LABEL_14:
 
   v4 = nrUUID;
   v5 = [(NSUUID *)v4 hash];
-  if (v2)
+  if (selfCopy)
   {
-    v2 = v2->_connection;
+    selfCopy = selfCopy->_connection;
   }
 
-  return v2 + v5;
+  return selfCopy + v5;
 }
 
 - (id)description
@@ -113,9 +113,9 @@ LABEL_14:
     connection = 0;
   }
 
-  v6 = [v3 initWithFormat:@"[OrphanedConnection:%@, %@]", v4, connection];
+  connection = [v3 initWithFormat:@"[OrphanedConnection:%@, %@]", v4, connection];
 
-  return v6;
+  return connection;
 }
 
 @end

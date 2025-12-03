@@ -9,18 +9,18 @@
   if (a3)
   {
     v4 = a3;
-    v5 = [PSSpecifierUpdates updatesWithSpecifiers:a1];
+    v5 = [PSSpecifierUpdates updatesWithSpecifiers:self];
     v4[2](v4, v5);
 
-    v6 = [v5 currentSpecifiers];
+    selfCopy = [v5 currentSpecifiers];
   }
 
   else
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

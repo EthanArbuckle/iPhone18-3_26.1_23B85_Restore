@@ -1,14 +1,14 @@
 @interface PPSSignpostTestingTask
-- (BOOL)perform:(BOOL *)a3 withStopDate:(id *)a4;
-- (PPSSignpostTestingTask)initWithRequest:(id)a3;
+- (BOOL)perform:(BOOL *)perform withStopDate:(id *)date;
+- (PPSSignpostTestingTask)initWithRequest:(id)request;
 @end
 
 @implementation PPSSignpostTestingTask
 
-- (PPSSignpostTestingTask)initWithRequest:(id)a3
+- (PPSSignpostTestingTask)initWithRequest:(id)request
 {
-  v5 = a3;
-  if (v5)
+  requestCopy = request;
+  if (requestCopy)
   {
     v10.receiver = self;
     v10.super_class = PPSSignpostTestingTask;
@@ -16,29 +16,29 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_request, a3);
+      objc_storeStrong(&v6->_request, request);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)perform:(BOOL *)a3 withStopDate:(id *)a4
+- (BOOL)perform:(BOOL *)perform withStopDate:(id *)date
 {
-  if (a3)
+  if (perform)
   {
     v6 = +[NSDate now];
     do
     {
-      if (*a3)
+      if (*perform)
       {
 
         goto LABEL_9;
@@ -72,13 +72,13 @@
   else
   {
 LABEL_9:
-    if (!a4)
+    if (!date)
     {
       return 1;
     }
 
     v6 = +[NSDate now];
-    *a4 = v6;
+    *date = v6;
     v14 = PPSLogSignpostTestingTask();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {

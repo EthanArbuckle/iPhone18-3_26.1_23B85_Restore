@@ -1,25 +1,25 @@
 @interface CalDAVAccountPropertyRefreshOperation
-- (BOOL)shouldKeepDefaultAlarmError:(id)a3;
+- (BOOL)shouldKeepDefaultAlarmError:(id)error;
 - (BOOL)shouldRefreshDefaultAlarms;
-- (CalDAVAccountPropertyRefreshOperation)initWithPrincipal:(id)a3;
+- (CalDAVAccountPropertyRefreshOperation)initWithPrincipal:(id)principal;
 - (id)_copyHomePropertiesPropFindElements;
-- (id)propPatchForProperty:(id)a3 value:(id)a4;
-- (void)_finishCalDAVAccountPropertyRefreshOperationWithError:(id)a3;
+- (id)propPatchForProperty:(id)property value:(id)value;
+- (void)_finishCalDAVAccountPropertyRefreshOperationWithError:(id)error;
 - (void)_reallyRefreshProperties;
 - (void)_refreshDefaultAlarms;
-- (void)getAccountPropertiesTask:(id)a3 completedWithError:(id)a4;
-- (void)propFindTask:(id)a3 parsedResponses:(id)a4 error:(id)a5;
+- (void)getAccountPropertiesTask:(id)task completedWithError:(id)error;
+- (void)propFindTask:(id)task parsedResponses:(id)responses error:(id)error;
 - (void)refreshProperties;
 - (void)sendLocallyChangedPropertiesIfNeeded;
 @end
 
 @implementation CalDAVAccountPropertyRefreshOperation
 
-- (CalDAVAccountPropertyRefreshOperation)initWithPrincipal:(id)a3
+- (CalDAVAccountPropertyRefreshOperation)initWithPrincipal:(id)principal
 {
   v7.receiver = self;
   v7.super_class = CalDAVAccountPropertyRefreshOperation;
-  v3 = [(CalDAVOperation *)&v7 initWithPrincipal:a3];
+  v3 = [(CalDAVOperation *)&v7 initWithPrincipal:principal];
   if (v3)
   {
     v4 = dispatch_group_create();
@@ -30,15 +30,15 @@
   return v3;
 }
 
-- (id)propPatchForProperty:(id)a3 value:(id)a4
+- (id)propPatchForProperty:(id)property value:(id)value
 {
   v5 = MEMORY[0x277CFDBE0];
-  v6 = a4;
-  v7 = a3;
+  valueCopy = value;
+  propertyCopy = property;
   v8 = [v5 alloc];
-  v9 = [v8 initWithNameSpace:*MEMORY[0x277CFDDC0] andName:v7];
+  v9 = [v8 initWithNameSpace:*MEMORY[0x277CFDDC0] andName:propertyCopy];
 
-  [v9 setPayloadAsString:v6];
+  [v9 setPayloadAsString:valueCopy];
   [v9 setUseCDATA:1];
 
   return v9;
@@ -47,41 +47,41 @@
 - (void)sendLocallyChangedPropertiesIfNeeded
 {
   v3 = objc_opt_new();
-  v4 = [(CalDAVOperation *)self principal];
+  principal = [(CalDAVOperation *)self principal];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_7;
   }
 
-  v5 = [(CalDAVOperation *)self principal];
-  if (([v5 needsDefaultTimedAlarmUpdate] & 1) == 0)
+  principal2 = [(CalDAVOperation *)self principal];
+  if (([principal2 needsDefaultTimedAlarmUpdate] & 1) == 0)
   {
 
     goto LABEL_7;
   }
 
-  v6 = [(CalDAVOperation *)self principal];
+  principal3 = [(CalDAVOperation *)self principal];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CalDAVOperation *)self principal];
-    v9 = [v8 defaultTimedAlarms];
-    v10 = [(CalDAVAccountPropertyRefreshOperation *)self propPatchForProperty:@"default-alarm-vevent-datetime" value:v9];
+    principal4 = [(CalDAVOperation *)self principal];
+    defaultTimedAlarms = [principal4 defaultTimedAlarms];
+    v10 = [(CalDAVAccountPropertyRefreshOperation *)self propPatchForProperty:@"default-alarm-vevent-datetime" value:defaultTimedAlarms];
     [v3 addObject:v10];
 
-    v11 = [(CalDAVOperation *)self principal];
-    LOBYTE(v8) = objc_opt_respondsToSelector();
+    principal5 = [(CalDAVOperation *)self principal];
+    LOBYTE(principal4) = objc_opt_respondsToSelector();
 
-    if (v8)
+    if (principal4)
     {
-      v4 = [(CalDAVOperation *)self principal];
-      [v4 setNeedsDefaultTimedAlarmUpdate:0];
+      principal = [(CalDAVOperation *)self principal];
+      [principal setNeedsDefaultTimedAlarmUpdate:0];
 LABEL_7:
     }
   }
 
-  v12 = [(CalDAVOperation *)self principal];
+  principal6 = [(CalDAVOperation *)self principal];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 LABEL_14:
@@ -89,30 +89,30 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v13 = [(CalDAVOperation *)self principal];
-  if (([v13 needsDefaultAllDayAlarmUpdate] & 1) == 0)
+  principal7 = [(CalDAVOperation *)self principal];
+  if (([principal7 needsDefaultAllDayAlarmUpdate] & 1) == 0)
   {
 
     goto LABEL_14;
   }
 
-  v14 = [(CalDAVOperation *)self principal];
+  principal8 = [(CalDAVOperation *)self principal];
   v15 = objc_opt_respondsToSelector();
 
   if (v15)
   {
-    v16 = [(CalDAVOperation *)self principal];
-    v17 = [v16 defaultAllDayAlarms];
-    v18 = [(CalDAVAccountPropertyRefreshOperation *)self propPatchForProperty:@"default-alarm-vevent-date" value:v17];
+    principal9 = [(CalDAVOperation *)self principal];
+    defaultAllDayAlarms = [principal9 defaultAllDayAlarms];
+    v18 = [(CalDAVAccountPropertyRefreshOperation *)self propPatchForProperty:@"default-alarm-vevent-date" value:defaultAllDayAlarms];
     [v3 addObject:v18];
 
-    v19 = [(CalDAVOperation *)self principal];
-    LOBYTE(v16) = objc_opt_respondsToSelector();
+    principal10 = [(CalDAVOperation *)self principal];
+    LOBYTE(principal9) = objc_opt_respondsToSelector();
 
-    if (v16)
+    if (principal9)
     {
-      v12 = [(CalDAVOperation *)self principal];
-      [v12 setNeedsDefaultAllDayAlarmUpdate:0];
+      principal6 = [(CalDAVOperation *)self principal];
+      [principal6 setNeedsDefaultAllDayAlarmUpdate:0];
       goto LABEL_14;
     }
   }
@@ -121,12 +121,12 @@ LABEL_15:
   if ([v3 count])
   {
     v20 = objc_alloc(MEMORY[0x277CFDC70]);
-    v21 = [(CalDAVOperation *)self principal];
-    v22 = [v21 calendarHomeURL];
-    v23 = [v20 initWithPropertiesToSet:v3 andRemove:0 atURL:v22];
+    principal11 = [(CalDAVOperation *)self principal];
+    calendarHomeURL = [principal11 calendarHomeURL];
+    v23 = [v20 initWithPropertiesToSet:v3 andRemove:0 atURL:calendarHomeURL];
 
-    v24 = [(CoreDAVTaskGroup *)self accountInfoProvider];
-    [v23 setAccountInfoProvider:v24];
+    accountInfoProvider = [(CoreDAVTaskGroup *)self accountInfoProvider];
+    [v23 setAccountInfoProvider:accountInfoProvider];
 
     objc_initWeak(&location, self);
     objc_initWeak(&from, v23);
@@ -141,8 +141,8 @@ LABEL_15:
     v25 = [(CoreDAVTaskGroup *)self outstandingTasks:v27];
     [v25 addObject:v23];
 
-    v26 = [(CoreDAVTaskGroup *)self taskManager];
-    [v26 submitQueuedCoreDAVTask:v23];
+    taskManager = [(CoreDAVTaskGroup *)self taskManager];
+    [taskManager submitQueuedCoreDAVTask:v23];
 
     objc_destroyWeak(&v32);
     objc_destroyWeak(&v31);
@@ -194,84 +194,84 @@ void *__58__CalDAVAccountPropertyRefreshOperation_refreshProperties__block_invok
 - (void)_reallyRefreshProperties
 {
   v3 = [CalDAVGetAccountPropertiesTaskGroup alloc];
-  v4 = [(CalDAVOperation *)self principal];
-  v5 = [(CoreDAVTaskGroup *)self taskManager];
-  v10 = [(CoreDAVGetAccountPropertiesTaskGroup *)v3 initWithAccountInfoProvider:v4 taskManager:v5];
+  principal = [(CalDAVOperation *)self principal];
+  taskManager = [(CoreDAVTaskGroup *)self taskManager];
+  v10 = [(CoreDAVGetAccountPropertiesTaskGroup *)v3 initWithAccountInfoProvider:principal taskManager:taskManager];
 
   [(CoreDAVTaskGroup *)v10 setDelegate:self];
-  v6 = [(CalDAVOperation *)self principal];
-  LODWORD(v4) = [v6 isDelegate];
+  principal2 = [(CalDAVOperation *)self principal];
+  LODWORD(principal) = [principal2 isDelegate];
 
-  if (v4)
+  if (principal)
   {
-    v7 = [(CalDAVOperation *)self principal];
-    v8 = [v7 principalURL];
-    [(CalDAVGetAccountPropertiesTaskGroup *)v10 setDelegatePrincipalURL:v8];
+    principal3 = [(CalDAVOperation *)self principal];
+    principalURL = [principal3 principalURL];
+    [(CalDAVGetAccountPropertiesTaskGroup *)v10 setDelegatePrincipalURL:principalURL];
   }
 
   [(CoreDAVGetAccountPropertiesTaskGroup *)v10 setFetchPrincipalSearchProperties:[(CalDAVAccountPropertyRefreshOperation *)self fetchPrincipalSearchProperties]];
-  v9 = [(CalDAVOperation *)self outstandingTaskGroups];
-  [v9 addObject:v10];
+  outstandingTaskGroups = [(CalDAVOperation *)self outstandingTaskGroups];
+  [outstandingTaskGroups addObject:v10];
 
   [(CalDAVGetAccountPropertiesTaskGroup *)v10 startTaskGroup];
 }
 
-- (void)getAccountPropertiesTask:(id)a3 completedWithError:(id)a4
+- (void)getAccountPropertiesTask:(id)task completedWithError:(id)error
 {
-  v36 = a3;
-  v6 = a4;
-  v7 = [(CalDAVOperation *)self outstandingTaskGroups];
-  [v7 removeObject:v36];
+  taskCopy = task;
+  errorCopy = error;
+  outstandingTaskGroups = [(CalDAVOperation *)self outstandingTaskGroups];
+  [outstandingTaskGroups removeObject:taskCopy];
 
-  v8 = [(CalDAVOperation *)self principal];
-  v9 = v8;
-  if (v6)
+  principal = [(CalDAVOperation *)self principal];
+  v9 = principal;
+  if (errorCopy)
   {
-    [(CalDAVAccountPropertyRefreshOperation *)self _finishCalDAVAccountPropertyRefreshOperationWithError:v6];
+    [(CalDAVAccountPropertyRefreshOperation *)self _finishCalDAVAccountPropertyRefreshOperationWithError:errorCopy];
   }
 
   else
   {
-    v10 = [v8 account];
-    v11 = [v36 collections];
-    v12 = [v11 anyObject];
-    [v10 setCollectionSetURL:v12];
+    account = [principal account];
+    collections = [taskCopy collections];
+    anyObject = [collections anyObject];
+    [account setCollectionSetURL:anyObject];
 
-    v13 = [v36 serverVersion];
-    [v10 setServerVersion:v13];
+    serverVersion = [taskCopy serverVersion];
+    [account setServerVersion:serverVersion];
 
-    v14 = [v36 principalSearchProperties];
-    v15 = [CalDAVPrincipalSearchPropertySet searchSetWithProperties:v14];
-    [v10 setSearchPropertySet:v15];
+    principalSearchProperties = [taskCopy principalSearchProperties];
+    v15 = [CalDAVPrincipalSearchPropertySet searchSetWithProperties:principalSearchProperties];
+    [account setSearchPropertySet:v15];
 
     v16 = MEMORY[0x277CBEBC0];
-    v17 = [v36 calendarHomes];
-    v18 = [v17 anyObject];
-    v19 = [v18 absoluteString];
-    v20 = [v19 appendSlashIfNeeded];
-    v21 = [v16 URLWithString:v20];
+    calendarHomes = [taskCopy calendarHomes];
+    anyObject2 = [calendarHomes anyObject];
+    absoluteString = [anyObject2 absoluteString];
+    appendSlashIfNeeded = [absoluteString appendSlashIfNeeded];
+    v21 = [v16 URLWithString:appendSlashIfNeeded];
     [v9 setCalendarHomeURL:v21];
 
-    v22 = [v36 inboxURL];
-    [v9 setInboxURL:v22];
+    inboxURL = [taskCopy inboxURL];
+    [v9 setInboxURL:inboxURL];
 
-    v23 = [v36 outboxURL];
-    [v9 setOutboxURL:v23];
+    outboxURL = [taskCopy outboxURL];
+    [v9 setOutboxURL:outboxURL];
 
-    v24 = [v36 dropboxURL];
-    [v9 setDropBoxURL:v24];
+    dropboxURL = [taskCopy dropboxURL];
+    [v9 setDropBoxURL:dropboxURL];
 
-    v25 = [v36 notificationURL];
-    [v9 setNotificationCollectionURL:v25];
+    notificationURL = [taskCopy notificationURL];
+    [v9 setNotificationCollectionURL:notificationURL];
 
-    v26 = [v36 displayName];
-    [v9 setFullName:v26];
+    displayName = [taskCopy displayName];
+    [v9 setFullName:displayName];
 
-    [v9 setSupportsCalendarUserSearch:{objc_msgSend(v36, "supportsCalendarUserSearch")}];
-    if ([v36 isExpandPropertyReportSupported])
+    [v9 setSupportsCalendarUserSearch:{objc_msgSend(taskCopy, "supportsCalendarUserSearch")}];
+    if ([taskCopy isExpandPropertyReportSupported])
     {
-      v27 = [v36 serverVersion];
-      [v9 setIsExpandPropertyReportSupported:{objc_msgSend(v27, "expandPropertyReportIsUnreliable") ^ 1}];
+      serverVersion2 = [taskCopy serverVersion];
+      [v9 setIsExpandPropertyReportSupported:{objc_msgSend(serverVersion2, "expandPropertyReportIsUnreliable") ^ 1}];
     }
 
     else
@@ -279,23 +279,23 @@ void *__58__CalDAVAccountPropertyRefreshOperation_refreshProperties__block_invok
       [v9 setIsExpandPropertyReportSupported:0];
     }
 
-    v28 = [v36 preferredUserAddresses];
-    [v9 setPreferredCalendarUserAddresses:v28];
+    preferredUserAddresses = [taskCopy preferredUserAddresses];
+    [v9 setPreferredCalendarUserAddresses:preferredUserAddresses];
 
     v29 = MEMORY[0x277CBEBC0];
-    v30 = [v36 principalURL];
-    v31 = [v30 absoluteString];
-    v32 = [v31 appendSlashIfNeeded];
-    v33 = [v29 URLWithString:v32];
+    principalURL = [taskCopy principalURL];
+    absoluteString2 = [principalURL absoluteString];
+    appendSlashIfNeeded2 = [absoluteString2 appendSlashIfNeeded];
+    v33 = [v29 URLWithString:appendSlashIfNeeded2];
 
-    v34 = [v9 principalURL];
-    LOBYTE(v31) = [v34 isEqual:v33];
+    principalURL2 = [v9 principalURL];
+    LOBYTE(absoluteString2) = [principalURL2 isEqual:v33];
 
-    if ((v31 & 1) == 0)
+    if ((absoluteString2 & 1) == 0)
     {
-      v35 = [v10 password];
+      password = [account password];
       [v9 setPrincipalURL:v33];
-      [v10 setPassword:v35];
+      [account setPassword:password];
     }
 
     if ([(CalDAVAccountPropertyRefreshOperation *)self shouldRefreshDefaultAlarms])
@@ -312,42 +312,42 @@ void *__58__CalDAVAccountPropertyRefreshOperation_refreshProperties__block_invok
 
 - (BOOL)shouldRefreshDefaultAlarms
 {
-  v2 = [(CalDAVOperation *)self principal];
+  principal = [(CalDAVOperation *)self principal];
   if (objc_opt_respondsToSelector() & 1) != 0 || (objc_opt_respondsToSelector())
   {
-    v3 = [v2 account];
-    v4 = [v3 serverVersion];
+    account = [principal account];
+    serverVersion = [account serverVersion];
 
-    v5 = [v4 supportsDefaultAlarms];
+    supportsDefaultAlarms = [serverVersion supportsDefaultAlarms];
   }
 
   else
   {
-    v5 = 0;
+    supportsDefaultAlarms = 0;
   }
 
-  return v5;
+  return supportsDefaultAlarms;
 }
 
 - (void)_refreshDefaultAlarms
 {
-  v3 = [(CalDAVOperation *)self principal];
-  v4 = [v3 calendarHomeURL];
-  if (v4)
+  principal = [(CalDAVOperation *)self principal];
+  calendarHomeURL = [principal calendarHomeURL];
+  if (calendarHomeURL)
   {
-    v5 = [(CalDAVAccountPropertyRefreshOperation *)self _copyHomePropertiesPropFindElements];
-    v6 = [objc_alloc(MEMORY[0x277CFDC68]) initWithPropertiesToFind:v5 atURL:v4 withDepth:2];
+    _copyHomePropertiesPropFindElements = [(CalDAVAccountPropertyRefreshOperation *)self _copyHomePropertiesPropFindElements];
+    v6 = [objc_alloc(MEMORY[0x277CFDC68]) initWithPropertiesToFind:_copyHomePropertiesPropFindElements atURL:calendarHomeURL withDepth:2];
     [*(&self->super.super.super.isa + *MEMORY[0x277CFDD58]) addObject:v6];
     [v6 setDelegate:self];
-    [v6 setAccountInfoProvider:v3];
+    [v6 setAccountInfoProvider:principal];
     WeakRetained = objc_loadWeakRetained((&self->super.super.super.isa + *MEMORY[0x277CFDD60]));
     [WeakRetained submitQueuedCoreDAVTask:v6];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CFDC18] sharedLogging];
-    v9 = [v8 logHandleForAccountInfoProvider:0];
+    mEMORY[0x277CFDC18] = [MEMORY[0x277CFDC18] sharedLogging];
+    v9 = [mEMORY[0x277CFDC18] logHandleForAccountInfoProvider:0];
     v10 = v9;
     if (v9 && os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -368,29 +368,29 @@ void *__58__CalDAVAccountPropertyRefreshOperation_refreshProperties__block_invok
   return v2;
 }
 
-- (void)propFindTask:(id)a3 parsedResponses:(id)a4 error:(id)a5
+- (void)propFindTask:(id)task parsedResponses:(id)responses error:(id)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CalDAVOperation *)self principal];
-  v12 = v11;
-  if (!v10)
+  taskCopy = task;
+  responsesCopy = responses;
+  errorCopy = error;
+  principal = [(CalDAVOperation *)self principal];
+  v12 = principal;
+  if (!errorCopy)
   {
-    v29 = v11;
-    v30 = self;
-    v31 = v8;
+    v29 = principal;
+    selfCopy = self;
+    v31 = taskCopy;
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    obj = v9;
+    obj = responsesCopy;
     v16 = [obj countByEnumeratingWithState:&v35 objects:v41 count:16];
     if (v16)
     {
       v17 = v16;
-      v10 = 0;
+      errorCopy = 0;
       v33 = *v36;
       v34 = 0;
       v18 = *MEMORY[0x277CFDDC0];
@@ -403,25 +403,25 @@ void *__58__CalDAVAccountPropertyRefreshOperation_refreshProperties__block_invok
             objc_enumerationMutation(obj);
           }
 
-          v20 = [*(*(&v35 + 1) + 8 * i) successfulPropertiesToValues];
-          v21 = [v20 CDVObjectForKeyWithNameSpace:v18 andName:@"default-alarm-vevent-datetime"];
+          successfulPropertiesToValues = [*(*(&v35 + 1) + 8 * i) successfulPropertiesToValues];
+          v21 = [successfulPropertiesToValues CDVObjectForKeyWithNameSpace:v18 andName:@"default-alarm-vevent-datetime"];
           v22 = v21;
           if (v21)
           {
-            v23 = [v21 payloadAsString];
+            payloadAsString = [v21 payloadAsString];
 
-            v10 = v23;
+            errorCopy = payloadAsString;
           }
 
-          v24 = [v20 CDVObjectForKeyWithNameSpace:v18 andName:@"default-alarm-vevent-date"];
+          v24 = [successfulPropertiesToValues CDVObjectForKeyWithNameSpace:v18 andName:@"default-alarm-vevent-date"];
           v25 = v24;
           if (v24)
           {
             [v24 payloadAsString];
-            v27 = v26 = v10;
+            v27 = v26 = errorCopy;
 
             v34 = v27;
-            v10 = v26;
+            errorCopy = v26;
           }
         }
 
@@ -434,18 +434,18 @@ void *__58__CalDAVAccountPropertyRefreshOperation_refreshProperties__block_invok
     else
     {
       v34 = 0;
-      v10 = 0;
+      errorCopy = 0;
     }
 
     v12 = v29;
     if (objc_opt_respondsToSelector())
     {
-      [v29 setDefaultTimedAlarms:v10];
+      [v29 setDefaultTimedAlarms:errorCopy];
     }
 
-    v8 = v31;
-    self = v30;
-    v13 = v34;
+    taskCopy = v31;
+    self = selfCopy;
+    mEMORY[0x277CFDC18] = v34;
     if (objc_opt_respondsToSelector())
     {
       [v29 setDefaultAllDayAlarms:v34];
@@ -454,46 +454,46 @@ void *__58__CalDAVAccountPropertyRefreshOperation_refreshProperties__block_invok
     goto LABEL_24;
   }
 
-  if (![(CalDAVAccountPropertyRefreshOperation *)self shouldKeepDefaultAlarmError:v10])
+  if (![(CalDAVAccountPropertyRefreshOperation *)self shouldKeepDefaultAlarmError:errorCopy])
   {
-    v13 = [MEMORY[0x277CFDC18] sharedLogging];
-    v14 = [v13 logHandleForAccountInfoProvider:0];
+    mEMORY[0x277CFDC18] = [MEMORY[0x277CFDC18] sharedLogging];
+    v14 = [mEMORY[0x277CFDC18] logHandleForAccountInfoProvider:0];
     v15 = v14;
     if (v14 && os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v40 = v10;
+      v40 = errorCopy;
       _os_log_impl(&dword_242742000, v15, OS_LOG_TYPE_ERROR, "Fetching default alarms failed. Ignoring and moving on. The error was %@", buf, 0xCu);
     }
 
 LABEL_24:
-    v10 = 0;
+    errorCopy = 0;
   }
 
-  [*(&self->super.super.super.isa + *MEMORY[0x277CFDD58]) removeObject:v8];
-  [(CalDAVAccountPropertyRefreshOperation *)self _finishCalDAVAccountPropertyRefreshOperationWithError:v10];
+  [*(&self->super.super.super.isa + *MEMORY[0x277CFDD58]) removeObject:taskCopy];
+  [(CalDAVAccountPropertyRefreshOperation *)self _finishCalDAVAccountPropertyRefreshOperationWithError:errorCopy];
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldKeepDefaultAlarmError:(id)a3
+- (BOOL)shouldKeepDefaultAlarmError:(id)error
 {
-  v3 = [a3 domain];
-  v4 = [v3 isEqualToString:*MEMORY[0x277CCA738]];
+  domain = [error domain];
+  v4 = [domain isEqualToString:*MEMORY[0x277CCA738]];
 
   return v4;
 }
 
-- (void)_finishCalDAVAccountPropertyRefreshOperationWithError:(id)a3
+- (void)_finishCalDAVAccountPropertyRefreshOperationWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __95__CalDAVAccountPropertyRefreshOperation__finishCalDAVAccountPropertyRefreshOperationWithError___block_invoke;
   v6[3] = &unk_278D66968;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   [(CoreDAVTaskGroup *)self finishCoreDAVTaskGroupWithError:v5 delegateCallbackBlock:v6];
 }
 

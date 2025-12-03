@@ -3,7 +3,7 @@
 - (id)_init;
 - (void)_startOfflineDetection;
 - (void)_stopOfflineDetection;
-- (void)debouncer:(id)a3 didDebounce:(id)a4;
+- (void)debouncer:(id)debouncer didDebounce:(id)debounce;
 @end
 
 @implementation STNetworkDetector
@@ -66,9 +66,9 @@
   }
 }
 
-- (void)debouncer:(id)a3 didDebounce:(id)a4
+- (void)debouncer:(id)debouncer didDebounce:(id)debounce
 {
-  v5 = [NSNotificationCenter defaultCenter:a3];
+  v5 = [NSNotificationCenter defaultCenter:debouncer];
   [v5 postNotificationName:@"STNetworkDetectorChangedNotificationName" object:self];
 }
 

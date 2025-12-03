@@ -1,12 +1,12 @@
 @interface RFExpandableStandardCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFExpandableStandardCardSection)initWithCoder:(id)a3;
-- (RFExpandableStandardCardSection)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFExpandableStandardCardSection)initWithCoder:(id)coder;
+- (RFExpandableStandardCardSection)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RFExpandableStandardCardSection
@@ -16,34 +16,34 @@
   v9.receiver = self;
   v9.super_class = RFExpandableStandardCardSection;
   v3 = [(SFCardSection *)&v9 hash];
-  v4 = [(RFExpandableStandardCardSection *)self summary_item_standard_card_section];
-  v5 = [v4 hash];
-  v6 = [(RFExpandableStandardCardSection *)self expanding_component_content];
-  v7 = v5 ^ [v6 hash];
+  summary_item_standard_card_section = [(RFExpandableStandardCardSection *)self summary_item_standard_card_section];
+  v5 = [summary_item_standard_card_section hash];
+  expanding_component_content = [(RFExpandableStandardCardSection *)self expanding_component_content];
+  v7 = v5 ^ [expanding_component_content hash];
 
   return v7 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(RFExpandableStandardCardSection *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(RFExpandableStandardCardSection *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v22.receiver = self;
       v22.super_class = RFExpandableStandardCardSection;
-      if ([(SFCardSection *)&v22 isEqual:v5])
+      if ([(SFCardSection *)&v22 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(RFExpandableStandardCardSection *)self summary_item_standard_card_section];
-        v8 = [(RFExpandableStandardCardSection *)v6 summary_item_standard_card_section];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        summary_item_standard_card_section = [(RFExpandableStandardCardSection *)self summary_item_standard_card_section];
+        summary_item_standard_card_section2 = [(RFExpandableStandardCardSection *)v6 summary_item_standard_card_section];
+        if ((summary_item_standard_card_section != 0) == (summary_item_standard_card_section2 == 0))
         {
           v11 = 0;
 LABEL_20:
@@ -51,12 +51,12 @@ LABEL_20:
           goto LABEL_21;
         }
 
-        v9 = [(RFExpandableStandardCardSection *)self summary_item_standard_card_section];
-        if (v9)
+        summary_item_standard_card_section3 = [(RFExpandableStandardCardSection *)self summary_item_standard_card_section];
+        if (summary_item_standard_card_section3)
         {
-          v3 = [(RFExpandableStandardCardSection *)self summary_item_standard_card_section];
-          v10 = [(RFExpandableStandardCardSection *)v6 summary_item_standard_card_section];
-          if (![v3 isEqual:v10])
+          summary_item_standard_card_section4 = [(RFExpandableStandardCardSection *)self summary_item_standard_card_section];
+          summary_item_standard_card_section5 = [(RFExpandableStandardCardSection *)v6 summary_item_standard_card_section];
+          if (![summary_item_standard_card_section4 isEqual:summary_item_standard_card_section5])
           {
             v11 = 0;
 LABEL_18:
@@ -65,13 +65,13 @@ LABEL_19:
             goto LABEL_20;
           }
 
-          v21 = v10;
+          v21 = summary_item_standard_card_section5;
         }
 
-        v12 = [(RFExpandableStandardCardSection *)self expanding_component_content];
-        v13 = [(RFExpandableStandardCardSection *)v6 expanding_component_content];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        expanding_component_content = [(RFExpandableStandardCardSection *)self expanding_component_content];
+        expanding_component_content2 = [(RFExpandableStandardCardSection *)v6 expanding_component_content];
+        v14 = expanding_component_content2;
+        if ((expanding_component_content != 0) == (expanding_component_content2 == 0))
         {
 
           v11 = 0;
@@ -79,16 +79,16 @@ LABEL_19:
 
         else
         {
-          v15 = [(RFExpandableStandardCardSection *)self expanding_component_content];
-          if (v15)
+          expanding_component_content3 = [(RFExpandableStandardCardSection *)self expanding_component_content];
+          if (expanding_component_content3)
           {
-            v16 = v15;
-            v19 = [(RFExpandableStandardCardSection *)self expanding_component_content];
+            v16 = expanding_component_content3;
+            expanding_component_content4 = [(RFExpandableStandardCardSection *)self expanding_component_content];
             [(RFExpandableStandardCardSection *)v6 expanding_component_content];
-            v17 = v20 = v3;
-            v11 = [v19 isEqual:v17];
+            v17 = v20 = summary_item_standard_card_section4;
+            v11 = [expanding_component_content4 isEqual:v17];
 
-            v3 = v20;
+            summary_item_standard_card_section4 = v20;
           }
 
           else
@@ -98,8 +98,8 @@ LABEL_19:
           }
         }
 
-        v10 = v21;
-        if (!v9)
+        summary_item_standard_card_section5 = v21;
+        if (!summary_item_standard_card_section3)
         {
           goto LABEL_19;
         }
@@ -116,20 +116,20 @@ LABEL_21:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RFExpandableStandardCardSection;
-  v4 = [(SFCardSection *)&v10 copyWithZone:a3];
+  v4 = [(SFCardSection *)&v10 copyWithZone:zone];
   if ([(RFExpandableStandardCardSection *)self hasSummary_item_standard_card_section])
   {
-    v5 = [(RFExpandableStandardCardSection *)self summary_item_standard_card_section];
-    v6 = [v5 copy];
+    summary_item_standard_card_section = [(RFExpandableStandardCardSection *)self summary_item_standard_card_section];
+    v6 = [summary_item_standard_card_section copy];
     [v4 setSummary_item_standard_card_section:v6];
   }
 
-  v7 = [(RFExpandableStandardCardSection *)self expanding_component_content];
-  v8 = [v7 copy];
+  expanding_component_content = [(RFExpandableStandardCardSection *)self expanding_component_content];
+  v8 = [expanding_component_content copy];
   [v4 setExpanding_component_content:v8];
 
   return v4;
@@ -138,152 +138,152 @@ LABEL_21:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFExpandableStandardCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBRFExpandableStandardCardSection *)v2 jsonData];
+  jsonData = [(_SFPBRFExpandableStandardCardSection *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFExpandableStandardCardSection alloc] initWithFacade:self];
-  v3 = [(_SFPBRFExpandableStandardCardSection *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFExpandableStandardCardSection *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = RFExpandableStandardCardSection;
-  [(SFCardSection *)&v3 encodeWithCoder:a3];
+  [(SFCardSection *)&v3 encodeWithCoder:coder];
 }
 
-- (RFExpandableStandardCardSection)initWithCoder:(id)a3
+- (RFExpandableStandardCardSection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFCardSection *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCardSection alloc] initWithData:v6];
   v8 = [[SFCardSection alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCardSection *)v8 summary_item_standard_card_section];
-    [(RFExpandableStandardCardSection *)v5 setSummary_item_standard_card_section:v9];
+    summary_item_standard_card_section = [(SFCardSection *)v8 summary_item_standard_card_section];
+    [(RFExpandableStandardCardSection *)v5 setSummary_item_standard_card_section:summary_item_standard_card_section];
 
-    v10 = [(SFCardSection *)v8 expanding_component_content];
-    [(RFExpandableStandardCardSection *)v5 setExpanding_component_content:v10];
+    expanding_component_content = [(SFCardSection *)v8 expanding_component_content];
+    [(RFExpandableStandardCardSection *)v5 setExpanding_component_content:expanding_component_content];
 
-    v11 = [(SFCardSection *)v8 nextCard];
-    [(SFCardSection *)v5 setNextCard:v11];
+    nextCard = [(SFCardSection *)v8 nextCard];
+    [(SFCardSection *)v5 setNextCard:nextCard];
 
-    v12 = [(SFCardSection *)v8 commands];
-    [(SFCardSection *)v5 setCommands:v12];
+    commands = [(SFCardSection *)v8 commands];
+    [(SFCardSection *)v5 setCommands:commands];
 
-    v13 = [(SFCardSection *)v8 parameterKeyPaths];
-    [(SFCardSection *)v5 setParameterKeyPaths:v13];
+    parameterKeyPaths = [(SFCardSection *)v8 parameterKeyPaths];
+    [(SFCardSection *)v5 setParameterKeyPaths:parameterKeyPaths];
 
-    v14 = [(SFCardSection *)v8 cardSectionId];
-    [(SFCardSection *)v5 setCardSectionId:v14];
+    cardSectionId = [(SFCardSection *)v8 cardSectionId];
+    [(SFCardSection *)v5 setCardSectionId:cardSectionId];
 
-    v15 = [(SFCardSection *)v8 resultIdentifier];
-    [(SFCardSection *)v5 setResultIdentifier:v15];
+    resultIdentifier = [(SFCardSection *)v8 resultIdentifier];
+    [(SFCardSection *)v5 setResultIdentifier:resultIdentifier];
 
-    v16 = [(SFCardSection *)v8 userReportRequest];
-    [(SFCardSection *)v5 setUserReportRequest:v16];
+    userReportRequest = [(SFCardSection *)v8 userReportRequest];
+    [(SFCardSection *)v5 setUserReportRequest:userReportRequest];
 
-    v17 = [(SFCardSection *)v8 command];
-    [(SFCardSection *)v5 setCommand:v17];
+    command = [(SFCardSection *)v8 command];
+    [(SFCardSection *)v5 setCommand:command];
 
-    v18 = [(SFCardSection *)v8 previewCommand];
-    [(SFCardSection *)v5 setPreviewCommand:v18];
+    previewCommand = [(SFCardSection *)v8 previewCommand];
+    [(SFCardSection *)v5 setPreviewCommand:previewCommand];
 
-    v19 = [(SFCardSection *)v8 previewButtonItems];
-    [(SFCardSection *)v5 setPreviewButtonItems:v19];
+    previewButtonItems = [(SFCardSection *)v8 previewButtonItems];
+    [(SFCardSection *)v5 setPreviewButtonItems:previewButtonItems];
 
-    v20 = [(SFCardSection *)v8 cardSectionDetail];
-    [(SFCardSection *)v5 setCardSectionDetail:v20];
+    cardSectionDetail = [(SFCardSection *)v8 cardSectionDetail];
+    [(SFCardSection *)v5 setCardSectionDetail:cardSectionDetail];
 
-    v21 = [(SFCardSection *)v8 previewButtonItemsTitle];
-    [(SFCardSection *)v5 setPreviewButtonItemsTitle:v21];
+    previewButtonItemsTitle = [(SFCardSection *)v8 previewButtonItemsTitle];
+    [(SFCardSection *)v5 setPreviewButtonItemsTitle:previewButtonItemsTitle];
 
-    v22 = [(SFCardSection *)v8 backgroundColor];
-    [(SFCardSection *)v5 setBackgroundColor:v22];
+    backgroundColor = [(SFCardSection *)v8 backgroundColor];
+    [(SFCardSection *)v5 setBackgroundColor:backgroundColor];
 
     [(SFCardSection *)v5 setShouldHideInAmbientMode:[(SFCardSection *)v8 shouldHideInAmbientMode]];
-    v23 = [(SFCardSection *)v8 leadingSwipeButtonItems];
-    [(SFCardSection *)v5 setLeadingSwipeButtonItems:v23];
+    leadingSwipeButtonItems = [(SFCardSection *)v8 leadingSwipeButtonItems];
+    [(SFCardSection *)v5 setLeadingSwipeButtonItems:leadingSwipeButtonItems];
 
-    v24 = [(SFCardSection *)v8 trailingSwipeButtonItems];
-    [(SFCardSection *)v5 setTrailingSwipeButtonItems:v24];
+    trailingSwipeButtonItems = [(SFCardSection *)v8 trailingSwipeButtonItems];
+    [(SFCardSection *)v5 setTrailingSwipeButtonItems:trailingSwipeButtonItems];
 
-    v25 = [(SFCardSection *)v8 punchoutOptions];
-    [(SFCardSection *)v5 setPunchoutOptions:v25];
+    punchoutOptions = [(SFCardSection *)v8 punchoutOptions];
+    [(SFCardSection *)v5 setPunchoutOptions:punchoutOptions];
 
-    v26 = [(SFCardSection *)v8 punchoutPickerTitle];
-    [(SFCardSection *)v5 setPunchoutPickerTitle:v26];
+    punchoutPickerTitle = [(SFCardSection *)v8 punchoutPickerTitle];
+    [(SFCardSection *)v5 setPunchoutPickerTitle:punchoutPickerTitle];
 
-    v27 = [(SFCardSection *)v8 punchoutPickerDismissText];
-    [(SFCardSection *)v5 setPunchoutPickerDismissText:v27];
+    punchoutPickerDismissText = [(SFCardSection *)v8 punchoutPickerDismissText];
+    [(SFCardSection *)v5 setPunchoutPickerDismissText:punchoutPickerDismissText];
 
     [(SFCardSection *)v5 setCanBeHidden:[(SFCardSection *)v8 canBeHidden]];
     [(SFCardSection *)v5 setHasTopPadding:[(SFCardSection *)v8 hasTopPadding]];
     [(SFCardSection *)v5 setHasBottomPadding:[(SFCardSection *)v8 hasBottomPadding]];
     [(SFCardSection *)v5 setSeparatorStyle:[(SFCardSection *)v8 separatorStyle]];
-    v28 = [(SFCardSection *)v8 referencedCommands];
-    [(SFCardSection *)v5 setReferencedCommands:v28];
+    referencedCommands = [(SFCardSection *)v8 referencedCommands];
+    [(SFCardSection *)v5 setReferencedCommands:referencedCommands];
 
     [(SFCardSection *)v5 setForceEnable3DTouch:[(SFCardSection *)v8 forceEnable3DTouch]];
     [(SFCardSection *)v5 setShouldShowInSmartDialog:[(SFCardSection *)v8 shouldShowInSmartDialog]];
-    v29 = [(SFCardSection *)v8 appEntityAnnotation];
-    [(SFCardSection *)v5 setAppEntityAnnotation:v29];
+    appEntityAnnotation = [(SFCardSection *)v8 appEntityAnnotation];
+    [(SFCardSection *)v5 setAppEntityAnnotation:appEntityAnnotation];
 
-    v30 = [(SFCardSection *)v8 emphasisSubjectId];
-    [(SFCardSection *)v5 setEmphasisSubjectId:v30];
+    emphasisSubjectId = [(SFCardSection *)v8 emphasisSubjectId];
+    [(SFCardSection *)v5 setEmphasisSubjectId:emphasisSubjectId];
 
     [(SFCardSection *)v5 setIncreasedContrastMode:[(SFCardSection *)v8 increasedContrastMode]];
-    v31 = [(SFCardSection *)v8 secondaryCommand];
-    [(SFCardSection *)v5 setSecondaryCommand:v31];
+    secondaryCommand = [(SFCardSection *)v8 secondaryCommand];
+    [(SFCardSection *)v5 setSecondaryCommand:secondaryCommand];
 
     [(SFCardSection *)v5 setRequiredLevelOfDetail:[(SFCardSection *)v8 requiredLevelOfDetail]];
-    v32 = [(SFCardSection *)v8 racFeedbackSubfeatureId];
-    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:v32];
+    racFeedbackSubfeatureId = [(SFCardSection *)v8 racFeedbackSubfeatureId];
+    [(SFCardSection *)v5 setRacFeedbackSubfeatureId:racFeedbackSubfeatureId];
 
-    v33 = [(SFCardSection *)v8 racFeedbackLoggingContent];
-    [(SFCardSection *)v5 setRacFeedbackLoggingContent:v33];
+    racFeedbackLoggingContent = [(SFCardSection *)v8 racFeedbackLoggingContent];
+    [(SFCardSection *)v5 setRacFeedbackLoggingContent:racFeedbackLoggingContent];
 
-    v34 = [(SFCardSection *)v8 copyableItems];
-    [(SFCardSection *)v5 setCopyableItems:v34];
+    copyableItems = [(SFCardSection *)v8 copyableItems];
+    [(SFCardSection *)v5 setCopyableItems:copyableItems];
 
-    v35 = [(SFCardSection *)v8 applicationBundleIdentifier];
-    [(SFCardSection *)v5 setApplicationBundleIdentifier:v35];
+    applicationBundleIdentifier = [(SFCardSection *)v8 applicationBundleIdentifier];
+    [(SFCardSection *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier];
   }
 
   return v5;
 }
 
-- (RFExpandableStandardCardSection)initWithProtobuf:(id)a3
+- (RFExpandableStandardCardSection)initWithProtobuf:(id)protobuf
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v25.receiver = self;
   v25.super_class = RFExpandableStandardCardSection;
   v5 = [(SFCardSection *)&v25 init];
   if (v5)
   {
-    v6 = [v4 summary_item_standard_card_section];
+    summary_item_standard_card_section = [protobufCopy summary_item_standard_card_section];
 
-    if (v6)
+    if (summary_item_standard_card_section)
     {
       v7 = [RFSummaryItemStandardCardSection alloc];
-      v8 = [v4 summary_item_standard_card_section];
-      v9 = [(RFSummaryItemStandardCardSection *)v7 initWithProtobuf:v8];
+      summary_item_standard_card_section2 = [protobufCopy summary_item_standard_card_section];
+      v9 = [(RFSummaryItemStandardCardSection *)v7 initWithProtobuf:summary_item_standard_card_section2];
       [(RFExpandableStandardCardSection *)v5 setSummary_item_standard_card_section:v9];
     }
 
-    v10 = [v4 expanding_component_contents];
-    if (v10)
+    expanding_component_contents = [protobufCopy expanding_component_contents];
+    if (expanding_component_contents)
     {
       v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -297,7 +297,7 @@ LABEL_21:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = [v4 expanding:0 component:?contents];
+    v12 = [protobufCopy expanding:0 component:?contents];
     v13 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v13)
     {

@@ -1,34 +1,34 @@
 @interface SBFluidSwitcherSpaceTitleItem
-- (BOOL)isEqual:(id)a3;
-- (SBFluidSwitcherSpaceTitleItem)initWithDisplayItem:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SBFluidSwitcherSpaceTitleItem)initWithDisplayItem:(id)item;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation SBFluidSwitcherSpaceTitleItem
 
-- (SBFluidSwitcherSpaceTitleItem)initWithDisplayItem:(id)a3
+- (SBFluidSwitcherSpaceTitleItem)initWithDisplayItem:(id)item
 {
-  v6 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = SBFluidSwitcherSpaceTitleItem;
   v7 = [(SBFluidSwitcherSpaceTitleItem *)&v9 init];
   if (v7)
   {
-    if (!v6)
+    if (!itemCopy)
     {
       [(SBFluidSwitcherSpaceTitleItem *)a2 initWithDisplayItem:v7];
     }
 
-    objc_storeStrong(&v7->_displayItem, a3);
+    objc_storeStrong(&v7->_displayItem, item);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithDisplayItem:", self->_displayItem}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithDisplayItem:", self->_displayItem}];
   if (v4)
   {
     v5 = [(UIImage *)self->_image copy];
@@ -63,10 +63,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -74,42 +74,42 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = SBSafeCast(v5, v4);
+    v6 = SBSafeCast(v5, equalCopy);
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 displayItem];
+      displayItem = [v6 displayItem];
       if (BSEqualObjects())
       {
-        v9 = [v7 image];
-        if ((v9 != 0) == (self->_image == 0))
+        image = [v7 image];
+        if ((image != 0) == (self->_image == 0))
         {
           v15 = 0;
         }
 
         else
         {
-          v10 = [v7 imageView];
-          if ((v10 != 0) == (self->_imageView == 0))
+          imageView = [v7 imageView];
+          if ((imageView != 0) == (self->_imageView == 0))
           {
             v15 = 0;
           }
 
           else
           {
-            v11 = [v7 iconIdentifier];
+            iconIdentifier = [v7 iconIdentifier];
             if (BSEqualObjects())
             {
-              v12 = [v7 imageAppearance];
+              imageAppearance = [v7 imageAppearance];
               if (BSEqualObjects())
               {
-                v13 = [v7 titleText];
+                titleText = [v7 titleText];
                 if (BSEqualStrings())
                 {
-                  v14 = [(SBFluidSwitcherSpaceTitleItem *)v4 subtitleText];
+                  subtitleText = [(SBFluidSwitcherSpaceTitleItem *)equalCopy subtitleText];
                   if (BSEqualStrings())
                   {
-                    v17 = [(SBFluidSwitcherSpaceTitleItem *)v4 titleTextColor];
+                    titleTextColor = [(SBFluidSwitcherSpaceTitleItem *)equalCopy titleTextColor];
                     v15 = BSEqualObjects() && [v7 subtitleInterfaceStyle] == self->_subtitleInterfaceStyle && self->_showsMultiWindowIndicator == objc_msgSend(v7, "showsMultiWindowIndicator");
                   }
 

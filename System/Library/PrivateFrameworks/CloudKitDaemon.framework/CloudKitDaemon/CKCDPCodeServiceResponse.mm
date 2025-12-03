@@ -1,34 +1,34 @@
 @interface CKCDPCodeServiceResponse
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAssetAuthorizationResponses:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAssetAuthorizationResponses:(id)responses;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKCDPCodeServiceResponse
 
-- (void)addAssetAuthorizationResponses:(id)a3
+- (void)addAssetAuthorizationResponses:(id)responses
 {
-  v4 = a3;
+  responsesCopy = responses;
   assetAuthorizationResponses = self->_assetAuthorizationResponses;
-  v8 = v4;
+  v8 = responsesCopy;
   if (!assetAuthorizationResponses)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_assetAuthorizationResponses;
     self->_assetAuthorizationResponses = v6;
 
-    v4 = v8;
+    responsesCopy = v8;
     assetAuthorizationResponses = self->_assetAuthorizationResponses;
   }
 
-  objc_msgSend_addObject_(assetAuthorizationResponses, v4, v4);
+  objc_msgSend_addObject_(assetAuthorizationResponses, responsesCopy, responsesCopy);
 }
 
 - (id)description
@@ -110,16 +110,16 @@
   return v6;
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = objc_msgSend_position(a3, a2, a3);
-  if (v5 < objc_msgSend_length(a3, v6, v7))
+  v5 = objc_msgSend_position(from, a2, from);
+  if (v5 < objc_msgSend_length(from, v6, v7))
   {
     do
     {
-      if (objc_msgSend_hasError(a3, v8, v9))
+      if (objc_msgSend_hasError(from, v8, v9))
       {
-        return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+        return objc_msgSend_hasError(from, v8, v9) ^ 1;
       }
 
       v10 = 0;
@@ -128,20 +128,20 @@
       while (1)
       {
         LOBYTE(v45) = 0;
-        v13 = objc_msgSend_position(a3, v8, v9, v45) + 1;
-        if (v13 >= objc_msgSend_position(a3, v14, v15) && (v18 = objc_msgSend_position(a3, v16, v17) + 1, v18 <= objc_msgSend_length(a3, v19, v20)))
+        v13 = objc_msgSend_position(from, v8, v9, v45) + 1;
+        if (v13 >= objc_msgSend_position(from, v14, v15) && (v18 = objc_msgSend_position(from, v16, v17) + 1, v18 <= objc_msgSend_length(from, v19, v20)))
         {
-          v21 = objc_msgSend_data(a3, v16, v17);
-          v24 = objc_msgSend_position(a3, v22, v23);
+          v21 = objc_msgSend_data(from, v16, v17);
+          v24 = objc_msgSend_position(from, v22, v23);
           objc_msgSend_getBytes_range_(v21, v25, &v45, v24, 1);
 
-          v28 = objc_msgSend_position(a3, v26, v27);
-          objc_msgSend_setPosition_(a3, v29, v28 + 1);
+          v28 = objc_msgSend_position(from, v26, v27);
+          objc_msgSend_setPosition_(from, v29, v28 + 1);
         }
 
         else
         {
-          objc_msgSend__setError(a3, v16, v17);
+          objc_msgSend__setError(from, v16, v17);
         }
 
         v12 |= (v45 & 0x7F) << v10;
@@ -158,17 +158,17 @@
         }
       }
 
-      v31 = objc_msgSend_hasError(a3, v8, v9) ? 0 : v12;
+      v31 = objc_msgSend_hasError(from, v8, v9) ? 0 : v12;
 LABEL_15:
-      if (objc_msgSend_hasError(a3, v8, v9))
+      if (objc_msgSend_hasError(from, v8, v9))
       {
-        return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+        return objc_msgSend_hasError(from, v8, v9) ^ 1;
       }
 
       v9 = v31 & 7;
       if (v9 == 4)
       {
-        return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+        return objc_msgSend_hasError(from, v8, v9) ^ 1;
       }
 
       v32 = v31 >> 3;
@@ -180,7 +180,7 @@ LABEL_15:
           objc_msgSend_addAssetAuthorizationResponses_(self, v39, serializedResult);
           v45 = 0;
           v46 = 0;
-          if (!PBReaderPlaceMark() || !sub_2252CC958(serializedResult, a3, v40))
+          if (!PBReaderPlaceMark() || !sub_2252CC958(serializedResult, from, v40))
           {
 LABEL_37:
 
@@ -200,7 +200,7 @@ LABEL_34:
           objc_storeStrong(&self->_attestationResponse, serializedResult);
           v45 = 0;
           v46 = 0;
-          if (!PBReaderPlaceMark() || !sub_2252CDC0C(serializedResult, a3, v35))
+          if (!PBReaderPlaceMark() || !sub_2252CDC0C(serializedResult, from, v35))
           {
             goto LABEL_37;
           }
@@ -225,7 +225,7 @@ LABEL_34:
           objc_storeStrong(&self->_error, serializedResult);
           v45 = 0;
           v46 = 0;
-          if (!PBReaderPlaceMark() || !sub_2252CF2C0(serializedResult, a3, v34))
+          if (!PBReaderPlaceMark() || !sub_2252CF2C0(serializedResult, from, v34))
           {
             goto LABEL_37;
           }
@@ -240,19 +240,19 @@ LABEL_34:
       }
 
 LABEL_35:
-      v41 = objc_msgSend_position(a3, v36, v37);
+      v41 = objc_msgSend_position(from, v36, v37);
     }
 
-    while (v41 < objc_msgSend_length(a3, v42, v43));
+    while (v41 < objc_msgSend_length(from, v42, v43));
   }
 
-  return objc_msgSend_hasError(a3, v8, v9) ^ 1;
+  return objc_msgSend_hasError(from, v8, v9) ^ 1;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_serializedResult)
   {
     PBDataWriterWriteDataField();
@@ -303,24 +303,24 @@ LABEL_35:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v17 = a3;
+  toCopy = to;
   serializedResult = self->_serializedResult;
   if (serializedResult)
   {
-    objc_msgSend_setSerializedResult_(v17, v4, serializedResult);
+    objc_msgSend_setSerializedResult_(toCopy, v4, serializedResult);
   }
 
   error = self->_error;
   if (error)
   {
-    objc_msgSend_setError_(v17, v4, error);
+    objc_msgSend_setError_(toCopy, v4, error);
   }
 
   if (objc_msgSend_assetAuthorizationResponsesCount(self, v4, error))
   {
-    objc_msgSend_clearAssetAuthorizationResponses(v17, v7, v8);
+    objc_msgSend_clearAssetAuthorizationResponses(toCopy, v7, v8);
     v11 = objc_msgSend_assetAuthorizationResponsesCount(self, v9, v10);
     if (v11)
     {
@@ -328,7 +328,7 @@ LABEL_35:
       for (i = 0; i != v12; ++i)
       {
         v14 = objc_msgSend_assetAuthorizationResponsesAtIndex_(self, v7, i);
-        objc_msgSend_addAssetAuthorizationResponses_(v17, v15, v14);
+        objc_msgSend_addAssetAuthorizationResponses_(toCopy, v15, v14);
       }
     }
   }
@@ -336,21 +336,21 @@ LABEL_35:
   attestationResponse = self->_attestationResponse;
   if (attestationResponse)
   {
-    objc_msgSend_setAttestationResponse_(v17, v7, attestationResponse);
+    objc_msgSend_setAttestationResponse_(toCopy, v7, attestationResponse);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v36 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_serializedResult, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_serializedResult, v11, zone);
   v13 = v10[4];
   v10[4] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_error, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_error, v14, zone);
   v16 = v10[3];
   v10[3] = v15;
 
@@ -374,7 +374,7 @@ LABEL_35:
           objc_enumerationMutation(v17);
         }
 
-        v24 = objc_msgSend_copyWithZone_(*(*(&v31 + 1) + 8 * v23), v20, a3, v31);
+        v24 = objc_msgSend_copyWithZone_(*(*(&v31 + 1) + 8 * v23), v20, zone, v31);
         objc_msgSend_addAssetAuthorizationResponses_(v10, v25, v24);
 
         ++v23;
@@ -387,7 +387,7 @@ LABEL_35:
     while (v21);
   }
 
-  v27 = objc_msgSend_copyWithZone_(self->_attestationResponse, v26, a3);
+  v27 = objc_msgSend_copyWithZone_(self->_attestationResponse, v26, zone);
   v28 = v10[2];
   v10[2] = v27;
 
@@ -395,14 +395,14 @@ LABEL_35:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((serializedResult = self->_serializedResult, v9 = v4[4], !(serializedResult | v9)) || objc_msgSend_isEqual_(serializedResult, v7, v9)) && ((error = self->_error, v11 = v4[3], !(error | v11)) || objc_msgSend_isEqual_(error, v7, v11)) && ((assetAuthorizationResponses = self->_assetAuthorizationResponses, v13 = v4[1], !(assetAuthorizationResponses | v13)) || objc_msgSend_isEqual_(assetAuthorizationResponses, v7, v13)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((serializedResult = self->_serializedResult, v9 = equalCopy[4], !(serializedResult | v9)) || objc_msgSend_isEqual_(serializedResult, v7, v9)) && ((error = self->_error, v11 = equalCopy[3], !(error | v11)) || objc_msgSend_isEqual_(error, v7, v11)) && ((assetAuthorizationResponses = self->_assetAuthorizationResponses, v13 = equalCopy[1], !(assetAuthorizationResponses | v13)) || objc_msgSend_isEqual_(assetAuthorizationResponses, v7, v13)))
   {
     attestationResponse = self->_attestationResponse;
-    v15 = v4[2];
+    v15 = equalCopy[2];
     if (attestationResponse | v15)
     {
       isEqual = objc_msgSend_isEqual_(attestationResponse, v7, v15);
@@ -430,18 +430,18 @@ LABEL_35:
   return v7 ^ v10 ^ objc_msgSend_hash(self->_attestationResponse, v11, v12);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = *(v5 + 4);
+  fromCopy = from;
+  v6 = *(fromCopy + 4);
   if (v6)
   {
     objc_msgSend_setSerializedResult_(self, v4, v6);
   }
 
   error = self->_error;
-  v8 = *(v5 + 3);
+  v8 = *(fromCopy + 3);
   if (error)
   {
     if (v8)
@@ -459,7 +459,7 @@ LABEL_35:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = *(v5 + 1);
+  v9 = *(fromCopy + 1);
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v20, v24, 16);
   if (v11)
   {
@@ -484,7 +484,7 @@ LABEL_35:
   }
 
   attestationResponse = self->_attestationResponse;
-  v18 = *(v5 + 2);
+  v18 = *(fromCopy + 2);
   if (attestationResponse)
   {
     if (v18)

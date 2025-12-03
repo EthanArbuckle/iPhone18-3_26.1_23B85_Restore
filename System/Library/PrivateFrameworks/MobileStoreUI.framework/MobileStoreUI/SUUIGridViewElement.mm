@@ -1,29 +1,29 @@
 @interface SUUIGridViewElement
 + (id)supportedFeatures;
 - (BOOL)allowsMultipleSelectionDuringEditing;
-- (SUUIGridViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUIGridViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 - (id)persistenceKey;
-- (int64_t)_countOfInputCheckboxesWithBaseElement:(id)a3 limit:(int64_t)a4;
-- (void)enumerateChildrenUsingBlock:(id)a3;
+- (int64_t)_countOfInputCheckboxesWithBaseElement:(id)element limit:(int64_t)limit;
+- (void)enumerateChildrenUsingBlock:(id)block;
 @end
 
 @implementation SUUIGridViewElement
 
-- (SUUIGridViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIGridViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   v11 = objc_opt_class();
   if (v11 == objc_opt_class())
   {
-    v13 = [v8 getAttribute:@"entityProviderID"];
+    v13 = [elementCopy getAttribute:@"entityProviderID"];
     v14 = [v13 length];
 
     if (v14)
     {
-      v12 = [[SUUIDynamicGridViewElement alloc] initWithDOMElement:v8 parent:v9 elementFactory:v10];
+      v12 = [[SUUIDynamicGridViewElement alloc] initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
 LABEL_7:
 
       goto LABEL_8;
@@ -32,10 +32,10 @@ LABEL_7:
 
   v16.receiver = self;
   v16.super_class = SUUIGridViewElement;
-  v12 = [(SUUIViewElement *)&v16 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v12 = [(SUUIViewElement *)&v16 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v12)
   {
-    self = [v8 getAttribute:@"editMode"];
+    self = [elementCopy getAttribute:@"editMode"];
     if ([(SUUIGridViewElement *)self length])
     {
       v12->super._showsEditMode = [(SUUIGridViewElement *)self BOOLValue];
@@ -54,7 +54,7 @@ LABEL_8:
   v9[1] = *MEMORY[0x277D85DE8];
   v9[0] = 0x286AF0640;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___SUUIGridViewElement;
   v4 = objc_msgSendSuper2(&v8, sel_supportedFeatures);
   if (v4)
@@ -71,14 +71,14 @@ LABEL_8:
   return v6;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v13.receiver = self;
   v13.super_class = SUUIGridViewElement;
-  v5 = [(SUUIViewElement *)&v13 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v13 applyUpdatesWithElement:elementCopy];
   p_isa = &v5->super.super.super.isa;
-  if (v4 == self || v5 != self)
+  if (elementCopy == self || v5 != self)
   {
     showsEditMode = self->_showsEditMode;
     if (showsEditMode != [(SUUIGridViewElement *)v5 showsEditMode])
@@ -97,23 +97,23 @@ LABEL_8:
     v7 = self->_persistenceKey;
     self->_persistenceKey = 0;
 
-    self->_showsEditMode = [(SUUIGridViewElement *)v4 showsEditMode];
+    self->_showsEditMode = [(SUUIGridViewElement *)elementCopy showsEditMode];
   }
 
   return p_isa;
 }
 
-- (void)enumerateChildrenUsingBlock:(id)a3
+- (void)enumerateChildrenUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__SUUIGridViewElement_enumerateChildrenUsingBlock___block_invoke;
   v7[3] = &unk_2798F6008;
-  v8 = v4;
+  v8 = blockCopy;
   v6.receiver = self;
   v6.super_class = SUUIGridViewElement;
-  v5 = v4;
+  v5 = blockCopy;
   [(SUUIViewElement *)&v6 enumerateChildrenUsingBlock:v7];
 }
 
@@ -133,17 +133,17 @@ void __51__SUUIGridViewElement_enumerateChildrenUsingBlock___block_invoke(uint64
   persistenceKey = self->_persistenceKey;
   if (persistenceKey)
   {
-    v3 = persistenceKey;
+    persistenceKey = persistenceKey;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SUUIGridViewElement;
-    v3 = [(SUUIViewElement *)&v5 persistenceKey];
+    persistenceKey = [(SUUIViewElement *)&v5 persistenceKey];
   }
 
-  return v3;
+  return persistenceKey;
 }
 
 - (BOOL)allowsMultipleSelectionDuringEditing
@@ -183,17 +183,17 @@ uint64_t __59__SUUIGridViewElement_allowsMultipleSelectionDuringEditing__block_i
   return result;
 }
 
-- (int64_t)_countOfInputCheckboxesWithBaseElement:(id)a3 limit:(int64_t)a4
+- (int64_t)_countOfInputCheckboxesWithBaseElement:(id)element limit:(int64_t)limit
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  elementCopy = element;
+  v7 = elementCopy;
+  if (limit)
   {
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
     v14 = 0;
-    if ([v6 elementType] == 18)
+    if ([elementCopy elementType] == 18)
     {
       v8 = v12[3] + 1;
       v12[3] = v8;
@@ -207,7 +207,7 @@ uint64_t __59__SUUIGridViewElement_allowsMultipleSelectionDuringEditing__block_i
       v10[3] = &unk_2798F76C8;
       v10[4] = self;
       v10[5] = &v11;
-      v10[6] = a4;
+      v10[6] = limit;
       [(SUUIGridViewElement *)self enumerateChildrenUsingBlock:v10];
       v8 = v12[3];
     }

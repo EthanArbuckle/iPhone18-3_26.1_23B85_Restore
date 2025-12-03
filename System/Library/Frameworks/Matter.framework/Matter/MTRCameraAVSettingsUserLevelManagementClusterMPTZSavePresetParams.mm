@@ -1,8 +1,8 @@
 @interface MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -32,20 +32,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams);
-  v5 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)self presetID];
-  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)v4 setPresetID:v5];
+  presetID = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)self presetID];
+  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)v4 setPresetID:presetID];
 
-  v6 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)self name];
-  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)v4 setName:v6];
+  name = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)self name];
+  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)v4 setName:name];
 
-  v7 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)self timedInvokeTimeoutMs];
-  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)self timedInvokeTimeoutMs];
+  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v8 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)self serverSideProcessingTimeout];
-  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)v4 setServerSideProcessingTimeout:v8];
+  serverSideProcessingTimeout = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)self serverSideProcessingTimeout];
+  [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -60,24 +60,24 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   LOBYTE(v24) = 0;
   v25 = 0uLL;
   v23[0] = 0;
   v23[1] = 0;
   v22 = v23;
-  v5 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)self presetID];
+  presetID = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)self presetID];
 
-  if (v5)
+  if (presetID)
   {
     v24 = 1;
-    v6 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)self presetID];
-    HIBYTE(v24) = [v6 unsignedCharValue];
+    presetID2 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)self presetID];
+    HIBYTE(v24) = [presetID2 unsignedCharValue];
   }
 
-  v7 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)self name];
-  sub_238DB9BD8(v16, [v7 UTF8String], objc_msgSend(v7, "lengthOfBytesUsingEncoding:", 4));
+  name = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)self name];
+  sub_238DB9BD8(v16, [name UTF8String], objc_msgSend(name, "lengthOfBytesUsingEncoding:", 4));
 
   v25 = v16[0];
   sub_2393D9C18(0x62FuLL, 0, &v21);
@@ -99,8 +99,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v21);
-      v8 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v21);
+      v8 = sub_2393C7114(reader, 21, 256);
       v11 = v15;
       v10 = v8;
     }
@@ -128,19 +128,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRCameraAVSettingsUserLevelManagementClusterMPTZSavePresetParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -151,7 +151,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x8B1800000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

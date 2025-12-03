@@ -1,7 +1,7 @@
 @interface CHManagedConfigurations
 + (id)managedConfigurations;
 - (CHManagedConfigurations)init;
-- (void)_profileSettingsChanged:(id)a3;
+- (void)_profileSettingsChanged:(id)changed;
 - (void)_updateSettings;
 @end
 
@@ -60,10 +60,10 @@
   }
 }
 
-- (void)_profileSettingsChanged:(id)a3
+- (void)_profileSettingsChanged:(id)changed
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -73,7 +73,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = changedCopy;
     _os_log_impl(&dword_18366B000, v5, OS_LOG_TYPE_DEBUG, "CHManagedConfigurations received notification: %@", buf, 0xCu);
   }
 

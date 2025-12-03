@@ -1,23 +1,23 @@
 @interface CKContextExtractionUtil
-+ (id)_renderImageToSurfaceWithImage:(id)a3;
-+ (void)renderLeadImage:(id)a3 toDonationItem:(id)a4;
-+ (void)renderSnapshot:(id)a3 toDonationItem:(id)a4;
++ (id)_renderImageToSurfaceWithImage:(id)image;
++ (void)renderLeadImage:(id)image toDonationItem:(id)item;
++ (void)renderSnapshot:(id)snapshot toDonationItem:(id)item;
 @end
 
 @implementation CKContextExtractionUtil
 
-+ (id)_renderImageToSurfaceWithImage:(id)a3
++ (id)_renderImageToSurfaceWithImage:(id)image
 {
   v30[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  imageCopy = image;
+  v4 = imageCopy;
+  if (imageCopy)
   {
-    v5 = [v3 ioSurface];
-    v6 = v5;
-    if (v5)
+    ioSurface = [imageCopy ioSurface];
+    v6 = ioSurface;
+    if (ioSurface)
     {
-      v7 = v5;
+      v7 = ioSurface;
     }
 
     else
@@ -51,12 +51,12 @@
       if (v24)
       {
         v25 = v24;
-        v26 = [v4 CGImage];
+        cGImage = [v4 CGImage];
         v32.origin.x = 0.0;
         v32.origin.y = 0.0;
         v32.size.width = v14;
         v32.size.height = v16;
-        CGContextDrawImage(v25, v32, v26);
+        CGContextDrawImage(v25, v32, cGImage);
         CGColorSpaceRelease(DeviceRGB);
         CGContextFlush(v25);
         CFRelease(v25);
@@ -81,35 +81,35 @@
   return v7;
 }
 
-+ (void)renderLeadImage:(id)a3 toDonationItem:(id)a4
++ (void)renderLeadImage:(id)image toDonationItem:(id)item
 {
-  if (a3)
+  if (image)
   {
-    v5 = a4;
-    v6 = [CKContextExtractionUtil _renderImageToSurfaceWithImage:a3];
-    [v5 setLeadImage:?];
+    itemCopy = item;
+    itemCopy2 = [CKContextExtractionUtil _renderImageToSurfaceWithImage:image];
+    [itemCopy setLeadImage:?];
   }
 
   else
   {
-    v6 = a4;
-    [v6 setLeadImage:0];
+    itemCopy2 = item;
+    [itemCopy2 setLeadImage:0];
   }
 }
 
-+ (void)renderSnapshot:(id)a3 toDonationItem:(id)a4
++ (void)renderSnapshot:(id)snapshot toDonationItem:(id)item
 {
-  if (a3)
+  if (snapshot)
   {
-    v5 = a4;
-    v6 = [CKContextExtractionUtil _renderImageToSurfaceWithImage:a3];
-    [v5 setSnapshot:?];
+    itemCopy = item;
+    itemCopy2 = [CKContextExtractionUtil _renderImageToSurfaceWithImage:snapshot];
+    [itemCopy setSnapshot:?];
   }
 
   else
   {
-    v6 = a4;
-    [v6 setSnapshot:0];
+    itemCopy2 = item;
+    [itemCopy2 setSnapshot:0];
   }
 }
 

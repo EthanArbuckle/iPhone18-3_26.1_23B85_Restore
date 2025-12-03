@@ -49,23 +49,23 @@
     v4 = v3;
     if (v3)
     {
-      v5 = v3;
+      currentCalendar = v3;
     }
 
     else
     {
-      v5 = [MEMORY[0x277CBEA80] currentCalendar];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     }
 
-    v6 = v5;
+    currentCalendar2 = currentCalendar;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
   }
 
-  return v6;
+  return currentCalendar2;
 }
 
 @end

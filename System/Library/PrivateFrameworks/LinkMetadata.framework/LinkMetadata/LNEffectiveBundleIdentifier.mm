@@ -1,31 +1,31 @@
 @interface LNEffectiveBundleIdentifier
-- (BOOL)isEqual:(id)a3;
-- (LNEffectiveBundleIdentifier)initWithCoder:(id)a3;
-- (LNEffectiveBundleIdentifier)initWithType:(int64_t)a3 bundleIdentifier:(id)a4 url:(id)a5;
-- (id)bundleMetadataForURLs:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNEffectiveBundleIdentifier)initWithCoder:(id)coder;
+- (LNEffectiveBundleIdentifier)initWithType:(int64_t)type bundleIdentifier:(id)identifier url:(id)url;
+- (id)bundleMetadataForURLs:(id)ls;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNEffectiveBundleIdentifier
 
 - (unint64_t)hash
 {
-  v3 = [(LNEffectiveBundleIdentifier *)self type];
-  v4 = [(LNEffectiveBundleIdentifier *)self bundleIdentifier];
-  v5 = [v4 hash];
+  type = [(LNEffectiveBundleIdentifier *)self type];
+  bundleIdentifier = [(LNEffectiveBundleIdentifier *)self bundleIdentifier];
+  v5 = [bundleIdentifier hash];
 
-  return v5 ^ v3;
+  return v5 ^ type;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v13 = 0;
@@ -34,10 +34,10 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v7 = [(LNEffectiveBundleIdentifier *)self bundleIdentifier];
-    v8 = [(LNEffectiveBundleIdentifier *)v6 bundleIdentifier];
-    v9 = v7;
-    v10 = v8;
+    bundleIdentifier = [(LNEffectiveBundleIdentifier *)self bundleIdentifier];
+    bundleIdentifier2 = [(LNEffectiveBundleIdentifier *)v6 bundleIdentifier];
+    v9 = bundleIdentifier;
+    v10 = bundleIdentifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -61,8 +61,8 @@ LABEL_14:
       }
     }
 
-    v14 = [(LNEffectiveBundleIdentifier *)self type];
-    v13 = v14 == [(LNEffectiveBundleIdentifier *)v6 type];
+    type = [(LNEffectiveBundleIdentifier *)self type];
+    v13 = type == [(LNEffectiveBundleIdentifier *)v6 type];
 LABEL_15:
 
     goto LABEL_16;
@@ -88,75 +88,75 @@ LABEL_17:
     v5 = off_1E72B0CD0[v4];
   }
 
-  v6 = [(LNEffectiveBundleIdentifier *)self bundleIdentifier];
+  bundleIdentifier = [(LNEffectiveBundleIdentifier *)self bundleIdentifier];
   v7 = [(LNEffectiveBundleIdentifier *)self url];
-  v8 = [v3 stringWithFormat:@"%@ (%@ at %@)", v5, v6, v7];
+  v8 = [v3 stringWithFormat:@"%@ (%@ at %@)", v5, bundleIdentifier, v7];
 
   return v8;
 }
 
-- (LNEffectiveBundleIdentifier)initWithCoder:(id)a3
+- (LNEffectiveBundleIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"type"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"type"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     self = [(LNEffectiveBundleIdentifier *)self initWithType:v5 bundleIdentifier:v6 url:v7];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[LNEffectiveBundleIdentifier type](self forKey:{"type"), @"type"}];
-  v5 = [(LNEffectiveBundleIdentifier *)self bundleIdentifier];
-  [v4 encodeObject:v5 forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[LNEffectiveBundleIdentifier type](self forKey:{"type"), @"type"}];
+  bundleIdentifier = [(LNEffectiveBundleIdentifier *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 
   v6 = [(LNEffectiveBundleIdentifier *)self url];
-  [v4 encodeObject:v6 forKey:@"url"];
+  [coderCopy encodeObject:v6 forKey:@"url"];
 }
 
-- (LNEffectiveBundleIdentifier)initWithType:(int64_t)a3 bundleIdentifier:(id)a4 url:(id)a5
+- (LNEffectiveBundleIdentifier)initWithType:(int64_t)type bundleIdentifier:(id)identifier url:(id)url
 {
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  urlCopy = url;
   v16.receiver = self;
   v16.super_class = LNEffectiveBundleIdentifier;
   v10 = [(LNEffectiveBundleIdentifier *)&v16 init];
   v11 = v10;
   if (v10)
   {
-    v10->_type = a3;
-    v12 = [v8 copy];
+    v10->_type = type;
+    v12 = [identifierCopy copy];
     bundleIdentifier = v11->_bundleIdentifier;
     v11->_bundleIdentifier = v12;
 
-    objc_storeStrong(&v11->_url, a5);
+    objc_storeStrong(&v11->_url, url);
     v14 = v11;
   }
 
   return v11;
 }
 
-- (id)bundleMetadataForURLs:(id)a3
+- (id)bundleMetadataForURLs:(id)ls
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __71__LNEffectiveBundleIdentifier_StaticExtraction__bundleMetadataForURLs___block_invoke;
   v5[3] = &unk_1E72B0E88;
   v5[4] = self;
-  v3 = [a3 if_compactMap:v5];
+  v3 = [ls if_compactMap:v5];
 
   return v3;
 }

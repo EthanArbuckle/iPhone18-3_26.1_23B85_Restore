@@ -1,22 +1,22 @@
 @interface FlexSongProxy
 - (BOOL)canPlay;
-- (FlexSongProxy)initWithUID:(id)a3 songName:(id)a4 artistName:(id)a5 tagIDs:(id)a6 keywords:(id)a7 weightedKeywords:(id)a8 hidden:(BOOL)a9 recalled:(BOOL)a10 assets:(id)a11 audioEncoderPresetName:(id)a12 metadataVersion:(int64_t)a13 songFormat:(id)a14;
+- (FlexSongProxy)initWithUID:(id)d songName:(id)name artistName:(id)artistName tagIDs:(id)ds keywords:(id)keywords weightedKeywords:(id)weightedKeywords hidden:(BOOL)hidden recalled:(BOOL)self0 assets:(id)self1 audioEncoderPresetName:(id)self2 metadataVersion:(int64_t)self3 songFormat:(id)self4;
 @end
 
 @implementation FlexSongProxy
 
-- (FlexSongProxy)initWithUID:(id)a3 songName:(id)a4 artistName:(id)a5 tagIDs:(id)a6 keywords:(id)a7 weightedKeywords:(id)a8 hidden:(BOOL)a9 recalled:(BOOL)a10 assets:(id)a11 audioEncoderPresetName:(id)a12 metadataVersion:(int64_t)a13 songFormat:(id)a14
+- (FlexSongProxy)initWithUID:(id)d songName:(id)name artistName:(id)artistName tagIDs:(id)ds keywords:(id)keywords weightedKeywords:(id)weightedKeywords hidden:(BOOL)hidden recalled:(BOOL)self0 assets:(id)self1 audioEncoderPresetName:(id)self2 metadataVersion:(int64_t)self3 songFormat:(id)self4
 {
-  v20 = a11;
+  assetsCopy = assets;
   v29.receiver = self;
   v29.super_class = FlexSongProxy;
-  HIBYTE(v27) = a10;
-  LOBYTE(v27) = a9;
-  v21 = [(FlexSongBackend *)&v29 initWithUID:a3 songName:a4 artistName:a5 tagIDs:a6 keywords:a7 weightedKeywords:a8 hidden:v27 recalled:a12 audioEncoderPresetName:a13 metadataVersion:a14 songFormat:0 sampleRate:0 customOptions:?];
+  HIBYTE(v27) = recalled;
+  LOBYTE(v27) = hidden;
+  v21 = [(FlexSongBackend *)&v29 initWithUID:d songName:name artistName:artistName tagIDs:ds keywords:keywords weightedKeywords:weightedKeywords hidden:v27 recalled:presetName audioEncoderPresetName:version metadataVersion:format songFormat:0 sampleRate:0 customOptions:?];
   v25 = v21;
   if (v21)
   {
-    objc_msgSend_updateAssets_(v21, v22, v20, v23, v24);
+    objc_msgSend_updateAssets_(v21, v22, assetsCopy, v23, v24);
   }
 
   return v25;

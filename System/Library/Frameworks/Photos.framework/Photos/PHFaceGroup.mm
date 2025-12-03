@@ -1,54 +1,54 @@
 @interface PHFaceGroup
 + (id)entityKeyMap;
-+ (id)fetchFaceGroupsForPerson:(id)a3 options:(id)a4;
-+ (id)fetchFaceGroupsGroupedByFaceLocalIdentifierForFaces:(id)a3 options:(id)a4;
-+ (id)fetchFaceGroupsWithFace:(id)a3 options:(id)a4;
-+ (id)fetchFaceGroupsWithLocalIdentifiers:(id)a3 options:(id)a4;
-+ (id)fetchPredicateFromComparisonPredicate:(id)a3 options:(id)a4;
-+ (id)propertiesToFetchWithHint:(unint64_t)a3;
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4;
-- (PHFaceGroup)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5;
++ (id)fetchFaceGroupsForPerson:(id)person options:(id)options;
++ (id)fetchFaceGroupsGroupedByFaceLocalIdentifierForFaces:(id)faces options:(id)options;
++ (id)fetchFaceGroupsWithFace:(id)face options:(id)options;
++ (id)fetchFaceGroupsWithLocalIdentifiers:(id)identifiers options:(id)options;
++ (id)fetchPredicateFromComparisonPredicate:(id)predicate options:(id)options;
++ (id)propertiesToFetchWithHint:(unint64_t)hint;
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path;
+- (PHFaceGroup)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library;
 @end
 
 @implementation PHFaceGroup
 
-- (PHFaceGroup)initWithFetchDictionary:(id)a3 propertyHint:(unint64_t)a4 photoLibrary:(id)a5
+- (PHFaceGroup)initWithFetchDictionary:(id)dictionary propertyHint:(unint64_t)hint photoLibrary:(id)library
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = PHFaceGroup;
-  v9 = [(PHObject *)&v13 initWithFetchDictionary:v8 propertyHint:a4 photoLibrary:a5];
+  v9 = [(PHObject *)&v13 initWithFetchDictionary:dictionaryCopy propertyHint:hint photoLibrary:library];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"unnamedFaceCount"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"unnamedFaceCount"];
     v9->_unnamedFaceCount = [v10 integerValue];
 
-    v11 = [v8 objectForKeyedSubscript:@"personBuilderState"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"personBuilderState"];
     v9->_personBuilderState = [v11 integerValue];
   }
 
   return v9;
 }
 
-+ (id)fetchPredicateFromComparisonPredicate:(id)a3 options:(id)a4
++ (id)fetchPredicateFromComparisonPredicate:(id)predicate options:(id)options
 {
-  v6 = a3;
-  v16.receiver = a1;
+  predicateCopy = predicate;
+  v16.receiver = self;
   v16.super_class = &OBJC_METACLASS___PHFaceGroup;
-  v7 = objc_msgSendSuper2(&v16, sel_fetchPredicateFromComparisonPredicate_options_, v6, a4);
+  v7 = objc_msgSendSuper2(&v16, sel_fetchPredicateFromComparisonPredicate_options_, predicateCopy, options);
   if (!v7)
   {
-    v8 = [v6 leftExpression];
-    v9 = [v6 rightExpression];
-    v10 = [v8 expressionType];
-    v11 = v8;
-    if (v10 == 3 || (v12 = [v9 expressionType], v11 = v9, v12 == 3))
+    leftExpression = [predicateCopy leftExpression];
+    rightExpression = [predicateCopy rightExpression];
+    expressionType = [leftExpression expressionType];
+    v11 = leftExpression;
+    if (expressionType == 3 || (v12 = [rightExpression expressionType], v11 = rightExpression, v12 == 3))
     {
-      v13 = [v11 keyPath];
-      v14 = v13;
-      if (v13 && (([v13 isEqualToString:@"detectedFaces.personForFace"] & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"detectedFaces.@count") & 1) != 0 || objc_msgSend(v14, "isEqualToString:", @"detectedFaces.detectionType")))
+      keyPath = [v11 keyPath];
+      v14 = keyPath;
+      if (keyPath && (([keyPath isEqualToString:@"detectedFaces.personForFace"] & 1) != 0 || (objc_msgSend(v14, "isEqualToString:", @"detectedFaces.@count") & 1) != 0 || objc_msgSend(v14, "isEqualToString:", @"detectedFaces.detectionType")))
       {
-        v7 = [objc_alloc(MEMORY[0x1E696AB18]) initWithLeftExpression:v8 rightExpression:v9 modifier:objc_msgSend(v6 type:"comparisonPredicateModifier") options:{objc_msgSend(v6, "predicateOperatorType"), objc_msgSend(v6, "options")}];
+        v7 = [objc_alloc(MEMORY[0x1E696AB18]) initWithLeftExpression:leftExpression rightExpression:rightExpression modifier:objc_msgSend(predicateCopy type:"comparisonPredicateModifier") options:{objc_msgSend(predicateCopy, "predicateOperatorType"), objc_msgSend(predicateCopy, "options")}];
 LABEL_11:
 
         goto LABEL_12;
@@ -77,23 +77,23 @@ id __47__PHFaceGroup_fetchEmptyFaceGroupsWithOptions___block_invoke(uint64_t a1,
   return v3;
 }
 
-+ (id)fetchFaceGroupsGroupedByFaceLocalIdentifierForFaces:(id)a3 options:(id)a4
++ (id)fetchFaceGroupsGroupedByFaceLocalIdentifierForFaces:(id)faces options:(id)options
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  facesCopy = faces;
+  optionsCopy = options;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__1422;
   v36 = __Block_byref_object_dispose__1423;
   v37 = 0;
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = v6;
+  v9 = facesCopy;
   v10 = 0;
   v11 = [v9 countByEnumeratingWithState:&v28 objects:v38 count:16];
   if (v11)
@@ -109,8 +109,8 @@ id __47__PHFaceGroup_fetchEmptyFaceGroupsWithOptions___block_invoke(uint64_t a1,
         }
 
         v14 = *(*(&v28 + 1) + 8 * i);
-        v15 = [v14 uuid];
-        [v8 addObject:v15];
+        uuid = [v14 uuid];
+        [array addObject:uuid];
 
         if (!v10)
         {
@@ -124,9 +124,9 @@ id __47__PHFaceGroup_fetchEmptyFaceGroupsWithOptions___block_invoke(uint64_t a1,
     while (v11);
   }
 
-  v16 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v7 object:v10];
+  v16 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:v10];
   v17 = MEMORY[0x1E69BE3D8];
-  v18 = [v16 photoLibrary];
+  photoLibrary = [v16 photoLibrary];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __75__PHFaceGroup_fetchFaceGroupsGroupedByFaceLocalIdentifierForFaces_options___block_invoke;
@@ -134,10 +134,10 @@ id __47__PHFaceGroup_fetchEmptyFaceGroupsWithOptions___block_invoke(uint64_t a1,
   v26 = &v32;
   v19 = v16;
   v24 = v19;
-  v20 = v7;
+  v20 = optionsCopy;
   v25 = v20;
-  v27 = a1;
-  [v17 batchFetchFaceGroupByFaceUUIDWithFaceUUIDs:v8 predicate:0 library:v18 completion:v23];
+  selfCopy = self;
+  [v17 batchFetchFaceGroupByFaceUUIDWithFaceUUIDs:array predicate:0 library:photoLibrary completion:v23];
 
   v21 = v33[5];
   _Block_object_dispose(&v32, 8);
@@ -198,24 +198,24 @@ void __75__PHFaceGroup_fetchFaceGroupsGroupedByFaceLocalIdentifierForFaces_optio
   [*(*(*(a1 + 48) + 8) + 40) setObject:v12 forKeyedSubscript:v6];
 }
 
-+ (id)fetchFaceGroupsWithFace:(id)a3 options:(id)a4
++ (id)fetchFaceGroupsWithFace:(id)face options:(id)options
 {
-  v4 = [PHQuery queryForFaceGroupsWithFace:a3 options:a4];
-  v5 = [v4 executeQuery];
+  v4 = [PHQuery queryForFaceGroupsWithFace:face options:options];
+  executeQuery = [v4 executeQuery];
 
-  return v5;
+  return executeQuery;
 }
 
-+ (id)fetchFaceGroupsForPerson:(id)a3 options:(id)a4
++ (id)fetchFaceGroupsForPerson:(id)person options:(id)options
 {
-  v5 = a3;
+  personCopy = person;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __48__PHFaceGroup_fetchFaceGroupsForPerson_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = personCopy;
+  v6 = personCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -228,16 +228,16 @@ id __48__PHFaceGroup_fetchFaceGroupsForPerson_options___block_invoke(uint64_t a1
   return v3;
 }
 
-+ (id)fetchFaceGroupsWithLocalIdentifiers:(id)a3 options:(id)a4
++ (id)fetchFaceGroupsWithLocalIdentifiers:(id)identifiers options:(id)options
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__PHFaceGroup_fetchFaceGroupsWithLocalIdentifiers_options___block_invoke;
   v9[3] = &unk_1E75AB0E0;
-  v10 = v5;
-  v6 = v5;
-  v7 = [PHObject authorizationAwareFetchResultWithOptions:a4 fetchBlock:v9];
+  v10 = identifiersCopy;
+  v6 = identifiersCopy;
+  v7 = [PHObject authorizationAwareFetchResultWithOptions:options fetchBlock:v9];
 
   return v7;
 }
@@ -258,23 +258,23 @@ id __42__PHFaceGroup_fetchFaceGroupsWithOptions___block_invoke(uint64_t a1, uint
   return v3;
 }
 
-+ (id)transformValueExpression:(id)a3 forKeyPath:(id)a4
++ (id)transformValueExpression:(id)expression forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  expressionCopy = expression;
+  pathCopy = path;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__PHFaceGroup_transformValueExpression_forKeyPath___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transformValueExpression_forKeyPath__onceToken_1434 != -1)
   {
     dispatch_once(&transformValueExpression_forKeyPath__onceToken_1434, block);
   }
 
-  if ([transformValueExpression_forKeyPath___passThroughSet_1435 containsObject:v7])
+  if ([transformValueExpression_forKeyPath___passThroughSet_1435 containsObject:pathCopy])
   {
-    v8 = v6;
+    v8 = expressionCopy;
   }
 
   else
@@ -328,7 +328,7 @@ void __27__PHFaceGroup_entityKeyMap__block_invoke()
   entityKeyMap_pl_once_object_15_1438 = v5;
 }
 
-+ (id)propertiesToFetchWithHint:(unint64_t)a3
++ (id)propertiesToFetchWithHint:(unint64_t)hint
 {
   if (propertiesToFetchWithHint__onceToken_1441 != -1)
   {

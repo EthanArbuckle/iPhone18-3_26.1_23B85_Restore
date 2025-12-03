@@ -1,33 +1,33 @@
 @interface NETSchemaNETPeerConnectionFailed
-- (BOOL)isEqual:(id)a3;
-- (NETSchemaNETPeerConnectionFailed)initWithDictionary:(id)a3;
-- (NETSchemaNETPeerConnectionFailed)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NETSchemaNETPeerConnectionFailed)initWithDictionary:(id)dictionary;
+- (NETSchemaNETPeerConnectionFailed)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addConnectedBtDevices:(id)a3;
-- (void)setHasHasDevice:(BOOL)a3;
-- (void)setHasIsConnected:(BOOL)a3;
-- (void)setHasIsNearby:(BOOL)a3;
-- (void)setHasIsPreferringBtClassic:(BOOL)a3;
-- (void)setHasTimeSinceLastNearbyChangeInSeconds:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addConnectedBtDevices:(id)devices;
+- (void)setHasHasDevice:(BOOL)device;
+- (void)setHasIsConnected:(BOOL)connected;
+- (void)setHasIsNearby:(BOOL)nearby;
+- (void)setHasIsPreferringBtClassic:(BOOL)classic;
+- (void)setHasTimeSinceLastNearbyChangeInSeconds:(BOOL)seconds;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NETSchemaNETPeerConnectionFailed
 
-- (NETSchemaNETPeerConnectionFailed)initWithDictionary:(id)a3
+- (NETSchemaNETPeerConnectionFailed)initWithDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = NETSchemaNETPeerConnectionFailed;
   v5 = [(NETSchemaNETPeerConnectionFailed *)&v27 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"connectedBtDevices"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"connectedBtDevices"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,28 +71,28 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"isCloudConnected", v23}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"isCloudConnected", v23}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETPeerConnectionFailed setIsCloudConnected:](v5, "setIsCloudConnected:", [v15 BOOLValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"isConnected"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"isConnected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETPeerConnectionFailed setIsConnected:](v5, "setIsConnected:", [v16 BOOLValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"hasDevice"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"hasDevice"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETPeerConnectionFailed setHasDevice:](v5, "setHasDevice:", [v17 BOOLValue]);
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"timeSinceLastNearbyChangeInSeconds"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastNearbyChangeInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,14 +100,14 @@
       [(NETSchemaNETPeerConnectionFailed *)v5 setTimeSinceLastNearbyChangeInSeconds:?];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"isNearby"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"isNearby"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETPeerConnectionFailed setIsNearby:](v5, "setIsNearby:", [v19 BOOLValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"isPreferringBtClassic"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"isPreferringBtClassic"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -120,30 +120,30 @@
   return v5;
 }
 
-- (NETSchemaNETPeerConnectionFailed)initWithJSON:(id)a3
+- (NETSchemaNETPeerConnectionFailed)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NETSchemaNETPeerConnectionFailed *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NETSchemaNETPeerConnectionFailed *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NETSchemaNETPeerConnectionFailed *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -157,10 +157,10 @@
 - (id)dictionaryRepresentation
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_connectedBtDevices count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -180,16 +180,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -199,14 +199,14 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"connectedBtDevices"];
+    [dictionary setObject:array forKeyedSubscript:@"connectedBtDevices"];
   }
 
   v12 = *(&self->_isPreferringBtClassic + 1);
   if ((v12 & 4) != 0)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[NETSchemaNETPeerConnectionFailed hasDevice](self, "hasDevice")}];
-    [v3 setObject:v16 forKeyedSubscript:@"hasDevice"];
+    [dictionary setObject:v16 forKeyedSubscript:@"hasDevice"];
 
     v12 = *(&self->_isPreferringBtClassic + 1);
     if ((v12 & 1) == 0)
@@ -227,7 +227,7 @@ LABEL_15:
   }
 
   v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[NETSchemaNETPeerConnectionFailed isCloudConnected](self, "isCloudConnected", v21)}];
-  [v3 setObject:v17 forKeyedSubscript:@"isCloudConnected"];
+  [dictionary setObject:v17 forKeyedSubscript:@"isCloudConnected"];
 
   v12 = *(&self->_isPreferringBtClassic + 1);
   if ((v12 & 2) == 0)
@@ -243,7 +243,7 @@ LABEL_16:
 
 LABEL_25:
   v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[NETSchemaNETPeerConnectionFailed isConnected](self, "isConnected", v21)}];
-  [v3 setObject:v18 forKeyedSubscript:@"isConnected"];
+  [dictionary setObject:v18 forKeyedSubscript:@"isConnected"];
 
   v12 = *(&self->_isPreferringBtClassic + 1);
   if ((v12 & 0x10) == 0)
@@ -259,7 +259,7 @@ LABEL_17:
 
 LABEL_26:
   v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[NETSchemaNETPeerConnectionFailed isNearby](self, "isNearby", v21)}];
-  [v3 setObject:v19 forKeyedSubscript:@"isNearby"];
+  [dictionary setObject:v19 forKeyedSubscript:@"isNearby"];
 
   v12 = *(&self->_isPreferringBtClassic + 1);
   if ((v12 & 0x20) == 0)
@@ -275,7 +275,7 @@ LABEL_18:
 
 LABEL_27:
   v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[NETSchemaNETPeerConnectionFailed isPreferringBtClassic](self, "isPreferringBtClassic", v21)}];
-  [v3 setObject:v20 forKeyedSubscript:@"isPreferringBtClassic"];
+  [dictionary setObject:v20 forKeyedSubscript:@"isPreferringBtClassic"];
 
   if ((*(&self->_isPreferringBtClassic + 1) & 8) != 0)
   {
@@ -283,13 +283,13 @@ LABEL_19:
     v13 = MEMORY[0x1E696AD98];
     [(NETSchemaNETPeerConnectionFailed *)self timeSinceLastNearbyChangeInSeconds];
     v14 = [v13 numberWithDouble:?];
-    [v3 setObject:v14 forKeyedSubscript:@"timeSinceLastNearbyChangeInSeconds"];
+    [dictionary setObject:v14 forKeyedSubscript:@"timeSinceLastNearbyChangeInSeconds"];
   }
 
 LABEL_20:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v21];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v21];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -393,30 +393,30 @@ LABEL_15:
   return v6 ^ v3 ^ v7 ^ v8 ^ v12 ^ v13 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
-  v5 = [(NETSchemaNETPeerConnectionFailed *)self connectedBtDevices];
-  v6 = [v4 connectedBtDevices];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  connectedBtDevices = [(NETSchemaNETPeerConnectionFailed *)self connectedBtDevices];
+  connectedBtDevices2 = [equalCopy connectedBtDevices];
+  v7 = connectedBtDevices2;
+  if ((connectedBtDevices != 0) == (connectedBtDevices2 == 0))
   {
 
     goto LABEL_32;
   }
 
-  v8 = [(NETSchemaNETPeerConnectionFailed *)self connectedBtDevices];
-  if (v8)
+  connectedBtDevices3 = [(NETSchemaNETPeerConnectionFailed *)self connectedBtDevices];
+  if (connectedBtDevices3)
   {
-    v9 = v8;
-    v10 = [(NETSchemaNETPeerConnectionFailed *)self connectedBtDevices];
-    v11 = [v4 connectedBtDevices];
-    v12 = [v10 isEqual:v11];
+    v9 = connectedBtDevices3;
+    connectedBtDevices4 = [(NETSchemaNETPeerConnectionFailed *)self connectedBtDevices];
+    connectedBtDevices5 = [equalCopy connectedBtDevices];
+    v12 = [connectedBtDevices4 isEqual:connectedBtDevices5];
 
     if (!v12)
     {
@@ -429,7 +429,7 @@ LABEL_15:
   }
 
   v13 = *(&self->_isPreferringBtClassic + 1);
-  v14 = v4[34];
+  v14 = equalCopy[34];
   if ((v13 & 1) != (v14 & 1))
   {
 LABEL_32:
@@ -440,13 +440,13 @@ LABEL_32:
   if (v13)
   {
     isCloudConnected = self->_isCloudConnected;
-    if (isCloudConnected != [v4 isCloudConnected])
+    if (isCloudConnected != [equalCopy isCloudConnected])
     {
       goto LABEL_32;
     }
 
     v13 = *(&self->_isPreferringBtClassic + 1);
-    v14 = v4[34];
+    v14 = equalCopy[34];
   }
 
   v16 = (v13 >> 1) & 1;
@@ -458,13 +458,13 @@ LABEL_32:
   if (v16)
   {
     isConnected = self->_isConnected;
-    if (isConnected != [v4 isConnected])
+    if (isConnected != [equalCopy isConnected])
     {
       goto LABEL_32;
     }
 
     v13 = *(&self->_isPreferringBtClassic + 1);
-    v14 = v4[34];
+    v14 = equalCopy[34];
   }
 
   v18 = (v13 >> 2) & 1;
@@ -476,13 +476,13 @@ LABEL_32:
   if (v18)
   {
     hasDevice = self->_hasDevice;
-    if (hasDevice != [v4 hasDevice])
+    if (hasDevice != [equalCopy hasDevice])
     {
       goto LABEL_32;
     }
 
     v13 = *(&self->_isPreferringBtClassic + 1);
-    v14 = v4[34];
+    v14 = equalCopy[34];
   }
 
   v20 = (v13 >> 3) & 1;
@@ -494,14 +494,14 @@ LABEL_32:
   if (v20)
   {
     timeSinceLastNearbyChangeInSeconds = self->_timeSinceLastNearbyChangeInSeconds;
-    [v4 timeSinceLastNearbyChangeInSeconds];
+    [equalCopy timeSinceLastNearbyChangeInSeconds];
     if (timeSinceLastNearbyChangeInSeconds != v22)
     {
       goto LABEL_32;
     }
 
     v13 = *(&self->_isPreferringBtClassic + 1);
-    v14 = v4[34];
+    v14 = equalCopy[34];
   }
 
   v23 = (v13 >> 4) & 1;
@@ -513,10 +513,10 @@ LABEL_32:
   if (v23)
   {
     isNearby = self->_isNearby;
-    if (isNearby == [v4 isNearby])
+    if (isNearby == [equalCopy isNearby])
     {
       v13 = *(&self->_isPreferringBtClassic + 1);
-      v14 = v4[34];
+      v14 = equalCopy[34];
       goto LABEL_28;
     }
 
@@ -533,7 +533,7 @@ LABEL_28:
   if (v25)
   {
     isPreferringBtClassic = self->_isPreferringBtClassic;
-    if (isPreferringBtClassic != [v4 isPreferringBtClassic])
+    if (isPreferringBtClassic != [equalCopy isPreferringBtClassic])
     {
       goto LABEL_32;
     }
@@ -545,10 +545,10 @@ LABEL_33:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -651,9 +651,9 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)setHasIsPreferringBtClassic:(BOOL)a3
+- (void)setHasIsPreferringBtClassic:(BOOL)classic
 {
-  if (a3)
+  if (classic)
   {
     v3 = 32;
   }
@@ -666,9 +666,9 @@ LABEL_15:
   *(&self->_isPreferringBtClassic + 1) = *(&self->_isPreferringBtClassic + 1) & 0xDF | v3;
 }
 
-- (void)setHasIsNearby:(BOOL)a3
+- (void)setHasIsNearby:(BOOL)nearby
 {
-  if (a3)
+  if (nearby)
   {
     v3 = 16;
   }
@@ -681,9 +681,9 @@ LABEL_15:
   *(&self->_isPreferringBtClassic + 1) = *(&self->_isPreferringBtClassic + 1) & 0xEF | v3;
 }
 
-- (void)setHasTimeSinceLastNearbyChangeInSeconds:(BOOL)a3
+- (void)setHasTimeSinceLastNearbyChangeInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 8;
   }
@@ -696,9 +696,9 @@ LABEL_15:
   *(&self->_isPreferringBtClassic + 1) = *(&self->_isPreferringBtClassic + 1) & 0xF7 | v3;
 }
 
-- (void)setHasHasDevice:(BOOL)a3
+- (void)setHasHasDevice:(BOOL)device
 {
-  if (a3)
+  if (device)
   {
     v3 = 4;
   }
@@ -711,9 +711,9 @@ LABEL_15:
   *(&self->_isPreferringBtClassic + 1) = *(&self->_isPreferringBtClassic + 1) & 0xFB | v3;
 }
 
-- (void)setHasIsConnected:(BOOL)a3
+- (void)setHasIsConnected:(BOOL)connected
 {
-  if (a3)
+  if (connected)
   {
     v3 = 2;
   }
@@ -726,32 +726,32 @@ LABEL_15:
   *(&self->_isPreferringBtClassic + 1) = *(&self->_isPreferringBtClassic + 1) & 0xFD | v3;
 }
 
-- (void)addConnectedBtDevices:(id)a3
+- (void)addConnectedBtDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   connectedBtDevices = self->_connectedBtDevices;
-  v8 = v4;
+  v8 = devicesCopy;
   if (!connectedBtDevices)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_connectedBtDevices;
-    self->_connectedBtDevices = v6;
+    self->_connectedBtDevices = array;
 
-    v4 = v8;
+    devicesCopy = v8;
     connectedBtDevices = self->_connectedBtDevices;
   }
 
-  [(NSArray *)connectedBtDevices addObject:v4];
+  [(NSArray *)connectedBtDevices addObject:devicesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = NETSchemaNETPeerConnectionFailed;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(NETSchemaNETPeerConnectionFailed *)self connectedBtDevices:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(NETSchemaNETPeerConnectionFailed *)self setConnectedBtDevices:v7];
 

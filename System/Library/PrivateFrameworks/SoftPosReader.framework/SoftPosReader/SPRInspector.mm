@@ -1,21 +1,21 @@
 @interface SPRInspector
 + (BOOL)seIsProductionSigned;
 + (NSString)seid;
-+ (id)getSPRInspectorAndReturnError:(id *)a3;
-- (BOOL)removeMuirfieldWithForce:(BOOL)a3 error:(id *)a4;
-- (BOOL)removeMuirfieldWithForce:(BOOL)a3 session:(id)a4 seid:(id)a5 error:(id *)a6;
++ (id)getSPRInspectorAndReturnError:(id *)error;
+- (BOOL)removeMuirfieldWithForce:(BOOL)force error:(id *)error;
+- (BOOL)removeMuirfieldWithForce:(BOOL)force session:(id)session seid:(id)seid error:(id *)error;
 - (NSArray)applicationRecords;
-- (id)getMemoryInfoAndReturnError:(id *)a3;
-- (id)getMemoryInfoWithSession:(id)a3 seid:(id)a4 isProduction:(BOOL)a5 error:(id *)a6;
+- (id)getMemoryInfoAndReturnError:(id *)error;
+- (id)getMemoryInfoWithSession:(id)session seid:(id)seid isProduction:(BOOL)production error:(id *)error;
 @end
 
 @implementation SPRInspector
 
-+ (id)getSPRInspectorAndReturnError:(id *)a3
++ (id)getSPRInspectorAndReturnError:(id *)error
 {
   v4 = [SPRInspector alloc];
   v8 = objc_msgSend_initWithConnector_(v4, v5, &unk_287B2DC60, v6, v7);
-  v12 = objc_msgSend_connectAndReturnError_(v8, v9, a3, v10, v11);
+  v12 = objc_msgSend_connectAndReturnError_(v8, v9, error, v10, v11);
 
   return v12;
 }
@@ -135,39 +135,39 @@ LABEL_8:
   return isProductionSigned;
 }
 
-- (BOOL)removeMuirfieldWithForce:(BOOL)a3 error:(id *)a4
+- (BOOL)removeMuirfieldWithForce:(BOOL)force error:(id *)error
 {
-  v5 = self;
-  sub_26A954BD8(a3);
+  selfCopy = self;
+  sub_26A954BD8(force);
 
   return 1;
 }
 
-- (BOOL)removeMuirfieldWithForce:(BOOL)a3 session:(id)a4 seid:(id)a5 error:(id *)a6
+- (BOOL)removeMuirfieldWithForce:(BOOL)force session:(id)session seid:(id)seid error:(id *)error
 {
   v9 = sub_26AA7EB44();
-  v10 = a4;
-  v11 = self;
-  sub_26A954F88(a3, v10, v9);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_26A954F88(force, sessionCopy, v9);
 
   return 1;
 }
 
-- (id)getMemoryInfoAndReturnError:(id *)a3
+- (id)getMemoryInfoAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_26A95558C();
 
   return v4;
 }
 
-- (id)getMemoryInfoWithSession:(id)a3 seid:(id)a4 isProduction:(BOOL)a5 error:(id *)a6
+- (id)getMemoryInfoWithSession:(id)session seid:(id)seid isProduction:(BOOL)production error:(id *)error
 {
   v8 = sub_26AA7EB44();
   v10 = v9;
-  v11 = a3;
-  v12 = self;
-  v13 = sub_26A955AD8(v11, v8, v10);
+  sessionCopy = session;
+  selfCopy = self;
+  v13 = sub_26A955AD8(sessionCopy, v8, v10);
 
   return v13;
 }

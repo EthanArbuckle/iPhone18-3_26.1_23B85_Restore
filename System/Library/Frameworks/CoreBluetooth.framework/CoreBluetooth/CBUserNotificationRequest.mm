@@ -1,20 +1,20 @@
 @interface CBUserNotificationRequest
-- (CBUserNotificationRequest)initWithCoder:(id)a3;
-- (CBUserNotificationRequest)initWithDictionary:(id)a3 error:(id *)a4;
-- (CBUserNotificationRequest)initWithXPCObject:(id)a3 error:(id *)a4;
+- (CBUserNotificationRequest)initWithCoder:(id)coder;
+- (CBUserNotificationRequest)initWithDictionary:(id)dictionary error:(id *)error;
+- (CBUserNotificationRequest)initWithXPCObject:(id)object error:(id *)error;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation CBUserNotificationRequest
 
-- (CBUserNotificationRequest)initWithCoder:(id)a3
+- (CBUserNotificationRequest)initWithCoder:(id)coder
 {
   v12[8] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v12[0] = objc_opt_class();
   v12[1] = objc_opt_class();
   v12[2] = objc_opt_class();
@@ -26,34 +26,34 @@
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:8];
   v7 = [v4 setWithArray:v6];
 
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"unRe"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"unRe"];
 
   v9 = [(CBUserNotificationRequest *)self initWithDictionary:v8 error:0];
   v10 = *MEMORY[0x1E69E9840];
   return v9;
 }
 
-- (CBUserNotificationRequest)initWithDictionary:(id)a3 error:(id *)a4
+- (CBUserNotificationRequest)initWithDictionary:(id)dictionary error:(id *)error
 {
   v12 = _CFXPCCreateXPCObjectFromCFObject();
   if (v12)
   {
-    self = [(CBUserNotificationRequest *)self initWithXPCObject:v12 error:a4];
-    v13 = self;
+    self = [(CBUserNotificationRequest *)self initWithXPCObject:v12 error:error];
+    selfCopy = self;
   }
 
-  else if (a4)
+  else if (error)
   {
     CBErrorF(-6700, "CBUserNotificationRequest convert XPC dict failed", v6, v7, v8, v9, v10, v11, v15);
-    *a4 = v13 = 0;
+    *error = selfCopy = 0;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
@@ -77,21 +77,21 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(CBUserNotificationRequest *)self dictionaryRepresentation];
-  if (v4)
+  coderCopy = coder;
+  dictionaryRepresentation = [(CBUserNotificationRequest *)self dictionaryRepresentation];
+  if (dictionaryRepresentation)
   {
-    [v5 encodeObject:v4 forKey:@"unRe"];
+    [coderCopy encodeObject:dictionaryRepresentation forKey:@"unRe"];
   }
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   device = self->_device;
-  xdict = v4;
+  xdict = objectCopy;
   CUXPCEncodeObject();
   event = self->_event;
   if (event)
@@ -129,9 +129,9 @@
   return v8;
 }
 
-- (CBUserNotificationRequest)initWithXPCObject:(id)a3 error:(id *)a4
+- (CBUserNotificationRequest)initWithXPCObject:(id)object error:(id *)error
 {
-  OUTLINED_FUNCTION_19(self, a2, a3);
+  OUTLINED_FUNCTION_19(self, a2, object);
   v7 = OUTLINED_FUNCTION_18();
   if (!v7)
   {

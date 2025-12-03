@@ -3,9 +3,9 @@
 - (UIEdgeInsets)edgeInsets;
 - (void)_contentSizeCategoryDidChange;
 - (void)didMoveToWindow;
-- (void)drawTextInRect:(CGRect)a3;
-- (void)setEdgeInsets:(UIEdgeInsets)a3;
-- (void)setVerticalAlignment:(unint64_t)a3;
+- (void)drawTextInRect:(CGRect)rect;
+- (void)setEdgeInsets:(UIEdgeInsets)insets;
+- (void)setVerticalAlignment:(unint64_t)alignment;
 @end
 
 @implementation CCUIStatusLabel
@@ -29,8 +29,8 @@
 
     [(CCUIStatusLabel *)v3 _contentSizeCategoryDidChange];
     [(CCUIStatusLabel *)v3 controlCenterApplyPrimaryContentShadow];
-    v7 = [(CCUIStatusLabel *)v3 layer];
-    [v7 setShadowPathIsBounds:0];
+    layer = [(CCUIStatusLabel *)v3 layer];
+    [layer setShadowPathIsBounds:0];
   }
 
   return v3;
@@ -41,9 +41,9 @@
   v6.receiver = self;
   v6.super_class = CCUIStatusLabel;
   [(CCUIStatusLabel *)&v6 didMoveToWindow];
-  v3 = [(CCUIStatusLabel *)self window];
+  window = [(CCUIStatusLabel *)self window];
 
-  if (v3)
+  if (window)
   {
     v4 = [(CCUIStatusLabel *)self visualStylingProviderForCategory:1];
     visualStylingProvider = self->_visualStylingProvider;
@@ -56,41 +56,41 @@
   }
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3
+- (void)setEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_edgeInsets.top, v3), vceqq_f64(*&self->_edgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_edgeInsets = a3;
+    self->_edgeInsets = insets;
     [(CCUIStatusLabel *)self setNeedsLayout];
   }
 }
 
-- (void)setVerticalAlignment:(unint64_t)a3
+- (void)setVerticalAlignment:(unint64_t)alignment
 {
-  if (self->_verticalAlignment != a3)
+  if (self->_verticalAlignment != alignment)
   {
-    self->_verticalAlignment = a3;
+    self->_verticalAlignment = alignment;
     [(CCUIStatusLabel *)self setNeedsLayout];
   }
 }
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CCUIEdgeInsetsRTLSwap();
   v9 = x + v8;
   v11 = y + v10;
   v13 = width - (v8 + v12);
   v15 = height - (v10 + v14);
-  v16 = [(CCUIStatusLabel *)self verticalAlignment];
-  if (v16 == 1)
+  verticalAlignment = [(CCUIStatusLabel *)self verticalAlignment];
+  if (verticalAlignment == 1)
   {
     [(CCUIStatusLabel *)self textRectForBounds:2 limitedToNumberOfLines:v9, v11, v13, v15];
     v18 = v17;
@@ -132,7 +132,7 @@
     v9 = rect.size.width;
   }
 
-  else if (v16)
+  else if (verticalAlignment)
   {
     v9 = *MEMORY[0x277CBF398];
     v11 = *(MEMORY[0x277CBF398] + 8);
@@ -147,8 +147,8 @@
 
 - (void)_contentSizeCategoryDidChange
 {
-  v3 = [MEMORY[0x277CF0D60] preferredFontProvider];
-  v4 = [v3 preferredFontForTextStyle:*MEMORY[0x277D769C0] hiFontStyle:1];
+  preferredFontProvider = [MEMORY[0x277CF0D60] preferredFontProvider];
+  v4 = [preferredFontProvider preferredFontForTextStyle:*MEMORY[0x277D769C0] hiFontStyle:1];
 
   [(CCUIStatusLabel *)self setFont:v4];
   [(CCUIStatusLabel *)self setNeedsLayout];

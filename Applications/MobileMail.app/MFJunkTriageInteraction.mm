@@ -15,8 +15,8 @@
   if (!triageAction)
   {
     v4 = [MSJunkTriageAction alloc];
-    v5 = [(MFTriageInteraction *)self messageListItemSelection];
-    v6 = [v4 initWithMessageListSelection:v5 origin:-[MFTriageInteraction origin](self actor:"origin") delegate:{-[MFTriageInteraction actor](self, "actor"), self}];
+    messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+    v6 = [v4 initWithMessageListSelection:messageListItemSelection origin:-[MFTriageInteraction origin](self actor:"origin") delegate:{-[MFTriageInteraction actor](self, "actor"), self}];
     v7 = self->_triageAction;
     self->_triageAction = v6;
 
@@ -28,18 +28,18 @@
 
 - (BOOL)flagState
 {
-  v2 = [(MFJunkTriageInteraction *)self triageAction];
-  v3 = [v2 hasNonJunkMessages];
+  triageAction = [(MFJunkTriageInteraction *)self triageAction];
+  hasNonJunkMessages = [triageAction hasNonJunkMessages];
 
-  return v3 ^ 1;
+  return hasNonJunkMessages ^ 1;
 }
 
 - (id)title
 {
-  v2 = [(MFJunkTriageInteraction *)self flagState];
+  flagState = [(MFJunkTriageInteraction *)self flagState];
   v3 = +[NSBundle mainBundle];
   v4 = v3;
-  if (v2)
+  if (flagState)
   {
     [v3 localizedStringForKey:@"MARK_EMAIL_NOT_JUNK" value:&stru_100662A88 table:@"Main"];
   }
@@ -55,10 +55,10 @@
 
 - (id)shortTitle
 {
-  v2 = [(MFJunkTriageInteraction *)self flagState];
+  flagState = [(MFJunkTriageInteraction *)self flagState];
   v3 = +[NSBundle mainBundle];
   v4 = v3;
-  if (v2)
+  if (flagState)
   {
     [v3 localizedStringForKey:@"SWIPE_NOT_JUNK" value:&stru_100662A88 table:@"Main"];
   }
@@ -74,10 +74,10 @@
 
 - (id)undoTitle
 {
-  v2 = [(MFJunkTriageInteraction *)self flagState];
+  flagState = [(MFJunkTriageInteraction *)self flagState];
   v3 = +[NSBundle mainBundle];
   v4 = v3;
-  if (v2)
+  if (flagState)
   {
     [v3 localizedStringForKey:@"OPERATION_NOT_JUNK_DESC" value:&stru_100662A88 table:@"Main"];
   }
@@ -93,13 +93,13 @@
 
 - (id)cardTitle
 {
-  v3 = [(MFTriageInteraction *)self messageCount];
-  if (v3 >= 2 && (v4 = v3, [(MFTriageInteraction *)self titleIncludesCount]))
+  messageCount = [(MFTriageInteraction *)self messageCount];
+  if (messageCount >= 2 && (v4 = messageCount, [(MFTriageInteraction *)self titleIncludesCount]))
   {
-    v5 = [(MFJunkTriageInteraction *)self flagState];
+    flagState = [(MFJunkTriageInteraction *)self flagState];
     v6 = +[NSBundle mainBundle];
     v7 = v6;
-    if (v5)
+    if (flagState)
     {
       [v6 localizedStringForKey:@"MARK_NOT_JUNK_FORMAT%1$ld" value:&stru_100662A88 table:@"Main"];
     }
@@ -115,10 +115,10 @@
 
   else
   {
-    v8 = [(MFJunkTriageInteraction *)self flagState];
+    flagState2 = [(MFJunkTriageInteraction *)self flagState];
     v9 = +[NSBundle mainBundle];
     v10 = v9;
-    if (v8)
+    if (flagState2)
     {
       [v9 localizedStringForKey:@"MARK_EMAIL_NOT_JUNK" value:&stru_100662A88 table:@"Main"];
     }

@@ -3,23 +3,23 @@
 + (id)blueColor;
 + (id)brownColor;
 + (id)clearColor;
-+ (id)colorWithBGR:(unsigned int)a3;
-+ (id)colorWithBGRValue:(int64_t)a3;
-+ (id)colorWithCGColor:(CGColor *)a3;
-+ (id)colorWithCalibratedHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6;
-+ (id)colorWithCsColour:(const CsColour *)a3;
-+ (id)colorWithDeviceCyan:(double)a3 magenta:(double)a4 yellow:(double)a5 black:(double)a6 alpha:(double)a7;
-+ (id)colorWithDeviceHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6;
-+ (id)colorWithEshColor:(const EshColor *)a3;
-+ (id)colorWithHexString:(id)a3;
-+ (id)colorWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6;
-+ (id)colorWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6 targetRGBSpace:(unint64_t)a7;
-+ (id)colorWithPatternImage:(id)a3;
-+ (id)colorWithRGBValue:(int64_t)a3;
-+ (id)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
-+ (id)colorWithSystemColorID:(int)a3;
-+ (id)colorWithUIColor:(id)a3;
-+ (id)colorWithWhite:(double)a3 alpha:(double)a4;
++ (id)colorWithBGR:(unsigned int)r;
++ (id)colorWithBGRValue:(int64_t)value;
++ (id)colorWithCGColor:(CGColor *)color;
++ (id)colorWithCalibratedHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha;
++ (id)colorWithCsColour:(const CsColour *)colour;
++ (id)colorWithDeviceCyan:(double)cyan magenta:(double)magenta yellow:(double)yellow black:(double)black alpha:(double)alpha;
++ (id)colorWithDeviceHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha;
++ (id)colorWithEshColor:(const EshColor *)color;
++ (id)colorWithHexString:(id)string;
++ (id)colorWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha;
++ (id)colorWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha targetRGBSpace:(unint64_t)space;
++ (id)colorWithPatternImage:(id)image;
++ (id)colorWithRGBValue:(int64_t)value;
++ (id)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
++ (id)colorWithSystemColorID:(int)d;
++ (id)colorWithUIColor:(id)color;
++ (id)colorWithWhite:(double)white alpha:(double)alpha;
 + (id)cyanColor;
 + (id)grayColor;
 + (id)greenColor;
@@ -29,54 +29,54 @@
 + (id)purpleColor;
 + (id)randomColor;
 + (id)redColor;
-+ (id)stringForColor:(id)a3;
-+ (id)stringForSystemColorID:(int)a3;
++ (id)stringForColor:(id)color;
++ (id)stringForSystemColorID:(int)d;
 + (id)whiteColor;
 + (id)yellowColor;
 - ($14D77461FF5D83CAEC4252578BA76F85)ttColor;
-- (BOOL)isAlmostEqualToColor:(id)a3;
+- (BOOL)isAlmostEqualToColor:(id)color;
 - (BOOL)isBlack;
-- (BOOL)isEqualWithTolerance:(id)a3;
+- (BOOL)isEqualWithTolerance:(id)tolerance;
 - (BOOL)isNearlyWhite;
-- (BOOL)p_isEqualToColor:(id)a3 withTolerance:(double)a4;
-- (BOOL)wantsHighContrastBackgroundForDarkMode:(id)a3;
+- (BOOL)p_isEqualToColor:(id)color withTolerance:(double)tolerance;
+- (BOOL)wantsHighContrastBackgroundForDarkMode:(id)mode;
 - (CGColor)CGColor;
 - (CGColorSpace)CGColorSpace;
 - (CsColour)csColour;
 - (EshColor)eshColor;
-- (OITSUColor)colorWithAlphaComponent:(double)a3;
-- (OITSUColor)colorWithShadeValue:(double)a3;
-- (OITSUColor)colorWithTintValue:(double)a3;
-- (OITSUColor)initWithCGColor:(CGColor *)a3 colorSpace:(unint64_t)a4;
-- (OITSUColor)initWithHexString:(id)a3;
-- (OITSUColor)initWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6 targetRGBSpace:(unint64_t)a7;
-- (OITSUColor)initWithPatternImage:(id)a3;
-- (OITSUColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 colorSpace:(unint64_t)a7;
-- (OITSUColor)initWithUIColor:(id)a3;
+- (OITSUColor)colorWithAlphaComponent:(double)component;
+- (OITSUColor)colorWithShadeValue:(double)value;
+- (OITSUColor)colorWithTintValue:(double)value;
+- (OITSUColor)initWithCGColor:(CGColor *)color colorSpace:(unint64_t)space;
+- (OITSUColor)initWithHexString:(id)string;
+- (OITSUColor)initWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha targetRGBSpace:(unint64_t)space;
+- (OITSUColor)initWithPatternImage:(id)image;
+- (OITSUColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha colorSpace:(unint64_t)space;
+- (OITSUColor)initWithUIColor:(id)color;
 - (UIColor)UIColor;
 - (double)alphaComponent;
 - (double)brightnessComponent;
 - (double)hueComponent;
 - (double)luminance;
-- (double)p_cmykComponentWithIndex:(unsigned __int8)a3;
-- (double)p_rgbComponentWithIndex:(unsigned __int8)a3;
+- (double)p_cmykComponentWithIndex:(unsigned __int8)index;
+- (double)p_rgbComponentWithIndex:(unsigned __int8)index;
 - (double)saturationComponent;
 - (double)whiteComponent;
-- (id)blendedColorWithFraction:(double)a3 ofColor:(id)a4;
+- (id)blendedColorWithFraction:(double)fraction ofColor:(id)color;
 - (id)copy;
 - (id)grayscaleColor;
 - (id)hexString;
 - (id)invertedColor;
-- (id)newBlendedColorWithFraction:(double)a3 ofColor:(id)a4;
+- (id)newBlendedColorWithFraction:(double)fraction ofColor:(id)color;
 - (int)CGColorSpaceModel;
 - (void)dealloc;
-- (void)getCyan:(double *)a3 magenta:(double *)a4 yellow:(double *)a5 black:(double *)a6 alpha:(double *)a7;
-- (void)getRGBAComponents:(double *)a3;
-- (void)getRGBBytes:(char *)a3 green:(char *)a4 blue:(char *)a5;
-- (void)getRed:(double *)a3 green:(double *)a4 blue:(double *)a5 alpha:(double *)a6;
-- (void)getWhite:(double *)a3 alpha:(double *)a4;
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4;
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4;
+- (void)getCyan:(double *)cyan magenta:(double *)magenta yellow:(double *)yellow black:(double *)black alpha:(double *)alpha;
+- (void)getRGBAComponents:(double *)components;
+- (void)getRGBBytes:(char *)bytes green:(char *)green blue:(char *)blue;
+- (void)getRed:(double *)red green:(double *)green blue:(double *)blue alpha:(double *)alpha;
+- (void)getWhite:(double *)white alpha:(double *)alpha;
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context;
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context;
 - (void)set;
 @end
 
@@ -89,61 +89,61 @@
   return CFAutorelease(v2);
 }
 
-+ (id)colorWithCGColor:(CGColor *)a3
++ (id)colorWithCGColor:(CGColor *)color
 {
-  v3 = [[a1 alloc] initWithCGColor:a3];
+  v3 = [[self alloc] initWithCGColor:color];
 
   return v3;
 }
 
-+ (id)colorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
++ (id)colorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
-  v6 = [[a1 alloc] initWithRed:a3 green:a4 blue:a5 alpha:a6];
+  v6 = [[self alloc] initWithRed:red green:green blue:blue alpha:alpha];
 
   return v6;
 }
 
-+ (id)colorWithWhite:(double)a3 alpha:(double)a4
++ (id)colorWithWhite:(double)white alpha:(double)alpha
 {
-  v4 = [[a1 alloc] initWithWhite:a3 alpha:a4];
+  v4 = [[self alloc] initWithWhite:white alpha:alpha];
 
   return v4;
 }
 
-+ (id)colorWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6
++ (id)colorWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha
 {
-  v6 = [[a1 alloc] initWithHue:a3 saturation:a4 brightness:a5 alpha:a6];
+  v6 = [[self alloc] initWithHue:hue saturation:saturation brightness:brightness alpha:alpha];
 
   return v6;
 }
 
-+ (id)colorWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6 targetRGBSpace:(unint64_t)a7
++ (id)colorWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha targetRGBSpace:(unint64_t)space
 {
-  v7 = [[a1 alloc] initWithHue:a7 saturation:a3 brightness:a4 alpha:a5 targetRGBSpace:a6];
+  v7 = [[self alloc] initWithHue:space saturation:hue brightness:saturation alpha:brightness targetRGBSpace:alpha];
 
   return v7;
 }
 
-+ (id)colorWithPatternImage:(id)a3
++ (id)colorWithPatternImage:(id)image
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPatternImage:v4];
+  imageCopy = image;
+  v5 = [[self alloc] initWithPatternImage:imageCopy];
 
   return v5;
 }
 
-+ (id)colorWithHexString:(id)a3
++ (id)colorWithHexString:(id)string
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithHexString:v4];
+  stringCopy = string;
+  v5 = [[self alloc] initWithHexString:stringCopy];
 
   return v5;
 }
 
-+ (id)colorWithUIColor:(id)a3
++ (id)colorWithUIColor:(id)color
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithUIColor:v4];
+  colorCopy = color;
+  v5 = [[self alloc] initWithUIColor:colorCopy];
 
   return v5;
 }
@@ -159,106 +159,106 @@
 
 + (id)clearColor
 {
-  v2 = [[a1 alloc] initWithWhite:0.0 alpha:0.0];
+  v2 = [[self alloc] initWithWhite:0.0 alpha:0.0];
 
   return v2;
 }
 
 + (id)blackColor
 {
-  v2 = [[a1 alloc] initWithWhite:0.0 alpha:1.0];
+  v2 = [[self alloc] initWithWhite:0.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)whiteColor
 {
-  v2 = [[a1 alloc] initWithWhite:1.0 alpha:1.0];
+  v2 = [[self alloc] initWithWhite:1.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)grayColor
 {
-  v2 = [[a1 alloc] initWithWhite:0.5 alpha:1.0];
+  v2 = [[self alloc] initWithWhite:0.5 alpha:1.0];
 
   return v2;
 }
 
 + (id)lightGrayColor
 {
-  v2 = [[a1 alloc] initWithWhite:0.667 alpha:1.0];
+  v2 = [[self alloc] initWithWhite:0.667 alpha:1.0];
 
   return v2;
 }
 
 + (id)redColor
 {
-  v2 = [[a1 alloc] initWithRed:1.0 green:0.0 blue:0.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:1.0 green:0.0 blue:0.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)greenColor
 {
-  v2 = [[a1 alloc] initWithRed:0.0 green:1.0 blue:0.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:0.0 green:1.0 blue:0.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)blueColor
 {
-  v2 = [[a1 alloc] initWithRed:0.0 green:0.0 blue:1.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:0.0 green:0.0 blue:1.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)cyanColor
 {
-  v2 = [[a1 alloc] initWithRed:0.0 green:1.0 blue:1.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:0.0 green:1.0 blue:1.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)yellowColor
 {
-  v2 = [[a1 alloc] initWithRed:1.0 green:1.0 blue:0.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:1.0 green:1.0 blue:0.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)magentaColor
 {
-  v2 = [[a1 alloc] initWithRed:1.0 green:0.0 blue:1.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:1.0 green:0.0 blue:1.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)orangeColor
 {
-  v2 = [[a1 alloc] initWithRed:1.0 green:0.5 blue:0.0 alpha:1.0];
+  v2 = [[self alloc] initWithRed:1.0 green:0.5 blue:0.0 alpha:1.0];
 
   return v2;
 }
 
 + (id)purpleColor
 {
-  v2 = [[a1 alloc] initWithRed:0.5 green:0.0 blue:0.5 alpha:1.0];
+  v2 = [[self alloc] initWithRed:0.5 green:0.0 blue:0.5 alpha:1.0];
 
   return v2;
 }
 
 + (id)brownColor
 {
-  v2 = [[a1 alloc] initWithRed:0.6 green:0.4 blue:0.2 alpha:1.0];
+  v2 = [[self alloc] initWithRed:0.6 green:0.4 blue:0.2 alpha:1.0];
 
   return v2;
 }
 
-- (OITSUColor)initWithCGColor:(CGColor *)a3 colorSpace:(unint64_t)a4
+- (OITSUColor)initWithCGColor:(CGColor *)color colorSpace:(unint64_t)space
 {
   v42 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!color)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUColor initWithCGColor:colorSpace:]"];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUColor.m"];
@@ -272,9 +272,9 @@
   v9 = [(OITSUColor *)&v41 init];
   if (v9)
   {
-    if (CGColorGetPattern(a3))
+    if (CGColorGetPattern(color))
     {
-      if (a4 != 2)
+      if (space != 2)
       {
         v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUColor initWithCGColor:colorSpace:]"];
         v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUColor.m"];
@@ -285,17 +285,17 @@ LABEL_7:
       }
 
 LABEL_25:
-      Copy = CGColorCreateCopy(a3);
+      Copy = CGColorCreateCopy(color);
       goto LABEL_26;
     }
 
-    ColorSpace = CGColorGetColorSpace(a3);
+    ColorSpace = CGColorGetColorSpace(color);
     Model = CGColorSpaceGetModel(ColorSpace);
-    if (a4)
+    if (space)
     {
-      if (a4 != 2)
+      if (space != 2)
       {
-        if (a4 != 1)
+        if (space != 1)
         {
           goto LABEL_25;
         }
@@ -309,7 +309,7 @@ LABEL_25:
           +[OITSUAssertionHandler logBacktraceThrottled];
         }
 
-        v16 = CGColorGetColorSpace(a3);
+        v16 = CGColorGetColorSpace(color);
         v17 = TSUSRGBColorSpace();
         if (!CFEqual(v16, v17))
         {
@@ -322,7 +322,7 @@ LABEL_25:
               v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUColor initWithCGColor:colorSpace:]"];
               v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUColor.m"];
               [OITSUAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:179 isFatal:0 description:"Color specified as P3 isn't P3, sRGB or Device RGB"];
-              a4 = 1;
+              space = 1;
               goto LABEL_7;
             }
           }
@@ -331,32 +331,32 @@ LABEL_25:
         goto LABEL_19;
       }
 
-      v20 = CGColorGetColorSpace(a3);
+      v20 = CGColorGetColorSpace(color);
       v21 = TSUSRGBColorSpace();
       if (!CFEqual(v20, v21))
       {
         v22 = TSUP3ColorSpace();
         if (!CFEqual(v20, v22))
         {
-          v38 = CGColorGetColorSpace(a3);
+          v38 = CGColorGetColorSpace(color);
           if (CGColorSpaceGetModel(v38) == kCGColorSpaceModelRGB && CGColorSpaceIsWideGamutRGB(v38))
           {
-            a4 = 1;
+            space = 1;
             v39 = TSUP3ColorSpace();
           }
 
           else
           {
             v39 = TSUSRGBColorSpace();
-            a4 = 0;
+            space = 0;
           }
 
-          Copy = CGColorCreateCopyByMatchingToColorSpace(v39, kCGRenderingIntentDefault, a3, 0);
+          Copy = CGColorCreateCopyByMatchingToColorSpace(v39, kCGRenderingIntentDefault, color, 0);
           if (Copy)
           {
 LABEL_26:
             v9->mCGColor = Copy;
-            v9->mColorRGBSpace = a4;
+            v9->mColorRGBSpace = space;
             if (!CGColorGetPattern(Copy))
             {
               Components = CGColorGetComponents(v9->mCGColor);
@@ -389,7 +389,7 @@ LABEL_26:
         }
 
 LABEL_19:
-        a4 = 1;
+        space = 1;
         goto LABEL_25;
       }
     }
@@ -405,7 +405,7 @@ LABEL_19:
         +[OITSUAssertionHandler logBacktraceThrottled];
       }
 
-      v25 = CGColorGetColorSpace(a3);
+      v25 = CGColorGetColorSpace(color);
       v26 = TSUSRGBColorSpace();
       if (!CFEqual(v25, v26))
       {
@@ -415,28 +415,28 @@ LABEL_19:
           v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUColor initWithCGColor:colorSpace:]"];
           v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUColor.m"];
           [OITSUAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:189 isFatal:0 description:"Color specified as sRGB isn't sRGB or Device RGB"];
-          a4 = 0;
+          space = 0;
           goto LABEL_7;
         }
       }
     }
 
-    a4 = 0;
+    space = 0;
     goto LABEL_25;
   }
 
   return v9;
 }
 
-- (OITSUColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6 colorSpace:(unint64_t)a7
+- (OITSUColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha colorSpace:(unint64_t)space
 {
   components[4] = *MEMORY[0x277D85DE8];
-  if (!a7 || a7 == 2)
+  if (!space || space == 2)
   {
     v13 = TSUSRGBColorSpace();
   }
 
-  else if (a7 == 1)
+  else if (space == 1)
   {
     v13 = TSUP3ColorSpace();
   }
@@ -446,21 +446,21 @@ LABEL_19:
     v13 = 0;
   }
 
-  components[0] = a3;
-  components[1] = a4;
-  components[2] = a5;
-  components[3] = a6;
+  components[0] = red;
+  components[1] = green;
+  components[2] = blue;
+  components[3] = alpha;
   v14 = CGColorCreate(v13, components);
-  v15 = [(OITSUColor *)self initWithCGColor:v14 colorSpace:a7];
+  v15 = [(OITSUColor *)self initWithCGColor:v14 colorSpace:space];
   CGColorRelease(v14);
   return v15;
 }
 
-- (OITSUColor)initWithHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6 targetRGBSpace:(unint64_t)a7
+- (OITSUColor)initWithHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha targetRGBSpace:(unint64_t)space
 {
-  if (a7)
+  if (space)
   {
-    if (a7 == 1)
+    if (space == 1)
     {
       v12 = TSUP3ColorSpace();
     }
@@ -476,20 +476,20 @@ LABEL_19:
     v12 = TSUSRGBColorSpace();
   }
 
-  v13 = TSUCreateCGColorFromHSBInColorSpace(v12, a3, a4, a5, a6);
+  v13 = TSUCreateCGColorFromHSBInColorSpace(v12, hue, saturation, brightness, alpha);
   v14 = [(OITSUColor *)self initWithCGColor:v13];
   CGColorRelease(v13);
   return v14;
 }
 
-- (OITSUColor)initWithPatternImage:(id)a3
+- (OITSUColor)initWithPatternImage:(id)image
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  imageCopy = image;
+  v5 = imageCopy;
+  if (imageCopy)
   {
     memset(&v14, 0, sizeof(v14));
-    [v4 scale];
+    [imageCopy scale];
     v7 = 1.0 / v6;
     [v5 scale];
     CGAffineTransformMakeScale(&v14, v7, 1.0 / v8);
@@ -511,14 +511,14 @@ LABEL_19:
   return v10;
 }
 
-- (OITSUColor)initWithHexString:(id)a3
+- (OITSUColor)initWithHexString:(id)string
 {
-  v4 = a3;
-  if ([v4 rangeOfString:@"#[\\dA-F]{6}" options:1024] || v5 != objc_msgSend(v4, "length"))
+  stringCopy = string;
+  if ([stringCopy rangeOfString:@"#[\\dA-F]{6}" options:1024] || v5 != objc_msgSend(stringCopy, "length"))
   {
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUColor initWithHexString:]"];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUColor.m"];
-    [OITSUAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:354 isFatal:0 description:"Invalid hex string: %@", v4];
+    [OITSUAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:354 isFatal:0 description:"Invalid hex string: %@", stringCopy];
 
     +[OITSUAssertionHandler logBacktraceThrottled];
     v12 = 0;
@@ -526,13 +526,13 @@ LABEL_19:
 
   else
   {
-    v6 = [v4 substringWithRange:{1, 2}];
+    v6 = [stringCopy substringWithRange:{1, 2}];
     v7 = __32__OITSUColor_initWithHexString___block_invoke(v6, v6);
 
-    v8 = [v4 substringWithRange:{3, 2}];
+    v8 = [stringCopy substringWithRange:{3, 2}];
     v9 = __32__OITSUColor_initWithHexString___block_invoke(v8, v8);
 
-    v10 = [v4 substringWithRange:{5, 2}];
+    v10 = [stringCopy substringWithRange:{5, 2}];
     v11 = __32__OITSUColor_initWithHexString___block_invoke(v10, v10);
 
     v12 = [(OITSUColor *)self initWithRed:(v7 / 255.0) green:(v9 / 255.0) blue:(v11 / 255.0) alpha:1.0];
@@ -552,10 +552,10 @@ uint64_t __32__OITSUColor_initWithHexString___block_invoke(uint64_t a1, void *a2
   return v6;
 }
 
-- (OITSUColor)initWithUIColor:(id)a3
+- (OITSUColor)initWithUIColor:(id)color
 {
-  v4 = a3;
-  if (!v4)
+  colorCopy = color;
+  if (!colorCopy)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUColor initWithUIColor:]"];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUColor.m"];
@@ -564,16 +564,16 @@ uint64_t __32__OITSUColor_initWithHexString___block_invoke(uint64_t a1, void *a2
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  v7 = [v4 CGColor];
-  if (CGColorGetPattern(v7))
+  cGColor = [colorCopy CGColor];
+  if (CGColorGetPattern(cGColor))
   {
-    v8 = [(OITSUColor *)self initWithCGColor:v7];
+    v8 = [(OITSUColor *)self initWithCGColor:cGColor];
   }
 
   else
   {
     v9 = TSUP3ColorSpace();
-    CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v9, kCGRenderingIntentDefault, v7, 0);
+    CopyByMatchingToColorSpace = CGColorCreateCopyByMatchingToColorSpace(v9, kCGRenderingIntentDefault, cGColor, 0);
     v11 = TSUSRGBColorSpace();
     v12 = CGColorCreateCopyByMatchingToColorSpace(v11, kCGRenderingIntentDefault, CopyByMatchingToColorSpace, 0);
     v13 = TSUP3ColorSpace();
@@ -608,29 +608,29 @@ uint64_t __32__OITSUColor_initWithHexString___block_invoke(uint64_t a1, void *a2
   [(OITSUColor *)&v3 dealloc];
 }
 
-- (BOOL)p_isEqualToColor:(id)a3 withTolerance:(double)a4
+- (BOOL)p_isEqualToColor:(id)color withTolerance:(double)tolerance
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6 && (mColorRGBSpace = self->mColorRGBSpace, mColorRGBSpace == [v6 colorRGBSpace]) && objc_msgSend(v7, "CGColor"))
+  colorCopy = color;
+  v7 = colorCopy;
+  if (colorCopy && (mColorRGBSpace = self->mColorRGBSpace, mColorRGBSpace == [colorCopy colorRGBSpace]) && objc_msgSend(v7, "CGColor"))
   {
-    v9 = [(OITSUColor *)self CGColor];
-    v10 = [v7 CGColor];
-    if (v9 == v10)
+    cGColor = [(OITSUColor *)self CGColor];
+    cGColor2 = [v7 CGColor];
+    if (cGColor == cGColor2)
     {
       v18 = 1;
     }
 
     else
     {
-      v11 = v10;
+      v11 = cGColor2;
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __45__OITSUColor_p_isEqualToColor_withTolerance___block_invoke;
       aBlock[3] = &__block_descriptor_40_e31_B24__0__CGColor__8__CGColor__16l;
-      *&aBlock[4] = a4;
+      *&aBlock[4] = tolerance;
       v12 = _Block_copy(aBlock);
-      ColorSpace = CGColorGetColorSpace(v9);
+      ColorSpace = CGColorGetColorSpace(cGColor);
       Model = CGColorSpaceGetModel(ColorSpace);
       v15 = CGColorGetColorSpace(v11);
       if (Model != CGColorSpaceGetModel(v15))
@@ -644,7 +644,7 @@ uint64_t __32__OITSUColor_initWithHexString___block_invoke(uint64_t a1, void *a2
 
       if (CFEqual(ColorSpace, v15))
       {
-        v18 = v12[2](v12, v9, v11);
+        v18 = v12[2](v12, cGColor, v11);
       }
 
       else
@@ -693,13 +693,13 @@ BOOL __45__OITSUColor_p_isEqualToColor_withTolerance___block_invoke(uint64_t a1,
   return result;
 }
 
-- (BOOL)isAlmostEqualToColor:(id)a3
+- (BOOL)isAlmostEqualToColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   [(OITSUColor *)self redComponent];
   v6 = v5;
-  [v4 redComponent];
-  if (vabdd_f64(v6, v7) >= 0.00999999978 || (-[OITSUColor greenComponent](self, "greenComponent"), v9 = v8, [v4 greenComponent], vabdd_f64(v9, v10) >= 0.00999999978) || (-[OITSUColor blueComponent](self, "blueComponent"), v12 = v11, objc_msgSend(v4, "blueComponent"), vabdd_f64(v12, v13) >= 0.00999999978))
+  [colorCopy redComponent];
+  if (vabdd_f64(v6, v7) >= 0.00999999978 || (-[OITSUColor greenComponent](self, "greenComponent"), v9 = v8, [colorCopy greenComponent], vabdd_f64(v9, v10) >= 0.00999999978) || (-[OITSUColor blueComponent](self, "blueComponent"), v12 = v11, objc_msgSend(colorCopy, "blueComponent"), vabdd_f64(v12, v13) >= 0.00999999978))
   {
     v17 = 0;
   }
@@ -708,26 +708,26 @@ BOOL __45__OITSUColor_p_isEqualToColor_withTolerance___block_invoke(uint64_t a1,
   {
     [(OITSUColor *)self alphaComponent];
     v15 = v14;
-    [v4 alphaComponent];
+    [colorCopy alphaComponent];
     v17 = vabdd_f64(v15, v16) < 0.00999999978;
   }
 
   return v17;
 }
 
-- (BOOL)isEqualWithTolerance:(id)a3
+- (BOOL)isEqualWithTolerance:(id)tolerance
 {
-  v4 = a3;
+  toleranceCopy = tolerance;
   v5 = objc_opt_class();
-  v6 = TSUDynamicCast(v5, v4);
+  v6 = TSUDynamicCast(v5, toleranceCopy);
 
   LOBYTE(self) = [(OITSUColor *)self p_isEqualToColor:v6 withTolerance:0.001953125];
   return self;
 }
 
-- (double)p_rgbComponentWithIndex:(unsigned __int8)a3
+- (double)p_rgbComponentWithIndex:(unsigned __int8)index
 {
-  v3 = a3;
+  indexCopy = index;
   Components = CGColorGetComponents([(OITSUColor *)self CGColor]);
   ColorSpace = CGColorGetColorSpace([(OITSUColor *)self CGColor]);
   Model = CGColorSpaceGetModel(ColorSpace);
@@ -738,13 +738,13 @@ BOOL __45__OITSUColor_p_isEqualToColor_withTolerance___block_invoke(uint64_t a1,
 
   if (Model == kCGColorSpaceModelCMYK)
   {
-    return 1.0 - fmin(Components[3] + Components[v3] * (1.0 - Components[3]), 1.0);
+    return 1.0 - fmin(Components[3] + Components[indexCopy] * (1.0 - Components[3]), 1.0);
   }
 
   result = 0.0;
   if (Model == kCGColorSpaceModelRGB)
   {
-    return Components[v3];
+    return Components[indexCopy];
   }
 
   return result;
@@ -752,23 +752,23 @@ BOOL __45__OITSUColor_p_isEqualToColor_withTolerance___block_invoke(uint64_t a1,
 
 - (double)alphaComponent
 {
-  v2 = [(OITSUColor *)self CGColor];
+  cGColor = [(OITSUColor *)self CGColor];
 
-  return CGColorGetAlpha(v2);
+  return CGColorGetAlpha(cGColor);
 }
 
-- (void)getRGBAComponents:(double *)a3
+- (void)getRGBAComponents:(double *)components
 {
-  if (a3)
+  if (components)
   {
     [(OITSUColor *)self redComponent];
-    *a3 = v5;
+    *components = v5;
     [(OITSUColor *)self greenComponent];
-    *(a3 + 1) = v6;
+    *(components + 1) = v6;
     [(OITSUColor *)self blueComponent];
-    *(a3 + 2) = v7;
+    *(components + 2) = v7;
     [(OITSUColor *)self alphaComponent];
-    *(a3 + 3) = v8;
+    *(components + 3) = v8;
   }
 
   else
@@ -826,9 +826,9 @@ BOOL __45__OITSUColor_p_isEqualToColor_withTolerance___block_invoke(uint64_t a1,
 - (UIColor)UIColor
 {
   v2 = MEMORY[0x277D75348];
-  v3 = [(OITSUColor *)self CGColor];
+  cGColor = [(OITSUColor *)self CGColor];
 
-  return [v2 colorWithCGColor:v3];
+  return [v2 colorWithCGColor:cGColor];
 }
 
 - (id)grayscaleColor
@@ -840,21 +840,21 @@ BOOL __45__OITSUColor_p_isEqualToColor_withTolerance___block_invoke(uint64_t a1,
   {
     if (Model == kCGColorSpaceModelRGB)
     {
-      v6 = [OITSUColor colorWithWhite:Components[1] * 0.59 + *Components * 0.3 + Components[2] * 0.11 alpha:Components[3]];
+      selfCopy = [OITSUColor colorWithWhite:Components[1] * 0.59 + *Components * 0.3 + Components[2] * 0.11 alpha:Components[3]];
     }
 
     else
     {
-      v6 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)invertedColor
@@ -877,9 +877,9 @@ BOOL __45__OITSUColor_p_isEqualToColor_withTolerance___block_invoke(uint64_t a1,
   return [OITSUColor colorWithRed:v6 green:v7 blue:v9 alpha:v8];
 }
 
-- (OITSUColor)colorWithAlphaComponent:(double)a3
+- (OITSUColor)colorWithAlphaComponent:(double)component
 {
-  CopyWithAlpha = CGColorCreateCopyWithAlpha(self->mCGColor, a3);
+  CopyWithAlpha = CGColorCreateCopyWithAlpha(self->mCGColor, component);
   v4 = [OITSUColor colorWithCGColor:CopyWithAlpha];
   CGColorRelease(CopyWithAlpha);
 
@@ -921,75 +921,75 @@ BOOL __45__OITSUColor_p_isEqualToColor_withTolerance___block_invoke(uint64_t a1,
   return v9 < 0.05 && v10 > 0.9;
 }
 
-- (BOOL)wantsHighContrastBackgroundForDarkMode:(id)a3
+- (BOOL)wantsHighContrastBackgroundForDarkMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   [(OITSUColor *)self luminance];
   v6 = v5;
-  [v4 luminance];
+  [modeCopy luminance];
   v8 = v7;
 
   return (v6 + 0.05) / (v8 + 0.05) < 1.3;
 }
 
-- (id)blendedColorWithFraction:(double)a3 ofColor:(id)a4
+- (id)blendedColorWithFraction:(double)fraction ofColor:(id)color
 {
-  v4 = [(OITSUColor *)self newBlendedColorWithFraction:a4 ofColor:a3];
+  v4 = [(OITSUColor *)self newBlendedColorWithFraction:color ofColor:fraction];
 
   return v4;
 }
 
-- (id)newBlendedColorWithFraction:(double)a3 ofColor:(id)a4
+- (id)newBlendedColorWithFraction:(double)fraction ofColor:(id)color
 {
-  v6 = a4;
+  colorCopy = color;
   v7 = [OITSUColor alloc];
   [(OITSUColor *)self redComponent];
   v9 = v8;
-  [v6 redComponent];
-  v11 = TSUMix(v9, v10, a3);
+  [colorCopy redComponent];
+  v11 = TSUMix(v9, v10, fraction);
   [(OITSUColor *)self greenComponent];
   v13 = v12;
-  [v6 greenComponent];
-  v15 = TSUMix(v13, v14, a3);
+  [colorCopy greenComponent];
+  v15 = TSUMix(v13, v14, fraction);
   [(OITSUColor *)self blueComponent];
   v17 = v16;
-  [v6 blueComponent];
-  v19 = TSUMix(v17, v18, a3);
+  [colorCopy blueComponent];
+  v19 = TSUMix(v17, v18, fraction);
   [(OITSUColor *)self alphaComponent];
   v21 = v20;
-  [v6 alphaComponent];
+  [colorCopy alphaComponent];
   v23 = v22;
 
-  v24 = TSUMix(v21, v23, a3);
+  v24 = TSUMix(v21, v23, fraction);
 
   return [(OITSUColor *)v7 initWithRed:v11 green:v15 blue:v19 alpha:v24];
 }
 
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  CGContextSaveGState(a4);
-  CGContextSetFillColorWithColor(a4, self->mCGColor);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  CGContextSaveGState(context);
+  CGContextSetFillColorWithColor(context, self->mCGColor);
   v11.origin.x = x;
   v11.origin.y = y;
   v11.size.width = width;
   v11.size.height = height;
-  CGContextFillRect(a4, v11);
+  CGContextFillRect(context, v11);
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context
 {
-  CGContextSaveGState(a4);
-  CGContextSetFillColorWithColor(a4, self->mCGColor);
-  CGContextAddPath(a4, a3);
-  CGContextFillPath(a4);
+  CGContextSaveGState(context);
+  CGContextSetFillColorWithColor(context, self->mCGColor);
+  CGContextAddPath(context, path);
+  CGContextFillPath(context);
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
 - (id)hexString
@@ -1015,61 +1015,61 @@ BOOL __45__OITSUColor_p_isEqualToColor_withTolerance___block_invoke(uint64_t a1,
   return ((v8 << 16) | ((v9 * 255.0) << 24) | (v6 << 8) | v4);
 }
 
-+ (id)colorWithCalibratedHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6
++ (id)colorWithCalibratedHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha
 {
-  v6 = TSUCreateCGColorFromHSB(a3, a4, a5, a6);
+  v6 = TSUCreateCGColorFromHSB(hue, saturation, brightness, alpha);
   v7 = [OITSUColor colorWithCGColor:v6];
   CGColorRelease(v6);
   return v7;
 }
 
-+ (id)colorWithDeviceHue:(double)a3 saturation:(double)a4 brightness:(double)a5 alpha:(double)a6
++ (id)colorWithDeviceHue:(double)hue saturation:(double)saturation brightness:(double)brightness alpha:(double)alpha
 {
-  v6 = TSUCreateCGColorFromHSB(a3, a4, a5, a6);
+  v6 = TSUCreateCGColorFromHSB(hue, saturation, brightness, alpha);
   v7 = [OITSUColor colorWithCGColor:v6];
   CGColorRelease(v6);
   return v7;
 }
 
-+ (id)colorWithDeviceCyan:(double)a3 magenta:(double)a4 yellow:(double)a5 black:(double)a6 alpha:(double)a7
++ (id)colorWithDeviceCyan:(double)cyan magenta:(double)magenta yellow:(double)yellow black:(double)black alpha:(double)alpha
 {
   v16 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  cyanCopy = cyan;
+  magentaCopy = magenta;
+  yellowCopy = yellow;
+  blackCopy = black;
+  alphaCopy = alpha;
   v7 = TSUDeviceCMYKColorSpace();
-  v8 = CGColorCreate(v7, &v11);
-  v9 = [OITSUColor colorWithCGColor:v8, *&v11, *&v12, *&v13, *&v14, *&v15, v16];
+  v8 = CGColorCreate(v7, &cyanCopy);
+  v9 = [OITSUColor colorWithCGColor:v8, *&cyanCopy, *&magentaCopy, *&yellowCopy, *&blackCopy, *&alphaCopy, v16];
   CGColorRelease(v8);
   return v9;
 }
 
-- (void)getRed:(double *)a3 green:(double *)a4 blue:(double *)a5 alpha:(double *)a6
+- (void)getRed:(double *)red green:(double *)green blue:(double *)blue alpha:(double *)alpha
 {
-  if (a3)
+  if (red)
   {
     [(OITSUColor *)self redComponent];
-    *a3 = v11;
+    *red = v11;
   }
 
-  if (a4)
+  if (green)
   {
     [(OITSUColor *)self greenComponent];
-    *a4 = v12;
+    *green = v12;
   }
 
-  if (a5)
+  if (blue)
   {
     [(OITSUColor *)self blueComponent];
-    *a5 = v13;
+    *blue = v13;
   }
 
-  if (a6)
+  if (alpha)
   {
     [(OITSUColor *)self alphaComponent];
-    *a6 = v14;
+    *alpha = v14;
   }
 }
 
@@ -1088,29 +1088,29 @@ BOOL __45__OITSUColor_p_isEqualToColor_withTolerance___block_invoke(uint64_t a1,
   }
 }
 
-- (void)getWhite:(double *)a3 alpha:(double *)a4
+- (void)getWhite:(double *)white alpha:(double *)alpha
 {
-  if (a3)
+  if (white)
   {
     [(OITSUColor *)self whiteComponent];
-    *a3 = v7;
+    *white = v7;
   }
 
-  if (a4)
+  if (alpha)
   {
     [(OITSUColor *)self alphaComponent];
-    *a4 = v8;
+    *alpha = v8;
   }
 }
 
-- (double)p_cmykComponentWithIndex:(unsigned __int8)a3
+- (double)p_cmykComponentWithIndex:(unsigned __int8)index
 {
-  v3 = a3;
+  indexCopy = index;
   Components = CGColorGetComponents([(OITSUColor *)self CGColor]);
   ColorSpace = CGColorGetColorSpace([(OITSUColor *)self CGColor]);
   if (CGColorSpaceGetModel(ColorSpace) == kCGColorSpaceModelCMYK)
   {
-    return Components[v3];
+    return Components[indexCopy];
   }
 
   else
@@ -1119,111 +1119,111 @@ BOOL __45__OITSUColor_p_isEqualToColor_withTolerance___block_invoke(uint64_t a1,
   }
 }
 
-- (void)getCyan:(double *)a3 magenta:(double *)a4 yellow:(double *)a5 black:(double *)a6 alpha:(double *)a7
+- (void)getCyan:(double *)cyan magenta:(double *)magenta yellow:(double *)yellow black:(double *)black alpha:(double *)alpha
 {
-  if (a3)
+  if (cyan)
   {
     [(OITSUColor *)self cyanComponent];
-    *a3 = v13;
+    *cyan = v13;
   }
 
-  if (a4)
+  if (magenta)
   {
     [(OITSUColor *)self magentaComponent];
-    *a4 = v14;
+    *magenta = v14;
   }
 
-  if (a5)
+  if (yellow)
   {
     [(OITSUColor *)self yellowComponent];
-    *a5 = v15;
+    *yellow = v15;
   }
 
-  if (a6)
+  if (black)
   {
     [(OITSUColor *)self blackComponent];
-    *a6 = v16;
+    *black = v16;
   }
 
-  if (a7)
+  if (alpha)
   {
     [(OITSUColor *)self alphaComponent];
-    *a7 = v17;
+    *alpha = v17;
   }
 }
 
 - (CGColorSpace)CGColorSpace
 {
-  v2 = [(OITSUColor *)self CGColor];
+  cGColor = [(OITSUColor *)self CGColor];
 
-  return CGColorGetColorSpace(v2);
+  return CGColorGetColorSpace(cGColor);
 }
 
 - (int)CGColorSpaceModel
 {
-  v2 = [(OITSUColor *)self CGColorSpace];
+  cGColorSpace = [(OITSUColor *)self CGColorSpace];
 
-  return CGColorSpaceGetModel(v2);
+  return CGColorSpaceGetModel(cGColorSpace);
 }
 
 - (id)copy
 {
   v3 = [OITSUColor alloc];
-  v4 = [(OITSUColor *)self CGColor];
+  cGColor = [(OITSUColor *)self CGColor];
 
-  return [(OITSUColor *)v3 initWithCGColor:v4];
+  return [(OITSUColor *)v3 initWithCGColor:cGColor];
 }
 
-+ (id)colorWithBGR:(unsigned int)a3
++ (id)colorWithBGR:(unsigned int)r
 {
-  v3 = a3 / 255.0;
-  v4 = BYTE1(a3) / 255.0;
-  v5 = BYTE2(a3) / 255.0;
+  v3 = r / 255.0;
+  v4 = BYTE1(r) / 255.0;
+  v5 = BYTE2(r) / 255.0;
   return [OITSUColor colorWithCalibratedRed:v3 green:v4 blue:v5 alpha:1.0];
 }
 
-+ (id)colorWithSystemColorID:(int)a3
++ (id)colorWithSystemColorID:(int)d
 {
-  if ((a3 - 1) > 0x23)
+  if ((d - 1) > 0x23)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = dword_25D6FABE8[a3 - 1];
+    v3 = dword_25D6FABE8[d - 1];
   }
 
-  return [a1 colorWithCalibratedRed:HIWORD(v3) / 255.0 green:BYTE1(v3) / 255.0 blue:v3 / 255.0 alpha:1.0];
+  return [self colorWithCalibratedRed:HIWORD(v3) / 255.0 green:BYTE1(v3) / 255.0 blue:v3 / 255.0 alpha:1.0];
 }
 
-+ (id)stringForSystemColorID:(int)a3
++ (id)stringForSystemColorID:(int)d
 {
-  if (a3 > 0x25)
+  if (d > 0x25)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799C76F8[a3];
+    return off_2799C76F8[d];
   }
 }
 
-+ (id)stringForColor:(id)a3
++ (id)stringForColor:(id)color
 {
   v4 = MEMORY[0x277CCACA8];
-  [a3 redComponent];
+  [color redComponent];
   v6 = v5;
-  [a3 greenComponent];
+  [color greenComponent];
   v8 = v7;
-  [a3 blueComponent];
+  [color blueComponent];
   v10 = v9;
-  [a3 alphaComponent];
+  [color alphaComponent];
   return [v4 stringWithFormat:@"RGB (%g %g %g %g)", v6, v8, v10, v11];
 }
 
-- (OITSUColor)colorWithTintValue:(double)a3
+- (OITSUColor)colorWithTintValue:(double)value
 {
   if (![OITSUColor(TCColorAdditions) colorWithTintValue:]::whiteRGBColor)
   {
@@ -1231,10 +1231,10 @@ BOOL __45__OITSUColor_p_isEqualToColor_withTolerance___block_invoke(uint64_t a1,
     v5 = [OITSUColor(TCColorAdditions) colorWithTintValue:]::whiteRGBColor;
   }
 
-  return [(OITSUColor *)self blendedColorWithFraction:1.0 - a3 ofColor:?];
+  return [(OITSUColor *)self blendedColorWithFraction:1.0 - value ofColor:?];
 }
 
-- (OITSUColor)colorWithShadeValue:(double)a3
+- (OITSUColor)colorWithShadeValue:(double)value
 {
   if (![OITSUColor(TCColorAdditions) colorWithShadeValue:]::blackRGBColor)
   {
@@ -1242,43 +1242,43 @@ BOOL __45__OITSUColor_p_isEqualToColor_withTolerance___block_invoke(uint64_t a1,
     v5 = [OITSUColor(TCColorAdditions) colorWithShadeValue:]::blackRGBColor;
   }
 
-  return [(OITSUColor *)self blendedColorWithFraction:1.0 - a3 ofColor:?];
+  return [(OITSUColor *)self blendedColorWithFraction:1.0 - value ofColor:?];
 }
 
 - (void)set
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSetFillColorWithColor(CurrentContext, [(OITSUColor *)self CGColor]);
-  v4 = [(OITSUColor *)self CGColor];
+  cGColor = [(OITSUColor *)self CGColor];
 
-  CGContextSetStrokeColorWithColor(CurrentContext, v4);
+  CGContextSetStrokeColorWithColor(CurrentContext, cGColor);
 }
 
-+ (id)colorWithCsColour:(const CsColour *)a3
++ (id)colorWithCsColour:(const CsColour *)colour
 {
-  LOWORD(v3) = a3->var1;
-  LOWORD(v4) = a3->var2;
-  LOWORD(v5) = a3->var3;
-  LOWORD(v6) = a3->var0;
+  LOWORD(v3) = colour->var1;
+  LOWORD(v4) = colour->var2;
+  LOWORD(v5) = colour->var3;
+  LOWORD(v6) = colour->var0;
   return [OITSUColor colorWithCalibratedRed:(v3 / 255.0) green:(v4 / 255.0) blue:(v5 / 255.0) alpha:(v6 / 255.0)];
 }
 
 - (CsColour)csColour
 {
   v3 = v2;
-  v4 = [(OITSUColor *)self ttColor];
-  *v3 = HIBYTE(*&v4.var0);
-  v3[1] = LOBYTE(v4.var0);
-  v3[2] = HIBYTE(v4.var0);
-  v3[3] = LOBYTE(v4.var1);
-  return v4;
+  ttColor = [(OITSUColor *)self ttColor];
+  *v3 = HIBYTE(*&ttColor.var0);
+  v3[1] = LOBYTE(ttColor.var0);
+  v3[2] = HIBYTE(ttColor.var0);
+  v3[3] = LOBYTE(ttColor.var1);
+  return ttColor;
 }
 
-+ (id)colorWithEshColor:(const EshColor *)a3
++ (id)colorWithEshColor:(const EshColor *)color
 {
-  v4 = (EshColor::getRed(a3) / 255.0);
-  v5 = (EshColor::getGreen(a3) / 255.0);
-  v6 = (EshColor::getBlue(a3) / 255.0);
+  v4 = (EshColor::getRed(color) / 255.0);
+  v5 = (EshColor::getGreen(color) / 255.0);
+  v6 = (EshColor::getBlue(color) / 255.0);
 
   return [OITSUColor colorWithCalibratedRed:v4 green:v5 blue:v6 alpha:1.0];
 }
@@ -1287,35 +1287,35 @@ BOOL __45__OITSUColor_p_isEqualToColor_withTolerance___block_invoke(uint64_t a1,
 {
   v3 = v2;
   LODWORD(v7) = 0;
-  v4 = [(OITSUColor *)self ttColor];
-  v6 = EshColor::RGB::create(v4, SBYTE1(v4), SBYTE2(v4), &v7 + 4, v5);
+  ttColor = [(OITSUColor *)self ttColor];
+  v6 = EshColor::RGB::create(ttColor, SBYTE1(ttColor), SBYTE2(ttColor), &v7 + 4, v5);
   *v3 = v7;
   return v6;
 }
 
-- (void)getRGBBytes:(char *)a3 green:(char *)a4 blue:(char *)a5
+- (void)getRGBBytes:(char *)bytes green:(char *)green blue:(char *)blue
 {
   [(OITSUColor *)self redComponent];
-  *a3 = (v9 * 255.0 + 0.5);
+  *bytes = (v9 * 255.0 + 0.5);
   [(OITSUColor *)self greenComponent];
-  *a4 = (v10 * 255.0 + 0.5);
+  *green = (v10 * 255.0 + 0.5);
   [(OITSUColor *)self blueComponent];
-  *a5 = (v11 * 255.0 + 0.5);
+  *blue = (v11 * 255.0 + 0.5);
 }
 
-+ (id)colorWithBGRValue:(int64_t)a3
++ (id)colorWithBGRValue:(int64_t)value
 {
-  v3 = BYTE2(a3) / 255.0;
-  v4 = BYTE1(a3) / 255.0;
-  v5 = a3 / 255.0;
+  v3 = BYTE2(value) / 255.0;
+  v4 = BYTE1(value) / 255.0;
+  v5 = value / 255.0;
   return [OITSUColor colorWithCalibratedRed:v5 green:v4 blue:v3 alpha:1.0];
 }
 
-+ (id)colorWithRGBValue:(int64_t)a3
++ (id)colorWithRGBValue:(int64_t)value
 {
-  v3 = BYTE2(a3) / 255.0;
-  v4 = BYTE1(a3) / 255.0;
-  v5 = a3 / 255.0;
+  v3 = BYTE2(value) / 255.0;
+  v4 = BYTE1(value) / 255.0;
+  v5 = value / 255.0;
   return [OITSUColor colorWithCalibratedRed:v3 green:v4 blue:v5 alpha:1.0];
 }
 

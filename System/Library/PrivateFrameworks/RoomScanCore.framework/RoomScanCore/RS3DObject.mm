@@ -1,17 +1,17 @@
 @interface RS3DObject
-- (BOOL)getDimension:(id)a3 dim:;
-- (BOOL)getTransform:(id)a3 transform:(id *)a4;
-- (BOOL)hasBoxesDict:(id)a3;
+- (BOOL)getDimension:(id)dimension dim:;
+- (BOOL)getTransform:(id)transform transform:(id *)a4;
+- (BOOL)hasBoxesDict:(id)dict;
 - (RS3DObject)init;
-- (RS3DObject)initWithCoder:(id)a3;
-- (RS3DObject)initWithDictionaryRepresentation:(id)a3;
+- (RS3DObject)initWithCoder:(id)coder;
+- (RS3DObject)initWithDictionaryRepresentation:(id)representation;
 - (double)transform;
 - (float32x2_t)dimensions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)rotateAlongZAxisRightHand:(float)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)rotateAlongZAxisRightHand:(float)hand;
 - (void)translateBy:(RS3DObject *)self;
 @end
 
@@ -80,10 +80,10 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)rotateAlongZAxisRightHand:(float)a3
+- (void)rotateAlongZAxisRightHand:(float)hand
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = __sincosf_stret(a3);
+  v4 = __sincosf_stret(hand);
   v24 = objc_opt_new();
   v26 = 0u;
   v27 = 0u;
@@ -159,14 +159,14 @@
   return v5;
 }
 
-- (RS3DObject)initWithDictionaryRepresentation:(id)a3
+- (RS3DObject)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v113.receiver = self;
   v113.super_class = RS3DObject;
   v5 = [(RS3DObject *)&v113 init];
   v6 = v5;
-  v8 = objc_msgSend_objectForKeyedSubscript_(v4, v7, @"type");
+  v8 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v7, @"type");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -193,7 +193,7 @@
     goto LABEL_25;
   }
 
-  v14 = objc_msgSend_objectForKeyedSubscript_(v4, v13, @"detectionsource");
+  v14 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v13, @"detectionsource");
   objc_opt_class();
   v15 = (objc_opt_isKindOfClass() & 1) != 0 ? v14 : 0;
 
@@ -212,7 +212,7 @@
     goto LABEL_25;
   }
 
-  v20 = objc_msgSend_objectForKeyedSubscript_(v4, v19, @"identifier");
+  v20 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v19, @"identifier");
   if (!v20)
   {
     goto LABEL_25;
@@ -223,7 +223,7 @@
   identifier = v5->identifier;
   v5->identifier = v23;
 
-  v26 = objc_msgSend_objectForKeyedSubscript_(v4, v25, @"parent_id");
+  v26 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v25, @"parent_id");
   if (v26)
   {
     v27 = objc_alloc(MEMORY[0x277CCAD78]);
@@ -238,7 +238,7 @@
   parent_id = v5->parent_id;
   v5->parent_id = v29;
 
-  v32 = objc_msgSend_objectForKeyedSubscript_(v4, v31, @"status");
+  v32 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v31, @"status");
   objc_opt_class();
   v33 = (objc_opt_isKindOfClass() & 1) != 0 ? v32 : 0;
 
@@ -249,7 +249,7 @@
 
   v5->status = objc_msgSend_BOOLValue(v33, v34, v35);
 
-  v37 = objc_msgSend_objectForKeyedSubscript_(v4, v36, @"confidence");
+  v37 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v36, @"confidence");
   objc_opt_class();
   v38 = (objc_opt_isKindOfClass() & 1) != 0 ? v37 : 0;
 
@@ -258,7 +258,7 @@
     objc_msgSend_floatValue(v38, v39, v40);
     v5->confidence = v41;
 
-    v43 = objc_msgSend_objectForKeyedSubscript_(v4, v42, @"logits");
+    v43 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v42, @"logits");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -280,7 +280,7 @@
       v5->logits = v49;
     }
 
-    v51 = objc_msgSend_objectForKeyedSubscript_(v4, v48, @"embedding2d");
+    v51 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v48, @"embedding2d");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -302,7 +302,7 @@
       v5->embedding2d = v55;
     }
 
-    v57 = objc_msgSend_objectForKeyedSubscript_(v4, v54, @"corners_status");
+    v57 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v54, @"corners_status");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -324,7 +324,7 @@
       v5->corners_status = v61;
     }
 
-    v63 = objc_msgSend_objectForKeyedSubscript_(v4, v60, @"edges_status");
+    v63 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v60, @"edges_status");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -346,7 +346,7 @@
       v5->edges_status = v67;
     }
 
-    v69 = objc_msgSend_objectForKeyedSubscript_(v4, v66, @"color");
+    v69 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v66, @"color");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -363,7 +363,7 @@
       sub_26223E4F8(v70, v5->color);
     }
 
-    v72 = objc_msgSend_objectForKeyedSubscript_(v4, v71, @"groups");
+    v72 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v71, @"groups");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -386,13 +386,13 @@
       v5->_groups = v79;
     }
 
-    v81 = objc_msgSend_objectForKeyedSubscript_(v4, v78, @"parts");
+    v81 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v78, @"parts");
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v84 = objc_msgSend_objectForKeyedSubscript_(v4, v83, @"parts");
+      v84 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v83, @"parts");
       v87 = objc_msgSend_mutableCopy(v84, v85, v86);
       parts = v6->_parts;
       v6->_parts = v87;
@@ -405,13 +405,13 @@
       v6->_parts = v89;
     }
 
-    v91 = objc_msgSend_objectForKeyedSubscript_(v4, v90, @"beautified_parts");
+    v91 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v90, @"beautified_parts");
     objc_opt_class();
     v92 = objc_opt_isKindOfClass();
 
     if (v92)
     {
-      v94 = objc_msgSend_objectForKeyedSubscript_(v4, v93, @"beautified_parts");
+      v94 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v93, @"beautified_parts");
       v97 = objc_msgSend_mutableCopy(v94, v95, v96);
       beautified_parts = v6->_beautified_parts;
       v6->_beautified_parts = v97;
@@ -424,7 +424,7 @@
       v6->_beautified_parts = v99;
     }
 
-    v101 = objc_msgSend_objectForKeyedSubscript_(v4, v100, @"boxes_dict");
+    v101 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v100, @"boxes_dict");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -447,7 +447,7 @@
       v6->_boxesDict = v108;
     }
 
-    v110 = objc_msgSend_objectForKeyedSubscript_(v4, v107, @"story");
+    v110 = objc_msgSend_objectForKeyedSubscript_(representationCopy, v107, @"story");
     v6->storyLevel = objc_msgSend_integerValue(v110, v111, v112);
 
     v45 = v6;
@@ -537,12 +537,12 @@ LABEL_25:
   return v53;
 }
 
-- (BOOL)getTransform:(id)a3 transform:(id *)a4
+- (BOOL)getTransform:(id)transform transform:(id *)a4
 {
-  v6 = a3;
-  if (objc_msgSend_hasBoxesDict_(self, v7, v6))
+  transformCopy = transform;
+  if (objc_msgSend_hasBoxesDict_(self, v7, transformCopy))
   {
-    v9 = objc_msgSend_objectForKeyedSubscript_(self->_boxesDict, v8, v6);
+    v9 = objc_msgSend_objectForKeyedSubscript_(self->_boxesDict, v8, transformCopy);
     v10 = sub_26223D51C(v9, v31);
 
     if (v10)
@@ -607,18 +607,18 @@ LABEL_25:
   return v10;
 }
 
-- (BOOL)getDimension:(id)a3 dim:
+- (BOOL)getDimension:(id)dimension dim:
 {
   v4 = v3;
-  v6 = a3;
-  if ((objc_msgSend_hasBoxesDict_(self, v7, v6) & 1) == 0)
+  dimensionCopy = dimension;
+  if ((objc_msgSend_hasBoxesDict_(self, v7, dimensionCopy) & 1) == 0)
   {
     LOBYTE(v10) = 0;
     v18 = 0uLL;
     goto LABEL_5;
   }
 
-  v9 = objc_msgSend_objectForKeyedSubscript_(self->_boxesDict, v8, v6);
+  v9 = objc_msgSend_objectForKeyedSubscript_(self->_boxesDict, v8, dimensionCopy);
   v10 = sub_26223D51C(v9, &v20);
 
   if (v10)
@@ -640,21 +640,21 @@ LABEL_5:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v39[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  objc_msgSend_encodeObject_forKey_(v4, v5, self->type, @"type");
-  objc_msgSend_encodeObject_forKey_(v4, v6, self->detection_source, @"detectionsource");
-  objc_msgSend_encodeObject_forKey_(v4, v7, self->identifier, @"identifier");
-  objc_msgSend_encodeObject_forKey_(v4, v8, self->parent_id, @"parent_id");
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, self->type, @"type");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v6, self->detection_source, @"detectionsource");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->identifier, @"identifier");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, self->parent_id, @"parent_id");
   *&v9 = self->confidence;
-  objc_msgSend_encodeFloat_forKey_(v4, v10, @"confidence", v9);
-  objc_msgSend_encodeObject_forKey_(v4, v11, self->logits, @"logits");
-  objc_msgSend_encodeObject_forKey_(v4, v12, self->embedding2d, @"embedding2d");
-  objc_msgSend_encodeObject_forKey_(v4, v13, self->corners_status, @"corners_status");
-  objc_msgSend_encodeObject_forKey_(v4, v14, self->edges_status, @"edges_status");
-  objc_msgSend_encodeBool_forKey_(v4, v15, self->status, @"status");
+  objc_msgSend_encodeFloat_forKey_(coderCopy, v10, @"confidence", v9);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v11, self->logits, @"logits");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, self->embedding2d, @"embedding2d");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v13, self->corners_status, @"corners_status");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v14, self->edges_status, @"edges_status");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v15, self->status, @"status");
   v38 = *self->color;
   v18 = objc_msgSend_numberWithFloat_(MEMORY[0x277CCABB0], v16, v17);
   v39[0] = v18;
@@ -668,59 +668,59 @@ LABEL_5:
   v39[3] = v28;
   v30 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v29, v39, 4);
 
-  objc_msgSend_encodeObject_forKey_(v4, v31, v30, @"color");
-  objc_msgSend_encodeObject_forKey_(v4, v32, self->_groups, @"groups");
-  objc_msgSend_encodeObject_forKey_(v4, v33, self->_parts, @"parts");
-  objc_msgSend_encodeObject_forKey_(v4, v34, self->_beautified_parts, @"beautified_parts");
-  objc_msgSend_encodeObject_forKey_(v4, v35, self->_boxesDict, @"boxes_dict");
-  objc_msgSend_encodeInteger_forKey_(v4, v36, self->storyLevel, @"story");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v31, v30, @"color");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v32, self->_groups, @"groups");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v33, self->_parts, @"parts");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v34, self->_beautified_parts, @"beautified_parts");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v35, self->_boxesDict, @"boxes_dict");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v36, self->storyLevel, @"story");
 
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (RS3DObject)initWithCoder:(id)a3
+- (RS3DObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v120.receiver = self;
   v120.super_class = RS3DObject;
   v5 = [(RS3DObject *)&v120 init];
   v6 = objc_opt_class();
-  v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"type");
+  v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"type");
   type = v5->type;
   v5->type = v8;
 
-  if ((sub_26223E290(v5->type) & 1) != 0 && (v10 = objc_opt_class(), objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"detectionsource"), v12 = objc_claimAutoreleasedReturnValue(), detection_source = v5->detection_source, v5->detection_source = v12, detection_source, sub_26223E428(v5->detection_source)))
+  if ((sub_26223E290(v5->type) & 1) != 0 && (v10 = objc_opt_class(), objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"detectionsource"), v12 = objc_claimAutoreleasedReturnValue(), detection_source = v5->detection_source, v5->detection_source = v12, detection_source, sub_26223E428(v5->detection_source)))
   {
     v14 = objc_opt_class();
-    v16 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v15, v14, @"identifier");
+    v16 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v15, v14, @"identifier");
     identifier = v5->identifier;
     v5->identifier = v16;
 
     v18 = objc_opt_class();
-    v20 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v19, v18, @"parent_id");
+    v20 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v19, v18, @"parent_id");
     parent_id = v5->parent_id;
     v5->parent_id = v20;
 
-    objc_msgSend_decodeFloatForKey_(v4, v22, @"confidence");
+    objc_msgSend_decodeFloatForKey_(coderCopy, v22, @"confidence");
     v5->confidence = v23;
-    v5->status = objc_msgSend_decodeBoolForKey_(v4, v24, @"status");
+    v5->status = objc_msgSend_decodeBoolForKey_(coderCopy, v24, @"status");
     v25 = objc_opt_class();
-    v27 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v26, v25, @"logits");
+    v27 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v26, v25, @"logits");
     logits = v5->logits;
     v5->logits = v27;
 
     v29 = objc_opt_class();
-    v31 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v30, v29, @"embedding2d");
+    v31 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v30, v29, @"embedding2d");
     embedding2d = v5->embedding2d;
     v5->embedding2d = v31;
 
     v33 = objc_opt_class();
-    v35 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v34, v33, @"corners_status");
+    v35 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v34, v33, @"corners_status");
     corners_status = v5->corners_status;
     v5->corners_status = v35;
 
     v37 = objc_opt_class();
-    v39 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v38, v37, @"edges_status");
+    v39 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v38, v37, @"edges_status");
     edges_status = v5->edges_status;
     v5->edges_status = v39;
 
@@ -728,7 +728,7 @@ LABEL_5:
     v42 = objc_opt_class();
     v43 = objc_opt_class();
     v45 = objc_msgSend_setWithObjects_(v41, v44, v42, v43, 0);
-    v47 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v46, v45, @"color");
+    v47 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v46, v45, @"color");
     if (objc_msgSend_count(v47, v48, v49) == 4)
     {
       v51 = objc_msgSend_objectAtIndexedSubscript_(v47, v50, 0);
@@ -754,35 +754,35 @@ LABEL_5:
     v75 = objc_opt_class();
     v77 = objc_msgSend_setWithObjects_(v71, v76, v72, v73, v74, v75, 0);
 
-    v79 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v78, v77, @"groups");
+    v79 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v78, v77, @"groups");
     v82 = objc_msgSend_mutableCopy(v79, v80, v81);
 
     v85 = objc_msgSend_mutableCopy(v82, v83, v84);
     groups = v5->_groups;
     v5->_groups = v85;
 
-    v88 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v87, v77, @"parts");
+    v88 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v87, v77, @"parts");
     v91 = objc_msgSend_mutableCopy(v88, v89, v90);
 
     v94 = objc_msgSend_mutableCopy(v91, v92, v93);
     parts = v5->_parts;
     v5->_parts = v94;
 
-    v97 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v96, v77, @"beautified_parts");
+    v97 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v96, v77, @"beautified_parts");
     v100 = objc_msgSend_mutableCopy(v97, v98, v99);
 
     v103 = objc_msgSend_mutableCopy(v100, v101, v102);
     beautified_parts = v5->_beautified_parts;
     v5->_beautified_parts = v103;
 
-    v106 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v105, v77, @"boxes_dict");
+    v106 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v105, v77, @"boxes_dict");
     v109 = objc_msgSend_mutableCopy(v106, v107, v108);
 
     v112 = objc_msgSend_mutableCopy(v109, v110, v111);
     boxesDict = v5->_boxesDict;
     v5->_boxesDict = v112;
 
-    v5->storyLevel = objc_msgSend_decodeIntegerForKey_(v4, v114, @"story");
+    v5->storyLevel = objc_msgSend_decodeIntegerForKey_(coderCopy, v114, @"story");
     v115 = v5;
   }
 
@@ -794,14 +794,14 @@ LABEL_5:
   return v115;
 }
 
-- (BOOL)hasBoxesDict:(id)a3
+- (BOOL)hasBoxesDict:(id)dict
 {
-  v6 = a3;
+  dictCopy = dict;
   boxesDict = self->_boxesDict;
   if (boxesDict)
   {
     v8 = objc_msgSend_allKeys(boxesDict, v4, v5);
-    v10 = objc_msgSend_containsObject_(v8, v9, v6);
+    v10 = objc_msgSend_containsObject_(v8, v9, dictCopy);
   }
 
   else
@@ -812,7 +812,7 @@ LABEL_5:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(RS3DObject);
   objc_storeStrong(&v4->type, self->type);
@@ -853,11 +853,11 @@ LABEL_5:
 
 - (double)transform
 {
-  hasBoxesDict = objc_msgSend_hasBoxesDict_(a1, a2, @"rawdetection");
+  hasBoxesDict = objc_msgSend_hasBoxesDict_(self, a2, @"rawdetection");
   v5.i64[0] = 0;
   if (hasBoxesDict)
   {
-    v6 = objc_msgSend_objectForKeyedSubscript_(a1[2], v4, @"rawdetection", 0.0);
+    v6 = objc_msgSend_objectForKeyedSubscript_(self[2], v4, @"rawdetection", 0.0);
     v7 = sub_26223D51C(v6, &v30);
 
     v5 = 0uLL;
@@ -941,11 +941,11 @@ LABEL_5:
 
 - (float32x2_t)dimensions
 {
-  hasBoxesDict = objc_msgSend_hasBoxesDict_(a1, a2, @"rawdetection");
+  hasBoxesDict = objc_msgSend_hasBoxesDict_(self, a2, @"rawdetection");
   result = 0;
   if (hasBoxesDict)
   {
-    v6 = objc_msgSend_objectForKeyedSubscript_(a1[2], v4, @"rawdetection", 0.0);
+    v6 = objc_msgSend_objectForKeyedSubscript_(self[2], v4, @"rawdetection", 0.0);
     v7 = sub_26223D51C(v6, &v12);
 
     result = 0;

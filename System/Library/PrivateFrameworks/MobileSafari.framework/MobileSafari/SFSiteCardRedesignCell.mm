@@ -2,35 +2,35 @@
 - (BOOL)_titleLabelPrefersMultipleLines;
 - (NSString)subtitle;
 - (NSString)title;
-- (SFSiteCardRedesignCell)initWithCoder:(id)a3;
-- (SFSiteCardRedesignCell)initWithFrame:(CGRect)a3;
+- (SFSiteCardRedesignCell)initWithCoder:(id)coder;
+- (SFSiteCardRedesignCell)initWithFrame:(CGRect)frame;
 - (id)focusEffect;
 - (void)_updateLayoutForContentSizeChange;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setCaptionText:(id)a3 icon:(id)a4;
-- (void)setMetadata:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setCaptionText:(id)text icon:(id)icon;
+- (void)setMetadata:(id)metadata;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SFSiteCardRedesignCell
 
-- (SFSiteCardRedesignCell)initWithFrame:(CGRect)a3
+- (SFSiteCardRedesignCell)initWithFrame:(CGRect)frame
 {
   v106[1] = *MEMORY[0x1E69E9840];
   v100.receiver = self;
   v100.super_class = SFSiteCardRedesignCell;
-  v3 = [(SFStartPageFilledBackgroundCell *)&v100 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFStartPageFilledBackgroundCell *)&v100 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(SFSiteCardRedesignCell *)v3 setMaximumContentSizeCategory:*MEMORY[0x1E69DDC50]];
-    v98 = [(SFStartPageFilledBackgroundCell *)v4 defaultBackgroundConfiguration];
-    [v98 setCornerRadius:20.0];
-    [(SFSiteCardRedesignCell *)v4 setBackgroundConfiguration:v98];
-    v5 = [(SFSiteCardRedesignCell *)v4 contentView];
+    defaultBackgroundConfiguration = [(SFStartPageFilledBackgroundCell *)v4 defaultBackgroundConfiguration];
+    [defaultBackgroundConfiguration setCornerRadius:20.0];
+    [(SFSiteCardRedesignCell *)v4 setBackgroundConfiguration:defaultBackgroundConfiguration];
+    contentView = [(SFSiteCardRedesignCell *)v4 contentView];
     UIEdgeInsetsMakeWithEdges();
-    [v5 setLayoutMargins:?];
+    [contentView setLayoutMargins:?];
     v6 = objc_alloc_init(_SFSiteIconView);
     imageView = v4->_imageView;
     v4->_imageView = v6;
@@ -38,14 +38,14 @@
     [(_SFSiteIconView *)v4->_imageView _setContinuousCornerRadius:8.0];
     [(_SFSiteIconView *)v4->_imageView setClipsToBounds:1];
     [(_SFSiteIconView *)v4->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v5 addSubview:v4->_imageView];
+    [contentView addSubview:v4->_imageView];
     v8 = objc_alloc_init(MEMORY[0x1E69DCC20]);
     textLayoutGuide = v4->_textLayoutGuide;
     v4->_textLayoutGuide = v8;
 
     [(UILayoutGuide *)v4->_textLayoutGuide setIdentifier:@"SFSiteCardText"];
-    v99 = v5;
-    [v5 addLayoutGuide:v4->_textLayoutGuide];
+    v99 = contentView;
+    [contentView addLayoutGuide:v4->_textLayoutGuide];
     v10 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     titleLabel = v4->_titleLabel;
     v4->_titleLabel = v10;
@@ -56,10 +56,10 @@
     [(UILabel *)v4->_titleLabel setFont:v12];
 
     [(UILabel *)v4->_titleLabel setNumberOfLines:2];
-    v13 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v4->_titleLabel setTextColor:v13];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v4->_titleLabel setTextColor:labelColor];
 
-    [v5 addSubview:v4->_titleLabel];
+    [contentView addSubview:v4->_titleLabel];
     v14 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     subtitleLabel = v4->_subtitleLabel;
     v4->_subtitleLabel = v14;
@@ -82,97 +82,97 @@
 
     [(UILabel *)v4->_subtitleLabel setFont:v22];
     [(UILabel *)v4->_subtitleLabel setNumberOfLines:1];
-    v23 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v4->_subtitleLabel setTextColor:v23];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v4->_subtitleLabel setTextColor:secondaryLabelColor];
 
     LODWORD(v24) = 1132068864;
     [(UILabel *)v4->_subtitleLabel setContentCompressionResistancePriority:1 forAxis:v24];
     [v99 addSubview:v4->_subtitleLabel];
-    v25 = [(_SFSiteIconView *)v4->_imageView widthAnchor];
-    v26 = [(SFSiteCardRedesignCell *)v4 traitCollection];
-    v27 = [v25 constraintEqualToConstant:iconDimension(v26)];
+    widthAnchor = [(_SFSiteIconView *)v4->_imageView widthAnchor];
+    traitCollection = [(SFSiteCardRedesignCell *)v4 traitCollection];
+    v27 = [widthAnchor constraintEqualToConstant:iconDimension(traitCollection)];
     LODWORD(v28) = 1148682240;
     v29 = [v27 sf_withPriority:v28];
     iconDimensionConstraint = v4->_iconDimensionConstraint;
     v4->_iconDimensionConstraint = v29;
 
-    v31 = [v99 layoutMarginsGuide];
+    layoutMarginsGuide = [v99 layoutMarginsGuide];
     v75 = MEMORY[0x1E696ACD8];
-    v97 = [(_SFSiteIconView *)v4->_imageView leadingAnchor];
-    v88 = v31;
-    v96 = [v31 leadingAnchor];
-    v95 = [v97 constraintEqualToAnchor:v96];
+    leadingAnchor = [(_SFSiteIconView *)v4->_imageView leadingAnchor];
+    v88 = layoutMarginsGuide;
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v95 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v102[0] = v95;
-    v94 = [(UILayoutGuide *)v4->_textLayoutGuide leadingAnchor];
-    v93 = [(_SFSiteIconView *)v4->_imageView trailingAnchor];
-    v92 = [v94 constraintEqualToAnchor:v93 constant:12.0];
+    leadingAnchor3 = [(UILayoutGuide *)v4->_textLayoutGuide leadingAnchor];
+    trailingAnchor = [(_SFSiteIconView *)v4->_imageView trailingAnchor];
+    v92 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:12.0];
     v102[1] = v92;
-    v91 = [(UILayoutGuide *)v4->_textLayoutGuide trailingAnchor];
-    v90 = [v31 trailingAnchor];
-    v89 = [v91 constraintEqualToAnchor:v90];
+    trailingAnchor2 = [(UILayoutGuide *)v4->_textLayoutGuide trailingAnchor];
+    trailingAnchor3 = [layoutMarginsGuide trailingAnchor];
+    v89 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     v102[2] = v89;
-    v87 = [(_SFSiteIconView *)v4->_imageView topAnchor];
-    v86 = [v31 topAnchor];
-    v85 = [v87 constraintGreaterThanOrEqualToAnchor:v86];
+    topAnchor = [(_SFSiteIconView *)v4->_imageView topAnchor];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
+    v85 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     v102[3] = v85;
-    v84 = [(_SFSiteIconView *)v4->_imageView centerYAnchor];
-    v83 = [v31 centerYAnchor];
-    v82 = [v84 constraintEqualToAnchor:v83];
+    centerYAnchor = [(_SFSiteIconView *)v4->_imageView centerYAnchor];
+    centerYAnchor2 = [layoutMarginsGuide centerYAnchor];
+    v82 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v102[4] = v82;
-    v81 = [(_SFSiteIconView *)v4->_imageView bottomAnchor];
-    v80 = [v31 bottomAnchor];
-    v79 = [v81 constraintLessThanOrEqualToAnchor:v80];
+    bottomAnchor = [(_SFSiteIconView *)v4->_imageView bottomAnchor];
+    bottomAnchor2 = [layoutMarginsGuide bottomAnchor];
+    v79 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
     v102[5] = v79;
-    v78 = [(UILayoutGuide *)v4->_textLayoutGuide bottomAnchor];
-    v77 = [v31 bottomAnchor];
-    v76 = [v78 constraintEqualToAnchor:v77 constant:2.0];
+    bottomAnchor3 = [(UILayoutGuide *)v4->_textLayoutGuide bottomAnchor];
+    bottomAnchor4 = [layoutMarginsGuide bottomAnchor];
+    v76 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:2.0];
     v102[6] = v76;
-    v74 = [(UILayoutGuide *)v4->_textLayoutGuide topAnchor];
-    v73 = [v31 topAnchor];
-    v72 = [v74 constraintEqualToAnchor:v73 constant:-2.0];
+    topAnchor3 = [(UILayoutGuide *)v4->_textLayoutGuide topAnchor];
+    topAnchor4 = [layoutMarginsGuide topAnchor];
+    v72 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:-2.0];
     v102[7] = v72;
-    v71 = [(UILayoutGuide *)v4->_textLayoutGuide heightAnchor];
-    v70 = [(_SFSiteIconView *)v4->_imageView heightAnchor];
-    v69 = [v71 constraintEqualToAnchor:v70];
+    heightAnchor = [(UILayoutGuide *)v4->_textLayoutGuide heightAnchor];
+    heightAnchor2 = [(_SFSiteIconView *)v4->_imageView heightAnchor];
+    v69 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     LODWORD(v32) = 1148600320;
     v68 = [v69 sf_withPriority:v32];
     v102[8] = v68;
     v102[9] = v4->_iconDimensionConstraint;
-    v67 = [(_SFSiteIconView *)v4->_imageView heightAnchor];
-    v66 = [(_SFSiteIconView *)v4->_imageView widthAnchor];
-    v65 = [v67 constraintEqualToAnchor:v66];
+    heightAnchor3 = [(_SFSiteIconView *)v4->_imageView heightAnchor];
+    widthAnchor2 = [(_SFSiteIconView *)v4->_imageView widthAnchor];
+    v65 = [heightAnchor3 constraintEqualToAnchor:widthAnchor2];
     v102[10] = v65;
-    v64 = [(UILabel *)v4->_titleLabel leadingAnchor];
-    v63 = [(UILayoutGuide *)v4->_textLayoutGuide leadingAnchor];
-    v62 = [v64 constraintEqualToAnchor:v63];
+    leadingAnchor4 = [(UILabel *)v4->_titleLabel leadingAnchor];
+    leadingAnchor5 = [(UILayoutGuide *)v4->_textLayoutGuide leadingAnchor];
+    v62 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
     v102[11] = v62;
-    v61 = [(UILabel *)v4->_titleLabel widthAnchor];
-    v60 = [(UILayoutGuide *)v4->_textLayoutGuide widthAnchor];
-    v59 = [v61 constraintEqualToAnchor:v60];
+    widthAnchor3 = [(UILabel *)v4->_titleLabel widthAnchor];
+    widthAnchor4 = [(UILayoutGuide *)v4->_textLayoutGuide widthAnchor];
+    v59 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
     v102[12] = v59;
-    v58 = [(UILabel *)v4->_subtitleLabel leadingAnchor];
-    v57 = [(UILayoutGuide *)v4->_textLayoutGuide leadingAnchor];
-    v56 = [v58 constraintEqualToAnchor:v57];
+    leadingAnchor6 = [(UILabel *)v4->_subtitleLabel leadingAnchor];
+    leadingAnchor7 = [(UILayoutGuide *)v4->_textLayoutGuide leadingAnchor];
+    v56 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
     v102[13] = v56;
-    v55 = [(UILabel *)v4->_subtitleLabel widthAnchor];
-    v54 = [(UILayoutGuide *)v4->_textLayoutGuide widthAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54];
+    widthAnchor5 = [(UILabel *)v4->_subtitleLabel widthAnchor];
+    widthAnchor6 = [(UILayoutGuide *)v4->_textLayoutGuide widthAnchor];
+    v53 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6];
     v102[14] = v53;
-    v52 = [(UILabel *)v4->_titleLabel topAnchor];
-    v51 = [(UILayoutGuide *)v4->_textLayoutGuide topAnchor];
-    v50 = [v52 constraintEqualToAnchor:v51 constant:0.0];
+    topAnchor5 = [(UILabel *)v4->_titleLabel topAnchor];
+    topAnchor6 = [(UILayoutGuide *)v4->_textLayoutGuide topAnchor];
+    v50 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:0.0];
     v102[15] = v50;
-    v49 = [(UILabel *)v4->_subtitleLabel topAnchor];
-    v48 = [(UILabel *)v4->_titleLabel bottomAnchor];
-    v33 = [v49 constraintEqualToAnchor:v48 constant:2.0];
+    topAnchor7 = [(UILabel *)v4->_subtitleLabel topAnchor];
+    bottomAnchor5 = [(UILabel *)v4->_titleLabel bottomAnchor];
+    v33 = [topAnchor7 constraintEqualToAnchor:bottomAnchor5 constant:2.0];
     v102[16] = v33;
-    v34 = [(UILabel *)v4->_subtitleLabel bottomAnchor];
-    v35 = [(UILayoutGuide *)v4->_textLayoutGuide bottomAnchor];
-    v36 = [v34 constraintLessThanOrEqualToAnchor:v35];
+    bottomAnchor6 = [(UILabel *)v4->_subtitleLabel bottomAnchor];
+    bottomAnchor7 = [(UILayoutGuide *)v4->_textLayoutGuide bottomAnchor];
+    v36 = [bottomAnchor6 constraintLessThanOrEqualToAnchor:bottomAnchor7];
     v102[17] = v36;
-    v37 = [(SFSiteCardRedesignCell *)v4 contentView];
-    v38 = [v37 heightAnchor];
-    v39 = [v38 constraintEqualToConstant:0.0];
+    contentView2 = [(SFSiteCardRedesignCell *)v4 contentView];
+    heightAnchor4 = [contentView2 heightAnchor];
+    v39 = [heightAnchor4 constraintEqualToConstant:0.0];
     LODWORD(v40) = 1132003328;
     v41 = [v39 sf_withPriority:v40];
     v102[18] = v41;
@@ -190,11 +190,11 @@
   return v4;
 }
 
-- (SFSiteCardRedesignCell)initWithCoder:(id)a3
+- (SFSiteCardRedesignCell)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SFSiteCardRedesignCell;
-  return [(SFSiteCardRedesignCell *)&v4 initWithCoder:a3];
+  return [(SFSiteCardRedesignCell *)&v4 initWithCoder:coder];
 }
 
 - (void)prepareForReuse
@@ -209,8 +209,8 @@
 
 - (void)_updateLayoutForContentSizeChange
 {
-  v3 = [(SFSiteCardRedesignCell *)self traitCollection];
-  [(NSLayoutConstraint *)self->_iconDimensionConstraint setConstant:iconDimension(v3)];
+  traitCollection = [(SFSiteCardRedesignCell *)self traitCollection];
+  [(NSLayoutConstraint *)self->_iconDimensionConstraint setConstant:iconDimension(traitCollection)];
 
   [(SFSiteCardRedesignCell *)self setNeedsLayout];
 }
@@ -235,57 +235,57 @@
   return [v2 effectWithRoundedRect:v3 cornerRadius:? curve:?];
 }
 
-- (void)setCaptionText:(id)a3 icon:(id)a4
+- (void)setCaptionText:(id)text icon:(id)icon
 {
   v26[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  iconCopy = icon;
   if (!self->_captionLabel)
   {
-    v8 = [v6 length];
-    if (v7 || v8)
+    v8 = [textCopy length];
+    if (iconCopy || v8)
     {
       v9 = objc_alloc_init(SFSiteCardSourceView);
       captionLabel = self->_captionLabel;
       self->_captionLabel = v9;
 
       [(SFSiteCardSourceView *)self->_captionLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-      v11 = [(SFSiteCardRedesignCell *)self contentView];
-      [v11 addSubview:self->_captionLabel];
+      contentView = [(SFSiteCardRedesignCell *)self contentView];
+      [contentView addSubview:self->_captionLabel];
 
       v20 = MEMORY[0x1E696ACD8];
-      v25 = [(SFSiteCardSourceView *)self->_captionLabel leadingAnchor];
-      v24 = [(UILayoutGuide *)self->_textLayoutGuide leadingAnchor];
-      v23 = [v25 constraintEqualToAnchor:v24];
+      leadingAnchor = [(SFSiteCardSourceView *)self->_captionLabel leadingAnchor];
+      leadingAnchor2 = [(UILayoutGuide *)self->_textLayoutGuide leadingAnchor];
+      v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v26[0] = v23;
-      v22 = [(SFSiteCardSourceView *)self->_captionLabel widthAnchor];
-      v21 = [(UILayoutGuide *)self->_textLayoutGuide widthAnchor];
-      v19 = [v22 constraintEqualToAnchor:v21];
+      widthAnchor = [(SFSiteCardSourceView *)self->_captionLabel widthAnchor];
+      widthAnchor2 = [(UILayoutGuide *)self->_textLayoutGuide widthAnchor];
+      v19 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
       v26[1] = v19;
-      v18 = [(SFSiteCardSourceView *)self->_captionLabel topAnchor];
-      v12 = [(UILabel *)self->_subtitleLabel bottomAnchor];
-      v13 = [v18 constraintGreaterThanOrEqualToAnchor:v12 constant:2.0];
+      topAnchor = [(SFSiteCardSourceView *)self->_captionLabel topAnchor];
+      bottomAnchor = [(UILabel *)self->_subtitleLabel bottomAnchor];
+      v13 = [topAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor constant:2.0];
       v26[2] = v13;
-      v14 = [(SFSiteCardSourceView *)self->_captionLabel bottomAnchor];
-      v15 = [(UILayoutGuide *)self->_textLayoutGuide bottomAnchor];
-      v16 = [v14 constraintEqualToAnchor:v15];
+      bottomAnchor2 = [(SFSiteCardSourceView *)self->_captionLabel bottomAnchor];
+      bottomAnchor3 = [(UILayoutGuide *)self->_textLayoutGuide bottomAnchor];
+      v16 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
       v26[3] = v16;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:4];
       [v20 activateConstraints:v17];
     }
   }
 
-  [(SFSiteCardSourceView *)self->_captionLabel setText:v6];
-  [(SFSiteCardSourceView *)self->_captionLabel setImage:v7];
+  [(SFSiteCardSourceView *)self->_captionLabel setText:textCopy];
+  [(SFSiteCardSourceView *)self->_captionLabel setImage:iconCopy];
 }
 
 - (NSString)title
 {
-  v2 = [(UILabel *)self->_titleLabel text];
-  v3 = v2;
-  if (v2)
+  text = [(UILabel *)self->_titleLabel text];
+  v3 = text;
+  if (text)
   {
-    v4 = v2;
+    v4 = text;
   }
 
   else
@@ -298,20 +298,20 @@
   return &v4->isa;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  [(UILabel *)self->_titleLabel setText:a3];
+  [(UILabel *)self->_titleLabel setText:title];
 
   [(SFSiteCardRedesignCell *)self setNeedsLayout];
 }
 
 - (NSString)subtitle
 {
-  v2 = [(UILabel *)self->_subtitleLabel text];
-  v3 = v2;
-  if (v2)
+  text = [(UILabel *)self->_subtitleLabel text];
+  v3 = text;
+  if (text)
   {
-    v4 = v2;
+    v4 = text;
   }
 
   else
@@ -331,32 +331,32 @@
   [(SFSiteCardRedesignCell *)&v2 layoutSubviews];
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  objc_storeStrong(&self->_metadata, a3);
-  v5 = a3;
-  v6 = [v5 title];
-  [(SFSiteCardRedesignCell *)self setTitle:v6];
+  objc_storeStrong(&self->_metadata, metadata);
+  metadataCopy = metadata;
+  title = [metadataCopy title];
+  [(SFSiteCardRedesignCell *)self setTitle:title];
 
   v7 = [(LPLinkMetadata *)self->_metadata URL];
-  v8 = [v7 host];
-  v9 = [v8 safari_highLevelDomainFromHost];
-  [(SFSiteCardRedesignCell *)self setSubtitle:v9];
+  host = [v7 host];
+  safari_highLevelDomainFromHost = [host safari_highLevelDomainFromHost];
+  [(SFSiteCardRedesignCell *)self setSubtitle:safari_highLevelDomainFromHost];
 
-  v10 = [(SFSiteCardRedesignCell *)self traitCollection];
-  v11 = iconDimension(v10);
+  traitCollection = [(SFSiteCardRedesignCell *)self traitCollection];
+  v11 = iconDimension(traitCollection);
 
   imageView = self->_imageView;
   v13 = MEMORY[0x1E69DCAD8];
-  v14 = [MEMORY[0x1E69DC888] systemFillColor];
-  v18[0] = v14;
+  systemFillColor = [MEMORY[0x1E69DC888] systemFillColor];
+  v18[0] = systemFillColor;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
   v16 = [v13 configurationWithPaletteColors:v15];
 
   v17 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"safari" withConfiguration:v16];
 
-  [(_SFSiteIconView *)imageView updateSiteIconViewWithLinkMetadata:v5 requiredImageSize:v17 fallbackIcon:v11, v11];
+  [(_SFSiteIconView *)imageView updateSiteIconViewWithLinkMetadata:metadataCopy requiredImageSize:v17 fallbackIcon:v11, v11];
 }
 
 @end

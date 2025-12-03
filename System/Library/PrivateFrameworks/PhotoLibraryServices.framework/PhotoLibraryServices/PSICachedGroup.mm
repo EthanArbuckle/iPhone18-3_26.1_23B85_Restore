@@ -1,6 +1,6 @@
 @interface PSICachedGroup
-- (BOOL)isEqual:(id)a3;
-- (PSICachedGroup)initWithText:(id)a3 identifier:(id)a4 category:(unint64_t)a5 owningGroupId:(unint64_t)a6;
+- (BOOL)isEqual:(id)equal;
+- (PSICachedGroup)initWithText:(id)text identifier:(id)identifier category:(unint64_t)category owningGroupId:(unint64_t)id;
 - (id)description;
 @end
 
@@ -23,10 +23,10 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@' (%@, %d) -> %d", text, v5, self->_category, self->_owningGroupId, v2, v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -36,7 +36,7 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
+      v7 = equalCopy;
       v8 = v7;
       if (self->_category == v7->_category && self->_owningGroupId == v7->_owningGroupId && ((text = self->_text, text == v8->_text) || [(NSString *)text isEqualToString:?]))
       {
@@ -67,25 +67,25 @@
   return v6;
 }
 
-- (PSICachedGroup)initWithText:(id)a3 identifier:(id)a4 category:(unint64_t)a5 owningGroupId:(unint64_t)a6
+- (PSICachedGroup)initWithText:(id)text identifier:(id)identifier category:(unint64_t)category owningGroupId:(unint64_t)id
 {
-  v10 = a3;
-  v11 = a4;
+  textCopy = text;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = PSICachedGroup;
   v12 = [(PSICachedGroup *)&v18 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [textCopy copy];
     text = v12->_text;
     v12->_text = v13;
 
-    v15 = [v11 copy];
+    v15 = [identifierCopy copy];
     identifier = v12->_identifier;
     v12->_identifier = v15;
 
-    v12->_category = a5;
-    v12->_owningGroupId = a6;
+    v12->_category = category;
+    v12->_owningGroupId = id;
   }
 
   return v12;

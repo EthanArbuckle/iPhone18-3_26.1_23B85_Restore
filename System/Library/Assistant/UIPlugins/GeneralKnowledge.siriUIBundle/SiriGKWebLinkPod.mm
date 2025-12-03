@@ -1,20 +1,20 @@
 @interface SiriGKWebLinkPod
-- (SiriGKWebLinkPod)initWithPod:(id)a3 safariBackURL:(id)a4;
+- (SiriGKWebLinkPod)initWithPod:(id)pod safariBackURL:(id)l;
 @end
 
 @implementation SiriGKWebLinkPod
 
-- (SiriGKWebLinkPod)initWithPod:(id)a3 safariBackURL:(id)a4
+- (SiriGKWebLinkPod)initWithPod:(id)pod safariBackURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  podCopy = pod;
+  lCopy = l;
   v23.receiver = self;
   v23.super_class = SiriGKWebLinkPod;
   v8 = [(SiriGKWebLinkPod *)&v23 init];
   if (v8)
   {
-    v9 = [v6 links];
-    v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v9 count]);
+    links = [podCopy links];
+    v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [links count]);
     viewArray = v8->_viewArray;
     v8->_viewArray = v10;
 
@@ -22,8 +22,8 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = [v6 links];
-    v13 = [v12 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    links2 = [podCopy links];
+    v13 = [links2 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v13)
     {
       v14 = v13;
@@ -35,17 +35,17 @@
         {
           if (*v20 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(links2);
           }
 
-          v17 = [[SiriGKWebLinkView alloc] initWithLinkedAnswer:*(*(&v19 + 1) + 8 * v16) safariBackURL:v7];
+          v17 = [[SiriGKWebLinkView alloc] initWithLinkedAnswer:*(*(&v19 + 1) + 8 * v16) safariBackURL:lCopy];
           [(NSMutableArray *)v8->_viewArray addObject:v17];
 
           v16 = v16 + 1;
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v14 = [links2 countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v14);

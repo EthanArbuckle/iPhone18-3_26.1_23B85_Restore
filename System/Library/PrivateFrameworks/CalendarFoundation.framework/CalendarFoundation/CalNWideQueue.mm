@@ -1,21 +1,21 @@
 @interface CalNWideQueue
-- (CalNWideQueue)initWithSerialQueue:(id)a3 andWidth:(unint64_t)a4;
-- (void)executeBlock:(id)a3;
+- (CalNWideQueue)initWithSerialQueue:(id)queue andWidth:(unint64_t)width;
+- (void)executeBlock:(id)block;
 @end
 
 @implementation CalNWideQueue
 
-- (CalNWideQueue)initWithSerialQueue:(id)a3 andWidth:(unint64_t)a4
+- (CalNWideQueue)initWithSerialQueue:(id)queue andWidth:(unint64_t)width
 {
-  v6 = a3;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = CalNWideQueue;
   v7 = [(CalNWideQueue *)&v13 init];
   if (v7)
   {
-    if (v6)
+    if (queueCopy)
     {
-      v8 = v6;
+      v8 = queueCopy;
     }
 
     else
@@ -26,7 +26,7 @@
     queue = v7->_queue;
     v7->_queue = v8;
 
-    v10 = dispatch_semaphore_create(a4);
+    v10 = dispatch_semaphore_create(width);
     semaphore = v7->_semaphore;
     v7->_semaphore = v10;
   }
@@ -34,17 +34,17 @@
   return v7;
 }
 
-- (void)executeBlock:(id)a3
+- (void)executeBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __30__CalNWideQueue_executeBlock___block_invoke;
   v7[3] = &unk_1E7EC6890;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(queue, v7);
 }
 

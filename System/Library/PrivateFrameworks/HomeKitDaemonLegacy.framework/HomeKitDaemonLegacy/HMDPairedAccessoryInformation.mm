@@ -1,8 +1,8 @@
 @interface HMDPairedAccessoryInformation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMDAccessoryBrowserDelegate)delegate;
 - (HMDPairedAccessoryInformation)init;
-- (HMDPairedAccessoryInformation)initWithIdentifier:(id)a3 transports:(unint64_t)a4 setupHash:(id)a5 delegate:(id)a6;
+- (HMDPairedAccessoryInformation)initWithIdentifier:(id)identifier transports:(unint64_t)transports setupHash:(id)hash delegate:(id)delegate;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -19,25 +19,25 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDPairedAccessoryInformation *)self identifier];
-  v5 = [(HMDPairedAccessoryInformation *)self setupHash];
-  v6 = [v3 stringWithFormat:@"Identifier: %@, setupHash: %@", v4, v5];
+  identifier = [(HMDPairedAccessoryInformation *)self identifier];
+  setupHash = [(HMDPairedAccessoryInformation *)self setupHash];
+  v6 = [v3 stringWithFormat:@"Identifier: %@, setupHash: %@", identifier, setupHash];
 
   return v6;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMDPairedAccessoryInformation *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HMDPairedAccessoryInformation *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -47,7 +47,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -59,9 +59,9 @@
     v7 = v6;
     if (v6)
     {
-      v8 = [(HMDPairedAccessoryInformation *)v6 identifier];
-      v9 = [(HMDPairedAccessoryInformation *)self identifier];
-      v10 = [v8 isEqual:v9];
+      identifier = [(HMDPairedAccessoryInformation *)v6 identifier];
+      identifier2 = [(HMDPairedAccessoryInformation *)self identifier];
+      v10 = [identifier isEqual:identifier2];
     }
 
     else
@@ -73,26 +73,26 @@
   return v10;
 }
 
-- (HMDPairedAccessoryInformation)initWithIdentifier:(id)a3 transports:(unint64_t)a4 setupHash:(id)a5 delegate:(id)a6
+- (HMDPairedAccessoryInformation)initWithIdentifier:(id)identifier transports:(unint64_t)transports setupHash:(id)hash delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  hashCopy = hash;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = HMDPairedAccessoryInformation;
   v13 = [(HMDPairedAccessoryInformation *)&v19 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [identifierCopy copy];
     identifier = v13->_identifier;
     v13->_identifier = v14;
 
-    v13->_transports = a4;
-    v16 = [v11 copy];
+    v13->_transports = transports;
+    v16 = [hashCopy copy];
     setupHash = v13->_setupHash;
     v13->_setupHash = v16;
 
-    objc_storeWeak(&v13->_delegate, v12);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
   }
 
   return v13;

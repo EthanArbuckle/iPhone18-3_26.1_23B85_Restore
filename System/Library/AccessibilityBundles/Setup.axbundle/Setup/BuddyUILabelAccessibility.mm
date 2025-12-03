@@ -13,9 +13,9 @@
     return 0;
   }
 
-  v3 = [(BuddyUILabelAccessibility *)self accessibilityLabel];
-  v4 = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
-  v5 = [v3 stringByTrimmingCharactersInSet:v4];
+  accessibilityLabel = [(BuddyUILabelAccessibility *)self accessibilityLabel];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
+  v5 = [accessibilityLabel stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   v6 = [v5 length] != 0;
 
   return v6;

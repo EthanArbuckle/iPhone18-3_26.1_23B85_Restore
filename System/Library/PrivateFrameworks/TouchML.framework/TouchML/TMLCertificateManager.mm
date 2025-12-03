@@ -2,7 +2,7 @@
 + (id)shared;
 - (__SecKey)verificationKey;
 - (id)certificateForSignatureVerification;
-- (void)updateCertificateFromPath:(id)a3;
+- (void)updateCertificateFromPath:(id)path;
 @end
 
 @implementation TMLCertificateManager
@@ -110,12 +110,12 @@ LABEL_18:
   return v7;
 }
 
-- (void)updateCertificateFromPath:(id)a3
+- (void)updateCertificateFromPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v10 = 0;
-    v5 = objc_msgSend_stringWithContentsOfFile_encoding_error_(MEMORY[0x277CCACA8], a2, v3, a3, 4, &v10);
+    v5 = objc_msgSend_stringWithContentsOfFile_encoding_error_(MEMORY[0x277CCACA8], a2, v3, path, 4, &v10);
     v6 = v10;
     if ((objc_msgSend_isEqualToString_(v5, v7, v8, self->_certificate) & 1) == 0)
     {

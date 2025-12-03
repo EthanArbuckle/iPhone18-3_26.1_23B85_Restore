@@ -1,7 +1,7 @@
 @interface PLDetectionTrait
-+ (BOOL)isPetDetectionType:(signed __int16)a3;
-+ (id)fetchDetectionTraitByFaceUUIDWithFaceUUIDs:(id)a3 library:(id)a4 error:(id *)a5;
-+ (id)insertIntoManagedObjectContext:(id)a3 type:(signed __int16)a4 value:(signed __int16)a5 score:(double)a6 startTime:(double)a7 duration:(double)a8 thumbnailIdentifier:(id)a9;
++ (BOOL)isPetDetectionType:(signed __int16)type;
++ (id)fetchDetectionTraitByFaceUUIDWithFaceUUIDs:(id)ds library:(id)library error:(id *)error;
++ (id)insertIntoManagedObjectContext:(id)context type:(signed __int16)type value:(signed __int16)value score:(double)score startTime:(double)time duration:(double)duration thumbnailIdentifier:(id)identifier;
 - (id)debugLogDescription;
 - (void)_touchPersonForPersistenceIfNeeded;
 - (void)willSave;
@@ -31,23 +31,23 @@
   [v3 appendName:@"startTime" doubleValue:?];
   [(PLDetectionTrait *)self duration];
   [v3 appendName:@"duration" doubleValue:?];
-  v6 = [(PLDetectionTrait *)self thumbnailIdentifier];
-  [v3 appendName:@"thumbID" object:v6];
+  thumbnailIdentifier = [(PLDetectionTrait *)self thumbnailIdentifier];
+  [v3 appendName:@"thumbID" object:thumbnailIdentifier];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 - (void)_touchPersonForPersistenceIfNeeded
 {
-  v3 = [(PLManagedObject *)self pathManager];
-  v4 = [v3 isDCIM];
+  pathManager = [(PLManagedObject *)self pathManager];
+  isDCIM = [pathManager isDCIM];
 
-  if (v4)
+  if (isDCIM)
   {
-    v6 = [(PLDetectionTrait *)self detection];
-    v5 = [v6 associatedPersonForFaceOrTorso:1 orTemporal:0];
+    detection = [(PLDetectionTrait *)self detection];
+    v5 = [detection associatedPersonForFaceOrTorso:1 orTemporal:0];
     if (([v5 isInserted] & 1) == 0 && (objc_msgSend(v5, "isUpdated") & 1) == 0)
     {
       [v5 setEffectiveVerifiedType:{objc_msgSend(v5, "verifiedType")}];
@@ -60,7 +60,7 @@
   v4.receiver = self;
   v4.super_class = PLDetectionTrait;
   [(PLManagedObject *)&v4 willSave];
-  v3 = [(PLDetectionTrait *)self managedObjectContext];
+  managedObjectContext = [(PLDetectionTrait *)self managedObjectContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -69,28 +69,28 @@
   }
 }
 
-+ (BOOL)isPetDetectionType:(signed __int16)a3
++ (BOOL)isPetDetectionType:(signed __int16)type
 {
-  v3 = a3;
-  if (a3 == 2)
+  typeCopy = type;
+  if (type == 2)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"PLDetectionTrait.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"detectionType != PLDetectionTypePet"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDetectionTrait.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"detectionType != PLDetectionTypePet"}];
   }
 
-  return v3 > 2;
+  return typeCopy > 2;
 }
 
-+ (id)fetchDetectionTraitByFaceUUIDWithFaceUUIDs:(id)a3 library:(id)a4 error:(id *)a5
++ (id)fetchDetectionTraitByFaceUUIDWithFaceUUIDs:(id)ds library:(id)library error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dsCopy = ds;
+  libraryCopy = library;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
   v29 = __Block_byref_object_copy__35113;
   v30 = __Block_byref_object_dispose__35114;
-  v31 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -101,19 +101,19 @@
   v15[1] = 3221225472;
   v15[2] = __77__PLDetectionTrait_fetchDetectionTraitByFaceUUIDWithFaceUUIDs_library_error___block_invoke;
   v15[3] = &unk_1E7578898;
-  v9 = v8;
+  v9 = libraryCopy;
   v16 = v9;
-  v10 = v7;
+  v10 = dsCopy;
   v17 = v10;
   v18 = &v20;
   v19 = &v26;
   [v9 performBlockAndWait:v15];
   v11 = v27[5];
   v12 = v21[5];
-  if (!v11 && a5)
+  if (!v11 && error)
   {
     v12 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   v13 = v27[5];
@@ -215,36 +215,36 @@ void __77__PLDetectionTrait_fetchDetectionTraitByFaceUUIDWithFaceUUIDs_library_e
   }
 }
 
-+ (id)insertIntoManagedObjectContext:(id)a3 type:(signed __int16)a4 value:(signed __int16)a5 score:(double)a6 startTime:(double)a7 duration:(double)a8 thumbnailIdentifier:(id)a9
++ (id)insertIntoManagedObjectContext:(id)context type:(signed __int16)type value:(signed __int16)value score:(double)score startTime:(double)time duration:(double)duration thumbnailIdentifier:(id)identifier
 {
-  v13 = a5;
-  v14 = a4;
-  v17 = a3;
-  v18 = a9;
-  if (v17)
+  valueCopy = value;
+  typeCopy = type;
+  contextCopy = context;
+  identifierCopy = identifier;
+  if (contextCopy)
   {
-    v19 = [a1 entityName];
-    [MEMORY[0x1E695D5B8] insertNewObjectForEntityForName:v19 inManagedObjectContext:v17];
+    entityName = [self entityName];
+    [MEMORY[0x1E695D5B8] insertNewObjectForEntityForName:entityName inManagedObjectContext:contextCopy];
   }
 
   else
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"PLDetectionTrait.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"moc"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDetectionTrait.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"moc"}];
 
-    v19 = [a1 entityName];
-    PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v19, 0, 0);
+    entityName = [self entityName];
+    PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(entityName, 0, 0);
   }
   v20 = ;
 
-  [v20 setType:v14];
-  [v20 setValue:v13];
-  [v20 setScore:a6];
-  [v20 setStartTime:a7];
-  [v20 setDuration:a8];
-  if (v18)
+  [v20 setType:typeCopy];
+  [v20 setValue:valueCopy];
+  [v20 setScore:score];
+  [v20 setStartTime:time];
+  [v20 setDuration:duration];
+  if (identifierCopy)
   {
-    [v20 setThumbnailIdentifier:v18];
+    [v20 setThumbnailIdentifier:identifierCopy];
   }
 
   return v20;

@@ -1,32 +1,32 @@
 @interface _SWCChatterboxResolver
-+ (BOOL)_looksLikeAppleErrorPageURLResponse:(id)a3;
-+ (BOOL)_looksLikeChatterboxURLComponents:(id)a3;
++ (BOOL)_looksLikeAppleErrorPageURLResponse:(id)response;
++ (BOOL)_looksLikeChatterboxURLComponents:(id)components;
 + (id)_queue;
-+ (id)_resolverForTask:(id)a3;
++ (id)_resolverForTask:(id)task;
 + (id)_session;
-+ (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-+ (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-+ (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
-+ (void)_invokeCompletionHandlerForTask:(id)a3 result:(id)a4 error:(id)a5;
-+ (void)_setResolver:(id)a3 forTask:(id)a4;
-- (_SWCChatterboxResolver)initWithURL:(id)a3;
++ (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
++ (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
++ (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
++ (void)_invokeCompletionHandlerForTask:(id)task result:(id)result error:(id)error;
++ (void)_setResolver:(id)resolver forTask:(id)task;
+- (_SWCChatterboxResolver)initWithURL:(id)l;
 - (void)dealloc;
-- (void)resolveWithCompletionHandler:(id)a3;
+- (void)resolveWithCompletionHandler:(id)handler;
 @end
 
 @implementation _SWCChatterboxResolver
 
-- (_SWCChatterboxResolver)initWithURL:(id)a3
+- (_SWCChatterboxResolver)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = _SWCChatterboxResolver;
   v6 = [(_SWCChatterboxResolver *)&v12 init];
   v7 = v6;
-  if (!v5)
+  if (!lCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:v7 file:@"SWCChatterboxResolver.mm" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"aURL != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v7 file:@"SWCChatterboxResolver.mm" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"aURL != nil"}];
 
     if (!v7)
     {
@@ -39,7 +39,7 @@
   if (v6)
   {
 LABEL_3:
-    v8 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v5 resolvingAgainstBaseURL:1];
+    v8 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:lCopy resolvingAgainstBaseURL:1];
     URLComponents = v7->_URLComponents;
     v7->_URLComponents = v8;
   }
@@ -61,7 +61,7 @@ LABEL_4:
   if (os_log_type_enabled(qword_280B21850, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_265F54000, v3, OS_LOG_TYPE_DEBUG, "Deallocating %p", buf, 0xCu);
   }
 
@@ -71,16 +71,16 @@ LABEL_4:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resolveWithCompletionHandler:(id)a3
+- (void)resolveWithCompletionHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  handlerCopy = handler;
   v6 = self->_URLComponents;
   v7 = objc_opt_class();
-  if (!v5)
+  if (!handlerCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"SWCChatterboxResolver.mm" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SWCChatterboxResolver.mm" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != nil"}];
   }
 
   if ([v7 _looksLikeChatterboxURLComponents:v6])
@@ -89,8 +89,8 @@ LABEL_4:
     os_unfair_recursive_lock_lock_with_options();
     if (self->_task)
     {
-      v18 = [MEMORY[0x277CCA890] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"SWCChatterboxResolver.mm" lineNumber:87 description:{@"Already attempting to resolve this Chatterbox URL.", v8}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"SWCChatterboxResolver.mm" lineNumber:87 description:{@"Already attempting to resolve this Chatterbox URL.", v8}];
     }
 
     if (qword_280B21858 != -1)
@@ -106,13 +106,13 @@ LABEL_4:
       _os_log_impl(&dword_265F54000, v9, OS_LOG_TYPE_INFO, "Resolving Chatterbox URL %{sensitive}@", buf, 0xCu);
     }
 
-    v10 = [v7 _session];
+    _session = [v7 _session];
     v11 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:v8];
-    v12 = [v10 dataTaskWithRequest:v11];
+    v12 = [_session dataTaskWithRequest:v11];
     [v12 resume];
     objc_storeStrong(&self->_task, v12);
-    objc_storeStrong(&self->_session, v10);
-    v13 = [v5 copy];
+    objc_storeStrong(&self->_session, _session);
+    v13 = [handlerCopy copy];
     completionHandler = self->_completionHandler;
     self->_completionHandler = v13;
 
@@ -136,25 +136,25 @@ LABEL_4:
       _os_log_impl(&dword_265F54000, v15, OS_LOG_TYPE_INFO, "URL %{sensitive}@ is not from Chatterbox, returning verbatim.", buf, 0xCu);
     }
 
-    (*(v5 + 2))(v5, v8, 0);
+    (*(handlerCopy + 2))(handlerCopy, v8, 0);
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
++ (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_11;
   }
 
-  v12 = [v10 statusCode];
+  statusCode = [responseCopy statusCode];
   if (qword_280B21858 != -1)
   {
     dispatch_once(&qword_280B21858, &__block_literal_global_98);
@@ -163,27 +163,27 @@ LABEL_4:
   v13 = qword_280B21850;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [v9 originalRequest];
-    v15 = [v14 URL];
+    originalRequest = [taskCopy originalRequest];
+    v15 = [originalRequest URL];
     *buf = 134218499;
-    v25 = v12;
+    v25 = statusCode;
     v26 = 2117;
     v27 = v15;
     v28 = 2117;
-    v29 = v10;
+    v29 = responseCopy;
     _os_log_impl(&dword_265F54000, v13, OS_LOG_TYPE_INFO, "Got HTTP response %li for Chatterbox URL %{sensitive}@: %{sensitive}@", buf, 0x20u);
   }
 
-  if ((v12 - 200) > 0x63)
+  if ((statusCode - 200) > 0x63)
   {
-    if ((v12 - 400) <= 0xC7)
+    if ((statusCode - 400) <= 0xC7)
     {
       v17 = objc_alloc(MEMORY[0x277CCA9B8]);
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"+[_SWCChatterboxResolver URLSession:dataTask:didReceiveResponse:completionHandler:]", @"Line", @"Function", &unk_2877A73C0}];
       v23[1] = v16;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:2];
-      v19 = [v17 initWithDomain:@"HTTP" code:v12 userInfo:v18];
-      [a1 _invokeCompletionHandlerForTask:v9 result:0 error:v19];
+      v19 = [v17 initWithDomain:@"HTTP" code:statusCode userInfo:v18];
+      [self _invokeCompletionHandlerForTask:taskCopy result:0 error:v19];
 
       goto LABEL_10;
     }
@@ -193,25 +193,25 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v16 = [v10 URL];
-  [a1 _invokeCompletionHandlerForTask:v9 result:v16 error:0];
+  v16 = [responseCopy URL];
+  [self _invokeCompletionHandlerForTask:taskCopy result:v16 error:0];
 LABEL_10:
 
   v20 = 0;
 LABEL_12:
-  v11[2](v11, v20);
+  handlerCopy[2](handlerCopy, v20);
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
++ (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v30 = a3;
-  v12 = a4;
-  v31 = a5;
-  v13 = a6;
-  v14 = a7;
+  sessionCopy = session;
+  taskCopy = task;
+  redirectionCopy = redirection;
+  requestCopy = request;
+  handlerCopy = handler;
   if (qword_280B21858 != -1)
   {
     dispatch_once(&qword_280B21858, &__block_literal_global_98);
@@ -220,9 +220,9 @@ LABEL_12:
   v15 = qword_280B21850;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v16 = [v12 originalRequest];
-    v17 = [v16 URL];
-    v18 = [v13 URL];
+    originalRequest = [taskCopy originalRequest];
+    v17 = [originalRequest URL];
+    v18 = [requestCopy URL];
     *buf = 138740227;
     v35 = v17;
     v36 = 2117;
@@ -230,7 +230,7 @@ LABEL_12:
     _os_log_impl(&dword_265F54000, v15, OS_LOG_TYPE_INFO, "Redirecting Chatterbox URL %{sensitive}@ => %{sensitive}@", buf, 0x16u);
   }
 
-  if ([a1 _looksLikeAppleErrorPageURLResponse:v31])
+  if ([self _looksLikeAppleErrorPageURLResponse:redirectionCopy])
   {
     if (qword_280B21858 != -1)
     {
@@ -240,8 +240,8 @@ LABEL_12:
     v19 = qword_280B21850;
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v28 = [v12 originalRequest];
-      v29 = [v28 URL];
+      originalRequest2 = [taskCopy originalRequest];
+      v29 = [originalRequest2 URL];
       *buf = 138739971;
       v35 = v29;
       _os_log_error_impl(&dword_265F54000, v19, OS_LOG_TYPE_ERROR, "Chatterbox URL %{sensitive}@: resolution failed server-side and redirected to a generic error page.", buf, 0xCu);
@@ -258,43 +258,43 @@ LABEL_12:
     v23 = *MEMORY[0x277CCA760];
     v32[2] = v22;
     v32[3] = v23;
-    v24 = [v13 URL];
+    v24 = [requestCopy URL];
     v33[3] = v24;
     v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:4];
     v26 = [v20 initWithDomain:@"SWCErrorDomain" code:9 userInfo:v25];
-    [a1 _invokeCompletionHandlerForTask:v12 result:0 error:v26];
+    [self _invokeCompletionHandlerForTask:taskCopy result:0 error:v26];
 
-    [v12 cancel];
+    [taskCopy cancel];
   }
 
-  v14[2](v14, v13);
+  handlerCopy[2](handlerCopy, requestCopy);
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
++ (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
+  if (errorCopy)
   {
     if (qword_280B21858 != -1)
     {
       dispatch_once(&qword_280B21858, &__block_literal_global_98);
     }
 
-    v11 = qword_280B21850;
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    currentRequest = qword_280B21850;
+    if (os_log_type_enabled(currentRequest, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v9 originalRequest];
-      v18 = [v17 URL];
+      originalRequest = [taskCopy originalRequest];
+      v18 = [originalRequest URL];
       v19 = 138740227;
       v20 = v18;
       v21 = 2112;
-      v22 = v10;
-      _os_log_error_impl(&dword_265F54000, v11, OS_LOG_TYPE_ERROR, "Error handling Chatterbox URL %{sensitive}@: %@", &v19, 0x16u);
+      v22 = errorCopy;
+      _os_log_error_impl(&dword_265F54000, currentRequest, OS_LOG_TYPE_ERROR, "Error handling Chatterbox URL %{sensitive}@: %@", &v19, 0x16u);
     }
 
     v12 = 0;
@@ -310,19 +310,19 @@ LABEL_12:
     v13 = qword_280B21850;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [v9 originalRequest];
-      v15 = [v14 URL];
+      originalRequest2 = [taskCopy originalRequest];
+      v15 = [originalRequest2 URL];
       v19 = 138739971;
       v20 = v15;
       _os_log_impl(&dword_265F54000, v13, OS_LOG_TYPE_INFO, "Finished handling Chatterbox URL %{sensitive}@", &v19, 0xCu);
     }
 
-    v11 = [v9 currentRequest];
-    v12 = [v11 URL];
+    currentRequest = [taskCopy currentRequest];
+    v12 = [currentRequest URL];
   }
 
-  [a1 _invokeCompletionHandlerForTask:v9 result:v12 error:v10];
-  if (!v10)
+  [self _invokeCompletionHandlerForTask:taskCopy result:v12 error:errorCopy];
+  if (!errorCopy)
   {
   }
 
@@ -347,10 +347,10 @@ LABEL_12:
   WeakRetained = objc_loadWeakRetained(&qword_280B21840);
   if (!WeakRetained)
   {
-    v4 = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
+    ephemeralSessionConfiguration = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
     v5 = MEMORY[0x277CCAD30];
-    v6 = [a1 _queue];
-    WeakRetained = [v5 sessionWithConfiguration:v4 delegate:a1 delegateQueue:v6];
+    _queue = [self _queue];
+    WeakRetained = [v5 sessionWithConfiguration:ephemeralSessionConfiguration delegate:self delegateQueue:_queue];
   }
 
   os_unfair_recursive_lock_unlock();
@@ -358,23 +358,23 @@ LABEL_12:
   return WeakRetained;
 }
 
-+ (id)_resolverForTask:(id)a3
++ (id)_resolverForTask:(id)task
 {
-  v3 = a3;
+  taskCopy = task;
   os_unfair_recursive_lock_lock_with_options();
-  v4 = [qword_280B21848 objectForKeyedSubscript:v3];
+  v4 = [qword_280B21848 objectForKeyedSubscript:taskCopy];
   os_unfair_recursive_lock_unlock();
 
   return v4;
 }
 
-+ (void)_setResolver:(id)a3 forTask:(id)a4
++ (void)_setResolver:(id)resolver forTask:(id)task
 {
-  v9 = a3;
-  v5 = a4;
+  resolverCopy = resolver;
+  taskCopy = task;
   os_unfair_recursive_lock_lock_with_options();
   v6 = qword_280B21848;
-  if (v9 && !qword_280B21848)
+  if (resolverCopy && !qword_280B21848)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v8 = qword_280B21848;
@@ -383,18 +383,18 @@ LABEL_12:
     v6 = qword_280B21848;
   }
 
-  [v6 setObject:v9 forKeyedSubscript:v5];
+  [v6 setObject:resolverCopy forKeyedSubscript:taskCopy];
   os_unfair_recursive_lock_unlock();
 }
 
-+ (void)_invokeCompletionHandlerForTask:(id)a3 result:(id)a4 error:(id)a5
++ (void)_invokeCompletionHandlerForTask:(id)task result:(id)result error:(id)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  taskCopy = task;
+  resultCopy = result;
+  errorCopy = error;
   os_unfair_recursive_lock_lock_with_options();
-  v11 = [a1 _resolverForTask:v8];
+  v11 = [self _resolverForTask:taskCopy];
   v12 = v11;
   if (v11)
   {
@@ -406,12 +406,12 @@ LABEL_12:
     *(v12 + 32) = 0;
 
     v16 = 0;
-    if (!v9)
+    if (!resultCopy)
     {
       v16 = *(v12 + 8);
     }
 
-    [a1 _setResolver:0 forTask:v8];
+    [self _setResolver:0 forTask:taskCopy];
     v17 = *(v12 + 24);
     *(v12 + 24) = 0;
   }
@@ -434,8 +434,8 @@ LABEL_12:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
       v20 = MEMORY[0x2667737C0](v14);
-      v21 = [v8 originalRequest];
-      v22 = [v21 URL];
+      originalRequest = [taskCopy originalRequest];
+      v22 = [originalRequest URL];
       v23 = 138412547;
       v24 = v20;
       v25 = 2117;
@@ -443,32 +443,32 @@ LABEL_12:
       _os_log_debug_impl(&dword_265F54000, v18, OS_LOG_TYPE_DEBUG, "Invoking completion handler %@ for Chatterbox URL %{sensitive}@", &v23, 0x16u);
     }
 
-    (v14)[2](v14, v9, v10);
+    (v14)[2](v14, resultCopy, errorCopy);
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)_looksLikeChatterboxURLComponents:(id)a3
++ (BOOL)_looksLikeChatterboxURLComponents:(id)components
 {
-  v5 = a3;
-  if (!v5)
+  componentsCopy = components;
+  if (!componentsCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"SWCChatterboxResolver.mm" lineNumber:272 description:{@"Invalid parameter not satisfying: %@", @"urlComponents != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SWCChatterboxResolver.mm" lineNumber:272 description:{@"Invalid parameter not satisfying: %@", @"urlComponents != nil"}];
   }
 
   v6 = objc_autoreleasePoolPush();
-  v7 = [v5 scheme];
-  v8 = [v5 host];
-  if (!v7)
+  scheme = [componentsCopy scheme];
+  host = [componentsCopy host];
+  if (!scheme)
   {
     goto LABEL_13;
   }
 
-  if (![v7 caseInsensitiveCompare:@"http"])
+  if (![scheme caseInsensitiveCompare:@"http"])
   {
-    if (v8)
+    if (host)
     {
       goto LABEL_9;
     }
@@ -479,13 +479,13 @@ LABEL_13:
   }
 
   v9 = 0;
-  if ([v7 caseInsensitiveCompare:@"https"] || !v8)
+  if ([scheme caseInsensitiveCompare:@"https"] || !host)
   {
     goto LABEL_14;
   }
 
 LABEL_9:
-  if (![v8 caseInsensitiveCompare:@"c.apple.com"])
+  if (![host caseInsensitiveCompare:@"c.apple.com"])
   {
     v9 = 1;
     goto LABEL_14;
@@ -499,7 +499,7 @@ LABEL_9:
   v10 = +[_SWCPrefs sharedPrefs];
   if ([v10 isAppleInternal])
   {
-    v9 = [v8 caseInsensitiveCompare:qword_280B21760] == 0;
+    v9 = [host caseInsensitiveCompare:qword_280B21760] == 0;
   }
 
   else
@@ -513,25 +513,25 @@ LABEL_14:
   return v9;
 }
 
-+ (BOOL)_looksLikeAppleErrorPageURLResponse:(id)a3
++ (BOOL)_looksLikeAppleErrorPageURLResponse:(id)response
 {
-  v3 = [a3 valueForHTTPHeaderField:@"Location"];
+  v3 = [response valueForHTTPHeaderField:@"Location"];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277CCACE0]) initWithString:v3];
-    v5 = [v4 host];
-    v6 = v5;
-    if (v5 && ![v5 caseInsensitiveCompare:@"www.apple.com"])
+    host = [v4 host];
+    v6 = host;
+    if (host && ![host caseInsensitiveCompare:@"www.apple.com"])
     {
-      v8 = [v4 path];
-      if ([v8 isEqual:@"/error"])
+      path = [v4 path];
+      if ([path isEqual:@"/error"])
       {
         v7 = 1;
       }
 
       else
       {
-        v7 = [v8 hasSuffix:@"/error.html"];
+        v7 = [path hasSuffix:@"/error.html"];
       }
     }
 

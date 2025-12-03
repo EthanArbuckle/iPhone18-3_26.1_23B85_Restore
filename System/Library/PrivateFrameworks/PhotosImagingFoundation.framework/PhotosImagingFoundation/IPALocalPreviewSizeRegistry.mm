@@ -11,11 +11,11 @@
   v50.receiver = self;
   v50.super_class = IPALocalPreviewSizeRegistry;
   v2 = [(IPAPreviewSizeRegistry *)&v50 initWithName:@"Local"];
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"__32s"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"__32s"];
 
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 BOOLForKey:@"__32s_422"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults2 BOOLForKey:@"__32s_422"];
 
   if (v6)
   {
@@ -113,7 +113,7 @@
   block[1] = 3221225472;
   block[2] = __45__IPALocalPreviewSizeRegistry_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);

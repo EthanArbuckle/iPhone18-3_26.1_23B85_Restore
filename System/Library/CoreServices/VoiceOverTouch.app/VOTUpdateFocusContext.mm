@@ -1,15 +1,15 @@
 @interface VOTUpdateFocusContext
-+ (id)context:(int64_t)a3;
++ (id)context:(int64_t)context;
 - (VOTUpdateFocusContext)init;
 - (id)description;
 @end
 
 @implementation VOTUpdateFocusContext
 
-+ (id)context:(int64_t)a3
++ (id)context:(int64_t)context
 {
   v4 = objc_alloc_init(VOTUpdateFocusContext);
-  [(VOTUpdateFocusContext *)v4 setReason:a3];
+  [(VOTUpdateFocusContext *)v4 setReason:context];
 
   return v4;
 }
@@ -30,11 +30,11 @@
 - (id)description
 {
   v3 = [NSNumber numberWithBool:[(VOTUpdateFocusContext *)self shouldIgnorePreviousFocusedElement]];
-  v4 = [(VOTUpdateFocusContext *)self focusElement];
+  focusElement = [(VOTUpdateFocusContext *)self focusElement];
   v5 = [NSNumber numberWithInt:[(VOTUpdateFocusContext *)self senderPID]];
-  v6 = [(VOTUpdateFocusContext *)self senderBundleID];
+  senderBundleID = [(VOTUpdateFocusContext *)self senderBundleID];
   v7 = [NSNumber numberWithBool:[(VOTUpdateFocusContext *)self senderIsAppExtension]];
-  v8 = [NSString stringWithFormat:@"VOTUpdateFocusContext <%p>.\n\tReason:%@\n\tIgnorePrevious:%@\n\tFocus:%@\n\tSender PID: %@ BundleID: %@. Is Extension:%@", self, 0, v3, v4, v5, v6, v7];
+  v8 = [NSString stringWithFormat:@"VOTUpdateFocusContext <%p>.\n\tReason:%@\n\tIgnorePrevious:%@\n\tFocus:%@\n\tSender PID: %@ BundleID: %@. Is Extension:%@", self, 0, v3, focusElement, v5, senderBundleID, v7];
 
   return v8;
 }

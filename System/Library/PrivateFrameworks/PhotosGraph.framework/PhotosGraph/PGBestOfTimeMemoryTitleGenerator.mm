@@ -1,10 +1,10 @@
 @interface PGBestOfTimeMemoryTitleGenerator
-- (PGBestOfTimeMemoryTitleGenerator)initWithStartDate:(id)a3 endDate:(id)a4 titleGenerationContext:(id)a5;
-- (PGBestOfTimeMemoryTitleGenerator)initWithYear:(int64_t)a3 titleGenerationContext:(id)a4;
+- (PGBestOfTimeMemoryTitleGenerator)initWithStartDate:(id)date endDate:(id)endDate titleGenerationContext:(id)context;
+- (PGBestOfTimeMemoryTitleGenerator)initWithYear:(int64_t)year titleGenerationContext:(id)context;
 - (id)_bestOfPastTimeTitle;
 - (id)_bestOfYearTitle;
 - (id)_generateSubtitle;
-- (void)_generateTitleAndSubtitleWithResult:(id)a3;
+- (void)_generateTitleAndSubtitleWithResult:(id)result;
 @end
 
 @implementation PGBestOfTimeMemoryTitleGenerator
@@ -63,57 +63,57 @@ LABEL_7:
   return v4;
 }
 
-- (void)_generateTitleAndSubtitleWithResult:(id)a3
+- (void)_generateTitleAndSubtitleWithResult:(id)result
 {
   if (self->_startDate && self->_endDate)
   {
-    v5 = a3;
-    v6 = [(PGBestOfTimeMemoryTitleGenerator *)self _bestOfPastTimeTitle];
+    resultCopy = result;
+    _bestOfPastTimeTitle = [(PGBestOfTimeMemoryTitleGenerator *)self _bestOfPastTimeTitle];
   }
 
   else
   {
-    v7 = a3;
-    v6 = [(PGBestOfTimeMemoryTitleGenerator *)self _bestOfYearTitle];
+    resultCopy2 = result;
+    _bestOfPastTimeTitle = [(PGBestOfTimeMemoryTitleGenerator *)self _bestOfYearTitle];
   }
 
-  v9 = v6;
-  v8 = [(PGBestOfTimeMemoryTitleGenerator *)self _generateSubtitle];
-  (*(a3 + 2))(a3, v9, v8);
+  v9 = _bestOfPastTimeTitle;
+  _generateSubtitle = [(PGBestOfTimeMemoryTitleGenerator *)self _generateSubtitle];
+  (*(result + 2))(result, v9, _generateSubtitle);
 }
 
-- (PGBestOfTimeMemoryTitleGenerator)initWithYear:(int64_t)a3 titleGenerationContext:(id)a4
+- (PGBestOfTimeMemoryTitleGenerator)initWithYear:(int64_t)year titleGenerationContext:(id)context
 {
   v6 = MEMORY[0x277CBEB98];
-  v7 = a4;
+  contextCopy = context;
   v8 = [v6 set];
   v11.receiver = self;
   v11.super_class = PGBestOfTimeMemoryTitleGenerator;
-  v9 = [(PGTitleGenerator *)&v11 initWithMomentNodes:v8 referenceDateInterval:0 keyAsset:0 curatedAssetCollection:0 assetCollection:0 type:0 titleGenerationContext:v7];
+  v9 = [(PGTitleGenerator *)&v11 initWithMomentNodes:v8 referenceDateInterval:0 keyAsset:0 curatedAssetCollection:0 assetCollection:0 type:0 titleGenerationContext:contextCopy];
 
   if (v9)
   {
-    v9->_year = a3;
+    v9->_year = year;
   }
 
   return v9;
 }
 
-- (PGBestOfTimeMemoryTitleGenerator)initWithStartDate:(id)a3 endDate:(id)a4 titleGenerationContext:(id)a5
+- (PGBestOfTimeMemoryTitleGenerator)initWithStartDate:(id)date endDate:(id)endDate titleGenerationContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v11 = MEMORY[0x277CBEB98];
-  v12 = a5;
+  contextCopy = context;
   v13 = [v11 set];
   v16.receiver = self;
   v16.super_class = PGBestOfTimeMemoryTitleGenerator;
-  v14 = [(PGTitleGenerator *)&v16 initWithMomentNodes:v13 referenceDateInterval:0 keyAsset:0 curatedAssetCollection:0 assetCollection:0 type:0 titleGenerationContext:v12];
+  v14 = [(PGTitleGenerator *)&v16 initWithMomentNodes:v13 referenceDateInterval:0 keyAsset:0 curatedAssetCollection:0 assetCollection:0 type:0 titleGenerationContext:contextCopy];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_startDate, a3);
-    objc_storeStrong(&v14->_endDate, a4);
+    objc_storeStrong(&v14->_startDate, date);
+    objc_storeStrong(&v14->_endDate, endDate);
     v14->_year = 0x7FFFFFFFFFFFFFFFLL;
   }
 

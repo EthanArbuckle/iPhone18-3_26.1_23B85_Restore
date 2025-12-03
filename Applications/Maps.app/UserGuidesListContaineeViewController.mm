@@ -1,6 +1,6 @@
 @interface UserGuidesListContaineeViewController
 - (ShareDelegate)shareDelegate;
-- (_TtC4Maps37UserGuidesListContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC4Maps37UserGuidesListContaineeViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP4Maps45UserGuidesListContaineeViewControllerDelegate_)actionDelegate;
 - (void)viewDidLoad;
 @end
@@ -23,13 +23,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002ABC40();
 }
 
-- (_TtC4Maps37UserGuidesListContaineeViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps37UserGuidesListContaineeViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -41,8 +41,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1002AC5C4(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1002AC5C4(v5, v7, bundle);
 }
 
 @end

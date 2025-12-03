@@ -1,8 +1,8 @@
 @interface CRLiOSUnhittableView
 - (CRLiOSUnhittableView)init;
-- (CRLiOSUnhittableView)initWithCoder:(id)a3;
-- (CRLiOSUnhittableView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (CRLiOSUnhittableView)initWithCoder:(id)coder;
+- (CRLiOSUnhittableView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)p_commonInit;
 @end
 
@@ -22,11 +22,11 @@
   return v3;
 }
 
-- (CRLiOSUnhittableView)initWithCoder:(id)a3
+- (CRLiOSUnhittableView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CRLiOSUnhittableView;
-  v3 = [(CRLiOSUnhittableView *)&v6 initWithCoder:a3];
+  v3 = [(CRLiOSUnhittableView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -36,11 +36,11 @@
   return v4;
 }
 
-- (CRLiOSUnhittableView)initWithFrame:(CGRect)a3
+- (CRLiOSUnhittableView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CRLiOSUnhittableView;
-  v3 = [(CRLiOSUnhittableView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CRLiOSUnhittableView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -60,11 +60,11 @@
   [(CRLiOSUnhittableView *)self setUserInteractionEnabled:1];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = CRLiOSUnhittableView;
-  v5 = [(CRLiOSUnhittableView *)&v7 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(CRLiOSUnhittableView *)&v7 hitTest:event withEvent:test.x, test.y];
   if (v5 == self)
   {
 

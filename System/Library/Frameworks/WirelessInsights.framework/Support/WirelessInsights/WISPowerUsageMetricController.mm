@@ -1,10 +1,10 @@
 @interface WISPowerUsageMetricController
 - (WISPowerUsageMetricController)init;
 - (id).cxx_construct;
-- (id)powerIOPropertyForKey:(id)a3 ofExpectedClass:(Class)a4;
+- (id)powerIOPropertyForKey:(id)key ofExpectedClass:(Class)class;
 - (shared_ptr<TelemetryObserver>)observer;
 - (void)dealloc;
-- (void)handleBasebandPowerMetricWithPayload:(id)a3;
+- (void)handleBasebandPowerMetricWithPayload:(id)payload;
 - (void)handleChargingStateUpdate;
 @end
 
@@ -33,13 +33,13 @@
     [(WISPowerUsageMetricController *)v2 setNotificationToken:0xFFFFFFFFLL];
     out_token = -1;
     objc_initWeak(&location, v2);
-    v4 = [(WISPowerUsageMetricController *)v2 queue];
+    queue = [(WISPowerUsageMetricController *)v2 queue];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_10013794C;
     handler[3] = &unk_1002AB2D8;
     objc_copyWeak(&v7, &location);
-    if (!notify_register_dispatch("com.apple.system.powersources.source", &out_token, v4, handler))
+    if (!notify_register_dispatch("com.apple.system.powersources.source", &out_token, queue, handler))
     {
       [(WISPowerUsageMetricController *)v2 setNotificationToken:out_token];
       sub_100138BDC();
@@ -95,9 +95,9 @@
   }
 }
 
-- (void)handleBasebandPowerMetricWithPayload:(id)a3
+- (void)handleBasebandPowerMetricWithPayload:(id)payload
 {
-  v71 = a3;
+  payloadCopy = payload;
   v4 = [NSString stringWithUTF8String:"CurrentCapacity"];
   v73 = [(WISPowerUsageMetricController *)self powerIOPropertyForKey:v4 ofExpectedClass:objc_opt_class()];
 
@@ -144,35 +144,35 @@
 
   if (v73 && v72 && v7 && v9 && v13 && v15 && v17)
   {
-    v65 = [v73 longLongValue];
-    v63 = [v72 longLongValue];
-    v67 = [v7 longLongValue];
-    v61 = [v9 longLongValue];
-    v59 = [v13 longLongValue];
-    v57 = [v15 longLongValue];
-    v69 = [v17 unsignedLongLongValue];
+    longLongValue = [v73 longLongValue];
+    longLongValue2 = [v72 longLongValue];
+    longLongValue3 = [v7 longLongValue];
+    longLongValue4 = [v9 longLongValue];
+    longLongValue5 = [v13 longLongValue];
+    longLongValue6 = [v15 longLongValue];
+    unsignedLongLongValue = [v17 unsignedLongLongValue];
     v19 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
-    v20 = [(WISPowerUsageMetricController *)self isInitialized];
-    if ((v20 & 1) == 0)
+    isInitialized = [(WISPowerUsageMetricController *)self isInitialized];
+    if ((isInitialized & 1) == 0)
     {
       if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
       {
         sub_10020B2C4();
       }
 
-      [(WISPowerUsageMetricController *)self setLastRemainingPercent:v65];
-      [(WISPowerUsageMetricController *)self setLastMaxPercent:v63];
-      [(WISPowerUsageMetricController *)self setLastRawRemainingCharge:v67];
-      [(WISPowerUsageMetricController *)self setLastRawMaxCharge:v61];
-      [(WISPowerUsageMetricController *)self setLastVoltage:v59];
-      [(WISPowerUsageMetricController *)self setLastPackCurrentAccumulator:v57];
-      [(WISPowerUsageMetricController *)self setLastPackCurrentAccumulatorCount:v69];
+      [(WISPowerUsageMetricController *)self setLastRemainingPercent:longLongValue];
+      [(WISPowerUsageMetricController *)self setLastMaxPercent:longLongValue2];
+      [(WISPowerUsageMetricController *)self setLastRawRemainingCharge:longLongValue3];
+      [(WISPowerUsageMetricController *)self setLastRawMaxCharge:longLongValue4];
+      [(WISPowerUsageMetricController *)self setLastVoltage:longLongValue5];
+      [(WISPowerUsageMetricController *)self setLastPackCurrentAccumulator:longLongValue6];
+      [(WISPowerUsageMetricController *)self setLastPackCurrentAccumulatorCount:unsignedLongLongValue];
       [(WISPowerUsageMetricController *)self setLastSubmissionTimestamp:v19];
       [(WISPowerUsageMetricController *)self setWasChargedSinceLastSubmission:[(WISPowerUsageMetricController *)self isCurrentlyCharging]];
       goto LABEL_19;
     }
 
-    if (v19 < [(WISPowerUsageMetricController *)self lastSubmissionTimestamp]|| v69 < [(WISPowerUsageMetricController *)self lastPackCurrentAccumulatorCount])
+    if (v19 < [(WISPowerUsageMetricController *)self lastSubmissionTimestamp]|| unsignedLongLongValue < [(WISPowerUsageMetricController *)self lastPackCurrentAccumulatorCount])
     {
       v21 = *(qword_1002DBE98 + 48);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -182,65 +182,65 @@
       }
 
 LABEL_19:
-      [(WISPowerUsageMetricController *)self setIsInitialized:v20 ^ 1];
+      [(WISPowerUsageMetricController *)self setIsInitialized:isInitialized ^ 1];
       goto LABEL_20;
     }
 
-    v55 = [(WISPowerUsageMetricController *)self lastRemainingPercent];
-    v53 = [(WISPowerUsageMetricController *)self lastMaxPercent];
-    v51 = [(WISPowerUsageMetricController *)self lastRawRemainingCharge];
-    v49 = [(WISPowerUsageMetricController *)self lastRawMaxCharge];
-    v46 = [(WISPowerUsageMetricController *)self lastRawRemainingCharge];
-    v47 = [(WISPowerUsageMetricController *)self wasChargedSinceLastSubmission];
+    lastRemainingPercent = [(WISPowerUsageMetricController *)self lastRemainingPercent];
+    lastMaxPercent = [(WISPowerUsageMetricController *)self lastMaxPercent];
+    lastRawRemainingCharge = [(WISPowerUsageMetricController *)self lastRawRemainingCharge];
+    lastRawMaxCharge = [(WISPowerUsageMetricController *)self lastRawMaxCharge];
+    lastRawRemainingCharge2 = [(WISPowerUsageMetricController *)self lastRawRemainingCharge];
+    wasChargedSinceLastSubmission = [(WISPowerUsageMetricController *)self wasChargedSinceLastSubmission];
     [(WISPowerUsageMetricController *)self setWasChargedSinceLastSubmission:[(WISPowerUsageMetricController *)self isCurrentlyCharging]];
-    v45 = [(WISPowerUsageMetricController *)self lastSubmissionTimestamp];
-    v44 = [(WISPowerUsageMetricController *)self lastPackCurrentAccumulator];
-    v43 = [(WISPowerUsageMetricController *)self lastPackCurrentAccumulatorCount];
-    v42 = [(WISPowerUsageMetricController *)self lastVoltage];
-    [(WISPowerUsageMetricController *)self setLastRemainingPercent:v65];
-    [(WISPowerUsageMetricController *)self setLastMaxPercent:v63];
-    [(WISPowerUsageMetricController *)self setLastRawRemainingCharge:v67];
-    [(WISPowerUsageMetricController *)self setLastRawMaxCharge:v61];
-    [(WISPowerUsageMetricController *)self setLastVoltage:v59];
-    [(WISPowerUsageMetricController *)self setLastPackCurrentAccumulator:v57];
-    [(WISPowerUsageMetricController *)self setLastPackCurrentAccumulatorCount:v69];
+    lastSubmissionTimestamp = [(WISPowerUsageMetricController *)self lastSubmissionTimestamp];
+    lastPackCurrentAccumulator = [(WISPowerUsageMetricController *)self lastPackCurrentAccumulator];
+    lastPackCurrentAccumulatorCount = [(WISPowerUsageMetricController *)self lastPackCurrentAccumulatorCount];
+    lastVoltage = [(WISPowerUsageMetricController *)self lastVoltage];
+    [(WISPowerUsageMetricController *)self setLastRemainingPercent:longLongValue];
+    [(WISPowerUsageMetricController *)self setLastMaxPercent:longLongValue2];
+    [(WISPowerUsageMetricController *)self setLastRawRemainingCharge:longLongValue3];
+    [(WISPowerUsageMetricController *)self setLastRawMaxCharge:longLongValue4];
+    [(WISPowerUsageMetricController *)self setLastVoltage:longLongValue5];
+    [(WISPowerUsageMetricController *)self setLastPackCurrentAccumulator:longLongValue6];
+    [(WISPowerUsageMetricController *)self setLastPackCurrentAccumulatorCount:unsignedLongLongValue];
     [(WISPowerUsageMetricController *)self setLastSubmissionTimestamp:v19];
-    v22 = [v71 valueForKey:@"duration_ms"];
-    v23 = [v22 longLongValue];
+    v22 = [payloadCopy valueForKey:@"duration_ms"];
+    longLongValue7 = [v22 longLongValue];
 
-    v24 = [v71 valueForKey:@"power_stats_cumulated_energy_mj"];
-    v41 = [v24 longLongValue];
+    v24 = [payloadCopy valueForKey:@"power_stats_cumulated_energy_mj"];
+    longLongValue8 = [v24 longLongValue];
 
-    v25 = [v71 valueForKey:@"power_stats_avg_power_mw"];
-    v40 = [v25 longLongValue];
+    v25 = [payloadCopy valueForKey:@"power_stats_avg_power_mw"];
+    longLongValue9 = [v25 longLongValue];
 
-    v26 = llround(v65 * 100.0 / v63);
+    v26 = llround(longLongValue * 100.0 / longLongValue2);
     v76[0] = @"remaining_percent";
     [NSNumber numberWithLongLong:v26];
-    v66 = v27 = llround(v55 * 100.0 / v53) - v26;
+    v66 = v27 = llround(lastRemainingPercent * 100.0 / lastMaxPercent) - v26;
     v77[0] = v66;
     v76[1] = @"total_used_percent";
     v64 = [NSNumber numberWithLongLong:v27];
     v77[1] = v64;
     v76[2] = @"raw_remaining_percent";
-    [NSNumber numberWithDouble:v67 * 100.0 / v61];
-    v62 = v28 = v51 * 100.0 / v49 - v67 * 100.0 / v61;
+    [NSNumber numberWithDouble:longLongValue3 * 100.0 / longLongValue4];
+    v62 = v28 = lastRawRemainingCharge * 100.0 / lastRawMaxCharge - longLongValue3 * 100.0 / longLongValue4;
     v77[2] = v62;
     v76[3] = @"total_raw_used_percent";
     v56 = [NSNumber numberWithDouble:v28];
     v77[3] = v56;
     v76[4] = @"was_charged";
-    [NSNumber numberWithBool:v47];
-    v54 = v29 = (v19 - v45) / 0x3B9ACA00;
+    [NSNumber numberWithBool:wasChargedSinceLastSubmission];
+    v54 = v29 = (v19 - lastSubmissionTimestamp) / 0x3B9ACA00;
     v77[4] = v54;
     v76[5] = @"duration_s";
     v30 = [NSNumber numberWithUnsignedLongLong:v29];
-    v31 = v46 - v67;
+    v31 = lastRawRemainingCharge2 - longLongValue3;
     v68 = v30;
     v77[5] = v30;
     v76[6] = @"raw_charge_used_mAh";
     [NSNumber numberWithLongLong:v31];
-    v70 = v32 = (v44 - v57) / (v69 - v43) * ((v59 + v42) / 2) / 1000.0;
+    v70 = v32 = (lastPackCurrentAccumulator - longLongValue6) / (unsignedLongLongValue - lastPackCurrentAccumulatorCount) * ((longLongValue5 + lastVoltage) / 2) / 1000.0;
     v77[6] = v70;
     v76[7] = @"energy_used_mWh";
     v60 = [NSNumber numberWithDouble:v29 / 3600.0 * v32];
@@ -249,14 +249,14 @@ LABEL_19:
     v58 = [NSNumber numberWithDouble:v32];
     v77[8] = v58;
     v76[9] = @"baseband_duration_s";
-    v52 = [NSNumber numberWithLongLong:v23 / 1000];
-    v77[9] = v52;
+    1000 = [NSNumber numberWithLongLong:longLongValue7 / 1000];
+    v77[9] = 1000;
     v76[10] = @"baseband_energy_used_mWh";
-    v50 = [NSNumber numberWithDouble:v41 / 3600.0];
+    v50 = [NSNumber numberWithDouble:longLongValue8 / 3600.0];
     v77[10] = v50;
     v76[11] = @"baseband_average_power_used_mW";
-    [NSNumber numberWithLongLong:v40];
-    v48 = v33 = v41 / 3600.0 / (v29 / 3600.0 * v32);
+    [NSNumber numberWithLongLong:longLongValue9];
+    v48 = v33 = longLongValue8 / 3600.0 / (v29 / 3600.0 * v32);
     v77[11] = v48;
     v76[12] = @"baseband_to_total_energy_ratio_percent";
     v34 = [NSNumber numberWithDouble:v33 * 100.0];
@@ -292,15 +292,15 @@ LABEL_19:
 LABEL_20:
 }
 
-- (id)powerIOPropertyForKey:(id)a3 ofExpectedClass:(Class)a4
+- (id)powerIOPropertyForKey:(id)key ofExpectedClass:(Class)class
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = IOServiceMatching("IOPMPowerSource");
   MatchingService = IOServiceGetMatchingService(kIOMainPortDefault, v5);
   v7 = MatchingService;
   if (MatchingService)
   {
-    CFProperty = IORegistryEntryCreateCFProperty(MatchingService, v4, kCFAllocatorDefault, 0);
+    CFProperty = IORegistryEntryCreateCFProperty(MatchingService, keyCopy, kCFAllocatorDefault, 0);
     IOObjectRelease(v7);
     if (CFProperty && (objc_opt_isKindOfClass() & 1) != 0)
     {

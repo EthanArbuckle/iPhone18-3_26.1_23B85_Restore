@@ -1,9 +1,9 @@
 @interface AFPeerContentTuple
-- (AFPeerContentTuple)initWithCoder:(id)a3;
-- (AFPeerContentTuple)initWithInfo:(id)a3 content:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (AFPeerContentTuple)initWithCoder:(id)coder;
+- (AFPeerContentTuple)initWithInfo:(id)info content:(id)content;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFPeerContentTuple
@@ -20,11 +20,11 @@
   return v6;
 }
 
-- (AFPeerContentTuple)initWithCoder:(id)a3
+- (AFPeerContentTuple)initWithCoder:(id)coder
 {
   v13[12] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFPeerContentTuple.info"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFPeerContentTuple.info"];
   v6 = MEMORY[0x1E695DFD8];
   v13[0] = objc_opt_class();
   v13[1] = objc_opt_class();
@@ -40,42 +40,42 @@
   v13[11] = objc_opt_class();
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:12];
   v8 = [v6 setWithArray:v7];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"AFPeerContentTuple.content"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"AFPeerContentTuple.content"];
 
   v10 = [(AFPeerContentTuple *)self initWithInfo:v5 content:v9];
   v11 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   info = self->_info;
-  v5 = a3;
-  [v5 encodeObject:info forKey:@"AFPeerContentTuple.info"];
-  [v5 encodeObject:self->_content forKey:@"AFPeerContentTuple.content"];
+  coderCopy = coder;
+  [coderCopy encodeObject:info forKey:@"AFPeerContentTuple.info"];
+  [coderCopy encodeObject:self->_content forKey:@"AFPeerContentTuple.content"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v10 = 1;
     }
 
     else
     {
-      v5 = v4;
-      v6 = [(AFPeerContentTuple *)self info];
-      v7 = [(AFPeerContentTuple *)v5 info];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      info = [(AFPeerContentTuple *)self info];
+      info2 = [(AFPeerContentTuple *)v5 info];
+      if ([info isEqual:info2])
       {
-        v8 = [(AFPeerContentTuple *)self content];
-        v9 = [(AFPeerContentTuple *)v5 content];
-        v10 = [v8 isEqual:v9];
+        content = [(AFPeerContentTuple *)self content];
+        content2 = [(AFPeerContentTuple *)v5 content];
+        v10 = [content isEqual:content2];
       }
 
       else
@@ -93,14 +93,14 @@
   return v10;
 }
 
-- (AFPeerContentTuple)initWithInfo:(id)a3 content:(id)a4
+- (AFPeerContentTuple)initWithInfo:(id)info content:(id)content
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  infoCopy = info;
+  contentCopy = content;
+  v9 = contentCopy;
+  if (infoCopy)
   {
-    if (v8)
+    if (contentCopy)
     {
       goto LABEL_3;
     }
@@ -108,8 +108,8 @@
 
   else
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"AFPeerContentTuple.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"info != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"AFPeerContentTuple.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"info != nil"}];
 
     if (v9)
     {
@@ -117,8 +117,8 @@
     }
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"AFPeerContentTuple.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"content != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"AFPeerContentTuple.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"content != nil"}];
 
 LABEL_3:
   v18.receiver = self;
@@ -126,7 +126,7 @@ LABEL_3:
   v10 = [(AFPeerContentTuple *)&v18 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [infoCopy copy];
     info = v10->_info;
     v10->_info = v11;
 

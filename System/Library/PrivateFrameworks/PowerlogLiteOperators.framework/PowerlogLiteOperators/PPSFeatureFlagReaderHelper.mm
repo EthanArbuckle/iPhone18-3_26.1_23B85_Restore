@@ -16,8 +16,8 @@
     _os_log_debug_impl(&dword_21A4C6000, v3, OS_LOG_TYPE_DEBUG, "[PPSFeatureFlagReader] getFeatureFlags called", buf, 2u);
   }
 
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [(PPSFeatureFlagReaderHelper *)self createXPCConnection];
+  date = [MEMORY[0x277CBEAA8] date];
+  createXPCConnection = [(PPSFeatureFlagReaderHelper *)self createXPCConnection];
   *buf = 0;
   v17 = buf;
   v18 = 0x3032000000;
@@ -29,7 +29,7 @@
   v15[2] = __45__PPSFeatureFlagReaderHelper_getFeatureFlags__block_invoke;
   v15[3] = &unk_27825BB18;
   v15[4] = buf;
-  [v5 getFeatureFlags:v15];
+  [createXPCConnection getFeatureFlags:v15];
   v6 = logPPSFeatureFlagReaderHelper();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -40,8 +40,8 @@
   }
 
   [(PPSFeatureFlagReaderHelper *)self closeXPCConnection];
-  v7 = [MEMORY[0x277CBEAA8] date];
-  [v7 timeIntervalSinceDate:v4];
+  date2 = [MEMORY[0x277CBEAA8] date];
+  [date2 timeIntervalSinceDate:date];
   v9 = v8;
   v10 = logPPSFeatureFlagReaderHelper();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -49,9 +49,9 @@
     *v22 = 134218498;
     v23 = v9;
     v24 = 2112;
-    v25 = v4;
+    v25 = date;
     v26 = 2112;
-    v27 = v7;
+    v27 = date2;
     _os_log_debug_impl(&dword_21A4C6000, v10, OS_LOG_TYPE_DEBUG, "[PPSFeatureFlagReader] Time for getting getFeatureFlags reading to run: %f, %@, %@", v22, 0x20u);
   }
 

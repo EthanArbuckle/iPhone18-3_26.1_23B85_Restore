@@ -1,31 +1,31 @@
 @interface BEContentLayoutInfo
-+ (id)javascriptForContentOptions:(unint64_t)a3;
-+ (id)updateScriptWithOptions:(id)a3;
-- (BEContentLayoutInfo)initWithOptions:(id)a3;
-- (id)mainFrameJavascriptURL:(int64_t)a3;
-- (id)mainFrameOnlyJavascript:(int64_t)a3;
++ (id)javascriptForContentOptions:(unint64_t)options;
++ (id)updateScriptWithOptions:(id)options;
+- (BEContentLayoutInfo)initWithOptions:(id)options;
+- (id)mainFrameJavascriptURL:(int64_t)l;
+- (id)mainFrameOnlyJavascript:(int64_t)javascript;
 @end
 
 @implementation BEContentLayoutInfo
 
-- (BEContentLayoutInfo)initWithOptions:(id)a3
+- (BEContentLayoutInfo)initWithOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v9.receiver = self;
   v9.super_class = BEContentLayoutInfo;
   v6 = [(BEContentLayoutInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_options, a3);
+    objc_storeStrong(&v6->_options, options);
   }
 
   return v7;
 }
 
-- (id)mainFrameOnlyJavascript:(int64_t)a3
+- (id)mainFrameOnlyJavascript:(int64_t)javascript
 {
-  if (a3)
+  if (javascript)
   {
     v3 = 0;
   }
@@ -33,12 +33,12 @@
   else
   {
     v10 = @"bookInfo";
-    v4 = [(BEWebViewFactoryPaginationOptions *)self->_options jsonRepresentation];
-    v5 = v4;
+    jsonRepresentation = [(BEWebViewFactoryPaginationOptions *)self->_options jsonRepresentation];
+    v5 = jsonRepresentation;
     v6 = &stru_33E120;
-    if (v4)
+    if (jsonRepresentation)
     {
-      v6 = v4;
+      v6 = jsonRepresentation;
     }
 
     v11 = v6;
@@ -51,9 +51,9 @@
   return v3;
 }
 
-- (id)mainFrameJavascriptURL:(int64_t)a3
+- (id)mainFrameJavascriptURL:(int64_t)l
 {
-  if (a3)
+  if (l)
   {
     v3 = 0;
   }
@@ -67,18 +67,18 @@
   return v3;
 }
 
-+ (id)javascriptForContentOptions:(unint64_t)a3
++ (id)javascriptForContentOptions:(unint64_t)options
 {
-  v3 = [NSNumber numberWithUnsignedInteger:a3];
+  v3 = [NSNumber numberWithUnsignedInteger:options];
   v4 = [NSString stringWithFormat:@"__ibooks_content_layout_info.getFramesAndPageOffsets(%@)", v3];
 
   return v4;
 }
 
-+ (id)updateScriptWithOptions:(id)a3
++ (id)updateScriptWithOptions:(id)options
 {
-  v3 = [a3 jsonRepresentation];
-  v4 = [NSString stringWithFormat:@"__ibooks_content_layout_info.updateDocumentInfo('%@')", v3];
+  jsonRepresentation = [options jsonRepresentation];
+  v4 = [NSString stringWithFormat:@"__ibooks_content_layout_info.updateDocumentInfo('%@')", jsonRepresentation];
 
   return v4;
 }

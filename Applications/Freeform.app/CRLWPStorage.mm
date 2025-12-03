@@ -1,81 +1,81 @@
 @interface CRLWPStorage
 - (BOOL)canUserReplaceText;
 - (BOOL)hasSmartFields;
-- (BOOL)hasSmartFieldsInRange:(_NSRange)a3;
+- (BOOL)hasSmartFieldsInRange:(_NSRange)range;
 - (BOOL)hasVisibleContent;
-- (BOOL)isAllWhitespaceInRange:(_NSRange)a3;
-- (BOOL)isEmptyParagraphAtIndex:(int64_t)a3;
-- (BOOL)isEmptyParagraphAtSelection:(id)a3;
-- (BOOL)isWritingDirectionRightToLeftForParagraphAtParIndex:(int64_t)a3;
+- (BOOL)isAllWhitespaceInRange:(_NSRange)range;
+- (BOOL)isEmptyParagraphAtIndex:(int64_t)index;
+- (BOOL)isEmptyParagraphAtSelection:(id)selection;
+- (BOOL)isWritingDirectionRightToLeftForParagraphAtParIndex:(int64_t)index;
 - (CRLCanvasElementInfo)parentInfo;
 - (Class)editorClass;
 - (Class)repClass;
 - (NSAttributedString)coreTextAttributedString;
 - (NSDictionary)markedTextStyle;
-- (_NSRange)charRangeMappedFromStorage:(_NSRange)a3;
-- (_NSRange)charRangeMappedToStorage:(_NSRange)a3;
-- (_NSRange)charRangeRemappedFromStorage:(_NSRange)a3;
-- (_NSRange)findRangeOfWordBackwardFromCharIndex:(int64_t)a3 expandingRangeToEndOfWord:(BOOL)a4;
+- (_NSRange)charRangeMappedFromStorage:(_NSRange)storage;
+- (_NSRange)charRangeMappedToStorage:(_NSRange)storage;
+- (_NSRange)charRangeRemappedFromStorage:(_NSRange)storage;
+- (_NSRange)findRangeOfWordBackwardFromCharIndex:(int64_t)index expandingRangeToEndOfWord:(BOOL)word;
 - (_NSRange)range;
-- (_NSRange)rangeByExpandingToIncludePartialWords:(_NSRange)a3;
-- (_NSRange)rangeOfNearestWhitespaceBeforeCharIndex:(int64_t)a3 includingBreaks:(BOOL)a4;
-- (_NSRange)rangeOfNumericalSuffixPrecedingCharIndex:(unint64_t)a3;
-- (_NSRange)rangeOfNumericalSuffixPrecedingCharIndex:(unint64_t)a3 forLocale:(id)a4;
-- (_NSRange)textRangeForParagraphAtCharIndex:(int64_t)a3;
-- (_NSRange)textRangeForParagraphAtIndex:(int64_t)a3;
-- (_NSRange)textRangeForParagraphsInCharRange:(_NSRange)a3;
-- (_NSRange)wordAtCharIndex:(int64_t)a3 includePreviousWord:(BOOL)a4;
-- (_NSRange)wordAtCharIndex:(int64_t)a3 includePreviousWord:(BOOL)a4 includeHyphenation:(BOOL)a5;
+- (_NSRange)rangeByExpandingToIncludePartialWords:(_NSRange)words;
+- (_NSRange)rangeOfNearestWhitespaceBeforeCharIndex:(int64_t)index includingBreaks:(BOOL)breaks;
+- (_NSRange)rangeOfNumericalSuffixPrecedingCharIndex:(unint64_t)index;
+- (_NSRange)rangeOfNumericalSuffixPrecedingCharIndex:(unint64_t)index forLocale:(id)locale;
+- (_NSRange)textRangeForParagraphAtCharIndex:(int64_t)index;
+- (_NSRange)textRangeForParagraphAtIndex:(int64_t)index;
+- (_NSRange)textRangeForParagraphsInCharRange:(_NSRange)range;
+- (_NSRange)wordAtCharIndex:(int64_t)index includePreviousWord:(BOOL)word;
+- (_NSRange)wordAtCharIndex:(int64_t)index includePreviousWord:(BOOL)word includeHyphenation:(BOOL)hyphenation;
 - (_TtC8Freeform12CRLWPStorage)init;
 - (_TtC8Freeform8CRLBoard)parentBoard;
-- (id)characterStyleAtCharIndex:(int64_t)a3;
-- (id)characterStyleAtCharIndex:(int64_t)a3 before:(BOOL)a4 effectiveRange:(_NSRange *)a5;
-- (id)characterStyleAtCharIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)commandForReplaceAllWithProvider:(id)a3;
+- (id)characterStyleAtCharIndex:(int64_t)index;
+- (id)characterStyleAtCharIndex:(int64_t)index before:(BOOL)before effectiveRange:(_NSRange *)range;
+- (id)characterStyleAtCharIndex:(int64_t)index effectiveRange:(_NSRange *)range;
+- (id)commandForReplaceAllWithProvider:(id)provider;
 - (id)copyWithMarkedText;
-- (id)hyperlinkFieldAtCharIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)listStyleAtCharIndex:(int64_t)a3;
-- (id)listStyleAtCharIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)listStyleAtParIndex:(int64_t)a3;
-- (id)listStyleAtParIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)numberedListLabelAtCharIndex:(int64_t)a3;
-- (id)numberedListLabelAtParIndex:(int64_t)a3;
-- (id)paragraphStyleAtCharIndex:(int64_t)a3;
-- (id)paragraphStyleAtCharIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)paragraphStyleAtParIndex:(int64_t)a3;
-- (id)paragraphStyleAtParIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)rangeForParagraphAt:(int64_t)a3;
-- (id)searchForString:(id)a3 options:(unint64_t)a4 searchCanvasDelegate:(id)a5 onHit:(id)a6;
-- (id)smartFieldAtCharIndex:(int64_t)a3 attributeKind:(unint64_t)a4 effectiveRange:(_NSRange *)a5;
-- (id)smartFieldsWithAttributeKind:(unint64_t)a3 intersectingRange:(_NSRange)a4;
-- (id)stringEquivalentFromRange:(_NSRange)a3;
-- (id)substringWithRange:(_NSRange)a3;
-- (int64_t)charIndexForParagraphAtIndex:(int64_t)a3;
-- (int64_t)hyphenationLocationBeforeIndex:(int64_t)a3 inRange:(_NSRange)a4 locale:(id)a5 hyphenChar:(unsigned int *)a6;
+- (id)hyperlinkFieldAtCharIndex:(int64_t)index effectiveRange:(_NSRange *)range;
+- (id)listStyleAtCharIndex:(int64_t)index;
+- (id)listStyleAtCharIndex:(int64_t)index effectiveRange:(_NSRange *)range;
+- (id)listStyleAtParIndex:(int64_t)index;
+- (id)listStyleAtParIndex:(int64_t)index effectiveRange:(_NSRange *)range;
+- (id)numberedListLabelAtCharIndex:(int64_t)index;
+- (id)numberedListLabelAtParIndex:(int64_t)index;
+- (id)paragraphStyleAtCharIndex:(int64_t)index;
+- (id)paragraphStyleAtCharIndex:(int64_t)index effectiveRange:(_NSRange *)range;
+- (id)paragraphStyleAtParIndex:(int64_t)index;
+- (id)paragraphStyleAtParIndex:(int64_t)index effectiveRange:(_NSRange *)range;
+- (id)rangeForParagraphAt:(int64_t)at;
+- (id)searchForString:(id)string options:(unint64_t)options searchCanvasDelegate:(id)delegate onHit:(id)hit;
+- (id)smartFieldAtCharIndex:(int64_t)index attributeKind:(unint64_t)kind effectiveRange:(_NSRange *)range;
+- (id)smartFieldsWithAttributeKind:(unint64_t)kind intersectingRange:(_NSRange)range;
+- (id)stringEquivalentFromRange:(_NSRange)range;
+- (id)substringWithRange:(_NSRange)range;
+- (int64_t)charIndexForParagraphAtIndex:(int64_t)index;
+- (int64_t)hyphenationLocationBeforeIndex:(int64_t)index inRange:(_NSRange)range locale:(id)locale hyphenChar:(unsigned int *)char;
 - (int64_t)length;
-- (int64_t)listNumberAtParIndex:(int64_t)a3;
-- (int64_t)listStartAtParIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4;
-- (int64_t)nextCharacterIndex:(int64_t)a3;
+- (int64_t)listNumberAtParIndex:(int64_t)index;
+- (int64_t)listStartAtParIndex:(int64_t)index effectiveRange:(_NSRange *)range;
+- (int64_t)nextCharacterIndex:(int64_t)index;
 - (int64_t)paragraphCount;
-- (int64_t)paragraphIndexAtCharIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4;
-- (int64_t)paragraphLevelAtParIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4;
-- (int64_t)previousCharacterIndex:(int64_t)a3;
-- (int64_t)writingDirectionForParagraphAtCharIndex:(int64_t)a3;
+- (int64_t)paragraphIndexAtCharIndex:(int64_t)index effectiveRange:(_NSRange *)range;
+- (int64_t)paragraphLevelAtParIndex:(int64_t)index effectiveRange:(_NSRange *)range;
+- (int64_t)previousCharacterIndex:(int64_t)index;
+- (int64_t)writingDirectionForParagraphAtCharIndex:(int64_t)index;
 - (uint64_t)characterCount;
-- (unsigned)characterAtIndex:(int64_t)a3;
-- (void)continueSearch:(id)a3;
-- (void)enumerateSmartFieldsWithAttributeKind:(unint64_t)a3 inRange:(_NSRange)a4 usingBlock:(id)a5;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
-- (void)replaceCharactersIn:(_NSRange)a3 with:(id)a4;
-- (void)replaceCharactersIn:(_NSRange)a3 withStorage:(id)a4;
-- (void)setAttributedMarkedText:(id)a3;
-- (void)setGeometry:(id)a3;
-- (void)setMarkedTextRange:(id)a3;
-- (void)setMarkedTextStyle:(id)a3;
-- (void)setParentInfo:(id)a3;
-- (void)setSelectedMarkedTextRange:(id)a3;
-- (void)setSelectedMarkedTextRangeFromOS:(id)a3;
-- (void)setStore:(id)a3;
+- (unsigned)characterAtIndex:(int64_t)index;
+- (void)continueSearch:(id)search;
+- (void)enumerateSmartFieldsWithAttributeKind:(unint64_t)kind inRange:(_NSRange)range usingBlock:(id)block;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
+- (void)replaceCharactersIn:(_NSRange)in with:(id)with;
+- (void)replaceCharactersIn:(_NSRange)in withStorage:(id)storage;
+- (void)setAttributedMarkedText:(id)text;
+- (void)setGeometry:(id)geometry;
+- (void)setMarkedTextRange:(id)range;
+- (void)setMarkedTextStyle:(id)style;
+- (void)setParentInfo:(id)info;
+- (void)setSelectedMarkedTextRange:(id)range;
+- (void)setSelectedMarkedTextRangeFromOS:(id)s;
+- (void)setStore:(id)store;
 - (void)setUpForTesting;
 @end
 
@@ -83,13 +83,13 @@
 
 - (uint64_t)characterCount
 {
-  v1 = a1;
+  selfCopy = self;
   v2 = sub_100A38A8C();
 
   return v2;
 }
 
-- (_NSRange)rangeOfNumericalSuffixPrecedingCharIndex:(unint64_t)a3
+- (_NSRange)rangeOfNumericalSuffixPrecedingCharIndex:(unint64_t)index
 {
   v3 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
@@ -148,10 +148,10 @@
   objc_exception_throw(v18);
 }
 
-- (_NSRange)rangeOfNumericalSuffixPrecedingCharIndex:(unint64_t)a3 forLocale:(id)a4
+- (_NSRange)rangeOfNumericalSuffixPrecedingCharIndex:(unint64_t)index forLocale:(id)locale
 {
-  v6 = a4;
-  if ([v6 length] <= 1)
+  localeCopy = locale;
+  if ([localeCopy length] <= 1)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -182,7 +182,7 @@
 
   v10 = 0x7FFFFFFFFFFFFFFFLL;
   v11 = 0;
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -207,8 +207,8 @@
     }
 
     v13 = [NSString stringWithUTF8String:"[CRLWPStorage(SpellCheck) rangeOfNumericalSuffixPrecedingCharIndex:forLocale:]"];
-    v14 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Spelling/CRLWPStorage+SpellCheck.m"];
-    [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:23 isFatal:0 description:"Invalid charIndex."];
+    index = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLWP/Spelling/CRLWPStorage+SpellCheck.m"];
+    [CRLAssertionHandler handleFailureInFunction:v13 file:index lineNumber:23 isFatal:0 description:"Invalid charIndex."];
   }
 
   else
@@ -219,21 +219,21 @@
     }
 
     v15 = &qword_101A34C18;
-    if (([v6 hasPrefix:@"en"] & 1) == 0)
+    if (([localeCopy hasPrefix:@"en"] & 1) == 0)
     {
-      if ([v6 hasPrefix:@"fr"])
+      if ([localeCopy hasPrefix:@"fr"])
       {
         v15 = &qword_101A34C20;
       }
 
-      else if ([v6 hasPrefix:@"it"] & 1) != 0 || (objc_msgSend(v6, "hasPrefix:", @"gl"))
+      else if ([localeCopy hasPrefix:@"it"] & 1) != 0 || (objc_msgSend(localeCopy, "hasPrefix:", @"gl"))
       {
         v15 = &qword_101A34C28;
       }
 
-      else if ([v6 hasPrefix:@"pt"])
+      else if ([localeCopy hasPrefix:@"pt"])
       {
-        if ([v6 hasSuffix:@"BR"])
+        if ([localeCopy hasSuffix:@"BR"])
         {
           v15 = &qword_101A34C38;
         }
@@ -244,36 +244,36 @@
         }
       }
 
-      else if ([v6 hasPrefix:@"es"])
+      else if ([localeCopy hasPrefix:@"es"])
       {
         v15 = &qword_101A34C40;
       }
 
-      else if ([v6 hasPrefix:@"ca"])
+      else if ([localeCopy hasPrefix:@"ca"])
       {
         v15 = &qword_101A34C48;
       }
 
-      else if ([v6 hasPrefix:@"el"])
+      else if ([localeCopy hasPrefix:@"el"])
       {
         v15 = &qword_101A34C50;
       }
 
-      else if ([v6 hasPrefix:@"nl"])
+      else if ([localeCopy hasPrefix:@"nl"])
       {
         v15 = &qword_101A34C58;
       }
 
-      else if ([v6 hasPrefix:@"uk"])
+      else if ([localeCopy hasPrefix:@"uk"])
       {
         v15 = &qword_101A34C60;
       }
     }
 
     v13 = *v15;
-    v14 = [[_TtC8Freeform12CRLWPStorage alloc] initFromStorage:self withRange:0, a3];
-    v16 = [v14 charIndexMappedFromStorage:a3];
-    v17 = sub_100280AB0(v16, 0, v14);
+    index = [[_TtC8Freeform12CRLWPStorage alloc] initFromStorage:self withRange:0, index];
+    v16 = [index charIndexMappedFromStorage:index];
+    v17 = sub_100280AB0(v16, 0, index);
     if (v17 <= v16)
     {
       v18 = v16;
@@ -294,7 +294,7 @@
       v19 = v17;
     }
 
-    v20 = [v14 substringWithRange:{v19, v18 - v19}];
+    v20 = [index substringWithRange:{v19, v18 - v19}];
     v21 = +[NSCharacterSet decimalDigitCharacterSet];
     v22 = [v20 rangeOfCharacterFromSet:v21 options:4];
 
@@ -312,7 +312,7 @@
       v28 = 0x7FFFFFFFFFFFFFFFLL;
       if (v26)
       {
-        v28 = [v14 charRangeMappedToStorage:{v16 - (objc_msgSend(v25, "length") + ~(objc_msgSend(v25, "characterAtIndex:", 1) == 46))}];
+        v28 = [index charRangeMappedToStorage:{v16 - (objc_msgSend(v25, "length") + ~(objc_msgSend(v25, "characterAtIndex:", 1) == 46))}];
         v27 = v29;
       }
 
@@ -358,39 +358,39 @@
   return result;
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform12CRLWPStorage_geometry);
-  *(self + OBJC_IVAR____TtC8Freeform12CRLWPStorage_geometry) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform12CRLWPStorage_geometry) = geometry;
+  geometryCopy = geometry;
 }
 
-- (void)setAttributedMarkedText:(id)a3
+- (void)setAttributedMarkedText:(id)text
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform12CRLWPStorage_attributedMarkedText);
-  *(self + OBJC_IVAR____TtC8Freeform12CRLWPStorage_attributedMarkedText) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform12CRLWPStorage_attributedMarkedText) = text;
+  textCopy = text;
 }
 
-- (void)setMarkedTextRange:(id)a3
+- (void)setMarkedTextRange:(id)range
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform12CRLWPStorage_markedTextRange);
-  *(self + OBJC_IVAR____TtC8Freeform12CRLWPStorage_markedTextRange) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform12CRLWPStorage_markedTextRange) = range;
+  rangeCopy = range;
 }
 
-- (void)setSelectedMarkedTextRange:(id)a3
+- (void)setSelectedMarkedTextRange:(id)range
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform12CRLWPStorage_selectedMarkedTextRange);
-  *(self + OBJC_IVAR____TtC8Freeform12CRLWPStorage_selectedMarkedTextRange) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform12CRLWPStorage_selectedMarkedTextRange) = range;
+  rangeCopy = range;
 }
 
-- (void)setSelectedMarkedTextRangeFromOS:(id)a3
+- (void)setSelectedMarkedTextRangeFromOS:(id)s
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform12CRLWPStorage_selectedMarkedTextRangeFromOS);
-  *(self + OBJC_IVAR____TtC8Freeform12CRLWPStorage_selectedMarkedTextRangeFromOS) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform12CRLWPStorage_selectedMarkedTextRangeFromOS) = s;
+  sCopy = s;
 }
 
 - (NSDictionary)markedTextStyle
@@ -411,9 +411,9 @@
   return v2.super.isa;
 }
 
-- (void)setMarkedTextStyle:(id)a3
+- (void)setMarkedTextStyle:(id)style
 {
-  if (a3)
+  if (style)
   {
     type metadata accessor for Key(0);
     sub_100A40278(&qword_1019F34A0, 255, type metadata accessor for Key);
@@ -430,7 +430,7 @@
 
 - (id)copyWithMarkedText
 {
-  v2 = self;
+  selfCopy = self;
   sub_100A28D8C();
   v4 = v3;
 
@@ -444,18 +444,18 @@
   return Strong;
 }
 
-- (void)setParentInfo:(id)a3
+- (void)setParentInfo:(id)info
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_100A29E08(a3);
+  selfCopy = self;
+  sub_100A29E08(info);
 }
 
-- (void)setStore:(id)a3
+- (void)setStore:(id)store
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform12CRLWPStorage_store);
-  *(self + OBJC_IVAR____TtC8Freeform12CRLWPStorage_store) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform12CRLWPStorage_store) = store;
+  storeCopy = store;
 }
 
 - (_TtC8Freeform8CRLBoard)parentBoard
@@ -469,7 +469,7 @@
     if (v5)
     {
       v6 = *((swift_isaMask & *v5) + 0x380);
-      v7 = self;
+      selfCopy = self;
       v8 = v6();
 
       Strong = v8;
@@ -509,7 +509,7 @@
 
 - (BOOL)hasVisibleContent
 {
-  v2 = self;
+  selfCopy = self;
   sub_100A2A488();
   v4 = v3;
 
@@ -519,13 +519,13 @@
 - (NSAttributedString)coreTextAttributedString
 {
   v2 = *(self + OBJC_IVAR____TtC8Freeform12CRLWPStorage__hasValidPresentationProperties);
-  v3 = self;
+  selfCopy = self;
   if ((v2 & 1) == 0)
   {
     sub_100A2A960();
   }
 
-  v4 = *(v3 + OBJC_IVAR____TtC8Freeform12CRLWPStorage__coreTextAttributedString);
+  v4 = *(selfCopy + OBJC_IVAR____TtC8Freeform12CRLWPStorage__coreTextAttributedString);
   v5 = v4;
 
   return v4;
@@ -533,25 +533,25 @@
 
 - (int64_t)length
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100A38A88();
 
   return v3;
 }
 
-- (void)replaceCharactersIn:(_NSRange)a3 withStorage:(id)a4
+- (void)replaceCharactersIn:(_NSRange)in withStorage:(id)storage
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = self;
-  sub_100A30E84(location, length, v7);
+  length = in.length;
+  location = in.location;
+  storageCopy = storage;
+  selfCopy = self;
+  sub_100A30E84(location, length, storageCopy);
 }
 
-- (void)replaceCharactersIn:(_NSRange)a3 with:(id)a4
+- (void)replaceCharactersIn:(_NSRange)in with:(id)with
 {
-  length = a3.length;
-  location = a3.location;
+  length = in.length;
+  location = in.location;
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = __OFADD__(location, length);
   v10 = location + length;
@@ -570,7 +570,7 @@ LABEL_7:
 
   v11 = v7;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   sub_100A2E55C(location, v10, v11, v12, 1);
 }
 
@@ -583,7 +583,7 @@ LABEL_7:
 
 - (_NSRange)range
 {
-  v2 = self;
+  selfCopy = self;
   sub_100A34E98();
   v4 = v3;
 
@@ -596,14 +596,14 @@ LABEL_7:
 
 - (BOOL)hasSmartFields
 {
-  v2 = self;
-  v3 = [(CRLWPStorage *)v2 range];
-  v5 = [(CRLWPStorage *)v2 hasSmartFieldsInRange:v3, v4];
+  selfCopy = self;
+  range = [(CRLWPStorage *)selfCopy range];
+  v5 = [(CRLWPStorage *)selfCopy hasSmartFieldsInRange:range, v4];
 
   return v5;
 }
 
-- (int64_t)hyphenationLocationBeforeIndex:(int64_t)a3 inRange:(_NSRange)a4 locale:(id)a5 hyphenChar:(unsigned int *)a6
+- (int64_t)hyphenationLocationBeforeIndex:(int64_t)index inRange:(_NSRange)range locale:(id)locale hyphenChar:(unsigned int *)char
 {
   v6 = type metadata accessor for Locale();
   v7 = *(v6 - 8);
@@ -614,30 +614,30 @@ LABEL_7:
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (int64_t)writingDirectionForParagraphAtCharIndex:(int64_t)a3
+- (int64_t)writingDirectionForParagraphAtCharIndex:(int64_t)index
 {
-  v4 = self;
-  sub_100A3539C(a3);
+  selfCopy = self;
+  sub_100A3539C(index);
   v6 = v5;
 
   return v6;
 }
 
-- (BOOL)isWritingDirectionRightToLeftForParagraphAtParIndex:(int64_t)a3
+- (BOOL)isWritingDirectionRightToLeftForParagraphAtParIndex:(int64_t)index
 {
-  v4 = self;
-  LOBYTE(a3) = [(CRLWPStorage *)v4 isWritingDirectionRightToLeftForParagraphAtCharIndex:[(CRLWPStorage *)v4 textRangeForParagraphAtIndex:a3]];
+  selfCopy = self;
+  LOBYTE(index) = [(CRLWPStorage *)selfCopy isWritingDirectionRightToLeftForParagraphAtCharIndex:[(CRLWPStorage *)selfCopy textRangeForParagraphAtIndex:index]];
 
-  return a3;
+  return index;
 }
 
-- (_NSRange)textRangeForParagraphsInCharRange:(_NSRange)a3
+- (_NSRange)textRangeForParagraphsInCharRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = self;
-  v6 = [(CRLWPStorage *)v5 paragraphIndexAtCharIndex:location];
-  v7 = [(CRLWPStorage *)v5 textRangeForParagraphAtIndex:v6];
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
+  v6 = [(CRLWPStorage *)selfCopy paragraphIndexAtCharIndex:location];
+  v7 = [(CRLWPStorage *)selfCopy textRangeForParagraphAtIndex:v6];
   v9 = v7;
   v10 = v8;
   if (length >= 2)
@@ -650,8 +650,8 @@ LABEL_7:
 
     else if (!__OFSUB__(v11, 1))
     {
-      v12 = [(CRLWPStorage *)v5 paragraphIndexAtCharIndex:v11 - 1];
-      v13 = [(CRLWPStorage *)v5 textRangeForParagraphAtIndex:v12];
+      v12 = [(CRLWPStorage *)selfCopy paragraphIndexAtCharIndex:v11 - 1];
+      v13 = [(CRLWPStorage *)selfCopy textRangeForParagraphAtIndex:v12];
       if (v12 != v6)
       {
         v18.location = v13;
@@ -680,11 +680,11 @@ LABEL_9:
   return result;
 }
 
-- (_NSRange)findRangeOfWordBackwardFromCharIndex:(int64_t)a3 expandingRangeToEndOfWord:(BOOL)a4
+- (_NSRange)findRangeOfWordBackwardFromCharIndex:(int64_t)index expandingRangeToEndOfWord:(BOOL)word
 {
-  v4 = a4;
-  v6 = self;
-  sub_100A35820(a3, v4);
+  wordCopy = word;
+  selfCopy = self;
+  sub_100A35820(index, wordCopy);
   v8 = v7;
   v10 = v9;
 
@@ -695,11 +695,11 @@ LABEL_9:
   return result;
 }
 
-- (_NSRange)rangeOfNearestWhitespaceBeforeCharIndex:(int64_t)a3 includingBreaks:(BOOL)a4
+- (_NSRange)rangeOfNearestWhitespaceBeforeCharIndex:(int64_t)index includingBreaks:(BOOL)breaks
 {
-  v4 = a4;
-  v6 = self;
-  sub_100A35DB8(a3, v4);
+  breaksCopy = breaks;
+  selfCopy = self;
+  sub_100A35DB8(index, breaksCopy);
   v8 = v7;
   v10 = v9;
 
@@ -710,22 +710,22 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isEmptyParagraphAtSelection:(id)a3
+- (BOOL)isEmptyParagraphAtSelection:(id)selection
 {
-  v4 = a3;
-  v5 = self;
-  v6 = -[CRLWPStorage isEmptyParagraphAtIndex:](v5, "isEmptyParagraphAtIndex:", -[CRLWPStorage paragraphIndexAtCharIndex:](v5, "paragraphIndexAtCharIndex:", [v4 leadingCharIndex]));
+  selectionCopy = selection;
+  selfCopy = self;
+  v6 = -[CRLWPStorage isEmptyParagraphAtIndex:](selfCopy, "isEmptyParagraphAtIndex:", -[CRLWPStorage paragraphIndexAtCharIndex:](selfCopy, "paragraphIndexAtCharIndex:", [selectionCopy leadingCharIndex]));
 
   return v6;
 }
 
-- (BOOL)isEmptyParagraphAtIndex:(int64_t)a3
+- (BOOL)isEmptyParagraphAtIndex:(int64_t)index
 {
-  v4 = self;
-  v5 = [(CRLWPStorage *)v4 textRangeForParagraphAtIndex:a3];
+  selfCopy = self;
+  v5 = [(CRLWPStorage *)selfCopy textRangeForParagraphAtIndex:index];
   if (v6)
   {
-    v7 = sub_10027E2F0([(CRLWPStorage *)v4 characterAtIndex:v5]);
+    v7 = sub_10027E2F0([(CRLWPStorage *)selfCopy characterAtIndex:v5]);
   }
 
   else
@@ -736,10 +736,10 @@ LABEL_9:
   return v7;
 }
 
-- (id)rangeForParagraphAt:(int64_t)a3
+- (id)rangeForParagraphAt:(int64_t)at
 {
-  v4 = self;
-  v5 = [(CRLWPStorage *)v4 textRangeForParagraphAtIndex:a3];
+  selfCopy = self;
+  v5 = [(CRLWPStorage *)selfCopy textRangeForParagraphAtIndex:at];
   v7 = v6;
   v8 = objc_allocWithZone(type metadata accessor for CRLTextRange());
   v9 = sub_10078CDF0(v5, v7);
@@ -747,10 +747,10 @@ LABEL_9:
   return v9;
 }
 
-- (_NSRange)textRangeForParagraphAtIndex:(int64_t)a3
+- (_NSRange)textRangeForParagraphAtIndex:(int64_t)index
 {
-  v4 = self;
-  v5 = sub_100A36400(a3);
+  selfCopy = self;
+  v5 = sub_100A36400(index);
   v7 = v6;
 
   v8 = v5;
@@ -760,10 +760,10 @@ LABEL_9:
   return result;
 }
 
-- (_NSRange)textRangeForParagraphAtCharIndex:(int64_t)a3
+- (_NSRange)textRangeForParagraphAtCharIndex:(int64_t)index
 {
-  v4 = self;
-  v5 = sub_100A364C0(a3);
+  selfCopy = self;
+  v5 = sub_100A364C0(index);
   v7 = v6;
 
   v8 = v5;
@@ -773,43 +773,43 @@ LABEL_9:
   return result;
 }
 
-- (id)smartFieldsWithAttributeKind:(unint64_t)a3 intersectingRange:(_NSRange)a4
+- (id)smartFieldsWithAttributeKind:(unint64_t)kind intersectingRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = self;
-  sub_100A3659C(a3, location, length);
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
+  sub_100A3659C(kind, location, length);
 
   v8.super.isa = Array._bridgeToObjectiveC()().super.isa;
 
   return v8.super.isa;
 }
 
-- (id)smartFieldAtCharIndex:(int64_t)a3 attributeKind:(unint64_t)a4 effectiveRange:(_NSRange *)a5
+- (id)smartFieldAtCharIndex:(int64_t)index attributeKind:(unint64_t)kind effectiveRange:(_NSRange *)range
 {
-  v8 = self;
-  sub_100A36D98(a3, a4, a5);
+  selfCopy = self;
+  sub_100A36D98(index, kind, range);
   v10 = v9;
 
   return v10;
 }
 
-- (void)enumerateSmartFieldsWithAttributeKind:(unint64_t)a3 inRange:(_NSRange)a4 usingBlock:(id)a5
+- (void)enumerateSmartFieldsWithAttributeKind:(unint64_t)kind inRange:(_NSRange)range usingBlock:(id)block
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = _Block_copy(a5);
+  length = range.length;
+  location = range.location;
+  v9 = _Block_copy(block);
   _Block_copy(v9);
-  v10 = self;
-  sub_100A479D4(a3, location, length, v10, v9);
+  selfCopy = self;
+  sub_100A479D4(kind, location, length, selfCopy, v9);
   _Block_release(v9);
   _Block_release(v9);
 }
 
-- (id)hyperlinkFieldAtCharIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)hyperlinkFieldAtCharIndex:(int64_t)index effectiveRange:(_NSRange *)range
 {
-  v6 = self;
-  v7 = sub_100A48148(a3, a4, &OBJC_IVAR____TtC8Freeform12CRLWPStorage__hyperlinkRuns);
+  selfCopy = self;
+  v7 = sub_100A48148(index, range, &OBJC_IVAR____TtC8Freeform12CRLWPStorage__hyperlinkRuns);
 
   return v7;
 }
@@ -817,201 +817,201 @@ LABEL_9:
 - (int64_t)paragraphCount
 {
   v2 = *(self + OBJC_IVAR____TtC8Freeform12CRLWPStorage__hasValidRanges);
-  v3 = self;
+  selfCopy = self;
   if ((v2 & 1) == 0)
   {
     sub_100A2C630();
   }
 
-  v4 = *(*(v3 + OBJC_IVAR____TtC8Freeform12CRLWPStorage__paragraphRanges) + 16);
+  v4 = *(*(selfCopy + OBJC_IVAR____TtC8Freeform12CRLWPStorage__paragraphRanges) + 16);
 
   return v4;
 }
 
-- (id)paragraphStyleAtParIndex:(int64_t)a3
+- (id)paragraphStyleAtParIndex:(int64_t)index
 {
-  v3 = [(CRLWPStorage *)self paragraphStyleAtParIndex:a3 effectiveRange:0];
+  v3 = [(CRLWPStorage *)self paragraphStyleAtParIndex:index effectiveRange:0];
 
   return v3;
 }
 
-- (id)paragraphStyleAtParIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)paragraphStyleAtParIndex:(int64_t)index effectiveRange:(_NSRange *)range
 {
-  v6 = self;
-  sub_100A372E0(a3, a4);
+  selfCopy = self;
+  sub_100A372E0(index, range);
   v8 = v7;
 
   return v8;
 }
 
-- (int64_t)charIndexForParagraphAtIndex:(int64_t)a3
+- (int64_t)charIndexForParagraphAtIndex:(int64_t)index
 {
   v4 = xmmword_101464828;
 
   return v4;
 }
 
-- (int64_t)paragraphIndexAtCharIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4
+- (int64_t)paragraphIndexAtCharIndex:(int64_t)index effectiveRange:(_NSRange *)range
 {
-  v6 = self;
-  v7 = sub_100A37480(a3, a4);
+  selfCopy = self;
+  v7 = sub_100A37480(index, range);
 
   return v7;
 }
 
-- (id)paragraphStyleAtCharIndex:(int64_t)a3
+- (id)paragraphStyleAtCharIndex:(int64_t)index
 {
-  v3 = [(CRLWPStorage *)self paragraphStyleAtCharIndex:a3 effectiveRange:0];
+  v3 = [(CRLWPStorage *)self paragraphStyleAtCharIndex:index effectiveRange:0];
 
   return v3;
 }
 
-- (id)paragraphStyleAtCharIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)paragraphStyleAtCharIndex:(int64_t)index effectiveRange:(_NSRange *)range
 {
-  v6 = self;
-  sub_100A37620(a3, a4);
+  selfCopy = self;
+  sub_100A37620(index, range);
   v8 = v7;
 
   return v8;
 }
 
-- (id)characterStyleAtCharIndex:(int64_t)a3
+- (id)characterStyleAtCharIndex:(int64_t)index
 {
-  v3 = [(CRLWPStorage *)self characterStyleAtCharIndex:a3 effectiveRange:0];
+  v3 = [(CRLWPStorage *)self characterStyleAtCharIndex:index effectiveRange:0];
 
   return v3;
 }
 
-- (id)characterStyleAtCharIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)characterStyleAtCharIndex:(int64_t)index effectiveRange:(_NSRange *)range
 {
-  v4 = [(CRLWPStorage *)self characterStyleAtCharIndex:a3 before:1 effectiveRange:a4];
+  v4 = [(CRLWPStorage *)self characterStyleAtCharIndex:index before:1 effectiveRange:range];
 
   return v4;
 }
 
-- (id)characterStyleAtCharIndex:(int64_t)a3 before:(BOOL)a4 effectiveRange:(_NSRange *)a5
+- (id)characterStyleAtCharIndex:(int64_t)index before:(BOOL)before effectiveRange:(_NSRange *)range
 {
-  v7 = self;
-  v8 = sub_100A48148(a3, a5, &OBJC_IVAR____TtC8Freeform12CRLWPStorage__characterStyleRuns);
+  selfCopy = self;
+  v8 = sub_100A48148(index, range, &OBJC_IVAR____TtC8Freeform12CRLWPStorage__characterStyleRuns);
 
   return v8;
 }
 
-- (id)numberedListLabelAtCharIndex:(int64_t)a3
+- (id)numberedListLabelAtCharIndex:(int64_t)index
 {
-  v4 = self;
-  v5 = [(CRLWPStorage *)v4 numberedListLabelAtParIndex:[(CRLWPStorage *)v4 paragraphIndexAtCharIndex:a3]];
+  selfCopy = self;
+  v5 = [(CRLWPStorage *)selfCopy numberedListLabelAtParIndex:[(CRLWPStorage *)selfCopy paragraphIndexAtCharIndex:index]];
 
   return v5;
 }
 
-- (id)numberedListLabelAtParIndex:(int64_t)a3
+- (id)numberedListLabelAtParIndex:(int64_t)index
 {
-  v4 = self;
-  sub_100A37908(a3);
+  selfCopy = self;
+  sub_100A37908(index);
 
   v5 = String._bridgeToObjectiveC()();
 
   return v5;
 }
 
-- (int64_t)listNumberAtParIndex:(int64_t)a3
+- (int64_t)listNumberAtParIndex:(int64_t)index
 {
-  v4 = self;
-  v5 = sub_100A37AE0(a3);
+  selfCopy = self;
+  v5 = sub_100A37AE0(index);
 
   return v5;
 }
 
-- (id)listStyleAtParIndex:(int64_t)a3
+- (id)listStyleAtParIndex:(int64_t)index
 {
-  v3 = [(CRLWPStorage *)self listStyleAtParIndex:a3 effectiveRange:0];
+  v3 = [(CRLWPStorage *)self listStyleAtParIndex:index effectiveRange:0];
 
   return v3;
 }
 
-- (id)listStyleAtParIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)listStyleAtParIndex:(int64_t)index effectiveRange:(_NSRange *)range
 {
-  v6 = self;
-  sub_100A37C40(a3, a4);
+  selfCopy = self;
+  sub_100A37C40(index, range);
   v8 = v7;
 
   return v8;
 }
 
-- (id)listStyleAtCharIndex:(int64_t)a3
+- (id)listStyleAtCharIndex:(int64_t)index
 {
-  v3 = [(CRLWPStorage *)self listStyleAtCharIndex:a3 effectiveRange:0];
+  v3 = [(CRLWPStorage *)self listStyleAtCharIndex:index effectiveRange:0];
 
   return v3;
 }
 
-- (id)listStyleAtCharIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)listStyleAtCharIndex:(int64_t)index effectiveRange:(_NSRange *)range
 {
-  v6 = self;
-  v7 = [(CRLWPStorage *)v6 listStyleAtParIndex:[(CRLWPStorage *)v6 paragraphIndexAtCharIndex:a3] effectiveRange:a4];
+  selfCopy = self;
+  v7 = [(CRLWPStorage *)selfCopy listStyleAtParIndex:[(CRLWPStorage *)selfCopy paragraphIndexAtCharIndex:index] effectiveRange:range];
 
   return v7;
 }
 
-- (int64_t)paragraphLevelAtParIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4
+- (int64_t)paragraphLevelAtParIndex:(int64_t)index effectiveRange:(_NSRange *)range
 {
-  v6 = self;
-  sub_100A37E24(a3, a4);
+  selfCopy = self;
+  sub_100A37E24(index, range);
   v8 = v7;
 
   return v8;
 }
 
-- (int64_t)listStartAtParIndex:(int64_t)a3 effectiveRange:(_NSRange *)a4
+- (int64_t)listStartAtParIndex:(int64_t)index effectiveRange:(_NSRange *)range
 {
-  v6 = self;
-  v7 = sub_100A37F34(a3, a4);
+  selfCopy = self;
+  v7 = sub_100A37F34(index, range);
 
   return v7;
 }
 
-- (_NSRange)charRangeMappedToStorage:(_NSRange)a3
+- (_NSRange)charRangeMappedToStorage:(_NSRange)storage
 {
-  length = a3.length;
-  location = a3.location;
+  length = storage.length;
+  location = storage.location;
   result.length = length;
   result.location = location;
   return result;
 }
 
-- (_NSRange)charRangeMappedFromStorage:(_NSRange)a3
+- (_NSRange)charRangeMappedFromStorage:(_NSRange)storage
 {
-  length = a3.length;
-  location = a3.location;
+  length = storage.length;
+  location = storage.location;
   result.length = length;
   result.location = location;
   return result;
 }
 
-- (_NSRange)charRangeRemappedFromStorage:(_NSRange)a3
+- (_NSRange)charRangeRemappedFromStorage:(_NSRange)storage
 {
-  length = a3.length;
-  location = a3.location;
+  length = storage.length;
+  location = storage.location;
   result.length = length;
   result.location = location;
   return result;
 }
 
-- (unsigned)characterAtIndex:(int64_t)a3
+- (unsigned)characterAtIndex:(int64_t)index
 {
-  v4 = self;
-  sub_100A38080(a3);
-  LOWORD(a3) = v5;
+  selfCopy = self;
+  sub_100A38080(index);
+  LOWORD(index) = v5;
 
-  return a3;
+  return index;
 }
 
-- (id)substringWithRange:(_NSRange)a3
+- (id)substringWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = self;
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
   sub_100A38364(location, length);
 
   v6 = String._bridgeToObjectiveC()();
@@ -1019,36 +1019,36 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)hasSmartFieldsInRange:(_NSRange)a3
+- (BOOL)hasSmartFieldsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = self;
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
   LOBYTE(length) = sub_100A38854(location, length);
 
   return length & 1;
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = self;
-  sub_100A38CD8(a3, location, length);
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
+  sub_100A38CD8(characters, location, length);
 }
 
-- (id)stringEquivalentFromRange:(_NSRange)a3
+- (id)stringEquivalentFromRange:(_NSRange)range
 {
-  v3 = [(CRLWPStorage *)self substringWithRange:a3.location, a3.length];
+  v3 = [(CRLWPStorage *)self substringWithRange:range.location, range.length];
 
   return v3;
 }
 
-- (_NSRange)rangeByExpandingToIncludePartialWords:(_NSRange)a3
+- (_NSRange)rangeByExpandingToIncludePartialWords:(_NSRange)words
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = self;
+  length = words.length;
+  location = words.location;
+  selfCopy = self;
   v6 = sub_100A39020(location, length);
   v8 = v7;
 
@@ -1059,25 +1059,25 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isAllWhitespaceInRange:(_NSRange)a3
+- (BOOL)isAllWhitespaceInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = self;
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
   sub_100A39C38(location, length);
   LOBYTE(length) = v6;
 
   return length & 1;
 }
 
-- (id)searchForString:(id)a3 options:(unint64_t)a4 searchCanvasDelegate:(id)a5 onHit:(id)a6
+- (id)searchForString:(id)string options:(unint64_t)options searchCanvasDelegate:(id)delegate onHit:(id)hit
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(hit);
   v11 = v10;
-  if (a3)
+  if (string)
   {
     v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-    a3 = v13;
+    string = v13;
     if (v11)
     {
 LABEL_3:
@@ -1100,26 +1100,26 @@ LABEL_3:
   v14 = 0;
 LABEL_6:
   swift_unknownObjectRetain();
-  v15 = self;
-  v16 = sub_100A39FF0(v12, a3, a4, a5, v11, v14);
+  selfCopy = self;
+  v16 = sub_100A39FF0(v12, string, options, delegate, v11, v14);
   sub_1000C1014(v11);
   swift_unknownObjectRelease();
 
   return v16;
 }
 
-- (void)continueSearch:(id)a3
+- (void)continueSearch:(id)search
 {
-  v4 = a3;
-  v5 = self;
-  sub_100A3A854(v4);
+  searchCopy = search;
+  selfCopy = self;
+  sub_100A3A854(searchCopy);
 }
 
-- (id)commandForReplaceAllWithProvider:(id)a3
+- (id)commandForReplaceAllWithProvider:(id)provider
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_100A3AF40(a3);
+  selfCopy = self;
+  v6 = sub_100A3AF40(provider);
   swift_unknownObjectRelease();
 
   return v6;
@@ -1127,42 +1127,42 @@ LABEL_6:
 
 - (BOOL)canUserReplaceText
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100A3C2BC();
 
   return v3 & 1;
 }
 
-- (int64_t)nextCharacterIndex:(int64_t)a3
+- (int64_t)nextCharacterIndex:(int64_t)index
 {
-  v4 = self;
-  sub_100A3C3CC(a3);
+  selfCopy = self;
+  sub_100A3C3CC(index);
   v6 = v5;
 
   return v6;
 }
 
-- (int64_t)previousCharacterIndex:(int64_t)a3
+- (int64_t)previousCharacterIndex:(int64_t)index
 {
-  v4 = self;
-  sub_100A3CC44(a3);
+  selfCopy = self;
+  sub_100A3CC44(index);
   v6 = v5;
 
   return v6;
 }
 
-- (_NSRange)wordAtCharIndex:(int64_t)a3 includePreviousWord:(BOOL)a4
+- (_NSRange)wordAtCharIndex:(int64_t)index includePreviousWord:(BOOL)word
 {
-  v4 = [(CRLWPStorage *)self wordAtCharIndex:a3 includePreviousWord:a4 includeHyphenation:0];
+  v4 = [(CRLWPStorage *)self wordAtCharIndex:index includePreviousWord:word includeHyphenation:0];
   result.length = v5;
   result.location = v4;
   return result;
 }
 
-- (_NSRange)wordAtCharIndex:(int64_t)a3 includePreviousWord:(BOOL)a4 includeHyphenation:(BOOL)a5
+- (_NSRange)wordAtCharIndex:(int64_t)index includePreviousWord:(BOOL)word includeHyphenation:(BOOL)hyphenation
 {
-  v8 = self;
-  sub_100A3D70C(a3, a4, a5);
+  selfCopy = self;
+  sub_100A3D70C(index, word, hyphenation);
   v10 = v9;
   v12 = v11;
 
@@ -1175,7 +1175,7 @@ LABEL_6:
 
 - (void)setUpForTesting
 {
-  v2 = self;
+  selfCopy = self;
   sub_100A3DA74();
 }
 

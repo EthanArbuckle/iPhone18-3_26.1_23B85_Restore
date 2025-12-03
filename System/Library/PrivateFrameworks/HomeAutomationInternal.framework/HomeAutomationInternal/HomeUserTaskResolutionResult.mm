@@ -1,25 +1,25 @@
 @interface HomeUserTaskResolutionResult
-+ (id)confirmationRequiredWithHomeUserTaskToConfirm:(id)a3;
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3;
-+ (id)disambiguationWithHomeUserTasksToDisambiguate:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)successWithResolvedHomeUserTask:(id)a3;
-+ (id)successWithResolvedObject:(id)a3;
-- (HomeUserTaskResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4;
++ (id)confirmationRequiredWithHomeUserTaskToConfirm:(id)confirm;
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm;
++ (id)disambiguationWithHomeUserTasksToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedHomeUserTask:(id)task;
++ (id)successWithResolvedObject:(id)object;
+- (HomeUserTaskResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent;
 @end
 
 @implementation HomeUserTaskResolutionResult
 
-+ (id)successWithResolvedHomeUserTask:(id)a3
++ (id)successWithResolvedHomeUserTask:(id)task
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_252E2C7CC(v4);
+  taskCopy = task;
+  v5 = sub_252E2C7CC(taskCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithHomeUserTasksToDisambiguate:(id)a3
++ (id)disambiguationWithHomeUserTasksToDisambiguate:(id)disambiguate
 {
   type metadata accessor for HomeUserTask();
   v3 = sub_252E37264();
@@ -29,45 +29,45 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithHomeUserTaskToConfirm:(id)a3
++ (id)confirmationRequiredWithHomeUserTaskToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_252E2C928(a3);
+  confirmCopy = confirm;
+  v5 = sub_252E2C928(confirm);
 
   return v5;
 }
 
-+ (id)successWithResolvedObject:(id)a3
++ (id)successWithResolvedObject:(id)object
 {
   result = sub_252E37B04();
   __break(1u);
   return result;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   result = sub_252E37B04();
   __break(1u);
   return result;
 }
 
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm
 {
   result = sub_252E37B04();
   __break(1u);
   return result;
 }
 
-- (HomeUserTaskResolutionResult)initWithJSONDictionary:(id)a3 forIntent:(id)a4
+- (HomeUserTaskResolutionResult)initWithJSONDictionary:(id)dictionary forIntent:(id)intent
 {
   sub_252E36E44();
-  v6 = a4;
+  intentCopy = intent;
   v7 = sub_252E36E24();
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for HomeUserTaskResolutionResult();
-  v8 = [(HomeUserTaskResolutionResult *)&v10 initWithJSONDictionary:v7 forIntent:v6];
+  v8 = [(HomeUserTaskResolutionResult *)&v10 initWithJSONDictionary:v7 forIntent:intentCopy];
 
   if (v8)
   {

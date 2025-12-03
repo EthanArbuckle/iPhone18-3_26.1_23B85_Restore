@@ -1,21 +1,21 @@
 @interface BRCMigrateZonePCSOperation
-- (BRCMigrateZonePCSOperation)initWithSessionContext:(id)a3 clientState:(id)a4;
-- (void)_createCloudDocsZone:(id)a3;
-- (void)_fetchZonesNeedingMigration:(id)a3;
+- (BRCMigrateZonePCSOperation)initWithSessionContext:(id)context clientState:(id)state;
+- (void)_createCloudDocsZone:(id)zone;
+- (void)_fetchZonesNeedingMigration:(id)migration;
 - (void)main;
 @end
 
 @implementation BRCMigrateZonePCSOperation
 
-- (BRCMigrateZonePCSOperation)initWithSessionContext:(id)a3 clientState:(id)a4
+- (BRCMigrateZonePCSOperation)initWithSessionContext:(id)context clientState:(id)state
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 syncContextProvider];
-  v10 = [v9 defaultSyncContext];
+  stateCopy = state;
+  contextCopy = context;
+  syncContextProvider = [contextCopy syncContextProvider];
+  defaultSyncContext = [syncContextProvider defaultSyncContext];
   v15.receiver = self;
   v15.super_class = BRCMigrateZonePCSOperation;
-  v11 = [(_BRCOperation *)&v15 initWithName:@"migrate-pcs" syncContext:v10 sessionContext:v8];
+  v11 = [(_BRCOperation *)&v15 initWithName:@"migrate-pcs" syncContext:defaultSyncContext sessionContext:contextCopy];
 
   if (v11)
   {
@@ -23,15 +23,15 @@
     interestingZoneIDs = v11->_interestingZoneIDs;
     v11->_interestingZoneIDs = v12;
 
-    objc_storeStrong(&v11->_clientState, a4);
+    objc_storeStrong(&v11->_clientState, state);
   }
 
   return v11;
 }
 
-- (void)_createCloudDocsZone:(id)a3
+- (void)_createCloudDocsZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   v5 = objc_alloc(MEMORY[0x277CBC5F8]);
   v6 = [v5 initWithZoneName:*MEMORY[0x277CFAD68] ownerName:*MEMORY[0x277CBBF28]];
   v7 = [[BRCCreateZoneAndSubscribeOperation alloc] initWithSessionContext:self->super._sessionContext zoneID:v6];
@@ -45,8 +45,8 @@
   objc_copyWeak(&v14, &location);
   v8 = v6;
   v11 = v8;
-  v9 = v4;
-  v12 = self;
+  v9 = zoneCopy;
+  selfCopy = self;
   v13 = v9;
   [(BRCCreateZoneAndSubscribeOperation *)v7 setCreateZoneAndSubscribeCompletionBlock:v10];
   [(_BRCOperation *)self addSubOperation:v7];
@@ -77,28 +77,28 @@ void __51__BRCMigrateZonePCSOperation__createCloudDocsZone___block_invoke(uint64
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_fetchZonesNeedingMigration:(id)a3
+- (void)_fetchZonesNeedingMigration:(id)migration
 {
-  v4 = a3;
+  migrationCopy = migration;
   v5 = [BRCUserDefaults defaultsForMangledID:0];
-  v6 = [v5 blacklistPCSPrep];
+  blacklistPCSPrep = [v5 blacklistPCSPrep];
 
   v7 = objc_alloc(MEMORY[0x277CBC5F8]);
   v8 = [v7 initWithZoneName:*MEMORY[0x277CFAD68] ownerName:*MEMORY[0x277CBBF28]];
-  v9 = [MEMORY[0x277CBC3D0] fetchAllRecordZonesOperation];
+  fetchAllRecordZonesOperation = [MEMORY[0x277CBC3D0] fetchAllRecordZonesOperation];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __58__BRCMigrateZonePCSOperation__fetchZonesNeedingMigration___block_invoke;
   v16 = &unk_278505C28;
   v17 = v8;
-  v18 = v6;
-  v19 = self;
-  v20 = v4;
-  v10 = v4;
-  v11 = v6;
+  v18 = blacklistPCSPrep;
+  selfCopy = self;
+  v20 = migrationCopy;
+  v10 = migrationCopy;
+  v11 = blacklistPCSPrep;
   v12 = v8;
-  [v9 setFetchRecordZonesCompletionBlock:&v13];
-  [(_BRCOperation *)self addSubOperation:v9, v13, v14, v15, v16];
+  [fetchAllRecordZonesOperation setFetchRecordZonesCompletionBlock:&v13];
+  [(_BRCOperation *)self addSubOperation:fetchAllRecordZonesOperation, v13, v14, v15, v16];
 }
 
 void __58__BRCMigrateZonePCSOperation__fetchZonesNeedingMigration___block_invoke(uint64_t a1, void *a2, void *a3)

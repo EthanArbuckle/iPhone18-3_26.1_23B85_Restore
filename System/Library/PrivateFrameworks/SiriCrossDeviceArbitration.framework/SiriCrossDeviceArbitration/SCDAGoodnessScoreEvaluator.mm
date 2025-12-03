@@ -1,31 +1,31 @@
 @interface SCDAGoodnessScoreEvaluator
 - (BOOL)deviceAdjustTrialEnabled;
-- (SCDAGoodnessScoreEvaluator)initWithDeviceInstanceContext:(id)a3 preferences:(id)a4 queue:(id)a5 instrumentation:(id)a6;
+- (SCDAGoodnessScoreEvaluator)initWithDeviceInstanceContext:(id)context preferences:(id)preferences queue:(id)queue instrumentation:(id)instrumentation;
 - (id)_createSettingsConnectionIfRequired;
-- (id)_readSidekickBoostsFile:(id)a3;
+- (id)_readSidekickBoostsFile:(id)file;
 - (int64_t)deviceAdjustTrialValue;
-- (unsigned)_getRecentBump:(double)a3 ignoreAdjustedBoost:(BOOL)a4 recentlyWonBySmallAmount:(BOOL)a5;
-- (unsigned)getMyriadAdjustedBoostForGoodnessScoreContext:(id)a3;
+- (unsigned)_getRecentBump:(double)bump ignoreAdjustedBoost:(BOOL)boost recentlyWonBySmallAmount:(BOOL)amount;
+- (unsigned)getMyriadAdjustedBoostForGoodnessScoreContext:(id)context;
 - (unsigned)getPlatformBias;
 - (void)_fetchDevicePlatformBiasIfRequired;
 - (void)_reloadTrialConfiguredBoostValues;
-- (void)_updateDeviceAdjust:(int64_t)a3;
-- (void)_updateDeviceAdjustTrialEnabled:(BOOL)a3;
-- (void)_updateMediaPlaybackBoost:(unsigned __int8)a3;
-- (void)_updateRecentSiriBoostTrialEnabled:(BOOL)a3;
-- (void)_updateRecentSiriExponentialBoostDefined:(BOOL)a3 withSecondDegree:(double)a4 andFirstDegree:(double)a5 andIntercept:(double)a6;
-- (void)_updateSidekickBoosts:(id)a3;
+- (void)_updateDeviceAdjust:(int64_t)adjust;
+- (void)_updateDeviceAdjustTrialEnabled:(BOOL)enabled;
+- (void)_updateMediaPlaybackBoost:(unsigned __int8)boost;
+- (void)_updateRecentSiriBoostTrialEnabled:(BOOL)enabled;
+- (void)_updateRecentSiriExponentialBoostDefined:(BOOL)defined withSecondDegree:(double)degree andFirstDegree:(double)firstDegree andIntercept:(double)intercept;
+- (void)_updateSidekickBoosts:(id)boosts;
 - (void)dealloc;
-- (void)myriadTrialBoostsUpdated:(id)a3;
+- (void)myriadTrialBoostsUpdated:(id)updated;
 - (void)preheat;
 @end
 
 @implementation SCDAGoodnessScoreEvaluator
 
-- (unsigned)getMyriadAdjustedBoostForGoodnessScoreContext:(id)a3
+- (unsigned)getMyriadAdjustedBoostForGoodnessScoreContext:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = SCDALogContextCore;
   if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_INFO))
   {
@@ -35,29 +35,29 @@
   }
 
   os_unfair_lock_lock(&self->_scoreEvaluationLock);
-  v6 = [(SCDAAssistantPreferences *)self->_pref myriadShouldIgnoreAdjustedBoost];
-  v7 = [(SCDAAssistantPreferences *)self->_pref ignoreMyriadPlatformBias];
-  v8 = v7;
-  if (v6 && v7)
+  myriadShouldIgnoreAdjustedBoost = [(SCDAAssistantPreferences *)self->_pref myriadShouldIgnoreAdjustedBoost];
+  ignoreMyriadPlatformBias = [(SCDAAssistantPreferences *)self->_pref ignoreMyriadPlatformBias];
+  v8 = ignoreMyriadPlatformBias;
+  if (myriadShouldIgnoreAdjustedBoost && ignoreMyriadPlatformBias)
   {
-    v9 = 0;
+    getPlatformBias = 0;
   }
 
-  else if (v6)
+  else if (myriadShouldIgnoreAdjustedBoost)
   {
-    v9 = [(SCDAGoodnessScoreEvaluator *)self getPlatformBias];
+    getPlatformBias = [(SCDAGoodnessScoreEvaluator *)self getPlatformBias];
   }
 
   else
   {
-    v10 = [v4 reasons];
+    reasons = [contextCopy reasons];
     lastActivationTime = self->_lastActivationTime;
-    [v4 mediaPlaybackInterruptedTime];
-    v9 = -[SCDAGoodnessScoreEvaluator _bumpGoodnessScore:lastActivationTime:mediaPlaybackInterruptedTime:ignoreAdjustedBoost:recentlyWonBySmallAmount:](self, "_bumpGoodnessScore:lastActivationTime:mediaPlaybackInterruptedTime:ignoreAdjustedBoost:recentlyWonBySmallAmount:", v10, 0, [v4 recentlyWonBySmallAmount], lastActivationTime, v12);
+    [contextCopy mediaPlaybackInterruptedTime];
+    getPlatformBias = -[SCDAGoodnessScoreEvaluator _bumpGoodnessScore:lastActivationTime:mediaPlaybackInterruptedTime:ignoreAdjustedBoost:recentlyWonBySmallAmount:](self, "_bumpGoodnessScore:lastActivationTime:mediaPlaybackInterruptedTime:ignoreAdjustedBoost:recentlyWonBySmallAmount:", reasons, 0, [contextCopy recentlyWonBySmallAmount], lastActivationTime, v12);
 
     if (!v8)
     {
-      v9 += [(SCDAGoodnessScoreEvaluator *)self getPlatformBias];
+      getPlatformBias += [(SCDAGoodnessScoreEvaluator *)self getPlatformBias];
     }
   }
 
@@ -67,19 +67,19 @@
     v16 = 136315394;
     v17 = "[SCDAGoodnessScoreEvaluator getMyriadAdjustedBoostForGoodnessScoreContext:]";
     v18 = 2048;
-    v19 = v9;
+    v19 = getPlatformBias;
     _os_log_impl(&dword_1DA758000, v13, OS_LOG_TYPE_INFO, "%s #scda adjusted score: %ld", &v16, 0x16u);
   }
 
-  if (v9 >= 0xFF)
+  if (getPlatformBias >= 0xFF)
   {
-    LOBYTE(v9) = -1;
+    LOBYTE(getPlatformBias) = -1;
   }
 
   os_unfair_lock_unlock(&self->_scoreEvaluationLock);
 
   v14 = *MEMORY[0x1E69E9840];
-  return v9;
+  return getPlatformBias;
 }
 
 - (void)preheat
@@ -338,14 +338,14 @@ void __63__SCDAGoodnessScoreEvaluator__reloadTrialConfiguredBoostValues__block_i
   v48 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_readSidekickBoostsFile:(id)a3
+- (id)_readSidekickBoostsFile:(id)file
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  fileCopy = file;
+  if (fileCopy)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    if (([v4 fileExistsAtPath:v3] & 1) == 0)
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    if (([defaultManager fileExistsAtPath:fileCopy] & 1) == 0)
     {
       v11 = SCDALogContextCore;
       if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_ERROR))
@@ -353,7 +353,7 @@ void __63__SCDAGoodnessScoreEvaluator__reloadTrialConfiguredBoostValues__block_i
         *buf = 136315394;
         v21 = "[SCDAGoodnessScoreEvaluator _readSidekickBoostsFile:]";
         v22 = 2112;
-        v23 = v3;
+        v23 = fileCopy;
         _os_log_error_impl(&dword_1DA758000, v11, OS_LOG_TYPE_ERROR, "%s Unable to find sidekick boosts plist at path %@.", buf, 0x16u);
       }
 
@@ -361,7 +361,7 @@ void __63__SCDAGoodnessScoreEvaluator__reloadTrialConfiguredBoostValues__block_i
       goto LABEL_23;
     }
 
-    v5 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v3];
+    v5 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:fileCopy];
     if (!v5)
     {
       v12 = SCDALogContextCore;
@@ -370,7 +370,7 @@ void __63__SCDAGoodnessScoreEvaluator__reloadTrialConfiguredBoostValues__block_i
         *buf = 136315394;
         v21 = "[SCDAGoodnessScoreEvaluator _readSidekickBoostsFile:]";
         v22 = 2112;
-        v23 = v3;
+        v23 = fileCopy;
         _os_log_error_impl(&dword_1DA758000, v12, OS_LOG_TYPE_ERROR, "%s Unable to read sidekick boosts plist file at path %@.", buf, 0x16u);
       }
 
@@ -389,7 +389,7 @@ void __63__SCDAGoodnessScoreEvaluator__reloadTrialConfiguredBoostValues__block_i
         *buf = 136315650;
         v21 = "[SCDAGoodnessScoreEvaluator _readSidekickBoostsFile:]";
         v22 = 2112;
-        v23 = v3;
+        v23 = fileCopy;
         v24 = 2112;
         v25 = v7;
         _os_log_error_impl(&dword_1DA758000, v8, OS_LOG_TYPE_ERROR, "%s Unable to initialize sidekick boosts from plist file at path %@ due to error %@", buf, 0x20u);
@@ -477,7 +477,7 @@ LABEL_24:
   return v6;
 }
 
-- (void)_updateSidekickBoosts:(id)a3
+- (void)_updateSidekickBoosts:(id)boosts
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = SCDALogContextCore;
@@ -491,14 +491,14 @@ LABEL_24:
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateRecentSiriExponentialBoostDefined:(BOOL)a3 withSecondDegree:(double)a4 andFirstDegree:(double)a5 andIntercept:(double)a6
+- (void)_updateRecentSiriExponentialBoostDefined:(BOOL)defined withSecondDegree:(double)degree andFirstDegree:(double)firstDegree andIntercept:(double)intercept
 {
   v27 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_scoreEvaluationLock);
-  self->_isExponentialBoostDefined = a3;
-  self->_recentSiriSecondDegreeCoefficient = a4;
-  self->_recentSiriFirstDegreeCoefficient = a5;
-  self->_recentSiriIntercept = a6;
+  self->_isExponentialBoostDefined = defined;
+  self->_recentSiriSecondDegreeCoefficient = degree;
+  self->_recentSiriFirstDegreeCoefficient = firstDegree;
+  self->_recentSiriIntercept = intercept;
   os_unfair_lock_unlock(&self->_scoreEvaluationLock);
   v11 = SCDALogContextCore;
   if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_INFO))
@@ -523,13 +523,13 @@ LABEL_24:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateDeviceAdjust:(int64_t)a3
+- (void)_updateDeviceAdjust:(int64_t)adjust
 {
   v16 = *MEMORY[0x1E69E9840];
-  if ((a3 - 129) > 0xFFFFFFFFFFFFFEFELL)
+  if ((adjust - 129) > 0xFFFFFFFFFFFFFEFELL)
   {
     os_unfair_lock_lock(&self->_scoreEvaluationLock);
-    self->_deviceAdjust = a3;
+    self->_deviceAdjust = adjust;
     os_unfair_lock_unlock(&self->_scoreEvaluationLock);
     v6 = SCDALogContextCore;
     if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_INFO))
@@ -544,7 +544,7 @@ LABEL_24:
       v10 = 136315650;
       v11 = "[SCDAGoodnessScoreEvaluator _updateDeviceAdjust:]";
       v12 = 2112;
-      v13 = v7;
+      adjustCopy = v7;
       v14 = 2048;
       v15 = deviceAdjust;
       _os_log_impl(&dword_1DA758000, v6, OS_LOG_TYPE_INFO, "%s #scda updated Trial Device Adjust to (Enabled: %@) Value %ld", &v10, 0x20u);
@@ -559,7 +559,7 @@ LABEL_24:
       v10 = 136315394;
       v11 = "[SCDAGoodnessScoreEvaluator _updateDeviceAdjust:]";
       v12 = 2048;
-      v13 = a3;
+      adjustCopy = adjust;
       _os_log_error_impl(&dword_1DA758000, v5, OS_LOG_TYPE_ERROR, "%s #scda Error: Attempting to assign out of bounds device adjust: %ld", &v10, 0x16u);
     }
 
@@ -571,11 +571,11 @@ LABEL_24:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateDeviceAdjustTrialEnabled:(BOOL)a3
+- (void)_updateDeviceAdjustTrialEnabled:(BOOL)enabled
 {
   v15 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_scoreEvaluationLock);
-  self->_isDeviceAdjustTrialEnabled = a3;
+  self->_isDeviceAdjustTrialEnabled = enabled;
   os_unfair_lock_unlock(&self->_scoreEvaluationLock);
   v5 = SCDALogContextCore;
   if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_INFO))
@@ -599,11 +599,11 @@ LABEL_24:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateRecentSiriBoostTrialEnabled:(BOOL)a3
+- (void)_updateRecentSiriBoostTrialEnabled:(BOOL)enabled
 {
   v12 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_scoreEvaluationLock);
-  self->_isRecentSiriBoostTrialEnabled = a3;
+  self->_isRecentSiriBoostTrialEnabled = enabled;
   os_unfair_lock_unlock(&self->_scoreEvaluationLock);
   v5 = SCDALogContextCore;
   if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_INFO))
@@ -624,11 +624,11 @@ LABEL_24:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateMediaPlaybackBoost:(unsigned __int8)a3
+- (void)_updateMediaPlaybackBoost:(unsigned __int8)boost
 {
   v12 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_scoreEvaluationLock);
-  self->_mediaPlaybackBoost = a3;
+  self->_mediaPlaybackBoost = boost;
   os_unfair_lock_unlock(&self->_scoreEvaluationLock);
   v5 = SCDALogContextCore;
   if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_INFO))
@@ -707,10 +707,10 @@ LABEL_24:
   return result;
 }
 
-- (unsigned)_getRecentBump:(double)a3 ignoreAdjustedBoost:(BOOL)a4 recentlyWonBySmallAmount:(BOOL)a5
+- (unsigned)_getRecentBump:(double)bump ignoreAdjustedBoost:(BOOL)boost recentlyWonBySmallAmount:(BOOL)amount
 {
   v44 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (boost)
   {
     v5 = SCDALogContextCore;
     if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_INFO))
@@ -725,7 +725,7 @@ LABEL_24:
 
   else
   {
-    v7 = a5;
+    amountCopy = amount;
     v10 = 0.0;
     v11 = 0.0;
     if (+[SCDAUtilities isIOS])
@@ -746,15 +746,15 @@ LABEL_24:
       }
     }
 
-    v13 = [MEMORY[0x1E696AE30] processInfo];
-    [v13 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     v15 = v14;
 
-    v16 = v15 - a3;
+    v16 = v15 - bump;
     [(SCDAAssistantPreferences *)self->_pref recencyBoostDecayInterval];
     v18 = 8.0 / v17;
     [(SCDAAssistantPreferences *)self->_pref recencyBoostInitialInterval];
-    v20 = v15 - a3 - v19;
+    v20 = v15 - bump - v19;
     v21 = -v20;
     v22 = v20 < 0.0;
     v23 = -0.0;
@@ -771,7 +771,7 @@ LABEL_24:
 
     if (self->_isRecentSiriBoostTrialEnabled && self->_isExponentialBoostDefined)
     {
-      v25 = SCDAGoodnessComputeExponentialBoost(a3, v15, self->_recentSiriSecondDegreeCoefficient, self->_recentSiriFirstDegreeCoefficient, self->_recentSiriIntercept);
+      v25 = SCDAGoodnessComputeExponentialBoost(bump, v15, self->_recentSiriSecondDegreeCoefficient, self->_recentSiriFirstDegreeCoefficient, self->_recentSiriIntercept);
       v26 = SCDALogContextCore;
       if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_INFO))
       {
@@ -787,7 +787,7 @@ LABEL_24:
       v10 = v25;
     }
 
-    if (v7 && v10 > v11)
+    if (amountCopy && v10 > v11)
     {
       v27 = SCDALogContextCore;
       v28 = 0.0;
@@ -812,9 +812,9 @@ LABEL_24:
       v28 = v10;
     }
 
-    v29 = [(SCDAAssistantPreferences *)self->_pref disableRecencyBoost];
+    disableRecencyBoost = [(SCDAAssistantPreferences *)self->_pref disableRecencyBoost];
     v30 = SCDALogContextCore;
-    if (v29)
+    if (disableRecencyBoost)
     {
       v31 = 0.0;
       if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_INFO))
@@ -882,7 +882,7 @@ LABEL_24:
   return v6;
 }
 
-- (void)myriadTrialBoostsUpdated:(id)a3
+- (void)myriadTrialBoostsUpdated:(id)updated
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -911,30 +911,30 @@ uint64_t __55__SCDAGoodnessScoreEvaluator_myriadTrialBoostsUpdated___block_invok
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SCDAGoodnessScoreEvaluator;
   [(SCDAGoodnessScoreEvaluator *)&v4 dealloc];
 }
 
-- (SCDAGoodnessScoreEvaluator)initWithDeviceInstanceContext:(id)a3 preferences:(id)a4 queue:(id)a5 instrumentation:(id)a6
+- (SCDAGoodnessScoreEvaluator)initWithDeviceInstanceContext:(id)context preferences:(id)preferences queue:(id)queue instrumentation:(id)instrumentation
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contextCopy = context;
+  preferencesCopy = preferences;
+  queueCopy = queue;
+  instrumentationCopy = instrumentation;
   v26.receiver = self;
   v26.super_class = SCDAGoodnessScoreEvaluator;
   v15 = [(SCDAGoodnessScoreEvaluator *)&v26 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_deviceInstanceContext, a3);
-    if (v12)
+    objc_storeStrong(&v15->_deviceInstanceContext, context);
+    if (preferencesCopy)
     {
-      v17 = v12;
+      v17 = preferencesCopy;
     }
 
     else
@@ -946,10 +946,10 @@ uint64_t __55__SCDAGoodnessScoreEvaluator_myriadTrialBoostsUpdated___block_invok
     v16->_pref = v17;
 
     v16->_platformBiasAcquisitionState = 0;
-    objc_storeStrong(&v16->_queue, a5);
+    objc_storeStrong(&v16->_queue, queue);
     v16->_evaluateForAudioAccessory = 0;
     v16->_scoreEvaluationLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v16->_myriadInstrumentation, a6);
+    objc_storeStrong(&v16->_myriadInstrumentation, instrumentation);
     *&v16->_mediaPlaybackBoost = 5127;
     v16->_isSpeakerEndpoint = 0;
     endpointModelName = v16->_endpointModelName;
@@ -966,9 +966,9 @@ uint64_t __55__SCDAGoodnessScoreEvaluator_myriadTrialBoostsUpdated___block_invok
     block[3] = &unk_1E85D3850;
     v21 = v16;
     v25 = v21;
-    dispatch_async(v13, block);
-    v22 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v22 addObserver:v21 selector:sel_myriadTrialBoostsUpdated_ name:*MEMORY[0x1E698D088] object:0];
+    dispatch_async(queueCopy, block);
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v21 selector:sel_myriadTrialBoostsUpdated_ name:*MEMORY[0x1E698D088] object:0];
   }
 
   return v16;

@@ -1,27 +1,27 @@
 @interface STKSessionAction
-+ (id)_sessionActionFromBSAction:(id)a3;
++ (id)_sessionActionFromBSAction:(id)action;
 - (BSXPCCoding)sessionData;
-- (STKSessionAction)initWithBehavior:(id)a3 data:(id)a4 responseBlock:(id)a5;
+- (STKSessionAction)initWithBehavior:(id)behavior data:(id)data responseBlock:(id)block;
 - (STKSessionBehavior)behavior;
 - (id)_init;
-- (id)_initWithBSAction:(id)a3;
+- (id)_initWithBSAction:(id)action;
 - (void)dealloc;
 - (void)invalidate;
-- (void)sendResponse:(int64_t)a3 withContext:(id)a4;
+- (void)sendResponse:(int64_t)response withContext:(id)context;
 @end
 
 @implementation STKSessionAction
 
-+ (id)_sessionActionFromBSAction:(id)a3
++ (id)_sessionActionFromBSAction:(id)action
 {
-  v3 = a3;
-  v4 = [v3 info];
-  v5 = [v4 objectForSetting:1];
+  actionCopy = action;
+  info = [actionCopy info];
+  v5 = [info objectForSetting:1];
 
   v6 = NSClassFromString(v5);
   if ([(objc_class *)v6 isSubclassOfClass:objc_opt_class()])
   {
-    v7 = [[v6 alloc] _initWithBSAction:v3];
+    v7 = [[v6 alloc] _initWithBSAction:actionCopy];
   }
 
   else
@@ -39,28 +39,28 @@
   return [(STKSessionAction *)&v3 init];
 }
 
-- (id)_initWithBSAction:(id)a3
+- (id)_initWithBSAction:(id)action
 {
-  v5 = a3;
-  v6 = [(STKSessionAction *)self _init];
-  v7 = v6;
-  if (v6)
+  actionCopy = action;
+  _init = [(STKSessionAction *)self _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 3, a3);
+    objc_storeStrong(_init + 3, action);
   }
 
   return v7;
 }
 
-- (STKSessionAction)initWithBehavior:(id)a3 data:(id)a4 responseBlock:(id)a5
+- (STKSessionAction)initWithBehavior:(id)behavior data:(id)data responseBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  behaviorCopy = behavior;
+  dataCopy = data;
+  blockCopy = block;
+  v12 = blockCopy;
+  if (behaviorCopy)
   {
-    if (v10)
+    if (dataCopy)
     {
       goto LABEL_3;
     }
@@ -76,7 +76,7 @@ LABEL_8:
   }
 
   [STKSessionAction initWithBehavior:data:responseBlock:];
-  if (!v10)
+  if (!dataCopy)
   {
     goto LABEL_8;
   }
@@ -90,8 +90,8 @@ LABEL_3:
 LABEL_9:
   [STKSessionAction initWithBehavior:data:responseBlock:];
 LABEL_4:
-  v13 = __56__STKSessionAction_initWithBehavior_data_responseBlock___block_invoke(v11, v9);
-  v14 = __56__STKSessionAction_initWithBehavior_data_responseBlock___block_invoke(v13, v10);
+  v13 = __56__STKSessionAction_initWithBehavior_data_responseBlock___block_invoke(blockCopy, behaviorCopy);
+  v14 = __56__STKSessionAction_initWithBehavior_data_responseBlock___block_invoke(v13, dataCopy);
   v15 = objc_alloc_init(MEMORY[0x277CF0C80]);
   v16 = objc_opt_class();
   v17 = NSStringFromClass(v16);
@@ -103,12 +103,12 @@ LABEL_4:
   v19 = NSStringFromClass(v18);
   [v15 setObject:v19 forSetting:4];
 
-  v20 = [(STKSessionAction *)self _init];
-  v21 = v20;
-  if (v20)
+  _init = [(STKSessionAction *)self _init];
+  v21 = _init;
+  if (_init)
   {
-    objc_storeStrong(v20 + 1, a3);
-    objc_storeStrong(&v21->_data, a4);
+    objc_storeStrong(_init + 1, behavior);
+    objc_storeStrong(&v21->_data, data);
     v22 = objc_alloc(MEMORY[0x277CF0B58]);
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
@@ -162,7 +162,7 @@ void __56__STKSessionAction_initWithBehavior_data_responseBlock___block_invoke_2
 - (void)dealloc
 {
   OUTLINED_FUNCTION_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_2();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
@@ -172,8 +172,8 @@ void __56__STKSessionAction_initWithBehavior_data_responseBlock___block_invoke_2
   behavior = self->_behavior;
   if (!behavior)
   {
-    v4 = [(BSAction *)self->_action info];
-    v5 = [v4 objectForSetting:2];
+    info = [(BSAction *)self->_action info];
+    v5 = [info objectForSetting:2];
 
     if ([v5 conformsToProtocol:&unk_287590CC0])
     {
@@ -193,13 +193,13 @@ void __56__STKSessionAction_initWithBehavior_data_responseBlock___block_invoke_2
   data = self->_data;
   if (!data)
   {
-    v4 = [(BSAction *)self->_action info];
-    v5 = [v4 objectForSetting:3];
+    info = [(BSAction *)self->_action info];
+    v5 = [info objectForSetting:3];
 
     if ([v5 conformsToProtocol:&unk_287590CC0])
     {
-      v6 = [(BSAction *)self->_action info];
-      v7 = [v6 objectForSetting:4];
+      info2 = [(BSAction *)self->_action info];
+      v7 = [info2 objectForSetting:4];
 
       v8 = NSClassFromString(v7);
       if (v8)
@@ -216,15 +216,15 @@ void __56__STKSessionAction_initWithBehavior_data_responseBlock___block_invoke_2
   return data;
 }
 
-- (void)sendResponse:(int64_t)a3 withContext:(id)a4
+- (void)sendResponse:(int64_t)response withContext:(id)context
 {
   v6 = MEMORY[0x277CF0C80];
-  v7 = a4;
+  contextCopy = context;
   v8 = objc_alloc_init(v6);
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:response];
   [v8 setObject:v9 forSetting:1];
 
-  [v8 setObject:v7 forSetting:2];
+  [v8 setObject:contextCopy forSetting:2];
   v10 = self->_action;
   action = self->_action;
   self->_action = 0;

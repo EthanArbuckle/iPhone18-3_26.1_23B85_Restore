@@ -1,15 +1,15 @@
 @interface ASCPendingPromises
 - (ASCPendingPromises)init;
-- (BOOL)containsBinaryPromise:(id)a3;
-- (BOOL)containsPromise:(id)a3;
+- (BOOL)containsBinaryPromise:(id)promise;
+- (BOOL)containsPromise:(id)promise;
 - (BOOL)hasPromises;
 - (NSMutableArray)binaryPromises;
 - (NSMutableArray)promises;
-- (void)addBinaryPromise:(id)a3;
-- (void)addPromise:(id)a3;
-- (void)enumerateBinaryPromises:(id)a3 andPromises:(id)a4;
-- (void)finishAllWithError:(id)a3;
-- (void)withLock:(id)a3;
+- (void)addBinaryPromise:(id)promise;
+- (void)addPromise:(id)promise;
+- (void)enumerateBinaryPromises:(id)promises andPromises:(id)andPromises;
+- (void)finishAllWithError:(id)error;
+- (void)withLock:(id)lock;
 @end
 
 @implementation ASCPendingPromises
@@ -29,24 +29,24 @@
   return v2;
 }
 
-- (void)withLock:(id)a3
+- (void)withLock:(id)lock
 {
-  v6 = a3;
-  v4 = [(ASCPendingPromises *)self stateLock];
-  [v4 lock];
+  lockCopy = lock;
+  stateLock = [(ASCPendingPromises *)self stateLock];
+  [stateLock lock];
 
-  v6[2]();
-  v5 = [(ASCPendingPromises *)self stateLock];
-  [v5 unlock];
+  lockCopy[2]();
+  stateLock2 = [(ASCPendingPromises *)self stateLock];
+  [stateLock2 unlock];
 }
 
 - (NSMutableArray)binaryPromises
 {
-  v3 = [(ASCPendingPromises *)self binaryPromisesIfLoaded];
-  v4 = v3;
-  if (v3)
+  binaryPromisesIfLoaded = [(ASCPendingPromises *)self binaryPromisesIfLoaded];
+  v4 = binaryPromisesIfLoaded;
+  if (binaryPromisesIfLoaded)
   {
-    v5 = v3;
+    v5 = binaryPromisesIfLoaded;
   }
 
   else
@@ -60,11 +60,11 @@
 
 - (NSMutableArray)promises
 {
-  v3 = [(ASCPendingPromises *)self promisesIfLoaded];
-  v4 = v3;
-  if (v3)
+  promisesIfLoaded = [(ASCPendingPromises *)self promisesIfLoaded];
+  v4 = promisesIfLoaded;
+  if (promisesIfLoaded)
   {
-    v5 = v3;
+    v5 = promisesIfLoaded;
   }
 
   else
@@ -76,9 +76,9 @@
   return v5;
 }
 
-- (BOOL)containsBinaryPromise:(id)a3
+- (BOOL)containsBinaryPromise:(id)promise
 {
-  v4 = a3;
+  promiseCopy = promise;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -89,7 +89,7 @@
   v7[3] = &unk_2781CC5F8;
   v9 = &v10;
   v7[4] = self;
-  v5 = v4;
+  v5 = promiseCopy;
   v8 = v5;
   [(ASCPendingPromises *)self withLock:v7];
   LOBYTE(self) = *(v11 + 24);
@@ -116,16 +116,16 @@ void __44__ASCPendingPromises_containsBinaryPromise___block_invoke(uint64_t a1)
   }
 }
 
-- (void)addBinaryPromise:(id)a3
+- (void)addBinaryPromise:(id)promise
 {
-  v4 = a3;
+  promiseCopy = promise;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__ASCPendingPromises_addBinaryPromise___block_invoke;
   v6[3] = &unk_2781CC1F8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = promiseCopy;
+  v5 = promiseCopy;
   [(ASCPendingPromises *)self withLock:v6];
 }
 
@@ -222,9 +222,9 @@ void __33__ASCPendingPromises_hasPromises__block_invoke(uint64_t a1)
 LABEL_9:
 }
 
-- (BOOL)containsPromise:(id)a3
+- (BOOL)containsPromise:(id)promise
 {
-  v4 = a3;
+  promiseCopy = promise;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -235,7 +235,7 @@ LABEL_9:
   v7[3] = &unk_2781CC5F8;
   v9 = &v10;
   v7[4] = self;
-  v5 = v4;
+  v5 = promiseCopy;
   v8 = v5;
   [(ASCPendingPromises *)self withLock:v7];
   LOBYTE(self) = *(v11 + 24);
@@ -262,16 +262,16 @@ void __38__ASCPendingPromises_containsPromise___block_invoke(uint64_t a1)
   }
 }
 
-- (void)addPromise:(id)a3
+- (void)addPromise:(id)promise
 {
-  v4 = a3;
+  promiseCopy = promise;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __33__ASCPendingPromises_addPromise___block_invoke;
   v6[3] = &unk_2781CC1F8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = promiseCopy;
+  v5 = promiseCopy;
   [(ASCPendingPromises *)self withLock:v6];
 }
 
@@ -319,22 +319,22 @@ void __33__ASCPendingPromises_addPromise___block_invoke_3(uint64_t a1)
   [v2 removeObjectIdenticalTo:*(a1 + 40)];
 }
 
-- (void)enumerateBinaryPromises:(id)a3 andPromises:(id)a4
+- (void)enumerateBinaryPromises:(id)promises andPromises:(id)andPromises
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ASCPendingPromises *)self stateLock];
-  [v8 lock];
+  promisesCopy = promises;
+  andPromisesCopy = andPromises;
+  stateLock = [(ASCPendingPromises *)self stateLock];
+  [stateLock lock];
 
-  v9 = [(ASCPendingPromises *)self binaryPromisesIfLoaded];
-  v10 = [v9 copy];
+  binaryPromisesIfLoaded = [(ASCPendingPromises *)self binaryPromisesIfLoaded];
+  v10 = [binaryPromisesIfLoaded copy];
 
-  v11 = [(ASCPendingPromises *)self promisesIfLoaded];
-  v12 = [v11 copy];
+  promisesIfLoaded = [(ASCPendingPromises *)self promisesIfLoaded];
+  v12 = [promisesIfLoaded copy];
 
-  v13 = [(ASCPendingPromises *)self stateLock];
-  [v13 unlock];
+  stateLock2 = [(ASCPendingPromises *)self stateLock];
+  [stateLock2 unlock];
 
   if (v10)
   {
@@ -358,7 +358,7 @@ void __33__ASCPendingPromises_addPromise___block_invoke_3(uint64_t a1)
             objc_enumerationMutation(v14);
           }
 
-          v6[2](v6, *(*(&v28 + 1) + 8 * v18++));
+          promisesCopy[2](promisesCopy, *(*(&v28 + 1) + 8 * v18++));
         }
 
         while (v16 != v18);
@@ -391,7 +391,7 @@ void __33__ASCPendingPromises_addPromise___block_invoke_3(uint64_t a1)
             objc_enumerationMutation(v19);
           }
 
-          v7[2](v7, *(*(&v24 + 1) + 8 * v23++));
+          andPromisesCopy[2](andPromisesCopy, *(*(&v24 + 1) + 8 * v23++));
         }
 
         while (v21 != v23);
@@ -403,14 +403,14 @@ void __33__ASCPendingPromises_addPromise___block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)finishAllWithError:(id)a3
+- (void)finishAllWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41__ASCPendingPromises_finishAllWithError___block_invoke;
   v8[3] = &unk_2781CC6D8;
-  v9 = v4;
+  v9 = errorCopy;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__ASCPendingPromises_finishAllWithError___block_invoke_2;

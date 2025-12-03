@@ -1,29 +1,29 @@
 @interface CKMutableMessageContext
-- (void)setChatContext:(id)a3;
-- (void)setFromMe:(BOOL)a3;
-- (void)setServiceName:(id)a3;
+- (void)setChatContext:(id)context;
+- (void)setFromMe:(BOOL)me;
+- (void)setServiceName:(id)name;
 @end
 
 @implementation CKMutableMessageContext
 
-- (void)setChatContext:(id)a3
+- (void)setChatContext:(id)context
 {
-  v4 = [a3 copy];
+  v4 = [context copy];
   chatContext = self->super._chatContext;
   self->super._chatContext = v4;
 }
 
-- (void)setServiceName:(id)a3
+- (void)setServiceName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   serviceName = self->super._serviceName;
   self->super._serviceName = v4;
 }
 
-- (void)setFromMe:(BOOL)a3
+- (void)setFromMe:(BOOL)me
 {
-  self->super._fromMe = a3;
-  if (a3)
+  self->super._fromMe = me;
+  if (me)
   {
     *&self->super._spam = 0;
     self->super._senderUnauthenticated = 0;

@@ -1,16 +1,16 @@
 @interface FlyoverTrayHeaderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_setupViews;
 @end
 
 @implementation FlyoverTrayHeaderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FlyoverTrayHeader" hasInstanceMethod:@"_setupViews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"FlyoverTrayHeader" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FlyoverTrayHeader" hasInstanceMethod:@"_setupViews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"FlyoverTrayHeader" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

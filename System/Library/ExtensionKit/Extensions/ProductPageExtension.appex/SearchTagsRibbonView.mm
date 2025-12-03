@@ -1,6 +1,6 @@
 @interface SearchTagsRibbonView
 - (BOOL)hasContent;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (void)layoutSubviews;
 @end
 
@@ -8,15 +8,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004EDC78();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_1004EE27C(a4);
+  selfCopy = self;
+  sub_1004EE27C(in);
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -39,7 +39,7 @@
   swift_getObjectType();
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC20ProductPageExtension20SearchTagsRibbonView_metadataRibbonItemModels);
 
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1000E99EC(v3, 0);
 
   return v5 & 1;

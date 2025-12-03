@@ -1,13 +1,13 @@
 @interface PKAccountAttestationRequest
 + (id)_keychainItemWrapper;
 + (id)createAnonymizationSalt;
-+ (id)defaultAnonymizationSaltWithError:(id *)a3;
-+ (id)keychainDataWithError:(id *)a3;
-+ (id)setDefaultAnonymizationSalt:(id)a3;
++ (id)defaultAnonymizationSaltWithError:(id *)error;
++ (id)keychainDataWithError:(id *)error;
++ (id)setDefaultAnonymizationSalt:(id)salt;
 + (void)removeAccountAttesationData;
 + (void)removeLocalAccountAttesationData;
-- (PKAccountAttestationRequest)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKAccountAttestationRequest)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountAttestationRequest
@@ -27,15 +27,15 @@
   return v2;
 }
 
-+ (id)keychainDataWithError:(id *)a3
++ (id)keychainDataWithError:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = [a1 _keychainItemWrapper];
-  v5 = [v4 objectForKey:*MEMORY[0x1E697B3C0]];
+  _keychainItemWrapper = [self _keychainItemWrapper];
+  v5 = [_keychainItemWrapper objectForKey:*MEMORY[0x1E697B3C0]];
   v6 = v5;
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   if (v5)
@@ -89,11 +89,11 @@
           _os_log_impl(&dword_1AD337000, v20, OS_LOG_TYPE_DEFAULT, "Account Attestation: Could not parse keychain data: %@", buf, 0xCu);
         }
 
-        if (a3)
+        if (error)
         {
           v21 = v10;
           v13 = 0;
-          *a3 = v10;
+          *error = v10;
         }
 
         else
@@ -114,11 +114,11 @@
         _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Account Attestation: Could not initialize unarchiver with keychain data: %@", buf, 0xCu);
       }
 
-      if (a3)
+      if (error)
       {
         v12 = v10;
         v13 = 0;
-        *a3 = v10;
+        *error = v10;
       }
 
       else
@@ -136,10 +136,10 @@
   return v13;
 }
 
-+ (id)defaultAnonymizationSaltWithError:(id *)a3
++ (id)defaultAnonymizationSaltWithError:(id *)error
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [a1 keychainDataWithError:a3];
+  v3 = [self keychainDataWithError:error];
   v4 = v3;
   if (!v3)
   {
@@ -184,12 +184,12 @@ LABEL_11:
   return v5;
 }
 
-+ (id)setDefaultAnonymizationSalt:(id)a3
++ (id)setDefaultAnonymizationSalt:(id)salt
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  saltCopy = salt;
   v22 = 0;
-  v5 = [a1 keychainDataWithError:&v22];
+  v5 = [self keychainDataWithError:&v22];
   v6 = v22;
   v7 = [v5 mutableCopy];
 
@@ -213,7 +213,7 @@ LABEL_23:
   {
     v10 = PKLogFacilityTypeGetObject(7uLL);
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-    if (!v4)
+    if (!saltCopy)
     {
       if (v11)
       {
@@ -229,13 +229,13 @@ LABEL_23:
     if (v11)
     {
       *buf = 138412290;
-      v24 = v4;
+      v24 = saltCopy;
       _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "Account Attestation: Updating default salt: '%@'", buf, 0xCu);
     }
 
     v12 = v7;
 LABEL_14:
-    [v12 setObject:v4 forKey:@"DefaultSalt"];
+    [v12 setObject:saltCopy forKey:@"DefaultSalt"];
 LABEL_18:
     v14 = MEMORY[0x1E696ACC8];
     v15 = [v7 copy];
@@ -243,8 +243,8 @@ LABEL_18:
     v16 = [v14 archivedDataWithRootObject:v15 requiringSecureCoding:1 error:&v21];
     v17 = v21;
 
-    v18 = [a1 _keychainItemWrapper];
-    [v18 setObject:v16 forKey:*MEMORY[0x1E697B3C0]];
+    _keychainItemWrapper = [self _keychainItemWrapper];
+    [_keychainItemWrapper setObject:v16 forKey:*MEMORY[0x1E697B3C0]];
 
     if (v17)
     {
@@ -262,13 +262,13 @@ LABEL_18:
     goto LABEL_23;
   }
 
-  if (v4)
+  if (saltCopy)
   {
     v13 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v24 = v4;
+      v24 = saltCopy;
       _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "Account Attestation: Creating new keychain data with salt: '%@'", buf, 0xCu);
     }
 
@@ -292,8 +292,8 @@ LABEL_24:
     _os_log_impl(&dword_1AD337000, v3, OS_LOG_TYPE_DEFAULT, "Account Attestation: Removing data...", v5, 2u);
   }
 
-  v4 = [a1 _keychainItemWrapper];
-  [v4 resetKeychainItem];
+  _keychainItemWrapper = [self _keychainItemWrapper];
+  [_keychainItemWrapper resetKeychainItem];
 }
 
 + (void)removeLocalAccountAttesationData
@@ -305,8 +305,8 @@ LABEL_24:
     _os_log_impl(&dword_1AD337000, v3, OS_LOG_TYPE_DEFAULT, "Account Attestation: Removing local data...", v5, 2u);
   }
 
-  v4 = [a1 _keychainItemWrapper];
-  [v4 resetLocalKeychainItem];
+  _keychainItemWrapper = [self _keychainItemWrapper];
+  [_keychainItemWrapper resetLocalKeychainItem];
 }
 
 + (id)_keychainItemWrapper
@@ -316,19 +316,19 @@ LABEL_24:
   return v2;
 }
 
-- (PKAccountAttestationRequest)initWithCoder:(id)a3
+- (PKAccountAttestationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKAccountAttestationRequest;
   v5 = [(PKAccountAttestationRequest *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"casdCertificate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"casdCertificate"];
     casdCertificate = v5->_casdCertificate;
     v5->_casdCertificate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"anonymizationSalt"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"anonymizationSalt"];
     anonymizationSalt = v5->_anonymizationSalt;
     v5->_anonymizationSalt = v8;
   }
@@ -336,12 +336,12 @@ LABEL_24:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   casdCertificate = self->_casdCertificate;
-  v5 = a3;
-  [v5 encodeObject:casdCertificate forKey:@"casdCertificate"];
-  [v5 encodeObject:self->_anonymizationSalt forKey:@"anonymizationSalt"];
+  coderCopy = coder;
+  [coderCopy encodeObject:casdCertificate forKey:@"casdCertificate"];
+  [coderCopy encodeObject:self->_anonymizationSalt forKey:@"anonymizationSalt"];
 }
 
 @end

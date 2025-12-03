@@ -1,34 +1,34 @@
 @interface ICUnsupportedObjectPredicateHelper
-+ (id)predicateForSupportedAttachmentsInContext:(id)a3;
-+ (id)predicateForSupportedFoldersInContext:(id)a3;
-+ (id)predicateForSupportedInlineAttachmentsInContext:(id)a3;
-+ (id)predicateForSupportedNotesInContext:(id)a3;
-+ (id)unsupportedAttachmentIdentifiersWithContext:(id)a3;
-+ (id)unsupportedFolderIdentifiersWithContext:(id)a3;
-+ (id)unsupportedInlineAttachmentIdentifiersWithContext:(id)a3;
-+ (void)recursivelyAddAttachment:(id)a3 toMutableSet:(id)a4;
-+ (void)recursivelyAddFolder:(id)a3 toMutableSet:(id)a4;
++ (id)predicateForSupportedAttachmentsInContext:(id)context;
++ (id)predicateForSupportedFoldersInContext:(id)context;
++ (id)predicateForSupportedInlineAttachmentsInContext:(id)context;
++ (id)predicateForSupportedNotesInContext:(id)context;
++ (id)unsupportedAttachmentIdentifiersWithContext:(id)context;
++ (id)unsupportedFolderIdentifiersWithContext:(id)context;
++ (id)unsupportedInlineAttachmentIdentifiersWithContext:(id)context;
++ (void)recursivelyAddAttachment:(id)attachment toMutableSet:(id)set;
++ (void)recursivelyAddFolder:(id)folder toMutableSet:(id)set;
 @end
 
 @implementation ICUnsupportedObjectPredicateHelper
 
-+ (id)predicateForSupportedFoldersInContext:(id)a3
++ (id)predicateForSupportedFoldersInContext:(id)context
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = [a1 unsupportedFolderIdentifiersWithContext:a3];
+  v4 = [self unsupportedFolderIdentifiersWithContext:context];
   v5 = [v3 predicateWithFormat:@"NOT (identifier IN %@)", v4];
 
   return v5;
 }
 
-+ (id)predicateForSupportedNotesInContext:(id)a3
++ (id)predicateForSupportedNotesInContext:(id)context
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAC30];
-  v5 = a3;
+  contextCopy = context;
   v6 = [v4 predicateWithFormat:@"minimumSupportedNotesVersion <= %d", +[ICCloudSyncingObject currentNotesVersion](ICCloudSyncingObject, "currentNotesVersion")];
   v7 = MEMORY[0x277CCAC30];
-  v8 = [a1 unsupportedFolderIdentifiersWithContext:v5];
+  v8 = [self unsupportedFolderIdentifiersWithContext:contextCopy];
 
   v9 = [v7 predicateWithFormat:@"NOT (folder.identifier IN %@)", v8];
 
@@ -41,17 +41,17 @@
   return v12;
 }
 
-+ (id)predicateForSupportedAttachmentsInContext:(id)a3
++ (id)predicateForSupportedAttachmentsInContext:(id)context
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAC30];
-  v5 = a3;
-  v6 = [a1 unsupportedAttachmentIdentifiersWithContext:v5];
+  contextCopy = context;
+  v6 = [self unsupportedAttachmentIdentifiersWithContext:contextCopy];
   v7 = [v4 predicateWithFormat:@"NOT (identifier IN %@)", v6];
 
   v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"note.minimumSupportedNotesVersion <= %d", +[ICCloudSyncingObject currentNotesVersion](ICCloudSyncingObject, "currentNotesVersion")];
   v9 = MEMORY[0x277CCAC30];
-  v10 = [a1 unsupportedFolderIdentifiersWithContext:v5];
+  v10 = [self unsupportedFolderIdentifiersWithContext:contextCopy];
 
   v11 = [v9 predicateWithFormat:@"NOT (note.folder.identifier IN %@)", v10];
 
@@ -65,17 +65,17 @@
   return v14;
 }
 
-+ (id)predicateForSupportedInlineAttachmentsInContext:(id)a3
++ (id)predicateForSupportedInlineAttachmentsInContext:(id)context
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAC30];
-  v5 = a3;
-  v6 = [a1 unsupportedInlineAttachmentIdentifiersWithContext:v5];
+  contextCopy = context;
+  v6 = [self unsupportedInlineAttachmentIdentifiersWithContext:contextCopy];
   v7 = [v4 predicateWithFormat:@"NOT (identifier IN %@)", v6];
 
   v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"note.minimumSupportedNotesVersion <= %d", +[ICCloudSyncingObject currentNotesVersion](ICCloudSyncingObject, "currentNotesVersion")];
   v9 = MEMORY[0x277CCAC30];
-  v10 = [a1 unsupportedFolderIdentifiersWithContext:v5];
+  v10 = [self unsupportedFolderIdentifiersWithContext:contextCopy];
 
   v11 = [v9 predicateWithFormat:@"NOT (note.folder.identifier IN %@)", v10];
 
@@ -89,20 +89,20 @@
   return v14;
 }
 
-+ (void)recursivelyAddFolder:(id)a3 toMutableSet:(id)a4
++ (void)recursivelyAddFolder:(id)folder toMutableSet:(id)set
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 markedForDeletion] & 1) == 0 && (objc_msgSend(v6, "needsInitialFetchFromCloud") & 1) == 0)
+  folderCopy = folder;
+  setCopy = set;
+  if (([folderCopy markedForDeletion] & 1) == 0 && (objc_msgSend(folderCopy, "needsInitialFetchFromCloud") & 1) == 0)
   {
-    [v7 addObject:v6];
+    [setCopy addObject:folderCopy];
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v8 = [v6 children];
-    v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    children = [folderCopy children];
+    v9 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v9)
     {
       v10 = v9;
@@ -114,14 +114,14 @@
         {
           if (*v14 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(children);
           }
 
-          [a1 recursivelyAddFolder:*(*(&v13 + 1) + 8 * v12++) toMutableSet:v7];
+          [self recursivelyAddFolder:*(*(&v13 + 1) + 8 * v12++) toMutableSet:setCopy];
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v10 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v10);
@@ -129,9 +129,9 @@
   }
 }
 
-+ (id)unsupportedFolderIdentifiersWithContext:(id)a3
++ (id)unsupportedFolderIdentifiersWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -142,9 +142,9 @@
   v8[1] = 3221225472;
   v8[2] = __78__ICUnsupportedObjectPredicateHelper_unsupportedFolderIdentifiersWithContext___block_invoke;
   v8[3] = &unk_278196870;
-  v5 = v4;
+  v5 = contextCopy;
   v10 = &v12;
-  v11 = a1;
+  selfCopy = self;
   v9 = v5;
   [v5 performBlockAndWait:v8];
   v6 = [v13[5] copy];
@@ -232,25 +232,25 @@ void __78__ICUnsupportedObjectPredicateHelper_unsupportedFolderIdentifiersWithCo
   }
 }
 
-+ (void)recursivelyAddAttachment:(id)a3 toMutableSet:(id)a4
++ (void)recursivelyAddAttachment:(id)attachment toMutableSet:(id)set
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 markedForDeletion] & 1) == 0 && (objc_msgSend(v6, "needsInitialFetchFromCloud") & 1) == 0)
+  attachmentCopy = attachment;
+  setCopy = set;
+  if (([attachmentCopy markedForDeletion] & 1) == 0 && (objc_msgSend(attachmentCopy, "needsInitialFetchFromCloud") & 1) == 0)
   {
-    v8 = [v6 note];
-    v9 = [v8 needsInitialFetchFromCloud];
+    note = [attachmentCopy note];
+    needsInitialFetchFromCloud = [note needsInitialFetchFromCloud];
 
-    if ((v9 & 1) == 0)
+    if ((needsInitialFetchFromCloud & 1) == 0)
     {
-      [v7 addObject:v6];
+      [setCopy addObject:attachmentCopy];
       v17 = 0u;
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v10 = [v6 subAttachments];
-      v11 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      subAttachments = [attachmentCopy subAttachments];
+      v11 = [subAttachments countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v11)
       {
         v12 = v11;
@@ -262,14 +262,14 @@ void __78__ICUnsupportedObjectPredicateHelper_unsupportedFolderIdentifiersWithCo
           {
             if (*v16 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(subAttachments);
             }
 
-            [a1 recursivelyAddAttachment:*(*(&v15 + 1) + 8 * v14++) toMutableSet:v7];
+            [self recursivelyAddAttachment:*(*(&v15 + 1) + 8 * v14++) toMutableSet:setCopy];
           }
 
           while (v12 != v14);
-          v12 = [v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v12 = [subAttachments countByEnumeratingWithState:&v15 objects:v19 count:16];
         }
 
         while (v12);
@@ -278,9 +278,9 @@ void __78__ICUnsupportedObjectPredicateHelper_unsupportedFolderIdentifiersWithCo
   }
 }
 
-+ (id)unsupportedAttachmentIdentifiersWithContext:(id)a3
++ (id)unsupportedAttachmentIdentifiersWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -291,9 +291,9 @@ void __78__ICUnsupportedObjectPredicateHelper_unsupportedFolderIdentifiersWithCo
   v8[1] = 3221225472;
   v8[2] = __82__ICUnsupportedObjectPredicateHelper_unsupportedAttachmentIdentifiersWithContext___block_invoke;
   v8[3] = &unk_278196870;
-  v5 = v4;
+  v5 = contextCopy;
   v10 = &v12;
-  v11 = a1;
+  selfCopy = self;
   v9 = v5;
   [v5 performBlockAndWait:v8];
   v6 = [v13[5] copy];
@@ -381,9 +381,9 @@ void __82__ICUnsupportedObjectPredicateHelper_unsupportedAttachmentIdentifiersWi
   }
 }
 
-+ (id)unsupportedInlineAttachmentIdentifiersWithContext:(id)a3
++ (id)unsupportedInlineAttachmentIdentifiersWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -394,7 +394,7 @@ void __82__ICUnsupportedObjectPredicateHelper_unsupportedAttachmentIdentifiersWi
   v8 = 3221225472;
   v9 = __88__ICUnsupportedObjectPredicateHelper_unsupportedInlineAttachmentIdentifiersWithContext___block_invoke;
   v10 = &unk_278194D68;
-  v4 = v3;
+  v4 = contextCopy;
   v11 = v4;
   v12 = &v13;
   [v4 performBlockAndWait:&v7];

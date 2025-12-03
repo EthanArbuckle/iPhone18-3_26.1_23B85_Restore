@@ -2,9 +2,9 @@
 - (id)platform;
 - (void)awakeFromNib;
 - (void)didCancel;
-- (void)showPINEntryUIWithFlags:(unsigned int)a3;
-- (void)showPINEntryUIWithFlags:(unsigned int)a3 inThrottleSeconds:(float)a4;
-- (void)tryPin:(id)a3;
+- (void)showPINEntryUIWithFlags:(unsigned int)flags;
+- (void)showPINEntryUIWithFlags:(unsigned int)flags inThrottleSeconds:(float)seconds;
+- (void)tryPin:(id)pin;
 @end
 
 @implementation FBAPinPairingViewController
@@ -16,20 +16,20 @@
   [(FBAPinPairingViewController *)&v5 awakeFromNib];
   [(FBAPinPairingViewController *)self setContext:0];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [(FBAPinPairingViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(FBAPinPairingViewController *)self view];
+  [view setBackgroundColor:v3];
 }
 
 - (void)didCancel
 {
   v4 = +[NSNotificationCenter defaultCenter];
-  v3 = [(FBAPinPairingViewController *)self device];
-  [v4 postNotificationName:@"FBAPinPairingViewControllerDidCancel" object:v3];
+  device = [(FBAPinPairingViewController *)self device];
+  [v4 postNotificationName:@"FBAPinPairingViewControllerDidCancel" object:device];
 }
 
-- (void)tryPin:(id)a3
+- (void)tryPin:(id)pin
 {
-  v4 = a3;
+  pinCopy = pin;
   v5 = +[FBALog ded];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -37,18 +37,18 @@
   }
 
   v6 = +[FBKDeviceManager sharedInstance];
-  v7 = [(FBAPinPairingViewController *)self device];
+  device = [(FBAPinPairingViewController *)self device];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100030768;
   v8[3] = &unk_1000DF760;
   v8[4] = self;
-  [v6 tryPairingDevice:v7 withPin:v4 completion:v8];
+  [v6 tryPairingDevice:device withPin:pinCopy completion:v8];
 }
 
-- (void)showPINEntryUIWithFlags:(unsigned int)a3
+- (void)showPINEntryUIWithFlags:(unsigned int)flags
 {
-  if (a3)
+  if (flags)
   {
     ++self->_failCount;
     [(FBAPINEntryView *)self->_pinEntryView shake];
@@ -67,13 +67,13 @@
 
   else
   {
-    if ((a3 & 2) == 0)
+    if ((flags & 2) == 0)
     {
       goto LABEL_10;
     }
 
-    v4 = [(FBAPinPairingViewController *)self platform];
-    v5 = [v4 isEqualToString:DEDDevicePlatformTV];
+    platform = [(FBAPinPairingViewController *)self platform];
+    v5 = [platform isEqualToString:DEDDevicePlatformTV];
 
     v6 = +[NSBundle mainBundle];
     v7 = v6;
@@ -103,25 +103,25 @@ LABEL_10:
   [(FBAPINEntryView *)pinEntryView setText:&stru_1000E2210];
 }
 
-- (void)showPINEntryUIWithFlags:(unsigned int)a3 inThrottleSeconds:(float)a4
+- (void)showPINEntryUIWithFlags:(unsigned int)flags inThrottleSeconds:(float)seconds
 {
-  v6 = dispatch_time(0, (a4 * 1000000000.0));
+  v6 = dispatch_time(0, (seconds * 1000000000.0));
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100030A14;
   v7[3] = &unk_1000DF788;
   v7[4] = self;
-  v8 = a3;
+  flagsCopy = flags;
   dispatch_after(v6, &_dispatch_main_q, v7);
 }
 
 - (id)platform
 {
-  v2 = [(FBAPinPairingViewController *)self device];
-  v3 = [v2 platform];
+  device = [(FBAPinPairingViewController *)self device];
+  platform = [device platform];
 
   v4 = DEDDevicePlatformTV;
-  if (([v3 isEqualToString:DEDDevicePlatformTV] & 1) == 0)
+  if (([platform isEqualToString:DEDDevicePlatformTV] & 1) == 0)
   {
     v5 = +[FBALog ded];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))

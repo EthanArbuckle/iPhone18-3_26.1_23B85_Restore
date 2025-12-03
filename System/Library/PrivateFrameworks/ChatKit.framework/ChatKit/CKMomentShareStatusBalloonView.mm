@@ -1,18 +1,18 @@
 @interface CKMomentShareStatusBalloonView
-+ (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)_performLayoutInSize:(CGSize)a3 updateSubviewFrames:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKMomentShareStatusBalloonView)initWithFrame:(CGRect)a3;
++ (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)_performLayoutInSize:(CGSize)size updateSubviewFrames:(BOOL)frames;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKMomentShareStatusBalloonView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation CKMomentShareStatusBalloonView
 
-- (CKMomentShareStatusBalloonView)initWithFrame:(CGRect)a3
+- (CKMomentShareStatusBalloonView)initWithFrame:(CGRect)frame
 {
   v22.receiver = self;
   v22.super_class = CKMomentShareStatusBalloonView;
-  v3 = [(CKColoredBalloonView *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKColoredBalloonView *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DCAB8] px_imageNamed:@"PXMessagesPlaceholderIcon"];
@@ -45,14 +45,14 @@
     v3->_secondaryLabel = v15;
 
     v17 = v3->_secondaryLabel;
-    v18 = [objc_opt_class() _secondaryLabelString];
-    [(UILabel *)v17 setText:v18];
+    _secondaryLabelString = [objc_opt_class() _secondaryLabelString];
+    [(UILabel *)v17 setText:_secondaryLabelString];
 
     [(UILabel *)v3->_secondaryLabel setFont:v9];
     [(UILabel *)v3->_secondaryLabel setNumberOfLines:0];
     v19 = v3->_secondaryLabel;
-    v20 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v19 setTextColor:v20];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v19 setTextColor:secondaryLabelColor];
 
     [(CKMomentShareStatusBalloonView *)v3 addSubview:v3->_secondaryLabel];
   }
@@ -60,15 +60,15 @@
   return v3;
 }
 
-+ (CGSize)sizeThatFits:(CGSize)a3
++ (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__CKMomentShareStatusBalloonView_sizeThatFits___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sizeThatFits__predicate != -1)
   {
     dispatch_once(&sizeThatFits__predicate, block);
@@ -95,9 +95,9 @@ void __47__CKMomentShareStatusBalloonView_sizeThatFits___block_invoke(uint64_t a
   sizeThatFits___measurementView = v2;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(CKMomentShareStatusBalloonView *)self _performLayoutInSize:0 updateSubviewFrames:a3.width, a3.height];
+  [(CKMomentShareStatusBalloonView *)self _performLayoutInSize:0 updateSubviewFrames:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -112,17 +112,17 @@ void __47__CKMomentShareStatusBalloonView_sizeThatFits___block_invoke(uint64_t a
   [(CKMomentShareStatusBalloonView *)self _performLayoutInSize:1 updateSubviewFrames:v3, v4];
 }
 
-- (CGSize)_performLayoutInSize:(CGSize)a3 updateSubviewFrames:(BOOL)a4
+- (CGSize)_performLayoutInSize:(CGSize)size updateSubviewFrames:(BOOL)frames
 {
-  v4 = a4;
+  framesCopy = frames;
   v6 = +[CKUIBehavior sharedBehaviors];
   [(CKColoredBalloonView *)self balloonDescriptor];
   [v6 balloonMaskTailSizeForTailShape:v53];
   v8 = v7;
 
-  v9 = [(CKBalloonView *)self orientation];
+  orientation = [(CKBalloonView *)self orientation];
   v10 = v8 + 10.0;
-  if (v9)
+  if (orientation)
   {
     v11 = 10.0;
   }
@@ -132,7 +132,7 @@ void __47__CKMomentShareStatusBalloonView_sizeThatFits___block_invoke(uint64_t a
     v11 = v8 + 10.0;
   }
 
-  if (v9)
+  if (orientation)
   {
     v12 = v10;
   }
@@ -189,12 +189,12 @@ void __47__CKMomentShareStatusBalloonView_sizeThatFits___block_invoke(uint64_t a
   v60.size.width = v23;
   v60.size.height = v25;
   v45 = fmax(v44, fmax(MaxY, CGRectGetMaxY(v60)));
-  v28 = [(CKMomentShareStatusBalloonView *)self traitCollection];
-  [v28 displayScale];
+  traitCollection = [(CKMomentShareStatusBalloonView *)self traitCollection];
+  [traitCollection displayScale];
   if (v29 == 0.0)
   {
-    v30 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v30 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
   }
 
   PXFloatFloorToPixel();
@@ -239,7 +239,7 @@ void __47__CKMomentShareStatusBalloonView_sizeThatFits___block_invoke(uint64_t a
     v26 = v38 - v23;
   }
 
-  if (v4)
+  if (framesCopy)
   {
     [(UIImageView *)self->_iconImageView setFrame:v37, rect, 50.0, 50.0];
     [(UILabel *)self->_primaryLabel setFrame:v36, v35, v50, v49];

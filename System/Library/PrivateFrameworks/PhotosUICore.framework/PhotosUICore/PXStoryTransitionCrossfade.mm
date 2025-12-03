@@ -1,19 +1,19 @@
 @interface PXStoryTransitionCrossfade
-- (PXStoryTransitionCrossfade)initWithTransitionInfo:(id *)a3 event:(int64_t)a4 clipLayouts:(id)a5 storyTransitionCurveType:(unint64_t)a6;
-- (double)clipAlphaForTime:(id *)a3;
+- (PXStoryTransitionCrossfade)initWithTransitionInfo:(id *)info event:(int64_t)event clipLayouts:(id)layouts storyTransitionCurveType:(unint64_t)type;
+- (double)clipAlphaForTime:(id *)time;
 @end
 
 @implementation PXStoryTransitionCrossfade
 
-- (double)clipAlphaForTime:(id *)a3
+- (double)clipAlphaForTime:(id *)time
 {
-  v5 = [(PXStoryConcreteTransition *)self event];
-  if (v5 == 1)
+  event = [(PXStoryConcreteTransition *)self event];
+  if (event == 1)
   {
     return 1.0;
   }
 
-  if (v5 == 2)
+  if (event == 2)
   {
     springAnimation = self->_springAnimation;
     if (!springAnimation)
@@ -30,10 +30,10 @@
   else
   {
     result = 0.0;
-    if (!v5)
+    if (!event)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:240 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:240 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -42,13 +42,13 @@
   return result;
 }
 
-- (PXStoryTransitionCrossfade)initWithTransitionInfo:(id *)a3 event:(int64_t)a4 clipLayouts:(id)a5 storyTransitionCurveType:(unint64_t)a6
+- (PXStoryTransitionCrossfade)initWithTransitionInfo:(id *)info event:(int64_t)event clipLayouts:(id)layouts storyTransitionCurveType:(unint64_t)type
 {
-  v10 = a5;
-  if (a6 == 1)
+  layoutsCopy = layouts;
+  if (type == 1)
   {
     CMTimeMakeWithSeconds(&v19, 1.0, 600);
-    self = [(PXStoryConcreteTransition *)self initWithKind:2 duration:&v19 event:a4 clipLayouts:v10];
+    self = [(PXStoryConcreteTransition *)self initWithKind:2 duration:&v19 event:event clipLayouts:layoutsCopy];
     v14 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"keyPath"];
     [v14 setMass:1.0];
     [v14 setStiffness:50.0];
@@ -60,10 +60,10 @@
     goto LABEL_5;
   }
 
-  if (!a6)
+  if (!type)
   {
-    v19 = *(&a3->var1 + 3);
-    self = [(PXStoryConcreteTransition *)self initWithKind:2 duration:&v19 event:a4 clipLayouts:v10];
+    v19 = *(&info->var1 + 3);
+    self = [(PXStoryConcreteTransition *)self initWithKind:2 duration:&v19 event:event clipLayouts:layoutsCopy];
     LODWORD(v11) = 1050253722;
     LODWORD(v12) = 1060320051;
     LODWORD(v13) = 1.0;

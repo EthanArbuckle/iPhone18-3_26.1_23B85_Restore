@@ -1,28 +1,28 @@
 @interface MapsSuggestionsDGVLinkOverlay
-- (MapsSuggestionsDGVLinkOverlay)initWithFromAnnotation:(id)a3 toAnnotation:(id)a4 index:(unint64_t)a5;
+- (MapsSuggestionsDGVLinkOverlay)initWithFromAnnotation:(id)annotation toAnnotation:(id)toAnnotation index:(unint64_t)index;
 @end
 
 @implementation MapsSuggestionsDGVLinkOverlay
 
-- (MapsSuggestionsDGVLinkOverlay)initWithFromAnnotation:(id)a3 toAnnotation:(id)a4 index:(unint64_t)a5
+- (MapsSuggestionsDGVLinkOverlay)initWithFromAnnotation:(id)annotation toAnnotation:(id)toAnnotation index:(unint64_t)index
 {
-  v8 = a3;
-  v9 = a4;
+  annotationCopy = annotation;
+  toAnnotationCopy = toAnnotation;
   v20.receiver = self;
   v20.super_class = MapsSuggestionsDGVLinkOverlay;
   v10 = [(MapsSuggestionsDGVLinkOverlay *)&v20 init];
   if (v10)
   {
     v11 = v10;
-    [v8 coordinate];
+    [annotationCopy coordinate];
     v13 = v12;
-    [v8 coordinate];
+    [annotationCopy coordinate];
     v21[0] = CLLocationCoordinate2DMake(v13, v14);
-    [v9 coordinate];
+    [toAnnotationCopy coordinate];
     v16 = v15;
-    [v9 coordinate];
+    [toAnnotationCopy coordinate];
     v21[1] = CLLocationCoordinate2DMake(v16, v17);
-    [(MapsSuggestionsDGVLinkOverlay *)v11 setIndex:a5];
+    [(MapsSuggestionsDGVLinkOverlay *)v11 setIndex:index];
     v18 = [MapsSuggestionsDGVLinkOverlay polylineWithCoordinates:v21 count:2];
   }
 

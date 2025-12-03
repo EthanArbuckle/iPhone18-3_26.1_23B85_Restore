@@ -1,6 +1,6 @@
 @interface MOEventPatternDetectorFeatureExtractorADPDCounts
 - (MOEventPatternDetectorFeatureExtractorADPDCounts)init;
-- (id)extractFeaturesFromEvents:(id)a3;
+- (id)extractFeaturesFromEvents:(id)events;
 @end
 
 @implementation MOEventPatternDetectorFeatureExtractorADPDCounts
@@ -19,15 +19,15 @@
   return v3;
 }
 
-- (id)extractFeaturesFromEvents:(id)a3
+- (id)extractFeaturesFromEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v25 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v3;
+  obj = eventsCopy;
   v4 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v4)
   {
@@ -64,23 +64,23 @@
               }
 
               v14 = *(*(&v26 + 1) + 8 * j);
-              v15 = [v14 pCount];
-              v16 = [v15 intValue];
+              pCount = [v14 pCount];
+              intValue = [pCount intValue];
 
-              if ((v16 & 0x80000000) == 0)
+              if ((intValue & 0x80000000) == 0)
               {
-                v17 = [v14 pCount];
-                [v8 addObject:v17];
+                pCount2 = [v14 pCount];
+                [v8 addObject:pCount2];
               }
 
-              v18 = [v14 densityScore];
-              [v18 doubleValue];
+              densityScore = [v14 densityScore];
+              [densityScore doubleValue];
               v20 = v19;
 
               if (v20 >= 0.0)
               {
-                v21 = [v14 densityScore];
-                [v8 addObject:v21];
+                densityScore2 = [v14 densityScore];
+                [v8 addObject:densityScore2];
               }
             }
 

@@ -1,33 +1,33 @@
 @interface HUSiriTriggerPhraseSettingDetailsItemManager
-- (HUSiriTriggerPhraseSettingDetailsItemManager)initWithSourceItem:(id)a3 delegate:(id)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUSiriTriggerPhraseSettingDetailsItemManager)initWithSourceItem:(id)item delegate:(id)delegate;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (id)home;
-- (id)updateSiriTriggerPhrase:(id)a3;
-- (void)mediaProfileContainer:(id)a3 didUpdateSettingKeypath:(id)a4 value:(id)a5;
+- (id)updateSiriTriggerPhrase:(id)phrase;
+- (void)mediaProfileContainer:(id)container didUpdateSettingKeypath:(id)keypath value:(id)value;
 @end
 
 @implementation HUSiriTriggerPhraseSettingDetailsItemManager
 
-- (HUSiriTriggerPhraseSettingDetailsItemManager)initWithSourceItem:(id)a3 delegate:(id)a4
+- (HUSiriTriggerPhraseSettingDetailsItemManager)initWithSourceItem:(id)item delegate:(id)delegate
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 copy];
+  delegateCopy = delegate;
+  v7 = [item copy];
   v12.receiver = self;
   v12.super_class = HUSiriTriggerPhraseSettingDetailsItemManager;
-  v8 = [(HFItemManager *)&v12 initWithDelegate:v6 sourceItem:v7];
+  v8 = [(HFItemManager *)&v12 initWithDelegate:delegateCopy sourceItem:v7];
 
   if (v8)
   {
     v9 = HFLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)v8 home];
+      home = [(HUSiriTriggerPhraseSettingDetailsItemManager *)v8 home];
       *buf = 136315394;
       v14 = "[HUSiriTriggerPhraseSettingDetailsItemManager initWithSourceItem:delegate:]";
       v15 = 2112;
-      v16 = v10;
+      v16 = home;
       _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%s Current home = [%@]", buf, 0x16u);
     }
   }
@@ -35,13 +35,13 @@
   return v8;
 }
 
-- (id)updateSiriTriggerPhrase:(id)a3
+- (id)updateSiriTriggerPhrase:(id)phrase
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  phraseCopy = phrase;
   v5 = objc_opt_new();
-  v6 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self hsOrJSItem];
-  if (v6 == v4)
+  hsOrJSItem = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self hsOrJSItem];
+  if (hsOrJSItem == phraseCopy)
   {
     v7 = 3;
   }
@@ -61,7 +61,7 @@
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%s Now Updating Siri Trigger Phrase Options to [%lu]", buf, 0x16u);
   }
 
-  v9 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self home];
+  home = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self home];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __72__HUSiriTriggerPhraseSettingDetailsItemManager_updateSiriTriggerPhrase___block_invoke;
@@ -70,7 +70,7 @@
   v16 = v7;
   v10 = v5;
   v15 = v10;
-  [v9 updateSiriPhraseOptions:v7 completion:v14];
+  [home updateSiriPhraseOptions:v7 completion:v14];
 
   v11 = v15;
   v12 = v10;
@@ -126,10 +126,10 @@ void __72__HUSiriTriggerPhraseSettingDetailsItemManager_updateSiriTriggerPhrase_
 - (id)home
 {
   objc_opt_class();
-  v3 = [(HFItemManager *)self sourceItem];
+  sourceItem = [(HFItemManager *)self sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = sourceItem;
   }
 
   else
@@ -139,34 +139,34 @@ void __72__HUSiriTriggerPhraseSettingDetailsItemManager_updateSiriTriggerPhrase_
 
   v5 = v4;
 
-  v6 = [v5 home];
+  home = [v5 home];
 
-  if (v6)
+  if (home)
   {
-    v7 = v6;
+    home2 = home;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = HUSiriTriggerPhraseSettingDetailsItemManager;
-    v7 = [(HFItemManager *)&v10 home];
+    home2 = [(HFItemManager *)&v10 home];
   }
 
-  v8 = v7;
+  v8 = home2;
 
   return v8;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v69[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v62 = [v4 siriPhraseOptions];
+    siriPhraseOptions = [homeCopy siriPhraseOptions];
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "siriPhraseOptions = [%lu]", buf, 0xCu);
   }
 
@@ -175,7 +175,7 @@ void __72__HUSiriTriggerPhraseSettingDetailsItemManager_updateSiriTriggerPhrase_
   v58[1] = 3221225472;
   v58[2] = __75__HUSiriTriggerPhraseSettingDetailsItemManager__buildItemProvidersForHome___block_invoke;
   v58[3] = &unk_277DB7478;
-  v7 = v4;
+  v7 = homeCopy;
   v59 = v7;
   v8 = [v6 initWithResultsBlock:v58];
   [(HUSiriTriggerPhraseSettingDetailsItemManager *)self setHsOrJSItem:v8];
@@ -192,10 +192,10 @@ void __72__HUSiriTriggerPhraseSettingDetailsItemManager_updateSiriTriggerPhrase_
 
   v11 = objc_alloc(MEMORY[0x277D14B40]);
   v12 = MEMORY[0x277CBEB98];
-  v13 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self hsOrJSItem];
-  v69[0] = v13;
-  v14 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self hsItem];
-  v69[1] = v14;
+  hsOrJSItem = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self hsOrJSItem];
+  v69[0] = hsOrJSItem;
+  hsItem = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self hsItem];
+  v69[1] = hsItem;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v69 count:2];
   v16 = [v12 setWithArray:v15];
   v17 = [v11 initWithItems:v16];
@@ -219,10 +219,10 @@ void __72__HUSiriTriggerPhraseSettingDetailsItemManager_updateSiriTriggerPhrase_
   v53 = 0x2020000000;
   v54 = 1;
   objc_opt_class();
-  v21 = [(HFItemManager *)self sourceItem];
+  sourceItem = [(HFItemManager *)self sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v22 = v21;
+    v22 = sourceItem;
   }
 
   else
@@ -245,8 +245,8 @@ void __72__HUSiriTriggerPhraseSettingDetailsItemManager_updateSiriTriggerPhrase_
   [(HUSiriTriggerPhraseSettingDetailsItemManager *)self setSiriDeviceItemProvider:v26];
 
   v27 = objc_alloc(MEMORY[0x277D142F0]);
-  v28 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self home];
-  v29 = [v27 initWithHome:v28];
+  home = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self home];
+  v29 = [v27 initWithHome:home];
 
   [v29 setFilter:&__block_literal_global_292];
   v52[3] = 1;
@@ -264,28 +264,28 @@ void __72__HUSiriTriggerPhraseSettingDetailsItemManager_updateSiriTriggerPhrase_
   v33 = HFLogForCategory();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
   {
-    v34 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self unsupportedMediaAccessories];
-    v35 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self siriDeviceItemProvider];
-    v36 = [v35 items];
-    v37 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self siriOtherDeviceItemProvider];
-    v38 = [v37 items];
+    unsupportedMediaAccessories = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self unsupportedMediaAccessories];
+    siriDeviceItemProvider = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self siriDeviceItemProvider];
+    items = [siriDeviceItemProvider items];
+    siriOtherDeviceItemProvider = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self siriOtherDeviceItemProvider];
+    items2 = [siriOtherDeviceItemProvider items];
     *buf = 136315906;
-    v62 = "[HUSiriTriggerPhraseSettingDetailsItemManager _buildItemProvidersForHome:]";
+    siriPhraseOptions = "[HUSiriTriggerPhraseSettingDetailsItemManager _buildItemProvidersForHome:]";
     v63 = 2112;
-    v64 = v34;
+    v64 = unsupportedMediaAccessories;
     v65 = 2112;
-    v66 = v36;
+    v66 = items;
     v67 = 2112;
-    v68 = v38;
+    v68 = items2;
     _os_log_impl(&dword_20CEB6000, v33, OS_LOG_TYPE_DEFAULT, "%s unsupportedMediaAccessories = %@ -  siriDeviceItems = %@, sidekick items = %@", buf, 0x2Au);
   }
 
-  v39 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self siriTriggerPhraseSelectionItemProvider];
-  v60[0] = v39;
-  v40 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self siriDeviceItemProvider];
-  v60[1] = v40;
-  v41 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self siriOtherDeviceItemProvider];
-  v60[2] = v41;
+  siriTriggerPhraseSelectionItemProvider = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self siriTriggerPhraseSelectionItemProvider];
+  v60[0] = siriTriggerPhraseSelectionItemProvider;
+  siriDeviceItemProvider2 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self siriDeviceItemProvider];
+  v60[1] = siriDeviceItemProvider2;
+  siriOtherDeviceItemProvider2 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self siriOtherDeviceItemProvider];
+  v60[2] = siriOtherDeviceItemProvider2;
   v42 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:3];
 
   _Block_object_dispose(&v51, 8);
@@ -835,88 +835,88 @@ id __75__HUSiriTriggerPhraseSettingDetailsItemManager__buildItemProvidersForHome
   return v6;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v179 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self home];
-    v8 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self home];
-    v9 = [v8 hf_atleastOneMediaAccessorySupportingJustSiri];
-    v10 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self home];
+    home = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self home];
+    home2 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self home];
+    hf_atleastOneMediaAccessorySupportingJustSiri = [home2 hf_atleastOneMediaAccessorySupportingJustSiri];
+    home3 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self home];
     *buf = 136315906;
     v172 = "[HUSiriTriggerPhraseSettingDetailsItemManager _buildSectionsWithDisplayedItems:]";
     v173 = 2112;
-    v174 = v7;
+    v174 = home;
     v175 = 1024;
-    v176 = v9;
+    v176 = hf_atleastOneMediaAccessorySupportingJustSiri;
     v177 = 1024;
-    v178 = [v10 hf_atLeastOneMediaAccessoryWithSupportingJustSiriLanguage];
+    hf_atLeastOneMediaAccessoryWithSupportingJustSiriLanguage = [home3 hf_atLeastOneMediaAccessoryWithSupportingJustSiriLanguage];
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%s home [%@] atleastOneMediaAccessorySupportingJustSiri = %{BOOL}d, atLeastOneMediaAccessoryWithSupportingJustSiriLanguage = %{BOOL}d", buf, 0x22u);
   }
 
-  v11 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self home];
-  v12 = [v11 hf_atLeastOneMediaAccessoryWithSupportingJustSiriLanguage];
+  home4 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self home];
+  hf_atLeastOneMediaAccessoryWithSupportingJustSiriLanguage2 = [home4 hf_atLeastOneMediaAccessoryWithSupportingJustSiriLanguage];
 
-  if (v12)
+  if (hf_atLeastOneMediaAccessoryWithSupportingJustSiriLanguage2)
   {
     v13 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUSiriTriggerPhraseSettingItemSectionIdentifier"];
     v14 = _HULocalizedStringWithDefaultValue(@"HUSiriTriggerPhraseSelectionSection_Header", @"HUSiriTriggerPhraseSelectionSection_Header", 1);
     [v13 setHeaderTitle:v14];
 
-    v15 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self home];
-    v16 = [v15 siriPhraseOptions];
+    home5 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self home];
+    siriPhraseOptions = [home5 siriPhraseOptions];
 
-    v17 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self home];
-    v18 = HULocalizedSiriTriggerPhrase(v17);
+    home6 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self home];
+    v18 = HULocalizedSiriTriggerPhrase(home6);
     v25 = HULocalizedStringWithFormat(@"HUJustSiriOrHeySiri_Setting_Section_Footer", @"%@", v19, v20, v21, v22, v23, v24, v18);
 
-    v26 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self unsupportedMediaAccessories];
-    v27 = [v26 count];
+    unsupportedMediaAccessories = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self unsupportedMediaAccessories];
+    v27 = [unsupportedMediaAccessories count];
 
     v161 = v25;
-    if (v27 && v16 == 3)
+    if (v27 && siriPhraseOptions == 3)
     {
-      v28 = v4;
-      v29 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self unsupportedMediaAccessories];
-      v30 = [v29 firstObject];
-      v31 = [v30 name];
+      v28 = itemsCopy;
+      unsupportedMediaAccessories2 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self unsupportedMediaAccessories];
+      firstObject = [unsupportedMediaAccessories2 firstObject];
+      name = [firstObject name];
 
-      v32 = self;
-      v33 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self unsupportedMediaAccessories];
-      v34 = [v33 firstObject];
-      v35 = [v34 mediaProfile];
-      v36 = [v35 hf_serviceNameComponents];
+      selfCopy = self;
+      unsupportedMediaAccessories3 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self unsupportedMediaAccessories];
+      firstObject2 = [unsupportedMediaAccessories3 firstObject];
+      mediaProfile = [firstObject2 mediaProfile];
+      hf_serviceNameComponents = [mediaProfile hf_serviceNameComponents];
 
-      if (v36)
+      if (hf_serviceNameComponents)
       {
-        v37 = [v36 composedString];
-        v38 = v37;
-        if (v37)
+        composedString = [hf_serviceNameComponents composedString];
+        v38 = composedString;
+        if (composedString)
         {
-          v39 = v37;
+          v39 = composedString;
 
-          v31 = v39;
+          name = v39;
         }
       }
 
-      v40 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)v32 unsupportedMediaAccessories];
-      if ([v40 count] >= 2)
+      unsupportedMediaAccessories4 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)selfCopy unsupportedMediaAccessories];
+      if ([unsupportedMediaAccessories4 count] >= 2)
       {
-        v41 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)v32 unsupportedMediaAccessories];
-        [v41 count];
-        v48 = HULocalizedStringWithFormat(@"HUJustSiriOrHeySiri_Setting_Section_Footer_SeveralAccessories", @"%@%lu", v42, v43, v44, v45, v46, v47, v31);
+        unsupportedMediaAccessories5 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)selfCopy unsupportedMediaAccessories];
+        [unsupportedMediaAccessories5 count];
+        v48 = HULocalizedStringWithFormat(@"HUJustSiriOrHeySiri_Setting_Section_Footer_SeveralAccessories", @"%@%lu", v42, v43, v44, v45, v46, v47, name);
 
-        v31 = v48;
+        name = v48;
       }
 
-      v4 = v28;
+      itemsCopy = v28;
 
-      v49 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)v32 unsupportedMediaAccessories];
-      v50 = [v49 count];
+      unsupportedMediaAccessories6 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)selfCopy unsupportedMediaAccessories];
+      v50 = [unsupportedMediaAccessories6 count];
       v51 = @"HUJustSiriOrHeySiri_Setting_Section_Footer_UnsupportedAccessory";
       if (v50 > 1)
       {
@@ -925,13 +925,13 @@ id __75__HUSiriTriggerPhraseSettingDetailsItemManager__buildItemProvidersForHome
 
       v52 = v51;
 
-      v59 = HULocalizedStringWithFormat(v52, @"%@", v53, v54, v55, v56, v57, v58, v31);
+      v59 = HULocalizedStringWithFormat(v52, @"%@", v53, v54, v55, v56, v57, v58, name);
 
       v60 = [v161 stringByAppendingFormat:@"\n• %@", v59];
       [v13 setFooterTitle:v60];
 
       v25 = v161;
-      self = v32;
+      self = selfCopy;
     }
 
     else
@@ -939,19 +939,19 @@ id __75__HUSiriTriggerPhraseSettingDetailsItemManager__buildItemProvidersForHome
       [v13 setFooterTitle:v25];
     }
 
-    v61 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self unsupportedLanguageCodes];
-    v62 = [v61 count];
+    unsupportedLanguageCodes = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self unsupportedLanguageCodes];
+    v62 = [unsupportedLanguageCodes count];
 
-    if (v62 && v16 == 3)
+    if (v62 && siriPhraseOptions == 3)
     {
       v157 = v13;
-      v159 = v4;
+      v159 = itemsCopy;
       v63 = objc_opt_new();
       v166 = 0u;
       v167 = 0u;
       v168 = 0u;
       v169 = 0u;
-      v158 = self;
+      selfCopy2 = self;
       obj = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self unsupportedLanguageCodes];
       v64 = [obj countByEnumeratingWithState:&v166 objects:v170 count:16];
       if (v64)
@@ -968,11 +968,11 @@ id __75__HUSiriTriggerPhraseSettingDetailsItemManager__buildItemProvidersForHome
             }
 
             v68 = *(*(&v166 + 1) + 8 * i);
-            v69 = [MEMORY[0x277CEF2D8] sharedInstance];
-            v70 = [v69 localizedNameForSiriLanguage:v68 inDisplayLanguage:0];
+            mEMORY[0x277CEF2D8] = [MEMORY[0x277CEF2D8] sharedInstance];
+            v70 = [mEMORY[0x277CEF2D8] localizedNameForSiriLanguage:v68 inDisplayLanguage:0];
 
-            v71 = [MEMORY[0x277D7A8D0] sharedPreferences];
-            v72 = [v71 localizedTriggerPhraseForLanguageCode:v68];
+            mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
+            v72 = [mEMORY[0x277D7A8D0] localizedTriggerPhraseForLanguageCode:v68];
 
             v79 = HULocalizedStringWithFormat(@"HUJustSiriOrHeySiri_Setting_Section_Footer_UnsupportedSiriLanguage", @" %@%@", v73, v74, v75, v76, v77, v78, v70);
             v80 = [MEMORY[0x277CCACA8] stringWithFormat:@"\n• %@", v79, v72];
@@ -987,30 +987,30 @@ id __75__HUSiriTriggerPhraseSettingDetailsItemManager__buildItemProvidersForHome
       }
 
       v13 = v157;
-      v81 = [v157 footerTitle];
+      footerTitle = [v157 footerTitle];
       if ([v63 length])
       {
-        v82 = [v81 stringByAppendingFormat:@"%@", v63];
+        v82 = [footerTitle stringByAppendingFormat:@"%@", v63];
 
         [v157 setFooterTitle:v82];
-        v81 = v82;
+        footerTitle = v82;
       }
 
       v25 = v161;
-      self = v158;
-      v4 = v159;
+      self = selfCopy2;
+      itemsCopy = v159;
     }
 
-    v83 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self siriTriggerPhraseSelectionItemProvider];
-    v84 = [v83 items];
-    v85 = [v84 allObjects];
-    v86 = [v85 sortedArrayUsingComparator:&__block_literal_global_359_0];
+    siriTriggerPhraseSelectionItemProvider = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self siriTriggerPhraseSelectionItemProvider];
+    items = [siriTriggerPhraseSelectionItemProvider items];
+    allObjects = [items allObjects];
+    v86 = [allObjects sortedArrayUsingComparator:&__block_literal_global_359_0];
 
     v164[0] = MEMORY[0x277D85DD0];
     v164[1] = 3221225472;
     v164[2] = __81__HUSiriTriggerPhraseSettingDetailsItemManager__buildSectionsWithDisplayedItems___block_invoke_3;
     v164[3] = &unk_277DB85D8;
-    v165 = v4;
+    v165 = itemsCopy;
     v87 = [v86 na_filter:v164];
     [v13 setItems:v87];
 
@@ -1018,16 +1018,16 @@ id __75__HUSiriTriggerPhraseSettingDetailsItemManager__buildItemProvidersForHome
   }
 
   v88 = objc_opt_new();
-  v89 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self siriDeviceItemProvider];
-  v90 = [v89 items];
-  v91 = [v90 allObjects];
-  v92 = [v91 sortedArrayUsingComparator:&__block_literal_global_365];
+  siriDeviceItemProvider = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self siriDeviceItemProvider];
+  items2 = [siriDeviceItemProvider items];
+  allObjects2 = [items2 allObjects];
+  v92 = [allObjects2 sortedArrayUsingComparator:&__block_literal_global_365];
 
   objc_opt_class();
-  v93 = [(HFItemManager *)self sourceItem];
+  sourceItem = [(HFItemManager *)self sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v94 = v93;
+    v94 = sourceItem;
   }
 
   else
@@ -1047,23 +1047,23 @@ id __75__HUSiriTriggerPhraseSettingDetailsItemManager__buildItemProvidersForHome
       goto LABEL_37;
     }
 
-    v96 = [v92 firstObject];
+    firstObject3 = [v92 firstObject];
     v97 = [v92 subarrayWithRange:{1, objc_msgSend(v92, "count") - 1}];
     v98 = objc_opt_new();
-    [v98 addObject:v96];
+    [v98 addObject:firstObject3];
     v99 = [v97 sortedArrayUsingComparator:&__block_literal_global_363];
     [v98 addObjectsFromArray:v99];
 
     v95 = [v98 copy];
-    v92 = v96;
+    v92 = firstObject3;
   }
 
   v92 = v95;
 LABEL_37:
-  v100 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self siriOtherDeviceItemProvider];
-  v101 = [v100 items];
-  v102 = [v101 allObjects];
-  v103 = [v102 sortedArrayUsingComparator:&__block_literal_global_367];
+  siriOtherDeviceItemProvider = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self siriOtherDeviceItemProvider];
+  items3 = [siriOtherDeviceItemProvider items];
+  allObjects3 = [items3 allObjects];
+  v103 = [allObjects3 sortedArrayUsingComparator:&__block_literal_global_367];
 
   if (v94)
   {
@@ -1077,24 +1077,24 @@ LABEL_37:
       goto LABEL_42;
     }
 
-    v105 = [v103 firstObject];
+    firstObject4 = [v103 firstObject];
     v106 = [v103 subarrayWithRange:{1, objc_msgSend(v103, "count") - 1}];
     v107 = objc_opt_new();
-    [v107 addObject:v105];
+    [v107 addObject:firstObject4];
     v108 = [v106 sortedArrayUsingComparator:&__block_literal_global_363];
     [v107 addObjectsFromArray:v108];
 
     v104 = [v107 copy];
-    v103 = v105;
+    v103 = firstObject4;
   }
 
   v103 = v104;
 LABEL_42:
   objc_opt_class();
-  v109 = [(HFItemManager *)self sourceItem];
+  sourceItem2 = [(HFItemManager *)self sourceItem];
   if (objc_opt_isKindOfClass())
   {
-    v110 = v109;
+    v110 = sourceItem2;
   }
 
   else
@@ -1105,11 +1105,11 @@ LABEL_42:
   v111 = v110;
 
   objc_opt_class();
-  v112 = [v111 sourceItem];
+  sourceItem3 = [v111 sourceItem];
 
   if (objc_opt_isKindOfClass())
   {
-    v113 = v112;
+    v113 = sourceItem3;
   }
 
   else
@@ -1155,38 +1155,38 @@ LABEL_42:
     v118 = _HULocalizedStringWithDefaultValue(@"HUSiriDevicesSection_Header", @"HUSiriDevicesSection_Header", 1);
     [v117 setHeaderTitle:v118];
 
-    v119 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self home];
-    v120 = [v119 hf_atleastOneMediaAccessorySupportingJustSiri];
+    home7 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self home];
+    hf_atleastOneMediaAccessorySupportingJustSiri2 = [home7 hf_atleastOneMediaAccessorySupportingJustSiri];
 
-    if ((v120 & 1) == 0)
+    if ((hf_atleastOneMediaAccessorySupportingJustSiri2 & 1) == 0)
     {
       v162 = v5;
-      v121 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self home];
-      v122 = HULocalizedSiriTriggerPhrase(v121);
+      home8 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self home];
+      v122 = HULocalizedSiriTriggerPhrase(home8);
       v129 = HULocalizedStringWithFormat(@"HUJustSiriListenOn_Setting_Section_Footer", @"%@", v123, v124, v125, v126, v127, v128, v122);
 
-      v130 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self unsupportedMediaAccessories];
-      v131 = [v130 count];
+      unsupportedMediaAccessories7 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self unsupportedMediaAccessories];
+      v131 = [unsupportedMediaAccessories7 count];
 
       if (v131)
       {
-        v160 = v4;
-        v132 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self unsupportedMediaAccessories];
-        v133 = [v132 firstObject];
-        v134 = [v133 name];
+        v160 = itemsCopy;
+        unsupportedMediaAccessories8 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self unsupportedMediaAccessories];
+        firstObject5 = [unsupportedMediaAccessories8 firstObject];
+        name2 = [firstObject5 name];
 
-        v135 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self unsupportedMediaAccessories];
-        if ([v135 count] >= 2)
+        unsupportedMediaAccessories9 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self unsupportedMediaAccessories];
+        if ([unsupportedMediaAccessories9 count] >= 2)
         {
-          v136 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self unsupportedMediaAccessories];
-          [v136 count];
-          v143 = HULocalizedStringWithFormat(@"HUJustSiriOrHeySiri_Setting_Section_Footer_SeveralAccessories", @"%@%lu", v137, v138, v139, v140, v141, v142, v134);
+          unsupportedMediaAccessories10 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self unsupportedMediaAccessories];
+          [unsupportedMediaAccessories10 count];
+          v143 = HULocalizedStringWithFormat(@"HUJustSiriOrHeySiri_Setting_Section_Footer_SeveralAccessories", @"%@%lu", v137, v138, v139, v140, v141, v142, name2);
 
-          v134 = v143;
+          name2 = v143;
         }
 
-        v144 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self unsupportedMediaAccessories];
-        v145 = [v144 count];
+        unsupportedMediaAccessories11 = [(HUSiriTriggerPhraseSettingDetailsItemManager *)self unsupportedMediaAccessories];
+        v145 = [unsupportedMediaAccessories11 count];
         v146 = @"HUJustSiriOrHeySiri_Setting_Section_Footer_UnsupportedAccessory";
         if (v145 > 1)
         {
@@ -1195,12 +1195,12 @@ LABEL_42:
 
         v147 = v146;
 
-        v154 = HULocalizedStringWithFormat(v147, @"%@", v148, v149, v150, v151, v152, v153, v134);
+        v154 = HULocalizedStringWithFormat(v147, @"%@", v148, v149, v150, v151, v152, v153, name2);
 
-        v155 = [v129 stringByAppendingFormat:@" %@", v154];
-        [v117 setFooterTitle:v155];
+        v154 = [v129 stringByAppendingFormat:@" %@", v154];
+        [v117 setFooterTitle:v154];
 
-        v4 = v160;
+        itemsCopy = v160;
       }
 
       else
@@ -1385,18 +1385,18 @@ uint64_t __81__HUSiriTriggerPhraseSettingDetailsItemManager__buildSectionsWithDi
   return v13;
 }
 
-- (void)mediaProfileContainer:(id)a3 didUpdateSettingKeypath:(id)a4 value:(id)a5
+- (void)mediaProfileContainer:(id)container didUpdateSettingKeypath:(id)keypath value:(id)value
 {
   v16 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  keypathCopy = keypath;
+  valueCopy = value;
   v10 = HFLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412546;
-    v13 = v8;
+    v13 = keypathCopy;
     v14 = 2112;
-    v15 = v9;
+    v15 = valueCopy;
     _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "Received update for setting keypath %@ value = %@", &v12, 0x16u);
   }
 

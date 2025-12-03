@@ -156,16 +156,16 @@
 
 + (void)initialize
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___PNUserDefaults;
   objc_msgSendSuper2(&v3, sel_initialize);
-  [a1 _registerDefaults];
+  [self _registerDefaults];
 }
 
 + (void)_registerDefaults
 {
   v11[110] = *MEMORY[0x1E69E9840];
-  v7 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v2 = MEMORY[0x1E695E118];
   v10[0] = @"PNPromoterStatusMergeCandidateLimit";
   v10[1] = @"PNPromoterStatusVerifiedPersonLimit";
@@ -416,7 +416,7 @@
   v10[109] = @"PNSpatial3DMinimumGenerationTime";
   v11[109] = &unk_1F46E5848;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:110];
-  [v7 registerDefaults:v5];
+  [standardUserDefaults registerDefaults:v5];
 
   v6 = xpc_copy_entitlement_for_self();
   if (v6 == MEMORY[0x1E69E9E10])
@@ -427,64 +427,64 @@
 
 + (NSString)fallbackStorytelling30bModelName
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"PNFallbackStorytelling30bModelName"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"PNFallbackStorytelling30bModelName"];
 
   return v3;
 }
 
 + (NSString)fallbackAssetCuration30bModelName
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"PNFallbackAssetCuration30bModelName"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"PNFallbackAssetCuration30bModelName"];
 
   return v3;
 }
 
 + (NSString)fallbackGlobalTraits30bModelName
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"PNFallbackGlobalTraits30bModelName"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"PNFallbackGlobalTraits30bModelName"];
 
   return v3;
 }
 
 + (BOOL)useGlobalTraitsV3
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNUseGlobalTraitsV3"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNUseGlobalTraitsV3"];
 
   return v3;
 }
 
 + (BOOL)generateOnDeviceTitle
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNGenerateOnDeviceTitle"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNGenerateOnDeviceTitle"];
 
   return v3;
 }
 
 + (BOOL)useOnDeviceAssetCurationOutlier
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNUseOnDeviceAssetCurationOutlier"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNUseOnDeviceAssetCurationOutlier"];
 
   return v3;
 }
 
 + (NSString)memoryCreationAvailabilityState
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"PNMemoryCreationAvailabilityState"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"PNMemoryCreationAvailabilityState"];
 
   return v3;
 }
 
 + (double)spatial3DMinimumGenerationTime
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"PNSpatial3DMinimumGenerationTime"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PNSpatial3DMinimumGenerationTime"];
   v4 = v3;
 
   return v4;
@@ -492,8 +492,8 @@
 
 + (double)spatial3DImageCompressionQuality
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"PNSpatial3DImageCompressionQuality"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PNSpatial3DImageCompressionQuality"];
   v4 = v3;
 
   return v4;
@@ -501,102 +501,102 @@
 
 + (int64_t)spatial3DImageCompressionCodec
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNSpatial3DImageCompressionCodec"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNSpatial3DImageCompressionCodec"];
 
   return v3;
 }
 
 + (int64_t)spatial3DTextureCompressionPhase
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNSpatial3DTextureCompressionPhase"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNSpatial3DTextureCompressionPhase"];
 
   return v3;
 }
 
 + (BOOL)enableSpatial3DBackgroundPersistence
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNEnableSpatial3DBackgroundPersistence"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNEnableSpatial3DBackgroundPersistence"];
 
   return v3;
 }
 
 + (BOOL)includeRelatedMessagesBackdropSuggestions
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNIncludeRelatedMessagesBackdropSuggestions"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNIncludeRelatedMessagesBackdropSuggestions"];
 
   return v3;
 }
 
 + (int64_t)generateNextStoryTitleStyleIndex
 {
-  v2 = a1;
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 integerForKey:@"kPNMemoryStoryNextStyleIndex"];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults integerForKey:@"kPNMemoryStoryNextStyleIndex"];
 
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v5 setInteger:v4 + 1 forKey:@"kPNMemoryStoryNextStyleIndex"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults2 setInteger:v4 + 1 forKey:@"kPNMemoryStoryNextStyleIndex"];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 
 + (NSString)eventElectionMode
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"PNEventElectionMode"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"PNEventElectionMode"];
 
   return v3;
 }
 
 + (int64_t)maximumNumberOfAssetsToCurateOnForHastingsCuration
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNMaximumNumberOfAssetsToCurateOnForHastings"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNMaximumNumberOfAssetsToCurateOnForHastings"];
 
   return v3;
 }
 
 + (BOOL)usePersonAndPetExtendedTokensInAssetCuration
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNUsePersonAndPetExtendedTokensInAssetCuration"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNUsePersonAndPetExtendedTokensInAssetCuration"];
 
   return v3;
 }
 
 + (BOOL)usePersonPromptAnnotations
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNUsePersonPromptAnnotations"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNUsePersonPromptAnnotations"];
 
   return v3;
 }
 
 + (BOOL)useShadowNamesInAssetCuration
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNUseShadowNamesInAssetCuration"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNUseShadowNamesInAssetCuration"];
 
   return v3;
 }
 
 + (BOOL)useNormalDistributionForMoments
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNUseNormalDistributionForMoments"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNUseNormalDistributionForMoments"];
 
   return v3;
 }
 
 + (double)minimumCumulativeDistributionOfMomentFrequency
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"PNMinimumCumulativeDistributionOfMomentFrequency"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PNMinimumCumulativeDistributionOfMomentFrequency"];
   v4 = v3;
 
   return v4;
@@ -604,272 +604,272 @@
 
 + (BOOL)globalTraitsUseAPhotoOfBeforeTrait
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNGlobalTraitsUseAPhotoOfBeforeTrait"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNGlobalTraitsUseAPhotoOfBeforeTrait"];
 
   return v3;
 }
 
 + (NSNumber)globalTraitsMaximumTextSimilarityScore
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PNGlobalTraitsMaximumTextSimilarityScore"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PNGlobalTraitsMaximumTextSimilarityScore"];
 
   return v3;
 }
 
 + (BOOL)globalTraitsUseSemanticSimilarity
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNGlobalTraitsUseSemanticSimilarity"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNGlobalTraitsUseSemanticSimilarity"];
 
   return v3;
 }
 
 + (int64_t)globalTraitsNumberOfTraitsForMomentOverlap
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNGlobalTraitsNumberOfTraitsForMomentOverlap"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNGlobalTraitsNumberOfTraitsForMomentOverlap"];
 
   return v3;
 }
 
 + (BOOL)globalTraitsUseMomentValidation
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNGlobalTraitsUseMomentValidation"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNGlobalTraitsUseMomentValidation"];
 
   return v3;
 }
 
 + (BOOL)useGlobalTraitsV3EmbeddingOnlySearch
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNUseGlobalTraitsV3EmbeddingOnlySearch"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNUseGlobalTraitsV3EmbeddingOnlySearch"];
 
   return v3;
 }
 
 + (BOOL)useGlobalTraitsV3MetadataOnlySearch
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNUseGlobalTraitsV3MetadataOnlySearch"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNUseGlobalTraitsV3MetadataOnlySearch"];
 
   return v3;
 }
 
 + (BOOL)useGlobalTraitsV3TitleAndQuery
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNUseGlobalTraitsV3TitleAndQuery"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNUseGlobalTraitsV3TitleAndQuery"];
 
   return v3;
 }
 
 + (BOOL)useGlobalTraitsV3Captions
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNUseGlobalTraitsV3Captions"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNUseGlobalTraitsV3Captions"];
 
   return v3;
 }
 
 + (NSString)queryUnderstandingLocale
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"PNQueryUnderstandingLocale"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"PNQueryUnderstandingLocale"];
 
   return v3;
 }
 
 + (NSString)assetCurationLocale
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"PNAssetCurationLocale"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"PNAssetCurationLocale"];
 
   return v3;
 }
 
 + (NSString)titleLocale
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"PNTitleLocale"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"PNTitleLocale"];
 
   return v3;
 }
 
 + (NSString)storytellerLocale
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"PNStorytellerLocale"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"PNStorytellerLocale"];
 
   return v3;
 }
 
 + (NSString)globalTraitsLocale
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"PNGlobalTraitsLocale"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"PNGlobalTraitsLocale"];
 
   return v3;
 }
 
 + (int64_t)assetCurationModelVersion
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNAssetCurationModelVersion"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNAssetCurationModelVersion"];
 
   return v3;
 }
 
 + (int64_t)storytellerModelVersion
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNStorytellerModelVersion"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNStorytellerModelVersion"];
 
   return v3;
 }
 
 + (int64_t)globalTraitsModelVersion
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNGlobalTraitsModelVersion"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNGlobalTraitsModelVersion"];
 
   return v3;
 }
 
 + (BOOL)enableMockGeneralMCError
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNEnableGeneralMCError"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNEnableGeneralMCError"];
 
   return v3;
 }
 
 + (BOOL)enableMockCocoaDomainError
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNEnableMockCocoaDomainError"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNEnableMockCocoaDomainError"];
 
   return v3;
 }
 
 + (BOOL)enableMockServerRequestTimeout
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNEnableMockServerRequestTimeout"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNEnableMockServerRequestTimeout"];
 
   return v3;
 }
 
 + (BOOL)enableMockNotEnoughAssetsError
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNEnableMockNotEnoughAssetsError"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNEnableMockNotEnoughAssetsError"];
 
   return v3;
 }
 
 + (BOOL)enableMockNetworkError
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNEnableMockNetworkError"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNEnableMockNetworkError"];
 
   return v3;
 }
 
 + (BOOL)enableMockRateLimitingError
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNEnableMockRateLimitingError"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNEnableMockRateLimitingError"];
 
   return v3;
 }
 
 + (BOOL)useStillAssetsOnlyInBackground
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNUseStillAssetsOnlyInBackground"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNUseStillAssetsOnlyInBackground"];
 
   return v3;
 }
 
 + (BOOL)forceMCMontagePath
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"kPNForceMCMontagePath"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"kPNForceMCMontagePath"];
 
   return v3;
 }
 
 + (int64_t)storyGenerationPipeline
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"kPNStoryGenerationPipeline"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"kPNStoryGenerationPipeline"];
 
   return v3;
 }
 
 + (BOOL)enableTraitDeduping
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"kPNEnableTraitDeduping"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"kPNEnableTraitDeduping"];
 
   return v3;
 }
 
 + (BOOL)dontSplitMomentsAcrossChaptersForImplicitMontage
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"kPNDontSplitMomentsAcrossChaptersForImplicitMontage"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"kPNDontSplitMomentsAcrossChaptersForImplicitMontage"];
 
   return v3;
 }
 
 + (NSNumber)chapterCuratorFeatureTypesForDistribution
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"kPNChapterCuratorFeatureTypesForDistribution"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"kPNChapterCuratorFeatureTypesForDistribution"];
 
   return v3;
 }
 
 + (BOOL)enableStorytellingMomentFiltering
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"kPNEnableStorytellingMomentFiltering"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"kPNEnableStorytellingMomentFiltering"];
 
   return v3;
 }
 
 + (NSString)shufflePromptParametersSeed
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"kPNShufflePromptParametersSeed"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"kPNShufflePromptParametersSeed"];
 
   return v3;
 }
 
 + (BOOL)shufflePromptParameters
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"kPNShufflePromptParameters"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"kPNShufflePromptParameters"];
 
   return v3;
 }
 
 + (BOOL)promotePlayableAssetsInStories
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"kPNPromotePlayableAssetsInStories"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"kPNPromotePlayableAssetsInStories"];
 
   return v3;
 }
 
 + (double)chapterValidatorMinimumCoverageOfStoryAssetsInFinalChapters
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"kPNChapterValidatorMinimumCoverageOfStoryAssetsInFinalChapters"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"kPNChapterValidatorMinimumCoverageOfStoryAssetsInFinalChapters"];
   v4 = v3;
 
   return v4;
@@ -877,16 +877,16 @@
 
 + (int64_t)chapterValidatorMinimumNumberOfRetrievedFilteredAssetPerChapter
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"kPNChapterValidatorMinimumNumberOfRetrievedFilteredAssetPerChapter"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"kPNChapterValidatorMinimumNumberOfRetrievedFilteredAssetPerChapter"];
 
   return v3;
 }
 
 + (double)chapterValidatorMinimumRatioOfNonoverlappingAssetsForDistinctShot
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"kPNChapterValidatorMinimumRatioOfNonoverlappingAssetsForDistinctShot"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"kPNChapterValidatorMinimumRatioOfNonoverlappingAssetsForDistinctShot"];
   v4 = v3;
 
   return v4;
@@ -894,16 +894,16 @@
 
 + (int64_t)chapterValidatorMinimumNumberOfMatchingShotsForFocusedChapters
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"kPNChapterValidatorMinimumNumberOfMatchingShotsForFocusedChapters"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"kPNChapterValidatorMinimumNumberOfMatchingShotsForFocusedChapters"];
 
   return v3;
 }
 
 + (double)chapterValidatorMinimumRatioOfMatchingShotsForFocusedChapters
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"kPNChapterValidatorMinimumRatioOfMatchingShotsForFocusedChapters"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"kPNChapterValidatorMinimumRatioOfMatchingShotsForFocusedChapters"];
   v4 = v3;
 
   return v4;
@@ -911,8 +911,8 @@
 
 + (double)chapterValidatorMatchingRatioThresholdPerShotForFocusedChapters
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"kPNChapterValidatorMatchingRatioThresholdPerShotForFocusedChapters"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"kPNChapterValidatorMatchingRatioThresholdPerShotForFocusedChapters"];
   v4 = v3;
 
   return v4;
@@ -920,64 +920,64 @@
 
 + (BOOL)enableChapterValidator
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"kPNEnableChapterValidator"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"kPNEnableChapterValidator"];
 
   return v3;
 }
 
 + (NSNumber)numberOfChronologicalStorySelectedTraits
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"kPNNumberOfChronologicalStorySelectedTraits"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"kPNNumberOfChronologicalStorySelectedTraits"];
 
   return v3;
 }
 
 + (NSNumber)chapterCurationRandomizerSeed
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"kPNChapterCurationRandomizerSeed"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"kPNChapterCurationRandomizerSeed"];
 
   return v3;
 }
 
 + (int64_t)maximumNumberOfAssetsPerMomentBatchForLibraryUnderstandingPersonalTraits
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNMaximumNumberOfAssetsPerMomentBatchForLibraryUnderstandingPersonalTraits"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNMaximumNumberOfAssetsPerMomentBatchForLibraryUnderstandingPersonalTraits"];
 
   return v3;
 }
 
 + (BOOL)useLibraryUnderstandingOvernightProcessedResults
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNUseLibraryUnderstandingOvernightProcessedResults"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNUseLibraryUnderstandingOvernightProcessedResults"];
 
   return v3;
 }
 
 + (BOOL)enableClusterByClusterForLibraryUnderstandingPersonalTraits
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNEnableClusterByClusterForLibraryUnderstandingPersonalTraits"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNEnableClusterByClusterForLibraryUnderstandingPersonalTraits"];
 
   return v3;
 }
 
 + (BOOL)useStorytellerSelectedTraitsForTitler
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNUseStorytellerSelectedTraitsForTitler"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNUseStorytellerSelectedTraitsForTitler"];
 
   return v3;
 }
 
 + (double)minimumAssetOverlapForThresholdTitler
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"PNMinimumAssetOverlapForThresholdTitler"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PNMinimumAssetOverlapForThresholdTitler"];
   v4 = v3;
 
   return v4;
@@ -985,56 +985,56 @@
 
 + (BOOL)useAllTraitsAboveThresholdInTitler
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNUseAllTraitsAboveThresholdInTitler"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNUseAllTraitsAboveThresholdInTitler"];
 
   return v3;
 }
 
 + (int64_t)numberOfRepresentativeAssetsPerClusterForLibraryUnderstanding
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNNumberOfRepresentativeAssetsPerClusterForLibraryUnderstanding"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNNumberOfRepresentativeAssetsPerClusterForLibraryUnderstanding"];
 
   return v3;
 }
 
 + (int64_t)maximumNumberOfClustersForLibraryUnderstanding
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNMaximumNumberOfClustersForLibraryUnderstanding"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNMaximumNumberOfClustersForLibraryUnderstanding"];
 
   return v3;
 }
 
 + (int64_t)maximumNumberOfConsolidatedTraits
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNMaximumNumberOfConsolidatedTraits"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNMaximumNumberOfConsolidatedTraits"];
 
   return v3;
 }
 
 + (BOOL)enableFinalTraitLimit
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNEnableFinalTraitLimit"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNEnableFinalTraitLimit"];
 
   return v3;
 }
 
 + (BOOL)enableLibraryUnderstandingPersonalTraits
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNEnableLibraryUnderstandingPersonalTraits"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNEnableLibraryUnderstandingPersonalTraits"];
 
   return v3;
 }
 
 + (double)personalTraitMosaicGaussianFilteringCDFThreshold
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"PNPersonalTraitMosaicGaussianFilteringCDFThreshold"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PNPersonalTraitMosaicGaussianFilteringCDFThreshold"];
   v4 = v3;
 
   return v4;
@@ -1042,8 +1042,8 @@
 
 + (double)personalTraitMosaicMinRatioOfAssets
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"PNPersonalTraitMosaicMinRatioOfAssets"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PNPersonalTraitMosaicMinRatioOfAssets"];
   v4 = v3;
 
   return v4;
@@ -1051,16 +1051,16 @@
 
 + (NSNumber)personalTraitWeightedRandomSamplingSeed
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PNPersonalTraitWeightedRandomSamplingSeed"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PNPersonalTraitWeightedRandomSamplingSeed"];
 
   return v3;
 }
 
 + (double)personalTraitWeightedRandomSamplingTemperature
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"PNPersonalTraitWeightedRandomSamplingTemperature"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PNPersonalTraitWeightedRandomSamplingTemperature"];
   v4 = v3;
 
   return v4;
@@ -1068,8 +1068,8 @@
 
 + (double)personalTraitGaussianFilteringCDFThreshold
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"PNPersonalTraitGaussianFilteringCDFThreshold"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PNPersonalTraitGaussianFilteringCDFThreshold"];
   v4 = v3;
 
   return v4;
@@ -1077,8 +1077,8 @@
 
 + (double)personalTraitMinRatioOfAssets
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"PNPersonalTraitMinRatioOfAssets"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PNPersonalTraitMinRatioOfAssets"];
   v4 = v3;
 
   return v4;
@@ -1086,72 +1086,72 @@
 
 + (NSNumber)numberOfTraitsToSelect
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"kPNStoryGenerationNumberOfTraitsToSelect"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"kPNStoryGenerationNumberOfTraitsToSelect"];
 
   return v3;
 }
 
 + (NSNumber)numberOfShotsPerChapter
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"kPNStoryGenerationNumberOfShotsPerChapter"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"kPNStoryGenerationNumberOfShotsPerChapter"];
 
   return v3;
 }
 
 + (NSNumber)numberOfChaptersPerStory
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"kPNStoryGenerationNumberOfChaptersPerStory"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"kPNStoryGenerationNumberOfChaptersPerStory"];
 
   return v3;
 }
 
 + (NSNumber)numberOfGlobalTraits
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"kPNStoryGenerationNumberOfGlobalTraits"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"kPNStoryGenerationNumberOfGlobalTraits"];
 
   return v3;
 }
 
 + (BOOL)saveVisualClustersToDebugAlbums
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"kPNSaveVisualClustersToDebugAlbums"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"kPNSaveVisualClustersToDebugAlbums"];
 
   return v3;
 }
 
 + (BOOL)enableMediaAnalysisEmbeddingSearch
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNEnableMediaAnalysisEmbeddingSearch"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNEnableMediaAnalysisEmbeddingSearch"];
 
   return v3;
 }
 
 + (BOOL)enableOnDemandCaptionGeneration
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNEnableOnDemandCaptionGeneration"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNEnableOnDemandCaptionGeneration"];
 
   return v3;
 }
 
 + (BOOL)disableLLMAssetCuration
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNDisableLLMAssetCuration"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNDisableLLMAssetCuration"];
 
   return v3;
 }
 
 + (double)storyMusicCurationTimeoutSeconds
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"kPNStoryMusicCurationTimeoutSeconds"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"kPNStoryMusicCurationTimeoutSeconds"];
   v4 = v3;
 
   return v4;
@@ -1159,216 +1159,216 @@
 
 + (NSDictionary)musicKeywordsThimbleParameters
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 dictionaryForKey:@"PNMusicKeywordsThimbleParameters"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults dictionaryForKey:@"PNMusicKeywordsThimbleParameters"];
 
   return v3;
 }
 
 + (NSDictionary)musicKeywordsPegasusParameters
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 dictionaryForKey:@"PNMusicKeywordsPegasusParameters"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults dictionaryForKey:@"PNMusicKeywordsPegasusParameters"];
 
   return v3;
 }
 
 + (BOOL)enablePromptSuggestionPlistCache
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNEnablePromptSuggestionPlistCache"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNEnablePromptSuggestionPlistCache"];
 
   return v3;
 }
 
 + (BOOL)alwaysShowCreativePrompts
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNAlwaysShowCreativePrompts"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNAlwaysShowCreativePrompts"];
 
   return v3;
 }
 
 + (BOOL)useCachedQueryTokensForSuggestions
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNUseCachedQueryTokensForSuggestions"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNUseCachedQueryTokensForSuggestions"];
 
   return v3;
 }
 
 + (BOOL)debugContextualPromptSuggestionsFromAllMemories
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNDebugContextualPromptSuggestionsFromAllMemories"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNDebugContextualPromptSuggestionsFromAllMemories"];
 
   return v3;
 }
 
 + (NSString)mockMomentDataFromFile
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"PNMockMomentDataFromFile"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"PNMockMomentDataFromFile"];
 
   return v3;
 }
 
 + (int64_t)promptValidationBatchSize
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNPromptValidationBatchSize"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNPromptValidationBatchSize"];
 
   return v3;
 }
 
 + (int64_t)promptValidationAssetCountThreshold
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNPromptValidationAssetCountThreshold"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNPromptValidationAssetCountThreshold"];
 
   return v3;
 }
 
 + (NSDictionary)promptRankingParameters
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 dictionaryForKey:@"PNPromptRankingParameters"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults dictionaryForKey:@"PNPromptRankingParameters"];
 
   return v3;
 }
 
 + (NSDictionary)freeformTitleThimbleParameters
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 dictionaryForKey:@"PNFreeformTitleThimbleParameters"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults dictionaryForKey:@"PNFreeformTitleThimbleParameters"];
 
   return v3;
 }
 
 + (NSDictionary)freeformTitlePegasusParameters
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 dictionaryForKey:@"PNFreeformTitlePegasusParameters"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults dictionaryForKey:@"PNFreeformTitlePegasusParameters"];
 
   return v3;
 }
 
 + (NSDictionary)freeformStoryOnDeviceParameters
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 dictionaryForKey:@"PNFreeformStoryOnDeviceParameters"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults dictionaryForKey:@"PNFreeformStoryOnDeviceParameters"];
 
   return v3;
 }
 
 + (NSDictionary)freeformStoryThimbleParameters
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 dictionaryForKey:@"PNFreeformStoryThimbleParameters"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults dictionaryForKey:@"PNFreeformStoryThimbleParameters"];
 
   return v3;
 }
 
 + (NSDictionary)freeformStoryPegasusParameters
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 dictionaryForKey:@"PNFreeformStoryPegasusParameters"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults dictionaryForKey:@"PNFreeformStoryPegasusParameters"];
 
   return v3;
 }
 
 + (NSDictionary)assetCurationThimbleParameters
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 dictionaryForKey:@"PNAssetCurationThimbleParameters"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults dictionaryForKey:@"PNAssetCurationThimbleParameters"];
 
   return v3;
 }
 
 + (NSDictionary)assetCurationPegasusParameters
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 dictionaryForKey:@"PNAssetCurationPegasusParameters"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults dictionaryForKey:@"PNAssetCurationPegasusParameters"];
 
   return v3;
 }
 
 + (NSDictionary)globalTraitsOnDeviceParameters
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 dictionaryForKey:@"PNGlobalTraitsOnDeviceParameters"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults dictionaryForKey:@"PNGlobalTraitsOnDeviceParameters"];
 
   return v3;
 }
 
 + (NSDictionary)globalTraitsThimbleParameters
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 dictionaryForKey:@"PNGlobalTraitsThimbleParameters"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults dictionaryForKey:@"PNGlobalTraitsThimbleParameters"];
 
   return v3;
 }
 
 + (NSDictionary)globalTraitsPegasusParameters
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 dictionaryForKey:@"PNGlobalTraitsPegasusParameters"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults dictionaryForKey:@"PNGlobalTraitsPegasusParameters"];
 
   return v3;
 }
 
 + (NSString)fallbackQueryUnderstanding30bModelName
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"PNFallbackQueryUnderstanding30bModelName"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"PNFallbackQueryUnderstanding30bModelName"];
 
   return v3;
 }
 
 + (BOOL)forceSequentialAssetCurationCalls
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNForceSequentialAssetCurationCalls"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNForceSequentialAssetCurationCalls"];
 
   return v3;
 }
 
 + (NSNumber)storytellerSelectedTraitsCount
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PNStorytellerSelectedTraitsCount"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PNStorytellerSelectedTraitsCount"];
 
   return v3;
 }
 
 + (NSNumber)globalAndPersonalTraitsSeed
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PNGlobalAndPersonalTraitsSeed"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PNGlobalAndPersonalTraitsSeed"];
 
   return v3;
 }
 
 + (BOOL)useFallbackTitleForMiniMC
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNUseFallbackTitleForMiniMC"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNUseFallbackTitleForMiniMC"];
 
   return v3;
 }
 
 + (BOOL)useGMSStreaming
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNUseGMSStreaming"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNUseGMSStreaming"];
 
   return v3;
 }
 
 + (double)assetScopingTokenPromotionLikeliness
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"PNAssetScopingTokenPromotionLikeliness"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PNAssetScopingTokenPromotionLikeliness"];
   v4 = v3;
 
   return v4;
@@ -1376,8 +1376,8 @@
 
 + (int64_t)tripHighlightRepresentativeAssetsMinimumThreshold
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"PNTripHighlightRepresentativeAssetsThreshold"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PNTripHighlightRepresentativeAssetsThreshold"];
   v4 = v3;
 
   return v4;
@@ -1385,136 +1385,136 @@
 
 + (BOOL)enableAssetScopingTokenPromotion
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNEnableAssetScopingTokenPromotion"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNEnableAssetScopingTokenPromotion"];
 
   return v3;
 }
 
 + (NSString)appleMusicMCPrivacyDisclosureState
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"PNAppleMusicMCPrivacyDisclosureState"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"PNAppleMusicMCPrivacyDisclosureState"];
 
   return v3;
 }
 
 + (NSString)appleMusicSmartSearchMode
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"PNAppleMusicSmartSearchMode"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"PNAppleMusicSmartSearchMode"];
 
   return v3;
 }
 
 + (NSString)storyMusicMaestroEmbeddingApproach
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"PNStoryMusicMaestroEmbeddingApproach"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"PNStoryMusicMaestroEmbeddingApproach"];
 
   return v3;
 }
 
 + (BOOL)usePhotoKitBatchSPIForRetrieval
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"kPNUsePhotoKitBatchSPIForRetrieval"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"kPNUsePhotoKitBatchSPIForRetrieval"];
 
   return v3;
 }
 
 + (int64_t)queryPeopleRequiredInRetrievalTripLimit
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNQueryPeopleRequiredInTripMomentLimit"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNQueryPeopleRequiredInTripMomentLimit"];
 
   return v3;
 }
 
 + (int64_t)queryPeopleRequiredInRetrievalMomentLimit
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNQueryPeopleRequiredInRetrievalMomentLimit"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNQueryPeopleRequiredInRetrievalMomentLimit"];
 
   return v3;
 }
 
 + (int64_t)placeholderAssetFetchMultiplier
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNPlaceholderAssetFetchMultiplier"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNPlaceholderAssetFetchMultiplier"];
 
   return v3;
 }
 
 + (int64_t)keyAssetEmbeddingSearchRetrievalLimit
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNKeyAssetEmbeddingSearchRetrievalLimit"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNKeyAssetEmbeddingSearchRetrievalLimit"];
 
   return v3;
 }
 
 + (int64_t)shotlistMatchingEmbeddingSearchRetrievalLimit
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNShotlistMatchingEmbeddingSearchRetrievalLimit"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNShotlistMatchingEmbeddingSearchRetrievalLimit"];
 
   return v3;
 }
 
 + (int64_t)globalTraitsMatchingEmbeddingSearchRetrievalLimit
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNGlobalTraitsMatchingEmbeddingSearchRetrievalLimit"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNGlobalTraitsMatchingEmbeddingSearchRetrievalLimit"];
 
   return v3;
 }
 
 + (int64_t)globalTraitsScopingEmbeddingSearchRetrievalLimit
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNGlobalTraitsScopingEmbeddingSearchRetrievalLimit"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNGlobalTraitsScopingEmbeddingSearchRetrievalLimit"];
 
   return v3;
 }
 
 + (int64_t)userQueryEmbeddingSearchRetrievalLimit
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNUserQueryEmbeddingSearchRetrievalLimit"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNUserQueryEmbeddingSearchRetrievalLimit"];
 
   return v3;
 }
 
 + (int64_t)maximumNumberOfMomentsForStoryGeneration
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNMaximumNumberOfMomentsForStoryGeneration"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNMaximumNumberOfMomentsForStoryGeneration"];
 
   return v3;
 }
 
 + (BOOL)useOtherQueryTokenAssetsForEventDisambiguation
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"kPNUseOtherQueryTokenAssetsForEventDisambiguation"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"kPNUseOtherQueryTokenAssetsForEventDisambiguation"];
 
   return v3;
 }
 
 + (int64_t)targetNumberOfEventSuggestions
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNTargetNumberOfEventSuggestions"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNTargetNumberOfEventSuggestions"];
 
   return v3;
 }
 
 + (NSNumber)storyAssetsFetcherSimilarityThreshold
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"PNStoryAssetsFetcherSimilarityThreshold"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"PNStoryAssetsFetcherSimilarityThreshold"];
 
   if ([v3 length])
   {
@@ -1533,56 +1533,56 @@
 
 + (int64_t)queryAnnotationPromptBindingNumberOfLocationNames
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNUseQueryAnnotationPromptBindingNumberOfLocationNames"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNUseQueryAnnotationPromptBindingNumberOfLocationNames"];
 
   return v3;
 }
 
 + (int64_t)queryAnnotationPromptBindingNumberOfPersonAndPetNames
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNUseQueryAnnotationPromptBindingNumberOfPersonAndPetNames"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNUseQueryAnnotationPromptBindingNumberOfPersonAndPetNames"];
 
   return v3;
 }
 
 + (BOOL)enableLocationPromptBinding
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNQueryAnnotationEnableLocationPromptBinding"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNQueryAnnotationEnableLocationPromptBinding"];
 
   return v3;
 }
 
 + (BOOL)useQueryAnnotationPromptBindingPersonAndPetNames
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNUseQueryAnnotationPromptBindingPersonAndPetNames"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNUseQueryAnnotationPromptBindingPersonAndPetNames"];
 
   return v3;
 }
 
 + (BOOL)enableQueryAnnotationPipelineInPhotos
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNEnableQueryAnnotationPipelineInPhotos"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNEnableQueryAnnotationPipelineInPhotos"];
 
   return v3;
 }
 
 + (int64_t)minimumNumberOfLongTrips
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"kPNMinimumNumberOfLongTrips"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"kPNMinimumNumberOfLongTrips"];
 
   return v3;
 }
 
 + (double)shotlistMatchingRetrievalThreshold
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"kPNRetrievalThresholdShotlistMatching"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"kPNRetrievalThresholdShotlistMatching"];
   v4 = v3;
 
   return v4;
@@ -1590,8 +1590,8 @@
 
 + (double)assetsSelectionUsingOverlappingMomentsThreshold
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"kPNAssetsSelectionUsingOverlappingMomentsThreshold"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"kPNAssetsSelectionUsingOverlappingMomentsThreshold"];
   v4 = v3;
 
   return v4;
@@ -1599,8 +1599,8 @@
 
 + (double)globalTraitsRetrievalThreshold
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"kPNRetrievalThresholdGlobalTraits"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"kPNRetrievalThresholdGlobalTraits"];
   v4 = v3;
 
   return v4;
@@ -1608,8 +1608,8 @@
 
 + (double)globalTraitsScopedAssetsRetrievalThreshold
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 doubleForKey:@"kPNRetrievalThresholdGlobalTraitsScopedAssets"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"kPNRetrievalThresholdGlobalTraitsScopedAssets"];
   v4 = v3;
 
   return v4;
@@ -1617,40 +1617,40 @@
 
 + (NSString)fallbackBase30bModelName
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"PNFallbackBase30bModelName"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"PNFallbackBase30bModelName"];
 
   return v3;
 }
 
 + (NSString)ajaxDawToken
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 stringForKey:@"PNAjaxDawToken"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults stringForKey:@"PNAjaxDawToken"];
 
   return v3;
 }
 
 + (BOOL)locationCurationAvoidPeople
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"PNLocationCurationAvoidPeople"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"PNLocationCurationAvoidPeople"];
 
   return v3;
 }
 
 + (int64_t)promoterStatusVerifiedPersonLimit
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNPromoterStatusVerifiedPersonLimit"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNPromoterStatusVerifiedPersonLimit"];
 
   return v3;
 }
 
 + (int64_t)promoterStatusMergeCandidateLimit
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PNPromoterStatusMergeCandidateLimit"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PNPromoterStatusMergeCandidateLimit"];
 
   return v3;
 }

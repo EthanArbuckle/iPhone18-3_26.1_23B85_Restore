@@ -1,5 +1,5 @@
 @interface SKPhysicsBody
-+ (SKPhysicsBody)allocWithZone:(_NSZone *)a3;
++ (SKPhysicsBody)allocWithZone:(_NSZone *)zone;
 + (SKPhysicsBody)bodyWithBodies:(NSArray *)bodies;
 + (SKPhysicsBody)bodyWithCircleOfRadius:(CGFloat)r;
 + (SKPhysicsBody)bodyWithCircleOfRadius:(CGFloat)r center:(CGPoint)center;
@@ -12,24 +12,24 @@
 + (SKPhysicsBody)bodyWithRectangleOfSize:(CGSize)s center:(CGPoint)center;
 + (SKPhysicsBody)bodyWithTexture:(SKTexture *)texture alphaThreshold:(float)alphaThreshold size:(CGSize)size;
 + (SKPhysicsBody)bodyWithTexture:(SKTexture *)texture size:(CGSize)size;
-+ (SKPhysicsBody)bodyWithTexture:(id)a3 alphaThreshold:(float)a4 size:(CGSize)a5 accuracy:(float)a6;
-+ (id)copyWithZone:(_NSZone *)a3;
++ (SKPhysicsBody)bodyWithTexture:(id)texture alphaThreshold:(float)threshold size:(CGSize)size accuracy:(float)accuracy;
++ (id)copyWithZone:(_NSZone *)zone;
 - (CGVector)velocity;
 - (SKNode)node;
 @end
 
 @implementation SKPhysicsBody
 
-+ (SKPhysicsBody)allocWithZone:(_NSZone *)a3
++ (SKPhysicsBody)allocWithZone:(_NSZone *)zone
 {
-  v3 = [MEMORY[0x277D3D0D0] allocWithZone:a3];
+  v3 = [MEMORY[0x277D3D0D0] allocWithZone:zone];
   setSKPhysicsDefaults(v3);
   return v3;
 }
 
-+ (id)copyWithZone:(_NSZone *)a3
++ (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [MEMORY[0x277D3D0D0] copyWithZone:a3];
+  v3 = [MEMORY[0x277D3D0D0] copyWithZone:zone];
   setSKPhysicsDefaults(v3);
   return v3;
 }
@@ -134,7 +134,7 @@
     v16 = height;
     [(SKTexture *)v9 modifyPixelDataWithBlock:v12];
     setSKPhysicsDefaults(v18[5]);
-    v10 = v18[5];
+    height = v18[5];
 
     _Block_object_dispose(&v17, 8);
   }
@@ -142,10 +142,10 @@
   else
   {
     LODWORD(v7) = 1028443341;
-    v10 = [SKPhysicsBody bodyWithTexture:v6 alphaThreshold:v7 size:width, height];
+    height = [SKPhysicsBody bodyWithTexture:v6 alphaThreshold:v7 size:width, height];
   }
 
-  return v10;
+  return height;
 }
 
 void __38__SKPhysicsBody_bodyWithTexture_size___block_invoke(uint64_t a1, uint64_t a2)
@@ -172,11 +172,11 @@ void __38__SKPhysicsBody_bodyWithTexture_size___block_invoke(uint64_t a1, uint64
   return v8;
 }
 
-+ (SKPhysicsBody)bodyWithTexture:(id)a3 alphaThreshold:(float)a4 size:(CGSize)a5 accuracy:(float)a6
++ (SKPhysicsBody)bodyWithTexture:(id)texture alphaThreshold:(float)threshold size:(CGSize)size accuracy:(float)accuracy
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = [SKPhysicsGrid gridFromTexture:"gridFromTexture:alphaThreshold:accuracy:" alphaThreshold:a3 accuracy:?];
+  height = size.height;
+  width = size.width;
+  v8 = [SKPhysicsGrid gridFromTexture:"gridFromTexture:alphaThreshold:accuracy:" alphaThreshold:texture accuracy:?];
   v9 = [v8 physicsBodyFromSmoothedOutline:1.0 size:{width, height}];
   setSKPhysicsDefaults(v9);
 

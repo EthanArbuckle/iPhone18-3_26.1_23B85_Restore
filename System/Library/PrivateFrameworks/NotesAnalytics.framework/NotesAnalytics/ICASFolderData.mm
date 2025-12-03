@@ -1,30 +1,30 @@
 @interface ICASFolderData
-- (ICASFolderData)initWithFolderID:(id)a3 folderType:(id)a4 folderLabelType:(id)a5 subFolderLevel:(id)a6 collaborationStatus:(id)a7 collaborationType:(id)a8;
+- (ICASFolderData)initWithFolderID:(id)d folderType:(id)type folderLabelType:(id)labelType subFolderLevel:(id)level collaborationStatus:(id)status collaborationType:(id)collaborationType;
 - (id)toDict;
 @end
 
 @implementation ICASFolderData
 
-- (ICASFolderData)initWithFolderID:(id)a3 folderType:(id)a4 folderLabelType:(id)a5 subFolderLevel:(id)a6 collaborationStatus:(id)a7 collaborationType:(id)a8
+- (ICASFolderData)initWithFolderID:(id)d folderType:(id)type folderLabelType:(id)labelType subFolderLevel:(id)level collaborationStatus:(id)status collaborationType:(id)collaborationType
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  dCopy = d;
+  typeCopy = type;
+  labelTypeCopy = labelType;
+  levelCopy = level;
+  statusCopy = status;
+  collaborationTypeCopy = collaborationType;
   v24.receiver = self;
   v24.super_class = ICASFolderData;
   v18 = [(ICASFolderData *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_folderID, a3);
-    objc_storeStrong(&v19->_folderType, a4);
-    objc_storeStrong(&v19->_folderLabelType, a5);
-    objc_storeStrong(&v19->_subFolderLevel, a6);
-    objc_storeStrong(&v19->_collaborationStatus, a7);
-    objc_storeStrong(&v19->_collaborationType, a8);
+    objc_storeStrong(&v18->_folderID, d);
+    objc_storeStrong(&v19->_folderType, type);
+    objc_storeStrong(&v19->_folderLabelType, labelType);
+    objc_storeStrong(&v19->_subFolderLevel, level);
+    objc_storeStrong(&v19->_collaborationStatus, status);
+    objc_storeStrong(&v19->_collaborationType, collaborationType);
   }
 
   return v19;
@@ -34,89 +34,89 @@
 {
   v26[6] = *MEMORY[0x277D85DE8];
   v25[0] = @"folderID";
-  v24 = [(ICASFolderData *)self folderID];
-  if (v24)
+  folderID = [(ICASFolderData *)self folderID];
+  if (folderID)
   {
-    v3 = [(ICASFolderData *)self folderID];
+    folderID2 = [(ICASFolderData *)self folderID];
   }
 
   else
   {
-    v3 = objc_opt_new();
+    folderID2 = objc_opt_new();
   }
 
-  v23 = v3;
-  v26[0] = v3;
+  v23 = folderID2;
+  v26[0] = folderID2;
   v25[1] = @"folderType";
-  v21 = [(ICASFolderData *)self folderType];
-  if (v21)
+  folderType = [(ICASFolderData *)self folderType];
+  if (folderType)
   {
-    v4 = [(ICASFolderData *)self folderType];
+    folderType2 = [(ICASFolderData *)self folderType];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    folderType2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v26[1] = v4;
+  v5 = folderType2;
+  v26[1] = folderType2;
   v25[2] = @"folderLabelType";
-  v6 = [(ICASFolderData *)self folderLabelType];
-  if (v6)
+  folderLabelType = [(ICASFolderData *)self folderLabelType];
+  if (folderLabelType)
   {
-    v7 = [(ICASFolderData *)self folderLabelType];
+    folderLabelType2 = [(ICASFolderData *)self folderLabelType];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    folderLabelType2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v26[2] = v7;
+  v8 = folderLabelType2;
+  v26[2] = folderLabelType2;
   v25[3] = @"subFolderLevel";
-  v9 = [(ICASFolderData *)self subFolderLevel];
-  if (v9)
+  subFolderLevel = [(ICASFolderData *)self subFolderLevel];
+  if (subFolderLevel)
   {
-    v10 = [(ICASFolderData *)self subFolderLevel];
+    subFolderLevel2 = [(ICASFolderData *)self subFolderLevel];
   }
 
   else
   {
-    v10 = objc_opt_new();
+    subFolderLevel2 = objc_opt_new();
   }
 
-  v11 = v10;
-  v26[3] = v10;
+  v11 = subFolderLevel2;
+  v26[3] = subFolderLevel2;
   v25[4] = @"collaborationStatus";
-  v12 = [(ICASFolderData *)self collaborationStatus];
-  if (v12)
+  collaborationStatus = [(ICASFolderData *)self collaborationStatus];
+  if (collaborationStatus)
   {
-    v13 = [(ICASFolderData *)self collaborationStatus];
+    collaborationStatus2 = [(ICASFolderData *)self collaborationStatus];
   }
 
   else
   {
-    v13 = objc_opt_new();
+    collaborationStatus2 = objc_opt_new();
   }
 
-  v14 = v13;
-  v26[4] = v13;
+  v14 = collaborationStatus2;
+  v26[4] = collaborationStatus2;
   v25[5] = @"collaborationType";
-  v15 = [(ICASFolderData *)self collaborationType];
-  if (v15)
+  collaborationType = [(ICASFolderData *)self collaborationType];
+  if (collaborationType)
   {
-    v16 = [(ICASFolderData *)self collaborationType];
+    collaborationType2 = [(ICASFolderData *)self collaborationType];
   }
 
   else
   {
-    v16 = objc_opt_new();
+    collaborationType2 = objc_opt_new();
   }
 
-  v17 = v16;
-  v26[5] = v16;
+  v17 = collaborationType2;
+  v26[5] = collaborationType2;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:6];
 
   v19 = *MEMORY[0x277D85DE8];

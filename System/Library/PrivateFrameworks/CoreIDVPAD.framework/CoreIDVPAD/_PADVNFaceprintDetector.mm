@@ -1,11 +1,11 @@
 @interface _PADVNFaceprintDetector
 - (_PADVNFaceprintDetector)init;
-- (id)requestsForFrame:(id)a3 handler:(id)a4;
-- (void)analyzeObservationComposite:(id)a3;
-- (void)analyzeObservationCompositeSet:(id)a3;
-- (void)handleObservationCompositeError:(id)a3;
+- (id)requestsForFrame:(id)frame handler:(id)handler;
+- (void)analyzeObservationComposite:(id)composite;
+- (void)analyzeObservationCompositeSet:(id)set;
+- (void)handleObservationCompositeError:(id)error;
 - (void)invalidate;
-- (void)processFrames:(id)a3 completion:(id)a4;
+- (void)processFrames:(id)frames completion:(id)completion;
 @end
 
 @implementation _PADVNFaceprintDetector
@@ -32,12 +32,12 @@
   return v7;
 }
 
-- (void)processFrames:(id)a3 completion:(id)a4
+- (void)processFrames:(id)frames completion:(id)completion
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  framesCopy = frames;
+  completionCopy = completion;
+  v8 = completionCopy;
   if (self->_completion)
   {
     v9 = MEMORY[0x277CCA9B8];
@@ -50,16 +50,16 @@
 
   else
   {
-    v12 = _Block_copy(v7);
+    v12 = _Block_copy(completionCopy);
     completion = self->_completion;
     self->_completion = v12;
 
-    self->_setSize = [v6 count];
+    self->_setSize = [framesCopy count];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = v6;
+    v10 = framesCopy;
     v14 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v14)
     {
@@ -87,11 +87,11 @@
   }
 }
 
-- (id)requestsForFrame:(id)a3 handler:(id)a4
+- (id)requestsForFrame:(id)frame handler:(id)handler
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  frameCopy = frame;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
   v8 = os_log_create("com.apple.CoreIDV", "RGBLiveness");
   if (os_signpost_enabled(v8))
@@ -100,24 +100,24 @@
     _os_signpost_emit_with_name_impl(&dword_245686000, v8, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "Vision.ID", "", buf, 2u);
   }
 
-  v9 = VNCreateFaceprintRequestInit(v7);
+  v9 = VNCreateFaceprintRequestInit(handlerCopy);
   v37[0] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:1];
 
-  v11 = [v6 faces];
-  v12 = [v11 count];
+  faces = [frameCopy faces];
+  v12 = [faces count];
 
   if (v12 == 1)
   {
-    v13 = [v6 faces];
-    v14 = [v13 firstObject];
-    [v14 bounds];
+    faces2 = [frameCopy faces];
+    firstObject = [faces2 firstObject];
+    [firstObject bounds];
     v19 = VNFaceObservationWithAVFoundationFaceBounds(v15, v16, v17, v18);
 
     if (v19)
     {
       v28 = v10;
-      v29 = v7;
+      v29 = handlerCopy;
       v32 = 0u;
       v33 = 0u;
       v30 = 0u;
@@ -163,17 +163,17 @@
       }
 
       v10 = v28;
-      v7 = v29;
+      handlerCopy = v29;
     }
   }
 
   return v10;
 }
 
-- (void)handleObservationCompositeError:(id)a3
+- (void)handleObservationCompositeError:(id)error
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = os_log_create("com.apple.CoreIDV", "RGBLiveness");
   if (os_signpost_enabled(v5))
   {
@@ -184,36 +184,36 @@
   completion = self->_completion;
   if (completion)
   {
-    if (!v4)
+    if (!errorCopy)
     {
       v7 = MEMORY[0x277CCA9B8];
       v10 = *MEMORY[0x277CCA068];
       v11[0] = @"An error occurred when detecting faceprints in the frame.";
       v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-      v4 = [v7 errorWithDomain:@"com.apple.coreidv.CoreIDVPAD.PADErrorDomain" code:3 userInfo:v8];
+      errorCopy = [v7 errorWithDomain:@"com.apple.coreidv.CoreIDVPAD.PADErrorDomain" code:3 userInfo:v8];
 
       completion = self->_completion;
     }
 
-    completion[2](completion, v4);
+    completion[2](completion, errorCopy);
   }
 }
 
-- (void)analyzeObservationComposite:(id)a3
+- (void)analyzeObservationComposite:(id)composite
 {
   v15.receiver = self;
   v15.super_class = _PADVNFaceprintDetector;
-  v4 = a3;
-  [(PADVNSerialRequestsScheduler *)&v15 analyzeObservationComposite:v4];
+  compositeCopy = composite;
+  [(PADVNSerialRequestsScheduler *)&v15 analyzeObservationComposite:compositeCopy];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [v4 objectForKeyedSubscript:v6];
+  v7 = [compositeCopy objectForKeyedSubscript:v6];
 
-  v8 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
-  if (v8)
+  if (firstObject)
   {
-    v9 = PADVNFaceprintInit(v8);
+    v9 = PADVNFaceprintInit(firstObject);
     v10 = v9;
     v11 = MEMORY[0x277CBEBF8];
     if (v9)
@@ -242,11 +242,11 @@
   }
 }
 
-- (void)analyzeObservationCompositeSet:(id)a3
+- (void)analyzeObservationCompositeSet:(id)set
 {
   v5.receiver = self;
   v5.super_class = _PADVNFaceprintDetector;
-  [(PADVNSerialRequestsScheduler *)&v5 analyzeObservationCompositeSet:a3];
+  [(PADVNSerialRequestsScheduler *)&v5 analyzeObservationCompositeSet:set];
   completion = self->_completion;
   if (completion)
   {

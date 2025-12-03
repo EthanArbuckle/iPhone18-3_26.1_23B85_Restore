@@ -1,5 +1,5 @@
 @interface HKSleepDurationChartPoint
-+ (id)chartPointsForInformationProviders:(id)a3 context:(id)a4;
++ (id)chartPointsForInformationProviders:(id)providers context:(id)context;
 - (id)allYValues;
 - (id)maxYValue;
 @end
@@ -46,17 +46,17 @@
   return v5;
 }
 
-+ (id)chartPointsForInformationProviders:(id)a3 context:(id)a4
++ (id)chartPointsForInformationProviders:(id)providers context:(id)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  providersCopy = providers;
+  contextCopy = context;
   v7 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v5;
+  obj = providersCopy;
   v8 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -80,10 +80,10 @@
         [(HKSleepDurationChartPoint *)v13 setAsleepValue:?];
         [v12 inBedDuration];
         [(HKSleepDurationChartPoint *)v13 setInBedValue:?];
-        v15 = [v12 sleepDurationGoalSeconds];
-        [(HKSleepDurationChartPoint *)v13 setGoalValue:v15];
+        sleepDurationGoalSeconds = [v12 sleepDurationGoalSeconds];
+        [(HKSleepDurationChartPoint *)v13 setGoalValue:sleepDurationGoalSeconds];
 
-        v16 = -[HKSleepChartPointUserInfo initWithSeriesType:chartPointInfoProvider:]([HKSleepChartPointUserInfo alloc], "initWithSeriesType:chartPointInfoProvider:", [v6 chartType], v12);
+        v16 = -[HKSleepChartPointUserInfo initWithSeriesType:chartPointInfoProvider:]([HKSleepChartPointUserInfo alloc], "initWithSeriesType:chartPointInfoProvider:", [contextCopy chartType], v12);
         [(HKSleepDurationChartPoint *)v13 setUserInfo:v16];
 
         [v7 addObject:v13];

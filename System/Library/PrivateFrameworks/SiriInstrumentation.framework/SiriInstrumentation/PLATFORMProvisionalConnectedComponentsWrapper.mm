@@ -1,27 +1,27 @@
 @interface PLATFORMProvisionalConnectedComponentsWrapper
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (PLATFORMProvisionalConnectedComponentsByClock)msg;
-- (PLATFORMProvisionalConnectedComponentsWrapper)initWithDictionary:(id)a3;
-- (PLATFORMProvisionalConnectedComponentsWrapper)initWithJSON:(id)a3;
+- (PLATFORMProvisionalConnectedComponentsWrapper)initWithDictionary:(id)dictionary;
+- (PLATFORMProvisionalConnectedComponentsWrapper)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)qualifiedMessageName;
 - (void)deleteMsg;
-- (void)setMsg:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setMsg:(id)msg;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLATFORMProvisionalConnectedComponentsWrapper
 
-- (PLATFORMProvisionalConnectedComponentsWrapper)initWithDictionary:(id)a3
+- (PLATFORMProvisionalConnectedComponentsWrapper)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PLATFORMProvisionalConnectedComponentsWrapper;
   v5 = [(PLATFORMProvisionalConnectedComponentsWrapper *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"clockIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"clockIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(PLATFORMProvisionalConnectedComponentsWrapper *)v5 setClockIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"msg"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"msg"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,30 +43,30 @@
   return v5;
 }
 
-- (PLATFORMProvisionalConnectedComponentsWrapper)initWithJSON:(id)a3
+- (PLATFORMProvisionalConnectedComponentsWrapper)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLATFORMProvisionalConnectedComponentsWrapper *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLATFORMProvisionalConnectedComponentsWrapper *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLATFORMProvisionalConnectedComponentsWrapper *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -79,72 +79,72 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_clockIdentifier)
   {
-    v4 = [(PLATFORMProvisionalConnectedComponentsWrapper *)self clockIdentifier];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    clockIdentifier = [(PLATFORMProvisionalConnectedComponentsWrapper *)self clockIdentifier];
+    dictionaryRepresentation = [clockIdentifier dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"clockIdentifier"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"clockIdentifier"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"clockIdentifier"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"clockIdentifier"];
     }
   }
 
   if (self->_msg)
   {
     v7 = [(PLATFORMProvisionalConnectedComponentsWrapper *)self msg];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    dictionaryRepresentation2 = [v7 dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"msg"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"msg"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"msg"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"msg"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   whichEventtype = self->_whichEventtype;
-  if (whichEventtype != [v4 whichEventtype])
+  if (whichEventtype != [equalCopy whichEventtype])
   {
     goto LABEL_13;
   }
 
-  v6 = [(PLATFORMProvisionalConnectedComponentsWrapper *)self clockIdentifier];
-  v7 = [v4 clockIdentifier];
-  if ((v6 != 0) == (v7 == 0))
+  clockIdentifier = [(PLATFORMProvisionalConnectedComponentsWrapper *)self clockIdentifier];
+  clockIdentifier2 = [equalCopy clockIdentifier];
+  if ((clockIdentifier != 0) == (clockIdentifier2 == 0))
   {
     goto LABEL_12;
   }
 
-  v8 = [(PLATFORMProvisionalConnectedComponentsWrapper *)self clockIdentifier];
-  if (v8)
+  clockIdentifier3 = [(PLATFORMProvisionalConnectedComponentsWrapper *)self clockIdentifier];
+  if (clockIdentifier3)
   {
-    v9 = v8;
-    v10 = [(PLATFORMProvisionalConnectedComponentsWrapper *)self clockIdentifier];
-    v11 = [v4 clockIdentifier];
-    v12 = [v10 isEqual:v11];
+    v9 = clockIdentifier3;
+    clockIdentifier4 = [(PLATFORMProvisionalConnectedComponentsWrapper *)self clockIdentifier];
+    clockIdentifier5 = [equalCopy clockIdentifier];
+    v12 = [clockIdentifier4 isEqual:clockIdentifier5];
 
     if (!v12)
     {
@@ -156,9 +156,9 @@
   {
   }
 
-  v6 = [(PLATFORMProvisionalConnectedComponentsWrapper *)self msg];
-  v7 = [v4 msg];
-  if ((v6 != 0) != (v7 == 0))
+  clockIdentifier = [(PLATFORMProvisionalConnectedComponentsWrapper *)self msg];
+  clockIdentifier2 = [equalCopy msg];
+  if ((clockIdentifier != 0) != (clockIdentifier2 == 0))
   {
     v13 = [(PLATFORMProvisionalConnectedComponentsWrapper *)self msg];
     if (!v13)
@@ -171,7 +171,7 @@ LABEL_16:
 
     v14 = v13;
     v15 = [(PLATFORMProvisionalConnectedComponentsWrapper *)self msg];
-    v16 = [v4 msg];
+    v16 = [equalCopy msg];
     v17 = [v15 isEqual:v16];
 
     if (v17)
@@ -192,14 +192,14 @@ LABEL_14:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(PLATFORMProvisionalConnectedComponentsWrapper *)self clockIdentifier];
+  toCopy = to;
+  clockIdentifier = [(PLATFORMProvisionalConnectedComponentsWrapper *)self clockIdentifier];
 
-  if (v4)
+  if (clockIdentifier)
   {
-    v5 = [(PLATFORMProvisionalConnectedComponentsWrapper *)self clockIdentifier];
+    clockIdentifier2 = [(PLATFORMProvisionalConnectedComponentsWrapper *)self clockIdentifier];
     PBDataWriterWriteSubmessage();
   }
 
@@ -237,16 +237,16 @@ LABEL_14:
   return v3;
 }
 
-- (void)setMsg:(id)a3
+- (void)setMsg:(id)msg
 {
   v3 = 101;
-  if (!a3)
+  if (!msg)
   {
     v3 = 0;
   }
 
   self->_whichEventtype = v3;
-  objc_storeStrong(&self->_msg, a3);
+  objc_storeStrong(&self->_msg, msg);
 }
 
 - (id)qualifiedMessageName

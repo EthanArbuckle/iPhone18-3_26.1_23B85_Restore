@@ -1,45 +1,45 @@
 @interface VCMediaNegotiationBlobBandwidthSettings
-+ (int)bandwidthConfigurationFor2GWithArbiterMode:(unsigned __int8)a3;
-+ (int)bandwidthConfigurationFor3GWithArbiterMode:(unsigned __int8)a3;
-+ (int)bandwidthConfigurationFor5GWithArbiterMode:(unsigned __int8)a3;
-+ (int)bandwidthConfigurationForAWDLWithArbiterMode:(unsigned __int8)a3;
-+ (int)bandwidthConfigurationForLTEWithArbiterMode:(unsigned __int8)a3;
-+ (int)bandwidthConfigurationForUSBWithArbiterMode:(unsigned __int8)a3;
-+ (int)bandwidthConfigurationForWiFiWithArbiterMode:(unsigned __int8)a3;
-+ (int)bandwidthConfigurationForWiredWithArbiterMode:(unsigned __int8)a3;
-+ (int)bandwidthConfigurationWithArbiterMode:(unsigned __int8)a3 connectionType:(int)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)configurationAsString:(int)a3;
-- (id)configurationExtensionAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (int)bandwidthConfigurationFor2GWithArbiterMode:(unsigned __int8)mode;
++ (int)bandwidthConfigurationFor3GWithArbiterMode:(unsigned __int8)mode;
++ (int)bandwidthConfigurationFor5GWithArbiterMode:(unsigned __int8)mode;
++ (int)bandwidthConfigurationForAWDLWithArbiterMode:(unsigned __int8)mode;
++ (int)bandwidthConfigurationForLTEWithArbiterMode:(unsigned __int8)mode;
++ (int)bandwidthConfigurationForUSBWithArbiterMode:(unsigned __int8)mode;
++ (int)bandwidthConfigurationForWiFiWithArbiterMode:(unsigned __int8)mode;
++ (int)bandwidthConfigurationForWiredWithArbiterMode:(unsigned __int8)mode;
++ (int)bandwidthConfigurationWithArbiterMode:(unsigned __int8)mode connectionType:(int)type;
+- (BOOL)isEqual:(id)equal;
+- (id)configurationAsString:(int)string;
+- (id)configurationExtensionAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)newBandwidthConfigurations;
-- (int)StringAsConfiguration:(id)a3;
-- (int)StringAsConfigurationExtension:(id)a3;
+- (int)StringAsConfiguration:(id)configuration;
+- (int)StringAsConfigurationExtension:(id)extension;
 - (int)configurationExtension;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCMediaNegotiationBlobBandwidthSettings
 
-- (id)configurationAsString:(int)a3
+- (id)configurationAsString:(int)string
 {
-  if (a3 <= 1023)
+  if (string <= 1023)
   {
-    if (a3 <= 15)
+    if (string <= 15)
     {
-      if (a3 <= 1)
+      if (string <= 1)
       {
-        if (!a3)
+        if (!string)
         {
           return @"mode_Invalid";
         }
 
-        if (a3 == 1)
+        if (string == 1)
         {
           return @"mode_Default_Wifi";
         }
@@ -47,7 +47,7 @@
 
       else
       {
-        switch(a3)
+        switch(string)
         {
           case 2:
             return @"mode_Default_LTE";
@@ -59,9 +59,9 @@
       }
     }
 
-    else if (a3 > 127)
+    else if (string > 127)
     {
-      switch(a3)
+      switch(string)
       {
         case 128:
           return @"mode_Screen_3G";
@@ -74,7 +74,7 @@
 
     else
     {
-      switch(a3)
+      switch(string)
       {
         case 16:
           return @"mode_Screen_Wifi";
@@ -86,11 +86,11 @@
     }
   }
 
-  else if (a3 >= 0x10000)
+  else if (string >= 0x10000)
   {
-    if (a3 >= 0x80000)
+    if (string >= 0x80000)
     {
-      switch(a3)
+      switch(string)
       {
         case 0x80000:
           return @"mode_ImmersiveVideo_WiFi";
@@ -103,7 +103,7 @@
 
     else
     {
-      switch(a3)
+      switch(string)
       {
         case 0x10000:
           return @"mode_RemoteCamera_USB";
@@ -115,9 +115,9 @@
     }
   }
 
-  else if (a3 >= 0x2000)
+  else if (string >= 0x2000)
   {
-    switch(a3)
+    switch(string)
     {
       case 0x2000:
         return @"mode_iPadCompanion_USB";
@@ -130,7 +130,7 @@
 
   else
   {
-    switch(a3)
+    switch(string)
     {
       case 1024:
         return @"mode_Screen_2G";
@@ -141,122 +141,122 @@
     }
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
 }
 
-- (int)StringAsConfiguration:(id)a3
+- (int)StringAsConfiguration:(id)configuration
 {
-  if ([a3 isEqualToString:@"mode_Invalid"])
+  if ([configuration isEqualToString:@"mode_Invalid"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"mode_Default_Wifi"])
+  if ([configuration isEqualToString:@"mode_Default_Wifi"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"mode_Default_LTE"])
+  if ([configuration isEqualToString:@"mode_Default_LTE"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"mode_FaceTime_Wifi"])
+  if ([configuration isEqualToString:@"mode_FaceTime_Wifi"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"mode_FaceTime_LTE"])
+  if ([configuration isEqualToString:@"mode_FaceTime_LTE"])
   {
     return 8;
   }
 
-  if ([a3 isEqualToString:@"mode_Screen_Wifi"])
+  if ([configuration isEqualToString:@"mode_Screen_Wifi"])
   {
     return 16;
   }
 
-  if ([a3 isEqualToString:@"mode_Screen_LTE"])
+  if ([configuration isEqualToString:@"mode_Screen_LTE"])
   {
     return 32;
   }
 
-  if ([a3 isEqualToString:@"mode_FaceTime_3G"])
+  if ([configuration isEqualToString:@"mode_FaceTime_3G"])
   {
     return 64;
   }
 
-  if ([a3 isEqualToString:@"mode_Screen_3G"])
+  if ([configuration isEqualToString:@"mode_Screen_3G"])
   {
     return 128;
   }
 
-  if ([a3 isEqualToString:@"mode_Default_3G"])
+  if ([configuration isEqualToString:@"mode_Default_3G"])
   {
     return 256;
   }
 
-  if ([a3 isEqualToString:@"mode_FaceTime_2G"])
+  if ([configuration isEqualToString:@"mode_FaceTime_2G"])
   {
     return 512;
   }
 
-  if ([a3 isEqualToString:@"mode_Screen_2G"])
+  if ([configuration isEqualToString:@"mode_Screen_2G"])
   {
     return 1024;
   }
 
-  if ([a3 isEqualToString:@"mode_Default_2G"])
+  if ([configuration isEqualToString:@"mode_Default_2G"])
   {
     return 2048;
   }
 
-  if ([a3 isEqualToString:@"mode_iPadCompanion_AWDL"])
+  if ([configuration isEqualToString:@"mode_iPadCompanion_AWDL"])
   {
     return 4096;
   }
 
-  if ([a3 isEqualToString:@"mode_iPadCompanion_USB"])
+  if ([configuration isEqualToString:@"mode_iPadCompanion_USB"])
   {
     return 0x2000;
   }
 
-  if ([a3 isEqualToString:@"mode_FaceTime_5G"])
+  if ([configuration isEqualToString:@"mode_FaceTime_5G"])
   {
     return 0x4000;
   }
 
-  if ([a3 isEqualToString:@"mode_RemoteCamera_AWDL"])
+  if ([configuration isEqualToString:@"mode_RemoteCamera_AWDL"])
   {
     return 0x8000;
   }
 
-  if ([a3 isEqualToString:@"mode_RemoteCamera_USB"])
+  if ([configuration isEqualToString:@"mode_RemoteCamera_USB"])
   {
     return 0x10000;
   }
 
-  if ([a3 isEqualToString:@"mode_MultiwayScreen_Wifi"])
+  if ([configuration isEqualToString:@"mode_MultiwayScreen_Wifi"])
   {
     return 0x20000;
   }
 
-  if ([a3 isEqualToString:@"mode_LowLatencyScreen_Wired"])
+  if ([configuration isEqualToString:@"mode_LowLatencyScreen_Wired"])
   {
     return 0x40000;
   }
 
-  if ([a3 isEqualToString:@"mode_ImmersiveVideo_WiFi"])
+  if ([configuration isEqualToString:@"mode_ImmersiveVideo_WiFi"])
   {
     return 0x80000;
   }
 
-  if ([a3 isEqualToString:@"mode_ImmersiveVideo_Wired"])
+  if ([configuration isEqualToString:@"mode_ImmersiveVideo_Wired"])
   {
     return 0x100000;
   }
 
-  if ([a3 isEqualToString:@"mode_SUPPORTED"])
+  if ([configuration isEqualToString:@"mode_SUPPORTED"])
   {
     return 0x1FFFFF;
   }
@@ -277,20 +277,20 @@
   }
 }
 
-- (id)configurationExtensionAsString:(int)a3
+- (id)configurationExtensionAsString:(int)string
 {
-  if (a3 <= 1023)
+  if (string <= 1023)
   {
-    if (a3 <= 15)
+    if (string <= 15)
     {
-      if (a3 <= 1)
+      if (string <= 1)
       {
-        if (!a3)
+        if (!string)
         {
           return @"mode_Invalid";
         }
 
-        if (a3 == 1)
+        if (string == 1)
         {
           return @"mode_Default_Wifi";
         }
@@ -298,7 +298,7 @@
 
       else
       {
-        switch(a3)
+        switch(string)
         {
           case 2:
             return @"mode_Default_LTE";
@@ -310,9 +310,9 @@
       }
     }
 
-    else if (a3 > 127)
+    else if (string > 127)
     {
-      switch(a3)
+      switch(string)
       {
         case 128:
           return @"mode_Screen_3G";
@@ -325,7 +325,7 @@
 
     else
     {
-      switch(a3)
+      switch(string)
       {
         case 16:
           return @"mode_Screen_Wifi";
@@ -337,11 +337,11 @@
     }
   }
 
-  else if (a3 >= 0x10000)
+  else if (string >= 0x10000)
   {
-    if (a3 >= 0x80000)
+    if (string >= 0x80000)
     {
-      switch(a3)
+      switch(string)
       {
         case 0x80000:
           return @"mode_ImmersiveVideo_WiFi";
@@ -354,7 +354,7 @@
 
     else
     {
-      switch(a3)
+      switch(string)
       {
         case 0x10000:
           return @"mode_RemoteCamera_USB";
@@ -366,9 +366,9 @@
     }
   }
 
-  else if (a3 >= 0x2000)
+  else if (string >= 0x2000)
   {
-    switch(a3)
+    switch(string)
     {
       case 0x2000:
         return @"mode_iPadCompanion_USB";
@@ -381,7 +381,7 @@
 
   else
   {
-    switch(a3)
+    switch(string)
     {
       case 1024:
         return @"mode_Screen_2G";
@@ -392,122 +392,122 @@
     }
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
 }
 
-- (int)StringAsConfigurationExtension:(id)a3
+- (int)StringAsConfigurationExtension:(id)extension
 {
-  if ([a3 isEqualToString:@"mode_Invalid"])
+  if ([extension isEqualToString:@"mode_Invalid"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"mode_Default_Wifi"])
+  if ([extension isEqualToString:@"mode_Default_Wifi"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"mode_Default_LTE"])
+  if ([extension isEqualToString:@"mode_Default_LTE"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"mode_FaceTime_Wifi"])
+  if ([extension isEqualToString:@"mode_FaceTime_Wifi"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"mode_FaceTime_LTE"])
+  if ([extension isEqualToString:@"mode_FaceTime_LTE"])
   {
     return 8;
   }
 
-  if ([a3 isEqualToString:@"mode_Screen_Wifi"])
+  if ([extension isEqualToString:@"mode_Screen_Wifi"])
   {
     return 16;
   }
 
-  if ([a3 isEqualToString:@"mode_Screen_LTE"])
+  if ([extension isEqualToString:@"mode_Screen_LTE"])
   {
     return 32;
   }
 
-  if ([a3 isEqualToString:@"mode_FaceTime_3G"])
+  if ([extension isEqualToString:@"mode_FaceTime_3G"])
   {
     return 64;
   }
 
-  if ([a3 isEqualToString:@"mode_Screen_3G"])
+  if ([extension isEqualToString:@"mode_Screen_3G"])
   {
     return 128;
   }
 
-  if ([a3 isEqualToString:@"mode_Default_3G"])
+  if ([extension isEqualToString:@"mode_Default_3G"])
   {
     return 256;
   }
 
-  if ([a3 isEqualToString:@"mode_FaceTime_2G"])
+  if ([extension isEqualToString:@"mode_FaceTime_2G"])
   {
     return 512;
   }
 
-  if ([a3 isEqualToString:@"mode_Screen_2G"])
+  if ([extension isEqualToString:@"mode_Screen_2G"])
   {
     return 1024;
   }
 
-  if ([a3 isEqualToString:@"mode_Default_2G"])
+  if ([extension isEqualToString:@"mode_Default_2G"])
   {
     return 2048;
   }
 
-  if ([a3 isEqualToString:@"mode_iPadCompanion_AWDL"])
+  if ([extension isEqualToString:@"mode_iPadCompanion_AWDL"])
   {
     return 4096;
   }
 
-  if ([a3 isEqualToString:@"mode_iPadCompanion_USB"])
+  if ([extension isEqualToString:@"mode_iPadCompanion_USB"])
   {
     return 0x2000;
   }
 
-  if ([a3 isEqualToString:@"mode_FaceTime_5G"])
+  if ([extension isEqualToString:@"mode_FaceTime_5G"])
   {
     return 0x4000;
   }
 
-  if ([a3 isEqualToString:@"mode_RemoteCamera_AWDL"])
+  if ([extension isEqualToString:@"mode_RemoteCamera_AWDL"])
   {
     return 0x8000;
   }
 
-  if ([a3 isEqualToString:@"mode_RemoteCamera_USB"])
+  if ([extension isEqualToString:@"mode_RemoteCamera_USB"])
   {
     return 0x10000;
   }
 
-  if ([a3 isEqualToString:@"mode_MultiwayScreen_Wifi"])
+  if ([extension isEqualToString:@"mode_MultiwayScreen_Wifi"])
   {
     return 0x20000;
   }
 
-  if ([a3 isEqualToString:@"mode_LowLatencyScreen_Wired"])
+  if ([extension isEqualToString:@"mode_LowLatencyScreen_Wired"])
   {
     return 0x40000;
   }
 
-  if ([a3 isEqualToString:@"mode_ImmersiveVideo_WiFi"])
+  if ([extension isEqualToString:@"mode_ImmersiveVideo_WiFi"])
   {
     return 0x80000;
   }
 
-  if ([a3 isEqualToString:@"mode_ImmersiveVideo_Wired"])
+  if ([extension isEqualToString:@"mode_ImmersiveVideo_Wired"])
   {
     return 0x100000;
   }
 
-  if ([a3 isEqualToString:@"mode_SUPPORTED"])
+  if ([extension isEqualToString:@"mode_SUPPORTED"])
   {
     return 0x1FFFFF;
   }
@@ -525,7 +525,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   configuration = self->_configuration;
   if (configuration <= 1023)
   {
@@ -665,8 +665,8 @@
 
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", self->_configuration];
 LABEL_55:
-  [v3 setObject:v5 forKey:@"configuration"];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_maxBandwidth), @"maxBandwidth"}];
+  [dictionary setObject:v5 forKey:@"configuration"];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_maxBandwidth), @"maxBandwidth"}];
   if (*&self->_has)
   {
     configurationExtension = self->_configurationExtension;
@@ -803,8 +803,8 @@ LABEL_55:
         case 4096:
           v7 = @"mode_iPadCompanion_AWDL";
 LABEL_110:
-          [v3 setObject:v7 forKey:@"configurationExtension"];
-          return v3;
+          [dictionary setObject:v7 forKey:@"configurationExtension"];
+          return dictionary;
       }
     }
 
@@ -812,10 +812,10 @@ LABEL_110:
     goto LABEL_110;
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   PBDataWriterWriteInt32Field();
   PBDataWriterWriteUint32Field();
@@ -826,20 +826,20 @@ LABEL_110:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 2) = self->_configuration;
-  *(a3 + 4) = self->_maxBandwidth;
+  *(to + 2) = self->_configuration;
+  *(to + 4) = self->_maxBandwidth;
   if (*&self->_has)
   {
-    *(a3 + 3) = self->_configurationExtension;
-    *(a3 + 20) |= 1u;
+    *(to + 3) = self->_configurationExtension;
+    *(to + 20) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 2) = self->_configuration;
   *(result + 4) = self->_maxBandwidth;
   if (*&self->_has)
@@ -851,20 +851,20 @@ LABEL_110:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    if (self->_configuration != *(a3 + 2) || self->_maxBandwidth != *(a3 + 4))
+    if (self->_configuration != *(equal + 2) || self->_maxBandwidth != *(equal + 4))
     {
       goto LABEL_8;
     }
 
-    LOBYTE(v5) = (*(a3 + 20) & 1) == 0;
+    LOBYTE(v5) = (*(equal + 20) & 1) == 0;
     if (*&self->_has)
     {
-      if ((*(a3 + 20) & 1) != 0 && self->_configurationExtension == *(a3 + 3))
+      if ((*(equal + 20) & 1) != 0 && self->_configurationExtension == *(equal + 3))
       {
         LOBYTE(v5) = 1;
         return v5;
@@ -893,22 +893,22 @@ LABEL_8:
   return (2654435761 * self->_maxBandwidth) ^ v2 ^ (2654435761 * self->_configuration);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_configuration = *(a3 + 2);
-  self->_maxBandwidth = *(a3 + 4);
-  if (*(a3 + 20))
+  self->_configuration = *(from + 2);
+  self->_maxBandwidth = *(from + 4);
+  if (*(from + 20))
   {
-    self->_configurationExtension = *(a3 + 3);
+    self->_configurationExtension = *(from + 3);
     *&self->_has |= 1u;
   }
 }
 
-+ (int)bandwidthConfigurationFor2GWithArbiterMode:(unsigned __int8)a3
++ (int)bandwidthConfigurationFor2GWithArbiterMode:(unsigned __int8)mode
 {
-  if (a3 < 9u)
+  if (mode < 9u)
   {
-    return dword_1DBD50468[a3];
+    return dword_1DBD50468[mode];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -926,11 +926,11 @@ LABEL_8:
   return 0;
 }
 
-+ (int)bandwidthConfigurationFor3GWithArbiterMode:(unsigned __int8)a3
++ (int)bandwidthConfigurationFor3GWithArbiterMode:(unsigned __int8)mode
 {
-  if (a3 < 9u)
+  if (mode < 9u)
   {
-    return dword_1DBD5048C[a3];
+    return dword_1DBD5048C[mode];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -948,11 +948,11 @@ LABEL_8:
   return 0;
 }
 
-+ (int)bandwidthConfigurationForLTEWithArbiterMode:(unsigned __int8)a3
++ (int)bandwidthConfigurationForLTEWithArbiterMode:(unsigned __int8)mode
 {
-  if (a3 < 9u)
+  if (mode < 9u)
   {
-    return dword_1DBD504B0[a3];
+    return dword_1DBD504B0[mode];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -970,9 +970,9 @@ LABEL_8:
   return 0;
 }
 
-+ (int)bandwidthConfigurationFor5GWithArbiterMode:(unsigned __int8)a3
++ (int)bandwidthConfigurationFor5GWithArbiterMode:(unsigned __int8)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     return 0x4000;
   }
@@ -992,11 +992,11 @@ LABEL_8:
   return 0;
 }
 
-+ (int)bandwidthConfigurationForWiFiWithArbiterMode:(unsigned __int8)a3
++ (int)bandwidthConfigurationForWiFiWithArbiterMode:(unsigned __int8)mode
 {
-  if (a3 < 9u)
+  if (mode < 9u)
   {
-    return dword_1DBD504D4[a3];
+    return dword_1DBD504D4[mode];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -1014,11 +1014,11 @@ LABEL_8:
   return 0;
 }
 
-+ (int)bandwidthConfigurationForAWDLWithArbiterMode:(unsigned __int8)a3
++ (int)bandwidthConfigurationForAWDLWithArbiterMode:(unsigned __int8)mode
 {
-  if ((a3 - 4) < 3)
+  if ((mode - 4) < 3)
   {
-    return dword_1DBD504F8[(a3 - 4)];
+    return dword_1DBD504F8[(mode - 4)];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -1036,11 +1036,11 @@ LABEL_8:
   return 0;
 }
 
-+ (int)bandwidthConfigurationForUSBWithArbiterMode:(unsigned __int8)a3
++ (int)bandwidthConfigurationForUSBWithArbiterMode:(unsigned __int8)mode
 {
-  if ((a3 - 4) < 3)
+  if ((mode - 4) < 3)
   {
-    return dword_1DBD50504[(a3 - 4)];
+    return dword_1DBD50504[(mode - 4)];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -1058,14 +1058,14 @@ LABEL_8:
   return 0;
 }
 
-+ (int)bandwidthConfigurationForWiredWithArbiterMode:(unsigned __int8)a3
++ (int)bandwidthConfigurationForWiredWithArbiterMode:(unsigned __int8)mode
 {
-  if (a3 == 5)
+  if (mode == 5)
   {
     return 0x40000;
   }
 
-  if (a3 == 8)
+  if (mode == 8)
   {
     return 0x100000;
   }
@@ -1085,23 +1085,23 @@ LABEL_8:
   return 0;
 }
 
-+ (int)bandwidthConfigurationWithArbiterMode:(unsigned __int8)a3 connectionType:(int)a4
++ (int)bandwidthConfigurationWithArbiterMode:(unsigned __int8)mode connectionType:(int)type
 {
-  v5 = a3;
+  modeCopy = mode;
   v19 = *MEMORY[0x1E69E9840];
-  if (a4 > 3)
+  if (type > 3)
   {
-    if (a4 > 5)
+    if (type > 5)
     {
-      if (a4 == 6)
+      if (type == 6)
       {
 
-        return [a1 bandwidthConfigurationFor5GWithArbiterMode:?];
+        return [self bandwidthConfigurationFor5GWithArbiterMode:?];
       }
 
       else
       {
-        if (a4 != 7)
+        if (type != 7)
         {
 LABEL_34:
           if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -1117,9 +1117,9 @@ LABEL_34:
               v13 = 1024;
               v14 = 1212;
               v15 = 1024;
-              v16 = a4;
+              typeCopy = type;
               v17 = 1024;
-              v18 = v5;
+              v18 = modeCopy;
               _os_log_error_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_ERROR, " [%s] %s:%d Invalid bandwidth configuration: connection type=%d, arbiterMode=%hhu", &v9, 0x28u);
             }
           }
@@ -1127,52 +1127,52 @@ LABEL_34:
           return 0;
         }
 
-        return [a1 bandwidthConfigurationForWiredWithArbiterMode:?];
+        return [self bandwidthConfigurationForWiredWithArbiterMode:?];
       }
     }
 
-    else if (a4 == 4)
+    else if (type == 4)
     {
 
-      return [a1 bandwidthConfigurationForAWDLWithArbiterMode:?];
+      return [self bandwidthConfigurationForAWDLWithArbiterMode:?];
     }
 
     else
     {
 
-      return [a1 bandwidthConfigurationForUSBWithArbiterMode:?];
+      return [self bandwidthConfigurationForUSBWithArbiterMode:?];
     }
   }
 
-  else if (a4 > 1)
+  else if (type > 1)
   {
-    if (a4 == 2)
+    if (type == 2)
     {
 
-      return [a1 bandwidthConfigurationForLTEWithArbiterMode:?];
+      return [self bandwidthConfigurationForLTEWithArbiterMode:?];
     }
 
     else
     {
 
-      return [a1 bandwidthConfigurationForWiFiWithArbiterMode:?];
+      return [self bandwidthConfigurationForWiFiWithArbiterMode:?];
     }
   }
 
   else
   {
-    if (a4)
+    if (type)
     {
-      if (a4 == 1)
+      if (type == 1)
       {
 
-        return [a1 bandwidthConfigurationFor3GWithArbiterMode:?];
+        return [self bandwidthConfigurationFor3GWithArbiterMode:?];
       }
 
       goto LABEL_34;
     }
 
-    return [a1 bandwidthConfigurationFor2GWithArbiterMode:?];
+    return [self bandwidthConfigurationFor2GWithArbiterMode:?];
   }
 }
 

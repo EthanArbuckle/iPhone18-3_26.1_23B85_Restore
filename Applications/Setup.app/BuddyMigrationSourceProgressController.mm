@@ -2,9 +2,9 @@
 - (BuddyMigrationSourceProgressController)init;
 - (id)createLockscreenController;
 - (void)cancelMigration;
-- (void)confirmCancellation:(id)a3;
-- (void)deviceMigrationManager:(id)a3 didCompleteWithError:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)confirmCancellation:(id)cancellation;
+- (void)deviceMigrationManager:(id)manager didCompleteWithError:(id)error;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BuddyMigrationSourceProgressController
@@ -25,51 +25,51 @@
   return v6;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  appearCopy = appear;
   v13.receiver = self;
   v13.super_class = BuddyMigrationSourceProgressController;
-  [(BuddyMigrationSourceProgressController *)&v13 viewWillAppear:a3];
-  if (([(BuddyMigrationSourceProgressController *)v16 isMovingToParentViewController]& 1) != 0)
+  [(BuddyMigrationSourceProgressController *)&v13 viewWillAppear:appear];
+  if (([(BuddyMigrationSourceProgressController *)selfCopy isMovingToParentViewController]& 1) != 0)
   {
     v3 = objc_alloc_init(BYBuddyDaemonMigrationSourceClient);
-    [(BuddyMigrationSourceProgressController *)v16 setMigrationSourceClient:v3];
+    [(BuddyMigrationSourceProgressController *)selfCopy setMigrationSourceClient:v3];
 
-    v4 = v16;
-    v5 = [(BuddyMigrationSourceProgressController *)v16 migrationSourceClient];
-    [(BYBuddyDaemonMigrationSourceClient *)v5 setDelegate:v4];
+    v4 = selfCopy;
+    migrationSourceClient = [(BuddyMigrationSourceProgressController *)selfCopy migrationSourceClient];
+    [(BYBuddyDaemonMigrationSourceClient *)migrationSourceClient setDelegate:v4];
 
-    v6 = [(BuddyMigrationSourceProgressController *)v16 migrationSourceClient];
+    migrationSourceClient2 = [(BuddyMigrationSourceProgressController *)selfCopy migrationSourceClient];
     v7 = _NSConcreteStackBlock;
     v8 = -1073741824;
     v9 = 0;
     v10 = sub_1001F3478;
     v11 = &unk_10032EEE8;
-    v12 = v16;
-    [(BYBuddyDaemonMigrationSourceClient *)v6 registerAsUserInterfaceHost:&v7];
+    v12 = selfCopy;
+    [(BYBuddyDaemonMigrationSourceClient *)migrationSourceClient2 registerAsUserInterfaceHost:&v7];
 
     objc_storeStrong(&v12, 0);
   }
 }
 
-- (void)confirmCancellation:(id)a3
+- (void)confirmCancellation:(id)cancellation
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, cancellation);
   v3 = [BuddyMigrationCancelAlertController alertControllerForSource:location[0]];
-  [(BuddyMigrationSourceProgressController *)v6 presentViewController:v3 animated:1 completion:0, v3];
+  [(BuddyMigrationSourceProgressController *)selfCopy presentViewController:v3 animated:1 completion:0, v3];
   objc_storeStrong(&v4, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)cancelMigration
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   v11.receiver = self;
   v11.super_class = BuddyMigrationSourceProgressController;
@@ -80,10 +80,10 @@
   v7 = 0;
   v8 = sub_1001F3870;
   v9 = &unk_10032B0D0;
-  v10 = v13;
+  v10 = selfCopy;
   dispatch_async(v2, &block);
 
-  v3 = v13;
+  v3 = selfCopy;
   v4 = [NSError errorWithDomain:@"MBErrorDomain" code:202 userInfo:0];
   [(BuddyMigrationSourceProgressController *)v3 deviceMigrationManager:0 didCompleteWithError:v4];
 
@@ -93,23 +93,23 @@
 - (id)createLockscreenController
 {
   v2 = [BuddyMigrationSourceLockscreenController alloc];
-  v3 = [(BuddyMigrationProgressController *)self progressTitle];
-  v4 = [(BuddyMigrationProgressController *)self featureFlags];
-  v5 = [(BuddyMigrationProgressController *)self deviceProvider];
-  v6 = [(BuddyMigrationSourceLockscreenController *)v2 initWithProgressTitle:v3 featureFlags:v4 deviceProvider:v5 stringProvider:self->_buddyMigrationSourceFinishedStringProvider];
+  progressTitle = [(BuddyMigrationProgressController *)self progressTitle];
+  featureFlags = [(BuddyMigrationProgressController *)self featureFlags];
+  deviceProvider = [(BuddyMigrationProgressController *)self deviceProvider];
+  v6 = [(BuddyMigrationSourceLockscreenController *)v2 initWithProgressTitle:progressTitle featureFlags:featureFlags deviceProvider:deviceProvider stringProvider:self->_buddyMigrationSourceFinishedStringProvider];
 
   return v6;
 }
 
-- (void)deviceMigrationManager:(id)a3 didCompleteWithError:(id)a4
+- (void)deviceMigrationManager:(id)manager didCompleteWithError:(id)error
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v13.receiver = v16;
+  objc_storeStrong(&v14, error);
+  v13.receiver = selfCopy;
   v13.super_class = BuddyMigrationSourceProgressController;
   [(BuddyMigrationProgressController *)&v13 deviceMigrationManager:location[0] didCompleteWithError:v14];
   v5 = &_dispatch_main_q;
@@ -118,7 +118,7 @@
   v8 = 0;
   v9 = sub_1001F3AEC;
   v10 = &unk_10032B838;
-  v11 = v16;
+  v11 = selfCopy;
   v12 = v14;
   dispatch_async(v5, &v6);
 

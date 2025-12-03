@@ -1,44 +1,44 @@
 @interface SmartFolderComposerSwitchCell
-- (_TtC11MobileNotes29SmartFolderComposerSwitchCell)initWithFrame:(CGRect)a3;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)onDidChangeWithSender:(id)a3;
+- (_TtC11MobileNotes29SmartFolderComposerSwitchCell)initWithFrame:(CGRect)frame;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)onDidChangeWithSender:(id)sender;
 @end
 
 @implementation SmartFolderComposerSwitchCell
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_1004BEE9C();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)onDidChangeWithSender:(id)a3
+- (void)onDidChangeWithSender:(id)sender
 {
-  v4 = self;
-  v7 = v4;
-  if (a3)
+  selfCopy = self;
+  v7 = selfCopy;
+  if (sender)
   {
-    v5 = [a3 isOn];
-    v4 = v7;
+    isOn = [sender isOn];
+    selfCopy = v7;
   }
 
   else
   {
-    v5 = 0;
+    isOn = 0;
   }
 
-  v6 = *(&v4->super.super.super.super.super.super.isa + OBJC_IVAR____TtC11MobileNotes29SmartFolderComposerSwitchCell_onDidChange);
+  v6 = *(&selfCopy->super.super.super.super.super.super.isa + OBJC_IVAR____TtC11MobileNotes29SmartFolderComposerSwitchCell_onDidChange);
   if (v6)
   {
 
-    v6(v5);
+    v6(isOn);
 
     sub_1002B5F48(v6);
   }
@@ -48,12 +48,12 @@
   }
 }
 
-- (_TtC11MobileNotes29SmartFolderComposerSwitchCell)initWithFrame:(CGRect)a3
+- (_TtC11MobileNotes29SmartFolderComposerSwitchCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = (&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC11MobileNotes29SmartFolderComposerSwitchCell_onDidChange);
   *v9 = 0;

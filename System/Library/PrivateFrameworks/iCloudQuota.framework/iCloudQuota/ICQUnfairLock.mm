@@ -1,6 +1,6 @@
 @interface ICQUnfairLock
 - (ICQUnfairLock)init;
-- (void)synchronized:(id)a3;
+- (void)synchronized:(id)synchronized;
 @end
 
 @implementation ICQUnfairLock
@@ -18,13 +18,13 @@
   return result;
 }
 
-- (void)synchronized:(id)a3
+- (void)synchronized:(id)synchronized
 {
-  v4 = a3;
+  synchronizedCopy = synchronized;
   os_unfair_lock_lock(&self->_lock);
-  if (v4)
+  if (synchronizedCopy)
   {
-    v4[2]();
+    synchronizedCopy[2]();
   }
 
   os_unfair_lock_unlock(&self->_lock);

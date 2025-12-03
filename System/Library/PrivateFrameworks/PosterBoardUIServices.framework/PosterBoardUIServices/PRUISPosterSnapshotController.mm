@@ -1,81 +1,81 @@
 @interface PRUISPosterSnapshotController
 + (id)sharedIncomingCallSnapshotController;
-- (PRUISPosterSnapshotController)initWithCache:(id)a3 instanceIdentifier:(id)a4;
-- (PRUISPosterSnapshotController)initWithCacheURL:(id)a3;
-- (PRUISPosterSnapshotController)initWithSQLiteCache:(id)a3 instanceIdentifier:(id)a4 extensionProvider:(id)a5;
-- (id)acquireKeepActiveAssertionForReason:(id)a3;
-- (id)latestSnapshotBundleForRequest:(id)a3 error:(id *)a4;
-- (void)executeSnapshotRequest:(id)a3 completion:(id)a4;
-- (void)executeSnapshotRequest:(id)a3 completionBlock:(id)a4;
+- (PRUISPosterSnapshotController)initWithCache:(id)cache instanceIdentifier:(id)identifier;
+- (PRUISPosterSnapshotController)initWithCacheURL:(id)l;
+- (PRUISPosterSnapshotController)initWithSQLiteCache:(id)cache instanceIdentifier:(id)identifier extensionProvider:(id)provider;
+- (id)acquireKeepActiveAssertionForReason:(id)reason;
+- (id)latestSnapshotBundleForRequest:(id)request error:(id *)error;
+- (void)executeSnapshotRequest:(id)request completion:(id)completion;
+- (void)executeSnapshotRequest:(id)request completionBlock:(id)block;
 @end
 
 @implementation PRUISPosterSnapshotController
 
-- (PRUISPosterSnapshotController)initWithCacheURL:(id)a3
+- (PRUISPosterSnapshotController)initWithCacheURL:(id)l
 {
-  v4 = a3;
-  v5 = [[PRUISPosterSnapshotFilesystemCache alloc] initWithURL:v4];
+  lCopy = l;
+  v5 = [[PRUISPosterSnapshotFilesystemCache alloc] initWithURL:lCopy];
 
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  v7 = [(PRUISPosterSnapshotController *)self initWithCache:v5 instanceIdentifier:v6];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v7 = [(PRUISPosterSnapshotController *)self initWithCache:v5 instanceIdentifier:uUID];
 
   return v7;
 }
 
-- (PRUISPosterSnapshotController)initWithCache:(id)a3 instanceIdentifier:(id)a4
+- (PRUISPosterSnapshotController)initWithCache:(id)cache instanceIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  cacheCopy = cache;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = PRUISPosterSnapshotController;
   v9 = [(PRUISPosterSnapshotController *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cache, a3);
-    v11 = [v7 underlyingCache];
-    PRUISPosterSnapshotControllerSharedInit(v10, v11, v8, 0);
+    objc_storeStrong(&v9->_cache, cache);
+    underlyingCache = [cacheCopy underlyingCache];
+    PRUISPosterSnapshotControllerSharedInit(v10, underlyingCache, identifierCopy, 0);
   }
 
   return v10;
 }
 
-- (PRUISPosterSnapshotController)initWithSQLiteCache:(id)a3 instanceIdentifier:(id)a4 extensionProvider:(id)a5
+- (PRUISPosterSnapshotController)initWithSQLiteCache:(id)cache instanceIdentifier:(id)identifier extensionProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  cacheCopy = cache;
+  identifierCopy = identifier;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = PRUISPosterSnapshotController;
   v12 = [(PRUISPosterSnapshotController *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_cache, a3);
-    v14 = [v9 underlyingCache];
-    PRUISPosterSnapshotControllerSharedInit(v13, v14, v10, v11);
+    objc_storeStrong(&v12->_cache, cache);
+    underlyingCache = [cacheCopy underlyingCache];
+    PRUISPosterSnapshotControllerSharedInit(v13, underlyingCache, identifierCopy, providerCopy);
   }
 
   return v13;
 }
 
-- (void)executeSnapshotRequest:(id)a3 completion:(id)a4
+- (void)executeSnapshotRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __67__PRUISPosterSnapshotController_executeSnapshotRequest_completion___block_invoke;
   v8[3] = &unk_1E83A7128;
-  v9 = v6;
-  v7 = v6;
-  [(PRUISPosterSnapshotController *)self executeSnapshotRequest:a3 completionBlock:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(PRUISPosterSnapshotController *)self executeSnapshotRequest:request completionBlock:v8];
 }
 
-- (void)executeSnapshotRequest:(id)a3 completionBlock:(id)a4
+- (void)executeSnapshotRequest:(id)request completionBlock:(id)block
 {
   v58[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v30 = a4;
+  requestCopy = request;
+  blockCopy = block;
   if (!self->_snapshotController)
   {
     v7 = MEMORY[0x1E696ABC0];
@@ -90,15 +90,15 @@
       [(PRUISPosterSnapshotController *)self executeSnapshotRequest:v9 completionBlock:v10];
     }
 
-    if (v30)
+    if (blockCopy)
     {
-      (*(v30 + 2))(v30, v6, 0, v9, 0);
+      (*(blockCopy + 2))(blockCopy, requestCopy, 0, v9, 0);
     }
   }
 
-  v11 = [v6 attachmentConfiguration];
-  v12 = [v11 attachments];
-  v13 = [v12 count];
+  attachmentConfiguration = [requestCopy attachmentConfiguration];
+  attachments = [attachmentConfiguration attachments];
+  v13 = [attachments count];
 
   v14 = objc_opt_new();
   v53[0] = 0;
@@ -123,12 +123,12 @@
     goto LABEL_10;
   }
 
-  v16 = [v6 attachmentConfiguration];
-  v17 = [v16 attachmentHostWindowScene];
+  attachmentConfiguration2 = [requestCopy attachmentConfiguration];
+  attachmentHostWindowScene = [attachmentConfiguration2 attachmentHostWindowScene];
   v18 = v47[5];
-  v47[5] = v17;
+  v47[5] = attachmentHostWindowScene;
 
-  v19 = v17;
+  v19 = attachmentHostWindowScene;
   if (v19)
   {
     dispatch_group_enter(v15);
@@ -137,7 +137,7 @@
     aBlock[8] = __72__PRUISPosterSnapshotController_executeSnapshotRequest_completionBlock___block_invoke;
     aBlock[9] = &unk_1E83A7150;
     v44 = v53;
-    v40 = v6;
+    v40 = requestCopy;
     v41 = v19;
     v45 = v52;
     v42 = v14;
@@ -159,16 +159,16 @@ LABEL_10:
     v36[3] = &unk_1E83A71A0;
     v22 = v21;
     v37 = v22;
-    v38 = v30;
+    v38 = blockCopy;
     v23 = _Block_copy(v36);
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __72__PRUISPosterSnapshotController_executeSnapshotRequest_completionBlock___block_invoke_6;
     v31[3] = &unk_1E83A71F0;
-    v32 = v6;
+    v32 = requestCopy;
     v33 = v14;
     v24 = v23;
-    v34 = self;
+    selfCopy = self;
     v35 = v24;
     v25 = _Block_copy(v31);
     v26 = v25;
@@ -179,14 +179,14 @@ LABEL_10:
 
     else
     {
-      v27 = [MEMORY[0x1E69C51F0] snapshotWorkloop];
-      dispatch_group_notify(v15, v27, v26);
+      snapshotWorkloop = [MEMORY[0x1E69C51F0] snapshotWorkloop];
+      dispatch_group_notify(v15, snapshotWorkloop, v26);
     }
 
     goto LABEL_14;
   }
 
-  if (!v30)
+  if (!blockCopy)
   {
     goto LABEL_15;
   }
@@ -197,7 +197,7 @@ LABEL_10:
   v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v56 forKeys:&v55 count:1];
   v22 = [v28 errorWithDomain:@"com.apple.PosterBoardUIServices.PosterSnapshotControllerErrorDomain" code:1 userInfo:v29];
 
-  (*(v30 + 2))(v30, v6, 0, v22, 0);
+  (*(blockCopy + 2))(blockCopy, requestCopy, 0, v22, 0);
 LABEL_14:
 
 LABEL_15:
@@ -443,18 +443,18 @@ void __72__PRUISPosterSnapshotController_executeSnapshotRequest_completionBlock_
   (*(v17 + 16))(v17, v16, v19, v8, v9);
 }
 
-- (id)latestSnapshotBundleForRequest:(id)a3 error:(id *)a4
+- (id)latestSnapshotBundleForRequest:(id)request error:(id *)error
 {
-  v4 = [(PRUISPosterSnapshotController *)self currentSnapshotBundleForRequest:a3 error:a4];
-  v5 = [v4 prPosterSnapshotBundle];
+  v4 = [(PRUISPosterSnapshotController *)self currentSnapshotBundleForRequest:request error:error];
+  prPosterSnapshotBundle = [v4 prPosterSnapshotBundle];
 
-  return v5;
+  return prPosterSnapshotBundle;
 }
 
-- (id)acquireKeepActiveAssertionForReason:(id)a3
+- (id)acquireKeepActiveAssertionForReason:(id)reason
 {
-  v3 = a3;
-  v4 = [(BSSimpleAssertion *)[PRUISPosterSnapshotControllerActiveAssertion alloc] initWithIdentifier:@"Keep Active Assertion" forReason:v3 invalidationBlock:&__block_literal_global];
+  reasonCopy = reason;
+  v4 = [(BSSimpleAssertion *)[PRUISPosterSnapshotControllerActiveAssertion alloc] initWithIdentifier:@"Keep Active Assertion" forReason:reasonCopy invalidationBlock:&__block_literal_global];
 
   return v4;
 }

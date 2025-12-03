@@ -1,28 +1,28 @@
 @interface STStorageTableCell
 - (NSString)sizeString;
-- (STStorageTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (STStorageTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)createLargeFontConstraints;
 - (void)createNormalFontConstraints;
-- (void)setInfo:(id)a3;
-- (void)setSize:(int64_t)a3;
-- (void)setSizeString:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setInfo:(id)info;
+- (void)setSize:(int64_t)size;
+- (void)setSizeString:(id)string;
+- (void)setTitle:(id)title;
 - (void)setupTitleAndInfoConstraints;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraints;
 @end
 
 @implementation STStorageTableCell
 
-- (STStorageTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (STStorageTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v57.receiver = self;
   v57.super_class = STStorageTableCell;
-  v5 = [(PSTableCell *)&v57 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(PSTableCell *)&v57 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   v6 = v5;
   if (v5)
   {
-    v7 = [(STStorageTableCell *)v5 contentView];
+    contentView = [(STStorageTableCell *)v5 contentView];
     v8 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
     v56 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76938]];
     v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:4];
@@ -38,7 +38,7 @@
     [(UIImageView *)v6->_iconView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v6->_iconView setAccessibilityIdentifier:@"Icon"];
     [(UIImageView *)v6->_iconView setContentMode:1];
-    [v7 addSubview:v6->_iconView];
+    [contentView addSubview:v6->_iconView];
     [v9 addObject:v6->_iconView];
     v17 = [MEMORY[0x277CCAAD0] constraintWithItem:v6->_iconView attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:0.0 constant:29.0];
     iconSizeConstraint = v6->_iconSizeConstraint;
@@ -53,7 +53,7 @@
     [(UIView *)v6->_titleInfoView setContentHuggingPriority:1 forAxis:v21];
     LODWORD(v22) = 1144750080;
     [(UIView *)v6->_titleInfoView setContentCompressionResistancePriority:1 forAxis:v22];
-    [v7 addSubview:v6->_titleInfoView];
+    [contentView addSubview:v6->_titleInfoView];
     v23 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v11, v12, v13, v14}];
     titleLabel = v6->_titleLabel;
     v6->_titleLabel = v23;
@@ -83,8 +83,8 @@
     v29 = [MEMORY[0x277D755B8] systemImageNamed:@"icloud.and.arrow.down"];
     [(UIImageView *)v6->_cloudIconView setImage:v29];
 
-    v30 = [(STStorageTableCell *)v6 _cloudIconColor];
-    [(UIImageView *)v6->_cloudIconView setTintColor:v30];
+    _cloudIconColor = [(STStorageTableCell *)v6 _cloudIconColor];
+    [(UIImageView *)v6->_cloudIconView setTintColor:_cloudIconColor];
 
     [(UIView *)v6->_titleInfoView addSubview:v6->_cloudIconView];
     [v9 addObject:v6->_cloudIconView];
@@ -93,8 +93,8 @@
     v6->_infoLabel = v31;
 
     [(UILabel *)v6->_infoLabel setFont:v56];
-    v33 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v6->_sizeLabel setTextColor:v33];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v6->_sizeLabel setTextColor:secondaryLabelColor];
 
     [(UILabel *)v6->_infoLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v6->_infoLabel setAccessibilityIdentifier:@"Info"];
@@ -113,8 +113,8 @@
     v6->_sizeLabel = v36;
 
     [(UILabel *)v6->_sizeLabel setFont:v8];
-    v38 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v6->_sizeLabel setTextColor:v38];
+    secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v6->_sizeLabel setTextColor:secondaryLabelColor2];
 
     [(UILabel *)v6->_sizeLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v6->_sizeLabel setAccessibilityIdentifier:@"Size"];
@@ -125,7 +125,7 @@
     [(UILabel *)v6->_sizeLabel setContentHuggingPriority:0 forAxis:v39];
     LODWORD(v40) = 1148846080;
     [(UILabel *)v6->_sizeLabel setContentCompressionResistancePriority:0 forAxis:v40];
-    [v7 addSubview:v6->_sizeLabel];
+    [contentView addSubview:v6->_sizeLabel];
     [v9 addObject:v6->_sizeLabel];
     v41 = [objc_alloc(MEMORY[0x277D750E8]) initWithFrame:{v11, v12, v13, v14}];
     spinner = v6->_spinner;
@@ -139,12 +139,12 @@
     [(UIActivityIndicatorView *)v6->_spinner setContentHuggingPriority:0 forAxis:v43];
     LODWORD(v44) = 1148846080;
     [(UIActivityIndicatorView *)v6->_spinner setContentCompressionResistancePriority:0 forAxis:v44];
-    [v7 addSubview:v6->_spinner];
+    [contentView addSubview:v6->_spinner];
     [v9 addObject:v6->_spinner];
-    [v7 setAccessibilityElements:v9];
+    [contentView setAccessibilityElements:v9];
     v45 = MEMORY[0x277CCAAD0];
-    v46 = [(STStorageTableCell *)v6 contentView];
-    v47 = [v45 constraintWithItem:v46 attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:0.0 constant:0.0];
+    contentView2 = [(STStorageTableCell *)v6 contentView];
+    v47 = [v45 constraintWithItem:contentView2 attribute:8 relatedBy:1 toItem:0 attribute:0 multiplier:0.0 constant:0.0];
     minHeightConstraint = v6->_minHeightConstraint;
     v6->_minHeightConstraint = v47;
 
@@ -212,23 +212,23 @@
 
 - (void)createNormalFontConstraints
 {
-  v17 = [(STStorageTableCell *)self contentView];
+  contentView = [(STStorageTableCell *)self contentView];
   v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:16];
-  v4 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_iconView attribute:5 relatedBy:0 toItem:v17 attribute:5 multiplier:1.0 constant:15.0];
+  v4 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_iconView attribute:5 relatedBy:0 toItem:contentView attribute:5 multiplier:1.0 constant:15.0];
   [(NSMutableArray *)v3 addObject:v4];
 
   v5 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_iconView attribute:7 relatedBy:0 toItem:self->_iconView attribute:8 multiplier:1.0 constant:0.0];
   [(NSMutableArray *)v3 addObject:v5];
 
-  v6 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_iconView attribute:10 relatedBy:0 toItem:v17 attribute:10 multiplier:1.0 constant:0.0];
+  v6 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_iconView attribute:10 relatedBy:0 toItem:contentView attribute:10 multiplier:1.0 constant:0.0];
   [(NSMutableArray *)v3 addObject:v6];
 
-  v7 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_sizeLabel attribute:6 relatedBy:0 toItem:v17 attribute:6 multiplier:1.0 constant:0.0];
+  v7 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_sizeLabel attribute:6 relatedBy:0 toItem:contentView attribute:6 multiplier:1.0 constant:0.0];
   sizeRightConstraint = self->_sizeRightConstraint;
   self->_sizeRightConstraint = v7;
 
   [(NSMutableArray *)v3 addObject:self->_sizeRightConstraint];
-  v9 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_sizeLabel attribute:10 relatedBy:0 toItem:v17 attribute:10 multiplier:1.0 constant:0.0];
+  v9 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_sizeLabel attribute:10 relatedBy:0 toItem:contentView attribute:10 multiplier:1.0 constant:0.0];
   [(NSMutableArray *)v3 addObject:v9];
 
   v10 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_titleInfoView attribute:5 relatedBy:0 toItem:self->_iconView attribute:6 multiplier:1.0 constant:15.0];
@@ -237,16 +237,16 @@
   v11 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_titleInfoView attribute:6 relatedBy:0 toItem:self->_sizeLabel attribute:5 multiplier:1.0 constant:-10.0];
   [(NSMutableArray *)v3 addObject:v11];
 
-  v12 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_titleInfoView attribute:10 relatedBy:0 toItem:v17 attribute:10 multiplier:1.0 constant:0.0];
+  v12 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_titleInfoView attribute:10 relatedBy:0 toItem:contentView attribute:10 multiplier:1.0 constant:0.0];
   [(NSMutableArray *)v3 addObject:v12];
 
-  v13 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_titleInfoView attribute:10 relatedBy:1 toItem:v17 attribute:10 multiplier:1.0 constant:0.0];
+  v13 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_titleInfoView attribute:10 relatedBy:1 toItem:contentView attribute:10 multiplier:1.0 constant:0.0];
   [(NSMutableArray *)v3 addObject:v13];
 
-  v14 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_spinner attribute:10 relatedBy:0 toItem:v17 attribute:10 multiplier:1.0 constant:0.0];
+  v14 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_spinner attribute:10 relatedBy:0 toItem:contentView attribute:10 multiplier:1.0 constant:0.0];
   [(NSMutableArray *)v3 addObject:v14];
 
-  v15 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_spinner attribute:6 relatedBy:0 toItem:v17 attribute:6 multiplier:1.0 constant:-10.0];
+  v15 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_spinner attribute:6 relatedBy:0 toItem:contentView attribute:6 multiplier:1.0 constant:-10.0];
   [(NSMutableArray *)v3 addObject:v15];
 
   normalFontConstraints = self->_normalFontConstraints;
@@ -255,9 +255,9 @@
 
 - (void)createLargeFontConstraints
 {
-  v18 = [(STStorageTableCell *)self contentView];
+  contentView = [(STStorageTableCell *)self contentView];
   v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:12];
-  v4 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_iconView attribute:5 relatedBy:0 toItem:v18 attribute:5 multiplier:1.0 constant:10.0];
+  v4 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_iconView attribute:5 relatedBy:0 toItem:contentView attribute:5 multiplier:1.0 constant:10.0];
   [(NSMutableArray *)v3 addObject:v4];
 
   v5 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_iconView attribute:7 relatedBy:0 toItem:self->_iconView attribute:8 multiplier:1.0 constant:0.0];
@@ -269,31 +269,31 @@
   v7 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_titleInfoView attribute:5 relatedBy:0 toItem:self->_iconView attribute:6 multiplier:1.0 constant:15.0];
   [(NSMutableArray *)v3 addObject:v7];
 
-  v8 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_titleInfoView attribute:6 relatedBy:0 toItem:v18 attribute:6 multiplier:1.0 constant:-10.0];
+  v8 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_titleInfoView attribute:6 relatedBy:0 toItem:contentView attribute:6 multiplier:1.0 constant:-10.0];
   [(NSMutableArray *)v3 addObject:v8];
 
-  v9 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_titleInfoView attribute:3 relatedBy:0 toItem:v18 attribute:3 multiplier:1.0 constant:12.0];
+  v9 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_titleInfoView attribute:3 relatedBy:0 toItem:contentView attribute:3 multiplier:1.0 constant:12.0];
   [(NSMutableArray *)v3 addObject:v9];
 
-  v10 = [MEMORY[0x277CCAAD0] constraintWithItem:v18 attribute:4 relatedBy:1 toItem:self->_titleInfoView attribute:4 multiplier:1.0 constant:12.0];
+  v10 = [MEMORY[0x277CCAAD0] constraintWithItem:contentView attribute:4 relatedBy:1 toItem:self->_titleInfoView attribute:4 multiplier:1.0 constant:12.0];
   [(NSMutableArray *)v3 addObject:v10];
 
   v11 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_sizeLabel attribute:5 relatedBy:0 toItem:self->_iconView attribute:6 multiplier:1.0 constant:15.0];
   [(NSMutableArray *)v3 addObject:v11];
 
-  v12 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_sizeLabel attribute:6 relatedBy:-1 toItem:v18 attribute:6 multiplier:1.0 constant:-10.0];
+  v12 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_sizeLabel attribute:6 relatedBy:-1 toItem:contentView attribute:6 multiplier:1.0 constant:-10.0];
   [(NSMutableArray *)v3 addObject:v12];
 
   v13 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_sizeLabel attribute:3 relatedBy:0 toItem:self->_titleInfoView attribute:4 multiplier:1.0 constant:2.0];
   [(NSMutableArray *)v3 addObject:v13];
 
-  v14 = [MEMORY[0x277CCAAD0] constraintWithItem:v18 attribute:4 relatedBy:1 toItem:self->_sizeLabel attribute:4 multiplier:1.0 constant:12.0];
+  v14 = [MEMORY[0x277CCAAD0] constraintWithItem:contentView attribute:4 relatedBy:1 toItem:self->_sizeLabel attribute:4 multiplier:1.0 constant:12.0];
   [(NSMutableArray *)v3 addObject:v14];
 
-  v15 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_spinner attribute:10 relatedBy:0 toItem:v18 attribute:10 multiplier:1.0 constant:0.0];
+  v15 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_spinner attribute:10 relatedBy:0 toItem:contentView attribute:10 multiplier:1.0 constant:0.0];
   [(NSMutableArray *)v3 addObject:v15];
 
-  v16 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_spinner attribute:6 relatedBy:0 toItem:v18 attribute:6 multiplier:1.0 constant:-10.0];
+  v16 = [MEMORY[0x277CCAAD0] constraintWithItem:self->_spinner attribute:6 relatedBy:0 toItem:contentView attribute:6 multiplier:1.0 constant:-10.0];
   [(NSMutableArray *)v3 addObject:v16];
 
   largeFontConstraints = self->_largeFontConstraints;
@@ -303,9 +303,9 @@
 - (void)updateConstraints
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v3 = [(STStorageTableCell *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(STStorageTableCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v6 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
   v7 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76938]];
@@ -348,9 +348,9 @@
     }
 
     [MEMORY[0x277CCAAD0] activateConstraints:self->_normalFontConstraints];
-    v16 = [(STStorageTableCell *)self accessoryType];
+    accessoryType = [(STStorageTableCell *)self accessoryType];
     v17 = -15.0;
-    if (v16 == 1)
+    if (accessoryType == 1)
     {
       v17 = 0.0;
     }
@@ -360,9 +360,9 @@
     [(UILabel *)self->_infoLabel setNumberOfLines:1];
   }
 
-  v18 = [(UILabel *)self->_infoLabel isHidden];
+  isHidden = [(UILabel *)self->_infoLabel isHidden];
   infoConstraints = self->_infoConstraints;
-  if (v18)
+  if (isHidden)
   {
     [MEMORY[0x277CCAAD0] deactivateConstraints:infoConstraints];
   }
@@ -372,9 +372,9 @@
     [MEMORY[0x277CCAAD0] activateConstraints:infoConstraints];
   }
 
-  v20 = [(UIImageView *)self->_cloudIconView isHidden];
+  isHidden2 = [(UIImageView *)self->_cloudIconView isHidden];
   v21 = MEMORY[0x277CCAAD0];
-  if (v20)
+  if (isHidden2)
   {
     v33[0] = self->_cloudIconConstraint;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
@@ -416,20 +416,20 @@
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = STStorageTableCell;
-  [(STStorageTableCell *)&v4 traitCollectionDidChange:a3];
+  [(STStorageTableCell *)&v4 traitCollectionDidChange:change];
   [(STStorageTableCell *)self setNeedsUpdateConstraints];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  if ([(__CFString *)v4 length])
+  titleCopy = title;
+  if ([(__CFString *)titleCopy length])
   {
-    v5 = v4;
+    v5 = titleCopy;
   }
 
   else
@@ -442,12 +442,12 @@
   [(STStorageTableCell *)self setNeedsLayout];
 }
 
-- (void)setInfo:(id)a3
+- (void)setInfo:(id)info
 {
-  v4 = a3;
-  if ([(__CFString *)v4 length])
+  infoCopy = info;
+  if ([(__CFString *)infoCopy length])
   {
-    v5 = v4;
+    v5 = infoCopy;
   }
 
   else
@@ -460,26 +460,26 @@
   [(STStorageTableCell *)self setNeedsLayout];
 }
 
-- (void)setSizeString:(id)a3
+- (void)setSizeString:(id)string
 {
-  v13 = a3;
-  if ([(__CFString *)v13 isEqualToString:@"…"])
+  stringCopy = string;
+  if ([(__CFString *)stringCopy isEqualToString:@"…"])
   {
     [(UILabel *)self->_sizeLabel setText:0];
-    v4 = [(STStorageTableCell *)self spinner];
-    [(__CFString *)v4 startAnimating];
+    spinner = [(STStorageTableCell *)self spinner];
+    [(__CFString *)spinner startAnimating];
   }
 
   else
   {
-    v5 = [(STStorageTableCell *)self spinner];
-    [v5 stopAnimating];
+    spinner2 = [(STStorageTableCell *)self spinner];
+    [spinner2 stopAnimating];
 
-    v6 = [(UILabel *)self->_sizeLabel text];
-    v7 = v6;
-    if (v6)
+    text = [(UILabel *)self->_sizeLabel text];
+    v7 = text;
+    if (text)
     {
-      v8 = v6;
+      v8 = text;
     }
 
     else
@@ -487,11 +487,11 @@
       v8 = &stru_282D51E38;
     }
 
-    v4 = v8;
+    spinner = v8;
 
-    if (v13)
+    if (stringCopy)
     {
-      v9 = v13;
+      v9 = stringCopy;
     }
 
     else
@@ -500,11 +500,11 @@
     }
 
     v10 = v9;
-    if (([(__CFString *)v4 isEqualToString:v10]& 1) == 0)
+    if (([(__CFString *)spinner isEqualToString:v10]& 1) == 0)
     {
-      if ([(__CFString *)v13 length])
+      if ([(__CFString *)stringCopy length])
       {
-        v11 = v13;
+        v11 = stringCopy;
       }
 
       else
@@ -513,19 +513,19 @@
       }
 
       [(UILabel *)self->_sizeLabel setText:v11];
-      v12 = [(STStorageTableCell *)self contentView];
-      [v12 setNeedsLayout];
+      contentView = [(STStorageTableCell *)self contentView];
+      [contentView setNeedsLayout];
     }
   }
 }
 
 - (NSString)sizeString
 {
-  v2 = [(UILabel *)self->_sizeLabel text];
-  v3 = v2;
-  if (v2)
+  text = [(UILabel *)self->_sizeLabel text];
+  v3 = text;
+  if (text)
   {
-    v4 = v2;
+    v4 = text;
   }
 
   else
@@ -538,17 +538,17 @@
   return &v4->isa;
 }
 
-- (void)setSize:(int64_t)a3
+- (void)setSize:(int64_t)size
 {
-  if (a3 < 0)
+  if (size < 0)
   {
 
     [(STStorageTableCell *)self setSizeString:@"…"];
   }
 
-  else if (self->_size != a3)
+  else if (self->_size != size)
   {
-    self->_size = a3;
+    self->_size = size;
     v4 = STFormattedSize();
     [(STStorageTableCell *)self setSizeString:v4];
   }

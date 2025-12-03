@@ -1,22 +1,22 @@
 @interface POInternalProtocols
-+ (id)interfaceWithInternalProtocol:(id)a3;
++ (id)interfaceWithInternalProtocol:(id)protocol;
 @end
 
 @implementation POInternalProtocols
 
-+ (id)interfaceWithInternalProtocol:(id)a3
++ (id)interfaceWithInternalProtocol:(id)protocol
 {
-  v3 = a3;
+  protocolCopy = protocol;
   if (interfaceWithInternalProtocol__onceToken != -1)
   {
     +[POInternalProtocols interfaceWithInternalProtocol:];
   }
 
-  v4 = [interfaceWithInternalProtocol__protocolCache objectForKey:v3];
+  v4 = [interfaceWithInternalProtocol__protocolCache objectForKey:protocolCopy];
   if (!v4)
   {
-    v4 = [MEMORY[0x277CCAE90] interfaceWithProtocol:v3];
-    [interfaceWithInternalProtocol__protocolCache setObject:v4 forKey:v3];
+    v4 = [MEMORY[0x277CCAE90] interfaceWithProtocol:protocolCopy];
+    [interfaceWithInternalProtocol__protocolCache setObject:v4 forKey:protocolCopy];
   }
 
   v5 = v4;

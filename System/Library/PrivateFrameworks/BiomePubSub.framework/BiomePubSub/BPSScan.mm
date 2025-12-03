@@ -1,30 +1,30 @@
 @interface BPSScan
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5;
-- (BPSScan)initWithUpstream:(id)a3 initialResult:(id)a4 nextPartialResult:(id)a5;
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state;
+- (BPSScan)initWithUpstream:(id)upstream initialResult:(id)result nextPartialResult:(id)partialResult;
 - (id)bookmarkableUpstreams;
 - (id)nextEvent;
 - (id)upstreamPublishers;
 - (void)reset;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSScan
 
-- (BPSScan)initWithUpstream:(id)a3 initialResult:(id)a4 nextPartialResult:(id)a5
+- (BPSScan)initWithUpstream:(id)upstream initialResult:(id)result nextPartialResult:(id)partialResult
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  upstreamCopy = upstream;
+  resultCopy = result;
+  partialResultCopy = partialResult;
   v17.receiver = self;
   v17.super_class = BPSScan;
   v12 = [(BPSScan *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_upstream, a3);
-    objc_storeStrong(&v13->_initialResult, a4);
-    objc_storeStrong(&v13->_result, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_upstream, upstream);
+    objc_storeStrong(&v13->_initialResult, result);
+    objc_storeStrong(&v13->_result, result);
+    v14 = [partialResultCopy copy];
     nextPartialResult = v13->_nextPartialResult;
     v13->_nextPartialResult = v14;
   }
@@ -32,9 +32,9 @@
   return v13;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
-  v4 = a3;
+  subscribeCopy = subscribe;
   v5 = __biome_log_for_category();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -42,19 +42,19 @@
   }
 
   v6 = [_BPSScanInner alloc];
-  v7 = [(BPSScan *)self nextPartialResult];
-  v8 = [(BPSScan *)self initialResult];
-  v9 = [(_BPSScanInner *)v6 initWithDownstream:v4 nextPartialResult:v7 initialResult:v8];
+  nextPartialResult = [(BPSScan *)self nextPartialResult];
+  initialResult = [(BPSScan *)self initialResult];
+  v9 = [(_BPSScanInner *)v6 initWithDownstream:subscribeCopy nextPartialResult:nextPartialResult initialResult:initialResult];
 
-  v10 = [(BPSScan *)self upstream];
-  [v10 subscribe:v9];
+  upstream = [(BPSScan *)self upstream];
+  [upstream subscribe:v9];
 }
 
 - (id)upstreamPublishers
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BPSScan *)self upstream];
-  v6[0] = v2;
+  upstream = [(BPSScan *)self upstream];
+  v6[0] = upstream;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];
@@ -64,55 +64,55 @@
 
 - (id)nextEvent
 {
-  v3 = [(BPSScan *)self upstream];
-  v4 = [v3 nextEvent];
+  upstream = [(BPSScan *)self upstream];
+  nextEvent = [upstream nextEvent];
 
-  if (v4)
+  if (nextEvent)
   {
-    v5 = [(BPSScan *)self nextPartialResult];
-    v6 = [(BPSScan *)self result];
-    v7 = (v5)[2](v5, v6, v4);
+    nextPartialResult = [(BPSScan *)self nextPartialResult];
+    result = [(BPSScan *)self result];
+    v7 = (nextPartialResult)[2](nextPartialResult, result, nextEvent);
     [(BPSScan *)self setResult:v7];
 
-    v8 = [(BPSScan *)self result];
+    result2 = [(BPSScan *)self result];
   }
 
   else
   {
-    v8 = 0;
+    result2 = 0;
   }
 
-  return v8;
+  return result2;
 }
 
 - (void)reset
 {
-  v3 = [(BPSScan *)self initialResult];
-  [(BPSScan *)self setResult:v3];
+  initialResult = [(BPSScan *)self initialResult];
+  [(BPSScan *)self setResult:initialResult];
 
   v4.receiver = self;
   v4.super_class = BPSScan;
   [(BPSPublisher *)&v4 reset];
 }
 
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  publisherCopy = publisher;
+  stateCopy = state;
+  upstreamsCopy = upstreams;
   v10 = [BPSScan alloc];
-  v11 = [v9 objectAtIndexedSubscript:0];
+  v11 = [upstreamsCopy objectAtIndexedSubscript:0];
 
-  v12 = v8;
-  if (!v8)
+  initialResult = stateCopy;
+  if (!stateCopy)
   {
-    v12 = [v7 initialResult];
+    initialResult = [publisherCopy initialResult];
   }
 
-  v13 = [v7 nextPartialResult];
-  v14 = [(BPSScan *)v10 initWithUpstream:v11 initialResult:v12 nextPartialResult:v13];
+  nextPartialResult = [publisherCopy nextPartialResult];
+  v14 = [(BPSScan *)v10 initWithUpstream:v11 initialResult:initialResult nextPartialResult:nextPartialResult];
 
-  if (!v8)
+  if (!stateCopy)
   {
   }
 
@@ -122,8 +122,8 @@
 - (id)bookmarkableUpstreams
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BPSScan *)self upstream];
-  v6[0] = v2;
+  upstream = [(BPSScan *)self upstream];
+  v6[0] = upstream;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x1E69E9840];

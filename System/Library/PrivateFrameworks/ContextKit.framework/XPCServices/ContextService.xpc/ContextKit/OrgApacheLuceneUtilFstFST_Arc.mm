@@ -1,39 +1,39 @@
 @interface OrgApacheLuceneUtilFstFST_Arc
-- (BOOL)flagWithInt:(int)a3;
-- (id)copyFromWithOrgApacheLuceneUtilFstFST_Arc:(id)a3;
+- (BOOL)flagWithInt:(int)int;
+- (id)copyFromWithOrgApacheLuceneUtilFstFST_Arc:(id)arc;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilFstFST_Arc
 
-- (id)copyFromWithOrgApacheLuceneUtilFstFST_Arc:(id)a3
+- (id)copyFromWithOrgApacheLuceneUtilFstFST_Arc:(id)arc
 {
-  if (!a3)
+  if (!arc)
   {
     JreThrowNullPointerException();
   }
 
-  self->node_ = *(a3 + 3);
-  self->label_ = *(a3 + 2);
-  self->target_ = *(a3 + 4);
-  self->flags_ = *(a3 + 40);
-  JreStrongAssign(&self->output_, *(a3 + 2));
-  JreStrongAssign(&self->nextFinalOutput_, *(a3 + 6));
-  self->nextArc_ = *(a3 + 7);
-  v5 = *(a3 + 18);
+  self->node_ = *(arc + 3);
+  self->label_ = *(arc + 2);
+  self->target_ = *(arc + 4);
+  self->flags_ = *(arc + 40);
+  JreStrongAssign(&self->output_, *(arc + 2));
+  JreStrongAssign(&self->nextFinalOutput_, *(arc + 6));
+  self->nextArc_ = *(arc + 7);
+  v5 = *(arc + 18);
   self->bytesPerArc_ = v5;
   if (v5)
   {
-    self->posArcsStart_ = *(a3 + 8);
-    self->arcIdx_ = *(a3 + 19);
-    self->numArcs_ = *(a3 + 20);
+    self->posArcsStart_ = *(arc + 8);
+    self->arcIdx_ = *(arc + 19);
+    self->numArcs_ = *(arc + 20);
   }
 
   return self;
 }
 
-- (BOOL)flagWithInt:(int)a3
+- (BOOL)flagWithInt:(int)int
 {
   flags = self->flags_;
   if ((atomic_load_explicit(OrgApacheLuceneUtilFstFST__initialized, memory_order_acquire) & 1) == 0)
@@ -41,7 +41,7 @@
     sub_100122538();
   }
 
-  return (flags & a3) != 0;
+  return (flags & int) != 0;
 }
 
 - (id)description

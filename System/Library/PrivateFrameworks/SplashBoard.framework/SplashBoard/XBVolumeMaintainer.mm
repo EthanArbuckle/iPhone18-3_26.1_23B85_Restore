@@ -1,19 +1,19 @@
 @interface XBVolumeMaintainer
-+ (void)configure:(id)a3;
++ (void)configure:(id)configure;
 @end
 
 @implementation XBVolumeMaintainer
 
-+ (void)configure:(id)a3
++ (void)configure:(id)configure
 {
-  v3 = a3;
+  configureCopy = configure;
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __32__XBVolumeMaintainer_configure___block_invoke;
   block[3] = &unk_279CF9280;
-  v7 = v3;
-  v5 = v3;
+  v7 = configureCopy;
+  v5 = configureCopy;
   dispatch_async(v4, block);
 }
 

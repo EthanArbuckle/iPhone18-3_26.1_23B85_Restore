@@ -1,6 +1,6 @@
 @interface ISPlayerState
-+ (id)outputInfoWithPhotoBlurRadius:(double)a3 videoAlpha:(double)a4 videoBlurRadius:(double)a5 label:(id)a6;
-- (ISPlayerState)initWithPhotoBlurRadius:(double)a3 videoAlpha:(double)a4 videoBlurRadius:(double)a5 label:(id)a6;
++ (id)outputInfoWithPhotoBlurRadius:(double)radius videoAlpha:(double)alpha videoBlurRadius:(double)blurRadius label:(id)label;
+- (ISPlayerState)initWithPhotoBlurRadius:(double)radius videoAlpha:(double)alpha videoBlurRadius:(double)blurRadius label:(id)label;
 - (id)description;
 @end
 
@@ -20,19 +20,19 @@
   return v6;
 }
 
-- (ISPlayerState)initWithPhotoBlurRadius:(double)a3 videoAlpha:(double)a4 videoBlurRadius:(double)a5 label:(id)a6
+- (ISPlayerState)initWithPhotoBlurRadius:(double)radius videoAlpha:(double)alpha videoBlurRadius:(double)blurRadius label:(id)label
 {
-  v10 = a6;
+  labelCopy = label;
   v16.receiver = self;
   v16.super_class = ISPlayerState;
   v11 = [(ISPlayerState *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_photoBlurRadius = a3;
-    v11->_videoAlpha = a4;
-    v11->_videoBlurRadius = a5;
-    v13 = [v10 copy];
+    v11->_photoBlurRadius = radius;
+    v11->_videoAlpha = alpha;
+    v11->_videoBlurRadius = blurRadius;
+    v13 = [labelCopy copy];
     diagnosticLabel = v12->_diagnosticLabel;
     v12->_diagnosticLabel = v13;
   }
@@ -40,10 +40,10 @@
   return v12;
 }
 
-+ (id)outputInfoWithPhotoBlurRadius:(double)a3 videoAlpha:(double)a4 videoBlurRadius:(double)a5 label:(id)a6
++ (id)outputInfoWithPhotoBlurRadius:(double)radius videoAlpha:(double)alpha videoBlurRadius:(double)blurRadius label:(id)label
 {
-  v10 = a6;
-  v11 = [[a1 alloc] initWithPhotoBlurRadius:v10 videoAlpha:a3 videoBlurRadius:a4 label:a5];
+  labelCopy = label;
+  v11 = [[self alloc] initWithPhotoBlurRadius:labelCopy videoAlpha:radius videoBlurRadius:alpha label:blurRadius];
 
   return v11;
 }

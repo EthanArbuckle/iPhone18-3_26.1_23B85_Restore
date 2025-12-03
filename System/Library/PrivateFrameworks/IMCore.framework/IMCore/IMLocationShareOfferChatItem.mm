@@ -1,13 +1,13 @@
 @interface IMLocationShareOfferChatItem
 - (NSDate)time;
-- (id)_initWithItem:(id)a3 sender:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithItem:(id)item sender:(id)sender;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)offerState;
 @end
 
 @implementation IMLocationShareOfferChatItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend__item(self, v5, v6);
@@ -53,18 +53,18 @@
   return v20;
 }
 
-- (id)_initWithItem:(id)a3 sender:(id)a4
+- (id)_initWithItem:(id)item sender:(id)sender
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  senderCopy = sender;
   v16.receiver = self;
   v16.super_class = IMLocationShareOfferChatItem;
-  v8 = [(IMChatItem *)&v16 _initWithItem:v6];
+  v8 = [(IMChatItem *)&v16 _initWithItem:itemCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 8, a4);
-    v12 = objc_msgSend_guid(v6, v10, v11);
+    objc_storeStrong(v8 + 8, sender);
+    v12 = objc_msgSend_guid(itemCopy, v10, v11);
     v13 = sub_1A83AC604();
 
     objc_msgSend__setGUID_(v9, v14, v13);

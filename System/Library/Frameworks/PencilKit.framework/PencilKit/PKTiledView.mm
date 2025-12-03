@@ -1,26 +1,26 @@
 @interface PKTiledView
 + (BOOL)showDebugOutlines;
-+ (id)newInlineDrawingOfClass:(Class)a3;
-- ($FF38E1E694A259ECA75E65D4243A6BF6)convertInputPoint:(SEL)a3 toAttachment:(id *)a4;
++ (id)newInlineDrawingOfClass:(Class)class;
+- ($FF38E1E694A259ECA75E65D4243A6BF6)convertInputPoint:(SEL)point toAttachment:(id *)attachment;
 - (BOOL)_isScrollViewSizeAnimating;
-- (BOOL)_isValidDropPointForStrokes:(CGPoint)a3 didInsertNewAttachment:(BOOL *)a4;
+- (BOOL)_isValidDropPointForStrokes:(CGPoint)strokes didInsertNewAttachment:(BOOL *)attachment;
 - (BOOL)_isZoomingOrResizing;
 - (BOOL)_scrollViewIsScrollingOrZoomingOrResizing;
 - (BOOL)_sixChannelBlendingIsActive;
 - (BOOL)_snapshottingDisabled;
 - (BOOL)_toolPickerIsOrWillBeVisible;
 - (BOOL)_transparentBlendingIsActive;
-- (BOOL)_updateHeightOfAttachmentIfNecessary:(id)a3;
+- (BOOL)_updateHeightOfAttachmentIfNecessary:(id)necessary;
 - (BOOL)allowsFingerDrawing;
-- (BOOL)canvasView:(id)a3 drawingIsShared:(id)a4;
-- (BOOL)canvasView:(id)a3 shouldBeginDrawingWithTouch:(id)a4;
-- (BOOL)canvasView:(id)a3 shouldDiscardEndedStroke:(id)a4 drawing:(id)a5;
-- (BOOL)canvasView:(id)a3 shouldDiscardTapStrokeAt:(CGPoint)a4 drawing:(id)a5;
-- (BOOL)canvasViewShouldCombineStrokes:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)hitSelectionAt:(CGPoint)a3;
-- (BOOL)hoverController:(id)a3 shouldBeActiveAt:(CGPoint)a4;
+- (BOOL)canvasView:(id)view drawingIsShared:(id)shared;
+- (BOOL)canvasView:(id)view shouldBeginDrawingWithTouch:(id)touch;
+- (BOOL)canvasView:(id)view shouldDiscardEndedStroke:(id)stroke drawing:(id)drawing;
+- (BOOL)canvasView:(id)view shouldDiscardTapStrokeAt:(CGPoint)at drawing:(id)drawing;
+- (BOOL)canvasViewShouldCombineStrokes:(id)strokes;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)hitSelectionAt:(CGPoint)at;
+- (BOOL)hoverController:(id)controller shouldBeActiveAt:(CGPoint)at;
 - (BOOL)insertSpaceEnabled;
 - (BOOL)invertColors;
 - (BOOL)isAutoRefineEnabled;
@@ -29,26 +29,26 @@
 - (BOOL)isGenerationModelAvailable;
 - (BOOL)isInNotesTextView;
 - (BOOL)needToUpdateViewFrame;
-- (BOOL)p_shouldSkipStrokeCacheInvalidationForAttachment:(id)a3;
+- (BOOL)p_shouldSkipStrokeCacheInvalidationForAttachment:(id)attachment;
 - (BOOL)rulerHostWantsSharedRuler;
 - (BOOL)selectionSupportsSnapToShape;
 - (BOOL)selectionSupportsTranslate;
 - (BOOL)shouldStartToolPreviewWhenHovering;
-- (BOOL)tileIsVisibleForOffset:(CGPoint)a3 inAttachment:(id)a4 distanceToMiddle:(double *)a5;
+- (BOOL)tileIsVisibleForOffset:(CGPoint)offset inAttachment:(id)attachment distanceToMiddle:(double *)middle;
 - (BOOL)toolShadowShouldBeActive;
-- (CGAffineTransform)canvasView:(SEL)a3 transformForStroke:(id)a4;
+- (CGAffineTransform)canvasView:(SEL)view transformForStroke:(id)stroke;
 - (CGAffineTransform)contentCoordinateSpaceTransform;
 - (CGAffineTransform)strokeTransform;
-- (CGAffineTransform)transformFromStrokeSpaceToViewInAttachment:(SEL)a3;
-- (CGAffineTransform)transformFromStrokeSpaceToViewInDrawing:(SEL)a3;
-- (CGPoint)paletteViewHoverLocation:(id)a3;
-- (CGPoint)pointInStrokeSpace:(CGPoint)a3 inDrawing:(id)a4;
-- (CGRect)attachmentBoundsForDrawing:(id)a3;
-- (CGRect)boundsForDrawing:(id)a3;
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4;
+- (CGAffineTransform)transformFromStrokeSpaceToViewInAttachment:(SEL)attachment;
+- (CGAffineTransform)transformFromStrokeSpaceToViewInDrawing:(SEL)drawing;
+- (CGPoint)paletteViewHoverLocation:(id)location;
+- (CGPoint)pointInStrokeSpace:(CGPoint)space inDrawing:(id)drawing;
+- (CGRect)attachmentBoundsForDrawing:(id)drawing;
+- (CGRect)boundsForDrawing:(id)drawing;
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration;
 - (CGRect)newViewFrame;
-- (CGRect)visibleOnscreenBoundsForDrawing:(id)a3;
-- (CGRect)visibleOnscreenBoundsForDrawing:(id)a3 slack:(CGSize)a4;
+- (CGRect)visibleOnscreenBoundsForDrawing:(id)drawing;
+- (CGRect)visibleOnscreenBoundsForDrawing:(id)drawing slack:(CGSize)slack;
 - (PKAutoRefineTaskCoordinator)externalAutoRefineTaskCoordinator;
 - (PKController)drawingController;
 - (PKInk)ink;
@@ -70,60 +70,60 @@
 - (id)_accessibilityUserTestingChildren;
 - (id)_activeToolPicker;
 - (id)_adornmentViewsToHitTest;
-- (id)_attachmentForUUID:(id)a3;
-- (id)_createPKStrokesFromCHDrawing:(id)a3 inputScale:(double)a4 sourceStroke:(id)a5 ink:(id)a6;
-- (id)_createPKStrokesFromCHDrawing:(id)a3 transform:(CGAffineTransform *)a4 inputScale:(double)a5 sourceStroke:(id)a6;
-- (id)_hitAttachment:(CGPoint)a3 includeStandinAttachment:(BOOL)a4 expandBottomAttachment:(BOOL)a5;
+- (id)_attachmentForUUID:(id)d;
+- (id)_createPKStrokesFromCHDrawing:(id)drawing inputScale:(double)scale sourceStroke:(id)stroke ink:(id)ink;
+- (id)_createPKStrokesFromCHDrawing:(id)drawing transform:(CGAffineTransform *)transform inputScale:(double)scale sourceStroke:(id)stroke;
+- (id)_hitAttachment:(CGPoint)attachment includeStandinAttachment:(BOOL)standinAttachment expandBottomAttachment:(BOOL)bottomAttachment;
 - (id)_recentStrokesForAutoRefine;
-- (id)_tilesForAttachment:(id)a3 bounds:(CGRect)a4 invert:(BOOL)a5;
+- (id)_tilesForAttachment:(id)attachment bounds:(CGRect)bounds invert:(BOOL)invert;
 - (id)_visibleAttachments;
-- (id)_visibleTilesForAttachment:(id)a3;
-- (id)attachmentForHoverPreviewAt:(id *)a3;
-- (id)attachmentForUUID:(id)a3;
+- (id)_visibleTilesForAttachment:(id)attachment;
+- (id)attachmentForHoverPreviewAt:(id *)at;
+- (id)attachmentForUUID:(id)d;
 - (id)attachmentViews;
 - (id)attachments;
-- (id)canvasView:(id)a3 attachmentViewForDrawing:(id)a4;
-- (id)canvasViewContentCoordinateSpace:(id)a3;
-- (id)canvasViewTouchView:(id)a3;
+- (id)canvasView:(id)view attachmentViewForDrawing:(id)drawing;
+- (id)canvasViewContentCoordinateSpace:(id)space;
+- (id)canvasViewTouchView:(id)view;
 - (id)currentDrawingBeingCopiedToCanvas;
-- (id)didChangeDrawing:(id)a3 undoable:(BOOL)a4;
+- (id)didChangeDrawing:(id)drawing undoable:(BOOL)undoable;
 - (id)drawingGestureRecognizer;
 - (id)drawingUndoTarget;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
-- (id)generateTile:(CGPoint)a3 inAttachment:(id)a4 rendering:(BOOL)a5 offscreen:(BOOL)a6 overrideAdditionalStrokes:(id)a7;
-- (id)hitAttachment:(CGPoint)a3 includeStandinAttachment:(BOOL)a4 expandBottomAttachment:(BOOL)a5;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
+- (id)generateTile:(CGPoint)tile inAttachment:(id)attachment rendering:(BOOL)rendering offscreen:(BOOL)offscreen overrideAdditionalStrokes:(id)strokes;
+- (id)hitAttachment:(CGPoint)attachment includeStandinAttachment:(BOOL)standinAttachment expandBottomAttachment:(BOOL)bottomAttachment;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)hoverGestureRecognizer;
-- (id)initInScrollView:(id)a3;
-- (id)initInScrollView:(id)a3 sixChannelBlending:(BOOL)a4 defaultDrawingClass:(Class)a5 readOnly:(BOOL)a6;
-- (id)paletteViewHoverView:(id)a3;
+- (id)initInScrollView:(id)view;
+- (id)initInScrollView:(id)view sixChannelBlending:(BOOL)blending defaultDrawingClass:(Class)class readOnly:(BOOL)only;
+- (id)paletteViewHoverView:(id)view;
 - (id)rulerHostingView;
 - (id)rulerView;
-- (id)selectedStrokeIdsForAttachment:(id)a3;
-- (id)smoothedHullForStroke:(id)a3;
-- (id)tileForOffset:(CGPoint)a3 inAttachment:(id)a4 offscreen:(BOOL)a5 tileZoomScale:(double)a6;
+- (id)selectedStrokeIdsForAttachment:(id)attachment;
+- (id)smoothedHullForStroke:(id)stroke;
+- (id)tileForOffset:(CGPoint)offset inAttachment:(id)attachment offscreen:(BOOL)offscreen tileZoomScale:(double)scale;
 - (id)topZAttachment;
 - (id)undoManager;
 - (id)visibleAttachments;
-- (id)visibleOnScreenStrokesForDrawing:(id)a3;
+- (id)visibleOnScreenStrokesForDrawing:(id)drawing;
 - (int64_t)_activeSixChannelBlendingMode;
 - (int64_t)_totalVisibleStrokes;
 - (int64_t)effectiveMaximumSupportedContentVersion;
 - (uint64_t)isSystemSnapshotting;
 - (vector<AttachmentTileInfo,)getVisibleTiles:(PKTiledView *)self;
-- (void)_addAttachmentsUnderView:(id)a3 toArray:(id)a4;
+- (void)_addAttachmentsUnderView:(id)view toArray:(id)array;
 - (void)_beginAnalyticsSessionIfNecessary;
-- (void)_cancelCurrentStrokeAndReduceMemoryFootprintFlushCaches:(BOOL)a3;
+- (void)_cancelCurrentStrokeAndReduceMemoryFootprintFlushCaches:(BOOL)caches;
 - (void)_cancelHideCanvasIfNecessary;
-- (void)_canvasView:(id)a3 didFinishRenderingNewStrokes:(id)a4 inDrawing:(id)a5 forPreview:(BOOL)a6;
-- (void)_canvasViewDidEraseStrokes:(id)a3;
-- (void)_canvasViewWillBeginDrawing:(id)a3 startPoint:(id *)a4 forPreview:(BOOL)a5;
+- (void)_canvasView:(id)view didFinishRenderingNewStrokes:(id)strokes inDrawing:(id)drawing forPreview:(BOOL)preview;
+- (void)_canvasViewDidEraseStrokes:(id)strokes;
+- (void)_canvasViewWillBeginDrawing:(id)drawing startPoint:(id *)point forPreview:(BOOL)preview;
 - (void)_canvasViewWillCreateSnapshot;
 - (void)_cleanupTilesWithStaleTransform;
 - (void)_clearSelectionIfNecessary;
-- (void)_copyAll:(id)a3;
-- (void)_copyFromCanvas:(id)a3 intoAttachment:(id)a4 hideCanvas:(BOOL)a5 strokes:(id)a6;
+- (void)_copyAll:(id)all;
+- (void)_copyFromCanvas:(id)canvas intoAttachment:(id)attachment hideCanvas:(BOOL)hideCanvas strokes:(id)strokes;
 - (void)_createHoverControllerIfNecessary;
 - (void)_didAddDrawingAttachmentView;
 - (void)_didEndInteractiveResize;
@@ -131,146 +131,146 @@
 - (void)_dismissInsertSpaceHandlesIfNecessary;
 - (void)_endAnalyticsSessionsIfNecessary;
 - (void)_endHoverToolPreview;
-- (void)_findSelectionTranscriptionWithCompletion:(id)a3;
-- (void)_finishCombiningStrokesIfNecessaryForAttachment:(id)a3;
+- (void)_findSelectionTranscriptionWithCompletion:(id)completion;
+- (void)_finishCombiningStrokesIfNecessaryForAttachment:(id)attachment;
 - (void)_flushCaches;
-- (void)_getAllHandwritingTranscription:(id)a3;
-- (void)_handleDrawingDidChangeForAttachment:(id)a3 didChangeVisibleStrokes:(BOOL)a4;
-- (void)_handlePencilSqueezeInteractionDidChangePaletteViewVisibilityNotification:(id)a3;
-- (void)_handleSingleTapAtLocation:(CGPoint)a3 forAttachment:(id)a4;
+- (void)_getAllHandwritingTranscription:(id)transcription;
+- (void)_handleDrawingDidChangeForAttachment:(id)attachment didChangeVisibleStrokes:(BOOL)strokes;
+- (void)_handlePencilSqueezeInteractionDidChangePaletteViewVisibilityNotification:(id)notification;
+- (void)_handleSingleTapAtLocation:(CGPoint)location forAttachment:(id)attachment;
 - (void)_hideCanvas;
 - (void)_keepPencilShadowVisible;
-- (void)_layoutSubviewsUpdateTilesForRendering:(BOOL)a3;
-- (void)_observeScrollViewDidScroll:(id)a3;
-- (void)_pauseHoverPreviewForTimeInterval:(double)a3;
+- (void)_layoutSubviewsUpdateTilesForRendering:(BOOL)rendering;
+- (void)_observeScrollViewDidScroll:(id)scroll;
+- (void)_pauseHoverPreviewForTimeInterval:(double)interval;
 - (void)_reenableScrollViewPanGestureIfNecessary;
 - (void)_resetDrawingState;
 - (void)_resetSelectedStrokeStateForRenderer;
-- (void)_sceneDidActivate:(id)a3;
-- (void)_scrollViewDidLayoutSubviews:(id)a3;
+- (void)_sceneDidActivate:(id)activate;
+- (void)_scrollViewDidLayoutSubviews:(id)subviews;
 - (void)_scrollViewDidScroll;
-- (void)_selectionRefreshWithChangeToDrawings:(id)a3 overrideAdditionalStrokes:(id)a4 completion:(id)a5;
-- (void)_setAdditionalStrokes:(id)a3 inDrawing:(id)a4 invalidateTiles:(BOOL)a5 forceOffscreen:(BOOL)a6 completion:(id)a7;
-- (void)_setDrawingEnabled:(BOOL)a3;
-- (void)_setExternalAttachments:(id)a3;
+- (void)_selectionRefreshWithChangeToDrawings:(id)drawings overrideAdditionalStrokes:(id)strokes completion:(id)completion;
+- (void)_setAdditionalStrokes:(id)strokes inDrawing:(id)drawing invalidateTiles:(BOOL)tiles forceOffscreen:(BOOL)offscreen completion:(id)completion;
+- (void)_setDrawingEnabled:(BOOL)enabled;
+- (void)_setExternalAttachments:(id)attachments;
 - (void)_setHasSeenAnyExtendedDynamicRangeInks;
 - (void)_setupPencilShadowViewIfNecessary;
-- (void)_showEditMenuFromLocation:(CGPoint)a3 forAttachment:(id)a4;
-- (void)_straightenStrokes:(id)a3 drawing:(id)a4 completionBlock:(id)a5;
-- (void)_transientlyUpdateHeightOfAttachment:(id)a3 delta:(double)a4;
+- (void)_showEditMenuFromLocation:(CGPoint)location forAttachment:(id)attachment;
+- (void)_straightenStrokes:(id)strokes drawing:(id)drawing completionBlock:(id)block;
+- (void)_transientlyUpdateHeightOfAttachment:(id)attachment delta:(double)delta;
 - (void)_trimRecentStrokes;
-- (void)_updateAttachmentHeightIfNecessaryForDrawing:(id)a3;
+- (void)_updateAttachmentHeightIfNecessaryForDrawing:(id)drawing;
 - (void)_updateAttachmentOnscreenBounds;
 - (void)_updateDrawingGestureEnablement;
-- (void)_updateDrawingGestureEnablementWithInk:(id)a3;
-- (void)_updateForToolPickerVisibilityChange:(id)a3;
-- (void)_updatePencilShadowView:(id *)a3;
-- (void)_updateSymbolPreviewViewForTouch:(id *)a3 attachment:(id)a4 alpha:(double)a5;
-- (void)_updateToolPreviewIndicatorInputPoint:(id *)a3;
+- (void)_updateDrawingGestureEnablementWithInk:(id)ink;
+- (void)_updateForToolPickerVisibilityChange:(id)change;
+- (void)_updatePencilShadowView:(id *)view;
+- (void)_updateSymbolPreviewViewForTouch:(id *)touch attachment:(id)attachment alpha:(double)alpha;
+- (void)_updateToolPreviewIndicatorInputPoint:(id *)point;
 - (void)_updateWantsExtendedDynamicRangeContent;
 - (void)_willBeginInteractiveResize;
-- (void)blitOldTilesIntoNewTiles:(id)a3 completion:(id)a4;
-- (void)cancelTileGenerationInvalidateTiles:(BOOL)a3;
-- (void)canvasView:(id)a3 beganStroke:(id)a4;
-- (void)canvasView:(id)a3 cancelledStroke:(id)a4;
-- (void)canvasView:(id)a3 drawingDidChange:(id)a4;
-- (void)canvasView:(id)a3 endedStroke:(id)a4 shapeStrokes:(id)a5;
-- (void)canvasView:(id)a3 registerMultiStepUndoCommands:(id)a4;
-- (void)canvasView:(id)a3 registerUndoCommands:(id)a4;
-- (void)canvasView:(id)a3 scratchOutStrokes:(id)a4 drawing:(id)a5;
-- (void)canvasView:(id)a3 textStrokesCoveredByStroke:(id)a4 drawing:(id)a5 completion:(id)a6;
-- (void)canvasViewDidBeginDrawing:(id)a3;
-- (void)canvasViewDidEndDrawing:(id)a3;
-- (void)canvasViewDrawingMoved:(id)a3 withTouch:(id)a4;
-- (void)canvasViewInvalidateTiles:(id)a3;
-- (void)canvasViewWillBeginNewStroke:(id)a3 withTouch:(id)a4 location:(CGPoint)a5;
-- (void)changeStrokesUsingTransformations:(id)a3 strokeGroups:(id)a4 drawing:(id)a5 originalStrokes:(id)a6;
-- (void)commitSelectionIfNecessaryWithCompletion:(id)a3;
-- (void)convertToShapeAtLocation:(CGPoint)a3;
+- (void)blitOldTilesIntoNewTiles:(id)tiles completion:(id)completion;
+- (void)cancelTileGenerationInvalidateTiles:(BOOL)tiles;
+- (void)canvasView:(id)view beganStroke:(id)stroke;
+- (void)canvasView:(id)view cancelledStroke:(id)stroke;
+- (void)canvasView:(id)view drawingDidChange:(id)change;
+- (void)canvasView:(id)view endedStroke:(id)stroke shapeStrokes:(id)strokes;
+- (void)canvasView:(id)view registerMultiStepUndoCommands:(id)commands;
+- (void)canvasView:(id)view registerUndoCommands:(id)commands;
+- (void)canvasView:(id)view scratchOutStrokes:(id)strokes drawing:(id)drawing;
+- (void)canvasView:(id)view textStrokesCoveredByStroke:(id)stroke drawing:(id)drawing completion:(id)completion;
+- (void)canvasViewDidBeginDrawing:(id)drawing;
+- (void)canvasViewDidEndDrawing:(id)drawing;
+- (void)canvasViewDrawingMoved:(id)moved withTouch:(id)touch;
+- (void)canvasViewInvalidateTiles:(id)tiles;
+- (void)canvasViewWillBeginNewStroke:(id)stroke withTouch:(id)touch location:(CGPoint)location;
+- (void)changeStrokesUsingTransformations:(id)transformations strokeGroups:(id)groups drawing:(id)drawing originalStrokes:(id)strokes;
+- (void)commitSelectionIfNecessaryWithCompletion:(id)completion;
+- (void)convertToShapeAtLocation:(CGPoint)location;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)editMenuInteraction:(id)a3 willPresentMenuForConfiguration:(id)a4 animator:(id)a5;
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)editMenuInteraction:(id)interaction willPresentMenuForConfiguration:(id)configuration animator:(id)animator;
 - (void)endLiveResize;
-- (void)getAttachment:(id)a3 strokeTransform:(CGAffineTransform *)a4 paperTransform:(CGAffineTransform *)a5;
-- (void)getAttachment:(id)a3 strokeTransform:(CGAffineTransform *)a4 paperTransform:(CGAffineTransform *)a5 scrollViewContentOffset:(CGPoint)a6;
-- (void)hoverController:(id)a3 didBegin:(id *)a4;
-- (void)hoverController:(id)a3 didUpdate:(id *)a4;
-- (void)hoverController:(id)a3 holdGestureMeanTouch:(id *)a4 latestTouch:(id *)a5;
-- (void)hoverController:(id)a3 intentionalHoverWithDuration:(double)a4;
-- (void)hoverControllerDidEnd:(id)a3;
-- (void)hoverControllerHoldGestureEnded:(id)a3;
-- (void)insertCanvasView:(id)a3 intoScrollView:(id)a4;
-- (void)insertSpace:(id)a3;
-- (void)insertSpaceAtLocation:(CGPoint)a3;
+- (void)getAttachment:(id)attachment strokeTransform:(CGAffineTransform *)transform paperTransform:(CGAffineTransform *)paperTransform;
+- (void)getAttachment:(id)attachment strokeTransform:(CGAffineTransform *)transform paperTransform:(CGAffineTransform *)paperTransform scrollViewContentOffset:(CGPoint)offset;
+- (void)hoverController:(id)controller didBegin:(id *)begin;
+- (void)hoverController:(id)controller didUpdate:(id *)update;
+- (void)hoverController:(id)controller holdGestureMeanTouch:(id *)touch latestTouch:(id *)latestTouch;
+- (void)hoverController:(id)controller intentionalHoverWithDuration:(double)duration;
+- (void)hoverControllerDidEnd:(id)end;
+- (void)hoverControllerHoldGestureEnded:(id)ended;
+- (void)insertCanvasView:(id)view intoScrollView:(id)scrollView;
+- (void)insertSpace:(id)space;
+- (void)insertSpaceAtLocation:(CGPoint)location;
 - (void)layoutSubviews;
 - (void)newCanvasView;
-- (void)paletteViewPencilDidTap:(id)a3;
-- (void)performUndo:(id)a3;
+- (void)paletteViewPencilDidTap:(id)tap;
+- (void)performUndo:(id)undo;
 - (void)purgeNonVisibleTiles;
-- (void)refine:(id)a3 strokes:(id)a4 drawing:(id)a5;
-- (void)registerUndoCommand:(id)a3;
-- (void)registerUndoCommands:(id)a3;
-- (void)registerUndoCommands:(id)a3 andChangeToDrawing:(id)a4;
-- (void)renderAttachment:(id)a3 intoCanvas:(id)a4 showing:(BOOL)a5;
-- (void)replaceInkTexture:(id)a3 image:(CGImage *)a4;
-- (void)replayCanvasViewDrawingMoved:(id)a3 inputPoint:(id *)a4 inputType:(int64_t)a5;
-- (void)resizeTiles:(id)a3 completion:(id)a4;
+- (void)refine:(id)refine strokes:(id)strokes drawing:(id)drawing;
+- (void)registerUndoCommand:(id)command;
+- (void)registerUndoCommands:(id)commands;
+- (void)registerUndoCommands:(id)commands andChangeToDrawing:(id)drawing;
+- (void)renderAttachment:(id)attachment intoCanvas:(id)canvas showing:(BOOL)showing;
+- (void)replaceInkTexture:(id)texture image:(CGImage *)image;
+- (void)replayCanvasViewDrawingMoved:(id)moved inputPoint:(id *)point inputType:(int64_t)type;
+- (void)resizeTiles:(id)tiles completion:(id)completion;
 - (void)resumeWorkAfterDrawing;
 - (void)selectionDidChange;
-- (void)selectionSupportsRefinement:(id)a3;
-- (void)setCanvasViewZOrderPolicy:(int64_t)a3;
-- (void)setCurrentDrawingBeingCopiedToCanvas:(id *)a1;
-- (void)setCurrentPreviewDrawingUUID:(uint64_t)a1;
-- (void)setDefaultDrawingClass:(Class)a3;
-- (void)setDelegate:(id)a3;
-- (void)setDisableTileRendering:(BOOL)a3;
-- (void)setDrawBitmapEraserMask:(BOOL)a3;
-- (void)setDrawingPolicy:(unint64_t)a3;
-- (void)setInk:(id)a3;
-- (void)setInsertSpaceEnabled:(BOOL)a3;
-- (void)setIsAutoRefineEnabled:(BOOL)a3;
-- (void)setLinedPaper:(id)a3;
-- (void)setLiveAttachment:(uint64_t)a1;
-- (void)setPaperTexture:(id)a3;
-- (void)setRulerEnabled:(BOOL)a3;
-- (void)setRulerHostingDelegate:(id)a3;
-- (void)setSelectedStrokeIds:(id)a3 selectionType:(int64_t)a4 forAttachment:(id)a5;
-- (void)setSelectedStrokesColor:(id)a3;
-- (void)setSelectionHidden:(BOOL)a3;
-- (void)setSixChannelBlending:(BOOL)a3;
-- (void)setSixChannelBlendingDisableSnapshotting:(BOOL)a3;
-- (void)setSixChannelBlendingRendersTransparent:(BOOL)a3;
-- (void)setWantsExtendedDynamicRangeContent:(BOOL)a3;
+- (void)selectionSupportsRefinement:(id)refinement;
+- (void)setCanvasViewZOrderPolicy:(int64_t)policy;
+- (void)setCurrentDrawingBeingCopiedToCanvas:(id *)canvas;
+- (void)setCurrentPreviewDrawingUUID:(uint64_t)d;
+- (void)setDefaultDrawingClass:(Class)class;
+- (void)setDelegate:(id)delegate;
+- (void)setDisableTileRendering:(BOOL)rendering;
+- (void)setDrawBitmapEraserMask:(BOOL)mask;
+- (void)setDrawingPolicy:(unint64_t)policy;
+- (void)setInk:(id)ink;
+- (void)setInsertSpaceEnabled:(BOOL)enabled;
+- (void)setIsAutoRefineEnabled:(BOOL)enabled;
+- (void)setLinedPaper:(id)paper;
+- (void)setLiveAttachment:(uint64_t)attachment;
+- (void)setPaperTexture:(id)texture;
+- (void)setRulerEnabled:(BOOL)enabled;
+- (void)setRulerHostingDelegate:(id)delegate;
+- (void)setSelectedStrokeIds:(id)ids selectionType:(int64_t)type forAttachment:(id)attachment;
+- (void)setSelectedStrokesColor:(id)color;
+- (void)setSelectionHidden:(BOOL)hidden;
+- (void)setSixChannelBlending:(BOOL)blending;
+- (void)setSixChannelBlendingDisableSnapshotting:(BOOL)snapshotting;
+- (void)setSixChannelBlendingRendersTransparent:(BOOL)transparent;
+- (void)setWantsExtendedDynamicRangeContent:(BOOL)content;
 - (void)setupGestures;
-- (void)setupRefineAnimationFrom:(id)a3 to:(id)a4 inDrawing:(id)a5 alternateContainerView:(id)a6 alternateDrawingTransform:(CGAffineTransform *)a7 completionHandler:(id)a8;
-- (void)setupRefineAnimationFrom:(id)a3 to:(id)a4 inDrawing:(id)a5 completionHandler:(id)a6;
-- (void)setupStrokeInAnimationTo:(id)a3 inDrawing:(id)a4 alternateContainerView:(id)a5 alternateDrawingTransform:(CGAffineTransform *)a6 completionHandler:(id)a7;
-- (void)setupStrokeInAnimationTo:(id)a3 inDrawing:(id)a4 completionHandler:(id)a5;
-- (void)showImageWandTipWithController:(id)a3 toolPicker:(id)a4;
+- (void)setupRefineAnimationFrom:(id)from to:(id)to inDrawing:(id)drawing alternateContainerView:(id)view alternateDrawingTransform:(CGAffineTransform *)transform completionHandler:(id)handler;
+- (void)setupRefineAnimationFrom:(id)from to:(id)to inDrawing:(id)drawing completionHandler:(id)handler;
+- (void)setupStrokeInAnimationTo:(id)to inDrawing:(id)drawing alternateContainerView:(id)view alternateDrawingTransform:(CGAffineTransform *)transform completionHandler:(id)handler;
+- (void)setupStrokeInAnimationTo:(id)to inDrawing:(id)drawing completionHandler:(id)handler;
+- (void)showImageWandTipWithController:(id)controller toolPicker:(id)picker;
 - (void)snapToShapeSelection;
 - (void)startLiveResize;
-- (void)startRefineAnimationWithDuration:(double)a3;
-- (void)startToolPreviewIfPossibleForInputPoint:(id *)a3;
-- (void)startedDrawingInBlankSpaceWithTouch:(id)a3 location:(CGPoint)a4;
+- (void)startRefineAnimationWithDuration:(double)duration;
+- (void)startToolPreviewIfPossibleForInputPoint:(id *)point;
+- (void)startedDrawingInBlankSpaceWithTouch:(id)touch location:(CGPoint)location;
 - (void)stopRefineAnimation;
-- (void)straighten:(id)a3 strokes:(id)a4 drawing:(id)a5;
-- (void)straightenStrokes:(id)a3 drawing:(id)a4 completionBlockWithStrokeTransformInfo:(id)a5;
-- (void)swapOffscreenCallback:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)straighten:(id)straighten strokes:(id)strokes drawing:(id)drawing;
+- (void)straightenStrokes:(id)strokes drawing:(id)drawing completionBlockWithStrokeTransformInfo:(id)info;
+- (void)swapOffscreenCallback:(id)callback;
+- (void)traitCollectionDidChange:(id)change;
 - (void)transformingSelectionBegan;
 - (void)transformingSelectionCancelled;
-- (void)transformingSelectionChanged:(CGAffineTransform *)a3;
+- (void)transformingSelectionChanged:(CGAffineTransform *)changed;
 - (void)transformingSelectionEnded;
 - (void)updateAfterTraitCollectionChange;
-- (void)updateCurrentSelectionWithNewDrawingIfNecessary:(id)a3;
-- (void)updateExistingTiles:(BOOL)a3;
+- (void)updateCurrentSelectionWithNewDrawingIfNecessary:(id)necessary;
+- (void)updateExistingTiles:(BOOL)tiles;
 - (void)updateForAllowedDrawingInput;
 - (void)updateTilesForVisibleRect;
-- (void)updateTilesForVisibleRectForceIfZooming:(BOOL)a3;
-- (void)updateTilesForVisibleRectOffscreenOverrideAdditionalStrokes:(id)a3 withCallback:(id)a4;
-- (void)updateTilesForVisibleRectRendering:(BOOL)a3 offscreen:(BOOL)a4 overrideAdditionalStrokes:(id)a5;
-- (void)updateTilesForVisibleRectRendering:(uint64_t)a3 offscreen:(char)a4 overrideAdditionalStrokes:;
+- (void)updateTilesForVisibleRectForceIfZooming:(BOOL)zooming;
+- (void)updateTilesForVisibleRectOffscreenOverrideAdditionalStrokes:(id)strokes withCallback:(id)callback;
+- (void)updateTilesForVisibleRectRendering:(BOOL)rendering offscreen:(BOOL)offscreen overrideAdditionalStrokes:(id)strokes;
+- (void)updateTilesForVisibleRectRendering:(uint64_t)rendering offscreen:(char)offscreen overrideAdditionalStrokes:;
 @end
 
 @implementation PKTiledView
@@ -296,17 +296,17 @@ void __32__PKTiledView_showDebugOutlines__block_invoke()
   v20 = *MEMORY[0x1E69E9840];
   if ((*&self->_tiledViewFlags & 4) != 0)
   {
-    v12 = [(PKTiledView *)self delegate];
-    v13 = [v12 tiledViewAttachmentViews];
+    delegate = [(PKTiledView *)self delegate];
+    tiledViewAttachmentViews = [delegate tiledViewAttachmentViews];
 
-    v11 = [v13 copy];
+    v11 = [tiledViewAttachmentViews copy];
   }
 
   else
   {
-    v3 = [MEMORY[0x1E695DF70] array];
-    v4 = [(PKTiledView *)self attachmentContainerView];
-    [(PKTiledView *)self _addAttachmentsUnderView:v4 toArray:v3];
+    array = [MEMORY[0x1E695DF70] array];
+    attachmentContainerView = [(PKTiledView *)self attachmentContainerView];
+    [(PKTiledView *)self _addAttachmentsUnderView:attachmentContainerView toArray:array];
 
     timestampForLatestUserInteraction = self->_timestampForLatestUserInteraction;
     if (timestampForLatestUserInteraction != 0.0)
@@ -332,7 +332,7 @@ void __32__PKTiledView_showDebugOutlines__block_invoke()
             v10 = *(*(&v15 + 1) + 8 * i);
             if ([v10 isExternalAttachment])
             {
-              [v3 addObject:v10];
+              [array addObject:v10];
             }
           }
 
@@ -343,7 +343,7 @@ void __32__PKTiledView_showDebugOutlines__block_invoke()
       }
     }
 
-    v11 = [v3 copy];
+    v11 = [array copy];
   }
 
   return v11;
@@ -358,9 +358,9 @@ void __32__PKTiledView_showDebugOutlines__block_invoke()
 
 - (double)canvasZoomScale
 {
-  v3 = [(PKTiledView *)self contentCoordinateSpace];
+  contentCoordinateSpace = [(PKTiledView *)self contentCoordinateSpace];
 
-  if (v3)
+  if (contentCoordinateSpace)
   {
     [(PKTiledView *)self contentCoordinateSpaceTransform];
     return sqrt(v10 * v10 + v9 * v9);
@@ -368,12 +368,12 @@ void __32__PKTiledView_showDebugOutlines__block_invoke()
 
   else
   {
-    v5 = [(PKTiledView *)self scrollView];
+    scrollView = [(PKTiledView *)self scrollView];
 
-    if (v5)
+    if (scrollView)
     {
-      v6 = [(PKTiledView *)self scrollView];
-      [v6 zoomScale];
+      scrollView2 = [(PKTiledView *)self scrollView];
+      [scrollView2 zoomScale];
       v4 = v7;
     }
 
@@ -395,30 +395,30 @@ void __32__PKTiledView_showDebugOutlines__block_invoke()
 
 - (BOOL)_sixChannelBlendingIsActive
 {
-  v3 = [(PKTiledView *)self sixChannelBlending];
-  if (v3)
+  sixChannelBlending = [(PKTiledView *)self sixChannelBlending];
+  if (sixChannelBlending)
   {
-    LOBYTE(v3) = ![(PKTiledView *)self invertColors];
+    LOBYTE(sixChannelBlending) = ![(PKTiledView *)self invertColors];
   }
 
-  return v3;
+  return sixChannelBlending;
 }
 
 - (id)rulerHostingView
 {
-  v3 = [(PKTiledView *)self rulerHostingDelegate];
-  if (!v3 || (v4 = v3, -[PKTiledView rulerHostingDelegate](self, "rulerHostingDelegate"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, v4, (v6 & 1) == 0) || (-[PKTiledView rulerHostingDelegate](self, "rulerHostingDelegate"), v7 = objc_claimAutoreleasedReturnValue(), [v7 rulerHostingView], v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+  rulerHostingDelegate = [(PKTiledView *)self rulerHostingDelegate];
+  if (!rulerHostingDelegate || (v4 = rulerHostingDelegate, -[PKTiledView rulerHostingDelegate](self, "rulerHostingDelegate"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_respondsToSelector(), v5, v4, (v6 & 1) == 0) || (-[PKTiledView rulerHostingDelegate](self, "rulerHostingDelegate"), v7 = objc_claimAutoreleasedReturnValue(), [v7 rulerHostingView], selfCopy = objc_claimAutoreleasedReturnValue(), v7, !selfCopy))
   {
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (BOOL)invertColors
 {
-  v2 = [(PKTiledView *)self traitCollection];
-  v3 = [v2 userInterfaceStyle] == 2;
+  traitCollection = [(PKTiledView *)self traitCollection];
+  v3 = [traitCollection userInterfaceStyle] == 2;
 
   return v3;
 }
@@ -452,8 +452,8 @@ void __32__PKTiledView_showDebugOutlines__block_invoke()
 
 - (void)newCanvasView
 {
-  v21 = [(PKTiledView *)self scrollView];
-  [v21 bounds];
+  scrollView = [(PKTiledView *)self scrollView];
+  [scrollView bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -477,7 +477,7 @@ void __32__PKTiledView_showDebugOutlines__block_invoke()
   v13 = qword_1EC291550;
   if (v12)
   {
-    v14 = [(PKTiledView *)self scrollView];
+    scrollView2 = [(PKTiledView *)self scrollView];
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
@@ -488,13 +488,13 @@ void __32__PKTiledView_showDebugOutlines__block_invoke()
 
   if ([(PKTiledView *)self showDebugOutlines])
   {
-    v16 = [(PKTiledCanvasView *)v22 layer];
-    [v16 setBorderWidth:2.0];
+    layer = [(PKTiledCanvasView *)v22 layer];
+    [layer setBorderWidth:2.0];
 
-    v17 = [MEMORY[0x1E69DC888] purpleColor];
-    v18 = [v17 CGColor];
-    v19 = [(PKTiledCanvasView *)v22 layer];
-    [v19 setBorderColor:v18];
+    purpleColor = [MEMORY[0x1E69DC888] purpleColor];
+    cGColor = [purpleColor CGColor];
+    layer2 = [(PKTiledCanvasView *)v22 layer];
+    [layer2 setBorderColor:cGColor];
   }
 
   [(PKTiledView *)self setDrawingUndoTarget:self];
@@ -503,14 +503,14 @@ void __32__PKTiledView_showDebugOutlines__block_invoke()
   [(PKTiledCanvasView *)v22 setUserInteractionEnabled:0];
   [(PKTiledView *)self setCanvasView:v22];
   [(PKTiledView *)self setupGestures];
-  v20 = [(PKTiledView *)self scrollView];
-  [(PKTiledView *)self insertCanvasView:v22 intoScrollView:v20];
+  scrollView3 = [(PKTiledView *)self scrollView];
+  [(PKTiledView *)self insertCanvasView:v22 intoScrollView:scrollView3];
 }
 
 - (BOOL)isExtendedDynamicRangeRenderingActive
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"internalSettings.drawing.disableHDRMetalRenderer"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"internalSettings.drawing.disableHDRMetalRenderer"];
 
   if ((v4 & 1) != 0 || (![(PKTiledView *)self _sixChannelBlendingIsActive]? (LOBYTE(v5) = 0) : (v5 = ![(PKTiledView *)self sixChannelBlendingDisableSnapshotting]), !self->_isDoingInteractiveResize))
   {
@@ -528,7 +528,7 @@ void __32__PKTiledView_showDebugOutlines__block_invoke()
 - (void)updateForAllowedDrawingInput
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [(PKTiledView *)self allowsFingerDrawing];
+  allowsFingerDrawing = [(PKTiledView *)self allowsFingerDrawing];
   if (!PKIsVisionDevice())
   {
     goto LABEL_5;
@@ -542,7 +542,7 @@ void __32__PKTiledView_showDebugOutlines__block_invoke()
   if (byte_1EC291539)
   {
 LABEL_5:
-    if (v3)
+    if (allowsFingerDrawing)
     {
       v4 = &unk_1F47C18E0;
     }
@@ -552,13 +552,13 @@ LABEL_5:
       v4 = &unk_1F47C18F8;
     }
 
-    v5 = [(PKTiledView *)self drawingGestureRecognizer];
-    [v5 setAllowedTouchTypes:v4];
+    drawingGestureRecognizer = [(PKTiledView *)self drawingGestureRecognizer];
+    [drawingGestureRecognizer setAllowedTouchTypes:v4];
 
-    v6 = [(PKTiledView *)self scrollView];
-    v7 = [v6 panGestureRecognizer];
-    v8 = v7;
-    if (v3)
+    scrollView = [(PKTiledView *)self scrollView];
+    panGestureRecognizer = [scrollView panGestureRecognizer];
+    panGestureRecognizer3 = panGestureRecognizer;
+    if (allowsFingerDrawing)
     {
       v9 = 2;
     }
@@ -568,47 +568,47 @@ LABEL_5:
       v9 = 1;
     }
 
-    [v7 setMinimumNumberOfTouches:v9];
+    [panGestureRecognizer setMinimumNumberOfTouches:v9];
     goto LABEL_12;
   }
 
   [(PKTiledView *)self _updateRemoteEffect];
   if (![(PKTiledView *)self _isVirtualDevice])
   {
-    v25 = [(PKTiledView *)self drawingGestureRecognizer];
-    [v25 setAllowedTouchTypes:&unk_1F47C18B0];
+    drawingGestureRecognizer2 = [(PKTiledView *)self drawingGestureRecognizer];
+    [drawingGestureRecognizer2 setAllowedTouchTypes:&unk_1F47C18B0];
 
-    v26 = [(PKTiledView *)self scrollView];
-    v27 = [v26 panGestureRecognizer];
-    [v27 setMinimumNumberOfTouches:1];
+    scrollView2 = [(PKTiledView *)self scrollView];
+    panGestureRecognizer2 = [scrollView2 panGestureRecognizer];
+    [panGestureRecognizer2 setMinimumNumberOfTouches:1];
 
-    v6 = [(PKTiledView *)self scrollView];
-    v8 = [v6 panGestureRecognizer];
-    [v8 setAllowedTouchTypes:&unk_1F47C18C8];
+    scrollView = [(PKTiledView *)self scrollView];
+    panGestureRecognizer3 = [scrollView panGestureRecognizer];
+    [panGestureRecognizer3 setAllowedTouchTypes:&unk_1F47C18C8];
 LABEL_12:
   }
 
-  v10 = [(PKTiledView *)self drawingGestureRecognizer];
-  v11 = [v10 allowedTouchTypes];
-  v12 = [(PKTiledView *)self generationToolGestureRecognizer];
-  [v12 setAllowedTouchTypes:v11];
+  drawingGestureRecognizer3 = [(PKTiledView *)self drawingGestureRecognizer];
+  allowedTouchTypes = [drawingGestureRecognizer3 allowedTouchTypes];
+  generationToolGestureRecognizer = [(PKTiledView *)self generationToolGestureRecognizer];
+  [generationToolGestureRecognizer setAllowedTouchTypes:allowedTouchTypes];
 
-  v13 = [(PKTiledView *)self drawingGestureRecognizer];
-  v14 = [v13 allowedTouchTypes];
-  v15 = [(PKTiledView *)self simultaneousDrawingGestureRecognizer];
-  [v15 setAllowedTouchTypes:v14];
+  drawingGestureRecognizer4 = [(PKTiledView *)self drawingGestureRecognizer];
+  allowedTouchTypes2 = [drawingGestureRecognizer4 allowedTouchTypes];
+  simultaneousDrawingGestureRecognizer = [(PKTiledView *)self simultaneousDrawingGestureRecognizer];
+  [simultaneousDrawingGestureRecognizer setAllowedTouchTypes:allowedTouchTypes2];
 
-  v16 = [(PKTiledView *)self selectionController];
-  v17 = [(PKSelectionController *)v16 selectionInteraction];
+  selectionController = [(PKTiledView *)self selectionController];
+  selectionInteraction = [(PKSelectionController *)selectionController selectionInteraction];
   v18 = [(PKTiledView *)self ink];
-  [v17 _updateAllowedTouchTypesForSelectedInk:v18];
+  [selectionInteraction _updateAllowedTouchTypesForSelectedInk:v18];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v19 = [(PKTiledView *)self attachmentViews];
-  v20 = [v19 countByEnumeratingWithState:&v28 objects:v34 count:16];
+  attachmentViews = [(PKTiledView *)self attachmentViews];
+  v20 = [attachmentViews countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v20)
   {
     v21 = *v29;
@@ -618,13 +618,13 @@ LABEL_12:
       {
         if (*v29 != v21)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(attachmentViews);
         }
 
         [*(*(&v28 + 1) + 8 * i) fingerDrawingEnabledDidChange];
       }
 
-      v20 = [v19 countByEnumeratingWithState:&v28 objects:v34 count:16];
+      v20 = [attachmentViews countByEnumeratingWithState:&v28 objects:v34 count:16];
     }
 
     while (v20);
@@ -633,9 +633,9 @@ LABEL_12:
   v23 = os_log_create("com.apple.pencilkit", "Sketching");
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
-    v24 = [(PKTiledView *)self allowsFingerDrawing];
+    allowsFingerDrawing2 = [(PKTiledView *)self allowsFingerDrawing];
     *buf = 67109120;
-    v33 = v24;
+    v33 = allowsFingerDrawing2;
     _os_log_impl(&dword_1C7CCA000, v23, OS_LOG_TYPE_INFO, "Update allows finger drawing: %{BOOL}d", buf, 8u);
   }
 }
@@ -664,8 +664,8 @@ LABEL_12:
   aBlock[3] = &unk_1E82D69E8;
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
-  v6 = [(PKTiledView *)self window];
-  if ([PKToolPicker isActiveToolPickerVisibleForWindow:v6])
+  window = [(PKTiledView *)self window];
+  if ([PKToolPicker isActiveToolPickerVisibleForWindow:window])
   {
     v4 = 1;
   }
@@ -707,13 +707,13 @@ LABEL_12:
   }
 
   v12 = self->_liveAttachment;
-  v13 = [(PKTiledView *)self canvasView];
-  v14 = [v13 drawingGestureRecognizer];
-  [(PKAttachmentView *)v12 addGestureRecognizer:v14];
+  canvasView = [(PKTiledView *)self canvasView];
+  drawingGestureRecognizer = [canvasView drawingGestureRecognizer];
+  [(PKAttachmentView *)v12 addGestureRecognizer:drawingGestureRecognizer];
 
   v15 = self->_simultaneousDrawingGestureRecognizer;
-  v16 = [(PKTiledView *)self canvasView];
-  [v16 setAllowSimultaneousGR:v15];
+  canvasView2 = [(PKTiledView *)self canvasView];
+  [canvasView2 setAllowSimultaneousGR:v15];
 
   [(PKAttachmentView *)self->_liveAttachment addGestureRecognizer:self->_generationToolGestureRecognizer];
   liveAttachment = self->_liveAttachment;
@@ -734,16 +734,16 @@ uint64_t __34__PKTiledView_allowsFingerDrawing__block_invoke(uint64_t a1)
 
 - (id)drawingGestureRecognizer
 {
-  v2 = [(PKTiledView *)self canvasView];
-  v3 = [v2 drawingGestureRecognizer];
+  canvasView = [(PKTiledView *)self canvasView];
+  drawingGestureRecognizer = [canvasView drawingGestureRecognizer];
 
-  return v3;
+  return drawingGestureRecognizer;
 }
 
 - (PKInk)ink
 {
-  v2 = [(PKTiledView *)self canvasView];
-  v3 = [v2 ink];
+  canvasView = [(PKTiledView *)self canvasView];
+  v3 = [canvasView ink];
 
   return v3;
 }
@@ -751,7 +751,7 @@ uint64_t __34__PKTiledView_allowsFingerDrawing__block_invoke(uint64_t a1)
 - (id)attachmentViews
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(PKTiledView *)self attachments];
   v15 = 0u;
   v16 = 0u;
@@ -775,7 +775,7 @@ uint64_t __34__PKTiledView_allowsFingerDrawing__block_invoke(uint64_t a1)
         v10 = PKDynamicCast(v9, v8);
         if (v10)
         {
-          [v3 addObject:{v10, v13}];
+          [array addObject:{v10, v13}];
         }
       }
 
@@ -785,17 +785,17 @@ uint64_t __34__PKTiledView_allowsFingerDrawing__block_invoke(uint64_t a1)
     while (v5);
   }
 
-  v11 = [v3 copy];
+  v11 = [array copy];
 
   return v11;
 }
 
 - (UIImage)paperTexture
 {
-  v2 = [(PKTiledView *)self canvasView];
-  v3 = [v2 paperTexture];
+  canvasView = [(PKTiledView *)self canvasView];
+  paperTexture = [canvasView paperTexture];
 
-  return v3;
+  return paperTexture;
 }
 
 - (void)didMoveToWindow
@@ -804,22 +804,22 @@ uint64_t __34__PKTiledView_allowsFingerDrawing__block_invoke(uint64_t a1)
   v11.super_class = PKTiledView;
   [(PKTiledView *)&v11 didMoveToWindow];
   [(PKTiledView *)self updateForAllowedDrawingInput];
-  v3 = [(PKTiledView *)self window];
-  v4 = [v3 windowScene];
+  window = [(PKTiledView *)self window];
+  windowScene = [window windowScene];
 
-  if (v4)
+  if (windowScene)
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:self selector:sel__sceneDidActivate_ name:*MEMORY[0x1E69DE338] object:v4];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__sceneDidActivate_ name:*MEMORY[0x1E69DE338] object:windowScene];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:self selector:sel__sceneWillDeactivate_ name:*MEMORY[0x1E69DE358] object:v4];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__sceneWillDeactivate_ name:*MEMORY[0x1E69DE358] object:windowScene];
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:self selector:sel_startLiveResize name:*MEMORY[0x1E69DEB20] object:v4];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:self selector:sel_startLiveResize name:*MEMORY[0x1E69DEB20] object:windowScene];
 
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:self selector:sel_endLiveResize name:*MEMORY[0x1E69DEB28] object:v4];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:self selector:sel_endLiveResize name:*MEMORY[0x1E69DEB28] object:windowScene];
 
     dispatch_async(MEMORY[0x1E69E96A0], &__block_literal_global_2);
   }
@@ -827,11 +827,11 @@ uint64_t __34__PKTiledView_allowsFingerDrawing__block_invoke(uint64_t a1)
   else
   {
     [(PKTiledView *)self _endAnalyticsSessionsIfNecessary];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 removeObserver:self name:*MEMORY[0x1E69DE338] object:0];
+    defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter5 removeObserver:self name:*MEMORY[0x1E69DE338] object:0];
 
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 removeObserver:self name:*MEMORY[0x1E69DE358] object:0];
+    defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter6 removeObserver:self name:*MEMORY[0x1E69DE358] object:0];
   }
 }
 
@@ -846,19 +846,19 @@ uint64_t __34__PKTiledView_allowsFingerDrawing__block_invoke(uint64_t a1)
 
 - (BOOL)_isZoomingOrResizing
 {
-  v3 = [(PKTiledView *)self scrollView];
-  if (([v3 isZooming] & 1) != 0 || self && self->_disableTileRendering)
+  scrollView = [(PKTiledView *)self scrollView];
+  if (([scrollView isZooming] & 1) != 0 || self && self->_disableTileRendering)
   {
     symbolPreviewActive = 1;
   }
 
   else
   {
-    v6 = [(PKTiledView *)self isSystemSnapshotting];
-    symbolPreviewActive = v6;
+    isSystemSnapshotting = [(PKTiledView *)self isSystemSnapshotting];
+    symbolPreviewActive = isSystemSnapshotting;
     if (self)
     {
-      v7 = v6;
+      v7 = isSystemSnapshotting;
     }
 
     else
@@ -877,16 +877,16 @@ uint64_t __34__PKTiledView_allowsFingerDrawing__block_invoke(uint64_t a1)
 
 - (uint64_t)isSystemSnapshotting
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [a1 window];
-  v2 = [v1 windowScene];
-  v3 = [v2 _isPerformingSystemSnapshot];
+  window = [self window];
+  windowScene = [window windowScene];
+  _isPerformingSystemSnapshot = [windowScene _isPerformingSystemSnapshot];
 
-  return v3;
+  return _isPerformingSystemSnapshot;
 }
 
 - (BOOL)_scrollViewIsScrollingOrZoomingOrResizing
@@ -896,37 +896,37 @@ uint64_t __34__PKTiledView_allowsFingerDrawing__block_invoke(uint64_t a1)
     return 1;
   }
 
-  v4 = [(PKTiledView *)self scrollView];
-  if ([v4 isDragging])
+  scrollView = [(PKTiledView *)self scrollView];
+  if ([scrollView isDragging])
   {
-    v3 = 1;
+    isZoomAnimating = 1;
   }
 
   else
   {
-    v5 = [(PKTiledView *)self scrollView];
-    if ([v5 isDecelerating])
+    scrollView2 = [(PKTiledView *)self scrollView];
+    if ([scrollView2 isDecelerating])
     {
-      v3 = 1;
+      isZoomAnimating = 1;
     }
 
     else
     {
-      v6 = [(PKTiledView *)self scrollView];
-      if ([v6 isScrollAnimating])
+      scrollView3 = [(PKTiledView *)self scrollView];
+      if ([scrollView3 isScrollAnimating])
       {
-        v3 = 1;
+        isZoomAnimating = 1;
       }
 
       else
       {
-        v7 = [(PKTiledView *)self scrollView];
-        v3 = [v7 isZoomAnimating];
+        scrollView4 = [(PKTiledView *)self scrollView];
+        isZoomAnimating = [scrollView4 isZoomAnimating];
       }
     }
   }
 
-  return v3;
+  return isZoomAnimating;
 }
 
 - (BOOL)needToUpdateViewFrame
@@ -960,16 +960,16 @@ uint64_t __34__PKTiledView_allowsFingerDrawing__block_invoke(uint64_t a1)
 
 - (CGRect)newViewFrame
 {
-  v3 = [(PKTiledView *)self scrollView];
-  [v3 contentOffset];
+  scrollView = [(PKTiledView *)self scrollView];
+  [scrollView contentOffset];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(PKTiledView *)self scrollView];
-  [v8 bounds];
+  scrollView2 = [(PKTiledView *)self scrollView];
+  [scrollView2 bounds];
   v10 = v9;
-  v11 = [(PKTiledView *)self scrollView];
-  [v11 bounds];
+  scrollView3 = [(PKTiledView *)self scrollView];
+  [scrollView3 bounds];
   v13 = v12;
 
   v14 = v5;
@@ -989,8 +989,8 @@ uint64_t __34__PKTiledView_allowsFingerDrawing__block_invoke(uint64_t a1)
   {
     if (*(&self->_editMenuVisible + 2))
     {
-      v3 = [(PKTiledView *)self canvasView];
-      [v3 _previewDrawingEnded];
+      canvasView = [(PKTiledView *)self canvasView];
+      [canvasView _previewDrawingEnded];
     }
 
     if (self->_toolPreviewView)
@@ -1025,10 +1025,10 @@ uint64_t __34__PKTiledView_allowsFingerDrawing__block_invoke(uint64_t a1)
 
 - (BOOL)isDrawing
 {
-  v2 = [(PKTiledView *)self canvasView];
-  v3 = [v2 isDrawing];
+  canvasView = [(PKTiledView *)self canvasView];
+  isDrawing = [canvasView isDrawing];
 
-  return v3;
+  return isDrawing;
 }
 
 - (void)_dismissInsertSpaceHandlesIfNecessary
@@ -1056,11 +1056,11 @@ uint64_t __34__PKTiledView_allowsFingerDrawing__block_invoke(uint64_t a1)
 
 - (double)_layerContentsScale
 {
-  v3 = [(PKTiledView *)self canvasView];
-  if (v3)
+  canvasView = [(PKTiledView *)self canvasView];
+  if (canvasView)
   {
-    v4 = [(PKTiledView *)self canvasView];
-    [v4 layerContentsScale];
+    canvasView2 = [(PKTiledView *)self canvasView];
+    [canvasView2 layerContentsScale];
     v6 = v5;
   }
 
@@ -1076,8 +1076,8 @@ uint64_t __34__PKTiledView_allowsFingerDrawing__block_invoke(uint64_t a1)
 - (void)_hideCanvas
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(PKTiledView *)self canvasView];
-  [v3 _finishCombiningStrokesIfNecessary];
+  canvasView = [(PKTiledView *)self canvasView];
+  [canvasView _finishCombiningStrokesIfNecessary];
 
   WeakRetained = objc_loadWeakRetained(&self->_lastZoomScale);
   if (WeakRetained)
@@ -1098,8 +1098,8 @@ uint64_t __34__PKTiledView_allowsFingerDrawing__block_invoke(uint64_t a1)
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [(PKTiledView *)self attachmentViews];
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  attachmentViews = [(PKTiledView *)self attachmentViews];
+  v7 = [attachmentViews countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = *v23;
@@ -1110,30 +1110,30 @@ uint64_t __34__PKTiledView_allowsFingerDrawing__block_invoke(uint64_t a1)
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(attachmentViews);
         }
 
         [*(*(&v22 + 1) + 8 * v9++) setContentHidden:0];
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v7 = [attachmentViews countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [(PKTiledView *)self canvasView];
-  v11 = [v10 isHidden];
+  canvasView2 = [(PKTiledView *)self canvasView];
+  isHidden = [canvasView2 isHidden];
 
-  v12 = [(PKTiledView *)self canvasView];
-  [v12 setHidden:1];
+  canvasView3 = [(PKTiledView *)self canvasView];
+  [canvasView3 setHidden:1];
 
   [(PKTiledView *)&self->super.super.super.isa setCurrentDrawingBeingCopiedToCanvas:?];
-  if ((v11 & 1) == 0 && (*&self->_tiledViewFlags & 0x20) != 0)
+  if ((isHidden & 1) == 0 && (*&self->_tiledViewFlags & 0x20) != 0)
   {
-    v13 = [(PKTiledView *)self delegate];
-    [v13 canvasView:self didChangeHiddenState:1];
+    delegate = [(PKTiledView *)self delegate];
+    [delegate canvasView:self didChangeHiddenState:1];
   }
 
   if ([(PKTiledView *)self canvasViewZOrderPolicy]== 2)
@@ -1142,15 +1142,15 @@ uint64_t __34__PKTiledView_allowsFingerDrawing__block_invoke(uint64_t a1)
     v19 = *MEMORY[0x1E695EFD0];
     v20 = v14;
     v21 = *(MEMORY[0x1E695EFD0] + 32);
-    v15 = [(PKTiledView *)self canvasView];
+    canvasView4 = [(PKTiledView *)self canvasView];
     v18[0] = v19;
     v18[1] = v20;
     v18[2] = v21;
-    [v15 setTransform:v18];
+    [canvasView4 setTransform:v18];
 
-    v16 = [(PKTiledView *)self canvasView];
-    v17 = [(PKTiledView *)self scrollView];
-    [(PKTiledView *)self insertCanvasView:v16 intoScrollView:v17];
+    canvasView5 = [(PKTiledView *)self canvasView];
+    scrollView = [(PKTiledView *)self scrollView];
+    [(PKTiledView *)self insertCanvasView:canvasView5 intoScrollView:scrollView];
   }
 
   [MEMORY[0x1E6979518] commit];
@@ -1171,8 +1171,8 @@ uint64_t __34__PKTiledView_allowsFingerDrawing__block_invoke(uint64_t a1)
   }
 
   v4 = +[PKSelectionStatisticsManager sharedStatisticsManager];
-  v3 = [(PKTiledView *)self scrollView];
-  [v3 contentOffset];
+  scrollView = [(PKTiledView *)self scrollView];
+  [scrollView contentOffset];
   [v4 logScrollEventWithContentOffset:?];
 }
 
@@ -1181,8 +1181,8 @@ uint64_t __34__PKTiledView_allowsFingerDrawing__block_invoke(uint64_t a1)
   v72 = *MEMORY[0x1E69E9840];
   if ((!self || !self->_hoverPreviewActive) && ![(PKTiledView *)self _isZoomingOrResizing])
   {
-    v2 = [MEMORY[0x1E696AE30] processInfo];
-    [v2 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     v4 = v3;
 
     v67 = 0u;
@@ -1207,36 +1207,36 @@ uint64_t __34__PKTiledView_allowsFingerDrawing__block_invoke(uint64_t a1)
         }
 
         v7 = *(*(&v65 + 1) + 8 * i);
-        v8 = [v7 viewRep];
-        v9 = [v8 isHidden];
+        viewRep = [v7 viewRep];
+        isHidden = [viewRep isHidden];
 
-        if (!v9)
+        if (!isHidden)
         {
           [(PKTiledView *)self bounds];
           v24 = v23;
           v26 = v25;
           v28 = v27;
           v30 = v29;
-          v31 = [MEMORY[0x1E696AAE8] mainBundle];
-          v32 = [v31 bundleIdentifier];
-          v33 = [v32 isEqualToString:@"com.apple.PaperKit.MarkupPhotoEditingExtension"];
+          mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+          bundleIdentifier = [mainBundle bundleIdentifier];
+          v33 = [bundleIdentifier isEqualToString:@"com.apple.PaperKit.MarkupPhotoEditingExtension"];
 
           if (v33)
           {
             goto LABEL_29;
           }
 
-          v34 = [MEMORY[0x1E696AAE8] mainBundle];
-          v35 = [v34 bundleIdentifier];
-          if ([v35 isEqualToString:@"com.apple.quicklook.extension.previewUI"])
+          mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+          bundleIdentifier2 = [mainBundle2 bundleIdentifier];
+          if ([bundleIdentifier2 isEqualToString:@"com.apple.quicklook.extension.previewUI"])
           {
 
             goto LABEL_29;
           }
 
-          v36 = [MEMORY[0x1E696AAE8] mainBundle];
-          v37 = [v36 bundleIdentifier];
-          v38 = [v37 isEqualToString:@"com.apple.quicklook.UIExtension"];
+          mainBundle3 = [MEMORY[0x1E696AAE8] mainBundle];
+          bundleIdentifier3 = [mainBundle3 bundleIdentifier];
+          v38 = [bundleIdentifier3 isEqualToString:@"com.apple.quicklook.UIExtension"];
 
           if ((v38 & 1) != 0 || PKIsQuickNoteOnPhone())
           {
@@ -1262,8 +1262,8 @@ LABEL_33:
           v60 = 0u;
           v57 = 0u;
           v58 = 0u;
-          v11 = v42;
-          v43 = [v11 countByEnumeratingWithState:&v57 objects:v69 count:16];
+          allValues = v42;
+          v43 = [allValues countByEnumeratingWithState:&v57 objects:v69 count:16];
           if (!v43)
           {
             goto LABEL_47;
@@ -1276,7 +1276,7 @@ LABEL_33:
 LABEL_36:
             if (*v58 != v44)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(allValues);
             }
 
             v46 = *(*(&v57 + 1) + 8 * v45);
@@ -1290,19 +1290,19 @@ LABEL_41:
                 if (v4 - v48 >= 0.1)
                 {
                   [(PKRendererTile *)*(*(&v57 + 1) + 8 * v45) purgeTileLayers];
-                  v49 = [v7 purgedTiles];
-                  v50 = [(PKRendererTile *)v46 properties];
-                  [v49 setObject:v46 forKeyedSubscript:v50];
+                  purgedTiles = [v7 purgedTiles];
+                  properties = [(PKRendererTile *)v46 properties];
+                  [purgedTiles setObject:v46 forKeyedSubscript:properties];
 
-                  v51 = [v7 tiles];
-                  v52 = [(PKRendererTile *)v46 properties];
-                  [v51 removeObjectForKey:v52];
+                  tiles = [v7 tiles];
+                  properties2 = [(PKRendererTile *)v46 properties];
+                  [tiles removeObjectForKey:properties2];
                 }
               }
 
               if (v43 == ++v45)
               {
-                v53 = [v11 countByEnumeratingWithState:&v57 objects:v69 count:16];
+                v53 = [allValues countByEnumeratingWithState:&v57 objects:v69 count:16];
                 v43 = v53;
                 if (!v53)
                 {
@@ -1328,10 +1328,10 @@ LABEL_47:
         v64 = 0u;
         v61 = 0u;
         v62 = 0u;
-        v10 = [v7 tiles];
-        v11 = [v10 allValues];
+        tiles2 = [v7 tiles];
+        allValues = [tiles2 allValues];
 
-        v12 = [v11 countByEnumeratingWithState:&v61 objects:v70 count:16];
+        v12 = [allValues countByEnumeratingWithState:&v61 objects:v70 count:16];
         if (v12)
         {
           v13 = *v62;
@@ -1342,7 +1342,7 @@ LABEL_47:
             {
               if (*v62 != v13)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(allValues);
               }
 
               v15 = *(*(&v61 + 1) + 8 * v14);
@@ -1360,20 +1360,20 @@ LABEL_47:
               if (v4 - v17 >= 0.1)
               {
                 [(PKRendererTile *)*(*(&v61 + 1) + 8 * v14) purgeTileLayers];
-                v18 = [v7 purgedTiles];
-                v19 = [(PKRendererTile *)v15 properties];
-                [v18 setObject:v15 forKeyedSubscript:v19];
+                purgedTiles2 = [v7 purgedTiles];
+                properties3 = [(PKRendererTile *)v15 properties];
+                [purgedTiles2 setObject:v15 forKeyedSubscript:properties3];
 
-                v20 = [v7 tiles];
-                v21 = [(PKRendererTile *)v15 properties];
-                [v20 removeObjectForKey:v21];
+                tiles3 = [v7 tiles];
+                properties4 = [(PKRendererTile *)v15 properties];
+                [tiles3 removeObjectForKey:properties4];
               }
 
               ++v14;
             }
 
             while (v12 != v14);
-            v22 = [v11 countByEnumeratingWithState:&v61 objects:v70 count:16];
+            v22 = [allValues countByEnumeratingWithState:&v61 objects:v70 count:16];
             v12 = v22;
           }
 
@@ -1405,7 +1405,7 @@ LABEL_50:
 - (id)visibleAttachments
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(PKTiledView *)self _visibleAttachments];
   v14 = 0u;
   v15 = 0u;
@@ -1429,7 +1429,7 @@ LABEL_50:
         v10 = PKDynamicCast(v9, v8);
         if (v10)
         {
-          [v3 addObject:{v10, v12}];
+          [array addObject:{v10, v12}];
         }
       }
 
@@ -1439,13 +1439,13 @@ LABEL_50:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)_visibleAttachments
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(PKTiledView *)self attachments];
   v14 = 0u;
   v15 = 0u;
@@ -1465,12 +1465,12 @@ LABEL_50:
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 viewRep];
-        v10 = [v9 isHidden];
+        viewRep = [v8 viewRep];
+        isHidden = [viewRep isHidden];
 
-        if ((v10 & 1) == 0)
+        if ((isHidden & 1) == 0)
         {
-          [v3 addObject:v8];
+          [array addObject:v8];
         }
       }
 
@@ -1480,7 +1480,7 @@ LABEL_50:
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (void)layoutSubviews
@@ -1501,37 +1501,37 @@ LABEL_50:
 
   else
   {
-    v3 = [(PKTiledView *)self invertColors];
+    invertColors = [(PKTiledView *)self invertColors];
     drawingTouchThatHitNothing = self->_drawingTouchThatHitNothing;
     if (drawingTouchThatHitNothing)
     {
-      LOBYTE(drawingTouchThatHitNothing[1].super.isa) = v3;
-      [(PKMetalRendererController *)drawingTouchThatHitNothing[3].super.isa setInvertColors:v3];
+      LOBYTE(drawingTouchThatHitNothing[1].super.isa) = invertColors;
+      [(PKMetalRendererController *)drawingTouchThatHitNothing[3].super.isa setInvertColors:invertColors];
     }
 
-    v5 = [(PKTiledView *)self _activeSixChannelBlendingMode];
-    v6 = [(PKTiledView *)self canvasView];
-    [v6 setSixChannelBlendingMode:v5];
+    _activeSixChannelBlendingMode = [(PKTiledView *)self _activeSixChannelBlendingMode];
+    canvasView = [(PKTiledView *)self canvasView];
+    [canvasView setSixChannelBlendingMode:_activeSixChannelBlendingMode];
 
-    v7 = [(PKTiledView *)self drawBitmapEraserMask];
-    v8 = [(PKTiledView *)self canvasView];
-    [v8 setDrawBitmapEraserMask:v7];
+    drawBitmapEraserMask = [(PKTiledView *)self drawBitmapEraserMask];
+    canvasView2 = [(PKTiledView *)self canvasView];
+    [canvasView2 setDrawBitmapEraserMask:drawBitmapEraserMask];
   }
 }
 
-- (id)initInScrollView:(id)a3
+- (id)initInScrollView:(id)view
 {
-  v4 = a3;
-  v5 = [(PKTiledView *)self initInScrollView:v4 defaultDrawingClass:objc_opt_class()];
+  viewCopy = view;
+  v5 = [(PKTiledView *)self initInScrollView:viewCopy defaultDrawingClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)initInScrollView:(id)a3 sixChannelBlending:(BOOL)a4 defaultDrawingClass:(Class)a5 readOnly:(BOOL)a6
+- (id)initInScrollView:(id)view sixChannelBlending:(BOOL)blending defaultDrawingClass:(Class)class readOnly:(BOOL)only
 {
-  v8 = a4;
-  v10 = a3;
-  [v10 bounds];
+  blendingCopy = blending;
+  viewCopy = view;
+  [viewCopy bounds];
   v54.receiver = self;
   v54.super_class = PKTiledView;
   v11 = [(PKTiledView *)&v54 initWithFrame:?];
@@ -1542,8 +1542,8 @@ LABEL_50:
     [v13 queryGenerationModelAvailabilityStatus];
 
     *(v11 + 77) = 4;
-    *(v11 + 448) = !v8;
-    if (v8)
+    *(v11 + 448) = !blendingCopy;
+    if (blendingCopy)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -1553,16 +1553,16 @@ LABEL_50:
       dispatch_async(MEMORY[0x1E69E96A0], block);
     }
 
-    v14 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = *(v11 + 61);
-    *(v11 + 61) = v14;
+    *(v11 + 61) = array;
 
-    objc_storeStrong(v11 + 67, a5);
-    *(v11 + 499) = v8;
+    objc_storeStrong(v11 + 67, class);
+    *(v11 + 499) = blendingCopy;
     v16 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.PencilKit"];
-    v17 = [MEMORY[0x1E696AAE8] mainBundle];
-    v18 = [v17 bundleIdentifier];
-    v19 = [v18 isEqualToString:@"com.apple.freeform"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v19 = [bundleIdentifier isEqualToString:@"com.apple.freeform"];
 
     if (v19)
     {
@@ -1581,8 +1581,8 @@ LABEL_50:
     *(v11 + 498) = +[PKTiledView showDebugOutlines];
     objc_opt_self();
     *(v11 + 88) = 0x4080000000000000;
-    v22 = objc_storeWeak(v11 + 69, v10);
-    [v10 _addScrollViewScrollObserver:v11];
+    v22 = objc_storeWeak(v11 + 69, viewCopy);
+    [viewCopy _addScrollViewScrollObserver:v11];
 
     WeakRetained = objc_loadWeakRetained(v11 + 69);
     [WeakRetained _setLayoutObserver:v11];
@@ -1615,27 +1615,27 @@ LABEL_50:
 
     [*(v11 + 91) setTiledView:v11];
     [v11 addSubview:*(v11 + 91)];
-    if (!a6)
+    if (!only)
     {
       [v11 newCanvasView];
     }
 
-    [v10 addSubview:v11];
+    [viewCopy addSubview:v11];
     [v11 set_maxFileFormatVersion:{+[PKDrawing _currentSerializationVersion](PKDrawingConcrete, "_currentSerializationVersion")}];
     *(v11 + 496) = 1;
     *(v11 + 72) = dyld_program_sdk_at_least() ^ 1;
-    v36 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v36 addObserver:v12 selector:sel__updateForToolPickerVisibilityChange_ name:@"PKToolPickerWillShowNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel__updateForToolPickerVisibilityChange_ name:@"PKToolPickerWillShowNotification" object:0];
 
-    v37 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v37 addObserver:v12 selector:sel__updateForToolPickerVisibilityChange_ name:@"PKToolPickerDidShowNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v12 selector:sel__updateForToolPickerVisibilityChange_ name:@"PKToolPickerDidShowNotification" object:0];
 
-    v38 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v38 addObserver:v12 selector:sel__updateForToolPickerVisibilityChange_ name:@"PKToolPickerDidHideNotification" object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v12 selector:sel__updateForToolPickerVisibilityChange_ name:@"PKToolPickerDidHideNotification" object:0];
 
     [objc_opt_class() addObserver:v12 forKeyPath:@"prefersPencilOnlyDrawing" options:0 context:0];
-    v39 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v39 addObserver:v12 selector:sel__handlePencilSqueezeInteractionDidChangePaletteViewVisibilityNotification_ name:@"PKPencilSqueezeInteractionDidChangePaletteViewVisibilityNotification" object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v12 selector:sel__handlePencilSqueezeInteractionDidChangePaletteViewVisibilityNotification_ name:@"PKPencilSqueezeInteractionDidChangePaletteViewVisibilityNotification" object:0];
 
     [v12 updateForAllowedDrawingInput];
     [v12 setAccessibilityIdentifier:@"com.apple.pencilkit.tiledView"];
@@ -1643,7 +1643,7 @@ LABEL_50:
     v41 = *(v12 + 51);
     *(v12 + 51) = v40;
 
-    [v10 addInteraction:*(v12 + 51)];
+    [viewCopy addInteraction:*(v12 + 51)];
     objc_initWeak(&location, v12);
     v49[0] = MEMORY[0x1E69E9820];
     v49[1] = 3221225472;
@@ -1770,13 +1770,13 @@ void __80__PKTiledView_initInScrollView_sixChannelBlending_defaultDrawingClass_r
     self->_hideCanvasBlock = 0;
   }
 
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v12 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [objc_opt_class() removeObserver:self forKeyPath:@"prefersPencilOnlyDrawing"];
   [(PKTileController *)self->_drawingTouchThatHitNothing teardown];
-  v13 = [(UIDropInteraction *)self->_dropInteraction view];
-  [v13 removeInteraction:self->_dropInteraction];
+  view = [(UIDropInteraction *)self->_dropInteraction view];
+  [view removeInteraction:self->_dropInteraction];
 
   WeakRetained = objc_loadWeakRetained(&self->_attachmentContainerView);
   [WeakRetained _setLayoutObserver:0];
@@ -1803,31 +1803,31 @@ void __80__PKTiledView_initInScrollView_sixChannelBlending_defaultDrawingClass_r
 
 - (int64_t)effectiveMaximumSupportedContentVersion
 {
-  v3 = [(PKTiledView *)self maximumSupportedContentVersion];
-  v4 = [(PKTiledView *)self _activeToolPicker];
-  v5 = v4;
-  if (v4)
+  maximumSupportedContentVersion = [(PKTiledView *)self maximumSupportedContentVersion];
+  _activeToolPicker = [(PKTiledView *)self _activeToolPicker];
+  v5 = _activeToolPicker;
+  if (_activeToolPicker)
   {
-    v6 = [v4 maximumSupportedContentVersion];
+    maximumSupportedContentVersion2 = [_activeToolPicker maximumSupportedContentVersion];
   }
 
   else
   {
-    v6 = 4;
+    maximumSupportedContentVersion2 = 4;
   }
 
-  if (v3 >= v6)
+  if (maximumSupportedContentVersion >= maximumSupportedContentVersion2)
   {
-    v3 = v6;
+    maximumSupportedContentVersion = maximumSupportedContentVersion2;
   }
 
-  return v3;
+  return maximumSupportedContentVersion;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v12 = a3;
-  objc_storeWeak(&self->_canvasViewZOrderPolicy, v12);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_canvasViewZOrderPolicy, delegateCopy);
   *&self->_tiledViewFlags = *&self->_tiledViewFlags & 0xFFFE | objc_opt_respondsToSelector() & 1;
   if (objc_opt_respondsToSelector())
   {
@@ -1923,13 +1923,13 @@ void __80__PKTiledView_initInScrollView_sixChannelBlending_defaultDrawingClass_r
 {
   if (!self || !*(&self->_editMenuVisible + 4))
   {
-    v8 = [(PKTiledView *)self scrollView];
-    v3 = [v8 panGestureRecognizer];
-    if ([v3 isEnabled])
+    scrollView = [(PKTiledView *)self scrollView];
+    panGestureRecognizer = [scrollView panGestureRecognizer];
+    if ([panGestureRecognizer isEnabled])
     {
-      v4 = [(PKTiledView *)self _shouldPreventScrollViewPanGestureWhilePreviewing];
+      _shouldPreventScrollViewPanGestureWhilePreviewing = [(PKTiledView *)self _shouldPreventScrollViewPanGestureWhilePreviewing];
 
-      if (v4)
+      if (_shouldPreventScrollViewPanGestureWhilePreviewing)
       {
         v5 = os_log_create("com.apple.pencilkit", "");
         if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -1943,9 +1943,9 @@ void __80__PKTiledView_initInScrollView_sixChannelBlending_defaultDrawingClass_r
           *(&self->_editMenuVisible + 4) = 1;
         }
 
-        v6 = [(PKTiledView *)self scrollView];
-        v7 = [v6 panGestureRecognizer];
-        [v7 setEnabled:0];
+        scrollView2 = [(PKTiledView *)self scrollView];
+        panGestureRecognizer2 = [scrollView2 panGestureRecognizer];
+        [panGestureRecognizer2 setEnabled:0];
       }
     }
 
@@ -1966,9 +1966,9 @@ void __80__PKTiledView_initInScrollView_sixChannelBlending_defaultDrawingClass_r
       _os_log_impl(&dword_1C7CCA000, v3, OS_LOG_TYPE_INFO, "Reenabling scroll view pan gesture recognizer", v6, 2u);
     }
 
-    v4 = [(PKTiledView *)self scrollView];
-    v5 = [v4 panGestureRecognizer];
-    [v5 setEnabled:1];
+    scrollView = [(PKTiledView *)self scrollView];
+    panGestureRecognizer = [scrollView panGestureRecognizer];
+    [panGestureRecognizer setEnabled:1];
 
     *(&self->_editMenuVisible + 4) = 0;
   }
@@ -1990,8 +1990,8 @@ void __80__PKTiledView_initInScrollView_sixChannelBlending_defaultDrawingClass_r
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v4 = [(PKTiledView *)self attachmentViews];
-      v5 = [v4 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      attachmentViews = [(PKTiledView *)self attachmentViews];
+      v5 = [attachmentViews countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v5)
       {
         v6 = *v27;
@@ -2001,7 +2001,7 @@ void __80__PKTiledView_initInScrollView_sixChannelBlending_defaultDrawingClass_r
           {
             if (*v27 != v6)
             {
-              objc_enumerationMutation(v4);
+              objc_enumerationMutation(attachmentViews);
             }
 
             if ([*(*(&v26 + 1) + 8 * i) hasSeenAnyExtendedDynamicRangeStrokes])
@@ -2011,7 +2011,7 @@ void __80__PKTiledView_initInScrollView_sixChannelBlending_defaultDrawingClass_r
             }
           }
 
-          v5 = [v4 countByEnumeratingWithState:&v26 objects:v30 count:16];
+          v5 = [attachmentViews countByEnumeratingWithState:&v26 objects:v30 count:16];
           if (v5)
           {
             continue;
@@ -2023,12 +2023,12 @@ void __80__PKTiledView_initInScrollView_sixChannelBlending_defaultDrawingClass_r
 
 LABEL_14:
 
-      v8 = [(PKTiledView *)self canvasView];
-      v9 = [v8 metalConfig];
-      v10 = v9;
-      if (v9)
+      canvasView = [(PKTiledView *)self canvasView];
+      metalConfig = [canvasView metalConfig];
+      v10 = metalConfig;
+      if (metalConfig)
       {
-        v11 = v9;
+        v11 = metalConfig;
       }
 
       else
@@ -2042,20 +2042,20 @@ LABEL_14:
       +[PKMetalUtility layerContentsScale];
       v14 = v13;
       v15 = [PKTileController alloc];
-      v16 = [(PKTiledView *)self _sixChannelBlendingIsActive];
-      v17 = [(PKTiledView *)self _transparentBlendingIsActive];
-      v18 = [(PKTiledView *)self isExtendedDynamicRangeRenderingActive];
+      _sixChannelBlendingIsActive = [(PKTiledView *)self _sixChannelBlendingIsActive];
+      _transparentBlendingIsActive = [(PKTiledView *)self _transparentBlendingIsActive];
+      isExtendedDynamicRangeRenderingActive = [(PKTiledView *)self isExtendedDynamicRangeRenderingActive];
       v19 = ceil(v14 * 512.0);
-      v20 = [(PKTileController *)v15 initWithPixelSize:v16 actualSize:v17 pixelFormat:v18 sixChannelBlending:v12 transparentBlending:v19 wantsExtendedDynamicRangeContent:v19 metalConfig:v19, v19];
+      v20 = [(PKTileController *)v15 initWithPixelSize:_sixChannelBlendingIsActive actualSize:_transparentBlendingIsActive pixelFormat:isExtendedDynamicRangeRenderingActive sixChannelBlending:v12 transparentBlending:v19 wantsExtendedDynamicRangeContent:v19 metalConfig:v19, v19];
       drawingTouchThatHitNothing = self->_drawingTouchThatHitNothing;
       self->_drawingTouchThatHitNothing = v20;
 
-      v22 = [(PKTiledView *)self invertColors];
+      invertColors = [(PKTiledView *)self invertColors];
       v23 = self->_drawingTouchThatHitNothing;
       if (v23)
       {
-        LOBYTE(v23[1].super.isa) = v22;
-        [(PKMetalRendererController *)v23[3].super.isa setInvertColors:v22];
+        LOBYTE(v23[1].super.isa) = invertColors;
+        [(PKMetalRendererController *)v23[3].super.isa setInvertColors:invertColors];
       }
     }
 
@@ -2069,17 +2069,17 @@ LABEL_14:
 
 - (double)timestampForLatestUserInteraction
 {
-  v3 = [(PKTiledView *)self canvasView];
-  if (([v3 isDrawing] & 1) == 0)
+  canvasView = [(PKTiledView *)self canvasView];
+  if (([canvasView isDrawing] & 1) == 0)
   {
 
     return *&self->_recentStrokesForAutoRefine;
   }
 
-  v4 = [(PKTiledView *)self canvasView];
-  v5 = [v4 isPreviewing];
+  canvasView2 = [(PKTiledView *)self canvasView];
+  isPreviewing = [canvasView2 isPreviewing];
 
-  if (v5)
+  if (isPreviewing)
   {
     return *&self->_recentStrokesForAutoRefine;
   }
@@ -2087,25 +2087,25 @@ LABEL_14:
   return CACurrentMediaTime();
 }
 
-- (void)_cancelCurrentStrokeAndReduceMemoryFootprintFlushCaches:(BOOL)a3
+- (void)_cancelCurrentStrokeAndReduceMemoryFootprintFlushCaches:(BOOL)caches
 {
-  v3 = a3;
+  cachesCopy = caches;
   [(PKTiledView *)self _endHoverToolPreview];
   [(PKHoverController *)*&self->_lastContentOffset.x reset];
   [(PKTiledView *)self _resetDrawingState];
-  if (v3)
+  if (cachesCopy)
   {
     [(PKTiledView *)self _flushCaches];
   }
 
-  v5 = [(PKTiledView *)self canvasView];
-  [v5 _reduceMemoryFootprint];
+  canvasView = [(PKTiledView *)self canvasView];
+  [canvasView _reduceMemoryFootprint];
 }
 
 - (void)_flushCaches
 {
-  v3 = [self->_drawingPolicy _rendererController];
-  [(PKMetalRendererController *)v3 flushMemoryIfPossible];
+  _rendererController = [self->_drawingPolicy _rendererController];
+  [(PKMetalRendererController *)_rendererController flushMemoryIfPossible];
 
   drawingTouchThatHitNothing = self->_drawingTouchThatHitNothing;
   if (drawingTouchThatHitNothing)
@@ -2118,8 +2118,8 @@ LABEL_14:
 
 - (void)_resetDrawingState
 {
-  v3 = [(PKTiledView *)self drawingGestureRecognizer];
-  [v3 cancel];
+  drawingGestureRecognizer = [(PKTiledView *)self drawingGestureRecognizer];
+  [drawingGestureRecognizer cancel];
 
   if (([self->_drawingPolicy isHidden] & 1) == 0)
   {
@@ -2141,9 +2141,9 @@ LABEL_14:
 
   if (!WeakRetained)
   {
-    v6 = [(PKTiledView *)self window];
-    v7 = [v6 windowScene];
-    v8 = [PKPencilObserverInteraction interactionForScene:v7];
+    window = [(PKTiledView *)self window];
+    windowScene = [window windowScene];
+    v8 = [PKPencilObserverInteraction interactionForScene:windowScene];
     v9 = v8;
     if (v8)
     {
@@ -2162,10 +2162,10 @@ LABEL_14:
 
     v12 = objc_loadWeakRetained(&self->_analyticsSession);
     v13 = [(PKTiledView *)self ink];
-    v15 = [v13 identifier];
+    identifier = [v13 identifier];
     if (v12)
     {
-      objc_setProperty_nonatomic_copy(v12, v14, v15, 40);
+      objc_setProperty_nonatomic_copy(v12, v14, identifier, 40);
     }
   }
 }
@@ -2189,8 +2189,8 @@ LABEL_14:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(PKTiledView *)self attachmentViews];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  attachmentViews = [(PKTiledView *)self attachmentViews];
+  v4 = [attachmentViews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = *v13;
@@ -2201,7 +2201,7 @@ LABEL_14:
       {
         if (*v13 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(attachmentViews);
         }
 
         v7 = *(*(&v12 + 1) + 8 * v6);
@@ -2225,7 +2225,7 @@ LABEL_14:
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [attachmentViews countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v4);
@@ -2254,11 +2254,11 @@ LABEL_14:
   }
 }
 
-- (void)setWantsExtendedDynamicRangeContent:(BOOL)a3
+- (void)setWantsExtendedDynamicRangeContent:(BOOL)content
 {
-  if (self->_isDoingInteractiveResize != a3)
+  if (self->_isDoingInteractiveResize != content)
   {
-    self->_isDoingInteractiveResize = a3;
+    self->_isDoingInteractiveResize = content;
     [(PKTiledView *)self _updateWantsExtendedDynamicRangeContent];
   }
 }
@@ -2266,13 +2266,13 @@ LABEL_14:
 - (void)_updateWantsExtendedDynamicRangeContent
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = [(PKTiledView *)self isExtendedDynamicRangeRenderingActive];
-  [self->_drawingPolicy setWantsExtendedDynamicRangeContent:v3];
+  isExtendedDynamicRangeRenderingActive = [(PKTiledView *)self isExtendedDynamicRangeRenderingActive];
+  [self->_drawingPolicy setWantsExtendedDynamicRangeContent:isExtendedDynamicRangeRenderingActive];
   drawingTouchThatHitNothing = self->_drawingTouchThatHitNothing;
   if (drawingTouchThatHitNothing && (isa = drawingTouchThatHitNothing[3].super.isa) != 0)
   {
-    v6 = v3;
-    if (v3 == *(isa + 524))
+    v6 = isExtendedDynamicRangeRenderingActive;
+    if (isExtendedDynamicRangeRenderingActive == *(isa + 524))
     {
       return;
     }
@@ -2280,7 +2280,7 @@ LABEL_14:
 
   else
   {
-    if (!v3)
+    if (!isExtendedDynamicRangeRenderingActive)
     {
       return;
     }
@@ -2297,13 +2297,13 @@ LABEL_14:
     _os_log_impl(&dword_1C7CCA000, v7, OS_LOG_TYPE_DEFAULT, "Tile type changed to EDR: %{BOOL}d", buf, 8u);
   }
 
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v9 = [(PKTiledView *)self attachmentViews];
-  v10 = [v9 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  attachmentViews = [(PKTiledView *)self attachmentViews];
+  v10 = [attachmentViews countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v10)
   {
     v11 = *v35;
@@ -2313,21 +2313,21 @@ LABEL_14:
       {
         if (*v35 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(attachmentViews);
         }
 
         v13 = *(*(&v34 + 1) + 8 * i);
-        v14 = [v13 tiles];
-        [v8 addEntriesFromDictionary:v14];
+        tiles = [v13 tiles];
+        [dictionary addEntriesFromDictionary:tiles];
 
-        v15 = [v13 tiles];
-        [v15 removeAllObjects];
+        tiles2 = [v13 tiles];
+        [tiles2 removeAllObjects];
 
-        v16 = [v13 purgedTiles];
-        [v16 removeAllObjects];
+        purgedTiles = [v13 purgedTiles];
+        [purgedTiles removeAllObjects];
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v34 objects:v39 count:16];
+      v10 = [attachmentViews countByEnumeratingWithState:&v34 objects:v39 count:16];
     }
 
     while (v10);
@@ -2337,8 +2337,8 @@ LABEL_14:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v17 = [v8 allValues];
-  v18 = [v17 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  allValues = [dictionary allValues];
+  v18 = [allValues countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v18)
   {
     v19 = *v31;
@@ -2348,7 +2348,7 @@ LABEL_14:
       {
         if (*v31 != v19)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(allValues);
         }
 
         if (([(PKRendererTile *)*(*(&v30 + 1) + 8 * j) hasContents]& 1) != 0)
@@ -2358,7 +2358,7 @@ LABEL_14:
         }
       }
 
-      v18 = [v17 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v18 = [allValues countByEnumeratingWithState:&v30 objects:v38 count:16];
       if (v18)
       {
         continue;
@@ -2375,10 +2375,10 @@ LABEL_23:
   aBlock[1] = 3221225472;
   aBlock[2] = __54__PKTiledView__updateWantsExtendedDynamicRangeContent__block_invoke;
   aBlock[3] = &unk_1E82D6388;
-  v22 = v8;
+  v22 = dictionary;
   v29 = v22;
   v23 = _Block_copy(aBlock);
-  [(PKTileController *)self->_drawingTouchThatHitNothing setWantsExtendedDynamicRangeContent:v3];
+  [(PKTileController *)self->_drawingTouchThatHitNothing setWantsExtendedDynamicRangeContent:isExtendedDynamicRangeRenderingActive];
   v24 = os_log_create("com.apple.pencilkit", "EDR");
   v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
   if (v21)
@@ -2443,28 +2443,28 @@ void __54__PKTiledView__updateWantsExtendedDynamicRangeContent__block_invoke(uin
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  if (self->_generationToolGestureRecognizer != a3 && self->_simultaneousDrawingGestureRecognizer != a3)
+  if (self->_generationToolGestureRecognizer != begin && self->_simultaneousDrawingGestureRecognizer != begin)
   {
     return 1;
   }
 
-  v4 = [(PKTiledView *)self drawingGestureRecognizer];
-  v3 = [v4 isEnabled];
+  drawingGestureRecognizer = [(PKTiledView *)self drawingGestureRecognizer];
+  isEnabled = [drawingGestureRecognizer isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  v8 = gestureRecognizerCopy;
   generationToolGestureRecognizer = self->_generationToolGestureRecognizer;
-  v11 = generationToolGestureRecognizer == v6 || generationToolGestureRecognizer == v7;
-  v12 = [(PKTiledView *)self canvasView];
-  v13 = [v12 drawingGestureRecognizer];
+  v11 = generationToolGestureRecognizer == recognizerCopy || generationToolGestureRecognizer == gestureRecognizerCopy;
+  canvasView = [(PKTiledView *)self canvasView];
+  drawingGestureRecognizer = [canvasView drawingGestureRecognizer];
 
   if (v11)
   {
@@ -2474,69 +2474,69 @@ void __54__PKTiledView__updateWantsExtendedDynamicRangeContent__block_invoke(uin
   else
   {
     simultaneousDrawingGestureRecognizer = self->_simultaneousDrawingGestureRecognizer;
-    v17 = simultaneousDrawingGestureRecognizer == v6 || simultaneousDrawingGestureRecognizer == v8;
-    v19 = v13 == v6 || v13 == v8;
+    v17 = simultaneousDrawingGestureRecognizer == recognizerCopy || simultaneousDrawingGestureRecognizer == v8;
+    v19 = drawingGestureRecognizer == recognizerCopy || drawingGestureRecognizer == v8;
     v14 = v19 && v17;
   }
 
   return v14;
 }
 
-- (void)insertCanvasView:(id)a3 intoScrollView:(id)a4
+- (void)insertCanvasView:(id)view intoScrollView:(id)scrollView
 {
-  v7 = a3;
-  v6 = a4;
+  viewCopy = view;
+  scrollViewCopy = scrollView;
   if ([(PKTiledView *)self canvasViewZOrderPolicy])
   {
-    [v6 addSubview:v7];
+    [scrollViewCopy addSubview:viewCopy];
   }
 
   else
   {
-    [v6 insertSubview:v7 atIndex:0];
+    [scrollViewCopy insertSubview:viewCopy atIndex:0];
   }
 }
 
-- (void)setDefaultDrawingClass:(Class)a3
+- (void)setDefaultDrawingClass:(Class)class
 {
-  if (self->_linedPaper != a3)
+  if (self->_linedPaper != class)
   {
-    objc_storeStrong(&self->_linedPaper, a3);
-    v5 = objc_alloc_init(a3);
+    objc_storeStrong(&self->_linedPaper, class);
+    v5 = objc_alloc_init(class);
     [self->_drawingPolicy setDrawing:?];
   }
 }
 
-- (void)setCanvasViewZOrderPolicy:(int64_t)a3
+- (void)setCanvasViewZOrderPolicy:(int64_t)policy
 {
-  self->_contentSnapshottingView = a3;
+  self->_contentSnapshottingView = policy;
   drawingPolicy = self->_drawingPolicy;
   if (drawingPolicy)
   {
     [drawingPolicy removeFromSuperview];
     v5 = self->_drawingPolicy;
-    v6 = [(PKTiledView *)self scrollView];
+    scrollView = [(PKTiledView *)self scrollView];
     [(PKTiledView *)self insertCanvasView:v5 intoScrollView:?];
   }
 }
 
-- (void)setInk:(id)a3
+- (void)setInk:(id)ink
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(PKTiledView *)self canvasView];
-  v7 = [v6 ink];
-  v8 = [v7 identifier];
-  v9 = [v5 isEqualToString:v8];
+  inkCopy = ink;
+  identifier = [inkCopy identifier];
+  canvasView = [(PKTiledView *)self canvasView];
+  v7 = [canvasView ink];
+  identifier2 = [v7 identifier];
+  v9 = [identifier isEqualToString:identifier2];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [(PKTiledView *)self window];
-    v11 = [v10 windowScene];
-    v12 = [PKPencilShadowView shadowViewForScene:v11];
-    [v12 setInk:v4];
+    window = [(PKTiledView *)self window];
+    windowScene = [window windowScene];
+    v12 = [PKPencilShadowView shadowViewForScene:windowScene];
+    [v12 setInk:inkCopy];
 
-    if ([v4 _isEraserInk] & 1) != 0 || (-[PKTiledView canvasView](self, "canvasView"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "ink"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "_isEraserInk"), v14, v13, (v15))
+    if ([inkCopy _isEraserInk] & 1) != 0 || (-[PKTiledView canvasView](self, "canvasView"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "ink"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "_isEraserInk"), v14, v13, (v15))
     {
       if (!self)
       {
@@ -2557,8 +2557,8 @@ LABEL_10:
     if (*(&self->_editMenuVisible + 2) || *(&self->_editMenuVisible + 3))
     {
       [(PKTiledView *)self _endHoverToolPreview];
-      v16 = [(PKTiledView *)self hoverController];
-      [(PKHoverController *)v16 reset];
+      hoverController = [(PKTiledView *)self hoverController];
+      [(PKHoverController *)hoverController reset];
 
       [(PKTiledView *)self _resetDrawingState];
     }
@@ -2567,33 +2567,33 @@ LABEL_10:
   }
 
 LABEL_11:
-  [(PKTiledView *)self _updateDrawingGestureEnablementWithInk:v4];
-  v18 = [(PKTiledView *)self canvasView];
-  v19 = [v18 ink];
-  v20 = [v19 identifier];
-  if (![v20 isEqual:@"com.apple.ink.objectEraser"])
+  [(PKTiledView *)self _updateDrawingGestureEnablementWithInk:inkCopy];
+  canvasView2 = [(PKTiledView *)self canvasView];
+  v19 = [canvasView2 ink];
+  identifier3 = [v19 identifier];
+  if (![identifier3 isEqual:@"com.apple.ink.objectEraser"])
   {
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v21 = [(PKTiledView *)self canvasView];
-  v45 = v4;
-  v22 = [v21 ink];
-  v23 = [v22 identifier];
-  v24 = [v4 identifier];
-  if (([v23 isEqual:v24] & 1) != 0 || (maxFileFormatVersion = self->__maxFileFormatVersion, maxFileFormatVersion != -[PKTiledView _totalVisibleStrokes](self, "_totalVisibleStrokes")))
+  canvasView3 = [(PKTiledView *)self canvasView];
+  v45 = inkCopy;
+  v22 = [canvasView3 ink];
+  identifier4 = [v22 identifier];
+  identifier5 = [inkCopy identifier];
+  if (([identifier4 isEqual:identifier5] & 1) != 0 || (maxFileFormatVersion = self->__maxFileFormatVersion, maxFileFormatVersion != -[PKTiledView _totalVisibleStrokes](self, "_totalVisibleStrokes")))
   {
 
-    v4 = v45;
+    inkCopy = v45;
     goto LABEL_17;
   }
 
-  v44 = [(PKTiledView *)self aggd_didMergeWithCollaborator];
+  aggd_didMergeWithCollaborator = [(PKTiledView *)self aggd_didMergeWithCollaborator];
 
-  v4 = v45;
-  if (!v44)
+  inkCopy = v45;
+  if (!aggd_didMergeWithCollaborator)
   {
     v26 = +[PKStatisticsManager sharedStatisticsManager];
     [(PKStatisticsManager *)v26 recordInkPickerNoOp:?];
@@ -2602,8 +2602,8 @@ LABEL_17:
   }
 
 LABEL_18:
-  v27 = [v4 identifier];
-  v28 = [v27 isEqual:@"com.apple.ink.objectEraser"];
+  identifier6 = [inkCopy identifier];
+  v28 = [identifier6 isEqual:@"com.apple.ink.objectEraser"];
 
   if (v28)
   {
@@ -2611,7 +2611,7 @@ LABEL_18:
     [(PKTiledView *)self setAggd_didMergeWithCollaborator:0];
   }
 
-  else if ([v4 _isHandwritingInk])
+  else if ([inkCopy _isHandwritingInk])
   {
     [(PKTiledView *)self setRulerEnabled:0];
   }
@@ -2624,12 +2624,12 @@ LABEL_22:
   }
 
   v30 = tileController;
-  v31 = [(PKTileController *)v30 isDragging];
+  isDragging = [(PKTileController *)v30 isDragging];
 
-  if ((v31 & 1) == 0)
+  if ((isDragging & 1) == 0)
   {
     v32 = self->_tileController;
-    if ((v32 && *&v32[2]._contentZoomScale || -[PKSelectionController _hasExternalElementsSelectedInAttachment:](v32, 0)) && ([v4 inkType], v33 = objc_claimAutoreleasedReturnValue(), -[PKTiledView ink](self, "ink"), v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v34, "inkType"), v35 = objc_claimAutoreleasedReturnValue(), v36 = objc_msgSend(v33, "isEqual:", v35), v35, v34, v33, (v36 & 1) == 0))
+    if ((v32 && *&v32[2]._contentZoomScale || -[PKSelectionController _hasExternalElementsSelectedInAttachment:](v32, 0)) && ([inkCopy inkType], v33 = objc_claimAutoreleasedReturnValue(), -[PKTiledView ink](self, "ink"), v34 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v34, "inkType"), v35 = objc_claimAutoreleasedReturnValue(), v36 = objc_msgSend(v33, "isEqual:", v35), v35, v34, v33, (v36 & 1) == 0))
     {
       v38 = self->_tileController;
       if (v38)
@@ -2648,10 +2648,10 @@ LABEL_22:
     }
   }
 
-  v39 = [(PKTiledView *)self canvasView];
-  [v39 setInk:v4];
+  canvasView4 = [(PKTiledView *)self canvasView];
+  [canvasView4 setInk:inkCopy];
 
-  [v4 hdrHeadroom];
+  [inkCopy hdrHeadroom];
   if (v40 > 1.0)
   {
     v41 = os_log_create("com.apple.pencilkit", "EDR");
@@ -2664,9 +2664,9 @@ LABEL_22:
     [(PKTiledView *)self _setHasSeenAnyExtendedDynamicRangeInks];
   }
 
-  v42 = [(PKTiledView *)self selectionController];
-  v43 = [(PKSelectionController *)v42 selectionInteraction];
-  [v43 _updateAllowedTouchTypesForSelectedInk:v4];
+  selectionController = [(PKTiledView *)self selectionController];
+  selectionInteraction = [(PKSelectionController *)selectionController selectionInteraction];
+  [selectionInteraction _updateAllowedTouchTypesForSelectedInk:inkCopy];
 
   objc_initWeak(buf, self);
   v46[0] = MEMORY[0x1E69E9820];
@@ -2698,9 +2698,9 @@ void __22__PKTiledView_setInk___block_invoke(uint64_t a1, int a2)
   }
 }
 
-- (void)setSelectedStrokesColor:(id)a3
+- (void)setSelectedStrokesColor:(id)color
 {
-  v8 = a3;
+  colorCopy = color;
   tileController = self->_tileController;
   if (tileController)
   {
@@ -2708,26 +2708,26 @@ void __22__PKTiledView_setInk___block_invoke(uint64_t a1, int a2)
   }
 
   v5 = tileController;
-  v6 = [(PKTileController *)v5 isDragging];
+  isDragging = [(PKTileController *)v5 isDragging];
 
-  if ((v6 & 1) == 0)
+  if ((isDragging & 1) == 0)
   {
     v7 = self->_tileController;
     if (v7)
     {
       if (*&v7[2]._contentZoomScale)
       {
-        [(PKSelectionController *)v7 changeColorOfSelection:v8];
+        [(PKSelectionController *)v7 changeColorOfSelection:colorCopy];
       }
     }
   }
 }
 
-- (void)setPaperTexture:(id)a3
+- (void)setPaperTexture:(id)texture
 {
-  v5 = a3;
-  v4 = [(PKTiledView *)self canvasView];
-  [v4 setPaperTexture:v5];
+  textureCopy = texture;
+  canvasView = [(PKTiledView *)self canvasView];
+  [canvasView setPaperTexture:textureCopy];
 }
 
 - (int64_t)_totalVisibleStrokes
@@ -2737,9 +2737,9 @@ void __22__PKTiledView_setInk___block_invoke(uint64_t a1, int a2)
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(PKTiledView *)self attachments];
+  attachments = [(PKTiledView *)self attachments];
   v3 = 0;
-  v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [attachments countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = *v12;
@@ -2750,19 +2750,19 @@ void __22__PKTiledView_setInk___block_invoke(uint64_t a1, int a2)
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(attachments);
         }
 
-        v7 = [*(*(&v11 + 1) + 8 * v6) drawing];
-        v8 = [v7 strokes];
-        v9 = [v8 count];
+        drawing = [*(*(&v11 + 1) + 8 * v6) drawing];
+        strokes = [drawing strokes];
+        v9 = [strokes count];
 
         v3 += v9;
         ++v6;
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [attachments countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -2773,60 +2773,60 @@ void __22__PKTiledView_setInk___block_invoke(uint64_t a1, int a2)
 
 - (BOOL)_toolPickerIsOrWillBeVisible
 {
-  v2 = [(PKTiledView *)self _activeToolPicker];
-  v3 = v2;
-  if (v2)
+  _activeToolPicker = [(PKTiledView *)self _activeToolPicker];
+  v3 = _activeToolPicker;
+  if (_activeToolPicker)
   {
-    if ([v2 isVisible])
+    if ([_activeToolPicker isVisible])
     {
-      v4 = 1;
+      _isAnimatingToVisible = 1;
     }
 
     else
     {
-      v4 = [v3 _isAnimatingToVisible];
+      _isAnimatingToVisible = [v3 _isAnimatingToVisible];
     }
   }
 
   else
   {
-    v4 = 0;
+    _isAnimatingToVisible = 0;
   }
 
-  return v4;
+  return _isAnimatingToVisible;
 }
 
-- (void)_setDrawingEnabled:(BOOL)a3
+- (void)_setDrawingEnabled:(BOOL)enabled
 {
-  if (self->_sixChannelBlendingRendersTransparent != a3)
+  if (self->_sixChannelBlendingRendersTransparent != enabled)
   {
-    self->_sixChannelBlendingRendersTransparent = a3;
+    self->_sixChannelBlendingRendersTransparent = enabled;
     [(PKTiledView *)self _updateDrawingGestureEnablement];
   }
 }
 
-- (void)setDrawingPolicy:(unint64_t)a3
+- (void)setDrawingPolicy:(unint64_t)policy
 {
-  if (self->_delegate != a3)
+  if (self->_delegate != policy)
   {
-    self->_delegate = a3;
+    self->_delegate = policy;
     [(PKTiledView *)self updateForAllowedDrawingInput];
   }
 }
 
-- (void)showImageWandTipWithController:(id)a3 toolPicker:(id)a4
+- (void)showImageWandTipWithController:(id)controller toolPicker:(id)picker
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isVisible])
+  controllerCopy = controller;
+  pickerCopy = picker;
+  if ([pickerCopy isVisible])
   {
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v8 = [(PKTiledView *)self visibleAttachments];
-    v9 = [v8 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    visibleAttachments = [(PKTiledView *)self visibleAttachments];
+    v9 = [visibleAttachments countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v9)
     {
       v10 = *v33;
@@ -2836,7 +2836,7 @@ void __22__PKTiledView_setInk___block_invoke(uint64_t a1, int a2)
         {
           if (*v33 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(visibleAttachments);
           }
 
           v12 = *(*(&v32 + 1) + 8 * i);
@@ -2845,8 +2845,8 @@ void __22__PKTiledView_setInk___block_invoke(uint64_t a1, int a2)
           v16 = v15;
           v18 = v17;
           v20 = v19;
-          v21 = [(PKTiledView *)self scrollView];
-          [v21 visibleBounds];
+          scrollView = [(PKTiledView *)self scrollView];
+          [scrollView visibleBounds];
           v39.origin.x = v22;
           v39.origin.y = v23;
           v39.size.width = v24;
@@ -2859,20 +2859,20 @@ void __22__PKTiledView_setInk___block_invoke(uint64_t a1, int a2)
 
           if (v26)
           {
-            v27 = [v12 drawing];
-            [v27 bounds];
+            drawing = [v12 drawing];
+            [drawing bounds];
             v29 = v28;
             v31 = v30;
 
             if (v29 > 0.0 && v31 > 0.0)
             {
-              [v7 _showImageWandTipWithController:v6];
+              [pickerCopy _showImageWandTipWithController:controllerCopy];
               goto LABEL_14;
             }
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v9 = [visibleAttachments countByEnumeratingWithState:&v32 objects:v36 count:16];
         if (v9)
         {
           continue;
@@ -2886,15 +2886,15 @@ LABEL_14:
   }
 }
 
-- (void)_updateForToolPickerVisibilityChange:(id)a3
+- (void)_updateForToolPickerVisibilityChange:(id)change
 {
-  v8 = a3;
-  v4 = [v8 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"PKToolPickerNotificationWindowSceneUserInfoKey"];
-  v6 = [(PKTiledView *)self window];
-  v7 = [v6 windowScene];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"PKToolPickerNotificationWindowSceneUserInfoKey"];
+  window = [(PKTiledView *)self window];
+  windowScene = [window windowScene];
 
-  if (v5 == v7)
+  if (v5 == windowScene)
   {
     [(PKTiledView *)self _toolPickerVisibilityDidChange];
   }
@@ -2902,25 +2902,25 @@ LABEL_14:
 
 - (id)_activeToolPicker
 {
-  v3 = [(PKTiledView *)self window];
+  window = [(PKTiledView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(PKTiledView *)self window];
-    v3 = [PKToolPicker activeToolPickerForWindow:v4];
+    window2 = [(PKTiledView *)self window];
+    window = [PKToolPicker activeToolPickerForWindow:window2];
   }
 
-  return v3;
+  return window;
 }
 
-- (void)_handlePencilSqueezeInteractionDidChangePaletteViewVisibilityNotification:(id)a3
+- (void)_handlePencilSqueezeInteractionDidChangePaletteViewVisibilityNotification:(id)notification
 {
-  v4 = [(PKTiledView *)self window];
-  v5 = [v4 windowScene];
-  v6 = [PKPencilSqueezeInteraction _existingInteractionForWindowScene:v5];
-  v7 = [v6 _paletteViewVisible];
+  window = [(PKTiledView *)self window];
+  windowScene = [window windowScene];
+  v6 = [PKPencilSqueezeInteraction _existingInteractionForWindowScene:windowScene];
+  _paletteViewVisible = [v6 _paletteViewVisible];
 
-  if (v7)
+  if (_paletteViewVisible)
   {
 
     [(PKTiledView *)self updateForAllowedDrawingInput];
@@ -2929,59 +2929,59 @@ LABEL_14:
 
 - (void)_updateDrawingGestureEnablement
 {
-  v4 = [(PKTiledView *)self canvasView];
-  v3 = [v4 ink];
+  canvasView = [(PKTiledView *)self canvasView];
+  v3 = [canvasView ink];
   [(PKTiledView *)self _updateDrawingGestureEnablementWithInk:v3];
 }
 
-- (void)_updateDrawingGestureEnablementWithInk:(id)a3
+- (void)_updateDrawingGestureEnablementWithInk:(id)ink
 {
-  v12 = a3;
+  inkCopy = ink;
   if ([(PKTiledView *)self _isDrawingEnabled])
   {
-    v4 = [v12 _isLassoInk];
-    v5 = [v12 _isGenerationTool];
-    v6 = [(PKTiledView *)self drawingGestureRecognizer];
-    v7 = (v4 | v5) ^ 1;
-    [v6 setEnabled:v7 & 1];
+    _isLassoInk = [inkCopy _isLassoInk];
+    _isGenerationTool = [inkCopy _isGenerationTool];
+    drawingGestureRecognizer = [(PKTiledView *)self drawingGestureRecognizer];
+    v7 = (_isLassoInk | _isGenerationTool) ^ 1;
+    [drawingGestureRecognizer setEnabled:v7 & 1];
 
-    v8 = [(PKTiledView *)self simultaneousDrawingGestureRecognizer];
-    [v8 setEnabled:v7 & 1];
+    simultaneousDrawingGestureRecognizer = [(PKTiledView *)self simultaneousDrawingGestureRecognizer];
+    [simultaneousDrawingGestureRecognizer setEnabled:v7 & 1];
 
-    v9 = [(PKTiledView *)self generationToolGestureRecognizer];
-    [v9 setEnabled:v5];
+    generationToolGestureRecognizer = [(PKTiledView *)self generationToolGestureRecognizer];
+    [generationToolGestureRecognizer setEnabled:_isGenerationTool];
   }
 
   else
   {
-    v10 = [(PKTiledView *)self drawingGestureRecognizer];
-    [v10 setEnabled:0];
+    drawingGestureRecognizer2 = [(PKTiledView *)self drawingGestureRecognizer];
+    [drawingGestureRecognizer2 setEnabled:0];
 
-    v11 = [(PKTiledView *)self simultaneousDrawingGestureRecognizer];
-    [v11 setEnabled:0];
+    simultaneousDrawingGestureRecognizer2 = [(PKTiledView *)self simultaneousDrawingGestureRecognizer];
+    [simultaneousDrawingGestureRecognizer2 setEnabled:0];
 
-    v9 = [(PKTiledView *)self generationToolGestureRecognizer];
-    [v9 setEnabled:0];
+    generationToolGestureRecognizer = [(PKTiledView *)self generationToolGestureRecognizer];
+    [generationToolGestureRecognizer setEnabled:0];
   }
 }
 
-- (void)setLinedPaper:(id)a3
+- (void)setLinedPaper:(id)paper
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 copy];
+  paperCopy = paper;
+  v5 = [paperCopy copy];
   scrollView = self->_scrollView;
   self->_scrollView = v5;
 
-  v7 = [(PKTiledView *)self canvasView];
-  [v7 setLinedPaper:v4];
+  canvasView = [(PKTiledView *)self canvasView];
+  [canvasView setLinedPaper:paperCopy];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v8 = [(PKTiledView *)self attachmentViews];
-  v9 = [v8 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  attachmentViews = [(PKTiledView *)self attachmentViews];
+  v9 = [attachmentViews countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v9)
   {
     v10 = *v13;
@@ -2992,28 +2992,28 @@ LABEL_14:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(attachmentViews);
         }
 
         [*(*(&v12 + 1) + 8 * v11++) setNeedsLayout];
       }
 
       while (v9 != v11);
-      v9 = [v8 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [attachmentViews countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)setRulerEnabled:(BOOL)a3
+- (void)setRulerEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if (!PKIsVisionDevice())
   {
-    self->_rulerEnabled = v3;
+    self->_rulerEnabled = enabledCopy;
     hoverController = self->_hoverController;
-    if (v3)
+    if (enabledCopy)
     {
       [(PKRulerController *)hoverController showRuler];
     }
@@ -3023,10 +3023,10 @@ LABEL_14:
       [(PKRulerController *)hoverController hideRulerAnimated:?];
     }
 
-    v6 = [(PKTiledView *)self _activeToolPicker];
-    if ([v6 isRulerActive] != v3)
+    _activeToolPicker = [(PKTiledView *)self _activeToolPicker];
+    if ([_activeToolPicker isRulerActive] != enabledCopy)
     {
-      [v6 setRulerActive:v3];
+      [_activeToolPicker setRulerActive:enabledCopy];
     }
   }
 }
@@ -3080,21 +3080,21 @@ LABEL_7:
   return v16;
 }
 
-- (void)setRulerHostingDelegate:(id)a3
+- (void)setRulerHostingDelegate:(id)delegate
 {
-  v5 = a3;
-  objc_storeWeak(&self->_tileSize, v5);
-  if (v5)
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_tileSize, delegateCopy);
+  if (delegateCopy)
   {
-    v4 = v5;
+    selfCopy = delegateCopy;
   }
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
-  [(PKRulerController *)self->_hoverController setRulerHostingDelegate:v4];
+  [(PKRulerController *)self->_hoverController setRulerHostingDelegate:selfCopy];
 }
 
 - (BOOL)selectionSupportsTranslate
@@ -3109,17 +3109,17 @@ LABEL_7:
   return [LTUITranslationViewControllerClass isAvailable];
 }
 
-- (void)selectionSupportsRefinement:(id)a3
+- (void)selectionSupportsRefinement:(id)refinement
 {
-  v4 = a3;
+  refinementCopy = refinement;
   if (([(PKSelectionController *)self->_tileController refinementEnabled]& 1) != 0)
   {
-    [(PKSelectionController *)&self->_tileController->super.isa supportsRefinement:v4];
+    [(PKSelectionController *)&self->_tileController->super.isa supportsRefinement:refinementCopy];
   }
 
-  else if (v4)
+  else if (refinementCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(refinementCopy + 2))(refinementCopy, 0);
   }
 }
 
@@ -3132,9 +3132,9 @@ LABEL_7:
   }
 
   v3 = tileController;
-  v4 = [(PKTileController *)v3 supportsSnapToShape];
+  supportsSnapToShape = [(PKTileController *)v3 supportsSnapToShape];
 
-  return v4;
+  return supportsSnapToShape;
 }
 
 - (void)snapToShapeSelection
@@ -3149,19 +3149,19 @@ LABEL_7:
   [(PKTileController *)v4 convertToShapes:self];
 }
 
-- (void)insertSpace:(id)a3
+- (void)insertSpace:(id)space
 {
-  v5 = a3;
+  spaceCopy = space;
   v4 = +[PKStatisticsManager sharedStatisticsManager];
   [(PKStatisticsManager *)v4 recordInsertSpaceWithType:?];
 
-  [(PKSelectionController *)&self->_tileController->super.isa insertSpace:v5];
+  [(PKSelectionController *)&self->_tileController->super.isa insertSpace:spaceCopy];
 }
 
-- (void)insertSpaceAtLocation:(CGPoint)a3
+- (void)insertSpaceAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v6 = +[PKStatisticsManager sharedStatisticsManager];
   [(PKStatisticsManager *)v6 recordInsertSpaceWithType:?];
 
@@ -3198,8 +3198,8 @@ LABEL_7:
         do
         {
           v10 = [*&self->_drawingEnabled objectAtIndexedSubscript:v8];
-          v11 = [v10 path];
-          if ([v11 _pointsCount] && (objc_msgSend(v10, "timestamp"), v13 = v12, objc_msgSend(v11, "timestampAtIndex:", objc_msgSend(v11, "_pointsCount") - 1), v13 + v14 < v9))
+          path = [v10 path];
+          if ([path _pointsCount] && (objc_msgSend(v10, "timestamp"), v13 = v12, objc_msgSend(path, "timestampAtIndex:", objc_msgSend(path, "_pointsCount") - 1), v13 + v14 < v9))
           {
             [*&self->_drawingEnabled removeObjectAtIndex:v8];
           }
@@ -3222,14 +3222,14 @@ LABEL_7:
 
 - (BOOL)_transparentBlendingIsActive
 {
-  v3 = [(PKTiledView *)self sixChannelBlendingRendersTransparent];
-  if (v3)
+  sixChannelBlendingRendersTransparent = [(PKTiledView *)self sixChannelBlendingRendersTransparent];
+  if (sixChannelBlendingRendersTransparent)
   {
 
-    LOBYTE(v3) = [(PKTiledView *)self _sixChannelBlendingIsActive];
+    LOBYTE(sixChannelBlendingRendersTransparent) = [(PKTiledView *)self _sixChannelBlendingIsActive];
   }
 
-  return v3;
+  return sixChannelBlendingRendersTransparent;
 }
 
 - (double)inputScale
@@ -3244,19 +3244,19 @@ LABEL_7:
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v8.receiver = self;
   v8.super_class = PKTiledView;
-  [(PKTiledView *)&v8 traitCollectionDidChange:v4];
+  [(PKTiledView *)&v8 traitCollectionDidChange:changeCopy];
   if (self->_drawingTouchThatHitNothing)
   {
-    v5 = [(PKTiledView *)self window];
-    v6 = [v5 windowScene];
-    v7 = [v6 activationState];
+    window = [(PKTiledView *)self window];
+    windowScene = [window windowScene];
+    activationState = [windowScene activationState];
 
-    if (v7 == 2)
+    if (activationState == 2)
     {
       self->_disableUndoManager = 1;
     }
@@ -3268,14 +3268,14 @@ LABEL_7:
   }
 }
 
-- (void)setSixChannelBlending:(BOOL)a3
+- (void)setSixChannelBlending:(BOOL)blending
 {
-  if (self->_supportsCopyAsText != a3)
+  if (self->_supportsCopyAsText != blending)
   {
-    self->_supportsCopyAsText = a3;
-    v4 = [(PKTiledView *)self _activeSixChannelBlendingMode];
-    v5 = [(PKTiledView *)self canvasView];
-    [v5 setSixChannelBlendingMode:v4];
+    self->_supportsCopyAsText = blending;
+    _activeSixChannelBlendingMode = [(PKTiledView *)self _activeSixChannelBlendingMode];
+    canvasView = [(PKTiledView *)self canvasView];
+    [canvasView setSixChannelBlendingMode:_activeSixChannelBlendingMode];
 
     [(PKTiledView *)self updateAfterTraitCollectionChange];
 
@@ -3283,11 +3283,11 @@ LABEL_7:
   }
 }
 
-- (void)setDrawBitmapEraserMask:(BOOL)a3
+- (void)setDrawBitmapEraserMask:(BOOL)mask
 {
-  if (self->_shouldAdjustStrokeTransformAtEndOfStroke != a3)
+  if (self->_shouldAdjustStrokeTransformAtEndOfStroke != mask)
   {
-    self->_shouldAdjustStrokeTransformAtEndOfStroke = a3;
+    self->_shouldAdjustStrokeTransformAtEndOfStroke = mask;
     [self->_drawingPolicy setDrawBitmapEraserMask:?];
   }
 }
@@ -3303,16 +3303,16 @@ LABEL_7:
   return externalAutoRefineTaskCoordinator & 1;
 }
 
-- (void)setIsAutoRefineEnabled:(BOOL)a3
+- (void)setIsAutoRefineEnabled:(BOOL)enabled
 {
   v13 = *MEMORY[0x1E69E9840];
-  [(PKAutoRefineController *)self->_externalAutoRefineTaskCoordinator setIsAutoRefineOn:a3];
+  [(PKAutoRefineController *)self->_externalAutoRefineTaskCoordinator setIsAutoRefineOn:enabled];
   v10 = 0u;
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v4 = [(PKTiledView *)self attachmentViews];
-  v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  attachmentViews = [(PKTiledView *)self attachmentViews];
+  v5 = [attachmentViews countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v5)
   {
     v6 = *v9;
@@ -3323,14 +3323,14 @@ LABEL_7:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(attachmentViews);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) _handleAutoRefineSettingsDidChange];
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [attachmentViews countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -3340,12 +3340,12 @@ LABEL_7:
 - (void)updateAfterTraitCollectionChange
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(PKTiledView *)self invertColors];
-  v4 = [(PKTiledView *)self _sixChannelBlendingIsActive];
-  v5 = [(PKTiledView *)self tileController];
-  if (v5)
+  invertColors = [(PKTiledView *)self invertColors];
+  _sixChannelBlendingIsActive = [(PKTiledView *)self _sixChannelBlendingIsActive];
+  tileController = [(PKTiledView *)self tileController];
+  if (tileController)
   {
-    v6 = v5[9];
+    v6 = tileController[9];
   }
 
   else
@@ -3353,11 +3353,11 @@ LABEL_7:
     v6 = 0;
   }
 
-  v7 = [(PKTiledView *)self tileController];
-  v8 = v4 ^ v6;
-  if (v7)
+  tileController2 = [(PKTiledView *)self tileController];
+  v8 = _sixChannelBlendingIsActive ^ v6;
+  if (tileController2)
   {
-    v9 = v7[8];
+    v9 = tileController2[8];
   }
 
   else
@@ -3365,20 +3365,20 @@ LABEL_7:
     v9 = 0;
   }
 
-  v10 = v3 ^ v9 | v8;
+  v10 = invertColors ^ v9 | v8;
 
   if (v10)
   {
-    v11 = [(PKTiledView *)self tileController];
-    v12 = v11;
-    if (v11)
+    tileController3 = [(PKTiledView *)self tileController];
+    v12 = tileController3;
+    if (tileController3)
     {
-      *(v11 + 8) = v3;
-      [(PKMetalRendererController *)*(v11 + 24) setInvertColors:v3];
+      *(tileController3 + 8) = invertColors;
+      [(PKMetalRendererController *)*(tileController3 + 24) setInvertColors:invertColors];
     }
 
-    v13 = [(PKTiledView *)self tileController];
-    [(PKTileController *)v13 setSixChannelBlending:v4];
+    tileController4 = [(PKTiledView *)self tileController];
+    [(PKTileController *)tileController4 setSixChannelBlending:_sixChannelBlendingIsActive];
 
     [(PKTiledView *)self cancelTileGenerationInvalidateTiles:1];
     if (v8)
@@ -3387,8 +3387,8 @@ LABEL_7:
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v14 = [(PKTiledView *)self attachmentViews];
-      v15 = [v14 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      attachmentViews = [(PKTiledView *)self attachmentViews];
+      v15 = [attachmentViews countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v15)
       {
         v16 = *v21;
@@ -3398,30 +3398,30 @@ LABEL_7:
           {
             if (*v21 != v16)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(attachmentViews);
             }
 
-            [*(*(&v20 + 1) + 8 * i) setSixChannelBlending:v4];
+            [*(*(&v20 + 1) + 8 * i) setSixChannelBlending:_sixChannelBlendingIsActive];
           }
 
-          v15 = [v14 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v15 = [attachmentViews countByEnumeratingWithState:&v20 objects:v24 count:16];
         }
 
         while (v15);
       }
 
-      v18 = [(PKTiledView *)self _activeSixChannelBlendingMode];
-      v19 = [(PKTiledView *)self canvasView];
-      [v19 setSixChannelBlendingMode:v18];
+      _activeSixChannelBlendingMode = [(PKTiledView *)self _activeSixChannelBlendingMode];
+      canvasView = [(PKTiledView *)self canvasView];
+      [canvasView setSixChannelBlendingMode:_activeSixChannelBlendingMode];
     }
 
     [(PKTiledView *)self _layoutSubviews];
   }
 }
 
-- (void)_sceneDidActivate:(id)a3
+- (void)_sceneDidActivate:(id)activate
 {
-  v4 = a3;
+  activateCopy = activate;
   if (self && self->_disableUndoManager)
   {
     self->_disableUndoManager = 0;
@@ -3430,19 +3430,19 @@ LABEL_7:
   }
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
   v43 = *MEMORY[0x1E69E9840];
   tileController = self->_tileController;
   y = self->_lastContentOffset.y;
   a = self->_strokeTransformAtStartOfStroke.a;
-  v7 = [(PKTiledView *)self scrollView];
-  [v7 contentOffset];
+  scrollView = [(PKTiledView *)self scrollView];
+  [scrollView contentOffset];
   [(PKSelectionController *)&tileController->super.isa didScroll:a - v9];
 
   [(PKTiledView *)self setNeedsLayout];
-  v10 = [(PKTiledView *)self scrollView];
-  [v10 contentOffset];
+  scrollView2 = [(PKTiledView *)self scrollView];
+  [scrollView2 contentOffset];
   v12 = v11;
   v14 = v13;
   v15 = self->_lastContentOffset.y;
@@ -3469,8 +3469,8 @@ LABEL_7:
     self->_aggd_didMergeWithCollaborator = 1;
     v21 = dispatch_time(0, 100000000);
     dispatch_after(v21, MEMORY[0x1E69E96A0], self->_updateAttachmentBoundsBlock);
-    v22 = [(PKTiledView *)self scrollView];
-    [v22 contentOffset];
+    scrollView3 = [(PKTiledView *)self scrollView];
+    [scrollView3 contentOffset];
     self->_lastContentOffset.y = v23;
     self->_strokeTransformAtStartOfStroke.a = v24;
 
@@ -3479,14 +3479,14 @@ LABEL_7:
   }
 
   cachedAdditionalStrokes = self->_cachedAdditionalStrokes;
-  v26 = [(PKTiledView *)self scrollView];
-  [v26 zoomScale];
+  scrollView4 = [(PKTiledView *)self scrollView];
+  [scrollView4 zoomScale];
   v28 = vabdd_f64(*&cachedAdditionalStrokes, v27) < 0.00999999978;
 
   if (!v28)
   {
-    v29 = [(PKTiledView *)self scrollView];
-    [v29 zoomScale];
+    scrollView5 = [(PKTiledView *)self scrollView];
+    [scrollView5 zoomScale];
     self->_cachedAdditionalStrokes = v30;
   }
 
@@ -3500,8 +3500,8 @@ LABEL_7:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v31 = [(PKTiledView *)self attachmentViews];
-  v32 = [v31 countByEnumeratingWithState:&v35 objects:v42 count:16];
+  attachmentViews = [(PKTiledView *)self attachmentViews];
+  v32 = [attachmentViews countByEnumeratingWithState:&v35 objects:v42 count:16];
   if (v32)
   {
     v33 = *v36;
@@ -3512,14 +3512,14 @@ LABEL_7:
       {
         if (*v36 != v33)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(attachmentViews);
         }
 
         [*(*(&v35 + 1) + 8 * v34++) containingScrollViewDidScroll];
       }
 
       while (v32 != v34);
-      v32 = [v31 countByEnumeratingWithState:&v35 objects:v42 count:16];
+      v32 = [attachmentViews countByEnumeratingWithState:&v35 objects:v42 count:16];
     }
 
     while (v32);
@@ -3535,16 +3535,16 @@ void __43__PKTiledView__observeScrollViewDidScroll___block_invoke(uint64_t a1)
   [WeakRetained _scrollViewDidScroll];
 }
 
-- (void)_addAttachmentsUnderView:(id)a3 toArray:(id)a4
+- (void)_addAttachmentsUnderView:(id)view toArray:(id)array
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  arrayCopy = array;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [a3 subviews];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  subviews = [view subviews];
+  v7 = [subviews countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -3555,14 +3555,14 @@ void __43__PKTiledView__observeScrollViewDidScroll___block_invoke(uint64_t a1)
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v15 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [v10 tiledViewAttachmentViews];
-          [v5 addObjectsFromArray:v11];
+          tiledViewAttachmentViews = [v10 tiledViewAttachmentViews];
+          [arrayCopy addObjectsFromArray:tiledViewAttachmentViews];
         }
 
         else
@@ -3570,17 +3570,17 @@ void __43__PKTiledView__observeScrollViewDidScroll___block_invoke(uint64_t a1)
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v5 addObject:v10];
+            [arrayCopy addObject:v10];
           }
 
           else
           {
-            v12 = [v10 subviews];
-            v13 = [v12 count] == 0;
+            subviews2 = [v10 subviews];
+            v13 = [subviews2 count] == 0;
 
             if (!v13)
             {
-              [(PKTiledView *)self _addAttachmentsUnderView:v10 toArray:v5];
+              [(PKTiledView *)self _addAttachmentsUnderView:v10 toArray:arrayCopy];
             }
           }
         }
@@ -3589,23 +3589,23 @@ void __43__PKTiledView__observeScrollViewDidScroll___block_invoke(uint64_t a1)
       }
 
       while (v7 != v9);
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)visibleOnScreenStrokesForDrawing:(id)a3
+- (id)visibleOnScreenStrokesForDrawing:(id)drawing
 {
-  v4 = [a3 uuid];
-  v5 = [(PKTiledView *)self attachmentForUUID:v4];
+  uuid = [drawing uuid];
+  v5 = [(PKTiledView *)self attachmentForUUID:uuid];
 
-  v6 = [v5 strokeSpatialCache];
-  v7 = v6;
-  if (v6)
+  strokeSpatialCache = [v5 strokeSpatialCache];
+  v7 = strokeSpatialCache;
+  if (strokeSpatialCache)
   {
-    v8 = *(v6 + 24);
+    v8 = *(strokeSpatialCache + 24);
   }
 
   else
@@ -3618,9 +3618,9 @@ void __43__PKTiledView__observeScrollViewDidScroll___block_invoke(uint64_t a1)
   return v8;
 }
 
-- (id)smoothedHullForStroke:(id)a3
+- (id)smoothedHullForStroke:(id)stroke
 {
-  v3 = a3;
+  strokeCopy = stroke;
   v12 = 0;
   v13 = &v12;
   v14 = 0x4812000000;
@@ -3635,13 +3635,13 @@ void __43__PKTiledView__observeScrollViewDidScroll___block_invoke(uint64_t a1)
   v11[2] = __37__PKTiledView_smoothedHullForStroke___block_invoke;
   v11[3] = &unk_1E82D6A10;
   v11[4] = &v12;
-  [v3 interpolatePointDataWithStep:v11 usingBlock:1.0];
+  [strokeCopy interpolatePointDataWithStep:v11 usingBlock:1.0];
   [PKPathUtility smoothedHullForPoints:v13 + 6];
   v4 = [PKPathUtility bezierPathFromPoints:__p];
   v5 = [PKStroke alloc];
-  v6 = [v4 CGPath];
-  v7 = [v3 ink];
-  v8 = [(PKStroke *)v5 _initWithPath:v6 ink:v7 inputScale:1.0];
+  cGPath = [v4 CGPath];
+  v7 = [strokeCopy ink];
+  v8 = [(PKStroke *)v5 _initWithPath:cGPath ink:v7 inputScale:1.0];
 
   if (__p[0])
   {
@@ -3718,26 +3718,26 @@ void __37__PKTiledView_smoothedHullForStroke___block_invoke(uint64_t a1, double 
   v3[7] = v6;
 }
 
-- (id)canvasView:(id)a3 attachmentViewForDrawing:(id)a4
+- (id)canvasView:(id)view attachmentViewForDrawing:(id)drawing
 {
-  v5 = [a4 uuid];
-  v6 = [(PKTiledView *)self attachmentForUUID:v5];
+  uuid = [drawing uuid];
+  v6 = [(PKTiledView *)self attachmentForUUID:uuid];
 
   return v6;
 }
 
-- (void)canvasView:(id)a3 textStrokesCoveredByStroke:(id)a4 drawing:(id)a5 completion:(id)a6
+- (void)canvasView:(id)view textStrokesCoveredByStroke:(id)stroke drawing:(id)drawing completion:(id)completion
 {
-  v16 = a4;
-  v9 = a6;
-  v10 = [a5 uuid];
-  v11 = [(PKTiledView *)self _attachmentForUUID:v10];
+  strokeCopy = stroke;
+  completionCopy = completion;
+  uuid = [drawing uuid];
+  v11 = [(PKTiledView *)self _attachmentForUUID:uuid];
 
-  v12 = [v11 recognitionController];
-  v13 = v12;
-  if (v12)
+  recognitionController = [v11 recognitionController];
+  v13 = recognitionController;
+  if (recognitionController)
   {
-    v14 = *(v12 + 48);
+    v14 = *(recognitionController + 48);
   }
 
   else
@@ -3747,13 +3747,13 @@ void __37__PKTiledView_smoothedHullForStroke___block_invoke(uint64_t a1, double 
 
   v15 = v14;
 
-  [(PKRecognitionSessionManager *)v15 textStrokesCoveredByStroke:v16 completion:v9];
+  [(PKRecognitionSessionManager *)v15 textStrokesCoveredByStroke:strokeCopy completion:completionCopy];
 }
 
-- (id)_attachmentForUUID:(id)a3
+- (id)_attachmentForUUID:(id)d
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   [(PKTiledView *)self attachments];
   v16 = 0u;
   v17 = 0u;
@@ -3773,9 +3773,9 @@ void __37__PKTiledView_smoothedHullForStroke___block_invoke(uint64_t a1, double 
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 drawing];
-        v11 = [v10 uuid];
-        v12 = [v11 isEqual:v4];
+        drawing = [v9 drawing];
+        uuid = [drawing uuid];
+        v12 = [uuid isEqual:dCopy];
 
         if (v12)
         {
@@ -3799,20 +3799,20 @@ LABEL_11:
   return v6;
 }
 
-- (void)canvasView:(id)a3 scratchOutStrokes:(id)a4 drawing:(id)a5
+- (void)canvasView:(id)view scratchOutStrokes:(id)strokes drawing:(id)drawing
 {
-  v9 = a4;
-  v7 = a5;
+  strokesCopy = strokes;
+  drawingCopy = drawing;
   if ((*&self->_tiledViewFlags & 0x100) != 0)
   {
-    v8 = [(PKTiledView *)self delegate];
-    [v8 canvasView:self scratchOutStrokes:v9 drawing:v7];
+    delegate = [(PKTiledView *)self delegate];
+    [delegate canvasView:self scratchOutStrokes:strokesCopy drawing:drawingCopy];
   }
 }
 
-- (id)attachmentForUUID:(id)a3
+- (id)attachmentForUUID:(id)d
 {
-  v3 = [(PKTiledView *)self _attachmentForUUID:a3];
+  v3 = [(PKTiledView *)self _attachmentForUUID:d];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -3827,19 +3827,19 @@ LABEL_11:
   return v4;
 }
 
-- (void)_setExternalAttachments:(id)a3
+- (void)_setExternalAttachments:(id)attachments
 {
-  v6 = a3;
-  v4 = COERCE_DOUBLE([v6 copy]);
+  attachmentsCopy = attachments;
+  v4 = COERCE_DOUBLE([attachmentsCopy copy]);
   timestampForLatestUserInteraction = self->_timestampForLatestUserInteraction;
   self->_timestampForLatestUserInteraction = v4;
 }
 
-- (BOOL)p_shouldSkipStrokeCacheInvalidationForAttachment:(id)a3
+- (BOOL)p_shouldSkipStrokeCacheInvalidationForAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   v5 = objc_opt_class();
-  v6 = PKDynamicCast(v5, v4);
+  v6 = PKDynamicCast(v5, attachmentCopy);
   v7 = v6;
   if (v6 && *&self->_timestampForLatestUserInteraction)
   {
@@ -3861,9 +3861,9 @@ LABEL_11:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(PKTiledView *)self _visibleAttachments];
+  _visibleAttachments = [(PKTiledView *)self _visibleAttachments];
   v3 = 0;
-  v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [_visibleAttachments countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = *v14;
@@ -3873,15 +3873,15 @@ LABEL_11:
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_visibleAttachments);
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
         if (v3)
         {
-          v8 = [v3 viewRep];
-          v9 = [v7 viewRep];
-          v10 = [v8 PK_isBelowViewInDepth:v9];
+          viewRep = [v3 viewRep];
+          viewRep2 = [v7 viewRep];
+          v10 = [viewRep PK_isBelowViewInDepth:viewRep2];
 
           if (!v10)
           {
@@ -3894,7 +3894,7 @@ LABEL_11:
         v3 = v11;
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [_visibleAttachments countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v4);
@@ -3907,85 +3907,85 @@ LABEL_11:
 {
   if ([(PKTiledView *)self disableUndoManager])
   {
-    v3 = 0;
+    undoManager = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = PKTiledView;
-    v3 = [(PKTiledView *)&v5 undoManager];
+    undoManager = [(PKTiledView *)&v5 undoManager];
   }
 
-  return v3;
+  return undoManager;
 }
 
-- (void)startedDrawingInBlankSpaceWithTouch:(id)a3 location:(CGPoint)a4
+- (void)startedDrawingInBlankSpaceWithTouch:(id)touch location:(CGPoint)location
 {
-  v12 = a3;
-  objc_storeStrong(&self->_rulerHostingDelegate, a3);
-  if (v12)
+  touchCopy = touch;
+  objc_storeStrong(&self->_rulerHostingDelegate, touch);
+  if (touchCopy)
   {
-    v6 = [(PKTiledView *)self viewForAttachmentAtBlankSpace];
+    viewForAttachmentAtBlankSpace = [(PKTiledView *)self viewForAttachmentAtBlankSpace];
   }
 
   else
   {
-    v6 = 0;
+    viewForAttachmentAtBlankSpace = 0;
   }
 
-  v7 = [v6 drawing];
-  if (!v7)
+  drawing = [viewForAttachmentAtBlankSpace drawing];
+  if (!drawing)
   {
-    v7 = [PKTiledView newInlineDrawingOfClass:[(PKTiledView *)self defaultDrawingClass]];
+    drawing = [PKTiledView newInlineDrawingOfClass:[(PKTiledView *)self defaultDrawingClass]];
   }
 
-  v8 = [(PKTiledView *)self canvasView];
-  [v8 setDrawing:v7];
+  canvasView = [(PKTiledView *)self canvasView];
+  [canvasView setDrawing:drawing];
 
   [(PKTiledView *)self defaultDrawingClass];
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(PKTiledView *)self standInAttachmentView];
-    [v9 setDrawing:v7];
+    standInAttachmentView = [(PKTiledView *)self standInAttachmentView];
+    [standInAttachmentView setDrawing:drawing];
 
-    v10 = [(PKTiledView *)self standInAttachmentView];
-    v11 = [(PKTiledView *)self canvasView];
-    [(PKTiledView *)self renderAttachment:v10 intoCanvas:v11 showing:1];
+    standInAttachmentView2 = [(PKTiledView *)self standInAttachmentView];
+    canvasView2 = [(PKTiledView *)self canvasView];
+    [(PKTiledView *)self renderAttachment:standInAttachmentView2 intoCanvas:canvasView2 showing:1];
   }
 
   else
   {
-    if (!v6)
+    if (!viewForAttachmentAtBlankSpace)
     {
       goto LABEL_11;
     }
 
-    v10 = [(PKTiledView *)self canvasView];
-    [(PKTiledView *)self renderAttachment:v6 intoCanvas:v10 showing:1];
+    standInAttachmentView2 = [(PKTiledView *)self canvasView];
+    [(PKTiledView *)self renderAttachment:viewForAttachmentAtBlankSpace intoCanvas:standInAttachmentView2 showing:1];
   }
 
 LABEL_11:
 }
 
-- (void)canvasViewWillBeginNewStroke:(id)a3 withTouch:(id)a4 location:(CGPoint)a5
+- (void)canvasViewWillBeginNewStroke:(id)stroke withTouch:(id)touch location:(CGPoint)location
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a3;
-  v10 = a4;
-  if (v10)
+  y = location.y;
+  x = location.x;
+  strokeCopy = stroke;
+  touchCopy = touch;
+  if (touchCopy)
   {
-    v11 = [(PKTiledView *)self hoverController];
-    [(PKHoverController *)v11 didReceiveNormalTouch:v10];
+    hoverController = [(PKTiledView *)self hoverController];
+    [(PKHoverController *)hoverController didReceiveNormalTouch:touchCopy];
 
     [(PKTiledView *)self canvasZoomScale];
     v13 = v12;
-    v14 = [(PKTiledView *)self drawingController];
-    v15 = v14;
-    if (v14)
+    drawingController = [(PKTiledView *)self drawingController];
+    v15 = drawingController;
+    if (drawingController)
     {
-      v16 = *(v14 + 64);
+      v16 = *(drawingController + 64);
     }
 
     else
@@ -3996,30 +3996,30 @@ LABEL_11:
     v17 = v16;
     [(PKMetalRendererController *)v17 setContentZoomScale:v13];
 
-    [v10 locationInView:self];
+    [touchCopy locationInView:self];
     x = v18;
     y = v19;
   }
 
-  v20 = [(PKTiledView *)self tileController];
-  if (v10)
+  tileController = [(PKTiledView *)self tileController];
+  if (touchCopy)
   {
     [(PKHoverController *)*&self->_lastContentOffset.x reset];
-    v21 = [(PKTiledView *)self selectionController];
-    if (v21)
+    selectionController = [(PKTiledView *)self selectionController];
+    if (selectionController)
     {
-      v22 = v21[16];
+      v22 = selectionController[16];
 
       if (!v22)
       {
         goto LABEL_11;
       }
 
-      v23 = [(PKTiledView *)self selectionController];
-      v24 = v23;
-      if (v23)
+      selectionController2 = [(PKTiledView *)self selectionController];
+      v24 = selectionController2;
+      if (selectionController2)
       {
-        [(PKSelectionController *)v23 clearSelectionIfNecessaryAnimated:0 withCompletion:?];
+        [(PKSelectionController *)selectionController2 clearSelectionIfNecessaryAnimated:0 withCompletion:?];
       }
     }
 
@@ -4041,13 +4041,13 @@ LABEL_11:
   v25 = [(PKTiledView *)self _hitAttachment:x, y];
   if (v25)
   {
-    if (v10)
+    if (touchCopy)
     {
-      v26 = [(PKTiledView *)self drawingTouchThatHitNothing];
+      drawingTouchThatHitNothing = [(PKTiledView *)self drawingTouchThatHitNothing];
 
       if (self)
       {
-        if (v26 == v10)
+        if (drawingTouchThatHitNothing == touchCopy)
         {
           self->_shouldBeginHoverPreview = 1;
         }
@@ -4061,33 +4061,33 @@ LABEL_11:
     v29 = PKDynamicCast(v28, v25);
     objc_storeStrong(&self->_currentDrawingBeingCopiedToCanvas, v29);
 
-    if ([v9 isErasingObjects])
+    if ([strokeCopy isErasingObjects])
     {
-      v30 = [v25 drawing];
-      [v9 setDrawing:v30];
+      drawing = [v25 drawing];
+      [strokeCopy setDrawing:drawing];
 LABEL_26:
 
       goto LABEL_27;
     }
 
-    v31 = [v9 drawing];
-    v32 = [(PKTiledView *)self liveAttachment];
-    v33 = [v32 drawing];
-    v34 = v33;
-    if (v31 != v33)
+    drawing2 = [strokeCopy drawing];
+    liveAttachment = [(PKTiledView *)self liveAttachment];
+    drawing3 = [liveAttachment drawing];
+    v34 = drawing3;
+    if (drawing2 != drawing3)
     {
 
 LABEL_25:
       [(PKTiledView *)self _layoutSubviewsUpdateTilesForRendering:0];
-      v30 = [(PKTiledView *)self liveAttachment];
-      [(PKTiledView *)self renderAttachment:v30 intoCanvas:v9 showing:1];
+      drawing = [(PKTiledView *)self liveAttachment];
+      [(PKTiledView *)self renderAttachment:drawing intoCanvas:strokeCopy showing:1];
       goto LABEL_26;
     }
 
-    v35 = [(PKTiledView *)self canvasView];
-    v36 = [v35 isHidden];
+    canvasView = [(PKTiledView *)self canvasView];
+    isHidden = [canvasView isHidden];
 
-    if (v36)
+    if (isHidden)
     {
       goto LABEL_25;
     }
@@ -4100,38 +4100,38 @@ LABEL_25:
     }
   }
 
-  else if (([v9 isErasingObjects] & 1) == 0)
+  else if (([strokeCopy isErasingObjects] & 1) == 0)
   {
-    [(PKTiledView *)self startedDrawingInBlankSpaceWithTouch:v10 location:x, y];
+    [(PKTiledView *)self startedDrawingInBlankSpaceWithTouch:touchCopy location:x, y];
   }
 
 LABEL_27:
 }
 
-- (void)setLiveAttachment:(uint64_t)a1
+- (void)setLiveAttachment:(uint64_t)attachment
 {
-  if (a1)
+  if (attachment)
   {
-    objc_storeStrong((a1 + 736), a2);
+    objc_storeStrong((attachment + 736), a2);
   }
 }
 
-- (void)_canvasViewWillBeginDrawing:(id)a3 startPoint:(id *)a4 forPreview:(BOOL)a5
+- (void)_canvasViewWillBeginDrawing:(id)drawing startPoint:(id *)point forPreview:(BOOL)preview
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (a5)
+  drawingCopy = drawing;
+  if (preview)
   {
     [(PKTiledView *)self _setupPencilShadowViewIfNecessary];
   }
 
   else
   {
-    v9 = [(PKTiledView *)self hoverController];
-    [(PKHoverController *)v9 didReceiveNormalTouch:?];
+    hoverController = [(PKTiledView *)self hoverController];
+    [(PKHoverController *)hoverController didReceiveNormalTouch:?];
 
-    v10 = [(PKTiledView *)self delegate];
-    [v10 _canvasViewWillBeginDrawing:self];
+    delegate = [(PKTiledView *)self delegate];
+    [delegate _canvasViewWillBeginDrawing:self];
 
     [(PKTiledView *)self _updateTimestampForLatestUserInteraction];
   }
@@ -4156,14 +4156,14 @@ LABEL_27:
   v14 = os_log_create("com.apple.pencilkit", "Drawing");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    var13 = a4->var13;
+    var13 = point->var13;
     v24 = 134217984;
     v25 = var13;
     _os_log_impl(&dword_1C7CCA000, v14, OS_LOG_TYPE_DEFAULT, "Resetting base roll value to: %g", &v24, 0xCu);
   }
 
   LOBYTE(self->_externalAttachments) = 0;
-  v16 = a4->var13;
+  v16 = point->var13;
   v17 = +[PKPencilDevice activePencil];
   [v17 setBaseRollAngle:v16];
 
@@ -4171,36 +4171,36 @@ LABEL_10:
   v18 = +[PKPencilDevice activePencil];
   [v18 baseRollAngle];
   v20 = v19;
-  v21 = [(PKTiledView *)self drawingController];
-  v22 = [(PKController *)v21 inputController];
-  v23 = v22;
-  if (v22)
+  drawingController = [(PKTiledView *)self drawingController];
+  inputController = [(PKController *)drawingController inputController];
+  v23 = inputController;
+  if (inputController)
   {
-    os_unfair_lock_lock(v22 + 80);
+    os_unfair_lock_lock(inputController + 80);
     *&v23[94]._os_unfair_lock_opaque = v20;
     os_unfair_lock_unlock(v23 + 80);
   }
 }
 
-- (void)canvasViewDidBeginDrawing:(id)a3
+- (void)canvasViewDidBeginDrawing:(id)drawing
 {
-  v13 = a3;
-  v4 = [(PKTiledView *)self delegate];
-  [v4 canvasViewDidBeginDrawing:self];
+  drawingCopy = drawing;
+  delegate = [(PKTiledView *)self delegate];
+  [delegate canvasViewDidBeginDrawing:self];
 
-  v5 = [v13 activeDrawing];
-  v6 = [v5 uuid];
-  v7 = [(PKTiledView *)self attachmentForUUID:v6];
+  activeDrawing = [drawingCopy activeDrawing];
+  uuid = [activeDrawing uuid];
+  v7 = [(PKTiledView *)self attachmentForUUID:uuid];
   [v7 didBeginDrawing];
 
   v8 = +[PKSelectionStatisticsManager sharedStatisticsManager];
   [v8 logEndSelectionSessionIfNecessary];
 
-  v9 = [(PKTiledView *)self selectionController];
-  v10 = v9;
-  if (v9)
+  selectionController = [(PKTiledView *)self selectionController];
+  v10 = selectionController;
+  if (selectionController)
   {
-    v11 = *(v9 + 144);
+    v11 = *(selectionController + 144);
   }
 
   else
@@ -4212,16 +4212,16 @@ LABEL_10:
   [v12 invalidateCachedStrokes];
 }
 
-- (void)canvasViewDidEndDrawing:(id)a3
+- (void)canvasViewDidEndDrawing:(id)drawing
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKTiledView *)self delegate];
-  [v5 canvasViewDidEndDrawing:self];
+  drawingCopy = drawing;
+  delegate = [(PKTiledView *)self delegate];
+  [delegate canvasViewDidEndDrawing:self];
 
-  v6 = [v4 activeDrawing];
-  v7 = [v6 uuid];
-  v8 = [(PKTiledView *)self _attachmentForUUID:v7];
+  activeDrawing = [drawingCopy activeDrawing];
+  uuid = [activeDrawing uuid];
+  v8 = [(PKTiledView *)self _attachmentForUUID:uuid];
 
   v9 = objc_opt_class();
   v10 = PKDynamicCast(v9, v8);
@@ -4286,18 +4286,18 @@ LABEL_10:
   [(PKTiledView *)self setLiveAttachment:?];
 }
 
-- (BOOL)canvasView:(id)a3 shouldDiscardEndedStroke:(id)a4 drawing:(id)a5
+- (BOOL)canvasView:(id)view shouldDiscardEndedStroke:(id)stroke drawing:(id)drawing
 {
-  v7 = a4;
-  v8 = [a5 uuid];
-  v9 = [(PKTiledView *)self _attachmentForUUID:v8];
+  strokeCopy = stroke;
+  uuid = [drawing uuid];
+  v9 = [(PKTiledView *)self _attachmentForUUID:uuid];
 
   v10 = objc_opt_class();
   v11 = PKDynamicCast(v10, v9);
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 shouldDiscardEndedStroke:v7];
+    v13 = [v11 shouldDiscardEndedStroke:strokeCopy];
   }
 
   else
@@ -4308,19 +4308,19 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)canvasView:(id)a3 shouldDiscardTapStrokeAt:(CGPoint)a4 drawing:(id)a5
+- (BOOL)canvasView:(id)view shouldDiscardTapStrokeAt:(CGPoint)at drawing:(id)drawing
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = [a5 uuid];
-  v9 = [(PKTiledView *)self _attachmentForUUID:v8];
+  y = at.y;
+  x = at.x;
+  uuid = [drawing uuid];
+  v9 = [(PKTiledView *)self _attachmentForUUID:uuid];
 
   v10 = objc_opt_class();
   v11 = PKDynamicCast(v10, v9);
   if (v11)
   {
-    v12 = [v9 drawing];
-    [(PKTiledView *)self transformFromViewToStrokeSpaceInDrawing:v12];
+    drawing = [v9 drawing];
+    [(PKTiledView *)self transformFromViewToStrokeSpaceInDrawing:drawing];
 
     v13 = [v11 _handleSingleTapAtDrawingLocation:1 fromTapStroke:{y * 0.0 + 0.0 * x + 0.0, y * 0.0 + 0.0 * x + 0.0}];
   }
@@ -4333,19 +4333,19 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)canvasView:(id)a3 drawingIsShared:(id)a4
+- (BOOL)canvasView:(id)view drawingIsShared:(id)shared
 {
-  v5 = [a4 uuid];
-  v6 = [(PKTiledView *)self _attachmentForUUID:v5];
+  uuid = [shared uuid];
+  v6 = [(PKTiledView *)self _attachmentForUUID:uuid];
 
   v7 = objc_opt_class();
   v8 = PKDynamicCast(v7, v6);
-  v9 = [v8 isSharedViaICloud];
+  isSharedViaICloud = [v8 isSharedViaICloud];
 
-  return v9;
+  return isSharedViaICloud;
 }
 
-- (BOOL)canvasViewShouldCombineStrokes:(id)a3
+- (BOOL)canvasViewShouldCombineStrokes:(id)strokes
 {
   if (!self->_isLayingOut)
   {
@@ -4357,91 +4357,91 @@ LABEL_10:
     return 0;
   }
 
-  v4 = [(PKTiledView *)self selectionController];
-  v5 = [(PKSelectionController *)v4 _hasExternalElementsSelectedInAttachment:?];
+  selectionController = [(PKTiledView *)self selectionController];
+  v5 = [(PKSelectionController *)selectionController _hasExternalElementsSelectedInAttachment:?];
 
   if (v5)
   {
     return 0;
   }
 
-  v7 = [(PKTiledView *)self rulerController];
-  v8 = [(PKRulerController *)v7 rulerSelected];
+  rulerController = [(PKTiledView *)self rulerController];
+  rulerSelected = [(PKRulerController *)rulerController rulerSelected];
 
-  return v8 ^ 1;
+  return rulerSelected ^ 1;
 }
 
-- (id)canvasViewContentCoordinateSpace:(id)a3
+- (id)canvasViewContentCoordinateSpace:(id)space
 {
-  v3 = [(PKTiledView *)self contentCoordinateSpace];
+  contentCoordinateSpace = [(PKTiledView *)self contentCoordinateSpace];
 
-  return v3;
+  return contentCoordinateSpace;
 }
 
-- (void)canvasView:(id)a3 beganStroke:(id)a4
+- (void)canvasView:(id)view beganStroke:(id)stroke
 {
-  v14 = a3;
-  v6 = a4;
+  viewCopy = view;
+  strokeCopy = stroke;
   [(PKTiledView *)self _updateTimestampForLatestUserInteraction];
   if ([(PKTiledView *)self toolShadowShouldBeActive])
   {
-    v7 = [(PKTiledView *)self window];
-    v8 = [v7 windowScene];
-    v9 = [PKPencilShadowView shadowViewForScene:v8];
+    window = [(PKTiledView *)self window];
+    windowScene = [window windowScene];
+    v9 = [PKPencilShadowView shadowViewForScene:windowScene];
     [v9 strokeBegan];
   }
 
-  v10 = [(PKTiledView *)self delegate];
-  [v10 canvasView:self beganStroke:v6];
+  delegate = [(PKTiledView *)self delegate];
+  [delegate canvasView:self beganStroke:strokeCopy];
 
-  v11 = [v14 activeDrawing];
-  v12 = [v11 uuid];
-  v13 = [(PKTiledView *)self attachmentForUUID:v12];
-  [v13 beganStroke:v6];
+  activeDrawing = [viewCopy activeDrawing];
+  uuid = [activeDrawing uuid];
+  v13 = [(PKTiledView *)self attachmentForUUID:uuid];
+  [v13 beganStroke:strokeCopy];
 }
 
-- (void)replayCanvasViewDrawingMoved:(id)a3 inputPoint:(id *)a4 inputType:(int64_t)a5
+- (void)replayCanvasViewDrawingMoved:(id)moved inputPoint:(id *)point inputType:(int64_t)type
 {
   [(PKTiledView *)self _updateTimestampForLatestUserInteraction];
-  v8 = [MEMORY[0x1E696AAE8] mainBundle];
-  v9 = [v8 bundleIdentifier];
-  v10 = [v9 isEqualToString:@"com.apple.freeform"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v10 = [bundleIdentifier isEqualToString:@"com.apple.freeform"];
 
   if (v10)
   {
-    v11 = [(PKTiledView *)self contentCoordinateSpace];
-    if (v11)
+    contentCoordinateSpace = [(PKTiledView *)self contentCoordinateSpace];
+    if (contentCoordinateSpace)
     {
-      v12 = v11;
-      v13 = [(PKTiledView *)self toolShadowShouldBeActive];
+      v12 = contentCoordinateSpace;
+      toolShadowShouldBeActive = [(PKTiledView *)self toolShadowShouldBeActive];
 
-      v14 = !v13;
-      if (a5 != 1)
+      v14 = !toolShadowShouldBeActive;
+      if (type != 1)
       {
         v14 = 1;
       }
 
       if ((v14 & 1) == 0)
       {
-        v15 = [(PKTiledView *)self contentCoordinateSpace];
-        [v15 convertPoint:self toCoordinateSpace:{a4->var0.var0.x, a4->var0.var0.y}];
+        contentCoordinateSpace2 = [(PKTiledView *)self contentCoordinateSpace];
+        [contentCoordinateSpace2 convertPoint:self toCoordinateSpace:{point->var0.var0.x, point->var0.var0.y}];
         v17 = v16;
         v19 = v18;
 
-        a4->var0.var0.x = v17;
-        a4->var0.var0.y = v19;
-        v20 = *&a4->var13;
-        v24[6] = *&a4->var11;
+        point->var0.var0.x = v17;
+        point->var0.var0.y = v19;
+        v20 = *&point->var13;
+        v24[6] = *&point->var11;
         v24[7] = v20;
-        var15 = a4->var15;
-        v21 = *&a4->var5;
-        v24[2] = *&a4->var3;
+        var15 = point->var15;
+        v21 = *&point->var5;
+        v24[2] = *&point->var3;
         v24[3] = v21;
-        v22 = *&a4->var9;
-        v24[4] = *&a4->var7;
+        v22 = *&point->var9;
+        v24[4] = *&point->var7;
         v24[5] = v22;
-        v23 = *&a4->var1;
-        v24[0] = a4->var0;
+        v23 = *&point->var1;
+        v24[0] = point->var0;
         v24[1] = v23;
         [(PKTiledView *)self _updatePencilShadowView:v24];
       }
@@ -4449,23 +4449,23 @@ LABEL_10:
   }
 }
 
-- (void)changeStrokesUsingTransformations:(id)a3 strokeGroups:(id)a4 drawing:(id)a5 originalStrokes:(id)a6
+- (void)changeStrokesUsingTransformations:(id)transformations strokeGroups:(id)groups drawing:(id)drawing originalStrokes:(id)strokes
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [PKRecognitionController undoCommandsToChangeStrokesUsingTransformations:v10 strokeGroups:v11 drawing:v12 originalStrokes:v13];
-  v15 = [v12 shouldClearSelectionAfterStraightening];
+  transformationsCopy = transformations;
+  groupsCopy = groups;
+  drawingCopy = drawing;
+  strokesCopy = strokes;
+  v14 = [PKRecognitionController undoCommandsToChangeStrokesUsingTransformations:transformationsCopy strokeGroups:groupsCopy drawing:drawingCopy originalStrokes:strokesCopy];
+  shouldClearSelectionAfterStraightening = [drawingCopy shouldClearSelectionAfterStraightening];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __86__PKTiledView_changeStrokesUsingTransformations_strokeGroups_drawing_originalStrokes___block_invoke;
   v18[3] = &unk_1E82D6DD0;
-  v21 = v15;
+  v21 = shouldClearSelectionAfterStraightening;
   v18[4] = self;
   v19 = v14;
-  v20 = v12;
-  v16 = v12;
+  v20 = drawingCopy;
+  v16 = drawingCopy;
   v17 = v14;
   dispatch_async(MEMORY[0x1E69E96A0], v18);
 }
@@ -4497,25 +4497,25 @@ void __86__PKTiledView_changeStrokesUsingTransformations_strokeGroups_drawing_or
   [v8 _selectionRefreshWithChangeToDrawings:v9 completion:&__block_literal_global_417];
 }
 
-- (void)straightenStrokes:(id)a3 drawing:(id)a4 completionBlockWithStrokeTransformInfo:(id)a5
+- (void)straightenStrokes:(id)strokes drawing:(id)drawing completionBlockWithStrokeTransformInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 copy];
+  strokesCopy = strokes;
+  drawingCopy = drawing;
+  infoCopy = info;
+  v11 = [drawingCopy copy];
 
-  v12 = [v11 uuid];
-  v13 = [(PKTiledView *)self _attachmentForUUID:v12];
+  uuid = [v11 uuid];
+  v13 = [(PKTiledView *)self _attachmentForUUID:uuid];
 
-  v14 = [v13 recognitionController];
+  recognitionController = [v13 recognitionController];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __80__PKTiledView_straightenStrokes_drawing_completionBlockWithStrokeTransformInfo___block_invoke;
   v16[3] = &unk_1E82D6A38;
-  v15 = v10;
+  v15 = infoCopy;
   v16[4] = self;
   v17 = v15;
-  [v14 straightenStrokes:v8 drawing:v11 completionBlockWithStrokeTransformInfo:v16];
+  [recognitionController straightenStrokes:strokesCopy drawing:v11 completionBlockWithStrokeTransformInfo:v16];
 }
 
 void __80__PKTiledView_straightenStrokes_drawing_completionBlockWithStrokeTransformInfo___block_invoke(uint64_t a1)
@@ -4547,32 +4547,32 @@ void __80__PKTiledView_straightenStrokes_drawing_completionBlockWithStrokeTransf
   [(PKAnalyticsSession *)v2 incrementTextLineStraighteningCount];
 }
 
-- (void)straighten:(id)a3 strokes:(id)a4 drawing:(id)a5
+- (void)straighten:(id)straighten strokes:(id)strokes drawing:(id)drawing
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __42__PKTiledView_straighten_strokes_drawing___block_invoke;
   v5[3] = &unk_1E82D6A60;
   v5[4] = self;
-  [(PKTiledView *)self straightenStrokes:a4 drawing:a5 completionBlockWithStrokeTransformInfo:v5];
+  [(PKTiledView *)self straightenStrokes:strokes drawing:drawing completionBlockWithStrokeTransformInfo:v5];
 }
 
-- (void)_straightenStrokes:(id)a3 drawing:(id)a4 completionBlock:(id)a5
+- (void)_straightenStrokes:(id)strokes drawing:(id)drawing completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  strokesCopy = strokes;
+  drawingCopy = drawing;
+  blockCopy = block;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __58__PKTiledView__straightenStrokes_drawing_completionBlock___block_invoke;
   v14[3] = &unk_1E82D6A88;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v10;
-  v12 = v8;
-  v13 = v9;
+  v15 = drawingCopy;
+  v16 = strokesCopy;
+  v17 = blockCopy;
+  v11 = blockCopy;
+  v12 = strokesCopy;
+  v13 = drawingCopy;
   [(PKTiledView *)self straightenStrokes:v12 drawing:v13 completionBlockWithStrokeTransformInfo:v14];
 }
 
@@ -4582,19 +4582,19 @@ void __58__PKTiledView__straightenStrokes_drawing_completionBlock___block_invoke
   (*(*(a1 + 56) + 16))();
 }
 
-- (id)_createPKStrokesFromCHDrawing:(id)a3 inputScale:(double)a4 sourceStroke:(id)a5 ink:(id)a6
+- (id)_createPKStrokesFromCHDrawing:(id)drawing inputScale:(double)scale sourceStroke:(id)stroke ink:(id)ink
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  drawingCopy = drawing;
+  strokeCopy = stroke;
+  inkCopy = ink;
   v12 = *(MEMORY[0x1E695EFD0] + 16);
   v16 = *MEMORY[0x1E695EFD0];
   v17 = v12;
   v18 = *(MEMORY[0x1E695EFD0] + 32);
-  if (v10)
+  if (strokeCopy)
   {
-    v19[0] = v10;
+    v19[0] = strokeCopy;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:{1, v16, v17, v18}];
   }
 
@@ -4603,43 +4603,43 @@ void __58__PKTiledView__straightenStrokes_drawing_completionBlock___block_invoke
     v13 = MEMORY[0x1E695E0F0];
   }
 
-  v14 = [PKStroke _createStrokesFromCHDrawing:v9 transform:&v16 inputScale:v13 sourceStrokes:objc_opt_class() strokeClass:v11 newInk:1 suggestedHeight:a4 shouldSetSynthesizedFlag:-1.0];
-  if (v10)
+  v14 = [PKStroke _createStrokesFromCHDrawing:drawingCopy transform:&v16 inputScale:v13 sourceStrokes:objc_opt_class() strokeClass:inkCopy newInk:1 suggestedHeight:scale shouldSetSynthesizedFlag:-1.0];
+  if (strokeCopy)
   {
   }
 
   return v14;
 }
 
-- (id)_createPKStrokesFromCHDrawing:(id)a3 transform:(CGAffineTransform *)a4 inputScale:(double)a5 sourceStroke:(id)a6
+- (id)_createPKStrokesFromCHDrawing:(id)drawing transform:(CGAffineTransform *)transform inputScale:(double)scale sourceStroke:(id)stroke
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
-  v11 = *&a4->c;
-  v15[0] = *&a4->a;
+  drawingCopy = drawing;
+  strokeCopy = stroke;
+  v11 = *&transform->c;
+  v15[0] = *&transform->a;
   v15[1] = v11;
-  v16 = *&a4->tx;
-  v17[0] = v10;
+  v16 = *&transform->tx;
+  v17[0] = strokeCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:{1, v15[0], v11, v16}];
-  v13 = [PKStroke _createStrokesFromCHDrawing:v9 transform:v15 inputScale:v12 sourceStrokes:objc_opt_class() strokeClass:0 newInk:1 suggestedHeight:a5 shouldSetSynthesizedFlag:-1.0];
+  v13 = [PKStroke _createStrokesFromCHDrawing:drawingCopy transform:v15 inputScale:v12 sourceStrokes:objc_opt_class() strokeClass:0 newInk:1 suggestedHeight:scale shouldSetSynthesizedFlag:-1.0];
 
   return v13;
 }
 
-- (void)refine:(id)a3 strokes:(id)a4 drawing:(id)a5
+- (void)refine:(id)refine strokes:(id)strokes drawing:(id)drawing
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 copy];
+  strokesCopy = strokes;
+  drawingCopy = drawing;
+  v9 = [drawingCopy copy];
 
   [(PKTiledView *)self inputScale];
   v11 = v10;
-  v12 = [(PKTiledView *)self selectionController];
-  v13 = v12;
-  if (v12)
+  selectionController = [(PKTiledView *)self selectionController];
+  v13 = selectionController;
+  if (selectionController)
   {
-    v14 = *(v12 + 128);
+    v14 = *(selectionController + 128);
   }
 
   else
@@ -4649,27 +4649,27 @@ void __58__PKTiledView__straightenStrokes_drawing_completionBlock___block_invoke
 
   v15 = v14;
 
-  v16 = [(PKTiledView *)self selectionController];
-  v17 = v16;
-  if (v16)
+  selectionController2 = [(PKTiledView *)self selectionController];
+  v17 = selectionController2;
+  if (selectionController2)
   {
-    v18 = [*(v16 + 152) selectionType];
+    selectionType = [*(selectionController2 + 152) selectionType];
   }
 
   else
   {
-    v18 = 0;
+    selectionType = 0;
   }
 
   if (v15)
   {
-    v19 = [v15 strokes];
-    if ([v19 count])
+    strokes = [v15 strokes];
+    if ([strokes count])
     {
-      v20 = [v15 drawing];
-      v21 = [v20 uuid];
-      v22 = [v9 uuid];
-      v23 = [v21 isEqual:v22];
+      drawing = [v15 drawing];
+      uuid = [drawing uuid];
+      uuid2 = [v9 uuid];
+      v23 = [uuid isEqual:uuid2];
 
       if (v23)
       {
@@ -4695,10 +4695,10 @@ LABEL_11:
   v39[3] = 0;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v25 = v24;
-  v26 = [v9 uuid];
-  v27 = [(PKTiledView *)self _attachmentForUUID:v26];
+  uuid3 = [v9 uuid];
+  v27 = [(PKTiledView *)self _attachmentForUUID:uuid3];
 
-  v28 = [v27 recognitionController];
+  recognitionController = [v27 recognitionController];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __38__PKTiledView_refine_strokes_drawing___block_invoke;
@@ -4708,11 +4708,11 @@ LABEL_11:
   v36 = v39;
   v37 = v25;
   v32 = v29;
-  v33 = self;
+  selfCopy = self;
   v30 = v15;
   v34 = v30;
-  v38 = v18;
-  [v28 refineStrokes:v7 drawing:v29 inputScale:v31 completion:v11];
+  v38 = selectionType;
+  [recognitionController refineStrokes:strokesCopy drawing:v29 inputScale:v31 completion:v11];
 
   _Block_object_dispose(v39, 8);
   _Block_object_dispose(v40, 8);
@@ -4852,11 +4852,11 @@ void __38__PKTiledView_refine_strokes_drawing___block_invoke_4(void *a1)
   }
 }
 
-- (void)canvasView:(id)a3 endedStroke:(id)a4 shapeStrokes:(id)a5
+- (void)canvasView:(id)view endedStroke:(id)stroke shapeStrokes:(id)strokes
 {
-  v21 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  strokeCopy = stroke;
+  strokesCopy = strokes;
   [(PKTiledView *)self _updateTimestampForLatestUserInteraction];
   WeakRetained = objc_loadWeakRetained(&self->_editMenuInteraction);
   if (WeakRetained)
@@ -4870,7 +4870,7 @@ void __38__PKTiledView_refine_strokes_drawing___block_invoke_4(void *a1)
       if (v13 > 0.0)
       {
         [(PKTiledView *)self _trimRecentStrokes];
-        [*&self->_drawingEnabled addObject:v8];
+        [*&self->_drawingEnabled addObject:strokeCopy];
       }
     }
 
@@ -4882,8 +4882,8 @@ void __38__PKTiledView_refine_strokes_drawing___block_invoke_4(void *a1)
   tiledViewFlags = self->_tiledViewFlags;
   if ((tiledViewFlags & 2) != 0)
   {
-    v15 = [(PKTiledView *)self delegate];
-    [v15 canvasView:self endedStroke:v8 shapeStrokes:v9];
+    delegate = [(PKTiledView *)self delegate];
+    [delegate canvasView:self endedStroke:strokeCopy shapeStrokes:strokesCopy];
   }
 
   else
@@ -4893,52 +4893,52 @@ void __38__PKTiledView_refine_strokes_drawing___block_invoke_4(void *a1)
       goto LABEL_10;
     }
 
-    v15 = [(PKTiledView *)self delegate];
-    [v15 canvasView:self endedStroke:v8];
+    delegate = [(PKTiledView *)self delegate];
+    [delegate canvasView:self endedStroke:strokeCopy];
   }
 
 LABEL_10:
-  v16 = [v21 activeDrawing];
-  v17 = [v16 uuid];
-  v18 = [(PKTiledView *)self attachmentForUUID:v17];
+  activeDrawing = [viewCopy activeDrawing];
+  uuid = [activeDrawing uuid];
+  v18 = [(PKTiledView *)self attachmentForUUID:uuid];
 
-  if (v8)
+  if (strokeCopy)
   {
-    [(PKAutoRefineController *)self->_externalAutoRefineTaskCoordinator indexRefinableStroke:v8];
-    v19 = [v18 recognitionManager];
-    [(PKRecognitionSessionManager *)v19 updateWithRefinableStroke:v8];
+    [(PKAutoRefineController *)self->_externalAutoRefineTaskCoordinator indexRefinableStroke:strokeCopy];
+    recognitionManager = [v18 recognitionManager];
+    [(PKRecognitionSessionManager *)recognitionManager updateWithRefinableStroke:strokeCopy];
   }
 
   [(PKTiledView *)self _beginAnalyticsSessionIfNecessary];
   v20 = self->_aggd_cachedVisibleStrokeCount;
   [(PKAnalyticsSession *)v20 incrementStrokeCount];
 
-  [v18 endedStroke:v8];
+  [v18 endedStroke:strokeCopy];
 }
 
-- (void)canvasView:(id)a3 cancelledStroke:(id)a4
+- (void)canvasView:(id)view cancelledStroke:(id)stroke
 {
-  v15 = a3;
-  v6 = a4;
+  viewCopy = view;
+  strokeCopy = stroke;
   [(PKTiledView *)self _updateTimestampForLatestUserInteraction];
-  if (v6)
+  if (strokeCopy)
   {
-    v7 = [(PKTiledView *)self delegate];
-    [v7 canvasView:self cancelledStroke:v6];
+    delegate = [(PKTiledView *)self delegate];
+    [delegate canvasView:self cancelledStroke:strokeCopy];
 
-    v8 = [v15 activeDrawing];
-    v9 = [v8 uuid];
-    v10 = [(PKTiledView *)self attachmentForUUID:v9];
-    [v10 cancelledStroke:v6];
+    activeDrawing = [viewCopy activeDrawing];
+    uuid = [activeDrawing uuid];
+    v10 = [(PKTiledView *)self attachmentForUUID:uuid];
+    [v10 cancelledStroke:strokeCopy];
   }
 
-  v11 = [(PKTiledView *)self canvasView];
-  [v11 _finishCombiningStrokesIfNecessary];
+  canvasView = [(PKTiledView *)self canvasView];
+  [canvasView _finishCombiningStrokesIfNecessary];
 
-  v12 = [(PKTiledView *)self canvasView];
-  v13 = [v12 wantsCanvasVisible];
+  canvasView2 = [(PKTiledView *)self canvasView];
+  wantsCanvasVisible = [canvasView2 wantsCanvasVisible];
 
-  if ((v13 & 1) == 0)
+  if ((wantsCanvasVisible & 1) == 0)
   {
     rulerHostingDelegate = self->_rulerHostingDelegate;
     self->_rulerHostingDelegate = 0;
@@ -4948,36 +4948,36 @@ LABEL_10:
   }
 }
 
-- (void)_canvasViewDidEraseStrokes:(id)a3
+- (void)_canvasViewDidEraseStrokes:(id)strokes
 {
-  v16 = a3;
+  strokesCopy = strokes;
   [(PKTiledView *)self _updateTimestampForLatestUserInteraction];
-  v4 = [(PKTiledView *)self canvasView];
-  v5 = [v4 drawing];
+  canvasView = [(PKTiledView *)self canvasView];
+  drawing = [canvasView drawing];
 
-  if (v5)
+  if (drawing)
   {
-    v6 = [(PKTiledView *)self canvasView];
-    v7 = [v6 drawing];
-    v8 = [v7 uuid];
-    v9 = [(PKTiledView *)self _attachmentForUUID:v8];
+    canvasView2 = [(PKTiledView *)self canvasView];
+    drawing2 = [canvasView2 drawing];
+    uuid = [drawing2 uuid];
+    v9 = [(PKTiledView *)self _attachmentForUUID:uuid];
 
     v10 = objc_opt_class();
     v11 = PKDynamicCast(v10, v9);
     v12 = v11;
     if (v11)
     {
-      [v11 drawingDidEraseStrokes:v16];
+      [v11 drawingDidEraseStrokes:strokesCopy];
     }
   }
 
-  v13 = [(PKTiledView *)self delegate];
+  delegate = [(PKTiledView *)self delegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(PKTiledView *)self delegate];
-    [v15 canvasViewDidEraseStrokes:v16];
+    delegate2 = [(PKTiledView *)self delegate];
+    [delegate2 canvasViewDidEraseStrokes:strokesCopy];
   }
 }
 
@@ -4992,72 +4992,72 @@ LABEL_10:
   }
 }
 
-- (void)_canvasView:(id)a3 didFinishRenderingNewStrokes:(id)a4 inDrawing:(id)a5 forPreview:(BOOL)a6
+- (void)_canvasView:(id)view didFinishRenderingNewStrokes:(id)strokes inDrawing:(id)drawing forPreview:(BOOL)preview
 {
-  v18 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  strokesCopy = strokes;
+  drawingCopy = drawing;
   kdebug_trace();
-  v11 = [v10 uuid];
-  v12 = [(PKTiledView *)self _attachmentForUUID:v11];
+  uuid = [drawingCopy uuid];
+  v12 = [(PKTiledView *)self _attachmentForUUID:uuid];
 
   if (v12)
   {
     v13 = objc_opt_class();
     v14 = PKDynamicCast(v13, v12);
     v15 = v14;
-    if (v14 && [v14 updateHeightAfterDrawing] && (objc_msgSend(v10, "_isEmpty") & 1) == 0)
+    if (v14 && [v14 updateHeightAfterDrawing] && (objc_msgSend(drawingCopy, "_isEmpty") & 1) == 0)
     {
       [(PKTiledView *)self _updateHeightOfAttachmentIfNecessary:v15];
       [(PKTiledView *)self updateTilesForVisibleRectRendering:0 offscreen:0 overrideAdditionalStrokes:0];
     }
 
     [(PKTiledView *)self cancelTileGenerationInvalidateTiles:0];
-    v16 = [v18 wantsCanvasVisible];
-    if ((v16 & 1) == 0)
+    wantsCanvasVisible = [viewCopy wantsCanvasVisible];
+    if ((wantsCanvasVisible & 1) == 0)
     {
-      [v9 count];
+      [strokesCopy count];
     }
 
-    v17 = [(PKTiledView *)self canvasView];
-    [(PKTiledView *)self _copyFromCanvas:v17 intoAttachment:v12 hideCanvas:v16 ^ 1u strokes:v9];
+    canvasView = [(PKTiledView *)self canvasView];
+    [(PKTiledView *)self _copyFromCanvas:canvasView intoAttachment:v12 hideCanvas:wantsCanvasVisible ^ 1u strokes:strokesCopy];
   }
 
-  else if (([v18 wantsCanvasVisible] & 1) == 0)
+  else if (([viewCopy wantsCanvasVisible] & 1) == 0)
   {
     [(PKTiledView *)self _hideCanvas];
   }
 }
 
-- (void)updateCurrentSelectionWithNewDrawingIfNecessary:(id)a3
+- (void)updateCurrentSelectionWithNewDrawingIfNecessary:(id)necessary
 {
-  v5 = a3;
-  v4 = [(PKTiledView *)self selectionController];
-  [(PKSelectionController *)v4 updateCurrentSelectionWithNewDrawingIfNecessary:v5];
+  necessaryCopy = necessary;
+  selectionController = [(PKTiledView *)self selectionController];
+  [(PKSelectionController *)selectionController updateCurrentSelectionWithNewDrawingIfNecessary:necessaryCopy];
 }
 
-- (void)_handleDrawingDidChangeForAttachment:(id)a3 didChangeVisibleStrokes:(BOOL)a4
+- (void)_handleDrawingDidChangeForAttachment:(id)attachment didChangeVisibleStrokes:(BOOL)strokes
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 drawing];
+  strokesCopy = strokes;
+  attachmentCopy = attachment;
+  drawing = [attachmentCopy drawing];
 
-  if (v7 && ![(PKTiledView *)self p_shouldSkipStrokeCacheInvalidationForAttachment:v6])
+  if (drawing && ![(PKTiledView *)self p_shouldSkipStrokeCacheInvalidationForAttachment:attachmentCopy])
   {
     objc_initWeak(&location, self);
-    v8 = [v6 drawing];
-    [(PKTiledView *)self visibleOnscreenBoundsForDrawing:v8];
+    drawing2 = [attachmentCopy drawing];
+    [(PKTiledView *)self visibleOnscreenBoundsForDrawing:drawing2];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
 
     v17 = objc_opt_class();
-    v18 = PKDynamicCast(v17, v6);
+    v18 = PKDynamicCast(v17, attachmentCopy);
     v19 = v18;
     if (v18)
     {
-      [v18 drawingDidChangeVisibleStrokes:v4];
+      [v18 drawingDidChangeVisibleStrokes:strokesCopy];
     }
 
     v20 = dispatch_time(0, 100000000);
@@ -5066,7 +5066,7 @@ LABEL_10:
     block[2] = __76__PKTiledView__handleDrawingDidChangeForAttachment_didChangeVisibleStrokes___block_invoke;
     block[3] = &unk_1E82D6B00;
     objc_copyWeak(v23, &location);
-    v22 = v6;
+    v22 = attachmentCopy;
     v23[1] = v10;
     v23[2] = v12;
     v23[3] = v14;
@@ -5106,16 +5106,16 @@ void __76__PKTiledView__handleDrawingDidChangeForAttachment_didChangeVisibleStro
   }
 }
 
-- (void)canvasView:(id)a3 drawingDidChange:(id)a4
+- (void)canvasView:(id)view drawingDidChange:(id)change
 {
-  v5 = a4;
-  v6 = [v5 uuid];
-  v7 = [(PKTiledView *)self _attachmentForUUID:v6];
+  changeCopy = change;
+  uuid = [changeCopy uuid];
+  v7 = [(PKTiledView *)self _attachmentForUUID:uuid];
 
   if (v7)
   {
-    v8 = [v7 drawing];
-    [v8 mergeWithDrawing:v5];
+    drawing = [v7 drawing];
+    [drawing mergeWithDrawing:changeCopy];
 
     [(PKTiledView *)self _handleDrawingDidChangeForAttachment:v7];
   }
@@ -5130,20 +5130,20 @@ void __76__PKTiledView__handleDrawingDidChangeForAttachment_didChangeVisibleStro
     }
   }
 
-  [(PKTiledView *)self updateCurrentSelectionWithNewDrawingIfNecessary:v5];
+  [(PKTiledView *)self updateCurrentSelectionWithNewDrawingIfNecessary:changeCopy];
 }
 
-- (BOOL)canvasView:(id)a3 shouldBeginDrawingWithTouch:(id)a4
+- (BOOL)canvasView:(id)view shouldBeginDrawingWithTouch:(id)touch
 {
-  v5 = a4;
+  touchCopy = touch;
   [(PKTiledView *)self _beginAnalyticsSessionIfNecessary];
-  v6 = [(PKTiledView *)self delegate];
+  delegate = [(PKTiledView *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(PKTiledView *)self delegate];
-    v9 = [v8 canvasView:self shouldBeginDrawingWithTouch:v5];
+    delegate2 = [(PKTiledView *)self delegate];
+    v9 = [delegate2 canvasView:self shouldBeginDrawingWithTouch:touchCopy];
   }
 
   else
@@ -5151,7 +5151,7 @@ void __76__PKTiledView__handleDrawingDidChangeForAttachment_didChangeVisibleStro
     v9 = 1;
   }
 
-  if ([v5 type])
+  if ([touchCopy type])
   {
     if ((v9 & 1) == 0)
     {
@@ -5161,8 +5161,8 @@ void __76__PKTiledView__handleDrawingDidChangeForAttachment_didChangeVisibleStro
     goto LABEL_6;
   }
 
-  v17 = [(PKTiledView *)self hoverController];
-  if (!v17 || !self || (v17[56] & 1) == 0)
+  hoverController = [(PKTiledView *)self hoverController];
+  if (!hoverController || !self || (hoverController[56] & 1) == 0)
   {
 
     if ((v9 & 1) == 0)
@@ -5171,17 +5171,17 @@ void __76__PKTiledView__handleDrawingDidChangeForAttachment_didChangeVisibleStro
     }
 
 LABEL_6:
-    v10 = [(PKTiledView *)self drawingGestureRecognizer];
-    v11 = [v10 drawingTouch];
+    drawingGestureRecognizer = [(PKTiledView *)self drawingGestureRecognizer];
+    drawingTouch = [drawingGestureRecognizer drawingTouch];
 
-    if (v11)
+    if (drawingTouch)
     {
-      v12 = [(PKTiledView *)self drawingGestureRecognizer];
-      v13 = [v12 drawingTouch];
-      v14 = [v13 type];
+      drawingGestureRecognizer2 = [(PKTiledView *)self drawingGestureRecognizer];
+      drawingTouch2 = [drawingGestureRecognizer2 drawingTouch];
+      type = [drawingTouch2 type];
 
-      v15 = [v5 type];
-      if (v14 == 2 && v15 != 2)
+      type2 = [touchCopy type];
+      if (type == 2 && type2 != 2)
       {
         v16 = os_log_create("com.apple.pencilkit", "");
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -5194,8 +5194,8 @@ LABEL_6:
       }
     }
 
-    v18 = [(PKTiledView *)self selectionController];
-    if (!v18 || (v19 = v18[16], v18, !v19) || ([v5 locationInView:self], v21 = v20, v23 = v22, -[PKTiledView selectionController](self, "selectionController"), v24 = objc_claimAutoreleasedReturnValue(), -[PKSelectionController selectionInteraction](v24), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "_selectionShouldReceiveTouchForPoint:", v21, v23), v25, v24, (v26 & 1) == 0))
+    selectionController = [(PKTiledView *)self selectionController];
+    if (!selectionController || (v19 = selectionController[16], selectionController, !v19) || ([touchCopy locationInView:self], v21 = v20, v23 = v22, -[PKTiledView selectionController](self, "selectionController"), v24 = objc_claimAutoreleasedReturnValue(), -[PKSelectionController selectionInteraction](v24), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "_selectionShouldReceiveTouchForPoint:", v21, v23), v25, v24, (v26 & 1) == 0))
     {
       [(PKTiledView *)self _cancelHideCanvasIfNecessary];
       v27 = 1;
@@ -5226,11 +5226,11 @@ LABEL_23:
   return v27;
 }
 
-- (void)canvasViewDrawingMoved:(id)a3 withTouch:(id)a4
+- (void)canvasViewDrawingMoved:(id)moved withTouch:(id)touch
 {
-  v5 = a4;
+  touchCopy = touch;
   [(PKTiledView *)self _updateTimestampForLatestUserInteraction];
-  if (-[PKTiledView toolShadowShouldBeActive](self, "toolShadowShouldBeActive") && [v5 type] == 2)
+  if (-[PKTiledView toolShadowShouldBeActive](self, "toolShadowShouldBeActive") && [touchCopy type] == 2)
   {
     [(PKTiledView *)self _keepPencilShadowVisible];
   }
@@ -5241,13 +5241,13 @@ LABEL_23:
   v15 = 0u;
   __s1 = 0u;
   v13 = 0u;
-  v6 = [(PKTiledView *)self canvasView];
-  v7 = [v6 _drawingController];
-  v8 = [(PKController *)v7 inputController];
-  v9 = v8;
-  if (v8)
+  canvasView = [(PKTiledView *)self canvasView];
+  _drawingController = [canvasView _drawingController];
+  inputController = [(PKController *)_drawingController inputController];
+  v9 = inputController;
+  if (inputController)
   {
-    [v8 _latestStrokePoint];
+    [inputController _latestStrokePoint];
   }
 
   else
@@ -5268,14 +5268,14 @@ LABEL_23:
   }
 }
 
-- (void)canvasViewInvalidateTiles:(id)a3
+- (void)canvasViewInvalidateTiles:(id)tiles
 {
   [(PKTiledView *)self cancelTileGenerationInvalidateTiles:1];
 
   [(PKTiledView *)self updateTilesForVisibleRect];
 }
 
-- (CGAffineTransform)canvasView:(SEL)a3 transformForStroke:(id)a4
+- (CGAffineTransform)canvasView:(SEL)view transformForStroke:(id)stroke
 {
   if (self && (BYTE4(self[10].d) & 1) != 0)
   {
@@ -5294,37 +5294,37 @@ LABEL_23:
   return self;
 }
 
-- (void)_handleSingleTapAtLocation:(CGPoint)a3 forAttachment:(id)a4
+- (void)_handleSingleTapAtLocation:(CGPoint)location forAttachment:(id)attachment
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = location.y;
+  x = location.x;
+  attachmentCopy = attachment;
   v8 = objc_opt_class();
-  v9 = PKDynamicCast(v8, v7);
+  v9 = PKDynamicCast(v8, attachmentCopy);
   if (v9)
   {
-    v10 = [v7 drawing];
+    drawing = [attachmentCopy drawing];
 
-    if (!v10 || ([v7 drawing], v11 = objc_claimAutoreleasedReturnValue(), -[PKTiledView transformFromViewToStrokeSpaceInDrawing:](self, "transformFromViewToStrokeSpaceInDrawing:", v11), v11, (objc_msgSend(v9, "_handleSingleTapAtDrawingLocation:", y * 0.0 + 0.0 * x + 0.0, y * 0.0 + 0.0 * x + 0.0) & 1) == 0))
+    if (!drawing || ([attachmentCopy drawing], v11 = objc_claimAutoreleasedReturnValue(), -[PKTiledView transformFromViewToStrokeSpaceInDrawing:](self, "transformFromViewToStrokeSpaceInDrawing:", v11), v11, (objc_msgSend(v9, "_handleSingleTapAtDrawingLocation:", y * 0.0 + 0.0 * x + 0.0, y * 0.0 + 0.0 * x + 0.0) & 1) == 0))
     {
       [(PKTiledView *)self _showEditMenuFromLocation:v9 forAttachment:x, y];
     }
   }
 }
 
-- (void)_showEditMenuFromLocation:(CGPoint)a3 forAttachment:(id)a4
+- (void)_showEditMenuFromLocation:(CGPoint)location forAttachment:(id)attachment
 {
-  y = a3.y;
-  x = a3.x;
-  v12 = a4;
+  y = location.y;
+  x = location.x;
+  attachmentCopy = attachment;
   [(PKTiledView *)self becomeFirstResponder];
-  [v12 setAttachmentChromeVisible:1 animated:1 highlightBackground:0];
+  [attachmentCopy setAttachmentChromeVisible:1 animated:1 highlightBackground:0];
   v7 = [MEMORY[0x1E69DC9D8] configurationWithIdentifier:@"PKEditMenuConfigurationIdentifier" sourcePoint:{x, y}];
-  v8 = [(PKTiledView *)self selectionController];
-  v9 = v8;
-  if (v8)
+  selectionController = [(PKTiledView *)self selectionController];
+  v9 = selectionController;
+  if (selectionController)
   {
-    WeakRetained = objc_loadWeakRetained((v8 + 120));
+    WeakRetained = objc_loadWeakRetained((selectionController + 120));
   }
 
   else
@@ -5332,31 +5332,31 @@ LABEL_23:
     WeakRetained = 0;
   }
 
-  v11 = [WeakRetained editMenuInteraction];
-  [v11 presentEditMenuWithConfiguration:v7];
+  editMenuInteraction = [WeakRetained editMenuInteraction];
+  [editMenuInteraction presentEditMenuWithConfiguration:v7];
 }
 
-- (id)didChangeDrawing:(id)a3 undoable:(BOOL)a4
+- (id)didChangeDrawing:(id)drawing undoable:(BOOL)undoable
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 uuid];
-  v8 = [(PKTiledView *)self _attachmentForUUID:v7];
+  undoableCopy = undoable;
+  drawingCopy = drawing;
+  uuid = [drawingCopy uuid];
+  v8 = [(PKTiledView *)self _attachmentForUUID:uuid];
 
   if ([v8 isExternalAttachment] && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v8 externalAttachmentDidChangeDrawing:v6];
+    [v8 externalAttachmentDidChangeDrawing:drawingCopy];
   }
 
   [v8 drawing];
-  if (v4)
+  if (undoableCopy)
     v9 = {;
-    v10 = [v9 undoableMergeWithDrawing:v6];
+    v10 = [v9 undoableMergeWithDrawing:drawingCopy];
   }
 
   else
     v9 = {;
-    [v9 mergeWithDrawing:v6];
+    [v9 mergeWithDrawing:drawingCopy];
     v10 = 0;
   }
 
@@ -5365,20 +5365,20 @@ LABEL_23:
   return v10;
 }
 
-- (void)registerUndoCommand:(id)a3
+- (void)registerUndoCommand:(id)command
 {
-  v15 = a3;
-  v4 = [(PKTiledView *)self undoManager];
+  commandCopy = command;
+  undoManager = [(PKTiledView *)self undoManager];
 
-  if (v4)
+  if (undoManager)
   {
-    v5 = [(PKTiledView *)self undoManager];
-    v6 = [(PKTiledView *)self drawingUndoTarget];
-    [v15 registerWithUndoManager:v5 target:v6 selector:{-[PKTiledView drawingUndoSelector](self, "drawingUndoSelector")}];
+    undoManager2 = [(PKTiledView *)self undoManager];
+    drawingUndoTarget = [(PKTiledView *)self drawingUndoTarget];
+    [commandCopy registerWithUndoManager:undoManager2 target:drawingUndoTarget selector:{-[PKTiledView drawingUndoSelector](self, "drawingUndoSelector")}];
 
-    v7 = [(PKTiledView *)self drawingUndoTarget];
+    drawingUndoTarget2 = [(PKTiledView *)self drawingUndoTarget];
 
-    if (v7 == self)
+    if (drawingUndoTarget2 == self)
     {
       hoverConvertToShapeBlock = self->_hoverConvertToShapeBlock;
       if (!hoverConvertToShapeBlock)
@@ -5390,41 +5390,41 @@ LABEL_23:
         hoverConvertToShapeBlock = self->_hoverConvertToShapeBlock;
       }
 
-      v11 = [(PKTiledView *)self undoManager];
-      v12 = [hoverConvertToShapeBlock indexOfObjectIdenticalTo:v11];
+      undoManager3 = [(PKTiledView *)self undoManager];
+      v12 = [hoverConvertToShapeBlock indexOfObjectIdenticalTo:undoManager3];
 
       if (v12 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v13 = self->_hoverConvertToShapeBlock;
-        v14 = [(PKTiledView *)self undoManager];
-        [v13 addObject:v14];
+        undoManager4 = [(PKTiledView *)self undoManager];
+        [v13 addObject:undoManager4];
       }
     }
   }
 }
 
-- (void)registerUndoCommands:(id)a3
+- (void)registerUndoCommands:(id)commands
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKTiledView *)self undoManager];
+  commandsCopy = commands;
+  undoManager = [(PKTiledView *)self undoManager];
 
-  if (v5)
+  if (undoManager)
   {
-    v6 = [(PKTiledView *)self undoManager];
-    v7 = [v6 groupsByEvent];
+    undoManager2 = [(PKTiledView *)self undoManager];
+    groupsByEvent = [undoManager2 groupsByEvent];
 
-    if ((v7 & 1) == 0)
+    if ((groupsByEvent & 1) == 0)
     {
-      v8 = [(PKTiledView *)self undoManager];
-      [v8 beginUndoGrouping];
+      undoManager3 = [(PKTiledView *)self undoManager];
+      [undoManager3 beginUndoGrouping];
     }
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v9 = v4;
+    v9 = commandsCopy;
     v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v10)
     {
@@ -5449,55 +5449,55 @@ LABEL_23:
       while (v10);
     }
 
-    if ((v7 & 1) == 0)
+    if ((groupsByEvent & 1) == 0)
     {
-      v13 = [(PKTiledView *)self undoManager];
-      [v13 endUndoGrouping];
+      undoManager4 = [(PKTiledView *)self undoManager];
+      [undoManager4 endUndoGrouping];
     }
   }
 }
 
-- (void)registerUndoCommands:(id)a3 andChangeToDrawing:(id)a4
+- (void)registerUndoCommands:(id)commands andChangeToDrawing:(id)drawing
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [(PKTiledView *)self registerUndoCommands:v6];
-  [(PKTiledView *)self didChangeDrawing:v7];
-  v8 = [(PKTiledView *)self selectionController];
-  v9 = v8;
-  if (v8)
+  commandsCopy = commands;
+  drawingCopy = drawing;
+  [(PKTiledView *)self registerUndoCommands:commandsCopy];
+  [(PKTiledView *)self didChangeDrawing:drawingCopy];
+  selectionController = [(PKTiledView *)self selectionController];
+  v9 = selectionController;
+  if (selectionController)
   {
-    [(PKSelectionController *)v8 clearSelectionIfNecessaryAnimated:0 withCompletion:?];
+    [(PKSelectionController *)selectionController clearSelectionIfNecessaryAnimated:0 withCompletion:?];
   }
 
-  [(PKTiledView *)self didChangeDrawing:v7];
-  v11[0] = v7;
+  [(PKTiledView *)self didChangeDrawing:drawingCopy];
+  v11[0] = drawingCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   [(PKTiledView *)self _selectionRefreshWithChangeToDrawings:v10 completion:&__block_literal_global_433];
 }
 
-- (void)canvasView:(id)a3 registerMultiStepUndoCommands:(id)a4
+- (void)canvasView:(id)view registerMultiStepUndoCommands:(id)commands
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKTiledView *)self undoManager];
-  if (v8)
+  viewCopy = view;
+  commandsCopy = commands;
+  undoManager = [(PKTiledView *)self undoManager];
+  if (undoManager)
   {
-    v9 = [v7 count];
+    v9 = [commandsCopy count];
 
     if (v9)
     {
-      v10 = [v7 firstObject];
-      [(PKTiledView *)self canvasView:v6 registerUndoCommands:v10];
+      firstObject = [commandsCopy firstObject];
+      [(PKTiledView *)self canvasView:viewCopy registerUndoCommands:firstObject];
 
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __56__PKTiledView_canvasView_registerMultiStepUndoCommands___block_invoke;
       block[3] = &unk_1E82D6400;
       block[4] = self;
-      v12 = v6;
-      v13 = v7;
+      v12 = viewCopy;
+      v13 = commandsCopy;
       dispatch_async(MEMORY[0x1E69E96A0], block);
     }
   }
@@ -5511,38 +5511,38 @@ void __56__PKTiledView_canvasView_registerMultiStepUndoCommands___block_invoke(u
   [v1 canvasView:v2 registerMultiStepUndoCommands:?];
 }
 
-- (void)canvasView:(id)a3 registerUndoCommands:(id)a4
+- (void)canvasView:(id)view registerUndoCommands:(id)commands
 {
-  v6 = a4;
-  v5 = [(PKTiledView *)self undoManager];
+  commandsCopy = commands;
+  undoManager = [(PKTiledView *)self undoManager];
 
-  if (v5)
+  if (undoManager)
   {
-    [(PKTiledView *)self registerUndoCommands:v6];
+    [(PKTiledView *)self registerUndoCommands:commandsCopy];
   }
 }
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v4 = a3;
+  undoCopy = undo;
   v5 = +[PKStatisticsManager sharedStatisticsManager];
   [(PKStatisticsManager *)v5 recordUndoIfNecessary];
 
   [(PKAutoRefineController *)self->_externalAutoRefineTaskCoordinator clearRefinableStrokes];
   [(PKTiledView *)self _dismissInsertSpaceHandlesIfNecessary];
-  v6 = [(PKTiledView *)self canvasView];
-  v7 = [v6 _isCombiningStrokes];
+  canvasView = [(PKTiledView *)self canvasView];
+  _isCombiningStrokes = [canvasView _isCombiningStrokes];
 
-  if (v7)
+  if (_isCombiningStrokes)
   {
-    v8 = [(PKTiledView *)self canvasView];
-    [v8 _finishCombiningStrokesIfNecessary];
+    canvasView2 = [(PKTiledView *)self canvasView];
+    [canvasView2 _finishCombiningStrokesIfNecessary];
   }
 
   [(PKTiledView *)self _endHoverToolPreview];
   [(PKHoverController *)*&self->_lastContentOffset.x reset];
-  v9 = [v4 drawingUUID];
-  v10 = [(PKTiledView *)self _attachmentForUUID:v9];
+  drawingUUID = [undoCopy drawingUUID];
+  v10 = [(PKTiledView *)self _attachmentForUUID:drawingUUID];
 
   if (!v10)
   {
@@ -5550,12 +5550,12 @@ void __56__PKTiledView_canvasView_registerMultiStepUndoCommands___block_invoke(u
     goto LABEL_20;
   }
 
-  v11 = [(PKTiledView *)self undoManager];
-  v12 = [v4 actionName];
-  [v11 setActionName:v12];
+  undoManager = [(PKTiledView *)self undoManager];
+  actionName = [undoCopy actionName];
+  [undoManager setActionName:actionName];
 
-  v13 = [v10 drawing];
-  v14 = [v4 applyToDrawingReturnInverted:v13];
+  drawing = [v10 drawing];
+  v14 = [undoCopy applyToDrawingReturnInverted:drawing];
 
   v35 = v14;
   if (v14)
@@ -5564,30 +5564,30 @@ void __56__PKTiledView_canvasView_registerMultiStepUndoCommands___block_invoke(u
   }
 
   v15 = +[PKStatisticsManager sharedStatisticsManager];
-  v16 = [v4 actionName];
-  v17 = [v4 strokes];
-  v18 = [(PKTiledView *)self canvasView];
-  v19 = [v18 ink];
-  v20 = [v19 identifier];
-  [(PKStatisticsManager *)v15 recordUndo:v16 forStrokes:v17 fallbackInkIdentifier:v20];
+  actionName2 = [undoCopy actionName];
+  strokes = [undoCopy strokes];
+  canvasView3 = [(PKTiledView *)self canvasView];
+  v19 = [canvasView3 ink];
+  identifier = [v19 identifier];
+  [(PKStatisticsManager *)v15 recordUndo:actionName2 forStrokes:strokes fallbackInkIdentifier:identifier];
 
   [(PKTiledView *)self _beginAnalyticsSessionIfNecessary];
   v21 = self->_aggd_cachedVisibleStrokeCount;
   [(PKAnalyticsSession *)v21 incrementUndoCount];
 
-  if (v7)
+  if (_isCombiningStrokes)
   {
-    v22 = [(PKTiledView *)self canvasView];
-    if ([v22 isHidden])
+    canvasView4 = [(PKTiledView *)self canvasView];
+    if ([canvasView4 isHidden])
     {
     }
 
     else
     {
-      v23 = [(PKTiledView *)self canvasView];
-      v24 = [v23 wantsCanvasVisible];
+      canvasView5 = [(PKTiledView *)self canvasView];
+      wantsCanvasVisible = [canvasView5 wantsCanvasVisible];
 
-      if (v24)
+      if (wantsCanvasVisible)
       {
         v25 = os_log_create("com.apple.pencilkit", "");
         if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
@@ -5609,28 +5609,28 @@ void __56__PKTiledView_canvasView_registerMultiStepUndoCommands___block_invoke(u
   }
 
 LABEL_16:
-  -[PKTiledView _handleDrawingDidChangeForAttachment:didChangeVisibleStrokes:](self, "_handleDrawingDidChangeForAttachment:didChangeVisibleStrokes:", v10, [v4 changesVisibleStrokes]);
+  -[PKTiledView _handleDrawingDidChangeForAttachment:didChangeVisibleStrokes:](self, "_handleDrawingDidChangeForAttachment:didChangeVisibleStrokes:", v10, [undoCopy changesVisibleStrokes]);
   v26 = dispatch_get_global_queue(0, 0);
-  v27 = [v10 drawing];
+  drawing2 = [v10 drawing];
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = __27__PKTiledView_performUndo___block_invoke;
   v41[3] = &unk_1E82D67C8;
   v28 = v10;
   v42 = v28;
-  [v27 clipStrokesIfNeededOnQueue:v26 completion:v41];
+  [drawing2 clipStrokesIfNeededOnQueue:v26 completion:v41];
 
   if ([v28 isAtEndOfDocument])
   {
-    v29 = [v28 drawing];
-    v30 = [v29 _isEmpty];
+    drawing3 = [v28 drawing];
+    _isEmpty = [drawing3 _isEmpty];
 
-    if ((v30 & 1) == 0)
+    if ((_isEmpty & 1) == 0)
     {
       v31 = objc_opt_class();
       v32 = PKDynamicCast(v31, v28);
-      v33 = [v28 drawing];
-      [v33 bounds];
+      drawing4 = [v28 drawing];
+      [drawing4 bounds];
       MaxY = CGRectGetMaxY(v43);
       [v28 drawingTransform];
       [v32 updateDrawingHeight:MaxY * sqrt(v40 * v40 + *buf * *buf)];
@@ -5685,22 +5685,22 @@ void __27__PKTiledView_performUndo___block_invoke_3(uint64_t a1)
   [WeakRetained updateCurrentSelectionWithNewDrawingIfNecessary:v2];
 }
 
-+ (id)newInlineDrawingOfClass:(Class)a3
++ (id)newInlineDrawingOfClass:(Class)class
 {
-  v3 = objc_alloc_init(a3);
+  v3 = objc_alloc_init(class);
   [v3 set_canvasBounds:{0.0, 0.0, 768.0, 120.0}];
   return v3;
 }
 
-- (void)setCurrentDrawingBeingCopiedToCanvas:(id *)a1
+- (void)setCurrentDrawingBeingCopiedToCanvas:(id *)canvas
 {
   v3 = a2;
-  if (a1)
+  if (canvas)
   {
     v5 = v3;
-    objc_storeWeak(a1 + 93, v3);
-    v4 = [a1 canvasView];
-    [v4 setCurrentDrawingBeingCopiedToCanvas:v5];
+    objc_storeWeak(canvas + 93, v3);
+    canvasView = [canvas canvasView];
+    [canvasView setCurrentDrawingBeingCopiedToCanvas:v5];
 
     v3 = v5;
   }
@@ -5713,11 +5713,11 @@ void __27__PKTiledView_performUndo___block_invoke_3(uint64_t a1)
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(PKTiledView *)self scrollView];
-  v3 = [v2 layer];
-  v4 = [v3 animationKeys];
+  scrollView = [(PKTiledView *)self scrollView];
+  layer = [scrollView layer];
+  animationKeys = [layer animationKeys];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [animationKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -5727,7 +5727,7 @@ void __27__PKTiledView_performUndo___block_invoke_3(uint64_t a1)
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(animationKeys);
         }
 
         if ([*(*(&v10 + 1) + 8 * i) hasPrefix:@"bounds.size"])
@@ -5737,7 +5737,7 @@ void __27__PKTiledView_performUndo___block_invoke_3(uint64_t a1)
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [animationKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;
@@ -5753,7 +5753,7 @@ LABEL_11:
   return v8;
 }
 
-- (void)_scrollViewDidLayoutSubviews:(id)a3
+- (void)_scrollViewDidLayoutSubviews:(id)subviews
 {
   if ([(PKTiledView *)self needToUpdateViewFrame])
   {
@@ -5768,21 +5768,21 @@ LABEL_11:
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [(PKTiledView *)self window];
-    v20 = [v19 windowScene];
-    v21 = [v20 screen];
-    [v21 nativeScale];
+    window = [(PKTiledView *)self window];
+    windowScene = [window windowScene];
+    screen = [windowScene screen];
+    [screen nativeScale];
     v23 = v22;
 
     if ([(PKTiledView *)self isDrawing]&& (v8 != v16 || v10 != v18 || sqrt((v6 - v14) * (v6 - v14) + (v28 - v12) * (v28 - v12)) >= 1.0 / fmax(v23, 1.0)))
     {
-      v24 = [(PKTiledView *)self canvasView];
-      v25 = [v24 drawingGestureRecognizer];
-      [v25 cancel];
+      canvasView = [(PKTiledView *)self canvasView];
+      drawingGestureRecognizer = [canvasView drawingGestureRecognizer];
+      [drawingGestureRecognizer cancel];
     }
 
-    v26 = [(PKTiledView *)self canvasView];
-    [v26 _finishCombiningStrokesIfNecessary];
+    canvasView2 = [(PKTiledView *)self canvasView];
+    [canvasView2 _finishCombiningStrokesIfNecessary];
 
     [(PKTiledView *)self _layoutSubviews];
     tileController = self->_tileController;
@@ -5795,12 +5795,12 @@ LABEL_11:
 {
   if (self->_rulerHostingDelegate)
   {
-    v3 = [(PKTiledView *)self canvasView];
-    v4 = [v3 isDrawing];
+    canvasView = [(PKTiledView *)self canvasView];
+    isDrawing = [canvasView isDrawing];
 
-    v5 = [(PKTiledView *)self canvasView];
-    v6 = [(PKTiledView *)self drawingTouchThatHitNothing];
-    [(PKTiledView *)self canvasViewWillBeginNewStroke:v5 withTouch:v6 location:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
+    canvasView2 = [(PKTiledView *)self canvasView];
+    drawingTouchThatHitNothing = [(PKTiledView *)self drawingTouchThatHitNothing];
+    [(PKTiledView *)self canvasViewWillBeginNewStroke:canvasView2 withTouch:drawingTouchThatHitNothing location:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
 
     rulerHostingDelegate = self->_rulerHostingDelegate;
     if (rulerHostingDelegate)
@@ -5810,7 +5810,7 @@ LABEL_11:
 
     else
     {
-      v8 = v4;
+      v8 = isDrawing;
     }
 
     if ((v8 & 1) == 0)
@@ -5822,8 +5822,8 @@ LABEL_11:
         _os_log_debug_impl(&dword_1C7CCA000, v9, OS_LOG_TYPE_DEBUG, "Stroke already ended in _didAddDrawingAttachmentView", v12, 2u);
       }
 
-      v10 = [(PKTiledView *)self canvasView];
-      [(PKTiledView *)self canvasViewDidEndDrawing:v10];
+      canvasView3 = [(PKTiledView *)self canvasView];
+      [(PKTiledView *)self canvasViewDidEndDrawing:canvasView3];
 
       rulerHostingDelegate = self->_rulerHostingDelegate;
     }
@@ -5831,8 +5831,8 @@ LABEL_11:
     self->_rulerHostingDelegate = 0;
   }
 
-  v11 = [(PKTiledView *)self selectionController];
-  [(PKSelectionController *)v11 _didAddDrawingAttachmentView];
+  selectionController = [(PKTiledView *)self selectionController];
+  [(PKSelectionController *)selectionController _didAddDrawingAttachmentView];
 }
 
 - (void)_updateAttachmentOnscreenBounds
@@ -5842,8 +5842,8 @@ LABEL_11:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(PKTiledView *)self attachments];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  attachments = [(PKTiledView *)self attachments];
+  v4 = [attachments countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -5853,39 +5853,39 @@ LABEL_11:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(attachments);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
         if (![(PKTiledView *)self p_shouldSkipStrokeCacheInvalidationForAttachment:v7])
         {
-          v8 = [v7 drawing];
-          [(PKTiledView *)self visibleOnscreenBoundsForDrawing:v8];
+          drawing = [v7 drawing];
+          [(PKTiledView *)self visibleOnscreenBoundsForDrawing:drawing];
           [v7 visibleOnscreenBoundsDidChange:?];
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [attachments countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)_layoutSubviewsUpdateTilesForRendering:(BOOL)a3
+- (void)_layoutSubviewsUpdateTilesForRendering:(BOOL)rendering
 {
-  v3 = a3;
+  renderingCopy = rendering;
   v114 = *MEMORY[0x1E69E9840];
   if (self && self->_hoverPreviewActive)
   {
     goto LABEL_3;
   }
 
-  v11 = [(PKTiledView *)self scrollView];
-  if ([v11 isZooming] && (!self ? (v12 = 0.0) : (v12 = *&self->_tileLevel + *&self->_tileLevel), -[PKTiledView canvasZoomScale](self, "canvasZoomScale"), v12 > v13))
+  scrollView = [(PKTiledView *)self scrollView];
+  if ([scrollView isZooming] && (!self ? (v12 = 0.0) : (v12 = *&self->_tileLevel + *&self->_tileLevel), -[PKTiledView canvasZoomScale](self, "canvasZoomScale"), v12 > v13))
   {
-    v14 = [(PKTiledView *)self scrollView];
-    [v14 zoomScale];
+    scrollView2 = [(PKTiledView *)self scrollView];
+    [scrollView2 zoomScale];
     v16 = v15;
     if (self)
     {
@@ -5900,8 +5900,8 @@ LABEL_11:
     if (v16 > v17)
     {
 LABEL_3:
-      v87 = [(PKTiledView *)self scrollView];
-      [v87 zoomScale];
+      scrollView3 = [(PKTiledView *)self scrollView];
+      [scrollView3 zoomScale];
       if (self)
       {
         v6 = *&self->_tileLevel;
@@ -5960,8 +5960,8 @@ LABEL_25:
     v28 = v27;
     v30 = v29;
     v32 = v31;
-    v33 = [(PKTiledView *)self canvasView];
-    [v33 setFrame:{v26, v28, v30, v32}];
+    canvasView = [(PKTiledView *)self canvasView];
+    [canvasView setFrame:{v26, v28, v30, v32}];
 
     [(PKTiledView *)self bounds];
     if (self)
@@ -5975,8 +5975,8 @@ LABEL_25:
     }
 
     [(PKAttachmentView *)liveAttachment setFrame:?];
-    v35 = [(PKTiledView *)self scrollView];
-    [v35 zoomScale];
+    scrollView4 = [(PKTiledView *)self scrollView];
+    [scrollView4 zoomScale];
     v37 = v36;
 
     if (self)
@@ -6026,7 +6026,7 @@ LABEL_25:
     [(PKTiledView *)self frame];
     if (v47 == v22 && v46 == v24 && self->_tileScale == tileScale && *&self->_tileLevel == v40)
     {
-      [(PKTiledView *)self updateTilesForVisibleRectRendering:v3 offscreen:0 overrideAdditionalStrokes:0];
+      [(PKTiledView *)self updateTilesForVisibleRectRendering:renderingCopy offscreen:0 overrideAdditionalStrokes:0];
 LABEL_80:
       self->_hoverPreviewActive = 0;
       return;
@@ -6038,9 +6038,9 @@ LABEL_80:
       if (*&tileController[2]._contentZoomScale)
       {
         v49 = tileController[2]._completionHandlers;
-        v50 = [(NSMutableArray *)v49 isDragging];
+        isDragging = [(NSMutableArray *)v49 isDragging];
 
-        if ((v50 & 1) == 0)
+        if ((isDragging & 1) == 0)
         {
           v51 = self->_tileController;
           if (v51)
@@ -6052,7 +6052,7 @@ LABEL_80:
     }
 
     [(PKTiledView *)self _dismissInsertSpaceHandlesIfNecessary];
-    v52 = [(PKTiledView *)self attachmentViews];
+    attachmentViews = [(PKTiledView *)self attachmentViews];
     [(PKTiledView *)self frame];
     v55 = v54 != v24 || v53 != v22;
     if (v55)
@@ -6061,7 +6061,7 @@ LABEL_80:
       v95 = 0u;
       v92 = 0u;
       v93 = 0u;
-      v56 = v52;
+      v56 = attachmentViews;
       v57 = [v56 countByEnumeratingWithState:&v92 objects:v112 count:16];
       if (v57)
       {
@@ -6106,7 +6106,7 @@ LABEL_60:
       v91 = 0u;
       v88 = 0u;
       v89 = 0u;
-      v63 = v52;
+      v63 = attachmentViews;
       v64 = [v63 countByEnumeratingWithState:&v88 objects:v111 count:16];
       if (v64)
       {
@@ -6121,8 +6121,8 @@ LABEL_60:
             }
 
             v67 = *(*(&v88 + 1) + 8 * j);
-            v68 = [(PKTiledView *)self scrollView];
-            [v67 pixelAlignForContentScale:v68 enclosingScrollView:v62];
+            scrollView5 = [(PKTiledView *)self scrollView];
+            [v67 pixelAlignForContentScale:scrollView5 enclosingScrollView:v62];
           }
 
           v64 = [v63 countByEnumeratingWithState:&v88 objects:v111 count:16];
@@ -6135,23 +6135,23 @@ LABEL_60:
     }
 
     [(PKTiledView *)self _hideCanvas];
-    v69 = [MEMORY[0x1E696AAE8] mainBundle];
-    v70 = [v69 bundleIdentifier];
-    v71 = [v70 isEqualToString:@"com.apple.PaperKit.MarkupPhotoEditingExtension"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v71 = [bundleIdentifier isEqualToString:@"com.apple.PaperKit.MarkupPhotoEditingExtension"];
 
     if ((v71 & 1) == 0)
     {
-      v72 = [MEMORY[0x1E696AAE8] mainBundle];
-      v73 = [v72 bundleIdentifier];
-      if ([v73 isEqualToString:@"com.apple.quicklook.extension.previewUI"])
+      mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier2 = [mainBundle2 bundleIdentifier];
+      if ([bundleIdentifier2 isEqualToString:@"com.apple.quicklook.extension.previewUI"])
       {
       }
 
       else
       {
-        v74 = [MEMORY[0x1E696AAE8] mainBundle];
-        v75 = [v74 bundleIdentifier];
-        v76 = [v75 isEqualToString:@"com.apple.quicklook.UIExtension"];
+        mainBundle3 = [MEMORY[0x1E696AAE8] mainBundle];
+        bundleIdentifier3 = [mainBundle3 bundleIdentifier];
+        v76 = [bundleIdentifier3 isEqualToString:@"com.apple.quicklook.UIExtension"];
 
         if ((v76 & 1) == 0 && !PKIsQuickNoteOnPhone())
         {
@@ -6176,12 +6176,12 @@ LABEL_60:
     }
 
 LABEL_79:
-    v78 = [(PKTiledView *)self canvasView];
+    canvasView2 = [(PKTiledView *)self canvasView];
     [(PKTiledView *)self frame];
-    [v78 _setFixedPointSize:v79 drawingScale:{v80, *&v37}];
+    [canvasView2 _setFixedPointSize:v79 drawingScale:{v80, *&v37}];
 
-    [(PKTiledView *)self resizeTiles:v52 completion:0];
-    [(PKTiledView *)self updateTilesForVisibleRectRendering:v3 offscreen:0 overrideAdditionalStrokes:0];
+    [(PKTiledView *)self resizeTiles:attachmentViews completion:0];
+    [(PKTiledView *)self updateTilesForVisibleRectRendering:renderingCopy offscreen:0 overrideAdditionalStrokes:0];
     if (!self)
     {
       return;
@@ -6205,8 +6205,8 @@ LABEL_79:
   v108 = 0u;
   v105 = 0u;
   v106 = 0u;
-  v81 = [(PKTiledView *)self attachmentViews];
-  v82 = [v81 countByEnumeratingWithState:&v105 objects:v113 count:16];
+  attachmentViews2 = [(PKTiledView *)self attachmentViews];
+  v82 = [attachmentViews2 countByEnumeratingWithState:&v105 objects:v113 count:16];
   if (v82)
   {
     v83 = *v106;
@@ -6216,7 +6216,7 @@ LABEL_79:
       {
         if (*v106 != v83)
         {
-          objc_enumerationMutation(v81);
+          objc_enumerationMutation(attachmentViews2);
         }
 
         v85 = *(*(&v105 + 1) + 8 * k);
@@ -6245,7 +6245,7 @@ LABEL_79:
         [v85 setTileTransform:&v98];
       }
 
-      v82 = [v81 countByEnumeratingWithState:&v105 objects:v113 count:16];
+      v82 = [attachmentViews2 countByEnumeratingWithState:&v105 objects:v113 count:16];
     }
 
     while (v82);
@@ -6298,23 +6298,23 @@ void __54__PKTiledView__layoutSubviewsUpdateTilesForRendering___block_invoke_2(u
   }
 }
 
-- (void)getAttachment:(id)a3 strokeTransform:(CGAffineTransform *)a4 paperTransform:(CGAffineTransform *)a5
+- (void)getAttachment:(id)attachment strokeTransform:(CGAffineTransform *)transform paperTransform:(CGAffineTransform *)paperTransform
 {
-  v9 = a3;
-  v8 = [(PKTiledView *)self scrollView];
-  [v8 contentOffset];
-  [(PKTiledView *)self getAttachment:v9 strokeTransform:a4 paperTransform:a5 scrollViewContentOffset:?];
+  attachmentCopy = attachment;
+  scrollView = [(PKTiledView *)self scrollView];
+  [scrollView contentOffset];
+  [(PKTiledView *)self getAttachment:attachmentCopy strokeTransform:transform paperTransform:paperTransform scrollViewContentOffset:?];
 }
 
 - (CGAffineTransform)contentCoordinateSpaceTransform
 {
-  v5 = [(PKTiledView *)self contentCoordinateSpace];
+  contentCoordinateSpace = [(PKTiledView *)self contentCoordinateSpace];
 
-  if (v5)
+  if (contentCoordinateSpace)
   {
-    v10 = [(PKTiledView *)self contentCoordinateSpace];
-    v7 = [(PKTiledView *)self canvasView];
-    PK_transformToConvertFromCoordinateSpaceToCoordinateSpace(v10, v7, &retstr->a);
+    contentCoordinateSpace2 = [(PKTiledView *)self contentCoordinateSpace];
+    canvasView = [(PKTiledView *)self canvasView];
+    PK_transformToConvertFromCoordinateSpaceToCoordinateSpace(contentCoordinateSpace2, canvasView, &retstr->a);
   }
 
   else
@@ -6329,48 +6329,48 @@ void __54__PKTiledView__layoutSubviewsUpdateTilesForRendering___block_invoke_2(u
   return result;
 }
 
-- (void)getAttachment:(id)a3 strokeTransform:(CGAffineTransform *)a4 paperTransform:(CGAffineTransform *)a5 scrollViewContentOffset:(CGPoint)a6
+- (void)getAttachment:(id)attachment strokeTransform:(CGAffineTransform *)transform paperTransform:(CGAffineTransform *)paperTransform scrollViewContentOffset:(CGPoint)offset
 {
-  y = a6.y;
-  x = a6.x;
-  v11 = a3;
-  v12 = [(PKTiledView *)self scrollView];
-  [v12 zoomScale];
+  y = offset.y;
+  x = offset.x;
+  attachmentCopy = attachment;
+  scrollView = [(PKTiledView *)self scrollView];
+  [scrollView zoomScale];
   v14 = v13;
 
-  v15 = [(PKTiledView *)self drawingTouchThatHitNothing];
+  drawingTouchThatHitNothing = [(PKTiledView *)self drawingTouchThatHitNothing];
 
-  if (v15)
+  if (drawingTouchThatHitNothing)
   {
-    v16 = [(PKTiledView *)self standInAttachmentView];
+    standInAttachmentView = [(PKTiledView *)self standInAttachmentView];
 
-    v11 = v16;
+    attachmentCopy = standInAttachmentView;
   }
 
   memset(&v45[1], 0, sizeof(CGAffineTransform));
-  if (v11)
+  if (attachmentCopy)
   {
-    [v11 drawingTransform];
+    [attachmentCopy drawingTransform];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_canvasView);
-  v18 = [v11 tileContainerView];
-  [v18 bounds];
+  tileContainerView = [attachmentCopy tileContainerView];
+  [tileContainerView bounds];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  v27 = [v11 tileContainerView];
-  [WeakRetained convertRect:v27 fromView:{v20, v22, v24, v26}];
+  tileContainerView2 = [attachmentCopy tileContainerView];
+  [WeakRetained convertRect:tileContainerView2 fromView:{v20, v22, v24, v26}];
   v29 = v28;
   v31 = v30;
 
   memset(v45, 0, 48);
-  v32 = [(PKTiledView *)self canvasView];
-  v33 = v32;
-  if (v32)
+  canvasView = [(PKTiledView *)self canvasView];
+  v33 = canvasView;
+  if (canvasView)
   {
-    [v32 _replayCoordinateSystemTransform];
+    [canvasView _replayCoordinateSystemTransform];
   }
 
   else
@@ -6390,9 +6390,9 @@ void __54__PKTiledView__layoutSubviewsUpdateTilesForRendering___block_invoke_2(u
     goto LABEL_12;
   }
 
-  v34 = [(PKTiledView *)self contentCoordinateSpace];
+  contentCoordinateSpace = [(PKTiledView *)self contentCoordinateSpace];
 
-  if (v34)
+  if (contentCoordinateSpace)
   {
     memset(&t1, 0, sizeof(t1));
     [(PKTiledView *)self contentCoordinateSpaceTransform];
@@ -6418,21 +6418,21 @@ LABEL_12:
   t2 = v44;
   CGAffineTransformConcat(&v43, &t1, &t2);
   v39 = *&v43.c;
-  *&a4->a = *&v43.a;
-  *&a4->c = v39;
-  *&a4->tx = *&v43.tx;
+  *&transform->a = *&v43.a;
+  *&transform->c = v39;
+  *&transform->tx = *&v43.tx;
   CGAffineTransformMakeTranslation(&t1, -x / v14, -y / v14);
   v40 = *&t1.c;
-  *&a5->a = *&t1.a;
-  *&a5->c = v40;
-  *&a5->tx = *&t1.tx;
+  *&paperTransform->a = *&t1.a;
+  *&paperTransform->c = v40;
+  *&paperTransform->tx = *&t1.tx;
 }
 
-- (id)canvasViewTouchView:(id)a3
+- (id)canvasViewTouchView:(id)view
 {
-  v4 = [(PKTiledView *)self liveAttachment];
+  liveAttachment = [(PKTiledView *)self liveAttachment];
 
-  if (v4)
+  if (liveAttachment)
   {
     [(PKTiledView *)self liveAttachment];
   }
@@ -6446,23 +6446,23 @@ LABEL_12:
   return v5;
 }
 
-- (id)_hitAttachment:(CGPoint)a3 includeStandinAttachment:(BOOL)a4 expandBottomAttachment:(BOOL)a5
+- (id)_hitAttachment:(CGPoint)attachment includeStandinAttachment:(BOOL)standinAttachment expandBottomAttachment:(BOOL)bottomAttachment
 {
-  v5 = a5;
-  v6 = a4;
-  y = a3.y;
-  x = a3.x;
+  bottomAttachmentCopy = bottomAttachment;
+  standinAttachmentCopy = standinAttachment;
+  y = attachment.y;
+  x = attachment.x;
   v66 = *MEMORY[0x1E69E9840];
-  v10 = [(PKTiledView *)self contentCoordinateSpace];
-  if (v10 && [(PKTiledView *)self disableTileRendering])
+  contentCoordinateSpace = [(PKTiledView *)self contentCoordinateSpace];
+  if (contentCoordinateSpace && [(PKTiledView *)self disableTileRendering])
   {
-    v11 = [(PKTiledView *)self _visibleAttachments];
-    v12 = [v11 count];
+    _visibleAttachments = [(PKTiledView *)self _visibleAttachments];
+    v12 = [_visibleAttachments count];
 
     if (v12 == 1)
     {
-      v13 = [(PKTiledView *)self _visibleAttachments];
-      v14 = [v13 firstObject];
+      _visibleAttachments2 = [(PKTiledView *)self _visibleAttachments];
+      firstObject = [_visibleAttachments2 firstObject];
 
       goto LABEL_28;
     }
@@ -6476,50 +6476,50 @@ LABEL_12:
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v15 = [(PKTiledView *)self _visibleAttachments];
-  v16 = [v15 countByEnumeratingWithState:&v61 objects:v65 count:16];
+  _visibleAttachments3 = [(PKTiledView *)self _visibleAttachments];
+  v16 = [_visibleAttachments3 countByEnumeratingWithState:&v61 objects:v65 count:16];
   if (!v16)
   {
 
-    if (!v6)
+    if (!standinAttachmentCopy)
     {
 LABEL_27:
-      v14 = 0;
+      firstObject = 0;
       goto LABEL_28;
     }
 
 LABEL_23:
-    v37 = [(PKTiledView *)self standInAttachmentView];
-    if (v37)
+    standInAttachmentView = [(PKTiledView *)self standInAttachmentView];
+    if (standInAttachmentView)
     {
-      v38 = [(PKTiledView *)self standInAttachmentView];
-      v39 = [v38 attachmentContainerView];
-      v40 = [v39 isHidden];
+      standInAttachmentView2 = [(PKTiledView *)self standInAttachmentView];
+      attachmentContainerView = [standInAttachmentView2 attachmentContainerView];
+      isHidden = [attachmentContainerView isHidden];
 
-      if ((v40 & 1) == 0)
+      if ((isHidden & 1) == 0)
       {
-        v41 = [(PKTiledView *)self standInAttachmentView];
-        [v41 bounds];
+        standInAttachmentView3 = [(PKTiledView *)self standInAttachmentView];
+        [standInAttachmentView3 bounds];
         v43 = v42;
         v45 = v44;
         v47 = v46;
         v49 = v48;
 
-        v50 = [(PKTiledView *)self scrollView];
-        [v50 bounds];
+        scrollView = [(PKTiledView *)self scrollView];
+        [scrollView bounds];
         v52 = v51;
 
-        v53 = [(PKTiledView *)self standInAttachmentView];
-        [v53 convertPoint:self fromView:{x, y}];
+        standInAttachmentView4 = [(PKTiledView *)self standInAttachmentView];
+        [standInAttachmentView4 convertPoint:self fromView:{x, y}];
         v55 = v54;
         v57 = v56;
 
-        v58 = [(PKTiledView *)self standInAttachmentView];
-        v59 = [v58 hitByTouchLocation:v55 bounds:{v57, v43, v45, v47, v49 + v52}];
+        standInAttachmentView5 = [(PKTiledView *)self standInAttachmentView];
+        v59 = [standInAttachmentView5 hitByTouchLocation:v55 bounds:{v57, v43, v45, v47, v49 + v52}];
 
         if (v59)
         {
-          v14 = [(PKTiledView *)self standInAttachmentView];
+          firstObject = [(PKTiledView *)self standInAttachmentView];
           goto LABEL_28;
         }
       }
@@ -6535,39 +6535,39 @@ LABEL_23:
     {
       if (*v62 != v17)
       {
-        objc_enumerationMutation(v15);
+        objc_enumerationMutation(_visibleAttachments3);
       }
 
       v19 = *(*(&v61 + 1) + 8 * i);
-      v20 = [v19 viewRep];
-      [v20 bounds];
+      viewRep = [v19 viewRep];
+      [viewRep bounds];
       v22 = v21;
       v24 = v23;
       v26 = v25;
       v28 = v27;
 
-      if (v19 && ([v19 isAtEndOfDocument] & v5) == 1)
+      if (v19 && ([v19 isAtEndOfDocument] & bottomAttachmentCopy) == 1)
       {
-        v29 = [(PKTiledView *)self scrollView];
-        [v29 bounds];
+        scrollView2 = [(PKTiledView *)self scrollView];
+        [scrollView2 bounds];
         v31 = v30;
 
         v28 = v28 + v31;
       }
 
-      v32 = [v19 viewRep];
-      [v32 convertPoint:self fromView:{x, y}];
+      viewRep2 = [v19 viewRep];
+      [viewRep2 convertPoint:self fromView:{x, y}];
       v34 = v33;
       v36 = v35;
 
       if ([v19 hitByTouchLocation:v34 bounds:{v36, v22, v24, v26, v28}])
       {
-        v14 = v19;
+        firstObject = v19;
         goto LABEL_19;
       }
     }
 
-    v16 = [v15 countByEnumeratingWithState:&v61 objects:v65 count:16];
+    v16 = [_visibleAttachments3 countByEnumeratingWithState:&v61 objects:v65 count:16];
     if (v16)
     {
       continue;
@@ -6576,22 +6576,22 @@ LABEL_23:
     break;
   }
 
-  v14 = 0;
+  firstObject = 0;
 LABEL_19:
 
-  if (!v14 && v6)
+  if (!firstObject && standinAttachmentCopy)
   {
     goto LABEL_23;
   }
 
 LABEL_28:
 
-  return v14;
+  return firstObject;
 }
 
-- (id)hitAttachment:(CGPoint)a3 includeStandinAttachment:(BOOL)a4 expandBottomAttachment:(BOOL)a5
+- (id)hitAttachment:(CGPoint)attachment includeStandinAttachment:(BOOL)standinAttachment expandBottomAttachment:(BOOL)bottomAttachment
 {
-  v5 = [(PKTiledView *)self _hitAttachment:a4 includeStandinAttachment:a5 expandBottomAttachment:a3.x, a3.y];
+  v5 = [(PKTiledView *)self _hitAttachment:standinAttachment includeStandinAttachment:bottomAttachment expandBottomAttachment:attachment.x, attachment.y];
   v6 = objc_opt_class();
   v7 = PKDynamicCast(v6, v5);
 
@@ -6600,16 +6600,16 @@ LABEL_28:
 
 - (BOOL)isInNotesTextView
 {
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.mobilenotes"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:@"com.apple.mobilenotes"];
 
   if (v5)
   {
-    v6 = [(PKTiledView *)self superview];
-    if (v6)
+    superview = [(PKTiledView *)self superview];
+    if (superview)
     {
-      v7 = v6;
+      v7 = superview;
       while (1)
       {
         objc_opt_class();
@@ -6618,56 +6618,56 @@ LABEL_28:
           break;
         }
 
-        v8 = [v7 superview];
+        superview2 = [v7 superview];
 
-        v7 = v8;
-        if (!v8)
+        v7 = superview2;
+        if (!superview2)
         {
           goto LABEL_6;
         }
       }
 
-      LOBYTE(v6) = 1;
+      LOBYTE(superview) = 1;
     }
   }
 
   else
   {
 LABEL_6:
-    LOBYTE(v6) = 0;
+    LOBYTE(superview) = 0;
   }
 
-  return v6;
+  return superview;
 }
 
 - (void)_setupPencilShadowViewIfNecessary
 {
-  v3 = [(PKTiledView *)self toolShadowShouldBeActive];
-  v5 = [(PKTiledView *)self window];
-  v4 = [v5 windowScene];
-  if (v3)
+  toolShadowShouldBeActive = [(PKTiledView *)self toolShadowShouldBeActive];
+  window = [(PKTiledView *)self window];
+  windowScene = [window windowScene];
+  if (toolShadowShouldBeActive)
   {
-    [PKPencilShadowView createShadowViewForSceneIfNecessary:v4];
+    [PKPencilShadowView createShadowViewForSceneIfNecessary:windowScene];
   }
 
   else
   {
-    [PKPencilShadowView hideShadowViewForSceneIfNecessary:v4];
+    [PKPencilShadowView hideShadowViewForSceneIfNecessary:windowScene];
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__441;
   v21 = __Block_byref_object_dispose__442;
   v22 = 0;
-  v8 = [(PKTiledView *)self subviews];
+  subviews = [(PKTiledView *)self subviews];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __33__PKTiledView_hitTest_withEvent___block_invoke;
@@ -6676,9 +6676,9 @@ LABEL_6:
   v16 = y;
   v14 = &v17;
   v12[4] = self;
-  v9 = v7;
+  v9 = eventCopy;
   v13 = v9;
-  [v8 enumerateObjectsWithOptions:2 usingBlock:v12];
+  [subviews enumerateObjectsWithOptions:2 usingBlock:v12];
 
   v10 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -6700,27 +6700,27 @@ void __33__PKTiledView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, u
   }
 }
 
-- (id)_visibleTilesForAttachment:(id)a3
+- (id)_visibleTilesForAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   [(PKTiledView *)self bounds];
-  v5 = [(PKTiledView *)self _tilesForAttachment:v4 bounds:0 invert:?];
+  v5 = [(PKTiledView *)self _tilesForAttachment:attachmentCopy bounds:0 invert:?];
 
   return v5;
 }
 
-- (id)_tilesForAttachment:(id)a3 bounds:(CGRect)a4 invert:(BOOL)a5
+- (id)_tilesForAttachment:(id)attachment bounds:(CGRect)bounds invert:(BOOL)invert
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  invertCopy = invert;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v53 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v47 = [MEMORY[0x1E695DF70] array];
+  attachmentCopy = attachment;
+  array = [MEMORY[0x1E695DF70] array];
   v12 = objc_opt_class();
-  v13 = PKDynamicCast(v12, v11);
+  v13 = PKDynamicCast(v12, attachmentCopy);
   v46 = v13;
   if (v13)
   {
@@ -6728,10 +6728,10 @@ void __33__PKTiledView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, u
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v14 = [v13 tiles];
-    v15 = [v14 allValues];
+    tiles = [v13 tiles];
+    allValues = [tiles allValues];
 
-    v16 = [v15 countByEnumeratingWithState:&v48 objects:v52 count:16];
+    v16 = [allValues countByEnumeratingWithState:&v48 objects:v52 count:16];
     if (v16)
     {
       v17 = *v49;
@@ -6742,7 +6742,7 @@ void __33__PKTiledView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, u
         {
           if (*v49 != v17)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(allValues);
           }
 
           v19 = *(*(&v48 + 1) + 8 * v18);
@@ -6762,8 +6762,8 @@ void __33__PKTiledView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, u
             v21 = 0.0;
           }
 
-          v24 = [v11 tileContainerView];
-          [(PKTiledView *)self convertRect:v24 fromView:v21, v20, v22, v23];
+          tileContainerView = [attachmentCopy tileContainerView];
+          [(PKTiledView *)self convertRect:tileContainerView fromView:v21, v20, v22, v23];
           v26 = v25;
           v28 = v27;
           v30 = v29;
@@ -6779,8 +6779,8 @@ void __33__PKTiledView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, u
           v56.size.height = height;
           if (CGRectIntersectsRect(v55, v56))
           {
-            v33 = [v46 tileContainerView];
-            [v33 bounds];
+            tileContainerView2 = [v46 tileContainerView];
+            [tileContainerView2 bounds];
             if (v19)
             {
               v38 = *(v19 + 27);
@@ -6805,23 +6805,23 @@ void __33__PKTiledView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, u
             v42 = 0;
           }
 
-          if (v42 != v5)
+          if (v42 != invertCopy)
           {
-            [v47 addObject:v19];
+            [array addObject:v19];
           }
 
           ++v18;
         }
 
         while (v16 != v18);
-        v43 = [v15 countByEnumeratingWithState:&v48 objects:v52 count:16];
+        v43 = [allValues countByEnumeratingWithState:&v48 objects:v52 count:16];
         v16 = v43;
       }
 
       while (v43);
     }
 
-    v44 = v47;
+    v44 = array;
   }
 
   else
@@ -6832,22 +6832,22 @@ void __33__PKTiledView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, u
   return v44;
 }
 
-- (void)setSixChannelBlendingDisableSnapshotting:(BOOL)a3
+- (void)setSixChannelBlendingDisableSnapshotting:(BOOL)snapshotting
 {
-  self->_isDoingLayoutAfterLiveWindowResizing = a3;
+  self->_isDoingLayoutAfterLiveWindowResizing = snapshotting;
   [self->_drawingPolicy setSixChannelBlendingMode:{-[PKTiledView _activeSixChannelBlendingMode](self, "_activeSixChannelBlendingMode")}];
 
   [(PKTiledView *)self _updateWantsExtendedDynamicRangeContent];
 }
 
-- (void)setSixChannelBlendingRendersTransparent:(BOOL)a3
+- (void)setSixChannelBlendingRendersTransparent:(BOOL)transparent
 {
-  self->_shouldHideCanvasAfterScroll = a3;
-  [(PKTileController *)self->_drawingTouchThatHitNothing setTransparentBlending:a3];
-  v4 = [(PKTiledView *)self _activeSixChannelBlendingMode];
+  self->_shouldHideCanvasAfterScroll = transparent;
+  [(PKTileController *)self->_drawingTouchThatHitNothing setTransparentBlending:transparent];
+  _activeSixChannelBlendingMode = [(PKTiledView *)self _activeSixChannelBlendingMode];
   drawingPolicy = self->_drawingPolicy;
 
-  [drawingPolicy setSixChannelBlendingMode:v4];
+  [drawingPolicy setSixChannelBlendingMode:_activeSixChannelBlendingMode];
 }
 
 - (BOOL)_snapshottingDisabled
@@ -6862,8 +6862,8 @@ void __33__PKTiledView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, u
     return 0;
   }
 
-  v4 = [(PKTiledView *)self delegate];
-  v3 = [v4 _canvasViewSnapshottingDisabled:self];
+  delegate = [(PKTiledView *)self delegate];
+  v3 = [delegate _canvasViewSnapshottingDisabled:self];
 
   return v3;
 }
@@ -6872,24 +6872,24 @@ void __33__PKTiledView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, u
 {
   if ((*&self->_tiledViewFlags & 8) != 0)
   {
-    v3 = [(PKTiledView *)self delegate];
-    [v3 _canvasViewWillCreateSnapshot:self];
+    delegate = [(PKTiledView *)self delegate];
+    [delegate _canvasViewWillCreateSnapshot:self];
   }
 }
 
-- (void)setDisableTileRendering:(BOOL)a3
+- (void)setDisableTileRendering:(BOOL)rendering
 {
   v30 = *MEMORY[0x1E69E9840];
-  BYTE1(self->_refineAnimationController) = a3;
-  if (a3)
+  BYTE1(self->_refineAnimationController) = rendering;
+  if (rendering)
   {
-    v3 = self;
+    selfCopy = self;
     [(PKTiledView *)self cancelTileGenerationInvalidateTiles:1];
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    obj = [(PKTiledView *)v3 attachmentViews];
+    obj = [(PKTiledView *)selfCopy attachmentViews];
     v4 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v4)
     {
@@ -6909,11 +6909,11 @@ void __33__PKTiledView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, u
           v23 = 0u;
           v20 = 0u;
           v21 = 0u;
-          v8 = [v7 tiles];
-          v9 = [v8 objectEnumerator];
+          tiles = [v7 tiles];
+          objectEnumerator = [tiles objectEnumerator];
 
-          v10 = [v9 countByEnumeratingWithState:&v20 objects:v28 count:16];
-          v11 = v3;
+          v10 = [objectEnumerator countByEnumeratingWithState:&v20 objects:v28 count:16];
+          v11 = selfCopy;
           if (v10)
           {
             v12 = *v21;
@@ -6923,7 +6923,7 @@ void __33__PKTiledView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, u
               {
                 if (*v21 != v12)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(objectEnumerator);
                 }
 
                 v14 = *(*(&v20 + 1) + 8 * j);
@@ -6935,18 +6935,18 @@ void __33__PKTiledView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, u
                 [(PKRendererTile *)v14 purgeTileLayers];
               }
 
-              v10 = [v9 countByEnumeratingWithState:&v20 objects:v28 count:16];
+              v10 = [objectEnumerator countByEnumeratingWithState:&v20 objects:v28 count:16];
             }
 
             while (v10);
           }
 
-          v3 = v11;
-          v15 = [v7 tiles];
-          [v15 removeAllObjects];
+          selfCopy = v11;
+          tiles2 = [v7 tiles];
+          [tiles2 removeAllObjects];
 
-          v16 = [v7 purgedTiles];
-          [v16 removeAllObjects];
+          purgedTiles = [v7 purgedTiles];
+          [purgedTiles removeAllObjects];
         }
 
         v4 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
@@ -6955,84 +6955,84 @@ void __33__PKTiledView_hitTest_withEvent___block_invoke(uint64_t a1, void *a2, u
       while (v4);
     }
 
-    drawingTouchThatHitNothing = v3->_drawingTouchThatHitNothing;
+    drawingTouchThatHitNothing = selfCopy->_drawingTouchThatHitNothing;
     if (drawingTouchThatHitNothing)
     {
       [(PKTileController *)drawingTouchThatHitNothing teardown];
-      v18 = v3->_drawingTouchThatHitNothing;
-      v3->_drawingTouchThatHitNothing = 0;
+      v18 = selfCopy->_drawingTouchThatHitNothing;
+      selfCopy->_drawingTouchThatHitNothing = 0;
     }
   }
 }
 
-- (void)_finishCombiningStrokesIfNecessaryForAttachment:(id)a3
+- (void)_finishCombiningStrokesIfNecessaryForAttachment:(id)attachment
 {
-  v10 = a3;
-  if (v10)
+  attachmentCopy = attachment;
+  if (attachmentCopy)
   {
-    v4 = [(PKTiledView *)self canvasView];
-    if ([v4 _isCombiningStrokes])
+    canvasView = [(PKTiledView *)self canvasView];
+    if ([canvasView _isCombiningStrokes])
     {
-      v5 = [(PKTiledView *)self canvasView];
-      v6 = [v5 _combineStrokesDrawingUUID];
-      v7 = [v10 drawing];
-      v8 = [v7 uuid];
-      v9 = [v6 isEqual:v8];
+      canvasView2 = [(PKTiledView *)self canvasView];
+      _combineStrokesDrawingUUID = [canvasView2 _combineStrokesDrawingUUID];
+      drawing = [attachmentCopy drawing];
+      uuid = [drawing uuid];
+      v9 = [_combineStrokesDrawingUUID isEqual:uuid];
 
       if (v9)
       {
         goto LABEL_6;
       }
 
-      v4 = [(PKTiledView *)self canvasView];
-      [v4 _finishCombiningStrokesIfNecessary];
+      canvasView = [(PKTiledView *)self canvasView];
+      [canvasView _finishCombiningStrokesIfNecessary];
     }
   }
 
 LABEL_6:
 }
 
-- (void)renderAttachment:(id)a3 intoCanvas:(id)a4 showing:(BOOL)a5
+- (void)renderAttachment:(id)attachment intoCanvas:(id)canvas showing:(BOOL)showing
 {
   v176[9] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PKTiledView *)&self->super.super.super.isa currentDrawingBeingCopiedToCanvas];
-  v11 = [v8 drawing];
+  attachmentCopy = attachment;
+  canvasCopy = canvas;
+  currentDrawingBeingCopiedToCanvas = [(PKTiledView *)&self->super.super.super.isa currentDrawingBeingCopiedToCanvas];
+  drawing = [attachmentCopy drawing];
 
-  if (v10 != v11)
+  if (currentDrawingBeingCopiedToCanvas != drawing)
   {
-    [(PKTiledView *)self _finishCombiningStrokesIfNecessaryForAttachment:v8];
-    v132 = [(PKTiledView *)self _visibleTilesForAttachment:v8];
-    v12 = [(PKTiledView *)self canvasView];
-    v13 = [v8 tileMaskView];
-    [v13 bounds];
+    [(PKTiledView *)self _finishCombiningStrokesIfNecessaryForAttachment:attachmentCopy];
+    v132 = [(PKTiledView *)self _visibleTilesForAttachment:attachmentCopy];
+    canvasView = [(PKTiledView *)self canvasView];
+    tileMaskView = [attachmentCopy tileMaskView];
+    [tileMaskView bounds];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [v8 tileMaskView];
-    [v12 convertRect:v22 fromView:{v15, v17, v19, v21}];
+    tileMaskView2 = [attachmentCopy tileMaskView];
+    [canvasView convertRect:tileMaskView2 fromView:{v15, v17, v19, v21}];
     v24 = v23;
     v26 = v25;
     v28 = v27;
     v30 = v29;
 
-    if (v8)
+    if (attachmentCopy)
     {
-      if (([v8 isAtEndOfDocument] & 1) != 0 || (-[PKTiledView standInAttachmentView](self, "standInAttachmentView"), v31 = objc_claimAutoreleasedReturnValue(), v31, v31 == v8))
+      if (([attachmentCopy isAtEndOfDocument] & 1) != 0 || (-[PKTiledView standInAttachmentView](self, "standInAttachmentView"), v31 = objc_claimAutoreleasedReturnValue(), v31, v31 == attachmentCopy))
       {
-        v32 = [(PKTiledView *)self scrollView];
-        [v32 bounds];
+        scrollView = [(PKTiledView *)self scrollView];
+        [scrollView bounds];
         v34 = v33;
 
-        v35 = [(PKTiledView *)self standInAttachmentView];
+        standInAttachmentView = [(PKTiledView *)self standInAttachmentView];
         v30 = v30 + v34;
 
-        if (v35 == v8)
+        if (standInAttachmentView == attachmentCopy)
         {
-          v36 = [(PKTiledView *)self scrollView];
-          [v36 bounds];
+          scrollView2 = [(PKTiledView *)self scrollView];
+          [scrollView2 bounds];
           v28 = v37;
         }
       }
@@ -7060,9 +7060,9 @@ LABEL_6:
     v53 = v52;
     v55 = v54;
     [(PKTiledView *)self suspendWorkForDrawing];
-    v131 = a5;
+    showingCopy = showing;
     objc_initWeak(&location, self);
-    [(PKTiledView *)self getAttachment:v8 strokeTransform:v173 paperTransform:v172];
+    [(PKTiledView *)self getAttachment:attachmentCopy strokeTransform:v173 paperTransform:v172];
     if (self)
     {
       v56 = v173[1];
@@ -7071,8 +7071,8 @@ LABEL_6:
       *&self->_strokeTransformAtStartOfStroke.ty = v173[2];
     }
 
-    v57 = [v8 drawing];
-    [(PKTiledView *)&self->super.super.super.isa setCurrentDrawingBeingCopiedToCanvas:v57];
+    drawing2 = [attachmentCopy drawing];
+    [(PKTiledView *)&self->super.super.super.isa setCurrentDrawingBeingCopiedToCanvas:drawing2];
 
     v163 = 0;
     v164 = &v163;
@@ -7095,19 +7095,19 @@ LABEL_6:
       if (![(PKTiledView *)self _snapshottingDisabled])
       {
         [(PKTiledView *)self _canvasViewWillCreateSnapshot];
-        v126 = [(PKTiledView *)self window];
-        v59 = [(PKTiledView *)self contentSnapshottingView];
-        if (!v59)
+        window = [(PKTiledView *)self window];
+        contentSnapshottingView = [(PKTiledView *)self contentSnapshottingView];
+        if (!contentSnapshottingView)
         {
-          v59 = v126;
+          contentSnapshottingView = window;
         }
 
-        v129 = v59;
-        v60 = [(PKTiledView *)self canvasView];
-        v61 = [v60 _rendererController];
-        if (v61)
+        v129 = contentSnapshottingView;
+        canvasView2 = [(PKTiledView *)self canvasView];
+        _rendererController = [canvasView2 _rendererController];
+        if (_rendererController)
         {
-          v62 = v61[520];
+          v62 = _rendererController[520];
         }
 
         else
@@ -7136,8 +7136,8 @@ LABEL_6:
         v180.size.width = v78;
         v180.size.height = v79;
         v81 = CGRectGetHeight(v180);
-        v82 = [(PKTiledView *)self canvasView];
-        v83 = v82;
+        canvasView3 = [(PKTiledView *)self canvasView];
+        v83 = canvasView3;
         v84 = 1.0;
         if (v81 >= 1.0)
         {
@@ -7154,7 +7154,7 @@ LABEL_6:
           v84 = v80;
         }
 
-        v130 = [v82 snapshotFramebufferWithSize:{v84, v85}];
+        v130 = [canvasView3 snapshotFramebufferWithSize:{v84, v85}];
 
         v51 = v66;
         v55 = v123;
@@ -7164,48 +7164,48 @@ LABEL_6:
         if (v130 && *(v130 + 56))
         {
           v124 = *MEMORY[0x1E6979F68];
-          v87 = [(PKTiledView *)self window];
-          v88 = [v87 screen];
-          v89 = [v88 displayConfiguration];
-          v127 = [v89 name];
+          window2 = [(PKTiledView *)self window];
+          screen = [window2 screen];
+          displayConfiguration = [screen displayConfiguration];
+          name = [displayConfiguration name];
 
-          if (!v127)
+          if (!name)
           {
-            v90 = [MEMORY[0x1E6979328] mainDisplay];
-            v91 = [v90 name];
+            mainDisplay = [MEMORY[0x1E6979328] mainDisplay];
+            name2 = [mainDisplay name];
 
             v92 = @"LCD";
-            if (v91)
+            if (name2)
             {
-              v92 = v91;
+              v92 = name2;
             }
 
-            v127 = v92;
+            name = v92;
           }
 
-          v93 = [(PKTiledView *)self window];
-          v125 = [v93 windowScene];
+          window3 = [(PKTiledView *)self window];
+          windowScene = [window3 windowScene];
 
           v94 = v122;
           if (objc_opt_respondsToSelector())
           {
-            v95 = [v125 renderingEnvironment];
+            renderingEnvironment = [windowScene renderingEnvironment];
             if (objc_opt_respondsToSelector())
             {
-              v96 = [v95 systemDisplayIdentifier];
-              if (v96)
+              systemDisplayIdentifier = [renderingEnvironment systemDisplayIdentifier];
+              if (systemDisplayIdentifier)
               {
 
-                v97 = v96;
+                v97 = systemDisplayIdentifier;
                 v124 = @"systemIdentifier";
-                v127 = v97;
+                name = v97;
               }
             }
 
             v94 = v122;
           }
 
-          v98 = [(PKTiledView *)self isExtendedDynamicRangeRenderingActive];
+          isExtendedDynamicRangeRenderingActive = [(PKTiledView *)self isExtendedDynamicRangeRenderingActive];
           memset(&v156, 0, sizeof(v156));
           CGAffineTransformMakeScale(&v156, v94, v94);
           memset(&v155, 0, sizeof(v155));
@@ -7215,7 +7215,7 @@ LABEL_6:
           v175[0] = *MEMORY[0x1E6979FB0];
           v175[1] = v124;
           v176[0] = v99;
-          v176[1] = v127;
+          v176[1] = name;
           v100 = *MEMORY[0x1E6979F50];
           v176[2] = *(v130 + 56);
           v101 = *MEMORY[0x1E697A000];
@@ -7233,17 +7233,17 @@ LABEL_6:
           v176[3] = v102;
           v175[4] = *MEMORY[0x1E6979F40];
           v103 = MEMORY[0x1E696AD98];
-          v104 = [v128 context];
-          v105 = [v103 numberWithUnsignedInt:{objc_msgSend(v104, "contextId")}];
+          context = [v128 context];
+          v105 = [v103 numberWithUnsignedInt:{objc_msgSend(context, "contextId")}];
           v176[4] = v105;
           v175[5] = *MEMORY[0x1E6979FA8];
           v106 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v128];
           v176[5] = v106;
           v175[6] = *MEMORY[0x1E6979F88];
-          v107 = [MEMORY[0x1E696AD98] numberWithBool:!v98 & v62];
+          v107 = [MEMORY[0x1E696AD98] numberWithBool:!isExtendedDynamicRangeRenderingActive & v62];
           v176[6] = v107;
           v175[7] = *MEMORY[0x1E697A008];
-          v108 = [MEMORY[0x1E696AD98] numberWithBool:v98];
+          v108 = [MEMORY[0x1E696AD98] numberWithBool:isExtendedDynamicRangeRenderingActive];
           v175[8] = *MEMORY[0x1E6979F80];
           v176[7] = v108;
           v176[8] = MEMORY[0x1E695E118];
@@ -7256,7 +7256,7 @@ LABEL_6:
           v142[3] = &unk_1E82D6B50;
           v143 = v109;
           v144 = v129;
-          v145 = self;
+          selfCopy = self;
           v147 = &v163;
           v148 = &v157;
           v146 = v130;
@@ -7294,8 +7294,8 @@ LABEL_6:
 
     v114 = 1;
 LABEL_38:
-    v115 = [(PKTiledView *)self canvasView];
-    v116 = [v8 drawing];
+    canvasView4 = [(PKTiledView *)self canvasView];
+    drawing3 = [attachmentCopy drawing];
     [(PKTiledView *)self _layerContentsScale];
     v118 = v117;
     v119 = v158[5];
@@ -7307,7 +7307,7 @@ LABEL_38:
     v133[1] = 3221225472;
     v133[2] = __51__PKTiledView_renderAttachment_intoCanvas_showing___block_invoke_462;
     v133[3] = &unk_1E82D6B78;
-    v134 = v9;
+    v134 = canvasCopy;
     v136[1] = *&v49;
     v136[2] = v51;
     v136[3] = v53;
@@ -7316,10 +7316,10 @@ LABEL_38:
     v138 = v172[1];
     v139 = v172[2];
     objc_copyWeak(v136, &location);
-    v140 = v131;
-    v135 = v8;
+    v140 = showingCopy;
+    v135 = attachmentCopy;
     v141 = v114;
-    [v115 _setDrawing:v116 tiles:v112 tileScale:v119 snapshotTexture:&v155 snapshotTextureTransform:v133 completionBlock:v118];
+    [canvasView4 _setDrawing:drawing3 tiles:v112 tileScale:v119 snapshotTexture:&v155 snapshotTextureTransform:v133 completionBlock:v118];
 
     objc_destroyWeak(v136);
     _Block_object_dispose(&v157, 8);
@@ -7461,26 +7461,26 @@ void __51__PKTiledView_renderAttachment_intoCanvas_showing___block_invoke_462(ui
   [(PKTiledView *)v4 setCurrentDrawingBeingCopiedToCanvas:?];
 }
 
-- (void)_copyFromCanvas:(id)a3 intoAttachment:(id)a4 hideCanvas:(BOOL)a5 strokes:(id)a6
+- (void)_copyFromCanvas:(id)canvas intoAttachment:(id)attachment hideCanvas:(BOOL)hideCanvas strokes:(id)strokes
 {
-  v78 = a5;
+  hideCanvasCopy = hideCanvas;
   v131 = *MEMORY[0x1E69E9840];
-  v74 = a3;
-  v80 = a4;
-  v81 = a6;
-  v8 = [v80 drawing];
-  v9 = [v8 strokes];
-  v10 = [v9 copy];
+  canvasCopy = canvas;
+  attachmentCopy = attachment;
+  strokesCopy = strokes;
+  drawing = [attachmentCopy drawing];
+  strokes = [drawing strokes];
+  v10 = [strokes copy];
 
   v75 = v10;
-  v82 = [(PKTiledView *)self _visibleTilesForAttachment:v80];
+  v82 = [(PKTiledView *)self _visibleTilesForAttachment:attachmentCopy];
   v11 = [v10 mutableCopy];
   v121 = 0u;
   v122 = 0u;
   v119 = 0u;
   v120 = 0u;
-  v12 = [v81 reverseObjectEnumerator];
-  v13 = [v12 countByEnumeratingWithState:&v119 objects:v130 count:16];
+  reverseObjectEnumerator = [strokesCopy reverseObjectEnumerator];
+  v13 = [reverseObjectEnumerator countByEnumeratingWithState:&v119 objects:v130 count:16];
   if (v13)
   {
     v14 = *v120;
@@ -7490,12 +7490,12 @@ void __51__PKTiledView_renderAttachment_intoCanvas_showing___block_invoke_462(ui
       {
         if (*v120 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v16 = *(*(&v119 + 1) + 8 * i);
-        v17 = [v11 lastObject];
-        LODWORD(v16) = [v17 isEqual:v16];
+        lastObject = [v11 lastObject];
+        LODWORD(v16) = [lastObject isEqual:v16];
 
         if (!v16)
         {
@@ -7512,7 +7512,7 @@ void __51__PKTiledView_renderAttachment_intoCanvas_showing___block_invoke_462(ui
         [v11 removeLastObject];
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v119 objects:v130 count:16];
+      v13 = [reverseObjectEnumerator countByEnumeratingWithState:&v119 objects:v130 count:16];
       if (v13)
       {
         continue;
@@ -7526,8 +7526,8 @@ void __51__PKTiledView_renderAttachment_intoCanvas_showing___block_invoke_462(ui
   v117 = 0u;
   v114 = 0u;
   v115 = 0u;
-  v12 = v82;
-  v19 = [v12 countByEnumeratingWithState:&v114 objects:v129 count:16];
+  reverseObjectEnumerator = v82;
+  v19 = [reverseObjectEnumerator countByEnumeratingWithState:&v114 objects:v129 count:16];
   if (v19)
   {
     v20 = *v115;
@@ -7537,7 +7537,7 @@ LABEL_11:
     {
       if (*v115 != v20)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       Property = *(*(&v114 + 1) + 8 * v21);
@@ -7556,7 +7556,7 @@ LABEL_11:
 
       if (v19 == ++v21)
       {
-        v19 = [v12 countByEnumeratingWithState:&v114 objects:v129 count:16];
+        v19 = [reverseObjectEnumerator countByEnumeratingWithState:&v114 objects:v129 count:16];
         if (v19)
         {
           goto LABEL_11;
@@ -7576,16 +7576,16 @@ LABEL_19:
     v76 = 0;
   }
 
-  v26 = [(PKTiledView *)self scrollView];
-  [v26 contentOffset];
-  [(PKTiledView *)self getAttachment:v80 strokeTransform:v124 paperTransform:v123 scrollViewContentOffset:?];
+  scrollView = [(PKTiledView *)self scrollView];
+  [scrollView contentOffset];
+  [(PKTiledView *)self getAttachment:attachmentCopy strokeTransform:v124 paperTransform:v123 scrollViewContentOffset:?];
 
-  if (v78)
+  if (hideCanvasCopy)
   {
     [(PKTiledView *)self setLiveAttachment:?];
   }
 
-  if ([v81 count])
+  if ([strokesCopy count])
   {
     x = *MEMORY[0x1E695F050];
     y = *(MEMORY[0x1E695F050] + 8);
@@ -7595,7 +7595,7 @@ LABEL_19:
     v111 = 0u;
     v112 = 0u;
     v113 = 0u;
-    v31 = v81;
+    v31 = strokesCopy;
     v32 = [v31 countByEnumeratingWithState:&v110 objects:v128 count:16];
     if (v32)
     {
@@ -7796,27 +7796,27 @@ LABEL_19:
   v90 = v68;
   v96 = v76;
   v69 = v75;
-  v97 = v78;
+  v97 = hideCanvasCopy;
   v91 = v69;
-  v92 = self;
-  v77 = v74;
+  selfCopy = self;
+  v77 = canvasCopy;
   v93 = v77;
-  v79 = v80;
+  v79 = attachmentCopy;
   v94 = v79;
-  v70 = v81;
+  v70 = strokesCopy;
   v95 = v70;
   v71 = _Block_copy(aBlock);
   if ([v66 count] && !-[PKTiledView disableTileRendering](self, "disableTileRendering", v73))
   {
-    v72 = [(PKTiledView *)self tileController];
+    tileController = [(PKTiledView *)self tileController];
     v84[0] = MEMORY[0x1E69E9820];
     v84[1] = 3221225472;
     v84[2] = __65__PKTiledView__copyFromCanvas_intoAttachment_hideCanvas_strokes___block_invoke_464;
     v84[3] = &unk_1E82D63B0;
     v85 = v71;
-    if (v72)
+    if (tileController)
     {
-      [(PKMetalRendererController *)v72[3] updateTiles:v66 withNewStrokes:v70 completionBlock:v84];
+      [(PKMetalRendererController *)tileController[3] updateTiles:v66 withNewStrokes:v70 completionBlock:v84];
     }
   }
 
@@ -8114,12 +8114,12 @@ LABEL_58:
   }
 }
 
-- (void)resizeTiles:(id)a3 completion:(id)a4
+- (void)resizeTiles:(id)tiles completion:(id)completion
 {
   v50 = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  v6 = a4;
-  v7 = v6;
+  tilesCopy = tiles;
+  completionCopy = completion;
+  v7 = completionCopy;
   drawingTouchThatHitNothing = self->_drawingTouchThatHitNothing;
   if (!drawingTouchThatHitNothing)
   {
@@ -8132,7 +8132,7 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v36 = v6;
+  v36 = completionCopy;
   if (self->_disableTileRendering || ([(PKTiledView *)self isSystemSnapshotting]& 1) != 0 || self->_symbolPreviewActive)
   {
     v7 = v36;
@@ -8152,7 +8152,7 @@ LABEL_6:
   v45 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v10 = v37;
+  v10 = tilesCopy;
   v11 = [v10 countByEnumeratingWithState:&v42 objects:v47 count:16];
   if (v11)
   {
@@ -8172,10 +8172,10 @@ LABEL_6:
         v41 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v15 = [v14 tiles];
-        v16 = [v15 objectEnumerator];
+        tiles = [v14 tiles];
+        objectEnumerator = [tiles objectEnumerator];
 
-        v17 = [v16 countByEnumeratingWithState:&v38 objects:v46 count:16];
+        v17 = [objectEnumerator countByEnumeratingWithState:&v38 objects:v46 count:16];
         if (v17)
         {
           v18 = *v39;
@@ -8185,7 +8185,7 @@ LABEL_6:
             {
               if (*v39 != v18)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(objectEnumerator);
               }
 
               v20 = *(*(&v38 + 1) + 8 * j);
@@ -8195,7 +8195,7 @@ LABEL_6:
               }
             }
 
-            v17 = [v16 countByEnumeratingWithState:&v38 objects:v46 count:16];
+            v17 = [objectEnumerator countByEnumeratingWithState:&v38 objects:v46 count:16];
           }
 
           while (v17);
@@ -8216,22 +8216,22 @@ LABEL_6:
       [(PKTiledView *)self _layerContentsScale];
       if (v23 > 0.0)
       {
-        v24 = [(PKTiledView *)self scrollView];
-        [v24 zoomScale];
+        scrollView = [(PKTiledView *)self scrollView];
+        [scrollView zoomScale];
         v26 = v25 > 0.0;
 
         if (v26)
         {
-          v27 = [MEMORY[0x1E696AAE8] mainBundle];
-          v28 = [v27 bundleIdentifier];
-          v29 = [v28 isEqualToString:@"com.apple.PaperKit.MarkupPhotoEditingExtension"];
+          mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+          bundleIdentifier = [mainBundle bundleIdentifier];
+          v29 = [bundleIdentifier isEqualToString:@"com.apple.PaperKit.MarkupPhotoEditingExtension"];
 
           v7 = v36;
           if ((v29 & 1) == 0)
           {
-            v30 = [MEMORY[0x1E696AAE8] mainBundle];
-            v31 = [v30 bundleIdentifier];
-            if ([v31 isEqualToString:@"com.apple.quicklook.extension.previewUI"])
+            mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+            bundleIdentifier2 = [mainBundle2 bundleIdentifier];
+            if ([bundleIdentifier2 isEqualToString:@"com.apple.quicklook.extension.previewUI"])
             {
 
               v7 = v36;
@@ -8239,9 +8239,9 @@ LABEL_6:
 
             else
             {
-              v33 = [MEMORY[0x1E696AAE8] mainBundle];
-              v34 = [v33 bundleIdentifier];
-              v35 = [v34 isEqualToString:@"com.apple.quicklook.UIExtension"];
+              mainBundle3 = [MEMORY[0x1E696AAE8] mainBundle];
+              bundleIdentifier3 = [mainBundle3 bundleIdentifier];
+              v35 = [bundleIdentifier3 isEqualToString:@"com.apple.quicklook.UIExtension"];
 
               v7 = v36;
               if ((v35 & 1) == 0 && !PKIsQuickNoteOnPhone())
@@ -8273,18 +8273,18 @@ LABEL_42:
 LABEL_8:
 }
 
-- (BOOL)_updateHeightOfAttachmentIfNecessary:(id)a3
+- (BOOL)_updateHeightOfAttachmentIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   if ([(PKTiledView *)self _shouldUpdateHeightOfAttachments])
   {
-    v5 = [v4 drawing];
+    drawing = [necessaryCopy drawing];
     v6 = objc_opt_class();
-    v7 = PKDynamicCast(v6, v4);
-    v8 = [v5 _isEmpty];
+    v7 = PKDynamicCast(v6, necessaryCopy);
+    _isEmpty = [drawing _isEmpty];
     if (v7)
     {
-      v9 = v8;
+      v9 = _isEmpty;
     }
 
     else
@@ -8301,19 +8301,19 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v11 = [v7 drawing];
-    [v7 heightFromDrawing:v11 delta:10.0];
+    drawing2 = [v7 drawing];
+    [v7 heightFromDrawing:drawing2 delta:10.0];
     v13 = v12;
 
     [v7 bounds];
     if (v13 <= v14)
     {
-      [v5 bounds];
+      [drawing bounds];
       rect = v16;
       v18 = v17;
       v20 = v19;
       v22 = v21;
-      [v5 _canvasBounds];
+      [drawing _canvasBounds];
       v27 = v26;
       v28 = v23;
       v10 = 0;
@@ -8390,32 +8390,32 @@ LABEL_11:
   return v10;
 }
 
-- (void)_transientlyUpdateHeightOfAttachment:(id)a3 delta:(double)a4
+- (void)_transientlyUpdateHeightOfAttachment:(id)attachment delta:(double)delta
 {
-  v11 = a3;
-  v6 = [v11 drawing];
-  if ([v6 _isEmpty])
+  attachmentCopy = attachment;
+  drawing = [attachmentCopy drawing];
+  if ([drawing _isEmpty])
   {
   }
 
   else
   {
-    v7 = [(PKTiledView *)self _shouldUpdateHeightOfAttachments];
+    _shouldUpdateHeightOfAttachments = [(PKTiledView *)self _shouldUpdateHeightOfAttachments];
 
-    if (v7)
+    if (_shouldUpdateHeightOfAttachments)
     {
-      v8 = [v11 drawing];
-      [v11 heightFromDrawing:v8 delta:a4 + 10.0];
+      drawing2 = [attachmentCopy drawing];
+      [attachmentCopy heightFromDrawing:drawing2 delta:delta + 10.0];
       v10 = v9;
 
-      [v11 updateDrawingHeight:0 notifyDrawingDidChange:v10];
+      [attachmentCopy updateDrawingHeight:0 notifyDrawingDidChange:v10];
     }
   }
 }
 
-- (void)cancelTileGenerationInvalidateTiles:(BOOL)a3
+- (void)cancelTileGenerationInvalidateTiles:(BOOL)tiles
 {
-  v3 = a3;
+  tilesCopy = tiles;
   v29 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.pencilkit", "Tiles");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -8448,10 +8448,10 @@ LABEL_11:
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v10 = [v9 tiles];
-        v11 = [v10 objectEnumerator];
+        tiles = [v9 tiles];
+        objectEnumerator = [tiles objectEnumerator];
 
-        v13 = [v11 countByEnumeratingWithState:&v18 objects:v27 count:16];
+        v13 = [objectEnumerator countByEnumeratingWithState:&v18 objects:v27 count:16];
         if (v13)
         {
           v14 = *v19;
@@ -8462,14 +8462,14 @@ LABEL_11:
             {
               if (*v19 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(objectEnumerator);
               }
 
               v16 = *(*(&v18 + 1) + 8 * v15);
               if (v16)
               {
                 atomic_fetch_add(v16 + 2, 1uLL);
-                if (v3)
+                if (tilesCopy)
                 {
                   objc_setProperty_atomic_copy(v16, v12, 0, 136);
                 }
@@ -8479,7 +8479,7 @@ LABEL_11:
             }
 
             while (v13 != v15);
-            v13 = [v11 countByEnumeratingWithState:&v18 objects:v27 count:16];
+            v13 = [objectEnumerator countByEnumeratingWithState:&v18 objects:v27 count:16];
           }
 
           while (v13);
@@ -8497,19 +8497,19 @@ LABEL_11:
   }
 }
 
-- (void)updateTilesForVisibleRectForceIfZooming:(BOOL)a3
+- (void)updateTilesForVisibleRectForceIfZooming:(BOOL)zooming
 {
-  if (a3 || ![(PKTiledView *)self _isZoomingOrResizing])
+  if (zooming || ![(PKTiledView *)self _isZoomingOrResizing])
   {
 
     [(PKTiledView *)self updateTilesForVisibleRectRendering:1 offscreen:0 overrideAdditionalStrokes:0];
   }
 }
 
-- (void)swapOffscreenCallback:(id)a3
+- (void)swapOffscreenCallback:(id)callback
 {
   v28 = *MEMORY[0x1E69E9840];
-  v14 = a3;
+  callbackCopy = callback;
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
   [(PKTiledView *)self _pauseHoverPreviewForTimeInterval:0.1];
@@ -8540,24 +8540,24 @@ LABEL_11:
         v7 = os_log_create("com.apple.pencilkit", "Tiles");
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
         {
-          v10 = [v6 offscreenTiles];
-          v11 = [v10 count];
+          offscreenTiles = [v6 offscreenTiles];
+          v11 = [offscreenTiles count];
           *buf = 134217984;
           v26 = v11;
           _os_log_debug_impl(&dword_1C7CCA000, v7, OS_LOG_TYPE_DEBUG, "swap offscreen tiles %ld", buf, 0xCu);
         }
 
-        v8 = [v6 offscreenTiles];
+        offscreenTiles2 = [v6 offscreenTiles];
         v16[0] = MEMORY[0x1E69E9820];
         v16[1] = 3221225472;
         v16[2] = __37__PKTiledView_swapOffscreenCallback___block_invoke;
         v16[3] = &unk_1E82D6BC8;
         v16[4] = v6;
         v16[5] = &v21;
-        [v8 enumerateKeysAndObjectsUsingBlock:v16];
+        [offscreenTiles2 enumerateKeysAndObjectsUsingBlock:v16];
 
-        v9 = [v6 offscreenTiles];
-        [v9 removeAllObjects];
+        offscreenTiles3 = [v6 offscreenTiles];
+        [offscreenTiles3 removeAllObjects];
 
         ++v5;
       }
@@ -8569,9 +8569,9 @@ LABEL_11:
     while (v3);
   }
 
-  if (v14)
+  if (callbackCopy)
   {
-    v14[2]();
+    callbackCopy[2]();
   }
 
   [MEMORY[0x1E6979518] commit];
@@ -8634,14 +8634,14 @@ void __37__PKTiledView_swapOffscreenCallback___block_invoke(uint64_t a1, void *a
 LABEL_11:
 }
 
-- (void)updateTilesForVisibleRectOffscreenOverrideAdditionalStrokes:(id)a3 withCallback:(id)a4
+- (void)updateTilesForVisibleRectOffscreenOverrideAdditionalStrokes:(id)strokes withCallback:(id)callback
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  strokesCopy = strokes;
+  callbackCopy = callback;
   if ([(PKTiledView *)self _isZoomingOrResizing])
   {
-    if (v6 && ([(PKTiledView *)self window], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+    if (strokesCopy && ([(PKTiledView *)self window], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
     {
       v9 = os_log_create("com.apple.pencilkit", "Tiles");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -8656,14 +8656,14 @@ LABEL_11:
       v14[2] = __88__PKTiledView_updateTilesForVisibleRectOffscreenOverrideAdditionalStrokes_withCallback___block_invoke_466;
       v14[3] = &unk_1E82D6840;
       v14[4] = self;
-      v15 = v6;
-      v16 = v7;
+      v15 = strokesCopy;
+      v16 = callbackCopy;
       dispatch_after(v10, MEMORY[0x1E69E96A0], v14);
     }
 
     else
     {
-      v7[2](v7);
+      callbackCopy[2](callbackCopy);
     }
   }
 
@@ -8672,22 +8672,22 @@ LABEL_11:
     v11 = os_log_create("com.apple.pencilkit", "Tiles");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [(PKTiledView *)self canvasView];
+      canvasView = [(PKTiledView *)self canvasView];
       *buf = 67109120;
-      v22 = [v13 isHidden];
+      isHidden = [canvasView isHidden];
       _os_log_debug_impl(&dword_1C7CCA000, v11, OS_LOG_TYPE_DEBUG, "updateTilesForVisibleRectRendering canvasVisible:%d", buf, 8u);
     }
 
-    [(PKTiledView *)self updateTilesForVisibleRectRendering:1 offscreen:1 overrideAdditionalStrokes:v6];
-    v12 = [(PKTiledView *)self tileController];
+    [(PKTiledView *)self updateTilesForVisibleRectRendering:1 offscreen:1 overrideAdditionalStrokes:strokesCopy];
+    tileController = [(PKTiledView *)self tileController];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __88__PKTiledView_updateTilesForVisibleRectOffscreenOverrideAdditionalStrokes_withCallback___block_invoke;
     v17[3] = &unk_1E82D6840;
-    v18 = v6;
-    v19 = self;
-    v20 = v7;
-    [(PKTileController *)v12 callbackAfterTileGeneration:v17];
+    v18 = strokesCopy;
+    selfCopy = self;
+    v20 = callbackCopy;
+    [(PKTileController *)tileController callbackAfterTileGeneration:v17];
   }
 }
 
@@ -8772,13 +8772,13 @@ LABEL_19:
   return [*(a1 + 40) updateTilesForVisibleRectOffscreenOverrideAdditionalStrokes:*(a1 + 32) withCallback:*(a1 + 48)];
 }
 
-- (BOOL)tileIsVisibleForOffset:(CGPoint)a3 inAttachment:(id)a4 distanceToMiddle:(double *)a5
+- (BOOL)tileIsVisibleForOffset:(CGPoint)offset inAttachment:(id)attachment distanceToMiddle:(double *)middle
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = [(PKTiledView *)self scrollView];
-  [v10 bounds];
+  y = offset.y;
+  x = offset.x;
+  attachmentCopy = attachment;
+  scrollView = [(PKTiledView *)self scrollView];
+  [scrollView bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -8798,25 +8798,25 @@ LABEL_19:
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  v27 = [v9 tileContainerView];
-  v28 = [v9 viewRep];
-  [v27 convertRect:v28 toView:{v20, v22, v24, v26}];
+  tileContainerView = [attachmentCopy tileContainerView];
+  viewRep = [attachmentCopy viewRep];
+  [tileContainerView convertRect:viewRep toView:{v20, v22, v24, v26}];
   v30 = v29;
   v32 = v31;
   v34 = v33;
   v36 = v35;
 
-  v37 = [v9 tileContainerView];
-  [v37 bounds];
+  tileContainerView2 = [attachmentCopy tileContainerView];
+  [tileContainerView2 bounds];
   v60.origin.x = v30;
   v60.origin.y = v32;
   v60.size.width = v34;
   v60.size.height = v36;
-  LOBYTE(v28) = CGRectIntersectsRect(v54, v60);
+  LOBYTE(viewRep) = CGRectIntersectsRect(v54, v60);
 
-  if ((v28 & 1) != 0 && ([v9 viewRep], v38 = objc_claimAutoreleasedReturnValue(), -[PKTiledView scrollView](self, "scrollView"), v39 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v38, "convertRect:toView:", v39, v30, v32, v34, v36), v41 = v40, v43 = v42, v45 = v44, v47 = v46, v39, v38, v55.origin.x = v12, v55.origin.y = v14, v55.size.width = v16, v55.size.height = v18, v61.origin.x = v41, v61.origin.y = v43, v61.size.width = v45, v61.size.height = v47, CGRectIntersectsRect(v55, v61)))
+  if ((viewRep & 1) != 0 && ([attachmentCopy viewRep], v38 = objc_claimAutoreleasedReturnValue(), -[PKTiledView scrollView](self, "scrollView"), v39 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v38, "convertRect:toView:", v39, v30, v32, v34, v36), v41 = v40, v43 = v42, v45 = v44, v47 = v46, v39, v38, v55.origin.x = v12, v55.origin.y = v14, v55.size.width = v16, v55.size.height = v18, v61.origin.x = v41, v61.origin.y = v43, v61.size.width = v45, v61.size.height = v47, CGRectIntersectsRect(v55, v61)))
   {
-    if (a5)
+    if (middle)
     {
       v56.origin.x = v12;
       v56.origin.y = v14;
@@ -8838,7 +8838,7 @@ LABEL_19:
       v59.size.width = v45;
       v59.size.height = v47;
       v50 = CGRectGetMidY(v59);
-      *a5 = (MidY - v50) * (MidY - v50) + (MidX - v49) * (MidX - v49);
+      *middle = (MidY - v50) * (MidY - v50) + (MidX - v49) * (MidX - v49);
     }
 
     v51 = 1;
@@ -8856,8 +8856,8 @@ LABEL_19:
 {
   v88 = *MEMORY[0x1E69E9840];
   v67 = a4;
-  v6 = [(PKTiledView *)self scrollView];
-  [v6 bounds];
+  scrollView = [(PKTiledView *)self scrollView];
+  [scrollView bounds];
   v70 = v8;
   v71 = v7;
   v68 = v10;
@@ -8887,16 +8887,16 @@ LABEL_19:
         }
 
         v13 = *(*(&v77 + 1) + 8 * v12);
-        v14 = [v13 viewRep];
-        [v14 frame];
+        viewRep = [v13 viewRep];
+        [viewRep frame];
         v76 = v12;
         if (v15 <= 1.0)
         {
           goto LABEL_49;
         }
 
-        v16 = [v13 viewRep];
-        [v16 frame];
+        viewRep2 = [v13 viewRep];
+        [viewRep2 frame];
         if ((v20 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || (v17 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
         {
 
@@ -8908,9 +8908,9 @@ LABEL_49:
 
         if (v22)
         {
-          v23 = [v13 tileContainerView];
-          v24 = [(PKTiledView *)self scrollView];
-          [v23 convertRect:v24 fromView:{v71, v70, v69, v68}];
+          tileContainerView = [v13 tileContainerView];
+          scrollView2 = [(PKTiledView *)self scrollView];
+          [tileContainerView convertRect:scrollView2 fromView:{v71, v70, v69, v68}];
           v26 = v25;
           v28 = v27;
           v30 = v29;
@@ -9093,9 +9093,9 @@ LABEL_50:
   return result;
 }
 
-- (void)updateExistingTiles:(BOOL)a3
+- (void)updateExistingTiles:(BOOL)tiles
 {
-  v3 = a3;
+  tilesCopy = tiles;
   v43 = *MEMORY[0x1E69E9840];
   [(PKTiledView *)self bounds];
   v6 = v5;
@@ -9126,10 +9126,10 @@ LABEL_50:
         v34 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v14 = [v13 tiles];
-        v15 = [v14 allValues];
+        tiles = [v13 tiles];
+        allValues = [tiles allValues];
 
-        v16 = [v15 countByEnumeratingWithState:&v33 objects:v41 count:16];
+        v16 = [allValues countByEnumeratingWithState:&v33 objects:v41 count:16];
         if (v16)
         {
           v17 = *v34;
@@ -9140,14 +9140,14 @@ LABEL_50:
             {
               if (*v34 != v17)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(allValues);
               }
 
               v19 = *(*(&v33 + 1) + 8 * v18);
-              if (!v3 || (!v19 ? (b = 0.0, c = 0.0, d = 0.0, a = 0.0) : (a = v19[2]._drawingTransform.a, b = v19[2]._drawingTransform.b, c = v19[2]._drawingTransform.c, d = v19[2]._drawingTransform.d), [v13 tileContainerView], v24 = objc_claimAutoreleasedReturnValue(), -[PKTiledView convertRect:fromView:](self, "convertRect:fromView:", v24, a, b, c, d), v45.origin.x = v6, v45.origin.y = v8, v45.size.width = v10, v45.size.height = v12, v25 = CGRectIntersectsRect(v44, v45), v24, v25))
+              if (!tilesCopy || (!v19 ? (b = 0.0, c = 0.0, d = 0.0, a = 0.0) : (a = v19[2]._drawingTransform.a, b = v19[2]._drawingTransform.b, c = v19[2]._drawingTransform.c, d = v19[2]._drawingTransform.d), [v13 tileContainerView], v24 = objc_claimAutoreleasedReturnValue(), -[PKTiledView convertRect:fromView:](self, "convertRect:fromView:", v24, a, b, c, d), v45.origin.x = v6, v45.origin.y = v8, v45.size.width = v10, v45.size.height = v12, v25 = CGRectIntersectsRect(v44, v45), v24, v25))
               {
-                v26 = [(PKRendererTile *)v19 properties];
-                [v26 offset];
+                properties = [(PKRendererTile *)v19 properties];
+                [properties offset];
                 v27 = [(PKTiledView *)self generateTile:v13 inAttachment:1 rendering:0 offscreen:0 overrideAdditionalStrokes:?];
               }
 
@@ -9155,7 +9155,7 @@ LABEL_50:
             }
 
             while (v16 != v18);
-            v28 = [v15 countByEnumeratingWithState:&v33 objects:v41 count:16];
+            v28 = [allValues countByEnumeratingWithState:&v33 objects:v41 count:16];
             v16 = v28;
           }
 
@@ -9173,12 +9173,12 @@ LABEL_50:
   }
 }
 
-- (void)updateTilesForVisibleRectRendering:(BOOL)a3 offscreen:(BOOL)a4 overrideAdditionalStrokes:(id)a5
+- (void)updateTilesForVisibleRectRendering:(BOOL)rendering offscreen:(BOOL)offscreen overrideAdditionalStrokes:(id)strokes
 {
-  v5 = a4;
-  v6 = a3;
+  offscreenCopy = offscreen;
+  renderingCopy = rendering;
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  strokesCopy = strokes;
   updateVisibleTilesAfterZoomOutBlock = self->_updateVisibleTilesAfterZoomOutBlock;
   if (updateVisibleTilesAfterZoomOutBlock)
   {
@@ -9187,8 +9187,8 @@ LABEL_50:
     self->_updateVisibleTilesAfterZoomOutBlock = 0;
   }
 
-  v11 = [(PKTiledView *)self scrollView];
-  [v11 zoomScale];
+  scrollView = [(PKTiledView *)self scrollView];
+  [scrollView zoomScale];
   v13 = v12;
 
   if (self->_tileScale >= 1.0)
@@ -9199,16 +9199,16 @@ LABEL_50:
       [(PKTiledView *)self frame];
       if ((v19 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && (v16 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000 && (v17 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && (v18 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
       {
-        v20 = [(PKTiledView *)self disableTileRendering];
-        v21 = v13 == 0.0 || v20;
+        disableTileRendering = [(PKTiledView *)self disableTileRendering];
+        v21 = v13 == 0.0 || disableTileRendering;
         if ((v21 & 1) == 0 && *&self->_tileLevel != 0.0)
         {
           v43 = 0u;
           v44 = 0u;
           v41 = 0u;
           v42 = 0u;
-          v22 = [(PKTiledView *)self attachmentViews];
-          v23 = [v22 countByEnumeratingWithState:&v41 objects:v46 count:16];
+          attachmentViews = [(PKTiledView *)self attachmentViews];
+          v23 = [attachmentViews countByEnumeratingWithState:&v41 objects:v46 count:16];
           if (v23)
           {
             v24 = *v42;
@@ -9218,20 +9218,20 @@ LABEL_50:
               {
                 if (*v42 != v24)
                 {
-                  objc_enumerationMutation(v22);
+                  objc_enumerationMutation(attachmentViews);
                 }
 
                 [*(*(&v41 + 1) + 8 * i) _cancelOffscreenTiles];
               }
 
-              v23 = [v22 countByEnumeratingWithState:&v41 objects:v46 count:16];
+              v23 = [attachmentViews countByEnumeratingWithState:&v41 objects:v46 count:16];
             }
 
             while (v23);
           }
 
-          v26 = [(PKTiledView *)self visibleAttachments];
-          [(PKTiledView *)self getVisibleTiles:v26];
+          visibleAttachments = [(PKTiledView *)self visibleAttachments];
+          [(PKTiledView *)self getVisibleTiles:visibleAttachments];
 
           v27 = 126 - 2 * __clz((v40 - v39) >> 5);
           if (v40 == v39)
@@ -9255,11 +9255,11 @@ LABEL_50:
               [v31 clearTileDrawingTransform];
             }
 
-            v33 = [v32 drawing];
-            v34 = [v33 uuid];
-            v35 = [v8 objectForKeyedSubscript:v34];
+            drawing = [v32 drawing];
+            uuid = [drawing uuid];
+            v35 = [strokesCopy objectForKeyedSubscript:uuid];
 
-            v36 = [(PKTiledView *)self generateTile:*j inAttachment:v6 rendering:v5 offscreen:v35 overrideAdditionalStrokes:j[1], j[2]];
+            v36 = [(PKTiledView *)self generateTile:*j inAttachment:renderingCopy rendering:offscreenCopy offscreen:v35 overrideAdditionalStrokes:j[1], j[2]];
           }
 
           if (self->_didDisableScrollViewPanGestureRecognizer)
@@ -9324,10 +9324,10 @@ LABEL_50:
         v21 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v5 = [v4 tiles];
-        v6 = [v5 allKeys];
+        tiles = [v4 tiles];
+        allKeys = [tiles allKeys];
 
-        v7 = [v6 countByEnumeratingWithState:&v18 objects:v29 count:16];
+        v7 = [allKeys countByEnumeratingWithState:&v18 objects:v29 count:16];
         if (v7)
         {
           v8 = *v19;
@@ -9337,7 +9337,7 @@ LABEL_50:
             {
               if (*v19 != v8)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(allKeys);
               }
 
               v10 = *(*(&v18 + 1) + 8 * j);
@@ -9356,17 +9356,17 @@ LABEL_50:
 
               if (!DKDNearlyEqualTransforms(v17, v16))
               {
-                v11 = [v4 tiles];
-                v12 = [v11 objectForKeyedSubscript:v10];
+                tiles2 = [v4 tiles];
+                v12 = [tiles2 objectForKeyedSubscript:v10];
 
-                v13 = [v4 tiles];
-                [v13 removeObjectForKey:v10];
+                tiles3 = [v4 tiles];
+                [tiles3 removeObjectForKey:v10];
 
                 [(PKRendererTile *)v12 purgeTileLayers];
               }
             }
 
-            v7 = [v6 countByEnumeratingWithState:&v18 objects:v29 count:16];
+            v7 = [allKeys countByEnumeratingWithState:&v18 objects:v29 count:16];
           }
 
           while (v7);
@@ -9380,19 +9380,19 @@ LABEL_50:
   }
 }
 
-- (void)blitOldTilesIntoNewTiles:(id)a3 completion:(id)a4
+- (void)blitOldTilesIntoNewTiles:(id)tiles completion:(id)completion
 {
   v108 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v76 = a4;
-  v78 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  tilesCopy = tiles;
+  completionCopy = completion;
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v103 = 0u;
   v104 = 0u;
   v101 = 0u;
   v102 = 0u;
-  obj = v6;
+  obj = tilesCopy;
   v7 = [obj countByEnumeratingWithState:&v101 objects:v107 count:16];
-  v80 = self;
+  selfCopy = self;
   if (v7)
   {
     v8 = *v102;
@@ -9414,12 +9414,12 @@ LABEL_50:
           [v12 drawingTransform];
           if (sqrt(*(&v98 + 1) * *(&v98 + 1) + *&v98 * *&v98) > 0.0)
           {
-            v14 = [v13 tiles];
-            v15 = [v14 copy];
-            [v78 setObject:v15 forKey:v10];
+            tiles = [v13 tiles];
+            v15 = [tiles copy];
+            [strongToStrongObjectsMapTable setObject:v15 forKey:v10];
 
-            v16 = [v13 tiles];
-            [v16 removeAllObjects];
+            tiles2 = [v13 tiles];
+            [tiles2 removeAllObjects];
           }
         }
       }
@@ -9430,14 +9430,14 @@ LABEL_50:
     while (v7);
   }
 
-  v17 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   [(PKTiledView *)self _layerContentsScale];
   v19 = v18;
-  v20 = [(PKTiledView *)self scrollView];
-  [v20 zoomScale];
+  scrollView = [(PKTiledView *)self scrollView];
+  [scrollView zoomScale];
   v22 = v21;
 
-  v23 = self;
+  selfCopy2 = self;
   [(PKTiledView *)self getVisibleTiles:obj];
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
@@ -9453,7 +9453,7 @@ LABEL_50:
         [*v24 drawingTransform];
         v26 = *(&v98 + 1);
         v27 = *&v98;
-        if (!v23)
+        if (!selfCopy2)
         {
           goto LABEL_19;
         }
@@ -9463,7 +9463,7 @@ LABEL_50:
       {
         v26 = 0.0;
         v27 = 0.0;
-        if (!v23)
+        if (!selfCopy2)
         {
 LABEL_19:
           gestureView = 0;
@@ -9471,7 +9471,7 @@ LABEL_19:
         }
       }
 
-      gestureView = v23->_gestureView;
+      gestureView = selfCopy2->_gestureView;
 LABEL_16:
       v29 = [(PKRendererTile *)v24[1] layerFrameForLevel:PKRendererTile offset:gestureView];
       v31 = v30;
@@ -9498,11 +9498,11 @@ LABEL_16:
       v93 = 0u;
       v94 = 0u;
       v95 = 0u;
-      v44 = [v78 objectForKey:*v24];
-      v45 = [v44 objectEnumerator];
+      v44 = [strongToStrongObjectsMapTable objectForKey:*v24];
+      objectEnumerator = [v44 objectEnumerator];
 
       v46 = 0;
-      v47 = [v45 countByEnumeratingWithState:&v92 objects:v106 count:16];
+      v47 = [objectEnumerator countByEnumeratingWithState:&v92 objects:v106 count:16];
       if (v47)
       {
         v48 = *v93;
@@ -9513,7 +9513,7 @@ LABEL_16:
           {
             if (*v93 != v48)
             {
-              objc_enumerationMutation(v45);
+              objc_enumerationMutation(objectEnumerator);
             }
 
             v50 = *(*(&v92 + 1) + 8 * v49);
@@ -9544,9 +9544,9 @@ LABEL_16:
                 v55 = v24[1];
                 v56 = v24[2];
                 v57 = *v24;
-                v58 = [(PKTiledView *)v80 scrollView];
-                [v58 zoomScale];
-                v46 = [(PKTiledView *)v80 tileForOffset:v57 inAttachment:0 offscreen:v55 tileZoomScale:v56, v59];
+                scrollView2 = [(PKTiledView *)selfCopy scrollView];
+                [scrollView2 zoomScale];
+                v46 = [(PKTiledView *)selfCopy tileForOffset:v57 inAttachment:0 offscreen:v55 tileZoomScale:v56, v59];
 
                 if (v46)
                 {
@@ -9556,21 +9556,21 @@ LABEL_16:
                 }
               }
 
-              v60 = [v17 objectForKey:v46];
-              if (!v60)
+              array = [strongToStrongObjectsMapTable2 objectForKey:v46];
+              if (!array)
               {
-                v60 = [MEMORY[0x1E695DF70] array];
-                [v17 setObject:v60 forKey:v46];
+                array = [MEMORY[0x1E695DF70] array];
+                [strongToStrongObjectsMapTable2 setObject:array forKey:v46];
               }
 
-              [v60 addObject:v50];
+              [array addObject:v50];
             }
 
             ++v49;
           }
 
           while (v47 != v49);
-          v61 = [v45 countByEnumeratingWithState:&v92 objects:v106 count:16];
+          v61 = [objectEnumerator countByEnumeratingWithState:&v92 objects:v106 count:16];
           v47 = v61;
         }
 
@@ -9578,14 +9578,14 @@ LABEL_16:
       }
 
       v24 += 4;
-      v23 = v80;
+      selfCopy2 = selfCopy;
     }
 
     while (v24 != v77);
   }
 
   [MEMORY[0x1E6979518] commit];
-  v62 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v90 = 0u;
   v91 = 0u;
   v88 = 0u;
@@ -9619,7 +9619,7 @@ LABEL_16:
         }
 
         v69 = [v68 valueWithCGAffineTransform:&v98];
-        [v62 setObject:v69 forKey:v67];
+        [strongToStrongObjectsMapTable3 setObject:v69 forKey:v67];
       }
 
       v64 = [v63 countByEnumeratingWithState:&v88 objects:v105 count:16];
@@ -9628,21 +9628,21 @@ LABEL_16:
     while (v64);
   }
 
-  drawingTouchThatHitNothing = v80->_drawingTouchThatHitNothing;
+  drawingTouchThatHitNothing = selfCopy->_drawingTouchThatHitNothing;
   v81[0] = MEMORY[0x1E69E9820];
   v81[1] = 3221225472;
   v81[2] = __51__PKTiledView_blitOldTilesIntoNewTiles_completion___block_invoke;
   v81[3] = &unk_1E82D6BF0;
   v71 = v63;
   v82 = v71;
-  v72 = v62;
+  v72 = strongToStrongObjectsMapTable3;
   v83 = v72;
-  v73 = v17;
+  v73 = strongToStrongObjectsMapTable2;
   v84 = v73;
-  v74 = v78;
+  v74 = strongToStrongObjectsMapTable;
   v85 = v74;
-  v75 = v76;
-  v86 = v80;
+  v75 = completionCopy;
+  v86 = selfCopy;
   v87 = v75;
   [(PKTileController *)drawingTouchThatHitNothing renderTilesIntoTiles:v73 completion:v81];
 
@@ -9831,14 +9831,14 @@ uint64_t __51__PKTiledView_blitOldTilesIntoNewTiles_completion___block_invoke_2(
   return [*(a1 + 64) updateTilesForVisibleRect];
 }
 
-- (id)tileForOffset:(CGPoint)a3 inAttachment:(id)a4 offscreen:(BOOL)a5 tileZoomScale:(double)a6
+- (id)tileForOffset:(CGPoint)offset inAttachment:(id)attachment offscreen:(BOOL)offscreen tileZoomScale:(double)scale
 {
-  v7 = a5;
-  y = a3.y;
-  x = a3.x;
-  v11 = a4;
+  offscreenCopy = offscreen;
+  y = offset.y;
+  x = offset.x;
+  attachmentCopy = attachment;
   v12 = objc_opt_class();
-  v13 = PKDynamicCast(v12, v11);
+  v13 = PKDynamicCast(v12, attachmentCopy);
   if (v13)
   {
     [v13 setSixChannelBlending:{-[PKTiledView _sixChannelBlendingIsActive](self, "_sixChannelBlendingIsActive")}];
@@ -9846,9 +9846,9 @@ uint64_t __51__PKTiledView_blitOldTilesIntoNewTiles_completion___block_invoke_2(
 
   [(PKTiledView *)self _layerContentsScale];
   v15 = v14;
-  if (v11)
+  if (attachmentCopy)
   {
-    [v11 drawingTransform];
+    [attachmentCopy drawingTransform];
     v16 = *(&v72 + 1);
     v17 = *&v72;
   }
@@ -9863,7 +9863,7 @@ uint64_t __51__PKTiledView_blitOldTilesIntoNewTiles_completion___block_invoke_2(
   if (!self)
   {
     gestureView = 0;
-    if (v11)
+    if (attachmentCopy)
     {
       goto LABEL_8;
     }
@@ -9876,27 +9876,27 @@ LABEL_10:
   }
 
   gestureView = self->_gestureView;
-  if (!v11)
+  if (!attachmentCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_8:
-  [v11 drawingTransform];
+  [attachmentCopy drawingTransform];
 LABEL_11:
   v20 = [(PKRendererTileProperties *)v18 initWithLevel:gestureView offset:&v72 drawingTransform:[(PKTiledView *)self _sixChannelBlendingIsActive] sixChannelMode:[(PKTiledView *)self sixChannelBlendingRendersTransparent] transparentBlending:[(PKTiledView *)self isExtendedDynamicRangeRenderingActive] extendedDynamicRange:x, y];
-  v21 = [v13 tiles];
-  v71 = [v21 objectForKeyedSubscript:v20];
+  tiles = [v13 tiles];
+  v71 = [tiles objectForKeyedSubscript:v20];
 
-  v22 = [v13 offscreenTiles];
-  v23 = [v22 objectForKeyedSubscript:v20];
+  offscreenTiles = [v13 offscreenTiles];
+  v23 = [offscreenTiles objectForKeyedSubscript:v20];
 
-  v24 = [v13 purgedTiles];
-  v25 = [v24 objectForKeyedSubscript:v20];
+  purgedTiles = [v13 purgedTiles];
+  v25 = [purgedTiles objectForKeyedSubscript:v20];
 
-  v26 = [v13 purgedTiles];
-  [v26 removeObjectForKey:v20];
-  v27 = v15 * a6 * sqrt(v16 * v16 + v17 * v17);
+  purgedTiles2 = [v13 purgedTiles];
+  [purgedTiles2 removeObjectForKey:v20];
+  v27 = v15 * scale * sqrt(v16 * v16 + v17 * v17);
 
   if (v25 && v25[19] != v27)
   {
@@ -9929,7 +9929,7 @@ LABEL_19:
 
   v71 = 0;
 LABEL_23:
-  if (v7)
+  if (offscreenCopy)
   {
     if (!v28)
     {
@@ -9944,9 +9944,9 @@ LABEL_23:
           [*(v29 + 88) setHidden:1];
           [*(v30 + 12) setHidden:1];
 LABEL_38:
-          v40 = [v13 offscreenTiles];
+          offscreenTiles2 = [v13 offscreenTiles];
 LABEL_46:
-          v69 = v40;
+          v69 = offscreenTiles2;
           if (v30)
           {
             *(v30 + 19) = v27;
@@ -9955,33 +9955,33 @@ LABEL_46:
             [*(v30 + 12) setContentsScale:v27];
           }
 
-          [v40 setObject:v30 forKeyedSubscript:v20];
+          [offscreenTiles2 setObject:v30 forKeyedSubscript:v20];
           if (v30 && *(v30 + 82) == 1)
           {
-            v41 = [v11 tileContainerView];
-            v42 = [v41 layer];
-            v43 = [(PKRendererTile *)v30 tileMultiplyLayer];
-            [v42 addSublayer:v43];
+            tileContainerView = [attachmentCopy tileContainerView];
+            layer = [tileContainerView layer];
+            tileMultiplyLayer = [(PKRendererTile *)v30 tileMultiplyLayer];
+            [layer addSublayer:tileMultiplyLayer];
           }
 
-          v44 = [v11 tileContainerView];
-          v45 = [v44 layer];
-          v46 = [(PKRendererTile *)v30 tileLayer];
-          [v45 addSublayer:v46];
+          tileContainerView2 = [attachmentCopy tileContainerView];
+          layer2 = [tileContainerView2 layer];
+          tileLayer = [(PKRendererTile *)v30 tileLayer];
+          [layer2 addSublayer:tileLayer];
 
           if ([(PKTiledView *)self showDebugOutlines])
           {
             v47 = [MEMORY[0x1E69DC888] colorWithRed:0.0 green:0.0 blue:0.0 alpha:dbl_1C801C310[((x + y) & 1) == 0]];
-            v48 = [v47 CGColor];
-            v49 = [(PKRendererTile *)v30 tileLayer];
-            [v49 setBackgroundColor:v48];
+            cGColor = [v47 CGColor];
+            tileLayer2 = [(PKRendererTile *)v30 tileLayer];
+            [tileLayer2 setBackgroundColor:cGColor];
 
             v50 = objc_alloc_init(MEMORY[0x1E6979508]);
-            v51 = [(PKTiledView *)self scrollView];
-            [v51 zoomScale];
+            scrollView = [(PKTiledView *)self scrollView];
+            [scrollView zoomScale];
             v53 = v52;
-            v54 = [(PKTiledView *)self scrollView];
-            [v54 zoomScale];
+            scrollView2 = [(PKTiledView *)self scrollView];
+            [scrollView2 zoomScale];
             [v50 setFrame:{0.0, 0.0, 100.0 / v53, 30.0 / v55}];
 
             if (v30)
@@ -10001,19 +10001,19 @@ LABEL_46:
             v59 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld, (%d, %d)", v56, v57, v58];
             [v50 setString:v59];
 
-            v60 = [MEMORY[0x1E69DC888] blackColor];
-            [v50 setForegroundColor:{objc_msgSend(v60, "CGColor")}];
+            blackColor = [MEMORY[0x1E69DC888] blackColor];
+            [v50 setForegroundColor:{objc_msgSend(blackColor, "CGColor")}];
 
-            v61 = [(PKTiledView *)self scrollView];
-            [v61 zoomScale];
+            scrollView3 = [(PKTiledView *)self scrollView];
+            [scrollView3 zoomScale];
             [v50 setFontSize:14.0 / v62];
 
-            v63 = [(PKTiledView *)self scrollView];
-            [v63 zoomScale];
+            scrollView4 = [(PKTiledView *)self scrollView];
+            [scrollView4 zoomScale];
             [v50 setContentsScale:v64 + v64];
 
-            v65 = [(PKRendererTile *)v30 tileLayer];
-            [v65 addSublayer:v50];
+            tileLayer3 = [(PKRendererTile *)v30 tileLayer];
+            [tileLayer3 addSublayer:v50];
           }
 
           v32 = v30;
@@ -10030,7 +10030,7 @@ LABEL_32:
         v35 = v70;
         v36 = v35;
         v37 = 1.0;
-        if (v7)
+        if (offscreenCopy)
         {
           v37 = 0.0;
         }
@@ -10041,10 +10041,10 @@ LABEL_32:
         [v35[11] setOpacity:v37];
         *&v39 = v38;
         [v36[12] setOpacity:v39];
-        *(v36 + 86) = v7;
-        [v36[11] setHidden:v7];
-        [v36[12] setHidden:v7];
-        if (v7)
+        *(v36 + 86) = offscreenCopy;
+        [v36[11] setHidden:offscreenCopy];
+        [v36[12] setHidden:offscreenCopy];
+        if (offscreenCopy)
         {
           goto LABEL_37;
         }
@@ -10064,9 +10064,9 @@ LABEL_32:
           v67 = 0;
         }
 
-        if (v11)
+        if (attachmentCopy)
         {
-          [v11 drawingTransform];
+          [attachmentCopy drawingTransform];
         }
 
         else
@@ -10077,7 +10077,7 @@ LABEL_32:
         }
 
         v36 = [(PKRendererTile *)v68 initWithLevel:v67 offset:&v72 drawingTransform:[(PKTiledView *)self _sixChannelBlendingIsActive] contentsScale:[(PKTiledView *)self sixChannelBlendingRendersTransparent] sixChannelMode:[(PKTiledView *)self isExtendedDynamicRangeRenderingActive] transparentBlending:x wantsExtendedDynamicRangeContent:y, v27];
-        if (v7)
+        if (offscreenCopy)
         {
 LABEL_37:
           v30 = v36;
@@ -10085,7 +10085,7 @@ LABEL_37:
         }
       }
 
-      v40 = [v13 tiles];
+      offscreenTiles2 = [v13 tiles];
       v30 = v36;
       goto LABEL_46;
     }
@@ -10116,28 +10116,28 @@ LABEL_57:
   return v31;
 }
 
-- (id)generateTile:(CGPoint)a3 inAttachment:(id)a4 rendering:(BOOL)a5 offscreen:(BOOL)a6 overrideAdditionalStrokes:(id)a7
+- (id)generateTile:(CGPoint)tile inAttachment:(id)attachment rendering:(BOOL)rendering offscreen:(BOOL)offscreen overrideAdditionalStrokes:(id)strokes
 {
-  v8 = a6;
-  y = a3.y;
-  x = a3.x;
-  v13 = a4;
-  v14 = a7;
+  offscreenCopy = offscreen;
+  y = tile.y;
+  x = tile.x;
+  attachmentCopy = attachment;
+  strokesCopy = strokes;
   if (!self || *&self->_tileLevel == 0.0)
   {
     v15 = 0;
     goto LABEL_30;
   }
 
-  v16 = [(PKTiledView *)self tileForOffset:v13 inAttachment:v8 offscreen:x tileZoomScale:y];
+  v16 = [(PKTiledView *)self tileForOffset:attachmentCopy inAttachment:offscreenCopy offscreen:x tileZoomScale:y];
   v15 = 0;
-  if (v16 && a5)
+  if (v16 && rendering)
   {
-    v17 = [v13 drawing];
-    v18 = [v17 strokes];
+    drawing = [attachmentCopy drawing];
+    strokes = [drawing strokes];
 
     v19 = objc_opt_class();
-    v20 = PKDynamicCast(v19, v13);
+    v20 = PKDynamicCast(v19, attachmentCopy);
     v21 = v20;
     if (!v20)
     {
@@ -10148,23 +10148,23 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    v51 = v18;
+    v51 = strokes;
     v52 = v20;
-    if (v14)
+    if (strokesCopy)
     {
-      v22 = v14;
+      additionalStrokes = strokesCopy;
     }
 
     else
     {
-      v22 = [v20 additionalStrokes];
+      additionalStrokes = [v20 additionalStrokes];
     }
 
-    v24 = v22;
-    v25 = [(PKDrawing *)self->_dirtyDrawing uuid];
-    v26 = [v13 drawing];
-    v27 = [v26 uuid];
-    v28 = [v25 isEqual:v27];
+    v24 = additionalStrokes;
+    uuid = [(PKDrawing *)self->_dirtyDrawing uuid];
+    drawing2 = [attachmentCopy drawing];
+    uuid2 = [drawing2 uuid];
+    v28 = [uuid isEqual:uuid2];
     if (v24)
     {
       v29 = v28;
@@ -10175,7 +10175,7 @@ LABEL_28:
       v29 = 0;
     }
 
-    if (v14 || !v29 || ![v24 isEqualToArray:self->_cachedVisibleStrokesWithAdditionalStrokesForDirtyDrawing])
+    if (strokesCopy || !v29 || ![v24 isEqualToArray:self->_cachedVisibleStrokesWithAdditionalStrokesForDirtyDrawing])
     {
 LABEL_24:
       [(PKRendererTile *)v16 updateLastUsedTimestamp];
@@ -10186,8 +10186,8 @@ LABEL_24:
         aBlock[2] = __87__PKTiledView_generateTile_inAttachment_rendering_offscreen_overrideAdditionalStrokes___block_invoke;
         aBlock[3] = &unk_1E82D6400;
         v64 = v52;
-        v65 = self;
-        v66 = v13;
+        selfCopy = self;
+        v66 = attachmentCopy;
         v36 = _Block_copy(aBlock);
       }
 
@@ -10196,11 +10196,11 @@ LABEL_24:
         v36 = 0;
       }
 
-      v50 = [(PKDrawing *)self->_dirtyDrawing uuid];
-      v37 = [(PKDrawing *)self->_dirtyDrawing version];
+      uuid3 = [(PKDrawing *)self->_dirtyDrawing uuid];
+      version = [(PKDrawing *)self->_dirtyDrawing version];
       v48 = [v24 copy];
       ++v16[18];
-      v38 = [(PKTiledView *)self tileController];
+      tileController = [(PKTiledView *)self tileController];
       v53[0] = MEMORY[0x1E69E9820];
       v53[1] = 3221225472;
       v53[2] = __87__PKTiledView_generateTile_inAttachment_rendering_offscreen_overrideAdditionalStrokes___block_invoke_2;
@@ -10212,32 +10212,32 @@ LABEL_24:
       v62 = v40;
       v41 = v24;
       v56 = v41;
-      v57 = v14;
-      v58 = self;
+      v57 = strokesCopy;
+      selfCopy2 = self;
       v42 = v48;
       v59 = v42;
-      v43 = v50;
+      v43 = uuid3;
       v60 = v43;
-      v44 = v37;
+      v44 = version;
       v61 = v44;
-      [(PKTileController *)v38 renderStrokes:v51 additionalStrokes:v41 intoTile:v39 completionBlock:v53];
+      [(PKTileController *)tileController renderStrokes:v51 additionalStrokes:v41 intoTile:v39 completionBlock:v53];
 
       v45 = v39;
-      v18 = v51;
+      strokes = v51;
       v21 = v52;
       goto LABEL_28;
     }
 
     cachedDrawingVersionForAdditionalStrokes = self->_cachedDrawingVersionForAdditionalStrokes;
-    v31 = [v13 drawing];
+    drawing3 = [attachmentCopy drawing];
     v47 = v24;
-    v32 = [v31 uuid];
-    if ([(PKDrawingVersion *)cachedDrawingVersionForAdditionalStrokes isEqual:v32])
+    uuid4 = [drawing3 uuid];
+    if ([(PKDrawingVersion *)cachedDrawingVersionForAdditionalStrokes isEqual:uuid4])
     {
       didScrollBlock = self->_didScrollBlock;
-      v34 = [v13 drawing];
-      v35 = [v34 version];
-      if ([didScrollBlock isEqual:v35])
+      drawing4 = [attachmentCopy drawing];
+      version2 = [drawing4 version];
+      if ([didScrollBlock isEqual:version2])
       {
         cachedDrawingUUIDForAdditionalStrokes = self->_cachedDrawingUUIDForAdditionalStrokes;
 
@@ -10247,8 +10247,8 @@ LABEL_24:
           goto LABEL_24;
         }
 
-        v32 = v51;
-        v31 = v47;
+        uuid4 = v51;
+        drawing3 = v47;
         v51 = self->_cachedDrawingUUIDForAdditionalStrokes;
         v24 = 0;
         goto LABEL_23;
@@ -10419,12 +10419,12 @@ LABEL_11:
 
 - (id)_adornmentViewsToHitTest
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(PKTiledView *)self selectionController];
-  v5 = v4;
-  if (v4)
+  array = [MEMORY[0x1E695DF70] array];
+  selectionController = [(PKTiledView *)self selectionController];
+  v5 = selectionController;
+  if (selectionController)
   {
-    v6 = *(v4 + 160);
+    v6 = *(selectionController + 160);
   }
 
   else
@@ -10434,11 +10434,11 @@ LABEL_11:
 
   v7 = v6;
 
-  v8 = [(PKTiledView *)self selectionController];
-  v9 = v8;
-  if (v8)
+  selectionController2 = [(PKTiledView *)self selectionController];
+  v9 = selectionController2;
+  if (selectionController2)
   {
-    v10 = *(v8 + 152);
+    v10 = *(selectionController2 + 152);
   }
 
   else
@@ -10448,23 +10448,23 @@ LABEL_11:
 
   v11 = v10;
 
-  v12 = [(PKTiledView *)self rulerView];
+  rulerView = [(PKTiledView *)self rulerView];
   if (v11)
   {
-    [v3 addObject:v11];
+    [array addObject:v11];
   }
 
   if (([v7 isHidden] & 1) == 0)
   {
-    [v3 addObject:v7];
+    [array addObject:v7];
   }
 
-  if (v12)
+  if (rulerView)
   {
-    [v3 addObject:v12];
+    [array addObject:rulerView];
   }
 
-  v13 = [v3 copy];
+  v13 = [array copy];
 
   return v13;
 }
@@ -10496,8 +10496,8 @@ LABEL_11:
   }
 
   v4 = tileController;
-  v5 = [(PKTileController *)v4 drawing];
-  obj = [v5 uuid];
+  drawing = [(PKTileController *)v4 drawing];
+  obj = [drawing uuid];
 
   v6 = *&self->_shouldResetBaseRollAngleOnNextStroke;
   if (!v6)
@@ -10536,32 +10536,32 @@ LABEL_9:
   v8 = obj;
 LABEL_10:
   objc_storeStrong(&self->_shouldResetBaseRollAngleOnNextStroke, v8);
-  v11 = [(PKTiledView *)self canvasView];
-  v12 = [v11 _isCombiningStrokes];
+  canvasView = [(PKTiledView *)self canvasView];
+  _isCombiningStrokes = [canvasView _isCombiningStrokes];
 
-  if (v12)
+  if (_isCombiningStrokes)
   {
-    v13 = [(PKTiledView *)self canvasView];
-    [v13 _finishCombiningStrokesIfNecessary];
+    canvasView2 = [(PKTiledView *)self canvasView];
+    [canvasView2 _finishCombiningStrokesIfNecessary];
   }
 
   [(PKTiledView *)self _updateRemoteEffect];
 }
 
-- (void)setSelectedStrokeIds:(id)a3 selectionType:(int64_t)a4 forAttachment:(id)a5
+- (void)setSelectedStrokeIds:(id)ids selectionType:(int64_t)type forAttachment:(id)attachment
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(PKTiledView *)self _attachmentForUUID:a5];
+  idsCopy = ids;
+  v9 = [(PKTiledView *)self _attachmentForUUID:attachment];
   if (v9)
   {
-    v21 = a4;
+    typeCopy = type;
     v10 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = v8;
+    v11 = idsCopy;
     v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v12)
     {
@@ -10576,8 +10576,8 @@ LABEL_10:
           }
 
           v15 = *(*(&v22 + 1) + 8 * i);
-          v16 = [v9 drawing];
-          v17 = [v16 _strokeForIdentifier:v15];
+          drawing = [v9 drawing];
+          v17 = [drawing _strokeForIdentifier:v15];
 
           if (v17)
           {
@@ -10595,8 +10595,8 @@ LABEL_10:
     tileController = self->_tileController;
     if (v18)
     {
-      v20 = [v9 drawing];
-      [(PKSelectionController *)&tileController->super.isa selectStrokes:v10 forSelectionType:v21 inDrawing:v20];
+      drawing2 = [v9 drawing];
+      [(PKSelectionController *)&tileController->super.isa selectStrokes:v10 forSelectionType:typeCopy inDrawing:drawing2];
     }
 
     else if (tileController)
@@ -10606,9 +10606,9 @@ LABEL_10:
   }
 }
 
-- (id)selectedStrokeIdsForAttachment:(id)a3
+- (id)selectedStrokeIdsForAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   tileController = self->_tileController;
   if (tileController)
   {
@@ -10616,9 +10616,9 @@ LABEL_10:
   }
 
   v6 = tileController;
-  v7 = [(PKTileController *)v6 drawing];
-  v8 = [v7 uuid];
-  v9 = [v8 isEqual:v4];
+  drawing = [(PKTileController *)v6 drawing];
+  uuid = [drawing uuid];
+  v9 = [uuid isEqual:attachmentCopy];
 
   if (v9)
   {
@@ -10657,9 +10657,9 @@ LABEL_10:
   }
 
   v3 = tileController;
-  v4 = [(PKTileController *)v3 strokeImage];
+  strokeImage = [(PKTileController *)v3 strokeImage];
 
-  return v4;
+  return strokeImage;
 }
 
 - (void)transformingSelectionBegan
@@ -10671,9 +10671,9 @@ LABEL_10:
   }
 
   v4 = tileController;
-  v5 = [(PKTileController *)v4 drawing];
-  v6 = [v5 uuid];
-  v7 = [(PKTiledView *)self _attachmentForUUID:v6];
+  drawing = [(PKTileController *)v4 drawing];
+  uuid = [drawing uuid];
+  v7 = [(PKTiledView *)self _attachmentForUUID:uuid];
 
   if (v7)
   {
@@ -10701,7 +10701,7 @@ LABEL_10:
   [(PKTileController *)v11 transformBegan];
 }
 
-- (void)transformingSelectionChanged:(CGAffineTransform *)a3
+- (void)transformingSelectionChanged:(CGAffineTransform *)changed
 {
   tileController = self->_tileController;
   if (tileController)
@@ -10710,10 +10710,10 @@ LABEL_10:
   }
 
   v5 = tileController;
-  v6 = *&a3->c;
-  v7[0] = *&a3->a;
+  v6 = *&changed->c;
+  v7[0] = *&changed->a;
   v7[1] = v6;
-  v7[2] = *&a3->tx;
+  v7[2] = *&changed->tx;
   [(PKTileController *)v5 transformChanged:v7];
 }
 
@@ -10741,9 +10741,9 @@ LABEL_10:
   [(PKTileController *)v3 transformCancelled];
 }
 
-- (void)setSelectionHidden:(BOOL)a3
+- (void)setSelectionHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   tileController = self->_tileController;
   if (tileController)
   {
@@ -10751,10 +10751,10 @@ LABEL_10:
   }
 
   v5 = tileController;
-  [(PKTileController *)v5 setHidden:v3];
+  [(PKTileController *)v5 setHidden:hiddenCopy];
 }
 
-- (BOOL)hitSelectionAt:(CGPoint)a3
+- (BOOL)hitSelectionAt:(CGPoint)at
 {
   tileController = self->_tileController;
   if (!tileController)
@@ -10763,8 +10763,8 @@ LABEL_10:
     goto LABEL_5;
   }
 
-  y = a3.y;
-  x = a3.x;
+  y = at.y;
+  x = at.x;
   v7 = tileController[2]._completionHandlers;
   v8 = v7;
   if (!v7)
@@ -10782,21 +10782,21 @@ LABEL_6:
   return v10;
 }
 
-- (void)_selectionRefreshWithChangeToDrawings:(id)a3 overrideAdditionalStrokes:(id)a4 completion:(id)a5
+- (void)_selectionRefreshWithChangeToDrawings:(id)drawings overrideAdditionalStrokes:(id)strokes completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  drawingsCopy = drawings;
+  strokesCopy = strokes;
+  completionCopy = completion;
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __90__PKTiledView__selectionRefreshWithChangeToDrawings_overrideAdditionalStrokes_completion___block_invoke;
   v18 = &unk_1E82D67F0;
-  v11 = v8;
+  v11 = drawingsCopy;
   v19 = v11;
-  v20 = self;
-  v12 = v9;
+  selfCopy = self;
+  v12 = strokesCopy;
   v21 = v12;
-  v13 = v10;
+  v13 = completionCopy;
   v22 = v13;
   v14 = _Block_copy(&v15);
   if ([MEMORY[0x1E696AF00] isMainThread])
@@ -10851,10 +10851,10 @@ uint64_t __90__PKTiledView__selectionRefreshWithChangeToDrawings_overrideAdditio
   return [*(a1 + 40) updateTilesForVisibleRectOffscreenOverrideAdditionalStrokes:*(a1 + 48) withCallback:*(a1 + 56)];
 }
 
-- (void)_updateAttachmentHeightIfNecessaryForDrawing:(id)a3
+- (void)_updateAttachmentHeightIfNecessaryForDrawing:(id)drawing
 {
-  v4 = [a3 uuid];
-  v5 = [(PKTiledView *)self _attachmentForUUID:v4];
+  uuid = [drawing uuid];
+  v5 = [(PKTiledView *)self _attachmentForUUID:uuid];
 
   if (v5 && [(PKTiledView *)self _updateHeightOfAttachmentIfNecessary:v5])
   {
@@ -10862,28 +10862,28 @@ uint64_t __90__PKTiledView__selectionRefreshWithChangeToDrawings_overrideAdditio
   }
 }
 
-- (void)commitSelectionIfNecessaryWithCompletion:(id)a3
+- (void)commitSelectionIfNecessaryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKTiledView *)self selectionController];
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  selectionController = [(PKTiledView *)self selectionController];
+  v6 = selectionController;
+  if (selectionController)
   {
-    if (*(v5 + 128))
+    if (*(selectionController + 128))
     {
 
       goto LABEL_5;
     }
 
-    v7 = [*(v5 + 144) isCurrentlyAddingSpace];
+    isCurrentlyAddingSpace = [*(selectionController + 144) isCurrentlyAddingSpace];
 
-    if (v7)
+    if (isCurrentlyAddingSpace)
     {
 LABEL_5:
       if ([MEMORY[0x1E696AF00] isMainThread])
       {
-        v8 = [(PKTiledView *)self selectionController];
-        [(PKSelectionController *)v8 clearSelectionIfNecessaryWithCompletion:v4];
+        selectionController2 = [(PKTiledView *)self selectionController];
+        [(PKSelectionController *)selectionController2 clearSelectionIfNecessaryWithCompletion:completionCopy];
       }
 
       else
@@ -10893,7 +10893,7 @@ LABEL_5:
         v9[2] = __56__PKTiledView_commitSelectionIfNecessaryWithCompletion___block_invoke;
         v9[3] = &unk_1E82D6D58;
         v9[4] = self;
-        v10 = v4;
+        v10 = completionCopy;
         dispatch_sync(MEMORY[0x1E69E96A0], v9);
       }
 
@@ -10901,9 +10901,9 @@ LABEL_5:
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_10:
@@ -10915,11 +10915,11 @@ void __56__PKTiledView_commitSelectionIfNecessaryWithCompletion___block_invoke(u
   [(PKSelectionController *)v2 clearSelectionIfNecessaryWithCompletion:?];
 }
 
-- (CGPoint)pointInStrokeSpace:(CGPoint)a3 inDrawing:(id)a4
+- (CGPoint)pointInStrokeSpace:(CGPoint)space inDrawing:(id)drawing
 {
-  y = a3.y;
-  x = a3.x;
-  [(PKTiledView *)self transformFromViewToStrokeSpaceInDrawing:a4];
+  y = space.y;
+  x = space.x;
+  [(PKTiledView *)self transformFromViewToStrokeSpaceInDrawing:drawing];
   v4 = vaddq_f64(0, vmlaq_n_f64(vmulq_n_f64(0, y), 0, x));
   v5 = v4.f64[1];
   result.x = v4.f64[0];
@@ -10927,10 +10927,10 @@ void __56__PKTiledView_commitSelectionIfNecessaryWithCompletion___block_invoke(u
   return result;
 }
 
-- (CGAffineTransform)transformFromStrokeSpaceToViewInDrawing:(SEL)a3
+- (CGAffineTransform)transformFromStrokeSpaceToViewInDrawing:(SEL)drawing
 {
-  v6 = [a4 uuid];
-  v7 = [(PKTiledView *)self _attachmentForUUID:v6];
+  uuid = [a4 uuid];
+  v7 = [(PKTiledView *)self _attachmentForUUID:uuid];
 
   if (v7)
   {
@@ -10956,14 +10956,14 @@ void __56__PKTiledView_commitSelectionIfNecessaryWithCompletion___block_invoke(u
   return result;
 }
 
-- (CGAffineTransform)transformFromStrokeSpaceToViewInAttachment:(SEL)a3
+- (CGAffineTransform)transformFromStrokeSpaceToViewInAttachment:(SEL)attachment
 {
   v9 = a4;
-  v6 = [(PKTiledView *)self canvasView];
-  v7 = v6;
-  if (v6)
+  canvasView = [(PKTiledView *)self canvasView];
+  v7 = canvasView;
+  if (canvasView)
   {
-    [v6 _strokeTransformForAttachment:v9];
+    [canvasView _strokeTransformForAttachment:v9];
   }
 
   else
@@ -10976,13 +10976,13 @@ void __56__PKTiledView_commitSelectionIfNecessaryWithCompletion___block_invoke(u
   return result;
 }
 
-- (CGRect)attachmentBoundsForDrawing:(id)a3
+- (CGRect)attachmentBoundsForDrawing:(id)drawing
 {
-  v4 = [a3 uuid];
-  v5 = [(PKTiledView *)self _attachmentForUUID:v4];
+  uuid = [drawing uuid];
+  v5 = [(PKTiledView *)self _attachmentForUUID:uuid];
 
-  v6 = [v5 viewRep];
-  [v6 bounds];
+  viewRep = [v5 viewRep];
+  [viewRep bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -10999,30 +10999,30 @@ void __56__PKTiledView_commitSelectionIfNecessaryWithCompletion___block_invoke(u
   return result;
 }
 
-- (CGRect)boundsForDrawing:(id)a3
+- (CGRect)boundsForDrawing:(id)drawing
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  v6 = [(PKTiledView *)self _attachmentForUUID:v5];
+  drawingCopy = drawing;
+  uuid = [drawingCopy uuid];
+  v6 = [(PKTiledView *)self _attachmentForUUID:uuid];
 
   WeakRetained = objc_loadWeakRetained(&self->_canvasView);
-  v8 = [v6 tileContainerView];
-  [v8 bounds];
+  tileContainerView = [v6 tileContainerView];
+  [tileContainerView bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [v6 tileContainerView];
-  [WeakRetained convertRect:v17 fromView:{v10, v12, v14, v16}];
+  tileContainerView2 = [v6 tileContainerView];
+  [WeakRetained convertRect:tileContainerView2 fromView:{v10, v12, v14, v16}];
   v19 = v18;
   v21 = v20;
 
-  v22 = [(PKTiledView *)self scrollView];
-  [v22 contentOffset];
+  scrollView = [(PKTiledView *)self scrollView];
+  [scrollView contentOffset];
   v24 = v23;
   v26 = v25;
 
-  [v4 bounds];
+  [drawingCopy bounds];
   v28 = v27;
   v30 = v29;
 
@@ -11037,11 +11037,11 @@ void __56__PKTiledView_commitSelectionIfNecessaryWithCompletion___block_invoke(u
   return result;
 }
 
-- (CGRect)visibleOnscreenBoundsForDrawing:(id)a3
+- (CGRect)visibleOnscreenBoundsForDrawing:(id)drawing
 {
-  v4 = a3;
+  drawingCopy = drawing;
   [(PKTiledView *)self bounds];
-  [(PKTiledView *)self visibleOnscreenBoundsForDrawing:v4 slack:v5, v6];
+  [(PKTiledView *)self visibleOnscreenBoundsForDrawing:drawingCopy slack:v5, v6];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -11058,31 +11058,31 @@ void __56__PKTiledView_commitSelectionIfNecessaryWithCompletion___block_invoke(u
   return result;
 }
 
-- (CGRect)visibleOnscreenBoundsForDrawing:(id)a3 slack:(CGSize)a4
+- (CGRect)visibleOnscreenBoundsForDrawing:(id)drawing slack:(CGSize)slack
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = [(PKTiledView *)self scrollView];
-  [v8 bounds];
+  height = slack.height;
+  width = slack.width;
+  drawingCopy = drawing;
+  scrollView = [(PKTiledView *)self scrollView];
+  [scrollView bounds];
   v57 = CGRectInset(v56, -width, -height);
   x = v57.origin.x;
   y = v57.origin.y;
   v11 = v57.size.width;
   v12 = v57.size.height;
 
-  v13 = [v7 uuid];
-  v14 = [(PKTiledView *)self _attachmentForUUID:v13];
+  uuid = [drawingCopy uuid];
+  v14 = [(PKTiledView *)self _attachmentForUUID:uuid];
 
-  v15 = [(PKTiledView *)self scrollView];
-  v16 = [v14 viewRep];
-  [v16 bounds];
+  scrollView2 = [(PKTiledView *)self scrollView];
+  viewRep = [v14 viewRep];
+  [viewRep bounds];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [v14 viewRep];
-  [v15 convertRect:v25 fromView:{v18, v20, v22, v24}];
+  viewRep2 = [v14 viewRep];
+  [scrollView2 convertRect:viewRep2 fromView:{v18, v20, v22, v24}];
   v27 = v26;
   v29 = v28;
   v31 = v30;
@@ -11111,15 +11111,15 @@ void __56__PKTiledView_commitSelectionIfNecessaryWithCompletion___block_invoke(u
     v35 = v60.origin.y;
     v36 = v60.size.width;
     v37 = v60.size.height;
-    v38 = [(PKTiledView *)self scrollView];
-    [(PKTiledView *)self convertRect:v38 fromView:v34, v35, v36, v37];
+    scrollView3 = [(PKTiledView *)self scrollView];
+    [(PKTiledView *)self convertRect:scrollView3 fromView:v34, v35, v36, v37];
     v40 = v39;
     v42 = v41;
     v44 = v43;
     v46 = v45;
 
     memset(&v55[1], 0, sizeof(CGAffineTransform));
-    [(PKTiledView *)self transformFromViewToStrokeSpaceInDrawing:v7];
+    [(PKTiledView *)self transformFromViewToStrokeSpaceInDrawing:drawingCopy];
     v55[0] = v55[1];
     v61.origin.x = v40;
     v61.origin.y = v42;
@@ -11151,11 +11151,11 @@ void __56__PKTiledView_commitSelectionIfNecessaryWithCompletion___block_invoke(u
   return result;
 }
 
-- (BOOL)_isValidDropPointForStrokes:(CGPoint)a3 didInsertNewAttachment:(BOOL *)a4
+- (BOOL)_isValidDropPointForStrokes:(CGPoint)strokes didInsertNewAttachment:(BOOL *)attachment
 {
-  y = a3.y;
-  x = a3.x;
-  *a4 = 0;
+  y = strokes.y;
+  x = strokes.x;
+  *attachment = 0;
   v8 = [(PKTiledView *)self hitAttachment:?];
 
   if (v8)
@@ -11163,8 +11163,8 @@ void __56__PKTiledView_commitSelectionIfNecessaryWithCompletion___block_invoke(u
     return 1;
   }
 
-  v10 = [(PKTiledView *)self scrollView];
-  [v10 convertPoint:self fromView:{x, y}];
+  scrollView = [(PKTiledView *)self scrollView];
+  [scrollView convertPoint:self fromView:{x, y}];
   v11 = [(PKTiledView *)self insertAttachmentIfInBlankSpace:?];
 
   if (!v11)
@@ -11173,17 +11173,17 @@ void __56__PKTiledView_commitSelectionIfNecessaryWithCompletion___block_invoke(u
   }
 
   result = 1;
-  *a4 = 1;
+  *attachment = 1;
   return result;
 }
 
 - (CGAffineTransform)strokeTransform
 {
-  v4 = [(PKTiledView *)self canvasView];
-  v6 = v4;
-  if (v4)
+  canvasView = [(PKTiledView *)self canvasView];
+  v6 = canvasView;
+  if (canvasView)
   {
-    [v4 strokeTransform];
+    [canvasView strokeTransform];
   }
 
   else
@@ -11196,14 +11196,14 @@ void __56__PKTiledView_commitSelectionIfNecessaryWithCompletion___block_invoke(u
   return result;
 }
 
-- (void)_setAdditionalStrokes:(id)a3 inDrawing:(id)a4 invalidateTiles:(BOOL)a5 forceOffscreen:(BOOL)a6 completion:(id)a7
+- (void)_setAdditionalStrokes:(id)strokes inDrawing:(id)drawing invalidateTiles:(BOOL)tiles forceOffscreen:(BOOL)offscreen completion:(id)completion
 {
-  v8 = a6;
-  v9 = a5;
+  offscreenCopy = offscreen;
+  tilesCopy = tiles;
   v44 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  strokesCopy = strokes;
+  drawingCopy = drawing;
+  completionCopy = completion;
   v15 = _PKSignpostLog();
   v16 = os_signpost_id_generate(v15);
 
@@ -11225,51 +11225,51 @@ void __56__PKTiledView_commitSelectionIfNecessaryWithCompletion___block_invoke(u
   v20 = os_log_create("com.apple.pencilkit", "Tiles");
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
-    v27 = [v12 count];
+    v27 = [strokesCopy count];
     *buf = 134218240;
     v41 = v27;
     v42 = 1024;
-    v43 = v8;
+    v43 = offscreenCopy;
     _os_log_debug_impl(&dword_1C7CCA000, v20, OS_LOG_TYPE_DEBUG, "setAdditionalStrokes %ld forceOffscreen:%d", buf, 0x12u);
   }
 
-  if (v8)
+  if (offscreenCopy)
   {
-    [(PKTiledView *)self cancelTileGenerationInvalidateTiles:v9];
-    v39 = v13;
+    [(PKTiledView *)self cancelTileGenerationInvalidateTiles:tilesCopy];
+    v39 = drawingCopy;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v39 count:1];
-    v22 = [v13 uuid];
-    v37 = v22;
-    v38 = v12;
+    uuid = [drawingCopy uuid];
+    v37 = uuid;
+    v38 = strokesCopy;
     v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __89__PKTiledView__setAdditionalStrokes_inDrawing_invalidateTiles_forceOffscreen_completion___block_invoke;
     v31[3] = &unk_1E82D6C68;
     v31[4] = self;
-    v32 = v13;
-    v33 = v12;
+    v32 = drawingCopy;
+    v33 = strokesCopy;
     v35 = v16;
-    v34 = v14;
+    v34 = completionCopy;
     [(PKTiledView *)self _selectionRefreshWithChangeToDrawings:v21 overrideAdditionalStrokes:v23 completion:v31];
   }
 
   else
   {
-    objc_storeStrong(&self->_dirtyDrawing, a4);
-    v24 = [v13 uuid];
-    v25 = [(PKTiledView *)self attachmentForUUID:v24];
-    [v25 setAdditionalStrokes:v12];
+    objc_storeStrong(&self->_dirtyDrawing, drawing);
+    uuid2 = [drawingCopy uuid];
+    v25 = [(PKTiledView *)self attachmentForUUID:uuid2];
+    [v25 setAdditionalStrokes:strokesCopy];
 
-    [(PKTiledView *)self cancelTileGenerationInvalidateTiles:v9];
-    v36 = v13;
+    [(PKTiledView *)self cancelTileGenerationInvalidateTiles:tilesCopy];
+    v36 = drawingCopy;
     v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v36 count:1];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __89__PKTiledView__setAdditionalStrokes_inDrawing_invalidateTiles_forceOffscreen_completion___block_invoke_482;
     v28[3] = &unk_1E82D6CE0;
     v30 = v16;
-    v29 = v14;
+    v29 = completionCopy;
     [(PKTiledView *)self _selectionRefreshWithChangeToDrawings:v26 completion:v28];
   }
 }
@@ -11344,8 +11344,8 @@ uint64_t __89__PKTiledView__setAdditionalStrokes_inDrawing_invalidateTiles_force
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(PKTiledView *)self attachmentViews];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  attachmentViews = [(PKTiledView *)self attachmentViews];
+  v5 = [attachmentViews countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = 0;
@@ -11356,12 +11356,12 @@ uint64_t __89__PKTiledView__setAdditionalStrokes_inDrawing_invalidateTiles_force
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(attachmentViews);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 additionalStrokes];
-        v11 = v10 == 0;
+        additionalStrokes = [v9 additionalStrokes];
+        v11 = additionalStrokes == 0;
 
         if (!v11)
         {
@@ -11370,7 +11370,7 @@ uint64_t __89__PKTiledView__setAdditionalStrokes_inDrawing_invalidateTiles_force
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [attachmentViews countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -11404,19 +11404,19 @@ uint64_t __89__PKTiledView__setAdditionalStrokes_inDrawing_invalidateTiles_force
   }
 }
 
-- (void)setInsertSpaceEnabled:(BOOL)a3
+- (void)setInsertSpaceEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(PKTiledView *)self selectionController];
-  [(PKSelectionController *)v4 setInsertSpaceEnabled:v3];
+  enabledCopy = enabled;
+  selectionController = [(PKTiledView *)self selectionController];
+  [(PKSelectionController *)selectionController setInsertSpaceEnabled:enabledCopy];
 }
 
 - (BOOL)insertSpaceEnabled
 {
-  v2 = [(PKTiledView *)self selectionController];
-  if (v2)
+  selectionController = [(PKTiledView *)self selectionController];
+  if (selectionController)
   {
-    v3 = v2[114];
+    v3 = selectionController[114];
   }
 
   else
@@ -11430,22 +11430,22 @@ uint64_t __89__PKTiledView__setAdditionalStrokes_inDrawing_invalidateTiles_force
 - (BOOL)isGenerationModelAvailable
 {
   v2 = +[PKGenerationModelAvailabilityController sharedInstance];
-  v3 = [v2 isGenerationModelAvailable];
+  isGenerationModelAvailable = [v2 isGenerationModelAvailable];
 
-  return v3;
+  return isGenerationModelAvailable;
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
   v75[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [(PKTiledView *)self selectionController];
-  if (v8 && (v9 = v8[16], v8, v9))
+  configurationCopy = configuration;
+  array = [MEMORY[0x1E695DF70] array];
+  selectionController = [(PKTiledView *)self selectionController];
+  if (selectionController && (v9 = selectionController[16], selectionController, v9))
   {
-    v10 = [(PKTiledView *)self selectionController];
-    v11 = [(PKSelectionController *)v10 editMenuActionsForConfiguration:v6];
-    [v7 addObjectsFromArray:v11];
+    selectionController2 = [(PKTiledView *)self selectionController];
+    v11 = [(PKSelectionController *)selectionController2 editMenuActionsForConfiguration:configurationCopy];
+    [array addObjectsFromArray:v11];
   }
 
   else
@@ -11460,7 +11460,7 @@ uint64_t __89__PKTiledView__setAdditionalStrokes_inDrawing_invalidateTiles_force
     v73[2] = __73__PKTiledView_editMenuInteraction_menuForConfiguration_suggestedActions___block_invoke;
     v73[3] = &unk_1E82D6D30;
     v73[4] = self;
-    v17 = v6;
+    v17 = configurationCopy;
     v74 = v17;
     v63 = [v13 actionWithTitle:v15 image:v16 identifier:0 handler:v73];
 
@@ -11499,53 +11499,53 @@ uint64_t __89__PKTiledView__setAdditionalStrokes_inDrawing_invalidateTiles_force
     v70 = v27;
     v61 = [v23 actionWithTitle:v25 image:v26 identifier:0 handler:v69];
 
-    v28 = [(PKTiledView *)self selectionController];
+    selectionController3 = [(PKTiledView *)self selectionController];
     [v27 sourcePoint];
-    v64 = [(PKSelectionController *)v28 _drawingForSelectionRect:v30 + -60.0, 120.0, 120.0];
+    v64 = [(PKSelectionController *)selectionController3 _drawingForSelectionRect:v30 + -60.0, 120.0, 120.0];
 
-    v31 = [v64 strokes];
-    v32 = [v31 count];
+    strokes = [v64 strokes];
+    v32 = [strokes count];
 
-    v33 = [(PKTiledView *)self selectionController];
-    LOBYTE(v26) = [(PKSelectionController *)v33 _selectionInteractionCanPerformAction:self withSender:0 inAttachment:?];
+    selectionController4 = [(PKTiledView *)self selectionController];
+    LOBYTE(v26) = [(PKSelectionController *)selectionController4 _selectionInteractionCanPerformAction:self withSender:0 inAttachment:?];
 
     if ((v32 != 0) | v26 & 1)
     {
-      [v7 addObject:v63];
+      [array addObject:v63];
     }
 
-    v34 = [(PKTiledView *)self selectionController];
-    v35 = [(PKSelectionController *)v34 _selectionInteractionCanPerformAction:self withSender:0 inAttachment:?];
+    selectionController5 = [(PKTiledView *)self selectionController];
+    v35 = [(PKSelectionController *)selectionController5 _selectionInteractionCanPerformAction:self withSender:0 inAttachment:?];
 
-    v36 = [MEMORY[0x1E69DCD50] generalPasteboard];
+    generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
     v75[0] = @"com.apple.drawing";
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:1];
-    v38 = [v36 containsPasteboardTypes:v37];
+    v38 = [generalPasteboard containsPasteboardTypes:v37];
 
     if ((!v12 & (v38 | v35)) == 1)
     {
-      [v7 addObject:v62];
+      [array addObject:v62];
     }
 
-    v39 = [(PKTiledView *)self selectionController];
-    v40 = [(PKSelectionController *)v39 _selectionInteractionCanPerformAction:self withSender:0 inAttachment:?];
+    selectionController6 = [(PKTiledView *)self selectionController];
+    v40 = [(PKSelectionController *)selectionController6 _selectionInteractionCanPerformAction:self withSender:0 inAttachment:?];
 
     if ((v32 != 0) | v40 & 1)
     {
-      v41 = [(PKTiledView *)self selectionController];
-      if (v41)
+      selectionController7 = [(PKTiledView *)self selectionController];
+      if (selectionController7)
       {
-        v42 = v41[114];
+        v42 = selectionController7[114];
 
         if (v42)
         {
-          [v7 addObject:v61];
+          [array addObject:v61];
         }
       }
     }
 
-    v43 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v44 = [v43 BOOLForKey:@"internalSettings.drawing.enableCopyAllHandwritingTranscription"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v44 = [standardUserDefaults BOOLForKey:@"internalSettings.drawing.enableCopyAllHandwritingTranscription"];
 
     if (v44)
     {
@@ -11561,17 +11561,17 @@ uint64_t __89__PKTiledView__setAdditionalStrokes_inDrawing_invalidateTiles_force
       v68 = v27;
       v49 = [v45 actionWithTitle:v47 image:v48 identifier:0 handler:v67];
 
-      v50 = [(PKTiledView *)self selectionController];
-      LOBYTE(v48) = [(PKSelectionController *)v50 _selectionInteractionCanPerformAction:self withSender:0 inAttachment:?];
+      selectionController8 = [(PKTiledView *)self selectionController];
+      LOBYTE(v48) = [(PKSelectionController *)selectionController8 _selectionInteractionCanPerformAction:self withSender:0 inAttachment:?];
 
       if ((v32 != 0) | v48 & 1)
       {
-        [v7 addObject:v49];
+        [array addObject:v49];
       }
     }
 
-    v51 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v52 = [v51 BOOLForKey:@"internalSettings.drawing.enableCopyAll"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v52 = [standardUserDefaults2 BOOLForKey:@"internalSettings.drawing.enableCopyAll"];
 
     if (v52)
     {
@@ -11587,38 +11587,38 @@ uint64_t __89__PKTiledView__setAdditionalStrokes_inDrawing_invalidateTiles_force
       v66 = v27;
       v57 = [v53 actionWithTitle:v55 image:v56 identifier:0 handler:v65];
 
-      v58 = [(PKTiledView *)self selectionController];
-      LOBYTE(v56) = [(PKSelectionController *)v58 _selectionInteractionCanPerformAction:self withSender:0 inAttachment:?];
+      selectionController9 = [(PKTiledView *)self selectionController];
+      LOBYTE(v56) = [(PKSelectionController *)selectionController9 _selectionInteractionCanPerformAction:self withSender:0 inAttachment:?];
 
       if ((v32 != 0) | v56 & 1)
       {
-        [v7 addObject:v57];
+        [array addObject:v57];
       }
     }
   }
 
-  v59 = [MEMORY[0x1E69DCC60] menuWithChildren:v7];
+  v59 = [MEMORY[0x1E69DCC60] menuWithChildren:array];
 
   return v59;
 }
 
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration
 {
-  v5 = a4;
-  v6 = [(PKTiledView *)self selectionController];
-  if (v6 && (v7 = v6[16], v6, v7))
+  configurationCopy = configuration;
+  selectionController = [(PKTiledView *)self selectionController];
+  if (selectionController && (v7 = selectionController[16], selectionController, v7))
   {
-    v8 = [(PKTiledView *)self selectionController];
-    v9 = [(PKSelectionController *)v8 editMenuTargetRect];
+    selectionController2 = [(PKTiledView *)self selectionController];
+    editMenuTargetRect = [(PKSelectionController *)selectionController2 editMenuTargetRect];
     v11 = v10;
     v13 = v12;
     v15 = v14;
 
-    v16 = [(PKTiledView *)self selectionController];
-    v17 = v16;
-    if (v16)
+    selectionController3 = [(PKTiledView *)self selectionController];
+    v17 = selectionController3;
+    if (selectionController3)
     {
-      v18 = *(v16 + 152);
+      v18 = *(selectionController3 + 152);
     }
 
     else
@@ -11627,7 +11627,7 @@ uint64_t __89__PKTiledView__setAdditionalStrokes_inDrawing_invalidateTiles_force
     }
 
     v19 = v18;
-    [(PKTiledView *)self convertRect:v19 fromView:v9, v11, v13, v15];
+    [(PKTiledView *)self convertRect:v19 fromView:editMenuTargetRect, v11, v13, v15];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -11636,9 +11636,9 @@ uint64_t __89__PKTiledView__setAdditionalStrokes_inDrawing_invalidateTiles_force
 
   else
   {
-    [v5 sourcePoint];
+    [configurationCopy sourcePoint];
     v21 = v28;
-    [v5 sourcePoint];
+    [configurationCopy sourcePoint];
     v23 = v29;
     v25 = 5.0;
     v27 = 5.0;
@@ -11655,32 +11655,32 @@ uint64_t __89__PKTiledView__setAdditionalStrokes_inDrawing_invalidateTiles_force
   return result;
 }
 
-- (void)editMenuInteraction:(id)a3 willPresentMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)editMenuInteraction:(id)interaction willPresentMenuForConfiguration:(id)configuration animator:(id)animator
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __76__PKTiledView_editMenuInteraction_willPresentMenuForConfiguration_animator___block_invoke;
   v5[3] = &unk_1E82D6388;
   v5[4] = self;
-  [a5 addCompletion:{v5, a4}];
+  [animator addCompletion:{v5, configuration}];
 }
 
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __76__PKTiledView_editMenuInteraction_willDismissMenuForConfiguration_animator___block_invoke;
   v5[3] = &unk_1E82D6388;
   v5[4] = self;
-  [a5 addCompletion:{v5, a4}];
+  [animator addCompletion:{v5, configuration}];
 }
 
 - (PKController)drawingController
 {
-  v2 = [(PKTiledView *)self canvasView];
-  v3 = [v2 _drawingController];
+  canvasView = [(PKTiledView *)self canvasView];
+  _drawingController = [canvasView _drawingController];
 
-  return v3;
+  return _drawingController;
 }
 
 - (void)_createHoverControllerIfNecessary
@@ -11691,10 +11691,10 @@ uint64_t __89__PKTiledView__setAdditionalStrokes_inDrawing_invalidateTiles_force
     x = self->_lastContentOffset.x;
     *&self->_lastContentOffset.x = v3;
 
-    v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v6 = [v5 maximumFramesPerSecond];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    maximumFramesPerSecond = [mainScreen maximumFramesPerSecond];
 
-    if (v6 >= 101)
+    if (maximumFramesPerSecond >= 101)
     {
       [(PKHoverController *)*&self->_lastContentOffset.x setShouldGenerate120HzEvents:?];
     }
@@ -11710,22 +11710,22 @@ uint64_t __89__PKTiledView__setAdditionalStrokes_inDrawing_invalidateTiles_force
 - (id)hoverGestureRecognizer
 {
   [(PKTiledView *)self _createHoverControllerIfNecessary];
-  v3 = [(PKTiledView *)self hoverController];
-  v4 = [(PKHoverController *)v3 hoverGestureRecognizer];
+  hoverController = [(PKTiledView *)self hoverController];
+  hoverGestureRecognizer = [(PKHoverController *)hoverController hoverGestureRecognizer];
 
-  return v4;
+  return hoverGestureRecognizer;
 }
 
 - (BOOL)rulerHostWantsSharedRuler
 {
-  v3 = [(PKTiledView *)self rulerHostingDelegate];
-  if (!v3)
+  rulerHostingDelegate = [(PKTiledView *)self rulerHostingDelegate];
+  if (!rulerHostingDelegate)
   {
     return 0;
   }
 
-  v4 = v3;
-  v5 = [(PKTiledView *)self rulerHostingDelegate];
+  v4 = rulerHostingDelegate;
+  rulerHostingDelegate2 = [(PKTiledView *)self rulerHostingDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if ((v6 & 1) == 0)
@@ -11733,10 +11733,10 @@ uint64_t __89__PKTiledView__setAdditionalStrokes_inDrawing_invalidateTiles_force
     return 0;
   }
 
-  v7 = [(PKTiledView *)self rulerHostingDelegate];
-  v8 = [v7 rulerHostWantsSharedRuler];
+  rulerHostingDelegate3 = [(PKTiledView *)self rulerHostingDelegate];
+  rulerHostWantsSharedRuler = [rulerHostingDelegate3 rulerHostWantsSharedRuler];
 
-  return v8;
+  return rulerHostWantsSharedRuler;
 }
 
 - (id)rulerView
@@ -11753,35 +11753,35 @@ uint64_t __89__PKTiledView__setAdditionalStrokes_inDrawing_invalidateTiles_force
   }
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
-  v4 = [(PKTileController *)self->_tileController dropInteraction:a3 sessionDidUpdate:a4];
+  v4 = [(PKTileController *)self->_tileController dropInteraction:interaction sessionDidUpdate:update];
 
   return v4;
 }
 
-- (void)replaceInkTexture:(id)a3 image:(CGImage *)a4
+- (void)replaceInkTexture:(id)texture image:(CGImage *)image
 {
-  v8 = a3;
-  v6 = [(PKTiledView *)self canvasView];
-  v7 = [v6 _rendererController];
-  [(PKMetalRendererController *)v7 replaceInkTexture:v8 image:a4];
+  textureCopy = texture;
+  canvasView = [(PKTiledView *)self canvasView];
+  _rendererController = [canvasView _rendererController];
+  [(PKMetalRendererController *)_rendererController replaceInkTexture:textureCopy image:image];
 }
 
 - (double)_latestLatency
 {
-  v2 = [(PKTiledView *)self canvasView];
-  v3 = [v2 _rendererController];
-  v4 = [(PKMetalRendererController *)v3 _latestLatency];
+  canvasView = [(PKTiledView *)self canvasView];
+  _rendererController = [canvasView _rendererController];
+  _latestLatency = [(PKMetalRendererController *)_rendererController _latestLatency];
 
-  return v4;
+  return _latestLatency;
 }
 
-- (void)_pauseHoverPreviewForTimeInterval:(double)a3
+- (void)_pauseHoverPreviewForTimeInterval:(double)interval
 {
   [(PKTiledView *)self _endHoverToolPreview];
   [(PKHoverController *)*&self->_lastContentOffset.x reset];
-  self->_hoverPreviewStartTimestamp = a3;
+  self->_hoverPreviewStartTimestamp = interval;
 }
 
 - (BOOL)toolShadowShouldBeActive
@@ -11791,48 +11791,48 @@ uint64_t __89__PKTiledView__setAdditionalStrokes_inDrawing_invalidateTiles_force
     return 0;
   }
 
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.mobilenotes"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.mobilenotes"];
 
-  if ((v4 & 1) != 0 || (+[PKHoverSettings sharedSettings](PKHoverSettings, "sharedSettings"), v2 = objc_claimAutoreleasedReturnValue(), [v2 toolShadowActiveOutsideNotes]))
+  if ((v4 & 1) != 0 || (+[PKHoverSettings sharedSettings](PKHoverSettings, "sharedSettings"), mainBundle = objc_claimAutoreleasedReturnValue(), [mainBundle toolShadowActiveOutsideNotes]))
   {
     v5 = +[PKHoverSettings sharedSettings];
     if ([v5 toolShadowActive])
     {
 
-      v6 = 1;
+      toolShadowActiveOnOldPencils = 1;
       if (v4)
       {
-        return v6;
+        return toolShadowActiveOnOldPencils;
       }
     }
 
     else
     {
       v7 = +[PKHoverSettings sharedSettings];
-      v6 = [v7 toolShadowActiveOnOldPencils];
+      toolShadowActiveOnOldPencils = [v7 toolShadowActiveOnOldPencils];
 
       if (v4)
       {
-        return v6;
+        return toolShadowActiveOnOldPencils;
       }
     }
   }
 
   else
   {
-    v6 = 0;
+    toolShadowActiveOnOldPencils = 0;
   }
 
-  return v6;
+  return toolShadowActiveOnOldPencils;
 }
 
-- (id)paletteViewHoverView:(id)a3
+- (id)paletteViewHoverView:(id)view
 {
-  v4 = [(PKTiledView *)self window];
-  v5 = [v4 windowScene];
-  v6 = [PKPencilObserverInteraction interactionForScene:v5];
+  window = [(PKTiledView *)self window];
+  windowScene = [window windowScene];
+  v6 = [PKPencilObserverInteraction interactionForScene:windowScene];
 
   if (v6)
   {
@@ -11841,9 +11841,9 @@ uint64_t __89__PKTiledView__setAdditionalStrokes_inDrawing_invalidateTiles_force
     {
       if (*(v7 + 56) == 1)
       {
-        v8 = [v6 view];
+        selfCopy = [v6 view];
 LABEL_12:
-        v17 = v8;
+        v17 = selfCopy;
         goto LABEL_13;
       }
     }
@@ -11860,7 +11860,7 @@ LABEL_12:
     if (*(*&x + 56))
     {
 LABEL_11:
-      v8 = self;
+      selfCopy = self;
       goto LABEL_12;
     }
 
@@ -11890,11 +11890,11 @@ LABEL_13:
   return v17;
 }
 
-- (CGPoint)paletteViewHoverLocation:(id)a3
+- (CGPoint)paletteViewHoverLocation:(id)location
 {
-  v4 = [(PKTiledView *)self window];
-  v5 = [v4 windowScene];
-  v6 = [PKPencilObserverInteraction interactionForScene:v5];
+  window = [(PKTiledView *)self window];
+  windowScene = [window windowScene];
+  v6 = [PKPencilObserverInteraction interactionForScene:windowScene];
 
   if (v6 && (v7 = *(v6 + 8)) != 0 && *(v7 + 56) == 1)
   {
@@ -11936,47 +11936,47 @@ LABEL_10:
   return result;
 }
 
-- (void)paletteViewPencilDidTap:(id)a3
+- (void)paletteViewPencilDidTap:(id)tap
 {
-  v3 = [(PKTiledView *)self canvasView];
-  [v3 _finishCombiningStrokesIfNecessary];
+  canvasView = [(PKTiledView *)self canvasView];
+  [canvasView _finishCombiningStrokesIfNecessary];
 }
 
-- ($FF38E1E694A259ECA75E65D4243A6BF6)convertInputPoint:(SEL)a3 toAttachment:(id *)a4
+- ($FF38E1E694A259ECA75E65D4243A6BF6)convertInputPoint:(SEL)point toAttachment:(id *)attachment
 {
   v13 = 0u;
   v14 = 0u;
   v12 = 0u;
   result = [(PKTiledView *)self transformFromViewToStrokeSpaceInAttachment:a5];
-  a4->var0 = vaddq_f64(v14, vmlaq_n_f64(vmulq_n_f64(v13, a4->var0.var0.y), v12, a4->var0.var0.x));
-  a4->var9 = -1;
-  a4->var1 = 1.0;
-  v8 = *&a4->var13;
-  *&retstr->var11 = *&a4->var11;
+  attachment->var0 = vaddq_f64(v14, vmlaq_n_f64(vmulq_n_f64(v13, attachment->var0.var0.y), v12, attachment->var0.var0.x));
+  attachment->var9 = -1;
+  attachment->var1 = 1.0;
+  v8 = *&attachment->var13;
+  *&retstr->var11 = *&attachment->var11;
   *&retstr->var13 = v8;
-  retstr->var15 = a4->var15;
-  v9 = *&a4->var5;
-  *&retstr->var3 = *&a4->var3;
+  retstr->var15 = attachment->var15;
+  v9 = *&attachment->var5;
+  *&retstr->var3 = *&attachment->var3;
   *&retstr->var5 = v9;
-  v10 = *&a4->var9;
-  *&retstr->var7 = *&a4->var7;
+  v10 = *&attachment->var9;
+  *&retstr->var7 = *&attachment->var7;
   *&retstr->var9 = v10;
-  v11 = *&a4->var1;
-  retstr->var0 = a4->var0;
+  v11 = *&attachment->var1;
+  retstr->var0 = attachment->var0;
   *&retstr->var1 = v11;
   return result;
 }
 
-- (id)attachmentForHoverPreviewAt:(id *)a3
+- (id)attachmentForHoverPreviewAt:(id *)at
 {
   v5 = [(PKTiledView *)self ink];
-  v6 = [v5 _isHandwritingInk];
+  _isHandwritingInk = [v5 _isHandwritingInk];
 
-  v7 = [(PKTiledView *)self hitAttachment:v6 ^ 1u includeStandinAttachment:v6 ^ 1u expandBottomAttachment:a3->var0.var0.x, a3->var0.var0.y];
+  v7 = [(PKTiledView *)self hitAttachment:_isHandwritingInk ^ 1u includeStandinAttachment:_isHandwritingInk ^ 1u expandBottomAttachment:at->var0.var0.x, at->var0.var0.y];
   v8 = +[PKDrawing drawingClassForPaper];
   if (v7)
   {
-    v9 = v6 ^ 1;
+    v9 = _isHandwritingInk ^ 1;
   }
 
   else
@@ -11996,23 +11996,23 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)hoverController:(id)a3 shouldBeActiveAt:(CGPoint)a4
+- (BOOL)hoverController:(id)controller shouldBeActiveAt:(CGPoint)at
 {
-  y = a4.y;
-  x = a4.x;
+  y = at.y;
+  x = at.x;
   if ([(PKTiledView *)self rulerEnabled])
   {
-    v7 = [(PKTiledView *)self rulerController];
-    v8 = v7;
-    v9 = v7 ? *(v7 + 56) : 0;
+    rulerController = [(PKTiledView *)self rulerController];
+    v8 = rulerController;
+    v9 = rulerController ? *(rulerController + 56) : 0;
     v10 = v9;
     [v10 convertPoint:self fromView:{x, y}];
     v12 = v11;
     v14 = v13;
 
-    v15 = [(PKTiledView *)self rulerController];
-    v16 = v15;
-    v17 = v15 ? *(v15 + 56) : 0;
+    rulerController2 = [(PKTiledView *)self rulerController];
+    v16 = rulerController2;
+    v17 = rulerController2 ? *(rulerController2 + 56) : 0;
     v18 = v17;
     v19 = [v18 hitTest:0 withEvent:{v12, v14}];
 
@@ -12022,10 +12022,10 @@ LABEL_10:
     }
   }
 
-  v20 = [(PKTiledView *)self drawingGestureRecognizer];
-  v21 = [v20 isEnabled];
+  drawingGestureRecognizer = [(PKTiledView *)self drawingGestureRecognizer];
+  isEnabled = [drawingGestureRecognizer isEnabled];
 
-  if ((v21 & 1) == 0)
+  if ((isEnabled & 1) == 0)
   {
     return 0;
   }
@@ -12035,31 +12035,31 @@ LABEL_10:
     return 1;
   }
 
-  v23 = [(PKTiledView *)self delegate];
-  v22 = [v23 canvasView:self hoverShouldBeActiveAt:{x, y}];
+  delegate = [(PKTiledView *)self delegate];
+  v22 = [delegate canvasView:self hoverShouldBeActiveAt:{x, y}];
 
   return v22;
 }
 
-- (void)hoverController:(id)a3 intentionalHoverWithDuration:(double)a4
+- (void)hoverController:(id)controller intentionalHoverWithDuration:(double)duration
 {
-  v7 = a3;
+  controllerCopy = controller;
   if (self && *(&self->_editMenuVisible + 2))
   {
     [(PKTiledView *)self _beginAnalyticsSessionIfNecessary];
     WeakRetained = objc_loadWeakRetained(&self->_analyticsSession);
     if (WeakRetained)
     {
-      WeakRetained[12] = WeakRetained[12] + a4;
+      WeakRetained[12] = WeakRetained[12] + duration;
     }
   }
 }
 
-- (void)hoverController:(id)a3 didBegin:(id *)a4
+- (void)hoverController:(id)controller didBegin:(id *)begin
 {
   [(PKTiledView *)self _beginAnalyticsSessionIfNecessary];
-  v6 = [(PKTiledView *)self window];
-  v7 = [PKToolPicker existingPaletteViewForWindow:v6];
+  window = [(PKTiledView *)self window];
+  v7 = [PKToolPicker existingPaletteViewForWindow:window];
 
   if (v7)
   {
@@ -12067,12 +12067,12 @@ LABEL_10:
   }
 
   v8 = CACurrentMediaTime();
-  v9 = [(PKTiledView *)self canvasView];
-  v10 = [v9 isHidden];
+  canvasView = [(PKTiledView *)self canvasView];
+  isHidden = [canvasView isHidden];
   if (self)
   {
     v11 = 0.1;
-    if (!v10)
+    if (!isHidden)
     {
       v11 = 0.0;
     }
@@ -12086,11 +12086,11 @@ LABEL_10:
   {
   }
 
-  v12 = [(PKTiledView *)self canvasView];
-  if ([v12 isHidden])
+  canvasView2 = [(PKTiledView *)self canvasView];
+  if ([canvasView2 isHidden])
   {
-    v13 = [(PKTiledView *)self canvasView];
-    [v13 latestRenderTimestamp];
+    canvasView3 = [(PKTiledView *)self canvasView];
+    [canvasView3 latestRenderTimestamp];
     v15 = v14;
     v16 = +[PKHoverSettings sharedSettings];
     [v16 inactivityTimeInterval];
@@ -12101,8 +12101,8 @@ LABEL_10:
       goto LABEL_12;
     }
 
-    v12 = +[PKHoverSettings sharedSettings];
-    [v12 extraHoverPreviewDelay];
+    canvasView2 = +[PKHoverSettings sharedSettings];
+    [canvasView2 extraHoverPreviewDelay];
     if (self)
     {
       self->_extraHoverPreviewDelay = v19 + self->_extraHoverPreviewDelay;
@@ -12112,39 +12112,39 @@ LABEL_10:
 LABEL_12:
   if ([(PKTiledView *)self shouldStartToolPreviewWhenHovering])
   {
-    v20 = *&a4->var13;
-    v30[6] = *&a4->var11;
+    v20 = *&begin->var13;
+    v30[6] = *&begin->var11;
     v30[7] = v20;
-    var15 = a4->var15;
-    v21 = *&a4->var5;
-    v30[2] = *&a4->var3;
+    var15 = begin->var15;
+    v21 = *&begin->var5;
+    v30[2] = *&begin->var3;
     v30[3] = v21;
-    v22 = *&a4->var9;
-    v30[4] = *&a4->var7;
+    v22 = *&begin->var9;
+    v30[4] = *&begin->var7;
     v30[5] = v22;
-    v23 = *&a4->var1;
-    v30[0] = a4->var0;
+    v23 = *&begin->var1;
+    v30[0] = begin->var0;
     v30[1] = v23;
     v24 = [(PKTiledView *)self attachmentForHoverPreviewAt:v30];
     [(PKTiledView *)self _finishCombiningStrokesIfNecessaryForAttachment:v24];
     if (v24)
     {
-      v25 = [(PKTiledView *)self standInAttachmentView];
+      standInAttachmentView = [(PKTiledView *)self standInAttachmentView];
 
-      if (v24 != v25)
+      if (v24 != standInAttachmentView)
       {
         v26 = [(PKTiledView *)self viewToMakeFirstResponderWhenHoveringOverAttachment:v24];
         if (v26)
         {
-          v27 = [(PKTiledView *)self _activeToolPicker];
-          if ([v27 isVisible])
+          _activeToolPicker = [(PKTiledView *)self _activeToolPicker];
+          if ([_activeToolPicker isVisible])
           {
             v28[0] = MEMORY[0x1E69E9820];
             v28[1] = 3221225472;
             v28[2] = __40__PKTiledView_hoverController_didBegin___block_invoke;
             v28[3] = &unk_1E82D6388;
             v29 = v26;
-            [v27 _performWithVisibilityUpdatesEnabled:0 block:v28];
+            [_activeToolPicker _performWithVisibilityUpdatesEnabled:0 block:v28];
           }
 
           else
@@ -12167,24 +12167,24 @@ LABEL_12:
   if ([(PKTiledView *)self toolShadowShouldBeActive])
   {
     [(PKTiledView *)self _setupPencilShadowViewIfNecessary];
-    v8 = [(PKTiledView *)self window];
-    v3 = [v8 windowScene];
-    v4 = [PKPencilShadowView shadowViewForScene:v3];
+    window = [(PKTiledView *)self window];
+    windowScene = [window windowScene];
+    v4 = [PKPencilShadowView shadowViewForScene:windowScene];
     v5 = [(PKTiledView *)self ink];
     [v4 setInk:v5];
 
-    v9 = [(PKTiledView *)self window];
-    v6 = [v9 windowScene];
-    v7 = [PKPencilShadowView shadowViewForScene:v6];
+    window2 = [(PKTiledView *)self window];
+    windowScene2 = [window2 windowScene];
+    v7 = [PKPencilShadowView shadowViewForScene:windowScene2];
     [v7 keepVisibleInTiledView:self];
   }
 }
 
-- (void)_updatePencilShadowView:(id *)a3
+- (void)_updatePencilShadowView:(id *)view
 {
   if ([(PKTiledView *)self toolShadowShouldBeActive])
   {
-    a3->var7 = [PKInputPointUtility correctedTimestampFromOldTimestampIfNecessary:?];
+    view->var7 = [PKInputPointUtility correctedTimestampFromOldTimestampIfNecessary:?];
     [(PKTiledView *)self _keepPencilShadowVisible];
     v5 = +[PKHoverSettings sharedSettings];
     if ([v5 toolShadowLocationWorkaround])
@@ -12193,9 +12193,9 @@ LABEL_12:
 
     else
     {
-      v6 = [MEMORY[0x1E696AAE8] mainBundle];
-      v7 = [v6 bundleIdentifier];
-      v8 = [v7 isEqualToString:@"com.apple.freeform"];
+      mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      v8 = [bundleIdentifier isEqualToString:@"com.apple.freeform"];
 
       if ((v8 & 1) == 0)
       {
@@ -12203,28 +12203,28 @@ LABEL_12:
       }
     }
 
-    v9 = [(PKTiledView *)self window];
-    v10 = [v9 windowScene];
-    v11 = [PKPencilObserverInteraction interactionForScene:v10];
-    v12 = [v11 view];
+    window = [(PKTiledView *)self window];
+    windowScene = [window windowScene];
+    v11 = [PKPencilObserverInteraction interactionForScene:windowScene];
+    view = [v11 view];
 
-    [(UIView *)self PK_convertPoint:v12 toCoordinateSpace:a3->var0.var0.x, a3->var0.var0.y];
+    [(UIView *)self PK_convertPoint:view toCoordinateSpace:view->var0.var0.x, view->var0.var0.y];
     v14 = v13;
     v16 = v15;
-    v17 = *&a3->var11;
-    v36 = *&a3->var9;
+    v17 = *&view->var11;
+    v36 = *&view->var9;
     v37 = v17;
-    v38 = *&a3->var13;
-    var15 = a3->var15;
-    v18 = *&a3->var3;
-    v32 = *&a3->var1;
+    v38 = *&view->var13;
+    var15 = view->var15;
+    v18 = *&view->var3;
+    v32 = *&view->var1;
     v33 = v18;
-    v19 = *&a3->var7;
-    v34 = *&a3->var5;
+    v19 = *&view->var7;
+    v34 = *&view->var5;
     v35 = v19;
-    v20 = [(PKTiledView *)self window];
-    v21 = [v20 windowScene];
-    v22 = [PKPencilObserverInteraction interactionForScene:v21];
+    window2 = [(PKTiledView *)self window];
+    windowScene2 = [window2 windowScene];
+    v22 = [PKPencilObserverInteraction interactionForScene:windowScene2];
     v23[0] = v14;
     v23[1] = v16;
     v28 = v36;
@@ -12239,24 +12239,24 @@ LABEL_12:
   }
 }
 
-- (void)hoverController:(id)a3 didUpdate:(id *)a4
+- (void)hoverController:(id)controller didUpdate:(id *)update
 {
   if (![(PKTiledView *)self _scrollViewIsScrollingOrZoomingOrResizing])
   {
     if (!self || !*(&self->_editMenuVisible + 2) || (-[PKTiledView canvasView](self, "canvasView"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 _hasStrokeTransformChanged], v8, !v9))
     {
-      v10 = *&a4->var13;
-      v143 = *&a4->var11;
+      v10 = *&update->var13;
+      v143 = *&update->var11;
       v144 = v10;
-      var15 = a4->var15;
-      v11 = *&a4->var5;
-      v139 = *&a4->var3;
+      var15 = update->var15;
+      v11 = *&update->var5;
+      v139 = *&update->var3;
       v140 = v11;
-      v12 = *&a4->var9;
-      v141 = *&a4->var7;
+      v12 = *&update->var9;
+      v141 = *&update->var7;
       v142 = v12;
-      v13 = *&a4->var1;
-      var0 = a4->var0;
+      v13 = *&update->var1;
+      var0 = update->var0;
       v138 = v13;
       v14 = [(PKTiledView *)self attachmentForHoverPreviewAt:&var0];
       [(PKTiledView *)self _finishCombiningStrokesIfNecessaryForAttachment:v14];
@@ -12285,14 +12285,14 @@ LABEL_12:
         }
 
         v19 = v18;
-        v20 = [v14 drawing];
-        v21 = [v20 uuid];
-        v22 = [(PKPencilStatisticsManager *)v19 isEqual:v21];
+        drawing = [v14 drawing];
+        uuid = [drawing uuid];
+        v22 = [(PKPencilStatisticsManager *)v19 isEqual:uuid];
 
         if ((v22 & 1) == 0)
         {
-          v23 = [(PKTiledView *)self hoverController];
-          [(PKHoverController *)v23 reset];
+          hoverController = [(PKTiledView *)self hoverController];
+          [(PKHoverController *)hoverController reset];
 
 LABEL_72:
           return;
@@ -12309,59 +12309,59 @@ LABEL_72:
         }
       }
 
-      v24 = *&a4->var13;
-      v143 = *&a4->var11;
+      v24 = *&update->var13;
+      v143 = *&update->var11;
       v144 = v24;
-      var15 = a4->var15;
-      v25 = *&a4->var5;
-      v139 = *&a4->var3;
+      var15 = update->var15;
+      v25 = *&update->var5;
+      v139 = *&update->var3;
       v140 = v25;
-      v26 = *&a4->var9;
-      v141 = *&a4->var7;
+      v26 = *&update->var9;
+      v141 = *&update->var7;
       v142 = v26;
-      v27 = *&a4->var1;
-      var0 = a4->var0;
+      v27 = *&update->var1;
+      var0 = update->var0;
       v138 = v27;
       [(PKTiledView *)self _updatePencilShadowView:&var0];
       kdebug_trace();
       v28 = +[PKHoverSettings sharedSettings];
-      v29 = [v28 toolPreviewShouldWaitForHoverAndHold];
+      toolPreviewShouldWaitForHoverAndHold = [v28 toolPreviewShouldWaitForHoverAndHold];
 
-      if ((v29 & 1) == 0)
+      if ((toolPreviewShouldWaitForHoverAndHold & 1) == 0)
       {
-        v30 = *&a4->var13;
-        v143 = *&a4->var11;
+        v30 = *&update->var13;
+        v143 = *&update->var11;
         v144 = v30;
-        var15 = a4->var15;
-        v31 = *&a4->var5;
-        v139 = *&a4->var3;
+        var15 = update->var15;
+        v31 = *&update->var5;
+        v139 = *&update->var3;
         v140 = v31;
-        v32 = *&a4->var9;
-        v141 = *&a4->var7;
+        v32 = *&update->var9;
+        v141 = *&update->var7;
         v142 = v32;
-        v33 = *&a4->var1;
-        var0 = a4->var0;
+        v33 = *&update->var1;
+        var0 = update->var0;
         v138 = v33;
         [(PKTiledView *)self startToolPreviewIfPossibleForInputPoint:&var0];
       }
 
-      v34 = [(PKTiledView *)self hoverController];
+      hoverController2 = [(PKTiledView *)self hoverController];
       v35 = +[PKHoverSettings sharedSettings];
       [v35 toolPreviewMaxZDistance];
-      v36 = *&a4->var13;
-      v143 = *&a4->var11;
+      v36 = *&update->var13;
+      v143 = *&update->var11;
       v144 = v36;
-      var15 = a4->var15;
-      v37 = *&a4->var5;
-      v139 = *&a4->var3;
+      var15 = update->var15;
+      v37 = *&update->var5;
+      v139 = *&update->var3;
       v140 = v37;
-      v38 = *&a4->var9;
-      v141 = *&a4->var7;
+      v38 = *&update->var9;
+      v141 = *&update->var7;
       v142 = v38;
-      v39 = *&a4->var1;
-      var0 = a4->var0;
+      v39 = *&update->var1;
+      var0 = update->var0;
       v138 = v39;
-      v41 = [(PKHoverController *)v34 adjustedZLimitFromLimit:v40 inputPoint:?];
+      v41 = [(PKHoverController *)hoverController2 adjustedZLimitFromLimit:v40 inputPoint:?];
 
       v42 = +[PKHoverSettings sharedSettings];
       [v42 toolPreviewFadeOutDistance];
@@ -12378,7 +12378,7 @@ LABEL_72:
       }
 
       v46 = v41 - v45;
-      var6 = a4->var6;
+      var6 = update->var6;
       v48 = 1.0;
       if (var6 > v46)
       {
@@ -12437,9 +12437,9 @@ LABEL_72:
         v48 = v48 * v55;
       }
 
-      v56 = [(PKTiledView *)self canvasView];
-      v57 = [v56 _rendererController];
-      [(PKMetalRendererController *)v57 setPreviewStrokeAlpha:v48];
+      canvasView = [(PKTiledView *)self canvasView];
+      _rendererController = [canvasView _rendererController];
+      [(PKMetalRendererController *)_rendererController setPreviewStrokeAlpha:v48];
 
       var15 = 0;
       v143 = 0u;
@@ -12450,18 +12450,18 @@ LABEL_72:
       v140 = 0u;
       var0 = 0u;
       v138 = 0u;
-      v58 = *&a4->var13;
-      v134 = *&a4->var11;
+      v58 = *&update->var13;
+      v134 = *&update->var11;
       v135 = v58;
-      v136 = a4->var15;
-      v59 = *&a4->var5;
-      v130 = *&a4->var3;
+      v136 = update->var15;
+      v59 = *&update->var5;
+      v130 = *&update->var3;
       v131 = v59;
-      v60 = *&a4->var9;
-      v132 = *&a4->var7;
+      v60 = *&update->var9;
+      v132 = *&update->var7;
       v133 = v60;
-      v61 = *&a4->var1;
-      *location = a4->var0;
+      v61 = *&update->var1;
+      *location = update->var0;
       v129 = v61;
       [(PKTiledView *)self convertInputPoint:location toAttachment:v14];
       if (!*(&self->_editMenuVisible + 1))
@@ -12469,51 +12469,51 @@ LABEL_72:
         goto LABEL_44;
       }
 
-      v62 = [(PKTiledView *)self canvasView];
-      if ([v62 isDrawing])
+      canvasView2 = [(PKTiledView *)self canvasView];
+      if ([canvasView2 isDrawing])
       {
 
         goto LABEL_44;
       }
 
-      v63 = [(PKTiledView *)self canvasView];
-      v64 = [v63 _isLiveAnimating];
+      canvasView3 = [(PKTiledView *)self canvasView];
+      _isLiveAnimating = [canvasView3 _isLiveAnimating];
 
-      if (v64)
+      if (_isLiveAnimating)
       {
 LABEL_44:
         if (*(&self->_editMenuVisible + 2) || *(&self->_editMenuVisible + 3))
         {
-          v65 = [(PKTiledView *)self hoverController];
+          hoverController3 = [(PKTiledView *)self hoverController];
           v66 = +[PKHoverSettings sharedSettings];
           [v66 toolPreviewMaxZDistance];
           v68 = v67;
           v69 = +[PKHoverSettings sharedSettings];
           [v69 deactivateExtraDistance];
-          v71 = *&a4->var13;
-          v134 = *&a4->var11;
+          v71 = *&update->var13;
+          v134 = *&update->var11;
           v135 = v71;
-          v136 = a4->var15;
-          v72 = *&a4->var5;
-          v130 = *&a4->var3;
+          v136 = update->var15;
+          v72 = *&update->var5;
+          v130 = *&update->var3;
           v131 = v72;
-          v73 = *&a4->var9;
-          v132 = *&a4->var7;
+          v73 = *&update->var9;
+          v132 = *&update->var7;
           v133 = v73;
-          v74 = *&a4->var1;
-          *location = a4->var0;
+          v74 = *&update->var1;
+          *location = update->var0;
           v129 = v74;
-          v75 = [(PKHoverController *)v65 adjustedZLimitFromLimit:v68 + v70 inputPoint:?];
+          v75 = [(PKHoverController *)hoverController3 adjustedZLimitFromLimit:v68 + v70 inputPoint:?];
 
-          if (a4->var6 > v75)
+          if (update->var6 > v75)
           {
             v76 = +[PKHoverSettings sharedSettings];
-            v77 = [v76 toolPreviewShouldWaitForHoverAndHold];
+            toolPreviewShouldWaitForHoverAndHold2 = [v76 toolPreviewShouldWaitForHoverAndHold];
 
-            if (v77)
+            if (toolPreviewShouldWaitForHoverAndHold2)
             {
-              v78 = [(PKTiledView *)self hoverController];
-              [(PKHoverController *)v78 resetHoverHold];
+              hoverController4 = [(PKTiledView *)self hoverController];
+              [(PKHoverController *)hoverController4 resetHoverHold];
             }
 
             [(PKTiledView *)self _endHoverToolPreview];
@@ -12524,18 +12524,18 @@ LABEL_44:
           {
             if (*(&self->_editMenuVisible + 3))
             {
-              v88 = *&a4->var13;
-              v134 = *&a4->var11;
+              v88 = *&update->var13;
+              v134 = *&update->var11;
               v135 = v88;
-              v136 = a4->var15;
-              v89 = *&a4->var5;
-              v130 = *&a4->var3;
+              v136 = update->var15;
+              v89 = *&update->var5;
+              v130 = *&update->var3;
               v131 = v89;
-              v90 = *&a4->var9;
-              v132 = *&a4->var7;
+              v90 = *&update->var9;
+              v132 = *&update->var7;
               v133 = v90;
-              v91 = *&a4->var1;
-              *location = a4->var0;
+              v91 = *&update->var1;
+              *location = update->var0;
               v129 = v91;
               [(PKTiledView *)self _updateSymbolPreviewViewForTouch:location attachment:v14 alpha:v48];
             }
@@ -12543,7 +12543,7 @@ LABEL_44:
             goto LABEL_71;
           }
 
-          v79 = [(PKTiledView *)self canvasView];
+          canvasView4 = [(PKTiledView *)self canvasView];
           v134 = v143;
           v135 = v144;
           v136 = var15;
@@ -12553,21 +12553,21 @@ LABEL_44:
           v133 = v142;
           *location = var0;
           v129 = v138;
-          [v79 _previewDrawingMoved:location tiledViewLocation:{a4->var0.var0.x, a4->var0.var0.y}];
+          [canvasView4 _previewDrawingMoved:location tiledViewLocation:{update->var0.var0.x, update->var0.var0.y}];
 
           v80 = [(PKTiledView *)self ink];
-          v81 = [v80 identifier];
-          LODWORD(v79) = [v81 isEqual:@"com.apple.ink.pen"];
+          identifier = [v80 identifier];
+          LODWORD(canvasView4) = [identifier isEqual:@"com.apple.ink.pen"];
 
           v82 = [(PKTiledView *)self ink];
-          v83 = [v82 identifier];
-          LODWORD(v81) = [v83 isEqual:@"com.apple.ink.marker"];
+          identifier2 = [v82 identifier];
+          LODWORD(identifier) = [identifier2 isEqual:@"com.apple.ink.marker"];
 
           v84 = [(PKTiledView *)self ink];
-          v85 = [v84 identifier];
-          v86 = [v85 isEqual:@"com.apple.ink.pencil"];
+          identifier3 = [v84 identifier];
+          v86 = [identifier3 isEqual:@"com.apple.ink.pencil"];
 
-          if ((v79 | v81 | v86))
+          if ((canvasView4 | identifier | v86))
           {
             v87 = +[PKHoverSettings sharedSettings];
             if ([v87 toolIndicatorActive])
@@ -12599,8 +12599,8 @@ LABEL_64:
               objc_initWeak(location, self);
               if (self->_currentPreviewDrawingUUID)
               {
-                v101 = [(PKTiledView *)self canvasView];
-                v102 = [v101 _rendererController];
+                canvasView5 = [(PKTiledView *)self canvasView];
+                _rendererController2 = [canvasView5 _rendererController];
                 v117[0] = MEMORY[0x1E69E9820];
                 v117[1] = 3221225472;
                 v117[2] = __41__PKTiledView_hoverController_didUpdate___block_invoke;
@@ -12615,7 +12615,7 @@ LABEL_64:
                 v123 = v141;
                 v127 = var15;
                 v119 = var0;
-                [(PKMetalRendererController *)v102 addBlockToCallAfterPresenting:v117];
+                [(PKMetalRendererController *)_rendererController2 addBlockToCallAfterPresenting:v117];
 
                 objc_destroyWeak(&v118);
               }
@@ -12624,9 +12624,9 @@ LABEL_64:
               goto LABEL_71;
             }
 
-            v96 = [(PKTiledView *)self toolShadowShouldBeActive];
+            toolShadowShouldBeActive = [(PKTiledView *)self toolShadowShouldBeActive];
 
-            if (v96)
+            if (toolShadowShouldBeActive)
             {
               goto LABEL_64;
             }
@@ -12639,19 +12639,19 @@ LABEL_71:
       }
 
       v92 = [(PKTiledView *)self ink];
-      v93 = [v92 identifier];
-      if (([v93 isEqual:@"com.apple.ink.objectEraser"] & 1) == 0)
+      identifier4 = [v92 identifier];
+      if (([identifier4 isEqual:@"com.apple.ink.objectEraser"] & 1) == 0)
       {
         v94 = [(PKTiledView *)self ink];
-        v95 = [v94 identifier];
-        if (([v95 isEqualToString:@"com.apple.ink.lasso"] & 1) == 0)
+        identifier5 = [v94 identifier];
+        if (([identifier5 isEqualToString:@"com.apple.ink.lasso"] & 1) == 0)
         {
           v116 = [(PKTiledView *)self ink];
           if (([v116 _isHandwritingInk] & 1) == 0)
           {
             v115 = [(PKTiledView *)self ink];
-            v114 = [v115 identifier];
-            v113 = [v114 isEqual:@"com.apple.ink.generationtool"];
+            identifier6 = [v115 identifier];
+            v113 = [identifier6 isEqual:@"com.apple.ink.generationtool"];
 
             if ((v113 & 1) == 0)
             {
@@ -12666,15 +12666,15 @@ LABEL_71:
                 v104 = 1;
               }
 
-              v105 = [(PKTiledView *)self canvasView];
-              v106 = [v105 _rendererController];
-              [(PKMetalRendererController *)v106 setPreviewStrokeMaxPoints:v104];
+              canvasView6 = [(PKTiledView *)self canvasView];
+              _rendererController3 = [canvasView6 _rendererController];
+              [(PKMetalRendererController *)_rendererController3 setPreviewStrokeMaxPoints:v104];
 
-              v107 = [(PKTiledView *)self window];
-              v108 = [PKToolPicker existingPaletteViewForWindow:v107];
+              window = [(PKTiledView *)self window];
+              v108 = [PKToolPicker existingPaletteViewForWindow:window];
 
-              v109 = [v108 isPalettePresentingPopover];
-              v110 = [(PKTiledView *)self canvasView];
+              isPalettePresentingPopover = [v108 isPalettePresentingPopover];
+              canvasView7 = [(PKTiledView *)self canvasView];
               v134 = v143;
               v135 = v144;
               v136 = var15;
@@ -12684,12 +12684,12 @@ LABEL_71:
               v133 = v142;
               *location = var0;
               v129 = v138;
-              [v110 _previewDrawingBegan:location tiledViewLocation:v109 disableDetachedRendering:{a4->var0.var0.x, a4->var0.var0.y}];
+              [canvasView7 _previewDrawingBegan:location tiledViewLocation:isPalettePresentingPopover disableDetachedRendering:{update->var0.var0.x, update->var0.var0.y}];
 
               *(&self->_editMenuVisible + 2) = 1;
-              v111 = [v14 drawing];
-              v112 = [v111 uuid];
-              [(PKTiledView *)self setCurrentPreviewDrawingUUID:v112];
+              drawing2 = [v14 drawing];
+              uuid2 = [drawing2 uuid];
+              [(PKTiledView *)self setCurrentPreviewDrawingUUID:uuid2];
 
               *(&self->_editMenuVisible + 1) = 0;
               goto LABEL_71;
@@ -12707,19 +12707,19 @@ LABEL_62:
     }
   }
 
-  v6 = [(PKTiledView *)self canvasView];
-  [v6 _finishCombiningStrokesIfNecessary];
+  canvasView8 = [(PKTiledView *)self canvasView];
+  [canvasView8 _finishCombiningStrokesIfNecessary];
 
   v7 = *&self->_lastContentOffset.x;
 
   [(PKHoverController *)v7 reset];
 }
 
-- (void)setCurrentPreviewDrawingUUID:(uint64_t)a1
+- (void)setCurrentPreviewDrawingUUID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    objc_storeStrong((a1 + 888), a2);
+    objc_storeStrong((d + 888), a2);
   }
 }
 
@@ -12742,15 +12742,15 @@ void __41__PKTiledView_hoverController_didUpdate___block_invoke(uint64_t a1)
   [WeakRetained _updateToolPreviewIndicatorInputPoint:v7];
 }
 
-- (void)_updateSymbolPreviewViewForTouch:(id *)a3 attachment:(id)a4 alpha:(double)a5
+- (void)_updateSymbolPreviewViewForTouch:(id *)touch attachment:(id)attachment alpha:(double)alpha
 {
   v81 = *MEMORY[0x1E69E9840];
-  v65 = a4;
-  v66 = self;
+  attachmentCopy = attachment;
+  selfCopy = self;
   v8 = [(PKTiledView *)self ink];
-  v9 = [v8 _isEraserInk];
+  _isEraserInk = [v8 _isEraserInk];
 
-  if (v9)
+  if (_isEraserInk)
   {
     v10 = 1;
   }
@@ -12758,9 +12758,9 @@ void __41__PKTiledView_hoverController_didUpdate___block_invoke(uint64_t a1)
   else
   {
     v11 = [(PKTiledView *)self ink];
-    v12 = [v11 _isHandwritingInk];
+    _isHandwritingInk = [v11 _isHandwritingInk];
 
-    if (v12)
+    if (_isHandwritingInk)
     {
       v10 = 3;
     }
@@ -12797,26 +12797,26 @@ void __41__PKTiledView_hoverController_didUpdate___block_invoke(uint64_t a1)
     v15 = 12.0;
   }
 
-  [(PKToolPreviewView *)&self->_currentPreviewDrawingUUID->super.isa prepareWithFrame:v10 mode:a3->var0.var0.x - v15 * 0.5, a3->var0.var0.y - v15 * 0.5, v15, v15];
-  [(NSUUID *)self->_currentPreviewDrawingUUID setAlpha:a5];
+  [(PKToolPreviewView *)&self->_currentPreviewDrawingUUID->super.isa prepareWithFrame:v10 mode:touch->var0.var0.x - v15 * 0.5, touch->var0.var0.y - v15 * 0.5, v15, v15];
+  [(NSUUID *)self->_currentPreviewDrawingUUID setAlpha:alpha];
   v16 = [(PKTiledView *)self ink];
-  v17 = [v16 _isEraserInk];
+  _isEraserInk2 = [v16 _isEraserInk];
 
-  if (v17)
+  if (_isEraserInk2)
   {
-    x = a3->var0.var0.x;
-    y = a3->var0.var0.y;
+    x = touch->var0.var0.x;
+    y = touch->var0.var0.y;
     memset(&v78, 0, sizeof(v78));
-    [(PKTiledView *)self transformFromViewToStrokeSpaceInAttachment:v65];
-    v20 = [v65 strokeSpatialCache];
-    v21 = v20;
-    if (v20 && *(v20 + 8) == 1)
+    [(PKTiledView *)self transformFromViewToStrokeSpaceInAttachment:attachmentCopy];
+    strokeSpatialCache = [attachmentCopy strokeSpatialCache];
+    v21 = strokeSpatialCache;
+    if (strokeSpatialCache && *(strokeSpatialCache + 8) == 1)
     {
-      v22 = [v65 strokeSpatialCache];
-      v23 = v22;
-      if (v22)
+      strokeSpatialCache2 = [attachmentCopy strokeSpatialCache];
+      v23 = strokeSpatialCache2;
+      if (strokeSpatialCache2)
       {
-        v24 = *(v22 + 24);
+        v24 = *(strokeSpatialCache2 + 24);
       }
 
       else
@@ -12832,8 +12832,8 @@ void __41__PKTiledView_hoverController_didUpdate___block_invoke(uint64_t a1)
       v63 = 0;
     }
 
-    v25 = [v65 drawing];
-    newValue = [v25 strokesIntersectedByPoint:v63 prevPoint:y * 0.0 + 0.0 * x + 0.0 onscreenVisibleStrokes:{y * 0.0 + 0.0 * x + 0.0, y * 0.0 + 0.0 * x + 0.0, y * 0.0 + 0.0 * x + 0.0}];
+    drawing = [attachmentCopy drawing];
+    newValue = [drawing strokesIntersectedByPoint:v63 prevPoint:y * 0.0 + 0.0 * x + 0.0 onscreenVisibleStrokes:{y * 0.0 + 0.0 * x + 0.0, y * 0.0 + 0.0 * x + 0.0, y * 0.0 + 0.0 * x + 0.0}];
 
     if (([(PKDrawing *)self->_erasePreviewDrawing isEqualToOrderedSet:newValue]& 1) == 0)
     {
@@ -12892,25 +12892,25 @@ void __41__PKTiledView_hoverController_didUpdate___block_invoke(uint64_t a1)
         v84.origin.y = v44;
         v84.size.width = width;
         v84.size.height = height;
-        p_isa = &v66->super.super.super.isa;
+        p_isa = &selfCopy->super.super.super.isa;
         if (CGRectIsNull(v84))
         {
-          [(NSOrderedSet *)v66->_eraseOrLassoPreviewStrokes removeFromSuperview];
-          objc_storeStrong(&v66->_eraseOrLassoPreviewStrokes, 0);
+          [(NSOrderedSet *)selfCopy->_eraseOrLassoPreviewStrokes removeFromSuperview];
+          objc_storeStrong(&selfCopy->_eraseOrLassoPreviewStrokes, 0);
         }
 
         else
         {
-          if (!v66->_eraseOrLassoPreviewStrokes)
+          if (!selfCopy->_eraseOrLassoPreviewStrokes)
           {
             v56 = objc_alloc_init(PKStrokePreviewView);
-            objc_storeStrong(&v66->_eraseOrLassoPreviewStrokes, v56);
+            objc_storeStrong(&selfCopy->_eraseOrLassoPreviewStrokes, v56);
 
-            p_isa = &v66->super.super.super.isa;
-            [(NSOrderedSet *)v66->_eraseOrLassoPreviewStrokes setTranslatesAutoresizingMaskIntoConstraints:0];
+            p_isa = &selfCopy->super.super.super.isa;
+            [(NSOrderedSet *)selfCopy->_eraseOrLassoPreviewStrokes setTranslatesAutoresizingMaskIntoConstraints:0];
             [p_isa addSubview:p_isa[107]];
-            [(NSOrderedSet *)v66->_eraseOrLassoPreviewStrokes setOpaque:0];
-            [(NSOrderedSet *)v66->_eraseOrLassoPreviewStrokes setAlpha:1.0];
+            [(NSOrderedSet *)selfCopy->_eraseOrLassoPreviewStrokes setOpaque:0];
+            [(NSOrderedSet *)selfCopy->_eraseOrLassoPreviewStrokes setAlpha:1.0];
           }
 
           v68 = v78;
@@ -12928,15 +12928,15 @@ void __41__PKTiledView_hoverController_didUpdate___block_invoke(uint64_t a1)
           v59 = v87.size.width;
           v60 = v87.size.height;
           v61 = p_isa[107];
-          v62 = [v47 array];
-          [(PKStrokePreviewView *)v61 prepareWithFrame:v62 strokeBounds:v57 strokes:v58, v59, v60, v43, v44, width, height];
+          array = [v47 array];
+          [(PKStrokePreviewView *)v61 prepareWithFrame:array strokeBounds:v57 strokes:v58, v59, v60, v43, v44, width, height];
         }
       }
 
       else
       {
-        v30 = [v65 drawing];
-        objc_storeStrong(&self->_toolPreviewView, v30);
+        drawing2 = [attachmentCopy drawing];
+        objc_storeStrong(&self->_toolPreviewView, drawing2);
 
         v31 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(newValue, "count")}];
         v76 = 0u;
@@ -12959,9 +12959,9 @@ void __41__PKTiledView_hoverController_didUpdate___block_invoke(uint64_t a1)
 
               v35 = *(*(&v74 + 1) + 8 * j);
               v36 = [v35 ink];
-              v37 = [v36 color];
-              [v37 alphaComponent];
-              v39 = [v37 colorWithAlphaComponent:v29 * v38];
+              color = [v36 color];
+              [color alphaComponent];
+              v39 = [color colorWithAlphaComponent:v29 * v38];
               v40 = [PKInk inkFromInk:v36 color:v39];
 
               v41 = [v35 mutableCopy];
@@ -12976,40 +12976,40 @@ void __41__PKTiledView_hoverController_didUpdate___block_invoke(uint64_t a1)
           while (v32);
         }
 
-        v42 = [v65 drawing];
-        [(PKTiledView *)v66 _setAdditionalStrokes:v31 inDrawing:v42 invalidateTiles:1];
+        drawing3 = [attachmentCopy drawing];
+        [(PKTiledView *)selfCopy _setAdditionalStrokes:v31 inDrawing:drawing3 invalidateTiles:1];
       }
     }
   }
 }
 
-- (void)_updateToolPreviewIndicatorInputPoint:(id *)a3
+- (void)_updateToolPreviewIndicatorInputPoint:(id *)point
 {
   if (self->_currentPreviewDrawingUUID)
   {
     v5 = [(PKTiledView *)self ink];
-    v6 = [v5 identifier];
-    v7 = [v6 isEqual:@"com.apple.ink.pen"];
+    identifier = [v5 identifier];
+    v7 = [identifier isEqual:@"com.apple.ink.pen"];
 
     v8 = [(PKTiledView *)self ink];
-    v9 = [v8 identifier];
-    v10 = [v9 isEqual:@"com.apple.ink.marker"];
+    identifier2 = [v8 identifier];
+    v10 = [identifier2 isEqual:@"com.apple.ink.marker"];
 
     v11 = [(PKTiledView *)self ink];
-    v12 = [v11 identifier];
-    v13 = [v12 isEqual:@"com.apple.ink.pencil"];
+    identifier3 = [v11 identifier];
+    v13 = [identifier3 isEqual:@"com.apple.ink.pencil"];
 
     v69 = 0u;
     v70 = 0u;
     v68 = 0u;
     memset(&__s1, 0, sizeof(__s1));
-    v14 = [(PKTiledView *)self canvasView];
-    v15 = [v14 _drawingController];
-    v16 = [(PKController *)v15 inputController];
-    v17 = v16;
-    if (v16)
+    canvasView = [(PKTiledView *)self canvasView];
+    _drawingController = [canvasView _drawingController];
+    inputController = [(PKController *)_drawingController inputController];
+    v17 = inputController;
+    if (inputController)
     {
-      [v16 _latestStrokePoint];
+      [inputController _latestStrokePoint];
     }
 
     else
@@ -13022,39 +13022,39 @@ void __41__PKTiledView_hoverController_didUpdate___block_invoke(uint64_t a1)
 
     if (!memcmp(&__s1, &_PKStrokePointZero, 0x60uLL))
     {
-      v18 = [(PKTiledView *)self canvasView];
-      v19 = [v18 _drawingController];
-      v20 = [(PKController *)v19 inputController];
-      v21 = v20;
-      v22 = *&a3->var9;
-      v23 = *&a3->var13;
-      v60 = *&a3->var11;
+      canvasView2 = [(PKTiledView *)self canvasView];
+      _drawingController2 = [canvasView2 _drawingController];
+      inputController2 = [(PKController *)_drawingController2 inputController];
+      v21 = inputController2;
+      v22 = *&point->var9;
+      v23 = *&point->var13;
+      v60 = *&point->var11;
       v61 = v23;
-      v24 = *&a3->var1;
-      v25 = *&a3->var5;
-      v56 = *&a3->var3;
+      v24 = *&point->var1;
+      v25 = *&point->var5;
+      v56 = *&point->var3;
       v57 = v25;
-      v26 = *&a3->var5;
-      v27 = *&a3->var9;
-      v58 = *&a3->var7;
+      v26 = *&point->var5;
+      v27 = *&point->var9;
+      v58 = *&point->var7;
       v59 = v27;
-      v28 = *&a3->var1;
-      v55[0] = a3->var0;
+      v28 = *&point->var1;
+      v55[0] = point->var0;
       v55[1] = v28;
-      v29 = *&a3->var13;
+      v29 = *&point->var13;
       v53[6] = v60;
       v53[7] = v29;
       v53[2] = v56;
       v53[3] = v26;
       v53[4] = v58;
       v53[5] = v22;
-      var15 = a3->var15;
-      v54 = a3->var15;
+      var15 = point->var15;
+      v54 = point->var15;
       v53[0] = v55[0];
       v53[1] = v24;
-      if (v20)
+      if (inputController2)
       {
-        [v20 outputCurrentStrokePoint:v55 lastPoint:v53];
+        [inputController2 outputCurrentStrokePoint:v55 lastPoint:v53];
       }
 
       else
@@ -13072,11 +13072,11 @@ void __41__PKTiledView_hoverController_didUpdate___block_invoke(uint64_t a1)
     }
 
     memset(&v63, 0, sizeof(v63));
-    v30 = [(PKTiledView *)self canvasView];
-    v31 = v30;
-    if (v30)
+    canvasView3 = [(PKTiledView *)self canvasView];
+    v31 = canvasView3;
+    if (canvasView3)
     {
-      [v30 strokeTransform];
+      [canvasView3 strokeTransform];
     }
 
     else
@@ -13113,11 +13113,11 @@ LABEL_19:
       [(PKToolPreviewView *)&self->_currentPreviewDrawingUUID->super.isa prepareWithFrame:v72.origin.x mode:v72.origin.y, v72.size.width, v72.size.height];
       CGAffineTransformMakeTranslation(&v52, -x, -y);
       [v35 applyTransform:&v52];
-      v45 = [v35 CGPath];
+      cGPath = [v35 CGPath];
       currentPreviewDrawingUUID = self->_currentPreviewDrawingUUID;
       if (currentPreviewDrawingUUID)
       {
-        [(objc_class *)currentPreviewDrawingUUID[52].super.isa setPath:v45];
+        [(objc_class *)currentPreviewDrawingUUID[52].super.isa setPath:cGPath];
         v47 = self->_currentPreviewDrawingUUID;
       }
 
@@ -13136,10 +13136,10 @@ LABEL_19:
       tx = __s1.tx;
       v37 = *(&v68 + 1);
       v38 = [(PKTiledView *)self ink];
-      v39 = [v38 behavior];
-      v40 = [v39 particleDescriptor];
+      behavior = [v38 behavior];
+      particleDescriptor = [behavior particleDescriptor];
 
-      [v40 particleSize];
+      [particleDescriptor particleSize];
       v35 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:*MEMORY[0x1E695EFF8] - tx * (v32 + v32) * v41 * 0.5 cornerRadius:{*(MEMORY[0x1E695EFF8] + 8) - (v32 + v32) * v42 * 0.5, tx * (v32 + v32) * v41, (v32 + v32) * v42, 2.0}];
       memset(&v52, 0, sizeof(v52));
       CGAffineTransformMakeRotation(&v52, v37);
@@ -13166,14 +13166,14 @@ LABEL_23:
   }
 }
 
-- (void)hoverControllerDidEnd:(id)a3
+- (void)hoverControllerDidEnd:(id)end
 {
   [(PKTiledView *)self _reenableScrollViewPanGestureIfNecessary];
   [(PKTiledView *)self _endHoverToolPreview];
   v4 = +[PKHoverSettings sharedSettings];
-  v5 = [v4 toolShadowLocationWorkaround];
+  toolShadowLocationWorkaround = [v4 toolShadowLocationWorkaround];
 
-  if (v5)
+  if (toolShadowLocationWorkaround)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -13192,36 +13192,36 @@ void __37__PKTiledView_hoverControllerDidEnd___block_invoke(uint64_t a1)
   [(PKPencilObserverInteraction *)v2 workaroundShadowUpdateEnded];
 }
 
-- (void)hoverController:(id)a3 holdGestureMeanTouch:(id *)a4 latestTouch:(id *)a5
+- (void)hoverController:(id)controller holdGestureMeanTouch:(id *)touch latestTouch:(id *)latestTouch
 {
-  v7 = a3;
+  controllerCopy = controller;
   if (!self || !*(&self->_editMenuVisible + 2) && !*(&self->_editMenuVisible + 1) && !*(&self->_editMenuVisible + 3))
   {
-    [(PKTiledView *)self convertToShapeAtLocation:a5->var0.var0.x, a5->var0.var0.y];
+    [(PKTiledView *)self convertToShapeAtLocation:latestTouch->var0.var0.x, latestTouch->var0.var0.y];
     v8 = +[PKHoverSettings sharedSettings];
-    v9 = [v8 toolPreviewShouldWaitForHoverAndHold];
+    toolPreviewShouldWaitForHoverAndHold = [v8 toolPreviewShouldWaitForHoverAndHold];
 
-    if (v9)
+    if (toolPreviewShouldWaitForHoverAndHold)
     {
-      v10 = *&a5->var13;
-      v14[6] = *&a5->var11;
+      v10 = *&latestTouch->var13;
+      v14[6] = *&latestTouch->var11;
       v14[7] = v10;
-      var15 = a5->var15;
-      v11 = *&a5->var5;
-      v14[2] = *&a5->var3;
+      var15 = latestTouch->var15;
+      v11 = *&latestTouch->var5;
+      v14[2] = *&latestTouch->var3;
       v14[3] = v11;
-      v12 = *&a5->var9;
-      v14[4] = *&a5->var7;
+      v12 = *&latestTouch->var9;
+      v14[4] = *&latestTouch->var7;
       v14[5] = v12;
-      v13 = *&a5->var1;
-      v14[0] = a5->var0;
+      v13 = *&latestTouch->var1;
+      v14[0] = latestTouch->var0;
       v14[1] = v13;
       [(PKTiledView *)self startToolPreviewIfPossibleForInputPoint:v14];
     }
   }
 }
 
-- (void)hoverControllerHoldGestureEnded:(id)a3
+- (void)hoverControllerHoldGestureEnded:(id)ended
 {
   if (self)
   {
@@ -13233,8 +13233,8 @@ void __37__PKTiledView_hoverControllerDidEnd___block_invoke(uint64_t a1)
     }
   }
 
-  v6 = [(PKTiledView *)self hoverController];
-  [v6 hideLabel];
+  hoverController = [(PKTiledView *)self hoverController];
+  [hoverController hideLabel];
 }
 
 - (BOOL)shouldStartToolPreviewWhenHovering
@@ -13247,7 +13247,7 @@ void __37__PKTiledView_hoverControllerDidEnd___block_invoke(uint64_t a1)
   v2 = *&self->_delayHoverPreviewUntil;
   if (v2)
   {
-    v3 = 0;
+    toolIndicatorActive = 0;
   }
 
   else
@@ -13255,34 +13255,34 @@ void __37__PKTiledView_hoverControllerDidEnd___block_invoke(uint64_t a1)
     v4 = +[PKHoverSettings sharedSettings];
     if ([v4 toolPreviewActive])
     {
-      v3 = 1;
+      toolIndicatorActive = 1;
     }
 
     else
     {
       v5 = +[PKHoverSettings sharedSettings];
-      v3 = [v5 toolIndicatorActive];
+      toolIndicatorActive = [v5 toolIndicatorActive];
     }
   }
 
-  return v3;
+  return toolIndicatorActive;
 }
 
-- (void)startToolPreviewIfPossibleForInputPoint:(id *)a3
+- (void)startToolPreviewIfPossibleForInputPoint:(id *)point
 {
   if (!self || !*(&self->_editMenuVisible + 1) && !*(&self->_editMenuVisible + 2) && !*(&self->_editMenuVisible + 3))
   {
-    v5 = [(PKTiledView *)self canvasView];
-    if ([v5 _isCombiningStrokes])
+    canvasView = [(PKTiledView *)self canvasView];
+    if ([canvasView _isCombiningStrokes])
     {
     }
 
     else
     {
-      v6 = [(PKTiledView *)self canvasView];
-      v7 = [v6 isHidden];
+      canvasView2 = [(PKTiledView *)self canvasView];
+      isHidden = [canvasView2 isHidden];
 
-      if ((v7 & 1) == 0)
+      if ((isHidden & 1) == 0)
       {
         return;
       }
@@ -13301,25 +13301,25 @@ void __37__PKTiledView_hoverControllerDidEnd___block_invoke(uint64_t a1)
 
     if (v8 >= extraHoverPreviewDelay && ![(PKTiledView *)self _scrollViewIsScrollingOrZoomingOrResizing]&& ![(PKTiledView *)self _isScrollViewSizeAnimating]&& [(PKTiledView *)self shouldStartToolPreviewWhenHovering])
     {
-      v10 = [(PKTiledView *)self hoverController];
+      hoverController = [(PKTiledView *)self hoverController];
       v11 = +[PKHoverSettings sharedSettings];
       [v11 toolPreviewMaxZDistance];
-      v12 = *&a3->var13;
-      v21[6] = *&a3->var11;
+      v12 = *&point->var13;
+      v21[6] = *&point->var11;
       v21[7] = v12;
-      var15 = a3->var15;
-      v13 = *&a3->var5;
-      v21[2] = *&a3->var3;
+      var15 = point->var15;
+      v13 = *&point->var5;
+      v21[2] = *&point->var3;
       v21[3] = v13;
-      v14 = *&a3->var9;
-      v21[4] = *&a3->var7;
+      v14 = *&point->var9;
+      v21[4] = *&point->var7;
       v21[5] = v14;
-      v15 = *&a3->var1;
-      v21[0] = a3->var0;
+      v15 = *&point->var1;
+      v21[0] = point->var0;
       v21[1] = v15;
-      v17 = [(PKHoverController *)v10 adjustedZLimitFromLimit:v21 inputPoint:v16];
+      v17 = [(PKHoverController *)hoverController adjustedZLimitFromLimit:v21 inputPoint:v16];
 
-      if (a3->var6 <= v17)
+      if (point->var6 <= v17)
       {
         if (self)
         {
@@ -13343,22 +13343,22 @@ void __37__PKTiledView_hoverControllerDidEnd___block_invoke(uint64_t a1)
         }
 
         v18 = +[PKHoverSettings sharedSettings];
-        v19 = [v18 toolPreviewShouldWaitForHoverAndHold];
+        toolPreviewShouldWaitForHoverAndHold = [v18 toolPreviewShouldWaitForHoverAndHold];
 
-        if (v19)
+        if (toolPreviewShouldWaitForHoverAndHold)
         {
-          v20 = [(PKTiledView *)self hoverController];
-          [(PKHoverController *)v20 resetHoverHold];
+          hoverController2 = [(PKTiledView *)self hoverController];
+          [(PKHoverController *)hoverController2 resetHoverHold];
         }
       }
     }
   }
 }
 
-- (void)convertToShapeAtLocation:(CGPoint)a3
+- (void)convertToShapeAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v6 = +[PKHoverSettings sharedSettings];
   if ([v6 snapToShapeActive])
   {
@@ -13367,9 +13367,9 @@ void __37__PKTiledView_hoverControllerDidEnd___block_invoke(uint64_t a1)
   else
   {
     v7 = [(PKTiledView *)self ink];
-    v8 = [v7 _isStrokeGeneratingInk];
+    _isStrokeGeneratingInk = [v7 _isStrokeGeneratingInk];
 
-    if (v8)
+    if (_isStrokeGeneratingInk)
     {
       return;
     }
@@ -13379,17 +13379,17 @@ void __37__PKTiledView_hoverControllerDidEnd___block_invoke(uint64_t a1)
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 drawing];
+    drawing = [v9 drawing];
     [(PKTiledView *)self transformFromViewToStrokeSpaceInAttachment:v10];
-    v12 = [v10 strokeSpatialCache];
-    v13 = v12;
-    if (v12 && *(v12 + 8) == 1)
+    strokeSpatialCache = [v10 strokeSpatialCache];
+    v13 = strokeSpatialCache;
+    if (strokeSpatialCache && *(strokeSpatialCache + 8) == 1)
     {
-      v14 = [v10 strokeSpatialCache];
-      v15 = v14;
-      if (v14)
+      strokeSpatialCache2 = [v10 strokeSpatialCache];
+      v15 = strokeSpatialCache2;
+      if (strokeSpatialCache2)
       {
-        v16 = *(v14 + 24);
+        v16 = *(strokeSpatialCache2 + 24);
       }
 
       else
@@ -13405,29 +13405,29 @@ void __37__PKTiledView_hoverControllerDidEnd___block_invoke(uint64_t a1)
       v17 = 0;
     }
 
-    v18 = [v11 strokesIntersectedByPoint:v17 prevPoint:*&v43 + y * *&v42 + *location * x onscreenVisibleStrokes:{*(&v43 + 1) + y * *(&v42 + 1) + *&location[1] * x, *&v43 + y * *&v42 + *location * x + 1.0, *(&v43 + 1) + y * *(&v42 + 1) + *&location[1] * x + 1.0}];
+    v18 = [drawing strokesIntersectedByPoint:v17 prevPoint:*&v43 + y * *&v42 + *location * x onscreenVisibleStrokes:{*(&v43 + 1) + y * *(&v42 + 1) + *&location[1] * x, *&v43 + y * *&v42 + *location * x + 1.0, *(&v43 + 1) + y * *(&v42 + 1) + *&location[1] * x + 1.0}];
     if ([v18 count] != 1)
     {
       goto LABEL_28;
     }
 
-    v19 = [v18 firstObject];
-    if (![v19 _shapeType])
+    firstObject = [v18 firstObject];
+    if (![firstObject _shapeType])
     {
-      v20 = [v19 _strokeData];
-      if (![v20 hasValidPointTimestampData])
+      _strokeData = [firstObject _strokeData];
+      if (![_strokeData hasValidPointTimestampData])
       {
 LABEL_26:
 
         goto LABEL_27;
       }
 
-      v21 = [v19 _strokeMask];
+      _strokeMask = [firstObject _strokeMask];
 
-      if (!v21)
+      if (!_strokeMask)
       {
         v22 = objc_alloc_init(PKShapeDrawingController);
-        v20 = v22;
+        _strokeData = v22;
         if (v22)
         {
           v22->_shapeRecognitionOn = 1;
@@ -13443,7 +13443,7 @@ LABEL_26:
         v44 = 0u;
         *location = 0u;
         v42 = 0u;
-        v24 = [(PKShapeDrawingController *)v20 shapeFromStroke:v19 inputScale:location averageInputPoint:0 allowedShapeTypes:v23];
+        v24 = [(PKShapeDrawingController *)_strokeData shapeFromStroke:firstObject inputScale:location averageInputPoint:0 allowedShapeTypes:v23];
         v25 = v24;
         if (v24 && [v24 type] != 6 && objc_msgSend(v25, "type") != 7)
         {
@@ -13453,8 +13453,8 @@ LABEL_26:
           v35 = __40__PKTiledView_convertToShapeAtLocation___block_invoke;
           v36 = &unk_1E82D6CB8;
           objc_copyWeak(&v40, location);
-          v37 = v11;
-          v38 = v19;
+          v37 = drawing;
+          v38 = firstObject;
           v39 = v25;
           v27 = dispatch_block_create(0, &v33);
           if (self)
@@ -13525,14 +13525,14 @@ void __40__PKTiledView_convertToShapeAtLocation___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_findSelectionTranscriptionWithCompletion:(id)a3
+- (void)_findSelectionTranscriptionWithCompletion:(id)completion
 {
-  v8 = a3;
-  v4 = [(PKTiledView *)self selectionController];
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  selectionController = [(PKTiledView *)self selectionController];
+  v5 = selectionController;
+  if (selectionController)
   {
-    v6 = *(v4 + 152);
+    v6 = *(selectionController + 152);
   }
 
   else
@@ -13541,7 +13541,7 @@ void __40__PKTiledView_convertToShapeAtLocation___block_invoke(uint64_t a1)
   }
 
   v7 = v6;
-  [v7 _findTranscriptionWithCompletion:v8];
+  [v7 _findTranscriptionWithCompletion:completionCopy];
 }
 
 - (id)_accessibilityUserTestingChildren
@@ -13550,15 +13550,15 @@ void __40__PKTiledView_convertToShapeAtLocation___block_invoke(uint64_t a1)
   v3 = MEMORY[0x1E695DF70];
   v16.receiver = self;
   v16.super_class = PKTiledView;
-  v4 = [(PKTiledView *)&v16 _accessibilityUserTestingChildren];
-  v5 = [v3 arrayWithArray:v4];
+  _accessibilityUserTestingChildren = [(PKTiledView *)&v16 _accessibilityUserTestingChildren];
+  v5 = [v3 arrayWithArray:_accessibilityUserTestingChildren];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(PKTiledView *)self attachmentViews];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  attachmentViews = [(PKTiledView *)self attachmentViews];
+  v7 = [attachmentViews countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v7)
   {
     v8 = *v13;
@@ -13568,14 +13568,14 @@ void __40__PKTiledView_convertToShapeAtLocation___block_invoke(uint64_t a1)
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(attachmentViews);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) _accessibilityUserTestingChildren];
-        [v5 addObjectsFromArray:v10];
+        _accessibilityUserTestingChildren2 = [*(*(&v12 + 1) + 8 * i) _accessibilityUserTestingChildren];
+        [v5 addObjectsFromArray:_accessibilityUserTestingChildren2];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v7 = [attachmentViews countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v7);
@@ -13584,18 +13584,18 @@ void __40__PKTiledView_convertToShapeAtLocation___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)_getAllHandwritingTranscription:(id)a3
+- (void)_getAllHandwritingTranscription:(id)transcription
 {
-  v5 = a3;
-  v4 = [(PKTiledView *)self selectionController];
-  [PKSelectionController getAllHandwritingTranscription:v4];
+  transcriptionCopy = transcription;
+  selectionController = [(PKTiledView *)self selectionController];
+  [PKSelectionController getAllHandwritingTranscription:selectionController];
 }
 
-- (void)_copyAll:(id)a3
+- (void)_copyAll:(id)all
 {
-  v5 = a3;
-  v4 = [(PKTiledView *)self selectionController];
-  [(PKSelectionController *)v4 copyAll:v5];
+  allCopy = all;
+  selectionController = [(PKTiledView *)self selectionController];
+  [(PKSelectionController *)selectionController copyAll:allCopy];
 }
 
 - (PKTiledViewDelegate)delegate
@@ -13626,35 +13626,35 @@ void __40__PKTiledView_convertToShapeAtLocation___block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-- (void)updateTilesForVisibleRectRendering:(uint64_t)a3 offscreen:(char)a4 overrideAdditionalStrokes:
+- (void)updateTilesForVisibleRectRendering:(uint64_t)rendering offscreen:(char)offscreen overrideAdditionalStrokes:
 {
   while (2)
   {
-    v8 = a1;
+    selfCopy = self;
     while (1)
     {
       while (1)
       {
         while (1)
         {
-          a1 = v8;
-          v9 = (a2 - v8) >> 5;
+          self = selfCopy;
+          v9 = (a2 - selfCopy) >> 5;
           v10 = v9 - 2;
           if (v9 > 2)
           {
             switch(v9)
             {
               case 3uLL:
-                v70 = v8[7];
+                v70 = selfCopy[7];
                 v71 = *(a2 - 1);
-                if (v70 >= v8[3])
+                if (v70 >= selfCopy[3])
                 {
                   if (v71 >= v70)
                   {
                     return;
                   }
 
-                  v68 = (v8 + 4);
+                  v68 = (selfCopy + 4);
                   v69 = (a2 - 4);
                   goto LABEL_174;
                 }
@@ -13664,13 +13664,13 @@ void __40__PKTiledView_convertToShapeAtLocation___block_invoke(uint64_t a1)
                   goto LABEL_113;
                 }
 
-                std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(v8, (v8 + 4));
-                if (*(a2 - 1) >= v8[7])
+                std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(selfCopy, (selfCopy + 4));
+                if (*(a2 - 1) >= selfCopy[7])
                 {
                   return;
                 }
 
-                v72 = (v8 + 4);
+                v72 = (selfCopy + 4);
 LABEL_114:
                 v73 = (a2 - 4);
 LABEL_115:
@@ -13679,38 +13679,38 @@ LABEL_115:
                 return;
               case 4uLL:
 
-                std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[PKTiledView updateTilesForVisibleRectRendering:offscreen:overrideAdditionalStrokes:]::$_0 &,AttachmentTileInfo *,0>(v8, (v8 + 4), (v8 + 8), (a2 - 4));
+                std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[PKTiledView updateTilesForVisibleRectRendering:offscreen:overrideAdditionalStrokes:]::$_0 &,AttachmentTileInfo *,0>(selfCopy, (selfCopy + 4), (selfCopy + 8), (a2 - 4));
                 return;
               case 5uLL:
-                std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[PKTiledView updateTilesForVisibleRectRendering:offscreen:overrideAdditionalStrokes:]::$_0 &,AttachmentTileInfo *,0>(v8, (v8 + 4), (v8 + 8), (v8 + 12));
-                if (*(a2 - 1) >= v8[15])
+                std::__sort4[abi:ne200100]<std::_ClassicAlgPolicy,-[PKTiledView updateTilesForVisibleRectRendering:offscreen:overrideAdditionalStrokes:]::$_0 &,AttachmentTileInfo *,0>(selfCopy, (selfCopy + 4), (selfCopy + 8), (selfCopy + 12));
+                if (*(a2 - 1) >= selfCopy[15])
                 {
                   return;
                 }
 
-                std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>((v8 + 12), (a2 - 4));
-                if (v8[15] >= v8[11])
+                std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>((selfCopy + 12), (a2 - 4));
+                if (selfCopy[15] >= selfCopy[11])
                 {
                   return;
                 }
 
-                std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>((v8 + 8), (v8 + 12));
-                if (v8[11] >= v8[7])
+                std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>((selfCopy + 8), (selfCopy + 12));
+                if (selfCopy[11] >= selfCopy[7])
                 {
                   return;
                 }
 
-                v68 = (v8 + 4);
-                v69 = (v8 + 8);
+                v68 = (selfCopy + 4);
+                v69 = (selfCopy + 8);
 LABEL_174:
                 std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(v68, v69);
-                if (v8[7] >= v8[3])
+                if (selfCopy[7] >= selfCopy[3])
                 {
                   return;
                 }
 
-                v73 = (v8 + 4);
-                v72 = v8;
+                v73 = (selfCopy + 4);
+                v72 = selfCopy;
                 goto LABEL_115;
             }
           }
@@ -13724,27 +13724,27 @@ LABEL_174:
 
             if (v9 == 2)
             {
-              if (*(a2 - 1) >= v8[3])
+              if (*(a2 - 1) >= selfCopy[3])
               {
                 return;
               }
 
 LABEL_113:
-              v72 = v8;
+              v72 = selfCopy;
               goto LABEL_114;
             }
           }
 
           if (v9 <= 23)
           {
-            v74 = v8 + 4;
-            v76 = v8 == a2 || v74 == a2;
-            if (a4)
+            v74 = selfCopy + 4;
+            v76 = selfCopy == a2 || v74 == a2;
+            if (offscreen)
             {
               if (!v76)
               {
                 v77 = 0;
-                v78 = v8;
+                v78 = selfCopy;
                 do
                 {
                   v79 = v74;
@@ -13757,10 +13757,10 @@ LABEL_113:
                     v82 = v77;
                     while (1)
                     {
-                      v83 = v8 + v82;
-                      v84 = *(v8 + v82);
+                      v83 = selfCopy + v82;
+                      v84 = *(selfCopy + v82);
                       *v83 = 0;
-                      v85 = *(v8 + v82 + 32);
+                      v85 = *(selfCopy + v82 + 32);
                       *(v83 + 4) = v84;
 
                       *(v83 + 40) = *(v83 + 8);
@@ -13773,12 +13773,12 @@ LABEL_113:
                       v82 -= 32;
                       if (v81 >= *(v83 - 1))
                       {
-                        v86 = v8 + v82 + 32;
+                        v86 = selfCopy + v82 + 32;
                         goto LABEL_136;
                       }
                     }
 
-                    v86 = v8;
+                    v86 = selfCopy;
 LABEL_136:
                     v87 = *v86;
                     *v86 = v80;
@@ -13801,12 +13801,12 @@ LABEL_136:
               do
               {
                 v132 = v74;
-                if (*(a1 + 56) < *(a1 + 24))
+                if (*(self + 56) < *(self + 24))
                 {
                   v133 = *v74;
                   *v74 = 0.0;
-                  v148 = *(a1 + 40);
-                  v134 = *(a1 + 56);
+                  v148 = *(self + 40);
+                  v134 = *(self + 56);
                   v135 = v74;
                   v136 = v74;
                   do
@@ -13832,7 +13832,7 @@ LABEL_136:
                 }
 
                 v74 = v132 + 4;
-                a1 = v132;
+                self = v132;
               }
 
               while (v132 + 4 != a2);
@@ -13841,9 +13841,9 @@ LABEL_136:
             return;
           }
 
-          if (!a3)
+          if (!rendering)
           {
-            if (v8 != a2)
+            if (selfCopy != a2)
             {
               v88 = v10 >> 1;
               v89 = v10 >> 1;
@@ -13853,14 +13853,14 @@ LABEL_136:
                 if (v88 >= v89)
                 {
                   v91 = (2 * v89) | 1;
-                  v92 = a1 + 32 * v91;
+                  v92 = self + 32 * v91;
                   if (2 * v90 + 2 < v9 && *(v92 + 24) < *(v92 + 56))
                   {
                     v92 += 32;
                     v91 = 2 * v90 + 2;
                   }
 
-                  v93 = a1 + 32 * v90;
+                  v93 = self + 32 * v90;
                   v94 = *(v93 + 24);
                   if (*(v92 + 24) >= v94)
                   {
@@ -13886,7 +13886,7 @@ LABEL_136:
 
                       v100 = 2 * v91;
                       v91 = (2 * v91) | 1;
-                      v92 = a1 + 32 * v91;
+                      v92 = self + 32 * v91;
                       v101 = v100 + 2;
                       if (v101 < v9 && *(v92 + 24) < *(v92 + 56))
                       {
@@ -13911,14 +13911,14 @@ LABEL_136:
               do
               {
                 v103 = 0;
-                v104 = *a1;
-                *a1 = 0;
-                v147 = *(a1 + 8);
-                v150 = *(a1 + 24);
-                v105 = a1;
+                v104 = *self;
+                *self = 0;
+                v147 = *(self + 8);
+                v150 = *(self + 24);
+                selfCopy2 = self;
                 do
                 {
-                  v106 = v105 + 32 * v103;
+                  v106 = selfCopy2 + 32 * v103;
                   v107 = v106 + 32;
                   if (2 * v103 + 2 >= v9)
                   {
@@ -13944,13 +13944,13 @@ LABEL_136:
 
                   v111 = *v107;
                   *v107 = 0;
-                  v112 = *v105;
-                  *v105 = v111;
+                  v112 = *selfCopy2;
+                  *selfCopy2 = v111;
 
                   v113 = *(v107 + 8);
-                  *(v105 + 24) = *(v107 + 24);
-                  *(v105 + 8) = v113;
-                  v105 = v107;
+                  *(selfCopy2 + 24) = *(v107 + 24);
+                  *(selfCopy2 + 8) = v113;
+                  selfCopy2 = v107;
                 }
 
                 while (v103 <= ((v9 - 2) >> 1));
@@ -13979,13 +13979,13 @@ LABEL_136:
 
                   *(a2 - 1) = v150;
                   *(a2 - 3) = v147;
-                  v119 = (v107 - a1 + 32) >> 5;
+                  v119 = (v107 - self + 32) >> 5;
                   v120 = v119 < 2;
                   v121 = v119 - 2;
                   if (!v120)
                   {
                     v122 = v121 >> 1;
-                    v123 = a1 + 32 * (v121 >> 1);
+                    v123 = self + 32 * (v121 >> 1);
                     v124 = *(v107 + 24);
                     if (*(v123 + 24) < v124)
                     {
@@ -14010,7 +14010,7 @@ LABEL_136:
                         }
 
                         v122 = (v122 - 1) >> 1;
-                        v123 = a1 + 32 * v122;
+                        v123 = self + 32 * v122;
                       }
 
                       while (*(v123 + 24) < v124);
@@ -14033,28 +14033,28 @@ LABEL_136:
             return;
           }
 
-          v11 = &v8[4 * (v9 >> 1)];
+          v11 = &selfCopy[4 * (v9 >> 1)];
           v12 = *(a2 - 1);
           if (v9 >= 0x81)
           {
             v13 = *(v11 + 24);
-            if (v13 >= *(a1 + 24))
+            if (v13 >= *(self + 24))
             {
-              if (v12 >= v13 || (std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(a1 + 32 * (v9 >> 1), (a2 - 4)), *(v11 + 24) >= *(a1 + 24)))
+              if (v12 >= v13 || (std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(self + 32 * (v9 >> 1), (a2 - 4)), *(v11 + 24) >= *(self + 24)))
               {
 LABEL_26:
                 v19 = *(v11 - 8);
                 v20 = *(a2 - 5);
-                if (v19 >= *(a1 + 56))
+                if (v19 >= *(self + 56))
                 {
-                  if (v20 >= v19 || (std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(v11 - 32, (a2 - 8)), *(v11 - 8) >= *(a1 + 56)))
+                  if (v20 >= v19 || (std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(v11 - 32, (a2 - 8)), *(v11 - 8) >= *(self + 56)))
                   {
 LABEL_39:
                     v23 = *(v11 + 56);
                     v24 = *(a2 - 9);
-                    if (v23 >= *(a1 + 88))
+                    if (v23 >= *(self + 88))
                     {
-                      if (v24 >= v23 || (std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(v11 + 32, (a2 - 12)), *(v11 + 56) >= *(a1 + 88)))
+                      if (v24 >= v23 || (std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(v11 + 32, (a2 - 12)), *(v11 + 56) >= *(self + 88)))
                       {
 LABEL_48:
                         v27 = *(v11 + 24);
@@ -14082,18 +14082,18 @@ LABEL_48:
                           if (*(v11 + 56) >= *(v11 + 24))
                           {
 LABEL_57:
-                            v31 = *a1;
-                            *a1 = 0;
-                            v142 = *(a1 + 8);
-                            v149 = *(a1 + 24);
+                            v31 = *self;
+                            *self = 0;
+                            v142 = *(self + 8);
+                            v149 = *(self + 24);
                             v32 = *v11;
                             *v11 = 0;
-                            v33 = *a1;
-                            *a1 = v32;
+                            v33 = *self;
+                            *self = v32;
 
                             v34 = *(v11 + 8);
-                            *(a1 + 24) = *(v11 + 24);
-                            *(a1 + 8) = v34;
+                            *(self + 24) = *(v11 + 24);
+                            *(self + 8) = v34;
                             v35 = *v11;
                             *v11 = v31;
 
@@ -14116,13 +14116,13 @@ LABEL_57:
                         goto LABEL_57;
                       }
 
-                      v25 = a1 + 64;
+                      v25 = self + 64;
                       v26 = v11 + 32;
                     }
 
                     else
                     {
-                      v25 = a1 + 64;
+                      v25 = self + 64;
                       if (v24 >= v23)
                       {
                         std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(v25, v11 + 32);
@@ -14141,13 +14141,13 @@ LABEL_57:
                     goto LABEL_48;
                   }
 
-                  v21 = a1 + 32;
+                  v21 = self + 32;
                   v22 = v11 - 32;
                 }
 
                 else
                 {
-                  v21 = a1 + 32;
+                  v21 = self + 32;
                   if (v20 >= v19)
                   {
                     std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(v21, v11 - 32);
@@ -14166,84 +14166,84 @@ LABEL_57:
                 goto LABEL_39;
               }
 
-              v14 = a1;
-              v15 = a1 + 32 * (v9 >> 1);
+              selfCopy4 = self;
+              v15 = self + 32 * (v9 >> 1);
             }
 
             else
             {
-              v14 = a1;
+              selfCopy4 = self;
               if (v12 >= v13)
               {
-                std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(a1, a1 + 32 * (v9 >> 1));
+                std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(self, self + 32 * (v9 >> 1));
                 if (*(a2 - 1) >= *(v11 + 24))
                 {
                   goto LABEL_26;
                 }
 
-                v14 = a1 + 32 * (v9 >> 1);
+                selfCopy4 = self + 32 * (v9 >> 1);
               }
 
               v15 = (a2 - 4);
             }
 
-            std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(v14, v15);
+            std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(selfCopy4, v15);
             goto LABEL_26;
           }
 
-          v16 = *(a1 + 24);
+          v16 = *(self + 24);
           if (v16 < *(v11 + 24))
           {
-            v17 = a1 + 32 * (v9 >> 1);
+            selfCopy5 = self + 32 * (v9 >> 1);
             if (v12 >= v16)
             {
-              std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(v17, a1);
-              if (*(a2 - 1) >= *(a1 + 24))
+              std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(selfCopy5, self);
+              if (*(a2 - 1) >= *(self + 24))
               {
                 goto LABEL_58;
               }
 
-              v17 = a1;
+              selfCopy5 = self;
             }
 
-            v18 = (a2 - 4);
+            selfCopy6 = (a2 - 4);
             goto LABEL_34;
           }
 
           if (v12 < v16)
           {
-            std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(a1, (a2 - 4));
-            if (*(a1 + 24) < *(v11 + 24))
+            std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(self, (a2 - 4));
+            if (*(self + 24) < *(v11 + 24))
             {
-              v17 = a1 + 32 * (v9 >> 1);
-              v18 = a1;
+              selfCopy5 = self + 32 * (v9 >> 1);
+              selfCopy6 = self;
 LABEL_34:
-              std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(v17, v18);
+              std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(selfCopy5, selfCopy6);
             }
           }
 
 LABEL_58:
-          --a3;
-          if (a4)
+          --rendering;
+          if (offscreen)
           {
             break;
           }
 
-          v36 = *(a1 + 24);
-          if (*(a1 - 8) < v36)
+          v36 = *(self + 24);
+          if (*(self - 8) < v36)
           {
             goto LABEL_61;
           }
 
-          v54 = *a1;
-          *a1 = 0;
-          v144 = *(a1 + 8);
+          v54 = *self;
+          *self = 0;
+          v144 = *(self + 8);
           if (v36 >= *(a2 - 1))
           {
-            v57 = (a1 + 32);
+            v57 = (self + 32);
             do
             {
-              v8 = v57;
+              selfCopy = v57;
               if (v57 >= a2)
               {
                 break;
@@ -14258,19 +14258,19 @@ LABEL_58:
 
           else
           {
-            v55 = a1;
+            selfCopy7 = self;
             do
             {
-              v8 = (v55 + 32);
-              v56 = *(v55 + 56);
-              v55 += 32;
+              selfCopy = (selfCopy7 + 32);
+              v56 = *(selfCopy7 + 56);
+              selfCopy7 += 32;
             }
 
             while (v36 >= v56);
           }
 
           v59 = a2;
-          if (v8 < a2)
+          if (selfCopy < a2)
           {
             v60 = a2;
             do
@@ -14283,13 +14283,13 @@ LABEL_58:
             while (v36 < v61);
           }
 
-          while (v8 < v59)
+          while (selfCopy < v59)
           {
-            std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(v8, v59);
+            std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(selfCopy, v59);
             do
             {
-              v62 = v8[7];
-              v8 += 4;
+              v62 = selfCopy[7];
+              selfCopy += 4;
             }
 
             while (v36 >= v62);
@@ -14302,40 +14302,40 @@ LABEL_58:
             while (v36 < v63);
           }
 
-          if (v8 - 4 != a1)
+          if (selfCopy - 4 != self)
           {
-            v64 = *(v8 - 4);
-            *(v8 - 4) = 0.0;
-            v65 = *a1;
-            *a1 = v64;
+            v64 = *(selfCopy - 4);
+            *(selfCopy - 4) = 0.0;
+            v65 = *self;
+            *self = v64;
 
-            v66 = *(v8 - 3);
-            *(a1 + 24) = *(v8 - 1);
-            *(a1 + 8) = v66;
+            v66 = *(selfCopy - 3);
+            *(self + 24) = *(selfCopy - 1);
+            *(self + 8) = v66;
           }
 
-          v67 = *(v8 - 4);
-          *(v8 - 4) = v54;
+          v67 = *(selfCopy - 4);
+          *(selfCopy - 4) = v54;
 
-          a4 = 0;
-          *(v8 - 3) = v144;
-          *(v8 - 1) = v36;
+          offscreen = 0;
+          *(selfCopy - 3) = v144;
+          *(selfCopy - 1) = v36;
         }
 
-        v36 = *(a1 + 24);
+        v36 = *(self + 24);
 LABEL_61:
         v37 = 0;
-        v38 = *a1;
-        *a1 = 0;
-        v143 = *(a1 + 8);
+        v38 = *self;
+        *self = 0;
+        v143 = *(self + 8);
         do
         {
-          v39 = *(a1 + v37 + 56);
+          v39 = *(self + v37 + 56);
           v37 += 32;
         }
 
         while (v39 < v36);
-        v40 = (a1 + v37);
+        v40 = (self + v37);
         v41 = a2;
         if (v37 == 32)
         {
@@ -14369,20 +14369,20 @@ LABEL_61:
 LABEL_71:
         if (v40 >= v42)
         {
-          v8 = v40;
+          selfCopy = v40;
         }
 
         else
         {
           v46 = v42;
-          v8 = v40;
+          selfCopy = v40;
           do
           {
-            std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(v8, v46);
+            std::_IterOps<std::_ClassicAlgPolicy>::iter_swap[abi:ne200100]<AttachmentTileInfo *&,AttachmentTileInfo *&>(selfCopy, v46);
             do
             {
-              v47 = v8[7];
-              v8 += 4;
+              v47 = selfCopy[7];
+              selfCopy += 4;
             }
 
             while (v47 < v36);
@@ -14395,38 +14395,38 @@ LABEL_71:
             while (v48 >= v36);
           }
 
-          while (v8 < v46);
+          while (selfCopy < v46);
         }
 
-        if (v8 - 4 != a1)
+        if (selfCopy - 4 != self)
         {
-          v49 = *(v8 - 4);
-          *(v8 - 4) = 0.0;
-          v50 = *a1;
-          *a1 = v49;
+          v49 = *(selfCopy - 4);
+          *(selfCopy - 4) = 0.0;
+          v50 = *self;
+          *self = v49;
 
-          v51 = *(v8 - 3);
-          *(a1 + 24) = *(v8 - 1);
-          *(a1 + 8) = v51;
+          v51 = *(selfCopy - 3);
+          *(self + 24) = *(selfCopy - 1);
+          *(self + 8) = v51;
         }
 
-        v52 = *(v8 - 4);
-        *(v8 - 4) = v38;
+        v52 = *(selfCopy - 4);
+        *(selfCopy - 4) = v38;
 
-        *(v8 - 3) = v143;
-        *(v8 - 1) = v36;
+        *(selfCopy - 3) = v143;
+        *(selfCopy - 1) = v36;
         if (v40 >= v42)
         {
           break;
         }
 
 LABEL_84:
-        std::__introsort<std::_ClassicAlgPolicy,[PKTiledView updateTilesForVisibleRectRendering:offscreen:overrideAdditionalStrokes:]::$_0 &,AttachmentTileInfo *,false>(a1, v8 - 4, a3, a4 & 1);
-        a4 = 0;
+        std::__introsort<std::_ClassicAlgPolicy,[PKTiledView updateTilesForVisibleRectRendering:offscreen:overrideAdditionalStrokes:]::$_0 &,AttachmentTileInfo *,false>(self, selfCopy - 4, rendering, offscreen & 1);
+        offscreen = 0;
       }
 
-      v53 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[PKTiledView updateTilesForVisibleRectRendering:offscreen:overrideAdditionalStrokes:]::$_0 &,AttachmentTileInfo *>(a1, v8 - 4);
-      if (std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[PKTiledView updateTilesForVisibleRectRendering:offscreen:overrideAdditionalStrokes:]::$_0 &,AttachmentTileInfo *>(v8, a2))
+      v53 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[PKTiledView updateTilesForVisibleRectRendering:offscreen:overrideAdditionalStrokes:]::$_0 &,AttachmentTileInfo *>(self, selfCopy - 4);
+      if (std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,-[PKTiledView updateTilesForVisibleRectRendering:offscreen:overrideAdditionalStrokes:]::$_0 &,AttachmentTileInfo *>(selfCopy, a2))
       {
         break;
       }
@@ -14437,7 +14437,7 @@ LABEL_84:
       }
     }
 
-    a2 = v8 - 4;
+    a2 = selfCopy - 4;
     if (!v53)
     {
       continue;
@@ -14447,64 +14447,64 @@ LABEL_84:
   }
 }
 
-- (void)setupRefineAnimationFrom:(id)a3 to:(id)a4 inDrawing:(id)a5 completionHandler:(id)a6
+- (void)setupRefineAnimationFrom:(id)from to:(id)to inDrawing:(id)drawing completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(PKTiledView *)self refineAnimationController];
-  [v14 setupRefineAnimationFrom:v13 to:v12 in:v11 completionHandler:v10];
+  handlerCopy = handler;
+  drawingCopy = drawing;
+  toCopy = to;
+  fromCopy = from;
+  refineAnimationController = [(PKTiledView *)self refineAnimationController];
+  [refineAnimationController setupRefineAnimationFrom:fromCopy to:toCopy in:drawingCopy completionHandler:handlerCopy];
 }
 
-- (void)setupRefineAnimationFrom:(id)a3 to:(id)a4 inDrawing:(id)a5 alternateContainerView:(id)a6 alternateDrawingTransform:(CGAffineTransform *)a7 completionHandler:(id)a8
+- (void)setupRefineAnimationFrom:(id)from to:(id)to inDrawing:(id)drawing alternateContainerView:(id)view alternateDrawingTransform:(CGAffineTransform *)transform completionHandler:(id)handler
 {
-  v14 = a8;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [(PKTiledView *)self refineAnimationController];
-  v20 = *&a7->c;
-  v21[0] = *&a7->a;
+  handlerCopy = handler;
+  viewCopy = view;
+  drawingCopy = drawing;
+  toCopy = to;
+  fromCopy = from;
+  refineAnimationController = [(PKTiledView *)self refineAnimationController];
+  v20 = *&transform->c;
+  v21[0] = *&transform->a;
   v21[1] = v20;
-  v21[2] = *&a7->tx;
-  [v19 setupRefineAnimationFrom:v18 to:v17 in:v16 alternateContainerView:v15 alternateDrawingTransform:v21 completionHandler:v14];
+  v21[2] = *&transform->tx;
+  [refineAnimationController setupRefineAnimationFrom:fromCopy to:toCopy in:drawingCopy alternateContainerView:viewCopy alternateDrawingTransform:v21 completionHandler:handlerCopy];
 }
 
-- (void)setupStrokeInAnimationTo:(id)a3 inDrawing:(id)a4 completionHandler:(id)a5
+- (void)setupStrokeInAnimationTo:(id)to inDrawing:(id)drawing completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PKTiledView *)self refineAnimationController];
-  [v11 setupStrokeInAnimationTo:v10 in:v9 completionHandler:v8];
+  handlerCopy = handler;
+  drawingCopy = drawing;
+  toCopy = to;
+  refineAnimationController = [(PKTiledView *)self refineAnimationController];
+  [refineAnimationController setupStrokeInAnimationTo:toCopy in:drawingCopy completionHandler:handlerCopy];
 }
 
-- (void)setupStrokeInAnimationTo:(id)a3 inDrawing:(id)a4 alternateContainerView:(id)a5 alternateDrawingTransform:(CGAffineTransform *)a6 completionHandler:(id)a7
+- (void)setupStrokeInAnimationTo:(id)to inDrawing:(id)drawing alternateContainerView:(id)view alternateDrawingTransform:(CGAffineTransform *)transform completionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(PKTiledView *)self refineAnimationController];
-  v17 = *&a6->c;
-  v18[0] = *&a6->a;
+  handlerCopy = handler;
+  viewCopy = view;
+  drawingCopy = drawing;
+  toCopy = to;
+  refineAnimationController = [(PKTiledView *)self refineAnimationController];
+  v17 = *&transform->c;
+  v18[0] = *&transform->a;
   v18[1] = v17;
-  v18[2] = *&a6->tx;
-  [v16 setupStrokeInAnimationTo:v15 in:v14 alternateContainerView:v13 alternateDrawingTransform:v18 completionHandler:v12];
+  v18[2] = *&transform->tx;
+  [refineAnimationController setupStrokeInAnimationTo:toCopy in:drawingCopy alternateContainerView:viewCopy alternateDrawingTransform:v18 completionHandler:handlerCopy];
 }
 
-- (void)startRefineAnimationWithDuration:(double)a3
+- (void)startRefineAnimationWithDuration:(double)duration
 {
-  v4 = [(PKTiledView *)self refineAnimationController];
-  [v4 startRefineAnimationWithDuration:a3];
+  refineAnimationController = [(PKTiledView *)self refineAnimationController];
+  [refineAnimationController startRefineAnimationWithDuration:duration];
 }
 
 - (void)stopRefineAnimation
 {
-  v2 = [(PKTiledView *)self refineAnimationController];
-  [v2 stopRefineAnimation];
+  refineAnimationController = [(PKTiledView *)self refineAnimationController];
+  [refineAnimationController stopRefineAnimation];
 }
 
 @end

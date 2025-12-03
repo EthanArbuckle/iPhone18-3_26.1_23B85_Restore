@@ -1,15 +1,15 @@
 @interface IMBackgroundMessagingAPIDataAccess
 + (id)appBundleIDs;
-+ (id)recipientsForBundleID:(id)a3;
-+ (id)recipientsForBundleIDFromPreferences:(id)a3;
-+ (unint64_t)enabledPhoneNumbersForBundleID:(id)a3;
++ (id)recipientsForBundleID:(id)d;
++ (id)recipientsForBundleIDFromPreferences:(id)preferences;
++ (unint64_t)enabledPhoneNumbersForBundleID:(id)d;
 + (unint64_t)numberOfAppsUsingBackgroundMessaging;
 + (void)deleteAllData;
 + (void)resetStorageIfNeeded;
-+ (void)saveAppBundleIDs:(id)a3;
-+ (void)saveRecipients:(id)a3 forBundleID:(id)a4;
-+ (void)saveRecipientsToPreferences:(id)a3 forBundleID:(id)a4;
-+ (void)toggleEnablement:(BOOL)a3 forRecipient:(id)a4 inAppBundleID:(id)a5;
++ (void)saveAppBundleIDs:(id)ds;
++ (void)saveRecipients:(id)recipients forBundleID:(id)d;
++ (void)saveRecipientsToPreferences:(id)preferences forBundleID:(id)d;
++ (void)toggleEnablement:(BOOL)enablement forRecipient:(id)recipient inAppBundleID:(id)d;
 @end
 
 @implementation IMBackgroundMessagingAPIDataAccess
@@ -17,13 +17,13 @@
 + (void)deleteAllData
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [a1 appBundleIDs];
+  appBundleIDs = [self appBundleIDs];
   CFPreferencesSetAppValue(@"ApprovedApps", 0, @"com.apple.messages.critical-messaging.storage");
   v10 = 0u;
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = v2;
+  v3 = appBundleIDs;
   v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
@@ -79,7 +79,7 @@
       }
     }
 
-    [a1 deleteAllData];
+    [self deleteAllData];
     v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInt:1];
     CFPreferencesSetAppValue(@"StorageVersion", v6, @"com.apple.messages.critical-messaging.storage");
     CFPreferencesAppSynchronize(@"com.apple.messages.critical-messaging.storage");
@@ -130,17 +130,17 @@
   return v3;
 }
 
-+ (void)saveAppBundleIDs:(id)a3
++ (void)saveAppBundleIDs:(id)ds
 {
-  CFPreferencesSetAppValue(@"ApprovedApps", a3, @"com.apple.messages.critical-messaging.storage");
+  CFPreferencesSetAppValue(@"ApprovedApps", ds, @"com.apple.messages.critical-messaging.storage");
 
   CFPreferencesAppSynchronize(@"com.apple.messages.critical-messaging.storage");
 }
 
-+ (id)recipientsForBundleID:(id)a3
++ (id)recipientsForBundleID:(id)d
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [a1 recipientsForBundleIDFromPreferences:a3];
+  v3 = [self recipientsForBundleIDFromPreferences:d];
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v16 = 0u;
   v17 = 0u;
@@ -180,10 +180,10 @@
   return v4;
 }
 
-+ (id)recipientsForBundleIDFromPreferences:(id)a3
++ (id)recipientsForBundleIDFromPreferences:(id)preferences
 {
-  v3 = a3;
-  v4 = CFPreferencesCopyAppValue(v3, @"com.apple.messages.critical-messaging.storage");
+  preferencesCopy = preferences;
+  v4 = CFPreferencesCopyAppValue(preferencesCopy, @"com.apple.messages.critical-messaging.storage");
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -208,18 +208,18 @@
   return v5;
 }
 
-+ (void)saveRecipientsToPreferences:(id)a3 forBundleID:(id)a4
++ (void)saveRecipientsToPreferences:(id)preferences forBundleID:(id)d
 {
-  CFPreferencesSetAppValue(a4, a3, @"com.apple.messages.critical-messaging.storage");
+  CFPreferencesSetAppValue(d, preferences, @"com.apple.messages.critical-messaging.storage");
 
   CFPreferencesAppSynchronize(@"com.apple.messages.critical-messaging.storage");
 }
 
-+ (void)saveRecipients:(id)a3 forBundleID:(id)a4
++ (void)saveRecipients:(id)recipients forBundleID:(id)d
 {
   v37 = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v5 = a4;
+  recipientsCopy = recipients;
+  dCopy = d;
   v21 = +[IMBackgroundMessagingAPIDataAccess appBundleIDs];
   v30 = 0;
   v31 = &v30;
@@ -229,7 +229,7 @@
   v27[1] = 3221225472;
   v27[2] = sub_1A86D310C;
   v27[3] = &unk_1E7829DA8;
-  v20 = v5;
+  v20 = dCopy;
   v28 = v20;
   v29 = &v30;
   [v21 enumerateObjectsUsingBlock:v27];
@@ -255,8 +255,8 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = [v22 allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v23 objects:v36 count:16];
+  allKeys = [recipientsCopy allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v23 objects:v36 count:16];
   if (v10)
   {
     v11 = *v24;
@@ -266,30 +266,30 @@
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
         v34[0] = @"AuthorizationStatusKey";
-        v14 = [v22 objectForKey:v13];
+        v14 = [recipientsCopy objectForKey:v13];
         v34[1] = @"DisplayNameKey";
         v35[0] = v14;
-        v15 = [v13 displayName];
-        v16 = v15;
+        displayName = [v13 displayName];
+        v16 = displayName;
         v17 = &stru_1F1BB91F0;
-        if (v15)
+        if (displayName)
         {
-          v17 = v15;
+          v17 = displayName;
         }
 
         v35[1] = v17;
         v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:2];
 
-        v19 = [v13 phoneNumber];
-        [v8 setObject:v18 forKey:v19];
+        phoneNumber = [v13 phoneNumber];
+        [v8 setObject:v18 forKey:phoneNumber];
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v23 objects:v36 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v23 objects:v36 count:16];
     }
 
     while (v10);
@@ -299,16 +299,16 @@
   _Block_object_dispose(&v30, 8);
 }
 
-+ (unint64_t)enabledPhoneNumbersForBundleID:(id)a3
++ (unint64_t)enabledPhoneNumbersForBundleID:(id)d
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [a1 recipientsForBundleID:a3];
+  v3 = [self recipientsForBundleID:d];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 allValues];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [v3 allValues];
+  v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -320,7 +320,7 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
         if ([*(*(&v11 + 1) + 8 * i) intValue] == 2)
@@ -329,7 +329,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -343,20 +343,20 @@
   return v7;
 }
 
-+ (void)toggleEnablement:(BOOL)a3 forRecipient:(id)a4 inAppBundleID:(id)a5
++ (void)toggleEnablement:(BOOL)enablement forRecipient:(id)recipient inAppBundleID:(id)d
 {
-  v6 = a3;
-  v17 = a4;
-  v8 = a5;
-  v9 = [a1 recipientsForBundleIDFromPreferences:v8];
+  enablementCopy = enablement;
+  recipientCopy = recipient;
+  dCopy = d;
+  v9 = [self recipientsForBundleIDFromPreferences:dCopy];
   if (v9)
   {
-    v10 = [v17 phoneNumber];
-    v11 = [v9 objectForKey:v10];
+    phoneNumber = [recipientCopy phoneNumber];
+    v11 = [v9 objectForKey:phoneNumber];
 
     if (v11)
     {
-      if (v6)
+      if (enablementCopy)
       {
         v12 = 2;
       }
@@ -370,10 +370,10 @@
       v14 = [v11 mutableCopy];
       [v14 setObject:v13 forKey:@"AuthorizationStatusKey"];
       v15 = [v9 mutableCopy];
-      v16 = [v17 phoneNumber];
-      [v15 setObject:v14 forKey:v16];
+      phoneNumber2 = [recipientCopy phoneNumber];
+      [v15 setObject:v14 forKey:phoneNumber2];
 
-      [IMBackgroundMessagingAPIDataAccess saveRecipientsToPreferences:v15 forBundleID:v8];
+      [IMBackgroundMessagingAPIDataAccess saveRecipientsToPreferences:v15 forBundleID:dCopy];
     }
   }
 }

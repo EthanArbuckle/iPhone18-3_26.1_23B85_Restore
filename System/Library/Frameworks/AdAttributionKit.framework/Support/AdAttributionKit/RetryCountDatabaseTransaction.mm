@@ -1,6 +1,6 @@
 @interface RetryCountDatabaseTransaction
 - (_TtC20AttributionKitDaemon29RetryCountDatabaseTransaction)init;
-- (_TtC20AttributionKitDaemon29RetryCountDatabaseTransaction)initWithConnection:(id)a3;
+- (_TtC20AttributionKitDaemon29RetryCountDatabaseTransaction)initWithConnection:(id)connection;
 @end
 
 @implementation RetryCountDatabaseTransaction
@@ -12,11 +12,11 @@
   return [(RetryCountDatabaseSession *)&v3 init];
 }
 
-- (_TtC20AttributionKitDaemon29RetryCountDatabaseTransaction)initWithConnection:(id)a3
+- (_TtC20AttributionKitDaemon29RetryCountDatabaseTransaction)initWithConnection:(id)connection
 {
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
-  return [(RetryCountDatabaseSession *)&v5 initWithConnection:a3];
+  return [(RetryCountDatabaseSession *)&v5 initWithConnection:connection];
 }
 
 @end

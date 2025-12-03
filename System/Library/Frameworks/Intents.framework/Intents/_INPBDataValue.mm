@@ -1,54 +1,54 @@
 @interface _INPBDataValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBDataValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBDataValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)setValue:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setValue:(id)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBDataValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_value)
   {
-    v4 = [(_INPBDataValue *)self value];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"value"];
+    value = [(_INPBDataValue *)self value];
+    v5 = [value copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"value"];
   }
 
-  v6 = [(_INPBDataValue *)self valueMetadata];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"valueMetadata"];
+  valueMetadata = [(_INPBDataValue *)self valueMetadata];
+  dictionaryRepresentation = [valueMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"valueMetadata"];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBDataValue *)self value];
-  v6 = [v4 value];
-  if ((v5 != 0) == (v6 == 0))
+  value = [(_INPBDataValue *)self value];
+  value2 = [equalCopy value];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBDataValue *)self value];
-  if (v7)
+  value3 = [(_INPBDataValue *)self value];
+  if (value3)
   {
-    v8 = v7;
-    v9 = [(_INPBDataValue *)self value];
-    v10 = [v4 value];
-    v11 = [v9 isEqual:v10];
+    v8 = value3;
+    value4 = [(_INPBDataValue *)self value];
+    value5 = [equalCopy value];
+    v11 = [value4 isEqual:value5];
 
     if (!v11)
     {
@@ -60,12 +60,12 @@
   {
   }
 
-  v5 = [(_INPBDataValue *)self valueMetadata];
-  v6 = [v4 valueMetadata];
-  if ((v5 != 0) != (v6 == 0))
+  value = [(_INPBDataValue *)self valueMetadata];
+  value2 = [equalCopy valueMetadata];
+  if ((value != 0) != (value2 == 0))
   {
-    v12 = [(_INPBDataValue *)self valueMetadata];
-    if (!v12)
+    valueMetadata = [(_INPBDataValue *)self valueMetadata];
+    if (!valueMetadata)
     {
 
 LABEL_15:
@@ -73,10 +73,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBDataValue *)self valueMetadata];
-    v15 = [v4 valueMetadata];
-    v16 = [v14 isEqual:v15];
+    v13 = valueMetadata;
+    valueMetadata2 = [(_INPBDataValue *)self valueMetadata];
+    valueMetadata3 = [equalCopy valueMetadata];
+    v16 = [valueMetadata2 isEqual:valueMetadata3];
 
     if (v16)
     {
@@ -96,65 +96,65 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBDataValue allocWithZone:](_INPBDataValue init];
-  v6 = [(NSData *)self->_value copyWithZone:a3];
+  v6 = [(NSData *)self->_value copyWithZone:zone];
   [(_INPBDataValue *)v5 setValue:v6];
 
-  v7 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:a3];
+  v7 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:zone];
   [(_INPBDataValue *)v5 setValueMetadata:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBDataValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBDataValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBDataValue)initWithCoder:(id)a3
+- (_INPBDataValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBDataValue *)self initWithData:v6];
+    self = [(_INPBDataValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(_INPBDataValue *)self value];
+  toCopy = to;
+  value = [(_INPBDataValue *)self value];
 
-  if (v4)
+  if (value)
   {
     value = self->_value;
     PBDataWriterWriteDataField();
   }
 
-  v6 = [(_INPBDataValue *)self valueMetadata];
+  valueMetadata = [(_INPBDataValue *)self valueMetadata];
 
-  if (v6)
+  if (valueMetadata)
   {
-    v7 = [(_INPBDataValue *)self valueMetadata];
+    valueMetadata2 = [(_INPBDataValue *)self valueMetadata];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   value = self->_value;
   self->_value = v4;
 

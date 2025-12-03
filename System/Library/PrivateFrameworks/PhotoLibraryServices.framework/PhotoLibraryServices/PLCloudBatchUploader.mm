@@ -1,71 +1,71 @@
 @interface PLCloudBatchUploader
-- (BOOL)_hasUnuploadedResourceForAsset:(id)a3 resourceType:(unint64_t)a4 cloudMaster:(id)a5;
-- (BOOL)_processRepushAlbumError:(id)a3 inUploadBatch:(id)a4 forRecords:(id)a5 orderKeyManager:(id)a6 inLibrary:(id)a7;
-- (BOOL)_updateDeletionRecordListForKey:(id)a3 removingRecordID:(id)a4;
-- (BOOL)_validateAdditionalAssetAttributes:(id)a3 onRelatedObject:(id)a4;
-- (BOOL)_validateAsset:(id)a3 onRelatedObject:(id)a4;
-- (PLCloudBatchUploader)initWithLibraryServicesManager:(id)a3;
-- (id)_checkScopeValidityForDeletingRecords:(id)a3 includeMainScopeIdentifier:(id)a4 withRecordChangeClass:(Class)a5 managedObjectContext:(id)a6;
-- (id)_fetchChangesFromLocalEvent:(id)a3 shouldTriggerPrefetch:(BOOL *)a4 inLibrary:(id)a5;
-- (id)_getLocalRecordFromCPLRecord:(id)a3 inLibrary:(id)a4;
-- (id)_personsToUploadIncludingReverseOrderedMergeTargetsForPersons:(id)a3;
-- (id)_syncDescriptionForObject:(id)a3;
-- (id)_validateAssets:(id)a3 fromCloudUuidDeleteList:(id)a4;
-- (id)createBatchesForChanges:(id)a3 outInsertedPhotoCount:(unint64_t *)a4 outInsertedVideoCount:(unint64_t *)a5 withUploadTracker:(id)a6 inLibrary:(id)a7;
+- (BOOL)_hasUnuploadedResourceForAsset:(id)asset resourceType:(unint64_t)type cloudMaster:(id)master;
+- (BOOL)_processRepushAlbumError:(id)error inUploadBatch:(id)batch forRecords:(id)records orderKeyManager:(id)manager inLibrary:(id)library;
+- (BOOL)_updateDeletionRecordListForKey:(id)key removingRecordID:(id)d;
+- (BOOL)_validateAdditionalAssetAttributes:(id)attributes onRelatedObject:(id)object;
+- (BOOL)_validateAsset:(id)asset onRelatedObject:(id)object;
+- (PLCloudBatchUploader)initWithLibraryServicesManager:(id)manager;
+- (id)_checkScopeValidityForDeletingRecords:(id)records includeMainScopeIdentifier:(id)identifier withRecordChangeClass:(Class)class managedObjectContext:(id)context;
+- (id)_fetchChangesFromLocalEvent:(id)event shouldTriggerPrefetch:(BOOL *)prefetch inLibrary:(id)library;
+- (id)_getLocalRecordFromCPLRecord:(id)record inLibrary:(id)library;
+- (id)_personsToUploadIncludingReverseOrderedMergeTargetsForPersons:(id)persons;
+- (id)_syncDescriptionForObject:(id)object;
+- (id)_validateAssets:(id)assets fromCloudUuidDeleteList:(id)list;
+- (id)createBatchesForChanges:(id)changes outInsertedPhotoCount:(unint64_t *)count outInsertedVideoCount:(unint64_t *)videoCount withUploadTracker:(id)tracker inLibrary:(id)library;
 - (id)pop;
-- (id)processCommitError:(id)a3 andFinalizeError:(id)a4 forUploadBatchContainer:(id)a5 withUploadTracker:(id)a6 inLibrary:(id)a7;
-- (void)_addAsset:(id)a3 toAssetChanges:(id)a4 isInsert:(BOOL)a5 seenAssetUuid:(id)a6;
-- (void)_addLocalResourcesToRecord:(id)a3 inLibrary:(id)a4;
-- (void)_cleanUploadedResources:(id)a3 inLibrary:(id)a4;
-- (void)_clearSuccessfullyPushedDeletedRecords:(id)a3;
-- (void)_handleInvalidAsset:(id)a3;
-- (void)_handleSharingChanges:(id)a3 forUploadEvent:(id)a4 inManagedObjectContext:(id)a5;
-- (void)_incrementUploadAttemptsAndPushStateForAssets:(id)a3;
-- (void)_processAlbumInserts:(id)a3 albumChanges:(id)a4 withBatchManager:(id)a5 inLibrary:(id)a6;
-- (void)_processChangeToFullRecordCommitError:(id)a3 inUploadBatch:(id)a4 forRecords:(id)a5 inLibrary:(id)a6;
-- (void)_processGenerateDerivativesCommitError:(id)a3 inUploadBatch:(id)a4 forRecords:(id)a5 inLibrary:(id)a6;
-- (void)_processIncludeMasterCommitError:(id)a3 inUploadBatch:(id)a4 forRecords:(id)a5 inLibrary:(id)a6;
-- (void)_processInvalidExpungeableResourceTypesCommitError:(id)a3 inUploadBatch:(id)a4 forRecords:(id)a5 inLibrary:(id)a6;
-- (void)_processInvalidResourceCopySourceCommitError:(id)a3 inUploadBatch:(id)a4 forRecords:(id)a5 orderKeyManager:(id)a6 inLibrary:(id)a7;
-- (void)_processInvalidScopeCommitError:(id)a3 inUploadBatch:(id)a4 forRecords:(id)a5 inLibrary:(id)a6;
-- (void)_processPendingObjects:(id)a3 forEntityName:(id)a4 withBatchManager:(id)a5 inLibrary:(id)a6;
-- (void)_processQuarantineRecordsCommitError:(id)a3 inUploadBatch:(id)a4 forRecords:(id)a5 uploadTracker:(id)a6 inLibrary:(id)a7;
-- (void)_promptForNilAssetUUID:(id)a3 isInsert:(BOOL)a4;
-- (void)_promptToFileRadarWithTitle:(id)a3 description:(id)a4;
-- (void)_pushBatches:(id)a3;
-- (void)_quarantineObject:(id)a3 uploadTracker:(id)a4;
-- (void)_sendAlbums:(id)a3 toBatchManager:(id)a4 orderKeyManager:(id)a5 inLibrary:(id)a6;
-- (void)_sendAssets:(id)a3 toBatchManager:(id)a4 orderKeyManager:(id)a5 inLibrary:(id)a6;
-- (void)_sendOneBatch:(id)a3 toBatchManager:(id)a4 inLibrary:(id)a5;
-- (void)_sortData:(id)a3 isInsert:(BOOL)a4 forUploadChanges:(id)a5 shouldTriggerPrefetch:(BOOL *)a6 inManagedObjectContext:(id)a7;
-- (void)_sortRelationshipData:(id)a3 forUploadChanges:(id)a4 inManagedObjectContext:(id)a5;
+- (id)processCommitError:(id)error andFinalizeError:(id)finalizeError forUploadBatchContainer:(id)container withUploadTracker:(id)tracker inLibrary:(id)library;
+- (void)_addAsset:(id)asset toAssetChanges:(id)changes isInsert:(BOOL)insert seenAssetUuid:(id)uuid;
+- (void)_addLocalResourcesToRecord:(id)record inLibrary:(id)library;
+- (void)_cleanUploadedResources:(id)resources inLibrary:(id)library;
+- (void)_clearSuccessfullyPushedDeletedRecords:(id)records;
+- (void)_handleInvalidAsset:(id)asset;
+- (void)_handleSharingChanges:(id)changes forUploadEvent:(id)event inManagedObjectContext:(id)context;
+- (void)_incrementUploadAttemptsAndPushStateForAssets:(id)assets;
+- (void)_processAlbumInserts:(id)inserts albumChanges:(id)changes withBatchManager:(id)manager inLibrary:(id)library;
+- (void)_processChangeToFullRecordCommitError:(id)error inUploadBatch:(id)batch forRecords:(id)records inLibrary:(id)library;
+- (void)_processGenerateDerivativesCommitError:(id)error inUploadBatch:(id)batch forRecords:(id)records inLibrary:(id)library;
+- (void)_processIncludeMasterCommitError:(id)error inUploadBatch:(id)batch forRecords:(id)records inLibrary:(id)library;
+- (void)_processInvalidExpungeableResourceTypesCommitError:(id)error inUploadBatch:(id)batch forRecords:(id)records inLibrary:(id)library;
+- (void)_processInvalidResourceCopySourceCommitError:(id)error inUploadBatch:(id)batch forRecords:(id)records orderKeyManager:(id)manager inLibrary:(id)library;
+- (void)_processInvalidScopeCommitError:(id)error inUploadBatch:(id)batch forRecords:(id)records inLibrary:(id)library;
+- (void)_processPendingObjects:(id)objects forEntityName:(id)name withBatchManager:(id)manager inLibrary:(id)library;
+- (void)_processQuarantineRecordsCommitError:(id)error inUploadBatch:(id)batch forRecords:(id)records uploadTracker:(id)tracker inLibrary:(id)library;
+- (void)_promptForNilAssetUUID:(id)d isInsert:(BOOL)insert;
+- (void)_promptToFileRadarWithTitle:(id)title description:(id)description;
+- (void)_pushBatches:(id)batches;
+- (void)_quarantineObject:(id)object uploadTracker:(id)tracker;
+- (void)_sendAlbums:(id)albums toBatchManager:(id)manager orderKeyManager:(id)keyManager inLibrary:(id)library;
+- (void)_sendAssets:(id)assets toBatchManager:(id)manager orderKeyManager:(id)keyManager inLibrary:(id)library;
+- (void)_sendOneBatch:(id)batch toBatchManager:(id)manager inLibrary:(id)library;
+- (void)_sortData:(id)data isInsert:(BOOL)insert forUploadChanges:(id)changes shouldTriggerPrefetch:(BOOL *)prefetch inManagedObjectContext:(id)context;
+- (void)_sortRelationshipData:(id)data forUploadChanges:(id)changes inManagedObjectContext:(id)context;
 - (void)clearUploadArray;
-- (void)handleUploadBatchesFromLocalEvent:(id)a3 outInsertedPhotoCount:(unint64_t *)a4 outInsertedVideoCount:(unint64_t *)a5 shouldTriggerPrefetch:(BOOL *)a6 withUploadTracker:(id)a7 inLibrary:(id)a8;
-- (void)processMomentSharesNeedingForceSyncInLibrary:(id)a3;
-- (void)quarantineRecord:(id)a3 uploadTracker:(id)a4 inLibrary:(id)a5;
-- (void)recordDeletions:(id)a3;
-- (void)recordMomentSharesNeedingForceSync:(id)a3 inLibrary:(id)a4;
-- (void)tryToFixCommitError:(id)a3 inUploadBatch:(id)a4 forRecords:(id)a5 uploadTracker:(id)a6 orderKeyManager:(id)a7 inLibrary:(id)a8;
-- (void)uploadDeletedRecordsFromPlist:(id)a3;
-- (void)uploadFullPhotoLibraryToCloud:(id)a3;
+- (void)handleUploadBatchesFromLocalEvent:(id)event outInsertedPhotoCount:(unint64_t *)count outInsertedVideoCount:(unint64_t *)videoCount shouldTriggerPrefetch:(BOOL *)prefetch withUploadTracker:(id)tracker inLibrary:(id)library;
+- (void)processMomentSharesNeedingForceSyncInLibrary:(id)library;
+- (void)quarantineRecord:(id)record uploadTracker:(id)tracker inLibrary:(id)library;
+- (void)recordDeletions:(id)deletions;
+- (void)recordMomentSharesNeedingForceSync:(id)sync inLibrary:(id)library;
+- (void)tryToFixCommitError:(id)error inUploadBatch:(id)batch forRecords:(id)records uploadTracker:(id)tracker orderKeyManager:(id)manager inLibrary:(id)library;
+- (void)uploadDeletedRecordsFromPlist:(id)plist;
+- (void)uploadFullPhotoLibraryToCloud:(id)cloud;
 @end
 
 @implementation PLCloudBatchUploader
 
-- (void)processMomentSharesNeedingForceSyncInLibrary:(id)a3
+- (void)processMomentSharesNeedingForceSyncInLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   if ([(NSMutableSet *)self->_momentSharesNeedingForceSync count])
   {
-    v5 = [(NSMutableSet *)self->_momentSharesNeedingForceSync allObjects];
-    [PLMomentShare forceSyncMomentShares:v5 photoLibrary:v4];
+    allObjects = [(NSMutableSet *)self->_momentSharesNeedingForceSync allObjects];
+    [PLMomentShare forceSyncMomentShares:allObjects photoLibrary:libraryCopy];
 
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __69__PLCloudBatchUploader_processMomentSharesNeedingForceSyncInLibrary___block_invoke;
     v6[3] = &unk_1E75781E8;
     v6[4] = self;
-    [v4 performBlockAndWait:v6];
+    [libraryCopy performBlockAndWait:v6];
     [(NSMutableSet *)self->_momentSharesNeedingForceSync removeAllObjects];
   }
 }
@@ -104,17 +104,17 @@ void __69__PLCloudBatchUploader_processMomentSharesNeedingForceSyncInLibrary___b
   }
 }
 
-- (void)recordMomentSharesNeedingForceSync:(id)a3 inLibrary:(id)a4
+- (void)recordMomentSharesNeedingForceSync:(id)sync inLibrary:(id)library
 {
-  v6 = a3;
+  syncCopy = sync;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __69__PLCloudBatchUploader_recordMomentSharesNeedingForceSync_inLibrary___block_invoke;
   v8[3] = &unk_1E7578848;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
-  [a4 performBlockAndWait:v8];
+  v9 = syncCopy;
+  selfCopy = self;
+  v7 = syncCopy;
+  [library performBlockAndWait:v8];
 }
 
 void __69__PLCloudBatchUploader_recordMomentSharesNeedingForceSync_inLibrary___block_invoke(uint64_t a1)
@@ -156,19 +156,19 @@ void __69__PLCloudBatchUploader_recordMomentSharesNeedingForceSync_inLibrary___b
   }
 }
 
-- (id)processCommitError:(id)a3 andFinalizeError:(id)a4 forUploadBatchContainer:(id)a5 withUploadTracker:(id)a6 inLibrary:(id)a7
+- (id)processCommitError:(id)error andFinalizeError:(id)finalizeError forUploadBatchContainer:(id)container withUploadTracker:(id)tracker inLibrary:(id)library
 {
   v88 = *MEMORY[0x1E69E9840];
-  v39 = a3;
-  v41 = a4;
-  v43 = a5;
-  v35 = a6;
-  v55 = a7;
-  v49 = [MEMORY[0x1E695DF90] dictionary];
-  v40 = [v43 batch];
-  if (v39 | v41)
+  errorCopy = error;
+  finalizeErrorCopy = finalizeError;
+  containerCopy = container;
+  trackerCopy = tracker;
+  libraryCopy = library;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  batch = [containerCopy batch];
+  if (errorCopy | finalizeErrorCopy)
   {
-    if ([PLCloudPhotoLibraryManager needResetSyncErrorType:?]|| [PLCloudPhotoLibraryManager needResetSyncErrorType:v41])
+    if ([PLCloudPhotoLibraryManager needResetSyncErrorType:?]|| [PLCloudPhotoLibraryManager needResetSyncErrorType:finalizeErrorCopy])
     {
       v38 = 1;
 LABEL_5:
@@ -176,9 +176,9 @@ LABEL_5:
       goto LABEL_23;
     }
 
-    if ([v40 count])
+    if ([batch count])
     {
-      if ([v43 wasFixed] & 1) != 0 || (objc_msgSend(v43, "wasSplit"))
+      if ([containerCopy wasFixed] & 1) != 0 || (objc_msgSend(containerCopy, "wasSplit"))
       {
         v12 = MEMORY[0x1E6994D48];
         if ((*MEMORY[0x1E6994D48] & 1) == 0)
@@ -187,21 +187,21 @@ LABEL_5:
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 67109120;
-            *&buf[4] = [v43 retryCount];
+            *&buf[4] = [containerCopy retryCount];
             _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Batch retry count: %d", buf, 8u);
           }
         }
 
-        if ([v43 wasSplit] && objc_msgSend(v43, "retryCount"))
+        if ([containerCopy wasSplit] && objc_msgSend(containerCopy, "retryCount"))
         {
           if ((*v12 & 1) == 0)
           {
             v14 = __CPLAssetsdOSLogDomain();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
             {
-              v15 = [v43 retryCount];
+              retryCount = [containerCopy retryCount];
               *buf = 67109120;
-              *&buf[4] = v15;
+              *&buf[4] = retryCount;
               _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Batch exceeded max retry count: %d for permanent failure, marking as failed", buf, 8u);
             }
           }
@@ -210,15 +210,15 @@ LABEL_5:
           goto LABEL_5;
         }
 
-        v16 = [v43 batchesSplitForError];
-        [(PLCloudBatchUploader *)self _pushBatches:v16];
+        batchesSplitForError = [containerCopy batchesSplitForError];
+        [(PLCloudBatchUploader *)self _pushBatches:batchesSplitForError];
       }
 
       else
       {
-        [(PLCloudBatchUploader *)self _push:v43];
-        [v43 setWasFixed:1];
-        [v43 incrementRetryCount];
+        [(PLCloudBatchUploader *)self _push:containerCopy];
+        [containerCopy setWasFixed:1];
+        [containerCopy incrementRetryCount];
       }
     }
   }
@@ -226,25 +226,25 @@ LABEL_5:
   v38 = 0;
   v44 = 0;
 LABEL_23:
-  v53 = [MEMORY[0x1E695DF70] array];
-  v51 = [MEMORY[0x1E695DF70] array];
-  v52 = [MEMORY[0x1E695DF70] array];
-  v50 = [MEMORY[0x1E695DF70] array];
-  v48 = [MEMORY[0x1E695DF70] array];
-  v47 = [MEMORY[0x1E695DF70] array];
-  v46 = [MEMORY[0x1E695DF70] array];
-  v45 = [MEMORY[0x1E695DF70] array];
-  v42 = [MEMORY[0x1E695DF70] array];
-  v37 = [MEMORY[0x1E695DF70] array];
-  v36 = [MEMORY[0x1E695DF70] array];
-  v54 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
+  array5 = [MEMORY[0x1E695DF70] array];
+  array6 = [MEMORY[0x1E695DF70] array];
+  array7 = [MEMORY[0x1E695DF70] array];
+  array8 = [MEMORY[0x1E695DF70] array];
+  array9 = [MEMORY[0x1E695DF70] array];
+  array10 = [MEMORY[0x1E695DF70] array];
+  array11 = [MEMORY[0x1E695DF70] array];
+  array12 = [MEMORY[0x1E695DF70] array];
   v81 = 0u;
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v17 = [v40 records];
-  v18 = [v17 countByEnumeratingWithState:&v79 objects:v87 count:16];
-  v19 = v44 | ((v39 | v41) == 0);
+  records = [batch records];
+  v18 = [records countByEnumeratingWithState:&v79 objects:v87 count:16];
+  v19 = v44 | ((errorCopy | finalizeErrorCopy) == 0);
   if (v18)
   {
     v20 = *v80;
@@ -255,22 +255,22 @@ LABEL_23:
       {
         if (*v80 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(records);
         }
 
         v22 = *(*(&v79 + 1) + 8 * v21);
         if ((v19 & [v22 supportsResources]) == 1)
         {
-          [(PLCloudBatchUploader *)self _cleanUploadedResources:v22 inLibrary:v55];
+          [(PLCloudBatchUploader *)self _cleanUploadedResources:v22 inLibrary:libraryCopy];
         }
 
-        v23 = [v22 scopedIdentifier];
-        v24 = [v23 identifier];
-        if (v24)
+        scopedIdentifier = [v22 scopedIdentifier];
+        identifier = [scopedIdentifier identifier];
+        if (identifier)
         {
           if ([v22 changeType] == 1024)
           {
-            [v54 addObject:v22];
+            [array12 addObject:v22];
           }
 
           else
@@ -278,7 +278,7 @@ LABEL_23:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              [v53 addObject:v23];
+              [array addObject:scopedIdentifier];
             }
 
             else
@@ -286,7 +286,7 @@ LABEL_23:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                [v52 addObject:v24];
+                [array3 addObject:identifier];
               }
 
               else
@@ -294,7 +294,7 @@ LABEL_23:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  [v51 addObject:v23];
+                  [array2 addObject:scopedIdentifier];
                 }
 
                 else
@@ -302,7 +302,7 @@ LABEL_23:
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    [v50 addObject:v24];
+                    [array4 addObject:identifier];
                   }
 
                   else
@@ -312,12 +312,12 @@ LABEL_23:
                     {
                       if ([PLUserFeedback shouldHandleCPLSuggestionChange:v22])
                       {
-                        [v47 addObject:v24];
+                        [array6 addObject:identifier];
                       }
 
                       else
                       {
-                        [v48 addObject:v24];
+                        [array5 addObject:identifier];
                       }
                     }
 
@@ -326,7 +326,7 @@ LABEL_23:
                       objc_opt_class();
                       if (objc_opt_isKindOfClass())
                       {
-                        [v46 addObject:v24];
+                        [array7 addObject:identifier];
                       }
 
                       else
@@ -334,7 +334,7 @@ LABEL_23:
                         objc_opt_class();
                         if (objc_opt_isKindOfClass())
                         {
-                          [v45 addObject:v24];
+                          [array8 addObject:identifier];
                         }
 
                         else
@@ -342,7 +342,7 @@ LABEL_23:
                           objc_opt_class();
                           if (objc_opt_isKindOfClass())
                           {
-                            [v42 addObject:v24];
+                            [array9 addObject:identifier];
                           }
 
                           else
@@ -350,7 +350,7 @@ LABEL_23:
                             objc_opt_class();
                             if (objc_opt_isKindOfClass())
                             {
-                              [v37 addObject:v24];
+                              [array10 addObject:identifier];
                             }
 
                             else
@@ -358,7 +358,7 @@ LABEL_23:
                               objc_opt_class();
                               if (objc_opt_isKindOfClass())
                               {
-                                [v36 addObject:v24];
+                                [array11 addObject:identifier];
                               }
                             }
                           }
@@ -374,7 +374,7 @@ LABEL_23:
 
         else
         {
-          v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Missing identifier for change %@, Please file a Radar to Photos Backend iCloud with 'cplctl diagnose' logs and relate to 32789330", objc_opt_class(), v35];
+          trackerCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Missing identifier for change %@, Please file a Radar to Photos Backend iCloud with 'cplctl diagnose' logs and relate to 32789330", objc_opt_class(), trackerCopy];
           PLSimulateCrash();
         }
 
@@ -382,7 +382,7 @@ LABEL_23:
       }
 
       while (v18 != v21);
-      v26 = [v17 countByEnumeratingWithState:&v79 objects:v87 count:16];
+      v26 = [records countByEnumeratingWithState:&v79 objects:v87 count:16];
       v18 = v26;
     }
 
@@ -410,57 +410,57 @@ LABEL_23:
       v28 = 1;
     }
 
-    if ((v44 & 1) == 0 && [v54 count] && -[NSMutableDictionary count](self->_recordsToDelete, "count"))
+    if ((v44 & 1) == 0 && [array12 count] && -[NSMutableDictionary count](self->_recordsToDelete, "count"))
     {
-      [(PLCloudBatchUploader *)self _clearSuccessfullyPushedDeletedRecords:v54];
+      [(PLCloudBatchUploader *)self _clearSuccessfullyPushedDeletedRecords:array12];
     }
 
     v56[0] = MEMORY[0x1E69E9820];
     v56[1] = 3221225472;
     v56[2] = __112__PLCloudBatchUploader_processCommitError_andFinalizeError_forUploadBatchContainer_withUploadTracker_inLibrary___block_invoke;
     v56[3] = &unk_1E75647C8;
-    v57 = v52;
-    v58 = v55;
+    v57 = array3;
+    v58 = libraryCopy;
     v73 = v28;
-    v59 = v50;
-    v60 = v48;
-    v61 = v47;
-    v62 = v46;
-    v63 = v42;
-    v64 = v37;
-    v65 = v36;
-    v66 = v53;
+    v59 = array4;
+    v60 = array5;
+    v61 = array6;
+    v62 = array7;
+    v63 = array9;
+    v64 = array10;
+    v65 = array11;
+    v66 = array;
     v71 = buf;
     v72 = &v75;
-    v67 = v51;
+    v67 = array2;
     v74 = v44;
-    v68 = v35;
-    v69 = v49;
-    v70 = v45;
+    v68 = trackerCopy;
+    v69 = dictionary;
+    v70 = array8;
     [v58 performTransactionAndWait:v56];
 
     v27 = *(v84 + 3);
   }
 
   v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v27];
-  [v49 setValue:v29 forKey:@"pushedPhotoCount"];
+  [dictionary setValue:v29 forKey:@"pushedPhotoCount"];
 
   v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v76[3]];
-  [v49 setValue:v30 forKey:@"pushedVideoCount"];
+  [dictionary setValue:v30 forKey:@"pushedVideoCount"];
 
   v31 = [MEMORY[0x1E696AD98] numberWithBool:v38];
-  [v49 setValue:v31 forKey:@"resetSyncNeeded"];
+  [dictionary setValue:v31 forKey:@"resetSyncNeeded"];
 
-  v32 = [MEMORY[0x1E696AD98] numberWithBool:(v39 | v41) != 0];
-  [v49 setValue:v32 forKey:@"hadError"];
+  v32 = [MEMORY[0x1E696AD98] numberWithBool:(errorCopy | finalizeErrorCopy) != 0];
+  [dictionary setValue:v32 forKey:@"hadError"];
 
   v33 = [MEMORY[0x1E696AD98] numberWithBool:v44];
-  [v49 setObject:v33 forKey:@"hadPermanentError"];
+  [dictionary setObject:v33 forKey:@"hadPermanentError"];
 
   _Block_object_dispose(&v75, 8);
   _Block_object_dispose(buf, 8);
 
-  return v49;
+  return dictionary;
 }
 
 void __112__PLCloudBatchUploader_processCommitError_andFinalizeError_forUploadBatchContainer_withUploadTracker_inLibrary___block_invoke(uint64_t a1)
@@ -1243,14 +1243,14 @@ LABEL_166:
   }
 }
 
-- (void)_clearSuccessfullyPushedDeletedRecords:(id)a3
+- (void)_clearSuccessfullyPushedDeletedRecords:(id)records
 {
   v35 = *MEMORY[0x1E69E9840];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = a3;
+  obj = records;
   v4 = [obj countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v4)
   {
@@ -1266,21 +1266,21 @@ LABEL_166:
           objc_enumerationMutation(obj);
         }
 
-        v9 = [*(*(&v26 + 1) + 8 * i) scopedIdentifier];
-        v10 = [v9 identifier];
+        scopedIdentifier = [*(*(&v26 + 1) + 8 * i) scopedIdentifier];
+        identifier = [scopedIdentifier identifier];
 
         objc_opt_class();
         v11 = @"RKVersion";
         if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), v11 = @"RKMaster", (objc_opt_isKindOfClass()) || (objc_opt_class(), v11 = @"RKMemory", (objc_opt_isKindOfClass()) || (objc_opt_class(), v11 = @"RKPerson", (objc_opt_isKindOfClass()) || (objc_opt_class(), v11 = @"RKFaceCrop", (objc_opt_isKindOfClass()) || (objc_opt_class(), v11 = @"RKAlbum", (objc_opt_isKindOfClass()))
         {
-          if ([(PLCloudBatchUploader *)self _updateDeletionRecordListForKey:v11 removingRecordID:v10])
+          if ([(PLCloudBatchUploader *)self _updateDeletionRecordListForKey:v11 removingRecordID:identifier])
           {
             v6 = 1;
           }
 
           else if ([(__CFString *)v11 isEqualToString:@"RKAlbum"])
           {
-            v6 = [(PLCloudBatchUploader *)self _updateDeletionRecordListForKey:@"RKFolder" removingRecordID:v10];
+            v6 = [(PLCloudBatchUploader *)self _updateDeletionRecordListForKey:@"RKFolder" removingRecordID:identifier];
           }
 
           else
@@ -1331,10 +1331,10 @@ LABEL_166:
         }
       }
 
-      v19 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v20 = self->_recordsToDeletePlistPath;
       v25 = 0;
-      [v19 removeItemAtPath:v20 error:&v25];
+      [defaultManager removeItemAtPath:v20 error:&v25];
       v21 = v25;
 
       if (v21)
@@ -1371,17 +1371,17 @@ LABEL_36:
 LABEL_37:
 }
 
-- (BOOL)_updateDeletionRecordListForKey:(id)a3 removingRecordID:(id)a4
+- (BOOL)_updateDeletionRecordListForKey:(id)key removingRecordID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_recordsToDelete objectForKey:v6];
-  if ([v8 count] && objc_msgSend(v8, "containsObject:", v7))
+  keyCopy = key;
+  dCopy = d;
+  v8 = [(NSMutableDictionary *)self->_recordsToDelete objectForKey:keyCopy];
+  if ([v8 count] && objc_msgSend(v8, "containsObject:", dCopy))
   {
-    [v8 removeObject:v7];
+    [v8 removeObject:dCopy];
     if (![v8 count])
     {
-      [(NSMutableDictionary *)self->_recordsToDelete removeObjectForKey:v6];
+      [(NSMutableDictionary *)self->_recordsToDelete removeObjectForKey:keyCopy];
     }
 
     v9 = 1;
@@ -1395,14 +1395,14 @@ LABEL_37:
   return v9;
 }
 
-- (BOOL)_processRepushAlbumError:(id)a3 inUploadBatch:(id)a4 forRecords:(id)a5 orderKeyManager:(id)a6 inLibrary:(id)a7
+- (BOOL)_processRepushAlbumError:(id)error inUploadBatch:(id)batch forRecords:(id)records orderKeyManager:(id)manager inLibrary:(id)library
 {
   v43 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  errorCopy = error;
+  batchCopy = batch;
+  recordsCopy = records;
+  managerCopy = manager;
+  libraryCopy = library;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -1413,11 +1413,11 @@ LABEL_37:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v38 = v14;
+      v38 = batchCopy;
       v39 = 2112;
-      v40 = v15;
+      v40 = recordsCopy;
       v41 = 2112;
-      v42 = v13;
+      v42 = errorCopy;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "Received error while upload batch: %@ forRecords: %@ : Error: %@. We need to repush these albums", buf, 0x20u);
     }
   }
@@ -1426,16 +1426,16 @@ LABEL_37:
   v25[1] = 3221225472;
   v25[2] = __100__PLCloudBatchUploader__processRepushAlbumError_inUploadBatch_forRecords_orderKeyManager_inLibrary___block_invoke;
   v25[3] = &unk_1E75647A0;
-  v19 = v15;
+  v19 = recordsCopy;
   v26 = v19;
-  v20 = v17;
+  v20 = libraryCopy;
   v32 = a2;
   v27 = v20;
-  v28 = self;
-  v21 = v16;
+  selfCopy = self;
+  v21 = managerCopy;
   v29 = v21;
   v31 = &v33;
-  v22 = v14;
+  v22 = batchCopy;
   v30 = v22;
   [v20 performBlockAndWait:v25];
   v23 = *(v34 + 24);
@@ -1521,35 +1521,35 @@ void __100__PLCloudBatchUploader__processRepushAlbumError_inUploadBatch_forRecor
 LABEL_20:
 }
 
-- (void)_processGenerateDerivativesCommitError:(id)a3 inUploadBatch:(id)a4 forRecords:(id)a5 inLibrary:(id)a6
+- (void)_processGenerateDerivativesCommitError:(id)error inUploadBatch:(id)batch forRecords:(id)records inLibrary:(id)library
 {
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  errorCopy = error;
+  batchCopy = batch;
+  recordsCopy = records;
+  libraryCopy = library;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     v14 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v32 = v11;
+      v32 = batchCopy;
       v33 = 2112;
-      v34 = v12;
+      v34 = recordsCopy;
       v35 = 2112;
-      v36 = v10;
+      v36 = errorCopy;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Received error while upload batch: %@ forRecords: %@ : Error: %@. We need to re-generate derivatives", buf, 0x20u);
     }
   }
 
-  v25 = v10;
+  v25 = errorCopy;
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v15 = [v11 records];
-  v16 = [v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  records = [batchCopy records];
+  v16 = [records countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v16)
   {
     v17 = v16;
@@ -1560,12 +1560,12 @@ LABEL_20:
       {
         if (*v27 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(records);
         }
 
         v20 = *(*(&v26 + 1) + 8 * i);
-        v21 = [v20 scopedIdentifier];
-        v22 = [v12 containsObject:v21];
+        scopedIdentifier = [v20 scopedIdentifier];
+        v22 = [recordsCopy containsObject:scopedIdentifier];
 
         if (v22)
         {
@@ -1580,116 +1580,116 @@ LABEL_20:
             }
           }
 
-          [(PLCloudBatchUploader *)self _addLocalResourcesToRecord:v20 inLibrary:v13];
+          [(PLCloudBatchUploader *)self _addLocalResourcesToRecord:v20 inLibrary:libraryCopy];
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v17 = [records countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v17);
   }
 }
 
-- (void)tryToFixCommitError:(id)a3 inUploadBatch:(id)a4 forRecords:(id)a5 uploadTracker:(id)a6 orderKeyManager:(id)a7 inLibrary:(id)a8
+- (void)tryToFixCommitError:(id)error inUploadBatch:(id)batch forRecords:(id)records uploadTracker:(id)tracker orderKeyManager:(id)manager inLibrary:(id)library
 {
-  v43 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [v15 objectForKey:@"regenerateDerivativeError"];
+  errorCopy = error;
+  batchCopy = batch;
+  recordsCopy = records;
+  trackerCopy = tracker;
+  managerCopy = manager;
+  libraryCopy = library;
+  v19 = [recordsCopy objectForKey:@"regenerateDerivativeError"];
   v20 = [v19 count];
 
   if (v20)
   {
-    v21 = [v15 objectForKey:@"regenerateDerivativeError"];
-    [(PLCloudBatchUploader *)self _processGenerateDerivativesCommitError:v43 inUploadBatch:v14 forRecords:v21 inLibrary:v18];
+    v21 = [recordsCopy objectForKey:@"regenerateDerivativeError"];
+    [(PLCloudBatchUploader *)self _processGenerateDerivativesCommitError:errorCopy inUploadBatch:batchCopy forRecords:v21 inLibrary:libraryCopy];
   }
 
-  v22 = [v15 objectForKey:@"needMasterError"];
+  v22 = [recordsCopy objectForKey:@"needMasterError"];
   v23 = [v22 count];
 
   if (v23)
   {
-    v24 = [v15 objectForKey:@"needMasterError"];
-    [(PLCloudBatchUploader *)self _processIncludeMasterCommitError:v43 inUploadBatch:v14 forRecords:v24 inLibrary:v18];
+    v24 = [recordsCopy objectForKey:@"needMasterError"];
+    [(PLCloudBatchUploader *)self _processIncludeMasterCommitError:errorCopy inUploadBatch:batchCopy forRecords:v24 inLibrary:libraryCopy];
   }
 
-  v25 = [v15 objectForKey:@"needFullChangeError"];
+  v25 = [recordsCopy objectForKey:@"needFullChangeError"];
   v26 = [v25 count];
 
   if (v26)
   {
-    v27 = [v15 objectForKey:@"needFullChangeError"];
-    [(PLCloudBatchUploader *)self _processChangeToFullRecordCommitError:v43 inUploadBatch:v14 forRecords:v27 inLibrary:v18];
+    v27 = [recordsCopy objectForKey:@"needFullChangeError"];
+    [(PLCloudBatchUploader *)self _processChangeToFullRecordCommitError:errorCopy inUploadBatch:batchCopy forRecords:v27 inLibrary:libraryCopy];
   }
 
-  v28 = [v15 objectForKey:@"repushAlbumError"];
+  v28 = [recordsCopy objectForKey:@"repushAlbumError"];
   v29 = [v28 count];
 
   if (v29)
   {
-    v30 = [v15 objectForKey:@"repushAlbumError"];
-    [(PLCloudBatchUploader *)self _processRepushAlbumError:v43 inUploadBatch:v14 forRecords:v30 orderKeyManager:v17 inLibrary:v18];
+    v30 = [recordsCopy objectForKey:@"repushAlbumError"];
+    [(PLCloudBatchUploader *)self _processRepushAlbumError:errorCopy inUploadBatch:batchCopy forRecords:v30 orderKeyManager:managerCopy inLibrary:libraryCopy];
   }
 
-  v31 = [v15 objectForKey:@"quarantinedRecordError"];
+  v31 = [recordsCopy objectForKey:@"quarantinedRecordError"];
   v32 = [v31 count];
 
   if (v32)
   {
-    v33 = [v15 objectForKey:@"quarantinedRecordError"];
-    [(PLCloudBatchUploader *)self _processQuarantineRecordsCommitError:v43 inUploadBatch:v14 forRecords:v33 uploadTracker:v16 inLibrary:v18];
+    v33 = [recordsCopy objectForKey:@"quarantinedRecordError"];
+    [(PLCloudBatchUploader *)self _processQuarantineRecordsCommitError:errorCopy inUploadBatch:batchCopy forRecords:v33 uploadTracker:trackerCopy inLibrary:libraryCopy];
   }
 
-  v34 = [v15 objectForKey:@"invalidScopeError"];
+  v34 = [recordsCopy objectForKey:@"invalidScopeError"];
   v35 = [v34 count];
 
   if (v35)
   {
-    v36 = [v15 objectForKey:@"invalidScopeError"];
-    [(PLCloudBatchUploader *)self _processInvalidScopeCommitError:v43 inUploadBatch:v14 forRecords:v36 inLibrary:v18];
+    v36 = [recordsCopy objectForKey:@"invalidScopeError"];
+    [(PLCloudBatchUploader *)self _processInvalidScopeCommitError:errorCopy inUploadBatch:batchCopy forRecords:v36 inLibrary:libraryCopy];
   }
 
-  v37 = [v15 objectForKey:@"invalidResourceCopySourceError"];
+  v37 = [recordsCopy objectForKey:@"invalidResourceCopySourceError"];
   v38 = [v37 count];
 
   if (v38)
   {
-    v39 = [v15 objectForKey:@"invalidResourceCopySourceError"];
-    [(PLCloudBatchUploader *)self _processInvalidResourceCopySourceCommitError:v43 inUploadBatch:v14 forRecords:v39 orderKeyManager:v17 inLibrary:v18];
+    v39 = [recordsCopy objectForKey:@"invalidResourceCopySourceError"];
+    [(PLCloudBatchUploader *)self _processInvalidResourceCopySourceCommitError:errorCopy inUploadBatch:batchCopy forRecords:v39 orderKeyManager:managerCopy inLibrary:libraryCopy];
   }
 
-  v40 = [v15 objectForKey:@"invalidExpungeableResourceTypes"];
+  v40 = [recordsCopy objectForKey:@"invalidExpungeableResourceTypes"];
   v41 = [v40 count];
 
   if (v41)
   {
-    v42 = [v15 objectForKey:@"invalidExpungeableResourceTypes"];
-    [(PLCloudBatchUploader *)self _processInvalidExpungeableResourceTypesCommitError:v43 inUploadBatch:v14 forRecords:v42 inLibrary:v18];
+    v42 = [recordsCopy objectForKey:@"invalidExpungeableResourceTypes"];
+    [(PLCloudBatchUploader *)self _processInvalidExpungeableResourceTypesCommitError:errorCopy inUploadBatch:batchCopy forRecords:v42 inLibrary:libraryCopy];
   }
 }
 
-- (void)_addLocalResourcesToRecord:(id)a3 inLibrary:(id)a4
+- (void)_addLocalResourcesToRecord:(id)record inLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  libraryCopy = library;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __61__PLCloudBatchUploader__addLocalResourcesToRecord_inLibrary___block_invoke;
   v12[3] = &unk_1E75761B8;
-  v13 = v6;
-  v14 = v7;
-  v15 = self;
+  v13 = recordCopy;
+  v14 = libraryCopy;
+  selfCopy = self;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61__PLCloudBatchUploader__addLocalResourcesToRecord_inLibrary___block_invoke_225;
   v10[3] = &unk_1E75781E8;
   v11 = v13;
   v8 = v13;
-  v9 = v7;
+  v9 = libraryCopy;
   [v9 performTransactionAndWait:v12 completionHandler:v10];
 }
 
@@ -1885,24 +1885,24 @@ void __61__PLCloudBatchUploader__addLocalResourcesToRecord_inLibrary___block_inv
   }
 }
 
-- (void)_processInvalidExpungeableResourceTypesCommitError:(id)a3 inUploadBatch:(id)a4 forRecords:(id)a5 inLibrary:(id)a6
+- (void)_processInvalidExpungeableResourceTypesCommitError:(id)error inUploadBatch:(id)batch forRecords:(id)records inLibrary:(id)library
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  errorCopy = error;
+  batchCopy = batch;
+  recordsCopy = records;
+  libraryCopy = library;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     v14 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v24 = v11;
+      v24 = batchCopy;
       v25 = 2112;
-      v26 = v12;
+      v26 = recordsCopy;
       v27 = 2112;
-      v28 = v10;
+      v28 = errorCopy;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Received error while uploading batch: %@ forRecords: %@ : Error: %@. We need to repush the full master record.", buf, 0x20u);
     }
   }
@@ -1911,13 +1911,13 @@ void __61__PLCloudBatchUploader__addLocalResourcesToRecord_inLibrary___block_inv
   v18[1] = 3221225472;
   v18[2] = __110__PLCloudBatchUploader__processInvalidExpungeableResourceTypesCommitError_inUploadBatch_forRecords_inLibrary___block_invoke;
   v18[3] = &unk_1E7578100;
-  v19 = v11;
-  v20 = v12;
-  v21 = self;
-  v22 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
+  v19 = batchCopy;
+  v20 = recordsCopy;
+  selfCopy = self;
+  v22 = libraryCopy;
+  v15 = libraryCopy;
+  v16 = recordsCopy;
+  v17 = batchCopy;
   [v15 performTransactionAndWait:v18];
 }
 
@@ -2220,25 +2220,25 @@ LABEL_52:
   }
 }
 
-- (void)_processInvalidResourceCopySourceCommitError:(id)a3 inUploadBatch:(id)a4 forRecords:(id)a5 orderKeyManager:(id)a6 inLibrary:(id)a7
+- (void)_processInvalidResourceCopySourceCommitError:(id)error inUploadBatch:(id)batch forRecords:(id)records orderKeyManager:(id)manager inLibrary:(id)library
 {
   v34 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  errorCopy = error;
+  batchCopy = batch;
+  recordsCopy = records;
+  managerCopy = manager;
+  libraryCopy = library;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     v17 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v29 = v13;
+      v29 = batchCopy;
       v30 = 2112;
-      v31 = v14;
+      v31 = recordsCopy;
       v32 = 2112;
-      v33 = v12;
+      v33 = errorCopy;
       _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_ERROR, "Received error while uploading batch: %@ forRecords: %@ : Error: %@. We need to check if the source resources exists.", buf, 0x20u);
     }
   }
@@ -2247,15 +2247,15 @@ LABEL_52:
   v22[1] = 3221225472;
   v22[2] = __120__PLCloudBatchUploader__processInvalidResourceCopySourceCommitError_inUploadBatch_forRecords_orderKeyManager_inLibrary___block_invoke;
   v22[3] = &unk_1E75730F8;
-  v23 = v16;
-  v24 = v13;
-  v25 = v14;
-  v26 = self;
-  v27 = v15;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v16;
+  v23 = libraryCopy;
+  v24 = batchCopy;
+  v25 = recordsCopy;
+  selfCopy = self;
+  v27 = managerCopy;
+  v18 = managerCopy;
+  v19 = recordsCopy;
+  v20 = batchCopy;
+  v21 = libraryCopy;
   [v21 performTransactionAndWait:v22];
 }
 
@@ -2764,24 +2764,24 @@ LABEL_121:
   }
 }
 
-- (void)_processInvalidScopeCommitError:(id)a3 inUploadBatch:(id)a4 forRecords:(id)a5 inLibrary:(id)a6
+- (void)_processInvalidScopeCommitError:(id)error inUploadBatch:(id)batch forRecords:(id)records inLibrary:(id)library
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  errorCopy = error;
+  batchCopy = batch;
+  recordsCopy = records;
+  libraryCopy = library;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     v14 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v24 = v11;
+      v24 = batchCopy;
       v25 = 2112;
-      v26 = v12;
+      v26 = recordsCopy;
       v27 = 2112;
-      v28 = v10;
+      v28 = errorCopy;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Received error while upload batch: %@ forRecords: %@ : Error: %@. We need to push the scope.", buf, 0x20u);
     }
   }
@@ -2790,13 +2790,13 @@ LABEL_121:
   v18[1] = 3221225472;
   v18[2] = __91__PLCloudBatchUploader__processInvalidScopeCommitError_inUploadBatch_forRecords_inLibrary___block_invoke;
   v18[3] = &unk_1E7578100;
-  v19 = v11;
-  v20 = v12;
-  v21 = self;
-  v22 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
+  v19 = batchCopy;
+  v20 = recordsCopy;
+  selfCopy = self;
+  v22 = libraryCopy;
+  v15 = libraryCopy;
+  v16 = recordsCopy;
+  v17 = batchCopy;
   [v15 performTransactionAndWait:v18];
 }
 
@@ -2983,36 +2983,36 @@ LABEL_33:
   }
 }
 
-- (void)_processQuarantineRecordsCommitError:(id)a3 inUploadBatch:(id)a4 forRecords:(id)a5 uploadTracker:(id)a6 inLibrary:(id)a7
+- (void)_processQuarantineRecordsCommitError:(id)error inUploadBatch:(id)batch forRecords:(id)records uploadTracker:(id)tracker inLibrary:(id)library
 {
   v49 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v32 = a6;
-  v31 = a7;
+  errorCopy = error;
+  batchCopy = batch;
+  recordsCopy = records;
+  trackerCopy = tracker;
+  libraryCopy = library;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     v15 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v44 = v13;
+      v44 = batchCopy;
       v45 = 2112;
-      v46 = v14;
+      v46 = recordsCopy;
       v47 = 2112;
-      v48 = v12;
+      v48 = errorCopy;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "Received error while upload batch: %@ forRecords: %@ : Error: %@. We need to quarantine records", buf, 0x20u);
     }
   }
 
-  v30 = v12;
+  v30 = errorCopy;
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v16 = [v13 records];
-  v17 = [v16 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  records = [batchCopy records];
+  v17 = [records countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v17)
   {
     v18 = v17;
@@ -3024,19 +3024,19 @@ LABEL_33:
       {
         if (*v38 != v20)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(records);
         }
 
         v22 = *(*(&v37 + 1) + 8 * i);
-        v23 = [v22 scopedIdentifier];
-        if ([v14 containsObject:v23])
+        scopedIdentifier = [v22 scopedIdentifier];
+        if ([recordsCopy containsObject:scopedIdentifier])
         {
-          [(PLCloudBatchUploader *)self quarantineRecord:v22 uploadTracker:v32 inLibrary:v31];
+          [(PLCloudBatchUploader *)self quarantineRecord:v22 uploadTracker:trackerCopy inLibrary:libraryCopy];
           v19 = 1;
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      v18 = [records countByEnumeratingWithState:&v37 objects:v42 count:16];
     }
 
     while (v18);
@@ -3051,7 +3051,7 @@ LABEL_33:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v24 = v14;
+  v24 = recordsCopy;
   v25 = [v24 countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v25)
   {
@@ -3066,7 +3066,7 @@ LABEL_33:
           objc_enumerationMutation(v24);
         }
 
-        [v13 removeRecordWithScopedIdentifier:*(*(&v33 + 1) + 8 * j)];
+        [batchCopy removeRecordWithScopedIdentifier:*(*(&v33 + 1) + 8 * j)];
       }
 
       v26 = [v24 countByEnumeratingWithState:&v33 objects:v41 count:16];
@@ -3082,15 +3082,15 @@ LABEL_33:
   }
 }
 
-- (void)_quarantineObject:(id)a3 uploadTracker:(id)a4
+- (void)_quarantineObject:(id)object uploadTracker:(id)tracker
 {
-  v8 = a3;
-  v5 = a4;
-  [v8 setCloudLocalState:4];
+  objectCopy = object;
+  trackerCopy = tracker;
+  [objectCopy setCloudLocalState:4];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v8;
+    v6 = objectCopy;
     v7 = v6;
     if (v6 && [v6 isPlaceholderAsset])
     {
@@ -3103,27 +3103,27 @@ LABEL_33:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v5 stopTrackingMaster:v8];
+      [trackerCopy stopTrackingMaster:objectCopy];
     }
   }
 }
 
-- (void)quarantineRecord:(id)a3 uploadTracker:(id)a4 inLibrary:(id)a5
+- (void)quarantineRecord:(id)record uploadTracker:(id)tracker inLibrary:(id)library
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordCopy = record;
+  trackerCopy = tracker;
+  libraryCopy = library;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __65__PLCloudBatchUploader_quarantineRecord_uploadTracker_inLibrary___block_invoke;
   v14[3] = &unk_1E7578100;
   v14[4] = self;
-  v15 = v8;
-  v16 = v10;
-  v17 = v9;
-  v11 = v9;
-  v12 = v10;
-  v13 = v8;
+  v15 = recordCopy;
+  v16 = libraryCopy;
+  v17 = trackerCopy;
+  v11 = trackerCopy;
+  v12 = libraryCopy;
+  v13 = recordCopy;
   [v12 performTransaction:v14];
 }
 
@@ -3167,13 +3167,13 @@ LABEL_9:
   }
 }
 
-- (void)_processIncludeMasterCommitError:(id)a3 inUploadBatch:(id)a4 forRecords:(id)a5 inLibrary:(id)a6
+- (void)_processIncludeMasterCommitError:(id)error inUploadBatch:(id)batch forRecords:(id)records inLibrary:(id)library
 {
   v48 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  errorCopy = error;
+  batchCopy = batch;
+  recordsCopy = records;
+  libraryCopy = library;
   v14 = MEMORY[0x1E6994D48];
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -3181,17 +3181,17 @@ LABEL_9:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      *&buf[4] = v11;
+      *&buf[4] = batchCopy;
       *&buf[12] = 2112;
-      *&buf[14] = v12;
+      *&buf[14] = recordsCopy;
       *&buf[22] = 2112;
-      v47 = v10;
+      v47 = errorCopy;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "Received error while upload batch: %@ forRecords: %@ : Error: %@. We need to include the missing master.", buf, 0x20u);
     }
   }
 
   v16 = objc_alloc_init(PLCloudPhotoLibraryBatchManager);
-  v17 = [MEMORY[0x1E695DFA8] setWithSet:v12];
+  v17 = [MEMORY[0x1E695DFA8] setWithSet:recordsCopy];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
@@ -3200,13 +3200,13 @@ LABEL_9:
   v35[1] = 3221225472;
   v35[2] = __92__PLCloudBatchUploader__processIncludeMasterCommitError_inUploadBatch_forRecords_inLibrary___block_invoke;
   v35[3] = &unk_1E7576968;
-  v18 = v11;
+  v18 = batchCopy;
   v36 = v18;
-  v19 = v12;
+  v19 = recordsCopy;
   v37 = v19;
-  v20 = v13;
+  v20 = libraryCopy;
   v38 = v20;
-  v39 = self;
+  selfCopy = self;
   v42 = buf;
   v21 = v16;
   v40 = v21;
@@ -3260,8 +3260,8 @@ LABEL_9:
   }
 
   uploadBatchArray = self->_uploadBatchArray;
-  v30 = [(PLCloudPhotoLibraryBatchManager *)v21 drainBatches];
-  [(NSMutableArray *)uploadBatchArray addObjectsFromArray:v30];
+  drainBatches = [(PLCloudPhotoLibraryBatchManager *)v21 drainBatches];
+  [(NSMutableArray *)uploadBatchArray addObjectsFromArray:drainBatches];
 
   _Block_object_dispose(buf, 8);
 }
@@ -3403,24 +3403,24 @@ LABEL_22:
   }
 }
 
-- (void)_processChangeToFullRecordCommitError:(id)a3 inUploadBatch:(id)a4 forRecords:(id)a5 inLibrary:(id)a6
+- (void)_processChangeToFullRecordCommitError:(id)error inUploadBatch:(id)batch forRecords:(id)records inLibrary:(id)library
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  errorCopy = error;
+  batchCopy = batch;
+  recordsCopy = records;
+  libraryCopy = library;
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     v14 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v24 = v11;
+      v24 = batchCopy;
       v25 = 2112;
-      v26 = v12;
+      v26 = recordsCopy;
       v27 = 2112;
-      v28 = v10;
+      v28 = errorCopy;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Received error while upload batch: %@ forRecords: %@ : Error: %@. We need change the upload type to a full record.", buf, 0x20u);
     }
   }
@@ -3429,13 +3429,13 @@ LABEL_22:
   v18[1] = 3221225472;
   v18[2] = __97__PLCloudBatchUploader__processChangeToFullRecordCommitError_inUploadBatch_forRecords_inLibrary___block_invoke;
   v18[3] = &unk_1E7578100;
-  v19 = v11;
-  v20 = v12;
-  v21 = self;
-  v22 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
+  v19 = batchCopy;
+  v20 = recordsCopy;
+  selfCopy = self;
+  v22 = libraryCopy;
+  v15 = libraryCopy;
+  v16 = recordsCopy;
+  v17 = batchCopy;
   [v15 performTransactionAndWait:v18];
 }
 
@@ -3625,43 +3625,43 @@ LABEL_36:
   }
 }
 
-- (id)_getLocalRecordFromCPLRecord:(id)a3 inLibrary:(id)a4
+- (id)_getLocalRecordFromCPLRecord:(id)record inLibrary:(id)library
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 scopedIdentifier];
-  v8 = [v7 identifier];
+  recordCopy = record;
+  libraryCopy = library;
+  scopedIdentifier = [recordCopy scopedIdentifier];
+  identifier = [scopedIdentifier identifier];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [PLManagedAsset assetWithScopedIdentifier:v7 inLibrary:v6 prefetchResources:0];
+    v9 = [PLManagedAsset assetWithScopedIdentifier:scopedIdentifier inLibrary:libraryCopy prefetchResources:0];
 LABEL_7:
-    v10 = v9;
+    firstObject = v9;
     goto LABEL_8;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [PLCloudMaster cloudMasterWithScopedIdentifier:v7 prefetchResources:0 inLibrary:v6];
+    v9 = [PLCloudMaster cloudMasterWithScopedIdentifier:scopedIdentifier prefetchResources:0 inLibrary:libraryCopy];
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [PLGenericAlbum albumWithCloudGUID:v8 inLibrary:v6];
+    v9 = [PLGenericAlbum albumWithCloudGUID:identifier inLibrary:libraryCopy];
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16[0] = v8;
-    v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-    v13 = [PLFaceCrop faceCropsWithUUIDs:v12 inPhotoLibrary:v6];
-    v10 = [v13 firstObject];
+    v16[0] = identifier;
+    managedObjectContext = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
+    v13 = [PLFaceCrop faceCropsWithUUIDs:managedObjectContext inPhotoLibrary:libraryCopy];
+    firstObject = [v13 firstObject];
 
 LABEL_29:
     goto LABEL_8;
@@ -3670,88 +3670,88 @@ LABEL_29:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [PLMemory memoryWithUUID:v8 inPhotoLibrary:v6];
+    v9 = [PLMemory memoryWithUUID:identifier inPhotoLibrary:libraryCopy];
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (![PLUserFeedback shouldHandleCPLSuggestionChange:v5])
+    if (![PLUserFeedback shouldHandleCPLSuggestionChange:recordCopy])
     {
-      v9 = [PLSuggestion suggestionWithUUID:v8 inPhotoLibrary:v6];
+      v9 = [PLSuggestion suggestionWithUUID:identifier inPhotoLibrary:libraryCopy];
       goto LABEL_7;
     }
 
-    v12 = [v6 managedObjectContext];
-    v14 = [PLUserFeedback userFeedbackWithUUID:v8 inManagedObjectContext:v12];
+    managedObjectContext = [libraryCopy managedObjectContext];
+    v14 = [PLUserFeedback userFeedbackWithUUID:identifier inManagedObjectContext:managedObjectContext];
     goto LABEL_28;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v6 managedObjectContext];
-    v14 = [PLPerson personWithUUID:v8 inManagedObjectContext:v12];
+    managedObjectContext = [libraryCopy managedObjectContext];
+    v14 = [PLPerson personWithUUID:identifier inManagedObjectContext:managedObjectContext];
 LABEL_28:
-    v10 = v14;
+    firstObject = v14;
     goto LABEL_29;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = [v6 managedObjectContext];
-    v12 = [PLGraphNode fetchNodeWithUUID:v8 inManagedObjectContext:v15];
+    managedObjectContext2 = [libraryCopy managedObjectContext];
+    managedObjectContext = [PLGraphNode fetchNodeWithUUID:identifier inManagedObjectContext:managedObjectContext2];
 
-    if (!v12)
+    if (!managedObjectContext)
     {
-      v10 = 0;
+      firstObject = 0;
       goto LABEL_29;
     }
 
-    v14 = [PLGraphNodeContainer newNodeContainerWithNode:v12];
+    v14 = [PLGraphNodeContainer newNodeContainerWithNode:managedObjectContext];
     goto LABEL_28;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [PLCloudSharedComment cloudSharedCommentWithGUID:v8 inLibrary:v6];
+    v9 = [PLCloudSharedComment cloudSharedCommentWithGUID:identifier inLibrary:libraryCopy];
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v6 managedObjectContext];
-    v14 = [(PLShare *)PLLibraryScope shareWithScopeIdentifier:v8 includeTrashed:1 inManagedObjectContext:v12];
+    managedObjectContext = [libraryCopy managedObjectContext];
+    v14 = [(PLShare *)PLLibraryScope shareWithScopeIdentifier:identifier includeTrashed:1 inManagedObjectContext:managedObjectContext];
     goto LABEL_28;
   }
 
-  v10 = 0;
+  firstObject = 0;
 LABEL_8:
 
-  return v10;
+  return firstObject;
 }
 
-- (void)_cleanUploadedResources:(id)a3 inLibrary:(id)a4
+- (void)_cleanUploadedResources:(id)resources inLibrary:(id)library
 {
   v56 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v31 = a4;
+  resourcesCopy = resources;
+  libraryCopy = library;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = [v5 resources];
+  obj = [resourcesCopy resources];
   v6 = [obj countByEnumeratingWithState:&v45 objects:v55 count:16];
   if (v6)
   {
     v7 = v6;
     v29 = v34;
     v8 = *v46;
-    v30 = v5;
+    v30 = resourcesCopy;
     do
     {
       for (i = 0; i != v7; ++i)
@@ -3767,29 +3767,29 @@ LABEL_8:
           v11 = __CPLAssetsdOSLogDomain();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
           {
-            v12 = [v10 identity];
-            v13 = [v12 fileURL];
-            v14 = [v13 path];
+            identity = [v10 identity];
+            fileURL = [identity fileURL];
+            path = [fileURL path];
             v15 = [MEMORY[0x1E6994B90] descriptionForResourceType:{objc_msgSend(v10, "resourceType")}];
-            v16 = [v10 deleteAfterUpload];
+            deleteAfterUpload = [v10 deleteAfterUpload];
             *buf = 138412802;
-            v50 = v14;
+            v50 = path;
             v51 = 2112;
             v52 = v15;
             v53 = 1024;
-            v54 = v16;
+            v54 = deleteAfterUpload;
             _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEBUG, "Checking: %@, type: %@ will delete after upload: %d", buf, 0x1Cu);
           }
         }
 
         if ([v10 deleteAfterUpload] && objc_msgSend(v10, "resourceType") != 1)
         {
-          v17 = [v10 identity];
-          v18 = [v17 fileURL];
-          v19 = [v18 path];
+          identity2 = [v10 identity];
+          fileURL2 = [identity2 fileURL];
+          path2 = [fileURL2 path];
 
-          v20 = [MEMORY[0x1E696AC08] defaultManager];
-          if ([v20 fileExistsAtPath:v19])
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+          if ([defaultManager fileExistsAtPath:path2])
           {
             if ((*MEMORY[0x1E6994D48] & 1) == 0)
             {
@@ -3797,13 +3797,13 @@ LABEL_8:
               if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
               {
                 *buf = 138412290;
-                v50 = v19;
+                v50 = path2;
                 _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEBUG, "removing %@ that was uploaded.", buf, 0xCu);
               }
             }
 
             v44 = 0;
-            v22 = [v20 removeItemAtPath:v19 error:&v44];
+            v22 = [defaultManager removeItemAtPath:path2 error:&v44];
             v23 = v44;
             if (v22)
             {
@@ -3815,12 +3815,12 @@ LABEL_8:
                   *buf = 138412546;
                   v50 = v10;
                   v51 = 2112;
-                  v52 = v19;
+                  v52 = path2;
                   _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_DEBUG, "removed uploaded resource for %@ at %@", buf, 0x16u);
                 }
               }
 
-              v25 = [v10 itemScopedIdentifier];
+              itemScopedIdentifier = [v10 itemScopedIdentifier];
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
@@ -3828,8 +3828,8 @@ LABEL_8:
                 v40[1] = 3221225472;
                 v40[2] = __58__PLCloudBatchUploader__cleanUploadedResources_inLibrary___block_invoke;
                 v40[3] = &unk_1E75761B8;
-                v41 = v25;
-                v42 = v31;
+                v41 = itemScopedIdentifier;
+                v42 = libraryCopy;
                 v43 = v10;
                 [v42 performTransactionAndWait:v40];
 
@@ -3844,14 +3844,14 @@ LABEL_8:
                 v33[1] = 3221225472;
                 v34[0] = __58__PLCloudBatchUploader__cleanUploadedResources_inLibrary___block_invoke_218;
                 v34[1] = &unk_1E75730F8;
-                v35 = v25;
-                v27 = v31;
+                v35 = itemScopedIdentifier;
+                v27 = libraryCopy;
                 v36 = v27;
                 v37 = v10;
-                v38 = v19;
-                v39 = v20;
+                v38 = path2;
+                v39 = defaultManager;
                 v28 = v27;
-                v5 = v30;
+                resourcesCopy = v30;
                 [v28 performTransactionAndWait:v33];
 
                 v26 = v35;
@@ -3864,7 +3864,7 @@ LABEL_8:
                 if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 138412290;
-                  v50 = v5;
+                  v50 = resourcesCopy;
                   _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_ERROR, "invalid item change to remove uploaded resources for %@", buf, 0xCu);
                 }
 
@@ -3876,12 +3876,12 @@ LABEL_33:
 
             else if ((*MEMORY[0x1E6994D48] & 1) == 0)
             {
-              v25 = __CPLAssetsdOSLogDomain();
-              if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+              itemScopedIdentifier = __CPLAssetsdOSLogDomain();
+              if (os_log_type_enabled(itemScopedIdentifier, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412290;
-                v50 = v19;
-                _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_DEFAULT, "failed to remove derivative file %@", buf, 0xCu);
+                v50 = path2;
+                _os_log_impl(&dword_19BF1F000, itemScopedIdentifier, OS_LOG_TYPE_DEFAULT, "failed to remove derivative file %@", buf, 0xCu);
               }
 
               goto LABEL_33;
@@ -4059,10 +4059,10 @@ LABEL_25:
 LABEL_26:
 }
 
-- (void)uploadFullPhotoLibraryToCloud:(id)a3
+- (void)uploadFullPhotoLibraryToCloud:(id)cloud
 {
   v85 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cloudCopy = cloud;
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:100];
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:100];
   v7 = objc_alloc_init(PLCloudPhotoLibraryBatchManager);
@@ -4072,8 +4072,8 @@ LABEL_26:
     v76[1] = 3221225472;
     v76[2] = __54__PLCloudBatchUploader_uploadFullPhotoLibraryToCloud___block_invoke;
     v76[3] = &unk_1E75761B8;
-    v77 = v4;
-    v78 = self;
+    v77 = cloudCopy;
+    selfCopy = self;
     v79 = v7;
     [v77 performBlockAndWait:v76];
   }
@@ -4084,7 +4084,7 @@ LABEL_26:
     v73[1] = 3221225472;
     v73[2] = __54__PLCloudBatchUploader_uploadFullPhotoLibraryToCloud___block_invoke_2;
     v73[3] = &unk_1E7578848;
-    v74 = v4;
+    v74 = cloudCopy;
     v75 = v7;
     [v74 performBlockAndWait:v73];
   }
@@ -4096,7 +4096,7 @@ LABEL_26:
     v69[2] = __54__PLCloudBatchUploader_uploadFullPhotoLibraryToCloud___block_invoke_2_188;
     v69[3] = &unk_1E75761B8;
     v70 = v5;
-    v71 = v4;
+    v71 = cloudCopy;
     v72 = v6;
     [v71 performBlockAndWait:v69];
   }
@@ -4106,8 +4106,8 @@ LABEL_26:
     v8 = [v5 _pl_map:&__block_literal_global_192];
     v9 = off_1E755FEC0;
 LABEL_10:
-    v10 = [(__objc2_class *)*v9 entityName];
-    [(PLCloudBatchUploader *)self _processPendingObjects:v8 forEntityName:v10 withBatchManager:v7 inLibrary:v4];
+    entityName = [(__objc2_class *)*v9 entityName];
+    [(PLCloudBatchUploader *)self _processPendingObjects:v8 forEntityName:entityName withBatchManager:v7 inLibrary:cloudCopy];
 
     goto LABEL_15;
   }
@@ -4126,7 +4126,7 @@ LABEL_15:
     v66[1] = 3221225472;
     v66[2] = __54__PLCloudBatchUploader_uploadFullPhotoLibraryToCloud___block_invoke_3;
     v66[3] = &unk_1E7578848;
-    v11 = v4;
+    v11 = cloudCopy;
     v67 = v11;
     v12 = v6;
     v68 = v12;
@@ -4145,8 +4145,8 @@ LABEL_15:
     v62[1] = 3221225472;
     v62[2] = __54__PLCloudBatchUploader_uploadFullPhotoLibraryToCloud___block_invoke_5;
     v62[3] = &unk_1E75761B8;
-    v63 = v4;
-    v64 = self;
+    v63 = cloudCopy;
+    selfCopy2 = self;
     v65 = v7;
     [v63 performBlockAndWait:v62];
   }
@@ -4157,7 +4157,7 @@ LABEL_15:
     v59[1] = 3221225472;
     v59[2] = __54__PLCloudBatchUploader_uploadFullPhotoLibraryToCloud___block_invoke_2_202;
     v59[3] = &unk_1E7578848;
-    v60 = v4;
+    v60 = cloudCopy;
     v61 = v7;
     [v60 performBlockAndWait:v59];
   }
@@ -4168,7 +4168,7 @@ LABEL_15:
     v56[1] = 3221225472;
     v56[2] = __54__PLCloudBatchUploader_uploadFullPhotoLibraryToCloud___block_invoke_2_205;
     v56[3] = &unk_1E7578848;
-    v57 = v4;
+    v57 = cloudCopy;
     v58 = v7;
     [v57 performBlockAndWait:v56];
   }
@@ -4179,7 +4179,7 @@ LABEL_15:
     v53[1] = 3221225472;
     v53[2] = __54__PLCloudBatchUploader_uploadFullPhotoLibraryToCloud___block_invoke_2_208;
     v53[3] = &unk_1E7578848;
-    v54 = v4;
+    v54 = cloudCopy;
     v55 = v7;
     [v54 performBlockAndWait:v53];
   }
@@ -4190,7 +4190,7 @@ LABEL_15:
     v50[1] = 3221225472;
     v50[2] = __54__PLCloudBatchUploader_uploadFullPhotoLibraryToCloud___block_invoke_2_211;
     v50[3] = &unk_1E7578848;
-    v51 = v4;
+    v51 = cloudCopy;
     v52 = v7;
     [v51 performBlockAndWait:v50];
   }
@@ -4201,23 +4201,23 @@ LABEL_15:
     v47[1] = 3221225472;
     v47[2] = __54__PLCloudBatchUploader_uploadFullPhotoLibraryToCloud___block_invoke_2_215;
     v47[3] = &unk_1E7578848;
-    v48 = v4;
+    v48 = cloudCopy;
     v49 = v7;
     [v48 performBlockAndWait:v47];
   }
 
   if (![(PLCloudPhotoLibraryBatchManager *)v7 currentBatchCount])
   {
-    v15 = [v4 pathManager];
-    v16 = [v15 deletedMemoryUUIDsFilePath];
+    pathManager = [cloudCopy pathManager];
+    deletedMemoryUUIDsFilePath = [pathManager deletedMemoryUUIDsFilePath];
 
-    v17 = [v4 mainScopeIdentifier];
-    v18 = [MEMORY[0x1E696AC08] defaultManager];
-    v19 = v18;
-    if (v16 && [v18 fileExistsAtPath:v16])
+    mainScopeIdentifier = [cloudCopy mainScopeIdentifier];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v19 = defaultManager;
+    if (deletedMemoryUUIDsFilePath && [defaultManager fileExistsAtPath:deletedMemoryUUIDsFilePath])
     {
       v41 = v5;
-      v20 = [MEMORY[0x1E695DEC8] arrayWithContentsOfFile:v16];
+      v20 = [MEMORY[0x1E695DEC8] arrayWithContentsOfFile:deletedMemoryUUIDsFilePath];
       if ([v20 count])
       {
         if ((*MEMORY[0x1E6994D48] & 1) == 0)
@@ -4232,10 +4232,10 @@ LABEL_15:
         }
 
         v36 = v19;
-        v37 = v16;
+        v37 = deletedMemoryUUIDsFilePath;
         v38 = v6;
-        v39 = self;
-        v40 = v4;
+        selfCopy3 = self;
+        v40 = cloudCopy;
         v45 = 0u;
         v46 = 0u;
         v43 = 0u;
@@ -4256,7 +4256,7 @@ LABEL_15:
                 objc_enumerationMutation(v22);
               }
 
-              v27 = [objc_alloc(MEMORY[0x1E6994BB8]) initWithScopeIdentifier:v17 identifier:*(*(&v43 + 1) + 8 * i)];
+              v27 = [objc_alloc(MEMORY[0x1E6994BB8]) initWithScopeIdentifier:mainScopeIdentifier identifier:*(*(&v43 + 1) + 8 * i)];
               v28 = [MEMORY[0x1E6994B18] newDeleteChangeWithScopedIdentifier:v27];
               [(PLCloudPhotoLibraryBatchManager *)v7 addRecord:v28];
             }
@@ -4267,14 +4267,14 @@ LABEL_15:
           while (v24);
         }
 
-        self = v39;
+        self = selfCopy3;
         v6 = v38;
         v20 = v35;
         v19 = v36;
       }
 
       v42 = 0;
-      v29 = [v19 removeItemAtPath:v16 error:{&v42, v35, v36, v37, v38, v39, v40}];
+      v29 = [v19 removeItemAtPath:deletedMemoryUUIDsFilePath error:{&v42, v35, v36, v37, v38, selfCopy3, v40}];
       v30 = v42;
       if ((v29 & 1) == 0 && (*MEMORY[0x1E6994D48] & 1) == 0)
       {
@@ -4283,7 +4283,7 @@ LABEL_15:
         if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v81 = v16;
+          v81 = deletedMemoryUUIDsFilePath;
           v82 = 2112;
           v83 = v30;
           _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_ERROR, "Failed to delete %@: %@", buf, 0x16u);
@@ -4297,8 +4297,8 @@ LABEL_15:
   }
 
   uploadBatchArray = self->_uploadBatchArray;
-  v34 = [(PLCloudPhotoLibraryBatchManager *)v7 drainBatches];
-  [(NSMutableArray *)uploadBatchArray addObjectsFromArray:v34];
+  drainBatches = [(PLCloudPhotoLibraryBatchManager *)v7 drainBatches];
+  [(NSMutableArray *)uploadBatchArray addObjectsFromArray:drainBatches];
 }
 
 void __54__PLCloudBatchUploader_uploadFullPhotoLibraryToCloud___block_invoke(id *a1)
@@ -4627,10 +4627,10 @@ void __54__PLCloudBatchUploader_uploadFullPhotoLibraryToCloud___block_invoke_185
   [v2 addRecord:v3];
 }
 
-- (void)uploadDeletedRecordsFromPlist:(id)a3
+- (void)uploadDeletedRecordsFromPlist:(id)plist
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  plistCopy = plist;
   v6 = objc_alloc_init(PLCloudPhotoLibraryBatchManager);
   if ([(NSMutableDictionary *)self->_recordsToDelete count]&& (*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -4644,9 +4644,9 @@ void __54__PLCloudBatchUploader_uploadFullPhotoLibraryToCloud___block_invoke_185
     }
   }
 
-  objc_storeStrong(&self->_recordsToDeletePlistPath, a3);
-  v26 = v5;
-  v9 = [MEMORY[0x1E695DF90] dictionaryWithContentsOfFile:v5];
+  objc_storeStrong(&self->_recordsToDeletePlistPath, plist);
+  v26 = plistCopy;
+  v9 = [MEMORY[0x1E695DF90] dictionaryWithContentsOfFile:plistCopy];
   v10 = self->_recordsToDelete;
   self->_recordsToDelete = v9;
 
@@ -4696,8 +4696,8 @@ void __54__PLCloudBatchUploader_uploadFullPhotoLibraryToCloud___block_invoke_185
                 v19 = *(*(&v31 + 1) + 8 * i);
                 v20 = objc_alloc_init(v13);
                 [v20 setChangeType:1024];
-                v21 = [(PLLibraryServicesManager *)self->_libraryServicesManager mainScopeIdentifier];
-                v22 = [objc_alloc(MEMORY[0x1E6994BB8]) initWithScopeIdentifier:v21 identifier:v19];
+                mainScopeIdentifier = [(PLLibraryServicesManager *)self->_libraryServicesManager mainScopeIdentifier];
+                v22 = [objc_alloc(MEMORY[0x1E6994BB8]) initWithScopeIdentifier:mainScopeIdentifier identifier:v19];
                 [v20 setScopedIdentifier:v22];
                 [(PLCloudPhotoLibraryBatchManager *)v6 addRecord:v20];
               }
@@ -4723,20 +4723,20 @@ void __54__PLCloudBatchUploader_uploadFullPhotoLibraryToCloud___block_invoke_185
   }
 
   uploadBatchArray = self->_uploadBatchArray;
-  v25 = [(PLCloudPhotoLibraryBatchManager *)v6 drainBatches];
-  [(NSMutableArray *)uploadBatchArray addObjectsFromArray:v25];
+  drainBatches = [(PLCloudPhotoLibraryBatchManager *)v6 drainBatches];
+  [(NSMutableArray *)uploadBatchArray addObjectsFromArray:drainBatches];
 }
 
-- (id)_personsToUploadIncludingReverseOrderedMergeTargetsForPersons:(id)a3
+- (id)_personsToUploadIncludingReverseOrderedMergeTargetsForPersons:(id)persons
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  personsCopy = persons;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(personsCopy, "count")}];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v3;
+  obj = personsCopy;
   v5 = [obj countByEnumeratingWithState:&v26 objects:v35 count:16];
   if (v5)
   {
@@ -4757,8 +4757,8 @@ void __54__PLCloudBatchUploader_uploadFullPhotoLibraryToCloud___block_invoke_185
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v10 = [v8 reverseOrderedMergeTargetPersons];
-        v11 = [v10 countByEnumeratingWithState:&v22 objects:v34 count:16];
+        reverseOrderedMergeTargetPersons = [v8 reverseOrderedMergeTargetPersons];
+        v11 = [reverseOrderedMergeTargetPersons countByEnumeratingWithState:&v22 objects:v34 count:16];
         if (v11)
         {
           v12 = v11;
@@ -4769,7 +4769,7 @@ void __54__PLCloudBatchUploader_uploadFullPhotoLibraryToCloud___block_invoke_185
             {
               if (*v23 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(reverseOrderedMergeTargetPersons);
               }
 
               v15 = *(*(&v22 + 1) + 8 * j);
@@ -4779,7 +4779,7 @@ void __54__PLCloudBatchUploader_uploadFullPhotoLibraryToCloud___block_invoke_185
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v22 objects:v34 count:16];
+            v12 = [reverseOrderedMergeTargetPersons countByEnumeratingWithState:&v22 objects:v34 count:16];
           }
 
           while (v12);
@@ -4813,24 +4813,24 @@ void __54__PLCloudBatchUploader_uploadFullPhotoLibraryToCloud___block_invoke_185
   return v4;
 }
 
-- (void)_processPendingObjects:(id)a3 forEntityName:(id)a4 withBatchManager:(id)a5 inLibrary:(id)a6
+- (void)_processPendingObjects:(id)objects forEntityName:(id)name withBatchManager:(id)manager inLibrary:(id)library
 {
   v43 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  objectsCopy = objects;
+  nameCopy = name;
+  managerCopy = manager;
+  libraryCopy = library;
   context = objc_autoreleasePoolPush();
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __88__PLCloudBatchUploader__processPendingObjects_forEntityName_withBatchManager_inLibrary___block_invoke;
   aBlock[3] = &unk_1E75646B8;
-  v25 = v11;
+  v25 = nameCopy;
   v38 = v25;
-  v14 = v13;
+  v14 = libraryCopy;
   v39 = v14;
-  v40 = self;
-  v24 = v12;
+  selfCopy = self;
+  v24 = managerCopy;
   v41 = v24;
   v15 = _Block_copy(aBlock);
   v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:50];
@@ -4838,7 +4838,7 @@ void __54__PLCloudBatchUploader_uploadFullPhotoLibraryToCloud___block_invoke_185
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v17 = v10;
+  v17 = objectsCopy;
   v18 = [v17 countByEnumeratingWithState:&v33 objects:v42 count:16];
   if (v18)
   {
@@ -4936,22 +4936,22 @@ void __88__PLCloudBatchUploader__processPendingObjects_forEntityName_withBatchMa
   }
 }
 
-- (void)_sendAssets:(id)a3 toBatchManager:(id)a4 orderKeyManager:(id)a5 inLibrary:(id)a6
+- (void)_sendAssets:(id)assets toBatchManager:(id)manager orderKeyManager:(id)keyManager inLibrary:(id)library
 {
   v127 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v94 = a5;
-  v95 = self;
-  v96 = a6;
-  [(PLCloudBatchUploader *)self _incrementUploadAttemptsAndPushStateForAssets:v10];
+  assetsCopy = assets;
+  managerCopy = manager;
+  keyManagerCopy = keyManager;
+  selfCopy = self;
+  libraryCopy = library;
+  [(PLCloudBatchUploader *)self _incrementUploadAttemptsAndPushStateForAssets:assetsCopy];
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
     v12 = __CPLAssetsdOSLogDomain();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v123 = v10;
+      v123 = assetsCopy;
       _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEBUG, "sending assets %@ to batch manager", buf, 0xCu);
     }
   }
@@ -4959,13 +4959,13 @@ void __88__PLCloudBatchUploader__processPendingObjects_forEntityName_withBatchMa
   v13 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v84 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v83 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v93 = [PLManagedAsset isComputeSyncEnabledForDirection:0 library:v96];
-  v77 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v10, "count")}];
+  v93 = [PLManagedAsset isComputeSyncEnabledForDirection:0 library:libraryCopy];
+  v77 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(assetsCopy, "count")}];
   v115 = 0u;
   v116 = 0u;
   v117 = 0u;
   v118 = 0u;
-  obj = v10;
+  obj = assetsCopy;
   v14 = [obj countByEnumeratingWithState:&v115 objects:v126 count:16];
   if (!v14)
   {
@@ -4999,22 +4999,22 @@ void __88__PLCloudBatchUploader__processPendingObjects_forEntityName_withBatchMa
         v21 = v20;
         if (v114 == 1)
         {
-          v22 = [v20 cplPropertyRecord];
-          [v11 addRecord:v22];
+          cplPropertyRecord = [v20 cplPropertyRecord];
+          [managerCopy addRecord:cplPropertyRecord];
 
           v18 = v92;
         }
 
-        v23 = [v21 scopedIdentifier];
+        scopedIdentifier = [v21 scopedIdentifier];
         v81 = v19;
         if (v75)
         {
-          v24 = [v75 scopedIdentifier];
-          if ([v24 isEqual:v23] && !objc_msgSend(v21, "cloudLocalState"))
+          scopedIdentifier2 = [v75 scopedIdentifier];
+          if ([scopedIdentifier2 isEqual:scopedIdentifier] && !objc_msgSend(v21, "cloudLocalState"))
           {
-            v53 = [v11 currentBatchCount];
+            currentBatchCount = [managerCopy currentBatchCount];
 
-            v54 = v53 < 200;
+            v54 = currentBatchCount < 200;
             v19 = v81;
             v18 = v92;
             if (v54)
@@ -5030,7 +5030,7 @@ void __88__PLCloudBatchUploader__processPendingObjects_forEntityName_withBatchMa
           }
         }
 
-        if (([v11 isAboveMaximumResourceBudget] & 1) != 0 || objc_msgSend(v11, "currentBatchCount") > 49)
+        if (([managerCopy isAboveMaximumResourceBudget] & 1) != 0 || objc_msgSend(managerCopy, "currentBatchCount") > 49)
         {
           if ((*MEMORY[0x1E6994D48] & 1) == 0)
           {
@@ -5047,18 +5047,18 @@ void __88__PLCloudBatchUploader__processPendingObjects_forEntityName_withBatchMa
         }
 
 LABEL_20:
-        if (v21 && ([v21 cloudLocalState] || (objc_msgSend(v13, "containsObject:", v23) & 1) != 0))
+        if (v21 && ([v21 cloudLocalState] || (objc_msgSend(v13, "containsObject:", scopedIdentifier) & 1) != 0))
         {
           v25 = v77;
           goto LABEL_24;
         }
 
-        v27 = [(__CFString *)v18 cplMasterChangeInLibrary:v96 shouldGenerateDerivatives:v95->_shouldGenerateDerivatives];
-        v31 = [(__CFString *)v18 master];
+        v27 = [(__CFString *)v18 cplMasterChangeInLibrary:libraryCopy shouldGenerateDerivatives:selfCopy->_shouldGenerateDerivatives];
+        master = [(__CFString *)v18 master];
 
-        v32 = [v31 scopedIdentifier];
+        scopedIdentifier3 = [master scopedIdentifier];
 
-        if (v32)
+        if (scopedIdentifier3)
         {
           if (!v27)
           {
@@ -5068,16 +5068,16 @@ LABEL_20:
 
         else
         {
-          v45 = [(__CFString *)v92 isDeleted];
+          isDeleted = [(__CFString *)v92 isDeleted];
           v46 = @"NO";
-          if (v45)
+          if (isDeleted)
           {
             v46 = @"YES";
           }
 
           v47 = v46;
-          v48 = [v31 scopedIdentifier];
-          [(PLCloudBatchUploader *)v95 _promptToFileRadarWithTitle:@"TTR: Found CloudMaster without a scopedIdentifier object" description:@"Found a CloudMaster %@ on asset %@ (isDeleted=%@) without a scopedIdentifier %@.\n\nSee rdar://problem/156927080", v31, v92, v47, v48];
+          scopedIdentifier4 = [master scopedIdentifier];
+          [(PLCloudBatchUploader *)selfCopy _promptToFileRadarWithTitle:@"TTR: Found CloudMaster without a scopedIdentifier object" description:@"Found a CloudMaster %@ on asset %@ (isDeleted=%@) without a scopedIdentifier %@.\n\nSee rdar://problem/156927080", master, v92, v47, scopedIdentifier4];
 
           if (!v27)
           {
@@ -5085,16 +5085,16 @@ LABEL_20:
           }
         }
 
-        v49 = [v31 scopedIdentifier];
+        scopedIdentifier5 = [master scopedIdentifier];
 
-        if (v49)
+        if (scopedIdentifier5)
         {
-          v50 = [v31 scopedIdentifier];
+          scopedIdentifier6 = [master scopedIdentifier];
 
-          v23 = v50;
-          [v84 setObject:v27 forKey:v50];
+          scopedIdentifier = scopedIdentifier6;
+          [v84 setObject:v27 forKey:scopedIdentifier6];
 
-          if (!v31)
+          if (!master)
           {
             v26 = 0;
             v16 = v79;
@@ -5103,7 +5103,7 @@ LABEL_20:
             goto LABEL_78;
           }
 
-          v21 = v31;
+          v21 = master;
           v25 = v77;
           v16 = v79;
           v19 = v81;
@@ -5155,17 +5155,17 @@ LABEL_83:
           else
           {
             v17 = v85;
-            if (v23)
+            if (scopedIdentifier)
             {
               v76 = v26;
               aBlock[0] = MEMORY[0x1E69E9820];
               aBlock[1] = 3221225472;
               aBlock[2] = __77__PLCloudBatchUploader__sendAssets_toBatchManager_orderKeyManager_inLibrary___block_invoke;
               aBlock[3] = &unk_1E7564690;
-              v110 = v96;
-              v111 = v95;
+              v110 = libraryCopy;
+              v111 = selfCopy;
               v112 = v84;
-              v33 = v23;
+              v33 = scopedIdentifier;
               v113 = v33;
               v34 = _Block_copy(aBlock);
               v35 = [v83 objectForKey:v33];
@@ -5178,14 +5178,14 @@ LABEL_83:
               v87 = v33;
               v90 = v35;
               [v35 addObject:v92];
-              v36 = [(__CFString *)v92 cloudAssetGUID];
-              if ([v36 length])
+              cloudAssetGUID = [(__CFString *)v92 cloudAssetGUID];
+              if ([cloudAssetGUID length])
               {
-                [v25 addObject:v36];
+                [v25 addObject:cloudAssetGUID];
               }
 
-              v74 = v36;
-              v23 = v87;
+              v74 = cloudAssetGUID;
+              scopedIdentifier = v87;
               v26 = v76;
               if ([v13 indexOfObject:v87] == 0x7FFFFFFFFFFFFFFFLL)
               {
@@ -5194,8 +5194,8 @@ LABEL_83:
                 v108 = 0u;
                 v105 = 0u;
                 v106 = 0u;
-                v37 = [v76 assets];
-                v38 = [v37 countByEnumeratingWithState:&v105 objects:v121 count:16];
+                assets = [v76 assets];
+                v38 = [assets countByEnumeratingWithState:&v105 objects:v121 count:16];
                 if (v38)
                 {
                   v39 = v38;
@@ -5206,12 +5206,12 @@ LABEL_83:
                     {
                       if (*v106 != v40)
                       {
-                        objc_enumerationMutation(v37);
+                        objc_enumerationMutation(assets);
                       }
 
                       v42 = *(*(&v105 + 1) + 8 * i);
-                      v43 = [v42 cloudAssetGUID];
-                      if (([v25 containsObject:v43] & 1) == 0 && objc_msgSend(obj, "indexOfObject:", v42) == 0x7FFFFFFFFFFFFFFFLL)
+                      cloudAssetGUID2 = [v42 cloudAssetGUID];
+                      if (([v25 containsObject:cloudAssetGUID2] & 1) == 0 && objc_msgSend(obj, "indexOfObject:", v42) == 0x7FFFFFFFFFFFFFFFLL)
                       {
                         if ((*MEMORY[0x1E6994D48] & 1) == 0)
                         {
@@ -5233,14 +5233,14 @@ LABEL_83:
                       }
                     }
 
-                    v39 = [v37 countByEnumeratingWithState:&v105 objects:v121 count:16];
+                    v39 = [assets countByEnumeratingWithState:&v105 objects:v121 count:16];
                   }
 
                   while (v39);
                 }
 
                 v13 = v72;
-                v23 = v87;
+                scopedIdentifier = v87;
                 [v72 addObject:v87];
                 v15 = v73;
                 v16 = v79;
@@ -5269,11 +5269,11 @@ LABEL_83:
                 _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_ERROR, "No valid masterScopedIdentifier for asset %@. Skipping upload", buf, 0xCu);
               }
 
-              v23 = 0;
+              scopedIdentifier = 0;
               goto LABEL_76;
             }
 
-            v23 = 0;
+            scopedIdentifier = 0;
           }
 
           v75 = v26;
@@ -5287,9 +5287,9 @@ LABEL_64:
           v51 = __CPLAssetsdOSLogDomain();
           if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
           {
-            v52 = [(__CFString *)v92 uuid];
+            uuid = [(__CFString *)v92 uuid];
             *buf = 138543362;
-            v123 = v52;
+            v123 = uuid;
             _os_log_impl(&dword_19BF1F000, v51, OS_LOG_TYPE_ERROR, "Failed to create master for asset %{public}@. Skipping upload.", buf, 0xCu);
 
             v17 = v85;
@@ -5306,10 +5306,10 @@ LABEL_64:
         v28 = __CPLAssetsdOSLogDomain();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
-          v29 = [(__CFString *)v92 isDeleted];
+          isDeleted2 = [(__CFString *)v92 isDeleted];
           *buf = 138412546;
           v30 = @"incomplete";
-          if (v29)
+          if (isDeleted2)
           {
             v30 = @"deleted";
           }
@@ -5363,7 +5363,7 @@ LABEL_98:
         v60 = [v84 objectForKey:v59];
         if (v60)
         {
-          [v11 addRecord:v60];
+          [managerCopy addRecord:v60];
           if ((*MEMORY[0x1E6994D48] & 1) == 0)
           {
             v61 = __CPLAssetsdOSLogDomain();
@@ -5398,8 +5398,8 @@ LABEL_98:
               }
 
               v67 = *(*(&v97 + 1) + 8 * j);
-              v68 = [v67 cplAssetChangeWithMasterScopedIdentifier:v59 withChangeType:0 shouldGenerateDerivatives:v95->_shouldGenerateDerivatives orderKeyManager:v94 computeSyncUploadEnabled:v93 inLibrary:v96];
-              [v11 addRecord:v68 ignoreBatchSize:1];
+              v68 = [v67 cplAssetChangeWithMasterScopedIdentifier:v59 withChangeType:0 shouldGenerateDerivatives:selfCopy->_shouldGenerateDerivatives orderKeyManager:keyManagerCopy computeSyncUploadEnabled:v93 inLibrary:libraryCopy];
+              [managerCopy addRecord:v68 ignoreBatchSize:1];
               if ((*MEMORY[0x1E6994D48] & 1) == 0)
               {
                 v69 = __CPLAssetsdOSLogDomain();
@@ -5411,12 +5411,12 @@ LABEL_98:
                 }
               }
 
-              v70 = [v67 computeSyncAttributes];
+              computeSyncAttributes = [v67 computeSyncAttributes];
 
-              if (v70)
+              if (computeSyncAttributes)
               {
-                v71 = [v67 scopedIdentifier];
-                [v11 addComputeSyncRelevantAsset:v71];
+                scopedIdentifier7 = [v67 scopedIdentifier];
+                [managerCopy addComputeSyncRelevantAsset:scopedIdentifier7];
               }
             }
 
@@ -5561,13 +5561,13 @@ LABEL_19:
   return v11;
 }
 
-- (void)_sendAlbums:(id)a3 toBatchManager:(id)a4 orderKeyManager:(id)a5 inLibrary:(id)a6
+- (void)_sendAlbums:(id)albums toBatchManager:(id)manager orderKeyManager:(id)keyManager inLibrary:(id)library
 {
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  albumsCopy = albums;
+  managerCopy = manager;
+  keyManagerCopy = keyManager;
+  libraryCopy = library;
   v13 = MEMORY[0x1E6994D48];
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -5575,7 +5575,7 @@ LABEL_19:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v30 = v9;
+      v30 = albumsCopy;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEBUG, "album to upload = %@", buf, 0xCu);
     }
   }
@@ -5584,7 +5584,7 @@ LABEL_19:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v15 = v9;
+  v15 = albumsCopy;
   v16 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v16)
   {
@@ -5602,8 +5602,8 @@ LABEL_19:
           objc_enumerationMutation(v15);
         }
 
-        v21 = [*(*(&v24 + 1) + 8 * v20) cplAlbumChangeInPhotoLibrary:v12 orderKeyManager:{v11, v23, v24}];
-        [v10 addRecord:v21];
+        v21 = [*(*(&v24 + 1) + 8 * v20) cplAlbumChangeInPhotoLibrary:libraryCopy orderKeyManager:{keyManagerCopy, v23, v24}];
+        [managerCopy addRecord:v21];
         if ((*v13 & 1) == 0)
         {
           v22 = __CPLAssetsdOSLogDomain();
@@ -5626,24 +5626,24 @@ LABEL_19:
   }
 }
 
-- (void)_sendOneBatch:(id)a3 toBatchManager:(id)a4 inLibrary:(id)a5
+- (void)_sendOneBatch:(id)batch toBatchManager:(id)manager inLibrary:(id)library
 {
-  v8 = a4;
-  v9 = a5;
+  managerCopy = manager;
+  libraryCopy = library;
   v10 = MEMORY[0x1E695DF70];
-  v11 = a3;
-  v12 = [[v10 alloc] initWithCapacity:{objc_msgSend(v11, "count")}];
-  v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v11, "count")}];
-  v14 = [v9 libraryServicesManager];
-  v15 = [v14 databaseContext];
+  batchCopy = batch;
+  v12 = [[v10 alloc] initWithCapacity:{objc_msgSend(batchCopy, "count")}];
+  v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(batchCopy, "count")}];
+  libraryServicesManager = [libraryCopy libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
 
   v16 = [PLRelationshipOrderKeyManager alloc];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __63__PLCloudBatchUploader__sendOneBatch_toBatchManager_inLibrary___block_invoke;
   v24[3] = &unk_1E7574C88;
-  v25 = v15;
-  v17 = v15;
+  v25 = databaseContext;
+  v17 = databaseContext;
   v18 = [(PLRelationshipOrderKeyManager *)v16 initWithGenerateContextBlock:v24];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -5653,16 +5653,16 @@ LABEL_19:
   v22 = v19;
   v20 = v12;
   v23 = v20;
-  [v11 enumerateObjectsUsingBlock:v21];
+  [batchCopy enumerateObjectsUsingBlock:v21];
 
   if ([v20 count])
   {
-    [(PLCloudBatchUploader *)self _sendAlbums:v20 toBatchManager:v8 orderKeyManager:v18 inLibrary:v9];
+    [(PLCloudBatchUploader *)self _sendAlbums:v20 toBatchManager:managerCopy orderKeyManager:v18 inLibrary:libraryCopy];
   }
 
   if ([v19 count])
   {
-    [(PLCloudBatchUploader *)self _sendAssets:v19 toBatchManager:v8 orderKeyManager:v18 inLibrary:v9];
+    [(PLCloudBatchUploader *)self _sendAssets:v19 toBatchManager:managerCopy orderKeyManager:v18 inLibrary:libraryCopy];
   }
 }
 
@@ -5707,15 +5707,15 @@ LABEL_5:
 LABEL_10:
 }
 
-- (void)_incrementUploadAttemptsAndPushStateForAssets:(id)a3
+- (void)_incrementUploadAttemptsAndPushStateForAssets:(id)assets
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  assetsCopy = assets;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  v4 = [assetsCopy countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v4)
   {
     v6 = v4;
@@ -5730,13 +5730,13 @@ LABEL_10:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(assetsCopy);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
         [v11 incrementUploadAttempts];
-        v12 = [MEMORY[0x1E695DF00] date];
-        [v11 setLastUploadAttemptDate:v12];
+        date = [MEMORY[0x1E695DF00] date];
+        [v11 setLastUploadAttemptDate:date];
 
         if ([v11 uploadAttempts] >= 10)
         {
@@ -5745,9 +5745,9 @@ LABEL_10:
             v13 = __CPLAssetsdOSLogDomain();
             if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
             {
-              v14 = [v11 uploadAttempts];
+              uploadAttempts = [v11 uploadAttempts];
               *buf = v16;
-              v22 = v14;
+              v22 = uploadAttempts;
               v23 = 2112;
               v24 = v11;
               _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "Retried %d time for asset %@, giving up", buf, 0x12u);
@@ -5762,7 +5762,7 @@ LABEL_10:
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v6 = [assetsCopy countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v6);
@@ -5774,11 +5774,11 @@ LABEL_10:
   }
 }
 
-- (BOOL)_hasUnuploadedResourceForAsset:(id)a3 resourceType:(unint64_t)a4 cloudMaster:(id)a5
+- (BOOL)_hasUnuploadedResourceForAsset:(id)asset resourceType:(unint64_t)type cloudMaster:(id)master
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = [a3 masterResourceForCPLType:a4];
+  masterCopy = master;
+  v8 = [asset masterResourceForCPLType:type];
   v9 = v8;
   if (v8 && ![v8 cloudLocalState])
   {
@@ -5786,8 +5786,8 @@ LABEL_10:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = [v7 assets];
-    v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    assets = [masterCopy assets];
+    v12 = [assets countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v12)
     {
       v13 = v12;
@@ -5798,10 +5798,10 @@ LABEL_10:
         {
           if (*v20 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(assets);
           }
 
-          v16 = [*(*(&v19 + 1) + 8 * i) masterResourceForCPLType:a4];
+          v16 = [*(*(&v19 + 1) + 8 * i) masterResourceForCPLType:type];
           v17 = v16;
           if (v16 && [v16 cloudLocalState] == 3)
           {
@@ -5811,7 +5811,7 @@ LABEL_10:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v13 = [assets countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v13)
         {
           continue;
@@ -5833,59 +5833,59 @@ LABEL_15:
   return v10;
 }
 
-- (id)createBatchesForChanges:(id)a3 outInsertedPhotoCount:(unint64_t *)a4 outInsertedVideoCount:(unint64_t *)a5 withUploadTracker:(id)a6 inLibrary:(id)a7
+- (id)createBatchesForChanges:(id)changes outInsertedPhotoCount:(unint64_t *)count outInsertedVideoCount:(unint64_t *)videoCount withUploadTracker:(id)tracker inLibrary:(id)library
 {
   v386 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v272 = a6;
-  v11 = a7;
-  v12 = [v10 insertedAssets];
-  v13 = [v10 updatedAssets];
-  v283 = [v10 deferredAssets];
-  v245 = [v10 updatedMasters];
-  v275 = [v10 propertyChangedAssetUuids];
-  v267 = [v10 sharingPropertyChangedAssetUuids];
-  v266 = [v10 adjustedAssetUuids];
-  v265 = [v10 faceChangedAssetUuids];
-  v264 = [v10 computeSyncChangedAssets];
-  v14 = [v10 insertedResources];
-  v246 = [v10 updatedResources];
-  v15 = [v10 albumInserts];
-  v16 = [v10 albumChanges];
-  v260 = [v10 memoryChanges];
-  v253 = [v10 personChanges];
-  v252 = [v10 faceCropChanges];
-  v259 = [v10 suggestionChanges];
-  v258 = [v10 userFeedbackChanges];
-  v257 = [v10 libraryScopeChanges];
-  v256 = [v10 collectionShareChanges];
-  v255 = [v10 socialGroupChanges];
-  v254 = [v10 deletedRecords];
-  v261 = v10;
-  v263 = [v10 updatedRelationship];
+  changesCopy = changes;
+  trackerCopy = tracker;
+  libraryCopy = library;
+  insertedAssets = [changesCopy insertedAssets];
+  updatedAssets = [changesCopy updatedAssets];
+  deferredAssets = [changesCopy deferredAssets];
+  updatedMasters = [changesCopy updatedMasters];
+  propertyChangedAssetUuids = [changesCopy propertyChangedAssetUuids];
+  sharingPropertyChangedAssetUuids = [changesCopy sharingPropertyChangedAssetUuids];
+  adjustedAssetUuids = [changesCopy adjustedAssetUuids];
+  faceChangedAssetUuids = [changesCopy faceChangedAssetUuids];
+  computeSyncChangedAssets = [changesCopy computeSyncChangedAssets];
+  insertedResources = [changesCopy insertedResources];
+  updatedResources = [changesCopy updatedResources];
+  albumInserts = [changesCopy albumInserts];
+  albumChanges = [changesCopy albumChanges];
+  memoryChanges = [changesCopy memoryChanges];
+  personChanges = [changesCopy personChanges];
+  faceCropChanges = [changesCopy faceCropChanges];
+  suggestionChanges = [changesCopy suggestionChanges];
+  userFeedbackChanges = [changesCopy userFeedbackChanges];
+  libraryScopeChanges = [changesCopy libraryScopeChanges];
+  collectionShareChanges = [changesCopy collectionShareChanges];
+  socialGroupChanges = [changesCopy socialGroupChanges];
+  deletedRecords = [changesCopy deletedRecords];
+  v261 = changesCopy;
+  updatedRelationship = [changesCopy updatedRelationship];
   v17 = objc_alloc_init(PLCloudPhotoLibraryBatchManager);
-  v18 = [v11 libraryServicesManager];
-  v19 = [v18 databaseContext];
+  libraryServicesManager = [libraryCopy libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
 
   v20 = [PLRelationshipOrderKeyManager alloc];
   v363[0] = MEMORY[0x1E69E9820];
   v363[1] = 3221225472;
   v363[2] = __120__PLCloudBatchUploader_createBatchesForChanges_outInsertedPhotoCount_outInsertedVideoCount_withUploadTracker_inLibrary___block_invoke;
   v363[3] = &unk_1E7574C88;
-  v249 = v19;
+  v249 = databaseContext;
   v364 = v249;
   v277 = [(PLRelationshipOrderKeyManager *)v20 initWithGenerateContextBlock:v363];
-  v276 = [PLManagedAsset isComputeSyncEnabledForDirection:0 library:v11];
-  v250 = v16;
-  v251 = v15;
+  v276 = [PLManagedAsset isComputeSyncEnabledForDirection:0 library:libraryCopy];
+  v250 = albumChanges;
+  v251 = albumInserts;
   v287 = v17;
   v21 = v17;
-  v22 = self;
-  [(PLCloudBatchUploader *)self _processAlbumInserts:v15 albumChanges:v16 withBatchManager:v21 inLibrary:v11];
+  selfCopy3 = self;
+  [(PLCloudBatchUploader *)self _processAlbumInserts:albumInserts albumChanges:albumChanges withBatchManager:v21 inLibrary:libraryCopy];
   if ([MEMORY[0x1E6994A80] serverSupportsVision])
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = [(PLCloudBatchUploader *)self _personsToUploadIncludingReverseOrderedMergeTargetsForPersons:v253];
+    v24 = [(PLCloudBatchUploader *)self _personsToUploadIncludingReverseOrderedMergeTargetsForPersons:personChanges];
     v25 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v24, "count")}];
     v360[0] = MEMORY[0x1E69E9820];
     v360[1] = 3221225472;
@@ -5899,15 +5899,15 @@ LABEL_15:
     objc_autoreleasePoolPop(v23);
   }
 
-  v282 = v11;
-  v286 = self;
+  v282 = libraryCopy;
+  selfCopy2 = self;
   if ([MEMORY[0x1E6994A80] serverSupportsVision])
   {
     v359 = 0u;
     v358 = 0u;
     v357 = 0u;
     v356 = 0u;
-    v27 = v252;
+    v27 = faceCropChanges;
     v28 = [v27 countByEnumeratingWithState:&v356 objects:v385 count:16];
     if (v28)
     {
@@ -5924,8 +5924,8 @@ LABEL_15:
 
           v32 = *(*(&v356 + 1) + 8 * i);
           v33 = objc_autoreleasePoolPush();
-          v34 = [v32 cplFaceCropChange];
-          [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:v34];
+          cplFaceCropChange = [v32 cplFaceCropChange];
+          [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:cplFaceCropChange];
 
           objc_autoreleasePoolPop(v33);
         }
@@ -5936,24 +5936,24 @@ LABEL_15:
       while (v29);
     }
 
-    v11 = v282;
-    v22 = self;
+    libraryCopy = v282;
+    selfCopy3 = self;
   }
 
   v35 = MEMORY[0x1E695DFD8];
-  v36 = [v254 valueForKey:@"scopedIdentifier"];
+  v36 = [deletedRecords valueForKey:@"scopedIdentifier"];
   v37 = [v35 setWithArray:v36];
 
-  v38 = [(PLCloudBatchUploader *)v22 _validateAssets:v12 fromCloudUuidDeleteList:v37];
+  v38 = [(PLCloudBatchUploader *)selfCopy3 _validateAssets:insertedAssets fromCloudUuidDeleteList:v37];
 
   v248 = v37;
-  v262 = [(PLCloudBatchUploader *)v22 _validateAssets:v13 fromCloudUuidDeleteList:v37];
+  v262 = [(PLCloudBatchUploader *)selfCopy3 _validateAssets:updatedAssets fromCloudUuidDeleteList:v37];
 
   v355 = 0u;
   v354 = 0u;
   v353 = 0u;
   v352 = 0u;
-  obj = v14;
+  obj = insertedResources;
   v39 = [obj countByEnumeratingWithState:&v352 objects:v384 count:16];
   if (v39)
   {
@@ -5971,13 +5971,13 @@ LABEL_15:
         v43 = *(*(&v352 + 1) + 8 * j);
         if ([v43 cplType] == 23 || objc_msgSend(v43, "cplType") == 24)
         {
-          v44 = [v43 asset];
-          v45 = [v44 master];
+          asset = [v43 asset];
+          master = [asset master];
 
-          if (v45)
+          if (master)
           {
-            v46 = [v45 cplFullRecord];
-            [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:v46];
+            cplFullRecord = [master cplFullRecord];
+            [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:cplFullRecord];
           }
         }
       }
@@ -5992,7 +5992,7 @@ LABEL_15:
   v350 = 0u;
   v349 = 0u;
   v348 = 0u;
-  v47 = v283;
+  v47 = deferredAssets;
   v48 = [v47 countByEnumeratingWithState:&v348 objects:v383 count:16];
   if (v48)
   {
@@ -6007,8 +6007,8 @@ LABEL_15:
           objc_enumerationMutation(v47);
         }
 
-        v52 = [*(*(&v348 + 1) + 8 * k) scopedIdentifier];
-        [v272 trackDeferredAssetForScopedIdentifier:v52];
+        scopedIdentifier = [*(*(&v348 + 1) + 8 * k) scopedIdentifier];
+        [trackerCopy trackDeferredAssetForScopedIdentifier:scopedIdentifier];
       }
 
       v49 = [v47 countByEnumeratingWithState:&v348 objects:v383 count:16];
@@ -6040,12 +6040,12 @@ LABEL_15:
 
         v54 = *(*(&v344 + 1) + 8 * v53);
         v55 = objc_autoreleasePoolPush();
-        v56 = [v54 shareRelationship];
-        v57 = v56;
-        if (!v56 || ([v56 shareURL], v58 = objc_claimAutoreleasedReturnValue(), v58, v58))
+        shareRelationship = [v54 shareRelationship];
+        v57 = shareRelationship;
+        if (!shareRelationship || ([shareRelationship shareURL], v58 = objc_claimAutoreleasedReturnValue(), v58, v58))
         {
-          v59 = [v54 cloudAssetGUID];
-          if (v59 && [v54 cloudLocalState])
+          cloudAssetGUID = [v54 cloudAssetGUID];
+          if (cloudAssetGUID && [v54 cloudLocalState])
           {
             v60 = 2;
           }
@@ -6060,34 +6060,34 @@ LABEL_15:
           v62 = v61;
           if (v343 == 1)
           {
-            v63 = [v61 cplPropertyRecord];
-            [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:v63];
+            cplPropertyRecord = [v61 cplPropertyRecord];
+            [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:cplPropertyRecord];
           }
 
           if (!v62 || ![v62 cloudLocalState]|| [v62 cloudLocalState]== 4)
           {
-            v64 = [v54 cplMasterChangeInLibrary:v11 shouldGenerateDerivatives:v22->_shouldGenerateDerivatives];
+            v64 = [v54 cplMasterChangeInLibrary:libraryCopy shouldGenerateDerivatives:selfCopy3->_shouldGenerateDerivatives];
             if (v64)
             {
               v65 = v64;
               v284 = v55;
               [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:v64];
-              v66 = [v54 master];
+              master2 = [v54 master];
 
-              if ([v66 placeholderState]!= 1)
+              if ([master2 placeholderState]!= 1)
               {
-                v67 = [v66 sizeOfOriginal];
-                v68 = [v65 scopedIdentifier];
-                v69 = [v54 scopedIdentifier];
-                [v272 addSizeForUnpushedOriginals:v67 forMasterScopedIdentifier:v68 forAssetScopedIdentifier:v69];
+                sizeOfOriginal = [master2 sizeOfOriginal];
+                scopedIdentifier2 = [v65 scopedIdentifier];
+                scopedIdentifier3 = [v54 scopedIdentifier];
+                [trackerCopy addSizeForUnpushedOriginals:sizeOfOriginal forMasterScopedIdentifier:scopedIdentifier2 forAssetScopedIdentifier:scopedIdentifier3];
 
-                v11 = v282;
-                v22 = v286;
+                libraryCopy = v282;
+                selfCopy3 = selfCopy2;
               }
 
-              if (v66)
+              if (master2)
               {
-                v62 = v66;
+                v62 = master2;
                 goto LABEL_76;
               }
 
@@ -6103,15 +6103,15 @@ LABEL_104:
               v71 = __CPLAssetsdOSLogDomain();
               if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
               {
-                v72 = [v54 uuid];
+                uuid = [v54 uuid];
                 *buf = 138543362;
-                v379 = v72;
+                v379 = uuid;
                 _os_log_impl(&dword_19BF1F000, v71, OS_LOG_TYPE_ERROR, "Failed to create master for %{public}@. Skipping upload", buf, 0xCu);
               }
             }
 
             v65 = 0;
-            v73 = v62;
+            scopedIdentifier4 = v62;
             v62 = 0;
 LABEL_102:
 
@@ -6124,9 +6124,9 @@ LABEL_102:
             goto LABEL_75;
           }
 
-          if ([(PLCloudBatchUploader *)v22 _hasUnuploadedResourceForAsset:v54 resourceType:17 cloudMaster:v62])
+          if ([(PLCloudBatchUploader *)selfCopy3 _hasUnuploadedResourceForAsset:v54 resourceType:17 cloudMaster:v62])
           {
-            v65 = [v54 cplMasterChangeInLibrary:v11 shouldGenerateDerivatives:v22->_shouldGenerateDerivatives];
+            v65 = [v54 cplMasterChangeInLibrary:libraryCopy shouldGenerateDerivatives:selfCopy3->_shouldGenerateDerivatives];
             if (v65)
             {
               if ((*MEMORY[0x1E6994D48] & 1) == 0)
@@ -6152,14 +6152,14 @@ LABEL_102:
             goto LABEL_76;
           }
 
-          if (![(PLCloudBatchUploader *)v22 _hasUnuploadedResourceForAsset:v54 resourceType:18 cloudMaster:v62])
+          if (![(PLCloudBatchUploader *)selfCopy3 _hasUnuploadedResourceForAsset:v54 resourceType:18 cloudMaster:v62])
           {
 LABEL_75:
             v65 = 0;
             goto LABEL_76;
           }
 
-          v65 = [v54 cplMasterChangeInLibrary:v11 shouldGenerateDerivatives:v22->_shouldGenerateDerivatives];
+          v65 = [v54 cplMasterChangeInLibrary:libraryCopy shouldGenerateDerivatives:selfCopy3->_shouldGenerateDerivatives];
           if (v65)
           {
             if ((*MEMORY[0x1E6994D48] & 1) == 0)
@@ -6189,62 +6189,62 @@ LABEL_76:
           {
             if ((*MEMORY[0x1E6994D48] & 1) == 0)
             {
-              v77 = __CPLAssetsdOSLogDomain();
-              if (os_log_type_enabled(v77, OS_LOG_TYPE_ERROR))
+              scopedIdentifier5 = __CPLAssetsdOSLogDomain();
+              if (os_log_type_enabled(scopedIdentifier5, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412546;
                 v379 = v62;
                 v380 = 2112;
                 v381 = v54;
-                _os_log_impl(&dword_19BF1F000, v77, OS_LOG_TYPE_ERROR, "CloudMaster %@ failed to be uploaded, skip uploading asset %@.", buf, 0x16u);
+                _os_log_impl(&dword_19BF1F000, scopedIdentifier5, OS_LOG_TYPE_ERROR, "CloudMaster %@ failed to be uploaded, skip uploading asset %@.", buf, 0x16u);
               }
 
 LABEL_96:
             }
 
-            v82 = [v62 originalFilename];
-            if (v82)
+            originalFilename = [v62 originalFilename];
+            if (originalFilename)
             {
-              v83 = v82;
-              v84 = [v54 originalFilename];
-              v85 = [v62 originalFilename];
-              v86 = [v84 isEqualToString:v85];
+              v83 = originalFilename;
+              originalFilename2 = [v54 originalFilename];
+              originalFilename3 = [v62 originalFilename];
+              v86 = [originalFilename2 isEqualToString:originalFilename3];
 
-              v22 = v286;
+              selfCopy3 = selfCopy2;
               if ((v86 & 1) == 0)
               {
-                v87 = [v62 originalFilename];
-                [v54 setOriginalFilename:v87];
+                originalFilename4 = [v62 originalFilename];
+                [v54 setOriginalFilename:originalFilename4];
               }
             }
 
-            v88 = [v54 computeSyncAttributes];
+            computeSyncAttributes = [v54 computeSyncAttributes];
 
-            if (!v88)
+            if (!computeSyncAttributes)
             {
-              v11 = v282;
+              libraryCopy = v282;
               v55 = v284;
               goto LABEL_104;
             }
 
-            v73 = [v54 scopedIdentifier];
-            [(PLCloudPhotoLibraryBatchManager *)v287 addComputeSyncRelevantAsset:v73];
-            v11 = v282;
+            scopedIdentifier4 = [v54 scopedIdentifier];
+            [(PLCloudPhotoLibraryBatchManager *)v287 addComputeSyncRelevantAsset:scopedIdentifier4];
+            libraryCopy = v282;
             v55 = v284;
             goto LABEL_102;
           }
 
-          v77 = [v62 scopedIdentifier];
-          if (v77)
+          scopedIdentifier5 = [v62 scopedIdentifier];
+          if (scopedIdentifier5)
           {
-            v78 = [v54 cplAssetChangeWithMasterScopedIdentifier:v77 withChangeType:v60 shouldGenerateDerivatives:v22->_shouldGenerateDerivatives orderKeyManager:v277 computeSyncUploadEnabled:v276 inLibrary:v11];
+            v78 = [v54 cplAssetChangeWithMasterScopedIdentifier:scopedIdentifier5 withChangeType:v60 shouldGenerateDerivatives:selfCopy3->_shouldGenerateDerivatives orderKeyManager:v277 computeSyncUploadEnabled:v276 inLibrary:libraryCopy];
             [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:v78];
             if ([v54 shouldIncludeInCPLCounts])
             {
               if ([v54 isPhoto])
               {
-                v79 = a4;
-                if (!a4)
+                videoCountCopy = count;
+                if (!count)
                 {
                   goto LABEL_91;
                 }
@@ -6252,20 +6252,20 @@ LABEL_96:
 
               else
               {
-                v80 = [v54 isVideo];
-                if (!a5)
+                isVideo = [v54 isVideo];
+                if (!videoCount)
                 {
                   goto LABEL_91;
                 }
 
-                v79 = a5;
-                if (!v80)
+                videoCountCopy = videoCount;
+                if (!isVideo)
                 {
                   goto LABEL_91;
                 }
               }
 
-              ++*v79;
+              ++*videoCountCopy;
             }
 
 LABEL_91:
@@ -6279,7 +6279,7 @@ LABEL_91:
                 _os_log_impl(&dword_19BF1F000, v81, OS_LOG_TYPE_DEBUG, "Adding asset %@ to initial batch", buf, 0xCu);
               }
 
-              v22 = v286;
+              selfCopy3 = selfCopy2;
             }
           }
 
@@ -6287,7 +6287,7 @@ LABEL_91:
           {
             if (*MEMORY[0x1E6994D48])
             {
-              v77 = 0;
+              scopedIdentifier5 = 0;
               goto LABEL_96;
             }
 
@@ -6308,13 +6308,13 @@ LABEL_91:
           goto LABEL_106;
         }
 
-        v59 = __CPLAssetsdOSLogDomain();
-        if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
+        cloudAssetGUID = __CPLAssetsdOSLogDomain();
+        if (os_log_type_enabled(cloudAssetGUID, OS_LOG_TYPE_DEFAULT))
         {
-          v70 = [v54 _compactDebugDescription];
+          _compactDebugDescription = [v54 _compactDebugDescription];
           *buf = 138543362;
-          v379 = v70;
-          _os_log_impl(&dword_19BF1F000, v59, OS_LOG_TYPE_DEFAULT, "Skipping asset %{public}@ on an unpublished share", buf, 0xCu);
+          v379 = _compactDebugDescription;
+          _os_log_impl(&dword_19BF1F000, cloudAssetGUID, OS_LOG_TYPE_DEFAULT, "Skipping asset %{public}@ on an unpublished share", buf, 0xCu);
         }
 
 LABEL_105:
@@ -6332,7 +6332,7 @@ LABEL_106:
     while (v89);
   }
 
-  v268 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v270 = [MEMORY[0x1E695DFA8] set];
   v279 = [MEMORY[0x1E695DFA8] set];
   v339 = 0u;
@@ -6357,29 +6357,29 @@ LABEL_106:
         v95 = *(*(&v339 + 1) + 8 * m);
         if ([v95 isPartOfBurst])
         {
-          v96 = [v95 uuid];
-          v97 = [v275 containsObject:v96];
+          uuid2 = [v95 uuid];
+          v97 = [propertyChangedAssetUuids containsObject:uuid2];
 
           if (v97)
           {
-            v98 = [v95 avalancheUUID];
-            v99 = [v279 containsObject:v98];
+            avalancheUUID = [v95 avalancheUUID];
+            v99 = [v279 containsObject:avalancheUUID];
 
             if ((v99 & 1) == 0)
             {
-              v100 = [v95 avalancheUUID];
-              [v279 addObject:v100];
+              avalancheUUID2 = [v95 avalancheUUID];
+              [v279 addObject:avalancheUUID2];
 
-              v101 = [v95 avalancheUUID];
-              v102 = [v282 managedObjectContext];
-              v103 = [PLAvalanche assetsWithAvalancheUUID:v101 sourceType:1 inManagedObjectContext:v102];
+              avalancheUUID3 = [v95 avalancheUUID];
+              managedObjectContext = [v282 managedObjectContext];
+              v103 = [PLAvalanche assetsWithAvalancheUUID:avalancheUUID3 sourceType:1 inManagedObjectContext:managedObjectContext];
 
               v336[0] = MEMORY[0x1E69E9820];
               v336[1] = 3221225472;
               v336[2] = __120__PLCloudBatchUploader_createBatchesForChanges_outInsertedPhotoCount_outInsertedVideoCount_withUploadTracker_inLibrary___block_invoke_138;
               v336[3] = &unk_1E75781C0;
               v337 = v270;
-              v338 = v275;
+              v338 = propertyChangedAssetUuids;
               [v103 enumerateObjectsUsingBlock:v336];
             }
           }
@@ -6395,15 +6395,15 @@ LABEL_106:
   if ([v270 count])
   {
     v104 = [MEMORY[0x1E695DFA8] setWithArray:v90];
-    v105 = [v270 allObjects];
-    [v104 addObjectsFromArray:v105];
+    allObjects = [v270 allObjects];
+    [v104 addObjectsFromArray:allObjects];
 
     v106 = MEMORY[0x1E695DEC8];
-    v107 = [v104 allObjects];
-    v108 = [v106 arrayWithArray:v107];
+    allObjects2 = [v104 allObjects];
+    v108 = [v106 arrayWithArray:allObjects2];
 
     v109 = v282;
-    v110 = a5;
+    videoCountCopy4 = videoCount;
     if ((*MEMORY[0x1E6994D48] & 1) == 0)
     {
       v111 = __CPLAssetsdOSLogDomain();
@@ -6420,7 +6420,7 @@ LABEL_106:
   {
     v108 = v90;
     v109 = v282;
-    v110 = a5;
+    videoCountCopy4 = videoCount;
   }
 
   v335 = 0u;
@@ -6449,20 +6449,20 @@ LABEL_106:
         v118 = v117;
         if (!v117 || ![v117 cloudLocalState]|| [v118 cloudLocalState]== 4 || [v115 cloudLocalState]== 4)
         {
-          v119 = [v115 cplMasterChangeInLibrary:v109 shouldGenerateDerivatives:v286->_shouldGenerateDerivatives];
-          v120 = [v119 scopedIdentifier];
+          v119 = [v115 cplMasterChangeInLibrary:v109 shouldGenerateDerivatives:selfCopy2->_shouldGenerateDerivatives];
+          scopedIdentifier6 = [v119 scopedIdentifier];
 
-          if (v120)
+          if (scopedIdentifier6)
           {
             [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:v119];
-            v121 = [v115 master];
+            master3 = [v115 master];
 
-            if ([v121 placeholderState]!= 1)
+            if ([master3 placeholderState]!= 1)
             {
-              v122 = [v121 sizeOfOriginal];
-              v123 = [v121 scopedIdentifier];
-              v124 = [v115 scopedIdentifier];
-              [v272 addSizeForUnpushedOriginals:v122 forMasterScopedIdentifier:v123 forAssetScopedIdentifier:v124];
+              sizeOfOriginal2 = [master3 sizeOfOriginal];
+              scopedIdentifier7 = [master3 scopedIdentifier];
+              scopedIdentifier8 = [v115 scopedIdentifier];
+              [trackerCopy addSizeForUnpushedOriginals:sizeOfOriginal2 forMasterScopedIdentifier:scopedIdentifier7 forAssetScopedIdentifier:scopedIdentifier8];
 
               v109 = v282;
               goto LABEL_144;
@@ -6473,27 +6473,27 @@ LABEL_106:
 
           if ((*MEMORY[0x1E6994D48] & 1) == 0)
           {
-            v123 = __CPLAssetsdOSLogDomain();
-            if (os_log_type_enabled(v123, OS_LOG_TYPE_ERROR))
+            scopedIdentifier7 = __CPLAssetsdOSLogDomain();
+            if (os_log_type_enabled(scopedIdentifier7, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
               v379 = v115;
-              _os_log_impl(&dword_19BF1F000, v123, OS_LOG_TYPE_ERROR, "Skip attempting to add master change with nil scopedIdentifier, asset %@", buf, 0xCu);
+              _os_log_impl(&dword_19BF1F000, scopedIdentifier7, OS_LOG_TYPE_ERROR, "Skip attempting to add master change with nil scopedIdentifier, asset %@", buf, 0xCu);
             }
 
-            v121 = v118;
+            master3 = v118;
 LABEL_144:
 
 LABEL_145:
-            v118 = v121;
+            v118 = master3;
           }
 
-          v125 = [v118 scopedIdentifier];
+          scopedIdentifier9 = [v118 scopedIdentifier];
 
-          if (v125)
+          if (scopedIdentifier9)
           {
-            v126 = [v118 scopedIdentifier];
-            v127 = [v115 cplAssetChangeWithMasterScopedIdentifier:v126 withChangeType:0 shouldGenerateDerivatives:v286->_shouldGenerateDerivatives orderKeyManager:v277 computeSyncUploadEnabled:v276 inLibrary:v109];
+            scopedIdentifier10 = [v118 scopedIdentifier];
+            v127 = [v115 cplAssetChangeWithMasterScopedIdentifier:scopedIdentifier10 withChangeType:0 shouldGenerateDerivatives:selfCopy2->_shouldGenerateDerivatives orderKeyManager:v277 computeSyncUploadEnabled:v276 inLibrary:v109];
             [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:v127];
             if (![v115 shouldIncludeInCPLCounts])
             {
@@ -6502,22 +6502,22 @@ LABEL_145:
 
             if ([v115 isPhoto])
             {
-              v128 = a4;
-              if (!a4)
+              countCopy2 = count;
+              if (!count)
               {
                 goto LABEL_157;
               }
 
 LABEL_156:
-              ++*v128;
+              ++*countCopy2;
               goto LABEL_157;
             }
 
-            v129 = [v115 isVideo];
-            if (v110)
+            isVideo2 = [v115 isVideo];
+            if (videoCountCopy4)
             {
-              v128 = v110;
-              if (v129)
+              countCopy2 = videoCountCopy4;
+              if (isVideo2)
               {
                 goto LABEL_156;
               }
@@ -6530,12 +6530,12 @@ LABEL_158:
 
           else if ((*MEMORY[0x1E6994D48] & 1) == 0)
           {
-            v126 = __CPLAssetsdOSLogDomain();
-            if (os_log_type_enabled(v126, OS_LOG_TYPE_ERROR))
+            scopedIdentifier10 = __CPLAssetsdOSLogDomain();
+            if (os_log_type_enabled(scopedIdentifier10, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
               v379 = v115;
-              _os_log_impl(&dword_19BF1F000, v126, OS_LOG_TYPE_ERROR, "No valid masterGUID for asset %@. Will retry in the next round", buf, 0xCu);
+              _os_log_impl(&dword_19BF1F000, scopedIdentifier10, OS_LOG_TYPE_ERROR, "No valid masterGUID for asset %@. Will retry in the next round", buf, 0xCu);
             }
 
             goto LABEL_158;
@@ -6559,12 +6559,12 @@ LABEL_158:
             }
           }
 
-          [v268 addObject:v115];
+          [array addObject:v115];
           goto LABEL_160;
         }
 
-        v131 = [v115 uuid];
-        if ([v265 containsObject:v131])
+        uuid3 = [v115 uuid];
+        if ([faceChangedAssetUuids containsObject:uuid3])
         {
           v132 = 32;
         }
@@ -6574,17 +6574,17 @@ LABEL_158:
           v132 = 0;
         }
 
-        if ([v275 containsObject:v131])
+        if ([propertyChangedAssetUuids containsObject:uuid3])
         {
           v132 |= 2uLL;
         }
 
-        if ([v267 containsObject:v131])
+        if ([sharingPropertyChangedAssetUuids containsObject:uuid3])
         {
           v132 |= 0x40uLL;
         }
 
-        if ([v263 containsObject:v115])
+        if ([updatedRelationship containsObject:v115])
         {
           v133 = v132 | 0x10;
         }
@@ -6594,13 +6594,13 @@ LABEL_158:
           v133 = v132;
         }
 
-        if ([v266 containsObject:v131])
+        if ([adjustedAssetUuids containsObject:uuid3])
         {
-          v134 = [MEMORY[0x1E696AC08] defaultManager];
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
           if (![v115 hasAdjustments])
           {
-            v139 = [v115 pathForOriginalFile];
-            v140 = [v134 fileExistsAtPath:v139];
+            pathForOriginalFile = [v115 pathForOriginalFile];
+            v140 = [defaultManager fileExistsAtPath:pathForOriginalFile];
 
             if (v140)
             {
@@ -6610,19 +6610,19 @@ LABEL_158:
             goto LABEL_187;
           }
 
-          if (!-[NSObject isPhoto](v115, "isPhoto") || (-[NSObject pathForFullsizeRenderImageFile](v115, "pathForFullsizeRenderImageFile"), v135 = objc_claimAutoreleasedReturnValue(), v136 = [v134 fileExistsAtPath:v135], v135, !v136))
+          if (!-[NSObject isPhoto](v115, "isPhoto") || (-[NSObject pathForFullsizeRenderImageFile](v115, "pathForFullsizeRenderImageFile"), v135 = objc_claimAutoreleasedReturnValue(), v136 = [defaultManager fileExistsAtPath:v135], v135, !v136))
           {
             if (![v115 isVideo])
             {
               goto LABEL_187;
             }
 
-            v137 = [v115 pathForFullsizeRenderVideoFile];
-            v138 = [v134 fileExistsAtPath:v137];
+            pathForFullsizeRenderVideoFile = [v115 pathForFullsizeRenderVideoFile];
+            v138 = [defaultManager fileExistsAtPath:pathForFullsizeRenderVideoFile];
 
             if (!v138)
             {
-              if (!-[NSObject isDefaultAdjustedSlomo](v115, "isDefaultAdjustedSlomo") || (-[NSObject pathForOriginalFile](v115, "pathForOriginalFile"), v147 = objc_claimAutoreleasedReturnValue(), v148 = [v134 fileExistsAtPath:v147], v147, !v148))
+              if (!-[NSObject isDefaultAdjustedSlomo](v115, "isDefaultAdjustedSlomo") || (-[NSObject pathForOriginalFile](v115, "pathForOriginalFile"), v147 = objc_claimAutoreleasedReturnValue(), v148 = [defaultManager fileExistsAtPath:v147], v147, !v148))
               {
                 if ((*MEMORY[0x1E6994D48] & 1) == 0)
                 {
@@ -6662,20 +6662,20 @@ LABEL_189:
           v141 = 0;
         }
 
-        v142 = [v118 scopedIdentifier];
-        v143 = [v115 cplAssetChangeWithMasterScopedIdentifier:v142 withChangeType:v141 shouldGenerateDerivatives:v286->_shouldGenerateDerivatives orderKeyManager:v277 computeSyncUploadEnabled:v276 inLibrary:v109];
+        scopedIdentifier11 = [v118 scopedIdentifier];
+        v143 = [v115 cplAssetChangeWithMasterScopedIdentifier:scopedIdentifier11 withChangeType:v141 shouldGenerateDerivatives:selfCopy2->_shouldGenerateDerivatives orderKeyManager:v277 computeSyncUploadEnabled:v276 inLibrary:v109];
         [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:v143];
-        v144 = [v115 scopedIdentifier];
-        v145 = [v264 containsObject:v144];
+        scopedIdentifier12 = [v115 scopedIdentifier];
+        v145 = [computeSyncChangedAssets containsObject:scopedIdentifier12];
 
         if (v145)
         {
-          v146 = [v115 scopedIdentifier];
-          [(PLCloudPhotoLibraryBatchManager *)v287 addComputeSyncRelevantAsset:v146];
+          scopedIdentifier13 = [v115 scopedIdentifier];
+          [(PLCloudPhotoLibraryBatchManager *)v287 addComputeSyncRelevantAsset:scopedIdentifier13];
         }
 
         v109 = v282;
-        v110 = a5;
+        videoCountCopy4 = videoCount;
 LABEL_160:
 
         objc_autoreleasePoolPop(v116);
@@ -6694,7 +6694,7 @@ LABEL_160:
   v330 = 0u;
   v329 = 0u;
   v328 = 0u;
-  v151 = v245;
+  v151 = updatedMasters;
   v152 = [v151 countByEnumeratingWithState:&v328 objects:v375 count:16];
   if (!v152)
   {
@@ -6713,13 +6713,13 @@ LABEL_160:
       }
 
       v156 = *(*(&v328 + 1) + 8 * n);
-      v157 = [v156 assets];
-      v158 = [v157 count];
+      assets = [v156 assets];
+      v158 = [assets count];
 
       if (v158)
       {
-        v159 = [v156 cplPropertyRecord];
-        [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:v159];
+        cplPropertyRecord2 = [v156 cplPropertyRecord];
+        [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:cplPropertyRecord2];
       }
 
       else
@@ -6729,14 +6729,14 @@ LABEL_160:
           continue;
         }
 
-        v159 = __CPLAssetsdOSLogDomain();
-        if (os_log_type_enabled(v159, OS_LOG_TYPE_ERROR))
+        cplPropertyRecord2 = __CPLAssetsdOSLogDomain();
+        if (os_log_type_enabled(cplPropertyRecord2, OS_LOG_TYPE_ERROR))
         {
-          v160 = [v156 scopedIdentifier];
-          v161 = [v160 identifier];
+          scopedIdentifier14 = [v156 scopedIdentifier];
+          identifier = [scopedIdentifier14 identifier];
           *buf = 138543362;
-          v379 = v161;
-          _os_log_impl(&dword_19BF1F000, v159, OS_LOG_TYPE_ERROR, "Could not find any asset for master %{public}@. Ignoring update", buf, 0xCu);
+          v379 = identifier;
+          _os_log_impl(&dword_19BF1F000, cplPropertyRecord2, OS_LOG_TYPE_ERROR, "Could not find any asset for master %{public}@. Ignoring update", buf, 0xCu);
         }
       }
     }
@@ -6751,7 +6751,7 @@ LABEL_215:
   v327 = 0u;
   v324 = 0u;
   v325 = 0u;
-  v162 = v246;
+  v162 = updatedResources;
   v163 = [v162 countByEnumeratingWithState:&v324 objects:v374 count:16];
   if (v163)
   {
@@ -6766,13 +6766,13 @@ LABEL_215:
           objc_enumerationMutation(v162);
         }
 
-        v167 = [*(*(&v324 + 1) + 8 * ii) asset];
-        v168 = [v167 master];
+        asset2 = [*(*(&v324 + 1) + 8 * ii) asset];
+        master4 = [asset2 master];
 
-        if (v168)
+        if (master4)
         {
-          v169 = [v168 cplPropertyRecord];
-          [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:v169];
+          cplPropertyRecord3 = [master4 cplPropertyRecord];
+          [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:cplPropertyRecord3];
         }
       }
 
@@ -6786,7 +6786,7 @@ LABEL_215:
   v323 = 0u;
   v320 = 0u;
   v321 = 0u;
-  v170 = v268;
+  v170 = array;
   v171 = [v170 countByEnumeratingWithState:&v320 objects:v373 count:16];
   if (v171)
   {
@@ -6825,13 +6825,13 @@ LABEL_215:
     while (v172);
   }
 
-  if ([v260 count])
+  if ([memoryChanges count])
   {
     v318 = 0u;
     v319 = 0u;
     v316 = 0u;
     v317 = 0u;
-    v177 = v260;
+    v177 = memoryChanges;
     v178 = [v177 countByEnumeratingWithState:&v316 objects:v372 count:16];
     if (v178)
     {
@@ -6848,10 +6848,10 @@ LABEL_215:
 
           v182 = *(*(&v316 + 1) + 8 * kk);
           v183 = objc_autoreleasePoolPush();
-          v184 = [v182 cplMemoryChange];
-          if (v184)
+          cplMemoryChange = [v182 cplMemoryChange];
+          if (cplMemoryChange)
           {
-            [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:v184];
+            [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:cplMemoryChange];
           }
 
           objc_autoreleasePoolPop(v183);
@@ -6864,13 +6864,13 @@ LABEL_215:
     }
   }
 
-  if ([v259 count])
+  if ([suggestionChanges count])
   {
     v314 = 0u;
     v315 = 0u;
     v312 = 0u;
     v313 = 0u;
-    v185 = v259;
+    v185 = suggestionChanges;
     v186 = [v185 countByEnumeratingWithState:&v312 objects:v371 count:16];
     if (v186)
     {
@@ -6887,10 +6887,10 @@ LABEL_215:
 
           v190 = *(*(&v312 + 1) + 8 * mm);
           v191 = objc_autoreleasePoolPush();
-          v192 = [v190 cplSuggestionChange];
-          if (v192)
+          cplSuggestionChange = [v190 cplSuggestionChange];
+          if (cplSuggestionChange)
           {
-            [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:v192];
+            [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:cplSuggestionChange];
           }
 
           objc_autoreleasePoolPop(v191);
@@ -6903,13 +6903,13 @@ LABEL_215:
     }
   }
 
-  if ([v258 count])
+  if ([userFeedbackChanges count])
   {
     v310 = 0u;
     v311 = 0u;
     v308 = 0u;
     v309 = 0u;
-    v193 = v258;
+    v193 = userFeedbackChanges;
     v194 = [v193 countByEnumeratingWithState:&v308 objects:v370 count:16];
     if (v194)
     {
@@ -6926,10 +6926,10 @@ LABEL_215:
 
           v198 = *(*(&v308 + 1) + 8 * nn);
           v199 = objc_autoreleasePoolPush();
-          v200 = [v198 cplSuggestionChange];
-          if (v200)
+          cplSuggestionChange2 = [v198 cplSuggestionChange];
+          if (cplSuggestionChange2)
           {
-            [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:v200];
+            [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:cplSuggestionChange2];
           }
 
           objc_autoreleasePoolPop(v199);
@@ -6942,13 +6942,13 @@ LABEL_215:
     }
   }
 
-  if ([v257 count])
+  if ([libraryScopeChanges count])
   {
     v306 = 0u;
     v307 = 0u;
     v304 = 0u;
     v305 = 0u;
-    v201 = v257;
+    v201 = libraryScopeChanges;
     v202 = [v201 countByEnumeratingWithState:&v304 objects:v369 count:16];
     if (v202)
     {
@@ -6965,10 +6965,10 @@ LABEL_215:
 
           v206 = *(*(&v304 + 1) + 8 * i1);
           v207 = objc_autoreleasePoolPush();
-          v208 = [v206 cplScopeChange];
-          if (v208)
+          cplScopeChange = [v206 cplScopeChange];
+          if (cplScopeChange)
           {
-            [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:v208];
+            [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:cplScopeChange];
           }
 
           objc_autoreleasePoolPop(v207);
@@ -6981,13 +6981,13 @@ LABEL_215:
     }
   }
 
-  if ([v256 count])
+  if ([collectionShareChanges count])
   {
     v302 = 0u;
     v303 = 0u;
     v300 = 0u;
     v301 = 0u;
-    v209 = v256;
+    v209 = collectionShareChanges;
     v210 = [v209 countByEnumeratingWithState:&v300 objects:v368 count:16];
     if (v210)
     {
@@ -7004,10 +7004,10 @@ LABEL_215:
 
           v214 = *(*(&v300 + 1) + 8 * i2);
           v215 = objc_autoreleasePoolPush();
-          v216 = [v214 cplScopeChange];
-          if (v216)
+          cplScopeChange2 = [v214 cplScopeChange];
+          if (cplScopeChange2)
           {
-            [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:v216];
+            [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:cplScopeChange2];
           }
 
           objc_autoreleasePoolPop(v215);
@@ -7020,13 +7020,13 @@ LABEL_215:
     }
   }
 
-  if ([v255 count])
+  if ([socialGroupChanges count])
   {
     v298 = 0u;
     v299 = 0u;
     v296 = 0u;
     v297 = 0u;
-    v217 = v255;
+    v217 = socialGroupChanges;
     v218 = [v217 countByEnumeratingWithState:&v296 objects:v367 count:16];
     if (v218)
     {
@@ -7043,10 +7043,10 @@ LABEL_215:
 
           v222 = *(*(&v296 + 1) + 8 * i3);
           v223 = objc_autoreleasePoolPush();
-          v224 = [v222 cplSocialGroupChange];
-          if (v224)
+          cplSocialGroupChange = [v222 cplSocialGroupChange];
+          if (cplSocialGroupChange)
           {
-            [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:v224];
+            [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:cplSocialGroupChange];
           }
 
           objc_autoreleasePoolPop(v223);
@@ -7059,8 +7059,8 @@ LABEL_215:
     }
   }
 
-  v225 = [v261 commentChanges];
-  v226 = [v225 count];
+  commentChanges = [v261 commentChanges];
+  v226 = [commentChanges count];
 
   if (v226)
   {
@@ -7068,8 +7068,8 @@ LABEL_215:
     v295 = 0u;
     v292 = 0u;
     v293 = 0u;
-    v227 = [v261 commentChanges];
-    v228 = [v227 countByEnumeratingWithState:&v292 objects:v366 count:16];
+    commentChanges2 = [v261 commentChanges];
+    v228 = [commentChanges2 countByEnumeratingWithState:&v292 objects:v366 count:16];
     if (v228)
     {
       v229 = v228;
@@ -7080,21 +7080,21 @@ LABEL_215:
         {
           if (*v293 != v230)
           {
-            objc_enumerationMutation(v227);
+            objc_enumerationMutation(commentChanges2);
           }
 
           v232 = *(*(&v292 + 1) + 8 * i4);
           v233 = objc_autoreleasePoolPush();
-          v234 = [v232 cplFullRecord];
-          if (v234)
+          cplFullRecord2 = [v232 cplFullRecord];
+          if (cplFullRecord2)
           {
-            [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:v234];
+            [(PLCloudPhotoLibraryBatchManager *)v287 addRecord:cplFullRecord2];
           }
 
           objc_autoreleasePoolPop(v233);
         }
 
-        v229 = [v227 countByEnumeratingWithState:&v292 objects:v366 count:16];
+        v229 = [commentChanges2 countByEnumeratingWithState:&v292 objects:v366 count:16];
       }
 
       while (v229);
@@ -7105,7 +7105,7 @@ LABEL_215:
   v291 = 0u;
   v288 = 0u;
   v289 = 0u;
-  v235 = v254;
+  v235 = deletedRecords;
   v236 = [v235 countByEnumeratingWithState:&v288 objects:v365 count:16];
   if (v236)
   {
@@ -7157,9 +7157,9 @@ LABEL_215:
     CFNotificationCenterPostNotification(v242, @"com.apple.mobileslideshow.cpl.failedtopush", 0, 0, 0);
   }
 
-  v243 = [(PLCloudPhotoLibraryBatchManager *)v287 drainBatches];
+  drainBatches = [(PLCloudPhotoLibraryBatchManager *)v287 drainBatches];
 
-  return v243;
+  return drainBatches;
 }
 
 uint64_t __120__PLCloudBatchUploader_createBatchesForChanges_outInsertedPhotoCount_outInsertedVideoCount_withUploadTracker_inLibrary___block_invoke(uint64_t a1)
@@ -7203,17 +7203,17 @@ void __120__PLCloudBatchUploader_createBatchesForChanges_outInsertedPhotoCount_o
   }
 }
 
-- (id)_validateAssets:(id)a3 fromCloudUuidDeleteList:(id)a4
+- (id)_validateAssets:(id)assets fromCloudUuidDeleteList:(id)list
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v25 = a4;
-  v6 = [MEMORY[0x1E695DF70] array];
+  assetsCopy = assets;
+  listCopy = list;
+  array = [MEMORY[0x1E695DF70] array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = v5;
+  v7 = assetsCopy;
   v8 = [v7 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v8)
   {
@@ -7233,8 +7233,8 @@ void __120__PLCloudBatchUploader_createBatchesForChanges_outInsertedPhotoCount_o
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
-        v15 = [v14 scopedIdentifier];
-        if (v15 && [v25 containsObject:v15])
+        scopedIdentifier = [v14 scopedIdentifier];
+        if (scopedIdentifier && [listCopy containsObject:scopedIdentifier])
         {
           if ((*v11 & 1) == 0)
           {
@@ -7242,7 +7242,7 @@ void __120__PLCloudBatchUploader_createBatchesForChanges_outInsertedPhotoCount_o
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
             {
               *buf = v23;
-              v31 = v15;
+              v31 = scopedIdentifier;
               _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "Skipping insert/update for asset %{public}@ since we see it in a delete", buf, 0xCu);
             }
           }
@@ -7250,17 +7250,17 @@ void __120__PLCloudBatchUploader_createBatchesForChanges_outInsertedPhotoCount_o
 
         else
         {
-          v17 = [v14 cloudLocalState];
-          v18 = v17 == 4 || v17 == 2;
+          cloudLocalState = [v14 cloudLocalState];
+          v18 = cloudLocalState == 4 || cloudLocalState == 2;
           if (v18 && (*v11 & 1) == 0)
           {
-            v19 = v17;
+            v19 = cloudLocalState;
             v20 = __CPLAssetsdOSLogDomain();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
-              v21 = [v14 uuid];
+              uuid = [v14 uuid];
               *buf = 138543618;
-              v31 = v21;
+              v31 = uuid;
               v32 = 1024;
               v33 = v19;
               _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEFAULT, "Going to retry asset %{public}@ with localState %d", buf, 0x12u);
@@ -7270,7 +7270,7 @@ void __120__PLCloudBatchUploader_createBatchesForChanges_outInsertedPhotoCount_o
             }
           }
 
-          [v6 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -7280,35 +7280,35 @@ void __120__PLCloudBatchUploader_createBatchesForChanges_outInsertedPhotoCount_o
     while (v10);
   }
 
-  return v6;
+  return array;
 }
 
-- (void)_processAlbumInserts:(id)a3 albumChanges:(id)a4 withBatchManager:(id)a5 inLibrary:(id)a6
+- (void)_processAlbumInserts:(id)inserts albumChanges:(id)changes withBatchManager:(id)manager inLibrary:(id)library
 {
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v12 libraryServicesManager];
-  v14 = [v13 databaseContext];
+  insertsCopy = inserts;
+  changesCopy = changes;
+  managerCopy = manager;
+  libraryCopy = library;
+  libraryServicesManager = [libraryCopy libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
 
   v15 = [PLRelationshipOrderKeyManager alloc];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __85__PLCloudBatchUploader__processAlbumInserts_albumChanges_withBatchManager_inLibrary___block_invoke;
   v35[3] = &unk_1E7574C88;
-  v16 = v14;
+  v16 = databaseContext;
   v36 = v16;
   v17 = [(PLRelationshipOrderKeyManager *)v15 initWithGenerateContextBlock:v35];
   v18 = MEMORY[0x1E695DFD8];
-  v29 = v10;
-  v30 = v9;
-  v19 = [v9 arrayByAddingObjectsFromArray:v10];
+  v29 = changesCopy;
+  v30 = insertsCopy;
+  v19 = [insertsCopy arrayByAddingObjectsFromArray:changesCopy];
   v20 = [v18 setWithArray:v19];
 
-  v21 = [v20 allObjects];
-  v22 = [PLGenericAlbum includeUnpushedParentsForAlbums:v21 limit:0x7FFFFFFFFFFFFFFFLL];
+  allObjects = [v20 allObjects];
+  v22 = [PLGenericAlbum includeUnpushedParentsForAlbums:allObjects limit:0x7FFFFFFFFFFFFFFFLL];
 
   v33 = 0u;
   v34 = 0u;
@@ -7330,8 +7330,8 @@ void __120__PLCloudBatchUploader_createBatchesForChanges_outInsertedPhotoCount_o
           objc_enumerationMutation(v23);
         }
 
-        v28 = [*(*(&v31 + 1) + 8 * v27) cplAlbumChangeInPhotoLibrary:v12 orderKeyManager:v17];
-        [v11 addRecord:v28];
+        v28 = [*(*(&v31 + 1) + 8 * v27) cplAlbumChangeInPhotoLibrary:libraryCopy orderKeyManager:v17];
+        [managerCopy addRecord:v28];
 
         ++v27;
       }
@@ -7351,25 +7351,25 @@ uint64_t __85__PLCloudBatchUploader__processAlbumInserts_albumChanges_withBatchM
   return [v1 managedObjectContext];
 }
 
-- (void)handleUploadBatchesFromLocalEvent:(id)a3 outInsertedPhotoCount:(unint64_t *)a4 outInsertedVideoCount:(unint64_t *)a5 shouldTriggerPrefetch:(BOOL *)a6 withUploadTracker:(id)a7 inLibrary:(id)a8
+- (void)handleUploadBatchesFromLocalEvent:(id)event outInsertedPhotoCount:(unint64_t *)count outInsertedVideoCount:(unint64_t *)videoCount shouldTriggerPrefetch:(BOOL *)prefetch withUploadTracker:(id)tracker inLibrary:(id)library
 {
-  v14 = a3;
-  v15 = a7;
-  v16 = a8;
+  eventCopy = event;
+  trackerCopy = tracker;
+  libraryCopy = library;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __152__PLCloudBatchUploader_handleUploadBatchesFromLocalEvent_outInsertedPhotoCount_outInsertedVideoCount_shouldTriggerPrefetch_withUploadTracker_inLibrary___block_invoke;
   v20[3] = &unk_1E7564640;
   v20[4] = self;
-  v21 = v14;
-  v24 = a6;
-  v25 = a4;
-  v26 = a5;
-  v22 = v16;
-  v23 = v15;
-  v17 = v15;
-  v18 = v16;
-  v19 = v14;
+  v21 = eventCopy;
+  prefetchCopy = prefetch;
+  countCopy = count;
+  videoCountCopy = videoCount;
+  v22 = libraryCopy;
+  v23 = trackerCopy;
+  v17 = trackerCopy;
+  v18 = libraryCopy;
+  v19 = eventCopy;
   [v18 performTransactionAndWait:v20];
 }
 
@@ -7425,12 +7425,12 @@ LABEL_14:
   }
 }
 
-- (id)_fetchChangesFromLocalEvent:(id)a3 shouldTriggerPrefetch:(BOOL *)a4 inLibrary:(id)a5
+- (id)_fetchChangesFromLocalEvent:(id)event shouldTriggerPrefetch:(BOOL *)prefetch inLibrary:(id)library
 {
   v138 = *MEMORY[0x1E69E9840];
-  v109 = a3;
-  v8 = a5;
-  v110 = [v8 managedObjectContext];
+  eventCopy = event;
+  libraryCopy = library;
+  managedObjectContext = [libraryCopy managedObjectContext];
   v9 = objc_alloc_init(PLCloudUploadChanges);
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -7438,25 +7438,25 @@ LABEL_14:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v137 = v109;
+      v137 = eventCopy;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_DEBUG, "localEvent = %@", buf, 0xCu);
     }
   }
 
-  v11 = [v109 objectForKey:*MEMORY[0x1E695D320]];
-  [(PLCloudBatchUploader *)self _sortData:v11 isInsert:1 forUploadChanges:v9 shouldTriggerPrefetch:a4 inManagedObjectContext:v110];
+  v11 = [eventCopy objectForKey:*MEMORY[0x1E695D320]];
+  [(PLCloudBatchUploader *)self _sortData:v11 isInsert:1 forUploadChanges:v9 shouldTriggerPrefetch:prefetch inManagedObjectContext:managedObjectContext];
 
-  v12 = [v109 objectForKey:*MEMORY[0x1E695D4C8]];
-  [(PLCloudBatchUploader *)self _sortData:v12 isInsert:0 forUploadChanges:v9 shouldTriggerPrefetch:a4 inManagedObjectContext:v110];
+  v12 = [eventCopy objectForKey:*MEMORY[0x1E695D4C8]];
+  [(PLCloudBatchUploader *)self _sortData:v12 isInsert:0 forUploadChanges:v9 shouldTriggerPrefetch:prefetch inManagedObjectContext:managedObjectContext];
 
-  v13 = [v109 objectForKey:@"PLUpdatedRelationshipsByObjectIDKey"];
-  [(PLCloudBatchUploader *)self _sortRelationshipData:v13 forUploadChanges:v9 inManagedObjectContext:v110];
+  v13 = [eventCopy objectForKey:@"PLUpdatedRelationshipsByObjectIDKey"];
+  [(PLCloudBatchUploader *)self _sortRelationshipData:v13 forUploadChanges:v9 inManagedObjectContext:managedObjectContext];
 
   v111 = v9;
-  [(PLCloudBatchUploader *)self _handleSharingChanges:v109 forUploadEvent:v9 inManagedObjectContext:v110];
+  [(PLCloudBatchUploader *)self _handleSharingChanges:eventCopy forUploadEvent:v9 inManagedObjectContext:managedObjectContext];
   v101 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v102 = v8;
-  v14 = [v8 mainScopeIdentifier];
+  v102 = libraryCopy;
+  mainScopeIdentifier = [libraryCopy mainScopeIdentifier];
   v126 = 0u;
   v127 = 0u;
   v128 = 0u;
@@ -7479,7 +7479,7 @@ LABEL_14:
 
         v107 = v16;
         v17 = *(*(&v126 + 1) + 8 * v16);
-        v18 = [v109 objectForKey:v17];
+        v18 = [eventCopy objectForKey:v17];
         v122 = 0u;
         v123 = 0u;
         v124 = 0u;
@@ -7501,17 +7501,17 @@ LABEL_14:
               }
 
               v23 = *(*(&v122 + 1) + 8 * v22);
-              v24 = [objc_alloc(*(v15 + 3000)) initWithStringRepresentation:v23 defaultScopeIdentifier:v14];
+              v24 = [objc_alloc(*(v15 + 3000)) initWithStringRepresentation:v23 defaultScopeIdentifier:mainScopeIdentifier];
               if (([(NSMutableSet *)self->_downloadedDeleteRecords containsObject:v24]& 1) == 0)
               {
                 if ([v17 isEqualToString:@"cloudAssetDeleteGUIDs"])
                 {
                   v25 = objc_opt_class();
-                  v26 = self;
+                  selfCopy2 = self;
                   v27 = v24;
-                  v28 = v14;
+                  v28 = mainScopeIdentifier;
 LABEL_18:
-                  v29 = [(PLCloudBatchUploader *)v26 _checkScopeValidityForDeletingRecords:v27 includeMainScopeIdentifier:v28 withRecordChangeClass:v25 managedObjectContext:v110];
+                  v29 = [(PLCloudBatchUploader *)selfCopy2 _checkScopeValidityForDeletingRecords:v27 includeMainScopeIdentifier:v28 withRecordChangeClass:v25 managedObjectContext:managedObjectContext];
                   goto LABEL_28;
                 }
 
@@ -7587,7 +7587,7 @@ LABEL_18:
 LABEL_45:
                   v29 = [v34 newDeleteScopeChangeWithScopeIdentifier:v35 type:v36];
 LABEL_28:
-                  v31 = v29;
+                  cplPropertyRecord = v29;
                   if (!v29)
                   {
                     goto LABEL_31;
@@ -7596,7 +7596,7 @@ LABEL_28:
 LABEL_29:
                   [(PLCloudUploadChanges *)v111 deletedRecords];
                   v33 = v32 = v15;
-                  [v33 addObject:v31];
+                  [v33 addObject:cplPropertyRecord];
 
                   v15 = v32;
 LABEL_30:
@@ -7621,7 +7621,7 @@ LABEL_27:
                 if ([v17 isEqualToString:@"cloudReactDeleteGUIDs"] || objc_msgSend(v17, "isEqualToString:", @"cloudTextCommentDeleteGUIDs"))
                 {
                   v25 = objc_opt_class();
-                  v26 = self;
+                  selfCopy2 = self;
                   v27 = v24;
                   v28 = 0;
                   goto LABEL_18;
@@ -7642,52 +7642,52 @@ LABEL_27:
                     v99 = v42;
                     v44 = [v42 objectAtIndexedSubscript:1];
                     v97 = [PLManagedAsset assetWithUUID:v43 inLibrary:v102];
-                    v45 = [v97 master];
+                    master = [v97 master];
                     v100 = v43;
                     v98 = v44;
-                    if (v45)
+                    if (master)
                     {
-                      v95 = v45;
+                      v95 = master;
                       v46 = objc_alloc_init(MEMORY[0x1E6994AB8]);
                       [v46 setResourceType:{objc_msgSend(v44, "integerValue")}];
                       [v46 setExpungedState:2];
-                      v47 = [MEMORY[0x1E695DF00] date];
+                      date = [MEMORY[0x1E695DF00] date];
                       v96 = v46;
-                      [v46 setExpungedDate:v47];
+                      [v46 setExpungedDate:date];
 
-                      v31 = [v101 objectForKeyedSubscript:v100];
-                      if (!v31)
+                      cplPropertyRecord = [v101 objectForKeyedSubscript:v100];
+                      if (!cplPropertyRecord)
                       {
-                        v31 = [v95 cplPropertyRecord];
-                        [v101 setObject:v31 forKeyedSubscript:v100];
+                        cplPropertyRecord = [v95 cplPropertyRecord];
+                        [v101 setObject:cplPropertyRecord forKeyedSubscript:v100];
                       }
 
-                      v48 = [v31 expungeableResourceStates];
-                      if (!v48)
+                      expungeableResourceStates = [cplPropertyRecord expungeableResourceStates];
+                      if (!expungeableResourceStates)
                       {
-                        v48 = MEMORY[0x1E695E0F0];
+                        expungeableResourceStates = MEMORY[0x1E695E0F0];
                       }
 
-                      v49 = [v48 arrayByAddingObject:{v46, v48}];
-                      [v31 setExpungeableResourceStates:v49];
+                      v49 = [expungeableResourceStates arrayByAddingObject:{v46, expungeableResourceStates}];
+                      [cplPropertyRecord setExpungeableResourceStates:v49];
 
                       v40 = v99;
-                      v45 = v95;
+                      master = v95;
                     }
 
                     else
                     {
-                      v31 = 0;
+                      cplPropertyRecord = 0;
                       v40 = v99;
                     }
                   }
 
                   else
                   {
-                    v31 = 0;
+                    cplPropertyRecord = 0;
                   }
 
-                  if (v31)
+                  if (cplPropertyRecord)
                   {
                     goto LABEL_29;
                   }
@@ -7695,12 +7695,12 @@ LABEL_27:
 
                 else if ((*MEMORY[0x1E6994D48] & 1) == 0)
                 {
-                  v31 = __CPLAssetsdOSLogDomain();
-                  if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+                  cplPropertyRecord = __CPLAssetsdOSLogDomain();
+                  if (os_log_type_enabled(cplPropertyRecord, OS_LOG_TYPE_ERROR))
                   {
                     *buf = 138412290;
                     v137 = v17;
-                    _os_log_impl(&dword_19BF1F000, v31, OS_LOG_TYPE_ERROR, "Unsupported cloudDeleteKey %@", buf, 0xCu);
+                    _os_log_impl(&dword_19BF1F000, cplPropertyRecord, OS_LOG_TYPE_ERROR, "Unsupported cloudDeleteKey %@", buf, 0xCu);
                   }
 
                   goto LABEL_30;
@@ -7735,8 +7735,8 @@ LABEL_31:
   v119 = 0u;
   v120 = 0u;
   v121 = 0u;
-  v51 = [(PLCloudUploadChanges *)v111 insertedAssets];
-  v52 = [v51 countByEnumeratingWithState:&v118 objects:v133 count:16];
+  insertedAssets = [(PLCloudUploadChanges *)v111 insertedAssets];
+  v52 = [insertedAssets countByEnumeratingWithState:&v118 objects:v133 count:16];
   if (v52)
   {
     v53 = v52;
@@ -7747,16 +7747,16 @@ LABEL_31:
       {
         if (*v119 != v54)
         {
-          objc_enumerationMutation(v51);
+          objc_enumerationMutation(insertedAssets);
         }
 
         v56 = *(*(&v118 + 1) + 8 * i);
-        v57 = [v56 uuid];
+        uuid = [v56 uuid];
 
-        if (v57)
+        if (uuid)
         {
-          v58 = [v56 uuid];
-          [v113 addObject:v58];
+          uuid2 = [v56 uuid];
+          [v113 addObject:uuid2];
         }
 
         else
@@ -7765,7 +7765,7 @@ LABEL_31:
         }
       }
 
-      v53 = [v51 countByEnumeratingWithState:&v118 objects:v133 count:16];
+      v53 = [insertedAssets countByEnumeratingWithState:&v118 objects:v133 count:16];
     }
 
     while (v53);
@@ -7775,8 +7775,8 @@ LABEL_31:
   v117 = 0u;
   v114 = 0u;
   v115 = 0u;
-  v106 = [(PLCloudUploadChanges *)v111 updatedAssets];
-  v59 = [v106 countByEnumeratingWithState:&v114 objects:v132 count:16];
+  updatedAssets = [(PLCloudUploadChanges *)v111 updatedAssets];
+  v59 = [updatedAssets countByEnumeratingWithState:&v114 objects:v132 count:16];
   if (v59)
   {
     v60 = v59;
@@ -7787,106 +7787,106 @@ LABEL_31:
       {
         if (*v115 != v108)
         {
-          objc_enumerationMutation(v106);
+          objc_enumerationMutation(updatedAssets);
         }
 
         v62 = *(*(&v114 + 1) + 8 * j);
-        v63 = [v62 uuid];
+        uuid3 = [v62 uuid];
 
-        if (!v63)
+        if (!uuid3)
         {
           [(PLCloudBatchUploader *)self _promptForNilAssetUUID:v62 isInsert:0];
           continue;
         }
 
         cameraAsset = self->_cameraAsset;
-        v65 = [v62 uuid];
-        if (([(NSMutableSet *)cameraAsset containsObject:v65]& 1) != 0)
+        uuid4 = [v62 uuid];
+        if (([(NSMutableSet *)cameraAsset containsObject:uuid4]& 1) != 0)
         {
 
 LABEL_93:
-          v67 = [v62 uuid];
-          v68 = [v113 containsObject:v67];
+          uuid5 = [v62 uuid];
+          v68 = [v113 containsObject:uuid5];
 
           if ((v68 & 1) == 0)
           {
-            v69 = [(PLCloudUploadChanges *)v111 insertedAssets];
-            [v69 addObject:v62];
+            insertedAssets2 = [(PLCloudUploadChanges *)v111 insertedAssets];
+            [insertedAssets2 addObject:v62];
           }
 
           v70 = self->_cameraAsset;
-          v71 = [v62 uuid];
-          [(NSMutableSet *)v70 removeObject:v71];
+          uuid6 = [v62 uuid];
+          [(NSMutableSet *)v70 removeObject:uuid6];
 
           goto LABEL_96;
         }
 
-        v66 = [v62 cloudLocalState];
+        cloudLocalState = [v62 cloudLocalState];
 
-        if (!v66)
+        if (!cloudLocalState)
         {
           goto LABEL_93;
         }
 
 LABEL_96:
-        v72 = [v109 objectForKeyedSubscript:@"PLUpdatedAttributesByObjectIDKey"];
-        v73 = [v62 objectID];
-        v74 = [v72 objectForKeyedSubscript:v73];
-        v75 = [v74 unsignedLongValue];
+        v72 = [eventCopy objectForKeyedSubscript:@"PLUpdatedAttributesByObjectIDKey"];
+        objectID = [v62 objectID];
+        v74 = [v72 objectForKeyedSubscript:objectID];
+        unsignedLongValue = [v74 unsignedLongValue];
 
         v131 = @"deferredProcessingNeeded";
         v76 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v131 count:1];
         v77 = +[PLManagedAsset entityName];
         v78 = [PLPropertyIndexMapping indexValueForAttributeNames:v76 entity:v77];
 
-        if ((v78 & v75) != 0)
+        if ((v78 & unsignedLongValue) != 0)
         {
-          v79 = [(PLCloudUploadChanges *)v111 adjustedAssetUuids];
-          v80 = [v62 uuid];
-          [v79 addObject:v80];
+          adjustedAssetUuids = [(PLCloudUploadChanges *)v111 adjustedAssetUuids];
+          uuid7 = [v62 uuid];
+          [adjustedAssetUuids addObject:uuid7];
         }
 
-        v81 = [v109 objectForKeyedSubscript:@"PLUpdatedAttributesByObjectIDKey"];
-        v82 = [v62 additionalAttributes];
-        v83 = [v82 objectID];
-        v84 = [v81 objectForKeyedSubscript:v83];
-        v85 = [v84 unsignedLongValue];
+        v81 = [eventCopy objectForKeyedSubscript:@"PLUpdatedAttributesByObjectIDKey"];
+        additionalAttributes = [v62 additionalAttributes];
+        objectID2 = [additionalAttributes objectID];
+        v84 = [v81 objectForKeyedSubscript:objectID2];
+        unsignedLongValue2 = [v84 unsignedLongValue];
 
         v130 = @"originalResourceChoice";
         v86 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v130 count:1];
         v87 = +[PLAdditionalAssetAttributes entityName];
         v88 = [PLPropertyIndexMapping indexValueForAttributeNames:v86 entity:v87];
 
-        if ((v88 & v85) != 0)
+        if ((v88 & unsignedLongValue2) != 0)
         {
-          v89 = [(PLCloudUploadChanges *)v111 adjustedAssetUuids];
-          v90 = [v62 uuid];
-          [v89 addObject:v90];
+          adjustedAssetUuids2 = [(PLCloudUploadChanges *)v111 adjustedAssetUuids];
+          uuid8 = [v62 uuid];
+          [adjustedAssetUuids2 addObject:uuid8];
         }
       }
 
-      v60 = [v106 countByEnumeratingWithState:&v114 objects:v132 count:16];
+      v60 = [updatedAssets countByEnumeratingWithState:&v114 objects:v132 count:16];
     }
 
     while (v60);
   }
 
-  v91 = [(PLCloudUploadChanges *)v111 updatedAssets];
-  v92 = [(PLCloudUploadChanges *)v111 insertedAssets];
-  [v91 removeObjectsInArray:v92];
+  updatedAssets2 = [(PLCloudUploadChanges *)v111 updatedAssets];
+  insertedAssets3 = [(PLCloudUploadChanges *)v111 insertedAssets];
+  [updatedAssets2 removeObjectsInArray:insertedAssets3];
 
   return v111;
 }
 
-- (id)_checkScopeValidityForDeletingRecords:(id)a3 includeMainScopeIdentifier:(id)a4 withRecordChangeClass:(Class)a5 managedObjectContext:(id)a6
+- (id)_checkScopeValidityForDeletingRecords:(id)records includeMainScopeIdentifier:(id)identifier withRecordChangeClass:(Class)class managedObjectContext:(id)context
 {
   v24 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (v10 && ([v9 scopeIdentifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", v10), v12, v13) || (objc_msgSend(v9, "scopeIdentifier"), v14 = objc_claimAutoreleasedReturnValue(), +[PLShare shareWithScopeIdentifier:includeTrashed:inManagedObjectContext:](PLShare, "shareWithScopeIdentifier:includeTrashed:inManagedObjectContext:", v14, 0, v11), v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
+  recordsCopy = records;
+  identifierCopy = identifier;
+  contextCopy = context;
+  if (identifierCopy && ([recordsCopy scopeIdentifier], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", identifierCopy), v12, v13) || (objc_msgSend(recordsCopy, "scopeIdentifier"), v14 = objc_claimAutoreleasedReturnValue(), +[PLShare shareWithScopeIdentifier:includeTrashed:inManagedObjectContext:](PLShare, "shareWithScopeIdentifier:includeTrashed:inManagedObjectContext:", v14, 0, contextCopy), v15 = objc_claimAutoreleasedReturnValue(), v15, v14, v15))
   {
-    v16 = [(objc_class *)a5 newDeleteChangeWithScopedIdentifier:v9];
+    v16 = [(objc_class *)class newDeleteChangeWithScopedIdentifier:recordsCopy];
   }
 
   else
@@ -7896,11 +7896,11 @@ LABEL_96:
       v17 = __CPLAssetsdOSLogDomain();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v18 = NSStringFromClass(a5);
+        v18 = NSStringFromClass(class);
         v20 = 138412546;
         v21 = v18;
         v22 = 2112;
-        v23 = v9;
+        v23 = recordsCopy;
         _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_ERROR, "Ignoring attempt to push %@ delete %@ for nonexistent scope", &v20, 0x16u);
       }
     }
@@ -7911,11 +7911,11 @@ LABEL_96:
   return v16;
 }
 
-- (void)_promptForNilAssetUUID:(id)a3 isInsert:(BOOL)a4
+- (void)_promptForNilAssetUUID:(id)d isInsert:(BOOL)insert
 {
   v14 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AEC0];
-  if (a4)
+  if (insert)
   {
     v5 = @"inserting";
   }
@@ -7925,16 +7925,16 @@ LABEL_96:
     v5 = @"updating";
   }
 
-  v6 = a3;
-  v7 = [v6 objectID];
-  v8 = [v6 isDeleted];
+  dCopy = d;
+  objectID = [dCopy objectID];
+  isDeleted = [dCopy isDeleted];
   v9 = @"NO";
-  if (v8)
+  if (isDeleted)
   {
     v9 = @"YES";
   }
 
-  v10 = [v4 stringWithFormat:@"Found %@ asset with nil uuid %@ (isDeleted=%@) %@.\n\nSee rdar://problem/52539172", v5, v7, v9, v6];
+  dCopy = [v4 stringWithFormat:@"Found %@ asset with nil uuid %@ (isDeleted=%@) %@.\n\nSee rdar://problem/52539172", v5, objectID, v9, dCopy];
 
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -7942,24 +7942,24 @@ LABEL_96:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v13 = v10;
+      v13 = dCopy;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_ERROR, "%{public}@", buf, 0xCu);
     }
   }
 
-  [PLDiagnostics fileRadarUserNotificationWithHeader:@"Unexpected Photo Library state" message:@"Please file a Radar against Photos" radarTitle:@"TTR: asset with nil uuid" radarDescription:v10];
+  [PLDiagnostics fileRadarUserNotificationWithHeader:@"Unexpected Photo Library state" message:@"Please file a Radar against Photos" radarTitle:@"TTR: asset with nil uuid" radarDescription:dCopy];
 }
 
-- (void)_handleInvalidAsset:(id)a3
+- (void)_handleInvalidAsset:(id)asset
 {
-  v3 = a3;
-  v7 = v3;
-  if (v3)
+  assetCopy = asset;
+  v7 = assetCopy;
+  if (assetCopy)
   {
-    v4 = [v3 uuid];
+    uuid = [assetCopy uuid];
 
     v5 = v7;
-    if (v4)
+    if (uuid)
     {
       goto LABEL_6;
     }
@@ -7978,36 +7978,36 @@ LABEL_96:
 LABEL_6:
 }
 
-- (void)_addAsset:(id)a3 toAssetChanges:(id)a4 isInsert:(BOOL)a5 seenAssetUuid:(id)a6
+- (void)_addAsset:(id)asset toAssetChanges:(id)changes isInsert:(BOOL)insert seenAssetUuid:(id)uuid
 {
-  v7 = a5;
-  v16 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [v16 uuid];
-  v13 = v12;
-  if (!v16 || !v12)
+  insertCopy = insert;
+  assetCopy = asset;
+  changesCopy = changes;
+  uuidCopy = uuid;
+  uuid = [assetCopy uuid];
+  v13 = uuid;
+  if (!assetCopy || !uuid)
   {
-    [(PLCloudBatchUploader *)self _handleInvalidAsset:v16];
+    [(PLCloudBatchUploader *)self _handleInvalidAsset:assetCopy];
     goto LABEL_10;
   }
 
-  if (([(NSMutableSet *)v11 containsObject:v12]& 1) != 0)
+  if (([(NSMutableSet *)uuidCopy containsObject:uuid]& 1) != 0)
   {
     goto LABEL_10;
   }
 
-  v14 = [v16 filename];
+  filename = [assetCopy filename];
 
-  if (v14)
+  if (filename)
   {
-    [v10 addObject:v16];
-    cameraAsset = v11;
+    [changesCopy addObject:assetCopy];
+    cameraAsset = uuidCopy;
   }
 
   else
   {
-    if (!v7)
+    if (!insertCopy)
     {
       goto LABEL_10;
     }
@@ -8019,30 +8019,30 @@ LABEL_6:
 LABEL_10:
 }
 
-- (id)_syncDescriptionForObject:(id)a3
+- (id)_syncDescriptionForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   if (objc_opt_respondsToSelector())
   {
-    [v3 syncDescription];
+    [objectCopy syncDescription];
   }
 
   else
   {
-    [v3 description];
+    [objectCopy description];
   }
   v4 = ;
 
   return v4;
 }
 
-- (void)_promptToFileRadarWithTitle:(id)a3 description:(id)a4
+- (void)_promptToFileRadarWithTitle:(id)title description:(id)description
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  titleCopy = title;
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a4;
-  v8 = [[v6 alloc] initWithFormat:v7 arguments:&v13];
+  descriptionCopy = description;
+  v8 = [[v6 alloc] initWithFormat:descriptionCopy arguments:&v13];
 
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
@@ -8055,30 +8055,30 @@ LABEL_10:
     }
   }
 
-  [PLDiagnostics fileRadarUserNotificationWithHeader:@"Unexpected Cloud Photo Library sync state" message:@"Please file a Radar against Photos" radarTitle:v5 radarDescription:v8];
+  [PLDiagnostics fileRadarUserNotificationWithHeader:@"Unexpected Cloud Photo Library sync state" message:@"Please file a Radar against Photos" radarTitle:titleCopy radarDescription:v8];
 }
 
-- (BOOL)_validateAsset:(id)a3 onRelatedObject:(id)a4
+- (BOOL)_validateAsset:(id)asset onRelatedObject:(id)object
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  assetCopy = asset;
+  objectCopy = object;
+  if (!assetCopy)
   {
     if ((*MEMORY[0x1E6994D48] & 1) == 0)
     {
-      v8 = __CPLAssetsdOSLogDomain();
-      if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      objectID = __CPLAssetsdOSLogDomain();
+      if (!os_log_type_enabled(objectID, OS_LOG_TYPE_ERROR))
       {
 LABEL_20:
 
         goto LABEL_21;
       }
 
-      v13 = [(PLCloudBatchUploader *)self _syncDescriptionForObject:v7];
+      v13 = [(PLCloudBatchUploader *)self _syncDescriptionForObject:objectCopy];
       *buf = 138412290;
       v21 = v13;
-      _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_ERROR, "Found related object without an asset: %@", buf, 0xCu);
+      _os_log_impl(&dword_19BF1F000, objectID, OS_LOG_TYPE_ERROR, "Found related object without an asset: %@", buf, 0xCu);
 LABEL_19:
 
       goto LABEL_20;
@@ -8089,59 +8089,59 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if ([v6 isDeleted])
+  if ([assetCopy isDeleted])
   {
-    v8 = [v6 objectID];
-    v9 = [v6 isDeleted];
+    objectID = [assetCopy objectID];
+    isDeleted = [assetCopy isDeleted];
     v10 = @"NO";
-    if (v9)
+    if (isDeleted)
     {
       v10 = @"YES";
     }
 
     v11 = v10;
-    v12 = [(PLCloudBatchUploader *)self _syncDescriptionForObject:v7];
-    [(PLCloudBatchUploader *)self _promptToFileRadarWithTitle:@"TTR: Found deleted asset on related object" description:@"Found deleted asset %@ (isDeleted=%@) on related object %@.\n\nSee rdar://problem/41032234", v8, v11, v12];
+    v12 = [(PLCloudBatchUploader *)self _syncDescriptionForObject:objectCopy];
+    [(PLCloudBatchUploader *)self _promptToFileRadarWithTitle:@"TTR: Found deleted asset on related object" description:@"Found deleted asset %@ (isDeleted=%@) on related object %@.\n\nSee rdar://problem/41032234", objectID, v11, v12];
 LABEL_15:
 
     goto LABEL_20;
   }
 
-  v14 = [v6 uuid];
+  uuid = [assetCopy uuid];
 
-  if (!v14)
+  if (!uuid)
   {
-    v8 = [v6 objectID];
-    v16 = [v6 isDeleted];
+    objectID = [assetCopy objectID];
+    isDeleted2 = [assetCopy isDeleted];
     v17 = @"NO";
-    if (v16)
+    if (isDeleted2)
     {
       v17 = @"YES";
     }
 
     v11 = v17;
-    v12 = [(PLCloudBatchUploader *)self _syncDescriptionForObject:v7];
-    [(PLCloudBatchUploader *)self _promptToFileRadarWithTitle:@"TTR: Found asset with no UUID on related object" description:@"Found asset with no UUID %@ (isDeleted=%@) on related object %@.\n\nSee rdar://problem/41032234", v8, v11, v12];
+    v12 = [(PLCloudBatchUploader *)self _syncDescriptionForObject:objectCopy];
+    [(PLCloudBatchUploader *)self _promptToFileRadarWithTitle:@"TTR: Found asset with no UUID on related object" description:@"Found asset with no UUID %@ (isDeleted=%@) on related object %@.\n\nSee rdar://problem/41032234", objectID, v11, v12];
     goto LABEL_15;
   }
 
-  if (([v6 supportsCloudUpload] & 1) == 0)
+  if (([assetCopy supportsCloudUpload] & 1) == 0)
   {
     if ((*MEMORY[0x1E6994D48] & 1) == 0)
     {
-      v8 = __CPLAssetsdOSLogDomain();
-      if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      objectID = __CPLAssetsdOSLogDomain();
+      if (!os_log_type_enabled(objectID, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_20;
       }
 
-      v13 = [(PLCloudBatchUploader *)self _syncDescriptionForObject:v7];
-      v18 = [v6 objectID];
+      v13 = [(PLCloudBatchUploader *)self _syncDescriptionForObject:objectCopy];
+      objectID2 = [assetCopy objectID];
       *buf = 138412546;
       v21 = v13;
       v22 = 2112;
-      v23 = v18;
-      _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "Related Object %@ attempted to push unsyncable asset: %@", buf, 0x16u);
+      v23 = objectID2;
+      _os_log_impl(&dword_19BF1F000, objectID, OS_LOG_TYPE_DEFAULT, "Related Object %@ attempted to push unsyncable asset: %@", buf, 0x16u);
 
       goto LABEL_19;
     }
@@ -8155,43 +8155,43 @@ LABEL_22:
   return v15;
 }
 
-- (BOOL)_validateAdditionalAssetAttributes:(id)a3 onRelatedObject:(id)a4
+- (BOOL)_validateAdditionalAssetAttributes:(id)attributes onRelatedObject:(id)object
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  attributesCopy = attributes;
+  objectCopy = object;
+  if (attributesCopy)
   {
-    if (![v6 isDeleted])
+    if (![attributesCopy isDeleted])
     {
       v14 = 1;
       goto LABEL_12;
     }
 
-    v8 = [v6 objectID];
-    v9 = [v6 isDeleted];
+    objectID = [attributesCopy objectID];
+    isDeleted = [attributesCopy isDeleted];
     v10 = @"NO";
-    if (v9)
+    if (isDeleted)
     {
       v10 = @"YES";
     }
 
     v11 = v10;
-    v12 = [(PLCloudBatchUploader *)self _syncDescriptionForObject:v7];
-    [(PLCloudBatchUploader *)self _promptToFileRadarWithTitle:@"TTR: Found deleted asset attributes on related object" description:@"Found deleted asset attributes %@ (isDeleted=%@) on related object %@.\n\nSee rdar://problem/41032234", v8, v11, v12];
+    v12 = [(PLCloudBatchUploader *)self _syncDescriptionForObject:objectCopy];
+    [(PLCloudBatchUploader *)self _promptToFileRadarWithTitle:@"TTR: Found deleted asset attributes on related object" description:@"Found deleted asset attributes %@ (isDeleted=%@) on related object %@.\n\nSee rdar://problem/41032234", objectID, v11, v12];
 
     goto LABEL_9;
   }
 
   if ((*MEMORY[0x1E6994D48] & 1) == 0)
   {
-    v8 = __CPLAssetsdOSLogDomain();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    objectID = __CPLAssetsdOSLogDomain();
+    if (os_log_type_enabled(objectID, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(PLCloudBatchUploader *)self _syncDescriptionForObject:v7];
+      v13 = [(PLCloudBatchUploader *)self _syncDescriptionForObject:objectCopy];
       *buf = 138412290;
       v17 = v13;
-      _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_ERROR, "Found related object without an asset attributes: %@", buf, 0xCu);
+      _os_log_impl(&dword_19BF1F000, objectID, OS_LOG_TYPE_ERROR, "Found related object without an asset attributes: %@", buf, 0xCu);
     }
 
 LABEL_9:
@@ -8203,16 +8203,16 @@ LABEL_12:
   return v14;
 }
 
-- (void)_handleSharingChanges:(id)a3 forUploadEvent:(id)a4 inManagedObjectContext:(id)a5
+- (void)_handleSharingChanges:(id)changes forUploadEvent:(id)event inManagedObjectContext:(id)context
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  changesCopy = changes;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v32 = a4;
-  obj = [v32 updatedAssets];
+  eventCopy = event;
+  obj = [eventCopy updatedAssets];
   v7 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v7)
   {
@@ -8228,40 +8228,40 @@ LABEL_12:
         }
 
         v11 = *(*(&v33 + 1) + 8 * i);
-        v12 = [v11 uuid];
+        uuid = [v11 uuid];
 
-        if (v12)
+        if (uuid)
         {
-          v13 = [v6 objectForKeyedSubscript:@"PLUpdatedAttributesByObjectIDKey"];
-          v14 = [v11 objectID];
-          v15 = [v13 objectForKeyedSubscript:v14];
-          v16 = [v15 unsignedLongValue];
+          v13 = [changesCopy objectForKeyedSubscript:@"PLUpdatedAttributesByObjectIDKey"];
+          objectID = [v11 objectID];
+          v15 = [v13 objectForKeyedSubscript:objectID];
+          unsignedLongValue = [v15 unsignedLongValue];
 
           v17 = +[PLManagedAsset listOfSharingAttributesRelevantForUpload];
           v18 = +[PLManagedAsset entityName];
           v19 = [PLPropertyIndexMapping indexValueForAttributeNames:v17 entity:v18];
 
-          if ((v19 & v16) != 0)
+          if ((v19 & unsignedLongValue) != 0)
           {
-            v20 = [v32 sharingPropertyChangedAssetUuids];
-            v21 = [v11 uuid];
-            [v20 addObject:v21];
+            sharingPropertyChangedAssetUuids = [eventCopy sharingPropertyChangedAssetUuids];
+            uuid2 = [v11 uuid];
+            [sharingPropertyChangedAssetUuids addObject:uuid2];
           }
 
-          v22 = [v6 objectForKeyedSubscript:@"PLUpdatedRelationshipsByObjectIDKey"];
-          v23 = [v11 objectID];
-          v24 = [v22 objectForKeyedSubscript:v23];
-          v25 = [v24 unsignedLongValue];
+          v22 = [changesCopy objectForKeyedSubscript:@"PLUpdatedRelationshipsByObjectIDKey"];
+          objectID2 = [v11 objectID];
+          v24 = [v22 objectForKeyedSubscript:objectID2];
+          unsignedLongValue2 = [v24 unsignedLongValue];
 
           v26 = +[PLManagedAsset listOfSharingRelationshipsRelevantForUpload];
           v27 = +[PLManagedAsset entityName];
           v28 = [PLPropertyIndexMapping indexValueForRelationshipNames:v26 entity:v27];
 
-          if ((v28 & v25) != 0)
+          if ((v28 & unsignedLongValue2) != 0)
           {
-            v29 = [v32 sharingPropertyChangedAssetUuids];
-            v30 = [v11 uuid];
-            [v29 addObject:v30];
+            sharingPropertyChangedAssetUuids2 = [eventCopy sharingPropertyChangedAssetUuids];
+            uuid3 = [v11 uuid];
+            [sharingPropertyChangedAssetUuids2 addObject:uuid3];
           }
         }
       }
@@ -8273,38 +8273,38 @@ LABEL_12:
   }
 }
 
-- (void)_sortData:(id)a3 isInsert:(BOOL)a4 forUploadChanges:(id)a5 shouldTriggerPrefetch:(BOOL *)a6 inManagedObjectContext:(id)a7
+- (void)_sortData:(id)data isInsert:(BOOL)insert forUploadChanges:(id)changes shouldTriggerPrefetch:(BOOL *)prefetch inManagedObjectContext:(id)context
 {
-  v10 = a4;
+  insertCopy = insert;
   v120 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a7;
-  v96 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v11, "count")}];
-  v14 = [v12 updatedAssets];
-  v94 = v10;
-  v87 = v14;
-  if (v10)
+  dataCopy = data;
+  changesCopy = changes;
+  contextCopy = context;
+  v96 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(dataCopy, "count")}];
+  updatedAssets = [changesCopy updatedAssets];
+  v94 = insertCopy;
+  v87 = updatedAssets;
+  if (insertCopy)
   {
-    v95 = [v12 insertedAssets];
-    v91 = [v12 albumInserts];
-    v86 = [v12 insertedResources];
-    v93 = 0;
+    insertedAssets = [changesCopy insertedAssets];
+    albumInserts = [changesCopy albumInserts];
+    insertedResources = [changesCopy insertedResources];
+    updatedMasters = 0;
   }
 
   else
   {
-    v95 = v14;
-    v91 = [v12 albumChanges];
-    v93 = [v12 updatedMasters];
-    v86 = [v12 updatedResources];
+    insertedAssets = updatedAssets;
+    albumInserts = [changesCopy albumChanges];
+    updatedMasters = [changesCopy updatedMasters];
+    insertedResources = [changesCopy updatedResources];
   }
 
   v111 = 0u;
   v112 = 0u;
   v109 = 0u;
   v110 = 0u;
-  obj = v11;
+  obj = dataCopy;
   v15 = [obj countByEnumeratingWithState:&v109 objects:v119 count:16];
   if (v15)
   {
@@ -8312,8 +8312,8 @@ LABEL_12:
     v18 = *v110;
     *&v16 = 138543362;
     v83 = v16;
-    v92 = v12;
-    v98 = a6;
+    v92 = changesCopy;
+    prefetchCopy = prefetch;
     do
     {
       v19 = 0;
@@ -8326,7 +8326,7 @@ LABEL_12:
 
         v20 = *(*(&v109 + 1) + 8 * v19);
         v108 = 0;
-        v21 = [v13 existingObjectWithID:v20 error:{&v108, v83}];
+        v21 = [contextCopy existingObjectWithID:v20 error:{&v108, v83}];
         v22 = v108;
         if (!v21)
         {
@@ -8373,7 +8373,7 @@ LABEL_12:
           goto LABEL_14;
         }
 
-        if (a6)
+        if (prefetch)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
@@ -8392,30 +8392,30 @@ LABEL_12:
             v28 = [v21 featuredState]== 1;
           }
 
-          *a6 = v28;
+          *prefetch = v28;
         }
 
 LABEL_26:
-        v29 = [v21 supportsCloudUpload];
+        supportsCloudUpload = [v21 supportsCloudUpload];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
-        if (v29)
+        if (supportsCloudUpload)
         {
           if (isKindOfClass)
           {
             v31 = v21;
-            [(PLCloudBatchUploader *)self _addAsset:v31 toAssetChanges:v95 isInsert:v94 seenAssetUuid:v96];
-            v32 = [v12 propertyChangedAssetUuids];
-            v33 = [v31 uuid];
+            [(PLCloudBatchUploader *)self _addAsset:v31 toAssetChanges:insertedAssets isInsert:v94 seenAssetUuid:v96];
+            propertyChangedAssetUuids = [changesCopy propertyChangedAssetUuids];
+            uuid = [v31 uuid];
 
-            [v32 addObject:v33];
+            [propertyChangedAssetUuids addObject:uuid];
             goto LABEL_29;
           }
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v38 = v93;
+            v38 = updatedMasters;
 LABEL_40:
             [v38 addObject:v21];
             goto LABEL_36;
@@ -8424,12 +8424,12 @@ LABEL_40:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v32 = v21;
-            v33 = [v32 asset];
-            if ([(PLCloudBatchUploader *)self _validateAsset:v33 onRelatedObject:v32])
+            propertyChangedAssetUuids = v21;
+            uuid = [propertyChangedAssetUuids asset];
+            if ([(PLCloudBatchUploader *)self _validateAsset:uuid onRelatedObject:propertyChangedAssetUuids])
             {
-              [(PLCloudBatchUploader *)self _addAsset:v33 toAssetChanges:v95 isInsert:v94 seenAssetUuid:v96];
-              v43 = [v12 propertyChangedAssetUuids];
+              [(PLCloudBatchUploader *)self _addAsset:uuid toAssetChanges:insertedAssets isInsert:v94 seenAssetUuid:v96];
+              propertyChangedAssetUuids2 = [changesCopy propertyChangedAssetUuids];
               goto LABEL_49;
             }
 
@@ -8440,18 +8440,18 @@ LABEL_40:
           if (objc_opt_isKindOfClass())
           {
             v46 = v21;
-            v47 = [v46 assetAttributes];
-            if ([(PLCloudBatchUploader *)self _validateAdditionalAssetAttributes:v47 onRelatedObject:v46])
+            assetAttributes = [v46 assetAttributes];
+            if ([(PLCloudBatchUploader *)self _validateAdditionalAssetAttributes:assetAttributes onRelatedObject:v46])
             {
-              v48 = [v47 asset];
-              if ([(PLCloudBatchUploader *)self _validateAsset:v48 onRelatedObject:v47])
+              asset = [assetAttributes asset];
+              if ([(PLCloudBatchUploader *)self _validateAsset:asset onRelatedObject:assetAttributes])
               {
-                [(PLCloudBatchUploader *)self _addAsset:v48 toAssetChanges:v95 isInsert:v94 seenAssetUuid:v96];
-                logb = [v12 propertyChangedAssetUuids];
-                v49 = [v48 uuid];
-                [logb addObject:v49];
+                [(PLCloudBatchUploader *)self _addAsset:asset toAssetChanges:insertedAssets isInsert:v94 seenAssetUuid:v96];
+                logb = [changesCopy propertyChangedAssetUuids];
+                uuid2 = [asset uuid];
+                [logb addObject:uuid2];
 
-                v12 = v92;
+                changesCopy = v92;
               }
             }
 
@@ -8461,7 +8461,7 @@ LABEL_40:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v38 = v91;
+            v38 = albumInserts;
             goto LABEL_40;
           }
 
@@ -8469,11 +8469,11 @@ LABEL_40:
           if (objc_opt_isKindOfClass())
           {
             v23 = v21;
-            v50 = [v23 assetAttributes];
-            v51 = v50;
-            if (v50)
+            assetAttributes2 = [v23 assetAttributes];
+            v51 = assetAttributes2;
+            if (assetAttributes2)
             {
-              log = [v50 asset];
+              log = [assetAttributes2 asset];
               if ([PLCloudBatchUploader _validateAsset:"_validateAsset:onRelatedObject:" onRelatedObject:?])
               {
                 v84 = v23;
@@ -8482,19 +8482,19 @@ LABEL_40:
                   v52 = __CPLAssetsdOSLogDomain();
                   if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
                   {
-                    v53 = [log uuid];
+                    uuid3 = [log uuid];
                     *buf = v83;
-                    v114 = v53;
+                    v114 = uuid3;
                     _os_log_impl(&dword_19BF1F000, v52, OS_LOG_TYPE_DEFAULT, "Asset %{public}@ adjusted", buf, 0xCu);
                   }
                 }
 
-                v54 = [v12 adjustedAssetUuids];
-                v55 = [log uuid];
-                [v54 addObject:v55];
+                adjustedAssetUuids = [changesCopy adjustedAssetUuids];
+                uuid4 = [log uuid];
+                [adjustedAssetUuids addObject:uuid4];
 
                 v56 = log;
-                a6 = v98;
+                prefetch = prefetchCopy;
                 v23 = v84;
 LABEL_77:
 
@@ -8529,7 +8529,7 @@ LABEL_19:
           if (objc_opt_isKindOfClass())
           {
             v41 = v21;
-            v57 = [v12 memoryChanges];
+            memoryChanges = [changesCopy memoryChanges];
             goto LABEL_85;
           }
 
@@ -8537,7 +8537,7 @@ LABEL_19:
           if (objc_opt_isKindOfClass())
           {
             v41 = v21;
-            v57 = [v12 suggestionChanges];
+            memoryChanges = [changesCopy suggestionChanges];
             goto LABEL_85;
           }
 
@@ -8545,7 +8545,7 @@ LABEL_19:
           if (objc_opt_isKindOfClass())
           {
             v41 = v21;
-            v57 = [v12 userFeedbackChanges];
+            memoryChanges = [changesCopy userFeedbackChanges];
             goto LABEL_85;
           }
 
@@ -8553,7 +8553,7 @@ LABEL_19:
           if (objc_opt_isKindOfClass())
           {
             v41 = v21;
-            v57 = [v12 personChanges];
+            memoryChanges = [changesCopy personChanges];
             goto LABEL_85;
           }
 
@@ -8561,32 +8561,32 @@ LABEL_19:
           if (objc_opt_isKindOfClass())
           {
             v41 = v21;
-            v57 = [v12 faceCropChanges];
+            memoryChanges = [changesCopy faceCropChanges];
             goto LABEL_85;
           }
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v32 = v21;
-            v33 = [v32 associatedAssetForFaceOrTorso:1 orTemporal:0];
-            if ([(PLCloudBatchUploader *)self _validateAsset:v33 onRelatedObject:v32])
+            propertyChangedAssetUuids = v21;
+            uuid = [propertyChangedAssetUuids associatedAssetForFaceOrTorso:1 orTemporal:0];
+            if ([(PLCloudBatchUploader *)self _validateAsset:uuid onRelatedObject:propertyChangedAssetUuids])
             {
-              [(PLCloudBatchUploader *)self _addAsset:v33 toAssetChanges:v87 isInsert:0 seenAssetUuid:v96];
-              v43 = [v12 faceChangedAssetUuids];
+              [(PLCloudBatchUploader *)self _addAsset:uuid toAssetChanges:v87 isInsert:0 seenAssetUuid:v96];
+              propertyChangedAssetUuids2 = [changesCopy faceChangedAssetUuids];
 LABEL_49:
-              v44 = v43;
-              v45 = [v33 uuid];
-              [v44 addObject:v45];
+              v44 = propertyChangedAssetUuids2;
+              v33Uuid = [uuid uuid];
+              [v44 addObject:v33Uuid];
 
-              v12 = v92;
+              changesCopy = v92;
             }
 
 LABEL_29:
 
 LABEL_30:
 LABEL_35:
-            a6 = v98;
+            prefetch = prefetchCopy;
             goto LABEL_36;
           }
 
@@ -8594,17 +8594,17 @@ LABEL_35:
           if (objc_opt_isKindOfClass())
           {
             v58 = v21;
-            v59 = [v58 shareURL];
+            shareURL = [v58 shareURL];
 
             loga = v58;
-            if (v59)
+            if (shareURL)
             {
-              v60 = [v58 momentShareAssets];
+              momentShareAssets = [v58 momentShareAssets];
               v104 = 0u;
               v105 = 0u;
               v106 = 0u;
               v107 = 0u;
-              v61 = [v60 countByEnumeratingWithState:&v104 objects:v118 count:16];
+              v61 = [momentShareAssets countByEnumeratingWithState:&v104 objects:v118 count:16];
               if (v61)
               {
                 v62 = v61;
@@ -8615,32 +8615,32 @@ LABEL_35:
                   {
                     if (*v105 != v63)
                     {
-                      objc_enumerationMutation(v60);
+                      objc_enumerationMutation(momentShareAssets);
                     }
 
-                    [(PLCloudBatchUploader *)self _addAsset:*(*(&v104 + 1) + 8 * i) toAssetChanges:v95 isInsert:1 seenAssetUuid:v96];
+                    [(PLCloudBatchUploader *)self _addAsset:*(*(&v104 + 1) + 8 * i) toAssetChanges:insertedAssets isInsert:1 seenAssetUuid:v96];
                   }
 
-                  v62 = [v60 countByEnumeratingWithState:&v104 objects:v118 count:16];
+                  v62 = [momentShareAssets countByEnumeratingWithState:&v104 objects:v118 count:16];
                 }
 
                 while (v62);
               }
 
-              v12 = v92;
+              changesCopy = v92;
               v58 = loga;
             }
 
-            a6 = v98;
+            prefetch = prefetchCopy;
             if ([v58 trashedState]!= 1)
             {
               goto LABEL_128;
             }
 
-            v65 = [v58 cloudDeletionType];
-            if (v65 != 6)
+            cloudDeletionType = [v58 cloudDeletionType];
+            if (cloudDeletionType != 6)
             {
-              if (v65 == 7)
+              if (cloudDeletionType == 7)
               {
                 v66 = 3;
                 goto LABEL_123;
@@ -8655,18 +8655,18 @@ LABEL_128:
 LABEL_123:
             v74 = MEMORY[0x1E6994BB0];
 LABEL_124:
-            v75 = [v58 scopeIdentifier];
-            v76 = [v74 newDeleteScopeChangeWithScopeIdentifier:v75 type:v66];
+            scopeIdentifier = [v58 scopeIdentifier];
+            collectionShareChanges = [v74 newDeleteScopeChangeWithScopeIdentifier:scopeIdentifier type:v66];
 
             v58 = loga;
-            a6 = v98;
-            if (!v76)
+            prefetch = prefetchCopy;
+            if (!collectionShareChanges)
             {
               goto LABEL_128;
             }
 
-            v77 = [v12 deletedRecords];
-            [v77 addObject:v76];
+            deletedRecords = [changesCopy deletedRecords];
+            [deletedRecords addObject:collectionShareChanges];
 
             goto LABEL_127;
           }
@@ -8675,10 +8675,10 @@ LABEL_124:
           if (objc_opt_isKindOfClass())
           {
             v41 = v21;
-            v57 = [v12 libraryScopeChanges];
+            memoryChanges = [changesCopy libraryScopeChanges];
 LABEL_85:
-            v32 = v57;
-            [v57 addObject:v41];
+            propertyChangedAssetUuids = memoryChanges;
+            [memoryChanges addObject:v41];
 LABEL_45:
 
             goto LABEL_30;
@@ -8688,17 +8688,17 @@ LABEL_45:
           if (objc_opt_isKindOfClass())
           {
             v58 = v21;
-            v67 = [v58 shareURL];
+            shareURL2 = [v58 shareURL];
 
             loga = v58;
-            if (v67)
+            if (shareURL2)
             {
-              v68 = [v58 collectionShareAssets];
+              collectionShareAssets = [v58 collectionShareAssets];
               v100 = 0u;
               v101 = 0u;
               v102 = 0u;
               v103 = 0u;
-              v69 = [v68 countByEnumeratingWithState:&v100 objects:v117 count:16];
+              v69 = [collectionShareAssets countByEnumeratingWithState:&v100 objects:v117 count:16];
               if (v69)
               {
                 v70 = v69;
@@ -8709,34 +8709,34 @@ LABEL_45:
                   {
                     if (*v101 != v71)
                     {
-                      objc_enumerationMutation(v68);
+                      objc_enumerationMutation(collectionShareAssets);
                     }
 
-                    [(PLCloudBatchUploader *)self _addAsset:*(*(&v100 + 1) + 8 * j) toAssetChanges:v95 isInsert:1 seenAssetUuid:v96];
+                    [(PLCloudBatchUploader *)self _addAsset:*(*(&v100 + 1) + 8 * j) toAssetChanges:insertedAssets isInsert:1 seenAssetUuid:v96];
                   }
 
-                  v70 = [v68 countByEnumeratingWithState:&v100 objects:v117 count:16];
+                  v70 = [collectionShareAssets countByEnumeratingWithState:&v100 objects:v117 count:16];
                 }
 
                 while (v70);
               }
 
-              v12 = v92;
+              changesCopy = v92;
               v58 = loga;
             }
 
             if ([v58 trashedState]== 1)
             {
-              v73 = [v58 cloudDeletionType];
-              a6 = v98;
-              if (v73 == 14)
+              cloudDeletionType2 = [v58 cloudDeletionType];
+              prefetch = prefetchCopy;
+              if (cloudDeletionType2 == 14)
               {
                 v66 = 7;
               }
 
               else
               {
-                if (v73 != 15)
+                if (cloudDeletionType2 != 15)
                 {
                   goto LABEL_128;
                 }
@@ -8748,22 +8748,22 @@ LABEL_45:
               goto LABEL_124;
             }
 
-            v76 = [v12 collectionShareChanges];
-            [v76 addObject:v58];
+            collectionShareChanges = [changesCopy collectionShareChanges];
+            [collectionShareChanges addObject:v58];
 LABEL_127:
-            a6 = v98;
+            prefetch = prefetchCopy;
 
             goto LABEL_128;
           }
 
           objc_opt_class();
-          a6 = v98;
+          prefetch = prefetchCopy;
           if (objc_opt_isKindOfClass())
           {
             v23 = v21;
             if (![v23 version])
             {
-              [v86 addObject:v23];
+              [insertedResources addObject:v23];
             }
 
             goto LABEL_19;
@@ -8773,20 +8773,20 @@ LABEL_127:
           if (objc_opt_isKindOfClass())
           {
             v46 = v21;
-            v85 = [v46 asset];
-            v78 = [v12 computeSyncChangedAssets];
-            v79 = [v85 scopedIdentifier];
-            [v78 addObject:v79];
+            asset2 = [v46 asset];
+            computeSyncChangedAssets = [changesCopy computeSyncChangedAssets];
+            scopedIdentifier = [asset2 scopedIdentifier];
+            [computeSyncChangedAssets addObject:scopedIdentifier];
 
-            v47 = v85;
-            if ([(PLCloudBatchUploader *)self _validateAsset:v85 onRelatedObject:v46])
+            assetAttributes = asset2;
+            if ([(PLCloudBatchUploader *)self _validateAsset:asset2 onRelatedObject:v46])
             {
-              [(PLCloudBatchUploader *)self _addAsset:v85 toAssetChanges:v95 isInsert:v94 seenAssetUuid:v96];
-              v80 = [v12 propertyChangedAssetUuids];
-              v81 = [v85 uuid];
-              [v80 addObject:v81];
+              [(PLCloudBatchUploader *)self _addAsset:asset2 toAssetChanges:insertedAssets isInsert:v94 seenAssetUuid:v96];
+              propertyChangedAssetUuids3 = [changesCopy propertyChangedAssetUuids];
+              uuid5 = [asset2 uuid];
+              [propertyChangedAssetUuids3 addObject:uuid5];
 
-              v47 = v85;
+              assetAttributes = asset2;
             }
 
 LABEL_58:
@@ -8798,7 +8798,7 @@ LABEL_58:
           if (objc_opt_isKindOfClass())
           {
             v41 = v21;
-            v57 = [v12 commentChanges];
+            memoryChanges = [changesCopy commentChanges];
             goto LABEL_85;
           }
         }
@@ -8808,13 +8808,13 @@ LABEL_58:
           if (isKindOfClass)
           {
             v34 = v21;
-            v35 = [objc_opt_class() predicateForUnpushedDeferredAssets];
-            v36 = [v35 evaluateWithObject:v34];
+            predicateForUnpushedDeferredAssets = [objc_opt_class() predicateForUnpushedDeferredAssets];
+            v36 = [predicateForUnpushedDeferredAssets evaluateWithObject:v34];
 
             if (v36)
             {
-              v37 = [v12 deferredAssets];
-              [v37 addObject:v34];
+              deferredAssets = [changesCopy deferredAssets];
+              [deferredAssets addObject:v34];
             }
 
             goto LABEL_35;
@@ -8823,20 +8823,20 @@ LABEL_58:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v32 = v21;
-            v39 = [v32 primaryLabel];
-            v40 = [v39 code];
+            propertyChangedAssetUuids = v21;
+            primaryLabel = [propertyChangedAssetUuids primaryLabel];
+            code = [primaryLabel code];
 
-            if (v40 != 1000)
+            if (code != 1000)
             {
               goto LABEL_30;
             }
 
-            v41 = [PLGraphNodeContainer newNodeContainerWithNode:v32];
+            v41 = [PLGraphNodeContainer newNodeContainerWithNode:propertyChangedAssetUuids];
             if ([v41 supportsCloudUpload])
             {
-              v42 = [v12 socialGroupChanges];
-              [v42 addObject:v41];
+              socialGroupChanges = [changesCopy socialGroupChanges];
+              [socialGroupChanges addObject:v41];
             }
 
             goto LABEL_45;
@@ -8877,17 +8877,17 @@ LABEL_36:
   }
 }
 
-- (void)_sortRelationshipData:(id)a3 forUploadChanges:(id)a4 inManagedObjectContext:(id)a5
+- (void)_sortRelationshipData:(id)data forUploadChanges:(id)changes inManagedObjectContext:(id)context
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v21 = a4;
-  v8 = a5;
+  dataCopy = data;
+  changesCopy = changes;
+  contextCopy = context;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = [v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
+  v9 = [dataCopy countByEnumeratingWithState:&v22 objects:v28 count:16];
   if (v9)
   {
     v10 = v9;
@@ -8898,11 +8898,11 @@ LABEL_36:
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(dataCopy);
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [v8 existingObjectWithID:v13 error:0];
+        v14 = [contextCopy existingObjectWithID:v13 error:0];
         if ([v14 supportsCloudUpload])
         {
           objc_opt_class();
@@ -8934,14 +8934,14 @@ LABEL_36:
               goto LABEL_26;
             }
 
-            v19 = [v15 filename];
+            filename = [v15 filename];
 
-            if (!v19)
+            if (!filename)
             {
               goto LABEL_26;
             }
 
-            v20 = [v21 updatedRelationship];
+            updatedRelationship = [changesCopy updatedRelationship];
           }
 
           else
@@ -8981,46 +8981,46 @@ LABEL_26:
               goto LABEL_26;
             }
 
-            v20 = [v21 albumChanges];
+            updatedRelationship = [changesCopy albumChanges];
           }
 
-          v16 = v20;
-          [v20 addObject:v15];
+          v16 = updatedRelationship;
+          [updatedRelationship addObject:v15];
           goto LABEL_25;
         }
 
 LABEL_27:
       }
 
-      v10 = [v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      v10 = [dataCopy countByEnumeratingWithState:&v22 objects:v28 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)recordDeletions:(id)a3
+- (void)recordDeletions:(id)deletions
 {
   downloadedDeleteRecords = self->_downloadedDeleteRecords;
-  v5 = a3;
+  deletionsCopy = deletions;
   [(NSMutableSet *)downloadedDeleteRecords removeAllObjects];
-  [(NSMutableSet *)self->_downloadedDeleteRecords addObjectsFromArray:v5];
+  [(NSMutableSet *)self->_downloadedDeleteRecords addObjectsFromArray:deletionsCopy];
 }
 
-- (void)_pushBatches:(id)a3
+- (void)_pushBatches:(id)batches
 {
   v4 = MEMORY[0x1E696AC90];
-  v5 = a3;
-  v6 = [v4 indexSetWithIndexesInRange:{0, objc_msgSend(v5, "count")}];
-  [(NSMutableArray *)self->_uploadBatchArray insertObjects:v5 atIndexes:v6];
+  batchesCopy = batches;
+  v6 = [v4 indexSetWithIndexesInRange:{0, objc_msgSend(batchesCopy, "count")}];
+  [(NSMutableArray *)self->_uploadBatchArray insertObjects:batchesCopy atIndexes:v6];
 }
 
 - (id)pop
 {
-  v3 = [(NSMutableArray *)self->_uploadBatchArray firstObject];
+  firstObject = [(NSMutableArray *)self->_uploadBatchArray firstObject];
   [(NSMutableArray *)self->_uploadBatchArray removeObjectAtIndex:0];
 
-  return v3;
+  return firstObject;
 }
 
 - (void)clearUploadArray
@@ -9031,19 +9031,19 @@ LABEL_27:
   [(NSMutableSet *)momentSharesNeedingForceSync removeAllObjects];
 }
 
-- (PLCloudBatchUploader)initWithLibraryServicesManager:(id)a3
+- (PLCloudBatchUploader)initWithLibraryServicesManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = PLCloudBatchUploader;
   v6 = [(PLCloudBatchUploader *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_libraryServicesManager, a3);
-    v8 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v6->_libraryServicesManager, manager);
+    array = [MEMORY[0x1E695DF70] array];
     uploadBatchArray = v7->_uploadBatchArray;
-    v7->_uploadBatchArray = v8;
+    v7->_uploadBatchArray = array;
 
     v10 = [MEMORY[0x1E695DFA8] set];
     downloadedDeleteRecords = v7->_downloadedDeleteRecords;

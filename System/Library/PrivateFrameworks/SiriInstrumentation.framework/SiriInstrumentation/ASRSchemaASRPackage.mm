@@ -1,25 +1,25 @@
 @interface ASRSchemaASRPackage
-- (ASRSchemaASRPackage)initWithDictionary:(id)a3;
-- (ASRSchemaASRPackage)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRPackage)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRPackage)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRPackage
 
-- (ASRSchemaASRPackage)initWithDictionary:(id)a3
+- (ASRSchemaASRPackage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ASRSchemaASRPackage;
   v5 = [(ASRSchemaASRPackage *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"rawRecognition"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"rawRecognition"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(ASRSchemaASRPackage *)v5 setRawRecognition:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"postItn"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"postItn"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (ASRSchemaASRPackage)initWithJSON:(id)a3
+- (ASRSchemaASRPackage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRPackage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRPackage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRPackage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,66 +77,66 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_postItn)
   {
-    v4 = [(ASRSchemaASRPackage *)self postItn];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    postItn = [(ASRSchemaASRPackage *)self postItn];
+    dictionaryRepresentation = [postItn dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"postItn"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"postItn"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"postItn"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"postItn"];
     }
   }
 
   if (self->_rawRecognition)
   {
-    v7 = [(ASRSchemaASRPackage *)self rawRecognition];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    rawRecognition = [(ASRSchemaASRPackage *)self rawRecognition];
+    dictionaryRepresentation2 = [rawRecognition dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"rawRecognition"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"rawRecognition"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"rawRecognition"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"rawRecognition"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(ASRSchemaASRPackage *)self rawRecognition];
-  v6 = [v4 rawRecognition];
-  if ((v5 != 0) == (v6 == 0))
+  rawRecognition = [(ASRSchemaASRPackage *)self rawRecognition];
+  rawRecognition2 = [equalCopy rawRecognition];
+  if ((rawRecognition != 0) == (rawRecognition2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(ASRSchemaASRPackage *)self rawRecognition];
-  if (v7)
+  rawRecognition3 = [(ASRSchemaASRPackage *)self rawRecognition];
+  if (rawRecognition3)
   {
-    v8 = v7;
-    v9 = [(ASRSchemaASRPackage *)self rawRecognition];
-    v10 = [v4 rawRecognition];
-    v11 = [v9 isEqual:v10];
+    v8 = rawRecognition3;
+    rawRecognition4 = [(ASRSchemaASRPackage *)self rawRecognition];
+    rawRecognition5 = [equalCopy rawRecognition];
+    v11 = [rawRecognition4 isEqual:rawRecognition5];
 
     if (!v11)
     {
@@ -148,12 +148,12 @@
   {
   }
 
-  v5 = [(ASRSchemaASRPackage *)self postItn];
-  v6 = [v4 postItn];
-  if ((v5 != 0) != (v6 == 0))
+  rawRecognition = [(ASRSchemaASRPackage *)self postItn];
+  rawRecognition2 = [equalCopy postItn];
+  if ((rawRecognition != 0) != (rawRecognition2 == 0))
   {
-    v12 = [(ASRSchemaASRPackage *)self postItn];
-    if (!v12)
+    postItn = [(ASRSchemaASRPackage *)self postItn];
+    if (!postItn)
     {
 
 LABEL_15:
@@ -161,10 +161,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(ASRSchemaASRPackage *)self postItn];
-    v15 = [v4 postItn];
-    v16 = [v14 isEqual:v15];
+    v13 = postItn;
+    postItn2 = [(ASRSchemaASRPackage *)self postItn];
+    postItn3 = [equalCopy postItn];
+    v16 = [postItn2 isEqual:postItn3];
 
     if (v16)
     {
@@ -184,46 +184,46 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(ASRSchemaASRPackage *)self rawRecognition];
+  toCopy = to;
+  rawRecognition = [(ASRSchemaASRPackage *)self rawRecognition];
 
-  if (v4)
+  if (rawRecognition)
   {
-    v5 = [(ASRSchemaASRPackage *)self rawRecognition];
+    rawRecognition2 = [(ASRSchemaASRPackage *)self rawRecognition];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(ASRSchemaASRPackage *)self postItn];
+  postItn = [(ASRSchemaASRPackage *)self postItn];
 
-  if (v6)
+  if (postItn)
   {
-    v7 = [(ASRSchemaASRPackage *)self postItn];
+    postItn2 = [(ASRSchemaASRPackage *)self postItn];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = ASRSchemaASRPackage;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(ASRSchemaASRPackage *)self rawRecognition];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  rawRecognition = [(ASRSchemaASRPackage *)self rawRecognition];
+  v7 = [rawRecognition applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ASRSchemaASRPackage *)self deleteRawRecognition];
   }
 
-  v9 = [(ASRSchemaASRPackage *)self postItn];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  postItn = [(ASRSchemaASRPackage *)self postItn];
+  v10 = [postItn applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ASRSchemaASRPackage *)self deletePostItn];
   }

@@ -5,12 +5,12 @@
 - (id)modifySubscriptionsCompletionBlock;
 - (id)perSubscriptionDeleteBlock;
 - (id)perSubscriptionSaveBlock;
-- (void)_setUpOperation:(id)a3;
-- (void)setModifySubscriptionsCompletionBlock:(id)a3;
-- (void)setPerSubscriptionDeleteBlock:(id)a3;
-- (void)setPerSubscriptionSaveBlock:(id)a3;
-- (void)setSubscriptionIDsToDelete:(id)a3;
-- (void)setSubscriptionsToSave:(id)a3;
+- (void)_setUpOperation:(id)operation;
+- (void)setModifySubscriptionsCompletionBlock:(id)block;
+- (void)setPerSubscriptionDeleteBlock:(id)block;
+- (void)setPerSubscriptionSaveBlock:(id)block;
+- (void)setSubscriptionIDsToDelete:(id)delete;
+- (void)setSubscriptionsToSave:(id)save;
 @end
 
 @implementation WBSRetryableCKModifySubscriptionsOperation
@@ -24,11 +24,11 @@
   return v3;
 }
 
-- (void)setSubscriptionsToSave:(id)a3
+- (void)setSubscriptionsToSave:(id)save
 {
-  v4 = a3;
+  saveCopy = save;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [saveCopy copy];
 
   subscriptionsToSave = self->_subscriptionsToSave;
   self->_subscriptionsToSave = v5;
@@ -47,11 +47,11 @@
   return v3;
 }
 
-- (void)setSubscriptionIDsToDelete:(id)a3
+- (void)setSubscriptionIDsToDelete:(id)delete
 {
-  v4 = a3;
+  deleteCopy = delete;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [deleteCopy copy];
 
   subscriptionIDsToDelete = self->_subscriptionIDsToDelete;
   self->_subscriptionIDsToDelete = v5;
@@ -70,11 +70,11 @@
   return v3;
 }
 
-- (void)setPerSubscriptionSaveBlock:(id)a3
+- (void)setPerSubscriptionSaveBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   perSubscriptionSaveBlock = self->_perSubscriptionSaveBlock;
   self->_perSubscriptionSaveBlock = v5;
@@ -93,11 +93,11 @@
   return v3;
 }
 
-- (void)setPerSubscriptionDeleteBlock:(id)a3
+- (void)setPerSubscriptionDeleteBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   perSubscriptionDeleteBlock = self->_perSubscriptionDeleteBlock;
   self->_perSubscriptionDeleteBlock = v5;
@@ -116,11 +116,11 @@
   return v3;
 }
 
-- (void)setModifySubscriptionsCompletionBlock:(id)a3
+- (void)setModifySubscriptionsCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   modifySubscriptionsCompletionBlock = self->_modifySubscriptionsCompletionBlock;
   self->_modifySubscriptionsCompletionBlock = v5;
@@ -137,20 +137,20 @@
   return v2;
 }
 
-- (void)_setUpOperation:(id)a3
+- (void)_setUpOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v12.receiver = self;
   v12.super_class = WBSRetryableCKModifySubscriptionsOperation;
-  [(WBSRetryableCKDatabaseOperation *)&v12 _setUpOperation:v4];
+  [(WBSRetryableCKDatabaseOperation *)&v12 _setUpOperation:operationCopy];
   if ([(NSMutableSet *)self->super.super._explicitlySetProperties containsObject:@"subscriptionsToSave"])
   {
-    [v4 setSubscriptionsToSave:self->_subscriptionsToSave];
+    [operationCopy setSubscriptionsToSave:self->_subscriptionsToSave];
   }
 
   if ([(NSMutableSet *)self->super.super._explicitlySetProperties containsObject:@"subscriptionIDsToDelete"])
   {
-    [v4 setSubscriptionIDsToDelete:self->_subscriptionIDsToDelete];
+    [operationCopy setSubscriptionIDsToDelete:self->_subscriptionIDsToDelete];
   }
 
   if (self->_perSubscriptionSaveBlock)
@@ -161,7 +161,7 @@
     v9[2] = __62__WBSRetryableCKModifySubscriptionsOperation__setUpOperation___block_invoke;
     v9[3] = &unk_1E7FCA068;
     objc_copyWeak(&v10, &location);
-    [v4 setPerSubscriptionSaveBlock:v9];
+    [operationCopy setPerSubscriptionSaveBlock:v9];
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
   }
@@ -174,7 +174,7 @@
     v7[2] = __62__WBSRetryableCKModifySubscriptionsOperation__setUpOperation___block_invoke_3;
     v7[3] = &unk_1E7FCA130;
     objc_copyWeak(&v8, &location);
-    [v4 setPerSubscriptionDeleteBlock:v7];
+    [operationCopy setPerSubscriptionDeleteBlock:v7];
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
@@ -185,7 +185,7 @@
   v5[2] = __62__WBSRetryableCKModifySubscriptionsOperation__setUpOperation___block_invoke_5;
   v5[3] = &unk_1E7FCA0E0;
   objc_copyWeak(&v6, &location);
-  [v4 setModifySubscriptionsCompletionBlock:v5];
+  [operationCopy setModifySubscriptionsCompletionBlock:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }

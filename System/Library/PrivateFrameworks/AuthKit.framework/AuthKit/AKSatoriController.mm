@@ -1,43 +1,43 @@
 @interface AKSatoriController
-- (AKSatoriController)initWithClient:(id)a3;
-- (id)_verificationSessionForReason:(unint64_t)a3;
-- (void)fetchRealUserLikelihoodForRequest:(id)a3 withCompletionHandler:(id)a4;
-- (void)warmUpVerificationSessionWithCompletionHandler:(id)a3;
+- (AKSatoriController)initWithClient:(id)client;
+- (id)_verificationSessionForReason:(unint64_t)reason;
+- (void)fetchRealUserLikelihoodForRequest:(id)request withCompletionHandler:(id)handler;
+- (void)warmUpVerificationSessionWithCompletionHandler:(id)handler;
 @end
 
 @implementation AKSatoriController
 
-- (AKSatoriController)initWithClient:(id)a3
+- (AKSatoriController)initWithClient:(id)client
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
+  objc_storeStrong(location, client);
+  v3 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v3;
   v7.super_class = AKSatoriController;
   v6 = [(AKSatoriController *)&v7 init];
-  v9 = v6;
-  objc_storeStrong(&v9, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    objc_storeStrong(&v9->_client, location[0]);
+    objc_storeStrong(&selfCopy->_client, location[0]);
   }
 
-  v5 = _objc_retain(v9);
+  v5 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
-- (id)_verificationSessionForReason:(unint64_t)a3
+- (id)_verificationSessionForReason:(unint64_t)reason
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
+  reasonCopy = reason;
   v7 = [[DIVerificationSessionContext alloc] initWithName:@"tiburon" tier:0 serviceUrl:0 httpHeaders:?];
-  [v7 setInvocationReason:v8];
+  [v7 setInvocationReason:reasonCopy];
   v3 = [DIVerificationSession alloc];
   v6 = [v3 initWithContext:v7];
   v5 = _objc_retain(v6);
@@ -47,24 +47,24 @@
   return v5;
 }
 
-- (void)warmUpVerificationSessionWithCompletionHandler:(id)a3
+- (void)warmUpVerificationSessionWithCompletionHandler:(id)handler
 {
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, handler);
   v16 = +[AKAccountManager sharedInstance];
-  v38 = [(AKAccountManager *)v16 primaryAuthKitAccount];
+  primaryAuthKitAccount = [(AKAccountManager *)v16 primaryAuthKitAccount];
   _objc_release(v16);
-  if (v38)
+  if (primaryAuthKitAccount)
   {
     v10 = +[AKAccountManager sharedInstance];
-    v11 = [(AKAccountManager *)v10 shouldPerformSatoriWarmupVerificationForAccount:v38];
+    v11 = [(AKAccountManager *)v10 shouldPerformSatoriWarmupVerificationForAccount:primaryAuthKitAccount];
     _objc_release(v10);
     if (v11)
     {
       v30 = os_transaction_create();
-      v29 = [(AKSatoriController *)v40 _verificationSessionForReason:1];
+      v29 = [(AKSatoriController *)selfCopy _verificationSessionForReason:1];
       v28 = _AKLogSystem();
       v27 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -83,7 +83,7 @@
       v20 = sub_1000E5030;
       v21 = &unk_100323030;
       v25 = _objc_retain(location[0]);
-      v22 = _objc_retain(v38);
+      v22 = _objc_retain(primaryAuthKitAccount);
       v23 = _objc_retain(v29);
       v24 = _objc_retain(v30);
       [v3 performVerificationWithAttributes:0 completion:&v17];
@@ -145,19 +145,19 @@
     v34 = 1;
   }
 
-  objc_storeStrong(&v38, 0);
+  objc_storeStrong(&primaryAuthKitAccount, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchRealUserLikelihoodForRequest:(id)a3 withCompletionHandler:(id)a4
+- (void)fetchRealUserLikelihoodForRequest:(id)request withCompletionHandler:(id)handler
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  v15 = [(AKSatoriController *)v18 _verificationSessionForReason:0];
+  objc_storeStrong(&v16, handler);
+  v15 = [(AKSatoriController *)selfCopy _verificationSessionForReason:0];
   v14 = mach_absolute_time();
   v5 = v15;
   v6 = _NSConcreteStackBlock;
@@ -165,7 +165,7 @@
   v8 = 0;
   v9 = sub_1000E53C0;
   v10 = &unk_100323080;
-  v11 = _objc_retain(v18);
+  v11 = _objc_retain(selfCopy);
   v13[1] = v14;
   v12 = _objc_retain(v15);
   v13[0] = _objc_retain(v16);

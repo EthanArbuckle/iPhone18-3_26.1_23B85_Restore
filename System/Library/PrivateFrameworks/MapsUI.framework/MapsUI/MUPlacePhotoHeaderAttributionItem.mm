@@ -1,13 +1,13 @@
 @interface MUPlacePhotoHeaderAttributionItem
-- (MUPlacePhotoHeaderAttributionItem)initWithDisplayName:(id)a3 visibility:(unint64_t)a4;
+- (MUPlacePhotoHeaderAttributionItem)initWithDisplayName:(id)name visibility:(unint64_t)visibility;
 @end
 
 @implementation MUPlacePhotoHeaderAttributionItem
 
-- (MUPlacePhotoHeaderAttributionItem)initWithDisplayName:(id)a3 visibility:(unint64_t)a4
+- (MUPlacePhotoHeaderAttributionItem)initWithDisplayName:(id)name visibility:(unint64_t)visibility
 {
-  v7 = a3;
-  if ([v7 length] | a4)
+  nameCopy = name;
+  if ([nameCopy length] | visibility)
   {
     v12.receiver = self;
     v12.super_class = MUPlacePhotoHeaderAttributionItem;
@@ -15,20 +15,20 @@
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_displayName, a3);
-      v9->_visibility = a4;
+      objc_storeStrong(&v8->_displayName, name);
+      v9->_visibility = visibility;
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

@@ -1,23 +1,23 @@
 @interface NTKTimelapseFaceView
-- (NTKTimelapseFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (id)_newBottomGradientViewWithColor:(id)a3;
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
-- (id)_newTopGradientViewWithColor:(id)a3;
+- (NTKTimelapseFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (id)_newBottomGradientViewWithColor:(id)color;
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (id)_newTopGradientViewWithColor:(id)color;
 - (id)_nextListing;
-- (id)_onDeckPosterImageViewWithTheme:(unint64_t)a3;
-- (id)_posterImageViewWithTheme:(unint64_t)a3;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
-- (id)_viewForEditOption:(id)a3;
-- (int64_t)_utilitySlotForSlot:(id)a3;
-- (void)_applyComplicationContentSpecificAttributesAnimated:(BOOL)a3;
+- (id)_onDeckPosterImageViewWithTheme:(unint64_t)theme;
+- (id)_posterImageViewWithTheme:(unint64_t)theme;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
+- (id)_viewForEditOption:(id)option;
+- (int64_t)_utilitySlotForSlot:(id)slot;
+- (void)_applyComplicationContentSpecificAttributesAnimated:(BOOL)animated;
 - (void)_applyDataMode;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyScrubbingForegroundColor:(id)a3 shadowColor:(id)a4;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyScrubbingForegroundColor:(id)color shadowColor:(id)shadowColor;
 - (void)_configureComplicationFactory;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_handleOrdinaryScreenWake;
-- (void)_handleTapToPlayVideoGesture:(id)a3;
+- (void)_handleTapToPlayVideoGesture:(id)gesture;
 - (void)_handleWristRaiseScreenWake;
 - (void)_loadLayoutRules;
 - (void)_loadSnapshotContentViews;
@@ -29,20 +29,20 @@
 - (void)_unloadSnapshotContentViews;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)videoPlayerViewDidBeginPlaying:(id)a3;
+- (void)videoPlayerViewDidBeginPlaying:(id)playing;
 @end
 
 @implementation NTKTimelapseFaceView
 
-- (NTKTimelapseFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKTimelapseFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v16.receiver = self;
   v16.super_class = NTKTimelapseFaceView;
-  v9 = [(NTKTimelapseFaceView *)&v16 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKTimelapseFaceView *)&v16 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   if (v9)
   {
-    v10 = [[NTKUtilityComplicationFactory alloc] initForDevice:v8];
+    v10 = [[NTKUtilityComplicationFactory alloc] initForDevice:deviceCopy];
     complicationFactory = v9->_complicationFactory;
     v9->_complicationFactory = v10;
 
@@ -55,8 +55,8 @@
     [(UITapGestureRecognizer *)v9->_tapToPlayGesture setDelegate:v9];
     [(UITapGestureRecognizer *)v9->_tapToPlayGesture setEnabled:0];
     [(NTKTimelapseFaceView *)v9 addGestureRecognizer:v9->_tapToPlayGesture];
-    v14 = [(NTKTimelapseFaceView *)v9 device];
-    v9->_deviceSizeClass = [v14 sizeClass];
+    device = [(NTKTimelapseFaceView *)v9 device];
+    v9->_deviceSizeClass = [device sizeClass];
   }
 
   return v9;
@@ -64,8 +64,8 @@
 
 - (void)dealloc
 {
-  v3 = [(NTKTimelapseFaceView *)self device];
-  v4 = [NTKTimelapseListingFactory sharedInstanceForDevice:v3];
+  device = [(NTKTimelapseFaceView *)self device];
+  v4 = [NTKTimelapseListingFactory sharedInstanceForDevice:device];
   [v4 discardAssets];
 
   v5.receiver = self;
@@ -116,18 +116,18 @@
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(NTKTimelapseFaceView *)self device];
-  v13 = [v3 initWithFrame:v12 forDeviceCornerRadius:{v5, v7, v9, v11}];
+  device = [(NTKTimelapseFaceView *)self device];
+  v13 = [v3 initWithFrame:device forDeviceCornerRadius:{v5, v7, v9, v11}];
   cornerView = self->_cornerView;
   self->_cornerView = v13;
 
   v15 = self->_cornerView;
-  v16 = [(NTKTimelapseFaceView *)self contentView];
-  [(NTKTimelapseFaceView *)self insertSubview:v15 aboveSubview:v16];
+  contentView = [(NTKTimelapseFaceView *)self contentView];
+  [(NTKTimelapseFaceView *)self insertSubview:v15 aboveSubview:contentView];
 
-  v17 = [(NTKTimelapseFaceView *)self _nextListing];
-  v18 = [v17 photoAnalysis];
-  [(NTKTimelapseFaceView *)self _setDateAttributes:v18 animated:0];
+  _nextListing = [(NTKTimelapseFaceView *)self _nextListing];
+  photoAnalysis = [_nextListing photoAnalysis];
+  [(NTKTimelapseFaceView *)self _setDateAttributes:photoAnalysis animated:0];
 }
 
 - (void)_unloadSnapshotContentViews
@@ -147,8 +147,8 @@
   bottomGradientView = self->_bottomGradientView;
   self->_bottomGradientView = 0;
 
-  v6 = [(NTKTimelapseFaceView *)self device];
-  v7 = [NTKTimelapseListingFactory sharedInstanceForDevice:v6];
+  device = [(NTKTimelapseFaceView *)self device];
+  v7 = [NTKTimelapseListingFactory sharedInstanceForDevice:device];
   [v7 discardAssets];
 }
 
@@ -157,8 +157,8 @@
   v12.receiver = self;
   v12.super_class = NTKTimelapseFaceView;
   [(NTKTimelapseFaceView *)&v12 layoutSubviews];
-  v3 = [(NTKTimelapseFaceView *)self contentView];
-  [v3 bounds];
+  contentView = [(NTKTimelapseFaceView *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -220,15 +220,15 @@
   }
 }
 
-- (int64_t)_utilitySlotForSlot:(id)a3
+- (int64_t)_utilitySlotForSlot:(id)slot
 {
-  v3 = a3;
-  if ([v3 isEqual:NTKComplicationSlotTopRight])
+  slotCopy = slot;
+  if ([slotCopy isEqual:NTKComplicationSlotTopRight])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqual:NTKComplicationSlotBottom])
+  else if ([slotCopy isEqual:NTKComplicationSlotBottom])
   {
     v4 = 9;
   }
@@ -249,14 +249,14 @@
   [(NTKUtilityComplicationFactory *)complicationFactory setForegroundImageAlpha:1.0];
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v9 = a3;
-  v6 = a4;
-  [v9 setFontWeight:UIFontWeightSemibold];
-  [v9 setForegroundColor:self->_foregroundColor];
-  [v9 setShadowColor:self->_shadowColor];
-  if ([v6 isEqualToString:NTKComplicationSlotBottom])
+  viewCopy = view;
+  slotCopy = slot;
+  [viewCopy setFontWeight:UIFontWeightSemibold];
+  [viewCopy setForegroundColor:self->_foregroundColor];
+  [viewCopy setShadowColor:self->_shadowColor];
+  if ([slotCopy isEqualToString:NTKComplicationSlotBottom])
   {
     v7 = 1;
   }
@@ -266,89 +266,89 @@
     v7 = *(self + 80) & 1;
   }
 
-  [v9 setUsesLegibility:v7];
+  [viewCopy setUsesLegibility:v7];
   [(NTKUtilityComplicationFactory *)self->_complicationFactory foregroundAlphaForEditing:[(NTKTimelapseFaceView *)self editing]];
-  [v9 setForegroundAlpha:?];
+  [viewCopy setForegroundAlpha:?];
   [(NTKUtilityComplicationFactory *)self->_complicationFactory foregroundImageAlphaForEditing:[(NTKTimelapseFaceView *)self editing]];
-  [v9 setForegroundImageAlpha:?];
-  [v9 setPlacement:{+[NTKUtilityComplicationFactory placementForSlot:](NTKUtilityComplicationFactory, "placementForSlot:", -[NTKTimelapseFaceView _utilitySlotForSlot:](self, "_utilitySlotForSlot:", v6))}];
-  [v9 setSuppressesInternalColorOverrides:1];
+  [viewCopy setForegroundImageAlpha:?];
+  [viewCopy setPlacement:{+[NTKUtilityComplicationFactory placementForSlot:](NTKUtilityComplicationFactory, "placementForSlot:", -[NTKTimelapseFaceView _utilitySlotForSlot:](self, "_utilitySlotForSlot:", slotCopy))}];
+  [viewCopy setSuppressesInternalColorOverrides:1];
   v8 = +[UIColor clearColor];
-  [v9 setBackgroundColor:v8];
+  [viewCopy setBackgroundColor:v8];
 }
 
-- (void)_applyComplicationContentSpecificAttributesAnimated:(BOOL)a3
+- (void)_applyComplicationContentSpecificAttributesAnimated:(BOOL)animated
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_3360;
   v3[3] = &unk_103E0;
-  v4 = a3;
+  animatedCopy = animated;
   v3[4] = self;
   [(NTKTimelapseFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v3];
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v22.receiver = self;
   v22.super_class = NTKTimelapseFaceView;
-  v8 = a3;
-  [(NTKTimelapseFaceView *)&v22 _applyOption:v8 forCustomEditMode:a4 slot:a5];
+  optionCopy = option;
+  [(NTKTimelapseFaceView *)&v22 _applyOption:optionCopy forCustomEditMode:mode slot:slot];
   theme = self->_theme;
-  v10 = [v8 timelapseTheme];
+  timelapseTheme = [optionCopy timelapseTheme];
 
-  self->_theme = v10;
+  self->_theme = timelapseTheme;
   if (([(NTKTimelapseFaceView *)self editing]& 1) == 0)
   {
-    v11 = [(NTKTimelapseFaceView *)self _nextListing];
-    v12 = [v11 photoAnalysis];
-    [(NTKTimelapseFaceView *)self _setDateAttributes:v12 animated:0];
+    _nextListing = [(NTKTimelapseFaceView *)self _nextListing];
+    photoAnalysis = [_nextListing photoAnalysis];
+    [(NTKTimelapseFaceView *)self _setDateAttributes:photoAnalysis animated:0];
   }
 
   if (theme != self->_theme || [(NTKTimelapseFaceView *)self editing])
   {
-    v13 = [(NTKTimelapseFaceView *)self posterImageView];
-    v14 = [(NTKTimelapseFaceView *)self device];
-    v15 = [NTKTimelapseListingFactory sharedInstanceForDevice:v14];
+    posterImageView = [(NTKTimelapseFaceView *)self posterImageView];
+    device = [(NTKTimelapseFaceView *)self device];
+    v15 = [NTKTimelapseListingFactory sharedInstanceForDevice:device];
     v16 = [v15 posterImageWithTheme:self->_theme];
-    [v13 setImage:v16];
+    [posterImageView setImage:v16];
   }
 
-  v17 = [(NTKTimelapseFaceView *)self posterImageView];
-  [v17 removeFromSuperview];
+  posterImageView2 = [(NTKTimelapseFaceView *)self posterImageView];
+  [posterImageView2 removeFromSuperview];
 
-  v18 = [(NTKTimelapseFaceView *)self backgroundContainerView];
-  v19 = [(NTKTimelapseFaceView *)self posterImageView];
-  [v18 addSubview:v19];
+  backgroundContainerView = [(NTKTimelapseFaceView *)self backgroundContainerView];
+  posterImageView3 = [(NTKTimelapseFaceView *)self posterImageView];
+  [backgroundContainerView addSubview:posterImageView3];
 
-  v20 = [(NTKTimelapseFaceView *)self backgroundContainerView];
-  v21 = [(NTKTimelapseFaceView *)self posterImageView];
-  [v20 sendSubviewToBack:v21];
+  backgroundContainerView2 = [(NTKTimelapseFaceView *)self backgroundContainerView];
+  posterImageView4 = [(NTKTimelapseFaceView *)self posterImageView];
+  [backgroundContainerView2 sendSubviewToBack:posterImageView4];
 
   [(NTKTimelapseFaceView *)self setNeedsLayout];
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v5.receiver = self;
   v5.super_class = NTKTimelapseFaceView;
-  [(NTKTimelapseFaceView *)&v5 _configureForTransitionFraction:a4 fromEditMode:a5 toEditMode:a3];
+  [(NTKTimelapseFaceView *)&v5 _configureForTransitionFraction:mode fromEditMode:editMode toEditMode:fraction];
 }
 
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
   complicationFactory = self->_complicationFactory;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(NTKUtilityComplicationFactory *)complicationFactory newViewForComplication:v10 family:a4 forSlot:[(NTKTimelapseFaceView *)self _utilitySlotForSlot:v9]];
+  slotCopy = slot;
+  complicationCopy = complication;
+  v11 = [(NTKUtilityComplicationFactory *)complicationFactory newViewForComplication:complicationCopy family:family forSlot:[(NTKTimelapseFaceView *)self _utilitySlotForSlot:slotCopy]];
 
-  [(NTKTimelapseFaceView *)self _configureComplicationView:v11 forSlot:v9];
+  [(NTKTimelapseFaceView *)self _configureComplicationView:v11 forSlot:slotCopy];
   return v11;
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v5 = [a3 resourceBaseName];
+  resourceBaseName = [option resourceBaseName];
   v6 = NTKImageNamedFromAssetsBundle();
 
   return v6;
@@ -376,23 +376,23 @@
   if ((*(self + 80) & 2) == 0)
   {
     *(self + 80) |= 2u;
-    v3 = [(NTKTimelapseFaceView *)self currentListing];
-    v4 = [v3 photoAnalysis];
-    [(NTKTimelapseFaceView *)self _setDateAttributes:v4 animated:0];
+    currentListing = [(NTKTimelapseFaceView *)self currentListing];
+    photoAnalysis = [currentListing photoAnalysis];
+    [(NTKTimelapseFaceView *)self _setDateAttributes:photoAnalysis animated:0];
   }
 }
 
-- (id)_viewForEditOption:(id)a3
+- (id)_viewForEditOption:(id)option
 {
-  v4 = [a3 timelapseTheme];
+  timelapseTheme = [option timelapseTheme];
 
-  return [(NTKTimelapseFaceView *)self _posterImageViewWithTheme:v4];
+  return [(NTKTimelapseFaceView *)self _posterImageViewWithTheme:timelapseTheme];
 }
 
-- (void)videoPlayerViewDidBeginPlaying:(id)a3
+- (void)videoPlayerViewDidBeginPlaying:(id)playing
 {
-  v4 = [(NTKTimelapseFaceView *)self currentListing];
-  v5 = v4;
+  currentListing = [(NTKTimelapseFaceView *)self currentListing];
+  v5 = currentListing;
   if ((*(self + 80) & 2) != 0)
   {
     *(self + 80) &= ~2u;
@@ -400,8 +400,8 @@
 
   else
   {
-    v6 = [v4 photoAnalysis];
-    [(NTKTimelapseFaceView *)self _setDateAttributes:v6 animated:1];
+    photoAnalysis = [currentListing photoAnalysis];
+    [(NTKTimelapseFaceView *)self _setDateAttributes:photoAnalysis animated:1];
   }
 
   if ([(NTKTimelapseFaceView *)self _curtainViewVisible])
@@ -409,9 +409,9 @@
     memset(&v13, 0, sizeof(v13));
     CGAffineTransformMakeScale(&v13, 0.95, 0.95);
     v12 = v13;
-    v7 = [(NTKTimelapseFaceView *)self videoPlayerView];
+    videoPlayerView = [(NTKTimelapseFaceView *)self videoPlayerView];
     v11 = v12;
-    [v7 setTransform:&v11];
+    [videoPlayerView setTransform:&v11];
 
     v11 = v13;
     [(UIView *)self->_topGradientView setTransform:&v11];
@@ -419,8 +419,8 @@
     [(UIView *)self->_bottomGradientView setTransform:&v11];
     v11 = v13;
     [(UIView *)self->_cornerView setTransform:&v11];
-    v8 = [(NTKTimelapseFaceView *)self videoPlayerView];
-    [v8 setAlpha:0.0];
+    videoPlayerView2 = [(NTKTimelapseFaceView *)self videoPlayerView];
+    [videoPlayerView2 setAlpha:0.0];
 
     [(UIView *)self->_topGradientView setAlpha:0.0];
     [(UIView *)self->_bottomGradientView setAlpha:0.0];
@@ -442,17 +442,17 @@
   [(UITapGestureRecognizer *)self->_tapToPlayGesture setEnabled:1];
 }
 
-- (void)_handleTapToPlayVideoGesture:(id)a3
+- (void)_handleTapToPlayVideoGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   if (([(NTKTimelapseFaceView *)self timeScrubbing]& 1) == 0)
   {
     [(NTKTimelapseFaceView *)self faultInFaceContentSkippedDuringSwiping];
-    if ((-[NTKTimelapseFaceView shouldPause](self, "shouldPause") & 1) == 0 && [v4 state] == &dword_0 + 3)
+    if ((-[NTKTimelapseFaceView shouldPause](self, "shouldPause") & 1) == 0 && [gestureCopy state] == &dword_0 + 3)
     {
       [(NTKTimelapseFaceView *)self _cancelDelayedPlayback];
-      v5 = [(NTKTimelapseFaceView *)self videoPlayerView];
-      [v5 pause];
+      videoPlayerView = [(NTKTimelapseFaceView *)self videoPlayerView];
+      [videoPlayerView pause];
 
       [(UITapGestureRecognizer *)self->_tapToPlayGesture setEnabled:0];
       v6[0] = _NSConcreteStackBlock;
@@ -465,46 +465,46 @@
   }
 }
 
-- (id)_newTopGradientViewWithColor:(id)a3
+- (id)_newTopGradientViewWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = NTKImageNamed();
-  v6 = [(NTKTimelapseFaceView *)self device];
-  [v6 screenBounds];
+  device = [(NTKTimelapseFaceView *)self device];
+  [device screenBounds];
   v8 = v7;
   [v5 size];
   v10 = v9;
 
   v11 = [[UIView alloc] initWithFrame:{0.0, 0.0, v8, v10}];
-  v12 = [v11 layer];
-  v13 = [v4 CGColor];
+  layer = [v11 layer];
+  cGColor = [colorCopy CGColor];
 
-  [v12 setContentsMultiplyColor:v13];
-  v14 = [v11 layer];
-  [v14 setContents:{objc_msgSend(v5, "CGImage")}];
+  [layer setContentsMultiplyColor:cGColor];
+  layer2 = [v11 layer];
+  [layer2 setContents:{objc_msgSend(v5, "CGImage")}];
 
-  v15 = [(NTKTimelapseFaceView *)self _curtainView];
-  v16 = [(NTKTimelapseFaceView *)self contentView];
-  v17 = v16;
-  if (v15)
+  _curtainView = [(NTKTimelapseFaceView *)self _curtainView];
+  contentView = [(NTKTimelapseFaceView *)self contentView];
+  v17 = contentView;
+  if (_curtainView)
   {
-    [v16 insertSubview:v11 belowSubview:v15];
+    [contentView insertSubview:v11 belowSubview:_curtainView];
   }
 
   else
   {
-    [v16 addSubview:v11];
+    [contentView addSubview:v11];
   }
 
   return v11;
 }
 
-- (id)_newBottomGradientViewWithColor:(id)a3
+- (id)_newBottomGradientViewWithColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   v5 = [NTKTimelapseFaceBundle imageWithName:@"TimelapseGradient"];
-  v6 = [(NTKTimelapseFaceView *)self device];
-  [v6 screenBounds];
+  device = [(NTKTimelapseFaceView *)self device];
+  [device screenBounds];
   v8 = v7;
   v10 = v9;
 
@@ -512,38 +512,38 @@
   v12 = v10 - v11;
   [v5 size];
   v14 = [[UIView alloc] initWithFrame:{0.0, v12, v8, v13}];
-  v15 = [v14 layer];
-  v16 = [v4 CGColor];
+  layer = [v14 layer];
+  cGColor = [colorCopy CGColor];
 
-  [v15 setContentsMultiplyColor:v16];
-  v17 = [v14 layer];
-  [v17 setContents:{objc_msgSend(v5, "CGImage")}];
+  [layer setContentsMultiplyColor:cGColor];
+  layer2 = [v14 layer];
+  [layer2 setContents:{objc_msgSend(v5, "CGImage")}];
 
   v18 = self->_topGradientView;
-  v19 = [(NTKTimelapseFaceView *)self _curtainView];
+  _curtainView = [(NTKTimelapseFaceView *)self _curtainView];
   if (v18)
   {
-    v20 = [(NTKTimelapseFaceView *)self contentView];
-    v21 = v20;
+    contentView = [(NTKTimelapseFaceView *)self contentView];
+    v21 = contentView;
     v22 = v14;
     v23 = v18;
   }
 
   else
   {
-    v20 = [(NTKTimelapseFaceView *)self contentView];
-    v21 = v20;
+    contentView = [(NTKTimelapseFaceView *)self contentView];
+    v21 = contentView;
     v22 = v14;
-    if (!v19)
+    if (!_curtainView)
     {
-      [v20 addSubview:v14];
+      [contentView addSubview:v14];
       goto LABEL_6;
     }
 
-    v23 = v19;
+    v23 = _curtainView;
   }
 
-  [v20 insertSubview:v22 belowSubview:v23];
+  [contentView insertSubview:v22 belowSubview:v23];
 LABEL_6:
 
   return v14;
@@ -557,22 +557,22 @@ LABEL_6:
   [(UITapGestureRecognizer *)self->_tapToPlayGesture setEnabled:[(NTKTimelapseFaceView *)self dataMode]== &dword_0 + 1];
 }
 
-- (id)_posterImageViewWithTheme:(unint64_t)a3
+- (id)_posterImageViewWithTheme:(unint64_t)theme
 {
   v5 = [UIImageView alloc];
   [(NTKTimelapseFaceView *)self bounds];
   v6 = [v5 initWithFrame:?];
   [v6 setContentMode:2];
   [v6 setClipsToBounds:1];
-  v7 = [(NTKTimelapseFaceView *)self device];
-  v8 = [NTKTimelapseListingFactory sharedInstanceForDevice:v7];
-  v9 = [v8 posterImageWithTheme:a3];
+  device = [(NTKTimelapseFaceView *)self device];
+  v8 = [NTKTimelapseListingFactory sharedInstanceForDevice:device];
+  v9 = [v8 posterImageWithTheme:theme];
   [v6 setImage:v9];
 
   return v6;
 }
 
-- (id)_onDeckPosterImageViewWithTheme:(unint64_t)a3
+- (id)_onDeckPosterImageViewWithTheme:(unint64_t)theme
 {
   v5 = [UIImageView alloc];
   [(NTKTimelapseFaceView *)self bounds];
@@ -580,28 +580,28 @@ LABEL_6:
   [v6 setContentMode:2];
   [v6 setClipsToBounds:1];
   v7 = +[NTKLocationManager sharedLocationManager];
-  v8 = [v7 anyLocation];
-  [v8 coordinate];
+  anyLocation = [v7 anyLocation];
+  [anyLocation coordinate];
   v10 = v9;
   v12 = v11;
 
   v13 = +[NTKDate faceDate];
-  v14 = [(NTKTimelapseFaceView *)self device];
-  v15 = [NTKTimelapseListingFactory sharedInstanceForDevice:v14];
-  v16 = [v15 heroImageWithTheme:a3 date:v13 location:{v10, v12}];
+  device = [(NTKTimelapseFaceView *)self device];
+  v15 = [NTKTimelapseListingFactory sharedInstanceForDevice:device];
+  v16 = [v15 heroImageWithTheme:theme date:v13 location:{v10, v12}];
   [v6 setImage:v16];
 
   v17 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v6 image];
-    v19 = [v18 description];
+    image = [v6 image];
+    v19 = [image description];
     v21 = 136316419;
     v22 = "[NTKTimelapseFaceView _onDeckPosterImageViewWithTheme:]";
     v23 = 2112;
     v24 = v19;
     v25 = 2048;
-    v26 = a3;
+    themeCopy = theme;
     v27 = 2112;
     v28 = v13;
     v29 = 2049;
@@ -616,18 +616,18 @@ LABEL_6:
 
 - (void)_resetVideoForListing
 {
-  v2 = [(NTKTimelapseFaceView *)self videoPlayerView];
+  videoPlayerView = [(NTKTimelapseFaceView *)self videoPlayerView];
   v3 = *&kCMTimeZero.value;
   epoch = kCMTimeZero.epoch;
-  [v2 seekToTime:&v3];
+  [videoPlayerView seekToTime:&v3];
 }
 
 - (id)_nextListing
 {
   [(NTKTimelapseFaceView *)self setShouldChangeVariantForScreenWake:0];
   v3 = +[NTKLocationManager sharedLocationManager];
-  v4 = [v3 anyLocation];
-  [v4 coordinate];
+  anyLocation = [v3 anyLocation];
+  [anyLocation coordinate];
   v6 = v5;
   v8 = v7;
 
@@ -649,8 +649,8 @@ LABEL_6:
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%s creating NTKTimelapseListingFactory with theme:%lu date:%@ latitude:%{private}f longitude:%{private}f", &v18, 0x34u);
   }
 
-  v12 = [(NTKTimelapseFaceView *)self device];
-  v13 = [NTKTimelapseListingFactory sharedInstanceForDevice:v12];
+  device = [(NTKTimelapseFaceView *)self device];
+  v13 = [NTKTimelapseListingFactory sharedInstanceForDevice:device];
   v14 = self->_theme;
   v15 = +[NTKDate faceDate];
   v16 = [v13 listingWithTheme:v14 date:v15 location:{v6, v8}];
@@ -660,8 +660,8 @@ LABEL_6:
 
 - (void)_playQueuedUpVideo
 {
-  v3 = [(NTKTimelapseFaceView *)self _nextListing];
-  v4 = [(NTKTimelapseFaceView *)self currentListing];
+  _nextListing = [(NTKTimelapseFaceView *)self _nextListing];
+  currentListing = [(NTKTimelapseFaceView *)self currentListing];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -669,41 +669,41 @@ LABEL_6:
     goto LABEL_5;
   }
 
-  v5 = [(NTKTimelapseFaceView *)self currentListing];
-  v6 = [v3 isSimilarTo:v5];
+  currentListing2 = [(NTKTimelapseFaceView *)self currentListing];
+  v6 = [_nextListing isSimilarTo:currentListing2];
 
   if (!v6)
   {
 LABEL_5:
-    v9 = self;
+    selfCopy = self;
     v7 = &selRef__playNextVideo;
-    v8 = &v9;
+    v8 = &selfCopy;
     goto LABEL_6;
   }
 
-  v10 = self;
+  selfCopy2 = self;
   v7 = &selRef__playQueuedUpVideo;
-  v8 = &v10;
+  v8 = &selfCopy2;
 LABEL_6:
   v8[1] = NTKTimelapseFaceView;
-  objc_msgSendSuper2(v8, *v7, v9);
+  objc_msgSendSuper2(v8, *v7, selfCopy);
 }
 
-- (void)_applyScrubbingForegroundColor:(id)a3 shadowColor:(id)a4
+- (void)_applyScrubbingForegroundColor:(id)color shadowColor:(id)shadowColor
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NTKTimelapseFaceView *)self timeView];
-  [v8 setColor:v6];
-  [v8 setShadowColor:v7];
+  colorCopy = color;
+  shadowColorCopy = shadowColor;
+  timeView = [(NTKTimelapseFaceView *)self timeView];
+  [timeView setColor:colorCopy];
+  [timeView setShadowColor:shadowColorCopy];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_4CBC;
   v11[3] = &unk_10458;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = colorCopy;
+  v13 = shadowColorCopy;
+  v9 = shadowColorCopy;
+  v10 = colorCopy;
   [(NTKTimelapseFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v11];
 }
 

@@ -1,6 +1,6 @@
 @interface CalendarDiagnosticExtension
 + (id)log;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 - (void)cleanUpOldAttachments;
 - (void)dealloc;
 @end
@@ -19,12 +19,12 @@
   return v3;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = [a3 objectForKeyedSubscript:@"DEExtensionHostAppKey"];
+  v4 = [parameters objectForKeyedSubscript:@"DEExtensionHostAppKey"];
   v5 = [v4 isEqualToString:@"com.apple.symptomsd"];
 
-  v24 = self;
+  selfCopy = self;
   [(CalendarDiagnosticExtension *)self cleanUpOldAttachments];
   v6 = dispatch_semaphore_create(0);
   v7 = objc_alloc_init(CDELogGatherer);
@@ -57,13 +57,13 @@
     }
   }
 
-  v13 = [(CDELogGatherer *)v8 attachments];
-  v14 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v13, "count")}];
+  attachments = [(CDELogGatherer *)v8 attachments];
+  v14 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(attachments, "count")}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v15 = v13;
+  v15 = attachments;
   v16 = [(NSArray *)v15 countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v16)
   {
@@ -91,8 +91,8 @@
     while (v17);
   }
 
-  oldAttachments = v24->_oldAttachments;
-  v24->_oldAttachments = v15;
+  oldAttachments = selfCopy->_oldAttachments;
+  selfCopy->_oldAttachments = v15;
 
   return v14;
 }

@@ -1,26 +1,26 @@
 @interface PGSharingSuggestionSourceMergeCandidates
-- (PGSharingSuggestionSourceMergeCandidates)initWithServiceManager:(id)a3;
-- (id)filterMeNodePredicateForInput:(id)a3 photoLibrary:(id)a4;
-- (id)suggestedResultsForInput:(id)a3 withOptions:(id)a4;
+- (PGSharingSuggestionSourceMergeCandidates)initWithServiceManager:(id)manager;
+- (id)filterMeNodePredicateForInput:(id)input photoLibrary:(id)library;
+- (id)suggestedResultsForInput:(id)input withOptions:(id)options;
 @end
 
 @implementation PGSharingSuggestionSourceMergeCandidates
 
-- (id)suggestedResultsForInput:(id)a3 withOptions:(id)a4
+- (id)suggestedResultsForInput:(id)input withOptions:(id)options
 {
   v118 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v84 = a4;
-  v6 = [v5 momentNodes];
-  v70 = v5;
-  v77 = [v5 graph];
+  inputCopy = input;
+  optionsCopy = options;
+  momentNodes = [inputCopy momentNodes];
+  v70 = inputCopy;
+  graph = [inputCopy graph];
   v7 = objc_opt_new();
-  v83 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+  v83 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(momentNodes, "count")}];
   v106 = 0u;
   v107 = 0u;
   v108 = 0u;
   v109 = 0u;
-  obj = v6;
+  obj = momentNodes;
   v8 = [obj countByEnumeratingWithState:&v106 objects:v117 count:16];
   if (v8)
   {
@@ -44,10 +44,10 @@
         v14 = v13;
         v105 = v14;
         [v12 enumeratePersonNodesUsingBlock:v104];
-        v15 = [v12 localIdentifier];
-        if ([v15 length])
+        localIdentifier = [v12 localIdentifier];
+        if ([localIdentifier length])
         {
-          [v83 setObject:v14 forKeyedSubscript:v15];
+          [v83 setObject:v14 forKeyedSubscript:localIdentifier];
         }
       }
 
@@ -57,24 +57,24 @@
     while (v9);
   }
 
-  v16 = [v70 moments];
-  v17 = [v16 photoLibrary];
-  v18 = [(PGSharingSuggestionSourceMergeCandidates *)self filterMeNodePredicateForInput:v70 photoLibrary:v17];
-  v19 = [v17 librarySpecificFetchOptions];
-  [v19 setIncludeGuestAssets:1];
+  moments = [v70 moments];
+  photoLibrary = [moments photoLibrary];
+  v18 = [(PGSharingSuggestionSourceMergeCandidates *)self filterMeNodePredicateForInput:v70 photoLibrary:photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludeGuestAssets:1];
   v20 = [MEMORY[0x277CCAC30] predicateWithFormat:@"kindSubtype != %d && kindSubtype != %d", 10, 103];
-  v75 = v19;
-  [v19 setInternalPredicate:v20];
+  v75 = librarySpecificFetchOptions;
+  [librarySpecificFetchOptions setInternalPredicate:v20];
 
-  v21 = [v17 librarySpecificFetchOptions];
-  [v21 setPersonContext:3];
+  librarySpecificFetchOptions2 = [photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions2 setPersonContext:3];
   if (v18)
   {
-    [v21 setPredicate:v18];
+    [librarySpecificFetchOptions2 setPredicate:v18];
   }
 
-  v69 = v17;
-  v22 = [v17 librarySpecificFetchOptions];
+  v69 = photoLibrary;
+  librarySpecificFetchOptions3 = [photoLibrary librarySpecificFetchOptions];
   v23 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(verifiedType == %d || verifiedType == %d) && type != %d", 2, 1, -1];
   v67 = v23;
   v68 = v18;
@@ -85,23 +85,23 @@
     v116[1] = v18;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v116 count:2];
     v26 = [v24 andPredicateWithSubpredicates:v25];
-    [v22 setPredicate:v26];
+    [librarySpecificFetchOptions3 setPredicate:v26];
   }
 
   else
   {
-    [v22 setPredicate:v23];
+    [librarySpecificFetchOptions3 setPredicate:v23];
   }
 
   v102 = 0u;
   v103 = 0u;
   v100 = 0u;
   v101 = 0u;
-  v71 = v16;
+  v71 = moments;
   v78 = [v71 countByEnumeratingWithState:&v100 objects:v115 count:16];
   if (v78)
   {
-    v73 = v21;
+    v73 = librarySpecificFetchOptions2;
     v74 = *v101;
     do
     {
@@ -129,9 +129,9 @@
 
           v79 = v33;
           v80 = v30;
-          v34 = [MEMORY[0x277CD9938] fetchPersonsForAssetCollection:v33 options:v21];
-          v35 = [v31 localIdentifier];
-          v36 = [v83 objectForKeyedSubscript:v35];
+          v34 = [MEMORY[0x277CD9938] fetchPersonsForAssetCollection:v33 options:librarySpecificFetchOptions2];
+          localIdentifier2 = [v31 localIdentifier];
+          v36 = [v83 objectForKeyedSubscript:localIdentifier2];
 
           v98 = 0u;
           v99 = 0u;
@@ -158,8 +158,8 @@
                 v42 = objc_autoreleasePoolPush();
                 if ([v41 verifiedType])
                 {
-                  v43 = [v41 localIdentifier];
-                  v44 = [v36 containsObject:v43];
+                  localIdentifier3 = [v41 localIdentifier];
+                  v44 = [v36 containsObject:localIdentifier3];
 
                   if ((v44 & 1) == 0)
                   {
@@ -169,10 +169,10 @@
 
                 else
                 {
-                  v45 = [MEMORY[0x277CD9938] fetchMergeCandidatePersonsForPerson:v41 options:v22];
+                  v45 = [MEMORY[0x277CD9938] fetchMergeCandidatePersonsForPerson:v41 options:librarySpecificFetchOptions3];
                   if ([v45 count])
                   {
-                    v46 = v22;
+                    v46 = librarySpecificFetchOptions3;
                     v94 = 0u;
                     v95 = 0u;
                     v92 = 0u;
@@ -201,12 +201,12 @@
                       while (v49);
                     }
 
-                    v22 = v46;
+                    librarySpecificFetchOptions3 = v46;
                     v37 = v85;
                     v36 = v86;
                   }
 
-                  else if ([v84 includeUnverified] && objc_msgSend(v41, "faceCount") >= 8)
+                  else if ([optionsCopy includeUnverified] && objc_msgSend(v41, "faceCount") >= 8)
                   {
                     [v7 addObject:v41];
                   }
@@ -221,7 +221,7 @@
             while (v39);
           }
 
-          v21 = v73;
+          librarySpecificFetchOptions2 = v73;
           v29 = v81;
           j = v82;
           v30 = v80;
@@ -239,13 +239,13 @@
   if (![v71 count])
   {
     v52 = +[PGLogging sharedLogging];
-    v53 = [v52 loggingConnection];
+    loggingConnection = [v52 loggingConnection];
 
-    if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v112 = obj;
-      _os_log_error_impl(&dword_22F0FC000, v53, OS_LOG_TYPE_ERROR, "No asset collections fetched for %@", buf, 0xCu);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "No asset collections fetched for %@", buf, 0xCu);
     }
   }
 
@@ -270,8 +270,8 @@
         }
 
         v60 = *(*(&v88 + 1) + 8 * n);
-        v61 = [v60 localIdentifier];
-        v62 = [v77 personNodeForPersonLocalIdentifier:v61];
+        localIdentifier4 = [v60 localIdentifier];
+        v62 = [graph personNodeForPersonLocalIdentifier:localIdentifier4];
 
         if (v62)
         {
@@ -307,64 +307,64 @@ void __81__PGSharingSuggestionSourceMergeCandidates_suggestedResultsForInput_wit
   }
 }
 
-- (id)filterMeNodePredicateForInput:(id)a3 photoLibrary:(id)a4
+- (id)filterMeNodePredicateForInput:(id)input photoLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 graph];
-  v9 = [v8 meNode];
+  inputCopy = input;
+  libraryCopy = library;
+  graph = [inputCopy graph];
+  meNode = [graph meNode];
 
-  v10 = [v9 localIdentifier];
-  v11 = [v9 contactIdentifier];
-  if (v9 || ([v6 momentNodes], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, v13))
+  localIdentifier = [meNode localIdentifier];
+  contactIdentifier = [meNode contactIdentifier];
+  if (meNode || ([inputCopy momentNodes], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, v13))
   {
-    v14 = v11;
+    cNIdentifier = contactIdentifier;
   }
 
   else
   {
-    v21 = [(CLSServiceManager *)self->_serviceManager mePerson];
-    v14 = [v21 CNIdentifier];
+    mePerson = [(CLSServiceManager *)self->_serviceManager mePerson];
+    cNIdentifier = [mePerson CNIdentifier];
 
-    if (v21)
+    if (mePerson)
     {
-      v22 = [v7 librarySpecificFetchOptions];
-      v23 = [MEMORY[0x277CCAC30] predicateWithFormat:@"personUri == %@", v14];
-      [v22 setPredicate:v23];
+      librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+      v23 = [MEMORY[0x277CCAC30] predicateWithFormat:@"personUri == %@", cNIdentifier];
+      [librarySpecificFetchOptions setPredicate:v23];
 
-      [v22 setFetchLimit:1];
-      v24 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:v22];
-      v25 = [v24 firstObject];
-      v26 = [v25 localIdentifier];
+      [librarySpecificFetchOptions setFetchLimit:1];
+      v24 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:librarySpecificFetchOptions];
+      firstObject = [v24 firstObject];
+      localIdentifier2 = [firstObject localIdentifier];
 
-      v10 = v26;
+      localIdentifier = localIdentifier2;
     }
   }
 
   v15 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
-  if (v10)
+  if (localIdentifier)
   {
-    v16 = [MEMORY[0x277CCAC30] predicateWithFormat:@"localIdentifier != %@", v10];
+    v16 = [MEMORY[0x277CCAC30] predicateWithFormat:@"localIdentifier != %@", localIdentifier];
     [v15 addObject:v16];
   }
 
-  if (v14)
+  if (cNIdentifier)
   {
-    v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"personUri != %@", v14];
+    v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"personUri != %@", cNIdentifier];
     [v15 addObject:v17];
   }
 
   if ([v15 count] == 1)
   {
-    v18 = [v15 firstObject];
+    firstObject2 = [v15 firstObject];
 LABEL_12:
-    v19 = v18;
+    v19 = firstObject2;
     goto LABEL_14;
   }
 
   if ([v15 count] >= 2)
   {
-    v18 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v15];
+    firstObject2 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v15];
     goto LABEL_12;
   }
 
@@ -374,16 +374,16 @@ LABEL_14:
   return v19;
 }
 
-- (PGSharingSuggestionSourceMergeCandidates)initWithServiceManager:(id)a3
+- (PGSharingSuggestionSourceMergeCandidates)initWithServiceManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = PGSharingSuggestionSourceMergeCandidates;
   v6 = [(PGSharingSuggestionSourceMergeCandidates *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serviceManager, a3);
+    objc_storeStrong(&v6->_serviceManager, manager);
   }
 
   return v7;

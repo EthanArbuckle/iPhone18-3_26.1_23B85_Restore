@@ -1,14 +1,14 @@
 @interface HMPBMetadata
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (uint64_t)addHapCategories:(uint64_t)a1;
-- (uint64_t)addHapCharacteristics:(uint64_t)a1;
-- (uint64_t)addHapServices:(uint64_t)a1;
+- (uint64_t)addHapCategories:(uint64_t)categories;
+- (uint64_t)addHapCharacteristics:(uint64_t)characteristics;
+- (uint64_t)addHapServices:(uint64_t)services;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMPBMetadata
@@ -30,24 +30,24 @@
   return v4 ^ v5 ^ [(NSMutableArray *)self->_hapCategories hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(equalCopy + 36);
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_version != *(v4 + 8))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_version != *(equalCopy + 8))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_13:
     v9 = 0;
@@ -55,13 +55,13 @@ LABEL_13:
   }
 
   hapCharacteristics = self->_hapCharacteristics;
-  if (hapCharacteristics | *(v4 + 2) && ![(NSMutableArray *)hapCharacteristics isEqual:?])
+  if (hapCharacteristics | *(equalCopy + 2) && ![(NSMutableArray *)hapCharacteristics isEqual:?])
   {
     goto LABEL_13;
   }
 
   hapServices = self->_hapServices;
-  if (hapServices | *(v4 + 3))
+  if (hapServices | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)hapServices isEqual:?])
     {
@@ -70,7 +70,7 @@ LABEL_13:
   }
 
   hapCategories = self->_hapCategories;
-  if (hapCategories | *(v4 + 1))
+  if (hapCategories | *(equalCopy + 1))
   {
     v9 = [(NSMutableArray *)hapCategories isEqual:?];
   }
@@ -85,10 +85,10 @@ LABEL_14:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -116,7 +116,7 @@ LABEL_14:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v35 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v35 + 1) + 8 * v11) copyWithZone:zone];
         [(HMPBMetadata *)v6 addHapCharacteristics:v12];
 
         ++v11;
@@ -149,7 +149,7 @@ LABEL_14:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v31 + 1) + 8 * v17) copyWithZone:a3];
+        v18 = [*(*(&v31 + 1) + 8 * v17) copyWithZone:zone];
         [(HMPBMetadata *)v6 addHapServices:v18];
 
         ++v17;
@@ -182,7 +182,7 @@ LABEL_14:
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v27 + 1) + 8 * v23) copyWithZone:{a3, v27}];
+        v24 = [*(*(&v27 + 1) + 8 * v23) copyWithZone:{zone, v27}];
         [(HMPBMetadata *)v6 addHapCategories:v24];
 
         ++v23;
@@ -199,21 +199,21 @@ LABEL_14:
   return v6;
 }
 
-- (uint64_t)addHapCharacteristics:(uint64_t)a1
+- (uint64_t)addHapCharacteristics:(uint64_t)characteristics
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (characteristics)
   {
-    v5 = *(a1 + 16);
+    v5 = *(characteristics + 16);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 16);
-      *(a1 + 16) = v6;
+      v7 = *(characteristics + 16);
+      *(characteristics + 16) = v6;
 
-      v5 = *(a1 + 16);
+      v5 = *(characteristics + 16);
     }
 
     v3 = [v5 addObject:v9];
@@ -223,21 +223,21 @@ LABEL_14:
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (uint64_t)addHapServices:(uint64_t)a1
+- (uint64_t)addHapServices:(uint64_t)services
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (services)
   {
-    v5 = *(a1 + 24);
+    v5 = *(services + 24);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 24);
-      *(a1 + 24) = v6;
+      v7 = *(services + 24);
+      *(services + 24) = v6;
 
-      v5 = *(a1 + 24);
+      v5 = *(services + 24);
     }
 
     v3 = [v5 addObject:v9];
@@ -247,21 +247,21 @@ LABEL_14:
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (uint64_t)addHapCategories:(uint64_t)a1
+- (uint64_t)addHapCategories:(uint64_t)categories
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (categories)
   {
-    v5 = *(a1 + 8);
+    v5 = *(categories + 8);
     v9 = v4;
     if (!v5)
     {
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v7 = *(a1 + 8);
-      *(a1 + 8) = v6;
+      v7 = *(categories + 8);
+      *(categories + 8) = v6;
 
-      v5 = *(a1 + 8);
+      v5 = *(categories + 8);
     }
 
     v3 = [v5 addObject:v9];
@@ -271,10 +271,10 @@ LABEL_14:
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     version = self->_version;
@@ -380,15 +380,15 @@ LABEL_14:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v4 = a3;
-  v5 = [v4 position];
-  if (v5 < [v4 length])
+  fromCopy = from;
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -399,18 +399,18 @@ LABEL_14:
       while (1)
       {
         LOBYTE(v26) = 0;
-        v9 = [v4 position] + 1;
-        if (v9 >= [v4 position] && (v10 = objc_msgSend(v4, "position") + 1, v10 <= objc_msgSend(v4, "length")))
+        v9 = [fromCopy position] + 1;
+        if (v9 >= [fromCopy position] && (v10 = objc_msgSend(fromCopy, "position") + 1, v10 <= objc_msgSend(fromCopy, "length")))
         {
-          v11 = [v4 data];
-          [v11 getBytes:&v26 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v26 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v8 |= (v26 & 0x7F) << v6;
@@ -428,9 +428,9 @@ LABEL_14:
         }
       }
 
-      v13 = [v4 hasError] ? 0 : v8;
+      v13 = [fromCopy hasError] ? 0 : v8;
 LABEL_15:
-      if (([v4 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -444,7 +444,7 @@ LABEL_15:
           [(HMPBMetadata *)self addHapServices:v15];
           v26 = 0;
           v27 = 0;
-          if (!PBReaderPlaceMark() || !HMPBMetadataServiceReadFrom(v15, v4))
+          if (!PBReaderPlaceMark() || !HMPBMetadataServiceReadFrom(v15, fromCopy))
           {
 LABEL_49:
 
@@ -462,7 +462,7 @@ LABEL_50:
           [(HMPBMetadata *)self addHapCategories:v15];
           v26 = 0;
           v27 = 0;
-          if (!PBReaderPlaceMark() || !HMPBMetadataCategoryReadFrom(v15, v4))
+          if (!PBReaderPlaceMark() || !HMPBMetadataCategoryReadFrom(v15, fromCopy))
           {
             goto LABEL_49;
           }
@@ -482,18 +482,18 @@ LABEL_50:
           while (1)
           {
             LOBYTE(v26) = 0;
-            v19 = [v4 position] + 1;
-            if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+            v19 = [fromCopy position] + 1;
+            if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
             {
-              v21 = [v4 data];
-              [v21 getBytes:&v26 range:{objc_msgSend(v4, "position"), 1}];
+              data2 = [fromCopy data];
+              [data2 getBytes:&v26 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v18 |= (v26 & 0x7F) << v16;
@@ -511,7 +511,7 @@ LABEL_50:
             }
           }
 
-          if ([v4 hasError])
+          if ([fromCopy hasError])
           {
             v22 = 0;
           }
@@ -532,7 +532,7 @@ LABEL_45:
           [(HMPBMetadata *)self addHapCharacteristics:v15];
           v26 = 0;
           v27 = 0;
-          if (!PBReaderPlaceMark() || !HMPBMetadataCharacteristicReadFrom(v15, v4))
+          if (!PBReaderPlaceMark() || !HMPBMetadataCharacteristicReadFrom(v15, fromCopy))
           {
             goto LABEL_49;
           }
@@ -550,13 +550,13 @@ LABEL_41:
       }
 
 LABEL_46:
-      v23 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v23 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  v24 = [v4 hasError] ^ 1;
+  v24 = [fromCopy hasError] ^ 1;
 LABEL_48:
 
   return v24;
@@ -565,11 +565,11 @@ LABEL_48:
 - (id)dictionaryRepresentation
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInt:self->_version];
-    [v3 setObject:v4 forKey:@"version"];
+    [dictionary setObject:v4 forKey:@"version"];
   }
 
   if ([(NSMutableArray *)self->_hapCharacteristics count])
@@ -594,8 +594,8 @@ LABEL_48:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v36 objects:v42 count:16];
@@ -604,7 +604,7 @@ LABEL_48:
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"hapCharacteristics"];
+    [dictionary setObject:v5 forKey:@"hapCharacteristics"];
   }
 
   if ([(NSMutableArray *)self->_hapServices count])
@@ -629,8 +629,8 @@ LABEL_48:
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v32 + 1) + 8 * j) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation2 = [*(*(&v32 + 1) + 8 * j) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation2];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v32 objects:v41 count:16];
@@ -639,7 +639,7 @@ LABEL_48:
       while (v15);
     }
 
-    [v3 setObject:v12 forKey:@"hapServices"];
+    [dictionary setObject:v12 forKey:@"hapServices"];
   }
 
   if ([(NSMutableArray *)self->_hapCategories count])
@@ -664,8 +664,8 @@ LABEL_48:
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v28 + 1) + 8 * k) dictionaryRepresentation];
-          [v19 addObject:v25];
+          dictionaryRepresentation3 = [*(*(&v28 + 1) + 8 * k) dictionaryRepresentation];
+          [v19 addObject:dictionaryRepresentation3];
         }
 
         v22 = [(NSMutableArray *)v20 countByEnumeratingWithState:&v28 objects:v40 count:16];
@@ -674,12 +674,12 @@ LABEL_48:
       while (v22);
     }
 
-    [v3 setObject:v19 forKey:@"hapCategories"];
+    [dictionary setObject:v19 forKey:@"hapCategories"];
   }
 
   v26 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -688,8 +688,8 @@ LABEL_48:
   v8.receiver = self;
   v8.super_class = HMPBMetadata;
   v4 = [(HMPBMetadata *)&v8 description];
-  v5 = [(HMPBMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMPBMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

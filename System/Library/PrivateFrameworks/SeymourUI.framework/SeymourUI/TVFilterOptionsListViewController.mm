@@ -1,9 +1,9 @@
 @interface TVFilterOptionsListViewController
 - (NSArray)preferredFocusEnvironments;
-- (_TtC9SeymourUI33TVFilterOptionsListViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC9SeymourUI33TVFilterOptionsListViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)handleActionButtonTapped;
 - (void)menuButtonTapped;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -25,33 +25,33 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B610F30();
 }
 
 - (void)menuButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B61168C();
 }
 
 - (void)handleActionButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BDA10FC();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for TVFilterOptionsListViewController();
   v4 = v5.receiver;
-  [(TVFilterOptionsListViewController *)&v5 viewDidAppear:v3];
+  [(TVFilterOptionsListViewController *)&v5 viewDidAppear:appearCopy];
   sub_20BDF6D08();
 }
 
-- (_TtC9SeymourUI33TVFilterOptionsListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI33TVFilterOptionsListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

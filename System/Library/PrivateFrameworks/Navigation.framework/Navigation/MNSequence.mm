@@ -1,11 +1,11 @@
 @interface MNSequence
-- (MNSequence)initWithQueue:(id)a3;
+- (MNSequence)initWithQueue:(id)queue;
 - (void)_endSequence;
-- (void)_finalizeSequenceWithPreviousStepResult:(id)a3;
-- (void)_runNextStepWithPreviousStepResult:(id)a3;
-- (void)addStep:(id)a3;
+- (void)_finalizeSequenceWithPreviousStepResult:(id)result;
+- (void)_runNextStepWithPreviousStepResult:(id)result;
+- (void)addStep:(id)step;
 - (void)dealloc;
-- (void)setSequenceFinalizeHandler:(id)a3;
+- (void)setSequenceFinalizeHandler:(id)handler;
 - (void)start;
 @end
 
@@ -18,17 +18,17 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D311E000, v3, OS_LOG_TYPE_DEFAULT, "%p Sequence ended.", &v5, 0xCu);
   }
 
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finalizeSequenceWithPreviousStepResult:(id)a3
+- (void)_finalizeSequenceWithPreviousStepResult:(id)result
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   finalizeHandler = self->_finalizeHandler;
   v6 = MNGetMNSequenceLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -52,7 +52,7 @@
     v15 = 3221225472;
     v16 = __54__MNSequence__finalizeSequenceWithPreviousStepResult___block_invoke;
     v17 = &unk_1E8430960;
-    v18 = self;
+    selfCopy = self;
     p_buf = &buf;
     geo_isolate_sync();
     queue = self->_queue;
@@ -62,7 +62,7 @@
     block[3] = &unk_1E842FD80;
     block[4] = self;
     v13 = &buf;
-    v12 = v4;
+    v12 = resultCopy;
     dispatch_async(queue, block);
 
     _Block_object_dispose(&buf, 8);
@@ -119,10 +119,10 @@ uint64_t __54__MNSequence__finalizeSequenceWithPreviousStepResult___block_invoke
   return result;
 }
 
-- (void)_runNextStepWithPreviousStepResult:(id)a3
+- (void)_runNextStepWithPreviousStepResult:(id)result
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -138,7 +138,7 @@ uint64_t __54__MNSequence__finalizeSequenceWithPreviousStepResult___block_invoke
   v15 = 3221225472;
   v16 = __49__MNSequence__runNextStepWithPreviousStepResult___block_invoke;
   v17 = &unk_1E842A548;
-  v18 = self;
+  selfCopy = self;
   v19 = &v25;
   v20 = &v21;
   geo_isolate_sync();
@@ -149,7 +149,7 @@ uint64_t __54__MNSequence__finalizeSequenceWithPreviousStepResult___block_invoke
     {
       v7 = v22[3];
       *buf = 134218240;
-      v32 = self;
+      selfCopy2 = self;
       v33 = 1024;
       v34 = v7;
       _os_log_impl(&dword_1D311E000, v6, OS_LOG_TYPE_INFO, "%p Starting step %d.", buf, 0x12u);
@@ -163,13 +163,13 @@ uint64_t __54__MNSequence__finalizeSequenceWithPreviousStepResult___block_invoke
     block[4] = self;
     v12 = &v21;
     v13 = &v25;
-    v11 = v4;
+    v11 = resultCopy;
     dispatch_async(queue, block);
   }
 
   else
   {
-    [(MNSequence *)self _finalizeSequenceWithPreviousStepResult:v4];
+    [(MNSequence *)self _finalizeSequenceWithPreviousStepResult:resultCopy];
   }
 
   _Block_object_dispose(&v21, 8);
@@ -264,7 +264,7 @@ void __49__MNSequence__runNextStepWithPreviousStepResult___block_invoke_21(uint6
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
       v8 = 136316162;
-      v9 = "[MNSequence start]";
+      selfCopy = "[MNSequence start]";
       v10 = 2080;
       v11 = "/Library/Caches/com.apple.xbs/Sources/Navigation/Extras/MNSequence.m";
       v12 = 1024;
@@ -284,7 +284,7 @@ void __49__MNSequence__runNextStepWithPreviousStepResult___block_invoke_21(uint6
     {
       v6 = [(NSMutableArray *)self->_steps count];
       v8 = 134218240;
-      v9 = self;
+      selfCopy = self;
       v10 = 1024;
       LODWORD(v11) = v6;
       _os_log_impl(&dword_1D311E000, v5, OS_LOG_TYPE_DEFAULT, "%p Starting sequence with %d steps.", &v8, 0x12u);
@@ -297,10 +297,10 @@ void __49__MNSequence__runNextStepWithPreviousStepResult___block_invoke_21(uint6
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSequenceFinalizeHandler:(id)a3
+- (void)setSequenceFinalizeHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   if (self->_isStarted)
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot modify MNSequence after it has already started."];
@@ -325,7 +325,7 @@ void __49__MNSequence__runNextStepWithPreviousStepResult___block_invoke_21(uint6
   {
     *v10 = self->_stepsIsolater;
     _geo_isolate_lock();
-    v7 = _Block_copy(v4);
+    v7 = _Block_copy(handlerCopy);
     finalizeHandler = self->_finalizeHandler;
     self->_finalizeHandler = v7;
 
@@ -335,11 +335,11 @@ void __49__MNSequence__runNextStepWithPreviousStepResult___block_invoke_21(uint6
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addStep:(id)a3
+- (void)addStep:(id)step
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  stepCopy = step;
+  v5 = stepCopy;
   if (self->_isStarted)
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot add steps to MNSequence after it has already started."];
@@ -360,16 +360,16 @@ void __49__MNSequence__runNextStepWithPreviousStepResult___block_invoke_21(uint6
     }
   }
 
-  else if (v4)
+  else if (stepCopy)
   {
     *v14 = self->_stepsIsolater;
     _geo_isolate_lock();
     steps = self->_steps;
     if (!steps)
     {
-      v9 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v10 = self->_steps;
-      self->_steps = v9;
+      self->_steps = array;
 
       steps = self->_steps;
     }
@@ -393,7 +393,7 @@ void __49__MNSequence__runNextStepWithPreviousStepResult___block_invoke_21(uint6
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1D311E000, v3, OS_LOG_TYPE_ERROR, "%p MNSequence was deallocated without ever being started. Did you forget to call start?", buf, 0xCu);
     }
 
@@ -401,7 +401,7 @@ void __49__MNSequence__runNextStepWithPreviousStepResult___block_invoke_21(uint6
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315906;
-      v8 = "[MNSequence dealloc]";
+      selfCopy = "[MNSequence dealloc]";
       v9 = 2080;
       v10 = "/Library/Caches/com.apple.xbs/Sources/Navigation/Extras/MNSequence.m";
       v11 = 1024;
@@ -418,16 +418,16 @@ void __49__MNSequence__runNextStepWithPreviousStepResult___block_invoke_21(uint6
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (MNSequence)initWithQueue:(id)a3
+- (MNSequence)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = MNSequence;
   v6 = [(MNSequence *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = geo_isolater_create();
     stepsIsolater = v7->_stepsIsolater;
     v7->_stepsIsolater = v8;

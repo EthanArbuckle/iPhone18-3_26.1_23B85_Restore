@@ -1,10 +1,10 @@
 @interface VideosExtrasSlideshowViewController
-- (VideosExtrasSlideshowViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (VideosExtrasSlideshowViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (VideosExtrasSlideshowViewControllerDataSource)dataSource;
 - (double)transitionInterval;
 - (unint64_t)_numberOfImages;
 - (void)_invalidateTransitionTimer;
-- (void)_loadImageContainerViewIfAppropriateWithImage:(id)a3;
+- (void)_loadImageContainerViewIfAppropriateWithImage:(id)image;
 - (void)_performDissolveTransition;
 - (void)_performInstantaneousTransition;
 - (void)_performPushTransition;
@@ -13,26 +13,26 @@
 - (void)_reload;
 - (void)_scheduleTransitionTimer;
 - (void)_transitionDidComplete;
-- (void)_transitionTimerDidFire:(id)a3;
+- (void)_transitionTimerDidFire:(id)fire;
 - (void)_transitionToNextImageIfAppropriate;
 - (void)dealloc;
-- (void)finalizeZoomingImageTransitionWithContext:(id)a3 transitionFinished:(BOOL)a4;
-- (void)performZoomingImageTransitionWithContext:(id)a3;
-- (void)prepareZoomingImageTransitionWithContext:(id)a3;
-- (void)setDataSource:(id)a3;
-- (void)setVisibleImageIndex:(unint64_t)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)finalizeZoomingImageTransitionWithContext:(id)context transitionFinished:(BOOL)finished;
+- (void)performZoomingImageTransitionWithContext:(id)context;
+- (void)prepareZoomingImageTransitionWithContext:(id)context;
+- (void)setDataSource:(id)source;
+- (void)setVisibleImageIndex:(unint64_t)index;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation VideosExtrasSlideshowViewController
 
-- (VideosExtrasSlideshowViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (VideosExtrasSlideshowViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = VideosExtrasSlideshowViewController;
-  result = [(VideosExtrasSlideshowViewController *)&v5 initWithNibName:a3 bundle:a4];
+  result = [(VideosExtrasSlideshowViewController *)&v5 initWithNibName:name bundle:bundle];
   if (result)
   {
     result->_visibleImageIndex = 0x7FFFFFFFFFFFFFFFLL;
@@ -49,20 +49,20 @@
   [(VideosExtrasSlideshowViewController *)&v3 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = VideosExtrasSlideshowViewController;
-  [(VideosExtrasSlideshowViewController *)&v4 viewDidAppear:a3];
+  [(VideosExtrasSlideshowViewController *)&v4 viewDidAppear:appear];
   [(VideosExtrasSlideshowViewController *)self setViewVisible:1];
   [(VideosExtrasSlideshowViewController *)self _prepareNextImageAndScheduleTransitionTimerIfAppropriate];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = VideosExtrasSlideshowViewController;
-  [(VideosExtrasSlideshowViewController *)&v4 viewDidDisappear:a3];
+  [(VideosExtrasSlideshowViewController *)&v4 viewDidDisappear:disappear];
   [(VideosExtrasSlideshowViewController *)self setViewVisible:0];
 }
 
@@ -74,43 +74,43 @@
   [(VideosExtrasSlideshowViewController *)self _loadImageContainerViewIfAppropriateWithImage:0];
 }
 
-- (void)prepareZoomingImageTransitionWithContext:(id)a3
+- (void)prepareZoomingImageTransitionWithContext:(id)context
 {
-  v8 = a3;
-  v4 = [(VideosExtrasSlideshowViewController *)self imageContainerView];
-  v5 = [v4 artworkView];
+  contextCopy = context;
+  imageContainerView = [(VideosExtrasSlideshowViewController *)self imageContainerView];
+  artworkView = [imageContainerView artworkView];
 
-  if ([v8 appearState] == 1)
+  if ([contextCopy appearState] == 1)
   {
-    v6 = [v8 zoomingImageView];
-    [v6 replicateStateFromImageView:v5];
+    zoomingImageView = [contextCopy zoomingImageView];
+    [zoomingImageView replicateStateFromImageView:artworkView];
   }
 
-  v7 = [(VideosExtrasSlideshowViewController *)self view];
-  [v7 setHidden:1];
+  view = [(VideosExtrasSlideshowViewController *)self view];
+  [view setHidden:1];
 }
 
-- (void)performZoomingImageTransitionWithContext:(id)a3
+- (void)performZoomingImageTransitionWithContext:(id)context
 {
-  v7 = a3;
-  if (![v7 appearState])
+  contextCopy = context;
+  if (![contextCopy appearState])
   {
-    v4 = [v7 zoomingImageView];
-    v5 = [(VideosExtrasSlideshowViewController *)self imageContainerView];
-    v6 = [v5 artworkView];
-    [v4 replicateStateFromImageView:v6];
+    zoomingImageView = [contextCopy zoomingImageView];
+    imageContainerView = [(VideosExtrasSlideshowViewController *)self imageContainerView];
+    artworkView = [imageContainerView artworkView];
+    [zoomingImageView replicateStateFromImageView:artworkView];
   }
 }
 
-- (void)finalizeZoomingImageTransitionWithContext:(id)a3 transitionFinished:(BOOL)a4
+- (void)finalizeZoomingImageTransitionWithContext:(id)context transitionFinished:(BOOL)finished
 {
-  v4 = [(VideosExtrasSlideshowViewController *)self view:a3];
+  v4 = [(VideosExtrasSlideshowViewController *)self view:context];
   [v4 setHidden:0];
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v5 = obj;
@@ -122,11 +122,11 @@
   }
 }
 
-- (void)setVisibleImageIndex:(unint64_t)a3
+- (void)setVisibleImageIndex:(unint64_t)index
 {
-  if (self->_visibleImageIndex != a3)
+  if (self->_visibleImageIndex != index)
   {
-    self->_visibleImageIndex = a3;
+    self->_visibleImageIndex = index;
     [(VideosExtrasSlideshowViewController *)self _reload];
   }
 }
@@ -144,8 +144,8 @@
 
 - (void)_invalidateTransitionTimer
 {
-  v3 = [(VideosExtrasSlideshowViewController *)self transitionTimer];
-  [v3 invalidate];
+  transitionTimer = [(VideosExtrasSlideshowViewController *)self transitionTimer];
+  [transitionTimer invalidate];
 
   [(VideosExtrasSlideshowViewController *)self setTransitionTimer:0];
 }
@@ -159,7 +159,7 @@
   [(VideosExtrasSlideshowViewController *)self setTransitionTimer:v4];
 }
 
-- (void)_transitionTimerDidFire:(id)a3
+- (void)_transitionTimerDidFire:(id)fire
 {
   [(VideosExtrasSlideshowViewController *)self _invalidateTransitionTimer];
 
@@ -168,29 +168,29 @@
 
 - (void)_performDissolveTransition
 {
-  v19 = [(VideosExtrasSlideshowViewController *)self imageContainerView];
-  [(VideosExtrasSlideshowViewController *)self setDisappearingImageContainerView:v19];
-  v3 = [(VideosExtrasSlideshowViewController *)self nextImage];
-  [(VideosExtrasSlideshowViewController *)self _loadImageContainerViewIfAppropriateWithImage:v3];
+  imageContainerView = [(VideosExtrasSlideshowViewController *)self imageContainerView];
+  [(VideosExtrasSlideshowViewController *)self setDisappearingImageContainerView:imageContainerView];
+  nextImage = [(VideosExtrasSlideshowViewController *)self nextImage];
+  [(VideosExtrasSlideshowViewController *)self _loadImageContainerViewIfAppropriateWithImage:nextImage];
 
-  v4 = [(VideosExtrasSlideshowViewController *)self view];
-  [v4 bringSubviewToFront:v19];
+  view = [(VideosExtrasSlideshowViewController *)self view];
+  [view bringSubviewToFront:imageContainerView];
 
-  v5 = [v19 layer];
-  [v5 bounds];
+  layer = [imageContainerView layer];
+  [layer bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v14 = objc_alloc_init(MEMORY[0x1E6979398]);
-  v15 = [MEMORY[0x1E69DC888] clearColor];
-  [v14 setBackgroundColor:{objc_msgSend(v15, "CGColor")}];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v14 setBackgroundColor:{objc_msgSend(clearColor, "CGColor")}];
 
   [v14 setFrame:{v7, v9, v11, v13}];
-  [v5 setMask:v14];
+  [layer setMask:v14];
   v16 = [MEMORY[0x1E6979318] animationWithKeyPath:@"backgroundColor"];
-  v17 = [MEMORY[0x1E69DC888] blackColor];
-  [v16 setFromValue:{objc_msgSend(v17, "CGColor")}];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [v16 setFromValue:{objc_msgSend(blackColor, "CGColor")}];
 
   [v16 setToValue:{objc_msgSend(v14, "backgroundColor")}];
   [v16 setDuration:0.5];
@@ -203,33 +203,33 @@
 
 - (void)_performInstantaneousTransition
 {
-  v3 = [(VideosExtrasSlideshowViewController *)self imageContainerView];
-  [(VideosExtrasSlideshowViewController *)self setDisappearingImageContainerView:v3];
+  imageContainerView = [(VideosExtrasSlideshowViewController *)self imageContainerView];
+  [(VideosExtrasSlideshowViewController *)self setDisappearingImageContainerView:imageContainerView];
 
-  v4 = [(VideosExtrasSlideshowViewController *)self nextImage];
-  [(VideosExtrasSlideshowViewController *)self _loadImageContainerViewIfAppropriateWithImage:v4];
+  nextImage = [(VideosExtrasSlideshowViewController *)self nextImage];
+  [(VideosExtrasSlideshowViewController *)self _loadImageContainerViewIfAppropriateWithImage:nextImage];
 
   [(VideosExtrasSlideshowViewController *)self _transitionDidComplete];
 }
 
 - (void)_performPushTransition
 {
-  v3 = [(VideosExtrasSlideshowViewController *)self imageContainerView];
-  [(VideosExtrasSlideshowViewController *)self setDisappearingImageContainerView:v3];
-  v4 = [(VideosExtrasSlideshowViewController *)self nextImage];
-  [(VideosExtrasSlideshowViewController *)self _loadImageContainerViewIfAppropriateWithImage:v4];
+  imageContainerView = [(VideosExtrasSlideshowViewController *)self imageContainerView];
+  [(VideosExtrasSlideshowViewController *)self setDisappearingImageContainerView:imageContainerView];
+  nextImage = [(VideosExtrasSlideshowViewController *)self nextImage];
+  [(VideosExtrasSlideshowViewController *)self _loadImageContainerViewIfAppropriateWithImage:nextImage];
 
-  v5 = [(VideosExtrasSlideshowViewController *)self imageContainerView];
-  v6 = [(VideosExtrasSlideshowViewController *)self view];
-  [v6 bounds];
+  imageContainerView2 = [(VideosExtrasSlideshowViewController *)self imageContainerView];
+  view = [(VideosExtrasSlideshowViewController *)self view];
+  [view bounds];
   Width = CGRectGetWidth(v26);
 
   v8 = Width + 60.0;
-  [v5 center];
+  [imageContainerView2 center];
   v10 = v9;
   v12 = v8 + v11;
-  [v5 setCenter:v8 + v11];
-  [v3 center];
+  [imageContainerView2 setCenter:v8 + v11];
+  [imageContainerView center];
   v13 = MEMORY[0x1E69DD250];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
@@ -237,8 +237,8 @@
   v19[3] = &unk_1E8730238;
   v22 = v12 - v8;
   v23 = v10;
-  v20 = v5;
-  v21 = v3;
+  v20 = imageContainerView2;
+  v21 = imageContainerView;
   v24 = v14 - v8;
   v25 = v15;
   v18[0] = MEMORY[0x1E69E9820];
@@ -246,8 +246,8 @@
   v18[2] = __61__VideosExtrasSlideshowViewController__performPushTransition__block_invoke_2;
   v18[3] = &unk_1E872F758;
   v18[4] = self;
-  v16 = v3;
-  v17 = v5;
+  v16 = imageContainerView;
+  v17 = imageContainerView2;
   [v13 animateWithDuration:v19 animations:v18 completion:0.5];
 }
 
@@ -264,16 +264,16 @@ uint64_t __61__VideosExtrasSlideshowViewController__performPushTransition__block
 - (void)_performWipeTransition
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v3 = [(VideosExtrasSlideshowViewController *)self imageContainerView];
-  [(VideosExtrasSlideshowViewController *)self setDisappearingImageContainerView:v3];
-  v4 = [(VideosExtrasSlideshowViewController *)self nextImage];
-  [(VideosExtrasSlideshowViewController *)self _loadImageContainerViewIfAppropriateWithImage:v4];
+  imageContainerView = [(VideosExtrasSlideshowViewController *)self imageContainerView];
+  [(VideosExtrasSlideshowViewController *)self setDisappearingImageContainerView:imageContainerView];
+  nextImage = [(VideosExtrasSlideshowViewController *)self nextImage];
+  [(VideosExtrasSlideshowViewController *)self _loadImageContainerViewIfAppropriateWithImage:nextImage];
 
-  v5 = [(VideosExtrasSlideshowViewController *)self view];
-  [v5 bringSubviewToFront:v3];
+  view = [(VideosExtrasSlideshowViewController *)self view];
+  [view bringSubviewToFront:imageContainerView];
 
-  v6 = [v3 layer];
-  [v6 bounds];
+  layer = [imageContainerView layer];
+  [layer bounds];
   x = v29.origin.x;
   y = v29.origin.y;
   width = v29.size.width;
@@ -282,17 +282,17 @@ uint64_t __61__VideosExtrasSlideshowViewController__performPushTransition__block
   v12 = v11 + 1.0;
   v13 = -v11;
   v14 = objc_alloc_init(MEMORY[0x1E6979380]);
-  v15 = [MEMORY[0x1E69DC888] clearColor];
-  v28[0] = [v15 CGColor];
-  v16 = [MEMORY[0x1E69DC888] blackColor];
-  v28[1] = [v16 CGColor];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  v28[0] = [clearColor CGColor];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v28[1] = [blackColor CGColor];
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
   [v14 setColors:v17];
 
   [v14 setStartPoint:{0.0, 0.5}];
   [v14 setEndPoint:{v13, 0.5}];
   [v14 setFrame:{x, y, width, height}];
-  [v6 setMask:v14];
+  [layer setMask:v14];
   v18 = [MEMORY[0x1E6979318] animationWithKeyPath:@"startPoint"];
   v19 = [MEMORY[0x1E696B098] valueWithCGPoint:{v12, 0.5}];
   [v18 setFromValue:v19];
@@ -323,46 +323,46 @@ uint64_t __61__VideosExtrasSlideshowViewController__performPushTransition__block
 
 - (void)_transitionDidComplete
 {
-  v3 = [(VideosExtrasSlideshowViewController *)self disappearingImageContainerView];
-  [v3 removeFromSuperview];
+  disappearingImageContainerView = [(VideosExtrasSlideshowViewController *)self disappearingImageContainerView];
+  [disappearingImageContainerView removeFromSuperview];
 
   [(VideosExtrasSlideshowViewController *)self setDisappearingImageContainerView:0];
 
   [(VideosExtrasSlideshowViewController *)self setAnimatingTransition:0];
 }
 
-- (void)_loadImageContainerViewIfAppropriateWithImage:(id)a3
+- (void)_loadImageContainerViewIfAppropriateWithImage:(id)image
 {
-  v4 = a3;
-  v5 = [(VideosExtrasSlideshowViewController *)self visibleImageIndex];
-  v6 = [(VideosExtrasSlideshowViewController *)self _numberOfImages];
-  if (v4 || v5 < v6)
+  imageCopy = image;
+  visibleImageIndex = [(VideosExtrasSlideshowViewController *)self visibleImageIndex];
+  _numberOfImages = [(VideosExtrasSlideshowViewController *)self _numberOfImages];
+  if (imageCopy || visibleImageIndex < _numberOfImages)
   {
-    v7 = [(VideosExtrasSlideshowViewController *)self view];
-    [v7 bounds];
+    view = [(VideosExtrasSlideshowViewController *)self view];
+    [view bounds];
     v12 = [[VideosExtrasConstrainedArtworkContainerView alloc] initWithFrame:v8, v9, v10, v11];
     [(VideosExtrasConstrainedArtworkContainerView *)v12 setAutoresizingMask:18];
-    v13 = [MEMORY[0x1E69DC888] blackColor];
-    [(VideosExtrasConstrainedArtworkContainerView *)v12 setBackgroundColor:v13];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(VideosExtrasConstrainedArtworkContainerView *)v12 setBackgroundColor:blackColor];
 
     [(VideosExtrasConstrainedArtworkContainerView *)v12 setShouldAutoresizeMaskLayerToFillBounds:1];
-    [v7 addSubview:v12];
+    [view addSubview:v12];
     [(VideosExtrasSlideshowViewController *)self setImageContainerView:v12];
-    if (v4)
+    if (imageCopy)
     {
-      v14 = [(VideosExtrasConstrainedArtworkContainerView *)v12 artworkView];
-      [v14 setImage:v4];
+      artworkView = [(VideosExtrasConstrainedArtworkContainerView *)v12 artworkView];
+      [artworkView setImage:imageCopy];
     }
 
     else
     {
-      v15 = [(VideosExtrasSlideshowViewController *)self dataSource];
+      dataSource = [(VideosExtrasSlideshowViewController *)self dataSource];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __85__VideosExtrasSlideshowViewController__loadImageContainerViewIfAppropriateWithImage___block_invoke;
       v16[3] = &unk_1E872FCC0;
       v17 = v12;
-      [v15 slideshowViewController:self loadImageAtIndex:v5 withCompletionHandler:v16];
+      [dataSource slideshowViewController:self loadImageAtIndex:visibleImageIndex withCompletionHandler:v16];
     }
   }
 }
@@ -377,8 +377,8 @@ void __85__VideosExtrasSlideshowViewController__loadImageContainerViewIfAppropri
 
 - (unint64_t)_numberOfImages
 {
-  v3 = [(VideosExtrasSlideshowViewController *)self dataSource];
-  v4 = [v3 numberOfImagesForSlideshowViewController:self];
+  dataSource = [(VideosExtrasSlideshowViewController *)self dataSource];
+  v4 = [dataSource numberOfImagesForSlideshowViewController:self];
 
   return v4;
 }
@@ -387,32 +387,32 @@ void __85__VideosExtrasSlideshowViewController__loadImageContainerViewIfAppropri
 {
   if ([(VideosExtrasSlideshowViewController *)self isViewVisible])
   {
-    v3 = [(VideosExtrasSlideshowViewController *)self visibleImageIndex];
-    v4 = [(VideosExtrasSlideshowViewController *)self _numberOfImages];
-    if (v3 < v4)
+    visibleImageIndex = [(VideosExtrasSlideshowViewController *)self visibleImageIndex];
+    _numberOfImages = [(VideosExtrasSlideshowViewController *)self _numberOfImages];
+    if (visibleImageIndex < _numberOfImages)
     {
-      v5 = v4;
+      v5 = _numberOfImages;
       [(VideosExtrasSlideshowViewController *)self setNextImage:0];
       [(VideosExtrasSlideshowViewController *)self _scheduleTransitionTimer];
-      if (v3 + 1 == v5)
+      if (visibleImageIndex + 1 == v5)
       {
         v6 = 0;
       }
 
       else
       {
-        v6 = v3 + 1;
+        v6 = visibleImageIndex + 1;
       }
 
-      v7 = [(VideosExtrasSlideshowViewController *)self dataSource];
+      dataSource = [(VideosExtrasSlideshowViewController *)self dataSource];
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __95__VideosExtrasSlideshowViewController__prepareNextImageAndScheduleTransitionTimerIfAppropriate__block_invoke;
       v9[3] = &unk_1E8730260;
-      v10 = v7;
-      v11 = v3;
+      v10 = dataSource;
+      v11 = visibleImageIndex;
       v9[4] = self;
-      v8 = v7;
+      v8 = dataSource;
       [v8 slideshowViewController:self loadImageAtIndex:v6 withCompletionHandler:v9];
     }
   }
@@ -443,8 +443,8 @@ void __95__VideosExtrasSlideshowViewController__prepareNextImageAndScheduleTrans
 {
   if ([(VideosExtrasSlideshowViewController *)self isViewLoaded])
   {
-    v3 = [(VideosExtrasSlideshowViewController *)self imageContainerView];
-    [v3 removeFromSuperview];
+    imageContainerView = [(VideosExtrasSlideshowViewController *)self imageContainerView];
+    [imageContainerView removeFromSuperview];
 
     [(VideosExtrasSlideshowViewController *)self setImageContainerView:0];
     [(VideosExtrasSlideshowViewController *)self _invalidateTransitionTimer];
@@ -456,37 +456,37 @@ void __95__VideosExtrasSlideshowViewController__prepareNextImageAndScheduleTrans
 
 - (void)_transitionToNextImageIfAppropriate
 {
-  v8 = [(VideosExtrasSlideshowViewController *)self nextImage];
-  v3 = [(VideosExtrasSlideshowViewController *)self _numberOfImages];
-  v4 = v8;
-  if (v8)
+  nextImage = [(VideosExtrasSlideshowViewController *)self nextImage];
+  _numberOfImages = [(VideosExtrasSlideshowViewController *)self _numberOfImages];
+  v4 = nextImage;
+  if (nextImage)
   {
-    v5 = v3;
-    if (self->_visibleImageIndex < v3)
+    v5 = _numberOfImages;
+    if (self->_visibleImageIndex < _numberOfImages)
     {
-      v6 = [(VideosExtrasSlideshowViewController *)self isViewVisible];
-      v4 = v8;
-      if (v6)
+      isViewVisible = [(VideosExtrasSlideshowViewController *)self isViewVisible];
+      v4 = nextImage;
+      if (isViewVisible)
       {
         self->_visibleImageIndex = (self->_visibleImageIndex + 1) % v5;
         [(VideosExtrasSlideshowViewController *)self setAnimatingTransition:1];
-        v7 = [(VideosExtrasSlideshowViewController *)self transitionStyle];
-        if (v7 > 1)
+        transitionStyle = [(VideosExtrasSlideshowViewController *)self transitionStyle];
+        if (transitionStyle > 1)
         {
-          if (v7 == 2)
+          if (transitionStyle == 2)
           {
             [(VideosExtrasSlideshowViewController *)self _performPushTransition];
           }
 
-          else if (v7 == 3)
+          else if (transitionStyle == 3)
           {
             [(VideosExtrasSlideshowViewController *)self _performWipeTransition];
           }
         }
 
-        else if (v7)
+        else if (transitionStyle)
         {
-          if (v7 == 1)
+          if (transitionStyle == 1)
           {
             [(VideosExtrasSlideshowViewController *)self _performDissolveTransition];
           }
@@ -498,7 +498,7 @@ void __95__VideosExtrasSlideshowViewController__prepareNextImageAndScheduleTrans
         }
 
         [(VideosExtrasSlideshowViewController *)self _prepareNextImageAndScheduleTransitionTimerIfAppropriate];
-        v4 = v8;
+        v4 = nextImage;
       }
     }
   }

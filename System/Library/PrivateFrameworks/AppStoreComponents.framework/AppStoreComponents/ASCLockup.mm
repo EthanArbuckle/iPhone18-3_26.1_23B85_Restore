@@ -1,15 +1,15 @@
 @interface ASCLockup
-- (ASCLockup)initWithCoder:(id)a3;
-- (ASCLockup)initWithID:(id)a3 kind:(id)a4 metrics:(id)a5 icon:(id)a6 heading:(id)a7 title:(id)a8 subtitle:(id)a9 ageRating:(id)a10 offer:(id)a11 features:(id)a12;
-- (ASCLockup)lockupWithOffer:(id)a3;
-- (ASCLockup)lockupWithSignpostTags:(id)a3;
+- (ASCLockup)initWithCoder:(id)coder;
+- (ASCLockup)initWithID:(id)d kind:(id)kind metrics:(id)metrics icon:(id)icon heading:(id)heading title:(id)title subtitle:(id)subtitle ageRating:(id)self0 offer:(id)self1 features:(id)self2;
+- (ASCLockup)lockupWithOffer:(id)offer;
+- (ASCLockup)lockupWithSignpostTags:(id)tags;
 - (ASCLockupDisplayContext)displayContext;
 - (ASCScreenshots)screenshots;
 - (ASCTrailers)trailers;
 - (BOOL)hasMedia;
 - (BOOL)isDistributor;
 - (BOOL)isEditorsChoice;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)requiresSSOEntitlement;
 - (NSArray)subgenres;
 - (NSArray)webDistributionDomains;
@@ -34,12 +34,12 @@
 - (NSString)shortName;
 - (NSString)supportUrl;
 - (float)productRating;
-- (id)featureWithClass:(Class)a3;
-- (id)lockupByAddingFeature:(id)a3;
+- (id)featureWithClass:(Class)class;
+- (id)lockupByAddingFeature:(id)feature;
 - (int64_t)ageRatingValue;
 - (unint64_t)hash;
-- (void)_buyParamsWithCompletionBlock:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_buyParamsWithCompletionBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ASCLockup
@@ -47,9 +47,9 @@
 - (BOOL)isEditorsChoice
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 isEditorsChoice];
+  isEditorsChoice = [v2 isEditorsChoice];
 
-  return v3;
+  return isEditorsChoice;
 }
 
 - (float)productRating
@@ -64,95 +64,95 @@
 - (NSString)productRatingBadge
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 productRatingBadge];
+  productRatingBadge = [v2 productRatingBadge];
 
-  return v3;
+  return productRatingBadge;
 }
 
 - (NSString)productDescription
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 productDescription];
+  productDescription = [v2 productDescription];
 
-  return v3;
+  return productDescription;
 }
 
 - (NSString)distributorBundleId
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 distributorBundleId];
+  distributorBundleId = [v2 distributorBundleId];
 
-  return v3;
+  return distributorBundleId;
 }
 
 - (NSString)appVersionId
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 appVersionId];
+  appVersionId = [v2 appVersionId];
 
-  return v3;
+  return appVersionId;
 }
 
 - (NSString)developerId
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 developerId];
+  developerId = [v2 developerId];
 
-  return v3;
+  return developerId;
 }
 
 - (NSArray)webDistributionDomains
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 webDistributionDomains];
+  webDistributionDomains = [v2 webDistributionDomains];
 
-  return v3;
+  return webDistributionDomains;
 }
 
 - (NSString)supportUrl
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 supportUrl];
+  supportUrl = [v2 supportUrl];
 
-  return v3;
+  return supportUrl;
 }
 
 - (int64_t)ageRatingValue
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 ageRatingValue];
+  ageRatingValue = [v2 ageRatingValue];
 
-  return v3;
+  return ageRatingValue;
 }
 
 - (NSDictionary)contentRatingsBySystem
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 contentRatingsBySystem];
+  contentRatingsBySystem = [v2 contentRatingsBySystem];
 
-  return v3;
+  return contentRatingsBySystem;
 }
 
 - (BOOL)isDistributor
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 isDistributor];
+  isDistributor = [v2 isDistributor];
 
-  return v3;
+  return isDistributor;
 }
 
 - (NSString)bundleID
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 bundleID];
+  bundleID = [v2 bundleID];
 
-  return v3;
+  return bundleID;
 }
 
-- (void)_buyParamsWithCompletionBlock:(id)a3
+- (void)_buyParamsWithCompletionBlock:(id)block
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   if ([MEMORY[0x277CEE620] BOOLForEntitlement:@"com.apple.private.appstorecomponents.lockup-buy-params"])
   {
     v5 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
@@ -175,7 +175,7 @@
       v29[2] = __54__ASCLockup_BuyParams___buyParamsWithCompletionBlock___block_invoke_14;
       v29[3] = &unk_2781CBC48;
       v30 = v20;
-      v31 = v4;
+      v31 = blockCopy;
       v12 = v20;
       dispatch_async(MEMORY[0x277D85CD0], v29);
 
@@ -183,21 +183,21 @@
       goto LABEL_11;
     }
 
-    v7 = [v5 appOffer];
-    v8 = [v7 metricsBuyParams];
+    appOffer = [v5 appOffer];
+    metricsBuyParams = [appOffer metricsBuyParams];
 
-    if (v8)
+    if (metricsBuyParams)
     {
       v9 = +[ASCAppOfferStateCenter sharedCenter];
-      v10 = [v6 appOffer];
+      appOffer2 = [v6 appOffer];
       v11 = objc_alloc_init(ASCMetricsActivity);
-      v12 = [v9 decorateBuyParamsForOffer:v10 withActivity:v11];
+      v12 = [v9 decorateBuyParamsForOffer:appOffer2 withActivity:v11];
 
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __54__ASCLockup_BuyParams___buyParamsWithCompletionBlock___block_invoke_2;
       v23[3] = &unk_2781CBC70;
-      v13 = v4;
+      v13 = blockCopy;
       v24 = v13;
       [v12 addSuccessBlock:v23];
       v21[0] = MEMORY[0x277D85DD0];
@@ -223,7 +223,7 @@ LABEL_11:
     v25[1] = 3221225472;
     v25[2] = __54__ASCLockup_BuyParams___buyParamsWithCompletionBlock___block_invoke_15;
     v25[3] = &unk_2781CBC48;
-    v27 = v4;
+    v27 = blockCopy;
     v6 = v6;
     v26 = v6;
     dispatch_async(MEMORY[0x277D85CD0], v25);
@@ -249,7 +249,7 @@ LABEL_11:
     block[2] = __54__ASCLockup_BuyParams___buyParamsWithCompletionBlock___block_invoke;
     block[3] = &unk_2781CBC48;
     v33 = v17;
-    v34 = v4;
+    v34 = blockCopy;
     v6 = v17;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
@@ -298,49 +298,49 @@ void __54__ASCLockup_BuyParams___buyParamsWithCompletionBlock___block_invoke_4(u
 - (NSString)developerName
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 developerName];
+  developerName = [v2 developerName];
 
-  return v3;
+  return developerName;
 }
 
 - (ASCLockupDisplayContext)displayContext
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 displayContext];
+  displayContext = [v2 displayContext];
 
-  return v3;
+  return displayContext;
 }
 
 - (NSString)privacyPolicyUrl
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 privacyPolicyUrl];
+  privacyPolicyUrl = [v2 privacyPolicyUrl];
 
-  return v3;
+  return privacyPolicyUrl;
 }
 
 - (NSString)eula
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 eula];
+  eula = [v2 eula];
 
-  return v3;
+  return eula;
 }
 
 - (NSString)genreName
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 genreName];
+  genreName = [v2 genreName];
 
-  return v3;
+  return genreName;
 }
 
 - (NSString)genreID
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 genreID];
+  genreID = [v2 genreID];
 
-  return v3;
+  return genreID;
 }
 
 - (NSArray)subgenres
@@ -349,47 +349,47 @@ void __54__ASCLockup_BuyParams___buyParamsWithCompletionBlock___block_invoke_4(u
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 subgenres];
+    subgenres = [v2 subgenres];
   }
 
   else
   {
-    v4 = MEMORY[0x277CBEBF8];
+    subgenres = MEMORY[0x277CBEBF8];
   }
 
-  return v4;
+  return subgenres;
 }
 
 - (ASCScreenshots)screenshots
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 screenshots];
+  screenshots = [v2 screenshots];
 
-  return v3;
+  return screenshots;
 }
 
 - (ASCTrailers)trailers
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 trailers];
+  trailers = [v2 trailers];
 
-  return v3;
+  return trailers;
 }
 
 - (BOOL)hasMedia
 {
-  v3 = [(ASCLockup *)self screenshots];
-  v4 = [v3 artwork];
-  if ([v4 count])
+  screenshots = [(ASCLockup *)self screenshots];
+  artwork = [screenshots artwork];
+  if ([artwork count])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(ASCLockup *)self trailers];
-    v7 = [v6 videos];
-    v5 = [v7 count] != 0;
+    trailers = [(ASCLockup *)self trailers];
+    videos = [trailers videos];
+    v5 = [videos count] != 0;
   }
 
   return v5;
@@ -398,25 +398,25 @@ void __54__ASCLockup_BuyParams___buyParamsWithCompletionBlock___block_invoke_4(u
 - (NSString)productPageMetadata
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 productPageMetadata];
+  productPageMetadata = [v2 productPageMetadata];
 
-  return v3;
+  return productPageMetadata;
 }
 
 - (NSString)productPageDescription
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 productPageDescription];
+  productPageDescription = [v2 productPageDescription];
 
-  return v3;
+  return productPageDescription;
 }
 
 - (NSString)productVariantID
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 productVariantID];
+  productVariantID = [v2 productVariantID];
 
-  return v3;
+  return productVariantID;
 }
 
 - (NSString)contentProviderTeamID
@@ -426,7 +426,7 @@ void __54__ASCLockup_BuyParams___buyParamsWithCompletionBlock___block_invoke_4(u
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 contentProviderTeamID];
+    contentProviderTeamID = [v3 contentProviderTeamID];
   }
 
   else
@@ -451,32 +451,32 @@ void __54__ASCLockup_BuyParams___buyParamsWithCompletionBlock___block_invoke_4(u
       objc_exception_throw(v14);
     }
 
-    v5 = &stru_2827A1458;
+    contentProviderTeamID = &stru_2827A1458;
   }
 
-  return v5;
+  return contentProviderTeamID;
 }
 
 - (NSString)shortName
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 shortName];
+  shortName = [v2 shortName];
 
-  return v3;
+  return shortName;
 }
 
 - (NSSet)signpostTags
 {
   v2 = [(ASCLockup *)self featureWithClass:objc_opt_class()];
-  v3 = [v2 signpostTags];
+  signpostTags = [v2 signpostTags];
 
-  return v3;
+  return signpostTags;
 }
 
-- (ASCLockup)lockupWithSignpostTags:(id)a3
+- (ASCLockup)lockupWithSignpostTags:(id)tags
 {
-  v4 = a3;
-  v5 = [[ASCLockupFeatureSignpostTags alloc] initWithSignpostTags:v4];
+  tagsCopy = tags;
+  v5 = [[ASCLockupFeatureSignpostTags alloc] initWithSignpostTags:tagsCopy];
 
   v6 = [(ASCLockup *)self lockupByAddingFeature:v5];
 
@@ -490,7 +490,7 @@ void __54__ASCLockup_BuyParams___buyParamsWithCompletionBlock___block_invoke_4(u
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 requiresSSOEntitlement];
+    requiresSSOEntitlement = [v3 requiresSSOEntitlement];
   }
 
   else
@@ -515,67 +515,67 @@ void __54__ASCLockup_BuyParams___buyParamsWithCompletionBlock___block_invoke_4(u
       objc_exception_throw(v14);
     }
 
-    v5 = 0;
+    requiresSSOEntitlement = 0;
   }
 
-  return v5;
+  return requiresSSOEntitlement;
 }
 
-- (ASCLockup)initWithID:(id)a3 kind:(id)a4 metrics:(id)a5 icon:(id)a6 heading:(id)a7 title:(id)a8 subtitle:(id)a9 ageRating:(id)a10 offer:(id)a11 features:(id)a12
+- (ASCLockup)initWithID:(id)d kind:(id)kind metrics:(id)metrics icon:(id)icon heading:(id)heading title:(id)title subtitle:(id)subtitle ageRating:(id)self0 offer:(id)self1 features:(id)self2
 {
-  v17 = a3;
-  v49 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
+  dCopy = d;
+  kindCopy = kind;
+  metricsCopy = metrics;
+  iconCopy = icon;
+  headingCopy = heading;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  ratingCopy = rating;
+  offerCopy = offer;
+  featuresCopy = features;
   +[ASCEligibility assertCurrentProcessEligibility];
   v50.receiver = self;
   v50.super_class = ASCLockup;
   v26 = [(ASCLockup *)&v50 init];
   if (v26)
   {
-    v27 = [v17 copy];
+    v27 = [dCopy copy];
     id = v26->_id;
     v26->_id = v27;
 
-    v29 = [v49 copy];
+    v29 = [kindCopy copy];
     kind = v26->_kind;
     v26->_kind = v29;
 
-    v31 = [v18 copy];
+    v31 = [metricsCopy copy];
     metrics = v26->_metrics;
     v26->_metrics = v31;
 
-    v33 = [v19 copy];
+    v33 = [iconCopy copy];
     icon = v26->_icon;
     v26->_icon = v33;
 
-    v35 = [v20 copy];
+    v35 = [headingCopy copy];
     heading = v26->_heading;
     v26->_heading = v35;
 
-    v37 = [v21 copy];
+    v37 = [titleCopy copy];
     title = v26->_title;
     v26->_title = v37;
 
-    v39 = [v22 copy];
+    v39 = [subtitleCopy copy];
     subtitle = v26->_subtitle;
     v26->_subtitle = v39;
 
-    v41 = [v23 copy];
+    v41 = [ratingCopy copy];
     ageRating = v26->_ageRating;
     v26->_ageRating = v41;
 
-    v43 = [v24 copyWithZone:0];
+    v43 = [offerCopy copyWithZone:0];
     offer = v26->_offer;
     v26->_offer = v43;
 
-    v45 = [v25 copy];
+    v45 = [featuresCopy copy];
     features = v26->_features;
     v26->_features = v45;
   }
@@ -583,23 +583,23 @@ void __54__ASCLockup_BuyParams___buyParamsWithCompletionBlock___block_invoke_4(u
   return v26;
 }
 
-- (ASCLockup)initWithCoder:(id)a3
+- (ASCLockup)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"id"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"id"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kind"];
     if (v6)
     {
-      v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metrics"];
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
-      v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"heading"];
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-      v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
-      v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ageRating"];
-      v10 = ASCOfferDecodeForKey(v4, @"offer");
-      v11 = ASCLockupFeaturesDecodeForKey(v4, @"features");
+      v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metrics"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
+      v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"heading"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+      v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+      v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ageRating"];
+      v10 = ASCOfferDecodeForKey(coderCopy, @"offer");
+      v11 = ASCLockupFeaturesDecodeForKey(coderCopy, @"features");
       v12 = v5;
       v13 = v6;
       v24 = v6;
@@ -640,38 +640,38 @@ void __54__ASCLockup_BuyParams___buyParamsWithCompletionBlock___block_invoke_4(u
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ASCLockup *)self id];
-  [v4 encodeObject:v5 forKey:@"id"];
+  [coderCopy encodeObject:v5 forKey:@"id"];
 
-  v6 = [(ASCLockup *)self kind];
-  [v4 encodeObject:v6 forKey:@"kind"];
+  kind = [(ASCLockup *)self kind];
+  [coderCopy encodeObject:kind forKey:@"kind"];
 
-  v7 = [(ASCLockup *)self metrics];
-  [v4 encodeObject:v7 forKey:@"metrics"];
+  metrics = [(ASCLockup *)self metrics];
+  [coderCopy encodeObject:metrics forKey:@"metrics"];
 
-  v8 = [(ASCLockup *)self icon];
-  [v4 encodeObject:v8 forKey:@"icon"];
+  icon = [(ASCLockup *)self icon];
+  [coderCopy encodeObject:icon forKey:@"icon"];
 
-  v9 = [(ASCLockup *)self heading];
-  [v4 encodeObject:v9 forKey:@"heading"];
+  heading = [(ASCLockup *)self heading];
+  [coderCopy encodeObject:heading forKey:@"heading"];
 
-  v10 = [(ASCLockup *)self title];
-  [v4 encodeObject:v10 forKey:@"title"];
+  title = [(ASCLockup *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v11 = [(ASCLockup *)self subtitle];
-  [v4 encodeObject:v11 forKey:@"subtitle"];
+  subtitle = [(ASCLockup *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"subtitle"];
 
-  v12 = [(ASCLockup *)self ageRating];
-  [v4 encodeObject:v12 forKey:@"ageRating"];
+  ageRating = [(ASCLockup *)self ageRating];
+  [coderCopy encodeObject:ageRating forKey:@"ageRating"];
 
-  v13 = [(ASCLockup *)self offer];
-  [v4 encodeObject:v13 forKey:@"offer"];
+  offer = [(ASCLockup *)self offer];
+  [coderCopy encodeObject:offer forKey:@"offer"];
 
-  v14 = [(ASCLockup *)self features];
-  [v4 encodeObject:v14 forKey:@"features"];
+  features = [(ASCLockup *)self features];
+  [coderCopy encodeObject:features forKey:@"features"];
 }
 
 - (unint64_t)hash
@@ -680,44 +680,44 @@ void __54__ASCLockup_BuyParams___buyParamsWithCompletionBlock___block_invoke_4(u
   v4 = [(ASCLockup *)self id];
   [(ASCHasher *)v3 combineObject:v4];
 
-  v5 = [(ASCLockup *)self kind];
-  [(ASCHasher *)v3 combineObject:v5];
+  kind = [(ASCLockup *)self kind];
+  [(ASCHasher *)v3 combineObject:kind];
 
-  v6 = [(ASCLockup *)self metrics];
-  [(ASCHasher *)v3 combineObject:v6];
+  metrics = [(ASCLockup *)self metrics];
+  [(ASCHasher *)v3 combineObject:metrics];
 
-  v7 = [(ASCLockup *)self icon];
-  [(ASCHasher *)v3 combineObject:v7];
+  icon = [(ASCLockup *)self icon];
+  [(ASCHasher *)v3 combineObject:icon];
 
-  v8 = [(ASCLockup *)self heading];
-  [(ASCHasher *)v3 combineObject:v8];
+  heading = [(ASCLockup *)self heading];
+  [(ASCHasher *)v3 combineObject:heading];
 
-  v9 = [(ASCLockup *)self title];
-  [(ASCHasher *)v3 combineObject:v9];
+  title = [(ASCLockup *)self title];
+  [(ASCHasher *)v3 combineObject:title];
 
-  v10 = [(ASCLockup *)self subtitle];
-  [(ASCHasher *)v3 combineObject:v10];
+  subtitle = [(ASCLockup *)self subtitle];
+  [(ASCHasher *)v3 combineObject:subtitle];
 
-  v11 = [(ASCLockup *)self ageRating];
-  [(ASCHasher *)v3 combineObject:v11];
+  ageRating = [(ASCLockup *)self ageRating];
+  [(ASCHasher *)v3 combineObject:ageRating];
 
-  v12 = [(ASCLockup *)self offer];
-  [(ASCHasher *)v3 combineObject:v12];
+  offer = [(ASCLockup *)self offer];
+  [(ASCHasher *)v3 combineObject:offer];
 
-  v13 = [(ASCLockup *)self features];
-  [(ASCHasher *)v3 combineObject:v13];
+  features = [(ASCLockup *)self features];
+  [(ASCHasher *)v3 combineObject:features];
 
-  v14 = [(ASCHasher *)v3 finalizeHash];
-  return v14;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self != v4)
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     objc_opt_class();
-    v5 = v4;
+    v5 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -754,125 +754,125 @@ LABEL_69:
       if ([v9 isEqual:v10])
       {
 LABEL_12:
-        v12 = [(ASCLockup *)self kind];
-        v13 = [(ASCLockup *)v8 kind];
-        v14 = v13;
-        if (v12 && v13)
+        kind = [(ASCLockup *)self kind];
+        kind2 = [(ASCLockup *)v8 kind];
+        v14 = kind2;
+        if (kind && kind2)
         {
-          if ([v12 isEqual:v13])
+          if ([kind isEqual:kind2])
           {
 LABEL_15:
-            v15 = [(ASCLockup *)self metrics];
-            v16 = [(ASCLockup *)v8 metrics];
-            v17 = v16;
-            if (v15 && v16)
+            metrics = [(ASCLockup *)self metrics];
+            metrics2 = [(ASCLockup *)v8 metrics];
+            v17 = metrics2;
+            if (metrics && metrics2)
             {
-              if ([v15 isEqual:v16])
+              if ([metrics isEqual:metrics2])
               {
 LABEL_18:
-                v18 = [(ASCLockup *)self icon];
-                v19 = [(ASCLockup *)v8 icon];
-                v20 = v19;
-                if (v18 && v19)
+                icon = [(ASCLockup *)self icon];
+                icon2 = [(ASCLockup *)v8 icon];
+                v20 = icon2;
+                if (icon && icon2)
                 {
-                  v21 = v18;
-                  v66 = v15;
+                  v21 = icon;
+                  v66 = metrics;
                   v22 = v17;
-                  v23 = v18;
+                  v23 = icon;
                   v24 = v20;
                   v25 = [v21 isEqual:v20];
                   v20 = v24;
-                  v18 = v23;
+                  icon = v23;
                   v17 = v22;
-                  v15 = v66;
+                  metrics = v66;
                   if (v25)
                   {
 LABEL_21:
                     v64 = v20;
-                    v65 = v18;
-                    v26 = [(ASCLockup *)self heading];
-                    v27 = [(ASCLockup *)v8 heading];
-                    v28 = v27;
-                    v67 = v26;
-                    if (v26 && v27)
+                    v65 = icon;
+                    heading = [(ASCLockup *)self heading];
+                    heading2 = [(ASCLockup *)v8 heading];
+                    v28 = heading2;
+                    v67 = heading;
+                    if (heading && heading2)
                     {
-                      v29 = v27;
-                      v30 = [v67 isEqual:v27];
+                      v29 = heading2;
+                      v30 = [v67 isEqual:heading2];
                       v28 = v29;
                       if (v30)
                       {
 LABEL_24:
                         v62 = v28;
-                        v31 = [(ASCLockup *)self title];
-                        v32 = [(ASCLockup *)v8 title];
-                        v33 = v32;
-                        v63 = v31;
-                        if (v31 && v32)
+                        title = [(ASCLockup *)self title];
+                        title2 = [(ASCLockup *)v8 title];
+                        v33 = title2;
+                        v63 = title;
+                        if (title && title2)
                         {
-                          v34 = v32;
-                          v35 = [v63 isEqual:v32];
+                          v34 = title2;
+                          v35 = [v63 isEqual:title2];
                           v33 = v34;
                           if (v35)
                           {
 LABEL_27:
                             v60 = v33;
-                            v36 = [(ASCLockup *)self subtitle];
-                            v37 = [(ASCLockup *)v8 subtitle];
-                            v38 = v37;
-                            v61 = v36;
-                            if (v36 && v37)
+                            subtitle = [(ASCLockup *)self subtitle];
+                            subtitle2 = [(ASCLockup *)v8 subtitle];
+                            v38 = subtitle2;
+                            v61 = subtitle;
+                            if (subtitle && subtitle2)
                             {
-                              v39 = v37;
-                              v40 = [v61 isEqual:v37];
+                              v39 = subtitle2;
+                              v40 = [v61 isEqual:subtitle2];
                               v38 = v39;
                               if (v40)
                               {
 LABEL_30:
                                 v58 = v38;
-                                v41 = [(ASCLockup *)self ageRating];
-                                v42 = [(ASCLockup *)v8 ageRating];
-                                v43 = v42;
-                                v59 = v41;
-                                if (v41 && v42)
+                                ageRating = [(ASCLockup *)self ageRating];
+                                ageRating2 = [(ASCLockup *)v8 ageRating];
+                                v43 = ageRating2;
+                                v59 = ageRating;
+                                if (ageRating && ageRating2)
                                 {
-                                  v44 = v42;
-                                  v45 = [v59 isEqual:v42];
+                                  v44 = ageRating2;
+                                  v45 = [v59 isEqual:ageRating2];
                                   v43 = v44;
                                   if (v45)
                                   {
 LABEL_33:
                                     v56 = v43;
-                                    v46 = [(ASCLockup *)self offer];
-                                    v47 = [(ASCLockup *)v8 offer];
-                                    v57 = v46;
-                                    v55 = v47;
-                                    if (v46 && v47)
+                                    offer = [(ASCLockup *)self offer];
+                                    offer2 = [(ASCLockup *)v8 offer];
+                                    v57 = offer;
+                                    v55 = offer2;
+                                    if (offer && offer2)
                                     {
-                                      if ([v46 isEqual:v47])
+                                      if ([offer isEqual:offer2])
                                       {
                                         goto LABEL_36;
                                       }
                                     }
 
-                                    else if (v46 == v47)
+                                    else if (offer == offer2)
                                     {
 LABEL_36:
-                                      v48 = [(ASCLockup *)self features];
-                                      v49 = [(ASCLockup *)v8 features];
-                                      v50 = v49;
-                                      if (v48 && v49)
+                                      features = [(ASCLockup *)self features];
+                                      features2 = [(ASCLockup *)v8 features];
+                                      v50 = features2;
+                                      if (features && features2)
                                       {
-                                        v51 = v49;
-                                        v52 = [v48 isEqual:v49];
+                                        v51 = features2;
+                                        v52 = [features isEqual:features2];
                                         v50 = v51;
-                                        v53 = v48;
+                                        v53 = features;
                                         v7 = v52;
                                       }
 
                                       else
                                       {
-                                        v53 = v48;
-                                        v7 = v48 == v49;
+                                        v53 = features;
+                                        v7 = features == features2;
                                       }
 
                                       goto LABEL_60;
@@ -886,7 +886,7 @@ LABEL_60:
                                   }
                                 }
 
-                                else if (v41 == v42)
+                                else if (ageRating == ageRating2)
                                 {
                                   goto LABEL_33;
                                 }
@@ -899,7 +899,7 @@ LABEL_61:
                               }
                             }
 
-                            else if (v36 == v37)
+                            else if (subtitle == subtitle2)
                             {
                               goto LABEL_30;
                             }
@@ -912,7 +912,7 @@ LABEL_62:
                           }
                         }
 
-                        else if (v31 == v32)
+                        else if (title == title2)
                         {
                           goto LABEL_27;
                         }
@@ -925,7 +925,7 @@ LABEL_63:
                       }
                     }
 
-                    else if (v26 == v27)
+                    else if (heading == heading2)
                     {
                       goto LABEL_24;
                     }
@@ -934,12 +934,12 @@ LABEL_63:
 LABEL_64:
 
                     v20 = v64;
-                    v18 = v65;
+                    icon = v65;
                     goto LABEL_65;
                   }
                 }
 
-                else if (v18 == v19)
+                else if (icon == icon2)
                 {
                   goto LABEL_21;
                 }
@@ -951,7 +951,7 @@ LABEL_65:
               }
             }
 
-            else if (v15 == v16)
+            else if (metrics == metrics2)
             {
               goto LABEL_18;
             }
@@ -963,7 +963,7 @@ LABEL_66:
           }
         }
 
-        else if (v12 == v13)
+        else if (kind == kind2)
         {
           goto LABEL_15;
         }
@@ -998,53 +998,53 @@ LABEL_70:
   v4 = [(ASCLockup *)self id];
   [(ASCDescriber *)v3 addObject:v4 withName:@"id"];
 
-  v5 = [(ASCLockup *)self kind];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"kind"];
+  kind = [(ASCLockup *)self kind];
+  [(ASCDescriber *)v3 addObject:kind withName:@"kind"];
 
-  v6 = [(ASCLockup *)self metrics];
-  [(ASCDescriber *)v3 addObject:v6 withName:@"metrics"];
+  metrics = [(ASCLockup *)self metrics];
+  [(ASCDescriber *)v3 addObject:metrics withName:@"metrics"];
 
-  v7 = [(ASCLockup *)self icon];
-  [(ASCDescriber *)v3 addObject:v7 withName:@"icon"];
+  icon = [(ASCLockup *)self icon];
+  [(ASCDescriber *)v3 addObject:icon withName:@"icon"];
 
-  v8 = [(ASCLockup *)self heading];
-  [(ASCDescriber *)v3 addObject:v8 withName:@"heading"];
+  heading = [(ASCLockup *)self heading];
+  [(ASCDescriber *)v3 addObject:heading withName:@"heading"];
 
-  v9 = [(ASCLockup *)self title];
-  [(ASCDescriber *)v3 addObject:v9 withName:@"title"];
+  title = [(ASCLockup *)self title];
+  [(ASCDescriber *)v3 addObject:title withName:@"title"];
 
-  v10 = [(ASCLockup *)self subtitle];
-  [(ASCDescriber *)v3 addObject:v10 withName:@"subtitle"];
+  subtitle = [(ASCLockup *)self subtitle];
+  [(ASCDescriber *)v3 addObject:subtitle withName:@"subtitle"];
 
-  v11 = [(ASCLockup *)self ageRating];
-  [(ASCDescriber *)v3 addObject:v11 withName:@"ageRating"];
+  ageRating = [(ASCLockup *)self ageRating];
+  [(ASCDescriber *)v3 addObject:ageRating withName:@"ageRating"];
 
-  v12 = [(ASCLockup *)self offer];
-  [(ASCDescriber *)v3 addObject:v12 withName:@"offer"];
+  offer = [(ASCLockup *)self offer];
+  [(ASCDescriber *)v3 addObject:offer withName:@"offer"];
 
-  v13 = [(ASCLockup *)self features];
-  v14 = [v13 count];
+  features = [(ASCLockup *)self features];
+  v14 = [features count];
 
   if (v14)
   {
-    v15 = [(ASCLockup *)self features];
-    [(ASCDescriber *)v3 addObject:v15 withName:@"features"];
+    features2 = [(ASCLockup *)self features];
+    [(ASCDescriber *)v3 addObject:features2 withName:@"features"];
   }
 
-  v16 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v16;
+  return finalizeDescription;
 }
 
-- (id)featureWithClass:(Class)a3
+- (id)featureWithClass:(Class)class
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(ASCLockup *)self features];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  features = [(ASCLockup *)self features];
+  v4 = [features countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1055,7 +1055,7 @@ LABEL_70:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(features);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -1066,7 +1066,7 @@ LABEL_70:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [features countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -1082,17 +1082,17 @@ LABEL_11:
   return v9;
 }
 
-- (id)lockupByAddingFeature:(id)a3
+- (id)lockupByAddingFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [(ASCLockup *)self features];
-  v6 = [v5 mutableCopy];
+  featureCopy = feature;
+  features = [(ASCLockup *)self features];
+  v6 = [features mutableCopy];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __35__ASCLockup_lockupByAddingFeature___block_invoke;
   v23[3] = &unk_2781CBF38;
-  v7 = v4;
+  v7 = featureCopy;
   v24 = v7;
   v8 = [v6 indexOfObjectPassingTest:v23];
   v21 = v6;
@@ -1109,15 +1109,15 @@ LABEL_11:
 
   v19 = [ASCLockup alloc];
   v9 = [(ASCLockup *)self id];
-  v10 = [(ASCLockup *)self kind];
-  v11 = [(ASCLockup *)self metrics];
-  v12 = [(ASCLockup *)self icon];
-  v13 = [(ASCLockup *)self heading];
-  v14 = [(ASCLockup *)self title];
-  v15 = [(ASCLockup *)self subtitle];
-  v16 = [(ASCLockup *)self ageRating];
-  v17 = [(ASCLockup *)self offer];
-  v20 = [(ASCLockup *)v19 initWithID:v9 kind:v10 metrics:v11 icon:v12 heading:v13 title:v14 subtitle:v15 ageRating:v16 offer:v17 features:v21];
+  kind = [(ASCLockup *)self kind];
+  metrics = [(ASCLockup *)self metrics];
+  icon = [(ASCLockup *)self icon];
+  heading = [(ASCLockup *)self heading];
+  title = [(ASCLockup *)self title];
+  subtitle = [(ASCLockup *)self subtitle];
+  ageRating = [(ASCLockup *)self ageRating];
+  offer = [(ASCLockup *)self offer];
+  v20 = [(ASCLockup *)v19 initWithID:v9 kind:kind metrics:metrics icon:icon heading:heading title:title subtitle:subtitle ageRating:ageRating offer:offer features:v21];
 
   return v20;
 }
@@ -1131,20 +1131,20 @@ uint64_t __35__ASCLockup_lockupByAddingFeature___block_invoke(uint64_t a1, void 
   return isKindOfClass & 1;
 }
 
-- (ASCLockup)lockupWithOffer:(id)a3
+- (ASCLockup)lockupWithOffer:(id)offer
 {
-  v4 = a3;
+  offerCopy = offer;
   v16 = [ASCLockup alloc];
   v15 = [(ASCLockup *)self id];
-  v5 = [(ASCLockup *)self kind];
-  v6 = [(ASCLockup *)self metrics];
-  v7 = [(ASCLockup *)self icon];
-  v8 = [(ASCLockup *)self heading];
-  v9 = [(ASCLockup *)self title];
-  v10 = [(ASCLockup *)self subtitle];
-  v11 = [(ASCLockup *)self ageRating];
-  v12 = [(ASCLockup *)self features];
-  v13 = [(ASCLockup *)v16 initWithID:v15 kind:v5 metrics:v6 icon:v7 heading:v8 title:v9 subtitle:v10 ageRating:v11 offer:v4 features:v12];
+  kind = [(ASCLockup *)self kind];
+  metrics = [(ASCLockup *)self metrics];
+  icon = [(ASCLockup *)self icon];
+  heading = [(ASCLockup *)self heading];
+  title = [(ASCLockup *)self title];
+  subtitle = [(ASCLockup *)self subtitle];
+  ageRating = [(ASCLockup *)self ageRating];
+  features = [(ASCLockup *)self features];
+  v13 = [(ASCLockup *)v16 initWithID:v15 kind:kind metrics:metrics icon:icon heading:heading title:title subtitle:subtitle ageRating:ageRating offer:offerCopy features:features];
 
   return v13;
 }

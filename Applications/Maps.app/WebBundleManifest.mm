@@ -1,39 +1,39 @@
 @interface WebBundleManifest
-- (BOOL)isEqual:(id)a3;
-- (WebBundleManifest)initWithCoder:(id)a3;
-- (WebBundleManifest)initWithVersion:(id)a3 files:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (WebBundleManifest)initWithCoder:(id)coder;
+- (WebBundleManifest)initWithVersion:(id)version files:(id)files;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WebBundleManifest
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(WebBundleManifest *)v6 version];
-    v8 = [(WebBundleManifest *)self version];
-    if (v7 == v8 || [v7 isEqual:v8])
+    version = [(WebBundleManifest *)v6 version];
+    version2 = [(WebBundleManifest *)self version];
+    if (version == version2 || [version isEqual:version2])
     {
-      v9 = [(WebBundleManifest *)v6 files];
-      v10 = [(WebBundleManifest *)self files];
-      if (v9 == v10)
+      files = [(WebBundleManifest *)v6 files];
+      files2 = [(WebBundleManifest *)self files];
+      if (files == files2)
       {
         v11 = 1;
       }
 
       else
       {
-        v11 = [v9 isEqual:v10];
+        v11 = [files isEqual:files2];
       }
     }
 
@@ -53,54 +53,54 @@
 
 - (unint64_t)hash
 {
-  v3 = [(WebBundleManifest *)self version];
-  v4 = [v3 hash];
-  v5 = [(WebBundleManifest *)self files];
-  v6 = [v5 hash];
+  version = [(WebBundleManifest *)self version];
+  v4 = [version hash];
+  files = [(WebBundleManifest *)self files];
+  v6 = [files hash];
 
   return v6 ^ v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   version = self->_version;
-  v5 = a3;
-  [v5 encodeObject:version forKey:@"WebBundleManifestVersionKey"];
-  [v5 encodeObject:self->_files forKey:@"WebBundleManifestFilesKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:version forKey:@"WebBundleManifestVersionKey"];
+  [coderCopy encodeObject:self->_files forKey:@"WebBundleManifestFilesKey"];
 }
 
-- (WebBundleManifest)initWithCoder:(id)a3
+- (WebBundleManifest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = WebBundleManifest;
   v5 = [(WebBundleManifest *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WebBundleManifestVersionKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WebBundleManifestVersionKey"];
     [(WebBundleManifest *)v5 setVersion:v6];
 
     v7 = objc_opt_class();
     v8 = [NSSet setWithObjects:v7, objc_opt_class(), 0];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"WebBundleManifestFilesKey"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"WebBundleManifestFilesKey"];
     [(WebBundleManifest *)v5 setFiles:v9];
   }
 
   return v5;
 }
 
-- (WebBundleManifest)initWithVersion:(id)a3 files:(id)a4
+- (WebBundleManifest)initWithVersion:(id)version files:(id)files
 {
-  v6 = a3;
-  v7 = a4;
+  versionCopy = version;
+  filesCopy = files;
   v11.receiver = self;
   v11.super_class = WebBundleManifest;
   v8 = [(WebBundleManifest *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(WebBundleManifest *)v8 setVersion:v6];
-    [(WebBundleManifest *)v9 setFiles:v7];
+    [(WebBundleManifest *)v8 setVersion:versionCopy];
+    [(WebBundleManifest *)v9 setFiles:filesCopy];
   }
 
   return v9;

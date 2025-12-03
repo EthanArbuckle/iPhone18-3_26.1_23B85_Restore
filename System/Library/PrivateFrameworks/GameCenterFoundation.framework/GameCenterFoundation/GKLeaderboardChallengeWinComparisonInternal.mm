@@ -1,5 +1,5 @@
 @interface GKLeaderboardChallengeWinComparisonInternal
-+ (id)initWithServerFragment:(id)a3;
++ (id)initWithServerFragment:(id)fragment;
 + (id)secureCodedPropertyKeys;
 @end
 
@@ -33,17 +33,17 @@ void __70__GKLeaderboardChallengeWinComparisonInternal_secureCodedPropertyKeys__
   v2 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)initWithServerFragment:(id)a3
++ (id)initWithServerFragment:(id)fragment
 {
-  v3 = a3;
+  fragmentCopy = fragment;
   v4 = objc_alloc_init(GKLeaderboardChallengeWinComparisonInternal);
-  v5 = [v3 objectForKeyedSubscript:@"bundle-id"];
+  v5 = [fragmentCopy objectForKeyedSubscript:@"bundle-id"];
   [(GKLeaderboardChallengeWinComparisonInternal *)v4 setBundleID:v5];
 
-  v6 = [v3 objectForKeyedSubscript:@"player-win-count"];
+  v6 = [fragmentCopy objectForKeyedSubscript:@"player-win-count"];
   [(GKLeaderboardChallengeWinComparisonInternal *)v4 setPlayerWinCount:v6];
 
-  v7 = [v3 objectForKeyedSubscript:@"compare-to-player-win-count"];
+  v7 = [fragmentCopy objectForKeyedSubscript:@"compare-to-player-win-count"];
 
   [(GKLeaderboardChallengeWinComparisonInternal *)v4 setOtherPlayerWinCount:v7];
 

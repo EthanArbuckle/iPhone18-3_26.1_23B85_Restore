@@ -8,20 +8,20 @@
 {
   v7.receiver = self;
   v7.super_class = SASyncGetAnchors;
-  v3 = [(SASyncGetAnchors *)&v7 ad_deferredMetricsContext];
-  v4 = [(SASyncGetAnchors *)self syncReason];
-  if (v4)
+  ad_deferredMetricsContext = [(SASyncGetAnchors *)&v7 ad_deferredMetricsContext];
+  syncReason = [(SASyncGetAnchors *)self syncReason];
+  if (syncReason)
   {
-    [v3 setObject:v4 forKey:SASyncGetAnchorsSyncReasonPListKey];
+    [ad_deferredMetricsContext setObject:syncReason forKey:SASyncGetAnchorsSyncReasonPListKey];
   }
 
-  v5 = [(SASyncGetAnchors *)self sources];
-  if (v5)
+  sources = [(SASyncGetAnchors *)self sources];
+  if (sources)
   {
-    [v3 setObject:v5 forKey:SASyncGetAnchorsSourcesPListKey];
+    [ad_deferredMetricsContext setObject:sources forKey:SASyncGetAnchorsSourcesPListKey];
   }
 
-  return v3;
+  return ad_deferredMetricsContext;
 }
 
 @end

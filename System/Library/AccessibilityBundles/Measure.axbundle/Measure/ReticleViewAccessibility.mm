@@ -1,5 +1,5 @@
 @interface ReticleViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)axIsFocusedOnRectangle;
 - (CGRect)_axFrameForReticleElement;
 - (id)_axHintForReticleElement;
@@ -8,73 +8,73 @@
 - (id)axFirstLabelElement;
 - (void)_axAnnounceReticleState;
 - (void)_axAnnounceReticleStateAfterDelay;
-- (void)setAlpha:(double)a3;
-- (void)setState:(int64_t)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation ReticleViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Measure.ReticleView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"setAlpha:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"Measure.ReticleView" hasInstanceMethod:@"setState:" withFullSignature:{"v", "q", 0}];
-  [v3 validateClass:@"Measure.ReticleView" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"Measure.ReticleView" hasInstanceMethod:@"currentDiameter" withFullSignature:{"f", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Measure.ReticleView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"setAlpha:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"Measure.ReticleView" hasInstanceMethod:@"setState:" withFullSignature:{"v", "q", 0}];
+  [validationsCopy validateClass:@"Measure.ReticleView" hasInstanceMethod:@"state" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"Measure.ReticleView" hasInstanceMethod:@"currentDiameter" withFullSignature:{"f", 0}];
 }
 
 - (id)axFirstLabelElement
 {
   v3 = AXMeasureLabelView();
   v4 = [v3 _accessibilityLabelElementsWithAccessibilityContainer:self];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
 - (BOOL)axIsFocusedOnRectangle
 {
   v2 = AXMeasureAccessibilityStateObserver();
-  v3 = [v2 axHasSuggestedRectangle];
+  axHasSuggestedRectangle = [v2 axHasSuggestedRectangle];
 
-  return v3;
+  return axHasSuggestedRectangle;
 }
 
 - (id)accessibilityElements
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
-  v4 = [(ReticleViewAccessibility *)self _axReticleElement];
-  if (!v4)
+  array = [MEMORY[0x29EDB8DE8] array];
+  _axReticleElement = [(ReticleViewAccessibility *)self _axReticleElement];
+  if (!_axReticleElement)
   {
-    v4 = [objc_alloc(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:self];
+    _axReticleElement = [objc_alloc(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:self];
     objc_initWeak(&location, self);
     v14[0] = MEMORY[0x29EDCA5F8];
     v14[1] = 3221225472;
     v14[2] = __49__ReticleViewAccessibility_accessibilityElements__block_invoke;
     v14[3] = &unk_29F2CE6A8;
     objc_copyWeak(&v15, &location);
-    [v4 _setAccessibilityFrameBlock:v14];
+    [_axReticleElement _setAccessibilityFrameBlock:v14];
     v12[0] = MEMORY[0x29EDCA5F8];
     v12[1] = 3221225472;
     v12[2] = __49__ReticleViewAccessibility_accessibilityElements__block_invoke_2;
     v12[3] = &unk_29F2CE6D0;
     objc_copyWeak(&v13, &location);
-    [v4 _setAccessibilityLabelBlock:v12];
-    [v4 _setAccessibilityValueBlock:&__block_literal_global_2];
+    [_axReticleElement _setAccessibilityLabelBlock:v12];
+    [_axReticleElement _setAccessibilityValueBlock:&__block_literal_global_2];
     v10[0] = MEMORY[0x29EDCA5F8];
     v10[1] = 3221225472;
     v10[2] = __49__ReticleViewAccessibility_accessibilityElements__block_invoke_4;
     v10[3] = &unk_29F2CE6D0;
     objc_copyWeak(&v11, &location);
-    [v4 _setAccessibilityHintBlock:v10];
+    [_axReticleElement _setAccessibilityHintBlock:v10];
     v8[0] = MEMORY[0x29EDCA5F8];
     v8[1] = 3221225472;
     v8[2] = __49__ReticleViewAccessibility_accessibilityElements__block_invoke_5;
     v8[3] = &unk_29F2CE718;
     objc_copyWeak(&v9, &location);
-    [v4 _setAccessibilityTraitsBlock:v8];
-    [(ReticleViewAccessibility *)self _axSetReticleElement:v4];
+    [_axReticleElement _setAccessibilityTraitsBlock:v8];
+    [(ReticleViewAccessibility *)self _axSetReticleElement:_axReticleElement];
     objc_destroyWeak(&v9);
     objc_destroyWeak(&v11);
     objc_destroyWeak(&v13);
@@ -82,16 +82,16 @@
     objc_destroyWeak(&location);
   }
 
-  [v3 addObject:v4];
+  [array addObject:_axReticleElement];
   v5 = AXMeasureLabelView();
   v6 = [v5 _accessibilityLabelElementsWithAccessibilityContainer:self];
 
   if ([v6 count])
   {
-    [v3 addObjectsFromArray:v6];
+    [array addObjectsFromArray:v6];
   }
 
-  return v3;
+  return array;
 }
 
 double __49__ReticleViewAccessibility_accessibilityElements__block_invoke(uint64_t a1)
@@ -149,30 +149,30 @@ uint64_t __49__ReticleViewAccessibility_accessibilityElements__block_invoke_5(ui
 {
   v6.receiver = self;
   v6.super_class = ReticleViewAccessibility;
-  v3 = [(ReticleViewAccessibility *)&v6 accessibilityHint];
+  accessibilityHint = [(ReticleViewAccessibility *)&v6 accessibilityHint];
   if ([(ReticleViewAccessibility *)self axIsFocusedOnRectangle])
   {
     v4 = accessibilityLocalizedString(@"RETICLE_HINT_RECTANGLE");
 
-    v3 = v4;
+    accessibilityHint = v4;
   }
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (id)_axStringForReticleState
 {
-  v3 = [(ReticleViewAccessibility *)self _axReticleState];
-  if (v3 > 1)
+  _axReticleState = [(ReticleViewAccessibility *)self _axReticleState];
+  if (_axReticleState > 1)
   {
-    if (v3 == 3)
+    if (_axReticleState == 3)
     {
       v5 = @"RETICLE_STATE_INVALID";
     }
 
     else
     {
-      if (v3 != 2)
+      if (_axReticleState != 2)
       {
         goto LABEL_13;
       }
@@ -181,9 +181,9 @@ uint64_t __49__ReticleViewAccessibility_accessibilityElements__block_invoke_5(ui
     }
   }
 
-  else if (v3)
+  else if (_axReticleState)
   {
-    if (v3 != 1)
+    if (_axReticleState != 1)
     {
       goto LABEL_13;
     }
@@ -212,12 +212,12 @@ LABEL_13:
 
 - (void)_axAnnounceReticleState
 {
-  v4 = [(ReticleViewAccessibility *)self _axLastAnnouncementForReticleState];
-  v3 = [(ReticleViewAccessibility *)self _axStringForReticleState];
-  if (!v4 || ([v4 isEqualToString:v3] & 1) == 0)
+  _axLastAnnouncementForReticleState = [(ReticleViewAccessibility *)self _axLastAnnouncementForReticleState];
+  _axStringForReticleState = [(ReticleViewAccessibility *)self _axStringForReticleState];
+  if (!_axLastAnnouncementForReticleState || ([_axLastAnnouncementForReticleState isEqualToString:_axStringForReticleState] & 1) == 0)
   {
-    AXMeasureSpeakMeasurementAnnouncement(v3);
-    [(ReticleViewAccessibility *)self _axSetLastAnnouncementForReticleState:v3];
+    AXMeasureSpeakMeasurementAnnouncement(_axStringForReticleState);
+    [(ReticleViewAccessibility *)self _axSetLastAnnouncementForReticleState:_axStringForReticleState];
   }
 }
 
@@ -228,13 +228,13 @@ LABEL_13:
   [(ReticleViewAccessibility *)self performSelector:sel__axAnnounceReticleState withObject:0 afterDelay:0.3];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  v5 = [(ReticleViewAccessibility *)self _axReticleState];
+  _axReticleState = [(ReticleViewAccessibility *)self _axReticleState];
   v9.receiver = self;
   v9.super_class = ReticleViewAccessibility;
-  [(ReticleViewAccessibility *)&v9 setState:a3];
-  if (v5 != a3)
+  [(ReticleViewAccessibility *)&v9 setState:state];
+  if (_axReticleState != state)
   {
     objc_opt_class();
     v6 = __UIAccessibilityCastAsClass();
@@ -248,7 +248,7 @@ LABEL_13:
   }
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v9 = 0;
   objc_opt_class();
@@ -258,8 +258,8 @@ LABEL_13:
 
   v8.receiver = self;
   v8.super_class = ReticleViewAccessibility;
-  [(ReticleViewAccessibility *)&v8 setAlpha:a3];
-  if (a3 >= 1.0 && v7 <= 0.0)
+  [(ReticleViewAccessibility *)&v8 setAlpha:alpha];
+  if (alpha >= 1.0 && v7 <= 0.0)
   {
     [(ReticleViewAccessibility *)self _axAnnounceReticleStateAfterDelay];
   }

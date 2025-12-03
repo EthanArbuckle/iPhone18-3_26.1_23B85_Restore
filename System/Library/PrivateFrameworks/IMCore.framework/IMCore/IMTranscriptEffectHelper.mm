@@ -1,16 +1,16 @@
 @interface IMTranscriptEffectHelper
-+ (BOOL)effectIdentifierIsFullScreenMoment:(id)a3;
-+ (BOOL)effectIdentifierIsImpactEffect:(id)a3;
-+ (BOOL)identifierIsEffectIdentifier:(id)a3;
-+ (BOOL)shouldShowReplayButtonForEffectIdentifier:(id)a3;
++ (BOOL)effectIdentifierIsFullScreenMoment:(id)moment;
++ (BOOL)effectIdentifierIsImpactEffect:(id)effect;
++ (BOOL)identifierIsEffectIdentifier:(id)identifier;
++ (BOOL)shouldShowReplayButtonForEffectIdentifier:(id)identifier;
 + (id)allEffectIdentifiers;
-+ (id)findIdentifierByMathcingPartialSufix:(id)a3;
++ (id)findIdentifierByMathcingPartialSufix:(id)sufix;
 + (id)identifierNameMap;
-+ (id)nameForEffectIdentifier:(id)a3;
-+ (id)replayStringForEffectIdentifier:(id)a3;
++ (id)nameForEffectIdentifier:(id)identifier;
++ (id)replayStringForEffectIdentifier:(id)identifier;
 + (id)replayStringMap;
 + (id)sendWithEffectStringMap;
-+ (id)sendWithStringForEffectIdentifier:(id)a3;
++ (id)sendWithStringForEffectIdentifier:(id)identifier;
 @end
 
 @implementation IMTranscriptEffectHelper
@@ -27,21 +27,21 @@
   return v3;
 }
 
-+ (BOOL)identifierIsEffectIdentifier:(id)a3
++ (BOOL)identifierIsEffectIdentifier:(id)identifier
 {
-  v4 = a3;
-  v7 = objc_msgSend_identifierNameMap(a1, v5, v6);
-  v9 = objc_msgSend_objectForKey_(v7, v8, v4);
+  identifierCopy = identifier;
+  v7 = objc_msgSend_identifierNameMap(self, v5, v6);
+  v9 = objc_msgSend_objectForKey_(v7, v8, identifierCopy);
 
   return v9 != 0;
 }
 
-+ (BOOL)effectIdentifierIsFullScreenMoment:(id)a3
++ (BOOL)effectIdentifierIsFullScreenMoment:(id)moment
 {
-  v4 = a3;
-  if (objc_msgSend_identifierIsEffectIdentifier_(a1, v5, v4))
+  momentCopy = moment;
+  if (objc_msgSend_identifierIsEffectIdentifier_(self, v5, momentCopy))
   {
-    objc_msgSend_rangeOfString_(v4, v6, @"com.apple.messages.effect");
+    objc_msgSend_rangeOfString_(momentCopy, v6, @"com.apple.messages.effect");
     v8 = v7 != 0;
   }
 
@@ -53,12 +53,12 @@
   return v8;
 }
 
-+ (BOOL)effectIdentifierIsImpactEffect:(id)a3
++ (BOOL)effectIdentifierIsImpactEffect:(id)effect
 {
-  v4 = a3;
-  if (objc_msgSend_identifierIsEffectIdentifier_(a1, v5, v4))
+  effectCopy = effect;
+  if (objc_msgSend_identifierIsEffectIdentifier_(self, v5, effectCopy))
   {
-    objc_msgSend_rangeOfString_(v4, v6, @"com.apple.MobileSMS.expressivesend");
+    objc_msgSend_rangeOfString_(effectCopy, v6, @"com.apple.MobileSMS.expressivesend");
     v8 = v7 != 0;
   }
 
@@ -106,15 +106,15 @@
   return v3;
 }
 
-+ (id)findIdentifierByMathcingPartialSufix:(id)a3
++ (id)findIdentifierByMathcingPartialSufix:(id)sufix
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sufixCopy = sufix;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = objc_msgSend_allEffectIdentifiers(a1, v5, v6, 0);
+  v7 = objc_msgSend_allEffectIdentifiers(self, v5, v6, 0);
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v16, v20, 16);
   if (v10)
   {
@@ -129,7 +129,7 @@
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if (objc_msgSend_localizedCaseInsensitiveContainsString_(v13, v9, v4))
+        if (objc_msgSend_localizedCaseInsensitiveContainsString_(v13, v9, sufixCopy))
         {
           v10 = v13;
           goto LABEL_11;
@@ -153,44 +153,44 @@ LABEL_11:
   return v10;
 }
 
-+ (id)nameForEffectIdentifier:(id)a3
++ (id)nameForEffectIdentifier:(id)identifier
 {
-  v4 = a3;
-  v7 = objc_msgSend_identifierNameMap(a1, v5, v6);
-  v9 = objc_msgSend_objectForKey_(v7, v8, v4);
+  identifierCopy = identifier;
+  v7 = objc_msgSend_identifierNameMap(self, v5, v6);
+  v9 = objc_msgSend_objectForKey_(v7, v8, identifierCopy);
 
   return v9;
 }
 
-+ (id)replayStringForEffectIdentifier:(id)a3
++ (id)replayStringForEffectIdentifier:(id)identifier
 {
-  v4 = a3;
-  v7 = objc_msgSend_replayStringMap(a1, v5, v6);
-  v9 = objc_msgSend_objectForKey_(v7, v8, v4);
+  identifierCopy = identifier;
+  v7 = objc_msgSend_replayStringMap(self, v5, v6);
+  v9 = objc_msgSend_objectForKey_(v7, v8, identifierCopy);
 
   return v9;
 }
 
-+ (id)sendWithStringForEffectIdentifier:(id)a3
++ (id)sendWithStringForEffectIdentifier:(id)identifier
 {
-  v4 = a3;
-  v7 = objc_msgSend_sendWithEffectStringMap(a1, v5, v6);
-  v9 = objc_msgSend_objectForKey_(v7, v8, v4);
+  identifierCopy = identifier;
+  v7 = objc_msgSend_sendWithEffectStringMap(self, v5, v6);
+  v9 = objc_msgSend_objectForKey_(v7, v8, identifierCopy);
 
   return v9;
 }
 
-+ (BOOL)shouldShowReplayButtonForEffectIdentifier:(id)a3
++ (BOOL)shouldShowReplayButtonForEffectIdentifier:(id)identifier
 {
-  v3 = a3;
-  isFeatureEnabled = objc_msgSend_isFeatureEnabled(a1, v4, v5);
-  LOBYTE(a1) = 0;
-  if (v3 && isFeatureEnabled)
+  identifierCopy = identifier;
+  isFeatureEnabled = objc_msgSend_isFeatureEnabled(self, v4, v5);
+  LOBYTE(self) = 0;
+  if (identifierCopy && isFeatureEnabled)
   {
-    LODWORD(a1) = objc_msgSend_isEqualToString_(*MEMORY[0x1E69A7D78], v7, v3) ^ 1;
+    LODWORD(self) = objc_msgSend_isEqualToString_(*MEMORY[0x1E69A7D78], v7, identifierCopy) ^ 1;
   }
 
-  return a1;
+  return self;
 }
 
 @end

@@ -1,44 +1,44 @@
 @interface SIOrderedEvent
-+ (id)deserializeFromData:(id)a3;
-- (SIOrderedEvent)initWithData:(id)a3;
-- (SIOrderedEvent)initWithInternalType:(id)a3;
-- (SIOrderedEvent)initWithTimestamp:(id)a3 messageUUID:(id)a4 topLevelUnionType:(id)a5;
++ (id)deserializeFromData:(id)data;
+- (SIOrderedEvent)initWithData:(id)data;
+- (SIOrderedEvent)initWithInternalType:(id)type;
+- (SIOrderedEvent)initWithTimestamp:(id)timestamp messageUUID:(id)d topLevelUnionType:(id)type;
 @end
 
 @implementation SIOrderedEvent
 
-- (SIOrderedEvent)initWithData:(id)a3
+- (SIOrderedEvent)initWithData:(id)data
 {
-  v4 = a3;
-  v5 = [[SIOrderedEventInternal alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[SIOrderedEventInternal alloc] initWithData:dataCopy];
 
   if (v5)
   {
     self = [(SIOrderedEvent *)self initWithInternalType:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (SIOrderedEvent)initWithInternalType:(id)a3
+- (SIOrderedEvent)initWithInternalType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v13.receiver = self;
   v13.super_class = SIOrderedEvent;
   v6 = [(SIOrderedEvent *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlying, a3);
+    objc_storeStrong(&v6->_underlying, type);
     v8 = [SILogicalTimestamp alloc];
-    v9 = [(SIOrderedEventInternal *)v7->_underlying logicalTimestamp];
-    v10 = [(SILogicalTimestamp *)v8 initWithInternalType:v9];
+    logicalTimestamp = [(SIOrderedEventInternal *)v7->_underlying logicalTimestamp];
+    v10 = [(SILogicalTimestamp *)v8 initWithInternalType:logicalTimestamp];
     underlyingTimestamp = v7->_underlyingTimestamp;
     v7->_underlyingTimestamp = v10;
   }
@@ -46,23 +46,23 @@
   return v7;
 }
 
-- (SIOrderedEvent)initWithTimestamp:(id)a3 messageUUID:(id)a4 topLevelUnionType:(id)a5
+- (SIOrderedEvent)initWithTimestamp:(id)timestamp messageUUID:(id)d topLevelUnionType:(id)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  timestampCopy = timestamp;
+  dCopy = d;
+  typeCopy = type;
   v20.receiver = self;
   v20.super_class = SIOrderedEvent;
   v12 = [(SIOrderedEvent *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_underlyingTimestamp, a3);
+    objc_storeStrong(&v12->_underlyingTimestamp, timestamp);
     v14 = [SILogicalTimestampInternal alloc];
-    v15 = [v9 clockIdentifier];
-    v16 = -[SILogicalTimestampInternal initWithClockIdentifier:nanosecondsSinceBoot:](v14, "initWithClockIdentifier:nanosecondsSinceBoot:", v15, [v9 nanoSecondsSinceBoot]);
+    clockIdentifier = [timestampCopy clockIdentifier];
+    v16 = -[SILogicalTimestampInternal initWithClockIdentifier:nanosecondsSinceBoot:](v14, "initWithClockIdentifier:nanosecondsSinceBoot:", clockIdentifier, [timestampCopy nanoSecondsSinceBoot]);
 
-    v17 = [[SIOrderedEventInternal alloc] initWithLogicalTimestamp:v16 messageUUID:v10 tluEvent:v11];
+    v17 = [[SIOrderedEventInternal alloc] initWithLogicalTimestamp:v16 messageUUID:dCopy tluEvent:typeCopy];
     underlying = v13->_underlying;
     v13->_underlying = v17;
   }
@@ -70,9 +70,9 @@
   return v13;
 }
 
-+ (id)deserializeFromData:(id)a3
++ (id)deserializeFromData:(id)data
 {
-  v3 = [SIOrderedEventInternal deserializeFrom:a3];
+  v3 = [SIOrderedEventInternal deserializeFrom:data];
   if (v3)
   {
     v4 = [[SIOrderedEvent alloc] initWithInternalType:v3];

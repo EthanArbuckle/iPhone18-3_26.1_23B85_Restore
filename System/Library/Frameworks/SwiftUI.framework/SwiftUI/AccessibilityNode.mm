@@ -1,6 +1,6 @@
 @interface AccessibilityNode
 - (AXChartDescriptor)accessibilityChartDescriptor;
-- (BOOL)_accessibilityCanPerformAction:(unsigned int)a3;
+- (BOOL)_accessibilityCanPerformAction:(unsigned int)action;
 - (BOOL)_accessibilityCanPerformEscapeAction;
 - (BOOL)_accessibilityDataSeriesIncludesTrendlineInSonification;
 - (BOOL)_accessibilityDataSeriesSupportsSonification;
@@ -8,7 +8,7 @@
 - (BOOL)_accessibilityExplicitlyNonInteractable;
 - (BOOL)_accessibilityHasOrderedChildren;
 - (BOOL)_accessibilityIsChartElement;
-- (BOOL)_accessibilityIsFirstSiblingForType:(unint64_t)a3;
+- (BOOL)_accessibilityIsFirstSiblingForType:(unint64_t)type;
 - (BOOL)_accessibilityIsMacVisualAppearance;
 - (BOOL)_accessibilitySupportsActivateAction;
 - (BOOL)accessibilityActivate;
@@ -16,12 +16,12 @@
 - (BOOL)accessibilityPerformEscape;
 - (BOOL)accessibilityPerformMagicTap;
 - (BOOL)accessibilityRespondsToUserInteraction;
-- (BOOL)accessibilityScroll:(int64_t)a3;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (BOOL)accessibilityViewIsModal;
 - (BOOL)isAccessibilityElement;
 - (BOOL)shouldGroupAccessibilityChildren;
 - (CGPoint)accessibilityActivationPoint;
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3;
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range;
 - (CGRect)accessibilityFrame;
 - (NSArray)accessibilityCustomRotors;
 - (NSArray)accessibilityElements;
@@ -41,15 +41,15 @@
 - (double)_accessibilityMaxValue;
 - (double)_accessibilityMinValue;
 - (double)_accessibilityNumberValue;
-- (id)_accessibilityDataSeriesMaximumValueForAxis:(int64_t)a3;
-- (id)_accessibilityDataSeriesMinimumValueForAxis:(int64_t)a3;
-- (id)_accessibilityDataSeriesValueDescriptionForPosition:(double)a3 axis:(int64_t)a4;
+- (id)_accessibilityDataSeriesMaximumValueForAxis:(int64_t)axis;
+- (id)_accessibilityDataSeriesMinimumValueForAxis:(int64_t)axis;
+- (id)_accessibilityDataSeriesValueDescriptionForPosition:(double)position axis:(int64_t)axis;
 - (id)_accessibilityHeadingLevel;
 - (id)_accessibilityWindow;
-- (id)accessibilityCustomAttribute:(id)a3;
+- (id)accessibilityCustomAttribute:(id)attribute;
 - (id)accessibilityCustomContent;
-- (id)accessibilityDataTableCellElementForRow:(int64_t)a3 column:(int64_t)a4;
-- (id)accessibilityHeaderElementsForColumn:(int64_t)a3;
+- (id)accessibilityDataTableCellElementForRow:(int64_t)row column:(int64_t)column;
+- (id)accessibilityHeaderElementsForColumn:(int64_t)column;
 - (id)accessibilityURL;
 - (int64_t)_accessibilityDataSeriesType;
 - (int64_t)_accessibilityExpandedStatus;
@@ -71,7 +71,7 @@
 - (BOOL)isAccessibilityElement
 {
   v5 = 4;
-  v2 = self;
+  selfCopy = self;
   AccessibilityNode.impliedVisibility(consideringParent:with:)(0, &v5, &v6);
 
   return 1u >> (v6 & 0xF);
@@ -79,7 +79,7 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode.accessibilityTraits.getter();
 
   return v3;
@@ -87,7 +87,7 @@
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode.resolvedLabels.getter();
   if (one-time initialization token for comma != -1)
   {
@@ -112,7 +112,7 @@
 
 - (NSAttributedString)accessibilityAttributedLabel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode.resolvedLabels.getter();
   if (one-time initialization token for comma != -1)
   {
@@ -126,7 +126,7 @@
 
 - (NSAttributedString)accessibilityAttributedValue
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode.resolvedAttributedValue.getter();
 
   return v3;
@@ -134,7 +134,7 @@
 
 - (NSString)accessibilityHint
 {
-  v2 = self;
+  selfCopy = self;
   AccessibilityNode.attachment.getter(v9);
   outlined init with copy of AccessibilityProperties(v9, v10);
   outlined destroy of AccessibilityAttachment(v9);
@@ -163,7 +163,7 @@
 
 - (NSAttributedString)accessibilityAttributedHint
 {
-  v2 = self;
+  selfCopy = self;
   AccessibilityNode.attachment.getter(v6);
   outlined init with copy of AccessibilityProperties(v6, v7);
   outlined destroy of AccessibilityAttachment(v6);
@@ -182,7 +182,7 @@
 
 - (NSString)accessibilityTextualContext
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode.accessibilityTextualContext.getter();
 
   return v3;
@@ -190,7 +190,7 @@
 
 - (id)_accessibilityHeadingLevel
 {
-  v2 = self;
+  selfCopy = self;
   AccessibilityNode.attachment.getter(v7);
   outlined init with copy of AccessibilityProperties(v7, v8);
   outlined destroy of AccessibilityAttachment(v7);
@@ -219,7 +219,7 @@
   {
     objc_opt_self();
     v4 = swift_dynamicCastObjCClass();
-    v5 = self;
+    selfCopy = self;
     if (!v4)
     {
       swift_unknownObjectRelease();
@@ -233,7 +233,7 @@
 
 - (CGRect)accessibilityFrame
 {
-  v2 = self;
+  selfCopy = self;
   AccessibilityNode.accessibilityFrame.getter();
   v4 = v3;
   v6 = v5;
@@ -253,7 +253,7 @@
 
 - (UIBezierPath)accessibilityPath
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode.accessibilityPath.getter();
 
   return v3;
@@ -261,7 +261,7 @@
 
 - (int64_t)_accessibilitySortPriority
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode._accessibilitySortPriority()();
 
   return v3;
@@ -269,17 +269,17 @@
 
 - (_TtP7SwiftUI36PlatformAccessibilityElementProtocol_)_accessibilityNodeRepresentedElement
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode.representedElement.getter();
 
   return v3;
 }
 
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = self;
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
   v6.location = location;
   v6.length = length;
   v15 = AccessibilityNode._accessibilityBounds(for:)(v6);
@@ -301,8 +301,8 @@
 
 - (NSArray)accessibilityElements
 {
-  v2 = self;
-  v3 = specialized static AccessibilityCore.queryChildren(element:options:)(v2, 2);
+  selfCopy = self;
+  v3 = specialized static AccessibilityCore.queryChildren(element:options:)(selfCopy, 2);
   v4 = Array<A>.representedElements(options:)(2, v3);
 
   specialized _arrayForceCast<A, B>(_:)(v4);
@@ -314,8 +314,8 @@
 
 - (int64_t)accessibilityElementCount
 {
-  v2 = self;
-  v3 = specialized static AccessibilityCore.queryChildren(element:options:)(v2, 0);
+  selfCopy = self;
+  v3 = specialized static AccessibilityCore.queryChildren(element:options:)(selfCopy, 0);
   v4 = Array<A>.representedElements(options:)(0, v3);
 
   if (v4 >> 62)
@@ -334,7 +334,7 @@
 - (BOOL)_accessibilityHasOrderedChildren
 {
   v4 = 4;
-  v2 = self;
+  selfCopy = self;
   AccessibilityNode.impliedVisibility(consideringParent:with:)(0, &v4, &v5);
 
   return v5 != 0;
@@ -342,11 +342,11 @@
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v2 = self;
+  selfCopy = self;
   *&v3 = COERCE_DOUBLE(AccessibilityNode.explicitActivationPoint.getter());
   if (v5 == -1 && (*&v3 = COERCE_DOUBLE(AccessibilityNode.implicitActivationPoint(options:)(2)), v6 == -1))
   {
-    [(AccessibilityNode *)v2 accessibilityFrame];
+    [(AccessibilityNode *)selfCopy accessibilityFrame];
     x = v18.origin.x;
     y = v18.origin.y;
     width = v18.size.width;
@@ -378,7 +378,7 @@
 
 - (BOOL)accessibilityViewIsModal
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode.accessibilityViewIsModal.getter();
 
   return v3 & 1;
@@ -387,7 +387,7 @@
 - (BOOL)accessibilityElementsHidden
 {
   v4 = 4;
-  v2 = self;
+  selfCopy = self;
   AccessibilityNode.impliedVisibility(consideringParent:with:)(0, &v4, &v5);
 
   return v5 == 3;
@@ -396,7 +396,7 @@
 - (BOOL)shouldGroupAccessibilityChildren
 {
   v4 = 4;
-  v2 = self;
+  selfCopy = self;
   AccessibilityNode.impliedVisibility(consideringParent:with:)(1, &v4, &v5);
 
   return v5 - 1 < 2;
@@ -404,7 +404,7 @@
 
 - (int64_t)accessibilityNavigationStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode.accessibilityNavigationStyle.getter();
 
   return v3;
@@ -412,39 +412,39 @@
 
 - (int64_t)accessibilityContainerType
 {
-  v2 = self;
-  v3 = AccessibilityNode.resolvedContainerType.getter();
+  selfCopy = self;
+  accessibilityContainerType = AccessibilityNode.resolvedContainerType.getter();
   if (v4)
   {
-    v7.receiver = v2;
+    v7.receiver = selfCopy;
     v7.super_class = type metadata accessor for AccessibilityNode();
-    v3 = [(AccessibilityNode *)&v7 accessibilityContainerType];
+    accessibilityContainerType = [(AccessibilityNode *)&v7 accessibilityContainerType];
   }
 
-  v5 = v3;
+  v5 = accessibilityContainerType;
 
   return v5;
 }
 
 - (BOOL)accessibilityRespondsToUserInteraction
 {
-  v2 = self;
-  v3 = AccessibilityNode.resolvedIsInteractive.getter();
-  if (v3 == 2)
+  selfCopy = self;
+  accessibilityRespondsToUserInteraction = AccessibilityNode.resolvedIsInteractive.getter();
+  if (accessibilityRespondsToUserInteraction == 2)
   {
-    v6.receiver = v2;
+    v6.receiver = selfCopy;
     v6.super_class = type metadata accessor for AccessibilityNode();
-    v3 = [(AccessibilityNode *)&v6 accessibilityRespondsToUserInteraction];
+    accessibilityRespondsToUserInteraction = [(AccessibilityNode *)&v6 accessibilityRespondsToUserInteraction];
   }
 
-  v4 = v3;
+  v4 = accessibilityRespondsToUserInteraction;
 
   return v4 & 1;
 }
 
 - (BOOL)_accessibilityExplicitlyNonInteractable
 {
-  v2 = self;
+  selfCopy = self;
   AccessibilityNode.attachment.getter(v5);
   outlined init with copy of AccessibilityProperties(v5, v6);
   outlined destroy of AccessibilityAttachment(v5);
@@ -457,19 +457,19 @@
 
 - (void)accessibilityIncrement
 {
-  v2 = self;
+  selfCopy = self;
   specialized AccessibilityNode.sendAction<A>(_:value:)(2, 0);
 }
 
 - (void)accessibilityDecrement
 {
-  v2 = self;
+  selfCopy = self;
   specialized AccessibilityNode.sendAction<A>(_:value:)(2, 1);
 }
 
 - (unint64_t)accessibilityDirectTouchOptions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode.accessibilityDirectTouchOptions.getter();
 
   return v3;
@@ -477,7 +477,7 @@
 
 - (BOOL)accessibilityActivate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = specialized AccessibilityNode.sendAction<A>(_:value:)(0, 0, 0, 0);
 
   return v3 & 1;
@@ -485,7 +485,7 @@
 
 - (BOOL)_accessibilitySupportsActivateAction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = specialized AccessibilityNode.hasAction<A>(_:)(0, 0, 0, 0);
 
   return v3 & 1;
@@ -493,7 +493,7 @@
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = self;
+  selfCopy = self;
   v3 = specialized AccessibilityNode.sendAction<A>(_:value:)(0, 0, 0, 1);
 
   return v3 & 1;
@@ -501,7 +501,7 @@
 
 - (BOOL)_accessibilityCanPerformEscapeAction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = specialized AccessibilityNode.hasAction<A>(_:)(0, 0, 0, 1);
 
   return v3 & 1;
@@ -509,7 +509,7 @@
 
 - (BOOL)accessibilityPerformMagicTap
 {
-  v2 = self;
+  selfCopy = self;
   v3 = specialized AccessibilityNode.sendAction<A>(_:value:)(0, 0, 0, 2);
 
   return v3 & 1;
@@ -520,7 +520,7 @@
   type metadata accessor for Text.Style?(0, &lazy cache variable for type metadata for URL?, MEMORY[0x1E6968FB0], MEMORY[0x1E69E6720]);
   MEMORY[0x1EEE9AC00](v3 - 8);
   v5 = &v14 - v4;
-  v6 = self;
+  selfCopy = self;
   AccessibilityNode.accessibilityURL()(v5);
 
   v7 = type metadata accessor for URL();
@@ -538,25 +538,25 @@
   return v10;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  v4 = self;
-  LOBYTE(a3) = AccessibilityNode.accessibilityScroll(_:)(a3);
+  selfCopy = self;
+  LOBYTE(scroll) = AccessibilityNode.accessibilityScroll(_:)(scroll);
 
-  return a3 & 1;
+  return scroll & 1;
 }
 
-- (BOOL)_accessibilityCanPerformAction:(unsigned int)a3
+- (BOOL)_accessibilityCanPerformAction:(unsigned int)action
 {
-  v4 = self;
-  LOBYTE(a3) = AccessibilityNode._accessibilityCanPerformAction(_:)(a3);
+  selfCopy = self;
+  LOBYTE(action) = AccessibilityNode._accessibilityCanPerformAction(_:)(action);
 
-  return a3 & 1;
+  return action & 1;
 }
 
 - (NSArray)accessibilityCustomRotors
 {
-  v2 = self;
+  selfCopy = self;
   AccessibilityNode.resolvedCustomRotors.getter();
 
   type metadata accessor for NSObject(0, &lazy cache variable for type metadata for UIAccessibilityCustomRotor);
@@ -567,7 +567,7 @@
 
 - (BOOL)_accessibilityIsMacVisualAppearance
 {
-  v2 = self;
+  selfCopy = self;
   IsMacVisual = AccessibilityNode._accessibilityIsMacVisualAppearance()();
 
   return IsMacVisual;
@@ -575,7 +575,7 @@
 
 - (unint64_t)_accessibilityAutomationType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode._accessibilityAutomationType()();
 
   return v3;
@@ -583,7 +583,7 @@
 
 - (double)_accessibilityMinValue
 {
-  v2 = self;
+  selfCopy = self;
   AccessibilityNode._accessibilityMinValue()(MEMORY[0x1E69804D8]);
   v4 = v3;
 
@@ -592,7 +592,7 @@
 
 - (double)_accessibilityMaxValue
 {
-  v2 = self;
+  selfCopy = self;
   AccessibilityNode._accessibilityMinValue()(MEMORY[0x1E69804D0]);
   v4 = v3;
 
@@ -601,7 +601,7 @@
 
 - (double)_accessibilityNumberValue
 {
-  v2 = self;
+  selfCopy = self;
   AccessibilityNode._accessibilityNumberValue()();
   v4 = v3;
 
@@ -610,23 +610,23 @@
 
 - (int64_t)_accessibilityExpandedStatus
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode._accessibilityExpandedStatus()();
 
   return v3;
 }
 
-- (id)accessibilityDataTableCellElementForRow:(int64_t)a3 column:(int64_t)a4
+- (id)accessibilityDataTableCellElementForRow:(int64_t)row column:(int64_t)column
 {
-  v6 = self;
-  v7 = AccessibilityNode.accessibilityDataTableCellElement(forRow:column:)(a3, a4);
+  selfCopy = self;
+  v7 = AccessibilityNode.accessibilityDataTableCellElement(forRow:column:)(row, column);
 
   return v7;
 }
 
 - (int64_t)accessibilityRowCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode.accessibilityRowCount()(AccessibilityCollectionViewTableDataSource.rowCount.getter);
 
   return v3;
@@ -634,16 +634,16 @@
 
 - (int64_t)accessibilityColumnCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode.accessibilityRowCount()(AccessibilityCollectionViewTableDataSource.columnCount.getter);
 
   return v3;
 }
 
-- (id)accessibilityHeaderElementsForColumn:(int64_t)a3
+- (id)accessibilityHeaderElementsForColumn:(int64_t)column
 {
-  v4 = self;
-  v5 = AccessibilityNode.accessibilityHeaderElements(forColumn:)(a3);
+  selfCopy = self;
+  v5 = AccessibilityNode.accessibilityHeaderElements(forColumn:)(column);
 
   if (v5)
   {
@@ -661,7 +661,7 @@
 
 - (_NSRange)accessibilityColumnRange
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode.accessibilityColumnRange()();
 
   location = v3.location;
@@ -673,7 +673,7 @@
 
 - (_NSRange)accessibilityRowRange
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode.accessibilityRowRange()();
 
   location = v3.location;
@@ -683,17 +683,17 @@
   return result;
 }
 
-- (BOOL)_accessibilityIsFirstSiblingForType:(unint64_t)a3
+- (BOOL)_accessibilityIsFirstSiblingForType:(unint64_t)type
 {
-  v4 = self;
-  LOBYTE(a3) = AccessibilityNode._accessibilityIsFirstSibling(for:)(a3);
+  selfCopy = self;
+  LOBYTE(type) = AccessibilityNode._accessibilityIsFirstSibling(for:)(type);
 
-  return a3 & 1;
+  return type & 1;
 }
 
 - (int64_t)_accessibilityDataSeriesType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode._accessibilityDataSeriesType()();
 
   return v3;
@@ -701,7 +701,7 @@
 
 - (BOOL)_accessibilityDataSeriesSupportsSummarization
 {
-  v2 = self;
+  selfCopy = self;
   AccessibilityNode.attachment.getter(v7);
   outlined init with copy of AccessibilityProperties(v7, v5);
   outlined destroy of AccessibilityAttachment(v7);
@@ -721,7 +721,7 @@
 
 - (BOOL)_accessibilityDataSeriesSupportsSonification
 {
-  v2 = self;
+  selfCopy = self;
   AccessibilityNode.attachment.getter(v7);
   outlined init with copy of AccessibilityProperties(v7, v5);
   outlined destroy of AccessibilityAttachment(v7);
@@ -741,7 +741,7 @@
 
 - (BOOL)_accessibilityDataSeriesIncludesTrendlineInSonification
 {
-  v2 = self;
+  selfCopy = self;
   AccessibilityNode.attachment.getter(v7);
   outlined init with copy of AccessibilityProperties(v7, v5);
   outlined destroy of AccessibilityAttachment(v7);
@@ -761,32 +761,32 @@
 
 - (double)_accessibilityDataSeriesSonificationDuration
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode._accessibilityDataSeriesSonificationDuration()();
 
   return v3;
 }
 
-- (id)_accessibilityDataSeriesMinimumValueForAxis:(int64_t)a3
+- (id)_accessibilityDataSeriesMinimumValueForAxis:(int64_t)axis
 {
-  v4 = self;
-  v5 = AccessibilityNode._accessibilityDataSeriesMinimumValue(for:)(a3);
+  selfCopy = self;
+  v5 = AccessibilityNode._accessibilityDataSeriesMinimumValue(for:)(axis);
 
   return v5;
 }
 
-- (id)_accessibilityDataSeriesMaximumValueForAxis:(int64_t)a3
+- (id)_accessibilityDataSeriesMaximumValueForAxis:(int64_t)axis
 {
-  v4 = self;
-  v5 = AccessibilityNode._accessibilityDataSeriesMaximumValue(for:)(a3);
+  selfCopy = self;
+  v5 = AccessibilityNode._accessibilityDataSeriesMaximumValue(for:)(axis);
 
   return v5;
 }
 
-- (id)_accessibilityDataSeriesValueDescriptionForPosition:(double)a3 axis:(int64_t)a4
+- (id)_accessibilityDataSeriesValueDescriptionForPosition:(double)position axis:(int64_t)axis
 {
-  v6 = self;
-  v7 = AccessibilityNode._accessibilityDataSeriesValueDescription(forPosition:axis:)(a4, a3);
+  selfCopy = self;
+  v7 = AccessibilityNode._accessibilityDataSeriesValueDescription(forPosition:axis:)(axis, position);
   v9 = v8;
 
   if (v9)
@@ -804,7 +804,7 @@
 
 - (UIResponder)nextResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode.next.getter();
 
   return v3;
@@ -817,11 +817,11 @@
   return result;
 }
 
-- (id)accessibilityCustomAttribute:(id)a3
+- (id)accessibilityCustomAttribute:(id)attribute
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   AccessibilityNode.accessibilityCustomAttribute(_:)(v4, v6, &v16);
 
   v8 = v17;
@@ -847,7 +847,7 @@
 
 - (AXChartDescriptor)accessibilityChartDescriptor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode.accessibilityChartDescriptor.getter();
 
   return v3;
@@ -855,7 +855,7 @@
 
 - (BOOL)_accessibilityIsChartElement
 {
-  v2 = self;
+  selfCopy = self;
   AccessibilityNode.attachment.getter(v5);
   outlined init with copy of AccessibilityProperties(v5, v6);
   outlined destroy of AccessibilityAttachment(v5);
@@ -871,7 +871,7 @@
 
 - (id)accessibilityCustomContent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AccessibilityNode.accessibilityCustomContent()();
 
   if (v3)

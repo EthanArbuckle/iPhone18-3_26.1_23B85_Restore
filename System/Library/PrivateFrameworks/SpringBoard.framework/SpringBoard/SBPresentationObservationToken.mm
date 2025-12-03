@@ -1,5 +1,5 @@
 @interface SBPresentationObservationToken
-- (SBPresentationObservationToken)initWithScene:(id)a3;
+- (SBPresentationObservationToken)initWithScene:(id)scene;
 - (SBWindowScene)windowScene;
 - (void)didDismiss;
 - (void)didPresent;
@@ -10,16 +10,16 @@
 
 @implementation SBPresentationObservationToken
 
-- (SBPresentationObservationToken)initWithScene:(id)a3
+- (SBPresentationObservationToken)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v8.receiver = self;
   v8.super_class = SBPresentationObservationToken;
   v5 = [(SBPresentationObservationToken *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_windowScene, v4);
+    objc_storeWeak(&v5->_windowScene, sceneCopy);
   }
 
   return v6;

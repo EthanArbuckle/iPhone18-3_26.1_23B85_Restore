@@ -1,48 +1,48 @@
 @interface MKWalletMerchantStylingInfo
-- (BOOL)isEqual:(id)a3;
-- (MKWalletMerchantStylingInfo)initWithCoder:(id)a3;
-- (MKWalletMerchantStylingInfo)initWithStyleAttributes:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MKWalletMerchantStylingInfo)initWithCoder:(id)coder;
+- (MKWalletMerchantStylingInfo)initWithStyleAttributes:(id)attributes;
 - (id)_featureStyleAttributes;
 - (id)description;
-- (id)imageForSize:(unint64_t)a3 scale:(double)a4 transparent:(BOOL)a5;
-- (id)tintColorForScale:(double)a3;
+- (id)imageForSize:(unint64_t)size scale:(double)scale transparent:(BOOL)transparent;
+- (id)tintColorForScale:(double)scale;
 @end
 
 @implementation MKWalletMerchantStylingInfo
 
 - (id)description
 {
-  v2 = [(MKWalletMerchantStylingInfo *)self _featureStyleAttributes];
-  if (v2)
+  _featureStyleAttributes = [(MKWalletMerchantStylingInfo *)self _featureStyleAttributes];
+  if (_featureStyleAttributes)
   {
-    v3 = [MEMORY[0x1E696AD60] string];
-    if ([v2 countAttrs])
+    string = [MEMORY[0x1E696AD60] string];
+    if ([_featureStyleAttributes countAttrs])
     {
       v4 = 0;
       v5 = 0;
       do
       {
-        -[__CFString appendFormat:](v3, "appendFormat:", @"%u,%d; ", *([v2 v] + v4), *(objc_msgSend(v2, "v") + v4 + 4));
+        -[__CFString appendFormat:](string, "appendFormat:", @"%u,%d; ", *([_featureStyleAttributes v] + v4), *(objc_msgSend(_featureStyleAttributes, "v") + v4 + 4));
         ++v5;
         v4 += 8;
       }
 
-      while (v5 < [v2 countAttrs]);
+      while (v5 < [_featureStyleAttributes countAttrs]);
     }
   }
 
   else
   {
-    v3 = @"(null)";
+    string = @"(null)";
   }
 
-  return v3;
+  return string;
 }
 
-- (id)tintColorForScale:(double)a3
+- (id)tintColorForScale:(double)scale
 {
-  v4 = [(MKWalletMerchantStylingInfo *)self _featureStyleAttributes];
-  v5 = [MKIconManager newFillColorForStyleAttributes:v4 forScale:a3];
+  _featureStyleAttributes = [(MKWalletMerchantStylingInfo *)self _featureStyleAttributes];
+  v5 = [MKIconManager newFillColorForStyleAttributes:_featureStyleAttributes forScale:scale];
 
   if (v5)
   {
@@ -58,11 +58,11 @@
   return v6;
 }
 
-- (id)imageForSize:(unint64_t)a3 scale:(double)a4 transparent:(BOOL)a5
+- (id)imageForSize:(unint64_t)size scale:(double)scale transparent:(BOOL)transparent
 {
-  v5 = a5;
-  v8 = [(MKWalletMerchantStylingInfo *)self _featureStyleAttributes];
-  v9 = [MKIconManager imageForStyle:v8 size:a3 forScale:0 format:v5 transparent:a4];
+  transparentCopy = transparent;
+  _featureStyleAttributes = [(MKWalletMerchantStylingInfo *)self _featureStyleAttributes];
+  v9 = [MKIconManager imageForStyle:_featureStyleAttributes size:size forScale:0 format:transparentCopy transparent:scale];
 
   return v9;
 }
@@ -75,13 +75,13 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4[1];
+    v5 = equalCopy[1];
     if (v5 | self->_styleAttributesData)
     {
       v6 = [v5 isEqual:?];
@@ -101,15 +101,15 @@
   return v6;
 }
 
-- (MKWalletMerchantStylingInfo)initWithCoder:(id)a3
+- (MKWalletMerchantStylingInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MKWalletMerchantStylingInfo;
   v5 = [(MKWalletMerchantStylingInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"d"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"d"];
     styleAttributesData = v5->_styleAttributesData;
     v5->_styleAttributesData = v6;
   }
@@ -117,17 +117,17 @@
   return v5;
 }
 
-- (MKWalletMerchantStylingInfo)initWithStyleAttributes:(id)a3
+- (MKWalletMerchantStylingInfo)initWithStyleAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v9.receiver = self;
   v9.super_class = MKWalletMerchantStylingInfo;
   v5 = [(MKWalletMerchantStylingInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 data];
+    data = [attributesCopy data];
     styleAttributesData = v5->_styleAttributesData;
-    v5->_styleAttributesData = v6;
+    v5->_styleAttributesData = data;
   }
 
   return v5;

@@ -1,33 +1,33 @@
 @interface ICSynapseLinkPreviewLoadingOperation
-- (ICSynapseLinkPreviewLoadingOperation)initWithSynapseItem:(id)a3;
-- (void)linkPreviewDidFinishLoading:(id)a3;
-- (void)loadPreviewWithCompletionBlock:(id)a3;
+- (ICSynapseLinkPreviewLoadingOperation)initWithSynapseItem:(id)item;
+- (void)linkPreviewDidFinishLoading:(id)loading;
+- (void)loadPreviewWithCompletionBlock:(id)block;
 @end
 
 @implementation ICSynapseLinkPreviewLoadingOperation
 
-- (ICSynapseLinkPreviewLoadingOperation)initWithSynapseItem:(id)a3
+- (ICSynapseLinkPreviewLoadingOperation)initWithSynapseItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v10.receiver = self;
   v10.super_class = ICSynapseLinkPreviewLoadingOperation;
   v5 = [(ICSynapseLinkPreviewLoadingOperation *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [itemCopy copy];
     synapseItem = v5->_synapseItem;
     v5->_synapseItem = v6;
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v5 selector:sel_linkPreviewDidFinishLoading_ name:*MEMORY[0x277D6B7F8] object:v5->_synapseItem];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_linkPreviewDidFinishLoading_ name:*MEMORY[0x277D6B7F8] object:v5->_synapseItem];
   }
 
   return v5;
 }
 
-- (void)loadPreviewWithCompletionBlock:(id)a3
+- (void)loadPreviewWithCompletionBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   completionBlock = self->_completionBlock;
   self->_completionBlock = v4;
 
@@ -36,9 +36,9 @@
   [(SYContentItem *)synapseItem loadFullPreviewIfNeeded];
 }
 
-- (void)linkPreviewDidFinishLoading:(id)a3
+- (void)linkPreviewDidFinishLoading:(id)loading
 {
-  v6 = a3;
+  loadingCopy = loading;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"[NSThread isMainThread]" functionName:"-[ICSynapseLinkPreviewLoadingOperation linkPreviewDidFinishLoading:]" simulateCrash:1 showAlert:0 format:@"Unexpected call from background thread"];
@@ -47,9 +47,9 @@
   if (self->_completionBlock)
   {
     synapseItem = self->_synapseItem;
-    v5 = [v6 object];
+    object = [loadingCopy object];
 
-    if (synapseItem == v5)
+    if (synapseItem == object)
     {
       (*(self->_completionBlock + 2))();
     }

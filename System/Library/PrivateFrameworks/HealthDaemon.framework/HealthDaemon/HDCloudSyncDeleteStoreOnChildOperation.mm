@@ -7,40 +7,40 @@
 - (void)main
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 computedState];
-  v5 = [v4 pushTargets];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  computedState = [configuration computedState];
+  pushTargets = [computedState pushTargets];
 
-  if (v5 && (-[HDCloudSyncOperation profile](self, "profile"), v6 = objc_claimAutoreleasedReturnValue(), [v6 cloudSyncManager], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isChild"), v7, v6, (v8 & 1) != 0))
+  if (pushTargets && (-[HDCloudSyncOperation profile](self, "profile"), v6 = objc_claimAutoreleasedReturnValue(), [v6 cloudSyncManager], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isChild"), v7, v6, (v8 & 1) != 0))
   {
-    if ([v5 count] >= 2)
+    if ([pushTargets count] >= 2)
     {
       _HKInitializeLogging();
       v9 = *MEMORY[0x277CCC328];
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v24 = self;
+        selfCopy = self;
         _os_log_impl(&dword_228986000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Watch has more than 1 push target", buf, 0xCu);
       }
     }
 
-    v10 = [(HDCloudSyncOperation *)self configuration];
-    v11 = [v10 computedState];
-    v12 = [v11 pushTargets];
+    configuration2 = [(HDCloudSyncOperation *)self configuration];
+    computedState2 = [configuration2 computedState];
+    pushTargets2 = [computedState2 pushTargets];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __46__HDCloudSyncDeleteStoreOnChildOperation_main__block_invoke;
     v22[3] = &unk_278623C68;
     v22[4] = self;
-    v13 = [v12 hk_map:v22];
+    v13 = [pushTargets2 hk_map:v22];
 
     if ([v13 count])
     {
       v14 = [HDCloudSyncDeleteStoresOperation alloc];
-      v15 = [(HDCloudSyncOperation *)self configuration];
-      v16 = [(HDCloudSyncOperation *)self cloudState];
-      v17 = [(HDCloudSyncDeleteStoresOperation *)v14 initWithConfiguration:v15 cloudState:v16 storeRecordsToDelete:v13];
+      configuration3 = [(HDCloudSyncOperation *)self configuration];
+      cloudState = [(HDCloudSyncOperation *)self cloudState];
+      v17 = [(HDCloudSyncDeleteStoresOperation *)v14 initWithConfiguration:configuration3 cloudState:cloudState storeRecordsToDelete:v13];
 
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;

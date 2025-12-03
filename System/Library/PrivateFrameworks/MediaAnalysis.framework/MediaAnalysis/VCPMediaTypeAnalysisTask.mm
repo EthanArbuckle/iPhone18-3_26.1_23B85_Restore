@@ -1,53 +1,53 @@
 @interface VCPMediaTypeAnalysisTask
-+ (id)taskWithPhotoLibrary:(id)a3 mediaType:(int64_t)a4;
-- (BOOL)_canDoFullAnalysis:(id)a3;
-- (VCPMediaTypeAnalysisTask)initWithPhotoLibrary:(id)a3 mediaType:(int64_t)a4;
-- (int)_processFetchedAssets:(id)a3 withProgressReport:(id)a4 embeddingChangeManager:(id)a5 andChangeManager:(id)a6;
++ (id)taskWithPhotoLibrary:(id)library mediaType:(int64_t)type;
+- (BOOL)_canDoFullAnalysis:(id)analysis;
+- (VCPMediaTypeAnalysisTask)initWithPhotoLibrary:(id)library mediaType:(int64_t)type;
+- (int)_processFetchedAssets:(id)assets withProgressReport:(id)report embeddingChangeManager:(id)manager andChangeManager:(id)changeManager;
 - (int)mainInternal;
 @end
 
 @implementation VCPMediaTypeAnalysisTask
 
-- (VCPMediaTypeAnalysisTask)initWithPhotoLibrary:(id)a3 mediaType:(int64_t)a4
+- (VCPMediaTypeAnalysisTask)initWithPhotoLibrary:(id)library mediaType:(int64_t)type
 {
   v6.receiver = self;
   v6.super_class = VCPMediaTypeAnalysisTask;
-  result = [(VCPBackgroundAnalysisTask *)&v6 initWithPhotoLibrary:a3];
+  result = [(VCPBackgroundAnalysisTask *)&v6 initWithPhotoLibrary:library];
   if (result)
   {
-    result->_type = a4;
+    result->_type = type;
   }
 
   return result;
 }
 
-+ (id)taskWithPhotoLibrary:(id)a3 mediaType:(int64_t)a4
++ (id)taskWithPhotoLibrary:(id)library mediaType:(int64_t)type
 {
-  v5 = a3;
-  v6 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:v5 mediaType:a4];
+  libraryCopy = library;
+  v6 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:libraryCopy mediaType:type];
 
   return v6;
 }
 
-- (BOOL)_canDoFullAnalysis:(id)a3
+- (BOOL)_canDoFullAnalysis:(id)analysis
 {
-  v3 = a3;
-  v4 = [PHAssetResource vcp_allAcceptableResourcesForAsset:v3];
-  v5 = [v3 vcp_fullAnalysisTypes];
-  LOBYTE(v5) = v5 == [v3 vcp_fullAnalysisTypesForResources:v4];
+  analysisCopy = analysis;
+  v4 = [PHAssetResource vcp_allAcceptableResourcesForAsset:analysisCopy];
+  vcp_fullAnalysisTypes = [analysisCopy vcp_fullAnalysisTypes];
+  LOBYTE(vcp_fullAnalysisTypes) = vcp_fullAnalysisTypes == [analysisCopy vcp_fullAnalysisTypesForResources:v4];
 
-  return v5;
+  return vcp_fullAnalysisTypes;
 }
 
-- (int)_processFetchedAssets:(id)a3 withProgressReport:(id)a4 embeddingChangeManager:(id)a5 andChangeManager:(id)a6
+- (int)_processFetchedAssets:(id)assets withProgressReport:(id)report embeddingChangeManager:(id)manager andChangeManager:(id)changeManager
 {
-  v80 = a3;
-  v76 = a4;
-  v73 = a5;
-  v74 = a6;
+  assetsCopy = assets;
+  reportCopy = report;
+  managerCopy = manager;
+  changeManagerCopy = changeManager;
   if ([(VCPTask *)self isCancelled])
   {
-    LODWORD(a4) = -128;
+    LODWORD(report) = -128;
     goto LABEL_95;
   }
 
@@ -69,13 +69,13 @@
     goto LABEL_18;
   }
 
-  v10 = [(VCPTask *)self photoLibrary];
-  if ([v10 vcp_isCPLEnabled])
+  photoLibrary = [(VCPTask *)self photoLibrary];
+  if ([photoLibrary vcp_isCPLEnabled])
   {
-    v11 = [(VCPTask *)self photoLibrary];
-    a4 = [v11 vcp_isCPLDownloadComplete];
+    photoLibrary2 = [(VCPTask *)self photoLibrary];
+    report = [photoLibrary2 vcp_isCPLDownloadComplete];
 
-    if ((a4 & 1) == 0)
+    if ((report & 1) == 0)
     {
       if (MediaAnalysisLogLevel() < 6)
       {
@@ -103,9 +103,9 @@ LABEL_19:
   }
 
   v14 = +[VCPInternetReachability sharedInstance];
-  v15 = [v14 hasWifiOrEthernetConnection];
+  hasWifiOrEthernetConnection = [v14 hasWifiOrEthernetConnection];
 
-  if ((v15 & 1) == 0)
+  if ((hasWifiOrEthernetConnection & 1) == 0)
   {
     if (MediaAnalysisLogLevel() < 6)
     {
@@ -125,25 +125,25 @@ LABEL_19:
 
   v69 = 1;
 LABEL_20:
-  v16 = [(VCPTask *)self photoLibrary];
-  v79 = [VCPBatchAnalysisTask taskWithPhotoLibrary:v16];
+  photoLibrary3 = [(VCPTask *)self photoLibrary];
+  v79 = [VCPBatchAnalysisTask taskWithPhotoLibrary:photoLibrary3];
 
-  v17 = [(VCPTask *)self cancel];
-  [v79 setCancel:v17];
+  cancel = [(VCPTask *)self cancel];
+  [v79 setCancel:cancel];
 
-  [v79 setEmbeddingChangeManager:v73];
-  [v79 setPhotosChangeManager:v74];
-  [v79 setProgressReporter:v76];
+  [v79 setEmbeddingChangeManager:managerCopy];
+  [v79 setPhotosChangeManager:changeManagerCopy];
+  [v79 setProgressReporter:reportCopy];
   [v79 setAllowStreaming:1];
-  v18 = [(VCPTask *)self photoLibrary];
-  v75 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v18];
+  photoLibrary4 = [(VCPTask *)self photoLibrary];
+  v75 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:photoLibrary4];
 
   v19 = 0;
   type = VCPLogToOSLogType[6];
   v67 = VCPLogToOSLogType[7];
   v66 = VCPLogToOSLogType[4];
   v68 = VCPLogToOSLogType[5];
-  while (v19 < [v80 count])
+  while (v19 < [assetsCopy count])
   {
     v20 = objc_autoreleasePoolPush();
     if (![(VCPTask *)self isCancelled])
@@ -151,7 +151,7 @@ LABEL_20:
       v22 = +[VCPWatchdog sharedWatchdog];
       [v22 pet];
 
-      v23 = [v80 objectAtIndexedSubscript:v19];
+      v23 = [assetsCopy objectAtIndexedSubscript:v19];
       if ([v23 vcp_isLongMovie])
       {
         if (_os_feature_enabled_impl())
@@ -174,14 +174,14 @@ LABEL_20:
       v84 = 0;
       if (+[MADManagedProcessingStatus isMACDReadEnabled])
       {
-        v25 = [(VCPTask *)self photoLibrary];
-        v26 = [v25 mad_fetchRequest];
+        photoLibrary5 = [(VCPTask *)self photoLibrary];
+        mad_fetchRequest = [photoLibrary5 mad_fetchRequest];
         v83 = 0;
-        v27 = [v23 localIdentifier];
-        v28 = [v26 fetchProcessingStatus:&v85 attempts:&v84 lastAttemptDate:0 nextAttemptDate:&v83 localIdentifier:v27 taskID:v24];
+        localIdentifier = [v23 localIdentifier];
+        reportCopy2 = [mad_fetchRequest fetchProcessingStatus:&v85 attempts:&v84 lastAttemptDate:0 nextAttemptDate:&v83 localIdentifier:localIdentifier taskID:v24];
         v29 = v83;
 
-        if (!v28)
+        if (!reportCopy2)
         {
 LABEL_31:
           if (v85)
@@ -193,13 +193,13 @@ LABEL_31:
             {
               if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, type))
               {
-                v77 = [v23 localIdentifier];
+                localIdentifier2 = [v23 localIdentifier];
                 v32 = VCPProcessingStatusDescription();
                 v33 = v84;
                 v34 = +[VCPLogManager dateFormatter];
                 v35 = [v34 stringFromDate:v29];
                 *buf = 138413058;
-                v87 = v77;
+                v87 = localIdentifier2;
                 v88 = 2112;
                 v89 = v32;
                 v90 = 1024;
@@ -211,17 +211,17 @@ LABEL_31:
 
               v21 = 12;
 LABEL_85:
-              v28 = a4;
+              reportCopy2 = report;
 LABEL_86:
 
-              a4 = v28;
+              report = reportCopy2;
               goto LABEL_87;
             }
           }
 
           v78 = [PHAssetResource vcp_allAcceptableResourcesForAsset:v23];
-          v37 = [(VCPTask *)self photoLibrary];
-          if (![v37 vcp_isCPLEnabled])
+          photoLibrary6 = [(VCPTask *)self photoLibrary];
+          if (![photoLibrary6 vcp_isCPLEnabled])
           {
             goto LABEL_64;
           }
@@ -246,9 +246,9 @@ LABEL_65:
                 _os_signpost_emit_with_name_impl(&_mh_execute_header, v48, OS_SIGNPOST_INTERVAL_BEGIN, v46, "VCPMediaTypeAnalysisTask_UnpackComputeSync", "", buf, 2u);
               }
 
-              v71 = [v78 mad_computeSyncResource];
-              v49 = [(VCPTask *)self cancel];
-              v72 = [v71 mad_existingAnalysisFromComputeSyncForAsset:v23 allowDownload:0 cancel:v49];
+              mad_computeSyncResource = [v78 mad_computeSyncResource];
+              cancel2 = [(VCPTask *)self cancel];
+              v72 = [mad_computeSyncResource mad_existingAnalysisFromComputeSyncForAsset:v23 allowDownload:0 cancel:cancel2];
 
               v50 = VCPSignPostLog();
               v51 = v50;
@@ -258,24 +258,24 @@ LABEL_65:
                 _os_signpost_emit_with_name_impl(&_mh_execute_header, v51, OS_SIGNPOST_INTERVAL_END, v46, "VCPMediaTypeAnalysisTask_UnpackComputeSync", "", buf, 2u);
               }
 
-              v52 = [v72 fullAnalysisResults];
-              v53 = v52 == 0;
+              fullAnalysisResults = [v72 fullAnalysisResults];
+              v53 = fullAnalysisResults == 0;
 
               if (!v53)
               {
-                v54 = [v72 fullAnalysisResults];
+                fullAnalysisResults2 = [v72 fullAnalysisResults];
                 v55 = v81;
-                v81 = v54;
+                v81 = fullAnalysisResults2;
 
                 v44 = [(VCPBackgroundAnalysisTask *)self missingAnalysisForAsset:v23 withExistingComputeSyncAnalysis:&v81 resources:v78 forLocalResourcesOnly:1];
                 if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(&_os_log_default, v68))
                 {
-                  v56 = [v23 localIdentifier];
+                  localIdentifier3 = [v23 localIdentifier];
                   [v81 vcp_types];
                   v57 = MediaAnalysisTypeShortDescription();
                   v58 = MediaAnalysisTypeShortDescription();
                   *buf = 138412802;
-                  v87 = v56;
+                  v87 = localIdentifier3;
                   v88 = 2112;
                   v89 = v57;
                   v90 = 2112;
@@ -289,24 +289,24 @@ LABEL_65:
               if (v59 >= 100.0)
               {
                 [v79 start];
-                v60 = [v79 error];
-                if (v60)
+                error = [v79 error];
+                if (error)
                 {
                   v21 = 1;
-                  a4 = v60;
+                  report = error;
                 }
 
                 else
                 {
-                  v61 = [(VCPTask *)self photoLibrary];
-                  v62 = [VCPBatchAnalysisTask taskWithPhotoLibrary:v61];
+                  photoLibrary7 = [(VCPTask *)self photoLibrary];
+                  v62 = [VCPBatchAnalysisTask taskWithPhotoLibrary:photoLibrary7];
 
-                  v63 = [(VCPTask *)self cancel];
-                  [v62 setCancel:v63];
+                  cancel3 = [(VCPTask *)self cancel];
+                  [v62 setCancel:cancel3];
 
-                  [v62 setPhotosChangeManager:v74];
-                  [v62 setEmbeddingChangeManager:v73];
-                  [v62 setProgressReporter:v76];
+                  [v62 setPhotosChangeManager:changeManagerCopy];
+                  [v62 setEmbeddingChangeManager:managerCopy];
+                  [v62 setProgressReporter:reportCopy];
                   v21 = 0;
                   v79 = v62;
                 }
@@ -320,7 +320,7 @@ LABEL_65:
 
             else
             {
-              [v76 increaseProcessedJobCountByOne];
+              [reportCopy increaseProcessedJobCountByOne];
               v21 = 12;
             }
           }
@@ -329,32 +329,32 @@ LABEL_65:
           {
             if (v69)
             {
-              v37 = [v78 vcp_smallMovieDerivativeResource];
-              if (v37)
+              photoLibrary6 = [v78 vcp_smallMovieDerivativeResource];
+              if (photoLibrary6)
               {
                 if ([v23 isVideo])
                 {
-                  v39 = [v37 fileSize];
-                  if (v39 > +[VCPDownloadManager maxSizeBytes])
+                  fileSize = [photoLibrary6 fileSize];
+                  if (fileSize > +[VCPDownloadManager maxSizeBytes])
                   {
                     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v67))
                     {
-                      v40 = [v23 localIdentifier];
+                      localIdentifier4 = [v23 localIdentifier];
                       *buf = 138412290;
-                      v87 = v40;
+                      v87 = localIdentifier4;
                       _os_log_impl(&_mh_execute_header, &_os_log_default, v67, "[%@] File size exceeds streaming threshold; skipping", buf, 0xCu);
                     }
 
                     goto LABEL_62;
                   }
 
-                  if (!v39 && [v23 vcp_isLongMovie])
+                  if (!fileSize && [v23 vcp_isLongMovie])
                   {
                     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v67))
                     {
-                      v43 = [v23 localIdentifier];
+                      localIdentifier5 = [v23 localIdentifier];
                       *buf = 138412290;
-                      v87 = v43;
+                      v87 = localIdentifier5;
                       _os_log_impl(&_mh_execute_header, &_os_log_default, v67, "[%@] Duration exceeds streaming threshold; skipping", buf, 0xCu);
                     }
 
@@ -374,27 +374,27 @@ LABEL_64:
 
               if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(&_os_log_default, v66))
               {
-                v42 = [v23 localIdentifier];
+                localIdentifier6 = [v23 localIdentifier];
                 *buf = 138412290;
-                v87 = v42;
+                v87 = localIdentifier6;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, v66, "[%@] Asset has no small video derivative; skipping", buf, 0xCu);
               }
 
 LABEL_62:
-              [v76 increaseProcessedJobCountByOne];
+              [reportCopy increaseProcessedJobCountByOne];
             }
 
             else
             {
               if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(&_os_log_default, v67))
               {
-                v41 = [v23 localIdentifier];
+                localIdentifier7 = [v23 localIdentifier];
                 *buf = 138412290;
-                v87 = v41;
+                v87 = localIdentifier7;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, v67, "[%@] Asset requiring streaming skipped", buf, 0xCu);
               }
 
-              [v76 increaseProcessedJobCountByOne];
+              [reportCopy increaseProcessedJobCountByOne];
             }
 
             v21 = 12;
@@ -407,11 +407,11 @@ LABEL_62:
       else
       {
         v82 = 0;
-        v36 = [v23 localIdentifier];
-        v28 = [v75 queryProcessingStatus:&v85 attempts:&v84 lastAttemptDate:0 andNextAttemptDate:&v82 forLocalIdentifier:v36 andTaskID:v24];
+        localIdentifier8 = [v23 localIdentifier];
+        reportCopy2 = [v75 queryProcessingStatus:&v85 attempts:&v84 lastAttemptDate:0 andNextAttemptDate:&v82 forLocalIdentifier:localIdentifier8 andTaskID:v24];
         v29 = v82;
 
-        if (!v28)
+        if (!reportCopy2)
         {
           goto LABEL_31;
         }
@@ -421,7 +421,7 @@ LABEL_62:
       goto LABEL_86;
     }
 
-    a4 = 4294967168;
+    report = 4294967168;
     v21 = 1;
 LABEL_87:
     objc_autoreleasePoolPop(v20);
@@ -434,15 +434,15 @@ LABEL_87:
   }
 
   [v79 cost];
-  if (v64 == 0.0 || ([v79 start], LODWORD(a4) = objc_msgSend(v79, "error"), !a4))
+  if (v64 == 0.0 || ([v79 start], LODWORD(report) = objc_msgSend(v79, "error"), !report))
   {
-    LODWORD(a4) = 0;
+    LODWORD(report) = 0;
   }
 
 LABEL_94:
 
 LABEL_95:
-  return a4;
+  return report;
 }
 
 - (int)mainInternal
@@ -480,13 +480,13 @@ LABEL_95:
     }
   }
 
-  v9 = [(VCPTask *)self photoLibrary];
-  v10 = [v9 vcp_assetCountWithMediaType:self->_type forTaskID:1];
+  photoLibrary = [(VCPTask *)self photoLibrary];
+  v10 = [photoLibrary vcp_assetCountWithMediaType:self->_type forTaskID:1];
 
   if (v10)
   {
-    v11 = [(VCPTask *)self progressHandler];
-    v12 = v11 == 0;
+    progressHandler = [(VCPTask *)self progressHandler];
+    v12 = progressHandler == 0;
 
     if (v12)
     {
@@ -495,12 +495,12 @@ LABEL_95:
 
     else
     {
-      v13 = [(VCPTask *)self progressHandler];
-      v78 = [VCPProgressReporter reporterWithIntervalSeconds:10 andTotalJobCount:v10 andBlock:v13];
+      progressHandler2 = [(VCPTask *)self progressHandler];
+      v78 = [VCPProgressReporter reporterWithIntervalSeconds:10 andTotalJobCount:v10 andBlock:progressHandler2];
     }
 
-    v15 = [(VCPTask *)self photoLibrary];
-    v16 = [VCPPhotosAssetChangeManager managerForPhotoLibrary:v15];
+    photoLibrary2 = [(VCPTask *)self photoLibrary];
+    v16 = [VCPPhotosAssetChangeManager managerForPhotoLibrary:photoLibrary2];
 
     if (!v16)
     {
@@ -522,8 +522,8 @@ LABEL_95:
 
     if (+[VCPVideoCNNAnalyzer isMUBackboneEnabled])
     {
-      v17 = [(VCPTask *)self photoLibrary];
-      v18 = [MADVectorDatabaseChangeManager sharedManagerForPhotoLibrary:v17];
+      photoLibrary3 = [(VCPTask *)self photoLibrary];
+      v18 = [MADVectorDatabaseChangeManager sharedManagerForPhotoLibrary:photoLibrary3];
 
       if (!v18)
       {
@@ -543,7 +543,7 @@ LABEL_95:
 LABEL_24:
         _os_log_impl(&_mh_execute_header, &_os_log_default, v19, v20, buf, 2u);
 LABEL_25:
-        v14 = -18;
+        publishPendingChanges = -18;
 LABEL_89:
 
         goto LABEL_90;
@@ -555,8 +555,8 @@ LABEL_89:
       v18 = 0;
     }
 
-    v21 = [(VCPTask *)self photoLibrary];
-    v22 = [PHAsset vcp_fetchOptionsForLibrary:v21 forTaskID:1];
+    photoLibrary4 = [(VCPTask *)self photoLibrary];
+    v22 = [PHAsset vcp_fetchOptionsForLibrary:photoLibrary4 forTaskID:1];
 
     v23 = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:0];
     v81 = v23;
@@ -764,10 +764,10 @@ LABEL_69:
         v31 = v38;
 LABEL_70:
 
-        if (!+[VCPDatabaseWriter isLegacyPersistEnabled](VCPDatabaseWriter, "isLegacyPersistEnabled") || (-[VCPTask photoLibrary](self, "photoLibrary"), v68 = objc_claimAutoreleasedReturnValue(), +[VCPDatabaseManager sharedDatabaseForPhotoLibrary:](VCPDatabaseManager, "sharedDatabaseForPhotoLibrary:", v68), v69 = objc_claimAutoreleasedReturnValue(), v14 = [v69 commit], v69, v68, v14 != -108) && v14 != -36 && v14 != -23)
+        if (!+[VCPDatabaseWriter isLegacyPersistEnabled](VCPDatabaseWriter, "isLegacyPersistEnabled") || (-[VCPTask photoLibrary](self, "photoLibrary"), v68 = objc_claimAutoreleasedReturnValue(), +[VCPDatabaseManager sharedDatabaseForPhotoLibrary:](VCPDatabaseManager, "sharedDatabaseForPhotoLibrary:", v68), v69 = objc_claimAutoreleasedReturnValue(), publishPendingChanges = [v69 commit], v69, v68, publishPendingChanges != -108) && publishPendingChanges != -36 && publishPendingChanges != -23)
         {
-          v14 = [v18 publishPendingChanges];
-          if (v14)
+          publishPendingChanges = [v18 publishPendingChanges];
+          if (publishPendingChanges)
           {
             if (MediaAnalysisLogLevel() >= 3)
             {
@@ -815,7 +815,7 @@ LABEL_70:
               [v74 accumulateDoubleValue:@"LongVideoSeconds" forField:@"com.apple.mediaanalysisd.FullAnalysisRunSession" andEvent:-v75];
             }
 
-            v14 = v35;
+            publishPendingChanges = v35;
           }
         }
 
@@ -843,10 +843,10 @@ LABEL_67:
     goto LABEL_68;
   }
 
-  v14 = 0;
+  publishPendingChanges = 0;
 LABEL_90:
 
-  return v14;
+  return publishPendingChanges;
 }
 
 @end

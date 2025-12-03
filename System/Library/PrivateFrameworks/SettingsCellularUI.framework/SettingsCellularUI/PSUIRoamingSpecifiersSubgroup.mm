@@ -1,32 +1,32 @@
 @interface PSUIRoamingSpecifiersSubgroup
 - (PSListController)listController;
 - (PSUICoreTelephonyDataCache)dataCache;
-- (PSUIRoamingSpecifiersSubgroup)initWithListController:(id)a3 dataCache:(id)a4 serviceDescriptor:(id)a5;
-- (PSUIRoamingSpecifiersSubgroup)initWithListController:(id)a3 groupSpecifier:(id)a4;
-- (id)getDataRoamingStatus:(id)a3;
+- (PSUIRoamingSpecifiersSubgroup)initWithListController:(id)controller dataCache:(id)cache serviceDescriptor:(id)descriptor;
+- (PSUIRoamingSpecifiersSubgroup)initWithListController:(id)controller groupSpecifier:(id)specifier;
+- (id)getDataRoamingStatus:(id)status;
 - (id)specifiers;
 - (void)launchDataRoamingWarningFlow;
 - (void)roamingOptionsDidChange;
-- (void)setDataRoamingEnabled:(id)a3 specifier:(id)a4;
-- (void)simSetupFlowCompleted:(unint64_t)a3;
+- (void)setDataRoamingEnabled:(id)enabled specifier:(id)specifier;
+- (void)simSetupFlowCompleted:(unint64_t)completed;
 @end
 
 @implementation PSUIRoamingSpecifiersSubgroup
 
-- (PSUIRoamingSpecifiersSubgroup)initWithListController:(id)a3 dataCache:(id)a4 serviceDescriptor:(id)a5
+- (PSUIRoamingSpecifiersSubgroup)initWithListController:(id)controller dataCache:(id)cache serviceDescriptor:(id)descriptor
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  cacheCopy = cache;
+  descriptorCopy = descriptor;
   v17.receiver = self;
   v17.super_class = PSUIRoamingSpecifiersSubgroup;
   v11 = [(PSUIRoamingSpecifiersSubgroup *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_listController, v8);
-    objc_storeWeak(&v12->_dataCache, v9);
-    objc_storeStrong(&v12->_serviceDescriptor, a5);
+    objc_storeWeak(&v11->_listController, controllerCopy);
+    objc_storeWeak(&v12->_dataCache, cacheCopy);
+    objc_storeStrong(&v12->_serviceDescriptor, descriptor);
     v13 = objc_alloc(MEMORY[0x277CC37B0]);
     v14 = [v13 initWithQueue:MEMORY[0x277D85CD0]];
     ctClient = v12->_ctClient;
@@ -36,10 +36,10 @@
   return v12;
 }
 
-- (PSUIRoamingSpecifiersSubgroup)initWithListController:(id)a3 groupSpecifier:(id)a4
+- (PSUIRoamingSpecifiersSubgroup)initWithListController:(id)controller groupSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  specifierCopy = specifier;
   objc_exception_throw([objc_alloc(MEMORY[0x277CBEAD8]) initWithName:@"Unsupported initializer called" reason:@"Unsupported initializer called" userInfo:0]);
 }
 
@@ -65,14 +65,14 @@
   return v10;
 }
 
-- (id)getDataRoamingStatus:(id)a3
+- (id)getDataRoamingStatus:(id)status
 {
   v18 = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_dataCache);
   v5 = [WeakRetained getInternationalDataAccessStatus:self->_serviceDescriptor];
 
-  v6 = [(PSUIRoamingSpecifiersSubgroup *)self getLogger];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIRoamingSpecifiersSubgroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v7 = @"disabled";
     serviceDescriptor = self->_serviceDescriptor;
@@ -87,7 +87,7 @@
     v15 = serviceDescriptor;
     v16 = 2112;
     v17 = v7;
-    _os_log_impl(&dword_2658DE000, v6, OS_LOG_TYPE_DEFAULT, "%s For service %@, roaming is %@", &v12, 0x20u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s For service %@, roaming is %@", &v12, 0x20u);
   }
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:v5];
@@ -96,20 +96,20 @@
   return v9;
 }
 
-- (void)setDataRoamingEnabled:(id)a3 specifier:(id)a4
+- (void)setDataRoamingEnabled:(id)enabled specifier:(id)specifier
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [a3 BOOLValue];
-  objc_storeStrong(&self->_roamingSpecifier, a4);
-  v9 = [(PSUIRoamingSpecifiersSubgroup *)self getLogger];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  specifierCopy = specifier;
+  bOOLValue = [enabled BOOLValue];
+  objc_storeStrong(&self->_roamingSpecifier, specifier);
+  getLogger = [(PSUIRoamingSpecifiersSubgroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     v10 = @"disabled";
     serviceDescriptor = self->_serviceDescriptor;
     v21 = "[PSUIRoamingSpecifiersSubgroup setDataRoamingEnabled:specifier:]";
     *buf = 136315650;
-    if (v8)
+    if (bOOLValue)
     {
       v10 = @"enabled";
     }
@@ -118,10 +118,10 @@
     v23 = serviceDescriptor;
     v24 = 2112;
     v25 = v10;
-    _os_log_impl(&dword_2658DE000, v9, OS_LOG_TYPE_DEFAULT, "%s For service %@, setting roaming = %@", buf, 0x20u);
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "%s For service %@, setting roaming = %@", buf, 0x20u);
   }
 
-  if (v8 && _os_feature_enabled_impl())
+  if (bOOLValue && _os_feature_enabled_impl())
   {
     ctClient = self->_ctClient;
     v19 = 0;
@@ -137,22 +137,22 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v16 = [(PSUIRoamingSpecifiersSubgroup *)self getLogger];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      getLogger2 = [(PSUIRoamingSpecifiersSubgroup *)self getLogger];
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_2658DE000, v16, OS_LOG_TYPE_DEFAULT, "Rate limited", buf, 2u);
+        _os_log_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_DEFAULT, "Rate limited", buf, 2u);
       }
     }
 
     else
     {
-      v16 = [(PSUIRoamingSpecifiersSubgroup *)self getLogger];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      getLogger2 = [(PSUIRoamingSpecifiersSubgroup *)self getLogger];
+      if (os_log_type_enabled(getLogger2, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v21 = v14;
-        _os_log_error_impl(&dword_2658DE000, v16, OS_LOG_TYPE_ERROR, "Error with checking setup eSIM: %@", buf, 0xCu);
+        _os_log_error_impl(&dword_2658DE000, getLogger2, OS_LOG_TYPE_ERROR, "Error with checking setup eSIM: %@", buf, 0xCu);
       }
     }
 
@@ -164,7 +164,7 @@ LABEL_16:
   }
 
   v15 = objc_loadWeakRetained(&self->_dataCache);
-  [v15 setInternationalDataAccessStatus:self->_serviceDescriptor status:v8];
+  [v15 setInternationalDataAccessStatus:self->_serviceDescriptor status:bOOLValue];
 
   [(PSUIRoamingSpecifiersSubgroup *)self roamingOptionsDidChange];
 LABEL_17:
@@ -249,15 +249,15 @@ void __61__PSUIRoamingSpecifiersSubgroup_launchDataRoamingWarningFlow__block_inv
   }
 }
 
-- (void)simSetupFlowCompleted:(unint64_t)a3
+- (void)simSetupFlowCompleted:(unint64_t)completed
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = [(PSUIRoamingSpecifiersSubgroup *)self getLogger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  getLogger = [(PSUIRoamingSpecifiersSubgroup *)self getLogger];
+  if (os_log_type_enabled(getLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v10 = a3;
-    _os_log_impl(&dword_2658DE000, v5, OS_LOG_TYPE_DEFAULT, "Data roaming warning flow completed with type %lu", buf, 0xCu);
+    completedCopy = completed;
+    _os_log_impl(&dword_2658DE000, getLogger, OS_LOG_TYPE_DEFAULT, "Data roaming warning flow completed with type %lu", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
@@ -266,7 +266,7 @@ void __61__PSUIRoamingSpecifiersSubgroup_launchDataRoamingWarningFlow__block_inv
   block[2] = __55__PSUIRoamingSpecifiersSubgroup_simSetupFlowCompleted___block_invoke;
   block[3] = &unk_279BA9FE0;
   objc_copyWeak(v8, buf);
-  v8[1] = a3;
+  v8[1] = completed;
   block[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], block);
   objc_destroyWeak(v8);

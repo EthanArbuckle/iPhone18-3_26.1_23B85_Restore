@@ -1,36 +1,36 @@
 @interface TUIFocusContainerView
-+ (id)renderModelWithSubviewsModel:(id)a3 identifier:(id)a4 focusStyle:(id)a5 actionHandler:(id)a6 linkEntities:(id)a7;
-- (TUIFocusContainerView)initWithFrame:(CGRect)a3;
++ (id)renderModelWithSubviewsModel:(id)model identifier:(id)identifier focusStyle:(id)style actionHandler:(id)handler linkEntities:(id)entities;
+- (TUIFocusContainerView)initWithFrame:(CGRect)frame;
 - (id)keyCommands;
-- (void)_handleSecondaryTapGesture:(id)a3;
-- (void)_handleTapGesture:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)_handleSecondaryTapGesture:(id)gesture;
+- (void)_handleTapGesture:(id)gesture;
+- (void)applyLayoutAttributes:(id)attributes;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)prepareForReuse;
-- (void)tui_handleContextMenuKey:(id)a3;
-- (void)tui_handleSelectKey:(id)a3;
+- (void)tui_handleContextMenuKey:(id)key;
+- (void)tui_handleSelectKey:(id)key;
 - (void)viewDidEndDisplay;
 @end
 
 @implementation TUIFocusContainerView
 
-+ (id)renderModelWithSubviewsModel:(id)a3 identifier:(id)a4 focusStyle:(id)a5 actionHandler:(id)a6 linkEntities:(id)a7
++ (id)renderModelWithSubviewsModel:(id)model identifier:(id)identifier focusStyle:(id)style actionHandler:(id)handler linkEntities:(id)entities
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[_TUIFocusContainerRenderModel alloc] initWithIdentifier:v14 submodel:v15 focusStyle:v13 actionHandler:v12 linkEntities:v11];
+  entitiesCopy = entities;
+  handlerCopy = handler;
+  styleCopy = style;
+  identifierCopy = identifier;
+  modelCopy = model;
+  v16 = [[_TUIFocusContainerRenderModel alloc] initWithIdentifier:identifierCopy submodel:modelCopy focusStyle:styleCopy actionHandler:handlerCopy linkEntities:entitiesCopy];
 
   return v16;
 }
 
-- (TUIFocusContainerView)initWithFrame:(CGRect)a3
+- (TUIFocusContainerView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = TUIFocusContainerView;
-  v3 = [(TUIContainerView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUIContainerView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[UITapGestureRecognizer alloc] initWithTarget:v3 action:"_handleTapGesture:"];
@@ -64,26 +64,26 @@
   self->_interactionHelper = 0;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v19.receiver = self;
   v19.super_class = TUIFocusContainerView;
-  [(TUIContainerView *)&v19 applyLayoutAttributes:a3];
+  [(TUIContainerView *)&v19 applyLayoutAttributes:attributes];
   styler = self->_styler;
   if (styler)
   {
-    v5 = sub_13D3B8(self);
-    v6 = [v5 focusStyle];
-    [(TUIFocusStylingHelper *)styler updateStyle:v6];
+    contentView = sub_13D3B8(self);
+    focusStyle = [contentView focusStyle];
+    [(TUIFocusStylingHelper *)styler updateStyle:focusStyle];
   }
 
   else
   {
     v7 = [TUIFocusStylingHelper alloc];
-    v5 = [(TUIContainerView *)self contentView];
-    v6 = sub_13D3B8(self);
-    v8 = [v6 focusStyle];
-    v9 = [(TUIFocusStylingHelper *)v7 initWithContainer:self reference:v5 style:v8];
+    contentView = [(TUIContainerView *)self contentView];
+    focusStyle = sub_13D3B8(self);
+    v6FocusStyle = [focusStyle focusStyle];
+    v9 = [(TUIFocusStylingHelper *)v7 initWithContainer:self reference:contentView style:v6FocusStyle];
     v10 = self->_styler;
     self->_styler = v9;
   }
@@ -99,13 +99,13 @@
   }
 
   v14 = sub_13D3B8(self);
-  v15 = [v14 linkEntities];
-  [(TUIInteractionsHelper *)interactionHelper updateWithLinkEntities:v15];
+  linkEntities = [v14 linkEntities];
+  [(TUIInteractionsHelper *)interactionHelper updateWithLinkEntities:linkEntities];
 
   v16 = self->_interactionHelper;
-  v17 = [(TUIReusableBaseView *)self feedControllerHost];
-  v18 = [v17 interactionBuilder];
-  [(TUIInteractionsHelper *)v16 updateInteractionsWithBuilder:v18];
+  feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+  interactionBuilder = [feedControllerHost interactionBuilder];
+  [(TUIInteractionsHelper *)v16 updateInteractionsWithBuilder:interactionBuilder];
 }
 
 - (void)viewDidEndDisplay
@@ -115,24 +115,24 @@
   self->_interactionHelper = 0;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [v9 nextFocusedItem];
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  nextFocusedItem = [contextCopy nextFocusedItem];
 
-  if (v7 == self)
+  if (nextFocusedItem == self)
   {
-    [(TUIFocusStylingHelper *)self->_styler activateEffectWithAnimationCoordinator:v6];
+    [(TUIFocusStylingHelper *)self->_styler activateEffectWithAnimationCoordinator:coordinatorCopy];
   }
 
   else
   {
-    v8 = [v9 previouslyFocusedItem];
+    previouslyFocusedItem = [contextCopy previouslyFocusedItem];
 
-    if (v8 == self)
+    if (previouslyFocusedItem == self)
     {
-      [(TUIFocusStylingHelper *)self->_styler deactivateEffectWithAnimationCoordinator:v6];
+      [(TUIFocusStylingHelper *)self->_styler deactivateEffectWithAnimationCoordinator:coordinatorCopy];
     }
   }
 }
@@ -140,43 +140,43 @@
 - (id)keyCommands
 {
   v2 = sub_13D3B8(self);
-  v3 = [v2 actionHandler];
-  v4 = [v3 keyCommands];
+  actionHandler = [v2 actionHandler];
+  keyCommands = [actionHandler keyCommands];
 
-  return v4;
+  return keyCommands;
 }
 
-- (void)_handleTapGesture:(id)a3
+- (void)_handleTapGesture:(id)gesture
 {
   v5 = sub_13D3B8(self);
-  v4 = [v5 actionHandler];
-  [v4 invoke:@"press" view:self allowRefId:1];
+  actionHandler = [v5 actionHandler];
+  [actionHandler invoke:@"press" view:self allowRefId:1];
 }
 
-- (void)_handleSecondaryTapGesture:(id)a3
+- (void)_handleSecondaryTapGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   v10 = sub_13D3B8(self);
-  v5 = [v10 actionHandler];
-  [v4 locationInView:self];
+  actionHandler = [v10 actionHandler];
+  [gestureCopy locationInView:self];
   v7 = v6;
   v9 = v8;
 
-  [v5 invoke:@"context-menu" view:self point:1 allowRefId:{v7, v9}];
+  [actionHandler invoke:@"context-menu" view:self point:1 allowRefId:{v7, v9}];
 }
 
-- (void)tui_handleSelectKey:(id)a3
+- (void)tui_handleSelectKey:(id)key
 {
   v5 = sub_13D3B8(self);
-  v4 = [v5 actionHandler];
-  [v4 invoke:@"press" view:self allowRefId:1];
+  actionHandler = [v5 actionHandler];
+  [actionHandler invoke:@"press" view:self allowRefId:1];
 }
 
-- (void)tui_handleContextMenuKey:(id)a3
+- (void)tui_handleContextMenuKey:(id)key
 {
   v5 = sub_13D3B8(self);
-  v4 = [v5 actionHandler];
-  [v4 invoke:@"context-menu" view:self allowRefId:1];
+  actionHandler = [v5 actionHandler];
+  [actionHandler invoke:@"context-menu" view:self allowRefId:1];
 }
 
 @end

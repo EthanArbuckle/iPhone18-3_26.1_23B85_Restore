@@ -1,8 +1,8 @@
 @interface IMDPlainTextTapbackInterpreter
 + (IMDPlainTextTapbackInterpreter)sharedInstance;
-- (BOOL)parseString:(id)a3 emoji:(id *)a4 infix:(id *)a5 type:(int64_t *)a6;
+- (BOOL)parseString:(id)string emoji:(id *)emoji infix:(id *)infix type:(int64_t *)type;
 - (IMDPlainTextTapbackInterpreter)init;
-- (id)interpretMessageItem:(id)a3 inChat:(id)a4;
+- (id)interpretMessageItem:(id)item inChat:(id)chat;
 @end
 
 @implementation IMDPlainTextTapbackInterpreter
@@ -30,22 +30,22 @@
   return [(IMDPlainTextTapbackInterpreter *)&v5 init];
 }
 
-- (BOOL)parseString:(id)a3 emoji:(id *)a4 infix:(id *)a5 type:(int64_t *)a6
+- (BOOL)parseString:(id)string emoji:(id *)emoji infix:(id *)infix type:(int64_t *)type
 {
   v10 = sub_22B7DB6A8();
   v12 = v11;
-  v13 = self;
-  LOBYTE(a6) = IMDPlainTextTapbackInterpreter.parseString(_:emoji:infix:type:)(v10, v12, a4, a5, a6);
+  selfCopy = self;
+  LOBYTE(type) = IMDPlainTextTapbackInterpreter.parseString(_:emoji:infix:type:)(v10, v12, emoji, infix, type);
 
-  return a6 & 1;
+  return type & 1;
 }
 
-- (id)interpretMessageItem:(id)a3 inChat:(id)a4
+- (id)interpretMessageItem:(id)item inChat:(id)chat
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  IMDPlainTextTapbackInterpreter.interpretMessageItem(_:in:)(v6, v7);
+  itemCopy = item;
+  chatCopy = chat;
+  selfCopy = self;
+  IMDPlainTextTapbackInterpreter.interpretMessageItem(_:in:)(itemCopy, chatCopy);
   v10 = v9;
 
   return v10;

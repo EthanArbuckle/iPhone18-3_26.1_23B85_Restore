@@ -1,34 +1,34 @@
 @interface PFParallaxLayoutUtilities
-+ (BOOL)_rectIsValid:(CGRect)a3;
-+ (BOOL)facePositionAcceptable:(CGRect)a3 imageAspect:(double)a4;
-+ (CGRect)adaptiveFrameForTopEdgeVisibleFrame:(CGRect)a3 layoutConfiguration:(id)a4 outVisibleFrame:(CGRect *)a5 maxClockStretchOverride:(double)a6;
-+ (CGRect)adaptiveFrameForVisibleFrame:(CGRect)a3 essentialRect:(CGRect)a4 originalImageSize:(CGSize)a5 layoutConfiguration:(id)a6 classification:(unint64_t)a7 maxClockStretchOverride:(double)a8;
-+ (CGRect)bestFaceRectWithImageSize:(CGSize)a3 deviceSize:(CGSize)a4 faceRegions:(id)a5;
-+ (CGRect)topFrameForVisibleRect:(CGRect)result adaptiveRect:(CGRect)a4;
-+ (CGRect)topFrameFromVisibleRectAspectRatio:(double)a3 adaptiveRect:(CGRect)a4;
++ (BOOL)_rectIsValid:(CGRect)valid;
++ (BOOL)facePositionAcceptable:(CGRect)acceptable imageAspect:(double)aspect;
++ (CGRect)adaptiveFrameForTopEdgeVisibleFrame:(CGRect)frame layoutConfiguration:(id)configuration outVisibleFrame:(CGRect *)visibleFrame maxClockStretchOverride:(double)override;
++ (CGRect)adaptiveFrameForVisibleFrame:(CGRect)frame essentialRect:(CGRect)rect originalImageSize:(CGSize)size layoutConfiguration:(id)configuration classification:(unint64_t)classification maxClockStretchOverride:(double)override;
++ (CGRect)bestFaceRectWithImageSize:(CGSize)size deviceSize:(CGSize)deviceSize faceRegions:(id)regions;
++ (CGRect)topFrameForVisibleRect:(CGRect)result adaptiveRect:(CGRect)rect;
++ (CGRect)topFrameFromVisibleRectAspectRatio:(double)ratio adaptiveRect:(CGRect)rect;
 + (double)adaptiveLayoutVerticalPriorityThreshold;
 + (double)centerLayoutHorizontalLowerBound;
 + (double)centerLayoutHorizontalUpperBound;
-+ (double)computeInactiveAvoidingRectForVisibleRect:(CGFloat)a3 acceptableFrame:(CGFloat)a4 unsafeRect:(CGFloat)a5 imageSize:(CGFloat)a6 considerHeadroom:(CGFloat)a7 newVisibleRect:(CGFloat)a8;
-+ (double)cropScoreThresholdForClassification:(unint64_t)a3;
-+ (double)effectiveAcceptableRectForClassification:(double)a3 havePetFaces:(double)a4 sourcePreferredCropRectNormalized:(double)a5 sourceAcceptableCropRectNormalized:(double)a6 sourceFaceAreaRectNormalized:(double)a7 sourceGazeAreaRectNormalized:(double)a8;
-+ (double)effectivePreferredRectForClassification:(double)a3 havePetFaces:(double)a4 sourcePreferredCropRectNormalized:(double)a5 sourceAcceptableCropRectNormalized:(double)a6 sourceFaceAreaRectNormalized:(double)a7;
-+ (double)timeOverlapCheckThresholdForTopRect:(CGRect)a3 isInteractive:(BOOL)a4;
-+ (double)widgetZoneAdjustmentForVisibleFrame:(CGRect)a3 essentialRect:(CGRect)a4 layoutConfiguration:(id)a5;
-+ (float)headroomPenaltyForIntermediateLayout:(id)a3 originalFullExtent:(CGRect)a4 layoutConfiguration:(id)a5;
-+ (id)computeLayoutWithHelper:(id)a3;
-+ (id)computeLayoutsWithHelper:(id)a3;
-+ (uint64_t)computeSpatialFrameForVisibleRect:(double)a3@<D0> adaptiveVisibleRect:(double)a4@<D1> spatialPaddingPercentage:(double)a5@<D2> effectiveImageRect:(double)a6@<D3>;
-+ (unint64_t)clockIntersectionFromTopRectMatteCoverage:(double)a3 bottomRectMatteCoverage:(double)a4;
-+ (unint64_t)layoutTypeFromLayoutConfiguration:(id)a3;
++ (double)computeInactiveAvoidingRectForVisibleRect:(CGFloat)rect acceptableFrame:(CGFloat)frame unsafeRect:(CGFloat)unsafeRect imageSize:(CGFloat)size considerHeadroom:(CGFloat)headroom newVisibleRect:(CGFloat)visibleRect;
++ (double)cropScoreThresholdForClassification:(unint64_t)classification;
++ (double)effectiveAcceptableRectForClassification:(double)classification havePetFaces:(double)faces sourcePreferredCropRectNormalized:(double)normalized sourceAcceptableCropRectNormalized:(double)rectNormalized sourceFaceAreaRectNormalized:(double)areaRectNormalized sourceGazeAreaRectNormalized:(double)gazeAreaRectNormalized;
++ (double)effectivePreferredRectForClassification:(double)classification havePetFaces:(double)faces sourcePreferredCropRectNormalized:(double)normalized sourceAcceptableCropRectNormalized:(double)rectNormalized sourceFaceAreaRectNormalized:(double)areaRectNormalized;
++ (double)timeOverlapCheckThresholdForTopRect:(CGRect)rect isInteractive:(BOOL)interactive;
++ (double)widgetZoneAdjustmentForVisibleFrame:(CGRect)frame essentialRect:(CGRect)rect layoutConfiguration:(id)configuration;
++ (float)headroomPenaltyForIntermediateLayout:(id)layout originalFullExtent:(CGRect)extent layoutConfiguration:(id)configuration;
++ (id)computeLayoutWithHelper:(id)helper;
++ (id)computeLayoutsWithHelper:(id)helper;
++ (uint64_t)computeSpatialFrameForVisibleRect:(double)rect@<D0> adaptiveVisibleRect:(double)visibleRect@<D1> spatialPaddingPercentage:(double)percentage@<D2> effectiveImageRect:(double)imageRect@<D3>;
++ (unint64_t)clockIntersectionFromTopRectMatteCoverage:(double)coverage bottomRectMatteCoverage:(double)matteCoverage;
++ (unint64_t)layoutTypeFromLayoutConfiguration:(id)configuration;
 @end
 
 @implementation PFParallaxLayoutUtilities
 
 + (double)centerLayoutHorizontalUpperBound
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PICenterLayoutHorizontalUpperBound"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PICenterLayoutHorizontalUpperBound"];
 
   if (v3)
   {
@@ -46,8 +46,8 @@
 
 + (double)centerLayoutHorizontalLowerBound
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PICenterLayoutHorizontalLowerBound"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PICenterLayoutHorizontalLowerBound"];
 
   if (v3)
   {
@@ -65,8 +65,8 @@
 
 + (double)adaptiveLayoutVerticalPriorityThreshold
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PFAdaptiveLayoutVerticalPriorityThreshold"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PFAdaptiveLayoutVerticalPriorityThreshold"];
 
   if (v3)
   {
@@ -82,28 +82,28 @@
   return v5;
 }
 
-+ (float)headroomPenaltyForIntermediateLayout:(id)a3 originalFullExtent:(CGRect)a4 layoutConfiguration:(id)a5
++ (float)headroomPenaltyForIntermediateLayout:(id)layout originalFullExtent:(CGRect)extent layoutConfiguration:(id)configuration
 {
-  height = a4.size.height;
-  v7 = a5;
-  v8 = a3;
-  [v8 visibleRect];
+  height = extent.size.height;
+  configurationCopy = configuration;
+  layoutCopy = layout;
+  [layoutCopy visibleRect];
   v10 = v9;
-  [v8 visibleRect];
+  [layoutCopy visibleRect];
   v12 = v11;
 
   v13 = v10 + v12 - height;
-  [v7 screenSize];
+  [configurationCopy screenSize];
   v15 = v14;
-  [v7 screenScale];
+  [configurationCopy screenScale];
   v17 = v15 / v16;
-  [v7 screenScale];
+  [configurationCopy screenScale];
   v19 = v18;
 
   return fmax(v17 * (v13 / v19), 0.0) / 489574.4 * 5.0;
 }
 
-+ (uint64_t)computeSpatialFrameForVisibleRect:(double)a3@<D0> adaptiveVisibleRect:(double)a4@<D1> spatialPaddingPercentage:(double)a5@<D2> effectiveImageRect:(double)a6@<D3>
++ (uint64_t)computeSpatialFrameForVisibleRect:(double)rect@<D0> adaptiveVisibleRect:(double)visibleRect@<D1> spatialPaddingPercentage:(double)percentage@<D2> effectiveImageRect:(double)imageRect@<D3>
 {
   *(a2 + 96) = 0u;
   *(a2 + 112) = 0u;
@@ -121,50 +121,50 @@
   v69 = a9;
   if (IsNull)
   {
-    v25 = a6;
+    imageRectCopy = imageRect;
   }
 
   else
   {
-    v25 = a10;
+    imageRectCopy = a10;
   }
 
   if (IsNull)
   {
-    v26 = a5;
+    percentageCopy = percentage;
   }
 
   else
   {
-    v26 = a9;
+    percentageCopy = a9;
   }
 
   v67 = a7;
   v68 = a8;
-  v66 = a5;
+  percentageCopy2 = percentage;
   if (IsNull)
   {
-    v27 = a4;
+    visibleRectCopy = visibleRect;
   }
 
   else
   {
-    v27 = a8;
+    visibleRectCopy = a8;
   }
 
   if (IsNull)
   {
-    v28 = a3;
+    rectCopy = rect;
   }
 
   else
   {
-    v28 = a7;
+    rectCopy = a7;
   }
 
-  v71 = a5 / a6;
+  v71 = percentage / imageRect;
   v29 = fmin(a11, 0.999);
-  v74 = CGRectInset(*(&v25 - 3), -(v26 / (1.0 - v29) - v26), -(v25 / (1.0 - v29) - v25));
+  v74 = CGRectInset(*(&imageRectCopy - 3), -(percentageCopy / (1.0 - v29) - percentageCopy), -(imageRectCopy / (1.0 - v29) - imageRectCopy));
   x = v74.origin.x;
   y = v74.origin.y;
   v77.size.width = v74.size.width;
@@ -179,10 +179,10 @@
   v77.size.height = height;
   if (CGRectContainsRect(v74, v77))
   {
-    *a2 = a3;
-    *(a2 + 8) = a4;
-    *(a2 + 16) = v66;
-    *(a2 + 24) = a6;
+    *a2 = rect;
+    *(a2 + 8) = visibleRect;
+    *(a2 + 16) = percentageCopy2;
+    *(a2 + 24) = imageRect;
     v33 = (a2 + 64);
     v34 = 120;
     v35 = 112;
@@ -295,7 +295,7 @@
     y = v76.origin.y;
     width = v76.size.width;
     v56 = v76.size.height;
-    [a1 topFrameFromVisibleRectAspectRatio:v71 adaptiveRect:{v54, v55, v51, v50}];
+    [self topFrameFromVisibleRectAspectRatio:v71 adaptiveRect:{v54, v55, v51, v50}];
     *(a2 + 64) = v57;
     *(a2 + 72) = v58;
     *(a2 + 80) = v59;
@@ -316,7 +316,7 @@
     v41 = v71;
   }
 
-  result = [a1 topFrameFromVisibleRectAspectRatio:v41 adaptiveRect:{x, y, width, height}];
+  result = [self topFrameFromVisibleRectAspectRatio:v41 adaptiveRect:{x, y, width, height}];
   *v33 = v62;
   *(a2 + v40) = v63;
   *(a2 + v39) = v64;
@@ -328,10 +328,10 @@
   return result;
 }
 
-+ (double)computeInactiveAvoidingRectForVisibleRect:(CGFloat)a3 acceptableFrame:(CGFloat)a4 unsafeRect:(CGFloat)a5 imageSize:(CGFloat)a6 considerHeadroom:(CGFloat)a7 newVisibleRect:(CGFloat)a8
++ (double)computeInactiveAvoidingRectForVisibleRect:(CGFloat)rect acceptableFrame:(CGFloat)frame unsafeRect:(CGFloat)unsafeRect imageSize:(CGFloat)size considerHeadroom:(CGFloat)headroom newVisibleRect:(CGFloat)visibleRect
 {
-  v28 = a1;
-  v29 = a1 + a3 * 0.5;
+  selfCopy = self;
+  v29 = self + rect * 0.5;
   memset(&v76, 0, sizeof(v76));
   CGAffineTransformMakeTranslation(&v76, -v29, -a2);
   memset(&v75, 0, sizeof(v75));
@@ -345,28 +345,28 @@
   t1 = v74;
   CGAffineTransformConcat(&v73, &v72, &t1);
   v72 = v73;
-  v77.origin.x = v28;
+  v77.origin.x = selfCopy;
   rect2 = a2;
   v77.origin.y = a2;
-  v77.size.width = a3;
-  v77.size.height = a4;
+  v77.size.width = rect;
+  v77.size.height = frame;
   v78 = CGRectApplyAffineTransform(v77, &v72);
   x = v78.origin.x;
-  v59 = a5;
+  unsafeRectCopy = unsafeRect;
   y = v78.origin.y;
   width = v78.size.width;
   height = v78.size.height;
-  v78.origin.x = a5;
-  v78.origin.y = a6;
-  v78.size.width = a7;
-  v78.size.height = a8;
+  v78.origin.x = unsafeRect;
+  v78.origin.y = size;
+  v78.size.width = headroom;
+  v78.size.height = visibleRect;
   MaxY = CGRectGetMaxY(v78);
-  v79.origin.y = a2 + a14 * a4;
-  v79.size.width = a3 * a15;
-  v79.size.height = a4 * a16;
-  v79.origin.x = v28 + a13 * a3;
+  v79.origin.y = a2 + a14 * frame;
+  v79.size.width = rect * a15;
+  v79.size.height = frame * a16;
+  v79.origin.x = selfCopy + a13 * rect;
   v58 = v79.origin.y;
-  v57 = a4 * a16;
+  v57 = frame * a16;
   v34 = MaxY - CGRectGetMinY(v79);
   if (v34 > 0.0)
   {
@@ -395,11 +395,11 @@
   v81.origin.y = 0.0;
   v81.size.width = a17;
   v81.size.height = a18;
-  v85.origin.x = v28;
+  v85.origin.x = selfCopy;
   v85.origin.y = rect2;
-  v85.size.width = a3;
-  v62 = a4;
-  v85.size.height = a4;
+  v85.size.width = rect;
+  frameCopy = frame;
+  v85.size.height = frame;
   v40 = v38;
   if (CGRectContainsRect(v81, v85) || (a11 & 1) == 0)
   {
@@ -421,11 +421,11 @@
   {
     if (a12)
     {
-      *a12 = v28;
+      *a12 = selfCopy;
       a12[1] = rect2;
-      v28 = v36;
-      a12[2] = a3;
-      a12[3] = v62;
+      selfCopy = v36;
+      a12[2] = rect;
+      a12[3] = frameCopy;
     }
 
     else
@@ -445,22 +445,22 @@
     v68 = v74;
     CGAffineTransformConcat(&t2, &v69, &v68);
     v69 = t2;
-    v82.origin.x = v28;
+    v82.origin.x = selfCopy;
     v82.origin.y = rect2;
-    v82.size.width = a3;
-    v82.size.height = v62;
+    v82.size.width = rect;
+    v82.size.height = frameCopy;
     v83 = CGRectApplyAffineTransform(v82, &v69);
     v45 = v83.origin.x;
     v46 = v83.origin.y;
     v61 = v83.size.width;
     v47 = v83.size.height;
-    v83.origin.x = v59;
-    v83.origin.y = a6;
-    v83.size.width = a7;
-    v83.size.height = a8;
+    v83.origin.x = unsafeRectCopy;
+    v83.origin.y = size;
+    v83.size.width = headroom;
+    v83.size.height = visibleRect;
     v48 = CGRectGetMaxY(v83);
-    v84.origin.x = v28 + a13 * a3;
-    v84.size.width = a3 * a15;
+    v84.origin.x = selfCopy + a13 * rect;
+    v84.size.width = rect * a15;
     v84.origin.y = v58;
     v84.size.height = v57;
     MinY = CGRectGetMinY(v84);
@@ -470,7 +470,7 @@
       v51 = vabdd_f64(v48, MinY) > 0.03;
       if (v50 && v51)
       {
-        v52 = v62;
+        v52 = frameCopy;
       }
 
       else
@@ -490,7 +490,7 @@
 
       if (v50 && v51)
       {
-        v54 = v28;
+        v54 = selfCopy;
       }
 
       else
@@ -500,26 +500,26 @@
 
       *a12 = v54;
       a12[1] = v53;
-      v55 = v61;
+      rectCopy = v61;
       if (v50 && v51)
       {
-        v55 = a3;
+        rectCopy = rect;
       }
 
-      a12[2] = v55;
+      a12[2] = rectCopy;
       a12[3] = v52;
     }
   }
 
-  return v28;
+  return selfCopy;
 }
 
-+ (CGRect)topFrameFromVisibleRectAspectRatio:(double)a3 adaptiveRect:(CGRect)a4
++ (CGRect)topFrameFromVisibleRectAspectRatio:(double)ratio adaptiveRect:(CGRect)rect
 {
-  width = a4.size.width;
-  v5 = a4.size.width / a3;
-  x = a4.origin.x;
-  y = a4.origin.y;
+  width = rect.size.width;
+  v5 = rect.size.width / ratio;
+  x = rect.origin.x;
+  y = rect.origin.y;
   v8 = width;
   result.size.height = v5;
   result.size.width = v8;
@@ -528,20 +528,20 @@
   return result;
 }
 
-+ (CGRect)topFrameForVisibleRect:(CGRect)result adaptiveRect:(CGRect)a4
++ (CGRect)topFrameForVisibleRect:(CGRect)result adaptiveRect:(CGRect)rect
 {
-  v4 = result.origin.y + a4.size.height - result.size.height;
+  v4 = result.origin.y + rect.size.height - result.size.height;
   result.origin.y = v4;
   return result;
 }
 
-+ (CGRect)adaptiveFrameForTopEdgeVisibleFrame:(CGRect)a3 layoutConfiguration:(id)a4 outVisibleFrame:(CGRect *)a5 maxClockStretchOverride:(double)a6
++ (CGRect)adaptiveFrameForTopEdgeVisibleFrame:(CGRect)frame layoutConfiguration:(id)configuration outVisibleFrame:(CGRect *)visibleFrame maxClockStretchOverride:(double)override
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  configurationCopy = configuration;
   v25.origin.y = 0.0;
   v25.origin.x = x;
   v25.size.width = width;
@@ -556,16 +556,16 @@
   v13 = v26.size.width;
   v14 = v26.size.height;
   v15 = v26.size.height - height;
-  [v11 maxStrechAmountNormalized];
+  [configurationCopy maxStrechAmountNormalized];
   v17 = v16;
 
-  v18 = fmax(v15 - height * v17 * a6, 0.0);
-  if (a5)
+  v18 = fmax(v15 - height * v17 * override, 0.0);
+  if (visibleFrame)
   {
-    a5->origin.x = x;
-    a5->origin.y = v18;
-    a5->size.width = width;
-    a5->size.height = height;
+    visibleFrame->origin.x = x;
+    visibleFrame->origin.y = v18;
+    visibleFrame->size.width = width;
+    visibleFrame->size.height = height;
   }
 
   v19 = v12 + v18;
@@ -579,18 +579,18 @@
   return result;
 }
 
-+ (CGRect)adaptiveFrameForVisibleFrame:(CGRect)a3 essentialRect:(CGRect)a4 originalImageSize:(CGSize)a5 layoutConfiguration:(id)a6 classification:(unint64_t)a7 maxClockStretchOverride:(double)a8
++ (CGRect)adaptiveFrameForVisibleFrame:(CGRect)frame essentialRect:(CGRect)rect originalImageSize:(CGSize)size layoutConfiguration:(id)configuration classification:(unint64_t)classification maxClockStretchOverride:(double)override
 {
-  height = a5.height;
-  width = a4.size.width;
-  v32 = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
-  v15 = *&a5.width;
+  height = size.height;
+  width = rect.size.width;
+  v32 = rect.size.height;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = frame.size.height;
+  v11 = frame.size.width;
+  v12 = frame.origin.y;
+  v13 = frame.origin.x;
+  v15 = *&size.width;
   v16 = v15;
   v17 = v33 - (v12 + v10);
   if (y - v12 >= 0.0)
@@ -627,7 +627,7 @@
       v22 = v33 - (v12 + v10);
     }
 
-    [a1 widgetZoneAdjustmentForVisibleFrame:v16 essentialRect:v13 layoutConfiguration:{v12 + v22, v11, v10, x, y, width, v32}];
+    [self widgetZoneAdjustmentForVisibleFrame:v16 essentialRect:v13 layoutConfiguration:{v12 + v22, v11, v10, x, y, width, v32}];
     v21 = v21 - v23;
   }
 
@@ -654,17 +654,17 @@
   return result;
 }
 
-+ (double)widgetZoneAdjustmentForVisibleFrame:(CGRect)a3 essentialRect:(CGRect)a4 layoutConfiguration:(id)a5
++ (double)widgetZoneAdjustmentForVisibleFrame:(CGRect)frame essentialRect:(CGRect)rect layoutConfiguration:(id)configuration
 {
-  y = a4.origin.y;
-  height = a3.size.height;
-  v7 = a3.origin.y;
-  v8 = a5;
-  v9 = [PFParallaxLayoutUtilities layoutTypeFromLayoutConfiguration:v8];
+  y = rect.origin.y;
+  height = frame.size.height;
+  v7 = frame.origin.y;
+  configurationCopy = configuration;
+  v9 = [PFParallaxLayoutUtilities layoutTypeFromLayoutConfiguration:configurationCopy];
   if (v9 == 1)
   {
     v11 = height * 0.0;
-    if ([v8 isPortrait])
+    if ([configurationCopy isPortrait])
     {
       v10 = v11;
     }
@@ -698,9 +698,9 @@
   return v13;
 }
 
-+ (unint64_t)clockIntersectionFromTopRectMatteCoverage:(double)a3 bottomRectMatteCoverage:(double)a4
++ (unint64_t)clockIntersectionFromTopRectMatteCoverage:(double)coverage bottomRectMatteCoverage:(double)matteCoverage
 {
-  if (fmax(a3, a4) > 0.0)
+  if (fmax(coverage, matteCoverage) > 0.0)
   {
     return 1;
   }
@@ -711,21 +711,21 @@
   }
 }
 
-+ (BOOL)facePositionAcceptable:(CGRect)a3 imageAspect:(double)a4
++ (BOOL)facePositionAcceptable:(CGRect)acceptable imageAspect:(double)aspect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = acceptable.size.height;
+  width = acceptable.size.width;
+  y = acceptable.origin.y;
+  x = acceptable.origin.x;
   +[PFParallaxLayoutUtilities facePositionLimits];
-  if (a4 <= 1.0)
+  if (aspect <= 1.0)
   {
-    v9 = width * a4;
+    v9 = width * aspect;
   }
 
   else
   {
-    v9 = height * (1.0 / a4);
+    v9 = height * (1.0 / aspect);
   }
 
   if (v9 < 0.0 || v9 > 0.0)
@@ -755,62 +755,62 @@
   return CGRectGetMaxY(v14) <= 0.0;
 }
 
-+ (double)cropScoreThresholdForClassification:(unint64_t)a3
++ (double)cropScoreThresholdForClassification:(unint64_t)classification
 {
-  if (a3 > 5)
+  if (classification > 5)
   {
     return 0.6;
   }
 
   else
   {
-    return dbl_1B36A2200[a3];
+    return dbl_1B36A2200[classification];
   }
 }
 
-+ (double)timeOverlapCheckThresholdForTopRect:(CGRect)a3 isInteractive:(BOOL)a4
++ (double)timeOverlapCheckThresholdForTopRect:(CGRect)rect isInteractive:(BOOL)interactive
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  interactiveCopy = interactive;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v9 = +[PFParallaxLayoutTextOverlapParameters systemParameters];
-  [v9 maxTopOverlapForTopRect:v4 isInteractive:{x, y, width, height}];
+  [v9 maxTopOverlapForTopRect:interactiveCopy isInteractive:{x, y, width, height}];
   v11 = v10;
 
   return v11;
 }
 
-+ (unint64_t)layoutTypeFromLayoutConfiguration:(id)a3
++ (unint64_t)layoutTypeFromLayoutConfiguration:(id)configuration
 {
-  v3 = a3;
-  [v3 screenSize];
+  configurationCopy = configuration;
+  [configurationCopy screenSize];
   v5 = v4;
-  [v3 screenScale];
+  [configurationCopy screenScale];
   v7 = v5 / v6;
-  [v3 screenSize];
+  [configurationCopy screenSize];
   v9 = v8;
-  [v3 screenScale];
+  [configurationCopy screenScale];
   v11 = v10;
 
   return v7 * (v9 / v11) >= 600000.0;
 }
 
-+ (CGRect)bestFaceRectWithImageSize:(CGSize)a3 deviceSize:(CGSize)a4 faceRegions:(id)a5
++ (CGRect)bestFaceRectWithImageSize:(CGSize)size deviceSize:(CGSize)deviceSize faceRegions:(id)regions
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3.height;
-  v8 = a3.width;
+  height = deviceSize.height;
+  width = deviceSize.width;
+  v7 = size.height;
+  v8 = size.width;
   v83 = *MEMORY[0x1E69E9840];
-  v9 = a5;
+  regionsCopy = regions;
   if (v8 == 0.0 || v7 == 0.0 || ((v63 = *(MEMORY[0x1E69BDDB0] + 8), v64 = *MEMORY[0x1E69BDDB0], v8 == *MEMORY[0x1E69BDDB0]) ? (v10 = v7 == *(MEMORY[0x1E69BDDB0] + 8)) : (v10 = 0), v10))
   {
     _PFAssertFailHandler();
   }
 
-  v11 = v9;
+  v11 = regionsCopy;
   if (width / height < v8 / v7)
   {
     v12 = v7 * (width / height);
@@ -855,7 +855,7 @@
   v80 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v18 = [v9 countByEnumeratingWithState:&v77 objects:v82 count:16];
+  v18 = [regionsCopy countByEnumeratingWithState:&v77 objects:v82 count:16];
   if (v18)
   {
     v19 = v18;
@@ -1073,7 +1073,7 @@ uint64_t __78__PFParallaxLayoutUtilities_bestFaceRectWithImageSize_deviceSize_fa
   }
 }
 
-+ (double)effectivePreferredRectForClassification:(double)a3 havePetFaces:(double)a4 sourcePreferredCropRectNormalized:(double)a5 sourceAcceptableCropRectNormalized:(double)a6 sourceFaceAreaRectNormalized:(double)a7
++ (double)effectivePreferredRectForClassification:(double)classification havePetFaces:(double)faces sourcePreferredCropRectNormalized:(double)normalized sourceAcceptableCropRectNormalized:(double)rectNormalized sourceFaceAreaRectNormalized:(double)areaRectNormalized
 {
   x = *MEMORY[0x1E695F050];
   y = *(MEMORY[0x1E695F050] + 8);
@@ -1092,9 +1092,9 @@ uint64_t __78__PFParallaxLayoutUtilities_bestFaceRectWithImageSize_deviceSize_fa
   if (!a11)
   {
 LABEL_9:
-    height = a5;
-    width = a4;
-    y = a3;
+    height = normalized;
+    width = faces;
+    y = classification;
     x = a2;
     goto LABEL_10;
   }
@@ -1108,18 +1108,18 @@ LABEL_9:
 
     if (a12)
     {
-      v28 = [a1 _rectIsValid:?];
+      v28 = [self _rectIsValid:?];
       v29 = a17;
       v30 = a18;
       v31 = a19;
       v32 = a20;
-      v33 = a6;
+      rectNormalizedCopy = rectNormalized;
       v34 = a8;
-      v35 = a7;
+      areaRectNormalizedCopy = areaRectNormalized;
       v36 = a9;
-      height = a5;
-      width = a4;
-      y = a3;
+      height = normalized;
+      width = faces;
+      y = classification;
       x = a2;
       if (!v28)
       {
@@ -1132,11 +1132,11 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  x = a6;
-  y = a7;
+  x = rectNormalized;
+  y = areaRectNormalized;
   width = a8;
   height = a9;
-  if (![a1 _rectIsValid:?])
+  if (![self _rectIsValid:?])
   {
     goto LABEL_10;
   }
@@ -1145,12 +1145,12 @@ LABEL_9:
   v30 = a18;
   v31 = a19;
   v32 = a20;
-  v33 = x;
-  v35 = y;
+  rectNormalizedCopy = x;
+  areaRectNormalizedCopy = y;
   v34 = width;
   v36 = height;
 LABEL_15:
-  v43 = CGRectUnion(*&v29, *&v33);
+  v43 = CGRectUnion(*&v29, *&rectNormalizedCopy);
   x = v43.origin.x;
   y = v43.origin.y;
   width = v43.size.width;
@@ -1168,7 +1168,7 @@ LABEL_10:
   return x;
 }
 
-+ (double)effectiveAcceptableRectForClassification:(double)a3 havePetFaces:(double)a4 sourcePreferredCropRectNormalized:(double)a5 sourceAcceptableCropRectNormalized:(double)a6 sourceFaceAreaRectNormalized:(double)a7 sourceGazeAreaRectNormalized:(double)a8
++ (double)effectiveAcceptableRectForClassification:(double)classification havePetFaces:(double)faces sourcePreferredCropRectNormalized:(double)normalized sourceAcceptableCropRectNormalized:(double)rectNormalized sourceFaceAreaRectNormalized:(double)areaRectNormalized sourceGazeAreaRectNormalized:(double)gazeAreaRectNormalized
 {
   x = *MEMORY[0x1E695F050];
   y = *(MEMORY[0x1E695F050] + 8);
@@ -1189,18 +1189,18 @@ LABEL_10:
     case 0:
 LABEL_9:
       height = a9;
-      width = a8;
-      y = a7;
-      x = a6;
+      width = gazeAreaRectNormalized;
+      y = areaRectNormalized;
+      x = rectNormalized;
       break;
     case 1:
       height = a9;
-      width = a8;
-      y = a7;
-      x = a6;
-      if ([a1 _rectIsValid:{a13, a14, a15, a16}])
+      width = gazeAreaRectNormalized;
+      y = areaRectNormalized;
+      x = rectNormalized;
+      if ([self _rectIsValid:{a13, a14, a15, a16}])
       {
-        if ([a1 _rectIsValid:{a17, a18, a19, a20}])
+        if ([self _rectIsValid:{a17, a18, a19, a20}])
         {
           v34 = +[PFWallpaperCompoundDeviceConfiguration deviceSupportsLandscapeConfiguration];
           height = a16;
@@ -1234,21 +1234,21 @@ LABEL_9:
       break;
     case 2:
       height = a9;
-      width = a8;
-      y = a7;
-      x = a6;
+      width = gazeAreaRectNormalized;
+      y = areaRectNormalized;
+      x = rectNormalized;
       if (a12)
       {
         x = a13;
         y = a14;
         width = a15;
         height = a16;
-        if (([a1 _rectIsValid:?] & 1) == 0)
+        if (([self _rectIsValid:?] & 1) == 0)
         {
           height = a9;
-          width = a8;
-          y = a7;
-          x = a6;
+          width = gazeAreaRectNormalized;
+          y = areaRectNormalized;
+          x = rectNormalized;
         }
       }
 
@@ -1268,13 +1268,13 @@ LABEL_10:
   return x;
 }
 
-+ (BOOL)_rectIsValid:(CGRect)a3
++ (BOOL)_rectIsValid:(CGRect)valid
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsNull(a3))
+  height = valid.size.height;
+  width = valid.size.width;
+  y = valid.origin.y;
+  x = valid.origin.x;
+  if (CGRectIsNull(valid))
   {
     return 0;
   }
@@ -1293,16 +1293,16 @@ LABEL_10:
   return x >= 0.0 && v7;
 }
 
-+ (id)computeLayoutsWithHelper:(id)a3
++ (id)computeLayoutsWithHelper:(id)helper
 {
   v112 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  helperCopy = helper;
   v4 = [PFParallaxIntermediateLayout alloc];
   v96[0] = MEMORY[0x1E69E9820];
   v96[1] = 3221225472;
   v96[2] = __54__PFParallaxLayoutUtilities_computeLayoutsWithHelper___block_invoke;
   v96[3] = &unk_1E7B657F8;
-  v5 = v3;
+  v5 = helperCopy;
   v97 = v5;
   v6 = [(PFParallaxIntermediateLayout *)v4 initWithConfiguration:v96];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1328,7 +1328,7 @@ LABEL_10:
 
   v70 = v11;
   v71 = v6;
-  v14 = [v5 allowedLayoutStrategies];
+  allowedLayoutStrategies = [v5 allowedLayoutStrategies];
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
@@ -1367,7 +1367,7 @@ LABEL_10:
           [v8 addObject:v22];
         }
 
-        if ((v14 & 2) != 0)
+        if ((allowedLayoutStrategies & 2) != 0)
         {
           v23 = [v5 intermediateWithZoomStrategy:3 intermediate:v19];
           if (v23)
@@ -1421,7 +1421,7 @@ LABEL_10:
           [v9 addObject:v32];
         }
 
-        if ((v14 & 2) != 0)
+        if ((allowedLayoutStrategies & 2) != 0)
         {
           v33 = [v5 intermediateWithOverlapStrategy:5 intermediate:v30];
           if (v33)
@@ -1463,7 +1463,7 @@ LABEL_10:
         }
 
         v40 = *(*(&v84 + 1) + 8 * k);
-        if ((v14 & 2) != 0)
+        if ((allowedLayoutStrategies & 2) != 0)
         {
           v41 = [v5 intermediateWithAdaptiveStrategy:2 intermediate:*(*(&v84 + 1) + 8 * k)];
           if (v41)
@@ -1623,11 +1623,11 @@ void __54__PFParallaxLayoutUtilities_computeLayoutsWithHelper___block_invoke(uin
   [v4 setSalientContentRect:?];
 }
 
-+ (id)computeLayoutWithHelper:(id)a3
++ (id)computeLayoutWithHelper:(id)helper
 {
-  v3 = a3;
-  v4 = [PFParallaxLayoutUtilities computeLayoutsWithHelper:v3];
-  v5 = [v3 bestLayout:v4];
+  helperCopy = helper;
+  v4 = [PFParallaxLayoutUtilities computeLayoutsWithHelper:helperCopy];
+  v5 = [helperCopy bestLayout:v4];
 
   return v5;
 }

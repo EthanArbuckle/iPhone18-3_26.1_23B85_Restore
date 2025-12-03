@@ -1,13 +1,13 @@
 @interface ECCMSEncoder
 + (NSOrderedSet)oidStringsForAuthenticatedEncryption;
-+ (id)_recipientInfoForCertificate:(void *)a3 andCapabilities:;
-+ (id)_recipientInfosForRecipients:(void *)a3 outError:;
-+ (id)_signedDataFromNetworkContentData:(unsigned int)a3 detached:(uint64_t)a4 forSender:(uint64_t)a5 identity:(uint64_t)a6 encryptionCertificate:(void *)a7 capabilities:(void *)a8 outError:;
-+ (id)encryptedDataFromContentData:(id)a3 senderCertificate:(__SecCertificate *)a4 senderCapabilities:(id)a5 recipients:(id)a6 outIsAuthenticated:(BOOL *)a7 outError:(id *)a8;
-+ (id)oidsForEncryptWithGCM:(BOOL)a3 encryptSubject:(BOOL)a4;
-+ (id)signatureDataFromNetworkContentData:(id)a3 forSender:(id)a4 identity:(__SecIdentity *)a5 encryptionCertificate:(__SecCertificate *)a6 capabilities:(id)a7 outError:(id *)a8;
-+ (id)signedDataFromNetworkContentData:(id)a3 forSender:(id)a4 identity:(__SecIdentity *)a5 encryptionCertificate:(__SecCertificate *)a6 capabilities:(id)a7 outError:(id *)a8;
-+ (uint64_t)_capabilitiesContainCapabilityRequiringAuthEnvelopedData:(uint64_t)a1;
++ (id)_recipientInfoForCertificate:(void *)certificate andCapabilities:;
++ (id)_recipientInfosForRecipients:(void *)recipients outError:;
++ (id)_signedDataFromNetworkContentData:(unsigned int)data detached:(uint64_t)detached forSender:(uint64_t)sender identity:(uint64_t)identity encryptionCertificate:(void *)certificate capabilities:(void *)capabilities outError:;
++ (id)encryptedDataFromContentData:(id)data senderCertificate:(__SecCertificate *)certificate senderCapabilities:(id)capabilities recipients:(id)recipients outIsAuthenticated:(BOOL *)authenticated outError:(id *)error;
++ (id)oidsForEncryptWithGCM:(BOOL)m encryptSubject:(BOOL)subject;
++ (id)signatureDataFromNetworkContentData:(id)data forSender:(id)sender identity:(__SecIdentity *)identity encryptionCertificate:(__SecCertificate *)certificate capabilities:(id)capabilities outError:(id *)error;
++ (id)signedDataFromNetworkContentData:(id)data forSender:(id)sender identity:(__SecIdentity *)identity encryptionCertificate:(__SecCertificate *)certificate capabilities:(id)capabilities outError:(id *)error;
++ (uint64_t)_capabilitiesContainCapabilityRequiringAuthEnvelopedData:(uint64_t)data;
 @end
 
 @implementation ECCMSEncoder
@@ -19,44 +19,44 @@ uint64_t ___ef_log_ECCMSEncoder_block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)signatureDataFromNetworkContentData:(id)a3 forSender:(id)a4 identity:(__SecIdentity *)a5 encryptionCertificate:(__SecCertificate *)a6 capabilities:(id)a7 outError:(id *)a8
++ (id)signatureDataFromNetworkContentData:(id)data forSender:(id)sender identity:(__SecIdentity *)identity encryptionCertificate:(__SecCertificate *)certificate capabilities:(id)capabilities outError:(id *)error
 {
-  v8 = [(ECCMSEncoder *)a1 _signedDataFromNetworkContentData:a3 detached:1u forSender:a4 identity:a5 encryptionCertificate:a6 capabilities:a7 outError:a8];
+  v8 = [(ECCMSEncoder *)self _signedDataFromNetworkContentData:data detached:1u forSender:sender identity:identity encryptionCertificate:certificate capabilities:capabilities outError:error];
 
   return v8;
 }
 
-+ (id)_signedDataFromNetworkContentData:(unsigned int)a3 detached:(uint64_t)a4 forSender:(uint64_t)a5 identity:(uint64_t)a6 encryptionCertificate:(void *)a7 capabilities:(void *)a8 outError:
++ (id)_signedDataFromNetworkContentData:(unsigned int)data detached:(uint64_t)detached forSender:(uint64_t)sender identity:(uint64_t)identity encryptionCertificate:(void *)certificate capabilities:(void *)capabilities outError:
 {
   v40 = *MEMORY[0x277D85DE8];
   v32 = a2;
-  v33 = a7;
+  certificateCopy = certificate;
   objc_opt_self();
-  v34 = [MEMORY[0x277D28640] OIDWithString:*MEMORY[0x277D285D8] error:a8];
-  if (a8 && *a8)
+  v34 = [MEMORY[0x277D28640] OIDWithString:*MEMORY[0x277D285D8] error:capabilities];
+  if (capabilities && *capabilities)
   {
     v13 = 0;
   }
 
   else
   {
-    v31 = a3;
-    v14 = [objc_alloc(MEMORY[0x277D28628]) initWithIdentity:a5 signatureAlgorithm:v34 error:a8];
-    if (a8 && *a8)
+    dataCopy = data;
+    v14 = [objc_alloc(MEMORY[0x277D28628]) initWithIdentity:sender signatureAlgorithm:v34 error:capabilities];
+    if (capabilities && *capabilities)
     {
       v13 = 0;
     }
 
     else
     {
-      if ([v33 count])
+      if ([certificateCopy count])
       {
         v15 = objc_alloc_init(MEMORY[0x277CBEB58]);
         v37 = 0u;
         v38 = 0u;
         v35 = 0u;
         v36 = 0u;
-        v16 = v33;
+        v16 = certificateCopy;
         v17 = [v16 countByEnumeratingWithState:&v35 objects:v39 count:16];
         if (v17)
         {
@@ -70,7 +70,7 @@ uint64_t ___ef_log_ECCMSEncoder_block_invoke()
                 objc_enumerationMutation(v16);
               }
 
-              v20 = [objc_alloc(MEMORY[0x277D28640]) initWithString:*(*(&v35 + 1) + 8 * i) error:a8];
+              v20 = [objc_alloc(MEMORY[0x277D28640]) initWithString:*(*(&v35 + 1) + 8 * i) error:capabilities];
               if (v20)
               {
                 [v15 addObject:v20];
@@ -88,20 +88,20 @@ uint64_t ___ef_log_ECCMSEncoder_block_invoke()
       }
 
       v22 = objc_alloc(MEMORY[0x277D28630]);
-      v23 = [MEMORY[0x277CBEAA8] date];
-      v24 = [v22 initWithSigningTime:v23];
+      date = [MEMORY[0x277CBEAA8] date];
+      v24 = [v22 initWithSigningTime:date];
 
-      v25 = [v14 protectedAttributes];
-      [v25 addObject:v24];
+      protectedAttributes = [v14 protectedAttributes];
+      [protectedAttributes addObject:v24];
 
-      if (a6)
+      if (identity)
       {
-        v26 = [objc_alloc(MEMORY[0x277D28600]) initWithCertificate:a6];
+        v26 = [objc_alloc(MEMORY[0x277D28600]) initWithCertificate:identity];
         [v14 addSMIMEEncryptionKeyPreferenceAttribute:v26];
       }
 
-      v27 = [objc_alloc(MEMORY[0x277D28620]) initWithDataContent:v32 isDetached:v31 signer:v14 error:a8];
-      if (!v27 || a8 && *a8)
+      v27 = [objc_alloc(MEMORY[0x277D28620]) initWithDataContent:v32 isDetached:dataCopy signer:v14 error:capabilities];
+      if (!v27 || capabilities && *capabilities)
       {
         v13 = 0;
       }
@@ -109,7 +109,7 @@ uint64_t ___ef_log_ECCMSEncoder_block_invoke()
       else
       {
         v28 = [objc_alloc(MEMORY[0x277D285F8]) initWithEmbeddedContent:v27];
-        v13 = [v28 encodeMessageSecurityObject:a8];
+        v13 = [v28 encodeMessageSecurityObject:capabilities];
       }
     }
   }
@@ -119,48 +119,48 @@ uint64_t ___ef_log_ECCMSEncoder_block_invoke()
   return v13;
 }
 
-+ (id)signedDataFromNetworkContentData:(id)a3 forSender:(id)a4 identity:(__SecIdentity *)a5 encryptionCertificate:(__SecCertificate *)a6 capabilities:(id)a7 outError:(id *)a8
++ (id)signedDataFromNetworkContentData:(id)data forSender:(id)sender identity:(__SecIdentity *)identity encryptionCertificate:(__SecCertificate *)certificate capabilities:(id)capabilities outError:(id *)error
 {
-  v8 = [(ECCMSEncoder *)a1 _signedDataFromNetworkContentData:a3 detached:0 forSender:a4 identity:a5 encryptionCertificate:a6 capabilities:a7 outError:a8];
+  v8 = [(ECCMSEncoder *)self _signedDataFromNetworkContentData:data detached:0 forSender:sender identity:identity encryptionCertificate:certificate capabilities:capabilities outError:error];
 
   return v8;
 }
 
-+ (id)encryptedDataFromContentData:(id)a3 senderCertificate:(__SecCertificate *)a4 senderCapabilities:(id)a5 recipients:(id)a6 outIsAuthenticated:(BOOL *)a7 outError:(id *)a8
++ (id)encryptedDataFromContentData:(id)data senderCertificate:(__SecCertificate *)certificate senderCapabilities:(id)capabilities recipients:(id)recipients outIsAuthenticated:(BOOL *)authenticated outError:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v38 = a5;
-  v39 = a6;
-  v40 = [(ECCMSEncoder *)a1 _recipientInfoForCertificate:a4 andCapabilities:v38];
+  dataCopy = data;
+  capabilitiesCopy = capabilities;
+  recipientsCopy = recipients;
+  v40 = [(ECCMSEncoder *)self _recipientInfoForCertificate:certificate andCapabilities:capabilitiesCopy];
   v48 = 0;
-  v36 = [(ECCMSEncoder *)a1 _recipientInfosForRecipients:v39 outError:&v48];
+  v36 = [(ECCMSEncoder *)self _recipientInfosForRecipients:recipientsCopy outError:&v48];
   v41 = v48;
   if (v41)
   {
     v14 = _ef_log_ECCMSEncoder();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = [v41 ef_publicDescription];
-      [ECCMSEncoder encryptedDataFromContentData:v15 senderCertificate:v50 senderCapabilities:v14 recipients:? outIsAuthenticated:? outError:?];
+      ef_publicDescription = [v41 ef_publicDescription];
+      [ECCMSEncoder encryptedDataFromContentData:ef_publicDescription senderCertificate:v50 senderCapabilities:v14 recipients:? outIsAuthenticated:? outError:?];
     }
   }
 
-  v16 = [(ECCMSEncoder *)a1 _capabilitiesContainCapabilityRequiringAuthEnvelopedData:v38];
+  v16 = [(ECCMSEncoder *)self _capabilitiesContainCapabilityRequiringAuthEnvelopedData:capabilitiesCopy];
   v47[0] = MEMORY[0x277D85DD0];
   v47[1] = 3221225472;
   v47[2] = __121__ECCMSEncoder_encryptedDataFromContentData_senderCertificate_senderCapabilities_recipients_outIsAuthenticated_outError___block_invoke;
   v47[3] = &__block_descriptor_40_e24_B16__0__ECCMSRecipient_8l;
-  v47[4] = a1;
-  v34 = v16 & [v39 ef_all:v47];
+  v47[4] = self;
+  v34 = v16 & [recipientsCopy ef_all:v47];
   v17 = 0x277D285F0;
   if (!v34)
   {
     v17 = 0x277D28608;
   }
 
-  v18 = [objc_alloc(*v17) initWithDataContent:v37 recipient:v40];
-  v35 = a8;
+  v18 = [objc_alloc(*v17) initWithDataContent:dataCopy recipient:v40];
+  errorCopy = error;
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
@@ -207,14 +207,14 @@ uint64_t ___ef_log_ECCMSEncoder_block_invoke()
 
     if (v26)
     {
-      if (a7)
+      if (authenticated)
       {
-        *a7 = v34;
+        *authenticated = v34;
       }
 
-      if (v35)
+      if (errorCopy)
       {
-        *v35 = 0;
+        *errorCopy = 0;
       }
 
       v28 = v26;
@@ -228,10 +228,10 @@ uint64_t ___ef_log_ECCMSEncoder_block_invoke()
         [ECCMSEncoder encryptedDataFromContentData:v30 senderCertificate:? senderCapabilities:? recipients:? outIsAuthenticated:? outError:?];
       }
 
-      if (v35)
+      if (errorCopy)
       {
         v31 = objc_alloc(MEMORY[0x277CCA9B8]);
-        *v35 = [v31 ef_initWithDomain:@"ECCMSErrorDomain" code:6 underlyingError:v27];
+        *errorCopy = [v31 ef_initWithDomain:@"ECCMSErrorDomain" code:6 underlyingError:v27];
       }
     }
 
@@ -247,9 +247,9 @@ uint64_t ___ef_log_ECCMSEncoder_block_invoke()
     }
 
     v26 = 0;
-    if (a8)
+    if (error)
     {
-      *a8 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"ECCMSErrorDomain" code:5 userInfo:0];
+      *error = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"ECCMSErrorDomain" code:5 userInfo:0];
     }
   }
 
@@ -258,20 +258,20 @@ uint64_t ___ef_log_ECCMSEncoder_block_invoke()
   return v26;
 }
 
-+ (id)_recipientInfoForCertificate:(void *)a3 andCapabilities:
++ (id)_recipientInfoForCertificate:(void *)certificate andCapabilities:
 {
   v34 = *MEMORY[0x277D85DE8];
-  v21 = a3;
+  certificateCopy = certificate;
   objc_opt_self();
   v19 = a2;
-  if (v21)
+  if (certificateCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v21, "count")}];
+    v4 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(certificateCopy, "count")}];
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    obj = v21;
+    obj = certificateCopy;
     v5 = [obj countByEnumeratingWithState:&v24 objects:v33 count:16];
     if (v5)
     {
@@ -299,11 +299,11 @@ uint64_t ___ef_log_ECCMSEncoder_block_invoke()
             v11 = _ef_log_ECCMSEncoder();
             if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
             {
-              v12 = [v10 ef_publicDescription];
+              ef_publicDescription = [v10 ef_publicDescription];
               *buf = 138543618;
               v30 = v8;
               v31 = 2114;
-              v32 = v12;
+              v32 = ef_publicDescription;
               _os_log_error_impl(&dword_22D092000, v11, OS_LOG_TYPE_ERROR, "Error for recipient OID %{public}@: %{public}@", buf, 0x16u);
             }
           }
@@ -341,7 +341,7 @@ uint64_t ___ef_log_ECCMSEncoder_block_invoke()
   return v16;
 }
 
-+ (id)_recipientInfosForRecipients:(void *)a3 outError:
++ (id)_recipientInfosForRecipients:(void *)recipients outError:
 {
   v23 = *MEMORY[0x277D85DE8];
   v4 = a2;
@@ -363,13 +363,13 @@ uint64_t ___ef_log_ECCMSEncoder_block_invoke()
       +[ECCMSEncoder _recipientInfosForRecipients:outError:].cold.1(v22, [v7 count], v9);
     }
 
-    if (a3)
+    if (recipients)
     {
       v10 = objc_alloc(MEMORY[0x277CCA9B8]);
       v20 = @"ECCMS_Recipient";
       v21 = v7;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-      *a3 = [v10 initWithDomain:@"ECCMSErrorDomain" code:3 userInfo:v11];
+      *recipients = [v10 initWithDomain:@"ECCMSErrorDomain" code:3 userInfo:v11];
     }
   }
 
@@ -378,16 +378,16 @@ uint64_t ___ef_log_ECCMSEncoder_block_invoke()
   return v8;
 }
 
-+ (uint64_t)_capabilitiesContainCapabilityRequiringAuthEnvelopedData:(uint64_t)a1
++ (uint64_t)_capabilitiesContainCapabilityRequiringAuthEnvelopedData:(uint64_t)data
 {
   v2 = a2;
-  v3 = [objc_opt_self() oidStringsForAuthenticatedEncryption];
+  oidStringsForAuthenticatedEncryption = [objc_opt_self() oidStringsForAuthenticatedEncryption];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__ECCMSEncoder__capabilitiesContainCapabilityRequiringAuthEnvelopedData___block_invoke;
   v7[3] = &unk_27874B708;
-  v8 = v3;
-  v4 = v3;
+  v8 = oidStringsForAuthenticatedEncryption;
+  v4 = oidStringsForAuthenticatedEncryption;
   v5 = [v2 ef_any:v7];
 
   return v5;
@@ -452,20 +452,20 @@ uint64_t __52__ECCMSEncoder_oidStringsForAuthenticatedEncryption__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)oidsForEncryptWithGCM:(BOOL)a3 encryptSubject:(BOOL)a4
++ (id)oidsForEncryptWithGCM:(BOOL)m encryptSubject:(BOOL)subject
 {
-  v4 = a4;
+  subjectCopy = subject;
   v22 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (m)
   {
-    v6 = objc_alloc_init(MEMORY[0x277D28618]);
+    oidStringForEncryptedSubject2 = objc_alloc_init(MEMORY[0x277D28618]);
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [v6 capabilities];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v21 count:16];
+    capabilities = [oidStringForEncryptedSubject2 capabilities];
+    v9 = [capabilities countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v9)
     {
       v10 = *v17;
@@ -475,32 +475,32 @@ uint64_t __52__ECCMSEncoder_oidStringsForAuthenticatedEncryption__block_invoke()
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(capabilities);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * i) OIDString];
-          [v7 addObject:v12];
+          oIDString = [*(*(&v16 + 1) + 8 * i) OIDString];
+          [v7 addObject:oIDString];
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v9 = [capabilities countByEnumeratingWithState:&v16 objects:v21 count:16];
       }
 
       while (v9);
     }
 
-    if (v4)
+    if (subjectCopy)
     {
-      v13 = [a1 oidStringForEncryptedSubject];
-      [v7 addObject:v13];
+      oidStringForEncryptedSubject = [self oidStringForEncryptedSubject];
+      [v7 addObject:oidStringForEncryptedSubject];
     }
 
     goto LABEL_13;
   }
 
-  if (a4)
+  if (subject)
   {
-    v6 = [a1 oidStringForEncryptedSubject];
-    v20 = v6;
+    oidStringForEncryptedSubject2 = [self oidStringForEncryptedSubject];
+    v20 = oidStringForEncryptedSubject2;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v20 count:1];
 LABEL_13:
 

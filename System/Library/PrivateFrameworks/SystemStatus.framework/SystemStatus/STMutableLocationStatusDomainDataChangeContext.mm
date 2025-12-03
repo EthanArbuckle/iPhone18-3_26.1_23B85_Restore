@@ -1,30 +1,30 @@
 @interface STMutableLocationStatusDomainDataChangeContext
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setUserInitiated:(BOOL)a3;
-- (void)setWantsProminentIndication:(BOOL)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setUserInitiated:(BOOL)initiated;
+- (void)setWantsProminentIndication:(BOOL)indication;
 @end
 
 @implementation STMutableLocationStatusDomainDataChangeContext
 
-- (void)setUserInitiated:(BOOL)a3
+- (void)setUserInitiated:(BOOL)initiated
 {
-  if (self->super._userInitiated != a3)
+  if (self->super._userInitiated != initiated)
   {
-    self->super._userInitiated = a3;
+    self->super._userInitiated = initiated;
   }
 }
 
-- (void)setWantsProminentIndication:(BOOL)a3
+- (void)setWantsProminentIndication:(BOOL)indication
 {
-  if (self->super._wantsProminentIndication != a3)
+  if (self->super._wantsProminentIndication != indication)
   {
-    self->super._wantsProminentIndication = a3;
+    self->super._wantsProminentIndication = indication;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [STLocationStatusDomainDataChangeContext allocWithZone:a3];
+  v4 = [STLocationStatusDomainDataChangeContext allocWithZone:zone];
 
   return [(STLocationStatusDomainDataChangeContext *)v4 initWithChangeContext:?];
 }

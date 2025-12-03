@@ -1,42 +1,42 @@
 @interface NRPBPropertyValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addArrayValues:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsError:(BOOL)a3;
-- (void)setHasIsMiniUUIDSet:(BOOL)a3;
-- (void)setHasIsSecurePropertyValue:(BOOL)a3;
-- (void)setHasIsSet:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addArrayValues:(id)values;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsError:(BOOL)error;
+- (void)setHasIsMiniUUIDSet:(BOOL)set;
+- (void)setHasIsSecurePropertyValue:(BOOL)value;
+- (void)setHasIsSet:(BOOL)set;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NRPBPropertyValue
 
-- (void)addArrayValues:(id)a3
+- (void)addArrayValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   arrayValues = self->_arrayValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!arrayValues)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_arrayValues;
     self->_arrayValues = v6;
 
-    v4 = v8;
+    valuesCopy = v8;
     arrayValues = self->_arrayValues;
   }
 
-  [(NSMutableArray *)arrayValues addObject:v4];
+  [(NSMutableArray *)arrayValues addObject:valuesCopy];
 }
 
-- (void)setHasIsSet:(BOOL)a3
+- (void)setHasIsSet:(BOOL)set
 {
-  if (a3)
+  if (set)
   {
     v3 = 16;
   }
@@ -49,9 +49,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasIsSecurePropertyValue:(BOOL)a3
+- (void)setHasIsSecurePropertyValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 8;
   }
@@ -64,9 +64,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsError:(BOOL)a3
+- (void)setHasIsError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 2;
   }
@@ -79,9 +79,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsMiniUUIDSet:(BOOL)a3
+- (void)setHasIsMiniUUIDSet:(BOOL)set
 {
-  if (a3)
+  if (set)
   {
     v3 = 4;
   }
@@ -100,8 +100,8 @@
   v8.receiver = self;
   v8.super_class = NRPBPropertyValue;
   v4 = [(NRPBPropertyValue *)&v8 description];
-  v5 = [(NRPBPropertyValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NRPBPropertyValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -109,19 +109,19 @@
 - (id)dictionaryRepresentation
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   stringValue = self->_stringValue;
   if (stringValue)
   {
-    [v3 setObject:stringValue forKey:@"stringValue"];
+    [dictionary setObject:stringValue forKey:@"stringValue"];
   }
 
   numberValue = self->_numberValue;
   if (numberValue)
   {
-    v7 = [(NRPBNumber *)numberValue dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"numberValue"];
+    dictionaryRepresentation = [(NRPBNumber *)numberValue dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"numberValue"];
   }
 
   uUIDValue = self->_uUIDValue;
@@ -139,15 +139,15 @@
   sizeValue = self->_sizeValue;
   if (sizeValue)
   {
-    v11 = [(NRPBSize *)sizeValue dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"sizeValue"];
+    dictionaryRepresentation2 = [(NRPBSize *)sizeValue dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"sizeValue"];
   }
 
   dictionaryKey = self->_dictionaryKey;
   if (dictionaryKey)
   {
-    v13 = [(NRPBPropertyValue *)dictionaryKey dictionaryRepresentation];
-    [v4 setObject:v13 forKey:@"dictionaryKey"];
+    dictionaryRepresentation3 = [(NRPBPropertyValue *)dictionaryKey dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"dictionaryKey"];
   }
 
   if ([(NSMutableArray *)self->_arrayValues count])
@@ -172,8 +172,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation4 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation4];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -257,10 +257,10 @@ LABEL_28:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_stringValue)
   {
     PBDataWriterWriteStringField();
@@ -387,50 +387,50 @@ LABEL_26:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (self->_stringValue)
   {
-    [v9 setStringValue:?];
+    [toCopy setStringValue:?];
   }
 
   if (self->_numberValue)
   {
-    [v9 setNumberValue:?];
+    [toCopy setNumberValue:?];
   }
 
   if (self->_uUIDValue)
   {
-    [v9 setUUIDValue:?];
+    [toCopy setUUIDValue:?];
   }
 
   if (self->_dataValue)
   {
-    [v9 setDataValue:?];
+    [toCopy setDataValue:?];
   }
 
   if (self->_sizeValue)
   {
-    [v9 setSizeValue:?];
+    [toCopy setSizeValue:?];
   }
 
   if (self->_dictionaryKey)
   {
-    [v9 setDictionaryKey:?];
+    [toCopy setDictionaryKey:?];
   }
 
   if ([(NRPBPropertyValue *)self arrayValuesCount])
   {
-    [v9 clearArrayValues];
-    v4 = [(NRPBPropertyValue *)self arrayValuesCount];
-    if (v4)
+    [toCopy clearArrayValues];
+    arrayValuesCount = [(NRPBPropertyValue *)self arrayValuesCount];
+    if (arrayValuesCount)
     {
-      v5 = v4;
+      v5 = arrayValuesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NRPBPropertyValue *)self arrayValuesAtIndex:i];
-        [v9 addArrayValues:v7];
+        [toCopy addArrayValues:v7];
       }
     }
   }
@@ -438,8 +438,8 @@ LABEL_26:
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    v9[68] = self->_isSet;
-    v9[72] |= 0x10u;
+    toCopy[68] = self->_isSet;
+    toCopy[72] |= 0x10u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -458,8 +458,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v9[67] = self->_isSecurePropertyValue;
-  v9[72] |= 8u;
+  toCopy[67] = self->_isSecurePropertyValue;
+  toCopy[72] |= 8u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -473,8 +473,8 @@ LABEL_20:
   }
 
 LABEL_28:
-  v9[64] = self->_isDate;
-  v9[72] |= 1u;
+  toCopy[64] = self->_isDate;
+  toCopy[72] |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -488,43 +488,43 @@ LABEL_21:
   }
 
 LABEL_29:
-  v9[65] = self->_isError;
-  v9[72] |= 2u;
+  toCopy[65] = self->_isError;
+  toCopy[72] |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_22:
-    v9[66] = self->_isMiniUUIDSet;
-    v9[72] |= 4u;
+    toCopy[66] = self->_isMiniUUIDSet;
+    toCopy[72] |= 4u;
   }
 
 LABEL_23:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_stringValue copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_stringValue copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
-  v8 = [(NRPBNumber *)self->_numberValue copyWithZone:a3];
+  v8 = [(NRPBNumber *)self->_numberValue copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSData *)self->_uUIDValue copyWithZone:a3];
+  v10 = [(NSData *)self->_uUIDValue copyWithZone:zone];
   v11 = *(v5 + 56);
   *(v5 + 56) = v10;
 
-  v12 = [(NSData *)self->_dataValue copyWithZone:a3];
+  v12 = [(NSData *)self->_dataValue copyWithZone:zone];
   v13 = *(v5 + 16);
   *(v5 + 16) = v12;
 
-  v14 = [(NRPBSize *)self->_sizeValue copyWithZone:a3];
+  v14 = [(NRPBSize *)self->_sizeValue copyWithZone:zone];
   v15 = *(v5 + 40);
   *(v5 + 40) = v14;
 
-  v16 = [(NRPBPropertyValue *)self->_dictionaryKey copyWithZone:a3];
+  v16 = [(NRPBPropertyValue *)self->_dictionaryKey copyWithZone:zone];
   v17 = *(v5 + 24);
   *(v5 + 24) = v16;
 
@@ -547,7 +547,7 @@ LABEL_23:
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v27 + 1) + 8 * i) copyWithZone:{a3, v27}];
+        v23 = [*(*(&v27 + 1) + 8 * i) copyWithZone:{zone, v27}];
         [v5 addArrayValues:v23];
       }
 
@@ -624,16 +624,16 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_54;
   }
 
   stringValue = self->_stringValue;
-  if (stringValue | *(v4 + 6))
+  if (stringValue | *(equalCopy + 6))
   {
     if (![(NSString *)stringValue isEqual:?])
     {
@@ -642,7 +642,7 @@ LABEL_14:
   }
 
   numberValue = self->_numberValue;
-  if (numberValue | *(v4 + 4))
+  if (numberValue | *(equalCopy + 4))
   {
     if (![(NRPBNumber *)numberValue isEqual:?])
     {
@@ -651,7 +651,7 @@ LABEL_14:
   }
 
   uUIDValue = self->_uUIDValue;
-  if (uUIDValue | *(v4 + 7))
+  if (uUIDValue | *(equalCopy + 7))
   {
     if (![(NSData *)uUIDValue isEqual:?])
     {
@@ -660,7 +660,7 @@ LABEL_14:
   }
 
   dataValue = self->_dataValue;
-  if (dataValue | *(v4 + 2))
+  if (dataValue | *(equalCopy + 2))
   {
     if (![(NSData *)dataValue isEqual:?])
     {
@@ -669,7 +669,7 @@ LABEL_14:
   }
 
   sizeValue = self->_sizeValue;
-  if (sizeValue | *(v4 + 5))
+  if (sizeValue | *(equalCopy + 5))
   {
     if (![(NRPBSize *)sizeValue isEqual:?])
     {
@@ -678,7 +678,7 @@ LABEL_14:
   }
 
   dictionaryKey = self->_dictionaryKey;
-  if (dictionaryKey | *(v4 + 3))
+  if (dictionaryKey | *(equalCopy + 3))
   {
     if (![(NRPBPropertyValue *)dictionaryKey isEqual:?])
     {
@@ -687,7 +687,7 @@ LABEL_14:
   }
 
   arrayValues = self->_arrayValues;
-  if (arrayValues | *(v4 + 1))
+  if (arrayValues | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)arrayValues isEqual:?])
     {
@@ -697,88 +697,88 @@ LABEL_14:
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 72) & 0x10) == 0)
+    if ((*(equalCopy + 72) & 0x10) == 0)
     {
       goto LABEL_54;
     }
 
-    v13 = *(v4 + 68);
+    v13 = *(equalCopy + 68);
     if (self->_isSet)
     {
-      if ((*(v4 + 68) & 1) == 0)
+      if ((*(equalCopy + 68) & 1) == 0)
       {
         goto LABEL_54;
       }
     }
 
-    else if (*(v4 + 68))
+    else if (*(equalCopy + 68))
     {
       goto LABEL_54;
     }
   }
 
-  else if ((*(v4 + 72) & 0x10) != 0)
+  else if ((*(equalCopy + 72) & 0x10) != 0)
   {
     goto LABEL_54;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 72) & 8) == 0)
+    if ((*(equalCopy + 72) & 8) == 0)
     {
       goto LABEL_54;
     }
 
-    v14 = *(v4 + 67);
+    v14 = *(equalCopy + 67);
     if (self->_isSecurePropertyValue)
     {
-      if ((*(v4 + 67) & 1) == 0)
+      if ((*(equalCopy + 67) & 1) == 0)
       {
         goto LABEL_54;
       }
     }
 
-    else if (*(v4 + 67))
+    else if (*(equalCopy + 67))
     {
       goto LABEL_54;
     }
   }
 
-  else if ((*(v4 + 72) & 8) != 0)
+  else if ((*(equalCopy + 72) & 8) != 0)
   {
     goto LABEL_54;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0)
+    if ((*(equalCopy + 72) & 1) == 0)
     {
       goto LABEL_54;
     }
 
-    v15 = *(v4 + 64);
+    v15 = *(equalCopy + 64);
     if (self->_isDate)
     {
-      if ((*(v4 + 64) & 1) == 0)
+      if ((*(equalCopy + 64) & 1) == 0)
       {
         goto LABEL_54;
       }
     }
 
-    else if (*(v4 + 64))
+    else if (*(equalCopy + 64))
     {
       goto LABEL_54;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_54;
   }
 
   if ((*&self->_has & 2) == 0)
   {
-    if ((*(v4 + 72) & 2) == 0)
+    if ((*(equalCopy + 72) & 2) == 0)
     {
       goto LABEL_24;
     }
@@ -788,40 +788,40 @@ LABEL_54:
     goto LABEL_55;
   }
 
-  if ((*(v4 + 72) & 2) == 0)
+  if ((*(equalCopy + 72) & 2) == 0)
   {
     goto LABEL_54;
   }
 
-  v16 = *(v4 + 65);
+  v16 = *(equalCopy + 65);
   if (self->_isError)
   {
-    if ((*(v4 + 65) & 1) == 0)
+    if ((*(equalCopy + 65) & 1) == 0)
     {
       goto LABEL_54;
     }
   }
 
-  else if (*(v4 + 65))
+  else if (*(equalCopy + 65))
   {
     goto LABEL_54;
   }
 
 LABEL_24:
-  v12 = (*(v4 + 72) & 4) == 0;
+  v12 = (*(equalCopy + 72) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 72) & 4) != 0)
+    if ((*(equalCopy + 72) & 4) != 0)
     {
       if (self->_isMiniUUIDSet)
       {
-        if (*(v4 + 66))
+        if (*(equalCopy + 66))
         {
           goto LABEL_56;
         }
       }
 
-      else if (!*(v4 + 66))
+      else if (!*(equalCopy + 66))
       {
 LABEL_56:
         v12 = 1;
@@ -912,17 +912,17 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 6))
+  fromCopy = from;
+  if (*(fromCopy + 6))
   {
     [(NRPBPropertyValue *)self setStringValue:?];
   }
 
   numberValue = self->_numberValue;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (numberValue)
   {
     if (v6)
@@ -936,18 +936,18 @@ LABEL_6:
     [(NRPBPropertyValue *)self setNumberValue:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(NRPBPropertyValue *)self setUUIDValue:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NRPBPropertyValue *)self setDataValue:?];
   }
 
   sizeValue = self->_sizeValue;
-  v8 = *(v4 + 5);
+  v8 = *(fromCopy + 5);
   if (sizeValue)
   {
     if (v8)
@@ -962,7 +962,7 @@ LABEL_6:
   }
 
   dictionaryKey = self->_dictionaryKey;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   if (dictionaryKey)
   {
     if (v10)
@@ -980,7 +980,7 @@ LABEL_6:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = *(v4 + 1);
+  v11 = *(fromCopy + 1);
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
@@ -1004,12 +1004,12 @@ LABEL_6:
     while (v13);
   }
 
-  v16 = *(v4 + 72);
+  v16 = *(fromCopy + 72);
   if ((v16 & 0x10) != 0)
   {
-    self->_isSet = *(v4 + 68);
+    self->_isSet = *(fromCopy + 68);
     *&self->_has |= 0x10u;
-    v16 = *(v4 + 72);
+    v16 = *(fromCopy + 72);
     if ((v16 & 8) == 0)
     {
 LABEL_31:
@@ -1022,14 +1022,14 @@ LABEL_31:
     }
   }
 
-  else if ((*(v4 + 72) & 8) == 0)
+  else if ((*(fromCopy + 72) & 8) == 0)
   {
     goto LABEL_31;
   }
 
-  self->_isSecurePropertyValue = *(v4 + 67);
+  self->_isSecurePropertyValue = *(fromCopy + 67);
   *&self->_has |= 8u;
-  v16 = *(v4 + 72);
+  v16 = *(fromCopy + 72);
   if ((v16 & 1) == 0)
   {
 LABEL_32:
@@ -1039,9 +1039,9 @@ LABEL_32:
     }
 
 LABEL_39:
-    self->_isError = *(v4 + 65);
+    self->_isError = *(fromCopy + 65);
     *&self->_has |= 2u;
-    if ((*(v4 + 72) & 4) == 0)
+    if ((*(fromCopy + 72) & 4) == 0)
     {
       goto LABEL_35;
     }
@@ -1050,9 +1050,9 @@ LABEL_39:
   }
 
 LABEL_38:
-  self->_isDate = *(v4 + 64);
+  self->_isDate = *(fromCopy + 64);
   *&self->_has |= 1u;
-  v16 = *(v4 + 72);
+  v16 = *(fromCopy + 72);
   if ((v16 & 2) != 0)
   {
     goto LABEL_39;
@@ -1062,7 +1062,7 @@ LABEL_33:
   if ((v16 & 4) != 0)
   {
 LABEL_34:
-    self->_isMiniUUIDSet = *(v4 + 66);
+    self->_isMiniUUIDSet = *(fromCopy + 66);
     *&self->_has |= 4u;
   }
 

@@ -1,6 +1,6 @@
 @interface VSAccountManagerResult
 - (VSAccountManagerResult)init;
-- (VSAccountManagerResult)initWithOperation:(id)a3;
+- (VSAccountManagerResult)initWithOperation:(id)operation;
 - (void)cancel;
 @end
 
@@ -16,10 +16,10 @@
   return 0;
 }
 
-- (VSAccountManagerResult)initWithOperation:(id)a3
+- (VSAccountManagerResult)initWithOperation:(id)operation
 {
-  v5 = a3;
-  if (!v5)
+  operationCopy = operation;
+  if (!operationCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The operation parameter must not be nil."];
   }
@@ -30,7 +30,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_operation, a3);
+    objc_storeStrong(&v6->_operation, operation);
   }
 
   return v7;
@@ -38,8 +38,8 @@
 
 - (void)cancel
 {
-  v2 = [(VSAccountManagerResult *)self operation];
-  [v2 cancel];
+  operation = [(VSAccountManagerResult *)self operation];
+  [operation cancel];
 }
 
 @end

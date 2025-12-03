@@ -1,10 +1,10 @@
 @interface HealthDigitalSeparationSource
 - (HealthDigitalSeparationSource)init;
-- (void)_stopSharingToEntries:(id)a3 completion:(id)a4;
-- (void)fetchSharedResourcesWithCompletion:(id)a3;
-- (void)stopAllSharingWithCompletion:(id)a3;
-- (void)stopSharing:(id)a3 withCompletion:(id)a4;
-- (void)stopSharingWithParticipant:(id)a3 completion:(id)a4;
+- (void)_stopSharingToEntries:(id)entries completion:(id)completion;
+- (void)fetchSharedResourcesWithCompletion:(id)completion;
+- (void)stopAllSharingWithCompletion:(id)completion;
+- (void)stopSharing:(id)sharing withCompletion:(id)completion;
+- (void)stopSharingWithParticipant:(id)participant completion:(id)completion;
 @end
 
 @implementation HealthDigitalSeparationSource
@@ -25,74 +25,74 @@
   return v2;
 }
 
-- (void)fetchSharedResourcesWithCompletion:(id)a3
+- (void)fetchSharedResourcesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   sharingEntryStore = self->_sharingEntryStore;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_DE8;
   v7[3] = &unk_41A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(HKSummarySharingEntryStore *)sharingEntryStore fetchSharingEntriesWithCompletion:v7];
 }
 
-- (void)stopSharing:(id)a3 withCompletion:(id)a4
+- (void)stopSharing:(id)sharing withCompletion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
+  sharingCopy = sharing;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v9 digitalEntries];
-    v8 = [v7 hk_map:&stru_41E0];
+    digitalEntries = [sharingCopy digitalEntries];
+    v8 = [digitalEntries hk_map:&stru_41E0];
 
-    [(HealthDigitalSeparationSource *)self _stopSharingToEntries:v8 completion:v6];
+    [(HealthDigitalSeparationSource *)self _stopSharingToEntries:v8 completion:completionCopy];
   }
 
   else
   {
     v8 = [NSError hk_error:2000 format:@"Unable to cast SharedResource."];
-    v6[2](v6, v8);
+    completionCopy[2](completionCopy, v8);
   }
 }
 
-- (void)stopSharingWithParticipant:(id)a3 completion:(id)a4
+- (void)stopSharingWithParticipant:(id)participant completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  participantCopy = participant;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v6 sharingEntry];
-    v11 = v8;
+    sharingEntry = [participantCopy sharingEntry];
+    v11 = sharingEntry;
     v9 = [NSArray arrayWithObjects:&v11 count:1];
-    [(HealthDigitalSeparationSource *)self _stopSharingToEntries:v9 completion:v7];
+    [(HealthDigitalSeparationSource *)self _stopSharingToEntries:v9 completion:completionCopy];
   }
 
   else
   {
     v10 = [NSError hk_error:2000 format:@"Unable to cast DSParticipation."];
-    (*(v7 + 2))(v7, v10);
+    (*(completionCopy + 2))(completionCopy, v10);
   }
 }
 
-- (void)stopAllSharingWithCompletion:(id)a3
+- (void)stopAllSharingWithCompletion:(id)completion
 {
   sharingEntryStore = self->_sharingEntryStore;
-  v5 = a3;
-  v6 = [(HKSummarySharingEntryStore *)sharingEntryStore sharingEntries];
-  v7 = [(HealthDigitalSeparationSource *)self _outgoingSharingEntriesFromEntries:v6];
+  completionCopy = completion;
+  sharingEntries = [(HKSummarySharingEntryStore *)sharingEntryStore sharingEntries];
+  v7 = [(HealthDigitalSeparationSource *)self _outgoingSharingEntriesFromEntries:sharingEntries];
 
-  [(HealthDigitalSeparationSource *)self _stopSharingToEntries:v7 completion:v5];
+  [(HealthDigitalSeparationSource *)self _stopSharingToEntries:v7 completion:completionCopy];
 }
 
-- (void)_stopSharingToEntries:(id)a3 completion:(id)a4
+- (void)_stopSharingToEntries:(id)entries completion:(id)completion
 {
-  v6 = a3;
-  v16 = a4;
+  entriesCopy = entries;
+  completionCopy = completion;
   v7 = dispatch_group_create();
   v28[0] = 0;
   v28[1] = v28;
@@ -105,7 +105,7 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v6;
+  obj = entriesCopy;
   v8 = [obj countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v8)
   {
@@ -123,14 +123,14 @@
         v11 = *(*(&v24 + 1) + 8 * v10);
         dispatch_group_enter(v7);
         sharingEntryStore = self->_sharingEntryStore;
-        v13 = [v11 UUID];
+        uUID = [v11 UUID];
         v21[0] = _NSConcreteStackBlock;
         v21[1] = 3221225472;
         v21[2] = sub_1568;
         v21[3] = &unk_4208;
         v23 = v28;
         v22 = v7;
-        [(HKSummarySharingEntryStore *)sharingEntryStore revokeInvitationWithUUID:v13 completion:v21];
+        [(HKSummarySharingEntryStore *)sharingEntryStore revokeInvitationWithUUID:uUID completion:v21];
 
         v10 = v10 + 1;
       }
@@ -148,9 +148,9 @@
   block[1] = 3221225472;
   block[2] = sub_15E0;
   block[3] = &unk_4230;
-  v19 = v16;
+  v19 = completionCopy;
   v20 = v28;
-  v15 = v16;
+  v15 = completionCopy;
   dispatch_group_notify(v7, v14, block);
 
   _Block_object_dispose(v28, 8);

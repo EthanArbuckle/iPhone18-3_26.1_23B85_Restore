@@ -1,36 +1,36 @@
 @interface _SFPBCopyCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBCopyCommand)initWithDictionary:(id)a3;
-- (_SFPBCopyCommand)initWithFacade:(id)a3;
-- (_SFPBCopyCommand)initWithJSON:(id)a3;
+- (_SFPBCopyCommand)initWithDictionary:(id)dictionary;
+- (_SFPBCopyCommand)initWithFacade:(id)facade;
+- (_SFPBCopyCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)addCopyableItems:(id)a3;
-- (void)setCopyableItems:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCopyableItems:(id)items;
+- (void)setCopyableItems:(id)items;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBCopyCommand
 
-- (_SFPBCopyCommand)initWithFacade:(id)a3
+- (_SFPBCopyCommand)initWithFacade:(id)facade
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBCopyCommand *)self init];
   if (v5)
   {
-    v6 = [v4 copyableItem];
+    copyableItem = [facadeCopy copyableItem];
 
-    if (v6)
+    if (copyableItem)
     {
       v7 = [_SFPBCopyItem alloc];
-      v8 = [v4 copyableItem];
-      v9 = [(_SFPBCopyItem *)v7 initWithFacade:v8];
+      copyableItem2 = [facadeCopy copyableItem];
+      v9 = [(_SFPBCopyItem *)v7 initWithFacade:copyableItem2];
       [(_SFPBCopyCommand *)v5 setCopyableItem:v9];
     }
 
-    v10 = [v4 copyableItems];
-    if (v10)
+    copyableItems = [facadeCopy copyableItems];
+    if (copyableItems)
     {
       v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -44,8 +44,8 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = [v4 copyableItems];
-    v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    copyableItems2 = [facadeCopy copyableItems];
+    v13 = [copyableItems2 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v13)
     {
       v14 = v13;
@@ -56,7 +56,7 @@
         {
           if (*v22 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(copyableItems2);
           }
 
           v17 = [[_SFPBCopyItem alloc] initWithFacade:*(*(&v21 + 1) + 8 * i)];
@@ -66,7 +66,7 @@
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v14 = [copyableItems2 countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v14);
@@ -80,16 +80,16 @@
   return v5;
 }
 
-- (_SFPBCopyCommand)initWithDictionary:(id)a3
+- (_SFPBCopyCommand)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = _SFPBCopyCommand;
   v5 = [(_SFPBCopyCommand *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"copyableItem"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"copyableItem"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -97,7 +97,7 @@
       [(_SFPBCopyCommand *)v5 setCopyableItem:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"copyableItems"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"copyableItems"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -150,30 +150,30 @@
   return v5;
 }
 
-- (_SFPBCopyCommand)initWithJSON:(id)a3
+- (_SFPBCopyCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBCopyCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBCopyCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBCopyCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -187,26 +187,26 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_copyableItem)
   {
-    v4 = [(_SFPBCopyCommand *)self copyableItem];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    copyableItem = [(_SFPBCopyCommand *)self copyableItem];
+    dictionaryRepresentation = [copyableItem dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"copyableItem"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"copyableItem"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"copyableItem"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"copyableItem"];
     }
   }
 
   if ([(NSArray *)self->_copyableItems count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -226,16 +226,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation2 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -245,36 +245,36 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"copyableItems"];
+    [dictionary setObject:array forKeyedSubscript:@"copyableItems"];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBCopyCommand *)self copyableItem];
-  v6 = [v4 copyableItem];
-  if ((v5 != 0) == (v6 == 0))
+  copyableItem = [(_SFPBCopyCommand *)self copyableItem];
+  copyableItem2 = [equalCopy copyableItem];
+  if ((copyableItem != 0) == (copyableItem2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBCopyCommand *)self copyableItem];
-  if (v7)
+  copyableItem3 = [(_SFPBCopyCommand *)self copyableItem];
+  if (copyableItem3)
   {
-    v8 = v7;
-    v9 = [(_SFPBCopyCommand *)self copyableItem];
-    v10 = [v4 copyableItem];
-    v11 = [v9 isEqual:v10];
+    v8 = copyableItem3;
+    copyableItem4 = [(_SFPBCopyCommand *)self copyableItem];
+    copyableItem5 = [equalCopy copyableItem];
+    v11 = [copyableItem4 isEqual:copyableItem5];
 
     if (!v11)
     {
@@ -286,12 +286,12 @@
   {
   }
 
-  v5 = [(_SFPBCopyCommand *)self copyableItems];
-  v6 = [v4 copyableItems];
-  if ((v5 != 0) != (v6 == 0))
+  copyableItem = [(_SFPBCopyCommand *)self copyableItems];
+  copyableItem2 = [equalCopy copyableItems];
+  if ((copyableItem != 0) != (copyableItem2 == 0))
   {
-    v12 = [(_SFPBCopyCommand *)self copyableItems];
-    if (!v12)
+    copyableItems = [(_SFPBCopyCommand *)self copyableItems];
+    if (!copyableItems)
     {
 
 LABEL_15:
@@ -299,10 +299,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBCopyCommand *)self copyableItems];
-    v15 = [v4 copyableItems];
-    v16 = [v14 isEqual:v15];
+    v13 = copyableItems;
+    copyableItems2 = [(_SFPBCopyCommand *)self copyableItems];
+    copyableItems3 = [equalCopy copyableItems];
+    v16 = [copyableItems2 isEqual:copyableItems3];
 
     if (v16)
     {
@@ -322,22 +322,22 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBCopyCommand *)self copyableItem];
-  if (v5)
+  toCopy = to;
+  copyableItem = [(_SFPBCopyCommand *)self copyableItem];
+  if (copyableItem)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBCopyCommand *)self copyableItems];
+  copyableItems = [(_SFPBCopyCommand *)self copyableItems];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [copyableItems countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -349,7 +349,7 @@ LABEL_13:
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(copyableItems);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
@@ -358,7 +358,7 @@ LABEL_13:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [copyableItems countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
@@ -367,27 +367,27 @@ LABEL_13:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addCopyableItems:(id)a3
+- (void)addCopyableItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   copyableItems = self->_copyableItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!copyableItems)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_copyableItems;
-    self->_copyableItems = v6;
+    self->_copyableItems = array;
 
-    v4 = v8;
+    itemsCopy = v8;
     copyableItems = self->_copyableItems;
   }
 
-  [(NSArray *)copyableItems addObject:v4];
+  [(NSArray *)copyableItems addObject:itemsCopy];
 }
 
-- (void)setCopyableItems:(id)a3
+- (void)setCopyableItems:(id)items
 {
-  v4 = [a3 copy];
+  v4 = [items copy];
   copyableItems = self->_copyableItems;
   self->_copyableItems = v4;
 

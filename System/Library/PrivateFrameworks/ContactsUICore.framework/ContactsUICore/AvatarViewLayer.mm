@@ -1,12 +1,12 @@
 @interface AvatarViewLayer
-- (_TtC14ContactsUICore15AvatarViewLayer)initWithCoder:(id)a3;
-- (_TtC14ContactsUICore15AvatarViewLayer)initWithLayer:(id)a3;
+- (_TtC14ContactsUICore15AvatarViewLayer)initWithCoder:(id)coder;
+- (_TtC14ContactsUICore15AvatarViewLayer)initWithLayer:(id)layer;
 - (void)display;
 @end
 
 @implementation AvatarViewLayer
 
-- (_TtC14ContactsUICore15AvatarViewLayer)initWithLayer:(id)a3
+- (_TtC14ContactsUICore15AvatarViewLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_1A34CD920();
@@ -14,7 +14,7 @@
   return AvatarViewLayer.init(layer:)(v4);
 }
 
-- (_TtC14ContactsUICore15AvatarViewLayer)initWithCoder:(id)a3
+- (_TtC14ContactsUICore15AvatarViewLayer)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC14ContactsUICore15AvatarViewLayer_spec;
   v5 = type metadata accessor for AvatarViewLayer.RenderSpec(0);
@@ -30,7 +30,7 @@
 
 - (void)display
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A32FA140();
 }
 

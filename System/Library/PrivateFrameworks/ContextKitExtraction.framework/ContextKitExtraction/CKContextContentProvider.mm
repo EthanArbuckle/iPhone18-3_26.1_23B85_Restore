@@ -1,56 +1,56 @@
 @interface CKContextContentProvider
-+ (id)handlePDFView:(id)a3 withExecutor:(id)a4;
-+ (unsigned)controlCodeForExecutor:(id)a3;
-+ (void)extractContentFromWebViewPDFData:(id)a3 withCompletionHandler:(id)a4;
++ (id)handlePDFView:(id)view withExecutor:(id)executor;
++ (unsigned)controlCodeForExecutor:(id)executor;
++ (void)extractContentFromWebViewPDFData:(id)data withCompletionHandler:(id)handler;
 @end
 
 @implementation CKContextContentProvider
 
-+ (unsigned)controlCodeForExecutor:(id)a3
++ (unsigned)controlCodeForExecutor:(id)executor
 {
-  v3 = [a3 context];
-  v4 = +[CKContextContentProviderManager controlCodeForNonce:](CKContextContentProviderManager, "controlCodeForNonce:", [v3 nonce]);
+  context = [executor context];
+  v4 = +[CKContextContentProviderManager controlCodeForNonce:](CKContextContentProviderManager, "controlCodeForNonce:", [context nonce]);
 
   return v4;
 }
 
-+ (id)handlePDFView:(id)a3 withExecutor:(id)a4
++ (id)handlePDFView:(id)view withExecutor:(id)executor
 {
-  v4 = a3;
-  v5 = [v4 currentSelection];
-  v6 = [v5 string];
+  viewCopy = view;
+  currentSelection = [viewCopy currentSelection];
+  string = [currentSelection string];
 
-  if (![v6 length])
+  if (![string length])
   {
-    v7 = [v4 currentPage];
-    v8 = [v7 string];
+    currentPage = [viewCopy currentPage];
+    string2 = [currentPage string];
 
-    v6 = v8;
+    string = string2;
   }
 
-  return v6;
+  return string;
 }
 
-+ (void)extractContentFromWebViewPDFData:(id)a3 withCompletionHandler:(id)a4
++ (void)extractContentFromWebViewPDFData:(id)data withCompletionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  dataCopy = data;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (dataCopy)
   {
     v8 = dispatch_queue_create("CKContextContentProviderUIScene WebView PDF Queue", 0);
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __83__CKContextContentProvider_extractContentFromWebViewPDFData_withCompletionHandler___block_invoke;
     v9[3] = &unk_1E7CEE568;
-    v10 = v5;
+    v10 = dataCopy;
     v11 = v7;
     dispatch_async(v8, v9);
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 

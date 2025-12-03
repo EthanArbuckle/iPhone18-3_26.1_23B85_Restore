@@ -1,5 +1,5 @@
 @interface SUUIStackedBarCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsTappable;
 - (BOOL)accessibilityActivate;
 - (id)accessibilityHint;
@@ -8,17 +8,17 @@
 
 @implementation SUUIStackedBarCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIStackedBarCell" hasInstanceVariable:@"_backButton" withType:"UIButton"];
-  [v3 validateClass:@"SUUIStackedBarCell" hasInstanceVariable:@"_expanded" withType:"BOOL"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIStackedBarCell" hasInstanceVariable:@"_backButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"SUUIStackedBarCell" hasInstanceVariable:@"_expanded" withType:"BOOL"];
 }
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(SUUIStackedBarCellAccessibility *)self _axIsTappable];
-  if (v3)
+  _axIsTappable = [(SUUIStackedBarCellAccessibility *)self _axIsTappable];
+  if (_axIsTappable)
   {
     objc_opt_class();
     v4 = [(SUUIStackedBarCellAccessibility *)self safeValueForKey:@"_backButton"];
@@ -27,7 +27,7 @@
     [v5 sendActionsForControlEvents:64];
   }
 
-  return v3;
+  return _axIsTappable;
 }
 
 - (id)accessibilityHint
@@ -63,8 +63,8 @@
   v3 = [(SUUIStackedBarCellAccessibility *)self safeValueForKey:@"_backButton"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 isHidden];
-  return v5 ^ 1;
+  isHidden = [v4 isHidden];
+  return isHidden ^ 1;
 }
 
 @end

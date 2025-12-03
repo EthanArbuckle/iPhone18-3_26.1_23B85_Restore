@@ -1,15 +1,15 @@
 @interface MADAnalyticsEventSubmitter
 - (MADAnalyticsEventSubmitter)init;
-- (void)_queue_registerSendEvent:(id)a3;
+- (void)_queue_registerSendEvent:(id)event;
 - (void)_queue_removeAllEvents;
-- (void)_queue_removeEvent:(id)a3;
-- (void)_queue_removeEventsWithName:(id)a3;
-- (void)_queue_setEvent:(id)a3;
+- (void)_queue_removeEvent:(id)event;
+- (void)_queue_removeEventsWithName:(id)name;
+- (void)_queue_setEvent:(id)event;
 - (void)_queue_submitAllEvents;
-- (void)_queue_submitEvent:(id)a3;
-- (void)setEvent:(id)a3;
+- (void)_queue_submitEvent:(id)event;
+- (void)setEvent:(id)event;
 - (void)submitAllEvents;
-- (void)submitEvent:(id)a3;
+- (void)submitEvent:(id)event;
 @end
 
 @implementation MADAnalyticsEventSubmitter
@@ -34,18 +34,18 @@
   return v2;
 }
 
-- (void)setEvent:(id)a3
+- (void)setEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __39__MADAnalyticsEventSubmitter_setEvent___block_invoke;
   v7[3] = &unk_4B2B18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = eventCopy;
+  selfCopy = self;
+  v6 = eventCopy;
   dispatch_sync(stateQueue, v7);
 }
 
@@ -71,18 +71,18 @@ void __39__MADAnalyticsEventSubmitter_setEvent___block_invoke(uint64_t a1)
   }
 }
 
-- (void)submitEvent:(id)a3
+- (void)submitEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_not_V2(self->_stateQueue);
   stateQueue = self->_stateQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __42__MADAnalyticsEventSubmitter_submitEvent___block_invoke;
   v7[3] = &unk_4B2B18;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = eventCopy;
+  selfCopy = self;
+  v6 = eventCopy;
   dispatch_sync(stateQueue, v7);
 }
 
@@ -120,11 +120,11 @@ void __42__MADAnalyticsEventSubmitter_submitEvent___block_invoke(uint64_t a1)
   dispatch_sync(stateQueue, block);
 }
 
-- (void)_queue_setEvent:(id)a3
+- (void)_queue_setEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (v4 && ([v4 eventUUID], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if (eventCopy && ([eventCopy eventUUID], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     if (_MAPreferencesIsVerboseLoggingEnabled())
     {
@@ -132,36 +132,36 @@ void __42__MADAnalyticsEventSubmitter_submitEvent___block_invoke(uint64_t a1)
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 138543362;
-        v10 = v4;
+        v10 = eventCopy;
         _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "SET_EVENT: Adding CoreAnalytics event to submission queue: %{public}@", &v9, 0xCu);
       }
     }
 
     events = self->_events;
-    v8 = [v4 eventUUID];
-    [(NSMutableDictionary *)events setSafeObject:v4 forKey:v8];
+    eventUUID = [eventCopy eventUUID];
+    [(NSMutableDictionary *)events setSafeObject:eventCopy forKey:eventUUID];
   }
 
   else
   {
-    v8 = _MADLog(@"Analytics");
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    eventUUID = _MADLog(@"Analytics");
+    if (os_log_type_enabled(eventUUID, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v9) = 0;
-      _os_log_impl(&dword_0, v8, OS_LOG_TYPE_ERROR, "SET_EVENT: Nil event passed to setEvent", &v9, 2u);
+      _os_log_impl(&dword_0, eventUUID, OS_LOG_TYPE_ERROR, "SET_EVENT: Nil event passed to setEvent", &v9, 2u);
     }
   }
 }
 
-- (void)_queue_removeEvent:(id)a3
+- (void)_queue_removeEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (v4 && ([v4 eventUUID], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if (eventCopy && ([eventCopy eventUUID], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     events = self->_events;
-    v7 = [v4 eventUUID];
-    v8 = [(NSMutableDictionary *)events objectForKey:v7];
+    eventUUID = [eventCopy eventUUID];
+    v8 = [(NSMutableDictionary *)events objectForKey:eventUUID];
 
     IsVerboseLoggingEnabled = _MAPreferencesIsVerboseLoggingEnabled();
     if (v8)
@@ -172,14 +172,14 @@ void __42__MADAnalyticsEventSubmitter_submitEvent___block_invoke(uint64_t a1)
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           v13 = 138543362;
-          v14 = v4;
+          v14 = eventCopy;
           _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "REMOVE_EVENT: Successfully removed event %{public}@ from queue", &v13, 0xCu);
         }
       }
 
       v11 = self->_events;
-      v12 = [v8 eventUUID];
-      [(NSMutableDictionary *)v11 removeObjectForKey:v12];
+      eventUUID2 = [v8 eventUUID];
+      [(NSMutableDictionary *)v11 removeObjectForKey:eventUUID2];
     }
 
     else
@@ -189,12 +189,12 @@ void __42__MADAnalyticsEventSubmitter_submitEvent___block_invoke(uint64_t a1)
         goto LABEL_12;
       }
 
-      v12 = _MADLog(@"Analytics");
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      eventUUID2 = _MADLog(@"Analytics");
+      if (os_log_type_enabled(eventUUID2, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138543362;
-        v14 = v4;
-        _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "REMOVE_EVENT: Event %{public}@ does not exist. Nothing to do", &v13, 0xCu);
+        v14 = eventCopy;
+        _os_log_impl(&dword_0, eventUUID2, OS_LOG_TYPE_DEFAULT, "REMOVE_EVENT: Event %{public}@ does not exist. Nothing to do", &v13, 0xCu);
       }
     }
   }
@@ -212,19 +212,19 @@ void __42__MADAnalyticsEventSubmitter_submitEvent___block_invoke(uint64_t a1)
 LABEL_12:
 }
 
-- (void)_queue_removeEventsWithName:(id)a3
+- (void)_queue_removeEventsWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (v4)
+  if (nameCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_events allValues];
+    allValues = [(NSMutableDictionary *)self->_events allValues];
     IsVerboseLoggingEnabled = _MAPreferencesIsVerboseLoggingEnabled();
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = v5;
+    v7 = allValues;
     v8 = [v7 countByEnumeratingWithState:&v20 objects:v26 count:16];
     if (v8)
     {
@@ -242,8 +242,8 @@ LABEL_12:
           }
 
           v13 = *(*(&v20 + 1) + 8 * i);
-          v14 = [v13 eventName];
-          v15 = [v14 isEqualToString:v4];
+          eventName = [v13 eventName];
+          v15 = [eventName isEqualToString:nameCopy];
 
           if (v15)
           {
@@ -259,8 +259,8 @@ LABEL_12:
             }
 
             events = self->_events;
-            v18 = [v13 eventUUID];
-            [(NSMutableDictionary *)events removeObjectForKey:v18];
+            eventUUID = [v13 eventUUID];
+            [(NSMutableDictionary *)events removeObjectForKey:eventUUID];
           }
         }
 
@@ -295,15 +295,15 @@ LABEL_12:
   [(NSMutableDictionary *)self->_events removeAllObjects];
 }
 
-- (void)_queue_submitEvent:(id)a3
+- (void)_queue_submitEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (v4 && ([v4 eventUUID], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if (eventCopy && ([eventCopy eventUUID], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     events = self->_events;
-    v7 = [v4 eventUUID];
-    v8 = [(NSMutableDictionary *)events objectForKey:v7];
+    eventUUID = [eventCopy eventUUID];
+    v8 = [(NSMutableDictionary *)events objectForKey:eventUUID];
 
     IsVerboseLoggingEnabled = _MAPreferencesIsVerboseLoggingEnabled();
     if (v8)
@@ -329,7 +329,7 @@ LABEL_12:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138543362;
-        v13 = v4;
+        v13 = eventCopy;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "SUBMIT: No event found matching %{public}@. Skipping", &v12, 0xCu);
       }
     }
@@ -349,12 +349,12 @@ LABEL_12:
 - (void)_queue_submitAllEvents
 {
   dispatch_assert_queue_V2(self->_stateQueue);
-  v3 = [(NSMutableDictionary *)self->_events allValues];
+  allValues = [(NSMutableDictionary *)self->_events allValues];
   v4 = _MADLog(@"Analytics");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v23 = [v3 count];
+    v23 = [allValues count];
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "[CoreAnalytics]: SUBMIT_ALL_EVENTS: Will submit %lu total events", buf, 0xCu);
   }
 
@@ -363,7 +363,7 @@ LABEL_12:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v3;
+  obj = allValues;
   v6 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -388,9 +388,9 @@ LABEL_12:
           v13 = _MADLog(@"Analytics");
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [v11 eventName];
+            eventName = [v11 eventName];
             *buf = v15;
-            v23 = v14;
+            v23 = eventName;
             _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "[CoreAnalytics]: SUBMIT_ALL_EVENT: Sending event %{public}@", buf, 0xCu);
           }
         }
@@ -409,11 +409,11 @@ LABEL_12:
   }
 }
 
-- (void)_queue_registerSendEvent:(id)a3
+- (void)_queue_registerSendEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (!v4)
+  if (!eventCopy)
   {
     v8 = _MADLog(@"Analytics");
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -441,7 +441,7 @@ LABEL_12:
     }
 
     *buf = 138543362;
-    v15 = v4;
+    v15 = eventCopy;
     v9 = "[CoreAnalytics] SUBMIT: NO -- Unable to invoke CoreAnalytics on this OS for event %{public}@";
     v10 = v8;
     v11 = OS_LOG_TYPE_DEFAULT;
@@ -455,13 +455,13 @@ LABEL_12:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v15 = v4;
+      v15 = eventCopy;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "[CoreAnalytics] SUBMIT: Calling SendEventLazy for %{public}@", buf, 0xCu);
     }
   }
 
-  v7 = [v4 eventName];
-  v13 = v4;
+  eventName = [eventCopy eventName];
+  v13 = eventCopy;
   AnalyticsSendEventLazy();
 
   v8 = v13;

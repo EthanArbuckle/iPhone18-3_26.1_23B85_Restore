@@ -1,8 +1,8 @@
 @interface SAAppSizer
 - (SAAppSizer)init;
-- (void)callHandlerWithError:(id)a3;
+- (void)callHandlerWithError:(id)error;
 - (void)invalidateConnection;
-- (void)startObservingWithScanOptions:(unint64_t)a3 updateHandler:(id)a4;
+- (void)startObservingWithScanOptions:(unint64_t)options updateHandler:(id)handler;
 - (void)stopObserving;
 @end
 
@@ -32,35 +32,35 @@
   }
 }
 
-- (void)callHandlerWithError:(id)a3
+- (void)callHandlerWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   sarc = self->_sarc;
   if (sarc && !self->_alreadyReportedXPCError)
   {
     self->_alreadyReportedXPCError = 1;
-    [(SAReplyController *)sarc callAppSizerHandlerWithError:v4];
+    [(SAReplyController *)sarc callAppSizerHandlerWithError:errorCopy];
     v6 = self->_sarc;
     self->_sarc = 0;
 
-    v7 = self;
-    objc_sync_enter(v7);
-    [(SAAppSizer *)v7 invalidateConnection];
-    objc_sync_exit(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(SAAppSizer *)selfCopy invalidateConnection];
+    objc_sync_exit(selfCopy);
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)startObservingWithScanOptions:(unint64_t)a3 updateHandler:(id)a4
+- (void)startObservingWithScanOptions:(unint64_t)options updateHandler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    if (v7->_handlerAlreadyRegistered)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy->_handlerAlreadyRegistered)
     {
       v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s can't be called more than once per AppSizer instance", "-[SAAppSizer startObservingWithScanOptions:updateHandler:]"];
       v9 = SALog();
@@ -75,54 +75,54 @@
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
       v12 = [v10 errorWithDomain:*MEMORY[0x277CCA5B8] code:17 userInfo:v11];
 
-      v6[2](v6, 0, v12);
+      handlerCopy[2](handlerCopy, 0, v12);
     }
 
     else
     {
-      v7->_alreadyReportedXPCError = 0;
+      selfCopy->_alreadyReportedXPCError = 0;
       v13 = objc_opt_new();
-      sarc = v7->_sarc;
-      v7->_sarc = v13;
+      sarc = selfCopy->_sarc;
+      selfCopy->_sarc = v13;
 
-      [(SAReplyController *)v7->_sarc setAppSizerUpdateHandler:v6];
+      [(SAReplyController *)selfCopy->_sarc setAppSizerUpdateHandler:handlerCopy];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __58__SAAppSizer_startObservingWithScanOptions_updateHandler___block_invoke;
       v25[3] = &unk_279CD6CF8;
-      v25[4] = v7;
+      v25[4] = selfCopy;
       v15 = [SADaemonXPC newWithInvalidationHandler:v25];
-      xpcOut = v7->_xpcOut;
-      v7->_xpcOut = v15;
+      xpcOut = selfCopy->_xpcOut;
+      selfCopy->_xpcOut = v15;
 
-      v17 = v7->_xpcOut;
+      v17 = selfCopy->_xpcOut;
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __58__SAAppSizer_startObservingWithScanOptions_updateHandler___block_invoke_2;
       v23[3] = &unk_279CD6D20;
-      v23[4] = v7;
+      v23[4] = selfCopy;
       v24 = 0;
       v18 = [(SADaemonXPC *)v17 remoteObjectProxyWithErrorHandler:v23];
-      v19 = v7->_sarc;
+      v19 = selfCopy->_sarc;
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __58__SAAppSizer_startObservingWithScanOptions_updateHandler___block_invoke_3;
       v22[3] = &unk_279CD6D48;
-      v22[4] = v7;
+      v22[4] = selfCopy;
       [v18 addAppSizerHandler:v19 reply:v22];
-      v7->_handlerAlreadyRegistered = 1;
+      selfCopy->_handlerAlreadyRegistered = 1;
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __58__SAAppSizer_startObservingWithScanOptions_updateHandler___block_invoke_4;
       v21[3] = &unk_279CD6CF8;
-      v21[4] = v7;
-      [v18 runAppSizerWithScanOptions:a3 reply:v21];
+      v21[4] = selfCopy;
+      [v18 runAppSizerWithScanOptions:options reply:v21];
 
       v8 = 0;
       v12 = 0;
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 
   else

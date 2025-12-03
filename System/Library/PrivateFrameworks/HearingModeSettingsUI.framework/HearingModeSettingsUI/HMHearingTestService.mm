@@ -1,39 +1,39 @@
 @interface HMHearingTestService
 - (UIViewController)hearingTestViewController;
 - (_TtC21HearingModeSettingsUI20HMHearingTestService)init;
-- (id)hearingTestViewControllerWithEnrollmentViewController:(id)a3;
-- (void)didTapImportAudiogramLinkIn:(id)a3 completion:(id)a4;
+- (id)hearingTestViewControllerWithEnrollmentViewController:(id)controller;
+- (void)didTapImportAudiogramLinkIn:(id)in completion:(id)completion;
 @end
 
 @implementation HMHearingTestService
 
 - (UIViewController)hearingTestViewController
 {
-  v2 = [objc_opt_self() makeStandardViewController];
+  makeStandardViewController = [objc_opt_self() makeStandardViewController];
 
-  return v2;
+  return makeStandardViewController;
 }
 
-- (id)hearingTestViewControllerWithEnrollmentViewController:(id)a3
+- (id)hearingTestViewControllerWithEnrollmentViewController:(id)controller
 {
   v4 = *((*MEMORY[0x277D85000] & self->super.isa) + 0x70);
-  v5 = a3;
-  v6 = self;
-  v4(v5);
-  v7 = [objc_opt_self() makeStandardViewControllerAudioGramImportFlowProvider_];
+  controllerCopy = controller;
+  selfCopy = self;
+  v4(controllerCopy);
+  makeStandardViewControllerAudioGramImportFlowProvider_ = [objc_opt_self() makeStandardViewControllerAudioGramImportFlowProvider_];
 
-  return v7;
+  return makeStandardViewControllerAudioGramImportFlowProvider_;
 }
 
-- (void)didTapImportAudiogramLinkIn:(id)a3 completion:(id)a4
+- (void)didTapImportAudiogramLinkIn:(id)in completion:(id)completion
 {
-  v5 = a3;
-  v9 = self;
-  v6 = [v5 navigationController];
-  if (v6)
+  inCopy = in;
+  selfCopy = self;
+  navigationController = [inCopy navigationController];
+  if (navigationController)
   {
-    v7 = v6;
-    v8 = (*((*MEMORY[0x277D85000] & v9->super.isa) + 0x68))();
+    v7 = navigationController;
+    v8 = (*((*MEMORY[0x277D85000] & selfCopy->super.isa) + 0x68))();
     [v7 pushViewController:v8 animated:1];
   }
 }

@@ -1,9 +1,9 @@
 @interface CSBluetoothWirelessSplitterMonitorImpIOS
 - (CSBluetoothWirelessSplitterMonitorImpIOS)init;
 - (void)_didReceiveWirelessSplitterStateChange;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
-- (void)splitterState:(id)a3;
+- (void)splitterState:(id)state;
 @end
 
 @implementation CSBluetoothWirelessSplitterMonitorImpIOS
@@ -35,9 +35,9 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   if (self->_notifyToken == -1)
   {
     handler[0] = _NSConcreteStackBlock;
@@ -45,7 +45,7 @@
     handler[2] = sub_1000EC680;
     handler[3] = &unk_1002537C0;
     handler[4] = self;
-    notify_register_dispatch("com.apple.bluetooth.WirelessSplitterOn", &self->_notifyToken, v4, handler);
+    notify_register_dispatch("com.apple.bluetooth.WirelessSplitterOn", &self->_notifyToken, queueCopy, handler);
     [(CSBluetoothWirelessSplitterMonitorImpIOS *)self _didReceiveWirelessSplitterStateChange];
     v5 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -71,10 +71,10 @@ LABEL_6:
   }
 }
 
-- (void)splitterState:(id)a3
+- (void)splitterState:(id)state
 {
-  v3 = a3;
-  if (v3)
+  stateCopy = state;
+  if (stateCopy)
   {
     v4 = +[CSBluetoothManager sharedInstance];
     if (v4)
@@ -83,13 +83,13 @@ LABEL_6:
       v5[1] = 3221225472;
       v5[2] = sub_1000EC800;
       v5[3] = &unk_100251588;
-      v6 = v3;
+      v6 = stateCopy;
       [v4 getWirelessSplitterInfoWithCompletion:v5];
     }
 
     else
     {
-      (*(v3 + 2))(v3, 0, 0);
+      (*(stateCopy + 2))(stateCopy, 0, 0);
     }
   }
 }
@@ -98,7 +98,7 @@ LABEL_6:
 {
   if ((+[CSUtils isDarwinOS]& 1) != 0)
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -113,10 +113,10 @@ LABEL_6:
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface CNUIContactsAuthorizationStore
 - (CNUIContactsAuthorizationStore)init;
-- (CNUIContactsAuthorizationStore)initWithBundleIdentifier:(id)a3;
+- (CNUIContactsAuthorizationStore)initWithBundleIdentifier:(id)identifier;
 - (id)contactsAuthorizationModel;
-- (id)contactsAuthorizationModelByLoadingIconsOfRemoteItemsInModel:(id)a3;
-- (id)recordForBundleIdentifier:(id)a3;
+- (id)contactsAuthorizationModelByLoadingIconsOfRemoteItemsInModel:(id)model;
+- (id)recordForBundleIdentifier:(id)identifier;
 - (id)records;
-- (id)saveContactsAuthorizationModel:(id)a3;
+- (id)saveContactsAuthorizationModel:(id)model;
 @end
 
 @implementation CNUIContactsAuthorizationStore
 
-- (id)saveContactsAuthorizationModel:(id)a3
+- (id)saveContactsAuthorizationModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = MEMORY[0x1E6996720];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__CNUIContactsAuthorizationStore_saveContactsAuthorizationModel___block_invoke;
   v9[3] = &unk_1E74E1C18;
-  v10 = v4;
-  v11 = self;
-  v6 = v4;
+  v10 = modelCopy;
+  selfCopy = self;
+  v6 = modelCopy;
   v7 = [v5 lazyFutureWithBlock:v9];
 
   return v7;
@@ -52,17 +52,17 @@ void __65__CNUIContactsAuthorizationStore_saveContactsAuthorizationModel___block
   [v7 saveAuthorizationRecord:v8];
 }
 
-- (id)contactsAuthorizationModelByLoadingIconsOfRemoteItemsInModel:(id)a3
+- (id)contactsAuthorizationModelByLoadingIconsOfRemoteItemsInModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = MEMORY[0x1E6996720];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __95__CNUIContactsAuthorizationStore_contactsAuthorizationModelByLoadingIconsOfRemoteItemsInModel___block_invoke;
   v9[3] = &unk_1E74E1BC8;
-  v10 = v4;
-  v11 = self;
-  v6 = v4;
+  v10 = modelCopy;
+  selfCopy = self;
+  v6 = modelCopy;
   v7 = [v5 lazyFutureWithBlock:v9];
 
   return v7;
@@ -95,11 +95,11 @@ id __95__CNUIContactsAuthorizationStore_contactsAuthorizationModelByLoadingIcons
   return v7;
 }
 
-- (id)recordForBundleIdentifier:(id)a3
+- (id)recordForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CNUIContactsAuthorizationStore *)self tccSettings];
-  v6 = [v5 authorizationRecordForBundleIdentifier:v4];
+  identifierCopy = identifier;
+  tccSettings = [(CNUIContactsAuthorizationStore *)self tccSettings];
+  v6 = [tccSettings authorizationRecordForBundleIdentifier:identifierCopy];
 
   return v6;
 }
@@ -108,25 +108,25 @@ id __95__CNUIContactsAuthorizationStore_contactsAuthorizationModelByLoadingIcons
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E6996568];
-  v4 = [(CNUIContactsAuthorizationStore *)self bundleIdentifier];
-  LOBYTE(v3) = (*(v3 + 16))(v3, v4);
+  bundleIdentifier = [(CNUIContactsAuthorizationStore *)self bundleIdentifier];
+  LOBYTE(v3) = (*(v3 + 16))(v3, bundleIdentifier);
 
   if (v3)
   {
-    v5 = [(CNUIContactsAuthorizationStore *)self tccSettings];
-    v6 = [v5 authorizationRecords];
+    tccSettings = [(CNUIContactsAuthorizationStore *)self tccSettings];
+    authorizationRecords = [tccSettings authorizationRecords];
 LABEL_5:
-    v8 = v6;
+    v8 = authorizationRecords;
     goto LABEL_6;
   }
 
-  v7 = [(CNUIContactsAuthorizationStore *)self bundleIdentifier];
-  v5 = [(CNUIContactsAuthorizationStore *)self recordForBundleIdentifier:v7];
+  bundleIdentifier2 = [(CNUIContactsAuthorizationStore *)self bundleIdentifier];
+  tccSettings = [(CNUIContactsAuthorizationStore *)self recordForBundleIdentifier:bundleIdentifier2];
 
-  if (v5)
+  if (tccSettings)
   {
-    v10[0] = v5;
-    v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
+    v10[0] = tccSettings;
+    authorizationRecords = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     goto LABEL_5;
   }
 
@@ -168,23 +168,23 @@ CNUICoreContactsAuthorizationModel *__60__CNUIContactsAuthorizationStore_contact
   return v4;
 }
 
-- (CNUIContactsAuthorizationStore)initWithBundleIdentifier:(id)a3
+- (CNUIContactsAuthorizationStore)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = CNUIContactsAuthorizationStore;
   v6 = [(CNUIContactsAuthorizationStore *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bundleIdentifier, a3);
+    objc_storeStrong(&v6->_bundleIdentifier, identifier);
     v8 = objc_alloc_init(CNUICoreRemoteApplicationIconLoader);
     iconFetcher = v7->_iconFetcher;
     v7->_iconFetcher = v8;
 
-    v10 = [MEMORY[0x1E6996850] defaultTCC];
+    defaultTCC = [MEMORY[0x1E6996850] defaultTCC];
     tccSettings = v7->_tccSettings;
-    v7->_tccSettings = v10;
+    v7->_tccSettings = defaultTCC;
 
     v12 = v7;
   }
@@ -194,7 +194,7 @@ CNUICoreContactsAuthorizationModel *__60__CNUIContactsAuthorizationStore_contact
 
 - (CNUIContactsAuthorizationStore)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }

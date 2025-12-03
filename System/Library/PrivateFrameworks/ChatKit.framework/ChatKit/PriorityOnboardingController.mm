@@ -1,6 +1,6 @@
 @interface PriorityOnboardingController
-- (_TtC7ChatKit28PriorityOnboardingController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC7ChatKit28PriorityOnboardingController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC7ChatKit28PriorityOnboardingController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC7ChatKit28PriorityOnboardingController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)customizeButtonAction;
 - (void)hideNotificationsButtonAction;
 - (void)viewDidLoad;
@@ -10,36 +10,36 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   PriorityOnboardingController.viewDidLoad()();
 }
 
 - (void)hideNotificationsButtonAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_190A79E74();
 }
 
 - (void)customizeButtonAction
 {
-  v4 = self;
+  selfCopy = self;
   sub_190ABA3AC();
-  v2 = [(PriorityOnboardingController *)v4 navigationController];
-  if (v2)
+  navigationController = [(PriorityOnboardingController *)selfCopy navigationController];
+  if (navigationController)
   {
-    v3 = v2;
-    [v2 dismissViewControllerAnimated:1 completion:0];
+    v3 = navigationController;
+    [navigationController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (_TtC7ChatKit28PriorityOnboardingController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC7ChatKit28PriorityOnboardingController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC7ChatKit28PriorityOnboardingController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC7ChatKit28PriorityOnboardingController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

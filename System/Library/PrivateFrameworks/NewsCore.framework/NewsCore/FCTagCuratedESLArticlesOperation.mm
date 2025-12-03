@@ -1,8 +1,8 @@
 @interface FCTagCuratedESLArticlesOperation
 - (FCTagCuratedESLArticlesOperation)init;
-- (FCTagCuratedESLArticlesOperation)initWithTags:(id)a3 context:(id)a4 configuration:(id)a5 bundleSubscriptionManager:(id)a6;
-- (id)_feedItemFromArticleRecord:(void *)a3 articleListIDsByArticleID:;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCTagCuratedESLArticlesOperation)initWithTags:(id)tags context:(id)context configuration:(id)configuration bundleSubscriptionManager:(id)manager;
+- (id)_feedItemFromArticleRecord:(void *)record articleListIDsByArticleID:;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)prepareOperation;
 @end
@@ -35,27 +35,27 @@
   objc_exception_throw(v6);
 }
 
-- (FCTagCuratedESLArticlesOperation)initWithTags:(id)a3 context:(id)a4 configuration:(id)a5 bundleSubscriptionManager:(id)a6
+- (FCTagCuratedESLArticlesOperation)initWithTags:(id)tags context:(id)context configuration:(id)configuration bundleSubscriptionManager:(id)manager
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  tagsCopy = tags;
+  contextCopy = context;
+  configurationCopy = configuration;
+  managerCopy = manager;
   v20.receiver = self;
   v20.super_class = FCTagCuratedESLArticlesOperation;
   v14 = [(FCOperation *)&v20 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [tagsCopy copy];
     tags = v14->_tags;
     v14->_tags = v15;
 
-    objc_storeStrong(&v14->_context, a4);
-    objc_storeStrong(&v14->_configuration, a5);
-    objc_storeStrong(&v14->_bundleSubscriptionManager, a6);
-    v17 = [MEMORY[0x1E695DEC8] array];
+    objc_storeStrong(&v14->_context, context);
+    objc_storeStrong(&v14->_configuration, configuration);
+    objc_storeStrong(&v14->_bundleSubscriptionManager, manager);
+    array = [MEMORY[0x1E695DEC8] array];
     networkEvents = v14->_networkEvents;
-    v14->_networkEvents = v17;
+    v14->_networkEvents = array;
   }
 
   return v14;
@@ -221,9 +221,9 @@ id __52__FCTagCuratedESLArticlesOperation_prepareOperation__block_invoke_16(uint
     if (self)
     {
       v3 = objc_alloc_init(FCCKContentBatchedFetchRecordsOperation);
-      v4 = [(FCContentContext *)self->_context internalContentContext];
-      v5 = [v4 contentDatabase];
-      [(FCCKContentBatchedFetchRecordsOperation *)v3 setDatabase:v5];
+      internalContentContext = [(FCContentContext *)self->_context internalContentContext];
+      contentDatabase = [internalContentContext contentDatabase];
+      [(FCCKContentBatchedFetchRecordsOperation *)v3 setDatabase:contentDatabase];
 
       v7 = [(NSArray *)self->_evergreenArticleListIDs fc_arrayByTransformingWithBlock:&__block_literal_global_40];
       if (v3)
@@ -245,7 +245,7 @@ id __52__FCTagCuratedESLArticlesOperation_prepareOperation__block_invoke_16(uint
       v34 = __66__FCTagCuratedESLArticlesOperation__performOperationWithStreaming__block_invoke_2;
       v35 = &unk_1E7C38B88;
       v12 = v11;
-      v36 = v12;
+      selfCopy2 = v12;
       v14 = v10;
       v37 = v14;
       if (v3)
@@ -257,7 +257,7 @@ id __52__FCTagCuratedESLArticlesOperation_prepareOperation__block_invoke_16(uint
       *&buf[8] = 3221225472;
       *&buf[16] = __66__FCTagCuratedESLArticlesOperation__performOperationWithStreaming__block_invoke_6;
       v40 = &unk_1E7C36E78;
-      v41 = self;
+      selfCopy4 = self;
       v42 = v14;
       v43[0] = v12;
       v15 = v12;
@@ -280,26 +280,26 @@ id __52__FCTagCuratedESLArticlesOperation_prepareOperation__block_invoke_16(uint
       if (os_log_type_enabled(FCOperationLog, OS_LOG_TYPE_DEFAULT))
       {
         v19 = v18;
-        v20 = [(FCOperation *)self shortOperationDescription];
+        shortOperationDescription = [(FCOperation *)self shortOperationDescription];
         evergreenArticleListIDs = self->_evergreenArticleListIDs;
         *buf = 138543618;
-        *&buf[4] = v20;
+        *&buf[4] = shortOperationDescription;
         *&buf[12] = 2114;
         *&buf[14] = evergreenArticleListIDs;
         _os_log_impl(&dword_1B63EF000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ will fetch from article list IDs: %{public}@", buf, 0x16u);
       }
 
       v22 = objc_alloc_init(FCCKBatchedMultiFetchQueryOperation);
-      v23 = [(FCContentContext *)self->_context internalContentContext];
-      v24 = [v23 contentDatabase];
-      [(FCCKBatchedMultiFetchQueryOperation *)v22 setDatabase:v24];
+      internalContentContext2 = [(FCContentContext *)self->_context internalContentContext];
+      contentDatabase2 = [internalContentContext2 contentDatabase];
+      [(FCCKBatchedMultiFetchQueryOperation *)v22 setDatabase:contentDatabase2];
 
       [(FCCKBatchedMultiFetchQueryOperation *)v22 setRecordIDs:?];
       newValue = MEMORY[0x1E69E9820];
       v33 = 3221225472;
       v34 = __70__FCTagCuratedESLArticlesOperation__performOperationWithSingleRequest__block_invoke_22;
       v35 = &unk_1E7C36D40;
-      v36 = self;
+      selfCopy2 = self;
       v25 = [MEMORY[0x1E695DEC8] fc_array:&newValue];
       [(FCCKBatchedMultiFetchQueryOperation *)v22 setRecordSpecs:v25];
 
@@ -320,7 +320,7 @@ id __52__FCTagCuratedESLArticlesOperation_prepareOperation__block_invoke_16(uint
       *&buf[8] = 3221225472;
       *&buf[16] = __70__FCTagCuratedESLArticlesOperation__performOperationWithSingleRequest__block_invoke_3;
       v40 = &unk_1E7C399A8;
-      v41 = self;
+      selfCopy4 = self;
       v29 = v28;
       v42 = v29;
       objc_copyWeak(v43, &location);
@@ -342,7 +342,7 @@ id __52__FCTagCuratedESLArticlesOperation_prepareOperation__block_invoke_16(uint
       *&buf[8] = 3221225472;
       *&buf[16] = __70__FCTagCuratedESLArticlesOperation__performOperationWithSingleRequest__block_invoke;
       v40 = &unk_1E7C36EA0;
-      v41 = self;
+      selfCopy4 = self;
       __70__FCTagCuratedESLArticlesOperation__performOperationWithSingleRequest__block_invoke(buf);
     }
   }
@@ -350,15 +350,15 @@ id __52__FCTagCuratedESLArticlesOperation_prepareOperation__block_invoke_16(uint
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(FCTagCuratedESLArticlesOperation *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(FCTagCuratedESLArticlesOperation *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(FCTagCuratedESLArticlesOperation *)self completionHandler];
-    (v5)[2](v5, v6);
+    completionHandler2 = [(FCTagCuratedESLArticlesOperation *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, errorCopy);
   }
 }
 
@@ -642,29 +642,29 @@ uint64_t __70__FCTagCuratedESLArticlesOperation__performOperationWithSingleReque
   return v3;
 }
 
-- (id)_feedItemFromArticleRecord:(void *)a3 articleListIDsByArticleID:
+- (id)_feedItemFromArticleRecord:(void *)record articleListIDsByArticleID:
 {
-  v5 = a3;
-  if (a1)
+  recordCopy = record;
+  if (self)
   {
     v6 = MEMORY[0x1E69B6E30];
-    v7 = a1[50];
+    v7 = self[50];
     v8 = a2;
-    v9 = [v7 contentStoreFrontID];
-    v10 = [a1[50] internalContentContext];
-    v11 = [v10 articleRecordSource];
-    a1 = [v6 feedItemFromCKRecord:v8 storefrontID:v9 recordSource:v11];
+    contentStoreFrontID = [v7 contentStoreFrontID];
+    internalContentContext = [self[50] internalContentContext];
+    articleRecordSource = [internalContentContext articleRecordSource];
+    self = [v6 feedItemFromCKRecord:v8 storefrontID:contentStoreFrontID recordSource:articleRecordSource];
 
-    if (a1)
+    if (self)
     {
-      [a1 markAsEvergreen];
-      v12 = [a1 articleID];
-      v13 = [v5 objectForKeyedSubscript:v12];
-      [a1 addSurfacedByArticleListID:v13];
+      [self markAsEvergreen];
+      articleID = [self articleID];
+      v13 = [recordCopy objectForKeyedSubscript:articleID];
+      [self addSurfacedByArticleListID:v13];
     }
   }
 
-  return a1;
+  return self;
 }
 
 id __66__FCTagCuratedESLArticlesOperation__performOperationWithStreaming__block_invoke(uint64_t a1, void *a2)

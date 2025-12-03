@@ -1,16 +1,16 @@
 @interface AudioConferenceControlCenterModuleEffectControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation AudioConferenceControlCenterModuleEffectControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideoConferenceControlCenterModule.EffectControl" hasSwiftField:@"isExpanded" withSwiftType:"Bool"];
-  [v3 validateClass:@"VideoConferenceControlCenterModule.EffectControl" hasSwiftField:@"buttonTitle" withSwiftType:"String"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideoConferenceControlCenterModule.EffectControl" hasSwiftField:@"isExpanded" withSwiftType:"Bool"];
+  [validationsCopy validateClass:@"VideoConferenceControlCenterModule.EffectControl" hasSwiftField:@"buttonTitle" withSwiftType:"String"];
 }
 
 - (id)accessibilityLabel
@@ -19,17 +19,17 @@
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    accessibilityLabel = v3;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = AudioConferenceControlCenterModuleEffectControlAccessibility;
-    v5 = [(AudioConferenceControlCenterModuleEffectControlAccessibility *)&v8 accessibilityLabel];
+    accessibilityLabel = [(AudioConferenceControlCenterModuleEffectControlAccessibility *)&v8 accessibilityLabel];
   }
 
-  v6 = v5;
+  v6 = accessibilityLabel;
 
   return v6;
 }

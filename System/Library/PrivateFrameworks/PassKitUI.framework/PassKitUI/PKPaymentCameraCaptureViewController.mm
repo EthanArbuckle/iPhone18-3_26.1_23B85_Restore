@@ -1,5 +1,5 @@
 @interface PKPaymentCameraCaptureViewController
-- (PKPaymentCameraCaptureViewController)initWithWebService:(id)a3 context:(int64_t)a4;
+- (PKPaymentCameraCaptureViewController)initWithWebService:(id)service context:(int64_t)context;
 - (PKPaymentCameraCaptureViewControllerDelegate)flowItemDelegate;
 @end
 
@@ -112,10 +112,10 @@ uint64_t __74___PKPaymentCameraCaptureViewController_cameraReader_didRecognizeOb
   return [v4 setButtonsEnabled:0];
 }
 
-- (PKPaymentCameraCaptureViewController)initWithWebService:(id)a3 context:(int64_t)a4
+- (PKPaymentCameraCaptureViewController)initWithWebService:(id)service context:(int64_t)context
 {
-  v6 = a3;
-  v7 = [[_PKPaymentCameraCaptureViewController alloc] initWithWebService:v6 context:a4];
+  serviceCopy = service;
+  v7 = [[_PKPaymentCameraCaptureViewController alloc] initWithWebService:serviceCopy context:context];
 
   return v7;
 }

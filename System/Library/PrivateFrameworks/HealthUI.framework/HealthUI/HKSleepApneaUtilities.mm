@@ -1,17 +1,17 @@
 @interface HKSleepApneaUtilities
-+ (id)averageBreathingDisturbancesForChartData:(id)a3;
-+ (id)localizedTitleForBreathingDisturbances:(id)a3;
-+ (id)localizedTitleForBreathingDisturbancesClassification:(int64_t)a3;
-+ (id)mostFrequentBreathingDisturbancesClassificationForChartData:(id)a3;
++ (id)averageBreathingDisturbancesForChartData:(id)data;
++ (id)localizedTitleForBreathingDisturbances:(id)disturbances;
++ (id)localizedTitleForBreathingDisturbancesClassification:(int64_t)classification;
++ (id)mostFrequentBreathingDisturbancesClassificationForChartData:(id)data;
 @end
 
 @implementation HKSleepApneaUtilities
 
-+ (id)localizedTitleForBreathingDisturbancesClassification:(int64_t)a3
++ (id)localizedTitleForBreathingDisturbancesClassification:(int64_t)classification
 {
-  if (a3)
+  if (classification)
   {
-    if (a3 != 1)
+    if (classification != 1)
     {
       goto LABEL_6;
     }
@@ -32,25 +32,25 @@ LABEL_6:
   return v3;
 }
 
-+ (id)localizedTitleForBreathingDisturbances:(id)a3
++ (id)localizedTitleForBreathingDisturbances:(id)disturbances
 {
   v4 = HKAppleSleepingBreathingDisturbancesClassificationForQuantity();
-  v5 = [a1 localizedTitleForBreathingDisturbancesClassification:{objc_msgSend(v4, "integerValue")}];
+  v5 = [self localizedTitleForBreathingDisturbancesClassification:{objc_msgSend(v4, "integerValue")}];
 
   return v5;
 }
 
-+ (id)averageBreathingDisturbancesForChartData:(id)a3
++ (id)averageBreathingDisturbancesForChartData:(id)data
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  dataCopy = data;
+  if ([dataCopy count])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v4 = v3;
+    v4 = dataCopy;
     v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v5)
     {
@@ -87,8 +87,8 @@ LABEL_6:
     }
 
     v15 = MEMORY[0x1E696C348];
-    v16 = [MEMORY[0x1E696C510] countUnit];
-    v14 = [v15 quantityWithUnit:v16 doubleValue:v9 / v13];
+    countUnit = [MEMORY[0x1E696C510] countUnit];
+    v14 = [v15 quantityWithUnit:countUnit doubleValue:v9 / v13];
   }
 
   else
@@ -99,16 +99,16 @@ LABEL_6:
   return v14;
 }
 
-+ (id)mostFrequentBreathingDisturbancesClassificationForChartData:(id)a3
++ (id)mostFrequentBreathingDisturbancesClassificationForChartData:(id)data
 {
-  v3 = a3;
-  if ([v3 count])
+  dataCopy = data;
+  if ([dataCopy count])
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __85__HKSleepApneaUtilities_mostFrequentBreathingDisturbancesClassificationForChartData___block_invoke;
     aBlock[3] = &unk_1E81B5DA8;
-    v9 = v3;
+    v9 = dataCopy;
     v4 = _Block_copy(aBlock);
     v5 = v4[2](v4, 0);
     if (v4[2](v4, 1) >= v5)

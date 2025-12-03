@@ -1,10 +1,10 @@
 @interface UAFAssetSetObserver
 + (id)getConcurrentQueue;
 + (id)getSerialQueue;
-+ (id)notificationForAssetSet:(id)a3 forRoot:(BOOL)a4;
-+ (int)listenForMAStartupNotification:(id)a3 updateHandler:(id)a4;
-+ (int)listenForNotification:(id)a3 queue:(id)a4 updateHandler:(id)a5;
-- (UAFAssetSetObserver)initWithAssetSet:(id)a3 ignoreMobileAssetStartup:(BOOL)a4 configurationDirURLs:(id)a5 queue:(id)a6 updateHandler:(id)a7;
++ (id)notificationForAssetSet:(id)set forRoot:(BOOL)root;
++ (int)listenForMAStartupNotification:(id)notification updateHandler:(id)handler;
++ (int)listenForNotification:(id)notification queue:(id)queue updateHandler:(id)handler;
+- (UAFAssetSetObserver)initWithAssetSet:(id)set ignoreMobileAssetStartup:(BOOL)startup configurationDirURLs:(id)ls queue:(id)queue updateHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -51,11 +51,11 @@ void __37__UAFAssetSetObserver_getSerialQueue__block_invoke()
   qword_1ED7D10A0 = v0;
 }
 
-+ (id)notificationForAssetSet:(id)a3 forRoot:(BOOL)a4
++ (id)notificationForAssetSet:(id)set forRoot:(BOOL)root
 {
-  v4 = a4;
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", @"com.apple.siri.uaf", a3];
-  if (v4)
+  rootCopy = root;
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", @"com.apple.siri.uaf", set];
+  if (rootCopy)
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v5, @"root"];
 
@@ -65,24 +65,24 @@ void __37__UAFAssetSetObserver_getSerialQueue__block_invoke()
   return v5;
 }
 
-+ (int)listenForNotification:(id)a3 queue:(id)a4 updateHandler:(id)a5
++ (int)listenForNotification:(id)notification queue:(id)queue updateHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  notificationCopy = notification;
+  handlerCopy = handler;
   out_token = -1;
-  v9 = v7;
-  v10 = a4;
-  v11 = [v7 UTF8String];
+  v9 = notificationCopy;
+  queueCopy = queue;
+  uTF8String = [notificationCopy UTF8String];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __65__UAFAssetSetObserver_listenForNotification_queue_updateHandler___block_invoke;
   handler[3] = &unk_1E7FFD9C0;
-  v12 = v7;
+  v12 = notificationCopy;
   v20 = v12;
-  v21 = v8;
-  v13 = v8;
-  v14 = notify_register_dispatch(v11, &out_token, v10, handler);
+  v21 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = notify_register_dispatch(uTF8String, &out_token, queueCopy, handler);
 
   if (v14)
   {
@@ -124,42 +124,42 @@ uint64_t __65__UAFAssetSetObserver_listenForNotification_queue_updateHandler___b
   return result;
 }
 
-+ (int)listenForMAStartupNotification:(id)a3 updateHandler:(id)a4
++ (int)listenForMAStartupNotification:(id)notification updateHandler:(id)handler
 {
   v5 = MEMORY[0x1E69B1900];
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  notificationCopy = notification;
   v8 = [v5 notifyRegistrationName:@"STARTUP_ACTIVATED" forAssetType:@"com.apple.MobileAsset.MAAutoAsset"];
-  v9 = [UAFAssetSetObserver listenForNotification:v8 queue:v7 updateHandler:v6];
+  v9 = [UAFAssetSetObserver listenForNotification:v8 queue:notificationCopy updateHandler:handlerCopy];
 
   return v9;
 }
 
-- (UAFAssetSetObserver)initWithAssetSet:(id)a3 ignoreMobileAssetStartup:(BOOL)a4 configurationDirURLs:(id)a5 queue:(id)a6 updateHandler:(id)a7
+- (UAFAssetSetObserver)initWithAssetSet:(id)set ignoreMobileAssetStartup:(BOOL)startup configurationDirURLs:(id)ls queue:(id)queue updateHandler:(id)handler
 {
-  v10 = a4;
+  startupCopy = startup;
   v50 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  setCopy = set;
+  lsCopy = ls;
+  queueCopy = queue;
+  handlerCopy = handler;
   v45.receiver = self;
   v45.super_class = UAFAssetSetObserver;
   v17 = [(UAFAssetSetObserver *)&v45 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_assetSetName, a3);
+    objc_storeStrong(&v17->_assetSetName, set);
     v19 = +[UAFConfigurationManager defaultManager];
-    if (v14)
+    if (lsCopy)
     {
-      v20 = [[UAFConfigurationManager alloc] initWithURLs:v14];
+      v20 = [[UAFConfigurationManager alloc] initWithURLs:lsCopy];
 
       v19 = v20;
     }
 
     v21 = objc_autoreleasePoolPush();
-    v22 = [v19 getAssetSet:v13];
+    v22 = [v19 getAssetSet:setCopy];
     if (!v22)
     {
       v29 = UAFGetLogCategory(&UAFLogContextClient);
@@ -168,7 +168,7 @@ uint64_t __65__UAFAssetSetObserver_listenForNotification_queue_updateHandler___b
         *buf = 136315394;
         v47 = "[UAFAssetSetObserver initWithAssetSet:ignoreMobileAssetStartup:configurationDirURLs:queue:updateHandler:]";
         v48 = 2114;
-        v49 = v13;
+        v49 = setCopy;
         _os_log_error_impl(&dword_1BCF2C000, v29, OS_LOG_TYPE_ERROR, "%s Could not init asset set %{public}@ for observer", buf, 0x16u);
       }
 
@@ -178,12 +178,12 @@ uint64_t __65__UAFAssetSetObserver_listenForNotification_queue_updateHandler___b
     }
 
     objc_autoreleasePoolPop(v21);
-    if (!v15)
+    if (!queueCopy)
     {
-      v15 = +[UAFAssetSetObserver getConcurrentQueue];
+      queueCopy = +[UAFAssetSetObserver getConcurrentQueue];
     }
 
-    v23 = MEMORY[0x1BFB33950](v16);
+    v23 = MEMORY[0x1BFB33950](handlerCopy);
     updateHandler = v18->_updateHandler;
     v18->_updateHandler = v23;
 
@@ -192,13 +192,13 @@ uint64_t __65__UAFAssetSetObserver_listenForNotification_queue_updateHandler___b
     v38 = 3221225472;
     v39 = __106__UAFAssetSetObserver_initWithAssetSet_ignoreMobileAssetStartup_configurationDirURLs_queue_updateHandler___block_invoke;
     v40 = &unk_1E7FFD9E8;
-    v15 = v15;
-    v41 = v15;
+    queueCopy = queueCopy;
+    v41 = queueCopy;
     objc_copyWeak(&v43, &location);
-    v25 = v13;
+    v25 = setCopy;
     v42 = v25;
     v26 = MEMORY[0x1BFB33950](&v37);
-    v27 = [UAFAssetSetObserver listenForUAFNotificationsForAssetSet:v25 forRoot:0 queue:v15 updateHandler:v26, v37, v38, v39, v40];
+    v27 = [UAFAssetSetObserver listenForUAFNotificationsForAssetSet:v25 forRoot:0 queue:queueCopy updateHandler:v26, v37, v38, v39, v40];
     v18->_uafNotifyToken = v27;
     if (v27 == -1)
     {
@@ -218,7 +218,7 @@ uint64_t __65__UAFAssetSetObserver_listenForNotification_queue_updateHandler___b
 
     else
     {
-      if (v10)
+      if (startupCopy)
       {
         v18->_maStartupNotifyToken = 0;
 LABEL_18:
@@ -232,7 +232,7 @@ LABEL_24:
         goto LABEL_25;
       }
 
-      v32 = [UAFAssetSetObserver listenForMAStartupNotification:v15 updateHandler:v26];
+      v32 = [UAFAssetSetObserver listenForMAStartupNotification:queueCopy updateHandler:v26];
       v18->_maStartupNotifyToken = v32;
       if (v32 != -1)
       {

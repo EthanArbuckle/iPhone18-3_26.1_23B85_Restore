@@ -1,29 +1,29 @@
 @interface BWNode
-- (BOOL)allInputsHaveReachedState:(int)a3;
+- (BOOL)allInputsHaveReachedState:(int)state;
 - (BOOL)hasNonLiveConfigurationChanges;
-- (BOOL)input:(id)a3 hasReachedState:(int)a4;
+- (BOOL)input:(id)input hasReachedState:(int)state;
 - (BWNode)init;
 - (NSString)briefName;
 - (NSString)description;
-- (id)osStatePropertyListWithVerbose:(BOOL)a3;
-- (void)_handleMessage:(id)a3 fromInput:(id)a4;
-- (void)addInput:(id)a3;
-- (void)addOutput:(id)a3;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (id)osStatePropertyListWithVerbose:(BOOL)verbose;
+- (void)_handleMessage:(id)message fromInput:(id)input;
+- (void)addInput:(id)input;
+- (void)addOutput:(id)output;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
-- (void)didSelectFormat:(id)a3 forOutput:(id)a4 forAttachedMediaKey:(id)a5;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
-- (void)handleStillImagePrewarmWithSettings:(id)a3 resourceConfig:(id)a4 forInput:(id)a5;
-- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)a3 forInput:(id)a4;
-- (void)notifyWhenEndOfConfigurationIsHandledUsingQueue:(id)a3 block:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
+- (void)didSelectFormat:(id)format forOutput:(id)output forAttachedMediaKey:(id)key;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
+- (void)handleNodeError:(id)error forInput:(id)input;
+- (void)handleStillImagePrewarmWithSettings:(id)settings resourceConfig:(id)config forInput:(id)input;
+- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)number forInput:(id)input;
+- (void)notifyWhenEndOfConfigurationIsHandledUsingQueue:(id)queue block:(id)block;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)removeInput:(id)a3;
-- (void)removeOutput:(id)a3;
-- (void)setRequestedConfigurationID:(int64_t)a3;
+- (void)removeInput:(id)input;
+- (void)removeOutput:(id)output;
+- (void)setRequestedConfigurationID:(int64_t)d;
 - (void)suspendResources;
 - (void)waitUntilEndOfConfigurationHandled;
 @end
@@ -55,15 +55,15 @@
   name = self->_name;
   if (name)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@" '%@'", name];
+    name = [MEMORY[0x1E696AEC0] stringWithFormat:@" '%@'", name];
   }
 
   else
   {
-    v4 = &stru_1F216A3D0;
+    name = &stru_1F216A3D0;
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p>%@", objc_opt_class(), self, v4];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %p>%@", objc_opt_class(), self, name];
 }
 
 - (void)prepareForCurrentConfigurationToBecomeLive
@@ -73,8 +73,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(BWNode *)self outputs];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v9 objects:v8 count:16];
+  outputs = [(BWNode *)self outputs];
+  v4 = [(NSArray *)outputs countByEnumeratingWithState:&v9 objects:v8 count:16];
   if (v4)
   {
     v5 = v4;
@@ -86,14 +86,14 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(outputs);
         }
 
         [*(*(&v9 + 1) + 8 * v7++) prepareForConfiguredFormatToBecomeLive];
       }
 
       while (v5 != v7);
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v9 objects:v8 count:16];
+      v5 = [(NSArray *)outputs countByEnumeratingWithState:&v9 objects:v8 count:16];
     }
 
     while (v5);
@@ -117,12 +117,12 @@
   return NSStringFromClass(v2);
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
-  if ([a5 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
 
-    [(BWNode *)self didSelectFormat:a3 forInput:a4];
+    [(BWNode *)self didSelectFormat:format forInput:input];
   }
 
   else
@@ -147,7 +147,7 @@
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
-          v15 = [v14 attachedMediaKeyDrivenByInputAttachedMediaKey:a5 inputIndex:{objc_msgSend(a4, "index")}];
+          v15 = [v14 attachedMediaKeyDrivenByInputAttachedMediaKey:key inputIndex:{objc_msgSend(input, "index")}];
           if (v15)
           {
             v16 = v15;
@@ -158,7 +158,7 @@
               [v14 _setMediaProperties:v17 forAttachedMediaKey:v16];
             }
 
-            [(BWNodeOutputMediaProperties *)v17 setResolvedFormat:a3];
+            [(BWNodeOutputMediaProperties *)v17 setResolvedFormat:format];
           }
         }
 
@@ -170,43 +170,43 @@
   }
 }
 
-- (void)didSelectFormat:(id)a3 forOutput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forOutput:(id)output forAttachedMediaKey:(id)key
 {
-  if ([a5 isEqualToString:@"PrimaryFormat"])
+  if ([key isEqualToString:@"PrimaryFormat"])
   {
 
-    [(BWNode *)self didSelectFormat:a3 forOutput:a4];
+    [(BWNode *)self didSelectFormat:format forOutput:output];
   }
 }
 
 - (BOOL)hasNonLiveConfigurationChanges
 {
-  v3 = [(BWNodeInput *)[(BWNode *)self input] liveFormat];
-  v4 = [(BWNodeOutput *)[(BWNode *)self output] liveFormat];
-  v5 = [(BWNodeInput *)[(BWNode *)self input] format];
-  v6 = [(BWNodeOutput *)[(BWNode *)self output] format];
-  if (v3 && ![(BWFormat *)v3 isEqual:v5])
+  liveFormat = [(BWNodeInput *)[(BWNode *)self input] liveFormat];
+  liveFormat2 = [(BWNodeOutput *)[(BWNode *)self output] liveFormat];
+  format = [(BWNodeInput *)[(BWNode *)self input] format];
+  format2 = [(BWNodeOutput *)[(BWNode *)self output] format];
+  if (liveFormat && ![(BWFormat *)liveFormat isEqual:format])
   {
     return 1;
   }
 
-  if (v4)
+  if (liveFormat2)
   {
-    return [(BWFormat *)v4 isEqual:v6]^ 1;
+    return [(BWFormat *)liveFormat2 isEqual:format2]^ 1;
   }
 
   return 0;
 }
 
-- (void)setRequestedConfigurationID:(int64_t)a3
+- (void)setRequestedConfigurationID:(int64_t)d
 {
-  self->_requestedConfigurationID = a3;
+  self->_requestedConfigurationID = d;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(BWNode *)self inputs];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v21 objects:v20 count:16];
+  inputs = [(BWNode *)self inputs];
+  v6 = [(NSArray *)inputs countByEnumeratingWithState:&v21 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -218,14 +218,14 @@
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(inputs);
         }
 
-        [*(*(&v21 + 1) + 8 * v9++) setRequestedConfigurationID:a3];
+        [*(*(&v21 + 1) + 8 * v9++) setRequestedConfigurationID:d];
       }
 
       while (v7 != v9);
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v21 objects:v20 count:16];
+      v7 = [(NSArray *)inputs countByEnumeratingWithState:&v21 objects:v20 count:16];
     }
 
     while (v7);
@@ -235,8 +235,8 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = [(BWNode *)self outputs];
-  v11 = [(NSArray *)v10 countByEnumeratingWithState:&v16 objects:v15 count:16];
+  outputs = [(BWNode *)self outputs];
+  v11 = [(NSArray *)outputs countByEnumeratingWithState:&v16 objects:v15 count:16];
   if (v11)
   {
     v12 = v11;
@@ -248,28 +248,28 @@
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(outputs);
         }
 
-        [*(*(&v16 + 1) + 8 * v14++) setRequestedConfigurationID:a3];
+        [*(*(&v16 + 1) + 8 * v14++) setRequestedConfigurationID:d];
       }
 
       while (v12 != v14);
-      v12 = [(NSArray *)v10 countByEnumeratingWithState:&v16 objects:v15 count:16];
+      v12 = [(NSArray *)outputs countByEnumeratingWithState:&v16 objects:v15 count:16];
     }
 
     while (v12);
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
   if (self->_input)
   {
-    [(BWNode *)self requestedConfigurationID:a3];
-    if ([(BWNode *)self preparedConfigurationID]!= a3)
+    [(BWNode *)self requestedConfigurationID:d];
+    if ([(BWNode *)self preparedConfigurationID]!= d)
     {
-      self->_preparedConfigurationID = a3;
+      self->_preparedConfigurationID = d;
     }
 
     if (!self->_singleInput || (output = self->_output) != 0 && !self->_singleOutput)
@@ -326,7 +326,7 @@
   FigHostTimeToNanoseconds();
 }
 
-- (void)notifyWhenEndOfConfigurationIsHandledUsingQueue:(id)a3 block:(id)a4
+- (void)notifyWhenEndOfConfigurationIsHandledUsingQueue:(id)queue block:(id)block
 {
   v7 = mach_absolute_time();
   currentConfigurationGroup = self->_currentConfigurationGroup;
@@ -334,9 +334,9 @@
   v9[1] = 3221225472;
   v9[2] = __64__BWNode_notifyWhenEndOfConfigurationIsHandledUsingQueue_block___block_invoke;
   v9[3] = &unk_1E79903B8;
-  v9[4] = a4;
+  v9[4] = block;
   v9[5] = v7;
-  dispatch_group_notify(currentConfigurationGroup, a3, v9);
+  dispatch_group_notify(currentConfigurationGroup, queue, v9);
 }
 
 uint64_t __64__BWNode_notifyWhenEndOfConfigurationIsHandledUsingQueue_block___block_invoke(uint64_t a1)
@@ -348,17 +348,17 @@ uint64_t __64__BWNode_notifyWhenEndOfConfigurationIsHandledUsingQueue_block___bl
   return v2();
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
-  if (a3)
+  if (d)
   {
     if (!self->_input)
     {
       return;
     }
 
-    v7 = [a3 longLongValue];
-    if (v7 != [(BWNode *)self liveConfigurationID])
+    longLongValue = [d longLongValue];
+    if (longLongValue != [(BWNode *)self liveConfigurationID])
     {
       return;
     }
@@ -382,14 +382,14 @@ LABEL_7:
       objc_exception_throw(v12);
     }
 
-    [(BWNodeOutput *)output markEndOfLiveOutputForConfigurationID:a3];
+    [(BWNodeOutput *)output markEndOfLiveOutputForConfigurationID:d];
     return;
   }
 
-  [(BWNode *)self didReachEndOfDataForInput:a4];
+  [(BWNode *)self didReachEndOfDataForInput:input];
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   if (self->_input)
   {
@@ -407,7 +407,7 @@ LABEL_7:
   }
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
   if (self->_input)
   {
@@ -421,29 +421,29 @@ LABEL_7:
 
     output = self->_output;
 
-    [(BWNodeOutput *)output emitNodeError:a3, a4];
+    [(BWNodeOutput *)output emitNodeError:error, input];
   }
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
   if (self->_input && self->_singleInput && (!self->_output || self->_singleOutput))
   {
-    [(BWNodeOutput *)self->_output emitDroppedSample:a3, a4];
+    [(BWNodeOutput *)self->_output emitDroppedSample:sample, input];
   }
 }
 
-- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)a3 forInput:(id)a4
+- (void)handleStillImageReferenceFrameBracketedCaptureSequenceNumber:(int)number forInput:(id)input
 {
   if (self->_input && self->_singleInput && (!self->_output || self->_singleOutput))
   {
-    [(BWNodeOutput *)self->_output emitStillImageReferenceFrameBracketedCaptureSequenceNumberMessageWithSequenceNumber:*&a3, a4];
+    [(BWNodeOutput *)self->_output emitStillImageReferenceFrameBracketedCaptureSequenceNumberMessageWithSequenceNumber:*&number, input];
   }
 }
 
-- (void)handleStillImagePrewarmWithSettings:(id)a3 resourceConfig:(id)a4 forInput:(id)a5
+- (void)handleStillImagePrewarmWithSettings:(id)settings resourceConfig:(id)config forInput:(id)input
 {
-  if ([(NSMutableArray *)self->_inputs containsObject:a5])
+  if ([(NSMutableArray *)self->_inputs containsObject:input])
   {
     v16 = 0u;
     v17 = 0u;
@@ -465,7 +465,7 @@ LABEL_7:
             objc_enumerationMutation(outputs);
           }
 
-          [*(*(&v14 + 1) + 8 * v12++) emitStillImagePrewarmMessageWithSettings:a3 resourceConfig:a4];
+          [*(*(&v14 + 1) + 8 * v12++) emitStillImagePrewarmMessageWithSettings:settings resourceConfig:config];
         }
 
         while (v10 != v12);
@@ -477,9 +477,9 @@ LABEL_7:
   }
 }
 
-- (void)addInput:(id)a3
+- (void)addInput:(id)input
 {
-  if (a3)
+  if (input)
   {
     inputs = self->_inputs;
     if (!inputs)
@@ -488,30 +488,30 @@ LABEL_7:
       self->_inputs = inputs;
     }
 
-    [(NSMutableArray *)inputs addObject:a3];
+    [(NSMutableArray *)inputs addObject:input];
     self->_singleInput = [(NSMutableArray *)self->_inputs count]== 1;
     if (!self->_input)
     {
-      self->_input = a3;
+      self->_input = input;
     }
   }
 }
 
-- (void)removeInput:(id)a3
+- (void)removeInput:(id)input
 {
-  if (a3)
+  if (input)
   {
     [(NSMutableArray *)self->_inputs removeObject:?];
-    if (self->_input == a3)
+    if (self->_input == input)
     {
       self->_input = [(NSMutableArray *)self->_inputs firstObject];
     }
   }
 }
 
-- (void)addOutput:(id)a3
+- (void)addOutput:(id)output
 {
-  if (a3)
+  if (output)
   {
     outputs = self->_outputs;
     if (!outputs)
@@ -520,39 +520,39 @@ LABEL_7:
       self->_outputs = outputs;
     }
 
-    [(NSMutableArray *)outputs addObject:a3];
+    [(NSMutableArray *)outputs addObject:output];
     self->_singleOutput = [(NSMutableArray *)self->_outputs count]== 1;
     if (!self->_output)
     {
-      self->_output = a3;
+      self->_output = output;
     }
   }
 }
 
-- (void)removeOutput:(id)a3
+- (void)removeOutput:(id)output
 {
-  if (a3)
+  if (output)
   {
     [(NSMutableArray *)self->_outputs removeObject:?];
-    if (self->_output == a3)
+    if (self->_output == output)
     {
       self->_output = [(NSMutableArray *)self->_outputs firstObject];
     }
   }
 }
 
-- (BOOL)input:(id)a3 hasReachedState:(int)a4
+- (BOOL)input:(id)input hasReachedState:(int)state
 {
-  v5 = [a3 liveFormat];
-  v6 = v5 == 0;
-  if (a4)
+  liveFormat = [input liveFormat];
+  v6 = liveFormat == 0;
+  if (state)
   {
     v6 = 0;
   }
 
-  if (a4 == 1)
+  if (state == 1)
   {
-    return v5 != 0;
+    return liveFormat != 0;
   }
 
   else
@@ -561,7 +561,7 @@ LABEL_7:
   }
 }
 
-- (BOOL)allInputsHaveReachedState:(int)a3
+- (BOOL)allInputsHaveReachedState:(int)state
 {
   if ([(BWNode *)self supportsConcurrentLiveInputCallbacks])
   {
@@ -572,8 +572,8 @@ LABEL_7:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(BWNode *)self inputs];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  inputs = [(BWNode *)self inputs];
+  v6 = [(NSArray *)inputs countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (v6)
   {
     v7 = v6;
@@ -585,10 +585,10 @@ LABEL_7:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(inputs);
         }
 
-        if ((a3 != 1) == ([*(*(&v12 + 1) + 8 * v9) liveFormat] != 0))
+        if ((state != 1) == ([*(*(&v12 + 1) + 8 * v9) liveFormat] != 0))
         {
           return 0;
         }
@@ -597,7 +597,7 @@ LABEL_7:
       }
 
       while (v7 != v9);
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v12 objects:v11 count:16];
+      v7 = [(NSArray *)inputs countByEnumeratingWithState:&v12 objects:v11 count:16];
       if (v7)
       {
         continue;
@@ -610,10 +610,10 @@ LABEL_7:
   return 1;
 }
 
-- (void)_handleMessage:(id)a3 fromInput:(id)a4
+- (void)_handleMessage:(id)message fromInput:(id)input
 {
-  v7 = *(a3 + 2);
-  v8 = *(a3 + 3);
+  v7 = *(message + 2);
+  v8 = *(message + 3);
   v9 = objc_autoreleasePoolPush();
   if (v7 == 1)
   {
@@ -630,8 +630,8 @@ LABEL_11:
         else if (v8 == 9)
         {
           v10 = self->_currentConfigurationGroup;
-          v11 = [a3 configurationID];
-          -[BWNode didReachEndOfDataForConfigurationID:input:](self, "didReachEndOfDataForConfigurationID:input:", [MEMORY[0x1E696AD98] numberWithLongLong:v11], a4);
+          configurationID = [message configurationID];
+          -[BWNode didReachEndOfDataForConfigurationID:input:](self, "didReachEndOfDataForConfigurationID:input:", [MEMORY[0x1E696AD98] numberWithLongLong:configurationID], input);
           dispatch_group_leave(v10);
         }
 
@@ -641,12 +641,12 @@ LABEL_11:
       if (v8 != 6)
       {
 LABEL_10:
-        -[BWNode handleStillImagePrewarmWithSettings:resourceConfig:forInput:](self, "handleStillImagePrewarmWithSettings:resourceConfig:forInput:", [a3 stillImageSettings], objc_msgSend(a3, "resourceConfig"), a4);
+        -[BWNode handleStillImagePrewarmWithSettings:resourceConfig:forInput:](self, "handleStillImagePrewarmWithSettings:resourceConfig:forInput:", [message stillImageSettings], objc_msgSend(message, "resourceConfig"), input);
         goto LABEL_30;
       }
 
 LABEL_26:
-      -[BWNode handleStillImageReferenceFrameBracketedCaptureSequenceNumber:forInput:](self, "handleStillImageReferenceFrameBracketedCaptureSequenceNumber:forInput:", [a3 referenceFrameBracketedCaptureSequenceNumber], a4);
+      -[BWNode handleStillImageReferenceFrameBracketedCaptureSequenceNumber:forInput:](self, "handleStillImageReferenceFrameBracketedCaptureSequenceNumber:forInput:", [message referenceFrameBracketedCaptureSequenceNumber], input);
       goto LABEL_30;
     }
 
@@ -664,21 +664,21 @@ LABEL_26:
 
 LABEL_23:
       v12 = self->_currentConfigurationGroup;
-      [(BWNodeRenderDelegate *)self->_renderDelegate node:self format:0 didBecomeLiveForInput:a4 configurationID:[(BWNode *)self liveConfigurationID]];
-      [(BWNode *)self didReachEndOfDataForConfigurationID:0 input:a4];
+      [(BWNodeRenderDelegate *)self->_renderDelegate node:self format:0 didBecomeLiveForInput:input configurationID:[(BWNode *)self liveConfigurationID]];
+      [(BWNode *)self didReachEndOfDataForConfigurationID:0 input:input];
       dispatch_group_leave(v12);
 
       goto LABEL_30;
     }
 
 LABEL_24:
-    v13 = [a4 liveFormat];
-    v14 = [a3 configurationID];
-    [(BWNodeRenderDelegate *)self->_renderDelegate node:self format:v13 didBecomeLiveForInput:a4 configurationID:v14];
-    v15 = [a3 updatedFormat];
+    liveFormat = [input liveFormat];
+    configurationID2 = [message configurationID];
+    [(BWNodeRenderDelegate *)self->_renderDelegate node:self format:liveFormat didBecomeLiveForInput:input configurationID:configurationID2];
+    updatedFormat = [message updatedFormat];
     dispatch_group_enter(self->_currentConfigurationGroup);
-    self->_liveConfigurationID = v14;
-    [(BWNode *)self configurationWithID:v14 updatedFormat:v15 didBecomeLiveForInput:a4];
+    self->_liveConfigurationID = configurationID2;
+    [(BWNode *)self configurationWithID:configurationID2 updatedFormat:updatedFormat didBecomeLiveForInput:input];
     goto LABEL_30;
   }
 
@@ -705,7 +705,7 @@ LABEL_24:
     }
 
 LABEL_27:
-    -[BWNode handleNodeError:forInput:](self, "handleNodeError:forInput:", [a3 nodeError], a4);
+    -[BWNode handleNodeError:forInput:](self, "handleNodeError:forInput:", [message nodeError], input);
     goto LABEL_30;
   }
 
@@ -721,14 +721,14 @@ LABEL_27:
 
   if (v8 == 1)
   {
-    v16 = [a3 sampleBuffer];
-    [(BWNodeRenderDelegate *)self->_renderDelegate node:self willRenderSampleBuffer:v16 forInput:a4];
-    [(BWNode *)self renderSampleBuffer:v16 forInput:a4];
+    sampleBuffer = [message sampleBuffer];
+    [(BWNodeRenderDelegate *)self->_renderDelegate node:self willRenderSampleBuffer:sampleBuffer forInput:input];
+    [(BWNode *)self renderSampleBuffer:sampleBuffer forInput:input];
   }
 
   else if (v8 == 2)
   {
-    -[BWNode handleDroppedSample:forInput:](self, "handleDroppedSample:forInput:", [a3 droppedSample], a4);
+    -[BWNode handleDroppedSample:forInput:](self, "handleDroppedSample:forInput:", [message droppedSample], input);
   }
 
 LABEL_30:
@@ -736,28 +736,28 @@ LABEL_30:
   objc_autoreleasePoolPop(v9);
 }
 
-- (id)osStatePropertyListWithVerbose:(BOOL)a3
+- (id)osStatePropertyListWithVerbose:(BOOL)verbose
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  [v5 setObject:self->_subgraphName forKeyedSubscript:@"subgraphName"];
-  [v5 setObject:-[BWNode description](self forKeyedSubscript:{"description"), @"description"}];
-  if (v3)
+  verboseCopy = verbose;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:self->_subgraphName forKeyedSubscript:@"subgraphName"];
+  [dictionary setObject:-[BWNode description](self forKeyedSubscript:{"description"), @"description"}];
+  if (verboseCopy)
   {
-    [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_supportsConcurrentLiveInputCallbacks), @"supportsCurrentLiveInputCallbacks"}];
-    [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_supportsLiveReconfiguration), @"supportsLiveReconfiguration"}];
-    [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_singleInput), @"singleInput"}];
-    [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_singleOutput), @"singleOutput"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_supportsConcurrentLiveInputCallbacks), @"supportsCurrentLiveInputCallbacks"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_supportsLiveReconfiguration), @"supportsLiveReconfiguration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_singleInput), @"singleInput"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_singleOutput), @"singleOutput"}];
     if (self->_singleInput)
     {
       v6 = [-[NSMutableArray objectAtIndexedSubscript:](self->_inputs objectAtIndexedSubscript:{0), "osStatePropertyList"}];
       v7 = @"nodeInput";
-      v8 = v5;
+      v8 = dictionary;
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v31 = 0u;
       v32 = 0u;
       v33 = 0u;
@@ -777,7 +777,7 @@ LABEL_30:
               objc_enumerationMutation(inputs);
             }
 
-            [v9 addObject:{objc_msgSend(*(*(&v31 + 1) + 8 * i), "osStatePropertyList")}];
+            [array addObject:{objc_msgSend(*(*(&v31 + 1) + 8 * i), "osStatePropertyList")}];
           }
 
           v12 = [(NSMutableArray *)inputs countByEnumeratingWithState:&v31 objects:v30 count:16];
@@ -787,8 +787,8 @@ LABEL_30:
       }
 
       v7 = @"nodeInputs";
-      v8 = v5;
-      v6 = v9;
+      v8 = dictionary;
+      v6 = array;
     }
 
     [v8 setObject:v6 forKeyedSubscript:v7];
@@ -796,12 +796,12 @@ LABEL_30:
     {
       v15 = [-[NSMutableArray objectAtIndexedSubscript:](self->_outputs objectAtIndexedSubscript:{0), "osStatePropertyList"}];
       v16 = @"nodeOutput";
-      v17 = v5;
+      v17 = dictionary;
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
@@ -821,7 +821,7 @@ LABEL_30:
               objc_enumerationMutation(outputs);
             }
 
-            [v18 addObject:{objc_msgSend(*(*(&v26 + 1) + 8 * j), "osStatePropertyList")}];
+            [array2 addObject:{objc_msgSend(*(*(&v26 + 1) + 8 * j), "osStatePropertyList")}];
           }
 
           v21 = [(NSMutableArray *)outputs countByEnumeratingWithState:&v26 objects:v25 count:16];
@@ -831,18 +831,18 @@ LABEL_30:
       }
 
       v16 = @"nodeOutputs";
-      v17 = v5;
-      v15 = v18;
+      v17 = dictionary;
+      v15 = array2;
     }
 
     [v17 setObject:v15 forKeyedSubscript:v16];
-    [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_deferredPreparePriority), @"deferredPreparePriority"}];
-    [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", -[BWNode requestedConfigurationID](self, "requestedConfigurationID")), @"requestedConfigurationID"}];
-    [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", -[BWNode preparedConfigurationID](self, "preparedConfigurationID")), @"preparedConfigurationID"}];
-    [v5 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", -[BWNode liveConfigurationID](self, "liveConfigurationID")), @"liveConfigurationID"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->_deferredPreparePriority), @"deferredPreparePriority"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", -[BWNode requestedConfigurationID](self, "requestedConfigurationID")), @"requestedConfigurationID"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", -[BWNode preparedConfigurationID](self, "preparedConfigurationID")), @"preparedConfigurationID"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithLongLong:", -[BWNode liveConfigurationID](self, "liveConfigurationID")), @"liveConfigurationID"}];
   }
 
-  return v5;
+  return dictionary;
 }
 
 @end

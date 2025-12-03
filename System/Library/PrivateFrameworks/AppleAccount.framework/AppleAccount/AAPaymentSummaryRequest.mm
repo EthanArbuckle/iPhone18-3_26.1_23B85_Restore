@@ -8,17 +8,17 @@
 - (id)urlString
 {
   v2 = +[AAURLConfiguration urlConfiguration];
-  v3 = [v2 paymentSummaryURL];
+  paymentSummaryURL = [v2 paymentSummaryURL];
 
-  return v3;
+  return paymentSummaryURL;
 }
 
 - (id)urlRequest
 {
   v9.receiver = self;
   v9.super_class = AAPaymentSummaryRequest;
-  v3 = [(AAAppleIDSettingsRequest *)&v9 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AAAppleIDSettingsRequest *)&v9 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   secondaryAuthToken = self->_secondaryAuthToken;
   if (secondaryAuthToken)
@@ -26,9 +26,9 @@
     [v4 addValue:secondaryAuthToken forHTTPHeaderField:@"X-Apple-2SV-Authenticate"];
   }
 
-  v6 = [(AAAppleIDSettingsRequest *)self grandSlamAccount];
-  v7 = [v6 aida_alternateDSID];
-  [v4 aa_addGrandslamAuthorizationheaderWithAltDSID:v7 heartbeatToken:self->_heartbeatToken];
+  grandSlamAccount = [(AAAppleIDSettingsRequest *)self grandSlamAccount];
+  aida_alternateDSID = [grandSlamAccount aida_alternateDSID];
+  [v4 aa_addGrandslamAuthorizationheaderWithAltDSID:aida_alternateDSID heartbeatToken:self->_heartbeatToken];
 
   [v4 aa_addContentTypeHeaders:@"application/json"];
 

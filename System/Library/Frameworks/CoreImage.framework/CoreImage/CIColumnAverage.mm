@@ -7,8 +7,8 @@
 - (id)outputImage
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v2 = [(CIReductionFilter *)self offsetAndCrop];
-  if (v2 && (v3 = v2, [(CIImage *)v2 extent], !CGRectIsEmpty(v34)))
+  offsetAndCrop = [(CIReductionFilter *)self offsetAndCrop];
+  if (offsetAndCrop && (v3 = offsetAndCrop, [(CIImage *)offsetAndCrop extent], !CGRectIsEmpty(v34)))
   {
     [(CIImage *)v3 extent];
     v28 = v5;

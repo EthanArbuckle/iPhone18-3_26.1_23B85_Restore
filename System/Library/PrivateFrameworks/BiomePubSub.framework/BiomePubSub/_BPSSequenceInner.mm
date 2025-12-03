@@ -1,27 +1,27 @@
 @interface _BPSSequenceInner
-- (_BPSSequenceInner)initWithDownstream:(id)a3 enumerator:(id)a4;
+- (_BPSSequenceInner)initWithDownstream:(id)downstream enumerator:(id)enumerator;
 - (void)cancel;
-- (void)requestDemand:(int64_t)a3;
+- (void)requestDemand:(int64_t)demand;
 @end
 
 @implementation _BPSSequenceInner
 
-- (_BPSSequenceInner)initWithDownstream:(id)a3 enumerator:(id)a4
+- (_BPSSequenceInner)initWithDownstream:(id)downstream enumerator:(id)enumerator
 {
-  v7 = a3;
-  v8 = a4;
+  downstreamCopy = downstream;
+  enumeratorCopy = enumerator;
   v14.receiver = self;
   v14.super_class = _BPSSequenceInner;
   v9 = [(_BPSSequenceInner *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_downstream, a3);
-    objc_storeStrong(&v10->_enumerator, a4);
+    objc_storeStrong(&v9->_downstream, downstream);
+    objc_storeStrong(&v10->_enumerator, enumerator);
     v10->_recursion = 0;
-    v11 = [(NSEnumerator *)v10->_enumerator nextObject];
+    nextObject = [(NSEnumerator *)v10->_enumerator nextObject];
     next = v10->_next;
-    v10->_next = v11;
+    v10->_next = nextObject;
 
     v10->_lock._os_unfair_lock_opaque = 0;
   }
@@ -29,58 +29,58 @@
   return v10;
 }
 
-- (void)requestDemand:(int64_t)a3
+- (void)requestDemand:(int64_t)demand
 {
-  v12 = self;
-  os_unfair_lock_lock(&v12->_lock);
-  v4 = [(_BPSSequenceInner *)v12 downstream];
-  if (v4)
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  downstream = [(_BPSSequenceInner *)selfCopy downstream];
+  if (downstream)
   {
-    [(_BPSSequenceInner *)v12 setPendingDemand:[(_BPSSequenceInner *)v12 pendingDemand]+ a3];
-    if (![(_BPSSequenceInner *)v12 recursion])
+    [(_BPSSequenceInner *)selfCopy setPendingDemand:[(_BPSSequenceInner *)selfCopy pendingDemand]+ demand];
+    if (![(_BPSSequenceInner *)selfCopy recursion])
     {
       while (1)
       {
-        if ([(_BPSSequenceInner *)v12 pendingDemand]< 1)
+        if ([(_BPSSequenceInner *)selfCopy pendingDemand]< 1)
         {
           goto LABEL_3;
         }
 
-        v5 = [(_BPSSequenceInner *)v12 next];
-        if (!v5)
+        next = [(_BPSSequenceInner *)selfCopy next];
+        if (!next)
         {
           break;
         }
 
-        v6 = v5;
-        [(_BPSSequenceInner *)v12 setPendingDemand:[(_BPSSequenceInner *)v12 pendingDemand]- 1];
-        v7 = [(_BPSSequenceInner *)v12 enumerator];
-        v8 = [v7 nextObject];
-        [(_BPSSequenceInner *)v12 setNext:v8];
+        v6 = next;
+        [(_BPSSequenceInner *)selfCopy setPendingDemand:[(_BPSSequenceInner *)selfCopy pendingDemand]- 1];
+        enumerator = [(_BPSSequenceInner *)selfCopy enumerator];
+        nextObject = [enumerator nextObject];
+        [(_BPSSequenceInner *)selfCopy setNext:nextObject];
 
-        [(_BPSSequenceInner *)v12 setRecursion:1];
-        os_unfair_lock_unlock(&v12->_lock);
-        v9 = [v4 receiveInput:v6];
-        os_unfair_lock_lock(&v12->_lock);
-        [(_BPSSequenceInner *)v12 setPendingDemand:[(_BPSSequenceInner *)v12 pendingDemand]+ v9];
-        [(_BPSSequenceInner *)v12 setRecursion:0];
-        v10 = [(_BPSSequenceInner *)v12 next];
+        [(_BPSSequenceInner *)selfCopy setRecursion:1];
+        os_unfair_lock_unlock(&selfCopy->_lock);
+        v9 = [downstream receiveInput:v6];
+        os_unfair_lock_lock(&selfCopy->_lock);
+        [(_BPSSequenceInner *)selfCopy setPendingDemand:[(_BPSSequenceInner *)selfCopy pendingDemand]+ v9];
+        [(_BPSSequenceInner *)selfCopy setRecursion:0];
+        next2 = [(_BPSSequenceInner *)selfCopy next];
 
-        if (!v10)
+        if (!next2)
         {
-          [(_BPSSequenceInner *)v12 setDownstream:0];
-          os_unfair_lock_unlock(&v12->_lock);
+          [(_BPSSequenceInner *)selfCopy setDownstream:0];
+          os_unfair_lock_unlock(&selfCopy->_lock);
           v11 = +[BPSCompletion success];
-          [v4 receiveCompletion:v11];
+          [downstream receiveCompletion:v11];
 
           goto LABEL_13;
         }
       }
 
-      [(_BPSSequenceInner *)v12 setDownstream:0];
-      os_unfair_lock_unlock(&v12->_lock);
+      [(_BPSSequenceInner *)selfCopy setDownstream:0];
+      os_unfair_lock_unlock(&selfCopy->_lock);
       v6 = +[BPSCompletion success];
-      [v4 receiveCompletion:v6];
+      [downstream receiveCompletion:v6];
 LABEL_13:
 
       goto LABEL_4;
@@ -88,15 +88,15 @@ LABEL_13:
   }
 
 LABEL_3:
-  os_unfair_lock_unlock(&v12->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 LABEL_4:
 }
 
 - (void)cancel
 {
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->_lock);
-  [(_BPSSequenceInner *)v3 setDownstream:0];
+  [(_BPSSequenceInner *)selfCopy setDownstream:0];
   os_unfair_lock_unlock(&self->_lock);
 }
 

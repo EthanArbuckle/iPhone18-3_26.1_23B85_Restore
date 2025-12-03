@@ -1,58 +1,58 @@
 @interface UITextChecker
-+ (BOOL)_forgetWord:(id)a3 inDictionary:(id)a4;
-+ (BOOL)_isWord:(id)a3 inDictionary:(id)a4;
-+ (BOOL)_learnWord:(id)a3 inDictionary:(id)a4;
++ (BOOL)_forgetWord:(id)word inDictionary:(id)dictionary;
++ (BOOL)_isWord:(id)word inDictionary:(id)dictionary;
++ (BOOL)_learnWord:(id)word inDictionary:(id)dictionary;
 + (BOOL)grammarCheckingEnabled;
-+ (BOOL)grammarCheckingEnabledForLanguage:(id)a3;
++ (BOOL)grammarCheckingEnabledForLanguage:(id)language;
 + (NSArray)availableLanguages;
-+ (__CFSet)createDictHashTable:(BOOL)a3;
-+ (id)_dictionaryEntryForName:(id)a3;
-+ (id)_wordsInDictionary:(id)a3;
-+ (id)bestLanguageForString:(id)a3 fromAlternatives:(id)a4 currentLanguage:(id)a5 insertionPointIndex:(unint64_t)a6 scriptForBestLanguage:(id *)a7;
-+ (id)dictionaryInfo:(id)a3;
-+ (id)grammarAutocorrectionForWord:(id)a3;
++ (__CFSet)createDictHashTable:(BOOL)table;
++ (id)_dictionaryEntryForName:(id)name;
++ (id)_wordsInDictionary:(id)dictionary;
++ (id)bestLanguageForString:(id)string fromAlternatives:(id)alternatives currentLanguage:(id)language insertionPointIndex:(unint64_t)index scriptForBestLanguage:(id *)bestLanguage;
++ (id)dictionaryInfo:(id)info;
++ (id)grammarAutocorrectionForWord:(id)word;
 + (id)keyboardLanguages;
-+ (id)openUserDictionary:(id)a3;
++ (id)openUserDictionary:(id)dictionary;
 + (id)postEditor;
-+ (void)_setDictionaryEntry:(id)a3 forName:(id)a4;
-+ (void)_setWords:(id)a3 inDictionary:(id)a4;
-+ (void)handleGrammarCorrectionEntries:(id)a3;
-+ (void)noteTextReplacement:(id)a3;
-+ (void)noteWordTerminator:(id)a3 replacement:(id)a4;
++ (void)_setDictionaryEntry:(id)entry forName:(id)name;
++ (void)_setWords:(id)words inDictionary:(id)dictionary;
++ (void)handleGrammarCorrectionEntries:(id)entries;
++ (void)noteTextReplacement:(id)replacement;
++ (void)noteWordTerminator:(id)terminator replacement:(id)replacement;
 + (void)performFinalGrammarChecking;
-+ (void)setString:(id)a3 isExemptFromChecker:(BOOL)a4;
-- (BOOL)canChangeCaseOfFirstLetterInString:(id)a3 toUpperCase:(BOOL)a4 language:(id)a5;
-- (BOOL)isWordInUserDictionaries:(id)a3 caseSensitive:(BOOL)a4;
++ (void)setString:(id)string isExemptFromChecker:(BOOL)checker;
+- (BOOL)canChangeCaseOfFirstLetterInString:(id)string toUpperCase:(BOOL)case language:(id)language;
+- (BOOL)isWordInUserDictionaries:(id)dictionaries caseSensitive:(BOOL)sensitive;
 - (NSArray)completionsForPartialWordRange:(NSRange)range inString:(NSString *)string language:(NSString *)language;
 - (NSArray)guessesForWordRange:(NSRange)range inString:(NSString *)string language:(NSString *)language;
 - (NSArray)ignoredWords;
 - (NSRange)rangeOfMisspelledWordInString:(NSString *)stringToCheck range:(NSRange)range startingAt:(NSInteger)startingOffset wrap:(BOOL)wrapFlag language:(NSString *)language;
-- (_NSRange)_chunkAndCheckGrammarInString:(id)a3 language:(id)a4 usingChecker:(id)a5 details:(id *)a6;
-- (_NSRange)_chunkAndFindMisspelledWordInString:(id)a3 languages:(id)a4 learnedDictionaries:(id)a5 wordCount:(int64_t *)a6 correction:(id *)a7 usingChecker:(id)a8;
-- (_NSRange)checkGrammarOfString:(id)a3 startingAt:(int64_t)a4 language:(id)a5 wrap:(BOOL)a6 details:(id *)a7;
-- (_NSRange)checkSpellingOfString:(id)a3 startingAt:(int64_t)a4 language:(id)a5 wrap:(BOOL)a6 correction:(id *)a7;
-- (_NSRange)checkSpellingOfString:(id)a3 startingAt:(int64_t)a4 languages:(id)a5 wrap:(BOOL)a6 correction:(id *)a7;
-- (_NSRange)rangeOfMisspelledWordInString:(id)a3 range:(_NSRange)a4 startingAt:(int64_t)a5 wrap:(BOOL)a6 languages:(id)a7;
+- (_NSRange)_chunkAndCheckGrammarInString:(id)string language:(id)language usingChecker:(id)checker details:(id *)details;
+- (_NSRange)_chunkAndFindMisspelledWordInString:(id)string languages:(id)languages learnedDictionaries:(id)dictionaries wordCount:(int64_t *)count correction:(id *)correction usingChecker:(id)checker;
+- (_NSRange)checkGrammarOfString:(id)string startingAt:(int64_t)at language:(id)language wrap:(BOOL)wrap details:(id *)details;
+- (_NSRange)checkSpellingOfString:(id)string startingAt:(int64_t)at language:(id)language wrap:(BOOL)wrap correction:(id *)correction;
+- (_NSRange)checkSpellingOfString:(id)string startingAt:(int64_t)at languages:(id)languages wrap:(BOOL)wrap correction:(id *)correction;
+- (_NSRange)rangeOfMisspelledWordInString:(id)string range:(_NSRange)range startingAt:(int64_t)at wrap:(BOOL)wrap languages:(id)languages;
 - (id)_checker;
-- (id)_initWithAsynchronousLoading:(BOOL)a3;
-- (id)alternativesForPinyinInputString:(id)a3;
-- (id)checkString:(id)a3 range:(_NSRange)a4 types:(unint64_t)a5 languages:(id)a6 options:(id)a7;
-- (id)correctionForWordRange:(_NSRange)a3 inString:(id)a4 language:(id)a5;
-- (id)finalResultsFromCheckingString:(id)a3 range:(_NSRange)a4 language:(id)a5 options:(id)a6;
-- (id)grammarAlternativesForString:(id)a3;
-- (id)grammarGuessesForRange:(_NSRange)a3 inString:(id)a4 language:(id)a5;
-- (id)stringForInputString:(id)a3 language:(id)a4;
-- (id)suggestWordInLanguage:(id)a3;
-- (int64_t)adjustOffsetToNextWordBoundaryInString:(id)a3 startingAt:(int64_t)a4;
-- (int64_t)requestGrammarCheckingOfString:(id)a3 range:(_NSRange)a4 language:(id)a5 options:(id)a6 completionHandler:(id)a7;
+- (id)_initWithAsynchronousLoading:(BOOL)loading;
+- (id)alternativesForPinyinInputString:(id)string;
+- (id)checkString:(id)string range:(_NSRange)range types:(unint64_t)types languages:(id)languages options:(id)options;
+- (id)correctionForWordRange:(_NSRange)range inString:(id)string language:(id)language;
+- (id)finalResultsFromCheckingString:(id)string range:(_NSRange)range language:(id)language options:(id)options;
+- (id)grammarAlternativesForString:(id)string;
+- (id)grammarGuessesForRange:(_NSRange)range inString:(id)string language:(id)language;
+- (id)stringForInputString:(id)string language:(id)language;
+- (id)suggestWordInLanguage:(id)language;
+- (int64_t)adjustOffsetToNextWordBoundaryInString:(id)string startingAt:(int64_t)at;
+- (int64_t)requestGrammarCheckingOfString:(id)string range:(_NSRange)range language:(id)language options:(id)options completionHandler:(id)handler;
 - (void)dealloc;
 - (void)ignoreWord:(NSString *)wordToIgnore;
-- (void)initGlobalsWithAsynchronousLoading:(BOOL)a3;
-- (void)initPostEditingWithAsynchronousLoading:(BOOL)a3;
+- (void)initGlobalsWithAsynchronousLoading:(BOOL)loading;
+- (void)initPostEditingWithAsynchronousLoading:(BOOL)loading;
 - (void)initUserDictionaries;
-- (void)recordResponse:(unint64_t)a3 toGrammarDetailInAnnotatedString:(id)a4 range:(_NSRange)a5;
+- (void)recordResponse:(unint64_t)response toGrammarDetailInAnnotatedString:(id)string range:(_NSRange)range;
 - (void)releaseAllLexicons;
-- (void)requestProofreadingReviewOfString:(id)a3 range:(_NSRange)a4 language:(id)a5 options:(id)a6 completionHandler:(id)a7;
+- (void)requestProofreadingReviewOfString:(id)string range:(_NSRange)range language:(id)language options:(id)options completionHandler:(id)handler;
 - (void)resetAllLanguageModels;
 - (void)setIgnoredWords:(NSArray *)ignoredWords;
 @end
@@ -82,22 +82,22 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v2 = [getAppleSpellClass() availableLanguages];
-  v3 = v2;
-  if (!v2)
+  availableLanguages = [getAppleSpellClass() availableLanguages];
+  v3 = availableLanguages;
+  if (!availableLanguages)
   {
     goto LABEL_6;
   }
 
-  v4 = v2;
-  if (![v2 count])
+  v4 = availableLanguages;
+  if (![availableLanguages count])
   {
     goto LABEL_6;
   }
 
 LABEL_7:
   v5 = [MEMORY[0x1E695DFA8] setWithArray:v4];
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v7 = UIKeyboardGetCurrentInputMode();
   if (v7)
   {
@@ -108,7 +108,7 @@ LABEL_7:
 
       if (v9)
       {
-        [v6 addObject:v8];
+        [array addObject:v8];
         [v5 removeObject:v8];
       }
     }
@@ -144,7 +144,7 @@ LABEL_7:
           v16 = TIInputModeGetNormalizedIdentifier();
           if ([v5 containsObject:v16])
           {
-            [v6 addObject:v16];
+            [array addObject:v16];
             [v5 removeObject:v16];
           }
         }
@@ -156,10 +156,10 @@ LABEL_7:
     }
   }
 
-  v17 = [v5 allObjects];
-  [v6 addObjectsFromArray:v17];
+  allObjects = [v5 allObjects];
+  [array addObjectsFromArray:allObjects];
 
-  return v6;
+  return array;
 }
 
 - (void)initUserDictionaries
@@ -179,9 +179,9 @@ LABEL_7:
 
   if (!qword_1ED49AD78)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v8 = qword_1ED49AD78;
-    qword_1ED49AD78 = v7;
+    qword_1ED49AD78 = dictionary;
   }
 
   if (!qword_1ED49AD80)
@@ -192,9 +192,9 @@ LABEL_7:
   }
 }
 
-- (void)initGlobalsWithAsynchronousLoading:(BOOL)a3
+- (void)initGlobalsWithAsynchronousLoading:(BOOL)loading
 {
-  v3 = a3;
+  loadingCopy = loading;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc_init(MEMORY[0x1E696AD10]);
   v7 = qword_1ED49AD68;
@@ -210,7 +210,7 @@ LABEL_7:
   qword_1ED49AD88 = v10;
 
   [qword_1ED49AD88 spellServer:0 findMisspelledWordInString:@"abcxyz" language:self->_checkerWarmingLanguage wordCount:0 countOnly:0 correction:0];
-  if (v3)
+  if (loadingCopy)
   {
     dispatch_sync(MEMORY[0x1E69E96A0], &__block_literal_global_631);
   }
@@ -223,9 +223,9 @@ LABEL_7:
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)initPostEditingWithAsynchronousLoading:(BOOL)a3
+- (void)initPostEditingWithAsynchronousLoading:(BOOL)loading
 {
-  v3 = a3;
+  loadingCopy = loading;
   v4 = objc_autoreleasePoolPush();
   v12 = 0;
   v13 = &v12;
@@ -251,7 +251,7 @@ LABEL_7:
   qword_1ED49AD90 = v8;
 
   v10 = [qword_1ED49AD90 grammarDetailForString:@"This is a test. This is another." range:16 language:{4, @"en"}];
-  if (v3)
+  if (loadingCopy)
   {
     dispatch_sync(MEMORY[0x1E69E96A0], &__block_literal_global_77_3);
   }
@@ -264,22 +264,22 @@ LABEL_7:
   objc_autoreleasePoolPop(v4);
 }
 
-- (id)_initWithAsynchronousLoading:(BOOL)a3
+- (id)_initWithAsynchronousLoading:(BOOL)loading
 {
   v13.receiver = self;
   v13.super_class = UITextChecker;
   v4 = [(UITextChecker *)&v13 init];
   v4->_usdt = +[UITextChecker uniqueSpellDocumentTag];
-  v5 = [objc_opt_class() availableLanguages];
-  v6 = [v5 firstObject];
+  availableLanguages = [objc_opt_class() availableLanguages];
+  firstObject = [availableLanguages firstObject];
   checkerWarmingLanguage = v4->_checkerWarmingLanguage;
-  v4->_checkerWarmingLanguage = v6;
+  v4->_checkerWarmingLanguage = firstObject;
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __46__UITextChecker__initWithAsynchronousLoading___block_invoke;
   v10[3] = &unk_1E70F35E0;
-  v12 = a3;
+  loadingCopy = loading;
   v8 = v4;
   v11 = v8;
   if (_initWithAsynchronousLoading__onceToken != -1)
@@ -362,11 +362,11 @@ uint64_t __46__UITextChecker__initWithAsynchronousLoading___block_invoke_2(uint6
 
 - (void)resetAllLanguageModels
 {
-  v2 = [(UITextChecker *)self _checker];
-  v3 = v2;
-  if (v2)
+  _checker = [(UITextChecker *)self _checker];
+  v3 = _checker;
+  if (_checker)
   {
-    v5 = v2;
+    v5 = _checker;
     v4 = objc_opt_respondsToSelector();
     v3 = v5;
     if (v4)
@@ -381,11 +381,11 @@ uint64_t __46__UITextChecker__initWithAsynchronousLoading___block_invoke_2(uint6
 
 - (void)releaseAllLexicons
 {
-  v2 = [(UITextChecker *)self _checker];
-  v3 = v2;
-  if (v2)
+  _checker = [(UITextChecker *)self _checker];
+  v3 = _checker;
+  if (_checker)
   {
-    v5 = v2;
+    v5 = _checker;
     v4 = objc_opt_respondsToSelector();
     v3 = v5;
     if (v4)
@@ -402,101 +402,101 @@ uint64_t __46__UITextChecker__initWithAsynchronousLoading___block_invoke_2(uint6
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v2 = +[UIKeyboardInputModeController sharedInputModeController];
-  v3 = [v2 currentInputMode];
+  currentInputMode = [v2 currentInputMode];
 
-  v4 = [v3 multilingualLanguages];
-  v5 = [v4 count];
+  multilingualLanguages = [currentInputMode multilingualLanguages];
+  v5 = [multilingualLanguages count];
 
   if (v5)
   {
-    v6 = [v3 multilingualLanguages];
+    multilingualLanguages2 = [currentInputMode multilingualLanguages];
   }
 
   else
   {
-    v7 = [v3 primaryLanguage];
+    primaryLanguage = [currentInputMode primaryLanguage];
 
-    if (v7)
+    if (primaryLanguage)
     {
-      v8 = [v3 languageWithRegion];
-      v16[0] = v8;
-      v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
+      languageWithRegion = [currentInputMode languageWithRegion];
+      v16[0] = languageWithRegion;
+      multilingualLanguages2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
     }
 
     else
     {
-      v6 = MEMORY[0x1E695E0F0];
+      multilingualLanguages2 = MEMORY[0x1E695E0F0];
     }
   }
 
   v9 = +[UIDictationController sharedInstance];
-  v10 = [v9 detectedLanguage];
+  detectedLanguage = [v9 detectedLanguage];
 
   v11 = +[UIDictationController sharedInstance];
-  v12 = [v11 language];
+  language = [v11 language];
 
-  if (v10)
+  if (detectedLanguage)
   {
-    v13 = [v10 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+    v13 = [detectedLanguage stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
 
-    if ([v6 containsObject:v13])
+    if ([multilingualLanguages2 containsObject:v13])
     {
       goto LABEL_14;
     }
 
-    v14 = [v6 arrayByAddingObject:v13];
+    v14 = [multilingualLanguages2 arrayByAddingObject:v13];
   }
 
   else
   {
-    if (!v12 || ([v6 containsObject:v12] & 1) != 0)
+    if (!language || ([multilingualLanguages2 containsObject:language] & 1) != 0)
     {
       v13 = 0;
       goto LABEL_14;
     }
 
-    v14 = [v6 arrayByAddingObject:v12];
+    v14 = [multilingualLanguages2 arrayByAddingObject:language];
     v13 = 0;
   }
 
-  v6 = v14;
+  multilingualLanguages2 = v14;
 LABEL_14:
 
-  return v6;
+  return multilingualLanguages2;
 }
 
-- (int64_t)adjustOffsetToNextWordBoundaryInString:(id)a3 startingAt:(int64_t)a4
+- (int64_t)adjustOffsetToNextWordBoundaryInString:(id)string startingAt:(int64_t)at
 {
-  v5 = a3;
-  v6 = [v5 length];
-  if (a4 >= 1)
+  stringCopy = string;
+  v6 = [stringCopy length];
+  if (at >= 1)
   {
     v7 = v6;
-    v8 = v6 - a4;
-    if (v6 > a4)
+    v8 = v6 - at;
+    if (v6 > at)
     {
       if (qword_1ED49ADA8 != -1)
       {
         dispatch_once(&qword_1ED49ADA8, &__block_literal_global_207_2);
       }
 
-      if (([qword_1ED49ADA0 characterIsMember:{objc_msgSend(v5, "characterAtIndex:", a4)}] & 1) == 0)
+      if (([qword_1ED49ADA0 characterIsMember:{objc_msgSend(stringCopy, "characterAtIndex:", at)}] & 1) == 0)
       {
-        v9 = [v5 rangeOfCharacterFromSet:qword_1ED49ADA0 options:0 range:{a4, v8}];
+        v9 = [stringCopy rangeOfCharacterFromSet:qword_1ED49ADA0 options:0 range:{at, v8}];
         if (v10)
         {
-          a4 = v9;
+          at = v9;
         }
 
         else
         {
-          a4 = v7;
+          at = v7;
         }
       }
     }
   }
 
-  return a4;
+  return at;
 }
 
 void __67__UITextChecker_adjustOffsetToNextWordBoundaryInString_startingAt___block_invoke()
@@ -510,19 +510,19 @@ void __67__UITextChecker_adjustOffsetToNextWordBoundaryInString_startingAt___blo
   [v2 formUnionWithCharacterSet:v3];
 }
 
-- (_NSRange)_chunkAndCheckGrammarInString:(id)a3 language:(id)a4 usingChecker:(id)a5 details:(id *)a6
+- (_NSRange)_chunkAndCheckGrammarInString:(id)string language:(id)language usingChecker:(id)checker details:(id *)details
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  stringCopy = string;
+  languageCopy = language;
+  checkerCopy = checker;
   v13 = NSPageSize();
-  v14 = [v10 length];
-  v39 = v10;
+  v14 = [stringCopy length];
+  v39 = stringCopy;
   if (v13 <= v14)
   {
     v24 = v14;
-    v37 = a6;
-    v38 = v12;
+    detailsCopy = details;
+    v38 = checkerCopy;
     if (v14)
     {
       v25 = 0;
@@ -549,7 +549,7 @@ void __67__UITextChecker_adjustOffsetToNextWordBoundaryInString_startingAt___blo
         v20 = [v28 substringWithRange:{v25, v27}];
 
         v40 = 0;
-        v31 = [v38 spellServer:self checkGrammarInString:v20 language:v11 details:&v40];
+        v31 = [v38 spellServer:self checkGrammarInString:v20 language:languageCopy details:&v40];
         v22 = v32;
         v33 = v40;
         v19 = v33;
@@ -579,14 +579,14 @@ void __67__UITextChecker_adjustOffsetToNextWordBoundaryInString_startingAt___blo
         }
       }
 
-      if (v37)
+      if (detailsCopy)
       {
         v34 = v33;
-        *v37 = v19;
+        *detailsCopy = v19;
       }
 
       v15 = v31 + v25;
-      v12 = v38;
+      checkerCopy = v38;
     }
 
     else
@@ -594,11 +594,11 @@ void __67__UITextChecker_adjustOffsetToNextWordBoundaryInString_startingAt___blo
       v20 = 0;
       v19 = 0;
 LABEL_28:
-      v12 = v38;
+      checkerCopy = v38;
       v22 = 0;
-      if (v37)
+      if (detailsCopy)
       {
-        *v37 = 0;
+        *detailsCopy = 0;
       }
 
       v15 = 0x7FFFFFFFFFFFFFFFLL;
@@ -608,7 +608,7 @@ LABEL_28:
   else
   {
     v41 = 0;
-    v15 = [v12 spellServer:self checkGrammarInString:v10 language:v11 details:&v41];
+    v15 = [checkerCopy spellServer:self checkGrammarInString:stringCopy language:languageCopy details:&v41];
     v17 = v16;
     v18 = v41;
     v19 = v18;
@@ -638,11 +638,11 @@ LABEL_28:
       v15 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    if (a6 && v22)
+    if (details && v22)
     {
       v23 = v18;
       v20 = 0;
-      *a6 = v19;
+      *details = v19;
       v22 = v21;
     }
   }
@@ -654,17 +654,17 @@ LABEL_28:
   return result;
 }
 
-- (_NSRange)_chunkAndFindMisspelledWordInString:(id)a3 languages:(id)a4 learnedDictionaries:(id)a5 wordCount:(int64_t *)a6 correction:(id *)a7 usingChecker:(id)a8
+- (_NSRange)_chunkAndFindMisspelledWordInString:(id)string languages:(id)languages learnedDictionaries:(id)dictionaries wordCount:(int64_t *)count correction:(id *)correction usingChecker:(id)checker
 {
-  v11 = a3;
-  v36 = a4;
-  v35 = a8;
+  stringCopy = string;
+  languagesCopy = languages;
+  checkerCopy = checker;
   v12 = NSPageSize();
-  v13 = [v11 length];
-  v14 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  if (a6)
+  v13 = [stringCopy length];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  if (count)
   {
-    *a6 = -1;
+    *count = -1;
   }
 
   v37 = 0;
@@ -684,7 +684,7 @@ LABEL_28:
           v24 = v22 + v20 - 1;
           do
           {
-            if ([v14 characterIsMember:{objc_msgSend(v11, "characterAtIndex:", v24, v32)}])
+            if ([whitespaceAndNewlineCharacterSet characterIsMember:{objc_msgSend(stringCopy, "characterAtIndex:", v24, v32)}])
             {
               v22 = -v23;
               goto LABEL_31;
@@ -716,13 +716,13 @@ LABEL_28:
         }
 
 LABEL_31:
-        v27 = [v11 substringWithRange:{v20, v22, v32}];
+        v27 = [stringCopy substringWithRange:{v20, v22, v32}];
 
-        v28 = [v35 spellServer:self findMisspelledWordInString:v27 languages:v36 wordCount:&v37 countOnly:0 correction:a7];
+        v28 = [checkerCopy spellServer:self findMisspelledWordInString:v27 languages:languagesCopy wordCount:&v37 countOnly:0 correction:correction];
         v19 = v29;
-        if (a6)
+        if (count)
         {
-          *a6 = (*a6 & ~((*a6 | v37) >> 63)) + v37;
+          *count = (*count & ~((*count | v37) >> 63)) + v37;
         }
 
         if (v29 && v28 != 0x7FFFFFFFFFFFFFFFLL)
@@ -762,7 +762,7 @@ LABEL_31:
 
   else
   {
-    v15 = [v35 spellServer:self findMisspelledWordInString:v11 languages:v36 wordCount:&v37 countOnly:0 correction:a7];
+    v15 = [checkerCopy spellServer:self findMisspelledWordInString:stringCopy languages:languagesCopy wordCount:&v37 countOnly:0 correction:correction];
     v17 = 0x7FFFFFFFFFFFFFFFLL;
     if (v15 == 0x7FFFFFFFFFFFFFFFLL || v16 == 0)
     {
@@ -780,9 +780,9 @@ LABEL_31:
     }
 
     v32 = v17;
-    if (a6)
+    if (count)
     {
-      *a6 = v37;
+      *count = v37;
     }
   }
 
@@ -795,29 +795,29 @@ LABEL_42:
   return result;
 }
 
-- (_NSRange)rangeOfMisspelledWordInString:(id)a3 range:(_NSRange)a4 startingAt:(int64_t)a5 wrap:(BOOL)a6 languages:(id)a7
+- (_NSRange)rangeOfMisspelledWordInString:(id)string range:(_NSRange)range startingAt:(int64_t)at wrap:(BOOL)wrap languages:(id)languages
 {
-  v8 = a6;
-  length = a4.length;
-  location = a4.location;
-  v13 = a3;
-  v14 = a7;
-  v15 = [v13 length];
+  wrapCopy = wrap;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  languagesCopy = languages;
+  v15 = [stringCopy length];
   if (location || v15 != length)
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = [v13 substringWithRange:{location, length}];
-    if (location + length < a5 && v8)
+    v20 = [stringCopy substringWithRange:{location, length}];
+    if (location + length < at && wrapCopy)
     {
       v21 = 0;
     }
 
     else
     {
-      v21 = a5 - location;
+      v21 = at - location;
     }
 
-    if (a5 >= location)
+    if (at >= location)
     {
       v22 = v21;
     }
@@ -827,7 +827,7 @@ LABEL_42:
       v22 = 0;
     }
 
-    v23 = [(UITextChecker *)self checkSpellingOfString:v20 startingAt:v22 languages:v14 wrap:v8 correction:0];
+    v23 = [(UITextChecker *)self checkSpellingOfString:v20 startingAt:v22 languages:languagesCopy wrap:wrapCopy correction:0];
     v18 = v24;
     if (v23 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -844,7 +844,7 @@ LABEL_42:
 
   else
   {
-    v16 = [(UITextChecker *)self checkSpellingOfString:v13 startingAt:a5 languages:v14 wrap:v8 correction:0];
+    v16 = [(UITextChecker *)self checkSpellingOfString:stringCopy startingAt:at languages:languagesCopy wrap:wrapCopy correction:0];
     v18 = v17;
   }
 
@@ -866,26 +866,26 @@ LABEL_42:
     language = [MEMORY[0x1E695DEC8] arrayWithObject:language];
   }
 
-  v14 = [(UITextChecker *)self rangeOfMisspelledWordInString:v13 range:location startingAt:length wrap:startingOffset languages:v8, language];
+  language = [(UITextChecker *)self rangeOfMisspelledWordInString:v13 range:location startingAt:length wrap:startingOffset languages:v8, language];
   v16 = v15;
 
-  v17 = v14;
+  v17 = language;
   v18 = v16;
   result.length = v18;
   result.location = v17;
   return result;
 }
 
-- (_NSRange)checkSpellingOfString:(id)a3 startingAt:(int64_t)a4 language:(id)a5 wrap:(BOOL)a6 correction:(id *)a7
+- (_NSRange)checkSpellingOfString:(id)string startingAt:(int64_t)at language:(id)language wrap:(BOOL)wrap correction:(id *)correction
 {
-  v8 = a6;
-  v12 = a3;
-  if (a5)
+  wrapCopy = wrap;
+  stringCopy = string;
+  if (language)
   {
-    a5 = [MEMORY[0x1E695DEC8] arrayWithObject:a5];
+    language = [MEMORY[0x1E695DEC8] arrayWithObject:language];
   }
 
-  v13 = [(UITextChecker *)self checkSpellingOfString:v12 startingAt:a4 languages:a5 wrap:v8 correction:a7];
+  v13 = [(UITextChecker *)self checkSpellingOfString:stringCopy startingAt:at languages:language wrap:wrapCopy correction:correction];
   v15 = v14;
 
   v16 = v13;
@@ -895,43 +895,43 @@ LABEL_42:
   return result;
 }
 
-- (_NSRange)checkSpellingOfString:(id)a3 startingAt:(int64_t)a4 languages:(id)a5 wrap:(BOOL)a6 correction:(id *)a7
+- (_NSRange)checkSpellingOfString:(id)string startingAt:(int64_t)at languages:(id)languages wrap:(BOOL)wrap correction:(id *)correction
 {
-  v8 = a6;
-  v11 = a3;
-  v12 = a5;
+  wrapCopy = wrap;
+  stringCopy = string;
+  languagesCopy = languages;
   v45 = -1;
-  v42 = v11;
-  v13 = [v11 length];
-  v41 = v12;
-  v14 = [v12 firstObject];
-  v15 = v14;
-  if (a7)
+  v42 = stringCopy;
+  v13 = [stringCopy length];
+  v41 = languagesCopy;
+  firstObject = [languagesCopy firstObject];
+  v15 = firstObject;
+  if (correction)
   {
-    *a7 = 0;
+    *correction = 0;
   }
 
   v16 = 0;
   v17 = 0x7FFFFFFFFFFFFFFFLL;
   v18 = 0;
   v19 = 0;
-  v20 = 0;
+  _checker = 0;
   v21 = 0;
-  if (v13 && v14)
+  if (v13 && firstObject)
   {
-    if ([v14 isEqualToString:&stru_1EFB14550])
+    if ([firstObject isEqualToString:&stru_1EFB14550])
     {
       v16 = 0;
       v18 = 0;
       v19 = 0;
-      v20 = 0;
+      _checker = 0;
       v21 = 0;
       goto LABEL_38;
     }
 
     v22 = objc_autoreleasePoolPush();
-    v20 = [(UITextChecker *)self _checker];
-    if (!v20)
+    _checker = [(UITextChecker *)self _checker];
+    if (!_checker)
     {
       v26 = v22;
       v16 = 0;
@@ -941,19 +941,19 @@ LABEL_42:
       v17 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_35:
       objc_autoreleasePoolPop(v26);
-      if (a7)
+      if (correction)
       {
         v31 = v16;
-        *a7 = v16;
+        *correction = v16;
       }
 
       v18 = v39;
       goto LABEL_38;
     }
 
-    v23 = [(UITextChecker *)self adjustOffsetToNextWordBoundaryInString:v42 startingAt:a4];
+    v23 = [(UITextChecker *)self adjustOffsetToNextWordBoundaryInString:v42 startingAt:at];
     v24 = v23;
-    if (v8)
+    if (wrapCopy)
     {
       if (v23 >= v13)
       {
@@ -1005,7 +1005,7 @@ LABEL_24:
         v28 = [(UITextChecker *)self _nameOfDictionaryForDocumentTag:self->_usdt];
         [(UITextChecker *)self _setDocumentDictionaryName:v28];
 
-        if (a7)
+        if (correction)
         {
           v29 = &v44;
         }
@@ -1015,15 +1015,15 @@ LABEL_24:
           v29 = 0;
         }
 
-        if (a7)
+        if (correction)
         {
           v44 = 0;
         }
 
-        v17 = [(UITextChecker *)self _chunkAndFindMisspelledWordInString:v19 languages:v41 learnedDictionaries:qword_1ED49AD70 wordCount:&v45 correction:v29 usingChecker:v20];
+        v17 = [(UITextChecker *)self _chunkAndFindMisspelledWordInString:v19 languages:v41 learnedDictionaries:qword_1ED49AD70 wordCount:&v45 correction:v29 usingChecker:_checker];
         v21 = v30;
         v26 = v22;
-        if (a7)
+        if (correction)
         {
           v16 = v44;
           if (!v21)
@@ -1032,14 +1032,14 @@ LABEL_39:
             if (v39)
             {
               v45 = -1;
-              if (a7)
+              if (correction)
               {
                 v43 = v16;
               }
 
               v17 = [UITextChecker _chunkAndFindMisspelledWordInString:"_chunkAndFindMisspelledWordInString:languages:learnedDictionaries:wordCount:correction:usingChecker:" languages:? learnedDictionaries:? wordCount:? correction:? usingChecker:?];
               v21 = v35;
-              if (a7)
+              if (correction)
               {
                 v36 = v43;
 
@@ -1081,49 +1081,49 @@ LABEL_38:
   return result;
 }
 
-- (_NSRange)checkGrammarOfString:(id)a3 startingAt:(int64_t)a4 language:(id)a5 wrap:(BOOL)a6 details:(id *)a7
+- (_NSRange)checkGrammarOfString:(id)string startingAt:(int64_t)at language:(id)language wrap:(BOOL)wrap details:(id *)details
 {
-  v8 = a6;
-  v11 = a3;
-  v12 = a5;
-  v13 = [v11 length];
+  wrapCopy = wrap;
+  stringCopy = string;
+  languageCopy = language;
+  v13 = [stringCopy length];
   v14 = v13;
-  if (a7)
+  if (details)
   {
-    *a7 = 0;
+    *details = 0;
   }
 
   v15 = 0;
   v16 = 0x7FFFFFFFFFFFFFFFLL;
-  if (!v12)
+  if (!languageCopy)
   {
     v17 = 0;
     v18 = 0;
-    v19 = 0;
+    _checker = 0;
     v20 = 0;
     goto LABEL_41;
   }
 
-  v41 = a7;
+  detailsCopy = details;
   v17 = 0;
   v18 = 0;
-  v19 = 0;
+  _checker = 0;
   v20 = 0;
   if (v13)
   {
-    if ([v12 isEqualToString:&stru_1EFB14550])
+    if ([languageCopy isEqualToString:&stru_1EFB14550])
     {
       v15 = 0;
       v17 = 0;
       v18 = 0;
-      v19 = 0;
+      _checker = 0;
       v20 = 0;
       goto LABEL_41;
     }
 
     v21 = objc_autoreleasePoolPush();
-    v19 = [(UITextChecker *)self _checker];
-    if (!v19)
+    _checker = [(UITextChecker *)self _checker];
+    if (!_checker)
     {
       v38 = 0;
       contexta = v21;
@@ -1133,53 +1133,53 @@ LABEL_38:
       v16 = 0x7FFFFFFFFFFFFFFFLL;
       objc_autoreleasePoolPop(contexta);
 LABEL_38:
-      if (v41)
+      if (detailsCopy)
       {
         v34 = v15;
-        *v41 = v15;
+        *detailsCopy = v15;
       }
 
       v17 = v38;
       goto LABEL_41;
     }
 
-    if (v8)
+    if (wrapCopy)
     {
-      if (v14 <= a4)
+      if (v14 <= at)
       {
-        v22 = 0;
+        atCopy = 0;
       }
 
       else
       {
-        v22 = a4;
+        atCopy = at;
       }
 
-      if (a4 <= 0)
+      if (at <= 0)
       {
-        v23 = a4;
+        atCopy2 = at;
       }
 
       else
       {
-        v23 = v22;
+        atCopy2 = atCopy;
       }
 
       context = v21;
-      if (v23 > 0)
+      if (atCopy2 > 0)
       {
-        v24 = [v11 paragraphRangeForRange:{v23, 0}];
+        v24 = [stringCopy paragraphRangeForRange:{atCopy2, 0}];
         v26 = v25;
-        v27 = v23 - v24;
-        v18 = [v11 substringFromIndex:v24];
-        v38 = [v11 substringToIndex:v24 + v26];
+        v27 = atCopy2 - v24;
+        v18 = [stringCopy substringFromIndex:v24];
+        v38 = [stringCopy substringToIndex:v24 + v26];
         goto LABEL_26;
       }
     }
 
     else
     {
-      if (a4 >= 1 && v14 <= a4)
+      if (at >= 1 && v14 <= at)
       {
         objc_autoreleasePoolPop(v21);
         v15 = 0;
@@ -1191,16 +1191,16 @@ LABEL_38:
       }
 
       context = v21;
-      if (a4 > 0)
+      if (at > 0)
       {
-        v24 = [v11 paragraphRangeForRange:{a4, 0}];
-        v27 = a4 - v24;
-        v18 = [v11 substringFromIndex:v24];
+        v24 = [stringCopy paragraphRangeForRange:{at, 0}];
+        v27 = at - v24;
+        v18 = [stringCopy substringFromIndex:v24];
 LABEL_25:
         v38 = 0;
 LABEL_26:
         [qword_1ED49AD68 lock];
-        [(UITextChecker *)self _setLanguageDictionaryName:v12];
+        [(UITextChecker *)self _setLanguageDictionaryName:languageCopy];
         v28 = [(UITextChecker *)self _nameOfDictionaryForDocumentTag:self->_usdt];
         [(UITextChecker *)self _setDocumentDictionaryName:v28];
 
@@ -1208,7 +1208,7 @@ LABEL_26:
         while (1)
         {
           v43 = v15;
-          v16 = [(UITextChecker *)self _chunkAndCheckGrammarInString:v18 language:v12 usingChecker:v19 details:&v43];
+          v16 = [(UITextChecker *)self _chunkAndCheckGrammarInString:v18 language:languageCopy usingChecker:_checker details:&v43];
           v20 = v29;
           v30 = v43;
 
@@ -1246,7 +1246,7 @@ LABEL_26:
           }
 
           v24 += v31;
-          v33 = [v11 substringWithRange:{v24, v32 - v31}];
+          v33 = [stringCopy substringWithRange:{v24, v32 - v31}];
 
           v18 = v33;
         }
@@ -1257,7 +1257,7 @@ LABEL_26:
       }
     }
 
-    v18 = v11;
+    v18 = stringCopy;
     v24 = 0;
     v27 = 0;
     goto LABEL_25;
@@ -1273,20 +1273,20 @@ LABEL_41:
   return result;
 }
 
-+ (BOOL)grammarCheckingEnabledForLanguage:(id)a3
++ (BOOL)grammarCheckingEnabledForLanguage:(id)language
 {
-  v3 = a3;
+  languageCopy = language;
   if (qword_1ED49AE10 != -1)
   {
     dispatch_once(&qword_1ED49AE10, &__block_literal_global_509);
   }
 
   v4 = 0;
-  if (v3 && (byte_1ED49AD62 & 1) != 0)
+  if (languageCopy && (byte_1ED49AD62 & 1) != 0)
   {
-    v5 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:v3];
-    v6 = [v5 languageCode];
-    v4 = [v6 isEqualToString:@"en"];
+    v5 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:languageCopy];
+    languageCode = [v5 languageCode];
+    v4 = [languageCode isEqualToString:@"en"];
   }
 
   return v4;
@@ -1305,11 +1305,11 @@ LABEL_41:
   }
 }
 
-- (int64_t)requestGrammarCheckingOfString:(id)a3 range:(_NSRange)a4 language:(id)a5 options:(id)a6 completionHandler:(id)a7
+- (int64_t)requestGrammarCheckingOfString:(id)string range:(_NSRange)range language:(id)language options:(id)options completionHandler:(id)handler
 {
-  length = a4.length;
-  location = a4.location;
-  v13 = a7;
+  length = range.length;
+  location = range.location;
+  handlerCopy = handler;
   v14 = atomic_fetch_add(&qword_1ED49AE18, 1uLL) + 1;
   if (length >= 0x400)
   {
@@ -1321,32 +1321,32 @@ LABEL_41:
     v15 = length;
   }
 
-  v16 = a6;
-  v17 = a5;
-  v18 = a3;
-  v19 = [(UITextChecker *)self postEditor];
+  optionsCopy = options;
+  languageCopy = language;
+  stringCopy = string;
+  postEditor = [(UITextChecker *)self postEditor];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __89__UITextChecker_requestGrammarCheckingOfString_range_language_options_completionHandler___block_invoke;
   v22[3] = &unk_1E71273A0;
-  v23 = v13;
+  v23 = handlerCopy;
   v24 = v14;
-  v20 = v13;
-  [v19 requestCheckingOfString:v18 range:location language:v15 options:v17 completionHandler:{v16, v22}];
+  v20 = handlerCopy;
+  [postEditor requestCheckingOfString:stringCopy range:location language:v15 options:languageCopy completionHandler:{optionsCopy, v22}];
 
   return v14;
 }
 
-- (void)requestProofreadingReviewOfString:(id)a3 range:(_NSRange)a4 language:(id)a5 options:(id)a6 completionHandler:(id)a7
+- (void)requestProofreadingReviewOfString:(id)string range:(_NSRange)range language:(id)language options:(id)options completionHandler:(id)handler
 {
-  length = a4.length;
-  location = a4.location;
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(UITextChecker *)self postEditor];
-  if (v17 && (objc_opt_respondsToSelector() & 1) != 0)
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  languageCopy = language;
+  optionsCopy = options;
+  handlerCopy = handler;
+  postEditor = [(UITextChecker *)self postEditor];
+  if (postEditor && (objc_opt_respondsToSelector() & 1) != 0)
   {
     if (length >= 0x400)
     {
@@ -1357,21 +1357,21 @@ LABEL_41:
     v18[1] = 3221225472;
     v18[2] = __92__UITextChecker_requestProofreadingReviewOfString_range_language_options_completionHandler___block_invoke;
     v18[3] = &unk_1E70FDA40;
-    v19 = v16;
-    [v17 requestProofreadingReviewOfString:v13 range:location language:length offset:v14 options:0 completionHandler:{v15, v18}];
+    v19 = handlerCopy;
+    [postEditor requestProofreadingReviewOfString:stringCopy range:location language:length offset:languageCopy options:0 completionHandler:{optionsCopy, v18}];
   }
 }
 
-- (id)finalResultsFromCheckingString:(id)a3 range:(_NSRange)a4 language:(id)a5 options:(id)a6
+- (id)finalResultsFromCheckingString:(id)string range:(_NSRange)range language:(id)language options:(id)options
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(UITextChecker *)self postEditor];
-  v15 = v14;
-  if (v14)
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  languageCopy = language;
+  optionsCopy = options;
+  postEditor = [(UITextChecker *)self postEditor];
+  v15 = postEditor;
+  if (postEditor)
   {
     if (length >= 0x400)
     {
@@ -1383,7 +1383,7 @@ LABEL_41:
       v16 = length;
     }
 
-    v17 = [v14 finalResultsFromCheckingString:v11 range:location language:v16 options:{v12, v13}];
+    v17 = [postEditor finalResultsFromCheckingString:stringCopy range:location language:v16 options:{languageCopy, optionsCopy}];
   }
 
   else
@@ -1394,10 +1394,10 @@ LABEL_41:
   return v17;
 }
 
-- (id)grammarAlternativesForString:(id)a3
+- (id)grammarAlternativesForString:(id)string
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  stringCopy = string;
+  array = [MEMORY[0x1E695DF70] array];
   if (qword_1ED49AE20 != -1)
   {
     dispatch_once(&qword_1ED49AE20, &__block_literal_global_535_1);
@@ -1405,24 +1405,24 @@ LABEL_41:
 
   if (byte_1ED49AD63 == 1)
   {
-    v33 = self;
-    v37 = v5;
+    selfCopy = self;
+    v37 = array;
     v6 = +[UIKeyboardInputModeController sharedInputModeController];
-    v7 = [v6 currentInputMode];
-    v39 = [v7 languageWithRegion];
+    currentInputMode = [v6 currentInputMode];
+    languageWithRegion = [currentInputMode languageWithRegion];
 
     v8 = +[UIKeyboardImpl activeInstance];
-    v9 = [v8 keyboardState];
-    v10 = [v9 documentState];
+    keyboardState = [v8 keyboardState];
+    documentState = [keyboardState documentState];
 
-    v11 = [v10 contextBeforeInput];
-    v12 = [v10 selectedText];
-    v35 = v10;
-    v13 = [v10 contextAfterInput];
+    contextBeforeInput = [documentState contextBeforeInput];
+    selectedText = [documentState selectedText];
+    v35 = documentState;
+    contextAfterInput = [documentState contextAfterInput];
     v14 = &stru_1EFB14550;
-    if (v11)
+    if (contextBeforeInput)
     {
-      v15 = v11;
+      v15 = contextBeforeInput;
     }
 
     else
@@ -1430,9 +1430,9 @@ LABEL_41:
       v15 = &stru_1EFB14550;
     }
 
-    if (v12)
+    if (selectedText)
     {
-      v16 = v12;
+      v16 = selectedText;
     }
 
     else
@@ -1440,19 +1440,19 @@ LABEL_41:
       v16 = &stru_1EFB14550;
     }
 
-    v34 = v13;
-    if (v13)
+    v34 = contextAfterInput;
+    if (contextAfterInput)
     {
-      v14 = v13;
+      v14 = contextAfterInput;
     }
 
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", v15, v16, v14];
     v18 = [v17 length];
-    v19 = [v4 length];
-    v20 = [(__CFString *)v11 length];
-    v21 = [(__CFString *)v12 length];
+    v19 = [stringCopy length];
+    v20 = [(__CFString *)contextBeforeInput length];
+    v21 = [(__CFString *)selectedText length];
     v36 = v8;
-    v38 = [v8 smartPunctuationController];
+    smartPunctuationController = [v8 smartPunctuationController];
     v22 = 0;
     if (v20 >= v19)
     {
@@ -1472,7 +1472,7 @@ LABEL_41:
 
     while (v18 > v23 + v22)
     {
-      v25 = [v17 rangeOfString:v4 options:0 range:{v23 + v22, v18 - (v23 + v22)}];
+      v25 = [v17 rangeOfString:stringCopy options:0 range:{v23 + v22, v18 - (v23 + v22)}];
       if (!v26)
       {
         break;
@@ -1482,12 +1482,12 @@ LABEL_41:
       v22 = v26;
       if (v25 <= v20 && v24 <= v25 + v26)
       {
-        v27 = [(UITextChecker *)v33 postEditor];
-        v28 = [v27 grammarDetailForString:v17 range:v23 language:{v22, v39}];
+        postEditor = [(UITextChecker *)selfCopy postEditor];
+        v28 = [postEditor grammarDetailForString:v17 range:v23 language:{v22, languageWithRegion}];
 
         if (v28)
         {
-          v29 = _detailByApplyingSmartQuotes(v28, v38);
+          v29 = _detailByApplyingSmartQuotes(v28, smartPunctuationController);
           v30 = [v29 objectForKey:@"NSGrammarCorrections"];
 
           if (v30)
@@ -1497,7 +1497,7 @@ LABEL_41:
             {
               if ([v30 count])
               {
-                v31 = [[off_1E70ECBA0 alloc] initWithPrimaryString:v4 alternativeStrings:v30];
+                v31 = [[off_1E70ECBA0 alloc] initWithPrimaryString:stringCopy alternativeStrings:v30];
                 [v37 addObject:v31];
               }
             }
@@ -1508,22 +1508,22 @@ LABEL_41:
       }
     }
 
-    v5 = v37;
+    array = v37;
   }
 
-  return v5;
+  return array;
 }
 
-- (id)grammarGuessesForRange:(_NSRange)a3 inString:(id)a4 language:(id)a5
+- (id)grammarGuessesForRange:(_NSRange)range inString:(id)string language:(id)language
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E695DF70] array];
-  v12 = [(UITextChecker *)self postEditor];
-  v13 = [v9 length];
-  if (v12)
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  languageCopy = language;
+  array = [MEMORY[0x1E695DF70] array];
+  postEditor = [(UITextChecker *)self postEditor];
+  v13 = [stringCopy length];
+  if (postEditor)
   {
     if (length)
     {
@@ -1531,28 +1531,28 @@ LABEL_41:
       v15 = location + length;
       if (location + length <= v13)
       {
-        if ([UITextChecker grammarCheckingEnabledForLanguage:v10])
+        if ([UITextChecker grammarCheckingEnabledForLanguage:languageCopy])
         {
           v16 = +[UIKeyboardImpl activeInstance];
-          v52 = [v16 smartPunctuationController];
-          v49 = [v16 autocorrectionPreferenceForTraits];
-          v17 = v9;
+          smartPunctuationController = [v16 smartPunctuationController];
+          autocorrectionPreferenceForTraits = [v16 autocorrectionPreferenceForTraits];
+          v17 = stringCopy;
           if (!location && length == v14)
           {
-            v47 = v11;
-            v48 = v10;
+            v47 = array;
+            v48 = languageCopy;
             v50 = v16;
-            v18 = [v16 keyboardState];
-            v19 = [v18 documentState];
+            keyboardState = [v16 keyboardState];
+            documentState = [keyboardState documentState];
 
-            v20 = [v19 contextBeforeInput];
-            v21 = [v19 selectedText];
-            v46 = v19;
-            v22 = [v19 contextAfterInput];
+            contextBeforeInput = [documentState contextBeforeInput];
+            selectedText = [documentState selectedText];
+            v46 = documentState;
+            contextAfterInput = [documentState contextAfterInput];
             v23 = &stru_1EFB14550;
-            if (v20)
+            if (contextBeforeInput)
             {
-              v24 = v20;
+              v24 = contextBeforeInput;
             }
 
             else
@@ -1560,9 +1560,9 @@ LABEL_41:
               v24 = &stru_1EFB14550;
             }
 
-            if (v21)
+            if (selectedText)
             {
-              v25 = v21;
+              v25 = selectedText;
             }
 
             else
@@ -1570,18 +1570,18 @@ LABEL_41:
               v25 = &stru_1EFB14550;
             }
 
-            if (v22)
+            if (contextAfterInput)
             {
-              v23 = v22;
+              v23 = contextAfterInput;
             }
 
-            v43 = v22;
+            v43 = contextAfterInput;
             v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", v24, v25, v23];
             v27 = [v26 length];
-            v45 = v20;
-            v28 = [(__CFString *)v20 length];
-            v44 = v21;
-            v29 = [(__CFString *)v21 length];
+            v45 = contextBeforeInput;
+            v28 = [(__CFString *)contextBeforeInput length];
+            v44 = selectedText;
+            v29 = [(__CFString *)selectedText length];
             v30 = 0;
             if (v28 >= length)
             {
@@ -1623,19 +1623,19 @@ LABEL_41:
 LABEL_26:
 
             v15 = location + length;
-            v11 = v47;
-            v10 = v48;
+            array = v47;
+            languageCopy = v48;
             v16 = v50;
           }
 
           if (v15 <= [v17 length])
           {
-            v35 = [v12 grammarDetailForString:v17 range:location language:{length, v10}];
+            v35 = [postEditor grammarDetailForString:v17 range:location language:{length, languageCopy}];
             v36 = v35;
             if (v35)
             {
               v51 = v16;
-              v37 = _detailByApplyingSmartQuotes(v35, v52);
+              v37 = _detailByApplyingSmartQuotes(v35, smartPunctuationController);
               v38 = [v37 objectForKey:@"NSGrammarCorrections"];
 
               if (v38)
@@ -1645,7 +1645,7 @@ LABEL_26:
                 {
                   if ([v38 count])
                   {
-                    [v11 addObjectsFromArray:v38];
+                    [array addObjectsFromArray:v38];
                   }
                 }
               }
@@ -1653,17 +1653,17 @@ LABEL_26:
               v16 = v51;
             }
 
-            if (v49 && ![v11 count])
+            if (autocorrectionPreferenceForTraits && ![array count])
             {
-              v39 = [v12 reversionForString:v17 range:location language:{length, v10}];
+              v39 = [postEditor reversionForString:v17 range:location language:{length, languageCopy}];
               if (v39)
               {
                 v40 = v39;
-                v41 = _stringByApplyingSmartQuotes(v39, v52);
+                v41 = _stringByApplyingSmartQuotes(v39, smartPunctuationController);
 
-                if (v41 && ([v11 containsObject:v41] & 1) == 0)
+                if (v41 && ([array containsObject:v41] & 1) == 0)
                 {
-                  [v11 addObject:v41];
+                  [array addObject:v41];
                 }
               }
 
@@ -1678,21 +1678,21 @@ LABEL_26:
     }
   }
 
-  return v11;
+  return array;
 }
 
-- (void)recordResponse:(unint64_t)a3 toGrammarDetailInAnnotatedString:(id)a4 range:(_NSRange)a5
+- (void)recordResponse:(unint64_t)response toGrammarDetailInAnnotatedString:(id)string range:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v20 = a4;
-  v9 = [(UITextChecker *)self postEditor];
-  if (!v9 || !length || location + length > [v20 length])
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  postEditor = [(UITextChecker *)self postEditor];
+  if (!postEditor || !length || location + length > [stringCopy length])
   {
     goto LABEL_27;
   }
 
-  v10 = [v20 attribute:@"NSGrammarCorrections" atIndex:location effectiveRange:0];
+  v10 = [stringCopy attribute:@"NSGrammarCorrections" atIndex:location effectiveRange:0];
   if (v10)
   {
     objc_opt_class();
@@ -1703,7 +1703,7 @@ LABEL_26:
     }
   }
 
-  v11 = [v20 attribute:@"NSGrammarIssueType" atIndex:location effectiveRange:0];
+  v11 = [stringCopy attribute:@"NSGrammarIssueType" atIndex:location effectiveRange:0];
   if (v11)
   {
     objc_opt_class();
@@ -1714,7 +1714,7 @@ LABEL_26:
     }
   }
 
-  v12 = [v20 attribute:@"NSGrammarTargetPair" atIndex:location effectiveRange:0];
+  v12 = [stringCopy attribute:@"NSGrammarTargetPair" atIndex:location effectiveRange:0];
   if (v12)
   {
     objc_opt_class();
@@ -1725,7 +1725,7 @@ LABEL_26:
     }
   }
 
-  v13 = [v20 attribute:@"NSGrammarConfidenceScore" atIndex:location effectiveRange:0];
+  v13 = [stringCopy attribute:@"NSGrammarConfidenceScore" atIndex:location effectiveRange:0];
   if (v13)
   {
     objc_opt_class();
@@ -1736,10 +1736,10 @@ LABEL_26:
     }
   }
 
-  v14 = [v20 attribute:@"NSGrammarLanguage" atIndex:location effectiveRange:0];
+  v14 = [stringCopy attribute:@"NSGrammarLanguage" atIndex:location effectiveRange:0];
   if (v14)
   {
-    v15 = v14;
+    languageWithRegion = v14;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1748,8 +1748,8 @@ LABEL_26:
   }
 
   v16 = +[UIKeyboardInputModeController sharedInputModeController];
-  v17 = [v16 currentInputMode];
-  v15 = [v17 languageWithRegion];
+  currentInputMode = [v16 currentInputMode];
+  languageWithRegion = [currentInputMode languageWithRegion];
 
 LABEL_20:
   if (v10)
@@ -1757,10 +1757,10 @@ LABEL_20:
     v18 = [v10 count];
     if (v11)
     {
-      if (v13 && v18 && v15)
+      if (v13 && v18 && languageWithRegion)
       {
         v19 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v10, @"NSGrammarCorrections", v13, @"NSGrammarConfidenceScore", v11, @"NSGrammarIssueType", v12, @"NSGrammarTargetPair", 0}];
-        [v9 recordResponse:a3 toGrammarDetail:v19 language:v15];
+        [postEditor recordResponse:response toGrammarDetail:v19 language:languageWithRegion];
       }
     }
   }
@@ -1768,18 +1768,18 @@ LABEL_20:
 LABEL_27:
 }
 
-+ (id)grammarAutocorrectionForWord:(id)a3
++ (id)grammarAutocorrectionForWord:(id)word
 {
-  v3 = a3;
+  wordCopy = word;
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 _textChoicesAssistant];
+  _textChoicesAssistant = [v4 _textChoicesAssistant];
 
   v6 = 0;
-  if (v3 && v5)
+  if (wordCopy && _textChoicesAssistant)
   {
     if (+[UITextSelectionDisplayInteraction isTextAccelerationUIEnabled])
     {
-      v7 = [v5 candidateForFinalString:v3];
+      v7 = [_textChoicesAssistant candidateForFinalString:wordCopy];
       if (v7 && [_recentGrammarCandidates containsObject:v7])
       {
         v6 = v7;
@@ -1800,21 +1800,21 @@ LABEL_27:
   return v6;
 }
 
-+ (void)handleGrammarCorrectionEntries:(id)a3
++ (void)handleGrammarCorrectionEntries:(id)entries
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  entriesCopy = entries;
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 _textChoicesAssistant];
+  _textChoicesAssistant = [v4 _textChoicesAssistant];
 
-  if (v5 && +[UITextSelectionDisplayInteraction isTextAccelerationUIEnabled])
+  if (_textChoicesAssistant && +[UITextSelectionDisplayInteraction isTextAccelerationUIEnabled])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v17 = v3;
-    v6 = v3;
+    v17 = entriesCopy;
+    v6 = entriesCopy;
     v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
@@ -1840,7 +1840,7 @@ LABEL_27:
           v14 = objc_alloc(MEMORY[0x1E69D9588]);
           v15 = [v14 initWithAutocorrection:v13 alternateCorrections:MEMORY[0x1E695E0F0]];
           v16 = [MEMORY[0x1E69D9570] listWithCorrections:v15];
-          [v5 addList:v16 forCandidate:v13];
+          [_textChoicesAssistant addList:v16 forCandidate:v13];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -1849,28 +1849,28 @@ LABEL_27:
       while (v8);
     }
 
-    v3 = v17;
+    entriesCopy = v17;
   }
 }
 
-+ (void)noteWordTerminator:(id)a3 replacement:(id)a4
++ (void)noteWordTerminator:(id)terminator replacement:(id)replacement
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  terminatorCopy = terminator;
+  replacementCopy = replacement;
+  if ([replacementCopy length])
   {
-    v8 = v7;
+    string = replacementCopy;
   }
 
   else
   {
-    v8 = [v6 string];
+    string = [terminatorCopy string];
   }
 
-  v9 = v8;
+  v9 = string;
   v10 = +[UITextChecker keyboardLanguages];
-  v11 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
   v12 = +[UIKeyboardImpl activeInstance];
   v13 = +[UITextChecker postEditor];
@@ -1879,8 +1879,8 @@ LABEL_27:
     dispatch_once(&qword_1ED49ADB8, &__block_literal_global_246);
   }
 
-  v14 = [v12 inputDelegateManager];
-  v15 = [v14 hasAsyncCapableInputDelegate];
+  inputDelegateManager = [v12 inputDelegateManager];
+  hasAsyncCapableInputDelegate = [inputDelegateManager hasAsyncCapableInputDelegate];
 
   if (v13)
   {
@@ -1889,30 +1889,30 @@ LABEL_27:
       [v9 rangeOfCharacterFromSet:qword_1ED49ADB0];
       if (v16)
       {
-        if (([a1 grammarCheckingEnabledForLanguage:v11] & v15) == 1)
+        if (([self grammarCheckingEnabledForLanguage:firstObject] & hasAsyncCapableInputDelegate) == 1)
         {
-          v17 = [v12 keyboardState];
-          v18 = [v17 documentState];
+          keyboardState = [v12 keyboardState];
+          documentState = [keyboardState documentState];
 
-          v19 = [v18 contextBeforeInput];
-          v20 = [v19 length];
+          contextBeforeInput = [documentState contextBeforeInput];
+          v20 = [contextBeforeInput length];
           v21 = v20;
-          if (v19)
+          if (contextBeforeInput)
           {
             if (v20)
             {
-              [v19 rangeOfCharacterFromSet:qword_1ED49ADB0 options:12 range:{0, v20}];
+              [contextBeforeInput rangeOfCharacterFromSet:qword_1ED49ADB0 options:12 range:{0, v20}];
               if (!v22)
               {
-                v23 = [v19 stringByAppendingString:v9];
+                v23 = [contextBeforeInput stringByAppendingString:v9];
 
                 v21 = [v23 length];
-                v19 = v23;
+                contextBeforeInput = v23;
               }
             }
           }
 
-          if (v19 && v21 >= 0xA)
+          if (contextBeforeInput && v21 >= 0xA)
           {
             v28[0] = @"InsertionPoint";
             v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v21];
@@ -1920,10 +1920,10 @@ LABEL_27:
             v29[0] = v27;
             v29[1] = MEMORY[0x1E695E110];
             [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:2];
-            v25 = v24 = v18;
-            v26 = [v13 resultsFromCheckingString:v19 range:0 language:v21 options:{v11, v25}];
+            v25 = v24 = documentState;
+            v26 = [v13 resultsFromCheckingString:contextBeforeInput range:0 language:v21 options:{firstObject, v25}];
 
-            v18 = v24;
+            documentState = v24;
           }
         }
       }
@@ -1938,19 +1938,19 @@ void __48__UITextChecker_noteWordTerminator_replacement___block_invoke()
   qword_1ED49ADB0 = v0;
 }
 
-+ (void)noteTextReplacement:(id)a3
++ (void)noteTextReplacement:(id)replacement
 {
-  v56 = a3;
-  v4 = [v56 replacementText];
-  v5 = [v56 originalText];
+  replacementCopy = replacement;
+  replacementText = [replacementCopy replacementText];
+  originalText = [replacementCopy originalText];
   v6 = +[UITextChecker keyboardLanguages];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
   v8 = +[UIKeyboardImpl activeInstance];
   v9 = +[UITextChecker postEditor];
   if (v9)
   {
-    v10 = v5 == 0;
+    v10 = originalText == 0;
   }
 
   else
@@ -1958,23 +1958,23 @@ void __48__UITextChecker_noteWordTerminator_replacement___block_invoke()
     v10 = 1;
   }
 
-  v11 = v10 || v4 == 0;
-  if (!v11 && [a1 grammarCheckingEnabledForLanguage:v7])
+  v11 = v10 || replacementText == 0;
+  if (!v11 && [self grammarCheckingEnabledForLanguage:firstObject])
   {
-    v49 = v4;
-    v12 = [v8 keyboardState];
-    v13 = [v12 documentState];
+    v49 = replacementText;
+    keyboardState = [v8 keyboardState];
+    documentState = [keyboardState documentState];
 
     v47 = v8;
-    v55 = [v8 smartPunctuationController];
-    v14 = [v13 contextBeforeInput];
-    v15 = [v13 selectedText];
-    v46 = v13;
-    v16 = [v13 contextAfterInput];
+    smartPunctuationController = [v8 smartPunctuationController];
+    contextBeforeInput = [documentState contextBeforeInput];
+    selectedText = [documentState selectedText];
+    v46 = documentState;
+    contextAfterInput = [documentState contextAfterInput];
     v17 = &stru_1EFB14550;
-    if (v14)
+    if (contextBeforeInput)
     {
-      v18 = v14;
+      v18 = contextBeforeInput;
     }
 
     else
@@ -1982,9 +1982,9 @@ void __48__UITextChecker_noteWordTerminator_replacement___block_invoke()
       v18 = &stru_1EFB14550;
     }
 
-    if (v15)
+    if (selectedText)
     {
-      v19 = v15;
+      v19 = selectedText;
     }
 
     else
@@ -1992,20 +1992,20 @@ void __48__UITextChecker_noteWordTerminator_replacement___block_invoke()
       v19 = &stru_1EFB14550;
     }
 
-    v52 = v16;
-    if (v16)
+    v52 = contextAfterInput;
+    if (contextAfterInput)
     {
-      v17 = v16;
+      v17 = contextAfterInput;
     }
 
     v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", v18, v19, v17];
-    v21 = v7;
+    v21 = firstObject;
     v22 = [v20 length];
-    v23 = [v5 length];
-    v54 = v14;
-    v24 = [(__CFString *)v14 length];
-    v53 = v15;
-    v25 = [(__CFString *)v15 length];
+    v23 = [originalText length];
+    v54 = contextBeforeInput;
+    v24 = [(__CFString *)contextBeforeInput length];
+    v53 = selectedText;
+    v25 = [(__CFString *)selectedText length];
     v26 = 0;
     if (v24 >= v23)
     {
@@ -2028,14 +2028,14 @@ void __48__UITextChecker_noteWordTerminator_replacement___block_invoke()
       v29 = v25 + v24 + v23;
     }
 
-    v7 = v21;
+    firstObject = v21;
     do
     {
-      if (v29 <= v27 + v26 || (v30 = [v20 rangeOfString:v5 options:0 range:{v27 + v26, v29 - (v27 + v26)}], !v31))
+      if (v29 <= v27 + v26 || (v30 = [v20 rangeOfString:originalText options:0 range:{v27 + v26, v29 - (v27 + v26)}], !v31))
       {
         v35 = 0;
         v8 = v47;
-        v4 = v49;
+        replacementText = v49;
         v36 = v46;
         goto LABEL_47;
       }
@@ -2050,28 +2050,28 @@ void __48__UITextChecker_noteWordTerminator_replacement___block_invoke()
     {
       v35 = 0;
       v8 = v47;
-      v4 = v49;
+      replacementText = v49;
       v36 = v46;
     }
 
     else
     {
       v44 = v32;
-      v35 = [v9 reversionForString:v20 range:v27 language:{v26, v7}];
+      v35 = [v9 reversionForString:v20 range:v27 language:{v26, firstObject}];
       if (v35)
       {
         v37 = [v20 stringByReplacingCharactersInRange:v27 withString:{v26, v35}];
-        v38 = [v9 grammarDetailForString:v37 range:v27 language:{objc_msgSend(v35, "length"), v7}];
+        v38 = [v9 grammarDetailForString:v37 range:v27 language:{objc_msgSend(v35, "length"), firstObject}];
 
         v32 = v38;
         v8 = v47;
-        v4 = v49;
+        replacementText = v49;
       }
 
       else
       {
         v8 = v47;
-        v4 = v49;
+        replacementText = v49;
         v32 = v44;
       }
 
@@ -2083,18 +2083,18 @@ void __48__UITextChecker_noteWordTerminator_replacement___block_invoke()
     }
 
     v45 = v32;
-    v39 = _detailByApplyingSmartQuotes(v32, v55);
+    v39 = _detailByApplyingSmartQuotes(v32, smartPunctuationController);
     v40 = [v39 objectForKey:@"NSGrammarCorrections"];
 
     if (v40 && [v40 count])
     {
       if (v35)
       {
-        v48 = [v4 isEqualToString:v35];
-        v41 = [v8 inputDelegateManager];
-        v50 = [v41 hasAsyncCapableInputDelegate];
+        v48 = [replacementText isEqualToString:v35];
+        inputDelegateManager = [v8 inputDelegateManager];
+        hasAsyncCapableInputDelegate = [inputDelegateManager hasAsyncCapableInputDelegate];
 
-        if (v50)
+        if (hasAsyncCapableInputDelegate)
         {
           if (v48)
           {
@@ -2112,14 +2112,14 @@ void __48__UITextChecker_noteWordTerminator_replacement___block_invoke()
 
       else
       {
-        v43 = [v40 firstObject];
-        v51 = [v4 isEqual:v43];
+        firstObject2 = [v40 firstObject];
+        v51 = [replacementText isEqual:firstObject2];
 
         if (v51)
         {
           v42 = 1;
 LABEL_45:
-          [v9 recordResponse:v42 toGrammarDetail:v45 language:v7];
+          [v9 recordResponse:v42 toGrammarDetail:v45 language:firstObject];
         }
       }
     }
@@ -2138,41 +2138,41 @@ LABEL_47:
   if (byte_1ED49AD64 == 1)
   {
     v2 = +[UIKeyboardImpl activeInstance];
-    v3 = [v2 inputDelegateManager];
-    v6 = [v3 textInputDelegate];
+    inputDelegateManager = [v2 inputDelegateManager];
+    textInputDelegate = [inputDelegateManager textInputDelegate];
 
-    v4 = v6;
-    if (v6)
+    v4 = textInputDelegate;
+    if (textInputDelegate)
     {
       v5 = objc_opt_respondsToSelector();
-      v4 = v6;
+      v4 = textInputDelegate;
       if (v5)
       {
-        [v6 performFinalGrammarChecking];
-        v4 = v6;
+        [textInputDelegate performFinalGrammarChecking];
+        v4 = textInputDelegate;
       }
     }
   }
 }
 
-- (id)checkString:(id)a3 range:(_NSRange)a4 types:(unint64_t)a5 languages:(id)a6 options:(id)a7
+- (id)checkString:(id)string range:(_NSRange)range types:(unint64_t)types languages:(id)languages options:(id)options
 {
-  v9 = a5;
-  length = a4.length;
-  location = a4.location;
+  typesCopy = types;
+  length = range.length;
+  location = range.location;
   v93 = *MEMORY[0x1E69E9840];
-  v59 = a3;
-  v13 = a6;
-  v57 = a7;
-  v63 = [MEMORY[0x1E695DF70] array];
-  v58 = v13;
-  v61 = [v13 firstObject];
+  stringCopy = string;
+  languagesCopy = languages;
+  optionsCopy = options;
+  array = [MEMORY[0x1E695DF70] array];
+  v58 = languagesCopy;
+  firstObject = [languagesCopy firstObject];
   if (location < location + length)
   {
     v14 = location;
     do
     {
-      v15 = [(UITextChecker *)self rangeOfMisspelledWordInString:v59 range:location startingAt:length wrap:v14 languages:0, v58];
+      v15 = [(UITextChecker *)self rangeOfMisspelledWordInString:stringCopy range:location startingAt:length wrap:v14 languages:0, v58];
       if (v15 == 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
@@ -2186,19 +2186,19 @@ LABEL_47:
 
       v18 = v15;
       v19 = [objc_alloc(MEMORY[0x1E696AEB8]) initWithRange:{v15, v16}];
-      [v63 addObject:v19];
+      [array addObject:v19];
       v14 = v18 + v17;
     }
 
     while (v14 < location + length);
   }
 
-  if ([UITextChecker grammarCheckingEnabledForLanguage:v61])
+  if ([UITextChecker grammarCheckingEnabledForLanguage:firstObject])
   {
-    v60 = [(UITextChecker *)self postEditor];
+    postEditor = [(UITextChecker *)self postEditor];
     v20 = +[UIKeyboardImpl activeInstance];
     v56 = v20;
-    if ((v9 & 0x200) != 0)
+    if ((typesCopy & 0x200) != 0)
     {
       v22 = [v20 autocorrectionPreferenceForTraits] == 0;
       v20 = v56;
@@ -2210,7 +2210,7 @@ LABEL_47:
       v21 = 0;
     }
 
-    v64 = [v20 smartPunctuationController];
+    smartPunctuationController = [v20 smartPunctuationController];
     if (length >= 0x400)
     {
       v23 = 1024;
@@ -2221,7 +2221,7 @@ LABEL_47:
       v23 = length;
     }
 
-    [v60 resultsFromCheckingString:v59 range:location language:v23 options:{v61, v57}];
+    [postEditor resultsFromCheckingString:stringCopy range:location language:v23 options:{firstObject, optionsCopy}];
     v78 = 0u;
     v79 = 0u;
     v80 = 0u;
@@ -2243,15 +2243,15 @@ LABEL_47:
 
           v68 = v24;
           v25 = *(*(&v78 + 1) + 8 * v24);
-          v26 = [v25 resultType];
-          if (v26 == 512)
+          resultType = [v25 resultType];
+          if (resultType == 512)
           {
             if (v21)
             {
-              v28 = _resultByApplyingSmartQuotesToResult(v25, v64);
+              v28 = _resultByApplyingSmartQuotesToResult(v25, smartPunctuationController);
               v29 = obj;
               v30 = v28;
-              v31 = [v30 range];
+              range = [v30 range];
               v76 = v32;
               v86 = 0u;
               v87 = 0u;
@@ -2279,16 +2279,16 @@ LABEL_47:
                     }
 
                     v37 = *(*(&v86 + 1) + 8 * v36);
-                    v38 = [v37 range];
+                    range2 = [v37 range];
                     v40 = v39;
                     if ([v37 resultType] == 4)
                     {
-                      v41 = [v37 grammarDetails];
+                      grammarDetails = [v37 grammarDetails];
                       v82 = 0u;
                       v83 = 0u;
                       v84 = 0u;
                       v85 = 0u;
-                      v77 = v41;
+                      v77 = grammarDetails;
                       v42 = [v77 countByEnumeratingWithState:&v82 objects:v91 count:16];
                       if (v42)
                       {
@@ -2311,28 +2311,28 @@ LABEL_47:
                               v47 = [v46 objectForKey:@"NSGrammarRange"];
                               if (v47 && (objc_opt_respondsToSelector() & 1) != 0)
                               {
-                                v48 = [v47 rangeValue];
+                                rangeValue = [v47 rangeValue];
                                 v50 = v49;
                               }
 
                               else
                               {
                                 v50 = 0;
-                                v48 = 0x7FFFFFFFFFFFFFFFLL;
+                                rangeValue = 0x7FFFFFFFFFFFFFFFLL;
                               }
                             }
 
                             else
                             {
                               v50 = 0;
-                              v48 = 0x7FFFFFFFFFFFFFFFLL;
+                              rangeValue = 0x7FFFFFFFFFFFFFFFLL;
                             }
 
-                            if (v31 == v48 + v38 && v76 == v50)
+                            if (range == rangeValue + range2 && v76 == v50)
                             {
                               v51 = [UIExtendedCorrectionCheckingResult alloc];
-                              v52 = [v69 replacementString];
-                              v53 = [(UIExtendedCorrectionCheckingResult *)v51 initWithRange:v31 replacementString:v76 sentenceRange:v52 detail:v38, v74, v46];
+                              replacementString = [v69 replacementString];
+                              v53 = [(UIExtendedCorrectionCheckingResult *)v51 initWithRange:range replacementString:v76 sentenceRange:replacementString detail:range2, v74, v46];
 
                               v73 = v53;
                               goto LABEL_52;
@@ -2372,17 +2372,17 @@ LABEL_52:
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v54 = [v73 detail];
-                  [v60 recordResponse:4 toGrammarDetail:v54 language:v61];
+                  detail = [v73 detail];
+                  [postEditor recordResponse:4 toGrammarDetail:detail language:firstObject];
                 }
 
 LABEL_59:
-                [v63 addObject:v27];
+                [array addObject:v27];
               }
             }
           }
 
-          else if (v26 == 4)
+          else if (resultType == 4)
           {
             if (qword_1ED49AE20 != -1)
             {
@@ -2391,7 +2391,7 @@ LABEL_59:
 
             if (byte_1ED49AD63)
             {
-              v27 = _resultByApplyingSmartQuotesToResult(v25, v64);
+              v27 = _resultByApplyingSmartQuotesToResult(v25, smartPunctuationController);
               if (v27)
               {
                 goto LABEL_59;
@@ -2410,29 +2410,29 @@ LABEL_59:
     }
   }
 
-  return v63;
+  return array;
 }
 
-- (id)correctionForWordRange:(_NSRange)a3 inString:(id)a4 language:(id)a5
+- (id)correctionForWordRange:(_NSRange)range inString:(id)string language:(id)language
 {
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 length];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  languageCopy = language;
+  v11 = [stringCopy length];
   if (location || length != v11)
   {
-    v12 = [v9 substringWithRange:{location, length}];
+    v12 = [stringCopy substringWithRange:{location, length}];
   }
 
   else
   {
-    v12 = v9;
+    v12 = stringCopy;
   }
 
   v13 = v12;
   v23 = 0;
-  v14 = [(UITextChecker *)self checkSpellingOfString:v12 startingAt:0 language:v10 wrap:0 correction:&v23];
+  v14 = [(UITextChecker *)self checkSpellingOfString:v12 startingAt:0 language:languageCopy wrap:0 correction:&v23];
   v16 = v15;
   v17 = v23;
   v18 = v17;
@@ -2477,15 +2477,15 @@ LABEL_7:
         {
           if (![(NSString *)v10 isEqualToString:&stru_1EFB14550])
           {
-            v14 = [(UITextChecker *)self _checker];
-            if (v14)
+            _checker = [(UITextChecker *)self _checker];
+            if (_checker)
             {
               [qword_1ED49AD68 lock];
               [(UITextChecker *)self _setLanguageDictionaryName:v10];
               v15 = [(UITextChecker *)self _nameOfDictionaryForDocumentTag:self->_usdt];
               [(UITextChecker *)self _setDocumentDictionaryName:v15];
 
-              v16 = [v14 spellServer:self suggestGuessesForWordRange:location inString:length language:{v9, v10}];
+              v16 = [_checker spellServer:self suggestGuessesForWordRange:location inString:length language:{v9, v10}];
               [qword_1ED49AD68 unlock];
             }
 
@@ -2536,15 +2536,15 @@ LABEL_7:
         {
           if (![(NSString *)v10 isEqualToString:&stru_1EFB14550])
           {
-            v14 = [(UITextChecker *)self _checker];
-            if (v14)
+            _checker = [(UITextChecker *)self _checker];
+            if (_checker)
             {
               [qword_1ED49AD68 lock];
               [(UITextChecker *)self _setLanguageDictionaryName:v10];
               v15 = [(UITextChecker *)self _nameOfDictionaryForDocumentTag:self->_usdt];
               [(UITextChecker *)self _setDocumentDictionaryName:v15];
 
-              v16 = [v14 spellServer:self suggestCompletionsForPartialWordRange:location inString:length language:{v9, v10}];
+              v16 = [_checker spellServer:self suggestCompletionsForPartialWordRange:location inString:length language:{v9, v10}];
               [qword_1ED49AD68 unlock];
             }
 
@@ -2569,21 +2569,21 @@ LABEL_8:
   return v11;
 }
 
-- (id)suggestWordInLanguage:(id)a3
+- (id)suggestWordInLanguage:(id)language
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 isEqualToString:&stru_1EFB14550] & 1) == 0)
+  languageCopy = language;
+  v5 = languageCopy;
+  if (languageCopy && ([languageCopy isEqualToString:&stru_1EFB14550] & 1) == 0)
   {
-    v7 = [(UITextChecker *)self _checker];
-    if (v7)
+    _checker = [(UITextChecker *)self _checker];
+    if (_checker)
     {
       [qword_1ED49AD68 lock];
       [(UITextChecker *)self _setLanguageDictionaryName:v5];
       v8 = [(UITextChecker *)self _nameOfDictionaryForDocumentTag:self->_usdt];
       [(UITextChecker *)self _setDocumentDictionaryName:v8];
 
-      v9 = [v7 spellServer:self suggestWordWithLengthInRange:4 language:{3, v5}];
+      v9 = [_checker spellServer:self suggestWordWithLengthInRange:4 language:{3, v5}];
       [qword_1ED49AD68 unlock];
     }
 
@@ -2603,13 +2603,13 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)canChangeCaseOfFirstLetterInString:(id)a3 toUpperCase:(BOOL)a4 language:(id)a5
+- (BOOL)canChangeCaseOfFirstLetterInString:(id)string toUpperCase:(BOOL)case language:(id)language
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v9 && ([v9 isEqualToString:&stru_1EFB14550] & 1) == 0 && (-[UITextChecker _checker](self, "_checker"), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
+  caseCopy = case;
+  stringCopy = string;
+  languageCopy = language;
+  v10 = languageCopy;
+  if (languageCopy && ([languageCopy isEqualToString:&stru_1EFB14550] & 1) == 0 && (-[UITextChecker _checker](self, "_checker"), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v12 = v11;
     [qword_1ED49AD68 lock];
@@ -2617,7 +2617,7 @@ LABEL_8:
     v13 = [(UITextChecker *)self _nameOfDictionaryForDocumentTag:self->_usdt];
     [(UITextChecker *)self _setDocumentDictionaryName:v13];
 
-    v14 = [v12 spellServer:self canChangeCaseOfFirstLetterInString:v8 toUpperCase:v6 language:v10];
+    v14 = [v12 spellServer:self canChangeCaseOfFirstLetterInString:stringCopy toUpperCase:caseCopy language:v10];
     [qword_1ED49AD68 unlock];
   }
 
@@ -2629,22 +2629,22 @@ LABEL_8:
   return v14;
 }
 
-- (id)stringForInputString:(id)a3 language:(id)a4
+- (id)stringForInputString:(id)string language:(id)language
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && ([v7 isEqualToString:&stru_1EFB14550] & 1) == 0)
+  stringCopy = string;
+  languageCopy = language;
+  v8 = languageCopy;
+  if (languageCopy && ([languageCopy isEqualToString:&stru_1EFB14550] & 1) == 0)
   {
-    v10 = [(UITextChecker *)self _checker];
-    if (v10)
+    _checker = [(UITextChecker *)self _checker];
+    if (_checker)
     {
       [qword_1ED49AD68 lock];
       [(UITextChecker *)self _setLanguageDictionaryName:v8];
       v11 = [(UITextChecker *)self _nameOfDictionaryForDocumentTag:self->_usdt];
       [(UITextChecker *)self _setDocumentDictionaryName:v11];
 
-      v12 = [v10 spellServer:self stringForInputString:v6 language:v8];
+      v12 = [_checker spellServer:self stringForInputString:stringCopy language:v8];
       [qword_1ED49AD68 unlock];
     }
 
@@ -2664,18 +2664,18 @@ LABEL_8:
   return v9;
 }
 
-- (id)alternativesForPinyinInputString:(id)a3
+- (id)alternativesForPinyinInputString:(id)string
 {
-  v4 = a3;
-  v5 = [(UITextChecker *)self _checker];
-  if (v5)
+  stringCopy = string;
+  _checker = [(UITextChecker *)self _checker];
+  if (_checker)
   {
     [qword_1ED49AD68 lock];
     [(UITextChecker *)self _setLanguageDictionaryName:@"en"];
     v6 = [(UITextChecker *)self _nameOfDictionaryForDocumentTag:self->_usdt];
     [(UITextChecker *)self _setDocumentDictionaryName:v6];
 
-    v7 = [v5 spellServer:self alternativesForPinyinInputString:v4 language:@"en"];
+    v7 = [_checker spellServer:self alternativesForPinyinInputString:stringCopy language:@"en"];
     [qword_1ED49AD68 unlock];
   }
 
@@ -2687,17 +2687,17 @@ LABEL_8:
   return v7;
 }
 
-+ (id)bestLanguageForString:(id)a3 fromAlternatives:(id)a4 currentLanguage:(id)a5 insertionPointIndex:(unint64_t)a6 scriptForBestLanguage:(id *)a7
++ (id)bestLanguageForString:(id)string fromAlternatives:(id)alternatives currentLanguage:(id)language insertionPointIndex:(unint64_t)index scriptForBestLanguage:(id *)bestLanguage
 {
   v112 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v75 = a4;
-  v77 = a5;
-  v81 = v10;
-  v11 = [v10 length];
-  v12 = [MEMORY[0x1E695DF90] dictionary];
-  v13 = [MEMORY[0x1E695DF90] dictionary];
-  v14 = [MEMORY[0x1E695DF90] dictionary];
+  stringCopy = string;
+  alternativesCopy = alternatives;
+  languageCopy = language;
+  v81 = stringCopy;
+  v11 = [stringCopy length];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
   v106 = 0;
   v107 = &v106;
   v108 = 0x2020000000;
@@ -2713,20 +2713,20 @@ LABEL_8:
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:{*MEMORY[0x1E696A528], *MEMORY[0x1E696A548], 0}];
   v18 = [v15 initWithTagSchemes:v17 options:0];
 
-  [v18 setString:v10];
+  [v18 setString:stringCopy];
   v92[0] = MEMORY[0x1E69E9820];
   v92[1] = 3221225472;
   v92[2] = __114__UITextChecker_bestLanguageForString_fromAlternatives_currentLanguage_insertionPointIndex_scriptForBestLanguage___block_invoke;
   v92[3] = &unk_1E71273C8;
   v93 = v18;
   v97 = &v106;
-  v80 = v12;
+  v80 = dictionary;
   v94 = v80;
   v98 = &v100;
-  v99 = a6;
-  v79 = v13;
+  indexCopy = index;
+  v79 = dictionary2;
   v95 = v79;
-  v76 = v14;
+  v76 = dictionary3;
   v96 = v76;
   v74 = v93;
   [v93 enumerateTagsInRange:0 scheme:v11 options:v16 usingBlock:{14, v92}];
@@ -2761,13 +2761,13 @@ LABEL_8:
           if (([v26 isEqualToString:@"und"] & 1) == 0)
           {
             v27 = [v20 objectForKey:v26];
-            v28 = [v27 unsignedIntegerValue];
+            unsignedIntegerValue = [v27 unsignedIntegerValue];
 
-            if (v28 <= v23)
+            if (unsignedIntegerValue <= v23)
             {
-              v30 = v28;
+              v30 = unsignedIntegerValue;
               v29 = v26;
-              if (v28 <= v22)
+              if (unsignedIntegerValue <= v22)
               {
                 continue;
               }
@@ -2780,7 +2780,7 @@ LABEL_8:
               v82 = v26;
               v83 = v29;
               v30 = v23;
-              v23 = v28;
+              v23 = unsignedIntegerValue;
             }
 
             v31 = v26;
@@ -2828,13 +2828,13 @@ LABEL_17:
 
           v40 = *(*(&v84 + 1) + 8 * j);
           v41 = [v35 objectForKey:v40];
-          v42 = [v41 unsignedIntegerValue];
+          unsignedIntegerValue2 = [v41 unsignedIntegerValue];
 
-          if (v42 > v37)
+          if (unsignedIntegerValue2 > v37)
           {
             v43 = v40;
 
-            v37 = v42;
+            v37 = unsignedIntegerValue2;
             v34 = v43;
           }
         }
@@ -2865,7 +2865,7 @@ LABEL_17:
     goto LABEL_30;
   }
 
-  v46 = v77;
+  v46 = languageCopy;
   v47 = v82;
   v48 = [v47 length];
   if (!v46 || !v47 || (v49 = v48, ![v46 hasPrefix:v47]))
@@ -2960,7 +2960,7 @@ LABEL_55:
       goto LABEL_75;
     }
 
-    v63 = [v75 containsObject:v101[5]];
+    v63 = [alternativesCopy containsObject:v101[5]];
     v64 = v101[5];
     if (v63)
     {
@@ -2968,7 +2968,7 @@ LABEL_55:
       goto LABEL_73;
     }
 
-    v66 = alternativesMatchingLanguage(v75, v64);
+    v66 = alternativesMatchingLanguage(alternativesCopy, v64);
     if ([v66 containsObject:v101[5]])
     {
       v67 = v101[5];
@@ -3004,7 +3004,7 @@ LABEL_30:
       goto LABEL_87;
     }
 
-    if ([v75 containsObject:{v47, v33 + v33}])
+    if ([alternativesCopy containsObject:{v47, v33 + v33}])
     {
       v45 = v47;
 LABEL_84:
@@ -3018,7 +3018,7 @@ LABEL_84:
       goto LABEL_87;
     }
 
-    v68 = alternativesMatchingLanguage(v75, v47);
+    v68 = alternativesMatchingLanguage(alternativesCopy, v47);
     if ([v68 containsObject:v57])
     {
       v69 = v57;
@@ -3042,10 +3042,10 @@ LABEL_83:
   }
 
 LABEL_87:
-  if (a7)
+  if (bestLanguage)
   {
     v70 = v44;
-    *a7 = v44;
+    *bestLanguage = v44;
   }
 
   v71 = v96;
@@ -3094,12 +3094,12 @@ void __114__UITextChecker_bestLanguageForString_fromAlternatives_currentLanguage
   }
 }
 
-+ (__CFSet)createDictHashTable:(BOOL)a3
++ (__CFSet)createDictHashTable:(BOOL)table
 {
   memset(&v5, 0, 32);
   v5.hash = strHashNoCase;
   v5.equal = strIsEqualNoCase;
-  if (a3)
+  if (table)
   {
     v3 = ReallyFree;
   }
@@ -3113,11 +3113,11 @@ void __114__UITextChecker_bestLanguageForString_fromAlternatives_currentLanguage
   return CFSetCreateMutable(0, 0, &v5);
 }
 
-+ (id)openUserDictionary:(id)a3
++ (id)openUserDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ![v4 isEqualToString:*MEMORY[0x1E696A400]])
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (dictionaryCopy && ![dictionaryCopy isEqualToString:*MEMORY[0x1E696A400]])
   {
     v14 = 0;
     goto LABEL_34;
@@ -3175,9 +3175,9 @@ LABEL_10:
 LABEL_11:
 
   _Block_object_dispose(&v36, 8);
-  v15 = [v13 bytes];
+  bytes = [v13 bytes];
   v16 = [v13 length];
-  if (v15)
+  if (bytes)
   {
     v17 = v16 == 0;
   }
@@ -3195,11 +3195,11 @@ LABEL_11:
   v18 = v16;
   v29 = v6;
   v30 = v5;
-  v19 = [a1 createDictHashTable:0];
+  v19 = [self createDictHashTable:0];
   v20 = MEMORY[0x18CFE77E0](0);
   if (v18 >= 1)
   {
-    v21 = &v15[v18];
+    v21 = &bytes[v18];
     v22 = -1;
     v23 = 1;
     do
@@ -3210,31 +3210,31 @@ LABEL_11:
         v20 = MEMORY[0x18CFE77E0](0);
       }
 
-      v24 = strchr(v15, 10);
+      v24 = strchr(bytes, 10);
       if (!v24)
       {
-        v24 = &v15[strlen(v15)];
+        v24 = &bytes[strlen(bytes)];
       }
 
-      if (*v15 != 35)
+      if (*bytes != 35)
       {
-        v25 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:v15 length:v24 - v15 encoding:4 freeWhenDone:0];
+        v25 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytesNoCopy:bytes length:v24 - bytes encoding:4 freeWhenDone:0];
         if (v25)
         {
           v26 = v25;
-          if (CFSetGetValue(v19, v15))
+          if (CFSetGetValue(v19, bytes))
           {
-            CFSetRemoveValue(v19, v15);
+            CFSetRemoveValue(v19, bytes);
           }
 
           else
           {
-            CFSetSetValue(v19, v15);
+            CFSetSetValue(v19, bytes);
           }
         }
       }
 
-      v15 = v24 + 1;
+      bytes = v24 + 1;
       --v22;
       ++v23;
     }
@@ -3273,10 +3273,10 @@ LABEL_34:
   return v14;
 }
 
-+ (id)_dictionaryEntryForName:(id)a3
++ (id)_dictionaryEntryForName:(id)name
 {
-  v3 = a3;
-  v4 = v3;
+  nameCopy = name;
+  v4 = nameCopy;
   v5 = 0;
   v13 = 0;
   v14 = &v13;
@@ -3302,7 +3302,7 @@ LABEL_34:
     v10[2] = __41__UITextChecker__dictionaryEntryForName___block_invoke;
     v10[3] = &unk_1E70FCDA0;
     v12 = &v13;
-    v11 = v3;
+    v11 = nameCopy;
     dispatch_sync(v6, v10);
 
     v5 = v14[5];
@@ -3322,10 +3322,10 @@ void __41__UITextChecker__dictionaryEntryForName___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-+ (void)_setDictionaryEntry:(id)a3 forName:(id)a4
++ (void)_setDictionaryEntry:(id)entry forName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  entryCopy = entry;
+  nameCopy = name;
   v7 = qword_1ED49AD80;
   if (qword_1ED49AD78)
   {
@@ -3343,8 +3343,8 @@ void __41__UITextChecker__dictionaryEntryForName___block_invoke(uint64_t a1)
     v9[1] = 3221225472;
     v9[2] = __45__UITextChecker__setDictionaryEntry_forName___block_invoke;
     v9[3] = &unk_1E70F35B8;
-    v10 = v5;
-    v11 = v6;
+    v10 = entryCopy;
+    v11 = nameCopy;
     dispatch_sync(v7, v9);
   }
 }
@@ -3363,44 +3363,44 @@ uint64_t __45__UITextChecker__setDictionaryEntry_forName___block_invoke(uint64_t
   }
 }
 
-+ (id)dictionaryInfo:(id)a3
++ (id)dictionaryInfo:(id)info
 {
-  v4 = a3;
-  if (!v4)
+  infoCopy = info;
+  if (!infoCopy)
   {
-    v4 = *MEMORY[0x1E696A400];
+    infoCopy = *MEMORY[0x1E696A400];
   }
 
-  v5 = [a1 _dictionaryEntryForName:v4];
+  v5 = [self _dictionaryEntryForName:infoCopy];
   if (!v5)
   {
-    v5 = [a1 openUserDictionary:v4];
-    if (v5 || (v5 = [objc_allocWithZone(UITextCheckerDictionaryEntry) init]) != 0 && (v7 = objc_msgSend(a1, "createDictHashTable:", 1), (v5[1] = v7) != 0))
+    v5 = [self openUserDictionary:infoCopy];
+    if (v5 || (v5 = [objc_allocWithZone(UITextCheckerDictionaryEntry) init]) != 0 && (v7 = objc_msgSend(self, "createDictHashTable:", 1), (v5[1] = v7) != 0))
     {
-      [a1 _setDictionaryEntry:v5 forName:v4];
+      [self _setDictionaryEntry:v5 forName:infoCopy];
     }
   }
 
   return v5;
 }
 
-+ (BOOL)_learnWord:(id)a3 inDictionary:(id)a4
++ (BOOL)_learnWord:(id)word inDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 UTF8String];
-  if (!v7)
+  wordCopy = word;
+  dictionaryCopy = dictionary;
+  uTF8String = [wordCopy UTF8String];
+  if (!dictionaryCopy)
   {
-    v7 = *MEMORY[0x1E696A400];
+    dictionaryCopy = *MEMORY[0x1E696A400];
   }
 
-  v9 = [a1 dictionaryInfo:v7];
+  v9 = [self dictionaryInfo:dictionaryCopy];
   v10 = v9;
-  if (v9 && (v11 = *(v9 + 8)) != 0 && !CFSetGetValue(v11, v8))
+  if (v9 && (v11 = *(v9 + 8)) != 0 && !CFSetGetValue(v11, uTF8String))
   {
-    v14 = strdup(v8);
+    v14 = strdup(uTF8String);
     CFSetSetValue(v10[1], v14);
-    appendWordToDictionary(v6, v7);
+    appendWordToDictionary(wordCopy, dictionaryCopy);
     v12 = 1;
   }
 
@@ -3412,22 +3412,22 @@ uint64_t __45__UITextChecker__setDictionaryEntry_forName___block_invoke(uint64_t
   return v12;
 }
 
-+ (BOOL)_forgetWord:(id)a3 inDictionary:(id)a4
++ (BOOL)_forgetWord:(id)word inDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 UTF8String];
-  if (!v7)
+  wordCopy = word;
+  dictionaryCopy = dictionary;
+  uTF8String = [wordCopy UTF8String];
+  if (!dictionaryCopy)
   {
-    v7 = *MEMORY[0x1E696A400];
+    dictionaryCopy = *MEMORY[0x1E696A400];
   }
 
-  v9 = [a1 dictionaryInfo:v7];
+  v9 = [self dictionaryInfo:dictionaryCopy];
   v10 = v9;
-  if (v9 && (v11 = *(v9 + 8)) != 0 && CFSetGetValue(v11, v8))
+  if (v9 && (v11 = *(v9 + 8)) != 0 && CFSetGetValue(v11, uTF8String))
   {
-    CFSetRemoveValue(v10[1], v8);
-    appendWordToDictionary(v6, v7);
+    CFSetRemoveValue(v10[1], uTF8String);
+    appendWordToDictionary(wordCopy, dictionaryCopy);
     v12 = 1;
   }
 
@@ -3439,30 +3439,30 @@ uint64_t __45__UITextChecker__setDictionaryEntry_forName___block_invoke(uint64_t
   return v12;
 }
 
-+ (BOOL)_isWord:(id)a3 inDictionary:(id)a4
++ (BOOL)_isWord:(id)word inDictionary:(id)dictionary
 {
-  v6 = a4;
-  v7 = [a3 UTF8String];
-  if (!v6)
+  dictionaryCopy = dictionary;
+  uTF8String = [word UTF8String];
+  if (!dictionaryCopy)
   {
-    v6 = *MEMORY[0x1E696A400];
+    dictionaryCopy = *MEMORY[0x1E696A400];
   }
 
-  v8 = [a1 dictionaryInfo:v6];
+  v8 = [self dictionaryInfo:dictionaryCopy];
   v9 = v8;
-  v11 = v8 && (v10 = *(v8 + 8)) != 0 && CFSetGetValue(v10, v7) != 0;
+  v11 = v8 && (v10 = *(v8 + 8)) != 0 && CFSetGetValue(v10, uTF8String) != 0;
 
   return v11;
 }
 
-+ (id)_wordsInDictionary:(id)a3
++ (id)_wordsInDictionary:(id)dictionary
 {
-  v3 = [a1 dictionaryInfo:a3];
+  v3 = [self dictionaryInfo:dictionary];
   v4 = v3;
   if (v3 && (v5 = *(v3 + 8)) != 0 && (Count = CFSetGetCount(v5), Count >= 1))
   {
     v7 = Count;
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v9 = NSZoneMalloc(0, 8 * v7);
     if (v9)
     {
@@ -3486,7 +3486,7 @@ uint64_t __45__UITextChecker__setDictionaryEntry_forName___block_invoke(uint64_t
           }
 
           v16 = [v14 initWithBytesNoCopy:v12 length:v15 encoding:4 freeWhenDone:0];
-          [v8 addObject:v16];
+          [array addObject:v16];
         }
       }
 
@@ -3496,37 +3496,37 @@ uint64_t __45__UITextChecker__setDictionaryEntry_forName___block_invoke(uint64_t
 
   else
   {
-    v8 = 0;
+    array = 0;
   }
 
-  v17 = [v8 copy];
+  v17 = [array copy];
 
   return v17;
 }
 
-+ (void)_setWords:(id)a3 inDictionary:(id)a4
++ (void)_setWords:(id)words inDictionary:(id)dictionary
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [a1 dictionaryInfo:v6];
+  wordsCopy = words;
+  dictionaryCopy = dictionary;
+  v7 = [self dictionaryInfo:dictionaryCopy];
   if (v7)
   {
     v8 = v7;
-    [a1 _setDictionaryEntry:0 forName:v6];
+    [self _setDictionaryEntry:0 forName:dictionaryCopy];
   }
 
-  if (v17)
+  if (wordsCopy)
   {
-    v9 = [v17 count];
+    v9 = [wordsCopy count];
     if (v9)
     {
       v10 = 0;
       v11 = 0;
       v12 = v9 - 1;
-      v13 = v17;
+      v13 = wordsCopy;
       do
       {
-        if (v11 || ([a1 dictionaryInfo:v6], v11 = objc_claimAutoreleasedReturnValue(), v13 = v17, v11))
+        if (v11 || ([self dictionaryInfo:dictionaryCopy], v11 = objc_claimAutoreleasedReturnValue(), v13 = wordsCopy, v11))
         {
           if (v11[1])
           {
@@ -3535,15 +3535,15 @@ uint64_t __45__UITextChecker__setDictionaryEntry_forName___block_invoke(uint64_t
             if (v14)
             {
               v10 = v14;
-              v15 = [v14 UTF8String];
-              if (CFSetGetValue(v11[1], v15))
+              uTF8String = [v14 UTF8String];
+              if (CFSetGetValue(v11[1], uTF8String))
               {
-                CFSetRemoveValue(v11[1], v15);
+                CFSetRemoveValue(v11[1], uTF8String);
               }
 
               else
               {
-                v16 = strdup(v15);
+                v16 = strdup(uTF8String);
                 CFSetSetValue(v11[1], v16);
               }
             }
@@ -3553,7 +3553,7 @@ uint64_t __45__UITextChecker__setDictionaryEntry_forName___block_invoke(uint64_t
               v10 = 0;
             }
 
-            v13 = v17;
+            v13 = wordsCopy;
           }
         }
 
@@ -3590,10 +3590,10 @@ uint64_t __45__UITextChecker__setDictionaryEntry_forName___block_invoke(uint64_t
   [v5 _setWords:v4 inDictionary:v6];
 }
 
-- (BOOL)isWordInUserDictionaries:(id)a3 caseSensitive:(BOOL)a4
+- (BOOL)isWordInUserDictionaries:(id)dictionaries caseSensitive:(BOOL)sensitive
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionariesCopy = dictionaries;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -3613,9 +3613,9 @@ uint64_t __45__UITextChecker__setDictionaryEntry_forName___block_invoke(uint64_t
           objc_enumerationMutation(v5);
         }
 
-        if ([objc_opt_class() _isWord:v4 inDictionary:{*(*(&v18 + 1) + 8 * v8), v18}])
+        if ([objc_opt_class() _isWord:dictionariesCopy inDictionary:{*(*(&v18 + 1) + 8 * v8), v18}])
         {
-          v11 = 1;
+          bOOLValue = 1;
           goto LABEL_12;
         }
 
@@ -3633,22 +3633,22 @@ uint64_t __45__UITextChecker__setDictionaryEntry_forName___block_invoke(uint64_t
     }
   }
 
-  v9 = [v4 lowercaseString];
+  lowercaseString = [dictionariesCopy lowercaseString];
 
-  v4 = v9;
+  dictionariesCopy = lowercaseString;
   v10 = qword_1ED49AD98;
   objc_sync_enter(v10);
-  v5 = [qword_1ED49AD98 objectForKey:v4];
+  v5 = [qword_1ED49AD98 objectForKey:dictionariesCopy];
   objc_sync_exit(v10);
 
   if (v5)
   {
-    v11 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v4 = v4;
+    dictionariesCopy = dictionariesCopy;
     v27 = 0;
     v28 = &v27;
     v29 = 0x2020000000;
@@ -3674,38 +3674,38 @@ uint64_t __45__UITextChecker__setDictionaryEntry_forName___block_invoke(uint64_t
         v24 = &v27;
         v17 = v15;
         v23 = v17;
-        [v16 string:v4 isExemptFromTextCheckerWithCompletionHandler:v22];
+        [v16 string:dictionariesCopy isExemptFromTextCheckerWithCompletionHandler:v22];
         dispatch_semaphore_wait(v17, 0xFFFFFFFFFFFFFFFFLL);
       }
     }
 
-    v11 = *(v28 + 24);
+    bOOLValue = *(v28 + 24);
 
     _Block_object_dispose(&v27, 8);
-    setCachedExemptionForString(v4, v11 & 1);
+    setCachedExemptionForString(dictionariesCopy, bOOLValue & 1);
     v5 = 0;
   }
 
 LABEL_12:
 
-  return v11 & 1;
+  return bOOLValue & 1;
 }
 
-+ (void)setString:(id)a3 isExemptFromChecker:(BOOL)a4
++ (void)setString:(id)string isExemptFromChecker:(BOOL)checker
 {
-  v4 = a4;
-  v7 = a3;
-  if ([v7 length])
+  checkerCopy = checker;
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v5 = [v7 lowercaseString];
+    lowercaseString = [stringCopy lowercaseString];
 
-    setCachedExemptionForString(v5, v4);
-    v6 = v5;
+    setCachedExemptionForString(lowercaseString, checkerCopy);
+    v6 = lowercaseString;
   }
 
   else
   {
-    v6 = v7;
+    v6 = stringCopy;
   }
 }
 

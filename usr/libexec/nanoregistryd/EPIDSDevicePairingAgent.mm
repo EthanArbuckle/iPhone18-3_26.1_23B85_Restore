@@ -1,15 +1,15 @@
 @interface EPIDSDevicePairingAgent
-- (EPIDSDevicePairingAgent)initWithRemoteObjects:(id)a3;
-- (void)addIDSPairingAgentObserver:(id)a3;
-- (void)removeIDSPairingAgentObserver:(id)a3;
+- (EPIDSDevicePairingAgent)initWithRemoteObjects:(id)objects;
+- (void)addIDSPairingAgentObserver:(id)observer;
+- (void)removeIDSPairingAgentObserver:(id)observer;
 - (void)update;
 @end
 
 @implementation EPIDSDevicePairingAgent
 
-- (EPIDSDevicePairingAgent)initWithRemoteObjects:(id)a3
+- (EPIDSDevicePairingAgent)initWithRemoteObjects:(id)objects
 {
-  v5 = a3;
+  objectsCopy = objects;
   v6 = [(EPIDSDevicePairingAgent *)self init];
   if (v6)
   {
@@ -17,7 +17,7 @@
     pairingAgentObservers = v6->_pairingAgentObservers;
     v6->_pairingAgentObservers = v7;
 
-    objc_storeStrong(&v6->_remoteObjects, a3);
+    objc_storeStrong(&v6->_remoteObjects, objects);
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
@@ -53,23 +53,23 @@
   return v6;
 }
 
-- (void)addIDSPairingAgentObserver:(id)a3
+- (void)addIDSPairingAgentObserver:(id)observer
 {
-  [(NSPointerArray *)self->_pairingAgentObservers addPointer:a3];
+  [(NSPointerArray *)self->_pairingAgentObservers addPointer:observer];
   pairingAgentObservers = self->_pairingAgentObservers;
 
   [(NSPointerArray *)pairingAgentObservers compact];
 }
 
-- (void)removeIDSPairingAgentObserver:(id)a3
+- (void)removeIDSPairingAgentObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   v4 = [(NSPointerArray *)self->_pairingAgentObservers count];
   if (v4 >= 1)
   {
     v5 = v4;
     v6 = 0;
-    while ([(NSPointerArray *)self->_pairingAgentObservers pointerAtIndex:v6]!= v7)
+    while ([(NSPointerArray *)self->_pairingAgentObservers pointerAtIndex:v6]!= observerCopy)
     {
       if (v5 == ++v6)
       {
@@ -107,8 +107,8 @@ LABEL_7:
             objc_enumerationMutation(v3);
           }
 
-          v9 = [*(*(&v19 + 1) + 8 * i) defaultPairedDevice];
-          if ([v9 maxCompatibilityVersion] != 0x7FFFFFFFFFFFFFFFLL)
+          defaultPairedDevice = [*(*(&v19 + 1) + 8 * i) defaultPairedDevice];
+          if ([defaultPairedDevice maxCompatibilityVersion] != 0x7FFFFFFFFFFFFFFFLL)
           {
             ++v6;
           }
@@ -132,8 +132,8 @@ LABEL_7:
       v16 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v10 = [(NSPointerArray *)self->_pairingAgentObservers allObjects];
-      v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      allObjects = [(NSPointerArray *)self->_pairingAgentObservers allObjects];
+      v11 = [allObjects countByEnumeratingWithState:&v15 objects:v23 count:16];
       if (v11)
       {
         v12 = v11;
@@ -144,13 +144,13 @@ LABEL_7:
           {
             if (*v16 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(allObjects);
             }
 
             [*(*(&v15 + 1) + 8 * j) idsPairingAgentIDSDidPair:self];
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
+          v12 = [allObjects countByEnumeratingWithState:&v15 objects:v23 count:16];
         }
 
         while (v12);

@@ -1,8 +1,8 @@
 @interface ZoomLensModeDetailController
 - (ZoomLensModeDetailController)init;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateSpecifiersForZoomModeSettingsChange;
 @end
 
@@ -139,8 +139,8 @@ void __36__ZoomLensModeDetailController_init__block_invoke_2(uint64_t a1)
     v14 = [PSSpecifier groupSpecifierWithID:@"ZoomDockPosition" name:v13];
     [(ZoomLensModeDetailController *)self setDockPositionsGroupSpecifier:v14];
 
-    v15 = [(ZoomLensModeDetailController *)self dockPositionsGroupSpecifier];
-    [v4 addObject:v15];
+    dockPositionsGroupSpecifier = [(ZoomLensModeDetailController *)self dockPositionsGroupSpecifier];
+    [v4 addObject:dockPositionsGroupSpecifier];
 
     v16 = +[NSMutableArray array];
     [(ZoomLensModeDetailController *)self setDockPositionSpecs:v16];
@@ -170,8 +170,8 @@ void __36__ZoomLensModeDetailController_init__block_invoke_2(uint64_t a1)
 
           [v24 setProperty:v22 forKey:@"ZoomDockPosition"];
           [v4 addObject:v24];
-          v25 = [(ZoomLensModeDetailController *)self dockPositionSpecs];
-          [v25 addObject:v24];
+          dockPositionSpecs = [(ZoomLensModeDetailController *)self dockPositionSpecs];
+          [dockPositionSpecs addObject:v24];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v44 objects:v53 count:16];
@@ -181,20 +181,20 @@ void __36__ZoomLensModeDetailController_init__block_invoke_2(uint64_t a1)
     }
 
     v26 = +[AXSettings sharedInstance];
-    v27 = [v26 zoomPreferredCurrentLensMode];
-    v28 = [v27 isEqualToString:AXZoomLensModeWindowAnchored];
+    zoomPreferredCurrentLensMode = [v26 zoomPreferredCurrentLensMode];
+    v28 = [zoomPreferredCurrentLensMode isEqualToString:AXZoomLensModeWindowAnchored];
 
     if ((v28 & 1) == 0)
     {
-      v29 = [(ZoomLensModeDetailController *)self dockPositionsGroupSpecifier];
-      [v4 removeObject:v29];
+      dockPositionsGroupSpecifier2 = [(ZoomLensModeDetailController *)self dockPositionsGroupSpecifier];
+      [v4 removeObject:dockPositionsGroupSpecifier2];
 
       v42 = 0u;
       v43 = 0u;
       v40 = 0u;
       v41 = 0u;
-      v30 = [(ZoomLensModeDetailController *)self dockPositionSpecs];
-      v31 = [v30 countByEnumeratingWithState:&v40 objects:v52 count:16];
+      dockPositionSpecs2 = [(ZoomLensModeDetailController *)self dockPositionSpecs];
+      v31 = [dockPositionSpecs2 countByEnumeratingWithState:&v40 objects:v52 count:16];
       if (v31)
       {
         v32 = v31;
@@ -205,13 +205,13 @@ void __36__ZoomLensModeDetailController_init__block_invoke_2(uint64_t a1)
           {
             if (*v41 != v33)
             {
-              objc_enumerationMutation(v30);
+              objc_enumerationMutation(dockPositionSpecs2);
             }
 
             [v4 removeObject:*(*(&v40 + 1) + 8 * k)];
           }
 
-          v32 = [v30 countByEnumeratingWithState:&v40 objects:v52 count:16];
+          v32 = [dockPositionSpecs2 countByEnumeratingWithState:&v40 objects:v52 count:16];
         }
 
         while (v32);
@@ -229,97 +229,97 @@ void __36__ZoomLensModeDetailController_init__block_invoke_2(uint64_t a1)
 
 - (void)updateSpecifiersForZoomModeSettingsChange
 {
-  v3 = [(ZoomLensModeDetailController *)self specifiers];
-  v4 = [(ZoomLensModeDetailController *)self dockPositionsGroupSpecifier];
-  if ([v3 containsObject:v4])
+  specifiers = [(ZoomLensModeDetailController *)self specifiers];
+  dockPositionsGroupSpecifier = [(ZoomLensModeDetailController *)self dockPositionsGroupSpecifier];
+  if ([specifiers containsObject:dockPositionsGroupSpecifier])
   {
   }
 
   else
   {
     v5 = +[AXSettings sharedInstance];
-    v6 = [v5 zoomPreferredCurrentLensMode];
-    v7 = [v6 isEqualToString:AXZoomLensModeWindowAnchored];
+    zoomPreferredCurrentLensMode = [v5 zoomPreferredCurrentLensMode];
+    v7 = [zoomPreferredCurrentLensMode isEqualToString:AXZoomLensModeWindowAnchored];
 
     if (v7)
     {
-      v8 = [(ZoomLensModeDetailController *)self dockPositionsGroupSpecifier];
-      v9 = [(ZoomLensModeDetailController *)self specifiers];
-      v10 = [v9 lastObject];
-      [(ZoomLensModeDetailController *)self insertSpecifier:v8 afterSpecifier:v10 animated:1];
+      dockPositionsGroupSpecifier2 = [(ZoomLensModeDetailController *)self dockPositionsGroupSpecifier];
+      specifiers2 = [(ZoomLensModeDetailController *)self specifiers];
+      lastObject = [specifiers2 lastObject];
+      [(ZoomLensModeDetailController *)self insertSpecifier:dockPositionsGroupSpecifier2 afterSpecifier:lastObject animated:1];
 
-      v16 = [(ZoomLensModeDetailController *)self dockPositionSpecs];
-      v11 = [(ZoomLensModeDetailController *)self dockPositionsGroupSpecifier];
-      [(ZoomLensModeDetailController *)self insertContiguousSpecifiers:v16 afterSpecifier:v11 animated:1];
+      dockPositionSpecs = [(ZoomLensModeDetailController *)self dockPositionSpecs];
+      dockPositionsGroupSpecifier3 = [(ZoomLensModeDetailController *)self dockPositionsGroupSpecifier];
+      [(ZoomLensModeDetailController *)self insertContiguousSpecifiers:dockPositionSpecs afterSpecifier:dockPositionsGroupSpecifier3 animated:1];
 LABEL_8:
 
       goto LABEL_10;
     }
   }
 
-  v16 = [(ZoomLensModeDetailController *)self specifiers];
-  v11 = [(ZoomLensModeDetailController *)self dockPositionsGroupSpecifier];
-  if (([v16 containsObject:v11] & 1) == 0)
+  dockPositionSpecs = [(ZoomLensModeDetailController *)self specifiers];
+  dockPositionsGroupSpecifier3 = [(ZoomLensModeDetailController *)self dockPositionsGroupSpecifier];
+  if (([dockPositionSpecs containsObject:dockPositionsGroupSpecifier3] & 1) == 0)
   {
     goto LABEL_8;
   }
 
   v12 = +[AXSettings sharedInstance];
-  v13 = [v12 zoomPreferredCurrentLensMode];
-  v14 = [v13 isEqualToString:AXZoomLensModeWindowAnchored];
+  zoomPreferredCurrentLensMode2 = [v12 zoomPreferredCurrentLensMode];
+  v14 = [zoomPreferredCurrentLensMode2 isEqualToString:AXZoomLensModeWindowAnchored];
 
   if (v14)
   {
     return;
   }
 
-  v15 = [(ZoomLensModeDetailController *)self dockPositionsGroupSpecifier];
-  [(ZoomLensModeDetailController *)self removeSpecifier:v15 animated:1];
+  dockPositionsGroupSpecifier4 = [(ZoomLensModeDetailController *)self dockPositionsGroupSpecifier];
+  [(ZoomLensModeDetailController *)self removeSpecifier:dockPositionsGroupSpecifier4 animated:1];
 
-  v16 = [(ZoomLensModeDetailController *)self dockPositionSpecs];
+  dockPositionSpecs = [(ZoomLensModeDetailController *)self dockPositionSpecs];
   [ZoomLensModeDetailController removeContiguousSpecifiers:"removeContiguousSpecifiers:animated:" animated:?];
 LABEL_10:
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = ZoomLensModeDetailController;
-  v4 = [(ZoomLensModeDetailController *)&v14 tableView:a3 cellForRowAtIndexPath:a4];
+  v4 = [(ZoomLensModeDetailController *)&v14 tableView:view cellForRowAtIndexPath:path];
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 zoomPreferredCurrentLensMode];
+  zoomPreferredCurrentLensMode = [v5 zoomPreferredCurrentLensMode];
 
   v7 = +[AXSettings sharedInstance];
-  v8 = [v7 zoomPreferredCurrentDockPosition];
+  zoomPreferredCurrentDockPosition = [v7 zoomPreferredCurrentDockPosition];
 
-  v9 = [v4 specifier];
-  v10 = [v9 propertyForKey:@"ZoomLensMode"];
+  specifier = [v4 specifier];
+  v10 = [specifier propertyForKey:@"ZoomLensMode"];
 
   if (v10)
   {
-    [v4 setChecked:{objc_msgSend(v6, "isEqualToString:", v10)}];
+    [v4 setChecked:{objc_msgSend(zoomPreferredCurrentLensMode, "isEqualToString:", v10)}];
   }
 
-  v11 = [v4 specifier];
-  v12 = [v11 propertyForKey:@"ZoomDockPosition"];
+  specifier2 = [v4 specifier];
+  v12 = [specifier2 propertyForKey:@"ZoomDockPosition"];
 
   if (v12)
   {
-    [v4 setChecked:{objc_msgSend(v8, "isEqualToString:", v12)}];
+    [v4 setChecked:{objc_msgSend(zoomPreferredCurrentDockPosition, "isEqualToString:", v12)}];
   }
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
+  viewCopy = view;
   v17.receiver = self;
   v17.super_class = ZoomLensModeDetailController;
-  v7 = a4;
-  v8 = [(ZoomLensModeDetailController *)&v17 tableView:v6 cellForRowAtIndexPath:v7];
-  v9 = [v8 specifier];
-  v10 = [v9 propertyForKey:@"ZoomLensMode"];
+  pathCopy = path;
+  v8 = [(ZoomLensModeDetailController *)&v17 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v8 specifier];
+  v10 = [specifier propertyForKey:@"ZoomLensMode"];
 
   if (v10)
   {
@@ -330,8 +330,8 @@ LABEL_10:
     [v12 notifyZoomLensModeWasChangedInSettingsTo:v10];
   }
 
-  v13 = [v8 specifier];
-  v14 = [v13 propertyForKey:@"ZoomDockPosition"];
+  specifier2 = [v8 specifier];
+  v14 = [specifier2 propertyForKey:@"ZoomDockPosition"];
 
   if (v14)
   {
@@ -342,8 +342,8 @@ LABEL_10:
     [v16 notifyZoomDockPositionWasChangedInSettingsTo:v14];
   }
 
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  [(ZoomLensModeDetailController *)self updateTableCheckedSelection:v7];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  [(ZoomLensModeDetailController *)self updateTableCheckedSelection:pathCopy];
 }
 
 @end

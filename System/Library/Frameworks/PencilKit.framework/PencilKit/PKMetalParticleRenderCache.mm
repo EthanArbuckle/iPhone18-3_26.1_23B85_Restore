@@ -1,43 +1,43 @@
 @interface PKMetalParticleRenderCache
-- (BOOL)isCompatibleWithInk:(id)a3 renderZoomFactor:(int64_t)a4;
-- (BOOL)lockPurgeableResourcesAddToSet:(id)a3;
-- (id)initWithDevice:(void *)a3 ink:(void *)a4 renderZoomFactor:;
+- (BOOL)isCompatibleWithInk:(id)ink renderZoomFactor:(int64_t)factor;
+- (BOOL)lockPurgeableResourcesAddToSet:(id)set;
+- (id)initWithDevice:(void *)device ink:(void *)ink renderZoomFactor:;
 - (id)secondaryBuffers;
-- (void)addBuffer:(uint64_t)a1;
-- (void)addSecondaryBuffer:(uint64_t)a1;
+- (void)addBuffer:(uint64_t)buffer;
+- (void)addSecondaryBuffer:(uint64_t)buffer;
 @end
 
 @implementation PKMetalParticleRenderCache
 
-- (id)initWithDevice:(void *)a3 ink:(void *)a4 renderZoomFactor:
+- (id)initWithDevice:(void *)device ink:(void *)ink renderZoomFactor:
 {
-  v7 = a3;
-  if (a1)
+  deviceCopy = device;
+  if (self)
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = PKMetalParticleRenderCache;
-    a1 = objc_msgSendSuper2(&v11, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v11, sel_init);
+    if (self)
     {
-      v8 = [MEMORY[0x1E695DF70] array];
-      v9 = a1[1];
-      a1[1] = v8;
+      array = [MEMORY[0x1E695DF70] array];
+      v9 = self[1];
+      self[1] = array;
 
-      objc_storeStrong(a1 + 5, a3);
-      a1[4] = a4;
+      objc_storeStrong(self + 5, device);
+      self[4] = ink;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)addBuffer:(uint64_t)a1
+- (void)addBuffer:(uint64_t)buffer
 {
   v3 = a2;
-  if (a1)
+  if (buffer)
   {
     v5 = v3;
-    [*(a1 + 8) addObject:v3];
+    [*(buffer + 8) addObject:v3];
     v3 = v5;
     if (v5)
     {
@@ -49,24 +49,24 @@
       v4 = 0;
     }
 
-    *(a1 + 24) += v4;
+    *(buffer + 24) += v4;
   }
 }
 
-- (void)addSecondaryBuffer:(uint64_t)a1
+- (void)addSecondaryBuffer:(uint64_t)buffer
 {
   v3 = a2;
-  if (a1)
+  if (buffer)
   {
-    v4 = *(a1 + 16);
+    v4 = *(buffer + 16);
     v8 = v3;
     if (!v4)
     {
-      v5 = [MEMORY[0x1E695DF70] array];
-      v6 = *(a1 + 16);
-      *(a1 + 16) = v5;
+      array = [MEMORY[0x1E695DF70] array];
+      v6 = *(buffer + 16);
+      *(buffer + 16) = array;
 
-      v4 = *(a1 + 16);
+      v4 = *(buffer + 16);
       v3 = v8;
     }
 
@@ -82,24 +82,24 @@
       v7 = 0;
     }
 
-    *(a1 + 24) += v7;
+    *(buffer + 24) += v7;
   }
 }
 
 - (id)secondaryBuffers
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[2];
+    self = self[2];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)isCompatibleWithInk:(id)a3 renderZoomFactor:(int64_t)a4
+- (BOOL)isCompatibleWithInk:(id)ink renderZoomFactor:(int64_t)factor
 {
-  v6 = a3;
+  inkCopy = ink;
   if (self)
   {
     ink = self->_ink;
@@ -110,9 +110,9 @@
     ink = 0;
   }
 
-  v8 = ink;
-  v9 = [(PKInk *)v8 version];
-  if (v9 == [v6 version])
+  inkCopy2 = ink;
+  version = [(PKInk *)inkCopy2 version];
+  if (version == [inkCopy version])
   {
     if (self)
     {
@@ -125,8 +125,8 @@
     }
 
     v11 = v10;
-    v12 = [(PKInk *)v11 requiredContentVersion];
-    if (v12 == [v6 requiredContentVersion])
+    requiredContentVersion = [(PKInk *)v11 requiredContentVersion];
+    if (requiredContentVersion == [inkCopy requiredContentVersion])
     {
       if (self)
       {
@@ -138,10 +138,10 @@
         v13 = 0;
       }
 
-      v14 = [(PKInk *)v13 color];
-      Alpha = CGColorGetAlpha([v14 CGColor]);
-      v16 = [v6 color];
-      v17 = vabdd_f64(Alpha, CGColorGetAlpha([v16 CGColor])) < 0.00999999978 && self->_renderZoomFactor == a4;
+      color = [(PKInk *)v13 color];
+      Alpha = CGColorGetAlpha([color CGColor]);
+      color2 = [inkCopy color];
+      v17 = vabdd_f64(Alpha, CGColorGetAlpha([color2 CGColor])) < 0.00999999978 && self->_renderZoomFactor == factor;
     }
 
     else
@@ -158,10 +158,10 @@
   return v17;
 }
 
-- (BOOL)lockPurgeableResourcesAddToSet:(id)a3
+- (BOOL)lockPurgeableResourcesAddToSet:(id)set
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  setCopy = set;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -180,7 +180,7 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      if (([(PKMetalParticleRenderCacheBuffer *)*(*(&v18 + 1) + 8 * v8) lockPurgeableResourcesAddToSet:v4]& 1) == 0)
+      if (([(PKMetalParticleRenderCacheBuffer *)*(*(&v18 + 1) + 8 * v8) lockPurgeableResourcesAddToSet:setCopy]& 1) == 0)
       {
         break;
       }
@@ -224,7 +224,7 @@ LABEL_11:
         objc_enumerationMutation(v5);
       }
 
-      if (([(PKMetalParticleRenderCacheBuffer *)*(*(&v14 + 1) + 8 * v11) lockPurgeableResourcesAddToSet:v4]& 1) == 0)
+      if (([(PKMetalParticleRenderCacheBuffer *)*(*(&v14 + 1) + 8 * v11) lockPurgeableResourcesAddToSet:setCopy]& 1) == 0)
       {
         break;
       }

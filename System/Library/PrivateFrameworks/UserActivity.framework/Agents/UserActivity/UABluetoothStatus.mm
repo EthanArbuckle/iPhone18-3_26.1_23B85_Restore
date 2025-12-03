@@ -2,34 +2,34 @@
 + (UABluetoothStatus)sharedInstance;
 - (BOOL)poweredOn;
 - (UABluetoothStatus)init;
-- (id)registerCallback:(id)a3;
+- (id)registerCallback:(id)callback;
 - (void)attachToBluetoothSession;
-- (void)centralManagerDidUpdateState:(id)a3;
+- (void)centralManagerDidUpdateState:(id)state;
 - (void)dealloc;
 - (void)detachFromBluetoothSession;
-- (void)handleStateChange:(int64_t)a3;
+- (void)handleStateChange:(int64_t)change;
 - (void)processCallbacks;
-- (void)unregisterCallback:(id)a3;
+- (void)unregisterCallback:(id)callback;
 @end
 
 @implementation UABluetoothStatus
 
 - (BOOL)poweredOn
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_poweredOnValid)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_poweredOnValid)
   {
     goto LABEL_8;
   }
 
-  v2->_poweredOn = 0;
-  if (v2->_attached)
+  selfCopy->_poweredOn = 0;
+  if (selfCopy->_attached)
   {
-    v3 = [(UABluetoothStatus *)v2 cbManager];
-    v4 = [v3 state];
+    cbManager = [(UABluetoothStatus *)selfCopy cbManager];
+    state = [cbManager state];
 
-    [(UABluetoothStatus *)v2 handleStateChange:v4];
+    [(UABluetoothStatus *)selfCopy handleStateChange:state];
   }
 
   else
@@ -41,13 +41,13 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "BLUETOOTH: Returning NO for .poweredOn because our session has been detached, so also triggering a re-attach.", v8, 2u);
     }
 
-    [(UABluetoothStatus *)v2 attachToBluetoothSession];
+    [(UABluetoothStatus *)selfCopy attachToBluetoothSession];
   }
 
-  if (v2->_poweredOnValid)
+  if (selfCopy->_poweredOnValid)
   {
 LABEL_8:
-    poweredOn = v2->_poweredOn;
+    poweredOn = selfCopy->_poweredOn;
   }
 
   else
@@ -55,7 +55,7 @@ LABEL_8:
     poweredOn = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return poweredOn;
 }
@@ -94,13 +94,13 @@ LABEL_8:
   return v3;
 }
 
-- (void)handleStateChange:(int64_t)a3
+- (void)handleStateChange:(int64_t)change
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (a3 > 2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (change > 2)
   {
-    switch(a3)
+    switch(change)
     {
       case 3:
         v5 = sub_100001A30(0);
@@ -143,9 +143,9 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  if (a3)
+  if (change)
   {
-    if (a3 == 1)
+    if (change == 1)
     {
       v5 = sub_100001A30(0);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -158,7 +158,7 @@ LABEL_28:
       goto LABEL_23;
     }
 
-    if (a3 == 2)
+    if (change == 2)
     {
       v5 = sub_100001A30(0);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -179,7 +179,7 @@ LABEL_17:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v12 = 134349056;
-      v13 = a3;
+      changeCopy = change;
       v6 = "BLUETOOTH: Unexpected state %{public}ld";
       v9 = v5;
       v10 = 12;
@@ -204,44 +204,44 @@ LABEL_23:
   v11 = 0;
 LABEL_29:
 
-  v4->_poweredOn = v7;
-  v4->_poweredOnValid = v11;
-  objc_sync_exit(v4);
+  selfCopy->_poweredOn = v7;
+  selfCopy->_poweredOnValid = v11;
+  objc_sync_exit(selfCopy);
 }
 
 - (void)attachToBluetoothSession
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_attached && !v2->_attachInProcess)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_attached && !selfCopy->_attachInProcess)
   {
-    v2->_attachInProcess = 1;
+    selfCopy->_attachInProcess = 1;
     v3 = sub_100046FB4();
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100046FF8;
     block[3] = &unk_1000C4CC0;
-    block[4] = v2;
+    block[4] = selfCopy;
     dispatch_async(v3, block);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)detachFromBluetoothSession
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_attached)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_attached)
   {
     v8[0] = 0;
     v8[1] = v8;
     v8[2] = 0x3032000000;
     v8[3] = sub_100001F34;
     v8[4] = sub_10004729C;
-    v9 = v2->_cbManager;
-    cbManager = v2->_cbManager;
-    v2->_cbManager = 0;
+    v9 = selfCopy->_cbManager;
+    cbManager = selfCopy->_cbManager;
+    selfCopy->_cbManager = 0;
 
     v4 = sub_100046FB4();
     block[0] = _NSConcreteStackBlock;
@@ -261,30 +261,30 @@ LABEL_29:
     _Block_object_dispose(v8, 8);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  -[UABluetoothStatus handleStateChange:](v4, "handleStateChange:", [v5 state]);
-  objc_sync_exit(v4);
+  stateCopy = state;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  -[UABluetoothStatus handleStateChange:](selfCopy, "handleStateChange:", [stateCopy state]);
+  objc_sync_exit(selfCopy);
 
-  [(UABluetoothStatus *)v4 processCallbacks];
+  [(UABluetoothStatus *)selfCopy processCallbacks];
 }
 
-- (id)registerCallback:(id)a3
+- (id)registerCallback:(id)callback
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (!v5->_callbacks)
+  callbackCopy = callback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_callbacks)
   {
     v7 = objc_opt_new();
-    callbacks = v5->_callbacks;
-    v5->_callbacks = v7;
+    callbacks = selfCopy->_callbacks;
+    selfCopy->_callbacks = v7;
   }
 
   *&v6 = 138543618;
@@ -292,7 +292,7 @@ LABEL_29:
   do
   {
     v9 = +[NSUUID UUID];
-    v10 = [(NSMutableDictionary *)v5->_callbacks objectForKeyedSubscript:v9];
+    v10 = [(NSMutableDictionary *)selfCopy->_callbacks objectForKeyedSubscript:v9];
 
     if (v10)
     {
@@ -301,13 +301,13 @@ LABEL_29:
 
     else
     {
-      v12 = objc_retainBlock(v4);
-      [(NSMutableDictionary *)v5->_callbacks setObject:v12 forKeyedSubscript:v9];
+      v12 = objc_retainBlock(callbackCopy);
+      [(NSMutableDictionary *)selfCopy->_callbacks setObject:v12 forKeyedSubscript:v9];
 
       v13 = sub_100001A30(0);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        v14 = objc_retainBlock(v4);
+        v14 = objc_retainBlock(callbackCopy);
         *buf = v16;
         v18 = v9;
         v19 = 2050;
@@ -320,17 +320,17 @@ LABEL_29:
   }
 
   while (!v11);
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v11;
 }
 
-- (void)unregisterCallback:(id)a3
+- (void)unregisterCallback:(id)callback
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_callbacks objectForKeyedSubscript:v4];
+  callbackCopy = callback;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_callbacks objectForKeyedSubscript:callbackCopy];
 
   if (v6)
   {
@@ -338,24 +338,24 @@ LABEL_29:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v8 = 138543362;
-      v9 = v4;
+      v9 = callbackCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "BLUETOOTH: Unregistering callback %{public}@", &v8, 0xCu);
     }
 
-    [(NSMutableDictionary *)v5->_callbacks removeObjectForKey:v4];
+    [(NSMutableDictionary *)selfCopy->_callbacks removeObjectForKey:callbackCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)processCallbacks
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  callbacks = v2->_callbacks;
-  if (callbacks && [(NSMutableDictionary *)callbacks count]&& ((poweredOn = v2->_poweredOn, v5 = [(UABluetoothStatus *)v2 poweredOn], v6 = v5, !v2->_poweredOnValid) || poweredOn != v5))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  callbacks = selfCopy->_callbacks;
+  if (callbacks && [(NSMutableDictionary *)callbacks count]&& ((poweredOn = selfCopy->_poweredOn, v5 = [(UABluetoothStatus *)selfCopy poweredOn], v6 = v5, !selfCopy->_poweredOnValid) || poweredOn != v5))
   {
-    v7 = [(NSMutableDictionary *)v2->_callbacks copy];
+    v7 = [(NSMutableDictionary *)selfCopy->_callbacks copy];
   }
 
   else
@@ -364,7 +364,7 @@ LABEL_29:
     v7 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (v7)
   {

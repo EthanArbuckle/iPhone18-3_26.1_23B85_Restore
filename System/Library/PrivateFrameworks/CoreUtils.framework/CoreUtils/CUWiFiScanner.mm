@@ -2,27 +2,27 @@
 - (CUWiFiScanner)init;
 - (void)_cleanup;
 - (void)_invalidated;
-- (void)_scanWiFiFinished:(id)a3 status:(int)a4;
-- (void)_scanWiFiProcessResult:(id)a3;
+- (void)_scanWiFiFinished:(id)finished status:(int)status;
+- (void)_scanWiFiProcessResult:(id)result;
 - (void)_scanWiFiStart;
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
 - (void)resume;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 - (void)suspend;
 @end
 
 @implementation CUWiFiScanner
 
-- (void)_scanWiFiProcessResult:(id)a3
+- (void)_scanWiFiProcessResult:(id)result
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   v50 = 0;
   v51 = 0;
   v52 = 0;
-  CFDictionaryGetHardwareAddress(v4, @"bssid", &v48, 6uLL, &v50);
+  CFDictionaryGetHardwareAddress(resultCopy, @"bssid", &v48, 6uLL, &v50);
   if (v50)
   {
     ucat = self->_ucat;
@@ -59,7 +59,7 @@ LABEL_52:
   }
 
   [(CUWiFiDevice *)v11 setBssid:v9];
-  [(CUWiFiDevice *)v11 setRawScanResult:v4];
+  [(CUWiFiDevice *)v11 setRawScanResult:resultCopy];
   if ([(CUWiFiDevice *)v11 present]<= 0)
   {
     [(CUWiFiDevice *)v11 setPresent:1];
@@ -73,16 +73,16 @@ LABEL_52:
   [(CUWiFiDevice *)v11 setIdentifier:v12];
 
   TypeID = CFDataGetTypeID();
-  v14 = CFDictionaryGetTypedValue(v4, @"ie", TypeID, 0);
+  v14 = CFDictionaryGetTypedValue(resultCopy, @"ie", TypeID, 0);
   v45 = v9;
   if (!v14)
   {
     goto LABEL_12;
   }
 
-  v15 = [(CUWiFiDevice *)v11 ieData];
+  ieData = [(CUWiFiDevice *)v11 ieData];
   v16 = v14;
-  v17 = v15;
+  v17 = ieData;
   v18 = v17;
   if (v16 == v17)
   {
@@ -108,13 +108,13 @@ LABEL_14:
   [(CUWiFiDevice *)v11 setIeData:v16];
   v20 = 1;
 LABEL_15:
-  v21 = [(__CFDictionary *)v4 objectForKeyedSubscript:@"platformNetwork"];
+  v21 = [(__CFDictionary *)resultCopy objectForKeyedSubscript:@"platformNetwork"];
   if (v21)
   {
     [(CUWiFiDevice *)v11 setPlatformObject:v21];
   }
 
-  Int64Ranged = CFDictionaryGetInt64Ranged(v4, @"rssi", 0xFFFFFFFF80000000, 0x7FFFFFFFLL, &v50);
+  Int64Ranged = CFDictionaryGetInt64Ranged(resultCopy, @"rssi", 0xFFFFFFFF80000000, 0x7FFFFFFFLL, &v50);
   if ((Int64Ranged & 0x80000000) != 0 && [(CUWiFiDevice *)v11 rssi]!= Int64Ranged)
   {
     [(CUWiFiDevice *)v11 setRssi:Int64Ranged];
@@ -122,10 +122,10 @@ LABEL_15:
   }
 
   v23 = CFStringGetTypeID();
-  v24 = CFDictionaryGetTypedValue(v4, @"ssid", v23, 0);
-  v25 = [(CUWiFiDevice *)v11 ssid];
+  v24 = CFDictionaryGetTypedValue(resultCopy, @"ssid", v23, 0);
+  ssid = [(CUWiFiDevice *)v11 ssid];
   v26 = v24;
-  v27 = v25;
+  v27 = ssid;
   v28 = v27;
   if (v26 == v27)
   {
@@ -150,11 +150,11 @@ LABEL_26:
 
 LABEL_27:
   v46 = 0;
-  v47 = [v14 bytes];
-  IEGetVendorSpecific(v47, &v47[[v14 length]], 10502144, &v47, &v46, 0);
+  bytes = [v14 bytes];
+  IEGetVendorSpecific(bytes, &bytes[[v14 length]], 10502144, &bytes, &v46, 0);
   if (v46)
   {
-    v20 = [(CUWiFiDevice *)v11 _updateWithDeviceIE:v47 end:&v47[v46]]| v20;
+    v20 = [(CUWiFiDevice *)v11 _updateWithDeviceIE:bytes end:&bytes[v46]]| v20;
   }
 
   if (v10)
@@ -232,17 +232,17 @@ LABEL_39:
 LABEL_47:
 }
 
-- (void)_scanWiFiFinished:(id)a3 status:(int)a4
+- (void)_scanWiFiFinished:(id)finished status:(int)status
 {
   v61[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  finishedCopy = finished;
   ucat = self->_ucat;
   if (ucat->var0 <= 30)
   {
     if (ucat->var0 != -1)
     {
 LABEL_3:
-      v8 = [v6 count];
+      v8 = [finishedCopy count];
       LogPrintF(ucat, "[CUWiFiScanner _scanWiFiFinished:status:]", 0x1Eu, "WiFi scan finish: %ld results, status %#m\n", v9, v10, v11, v12, v8);
       goto LABEL_5;
     }
@@ -266,16 +266,16 @@ LABEL_5:
     goto LABEL_39;
   }
 
-  if (a4)
+  if (status)
   {
     errorHandler = self->_errorHandler;
     if (errorHandler)
     {
       v14 = MEMORY[0x1E696ABC0];
       v15 = *MEMORY[0x1E696A768];
-      v16 = a4;
+      statusCopy = status;
       v60 = *MEMORY[0x1E696A578];
-      v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{DebugGetErrorStringEx(0, a4, 0, 0)}];
+      v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{DebugGetErrorStringEx(0, status, 0, 0)}];
       v18 = v17;
       v19 = @"?";
       if (v17)
@@ -285,7 +285,7 @@ LABEL_5:
 
       v61[0] = v19;
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v61 forKeys:&v60 count:1];
-      v21 = [v14 errorWithDomain:v15 code:v16 userInfo:v20];
+      v21 = [v14 errorWithDomain:v15 code:statusCopy userInfo:v20];
       errorHandler[2](errorHandler, v21);
     }
   }
@@ -295,7 +295,7 @@ LABEL_5:
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v22 = v6;
+  v22 = finishedCopy;
   v23 = [v22 countByEnumeratingWithState:&v54 objects:v59 count:16];
   if (v23)
   {
@@ -323,8 +323,8 @@ LABEL_5:
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v27 = [(NSMutableDictionary *)self->_devices allKeys];
-  v28 = [v27 countByEnumeratingWithState:&v50 objects:v58 count:16];
+  allKeys = [(NSMutableDictionary *)self->_devices allKeys];
+  v28 = [allKeys countByEnumeratingWithState:&v50 objects:v58 count:16];
   if (v28)
   {
     v29 = v28;
@@ -336,7 +336,7 @@ LABEL_5:
       {
         if (*v51 != v30)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(allKeys);
         }
 
         v32 = *(*(&v50 + 1) + 8 * v31);
@@ -371,7 +371,7 @@ LABEL_28:
       }
 
       while (v29 != v31);
-      v40 = [v27 countByEnumeratingWithState:&v50 objects:v58 count:16];
+      v40 = [allKeys countByEnumeratingWithState:&v50 objects:v58 count:16];
       v29 = v40;
     }
 
@@ -711,13 +711,13 @@ LABEL_5:
   return [v12 _scanWiFiStart];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADEA928;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 

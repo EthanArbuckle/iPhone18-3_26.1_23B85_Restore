@@ -1,27 +1,27 @@
 @interface PBFLegacyPosterMigrationHelper
-- (PBFLegacyPosterMigrationHelper)initWithDataStore:(id)a3 legacyPosterPair:(id)a4;
+- (PBFLegacyPosterMigrationHelper)initWithDataStore:(id)store legacyPosterPair:(id)pair;
 - (id)lockScreenMigrationViewController;
-- (void)finalizeMigrationWithMigratedConfigurationUUID:(id)a3;
+- (void)finalizeMigrationWithMigratedConfigurationUUID:(id)d;
 - (void)lockScreenMigrationViewController;
-- (void)migrateHomePosterAndAssociateToConfiguration:(id)a3 completion:(id)a4;
-- (void)revertMigrationWithMigratedConfigurationUUID:(id)a3;
+- (void)migrateHomePosterAndAssociateToConfiguration:(id)configuration completion:(id)completion;
+- (void)revertMigrationWithMigratedConfigurationUUID:(id)d;
 @end
 
 @implementation PBFLegacyPosterMigrationHelper
 
-- (PBFLegacyPosterMigrationHelper)initWithDataStore:(id)a3 legacyPosterPair:(id)a4
+- (PBFLegacyPosterMigrationHelper)initWithDataStore:(id)store legacyPosterPair:(id)pair
 {
   v44 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  pairCopy = pair;
   v35.receiver = self;
   v35.super_class = PBFLegacyPosterMigrationHelper;
   v9 = [(PBFLegacyPosterMigrationHelper *)&v35 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_legacyPosterPair, a4);
-    objc_storeStrong(&v10->_dataStore, a3);
+    objc_storeStrong(&v9->_legacyPosterPair, pair);
+    objc_storeStrong(&v10->_dataStore, store);
     v10->_migrationEnabled = _os_feature_enabled_impl();
     v10->_distinctHomeScreenMigrationEnabled = _os_feature_enabled_impl();
     v11 = PBFLogLegacyPosterMigration();
@@ -33,12 +33,12 @@
     if ([(PBFLegacyPosterMigrationHelper *)v10 _shouldAllowMigration])
     {
       v12 = objc_alloc_init(MEMORY[0x277D37C70]);
-      v13 = [v12 posterMigrationInfo];
+      posterMigrationInfo = [v12 posterMigrationInfo];
 
-      objc_storeStrong(&v10->_migrationInfo, v13);
-      v14 = [v13 pairingType];
-      v15 = [v13 homeProvider] == 2 && objc_msgSend(v13, "pairingType") != 1;
-      if ([v13 homeProvider] == 1 && objc_msgSend(v13, "pairingType") == 2)
+      objc_storeStrong(&v10->_migrationInfo, posterMigrationInfo);
+      pairingType = [posterMigrationInfo pairingType];
+      v15 = [posterMigrationInfo homeProvider] == 2 && objc_msgSend(posterMigrationInfo, "pairingType") != 1;
+      if ([posterMigrationInfo homeProvider] == 1 && objc_msgSend(posterMigrationInfo, "pairingType") == 2)
       {
         distinctHomeScreenMigrationEnabled = v10->_distinctHomeScreenMigrationEnabled;
         v18 = 1;
@@ -50,10 +50,10 @@
         distinctHomeScreenMigrationEnabled = 1;
       }
 
-      v19 = [(PBFLegacyPosterMigrationHelper *)v10 migrationInfo];
-      v20 = [v19 lockProvider];
+      migrationInfo = [(PBFLegacyPosterMigrationHelper *)v10 migrationInfo];
+      lockProvider = [migrationInfo lockProvider];
 
-      if (!v20)
+      if (!lockProvider)
       {
         v21 = PBFLogLegacyPosterMigration();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -66,7 +66,7 @@
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         *buf = 67109888;
-        v37 = v14 != 0;
+        v37 = pairingType != 0;
         v38 = 1024;
         v39 = v15;
         v40 = 1024;
@@ -76,8 +76,8 @@
         _os_log_impl(&dword_21B526000, v22, OS_LOG_TYPE_INFO, "Supported migration: %d, Collections Home Mismatched: %d, Distinct Photo Home: %d, canMigrateHome:%d", buf, 0x1Au);
       }
 
-      v23 = v20 != 0;
-      v24 = v14 != 0;
+      v23 = lockProvider != 0;
+      v24 = pairingType != 0;
 
       v25 = v24 & ~v15 & distinctHomeScreenMigrationEnabled & v23;
       v10->_canMigrateLegacyPoster = v24 & ~v15 & distinctHomeScreenMigrationEnabled & v23;
@@ -135,24 +135,24 @@ LABEL_28:
 {
   if ([(PBFLegacyPosterMigrationHelper *)self canMigrateLegacyPoster]|| [(PBFLegacyPosterMigrationHelper *)self canMigrateLegacyLockPoster])
   {
-    v3 = [(PBFLegacyPosterMigrationHelper *)self migrationInfo];
-    [v3 lockProvider];
+    migrationInfo = [(PBFLegacyPosterMigrationHelper *)self migrationInfo];
+    [migrationInfo lockProvider];
 
     v4 = PBUIExtensionIdentifierForPosterWallpaperMigrationProvider();
     v5 = *MEMORY[0x277D3EA38];
     v6 = [MEMORY[0x277D3EB88] temporaryPathForRole:v5];
     v7 = MEMORY[0x277D3EB98];
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v7 incomingConfigurationIdentityWithProvider:v4 role:v5 posterUUID:v8 version:1 supplement:0];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v9 = [v7 incomingConfigurationIdentityWithProvider:v4 role:v5 posterUUID:uUID version:1 supplement:0];
 
     v10 = MEMORY[0x277D3EBA0];
-    v11 = [v6 contentsURL];
-    v12 = [v10 pathWithContainerURL:v11 identity:v9];
+    contentsURL = [v6 contentsURL];
+    v12 = [v10 pathWithContainerURL:contentsURL identity:v9];
 
     v13 = +[PBFPosterExtensionDataStoreXPCServiceGlue sharedInstance];
-    v14 = [v13 dataStore];
+    dataStore = [v13 dataStore];
 
-    v15 = [v14 providerForPath:v12];
+    v15 = [dataStore providerForPath:v12];
     if (!v15)
     {
       v17 = PBFLogLegacyPosterMigration();
@@ -186,9 +186,9 @@ LABEL_28:
       if (!v20)
       {
         v22 = MEMORY[0x277D3EB78];
-        v23 = [v15 identity];
-        v24 = [MEMORY[0x277CCAD78] UUID];
-        v17 = [v22 extensionInstanceForIdentity:v23 instanceIdentifier:v24];
+        identity = [v15 identity];
+        uUID2 = [MEMORY[0x277CCAD78] UUID];
+        v17 = [v22 extensionInstanceForIdentity:identity instanceIdentifier:uUID2];
 
         v19 = [[PBFLegacyMigrationEditingSceneViewController alloc] initWithProvider:v17 contents:v12 exnihiloPathAssertion:v6 replacing:0];
         v18 = PBFLogLegacyPosterMigration();
@@ -229,10 +229,10 @@ LABEL_19:
   return v19;
 }
 
-- (void)migrateHomePosterAndAssociateToConfiguration:(id)a3 completion:(id)a4
+- (void)migrateHomePosterAndAssociateToConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   if (![(PBFLegacyPosterMigrationHelper *)self _shouldAllowMigration]|| ![(PBFLegacyPosterMigrationHelper *)self isDistinctHomeScreenMigrationEnabled])
   {
     v22 = PBFLogLegacyPosterMigration();
@@ -240,7 +240,7 @@ LABEL_19:
     {
 LABEL_12:
 
-      (*(v7 + 2))(v7, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
       goto LABEL_13;
     }
 
@@ -249,10 +249,10 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  v8 = [(PBFLegacyPosterMigrationHelper *)self migrationInfo];
-  v9 = [v8 pairingType];
+  migrationInfo = [(PBFLegacyPosterMigrationHelper *)self migrationInfo];
+  pairingType = [migrationInfo pairingType];
 
-  if (v9 != 2)
+  if (pairingType != 2)
   {
     v22 = PBFLogLegacyPosterMigration();
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
@@ -270,10 +270,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v10 = [(PBFLegacyPosterMigrationHelper *)self migrationInfo];
-  v11 = [v10 homeProvider];
+  migrationInfo2 = [(PBFLegacyPosterMigrationHelper *)self migrationInfo];
+  homeProvider = [migrationInfo2 homeProvider];
 
-  if (!v11)
+  if (!homeProvider)
   {
     v22 = PBFLogLegacyPosterMigration();
     if (!os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -308,10 +308,10 @@ LABEL_11:
   v26[1] = 3221225472;
   v26[2] = __90__PBFLegacyPosterMigrationHelper_migrateHomePosterAndAssociateToConfiguration_completion___block_invoke;
   v26[3] = &unk_2782C6338;
-  v27 = v6;
+  v27 = configurationCopy;
   v28 = v14;
   v29 = v15;
-  v30 = v7;
+  v30 = completionCopy;
   v20 = v15;
   v21 = v14;
   dispatch_async(homeMigrationQueue, v26);
@@ -380,34 +380,34 @@ void __90__PBFLegacyPosterMigrationHelper_migrateHomePosterAndAssociateToConfigu
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)revertMigrationWithMigratedConfigurationUUID:(id)a3
+- (void)revertMigrationWithMigratedConfigurationUUID:(id)d
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = +[PBFPosterExtensionDataStoreXPCServiceGlue sharedInstance];
-  v6 = [v5 dataStore];
+  dataStore = [v5 dataStore];
 
-  v7 = [v6 switcherConfiguration];
-  v8 = [(PBFLegacyPosterMigrationHelper *)self legacyPosterPair];
-  v9 = [v8 configurationUUID];
+  switcherConfiguration = [dataStore switcherConfiguration];
+  legacyPosterPair = [(PBFLegacyPosterMigrationHelper *)self legacyPosterPair];
+  configurationUUID = [legacyPosterPair configurationUUID];
 
-  v10 = [v7 configurations];
+  configurations = [switcherConfiguration configurations];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __79__PBFLegacyPosterMigrationHelper_revertMigrationWithMigratedConfigurationUUID___block_invoke;
   v28[3] = &unk_2782C61F8;
-  v11 = v4;
+  v11 = dCopy;
   v29 = v11;
-  v12 = [v10 bs_firstObjectPassingTest:v28];
+  v12 = [configurations bs_firstObjectPassingTest:v28];
 
-  v13 = [v7 configurations];
+  configurations2 = [switcherConfiguration configurations];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __79__PBFLegacyPosterMigrationHelper_revertMigrationWithMigratedConfigurationUUID___block_invoke_2;
   v26[3] = &unk_2782C61F8;
-  v14 = v9;
+  v14 = configurationUUID;
   v27 = v14;
-  v15 = [v13 bs_firstObjectPassingTest:v26];
+  v15 = [configurations2 bs_firstObjectPassingTest:v26];
 
   if (!v12 || !v15)
   {
@@ -462,14 +462,14 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v16 = [v6 switcherConfiguration];
-  v17 = [v16 mutableCopy];
+  switcherConfiguration2 = [dataStore switcherConfiguration];
+  v17 = [switcherConfiguration2 mutableCopy];
 
   [v17 removeConfiguration:v12];
   [v17 setSelectedConfiguration:v15];
   [v17 setDesiredActiveConfiguration:v15];
   v25 = 0;
-  v18 = [v6 updateDataStoreForSwitcherConfiguration:v17 options:0 reason:@"Reverting legacy migration" error:&v25];
+  v18 = [dataStore updateDataStoreForSwitcherConfiguration:v17 options:0 reason:@"Reverting legacy migration" error:&v25];
   v19 = v25;
   if (v19)
   {
@@ -503,19 +503,19 @@ uint64_t __79__PBFLegacyPosterMigrationHelper_revertMigrationWithMigratedConfigu
   return v6;
 }
 
-- (void)finalizeMigrationWithMigratedConfigurationUUID:(id)a3
+- (void)finalizeMigrationWithMigratedConfigurationUUID:(id)d
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = +[PBFPosterExtensionDataStoreXPCServiceGlue sharedInstance];
-  v6 = [v5 dataStore];
+  dataStore = [v5 dataStore];
 
-  v7 = [v6 switcherConfiguration];
-  v8 = [(PBFLegacyPosterMigrationHelper *)self legacyPosterPair];
-  v9 = [v8 configurationUUID];
+  switcherConfiguration = [dataStore switcherConfiguration];
+  legacyPosterPair = [(PBFLegacyPosterMigrationHelper *)self legacyPosterPair];
+  configurationUUID = [legacyPosterPair configurationUUID];
 
-  v10 = [v7 configurations];
-  v11 = [v10 mutableCopy];
+  configurations = [switcherConfiguration configurations];
+  v11 = [configurations mutableCopy];
 
   v48 = 0;
   v49 = &v48;
@@ -542,11 +542,11 @@ uint64_t __79__PBFLegacyPosterMigrationHelper_revertMigrationWithMigratedConfigu
   v25[1] = 3221225472;
   v25[2] = __81__PBFLegacyPosterMigrationHelper_finalizeMigrationWithMigratedConfigurationUUID___block_invoke;
   v25[3] = &unk_2782C8C98;
-  v13 = v4;
+  v13 = dCopy;
   v26 = v13;
   v28 = &v38;
   v29 = &v48;
-  v14 = v9;
+  v14 = configurationUUID;
   v27 = v14;
   v30 = &v32;
   v31 = &v44;
@@ -562,20 +562,20 @@ uint64_t __79__PBFLegacyPosterMigrationHelper_revertMigrationWithMigratedConfigu
 
   else
   {
-    v15 = [v7 mutableCopy];
+    v15 = [switcherConfiguration mutableCopy];
     [v11 replaceObjectAtIndex:v45[3] withObject:v39[5]];
     [v11 replaceObjectAtIndex:v49[3] withObject:v33[5]];
     [v15 setConfigurations:v11];
-    v16 = [v15 selectedConfiguration];
-    v17 = [v16 isEqual:v33[5]];
+    selectedConfiguration = [v15 selectedConfiguration];
+    v17 = [selectedConfiguration isEqual:v33[5]];
 
     if (v17)
     {
       [v15 setSelectedConfiguration:v39[5]];
     }
 
-    v18 = [v15 activeConfiguration];
-    v19 = [v18 isEqual:v33[5]];
+    activeConfiguration = [v15 activeConfiguration];
+    v19 = [activeConfiguration isEqual:v33[5]];
 
     if (v19)
     {
@@ -584,15 +584,15 @@ uint64_t __79__PBFLegacyPosterMigrationHelper_revertMigrationWithMigratedConfigu
 
     [v15 removeConfiguration:v33[5]];
     v24 = 0;
-    v20 = [v6 updateDataStoreForSwitcherConfiguration:v15 options:0 reason:@"Finalizing legacy migration" error:&v24];
+    v20 = [dataStore updateDataStoreForSwitcherConfiguration:v15 options:0 reason:@"Finalizing legacy migration" error:&v24];
     v21 = v24;
     if (v21)
     {
       v22 = PBFLogLegacyPosterMigration();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        v23 = [v21 localizedDescription];
-        [(PBFLegacyPosterMigrationHelper *)v23 finalizeMigrationWithMigratedConfigurationUUID:buf, v22];
+        localizedDescription = [v21 localizedDescription];
+        [(PBFLegacyPosterMigrationHelper *)localizedDescription finalizeMigrationWithMigratedConfigurationUUID:buf, v22];
       }
     }
   }

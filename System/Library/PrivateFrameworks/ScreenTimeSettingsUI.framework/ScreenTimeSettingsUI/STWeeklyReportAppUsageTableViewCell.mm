@@ -1,28 +1,28 @@
 @interface STWeeklyReportAppUsageTableViewCell
-- (STWeeklyReportAppUsageTableViewCell)initWithUsageReport:(id)a3;
+- (STWeeklyReportAppUsageTableViewCell)initWithUsageReport:(id)report;
 @end
 
 @implementation STWeeklyReportAppUsageTableViewCell
 
-- (STWeeklyReportAppUsageTableViewCell)initWithUsageReport:(id)a3
+- (STWeeklyReportAppUsageTableViewCell)initWithUsageReport:(id)report
 {
-  v4 = a3;
+  reportCopy = report;
   v13.receiver = self;
   v13.super_class = STWeeklyReportAppUsageTableViewCell;
   v5 = [(STWeeklyReportAppUsageTableViewCell *)&v13 initWithStyle:0 reuseIdentifier:0];
   if (v5)
   {
-    v6 = [[STWeeklyReportAppUsageView alloc] initWithUsageReport:v4 useVibrancy:0];
+    v6 = [[STWeeklyReportAppUsageView alloc] initWithUsageReport:reportCopy useVibrancy:0];
     [(STWeeklyReportAppUsageView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(STWeeklyReportAppUsageTableViewCell *)v5 contentView];
-    [v7 addSubview:v6];
+    contentView = [(STWeeklyReportAppUsageTableViewCell *)v5 contentView];
+    [contentView addSubview:v6];
 
-    v8 = [(STWeeklyReportAppUsageTableViewCell *)v5 contentView];
-    [v8 sizeToFit];
+    contentView2 = [(STWeeklyReportAppUsageTableViewCell *)v5 contentView];
+    [contentView2 sizeToFit];
 
     v9 = MEMORY[0x277CCAAD0];
-    v10 = [(STWeeklyReportAppUsageTableViewCell *)v5 contentView];
-    v11 = [v9 st_constraintsForView:v6 equalToView:v10];
+    contentView3 = [(STWeeklyReportAppUsageTableViewCell *)v5 contentView];
+    v11 = [v9 st_constraintsForView:v6 equalToView:contentView3];
     [v9 activateConstraints:v11];
   }
 

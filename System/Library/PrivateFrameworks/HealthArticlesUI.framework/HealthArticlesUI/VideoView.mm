@@ -1,9 +1,9 @@
 @interface VideoView
 - (NSString)accessibilityVideoDescription;
-- (_TtC16HealthArticlesUI9VideoView)initWithCoder:(id)a3;
-- (_TtC16HealthArticlesUI9VideoView)initWithFrame:(CGRect)a3;
-- (void)nonLoopingEndOfPlay:(NSNotification *)a3 completionHandler:(id)a4;
-- (void)setAccessibilityVideoDescription:(id)a3;
+- (_TtC16HealthArticlesUI9VideoView)initWithCoder:(id)coder;
+- (_TtC16HealthArticlesUI9VideoView)initWithFrame:(CGRect)frame;
+- (void)nonLoopingEndOfPlay:(NSNotification *)play completionHandler:(id)handler;
+- (void)setAccessibilityVideoDescription:(id)description;
 @end
 
 @implementation VideoView
@@ -36,7 +36,7 @@
   return v5;
 }
 
-- (void)setAccessibilityVideoDescription:(id)a3
+- (void)setAccessibilityVideoDescription:(id)description
 {
   sub_25133F8F4();
   sub_25133F8E4();
@@ -46,9 +46,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (description)
   {
-    a3 = sub_25133F754();
+    description = sub_25133F754();
     v6 = v5;
   }
 
@@ -60,16 +60,16 @@
   v7 = (self + OBJC_IVAR____TtC16HealthArticlesUI9VideoView_accessibilityVideoDescription);
   swift_beginAccess();
   v8 = v7[1];
-  *v7 = a3;
+  *v7 = description;
   v7[1] = v6;
 }
 
-- (_TtC16HealthArticlesUI9VideoView)initWithFrame:(CGRect)a3
+- (_TtC16HealthArticlesUI9VideoView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_25133F8F4();
   sub_25133F8E4();
   sub_25133F894();
@@ -83,7 +83,7 @@
   return v7;
 }
 
-- (_TtC16HealthArticlesUI9VideoView)initWithCoder:(id)a3
+- (_TtC16HealthArticlesUI9VideoView)initWithCoder:(id)coder
 {
   sub_25133F8F4();
   sub_25133F8E4();
@@ -96,15 +96,15 @@
   sub_25133D0D0();
 }
 
-- (void)nonLoopingEndOfPlay:(NSNotification *)a3 completionHandler:(id)a4
+- (void)nonLoopingEndOfPlay:(NSNotification *)play completionHandler:(id)handler
 {
   sub_251337C04(0, &qword_27F42B470, MEMORY[0x277D85720], MEMORY[0x277D83D88]);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8, v9);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
+  v13[2] = play;
   v13[3] = v12;
   v13[4] = self;
   v14 = sub_25133F914();
@@ -119,8 +119,8 @@
   v16[3] = 0;
   v16[4] = &unk_251342650;
   v16[5] = v15;
-  v17 = a3;
-  v18 = self;
+  playCopy = play;
+  selfCopy = self;
   sub_25133CC1C(0, 0, v11, &unk_251342660, v16);
 }
 

@@ -1,27 +1,27 @@
 @interface MFInsetLabel
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC16MagnifierSupport12MFInsetLabel)initWithFrame:(CGRect)a3;
-- (void)drawTextInRect:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC16MagnifierSupport12MFInsetLabel)initWithFrame:(CGRect)frame;
+- (void)drawTextInRect:(CGRect)rect;
 @end
 
 @implementation MFInsetLabel
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_257EC0EA8(x, y, width, height);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_257EC0FB8(width, height);
   v8 = v7;
 
@@ -34,7 +34,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_257EC10DC();
   v5 = v4;
 
@@ -45,12 +45,12 @@
   return result;
 }
 
-- (_TtC16MagnifierSupport12MFInsetLabel)initWithFrame:(CGRect)a3
+- (_TtC16MagnifierSupport12MFInsetLabel)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC16MagnifierSupport12MFInsetLabel_topInset) = 0x4000000000000000;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC16MagnifierSupport12MFInsetLabel_leftInset) = 0x4020000000000000;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC16MagnifierSupport12MFInsetLabel_bottomInset) = 0x4000000000000000;

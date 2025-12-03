@@ -86,7 +86,7 @@ void __30__BWDeviceThermalMonitor_init__block_invoke(uint64_t a1, int a2)
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();

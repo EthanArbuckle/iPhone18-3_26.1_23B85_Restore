@@ -1,21 +1,21 @@
 @interface ATXSuggestedPagesEnterpriseAppDataSource
-- (id)provideAppsForSuggestedPageType:(int64_t)a3 environment:(id)a4;
+- (id)provideAppsForSuggestedPageType:(int64_t)type environment:(id)environment;
 @end
 
 @implementation ATXSuggestedPagesEnterpriseAppDataSource
 
-- (id)provideAppsForSuggestedPageType:(int64_t)a3 environment:(id)a4
+- (id)provideAppsForSuggestedPageType:(int64_t)type environment:(id)environment
 {
-  v5 = a4;
-  if (a3 == 7)
+  environmentCopy = environment;
+  if (type == 7)
   {
-    v6 = [MEMORY[0x277D262A0] sharedConnection];
-    v7 = [v6 managedAppIDs];
-    v8 = v7;
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    managedAppIDs = [mEMORY[0x277D262A0] managedAppIDs];
+    v8 = managedAppIDs;
     v9 = MEMORY[0x277CBEBF8];
-    if (v7)
+    if (managedAppIDs)
     {
-      v9 = v7;
+      v9 = managedAppIDs;
     }
 
     v10 = v9;
@@ -30,7 +30,7 @@
     v14[1] = 3221225472;
     v14[2] = __88__ATXSuggestedPagesEnterpriseAppDataSource_provideAppsForSuggestedPageType_environment___block_invoke;
     v14[3] = &unk_278598578;
-    v15 = v5;
+    v15 = environmentCopy;
     v12 = [v10 _pas_mappedArrayWithTransform:v14];
   }
 

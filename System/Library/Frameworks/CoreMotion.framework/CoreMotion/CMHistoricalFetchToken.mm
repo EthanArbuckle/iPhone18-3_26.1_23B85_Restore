@@ -1,30 +1,30 @@
 @interface CMHistoricalFetchToken
 + (id)cardioToken;
 + (id)mobilityToken;
-- (BOOL)isEqual:(id)a3;
-- (CMHistoricalFetchToken)initWithCoder:(id)a3;
-- (CMHistoricalFetchToken)initWithType:(unint64_t)a3 cursorList:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CMHistoricalFetchToken)initWithCoder:(id)coder;
+- (CMHistoricalFetchToken)initWithType:(unint64_t)type cursorList:(id)list;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMHistoricalFetchToken
 
-- (CMHistoricalFetchToken)initWithType:(unint64_t)a3 cursorList:(id)a4
+- (CMHistoricalFetchToken)initWithType:(unint64_t)type cursorList:(id)list
 {
   v10.receiver = self;
   v10.super_class = CMHistoricalFetchToken;
   v8 = [(CMHistoricalFetchToken *)&v10 init];
   if (v8)
   {
-    v8->_tables = objc_msgSend_mutableCopy(a4, v6, v7);
+    v8->_tables = objc_msgSend_mutableCopy(list, v6, v7);
     v8->_version = 2;
     v8->_startTime = 0.0;
     v8->_endTime = 0.0;
-    v8->_fetchType = a3;
+    v8->_fetchType = type;
   }
 
   return v8;
@@ -94,7 +94,7 @@
     }
   }
 
-  v45 = [a1 alloc];
+  v45 = [self alloc];
   result = objc_msgSend_initWithType_cursorList_(v45, v46, 0, v3);
   v48 = *MEMORY[0x1E69E9840];
   return result;
@@ -155,7 +155,7 @@
     }
   }
 
-  v33 = [a1 alloc];
+  v33 = [self alloc];
   result = objc_msgSend_initWithType_cursorList_(v33, v34, 1, v3);
   v36 = *MEMORY[0x1E69E9840];
   return result;
@@ -169,7 +169,7 @@
   [(CMHistoricalFetchToken *)&v3 dealloc];
 }
 
-- (CMHistoricalFetchToken)initWithCoder:(id)a3
+- (CMHistoricalFetchToken)initWithCoder:(id)coder
 {
   v18.receiver = self;
   v18.super_class = CMHistoricalFetchToken;
@@ -180,40 +180,40 @@
     v6 = objc_opt_class();
     v7 = objc_opt_class();
     v9 = objc_msgSend_setWithObjects_(v5, v8, v6, v7, 0);
-    v4->_tables = objc_msgSend_decodeObjectOfClasses_forKey_(a3, v10, v9, @"kCMHistoricalFetchTokenCodingKeyTables");
-    v4->_version = objc_msgSend_decodeIntegerForKey_(a3, v11, @"kCMHistoricalFetchTokenCodingKeyVersion");
-    v4->_fetchType = objc_msgSend_decodeIntegerForKey_(a3, v12, @"kCMHistoricalFetchTokenCodingKeyFetchType");
-    objc_msgSend_decodeDoubleForKey_(a3, v13, @"kCMHistoricalFetchTokenCodingKeyStartTime");
+    v4->_tables = objc_msgSend_decodeObjectOfClasses_forKey_(coder, v10, v9, @"kCMHistoricalFetchTokenCodingKeyTables");
+    v4->_version = objc_msgSend_decodeIntegerForKey_(coder, v11, @"kCMHistoricalFetchTokenCodingKeyVersion");
+    v4->_fetchType = objc_msgSend_decodeIntegerForKey_(coder, v12, @"kCMHistoricalFetchTokenCodingKeyFetchType");
+    objc_msgSend_decodeDoubleForKey_(coder, v13, @"kCMHistoricalFetchTokenCodingKeyStartTime");
     v4->_startTime = v14;
-    objc_msgSend_decodeDoubleForKey_(a3, v15, @"kCMHistoricalFetchTokenCodingKeyEndTime");
+    objc_msgSend_decodeDoubleForKey_(coder, v15, @"kCMHistoricalFetchTokenCodingKeyEndTime");
     v4->_endTime = v16;
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  objc_msgSend_encodeObject_forKey_(a3, a2, self->_tables, @"kCMHistoricalFetchTokenCodingKeyTables");
-  objc_msgSend_encodeInteger_forKey_(a3, v5, self->_version, @"kCMHistoricalFetchTokenCodingKeyVersion");
-  objc_msgSend_encodeInteger_forKey_(a3, v6, self->_fetchType, @"kCMHistoricalFetchTokenCodingKeyFetchType");
-  objc_msgSend_encodeDouble_forKey_(a3, v7, @"kCMHistoricalFetchTokenCodingKeyStartTime", self->_startTime);
+  objc_msgSend_encodeObject_forKey_(coder, a2, self->_tables, @"kCMHistoricalFetchTokenCodingKeyTables");
+  objc_msgSend_encodeInteger_forKey_(coder, v5, self->_version, @"kCMHistoricalFetchTokenCodingKeyVersion");
+  objc_msgSend_encodeInteger_forKey_(coder, v6, self->_fetchType, @"kCMHistoricalFetchTokenCodingKeyFetchType");
+  objc_msgSend_encodeDouble_forKey_(coder, v7, @"kCMHistoricalFetchTokenCodingKeyStartTime", self->_startTime);
   endTime = self->_endTime;
 
-  objc_msgSend_encodeDouble_forKey_(a3, v8, @"kCMHistoricalFetchTokenCodingKeyEndTime", endTime);
+  objc_msgSend_encodeDouble_forKey_(coder, v8, @"kCMHistoricalFetchTokenCodingKeyEndTime", endTime);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v9 = objc_msgSend_initWithType_cursorList_(v7, v8, self->_fetchType, self->_tables);
   objc_msgSend_setStartTime_(v9, v10, v11, self->_startTime);
   objc_msgSend_setEndTime_(v9, v12, v13, self->_endTime);
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -223,20 +223,20 @@
 
   v7 = objc_msgSend_tables(self, v5, v6);
   v10 = objc_msgSend_count(v7, v8, v9);
-  v13 = objc_msgSend_tables(a3, v11, v12);
+  v13 = objc_msgSend_tables(equal, v11, v12);
   if (v10 != objc_msgSend_count(v13, v14, v15))
   {
     goto LABEL_11;
   }
 
   v18 = objc_msgSend_version(self, v16, v17);
-  if (v18 != objc_msgSend_version(a3, v19, v20))
+  if (v18 != objc_msgSend_version(equal, v19, v20))
   {
     goto LABEL_11;
   }
 
   Type = objc_msgSend_fetchType(self, v21, v22);
-  if (Type == objc_msgSend_fetchType(a3, v24, v25) && (objc_msgSend_startTime(self, v26, v27), v29 = v28, objc_msgSend_startTime(a3, v30, v31), v29 == v34) && (objc_msgSend_endTime(self, v32, v33), v36 = v35, objc_msgSend_endTime(a3, v37, v38), v36 == v41))
+  if (Type == objc_msgSend_fetchType(equal, v24, v25) && (objc_msgSend_startTime(self, v26, v27), v29 = v28, objc_msgSend_startTime(equal, v30, v31), v29 == v34) && (objc_msgSend_endTime(self, v32, v33), v36 = v35, objc_msgSend_endTime(equal, v37, v38), v36 == v41))
   {
     v42 = objc_msgSend_tables(self, v39, v40);
     if (objc_msgSend_count(v42, v43, v44))
@@ -247,7 +247,7 @@
       {
         v49 = objc_msgSend_tables(self, v45, v46);
         v51 = objc_msgSend_objectAtIndexedSubscript_(v49, v50, v47);
-        v54 = objc_msgSend_tables(a3, v52, v53);
+        v54 = objc_msgSend_tables(equal, v52, v53);
         v56 = objc_msgSend_objectAtIndexedSubscript_(v54, v55, v47);
         v48 &= objc_msgSend_isEqual_(v51, v57, v56);
         ++v47;

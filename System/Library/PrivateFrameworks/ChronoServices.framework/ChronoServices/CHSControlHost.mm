@@ -1,13 +1,13 @@
 @interface CHSControlHost
 - (CHSControlHost)init;
-- (CHSControlHost)initWithIdentifier:(id)a3 configuration:(id)a4;
+- (CHSControlHost)initWithIdentifier:(id)identifier configuration:(id)configuration;
 - (NSString)description;
 - (NSString)identifier;
 - (void)activate;
 - (void)deactivate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setConfiguration:(id)a3;
+- (void)setConfiguration:(id)configuration;
 @end
 
 @implementation CHSControlHost
@@ -22,21 +22,21 @@
   return v4;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v6 = *(&self->super.isa + OBJC_IVAR___CHSControlHost_configuration);
-  *(&self->super.isa + OBJC_IVAR___CHSControlHost_configuration) = a3;
-  v4 = a3;
-  v5 = self;
+  *(&self->super.isa + OBJC_IVAR___CHSControlHost_configuration) = configuration;
+  configurationCopy = configuration;
+  selfCopy = self;
   sub_195F25D48(v6);
 }
 
-- (CHSControlHost)initWithIdentifier:(id)a3 configuration:(id)a4
+- (CHSControlHost)initWithIdentifier:(id)identifier configuration:(id)configuration
 {
   v5 = sub_195FA08B8();
   v7 = v6;
-  v8 = a4;
-  return CHSControlHost.init(identifier:configuration:)(v5, v7, a4);
+  configurationCopy = configuration;
+  return CHSControlHost.init(identifier:configuration:)(v5, v7, configuration);
 }
 
 - (void)dealloc
@@ -47,7 +47,7 @@
     v7 = v3;
     v5.receiver = self;
     v5.super_class = CHSControlHost;
-    v4 = self;
+    selfCopy = self;
     [(CHSControlHost *)&v5 dealloc];
   }
 
@@ -59,25 +59,25 @@
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   CHSControlHost.activate()();
 }
 
 - (void)deactivate
 {
-  v2 = self;
+  selfCopy = self;
   CHSControlHost.deactivate()();
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   CHSControlHost.invalidate()();
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   CHSControlHost.description.getter();
 
   v3 = sub_195FA0888();

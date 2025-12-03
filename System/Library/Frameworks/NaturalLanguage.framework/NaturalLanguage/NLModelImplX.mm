@@ -1,11 +1,11 @@
 @interface NLModelImplX
-- (NLModelImplX)initWithModelData:(id)a3 configuration:(id)a4 labelMap:(id)a5 vocabularyMap:(id)a6 documentFrequencyMap:(id)a7 customEmbeddingData:(id)a8 trainingInfo:(id)a9 error:(id *)a10;
-- (NLModelImplX)initWithModelTrainer:(id)a3 error:(id *)a4;
-- (float)outputForString:(id)a3;
-- (id)predictedLabelForString:(id)a3;
-- (id)predictedLabelHypothesesForString:(id)a3 maximumCount:(unint64_t)a4;
-- (id)predictedLabelHypothesesForTokens:(id)a3 maximumCount:(unint64_t)a4;
-- (id)predictedLabelsForTokens:(id)a3;
+- (NLModelImplX)initWithModelData:(id)data configuration:(id)configuration labelMap:(id)map vocabularyMap:(id)vocabularyMap documentFrequencyMap:(id)frequencyMap customEmbeddingData:(id)embeddingData trainingInfo:(id)info error:(id *)self0;
+- (NLModelImplX)initWithModelTrainer:(id)trainer error:(id *)error;
+- (float)outputForString:(id)string;
+- (id)predictedLabelForString:(id)string;
+- (id)predictedLabelHypothesesForString:(id)string maximumCount:(unint64_t)count;
+- (id)predictedLabelHypothesesForTokens:(id)tokens maximumCount:(unint64_t)count;
+- (id)predictedLabelsForTokens:(id)tokens;
 - (id)trainingInfo;
 - (unint64_t)systemVersion;
 - (void)dealloc;
@@ -13,50 +13,50 @@
 
 @implementation NLModelImplX
 
-- (NLModelImplX)initWithModelData:(id)a3 configuration:(id)a4 labelMap:(id)a5 vocabularyMap:(id)a6 documentFrequencyMap:(id)a7 customEmbeddingData:(id)a8 trainingInfo:(id)a9 error:(id *)a10
+- (NLModelImplX)initWithModelData:(id)data configuration:(id)configuration labelMap:(id)map vocabularyMap:(id)vocabularyMap documentFrequencyMap:(id)frequencyMap customEmbeddingData:(id)embeddingData trainingInfo:(id)info error:(id *)self0
 {
   v105[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
+  dataCopy = data;
+  configurationCopy = configuration;
+  mapCopy = map;
+  embeddingDataCopy = embeddingData;
   v89 = 0;
-  v17 = v13;
-  v18 = a9;
-  v74 = [v14 revision];
+  v17 = dataCopy;
+  infoCopy = info;
+  revision = [configurationCopy revision];
   v104 = *MEMORY[0x1E69B2808];
-  v105[0] = v13;
+  v105[0] = dataCopy;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v105 forKeys:&v104 count:1];
   cf = MRLNeuralNetworkCreate();
-  v72 = stringForKey(v18, 0x1F10C6780, 0);
+  v72 = stringForKey(infoCopy, 0x1F10C6780, 0);
   v20 = v72;
-  v71 = stringForKeyWithDefault(v18, @"TrainingEmbeddingType", 0);
+  v71 = stringForKeyWithDefault(infoCopy, @"TrainingEmbeddingType", 0);
   v21 = v71;
-  v83 = stringForKeyWithDefault(v18, @"EmbeddingModelIdentifier", 0);
-  v70 = unsignedIntegerForKey(v18, 0x1F10C67C0, 0);
+  v83 = stringForKeyWithDefault(infoCopy, @"EmbeddingModelIdentifier", 0);
+  v70 = unsignedIntegerForKey(infoCopy, 0x1F10C67C0, 0);
 
-  v22 = v20;
+  language = v20;
   if (!v20)
   {
-    v22 = [v14 language];
+    language = [configurationCopy language];
   }
 
   v23 = v21;
   if (!v21)
   {
-    v24 = [v14 options];
-    v23 = stringForKeyWithDefault(v24, @"EmbeddingType", 0);
+    options = [configurationCopy options];
+    v23 = stringForKeyWithDefault(options, @"EmbeddingType", 0);
   }
 
-  v80 = v16;
+  v80 = embeddingDataCopy;
   v78 = v21;
   if ([v23 isEqualToString:@"Static"])
   {
-    if (!v22 || ([NLEmbedding wordEmbeddingForLanguage:v22 revision:v74], (v25 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!language || ([NLEmbedding wordEmbeddingForLanguage:language revision:revision], (v25 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      NSLog(&cfstr_FailedToLoadSt.isa, v22, v74);
+      NSLog(&cfstr_FailedToLoadSt.isa, language, revision);
 LABEL_22:
-      requestWordEmbeddingAssetsForLanguage(v22);
+      requestWordEmbeddingAssetsForLanguage(language);
 LABEL_23:
       v26 = 0;
       goto LABEL_24;
@@ -69,9 +69,9 @@ LABEL_23:
   {
     if ([v23 isEqualToString:@"Transformer"])
     {
-      if (!v22 || ([NLEmbedding transformerContextualTokenEmbeddingForLanguage:v22], (v25 = objc_claimAutoreleasedReturnValue()) == 0))
+      if (!language || ([NLEmbedding transformerContextualTokenEmbeddingForLanguage:language], (v25 = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        NSLog(&cfstr_FailedToLoadTr.isa, v22);
+        NSLog(&cfstr_FailedToLoadTr.isa, language);
         goto LABEL_22;
       }
 
@@ -82,10 +82,10 @@ LABEL_23:
     {
       if ([v23 isEqualToString:@"Custom"])
       {
-        if (v16)
+        if (embeddingDataCopy)
         {
           v88 = 0;
-          v26 = [NLEmbedding embeddingWithData:v16 error:&v88];
+          v26 = [NLEmbedding embeddingWithData:embeddingDataCopy error:&v88];
           v30 = v88;
           if (v26)
           {
@@ -126,17 +126,17 @@ LABEL_23:
 
     else
     {
-      if (!v22)
+      if (!language)
       {
         NSLog(&cfstr_FailedToLoadCo_2.isa);
         goto LABEL_23;
       }
 
-      v27 = [NLContextualEmbedding contextualEmbeddingWithLanguage:v22];
+      v27 = [NLContextualEmbedding contextualEmbeddingWithLanguage:language];
       v28 = cf;
       if (!v27)
       {
-        NSLog(&cfstr_FailedToLoadCo_1.isa, v22);
+        NSLog(&cfstr_FailedToLoadCo_1.isa, language);
         v26 = 0;
         v29 = 0;
 LABEL_54:
@@ -157,9 +157,9 @@ LABEL_54:
     goto LABEL_54;
   }
 
-  if (!v22 || ([NLEmbedding contextualWordEmbeddingForLanguage:v22 revision:v74], (v25 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!language || ([NLEmbedding contextualWordEmbeddingForLanguage:language revision:revision], (v25 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    NSLog(&cfstr_FailedToLoadDy_0.isa, v22, v74);
+    NSLog(&cfstr_FailedToLoadDy_0.isa, language, revision);
     goto LABEL_22;
   }
 
@@ -184,7 +184,7 @@ LABEL_26:
     {
       v34 = v33;
       v33->_montrealModel = cf;
-      v35 = [v14 copy];
+      v35 = [configurationCopy copy];
       configuration = v34->_configuration;
       v34->_configuration = v35;
 
@@ -194,7 +194,7 @@ LABEL_26:
       customEmbeddingData = v34->_customEmbeddingData;
       v34->_customEmbeddingData = v37;
 
-      v39 = [v15 copy];
+      v39 = [mapCopy copy];
       labelMap = v34->_labelMap;
       v34->_labelMap = v39;
 
@@ -202,7 +202,7 @@ LABEL_26:
       objc_storeStrong(&v34->_trainingLanguage, v72);
       objc_storeStrong(&v34->_trainingEmbeddingType, v71);
       objc_storeStrong(&v34->_embeddingModelIdentifier, v83);
-      objc_storeStrong(&v34->_modelData, a3);
+      objc_storeStrong(&v34->_modelData, data);
       v41 = v34;
       self = v41;
       v17 = v32;
@@ -215,13 +215,13 @@ LABEL_26:
     v28 = cf;
   }
 
-  if (a10)
+  if (error)
   {
     if (v89)
     {
       v42 = v89;
 LABEL_36:
-      *a10 = v42;
+      *error = v42;
       goto LABEL_37;
     }
 
@@ -240,7 +240,7 @@ LABEL_36:
       v45 = v19;
       v47 = v46 = v17;
       v28 = cf;
-      *a10 = [v75 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:1 userInfo:v47];
+      *error = [v75 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:1 userInfo:v47];
 
       v17 = v46;
       v19 = v45;
@@ -248,12 +248,12 @@ LABEL_36:
 
     else
     {
-      v69 = v15;
+      v69 = mapCopy;
       if ([v23 isEqualToString:@"Static"])
       {
-        v48 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load model file, could not find static embedding for language %@ revision %llu", v22, v74];
+        v48 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load model file, could not find static embedding for language %@ revision %llu", language, revision];
         v76 = MEMORY[0x1E696ABC0];
-        v49 = v14;
+        v49 = configurationCopy;
         v50 = v17;
         v100 = *MEMORY[0x1E696A578];
         v101 = v48;
@@ -264,9 +264,9 @@ LABEL_36:
 
       else if ([v23 isEqualToString:@"Dynamic"])
       {
-        v48 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load model file, could not find dynamic embedding for language %@ revision %llu", v22, v74];
+        v48 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load model file, could not find dynamic embedding for language %@ revision %llu", language, revision];
         v76 = MEMORY[0x1E696ABC0];
-        v49 = v14;
+        v49 = configurationCopy;
         v50 = v17;
         v98 = *MEMORY[0x1E696A578];
         v99 = v48;
@@ -283,12 +283,12 @@ LABEL_36:
           cfa = v19;
           if ([v23 isEqualToString:@"Contextual"])
           {
-            v58 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load model file, could not find contextual embedding for language %@", v22];
+            v58 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load model file, could not find contextual embedding for language %@", language];
             v59 = MEMORY[0x1E696ABC0];
             v94 = *MEMORY[0x1E696A578];
             v95 = v58;
             v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v95 forKeys:&v94 count:1];
-            *a10 = [v59 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:8 userInfo:v60];
+            *error = [v59 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:8 userInfo:v60];
           }
 
           else
@@ -316,7 +316,7 @@ LABEL_36:
             }
 
             v68 = [v65 dictionaryWithObjects:v66 forKeys:v67 count:1];
-            *a10 = [v63 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:1 userInfo:v68];
+            *error = [v63 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:1 userInfo:v68];
 
             v17 = v61;
           }
@@ -326,9 +326,9 @@ LABEL_36:
           goto LABEL_37;
         }
 
-        v48 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load model file, could not find transformer embedding for language %@", v22];
+        v48 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load model file, could not find transformer embedding for language %@", language];
         v76 = MEMORY[0x1E696ABC0];
-        v49 = v14;
+        v49 = configurationCopy;
         v50 = v17;
         v96 = *MEMORY[0x1E696A578];
         v97 = v48;
@@ -341,9 +341,9 @@ LABEL_36:
       v55 = v20;
       v57 = v56 = v19;
       v17 = v50;
-      v14 = v49;
-      v15 = v69;
-      *a10 = [v76 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:8 userInfo:v57];
+      configurationCopy = v49;
+      mapCopy = v69;
+      *error = [v76 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:8 userInfo:v57];
 
       v19 = v56;
       v20 = v55;
@@ -364,40 +364,40 @@ LABEL_40:
   return v41;
 }
 
-- (NLModelImplX)initWithModelTrainer:(id)a3 error:(id *)a4
+- (NLModelImplX)initWithModelTrainer:(id)trainer error:(id *)error
 {
   v163 = *MEMORY[0x1E69E9840];
   v142 = 0;
-  v128 = a3;
-  v129 = [v128 configuration];
-  v5 = [v129 language];
-  v119 = [v129 embeddingURL];
-  v117 = [v129 embeddingModel];
-  v115 = [v129 embeddingData];
-  v130 = [v128 dataSet];
+  trainerCopy = trainer;
+  configuration = [trainerCopy configuration];
+  language = [configuration language];
+  embeddingURL = [configuration embeddingURL];
+  embeddingModel = [configuration embeddingModel];
+  embeddingData = [configuration embeddingData];
+  dataSet = [trainerCopy dataSet];
   *buf = xmmword_19D4E9090;
   *&buf[16] = vdupq_n_s64(0x400uLL);
   v162 = xmmword_19D4E9510;
-  v125 = [NLDataSet dataSetWithDataSet:v130 constraintParameters:buf modelTrainer:v128];
-  v122 = [v130 labelMap];
-  v120 = [v130 inverseLabelMap];
-  v6 = [v129 revision];
-  v114 = [v130 numberOfTrainingInstances];
-  v7 = [v130 numberOfLabels];
-  v8 = [v130 numberOfValidationInstances];
-  v9 = [v128 options];
-  v112 = unsignedIntegerForKey(v9, @"MaximumIterations", 75);
+  v125 = [NLDataSet dataSetWithDataSet:dataSet constraintParameters:buf modelTrainer:trainerCopy];
+  labelMap = [dataSet labelMap];
+  inverseLabelMap = [dataSet inverseLabelMap];
+  revision = [configuration revision];
+  numberOfTrainingInstances = [dataSet numberOfTrainingInstances];
+  numberOfLabels = [dataSet numberOfLabels];
+  numberOfValidationInstances = [dataSet numberOfValidationInstances];
+  options = [trainerCopy options];
+  v112 = unsignedIntegerForKey(options, @"MaximumIterations", 75);
 
-  v10 = [v129 options];
-  v127 = stringForKeyWithDefault(v10, @"EmbeddingType", 0);
+  options2 = [configuration options];
+  v127 = stringForKeyWithDefault(options2, @"EmbeddingType", 0);
 
-  v11 = v5;
-  if (!v5)
+  v11 = language;
+  if (!language)
   {
-    v12 = [v130 dataProviderOfType:?];
-    v13 = [v12 recognizedLanguage];
+    v12 = [dataSet dataProviderOfType:?];
+    recognizedLanguage = [v12 recognizedLanguage];
 
-    v11 = v13;
+    v11 = recognizedLanguage;
   }
 
   v126 = v11;
@@ -408,7 +408,7 @@ LABEL_40:
       v16 = v126;
       if (v126)
       {
-        v14 = [NLEmbedding wordEmbeddingForLanguage:v126 revision:v6];
+        v14 = [NLEmbedding wordEmbeddingForLanguage:v126 revision:revision];
         v16 = v126;
         if (v14)
         {
@@ -416,15 +416,15 @@ LABEL_40:
         }
       }
 
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load static embedding for language %@ revision %llu", v16, v6];
-      v18 = v17;
-      if (a4)
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load static embedding for language %@ revision %llu", v16, revision];
+      v119 = v17;
+      if (error)
       {
         v19 = MEMORY[0x1E696ABC0];
         v157 = *MEMORY[0x1E696A578];
         v158 = v17;
         v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v158 forKeys:&v157 count:1];
-        *a4 = [v19 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:8 userInfo:v20];
+        *error = [v19 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:8 userInfo:v20];
       }
 
       requestWordEmbeddingAssetsForLanguage(v126);
@@ -436,7 +436,7 @@ LABEL_40:
       v16 = v126;
       if (v126)
       {
-        v14 = [NLEmbedding contextualWordEmbeddingForLanguage:v126 revision:v6];
+        v14 = [NLEmbedding contextualWordEmbeddingForLanguage:v126 revision:revision];
         v16 = v126;
         if (v14)
         {
@@ -444,15 +444,15 @@ LABEL_40:
         }
       }
 
-      v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load dynamic embedding for language %@ revision %llu", v16, v6];
-      v18 = v21;
-      if (a4)
+      v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load dynamic embedding for language %@ revision %llu", v16, revision];
+      v119 = v21;
+      if (error)
       {
         v22 = MEMORY[0x1E696ABC0];
         v155 = *MEMORY[0x1E696A578];
         v156 = v21;
         v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v156 forKeys:&v155 count:1];
-        *a4 = [v22 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:8 userInfo:v23];
+        *error = [v22 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:8 userInfo:v23];
       }
 
       requestWordEmbeddingAssetsForLanguage(v126);
@@ -473,14 +473,14 @@ LABEL_40:
       }
 
       v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load transformer embedding for language %@", v16];
-      v18 = v26;
-      if (a4)
+      v119 = v26;
+      if (error)
       {
         v27 = MEMORY[0x1E696ABC0];
         v153 = *MEMORY[0x1E696A578];
         v154 = v26;
         v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v154 forKeys:&v153 count:1];
-        *a4 = [v27 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:8 userInfo:v28];
+        *error = [v27 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:8 userInfo:v28];
       }
 
       requestWordEmbeddingAssetsForLanguage(v126);
@@ -500,12 +500,12 @@ LABEL_40:
           if ([v35 hasAvailableAssets])
           {
             v118 = 0;
-            v121 = 0;
+            embeddingData2 = 0;
             v116 = 0;
-            v18 = 0;
+            v119 = 0;
 LABEL_55:
             v124 = 0;
-            if (![v14 dimension] || v114 < 2 || (v124 = 0, v7 < 2) || (v109 = v14, v8 <= 1))
+            if (![v14 dimension] || numberOfTrainingInstances < 2 || (v124 = 0, numberOfLabels < 2) || (v109 = v14, numberOfValidationInstances <= 1))
             {
               v24 = v14;
               v25 = 0;
@@ -516,44 +516,44 @@ LABEL_55:
           }
 
           v95 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Assets not available for contextual embedding %@", v14];
-          v18 = v95;
-          if (a4)
+          v119 = v95;
+          if (error)
           {
             v96 = MEMORY[0x1E696ABC0];
             v151 = *MEMORY[0x1E696A578];
             v152 = v95;
             v97 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v152 forKeys:&v151 count:1];
-            *a4 = [v96 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:8 userInfo:v97];
+            *error = [v96 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:8 userInfo:v97];
           }
 
           requestContextualEmbeddingAssetsForEmbedding_0(v14);
           v32 = 0;
-          v121 = 0;
+          embeddingData2 = 0;
           goto LABEL_50;
         }
       }
 
       v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load contextual embedding for language %@", v34];
-      v18 = v37;
-      if (a4)
+      v119 = v37;
+      if (error)
       {
         v38 = MEMORY[0x1E696ABC0];
         v149 = *MEMORY[0x1E696A578];
         v150 = v37;
         v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v150 forKeys:&v149 count:1];
-        *a4 = [v38 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:8 userInfo:v39];
+        *error = [v38 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:8 userInfo:v39];
       }
 
 LABEL_49:
       v32 = 0;
-      v121 = 0;
+      embeddingData2 = 0;
       v14 = 0;
 LABEL_50:
       v33 = 0;
 LABEL_51:
       v118 = v33;
       v116 = v32;
-      if (!v18)
+      if (!v119)
       {
 LABEL_54:
         if (v14)
@@ -568,11 +568,11 @@ LABEL_73:
         goto LABEL_117;
       }
 
-      v40 = v18;
+      v40 = v119;
 LABEL_53:
-      v18 = v40;
+      v119 = v40;
       NSLog(&stru_1F10C8E20.isa, v40);
-      [v128 logMessage:v18];
+      [trainerCopy logMessage:v119];
       goto LABEL_54;
     }
 
@@ -581,24 +581,24 @@ LABEL_53:
       v24 = 0;
       v124 = 0;
       v118 = 0;
-      v121 = 0;
+      embeddingData2 = 0;
       v116 = 0;
-      v18 = 0;
+      v119 = 0;
       goto LABEL_73;
     }
 
-    if (v119)
+    if (embeddingURL)
     {
-      v118 = [NLEmbedding _embeddingWithContentsOfURL:v119 error:0];
+      v118 = [NLEmbedding _embeddingWithContentsOfURL:embeddingURL error:0];
       if (v118)
       {
-        v121 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v119];
+        embeddingData2 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:embeddingURL];
         v36 = 0;
       }
 
       else
       {
-        v99 = [NLModel modelWithContentsOfURL:v119 error:a4];
+        v99 = [NLModel modelWithContentsOfURL:embeddingURL error:error];
         v36 = v99;
         if (!v99)
         {
@@ -606,13 +606,13 @@ LABEL_53:
           goto LABEL_141;
         }
 
-        v121 = [v99 embeddingData];
+        embeddingData2 = [v99 embeddingData];
       }
 
       v116 = v36;
-      if (v121)
+      if (embeddingData2)
       {
-        v14 = [NLEmbedding _embeddingWithData:v121 error:a4];
+        v14 = [NLEmbedding _embeddingWithData:embeddingData2 error:error];
         if (v14)
         {
           goto LABEL_23;
@@ -622,31 +622,31 @@ LABEL_53:
       }
 
 LABEL_141:
-      v121 = 0;
+      embeddingData2 = 0;
 LABEL_142:
-      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load custom embedding from %@", v119];
+      v119 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load custom embedding from %@", embeddingURL];
       v14 = 0;
       v33 = v118;
       v32 = v116;
       goto LABEL_51;
     }
 
-    if (v117)
+    if (embeddingModel)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v98 = v117;
+        v98 = embeddingModel;
       }
 
       else
       {
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) == 0 || ([NLModel modelWithMLModel:v117 error:a4], (v98 = objc_claimAutoreleasedReturnValue()) == 0))
+        if ((objc_opt_isKindOfClass() & 1) == 0 || ([NLModel modelWithMLModel:embeddingModel error:error], (v98 = objc_claimAutoreleasedReturnValue()) == 0))
         {
           v118 = 0;
           v14 = 0;
-          v121 = 0;
+          embeddingData2 = 0;
           v116 = 0;
 LABEL_145:
           v40 = @"Failed to load custom embedding from model";
@@ -655,10 +655,10 @@ LABEL_145:
       }
 
       v116 = v98;
-      v121 = [v98 embeddingData];
-      if (v121)
+      embeddingData2 = [v98 embeddingData];
+      if (embeddingData2)
       {
-        v14 = [NLEmbedding _embeddingWithData:v121 error:a4];
+        v14 = [NLEmbedding _embeddingWithData:embeddingData2 error:error];
         v118 = 0;
         if (v14)
         {
@@ -672,24 +672,24 @@ LABEL_145:
 
       v118 = 0;
       v14 = 0;
-      v121 = 0;
+      embeddingData2 = 0;
       goto LABEL_145;
     }
 
-    if (!v115)
+    if (!embeddingData)
     {
       v40 = @"Failed to load custom embedding, no embedding specified";
-      if (a4)
+      if (error)
       {
         v101 = MEMORY[0x1E696ABC0];
         v147 = *MEMORY[0x1E696A578];
         v148 = @"Failed to load custom embedding, no embedding specified";
         v102 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v148 forKeys:&v147 count:1];
-        *a4 = [v101 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:4 userInfo:v102];
+        *error = [v101 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:4 userInfo:v102];
 
         v118 = 0;
         v14 = 0;
-        v121 = 0;
+        embeddingData2 = 0;
         v116 = 0;
         v40 = @"Failed to load custom embedding, no embedding specified";
       }
@@ -698,31 +698,31 @@ LABEL_145:
       {
         v118 = 0;
         v14 = 0;
-        v121 = 0;
+        embeddingData2 = 0;
         v116 = 0;
       }
 
       goto LABEL_53;
     }
 
-    v118 = [NLEmbedding _embeddingWithData:v115 error:0];
+    v118 = [NLEmbedding _embeddingWithData:embeddingData error:0];
     if (v118)
     {
-      v100 = v115;
+      v100 = embeddingData;
       v116 = 0;
       goto LABEL_133;
     }
 
-    v103 = [NLModel modelWithData:v115 error:a4];
+    v103 = [NLModel modelWithData:embeddingData error:error];
     v116 = v103;
     if (v103)
     {
-      v104 = [v103 embeddingData];
-      if (v104)
+      embeddingData3 = [v103 embeddingData];
+      if (embeddingData3)
       {
-        v100 = v104;
+        v100 = embeddingData3;
 LABEL_133:
-        v121 = v100;
+        embeddingData2 = v100;
         v14 = [NLEmbedding _embeddingWithData:"_embeddingWithData:error:" error:?];
         if (v14)
         {
@@ -733,13 +733,13 @@ LABEL_133:
       }
 
       v14 = 0;
-      v121 = 0;
+      embeddingData2 = 0;
     }
 
     else
     {
       v14 = 0;
-      v121 = 0;
+      embeddingData2 = 0;
       v116 = 0;
     }
 
@@ -748,30 +748,30 @@ LABEL_154:
     goto LABEL_53;
   }
 
-  v14 = [NLEmbedding contextualWordEmbeddingForLanguage:v11 revision:v6];
+  v14 = [NLEmbedding contextualWordEmbeddingForLanguage:v11 revision:revision];
   if (!v14)
   {
-    v14 = [NLEmbedding wordEmbeddingForLanguage:v126 revision:v6];
+    v14 = [NLEmbedding wordEmbeddingForLanguage:v126 revision:revision];
     if (v14)
     {
       v15 = NLModelEmbeddingTypeStatic;
       goto LABEL_21;
     }
 
-    v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load embedding for language %@ revision %llu", v126, v6];
-    v18 = v29;
-    if (a4)
+    v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to load embedding for language %@ revision %llu", v126, revision];
+    v119 = v29;
+    if (error)
     {
       v30 = MEMORY[0x1E696ABC0];
       v159 = *MEMORY[0x1E696A578];
       v160 = v29;
       v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v160 forKeys:&v159 count:1];
-      *a4 = [v30 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:8 userInfo:v31];
+      *error = [v30 errorWithDomain:@"NLNaturalLanguageErrorDomain" code:8 userInfo:v31];
     }
 
     requestWordEmbeddingAssetsForLanguage(v126);
     v32 = 0;
-    v121 = 0;
+    embeddingData2 = 0;
     v14 = 0;
     v33 = 0;
     v127 = 0;
@@ -783,20 +783,20 @@ LABEL_21:
   v127 = *v15;
 LABEL_22:
   v116 = 0;
-  v121 = 0;
+  embeddingData2 = 0;
   v118 = 0;
 LABEL_23:
   v24 = 0;
-  if (![v14 dimension] || v114 <= 1)
+  if (![v14 dimension] || numberOfTrainingInstances <= 1)
   {
     v124 = v14;
-    v18 = 0;
+    v119 = 0;
     v25 = 0;
     goto LABEL_117;
   }
 
-  v18 = 0;
-  if (v7 < 2 || (v109 = 0, v124 = v14, v8 < 2))
+  v119 = 0;
+  if (numberOfLabels < 2 || (v109 = 0, v124 = v14, numberOfValidationInstances < 2))
   {
     v24 = 0;
     v124 = v14;
@@ -805,9 +805,9 @@ LABEL_23:
   }
 
 LABEL_59:
-  v41 = [v14 dimension];
-  v42 = [v125 numberOfTrainingInstances];
-  if (v42 < 0x21)
+  dimension = [v14 dimension];
+  numberOfTrainingInstances2 = [v125 numberOfTrainingInstances];
+  if (numberOfTrainingInstances2 < 0x21)
   {
     v46 = 1;
   }
@@ -815,14 +815,14 @@ LABEL_59:
   else
   {
     v43 = 16;
-    if (v42 < 0x100)
+    if (numberOfTrainingInstances2 < 0x100)
     {
-      v43 = v42 >> 4;
+      v43 = numberOfTrainingInstances2 >> 4;
     }
 
-    if (3 * v43 >= v42)
+    if (3 * v43 >= numberOfTrainingInstances2)
     {
-      v44 = v42;
+      v44 = numberOfTrainingInstances2;
     }
 
     else
@@ -837,15 +837,15 @@ LABEL_59:
 
     else
     {
-      v45 = v42;
+      v45 = numberOfTrainingInstances2;
       v46 = v43;
       do
       {
         v47 = v43 + 1;
-        if (v42 % (v43 + 1) < v45)
+        if (numberOfTrainingInstances2 % (v43 + 1) < v45)
         {
           v46 = v43 + 1;
-          v45 = v42 % (v43 + 1);
+          v45 = numberOfTrainingInstances2 % (v43 + 1);
         }
 
         ++v43;
@@ -855,8 +855,8 @@ LABEL_59:
     }
   }
 
-  v48 = [v125 numberOfValidationInstances];
-  if (v48 < 0x21)
+  numberOfValidationInstances2 = [v125 numberOfValidationInstances];
+  if (numberOfValidationInstances2 < 0x21)
   {
     v52 = 1;
   }
@@ -864,14 +864,14 @@ LABEL_59:
   else
   {
     v49 = 16;
-    if (v48 < 0x100)
+    if (numberOfValidationInstances2 < 0x100)
     {
-      v49 = v48 >> 4;
+      v49 = numberOfValidationInstances2 >> 4;
     }
 
-    if (3 * v49 >= v48)
+    if (3 * v49 >= numberOfValidationInstances2)
     {
-      v50 = v48;
+      v50 = numberOfValidationInstances2;
     }
 
     else
@@ -886,15 +886,15 @@ LABEL_59:
 
     else
     {
-      v51 = v48;
+      v51 = numberOfValidationInstances2;
       v52 = v49;
       do
       {
         v53 = v49 + 1;
-        if (v48 % (v49 + 1) < v51)
+        if (numberOfValidationInstances2 % (v49 + 1) < v51)
         {
           v52 = v49 + 1;
-          v51 = v48 % (v49 + 1);
+          v51 = numberOfValidationInstances2 % (v49 + 1);
         }
 
         ++v49;
@@ -910,10 +910,10 @@ LABEL_59:
   v146[0] = &unk_1F10D1370;
   v146[1] = &unk_1F10D1388;
   v145[2] = *MEMORY[0x1E69B2718];
-  v55 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v41];
+  v55 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:dimension];
   v146[2] = v55;
   v145[3] = *MEMORY[0x1E69B2740];
-  v56 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7 - 1];
+  v56 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:numberOfLabels - 1];
   v146[3] = v56;
   v145[4] = *MEMORY[0x1E69B2708];
   v57 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v46];
@@ -937,8 +937,8 @@ LABEL_59:
     v63 = [v125 dataProviderOfType:0];
     v107 = [(NLDataEnumerator *)v62 initWithDataProvider:v63];
 
-    v106 = [MEMORY[0x1E695DF90] dictionary];
-    v105 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     Current = CFAbsoluteTimeGetCurrent();
     if ([v125 numberOfValidationInstances])
     {
@@ -952,21 +952,21 @@ LABEL_59:
       v108 = 0;
     }
 
-    reportInstanceCompletionToTrainer(v128, v114 - 1, v114, 2);
+    reportInstanceCompletionToTrainer(trainerCopy, numberOfTrainingInstances - 1, numberOfTrainingInstances, 2);
     v67 = MEMORY[0x1E696AEC0];
-    v68 = [(__CFString *)v127 lowercaseString];
-    v69 = [v67 stringWithFormat:@"Starting %@ transfer training with %llu training samples and %llu validation samples", v68, v114, v8];
-    [v128 logMessage:v69];
+    lowercaseString = [(__CFString *)v127 lowercaseString];
+    v69 = [v67 stringWithFormat:@"Starting %@ transfer training with %llu training samples and %llu validation samples", lowercaseString, numberOfTrainingInstances, numberOfValidationInstances];
+    [trainerCopy logMessage:v69];
 
     v70 = objc_autoreleasePoolPush();
     v71 = NLGetLogCategory(0);
-    v72 = [v71 internal];
+    internal = [v71 internal];
 
-    if (os_log_type_enabled(v72, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(internal, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
       *&buf[4] = 0;
-      _os_log_impl(&dword_19D48F000, v72, OS_LOG_TYPE_INFO, "event: %lu", buf, 0xCu);
+      _os_log_impl(&dword_19D48F000, internal, OS_LOG_TYPE_INFO, "event: %lu", buf, 0xCu);
     }
 
     objc_autoreleasePoolPop(v70);
@@ -977,20 +977,20 @@ LABEL_59:
       {
         v74 = objc_autoreleasePoolPush();
         v75 = NLGetLogCategory(0);
-        v76 = [v75 internal];
+        internal2 = [v75 internal];
 
-        if (os_log_type_enabled(v76, OS_LOG_TYPE_INFO))
+        if (os_log_type_enabled(internal2, OS_LOG_TYPE_INFO))
         {
           v77 = [&unk_1F10D1478 objectAtIndexedSubscript:v73];
           v78 = v77;
-          v79 = [v77 UTF8String];
+          uTF8String = [v77 UTF8String];
           *buf = 134218498;
           *&buf[4] = 1;
           *&buf[12] = 2048;
           *&buf[14] = v73;
           *&buf[22] = 2082;
-          *&buf[24] = v79;
-          _os_log_impl(&dword_19D48F000, v76, OS_LOG_TYPE_INFO, "event: %lu, column: %lu, value: %{public}s", buf, 0x20u);
+          *&buf[24] = uTF8String;
+          _os_log_impl(&dword_19D48F000, internal2, OS_LOG_TYPE_INFO, "event: %lu, column: %lu, value: %{public}s", buf, 0x20u);
         }
 
         objc_autoreleasePoolPop(v74);
@@ -1014,11 +1014,11 @@ LABEL_59:
     v141 = 0;
     v135 = v124;
     v136 = v109;
-    v137 = v122;
+    v137 = labelMap;
     v138 = v107;
-    v139 = v106;
-    v80 = v105;
-    v132 = v128;
+    v139 = dictionary;
+    v80 = dictionary2;
+    v132 = trainerCopy;
     v133 = v138;
     v81 = v135;
     v24 = v136;
@@ -1029,18 +1029,18 @@ LABEL_59:
     v83 = MLPModelTrainerTrainModel();
     v84 = objc_autoreleasePoolPush();
     v85 = NLGetLogCategory(0);
-    v86 = [v85 internal];
+    internal3 = [v85 internal];
 
-    if (os_log_type_enabled(v86, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(internal3, OS_LOG_TYPE_INFO))
     {
       *v143 = 134217984;
       v144 = 3;
-      _os_log_impl(&dword_19D48F000, v86, OS_LOG_TYPE_INFO, "event: %lu", v143, 0xCu);
+      _os_log_impl(&dword_19D48F000, internal3, OS_LOG_TYPE_INFO, "event: %lu", v143, 0xCu);
     }
 
     objc_autoreleasePoolPop(v84);
-    v87 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Finished transfer training in %.2f seconds", CFAbsoluteTimeGetCurrent() - Current];
-    [v82 logMessage:v87];
+    current = [MEMORY[0x1E696AEC0] stringWithFormat:@"Finished transfer training in %.2f seconds", CFAbsoluteTimeGetCurrent() - Current];
+    [v82 logMessage:current];
 
     if (v83)
     {
@@ -1066,7 +1066,7 @@ LABEL_59:
     }
 
     v89 = MEMORY[0x1E695DF90];
-    v90 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v114];
+    v90 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:numberOfTrainingInstances];
     v111 = [v89 dictionaryWithObjectsAndKeys:{v90, 0x1F10C67C0, v127, 0x1F10C6800, 0}];
 
     if (v126)
@@ -1076,11 +1076,11 @@ LABEL_59:
 
     if (v24)
     {
-      v91 = [v24 identifier];
-      [v111 setObject:v91 forKey:0x1F10C6820];
+      identifier = [v24 identifier];
+      [v111 setObject:identifier forKey:0x1F10C6820];
     }
 
-    v92 = [(NLModelImplX *)self initWithModelData:v88 configuration:v129 labelMap:v120 vocabularyMap:0 documentFrequencyMap:0 customEmbeddingData:v121 trainingInfo:v111 error:0];
+    v92 = [(NLModelImplX *)self initWithModelData:v88 configuration:configuration labelMap:inverseLabelMap vocabularyMap:0 documentFrequencyMap:0 customEmbeddingData:embeddingData2 trainingInfo:v111 error:0];
     CFRelease(v88);
     v25 = v92;
     self = v25;
@@ -1089,10 +1089,10 @@ LABEL_59:
   else
   {
     v25 = 0;
-    if (a4 && v142)
+    if (error && v142)
     {
       v25 = 0;
-      *a4 = v142;
+      *error = v142;
     }
   }
 
@@ -1250,16 +1250,16 @@ uint64_t __43__NLModelImplX_initWithModelTrainer_error___block_invoke_92(uint64_
 
 - (unint64_t)systemVersion
 {
-  v3 = [(NLModelImplX *)self configuration];
-  v4 = [v3 options];
+  configuration = [(NLModelImplX *)self configuration];
+  options = [configuration options];
 
-  v5 = stringForKeyWithDefault(v4, @"EmbeddingType", 0);
+  v5 = stringForKeyWithDefault(options, @"EmbeddingType", 0);
   if ([v5 isEqualToString:@"Contextual"])
   {
-    v6 = [(NLModelImplX *)self configuration];
-    v7 = [v6 language];
+    configuration2 = [(NLModelImplX *)self configuration];
+    language = [configuration2 language];
 
-    v8 = [NLContextualEmbedding systemVersionForLanguage:v7];
+    v8 = [NLContextualEmbedding systemVersionForLanguage:language];
   }
 
   else
@@ -1291,12 +1291,12 @@ uint64_t __43__NLModelImplX_initWithModelTrainer_error___block_invoke_92(uint64_
   return v5;
 }
 
-- (float)outputForString:(id)a3
+- (float)outputForString:(id)string
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   contextualEmbedding = self->_contextualEmbedding;
-  v6 = inputSequenceFromSentence(v4, 0);
+  v6 = inputSequenceFromSentence(stringCopy, 0);
   v7 = v6;
   if (contextualEmbedding)
   {
@@ -1314,7 +1314,7 @@ uint64_t __43__NLModelImplX_initWithModelTrainer_error___block_invoke_92(uint64_
   {
     v23[0] = v8;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
-    v22 = v4;
+    v22 = stringCopy;
     v11 = MEMORY[0x1E695DEC8];
     v12 = &v22;
   }
@@ -1331,7 +1331,7 @@ LABEL_13:
 
     v21 = v8;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v21 count:1];
-    v20 = v4;
+    v20 = stringCopy;
     v11 = MEMORY[0x1E695DEC8];
     v12 = &v20;
   }
@@ -1366,11 +1366,11 @@ LABEL_14:
   return Output;
 }
 
-- (id)predictedLabelForString:(id)a3
+- (id)predictedLabelForString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = [(NSDictionary *)self->_labelMap count];
-  v6 = [(NLModelImplX *)self outputForString:v4];
+  v6 = [(NLModelImplX *)self outputForString:stringCopy];
   if (v6)
   {
     if (v5)
@@ -1411,14 +1411,14 @@ LABEL_14:
   return v11;
 }
 
-- (id)predictedLabelsForTokens:(id)a3
+- (id)predictedLabelsForTokens:(id)tokens
 {
-  v4 = a3;
-  v5 = [v4 componentsJoinedByString:@" "];
+  tokensCopy = tokens;
+  v5 = [tokensCopy componentsJoinedByString:@" "];
   v6 = [(NLModelImplX *)self predictedLabelForString:v5];
 
-  v7 = [MEMORY[0x1E695DF70] array];
-  if ([v4 count])
+  array = [MEMORY[0x1E695DF70] array];
+  if ([tokensCopy count])
   {
     v8 = 0;
     if (v6)
@@ -1433,22 +1433,22 @@ LABEL_14:
 
     do
     {
-      [v7 addObject:v9];
+      [array addObject:v9];
       ++v8;
     }
 
-    while (v8 < [v4 count]);
+    while (v8 < [tokensCopy count]);
   }
 
-  return v7;
+  return array;
 }
 
-- (id)predictedLabelHypothesesForString:(id)a3 maximumCount:(unint64_t)a4
+- (id)predictedLabelHypothesesForString:(id)string maximumCount:(unint64_t)count
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  stringCopy = string;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v7 = [(NSDictionary *)self->_labelMap count];
-  v8 = [(NLModelImplX *)self outputForString:v5];
+  v8 = [(NLModelImplX *)self outputForString:stringCopy];
   if (v8 && v7)
   {
     v9 = v8;
@@ -1462,7 +1462,7 @@ LABEL_14:
       if (v13)
       {
         v14 = [MEMORY[0x1E696AD98] numberWithDouble:*v9];
-        [v6 setObject:v14 forKey:v13];
+        [dictionary setObject:v14 forKey:v13];
       }
 
       ++v9;
@@ -1473,19 +1473,19 @@ LABEL_14:
     while (v7);
   }
 
-  v15 = topHypotheses(v6, a4);
+  v15 = topHypotheses(dictionary, count);
 
   return v15;
 }
 
-- (id)predictedLabelHypothesesForTokens:(id)a3 maximumCount:(unint64_t)a4
+- (id)predictedLabelHypothesesForTokens:(id)tokens maximumCount:(unint64_t)count
 {
-  v6 = a3;
-  v7 = [v6 componentsJoinedByString:@" "];
-  v8 = [(NLModelImplX *)self predictedLabelHypothesesForString:v7 maximumCount:a4];
+  tokensCopy = tokens;
+  v7 = [tokensCopy componentsJoinedByString:@" "];
+  v8 = [(NLModelImplX *)self predictedLabelHypothesesForString:v7 maximumCount:count];
 
-  v9 = [MEMORY[0x1E695DF70] array];
-  if ([v6 count])
+  array = [MEMORY[0x1E695DF70] array];
+  if ([tokensCopy count])
   {
     v10 = 0;
     if (v8)
@@ -1500,14 +1500,14 @@ LABEL_14:
 
     do
     {
-      [v9 addObject:v11];
+      [array addObject:v11];
       ++v10;
     }
 
-    while (v10 < [v6 count]);
+    while (v10 < [tokensCopy count]);
   }
 
-  return v9;
+  return array;
 }
 
 @end

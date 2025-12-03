@@ -1,47 +1,47 @@
 @interface AXSSCloudKitHelper
-- (AXSSCloudKitHelper)initWithContainerIdentifier:(id)a3 zoneName:(id)a4;
-- (BOOL)_checkAccountStatus:(id *)a3;
-- (BOOL)_createSchemaIfNecessary:(id *)a3;
-- (BOOL)_createZoneIfNecessary:(id *)a3;
-- (BOOL)_setupPushConnection:(id *)a3;
-- (BOOL)_setupZoneSubscriptionIfNecessary:(id *)a3;
-- (BOOL)shouldExportManagedObject:(id)a3;
+- (AXSSCloudKitHelper)initWithContainerIdentifier:(id)identifier zoneName:(id)name;
+- (BOOL)_checkAccountStatus:(id *)status;
+- (BOOL)_createSchemaIfNecessary:(id *)necessary;
+- (BOOL)_createZoneIfNecessary:(id *)necessary;
+- (BOOL)_setupPushConnection:(id *)connection;
+- (BOOL)_setupZoneSubscriptionIfNecessary:(id *)necessary;
+- (BOOL)shouldExportManagedObject:(id)object;
 - (NSPersistentStore)observedStore;
 - (id)apsEnvironment;
-- (id)createCKRecordFromObject:(id)a3;
+- (id)createCKRecordFromObject:(id)object;
 - (id)recordType;
 - (id)serverChangeTokenMetadataKey;
-- (id)testRecordForSchemaCreation:(id)a3;
+- (id)testRecordForSchemaCreation:(id)creation;
 - (id)zoneCreatedKey;
 - (id)zoneSubscriptionKey;
 - (void)_initializeCloudkitForObservedStore;
 - (void)_processAccumulatedQueueData;
-- (void)_setObservedStore:(id)a3 observedCoordinator:(id)a4;
+- (void)_setObservedStore:(id)store observedCoordinator:(id)coordinator;
 - (void)beginWatchingForChanges;
-- (void)clearRecordsForPurging:(id)a3;
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
+- (void)clearRecordsForPurging:(id)purging;
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
 - (void)dealloc;
 - (void)fetchChangesAndUpdateObservedStore;
-- (void)logMessage:(id)a3;
-- (void)managedObjectContextDidSave:(id)a3;
-- (void)observeChangesForManagedContext:(id)a3;
-- (void)openTransactionWithLabel:(id)a3 andExecuteWorkBlock:(id)a4;
-- (void)processAccumulatedChangesForServerChangeToken:(id)a3 withAccumulatedUpdates:(id)a4 andDeletes:(id)a5 inTransaction:(id)a6;
+- (void)logMessage:(id)message;
+- (void)managedObjectContextDidSave:(id)save;
+- (void)observeChangesForManagedContext:(id)context;
+- (void)openTransactionWithLabel:(id)label andExecuteWorkBlock:(id)block;
+- (void)processAccumulatedChangesForServerChangeToken:(id)token withAccumulatedUpdates:(id)updates andDeletes:(id)deletes inTransaction:(id)transaction;
 - (void)processLocalChangesAndPush;
-- (void)processRecordDeletionsFromServer:(id)a3;
-- (void)processServerUpdateChanges:(id)a3 moc:(id)a4 recordNameToManagedObject:(id)a5;
-- (void)retrieveLocalChangesForCloud:(id)a3;
-- (void)setIsProtectedDataAvailable:(BOOL)a3;
+- (void)processRecordDeletionsFromServer:(id)server;
+- (void)processServerUpdateChanges:(id)changes moc:(id)moc recordNameToManagedObject:(id)object;
+- (void)retrieveLocalChangesForCloud:(id)cloud;
+- (void)setIsProtectedDataAvailable:(BOOL)available;
 @end
 
 @implementation AXSSCloudKitHelper
 
-- (AXSSCloudKitHelper)initWithContainerIdentifier:(id)a3 zoneName:(id)a4
+- (AXSSCloudKitHelper)initWithContainerIdentifier:(id)identifier zoneName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  nameCopy = name;
   v23.receiver = self;
   v23.super_class = AXSSCloudKitHelper;
   v9 = [(AXSSCloudKitHelper *)&v23 init];
@@ -52,28 +52,28 @@
       [AXSSCloudKitHelper initWithContainerIdentifier:zoneName:];
     }
 
-    objc_storeStrong(&v9->_containerIdentifier, a3);
+    objc_storeStrong(&v9->_containerIdentifier, identifier);
     v10 = dispatch_semaphore_create(0);
     cloudKitQueueSemaphore = v9->_cloudKitQueueSemaphore;
     v9->_cloudKitQueueSemaphore = v10;
 
     objc_storeStrong(&v9->_cloudkitQueue, __sharedQueue);
-    v12 = [objc_alloc(MEMORY[0x1E695BA80]) initWithZoneName:v8];
+    v12 = [objc_alloc(MEMORY[0x1E695BA80]) initWithZoneName:nameCopy];
     recordZone = v9->_recordZone;
     v9->_recordZone = v12;
 
     v14 = objc_alloc(MEMORY[0x1E695BAA0]);
-    v15 = [(CKRecordZone *)v9->_recordZone zoneID];
-    v16 = [v14 initWithZoneID:v15 subscriptionID:@"com.apple.accessibility.zone.subscription"];
+    zoneID = [(CKRecordZone *)v9->_recordZone zoneID];
+    v16 = [v14 initWithZoneID:zoneID subscriptionID:@"com.apple.accessibility.zone.subscription"];
     zoneSubscription = v9->_zoneSubscription;
     v9->_zoneSubscription = v16;
 
-    v18 = [(AXSSCloudKitHelper *)v9 recordType];
-    [(CKRecordZoneSubscription *)v9->_zoneSubscription setRecordType:v18];
+    recordType = [(AXSSCloudKitHelper *)v9 recordType];
+    [(CKRecordZoneSubscription *)v9->_zoneSubscription setRecordType:recordType];
 
-    v19 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     accumulatedQueuedData = v9->_accumulatedQueuedData;
-    v9->_accumulatedQueuedData = v19;
+    v9->_accumulatedQueuedData = array;
 
     v21 = objc_alloc_init(MEMORY[0x1E695B9F0]);
     [v21 setShouldSendContentAvailable:1];
@@ -97,12 +97,12 @@ uint64_t __59__AXSSCloudKitHelper_initWithContainerIdentifier_zoneName___block_i
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C0E8A000, v3, OS_LOG_TYPE_INFO, "Helper removed: %@", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = AXSSCloudKitHelper;
@@ -110,21 +110,21 @@ uint64_t __59__AXSSCloudKitHelper_initWithContainerIdentifier_zoneName___block_i
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)observeChangesForManagedContext:(id)a3
+- (void)observeChangesForManagedContext:(id)context
 {
-  v5 = a3;
-  objc_storeStrong(&self->_managedObjectContext, a3);
-  v6 = [v5 persistentStoreCoordinator];
-  v7 = [v6 persistentStores];
-  v8 = [v7 firstObject];
+  contextCopy = context;
+  objc_storeStrong(&self->_managedObjectContext, context);
+  persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
+  persistentStores = [persistentStoreCoordinator persistentStores];
+  firstObject = [persistentStores firstObject];
 
-  v9 = [v5 persistentStoreCoordinator];
+  persistentStoreCoordinator2 = [contextCopy persistentStoreCoordinator];
   WeakRetained = objc_loadWeakRetained(&self->_observedStore);
 
   if (!WeakRetained)
   {
-    objc_storeWeak(&self->_observedStore, v8);
-    objc_storeStrong(&self->_observedCoordinator, v9);
+    objc_storeWeak(&self->_observedStore, firstObject);
+    objc_storeStrong(&self->_observedCoordinator, persistentStoreCoordinator2);
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __54__AXSSCloudKitHelper_observeChangesForManagedContext___block_invoke;
@@ -194,7 +194,7 @@ LABEL_7:
 LABEL_9:
 }
 
-- (BOOL)_checkAccountStatus:(id *)a3
+- (BOOL)_checkAccountStatus:(id *)status
 {
   v49[1] = *MEMORY[0x1E69E9840];
   v36 = 0;
@@ -242,9 +242,9 @@ LABEL_9:
     v17 = v33;
     if (*(v33 + 24) == 1)
     {
-      v18 = [(CKContainer *)self->_container privateCloudDatabase];
+      privateCloudDatabase = [(CKContainer *)self->_container privateCloudDatabase];
       database = self->_database;
-      self->_database = v18;
+      self->_database = privateCloudDatabase;
 
       v17 = v33;
       if (!self->_database)
@@ -280,12 +280,12 @@ LABEL_9:
       v29 = self->_container;
       self->_container = 0;
 
-      if (a3)
+      if (status)
       {
         v30 = v37[5];
         if (v30)
         {
-          *a3 = v30;
+          *status = v30;
         }
       }
     }
@@ -300,13 +300,13 @@ LABEL_9:
     v48 = *MEMORY[0x1E696A588];
     v49[0] = @"Current process can't use cloud kit";
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:&v48 count:1];
-    *a3 = [v8 errorWithDomain:@"AXCloudKitErrorDomain" code:0 userInfo:v9];
+    *status = [v8 errorWithDomain:@"AXCloudKitErrorDomain" code:0 userInfo:v9];
 
     v10 = v37[5];
     v11 = 0;
     if (v10)
     {
-      *a3 = v10;
+      *status = v10;
     }
   }
 
@@ -372,9 +372,9 @@ void __42__AXSSCloudKitHelper__checkAccountStatus___block_invoke(void *a1, uint6
 - (id)zoneCreatedKey
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(CKRecordZone *)self->_recordZone zoneID];
-  v4 = [v3 zoneName];
-  v5 = [v2 stringWithFormat:@"AXCloudKitZoneCreated-%@", v4];
+  zoneID = [(CKRecordZone *)self->_recordZone zoneID];
+  zoneName = [zoneID zoneName];
+  v5 = [v2 stringWithFormat:@"AXCloudKitZoneCreated-%@", zoneName];
 
   return v5;
 }
@@ -382,14 +382,14 @@ void __42__AXSSCloudKitHelper__checkAccountStatus___block_invoke(void *a1, uint6
 - (id)zoneSubscriptionKey
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(CKRecordZone *)self->_recordZone zoneID];
-  v4 = [v3 zoneName];
-  v5 = [v2 stringWithFormat:@"AXCloudKitSubscriptionCreated-%@", v4];
+  zoneID = [(CKRecordZone *)self->_recordZone zoneID];
+  zoneName = [zoneID zoneName];
+  v5 = [v2 stringWithFormat:@"AXCloudKitSubscriptionCreated-%@", zoneName];
 
   return v5;
 }
 
-- (BOOL)_createZoneIfNecessary:(id *)a3
+- (BOOL)_createZoneIfNecessary:(id *)necessary
 {
   v40 = *MEMORY[0x1E69E9840];
   v33 = 0;
@@ -412,9 +412,9 @@ void __42__AXSSCloudKitHelper__checkAccountStatus___block_invoke(void *a1, uint6
     _os_log_impl(&dword_1C0E8A000, v6, OS_LOG_TYPE_INFO, "Creating zone: %@", buf, 0xCu);
   }
 
-  v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v9 = [(AXSSCloudKitHelper *)self zoneCreatedKey];
-  v10 = [v8 BOOLForKey:v9];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  zoneCreatedKey = [(AXSSCloudKitHelper *)self zoneCreatedKey];
+  v10 = [standardUserDefaults BOOLForKey:zoneCreatedKey];
 
   if (v10)
   {
@@ -442,7 +442,7 @@ void __42__AXSSCloudKitHelper__checkAccountStatus___block_invoke(void *a1, uint6
     v25 = &v33;
     v26 = &v27;
     v23 = v5;
-    v24 = self;
+    selfCopy = self;
     [v11 setModifyRecordZonesCompletionBlock:v22];
     [(CKDatabase *)self->_database addOperation:v11];
     dispatch_semaphore_wait(self->_cloudKitQueueSemaphore, 0xFFFFFFFFFFFFFFFFLL);
@@ -457,17 +457,17 @@ void __42__AXSSCloudKitHelper__checkAccountStatus___block_invoke(void *a1, uint6
         _os_log_impl(&dword_1C0E8A000, v15, OS_LOG_TYPE_INFO, "Zone created: %@", buf, 0xCu);
       }
 
-      v17 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v18 = [(AXSSCloudKitHelper *)self zoneCreatedKey];
-      [v17 setBool:1 forKey:v18];
+      standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+      zoneCreatedKey2 = [(AXSSCloudKitHelper *)self zoneCreatedKey];
+      [standardUserDefaults2 setBool:1 forKey:zoneCreatedKey2];
     }
 
-    else if (a3)
+    else if (necessary)
     {
       v21 = v28[5];
       if (v21)
       {
-        *a3 = v21;
+        *necessary = v21;
       }
     }
 
@@ -496,7 +496,7 @@ void __45__AXSSCloudKitHelper__createZoneIfNecessary___block_invoke(void *a1, vo
   dispatch_semaphore_signal(*(a1[5] + 96));
 }
 
-- (BOOL)_createSchemaIfNecessary:(id *)a3
+- (BOOL)_createSchemaIfNecessary:(id *)necessary
 {
   v51[1] = *MEMORY[0x1E69E9840];
   v44 = 0;
@@ -510,11 +510,11 @@ void __45__AXSSCloudKitHelper__createZoneIfNecessary___block_invoke(void *a1, vo
   v42 = __Block_byref_object_dispose__4;
   v43 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_observedStore);
-  v6 = [WeakRetained metadata];
-  v7 = [v6 objectForKey:@"AXCloudKitFinishedSchemaCheckKey"];
-  v8 = [v7 BOOLValue];
+  metadata = [WeakRetained metadata];
+  v7 = [metadata objectForKey:@"AXCloudKitFinishedSchemaCheckKey"];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     *(v45 + 24) = 1;
     goto LABEL_7;
@@ -522,8 +522,8 @@ void __45__AXSSCloudKitHelper__createZoneIfNecessary___block_invoke(void *a1, vo
 
   v9 = objc_alloc(MEMORY[0x1E695BA70]);
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [MEMORY[0x1E696AFB0] UUID];
-  v12 = [v10 stringWithFormat:@"CD_FAKE_RECORD_%@", v11];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v12 = [v10 stringWithFormat:@"CD_FAKE_RECORD_%@", uUID];
   v13 = [v9 initWithRecordName:v12];
 
   v14 = [(AXSSCloudKitHelper *)self testRecordForSchemaCreation:v13];
@@ -541,7 +541,7 @@ void __45__AXSSCloudKitHelper__createZoneIfNecessary___block_invoke(void *a1, vo
   v36 = &v44;
   v37 = &v38;
   v34 = v18;
-  v35 = self;
+  selfCopy = self;
   [v17 setModifyRecordsCompletionBlock:v33];
   [(CKDatabase *)self->_database addOperation:v17];
   dispatch_semaphore_wait(self->_cloudKitQueueSemaphore, 0xFFFFFFFFFFFFFFFFLL);
@@ -557,7 +557,7 @@ void __45__AXSSCloudKitHelper__createZoneIfNecessary___block_invoke(void *a1, vo
     v28[2] = __47__AXSSCloudKitHelper__createSchemaIfNecessary___block_invoke_2;
     v28[3] = &unk_1E8135120;
     v29 = v13;
-    v30 = self;
+    selfCopy2 = self;
     v31 = &v44;
     v32 = &v38;
     [v21 setModifyRecordsCompletionBlock:v28];
@@ -585,12 +585,12 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  if (a3)
+  if (necessary)
   {
     v27 = v39[5];
     if (v27)
     {
-      *a3 = v27;
+      *necessary = v27;
     }
   }
 
@@ -648,7 +648,7 @@ void __47__AXSSCloudKitHelper__createSchemaIfNecessary___block_invoke_2(void *a1
   dispatch_semaphore_signal(*(a1[5] + 96));
 }
 
-- (BOOL)_setupZoneSubscriptionIfNecessary:(id *)a3
+- (BOOL)_setupZoneSubscriptionIfNecessary:(id *)necessary
 {
   v41[1] = *MEMORY[0x1E69E9840];
   v35 = 0;
@@ -661,9 +661,9 @@ void __47__AXSSCloudKitHelper__createSchemaIfNecessary___block_invoke_2(void *a1
   v32 = __Block_byref_object_copy__4;
   v33 = __Block_byref_object_dispose__4;
   v34 = 0;
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = [(AXSSCloudKitHelper *)self zoneSubscriptionKey];
-  v7 = [v5 BOOLForKey:v6];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  zoneSubscriptionKey = [(AXSSCloudKitHelper *)self zoneSubscriptionKey];
+  v7 = [standardUserDefaults BOOLForKey:zoneSubscriptionKey];
 
   if (v7)
   {
@@ -693,7 +693,7 @@ void __47__AXSSCloudKitHelper__createSchemaIfNecessary___block_invoke_2(void *a1
     v27 = &v35;
     v28 = &v29;
     v25 = v8;
-    v26 = self;
+    selfCopy = self;
     [v13 setModifySubscriptionsCompletionBlock:&v21];
     [(CKDatabase *)self->_database addOperation:v13, v21, v22, v23, v24];
     dispatch_semaphore_wait(self->_cloudKitQueueSemaphore, 0xFFFFFFFFFFFFFFFFLL);
@@ -708,17 +708,17 @@ void __47__AXSSCloudKitHelper__createSchemaIfNecessary___block_invoke_2(void *a1
         _os_log_impl(&dword_1C0E8A000, v14, OS_LOG_TYPE_INFO, "Zone subscription created: %@", buf, 0xCu);
       }
 
-      v16 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v17 = [(AXSSCloudKitHelper *)self zoneSubscriptionKey];
-      [v16 setBool:1 forKey:v17];
+      standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+      zoneSubscriptionKey2 = [(AXSSCloudKitHelper *)self zoneSubscriptionKey];
+      [standardUserDefaults2 setBool:1 forKey:zoneSubscriptionKey2];
     }
 
-    else if (a3)
+    else if (necessary)
     {
       v20 = v30[5];
       if (v20)
       {
-        *a3 = v20;
+        *necessary = v20;
       }
     }
 
@@ -753,24 +753,24 @@ void __56__AXSSCloudKitHelper__setupZoneSubscriptionIfNecessary___block_invoke(v
   v3 = AXLogPunctuationStorage();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(AXSSCloudKitHelper *)self managedObjectContext];
+    managedObjectContext = [(AXSSCloudKitHelper *)self managedObjectContext];
     v9 = 138412290;
-    v10 = v4;
+    v10 = managedObjectContext;
     _os_log_impl(&dword_1C0E8A000, v3, OS_LOG_TYPE_INFO, "Watching for changes now on: %@", &v9, 0xCu);
   }
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6 = *MEMORY[0x1E695D360];
-  v7 = [(AXSSCloudKitHelper *)self managedObjectContext];
-  [v5 addObserver:self selector:sel_managedObjectContextDidSave_ name:v6 object:v7];
+  managedObjectContext2 = [(AXSSCloudKitHelper *)self managedObjectContext];
+  [defaultCenter addObserver:self selector:sel_managedObjectContextDidSave_ name:v6 object:managedObjectContext2];
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)openTransactionWithLabel:(id)a3 andExecuteWorkBlock:(id)a4
+- (void)openTransactionWithLabel:(id)label andExecuteWorkBlock:(id)block
 {
-  v6 = a4;
-  [a3 cStringUsingEncoding:1];
+  blockCopy = block;
+  [label cStringUsingEncoding:1];
   v7 = os_transaction_create();
   cloudkitQueue = self->_cloudkitQueue;
   v11[0] = MEMORY[0x1E69E9820];
@@ -778,19 +778,19 @@ void __56__AXSSCloudKitHelper__setupZoneSubscriptionIfNecessary___block_invoke(v
   v11[2] = __67__AXSSCloudKitHelper_openTransactionWithLabel_andExecuteWorkBlock___block_invoke;
   v11[3] = &unk_1E8135148;
   v12 = v7;
-  v13 = v6;
+  v13 = blockCopy;
   v9 = v7;
-  v10 = v6;
+  v10 = blockCopy;
   dispatch_async(cloudkitQueue, v11);
 }
 
-- (BOOL)shouldExportManagedObject:(id)a3
+- (BOOL)shouldExportManagedObject:(id)object
 {
-  v4 = a3;
-  v5 = [v4 objectID];
-  v6 = [v5 persistentStore];
-  v7 = [(AXSSCloudKitHelper *)self observedStore];
-  if (![v6 isEqual:v7])
+  objectCopy = object;
+  objectID = [objectCopy objectID];
+  persistentStore = [objectID persistentStore];
+  observedStore = [(AXSSCloudKitHelper *)self observedStore];
+  if (![persistentStore isEqual:observedStore])
   {
 
     goto LABEL_5;
@@ -806,7 +806,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v9 = [v4 inCloud] ^ 1;
+  v9 = [objectCopy inCloud] ^ 1;
 LABEL_6:
 
   return v9;
@@ -815,8 +815,8 @@ LABEL_6:
 - (id)serverChangeTokenMetadataKey
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(AXSSCloudKitHelper *)self recordType];
-  v4 = [v2 stringWithFormat:@"CloudKitServerChangeToken-%@", v3];
+  recordType = [(AXSSCloudKitHelper *)self recordType];
+  v4 = [v2 stringWithFormat:@"CloudKitServerChangeToken-%@", recordType];
 
   return v4;
 }
@@ -941,11 +941,11 @@ void __56__AXSSCloudKitHelper_fetchChangesAndUpdateObservedStore__block_invoke_2
   }
 }
 
-- (void)setIsProtectedDataAvailable:(BOOL)a3
+- (void)setIsProtectedDataAvailable:(BOOL)available
 {
   isProtectedDataAvailable = self->_isProtectedDataAvailable;
-  self->_isProtectedDataAvailable = a3;
-  if (!isProtectedDataAvailable && a3)
+  self->_isProtectedDataAvailable = available;
+  if (!isProtectedDataAvailable && available)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -970,26 +970,26 @@ _BYTE *__50__AXSSCloudKitHelper_setIsProtectedDataAvailable___block_invoke(uint6
 - (void)_processAccumulatedQueueData
 {
   v9 = *MEMORY[0x1E69E9840];
-  OUTLINED_FUNCTION_0_0(&dword_1C0E8A000, a1, a3, "Assertion failed: %s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_0(&dword_1C0E8A000, self, a3, "Assertion failed: %s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processAccumulatedChangesForServerChangeToken:(id)a3 withAccumulatedUpdates:(id)a4 andDeletes:(id)a5 inTransaction:(id)a6
+- (void)processAccumulatedChangesForServerChangeToken:(id)token withAccumulatedUpdates:(id)updates andDeletes:(id)deletes inTransaction:(id)transaction
 {
   v48 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  tokenCopy = token;
+  updatesCopy = updates;
+  deletesCopy = deletes;
+  transactionCopy = transaction;
   if ([(AXSSCloudKitHelper *)self isProtectedDataAvailable])
   {
-    v14 = [(AXSSCloudKitHelper *)self observedCoordinator];
+    observedCoordinator = [(AXSSCloudKitHelper *)self observedCoordinator];
 
-    if (v14)
+    if (observedCoordinator)
     {
-      v15 = [(AXSSCloudKitHelper *)self observedCoordinator];
-      v16 = [v15 persistentStores];
-      v17 = [v16 count];
+      observedCoordinator2 = [(AXSSCloudKitHelper *)self observedCoordinator];
+      persistentStores = [observedCoordinator2 persistentStores];
+      v17 = [persistentStores count];
 
       if (v17)
       {
@@ -1003,52 +1003,52 @@ _BYTE *__50__AXSSCloudKitHelper_setIsProtectedDataAvailable___block_invoke(uint6
         v45 = __Block_byref_object_copy__4;
         v46 = __Block_byref_object_dispose__4;
         v47 = 0;
-        v18 = v13;
+        v18 = transactionCopy;
         v19 = [[AXSSCloudKitHelperManagedObjectContext alloc] initWithConcurrencyType:1];
-        v20 = [(AXSSCloudKitHelper *)self observedCoordinator];
-        [(AXSSCloudKitHelperManagedObjectContext *)v19 setPersistentStoreCoordinator:v20];
+        observedCoordinator3 = [(AXSSCloudKitHelper *)self observedCoordinator];
+        [(AXSSCloudKitHelperManagedObjectContext *)v19 setPersistentStoreCoordinator:observedCoordinator3];
 
         v34[0] = MEMORY[0x1E69E9820];
         v34[1] = 3221225472;
         v34[2] = __116__AXSSCloudKitHelper_processAccumulatedChangesForServerChangeToken_withAccumulatedUpdates_andDeletes_inTransaction___block_invoke;
         v34[3] = &unk_1E8135210;
         v34[4] = self;
-        v35 = v11;
+        v35 = updatesCopy;
         v21 = v19;
         v36 = v21;
         v37 = &v39;
         p_buf = &buf;
         [(AXSSCloudKitHelperManagedObjectContext *)v21 performBlockAndWait:v34];
-        [(AXSSCloudKitHelper *)self processRecordDeletionsFromServer:v12];
+        [(AXSSCloudKitHelper *)self processRecordDeletionsFromServer:deletesCopy];
         if (*(v40 + 24) == 1)
         {
-          v22 = [(AXSSCloudKitHelper *)self observedStore];
-          v23 = [v22 metadata];
-          v24 = [v23 mutableCopy];
+          observedStore = [(AXSSCloudKitHelper *)self observedStore];
+          metadata = [observedStore metadata];
+          dictionary = [metadata mutableCopy];
 
-          if (!v24)
+          if (!dictionary)
           {
-            v24 = [MEMORY[0x1E695DF90] dictionary];
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
           }
 
-          v25 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v10 requiringSecureCoding:1 error:0];
-          v26 = [(AXSSCloudKitHelper *)self serverChangeTokenMetadataKey];
-          [v24 setObject:v25 forKey:v26];
+          v25 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:tokenCopy requiringSecureCoding:1 error:0];
+          serverChangeTokenMetadataKey = [(AXSSCloudKitHelper *)self serverChangeTokenMetadataKey];
+          [dictionary setObject:v25 forKey:serverChangeTokenMetadataKey];
 
-          v27 = [(AXSSCloudKitHelper *)self observedStore];
-          [v27 setMetadata:v24];
+          observedStore2 = [(AXSSCloudKitHelper *)self observedStore];
+          [observedStore2 setMetadata:dictionary];
 
-          v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Finished importing changes for token: %@, metadata %@", v10, v24];
+          v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Finished importing changes for token: %@, metadata %@", tokenCopy, dictionary];
           [(AXSSCloudKitHelper *)self logMessage:v28];
 
-          v29 = [MEMORY[0x1E696ABB0] defaultCenter];
-          [v29 postNotificationName:@"AXSSVoiceOverPunctuationCloudKitUpdateNotification" object:0];
+          defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+          [defaultCenter postNotificationName:@"AXSSVoiceOverPunctuationCloudKitUpdateNotification" object:0];
         }
 
         else
         {
-          v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to process changes for token (%@):\n%@", v10, *(*(&buf + 1) + 40)];
-          [(AXSSCloudKitHelper *)self logMessage:v24];
+          dictionary = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to process changes for token (%@):\n%@", tokenCopy, *(*(&buf + 1) + 40)];
+          [(AXSSCloudKitHelper *)self logMessage:dictionary];
         }
 
         [(AXSSCloudKitHelper *)self processLocalChangesAndPush];
@@ -1081,15 +1081,15 @@ _BYTE *__50__AXSSCloudKitHelper_setIsProtectedDataAvailable___block_invoke(uint6
   if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v10;
+    *(&buf + 4) = tokenCopy;
     _os_log_impl(&dword_1C0E8A000, v30, OS_LOG_TYPE_INFO, "Device is locked, queueing change: %@", &buf, 0xCu);
   }
 
   v31 = objc_opt_new();
-  [v31 setServerChangeToken:v10];
-  [v31 setRecordsToUpdate:v11];
-  [v31 setRecordIDsToDelete:v12];
-  [v31 setOpenTransaction:v13];
+  [v31 setServerChangeToken:tokenCopy];
+  [v31 setRecordsToUpdate:updatesCopy];
+  [v31 setRecordIDsToDelete:deletesCopy];
+  [v31 setOpenTransaction:transactionCopy];
   [(NSMutableArray *)self->_accumulatedQueuedData addObject:v31];
 
 LABEL_19:
@@ -1330,34 +1330,34 @@ uint64_t __48__AXSSCloudKitHelper_processLocalChangesAndPush__block_invoke_142(u
   return [*(a1 + 32) clearRecordsForPurging:*(a1 + 40)];
 }
 
-- (void)logMessage:(id)a3
+- (void)logMessage:(id)message
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  messageCopy = message;
   v4 = AXLogPunctuationStorage();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = messageCopy;
     _os_log_impl(&dword_1C0E8A000, v4, OS_LOG_TYPE_DEFAULT, "%@", &v6, 0xCu);
   }
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_setupPushConnection:(id *)a3
+- (BOOL)_setupPushConnection:(id *)connection
 {
   v25[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc(MEMORY[0x1E698CF30]);
-  v6 = [(AXSSCloudKitHelper *)self apsEnvironment];
-  v7 = [v5 initWithEnvironmentName:v6 namedDelegatePort:*MEMORY[0x1E698CF08] queue:self->_cloudkitQueue];
+  apsEnvironment = [(AXSSCloudKitHelper *)self apsEnvironment];
+  v7 = [v5 initWithEnvironmentName:apsEnvironment namedDelegatePort:*MEMORY[0x1E698CF08] queue:self->_cloudkitQueue];
   apsConnection = self->_apsConnection;
   self->_apsConnection = v7;
 
   if (self->_apsConnection && ([(AXSSCloudKitHelper *)self cloudKitPushTopic], v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
-    v10 = [(AXSSCloudKitHelper *)self cloudKitPushTopic];
-    v25[0] = v10;
+    cloudKitPushTopic = [(AXSSCloudKitHelper *)self cloudKitPushTopic];
+    v25[0] = cloudKitPushTopic;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
     [(APSConnection *)self->_apsConnection _setEnabledTopics:v11];
 
@@ -1384,11 +1384,11 @@ uint64_t __48__AXSSCloudKitHelper_processLocalChangesAndPush__block_invoke_142(u
     v14 = [v16 errorWithDomain:@"AXCloudKitErrorDomain" code:1 userInfo:v17];
 
     v15 = 0;
-    if (a3 && v14)
+    if (connection && v14)
     {
       v18 = v14;
       v15 = 0;
-      *a3 = v14;
+      *connection = v14;
     }
   }
 
@@ -1396,39 +1396,39 @@ uint64_t __48__AXSSCloudKitHelper_processLocalChangesAndPush__block_invoke_142(u
   return v15;
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  if (self->_apsConnection == a3)
+  if (self->_apsConnection == connection)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Connection:\n%@\nSent public token: %@", a3, a4];
-    [(AXSSCloudKitHelper *)self logMessage:v6];
+    token = [MEMORY[0x1E696AEC0] stringWithFormat:@"Connection:\n%@\nSent public token: %@", connection, token];
+    [(AXSSCloudKitHelper *)self logMessage:token];
   }
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Connection:\n%@\nSent token: %@\nFor topic: %@\nWith identifier: %@", a3, a4, a5, a6];
-  [(AXSSCloudKitHelper *)self logMessage:v7];
+  identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"Connection:\n%@\nSent token: %@\nFor topic: %@\nWith identifier: %@", connection, token, topic, identifier];
+  [(AXSSCloudKitHelper *)self logMessage:identifier];
 }
 
-- (void)connection:(id)a3 didReceiveMessageForTopic:(id)a4 userInfo:(id)a5
+- (void)connection:(id)connection didReceiveMessageForTopic:(id)topic userInfo:(id)info
 {
-  v8 = a4;
-  v9 = a5;
+  topicCopy = topic;
+  infoCopy = info;
   v10 = MEMORY[0x1E696AEC0];
-  v11 = a3;
-  v12 = [v10 stringWithFormat:@"Connection:\n%@\nMessage for topic: %@\nuserInfo: %@", v11, v8, v9];
-  [(AXSSCloudKitHelper *)self logMessage:v12];
+  connectionCopy = connection;
+  infoCopy = [v10 stringWithFormat:@"Connection:\n%@\nMessage for topic: %@\nuserInfo: %@", connectionCopy, topicCopy, infoCopy];
+  [(AXSSCloudKitHelper *)self logMessage:infoCopy];
 
   apsConnection = self->_apsConnection;
-  if (apsConnection == v11)
+  if (apsConnection == connectionCopy)
   {
-    v14 = [(AXSSCloudKitHelper *)self cloudKitPushTopic];
-    v15 = [v8 isEqualToString:v14];
+    cloudKitPushTopic = [(AXSSCloudKitHelper *)self cloudKitPushTopic];
+    v15 = [topicCopy isEqualToString:cloudKitPushTopic];
 
     if (v15)
     {
-      v16 = [MEMORY[0x1E695B9D8] notificationFromRemoteNotificationDictionary:v9];
+      v16 = [MEMORY[0x1E695B9D8] notificationFromRemoteNotificationDictionary:infoCopy];
       if ([v16 notificationType] == 2)
       {
         cloudkitQueue = self->_cloudkitQueue;
@@ -1443,17 +1443,17 @@ uint64_t __48__AXSSCloudKitHelper_processLocalChangesAndPush__block_invoke_142(u
   }
 }
 
-- (void)managedObjectContextDidSave:(id)a3
+- (void)managedObjectContextDidSave:(id)save
 {
   v71 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v40 = v4;
+  saveCopy = save;
+  v40 = saveCopy;
   if (self->_observeLocalDatabaseChanges)
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@] Managed object context saved: %@", self, v4];
-    [(AXSSCloudKitHelper *)self logMessage:v5];
+    saveCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%@] Managed object context saved: %@", self, saveCopy];
+    [(AXSSCloudKitHelper *)self logMessage:saveCopy];
 
-    v39 = [v40 object];
+    object = [v40 object];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -1469,8 +1469,8 @@ uint64_t __48__AXSSCloudKitHelper_processLocalChangesAndPush__block_invoke_142(u
       v61 = 0u;
       v62 = 0u;
       v63 = 0u;
-      v7 = [v40 userInfo];
-      v8 = [v7 objectForKey:*MEMORY[0x1E695D328]];
+      userInfo = [v40 userInfo];
+      v8 = [userInfo objectForKey:*MEMORY[0x1E695D328]];
 
       v9 = [v8 countByEnumeratingWithState:&v60 objects:v70 count:16];
       if (v9)
@@ -1511,8 +1511,8 @@ uint64_t __48__AXSSCloudKitHelper_processLocalChangesAndPush__block_invoke_142(u
       v59 = 0u;
       v56 = 0u;
       v57 = 0u;
-      v15 = [v40 userInfo];
-      v16 = [v15 objectForKey:*MEMORY[0x1E695D4D0]];
+      userInfo2 = [v40 userInfo];
+      v16 = [userInfo2 objectForKey:*MEMORY[0x1E695D4D0]];
 
       v17 = [v16 countByEnumeratingWithState:&v56 objects:v67 count:16];
       if (v17)
@@ -1554,8 +1554,8 @@ uint64_t __48__AXSSCloudKitHelper_processLocalChangesAndPush__block_invoke_142(u
       v55 = 0u;
       v53 = 0u;
       v52 = 0u;
-      v23 = [v40 userInfo];
-      obj = [v23 objectForKey:*MEMORY[0x1E695D2F8]];
+      userInfo3 = [v40 userInfo];
+      obj = [userInfo3 objectForKey:*MEMORY[0x1E695D2F8]];
 
       v24 = [obj countByEnumeratingWithState:&v52 objects:v66 count:16];
       if (v24)
@@ -1574,10 +1574,10 @@ uint64_t __48__AXSSCloudKitHelper_processLocalChangesAndPush__block_invoke_142(u
             if (v27)
             {
               v28 = objc_alloc(MEMORY[0x1E695BA70]);
-              v29 = [v27 UUIDString];
-              v30 = [(AXSSCloudKitHelper *)self recordZone];
-              v31 = [v30 zoneID];
-              v32 = [v28 initWithRecordName:v29 zoneID:v31];
+              uUIDString = [v27 UUIDString];
+              recordZone = [(AXSSCloudKitHelper *)self recordZone];
+              zoneID = [recordZone zoneID];
+              v32 = [v28 initWithRecordName:uUIDString zoneID:zoneID];
 
               [v42 addObject:v32];
             }
@@ -1604,7 +1604,7 @@ uint64_t __48__AXSSCloudKitHelper_processLocalChangesAndPush__block_invoke_142(u
         v49[2] = __50__AXSSCloudKitHelper_managedObjectContextDidSave___block_invoke;
         v49[3] = &unk_1E8134848;
         v49[4] = self;
-        v50 = v39;
+        v50 = object;
         v51 = v43;
         [v50 performBlockAndWait:v49];
       }
@@ -1622,7 +1622,7 @@ uint64_t __48__AXSSCloudKitHelper_processLocalChangesAndPush__block_invoke_142(u
         v44[2] = __50__AXSSCloudKitHelper_managedObjectContextDidSave___block_invoke_2;
         v44[3] = &unk_1E8135368;
         v45 = v43;
-        v47 = self;
+        selfCopy = self;
         v48 = v64;
         v46 = v42;
         [(AXSSCloudKitHelper *)self openTransactionWithLabel:@"com.apple.axcloudkithelper.export" andExecuteWorkBlock:v44];
@@ -1631,7 +1631,7 @@ uint64_t __48__AXSSCloudKitHelper_processLocalChangesAndPush__block_invoke_142(u
       _Block_object_dispose(v64, 8);
     }
 
-    v36 = v39;
+    v36 = object;
   }
 
   else
@@ -1850,12 +1850,12 @@ void __50__AXSSCloudKitHelper_managedObjectContextDidSave___block_invoke_5(uint6
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setObservedStore:(id)a3 observedCoordinator:(id)a4
+- (void)_setObservedStore:(id)store observedCoordinator:(id)coordinator
 {
-  v6 = a4;
-  objc_storeWeak(&self->_observedStore, a3);
+  coordinatorCopy = coordinator;
+  objc_storeWeak(&self->_observedStore, store);
   observedCoordinator = self->_observedCoordinator;
-  self->_observedCoordinator = v6;
+  self->_observedCoordinator = coordinatorCopy;
 }
 
 - (NSPersistentStore)observedStore
@@ -1873,7 +1873,7 @@ void __50__AXSSCloudKitHelper_managedObjectContextDidSave___block_invoke_5(uint6
   return 0;
 }
 
-- (id)testRecordForSchemaCreation:(id)a3
+- (id)testRecordForSchemaCreation:(id)creation
 {
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_0_3();
@@ -1881,7 +1881,7 @@ void __50__AXSSCloudKitHelper_managedObjectContextDidSave___block_invoke_5(uint6
   return 0;
 }
 
-- (id)createCKRecordFromObject:(id)a3
+- (id)createCKRecordFromObject:(id)object
 {
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_0_3();
@@ -1889,7 +1889,7 @@ void __50__AXSSCloudKitHelper_managedObjectContextDidSave___block_invoke_5(uint6
   return 0;
 }
 
-- (void)processServerUpdateChanges:(id)a3 moc:(id)a4 recordNameToManagedObject:(id)a5
+- (void)processServerUpdateChanges:(id)changes moc:(id)moc recordNameToManagedObject:(id)object
 {
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_0_3();
@@ -1897,7 +1897,7 @@ void __50__AXSSCloudKitHelper_managedObjectContextDidSave___block_invoke_5(uint6
   NSRequestConcreteImplementation();
 }
 
-- (void)processRecordDeletionsFromServer:(id)a3
+- (void)processRecordDeletionsFromServer:(id)server
 {
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_0_3();
@@ -1905,7 +1905,7 @@ void __50__AXSSCloudKitHelper_managedObjectContextDidSave___block_invoke_5(uint6
   NSRequestConcreteImplementation();
 }
 
-- (void)retrieveLocalChangesForCloud:(id)a3
+- (void)retrieveLocalChangesForCloud:(id)cloud
 {
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_0_3();
@@ -1913,7 +1913,7 @@ void __50__AXSSCloudKitHelper_managedObjectContextDidSave___block_invoke_5(uint6
   NSRequestConcreteImplementation();
 }
 
-- (void)clearRecordsForPurging:(id)a3
+- (void)clearRecordsForPurging:(id)purging
 {
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_0_3();

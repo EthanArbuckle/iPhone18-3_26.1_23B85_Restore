@@ -1,9 +1,9 @@
 @interface PUEditPlugin
-+ (BOOL)pu_isMarkupExtensionIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)pu_isMarkupExtensionIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)pu_isMarkupExtension;
 - (NSString)title;
-- (PUEditPlugin)initWithExtension:(id)a3 pluginCategoryType:(unint64_t)a4;
+- (PUEditPlugin)initWithExtension:(id)extension pluginCategoryType:(unint64_t)type;
 - (UIImage)icon;
 - (UIImage)smallIcon;
 - (unint64_t)hash;
@@ -13,52 +13,52 @@
 
 - (BOOL)pu_isMarkupExtension
 {
-  v2 = [(PUEditPlugin *)self extension];
-  v3 = [v2 identifier];
-  v4 = [PUEditPlugin pu_isMarkupExtensionIdentifier:v3];
+  extension = [(PUEditPlugin *)self extension];
+  identifier = [extension identifier];
+  v4 = [PUEditPlugin pu_isMarkupExtensionIdentifier:identifier];
 
   return v4;
 }
 
 - (UIImage)smallIcon
 {
-  v2 = [(PUEditPlugin *)self applicationExtensionActivity];
-  v3 = [v2 _activitySettingsImage];
+  applicationExtensionActivity = [(PUEditPlugin *)self applicationExtensionActivity];
+  _activitySettingsImage = [applicationExtensionActivity _activitySettingsImage];
 
-  return v3;
+  return _activitySettingsImage;
 }
 
 - (UIImage)icon
 {
-  v2 = [(PUEditPlugin *)self applicationExtensionActivity];
-  v3 = [v2 _activityImage];
+  applicationExtensionActivity = [(PUEditPlugin *)self applicationExtensionActivity];
+  _activityImage = [applicationExtensionActivity _activityImage];
 
-  return v3;
+  return _activityImage;
 }
 
 - (NSString)title
 {
-  v2 = [(PUEditPlugin *)self extension];
-  v3 = [v2 _plugIn];
+  extension = [(PUEditPlugin *)self extension];
+  _plugIn = [extension _plugIn];
 
-  v4 = [v3 localizedContainingName];
-  if (![(__CFString *)v4 length])
+  localizedContainingName = [_plugIn localizedContainingName];
+  if (![(__CFString *)localizedContainingName length])
   {
-    v5 = [v3 localizedName];
+    localizedName = [_plugIn localizedName];
 
-    v4 = v5;
+    localizedContainingName = localizedName;
   }
 
-  if (![(__CFString *)v4 length])
+  if (![(__CFString *)localizedContainingName length])
   {
-    v6 = [v3 localizedShortName];
+    localizedShortName = [_plugIn localizedShortName];
 
-    v4 = v6;
+    localizedContainingName = localizedShortName;
   }
 
-  if ([(__CFString *)v4 length])
+  if ([(__CFString *)localizedContainingName length])
   {
-    v7 = v4;
+    v7 = localizedContainingName;
   }
 
   else
@@ -71,15 +71,15 @@
   return &v7->isa;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(PUEditPlugin *)self extension];
-    v6 = [v4 extension];
-    v7 = [v5 isEqual:v6];
+    extension = [(PUEditPlugin *)self extension];
+    extension2 = [equalCopy extension];
+    v7 = [extension isEqual:extension2];
   }
 
   else
@@ -92,34 +92,34 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PUEditPlugin *)self extension];
-  v3 = [v2 hash];
+  extension = [(PUEditPlugin *)self extension];
+  v3 = [extension hash];
 
   return v3;
 }
 
-- (PUEditPlugin)initWithExtension:(id)a3 pluginCategoryType:(unint64_t)a4
+- (PUEditPlugin)initWithExtension:(id)extension pluginCategoryType:(unint64_t)type
 {
-  v7 = a3;
+  extensionCopy = extension;
   v14.receiver = self;
   v14.super_class = PUEditPlugin;
   v8 = [(PUEditPlugin *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_extension, a3);
-    v9->_category = a4;
-    if (a4 == 1)
+    objc_storeStrong(&v8->_extension, extension);
+    v9->_category = type;
+    if (type == 1)
     {
       v10 = off_1E7B6E6E0;
       goto LABEL_6;
     }
 
-    if (!a4)
+    if (!type)
     {
       v10 = off_1E7B6E6D8;
 LABEL_6:
-      v11 = [objc_alloc(*v10) initWithApplicationExtension:v7];
+      v11 = [objc_alloc(*v10) initWithApplicationExtension:extensionCopy];
       applicationExtensionActivity = v9->_applicationExtensionActivity;
       v9->_applicationExtensionActivity = v11;
     }
@@ -128,17 +128,17 @@ LABEL_6:
   return v9;
 }
 
-+ (BOOL)pu_isMarkupExtensionIdentifier:(id)a3
++ (BOOL)pu_isMarkupExtensionIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.PaperKit.MarkupPhotoEditingExtension"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.PaperKit.MarkupPhotoEditingExtension"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"com.apple.MarkupUI.MarkupPhotoExtension"];
+    v4 = [identifierCopy isEqualToString:@"com.apple.MarkupUI.MarkupPhotoExtension"];
   }
 
   return v4;

@@ -1,25 +1,25 @@
 @interface OrientationLockedViewController
 - (BOOL)shouldAutorotate;
-- (CGRect)correctionRotationBoundsForReferenceOrientation:(int64_t)a3 targetOrientation:(int64_t)a4 bounds:(CGRect)result;
-- (OrientationLockedViewController)initWithCoder:(id)a3;
-- (OrientationLockedViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)correctionRotationAngleForReferenceOrientation:(int64_t)a3 targetOrientation:(int64_t)a4;
-- (double)rotationAngleForOrientation:(int64_t)a3;
+- (CGRect)correctionRotationBoundsForReferenceOrientation:(int64_t)orientation targetOrientation:(int64_t)targetOrientation bounds:(CGRect)result;
+- (OrientationLockedViewController)initWithCoder:(id)coder;
+- (OrientationLockedViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)correctionRotationAngleForReferenceOrientation:(int64_t)orientation targetOrientation:(int64_t)targetOrientation;
+- (double)rotationAngleForOrientation:(int64_t)orientation;
 - (void)configure;
 - (void)counterRotateChildrenForBoundsOrOrientationChange;
-- (void)setViewControllers:(id)a3;
+- (void)setViewControllers:(id)controllers;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation OrientationLockedViewController
 
-- (OrientationLockedViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (OrientationLockedViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = OrientationLockedViewController;
-  v4 = [(OrientationLockedViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(OrientationLockedViewController *)&v7 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -29,11 +29,11 @@
   return v5;
 }
 
-- (OrientationLockedViewController)initWithCoder:(id)a3
+- (OrientationLockedViewController)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = OrientationLockedViewController;
-  v3 = [(OrientationLockedViewController *)&v6 initWithCoder:a3];
+  v3 = [(OrientationLockedViewController *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -61,40 +61,40 @@
   v4.receiver = self;
   v4.super_class = OrientationLockedViewController;
   [(OrientationLockedViewController *)&v4 viewDidLoad];
-  v3 = [(OrientationLockedViewController *)self view];
-  [v3 addSubview:self->_orientationLockedView];
+  view = [(OrientationLockedViewController *)self view];
+  [view addSubview:self->_orientationLockedView];
 
   [(OrientationLockedViewController *)self counterRotateChildrenForBoundsOrOrientationChange];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(OrientationLockedViewController *)self view];
-  v6 = [v5 superview];
-  [v6 setClipsToBounds:0];
+  appearCopy = appear;
+  view = [(OrientationLockedViewController *)self view];
+  superview = [view superview];
+  [superview setClipsToBounds:0];
 
   v9.receiver = self;
   v9.super_class = OrientationLockedViewController;
-  [(OrientationLockedViewController *)&v9 viewWillAppear:v3];
-  v7 = [(OrientationLockedViewController *)self transitionCoordinator];
+  [(OrientationLockedViewController *)&v9 viewWillAppear:appearCopy];
+  transitionCoordinator = [(OrientationLockedViewController *)self transitionCoordinator];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000B190;
   v8[3] = &unk_100464B68;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [transitionCoordinator animateAlongsideTransition:v8 completion:0];
 }
 
-- (void)setViewControllers:(id)a3
+- (void)setViewControllers:(id)controllers
 {
-  v5 = a3;
-  objc_storeStrong(&self->_viewControllers, a3);
+  controllersCopy = controllers;
+  objc_storeStrong(&self->_viewControllers, controllers);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v5;
+  v6 = controllersCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -112,8 +112,8 @@
         v11 = *(*(&v14 + 1) + 8 * i);
         [(OrientationLockedViewController *)self addChildViewController:v11, v14];
         orientationLockedView = self->_orientationLockedView;
-        v13 = [v11 view];
-        [(UIView *)orientationLockedView addSubview:v13];
+        view = [v11 view];
+        [(UIView *)orientationLockedView addSubview:view];
 
         [v11 didMoveToParentViewController:self];
       }
@@ -129,28 +129,28 @@
 
 - (void)counterRotateChildrenForBoundsOrOrientationChange
 {
-  v3 = [(OrientationLockedViewController *)self interfaceOrientation];
-  v4 = [(OrientationLockedViewController *)self orientationToLockTo];
-  v5 = [(OrientationLockedViewController *)self view];
-  [v5 bounds];
-  [(OrientationLockedViewController *)self correctionRotationBoundsForReferenceOrientation:v3 targetOrientation:v4 bounds:?];
+  interfaceOrientation = [(OrientationLockedViewController *)self interfaceOrientation];
+  orientationToLockTo = [(OrientationLockedViewController *)self orientationToLockTo];
+  view = [(OrientationLockedViewController *)self view];
+  [view bounds];
+  [(OrientationLockedViewController *)self correctionRotationBoundsForReferenceOrientation:interfaceOrientation targetOrientation:orientationToLockTo bounds:?];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  [(OrientationLockedViewController *)self correctionRotationAngleForReferenceOrientation:v3 targetOrientation:v4];
+  [(OrientationLockedViewController *)self correctionRotationAngleForReferenceOrientation:interfaceOrientation targetOrientation:orientationToLockTo];
   v15 = v14;
-  v16 = [(OrientationLockedViewController *)self orientationLockedView];
+  orientationLockedView = [(OrientationLockedViewController *)self orientationLockedView];
   previousOrientation = self->_previousOrientation;
-  if (previousOrientation == v3)
+  if (previousOrientation == interfaceOrientation)
   {
     goto LABEL_24;
   }
 
   if ((previousOrientation - 3) <= 1)
   {
-    if ((v3 - 3) >= 2)
+    if ((interfaceOrientation - 3) >= 2)
     {
       goto LABEL_24;
     }
@@ -158,8 +158,8 @@
     goto LABEL_14;
   }
 
-  v18 = previousOrientation == 2 && v3 == 1;
-  if (v18 || (previousOrientation == 1 ? (v19 = v3 == 2) : (v19 = 0), v19))
+  v18 = previousOrientation == 2 && interfaceOrientation == 1;
+  if (v18 || (previousOrientation == 1 ? (v19 = interfaceOrientation == 2) : (v19 = 0), v19))
   {
 LABEL_14:
     [OrientationLockedViewController correctionRotationAngleForReferenceOrientation:"correctionRotationAngleForReferenceOrientation:targetOrientation:" targetOrientation:?];
@@ -204,23 +204,23 @@ LABEL_14:
     }
 
     *&v39.tx = v21;
-    [v16 setTransform:&v39];
+    [orientationLockedView setTransform:&v39];
   }
 
 LABEL_24:
   CGAffineTransformMakeRotation(&v34, v15);
   v39 = v34;
-  [v16 setTransform:&v39];
-  v22 = [(OrientationLockedViewController *)self view];
-  [v22 bounds];
-  [v16 setFrame:?];
+  [orientationLockedView setTransform:&v39];
+  view2 = [(OrientationLockedViewController *)self view];
+  [view2 bounds];
+  [orientationLockedView setFrame:?];
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v23 = [(OrientationLockedViewController *)self childViewControllers];
-  v24 = [v23 countByEnumeratingWithState:&v30 objects:v41 count:16];
+  childViewControllers = [(OrientationLockedViewController *)self childViewControllers];
+  v24 = [childViewControllers countByEnumeratingWithState:&v30 objects:v41 count:16];
   if (v24)
   {
     v25 = v24;
@@ -231,32 +231,32 @@ LABEL_24:
       {
         if (*v31 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v28 = *(*(&v30 + 1) + 8 * i);
         if ([v28 isViewLoaded])
         {
-          v29 = [v28 view];
-          [v29 setFrame:{v7, v9, v11, v13}];
+          view3 = [v28 view];
+          [view3 setFrame:{v7, v9, v11, v13}];
         }
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v30 objects:v41 count:16];
+      v25 = [childViewControllers countByEnumeratingWithState:&v30 objects:v41 count:16];
     }
 
     while (v25);
   }
 
-  [(OrientationLockedViewController *)self setPreviousOrientation:v3];
+  [(OrientationLockedViewController *)self setPreviousOrientation:interfaceOrientation];
 }
 
-- (CGRect)correctionRotationBoundsForReferenceOrientation:(int64_t)a3 targetOrientation:(int64_t)a4 bounds:(CGRect)result
+- (CGRect)correctionRotationBoundsForReferenceOrientation:(int64_t)orientation targetOrientation:(int64_t)targetOrientation bounds:(CGRect)result
 {
   width = result.size.width;
-  if ((a3 - 3) > 1)
+  if ((orientation - 3) > 1)
   {
-    if (((a4 - 3) | (a3 - 1)) > 1)
+    if (((targetOrientation - 3) | (orientation - 1)) > 1)
     {
       goto LABEL_3;
     }
@@ -268,7 +268,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ((a4 - 1) < 2)
+  if ((targetOrientation - 1) < 2)
   {
     goto LABEL_5;
   }
@@ -281,50 +281,50 @@ LABEL_6:
   return result;
 }
 
-- (double)correctionRotationAngleForReferenceOrientation:(int64_t)a3 targetOrientation:(int64_t)a4
+- (double)correctionRotationAngleForReferenceOrientation:(int64_t)orientation targetOrientation:(int64_t)targetOrientation
 {
-  [(OrientationLockedViewController *)self rotationAngleForOrientation:a3];
+  [(OrientationLockedViewController *)self rotationAngleForOrientation:orientation];
   v7 = v6;
-  [(OrientationLockedViewController *)self rotationAngleForOrientation:a4];
+  [(OrientationLockedViewController *)self rotationAngleForOrientation:targetOrientation];
   return v8 - v7;
 }
 
-- (double)rotationAngleForOrientation:(int64_t)a3
+- (double)rotationAngleForOrientation:(int64_t)orientation
 {
   result = 0.0;
-  if ((a3 - 2) <= 2)
+  if ((orientation - 2) <= 2)
   {
-    return dbl_1003D2F50[a3 - 2];
+    return dbl_1003D2F50[orientation - 2];
   }
 
   return result;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = OrientationLockedViewController;
-  v7 = a4;
-  [(OrientationLockedViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(OrientationLockedViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000B860;
   v8[3] = &unk_100464B68;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 - (BOOL)shouldAutorotate
 {
-  v3 = [(OrientationLockedViewController *)self traitCollection];
-  if ([v3 userInterfaceIdiom])
+  traitCollection = [(OrientationLockedViewController *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom])
   {
 
 LABEL_4:
-    v5 = [(OrientationLockedViewController *)self isAutorotationEnabled];
-    v6 = v5[2]();
+    isAutorotationEnabled = [(OrientationLockedViewController *)self isAutorotationEnabled];
+    v6 = isAutorotationEnabled[2]();
 
     return v6;
   }

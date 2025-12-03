@@ -1,12 +1,12 @@
 @interface IMBTranscriptEmptyMessageViewController
-- (_TtC8Business39IMBTranscriptEmptyMessageViewController)initWithCoder:(id)a3;
-- (_TtC8Business39IMBTranscriptEmptyMessageViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8Business39IMBTranscriptEmptyMessageViewController)initWithCoder:(id)coder;
+- (_TtC8Business39IMBTranscriptEmptyMessageViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation IMBTranscriptEmptyMessageViewController
 
-- (_TtC8Business39IMBTranscriptEmptyMessageViewController)initWithCoder:(id)a3
+- (_TtC8Business39IMBTranscriptEmptyMessageViewController)initWithCoder:(id)coder
 {
   *&self->conversation[OBJC_IVAR____TtC8Business39IMBTranscriptEmptyMessageViewController_messagesAppProxy] = 0;
   swift_unknownObjectWeakInit();
@@ -20,11 +20,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100030C9C();
 }
 
-- (_TtC8Business39IMBTranscriptEmptyMessageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8Business39IMBTranscriptEmptyMessageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

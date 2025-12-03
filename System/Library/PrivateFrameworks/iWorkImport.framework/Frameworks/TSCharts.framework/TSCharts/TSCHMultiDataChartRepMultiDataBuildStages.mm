@@ -1,22 +1,22 @@
 @interface TSCHMultiDataChartRepMultiDataBuildStages
-+ (id)buildStagesWithRep:(id)a3 stages:(_NSRange)a4 totalDuration:(double)a5;
-+ (unint64_t)dataSetIndexForRep:(id)a3 buildStage:(unint64_t)a4;
++ (id)buildStagesWithRep:(id)rep stages:(_NSRange)stages totalDuration:(double)duration;
++ (unint64_t)dataSetIndexForRep:(id)rep buildStage:(unint64_t)stage;
 - (BOOL)isFadingInLayers;
-- (TSCHMultiDataChartRepMultiDataBuildStages)initWithRep:(id)a3 stages:(_NSRange)a4 totalDuration:(double)a5;
+- (TSCHMultiDataChartRepMultiDataBuildStages)initWithRep:(id)rep stages:(_NSRange)stages totalDuration:(double)duration;
 - (id)chartLayout;
-- (unint64_t)dataSetIndexForStage:(unint64_t)a3;
+- (unint64_t)dataSetIndexForStage:(unint64_t)stage;
 - (void)setupLayoutDataSetIndexForCurrentStage;
 - (void)setupLayoutDataSetIndexForNextStage;
 @end
 
 @implementation TSCHMultiDataChartRepMultiDataBuildStages
 
-+ (unint64_t)dataSetIndexForRep:(id)a3 buildStage:(unint64_t)a4
++ (unint64_t)dataSetIndexForRep:(id)rep buildStage:(unint64_t)stage
 {
-  v8 = objc_msgSend_numberOfFadingBuildStages(a1, a2, v4, v5, v6, a3);
-  if (a4 >= v8)
+  v8 = objc_msgSend_numberOfFadingBuildStages(self, a2, v4, v5, v6, rep);
+  if (stage >= v8)
   {
-    return a4 - v8;
+    return stage - v8;
   }
 
   else
@@ -25,22 +25,22 @@
   }
 }
 
-+ (id)buildStagesWithRep:(id)a3 stages:(_NSRange)a4 totalDuration:(double)a5
++ (id)buildStagesWithRep:(id)rep stages:(_NSRange)stages totalDuration:(double)duration
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = [a1 alloc];
-  v14 = objc_msgSend_initWithRep_stages_totalDuration_(v10, v11, a5, v12, v13, v9, location, length);
+  length = stages.length;
+  location = stages.location;
+  repCopy = rep;
+  v10 = [self alloc];
+  v14 = objc_msgSend_initWithRep_stages_totalDuration_(v10, v11, duration, v12, v13, repCopy, location, length);
 
   return v14;
 }
 
-- (TSCHMultiDataChartRepMultiDataBuildStages)initWithRep:(id)a3 stages:(_NSRange)a4 totalDuration:(double)a5
+- (TSCHMultiDataChartRepMultiDataBuildStages)initWithRep:(id)rep stages:(_NSRange)stages totalDuration:(double)duration
 {
-  length = a4.length;
-  location = a4.location;
-  v10 = a3;
+  length = stages.length;
+  location = stages.location;
+  repCopy = rep;
   if (location == 0x7FFFFFFFFFFFFFFFLL)
   {
     v14 = MEMORY[0x277D81150];
@@ -60,11 +60,11 @@
   v31 = v30;
   if (v30)
   {
-    objc_storeWeak(&v30->_rep, v10);
+    objc_storeWeak(&v30->_rep, repCopy);
     v31->_stages.location = location;
     v31->_stages.length = length;
-    v32 = a5 / length;
-    v31->_totalDuration = a5;
+    v32 = duration / length;
+    v31->_totalDuration = duration;
     v31->_duration = v32;
     v31->_currentStage = location;
     objc_msgSend_setupLayoutDataSetIndexForCurrentStage(v31, v33, v32, v34, v35);
@@ -102,11 +102,11 @@
   return currentStage < objc_msgSend_numberOfFadingBuildStages(v3, v4, v5, v6, v7);
 }
 
-- (unint64_t)dataSetIndexForStage:(unint64_t)a3
+- (unint64_t)dataSetIndexForStage:(unint64_t)stage
 {
   v5 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_rep);
-  v11 = objc_msgSend_dataSetIndexForRep_buildStage_(v5, v7, v8, v9, v10, WeakRetained, a3);
+  v11 = objc_msgSend_dataSetIndexForRep_buildStage_(v5, v7, v8, v9, v10, WeakRetained, stage);
 
   return v11;
 }

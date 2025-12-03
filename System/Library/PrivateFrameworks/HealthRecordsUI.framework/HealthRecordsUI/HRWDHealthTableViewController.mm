@@ -1,19 +1,19 @@
 @interface HRWDHealthTableViewController
-- (HRWDHealthTableViewController)initWithStyle:(int64_t)a3 profile:(id)a4;
+- (HRWDHealthTableViewController)initWithStyle:(int64_t)style profile:(id)profile;
 @end
 
 @implementation HRWDHealthTableViewController
 
-- (HRWDHealthTableViewController)initWithStyle:(int64_t)a3 profile:(id)a4
+- (HRWDHealthTableViewController)initWithStyle:(int64_t)style profile:(id)profile
 {
-  v6 = a4;
+  profileCopy = profile;
   v10.receiver = self;
   v10.super_class = HRWDHealthTableViewController;
-  v7 = [(HRWDTableViewController *)&v10 initWithStyle:a3];
+  v7 = [(HRWDTableViewController *)&v10 initWithStyle:style];
   v8 = v7;
   if (v7)
   {
-    [(HRWDTableViewController *)v7 setProfile:v6];
+    [(HRWDTableViewController *)v7 setProfile:profileCopy];
   }
 
   return v8;

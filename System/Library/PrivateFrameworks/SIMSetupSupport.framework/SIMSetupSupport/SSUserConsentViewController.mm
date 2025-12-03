@@ -40,11 +40,11 @@
   [v3 setTitle:v5 forState:0];
 
   [v3 addTarget:self action:sel__continueButtonTapped forControlEvents:64];
-  v6 = [(SSUserConsentViewController *)self buttonTray];
-  [v6 addButton:v3];
+  buttonTray = [(SSUserConsentViewController *)self buttonTray];
+  [buttonTray addButton:v3];
 
-  v7 = [(OBBaseWelcomeController *)self navigationItem];
-  [v7 setHidesBackButton:1 animated:0];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:0];
 
   [(SSUserConsentViewController *)self _continueButtonTapped];
 }
@@ -70,16 +70,16 @@
 {
   v6 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancelButtonTapped];
   v3 = +[TSUtilities isPad];
-  v4 = [(OBBaseWelcomeController *)self navigationItem];
-  v5 = v4;
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  v5 = navigationItem;
   if (v3)
   {
-    [v4 setRightBarButtonItem:v6];
+    [navigationItem setRightBarButtonItem:v6];
   }
 
   else
   {
-    [v4 setLeftBarButtonItem:v6 animated:0];
+    [navigationItem setLeftBarButtonItem:v6 animated:0];
   }
 }
 

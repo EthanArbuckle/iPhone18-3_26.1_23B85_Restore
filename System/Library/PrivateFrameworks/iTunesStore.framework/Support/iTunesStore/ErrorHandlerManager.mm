@@ -1,17 +1,17 @@
 @interface ErrorHandlerManager
 + (id)errorHandlerManager;
-+ (void)connectHandlerWithMessage:(id)a3 connection:(id)a4;
-+ (void)observeXPCServer:(id)a3;
-+ (void)resolveSessionWithMessage:(id)a3 connection:(id)a4;
++ (void)connectHandlerWithMessage:(id)message connection:(id)connection;
++ (void)observeXPCServer:(id)server;
++ (void)resolveSessionWithMessage:(id)message connection:(id)connection;
 - (ErrorHandlerManager)init;
-- (id)_clientForConnection:(id)a3;
-- (void)_clientDisconnectNotification:(id)a3;
-- (void)_connectHandlerWithMessage:(id)a3 connection:(id)a4;
-- (void)_handleMessage:(id)a3 connection:(id)a4 withBlock:(id)a5;
-- (void)_handleMessage:(id)a3 connection:(id)a4 withReplyBlock:(id)a5;
-- (void)_resolveSessionWithMessage:(id)a3 connection:(id)a4;
+- (id)_clientForConnection:(id)connection;
+- (void)_clientDisconnectNotification:(id)notification;
+- (void)_connectHandlerWithMessage:(id)message connection:(id)connection;
+- (void)_handleMessage:(id)message connection:(id)connection withBlock:(id)block;
+- (void)_handleMessage:(id)message connection:(id)connection withReplyBlock:(id)block;
+- (void)_resolveSessionWithMessage:(id)message connection:(id)connection;
 - (void)dealloc;
-- (void)openSession:(id)a3 withCompletionBlock:(id)a4;
+- (void)openSession:(id)session withCompletionBlock:(id)block;
 @end
 
 @implementation ErrorHandlerManager
@@ -61,7 +61,7 @@
   block[1] = 3221225472;
   block[2] = sub_10020D0F8;
   block[3] = &unk_100327378;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100384160 != -1)
   {
     dispatch_once(&qword_100384160, block);
@@ -70,53 +70,53 @@
   return qword_100384158;
 }
 
-- (void)openSession:(id)a3 withCompletionBlock:(id)a4
+- (void)openSession:(id)session withCompletionBlock:(id)block
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10020D198;
   block[3] = &unk_10032AF90;
-  block[4] = a3;
+  block[4] = session;
   block[5] = self;
-  block[6] = a4;
+  block[6] = block;
   dispatch_async(dispatchQueue, block);
 }
 
-+ (void)observeXPCServer:(id)a3
++ (void)observeXPCServer:(id)server
 {
-  [a3 addObserver:a1 selector:"connectHandlerWithMessage:connection:" forMessage:96];
+  [server addObserver:self selector:"connectHandlerWithMessage:connection:" forMessage:96];
 
-  [a3 addObserver:a1 selector:"resolveSessionWithMessage:connection:" forMessage:97];
+  [server addObserver:self selector:"resolveSessionWithMessage:connection:" forMessage:97];
 }
 
-+ (void)connectHandlerWithMessage:(id)a3 connection:(id)a4
++ (void)connectHandlerWithMessage:(id)message connection:(id)connection
 {
-  v6 = [a1 errorHandlerManager];
+  errorHandlerManager = [self errorHandlerManager];
 
-  [v6 _connectHandlerWithMessage:a3 connection:a4];
+  [errorHandlerManager _connectHandlerWithMessage:message connection:connection];
 }
 
-+ (void)resolveSessionWithMessage:(id)a3 connection:(id)a4
++ (void)resolveSessionWithMessage:(id)message connection:(id)connection
 {
-  v6 = [a1 errorHandlerManager];
+  errorHandlerManager = [self errorHandlerManager];
 
-  [v6 _resolveSessionWithMessage:a3 connection:a4];
+  [errorHandlerManager _resolveSessionWithMessage:message connection:connection];
 }
 
-- (void)_clientDisconnectNotification:(id)a3
+- (void)_clientDisconnectNotification:(id)notification
 {
   dispatchQueue = self->_dispatchQueue;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10020D6B0;
   v4[3] = &unk_100327350;
-  v4[4] = a3;
+  v4[4] = notification;
   v4[5] = self;
   dispatch_async(dispatchQueue, v4);
 }
 
-- (id)_clientForConnection:(id)a3
+- (id)_clientForConnection:(id)connection
 {
   v14 = 0u;
   v15 = 0u;
@@ -141,14 +141,14 @@ LABEL_3:
     }
 
     v9 = *(*(&v14 + 1) + 8 * v8);
-    v10 = [v9 copyInputConnection];
-    v11 = v10;
-    if (v10)
+    copyInputConnection = [v9 copyInputConnection];
+    v11 = copyInputConnection;
+    if (copyInputConnection)
     {
-      xpc_release(v10);
+      xpc_release(copyInputConnection);
     }
 
-    if (v11 == a3 && v9 != 0)
+    if (v11 == connection && v9 != 0)
     {
       return v9;
     }
@@ -166,60 +166,60 @@ LABEL_3:
   }
 }
 
-- (void)_connectHandlerWithMessage:(id)a3 connection:(id)a4
+- (void)_connectHandlerWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10020DC88;
   v4[3] = &unk_10032BA20;
-  v4[4] = a4;
+  v4[4] = connection;
   v4[5] = self;
-  v4[6] = a3;
-  [(ErrorHandlerManager *)self _handleMessage:a3 connection:a4 withReplyBlock:v4];
+  v4[6] = message;
+  [(ErrorHandlerManager *)self _handleMessage:message connection:connection withReplyBlock:v4];
 }
 
-- (void)_handleMessage:(id)a3 connection:(id)a4 withBlock:(id)a5
+- (void)_handleMessage:(id)message connection:(id)connection withBlock:(id)block
 {
   [+[Daemon daemon](Daemon "daemon")];
-  xpc_retain(a4);
-  xpc_retain(a3);
+  xpc_retain(connection);
+  xpc_retain(message);
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10020E5F4;
   block[3] = &unk_100327408;
-  block[5] = a4;
-  block[6] = a5;
-  block[4] = a3;
+  block[5] = connection;
+  block[6] = block;
+  block[4] = message;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_handleMessage:(id)a3 connection:(id)a4 withReplyBlock:(id)a5
+- (void)_handleMessage:(id)message connection:(id)connection withReplyBlock:(id)block
 {
   [+[Daemon daemon](Daemon "daemon")];
-  xpc_retain(a4);
-  xpc_retain(a3);
+  xpc_retain(connection);
+  xpc_retain(message);
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10020E714;
   block[3] = &unk_10032A7D8;
-  block[5] = a4;
-  block[6] = a5;
-  block[4] = a3;
+  block[5] = connection;
+  block[6] = block;
+  block[4] = message;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_resolveSessionWithMessage:(id)a3 connection:(id)a4
+- (void)_resolveSessionWithMessage:(id)message connection:(id)connection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10020E80C;
   v4[3] = &unk_1003273E0;
   v4[4] = self;
-  v4[5] = a4;
-  v4[6] = a3;
-  [(ErrorHandlerManager *)self _handleMessage:a3 connection:a4 withBlock:v4];
+  v4[5] = connection;
+  v4[6] = message;
+  [(ErrorHandlerManager *)self _handleMessage:message connection:connection withBlock:v4];
 }
 
 @end

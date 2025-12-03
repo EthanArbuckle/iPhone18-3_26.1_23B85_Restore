@@ -1,17 +1,17 @@
 @interface JFXAVPlayerViewController
 - (CGSize)displaySize;
-- (void)configureDisplayAttributesForColorSpace:(id)a3;
+- (void)configureDisplayAttributesForColorSpace:(id)space;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation JFXAVPlayerViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = JFXAVPlayerViewController;
-  [(JFXAVPlayerViewController *)&v4 viewWillAppear:a3];
+  [(JFXAVPlayerViewController *)&v4 viewWillAppear:appear];
   [(JFXAVPlayerViewController *)self setShowAVControls:0];
 }
 
@@ -20,22 +20,22 @@
   v6.receiver = self;
   v6.super_class = JFXAVPlayerViewController;
   [(JFXAVPlayerViewController *)&v6 viewDidLoad];
-  v3 = [(JFXAVPlayerViewController *)self showAVControls];
-  v4 = [(JFXAVPlayerViewController *)self view];
-  [v4 setUserInteractionEnabled:v3];
+  showAVControls = [(JFXAVPlayerViewController *)self showAVControls];
+  view = [(JFXAVPlayerViewController *)self view];
+  [view setUserInteractionEnabled:showAVControls];
 
   [(JFXAVPlayerViewController *)self setShowsPlaybackControls:[(JFXAVPlayerViewController *)self showAVControls]];
   [(JFXAVPlayerViewController *)self setAllowsPictureInPicturePlayback:[(JFXAVPlayerViewController *)self showAVControls]];
-  v5 = [(JFXAVPlayerViewController *)self view];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view2 = [(JFXAVPlayerViewController *)self view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(JFXAVPlayerViewController *)self setAllowsVideoFrameAnalysis:0];
 }
 
 - (CGSize)displaySize
 {
-  v2 = [(JFXAVPlayerViewController *)self view];
-  [v2 bounds];
+  view = [(JFXAVPlayerViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
 
@@ -46,13 +46,13 @@
   return result;
 }
 
-- (void)configureDisplayAttributesForColorSpace:(id)a3
+- (void)configureDisplayAttributesForColorSpace:(id)space
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (space)
   {
     v6 = *MEMORY[0x277CC4E30];
-    v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(a3, "jfx_getCVPixelFormatForExport")}];
+    v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(space, "jfx_getCVPixelFormatForExport")}];
     v7[0] = v4;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
     [(JFXAVPlayerViewController *)self setPixelBufferAttributes:v5];

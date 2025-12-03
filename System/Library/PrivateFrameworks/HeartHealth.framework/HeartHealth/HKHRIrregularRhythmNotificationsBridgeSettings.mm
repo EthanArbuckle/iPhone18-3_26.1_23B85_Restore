@@ -1,28 +1,28 @@
 @interface HKHRIrregularRhythmNotificationsBridgeSettings
-- (HKHRIrregularRhythmNotificationsBridgeSettings)initWithSettingHidden:(BOOL)a3 notificationsOn:(BOOL)a4 shouldLinkToOnboarding:(BOOL)a5 userInteractionEnabled:(BOOL)a6 headerText:(id)a7 footer:(id)a8;
+- (HKHRIrregularRhythmNotificationsBridgeSettings)initWithSettingHidden:(BOOL)hidden notificationsOn:(BOOL)on shouldLinkToOnboarding:(BOOL)onboarding userInteractionEnabled:(BOOL)enabled headerText:(id)text footer:(id)footer;
 @end
 
 @implementation HKHRIrregularRhythmNotificationsBridgeSettings
 
-- (HKHRIrregularRhythmNotificationsBridgeSettings)initWithSettingHidden:(BOOL)a3 notificationsOn:(BOOL)a4 shouldLinkToOnboarding:(BOOL)a5 userInteractionEnabled:(BOOL)a6 headerText:(id)a7 footer:(id)a8
+- (HKHRIrregularRhythmNotificationsBridgeSettings)initWithSettingHidden:(BOOL)hidden notificationsOn:(BOOL)on shouldLinkToOnboarding:(BOOL)onboarding userInteractionEnabled:(BOOL)enabled headerText:(id)text footer:(id)footer
 {
-  v14 = a7;
-  v15 = a8;
+  textCopy = text;
+  footerCopy = footer;
   v23.receiver = self;
   v23.super_class = HKHRIrregularRhythmNotificationsBridgeSettings;
   v16 = [(HKHRIrregularRhythmNotificationsBridgeSettings *)&v23 init];
   v17 = v16;
   if (v16)
   {
-    v16->_isSettingHidden = a3;
-    v16->_areNotificationsOn = a4;
-    v16->_shouldLinkToOnboarding = a5;
-    v16->_isUserInteractionEnabled = a6;
-    v18 = [v14 copy];
+    v16->_isSettingHidden = hidden;
+    v16->_areNotificationsOn = on;
+    v16->_shouldLinkToOnboarding = onboarding;
+    v16->_isUserInteractionEnabled = enabled;
+    v18 = [textCopy copy];
     headerText = v17->_headerText;
     v17->_headerText = v18;
 
-    v20 = [v15 copy];
+    v20 = [footerCopy copy];
     footer = v17->_footer;
     v17->_footer = v20;
   }

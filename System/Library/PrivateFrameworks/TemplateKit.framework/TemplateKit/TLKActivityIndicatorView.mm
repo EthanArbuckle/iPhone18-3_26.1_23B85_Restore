@@ -3,9 +3,9 @@
 - (id)subtitleLabelText;
 - (void)didMoveToWindow;
 - (void)observedPropertiesChanged;
-- (void)setSubtitle:(id)a3;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setSubtitle:(id)subtitle;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TLKActivityIndicatorView
@@ -32,14 +32,14 @@
   return v3;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = TLKActivityIndicatorView;
-  [(TLKActivityIndicatorView *)&v9 traitCollectionDidChange:v4];
-  v5 = [(TLKActivityIndicatorView *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(TLKActivityIndicatorView *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(TLKActivityIndicatorView *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -47,11 +47,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(TLKActivityIndicatorView *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(TLKActivityIndicatorView *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -67,24 +67,24 @@ LABEL_5:
   [(UIView *)self tlk_updateWithCurrentAppearance];
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
   v8.receiver = self;
   v8.super_class = TLKActivityIndicatorView;
-  v4 = a3;
-  [(UIView *)&v8 tlk_updateForAppearance:v4];
-  v5 = [v4 secondaryColor];
-  v6 = [(TLKActivityIndicatorView *)self activityIndicator];
-  [v6 setColor:v5];
+  appearanceCopy = appearance;
+  [(UIView *)&v8 tlk_updateForAppearance:appearanceCopy];
+  secondaryColor = [appearanceCopy secondaryColor];
+  activityIndicator = [(TLKActivityIndicatorView *)self activityIndicator];
+  [activityIndicator setColor:secondaryColor];
 
-  v7 = [(TLKActivityIndicatorView *)self activityIndicator];
-  [v4 enableAppearanceForView:v7];
+  activityIndicator2 = [(TLKActivityIndicatorView *)self activityIndicator];
+  [appearanceCopy enableAppearanceForView:activityIndicator2];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  subtitleCopy = subtitle;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_subtitle setObserver:0];
@@ -95,7 +95,7 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = subtitleCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -128,11 +128,11 @@ LABEL_5:
         while (v8);
       }
 
-      v5 = v23;
+      subtitleCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_subtitle, a3);
+  objc_storeStrong(&self->_subtitle, subtitle);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_subtitle setObserver:self];
@@ -177,38 +177,38 @@ LABEL_5:
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
 - (void)observedPropertiesChanged
 {
-  v3 = [(TLKActivityIndicatorView *)self subtitle];
-  v4 = [v3 text];
-  v5 = [(TLKActivityIndicatorView *)self subtitleLabel];
-  [v5 setText:v4];
+  subtitle = [(TLKActivityIndicatorView *)self subtitle];
+  text = [subtitle text];
+  subtitleLabel = [(TLKActivityIndicatorView *)self subtitleLabel];
+  [subtitleLabel setText:text];
 
-  v6 = [(TLKActivityIndicatorView *)self activityIndicator];
-  [v6 startAnimating];
+  activityIndicator = [(TLKActivityIndicatorView *)self activityIndicator];
+  [activityIndicator startAnimating];
 }
 
 - (id)subtitleLabelText
 {
-  v2 = [(TLKActivityIndicatorView *)self subtitleLabel];
-  v3 = [v2 text];
+  subtitleLabel = [(TLKActivityIndicatorView *)self subtitleLabel];
+  text = [subtitleLabel text];
 
-  return v3;
+  return text;
 }
 
 @end

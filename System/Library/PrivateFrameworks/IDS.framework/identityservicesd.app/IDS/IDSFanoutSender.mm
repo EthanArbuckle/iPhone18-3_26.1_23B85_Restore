@@ -1,68 +1,68 @@
 @interface IDSFanoutSender
-- (IDSFanoutSender)initWithGUID:(id)a3 service:(id)a4 messageDelivery:(id)a5 completionActivity:(id)a6 coalesceQueueManager:(id)a7;
-- (void)finishedTrackingAPNSAcksWithURIs:(id)a3 guid:(id)a4;
-- (void)finishedTrackingMadridAcksWithContext:(id)a3 uris:(id)a4 guid:(id)a5;
-- (void)receivedAPNSAckForMessage:(id)a3 guid:(id)a4;
-- (void)receivedErrorWithContext:(id)a3;
-- (void)sendFanouts:(id)a3 guidToDeliveryAcknowledgementBlock:(id)a4 guidToSendCompletionBlock:(id)a5 forURIs:(id)a6 messageQueue:(id)a7;
-- (void)sendMMLs:(id)a3 guidToDeliveryAcknowledgementBlock:(id)a4 guidToSendCompletionBlock:(id)a5 forService:(id)a6 sendMode:(id)a7 messageQueue:(id)a8;
+- (IDSFanoutSender)initWithGUID:(id)d service:(id)service messageDelivery:(id)delivery completionActivity:(id)activity coalesceQueueManager:(id)manager;
+- (void)finishedTrackingAPNSAcksWithURIs:(id)is guid:(id)guid;
+- (void)finishedTrackingMadridAcksWithContext:(id)context uris:(id)uris guid:(id)guid;
+- (void)receivedAPNSAckForMessage:(id)message guid:(id)guid;
+- (void)receivedErrorWithContext:(id)context;
+- (void)sendFanouts:(id)fanouts guidToDeliveryAcknowledgementBlock:(id)block guidToSendCompletionBlock:(id)completionBlock forURIs:(id)is messageQueue:(id)queue;
+- (void)sendMMLs:(id)ls guidToDeliveryAcknowledgementBlock:(id)block guidToSendCompletionBlock:(id)completionBlock forService:(id)service sendMode:(id)mode messageQueue:(id)queue;
 @end
 
 @implementation IDSFanoutSender
 
-- (IDSFanoutSender)initWithGUID:(id)a3 service:(id)a4 messageDelivery:(id)a5 completionActivity:(id)a6 coalesceQueueManager:(id)a7
+- (IDSFanoutSender)initWithGUID:(id)d service:(id)service messageDelivery:(id)delivery completionActivity:(id)activity coalesceQueueManager:(id)manager
 {
-  v22 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  serviceCopy = service;
+  deliveryCopy = delivery;
+  activityCopy = activity;
+  managerCopy = manager;
   v23.receiver = self;
   v23.super_class = IDSFanoutSender;
   v17 = [(IDSFanoutSender *)&v23 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_messageDelivery, a5);
+    objc_storeStrong(&v17->_messageDelivery, delivery);
     v19 = objc_alloc_init(IDSAckStateMachine);
     ackStateMachine = v18->_ackStateMachine;
     v18->_ackStateMachine = v19;
 
-    objc_storeStrong(&v18->_guid, a3);
-    objc_storeStrong(&v18->_service, a4);
-    objc_storeStrong(&v18->_completionActivity, a6);
-    objc_storeStrong(&v18->_coalesceQueueManager, a7);
+    objc_storeStrong(&v18->_guid, d);
+    objc_storeStrong(&v18->_service, service);
+    objc_storeStrong(&v18->_completionActivity, activity);
+    objc_storeStrong(&v18->_coalesceQueueManager, manager);
   }
 
   return v18;
 }
 
-- (void)sendFanouts:(id)a3 guidToDeliveryAcknowledgementBlock:(id)a4 guidToSendCompletionBlock:(id)a5 forURIs:(id)a6 messageQueue:(id)a7
+- (void)sendFanouts:(id)fanouts guidToDeliveryAcknowledgementBlock:(id)block guidToSendCompletionBlock:(id)completionBlock forURIs:(id)is messageQueue:(id)queue
 {
-  v12 = a3;
-  v43 = a4;
-  v42 = a5;
-  v13 = a6;
-  v14 = a7;
-  objc_storeStrong(&self->_guidToDeliveryAcknowledgementBlock, a4);
-  objc_storeStrong(&self->_guidToSendCompletionBlock, a5);
+  fanoutsCopy = fanouts;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  isCopy = is;
+  queueCopy = queue;
+  objc_storeStrong(&self->_guidToDeliveryAcknowledgementBlock, block);
+  objc_storeStrong(&self->_guidToSendCompletionBlock, completionBlock);
   v15 = objc_alloc_init(IDSAPNSAckTracker);
   v16 = objc_alloc_init(IDSMadridAckTracker);
   [(IDSAPNSAckTracker *)v15 setDelegate:self];
   [(IDSMadridAckTracker *)v16 setDelegate:self];
   v40 = v15;
-  [(IDSAPNSAckTracker *)v15 trackMessages:v12 forURIs:v13];
+  [(IDSAPNSAckTracker *)v15 trackMessages:fanoutsCopy forURIs:isCopy];
   v39 = v16;
-  v41 = v13;
-  v47 = v14;
-  [(IDSMadridAckTracker *)v16 trackMessages:v12 forURIs:v13 messageQueue:v14];
-  v46 = self;
+  v41 = isCopy;
+  v47 = queueCopy;
+  [(IDSMadridAckTracker *)v16 trackMessages:fanoutsCopy forURIs:isCopy messageQueue:queueCopy];
+  selfCopy = self;
   [(IDSAckStateMachine *)self->_ackStateMachine setState:1];
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v17 = v12;
+  v17 = fanoutsCopy;
   v18 = [v17 countByEnumeratingWithState:&v52 objects:v57 count:16];
   if (v18)
   {
@@ -78,8 +78,8 @@
           objc_enumerationMutation(v17);
         }
 
-        v23 = [*(*(&v52 + 1) + 8 * i) pendingResponseTokens];
-        v20 += [v23 count];
+        pendingResponseTokens = [*(*(&v52 + 1) + 8 * i) pendingResponseTokens];
+        v20 += [pendingResponseTokens count];
       }
 
       v19 = [v17 countByEnumeratingWithState:&v52 objects:v57 count:16];
@@ -113,7 +113,7 @@
         }
 
         v27 = *(*(&v48 + 1) + 8 * j);
-        [(FTMessageDelivery *)v46->_messageDelivery sendMessage:v27];
+        [(FTMessageDelivery *)selfCopy->_messageDelivery sendMessage:v27];
         v28 = [v47 count];
         v29 = +[IMMobileNetworkManager sharedInstance];
         v30 = v29;
@@ -127,20 +127,20 @@
           [v29 removeFastDormancyDisableToken:@"IDSDeliveryManager"];
         }
 
-        v31 = [v27 sendMetric];
+        sendMetric = [v27 sendMetric];
         v32 = +[IDSCurrentServerTime sharedInstance];
         [v32 currentServerTimeInterval];
         v33 = [NSNumber numberWithDouble:?];
         v34 = +[_TtC17identityservicesd27IDSCloudTelemetryMetricKeys outgoingSendFanoutsKey];
-        [v31 addEntry:v33 forKey:v34];
+        [sendMetric addEntry:v33 forKey:v34];
 
-        v35 = [v27 chunkNumber];
+        chunkNumber = [v27 chunkNumber];
         v36 = +[_TtC17identityservicesd27IDSCloudTelemetryMetricKeys fanoutChunkNumberKey];
-        [v31 addEntry:v35 forKey:v36];
+        [sendMetric addEntry:chunkNumber forKey:v36];
 
         v37 = [NSNumber numberWithLongLong:v20];
         v38 = +[_TtC17identityservicesd27IDSCloudTelemetryMetricKeys totalFanoutDeviceCountKey];
-        [v31 addEntry:v37 forKey:v38];
+        [sendMetric addEntry:v37 forKey:v38];
       }
 
       v25 = [obj countByEnumeratingWithState:&v48 objects:v56 count:16];
@@ -150,29 +150,29 @@
   }
 }
 
-- (void)sendMMLs:(id)a3 guidToDeliveryAcknowledgementBlock:(id)a4 guidToSendCompletionBlock:(id)a5 forService:(id)a6 sendMode:(id)a7 messageQueue:(id)a8
+- (void)sendMMLs:(id)ls guidToDeliveryAcknowledgementBlock:(id)block guidToSendCompletionBlock:(id)completionBlock forService:(id)service sendMode:(id)mode messageQueue:(id)queue
 {
-  v14 = a3;
-  v34 = a4;
-  v33 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  objc_storeStrong(&self->_guidToDeliveryAcknowledgementBlock, a4);
-  objc_storeStrong(&self->_guidToSendCompletionBlock, a5);
+  lsCopy = ls;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  serviceCopy = service;
+  modeCopy = mode;
+  queueCopy = queue;
+  objc_storeStrong(&self->_guidToDeliveryAcknowledgementBlock, block);
+  objc_storeStrong(&self->_guidToSendCompletionBlock, completionBlock);
   v18 = objc_alloc_init(IDSAPNSAckTracker);
   v19 = objc_alloc_init(IDSMadridAckTracker);
   [(IDSAPNSAckTracker *)v18 setDelegate:self];
   [(IDSMadridAckTracker *)v19 setDelegate:self];
-  v20 = [v14 allKeys];
-  v31 = v16;
-  v32 = v15;
-  v21 = [IDSMMLBuilder mmlsFromAggregates:v20 service:v15 sendMode:v16 guid:self->_guid];
+  allKeys = [lsCopy allKeys];
+  v31 = modeCopy;
+  v32 = serviceCopy;
+  v21 = [IDSMMLBuilder mmlsFromAggregates:allKeys service:serviceCopy sendMode:modeCopy guid:self->_guid];
 
-  [(IDSAPNSAckTracker *)v18 trackMMLMessages:v21 forURIs:v14];
+  [(IDSAPNSAckTracker *)v18 trackMMLMessages:v21 forURIs:lsCopy];
   v30 = v19;
-  v35 = v14;
-  [(IDSMadridAckTracker *)v19 trackMMLMessages:v21 forURIs:v14 messageQueue:v17];
+  v35 = lsCopy;
+  [(IDSMadridAckTracker *)v19 trackMMLMessages:v21 forURIs:lsCopy messageQueue:queueCopy];
   [(IDSAckStateMachine *)self->_ackStateMachine setState:1];
   v38 = 0u;
   v39 = 0u;
@@ -194,7 +194,7 @@
         }
 
         [(FTMessageDelivery *)self->_messageDelivery sendMessage:*(*(&v36 + 1) + 8 * i)];
-        v27 = [v17 count];
+        v27 = [queueCopy count];
         v28 = +[IMMobileNetworkManager sharedInstance];
         v29 = v28;
         if (v27)
@@ -215,31 +215,31 @@
   }
 }
 
-- (void)receivedAPNSAckForMessage:(id)a3 guid:(id)a4
+- (void)receivedAPNSAckForMessage:(id)message guid:(id)guid
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  guidCopy = guid;
   v8 = +[IDSFoundationLog delivery];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v7;
+    v12 = guidCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received APNS Ack for GUID %@", &v11, 0xCu);
   }
 
-  v9 = [(NSDictionary *)self->_guidToDeliveryAcknowledgementBlock objectForKey:v7];
+  v9 = [(NSDictionary *)self->_guidToDeliveryAcknowledgementBlock objectForKey:guidCopy];
 
   if (v9)
   {
-    v10 = [(NSDictionary *)self->_guidToDeliveryAcknowledgementBlock objectForKey:v7];
-    (v10)[2](v10, v6);
+    v10 = [(NSDictionary *)self->_guidToDeliveryAcknowledgementBlock objectForKey:guidCopy];
+    (v10)[2](v10, messageCopy);
   }
 }
 
-- (void)finishedTrackingAPNSAcksWithURIs:(id)a3 guid:(id)a4
+- (void)finishedTrackingAPNSAcksWithURIs:(id)is guid:(id)guid
 {
-  v6 = a3;
-  v7 = a4;
+  isCopy = is;
+  guidCopy = guid;
   v8 = +[IDSFoundationLog delivery];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -253,19 +253,19 @@
       v9 = @"NO";
     }
 
-    v10 = [(IDSAckStateMachine *)self->_ackStateMachine error];
+    error = [(IDSAckStateMachine *)self->_ackStateMachine error];
     v17 = 138412802;
-    v18 = v7;
+    v18 = guidCopy;
     v19 = 2112;
     v20 = v9;
     v21 = 2112;
-    v22 = v10;
+    v22 = error;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Finished acks for GUID %@ success: %@ error: %@", &v17, 0x20u);
   }
 
   if ([(IDSAckStateMachine *)self->_ackStateMachine state]!= 3)
   {
-    v11 = [(NSDictionary *)self->_guidToSendCompletionBlock objectForKey:v7];
+    v11 = [(NSDictionary *)self->_guidToSendCompletionBlock objectForKey:guidCopy];
 
     if (v11)
     {
@@ -277,42 +277,42 @@
         v12 = 0;
       }
 
-      v14 = [(IDSAckStateMachine *)self->_ackStateMachine error];
-      v15 = [v13 initWithResponseCode:v12 error:v14 lastCall:0];
+      error2 = [(IDSAckStateMachine *)self->_ackStateMachine error];
+      v15 = [v13 initWithResponseCode:v12 error:error2 lastCall:0];
 
-      [v15 setDisplayURIs:v6];
+      [v15 setDisplayURIs:isCopy];
       [v15 setLastCourierAck:1];
-      v16 = [(NSDictionary *)self->_guidToSendCompletionBlock objectForKey:v7];
+      v16 = [(NSDictionary *)self->_guidToSendCompletionBlock objectForKey:guidCopy];
       (v16)[2](v16, v15);
       [(IDSAckStateMachine *)self->_ackStateMachine setError:0];
     }
   }
 }
 
-- (void)receivedErrorWithContext:(id)a3
+- (void)receivedErrorWithContext:(id)context
 {
-  v9 = a3;
+  contextCopy = context;
   [(IDSAckStateMachine *)self->_ackStateMachine setSuccessful:0];
-  v4 = [v9 responseError];
-  if (v4)
+  responseError = [contextCopy responseError];
+  if (responseError)
   {
-    v5 = v4;
-    v6 = [(IDSAckStateMachine *)self->_ackStateMachine error];
+    v5 = responseError;
+    error = [(IDSAckStateMachine *)self->_ackStateMachine error];
 
-    if (!v6)
+    if (!error)
     {
       ackStateMachine = self->_ackStateMachine;
-      v8 = [v9 responseError];
-      [(IDSAckStateMachine *)ackStateMachine setError:v8];
+      responseError2 = [contextCopy responseError];
+      [(IDSAckStateMachine *)ackStateMachine setError:responseError2];
     }
   }
 }
 
-- (void)finishedTrackingMadridAcksWithContext:(id)a3 uris:(id)a4 guid:(id)a5
+- (void)finishedTrackingMadridAcksWithContext:(id)context uris:(id)uris guid:(id)guid
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  urisCopy = uris;
+  guidCopy = guid;
   state.opaque[0] = 0xAAAAAAAAAAAAAAAALL;
   state.opaque[1] = 0xAAAAAAAAAAAAAAAALL;
   os_activity_scope_enter(self->_completionActivity, &state);
@@ -322,7 +322,7 @@
   {
     service = self->_service;
     *buf = 138412546;
-    v26 = v10;
+    v26 = guidCopy;
     v27 = 2112;
     v28 = service;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "OUTGOING-PUSH_FULLY_SENT:%@ SERVICE:%@", buf, 0x16u);
@@ -330,7 +330,7 @@
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v22 = v10;
+    v22 = guidCopy;
     v23 = self->_service;
     _IDSLogV();
   }
@@ -338,29 +338,29 @@
   v13 = [IDSFoundationLog delivery:v22];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(IDSAckStateMachine *)self->_ackStateMachine successful];
-    v15 = [(IDSAckStateMachine *)self->_ackStateMachine error];
-    v16 = v15;
+    successful = [(IDSAckStateMachine *)self->_ackStateMachine successful];
+    error = [(IDSAckStateMachine *)self->_ackStateMachine error];
+    v16 = error;
     v17 = @"NO";
     *buf = 138412802;
-    v26 = v10;
+    v26 = guidCopy;
     v27 = 2112;
-    if (v14)
+    if (successful)
     {
       v17 = @"YES";
     }
 
     v28 = v17;
     v29 = 2112;
-    v30 = v15;
+    v30 = error;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Finished sending GUID %@ success: %@ error: %@", buf, 0x20u);
   }
 
-  v18 = [(NSDictionary *)self->_guidToSendCompletionBlock objectForKey:v10];
+  v18 = [(NSDictionary *)self->_guidToSendCompletionBlock objectForKey:guidCopy];
 
   if (v18)
   {
-    [v8 setDisplayURIs:v9];
+    [contextCopy setDisplayURIs:urisCopy];
     if ([(IDSAckStateMachine *)self->_ackStateMachine successful])
     {
       v19 = 0;
@@ -371,13 +371,13 @@
       v19 = 2;
     }
 
-    [v8 setIdsResponseCode:v19];
-    v20 = [(IDSAckStateMachine *)self->_ackStateMachine error];
-    [v8 setResponseError:v20];
+    [contextCopy setIdsResponseCode:v19];
+    error2 = [(IDSAckStateMachine *)self->_ackStateMachine error];
+    [contextCopy setResponseError:error2];
 
-    [v8 setLastCall:1];
-    v21 = [(NSDictionary *)self->_guidToSendCompletionBlock objectForKey:v10];
-    (v21)[2](v21, v8);
+    [contextCopy setLastCall:1];
+    v21 = [(NSDictionary *)self->_guidToSendCompletionBlock objectForKey:guidCopy];
+    (v21)[2](v21, contextCopy);
     [(IDSAckStateMachine *)self->_ackStateMachine setError:0];
   }
 

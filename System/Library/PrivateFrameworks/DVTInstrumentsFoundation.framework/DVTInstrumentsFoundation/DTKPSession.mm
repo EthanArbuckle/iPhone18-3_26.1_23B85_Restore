@@ -1,13 +1,13 @@
 @interface DTKPSession
-+ (int)blessPid:(int)a3;
++ (int)blessPid:(int)pid;
 + (void)initialize;
 - (BOOL)isActive;
 - (BOOL)isPaused;
-- (BOOL)pause:(id *)a3;
-- (BOOL)resume:(id *)a3;
-- (BOOL)start:(id *)a3;
-- (BOOL)stop:(id *)a3;
-- (DTKPSession)initWithConfig:(id)a3 andAggregator:(id)a4;
+- (BOOL)pause:(id *)pause;
+- (BOOL)resume:(id *)resume;
+- (BOOL)start:(id *)start;
+- (BOOL)stop:(id *)stop;
+- (DTKPSession)initWithConfig:(id)config andAggregator:(id)aggregator;
 - (id).cxx_construct;
 - (id)_lockKPerf;
 - (int)_unlockKperf;
@@ -18,14 +18,14 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     DTKPSetupLogging();
   }
 }
 
-+ (int)blessPid:(int)a3
++ (int)blessPid:(int)pid
 {
   if (kperf_bless_set())
   {
@@ -38,18 +38,18 @@
   }
 }
 
-- (DTKPSession)initWithConfig:(id)a3 andAggregator:(id)a4
+- (DTKPSession)initWithConfig:(id)config andAggregator:(id)aggregator
 {
-  v7 = a3;
-  v8 = a4;
+  configCopy = config;
+  aggregatorCopy = aggregator;
   v12.receiver = self;
   v12.super_class = DTKPSession;
   v9 = [(DTKPSession *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(v9 + 11, a3);
-    objc_storeStrong(v10 + 12, a4);
+    objc_storeStrong(v9 + 11, config);
+    objc_storeStrong(v10 + 12, aggregator);
     *(v10 + 2) = atomic_fetch_add_explicit(dword_27EE84300, 1u, memory_order_relaxed);
     *(v10 + 104) = 10;
   }
@@ -99,7 +99,7 @@
   return result;
 }
 
-- (BOOL)start:(id *)a3
+- (BOOL)start:(id *)start
 {
   v25 = *MEMORY[0x277D85DE8];
   std::mutex::lock((self + 16));
@@ -107,9 +107,9 @@
   if (CSTaskIsTranslated())
   {
     v6 = sub_247FAC0A8(@"ktrace cannot trace the system under Rosetta translation", -500);
-    if (a3)
+    if (start)
     {
-      *a3 = v6;
+      *start = v6;
     }
 
     v7 = 0;
@@ -123,9 +123,9 @@
     {
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot start session unless it's idle. Current state: %s", sub_247FAC4F4(v8)];
       v10 = sub_247FAC0A8(v9, -500);
-      if (a3)
+      if (start)
       {
-        *a3 = v10;
+        *start = v10;
       }
     }
 
@@ -135,28 +135,28 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
         *buf = 67109120;
-        v24 = [(DTKPSession *)self sessionID];
+        sessionID = [(DTKPSession *)self sessionID];
         _os_log_impl(&dword_247F67000, v11, OS_LOG_TYPE_INFO, "DTKPSession: Starting recording. ID %d.", buf, 8u);
       }
 
-      v12 = [(DTKPSession *)self _lockKPerf];
-      v13 = v12;
-      if (a3)
+      _lockKPerf = [(DTKPSession *)self _lockKPerf];
+      v13 = _lockKPerf;
+      if (start)
       {
         v13 = 0;
-        *a3 = v12;
+        *start = _lockKPerf;
       }
 
-      if (!v12)
+      if (!_lockKPerf)
       {
         [(DTKPSession *)self recordingPriority];
         if (kperf_bless_allow_preemption())
         {
           v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not set the recording priority."];
           v15 = sub_247FAC0A8(v14, -6);
-          if (a3)
+          if (start)
           {
-            *a3 = v15;
+            *start = v15;
           }
 
           else
@@ -167,37 +167,37 @@
 
         else
         {
-          v16 = [*(self + 11) apply];
-          v17 = v16;
-          if (a3)
+          apply = [*(self + 11) apply];
+          v17 = apply;
+          if (start)
           {
-            *a3 = v16;
+            *start = apply;
             v17 = v13;
           }
 
-          if (v16)
+          if (apply)
           {
             v13 = v17;
           }
 
           else
           {
-            v21 = [*(self + 12) start];
-            v13 = v21;
-            if (a3)
+            start = [*(self + 12) start];
+            v13 = start;
+            if (start)
             {
-              *a3 = v21;
+              *start = start;
               v13 = v17;
             }
 
-            if (!v21)
+            if (!start)
             {
               v7 = 1;
               *(self + 20) = 1;
               goto LABEL_29;
             }
 
-            v22 = [*(self + 11) reset];
+            reset = [*(self + 11) reset];
           }
         }
 
@@ -205,7 +205,7 @@
       }
 
       *(self + 20) = 4;
-      if (!a3)
+      if (!start)
       {
         v18 = v13;
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -226,7 +226,7 @@ LABEL_29:
   return v7;
 }
 
-- (BOOL)pause:(id *)a3
+- (BOOL)pause:(id *)pause
 {
   v23 = *MEMORY[0x277D85DE8];
   std::mutex::lock((self + 16));
@@ -238,10 +238,10 @@ LABEL_29:
 
     v13 = v12;
     v14 = v13;
-    if (a3)
+    if (pause)
     {
       v15 = v13;
-      *a3 = v14;
+      *pause = v14;
     }
 
     else
@@ -262,19 +262,19 @@ LABEL_29:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v22 = [(DTKPSession *)self sessionID];
+    sessionID = [(DTKPSession *)self sessionID];
     _os_log_impl(&dword_247F67000, v6, OS_LOG_TYPE_INFO, "DTKPSession: Pausing recording. ID %d.", buf, 8u);
   }
 
-  v7 = [*(self + 12) pause];
-  if (v7)
+  pause = [*(self + 12) pause];
+  if (pause)
   {
-    v8 = v7;
+    v8 = pause;
     v9 = v8;
-    if (a3)
+    if (pause)
     {
       v10 = v8;
-      *a3 = v9;
+      *pause = v9;
     }
 
     else
@@ -302,7 +302,7 @@ LABEL_19:
   return v16;
 }
 
-- (BOOL)resume:(id *)a3
+- (BOOL)resume:(id *)resume
 {
   v23 = *MEMORY[0x277D85DE8];
   std::mutex::lock((self + 16));
@@ -314,10 +314,10 @@ LABEL_19:
 
     v13 = v12;
     v14 = v13;
-    if (a3)
+    if (resume)
     {
       v15 = v13;
-      *a3 = v14;
+      *resume = v14;
     }
 
     else
@@ -338,19 +338,19 @@ LABEL_19:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v22 = [(DTKPSession *)self sessionID];
+    sessionID = [(DTKPSession *)self sessionID];
     _os_log_impl(&dword_247F67000, v6, OS_LOG_TYPE_INFO, "DTKPSession: Resuming recording. ID %d.", buf, 8u);
   }
 
-  v7 = [*(self + 12) resume];
-  if (v7)
+  resume = [*(self + 12) resume];
+  if (resume)
   {
-    v8 = v7;
+    v8 = resume;
     v9 = v8;
-    if (a3)
+    if (resume)
     {
       v10 = v8;
-      *a3 = v9;
+      *resume = v9;
     }
 
     else
@@ -378,7 +378,7 @@ LABEL_19:
   return v16;
 }
 
-- (BOOL)stop:(id *)a3
+- (BOOL)stop:(id *)stop
 {
   v30 = *MEMORY[0x277D85DE8];
   std::mutex::lock((self + 16));
@@ -389,20 +389,20 @@ LABEL_19:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 67109120;
-      v29 = [(DTKPSession *)self sessionID];
+      sessionID = [(DTKPSession *)self sessionID];
       _os_log_impl(&dword_247F67000, v12, OS_LOG_TYPE_INFO, "DTKPSession: Stopping recording. ID %d.", buf, 8u);
     }
 
-    v13 = [*(self + 12) stop];
-    v14 = v13;
-    if (v13)
+    stop = [*(self + 12) stop];
+    v14 = stop;
+    if (stop)
     {
-      v15 = v13;
+      v15 = stop;
       v16 = v15;
-      if (a3)
+      if (stop)
       {
         v17 = v15;
-        *a3 = v16;
+        *stop = v16;
       }
 
       else
@@ -417,16 +417,16 @@ LABEL_19:
       }
     }
 
-    v19 = [*(self + 11) reset];
+    reset = [*(self + 11) reset];
 
-    if (v19)
+    if (reset)
     {
-      v20 = v19;
+      v20 = reset;
       v21 = v20;
-      if (a3)
+      if (stop)
       {
         v22 = v20;
-        *a3 = v21;
+        *stop = v21;
       }
 
       else
@@ -471,10 +471,10 @@ LABEL_26:
 
     v9 = v8;
     v10 = v9;
-    if (a3)
+    if (stop)
     {
       v11 = v9;
-      *a3 = v10;
+      *stop = v10;
     }
 
     else

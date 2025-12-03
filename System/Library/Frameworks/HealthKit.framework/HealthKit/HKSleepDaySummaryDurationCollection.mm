@@ -1,19 +1,19 @@
 @interface HKSleepDaySummaryDurationCollection
-+ (id)computeDurationsFromSleepPeriod:(id)a3 sleepDayInterval:(id)a4;
-+ (id)computeDurationsFromSleepPeriod:(id)a3 sleepDayInterval:(id)a4 strategies:(id)a5;
-- (id)durationsByAdding:(id)a3;
-- (id)durationsForStrategyType:(int64_t)a3;
-- (id)initWithDurations:(id *)a1;
++ (id)computeDurationsFromSleepPeriod:(id)period sleepDayInterval:(id)interval;
++ (id)computeDurationsFromSleepPeriod:(id)period sleepDayInterval:(id)interval strategies:(id)strategies;
+- (id)durationsByAdding:(id)adding;
+- (id)durationsForStrategyType:(int64_t)type;
+- (id)initWithDurations:(id *)durations;
 @end
 
 @implementation HKSleepDaySummaryDurationCollection
 
-+ (id)computeDurationsFromSleepPeriod:(id)a3 sleepDayInterval:(id)a4
++ (id)computeDurationsFromSleepPeriod:(id)period sleepDayInterval:(id)interval
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [HKSleepDaySummaryDurationStrategy standardStrategiesForSleepDayInterval:v6];
-  v9 = [a1 computeDurationsFromSleepPeriod:v7 sleepDayInterval:v6 strategies:v8];
+  intervalCopy = interval;
+  periodCopy = period;
+  v8 = [HKSleepDaySummaryDurationStrategy standardStrategiesForSleepDayInterval:intervalCopy];
+  v9 = [self computeDurationsFromSleepPeriod:periodCopy sleepDayInterval:intervalCopy strategies:v8];
 
   return v9;
 }
@@ -31,10 +31,10 @@ void __99__HKSleepDaySummaryDurationCollection_computeDurationsFromSleepPeriod_s
   [v5 setObject:v9 forKeyedSubscript:v8];
 }
 
-- (id)durationsForStrategyType:(int64_t)a3
+- (id)durationsForStrategyType:(int64_t)type
 {
   durations = self->_durations;
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v7 = [(NSDictionary *)durations objectForKeyedSubscript:v6];
 
   if (!v7)
@@ -45,39 +45,39 @@ void __99__HKSleepDaySummaryDurationCollection_computeDurationsFromSleepPeriod_s
   return v7;
 }
 
-- (id)initWithDurations:(id *)a1
+- (id)initWithDurations:(id *)durations
 {
   v4 = a2;
-  if (a1)
+  if (durations)
   {
-    v7.receiver = a1;
+    v7.receiver = durations;
     v7.super_class = HKSleepDaySummaryDurationCollection;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    durations = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
     }
   }
 
-  return a1;
+  return durations;
 }
 
-+ (id)computeDurationsFromSleepPeriod:(id)a3 sleepDayInterval:(id)a4 strategies:(id)a5
++ (id)computeDurationsFromSleepPeriod:(id)period sleepDayInterval:(id)interval strategies:(id)strategies
 {
-  v6 = a3;
+  periodCopy = period;
   v7 = MEMORY[0x1E695DF90];
-  v8 = a5;
+  strategiesCopy = strategies;
   v9 = objc_alloc_init(v7);
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __99__HKSleepDaySummaryDurationCollection_computeDurationsFromSleepPeriod_sleepDayInterval_strategies___block_invoke;
   v19 = &unk_1E7383E10;
-  v20 = v6;
+  v20 = periodCopy;
   v21 = v9;
   v10 = v9;
-  v11 = v6;
-  [v8 enumerateWithBlock:&v16];
+  v11 = periodCopy;
+  [strategiesCopy enumerateWithBlock:&v16];
 
   v12 = [HKSleepDaySummaryDurationCollection alloc];
   v13 = [v10 copy];
@@ -86,10 +86,10 @@ void __99__HKSleepDaySummaryDurationCollection_computeDurationsFromSleepPeriod_s
   return v14;
 }
 
-- (id)durationsByAdding:(id)a3
+- (id)durationsByAdding:(id)adding
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  addingCopy = adding;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v21 = 0u;
   v22 = 0u;
@@ -111,9 +111,9 @@ void __99__HKSleepDaySummaryDurationCollection_computeDurationsFromSleepPeriod_s
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [v10 integerValue];
-        v12 = [(HKSleepDaySummaryDurationCollection *)self durationsForStrategyType:v11];
-        v13 = [v4 durationsForStrategyType:v11];
+        integerValue = [v10 integerValue];
+        v12 = [(HKSleepDaySummaryDurationCollection *)self durationsForStrategyType:integerValue];
+        v13 = [addingCopy durationsForStrategyType:integerValue];
         v14 = [v12 durationsByAdding:v13];
         [v5 setObject:v14 forKeyedSubscript:v10];
       }

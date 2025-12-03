@@ -1,8 +1,8 @@
 @interface AEAActiveRestrictionUUIDFetchingService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (_TtC15assessmentagent39AEAActiveRestrictionUUIDFetchingService)init;
 - (void)dealloc;
-- (void)fetchSetOfActiveRestrictionUUIDsWithClientType:(id)a3 completion:(id)a4;
+- (void)fetchSetOfActiveRestrictionUUIDsWithClientType:(id)type completion:(id)completion;
 @end
 
 @implementation AEAActiveRestrictionUUIDFetchingService
@@ -10,9 +10,9 @@
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC15assessmentagent39AEAActiveRestrictionUUIDFetchingService_XPCListener);
-  v3 = self;
+  selfCopy = self;
   [v2 invalidate];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for AEAActiveRestrictionUUIDFetchingService();
   [(AEAActiveRestrictionUUIDFetchingService *)&v4 dealloc];
 }
@@ -24,23 +24,23 @@
   return result;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10001E684(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_10001E684(connectionCopy);
 
   return v9 & 1;
 }
 
-- (void)fetchSetOfActiveRestrictionUUIDsWithClientType:(id)a3 completion:(id)a4
+- (void)fetchSetOfActiveRestrictionUUIDsWithClientType:(id)type completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = (*(&self->super.isa + OBJC_IVAR____TtC15assessmentagent39AEAActiveRestrictionUUIDFetchingService_sessionManager))[22];
   swift_beginAccess();
   v7 = *(v6 + 16);
-  v8 = self;
+  selfCopy = self;
 
   isa = Set._bridgeToObjectiveC()().super.isa;
 

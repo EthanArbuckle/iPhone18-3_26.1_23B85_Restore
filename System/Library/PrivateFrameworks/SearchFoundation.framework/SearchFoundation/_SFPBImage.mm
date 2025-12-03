@@ -1,229 +1,229 @@
 @interface _SFPBImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBImage)initWithDictionary:(id)a3;
-- (_SFPBImage)initWithFacade:(id)a3;
-- (_SFPBImage)initWithJSON:(id)a3;
+- (_SFPBImage)initWithDictionary:(id)dictionary;
+- (_SFPBImage)initWithFacade:(id)facade;
+- (_SFPBImage)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setContentType:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setImageData:(id)a3;
-- (void)setKeyColor:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setContentType:(id)type;
+- (void)setIdentifier:(id)identifier;
+- (void)setImageData:(id)data;
+- (void)setKeyColor:(id)color;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBImage
 
-- (_SFPBImage)initWithFacade:(id)a3
+- (_SFPBImage)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBImage *)self init];
   if (v5)
   {
-    v6 = [v4 imageData];
-    if (v6)
+    imageData = [facadeCopy imageData];
+    if (imageData)
     {
-      v7 = v6;
+      v7 = imageData;
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if ((isKindOfClass & 1) == 0)
       {
-        v9 = [v4 imageData];
-        [(_SFPBImage *)v5 setImageData:v9];
+        imageData2 = [facadeCopy imageData];
+        [(_SFPBImage *)v5 setImageData:imageData2];
       }
     }
 
-    if ([v4 hasIsTemplate])
+    if ([facadeCopy hasIsTemplate])
     {
-      -[_SFPBImage setIsTemplate:](v5, "setIsTemplate:", [v4 isTemplate]);
+      -[_SFPBImage setIsTemplate:](v5, "setIsTemplate:", [facadeCopy isTemplate]);
     }
 
-    if ([v4 hasShouldCropToCircle])
+    if ([facadeCopy hasShouldCropToCircle])
     {
-      -[_SFPBImage setShouldCropToCircle:](v5, "setShouldCropToCircle:", [v4 shouldCropToCircle]);
+      -[_SFPBImage setShouldCropToCircle:](v5, "setShouldCropToCircle:", [facadeCopy shouldCropToCircle]);
     }
 
-    if ([v4 hasCornerRadius])
+    if ([facadeCopy hasCornerRadius])
     {
       v10 = [_SFPBGraphicalFloat alloc];
-      [v4 cornerRadius];
+      [facadeCopy cornerRadius];
       v11 = [(_SFPBGraphicalFloat *)v10 initWithCGFloat:?];
       [(_SFPBImage *)v5 setCornerRadius:v11];
     }
 
-    if ([v4 hasScale])
+    if ([facadeCopy hasScale])
     {
       v12 = [_SFPBGraphicalFloat alloc];
-      [v4 scale];
+      [facadeCopy scale];
       v13 = [(_SFPBGraphicalFloat *)v12 initWithCGFloat:?];
       [(_SFPBImage *)v5 setScale:v13];
     }
 
-    if ([v4 hasSize])
+    if ([facadeCopy hasSize])
     {
       v14 = [_SFPBPointSize alloc];
-      [v4 size];
+      [facadeCopy size];
       v15 = [(_SFPBPointSize *)v14 initWithCGSize:?];
       [(_SFPBImage *)v5 setSize:v15];
     }
 
-    v16 = [v4 contentType];
+    contentType = [facadeCopy contentType];
 
-    if (v16)
+    if (contentType)
     {
-      v17 = [v4 contentType];
-      [(_SFPBImage *)v5 setContentType:v17];
+      contentType2 = [facadeCopy contentType];
+      [(_SFPBImage *)v5 setContentType:contentType2];
     }
 
-    v18 = [v4 keyColor];
+    keyColor = [facadeCopy keyColor];
 
-    if (v18)
+    if (keyColor)
     {
-      v19 = [v4 keyColor];
-      [(_SFPBImage *)v5 setKeyColor:v19];
+      keyColor2 = [facadeCopy keyColor];
+      [(_SFPBImage *)v5 setKeyColor:keyColor2];
     }
 
-    v20 = [v4 identifier];
+    identifier = [facadeCopy identifier];
 
-    if (v20)
+    if (identifier)
     {
-      v21 = [v4 identifier];
-      [(_SFPBImage *)v5 setIdentifier:v21];
+      identifier2 = [facadeCopy identifier];
+      [(_SFPBImage *)v5 setIdentifier:identifier2];
     }
 
-    if ([v4 hasSource])
+    if ([facadeCopy hasSource])
     {
-      -[_SFPBImage setSource:](v5, "setSource:", [v4 source]);
+      -[_SFPBImage setSource:](v5, "setSource:", [facadeCopy source]);
     }
 
-    if ([v4 hasCornerRoundingStyle])
+    if ([facadeCopy hasCornerRoundingStyle])
     {
-      -[_SFPBImage setCornerRoundingStyle:](v5, "setCornerRoundingStyle:", [v4 cornerRoundingStyle]);
+      -[_SFPBImage setCornerRoundingStyle:](v5, "setCornerRoundingStyle:", [facadeCopy cornerRoundingStyle]);
     }
 
-    v22 = [v4 accessibilityLabel];
+    accessibilityLabel = [facadeCopy accessibilityLabel];
 
-    if (v22)
+    if (accessibilityLabel)
     {
-      v23 = [v4 accessibilityLabel];
-      [(_SFPBImage *)v5 setAccessibilityLabel:v23];
+      accessibilityLabel2 = [facadeCopy accessibilityLabel];
+      [(_SFPBImage *)v5 setAccessibilityLabel:accessibilityLabel2];
     }
 
-    v24 = [v4 badgingImage];
+    badgingImage = [facadeCopy badgingImage];
 
-    if (v24)
+    if (badgingImage)
     {
       v25 = [_SFPBImage alloc];
-      v26 = [v4 badgingImage];
-      v27 = [(_SFPBImage *)v25 initWithFacade:v26];
+      badgingImage2 = [facadeCopy badgingImage];
+      v27 = [(_SFPBImage *)v25 initWithFacade:badgingImage2];
       [(_SFPBImage *)v5 setBadgingImage:v27];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v28 = [[_SFPBURLImage alloc] initWithFacade:v4];
+      v28 = [[_SFPBURLImage alloc] initWithFacade:facadeCopy];
       [(_SFPBImage *)v5 setUrlImage:v28];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v29 = [[_SFPBContactImage alloc] initWithFacade:v4];
+      v29 = [[_SFPBContactImage alloc] initWithFacade:facadeCopy];
       [(_SFPBImage *)v5 setContactImage:v29];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v30 = [[_SFPBMonogramImage alloc] initWithFacade:v4];
+      v30 = [[_SFPBMonogramImage alloc] initWithFacade:facadeCopy];
       [(_SFPBImage *)v5 setMonogramImage:v30];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v31 = [[_SFPBLocalImage alloc] initWithFacade:v4];
+      v31 = [[_SFPBLocalImage alloc] initWithFacade:facadeCopy];
       [(_SFPBImage *)v5 setLocalImage:v31];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v32 = [[_SFPBAppIconImage alloc] initWithFacade:v4];
+      v32 = [[_SFPBAppIconImage alloc] initWithFacade:facadeCopy];
       [(_SFPBImage *)v5 setAppIconImage:v32];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v33 = [[_SFPBMediaArtworkImage alloc] initWithFacade:v4];
+      v33 = [[_SFPBMediaArtworkImage alloc] initWithFacade:facadeCopy];
       [(_SFPBImage *)v5 setMediaArtworkImage:v33];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v34 = [[_SFPBCalendarImage alloc] initWithFacade:v4];
+      v34 = [[_SFPBCalendarImage alloc] initWithFacade:facadeCopy];
       [(_SFPBImage *)v5 setCalendarImage:v34];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v35 = [[_SFPBSymbolImage alloc] initWithFacade:v4];
+      v35 = [[_SFPBSymbolImage alloc] initWithFacade:facadeCopy];
       [(_SFPBImage *)v5 setSymbolImage:v35];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v36 = [[_SFPBPhotosLibraryImage alloc] initWithFacade:v4];
+      v36 = [[_SFPBPhotosLibraryImage alloc] initWithFacade:facadeCopy];
       [(_SFPBImage *)v5 setPhotosLibraryImage:v36];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v37 = [[_SFPBQuickLookThumbnailImage alloc] initWithFacade:v4];
+      v37 = [[_SFPBQuickLookThumbnailImage alloc] initWithFacade:facadeCopy];
       [(_SFPBImage *)v5 setQuickLookThumbnailImage:v37];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v38 = [[_SFPBClockImage alloc] initWithFacade:v4];
+      v38 = [[_SFPBClockImage alloc] initWithFacade:facadeCopy];
       [(_SFPBImage *)v5 setClockImage:v38];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v39 = [[_SFPBShortcutsImage alloc] initWithFacade:v4];
+      v39 = [[_SFPBShortcutsImage alloc] initWithFacade:facadeCopy];
       [(_SFPBImage *)v5 setShortcutsImage:v39];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v40 = [[_SFPBDefaultPunchoutAppIconImage alloc] initWithFacade:v4];
+      v40 = [[_SFPBDefaultPunchoutAppIconImage alloc] initWithFacade:facadeCopy];
       [(_SFPBImage *)v5 setDefaultPunchoutAppIconImage:v40];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v41 = [[_SFPBPhotosAlbumImage alloc] initWithFacade:v4];
+      v41 = [[_SFPBPhotosAlbumImage alloc] initWithFacade:facadeCopy];
       [(_SFPBImage *)v5 setPhotosAlbumImage:v41];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v42 = [[_SFPBPhotosMemoryImage alloc] initWithFacade:v4];
+      v42 = [[_SFPBPhotosMemoryImage alloc] initWithFacade:facadeCopy];
       [(_SFPBImage *)v5 setPhotosMemoryImage:v42];
     }
 
@@ -233,15 +233,15 @@
   return v5;
 }
 
-- (_SFPBImage)initWithDictionary:(id)a3
+- (_SFPBImage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v86.receiver = self;
   v86.super_class = _SFPBImage;
   v5 = [(_SFPBImage *)&v86 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"imageData"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"imageData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -250,7 +250,7 @@
     }
 
     v77 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"isTemplate"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isTemplate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -258,7 +258,7 @@
     }
 
     v76 = v8;
-    v9 = [v4 objectForKeyedSubscript:@"shouldCropToCircle"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"shouldCropToCircle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -266,7 +266,7 @@
     }
 
     v75 = v9;
-    v10 = [v4 objectForKeyedSubscript:@"cornerRadius"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"cornerRadius"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -274,7 +274,7 @@
       [(_SFPBImage *)v5 setCornerRadius:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"scale"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"scale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -282,7 +282,7 @@
       [(_SFPBImage *)v5 setScale:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"size"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"size"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -290,7 +290,7 @@
       [(_SFPBImage *)v5 setSize:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"contentType"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"contentType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -299,7 +299,7 @@
     }
 
     v73 = v12;
-    v18 = [v4 objectForKeyedSubscript:@"keyColor"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"keyColor"];
     objc_opt_class();
     v85 = v18;
     if (objc_opt_isKindOfClass())
@@ -309,7 +309,7 @@
     }
 
     v20 = v14;
-    v21 = [v4 objectForKeyedSubscript:@"identifier"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"identifier"];
     objc_opt_class();
     v84 = v21;
     if (objc_opt_isKindOfClass())
@@ -319,14 +319,14 @@
     }
 
     v23 = v10;
-    v24 = [v4 objectForKeyedSubscript:@"source"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"source"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBImage setSource:](v5, "setSource:", [v24 intValue]);
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"cornerRoundingStyle"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"cornerRoundingStyle"];
     objc_opt_class();
     v83 = v25;
     if (objc_opt_isKindOfClass())
@@ -335,7 +335,7 @@
     }
 
     v70 = v24;
-    v26 = [v4 objectForKeyedSubscript:@"accessibilityLabel"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"accessibilityLabel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -344,7 +344,7 @@
     }
 
     v69 = v26;
-    v28 = [v4 objectForKeyedSubscript:@"badgingImage"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"badgingImage"];
     objc_opt_class();
     v29 = v23;
     if (objc_opt_isKindOfClass())
@@ -353,7 +353,7 @@
       [(_SFPBImage *)v5 setBadgingImage:v30];
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"type"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -361,7 +361,7 @@
     }
 
     v67 = v31;
-    v32 = [v4 objectForKeyedSubscript:@"urlImage"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"urlImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -369,7 +369,7 @@
       [(_SFPBImage *)v5 setUrlImage:v33];
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"contactImage"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"contactImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -377,7 +377,7 @@
       [(_SFPBImage *)v5 setContactImage:v35];
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"monogramImage"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"monogramImage"];
     objc_opt_class();
     v82 = v36;
     if (objc_opt_isKindOfClass())
@@ -386,7 +386,7 @@
       [(_SFPBImage *)v5 setMonogramImage:v37];
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"localImage"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"localImage"];
     objc_opt_class();
     v81 = v38;
     if (objc_opt_isKindOfClass())
@@ -395,7 +395,7 @@
       [(_SFPBImage *)v5 setLocalImage:v39];
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"appIconImage"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"appIconImage"];
     objc_opt_class();
     v80 = v40;
     if (objc_opt_isKindOfClass())
@@ -404,7 +404,7 @@
       [(_SFPBImage *)v5 setAppIconImage:v41];
     }
 
-    v42 = [v4 objectForKeyedSubscript:@"mediaArtworkImage"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"mediaArtworkImage"];
     objc_opt_class();
     v79 = v42;
     if (objc_opt_isKindOfClass())
@@ -413,7 +413,7 @@
       [(_SFPBImage *)v5 setMediaArtworkImage:v43];
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"calendarImage"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"calendarImage"];
     objc_opt_class();
     v78 = v44;
     if (objc_opt_isKindOfClass())
@@ -423,7 +423,7 @@
     }
 
     v68 = v28;
-    v46 = [v4 objectForKeyedSubscript:@"symbolImage"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"symbolImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -433,7 +433,7 @@
 
     v64 = v46;
     v71 = v16;
-    v48 = [v4 objectForKeyedSubscript:@"photosLibraryImage"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"photosLibraryImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -442,7 +442,7 @@
     }
 
     v66 = v32;
-    v50 = [v4 objectForKeyedSubscript:@"quickLookThumbnailImage"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"quickLookThumbnailImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -450,7 +450,7 @@
       [(_SFPBImage *)v5 setQuickLookThumbnailImage:v51];
     }
 
-    v52 = [v4 objectForKeyedSubscript:@"clockImage"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"clockImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -460,7 +460,7 @@
 
     v65 = v34;
     v72 = v20;
-    v54 = [v4 objectForKeyedSubscript:@"shortcutsImage"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"shortcutsImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -469,7 +469,7 @@
     }
 
     v74 = v29;
-    v56 = [v4 objectForKeyedSubscript:@"defaultPunchoutAppIconImage"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"defaultPunchoutAppIconImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -477,7 +477,7 @@
       [(_SFPBImage *)v5 setDefaultPunchoutAppIconImage:v57];
     }
 
-    v58 = [v4 objectForKeyedSubscript:@"photosAlbumImage"];
+    v58 = [dictionaryCopy objectForKeyedSubscript:@"photosAlbumImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -485,7 +485,7 @@
       [(_SFPBImage *)v5 setPhotosAlbumImage:v59];
     }
 
-    v60 = [v4 objectForKeyedSubscript:@"photosMemoryImage"];
+    v60 = [dictionaryCopy objectForKeyedSubscript:@"photosMemoryImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -499,30 +499,30 @@
   return v5;
 }
 
-- (_SFPBImage)initWithJSON:(id)a3
+- (_SFPBImage)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBImage *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBImage *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBImage *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -535,387 +535,387 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_accessibilityLabel)
   {
-    v4 = [(_SFPBImage *)self accessibilityLabel];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"accessibilityLabel"];
+    accessibilityLabel = [(_SFPBImage *)self accessibilityLabel];
+    v5 = [accessibilityLabel copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"accessibilityLabel"];
   }
 
   if (self->_appIconImage)
   {
-    v6 = [(_SFPBImage *)self appIconImage];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    appIconImage = [(_SFPBImage *)self appIconImage];
+    dictionaryRepresentation = [appIconImage dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"appIconImage"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"appIconImage"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"appIconImage"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"appIconImage"];
     }
   }
 
   if (self->_badgingImage)
   {
-    v9 = [(_SFPBImage *)self badgingImage];
-    v10 = [v9 dictionaryRepresentation];
-    if (v10)
+    badgingImage = [(_SFPBImage *)self badgingImage];
+    dictionaryRepresentation2 = [badgingImage dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"badgingImage"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"badgingImage"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"badgingImage"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"badgingImage"];
     }
   }
 
   if (self->_calendarImage)
   {
-    v12 = [(_SFPBImage *)self calendarImage];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    calendarImage = [(_SFPBImage *)self calendarImage];
+    dictionaryRepresentation3 = [calendarImage dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"calendarImage"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"calendarImage"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"calendarImage"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"calendarImage"];
     }
   }
 
   if (self->_clockImage)
   {
-    v15 = [(_SFPBImage *)self clockImage];
-    v16 = [v15 dictionaryRepresentation];
-    if (v16)
+    clockImage = [(_SFPBImage *)self clockImage];
+    dictionaryRepresentation4 = [clockImage dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v16 forKeyedSubscript:@"clockImage"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"clockImage"];
     }
 
     else
     {
-      v17 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v17 forKeyedSubscript:@"clockImage"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"clockImage"];
     }
   }
 
   if (self->_contactImage)
   {
-    v18 = [(_SFPBImage *)self contactImage];
-    v19 = [v18 dictionaryRepresentation];
-    if (v19)
+    contactImage = [(_SFPBImage *)self contactImage];
+    dictionaryRepresentation5 = [contactImage dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v19 forKeyedSubscript:@"contactImage"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"contactImage"];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v20 forKeyedSubscript:@"contactImage"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"contactImage"];
     }
   }
 
   if (self->_contentType)
   {
-    v21 = [(_SFPBImage *)self contentType];
-    v22 = [v21 copy];
-    [v3 setObject:v22 forKeyedSubscript:@"contentType"];
+    contentType = [(_SFPBImage *)self contentType];
+    v22 = [contentType copy];
+    [dictionary setObject:v22 forKeyedSubscript:@"contentType"];
   }
 
   if (self->_cornerRadius)
   {
-    v23 = [(_SFPBImage *)self cornerRadius];
-    v24 = [v23 dictionaryRepresentation];
-    if (v24)
+    cornerRadius = [(_SFPBImage *)self cornerRadius];
+    dictionaryRepresentation6 = [cornerRadius dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v24 forKeyedSubscript:@"cornerRadius"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"cornerRadius"];
     }
 
     else
     {
-      v25 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v25 forKeyedSubscript:@"cornerRadius"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"cornerRadius"];
     }
   }
 
   if (self->_cornerRoundingStyle)
   {
-    v26 = [(_SFPBImage *)self cornerRoundingStyle];
-    if (v26 >= 5)
+    cornerRoundingStyle = [(_SFPBImage *)self cornerRoundingStyle];
+    if (cornerRoundingStyle >= 5)
     {
-      v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v26];
+      v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", cornerRoundingStyle];
     }
 
     else
     {
-      v27 = off_1E7ACE448[v26];
+      v27 = off_1E7ACE448[cornerRoundingStyle];
     }
 
-    [v3 setObject:v27 forKeyedSubscript:@"cornerRoundingStyle"];
+    [dictionary setObject:v27 forKeyedSubscript:@"cornerRoundingStyle"];
   }
 
   if (self->_defaultPunchoutAppIconImage)
   {
-    v28 = [(_SFPBImage *)self defaultPunchoutAppIconImage];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    defaultPunchoutAppIconImage = [(_SFPBImage *)self defaultPunchoutAppIconImage];
+    dictionaryRepresentation7 = [defaultPunchoutAppIconImage dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"defaultPunchoutAppIconImage"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"defaultPunchoutAppIconImage"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"defaultPunchoutAppIconImage"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"defaultPunchoutAppIconImage"];
     }
   }
 
   if (self->_identifier)
   {
-    v31 = [(_SFPBImage *)self identifier];
-    v32 = [v31 copy];
-    [v3 setObject:v32 forKeyedSubscript:@"identifier"];
+    identifier = [(_SFPBImage *)self identifier];
+    v32 = [identifier copy];
+    [dictionary setObject:v32 forKeyedSubscript:@"identifier"];
   }
 
   if (self->_imageData)
   {
-    v33 = [(_SFPBImage *)self imageData];
-    v34 = [v33 base64EncodedStringWithOptions:0];
+    imageData = [(_SFPBImage *)self imageData];
+    v34 = [imageData base64EncodedStringWithOptions:0];
     if (v34)
     {
-      [v3 setObject:v34 forKeyedSubscript:@"imageData"];
+      [dictionary setObject:v34 forKeyedSubscript:@"imageData"];
     }
 
     else
     {
-      v35 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v35 forKeyedSubscript:@"imageData"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"imageData"];
     }
   }
 
   if (self->_isTemplate)
   {
     v36 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBImage isTemplate](self, "isTemplate")}];
-    [v3 setObject:v36 forKeyedSubscript:@"isTemplate"];
+    [dictionary setObject:v36 forKeyedSubscript:@"isTemplate"];
   }
 
   if (self->_keyColor)
   {
-    v37 = [(_SFPBImage *)self keyColor];
-    v38 = [v37 copy];
-    [v3 setObject:v38 forKeyedSubscript:@"keyColor"];
+    keyColor = [(_SFPBImage *)self keyColor];
+    v38 = [keyColor copy];
+    [dictionary setObject:v38 forKeyedSubscript:@"keyColor"];
   }
 
   if (self->_localImage)
   {
-    v39 = [(_SFPBImage *)self localImage];
-    v40 = [v39 dictionaryRepresentation];
-    if (v40)
+    localImage = [(_SFPBImage *)self localImage];
+    dictionaryRepresentation8 = [localImage dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v40 forKeyedSubscript:@"localImage"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"localImage"];
     }
 
     else
     {
-      v41 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v41 forKeyedSubscript:@"localImage"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"localImage"];
     }
   }
 
   if (self->_mediaArtworkImage)
   {
-    v42 = [(_SFPBImage *)self mediaArtworkImage];
-    v43 = [v42 dictionaryRepresentation];
-    if (v43)
+    mediaArtworkImage = [(_SFPBImage *)self mediaArtworkImage];
+    dictionaryRepresentation9 = [mediaArtworkImage dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v43 forKeyedSubscript:@"mediaArtworkImage"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"mediaArtworkImage"];
     }
 
     else
     {
-      v44 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v44 forKeyedSubscript:@"mediaArtworkImage"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"mediaArtworkImage"];
     }
   }
 
   if (self->_monogramImage)
   {
-    v45 = [(_SFPBImage *)self monogramImage];
-    v46 = [v45 dictionaryRepresentation];
-    if (v46)
+    monogramImage = [(_SFPBImage *)self monogramImage];
+    dictionaryRepresentation10 = [monogramImage dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v46 forKeyedSubscript:@"monogramImage"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"monogramImage"];
     }
 
     else
     {
-      v47 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v47 forKeyedSubscript:@"monogramImage"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"monogramImage"];
     }
   }
 
   if (self->_photosAlbumImage)
   {
-    v48 = [(_SFPBImage *)self photosAlbumImage];
-    v49 = [v48 dictionaryRepresentation];
-    if (v49)
+    photosAlbumImage = [(_SFPBImage *)self photosAlbumImage];
+    dictionaryRepresentation11 = [photosAlbumImage dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v49 forKeyedSubscript:@"photosAlbumImage"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"photosAlbumImage"];
     }
 
     else
     {
-      v50 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v50 forKeyedSubscript:@"photosAlbumImage"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"photosAlbumImage"];
     }
   }
 
   if (self->_photosLibraryImage)
   {
-    v51 = [(_SFPBImage *)self photosLibraryImage];
-    v52 = [v51 dictionaryRepresentation];
-    if (v52)
+    photosLibraryImage = [(_SFPBImage *)self photosLibraryImage];
+    dictionaryRepresentation12 = [photosLibraryImage dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v52 forKeyedSubscript:@"photosLibraryImage"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"photosLibraryImage"];
     }
 
     else
     {
-      v53 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v53 forKeyedSubscript:@"photosLibraryImage"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"photosLibraryImage"];
     }
   }
 
   if (self->_photosMemoryImage)
   {
-    v54 = [(_SFPBImage *)self photosMemoryImage];
-    v55 = [v54 dictionaryRepresentation];
-    if (v55)
+    photosMemoryImage = [(_SFPBImage *)self photosMemoryImage];
+    dictionaryRepresentation13 = [photosMemoryImage dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v55 forKeyedSubscript:@"photosMemoryImage"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"photosMemoryImage"];
     }
 
     else
     {
-      v56 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v56 forKeyedSubscript:@"photosMemoryImage"];
+      null14 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null14 forKeyedSubscript:@"photosMemoryImage"];
     }
   }
 
   if (self->_quickLookThumbnailImage)
   {
-    v57 = [(_SFPBImage *)self quickLookThumbnailImage];
-    v58 = [v57 dictionaryRepresentation];
-    if (v58)
+    quickLookThumbnailImage = [(_SFPBImage *)self quickLookThumbnailImage];
+    dictionaryRepresentation14 = [quickLookThumbnailImage dictionaryRepresentation];
+    if (dictionaryRepresentation14)
     {
-      [v3 setObject:v58 forKeyedSubscript:@"quickLookThumbnailImage"];
+      [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"quickLookThumbnailImage"];
     }
 
     else
     {
-      v59 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v59 forKeyedSubscript:@"quickLookThumbnailImage"];
+      null15 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null15 forKeyedSubscript:@"quickLookThumbnailImage"];
     }
   }
 
   if (self->_scale)
   {
-    v60 = [(_SFPBImage *)self scale];
-    v61 = [v60 dictionaryRepresentation];
-    if (v61)
+    scale = [(_SFPBImage *)self scale];
+    dictionaryRepresentation15 = [scale dictionaryRepresentation];
+    if (dictionaryRepresentation15)
     {
-      [v3 setObject:v61 forKeyedSubscript:@"scale"];
+      [dictionary setObject:dictionaryRepresentation15 forKeyedSubscript:@"scale"];
     }
 
     else
     {
-      v62 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v62 forKeyedSubscript:@"scale"];
+      null16 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null16 forKeyedSubscript:@"scale"];
     }
   }
 
   if (self->_shortcutsImage)
   {
-    v63 = [(_SFPBImage *)self shortcutsImage];
-    v64 = [v63 dictionaryRepresentation];
-    if (v64)
+    shortcutsImage = [(_SFPBImage *)self shortcutsImage];
+    dictionaryRepresentation16 = [shortcutsImage dictionaryRepresentation];
+    if (dictionaryRepresentation16)
     {
-      [v3 setObject:v64 forKeyedSubscript:@"shortcutsImage"];
+      [dictionary setObject:dictionaryRepresentation16 forKeyedSubscript:@"shortcutsImage"];
     }
 
     else
     {
-      v65 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v65 forKeyedSubscript:@"shortcutsImage"];
+      null17 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null17 forKeyedSubscript:@"shortcutsImage"];
     }
   }
 
   if (self->_shouldCropToCircle)
   {
     v66 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBImage shouldCropToCircle](self, "shouldCropToCircle")}];
-    [v3 setObject:v66 forKeyedSubscript:@"shouldCropToCircle"];
+    [dictionary setObject:v66 forKeyedSubscript:@"shouldCropToCircle"];
   }
 
   if (self->_size)
   {
     v67 = [(_SFPBImage *)self size];
-    v68 = [v67 dictionaryRepresentation];
-    if (v68)
+    dictionaryRepresentation17 = [v67 dictionaryRepresentation];
+    if (dictionaryRepresentation17)
     {
-      [v3 setObject:v68 forKeyedSubscript:@"size"];
+      [dictionary setObject:dictionaryRepresentation17 forKeyedSubscript:@"size"];
     }
 
     else
     {
-      v69 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v69 forKeyedSubscript:@"size"];
+      null18 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null18 forKeyedSubscript:@"size"];
     }
   }
 
   if (self->_source)
   {
-    v70 = [(_SFPBImage *)self source];
-    if (v70 >= 3)
+    source = [(_SFPBImage *)self source];
+    if (source >= 3)
     {
-      v71 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v70];
+      v71 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", source];
     }
 
     else
     {
-      v71 = off_1E7ACE548[v70];
+      v71 = off_1E7ACE548[source];
     }
 
-    [v3 setObject:v71 forKeyedSubscript:@"source"];
+    [dictionary setObject:v71 forKeyedSubscript:@"source"];
   }
 
   if (self->_symbolImage)
   {
-    v72 = [(_SFPBImage *)self symbolImage];
-    v73 = [v72 dictionaryRepresentation];
-    if (v73)
+    symbolImage = [(_SFPBImage *)self symbolImage];
+    dictionaryRepresentation18 = [symbolImage dictionaryRepresentation];
+    if (dictionaryRepresentation18)
     {
-      [v3 setObject:v73 forKeyedSubscript:@"symbolImage"];
+      [dictionary setObject:dictionaryRepresentation18 forKeyedSubscript:@"symbolImage"];
     }
 
     else
     {
-      v74 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v74 forKeyedSubscript:@"symbolImage"];
+      null19 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null19 forKeyedSubscript:@"symbolImage"];
     }
   }
 
   if (self->_type)
   {
-    v75 = [(_SFPBImage *)self type];
-    switch(v75)
+    type = [(_SFPBImage *)self type];
+    switch(type)
     {
       case '4':
         v76 = @"52";
@@ -963,9 +963,9 @@
         v76 = @"66";
         break;
       default:
-        if (v75)
+        if (type)
         {
-          v76 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v75];
+          v76 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", type];
         }
 
         else
@@ -976,28 +976,28 @@
         break;
     }
 
-    [v3 setObject:v76 forKeyedSubscript:@"type"];
+    [dictionary setObject:v76 forKeyedSubscript:@"type"];
   }
 
   if (self->_urlImage)
   {
-    v77 = [(_SFPBImage *)self urlImage];
-    v78 = [v77 dictionaryRepresentation];
-    if (v78)
+    urlImage = [(_SFPBImage *)self urlImage];
+    dictionaryRepresentation19 = [urlImage dictionaryRepresentation];
+    if (dictionaryRepresentation19)
     {
-      [v3 setObject:v78 forKeyedSubscript:@"urlImage"];
+      [dictionary setObject:dictionaryRepresentation19 forKeyedSubscript:@"urlImage"];
     }
 
     else
     {
-      v79 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v79 forKeyedSubscript:@"urlImage"];
+      null20 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null20 forKeyedSubscript:@"urlImage"];
     }
   }
 
-  v80 = v3;
+  v80 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -1054,28 +1054,28 @@
   return v24 ^ v29 ^ [(_SFPBPhotosMemoryImage *)self->_photosMemoryImage hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_127;
   }
 
-  v5 = [(_SFPBImage *)self imageData];
-  v6 = [v4 imageData];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self imageData];
+  imageData2 = [equalCopy imageData];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v7 = [(_SFPBImage *)self imageData];
-  if (v7)
+  imageData3 = [(_SFPBImage *)self imageData];
+  if (imageData3)
   {
-    v8 = v7;
-    v9 = [(_SFPBImage *)self imageData];
-    v10 = [v4 imageData];
-    v11 = [v9 isEqual:v10];
+    v8 = imageData3;
+    imageData4 = [(_SFPBImage *)self imageData];
+    imageData5 = [equalCopy imageData];
+    v11 = [imageData4 isEqual:imageData5];
 
     if (!v11)
     {
@@ -1088,31 +1088,31 @@
   }
 
   isTemplate = self->_isTemplate;
-  if (isTemplate != [v4 isTemplate])
+  if (isTemplate != [equalCopy isTemplate])
   {
     goto LABEL_127;
   }
 
   shouldCropToCircle = self->_shouldCropToCircle;
-  if (shouldCropToCircle != [v4 shouldCropToCircle])
+  if (shouldCropToCircle != [equalCopy shouldCropToCircle])
   {
     goto LABEL_127;
   }
 
-  v5 = [(_SFPBImage *)self cornerRadius];
-  v6 = [v4 cornerRadius];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self cornerRadius];
+  imageData2 = [equalCopy cornerRadius];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v14 = [(_SFPBImage *)self cornerRadius];
-  if (v14)
+  cornerRadius = [(_SFPBImage *)self cornerRadius];
+  if (cornerRadius)
   {
-    v15 = v14;
-    v16 = [(_SFPBImage *)self cornerRadius];
-    v17 = [v4 cornerRadius];
-    v18 = [v16 isEqual:v17];
+    v15 = cornerRadius;
+    cornerRadius2 = [(_SFPBImage *)self cornerRadius];
+    cornerRadius3 = [equalCopy cornerRadius];
+    v18 = [cornerRadius2 isEqual:cornerRadius3];
 
     if (!v18)
     {
@@ -1124,20 +1124,20 @@
   {
   }
 
-  v5 = [(_SFPBImage *)self scale];
-  v6 = [v4 scale];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self scale];
+  imageData2 = [equalCopy scale];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v19 = [(_SFPBImage *)self scale];
-  if (v19)
+  scale = [(_SFPBImage *)self scale];
+  if (scale)
   {
-    v20 = v19;
-    v21 = [(_SFPBImage *)self scale];
-    v22 = [v4 scale];
-    v23 = [v21 isEqual:v22];
+    v20 = scale;
+    scale2 = [(_SFPBImage *)self scale];
+    scale3 = [equalCopy scale];
+    v23 = [scale2 isEqual:scale3];
 
     if (!v23)
     {
@@ -1149,9 +1149,9 @@
   {
   }
 
-  v5 = [(_SFPBImage *)self size];
-  v6 = [v4 size];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self size];
+  imageData2 = [equalCopy size];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
@@ -1161,7 +1161,7 @@
   {
     v25 = v24;
     v26 = [(_SFPBImage *)self size];
-    v27 = [v4 size];
+    v27 = [equalCopy size];
     v28 = [v26 isEqual:v27];
 
     if (!v28)
@@ -1174,20 +1174,20 @@
   {
   }
 
-  v5 = [(_SFPBImage *)self contentType];
-  v6 = [v4 contentType];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self contentType];
+  imageData2 = [equalCopy contentType];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v29 = [(_SFPBImage *)self contentType];
-  if (v29)
+  contentType = [(_SFPBImage *)self contentType];
+  if (contentType)
   {
-    v30 = v29;
-    v31 = [(_SFPBImage *)self contentType];
-    v32 = [v4 contentType];
-    v33 = [v31 isEqual:v32];
+    v30 = contentType;
+    contentType2 = [(_SFPBImage *)self contentType];
+    contentType3 = [equalCopy contentType];
+    v33 = [contentType2 isEqual:contentType3];
 
     if (!v33)
     {
@@ -1199,20 +1199,20 @@
   {
   }
 
-  v5 = [(_SFPBImage *)self keyColor];
-  v6 = [v4 keyColor];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self keyColor];
+  imageData2 = [equalCopy keyColor];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v34 = [(_SFPBImage *)self keyColor];
-  if (v34)
+  keyColor = [(_SFPBImage *)self keyColor];
+  if (keyColor)
   {
-    v35 = v34;
-    v36 = [(_SFPBImage *)self keyColor];
-    v37 = [v4 keyColor];
-    v38 = [v36 isEqual:v37];
+    v35 = keyColor;
+    keyColor2 = [(_SFPBImage *)self keyColor];
+    keyColor3 = [equalCopy keyColor];
+    v38 = [keyColor2 isEqual:keyColor3];
 
     if (!v38)
     {
@@ -1224,20 +1224,20 @@
   {
   }
 
-  v5 = [(_SFPBImage *)self identifier];
-  v6 = [v4 identifier];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self identifier];
+  imageData2 = [equalCopy identifier];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v39 = [(_SFPBImage *)self identifier];
-  if (v39)
+  identifier = [(_SFPBImage *)self identifier];
+  if (identifier)
   {
-    v40 = v39;
-    v41 = [(_SFPBImage *)self identifier];
-    v42 = [v4 identifier];
-    v43 = [v41 isEqual:v42];
+    v40 = identifier;
+    identifier2 = [(_SFPBImage *)self identifier];
+    identifier3 = [equalCopy identifier];
+    v43 = [identifier2 isEqual:identifier3];
 
     if (!v43)
     {
@@ -1250,31 +1250,31 @@
   }
 
   source = self->_source;
-  if (source != [v4 source])
+  if (source != [equalCopy source])
   {
     goto LABEL_127;
   }
 
   cornerRoundingStyle = self->_cornerRoundingStyle;
-  if (cornerRoundingStyle != [v4 cornerRoundingStyle])
+  if (cornerRoundingStyle != [equalCopy cornerRoundingStyle])
   {
     goto LABEL_127;
   }
 
-  v5 = [(_SFPBImage *)self accessibilityLabel];
-  v6 = [v4 accessibilityLabel];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self accessibilityLabel];
+  imageData2 = [equalCopy accessibilityLabel];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v46 = [(_SFPBImage *)self accessibilityLabel];
-  if (v46)
+  accessibilityLabel = [(_SFPBImage *)self accessibilityLabel];
+  if (accessibilityLabel)
   {
-    v47 = v46;
-    v48 = [(_SFPBImage *)self accessibilityLabel];
-    v49 = [v4 accessibilityLabel];
-    v50 = [v48 isEqual:v49];
+    v47 = accessibilityLabel;
+    accessibilityLabel2 = [(_SFPBImage *)self accessibilityLabel];
+    accessibilityLabel3 = [equalCopy accessibilityLabel];
+    v50 = [accessibilityLabel2 isEqual:accessibilityLabel3];
 
     if (!v50)
     {
@@ -1286,20 +1286,20 @@
   {
   }
 
-  v5 = [(_SFPBImage *)self badgingImage];
-  v6 = [v4 badgingImage];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self badgingImage];
+  imageData2 = [equalCopy badgingImage];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v51 = [(_SFPBImage *)self badgingImage];
-  if (v51)
+  badgingImage = [(_SFPBImage *)self badgingImage];
+  if (badgingImage)
   {
-    v52 = v51;
-    v53 = [(_SFPBImage *)self badgingImage];
-    v54 = [v4 badgingImage];
-    v55 = [v53 isEqual:v54];
+    v52 = badgingImage;
+    badgingImage2 = [(_SFPBImage *)self badgingImage];
+    badgingImage3 = [equalCopy badgingImage];
+    v55 = [badgingImage2 isEqual:badgingImage3];
 
     if (!v55)
     {
@@ -1312,25 +1312,25 @@
   }
 
   type = self->_type;
-  if (type != [v4 type])
+  if (type != [equalCopy type])
   {
     goto LABEL_127;
   }
 
-  v5 = [(_SFPBImage *)self urlImage];
-  v6 = [v4 urlImage];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self urlImage];
+  imageData2 = [equalCopy urlImage];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v57 = [(_SFPBImage *)self urlImage];
-  if (v57)
+  urlImage = [(_SFPBImage *)self urlImage];
+  if (urlImage)
   {
-    v58 = v57;
-    v59 = [(_SFPBImage *)self urlImage];
-    v60 = [v4 urlImage];
-    v61 = [v59 isEqual:v60];
+    v58 = urlImage;
+    urlImage2 = [(_SFPBImage *)self urlImage];
+    urlImage3 = [equalCopy urlImage];
+    v61 = [urlImage2 isEqual:urlImage3];
 
     if (!v61)
     {
@@ -1342,20 +1342,20 @@
   {
   }
 
-  v5 = [(_SFPBImage *)self contactImage];
-  v6 = [v4 contactImage];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self contactImage];
+  imageData2 = [equalCopy contactImage];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v62 = [(_SFPBImage *)self contactImage];
-  if (v62)
+  contactImage = [(_SFPBImage *)self contactImage];
+  if (contactImage)
   {
-    v63 = v62;
-    v64 = [(_SFPBImage *)self contactImage];
-    v65 = [v4 contactImage];
-    v66 = [v64 isEqual:v65];
+    v63 = contactImage;
+    contactImage2 = [(_SFPBImage *)self contactImage];
+    contactImage3 = [equalCopy contactImage];
+    v66 = [contactImage2 isEqual:contactImage3];
 
     if (!v66)
     {
@@ -1367,20 +1367,20 @@
   {
   }
 
-  v5 = [(_SFPBImage *)self monogramImage];
-  v6 = [v4 monogramImage];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self monogramImage];
+  imageData2 = [equalCopy monogramImage];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v67 = [(_SFPBImage *)self monogramImage];
-  if (v67)
+  monogramImage = [(_SFPBImage *)self monogramImage];
+  if (monogramImage)
   {
-    v68 = v67;
-    v69 = [(_SFPBImage *)self monogramImage];
-    v70 = [v4 monogramImage];
-    v71 = [v69 isEqual:v70];
+    v68 = monogramImage;
+    monogramImage2 = [(_SFPBImage *)self monogramImage];
+    monogramImage3 = [equalCopy monogramImage];
+    v71 = [monogramImage2 isEqual:monogramImage3];
 
     if (!v71)
     {
@@ -1392,20 +1392,20 @@
   {
   }
 
-  v5 = [(_SFPBImage *)self localImage];
-  v6 = [v4 localImage];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self localImage];
+  imageData2 = [equalCopy localImage];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v72 = [(_SFPBImage *)self localImage];
-  if (v72)
+  localImage = [(_SFPBImage *)self localImage];
+  if (localImage)
   {
-    v73 = v72;
-    v74 = [(_SFPBImage *)self localImage];
-    v75 = [v4 localImage];
-    v76 = [v74 isEqual:v75];
+    v73 = localImage;
+    localImage2 = [(_SFPBImage *)self localImage];
+    localImage3 = [equalCopy localImage];
+    v76 = [localImage2 isEqual:localImage3];
 
     if (!v76)
     {
@@ -1417,20 +1417,20 @@
   {
   }
 
-  v5 = [(_SFPBImage *)self appIconImage];
-  v6 = [v4 appIconImage];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self appIconImage];
+  imageData2 = [equalCopy appIconImage];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v77 = [(_SFPBImage *)self appIconImage];
-  if (v77)
+  appIconImage = [(_SFPBImage *)self appIconImage];
+  if (appIconImage)
   {
-    v78 = v77;
-    v79 = [(_SFPBImage *)self appIconImage];
-    v80 = [v4 appIconImage];
-    v81 = [v79 isEqual:v80];
+    v78 = appIconImage;
+    appIconImage2 = [(_SFPBImage *)self appIconImage];
+    appIconImage3 = [equalCopy appIconImage];
+    v81 = [appIconImage2 isEqual:appIconImage3];
 
     if (!v81)
     {
@@ -1442,20 +1442,20 @@
   {
   }
 
-  v5 = [(_SFPBImage *)self mediaArtworkImage];
-  v6 = [v4 mediaArtworkImage];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self mediaArtworkImage];
+  imageData2 = [equalCopy mediaArtworkImage];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v82 = [(_SFPBImage *)self mediaArtworkImage];
-  if (v82)
+  mediaArtworkImage = [(_SFPBImage *)self mediaArtworkImage];
+  if (mediaArtworkImage)
   {
-    v83 = v82;
-    v84 = [(_SFPBImage *)self mediaArtworkImage];
-    v85 = [v4 mediaArtworkImage];
-    v86 = [v84 isEqual:v85];
+    v83 = mediaArtworkImage;
+    mediaArtworkImage2 = [(_SFPBImage *)self mediaArtworkImage];
+    mediaArtworkImage3 = [equalCopy mediaArtworkImage];
+    v86 = [mediaArtworkImage2 isEqual:mediaArtworkImage3];
 
     if (!v86)
     {
@@ -1467,20 +1467,20 @@
   {
   }
 
-  v5 = [(_SFPBImage *)self calendarImage];
-  v6 = [v4 calendarImage];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self calendarImage];
+  imageData2 = [equalCopy calendarImage];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v87 = [(_SFPBImage *)self calendarImage];
-  if (v87)
+  calendarImage = [(_SFPBImage *)self calendarImage];
+  if (calendarImage)
   {
-    v88 = v87;
-    v89 = [(_SFPBImage *)self calendarImage];
-    v90 = [v4 calendarImage];
-    v91 = [v89 isEqual:v90];
+    v88 = calendarImage;
+    calendarImage2 = [(_SFPBImage *)self calendarImage];
+    calendarImage3 = [equalCopy calendarImage];
+    v91 = [calendarImage2 isEqual:calendarImage3];
 
     if (!v91)
     {
@@ -1492,20 +1492,20 @@
   {
   }
 
-  v5 = [(_SFPBImage *)self symbolImage];
-  v6 = [v4 symbolImage];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self symbolImage];
+  imageData2 = [equalCopy symbolImage];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v92 = [(_SFPBImage *)self symbolImage];
-  if (v92)
+  symbolImage = [(_SFPBImage *)self symbolImage];
+  if (symbolImage)
   {
-    v93 = v92;
-    v94 = [(_SFPBImage *)self symbolImage];
-    v95 = [v4 symbolImage];
-    v96 = [v94 isEqual:v95];
+    v93 = symbolImage;
+    symbolImage2 = [(_SFPBImage *)self symbolImage];
+    symbolImage3 = [equalCopy symbolImage];
+    v96 = [symbolImage2 isEqual:symbolImage3];
 
     if (!v96)
     {
@@ -1517,20 +1517,20 @@
   {
   }
 
-  v5 = [(_SFPBImage *)self photosLibraryImage];
-  v6 = [v4 photosLibraryImage];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self photosLibraryImage];
+  imageData2 = [equalCopy photosLibraryImage];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v97 = [(_SFPBImage *)self photosLibraryImage];
-  if (v97)
+  photosLibraryImage = [(_SFPBImage *)self photosLibraryImage];
+  if (photosLibraryImage)
   {
-    v98 = v97;
-    v99 = [(_SFPBImage *)self photosLibraryImage];
-    v100 = [v4 photosLibraryImage];
-    v101 = [v99 isEqual:v100];
+    v98 = photosLibraryImage;
+    photosLibraryImage2 = [(_SFPBImage *)self photosLibraryImage];
+    photosLibraryImage3 = [equalCopy photosLibraryImage];
+    v101 = [photosLibraryImage2 isEqual:photosLibraryImage3];
 
     if (!v101)
     {
@@ -1542,20 +1542,20 @@
   {
   }
 
-  v5 = [(_SFPBImage *)self quickLookThumbnailImage];
-  v6 = [v4 quickLookThumbnailImage];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self quickLookThumbnailImage];
+  imageData2 = [equalCopy quickLookThumbnailImage];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v102 = [(_SFPBImage *)self quickLookThumbnailImage];
-  if (v102)
+  quickLookThumbnailImage = [(_SFPBImage *)self quickLookThumbnailImage];
+  if (quickLookThumbnailImage)
   {
-    v103 = v102;
-    v104 = [(_SFPBImage *)self quickLookThumbnailImage];
-    v105 = [v4 quickLookThumbnailImage];
-    v106 = [v104 isEqual:v105];
+    v103 = quickLookThumbnailImage;
+    quickLookThumbnailImage2 = [(_SFPBImage *)self quickLookThumbnailImage];
+    quickLookThumbnailImage3 = [equalCopy quickLookThumbnailImage];
+    v106 = [quickLookThumbnailImage2 isEqual:quickLookThumbnailImage3];
 
     if (!v106)
     {
@@ -1567,20 +1567,20 @@
   {
   }
 
-  v5 = [(_SFPBImage *)self clockImage];
-  v6 = [v4 clockImage];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self clockImage];
+  imageData2 = [equalCopy clockImage];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v107 = [(_SFPBImage *)self clockImage];
-  if (v107)
+  clockImage = [(_SFPBImage *)self clockImage];
+  if (clockImage)
   {
-    v108 = v107;
-    v109 = [(_SFPBImage *)self clockImage];
-    v110 = [v4 clockImage];
-    v111 = [v109 isEqual:v110];
+    v108 = clockImage;
+    clockImage2 = [(_SFPBImage *)self clockImage];
+    clockImage3 = [equalCopy clockImage];
+    v111 = [clockImage2 isEqual:clockImage3];
 
     if (!v111)
     {
@@ -1592,20 +1592,20 @@
   {
   }
 
-  v5 = [(_SFPBImage *)self shortcutsImage];
-  v6 = [v4 shortcutsImage];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self shortcutsImage];
+  imageData2 = [equalCopy shortcutsImage];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v112 = [(_SFPBImage *)self shortcutsImage];
-  if (v112)
+  shortcutsImage = [(_SFPBImage *)self shortcutsImage];
+  if (shortcutsImage)
   {
-    v113 = v112;
-    v114 = [(_SFPBImage *)self shortcutsImage];
-    v115 = [v4 shortcutsImage];
-    v116 = [v114 isEqual:v115];
+    v113 = shortcutsImage;
+    shortcutsImage2 = [(_SFPBImage *)self shortcutsImage];
+    shortcutsImage3 = [equalCopy shortcutsImage];
+    v116 = [shortcutsImage2 isEqual:shortcutsImage3];
 
     if (!v116)
     {
@@ -1617,20 +1617,20 @@
   {
   }
 
-  v5 = [(_SFPBImage *)self defaultPunchoutAppIconImage];
-  v6 = [v4 defaultPunchoutAppIconImage];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self defaultPunchoutAppIconImage];
+  imageData2 = [equalCopy defaultPunchoutAppIconImage];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v117 = [(_SFPBImage *)self defaultPunchoutAppIconImage];
-  if (v117)
+  defaultPunchoutAppIconImage = [(_SFPBImage *)self defaultPunchoutAppIconImage];
+  if (defaultPunchoutAppIconImage)
   {
-    v118 = v117;
-    v119 = [(_SFPBImage *)self defaultPunchoutAppIconImage];
-    v120 = [v4 defaultPunchoutAppIconImage];
-    v121 = [v119 isEqual:v120];
+    v118 = defaultPunchoutAppIconImage;
+    defaultPunchoutAppIconImage2 = [(_SFPBImage *)self defaultPunchoutAppIconImage];
+    defaultPunchoutAppIconImage3 = [equalCopy defaultPunchoutAppIconImage];
+    v121 = [defaultPunchoutAppIconImage2 isEqual:defaultPunchoutAppIconImage3];
 
     if (!v121)
     {
@@ -1642,20 +1642,20 @@
   {
   }
 
-  v5 = [(_SFPBImage *)self photosAlbumImage];
-  v6 = [v4 photosAlbumImage];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self photosAlbumImage];
+  imageData2 = [equalCopy photosAlbumImage];
+  if ((imageData != 0) == (imageData2 == 0))
   {
     goto LABEL_126;
   }
 
-  v122 = [(_SFPBImage *)self photosAlbumImage];
-  if (v122)
+  photosAlbumImage = [(_SFPBImage *)self photosAlbumImage];
+  if (photosAlbumImage)
   {
-    v123 = v122;
-    v124 = [(_SFPBImage *)self photosAlbumImage];
-    v125 = [v4 photosAlbumImage];
-    v126 = [v124 isEqual:v125];
+    v123 = photosAlbumImage;
+    photosAlbumImage2 = [(_SFPBImage *)self photosAlbumImage];
+    photosAlbumImage3 = [equalCopy photosAlbumImage];
+    v126 = [photosAlbumImage2 isEqual:photosAlbumImage3];
 
     if (!v126)
     {
@@ -1667,17 +1667,17 @@
   {
   }
 
-  v5 = [(_SFPBImage *)self photosMemoryImage];
-  v6 = [v4 photosMemoryImage];
-  if ((v5 != 0) == (v6 == 0))
+  imageData = [(_SFPBImage *)self photosMemoryImage];
+  imageData2 = [equalCopy photosMemoryImage];
+  if ((imageData != 0) == (imageData2 == 0))
   {
 LABEL_126:
 
     goto LABEL_127;
   }
 
-  v127 = [(_SFPBImage *)self photosMemoryImage];
-  if (!v127)
+  photosMemoryImage = [(_SFPBImage *)self photosMemoryImage];
+  if (!photosMemoryImage)
   {
 
 LABEL_130:
@@ -1685,10 +1685,10 @@ LABEL_130:
     goto LABEL_128;
   }
 
-  v128 = v127;
-  v129 = [(_SFPBImage *)self photosMemoryImage];
-  v130 = [v4 photosMemoryImage];
-  v131 = [v129 isEqual:v130];
+  v128 = photosMemoryImage;
+  photosMemoryImage2 = [(_SFPBImage *)self photosMemoryImage];
+  photosMemoryImage3 = [equalCopy photosMemoryImage];
+  v131 = [photosMemoryImage2 isEqual:photosMemoryImage3];
 
   if (v131)
   {
@@ -1702,11 +1702,11 @@ LABEL_128:
   return v132;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v28 = a3;
-  v4 = [(_SFPBImage *)self imageData];
-  if (v4)
+  toCopy = to;
+  imageData = [(_SFPBImage *)self imageData];
+  if (imageData)
   {
     PBDataWriterWriteDataField();
   }
@@ -1721,14 +1721,14 @@ LABEL_128:
     PBDataWriterWriteBOOLField();
   }
 
-  v5 = [(_SFPBImage *)self cornerRadius];
-  if (v5)
+  cornerRadius = [(_SFPBImage *)self cornerRadius];
+  if (cornerRadius)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBImage *)self scale];
-  if (v6)
+  scale = [(_SFPBImage *)self scale];
+  if (scale)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -1739,20 +1739,20 @@ LABEL_128:
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_SFPBImage *)self contentType];
-  if (v8)
+  contentType = [(_SFPBImage *)self contentType];
+  if (contentType)
   {
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(_SFPBImage *)self keyColor];
-  if (v9)
+  keyColor = [(_SFPBImage *)self keyColor];
+  if (keyColor)
   {
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(_SFPBImage *)self identifier];
-  if (v10)
+  identifier = [(_SFPBImage *)self identifier];
+  if (identifier)
   {
     PBDataWriterWriteStringField();
   }
@@ -1767,14 +1767,14 @@ LABEL_128:
     PBDataWriterWriteInt32Field();
   }
 
-  v11 = [(_SFPBImage *)self accessibilityLabel];
-  if (v11)
+  accessibilityLabel = [(_SFPBImage *)self accessibilityLabel];
+  if (accessibilityLabel)
   {
     PBDataWriterWriteStringField();
   }
 
-  v12 = [(_SFPBImage *)self badgingImage];
-  if (v12)
+  badgingImage = [(_SFPBImage *)self badgingImage];
+  if (badgingImage)
   {
     PBDataWriterWriteSubmessage();
   }
@@ -1784,136 +1784,136 @@ LABEL_128:
     PBDataWriterWriteInt32Field();
   }
 
-  v13 = [(_SFPBImage *)self urlImage];
-  if (v13)
+  urlImage = [(_SFPBImage *)self urlImage];
+  if (urlImage)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(_SFPBImage *)self contactImage];
-  if (v14)
+  contactImage = [(_SFPBImage *)self contactImage];
+  if (contactImage)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(_SFPBImage *)self monogramImage];
-  if (v15)
+  monogramImage = [(_SFPBImage *)self monogramImage];
+  if (monogramImage)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(_SFPBImage *)self localImage];
-  if (v16)
+  localImage = [(_SFPBImage *)self localImage];
+  if (localImage)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v17 = [(_SFPBImage *)self appIconImage];
-  if (v17)
+  appIconImage = [(_SFPBImage *)self appIconImage];
+  if (appIconImage)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(_SFPBImage *)self mediaArtworkImage];
-  if (v18)
+  mediaArtworkImage = [(_SFPBImage *)self mediaArtworkImage];
+  if (mediaArtworkImage)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v19 = [(_SFPBImage *)self calendarImage];
-  if (v19)
+  calendarImage = [(_SFPBImage *)self calendarImage];
+  if (calendarImage)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(_SFPBImage *)self symbolImage];
-  if (v20)
+  symbolImage = [(_SFPBImage *)self symbolImage];
+  if (symbolImage)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v21 = [(_SFPBImage *)self photosLibraryImage];
-  if (v21)
+  photosLibraryImage = [(_SFPBImage *)self photosLibraryImage];
+  if (photosLibraryImage)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(_SFPBImage *)self quickLookThumbnailImage];
-  if (v22)
+  quickLookThumbnailImage = [(_SFPBImage *)self quickLookThumbnailImage];
+  if (quickLookThumbnailImage)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v23 = [(_SFPBImage *)self clockImage];
-  if (v23)
+  clockImage = [(_SFPBImage *)self clockImage];
+  if (clockImage)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(_SFPBImage *)self shortcutsImage];
-  if (v24)
+  shortcutsImage = [(_SFPBImage *)self shortcutsImage];
+  if (shortcutsImage)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v25 = [(_SFPBImage *)self defaultPunchoutAppIconImage];
-  if (v25)
+  defaultPunchoutAppIconImage = [(_SFPBImage *)self defaultPunchoutAppIconImage];
+  if (defaultPunchoutAppIconImage)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(_SFPBImage *)self photosAlbumImage];
-  if (v26)
+  photosAlbumImage = [(_SFPBImage *)self photosAlbumImage];
+  if (photosAlbumImage)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v27 = [(_SFPBImage *)self photosMemoryImage];
-  if (v27)
+  photosMemoryImage = [(_SFPBImage *)self photosMemoryImage];
+  if (photosMemoryImage)
   {
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  v4 = [a3 copy];
+  v4 = [label copy];
   accessibilityLabel = self->_accessibilityLabel;
   self->_accessibilityLabel = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   identifier = self->_identifier;
   self->_identifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setKeyColor:(id)a3
+- (void)setKeyColor:(id)color
 {
-  v4 = [a3 copy];
+  v4 = [color copy];
   keyColor = self->_keyColor;
   self->_keyColor = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setContentType:(id)a3
+- (void)setContentType:(id)type
 {
-  v4 = [a3 copy];
+  v4 = [type copy];
   contentType = self->_contentType;
   self->_contentType = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setImageData:(id)a3
+- (void)setImageData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   imageData = self->_imageData;
   self->_imageData = v4;
 

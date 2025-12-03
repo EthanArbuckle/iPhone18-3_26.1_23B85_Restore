@@ -1,17 +1,17 @@
 @interface AXClarityBoardServerInstance
 - (AXClarityBoardServerInstance)init;
 - (AXClarityBoardServerInstanceDelegate)delegate;
-- (id)_activeInterfaceOrientation:(id)a3;
-- (id)_goHome:(id)a3;
-- (id)_isSystemSleeping:(id)a3;
-- (id)_registerActionHandler:(id)a3;
-- (id)_setOrientation:(id)a3;
-- (id)_systemAppPID:(id)a3;
-- (id)_unlockDevice:(id)a3;
-- (id)_wakeUpDeviceIfNecessary:(id)a3;
+- (id)_activeInterfaceOrientation:(id)orientation;
+- (id)_goHome:(id)home;
+- (id)_isSystemSleeping:(id)sleeping;
+- (id)_registerActionHandler:(id)handler;
+- (id)_setOrientation:(id)orientation;
+- (id)_systemAppPID:(id)d;
+- (id)_unlockDevice:(id)device;
+- (id)_wakeUpDeviceIfNecessary:(id)necessary;
 - (void)_startSystemAppServerIfNeeded;
 - (void)dealloc;
-- (void)notifyActionOccurredWithType:(int64_t)a3 payload:(id)a4;
+- (void)notifyActionOccurredWithType:(int64_t)type payload:(id)payload;
 @end
 
 @implementation AXClarityBoardServerInstance
@@ -61,11 +61,11 @@
   [(AXClarityBoardServerInstance *)&v4 dealloc];
 }
 
-- (void)notifyActionOccurredWithType:(int64_t)a3 payload:(id)a4
+- (void)notifyActionOccurredWithType:(int64_t)type payload:(id)payload
 {
-  v6 = a4;
-  v7 = [(AXClarityBoardServerInstance *)self actionHandlerHelper];
-  [v7 notifyActionOccurredWithType:a3 payload:v6];
+  payloadCopy = payload;
+  actionHandlerHelper = [(AXClarityBoardServerInstance *)self actionHandlerHelper];
+  [actionHandlerHelper notifyActionOccurredWithType:type payload:payloadCopy];
 }
 
 - (void)_startSystemAppServerIfNeeded
@@ -118,7 +118,7 @@
   }
 }
 
-- (id)_systemAppPID:(id)a3
+- (id)_systemAppPID:(id)d
 {
   v3 = getpid();
   v4 = [AXIPCMessage alloc];
@@ -132,10 +132,10 @@
   return v8;
 }
 
-- (id)_activeInterfaceOrientation:(id)a3
+- (id)_activeInterfaceOrientation:(id)orientation
 {
-  v4 = [(AXClarityBoardServerInstance *)self delegate];
-  v5 = [v4 activeInterfaceOrientationForServerInstance:self];
+  delegate = [(AXClarityBoardServerInstance *)self delegate];
+  v5 = [delegate activeInterfaceOrientationForServerInstance:self];
 
   v6 = [AXIPCMessage alloc];
   v7 = AXClarityBoardMessageKeyActiveInterfaceOrientation;
@@ -148,19 +148,19 @@
   return v10;
 }
 
-- (id)_registerActionHandler:(id)a3
+- (id)_registerActionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(AXClarityBoardServerInstance *)self actionHandlerHelper];
-  v6 = [v5 handleActionHandlerRegistrationMessage:v4];
+  handlerCopy = handler;
+  actionHandlerHelper = [(AXClarityBoardServerInstance *)self actionHandlerHelper];
+  v6 = [actionHandlerHelper handleActionHandlerRegistrationMessage:handlerCopy];
 
   return v6;
 }
 
-- (id)_isSystemSleeping:(id)a3
+- (id)_isSystemSleeping:(id)sleeping
 {
-  v4 = [(AXClarityBoardServerInstance *)self delegate];
-  v5 = [v4 isSystemSleepingForServerInstance:self];
+  delegate = [(AXClarityBoardServerInstance *)self delegate];
+  v5 = [delegate isSystemSleepingForServerInstance:self];
 
   v6 = [AXIPCMessage alloc];
   v7 = AXClarityBoardMessageKeyIsSystemSleeping;
@@ -173,33 +173,33 @@
   return v10;
 }
 
-- (id)_wakeUpDeviceIfNecessary:(id)a3
+- (id)_wakeUpDeviceIfNecessary:(id)necessary
 {
-  v4 = [(AXClarityBoardServerInstance *)self delegate];
-  [v4 wakeUpDeviceIfNecessaryForServerInstance:self];
+  delegate = [(AXClarityBoardServerInstance *)self delegate];
+  [delegate wakeUpDeviceIfNecessaryForServerInstance:self];
 
   return 0;
 }
 
-- (id)_setOrientation:(id)a3
+- (id)_setOrientation:(id)orientation
 {
-  v3 = [a3 payload];
-  v4 = [v3 objectForKeyedSubscript:AXClarityBoardOrientationKey];
-  v5 = [v4 integerValue];
+  payload = [orientation payload];
+  v4 = [payload objectForKeyedSubscript:AXClarityBoardOrientationKey];
+  integerValue = [v4 integerValue];
 
   v6 = +[CLFLog commonLog];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = v5;
+    v9 = integerValue;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Set orientation via server to: %ld", &v8, 0xCu);
   }
 
-  [AXUIDeviceUtilities setOrientation:v5];
+  [AXUIDeviceUtilities setOrientation:integerValue];
   return 0;
 }
 
-- (id)_goHome:(id)a3
+- (id)_goHome:(id)home
 {
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 postNotificationName:CLBGoHomeNotification object:0];
@@ -207,10 +207,10 @@
   return 0;
 }
 
-- (id)_unlockDevice:(id)a3
+- (id)_unlockDevice:(id)device
 {
-  v4 = [(AXClarityBoardServerInstance *)self delegate];
-  [v4 unlockDeviceForServerInstance:self];
+  delegate = [(AXClarityBoardServerInstance *)self delegate];
+  [delegate unlockDeviceForServerInstance:self];
 
   return 0;
 }

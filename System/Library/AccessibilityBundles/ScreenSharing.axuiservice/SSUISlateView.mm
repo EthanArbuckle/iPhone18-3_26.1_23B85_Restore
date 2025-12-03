@@ -1,15 +1,15 @@
 @interface SSUISlateView
-- (CGPoint)hotspotAdjustmentForCursorFrame:(CGRect)a3;
-- (SSUISlateView)initWithFrame:(CGRect)a3;
-- (void)addPoint:(CGPoint)a3;
-- (void)createCGBitmapContextWithSize:(CGSize)a3;
+- (CGPoint)hotspotAdjustmentForCursorFrame:(CGRect)frame;
+- (SSUISlateView)initWithFrame:(CGRect)frame;
+- (void)addPoint:(CGPoint)point;
+- (void)createCGBitmapContextWithSize:(CGSize)size;
 - (void)dealloc;
 - (void)drawCompletedPath;
 - (void)drawFromCollectedPoints;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)drawSampleAnnotations;
-- (void)setCurrentOrientation:(int64_t)a3;
-- (void)setEventFlags:(unsigned int)a3;
+- (void)setCurrentOrientation:(int64_t)orientation;
+- (void)setEventFlags:(unsigned int)flags;
 - (void)startPeriodicUpdate;
 - (void)stopPeriodicUpdate;
 - (void)wipeSlate;
@@ -18,13 +18,13 @@
 
 @implementation SSUISlateView
 
-- (SSUISlateView)initWithFrame:(CGRect)a3
+- (SSUISlateView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v11.receiver = self;
   v11.super_class = SSUISlateView;
-  v5 = [(SSUISlateView *)&v11 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(SSUISlateView *)&v11 initWithFrame:frame.origin.x, frame.origin.y];
   if (v5)
   {
     v6 = +[UIColor clearColor];
@@ -86,15 +86,15 @@
   [(SSUISlateView *)&v7 dealloc];
 }
 
-- (void)setEventFlags:(unsigned int)a3
+- (void)setEventFlags:(unsigned int)flags
 {
-  v3 = a3;
-  if ((a3 & 0x20000000) != 0)
+  flagsCopy = flags;
+  if ((flags & 0x20000000) != 0)
   {
     [(SSUISlateView *)self wipeSlate];
   }
 
-  v5 = v3 & 0x70;
+  v5 = flagsCopy & 0x70;
   if (self->mDrawColor)
   {
     if (v5 == [(SSUISlateView *)self currentColor])
@@ -155,11 +155,11 @@ LABEL_19:
   [(SSUISlateView *)self setCurrentColor:v5];
 }
 
-- (CGPoint)hotspotAdjustmentForCursorFrame:(CGRect)a3
+- (CGPoint)hotspotAdjustmentForCursorFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(SSUISlateView *)self lineWidth:a3.origin.x];
+  height = frame.size.height;
+  width = frame.size.width;
+  [(SSUISlateView *)self lineWidth:frame.origin.x];
   v6 = width - trunc(v5) + -1.0;
   v7 = height * 0.5;
   result.y = v7;
@@ -167,10 +167,10 @@ LABEL_19:
   return result;
 }
 
-- (void)createCGBitmapContextWithSize:(CGSize)a3
+- (void)createCGBitmapContextWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   if (DeviceRGB)
   {
@@ -194,19 +194,19 @@ LABEL_19:
 
 - (void)wipeSlate
 {
-  v3 = [(SSUISlateView *)self allDrawingPoints];
-  [v3 removeAllObjects];
+  allDrawingPoints = [(SSUISlateView *)self allDrawingPoints];
+  [allDrawingPoints removeAllObjects];
 
   [(SSUISlateView *)self wipeSlateCore];
 }
 
 - (void)wipeSlateCore
 {
-  v3 = [(SSUISlateView *)self finalDrawingPoints];
-  [v3 removeAllObjects];
+  finalDrawingPoints = [(SSUISlateView *)self finalDrawingPoints];
+  [finalDrawingPoints removeAllObjects];
 
-  v4 = [(SSUISlateView *)self drawingPoints];
-  [v4 removeAllObjects];
+  drawingPoints = [(SSUISlateView *)self drawingPoints];
+  [drawingPoints removeAllObjects];
 
   bzero(self->mRawBitmapData, [(SSUISlateView *)self rawBitmapByteCount]);
 
@@ -288,8 +288,8 @@ LABEL_19:
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "drawFromCollectedPoints", buf, 2u);
   }
 
-  v3 = [(SSUISlateView *)self drawingPoints];
-  v4 = [v3 count];
+  drawingPoints = [(SSUISlateView *)self drawingPoints];
+  v4 = [drawingPoints count];
 
   if (v4 >= 2)
   {
@@ -298,24 +298,24 @@ LABEL_19:
     [(SSUISlateView *)self lineWidth];
     CGContextSetLineWidth(mBitmapContext, v6);
     CGContextBeginPath(self->mBitmapContext);
-    v7 = [(SSUISlateView *)self drawingPoints];
-    v8 = [v7 firstObject];
+    drawingPoints2 = [(SSUISlateView *)self drawingPoints];
+    firstObject = [drawingPoints2 firstObject];
 
-    v9 = [v8 objectAtIndexedSubscript:0];
-    v10 = [v8 objectAtIndexedSubscript:1];
+    v9 = [firstObject objectAtIndexedSubscript:0];
+    v10 = [firstObject objectAtIndexedSubscript:1];
     v11 = self->mBitmapContext;
     [v9 floatValue];
     v13 = v12;
     [v10 floatValue];
     CGContextMoveToPoint(v11, v13, v14);
-    v15 = [(SSUISlateView *)self drawingPoints];
-    [v15 removeObject:v8];
+    drawingPoints3 = [(SSUISlateView *)self drawingPoints];
+    [drawingPoints3 removeObject:firstObject];
 
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v16 = self;
+    selfCopy = self;
     obj = [(SSUISlateView *)self drawingPoints];
     v17 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v17)
@@ -325,7 +325,7 @@ LABEL_19:
       do
       {
         v20 = 0;
-        v21 = v8;
+        v21 = firstObject;
         v22 = v9;
         v23 = v10;
         do
@@ -335,19 +335,19 @@ LABEL_19:
             objc_enumerationMutation(obj);
           }
 
-          v8 = *(*(&v30 + 1) + 8 * v20);
+          firstObject = *(*(&v30 + 1) + 8 * v20);
 
-          v9 = [v8 objectAtIndexedSubscript:0];
+          v9 = [firstObject objectAtIndexedSubscript:0];
 
-          v10 = [v8 objectAtIndexedSubscript:1];
+          v10 = [firstObject objectAtIndexedSubscript:1];
 
-          v24 = v16->mBitmapContext;
+          v24 = selfCopy->mBitmapContext;
           [v9 floatValue];
           v26 = v25;
           [v10 floatValue];
           CGContextAddLineToPoint(v24, v26, v27);
           v20 = v20 + 1;
-          v21 = v8;
+          v21 = firstObject;
           v22 = v9;
           v23 = v10;
         }
@@ -359,18 +359,18 @@ LABEL_19:
       while (v18);
     }
 
-    if (![(SSUISlateView *)v16 liveUpdate])
+    if (![(SSUISlateView *)selfCopy liveUpdate])
     {
-      v28 = [(SSUISlateView *)v16 drawingPoints];
-      [v28 removeAllObjects];
+      drawingPoints4 = [(SSUISlateView *)selfCopy drawingPoints];
+      [drawingPoints4 removeAllObjects];
     }
 
-    CGContextStrokePath(v16->mBitmapContext);
-    [(SSUISlateView *)v16 setNeedsDisplay];
+    CGContextStrokePath(selfCopy->mBitmapContext);
+    [(SSUISlateView *)selfCopy setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   CurrentContext = UIGraphicsGetCurrentContext();
   Image = CGBitmapContextCreateImage(self->mBitmapContext);
@@ -384,22 +384,22 @@ LABEL_19:
   }
 }
 
-- (void)addPoint:(CGPoint)a3
+- (void)addPoint:(CGPoint)point
 {
-  y = a3.y;
-  v5 = [NSNumber numberWithDouble:a3.x];
+  y = point.y;
+  v5 = [NSNumber numberWithDouble:point.x];
   v10[0] = v5;
   v6 = [NSNumber numberWithDouble:y];
   v10[1] = v6;
   v7 = [NSArray arrayWithObjects:v10 count:2];
 
-  v8 = [(SSUISlateView *)self drawingPoints];
-  [v8 addObject:v7];
+  drawingPoints = [(SSUISlateView *)self drawingPoints];
+  [drawingPoints addObject:v7];
 
   if ([(SSUISlateView *)self liveUpdate])
   {
-    v9 = [(SSUISlateView *)self finalDrawingPoints];
-    [v9 addObject:v7];
+    finalDrawingPoints = [(SSUISlateView *)self finalDrawingPoints];
+    [finalDrawingPoints addObject:v7];
   }
 }
 
@@ -421,55 +421,55 @@ LABEL_19:
 - (void)stopPeriodicUpdate
 {
   [(SSUISlateView *)self setLiveUpdate:0];
-  v3 = [(SSUISlateView *)self updateTimer];
-  [v3 invalidate];
+  updateTimer = [(SSUISlateView *)self updateTimer];
+  [updateTimer invalidate];
 
   [(SSUISlateView *)self setUpdateTimer:0];
 }
 
 - (void)drawCompletedPath
 {
-  v3 = [(SSUISlateView *)self finalDrawingPoints];
-  v4 = [v3 count];
+  finalDrawingPoints = [(SSUISlateView *)self finalDrawingPoints];
+  v4 = [finalDrawingPoints count];
 
   if (v4 >= 2)
   {
-    v5 = [(SSUISlateView *)self drawingPoints];
-    [v5 removeAllObjects];
+    drawingPoints = [(SSUISlateView *)self drawingPoints];
+    [drawingPoints removeAllObjects];
 
-    v6 = [(SSUISlateView *)self drawingPoints];
-    v7 = [(SSUISlateView *)self finalDrawingPoints];
-    [v6 addObjectsFromArray:v7];
+    drawingPoints2 = [(SSUISlateView *)self drawingPoints];
+    finalDrawingPoints2 = [(SSUISlateView *)self finalDrawingPoints];
+    [drawingPoints2 addObjectsFromArray:finalDrawingPoints2];
 
-    v8 = [(SSUISlateView *)self allDrawingPoints];
-    v9 = [(SSUISlateView *)self finalDrawingPoints];
-    v10 = [v9 copy];
-    [v8 addObject:v10];
+    allDrawingPoints = [(SSUISlateView *)self allDrawingPoints];
+    finalDrawingPoints3 = [(SSUISlateView *)self finalDrawingPoints];
+    v10 = [finalDrawingPoints3 copy];
+    [allDrawingPoints addObject:v10];
 
-    v11 = [(SSUISlateView *)self finalDrawingPoints];
-    [v11 removeAllObjects];
+    finalDrawingPoints4 = [(SSUISlateView *)self finalDrawingPoints];
+    [finalDrawingPoints4 removeAllObjects];
 
     [(SSUISlateView *)self drawFromCollectedPoints];
   }
 }
 
-- (void)setCurrentOrientation:(int64_t)a3
+- (void)setCurrentOrientation:(int64_t)orientation
 {
-  if (self->_currentOrientation != a3)
+  if (self->_currentOrientation != orientation)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       currentOrientation = self->_currentOrientation;
       *buf = 134218240;
-      v31 = a3;
+      orientationCopy = orientation;
       v32 = 2048;
       v33 = currentOrientation;
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "currentOrientation: %ld, was: %ld", buf, 0x16u);
     }
 
-    self->_currentOrientation = a3;
+    self->_currentOrientation = orientation;
     mBitmapContext = self->mBitmapContext;
-    if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if ((orientation & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       if (mBitmapContext == self->mBitmapContextLandscape)
       {
@@ -491,8 +491,8 @@ LABEL_19:
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v7 = [(SSUISlateView *)self allDrawingPoints];
-      v8 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      allDrawingPoints = [(SSUISlateView *)self allDrawingPoints];
+      v8 = [allDrawingPoints countByEnumeratingWithState:&v24 objects:v29 count:16];
       if (v8)
       {
         v9 = v8;
@@ -503,17 +503,17 @@ LABEL_19:
           {
             if (*v25 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(allDrawingPoints);
             }
 
             v12 = *(*(&v24 + 1) + 8 * i);
-            v13 = [(SSUISlateView *)self drawingPoints];
-            [v13 addObjectsFromArray:v12];
+            drawingPoints = [(SSUISlateView *)self drawingPoints];
+            [drawingPoints addObjectsFromArray:v12];
 
             [(SSUISlateView *)self drawFromCollectedPoints];
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
+          v9 = [allDrawingPoints countByEnumeratingWithState:&v24 objects:v29 count:16];
         }
 
         while (v9);
@@ -542,8 +542,8 @@ LABEL_19:
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v7 = [(SSUISlateView *)self allDrawingPoints];
-      v14 = [v7 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      allDrawingPoints = [(SSUISlateView *)self allDrawingPoints];
+      v14 = [allDrawingPoints countByEnumeratingWithState:&v20 objects:v28 count:16];
       if (v14)
       {
         v15 = v14;
@@ -554,17 +554,17 @@ LABEL_19:
           {
             if (*v21 != v16)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(allDrawingPoints);
             }
 
             v18 = *(*(&v20 + 1) + 8 * j);
-            v19 = [(SSUISlateView *)self drawingPoints];
-            [v19 addObjectsFromArray:v18];
+            drawingPoints2 = [(SSUISlateView *)self drawingPoints];
+            [drawingPoints2 addObjectsFromArray:v18];
 
             [(SSUISlateView *)self drawFromCollectedPoints];
           }
 
-          v15 = [v7 countByEnumeratingWithState:&v20 objects:v28 count:16];
+          v15 = [allDrawingPoints countByEnumeratingWithState:&v20 objects:v28 count:16];
         }
 
         while (v15);

@@ -1,45 +1,45 @@
 @interface SCNOffscreenRenderer
-+ (SCNOffscreenRenderer)offscreenRendererWithContext:(id)a3 size:(CGSize)a4;
-+ (SCNOffscreenRenderer)offscreenRendererWithDevice:(id)a3 sceneRendererDelegate:(id)a4 size:(CGSize)a5;
-- (BOOL)_usesSpecificMainPassClearColorForRenderer:(id)a3 clearColor:;
-- (BOOL)_wantsCustomMainPassPostProcessForRenderer:(id)a3;
++ (SCNOffscreenRenderer)offscreenRendererWithContext:(id)context size:(CGSize)size;
++ (SCNOffscreenRenderer)offscreenRendererWithDevice:(id)device sceneRendererDelegate:(id)delegate size:(CGSize)size;
+- (BOOL)_usesSpecificMainPassClearColorForRenderer:(id)renderer clearColor:;
+- (BOOL)_wantsCustomMainPassPostProcessForRenderer:(id)renderer;
 - (CGSize)size;
-- (id)_renderer:(id)a3 subdivDataForHash:(id)a4;
+- (id)_renderer:(id)_renderer subdivDataForHash:(id)hash;
 - (id)snapshot;
 - (unsigned)textureID;
-- (void)_encodeCustomMainPassPostProcessForRenderer:(id)a3 atTime:(double)a4 helper:(id)a5;
-- (void)_renderer:(id)a3 didApplyAnimationsAtTime:(double)a4;
-- (void)_renderer:(id)a3 didApplyConstraintsAtTime:(double)a4;
-- (void)_renderer:(id)a3 didBuildSubdivDataForHash:(id)a4 dataProvider:(id)a5;
-- (void)_renderer:(id)a3 didRenderScene:(id)a4 atTime:(double)a5;
-- (void)_renderer:(id)a3 didSimulatePhysicsAtTime:(double)a4;
-- (void)_renderer:(id)a3 updateAtTime:(double)a4;
-- (void)_renderer:(id)a3 willRenderScene:(id)a4 atTime:(double)a5;
-- (void)setSize:(CGSize)a3;
+- (void)_encodeCustomMainPassPostProcessForRenderer:(id)renderer atTime:(double)time helper:(id)helper;
+- (void)_renderer:(id)_renderer didApplyAnimationsAtTime:(double)time;
+- (void)_renderer:(id)_renderer didApplyConstraintsAtTime:(double)time;
+- (void)_renderer:(id)_renderer didBuildSubdivDataForHash:(id)hash dataProvider:(id)provider;
+- (void)_renderer:(id)_renderer didRenderScene:(id)scene atTime:(double)time;
+- (void)_renderer:(id)_renderer didSimulatePhysicsAtTime:(double)time;
+- (void)_renderer:(id)_renderer updateAtTime:(double)time;
+- (void)_renderer:(id)_renderer willRenderScene:(id)scene atTime:(double)time;
+- (void)setSize:(CGSize)size;
 @end
 
 @implementation SCNOffscreenRenderer
 
-+ (SCNOffscreenRenderer)offscreenRendererWithContext:(id)a3 size:(CGSize)a4
++ (SCNOffscreenRenderer)offscreenRendererWithContext:(id)context size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = [[a1 alloc] _initWithOptions:0 isPrivateRenderer:0 privateRendererOwner:0 clearsOnDraw:1 context:a3 renderingAPI:1];
+  height = size.height;
+  width = size.width;
+  v6 = [[self alloc] _initWithOptions:0 isPrivateRenderer:0 privateRendererOwner:0 clearsOnDraw:1 context:context renderingAPI:1];
   [v6 _setupOffscreenRendererWithSize:{width, height}];
 
   return v6;
 }
 
-+ (SCNOffscreenRenderer)offscreenRendererWithDevice:(id)a3 sceneRendererDelegate:(id)a4 size:(CGSize)a5
++ (SCNOffscreenRenderer)offscreenRendererWithDevice:(id)device sceneRendererDelegate:(id)delegate size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = a3;
-  if (a3 || (v8 = [SCNView deviceForOptions:?]) != 0)
+  height = size.height;
+  width = size.width;
+  deviceCopy = device;
+  if (device || (deviceCopy = [SCNView deviceForOptions:?]) != 0)
   {
-    v10 = [[a1 alloc] _initWithOptions:0 isPrivateRenderer:0 privateRendererOwner:0 clearsOnDraw:1 context:v8 renderingAPI:0];
-    *(v10 + 448) = a4;
-    if (a4)
+    v10 = [[self alloc] _initWithOptions:0 isPrivateRenderer:0 privateRendererOwner:0 clearsOnDraw:1 context:deviceCopy renderingAPI:0];
+    *(v10 + 448) = delegate;
+    if (delegate)
     {
       *(v10 + 456) = *(v10 + 456) & 0xFFFE | objc_opt_respondsToSelector() & 1;
       if (objc_opt_respondsToSelector())
@@ -141,7 +141,7 @@
   else
   {
 
-    return [a1 offscreenRendererWithContext:0 size:{width, height}];
+    return [self offscreenRendererWithContext:0 size:{width, height}];
   }
 }
 
@@ -171,10 +171,10 @@
   return result;
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  height = a3.height;
-  v4 = vmovn_s64(vcvtq_u64_f64(vrndpq_f64(a3)));
+  height = size.height;
+  v4 = vmovn_s64(vcvtq_u64_f64(vrndpq_f64(size)));
   v5 = vmvn_s8(vceq_s32(*self->super._anon_58, v4));
   if ((vpmax_u32(v5, v5).u32[0] & 0x80000000) != 0)
   {
@@ -183,67 +183,67 @@
   }
 }
 
-- (void)_renderer:(id)a3 updateAtTime:(double)a4
+- (void)_renderer:(id)_renderer updateAtTime:(double)time
 {
   if (*&self->_sceneRendererDelegateDelegationConformance)
   {
-    [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _renderer:a3 updateAtTime:a4];
+    [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _renderer:_renderer updateAtTime:time];
   }
 }
 
-- (void)_renderer:(id)a3 didApplyAnimationsAtTime:(double)a4
+- (void)_renderer:(id)_renderer didApplyAnimationsAtTime:(double)time
 {
   if ((*&self->_sceneRendererDelegateDelegationConformance & 2) != 0)
   {
-    [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _renderer:a3 didApplyAnimationsAtTime:a4];
+    [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _renderer:_renderer didApplyAnimationsAtTime:time];
   }
 }
 
-- (void)_renderer:(id)a3 didSimulatePhysicsAtTime:(double)a4
+- (void)_renderer:(id)_renderer didSimulatePhysicsAtTime:(double)time
 {
   if ((*&self->_sceneRendererDelegateDelegationConformance & 4) != 0)
   {
-    [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _renderer:a3 didSimulatePhysicsAtTime:a4];
+    [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _renderer:_renderer didSimulatePhysicsAtTime:time];
   }
 }
 
-- (void)_renderer:(id)a3 didApplyConstraintsAtTime:(double)a4
+- (void)_renderer:(id)_renderer didApplyConstraintsAtTime:(double)time
 {
   if ((*&self->_sceneRendererDelegateDelegationConformance & 8) != 0)
   {
-    [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _renderer:a3 didApplyConstraintsAtTime:a4];
+    [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _renderer:_renderer didApplyConstraintsAtTime:time];
   }
 }
 
-- (void)_renderer:(id)a3 willRenderScene:(id)a4 atTime:(double)a5
+- (void)_renderer:(id)_renderer willRenderScene:(id)scene atTime:(double)time
 {
   if ((*&self->_sceneRendererDelegateDelegationConformance & 0x10) != 0)
   {
-    [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _renderer:a3 willRenderScene:a4 atTime:a5];
+    [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _renderer:_renderer willRenderScene:scene atTime:time];
   }
 }
 
-- (void)_renderer:(id)a3 didRenderScene:(id)a4 atTime:(double)a5
+- (void)_renderer:(id)_renderer didRenderScene:(id)scene atTime:(double)time
 {
   if ((*&self->_sceneRendererDelegateDelegationConformance & 0x20) != 0)
   {
-    [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _renderer:a3 didRenderScene:a4 atTime:a5];
+    [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _renderer:_renderer didRenderScene:scene atTime:time];
   }
 }
 
-- (void)_renderer:(id)a3 didBuildSubdivDataForHash:(id)a4 dataProvider:(id)a5
+- (void)_renderer:(id)_renderer didBuildSubdivDataForHash:(id)hash dataProvider:(id)provider
 {
   if ((*&self->_sceneRendererDelegateDelegationConformance & 0x80) != 0)
   {
-    [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _renderer:a3 didBuildSubdivDataForHash:a4 dataProvider:a5];
+    [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _renderer:_renderer didBuildSubdivDataForHash:hash dataProvider:provider];
   }
 }
 
-- (id)_renderer:(id)a3 subdivDataForHash:(id)a4
+- (id)_renderer:(id)_renderer subdivDataForHash:(id)hash
 {
   if ((*&self->_sceneRendererDelegateDelegationConformance & 0x100) != 0)
   {
-    return [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _renderer:a3 subdivDataForHash:a4];
+    return [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _renderer:_renderer subdivDataForHash:hash];
   }
 
   else
@@ -252,11 +252,11 @@
   }
 }
 
-- (BOOL)_wantsCustomMainPassPostProcessForRenderer:(id)a3
+- (BOOL)_wantsCustomMainPassPostProcessForRenderer:(id)renderer
 {
   if ((*&self->_sceneRendererDelegateDelegationConformance & 0x200) != 0)
   {
-    return [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _wantsCustomMainPassPostProcessForRenderer:a3];
+    return [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _wantsCustomMainPassPostProcessForRenderer:renderer];
   }
 
   else
@@ -265,11 +265,11 @@
   }
 }
 
-- (BOOL)_usesSpecificMainPassClearColorForRenderer:(id)a3 clearColor:
+- (BOOL)_usesSpecificMainPassClearColorForRenderer:(id)renderer clearColor:
 {
   if ((*&self->_sceneRendererDelegateDelegationConformance & 0x200) != 0)
   {
-    return [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _usesSpecificMainPassClearColorForRenderer:a3 clearColor:?];
+    return [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _usesSpecificMainPassClearColorForRenderer:renderer clearColor:?];
   }
 
   else
@@ -278,11 +278,11 @@
   }
 }
 
-- (void)_encodeCustomMainPassPostProcessForRenderer:(id)a3 atTime:(double)a4 helper:(id)a5
+- (void)_encodeCustomMainPassPostProcessForRenderer:(id)renderer atTime:(double)time helper:(id)helper
 {
   if ((*&self->_sceneRendererDelegateDelegationConformance & 0x200) != 0)
   {
-    [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _encodeCustomMainPassPostProcessForRenderer:a3 atTime:a5 helper:a4];
+    [(_SCNSceneRendererDelegate *)self->_sceneRendererDelegate _encodeCustomMainPassPostProcessForRenderer:renderer atTime:helper helper:time];
   }
 }
 

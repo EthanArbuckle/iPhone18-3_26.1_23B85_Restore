@@ -8,7 +8,7 @@
 
 - (double)startTime
 {
-  v2 = self;
+  selfCopy = self;
   MusicTrack.startTime.getter();
   v4 = v3;
 
@@ -17,7 +17,7 @@
 
 - (double)duration
 {
-  v2 = self;
+  selfCopy = self;
   MusicTrack.duration.getter();
   v4 = v3;
 

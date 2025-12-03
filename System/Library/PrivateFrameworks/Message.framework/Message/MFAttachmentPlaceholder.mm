@@ -1,21 +1,21 @@
 @interface MFAttachmentPlaceholder
-+ (BOOL)hasPlaceholderRepresentation:(id)a3;
-+ (BOOL)isPlaceholderSerializedRepresentation:(id)a3;
-+ (BOOL)writeData:(id)a3 forURL:(id)a4;
-+ (id)_localStoreURLForFileData:(id)a3 contentID:(id)a4;
++ (BOOL)hasPlaceholderRepresentation:(id)representation;
++ (BOOL)isPlaceholderSerializedRepresentation:(id)representation;
++ (BOOL)writeData:(id)data forURL:(id)l;
++ (id)_localStoreURLForFileData:(id)data contentID:(id)d;
 + (id)_placeholderMagic;
-+ (id)attachmentPlaceholderForData:(id)a3 fileName:(id)a4 type:(id)a5 contentID:(id)a6;
-+ (id)attachmentPlaceholderForFileURL:(id)a3 fileName:(id)a4 fileSize:(int64_t)a5 type:(id)a6 contentID:(id)a7;
-+ (id)dataForPlaceholder:(id)a3;
++ (id)attachmentPlaceholderForData:(id)data fileName:(id)name type:(id)type contentID:(id)d;
++ (id)attachmentPlaceholderForFileURL:(id)l fileName:(id)name fileSize:(int64_t)size type:(id)type contentID:(id)d;
++ (id)dataForPlaceholder:(id)placeholder;
 + (id)placeholder;
 + (id)placeholderDirectory;
-+ (id)placeholderFromSerializedRepresentation:(id)a3;
-+ (id)placeholderRepresentations:(id)a3;
-+ (id)serializedPlaceholderForFileName:(id)a3 fileSize:(int64_t)a4 mimeType:(id)a5 contentID:(id)a6;
-+ (void)cloneFileAtURL:(id)a3 toPlaceholderURL:(id)a4;
++ (id)placeholderFromSerializedRepresentation:(id)representation;
++ (id)placeholderRepresentations:(id)representations;
++ (id)serializedPlaceholderForFileName:(id)name fileSize:(int64_t)size mimeType:(id)type contentID:(id)d;
++ (void)cloneFileAtURL:(id)l toPlaceholderURL:(id)rL;
 + (void)placeholderDirectory;
-+ (void)removePlaceholder:(id)a3;
-+ (void)removePlaceholderForFileURL:(id)a3;
++ (void)removePlaceholder:(id)placeholder;
++ (void)removePlaceholderForFileURL:(id)l;
 - (BOOL)useMailDrop;
 - (MFAttachmentPlaceholder)init;
 - (id)description;
@@ -23,14 +23,14 @@
 - (id)serializedRepresentation;
 - (unint64_t)fileSize;
 - (void)serializedRepresentation;
-- (void)setFileSize:(unint64_t)a3;
+- (void)setFileSize:(unint64_t)size;
 @end
 
 @implementation MFAttachmentPlaceholder
 
 + (id)placeholder
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -50,36 +50,36 @@
   return v2;
 }
 
-+ (id)attachmentPlaceholderForFileURL:(id)a3 fileName:(id)a4 fileSize:(int64_t)a5 type:(id)a6 contentID:(id)a7
++ (id)attachmentPlaceholderForFileURL:(id)l fileName:(id)name fileSize:(int64_t)size type:(id)type contentID:(id)d
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v15 = [MFAttachmentUtilities makeAttachmentPlaceholder:v12 fileSize:a5 mimeType:v13 contentID:v14];
-  v16 = [v15 fileURL];
-  v17 = [MFAttachmentUtilities securityScopeForFileURL:v16];
+  lCopy = l;
+  nameCopy = name;
+  typeCopy = type;
+  dCopy = d;
+  v15 = [MFAttachmentUtilities makeAttachmentPlaceholder:nameCopy fileSize:size mimeType:typeCopy contentID:dCopy];
+  fileURL = [v15 fileURL];
+  v17 = [MFAttachmentUtilities securityScopeForFileURL:fileURL];
 
-  v18 = [v17 startWriteAccess];
-  [MFAttachmentPlaceholder cloneFileAtURL:v11 toPlaceholderURL:v18];
+  startWriteAccess = [v17 startWriteAccess];
+  [MFAttachmentPlaceholder cloneFileAtURL:lCopy toPlaceholderURL:startWriteAccess];
 
   [v17 stopAccess];
 
   return v15;
 }
 
-+ (id)attachmentPlaceholderForData:(id)a3 fileName:(id)a4 type:(id)a5 contentID:(id)a6
++ (id)attachmentPlaceholderForData:(id)data fileName:(id)name type:(id)type contentID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = +[MFAttachmentUtilities makeAttachmentPlaceholder:fileSize:mimeType:contentID:](MFAttachmentUtilities, "makeAttachmentPlaceholder:fileSize:mimeType:contentID:", v10, [v9 length], v11, v12);
-  v14 = [v13 fileURL];
-  v15 = [MFAttachmentUtilities securityScopeForFileURL:v14];
+  dataCopy = data;
+  nameCopy = name;
+  typeCopy = type;
+  dCopy = d;
+  v13 = +[MFAttachmentUtilities makeAttachmentPlaceholder:fileSize:mimeType:contentID:](MFAttachmentUtilities, "makeAttachmentPlaceholder:fileSize:mimeType:contentID:", nameCopy, [dataCopy length], typeCopy, dCopy);
+  fileURL = [v13 fileURL];
+  v15 = [MFAttachmentUtilities securityScopeForFileURL:fileURL];
 
-  v16 = [v15 startWriteAccess];
-  [MFAttachmentPlaceholder writeData:v9 forURL:v16];
+  startWriteAccess = [v15 startWriteAccess];
+  [MFAttachmentPlaceholder writeData:dataCopy forURL:startWriteAccess];
 
   [v15 stopAccess];
 
@@ -89,19 +89,19 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MFAttachmentPlaceholder *)self fileName];
-  v5 = [(MFAttachmentPlaceholder *)self fileSize];
-  v6 = [(MFAttachmentPlaceholder *)self mimeType];
-  v7 = [(MFAttachmentPlaceholder *)self fileURLString];
-  v8 = [(MFAttachmentPlaceholder *)self contentID];
-  v9 = [(MFAttachmentPlaceholder *)self useMailDrop];
+  fileName = [(MFAttachmentPlaceholder *)self fileName];
+  fileSize = [(MFAttachmentPlaceholder *)self fileSize];
+  mimeType = [(MFAttachmentPlaceholder *)self mimeType];
+  fileURLString = [(MFAttachmentPlaceholder *)self fileURLString];
+  contentID = [(MFAttachmentPlaceholder *)self contentID];
+  useMailDrop = [(MFAttachmentPlaceholder *)self useMailDrop];
   v10 = "SMTP";
-  if (v9)
+  if (useMailDrop)
   {
     v10 = "MailDrop";
   }
 
-  v11 = [v3 stringWithFormat:@"%@ %lu [%@] @ %@ : %@ [%s]", v4, v5, v6, v7, v8, v10];
+  v11 = [v3 stringWithFormat:@"%@ %lu [%@] @ %@ : %@ [%s]", fileName, fileSize, mimeType, fileURLString, contentID, v10];
 
   return v11;
 }
@@ -109,23 +109,23 @@
 - (unint64_t)fileSize
 {
   v2 = [(NSMutableDictionary *)self->_jsonDictionary objectForKeyedSubscript:@"fileSize"];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (void)setFileSize:(unint64_t)a3
+- (void)setFileSize:(unint64_t)size
 {
   jsonDictionary = self->_jsonDictionary;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:size];
   [NSMutableDictionary setValue:"setValue:forKey:" forKey:?];
 }
 
 - (id)fileURL
 {
   v2 = MEMORY[0x1E695DFF8];
-  v3 = [(MFAttachmentPlaceholder *)self fileURLString];
-  v4 = [v2 URLWithString:v3];
+  fileURLString = [(MFAttachmentPlaceholder *)self fileURLString];
+  v4 = [v2 URLWithString:fileURLString];
 
   return v4;
 }
@@ -133,23 +133,23 @@
 - (BOOL)useMailDrop
 {
   v2 = [(NSMutableDictionary *)self->_jsonDictionary objectForKeyedSubscript:@"mailDrop"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-+ (id)_localStoreURLForFileData:(id)a3 contentID:(id)a4
++ (id)_localStoreURLForFileData:(id)data contentID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() placeholderDirectory];
-  v9 = [v8 stringByAppendingPathComponent:v7];
+  dataCopy = data;
+  dCopy = d;
+  placeholderDirectory = [objc_opt_class() placeholderDirectory];
+  v9 = [placeholderDirectory stringByAppendingPathComponent:dCopy];
   if ([v9 length])
   {
     v10 = [MEMORY[0x1E695DFF8] fileURLWithPath:v9];
-    if ([v6 length])
+    if ([dataCopy length])
     {
-      [a1 writeData:v6 forURL:v10];
+      [self writeData:dataCopy forURL:v10];
     }
   }
 
@@ -161,12 +161,12 @@
   return v10;
 }
 
-+ (id)placeholderFromSerializedRepresentation:(id)a3
++ (id)placeholderFromSerializedRepresentation:(id)representation
 {
-  v4 = a3;
-  if ([a1 isPlaceholderSerializedRepresentation:v4])
+  representationCopy = representation;
+  if ([self isPlaceholderSerializedRepresentation:representationCopy])
   {
-    v5 = [v4 subdataWithRange:{4, objc_msgSend(v4, "length") - 4}];
+    v5 = [representationCopy subdataWithRange:{4, objc_msgSend(representationCopy, "length") - 4}];
     if (v5)
     {
       v11 = 0;
@@ -220,18 +220,18 @@ void __44__MFAttachmentPlaceholder__placeholderMagic__block_invoke()
   _placeholderMagic_placeholderMagic = v0;
 }
 
-+ (BOOL)isPlaceholderSerializedRepresentation:(id)a3
++ (BOOL)isPlaceholderSerializedRepresentation:(id)representation
 {
-  v4 = a3;
-  if ([v4 length] < 0x35 || objc_msgSend(v4, "length") > 0x833)
+  representationCopy = representation;
+  if ([representationCopy length] < 0x35 || objc_msgSend(representationCopy, "length") > 0x833)
   {
     v7 = 0;
   }
 
   else
   {
-    v5 = [a1 _placeholderMagic];
-    v6 = [v4 rangeOfData:v5 options:2 range:{0, 4}];
+    _placeholderMagic = [self _placeholderMagic];
+    v6 = [representationCopy rangeOfData:_placeholderMagic options:2 range:{0, 4}];
 
     v7 = v6 != 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -273,16 +273,16 @@ void __44__MFAttachmentPlaceholder__placeholderMagic__block_invoke()
   return v5;
 }
 
-+ (BOOL)hasPlaceholderRepresentation:(id)a3
++ (BOOL)hasPlaceholderRepresentation:(id)representation
 {
-  v3 = [a3 messageBody];
-  v4 = [v3 rawData];
+  messageBody = [representation messageBody];
+  rawData = [messageBody rawData];
 
-  if ([v4 length])
+  if ([rawData length])
   {
-    v5 = [v4 length];
+    v5 = [rawData length];
     v6 = [@"=FA=CA=DE{" dataUsingEncoding:4];
-    v7 = [v4 rangeOfData:v6 options:0 range:{0, v5}];
+    v7 = [rawData rangeOfData:v6 options:0 range:{0, v5}];
 
     v8 = v7 != 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -295,18 +295,18 @@ void __44__MFAttachmentPlaceholder__placeholderMagic__block_invoke()
   return v8;
 }
 
-+ (id)placeholderRepresentations:(id)a3
++ (id)placeholderRepresentations:(id)representations
 {
   v31 = *MEMORY[0x1E69E9840];
-  v23 = a3;
-  v25 = [MEMORY[0x1E695DF70] array];
-  v4 = [v23 messageBody];
-  v5 = [v4 rawData];
+  representationsCopy = representations;
+  array = [MEMORY[0x1E695DF70] array];
+  messageBody = [representationsCopy messageBody];
+  rawData = [messageBody rawData];
 
-  v24 = v5;
-  if ([v5 length])
+  v24 = rawData;
+  if ([rawData length])
   {
-    v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{objc_msgSend(v5, "bytes")}];
+    v21 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{objc_msgSend(rawData, "bytes")}];
     v22 = [v21 componentsSeparatedByString:@"=FA=CA=DE{"];
     if ([v22 count])
     {
@@ -336,16 +336,16 @@ void __44__MFAttachmentPlaceholder__placeholderMagic__block_invoke()
               v13 = [v12 stringByReplacingOccurrencesOfString:@"=\n" withString:&stru_1F273A5E0];
 
               v14 = MEMORY[0x1E695DF88];
-              v15 = [a1 _placeholderMagic];
-              v16 = [v14 dataWithData:v15];
+              _placeholderMagic = [self _placeholderMagic];
+              v16 = [v14 dataWithData:_placeholderMagic];
 
               v17 = [v13 dataUsingEncoding:4];
               [v16 appendData:v17];
 
-              v18 = [a1 placeholderFromSerializedRepresentation:v16];
+              v18 = [self placeholderFromSerializedRepresentation:v16];
               if (v18)
               {
-                [v25 addObject:v18];
+                [array addObject:v18];
               }
             }
           }
@@ -360,16 +360,16 @@ void __44__MFAttachmentPlaceholder__placeholderMagic__block_invoke()
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v25;
+  return array;
 }
 
-+ (id)dataForPlaceholder:(id)a3
++ (id)dataForPlaceholder:(id)placeholder
 {
-  v3 = a3;
-  v4 = [v3 fileURL];
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v4 path];
-  v7 = [v5 fileExistsAtPath:v6];
+  placeholderCopy = placeholder;
+  fileURL = [placeholderCopy fileURL];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [fileURL path];
+  v7 = [defaultManager fileExistsAtPath:path];
 
   if (v7)
   {
@@ -377,7 +377,7 @@ void __44__MFAttachmentPlaceholder__placeholderMagic__block_invoke()
     aBlock[1] = 3221225472;
     aBlock[2] = __46__MFAttachmentPlaceholder_dataForPlaceholder___block_invoke;
     aBlock[3] = &unk_1E7AA4F98;
-    v8 = v4;
+    v8 = fileURL;
     v21 = v8;
     v9 = _Block_copy(aBlock);
     if (MFIsMobileMail())
@@ -387,19 +387,19 @@ void __44__MFAttachmentPlaceholder__placeholderMagic__block_invoke()
 
     else
     {
-      v13 = [MEMORY[0x1E699B868] promise];
+      promise = [MEMORY[0x1E699B868] promise];
       v14 = MEMORY[0x1E69ADAE8];
-      v15 = [v13 completionHandlerAdapter];
-      [v14 securityScopeForPlaceholderURL:v8 completionBlock:v15];
+      completionHandlerAdapter = [promise completionHandlerAdapter];
+      [v14 securityScopeForPlaceholderURL:v8 completionBlock:completionHandlerAdapter];
 
-      v16 = [v13 future];
-      v10 = [v16 then:v9];
+      future = [promise future];
+      v10 = [future then:v9];
     }
 
     v17 = [v10 result:0];
-    v12 = [v17 data];
+    data = [v17 data];
 
-    if (!v12)
+    if (!data)
     {
       v18 = MFLogGeneral();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -419,11 +419,11 @@ void __44__MFAttachmentPlaceholder__placeholderMagic__block_invoke()
       +[MFAttachmentPlaceholder dataForPlaceholder:];
     }
 
-    v12 = 0;
+    data = 0;
     v10 = 0;
   }
 
-  return v12;
+  return data;
 }
 
 id __46__MFAttachmentPlaceholder_dataForPlaceholder___block_invoke(uint64_t a1, uint64_t a2)
@@ -434,19 +434,19 @@ id __46__MFAttachmentPlaceholder_dataForPlaceholder___block_invoke(uint64_t a1, 
   return v3;
 }
 
-+ (BOOL)writeData:(id)a3 forURL:(id)a4
++ (BOOL)writeData:(id)data forURL:(id)l
 {
   v12 = *MEMORY[0x1E69E9840];
   v10 = 0;
-  v4 = [a3 writeToURL:a4 options:0x40000000 error:&v10];
+  v4 = [data writeToURL:l options:0x40000000 error:&v10];
   v5 = v10;
   if ((v4 & 1) == 0)
   {
     v6 = MFLogGeneral();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [v5 ef_publicDescription];
-      [MFAttachmentPlaceholder writeData:v7 forURL:v11];
+      ef_publicDescription = [v5 ef_publicDescription];
+      [MFAttachmentPlaceholder writeData:ef_publicDescription forURL:v11];
     }
   }
 
@@ -454,56 +454,56 @@ id __46__MFAttachmentPlaceholder_dataForPlaceholder___block_invoke(uint64_t a1, 
   return v4;
 }
 
-+ (void)cloneFileAtURL:(id)a3 toPlaceholderURL:(id)a4
++ (void)cloneFileAtURL:(id)l toPlaceholderURL:(id)rL
 {
   v22[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  v9 = [v8 copyItemAtURL:v6 toURL:v7 error:0];
+  lCopy = l;
+  rLCopy = rL;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v9 = [defaultManager copyItemAtURL:lCopy toURL:rLCopy error:0];
 
   if (v9)
   {
-    v10 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v11 = *MEMORY[0x1E695DA98];
     v21[0] = *MEMORY[0x1E695DAA8];
     v21[1] = v11;
-    v22[0] = v10;
-    v22[1] = v10;
+    v22[0] = date;
+    v22[1] = date;
     v21[2] = *MEMORY[0x1E695DAF0];
     v22[2] = *MEMORY[0x1E695DAE8];
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:3];
     v19 = 0;
-    v13 = [v7 setResourceValues:v12 error:&v19];
+    v13 = [rLCopy setResourceValues:v12 error:&v19];
     v14 = v19;
     if ((v13 & 1) == 0)
     {
       v15 = MFLogGeneral();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v16 = [v14 ef_publicDescription];
-        [MFAttachmentPlaceholder cloneFileAtURL:v16 toPlaceholderURL:v20];
+        ef_publicDescription = [v14 ef_publicDescription];
+        [MFAttachmentPlaceholder cloneFileAtURL:ef_publicDescription toPlaceholderURL:v20];
       }
     }
   }
 
   else
   {
-    v17 = [MEMORY[0x1E69AD6B0] dataWithContentsOfURL:v6];
-    [a1 writeData:v17 forURL:v7];
+    v17 = [MEMORY[0x1E69AD6B0] dataWithContentsOfURL:lCopy];
+    [self writeData:v17 forURL:rLCopy];
   }
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)removePlaceholderForFileURL:(id)a3
++ (void)removePlaceholderForFileURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   if (MFIsMobileMail())
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v7 = 0;
-    [v4 removeItemAtURL:v3 error:&v7];
+    [defaultManager removeItemAtURL:lCopy error:&v7];
     v5 = v7;
 
     if (v5)
@@ -517,21 +517,21 @@ id __46__MFAttachmentPlaceholder_dataForPlaceholder___block_invoke(uint64_t a1, 
   }
 }
 
-+ (void)removePlaceholder:(id)a3
++ (void)removePlaceholder:(id)placeholder
 {
-  v4 = [a3 fileURL];
-  [a1 removePlaceholderForFileURL:?];
+  fileURL = [placeholder fileURL];
+  [self removePlaceholderForFileURL:?];
 }
 
 + (id)placeholderDirectory
 {
   v2 = +[MailAccount defaultAccountDirectory];
   v3 = [v2 stringByAppendingPathComponent:@"AttachmentPlaceholders"];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  if (([v4 fileExistsAtPath:v3] & 1) == 0)
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if (([defaultManager fileExistsAtPath:v3] & 1) == 0)
   {
     v10 = 0;
-    v5 = [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v10];
+    v5 = [defaultManager createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v10];
     v6 = v10;
     if ((v5 & 1) == 0)
     {
@@ -545,46 +545,46 @@ id __46__MFAttachmentPlaceholder_dataForPlaceholder___block_invoke(uint64_t a1, 
     }
   }
 
-  v8 = [v3 mf_canonicalizedAbsolutePath];
+  mf_canonicalizedAbsolutePath = [v3 mf_canonicalizedAbsolutePath];
 
-  return v8;
+  return mf_canonicalizedAbsolutePath;
 }
 
-+ (id)serializedPlaceholderForFileName:(id)a3 fileSize:(int64_t)a4 mimeType:(id)a5 contentID:(id)a6
++ (id)serializedPlaceholderForFileName:(id)name fileSize:(int64_t)size mimeType:(id)type contentID:(id)d
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (![v12 length])
+  nameCopy = name;
+  typeCopy = type;
+  dCopy = d;
+  if (![dCopy length])
   {
-    v13 = [MEMORY[0x1E696AFB0] UUID];
-    v14 = [v13 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v12 = v14;
+    dCopy = uUIDString;
   }
 
-  v15 = [MEMORY[0x1E695DEF0] data];
-  v16 = [a1 _localStoreURLForFileData:v15 contentID:v12];
+  data = [MEMORY[0x1E695DEF0] data];
+  v16 = [self _localStoreURLForFileData:data contentID:dCopy];
 
   if (v16)
   {
     v17 = +[MFAttachmentPlaceholder placeholder];
-    [v17 setFileName:v10];
-    [v17 setFileSize:a4];
-    [v17 setMimeType:v11];
-    v18 = [v16 absoluteString];
-    [v17 setFileURLString:v18];
+    [v17 setFileName:nameCopy];
+    [v17 setFileSize:size];
+    [v17 setMimeType:typeCopy];
+    absoluteString = [v16 absoluteString];
+    [v17 setFileURLString:absoluteString];
 
-    [v17 setContentID:v12];
-    v19 = [v17 serializedRepresentation];
+    [v17 setContentID:dCopy];
+    serializedRepresentation = [v17 serializedRepresentation];
   }
 
   else
   {
-    v19 = 0;
+    serializedRepresentation = 0;
   }
 
-  return v19;
+  return serializedRepresentation;
 }
 
 + (void)attachmentPlaceholderForFileURL:fileName:fileSize:type:contentID:.cold.1()

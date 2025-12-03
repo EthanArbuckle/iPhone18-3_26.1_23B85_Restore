@@ -1,26 +1,26 @@
 @interface HFSwingModeControlItem
-- (HFSwingModeControlItem)initWithValueSource:(id)a3;
-- (HFSwingModeControlItem)initWithValueSource:(id)a3 characteristicType:(id)a4 valueTransformer:(id)a5 displayResults:(id)a6;
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4;
+- (HFSwingModeControlItem)initWithValueSource:(id)source;
+- (HFSwingModeControlItem)initWithValueSource:(id)source characteristicType:(id)type valueTransformer:(id)transformer displayResults:(id)results;
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source;
 @end
 
 @implementation HFSwingModeControlItem
 
-- (HFSwingModeControlItem)initWithValueSource:(id)a3 characteristicType:(id)a4 valueTransformer:(id)a5 displayResults:(id)a6
+- (HFSwingModeControlItem)initWithValueSource:(id)source characteristicType:(id)type valueTransformer:(id)transformer displayResults:(id)results
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v9 = NSStringFromSelector(sel_initWithValueSource_);
-  [v8 handleFailureInMethod:a2 object:self file:@"HFSwingModeControlItem.m" lineNumber:23 description:{@"%s is unavailable; use %@ instead", "-[HFSwingModeControlItem initWithValueSource:characteristicType:valueTransformer:displayResults:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFSwingModeControlItem.m" lineNumber:23 description:{@"%s is unavailable; use %@ instead", "-[HFSwingModeControlItem initWithValueSource:characteristicType:valueTransformer:displayResults:]", v9}];
 
   return 0;
 }
 
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source
 {
-  v6 = a4;
-  if ([(HFPrimaryStateControlItem *)self canCopyWithCharacteristicOptions:a3])
+  sourceCopy = source;
+  if ([(HFPrimaryStateControlItem *)self canCopyWithCharacteristicOptions:options])
   {
-    v7 = [objc_alloc(objc_opt_class()) initWithValueSource:v6];
+    v7 = [objc_alloc(objc_opt_class()) initWithValueSource:sourceCopy];
     [v7 copyLatestResultsFromItem:self];
   }
 
@@ -32,10 +32,10 @@
   return v7;
 }
 
-- (HFSwingModeControlItem)initWithValueSource:(id)a3
+- (HFSwingModeControlItem)initWithValueSource:(id)source
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sourceCopy = source;
   v5 = [HFValueTransformer transformerForValueClass:objc_opt_class() transformBlock:&__block_literal_global_65 reverseTransformBlock:&__block_literal_global_10_2];
   v13 = @"title";
   v6 = _HFLocalizedStringWithDefaultValue(@"HFControlShortTitleSwingMode", @"HFControlShortTitleSwingMode", 1);
@@ -45,7 +45,7 @@
   v8 = *MEMORY[0x277CCFAF8];
   v12.receiver = self;
   v12.super_class = HFSwingModeControlItem;
-  v9 = [(HFPrimaryStateControlItem *)&v12 initWithValueSource:v4 characteristicType:v8 valueTransformer:v5 displayResults:v7];
+  v9 = [(HFPrimaryStateControlItem *)&v12 initWithValueSource:sourceCopy characteristicType:v8 valueTransformer:v5 displayResults:v7];
 
   v10 = *MEMORY[0x277D85DE8];
   return v9;

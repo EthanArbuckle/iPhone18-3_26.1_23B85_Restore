@@ -1,16 +1,16 @@
 @interface VUIFavoriteBannerCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation VUIFavoriteBannerCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUIFavoriteBannerCollectionViewCell" hasProperty:@"bannerView" withType:"@"];
-  [v3 validateClass:@"VUIFavoriteBannerView" hasProperty:@"titleLabel" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUIFavoriteBannerCollectionViewCell" hasProperty:@"bannerView" withType:"@"];
+  [validationsCopy validateClass:@"VUIFavoriteBannerView" hasProperty:@"titleLabel" withType:"@"];
 }
 
 - (id)accessibilityLabel
@@ -20,9 +20,9 @@
   v3 = [v2 safeValueForKey:@"titleLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
-  return v5;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits

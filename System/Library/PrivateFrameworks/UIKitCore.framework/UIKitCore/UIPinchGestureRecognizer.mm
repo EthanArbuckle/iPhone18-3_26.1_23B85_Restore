@@ -1,23 +1,23 @@
 @interface UIPinchGestureRecognizer
 - (BOOL)_endsOnSingleTouch;
-- (BOOL)_shouldReceiveEvent:(id)a3;
+- (BOOL)_shouldReceiveEvent:(id)event;
 - (CGAffineTransform)transform;
 - (CGFloat)scale;
 - (CGFloat)velocity;
 - (CGPoint)anchorPoint;
-- (CGPoint)locationInView:(id)a3;
-- (CGPoint)locationOfTouch:(unint64_t)a3 inView:(id)a4;
-- (UIPinchGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (CGPoint)locationInView:(id)view;
+- (CGPoint)locationOfTouch:(unint64_t)touch inView:(id)view;
+- (UIPinchGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (double)_hysteresis;
 - (double)scaleThreshold;
 - (id)_driver;
 - (unint64_t)numberOfTouches;
 - (void)_evaluateTransformEventTouchCompatibility;
 - (void)_resetGestureRecognizer;
-- (void)_setEndsOnSingleTouch:(BOOL)a3;
-- (void)_setHysteresis:(double)a3;
-- (void)setScaleThreshold:(double)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)_setEndsOnSingleTouch:(BOOL)touch;
+- (void)_setHysteresis:(double)hysteresis;
+- (void)setScaleThreshold:(double)threshold;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation UIPinchGestureRecognizer
@@ -51,11 +51,11 @@
   [(UIGestureRecognizer *)&v2 _resetGestureRecognizer];
 }
 
-- (UIPinchGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (UIPinchGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v6.receiver = self;
   v6.super_class = UIPinchGestureRecognizer;
-  v4 = [(UIGestureRecognizer *)&v6 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v6 initWithTarget:target action:action];
   if (v4)
   {
     *&v4->_flags = *&v4->_flags & 0xFE | _UIGestureRecognizerShouldConsiderPointingDeviceCompatibility();
@@ -117,12 +117,12 @@
   return result;
 }
 
-- (void)setScaleThreshold:(double)a3
+- (void)setScaleThreshold:(double)threshold
 {
   driver = self->_driver;
   if (driver)
   {
-    driver->_scaleThreshold = a3;
+    driver->_scaleThreshold = threshold;
   }
 }
 
@@ -140,12 +140,12 @@
   }
 }
 
-- (void)_setHysteresis:(double)a3
+- (void)_setHysteresis:(double)hysteresis
 {
   driver = self->_driver;
   if (driver)
   {
-    driver->_hysteresis = a3;
+    driver->_hysteresis = hysteresis;
   }
 }
 
@@ -163,15 +163,15 @@
   }
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
   driver = self->_driver;
   if (driver)
   {
     p_a = &driver->_transform.a;
-    v5 = *&a3->a;
-    v6 = *&a3->tx;
-    p_a[1] = *&a3->c;
+    v5 = *&transform->a;
+    v6 = *&transform->tx;
+    p_a[1] = *&transform->c;
     p_a[2] = v6;
     *p_a = v5;
   }
@@ -199,12 +199,12 @@
   return self;
 }
 
-- (void)_setEndsOnSingleTouch:(BOOL)a3
+- (void)_setEndsOnSingleTouch:(BOOL)touch
 {
   driver = self->_driver;
   if (driver)
   {
-    *&driver->_flags = *&driver->_flags & 0xFE | a3;
+    *&driver->_flags = *&driver->_flags & 0xFE | touch;
   }
 }
 
@@ -240,12 +240,12 @@
   }
 }
 
-- (BOOL)_shouldReceiveEvent:(id)a3
+- (BOOL)_shouldReceiveEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = UIPinchGestureRecognizer;
   v5 = [(UIGestureRecognizer *)&v7 _shouldReceiveEvent:?];
-  if ([a3 type] == 14)
+  if ([event type] == 14)
   {
     [(UIPinchGestureRecognizer *)self _evaluateTransformEventTouchCompatibility];
   }
@@ -253,15 +253,15 @@
   return v5;
 }
 
-- (CGPoint)locationInView:(id)a3
+- (CGPoint)locationInView:(id)view
 {
-  v5 = [(UIGestureRecognizer *)self _activeTouchesEvent];
+  _activeTouchesEvent = [(UIGestureRecognizer *)self _activeTouchesEvent];
 
-  if (v5)
+  if (_activeTouchesEvent)
   {
     v12.receiver = self;
     v12.super_class = UIPinchGestureRecognizer;
-    [(UIGestureRecognizer *)&v12 locationInView:a3];
+    [(UIGestureRecognizer *)&v12 locationInView:view];
   }
 
   else
@@ -280,7 +280,7 @@
       v10 = 0.0;
     }
 
-    [(UIGestureRecognizer *)self _convertPoint:a3 fromSceneReferenceCoordinatesToView:v10, v11];
+    [(UIGestureRecognizer *)self _convertPoint:view fromSceneReferenceCoordinatesToView:v10, v11];
   }
 
   result.y = v7;
@@ -293,11 +293,11 @@
   flags = self->_flags;
   if ((flags & 4) == 0)
   {
-    v9 = self;
-    v4 = &v9;
+    selfCopy = self;
+    v4 = &selfCopy;
 LABEL_10:
     v4[1] = UIPinchGestureRecognizer;
-    return objc_msgSendSuper2(v4, sel_numberOfTouches, v8);
+    return objc_msgSendSuper2(v4, sel_numberOfTouches, selfCopy2);
   }
 
   if ((*&self->_flags & 8) == 0)
@@ -319,27 +319,27 @@ LABEL_10:
 
   if ((flags & 8) == 0)
   {
-    v8 = self;
-    v4 = &v8;
+    selfCopy2 = self;
+    v4 = &selfCopy2;
     goto LABEL_10;
   }
 
   return 2;
 }
 
-- (CGPoint)locationOfTouch:(unint64_t)a3 inView:(id)a4
+- (CGPoint)locationOfTouch:(unint64_t)touch inView:(id)view
 {
   if ((*&self->_flags & 8) != 0)
   {
 
-    [(UIPinchGestureRecognizer *)self locationInView:a4];
+    [(UIPinchGestureRecognizer *)self locationInView:view];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UIPinchGestureRecognizer;
-    [(UIGestureRecognizer *)&v7 locationOfTouch:a3 inView:a4];
+    [(UIGestureRecognizer *)&v7 locationOfTouch:touch inView:view];
   }
 
   result.y = v6;

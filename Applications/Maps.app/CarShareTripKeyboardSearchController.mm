@@ -1,29 +1,29 @@
 @interface CarShareTripKeyboardSearchController
 - (CarKeyboardModeController)keyboardMode;
-- (CarShareTripKeyboardSearchController)initWithContactSearchResults:(id)a3 dataSource:(id)a4 searchHandler:(id)a5;
+- (CarShareTripKeyboardSearchController)initWithContactSearchResults:(id)results dataSource:(id)source searchHandler:(id)handler;
 - (NSArray)focusOrderSubItems;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_attemptToStartShareWithContact:(id)a3;
-- (void)_cancelCapabilitiesForUpdatedMatches:(id)a3 previousMatches:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_attemptToStartShareWithContact:(id)contact;
+- (void)_cancelCapabilitiesForUpdatedMatches:(id)matches previousMatches:(id)previousMatches;
 - (void)_cancelDismiss;
 - (void)_commitPendingShares;
-- (void)_commitShareForCellAtIndexPath:(id)a3;
+- (void)_commitShareForCellAtIndexPath:(id)path;
 - (void)_dismissAfterDelay;
-- (void)_toggleSharingForContactAtIndexPath:(id)a3;
-- (void)_updateSearchResults:(id)a3;
-- (void)capabilityLevelFetcher:(id)a3 didUpdateCapabilityLevelsForHandles:(id)a4;
-- (void)carShareTripContactCellDidFinishRingAnimation:(id)a3;
+- (void)_toggleSharingForContactAtIndexPath:(id)path;
+- (void)_updateSearchResults:(id)results;
+- (void)capabilityLevelFetcher:(id)fetcher didUpdateCapabilityLevelsForHandles:(id)handles;
+- (void)carShareTripContactCellDidFinishRingAnimation:(id)animation;
 - (void)handleCancelButtonPressed;
-- (void)handleSearchButtonPressedWithText:(id)a3;
-- (void)sharedTripService:(id)a3 didUpdateSharingIdentity:(id)a4;
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)handleSearchButtonPressedWithText:(id)text;
+- (void)sharedTripService:(id)service didUpdateSharingIdentity:(id)identity;
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CarShareTripKeyboardSearchController
@@ -39,43 +39,43 @@
 {
   if ([(CarShareTripKeyboardSearchController *)self isViewLoaded])
   {
-    v3 = [(CarTableView *)self->_tableView _car_visibleCells];
+    _car_visibleCells = [(CarTableView *)self->_tableView _car_visibleCells];
   }
 
   else
   {
-    v3 = &__NSArray0__struct;
+    _car_visibleCells = &__NSArray0__struct;
   }
 
-  return v3;
+  return _car_visibleCells;
 }
 
-- (void)sharedTripService:(id)a3 didUpdateSharingIdentity:(id)a4
+- (void)sharedTripService:(id)service didUpdateSharingIdentity:(id)identity
 {
-  v8 = a4;
-  objc_storeStrong(&self->_sharingIdentity, a4);
-  if (([v8 hasValidAccount] & 1) == 0)
+  identityCopy = identity;
+  objc_storeStrong(&self->_sharingIdentity, identity);
+  if (([identityCopy hasValidAccount] & 1) == 0)
   {
     v6 = +[CarChromeModeCoordinator sharedInstance];
-    v7 = [(CarShareTripKeyboardSearchController *)self keyboardMode];
-    [v6 popFromContext:v7];
+    keyboardMode = [(CarShareTripKeyboardSearchController *)self keyboardMode];
+    [v6 popFromContext:keyboardMode];
   }
 }
 
-- (void)_attemptToStartShareWithContact:(id)a3
+- (void)_attemptToStartShareWithContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   objc_initWeak(&location, self);
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100D2F038;
   v19[3] = &unk_101661340;
   objc_copyWeak(&v21, &location);
-  v5 = v4;
+  v5 = contactCopy;
   v20 = v5;
   v6 = objc_retainBlock(v19);
-  v7 = [(CarShareTripKeyboardSearchController *)self keyboardMode];
-  v8 = [v7 chromeViewController];
+  keyboardMode = [(CarShareTripKeyboardSearchController *)self keyboardMode];
+  chromeViewController = [keyboardMode chromeViewController];
 
   v9 = self->_sharingIdentity;
   v10 = +[MSPSharedTripService sharedInstance];
@@ -87,7 +87,7 @@
   v14[4] = self;
   v11 = v9;
   v15 = v11;
-  v12 = v8;
+  v12 = chromeViewController;
   v16 = v12;
   v13 = v6;
   v17 = v13;
@@ -98,31 +98,31 @@
   objc_destroyWeak(&location);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v15 = a4;
+  pathCopy = path;
   self->_userInteracted = 1;
-  v6 = a3;
+  viewCopy = view;
   [(CarShareTripKeyboardSearchController *)self _cancelDismiss];
-  [v6 deselectRowAtIndexPath:v15 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 
-  v7 = [v15 row];
+  v7 = [pathCopy row];
   if (v7 < [(NSOrderedSet *)self->_matches count])
   {
     v8 = [(NSOrderedSet *)self->_matches objectAtIndexedSubscript:v7];
     cellsByContactStringValue = self->_cellsByContactStringValue;
-    v10 = [v8 stringValue];
-    v11 = [(NSMutableDictionary *)cellsByContactStringValue objectForKey:v10];
+    stringValue = [v8 stringValue];
+    v11 = [(NSMutableDictionary *)cellsByContactStringValue objectForKey:stringValue];
 
-    v12 = [v11 sharingState];
-    if (v12 == 1)
+    sharingState = [v11 sharingState];
+    if (sharingState == 1)
     {
       [v11 setSharingState:-[SharedTripSuggestionsDataSource sharingStateForContact:](self->_dataSource animated:{"sharingStateForContact:", v8), 0}];
     }
 
     else
     {
-      if (!v12)
+      if (!sharingState)
       {
         [(CarShareTripKeyboardSearchController *)self _attemptToStartShareWithContact:v8];
 LABEL_8:
@@ -130,12 +130,12 @@ LABEL_8:
         goto LABEL_9;
       }
 
-      [(CarShareTripKeyboardSearchController *)self _toggleSharingForContactAtIndexPath:v15];
+      [(CarShareTripKeyboardSearchController *)self _toggleSharingForContactAtIndexPath:pathCopy];
     }
 
-    v13 = [(CarShareTripKeyboardSearchController *)self keyboardMode];
-    v14 = [v13 chromeViewController];
-    [v14 captureUserAction:9026];
+    keyboardMode = [(CarShareTripKeyboardSearchController *)self keyboardMode];
+    chromeViewController = [keyboardMode chromeViewController];
+    [chromeViewController captureUserAction:9026];
 
     goto LABEL_8;
   }
@@ -143,79 +143,79 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)tableView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5
+- (void)tableView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  viewCopy = view;
+  coordinatorCopy = coordinator;
+  contextCopy = context;
   [(CarShareTripKeyboardSearchController *)self _cancelDismiss];
-  v11 = [v10 nextFocusedIndexPath];
+  nextFocusedIndexPath = [contextCopy nextFocusedIndexPath];
 
-  v12 = [v8 numberOfRowsInSection:{objc_msgSend(v11, "section")}];
-  if ([v11 row] == v12 - 1)
+  v12 = [viewCopy numberOfRowsInSection:{objc_msgSend(nextFocusedIndexPath, "section")}];
+  if ([nextFocusedIndexPath row] == v12 - 1)
   {
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100D2F948;
     v13[3] = &unk_101661B18;
-    v14 = v8;
-    [v9 addCoordinatedAnimations:0 completion:v13];
+    v14 = viewCopy;
+    [coordinatorCopy addCoordinatedAnimations:0 completion:v13];
   }
 }
 
-- (void)_commitShareForCellAtIndexPath:(id)a3
+- (void)_commitShareForCellAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (v4)
+  pathCopy = path;
+  if (pathCopy)
   {
-    v6 = v4;
-    v5 = -[NSOrderedSet objectAtIndexedSubscript:](self->_matches, "objectAtIndexedSubscript:", [v4 row]);
+    v6 = pathCopy;
+    v5 = -[NSOrderedSet objectAtIndexedSubscript:](self->_matches, "objectAtIndexedSubscript:", [pathCopy row]);
     if (![(SharedTripSuggestionsDataSource *)self->_dataSource sharingStateForContact:v5])
     {
       [(CarShareTripKeyboardSearchController *)self _toggleSharingForContactAtIndexPath:v6];
     }
 
-    v4 = v6;
+    pathCopy = v6;
   }
 }
 
-- (void)carShareTripContactCellDidFinishRingAnimation:(id)a3
+- (void)carShareTripContactCellDidFinishRingAnimation:(id)animation
 {
-  v4 = [(CarTableView *)self->_tableView indexPathForCell:a3];
+  v4 = [(CarTableView *)self->_tableView indexPathForCell:animation];
   [(CarShareTripKeyboardSearchController *)self _commitShareForCellAtIndexPath:v4];
 }
 
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v5 = [a4 contactValue];
-  if (v5)
+  contactValue = [cell contactValue];
+  if (contactValue)
   {
-    v7 = v5;
+    v7 = contactValue;
     v6 = +[MSPSharedTripCapabilityLevelFetcher sharedFetcher];
     [v6 cancelCapabilityLevelRequestForContact:v7];
 
-    v5 = v7;
+    contactValue = v7;
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v5 = [a4 contactValue];
-  if (v5)
+  contactValue = [cell contactValue];
+  if (contactValue)
   {
     v6 = +[MSPSharedTripCapabilityLevelFetcher sharedFetcher];
-    v8 = v5;
+    v8 = contactValue;
     v7 = [NSArray arrayWithObjects:&v8 count:1];
     [v6 requestCapabilityLevelsForContacts:v7];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = -[NSOrderedSet objectAtIndexedSubscript:](self->_matches, "objectAtIndexedSubscript:", [a4 row]);
+  v5 = -[NSOrderedSet objectAtIndexedSubscript:](self->_matches, "objectAtIndexedSubscript:", [path row]);
   cellsByContactStringValue = self->_cellsByContactStringValue;
-  v7 = [v5 stringValue];
-  v8 = [(NSMutableDictionary *)cellsByContactStringValue objectForKey:v7];
+  stringValue = [v5 stringValue];
+  v8 = [(NSMutableDictionary *)cellsByContactStringValue objectForKey:stringValue];
 
   if (v8)
   {
@@ -226,8 +226,8 @@ LABEL_9:
 
   else
   {
-    v12 = [v5 stringValue];
-    v13 = [v12 length];
+    stringValue2 = [v5 stringValue];
+    v13 = [stringValue2 length];
 
     v8 = [(CarShareTripContactCell *)[CarShareTripContactSearchResultCell alloc] initWithStyle:0 reuseIdentifier:0];
     if (!v13)
@@ -236,8 +236,8 @@ LABEL_9:
     }
 
     v14 = self->_cellsByContactStringValue;
-    v15 = [v5 stringValue];
-    [(NSMutableDictionary *)v14 setObject:v8 forKey:v15];
+    stringValue3 = [v5 stringValue];
+    [(NSMutableDictionary *)v14 setObject:v8 forKey:stringValue3];
 
     [(CarShareTripContactCell *)v8 setDelegate:self];
     [(CarShareTripContactSearchResultCell *)v8 configureWithMSPSharedTripContact:v5];
@@ -264,8 +264,8 @@ LABEL_6:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMutableDictionary *)self->_cellsByContactStringValue objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_cellsByContactStringValue objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -276,7 +276,7 @@ LABEL_6:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -288,7 +288,7 @@ LABEL_6:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -309,9 +309,9 @@ LABEL_6:
 - (void)_dismissAfterDelay
 {
   [(CarShareTripKeyboardSearchController *)self _cancelDismiss];
-  v3 = [(CarShareTripKeyboardSearchController *)self dismissHandler];
+  dismissHandler = [(CarShareTripKeyboardSearchController *)self dismissHandler];
 
-  if (v3)
+  if (dismissHandler)
   {
     objc_initWeak(&location, self);
     v6[0] = _NSConcreteStackBlock;
@@ -328,9 +328,9 @@ LABEL_6:
   }
 }
 
-- (void)_toggleSharingForContactAtIndexPath:(id)a3
+- (void)_toggleSharingForContactAtIndexPath:(id)path
 {
-  v4 = -[NSOrderedSet objectAtIndexedSubscript:](self->_matches, "objectAtIndexedSubscript:", [a3 row]);
+  v4 = -[NSOrderedSet objectAtIndexedSubscript:](self->_matches, "objectAtIndexedSubscript:", [path row]);
   if (v4)
   {
     v5 = v4;
@@ -340,14 +340,14 @@ LABEL_6:
   }
 }
 
-- (void)capabilityLevelFetcher:(id)a3 didUpdateCapabilityLevelsForHandles:(id)a4
+- (void)capabilityLevelFetcher:(id)fetcher didUpdateCapabilityLevelsForHandles:(id)handles
 {
-  v5 = a4;
+  handlesCopy = handles;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v19 = self;
+  selfCopy = self;
   v6 = self->_matches;
   v7 = [(NSOrderedSet *)v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
@@ -364,12 +364,12 @@ LABEL_6:
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 stringValue];
-        if ([v5 containsObject:v12])
+        stringValue = [v11 stringValue];
+        if ([handlesCopy containsObject:stringValue])
         {
-          cellsByContactStringValue = v19->_cellsByContactStringValue;
-          v14 = [v11 stringValue];
-          v15 = [(NSMutableDictionary *)cellsByContactStringValue objectForKey:v14];
+          cellsByContactStringValue = selfCopy->_cellsByContactStringValue;
+          stringValue2 = [v11 stringValue];
+          v15 = [(NSMutableDictionary *)cellsByContactStringValue objectForKey:stringValue2];
 
           v16 = +[MSPSharedTripService sharedInstance];
           v20 = 0;
@@ -387,43 +387,43 @@ LABEL_6:
   }
 }
 
-- (void)_cancelCapabilitiesForUpdatedMatches:(id)a3 previousMatches:(id)a4
+- (void)_cancelCapabilitiesForUpdatedMatches:(id)matches previousMatches:(id)previousMatches
 {
-  v10 = a3;
-  v5 = a4;
-  if ([v5 count])
+  matchesCopy = matches;
+  previousMatchesCopy = previousMatches;
+  if ([previousMatchesCopy count])
   {
-    v6 = [NSMutableSet setWithArray:v5];
-    if ([v10 count])
+    v6 = [NSMutableSet setWithArray:previousMatchesCopy];
+    if ([matchesCopy count])
     {
-      v7 = [NSSet setWithArray:v10];
+      v7 = [NSSet setWithArray:matchesCopy];
       [v6 minusSet:v7];
     }
 
     if ([v6 count])
     {
       v8 = +[MSPSharedTripCapabilityLevelFetcher sharedFetcher];
-      v9 = [v6 allObjects];
-      [v8 cancelCapabilityLevelRequestForContacts:v9];
+      allObjects = [v6 allObjects];
+      [v8 cancelCapabilityLevelRequestForContacts:allObjects];
     }
   }
 }
 
-- (void)_updateSearchResults:(id)a3
+- (void)_updateSearchResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v5 = sub_1000946AC();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v9 = 138477827;
-    v10 = v4;
+    v10 = resultsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Searching for '%{private}@'", &v9, 0xCu);
   }
 
   [(CarTableView *)self->_tableView scrollRectToVisible:0 animated:0.0, 0.0, 1.0, 1.0];
-  if ([v4 length])
+  if ([resultsCopy length])
   {
-    v6 = [MSPSharedTripContact _maps_contactsMatchingQuery:v4];
+    v6 = [MSPSharedTripContact _maps_contactsMatchingQuery:resultsCopy];
   }
 
   else
@@ -438,21 +438,21 @@ LABEL_6:
   [(CarTableView *)self->_tableView reloadData];
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  if ([v4 isActive])
+  controllerCopy = controller;
+  if ([controllerCopy isActive])
   {
-    v5 = [v4 searchBar];
-    v6 = [v5 text];
+    searchBar = [controllerCopy searchBar];
+    text = [searchBar text];
 
-    [(MapsThrottler *)self->_inputThrottler setValue:v6];
+    [(MapsThrottler *)self->_inputThrottler setValue:text];
     v7 = sub_1000946AC();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       inputThrottler = self->_inputThrottler;
       v9 = 138478083;
-      v10 = v6;
+      v10 = text;
       v11 = 2112;
       v12 = inputThrottler;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Updating input to '%{private}@' (throttler: %@)", &v9, 0x16u);
@@ -462,41 +462,41 @@ LABEL_6:
 
 - (void)handleCancelButtonPressed
 {
-  v3 = [(CarShareTripKeyboardSearchController *)self keyboardMode];
-  v2 = [v3 chromeViewController];
-  [v2 captureUserAction:2003];
+  keyboardMode = [(CarShareTripKeyboardSearchController *)self keyboardMode];
+  chromeViewController = [keyboardMode chromeViewController];
+  [chromeViewController captureUserAction:2003];
 }
 
-- (void)handleSearchButtonPressedWithText:(id)a3
+- (void)handleSearchButtonPressedWithText:(id)text
 {
-  v9 = a3;
-  v4 = [(CarShareTripKeyboardSearchController *)self keyboardMode];
-  v5 = [v4 chromeViewController];
-  [v5 captureUserAction:2014];
+  textCopy = text;
+  keyboardMode = [(CarShareTripKeyboardSearchController *)self keyboardMode];
+  chromeViewController = [keyboardMode chromeViewController];
+  [chromeViewController captureUserAction:2014];
 
   searchHandler = self->_searchHandler;
   if (searchHandler)
   {
     v7 = objc_retainBlock(searchHandler);
-    v8 = [(NSOrderedSet *)self->_matches array];
-    v7[2](v7, v9, v8);
+    array = [(NSOrderedSet *)self->_matches array];
+    v7[2](v7, textCopy, array);
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CarShareTripKeyboardSearchController;
-  [(CarShareTripKeyboardSearchController *)&v4 viewWillDisappear:a3];
+  [(CarShareTripKeyboardSearchController *)&v4 viewWillDisappear:disappear];
   [(CarShareTripKeyboardSearchController *)self _commitPendingShares];
   [(CarShareTripKeyboardSearchController *)self _cancelDismiss];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = CarShareTripKeyboardSearchController;
-  [(CarShareTripKeyboardSearchController *)&v8 viewWillAppear:a3];
+  [(CarShareTripKeyboardSearchController *)&v8 viewWillAppear:appear];
   objc_initWeak(&location, self);
   v4 = +[MSPSharedTripService sharedInstance];
   v5[0] = _NSConcreteStackBlock;
@@ -516,8 +516,8 @@ LABEL_6:
   v15.super_class = CarShareTripKeyboardSearchController;
   [(CarShareTripKeyboardSearchController *)&v15 viewDidLoad];
   v3 = [CarTableView alloc];
-  v4 = [(CarShareTripKeyboardSearchController *)self view];
-  [v4 bounds];
+  view = [(CarShareTripKeyboardSearchController *)self view];
+  [view bounds];
   v5 = [(CarTableView *)v3 initWithFrame:0 style:?];
   tableView = self->_tableView;
   self->_tableView = v5;
@@ -530,42 +530,42 @@ LABEL_6:
 
   [(CarTableView *)self->_tableView setRowHeight:UITableViewAutomaticDimension];
   [(CarTableView *)self->_tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"ContactCell"];
-  v8 = [(CarShareTripKeyboardSearchController *)self view];
-  [v8 addSubview:self->_tableView];
+  view2 = [(CarShareTripKeyboardSearchController *)self view];
+  [view2 addSubview:self->_tableView];
 
   v9 = self->_tableView;
-  v10 = [(CarShareTripKeyboardSearchController *)self view];
-  v11 = [v10 safeAreaLayoutGuide];
+  view3 = [(CarShareTripKeyboardSearchController *)self view];
+  safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
   LODWORD(v12) = 1148846080;
-  v13 = [(CarTableView *)v9 _maps_constraintsEqualToEdgesOfLayoutGuide:v11 priority:v12];
-  v14 = [v13 allConstraints];
-  [NSLayoutConstraint activateConstraints:v14];
+  v13 = [(CarTableView *)v9 _maps_constraintsEqualToEdgesOfLayoutGuide:safeAreaLayoutGuide priority:v12];
+  allConstraints = [v13 allConstraints];
+  [NSLayoutConstraint activateConstraints:allConstraints];
 }
 
-- (CarShareTripKeyboardSearchController)initWithContactSearchResults:(id)a3 dataSource:(id)a4 searchHandler:(id)a5
+- (CarShareTripKeyboardSearchController)initWithContactSearchResults:(id)results dataSource:(id)source searchHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultsCopy = results;
+  sourceCopy = source;
+  handlerCopy = handler;
   v38.receiver = self;
   v38.super_class = CarShareTripKeyboardSearchController;
   v11 = [(CarShareTripKeyboardSearchController *)&v38 initWithNibName:0 bundle:0];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_dataSource, a4);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_dataSource, source);
+    v13 = [handlerCopy copy];
     searchHandler = v12->_searchHandler;
     v12->_searchHandler = v13;
 
-    v15 = [NSOrderedSet orderedSetWithArray:v8];
+    v15 = [NSOrderedSet orderedSetWithArray:resultsCopy];
     matches = v12->_matches;
     v12->_matches = v15;
 
     v17 = [NSSet alloc];
     v18 = +[MSPSharedTripService sharedInstance];
-    v19 = [v18 receivers];
-    v20 = sub_100021DB0(v19, &stru_101651A88);
+    receivers = [v18 receivers];
+    v20 = sub_100021DB0(receivers, &stru_101651A88);
     v21 = [v17 initWithArray:v20];
     alreadySharingHandles = v12->_alreadySharingHandles;
     v12->_alreadySharingHandles = v21;

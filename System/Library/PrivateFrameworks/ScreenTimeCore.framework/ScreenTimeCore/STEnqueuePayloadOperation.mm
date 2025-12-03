@@ -1,21 +1,21 @@
 @interface STEnqueuePayloadOperation
-- (STEnqueuePayloadOperation)initWithPayload:(id)a3 persistenceController:(id)a4;
+- (STEnqueuePayloadOperation)initWithPayload:(id)payload persistenceController:(id)controller;
 - (void)_endWithoutSaving;
 - (void)main;
 @end
 
 @implementation STEnqueuePayloadOperation
 
-- (STEnqueuePayloadOperation)initWithPayload:(id)a3 persistenceController:(id)a4
+- (STEnqueuePayloadOperation)initWithPayload:(id)payload persistenceController:(id)controller
 {
-  v7 = a3;
+  payloadCopy = payload;
   v11.receiver = self;
   v11.super_class = STEnqueuePayloadOperation;
-  v8 = [(STPersistenceOperation *)&v11 initWithPersistenceController:a4];
+  v8 = [(STPersistenceOperation *)&v11 initWithPersistenceController:controller];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_payload, a3);
+    objc_storeStrong(&v8->_payload, payload);
   }
 
   return v9;
@@ -28,8 +28,8 @@
 
   state.opaque[0] = 0;
   state.opaque[1] = 0;
-  v4 = [(STOperation *)self activity];
-  os_activity_scope_enter(v4, &state);
+  activity = [(STOperation *)self activity];
+  os_activity_scope_enter(activity, &state);
 
   v5 = +[STLog payloadManager];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -39,13 +39,13 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[v1] %{public}s: \nStarted", buf, 0xCu);
   }
 
-  v6 = [(STPersistenceOperation *)self persistenceController];
+  persistenceController = [(STPersistenceOperation *)self persistenceController];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002D54C;
   v7[3] = &unk_1001A3BF0;
   v7[4] = self;
-  [v6 performBackgroundTask:v7];
+  [persistenceController performBackgroundTask:v7];
 
   os_activity_scope_leave(&state);
 }

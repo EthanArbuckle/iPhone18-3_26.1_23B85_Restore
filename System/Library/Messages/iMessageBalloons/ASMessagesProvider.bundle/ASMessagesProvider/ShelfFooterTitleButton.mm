@@ -1,19 +1,19 @@
 @interface ShelfFooterTitleButton
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC18ASMessagesProvider22ShelfFooterTitleButton)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProvider22ShelfFooterTitleButton)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC18ASMessagesProvider22ShelfFooterTitleButton)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProvider22ShelfFooterTitleButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)updateConfiguration;
 @end
 
 @implementation ShelfFooterTitleButton
 
-- (_TtC18ASMessagesProvider22ShelfFooterTitleButton)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProvider22ShelfFooterTitleButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v8 = type metadata accessor for ShelfFooterTitleButton.Style(0);
   __chkstk_darwin(v8);
@@ -34,7 +34,7 @@
   return v14;
 }
 
-- (_TtC18ASMessagesProvider22ShelfFooterTitleButton)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider22ShelfFooterTitleButton)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider22ShelfFooterTitleButton_leadingIconView;
   *(&self->super.super.super.super.super.isa + v4) = [objc_allocWithZone(UIImageView) init];
@@ -47,7 +47,7 @@
 
 - (void)updateConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   sub_548744();
 }
 
@@ -60,17 +60,17 @@
   sub_54858C(v4);
   sub_B170(v4, v4[3]);
   sub_75D650();
-  v3 = [v2 traitCollection];
+  traitCollection = [v2 traitCollection];
   sub_7673E0();
 
   sub_BEB8(v4);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_549270(width, height);
   v8 = v7;
 

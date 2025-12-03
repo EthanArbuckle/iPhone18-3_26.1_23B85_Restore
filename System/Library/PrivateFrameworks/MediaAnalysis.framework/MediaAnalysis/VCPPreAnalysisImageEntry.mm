@@ -1,18 +1,18 @@
 @interface VCPPreAnalysisImageEntry
-- (VCPPreAnalysisImageEntry)initWithPixelBuffer:(__CVBuffer *)a3;
+- (VCPPreAnalysisImageEntry)initWithPixelBuffer:(__CVBuffer *)buffer;
 - (void)dealloc;
 @end
 
 @implementation VCPPreAnalysisImageEntry
 
-- (VCPPreAnalysisImageEntry)initWithPixelBuffer:(__CVBuffer *)a3
+- (VCPPreAnalysisImageEntry)initWithPixelBuffer:(__CVBuffer *)buffer
 {
   v7.receiver = self;
   v7.super_class = VCPPreAnalysisImageEntry;
   v4 = [(VCPPreAnalysisImageEntry *)&v7 init];
   if (v4)
   {
-    v6 = CFRetain(a3);
+    v6 = CFRetain(buffer);
     CF<__CVBuffer *>::operator=(&v4->_pixelBuffer.value_, &v6);
     CF<__CVBuffer *>::~CF(&v6);
   }

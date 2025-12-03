@@ -25,14 +25,14 @@
 
   v14 = [v13 conformsToType:*MEMORY[0x1E6982CA8]];
   v15 = MEMORY[0x1E696AEC0];
-  v16 = [v11 digest];
-  v17 = [v16 UUIDString];
+  digest = [v11 digest];
+  uUIDString = [digest UUIDString];
   [v11 size];
   v19 = v18;
   [v11 size];
   v21 = v20;
   [v11 scale];
-  v23 = [v15 stringWithFormat:@"%@_%@, %.1f, %.1f, %.f, %d", v12, v17, v19, v21, v22, v14];
+  v23 = [v15 stringWithFormat:@"%@_%@, %.1f, %.1f, %.f, %d", v12, uUIDString, v19, v21, v22, v14];
 
   v24 = +[ISStaticResources sharedInstance];
   v25 = [v24 _findStaticImageWithKey:v23];
@@ -40,17 +40,17 @@
   if (!v25)
   {
     v26 = [ISRecipeFactory factoryWithDescriptor:v11];
-    v27 = [v26 genericTaggedRecipe];
+    genericTaggedRecipe = [v26 genericTaggedRecipe];
 
     if (objc_opt_respondsToSelector())
     {
-      v28 = [v9 suggestedRecipe];
-      v29 = v28;
-      if (v28)
+      suggestedRecipe = [v9 suggestedRecipe];
+      v29 = suggestedRecipe;
+      if (suggestedRecipe)
       {
-        v30 = v28;
+        v30 = suggestedRecipe;
 
-        v27 = v30;
+        genericTaggedRecipe = v30;
       }
     }
 
@@ -63,7 +63,7 @@
     v41 = @"kISPrimaryResourceKey";
     v42[0] = v9;
     v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:&v41 count:1];
-    [(ISCompositor *)v31 addElementWithRecipe:v27 resources:v32];
+    [(ISCompositor *)v31 addElementWithRecipe:genericTaggedRecipe resources:v32];
 
     [v11 size];
     v34 = v33;
@@ -102,7 +102,7 @@
     goto LABEL_12;
   }
 
-  v15 = [a1 _applyTreatmentsAndCacheResultForResource:v14 fallbackTypeID:v11 descriptor:v10 description:@"placeholder"];
+  v15 = [self _applyTreatmentsAndCacheResultForResource:v14 fallbackTypeID:v11 descriptor:v10 description:@"placeholder"];
   v16 = v15;
   if (!v15 || ![v15 CGImage])
   {
@@ -147,17 +147,17 @@ LABEL_13:
   v11 = a5;
   v12 = a6;
   v13 = +[ISStaticResources sharedInstance];
-  v14 = [v13 debugGenericAppIconResource];
+  debugGenericAppIconResource = [v13 debugGenericAppIconResource];
 
-  if (v14)
+  if (debugGenericAppIconResource)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v14 setAppearance:{objc_msgSend(v10, "appearance")}];
+      [debugGenericAppIconResource setAppearance:{objc_msgSend(v10, "appearance")}];
     }
 
-    v15 = [a1 _applyTreatmentsAndCacheResultForResource:v14 fallbackTypeID:v11 descriptor:v10 description:@"debug_placeholder"];
+    v15 = [self _applyTreatmentsAndCacheResultForResource:debugGenericAppIconResource fallbackTypeID:v11 descriptor:v10 description:@"debug_placeholder"];
     v16 = v15;
     if (v15 && [v15 CGImage])
     {
@@ -188,7 +188,7 @@ LABEL_13:
         _os_log_fault_impl(&dword_1A77B8000, v19, OS_LOG_TYPE_FAULT, "Failed to create debug placeholder image. Image: %@. Fallback type: %@. Descriptor: %@. Icon: %@", &v23, 0x2Au);
       }
 
-      v18 = [a1 _placeholderImageWithImageDescriptor:v10 markAsPlaceholder:a4 fallbackTypeID:v11 referenceIcon:v12];
+      v18 = [self _placeholderImageWithImageDescriptor:v10 markAsPlaceholder:a4 fallbackTypeID:v11 referenceIcon:v12];
     }
   }
 
@@ -200,7 +200,7 @@ LABEL_13:
       [IFImage(ISPlaceholderImage) _debugPlaceholderImageWithImageDescriptor:v20 markAsPlaceholder:? fallbackTypeID:? referenceIcon:?];
     }
 
-    v18 = [a1 _placeholderImageWithImageDescriptor:v10 markAsPlaceholder:a4 fallbackTypeID:v11 referenceIcon:v12];
+    v18 = [self _placeholderImageWithImageDescriptor:v10 markAsPlaceholder:a4 fallbackTypeID:v11 referenceIcon:v12];
   }
 
   v21 = *MEMORY[0x1E69E9840];

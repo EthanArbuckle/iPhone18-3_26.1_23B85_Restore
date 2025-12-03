@@ -1,34 +1,34 @@
 @interface SUUIStandardInteractiveSegment
 - (CGSize)_titleLabelSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIStandardInteractiveSegment)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIStandardInteractiveSegment)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentEdgeInsets;
 - (id)_backgroundImage;
 - (id)_borderImage;
-- (id)_createCorneredImageWithScale:(double)a3 forBorder:(BOOL)a4;
+- (id)_createCorneredImageWithScale:(double)scale forBorder:(BOOL)border;
 - (id)_inverseProgressTimingFunction;
 - (id)_progressTimingFunction;
-- (unint64_t)_cornersForSegmentPosition:(int64_t)a3;
+- (unint64_t)_cornersForSegmentPosition:(int64_t)position;
 - (void)_applySelectionProgress;
 - (void)_reloadCorneredImages;
 - (void)_updateBorderAndBackgroundContainerViewTinting;
 - (void)layoutSubviews;
-- (void)setAttributedTitle:(id)a3;
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setRelativeSelectionProgress:(double)a3;
-- (void)setSegmentPosition:(int64_t)a3;
+- (void)setAttributedTitle:(id)title;
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setRelativeSelectionProgress:(double)progress;
+- (void)setSegmentPosition:(int64_t)position;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SUUIStandardInteractiveSegment
 
-- (SUUIStandardInteractiveSegment)initWithFrame:(CGRect)a3
+- (SUUIStandardInteractiveSegment)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = SUUIStandardInteractiveSegment;
-  v3 = [(SUUIStandardInteractiveSegment *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIStandardInteractiveSegment *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -63,8 +63,8 @@
   v47.receiver = self;
   v47.super_class = SUUIStandardInteractiveSegment;
   [(SUUIStandardInteractiveSegment *)&v47 layoutSubviews];
-  v3 = [(SUUIStandardInteractiveSegment *)self traitCollection];
-  [v3 displayScale];
+  traitCollection = [(SUUIStandardInteractiveSegment *)self traitCollection];
+  [traitCollection displayScale];
   v5 = v4;
 
   if (v5 > 0.00000011920929)
@@ -180,10 +180,10 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(SUUIStandardInteractiveSegment *)self _titleLabelSize];
   v7 = v6;
   top = self->_contentEdgeInsets.top;
@@ -227,17 +227,17 @@
   [(SUUIStandardInteractiveSegment *)self _applySelectionProgress];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v13.receiver = self;
   v13.super_class = SUUIStandardInteractiveSegment;
-  v4 = a3;
-  [(SUUIStandardInteractiveSegment *)&v13 traitCollectionDidChange:v4];
-  [v4 displayScale];
+  changeCopy = change;
+  [(SUUIStandardInteractiveSegment *)&v13 traitCollectionDidChange:changeCopy];
+  [changeCopy displayScale];
   v6 = v5;
 
-  v7 = [(SUUIStandardInteractiveSegment *)self traitCollection];
-  [v7 displayScale];
+  traitCollection = [(SUUIStandardInteractiveSegment *)self traitCollection];
+  [traitCollection displayScale];
   v9 = v8;
 
   v10 = v6 > 0.00000011920929 || v9 <= 0.00000011920929;
@@ -248,18 +248,18 @@
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(SUUIStandardInteractiveSegment *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(SUUIStandardInteractiveSegment *)self isHighlighted];
   v17.receiver = self;
   v17.super_class = SUUIStandardInteractiveSegment;
-  [(SUUIStandardInteractiveSegment *)&v17 setHighlighted:v3];
-  v6 = [(SUUIStandardInteractiveSegment *)self isHighlighted];
-  if (v5 != v6)
+  [(SUUIStandardInteractiveSegment *)&v17 setHighlighted:highlightedCopy];
+  isHighlighted2 = [(SUUIStandardInteractiveSegment *)self isHighlighted];
+  if (isHighlighted != isHighlighted2)
   {
     highlightTransactionCount = self->_highlightTransactionCount;
-    if (v6)
+    if (isHighlighted2)
     {
       self->_highlightTransactionCount = highlightTransactionCount + 1;
       highlightedBackgroundImageView = self->_highlightedBackgroundImageView;
@@ -272,8 +272,8 @@
 
         [(UIImageView *)self->_highlightedBackgroundImageView setContentMode:0];
         v12 = self->_highlightedBackgroundImageView;
-        v13 = [(SUUIStandardInteractiveSegment *)self _backgroundImage];
-        [(UIImageView *)v12 setImage:v13];
+        _backgroundImage = [(SUUIStandardInteractiveSegment *)self _backgroundImage];
+        [(UIImageView *)v12 setImage:_backgroundImage];
 
         [(UIView *)self->_borderAndBackgroundContainerView insertSubview:self->_highlightedBackgroundImageView belowSubview:self->_borderImageView];
         [(SUUIStandardInteractiveSegment *)self setNeedsLayout];
@@ -322,35 +322,35 @@ void __49__SUUIStandardInteractiveSegment_setHighlighted___block_invoke_2(uint64
   }
 }
 
-- (void)setRelativeSelectionProgress:(double)a3
+- (void)setRelativeSelectionProgress:(double)progress
 {
   relativeSelectionProgress = self->_relativeSelectionProgress;
-  if (relativeSelectionProgress < a3 || relativeSelectionProgress > a3 || !self->_hasSetRelativeSelectionProgress)
+  if (relativeSelectionProgress < progress || relativeSelectionProgress > progress || !self->_hasSetRelativeSelectionProgress)
   {
     self->_hasSetRelativeSelectionProgress = 1;
-    self->_relativeSelectionProgress = a3;
+    self->_relativeSelectionProgress = progress;
     [(SUUIStandardInteractiveSegment *)self _applySelectionProgress];
   }
 }
 
-- (void)setSegmentPosition:(int64_t)a3
+- (void)setSegmentPosition:(int64_t)position
 {
-  if (self->_segmentPosition != a3)
+  if (self->_segmentPosition != position)
   {
-    self->_segmentPosition = a3;
+    self->_segmentPosition = position;
     [(SUUIStandardInteractiveSegment *)self _setNeedsReloadCorneredImages];
   }
 }
 
-- (void)setAttributedTitle:(id)a3
+- (void)setAttributedTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   attributedTitle = self->_attributedTitle;
-  if (attributedTitle != v4)
+  if (attributedTitle != titleCopy)
   {
-    v11 = v4;
-    attributedTitle = [(NSAttributedString *)attributedTitle isEqualToAttributedString:v4];
-    v4 = v11;
+    v11 = titleCopy;
+    attributedTitle = [(NSAttributedString *)attributedTitle isEqualToAttributedString:titleCopy];
+    titleCopy = v11;
     if ((attributedTitle & 1) == 0)
     {
       v6 = [(NSAttributedString *)v11 copy];
@@ -374,22 +374,22 @@ void __49__SUUIStandardInteractiveSegment_setHighlighted___block_invoke_2(uint64
         [(SUUIStandardInteractiveSegment *)self _applySelectionProgress];
       }
 
-      v4 = v11;
+      titleCopy = v11;
     }
   }
 
-  MEMORY[0x2821F96F8](attributedTitle, v4);
+  MEMORY[0x2821F96F8](attributedTitle, titleCopy);
 }
 
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentEdgeInsets.top, v3), vceqq_f64(*&self->_contentEdgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentEdgeInsets = a3;
+    self->_contentEdgeInsets = insets;
     [(SUUIStandardInteractiveSegment *)self setNeedsLayout];
   }
 }
@@ -400,10 +400,10 @@ void __49__SUUIStandardInteractiveSegment_setHighlighted___block_invoke_2(uint64
   {
     [(SUUIStandardInteractiveSegment *)self _normalizedSelectionProgressForRelativeSelectionProgress:self->_relativeSelectionProgress];
     v5 = v4;
-    v6 = [(SUUIStandardInteractiveSegment *)self _progressTimingFunction];
+    _progressTimingFunction = [(SUUIStandardInteractiveSegment *)self _progressTimingFunction];
     *&v7 = v5;
-    v33 = v6;
-    [v6 _solveForInput:v7];
+    v33 = _progressTimingFunction;
+    [_progressTimingFunction _solveForInput:v7];
     v9 = v8;
     v10 = [(NSAttributedString *)self->_titleLabelAttributedString length];
     titleLabel = self->_titleLabel;
@@ -417,8 +417,8 @@ void __49__SUUIStandardInteractiveSegment_setHighlighted___block_invoke_2(uint64
         self->_titleLabel = v13;
 
         v15 = self->_titleLabel;
-        v16 = [MEMORY[0x277D75348] clearColor];
-        [(UILabel *)v15 setBackgroundColor:v16];
+        clearColor = [MEMORY[0x277D75348] clearColor];
+        [(UILabel *)v15 setBackgroundColor:clearColor];
 
         v17 = self->_titleLabel;
         v18 = [MEMORY[0x277D74300] systemFontOfSize:13.0];
@@ -431,8 +431,8 @@ void __49__SUUIStandardInteractiveSegment_setHighlighted___block_invoke_2(uint64
         [(SUUIStandardInteractiveSegment *)self setNeedsLayout];
       }
 
-      v19 = [(UILabel *)self->_titleLabel layer];
-      v20 = v19;
+      layer = [(UILabel *)self->_titleLabel layer];
+      v20 = layer;
       if (v9 <= 0.00000011921)
       {
         v21 = 0;
@@ -443,7 +443,7 @@ void __49__SUUIStandardInteractiveSegment_setHighlighted___block_invoke_2(uint64
         v21 = *MEMORY[0x277CDA658];
       }
 
-      [(UILabel *)v19 setCompositingFilter:v21];
+      [(UILabel *)layer setCompositingFilter:v21];
     }
 
     else
@@ -453,10 +453,10 @@ void __49__SUUIStandardInteractiveSegment_setHighlighted___block_invoke_2(uint64
       self->_titleLabel = 0;
     }
 
-    v22 = [(SUUIStandardInteractiveSegment *)self _inverseProgressTimingFunction];
+    _inverseProgressTimingFunction = [(SUUIStandardInteractiveSegment *)self _inverseProgressTimingFunction];
     v23 = 1.0 - v5;
     *&v23 = 1.0 - v5;
-    [v22 _solveForInput:v23];
+    [_inverseProgressTimingFunction _solveForInput:v23];
     v25 = 1.0 - v24;
     selectedBackgroundImageView = self->_selectedBackgroundImageView;
     if (v25 <= 0.00000011920929)
@@ -477,8 +477,8 @@ void __49__SUUIStandardInteractiveSegment_setHighlighted___block_invoke_2(uint64
 
         [(UIImageView *)self->_selectedBackgroundImageView setContentMode:0];
         v30 = self->_selectedBackgroundImageView;
-        v31 = [(SUUIStandardInteractiveSegment *)self _backgroundImage];
-        [(UIImageView *)v30 setImage:v31];
+        _backgroundImage = [(SUUIStandardInteractiveSegment *)self _backgroundImage];
+        [(UIImageView *)v30 setImage:_backgroundImage];
 
         [(UIView *)self->_borderAndBackgroundContainerView insertSubview:self->_selectedBackgroundImageView aboveSubview:self->_borderImageView];
         [(SUUIStandardInteractiveSegment *)self setNeedsLayout];
@@ -494,8 +494,8 @@ void __49__SUUIStandardInteractiveSegment_setHighlighted___block_invoke_2(uint64
 {
   if (!self->_backgroundImage)
   {
-    v3 = [(SUUIStandardInteractiveSegment *)self traitCollection];
-    [v3 displayScale];
+    traitCollection = [(SUUIStandardInteractiveSegment *)self traitCollection];
+    [traitCollection displayScale];
     v5 = v4;
 
     if (v5 > 0.00000011920929)
@@ -515,8 +515,8 @@ void __49__SUUIStandardInteractiveSegment_setHighlighted___block_invoke_2(uint64
 {
   if (!self->_borderImage)
   {
-    v3 = [(SUUIStandardInteractiveSegment *)self traitCollection];
-    [v3 displayScale];
+    traitCollection = [(SUUIStandardInteractiveSegment *)self traitCollection];
+    [traitCollection displayScale];
     v5 = v4;
 
     if (v5 > 0.00000011920929)
@@ -532,23 +532,23 @@ void __49__SUUIStandardInteractiveSegment_setHighlighted___block_invoke_2(uint64
   return v8;
 }
 
-- (unint64_t)_cornersForSegmentPosition:(int64_t)a3
+- (unint64_t)_cornersForSegmentPosition:(int64_t)position
 {
-  if (a3 == 3)
+  if (position == 3)
   {
-    v9 = [MEMORY[0x277D75128] sharedApplication];
-    v10 = [v9 userInterfaceLayoutDirection];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
-    v6 = v10 == 0;
+    v6 = userInterfaceLayoutDirection == 0;
     v7 = 5;
     v8 = 10;
   }
 
   else
   {
-    if (a3 != 1)
+    if (position != 1)
     {
-      if (a3)
+      if (position)
       {
         return 0;
       }
@@ -559,10 +559,10 @@ void __49__SUUIStandardInteractiveSegment_setHighlighted___block_invoke_2(uint64
       }
     }
 
-    v4 = [MEMORY[0x277D75128] sharedApplication];
-    v5 = [v4 userInterfaceLayoutDirection];
+    mEMORY[0x277D75128]2 = [MEMORY[0x277D75128] sharedApplication];
+    userInterfaceLayoutDirection2 = [mEMORY[0x277D75128]2 userInterfaceLayoutDirection];
 
-    v6 = v5 == 0;
+    v6 = userInterfaceLayoutDirection2 == 0;
     v7 = 10;
     v8 = 5;
   }
@@ -578,11 +578,11 @@ void __49__SUUIStandardInteractiveSegment_setHighlighted___block_invoke_2(uint64
   }
 }
 
-- (id)_createCorneredImageWithScale:(double)a3 forBorder:(BOOL)a4
+- (id)_createCorneredImageWithScale:(double)scale forBorder:(BOOL)border
 {
-  v4 = a4;
+  borderCopy = border;
   v6 = [(SUUIStandardInteractiveSegment *)self _cornersForSegmentPosition:self->_segmentPosition];
-  if (v4)
+  if (borderCopy)
   {
     v7 = 8.0;
   }
@@ -616,13 +616,13 @@ void __49__SUUIStandardInteractiveSegment_setHighlighted___block_invoke_2(uint64
 
   v24.width = v7 * 2.0 + 1.0;
   v24.height = v24.width;
-  UIGraphicsBeginImageContextWithOptions(v24, 0, a3);
-  v11 = [MEMORY[0x277D75348] blackColor];
-  [v11 set];
+  UIGraphicsBeginImageContextWithOptions(v24, 0, scale);
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [blackColor set];
 
   v12 = MEMORY[0x277D75208];
   v13 = 0;
-  if (v4)
+  if (borderCopy)
   {
     v14 = v9;
     v15 = v10;
@@ -636,8 +636,8 @@ void __49__SUUIStandardInteractiveSegment_setHighlighted___block_invoke_2(uint64
   else
   {
     v17 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:v9 cornerRadius:{0.0, v10, v7 * 2.0 + 1.0, 3.5}];
-    v18 = [MEMORY[0x277D75348] blackColor];
-    [v18 setFill];
+    blackColor2 = [MEMORY[0x277D75348] blackColor];
+    [blackColor2 setFill];
 
     [v17 fill];
   }
@@ -692,15 +692,15 @@ void __49__SUUIStandardInteractiveSegment_setHighlighted___block_invoke_2(uint64
 
   if (self->_highlightedBackgroundImageView || self->_selectedBackgroundImageView)
   {
-    v5 = [(SUUIStandardInteractiveSegment *)self _backgroundImage];
-    [(UIImageView *)self->_highlightedBackgroundImageView setImage:v5];
-    [(UIImageView *)self->_selectedBackgroundImageView setImage:v5];
+    _backgroundImage = [(SUUIStandardInteractiveSegment *)self _backgroundImage];
+    [(UIImageView *)self->_highlightedBackgroundImageView setImage:_backgroundImage];
+    [(UIImageView *)self->_selectedBackgroundImageView setImage:_backgroundImage];
   }
 
   if (self->_borderImageView)
   {
-    v6 = [(SUUIStandardInteractiveSegment *)self _borderImage];
-    [(UIImageView *)self->_borderImageView setImage:v6];
+    _borderImage = [(SUUIStandardInteractiveSegment *)self _borderImage];
+    [(UIImageView *)self->_borderImageView setImage:_borderImage];
   }
 }
 
@@ -728,26 +728,26 @@ void __49__SUUIStandardInteractiveSegment_setHighlighted___block_invoke_2(uint64
 
 - (void)_updateBorderAndBackgroundContainerViewTinting
 {
-  v9 = [(SUUIStandardInteractiveSegment *)self tintColor];
-  [v9 alphaComponent];
+  tintColor = [(SUUIStandardInteractiveSegment *)self tintColor];
+  [tintColor alphaComponent];
   v4 = v3;
   v5 = fabs(v3 + -1.0);
   borderAndBackgroundContainerView = self->_borderAndBackgroundContainerView;
   if (v5 <= 0.00000011920929)
   {
-    [(UIView *)self->_borderAndBackgroundContainerView setTintColor:v9];
+    [(UIView *)self->_borderAndBackgroundContainerView setTintColor:tintColor];
     v4 = 1.0;
   }
 
   else
   {
-    v7 = [v9 colorWithAlphaComponent:1.0];
+    v7 = [tintColor colorWithAlphaComponent:1.0];
     [(UIView *)borderAndBackgroundContainerView setTintColor:v7];
   }
 
   [(UIView *)self->_borderAndBackgroundContainerView setAlpha:v4];
-  v8 = [(UIView *)self->_borderAndBackgroundContainerView layer];
-  [v8 setAllowsGroupOpacity:v5 > 0.00000011920929];
+  layer = [(UIView *)self->_borderAndBackgroundContainerView layer];
+  [layer setAllowsGroupOpacity:v5 > 0.00000011920929];
 }
 
 - (UIEdgeInsets)contentEdgeInsets

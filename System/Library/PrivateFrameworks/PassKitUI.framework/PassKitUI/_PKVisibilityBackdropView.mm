@@ -1,31 +1,31 @@
 @interface _PKVisibilityBackdropView
-- (_PKVisibilityBackdropView)initWithFrame:(CGRect)a3 privateStyle:(int64_t)a4;
+- (_PKVisibilityBackdropView)initWithFrame:(CGRect)frame privateStyle:(int64_t)style;
 - (_PKVisibilityBackdropViewDelegate)delegate;
 - (int64_t)pkui_preferredBackdropStyle;
-- (void)_pkui_setVisibility:(double)a3 animated:(BOOL)a4;
+- (void)_pkui_setVisibility:(double)visibility animated:(BOOL)animated;
 - (void)_updateStyleIfNecessary;
 - (void)dealloc;
 - (void)pkui_commitBackdropSettings;
-- (void)pkui_setVisibility:(double)a3 animated:(BOOL)a4;
+- (void)pkui_setVisibility:(double)visibility animated:(BOOL)animated;
 - (void)pkui_updateBackdropSettings;
-- (void)setDelegate:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation _PKVisibilityBackdropView
 
-- (_PKVisibilityBackdropView)initWithFrame:(CGRect)a3 privateStyle:(int64_t)a4
+- (_PKVisibilityBackdropView)initWithFrame:(CGRect)frame privateStyle:(int64_t)style
 {
   v9.receiver = self;
   v9.super_class = _PKVisibilityBackdropView;
-  v5 = [(_UIBackdropView *)&v9 initWithFrame:a3.origin.x privateStyle:a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(_UIBackdropView *)&v9 initWithFrame:frame.origin.x privateStyle:frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_style = a4;
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 addObserver:v6 selector:sel_pkui_accessibilitySettingsDidChange_ name:*MEMORY[0x1E69DD8A8] object:0];
-    [v7 addObserver:v6 selector:sel_pkui_accessibilitySettingsDidChange_ name:*MEMORY[0x1E69DD920] object:0];
+    v5->_style = style;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_pkui_accessibilitySettingsDidChange_ name:*MEMORY[0x1E69DD8A8] object:0];
+    [defaultCenter addObserver:v6 selector:sel_pkui_accessibilitySettingsDidChange_ name:*MEMORY[0x1E69DD920] object:0];
     [(_PKVisibilityBackdropView *)v6 pkui_commitBackdropSettings];
   }
 
@@ -44,31 +44,31 @@
   [(_UIBackdropView *)&v3 dealloc];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = _PKVisibilityBackdropView;
-  [(_PKVisibilityBackdropView *)&v4 traitCollectionDidChange:a3];
+  [(_PKVisibilityBackdropView *)&v4 traitCollectionDidChange:change];
   [(_PKVisibilityBackdropView *)self _updateStyleIfNecessary];
 }
 
-- (void)pkui_setVisibility:(double)a3 animated:(BOOL)a4
+- (void)pkui_setVisibility:(double)visibility animated:(BOOL)animated
 {
-  if (self->_visibility != fmax(fmin(a3, 1.0), 0.0))
+  if (self->_visibility != fmax(fmin(visibility, 1.0), 0.0))
   {
-    [(_PKVisibilityBackdropView *)self _pkui_setVisibility:a4 animated:?];
+    [(_PKVisibilityBackdropView *)self _pkui_setVisibility:animated animated:?];
   }
 }
 
-- (void)_pkui_setVisibility:(double)a3 animated:(BOOL)a4
+- (void)_pkui_setVisibility:(double)visibility animated:(BOOL)animated
 {
-  self->_visibility = a3;
+  self->_visibility = visibility;
   if (!self->_updatingBackdropSettings)
   {
     animationCounter = self->_animationCounter;
     if (animationCounter)
     {
-      if (vabdd_f64(a3, self->_visibilityAnimationTarget) >= 0.05 || a4)
+      if (vabdd_f64(visibility, self->_visibilityAnimationTarget) >= 0.05 || animated)
       {
         goto LABEL_7;
       }
@@ -76,11 +76,11 @@
 
     else
     {
-      if (a4)
+      if (animated)
       {
 LABEL_7:
         self->_animationCounter = animationCounter + 1;
-        self->_visibilityAnimationTarget = a3;
+        self->_visibilityAnimationTarget = visibility;
         objc_initWeak(&location, self);
         styleToken = self->_styleToken;
         v7 = MEMORY[0x1E69DD250];
@@ -116,8 +116,8 @@ LABEL_7:
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
-    v4 = [(_PKVisibilityBackdropView *)self traitCollection];
-    style = [WeakRetained visibilityBackdropView:self preferredStyleForTraitCollection:v4];
+    traitCollection = [(_PKVisibilityBackdropView *)self traitCollection];
+    style = [WeakRetained visibilityBackdropView:self preferredStyleForTraitCollection:traitCollection];
   }
 
   else
@@ -158,9 +158,9 @@ LABEL_7:
   self->_visibility = 0.0;
   self->_animationCounter = 0;
   ++self->_styleToken;
-  v7 = [(_PKVisibilityBackdropView *)self isHidden];
+  isHidden = [(_PKVisibilityBackdropView *)self isHidden];
   v8 = 0;
-  if ((v7 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
     [(_PKVisibilityBackdropView *)self alpha];
     v8 = v9 > 0.0 && visibility > 0.0;
@@ -171,22 +171,22 @@ LABEL_7:
 
 - (void)_updateStyleIfNecessary
 {
-  v3 = [(_PKVisibilityBackdropView *)self pkui_preferredBackdropStyle];
-  if (self->_style != v3)
+  pkui_preferredBackdropStyle = [(_PKVisibilityBackdropView *)self pkui_preferredBackdropStyle];
+  if (self->_style != pkui_preferredBackdropStyle)
   {
-    self->_style = v3;
+    self->_style = pkui_preferredBackdropStyle;
 
     [(_PKVisibilityBackdropView *)self pkui_updateBackdropSettings];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 
-  if (WeakRetained != v4 || v4 == 0 || WeakRetained == 0)
+  if (WeakRetained != delegateCopy || delegateCopy == 0 || WeakRetained == 0)
   {
     [(_PKVisibilityBackdropView *)self _updateStyleIfNecessary];
   }

@@ -1,18 +1,18 @@
 @interface SBUISystemApertureCAPackageContentProvider
 - (CGSize)intrinsicPackageSize;
-- (SBUISystemApertureCAPackageContentProvider)initWithPackageName:(id)a3 inBundle:(id)a4;
-- (SBUISystemApertureCAPackageContentProvider)initWithURL:(id)a3;
-- (void)setIntrinsicPackageSize:(CGSize)a3;
+- (SBUISystemApertureCAPackageContentProvider)initWithPackageName:(id)name inBundle:(id)bundle;
+- (SBUISystemApertureCAPackageContentProvider)initWithURL:(id)l;
+- (void)setIntrinsicPackageSize:(CGSize)size;
 @end
 
 @implementation SBUISystemApertureCAPackageContentProvider
 
-- (SBUISystemApertureCAPackageContentProvider)initWithPackageName:(id)a3 inBundle:(id)a4
+- (SBUISystemApertureCAPackageContentProvider)initWithPackageName:(id)name inBundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  nameCopy = name;
+  bundleCopy = bundle;
+  v9 = bundleCopy;
+  if (!nameCopy)
   {
     [SBUISystemApertureCAPackageContentProvider initWithPackageName:a2 inBundle:self];
     if (v9)
@@ -25,13 +25,13 @@ LABEL_5:
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!bundleCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v10 = [(BSUICAPackageView *)[_SBUISystemApertureCAPackageView alloc] initWithPackageName:v7 inBundle:v9];
+  v10 = [(BSUICAPackageView *)[_SBUISystemApertureCAPackageView alloc] initWithPackageName:nameCopy inBundle:v9];
   packageView = self->_packageView;
   self->_packageView = v10;
 
@@ -39,15 +39,15 @@ LABEL_3:
   return v12;
 }
 
-- (SBUISystemApertureCAPackageContentProvider)initWithURL:(id)a3
+- (SBUISystemApertureCAPackageContentProvider)initWithURL:(id)l
 {
-  v5 = a3;
-  if (!v5)
+  lCopy = l;
+  if (!lCopy)
   {
     [(SBUISystemApertureCAPackageContentProvider *)a2 initWithURL:?];
   }
 
-  v6 = [(BSUICAPackageView *)[_SBUISystemApertureCAPackageView alloc] initWithURL:v5];
+  v6 = [(BSUICAPackageView *)[_SBUISystemApertureCAPackageView alloc] initWithURL:lCopy];
   packageView = self->_packageView;
   self->_packageView = v6;
 
@@ -55,10 +55,10 @@ LABEL_3:
   return v8;
 }
 
-- (void)setIntrinsicPackageSize:(CGSize)a3
+- (void)setIntrinsicPackageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(SBUISystemApertureCAPackageContentProvider *)self intrinsicPackageSize];
   if (width != v7 || height != v6)
   {

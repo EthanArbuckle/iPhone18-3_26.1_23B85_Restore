@@ -1,8 +1,8 @@
 @interface MTLStencilDescriptorInternal
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTLStencilDescriptorInternal)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 @end
 
 @implementation MTLStencilDescriptorInternal
@@ -23,20 +23,20 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  return Class == object_getClass(a3) && self->_private.stencilCompareFunction == *(a3 + 1) && self->_private.stencilFailureOperation == *(a3 + 2) && self->_private.depthFailureOperation == *(a3 + 3) && self->_private.depthStencilPassOperation == *(a3 + 4) && self->_private.readMask == *(a3 + 10) && self->_private.writeMask == *(a3 + 11);
+  return Class == object_getClass(equal) && self->_private.stencilCompareFunction == *(equal + 1) && self->_private.stencilFailureOperation == *(equal + 2) && self->_private.depthFailureOperation == *(equal + 3) && self->_private.depthStencilPassOperation == *(equal + 4) && self->_private.readMask == *(equal + 10) && self->_private.writeMask == *(equal + 11);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (result)
   {
     v5 = *&self->_private.readMask;
@@ -49,10 +49,10 @@
   return result;
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v10[18] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v5 = MEMORY[0x1E696AEC0];
   v9.receiver = self;
   v9.super_class = MTLStencilDescriptorInternal;

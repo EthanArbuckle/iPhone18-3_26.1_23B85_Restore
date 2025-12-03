@@ -1,42 +1,42 @@
 @interface WALegibilityLabel
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIColor)textColor;
-- (WALegibilityLabel)initWithCoder:(id)a3;
-- (WALegibilityLabel)initWithFrame:(CGRect)a3;
-- (WALegibilityLabel)initWithSettings:(id)a3 strength:(double)a4;
-- (WALegibilityLabel)initWithSettings:(id)a3 strength:(double)a4 text:(id)a5 font:(id)a6 options:(int64_t)a7;
-- (double)_layoutGuideOffsetFromBottom:(id)a3;
+- (WALegibilityLabel)initWithCoder:(id)coder;
+- (WALegibilityLabel)initWithFrame:(CGRect)frame;
+- (WALegibilityLabel)initWithSettings:(id)settings strength:(double)strength;
+- (WALegibilityLabel)initWithSettings:(id)settings strength:(double)strength text:(id)text font:(id)font options:(int64_t)options;
+- (double)_layoutGuideOffsetFromBottom:(id)bottom;
 - (double)firstBaselineOffsetFromBottom;
 - (double)lastBaselineOffsetFromBottom;
 - (void)_updateLabelForLegibilitySettings;
 - (void)_updateLegibilityView;
 - (void)layoutSubviews;
-- (void)setAttributedText:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFont:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setMinimumScaleFactor:(double)a3;
-- (void)setNumberOfLines:(int64_t)a3;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
+- (void)setAttributedText:(id)text;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFont:(id)font;
+- (void)setFrame:(CGRect)frame;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setMinimumScaleFactor:(double)factor;
+- (void)setNumberOfLines:(int64_t)lines;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
 - (void)updateConstraints;
 @end
 
 @implementation WALegibilityLabel
 
-- (WALegibilityLabel)initWithFrame:(CGRect)a3
+- (WALegibilityLabel)initWithFrame:(CGRect)frame
 {
-  v4 = [MEMORY[0x277D760A8] sharedInstanceForStyle:{0, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v4 = [MEMORY[0x277D760A8] sharedInstanceForStyle:{0, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height}];
   v5 = [(WALegibilityLabel *)self initWithSettings:v4 strength:*MEMORY[0x277D774E0]];
 
   return v5;
 }
 
-- (WALegibilityLabel)initWithCoder:(id)a3
+- (WALegibilityLabel)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"WALegibilityLabel.m" lineNumber:50 description:@"Not supported"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"WALegibilityLabel.m" lineNumber:50 description:@"Not supported"];
 
   v6 = *MEMORY[0x277CBF3A0];
   v7 = *(MEMORY[0x277CBF3A0] + 8);
@@ -46,23 +46,23 @@
   return [(WALegibilityLabel *)self initWithFrame:v6, v7, v8, v9];
 }
 
-- (WALegibilityLabel)initWithSettings:(id)a3 strength:(double)a4
+- (WALegibilityLabel)initWithSettings:(id)settings strength:(double)strength
 {
   v6 = MEMORY[0x277D74300];
-  v7 = a3;
+  settingsCopy = settings;
   [v6 systemFontSize];
   v8 = [v6 systemFontOfSize:?];
-  v9 = [(WALegibilityLabel *)self initWithSettings:v7 strength:0 text:v8 font:a4];
+  v9 = [(WALegibilityLabel *)self initWithSettings:settingsCopy strength:0 text:v8 font:strength];
 
   return v9;
 }
 
-- (WALegibilityLabel)initWithSettings:(id)a3 strength:(double)a4 text:(id)a5 font:(id)a6 options:(int64_t)a7
+- (WALegibilityLabel)initWithSettings:(id)settings strength:(double)strength text:(id)text font:(id)font options:(int64_t)options
 {
   v75[4] = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  settingsCopy = settings;
+  textCopy = text;
+  fontCopy = font;
   v73.receiver = self;
   v73.super_class = WALegibilityLabel;
   v16 = *MEMORY[0x277CBF3A0];
@@ -73,16 +73,16 @@
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_legibilitySettings, a3);
-    v21->_strength = a4;
-    v22 = [v14 copy];
+    objc_storeStrong(&v20->_legibilitySettings, settings);
+    v21->_strength = strength;
+    v22 = [textCopy copy];
     text = v21->_text;
     v21->_text = v22;
 
-    objc_storeStrong(&v21->_font, a6);
-    v21->_options = a7;
+    objc_storeStrong(&v21->_font, font);
+    v21->_options = options;
     v24 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v16, v17, v18, v19}];
-    v72 = v13;
+    v72 = settingsCopy;
     lookasideLabel = v21->_lookasideLabel;
     v21->_lookasideLabel = v24;
 
@@ -92,23 +92,23 @@
     [(UILabel *)v21->_lookasideLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(WALegibilityLabel *)v21 addSubview:v21->_lookasideLabel];
     v58 = MEMORY[0x277CCAAD0];
-    v68 = [(UILabel *)v21->_lookasideLabel topAnchor];
-    v66 = [(WALegibilityLabel *)v21 topAnchor];
-    v64 = [v68 constraintEqualToAnchor:v66];
+    topAnchor = [(UILabel *)v21->_lookasideLabel topAnchor];
+    topAnchor2 = [(WALegibilityLabel *)v21 topAnchor];
+    v64 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v75[0] = v64;
-    v62 = [(UILabel *)v21->_lookasideLabel leadingAnchor];
-    v60 = [(WALegibilityLabel *)v21 leadingAnchor];
-    [v62 constraintEqualToAnchor:v60];
-    v26 = v70 = v15;
+    leadingAnchor = [(UILabel *)v21->_lookasideLabel leadingAnchor];
+    leadingAnchor2 = [(WALegibilityLabel *)v21 leadingAnchor];
+    [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    v26 = v70 = fontCopy;
     v75[1] = v26;
-    v27 = [(UILabel *)v21->_lookasideLabel widthAnchor];
-    v28 = [(WALegibilityLabel *)v21 widthAnchor];
-    [v27 constraintEqualToAnchor:v28];
-    v29 = v71 = v14;
+    widthAnchor = [(UILabel *)v21->_lookasideLabel widthAnchor];
+    widthAnchor2 = [(WALegibilityLabel *)v21 widthAnchor];
+    [widthAnchor constraintEqualToAnchor:widthAnchor2];
+    v29 = v71 = textCopy;
     v75[2] = v29;
-    v30 = [(UILabel *)v21->_lookasideLabel heightAnchor];
-    v31 = [(WALegibilityLabel *)v21 heightAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31];
+    heightAnchor = [(UILabel *)v21->_lookasideLabel heightAnchor];
+    heightAnchor2 = [(WALegibilityLabel *)v21 heightAnchor];
+    v32 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v75[3] = v32;
     v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v75 count:4];
     [v58 activateConstraints:v33];
@@ -124,43 +124,43 @@
 
     [(WALegibilityLabel *)v21 addLayoutGuide:v21->_lastBaselineLayoutGuide];
     v55 = MEMORY[0x277CCAAD0];
-    v69 = [(UILayoutGuide *)v21->_firstBaselineLayoutGuide topAnchor];
-    v67 = [(UILabel *)v21->_lookasideLabel firstBaselineAnchor];
-    v65 = [v69 constraintEqualToAnchor:v67];
+    topAnchor3 = [(UILayoutGuide *)v21->_firstBaselineLayoutGuide topAnchor];
+    firstBaselineAnchor = [(UILabel *)v21->_lookasideLabel firstBaselineAnchor];
+    v65 = [topAnchor3 constraintEqualToAnchor:firstBaselineAnchor];
     v74[0] = v65;
-    v63 = [(UILayoutGuide *)v21->_firstBaselineLayoutGuide heightAnchor];
-    v61 = [v63 constraintEqualToConstant:0.0];
+    heightAnchor3 = [(UILayoutGuide *)v21->_firstBaselineLayoutGuide heightAnchor];
+    v61 = [heightAnchor3 constraintEqualToConstant:0.0];
     v74[1] = v61;
-    v59 = [(UILayoutGuide *)v21->_firstBaselineLayoutGuide leadingAnchor];
-    v57 = [(WALegibilityLabel *)v21 leadingAnchor];
-    v56 = [v59 constraintEqualToAnchor:v57];
+    leadingAnchor3 = [(UILayoutGuide *)v21->_firstBaselineLayoutGuide leadingAnchor];
+    leadingAnchor4 = [(WALegibilityLabel *)v21 leadingAnchor];
+    v56 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v74[2] = v56;
-    v54 = [(UILayoutGuide *)v21->_firstBaselineLayoutGuide trailingAnchor];
-    v53 = [(WALegibilityLabel *)v21 trailingAnchor];
-    v52 = [v54 constraintEqualToAnchor:v53];
+    trailingAnchor = [(UILayoutGuide *)v21->_firstBaselineLayoutGuide trailingAnchor];
+    trailingAnchor2 = [(WALegibilityLabel *)v21 trailingAnchor];
+    v52 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v74[3] = v52;
-    v51 = [(UILayoutGuide *)v21->_lastBaselineLayoutGuide topAnchor];
-    v50 = [(UILabel *)v21->_lookasideLabel lastBaselineAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50];
+    topAnchor4 = [(UILayoutGuide *)v21->_lastBaselineLayoutGuide topAnchor];
+    lastBaselineAnchor = [(UILabel *)v21->_lookasideLabel lastBaselineAnchor];
+    v49 = [topAnchor4 constraintEqualToAnchor:lastBaselineAnchor];
     v74[4] = v49;
-    v38 = [(UILayoutGuide *)v21->_lastBaselineLayoutGuide heightAnchor];
-    v39 = [v38 constraintEqualToConstant:0.0];
+    heightAnchor4 = [(UILayoutGuide *)v21->_lastBaselineLayoutGuide heightAnchor];
+    v39 = [heightAnchor4 constraintEqualToConstant:0.0];
     v74[5] = v39;
-    v40 = [(UILayoutGuide *)v21->_lastBaselineLayoutGuide leadingAnchor];
-    v41 = [(WALegibilityLabel *)v21 leadingAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41];
+    leadingAnchor5 = [(UILayoutGuide *)v21->_lastBaselineLayoutGuide leadingAnchor];
+    leadingAnchor6 = [(WALegibilityLabel *)v21 leadingAnchor];
+    v42 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v74[6] = v42;
-    v43 = [(UILayoutGuide *)v21->_lastBaselineLayoutGuide trailingAnchor];
-    v44 = [(WALegibilityLabel *)v21 trailingAnchor];
-    v45 = [v43 constraintEqualToAnchor:v44];
+    trailingAnchor3 = [(UILayoutGuide *)v21->_lastBaselineLayoutGuide trailingAnchor];
+    trailingAnchor4 = [(WALegibilityLabel *)v21 trailingAnchor];
+    v45 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v74[7] = v45;
     v46 = [MEMORY[0x277CBEA60] arrayWithObjects:v74 count:8];
     [v55 activateConstraints:v46];
 
-    v15 = v70;
-    v14 = v71;
+    fontCopy = v70;
+    textCopy = v71;
 
-    v13 = v72;
+    settingsCopy = v72;
     [(WALegibilityLabel *)v21 _markOurselfDirty];
   }
 
@@ -168,9 +168,9 @@
   return v21;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   attributedText = self->_attributedText;
   self->_attributedText = v4;
 
@@ -179,9 +179,9 @@
   [(WALegibilityLabel *)self _markOurselfDirty];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   text = self->_text;
   self->_text = v4;
 
@@ -195,45 +195,45 @@
   textColorOverride = self->_textColorOverride;
   if (textColorOverride)
   {
-    v3 = textColorOverride;
+    primaryColor = textColorOverride;
   }
 
   else
   {
-    v3 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+    primaryColor = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
   }
 
-  return v3;
+  return primaryColor;
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  objc_storeStrong(&self->_textColorOverride, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_textColorOverride, color);
+  colorCopy = color;
   [(UILabel *)self->_lookasideLabel setTextColor:self->_textColorOverride];
 
   [(WALegibilityLabel *)self _markOurselfDirty];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  objc_storeStrong(&self->_font, a3);
-  v5 = a3;
-  [(UILabel *)self->_lookasideLabel setFont:v5];
+  objc_storeStrong(&self->_font, font);
+  fontCopy = font;
+  [(UILabel *)self->_lookasideLabel setFont:fontCopy];
 
   [(WALegibilityLabel *)self _markOurselfDirty];
 }
 
-- (void)setNumberOfLines:(int64_t)a3
+- (void)setNumberOfLines:(int64_t)lines
 {
-  [(UILabel *)self->_lookasideLabel setNumberOfLines:a3];
+  [(UILabel *)self->_lookasideLabel setNumberOfLines:lines];
 
   [(WALegibilityLabel *)self _markOurselfDirty];
 }
 
-- (void)setMinimumScaleFactor:(double)a3
+- (void)setMinimumScaleFactor:(double)factor
 {
-  [(UILabel *)self->_lookasideLabel setMinimumScaleFactor:a3];
+  [(UILabel *)self->_lookasideLabel setMinimumScaleFactor:factor];
 
   [(WALegibilityLabel *)self _markOurselfDirty];
 }
@@ -265,22 +265,22 @@
   legibilityView = self->_legibilityView;
   if (legibilityView)
   {
-    v24 = [(_UILegibilityView *)legibilityView leadingAnchor];
-    v23 = [(WALegibilityLabel *)self leadingAnchor];
-    v22 = [v24 constraintEqualToAnchor:v23];
+    leadingAnchor = [(_UILegibilityView *)legibilityView leadingAnchor];
+    leadingAnchor2 = [(WALegibilityLabel *)self leadingAnchor];
+    v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v31[0] = v22;
-    v21 = [(_UILegibilityView *)self->_legibilityView trailingAnchor];
-    v4 = [(WALegibilityLabel *)self trailingAnchor];
-    v5 = [v21 constraintEqualToAnchor:v4];
+    trailingAnchor = [(_UILegibilityView *)self->_legibilityView trailingAnchor];
+    trailingAnchor2 = [(WALegibilityLabel *)self trailingAnchor];
+    v5 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v31[1] = v5;
-    v6 = [(_UILegibilityView *)self->_legibilityView bottomAnchor];
-    v7 = [(WALegibilityLabel *)self lastBaselineAnchor];
+    bottomAnchor = [(_UILegibilityView *)self->_legibilityView bottomAnchor];
+    lastBaselineAnchor = [(WALegibilityLabel *)self lastBaselineAnchor];
     [(UILabel *)self->_lookasideLabel _baselineOffsetFromBottom];
-    v8 = [v6 constraintEqualToAnchor:v7 constant:?];
+    v8 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor constant:?];
     v31[2] = v8;
-    v9 = [(_UILegibilityView *)self->_legibilityView topAnchor];
-    v10 = [(WALegibilityLabel *)self topAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    topAnchor = [(_UILegibilityView *)self->_legibilityView topAnchor];
+    topAnchor2 = [(WALegibilityLabel *)self topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v31[3] = v11;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:4];
 
@@ -323,12 +323,12 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(WALegibilityLabel *)self frame];
   v9 = v8;
   v11 = v10;
@@ -342,12 +342,12 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(WALegibilityLabel *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -361,9 +361,9 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UILabel *)self->_lookasideLabel sizeThatFits:a3.width, a3.height];
+  [(UILabel *)self->_lookasideLabel sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -381,20 +381,20 @@
   }
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  objc_storeStrong(&self->_legibilitySettings, a3);
+  objc_storeStrong(&self->_legibilitySettings, settings);
 
   [(WALegibilityLabel *)self _markOurselfDirty];
 }
 
-- (double)_layoutGuideOffsetFromBottom:(id)a3
+- (double)_layoutGuideOffsetFromBottom:(id)bottom
 {
-  v4 = a3;
+  bottomCopy = bottom;
   [(WALegibilityLabel *)self bounds];
   v6 = v5;
   v8 = v7;
-  [v4 layoutFrame];
+  [bottomCopy layoutFrame];
   v10 = v9;
 
   return v6 + v8 - v10;
@@ -402,15 +402,15 @@
 
 - (void)_updateLabelForLegibilitySettings
 {
-  v3 = [(UILabel *)self->_lookasideLabel attributedText];
-  v7 = [v3 mutableCopy];
+  attributedText = [(UILabel *)self->_lookasideLabel attributedText];
+  v7 = [attributedText mutableCopy];
 
   v4 = [v7 length];
-  v5 = [(WALegibilityLabel *)self textColor];
+  textColor = [(WALegibilityLabel *)self textColor];
   v6 = *MEMORY[0x277D740C0];
-  if (v5)
+  if (textColor)
   {
-    [v7 addAttribute:v6 value:v5 range:{0, v4}];
+    [v7 addAttribute:v6 value:textColor range:{0, v4}];
   }
 
   else
@@ -425,8 +425,8 @@
 {
   [(WALegibilityLabel *)self _updateLabelForLegibilitySettings];
   [(WALegibilityLabel *)self bounds];
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v4 = _UIGraphicsDrawIntoImageContextWithOptions();
 
   legibilityConstraints = self->_legibilityConstraints;

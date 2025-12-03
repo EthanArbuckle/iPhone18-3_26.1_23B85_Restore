@@ -1,35 +1,35 @@
 @interface NTKGalleonRadialLabelView
 - ($F24F406B2B787EFB06265DBA3D28CBD5)paddingRange;
-- (NTKGalleonRadialLabelView)initWithDialDiameter:(double)a3 rightSideUp:(BOOL)a4 labels:(id)a5 paddingRange:(id)a6;
+- (NTKGalleonRadialLabelView)initWithDialDiameter:(double)diameter rightSideUp:(BOOL)up labels:(id)labels paddingRange:(id)range;
 - (void)_positionLabels;
 - (void)_setupImageLabels;
-- (void)galleon_setProgress:(double)a3;
+- (void)galleon_setProgress:(double)progress;
 - (void)layoutSubviews;
 - (void)tintColorDidChange;
 @end
 
 @implementation NTKGalleonRadialLabelView
 
-- (NTKGalleonRadialLabelView)initWithDialDiameter:(double)a3 rightSideUp:(BOOL)a4 labels:(id)a5 paddingRange:(id)a6
+- (NTKGalleonRadialLabelView)initWithDialDiameter:(double)diameter rightSideUp:(BOOL)up labels:(id)labels paddingRange:(id)range
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
-  v11 = a5;
+  var1 = range.var1;
+  var0 = range.var0;
+  labelsCopy = labels;
   v37.receiver = self;
   v37.super_class = NTKGalleonRadialLabelView;
-  v12 = [(NTKGalleonRadialLabelView *)&v37 initWithFrame:0.0, 0.0, a3, a3];
-  v16 = v12;
-  if (v12)
+  diameter = [(NTKGalleonRadialLabelView *)&v37 initWithFrame:0.0, 0.0, diameter, diameter];
+  v16 = diameter;
+  if (diameter)
   {
-    v17 = objc_msgSend_layer(v12, v13, v14, v15);
+    v17 = objc_msgSend_layer(diameter, v13, v14, v15);
     objc_msgSend_setContentsFormat_(v17, v18, *MEMORY[0x277CDA0C8], v19);
     v23 = objc_msgSend_galleon_degreeFont(MEMORY[0x277CBBB08], v20, v21, v22);
     labelFont = v16->_labelFont;
     v16->_labelFont = v23;
 
-    v16->_diameter = a3;
-    v16->_rightSideUp = a4;
-    v28 = objc_msgSend_copy(v11, v25, v26, v27);
+    v16->_diameter = diameter;
+    v16->_rightSideUp = up;
+    v28 = objc_msgSend_copy(labelsCopy, v25, v26, v27);
     labels = v16->_labels;
     v16->_labels = v28;
 
@@ -79,11 +79,11 @@
   }
 }
 
-- (void)galleon_setProgress:(double)a3
+- (void)galleon_setProgress:(double)progress
 {
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    self->_progress = a3;
+    self->_progress = progress;
 
     objc_msgSend_setNeedsLayout(self, v5, v6, v7);
   }

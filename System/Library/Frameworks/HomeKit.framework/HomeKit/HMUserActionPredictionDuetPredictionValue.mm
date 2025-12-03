@@ -1,70 +1,70 @@
 @interface HMUserActionPredictionDuetPredictionValue
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPredictionType:(id)a3;
+- (int)StringAsPredictionType:(id)type;
 - (int)predictionType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMapIsValid:(BOOL)a3;
-- (void)setHasModelHasSignificantData:(BOOL)a3;
-- (void)setHasPredictionType:(BOOL)a3;
-- (void)setHasScore:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMapIsValid:(BOOL)valid;
+- (void)setHasModelHasSignificantData:(BOOL)data;
+- (void)setHasPredictionType:(BOOL)type;
+- (void)setHasScore:(BOOL)score;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMUserActionPredictionDuetPredictionValue
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(HMUserActionPredictionDuetPredictionValue *)self setHomeIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(HMUserActionPredictionDuetPredictionValue *)self setTargetIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(HMUserActionPredictionDuetPredictionValue *)self setTargetAccessoryServiceIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v5 = *(v4 + 68);
+  v5 = *(fromCopy + 68);
   if ((v5 & 2) != 0)
   {
-    self->_score = *(v4 + 2);
+    self->_score = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 68);
+    v5 = *(fromCopy + 68);
   }
 
   if ((v5 & 4) != 0)
   {
-    self->_predictionType = *(v4 + 8);
+    self->_predictionType = *(fromCopy + 8);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(HMUserActionPredictionDuetPredictionValue *)self setReason:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 68);
+  v6 = *(fromCopy + 68);
   if (v6)
   {
-    self->_legacyScore = *(v4 + 1);
+    self->_legacyScore = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 68);
+    v6 = *(fromCopy + 68);
     if ((v6 & 0x10) == 0)
     {
 LABEL_15:
@@ -77,17 +77,17 @@ LABEL_15:
     }
   }
 
-  else if ((*(v4 + 68) & 0x10) == 0)
+  else if ((*(fromCopy + 68) & 0x10) == 0)
   {
     goto LABEL_15;
   }
 
-  self->_modelHasSignificantData = *(v4 + 65);
+  self->_modelHasSignificantData = *(fromCopy + 65);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 68) & 8) != 0)
+  if ((*(fromCopy + 68) & 8) != 0)
   {
 LABEL_16:
-    self->_mapIsValid = *(v4 + 64);
+    self->_mapIsValid = *(fromCopy + 64);
     *&self->_has |= 8u;
   }
 
@@ -200,16 +200,16 @@ LABEL_22:
   return v4 ^ v3 ^ v5 ^ v8 ^ v12 ^ v13 ^ v16 ^ v20 ^ v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
   homeIdentifier = self->_homeIdentifier;
-  if (homeIdentifier | *(v4 + 3))
+  if (homeIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)homeIdentifier isEqual:?])
     {
@@ -218,7 +218,7 @@ LABEL_22:
   }
 
   targetIdentifier = self->_targetIdentifier;
-  if (targetIdentifier | *(v4 + 7))
+  if (targetIdentifier | *(equalCopy + 7))
   {
     if (![(NSString *)targetIdentifier isEqual:?])
     {
@@ -227,7 +227,7 @@ LABEL_22:
   }
 
   targetAccessoryServiceIdentifier = self->_targetAccessoryServiceIdentifier;
-  if (targetAccessoryServiceIdentifier | *(v4 + 6))
+  if (targetAccessoryServiceIdentifier | *(equalCopy + 6))
   {
     if (![(NSString *)targetAccessoryServiceIdentifier isEqual:?])
     {
@@ -236,35 +236,35 @@ LABEL_22:
   }
 
   has = self->_has;
-  v9 = *(v4 + 68);
+  v9 = *(equalCopy + 68);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 68) & 2) == 0 || self->_score != *(v4 + 2))
+    if ((*(equalCopy + 68) & 2) == 0 || self->_score != *(equalCopy + 2))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 68) & 2) != 0)
+  else if ((*(equalCopy + 68) & 2) != 0)
   {
     goto LABEL_34;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 68) & 4) == 0 || self->_predictionType != *(v4 + 8))
+    if ((*(equalCopy + 68) & 4) == 0 || self->_predictionType != *(equalCopy + 8))
     {
       goto LABEL_34;
     }
   }
 
-  else if ((*(v4 + 68) & 4) != 0)
+  else if ((*(equalCopy + 68) & 4) != 0)
   {
     goto LABEL_34;
   }
 
   reason = self->_reason;
-  if (reason | *(v4 + 5))
+  if (reason | *(equalCopy + 5))
   {
     if (![(NSString *)reason isEqual:?])
     {
@@ -272,12 +272,12 @@ LABEL_22:
     }
 
     has = self->_has;
-    v9 = *(v4 + 68);
+    v9 = *(equalCopy + 68);
   }
 
   if (has)
   {
-    if ((v9 & 1) == 0 || self->_legacyScore != *(v4 + 1))
+    if ((v9 & 1) == 0 || self->_legacyScore != *(equalCopy + 1))
     {
       goto LABEL_34;
     }
@@ -295,16 +295,16 @@ LABEL_22:
       goto LABEL_34;
     }
 
-    v13 = *(v4 + 65);
+    v13 = *(equalCopy + 65);
     if (self->_modelHasSignificantData)
     {
-      if ((*(v4 + 65) & 1) == 0)
+      if ((*(equalCopy + 65) & 1) == 0)
       {
         goto LABEL_34;
       }
     }
 
-    else if (*(v4 + 65))
+    else if (*(equalCopy + 65))
     {
       goto LABEL_34;
     }
@@ -322,13 +322,13 @@ LABEL_22:
     {
       if (self->_mapIsValid)
       {
-        if (*(v4 + 64))
+        if (*(equalCopy + 64))
         {
           goto LABEL_42;
         }
       }
 
-      else if (!*(v4 + 64))
+      else if (!*(equalCopy + 64))
       {
 LABEL_42:
         v11 = 1;
@@ -345,18 +345,18 @@ LABEL_35:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_homeIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_homeIdentifier copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_targetIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_targetIdentifier copyWithZone:zone];
   v9 = *(v5 + 56);
   *(v5 + 56) = v8;
 
-  v10 = [(NSString *)self->_targetAccessoryServiceIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_targetAccessoryServiceIdentifier copyWithZone:zone];
   v11 = *(v5 + 48);
   *(v5 + 48) = v10;
 
@@ -374,7 +374,7 @@ LABEL_35:
     *(v5 + 68) |= 4u;
   }
 
-  v13 = [(NSString *)self->_reason copyWithZone:a3];
+  v13 = [(NSString *)self->_reason copyWithZone:zone];
   v14 = *(v5 + 40);
   *(v5 + 40) = v13;
 
@@ -416,53 +416,53 @@ LABEL_8:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_homeIdentifier)
   {
-    [v4 setHomeIdentifier:?];
-    v4 = v7;
+    [toCopy setHomeIdentifier:?];
+    toCopy = v7;
   }
 
   if (self->_targetIdentifier)
   {
     [v7 setTargetIdentifier:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_targetAccessoryServiceIdentifier)
   {
     [v7 setTargetAccessoryServiceIdentifier:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_score;
-    *(v4 + 68) |= 2u;
+    *(toCopy + 2) = *&self->_score;
+    *(toCopy + 68) |= 2u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(v4 + 8) = self->_predictionType;
-    *(v4 + 68) |= 4u;
+    *(toCopy + 8) = self->_predictionType;
+    *(toCopy + 68) |= 4u;
   }
 
   if (self->_reason)
   {
     [v7 setReason:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if (v6)
   {
-    *(v4 + 1) = *&self->_legacyScore;
-    *(v4 + 68) |= 1u;
+    *(toCopy + 1) = *&self->_legacyScore;
+    *(toCopy + 68) |= 1u;
     v6 = self->_has;
     if ((v6 & 0x10) == 0)
     {
@@ -481,38 +481,38 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  *(v4 + 65) = self->_modelHasSignificantData;
-  *(v4 + 68) |= 0x10u;
+  *(toCopy + 65) = self->_modelHasSignificantData;
+  *(toCopy + 68) |= 0x10u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_16:
-    *(v4 + 64) = self->_mapIsValid;
-    *(v4 + 68) |= 8u;
+    *(toCopy + 64) = self->_mapIsValid;
+    *(toCopy + 68) |= 8u;
   }
 
 LABEL_17:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v12 = v4;
+  toCopy = to;
+  v12 = toCopy;
   if (self->_homeIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_targetIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_targetAccessoryServiceIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   has = self->_has;
@@ -520,7 +520,7 @@ LABEL_17:
   {
     score = self->_score;
     PBDataWriterWriteDoubleField();
-    v4 = v12;
+    toCopy = v12;
     has = self->_has;
   }
 
@@ -528,13 +528,13 @@ LABEL_17:
   {
     predictionType = self->_predictionType;
     PBDataWriterWriteInt32Field();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_reason)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   v8 = self->_has;
@@ -542,7 +542,7 @@ LABEL_17:
   {
     legacyScore = self->_legacyScore;
     PBDataWriterWriteDoubleField();
-    v4 = v12;
+    toCopy = v12;
     v8 = self->_has;
     if ((v8 & 0x10) == 0)
     {
@@ -563,13 +563,13 @@ LABEL_15:
 
   modelHasSignificantData = self->_modelHasSignificantData;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_16:
     mapIsValid = self->_mapIsValid;
     PBDataWriterWriteBOOLField();
-    v4 = v12;
+    toCopy = v12;
   }
 
 LABEL_17:
@@ -577,12 +577,12 @@ LABEL_17:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   homeIdentifier = self->_homeIdentifier;
   if (homeIdentifier)
   {
-    [v3 setObject:homeIdentifier forKey:@"homeIdentifier"];
+    [dictionary setObject:homeIdentifier forKey:@"homeIdentifier"];
   }
 
   targetIdentifier = self->_targetIdentifier;
@@ -673,15 +673,15 @@ LABEL_20:
   v8.receiver = self;
   v8.super_class = HMUserActionPredictionDuetPredictionValue;
   v4 = [(HMUserActionPredictionDuetPredictionValue *)&v8 description];
-  v5 = [(HMUserActionPredictionDuetPredictionValue *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMUserActionPredictionDuetPredictionValue *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasMapIsValid:(BOOL)a3
+- (void)setHasMapIsValid:(BOOL)valid
 {
-  if (a3)
+  if (valid)
   {
     v3 = 8;
   }
@@ -694,9 +694,9 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasModelHasSignificantData:(BOOL)a3
+- (void)setHasModelHasSignificantData:(BOOL)data
 {
-  if (a3)
+  if (data)
   {
     v3 = 16;
   }
@@ -709,20 +709,20 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsPredictionType:(id)a3
+- (int)StringAsPredictionType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"scene"])
+  else if ([typeCopy isEqualToString:@"scene"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"accessory"])
+  else if ([typeCopy isEqualToString:@"accessory"])
   {
     v4 = 2;
   }
@@ -735,9 +735,9 @@ LABEL_20:
   return v4;
 }
 
-- (void)setHasPredictionType:(BOOL)a3
+- (void)setHasPredictionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -763,9 +763,9 @@ LABEL_20:
   }
 }
 
-- (void)setHasScore:(BOOL)a3
+- (void)setHasScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }

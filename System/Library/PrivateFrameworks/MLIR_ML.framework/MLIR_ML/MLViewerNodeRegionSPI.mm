@@ -1,51 +1,51 @@
 @interface MLViewerNodeRegionSPI
-- (MLViewerNodeRegionSPI)initWithCoder:(id)a3;
-- (MLViewerNodeRegionSPI)initWithJSONDictionary:(id)a3;
-- (MLViewerNodeRegionSPI)initWithName:(id)a3 returnType:(id)a4 nodes:(id)a5;
+- (MLViewerNodeRegionSPI)initWithCoder:(id)coder;
+- (MLViewerNodeRegionSPI)initWithJSONDictionary:(id)dictionary;
+- (MLViewerNodeRegionSPI)initWithName:(id)name returnType:(id)type nodes:(id)nodes;
 - (id)jsonDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MLViewerNodeRegionSPI
 
-- (MLViewerNodeRegionSPI)initWithName:(id)a3 returnType:(id)a4 nodes:(id)a5
+- (MLViewerNodeRegionSPI)initWithName:(id)name returnType:(id)type nodes:(id)nodes
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  typeCopy = type;
+  nodesCopy = nodes;
   v15.receiver = self;
   v15.super_class = MLViewerNodeRegionSPI;
   v12 = [(MLViewerNodeRegionSPI *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_name, a3);
-    objc_storeStrong(&v13->_returnType, a4);
-    objc_storeStrong(&v13->_nodes, a5);
+    objc_storeStrong(&v12->_name, name);
+    objc_storeStrong(&v13->_returnType, type);
+    objc_storeStrong(&v13->_nodes, nodes);
   }
 
   return v13;
 }
 
-- (MLViewerNodeRegionSPI)initWithJSONDictionary:(id)a3
+- (MLViewerNodeRegionSPI)initWithJSONDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = MLViewerNodeRegionSPI;
   v5 = [(MLViewerNodeRegionSPI *)&v25 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"name"];
+    v6 = [dictionaryCopy objectForKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 objectForKey:@"returnType"];
+    v8 = [dictionaryCopy objectForKey:@"returnType"];
     returnType = v5->_returnType;
     v5->_returnType = v8;
 
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [v4 objectForKey:@"nodes"];
+    [dictionaryCopy objectForKey:@"nodes"];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
@@ -95,8 +95,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(MLViewerNodeRegionSPI *)self nodes];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  nodes = [(MLViewerNodeRegionSPI *)self nodes];
+  v5 = [nodes countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = *v16;
@@ -106,51 +106,51 @@
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(nodes);
         }
 
-        v8 = [*(*(&v15 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v8];
+        jsonDictionary = [*(*(&v15 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [nodes countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  v10 = [(MLViewerNodeRegionSPI *)self name];
-  [v9 setObject:v10 forKey:@"name"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  name = [(MLViewerNodeRegionSPI *)self name];
+  [dictionary setObject:name forKey:@"name"];
 
-  v11 = [(MLViewerNodeRegionSPI *)self returnType];
-  LOBYTE(v10) = v11 == 0;
+  returnType = [(MLViewerNodeRegionSPI *)self returnType];
+  LOBYTE(name) = returnType == 0;
 
-  if ((v10 & 1) == 0)
+  if ((name & 1) == 0)
   {
-    v12 = [(MLViewerNodeRegionSPI *)self returnType];
-    [v9 setObject:v12 forKey:@"returnType"];
+    returnType2 = [(MLViewerNodeRegionSPI *)self returnType];
+    [dictionary setObject:returnType2 forKey:@"returnType"];
   }
 
-  [v9 setObject:v3 forKey:@"nodes"];
-  v13 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v9];
+  [dictionary setObject:v3 forKey:@"nodes"];
+  v13 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
 
   return v13;
 }
 
-- (MLViewerNodeRegionSPI)initWithCoder:(id)a3
+- (MLViewerNodeRegionSPI)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MLViewerNodeRegionSPI;
   v5 = [(MLViewerNodeRegionSPI *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"returnType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"returnType"];
     returnType = v5->_returnType;
     v5->_returnType = v8;
 
@@ -160,7 +160,7 @@
     }
 
     v10 = allowedClasses(void)::allowedClasses;
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"nodes"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"nodes"];
     nodes = v5->_nodes;
     v5->_nodes = v11;
 
@@ -170,17 +170,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(MLViewerNodeRegionSPI *)self name];
-  [v7 encodeObject:v4 forKey:@"name"];
+  coderCopy = coder;
+  name = [(MLViewerNodeRegionSPI *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v5 = [(MLViewerNodeRegionSPI *)self returnType];
-  [v7 encodeObject:v5 forKey:@"returnType"];
+  returnType = [(MLViewerNodeRegionSPI *)self returnType];
+  [coderCopy encodeObject:returnType forKey:@"returnType"];
 
-  v6 = [(MLViewerNodeRegionSPI *)self nodes];
-  [v7 encodeObject:v6 forKey:@"nodes"];
+  nodes = [(MLViewerNodeRegionSPI *)self nodes];
+  [coderCopy encodeObject:nodes forKey:@"nodes"];
 }
 
 @end

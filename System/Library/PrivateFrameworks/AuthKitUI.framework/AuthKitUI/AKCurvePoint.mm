@@ -1,6 +1,6 @@
 @interface AKCurvePoint
-+ (id)pointWithX:(double)a3 y:(double)a4;
-- (AKCurvePoint)initWithX:(double)a3 y:(double)a4;
++ (id)pointWithX:(double)x y:(double)y;
+- (AKCurvePoint)initWithX:(double)x y:(double)y;
 - (CGPoint)CGPoint;
 - (CGPoint)leftTangentPoint;
 - (CGPoint)rightTangentPoint;
@@ -8,18 +8,18 @@
 
 @implementation AKCurvePoint
 
-+ (id)pointWithX:(double)a3 y:(double)a4
++ (id)pointWithX:(double)x y:(double)y
 {
-  v4 = [[AKCurvePoint alloc] initWithX:a3 y:a4];
+  v4 = [[AKCurvePoint alloc] initWithX:x y:y];
 
   return v4;
 }
 
-- (AKCurvePoint)initWithX:(double)a3 y:(double)a4
+- (AKCurvePoint)initWithX:(double)x y:(double)y
 {
   v10 = a2;
-  v9 = a3;
-  v8 = a4;
+  xCopy = x;
+  yCopy = y;
   v11 = 0;
   v7.receiver = self;
   v7.super_class = AKCurvePoint;
@@ -28,8 +28,8 @@
   objc_storeStrong(&v11, v6);
   if (v6)
   {
-    v11->_x = v9;
-    v11->_y = v8;
+    v11->_x = xCopy;
+    v11->_y = yCopy;
   }
 
   v5 = MEMORY[0x277D82BE0](v11);

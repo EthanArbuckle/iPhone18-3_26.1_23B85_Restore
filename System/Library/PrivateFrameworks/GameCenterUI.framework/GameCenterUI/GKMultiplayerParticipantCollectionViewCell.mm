@@ -5,13 +5,13 @@
 - (_TtC12GameCenterUI16DynamicTypeLabel)accessibilitySubtitleLabel;
 - (_TtC12GameCenterUI23GKMultiplayerStatusView)accessibilityStatusAccessoryView;
 - (id)tapHandler;
-- (void)applyWithParticipant:(id)a3 number:(int64_t)a4 isRemovingEnabled:(BOOL)a5 isInvitingEnabled:(BOOL)a6 layoutMode:(int64_t)a7;
-- (void)didTapRemoveButton:(id)a3;
+- (void)applyWithParticipant:(id)participant number:(int64_t)number isRemovingEnabled:(BOOL)enabled isInvitingEnabled:(BOOL)invitingEnabled layoutMode:(int64_t)mode;
+- (void)didTapRemoveButton:(id)button;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setRemoveButtonHidden:(BOOL)a3;
-- (void)setSharePlayEnabled:(BOOL)a3;
-- (void)setTapHandler:(id)a3;
+- (void)setRemoveButtonHidden:(BOOL)hidden;
+- (void)setSharePlayEnabled:(BOOL)enabled;
+- (void)setTapHandler:(id)handler;
 @end
 
 @implementation GKMultiplayerParticipantCollectionViewCell
@@ -24,10 +24,10 @@
   return v2;
 }
 
-- (void)setSharePlayEnabled:(BOOL)a3
+- (void)setSharePlayEnabled:(BOOL)enabled
 {
-  v4 = self;
-  GKMultiplayerParticipantCollectionViewCell.sharePlayEnabled.setter(a3);
+  selfCopy = self;
+  GKMultiplayerParticipantCollectionViewCell.sharePlayEnabled.setter(enabled);
 }
 
 - (id)tapHandler
@@ -52,9 +52,9 @@
   return v4;
 }
 
-- (void)setTapHandler:(id)a3
+- (void)setTapHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -67,48 +67,48 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   GKMultiplayerParticipantCollectionViewCell.tapHandler.setter(v4, v5);
 }
 
 - (BOOL)removeButtonHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GKMultiplayerParticipantCollectionViewCell.removeButtonHidden.getter();
 
   return v3 & 1;
 }
 
-- (void)setRemoveButtonHidden:(BOOL)a3
+- (void)setRemoveButtonHidden:(BOOL)hidden
 {
-  v4 = self;
-  GKMultiplayerParticipantCollectionViewCell.removeButtonHidden.setter(a3);
+  selfCopy = self;
+  GKMultiplayerParticipantCollectionViewCell.removeButtonHidden.setter(hidden);
 }
 
-- (void)applyWithParticipant:(id)a3 number:(int64_t)a4 isRemovingEnabled:(BOOL)a5 isInvitingEnabled:(BOOL)a6 layoutMode:(int64_t)a7
+- (void)applyWithParticipant:(id)participant number:(int64_t)number isRemovingEnabled:(BOOL)enabled isInvitingEnabled:(BOOL)invitingEnabled layoutMode:(int64_t)mode
 {
-  v10 = a3;
-  v11 = self;
-  GKMultiplayerParticipantCollectionViewCell.apply(participant:number:isRemovingEnabled:isInvitingEnabled:layoutMode:)(v10, a4, 0, 0, a7);
+  participantCopy = participant;
+  selfCopy = self;
+  GKMultiplayerParticipantCollectionViewCell.apply(participant:number:isRemovingEnabled:isInvitingEnabled:layoutMode:)(participantCopy, number, 0, 0, mode);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   GKMultiplayerParticipantCollectionViewCell.layoutSubviews()();
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   GKMultiplayerParticipantCollectionViewCell.prepareForReuse()();
 }
 
-- (void)didTapRemoveButton:(id)a3
+- (void)didTapRemoveButton:(id)button
 {
-  if (a3)
+  if (button)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_24E3487A8();
     swift_unknownObjectRelease();
@@ -117,7 +117,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_24DF88240();

@@ -1,36 +1,36 @@
 @interface PLCloudResourceManager
 - (PLCloudResourceManager)init;
-- (PLCloudResourceManager)initWithCPLManager:(id)a3 libraryServicesManager:(id)a4;
+- (PLCloudResourceManager)initWithCPLManager:(id)manager libraryServicesManager:(id)servicesManager;
 - (double)_minimumIntervalBetweenOperations;
-- (id)statusForDebug:(BOOL)a3;
-- (void)_runOnWorkQueueWithTransaction:(id)a3 block:(id)a4;
+- (id)statusForDebug:(BOOL)debug;
+- (void)_runOnWorkQueueWithTransaction:(id)transaction block:(id)block;
 - (void)handleOptimizeModeChange;
-- (void)startAutomaticPrefetchAndPruneWithTimeout:(BOOL)a3;
+- (void)startAutomaticPrefetchAndPruneWithTimeout:(BOOL)timeout;
 - (void)stop;
 @end
 
 @implementation PLCloudResourceManager
 
-- (id)statusForDebug:(BOOL)a3
+- (id)statusForDebug:(BOOL)debug
 {
-  v3 = a3;
-  v5 = [(PLLibraryServicesManager *)self->_libraryServicesManager pathManager];
-  v6 = [v5 photoDirectoryWithType:1];
+  debugCopy = debug;
+  pathManager = [(PLLibraryServicesManager *)self->_libraryServicesManager pathManager];
+  v6 = [pathManager photoDirectoryWithType:1];
 
   v41 = [MEMORY[0x1E69BF208] fileSystemSizeForPath:v6];
   v46 = v6;
   v40 = [MEMORY[0x1E69BF208] diskSpaceAvailableForPath:v6];
   v7 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v7 setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
-  v8 = [MEMORY[0x1E695DFE8] localTimeZone];
-  [v7 setTimeZone:v8];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  [v7 setTimeZone:localTimeZone];
 
-  v9 = [(PLLibraryServicesManager *)self->_libraryServicesManager libraryURL];
-  v10 = [PLPhotoLibraryIdentifier photoLibraryIdentifierWithPhotoLibraryURL:v9 createIfMissing:1 error:0];
+  libraryURL = [(PLLibraryServicesManager *)self->_libraryServicesManager libraryURL];
+  v10 = [PLPhotoLibraryIdentifier photoLibraryIdentifierWithPhotoLibraryURL:libraryURL createIfMissing:1 error:0];
 
-  v11 = [(PLLibraryServicesManager *)self->_libraryServicesManager cplSettings];
+  cplSettings = [(PLLibraryServicesManager *)self->_libraryServicesManager cplSettings];
   v44 = v10;
-  v47 = v3;
+  v47 = debugCopy;
   if ([(PLLibraryServicesManager *)self->_libraryServicesManager isSystemPhotoLibrary])
   {
     v12 = *MEMORY[0x1E69949B0];
@@ -38,10 +38,10 @@
 
   else
   {
-    if ([v11 isAppLibrary])
+    if ([cplSettings isAppLibrary])
     {
-      v13 = [v10 containerIdentifier];
-      v14 = [v10 uuid];
+      containerIdentifier = [v10 containerIdentifier];
+      uuid = [v10 uuid];
       v49 = CPLLibraryIdentifierForApp();
 
       goto LABEL_7;
@@ -52,9 +52,9 @@
 
   v49 = v12;
 LABEL_7:
-  v15 = [(PLLibraryServicesManager *)self->_libraryServicesManager fingerprintContext];
+  fingerprintContext = [(PLLibraryServicesManager *)self->_libraryServicesManager fingerprintContext];
   v37 = MEMORY[0x1E696AEC0];
-  v35 = [(PLLibraryServicesManager *)self->_libraryServicesManager mainScopeIdentifier];
+  mainScopeIdentifier = [(PLLibraryServicesManager *)self->_libraryServicesManager mainScopeIdentifier];
   if ([(PLLibraryServicesManager *)self->_libraryServicesManager isCloudPhotoLibraryEnabled])
   {
     v16 = @"YES";
@@ -66,15 +66,15 @@ LABEL_7:
   }
 
   v34 = v16;
-  v43 = v11;
-  v48 = +[PLCloudResourcePrefetchManager descriptionForPrefetchMode:](PLCloudResourcePrefetchManager, "descriptionForPrefetchMode:", [v11 prefetchMode]);
-  v38 = [v15 fingerprintSchemeForNewMasterAsset];
-  v32 = [v38 fingerprintSchemeDescription];
-  v39 = v15;
-  v36 = [v15 mmcsv2FingerprintScheme];
-  v17 = [v36 boundaryKeyDescription];
-  v33 = [MEMORY[0x1E695DF00] date];
-  v18 = [v7 stringFromDate:v33];
+  v43 = cplSettings;
+  v48 = +[PLCloudResourcePrefetchManager descriptionForPrefetchMode:](PLCloudResourcePrefetchManager, "descriptionForPrefetchMode:", [cplSettings prefetchMode]);
+  fingerprintSchemeForNewMasterAsset = [fingerprintContext fingerprintSchemeForNewMasterAsset];
+  fingerprintSchemeDescription = [fingerprintSchemeForNewMasterAsset fingerprintSchemeDescription];
+  v39 = fingerprintContext;
+  mmcsv2FingerprintScheme = [fingerprintContext mmcsv2FingerprintScheme];
+  boundaryKeyDescription = [mmcsv2FingerprintScheme boundaryKeyDescription];
+  date = [MEMORY[0x1E695DF00] date];
+  v18 = [v7 stringFromDate:date];
   v19 = [v7 stringFromDate:self->_lastOperationDate];
   lastOperationDate = self->_lastOperationDate;
   [(PLCloudResourceManager *)self _minimumIntervalBetweenOperations];
@@ -94,7 +94,7 @@ LABEL_7:
   v24 = [MEMORY[0x1E696AAF0] stringFromByteCount:v41 countStyle:3];
   v25 = [MEMORY[0x1E696AAF0] stringFromByteCount:v40 countStyle:3];
   v26 = [(PLCloudResourcePrefetchManager *)self->_prefetchManager prefetchStatusForDebug:v47];
-  v42 = [v37 stringWithFormat:@"Library Identifier: %@\nMain Scope Identifier: %@\niCPL enabled: %@\nPrefetch Mode: %@\nDefault fingerprint scheme: %@\nBoundary Key Hash: %@\nCurrent time: %@\nLast operation time: %@\nNext operation time: %@\nEnqueued: %@\nTotal storage: %@ Available storage: %@\n\n%@", v49, v35, v34, v48, v32, v17, v18, v19, v22, v23, v24, v25, v26];
+  v42 = [v37 stringWithFormat:@"Library Identifier: %@\nMain Scope Identifier: %@\niCPL enabled: %@\nPrefetch Mode: %@\nDefault fingerprint scheme: %@\nBoundary Key Hash: %@\nCurrent time: %@\nLast operation time: %@\nNext operation time: %@\nEnqueued: %@\nTotal storage: %@ Available storage: %@\n\n%@", v49, mainScopeIdentifier, v34, v48, fingerprintSchemeDescription, boundaryKeyDescription, v18, v19, v22, v23, v24, v25, v26];
 
   pruneManager = self->_pruneManager;
   if (pruneManager)
@@ -132,14 +132,14 @@ LABEL_7:
   self->_enqueuedOperation = 0;
 }
 
-- (void)startAutomaticPrefetchAndPruneWithTimeout:(BOOL)a3
+- (void)startAutomaticPrefetchAndPruneWithTimeout:(BOOL)timeout
 {
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLCloudResourceManager startAutomaticPrefetchAndPruneWithTimeout:]"];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __68__PLCloudResourceManager_startAutomaticPrefetchAndPruneWithTimeout___block_invoke;
   v6[3] = &unk_1E7576F80;
-  v7 = a3;
+  timeoutCopy = timeout;
   v6[4] = self;
   [(PLCloudResourceManager *)self _runOnWorkQueueWithTransaction:v5 block:v6];
 }
@@ -242,8 +242,8 @@ void __68__PLCloudResourceManager_startAutomaticPrefetchAndPruneWithTimeout___bl
 
 - (double)_minimumIntervalBetweenOperations
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 integerForKey:@"PLPrefetchMinimumIntervalBetweenOperations"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"PLPrefetchMinimumIntervalBetweenOperations"];
 
   result = 600.0;
   if (v3 >= 1)
@@ -254,12 +254,12 @@ void __68__PLCloudResourceManager_startAutomaticPrefetchAndPruneWithTimeout___bl
   return result;
 }
 
-- (void)_runOnWorkQueueWithTransaction:(id)a3 block:(id)a4
+- (void)_runOnWorkQueueWithTransaction:(id)transaction block:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v5 = v7;
-  v6 = v8;
+  transactionCopy = transaction;
+  blockCopy = block;
+  v5 = transactionCopy;
+  v6 = blockCopy;
   pl_dispatch_async();
 }
 
@@ -271,10 +271,10 @@ uint64_t __63__PLCloudResourceManager__runOnWorkQueueWithTransaction_block___blo
   return [v2 stillAlive];
 }
 
-- (PLCloudResourceManager)initWithCPLManager:(id)a3 libraryServicesManager:(id)a4
+- (PLCloudResourceManager)initWithCPLManager:(id)manager libraryServicesManager:(id)servicesManager
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  servicesManagerCopy = servicesManager;
   v20.receiver = self;
   v20.super_class = PLCloudResourceManager;
   v8 = [(PLCloudResourceManager *)&v20 init];
@@ -285,19 +285,19 @@ uint64_t __63__PLCloudResourceManager__runOnWorkQueueWithTransaction_block___blo
     workQueue = v8->_workQueue;
     v8->_workQueue = v10;
 
-    objc_storeStrong(&v8->_libraryServicesManager, a4);
-    v12 = [v7 pathManager];
-    v13 = [v12 capabilities];
-    v14 = [v13 isCentralizedCacheDeleteCapable];
+    objc_storeStrong(&v8->_libraryServicesManager, servicesManager);
+    pathManager = [servicesManagerCopy pathManager];
+    capabilities = [pathManager capabilities];
+    isCentralizedCacheDeleteCapable = [capabilities isCentralizedCacheDeleteCapable];
 
-    if ((v14 & 1) == 0)
+    if ((isCentralizedCacheDeleteCapable & 1) == 0)
     {
-      v15 = [[PLCloudResourcePruneManager alloc] initWithCPLManager:v6 libraryServicesManager:v7];
+      v15 = [[PLCloudResourcePruneManager alloc] initWithCPLManager:managerCopy libraryServicesManager:servicesManagerCopy];
       pruneManager = v8->_pruneManager;
       v8->_pruneManager = v15;
     }
 
-    v17 = [[PLCloudResourcePrefetchManager alloc] initWithCPLManager:v6 pruneManager:v8->_pruneManager libraryServicesManager:v7];
+    v17 = [[PLCloudResourcePrefetchManager alloc] initWithCPLManager:managerCopy pruneManager:v8->_pruneManager libraryServicesManager:servicesManagerCopy];
     prefetchManager = v8->_prefetchManager;
     v8->_prefetchManager = v17;
 

@@ -1,42 +1,42 @@
 @interface _PASDeviceStateStub
-+ (void)setClassCLocked:(BOOL)a3;
-+ (void)setCurrentOsBuild:(id)a3;
-+ (void)setDeviceFormattedForProtection:(BOOL)a3;
-+ (void)setLockState:(int)a3;
++ (void)setClassCLocked:(BOOL)locked;
++ (void)setCurrentOsBuild:(id)build;
++ (void)setDeviceFormattedForProtection:(BOOL)protection;
++ (void)setLockState:(int)state;
 + (void)startMockingSystem;
 + (void)stopMockingSystem;
 @end
 
 @implementation _PASDeviceStateStub
 
-+ (void)setCurrentOsBuild:(id)a3
++ (void)setCurrentOsBuild:(id)build
 {
-  v3 = a3;
+  buildCopy = build;
   obj = objc_opt_class();
   objc_sync_enter(obj);
   v4 = _currentOsBuild;
-  _currentOsBuild = v3;
+  _currentOsBuild = buildCopy;
 
   objc_sync_exit(obj);
 }
 
-+ (void)setDeviceFormattedForProtection:(BOOL)a3
++ (void)setDeviceFormattedForProtection:(BOOL)protection
 {
   obj = objc_opt_class();
   objc_sync_enter(obj);
-  _deviceFormattedForProtection = a3;
+  _deviceFormattedForProtection = protection;
   objc_sync_exit(obj);
 }
 
-+ (void)setClassCLocked:(BOOL)a3
++ (void)setClassCLocked:(BOOL)locked
 {
-  v3 = a3;
+  lockedCopy = locked;
   v4 = objc_opt_class();
   objc_sync_enter(v4);
   v5 = _classCLocked;
-  _classCLocked = v3;
+  _classCLocked = lockedCopy;
   v8 = 0;
-  if (!v3 && (v5 & 1) != 0 && _firstUnlockCallback)
+  if (!lockedCopy && (v5 & 1) != 0 && _firstUnlockCallback)
   {
     v8 = MEMORY[0x2666F0150]();
     v6 = _firstUnlockCallback;
@@ -53,12 +53,12 @@
   }
 }
 
-+ (void)setLockState:(int)a3
++ (void)setLockState:(int)state
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = objc_opt_class();
   objc_sync_enter(v4);
-  _lockState = a3;
+  _lockState = state;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;

@@ -1,12 +1,12 @@
 @interface CBFrameStats
 - (BOOL)shouldPop;
-- (CBFrameStats)initWithQueue:(id)a3 frameInfoProvider:(id)a4 andWindowServerDisplay:(id)a5;
+- (CBFrameStats)initWithQueue:(id)queue frameInfoProvider:(id)provider andWindowServerDisplay:(id)display;
 - (float)getMovingAverage;
 - (float)getPeakAPCECap;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)processFrameInfo:(id *)a3;
-- (void)startMonitoring:(id)a3;
+- (void)processFrameInfo:(id *)info;
+- (void)startMonitoring:(id)monitoring;
 - (void)stopMonitoring;
 @end
 
@@ -40,36 +40,36 @@
   return v10;
 }
 
-- (CBFrameStats)initWithQueue:(id)a3 frameInfoProvider:(id)a4 andWindowServerDisplay:(id)a5
+- (CBFrameStats)initWithQueue:(id)queue frameInfoProvider:(id)provider andWindowServerDisplay:(id)display
 {
   v22 = *MEMORY[0x1E69E9840];
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
-  v17 = a3;
-  v16 = a4;
-  v15 = a5;
-  if (a3 && v16 && v15)
+  queueCopy = queue;
+  providerCopy = provider;
+  displayCopy = display;
+  if (queue && providerCopy && displayCopy)
   {
-    v14.receiver = v19;
+    v14.receiver = selfCopy;
     v14.super_class = CBFrameStats;
-    v19 = [(CBFrameStats *)&v14 init];
-    if (v19)
+    selfCopy = [(CBFrameStats *)&v14 init];
+    if (selfCopy)
     {
       v5 = os_log_create("com.apple.CoreBrightness.FrameStats", "default");
-      *(v19 + 16) = v5;
-      *(v19 + 1) = v17;
-      dispatch_retain(*(v19 + 1));
+      *(selfCopy + 16) = v5;
+      *(selfCopy + 1) = queueCopy;
+      dispatch_retain(*(selfCopy + 1));
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      *(v19 + 17) = v6;
-      v7 = MEMORY[0x1E69E5928](v16);
-      *(v19 + 2) = v7;
-      for (i = 0; i < [objc_msgSend(v15 "averagePixelConstraints")]; ++i)
+      *(selfCopy + 17) = v6;
+      v7 = MEMORY[0x1E69E5928](providerCopy);
+      *(selfCopy + 2) = v7;
+      for (i = 0; i < [objc_msgSend(displayCopy "averagePixelConstraints")]; ++i)
       {
-        std::vector<float>::push_back[abi:de200100](v19 + 3, ([objc_msgSend(v15 "averagePixelConstraints")] + 4 * i));
-        std::vector<float>::push_back[abi:de200100](v19 + 6, ([objc_msgSend(v15 "averagePixelConstraints")] + 4 * i));
-        if (*(v19 + 16))
+        std::vector<float>::push_back[abi:de200100](selfCopy + 3, ([objc_msgSend(displayCopy "averagePixelConstraints")] + 4 * i));
+        std::vector<float>::push_back[abi:de200100](selfCopy + 6, ([objc_msgSend(displayCopy "averagePixelConstraints")] + 4 * i));
+        if (*(selfCopy + 16))
         {
-          v12 = *(v19 + 16);
+          v12 = *(selfCopy + 16);
         }
 
         else
@@ -89,29 +89,29 @@
 
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          *&v10 = *std::vector<float>::back[abi:de200100](v19 + 3);
-          v8 = std::vector<float>::back[abi:de200100](v19 + 6);
+          *&v10 = *std::vector<float>::back[abi:de200100](selfCopy + 3);
+          v8 = std::vector<float>::back[abi:de200100](selfCopy + 6);
           __os_log_helper_16_0_4_4_0_8_0_4_0_8_0(v21, i, v10, i, COERCE__INT64(*v8));
           _os_log_impl(&dword_1DE8E5000, v12, OS_LOG_TYPE_DEFAULT, "FrameStats RTPLC | FrameDelayedNits[%d]=%f FrameDelayedAPCE[%d]=%f", v21, 0x22u);
         }
       }
 
-      *(v19 + 112) = 0;
-      *(v19 + 30) = 0;
-      *(v19 + 29) = 0;
-      *(v19 + 22) = 0;
-      *(v19 + 40) = 0;
-      *(v19 + 18) = 0;
-      *(v19 + 20) = 0.5;
-      *(v19 + 21) = 2.0;
-      *(v19 + 22) = mach_time_now_in_seconds();
-      *(v19 + 26) = 1060320051;
-      *(v19 + 27) = 10.0;
-      *(v19 + 31) = -1.0;
-      *(v19 + 148) = 0;
+      *(selfCopy + 112) = 0;
+      *(selfCopy + 30) = 0;
+      *(selfCopy + 29) = 0;
+      *(selfCopy + 22) = 0;
+      *(selfCopy + 40) = 0;
+      *(selfCopy + 18) = 0;
+      *(selfCopy + 20) = 0.5;
+      *(selfCopy + 21) = 2.0;
+      *(selfCopy + 22) = mach_time_now_in_seconds();
+      *(selfCopy + 26) = 1060320051;
+      *(selfCopy + 27) = 10.0;
+      *(selfCopy + 31) = -1.0;
+      *(selfCopy + 148) = 0;
     }
 
-    v20 = v19;
+    v20 = selfCopy;
   }
 
   else
@@ -125,58 +125,58 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   [(CBFrameStats *)self stopMonitoring];
-  if (v5->_queue)
+  if (selfCopy->_queue)
   {
-    dispatch_release(v5->_queue);
-    v5->_queue = 0;
+    dispatch_release(selfCopy->_queue);
+    selfCopy->_queue = 0;
   }
 
-  if (v5->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    MEMORY[0x1E69E5920](v5->_logHandle);
-    v5->_logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
+    selfCopy->_logHandle = 0;
   }
 
-  MEMORY[0x1E69E5920](v5->_frameArray);
-  *&v2 = MEMORY[0x1E69E5920](v5->_frameInfoProvider).n128_u64[0];
-  v3.receiver = v5;
+  MEMORY[0x1E69E5920](selfCopy->_frameArray);
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_frameInfoProvider).n128_u64[0];
+  v3.receiver = selfCopy;
   v3.super_class = CBFrameStats;
   [(CBFrameStats *)&v3 dealloc];
 }
 
-- (void)startMonitoring:(id)a3
+- (void)startMonitoring:(id)monitoring
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  monitoringCopy = monitoring;
   self->_previousFramePresentationTime = -1.0;
-  v12->_rtplcCapApplied.previous = 0;
-  v12->_rtplcCapApplied.triggerCount = 0.0;
-  v12->_rtplcCapApplied.count = 0.0;
-  v12->_peakAPCE.recoveryTimer = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, v12->_queue);
-  if (v12->_peakAPCE.recoveryTimer)
+  selfCopy->_rtplcCapApplied.previous = 0;
+  selfCopy->_rtplcCapApplied.triggerCount = 0.0;
+  selfCopy->_rtplcCapApplied.count = 0.0;
+  selfCopy->_peakAPCE.recoveryTimer = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, selfCopy->_queue);
+  if (selfCopy->_peakAPCE.recoveryTimer)
   {
-    dispatch_source_set_timer(v12->_peakAPCE.recoveryTimer, 0, (v12->_peakAPCE.recoveryWindowSize * 1000000000.0), 0);
+    dispatch_source_set_timer(selfCopy->_peakAPCE.recoveryTimer, 0, (selfCopy->_peakAPCE.recoveryWindowSize * 1000000000.0), 0);
     block = MEMORY[0x1E69E9820];
     v4 = -1073741824;
     v5 = 0;
     v6 = __32__CBFrameStats_startMonitoring___block_invoke;
     v7 = &unk_1E867B480;
-    v8 = v12;
+    v8 = selfCopy;
     v9 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INTERACTIVE, 0, &block);
     if (v9)
     {
-      dispatch_source_set_event_handler(v12->_peakAPCE.recoveryTimer, v9);
+      dispatch_source_set_event_handler(selfCopy->_peakAPCE.recoveryTimer, v9);
       _Block_release(v9);
     }
 
-    dispatch_resume(v12->_peakAPCE.recoveryTimer);
+    dispatch_resume(selfCopy->_peakAPCE.recoveryTimer);
   }
 
-  [(CBFrameInfoProvider *)v12->_frameInfoProvider registerObserver:v12 withCallback:v10];
+  [(CBFrameInfoProvider *)selfCopy->_frameInfoProvider registerObserver:selfCopy withCallback:monitoringCopy];
 }
 
 float __32__CBFrameStats_startMonitoring___block_invoke(uint64_t a1)
@@ -288,7 +288,7 @@ float __32__CBFrameStats_startMonitoring___block_invoke(uint64_t a1)
   return v26 / self->_movingAverageDuration;
 }
 
-- (void)processFrameInfo:(id *)a3
+- (void)processFrameInfo:(id *)info
 {
   v19 = *MEMORY[0x1E69E9840];
   if (self->_frameInfoLoggingEnabled)
@@ -306,7 +306,7 @@ float __32__CBFrameStats_startMonitoring___block_invoke(uint64_t a1)
 
     if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3->var2)
+      if (info->var2)
       {
         v3 = "YES";
       }
@@ -316,7 +316,7 @@ float __32__CBFrameStats_startMonitoring___block_invoke(uint64_t a1)
         v3 = "NO";
       }
 
-      if (a3->var3)
+      if (info->var3)
       {
         v4 = "YES";
       }
@@ -326,14 +326,14 @@ float __32__CBFrameStats_startMonitoring___block_invoke(uint64_t a1)
         v4 = "NO";
       }
 
-      __os_log_helper_16_2_7_4_0_8_0_8_32_8_32_8_0_8_0_8_0(v18, a3->var1, a3->var0, v3, v4, COERCE__INT64(a3->var5), COERCE__INT64(a3->var6), COERCE__INT64(a3->var7));
+      __os_log_helper_16_2_7_4_0_8_0_8_32_8_32_8_0_8_0_8_0(v18, info->var1, info->var0, v3, v4, COERCE__INT64(info->var5), COERCE__INT64(info->var6), COERCE__INT64(info->var7));
       _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "FrameStats Info\n{\n\tSwap=%u\n\tPresentationTime=%llu\n\tRTPLC.Triggered=%s\n\tRTPLC.CapApplied=%s\n\tNominalBrightness=%f\n\tScaleFactor=%f\n\tAPCE=%f\n}", v18, 0x44u);
     }
   }
 
-  v16 = mach_time_to_seconds(a3->var0);
-  var7 = a3->var7;
-  self->_scaleFactor = a3->var6;
+  v16 = mach_time_to_seconds(info->var0);
+  var7 = info->var7;
+  self->_scaleFactor = info->var6;
   v9 = objc_alloc(MEMORY[0x1E695DF20]);
   *&v5 = var7;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v5];
@@ -367,7 +367,7 @@ float __32__CBFrameStats_startMonitoring___block_invoke(uint64_t a1)
     self->_peakAPCE.windowStart = mach_time_now_in_seconds();
   }
 
-  if (a3->var3)
+  if (info->var3)
   {
     if (self->_previousFramePresentationTime != -1.0)
     {
@@ -380,7 +380,7 @@ float __32__CBFrameStats_startMonitoring___block_invoke(uint64_t a1)
     }
   }
 
-  if (a3->var2 || a3->var3)
+  if (info->var2 || info->var3)
   {
     if (!self->_tripLength)
     {
@@ -388,7 +388,7 @@ float __32__CBFrameStats_startMonitoring___block_invoke(uint64_t a1)
       self->_tripMaxAPCE = 0.0;
     }
 
-    self->_tripMaxAPCE = fmaxf(a3->var7, self->_tripMaxAPCE);
+    self->_tripMaxAPCE = fmaxf(info->var7, self->_tripMaxAPCE);
     ++self->_tripLength;
   }
 
@@ -397,20 +397,20 @@ float __32__CBFrameStats_startMonitoring___block_invoke(uint64_t a1)
     self->_tripLength = 0;
   }
 
-  self->_rtplcCapApplied.previous = a3->var3;
+  self->_rtplcCapApplied.previous = info->var3;
   self->_previousFramePresentationTime = v16;
   *MEMORY[0x1E69E9840];
 }
 
 - (float)getPeakAPCECap
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
   if (std::vector<float>::empty[abi:de200100](&self->_rtplcFrameDelayedNitsTable.__begin_))
   {
-    if (v18->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v18->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -443,16 +443,16 @@ float __32__CBFrameStats_startMonitoring___block_invoke(uint64_t a1)
 
   else
   {
-    [(CBFrameStats *)v18 getPeakAPCE];
+    [(CBFrameStats *)selfCopy getPeakAPCE];
     v13 = v2;
     for (i = 0; ; ++i)
     {
-      if (i >= std::vector<float>::size[abi:de200100](&v18->_rtplcFrameDelayedNitsTable.__begin_))
+      if (i >= std::vector<float>::size[abi:de200100](&selfCopy->_rtplcFrameDelayedNitsTable.__begin_))
       {
-        return *std::vector<float>::back[abi:de200100](&v18->_rtplcFrameDelayedNitsTable.__begin_);
+        return *std::vector<float>::back[abi:de200100](&selfCopy->_rtplcFrameDelayedNitsTable.__begin_);
       }
 
-      if (v13 > *std::vector<float>::operator[][abi:de200100](&v18->_rtplcFrameDelayedAPCETable.__begin_, i))
+      if (v13 > *std::vector<float>::operator[][abi:de200100](&selfCopy->_rtplcFrameDelayedAPCETable.__begin_, i))
       {
         break;
       }
@@ -460,16 +460,16 @@ float __32__CBFrameStats_startMonitoring___block_invoke(uint64_t a1)
 
     if (i)
     {
-      v5 = *std::vector<float>::operator[][abi:de200100](&v18->_rtplcFrameDelayedAPCETable.__begin_, i);
-      v6 = *std::vector<float>::operator[][abi:de200100](&v18->_rtplcFrameDelayedNitsTable.__begin_, i);
-      v7 = *std::vector<float>::operator[][abi:de200100](&v18->_rtplcFrameDelayedAPCETable.__begin_, i - 1);
-      v3 = std::vector<float>::operator[][abi:de200100](&v18->_rtplcFrameDelayedNitsTable.__begin_, i - 1);
+      v5 = *std::vector<float>::operator[][abi:de200100](&selfCopy->_rtplcFrameDelayedAPCETable.__begin_, i);
+      v6 = *std::vector<float>::operator[][abi:de200100](&selfCopy->_rtplcFrameDelayedNitsTable.__begin_, i);
+      v7 = *std::vector<float>::operator[][abi:de200100](&selfCopy->_rtplcFrameDelayedAPCETable.__begin_, i - 1);
+      v3 = std::vector<float>::operator[][abi:de200100](&selfCopy->_rtplcFrameDelayedNitsTable.__begin_, i - 1);
       return linear_interpolation(v13, v5, v6, v7, *v3);
     }
 
     else
     {
-      return *std::vector<float>::front[abi:de200100](&v18->_rtplcFrameDelayedNitsTable.__begin_);
+      return *std::vector<float>::front[abi:de200100](&selfCopy->_rtplcFrameDelayedNitsTable.__begin_);
     }
   }
 }

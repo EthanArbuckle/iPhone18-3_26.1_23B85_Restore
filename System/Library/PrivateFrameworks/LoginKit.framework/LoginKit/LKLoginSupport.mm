@@ -3,11 +3,11 @@
 + (BOOL)isNewUserAbleToLogin;
 + (id)findLeastRecentlyUsedCleanUser;
 - (LKLoginSupport)init;
-- (id)_errorForNotificationType:(unint64_t)a3;
-- (id)_notificationForNotificationType:(unint64_t)a3;
-- (void)_runWhenDarwinNotificationPosted:(unint64_t)a3 timeOutPeriod:(double)a4 block:(id)a5;
-- (void)_runWithTimeOutPeriod:(double)a3 notificationType:(unint64_t)a4 completionBlock:(id)a5;
-- (void)_timeOutAfterTimePeriod:(double)a3 withError:(id)a4 block:(id)a5;
+- (id)_errorForNotificationType:(unint64_t)type;
+- (id)_notificationForNotificationType:(unint64_t)type;
+- (void)_runWhenDarwinNotificationPosted:(unint64_t)posted timeOutPeriod:(double)period block:(id)block;
+- (void)_runWithTimeOutPeriod:(double)period notificationType:(unint64_t)type completionBlock:(id)block;
+- (void)_timeOutAfterTimePeriod:(double)period withError:(id)error block:(id)block;
 @end
 
 @implementation LKLoginSupport
@@ -20,10 +20,10 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [MEMORY[0x277D77BF8] sharedManager];
-  v4 = [v3 allUsers];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  allUsers = [mEMORY[0x277D77BF8] allUsers];
 
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [allUsers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -34,7 +34,7 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allUsers);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -44,7 +44,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allUsers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -53,17 +53,17 @@
   if ([v2 count])
   {
     [v2 sortUsingComparator:&__block_literal_global_3];
-    v10 = [v2 firstObject];
+    firstObject = [v2 firstObject];
   }
 
   else
   {
-    v10 = 0;
+    firstObject = 0;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return firstObject;
 }
 
 uint64_t __48__LKLoginSupport_findLeastRecentlyUsedCleanUser__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -83,10 +83,10 @@ uint64_t __48__LKLoginSupport_findLeastRecentlyUsedCleanUser__block_invoke(uint6
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [MEMORY[0x277D77BF8] sharedManager];
-  v3 = [v2 allUsers];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  allUsers = [mEMORY[0x277D77BF8] allUsers];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [allUsers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -96,7 +96,7 @@ uint64_t __48__LKLoginSupport_findLeastRecentlyUsedCleanUser__block_invoke(uint6
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allUsers);
         }
 
         if (![*(*(&v9 + 1) + 8 * i) hasDataToSync])
@@ -106,7 +106,7 @@ uint64_t __48__LKLoginSupport_findLeastRecentlyUsedCleanUser__block_invoke(uint6
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [allUsers countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -124,9 +124,9 @@ LABEL_11:
 
 + (BOOL)isNewUserAbleToLogin
 {
-  v2 = [MEMORY[0x277D77BF8] sharedManager];
-  v3 = [v2 allUsers];
-  v4 = [v3 count];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  allUsers = [mEMORY[0x277D77BF8] allUsers];
+  v4 = [allUsers count];
 
   if (v4 < 0x20)
   {
@@ -159,11 +159,11 @@ LABEL_11:
   return v2;
 }
 
-- (id)_errorForNotificationType:(unint64_t)a3
+- (id)_errorForNotificationType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }
@@ -182,11 +182,11 @@ LABEL_6:
   return self;
 }
 
-- (id)_notificationForNotificationType:(unint64_t)a3
+- (id)_notificationForNotificationType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_6;
     }
@@ -205,20 +205,20 @@ LABEL_6:
   return self;
 }
 
-- (void)_timeOutAfterTimePeriod:(double)a3 withError:(id)a4 block:(id)a5
+- (void)_timeOutAfterTimePeriod:(double)period withError:(id)error block:(id)block
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = dispatch_time(0, (a3 * 1000000000.0));
+  errorCopy = error;
+  blockCopy = block;
+  v9 = dispatch_time(0, (period * 1000000000.0));
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__LKLoginSupport__timeOutAfterTimePeriod_withError_block___block_invoke;
   block[3] = &unk_279826510;
-  v15 = a3;
-  v13 = v7;
-  v14 = v8;
-  v10 = v7;
-  v11 = v8;
+  periodCopy = period;
+  v13 = errorCopy;
+  v14 = blockCopy;
+  v10 = errorCopy;
+  v11 = blockCopy;
   dispatch_after(v9, MEMORY[0x277D85CD0], block);
 }
 
@@ -244,27 +244,27 @@ uint64_t __58__LKLoginSupport__timeOutAfterTimePeriod_withError_block___block_in
   return result;
 }
 
-- (void)_runWhenDarwinNotificationPosted:(unint64_t)a3 timeOutPeriod:(double)a4 block:(id)a5
+- (void)_runWhenDarwinNotificationPosted:(unint64_t)posted timeOutPeriod:(double)period block:(id)block
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  blockCopy = block;
   v9 = LKLogDefault;
   if (os_log_type_enabled(LKLogDefault, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [(LKLoginSupport *)self _notificationForNotificationType:a3];
+    v11 = [(LKLoginSupport *)self _notificationForNotificationType:posted];
     *buf = 138412546;
     v29 = v11;
     v30 = 2048;
-    v31 = a4;
+    periodCopy = period;
     _os_log_impl(&dword_25618F000, v10, OS_LOG_TYPE_DEFAULT, "Waiting for notification (%@) to be posted for %f seconds", buf, 0x16u);
   }
 
-  v12 = [(LKLoginSupport *)self _errorForNotificationType:a3];
-  [(LKLoginSupport *)self _timeOutAfterTimePeriod:v12 withError:v8 block:a4];
+  v12 = [(LKLoginSupport *)self _errorForNotificationType:posted];
+  [(LKLoginSupport *)self _timeOutAfterTimePeriod:v12 withError:blockCopy block:period];
 
-  v13 = [(LKLoginSupport *)self _notificationForNotificationType:a3];
-  v14 = [v13 UTF8String];
+  v13 = [(LKLoginSupport *)self _notificationForNotificationType:posted];
+  uTF8String = [v13 UTF8String];
   v15 = dispatch_get_global_queue(0, 0);
   v22 = MEMORY[0x277D85DD0];
   v23 = 3221225472;
@@ -272,9 +272,9 @@ uint64_t __58__LKLoginSupport__timeOutAfterTimePeriod_withError_block___block_in
   v25 = &unk_279826450;
   v16 = v13;
   v26 = v16;
-  v17 = v8;
+  v17 = blockCopy;
   v27 = v17;
-  v18 = notify_register_dispatch(v14, &_runWhenDarwinNotificationPosted_timeOutPeriod_block__notifyToken, v15, &v22);
+  v18 = notify_register_dispatch(uTF8String, &_runWhenDarwinNotificationPosted_timeOutPeriod_block__notifyToken, v15, &v22);
 
   if (v18)
   {
@@ -284,7 +284,7 @@ uint64_t __58__LKLoginSupport__timeOutAfterTimePeriod_withError_block___block_in
       *buf = 138412546;
       v29 = v16;
       v30 = 1026;
-      LODWORD(v31) = v18;
+      LODWORD(periodCopy) = v18;
       _os_log_impl(&dword_25618F000, v19, OS_LOG_TYPE_DEFAULT, "Could not register for %@ notification error %{public}d", buf, 0x12u);
     }
 
@@ -320,18 +320,18 @@ uint64_t __71__LKLoginSupport__runWhenDarwinNotificationPosted_timeOutPeriod_blo
   return result;
 }
 
-- (void)_runWithTimeOutPeriod:(double)a3 notificationType:(unint64_t)a4 completionBlock:(id)a5
+- (void)_runWithTimeOutPeriod:(double)period notificationType:(unint64_t)type completionBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v9 = [LKNotificationListenerOperation alloc];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __73__LKLoginSupport__runWithTimeOutPeriod_notificationType_completionBlock___block_invoke;
   v23[3] = &unk_279826560;
   v23[4] = self;
-  v10 = v8;
+  v10 = blockCopy;
   v24 = v10;
-  v11 = [(LKNotificationListenerOperation *)v9 initWithNotificationType:a4 timeOutPeriod:v23 completionBlock:a3];
+  v11 = [(LKNotificationListenerOperation *)v9 initWithNotificationType:type timeOutPeriod:v23 completionBlock:period];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __73__LKLoginSupport__runWithTimeOutPeriod_notificationType_completionBlock___block_invoke_3;
@@ -347,11 +347,11 @@ uint64_t __71__LKLoginSupport__runWhenDarwinNotificationPosted_timeOutPeriod_blo
   v17[2] = __73__LKLoginSupport__runWithTimeOutPeriod_notificationType_completionBlock___block_invoke_5;
   v17[3] = &unk_2798265D8;
   v18 = v14;
-  v19 = a4;
+  typeCopy = type;
   v15 = v14;
   [(LKNotificationListenerOperation *)v13 setListenerStartedBlock:v17];
-  v16 = [(LKLoginSupport *)self listenerQueue];
-  [v16 addOperation:v13];
+  listenerQueue = [(LKLoginSupport *)self listenerQueue];
+  [listenerQueue addOperation:v13];
 }
 
 void __73__LKLoginSupport__runWithTimeOutPeriod_notificationType_completionBlock___block_invoke(uint64_t a1, void *a2)

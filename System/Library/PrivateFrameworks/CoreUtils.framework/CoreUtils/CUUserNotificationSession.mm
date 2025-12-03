@@ -1,48 +1,48 @@
 @interface CUUserNotificationSession
-+ (void)addMockSession:(id)a3 mockID:(id)a4;
-+ (void)removeMockSession:(id)a3 mockID:(id)a4;
-+ (void)reportAction:(int)a3 error:(id)a4 mockID:(id)a5;
-- (BOOL)_runInit:(id *)a3;
-- (BOOL)_runRequestAddStart:(id *)a3;
-- (BOOL)_runResponse:(id)a3 error:(id *)a4;
++ (void)addMockSession:(id)session mockID:(id)d;
++ (void)removeMockSession:(id)session mockID:(id)d;
++ (void)reportAction:(int)action error:(id)error mockID:(id)d;
+- (BOOL)_runInit:(id *)init;
+- (BOOL)_runRequestAddStart:(id *)start;
+- (BOOL)_runResponse:(id)response error:(id *)error;
 - (CUUserNotificationSession)init;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_reportError:(id)a3;
+- (void)_reportError:(id)error;
 - (void)_reportTimeout;
 - (void)_run;
 - (void)_runAuthorizeCheckStart;
 - (void)_runAuthorizeRequestStart;
 - (void)_updateActionCategories;
 - (void)activate;
-- (void)addActionWithIdentifier:(id)a3 title:(id)a4 flags:(unsigned int)a5 handler:(id)a6;
+- (void)addActionWithIdentifier:(id)identifier title:(id)title flags:(unsigned int)flags handler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeActionWithIdentifier:(id)a3;
+- (void)removeActionWithIdentifier:(id)identifier;
 - (void)removeAllActions;
-- (void)setLabel:(id)a3;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)setLabel:(id)label;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation CUUserNotificationSession
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  centerCopy = center;
+  responseCopy = response;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __105__CUUserNotificationSession_userNotificationCenter_didReceiveNotificationResponse_withCompletionHandler___block_invoke;
   v15[3] = &unk_1E73A4108;
-  v16 = v8;
-  v17 = self;
-  v18 = v9;
-  v19 = v10;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v16 = centerCopy;
+  selfCopy = self;
+  v18 = responseCopy;
+  v19 = handlerCopy;
+  v12 = responseCopy;
+  v13 = handlerCopy;
+  v14 = centerCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -166,16 +166,16 @@ LABEL_15:
   v35();
 }
 
-- (BOOL)_runResponse:(id)a3 error:(id *)a4
+- (BOOL)_runResponse:(id)response error:(id *)error
 {
-  v12 = [a3 actionIdentifier];
-  if (v12)
+  actionIdentifier = [response actionIdentifier];
+  if (actionIdentifier)
   {
     v19 = self->_requestIdentifier;
     if (v19)
     {
       v20 = getUNNotificationDefaultActionIdentifier();
-      v21 = [v12 isEqual:v20];
+      v21 = [actionIdentifier isEqual:v20];
 
       if (v21)
       {
@@ -211,7 +211,7 @@ LABEL_21:
       }
 
       v27 = getUNNotificationDismissActionIdentifier();
-      v28 = [v12 isEqual:v27];
+      v28 = [actionIdentifier isEqual:v27];
 
       if (v28)
       {
@@ -250,7 +250,7 @@ LABEL_28:
         goto LABEL_19;
       }
 
-      v34 = [(NSMutableDictionary *)self->_actions objectForKeyedSubscript:v12];
+      v34 = [(NSMutableDictionary *)self->_actions objectForKeyedSubscript:actionIdentifier];
       if (v34)
       {
         v41 = v34;
@@ -271,28 +271,28 @@ LABEL_28:
         }
 
 LABEL_24:
-        v47 = [v41 handler];
-        v48 = v47;
-        if (v47)
+        handler = [v41 handler];
+        v48 = handler;
+        if (handler)
         {
-          (*(v47 + 16))(v47);
+          (*(handler + 16))(handler);
         }
 
         goto LABEL_27;
       }
 
-      if (a4)
+      if (error)
       {
-        NSErrorWithOSStatusF(4294960584, "Request action unknown: '%@'", v35, v36, v37, v38, v39, v40, v12);
+        NSErrorWithOSStatusF(4294960584, "Request action unknown: '%@'", v35, v36, v37, v38, v39, v40, actionIdentifier);
         goto LABEL_34;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       NSErrorWithOSStatusF(4294960588, "No identifier", v13, v14, v15, v16, v17, v18, v51);
 LABEL_34:
-      *a4 = v49 = 0;
+      *error = v49 = 0;
       goto LABEL_28;
     }
 
@@ -300,10 +300,10 @@ LABEL_34:
     goto LABEL_28;
   }
 
-  if (a4)
+  if (error)
   {
     NSErrorWithOSStatusF(4294960591, "No actionID", v6, v7, v8, v9, v10, v11, v51);
-    *a4 = v49 = 0;
+    *error = v49 = 0;
   }
 
   else
@@ -316,7 +316,7 @@ LABEL_29:
   return v49;
 }
 
-- (BOOL)_runRequestAddStart:(id *)a3
+- (BOOL)_runRequestAddStart:(id *)start
 {
   stepError = self->_stepError;
   self->_stepError = 0;
@@ -329,10 +329,10 @@ LABEL_29:
     v14 = [MEMORY[0x1E696AAE8] bundleWithPath:v13];
     if (![v14 _cfBundle])
     {
-      if (a3)
+      if (start)
       {
         NSErrorWithOSStatusF(4294960591, "No bundle found: '%@'", v15, v16, v17, v18, v19, v20, v12);
-        *a3 = v29 = 0;
+        *start = v29 = 0;
       }
 
       else
@@ -348,9 +348,9 @@ LABEL_29:
     v29 = v28 != 0;
     if (!v28)
     {
-      if (a3)
+      if (start)
       {
-        *a3 = NSErrorWithOSStatusF(4294960591, "No categoryID", v22, v23, v24, v25, v26, v27, v12);
+        *start = NSErrorWithOSStatusF(4294960591, "No categoryID", v22, v23, v24, v25, v26, v27, v12);
       }
 
       goto LABEL_52;
@@ -497,13 +497,13 @@ LABEL_31:
         [v21 setUserInfo:v49];
       }
 
-      v54 = self->_identifier;
-      if (!v54)
+      uUIDString = self->_identifier;
+      if (!uUIDString)
       {
-        v55 = [MEMORY[0x1E696AFB0] UUID];
-        v54 = [v55 UUIDString];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString = [uUID UUIDString];
 
-        objc_storeStrong(&self->_identifier, v54);
+        objc_storeStrong(&self->_identifier, uUIDString);
       }
 
       ucat = self->_ucat;
@@ -526,8 +526,8 @@ LABEL_31:
       LogPrintF(ucat, "[CUUserNotificationSession _runRequestAddStart:]", 0x1Eu, "Request add start: Category %@, ID %@\n", v50, v51, v52, v53, v28);
 LABEL_47:
       v81 = v28;
-      objc_storeStrong(&self->_requestIdentifier, v54);
-      v58 = [getUNNotificationRequestClass[0]() requestWithIdentifier:v54 content:v21 trigger:0];
+      objc_storeStrong(&self->_requestIdentifier, uUIDString);
+      v58 = [getUNNotificationRequestClass[0]() requestWithIdentifier:uUIDString content:v21 trigger:0];
       v59 = self->_unCenter;
       v85[0] = MEMORY[0x1E69E9820];
       v85[1] = 3221225472;
@@ -535,7 +535,7 @@ LABEL_47:
       v85[3] = &unk_1E73A4200;
       v85[4] = self;
       v85[5] = v59;
-      v60 = v54;
+      v60 = uUIDString;
       v86 = v60;
       [(UNUserNotificationCenter *)v59 addNotificationRequest:v58 withCompletionHandler:v85];
       if (self->_timeoutSeconds > 0.0)
@@ -587,10 +587,10 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (a3)
+  if (start)
   {
     NSErrorWithOSStatusF(4294960591, "No bundleID", v6, v7, v8, v9, v10, v11, v71);
-    *a3 = v29 = 0;
+    *start = v29 = 0;
   }
 
   else
@@ -911,7 +911,7 @@ LABEL_16:
   return [v20 _run];
 }
 
-- (BOOL)_runInit:(id *)a3
+- (BOOL)_runInit:(id *)init
 {
   v11 = self->_bundleID;
   if (v11)
@@ -929,16 +929,16 @@ LABEL_16:
         [(CUUserNotificationSession *)self _updateActionCategories];
       }
 
-      else if (a3)
+      else if (init)
       {
-        *a3 = NSErrorWithOSStatusF(4294960591, "No UN center", v19, v20, v21, v22, v23, v24, v28);
+        *init = NSErrorWithOSStatusF(4294960591, "No UN center", v19, v20, v21, v22, v23, v24, v28);
       }
     }
 
-    else if (a3)
+    else if (init)
     {
       NSErrorWithOSStatusF(4294960591, "No categoryID", v12, v13, v14, v15, v16, v17, v28);
-      *a3 = v26 = 0;
+      *init = v26 = 0;
     }
 
     else
@@ -947,10 +947,10 @@ LABEL_16:
     }
   }
 
-  else if (a3)
+  else if (init)
   {
     NSErrorWithOSStatusF(4294960591, "No bundleID", v5, v6, v7, v8, v9, v10, v28);
-    *a3 = v26 = 0;
+    *init = v26 = 0;
   }
 
   else
@@ -1129,9 +1129,9 @@ LABEL_5:
   [(CUUserNotificationSession *)self _invalidate];
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
-  v13 = a3;
+  errorCopy = error;
   ucat = self->_ucat;
   if (ucat->var0 <= 90)
   {
@@ -1165,7 +1165,7 @@ LABEL_9:
   v12 = v11;
   if (v11)
   {
-    (*(v11 + 2))(v11, 4, v13);
+    (*(v11 + 2))(v11, 4, errorCopy);
   }
 }
 
@@ -1251,17 +1251,17 @@ LABEL_5:
   return result;
 }
 
-- (void)removeActionWithIdentifier:(id)a3
+- (void)removeActionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__CUUserNotificationSession_removeActionWithIdentifier___block_invoke;
   v7[3] = &unk_1E73A49F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -1302,26 +1302,26 @@ LABEL_5:
   }
 }
 
-- (void)addActionWithIdentifier:(id)a3 title:(id)a4 flags:(unsigned int)a5 handler:(id)a6
+- (void)addActionWithIdentifier:(id)identifier title:(id)title flags:(unsigned int)flags handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [getUNNotificationActionClass[0]() actionWithIdentifier:v10 title:v11 options:a5 & 7];
+  identifierCopy = identifier;
+  titleCopy = title;
+  handlerCopy = handler;
+  v13 = [getUNNotificationActionClass[0]() actionWithIdentifier:identifierCopy title:titleCopy options:flags & 7];
   dispatchQueue = self->_dispatchQueue;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __73__CUUserNotificationSession_addActionWithIdentifier_title_flags_handler___block_invoke;
   v19[3] = &unk_1E73A3FF0;
-  v23 = v11;
-  v24 = v12;
+  v23 = titleCopy;
+  v24 = handlerCopy;
   v20 = v13;
-  v21 = self;
-  v22 = v10;
-  v25 = a5;
-  v15 = v11;
-  v16 = v10;
-  v17 = v12;
+  selfCopy = self;
+  v22 = identifierCopy;
+  flagsCopy = flags;
+  v15 = titleCopy;
+  v16 = identifierCopy;
+  v17 = handlerCopy;
   v18 = v13;
   dispatch_async(dispatchQueue, v19);
 }
@@ -1500,10 +1500,10 @@ LABEL_6:
 
 - (void)activate
 {
-  v3 = [(CUUserNotificationSession *)self mockID];
-  if (v3)
+  mockID = [(CUUserNotificationSession *)self mockID];
+  if (mockID)
   {
-    [CUUserNotificationSession addMockSession:self mockID:v3];
+    [CUUserNotificationSession addMockSession:self mockID:mockID];
   }
 
   dispatchQueue = self->_dispatchQueue;
@@ -1512,8 +1512,8 @@ LABEL_6:
   v6[2] = __37__CUUserNotificationSession_activate__block_invoke;
   v6[3] = &unk_1E73A49F0;
   v6[4] = self;
-  v7 = v3;
-  v5 = v3;
+  v7 = mockID;
+  v5 = mockID;
   dispatch_async(dispatchQueue, v6);
 }
 
@@ -1558,13 +1558,13 @@ LABEL_6:
   return result;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  objc_storeStrong(&self->_label, a3);
-  v13 = a3;
+  objc_storeStrong(&self->_label, label);
+  labelCopy = label;
   v5 = qword_1EADEA778;
-  v6 = v13;
-  [v13 UTF8String];
+  v6 = labelCopy;
+  [labelCopy UTF8String];
   LogCategoryReplaceF(&self->_ucat, "%s-%s", v7, v8, v9, v10, v11, v12, v5);
 }
 
@@ -1604,13 +1604,13 @@ LABEL_6:
   return v3;
 }
 
-+ (void)reportAction:(int)a3 error:(id)a4 mockID:(id)a5
++ (void)reportAction:(int)action error:(id)error mockID:(id)d
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  errorCopy = error;
+  dCopy = d;
   os_unfair_lock_lock(&gMockLock);
-  [gMockSessions objectForKeyedSubscript:v8];
+  [gMockSessions objectForKeyedSubscript:dCopy];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -1630,15 +1630,15 @@ LABEL_6:
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [v13 dispatchQueue];
+        dispatchQueue = [v13 dispatchQueue];
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __55__CUUserNotificationSession_reportAction_error_mockID___block_invoke;
         block[3] = &unk_1E73A49C8;
         block[4] = v13;
-        v18 = a3;
-        v17 = v7;
-        dispatch_async(v14, block);
+        actionCopy = action;
+        v17 = errorCopy;
+        dispatch_async(dispatchQueue, block);
       }
 
       v10 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -1665,28 +1665,28 @@ void __55__CUUserNotificationSession_reportAction_error_mockID___block_invoke(ui
   }
 }
 
-+ (void)removeMockSession:(id)a3 mockID:(id)a4
++ (void)removeMockSession:(id)session mockID:(id)d
 {
-  v7 = a4;
-  v5 = a3;
+  dCopy = d;
+  sessionCopy = session;
   os_unfair_lock_lock(&gMockLock);
-  v6 = [gMockSessions objectForKeyedSubscript:v7];
-  [v6 removeObject:v5];
+  v6 = [gMockSessions objectForKeyedSubscript:dCopy];
+  [v6 removeObject:sessionCopy];
 
   if (![v6 count])
   {
-    [gMockSessions setObject:0 forKeyedSubscript:v7];
+    [gMockSessions setObject:0 forKeyedSubscript:dCopy];
   }
 
   os_unfair_lock_unlock(&gMockLock);
 }
 
-+ (void)addMockSession:(id)a3 mockID:(id)a4
++ (void)addMockSession:(id)session mockID:(id)d
 {
-  v10 = a3;
-  v5 = a4;
+  sessionCopy = session;
+  dCopy = d;
   os_unfair_lock_lock(&gMockLock);
-  v6 = [gMockSessions objectForKeyedSubscript:v5];
+  v6 = [gMockSessions objectForKeyedSubscript:dCopy];
   if (!v6)
   {
     v6 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:517 capacity:0];
@@ -1700,10 +1700,10 @@ void __55__CUUserNotificationSession_reportAction_error_mockID___block_invoke(ui
       v7 = gMockSessions;
     }
 
-    [v7 setObject:v6 forKeyedSubscript:v5];
+    [v7 setObject:v6 forKeyedSubscript:dCopy];
   }
 
-  [v6 addObject:v10];
+  [v6 addObject:sessionCopy];
   os_unfair_lock_unlock(&gMockLock);
 }
 

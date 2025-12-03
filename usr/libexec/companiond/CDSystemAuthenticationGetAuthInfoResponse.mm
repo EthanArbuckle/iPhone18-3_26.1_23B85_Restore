@@ -1,14 +1,14 @@
 @interface CDSystemAuthenticationGetAuthInfoResponse
-- (CDSystemAuthenticationGetAuthInfoResponse)initWithRapportDictionary:(id)a3;
+- (CDSystemAuthenticationGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary;
 - (NSString)description;
 - (id)makeRapportDictionary;
 @end
 
 @implementation CDSystemAuthenticationGetAuthInfoResponse
 
-- (CDSystemAuthenticationGetAuthInfoResponse)initWithRapportDictionary:(id)a3
+- (CDSystemAuthenticationGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = CDSystemAuthenticationGetAuthInfoResponse;
   v5 = [(CDSystemAuthenticationGetAuthInfoResponse *)&v11 init];
@@ -43,9 +43,9 @@
   v3 = [BSDescriptionBuilder builderWithObject:self];
   [v3 appendString:self->_deviceClass withName:@"deviceClass" skipIfEmpty:1];
   [v3 appendString:self->_deviceName withName:@"deviceName" skipIfEmpty:1];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

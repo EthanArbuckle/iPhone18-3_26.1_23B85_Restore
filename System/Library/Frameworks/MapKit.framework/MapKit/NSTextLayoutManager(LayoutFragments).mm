@@ -18,9 +18,9 @@
   v4[1] = 3221225472;
   v4[2] = __59__NSTextLayoutManager_LayoutFragments___mk_lastLineSegment__block_invoke;
   v4[3] = &unk_1E76C9A50;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = &v5;
-  v1 = [a1 enumerateTextLayoutFragmentsFromLocation:0 options:1 usingBlock:v4];
+  v1 = [self enumerateTextLayoutFragmentsFromLocation:0 options:1 usingBlock:v4];
   v2 = v6[5];
   _Block_object_dispose(&v5, 8);
 
@@ -36,7 +36,7 @@
   v6[3] = &unk_1E76C9A00;
   v3 = v2;
   v7 = v3;
-  v4 = [a1 enumerateTextLayoutFragmentsFromLocation:0 options:0 usingBlock:v6];
+  v4 = [self enumerateTextLayoutFragmentsFromLocation:0 options:0 usingBlock:v6];
 
   return v3;
 }
@@ -48,10 +48,10 @@
   v8[1] = 3221225472;
   v8[2] = __59__NSTextLayoutManager_LayoutFragments___mk_layoutFragments__block_invoke;
   v8[3] = &unk_1E76C99D8;
-  v8[4] = a1;
+  v8[4] = self;
   v3 = v2;
   v9 = v3;
-  v4 = [a1 enumerateTextLayoutFragmentsFromLocation:0 options:0 usingBlock:v8];
+  v4 = [self enumerateTextLayoutFragmentsFromLocation:0 options:0 usingBlock:v8];
   v5 = v9;
   v6 = v3;
 

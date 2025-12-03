@@ -1,11 +1,11 @@
 @interface PUCollectionViewLayoutCache
 - (CGSize)collectionViewContentSize;
-- (PUCollectionViewLayoutCache)initWithProvider:(id)a3;
+- (PUCollectionViewLayoutCache)initWithProvider:(id)provider;
 - (PUCollectionViewLayoutProvider)layoutProvider;
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
 - (void)invalidateLayoutCache;
 @end
 
@@ -27,12 +27,12 @@
   [(NSMutableDictionary *)decorationViewLayoutAttributesByKind removeAllObjects];
 }
 
-- (id)layoutAttributesForDecorationViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForDecorationViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_decorationViewLayoutAttributesByKind objectForKey:v6];
-  v9 = [v8 objectForKey:v7];
+  kindCopy = kind;
+  pathCopy = path;
+  dictionary2 = [(NSMutableDictionary *)self->_decorationViewLayoutAttributesByKind objectForKey:kindCopy];
+  v9 = [dictionary2 objectForKey:pathCopy];
   if (v9)
   {
     v10 = v9;
@@ -40,32 +40,32 @@
 
   else if ((*&self->_layoutProviderFlags & 2) != 0)
   {
-    v11 = [(PUCollectionViewLayoutCache *)self layoutProvider];
-    v10 = [v11 layoutAttributesForDecorationViewOfKind:v6 atIndexPath:v7];
+    layoutProvider = [(PUCollectionViewLayoutCache *)self layoutProvider];
+    v10 = [layoutProvider layoutAttributesForDecorationViewOfKind:kindCopy atIndexPath:pathCopy];
 
     if (v10 && [(PUCollectionViewLayoutCache *)self cachesResults])
     {
       decorationViewLayoutAttributesByKind = self->_decorationViewLayoutAttributesByKind;
       if (decorationViewLayoutAttributesByKind)
       {
-        v13 = decorationViewLayoutAttributesByKind;
+        dictionary = decorationViewLayoutAttributesByKind;
       }
 
       else
       {
-        v13 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
       }
 
       v14 = self->_decorationViewLayoutAttributesByKind;
-      self->_decorationViewLayoutAttributesByKind = v13;
+      self->_decorationViewLayoutAttributesByKind = dictionary;
 
-      if (!v8)
+      if (!dictionary2)
       {
-        v8 = [MEMORY[0x1E695DF90] dictionary];
-        [(NSMutableDictionary *)self->_decorationViewLayoutAttributesByKind setObject:v8 forKey:v6];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+        [(NSMutableDictionary *)self->_decorationViewLayoutAttributesByKind setObject:dictionary2 forKey:kindCopy];
       }
 
-      [v8 setObject:v10 forKey:v7];
+      [dictionary2 setObject:v10 forKey:pathCopy];
     }
   }
 
@@ -77,12 +77,12 @@
   return v10;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_supplementaryViewLayoutAttributesByKind objectForKey:v6];
-  v9 = [v8 objectForKey:v7];
+  kindCopy = kind;
+  pathCopy = path;
+  dictionary2 = [(NSMutableDictionary *)self->_supplementaryViewLayoutAttributesByKind objectForKey:kindCopy];
+  v9 = [dictionary2 objectForKey:pathCopy];
   if (v9)
   {
     v10 = v9;
@@ -90,32 +90,32 @@
 
   else if (*&self->_layoutProviderFlags)
   {
-    v11 = [(PUCollectionViewLayoutCache *)self layoutProvider];
-    v10 = [v11 layoutAttributesForSupplementaryViewOfKind:v6 atIndexPath:v7];
+    layoutProvider = [(PUCollectionViewLayoutCache *)self layoutProvider];
+    v10 = [layoutProvider layoutAttributesForSupplementaryViewOfKind:kindCopy atIndexPath:pathCopy];
 
     if (v10 && [(PUCollectionViewLayoutCache *)self cachesResults])
     {
       supplementaryViewLayoutAttributesByKind = self->_supplementaryViewLayoutAttributesByKind;
       if (supplementaryViewLayoutAttributesByKind)
       {
-        v13 = supplementaryViewLayoutAttributesByKind;
+        dictionary = supplementaryViewLayoutAttributesByKind;
       }
 
       else
       {
-        v13 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
       }
 
       v14 = self->_supplementaryViewLayoutAttributesByKind;
-      self->_supplementaryViewLayoutAttributesByKind = v13;
+      self->_supplementaryViewLayoutAttributesByKind = dictionary;
 
-      if (!v8)
+      if (!dictionary2)
       {
-        v8 = [MEMORY[0x1E695DF90] dictionary];
-        [(NSMutableDictionary *)self->_supplementaryViewLayoutAttributesByKind setObject:v8 forKey:v6];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+        [(NSMutableDictionary *)self->_supplementaryViewLayoutAttributesByKind setObject:dictionary2 forKey:kindCopy];
       }
 
-      [v8 setObject:v10 forKey:v7];
+      [dictionary2 setObject:v10 forKey:pathCopy];
     }
   }
 
@@ -127,14 +127,14 @@
   return v10;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_itemLayoutAttributesByIndexPath objectForKey:v4];
+  pathCopy = path;
+  v5 = [(NSMutableDictionary *)self->_itemLayoutAttributesByIndexPath objectForKey:pathCopy];
   if (!v5)
   {
-    v7 = [(PUCollectionViewLayoutCache *)self layoutProvider];
-    v5 = [v7 layoutAttributesForItemAtIndexPath:v4];
+    layoutProvider = [(PUCollectionViewLayoutCache *)self layoutProvider];
+    v5 = [layoutProvider layoutAttributesForItemAtIndexPath:pathCopy];
 
     if (v5)
     {
@@ -143,18 +143,18 @@
         itemLayoutAttributesByIndexPath = self->_itemLayoutAttributesByIndexPath;
         if (itemLayoutAttributesByIndexPath)
         {
-          v9 = itemLayoutAttributesByIndexPath;
+          dictionary = itemLayoutAttributesByIndexPath;
         }
 
         else
         {
-          v9 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
         }
 
         v10 = self->_itemLayoutAttributesByIndexPath;
-        self->_itemLayoutAttributesByIndexPath = v9;
+        self->_itemLayoutAttributesByIndexPath = dictionary;
 
-        [(NSMutableDictionary *)self->_itemLayoutAttributesByIndexPath setObject:v5 forKey:v4];
+        [(NSMutableDictionary *)self->_itemLayoutAttributesByIndexPath setObject:v5 forKey:pathCopy];
       }
     }
   }
@@ -162,22 +162,22 @@
   return v5;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(PUCollectionViewLayoutCache *)self layoutProvider];
-  v8 = [v7 layoutAttributesForElementsInRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  layoutProvider = [(PUCollectionViewLayoutCache *)self layoutProvider];
+  v8 = [layoutProvider layoutAttributesForElementsInRect:{x, y, width, height}];
 
   return v8;
 }
 
 - (CGSize)collectionViewContentSize
 {
-  v2 = [(PUCollectionViewLayoutCache *)self layoutProvider];
-  [v2 collectionViewContentSize];
+  layoutProvider = [(PUCollectionViewLayoutCache *)self layoutProvider];
+  [layoutProvider collectionViewContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -188,16 +188,16 @@
   return result;
 }
 
-- (PUCollectionViewLayoutCache)initWithProvider:(id)a3
+- (PUCollectionViewLayoutCache)initWithProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = PUCollectionViewLayoutCache;
   v5 = [(PUCollectionViewLayoutCache *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_layoutProvider, v4);
+    objc_storeWeak(&v5->_layoutProvider, providerCopy);
     *&v6->_layoutProviderFlags = *&v6->_layoutProviderFlags & 0xFE | objc_opt_respondsToSelector() & 1;
     if (objc_opt_respondsToSelector())
     {

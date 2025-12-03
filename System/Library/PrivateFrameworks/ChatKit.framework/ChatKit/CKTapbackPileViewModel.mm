@@ -3,14 +3,14 @@
 - (BOOL)showBottomPeekPlatter;
 - (BOOL)useTailOffset;
 - (CKTapbackPileViewModel)init;
-- (CKTapbackPileViewModel)initWithAggregateAcknowledgmentChatItem:(id)a3;
+- (CKTapbackPileViewModel)initWithAggregateAcknowledgmentChatItem:(id)item;
 - (IMTapback)sentTapback;
 - (NSArray)tapbackChatItems;
 - (int64_t)totalDisplayCount;
-- (void)setLeftLayoutDirection:(BOOL)a3;
-- (void)setShowBottomPeekPlatter:(BOOL)a3;
-- (void)setTotalDisplayCount:(int64_t)a3;
-- (void)setUseTailOffset:(BOOL)a3;
+- (void)setLeftLayoutDirection:(BOOL)direction;
+- (void)setShowBottomPeekPlatter:(BOOL)platter;
+- (void)setTotalDisplayCount:(int64_t)count;
+- (void)setUseTailOffset:(BOOL)offset;
 @end
 
 @implementation CKTapbackPileViewModel
@@ -22,11 +22,11 @@
   return *(self + v3);
 }
 
-- (void)setTotalDisplayCount:(int64_t)a3
+- (void)setTotalDisplayCount:(int64_t)count
 {
   v5 = OBJC_IVAR___CKTapbackPileViewModel_totalDisplayCount;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = count;
 }
 
 - (BOOL)leftLayoutDirection
@@ -36,11 +36,11 @@
   return *(self + v3);
 }
 
-- (void)setLeftLayoutDirection:(BOOL)a3
+- (void)setLeftLayoutDirection:(BOOL)direction
 {
   v5 = OBJC_IVAR___CKTapbackPileViewModel_leftLayoutDirection;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = direction;
 }
 
 - (BOOL)useTailOffset
@@ -50,11 +50,11 @@
   return *(self + v3);
 }
 
-- (void)setUseTailOffset:(BOOL)a3
+- (void)setUseTailOffset:(BOOL)offset
 {
   v5 = OBJC_IVAR___CKTapbackPileViewModel_useTailOffset;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = offset;
 }
 
 - (BOOL)showBottomPeekPlatter
@@ -64,11 +64,11 @@
   return *(self + v3);
 }
 
-- (void)setShowBottomPeekPlatter:(BOOL)a3
+- (void)setShowBottomPeekPlatter:(BOOL)platter
 {
   v5 = OBJC_IVAR___CKTapbackPileViewModel_showBottomPeekPlatter;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = platter;
 }
 
 - (NSArray)tapbackChatItems
@@ -83,17 +83,17 @@
 - (IMTapback)sentTapback
 {
   v2 = *(self + OBJC_IVAR___CKTapbackPileViewModel_aggregateAcknowledgmentChatItem);
-  v3 = self;
-  v4 = [v2 sentTapbackChatItem];
-  v5 = [v4 tapback];
+  selfCopy = self;
+  sentTapbackChatItem = [v2 sentTapbackChatItem];
+  tapback = [sentTapbackChatItem tapback];
 
-  return v5;
+  return tapback;
 }
 
-- (CKTapbackPileViewModel)initWithAggregateAcknowledgmentChatItem:(id)a3
+- (CKTapbackPileViewModel)initWithAggregateAcknowledgmentChatItem:(id)item
 {
-  v3 = a3;
-  v4 = sub_19090FBE0(v3);
+  itemCopy = item;
+  v4 = sub_19090FBE0(itemCopy);
 
   return v4;
 }

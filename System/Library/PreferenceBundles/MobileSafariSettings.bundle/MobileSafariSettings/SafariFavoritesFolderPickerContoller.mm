@@ -3,9 +3,9 @@
 - (id)specifiers;
 - (void)_showBookmarksBeingSyncedAlert;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPathWithoutChangingDefaultFavorites:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPathWithoutChangingDefaultFavorites:(id)favorites;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation SafariFavoritesFolderPickerContoller
@@ -75,11 +75,11 @@
     [v10 setProperty:&__kCFBooleanTrue forKey:PSIsRadioGroupKey];
     v42 = v10;
     [v7 addObject:v10];
-    v44 = [(WebBookmarkCollection *)self->_bookmarkCollection favoritesFolder];
+    favoritesFolder = [(WebBookmarkCollection *)self->_bookmarkCollection favoritesFolder];
     v11 = [[SFFolderPickerList alloc] initWithBookmarkCollection:self->_bookmarkCollection style:1];
     v12 = [v11 folderListItemsIgnoringIdentifiers:0];
     v39 = v2;
-    v40 = self;
+    selfCopy = self;
     v37 = v11;
     v38 = v8;
     if ([(SafariFavoritesFolderPickerContoller *)self shouldIncludeManagedBookmarksFolder]&& ([(WBSManagedBookmarksController *)self->_managedBookmarksController managedBookmarks], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
@@ -119,17 +119,17 @@
           }
 
           v22 = *(*(&v45 + 1) + 8 * i);
-          v23 = [v22 title];
-          v24 = [PSSpecifier preferenceSpecifierNamed:v23 target:0 set:0 get:0 detail:0 cell:3 edit:0];
+          title = [v22 title];
+          v24 = [PSSpecifier preferenceSpecifierNamed:title target:0 set:0 get:0 detail:0 cell:3 edit:0];
 
           v25 = [UIImageSymbolConfiguration configurationWithScale:3];
           v26 = [UIImage systemImageNamed:@"folder" withConfiguration:v25];
           [v24 setProperty:v26 forKey:v19];
 
           [v24 setProperty:v22 forKey:@"FolderPickerItem"];
-          LODWORD(v26) = [v44 identifier];
-          v27 = [v22 bookmark];
-          LODWORD(v26) = v26 != [v27 identifier];
+          LODWORD(v26) = [favoritesFolder identifier];
+          bookmark = [v22 bookmark];
+          LODWORD(v26) = v26 != [bookmark identifier];
 
           if (((v26 | v15) & 1) == 0)
           {
@@ -148,8 +148,8 @@
 
     if (v36)
     {
-      v28 = [(WBSManagedBookmarksController *)v40->_managedBookmarksController topLevelBookmarksFolderTitle];
-      v29 = [PSSpecifier preferenceSpecifierNamed:v28 target:0 set:0 get:0 detail:0 cell:3 edit:0];
+      topLevelBookmarksFolderTitle = [(WBSManagedBookmarksController *)selfCopy->_managedBookmarksController topLevelBookmarksFolderTitle];
+      v29 = [PSSpecifier preferenceSpecifierNamed:topLevelBookmarksFolderTitle target:0 set:0 get:0 detail:0 cell:3 edit:0];
 
       v30 = [UIImage systemImageNamed:@"folder.badge.gearshape"];
       [v29 setProperty:v30 forKey:PSIconImageKey];
@@ -174,37 +174,37 @@
       [v7 insertObject:v29 atIndex:v32];
     }
 
-    v33 = *&v40->super.PSListController_opaque[v39];
-    *&v40->super.PSListController_opaque[v39] = v7;
+    v33 = *&selfCopy->super.PSListController_opaque[v39];
+    *&selfCopy->super.PSListController_opaque[v39] = v7;
     v34 = v7;
 
-    v4 = *&v40->super.PSListController_opaque[v39];
+    v4 = *&selfCopy->super.PSListController_opaque[v39];
   }
 
   return v4;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v9 = a4;
-  v7 = [(SafariFavoritesFolderPickerContoller *)self specifierAtIndex:[(SafariFavoritesFolderPickerContoller *)self indexForIndexPath:a5]];
+  cellCopy = cell;
+  v7 = [(SafariFavoritesFolderPickerContoller *)self specifierAtIndex:[(SafariFavoritesFolderPickerContoller *)self indexForIndexPath:path]];
   v8 = [v7 propertyForKey:@"FolderPickerItem"];
   if (v8)
   {
-    [v9 setLayoutManager:self->_cellLayoutManager];
+    [cellCopy setLayoutManager:self->_cellLayoutManager];
     +[_SFFolderPickerTableViewCellLayoutManager indentationWidth];
-    [v9 setIndentationWidth:?];
-    [v9 setIndentationLevel:{objc_msgSend(v8, "depth")}];
+    [cellCopy setIndentationWidth:?];
+    [cellCopy setIndentationLevel:{objc_msgSend(v8, "depth")}];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v23.receiver = self;
   v23.super_class = SafariFavoritesFolderPickerContoller;
-  v6 = a4;
-  [(SafariSettingsListController *)&v23 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(SafariFavoritesFolderPickerContoller *)self indexForIndexPath:v6, v23.receiver, v23.super_class];
+  pathCopy = path;
+  [(SafariSettingsListController *)&v23 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(SafariFavoritesFolderPickerContoller *)self indexForIndexPath:pathCopy, v23.receiver, v23.super_class];
 
   v8 = [(SafariFavoritesFolderPickerContoller *)self specifierAtIndex:v7];
   v9 = +[NSUserDefaults safari_browserDefaults];
@@ -223,9 +223,9 @@
     if (v15)
     {
       v17 = +[WBFeatureManager sharedFeatureManager];
-      v18 = [v17 favoritesFolderSelectionShouldSync];
+      favoritesFolderSelectionShouldSync = [v17 favoritesFolderSelectionShouldSync];
 
-      if (v18 && (+[WebBookmarkCollection lockSync]& 1) == 0)
+      if (favoritesFolderSelectionShouldSync && (+[WebBookmarkCollection lockSync]& 1) == 0)
       {
         [(SafariFavoritesFolderPickerContoller *)self reloadSpecifiers];
         [(SafariFavoritesFolderPickerContoller *)self _showBookmarksBeingSyncedAlert];
@@ -234,8 +234,8 @@
       else
       {
         bookmarkCollection = self->_bookmarkCollection;
-        v20 = [v15 bookmark];
-        [(WebBookmarkCollection *)bookmarkCollection setFavoritesFolder:v20 localOnly:v18 ^ 1];
+        bookmark = [v15 bookmark];
+        [(WebBookmarkCollection *)bookmarkCollection setFavoritesFolder:bookmark localOnly:favoritesFolderSelectionShouldSync ^ 1];
 
         if (v11)
         {
@@ -244,7 +244,7 @@
           [v21 postNotificationName:v22 object:0];
         }
 
-        if (v18)
+        if (favoritesFolderSelectionShouldSync)
         {
           [(WebBookmarkCollection *)self->_bookmarkCollection _postBookmarksChangedSyncNotification];
           +[WebBookmarkCollection unlockSync];
@@ -267,11 +267,11 @@ LABEL_12:
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPathWithoutChangingDefaultFavorites:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPathWithoutChangingDefaultFavorites:(id)favorites
 {
   v4.receiver = self;
   v4.super_class = SafariFavoritesFolderPickerContoller;
-  [(SafariSettingsListController *)&v4 tableView:a3 didSelectRowAtIndexPath:a4];
+  [(SafariSettingsListController *)&v4 tableView:view didSelectRowAtIndexPath:favorites];
 }
 
 - (void)_showBookmarksBeingSyncedAlert

@@ -1,51 +1,51 @@
 @interface FBSBundleInfo
-- (id)_initWithBundleProxy:(id)a3 bundleIdentifier:(id)a4 url:(id)a5;
-- (id)_initWithBundleProxy:(id)a3 overrideURL:(id)a4;
+- (id)_initWithBundleProxy:(id)proxy bundleIdentifier:(id)identifier url:(id)url;
+- (id)_initWithBundleProxy:(id)proxy overrideURL:(id)l;
 - (id)applicationIdentity;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation FBSBundleInfo
 
-- (id)_initWithBundleProxy:(id)a3 overrideURL:(id)a4
+- (id)_initWithBundleProxy:(id)proxy overrideURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  proxyCopy = proxy;
+  lCopy = l;
+  if (!proxyCopy)
   {
     [FBSBundleInfo _initWithBundleProxy:a2 overrideURL:?];
   }
 
-  v9 = v8;
-  v10 = [v7 bundleIdentifier];
+  v9 = lCopy;
+  bundleIdentifier = [proxyCopy bundleIdentifier];
   if (v9)
   {
-    v11 = [(FBSBundleInfo *)self _initWithBundleProxy:v7 bundleIdentifier:v10 url:v9];
+    v11 = [(FBSBundleInfo *)self _initWithBundleProxy:proxyCopy bundleIdentifier:bundleIdentifier url:v9];
   }
 
   else
   {
-    v12 = [v7 bundleURL];
-    v11 = [(FBSBundleInfo *)self _initWithBundleProxy:v7 bundleIdentifier:v10 url:v12];
+    bundleURL = [proxyCopy bundleURL];
+    v11 = [(FBSBundleInfo *)self _initWithBundleProxy:proxyCopy bundleIdentifier:bundleIdentifier url:bundleURL];
   }
 
   return v11;
 }
 
-- (id)_initWithBundleProxy:(id)a3 bundleIdentifier:(id)a4 url:(id)a5
+- (id)_initWithBundleProxy:(id)proxy bundleIdentifier:(id)identifier url:(id)url
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  proxyCopy = proxy;
+  identifierCopy = identifier;
+  urlCopy = url;
+  if (!identifierCopy)
   {
     [FBSBundleInfo _initWithBundleProxy:a2 bundleIdentifier:? url:?];
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = urlCopy;
+  if (!urlCopy)
   {
     [FBSBundleInfo _initWithBundleProxy:a2 bundleIdentifier:? url:?];
   }
@@ -55,7 +55,7 @@
   v13 = [(FBSBundleInfo *)&v31 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [identifierCopy copy];
     bundleIdentifier = v13->_bundleIdentifier;
     v13->_bundleIdentifier = v14;
 
@@ -63,24 +63,24 @@
     bundleURL = v13->_bundleURL;
     v13->_bundleURL = v16;
 
-    v18 = [v9 localizedName];
-    v19 = [v18 copy];
+    localizedName = [proxyCopy localizedName];
+    v19 = [localizedName copy];
     displayName = v13->_displayName;
     v13->_displayName = v19;
 
-    v21 = [v9 bundleVersion];
-    v22 = [v21 copy];
+    bundleVersion = [proxyCopy bundleVersion];
+    v22 = [bundleVersion copy];
     bundleVersion = v13->_bundleVersion;
     v13->_bundleVersion = v22;
 
-    v24 = [v9 bundleType];
-    v25 = [v24 copy];
+    bundleType = [proxyCopy bundleType];
+    v25 = [bundleType copy];
     bundleType = v13->_bundleType;
     v13->_bundleType = v25;
 
-    v13->_sequenceNumber = [v9 sequenceNumber];
-    v27 = [v9 cacheGUID];
-    v28 = [v27 copy];
+    v13->_sequenceNumber = [proxyCopy sequenceNumber];
+    cacheGUID = [proxyCopy cacheGUID];
+    v28 = [cacheGUID copy];
     cacheGUID = v13->_cacheGUID;
     v13->_cacheGUID = v28;
   }
@@ -101,7 +101,7 @@
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBSBundleInfo.m";
     v16 = 1024;
@@ -117,30 +117,30 @@
 
 - (id)succinctDescription
 {
-  v2 = [(FBSBundleInfo *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSBundleInfo *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [off_1E76BC9B0 builderWithObject:self];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(FBSBundleInfo *)self bundleIdentifier];
-  v6 = [(FBSBundleInfo *)self displayName];
-  v7 = [v4 stringWithFormat:@"%@ (%@)", v5, v6];
+  bundleIdentifier = [(FBSBundleInfo *)self bundleIdentifier];
+  displayName = [(FBSBundleInfo *)self displayName];
+  v7 = [v4 stringWithFormat:@"%@ (%@)", bundleIdentifier, displayName];
   v8 = [v3 appendObject:v7 withName:0];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSBundleInfo *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSBundleInfo *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (void)_initWithBundleProxy:(const char *)a1 overrideURL:.cold.1(const char *a1)

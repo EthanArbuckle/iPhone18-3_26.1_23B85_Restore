@@ -3,81 +3,81 @@
 - (CGRect)bottomBarFrame;
 - (CGRect)cropRect;
 - (CGRect)titleRect;
-- (PLCropOverlay)initWithFrame:(CGRect)a3 mode:(int)a4 offsettingStatusBar:(BOOL)a5;
+- (PLCropOverlay)initWithFrame:(CGRect)frame mode:(int)mode offsettingStatusBar:(BOOL)bar;
 - (id)_bottomBarFileSizeMenu;
 - (id)_bottomBarFileSizeMenuActions;
 - (id)_fileResizingButton;
-- (id)_newOverlayViewWithFrame:(CGRect)a3 lighterEdgeOnTop:(BOOL)a4;
+- (id)_newOverlayViewWithFrame:(CGRect)frame lighterEdgeOnTop:(BOOL)top;
 - (id)bottomBar;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)overlayContainerView;
-- (void)_backgroundSavePhoto:(id)a3 cropRect:(CGRect)a4 minimalCropDimension:(double)a5;
+- (void)_backgroundSavePhoto:(id)photo cropRect:(CGRect)rect minimalCropDimension:(double)dimension;
 - (void)_createCropView;
-- (void)_fadeOutCompleted:(id)a3;
-- (void)_savePhotoFinished:(id)a3;
-- (void)_setMode:(int)a3;
-- (void)_tappedBottomBarCancelButton:(id)a3;
-- (void)_tappedBottomBarDoneButton:(id)a3;
+- (void)_fadeOutCompleted:(id)completed;
+- (void)_savePhotoFinished:(id)finished;
+- (void)_setMode:(int)mode;
+- (void)_tappedBottomBarCancelButton:(id)button;
+- (void)_tappedBottomBarDoneButton:(id)button;
 - (void)_tappedBottomBarMotionToggle;
-- (void)_tappedBottomBarPlaybackButton:(id)a3;
+- (void)_tappedBottomBarPlaybackButton:(id)button;
 - (void)_tappedBottomBarSetBothButton;
 - (void)_tappedBottomBarSetHomeButton;
 - (void)_tappedBottomBarSetLockButton;
-- (void)_updateCropRectInRect:(CGRect)a3;
+- (void)_updateCropRectInRect:(CGRect)rect;
 - (void)_updateEditImageCancelButtonTitle;
 - (void)_updateEditImageDoneButtonTitle;
 - (void)_updateMotionToggle;
 - (void)_updateTitle;
-- (void)_updateToolbarItems:(BOOL)a3;
+- (void)_updateToolbarItems:(BOOL)items;
 - (void)_updateWallpaperBottomBarSettingButtons;
-- (void)beginBackgroundSaveWithTile:(id)a3 progressTitle:(id)a4 completionCallbackTarget:(id)a5 options:(int)a6;
-- (void)cancelButtonClicked:(id)a3;
-- (void)cropOverlayBottomBarPauseButtonClicked:(id)a3;
-- (void)cropOverlayBottomBarPlayButtonClicked:(id)a3;
+- (void)beginBackgroundSaveWithTile:(id)tile progressTitle:(id)title completionCallbackTarget:(id)target options:(int)options;
+- (void)cancelButtonClicked:(id)clicked;
+- (void)cropOverlayBottomBarPauseButtonClicked:(id)clicked;
+- (void)cropOverlayBottomBarPlayButtonClicked:(id)clicked;
 - (void)dealloc;
 - (void)didCapturePhoto;
 - (void)didCaptureVideo;
 - (void)didPauseVideo;
 - (void)didPlayVideo;
 - (void)dismiss;
-- (void)insertIrisView:(id)a3;
+- (void)insertIrisView:(id)view;
 - (void)layoutSubviews;
 - (void)removeProgress;
-- (void)setCameraBottomBar:(id)a3;
-- (void)setCancelButtonTitle:(id)a3;
-- (void)setControlsAreVisible:(BOOL)a3;
-- (void)setCropRectVisible:(BOOL)a3 duration:(float)a4;
-- (void)setDefaultCancelButtonTitle:(id)a3;
-- (void)setDefaultOKButtonTitle:(id)a3;
-- (void)setDisplayedInPopover:(BOOL)a3;
-- (void)setFileResizingHidden:(BOOL)a3;
-- (void)setFileResizingTitle:(id)a3;
-- (void)setIsEditingHomeScreen:(BOOL)a3;
-- (void)setIsEditingLockScreen:(BOOL)a3;
-- (void)setMotionToggleHidden:(BOOL)a3;
-- (void)setMotionToggleIsOn:(BOOL)a3;
-- (void)setOKButtonShowsCamera:(BOOL)a3;
-- (void)setOKButtonTitle:(id)a3;
-- (void)setOverlayContainerView:(id)a3;
-- (void)setPreviewMode:(BOOL)a3;
-- (void)setShowProgress:(BOOL)a3 title:(id)a4;
-- (void)setShowsCropRegion:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitle:(id)a3 okButtonTitle:(id)a4;
-- (void)setTitleHidden:(BOOL)a3 animationDuration:(double)a4;
-- (void)setUserInteractionEnabled:(BOOL)a3;
-- (void)statusBarHeightDidChange:(id)a3;
+- (void)setCameraBottomBar:(id)bar;
+- (void)setCancelButtonTitle:(id)title;
+- (void)setControlsAreVisible:(BOOL)visible;
+- (void)setCropRectVisible:(BOOL)visible duration:(float)duration;
+- (void)setDefaultCancelButtonTitle:(id)title;
+- (void)setDefaultOKButtonTitle:(id)title;
+- (void)setDisplayedInPopover:(BOOL)popover;
+- (void)setFileResizingHidden:(BOOL)hidden;
+- (void)setFileResizingTitle:(id)title;
+- (void)setIsEditingHomeScreen:(BOOL)screen;
+- (void)setIsEditingLockScreen:(BOOL)screen;
+- (void)setMotionToggleHidden:(BOOL)hidden;
+- (void)setMotionToggleIsOn:(BOOL)on;
+- (void)setOKButtonShowsCamera:(BOOL)camera;
+- (void)setOKButtonTitle:(id)title;
+- (void)setOverlayContainerView:(id)view;
+- (void)setPreviewMode:(BOOL)mode;
+- (void)setShowProgress:(BOOL)progress title:(id)title;
+- (void)setShowsCropRegion:(BOOL)region;
+- (void)setTitle:(id)title;
+- (void)setTitle:(id)title okButtonTitle:(id)buttonTitle;
+- (void)setTitleHidden:(BOOL)hidden animationDuration:(double)duration;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
+- (void)statusBarHeightDidChange:(id)change;
 @end
 
 @implementation PLCropOverlay
 
-- (id)_newOverlayViewWithFrame:(CGRect)a3 lighterEdgeOnTop:(BOOL)a4
+- (id)_newOverlayViewWithFrame:(CGRect)frame lighterEdgeOnTop:(BOOL)top
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  topCopy = top;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v17.width = 1.0;
   v17.height = 5.0;
   UIGraphicsBeginImageContext(v17);
@@ -88,7 +88,7 @@
   v18.size.height = 5.0;
   UIRectFillUsingBlendMode(v18, kCGBlendModeNormal);
   [objc_msgSend(MEMORY[0x277D75348] colorWithWhite:1.0 alpha:{0.37), "set"}];
-  if (v4)
+  if (topCopy)
   {
     v9 = 1.0;
   }
@@ -110,18 +110,18 @@
   return v15;
 }
 
-- (void)_updateCropRectInRect:(CGRect)a3
+- (void)_updateCropRectInRect:(CGRect)rect
 {
   p_cropRect = &self->_cropRect;
   self->_cropRect.origin.x = 0.0;
   self->_cropRect.origin.y = 0.0;
-  if (a3.size.width >= a3.size.height)
+  if (rect.size.width >= rect.size.height)
   {
-    a3.size.width = a3.size.height;
+    rect.size.width = rect.size.height;
   }
 
-  self->_cropRect.size.width = a3.size.width;
-  self->_cropRect.size.height = a3.size.width;
+  self->_cropRect.size.width = rect.size.width;
+  self->_cropRect.size.height = rect.size.width;
   UIRectCenteredIntegralRect();
   p_cropRect->origin.x = v4;
   p_cropRect->origin.y = v5;
@@ -129,12 +129,12 @@
   p_cropRect->size.height = v7;
 }
 
-- (void)_updateToolbarItems:(BOOL)a3
+- (void)_updateToolbarItems:(BOOL)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:5 target:0 action:0];
   v6 = objc_alloc(MEMORY[0x277D751E0]);
-  if (v3)
+  if (itemsCopy)
   {
     v7 = 17;
   }
@@ -145,7 +145,7 @@
   }
 
   v8 = &selRef__playButtonPressed_;
-  if (!v3)
+  if (!itemsCopy)
   {
     v8 = &selRef__pauseButtonPressed_;
   }
@@ -156,14 +156,14 @@
 
 - (void)_updateEditImageCancelButtonTitle
 {
-  v3 = [(PLCropOverlayPreviewBottomBar *)[(PLCropOverlayBottomBar *)[(PLCropOverlay *)self _bottomBar] previewBottomBar] cancelButton];
-  v4 = [(PLCropOverlay *)self defaultCancelButtonTitle];
-  if (![(NSString *)v4 length])
+  cancelButton = [(PLCropOverlayPreviewBottomBar *)[(PLCropOverlayBottomBar *)[(PLCropOverlay *)self _bottomBar] previewBottomBar] cancelButton];
+  defaultCancelButtonTitle = [(PLCropOverlay *)self defaultCancelButtonTitle];
+  if (![(NSString *)defaultCancelButtonTitle length])
   {
-    v4 = PLLocalizedFrameworkString();
+    defaultCancelButtonTitle = PLLocalizedFrameworkString();
   }
 
-  [(UIButton *)v3 setTitle:v4 forState:0];
+  [(UIButton *)cancelButton setTitle:defaultCancelButtonTitle forState:0];
 }
 
 - (void)_updateEditImageDoneButtonTitle
@@ -173,14 +173,14 @@
   v5 = (1 << mode) & 0x92;
   if (!v4 && v5 != 0)
   {
-    v8 = [(PLCropOverlayPreviewBottomBar *)[(PLCropOverlayBottomBar *)[(PLCropOverlay *)self _bottomBar] previewBottomBar] doneButton];
-    v9 = [(PLCropOverlay *)self defaultOKButtonTitle];
-    if (![(NSString *)v9 length])
+    doneButton = [(PLCropOverlayPreviewBottomBar *)[(PLCropOverlayBottomBar *)[(PLCropOverlay *)self _bottomBar] previewBottomBar] doneButton];
+    defaultOKButtonTitle = [(PLCropOverlay *)self defaultOKButtonTitle];
+    if (![(NSString *)defaultOKButtonTitle length])
     {
-      v9 = PLLocalizedFrameworkString();
+      defaultOKButtonTitle = PLLocalizedFrameworkString();
     }
 
-    [(UIButton *)v8 setTitle:v9 forState:0];
+    [(UIButton *)doneButton setTitle:defaultOKButtonTitle forState:0];
   }
 }
 
@@ -191,34 +191,34 @@
   [(PLCropOverlay *)self setTitle:v3];
 }
 
-- (void)setFileResizingHidden:(BOOL)a3
+- (void)setFileResizingHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(PLCropOverlay *)self _fileResizingButton];
+  hiddenCopy = hidden;
+  _fileResizingButton = [(PLCropOverlay *)self _fileResizingButton];
 
-  [v4 setHidden:v3];
+  [_fileResizingButton setHidden:hiddenCopy];
 }
 
-- (void)setFileResizingTitle:(id)a3
+- (void)setFileResizingTitle:(id)title
 {
-  v4 = [(PLCropOverlay *)self _fileResizingButton];
+  _fileResizingButton = [(PLCropOverlay *)self _fileResizingButton];
 
-  [v4 setTitle:a3 forState:0];
+  [_fileResizingButton setTitle:title forState:0];
 }
 
 - (id)_fileResizingButton
 {
-  v2 = [(PLCropOverlayBottomBar *)[(PLCropOverlay *)self _bottomBar] previewBottomBar];
+  previewBottomBar = [(PLCropOverlayBottomBar *)[(PLCropOverlay *)self _bottomBar] previewBottomBar];
 
-  return [(PLCropOverlayPreviewBottomBar *)v2 fileResizingButton];
+  return [(PLCropOverlayPreviewBottomBar *)previewBottomBar fileResizingButton];
 }
 
-- (void)setPreviewMode:(BOOL)a3
+- (void)setPreviewMode:(BOOL)mode
 {
   v3 = *(self + 504);
-  if ((v3 & 1) != a3)
+  if ((v3 & 1) != mode)
   {
-    *(self + 504) = v3 & 0xFE | a3;
+    *(self + 504) = v3 & 0xFE | mode;
     [(PLCropOverlay *)self _updateTitle];
     [(UIView *)self->_wildcatPickerTopView setHidden:*(self + 504) & 1];
     [(UIView *)self->_wildcatPickerBottomView setHidden:*(self + 504) & 1];
@@ -228,15 +228,15 @@
   }
 }
 
-- (void)setTitleHidden:(BOOL)a3 animationDuration:(double)a4
+- (void)setTitleHidden:(BOOL)hidden animationDuration:(double)duration
 {
   v6 = 1.0;
-  if (a3)
+  if (hidden)
   {
     v6 = 0.0;
   }
 
-  if (a4 <= 0.0)
+  if (duration <= 0.0)
   {
     titleLabel = self->_titleLabel;
 
@@ -257,9 +257,9 @@
   }
 }
 
-- (void)setShowsCropRegion:(BOOL)a3
+- (void)setShowsCropRegion:(BOOL)region
 {
-  if (a3)
+  if (region)
   {
     v3 = 16;
   }
@@ -279,14 +279,14 @@
   self->_hud = 0;
 }
 
-- (void)setShowProgress:(BOOL)a3 title:(id)a4
+- (void)setShowProgress:(BOOL)progress title:(id)title
 {
-  if (a3 && ([(PLCropOverlay *)self isTelephonyUIMode:self->_mode]|| [(PLCropOverlay *)self isWallpaperUIMode:self->_mode]))
+  if (progress && ([(PLCropOverlay *)self isTelephonyUIMode:self->_mode]|| [(PLCropOverlay *)self isWallpaperUIMode:self->_mode]))
   {
 
     v6 = objc_alloc_init(PLProgressHUD);
     self->_hud = v6;
-    [(PLProgressHUD *)v6 setText:a4];
+    [(PLProgressHUD *)v6 setText:title];
     hud = self->_hud;
 
     [(PLProgressHUD *)hud showInView:self];
@@ -300,18 +300,18 @@
   }
 }
 
-- (void)setCancelButtonTitle:(id)a3
+- (void)setCancelButtonTitle:(id)title
 {
   if (![(PLCropOverlay *)self isTelephonyUIMode:self->_mode])
   {
-    [(UIButton *)[(PLCropOverlayPreviewBottomBar *)[(PLCropOverlayBottomBar *)self->__bottomBar previewBottomBar] cancelButton] setTitle:a3 forState:0];
+    [(UIButton *)[(PLCropOverlayPreviewBottomBar *)[(PLCropOverlayBottomBar *)self->__bottomBar previewBottomBar] cancelButton] setTitle:title forState:0];
     bottomBar = self->__bottomBar;
 
     [(PLCropOverlayBottomBar *)bottomBar setNeedsLayout];
   }
 }
 
-- (void)setOKButtonShowsCamera:(BOOL)a3
+- (void)setOKButtonShowsCamera:(BOOL)camera
 {
   if (![(PLCropOverlay *)self isTelephonyUIMode:self->_mode])
   {
@@ -321,42 +321,42 @@
   }
 }
 
-- (void)setDefaultCancelButtonTitle:(id)a3
+- (void)setDefaultCancelButtonTitle:(id)title
 {
-  if (self->_defaultCancelButtonTitle != a3 && ([a3 isEqualToString:?] & 1) == 0)
+  if (self->_defaultCancelButtonTitle != title && ([title isEqualToString:?] & 1) == 0)
   {
 
-    self->_defaultCancelButtonTitle = [a3 copy];
+    self->_defaultCancelButtonTitle = [title copy];
 
     [(PLCropOverlay *)self _updateEditImageCancelButtonTitle];
   }
 }
 
-- (void)setDefaultOKButtonTitle:(id)a3
+- (void)setDefaultOKButtonTitle:(id)title
 {
-  if (self->_defaultOKButtonTitle != a3 && ([a3 isEqualToString:?] & 1) == 0)
+  if (self->_defaultOKButtonTitle != title && ([title isEqualToString:?] & 1) == 0)
   {
 
-    self->_defaultOKButtonTitle = [a3 copy];
+    self->_defaultOKButtonTitle = [title copy];
 
     [(PLCropOverlay *)self _updateEditImageDoneButtonTitle];
   }
 }
 
-- (void)setOKButtonTitle:(id)a3
+- (void)setOKButtonTitle:(id)title
 {
   if (![(PLCropOverlay *)self isTelephonyUIMode:self->_mode])
   {
-    [(UIButton *)[(PLCropOverlayPreviewBottomBar *)[(PLCropOverlayBottomBar *)self->__bottomBar previewBottomBar] doneButton] setTitle:a3 forState:0];
+    [(UIButton *)[(PLCropOverlayPreviewBottomBar *)[(PLCropOverlayBottomBar *)self->__bottomBar previewBottomBar] doneButton] setTitle:title forState:0];
     [(PLCropOverlayBottomBar *)self->__bottomBar setNeedsLayout];
   }
 
-  [(UIButton *)self->_okButton setTitle:a3 forState:0];
+  [(UIButton *)self->_okButton setTitle:title forState:0];
   if (self->_mode == 6)
   {
-    v5 = [(PLCropOverlayWallpaperBottomBar *)[(PLCropOverlayBottomBar *)self->__bottomBar wallpaperBottomBar] doSetButton];
+    doSetButton = [(PLCropOverlayWallpaperBottomBar *)[(PLCropOverlayBottomBar *)self->__bottomBar wallpaperBottomBar] doSetButton];
 
-    [(PLWallpaperButton *)v5 setTitle:a3 forState:0];
+    [(PLWallpaperButton *)doSetButton setTitle:title forState:0];
   }
 }
 
@@ -382,11 +382,11 @@
   return result;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   if ([(PLCropOverlay *)self isTelephonyUIMode:self->_mode])
   {
-    [(UILabel *)self->_titleLabel setText:a3];
+    [(UILabel *)self->_titleLabel setText:title];
     [(UILabel *)self->_titleLabel sizeToFit];
 
     [(PLCropOverlay *)self setNeedsLayout];
@@ -394,22 +394,22 @@
 
   else if (self->_mode == 6)
   {
-    v5 = [(PLCropOverlayBottomBar *)self->__bottomBar wallpaperBottomBar];
+    wallpaperBottomBar = [(PLCropOverlayBottomBar *)self->__bottomBar wallpaperBottomBar];
 
-    [(PLCropOverlayWallpaperBottomBar *)v5 setText:a3];
+    [(PLCropOverlayWallpaperBottomBar *)wallpaperBottomBar setText:title];
   }
 }
 
-- (void)setTitle:(id)a3 okButtonTitle:(id)a4
+- (void)setTitle:(id)title okButtonTitle:(id)buttonTitle
 {
   if ([(PLCropOverlay *)self isTelephonyUIMode:self->_mode])
   {
-    [(UILabel *)self->_titleLabel setText:a3];
+    [(UILabel *)self->_titleLabel setText:title];
     [(UILabel *)self->_titleLabel sizeToFit];
     [(PLCropOverlay *)self setNeedsLayout];
     okButton = self->_okButton;
 
-    [(UIButton *)okButton setTitle:a4 forState:0];
+    [(UIButton *)okButton setTitle:buttonTitle forState:0];
   }
 }
 
@@ -488,11 +488,11 @@
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = PLCropOverlay;
-  v5 = [(PLCropOverlay *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(PLCropOverlay *)&v9 hitTest:event withEvent:test.x, test.y];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   overlayContainerView = self->_overlayContainerView;
@@ -504,16 +504,16 @@
   return v5;
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5.receiver = self;
   v5.super_class = PLCropOverlay;
   [(PLCropOverlay *)&v5 setUserInteractionEnabled:?];
-  [(PLCropOverlayBottomBar *)[(PLCropOverlay *)self _bottomBar] setUserInteractionEnabled:v3];
+  [(PLCropOverlayBottomBar *)[(PLCropOverlay *)self _bottomBar] setUserInteractionEnabled:enabledCopy];
 }
 
-- (void)cropOverlayBottomBarPauseButtonClicked:(id)a3
+- (void)cropOverlayBottomBarPauseButtonClicked:(id)clicked
 {
   objc_loadWeak(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -524,7 +524,7 @@
   }
 }
 
-- (void)cropOverlayBottomBarPlayButtonClicked:(id)a3
+- (void)cropOverlayBottomBarPlayButtonClicked:(id)clicked
 {
   objc_loadWeak(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -535,12 +535,12 @@
   }
 }
 
-- (void)_tappedBottomBarPlaybackButton:(id)a3
+- (void)_tappedBottomBarPlaybackButton:(id)button
 {
   [(PLCropOverlayBottomBar *)self->__bottomBar togglePlaybackState];
-  v4 = [(PLCropOverlayBottomBar *)self->__bottomBar isPlayingVideo];
+  isPlayingVideo = [(PLCropOverlayBottomBar *)self->__bottomBar isPlayingVideo];
   objc_loadWeak(&self->_delegate);
-  if (v4)
+  if (isPlayingVideo)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -560,17 +560,17 @@
 
 - (BOOL)motionToggleHidden
 {
-  v2 = [(PLCropOverlay *)self wallpaperBottomBar];
+  wallpaperBottomBar = [(PLCropOverlay *)self wallpaperBottomBar];
 
-  return [(PLCropOverlayWallpaperBottomBar *)v2 motionToggleHidden];
+  return [(PLCropOverlayWallpaperBottomBar *)wallpaperBottomBar motionToggleHidden];
 }
 
-- (void)setMotionToggleHidden:(BOOL)a3
+- (void)setMotionToggleHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(PLCropOverlay *)self wallpaperBottomBar];
+  hiddenCopy = hidden;
+  wallpaperBottomBar = [(PLCropOverlay *)self wallpaperBottomBar];
 
-  [(PLCropOverlayWallpaperBottomBar *)v4 setMotionToggleHidden:v3];
+  [(PLCropOverlayWallpaperBottomBar *)wallpaperBottomBar setMotionToggleHidden:hiddenCopy];
 }
 
 - (void)_updateWallpaperBottomBarSettingButtons
@@ -578,13 +578,13 @@
   isEditingLockScreen = self->_isEditingLockScreen;
   if (isEditingLockScreen)
   {
-    v4 = [(PLCropOverlay *)self wallpaperBottomBar];
+    wallpaperBottomBar = [(PLCropOverlay *)self wallpaperBottomBar];
   }
 
   else
   {
     isEditingHomeScreen = self->_isEditingHomeScreen;
-    v4 = [(PLCropOverlay *)self wallpaperBottomBar];
+    wallpaperBottomBar = [(PLCropOverlay *)self wallpaperBottomBar];
     if (isEditingHomeScreen)
     {
       v6 = 1;
@@ -594,47 +594,47 @@
 
   v6 = 0;
 LABEL_6:
-  [(PLCropOverlayWallpaperBottomBar *)v4 setShouldOnlyShowHomeScreenButton:v6];
-  v7 = [(PLCropOverlay *)self wallpaperBottomBar];
+  [(PLCropOverlayWallpaperBottomBar *)wallpaperBottomBar setShouldOnlyShowHomeScreenButton:v6];
+  wallpaperBottomBar2 = [(PLCropOverlay *)self wallpaperBottomBar];
 
-  [(PLCropOverlayWallpaperBottomBar *)v7 setShouldOnlyShowLockScreenButton:isEditingLockScreen];
+  [(PLCropOverlayWallpaperBottomBar *)wallpaperBottomBar2 setShouldOnlyShowLockScreenButton:isEditingLockScreen];
 }
 
-- (void)setIsEditingLockScreen:(BOOL)a3
+- (void)setIsEditingLockScreen:(BOOL)screen
 {
-  if (self->_isEditingLockScreen != a3)
+  if (self->_isEditingLockScreen != screen)
   {
-    self->_isEditingLockScreen = a3;
+    self->_isEditingLockScreen = screen;
     [(PLCropOverlay *)self _updateWallpaperBottomBarSettingButtons];
   }
 }
 
-- (void)setIsEditingHomeScreen:(BOOL)a3
+- (void)setIsEditingHomeScreen:(BOOL)screen
 {
-  if (self->_isEditingHomeScreen != a3)
+  if (self->_isEditingHomeScreen != screen)
   {
-    self->_isEditingHomeScreen = a3;
+    self->_isEditingHomeScreen = screen;
     [(PLCropOverlay *)self _updateWallpaperBottomBarSettingButtons];
   }
 }
 
 - (void)_updateMotionToggle
 {
-  v2 = [(PLCropOverlayWallpaperBottomBar *)[(PLCropOverlay *)self wallpaperBottomBar] motionToggle];
+  motionToggle = [(PLCropOverlayWallpaperBottomBar *)[(PLCropOverlay *)self wallpaperBottomBar] motionToggle];
   v3 = PLLocalizedFrameworkString();
 
-  [(PLWallpaperButton *)v2 setTitle:v3 forState:0];
+  [(PLWallpaperButton *)motionToggle setTitle:v3 forState:0];
 }
 
-- (void)setMotionToggleIsOn:(BOOL)a3
+- (void)setMotionToggleIsOn:(BOOL)on
 {
-  if (self->_motionToggleIsOn != a3)
+  if (self->_motionToggleIsOn != on)
   {
-    self->_motionToggleIsOn = a3;
+    self->_motionToggleIsOn = on;
     [(PLCropOverlay *)self _updateMotionToggle];
-    v5 = [(PLCropOverlay *)self wallpaperBottomBar];
+    wallpaperBottomBar = [(PLCropOverlay *)self wallpaperBottomBar];
 
-    [(PLCropOverlayWallpaperBottomBar *)v5 setNeedsLayout];
+    [(PLCropOverlayWallpaperBottomBar *)wallpaperBottomBar setNeedsLayout];
   }
 }
 
@@ -735,7 +735,7 @@ uint64_t __39__PLCropOverlay__bottomBarFileSizeMenu__block_invoke(uint64_t a1, u
   }
 }
 
-- (void)_tappedBottomBarDoneButton:(id)a3
+- (void)_tappedBottomBarDoneButton:(id)button
 {
   [(PLCropOverlay *)self setUserInteractionEnabled:0];
   objc_loadWeak(&self->_delegate);
@@ -747,7 +747,7 @@ uint64_t __39__PLCropOverlay__bottomBarFileSizeMenu__block_invoke(uint64_t a1, u
   }
 }
 
-- (void)_tappedBottomBarCancelButton:(id)a3
+- (void)_tappedBottomBarCancelButton:(id)button
 {
   [(PLCropOverlay *)self setUserInteractionEnabled:0];
   objc_loadWeak(&self->_delegate);
@@ -764,14 +764,14 @@ uint64_t __39__PLCropOverlay__bottomBarFileSizeMenu__block_invoke(uint64_t a1, u
     [(PLCropOverlay *)self setCropRectVisible:0 duration:v4];
     if ([(PLCropOverlay *)self contactPhotoOverlay])
     {
-      v5 = [(PLCropOverlay *)self contactPhotoOverlay];
+      contactPhotoOverlay = [(PLCropOverlay *)self contactPhotoOverlay];
 
-      [(UIView *)v5 pl_setHidden:1 animated:1];
+      [(UIView *)contactPhotoOverlay pl_setHidden:1 animated:1];
     }
   }
 }
 
-- (void)cancelButtonClicked:(id)a3
+- (void)cancelButtonClicked:(id)clicked
 {
   [(PLCropOverlay *)self setUserInteractionEnabled:0];
   objc_loadWeak(&self->_delegate);
@@ -783,16 +783,16 @@ uint64_t __39__PLCropOverlay__bottomBarFileSizeMenu__block_invoke(uint64_t a1, u
   }
 }
 
-- (void)_fadeOutCompleted:(id)a3
+- (void)_fadeOutCompleted:(id)completed
 {
   [(PLCropOverlay *)self removeFromSuperview];
 
-  v4 = self;
+  selfCopy = self;
 }
 
 - (void)dismiss
 {
-  v3 = self;
+  selfCopy = self;
   [(PLCropOverlay *)self setUserInteractionEnabled:0];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
@@ -811,7 +811,7 @@ uint64_t __39__PLCropOverlay__bottomBarFileSizeMenu__block_invoke(uint64_t a1, u
   self->_hud = 0;
 }
 
-- (void)statusBarHeightDidChange:(id)a3
+- (void)statusBarHeightDidChange:(id)change
 {
   if ([(PLCropOverlay *)self isTelephonyUIMode:self->_mode])
   {
@@ -891,9 +891,9 @@ uint64_t __39__PLCropOverlay__bottomBarFileSizeMenu__block_invoke(uint64_t a1, u
   if (!self->_mode)
   {
     *(self + 504) |= 8u;
-    v4 = [(PLCropOverlayBottomBar *)self->__bottomBar previewBottomBar];
-    [(UIButton *)[(PLCropOverlayPreviewBottomBar *)v4 doneButton] setTitle:PLLocalizedFrameworkString() forState:0];
-    [(PLCropOverlayPreviewBottomBar *)v4 setNeedsLayout];
+    previewBottomBar = [(PLCropOverlayBottomBar *)self->__bottomBar previewBottomBar];
+    [(UIButton *)[(PLCropOverlayPreviewBottomBar *)previewBottomBar doneButton] setTitle:PLLocalizedFrameworkString() forState:0];
+    [(PLCropOverlayPreviewBottomBar *)previewBottomBar setNeedsLayout];
     bottomBar = self->__bottomBar;
 
     [(PLCropOverlayBottomBar *)bottomBar setStyle:2 animated:1];
@@ -906,76 +906,76 @@ uint64_t __39__PLCropOverlay__bottomBarFileSizeMenu__block_invoke(uint64_t a1, u
   if (mode == 3 || mode == 0)
   {
     *(self + 504) |= 8u;
-    v5 = [(PLCropOverlayBottomBar *)self->__bottomBar previewBottomBar];
-    [(UIButton *)[(PLCropOverlayPreviewBottomBar *)v5 doneButton] setTitle:[(PLCropOverlay *)self defaultOKButtonTitle] forState:0];
-    [(PLCropOverlayPreviewBottomBar *)v5 setNeedsLayout];
+    previewBottomBar = [(PLCropOverlayBottomBar *)self->__bottomBar previewBottomBar];
+    [(UIButton *)[(PLCropOverlayPreviewBottomBar *)previewBottomBar doneButton] setTitle:[(PLCropOverlay *)self defaultOKButtonTitle] forState:0];
+    [(PLCropOverlayPreviewBottomBar *)previewBottomBar setNeedsLayout];
     [(PLCropOverlay *)self setCropRectVisible:(*(self + 504) >> 4) & 1 duration:0.0];
     [(PLCropOverlayBottomBar *)self->__bottomBar setStyle:1 animated:1];
     if ([(PLCropOverlay *)self contactPhotoOverlay])
     {
-      v6 = [(PLCropOverlay *)self contactPhotoOverlay];
+      contactPhotoOverlay = [(PLCropOverlay *)self contactPhotoOverlay];
 
-      [(UIView *)v6 pl_setHidden:0 animated:1];
+      [(UIView *)contactPhotoOverlay pl_setHidden:0 animated:1];
     }
   }
 }
 
-- (void)_setMode:(int)a3
+- (void)_setMode:(int)mode
 {
-  self->_mode = a3;
+  self->_mode = mode;
   if (!self->__bottomBar)
   {
     return;
   }
 
-  if (a3 <= 6 && ((1 << a3) & 0x45) != 0)
+  if (mode <= 6 && ((1 << mode) & 0x45) != 0)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(PLCropOverlay *)self isTelephonyUIMode:*&a3]^ 1;
+    v5 = [(PLCropOverlay *)self isTelephonyUIMode:*&mode]^ 1;
   }
 
   [(PLCropOverlay *)self setCropRectVisible:v5 duration:0.0];
-  v6 = [(PLCropOverlay *)self _bottomBar];
-  v7 = [(PLCropOverlayBottomBar *)v6 previewBottomBar];
-  v8 = [(PLCropOverlayPreviewBottomBar *)v7 doneButton];
-  v9 = [(PLContactPhotoOverlay *)[(PLCropOverlay *)self contactPhotoOverlay] titleLabel];
-  if (a3 <= 2)
+  _bottomBar = [(PLCropOverlay *)self _bottomBar];
+  previewBottomBar = [(PLCropOverlayBottomBar *)_bottomBar previewBottomBar];
+  doneButton = [(PLCropOverlayPreviewBottomBar *)previewBottomBar doneButton];
+  titleLabel = [(PLContactPhotoOverlay *)[(PLCropOverlay *)self contactPhotoOverlay] titleLabel];
+  if (mode <= 2)
   {
-    if (!a3)
+    if (!mode)
     {
       goto LABEL_21;
     }
 
-    if (a3 == 1)
+    if (mode == 1)
     {
 LABEL_22:
-      [(PLCropOverlayBottomBar *)v6 setStyle:1];
+      [(PLCropOverlayBottomBar *)_bottomBar setStyle:1];
       [(PLCropOverlay *)self _updateEditImageDoneButtonTitle];
       goto LABEL_23;
     }
 
-    if (a3 != 2)
+    if (mode != 2)
     {
       return;
     }
 
-    [(PLCropOverlayBottomBar *)v6 setStyle:2];
-    [(UIButton *)v8 setTitle:PLLocalizedFrameworkString() forState:0];
+    [(PLCropOverlayBottomBar *)_bottomBar setStyle:2];
+    [(UIButton *)doneButton setTitle:PLLocalizedFrameworkString() forState:0];
 LABEL_32:
 
     [(PLCropOverlay *)self _updateEditImageCancelButtonTitle];
     return;
   }
 
-  if (a3 <= 5)
+  if (mode <= 5)
   {
-    if (a3 != 3)
+    if (mode != 3)
     {
-      if (a3 != 4)
+      if (mode != 4)
       {
         return;
       }
@@ -984,29 +984,29 @@ LABEL_32:
     }
 
 LABEL_21:
-    [(PLCropOverlayBottomBar *)v6 setStyle:0];
+    [(PLCropOverlayBottomBar *)_bottomBar setStyle:0];
 LABEL_23:
     [(PLCropOverlay *)self _updateEditImageCancelButtonTitle];
     v11 = PLLocalizedFrameworkString();
 
-    [(UILabel *)v9 setText:v11];
+    [(UILabel *)titleLabel setText:v11];
     return;
   }
 
-  if (a3 != 6)
+  if (mode != 6)
   {
-    if (a3 != 7)
+    if (mode != 7)
     {
       return;
     }
 
-    [(PLCropOverlayBottomBar *)v6 setStyle:1];
+    [(PLCropOverlayBottomBar *)_bottomBar setStyle:1];
     if (([objc_msgSend(MEMORY[0x277D75418] "currentDevice")] & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      [(UIButton *)[(PLCropOverlayPreviewBottomBar *)v7 cancelButton] setHidden:1];
-      v10 = [(PLCropOverlayPreviewBottomBar *)v7 doneButton];
+      [(UIButton *)[(PLCropOverlayPreviewBottomBar *)previewBottomBar cancelButton] setHidden:1];
+      doneButton2 = [(PLCropOverlayPreviewBottomBar *)previewBottomBar doneButton];
 
-      [(UIButton *)v10 setHidden:1];
+      [(UIButton *)doneButton2 setHidden:1];
       return;
     }
 
@@ -1015,26 +1015,26 @@ LABEL_23:
   }
 
   v12 = [objc_msgSend(MEMORY[0x277D75418] "currentDevice")] & 0xFFFFFFFFFFFFFFFBLL;
-  [(PLWallpaperButton *)[(PLCropOverlayWallpaperBottomBar *)[(PLCropOverlayBottomBar *)v6 wallpaperBottomBar] doCancelButton] setTitle:PLLocalizedFrameworkString() forState:0];
+  [(PLWallpaperButton *)[(PLCropOverlayWallpaperBottomBar *)[(PLCropOverlayBottomBar *)_bottomBar wallpaperBottomBar] doCancelButton] setTitle:PLLocalizedFrameworkString() forState:0];
   if (v12 == 1)
   {
-    [(PLWallpaperButton *)[(PLCropOverlayWallpaperBottomBar *)[(PLCropOverlayBottomBar *)v6 wallpaperBottomBar] doSetHomeScreenButton] setTitle:PLLocalizedFrameworkString() forState:0];
-    [(PLWallpaperButton *)[(PLCropOverlayWallpaperBottomBar *)[(PLCropOverlayBottomBar *)v6 wallpaperBottomBar] doSetLockScreenButton] setTitle:PLLocalizedFrameworkString() forState:0];
-    [(PLWallpaperButton *)[(PLCropOverlayWallpaperBottomBar *)[(PLCropOverlayBottomBar *)v6 wallpaperBottomBar] doSetBothScreenButton] setTitle:PLLocalizedFrameworkString() forState:0];
+    [(PLWallpaperButton *)[(PLCropOverlayWallpaperBottomBar *)[(PLCropOverlayBottomBar *)_bottomBar wallpaperBottomBar] doSetHomeScreenButton] setTitle:PLLocalizedFrameworkString() forState:0];
+    [(PLWallpaperButton *)[(PLCropOverlayWallpaperBottomBar *)[(PLCropOverlayBottomBar *)_bottomBar wallpaperBottomBar] doSetLockScreenButton] setTitle:PLLocalizedFrameworkString() forState:0];
+    [(PLWallpaperButton *)[(PLCropOverlayWallpaperBottomBar *)[(PLCropOverlayBottomBar *)_bottomBar wallpaperBottomBar] doSetBothScreenButton] setTitle:PLLocalizedFrameworkString() forState:0];
 
     [(PLCropOverlay *)self _updateMotionToggle];
   }
 }
 
-- (void)setCropRectVisible:(BOOL)a3 duration:(float)a4
+- (void)setCropRectVisible:(BOOL)visible duration:(float)duration
 {
-  v5 = a3;
-  if (!a3 || ![(PLCropOverlay *)self contactPhotoOverlay])
+  visibleCopy = visible;
+  if (!visible || ![(PLCropOverlay *)self contactPhotoOverlay])
   {
     v7 = *(self + 504);
-    if (((((v7 & 2) == 0) ^ v5) & 1) == 0)
+    if (((((v7 & 2) == 0) ^ visibleCopy) & 1) == 0)
     {
-      if (v5)
+      if (visibleCopy)
       {
         v8 = 2;
       }
@@ -1051,14 +1051,14 @@ LABEL_23:
       v9[2] = __45__PLCropOverlay_setCropRectVisible_duration___block_invoke;
       v9[3] = &unk_2782A2020;
       v9[4] = self;
-      if (a4 <= 0.0)
+      if (duration <= 0.0)
       {
         [(PLCropOverlayCropView *)self->_cropView setAlpha:((*(self + 504) >> 1) & 1)];
       }
 
       else
       {
-        [MEMORY[0x277D75D18] animateWithDuration:v9 animations:a4];
+        [MEMORY[0x277D75D18] animateWithDuration:v9 animations:duration];
       }
     }
   }
@@ -1101,16 +1101,16 @@ LABEL_23:
   return *(&self->super.super.super.isa + *v3);
 }
 
-- (void)insertIrisView:(id)a3
+- (void)insertIrisView:(id)view
 {
   if (self->_cropView)
   {
-    [(PLCropOverlay *)self insertSubview:a3 aboveSubview:?];
+    [(PLCropOverlay *)self insertSubview:view aboveSubview:?];
   }
 
   else
   {
-    [(PLCropOverlay *)self addSubview:a3];
+    [(PLCropOverlay *)self addSubview:view];
   }
 
   bottomBar = self->__bottomBar;
@@ -1178,19 +1178,19 @@ LABEL_23:
   }
 }
 
-- (void)setOverlayContainerView:(id)a3
+- (void)setOverlayContainerView:(id)view
 {
   if (!self->_mode)
   {
     overlayContainerView = self->_overlayContainerView;
-    if (overlayContainerView != a3)
+    if (overlayContainerView != view)
     {
       [(UIView *)overlayContainerView removeFromSuperview];
 
-      v6 = a3;
-      self->_overlayContainerView = v6;
+      viewCopy = view;
+      self->_overlayContainerView = viewCopy;
 
-      [(PLCropOverlay *)self addSubview:v6];
+      [(PLCropOverlay *)self addSubview:viewCopy];
     }
   }
 }
@@ -1208,16 +1208,16 @@ LABEL_23:
   }
 }
 
-- (void)setControlsAreVisible:(BOOL)a3
+- (void)setControlsAreVisible:(BOOL)visible
 {
   v3 = *(self + 504);
-  if (((((v3 & 0x20) == 0) ^ a3) & 1) == 0)
+  if (((((v3 & 0x20) == 0) ^ visible) & 1) == 0)
   {
-    v5 = a3 ? 32 : 0;
+    v5 = visible ? 32 : 0;
     *(self + 504) = v3 & 0xDF | v5;
     if (!self->_mode)
     {
-      if (a3)
+      if (visible)
       {
         v6 = 0;
       }
@@ -1236,9 +1236,9 @@ LABEL_23:
   }
 }
 
-- (void)setCameraBottomBar:(id)a3
+- (void)setCameraBottomBar:(id)bar
 {
-  [(PLCropOverlayBottomBar *)self->__bottomBar setCameraBottomBar:a3];
+  [(PLCropOverlayBottomBar *)self->__bottomBar setCameraBottomBar:bar];
 
   [(PLCropOverlay *)self setNeedsLayout];
 }
@@ -1263,7 +1263,7 @@ LABEL_23:
 
   if (-[PLCropOverlay mode](self, "mode") == 5 || ([objc_msgSend(MEMORY[0x277D75418] "currentDevice")] & 0xFFFFFFFFFFFFFFFBLL) == 1 && -[PLCropOverlay mode](self, "mode") == 2)
   {
-    v12 = [(PLCropOverlay *)self bottomBar];
+    bottomBar = [(PLCropOverlay *)self bottomBar];
     [MEMORY[0x277D75C58] defaultHeight];
     v14 = v13;
     v44.origin.x = v4;
@@ -1279,7 +1279,7 @@ LABEL_23:
     v45.size.height = v10;
     Width = CGRectGetWidth(v45);
     x = 0.0;
-    v20 = v12;
+    bottomBar2 = bottomBar;
     y = v17;
     height = v14;
   }
@@ -1298,14 +1298,14 @@ LABEL_23:
     memset(&slice, 0, sizeof(slice));
     [(PLCropOverlay *)self bounds:0];
     CGRectDivide(v46, &slice, &v41, v26, CGRectMaxYEdge);
-    v20 = [(PLCropOverlay *)self bottomBar];
+    bottomBar2 = [(PLCropOverlay *)self bottomBar];
     x = slice.origin.x;
     y = slice.origin.y;
     Width = slice.size.width;
     height = slice.size.height;
   }
 
-  [v20 setFrame:{x, y, Width, height}];
+  [bottomBar2 setFrame:{x, y, Width, height}];
   if ([(PLCropOverlay *)self contactPhotoOverlay])
   {
     [(PLContactPhotoOverlay *)[(PLCropOverlay *)self contactPhotoOverlay] setFrame:v4, v6, v8, v10];
@@ -1350,33 +1350,33 @@ LABEL_23:
   }
 }
 
-- (void)setDisplayedInPopover:(BOOL)a3
+- (void)setDisplayedInPopover:(BOOL)popover
 {
-  if (self->_displayedInPopover != a3)
+  if (self->_displayedInPopover != popover)
   {
-    self->_displayedInPopover = a3;
+    self->_displayedInPopover = popover;
     bottomBar = self->__bottomBar;
-    v5 = [(PLCropOverlay *)self isDisplayedInPopover];
+    isDisplayedInPopover = [(PLCropOverlay *)self isDisplayedInPopover];
 
-    [(PLCropOverlayBottomBar *)bottomBar setInPopover:v5];
+    [(PLCropOverlayBottomBar *)bottomBar setInPopover:isDisplayedInPopover];
   }
 }
 
-- (PLCropOverlay)initWithFrame:(CGRect)a3 mode:(int)a4 offsettingStatusBar:(BOOL)a5
+- (PLCropOverlay)initWithFrame:(CGRect)frame mode:(int)mode offsettingStatusBar:(BOOL)bar
 {
-  v5 = a5;
-  v6 = *&a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  barCopy = bar;
+  v6 = *&mode;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v53.receiver = self;
   v53.super_class = PLCropOverlay;
   v11 = [(PLCropOverlay *)&v53 initWithFrame:?];
   v12 = v11;
   if (v11)
   {
-    if (v5)
+    if (barCopy)
     {
       v13 = 4;
     }
@@ -1428,24 +1428,24 @@ LABEL_23:
         v29 = [[PLCropOverlayWallpaperBottomBar alloc] initWithFrame:v24, v25, v26, v27];
         [(PLCropOverlayBottomBar *)v12->__bottomBar setWallpaperBottomBar:v29];
 
-        v30 = [(PLCropOverlayWallpaperBottomBar *)v29 doCancelButton];
-        [(PLWallpaperButton *)v30 addTarget:v12 action:sel__tappedBottomBarCancelButton_ forControlEvents:64];
+        doCancelButton = [(PLCropOverlayWallpaperBottomBar *)v29 doCancelButton];
+        [(PLWallpaperButton *)doCancelButton addTarget:v12 action:sel__tappedBottomBarCancelButton_ forControlEvents:64];
         if (([objc_msgSend(MEMORY[0x277D75418] "currentDevice")] & 0xFFFFFFFFFFFFFFFBLL) == 1)
         {
-          v31 = [MEMORY[0x277D75348] lightGrayColor];
-          [(PLWallpaperButton *)v30 setTitleColor:v31 forState:1];
-          v32 = [(PLCropOverlayWallpaperBottomBar *)v29 doSetHomeScreenButton];
-          [(PLWallpaperButton *)v32 addTarget:v12 action:sel__tappedBottomBarSetHomeButton forControlEvents:64];
-          [(PLWallpaperButton *)v32 setTitleColor:v31 forState:1];
-          v33 = [(PLCropOverlayWallpaperBottomBar *)v29 doSetLockScreenButton];
-          [(PLWallpaperButton *)v33 addTarget:v12 action:sel__tappedBottomBarSetLockButton forControlEvents:64];
-          [(PLWallpaperButton *)v33 setTitleColor:v31 forState:1];
-          v34 = [(PLCropOverlayWallpaperBottomBar *)v29 doSetBothScreenButton];
-          [(PLWallpaperButton *)v34 addTarget:v12 action:sel__tappedBottomBarSetBothButton forControlEvents:64];
-          [(PLWallpaperButton *)v34 setTitleColor:v31 forState:1];
-          v35 = [(PLCropOverlayWallpaperBottomBar *)v29 motionToggle];
-          [(PLWallpaperButton *)v35 addTarget:v12 action:sel__tappedBottomBarMotionToggle forControlEvents:64];
-          [(PLWallpaperButton *)v35 setTitleColor:v31 forState:1];
+          lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+          [(PLWallpaperButton *)doCancelButton setTitleColor:lightGrayColor forState:1];
+          doSetHomeScreenButton = [(PLCropOverlayWallpaperBottomBar *)v29 doSetHomeScreenButton];
+          [(PLWallpaperButton *)doSetHomeScreenButton addTarget:v12 action:sel__tappedBottomBarSetHomeButton forControlEvents:64];
+          [(PLWallpaperButton *)doSetHomeScreenButton setTitleColor:lightGrayColor forState:1];
+          doSetLockScreenButton = [(PLCropOverlayWallpaperBottomBar *)v29 doSetLockScreenButton];
+          [(PLWallpaperButton *)doSetLockScreenButton addTarget:v12 action:sel__tappedBottomBarSetLockButton forControlEvents:64];
+          [(PLWallpaperButton *)doSetLockScreenButton setTitleColor:lightGrayColor forState:1];
+          doSetBothScreenButton = [(PLCropOverlayWallpaperBottomBar *)v29 doSetBothScreenButton];
+          [(PLWallpaperButton *)doSetBothScreenButton addTarget:v12 action:sel__tappedBottomBarSetBothButton forControlEvents:64];
+          [(PLWallpaperButton *)doSetBothScreenButton setTitleColor:lightGrayColor forState:1];
+          motionToggle = [(PLCropOverlayWallpaperBottomBar *)v29 motionToggle];
+          [(PLWallpaperButton *)motionToggle addTarget:v12 action:sel__tappedBottomBarMotionToggle forControlEvents:64];
+          [(PLWallpaperButton *)motionToggle setTitleColor:lightGrayColor forState:1];
         }
 
         else
@@ -1482,8 +1482,8 @@ LABEL_23:
         [(UIButton *)v12->__cameraCancelButton addTarget:v12 action:sel__tappedBottomBarCancelButton_ forControlEvents:64];
         [(UIButton *)v12->__cameraCancelButton setExclusiveTouch:1];
         [(UIButton *)v12->__cameraCancelButton setTitle:PLLocalizedFrameworkString() forState:0];
-        v49 = [(UIButton *)v12->__cameraCancelButton titleLabel];
-        -[UILabel setFont:](v49, "setFont:", [MEMORY[0x277D74300] fontWithDescriptor:objc_msgSend(MEMORY[0x277D74310] size:{"preferredFontDescriptorWithTextStyle:", *MEMORY[0x277D76918]), 18.0}]);
+        titleLabel = [(UIButton *)v12->__cameraCancelButton titleLabel];
+        -[UILabel setFont:](titleLabel, "setFont:", [MEMORY[0x277D74300] fontWithDescriptor:objc_msgSend(MEMORY[0x277D74310] size:{"preferredFontDescriptorWithTextStyle:", *MEMORY[0x277D76918]), 18.0}]);
         v50 = v12->__cameraCancelButton;
         if ([(PLCropOverlay *)v12 isTelephonyUIMode:v6])
         {
@@ -1506,9 +1506,9 @@ LABEL_23:
           goto LABEL_9;
         }
 
-        v52 = [(PLCropOverlayPreviewBottomBar *)v47 fileResizingButton];
-        [(UIButton *)v52 setMenu:[(PLCropOverlay *)v12 _bottomBarFileSizeMenu]];
-        [(UIButton *)v52 setShowsMenuAsPrimaryAction:1];
+        fileResizingButton = [(PLCropOverlayPreviewBottomBar *)v47 fileResizingButton];
+        [(UIButton *)fileResizingButton setMenu:[(PLCropOverlay *)v12 _bottomBarFileSizeMenu]];
+        [(UIButton *)fileResizingButton setShowsMenuAsPrimaryAction:1];
         goto LABEL_9;
       }
 
@@ -1538,8 +1538,8 @@ LABEL_23:
     }
 
 LABEL_9:
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v21 addObserver:v12 selector:sel_statusBarHeightDidChange_ name:*MEMORY[0x277D76718] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel_statusBarHeightDidChange_ name:*MEMORY[0x277D76718] object:0];
     [(PLCropOverlay *)v12 _setMode:v6];
     [(PLCropOverlay *)v12 _updateTitle];
   }
@@ -1547,24 +1547,24 @@ LABEL_9:
   return v12;
 }
 
-- (void)_savePhotoFinished:(id)a3
+- (void)_savePhotoFinished:(id)finished
 {
   [(PLCropOverlay *)self setProgressDone];
   [objc_msgSend(MEMORY[0x277D75128] "sharedApplication")];
-  v5 = [a3 objectForKey:@"completionTarget"];
+  v5 = [finished objectForKey:@"completionTarget"];
 
-  [v5 cropOverlay:self didFinishSaving:a3];
+  [v5 cropOverlay:self didFinishSaving:finished];
 }
 
-- (void)_backgroundSavePhoto:(id)a3 cropRect:(CGRect)a4 minimalCropDimension:(double)a5
+- (void)_backgroundSavePhoto:(id)photo cropRect:(CGRect)rect minimalCropDimension:(double)dimension
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v11 = objc_alloc_init(MEMORY[0x277CCA8B0]);
-  v12 = [objc_msgSend(a3 objectForKey:{@"tile", "dictionaryWithCroppedImageForRect:minimalCropDimension:withOptions:", objc_msgSend(objc_msgSend(a3, "objectForKey:", @"options", "unsignedIntValue"), x, y, width, height, a5}];
-  v13 = [a3 objectForKey:@"completionTarget"];
+  v12 = [objc_msgSend(photo objectForKey:{@"tile", "dictionaryWithCroppedImageForRect:minimalCropDimension:withOptions:", objc_msgSend(objc_msgSend(photo, "objectForKey:", @"options", "unsignedIntValue"), x, y, width, height, dimension}];
+  v13 = [photo objectForKey:@"completionTarget"];
   if (v12)
   {
     v14 = [v12 mutableCopy];
@@ -1584,22 +1584,22 @@ LABEL_9:
   pl_dispatch_sync();
 }
 
-- (void)beginBackgroundSaveWithTile:(id)a3 progressTitle:(id)a4 completionCallbackTarget:(id)a5 options:(int)a6
+- (void)beginBackgroundSaveWithTile:(id)tile progressTitle:(id)title completionCallbackTarget:(id)target options:(int)options
 {
-  v6 = *&a6;
-  v11 = [a3 scrollView];
+  v6 = *&options;
+  scrollView = [tile scrollView];
   v12 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:v6];
-  [v11 cancelMouseTracking];
-  [v11 setUserInteractionEnabled:0];
+  [scrollView cancelMouseTracking];
+  [scrollView setUserInteractionEnabled:0];
   [objc_msgSend(MEMORY[0x277D75128] "sharedApplication")];
-  if (!a4)
+  if (!title)
   {
-    a4 = PLLocalizedFrameworkString();
+    title = PLLocalizedFrameworkString();
   }
 
-  [(PLCropOverlay *)self setShowProgress:1 title:a4];
-  v13 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{a3, @"tile", a5, @"completionTarget", v12, @"options", 0}];
-  v14 = [a3 scrollView];
+  [(PLCropOverlay *)self setShowProgress:1 title:title];
+  v13 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{tile, @"tile", target, @"completionTarget", v12, @"options", 0}];
+  scrollView2 = [tile scrollView];
   if ((v6 & 4) != 0)
   {
     [(PLContactPhotoOverlay *)[(PLCropOverlay *)self contactPhotoOverlay] inscribingBounds];
@@ -1610,7 +1610,7 @@ LABEL_9:
     [(PLCropOverlay *)self cropRect];
   }
 
-  [v14 convertRect:self fromView:?];
+  [scrollView2 convertRect:self fromView:?];
   v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v16 = dispatch_queue_attr_make_with_qos_class(v15, QOS_CLASS_USER_INITIATED, 0);
   v17 = dispatch_queue_create("com.apple.photos.plcropoverlay.save", v16);

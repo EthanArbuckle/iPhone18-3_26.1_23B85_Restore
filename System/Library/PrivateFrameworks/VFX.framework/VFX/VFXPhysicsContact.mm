@@ -1,12 +1,12 @@
 @interface VFXPhysicsContact
-+ (id)_contactWithManifold:(const btPersistentManifold *)a3 index:(int64_t)a4;
++ (id)_contactWithManifold:(const btPersistentManifold *)manifold index:(int64_t)index;
 - (BOOL)_shouldPostUpdate;
 - (id)contactNormalValue;
 - (id)contactPointValue;
 - (id)description;
-- (void)_fillNodeA:(VFXPhysicsContact *)self nodeB:(SEL)a2 contactPoint:(id)a3 contactNormal:(id)a4 distance:(float)a5 hitFraction:(float)a6;
-- (void)_fillNodeA:(id)a3 nodeB:(id)a4;
-- (void)_updateWithManifold:(const btPersistentManifold *)a3 index:(int64_t)a4 point:(const btManifoldPoint *)a5;
+- (void)_fillNodeA:(VFXPhysicsContact *)self nodeB:(SEL)b contactPoint:(id)point contactNormal:(id)normal distance:(float)distance hitFraction:(float)fraction;
+- (void)_fillNodeA:(id)a nodeB:(id)b;
+- (void)_updateWithManifold:(const btPersistentManifold *)manifold index:(int64_t)index point:(const btManifoldPoint *)point;
 - (void)dealloc;
 @end
 
@@ -69,14 +69,14 @@
   return v8;
 }
 
-- (void)_fillNodeA:(VFXPhysicsContact *)self nodeB:(SEL)a2 contactPoint:(id)a3 contactNormal:(id)a4 distance:(float)a5 hitFraction:(float)a6
+- (void)_fillNodeA:(VFXPhysicsContact *)self nodeB:(SEL)b contactPoint:(id)point contactNormal:(id)normal distance:(float)distance hitFraction:(float)fraction
 {
   v8 = v7;
   v9 = v6;
-  v17 = *&a5;
-  v18 = *&a6;
+  v17 = *&distance;
+  v18 = *&fraction;
   nodeA = self->_nodeA;
-  if (nodeA != a3)
+  if (nodeA != point)
   {
     if (nodeA)
     {
@@ -84,9 +84,9 @@
       self->_nodeA = 0;
     }
 
-    if (a3)
+    if (point)
     {
-      v14 = CFRetain(a3);
+      v14 = CFRetain(point);
     }
 
     else
@@ -98,7 +98,7 @@
   }
 
   nodeB = self->_nodeB;
-  if (nodeB != a4)
+  if (nodeB != normal)
   {
     if (nodeB)
     {
@@ -106,9 +106,9 @@
       self->_nodeB = 0;
     }
 
-    if (a4)
+    if (normal)
     {
-      v16 = CFRetain(a4);
+      v16 = CFRetain(normal);
     }
 
     else
@@ -126,10 +126,10 @@
   self->_fraction = v8;
 }
 
-- (void)_fillNodeA:(id)a3 nodeB:(id)a4
+- (void)_fillNodeA:(id)a nodeB:(id)b
 {
   nodeA = self->_nodeA;
-  if (nodeA != a3)
+  if (nodeA != a)
   {
     if (nodeA)
     {
@@ -137,9 +137,9 @@
       self->_nodeA = 0;
     }
 
-    if (a3)
+    if (a)
     {
-      v8 = CFRetain(a3);
+      v8 = CFRetain(a);
     }
 
     else
@@ -151,7 +151,7 @@
   }
 
   nodeB = self->_nodeB;
-  if (nodeB != a4)
+  if (nodeB != b)
   {
     if (nodeB)
     {
@@ -159,9 +159,9 @@
       self->_nodeB = 0;
     }
 
-    if (a4)
+    if (b)
     {
-      v10 = CFRetain(a4);
+      v10 = CFRetain(b);
     }
 
     else
@@ -173,9 +173,9 @@
   }
 }
 
-- (void)_updateWithManifold:(const btPersistentManifold *)a3 index:(int64_t)a4 point:(const btManifoldPoint *)a5
+- (void)_updateWithManifold:(const btPersistentManifold *)manifold index:(int64_t)index point:(const btManifoldPoint *)point
 {
-  var3 = a3->var3;
+  var3 = manifold->var3;
   if (var3 && (*(var3 + 264) & 2) != 0 && (v9 = *(var3 + 67)) != 0)
   {
     v10 = sub_1AF16CDEC(*(v9 + 72));
@@ -186,7 +186,7 @@
     v10 = 0;
   }
 
-  v11 = *&a3->var4;
+  v11 = *&manifold->var4;
   if (v11 && (*(v11 + 264) & 2) != 0 && (v12 = *(v11 + 536)) != 0)
   {
     v13 = sub_1AF16CDEC(*(v12 + 72));
@@ -241,17 +241,17 @@
     self->_nodeB = v17;
   }
 
-  *self->_contactPoint = a5->var2;
-  *self->_contactNormal = a5->var4;
-  self->_collisionImpulse = a5->var15;
-  self->_distance = -a5->var5;
+  *self->_contactPoint = point->var2;
+  *self->_contactNormal = point->var4;
+  self->_collisionImpulse = point->var15;
+  self->_distance = -point->var5;
 }
 
-+ (id)_contactWithManifold:(const btPersistentManifold *)a3 index:(int64_t)a4
++ (id)_contactWithManifold:(const btPersistentManifold *)manifold index:(int64_t)index
 {
-  v4 = a3 + 192 * a4;
+  v4 = manifold + 192 * index;
   v5 = *(v4 + 16);
-  objc_msgSend__updateWithManifold_index_point_(v5, a2, a3, a4, v4 + 16);
+  objc_msgSend__updateWithManifold_index_point_(v5, a2, manifold, index, v4 + 16);
   return v5;
 }
 

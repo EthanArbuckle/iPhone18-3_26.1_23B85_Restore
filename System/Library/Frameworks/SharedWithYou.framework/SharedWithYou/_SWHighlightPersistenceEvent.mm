@@ -1,14 +1,14 @@
 @interface _SWHighlightPersistenceEvent
-- (_SWHighlightPersistenceEvent)initWithHighlight:(id)a3 type:(int64_t)a4;
+- (_SWHighlightPersistenceEvent)initWithHighlight:(id)highlight type:(int64_t)type;
 @end
 
 @implementation _SWHighlightPersistenceEvent
 
-- (_SWHighlightPersistenceEvent)initWithHighlight:(id)a3 type:(int64_t)a4
+- (_SWHighlightPersistenceEvent)initWithHighlight:(id)highlight type:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = _SWHighlightPersistenceEvent;
-  v4 = [(SWHighlightPersistenceEvent *)&v8 initWithHighlight:a3 type:a4];
+  v4 = [(SWHighlightPersistenceEvent *)&v8 initWithHighlight:highlight type:type];
   v5 = v4;
   if (v4)
   {

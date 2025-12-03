@@ -11,12 +11,12 @@
 {
   if (a3 == 2)
   {
-    return [a1 visibilityStateMixed];
+    return [self visibilityStateMixed];
   }
 
   if (a3 == 1)
   {
-    return [a1 visibilityStateShared];
+    return [self visibilityStateShared];
   }
 
   if (a3)
@@ -24,64 +24,64 @@
     return 0;
   }
 
-  return [a1 visibilityState];
+  return [self visibilityState];
 }
 
 - (id)keyAssetForHighlightFilter:()HighlightItem
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v2 = [a1 keyAssetObjectIDForKindWithFilter:?];
+  v2 = [self keyAssetObjectIDForKindWithFilter:?];
   if (v2)
   {
-    v3 = [a1 photoLibrary];
-    v4 = [v3 librarySpecificFetchOptions];
+    photoLibrary = [self photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    [v4 setIncludeGuestAssets:1];
+    [librarySpecificFetchOptions setIncludeGuestAssets:1];
     v5 = MEMORY[0x277CD97A8];
     v11[0] = v2;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-    v7 = [v5 fetchAssetsWithObjectIDs:v6 options:v4];
+    v7 = [v5 fetchAssetsWithObjectIDs:v6 options:librarySpecificFetchOptions];
 
-    v8 = [v7 firstObject];
+    firstObject = [v7 firstObject];
   }
 
   else
   {
-    v8 = 0;
+    firstObject = 0;
   }
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return firstObject;
 }
 
 - (id)extendedCuratedAssets
 {
-  v2 = [a1 photoLibrary];
-  v3 = [v2 librarySpecificFetchOptions];
+  photoLibrary = [self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v3 setIncludeGuestAssets:1];
-  v4 = [MEMORY[0x277CD97A8] fetchExtendedCuratedAssetsInAssetCollection:a1 options:v3];
-  v5 = [v4 fetchedObjects];
+  [librarySpecificFetchOptions setIncludeGuestAssets:1];
+  v4 = [MEMORY[0x277CD97A8] fetchExtendedCuratedAssetsInAssetCollection:self options:librarySpecificFetchOptions];
+  fetchedObjects = [v4 fetchedObjects];
 
-  return v5;
+  return fetchedObjects;
 }
 
 - (uint64_t)numberOfAssetsInExtendedForSharingFilter:()HighlightItem
 {
-  v5 = [a1 kind];
-  if (v5 == 3)
+  kind = [self kind];
+  if (kind == 3)
   {
     if (a3 == 2)
     {
 
-      return [a1 dayGroupExtendedAssetsCountMixed];
+      return [self dayGroupExtendedAssetsCountMixed];
     }
 
     else if (a3 == 1)
     {
 
-      return [a1 dayGroupExtendedAssetsCountShared];
+      return [self dayGroupExtendedAssetsCountShared];
     }
 
     else
@@ -91,13 +91,13 @@
         return 0;
       }
 
-      return [a1 dayGroupExtendedAssetsCountPrivate];
+      return [self dayGroupExtendedAssetsCountPrivate];
     }
   }
 
   else
   {
-    if (v5)
+    if (kind)
     {
       return 0;
     }
@@ -106,13 +106,13 @@
     {
       case 2:
 
-        return [a1 extendedCountMixed];
+        return [self extendedCountMixed];
       case 1:
 
-        return [a1 extendedCountShared];
+        return [self extendedCountShared];
       case 0:
 
-        return [a1 extendedCountPrivate];
+        return [self extendedCountPrivate];
       default:
         return 0;
     }

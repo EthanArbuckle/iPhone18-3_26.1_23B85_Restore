@@ -1,6 +1,6 @@
 @interface AXUIBridgeVoiceOverBrailleAlertIntervalController
 - (double)numericalPreferenceValue;
-- (void)setNumericalPreferenceValueFromUser:(double)a3;
+- (void)setNumericalPreferenceValueFromUser:(double)user;
 - (void)viewDidLoad;
 @end
 
@@ -11,8 +11,8 @@
   v4.receiver = self;
   v4.super_class = AXUIBridgeVoiceOverBrailleAlertIntervalController;
   [(AXUISettingsNumericalPickerViewController *)&v4 viewDidLoad];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_nanoSettingsChanged_ name:@"AXNanoPreferencesSettingsChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_nanoSettingsChanged_ name:@"AXNanoPreferencesSettingsChangedNotification" object:0];
 }
 
 - (double)numericalPreferenceValue
@@ -34,10 +34,10 @@
   return v5;
 }
 
-- (void)setNumericalPreferenceValueFromUser:(double)a3
+- (void)setNumericalPreferenceValueFromUser:(double)user
 {
   v4 = objc_opt_class();
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:user];
   [v4 setGizmoAccessibilityPref:v5 forKey:*MEMORY[0x277CE7FD8]];
 }
 

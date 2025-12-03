@@ -1,81 +1,81 @@
 @interface CACSpokenCommandManager
-+ (BOOL)commandIdentifierIsDictation:(id)a3;
-+ (BOOL)doesEvaluatorKey:(id)a3 matchValue:(id)a4;
++ (BOOL)commandIdentifierIsDictation:(id)dictation;
++ (BOOL)doesEvaluatorKey:(id)key matchValue:(id)value;
 + (id)_allCommandIdentifiers;
-+ (id)capitalizedStringFromString:(id)a3;
-+ (id)commandPropertiesForIdentifier:(id)a3;
++ (id)capitalizedStringFromString:(id)string;
++ (id)commandPropertiesForIdentifier:(id)identifier;
 + (id)hardwareEvaluatorKeys;
 + (id)sharedCACSpokenCommandManager;
-- (BOOL)_isNumberOnlyString:(id)a3 lessThanOrEqualToValue:(int64_t)a4;
+- (BOOL)_isNumberOnlyString:(id)string lessThanOrEqualToValue:(int64_t)value;
 - (BOOL)_isSystemSleeping;
-- (BOOL)_popInteractionLevel:(unsigned int)a3 referencingObject:(id)a4;
-- (BOOL)_pushInteractionLevel:(unsigned int)a3 referencingObject:(id)a4;
-- (BOOL)_replaceTextInRange:(_NSRange)a3 withString:(id)a4;
+- (BOOL)_popInteractionLevel:(unsigned int)level referencingObject:(id)object;
+- (BOOL)_pushInteractionLevel:(unsigned int)level referencingObject:(id)object;
+- (BOOL)_replaceTextInRange:(_NSRange)range withString:(id)string;
 - (BOOL)doesCurrentLanguageSupportInterWordSpaces;
 - (BOOL)doesFocusedElementRequireSecureInput;
-- (BOOL)elementIsOccluded:(id)a3 occludedAppScenes:(id)a4;
-- (BOOL)isActiveOverlayType:(id)a3;
+- (BOOL)elementIsOccluded:(id)occluded occludedAppScenes:(id)scenes;
+- (BOOL)isActiveOverlayType:(id)type;
 - (BOOL)isFetchingElements;
 - (BOOL)isNextPreviousResolverSpokenCommandEmojiBased;
 - (BOOL)isSynchronizingRecognizers;
-- (BOOL)shouldIgnoreCommand:(id)a3;
-- (BOOL)utteranceIDHasBeenHandled:(unint64_t)a3;
-- (CGRect)_interfaceOrientedFrameForElement:(id)a3 axFrame:(CGRect)a4;
-- (CGRect)bestDictationRecognizerModeImageRectForView:(id)a3;
-- (__RXLanguageObject)rxLanguageObjectForBuiltInLMIdentifier:(id)a3;
-- (double)delayForNotification:(int)a3;
+- (BOOL)shouldIgnoreCommand:(id)command;
+- (BOOL)utteranceIDHasBeenHandled:(unint64_t)handled;
+- (CGRect)_interfaceOrientedFrameForElement:(id)element axFrame:(CGRect)frame;
+- (CGRect)bestDictationRecognizerModeImageRectForView:(id)view;
+- (__RXLanguageObject)rxLanguageObjectForBuiltInLMIdentifier:(id)identifier;
+- (double)delayForNotification:(int)notification;
 - (id)_allElementsIncludingNonScanner;
-- (id)_arrayFromExternalContextOverrideForBuiltInIdentifier:(id)a3;
-- (id)_descriptionForAXTextUnit:(unint64_t)a3;
+- (id)_arrayFromExternalContextOverrideForBuiltInIdentifier:(id)identifier;
+- (id)_descriptionForAXTextUnit:(unint64_t)unit;
 - (id)_fetchPresentationElements;
 - (id)_inCallServiceApplication;
 - (id)_nextResolverRelationships;
 - (id)_previousResolverRelationships;
-- (id)_stringInRecognitionLocaleFormatFromIntegerValue:(int64_t)a3;
+- (id)_stringInRecognitionLocaleFormatFromIntegerValue:(int64_t)value;
 - (id)_telephonyQueue;
-- (id)_templateSpokenCommandWithIdentifier:(id)a3;
+- (id)_templateSpokenCommandWithIdentifier:(id)identifier;
 - (id)activeApplications;
 - (id)activeCommandIdentifiers;
-- (id)activeCommandsForLocaleIdentifier:(id)a3;
+- (id)activeCommandsForLocaleIdentifier:(id)identifier;
 - (id)activeOverlayType;
-- (id)allCommandsForLocaleIdentifier:(id)a3;
+- (id)allCommandsForLocaleIdentifier:(id)identifier;
 - (id)allCustomCommandsDetail;
 - (id)contextSummary;
-- (id)copySupportedCommandWithIdentifier:(id)a3;
+- (id)copySupportedCommandWithIdentifier:(id)identifier;
 - (id)focusedElement;
-- (id)groupedCommandsForLocaleIdentifier:(id)a3;
-- (id)languageModelForBuiltInLMIdentifier:(id)a3;
+- (id)groupedCommandsForLocaleIdentifier:(id)identifier;
+- (id)languageModelForBuiltInLMIdentifier:(id)identifier;
 - (id)leadingTextForCurrentSelection;
-- (id)nameOfAXNotification:(int)a3;
-- (id)primaryStringForCommandIdentifier:(id)a3;
+- (id)nameOfAXNotification:(int)notification;
+- (id)primaryStringForCommandIdentifier:(id)identifier;
 - (id)resolvedNextSpokenCommand;
 - (id)resolvedPreviousSpokenCommand;
 - (id)screenElements;
 - (id)screenElementsForEscape;
 - (id)stopRecordingGesture;
-- (id)synchronousRecognitionOfString:(id)a3 timeoutInterval:(double)a4;
-- (id)synchronousRecognitionUsingCommandIdentifier:(id)a3 parameters:(id)a4 timeoutInterval:(double)a5;
+- (id)synchronousRecognitionOfString:(id)string timeoutInterval:(double)interval;
+- (id)synchronousRecognitionUsingCommandIdentifier:(id)identifier parameters:(id)parameters timeoutInterval:(double)interval;
 - (int)dictationRecognizerMode;
-- (unsigned)currentInteractionLevelPassingBackTopReferencingObject:(id *)a3;
-- (void)_appendSpokenCommand:(id)a3 toLogAtPath:(id)a4;
+- (unsigned)currentInteractionLevelPassingBackTopReferencingObject:(id *)object;
+- (void)_appendSpokenCommand:(id)command toLogAtPath:(id)path;
 - (void)_attentionAwareSettingChanged;
 - (void)_beginObservingSiriListeningState;
 - (void)_cancelSynchronousRemoteRecognition;
-- (void)_clearPreviousTextInsertionSpecifierBasedOnExecutedCommand:(id)a3;
+- (void)_clearPreviousTextInsertionSpecifierBasedOnExecutedCommand:(id)command;
 - (void)_closeAllRecognizers;
 - (void)_createCommandRecognizersIfNecessary;
-- (void)_executeNextRepeatWithCompletionBlock:(id)a3;
+- (void)_executeNextRepeatWithCompletionBlock:(id)block;
 - (void)_fetchElements;
 - (void)_flushBuiltInLMIdentifierTable;
 - (void)_handleLanguageChange;
 - (void)_handlePendingCommands;
 - (void)_intializeBuiltInLMIdentifierTableIfNecessary;
-- (void)_markAsDirtyForBuiltInLMIdentifier:(id)a3;
+- (void)_markAsDirtyForBuiltInLMIdentifier:(id)identifier;
 - (void)_microphoneTurnedOffAfterInteruption;
 - (void)_microphoneTurnedOn;
 - (void)_microphoneTurnedOnAfterInteruption;
-- (void)_notesUndoWithPreHypothesisText:(id)a3 hypothesisHistory:(id)a4 forElement:(id)a5;
-- (void)_notifyStatusChanged:(int64_t)a3;
+- (void)_notesUndoWithPreHypothesisText:(id)text hypothesisHistory:(id)history forElement:(id)element;
+- (void)_notifyStatusChanged:(int64_t)changed;
 - (void)_notifyUserOfSensitiveLogging;
 - (void)_pushLeadingContextToSpeechRecognitionSystem;
 - (void)_pushSecureFieldStatusToSpeechRecognitionSystem;
@@ -83,61 +83,61 @@
 - (void)_rebuildCustomCommandRecognizers;
 - (void)_resetInteractionLevel;
 - (void)_resetRecognitionSystems;
-- (void)_scheduleFetchElementsWithDelay:(double)a3 andReason:(id)a4;
+- (void)_scheduleFetchElementsWithDelay:(double)delay andReason:(id)reason;
 - (void)_startListening;
-- (void)_startSynchronousRemoteRecognitionWithCompletionBlock:(id)a3;
+- (void)_startSynchronousRemoteRecognitionWithCompletionBlock:(id)block;
 - (void)_stopListening;
 - (void)_updateAssetPurgeability;
 - (void)_updateDictationInsertionCursorMode;
-- (void)_updateLanguageModelForBuiltInLMIdentifier:(id)a3;
+- (void)_updateLanguageModelForBuiltInLMIdentifier:(id)identifier;
 - (void)_updateMostRecentLaunchTime;
 - (void)_waitUntilElementsAreNumbered;
-- (void)attemptGrabbingMic:(id)a3;
+- (void)attemptGrabbingMic:(id)mic;
 - (void)attentionAwareGained;
 - (void)attentionAwareInterrupted;
 - (void)attentionAwareInterruptionEnded;
 - (void)attentionAwareLost;
-- (void)beginExecutingRepeatingSpokenCommandNumberOfTimes:(int64_t)a3 completionBlock:(id)a4;
+- (void)beginExecutingRepeatingSpokenCommandNumberOfTimes:(int64_t)times completionBlock:(id)block;
 - (void)beginObservingApplications;
 - (void)cancelAnyTransientOverlay;
 - (void)clearProvisionalDictation;
 - (void)dealloc;
 - (void)didBeginTouches;
-- (void)didFindCloseSpokenCommandIdentifiers:(id)a3;
-- (void)didFinishExecutingSpokenCommand:(id)a3;
-- (void)didObserveFirstTouchDownForObserver:(id)a3;
-- (void)didObserveLastTouchUpForObserver:(id)a3;
+- (void)didFindCloseSpokenCommandIdentifiers:(id)identifiers;
+- (void)didFinishExecutingSpokenCommand:(id)command;
+- (void)didObserveFirstTouchDownForObserver:(id)observer;
+- (void)didObserveLastTouchUpForObserver:(id)observer;
 - (void)dispatchPendingCommand;
-- (void)enterDictatedString:(id)a3;
+- (void)enterDictatedString:(id)string;
 - (void)enterSleepInteractionLevel;
-- (void)forceElementFetchWithReason:(id)a3;
-- (void)forceSynchronizeRecognizersForBuiltInLMIdentifier:(id)a3;
-- (void)handleCommandWithIdentifier:(id)a3;
-- (void)handleRecognizedCommand:(id)a3;
+- (void)forceElementFetchWithReason:(id)reason;
+- (void)forceSynchronizeRecognizersForBuiltInLMIdentifier:(id)identifier;
+- (void)handleCommandWithIdentifier:(id)identifier;
+- (void)handleRecognizedCommand:(id)command;
 - (void)handleSRSystemServerError;
-- (void)insertDictatedAttributedString:(id)a3;
-- (void)insertDictatedAttributedString:(id)a3 provisionally:(BOOL)a4;
-- (void)insertDictatedString:(id)a3 provisionally:(BOOL)a4;
-- (void)notifyUserOfCommandFailureWithTitle:(id)a3 description:(id)a4;
-- (void)observer:(id)a3 didObserveNotification:(int)a4 notificationData:(void *)a5;
-- (void)performOnRecognizerSynchronizationDispatchQueueIfRunning:(id)a3;
-- (void)performUndoIncludingProvisionalTextForElement:(id)a3;
-- (void)registerSignPostBeginProcessingForSpeechRecognizer:(id)a3 message:(id)a4;
-- (void)registerSignPostEndProcessingForSpeechRecognizer:(id)a3 message:(id)a4;
+- (void)insertDictatedAttributedString:(id)string;
+- (void)insertDictatedAttributedString:(id)string provisionally:(BOOL)provisionally;
+- (void)insertDictatedString:(id)string provisionally:(BOOL)provisionally;
+- (void)notifyUserOfCommandFailureWithTitle:(id)title description:(id)description;
+- (void)observer:(id)observer didObserveNotification:(int)notification notificationData:(void *)data;
+- (void)performOnRecognizerSynchronizationDispatchQueueIfRunning:(id)running;
+- (void)performUndoIncludingProvisionalTextForElement:(id)element;
+- (void)registerSignPostBeginProcessingForSpeechRecognizer:(id)recognizer message:(id)message;
+- (void)registerSignPostEndProcessingForSpeechRecognizer:(id)recognizer message:(id)message;
 - (void)run;
-- (void)setDictationRecognizerMode:(int)a3;
-- (void)setNextPreviousResolverSpokenCommand:(id)a3;
-- (void)setRepeatingSpokenCommand:(id)a3;
-- (void)setScreenElements:(id)a3 presentationElements:(id)a4 activeApplications:(id)a5 focusedTextAreaElement:(id)a6;
+- (void)setDictationRecognizerMode:(int)mode;
+- (void)setNextPreviousResolverSpokenCommand:(id)command;
+- (void)setRepeatingSpokenCommand:(id)command;
+- (void)setScreenElements:(id)elements presentationElements:(id)presentationElements activeApplications:(id)applications focusedTextAreaElement:(id)element;
 - (void)startListening;
 - (void)startRecordingGesture;
 - (void)stopAnyRepeatingSpokenCommand;
 - (void)stopListening;
 - (void)stopObservingApplications;
-- (void)suspendCommandDispatching:(BOOL)a3;
-- (void)synchronizeRecognizersWithReason:(id)a3;
+- (void)suspendCommandDispatching:(BOOL)dispatching;
+- (void)synchronizeRecognizersWithReason:(id)reason;
 - (void)updateStatusIndicatorView;
-- (void)willHandleCommandForUtteranceID:(unint64_t)a3;
+- (void)willHandleCommandForUtteranceID:(unint64_t)d;
 - (void)willTerminate;
 - (void)willUpdateElementsSignificantly;
 @end
@@ -163,17 +163,17 @@ uint64_t __56__CACSpokenCommandManager_sharedCACSpokenCommandManager__block_invo
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)capitalizedStringFromString:(id)a3
++ (id)capitalizedStringFromString:(id)string
 {
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
-  v5 = [v3 mainBundle];
-  v6 = [v5 preferredLocalizations];
-  v7 = [v6 objectAtIndex:0];
+  stringCopy = string;
+  mainBundle = [v3 mainBundle];
+  preferredLocalizations = [mainBundle preferredLocalizations];
+  v7 = [preferredLocalizations objectAtIndex:0];
 
   v8 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v7];
-  v9 = [MEMORY[0x277CCAB68] stringWithString:v4];
-  v10 = [v4 length];
+  v9 = [MEMORY[0x277CCAB68] stringWithString:stringCopy];
+  v10 = [stringCopy length];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __55__CACSpokenCommandManager_capitalizedStringFromString___block_invoke;
@@ -182,7 +182,7 @@ uint64_t __56__CACSpokenCommandManager_sharedCACSpokenCommandManager__block_invo
   v11 = v9;
   v18 = v11;
   v12 = v8;
-  [v4 enumerateSubstringsInRange:0 options:v10 usingBlock:{3, v16}];
+  [stringCopy enumerateSubstringsInRange:0 options:v10 usingBlock:{3, v16}];
 
   v13 = v18;
   v14 = v11;
@@ -211,26 +211,26 @@ void __55__CACSpokenCommandManager_capitalizedStringFromString___block_invoke(ui
   return v2;
 }
 
-+ (BOOL)doesEvaluatorKey:(id)a3 matchValue:(id)a4
++ (BOOL)doesEvaluatorKey:(id)key matchValue:(id)value
 {
   v66 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  valueCopy = value;
   v7 = &CACLogCorrections_sLogCorrections;
-  v8 = [sEvaluatorValueCache objectForKey:v5];
-  v9 = [v8 isEqual:v6];
+  v8 = [sEvaluatorValueCache objectForKey:keyCopy];
+  v9 = [v8 isEqual:valueCopy];
 
   if (v9)
   {
-    v10 = [sEvaluatorResultCache objectForKey:v5];
+    v10 = [sEvaluatorResultCache objectForKey:keyCopy];
     LOBYTE(v11) = [v10 BOOLValue];
 
     goto LABEL_21;
   }
 
-  if (([v5 isEqualToString:kCACCommandContextRequiresFocusedStaticText] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", kCACCommandContextRequiresFocusedEditableText) & 1) != 0 || objc_msgSend(v5, "isEqualToString:", kCACCommandContextRequiresFocusedEditableTextOrDateTime))
+  if (([keyCopy isEqualToString:kCACCommandContextRequiresFocusedStaticText] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", kCACCommandContextRequiresFocusedEditableText) & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", kCACCommandContextRequiresFocusedEditableTextOrDateTime))
   {
-    v12 = [sCACSpokenCommandManager focusedElement];
+    focusedElement = [sCACSpokenCommandManager focusedElement];
 
     v13 = sCACSpokenCommandManager;
     if (sCACSpokenCommandManager)
@@ -238,7 +238,7 @@ void __55__CACSpokenCommandManager_capitalizedStringFromString___block_invoke(ui
       v13 = *(sCACSpokenCommandManager + 368);
     }
 
-    if (v12 && (v13 & 1) == 0)
+    if (focusedElement && (v13 & 1) == 0)
     {
       goto LABEL_10;
     }
@@ -246,18 +246,18 @@ void __55__CACSpokenCommandManager_capitalizedStringFromString___block_invoke(ui
     goto LABEL_18;
   }
 
-  if ([v5 isEqualToString:kCACCommandContextRequiresInteractionLevel])
+  if ([keyCopy isEqualToString:kCACCommandContextRequiresInteractionLevel])
   {
-    v14 = [sCACSpokenCommandManager currentInteractionLevel];
+    currentInteractionLevel = [sCACSpokenCommandManager currentInteractionLevel];
 LABEL_15:
-    v11 = v14 == [(__CFString *)v6 integerValue];
+    v11 = currentInteractionLevel == [(__CFString *)valueCopy integerValue];
     goto LABEL_19;
   }
 
-  if ([v5 isEqualToString:kCACCommandContextSupportsInteractionLevel])
+  if ([keyCopy isEqualToString:kCACCommandContextSupportsInteractionLevel])
   {
-    v14 = [sCACSpokenCommandManager currentInteractionLevel];
-    if (v14)
+    currentInteractionLevel = [sCACSpokenCommandManager currentInteractionLevel];
+    if (currentInteractionLevel)
     {
       goto LABEL_15;
     }
@@ -267,7 +267,7 @@ LABEL_10:
     goto LABEL_19;
   }
 
-  if ([v5 isEqualToString:kCACCommandContextRequiresActiveDictationRecognizerMode])
+  if ([keyCopy isEqualToString:kCACCommandContextRequiresActiveDictationRecognizerMode])
   {
     if ([sCACSpokenCommandManager dictationRecognizerMode] != 1)
     {
@@ -275,16 +275,16 @@ LABEL_10:
     }
 
 LABEL_18:
-    v11 = [(__CFString *)v6 BOOLValue]^ 1;
+    v11 = [(__CFString *)valueCopy BOOLValue]^ 1;
     goto LABEL_19;
   }
 
-  if ([v5 isEqualToString:kCACCommandContextRequiresSpellingModeSupportForLocale])
+  if ([keyCopy isEqualToString:kCACCommandContextRequiresSpellingModeSupportForLocale])
   {
-    v19 = +[CACPreferences sharedPreferences];
-    v20 = [v19 bestLocaleIdentifier];
-    v21 = RXLocalesSupportingSpellingMode();
-    if ([CACLocaleUtilities isLocaleIdentifier:v20 containedInLocaleIdentifiers:v21]|| CFPreferencesGetAppBooleanValue(@"EnableSpellingModeDuringDevelopment", @"com.apple.speech.SpeechRecognitionCommandAndControl", 0))
+    activeOverlayType = +[CACPreferences sharedPreferences];
+    bestLocaleIdentifier = [activeOverlayType bestLocaleIdentifier];
+    visibleLabeledTextSegmentElements = RXLocalesSupportingSpellingMode();
+    if ([CACLocaleUtilities isLocaleIdentifier:bestLocaleIdentifier containedInLocaleIdentifiers:visibleLabeledTextSegmentElements]|| CFPreferencesGetAppBooleanValue(@"EnableSpellingModeDuringDevelopment", @"com.apple.speech.SpeechRecognitionCommandAndControl", 0))
     {
       goto LABEL_25;
     }
@@ -292,10 +292,10 @@ LABEL_18:
     goto LABEL_57;
   }
 
-  if ([v5 isEqualToString:kCACCommandContextRequiresSpellingModeSupportInAsset])
+  if ([keyCopy isEqualToString:kCACCommandContextRequiresSpellingModeSupportInAsset])
   {
-    v19 = +[CACSpeechSystem speechSystem];
-    if (([v19 supportsSpellingMode] & 1) != 0 || CFPreferencesGetAppBooleanValue(@"EnableSpellingModeDuringDevelopment", @"com.apple.speech.SpeechRecognitionCommandAndControl", 0))
+    activeOverlayType = +[CACSpeechSystem speechSystem];
+    if (([activeOverlayType supportsSpellingMode] & 1) != 0 || CFPreferencesGetAppBooleanValue(@"EnableSpellingModeDuringDevelopment", @"com.apple.speech.SpeechRecognitionCommandAndControl", 0))
     {
       goto LABEL_30;
     }
@@ -303,7 +303,7 @@ LABEL_18:
     goto LABEL_45;
   }
 
-  if ([v5 isEqualToString:kCACCommandContextRequiresOriginalEmojiCommands])
+  if ([keyCopy isEqualToString:kCACCommandContextRequiresOriginalEmojiCommands])
   {
     if (!CFPreferencesGetAppBooleanValue(@"UseAssetSupportForEmojiNameRecogition", @"com.apple.SpeechRecognitionCore", 0))
     {
@@ -313,15 +313,15 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  if ([v5 isEqualToString:kCACCommandContextRequiresSpecifiedBooleanPreferenceKeyIsTrue])
+  if ([keyCopy isEqualToString:kCACCommandContextRequiresSpecifiedBooleanPreferenceKeyIsTrue])
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v11 = 1;
-    if (v6 && (isKindOfClass & 1) != 0)
+    if (valueCopy && (isKindOfClass & 1) != 0)
     {
       keyExistsAndHasValidFormat = 0;
-      AppBooleanValue = CFPreferencesGetAppBooleanValue(v6, @"com.apple.speech.SpeechRecognitionCommandAndControl", &keyExistsAndHasValidFormat);
+      AppBooleanValue = CFPreferencesGetAppBooleanValue(valueCopy, @"com.apple.speech.SpeechRecognitionCommandAndControl", &keyExistsAndHasValidFormat);
       if (keyExistsAndHasValidFormat)
       {
         v24 = AppBooleanValue == 0;
@@ -338,15 +338,15 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if ([v5 isEqualToString:kCACCommandContextRequiresAnyOverlay])
+  if ([keyCopy isEqualToString:kCACCommandContextRequiresAnyOverlay])
   {
-    v19 = +[CACDisplayManager sharedManager];
-    if (([v19 isDisplayingAnyOverlay] & 1) == 0)
+    activeOverlayType = +[CACDisplayManager sharedManager];
+    if (([activeOverlayType isDisplayingAnyOverlay] & 1) == 0)
     {
 LABEL_45:
-      v25 = [(__CFString *)v6 BOOLValue];
+      bOOLValue = [(__CFString *)valueCopy BOOLValue];
 LABEL_46:
-      v11 = v25 ^ 1u;
+      v11 = bOOLValue ^ 1u;
       goto LABEL_47;
     }
 
@@ -355,26 +355,26 @@ LABEL_30:
     goto LABEL_47;
   }
 
-  if ([v5 isEqualToString:kCACCommandContextRequiresNumberedElementsOverlay])
+  if ([keyCopy isEqualToString:kCACCommandContextRequiresNumberedElementsOverlay])
   {
     v26 = sCACSpokenCommandManager;
     v27 = @"NumberedElements";
     goto LABEL_50;
   }
 
-  if ([v5 isEqualToString:kCACCommandContextRequiresAnyNumberedOverlay])
+  if ([keyCopy isEqualToString:kCACCommandContextRequiresAnyNumberedOverlay])
   {
-    v19 = [sCACSpokenCommandManager activeOverlayType];
-    if ([v19 isEqualToString:@"NumberedElements"] & 1) != 0 || (objc_msgSend(v19, "isEqualToString:", @"NumberedGrid"))
+    activeOverlayType = [sCACSpokenCommandManager activeOverlayType];
+    if ([activeOverlayType isEqualToString:@"NumberedElements"] & 1) != 0 || (objc_msgSend(activeOverlayType, "isEqualToString:", @"NumberedGrid"))
     {
       goto LABEL_30;
     }
 
-    if ([v19 isEqualToString:@"NamedElements"])
+    if ([activeOverlayType isEqualToString:@"NamedElements"])
     {
-      v20 = +[CACDisplayManager sharedManager];
-      v21 = [v20 visibleLabeledTextSegmentElements];
-      if ([v21 count])
+      bestLocaleIdentifier = +[CACDisplayManager sharedManager];
+      visibleLabeledTextSegmentElements = [bestLocaleIdentifier visibleLabeledTextSegmentElements];
+      if ([visibleLabeledTextSegmentElements count])
       {
 LABEL_25:
         v11 = 1;
@@ -385,19 +385,19 @@ LABEL_47:
       }
 
 LABEL_57:
-      v11 = [(__CFString *)v6 BOOLValue]^ 1;
+      v11 = [(__CFString *)valueCopy BOOLValue]^ 1;
       goto LABEL_26;
     }
 
     goto LABEL_45;
   }
 
-  if ([v5 isEqualToString:kCACCommandContextRequiresTextDisambiguationNumberedOverlay])
+  if ([keyCopy isEqualToString:kCACCommandContextRequiresTextDisambiguationNumberedOverlay])
   {
-    v28 = [sCACSpokenCommandManager activeOverlayType];
-    if (![(__CFString *)v28 isEqualToString:@"NumberedElements"])
+    activeOverlayType2 = [sCACSpokenCommandManager activeOverlayType];
+    if (![(__CFString *)activeOverlayType2 isEqualToString:@"NumberedElements"])
     {
-      v11 = [(__CFString *)v6 BOOLValue]^ 1;
+      v11 = [(__CFString *)valueCopy BOOLValue]^ 1;
 LABEL_73:
 
 LABEL_74:
@@ -405,32 +405,32 @@ LABEL_74:
       goto LABEL_19;
     }
 
-    v29 = [sCACSpokenCommandManager disambiguationHandler];
-    v30 = [v29 labeledElements];
-    v31 = [v30 firstObject];
-    v32 = [v31 textMarkerRange];
-    if (v32)
+    disambiguationHandler = [sCACSpokenCommandManager disambiguationHandler];
+    labeledElements = [disambiguationHandler labeledElements];
+    firstObject = [labeledElements firstObject];
+    textMarkerRange = [firstObject textMarkerRange];
+    if (textMarkerRange)
     {
       v11 = 1;
     }
 
     else
     {
-      v11 = [(__CFString *)v6 BOOLValue]^ 1;
+      v11 = [(__CFString *)valueCopy BOOLValue]^ 1;
     }
 
 LABEL_72:
     goto LABEL_73;
   }
 
-  if ([v5 isEqualToString:kCACCommandContextRequiresGridOverlay])
+  if ([keyCopy isEqualToString:kCACCommandContextRequiresGridOverlay])
   {
     v26 = sCACSpokenCommandManager;
     v27 = @"NumberedGrid";
     goto LABEL_50;
   }
 
-  if ([v5 isEqualToString:kCACCommandContextRequiresElementNamesOverlay])
+  if ([keyCopy isEqualToString:kCACCommandContextRequiresElementNamesOverlay])
   {
     v26 = sCACSpokenCommandManager;
     v27 = @"NamedElements";
@@ -443,10 +443,10 @@ LABEL_50:
     goto LABEL_18;
   }
 
-  if ([v5 isEqualToString:kCACCommandContextPreventDuringAnyPresentation])
+  if ([keyCopy isEqualToString:kCACCommandContextPreventDuringAnyPresentation])
   {
-    v19 = +[CACDisplayManager sharedManager];
-    if ([v19 isDisplayingAnyPresentation])
+    activeOverlayType = +[CACDisplayManager sharedManager];
+    if ([activeOverlayType isDisplayingAnyPresentation])
     {
       goto LABEL_45;
     }
@@ -454,10 +454,10 @@ LABEL_50:
     goto LABEL_30;
   }
 
-  if ([v5 isEqualToString:kCACCommandContextPreventDuringAnyOverlay])
+  if ([keyCopy isEqualToString:kCACCommandContextPreventDuringAnyOverlay])
   {
-    v19 = [sCACSpokenCommandManager activeOverlayType];
-    if (v19)
+    activeOverlayType = [sCACSpokenCommandManager activeOverlayType];
+    if (activeOverlayType)
     {
       goto LABEL_45;
     }
@@ -465,10 +465,10 @@ LABEL_50:
     goto LABEL_30;
   }
 
-  if ([v5 isEqualToString:kCACCommandContextRequiresOneOfAppIdentifiers])
+  if ([keyCopy isEqualToString:kCACCommandContextRequiresOneOfAppIdentifiers])
   {
-    v28 = v6;
-    if (![(__CFString *)v28 count])
+    activeOverlayType2 = valueCopy;
+    if (![(__CFString *)activeOverlayType2 count])
     {
       v11 = 1;
       goto LABEL_73;
@@ -478,8 +478,8 @@ LABEL_50:
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v29 = [sCACSpokenCommandManager activeApplications];
-    v11 = [v29 countByEnumeratingWithState:&v58 objects:v65 count:16];
+    disambiguationHandler = [sCACSpokenCommandManager activeApplications];
+    v11 = [disambiguationHandler countByEnumeratingWithState:&v58 objects:v65 count:16];
     if (v11)
     {
       v33 = *v59;
@@ -489,11 +489,11 @@ LABEL_50:
         {
           if (*v59 != v33)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(disambiguationHandler);
           }
 
-          v35 = [*(*(&v58 + 1) + 8 * i) bundleId];
-          if ([v35 length] && -[__CFString containsObject:](v28, "containsObject:", v35))
+          bundleId = [*(*(&v58 + 1) + 8 * i) bundleId];
+          if ([bundleId length] && -[__CFString containsObject:](activeOverlayType2, "containsObject:", bundleId))
           {
 
             v11 = 1;
@@ -501,7 +501,7 @@ LABEL_50:
           }
         }
 
-        v11 = [v29 countByEnumeratingWithState:&v58 objects:v65 count:16];
+        v11 = [disambiguationHandler countByEnumeratingWithState:&v58 objects:v65 count:16];
         if (v11)
         {
           continue;
@@ -514,20 +514,20 @@ LABEL_50:
     goto LABEL_72;
   }
 
-  if ([v5 isEqualToString:kCACCommandContextPreventDuringLockScreen] || objc_msgSend(v5, "isEqualToString:", kCACCommandContextPreventOniPhoneLockScreen) && (+[CACDisplayManager sharedManager](CACDisplayManager, "sharedManager"), v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "carPlayConnected"), v36, (v37 & 1) == 0))
+  if ([keyCopy isEqualToString:kCACCommandContextPreventDuringLockScreen] || objc_msgSend(keyCopy, "isEqualToString:", kCACCommandContextPreventOniPhoneLockScreen) && (+[CACDisplayManager sharedManager](CACDisplayManager, "sharedManager"), v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "carPlayConnected"), v36, (v37 & 1) == 0))
   {
-    v19 = [MEMORY[0x277CE6BA0] systemApplication];
-    v25 = [v19 isScreenLocked];
+    activeOverlayType = [MEMORY[0x277CE6BA0] systemApplication];
+    bOOLValue = [activeOverlayType isScreenLocked];
     goto LABEL_46;
   }
 
-  if (![v5 isEqualToString:kCACCommandContextRequiresAnyGesture])
+  if (![keyCopy isEqualToString:kCACCommandContextRequiresAnyGesture])
   {
-    if (![v5 isEqualToString:kCACCommandContextRequiresDragGesture])
+    if (![keyCopy isEqualToString:kCACCommandContextRequiresDragGesture])
     {
-      if (![v5 isEqualToString:kCACCommandContextRequiresSOS])
+      if (![keyCopy isEqualToString:kCACCommandContextRequiresSOS])
       {
-        if ([v5 isEqualToString:kCACCommandContextRequiresSiriEnabled])
+        if ([keyCopy isEqualToString:kCACCommandContextRequiresSiriEnabled])
         {
           if (AXDeviceIsSiriAvailable())
           {
@@ -537,7 +537,7 @@ LABEL_50:
           goto LABEL_18;
         }
 
-        if ([v5 isEqualToString:kCACCommandContextRequiresRingerSwitch])
+        if ([keyCopy isEqualToString:kCACCommandContextRequiresRingerSwitch])
         {
           if (AXDeviceIsRingerSwitchAvailable())
           {
@@ -547,7 +547,7 @@ LABEL_50:
           goto LABEL_18;
         }
 
-        if ([v5 isEqualToString:kCACCommandContextRequiresSpeakScreen])
+        if ([keyCopy isEqualToString:kCACCommandContextRequiresSpeakScreen])
         {
           if (UIAccessibilityIsSpeakScreenEnabled())
           {
@@ -557,7 +557,7 @@ LABEL_50:
           goto LABEL_18;
         }
 
-        if ([v5 isEqualToString:kCACCommandContextRequiresZoom])
+        if ([keyCopy isEqualToString:kCACCommandContextRequiresZoom])
         {
           if (_AXSZoomTouchEnabled())
           {
@@ -567,7 +567,7 @@ LABEL_50:
           goto LABEL_18;
         }
 
-        if ([v5 isEqualToString:kCACCommandContextRequiresSideAppSupport])
+        if ([keyCopy isEqualToString:kCACCommandContextRequiresSideAppSupport])
         {
           if (!AXDeviceSupportsSideApp())
           {
@@ -577,7 +577,7 @@ LABEL_50:
 
         else
         {
-          if ([v5 isEqualToString:kCACCommandContextRequiresApplePay])
+          if ([keyCopy isEqualToString:kCACCommandContextRequiresApplePay])
           {
             if (AXDeviceCanArmApplePay())
             {
@@ -587,7 +587,7 @@ LABEL_50:
             goto LABEL_18;
           }
 
-          if ([v5 isEqualToString:kCACCommandContextRequiresVoiceOver])
+          if ([keyCopy isEqualToString:kCACCommandContextRequiresVoiceOver])
           {
             if (UIAccessibilityIsVoiceOverRunning())
             {
@@ -597,7 +597,7 @@ LABEL_50:
             goto LABEL_18;
           }
 
-          if ([v5 isEqualToString:kCACCommandContextPreventWithVoiceOver])
+          if ([keyCopy isEqualToString:kCACCommandContextPreventWithVoiceOver])
           {
             if (!UIAccessibilityIsVoiceOverRunning())
             {
@@ -607,7 +607,7 @@ LABEL_50:
             goto LABEL_18;
           }
 
-          if ([v5 isEqualToString:kCACCommandContextRequiresIPad])
+          if ([keyCopy isEqualToString:kCACCommandContextRequiresIPad])
           {
             if (AXDeviceIsPad())
             {
@@ -617,7 +617,7 @@ LABEL_50:
             goto LABEL_18;
           }
 
-          if ([v5 isEqualToString:kCACCommandContextRequiresAppleVision])
+          if ([keyCopy isEqualToString:kCACCommandContextRequiresAppleVision])
           {
             if (AXDeviceIsRealityDevice())
             {
@@ -627,9 +627,9 @@ LABEL_50:
             goto LABEL_18;
           }
 
-          if (![v5 isEqualToString:kCACCommandContextPreventWithAppleVision])
+          if (![keyCopy isEqualToString:kCACCommandContextPreventWithAppleVision])
           {
-            if ([v5 isEqualToString:kCACCommandContextRequiresCameraButton])
+            if ([keyCopy isEqualToString:kCACCommandContextRequiresCameraButton])
             {
               if (AXDeviceSupportsCameraButton())
               {
@@ -639,9 +639,9 @@ LABEL_50:
               goto LABEL_18;
             }
 
-            if (![v5 isEqualToString:kCACCommandContextRequiresCarPlay])
+            if (![keyCopy isEqualToString:kCACCommandContextRequiresCarPlay])
             {
-              if ([v5 isEqualToString:kCACCommandContextRequiresVoiceControlEnabled])
+              if ([keyCopy isEqualToString:kCACCommandContextRequiresVoiceControlEnabled])
               {
                 if (_AXSCommandAndControlEnabled())
                 {
@@ -649,7 +649,7 @@ LABEL_50:
                 }
               }
 
-              else if ([v5 isEqualToString:kCACCommandContextRequiresEyeTrackingSupport])
+              else if ([keyCopy isEqualToString:kCACCommandContextRequiresEyeTrackingSupport])
               {
                 if (AXDeviceSupportsOnDeviceEyeTracking())
                 {
@@ -657,7 +657,7 @@ LABEL_50:
                 }
               }
 
-              else if ([v5 isEqualToString:kCACCommandContextRequiresHeadTrackingSupport])
+              else if ([keyCopy isEqualToString:kCACCommandContextRequiresHeadTrackingSupport])
               {
                 if (AXDeviceSupportsHeadTracking())
                 {
@@ -665,7 +665,7 @@ LABEL_50:
                 }
               }
 
-              else if ([v5 isEqualToString:kCACCommandContextRequiresSiriVisible])
+              else if ([keyCopy isEqualToString:kCACCommandContextRequiresSiriVisible])
               {
                 if ([objc_opt_class() _siriWindowIsOpen])
                 {
@@ -673,7 +673,7 @@ LABEL_50:
                 }
               }
 
-              else if (![v5 isEqualToString:kCACCommandContextPreventShowingCommand])
+              else if (![keyCopy isEqualToString:kCACCommandContextPreventShowingCommand])
               {
                 goto LABEL_10;
               }
@@ -681,8 +681,8 @@ LABEL_50:
               goto LABEL_18;
             }
 
-            v19 = +[CACDisplayManager sharedManager];
-            if ([v19 carPlayAvailable])
+            activeOverlayType = +[CACDisplayManager sharedManager];
+            if ([activeOverlayType carPlayAvailable])
             {
               goto LABEL_30;
             }
@@ -786,7 +786,7 @@ LABEL_116:
 LABEL_117:
 
   v48 = +[CACAXDragManager sharedManager];
-  v49 = [v48 isDragActive];
+  isDragActive = [v48 isDragActive];
 
   v11 = 1;
   if (v47)
@@ -795,7 +795,7 @@ LABEL_117:
   }
 
   v7 = &CACLogCorrections_sLogCorrections;
-  if ((v49 & 1) == 0)
+  if ((isDragActive & 1) == 0)
   {
     goto LABEL_18;
   }
@@ -804,10 +804,10 @@ LABEL_19:
   v15 = v7[226];
   if (v15)
   {
-    [v15 setObject:v6 forKey:v5];
+    [v15 setObject:valueCopy forKey:keyCopy];
     v16 = sEvaluatorResultCache;
     v17 = [MEMORY[0x277CCABB0] numberWithBool:v11];
-    [v16 setObject:v17 forKey:v5];
+    [v16 setObject:v17 forKey:keyCopy];
   }
 
 LABEL_21:
@@ -885,25 +885,25 @@ LABEL_21:
   v15 = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(v15, self, _NotificationLoggingPrivacyChanged, @"com.apple.VoiceControl.LoggingPrivacyChanged", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
   v16 = +[CACPreferences sharedPreferences];
-  v17 = [v16 divertedCommandsLogPath];
+  divertedCommandsLogPath = [v16 divertedCommandsLogPath];
   commandRecognitionLogPath = self->_commandRecognitionLogPath;
-  self->_commandRecognitionLogPath = v17;
+  self->_commandRecognitionLogPath = divertedCommandsLogPath;
 
   self->_forceAllCommandsToBeActive = [v16 forceAllCommandsToBeActive];
   self->_usingAutomationMode = [v16 usingAutomationMode];
-  v19 = [v16 externalContextOverrideFilePath];
-  if (v19)
+  externalContextOverrideFilePath = [v16 externalContextOverrideFilePath];
+  if (externalContextOverrideFilePath)
   {
     v20 = objc_alloc(MEMORY[0x277CBEAC0]);
-    v21 = [v19 stringByExpandingTildeInPath];
-    v22 = [v20 initWithContentsOfFile:v21];
+    stringByExpandingTildeInPath = [externalContextOverrideFilePath stringByExpandingTildeInPath];
+    v22 = [v20 initWithContentsOfFile:stringByExpandingTildeInPath];
     externalContextOverrideTable = self->_externalContextOverrideTable;
     self->_externalContextOverrideTable = v22;
   }
 
   else
   {
-    v21 = self->_externalContextOverrideTable;
+    stringByExpandingTildeInPath = self->_externalContextOverrideTable;
     self->_externalContextOverrideTable = 0;
   }
 
@@ -938,17 +938,17 @@ LABEL_21:
   v38 = objc_opt_new();
   [(CACSpokenCommandManager *)self setStagedTextInsertionSpecifier:v38];
 
-  v39 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   recentlyHandledUtterances = self->_recentlyHandledUtterances;
-  self->_recentlyHandledUtterances = v39;
+  self->_recentlyHandledUtterances = array;
 
-  v41 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   currentUtteranceHypotheses = self->_currentUtteranceHypotheses;
-  self->_currentUtteranceHypotheses = v41;
+  self->_currentUtteranceHypotheses = array2;
 
-  v43 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   previousUtteranceHypotheses = self->_previousUtteranceHypotheses;
-  self->_previousUtteranceHypotheses = v43;
+  self->_previousUtteranceHypotheses = array3;
 
   v45 = dispatch_queue_create("com.apple.speech.RecognizerSynchronizationQueue", 0);
   [(CACSpokenCommandManager *)self setRecognizerSynchronizationDispatchQueue:v45];
@@ -969,8 +969,8 @@ LABEL_21:
   perAppElementFetchingQueue = self->_perAppElementFetchingQueue;
   self->_perAppElementFetchingQueue = v52;
 
-  v54 = [MEMORY[0x277CE7178] sharedInstance];
-  [v54 warm];
+  mEMORY[0x277CE7178] = [MEMORY[0x277CE7178] sharedInstance];
+  [mEMORY[0x277CE7178] warm];
 
   [MEMORY[0x277CE6BB0] applyElementAttributeCacheScheme:6];
   [(CACSpokenCommandManager *)self _supressKeyboardDictation:1 withReason:@"Voice Control initialization"];
@@ -990,8 +990,8 @@ LABEL_21:
   v57 = +[CACPreferences sharedPreferences];
   [v57 setDidShowOnboarding:1];
 
-  v58 = [MEMORY[0x277CE7E38] sharedManager];
-  v59 = [v58 shortcuts];
+  mEMORY[0x277CE7E38] = [MEMORY[0x277CE7E38] sharedManager];
+  shortcuts = [mEMORY[0x277CE7E38] shortcuts];
 
   v60 = +[CACSystemStatusManager sharedManager];
   v61 = dispatch_time(0, 500000000);
@@ -999,9 +999,9 @@ LABEL_21:
   dispatch_after(v61, v62, &__block_literal_global_440);
 
   [(CACSpokenCommandManager *)self _beginObservingSiriListeningState];
-  v63 = [MEMORY[0x277CE2028] currentNotificationCenter];
-  [v63 setDelegate:self];
-  [v63 setWantsNotificationResponsesDelivered];
+  currentNotificationCenter = [MEMORY[0x277CE2028] currentNotificationCenter];
+  [currentNotificationCenter setDelegate:self];
+  [currentNotificationCenter setWantsNotificationResponsesDelivered];
   [(CACSpokenCommandManager *)self _updateMostRecentLaunchTime];
   [(CACSpokenCommandManager *)self _updateAssetPurgeability];
   v64 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__updateAssetPurgeability selector:0 userInfo:1 repeats:86400.0];
@@ -1029,14 +1029,14 @@ void __30__CACSpokenCommandManager_run__block_invoke()
   [v2 enableStatusBarOverride:0];
 }
 
-- (void)performOnRecognizerSynchronizationDispatchQueueIfRunning:(id)a3
+- (void)performOnRecognizerSynchronizationDispatchQueueIfRunning:(id)running
 {
-  v4 = a3;
-  v5 = [(CACSpokenCommandManager *)self recognizerSynchronizationDispatchQueue];
-  v6 = v5;
-  if (v5)
+  runningCopy = running;
+  recognizerSynchronizationDispatchQueue = [(CACSpokenCommandManager *)self recognizerSynchronizationDispatchQueue];
+  v6 = recognizerSynchronizationDispatchQueue;
+  if (recognizerSynchronizationDispatchQueue)
   {
-    dispatch_async(v5, v4);
+    dispatch_async(recognizerSynchronizationDispatchQueue, runningCopy);
   }
 
   else if (self->_isRunning)
@@ -1051,11 +1051,11 @@ void __30__CACSpokenCommandManager_run__block_invoke()
 
 - (id)screenElements
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = v3;
+  array = [MEMORY[0x277CBEB18] array];
+  v4 = array;
   if (self->_presentationElements || self->_topLevelElements)
   {
-    [v3 addObjectsFromArray:?];
+    [array addObjectsFromArray:?];
   }
 
   return v4;
@@ -1063,11 +1063,11 @@ void __30__CACSpokenCommandManager_run__block_invoke()
 
 - (id)_allElementsIncludingNonScanner
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = v3;
+  array = [MEMORY[0x277CBEB18] array];
+  v4 = array;
   if (self->_presentationElements || self->_topLevelAndNonScannerElements)
   {
-    [v3 addObjectsFromArray:?];
+    [array addObjectsFromArray:?];
   }
 
   return v4;
@@ -1076,18 +1076,18 @@ void __30__CACSpokenCommandManager_run__block_invoke()
 - (id)screenElementsForEscape
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(CACSpokenCommandManager *)self labeledElementsFromScreen];
-  v5 = [v4 firstObject];
-  v6 = [v5 element];
+  array = [MEMORY[0x277CBEB18] array];
+  labeledElementsFromScreen = [(CACSpokenCommandManager *)self labeledElementsFromScreen];
+  firstObject = [labeledElementsFromScreen firstObject];
+  element = [firstObject element];
 
-  v7 = [(CACSpokenCommandManager *)self _allElementsIncludingNonScanner];
-  v8 = [v7 mutableCopy];
+  _allElementsIncludingNonScanner = [(CACSpokenCommandManager *)self _allElementsIncludingNonScanner];
+  v8 = [_allElementsIncludingNonScanner mutableCopy];
 
-  if (v6)
+  if (element)
   {
-    [v3 addObject:v6];
-    [v8 removeObject:v6];
+    [array addObject:element];
+    [v8 removeObject:element];
   }
 
   v17 = 0u;
@@ -1109,7 +1109,7 @@ LABEL_5:
         objc_enumerationMutation(v9);
       }
 
-      [v3 addObject:{*(*(&v15 + 1) + 8 * v13), v15}];
+      [array addObject:{*(*(&v15 + 1) + 8 * v13), v15}];
       if ([v9 count] > 0x14)
       {
         break;
@@ -1128,23 +1128,23 @@ LABEL_5:
     }
   }
 
-  return v3;
+  return array;
 }
 
-- (void)setScreenElements:(id)a3 presentationElements:(id)a4 activeApplications:(id)a5 focusedTextAreaElement:(id)a6
+- (void)setScreenElements:(id)elements presentationElements:(id)presentationElements activeApplications:(id)applications focusedTextAreaElement:(id)element
 {
   v57 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  obj = a5;
-  v49 = a5;
-  v51 = a6;
-  v12 = [MEMORY[0x277CBEB18] array];
+  elementsCopy = elements;
+  presentationElementsCopy = presentationElements;
+  obj = applications;
+  applicationsCopy = applications;
+  elementCopy = element;
+  array = [MEMORY[0x277CBEB18] array];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v13 = v10;
+  v13 = elementsCopy;
   v14 = [v13 countByEnumeratingWithState:&v52 objects:v56 count:16];
   if (v14)
   {
@@ -1159,7 +1159,7 @@ LABEL_5:
           objc_enumerationMutation(v13);
         }
 
-        [v12 addObjectsFromArray:*(*(&v52 + 1) + 8 * i)];
+        [array addObjectsFromArray:*(*(&v52 + 1) + 8 * i)];
       }
 
       v15 = [v13 countByEnumeratingWithState:&v52 objects:v56 count:16];
@@ -1168,9 +1168,9 @@ LABEL_5:
     while (v15);
   }
 
-  v50 = v11;
+  v50 = presentationElementsCopy;
 
-  v18 = [(NSArray *)self->_topLevelElements isVisuallyEqualToArray:v12];
+  v18 = [(NSArray *)self->_topLevelElements isVisuallyEqualToArray:array];
   if (v18)
   {
     v19 = CACLogElementCollection();
@@ -1190,29 +1190,29 @@ LABEL_5:
   }
 
   v20 = !v18;
-  objc_storeStrong(&self->_topLevelElements, v12);
-  objc_storeStrong(&self->_topLevelAndNonScannerElements, v12);
+  objc_storeStrong(&self->_topLevelElements, array);
+  objc_storeStrong(&self->_topLevelAndNonScannerElements, array);
   presentationElements = self->_presentationElements;
-  if (presentationElements != v11)
+  if (presentationElements != presentationElementsCopy)
   {
-    if (![(NSArray *)presentationElements isVisuallyEqualToArray:v11])
+    if (![(NSArray *)presentationElements isVisuallyEqualToArray:presentationElementsCopy])
     {
       [(CACSpokenCommandManager *)self _markAsDirtyForBuiltInLMIdentifier:*MEMORY[0x277D65628]];
       [(CACSpokenCommandManager *)self _markAsDirtyForBuiltInLMIdentifier:*MEMORY[0x277D655F8]];
       v20 = 1;
     }
 
-    objc_storeStrong(&self->_presentationElements, a4);
+    objc_storeStrong(&self->_presentationElements, presentationElements);
   }
 
   p_focusedElement = &self->_focusedElement;
   focusedElement = self->_focusedElement;
-  if (focusedElement != v51)
+  if (focusedElement != elementCopy)
   {
-    v24 = self;
-    objc_sync_enter(v24);
-    objc_storeStrong(&self->_focusedElement, a6);
-    objc_sync_exit(v24);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&self->_focusedElement, element);
+    objc_sync_exit(selfCopy);
 
     if (!self->_focusedElement)
     {
@@ -1221,21 +1221,21 @@ LABEL_5:
     }
 
     v20 = 1;
-    [(CACSpokenCommandManager *)v24 _supressKeyboardDictation:1 withReason:@"new text area focused"];
+    [(CACSpokenCommandManager *)selfCopy _supressKeyboardDictation:1 withReason:@"new text area focused"];
     focusedElement = *p_focusedElement;
   }
 
   if (focusedElement)
   {
-    v25 = [(AXElement *)focusedElement uiElement];
-    v26 = [v25 stringWithAXAttribute:5019];
+    uiElement = [(AXElement *)focusedElement uiElement];
+    v26 = [uiElement stringWithAXAttribute:5019];
 
     if (![(__CFString *)v26 length])
     {
-      v27 = [*p_focusedElement recognitionStrings];
-      v28 = [v27 firstObject];
+      recognitionStrings = [*p_focusedElement recognitionStrings];
+      firstObject = [recognitionStrings firstObject];
 
-      v26 = v28;
+      v26 = firstObject;
     }
 
     v29 = +[CACMessageTracerUtilities sharedCACMessageTracerUtilities];
@@ -1251,15 +1251,15 @@ LABEL_5:
 
     [v29 setTextAreaIdentifierOrLabel:v30];
 
-    v31 = [*p_focusedElement cacTextSelectionCACTextMarkerRange];
-    if (v31)
+    cacTextSelectionCACTextMarkerRange = [*p_focusedElement cacTextSelectionCACTextMarkerRange];
+    if (cacTextSelectionCACTextMarkerRange)
     {
       v32 = +[CACMessageTracerUtilities sharedCACMessageTracerUtilities];
       v33 = MEMORY[0x277CCACA8];
-      v34 = [v31 nsRange];
-      [v31 nsRange];
-      v47 = v34;
-      v11 = v50;
+      nsRange = [cacTextSelectionCACTextMarkerRange nsRange];
+      [cacTextSelectionCACTextMarkerRange nsRange];
+      v47 = nsRange;
+      presentationElementsCopy = v50;
       v36 = [v33 stringWithFormat:@"%ld, %ld", v47, v35, obj];
       [v32 setTextAreaSelectionRange:v36];
     }
@@ -1267,24 +1267,24 @@ LABEL_5:
 
 LABEL_31:
   activeApplications = self->_activeApplications;
-  if (activeApplications != v49)
+  if (activeApplications != applicationsCopy)
   {
-    v38 = self;
-    objc_sync_enter(v38);
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
     objc_storeStrong(&self->_activeApplications, obj);
-    objc_sync_exit(v38);
+    objc_sync_exit(selfCopy2);
 
     activeApplications = self->_activeApplications;
   }
 
-  v39 = [(NSArray *)activeApplications firstObject];
-  v40 = [v39 bundleId];
+  firstObject2 = [(NSArray *)activeApplications firstObject];
+  bundleId = [firstObject2 bundleId];
 
   v41 = +[CACMessageTracerUtilities sharedCACMessageTracerUtilities];
-  [v41 setTargetApplicationIdentifier:v40];
+  [v41 setTargetApplicationIdentifier:bundleId];
 
-  v42 = [(CACSpokenCommandManager *)self currentInteractionLevel];
-  if (self->_lastSyncdInteractionLevel == v42)
+  currentInteractionLevel = [(CACSpokenCommandManager *)self currentInteractionLevel];
+  if (self->_lastSyncdInteractionLevel == currentInteractionLevel)
   {
     if (!v20)
     {
@@ -1300,7 +1300,7 @@ LABEL_31:
 
   else
   {
-    self->_lastSyncdInteractionLevel = v42;
+    self->_lastSyncdInteractionLevel = currentInteractionLevel;
   }
 
   v44 = [v13 mutableCopy];
@@ -1317,9 +1317,9 @@ LABEL_31:
 
   v43 = v46;
 
-  if (v11)
+  if (presentationElementsCopy)
   {
-    [v43 addObject:v11];
+    [v43 addObject:presentationElementsCopy];
   }
 
   [(CACLabeledElementsCollection *)self->_labeledScreenElementsCollection updateWithAXElements:v43];
@@ -1330,51 +1330,51 @@ LABEL_44:
 
 - (id)focusedElement
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_focusedElement;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_focusedElement;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)doesFocusedElementRequireSecureInput
 {
-  v2 = [(CACSpokenCommandManager *)self focusedElement];
-  v3 = [v2 hasAnyTraits:*MEMORY[0x277CE6DC8]];
+  focusedElement = [(CACSpokenCommandManager *)self focusedElement];
+  v3 = [focusedElement hasAnyTraits:*MEMORY[0x277CE6DC8]];
 
   return v3;
 }
 
 - (id)activeApplications
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_activeApplications;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_activeApplications;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (id)leadingTextForCurrentSelection
 {
-  v3 = [(CACSpokenCommandManager *)self focusedElement];
-  v4 = v3;
-  if (!v3)
+  focusedElement = [(CACSpokenCommandManager *)self focusedElement];
+  v4 = focusedElement;
+  if (!focusedElement)
   {
     v9 = 0;
     goto LABEL_24;
   }
 
-  v5 = [v3 cacString];
-  v6 = [(__CFString *)v5 length];
+  cacString = [focusedElement cacString];
+  v6 = [(__CFString *)cacString length];
   if (v6 >= 1)
   {
     v7 = v6;
     if (self->_hypothesesInsertedCount < 1)
     {
-      v10 = [v4 cacTextSelectionCACTextMarkerRange];
-      location = [v10 nsRange];
+      cacTextSelectionCACTextMarkerRange = [v4 cacTextSelectionCACTextMarkerRange];
+      location = [cacTextSelectionCACTextMarkerRange nsRange];
     }
 
     else
@@ -1392,7 +1392,7 @@ LABEL_44:
     {
       v11.location = location >= 0x190 ? location - 400 : 0;
       v11.length = location - v11.location;
-      v12 = CFStringTokenizerCreate(0, v5, v11, 0, 0);
+      v12 = CFStringTokenizerCreate(0, cacString, v11, 0, 0);
       if (v12)
       {
         v13 = v12;
@@ -1408,7 +1408,7 @@ LABEL_44:
             {
 LABEL_21:
               CFRelease(v13);
-              v9 = [(__CFString *)v5 substringWithRange:v15, location - v15];
+              v9 = [(__CFString *)cacString substringWithRange:v15, location - v15];
               goto LABEL_23;
             }
           }
@@ -1439,40 +1439,40 @@ LABEL_24:
   return v9;
 }
 
-- (CGRect)bestDictationRecognizerModeImageRectForView:(id)a3
+- (CGRect)bestDictationRecognizerModeImageRectForView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = *MEMORY[0x277CBF3A0];
   v6 = *(MEMORY[0x277CBF3A0] + 8);
   v8 = *(MEMORY[0x277CBF3A0] + 16);
   v7 = *(MEMORY[0x277CBF3A0] + 24);
-  v9 = [(CACSpokenCommandManager *)self focusedElement];
-  v10 = v9;
-  if (v9)
+  focusedElement = [(CACSpokenCommandManager *)self focusedElement];
+  v10 = focusedElement;
+  if (focusedElement)
   {
-    v11 = [v9 cacTextSelectionCACTextMarkerRange];
-    v12 = [v11 nsRange];
+    cacTextSelectionCACTextMarkerRange = [focusedElement cacTextSelectionCACTextMarkerRange];
+    nsRange = [cacTextSelectionCACTextMarkerRange nsRange];
     v14 = v13;
 
-    if (v12 != 0x7FFFFFFFFFFFFFFFLL)
+    if (nsRange != 0x7FFFFFFFFFFFFFFFLL)
     {
       [v10 textCursorFrame];
-      x = CACViewRectFromPortraitUpRect(v4, v15, v16, v17, v18);
+      x = CACViewRectFromPortraitUpRect(viewCopy, v15, v16, v17, v18);
       y = v20;
       width = v22;
       height = v24;
       if (!CGFloatIsValid() || !CGFloatIsValid() || !CGFloatIsValid() || (CGFloatIsValid() & 1) == 0)
       {
-        v26 = v12 + v14;
-        v27 = [v10 cacLastPosition];
-        v28 = [v27 index];
+        v26 = nsRange + v14;
+        cacLastPosition = [v10 cacLastPosition];
+        index = [cacLastPosition index];
 
-        v29 = v28 > 0;
-        v30 = v26 >= v28;
+        v29 = index > 0;
+        v30 = v26 >= index;
         v31 = v29 & v30;
         if (v29 && v30)
         {
-          v32 = v28 - 1;
+          v32 = index - 1;
         }
 
         else
@@ -1485,7 +1485,7 @@ LABEL_24:
         v48 = v33;
         v45 = v36;
         v46 = v35;
-        [v10 rectForRange:{v12, 0}];
+        [v10 rectForRange:{nsRange, 0}];
         v51 = v37;
         v52 = v38;
         v49 = v40;
@@ -1566,8 +1566,8 @@ LABEL_24:
 
 - (void)willUpdateElementsSignificantly
 {
-  v2 = [(CACSpokenCommandManager *)self activeOverlayType];
-  v3 = [v2 isEqualToString:@"NumberedGrid"];
+  activeOverlayType = [(CACSpokenCommandManager *)self activeOverlayType];
+  v3 = [activeOverlayType isEqualToString:@"NumberedGrid"];
 
   if ((v3 & 1) == 0)
   {
@@ -1642,14 +1642,14 @@ void __71__CACSpokenCommandManager__pushLeadingContextToSpeechRecognitionSystem_
 
 - (void)_pushSecureFieldStatusToSpeechRecognitionSystem
 {
-  v3 = [(CACSpokenCommandManager *)self doesFocusedElementRequireSecureInput];
-  if (self->_previousStatusFocusOnSecureField != v3)
+  doesFocusedElementRequireSecureInput = [(CACSpokenCommandManager *)self doesFocusedElementRequireSecureInput];
+  if (self->_previousStatusFocusOnSecureField != doesFocusedElementRequireSecureInput)
   {
     v4 = +[CACSpeechSystem speechSystem];
-    [v4 setSecureFieldFocused:v3];
+    [v4 setSecureFieldFocused:doesFocusedElementRequireSecureInput];
   }
 
-  self->_previousStatusFocusOnSecureField = v3;
+  self->_previousStatusFocusOnSecureField = doesFocusedElementRequireSecureInput;
 }
 
 - (void)_beginObservingSiriListeningState
@@ -1674,17 +1674,17 @@ void __71__CACSpokenCommandManager__pushLeadingContextToSpeechRecognitionSystem_
     goto LABEL_9;
   }
 
-  v4 = [(CACSpokenCommandManager *)self activeOverlayType];
-  if (([v4 isEqualToString:@"NumberedGrid"] & 1) == 0)
+  activeOverlayType = [(CACSpokenCommandManager *)self activeOverlayType];
+  if (([activeOverlayType isEqualToString:@"NumberedGrid"] & 1) == 0)
   {
 
     goto LABEL_9;
   }
 
   v5 = +[CACDisplayManager sharedManager];
-  v6 = [v5 isGridAtTopLevel];
+  isGridAtTopLevel = [v5 isGridAtTopLevel];
 
-  if (!v6)
+  if (!isGridAtTopLevel)
   {
 LABEL_9:
     v10 = +[CACDisplayManager sharedManager];
@@ -1696,9 +1696,9 @@ LABEL_9:
   }
 
   v7 = +[CACDisplayManager sharedManager];
-  v8 = [v7 updateGridLayoutFromPreferences];
+  updateGridLayoutFromPreferences = [v7 updateGridLayoutFromPreferences];
 
-  if (!v8)
+  if (!updateGridLayoutFromPreferences)
   {
     return;
   }
@@ -1709,11 +1709,11 @@ LABEL_9:
 LABEL_10:
 }
 
-- (BOOL)isActiveOverlayType:(id)a3
+- (BOOL)isActiveOverlayType:(id)type
 {
-  v4 = a3;
-  v5 = [(CACSpokenCommandManager *)self activeOverlayType];
-  v6 = [v5 isEqualToString:v4];
+  typeCopy = type;
+  activeOverlayType = [(CACSpokenCommandManager *)self activeOverlayType];
+  v6 = [activeOverlayType isEqualToString:typeCopy];
 
   return v6;
 }
@@ -1728,13 +1728,13 @@ LABEL_10:
   v4 = +[CACDisplayManager sharedManager];
   if ([v4 carPlayConnected])
   {
-    v5 = [MEMORY[0x277D79890] shared];
-    v6 = [v5 carPlayDebugOverlayUIEnabled];
+    mEMORY[0x277D79890] = [MEMORY[0x277D79890] shared];
+    carPlayDebugOverlayUIEnabled = [mEMORY[0x277D79890] carPlayDebugOverlayUIEnabled];
 
-    if (!v6)
+    if (!carPlayDebugOverlayUIEnabled)
     {
 LABEL_2:
-      v3 = 0;
+      alwaysShowOverlayType = 0;
       goto LABEL_13;
     }
   }
@@ -1743,36 +1743,36 @@ LABEL_2:
   {
   }
 
-  v7 = [(CACSpokenCommandManager *)self disambiguationHandler];
-  if (v7)
+  disambiguationHandler = [(CACSpokenCommandManager *)self disambiguationHandler];
+  if (disambiguationHandler)
   {
-    v3 = v7;
+    alwaysShowOverlayType = disambiguationHandler;
     v8 = @"NumberedElements";
 LABEL_9:
 
-    v3 = v8;
+    alwaysShowOverlayType = v8;
     goto LABEL_13;
   }
 
   v9 = +[CACDisplayManager sharedManager];
-  v10 = [v9 isDisplayingAnyPresentation];
+  isDisplayingAnyPresentation = [v9 isDisplayingAnyPresentation];
 
-  if (v10)
+  if (isDisplayingAnyPresentation)
   {
-    v3 = @"NumberedElements";
+    alwaysShowOverlayType = @"NumberedElements";
   }
 
   else
   {
-    v3 = self->_transientOverlayType;
-    if (!v3)
+    alwaysShowOverlayType = self->_transientOverlayType;
+    if (!alwaysShowOverlayType)
     {
       v12 = +[CACPreferences sharedPreferences];
-      v3 = [v12 alwaysShowOverlayType];
+      alwaysShowOverlayType = [v12 alwaysShowOverlayType];
 
-      if (v3)
+      if (alwaysShowOverlayType)
       {
-        if ([(__CFString *)v3 isEqualToString:@"None"])
+        if ([(__CFString *)alwaysShowOverlayType isEqualToString:@"None"])
         {
           v8 = 0;
           goto LABEL_9;
@@ -1783,21 +1783,21 @@ LABEL_9:
 
 LABEL_13:
 
-  return v3;
+  return alwaysShowOverlayType;
 }
 
 - (void)startRecordingGesture
 {
-  v2 = [(CACSpokenCommandManager *)self touchEventObserver];
-  [v2 startRecordingGesture];
+  touchEventObserver = [(CACSpokenCommandManager *)self touchEventObserver];
+  [touchEventObserver startRecordingGesture];
 }
 
 - (id)stopRecordingGesture
 {
-  v2 = [(CACSpokenCommandManager *)self touchEventObserver];
-  v3 = [v2 stopRecordingGesture];
+  touchEventObserver = [(CACSpokenCommandManager *)self touchEventObserver];
+  stopRecordingGesture = [touchEventObserver stopRecordingGesture];
 
-  return v3;
+  return stopRecordingGesture;
 }
 
 - (void)updateStatusIndicatorView
@@ -1857,9 +1857,9 @@ LABEL_8:
   return [v8 _notifyStatusChanged:v5];
 }
 
-- (void)_notifyStatusChanged:(int64_t)a3
+- (void)_notifyStatusChanged:(int64_t)changed
 {
-  if ((a3 - 1) > 2)
+  if ((changed - 1) > 2)
   {
     v6 = CACLogGeneral();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -1870,7 +1870,7 @@ LABEL_8:
 
   else
   {
-    v3 = off_279CEBD98[a3 - 1];
+    v3 = off_279CEBD98[changed - 1];
     v4 = CACLogGeneral();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
@@ -1884,34 +1884,34 @@ LABEL_8:
 
 + (id)_allCommandIdentifiers
 {
-  v2 = [MEMORY[0x277D655B8] allCommandIdentifiersForCurrentDevice];
-  v3 = [v2 sortedArrayUsingSelector:sel_compare_];
+  allCommandIdentifiersForCurrentDevice = [MEMORY[0x277D655B8] allCommandIdentifiersForCurrentDevice];
+  v3 = [allCommandIdentifiersForCurrentDevice sortedArrayUsingSelector:sel_compare_];
 
   return v3;
 }
 
-+ (BOOL)commandIdentifierIsDictation:(id)a3
++ (BOOL)commandIdentifierIsDictation:(id)dictation
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Dictation.Streaming"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Dictation.Literal"))
+  dictationCopy = dictation;
+  if ([dictationCopy isEqualToString:@"Dictation.Streaming"] & 1) != 0 || (objc_msgSend(dictationCopy, "isEqualToString:", @"Dictation.Literal"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Dictation.SpellAs"];
+    v4 = [dictationCopy isEqualToString:@"Dictation.SpellAs"];
   }
 
   return v4;
 }
 
-+ (id)commandPropertiesForIdentifier:(id)a3
++ (id)commandPropertiesForIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x277D655B8] commandWithIdentifier:a3];
-  v4 = [v3 commandProperties];
+  v3 = [MEMORY[0x277D655B8] commandWithIdentifier:identifier];
+  commandProperties = [v3 commandProperties];
 
-  return v4;
+  return commandProperties;
 }
 
 - (void)_createCommandRecognizersIfNecessary
@@ -1948,8 +1948,8 @@ LABEL_8:
           v7 = *(*(&v56 + 1) + 8 * i);
           if (([v47 isEnabledForCommandIdentifier:v7] & 1) != 0 || self->_forceAllCommandsToBeActive)
           {
-            v8 = [v47 bestLocaleIdentifier];
-            v9 = [v47 isCommandIdentifier:v7 availableForLocaleIdentifier:v8];
+            bestLocaleIdentifier = [v47 bestLocaleIdentifier];
+            v9 = [v47 isCommandIdentifier:v7 availableForLocaleIdentifier:bestLocaleIdentifier];
 
             if (v9)
             {
@@ -1961,21 +1961,21 @@ LABEL_8:
               v13 = v12;
               if (v12)
               {
-                v14 = [(CACSpokenCommand *)v12 languageModel];
-                v15 = [(CACSpokenCommand *)v13 strings];
+                languageModel = [(CACSpokenCommand *)v12 languageModel];
+                strings = [(CACSpokenCommand *)v13 strings];
 
-                if (v15)
+                if (strings)
                 {
                   v16 = objc_opt_new();
-                  v17 = [(CACSpokenCommand *)v13 contextEvaluation];
-                  [v16 addEntriesFromDictionary:v17];
+                  contextEvaluation = [(CACSpokenCommand *)v13 contextEvaluation];
+                  [v16 addEntriesFromDictionary:contextEvaluation];
 
                   v18 = [v11 objectForKey:@"RecognizerClassName"];
                   if (v18)
                   {
                     [v16 setObject:&unk_287BEFE20 forKey:v18];
-                    v19 = [(CACSpokenCommand *)v13 identifier];
-                    [v44 setObject:v18 forKey:v19];
+                    identifier = [(CACSpokenCommand *)v13 identifier];
+                    [v44 setObject:v18 forKey:identifier];
                   }
 
                   v20 = [CACSpokenCommand stringFromContextEvaluationDictionary:v16 isCustom:0];
@@ -2019,9 +2019,9 @@ LABEL_8:
 
           v24 = *(*(&v52 + 1) + 8 * j);
           v25 = [v46 objectForKey:v24];
-          v26 = [v25 firstObject];
-          v27 = [v26 identifier];
-          v28 = [v44 objectForKey:v27];
+          firstObject = [v25 firstObject];
+          identifier2 = [firstObject identifier];
+          v28 = [v44 objectForKey:identifier2];
 
           if ([(NSString *)v28 length])
           {
@@ -2034,9 +2034,9 @@ LABEL_8:
           }
 
           v30 = v29;
-          v31 = [v25 firstObject];
-          v32 = [v31 contextEvaluation];
-          v33 = [(CACCommandRecognizer *)v30 initWithCommands:v25 contextEvaluators:v32 builtInLMIdentifiers:0];
+          firstObject2 = [v25 firstObject];
+          contextEvaluation2 = [firstObject2 contextEvaluation];
+          v33 = [(CACCommandRecognizer *)v30 initWithCommands:v25 contextEvaluators:contextEvaluation2 builtInLMIdentifiers:0];
 
           if (v33)
           {
@@ -2200,16 +2200,16 @@ void __59__CACSpokenCommandManager__rebuildCustomCommandRecognizers__block_invok
   }
 }
 
-- (void)_markAsDirtyForBuiltInLMIdentifier:(id)a3
+- (void)_markAsDirtyForBuiltInLMIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__CACSpokenCommandManager__markAsDirtyForBuiltInLMIdentifier___block_invoke;
   v6[3] = &unk_279CEB4C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(CACSpokenCommandManager *)self performOnRecognizerSynchronizationDispatchQueueIfRunning:v6];
 }
 
@@ -2223,29 +2223,29 @@ void __62__CACSpokenCommandManager__markAsDirtyForBuiltInLMIdentifier___block_in
   objc_sync_exit(obj);
 }
 
-- (id)languageModelForBuiltInLMIdentifier:(id)a3
+- (id)languageModelForBuiltInLMIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->_identifierBasedLanguageModelCache;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_identifierBasedLanguageModelCache objectForKey:v4];
-  v7 = [v6 languageModel];
+  v6 = [(NSMutableDictionary *)self->_identifierBasedLanguageModelCache objectForKey:identifierCopy];
+  languageModel = [v6 languageModel];
 
   objc_sync_exit(v5);
 
-  return v7;
+  return languageModel;
 }
 
-- (__RXLanguageObject)rxLanguageObjectForBuiltInLMIdentifier:(id)a3
+- (__RXLanguageObject)rxLanguageObjectForBuiltInLMIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->_identifierBasedLanguageModelCache;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_identifierBasedLanguageModelCache objectForKey:v4];
-  v7 = [v6 rxLanguageObject];
+  v6 = [(NSMutableDictionary *)self->_identifierBasedLanguageModelCache objectForKey:identifierCopy];
+  rxLanguageObject = [v6 rxLanguageObject];
 
   objc_sync_exit(v5);
-  return v7;
+  return rxLanguageObject;
 }
 
 - (void)_intializeBuiltInLMIdentifierTableIfNecessary
@@ -2253,7 +2253,7 @@ void __62__CACSpokenCommandManager__markAsDirtyForBuiltInLMIdentifier___block_in
   v38 = *MEMORY[0x277D85DE8];
   v27 = self->_identifierBasedLanguageModelCache;
   objc_sync_enter(v27);
-  v30 = self;
+  selfCopy = self;
   if (![(NSMutableDictionary *)self->_identifierBasedLanguageModelCache count])
   {
     v33 = 0u;
@@ -2335,7 +2335,7 @@ void __62__CACSpokenCommandManager__markAsDirtyForBuiltInLMIdentifier___block_in
 
           [v14 setRxLanguageObject:v23];
           RXRelease(v23);
-          [(NSMutableDictionary *)v30->_identifierBasedLanguageModelCache setObject:v14 forKey:v13];
+          [(NSMutableDictionary *)selfCopy->_identifierBasedLanguageModelCache setObject:v14 forKey:v13];
         }
 
         v10 = obj;
@@ -2345,12 +2345,12 @@ void __62__CACSpokenCommandManager__markAsDirtyForBuiltInLMIdentifier___block_in
       while (v11);
     }
 
-    [(CACSpokenCommandManager *)v30 _updateLanguageModelForBuiltInLMIdentifier:*MEMORY[0x277D655C0]];
-    [(CACSpokenCommandManager *)v30 _updateLanguageModelForBuiltInLMIdentifier:*MEMORY[0x277D65618]];
-    [(CACSpokenCommandManager *)v30 _updateLanguageModelForBuiltInLMIdentifier:*MEMORY[0x277D655E8]];
-    [(CACSpokenCommandManager *)v30 _updateLanguageModelForBuiltInLMIdentifier:*MEMORY[0x277D655F0]];
-    [(CACSpokenCommandManager *)v30 _updateLanguageModelForBuiltInLMIdentifier:*MEMORY[0x277D655E0]];
-    [(CACSpokenCommandManager *)v30 _updateLanguageModelForBuiltInLMIdentifier:*MEMORY[0x277D655D8]];
+    [(CACSpokenCommandManager *)selfCopy _updateLanguageModelForBuiltInLMIdentifier:*MEMORY[0x277D655C0]];
+    [(CACSpokenCommandManager *)selfCopy _updateLanguageModelForBuiltInLMIdentifier:*MEMORY[0x277D65618]];
+    [(CACSpokenCommandManager *)selfCopy _updateLanguageModelForBuiltInLMIdentifier:*MEMORY[0x277D655E8]];
+    [(CACSpokenCommandManager *)selfCopy _updateLanguageModelForBuiltInLMIdentifier:*MEMORY[0x277D655F0]];
+    [(CACSpokenCommandManager *)selfCopy _updateLanguageModelForBuiltInLMIdentifier:*MEMORY[0x277D655E0]];
+    [(CACSpokenCommandManager *)selfCopy _updateLanguageModelForBuiltInLMIdentifier:*MEMORY[0x277D655D8]];
   }
 
   objc_sync_exit(v27);
@@ -2368,8 +2368,8 @@ void __62__CACSpokenCommandManager__markAsDirtyForBuiltInLMIdentifier___block_in
 - (void)_waitUntilElementsAreNumbered
 {
   v3 = +[CACDisplayManager sharedManager];
-  v4 = [v3 labeledElementsForItemNumbers];
-  v5 = [v4 count];
+  labeledElementsForItemNumbers = [v3 labeledElementsForItemNumbers];
+  v5 = [labeledElementsForItemNumbers count];
 
   if (v5)
   {
@@ -2385,20 +2385,20 @@ void __62__CACSpokenCommandManager__markAsDirtyForBuiltInLMIdentifier___block_in
   }
 }
 
-- (BOOL)_isNumberOnlyString:(id)a3 lessThanOrEqualToValue:(int64_t)a4
+- (BOOL)_isNumberOnlyString:(id)string lessThanOrEqualToValue:(int64_t)value
 {
-  v5 = a3;
-  v6 = [v5 integerValue];
-  v7 = v6 >= 1 && v6 <= a4;
-  if (v7 && (v8 = v6, [v5 length]))
+  stringCopy = string;
+  integerValue = [stringCopy integerValue];
+  v7 = integerValue >= 1 && integerValue <= value;
+  if (v7 && (v8 = integerValue, [stringCopy length]))
   {
     v9 = objc_opt_new();
     [v9 setNumberStyle:1];
     [v9 setUsesGroupingSeparator:0];
     v10 = MEMORY[0x277CBEAF8];
     v11 = +[CACPreferences sharedPreferences];
-    v12 = [v11 bestLocaleIdentifier];
-    v13 = [v10 localeWithLocaleIdentifier:v12];
+    bestLocaleIdentifier = [v11 bestLocaleIdentifier];
+    v13 = [v10 localeWithLocaleIdentifier:bestLocaleIdentifier];
 
     if (v13)
     {
@@ -2406,7 +2406,7 @@ void __62__CACSpokenCommandManager__markAsDirtyForBuiltInLMIdentifier___block_in
       v14 = [MEMORY[0x277CCABB0] numberWithInteger:v8];
       v15 = [v9 stringFromNumber:v14];
 
-      v16 = [v15 isEqualToString:v5];
+      v16 = [v15 isEqualToString:stringCopy];
     }
 
     else
@@ -2423,21 +2423,21 @@ void __62__CACSpokenCommandManager__markAsDirtyForBuiltInLMIdentifier___block_in
   return v16;
 }
 
-- (void)_updateLanguageModelForBuiltInLMIdentifier:(id)a3
+- (void)_updateLanguageModelForBuiltInLMIdentifier:(id)identifier
 {
   v429 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->_identifierBasedLanguageModelCache;
   objc_sync_enter(v5);
-  v282 = v4;
-  v6 = [(NSMutableDictionary *)self->_identifierBasedLanguageModelCache objectForKey:v4];
+  v282 = identifierCopy;
+  v6 = [(NSMutableDictionary *)self->_identifierBasedLanguageModelCache objectForKey:identifierCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 isCurrent];
+    isCurrent = [v6 isCurrent];
 
     objc_sync_exit(v5);
-    if (v8)
+    if (isCurrent)
     {
       goto LABEL_191;
     }
@@ -2448,7 +2448,7 @@ void __62__CACSpokenCommandManager__markAsDirtyForBuiltInLMIdentifier___block_in
     objc_sync_exit(v5);
   }
 
-  v308 = self;
+  selfCopy = self;
   v9 = [CACLanguageModel alloc];
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v282, kCACLanguageModelAttributeParameterIdentifier, 0}];
   v307 = [(CACLanguageModel *)v9 initWithText:&stru_287BD8610 identifier:v282 attributes:v10];
@@ -2497,22 +2497,22 @@ void __62__CACSpokenCommandManager__markAsDirtyForBuiltInLMIdentifier___block_in
 
     else
     {
-      v286 = [(CACLabeledElementsCollection *)self->_labeledScreenElementsCollection copyTableOfCollectedElementsByTitle];
+      copyTableOfCollectedElementsByTitle = [(CACLabeledElementsCollection *)self->_labeledScreenElementsCollection copyTableOfCollectedElementsByTitle];
       v289 = [MEMORY[0x277CBEB58] set];
       v31 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
       if ([v31 isActiveOverlayType:@"NumberedElements"])
       {
         v32 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-        v33 = [v32 doesFocusedElementRequireSecureInput];
+        doesFocusedElementRequireSecureInput = [v32 doesFocusedElementRequireSecureInput];
 
-        if (v33)
+        if (doesFocusedElementRequireSecureInput)
         {
           v396 = 0u;
           v395 = 0u;
           v394 = 0u;
           v393 = 0u;
-          v34 = [(CACLabeledElementsCollection *)self->_labeledScreenElementsCollection collectedElements];
-          v35 = [v34 countByEnumeratingWithState:&v393 objects:v427 count:16];
+          collectedElements = [(CACLabeledElementsCollection *)self->_labeledScreenElementsCollection collectedElements];
+          v35 = [collectedElements countByEnumeratingWithState:&v393 objects:v427 count:16];
           if (v35)
           {
             v36 = *v394;
@@ -2522,17 +2522,17 @@ void __62__CACSpokenCommandManager__markAsDirtyForBuiltInLMIdentifier___block_in
               {
                 if (*v394 != v36)
                 {
-                  objc_enumerationMutation(v34);
+                  objc_enumerationMutation(collectedElements);
                 }
 
-                v38 = [*(*(&v393 + 1) + 8 * j) numberedLabelForRecognition];
-                if ([v38 length])
+                numberedLabelForRecognition = [*(*(&v393 + 1) + 8 * j) numberedLabelForRecognition];
+                if ([numberedLabelForRecognition length])
                 {
-                  [v289 addObject:v38];
+                  [v289 addObject:numberedLabelForRecognition];
                 }
               }
 
-              v35 = [v34 countByEnumeratingWithState:&v393 objects:v427 count:16];
+              v35 = [collectedElements countByEnumeratingWithState:&v393 objects:v427 count:16];
             }
 
             while (v35);
@@ -2548,8 +2548,8 @@ void __62__CACSpokenCommandManager__markAsDirtyForBuiltInLMIdentifier___block_in
       v391 = 0u;
       v390 = 0u;
       v389 = 0u;
-      v64 = [v286 allKeys];
-      v287 = [v64 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+      allKeys = [copyTableOfCollectedElementsByTitle allKeys];
+      v287 = [allKeys sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
 
       obja = [v287 countByEnumeratingWithState:&v389 objects:v426 count:16];
       if (obja)
@@ -2571,11 +2571,11 @@ void __62__CACSpokenCommandManager__markAsDirtyForBuiltInLMIdentifier___block_in
               v67 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
               v68 = [v67 isActiveOverlayType:@"NumberedGrid"];
 
-              if (!v68 || (+[CACDisplayManager sharedManager](CACDisplayManager, "sharedManager"), v69 = objc_claimAutoreleasedReturnValue(), [v69 labeledElementsForGrid], v70 = objc_claimAutoreleasedReturnValue(), v71 = objc_msgSend(v70, "count"), v70, v69, v71 < 1) || !-[CACSpokenCommandManager _isNumberOnlyString:lessThanOrEqualToValue:](v308, "_isNumberOnlyString:lessThanOrEqualToValue:", v66, v71))
+              if (!v68 || (+[CACDisplayManager sharedManager](CACDisplayManager, "sharedManager"), v69 = objc_claimAutoreleasedReturnValue(), [v69 labeledElementsForGrid], v70 = objc_claimAutoreleasedReturnValue(), v71 = objc_msgSend(v70, "count"), v70, v69, v71 < 1) || !-[CACSpokenCommandManager _isNumberOnlyString:lessThanOrEqualToValue:](selfCopy, "_isNumberOnlyString:lessThanOrEqualToValue:", v66, v71))
               {
                 if (([v289 containsObject:v66] & 1) == 0)
                 {
-                  v72 = [v286 objectForKey:v66];
+                  v72 = [copyTableOfCollectedElementsByTitle objectForKey:v66];
                   if ([v72 count])
                   {
                     v292 = [v72 objectAtIndex:0];
@@ -2605,8 +2605,8 @@ void __62__CACSpokenCommandManager__markAsDirtyForBuiltInLMIdentifier___block_in
                           objc_enumerationMutation(v73);
                         }
 
-                        v78 = [*(*(&v385 + 1) + 8 * m) axIdentifier];
-                        v79 = [v78 hasPrefix:@"_CAC_NUMBERED_ONLY_ELEMENT_"];
+                        axIdentifier = [*(*(&v385 + 1) + 8 * m) axIdentifier];
+                        v79 = [axIdentifier hasPrefix:@"_CAC_NUMBERED_ONLY_ELEMENT_"];
 
                         v74 += v79;
                       }
@@ -2621,8 +2621,8 @@ void __62__CACSpokenCommandManager__markAsDirtyForBuiltInLMIdentifier___block_in
                   v383 = 0u;
                   v382 = 0u;
                   v381 = 0u;
-                  v80 = [v292 recognitionStrings];
-                  v81 = [v80 countByEnumeratingWithState:&v381 objects:v424 count:16];
+                  recognitionStrings = [v292 recognitionStrings];
+                  v81 = [recognitionStrings countByEnumeratingWithState:&v381 objects:v424 count:16];
                   if (v81)
                   {
                     v82 = *v382;
@@ -2632,7 +2632,7 @@ void __62__CACSpokenCommandManager__markAsDirtyForBuiltInLMIdentifier___block_in
                       {
                         if (*v382 != v82)
                         {
-                          objc_enumerationMutation(v80);
+                          objc_enumerationMutation(recognitionStrings);
                         }
 
                         v84 = *(*(&v381 + 1) + 8 * n);
@@ -2643,7 +2643,7 @@ void __62__CACSpokenCommandManager__markAsDirtyForBuiltInLMIdentifier___block_in
                         }
                       }
 
-                      v81 = [v80 countByEnumeratingWithState:&v381 objects:v424 count:16];
+                      v81 = [recognitionStrings countByEnumeratingWithState:&v381 objects:v424 count:16];
                       if (v81)
                       {
                         continue;
@@ -2779,15 +2779,15 @@ LABEL_94:
           aBlock[2] = __70__CACSpokenCommandManager__updateLanguageModelForBuiltInLMIdentifier___block_invoke;
           aBlock[3] = &unk_279CEBBD8;
           aBlock[5] = buf;
-          aBlock[4] = v308;
+          aBlock[4] = selfCopy;
           v120 = _Block_copy(aBlock);
           v121 = 10;
           v122 = 1000000000;
           do
           {
             v123 = dispatch_time(0, v122);
-            v124 = [(CACSpokenCommandManager *)v308 recognizerSynchronizationDispatchQueue];
-            dispatch_after(v123, v124, v120);
+            recognizerSynchronizationDispatchQueue = [(CACSpokenCommandManager *)selfCopy recognizerSynchronizationDispatchQueue];
+            dispatch_after(v123, recognizerSynchronizationDispatchQueue, v120);
 
             v122 += 1000000000;
             --v121;
@@ -2805,8 +2805,8 @@ LABEL_94:
     v95 = MEMORY[0x277D655C0];
     if ([v282 isEqualToString:*MEMORY[0x277D655C0]])
     {
-      v96 = [MEMORY[0x277D65598] deviceName];
-      v97 = [[CACLanguageModel alloc] initWithText:v96 identifier:*v95 attributes:0];
+      deviceName = [MEMORY[0x277D65598] deviceName];
+      v97 = [[CACLanguageModel alloc] initWithText:deviceName identifier:*v95 attributes:0];
       [(CACLanguageModel *)v307 addChildLanguageModel:v97];
 
       goto LABEL_162;
@@ -2862,7 +2862,7 @@ LABEL_94:
       v278 = [(CACLanguageModel *)v205 initWithText:&stru_287BD8610 identifier:0 attributes:v207];
 
       v276 = +[CACPreferences sharedPreferences];
-      v274 = [v276 bestLocaleIdentifier];
+      bestLocaleIdentifier = [v276 bestLocaleIdentifier];
       v413[0] = @"ModifierKeyName.Command";
       v208 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:1];
       v414[0] = v208;
@@ -2880,8 +2880,8 @@ LABEL_94:
       v414[4] = v212;
       v280 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v414 forKeys:v413 count:5];
 
-      v213 = [MEMORY[0x277D655A0] sharedSpokenCommandUtilities];
-      v298 = [v213 dictionaryForLocaleIdentifier:v274 resourceFileName:@"ModifierKeyNames" resourceFileExtension:@"strings"];
+      mEMORY[0x277D655A0] = [MEMORY[0x277D655A0] sharedSpokenCommandUtilities];
+      v298 = [mEMORY[0x277D655A0] dictionaryForLocaleIdentifier:bestLocaleIdentifier resourceFileName:@"ModifierKeyNames" resourceFileExtension:@"strings"];
 
       v214 = [CACLanguageModel alloc];
       v215 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v206, *MEMORY[0x277D65630], 0}];
@@ -2891,8 +2891,8 @@ LABEL_94:
       v351 = 0u;
       v348 = 0u;
       v349 = 0u;
-      v290 = [v280 allKeys];
-      obje = [v290 countByEnumeratingWithState:&v348 objects:v412 count:16];
+      allKeys2 = [v280 allKeys];
+      obje = [allKeys2 countByEnumeratingWithState:&v348 objects:v412 count:16];
       if (!obje)
       {
         goto LABEL_231;
@@ -2905,7 +2905,7 @@ LABEL_206:
       {
         if (*v349 != v293)
         {
-          objc_enumerationMutation(v290);
+          objc_enumerationMutation(allKeys2);
         }
 
         v217 = *(*(&v348 + 1) + 8 * v216);
@@ -2946,8 +2946,8 @@ LABEL_206:
             v346 = 0u;
             v343 = 0u;
             v344 = 0u;
-            v226 = [v221 children];
-            v227 = [v226 countByEnumeratingWithState:&v343 objects:v411 count:16];
+            children = [v221 children];
+            v227 = [children countByEnumeratingWithState:&v343 objects:v411 count:16];
             if (v227)
             {
               v228 = *v344;
@@ -2957,13 +2957,13 @@ LABEL_206:
                 {
                   if (*v344 != v228)
                   {
-                    objc_enumerationMutation(v226);
+                    objc_enumerationMutation(children);
                   }
 
                   [*(*(&v343 + 1) + 8 * mm) setIdentifier:v217];
                 }
 
-                v227 = [v226 countByEnumeratingWithState:&v343 objects:v411 count:16];
+                v227 = [children countByEnumeratingWithState:&v343 objects:v411 count:16];
               }
 
               while (v227);
@@ -2991,7 +2991,7 @@ LABEL_218:
 
         if (++v216 == obje)
         {
-          v230 = [v290 countByEnumeratingWithState:&v348 objects:v412 count:16];
+          v230 = [allKeys2 countByEnumeratingWithState:&v348 objects:v412 count:16];
           obje = v230;
           if (!v230)
           {
@@ -3063,7 +3063,7 @@ LABEL_231:
         {
           for (i1 = 2; i1 != 101; ++i1)
           {
-            v265 = [(CACSpokenCommandManager *)v308 _stringInRecognitionLocaleFormatFromIntegerValue:i1];
+            v265 = [(CACSpokenCommandManager *)selfCopy _stringInRecognitionLocaleFormatFromIntegerValue:i1];
             v266 = [[CACLanguageModel alloc] initWithText:v265 identifier:0 attributes:0];
             [(CACLanguageModel *)v307 addChildLanguageModel:v266];
           }
@@ -3116,7 +3116,7 @@ LABEL_231:
         {
           for (i3 = 2; i3 != 100; ++i3)
           {
-            v268 = [(CACSpokenCommandManager *)v308 _stringInRecognitionLocaleFormatFromIntegerValue:i3];
+            v268 = [(CACSpokenCommandManager *)selfCopy _stringInRecognitionLocaleFormatFromIntegerValue:i3];
             v269 = [[CACLanguageModel alloc] initWithText:v268 identifier:0 attributes:0];
             [(CACLanguageModel *)v307 addChildLanguageModel:v269];
           }
@@ -3169,22 +3169,22 @@ LABEL_231:
     }
 
     v272 = +[CACPreferences sharedPreferences];
-    v270 = [v272 builtInCommandsTable];
-    v271 = [v272 bestLocaleIdentifier];
-    v281 = [v270 objectForKey:@"KeyboardKeyProperties"];
-    v242 = [MEMORY[0x277D655A0] sharedSpokenCommandUtilities];
-    v294 = [v242 dictionaryForLocaleIdentifier:v271 resourceFileName:@"KeyboardKeyNames" resourceFileExtension:@"strings"];
+    builtInCommandsTable = [v272 builtInCommandsTable];
+    bestLocaleIdentifier2 = [v272 bestLocaleIdentifier];
+    v281 = [builtInCommandsTable objectForKey:@"KeyboardKeyProperties"];
+    mEMORY[0x277D655A0]2 = [MEMORY[0x277D655A0] sharedSpokenCommandUtilities];
+    v294 = [mEMORY[0x277D655A0]2 dictionaryForLocaleIdentifier:bestLocaleIdentifier2 resourceFileName:@"KeyboardKeyNames" resourceFileExtension:@"strings"];
 
-    v243 = [MEMORY[0x277D655A0] sharedSpokenCommandUtilities];
+    mEMORY[0x277D655A0]3 = [MEMORY[0x277D655A0] sharedSpokenCommandUtilities];
     v244 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v277 = [v243 dictionaryForLocaleIdentifier:v271 bundle:v244 subDirectory:@"LocalizedPhoneticAlphabet" rootFileName:@"PhoneticAlphabet" rootFileExtension:@"plist"];
+    v277 = [mEMORY[0x277D655A0]3 dictionaryForLocaleIdentifier:bestLocaleIdentifier2 bundle:v244 subDirectory:@"LocalizedPhoneticAlphabet" rootFileName:@"PhoneticAlphabet" rootFileExtension:@"plist"];
 
     v337 = 0u;
     v338 = 0u;
     v335 = 0u;
     v336 = 0u;
-    v288 = [v281 allKeys];
-    v299 = [v288 countByEnumeratingWithState:&v335 objects:v409 count:16];
+    allKeys3 = [v281 allKeys];
+    v299 = [allKeys3 countByEnumeratingWithState:&v335 objects:v409 count:16];
     if (!v299)
     {
 LABEL_289:
@@ -3199,7 +3199,7 @@ LABEL_249:
     {
       if (*v336 != v291)
       {
-        objc_enumerationMutation(v288);
+        objc_enumerationMutation(allKeys3);
       }
 
       v246 = *(*(&v335 + 1) + 8 * v245);
@@ -3244,8 +3244,8 @@ LABEL_255:
       v333 = 0u;
       v330 = 0u;
       v331 = 0u;
-      v252 = [objf children];
-      v253 = [v252 countByEnumeratingWithState:&v330 objects:v408 count:16];
+      children2 = [objf children];
+      v253 = [children2 countByEnumeratingWithState:&v330 objects:v408 count:16];
       if (v253)
       {
         v254 = *v331;
@@ -3255,13 +3255,13 @@ LABEL_255:
           {
             if (*v331 != v254)
             {
-              objc_enumerationMutation(v252);
+              objc_enumerationMutation(children2);
             }
 
             [*(*(&v330 + 1) + 8 * i5) setIdentifier:v246];
           }
 
-          v253 = [v252 countByEnumeratingWithState:&v330 objects:v408 count:16];
+          v253 = [children2 countByEnumeratingWithState:&v330 objects:v408 count:16];
         }
 
         while (v253);
@@ -3280,7 +3280,7 @@ LABEL_257:
 LABEL_258:
       if (++v245 == v299)
       {
-        v263 = [v288 countByEnumeratingWithState:&v335 objects:v409 count:16];
+        v263 = [allKeys3 countByEnumeratingWithState:&v335 objects:v409 count:16];
         v299 = v263;
         if (!v263)
         {
@@ -3317,8 +3317,8 @@ LABEL_277:
       v328 = 0u;
       v325 = 0u;
       v326 = 0u;
-      v259 = [v279 children];
-      v260 = [v259 countByEnumeratingWithState:&v325 objects:v407 count:16];
+      children3 = [v279 children];
+      v260 = [children3 countByEnumeratingWithState:&v325 objects:v407 count:16];
       if (v260)
       {
         v261 = *v326;
@@ -3328,13 +3328,13 @@ LABEL_277:
           {
             if (*v326 != v261)
             {
-              objc_enumerationMutation(v259);
+              objc_enumerationMutation(children3);
             }
 
             [*(*(&v325 + 1) + 8 * i6) setIdentifier:v246];
           }
 
-          v260 = [v259 countByEnumeratingWithState:&v325 objects:v407 count:16];
+          v260 = [children3 countByEnumeratingWithState:&v325 objects:v407 count:16];
         }
 
         while (v260);
@@ -3391,12 +3391,12 @@ LABEL_276:
             }
 
             v47 = *(*(&v373 + 1) + 8 * i7);
-            v48 = [v47 numberedLabelForRecognition];
+            numberedLabelForRecognition2 = [v47 numberedLabelForRecognition];
             v49 = [CACLanguageModel alloc];
             v50 = MEMORY[0x277CBEAC0];
             v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v47, kCACCommandParameterLabeledElement, 0}];
             v52 = [v50 dictionaryWithObjectsAndKeys:{v51, kCACLanguageModelAttributeCommandParameters, v44, *v45, 0}];
-            v53 = [(CACLanguageModel *)v49 initWithText:v48 identifier:0 attributes:v52];
+            v53 = [(CACLanguageModel *)v49 initWithText:numberedLabelForRecognition2 identifier:0 attributes:v52];
 
             [(CACLanguageModel *)v307 addChildLanguageModel:v53];
           }
@@ -3418,11 +3418,11 @@ LABEL_276:
         goto LABEL_153;
       }
 
-      v94 = [(CACSpokenCommandManager *)self disambiguationHandler];
-      obj = v94;
-      if (v94)
+      disambiguationHandler = [(CACSpokenCommandManager *)self disambiguationHandler];
+      obj = disambiguationHandler;
+      if (disambiguationHandler)
       {
-        [v94 labeledElements];
+        [disambiguationHandler labeledElements];
       }
 
       else
@@ -3452,12 +3452,12 @@ LABEL_276:
             }
 
             v141 = *(*(&v369 + 1) + 8 * i8);
-            v142 = [v141 numberedLabelForRecognition];
+            numberedLabelForRecognition3 = [v141 numberedLabelForRecognition];
             v143 = [CACLanguageModel alloc];
             v144 = MEMORY[0x277CBEAC0];
             v145 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v141, kCACCommandParameterLabeledElement, 0}];
             v146 = [v144 dictionaryWithObjectsAndKeys:{v145, kCACLanguageModelAttributeCommandParameters, v138, *v139, 0}];
-            v147 = [(CACLanguageModel *)v143 initWithText:v142 identifier:0 attributes:v146];
+            v147 = [(CACLanguageModel *)v143 initWithText:numberedLabelForRecognition3 identifier:0 attributes:v146];
 
             [(CACLanguageModel *)v307 addChildLanguageModel:v147];
           }
@@ -3478,13 +3478,13 @@ LABEL_153:
     if (v149 | v151)
     {
       v152 = +[CACDisplayManager sharedManager];
-      v153 = [v152 visibleLabeledTextSegmentElements];
+      visibleLabeledTextSegmentElements = [v152 visibleLabeledTextSegmentElements];
 
       v368 = 0u;
       v367 = 0u;
       v366 = 0u;
       v365 = 0u;
-      objc = v153;
+      objc = visibleLabeledTextSegmentElements;
       v154 = [objc countByEnumeratingWithState:&v365 objects:v420 count:16];
       if (v154)
       {
@@ -3501,12 +3501,12 @@ LABEL_153:
             }
 
             v159 = *(*(&v365 + 1) + 8 * i9);
-            v160 = [v159 numberedLabelForRecognition];
+            numberedLabelForRecognition4 = [v159 numberedLabelForRecognition];
             v161 = [CACLanguageModel alloc];
             v162 = MEMORY[0x277CBEAC0];
             v163 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v159, kCACCommandParameterLabeledElement, 0}];
             v164 = [v162 dictionaryWithObjectsAndKeys:{v163, kCACLanguageModelAttributeCommandParameters, v156, *v157, 0}];
-            v165 = [(CACLanguageModel *)v161 initWithText:v160 identifier:0 attributes:v164];
+            v165 = [(CACLanguageModel *)v161 initWithText:numberedLabelForRecognition4 identifier:0 attributes:v164];
 
             [(CACLanguageModel *)v307 addChildLanguageModel:v165];
           }
@@ -3559,7 +3559,7 @@ LABEL_153:
   }
 
 LABEL_162:
-  v297 = v308->_identifierBasedLanguageModelCache;
+  v297 = selfCopy->_identifierBasedLanguageModelCache;
   objc_sync_enter(v297);
   v166 = +[CACSpeechSystem speechSystem];
   objd = [v166 createRXLanguageObjectRefFromCACLanguageModel:v307 ignoreBuiltInLMTable:1];
@@ -3598,15 +3598,15 @@ LABEL_162:
             objc_enumerationMutation(v172);
           }
 
-          v176 = [(NSMutableDictionary *)v308->_identifierBasedLanguageModelCache objectForKey:*(*(&v313 + 1) + 8 * i11)];
+          v176 = [(NSMutableDictionary *)selfCopy->_identifierBasedLanguageModelCache objectForKey:*(*(&v313 + 1) + 8 * i11)];
           v177 = v176;
           if (v176)
           {
             [v176 setIsCurrent:1];
-            v178 = [v177 languageModel];
+            languageModel = [v177 languageModel];
             [v177 rxLanguageObject];
-            [v178 removeAllChildren];
-            [v178 addChildLanguageModel:v307];
+            [languageModel removeAllChildren];
+            [languageModel addChildLanguageModel:v307];
             if (RXLanguageObjectGetCount() < 1)
             {
               RXLanguageObjectAddObject();
@@ -3617,11 +3617,11 @@ LABEL_162:
               v179 = [[CACRXLanguageObjectWrapper alloc] initWithRXLanguageObject:RXLanguageObjectGetObjectAtIndex()];
               if (v179)
               {
-                oldRXLangaugeObjects = v308->_oldRXLangaugeObjects;
+                oldRXLangaugeObjects = selfCopy->_oldRXLangaugeObjects;
                 v181 = MEMORY[0x277CCACA8];
                 [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-                v183 = [v181 stringWithFormat:@"%f", v182];
-                [(NSMutableDictionary *)oldRXLangaugeObjects setObject:v179 forKey:v183];
+                v182 = [v181 stringWithFormat:@"%f", v182];
+                [(NSMutableDictionary *)oldRXLangaugeObjects setObject:v179 forKey:v182];
 
                 RXLanguageObjectSetObjectAtIndex();
               }
@@ -3640,8 +3640,8 @@ LABEL_162:
 
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v185 = v184;
-  v186 = [(NSMutableDictionary *)v308->_oldRXLangaugeObjects allKeys];
-  v187 = [v186 copy];
+  allKeys4 = [(NSMutableDictionary *)selfCopy->_oldRXLangaugeObjects allKeys];
+  v187 = [allKeys4 copy];
 
   v311 = 0u;
   v312 = 0u;
@@ -3666,7 +3666,7 @@ LABEL_162:
         [v193 doubleValue];
         if (v194 < v191)
         {
-          [(NSMutableDictionary *)v308->_oldRXLangaugeObjects removeObjectForKey:v193];
+          [(NSMutableDictionary *)selfCopy->_oldRXLangaugeObjects removeObjectForKey:v193];
         }
       }
 
@@ -3696,12 +3696,12 @@ void __70__CACSpokenCommandManager__updateLanguageModelForBuiltInLMIdentifier___
   }
 }
 
-- (id)_arrayFromExternalContextOverrideForBuiltInIdentifier:(id)a3
+- (id)_arrayFromExternalContextOverrideForBuiltInIdentifier:(id)identifier
 {
   externalContextOverrideTable = self->_externalContextOverrideTable;
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [(NSDictionary *)externalContextOverrideTable objectForKey:@"CommandParameters"];
-  v7 = [v6 objectForKey:v5];
+  v7 = [v6 objectForKey:identifierCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -3718,14 +3718,14 @@ void __70__CACSpokenCommandManager__updateLanguageModelForBuiltInLMIdentifier___
   return v9;
 }
 
-- (id)_stringInRecognitionLocaleFormatFromIntegerValue:(int64_t)a3
+- (id)_stringInRecognitionLocaleFormatFromIntegerValue:(int64_t)value
 {
   v4 = objc_opt_new();
   [v4 setNumberStyle:1];
   v5 = MEMORY[0x277CBEAF8];
   v6 = +[CACPreferences sharedPreferences];
-  v7 = [v6 bestLocaleIdentifier];
-  v8 = [v5 localeWithLocaleIdentifier:v7];
+  bestLocaleIdentifier = [v6 bestLocaleIdentifier];
+  v8 = [v5 localeWithLocaleIdentifier:bestLocaleIdentifier];
 
   if (v8)
   {
@@ -3733,16 +3733,16 @@ void __70__CACSpokenCommandManager__updateLanguageModelForBuiltInLMIdentifier___
   }
 
   [v4 setUsesGroupingSeparator:0];
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:value];
   v10 = [v4 stringFromNumber:v9];
 
   return v10;
 }
 
-- (void)willHandleCommandForUtteranceID:(unint64_t)a3
+- (void)willHandleCommandForUtteranceID:(unint64_t)d
 {
   recentlyHandledUtterances = self->_recentlyHandledUtterances;
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:d];
   [(NSMutableArray *)recentlyHandledUtterances addObject:v5];
 
   if ([(NSMutableArray *)self->_recentlyHandledUtterances count]>= 6)
@@ -3753,9 +3753,9 @@ void __70__CACSpokenCommandManager__updateLanguageModelForBuiltInLMIdentifier___
   }
 }
 
-- (BOOL)utteranceIDHasBeenHandled:(unint64_t)a3
+- (BOOL)utteranceIDHasBeenHandled:(unint64_t)handled
 {
-  if (!a3)
+  if (!handled)
   {
     return 0;
   }
@@ -3767,7 +3767,7 @@ void __70__CACSpokenCommandManager__updateLanguageModelForBuiltInLMIdentifier___
   return recentlyHandledUtterances;
 }
 
-- (unsigned)currentInteractionLevelPassingBackTopReferencingObject:(id *)a3
+- (unsigned)currentInteractionLevelPassingBackTopReferencingObject:(id *)object
 {
   v23 = *MEMORY[0x277D85DE8];
   v4 = self->_recognizerInteractionLevels;
@@ -3776,10 +3776,10 @@ void __70__CACSpokenCommandManager__updateLanguageModelForBuiltInLMIdentifier___
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(NSMutableDictionary *)self->_recognizerInteractionLevels allKeys];
+  allKeys = [(NSMutableDictionary *)self->_recognizerInteractionLevels allKeys];
   v6 = 0;
   v7 = 0;
-  v8 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v8 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = *v19;
@@ -3789,31 +3789,31 @@ void __70__CACSpokenCommandManager__updateLanguageModelForBuiltInLMIdentifier___
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 intValue];
-        if (v12 > v6)
+        intValue = [v11 intValue];
+        if (intValue > v6)
         {
           v13 = [(NSMutableDictionary *)self->_recognizerInteractionLevels objectForKey:v11];
-          v14 = [v13 lastObject];
+          lastObject = [v13 lastObject];
 
-          v6 = v12;
-          v7 = v14;
+          v6 = intValue;
+          v7 = lastObject;
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
   }
 
-  if (a3)
+  if (object)
   {
     v15 = v7;
-    *a3 = v7;
+    *object = v7;
   }
 
   objc_sync_exit(v4);
@@ -3821,25 +3821,25 @@ void __70__CACSpokenCommandManager__updateLanguageModelForBuiltInLMIdentifier___
   return v6;
 }
 
-- (BOOL)_pushInteractionLevel:(unsigned int)a3 referencingObject:(id)a4
+- (BOOL)_pushInteractionLevel:(unsigned int)level referencingObject:(id)object
 {
-  v4 = *&a3;
-  v6 = a4;
-  if (v6)
+  v4 = *&level;
+  objectCopy = object;
+  if (objectCopy)
   {
     v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%d", v4];
     v8 = self->_recognizerInteractionLevels;
     objc_sync_enter(v8);
     v9 = [(NSMutableDictionary *)self->_recognizerInteractionLevels objectForKey:v7];
     v10 = v9 == 0;
-    v11 = v9;
+    array = v9;
     if (!v9)
     {
-      v11 = [MEMORY[0x277CBEB18] array];
-      [(NSMutableDictionary *)self->_recognizerInteractionLevels setObject:v11 forKey:v7];
+      array = [MEMORY[0x277CBEB18] array];
+      [(NSMutableDictionary *)self->_recognizerInteractionLevels setObject:array forKey:v7];
     }
 
-    [v11 addObject:v6];
+    [array addObject:objectCopy];
 
     objc_sync_exit(v8);
     if (!v9)
@@ -3877,11 +3877,11 @@ void __70__CACSpokenCommandManager__updateLanguageModelForBuiltInLMIdentifier___
   return v10;
 }
 
-- (BOOL)_popInteractionLevel:(unsigned int)a3 referencingObject:(id)a4
+- (BOOL)_popInteractionLevel:(unsigned int)level referencingObject:(id)object
 {
-  v4 = *&a3;
+  v4 = *&level;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  objectCopy = object;
   v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%d", v4];
   v8 = self->_recognizerInteractionLevels;
   objc_sync_enter(v8);
@@ -3915,7 +3915,7 @@ LABEL_4:
         }
 
         v14 = *(*(&v18 + 1) + 8 * v13);
-        if ([v14 isEqual:v6])
+        if ([v14 isEqual:objectCopy])
         {
           break;
         }
@@ -3985,30 +3985,30 @@ LABEL_15:
   objc_sync_exit(obj);
 }
 
-- (void)setDictationRecognizerMode:(int)a3
+- (void)setDictationRecognizerMode:(int)mode
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  dictationRecognizerMode = v4->_dictationRecognizerMode;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dictationRecognizerMode = selfCopy->_dictationRecognizerMode;
   if (dictationRecognizerMode != 1)
   {
-    v4->_attentionAwarePreviousDictationRecognizerMode = dictationRecognizerMode;
+    selfCopy->_attentionAwarePreviousDictationRecognizerMode = dictationRecognizerMode;
   }
 
-  v4->_dictationRecognizerMode = a3;
-  objc_sync_exit(v4);
+  selfCopy->_dictationRecognizerMode = mode;
+  objc_sync_exit(selfCopy);
 
-  [(CACSpokenCommandManager *)v4 synchronizeRecognizersWithReason:kSRUISyncReasonRecognizerModeChanged];
+  [(CACSpokenCommandManager *)selfCopy synchronizeRecognizersWithReason:kSRUISyncReasonRecognizerModeChanged];
 
-  [(CACSpokenCommandManager *)v4 _updateDictationInsertionCursorMode];
+  [(CACSpokenCommandManager *)selfCopy _updateDictationInsertionCursorMode];
 }
 
 - (int)dictationRecognizerMode
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  dictationRecognizerMode = v2->_dictationRecognizerMode;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dictationRecognizerMode = selfCopy->_dictationRecognizerMode;
+  objc_sync_exit(selfCopy);
 
   return dictationRecognizerMode;
 }
@@ -4016,10 +4016,10 @@ LABEL_15:
 - (void)_updateDictationInsertionCursorMode
 {
   v3 = ![(CACSpokenCommandManager *)self currentInteractionLevel]&& [(CACSpokenCommandManager *)self dictationRecognizerMode]!= 1 && _AXSPrefersNonBlinkingCursorIndicator() == 0;
-  v6 = [(CACSpokenCommandManager *)self focusedElement];
-  v4 = [v6 application];
+  focusedElement = [(CACSpokenCommandManager *)self focusedElement];
+  application = [focusedElement application];
   v5 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  [v4 performAction:2071 withValue:v5];
+  [application performAction:2071 withValue:v5];
 }
 
 - (void)enterSleepInteractionLevel
@@ -4120,10 +4120,10 @@ void __56__CACSpokenCommandManager__notifyUserOfSensitiveLogging__block_invoke_2
     else
     {
       v4 = MEMORY[0x277D6EDF8];
-      v5 = [(CACSpokenCommandManager *)self _telephonyQueue];
-      v6 = [v4 callCenterWithQueue:v5];
+      _telephonyQueue = [(CACSpokenCommandManager *)self _telephonyQueue];
+      v6 = [v4 callCenterWithQueue:_telephonyQueue];
 
-      v7 = [(CACSpokenCommandManager *)self _telephonyQueue];
+      _telephonyQueue2 = [(CACSpokenCommandManager *)self _telephonyQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __63__CACSpokenCommandManager__microphoneTurnedOffAfterInteruption__block_invoke_3;
@@ -4131,7 +4131,7 @@ void __56__CACSpokenCommandManager__notifyUserOfSensitiveLogging__block_invoke_2
       block[4] = self;
       v10 = v6;
       v3 = v6;
-      dispatch_async(v7, block);
+      dispatch_async(_telephonyQueue2, block);
 
       dispatch_async(MEMORY[0x277D85CD0], &__block_literal_global_605);
     }
@@ -4198,9 +4198,9 @@ void __63__CACSpokenCommandManager__microphoneTurnedOffAfterInteruption__block_i
 - (void)_microphoneTurnedOnAfterInteruption
 {
   v3 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v4 = [v3 _attentionIsLostWithListeningOffAction];
+  _attentionIsLostWithListeningOffAction = [v3 _attentionIsLostWithListeningOffAction];
 
-  if ((v4 & 1) == 0)
+  if ((_attentionIsLostWithListeningOffAction & 1) == 0)
   {
 
     [(CACSpokenCommandManager *)self _popInteractionLevel:2 referencingObject:self];
@@ -4219,9 +4219,9 @@ void __63__CACSpokenCommandManager__microphoneTurnedOffAfterInteruption__block_i
   [(CACSpokenCommandManager *)self updateStatusIndicatorView];
 }
 
-- (void)attemptGrabbingMic:(id)a3
+- (void)attemptGrabbingMic:(id)mic
 {
-  v4 = [a3 integerValue];
+  integerValue = [mic integerValue];
   if (self->_initialListenRequestWasSuccessful)
   {
     v5 = MEMORY[0x277D82BB8];
@@ -4231,11 +4231,11 @@ void __63__CACSpokenCommandManager__microphoneTurnedOffAfterInteruption__block_i
 
   else
   {
-    v6 = v4;
-    v7 = v4 * 10.0;
+    v6 = integerValue;
+    v7 = integerValue * 10.0;
     if (v7 <= 80.0)
     {
-      if (!v4)
+      if (!integerValue)
       {
         [(CACSpokenCommandManager *)self displayRetryMessage];
       }
@@ -4369,12 +4369,12 @@ uint64_t __60__CACSpokenCommandManager_displayMessageAndQuitVoiceControl__block_
   }
 
   v4 = +[CACPreferences sharedPreferences];
-  v5 = [v4 attentionAwareAction];
+  attentionAwareAction = [v4 attentionAwareAction];
 
   v6 = +[CACDisplayManager sharedManager];
-  v7 = [v6 carPlayConnected];
+  carPlayConnected = [v6 carPlayConnected];
 
-  if (v7)
+  if (carPlayConnected)
   {
 
     v8 = CACLogAttentionAware();
@@ -4384,20 +4384,20 @@ uint64_t __60__CACSpokenCommandManager_displayMessageAndQuitVoiceControl__block_
       _os_log_impl(&dword_26B354000, v8, OS_LOG_TYPE_INFO, "Disabling attention aware due to carplay active", &v12, 2u);
     }
 
-    v5 = @"None";
+    attentionAwareAction = @"None";
   }
 
   v9 = CACLogAttentionAware();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v12 = 138412290;
-    v13 = v5;
+    v13 = attentionAwareAction;
     _os_log_impl(&dword_26B354000, v9, OS_LOG_TYPE_INFO, "Resolved attention aware setting - %@", &v12, 0xCu);
   }
 
-  if (![(NSString *)self->_currentAttentionAwarenessAction isEqualToString:v5])
+  if (![(NSString *)self->_currentAttentionAwarenessAction isEqualToString:attentionAwareAction])
   {
-    if (([(__CFString *)v5 isEqualToString:@"None"]& 1) != 0)
+    if (([(__CFString *)attentionAwareAction isEqualToString:@"None"]& 1) != 0)
     {
       if (self->_isAttentionAwareClientRunning)
       {
@@ -4433,7 +4433,7 @@ LABEL_15:
       [v11 setDictationRecognizerMode:self->_attentionAwarePreviousDictationRecognizerMode];
     }
 
-    objc_storeStrong(&self->_currentAttentionAwarenessAction, v5);
+    objc_storeStrong(&self->_currentAttentionAwarenessAction, attentionAwareAction);
   }
 }
 
@@ -4446,21 +4446,21 @@ LABEL_15:
     self->_appLibrary = v3;
   }
 
-  v5 = [(CACSpokenCommandManager *)self appLibrary];
+  appLibrary = [(CACSpokenCommandManager *)self appLibrary];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __53__CACSpokenCommandManager_beginObservingApplications__block_invoke;
   v10[3] = &unk_279CEBC20;
   v10[4] = self;
-  v6 = [v5 observeDidAddApplicationsWithBlock:v10];
+  v6 = [appLibrary observeDidAddApplicationsWithBlock:v10];
 
-  v7 = [(CACSpokenCommandManager *)self appLibrary];
+  appLibrary2 = [(CACSpokenCommandManager *)self appLibrary];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__CACSpokenCommandManager_beginObservingApplications__block_invoke_643;
   v9[3] = &unk_279CEBC20;
   v9[4] = self;
-  v8 = [v7 observeDidRemoveApplicationsWithBlock:v9];
+  v8 = [appLibrary2 observeDidRemoveApplicationsWithBlock:v9];
 
   [(CACSpokenCommandManager *)self setApplicationAddedObservationToken:v6];
   [(CACSpokenCommandManager *)self setApplicationRemovedObservationToken:v8];
@@ -4498,26 +4498,26 @@ void __53__CACSpokenCommandManager_beginObservingApplications__block_invoke_643(
 
 - (void)stopObservingApplications
 {
-  v3 = [(CACSpokenCommandManager *)self appLibrary];
-  v4 = [(CACSpokenCommandManager *)self applicationAddedObservationToken];
-  [v3 removeObserverForToken:v4];
+  appLibrary = [(CACSpokenCommandManager *)self appLibrary];
+  applicationAddedObservationToken = [(CACSpokenCommandManager *)self applicationAddedObservationToken];
+  [appLibrary removeObserverForToken:applicationAddedObservationToken];
 
-  v5 = [(CACSpokenCommandManager *)self appLibrary];
-  v6 = [(CACSpokenCommandManager *)self applicationRemovedObservationToken];
-  [v5 removeObserverForToken:v6];
+  appLibrary2 = [(CACSpokenCommandManager *)self appLibrary];
+  applicationRemovedObservationToken = [(CACSpokenCommandManager *)self applicationRemovedObservationToken];
+  [appLibrary2 removeObserverForToken:applicationRemovedObservationToken];
 
   [(CACSpokenCommandManager *)self setApplicationAddedObservationToken:0];
 
   [(CACSpokenCommandManager *)self setApplicationRemovedObservationToken:0];
 }
 
-- (void)synchronizeRecognizersWithReason:(id)a3
+- (void)synchronizeRecognizersWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = v4;
+  reasonCopy = reason;
+  v5 = reasonCopy;
   if (self->_isListening)
   {
-    if ([v4 isEqualToString:kSRUISyncReasonOverlayStateChanged])
+    if ([reasonCopy isEqualToString:kSRUISyncReasonOverlayStateChanged])
     {
       [(CACSpokenCommandManager *)self _markAsDirtyForBuiltInLMIdentifier:*MEMORY[0x277D655F8]];
       if ([(CACSpokenCommandManager *)self isActiveOverlayType:@"NumberedGrid"]|| [(CACSpokenCommandManager *)self isActiveOverlayType:@"NumberedElements"])
@@ -4531,7 +4531,7 @@ void __53__CACSpokenCommandManager_beginObservingApplications__block_invoke_643(
     v6[2] = __60__CACSpokenCommandManager_synchronizeRecognizersWithReason___block_invoke;
     v6[3] = &unk_279CEB4C0;
     v7 = v5;
-    v8 = self;
+    selfCopy = self;
     [(CACSpokenCommandManager *)self performOnRecognizerSynchronizationDispatchQueueIfRunning:v6];
   }
 }
@@ -4723,10 +4723,10 @@ void __60__CACSpokenCommandManager_synchronizeRecognizersWithReason___block_invo
 
 - (BOOL)isSynchronizingRecognizers
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_recognizerSyncTransactionID != 0.0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_recognizerSyncTransactionID != 0.0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -4734,7 +4734,7 @@ void __60__CACSpokenCommandManager_synchronizeRecognizersWithReason___block_invo
 - (id)activeCommandIdentifiers
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   obj = self->_recognizers;
   objc_sync_enter(obj);
   v20 = 0u;
@@ -4762,8 +4762,8 @@ void __60__CACSpokenCommandManager_synchronizeRecognizersWithReason___block_invo
           v19 = 0u;
           v16 = 0u;
           v17 = 0u;
-          v9 = [v8 spokenCommands];
-          v10 = [v9 countByEnumeratingWithState:&v16 objects:v24 count:16];
+          spokenCommands = [v8 spokenCommands];
+          v10 = [spokenCommands countByEnumeratingWithState:&v16 objects:v24 count:16];
           if (v10)
           {
             v11 = *v17;
@@ -4773,14 +4773,14 @@ void __60__CACSpokenCommandManager_synchronizeRecognizersWithReason___block_invo
               {
                 if (*v17 != v11)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(spokenCommands);
                 }
 
-                v13 = [*(*(&v16 + 1) + 8 * j) identifier];
-                [v3 addObject:v13];
+                identifier = [*(*(&v16 + 1) + 8 * j) identifier];
+                [array addObject:identifier];
               }
 
-              v10 = [v9 countByEnumeratingWithState:&v16 objects:v24 count:16];
+              v10 = [spokenCommands countByEnumeratingWithState:&v16 objects:v24 count:16];
             }
 
             while (v10);
@@ -4796,23 +4796,23 @@ void __60__CACSpokenCommandManager_synchronizeRecognizersWithReason___block_invo
 
   objc_sync_exit(obj);
 
-  return v3;
+  return array;
 }
 
-- (void)forceSynchronizeRecognizersForBuiltInLMIdentifier:(id)a3
+- (void)forceSynchronizeRecognizersForBuiltInLMIdentifier:(id)identifier
 {
-  [(CACSpokenCommandManager *)self _markAsDirtyForBuiltInLMIdentifier:a3];
+  [(CACSpokenCommandManager *)self _markAsDirtyForBuiltInLMIdentifier:identifier];
   v4 = kSRUISyncReasonRecognizersChanged;
 
   [(CACSpokenCommandManager *)self synchronizeRecognizersWithReason:v4];
 }
 
-- (void)suspendCommandDispatching:(BOOL)a3
+- (void)suspendCommandDispatching:(BOOL)dispatching
 {
   obj = self->_recognizedCommandsReadyForDispatch;
   objc_sync_enter(obj);
-  self->_suspendCommandDispatching = a3;
-  if (!a3)
+  self->_suspendCommandDispatching = dispatching;
+  if (!dispatching)
   {
     [(CACSpokenCommandManager *)self dispatchPendingCommand];
   }
@@ -4820,33 +4820,33 @@ void __60__CACSpokenCommandManager_synchronizeRecognizersWithReason___block_invo
   objc_sync_exit(obj);
 }
 
-- (void)handleRecognizedCommand:(id)a3
+- (void)handleRecognizedCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   v5 = CACLogRecognition();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(CACSpokenCommandManager *)v4 handleRecognizedCommand:v5];
+    [(CACSpokenCommandManager *)commandCopy handleRecognizedCommand:v5];
   }
 
   if (self->_commandRecognitionLogPath)
   {
-    [(CACSpokenCommandManager *)self _appendSpokenCommand:v4 toLogAtPath:?];
+    [(CACSpokenCommandManager *)self _appendSpokenCommand:commandCopy toLogAtPath:?];
   }
 
   else
   {
-    v6 = [v4 identifier];
-    [(CACSpokenCommandManager *)self setRecognizedCommandIdentifier:v6];
+    identifier = [commandCopy identifier];
+    [(CACSpokenCommandManager *)self setRecognizedCommandIdentifier:identifier];
 
-    v7 = [v4 identifier];
-    v8 = [(CACSpokenCommandManager *)self shouldIgnoreCommand:v7];
+    identifier2 = [commandCopy identifier];
+    v8 = [(CACSpokenCommandManager *)self shouldIgnoreCommand:identifier2];
 
     if (!v8)
     {
       v9 = self->_recognizedCommandsReadyForDispatch;
       objc_sync_enter(v9);
-      [(NSMutableArray *)self->_recognizedCommandsReadyForDispatch addObject:v4];
+      [(NSMutableArray *)self->_recognizedCommandsReadyForDispatch addObject:commandCopy];
       if (!self->_suspendCommandDispatching)
       {
         [(CACSpokenCommandManager *)self dispatchPendingCommand];
@@ -4872,11 +4872,11 @@ void __60__CACSpokenCommandManager_synchronizeRecognizersWithReason___block_invo
       v17 = &unk_279CEB4C0;
       v5 = v3;
       v18 = v5;
-      v19 = self;
+      selfCopy = self;
       dispatch_async(commandExecutionDispatchQueue, &v14);
       v6 = [CACMessageTracerUtilities sharedCACMessageTracerUtilities:v14];
-      v7 = [v5 recognizedParameters];
-      [v6 setRecognitionProperties:v7];
+      recognizedParameters = [v5 recognizedParameters];
+      [v6 setRecognitionProperties:recognizedParameters];
 
       v8 = +[CACMessageTracerUtilities sharedCACMessageTracerUtilities];
       if (objc_opt_respondsToSelector())
@@ -4893,14 +4893,14 @@ void __60__CACSpokenCommandManager_synchronizeRecognizersWithReason___block_invo
 
       if (([v5 executedIndirectly] & 1) == 0)
       {
-        v10 = [MEMORY[0x277CE6BA0] systemApplication];
-        v11 = [v10 isScreenLocked];
+        systemApplication = [MEMORY[0x277CE6BA0] systemApplication];
+        isScreenLocked = [systemApplication isScreenLocked];
 
-        if ((v11 & 1) == 0)
+        if ((isScreenLocked & 1) == 0)
         {
           v12 = +[CACMessageTracerUtilities sharedCACMessageTracerUtilities];
-          v13 = [v5 identifier];
-          [v12 logCommandWithIdentifier:v13];
+          identifier = [v5 identifier];
+          [v12 logCommandWithIdentifier:identifier];
         }
       }
     }
@@ -5005,21 +5005,21 @@ void __49__CACSpokenCommandManager_dispatchPendingCommand__block_invoke_2()
   }
 }
 
-- (void)_appendSpokenCommand:(id)a3 toLogAtPath:(id)a4
+- (void)_appendSpokenCommand:(id)command toLogAtPath:(id)path
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v33 = a4;
-  v6 = [MEMORY[0x277CCAB68] string];
+  commandCopy = command;
+  pathCopy = path;
+  string = [MEMORY[0x277CCAB68] string];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-  [v6 appendFormat:@"%f\t", v7];
-  v8 = [v5 recognizedParameters];
-  v9 = [v8 objectForKey:kCACCommandParameterText];
-  [v6 appendFormat:@"%@\t", v9];
+  [string appendFormat:@"%f\t", v7];
+  recognizedParameters = [commandCopy recognizedParameters];
+  v9 = [recognizedParameters objectForKey:kCACCommandParameterText];
+  [string appendFormat:@"%@\t", v9];
 
-  v10 = [v5 identifier];
-  v35 = v6;
-  [v6 appendFormat:@"%@\t", v10];
+  identifier = [commandCopy identifier];
+  v35 = string;
+  [string appendFormat:@"%@\t", identifier];
 
   v38 = 0u;
   v39 = 0u;
@@ -5056,8 +5056,8 @@ void __49__CACSpokenCommandManager_dispatchPendingCommand__block_invoke_2()
         }
 
         v21 = *(*(&v36 + 1) + 8 * i);
-        v22 = [v5 recognizedParameters];
-        v23 = [v22 objectForKey:v21];
+        recognizedParameters2 = [commandCopy recognizedParameters];
+        v23 = [recognizedParameters2 objectForKey:v21];
         v24 = [v23 objectForKey:kCACCommandParameterText];
 
         if (v24)
@@ -5072,21 +5072,21 @@ void __49__CACSpokenCommandManager_dispatchPendingCommand__block_invoke_2()
     while (v18);
   }
 
-  v25 = [v33 stringByExpandingTildeInPath];
-  v26 = fopen([v25 UTF8String], "a");
+  stringByExpandingTildeInPath = [pathCopy stringByExpandingTildeInPath];
+  v26 = fopen([stringByExpandingTildeInPath UTF8String], "a");
 
   fprintf(v26, "%s\n", [v35 UTF8String]);
   fclose(v26);
   if (self->_synchronousRemoteRequestCompletionBlock)
   {
-    v27 = [v5 languageObject];
-    v28 = [v27 transcriptionResult];
-    v29 = [v28 isPartialResult];
+    languageObject = [commandCopy languageObject];
+    transcriptionResult = [languageObject transcriptionResult];
+    isPartialResult = [transcriptionResult isPartialResult];
 
-    if ((v29 & 1) == 0)
+    if ((isPartialResult & 1) == 0)
     {
       synchronousRemoteRequestCompletionBlock = self->_synchronousRemoteRequestCompletionBlock;
-      v40 = v5;
+      v40 = commandCopy;
       v31 = [MEMORY[0x277CBEA60] arrayWithObjects:&v40 count:1];
       synchronousRemoteRequestCompletionBlock[2](synchronousRemoteRequestCompletionBlock, v31, 0);
 
@@ -5096,41 +5096,41 @@ void __49__CACSpokenCommandManager_dispatchPendingCommand__block_invoke_2()
   }
 }
 
-- (BOOL)shouldIgnoreCommand:(id)a3
+- (BOOL)shouldIgnoreCommand:(id)command
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CACSpokenCommandManager *)self commandsToIgnore];
+  commandCopy = command;
+  commandsToIgnore = [(CACSpokenCommandManager *)self commandsToIgnore];
 
-  if (v5)
+  if (commandsToIgnore)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v6 = [(CACSpokenCommandManager *)self commandsToIgnore];
-    v5 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
-    if (v5)
+    commandsToIgnore2 = [(CACSpokenCommandManager *)self commandsToIgnore];
+    commandsToIgnore = [commandsToIgnore2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    if (commandsToIgnore)
     {
       v7 = *v11;
       while (2)
       {
-        for (i = 0; i != v5; i = i + 1)
+        for (i = 0; i != commandsToIgnore; i = i + 1)
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(commandsToIgnore2);
           }
 
-          if ([*(*(&v10 + 1) + 8 * i) isEqualToString:v4])
+          if ([*(*(&v10 + 1) + 8 * i) isEqualToString:commandCopy])
           {
-            LOBYTE(v5) = 1;
+            LOBYTE(commandsToIgnore) = 1;
             goto LABEL_12;
           }
         }
 
-        v5 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
-        if (v5)
+        commandsToIgnore = [commandsToIgnore2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        if (commandsToIgnore)
         {
           continue;
         }
@@ -5142,15 +5142,15 @@ void __49__CACSpokenCommandManager_dispatchPendingCommand__block_invoke_2()
 LABEL_12:
   }
 
-  return v5;
+  return commandsToIgnore;
 }
 
-- (void)_startSynchronousRemoteRecognitionWithCompletionBlock:(id)a3
+- (void)_startSynchronousRemoteRecognitionWithCompletionBlock:(id)block
 {
   obj = self;
-  v4 = a3;
+  blockCopy = block;
   objc_sync_enter(obj);
-  v5 = _Block_copy(v4);
+  v5 = _Block_copy(blockCopy);
 
   synchronousRemoteRequestCompletionBlock = obj->_synchronousRemoteRequestCompletionBlock;
   obj->_synchronousRemoteRequestCompletionBlock = v5;
@@ -5168,40 +5168,40 @@ LABEL_12:
   objc_sync_exit(obj);
 }
 
-- (void)didFinishExecutingSpokenCommand:(id)a3
+- (void)didFinishExecutingSpokenCommand:(id)command
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [v4 languageObject];
-  v7 = [v6 transcriptionResult];
-  if ([v7 isPartialResult])
+  commandCopy = command;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  languageObject = [commandCopy languageObject];
+  transcriptionResult = [languageObject transcriptionResult];
+  if ([transcriptionResult isPartialResult])
   {
   }
 
   else
   {
-    synchronousRemoteRequestCompletionBlock = v5->_synchronousRemoteRequestCompletionBlock;
+    synchronousRemoteRequestCompletionBlock = selfCopy->_synchronousRemoteRequestCompletionBlock;
 
     if (synchronousRemoteRequestCompletionBlock)
     {
-      v9 = v5->_synchronousRemoteRequestCompletionBlock;
-      v17[0] = v4;
+      v9 = selfCopy->_synchronousRemoteRequestCompletionBlock;
+      v17[0] = commandCopy;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
       v9[2](v9, v10, 0);
 
-      v11 = v5->_synchronousRemoteRequestCompletionBlock;
-      v5->_synchronousRemoteRequestCompletionBlock = 0;
+      v11 = selfCopy->_synchronousRemoteRequestCompletionBlock;
+      selfCopy->_synchronousRemoteRequestCompletionBlock = 0;
     }
   }
 
-  v12 = [v4 languageObject];
-  v13 = [v12 transcriptionResult];
-  if ([v13 isPartialResult])
+  languageObject2 = [commandCopy languageObject];
+  transcriptionResult2 = [languageObject2 transcriptionResult];
+  if ([transcriptionResult2 isPartialResult])
   {
-    v14 = [v4 identifier];
-    v15 = [CACSpokenCommandManager commandIdentifierIsDictation:v14];
+    identifier = [commandCopy identifier];
+    v15 = [CACSpokenCommandManager commandIdentifierIsDictation:identifier];
 
     if (v15)
     {
@@ -5214,27 +5214,27 @@ LABEL_12:
   }
 
   v16 = objc_opt_new();
-  [(CACSpokenCommandManager *)v5 setStagedTextInsertionSpecifier:v16];
+  [(CACSpokenCommandManager *)selfCopy setStagedTextInsertionSpecifier:v16];
 
-  [(CACSpokenCommandManager *)v5 _clearPreviousTextInsertionSpecifierBasedOnExecutedCommand:v4];
+  [(CACSpokenCommandManager *)selfCopy _clearPreviousTextInsertionSpecifierBasedOnExecutedCommand:commandCopy];
 LABEL_10:
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)didFindCloseSpokenCommandIdentifiers:(id)a3
+- (void)didFindCloseSpokenCommandIdentifiers:(id)identifiers
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_synchronousRemoteRequestCompletionBlock)
+  identifiersCopy = identifiers;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_synchronousRemoteRequestCompletionBlock)
   {
     v6 = objc_opt_new();
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = v4;
+    v7 = identifiersCopy;
     v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v8)
     {
@@ -5249,7 +5249,7 @@ LABEL_10:
             objc_enumerationMutation(v7);
           }
 
-          v11 = [(CACSpokenCommandManager *)v5 _templateSpokenCommandWithIdentifier:*(*(&v13 + 1) + 8 * v10), v13];
+          v11 = [(CACSpokenCommandManager *)selfCopy _templateSpokenCommandWithIdentifier:*(*(&v13 + 1) + 8 * v10), v13];
           if (v11)
           {
             [v6 addObject:v11];
@@ -5265,41 +5265,41 @@ LABEL_10:
       while (v8);
     }
 
-    (*(v5->_synchronousRemoteRequestCompletionBlock + 2))();
-    synchronousRemoteRequestCompletionBlock = v5->_synchronousRemoteRequestCompletionBlock;
-    v5->_synchronousRemoteRequestCompletionBlock = 0;
+    (*(selfCopy->_synchronousRemoteRequestCompletionBlock + 2))();
+    synchronousRemoteRequestCompletionBlock = selfCopy->_synchronousRemoteRequestCompletionBlock;
+    selfCopy->_synchronousRemoteRequestCompletionBlock = 0;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)notifyUserOfCommandFailureWithTitle:(id)a3 description:(id)a4
+- (void)notifyUserOfCommandFailureWithTitle:(id)title description:(id)description
 {
-  v5 = a4;
-  v6 = a3;
+  descriptionCopy = description;
+  titleCopy = title;
   v8 = +[CACDisplayManager sharedManager];
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v6, v5];
+  descriptionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", titleCopy, descriptionCopy];
 
-  [v8 displayMessageString:v7 type:1];
+  [v8 displayMessageString:descriptionCopy type:1];
 }
 
-- (void)setNextPreviousResolverSpokenCommand:(id)a3
+- (void)setNextPreviousResolverSpokenCommand:(id)command
 {
-  v11 = a3;
-  v5 = [v11 identifier];
-  if (([(CACSpokenCommandManager *)v5 isEqualToString:@"Text.SelectNext"]& 1) != 0)
+  commandCopy = command;
+  selfCopy = [commandCopy identifier];
+  if (([(CACSpokenCommandManager *)selfCopy isEqualToString:@"Text.SelectNext"]& 1) != 0)
   {
     goto LABEL_8;
   }
 
-  v6 = [v11 identifier];
-  if ([v6 isEqualToString:@"Text.SelectPrevious"])
+  identifier = [commandCopy identifier];
+  if ([identifier isEqualToString:@"Text.SelectPrevious"])
   {
     goto LABEL_7;
   }
 
-  v7 = [v11 identifier];
-  if ([v7 isEqualToString:@"System.OverlayChooseLabel"])
+  identifier2 = [commandCopy identifier];
+  if ([identifier2 isEqualToString:@"System.OverlayChooseLabel"])
   {
 LABEL_6:
 
@@ -5309,22 +5309,22 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v8 = [v11 identifier];
-  if ([v8 isEqualToString:@"System.OverlayChooseLabelWithoutPrefix"])
+  identifier3 = [commandCopy identifier];
+  if ([identifier3 isEqualToString:@"System.OverlayChooseLabelWithoutPrefix"])
   {
 
     goto LABEL_6;
   }
 
-  v9 = [v11 identifier];
-  v10 = [v9 isEqualToString:@"System.OverlayChooseAllLabels"];
+  identifier4 = [commandCopy identifier];
+  v10 = [identifier4 isEqualToString:@"System.OverlayChooseAllLabels"];
 
   if ((v10 & 1) == 0)
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    objc_storeStrong(&v5->_currentNextPreviousResolverSpokenCommand, a3);
-    objc_sync_exit(v5);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_currentNextPreviousResolverSpokenCommand, command);
+    objc_sync_exit(selfCopy);
     goto LABEL_8;
   }
 
@@ -5333,29 +5333,29 @@ LABEL_9:
 
 - (BOOL)isNextPreviousResolverSpokenCommandEmojiBased
 {
-  v2 = [(CACSpokenCommand *)self->_currentNextPreviousResolverSpokenCommand identifier];
-  v3 = [v2 isEqualToString:@"Text.SelectEmojiWithPhrase"];
+  identifier = [(CACSpokenCommand *)self->_currentNextPreviousResolverSpokenCommand identifier];
+  v3 = [identifier isEqualToString:@"Text.SelectEmojiWithPhrase"];
 
   return v3;
 }
 
 - (id)resolvedNextSpokenCommand
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_currentNextPreviousResolverSpokenCommand)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_currentNextPreviousResolverSpokenCommand)
   {
-    v3 = [(CACSpokenCommandManager *)v2 _nextResolverRelationships];
-    v4 = [(CACSpokenCommand *)v2->_currentNextPreviousResolverSpokenCommand identifier];
-    v5 = [v3 objectForKey:v4];
+    _nextResolverRelationships = [(CACSpokenCommandManager *)selfCopy _nextResolverRelationships];
+    identifier = [(CACSpokenCommand *)selfCopy->_currentNextPreviousResolverSpokenCommand identifier];
+    v5 = [_nextResolverRelationships objectForKey:identifier];
 
     if (v5)
     {
-      v6 = [(CACSpokenCommand *)v2->_currentNextPreviousResolverSpokenCommand copy];
+      v6 = [(CACSpokenCommand *)selfCopy->_currentNextPreviousResolverSpokenCommand copy];
       [v6 setIdentifier:v5];
       if (([v5 isEqualToString:@"Text.SelectNext"] & 1) == 0)
       {
-        v7 = [(CACSpokenCommandManager *)v2 _templateSpokenCommandWithIdentifier:v5];
+        v7 = [(CACSpokenCommandManager *)selfCopy _templateSpokenCommandWithIdentifier:v5];
         v8 = v7;
         if (v7)
         {
@@ -5372,31 +5372,31 @@ LABEL_9:
 
   else
   {
-    v6 = [(CACSpokenCommandManager *)v2 _templateSpokenCommandWithIdentifier:@"Text.SelectNextWord"];
+    v6 = [(CACSpokenCommandManager *)selfCopy _templateSpokenCommandWithIdentifier:@"Text.SelectNextWord"];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (id)resolvedPreviousSpokenCommand
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_currentNextPreviousResolverSpokenCommand)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_currentNextPreviousResolverSpokenCommand)
   {
-    v3 = [(CACSpokenCommandManager *)v2 _previousResolverRelationships];
-    v4 = [(CACSpokenCommand *)v2->_currentNextPreviousResolverSpokenCommand identifier];
-    v5 = [v3 objectForKey:v4];
+    _previousResolverRelationships = [(CACSpokenCommandManager *)selfCopy _previousResolverRelationships];
+    identifier = [(CACSpokenCommand *)selfCopy->_currentNextPreviousResolverSpokenCommand identifier];
+    v5 = [_previousResolverRelationships objectForKey:identifier];
 
     if (v5)
     {
-      v6 = [(CACSpokenCommand *)v2->_currentNextPreviousResolverSpokenCommand copy];
+      v6 = [(CACSpokenCommand *)selfCopy->_currentNextPreviousResolverSpokenCommand copy];
       [v6 setIdentifier:v5];
       if (([v5 isEqualToString:@"Text.SelectPrevious"] & 1) == 0)
       {
-        v7 = [(CACSpokenCommandManager *)v2 _templateSpokenCommandWithIdentifier:v5];
+        v7 = [(CACSpokenCommandManager *)selfCopy _templateSpokenCommandWithIdentifier:v5];
         v8 = v7;
         if (v7)
         {
@@ -5413,10 +5413,10 @@ LABEL_9:
 
   else
   {
-    v6 = [(CACSpokenCommandManager *)v2 _templateSpokenCommandWithIdentifier:@"Text.SelectPreviousWord"];
+    v6 = [(CACSpokenCommandManager *)selfCopy _templateSpokenCommandWithIdentifier:@"Text.SelectPreviousWord"];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -5465,10 +5465,10 @@ uint64_t __57__CACSpokenCommandManager__previousResolverRelationships__block_inv
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_templateSpokenCommandWithIdentifier:(id)a3
+- (id)_templateSpokenCommandWithIdentifier:(id)identifier
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v17 = self->_recognizers;
   objc_sync_enter(v17);
   v25 = 0u;
@@ -5495,8 +5495,8 @@ uint64_t __57__CACSpokenCommandManager__previousResolverRelationships__block_inv
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v8 = [v7 spokenCommands];
-        v9 = [v8 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        spokenCommands = [v7 spokenCommands];
+        v9 = [spokenCommands countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v9)
         {
           v10 = *v22;
@@ -5506,12 +5506,12 @@ uint64_t __57__CACSpokenCommandManager__previousResolverRelationships__block_inv
             {
               if (*v22 != v10)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(spokenCommands);
               }
 
               v12 = *(*(&v21 + 1) + 8 * j);
-              v13 = [v12 identifier];
-              v14 = [v13 isEqualToString:v4];
+              identifier = [v12 identifier];
+              v14 = [identifier isEqualToString:identifierCopy];
 
               if (v14)
               {
@@ -5522,7 +5522,7 @@ uint64_t __57__CACSpokenCommandManager__previousResolverRelationships__block_inv
               }
             }
 
-            v9 = [v8 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            v9 = [spokenCommands countByEnumeratingWithState:&v21 objects:v29 count:16];
             if (v9)
             {
               continue;
@@ -5551,21 +5551,21 @@ LABEL_16:
   return v20;
 }
 
-- (void)setRepeatingSpokenCommand:(id)a3
+- (void)setRepeatingSpokenCommand:(id)command
 {
-  v9 = a3;
-  v4 = [v9 identifier];
-  v5 = [v4 isEqualToString:@"System.RepeatPreviousCommand"];
+  commandCopy = command;
+  identifier = [commandCopy identifier];
+  v5 = [identifier isEqualToString:@"System.RepeatPreviousCommand"];
 
   if ((v5 & 1) == 0)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    v7 = [v9 copy];
-    currentRepeatingSpokenCommand = v6->_currentRepeatingSpokenCommand;
-    v6->_currentRepeatingSpokenCommand = v7;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v7 = [commandCopy copy];
+    currentRepeatingSpokenCommand = selfCopy->_currentRepeatingSpokenCommand;
+    selfCopy->_currentRepeatingSpokenCommand = v7;
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -5577,31 +5577,31 @@ LABEL_16:
   objc_sync_exit(obj);
 }
 
-- (void)beginExecutingRepeatingSpokenCommandNumberOfTimes:(int64_t)a3 completionBlock:(id)a4
+- (void)beginExecutingRepeatingSpokenCommandNumberOfTimes:(int64_t)times completionBlock:(id)block
 {
-  v7 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  v6->_repeatingSpokenCommandRemainingCount = a3;
-  [(CACSpokenCommand *)v6->_currentRepeatingSpokenCommand setExecutedIndirectly:1];
-  objc_sync_exit(v6);
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_repeatingSpokenCommandRemainingCount = times;
+  [(CACSpokenCommand *)selfCopy->_currentRepeatingSpokenCommand setExecutedIndirectly:1];
+  objc_sync_exit(selfCopy);
 
-  [(CACSpokenCommandManager *)v6 _executeNextRepeatWithCompletionBlock:v7];
+  [(CACSpokenCommandManager *)selfCopy _executeNextRepeatWithCompletionBlock:blockCopy];
 }
 
-- (void)_executeNextRepeatWithCompletionBlock:(id)a3
+- (void)_executeNextRepeatWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = v5->_currentRepeatingSpokenCommand;
-  repeatingSpokenCommandRemainingCount = v5->_repeatingSpokenCommandRemainingCount;
-  objc_sync_exit(v5);
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = selfCopy->_currentRepeatingSpokenCommand;
+  repeatingSpokenCommandRemainingCount = selfCopy->_repeatingSpokenCommandRemainingCount;
+  objc_sync_exit(selfCopy);
 
   if (repeatingSpokenCommandRemainingCount < 1)
   {
     v10 = CACMakeSuccessError();
-    v4[2](v4, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   else
@@ -5611,8 +5611,8 @@ LABEL_16:
       goto LABEL_9;
     }
 
-    v8 = [(CACSpokenCommand *)v6 contextEvaluation];
-    v9 = [v8 objectForKey:kCACCommandContextRequiresNumberedElementsOverlay];
+    contextEvaluation = [(CACSpokenCommand *)v6 contextEvaluation];
+    v9 = [contextEvaluation objectForKey:kCACCommandContextRequiresNumberedElementsOverlay];
     if ([v9 BOOLValue])
     {
 
@@ -5622,26 +5622,26 @@ LABEL_9:
       block[1] = 3221225472;
       block[2] = __65__CACSpokenCommandManager__executeNextRepeatWithCompletionBlock___block_invoke;
       block[3] = &unk_279CEB430;
-      block[4] = v5;
+      block[4] = selfCopy;
       v17 = v6;
-      v18 = v4;
+      v18 = blockCopy;
       dispatch_async(v14, block);
 
       goto LABEL_10;
     }
 
-    v11 = [(CACSpokenCommand *)v6 contextEvaluation];
-    v12 = [v11 objectForKey:kCACCommandContextRequiresAnyNumberedOverlay];
-    v13 = [v12 BOOLValue];
+    contextEvaluation2 = [(CACSpokenCommand *)v6 contextEvaluation];
+    v12 = [contextEvaluation2 objectForKey:kCACCommandContextRequiresAnyNumberedOverlay];
+    bOOLValue = [v12 BOOLValue];
 
-    if (v13)
+    if (bOOLValue)
     {
       goto LABEL_9;
     }
 
     v10 = [CACLocaleUtilities localizedUIStringForKey:@"ErrorMessage.PreviousCommandNotAppropriate"];
     v15 = CACMakeError(3002, v10);
-    v4[2](v4, v15);
+    blockCopy[2](blockCopy, v15);
   }
 
 LABEL_10:
@@ -5677,24 +5677,24 @@ uint64_t __65__CACSpokenCommandManager__executeNextRepeatWithCompletionBlock___b
 
 - (BOOL)isFetchingElements
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_fetchingTransactionID != 0.0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_fetchingTransactionID != 0.0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)forceElementFetchWithReason:(id)a3
+- (void)forceElementFetchWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__CACSpokenCommandManager_forceElementFetchWithReason___block_invoke;
   v6[3] = &unk_279CEB4C0;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = reasonCopy;
+  selfCopy = self;
+  v5 = reasonCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -5707,13 +5707,13 @@ void __55__CACSpokenCommandManager_forceElementFetchWithReason___block_invoke(ui
 - (id)_fetchPresentationElements
 {
   v24 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] array];
-  v3 = [MEMORY[0x277D73FF8] options];
-  [v3 setLeafNodePredicate:&__block_literal_global_786];
+  array = [MEMORY[0x277CBEB18] array];
+  options = [MEMORY[0x277D73FF8] options];
+  [options setLeafNodePredicate:&__block_literal_global_786];
   v4 = +[CACDisplayManager sharedManager];
-  v5 = [v4 view];
-  v6 = [v5 window];
-  v7 = [v6 _accessibilityLeafDescendantsWithOptions:v3];
+  view = [v4 view];
+  window = [view window];
+  v7 = [window _accessibilityLeafDescendantsWithOptions:options];
 
   v21 = 0u;
   v22 = 0u;
@@ -5742,7 +5742,7 @@ void __55__CACSpokenCommandManager_forceElementFetchWithReason___block_invoke(ui
           v16 = [CACLocalAXElement alloc];
           v17 = [(CACLocalAXElement *)v16 initWithAXUIElement:v15, v19];
           [(CACLocalAXElement *)v17 setLocalElement:v13];
-          [v2 addObject:v17];
+          [array addObject:v17];
           CFRelease(v15);
         }
       }
@@ -5753,9 +5753,9 @@ void __55__CACSpokenCommandManager_forceElementFetchWithReason___block_invoke(ui
     while (v10);
   }
 
-  +[CACSignPostLog FetchElementsEventCompletedWithNumberOfElements:numberOfElementsAlreadyCached:](CACSignPostLog, "FetchElementsEventCompletedWithNumberOfElements:numberOfElementsAlreadyCached:", [v2 count], 0);
+  +[CACSignPostLog FetchElementsEventCompletedWithNumberOfElements:numberOfElementsAlreadyCached:](CACSignPostLog, "FetchElementsEventCompletedWithNumberOfElements:numberOfElementsAlreadyCached:", [array count], 0);
 
-  return v2;
+  return array;
 }
 
 uint64_t __53__CACSpokenCommandManager__fetchPresentationElements__block_invoke(uint64_t a1, void *a2)
@@ -5774,16 +5774,16 @@ uint64_t __53__CACSpokenCommandManager__fetchPresentationElements__block_invoke(
   return v3;
 }
 
-- (BOOL)elementIsOccluded:(id)a3 occludedAppScenes:(id)a4
+- (BOOL)elementIsOccluded:(id)occluded occludedAppScenes:(id)scenes
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  occludedCopy = occluded;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  scenesCopy = scenes;
+  v7 = [scenesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -5793,12 +5793,12 @@ uint64_t __53__CACSpokenCommandManager__fetchPresentationElements__block_invoke(
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(scenesCopy);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) fbSceneIdentifier];
-        v11 = [v5 fbSceneIdentifier];
-        v12 = [v10 isEqual:v11];
+        fbSceneIdentifier = [*(*(&v14 + 1) + 8 * i) fbSceneIdentifier];
+        fbSceneIdentifier2 = [occludedCopy fbSceneIdentifier];
+        v12 = [fbSceneIdentifier isEqual:fbSceneIdentifier2];
 
         if (v12)
         {
@@ -5807,7 +5807,7 @@ uint64_t __53__CACSpokenCommandManager__fetchPresentationElements__block_invoke(
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [scenesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -5839,33 +5839,33 @@ LABEL_11:
   return v4;
 }
 
-- (CGRect)_interfaceOrientedFrameForElement:(id)a3 axFrame:(CGRect)a4
+- (CGRect)_interfaceOrientedFrameForElement:(id)element axFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = [a3 windowDisplayId];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  windowDisplayId = [element windowDisplayId];
   v9 = +[CACDisplayManager sharedManager];
-  v10 = [v9 overlayViewForDisplayID:v8];
+  v10 = [v9 overlayViewForDisplayID:windowDisplayId];
 
   if (v10)
   {
     v11 = +[CACDisplayManager sharedManager];
-    v12 = [v11 carPlayConnected];
+    carPlayConnected = [v11 carPlayConnected];
 
-    v13 = [MEMORY[0x277CE6BA0] systemWideElement];
-    v14 = v13;
-    if (v12)
+    systemWideElement = [MEMORY[0x277CE6BA0] systemWideElement];
+    v14 = systemWideElement;
+    if (carPlayConnected)
     {
-      v15 = [v13 elementsForAttribute:1009];
-      v16 = [v15 firstObject];
+      v15 = [systemWideElement elementsForAttribute:1009];
+      firstObject = [v15 firstObject];
 
-      v14 = v16;
+      v14 = firstObject;
     }
 
-    v17 = [v10 window];
-    [v14 convertRect:objc_msgSend(v17 toContextId:"_contextId") displayId:{v8, x, y, width, height}];
+    window = [v10 window];
+    [v14 convertRect:objc_msgSend(window toContextId:"_contextId") displayId:{windowDisplayId, x, y, width, height}];
     x = v18;
     y = v19;
     width = v20;
@@ -6787,12 +6787,12 @@ LABEL_25:
   }
 }
 
-- (void)_scheduleFetchElementsWithDelay:(double)a3 andReason:(id)a4
+- (void)_scheduleFetchElementsWithDelay:(double)delay andReason:(id)reason
 {
-  v6 = a4;
+  reasonCopy = reason;
   if (!self->_elementFetchingQueue)
   {
-    v7 = [MEMORY[0x277CCACC8] callStackSymbols];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
     v8 = CACLogElementCollection();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -6801,40 +6801,40 @@ LABEL_25:
   }
 
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel__fetchElements object:0];
-  [CACSignPostLog FetchElementsEventBeganWithReason:v6 expectedDelay:a3];
-  v9 = self;
-  objc_sync_enter(v9);
+  [CACSignPostLog FetchElementsEventBeganWithReason:reasonCopy expectedDelay:delay];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-  v9->_fetchingTransactionID = v10;
-  objc_sync_exit(v9);
+  selfCopy->_fetchingTransactionID = v10;
+  objc_sync_exit(selfCopy);
 
-  nextFetchDelayFactor = v9->_nextFetchDelayFactor;
+  nextFetchDelayFactor = selfCopy->_nextFetchDelayFactor;
   if (nextFetchDelayFactor <= 1.0)
   {
-    v12 = a3;
+    delayCopy = delay;
   }
 
   else
   {
-    v12 = nextFetchDelayFactor * a3;
+    delayCopy = nextFetchDelayFactor * delay;
   }
 
-  [(CACSpokenCommandManager *)v9 performSelector:sel__fetchElements withObject:0 afterDelay:v12];
-  v9->_nextFetchDelayFactor = 0.0;
+  [(CACSpokenCommandManager *)selfCopy performSelector:sel__fetchElements withObject:0 afterDelay:delayCopy];
+  selfCopy->_nextFetchDelayFactor = 0.0;
 }
 
-- (void)observer:(id)a3 didObserveNotification:(int)a4 notificationData:(void *)a5
+- (void)observer:(id)observer didObserveNotification:(int)notification notificationData:(void *)data
 {
-  v6 = *&a4;
+  v6 = *&notification;
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  observerCopy = observer;
   v9 = CACLogDictationCommands();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 67109378;
     v25 = v6;
     v26 = 2112;
-    v27 = a5;
+    dataCopy = data;
     _os_log_impl(&dword_26B354000, v9, OS_LOG_TYPE_INFO, "did observe notification: %d, notification data: %@", buf, 0x12u);
   }
 
@@ -6848,29 +6848,29 @@ LABEL_25:
     v10 = 1 << (v6 + 24);
     if ((v10 & 0x13) != 0)
     {
-      v12 = self;
-      objc_sync_enter(v12);
-      displayIsOff = v12->_displayIsOff;
-      if (displayIsOff != [(CACSpokenCommandManager *)v12 _isSystemSleeping])
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      displayIsOff = selfCopy->_displayIsOff;
+      if (displayIsOff != [(CACSpokenCommandManager *)selfCopy _isSystemSleeping])
       {
-        v14 = [(CACSpokenCommandManager *)v12 _isSystemSleeping];
-        v12->_displayIsOff = v14;
-        if (v14)
+        _isSystemSleeping = [(CACSpokenCommandManager *)selfCopy _isSystemSleeping];
+        selfCopy->_displayIsOff = _isSystemSleeping;
+        if (_isSystemSleeping)
         {
-          [(CACSpokenCommandManager *)v12 _microphoneTurnedOffAfterInteruption];
+          [(CACSpokenCommandManager *)selfCopy _microphoneTurnedOffAfterInteruption];
         }
 
         else
         {
-          [(CACSpokenCommandManager *)v12 _microphoneTurnedOnAfterInteruption];
+          [(CACSpokenCommandManager *)selfCopy _microphoneTurnedOnAfterInteruption];
         }
       }
 
-      objc_sync_exit(v12);
+      objc_sync_exit(selfCopy);
 
       if (v6 == 1000)
       {
-        [(CACSpokenCommandManager *)v12 willUpdateElementsSignificantly];
+        [(CACSpokenCommandManager *)selfCopy willUpdateElementsSignificantly];
       }
 
       else if (v6 != 1001 && v6 != 1004)
@@ -6913,7 +6913,7 @@ LABEL_29:
 
     [(CACSpokenCommandManager *)self delayForNotification:v6];
     v21 = v20;
-    if (a5 && CFEqual(a5, *MEMORY[0x277CE6D40]))
+    if (data && CFEqual(data, *MEMORY[0x277CE6D40]))
     {
       [(CACSpokenCommandManager *)self forceElementFetchWithReason:v19];
     }
@@ -6955,10 +6955,10 @@ LABEL_29:
 LABEL_36:
 }
 
-- (double)delayForNotification:(int)a3
+- (double)delayForNotification:(int)notification
 {
   result = 0.3;
-  if (a3 == 1069)
+  if (notification == 1069)
   {
     return 0.75;
   }
@@ -6966,20 +6966,20 @@ LABEL_36:
   return result;
 }
 
-- (id)nameOfAXNotification:(int)a3
+- (id)nameOfAXNotification:(int)notification
 {
-  if (a3 > 1008)
+  if (notification > 1008)
   {
-    if (a3 > 1068)
+    if (notification > 1068)
     {
-      if (a3 == 1069)
+      if (notification == 1069)
       {
         v4 = @"kAXScrollViewDidEndDeceleratingNotification";
 
         return v4;
       }
 
-      if (a3 == 5001)
+      if (notification == 5001)
       {
         v4 = @"kAXFocusedApplicationsDidChangeNotification";
 
@@ -6989,14 +6989,14 @@ LABEL_36:
 
     else
     {
-      if (a3 == 1009)
+      if (notification == 1009)
       {
         v4 = @"kAXElementScrolledByPageNotification";
 
         return v4;
       }
 
-      if (a3 == 1018)
+      if (notification == 1018)
       {
         v4 = @"kAXFirstResponderChangedNotification";
 
@@ -7005,21 +7005,21 @@ LABEL_36:
     }
 
 LABEL_36:
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown, %i", *&a3];
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown, %i", *&notification];
 
     return v4;
   }
 
-  if (a3 > 1003)
+  if (notification > 1003)
   {
-    if (a3 == 1004)
+    if (notification == 1004)
     {
       v4 = @"kAXScreenLockedNotification";
 
       return v4;
     }
 
-    if (a3 == 1007)
+    if (notification == 1007)
     {
       v4 = @"kAXWebPageLoadedNotification";
 
@@ -7029,9 +7029,9 @@ LABEL_36:
     goto LABEL_36;
   }
 
-  if (a3 != 1000)
+  if (notification != 1000)
   {
-    if (a3 == 1001)
+    if (notification == 1001)
     {
       v4 = @"kAXLayoutChangedNotification";
 
@@ -7046,7 +7046,7 @@ LABEL_36:
   return v4;
 }
 
-- (void)didObserveFirstTouchDownForObserver:(id)a3
+- (void)didObserveFirstTouchDownForObserver:(id)observer
 {
   v4 = CACLogDictationCommands();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -7058,7 +7058,7 @@ LABEL_36:
   [(CACSpokenCommandManager *)self didBeginTouches];
 }
 
-- (void)didObserveLastTouchUpForObserver:(id)a3
+- (void)didObserveLastTouchUpForObserver:(id)observer
 {
   v4 = CACLogDictationCommands();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -7070,27 +7070,27 @@ LABEL_36:
   [(CACSpokenCommandManager *)self didEndTouches];
 }
 
-- (void)insertDictatedAttributedString:(id)a3
+- (void)insertDictatedAttributedString:(id)string
 {
-  v4 = [a3 string];
-  [(CACSpokenCommandManager *)self insertDictatedString:v4];
+  string = [string string];
+  [(CACSpokenCommandManager *)self insertDictatedString:string];
 }
 
-- (void)insertDictatedAttributedString:(id)a3 provisionally:(BOOL)a4
+- (void)insertDictatedAttributedString:(id)string provisionally:(BOOL)provisionally
 {
-  v4 = a4;
-  v6 = [a3 string];
-  [(CACSpokenCommandManager *)self insertDictatedString:v6 provisionally:v4];
+  provisionallyCopy = provisionally;
+  string = [string string];
+  [(CACSpokenCommandManager *)self insertDictatedString:string provisionally:provisionallyCopy];
 }
 
-- (void)insertDictatedString:(id)a3 provisionally:(BOOL)a4
+- (void)insertDictatedString:(id)string provisionally:(BOOL)provisionally
 {
-  v4 = a4;
-  v44 = a3;
-  if (!v4)
+  provisionallyCopy = provisionally;
+  stringCopy = string;
+  if (!provisionallyCopy)
   {
-    v17 = [MEMORY[0x277D79898] shared];
-    [v17 axFinalTextInsertion];
+    mEMORY[0x277D79898] = [MEMORY[0x277D79898] shared];
+    [mEMORY[0x277D79898] axFinalTextInsertion];
 
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     self->_lastDictationInsertionTimeStamp = v18;
@@ -7102,7 +7102,7 @@ LABEL_36:
 
     else
     {
-      if (hypothesesInsertedCount == 1 || [v44 rangeOfString:@"="] == 0x7FFFFFFFFFFFFFFFLL)
+      if (hypothesesInsertedCount == 1 || [stringCopy rangeOfString:@"="] == 0x7FFFFFFFFFFFFFFFLL)
       {
         v20 = 0;
       }
@@ -7110,12 +7110,12 @@ LABEL_36:
       else
       {
         v28 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-        v29 = [v28 focusedElement];
-        v30 = [v29 bundleId];
-        v20 = [v30 isEqualToString:@"com.apple.mobilenotes"];
+        focusedElement = [v28 focusedElement];
+        bundleId = [focusedElement bundleId];
+        v20 = [bundleId isEqualToString:@"com.apple.mobilenotes"];
       }
 
-      v31 = ![(NSString *)self->_lastHypothesis isEqualToString:v44]| v20;
+      v31 = ![(NSString *)self->_lastHypothesis isEqualToString:stringCopy]| v20;
       if (v31)
       {
         [(CACSpokenCommandManager *)self _replaceTextInRange:self->_lastHypothesisRange.location withString:self->_lastHypothesisRange.length, &stru_287BD8610];
@@ -7125,14 +7125,14 @@ LABEL_36:
       self->_hypothesesInsertedCount = 0;
       self->_hypothesisWasRolledBack = 0;
       v32 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-      v33 = [v32 focusedElement];
+      focusedElement2 = [v32 focusedElement];
 
-      v34 = [v33 textOperationsOperator];
-      [v34 performAction:2061];
+      textOperationsOperator = [focusedElement2 textOperationsOperator];
+      [textOperationsOperator performAction:2061];
     }
 
-    v35 = [(AXElement *)self->_focusedElement cacTextSelectionCACTextMarkerRange];
-    location = [v35 nsRange];
+    cacTextSelectionCACTextMarkerRange = [(AXElement *)self->_focusedElement cacTextSelectionCACTextMarkerRange];
+    location = [cacTextSelectionCACTextMarkerRange nsRange];
 
     if (v21)
     {
@@ -7141,51 +7141,51 @@ LABEL_36:
         location = self->_lastHypothesisRange.location;
       }
 
-      v37 = [(CACSpokenCommandManager *)self stagedTextInsertionSpecifier];
-      [v37 setInsertedString:v44];
+      stagedTextInsertionSpecifier = [(CACSpokenCommandManager *)self stagedTextInsertionSpecifier];
+      [stagedTextInsertionSpecifier setInsertedString:stringCopy];
 
-      v38 = [(CACSpokenCommandManager *)self stagedTextInsertionSpecifier];
-      [v38 setInsertedRange:{location, objc_msgSend(v44, "length")}];
+      stagedTextInsertionSpecifier2 = [(CACSpokenCommandManager *)self stagedTextInsertionSpecifier];
+      [stagedTextInsertionSpecifier2 setInsertedRange:{location, objc_msgSend(stringCopy, "length")}];
     }
 
     else
     {
-      [(AXElement *)self->_focusedElement insertText:v44 asUndoableAction:1];
-      v39 = [(CACSpokenCommandManager *)self stagedTextInsertionSpecifier];
-      [v39 setInsertedString:v44];
+      [(AXElement *)self->_focusedElement insertText:stringCopy asUndoableAction:1];
+      stagedTextInsertionSpecifier3 = [(CACSpokenCommandManager *)self stagedTextInsertionSpecifier];
+      [stagedTextInsertionSpecifier3 setInsertedString:stringCopy];
 
-      v40 = [(CACSpokenCommandManager *)self stagedTextInsertionSpecifier];
-      [v40 setInsertedRange:{self->_lastHypothesisRange.location, objc_msgSend(v44, "length")}];
+      stagedTextInsertionSpecifier4 = [(CACSpokenCommandManager *)self stagedTextInsertionSpecifier];
+      [stagedTextInsertionSpecifier4 setInsertedRange:{self->_lastHypothesisRange.location, objc_msgSend(stringCopy, "length")}];
     }
 
-    v41 = [(CACSpokenCommandManager *)self stagedTextInsertionSpecifier];
-    [v41 setAxElement:self->_focusedElement];
+    stagedTextInsertionSpecifier5 = [(CACSpokenCommandManager *)self stagedTextInsertionSpecifier];
+    [stagedTextInsertionSpecifier5 setAxElement:self->_focusedElement];
 
-    v42 = [(CACSpokenCommandManager *)self stagedTextInsertionSpecifier];
-    [v42 setProvisional:0];
+    stagedTextInsertionSpecifier6 = [(CACSpokenCommandManager *)self stagedTextInsertionSpecifier];
+    [stagedTextInsertionSpecifier6 setProvisional:0];
 
-    v12 = [(CACSpokenCommandManager *)self stagedTextInsertionSpecifier];
-    [(CACSpokenCommandManager *)self setPreviousTextInsertionSpecifier:v12];
+    stagedTextInsertionSpecifier7 = [(CACSpokenCommandManager *)self stagedTextInsertionSpecifier];
+    [(CACSpokenCommandManager *)self setPreviousTextInsertionSpecifier:stagedTextInsertionSpecifier7];
     goto LABEL_29;
   }
 
-  v7 = [(AXElement *)self->_focusedElement bundleId];
-  v8 = [v7 isEqualToString:@"com.apple.Pages"];
+  bundleId2 = [(AXElement *)self->_focusedElement bundleId];
+  v8 = [bundleId2 isEqualToString:@"com.apple.Pages"];
 
   if (v8)
   {
     goto LABEL_30;
   }
 
-  v9 = [MEMORY[0x277D79898] shared];
-  [v9 axPartialTextInsertion];
+  mEMORY[0x277D79898]2 = [MEMORY[0x277D79898] shared];
+  [mEMORY[0x277D79898]2 axPartialTextInsertion];
 
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   self->_lastDictationInsertionTimeStamp = v10;
   v11 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v12 = [v11 focusedElement];
+  stagedTextInsertionSpecifier7 = [v11 focusedElement];
 
-  v13 = [v12 textOperationsOperator];
+  textOperationsOperator2 = [stagedTextInsertionSpecifier7 textOperationsOperator];
   v14 = self->_hypothesesInsertedCount;
   if (v14 >= 1)
   {
@@ -7199,16 +7199,16 @@ LABEL_36:
   previousUtteranceHypotheses = self->_previousUtteranceHypotheses;
   self->_previousUtteranceHypotheses = v22;
 
-  v24 = [v12 cacTrailingValue];
+  cacTrailingValue = [stagedTextInsertionSpecifier7 cacTrailingValue];
   currentUtterancePreHypothesisText = self->_currentUtterancePreHypothesisText;
-  self->_currentUtterancePreHypothesisText = v24;
+  self->_currentUtterancePreHypothesisText = cacTrailingValue;
 
   [(NSMutableArray *)self->_currentUtteranceHypotheses removeAllObjects];
-  v26 = [v12 selectedTextRange];
+  selectedTextRange = [stagedTextInsertionSpecifier7 selectedTextRange];
   if (!v27)
   {
-    v15 = v26;
-    [v13 performAction:2060];
+    v15 = selectedTextRange;
+    [textOperationsOperator2 performAction:2060];
     length = 0;
     v14 = self->_hypothesesInsertedCount;
 LABEL_5:
@@ -7218,27 +7218,27 @@ LABEL_5:
       if (v14)
       {
 LABEL_7:
-        [(CACSpokenCommandManager *)self _replaceTextInRange:v15 withString:length, v44];
+        [(CACSpokenCommandManager *)self _replaceTextInRange:v15 withString:length, stringCopy];
 LABEL_27:
-        [(NSMutableArray *)self->_currentUtteranceHypotheses addObject:v44];
-        v43 = [v44 length];
+        [(NSMutableArray *)self->_currentUtteranceHypotheses addObject:stringCopy];
+        v43 = [stringCopy length];
         self->_lastHypothesisRange.location = v15;
         self->_lastHypothesisRange.length = v43;
-        objc_storeStrong(&self->_lastHypothesis, a3);
+        objc_storeStrong(&self->_lastHypothesis, string);
         goto LABEL_28;
       }
     }
 
     else
     {
-      [v13 performAction:2070];
+      [textOperationsOperator2 performAction:2070];
       if (v14)
       {
         goto LABEL_7;
       }
     }
 
-    [(AXElement *)self->_focusedElement insertText:v44 asUndoableAction:0];
+    [(AXElement *)self->_focusedElement insertText:stringCopy asUndoableAction:0];
     goto LABEL_27;
   }
 
@@ -7248,34 +7248,34 @@ LABEL_29:
 LABEL_30:
 }
 
-- (BOOL)_replaceTextInRange:(_NSRange)a3 withString:(id)a4
+- (BOOL)_replaceTextInRange:(_NSRange)range withString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"range";
-  v6 = a4;
+  stringCopy = string;
   v14.location = location;
   v14.length = length;
   v7 = NSStringFromRange(v14);
   v12[1] = @"replacement";
   v13[0] = v7;
-  v13[1] = v6;
+  v13[1] = stringCopy;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v9 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
 
-  v10 = [v9 focusedElement];
-  LOBYTE(v7) = [v10 performAction:2505 withValue:v8];
+  focusedElement = [v9 focusedElement];
+  LOBYTE(v7) = [focusedElement performAction:2505 withValue:v8];
 
   return v7;
 }
 
-- (void)enterDictatedString:(id)a3
+- (void)enterDictatedString:(id)string
 {
-  [(CACSpokenCommandManager *)self insertDictatedString:a3];
-  v4 = [(AXElement *)self->_focusedElement uiElement];
-  [v4 performAXAction:2054];
+  [(CACSpokenCommandManager *)self insertDictatedString:string];
+  uiElement = [(AXElement *)self->_focusedElement uiElement];
+  [uiElement performAXAction:2054];
 }
 
 - (void)clearProvisionalDictation
@@ -7284,26 +7284,26 @@ LABEL_30:
   {
     [(CACSpokenCommandManager *)self _replaceTextInRange:self->_lastHypothesisRange.location withString:self->_lastHypothesisRange.length, &stru_287BD8610];
     v4 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-    v6 = [v4 focusedElement];
+    focusedElement = [v4 focusedElement];
 
-    v5 = [v6 textOperationsOperator];
-    [v5 performAction:2061];
+    textOperationsOperator = [focusedElement textOperationsOperator];
+    [textOperationsOperator performAction:2061];
     self->_hypothesesInsertedCount = 0;
     self->_hypothesisWasRolledBack = 1;
   }
 }
 
-- (void)_notesUndoWithPreHypothesisText:(id)a3 hypothesisHistory:(id)a4 forElement:(id)a5
+- (void)_notesUndoWithPreHypothesisText:(id)text hypothesisHistory:(id)history forElement:(id)element
 {
-  v15 = a3;
-  v7 = a4;
-  v8 = a5;
+  textCopy = text;
+  historyCopy = history;
+  elementCopy = element;
   v9 = MEMORY[0x277CE6E60];
-  [v8 cacPerformTextOperation:*MEMORY[0x277CE6E60]];
-  v10 = [v7 mutableCopy];
+  [elementCopy cacPerformTextOperation:*MEMORY[0x277CE6E60]];
+  v10 = [historyCopy mutableCopy];
   while ([v10 count])
   {
-    v11 = [v8 cacTrailingValue];
+    cacTrailingValue = [elementCopy cacTrailingValue];
     v19 = 0;
     v20 = &v19;
     v21 = 0x2020000000;
@@ -7312,7 +7312,7 @@ LABEL_30:
     v16[1] = 3221225472;
     v16[2] = __88__CACSpokenCommandManager__notesUndoWithPreHypothesisText_hypothesisHistory_forElement___block_invoke;
     v16[3] = &unk_279CEBD50;
-    v12 = v11;
+    v12 = cacTrailingValue;
     v17 = v12;
     v18 = &v19;
     [v10 enumerateObjectsWithOptions:2 usingBlock:v16];
@@ -7326,7 +7326,7 @@ LABEL_30:
     {
       v14 = [v10 count];
       [v10 removeObjectsInRange:{v13, v14 - v20[3]}];
-      [v8 cacPerformTextOperation:*v9];
+      [elementCopy cacPerformTextOperation:*v9];
     }
 
     _Block_object_dispose(&v19, 8);
@@ -7345,75 +7345,75 @@ uint64_t __88__CACSpokenCommandManager__notesUndoWithPreHypothesisText_hypothesi
   return result;
 }
 
-- (void)performUndoIncludingProvisionalTextForElement:(id)a3
+- (void)performUndoIncludingProvisionalTextForElement:(id)element
 {
-  v10 = a3;
-  v4 = [v10 bundleId];
-  v5 = [v4 isEqualToString:@"com.apple.mobilenotes"];
+  elementCopy = element;
+  bundleId = [elementCopy bundleId];
+  v5 = [bundleId isEqualToString:@"com.apple.mobilenotes"];
 
   if (v5)
   {
     hypothesisWasRolledBack = self->_hypothesisWasRolledBack;
-    [(CACSpokenCommandManager *)self _notesUndoWithPreHypothesisText:self->_currentUtterancePreHypothesisText hypothesisHistory:self->_currentUtteranceHypotheses forElement:v10];
+    [(CACSpokenCommandManager *)self _notesUndoWithPreHypothesisText:self->_currentUtterancePreHypothesisText hypothesisHistory:self->_currentUtteranceHypotheses forElement:elementCopy];
     if (hypothesisWasRolledBack)
     {
-      [(CACSpokenCommandManager *)self _notesUndoWithPreHypothesisText:self->_previousUtterancePreHypothesisText hypothesisHistory:self->_previousUtteranceHypotheses forElement:v10];
+      [(CACSpokenCommandManager *)self _notesUndoWithPreHypothesisText:self->_previousUtterancePreHypothesisText hypothesisHistory:self->_previousUtteranceHypotheses forElement:elementCopy];
     }
   }
 
   else
   {
     v7 = MEMORY[0x277CE6E60];
-    [v10 cacPerformTextOperation:*MEMORY[0x277CE6E60]];
+    [elementCopy cacPerformTextOperation:*MEMORY[0x277CE6E60]];
     if (self->_hypothesisWasRolledBack)
     {
-      v8 = [v10 cacTrailingValue];
-      v9 = [v8 isEqualToString:self->_currentUtterancePreHypothesisText];
+      cacTrailingValue = [elementCopy cacTrailingValue];
+      v9 = [cacTrailingValue isEqualToString:self->_currentUtterancePreHypothesisText];
 
       if (v9)
       {
-        [v10 cacPerformTextOperation:*v7];
+        [elementCopy cacPerformTextOperation:*v7];
       }
     }
   }
 }
 
-- (id)primaryStringForCommandIdentifier:(id)a3
+- (id)primaryStringForCommandIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(NSMutableArray *)self->_recognizers count])
   {
-    v5 = [(CACSpokenCommandManager *)self _templateSpokenCommandWithIdentifier:v4];
-    v6 = [v5 strings];
-    v7 = [v6 firstObject];
+    v5 = [(CACSpokenCommandManager *)self _templateSpokenCommandWithIdentifier:identifierCopy];
+    strings = [v5 strings];
+    firstObject = [strings firstObject];
   }
 
   else
   {
     v5 = +[CACPreferences sharedPreferences];
-    v8 = [v5 bestLocaleIdentifier];
-    v6 = [v5 propertiesForCommandIdentifier:v4 localeIdentifier:v8];
+    bestLocaleIdentifier = [v5 bestLocaleIdentifier];
+    strings = [v5 propertiesForCommandIdentifier:identifierCopy localeIdentifier:bestLocaleIdentifier];
 
-    v9 = [v6 objectForKey:@"BuiltInStrings"];
-    v7 = [v9 firstObject];
+    v9 = [strings objectForKey:@"BuiltInStrings"];
+    firstObject = [v9 firstObject];
   }
 
-  return v7;
+  return firstObject;
 }
 
-- (void)_clearPreviousTextInsertionSpecifierBasedOnExecutedCommand:(id)a3
+- (void)_clearPreviousTextInsertionSpecifierBasedOnExecutedCommand:(id)command
 {
-  v4 = a3;
-  v7 = v4;
+  commandCopy = command;
+  v7 = commandCopy;
   if (_clearPreviousTextInsertionSpecifierBasedOnExecutedCommand__sPotentiallyDestructiveCommandsSetInit != -1)
   {
     [CACSpokenCommandManager _clearPreviousTextInsertionSpecifierBasedOnExecutedCommand:];
-    v4 = v7;
+    commandCopy = v7;
   }
 
   v5 = _clearPreviousTextInsertionSpecifierBasedOnExecutedCommand__sPotentiallyDestructiveCommandsSet;
-  v6 = [v4 identifier];
-  LODWORD(v5) = [v5 containsObject:v6];
+  identifier = [commandCopy identifier];
+  LODWORD(v5) = [v5 containsObject:identifier];
 
   if (v5)
   {
@@ -7430,8 +7430,8 @@ uint64_t __86__CACSpokenCommandManager__clearPreviousTextInsertionSpecifierBased
 
 - (BOOL)_isSystemSleeping
 {
-  v2 = [MEMORY[0x277CE7E50] server];
-  if ([v2 isSystemSleeping])
+  server = [MEMORY[0x277CE7E50] server];
+  if ([server isSystemSleeping])
   {
     v3 = +[CACDisplayManager sharedManager];
     v4 = [v3 carPlayConnected] ^ 1;
@@ -7469,8 +7469,8 @@ uint64_t __86__CACSpokenCommandManager__clearPreviousTextInsertionSpecifierBased
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v9 + 1) + 8 * v7) speechRecognizer];
-        [v8 closeSpeechRecognizer];
+        speechRecognizer = [*(*(&v9 + 1) + 8 * v7) speechRecognizer];
+        [speechRecognizer closeSpeechRecognizer];
 
         ++v7;
       }
@@ -7597,8 +7597,8 @@ uint64_t __48__CACSpokenCommandManager__handleLanguageChange__block_invoke_2(uin
       dispatch_after(v6, MEMORY[0x277D85CD0], block);
     }
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 postNotificationName:@"CACSpokenCommandManagerStartedListening" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"CACSpokenCommandManagerStartedListening" object:0];
   }
 }
 
@@ -7666,10 +7666,10 @@ void __41__CACSpokenCommandManager__stopListening__block_invoke()
   [v0 hideAnyOverlay];
 }
 
-- (id)copySupportedCommandWithIdentifier:(id)a3
+- (id)copySupportedCommandWithIdentifier:(id)identifier
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v17 = self->_recognizers;
   objc_sync_enter(v17);
   v25 = 0u;
@@ -7696,8 +7696,8 @@ void __41__CACSpokenCommandManager__stopListening__block_invoke()
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v8 = [v7 spokenCommands];
-        v9 = [v8 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        spokenCommands = [v7 spokenCommands];
+        v9 = [spokenCommands countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v9)
         {
           v10 = *v22;
@@ -7707,12 +7707,12 @@ void __41__CACSpokenCommandManager__stopListening__block_invoke()
             {
               if (*v22 != v10)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(spokenCommands);
               }
 
               v12 = *(*(&v21 + 1) + 8 * j);
-              v13 = [v12 identifier];
-              v14 = [v4 isEqualToString:v13];
+              identifier = [v12 identifier];
+              v14 = [identifierCopy isEqualToString:identifier];
 
               if (v14)
               {
@@ -7723,7 +7723,7 @@ void __41__CACSpokenCommandManager__stopListening__block_invoke()
               }
             }
 
-            v9 = [v8 countByEnumeratingWithState:&v21 objects:v29 count:16];
+            v9 = [spokenCommands countByEnumeratingWithState:&v21 objects:v29 count:16];
             if (v9)
             {
               continue;
@@ -7767,16 +7767,16 @@ LABEL_16:
   }
 }
 
-- (void)handleCommandWithIdentifier:(id)a3
+- (void)handleCommandWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55__CACSpokenCommandManager_handleCommandWithIdentifier___block_invoke;
   v6[3] = &unk_279CEB4C0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -7793,9 +7793,9 @@ _BYTE *__55__CACSpokenCommandManager_handleCommandWithIdentifier___block_invoke(
   return result;
 }
 
-- (id)synchronousRecognitionOfString:(id)a3 timeoutInterval:(double)a4
+- (id)synchronousRecognitionOfString:(id)string timeoutInterval:(double)interval
 {
-  v6 = a3;
+  stringCopy = string;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -7808,15 +7808,15 @@ _BYTE *__55__CACSpokenCommandManager_handleCommandWithIdentifier___block_invoke(
   v12[3] = &unk_279CEBD78;
   v12[4] = &v13;
   [(CACSpokenCommandManager *)self _startSynchronousRemoteRecognitionWithCompletionBlock:v12];
-  [CACSpeechSystem recognizeString:v6];
+  [CACSpeechSystem recognizeString:stringCopy];
   if (!v14[5])
   {
     while (1)
     {
       usleep(0xF4240u);
-      a4 = a4 + -1.0;
+      interval = interval + -1.0;
       v7 = v14[5];
-      if (a4 <= 0.0)
+      if (interval <= 0.0)
       {
         break;
       }
@@ -7915,15 +7915,15 @@ void __74__CACSpokenCommandManager_synchronousRecognitionOfString_timeoutInterva
   }
 }
 
-- (id)synchronousRecognitionUsingCommandIdentifier:(id)a3 parameters:(id)a4 timeoutInterval:(double)a5
+- (id)synchronousRecognitionUsingCommandIdentifier:(id)identifier parameters:(id)parameters timeoutInterval:(double)interval
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
   v10 = CACLogRecognition();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [CACSpokenCommandManager synchronousRecognitionUsingCommandIdentifier:v8 parameters:v9 timeoutInterval:v10];
+    [CACSpokenCommandManager synchronousRecognitionUsingCommandIdentifier:identifierCopy parameters:parametersCopy timeoutInterval:v10];
   }
 
   v33 = 0;
@@ -7932,27 +7932,27 @@ void __74__CACSpokenCommandManager_synchronousRecognitionOfString_timeoutInterva
   v36 = __Block_byref_object_copy__1;
   v37 = __Block_byref_object_dispose__1;
   v38 = 0;
-  v11 = [(CACSpokenCommandManager *)self copySupportedCommandWithIdentifier:v8];
-  if ([CACSpokenCommandManager commandIdentifierIsDictation:v8])
+  v11 = [(CACSpokenCommandManager *)self copySupportedCommandWithIdentifier:identifierCopy];
+  if ([CACSpokenCommandManager commandIdentifierIsDictation:identifierCopy])
   {
     v12 = +[CACDisplayManager sharedManager];
     [v12 hideAnyNonInteractiveOverlay];
 
-    v13 = [v9 firstObject];
+    firstObject = [parametersCopy firstObject];
 
-    if (!v13)
+    if (!firstObject)
     {
       goto LABEL_15;
     }
 
-    v14 = [v9 firstObject];
-    [(CACSpokenCommandManager *)self insertDictatedString:v14];
+    firstObject2 = [parametersCopy firstObject];
+    [(CACSpokenCommandManager *)self insertDictatedString:firstObject2];
 
     sleep(1u);
     v15 = objc_opt_new();
-    [v15 setObject:v8 forKey:@"CommandIdentifier"];
-    v16 = [v9 firstObject];
-    [v15 setObject:v16 forKey:@"RecognizedText"];
+    [v15 setObject:identifierCopy forKey:@"CommandIdentifier"];
+    firstObject3 = [parametersCopy firstObject];
+    [v15 setObject:firstObject3 forKey:@"RecognizedText"];
 
     v17 = MEMORY[0x277CBEAC0];
     v39[0] = v15;
@@ -7980,19 +7980,19 @@ void __74__CACSpokenCommandManager_synchronousRecognitionOfString_timeoutInterva
     v27[1] = 3221225472;
     v27[2] = __99__CACSpokenCommandManager_synchronousRecognitionUsingCommandIdentifier_parameters_timeoutInterval___block_invoke_2;
     v27[3] = &unk_279CEBD28;
-    v28 = v8;
-    v29 = v9;
+    v28 = identifierCopy;
+    v29 = parametersCopy;
     v30 = v11;
-    v31 = self;
+    selfCopy = self;
     [(CACSpokenCommandManager *)self performOnRecognizerSynchronizationDispatchQueueIfRunning:v27];
     if (!v34[5])
     {
       while (1)
       {
         usleep(0xF4240u);
-        a5 = a5 + -1.0;
+        interval = interval + -1.0;
         v22 = v34[5];
-        if (a5 <= 0.0)
+        if (interval <= 0.0)
         {
           break;
         }
@@ -8460,14 +8460,14 @@ LABEL_39:
 - (id)allCustomCommandsDetail
 {
   v96 = *MEMORY[0x277D85DE8];
-  v76 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v2 = +[CACPreferences sharedPreferences];
   v88 = 0u;
   v89 = 0u;
   v90 = 0u;
   v91 = 0u;
-  v3 = [v2 bestLocaleIdentifier];
-  v4 = [v2 commandIdentifiersForCommandSetIdentifier:@"Custom" localeIdentifier:v3];
+  bestLocaleIdentifier = [v2 bestLocaleIdentifier];
+  v4 = [v2 commandIdentifiersForCommandSetIdentifier:@"Custom" localeIdentifier:bestLocaleIdentifier];
 
   obj = v4;
   v5 = [v4 countByEnumeratingWithState:&v88 objects:v95 count:16];
@@ -8498,14 +8498,14 @@ LABEL_39:
 
         [v14 setObject:v11 forKey:v7];
         v15 = [v14 objectForKey:v9];
-        v16 = [v2 bestLocaleIdentifier];
-        v17 = [v15 objectForKey:v16];
-        v18 = [v17 firstObject];
+        bestLocaleIdentifier2 = [v2 bestLocaleIdentifier];
+        v17 = [v15 objectForKey:bestLocaleIdentifier2];
+        firstObject = [v17 firstObject];
 
         v19 = v14;
-        if (v18)
+        if (firstObject)
         {
-          [v14 setObject:v18 forKey:@"UnparsedString"];
+          [v14 setObject:firstObject forKey:@"UnparsedString"];
         }
 
         v20 = [v14 objectForKey:{@"CustomType", v64}];
@@ -8559,7 +8559,7 @@ LABEL_39:
 
           else if ([v20 isEqualToString:@"RunGesture"])
           {
-            v67 = v18;
+            v67 = firstObject;
             v29 = MEMORY[0x277CCAAC8];
             v30 = objc_opt_class();
             [v19 objectForKeyedSubscript:@"CustomGesture"];
@@ -8661,13 +8661,13 @@ LABEL_39:
 
             else
             {
-              v75 = [v21 localizedDescription];
-              [v31 setObject:v75 forKey:@"GesturesError"];
+              localizedDescription = [v21 localizedDescription];
+              [v31 setObject:localizedDescription forKey:@"GesturesError"];
               v19 = v31;
-              v34 = v75;
+              v34 = localizedDescription;
             }
 
-            v18 = v67;
+            firstObject = v67;
           }
 
           else
@@ -8688,19 +8688,19 @@ LABEL_39:
             v69 = v58;
             if (v57)
             {
-              v59 = [v57 plistDescription];
+              plistDescription = [v57 plistDescription];
               v19 = v71;
               v60 = v71;
-              v61 = v59;
+              v61 = plistDescription;
               v62 = @"UserActionFlow";
             }
 
             else
             {
-              v59 = [v58 localizedDescription];
+              plistDescription = [v58 localizedDescription];
               v19 = v71;
               v60 = v71;
-              v61 = v59;
+              v61 = plistDescription;
               v62 = @"UserActionFlowError";
             }
 
@@ -8711,7 +8711,7 @@ LABEL_39:
         }
 
 LABEL_39:
-        [v76 addObject:v19];
+        [array addObject:v19];
 
         v10 = v78 + 1;
       }
@@ -8723,26 +8723,26 @@ LABEL_39:
     while (v6);
   }
 
-  return v76;
+  return array;
 }
 
-- (id)allCommandsForLocaleIdentifier:(id)a3
+- (id)allCommandsForLocaleIdentifier:(id)identifier
 {
   v70 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v47 = [MEMORY[0x277CBEB18] array];
-  v48 = [MEMORY[0x277CBEB38] dictionary];
+  identifierCopy = identifier;
+  array = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v49 = +[CACPreferences sharedPreferences];
-  v4 = [MEMORY[0x277D655A0] sharedSpokenCommandUtilities];
-  v43 = v3;
-  v42 = [v4 commandStringsTableForLocaleIdentifier:v3];
+  mEMORY[0x277D655A0] = [MEMORY[0x277D655A0] sharedSpokenCommandUtilities];
+  v43 = identifierCopy;
+  v42 = [mEMORY[0x277D655A0] commandStringsTableForLocaleIdentifier:identifierCopy];
 
   v64 = 0u;
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v5 = [objc_opt_class() _allCommandIdentifiers];
-  v6 = [v5 countByEnumeratingWithState:&v62 objects:v69 count:16];
+  _allCommandIdentifiers = [objc_opt_class() _allCommandIdentifiers];
+  v6 = [_allCommandIdentifiers countByEnumeratingWithState:&v62 objects:v69 count:16];
   if (v6)
   {
     v7 = v6;
@@ -8753,7 +8753,7 @@ LABEL_39:
       {
         if (*v63 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_allCommandIdentifiers);
         }
 
         v10 = *(*(&v62 + 1) + 8 * i);
@@ -8761,9 +8761,9 @@ LABEL_39:
         v12 = [v11 mutableCopy];
 
         [v12 setObject:v10 forKey:@"Identifier"];
-        [v48 setObject:v12 forKey:v10];
-        v13 = [MEMORY[0x277D65598] activeTargetTypes];
-        v14 = [v42 unparsedCommandTextForCommandIdentifier:v10 targetTypes:v13];
+        [dictionary setObject:v12 forKey:v10];
+        activeTargetTypes = [MEMORY[0x277D65598] activeTargetTypes];
+        v14 = [v42 unparsedCommandTextForCommandIdentifier:v10 targetTypes:activeTargetTypes];
 
         if (v14)
         {
@@ -8771,7 +8771,7 @@ LABEL_39:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v62 objects:v69 count:16];
+      v7 = [_allCommandIdentifiers countByEnumeratingWithState:&v62 objects:v69 count:16];
     }
 
     while (v7);
@@ -8781,8 +8781,8 @@ LABEL_39:
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v15 = [v49 bestLocaleIdentifier];
-  v16 = [v49 commandIdentifiersForCommandSetIdentifier:@"Custom" localeIdentifier:v15];
+  bestLocaleIdentifier = [v49 bestLocaleIdentifier];
+  v16 = [v49 commandIdentifiersForCommandSetIdentifier:@"Custom" localeIdentifier:bestLocaleIdentifier];
 
   obj = v16;
   v17 = [v16 countByEnumeratingWithState:&v58 objects:v68 count:16];
@@ -8806,16 +8806,16 @@ LABEL_39:
 
         [v24 setObject:v21 forKey:@"Identifier"];
         v25 = [v24 objectForKey:@"CustomCommands"];
-        v26 = [v49 bestLocaleIdentifier];
-        v27 = [v25 objectForKey:v26];
-        v28 = [v27 firstObject];
+        bestLocaleIdentifier2 = [v49 bestLocaleIdentifier];
+        v27 = [v25 objectForKey:bestLocaleIdentifier2];
+        firstObject = [v27 firstObject];
 
-        if (v28)
+        if (firstObject)
         {
-          [v24 setObject:v28 forKey:@"UnparsedString"];
+          [v24 setObject:firstObject forKey:@"UnparsedString"];
         }
 
-        [v48 setObject:v24 forKey:v21];
+        [dictionary setObject:v24 forKey:v21];
       }
 
       v18 = [obj countByEnumeratingWithState:&v58 objects:v68 count:16];
@@ -8828,8 +8828,8 @@ LABEL_39:
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v40 = [v49 availableCommandSetIdentifiers];
-  v44 = [v40 countByEnumeratingWithState:&v54 objects:v67 count:16];
+  availableCommandSetIdentifiers = [v49 availableCommandSetIdentifiers];
+  v44 = [availableCommandSetIdentifiers countByEnumeratingWithState:&v54 objects:v67 count:16];
   if (v44)
   {
     v41 = *v55;
@@ -8840,7 +8840,7 @@ LABEL_39:
       {
         if (*v55 != v41)
         {
-          objc_enumerationMutation(v40);
+          objc_enumerationMutation(availableCommandSetIdentifiers);
         }
 
         obja = v29;
@@ -8865,8 +8865,8 @@ LABEL_39:
               }
 
               v36 = *(*(&v50 + 1) + 8 * k);
-              v37 = [v48 objectForKey:v36];
-              [v47 addObject:v37];
+              v37 = [dictionary objectForKey:v36];
+              [array addObject:v37];
               [v37 setObject:v30 forKey:@"CommandSet"];
               v38 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v49, "isEnabledForCommandIdentifier:", v36)}];
               [v37 setObject:v38 forKey:@"Enabled"];
@@ -8882,25 +8882,25 @@ LABEL_39:
       }
 
       while (obja + 1 != v44);
-      v44 = [v40 countByEnumeratingWithState:&v54 objects:v67 count:16];
+      v44 = [availableCommandSetIdentifiers countByEnumeratingWithState:&v54 objects:v67 count:16];
     }
 
     while (v44);
   }
 
-  return v47;
+  return array;
 }
 
-- (id)groupedCommandsForLocaleIdentifier:(id)a3
+- (id)groupedCommandsForLocaleIdentifier:(id)identifier
 {
   v70 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v46 = [MEMORY[0x277CBEB18] array];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  identifierCopy = identifier;
+  array = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v5 = +[CACPreferences sharedPreferences];
-  v6 = [MEMORY[0x277D655A0] sharedSpokenCommandUtilities];
-  v45 = v3;
-  v44 = [v6 commandStringsTableForLocaleIdentifier:v3];
+  mEMORY[0x277D655A0] = [MEMORY[0x277D655A0] sharedSpokenCommandUtilities];
+  v45 = identifierCopy;
+  v44 = [mEMORY[0x277D655A0] commandStringsTableForLocaleIdentifier:identifierCopy];
 
   v64 = 0u;
   v65 = 0u;
@@ -8926,9 +8926,9 @@ LABEL_39:
         v13 = [v12 mutableCopy];
 
         [v13 setObject:v11 forKey:@"Identifier"];
-        [v4 setObject:v13 forKey:v11];
-        v14 = [MEMORY[0x277D65598] activeTargetTypes];
-        v15 = [v44 unparsedCommandTextForCommandIdentifier:v11 targetTypes:v14];
+        [dictionary setObject:v13 forKey:v11];
+        activeTargetTypes = [MEMORY[0x277D65598] activeTargetTypes];
+        v15 = [v44 unparsedCommandTextForCommandIdentifier:v11 targetTypes:activeTargetTypes];
 
         if (v15)
         {
@@ -8946,8 +8946,8 @@ LABEL_39:
   v61 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v16 = [v5 bestLocaleIdentifier];
-  v17 = [v5 commandIdentifiersForCommandSetIdentifier:@"Custom" localeIdentifier:v16];
+  bestLocaleIdentifier = [v5 bestLocaleIdentifier];
+  v17 = [v5 commandIdentifiersForCommandSetIdentifier:@"Custom" localeIdentifier:bestLocaleIdentifier];
 
   v42 = v17;
   v18 = [v17 countByEnumeratingWithState:&v58 objects:v68 count:16];
@@ -8971,16 +8971,16 @@ LABEL_39:
 
         [v24 setObject:v21 forKey:@"Identifier"];
         v25 = [v24 objectForKey:@"CustomCommands"];
-        v26 = [v5 bestLocaleIdentifier];
-        v27 = [v25 objectForKey:v26];
-        v28 = [v27 firstObject];
+        bestLocaleIdentifier2 = [v5 bestLocaleIdentifier];
+        v27 = [v25 objectForKey:bestLocaleIdentifier2];
+        firstObject = [v27 firstObject];
 
-        if (v28)
+        if (firstObject)
         {
-          [v24 setObject:v28 forKey:@"UnparsedString"];
+          [v24 setObject:firstObject forKey:@"UnparsedString"];
         }
 
-        [v4 setObject:v24 forKey:v21];
+        [dictionary setObject:v24 forKey:v21];
       }
 
       v19 = [v42 countByEnumeratingWithState:&v58 objects:v68 count:16];
@@ -8993,8 +8993,8 @@ LABEL_39:
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v41 = [v5 availableCommandSetIdentifiers];
-  objb = [v41 countByEnumeratingWithState:&v54 objects:v67 count:16];
+  availableCommandSetIdentifiers = [v5 availableCommandSetIdentifiers];
+  objb = [availableCommandSetIdentifiers countByEnumeratingWithState:&v54 objects:v67 count:16];
   if (objb)
   {
     v43 = *v55;
@@ -9004,17 +9004,17 @@ LABEL_39:
       {
         if (*v55 != v43)
         {
-          objc_enumerationMutation(v41);
+          objc_enumerationMutation(availableCommandSetIdentifiers);
         }
 
         v30 = *(*(&v54 + 1) + 8 * k);
-        v31 = [MEMORY[0x277CBEB38] dictionary];
-        [v31 setObject:v30 forKey:@"Identifier"];
+        dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+        [dictionary2 setObject:v30 forKey:@"Identifier"];
         v32 = [v5 displayNameForCommandSetIdentifier:v30];
-        [v31 setObject:v32 forKey:@"Text"];
+        [dictionary2 setObject:v32 forKey:@"Text"];
 
-        v33 = [MEMORY[0x277CBEB18] array];
-        [v31 setObject:v33 forKey:@"Commands"];
+        array2 = [MEMORY[0x277CBEB18] array];
+        [dictionary2 setObject:array2 forKey:@"Commands"];
         v52 = 0u;
         v53 = 0u;
         v50 = 0u;
@@ -9034,10 +9034,10 @@ LABEL_39:
                 objc_enumerationMutation(v34);
               }
 
-              v39 = [v4 objectForKey:*(*(&v50 + 1) + 8 * m)];
+              v39 = [dictionary objectForKey:*(*(&v50 + 1) + 8 * m)];
               if (v39)
               {
-                [v33 addObject:v39];
+                [array2 addObject:v39];
               }
             }
 
@@ -9047,29 +9047,29 @@ LABEL_39:
           while (v36);
         }
 
-        [v46 addObject:v31];
+        [array addObject:dictionary2];
       }
 
-      objb = [v41 countByEnumeratingWithState:&v54 objects:v67 count:16];
+      objb = [availableCommandSetIdentifiers countByEnumeratingWithState:&v54 objects:v67 count:16];
     }
 
     while (objb);
   }
 
-  return v46;
+  return array;
 }
 
-- (id)activeCommandsForLocaleIdentifier:(id)a3
+- (id)activeCommandsForLocaleIdentifier:(id)identifier
 {
   v42 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  identifierCopy = identifier;
+  array = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v6 = [(CACSpokenCommandManager *)self allCommandsForLocaleIdentifier:v22];
+  v6 = [(CACSpokenCommandManager *)self allCommandsForLocaleIdentifier:identifierCopy];
   v7 = [v6 countByEnumeratingWithState:&v35 objects:v41 count:16];
   if (v7)
   {
@@ -9085,7 +9085,7 @@ LABEL_39:
 
         v10 = *(*(&v35 + 1) + 8 * i);
         v11 = [v10 objectForKey:@"Identifier"];
-        [v5 setObject:v10 forKey:v11];
+        [dictionary setObject:v10 forKey:v11];
       }
 
       v7 = [v6 countByEnumeratingWithState:&v35 objects:v41 count:16];
@@ -9121,8 +9121,8 @@ LABEL_39:
           v30 = 0u;
           v27 = 0u;
           v28 = 0u;
-          v13 = [v12 spokenCommands];
-          v14 = [v13 countByEnumeratingWithState:&v27 objects:v39 count:16];
+          spokenCommands = [v12 spokenCommands];
+          v14 = [spokenCommands countByEnumeratingWithState:&v27 objects:v39 count:16];
           if (v14)
           {
             v15 = *v28;
@@ -9132,22 +9132,22 @@ LABEL_39:
               {
                 if (*v28 != v15)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(spokenCommands);
                 }
 
-                v17 = [*(*(&v27 + 1) + 8 * k) identifier];
-                v18 = [v5 objectForKey:v17];
+                identifier = [*(*(&v27 + 1) + 8 * k) identifier];
+                v18 = [dictionary objectForKey:identifier];
 
                 if (v18)
                 {
-                  v19 = [v12 type];
-                  [v18 setObject:v19 forKey:@"RecognizerType"];
+                  type = [v12 type];
+                  [v18 setObject:type forKey:@"RecognizerType"];
 
-                  [v4 addObject:v18];
+                  [array addObject:v18];
                 }
               }
 
-              v14 = [v13 countByEnumeratingWithState:&v27 objects:v39 count:16];
+              v14 = [spokenCommands countByEnumeratingWithState:&v27 objects:v39 count:16];
             }
 
             while (v14);
@@ -9163,36 +9163,36 @@ LABEL_39:
 
   objc_sync_exit(v21);
 
-  return v4;
+  return array;
 }
 
-- (id)_descriptionForAXTextUnit:(unint64_t)a3
+- (id)_descriptionForAXTextUnit:(unint64_t)unit
 {
-  if (a3 > 4)
+  if (unit > 4)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_279CEBDB0[a3];
+    return off_279CEBDB0[unit];
   }
 }
 
 - (id)contextSummary
 {
   v131 = *MEMORY[0x277D85DE8];
-  v98 = [MEMORY[0x277CBEB38] dictionary];
-  v105 = [MEMORY[0x277CBEB18] array];
-  v101 = self;
-  v3 = [(CACLabeledElementsCollection *)self->_labeledScreenElementsCollection copyTableOfCollectedElementsByTitle];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
+  copyTableOfCollectedElementsByTitle = [(CACLabeledElementsCollection *)self->_labeledScreenElementsCollection copyTableOfCollectedElementsByTitle];
   v123 = 0u;
   v124 = 0u;
   v125 = 0u;
   v126 = 0u;
-  v102 = v3;
-  v4 = [v3 allKeys];
-  v5 = [v4 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+  v102 = copyTableOfCollectedElementsByTitle;
+  allKeys = [copyTableOfCollectedElementsByTitle allKeys];
+  v5 = [allKeys sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
 
   obj = v5;
   v103 = [v5 countByEnumeratingWithState:&v123 objects:v130 count:16];
@@ -9230,26 +9230,26 @@ LABEL_39:
               }
 
               v10 = *(*(&v119 + 1) + 8 * i);
-              v11 = [MEMORY[0x277CBEB38] dictionary];
+              dictionary2 = [MEMORY[0x277CBEB38] dictionary];
               [v10 rectangle];
               v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%4.0f, %4.0f, %4.0f, %4.0f)", v12, v13, v14, v15];
-              [v11 setObject:v16 forKey:@"Rectangle"];
+              [dictionary2 setObject:v16 forKey:@"Rectangle"];
 
               v17 = v6;
               v18 = [*(v6 + 2992) numberWithInteger:{objc_msgSend(v8, "count")}];
-              [v11 setObject:v18 forKey:@"Count"];
+              [dictionary2 setObject:v18 forKey:@"Count"];
 
-              v19 = [v10 element];
-              v20 = [v19 recognitionStrings];
-              v21 = [v20 firstObject];
+              element = [v10 element];
+              recognitionStrings = [element recognitionStrings];
+              firstObject = [recognitionStrings firstObject];
 
-              v22 = [v19 application];
-              v23 = [v22 recognitionStrings];
-              v24 = [v23 firstObject];
+              application = [element application];
+              recognitionStrings2 = [application recognitionStrings];
+              firstObject2 = [recognitionStrings2 firstObject];
 
-              if (v21)
+              if (firstObject)
               {
-                v25 = v21;
+                v25 = firstObject;
               }
 
               else
@@ -9257,10 +9257,10 @@ LABEL_39:
                 v25 = &stru_287BD8610;
               }
 
-              [v11 setObject:v25 forKey:@"Text"];
-              if (v24)
+              [dictionary2 setObject:v25 forKey:@"Text"];
+              if (firstObject2)
               {
-                v26 = v24;
+                v26 = firstObject2;
               }
 
               else
@@ -9268,36 +9268,36 @@ LABEL_39:
                 v26 = &stru_287BD8610;
               }
 
-              [v11 setObject:v26 forKey:@"AppLabel"];
-              v27 = [v19 value];
-              if (v27)
+              [dictionary2 setObject:v26 forKey:@"AppLabel"];
+              value = [element value];
+              if (value)
               {
-                v28 = [v19 value];
-                [v11 setObject:v28 forKey:@"Value"];
+                value2 = [element value];
+                [dictionary2 setObject:value2 forKey:@"Value"];
               }
 
               else
               {
-                [v11 setObject:&stru_287BD8610 forKey:@"Value"];
+                [dictionary2 setObject:&stru_287BD8610 forKey:@"Value"];
               }
 
-              v29 = [v10 numberedLabelForRecognition];
-              if (v29)
+              numberedLabelForRecognition = [v10 numberedLabelForRecognition];
+              if (numberedLabelForRecognition)
               {
-                v30 = [v10 numberedLabelForRecognition];
-                [v11 setObject:v30 forKey:@"Number"];
+                numberedLabelForRecognition2 = [v10 numberedLabelForRecognition];
+                [dictionary2 setObject:numberedLabelForRecognition2 forKey:@"Number"];
               }
 
               else
               {
-                [v11 setObject:&stru_287BD8610 forKey:@"Number"];
+                [dictionary2 setObject:&stru_287BD8610 forKey:@"Number"];
               }
 
               v6 = v17;
-              v31 = [*(v17 + 2992) numberWithLongLong:{objc_msgSend(v19, "traits")}];
-              [v11 setObject:v31 forKey:@"Traits"];
+              v31 = [*(v17 + 2992) numberWithLongLong:{objc_msgSend(element, "traits")}];
+              [dictionary2 setObject:v31 forKey:@"Traits"];
 
-              [v105 addObject:v11];
+              [array addObject:dictionary2];
             }
 
             v109 = [v8 countByEnumeratingWithState:&v119 objects:v129 count:16];
@@ -9316,18 +9316,18 @@ LABEL_39:
     while (v103);
   }
 
-  [v98 setObject:v105 forKey:@"Elements"];
-  v110 = [MEMORY[0x277CBEB18] array];
+  [dictionary setObject:array forKey:@"Elements"];
+  array2 = [MEMORY[0x277CBEB18] array];
   v115 = 0u;
   v116 = 0u;
   v117 = 0u;
   v118 = 0u;
   v32 = +[CACDisplayManager sharedManager];
-  v33 = [v32 _test_activeEditingOverlayElements];
+  _test_activeEditingOverlayElements = [v32 _test_activeEditingOverlayElements];
 
-  v107 = v33;
-  v34 = [v33 countByEnumeratingWithState:&v115 objects:v128 count:16];
-  v35 = v101;
+  v107 = _test_activeEditingOverlayElements;
+  v34 = [_test_activeEditingOverlayElements countByEnumeratingWithState:&v115 objects:v128 count:16];
+  v35 = selfCopy;
   if (v34)
   {
     v36 = v34;
@@ -9342,12 +9342,12 @@ LABEL_39:
         }
 
         v39 = *(*(&v115 + 1) + 8 * j);
-        v40 = [MEMORY[0x277CBEB38] dictionary];
-        v41 = [v39 label];
-        v42 = v41;
-        if (v41)
+        dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+        label = [v39 label];
+        v42 = label;
+        if (label)
         {
-          v43 = v41;
+          v43 = label;
         }
 
         else
@@ -9355,7 +9355,7 @@ LABEL_39:
           v43 = &stru_287BD8610;
         }
 
-        [v40 setObject:v43 forKey:@"label"];
+        [dictionary3 setObject:v43 forKey:@"label"];
 
         v133.location = [v39 range];
         v44 = NSStringFromRange(v133);
@@ -9370,13 +9370,13 @@ LABEL_39:
           v46 = &stru_287BD8610;
         }
 
-        [v40 setObject:v46 forKey:@"range"];
+        [dictionary3 setObject:v46 forKey:@"range"];
 
-        v47 = [v39 representedText];
-        v48 = v47;
-        if (v47)
+        representedText = [v39 representedText];
+        v48 = representedText;
+        if (representedText)
         {
-          v49 = v47;
+          v49 = representedText;
         }
 
         else
@@ -9384,14 +9384,14 @@ LABEL_39:
           v49 = &stru_287BD8610;
         }
 
-        [v40 setObject:v49 forKey:@"representedText"];
+        [dictionary3 setObject:v49 forKey:@"representedText"];
 
-        v50 = [v39 textUnit];
-        v35 = v101;
-        v51 = [(CACSpokenCommandManager *)v101 _descriptionForAXTextUnit:v50];
-        [v40 setObject:v51 forKey:@"type"];
+        textUnit = [v39 textUnit];
+        v35 = selfCopy;
+        v51 = [(CACSpokenCommandManager *)selfCopy _descriptionForAXTextUnit:textUnit];
+        [dictionary3 setObject:v51 forKey:@"type"];
 
-        [v110 addObject:v40];
+        [array2 addObject:dictionary3];
       }
 
       v36 = [v107 countByEnumeratingWithState:&v115 objects:v128 count:16];
@@ -9400,20 +9400,20 @@ LABEL_39:
     while (v36);
   }
 
-  v52 = v98;
-  [v98 setObject:v110 forKey:@"OverlayElements"];
+  v52 = dictionary;
+  [dictionary setObject:array2 forKey:@"OverlayElements"];
   v53 = +[CACApplicationUtilities targetApplications];
-  [v98 setObject:v53 forKey:@"Applications"];
+  [dictionary setObject:v53 forKey:@"Applications"];
 
   if (v35->_focusedElement)
   {
-    v54 = [MEMORY[0x277CBEB38] dictionary];
-    v55 = [(AXElement *)v35->_focusedElement recognitionStrings];
-    v56 = [v55 firstObject];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
+    recognitionStrings3 = [(AXElement *)v35->_focusedElement recognitionStrings];
+    firstObject3 = [recognitionStrings3 firstObject];
 
-    if (v56)
+    if (firstObject3)
     {
-      v57 = v56;
+      v57 = firstObject3;
     }
 
     else
@@ -9421,9 +9421,9 @@ LABEL_39:
       v57 = &stru_287BD8610;
     }
 
-    [v54 setObject:v57 forKey:@"Text"];
-    v58 = [(AXElement *)v35->_focusedElement uiElement];
-    v59 = [v58 stringWithAXAttribute:5019];
+    [dictionary4 setObject:v57 forKey:@"Text"];
+    uiElement = [(AXElement *)v35->_focusedElement uiElement];
+    v59 = [uiElement stringWithAXAttribute:5019];
 
     if (v59)
     {
@@ -9435,12 +9435,12 @@ LABEL_39:
       v60 = &stru_287BD8610;
     }
 
-    [v54 setObject:v60 forKey:@"Identifier"];
-    v61 = [(AXElement *)v35->_focusedElement value];
-    v62 = v61;
-    if (v61)
+    [dictionary4 setObject:v60 forKey:@"Identifier"];
+    value3 = [(AXElement *)v35->_focusedElement value];
+    v62 = value3;
+    if (value3)
     {
-      v63 = v61;
+      v63 = value3;
     }
 
     else
@@ -9448,21 +9448,21 @@ LABEL_39:
       v63 = &stru_287BD8610;
     }
 
-    [v54 setObject:v63 forKey:@"Value"];
-    v64 = [(AXElement *)v35->_focusedElement cacTextOperations];
-    if (v64)
+    [dictionary4 setObject:v63 forKey:@"Value"];
+    cacTextOperations = [(AXElement *)v35->_focusedElement cacTextOperations];
+    if (cacTextOperations)
     {
-      [v54 setObject:v64 forKey:@"AvaiableTextOperations"];
+      [dictionary4 setObject:cacTextOperations forKey:@"AvaiableTextOperations"];
     }
 
-    v65 = [(AXElement *)v35->_focusedElement cacTextSelectionCACTextMarkerRange];
+    cacTextSelectionCACTextMarkerRange = [(AXElement *)v35->_focusedElement cacTextSelectionCACTextMarkerRange];
     v66 = MEMORY[0x277CCACA8];
-    v67 = [v65 nsRange];
-    [v65 nsRange];
-    v69 = [v66 stringWithFormat:@"%ld, %ld", v67, v68];
-    [v54 setObject:v69 forKey:@"SelectionRange"];
+    nsRange = [cacTextSelectionCACTextMarkerRange nsRange];
+    [cacTextSelectionCACTextMarkerRange nsRange];
+    v69 = [v66 stringWithFormat:@"%ld, %ld", nsRange, v68];
+    [dictionary4 setObject:v69 forKey:@"SelectionRange"];
 
-    v70 = [(AXElement *)v35->_focusedElement cacStringForCACTextMarkerRange:v65];
+    v70 = [(AXElement *)v35->_focusedElement cacStringForCACTextMarkerRange:cacTextSelectionCACTextMarkerRange];
     v71 = v70;
     if (v70)
     {
@@ -9474,8 +9474,8 @@ LABEL_39:
       v72 = &stru_287BD8610;
     }
 
-    [v54 setObject:v72 forKey:@"SelectedText"];
-    [v98 setObject:v54 forKey:@"FocusedTextElement"];
+    [dictionary4 setObject:v72 forKey:@"SelectedText"];
+    [dictionary setObject:dictionary4 forKey:@"FocusedTextElement"];
   }
 
   v73 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
@@ -9483,16 +9483,16 @@ LABEL_39:
 
   if (v74)
   {
-    v75 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     v111 = 0u;
     v112 = 0u;
     v113 = 0u;
     v114 = 0u;
     v76 = +[CACDisplayManager sharedManager];
-    v77 = [v76 labeledElementsForItemNumbers];
+    labeledElementsForItemNumbers = [v76 labeledElementsForItemNumbers];
 
-    v108 = v77;
-    v78 = [v77 countByEnumeratingWithState:&v111 objects:v127 count:16];
+    v108 = labeledElementsForItemNumbers;
+    v78 = [labeledElementsForItemNumbers countByEnumeratingWithState:&v111 objects:v127 count:16];
     if (v78)
     {
       v79 = v78;
@@ -9507,12 +9507,12 @@ LABEL_39:
           }
 
           v82 = *(*(&v111 + 1) + 8 * k);
-          v83 = [MEMORY[0x277CBEB38] dictionary];
-          v84 = [v82 numberedLabelForRecognition];
-          v85 = v84;
-          if (v84)
+          dictionary5 = [MEMORY[0x277CBEB38] dictionary];
+          numberedLabelForRecognition3 = [v82 numberedLabelForRecognition];
+          v85 = numberedLabelForRecognition3;
+          if (numberedLabelForRecognition3)
           {
-            v86 = v84;
+            v86 = numberedLabelForRecognition3;
           }
 
           else
@@ -9520,16 +9520,16 @@ LABEL_39:
             v86 = &stru_287BD8610;
           }
 
-          [v83 setObject:v86 forKey:@"Text"];
+          [dictionary5 setObject:v86 forKey:@"Text"];
           [v82 rectangle];
           v91 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%4.0f, %4.0f, %4.0f, %4.0f)", v87, v88, v89, v90];
-          [v83 setObject:v91 forKey:@"Rectangle"];
+          [dictionary5 setObject:v91 forKey:@"Rectangle"];
 
           [v82 labelRectangle];
           v96 = [MEMORY[0x277CCACA8] stringWithFormat:@"(%4.0f, %4.0f, %4.0f, %4.0f)", v92, v93, v94, v95];
-          [v83 setObject:v96 forKey:@"LabelRectangle"];
+          [dictionary5 setObject:v96 forKey:@"LabelRectangle"];
 
-          [v75 addObject:v83];
+          [array3 addObject:dictionary5];
         }
 
         v79 = [v108 countByEnumeratingWithState:&v111 objects:v127 count:16];
@@ -9538,18 +9538,18 @@ LABEL_39:
       while (v79);
     }
 
-    v52 = v98;
-    [v98 setObject:v75 forKey:@"LabeledElements"];
+    v52 = dictionary;
+    [dictionary setObject:array3 forKey:@"LabeledElements"];
   }
 
   return v52;
 }
 
-- (void)registerSignPostBeginProcessingForSpeechRecognizer:(id)a3 message:(id)a4
+- (void)registerSignPostBeginProcessingForSpeechRecognizer:(id)recognizer message:(id)message
 {
   v86 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  messageCopy = message;
   v8 = self->_recognizers;
   objc_sync_enter(v8);
   v79 = 0u;
@@ -9574,8 +9574,8 @@ LABEL_39:
           objc_enumerationMutation(v9);
         }
 
-        v15 = [*(*(&v79 + 1) + 8 * v13) speechRecognizer];
-        v16 = v15 == v6;
+        speechRecognizer = [*(*(&v79 + 1) + 8 * v13) speechRecognizer];
+        v16 = speechRecognizer == recognizerCopy;
 
         if (v16)
         {
@@ -9585,10 +9585,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v18 = v7;
-                v19 = [v7 UTF8String];
+                v18 = messageCopy;
+                uTF8String = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v19;
+                v84 = uTF8String;
                 v20 = "CAC, CmdRec: Processing recognzer 0.";
                 goto LABEL_71;
               }
@@ -9598,10 +9598,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v49 = v7;
-                v50 = [v7 UTF8String];
+                v49 = messageCopy;
+                uTF8String2 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v50;
+                v84 = uTF8String2;
                 v20 = "CAC, CmdRec: Processing recognzer 1.";
                 goto LABEL_71;
               }
@@ -9611,10 +9611,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v41 = v7;
-                v42 = [v7 UTF8String];
+                v41 = messageCopy;
+                uTF8String3 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v42;
+                v84 = uTF8String3;
                 v20 = "CAC, CmdRec: Processing recognzer 2.";
                 goto LABEL_71;
               }
@@ -9624,10 +9624,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v59 = v7;
-                v60 = [v7 UTF8String];
+                v59 = messageCopy;
+                uTF8String4 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v60;
+                v84 = uTF8String4;
                 v20 = "CAC, CmdRec: Processing recognzer 3.";
                 goto LABEL_71;
               }
@@ -9637,10 +9637,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v61 = v7;
-                v62 = [v7 UTF8String];
+                v61 = messageCopy;
+                uTF8String5 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v62;
+                v84 = uTF8String5;
                 v20 = "CAC, CmdRec: Processing recognzer 4.";
                 goto LABEL_71;
               }
@@ -9650,10 +9650,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v43 = v7;
-                v44 = [v7 UTF8String];
+                v43 = messageCopy;
+                uTF8String6 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v44;
+                v84 = uTF8String6;
                 v20 = "CAC, CmdRec: Processing recognzer 5.";
                 goto LABEL_71;
               }
@@ -9663,10 +9663,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v51 = v7;
-                v52 = [v7 UTF8String];
+                v51 = messageCopy;
+                uTF8String7 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v52;
+                v84 = uTF8String7;
                 v20 = "CAC, CmdRec: Processing recognzer 6.";
                 goto LABEL_71;
               }
@@ -9676,10 +9676,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v53 = v7;
-                v54 = [v7 UTF8String];
+                v53 = messageCopy;
+                uTF8String8 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v54;
+                v84 = uTF8String8;
                 v20 = "CAC, CmdRec: Processing recognzer 7.";
                 goto LABEL_71;
               }
@@ -9689,10 +9689,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v67 = v7;
-                v68 = [v7 UTF8String];
+                v67 = messageCopy;
+                uTF8String9 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v68;
+                v84 = uTF8String9;
                 v20 = "CAC, CmdRec: Processing recognzer 8.";
                 goto LABEL_71;
               }
@@ -9702,10 +9702,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v63 = v7;
-                v64 = [v7 UTF8String];
+                v63 = messageCopy;
+                uTF8String10 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v64;
+                v84 = uTF8String10;
                 v20 = "CAC, CmdRec: Processing recognzer 9.";
                 goto LABEL_71;
               }
@@ -9715,10 +9715,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v31 = v7;
-                v32 = [v7 UTF8String];
+                v31 = messageCopy;
+                uTF8String11 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v32;
+                v84 = uTF8String11;
                 v20 = "CAC, CmdRec: Processing recognzer 10.";
                 goto LABEL_71;
               }
@@ -9728,10 +9728,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v45 = v7;
-                v46 = [v7 UTF8String];
+                v45 = messageCopy;
+                uTF8String12 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v46;
+                v84 = uTF8String12;
                 v20 = "CAC, CmdRec: Processing recognzer 11.";
                 goto LABEL_71;
               }
@@ -9741,10 +9741,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v37 = v7;
-                v38 = [v7 UTF8String];
+                v37 = messageCopy;
+                uTF8String13 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v38;
+                v84 = uTF8String13;
                 v20 = "CAC, CmdRec: Processing recognzer 12.";
                 goto LABEL_71;
               }
@@ -9754,10 +9754,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v25 = v7;
-                v26 = [v7 UTF8String];
+                v25 = messageCopy;
+                uTF8String14 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v26;
+                v84 = uTF8String14;
                 v20 = "CAC, CmdRec: Processing recognzer 13.";
                 goto LABEL_71;
               }
@@ -9767,10 +9767,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v55 = v7;
-                v56 = [v7 UTF8String];
+                v55 = messageCopy;
+                uTF8String15 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v56;
+                v84 = uTF8String15;
                 v20 = "CAC, CmdRec: Processing recognzer 14.";
                 goto LABEL_71;
               }
@@ -9780,10 +9780,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v57 = v7;
-                v58 = [v7 UTF8String];
+                v57 = messageCopy;
+                uTF8String16 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v58;
+                v84 = uTF8String16;
                 v20 = "CAC, CmdRec: Processing recognzer 15.";
                 goto LABEL_71;
               }
@@ -9793,10 +9793,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v71 = v7;
-                v72 = [v7 UTF8String];
+                v71 = messageCopy;
+                uTF8String17 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v72;
+                v84 = uTF8String17;
                 v20 = "CAC, CmdRec: Processing recognzer 16.";
                 goto LABEL_71;
               }
@@ -9806,10 +9806,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v69 = v7;
-                v70 = [v7 UTF8String];
+                v69 = messageCopy;
+                uTF8String18 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v70;
+                v84 = uTF8String18;
                 v20 = "CAC, CmdRec: Processing recognzer 17.";
                 goto LABEL_71;
               }
@@ -9819,10 +9819,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v21 = v7;
-                v22 = [v7 UTF8String];
+                v21 = messageCopy;
+                uTF8String19 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v22;
+                v84 = uTF8String19;
                 v20 = "CAC, CmdRec: Processing recognzer 18.";
                 goto LABEL_71;
               }
@@ -9832,10 +9832,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v39 = v7;
-                v40 = [v7 UTF8String];
+                v39 = messageCopy;
+                uTF8String20 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v40;
+                v84 = uTF8String20;
                 v20 = "CAC, CmdRec: Processing recognzer 19.";
                 goto LABEL_71;
               }
@@ -9845,10 +9845,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v73 = v7;
-                v74 = [v7 UTF8String];
+                v73 = messageCopy;
+                uTF8String21 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v74;
+                v84 = uTF8String21;
                 v20 = "CAC, CmdRec: Processing recognzer 20.";
                 goto LABEL_71;
               }
@@ -9858,10 +9858,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v23 = v7;
-                v24 = [v7 UTF8String];
+                v23 = messageCopy;
+                uTF8String22 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v24;
+                v84 = uTF8String22;
                 v20 = "CAC, CmdRec: Processing recognzer 21.";
                 goto LABEL_71;
               }
@@ -9871,10 +9871,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v35 = v7;
-                v36 = [v7 UTF8String];
+                v35 = messageCopy;
+                uTF8String23 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v36;
+                v84 = uTF8String23;
                 v20 = "CAC, CmdRec: Processing recognzer 22.";
                 goto LABEL_71;
               }
@@ -9884,10 +9884,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v29 = v7;
-                v30 = [v7 UTF8String];
+                v29 = messageCopy;
+                uTF8String24 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v30;
+                v84 = uTF8String24;
                 v20 = "CAC, CmdRec: Processing recognzer 24.";
                 goto LABEL_71;
               }
@@ -9897,10 +9897,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v47 = v7;
-                v48 = [v7 UTF8String];
+                v47 = messageCopy;
+                uTF8String25 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v48;
+                v84 = uTF8String25;
                 v20 = "CAC, CmdRec: Processing recognzer 25.";
                 goto LABEL_71;
               }
@@ -9910,10 +9910,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v27 = v7;
-                v28 = [v7 UTF8String];
+                v27 = messageCopy;
+                uTF8String26 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v28;
+                v84 = uTF8String26;
                 v20 = "CAC, CmdRec: Processing recognzer 26.";
                 goto LABEL_71;
               }
@@ -9923,10 +9923,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v77 = v7;
-                v78 = [v7 UTF8String];
+                v77 = messageCopy;
+                uTF8String27 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v78;
+                v84 = uTF8String27;
                 v20 = "CAC, CmdRec: Processing recognzer 27.";
                 goto LABEL_71;
               }
@@ -9936,10 +9936,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v75 = v7;
-                v76 = [v7 UTF8String];
+                v75 = messageCopy;
+                uTF8String28 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v76;
+                v84 = uTF8String28;
                 v20 = "CAC, CmdRec: Processing recognzer 28.";
                 goto LABEL_71;
               }
@@ -9949,10 +9949,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v33 = v7;
-                v34 = [v7 UTF8String];
+                v33 = messageCopy;
+                uTF8String29 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v34;
+                v84 = uTF8String29;
                 v20 = "CAC, CmdRec: Processing recognzer 29.";
                 goto LABEL_71;
               }
@@ -9962,10 +9962,10 @@ LABEL_39:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v65 = v7;
-                v66 = [v7 UTF8String];
+                v65 = messageCopy;
+                uTF8String30 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v66;
+                v84 = uTF8String30;
                 v20 = "CAC, CmdRec: Processing recognzer >= 30.";
 LABEL_71:
                 _os_signpost_emit_with_name_impl(&dword_26B354000, v17, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, v20, "%s", buf, 0xCu);
@@ -9997,11 +9997,11 @@ LABEL_73:
   objc_sync_exit(v8);
 }
 
-- (void)registerSignPostEndProcessingForSpeechRecognizer:(id)a3 message:(id)a4
+- (void)registerSignPostEndProcessingForSpeechRecognizer:(id)recognizer message:(id)message
 {
   v86 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  messageCopy = message;
   v8 = self->_recognizers;
   objc_sync_enter(v8);
   v79 = 0u;
@@ -10026,8 +10026,8 @@ LABEL_73:
           objc_enumerationMutation(v9);
         }
 
-        v15 = [*(*(&v79 + 1) + 8 * v13) speechRecognizer];
-        v16 = v15 == v6;
+        speechRecognizer = [*(*(&v79 + 1) + 8 * v13) speechRecognizer];
+        v16 = speechRecognizer == recognizerCopy;
 
         if (v16)
         {
@@ -10037,10 +10037,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v18 = v7;
-                v19 = [v7 UTF8String];
+                v18 = messageCopy;
+                uTF8String = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v19;
+                v84 = uTF8String;
                 v20 = "CAC, CmdRec: Processing recognzer 0.";
                 goto LABEL_71;
               }
@@ -10050,10 +10050,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v49 = v7;
-                v50 = [v7 UTF8String];
+                v49 = messageCopy;
+                uTF8String2 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v50;
+                v84 = uTF8String2;
                 v20 = "CAC, CmdRec: Processing recognzer 1.";
                 goto LABEL_71;
               }
@@ -10063,10 +10063,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v41 = v7;
-                v42 = [v7 UTF8String];
+                v41 = messageCopy;
+                uTF8String3 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v42;
+                v84 = uTF8String3;
                 v20 = "CAC, CmdRec: Processing recognzer 2.";
                 goto LABEL_71;
               }
@@ -10076,10 +10076,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v59 = v7;
-                v60 = [v7 UTF8String];
+                v59 = messageCopy;
+                uTF8String4 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v60;
+                v84 = uTF8String4;
                 v20 = "CAC, CmdRec: Processing recognzer 3.";
                 goto LABEL_71;
               }
@@ -10089,10 +10089,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v61 = v7;
-                v62 = [v7 UTF8String];
+                v61 = messageCopy;
+                uTF8String5 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v62;
+                v84 = uTF8String5;
                 v20 = "CAC, CmdRec: Processing recognzer 4.";
                 goto LABEL_71;
               }
@@ -10102,10 +10102,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v43 = v7;
-                v44 = [v7 UTF8String];
+                v43 = messageCopy;
+                uTF8String6 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v44;
+                v84 = uTF8String6;
                 v20 = "CAC, CmdRec: Processing recognzer 5.";
                 goto LABEL_71;
               }
@@ -10115,10 +10115,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v51 = v7;
-                v52 = [v7 UTF8String];
+                v51 = messageCopy;
+                uTF8String7 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v52;
+                v84 = uTF8String7;
                 v20 = "CAC, CmdRec: Processing recognzer 6.";
                 goto LABEL_71;
               }
@@ -10128,10 +10128,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v53 = v7;
-                v54 = [v7 UTF8String];
+                v53 = messageCopy;
+                uTF8String8 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v54;
+                v84 = uTF8String8;
                 v20 = "CAC, CmdRec: Processing recognzer 7.";
                 goto LABEL_71;
               }
@@ -10141,10 +10141,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v67 = v7;
-                v68 = [v7 UTF8String];
+                v67 = messageCopy;
+                uTF8String9 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v68;
+                v84 = uTF8String9;
                 v20 = "CAC, CmdRec: Processing recognzer 8.";
                 goto LABEL_71;
               }
@@ -10154,10 +10154,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v63 = v7;
-                v64 = [v7 UTF8String];
+                v63 = messageCopy;
+                uTF8String10 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v64;
+                v84 = uTF8String10;
                 v20 = "CAC, CmdRec: Processing recognzer 9.";
                 goto LABEL_71;
               }
@@ -10167,10 +10167,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v31 = v7;
-                v32 = [v7 UTF8String];
+                v31 = messageCopy;
+                uTF8String11 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v32;
+                v84 = uTF8String11;
                 v20 = "CAC, CmdRec: Processing recognzer 10.";
                 goto LABEL_71;
               }
@@ -10180,10 +10180,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v45 = v7;
-                v46 = [v7 UTF8String];
+                v45 = messageCopy;
+                uTF8String12 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v46;
+                v84 = uTF8String12;
                 v20 = "CAC, CmdRec: Processing recognzer 11.";
                 goto LABEL_71;
               }
@@ -10193,10 +10193,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v37 = v7;
-                v38 = [v7 UTF8String];
+                v37 = messageCopy;
+                uTF8String13 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v38;
+                v84 = uTF8String13;
                 v20 = "CAC, CmdRec: Processing recognzer 12.";
                 goto LABEL_71;
               }
@@ -10206,10 +10206,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v25 = v7;
-                v26 = [v7 UTF8String];
+                v25 = messageCopy;
+                uTF8String14 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v26;
+                v84 = uTF8String14;
                 v20 = "CAC, CmdRec: Processing recognzer 13.";
                 goto LABEL_71;
               }
@@ -10219,10 +10219,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v55 = v7;
-                v56 = [v7 UTF8String];
+                v55 = messageCopy;
+                uTF8String15 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v56;
+                v84 = uTF8String15;
                 v20 = "CAC, CmdRec: Processing recognzer 14.";
                 goto LABEL_71;
               }
@@ -10232,10 +10232,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v57 = v7;
-                v58 = [v7 UTF8String];
+                v57 = messageCopy;
+                uTF8String16 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v58;
+                v84 = uTF8String16;
                 v20 = "CAC, CmdRec: Processing recognzer 15.";
                 goto LABEL_71;
               }
@@ -10245,10 +10245,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v71 = v7;
-                v72 = [v7 UTF8String];
+                v71 = messageCopy;
+                uTF8String17 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v72;
+                v84 = uTF8String17;
                 v20 = "CAC, CmdRec: Processing recognzer 16.";
                 goto LABEL_71;
               }
@@ -10258,10 +10258,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v69 = v7;
-                v70 = [v7 UTF8String];
+                v69 = messageCopy;
+                uTF8String18 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v70;
+                v84 = uTF8String18;
                 v20 = "CAC, CmdRec: Processing recognzer 17.";
                 goto LABEL_71;
               }
@@ -10271,10 +10271,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v21 = v7;
-                v22 = [v7 UTF8String];
+                v21 = messageCopy;
+                uTF8String19 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v22;
+                v84 = uTF8String19;
                 v20 = "CAC, CmdRec: Processing recognzer 18.";
                 goto LABEL_71;
               }
@@ -10284,10 +10284,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v39 = v7;
-                v40 = [v7 UTF8String];
+                v39 = messageCopy;
+                uTF8String20 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v40;
+                v84 = uTF8String20;
                 v20 = "CAC, CmdRec: Processing recognzer 19.";
                 goto LABEL_71;
               }
@@ -10297,10 +10297,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v73 = v7;
-                v74 = [v7 UTF8String];
+                v73 = messageCopy;
+                uTF8String21 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v74;
+                v84 = uTF8String21;
                 v20 = "CAC, CmdRec: Processing recognzer 20.";
                 goto LABEL_71;
               }
@@ -10310,10 +10310,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v23 = v7;
-                v24 = [v7 UTF8String];
+                v23 = messageCopy;
+                uTF8String22 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v24;
+                v84 = uTF8String22;
                 v20 = "CAC, CmdRec: Processing recognzer 21.";
                 goto LABEL_71;
               }
@@ -10323,10 +10323,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v35 = v7;
-                v36 = [v7 UTF8String];
+                v35 = messageCopy;
+                uTF8String23 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v36;
+                v84 = uTF8String23;
                 v20 = "CAC, CmdRec: Processing recognzer 22.";
                 goto LABEL_71;
               }
@@ -10336,10 +10336,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v29 = v7;
-                v30 = [v7 UTF8String];
+                v29 = messageCopy;
+                uTF8String24 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v30;
+                v84 = uTF8String24;
                 v20 = "CAC, CmdRec: Processing recognzer 24.";
                 goto LABEL_71;
               }
@@ -10349,10 +10349,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v47 = v7;
-                v48 = [v7 UTF8String];
+                v47 = messageCopy;
+                uTF8String25 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v48;
+                v84 = uTF8String25;
                 v20 = "CAC, CmdRec: Processing recognzer 25.";
                 goto LABEL_71;
               }
@@ -10362,10 +10362,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v27 = v7;
-                v28 = [v7 UTF8String];
+                v27 = messageCopy;
+                uTF8String26 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v28;
+                v84 = uTF8String26;
                 v20 = "CAC, CmdRec: Processing recognzer 26.";
                 goto LABEL_71;
               }
@@ -10375,10 +10375,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v77 = v7;
-                v78 = [v7 UTF8String];
+                v77 = messageCopy;
+                uTF8String27 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v78;
+                v84 = uTF8String27;
                 v20 = "CAC, CmdRec: Processing recognzer 27.";
                 goto LABEL_71;
               }
@@ -10388,10 +10388,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v75 = v7;
-                v76 = [v7 UTF8String];
+                v75 = messageCopy;
+                uTF8String28 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v76;
+                v84 = uTF8String28;
                 v20 = "CAC, CmdRec: Processing recognzer 28.";
                 goto LABEL_71;
               }
@@ -10401,10 +10401,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v33 = v7;
-                v34 = [v7 UTF8String];
+                v33 = messageCopy;
+                uTF8String29 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v34;
+                v84 = uTF8String29;
                 v20 = "CAC, CmdRec: Processing recognzer 29.";
                 goto LABEL_71;
               }
@@ -10414,10 +10414,10 @@ LABEL_73:
               v17 = RXSignpostLog();
               if (os_signpost_enabled(v17))
               {
-                v65 = v7;
-                v66 = [v7 UTF8String];
+                v65 = messageCopy;
+                uTF8String30 = [messageCopy UTF8String];
                 *buf = 136315138;
-                v84 = v66;
+                v84 = uTF8String30;
                 v20 = "CAC, CmdRec: Processing recognzer >= 30.";
 LABEL_71:
                 _os_signpost_emit_with_name_impl(&dword_26B354000, v17, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, v20, "%s", buf, 0xCu);
@@ -10484,11 +10484,11 @@ void __51__CACSpokenCommandManager__updateAssetPurgeability__block_invoke()
 
 - (void)_updateMostRecentLaunchTime
 {
-  v2 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v3 = *MEMORY[0x277CBF040];
   v4 = *MEMORY[0x277CBF010];
 
-  CFPreferencesSetValue(@"LastVoiceControlLaunch", v2, @"com.apple.speech.SpeechRecognitionCommandAndControl", v3, v4);
+  CFPreferencesSetValue(@"LastVoiceControlLaunch", date, @"com.apple.speech.SpeechRecognitionCommandAndControl", v3, v4);
 }
 
 - (void)performOnRecognizerSynchronizationDispatchQueueIfRunning:.cold.1()

@@ -9,14 +9,14 @@
 
 - (void)start
 {
-  v2 = [(PKDetectionQuery *)self query];
-  [v2 start];
+  query = [(PKDetectionQuery *)self query];
+  [query start];
 }
 
 - (void)pause
 {
-  v2 = [(PKDetectionQuery *)self query];
-  [v2 pause];
+  query = [(PKDetectionQuery *)self query];
+  [query pause];
 }
 
 - (void)teardown

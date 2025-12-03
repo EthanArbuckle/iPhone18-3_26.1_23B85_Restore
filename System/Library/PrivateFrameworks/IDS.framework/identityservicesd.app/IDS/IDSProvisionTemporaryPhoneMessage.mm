@@ -1,11 +1,11 @@
 @interface IDSProvisionTemporaryPhoneMessage
 - (IDSProvisionTemporaryPhoneMessage)init;
 - (id)additionalMessageHeaders;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
-- (void)addPhoneAuthenticationCertificate:(id)a3 withUserID:(id)a4;
-- (void)handleResponseDictionary:(id)a3;
+- (void)addPhoneAuthenticationCertificate:(id)certificate withUserID:(id)d;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation IDSProvisionTemporaryPhoneMessage
@@ -19,8 +19,8 @@
   {
     IMGetConferenceSettings();
     v3 = 0;
-    v4 = [v3 lastObject];
-    [(IDSProvisionTemporaryPhoneMessage *)v2 setTopic:v4];
+    lastObject = [v3 lastObject];
+    [(IDSProvisionTemporaryPhoneMessage *)v2 setTopic:lastObject];
 
     [(IDSProvisionTemporaryPhoneMessage *)v2 setWantsResponse:1];
   }
@@ -28,39 +28,39 @@
   return v2;
 }
 
-- (void)addPhoneAuthenticationCertificate:(id)a3 withUserID:(id)a4
+- (void)addPhoneAuthenticationCertificate:(id)certificate withUserID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  certificateCopy = certificate;
   v8 = +[IDSRegistrationKeyManager sharedInstance];
-  -[IDSProvisionTemporaryPhoneMessage addAuthUserID:certificate:privateKey:publicKey:](self, "addAuthUserID:certificate:privateKey:publicKey:", v6, v7, [v8 identityPrivateKey], objc_msgSend(v8, "identityPublicKey"));
+  -[IDSProvisionTemporaryPhoneMessage addAuthUserID:certificate:privateKey:publicKey:](self, "addAuthUserID:certificate:privateKey:publicKey:", dCopy, certificateCopy, [v8 identityPrivateKey], objc_msgSend(v8, "identityPublicKey"));
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = IDSProvisionTemporaryPhoneMessage;
-  v4 = [(IDSProvisionTemporaryPhoneMessage *)&v13 copyWithZone:a3];
-  v5 = [(IDSProvisionTemporaryPhoneMessage *)self profileID];
-  [v4 setProfileID:v5];
+  v4 = [(IDSProvisionTemporaryPhoneMessage *)&v13 copyWithZone:zone];
+  profileID = [(IDSProvisionTemporaryPhoneMessage *)self profileID];
+  [v4 setProfileID:profileID];
 
-  v6 = [(IDSProvisionTemporaryPhoneMessage *)self authToken];
-  [v4 setAuthToken:v6];
+  authToken = [(IDSProvisionTemporaryPhoneMessage *)self authToken];
+  [v4 setAuthToken:authToken];
 
-  v7 = [(IDSProvisionTemporaryPhoneMessage *)self countryCode];
-  [v4 setCountryCode:v7];
+  countryCode = [(IDSProvisionTemporaryPhoneMessage *)self countryCode];
+  [v4 setCountryCode:countryCode];
 
-  v8 = [(IDSProvisionTemporaryPhoneMessage *)self networkCode];
-  [v4 setNetworkCode:v8];
+  networkCode = [(IDSProvisionTemporaryPhoneMessage *)self networkCode];
+  [v4 setNetworkCode:networkCode];
 
-  v9 = [(IDSProvisionTemporaryPhoneMessage *)self responseStatus];
-  [v4 setResponseStatus:v9];
+  responseStatus = [(IDSProvisionTemporaryPhoneMessage *)self responseStatus];
+  [v4 setResponseStatus:responseStatus];
 
-  v10 = [(IDSProvisionTemporaryPhoneMessage *)self responseCertificate];
-  [v4 setResponseCertificate:v10];
+  responseCertificate = [(IDSProvisionTemporaryPhoneMessage *)self responseCertificate];
+  [v4 setResponseCertificate:responseCertificate];
 
-  v11 = [(IDSProvisionTemporaryPhoneMessage *)self responseCertificateExpiration];
-  [v4 setResponseCertificateExpiration:v11];
+  responseCertificateExpiration = [(IDSProvisionTemporaryPhoneMessage *)self responseCertificateExpiration];
+  [v4 setResponseCertificateExpiration:responseCertificateExpiration];
 
   return v4;
 }
@@ -78,18 +78,18 @@
 {
   v10.receiver = self;
   v10.super_class = IDSProvisionTemporaryPhoneMessage;
-  v3 = [(IDSProvisionTemporaryPhoneMessage *)&v10 messageBody];
-  Mutable = [v3 mutableCopy];
+  messageBody = [(IDSProvisionTemporaryPhoneMessage *)&v10 messageBody];
+  Mutable = [messageBody mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSProvisionTemporaryPhoneMessage *)self profileID];
-  if (v5)
+  profileID = [(IDSProvisionTemporaryPhoneMessage *)self profileID];
+  if (profileID)
   {
-    CFDictionarySetValue(Mutable, @"vc-profile-id", v5);
+    CFDictionarySetValue(Mutable, @"vc-profile-id", profileID);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -97,10 +97,10 @@
     sub_10091F698();
   }
 
-  v6 = [(IDSProvisionTemporaryPhoneMessage *)self authToken];
-  if (v6)
+  authToken = [(IDSProvisionTemporaryPhoneMessage *)self authToken];
+  if (authToken)
   {
-    CFDictionarySetValue(Mutable, @"vc-auth-token", v6);
+    CFDictionarySetValue(Mutable, @"vc-auth-token", authToken);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -108,10 +108,10 @@
     sub_10091F720();
   }
 
-  v7 = [(IDSProvisionTemporaryPhoneMessage *)self countryCode];
-  if (v7)
+  countryCode = [(IDSProvisionTemporaryPhoneMessage *)self countryCode];
+  if (countryCode)
   {
-    CFDictionarySetValue(Mutable, @"sim-mcc", v7);
+    CFDictionarySetValue(Mutable, @"sim-mcc", countryCode);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -119,10 +119,10 @@
     sub_10091F7A8();
   }
 
-  v8 = [(IDSProvisionTemporaryPhoneMessage *)self networkCode];
-  if (v8)
+  networkCode = [(IDSProvisionTemporaryPhoneMessage *)self networkCode];
+  if (networkCode)
   {
-    CFDictionarySetValue(Mutable, @"sim-mnc", v8);
+    CFDictionarySetValue(Mutable, @"sim-mnc", networkCode);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -137,20 +137,20 @@
 {
   v10.receiver = self;
   v10.super_class = IDSProvisionTemporaryPhoneMessage;
-  v3 = [(IDSProvisionTemporaryPhoneMessage *)&v10 additionalMessageHeaders];
-  Mutable = [v3 mutableCopy];
+  additionalMessageHeaders = [(IDSProvisionTemporaryPhoneMessage *)&v10 additionalMessageHeaders];
+  Mutable = [additionalMessageHeaders mutableCopy];
 
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   }
 
-  v5 = [(IDSProvisionTemporaryPhoneMessage *)self pushCertificate];
-  v6 = [v5 _FTStringFromBaseData];
+  pushCertificate = [(IDSProvisionTemporaryPhoneMessage *)self pushCertificate];
+  _FTStringFromBaseData = [pushCertificate _FTStringFromBaseData];
 
-  if (v6)
+  if (_FTStringFromBaseData)
   {
-    CFDictionarySetValue(Mutable, @"x-push-cert", v6);
+    CFDictionarySetValue(Mutable, @"x-push-cert", _FTStringFromBaseData);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -158,12 +158,12 @@
     sub_1009150CC();
   }
 
-  v7 = [(IDSProvisionTemporaryPhoneMessage *)self pushToken];
-  v8 = [v7 _FTStringFromBaseData];
+  pushToken = [(IDSProvisionTemporaryPhoneMessage *)self pushToken];
+  _FTStringFromBaseData2 = [pushToken _FTStringFromBaseData];
 
-  if (v8)
+  if (_FTStringFromBaseData2)
   {
-    CFDictionarySetValue(Mutable, @"x-push-token", v8);
+    CFDictionarySetValue(Mutable, @"x-push-token", _FTStringFromBaseData2);
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -174,33 +174,33 @@
   return Mutable;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = +[IMRGLog registration];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412290;
-    v19 = v4;
+    v19 = dictionaryCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "IDS Provision Temporary Phone response: %@", &v18, 0xCu);
   }
 
-  v6 = [v4 _numberForKey:@"status"];
+  v6 = [dictionaryCopy _numberForKey:@"status"];
   [(IDSProvisionTemporaryPhoneMessage *)self setResponseStatus:v6];
 
-  v7 = [(IDSProvisionTemporaryPhoneMessage *)self responseStatus];
-  if (v7)
+  responseStatus = [(IDSProvisionTemporaryPhoneMessage *)self responseStatus];
+  if (responseStatus)
   {
-    v8 = v7;
-    v9 = [(IDSProvisionTemporaryPhoneMessage *)self responseStatus];
-    v10 = [v9 integerValue];
+    v8 = responseStatus;
+    responseStatus2 = [(IDSProvisionTemporaryPhoneMessage *)self responseStatus];
+    integerValue = [responseStatus2 integerValue];
 
-    if (!v10)
+    if (!integerValue)
     {
-      v11 = [v4 objectForKeyedSubscript:@"temporary-credential"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"temporary-credential"];
       [(IDSProvisionTemporaryPhoneMessage *)self setResponseCertificate:v11];
 
-      v12 = [v4 _stringForKey:@"expiry"];
+      v12 = [dictionaryCopy _stringForKey:@"expiry"];
       v13 = objc_alloc_init(NSNumberFormatter);
       v14 = [v13 numberFromString:v12];
       if (v14)

@@ -4,20 +4,20 @@
 - (BOOL)avkit_isVideoGravityFrozen;
 - (CGAffineTransform)_contentTransform;
 - (UIEdgeInsets)avkit_overrideLayoutMarginsForCounterRotation;
-- (UIEdgeInsets)avkit_overrideLayoutMarginsForInterfaceOrientation:(int64_t)a3;
+- (UIEdgeInsets)avkit_overrideLayoutMarginsForInterfaceOrientation:(int64_t)orientation;
 - (UIView)presentationContainerContentView;
 - (double)_continuousCornerRadius;
 - (double)_cornerRadius;
 - (double)_radiansForCounterRotation;
-- (void)_setContinuousCornerRadius:(double)a3;
-- (void)_setCornerRadius:(double)a3;
+- (void)_setContinuousCornerRadius:(double)radius;
+- (void)_setCornerRadius:(double)radius;
 - (void)didStopTransition;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setClipsToBounds:(BOOL)a3;
-- (void)setWantsAppearanceConfigValues:(BOOL)a3;
-- (void)willStartDismissalTransitionFromInterfaceOrientation:(int64_t)a3 toOrientation:(int64_t)a4 needsCounterRotation:(BOOL)a5;
-- (void)willStartPresentationTransitionFromInterfaceOrientation:(int64_t)a3 toOrientation:(int64_t)a4 needsCounterRotation:(BOOL)a5;
+- (void)setBackgroundColor:(id)color;
+- (void)setClipsToBounds:(BOOL)bounds;
+- (void)setWantsAppearanceConfigValues:(BOOL)values;
+- (void)willStartDismissalTransitionFromInterfaceOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation needsCounterRotation:(BOOL)rotation;
+- (void)willStartPresentationTransitionFromInterfaceOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation needsCounterRotation:(BOOL)rotation;
 @end
 
 @implementation AVPresentationContainerView
@@ -34,57 +34,57 @@
   v21.receiver = self;
   v21.super_class = AVPresentationContainerView;
   [(AVPresentationContainerView *)&v21 layoutSubviews];
-  v3 = [(AVPresentationContainerView *)self presentationContainerContentView];
-  v4 = [v3 superview];
+  presentationContainerContentView = [(AVPresentationContainerView *)self presentationContainerContentView];
+  superview = [presentationContainerContentView superview];
 
-  if (v4 == self)
+  if (superview == self)
   {
     [(AVPresentationContainerView *)self bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(AVPresentationContainerView *)self presentationContainerContentView];
-    [v13 setFrame:{v6, v8, v10, v12}];
+    presentationContainerContentView2 = [(AVPresentationContainerView *)self presentationContainerContentView];
+    [presentationContainerContentView2 setFrame:{v6, v8, v10, v12}];
 
     [(AVPresentationContainerView *)self _contentTransform];
-    v14 = [(AVPresentationContainerView *)self presentationContainerContentView];
+    presentationContainerContentView3 = [(AVPresentationContainerView *)self presentationContainerContentView];
     v20[0] = v20[3];
     v20[1] = v20[4];
     v20[2] = v20[5];
-    [v14 setTransform:v20];
+    [presentationContainerContentView3 setTransform:v20];
 
     [(AVPresentationContainerView *)self bounds];
     UIRectGetCenter();
     v16 = v15;
     v18 = v17;
-    v19 = [(AVPresentationContainerView *)self presentationContainerContentView];
-    [v19 setCenter:{v16, v18}];
+    presentationContainerContentView4 = [(AVPresentationContainerView *)self presentationContainerContentView];
+    [presentationContainerContentView4 setCenter:{v16, v18}];
   }
 }
 
-- (void)setClipsToBounds:(BOOL)a3
+- (void)setClipsToBounds:(BOOL)bounds
 {
-  v3 = a3;
+  boundsCopy = bounds;
   v8.receiver = self;
   v8.super_class = AVPresentationContainerView;
-  [(AVPresentationContainerView *)&v8 setClipsToBounds:[(AVPresentationContainerView *)self wantsAppearanceConfigValues]& a3];
-  v5 = [(AVPresentationContainerView *)self appearanceProxy];
-  [v5 setClipsToBounds:v3];
+  [(AVPresentationContainerView *)&v8 setClipsToBounds:[(AVPresentationContainerView *)self wantsAppearanceConfigValues]& bounds];
+  appearanceProxy = [(AVPresentationContainerView *)self appearanceProxy];
+  [appearanceProxy setClipsToBounds:boundsCopy];
 
-  v6 = [(AVPresentationContainerView *)self appearanceProxy];
-  v7 = [v6 actualView];
-  [v7 setClipsToBounds:v3];
+  appearanceProxy2 = [(AVPresentationContainerView *)self appearanceProxy];
+  actualView = [appearanceProxy2 actualView];
+  [actualView setClipsToBounds:boundsCopy];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  v6 = [(AVPresentationContainerView *)self wantsAppearanceConfigValues];
-  if (v6)
+  colorCopy = color;
+  wantsAppearanceConfigValues = [(AVPresentationContainerView *)self wantsAppearanceConfigValues];
+  if (wantsAppearanceConfigValues)
   {
-    v3 = [(AVPresentationContainerView *)self appearanceProxy];
-    [v3 backgroundColor];
+    appearanceProxy = [(AVPresentationContainerView *)self appearanceProxy];
+    [appearanceProxy backgroundColor];
   }
 
   else
@@ -95,18 +95,18 @@
   v11.receiver = self;
   v11.super_class = AVPresentationContainerView;
   [(AVPresentationContainerView *)&v11 setBackgroundColor:v7];
-  if (v6)
+  if (wantsAppearanceConfigValues)
   {
 
-    v7 = v3;
+    v7 = appearanceProxy;
   }
 
-  v8 = [(AVPresentationContainerView *)self appearanceProxy];
-  [v8 setBackgroundColor:v5];
+  appearanceProxy2 = [(AVPresentationContainerView *)self appearanceProxy];
+  [appearanceProxy2 setBackgroundColor:colorCopy];
 
-  v9 = [(AVPresentationContainerView *)self appearanceProxy];
-  v10 = [v9 actualView];
-  [v10 setBackgroundColor:v5];
+  appearanceProxy3 = [(AVPresentationContainerView *)self appearanceProxy];
+  actualView = [appearanceProxy3 actualView];
+  [actualView setBackgroundColor:colorCopy];
 }
 
 - (double)_radiansForCounterRotation
@@ -122,15 +122,15 @@
     v4 = qword_18B6EC6F0[v3];
   }
 
-  v5 = [(AVPresentationContainerView *)self toOrientation];
-  if ((v5 - 2) > 2)
+  toOrientation = [(AVPresentationContainerView *)self toOrientation];
+  if ((toOrientation - 2) > 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = qword_18B6EC708[v5 - 2];
+    v6 = qword_18B6EC708[toOrientation - 2];
   }
 
   return (v6 + v4) * 1.57079633;
@@ -170,26 +170,26 @@
   [(AVPresentationContainerView *)self setWillBeginOrientationChange:0];
 }
 
-- (void)willStartDismissalTransitionFromInterfaceOrientation:(int64_t)a3 toOrientation:(int64_t)a4 needsCounterRotation:(BOOL)a5
+- (void)willStartDismissalTransitionFromInterfaceOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation needsCounterRotation:(BOOL)rotation
 {
-  v5 = a5;
+  rotationCopy = rotation;
   [(AVPresentationContainerView *)self setBeingDismissed:1];
-  [(AVPresentationContainerView *)self setFromOrientation:a3];
-  [(AVPresentationContainerView *)self setToOrientation:a4];
-  [(AVPresentationContainerView *)self setCounterRotatingContentView:v5];
+  [(AVPresentationContainerView *)self setFromOrientation:orientation];
+  [(AVPresentationContainerView *)self setToOrientation:toOrientation];
+  [(AVPresentationContainerView *)self setCounterRotatingContentView:rotationCopy];
   [(AVPresentationContainerView *)self setNeedsLayout];
   [(AVPresentationContainerView *)self layoutIfNeeded];
 
   [(AVPresentationContainerView *)self setWillBeginOrientationChange:0];
 }
 
-- (void)willStartPresentationTransitionFromInterfaceOrientation:(int64_t)a3 toOrientation:(int64_t)a4 needsCounterRotation:(BOOL)a5
+- (void)willStartPresentationTransitionFromInterfaceOrientation:(int64_t)orientation toOrientation:(int64_t)toOrientation needsCounterRotation:(BOOL)rotation
 {
-  v5 = a5;
+  rotationCopy = rotation;
   [(AVPresentationContainerView *)self setBeingPresented:1];
-  [(AVPresentationContainerView *)self setFromOrientation:a3];
-  [(AVPresentationContainerView *)self setToOrientation:a4];
-  [(AVPresentationContainerView *)self setCounterRotatingContentView:v5];
+  [(AVPresentationContainerView *)self setFromOrientation:orientation];
+  [(AVPresentationContainerView *)self setToOrientation:toOrientation];
+  [(AVPresentationContainerView *)self setCounterRotatingContentView:rotationCopy];
   [(AVPresentationContainerView *)self setNeedsLayout];
   [(AVPresentationContainerView *)self layoutIfNeeded];
 
@@ -207,7 +207,7 @@
   {
     if ([(AVPresentationContainerView *)self isBeingDismissed])
     {
-      v3 = [(AVPresentationContainerView *)self fromOrientation];
+      fromOrientation = [(AVPresentationContainerView *)self fromOrientation];
       goto LABEL_6;
     }
 
@@ -219,9 +219,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v3 = [(AVPresentationContainerView *)self toOrientation];
+  fromOrientation = [(AVPresentationContainerView *)self toOrientation];
 LABEL_6:
-  [(AVPresentationContainerView *)self avkit_overrideLayoutMarginsForInterfaceOrientation:v3];
+  [(AVPresentationContainerView *)self avkit_overrideLayoutMarginsForInterfaceOrientation:fromOrientation];
 LABEL_8:
   result.right = v7;
   result.bottom = v6;
@@ -230,19 +230,19 @@ LABEL_8:
   return result;
 }
 
-- (UIEdgeInsets)avkit_overrideLayoutMarginsForInterfaceOrientation:(int64_t)a3
+- (UIEdgeInsets)avkit_overrideLayoutMarginsForInterfaceOrientation:(int64_t)orientation
 {
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
-  if ((a3 - 3) > 1 || v5)
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
+  if ((orientation - 3) > 1 || userInterfaceIdiom)
   {
 
     goto LABEL_6;
   }
 
-  v6 = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
-  v7 = [v6 traitCollection];
-  [v7 displayCornerRadius];
+  avkit_mainScreen = [MEMORY[0x1E69DCEB0] avkit_mainScreen];
+  traitCollection = [avkit_mainScreen traitCollection];
+  [traitCollection displayCornerRadius];
   v9 = v8;
 
   if (v9 <= 0.0)
@@ -268,8 +268,8 @@ LABEL_7:
 {
   if ([(AVPresentationContainerView *)self isBeingDismissed]|| (v3 = [(AVPresentationContainerView *)self isBeingPresented]))
   {
-    v4 = [(AVPresentationContainerView *)self fromOrientation];
-    LOBYTE(v3) = v4 != [(AVPresentationContainerView *)self toOrientation];
+    fromOrientation = [(AVPresentationContainerView *)self fromOrientation];
+    LOBYTE(v3) = fromOrientation != [(AVPresentationContainerView *)self toOrientation];
   }
 
   return v3;
@@ -277,34 +277,34 @@ LABEL_7:
 
 - (BOOL)avkit_isVideoGravityFrozen
 {
-  v3 = [(AVPresentationContainerView *)self willBeginOrientationChange];
-  if (v3)
+  willBeginOrientationChange = [(AVPresentationContainerView *)self willBeginOrientationChange];
+  if (willBeginOrientationChange)
   {
-    v4 = [(AVPresentationContainerView *)self window];
-    v5 = [v4 _windowOwnsInterfaceOrientation];
+    window = [(AVPresentationContainerView *)self window];
+    _windowOwnsInterfaceOrientation = [window _windowOwnsInterfaceOrientation];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(willBeginOrientationChange) = _windowOwnsInterfaceOrientation;
   }
 
-  return v3;
+  return willBeginOrientationChange;
 }
 
-- (void)_setCornerRadius:(double)a3
+- (void)_setCornerRadius:(double)radius
 {
-  v5 = [(AVPresentationContainerView *)self layer];
-  [v5 setCornerRadius:a3];
+  layer = [(AVPresentationContainerView *)self layer];
+  [layer setCornerRadius:radius];
 
   v6 = *MEMORY[0x1E69796E0];
-  v7 = [(AVPresentationContainerView *)self layer];
-  [v7 setCornerCurve:v6];
+  layer2 = [(AVPresentationContainerView *)self layer];
+  [layer2 setCornerCurve:v6];
 
-  v8 = [(AVPresentationContainerView *)self layer];
-  v9 = [v8 appearanceProxy];
-  v10 = [v9 maskedCorners];
-  v11 = [(AVPresentationContainerView *)self layer];
-  [v11 setMaskedCorners:v10];
+  layer3 = [(AVPresentationContainerView *)self layer];
+  appearanceProxy = [layer3 appearanceProxy];
+  maskedCorners = [appearanceProxy maskedCorners];
+  layer4 = [(AVPresentationContainerView *)self layer];
+  [layer4 setMaskedCorners:maskedCorners];
 
-  if (a3 > 0.0)
+  if (radius > 0.0)
   {
 
     [(AVPresentationContainerView *)self setClipsToBounds:1];
@@ -313,35 +313,35 @@ LABEL_7:
 
 - (double)_cornerRadius
 {
-  v3 = [(AVPresentationContainerView *)self layer];
-  v4 = [v3 cornerCurve];
+  layer = [(AVPresentationContainerView *)self layer];
+  cornerCurve = [layer cornerCurve];
   v5 = 0.0;
-  if (v4 == *MEMORY[0x1E69796E0])
+  if (cornerCurve == *MEMORY[0x1E69796E0])
   {
-    v6 = [(AVPresentationContainerView *)self layer];
-    [v6 cornerRadius];
+    layer2 = [(AVPresentationContainerView *)self layer];
+    [layer2 cornerRadius];
     v5 = v7;
   }
 
   return v5;
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
-  v5 = [(AVPresentationContainerView *)self layer];
-  [v5 setCornerRadius:a3];
+  layer = [(AVPresentationContainerView *)self layer];
+  [layer setCornerRadius:radius];
 
   v6 = *MEMORY[0x1E69796E8];
-  v7 = [(AVPresentationContainerView *)self layer];
-  [v7 setCornerCurve:v6];
+  layer2 = [(AVPresentationContainerView *)self layer];
+  [layer2 setCornerCurve:v6];
 
-  v8 = [(AVPresentationContainerView *)self layer];
-  v9 = [v8 appearanceProxy];
-  v10 = [v9 maskedCorners];
-  v11 = [(AVPresentationContainerView *)self layer];
-  [v11 setMaskedCorners:v10];
+  layer3 = [(AVPresentationContainerView *)self layer];
+  appearanceProxy = [layer3 appearanceProxy];
+  maskedCorners = [appearanceProxy maskedCorners];
+  layer4 = [(AVPresentationContainerView *)self layer];
+  [layer4 setMaskedCorners:maskedCorners];
 
-  if (a3 > 0.0)
+  if (radius > 0.0)
   {
 
     [(AVPresentationContainerView *)self setClipsToBounds:1];
@@ -350,32 +350,32 @@ LABEL_7:
 
 - (double)_continuousCornerRadius
 {
-  v3 = [(AVPresentationContainerView *)self layer];
-  v4 = [v3 cornerCurve];
+  layer = [(AVPresentationContainerView *)self layer];
+  cornerCurve = [layer cornerCurve];
   v5 = 0.0;
-  if (v4 == *MEMORY[0x1E69796E8])
+  if (cornerCurve == *MEMORY[0x1E69796E8])
   {
-    v6 = [(AVPresentationContainerView *)self layer];
-    [v6 cornerRadius];
+    layer2 = [(AVPresentationContainerView *)self layer];
+    [layer2 cornerRadius];
     v5 = v7;
   }
 
   return v5;
 }
 
-- (void)setWantsAppearanceConfigValues:(BOOL)a3
+- (void)setWantsAppearanceConfigValues:(BOOL)values
 {
-  if (self->_wantsAppearanceConfigValues != a3)
+  if (self->_wantsAppearanceConfigValues != values)
   {
-    v11 = v3;
+    v11 = appearanceProxy;
     v12 = v4;
     v13 = v5;
-    v6 = a3;
-    self->_wantsAppearanceConfigValues = a3;
-    if (a3)
+    valuesCopy = values;
+    self->_wantsAppearanceConfigValues = values;
+    if (values)
     {
-      v3 = [(AVPresentationContainerView *)self appearanceProxy];
-      [v3 backgroundColor];
+      appearanceProxy = [(AVPresentationContainerView *)self appearanceProxy];
+      [appearanceProxy backgroundColor];
     }
 
     else
@@ -386,23 +386,23 @@ LABEL_7:
     v10.receiver = self;
     v10.super_class = AVPresentationContainerView;
     [(AVPresentationContainerView *)&v10 setBackgroundColor:v8];
-    if (v6)
+    if (valuesCopy)
     {
 
-      v8 = v3;
+      v8 = appearanceProxy;
     }
 
-    v9 = [(AVPresentationContainerView *)self layer];
-    [v9 setWantsAppearanceConfigValues:v6];
+    layer = [(AVPresentationContainerView *)self layer];
+    [layer setWantsAppearanceConfigValues:valuesCopy];
   }
 }
 
 - (AVPresentationContainerViewAppearanceProxy)appearanceProxy
 {
-  v2 = [(AVPresentationContainerView *)self layer];
-  v3 = [v2 appearanceProxy];
+  layer = [(AVPresentationContainerView *)self layer];
+  appearanceProxy = [layer appearanceProxy];
 
-  return v3;
+  return appearanceProxy;
 }
 
 @end

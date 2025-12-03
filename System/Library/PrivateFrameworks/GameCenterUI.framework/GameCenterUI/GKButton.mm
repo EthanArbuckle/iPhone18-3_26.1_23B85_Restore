@@ -1,27 +1,27 @@
 @interface GKButton
 + (void)initialize;
 - (CGSize)intrinsicContentSize;
-- (GKButton)initWithFrame:(CGRect)a3;
-- (void)applyButtonStyle:(id)a3;
-- (void)applyTextStyle:(id)a3;
-- (void)replayAndApplyStyleWithSystemContentChange:(BOOL)a3;
-- (void)setAttributedTitle:(id)a3 forState:(unint64_t)a4;
-- (void)setBaseStyle:(id)a3;
+- (GKButton)initWithFrame:(CGRect)frame;
+- (void)applyButtonStyle:(id)style;
+- (void)applyTextStyle:(id)style;
+- (void)replayAndApplyStyleWithSystemContentChange:(BOOL)change;
+- (void)setAttributedTitle:(id)title forState:(unint64_t)state;
+- (void)setBaseStyle:(id)style;
 @end
 
 @implementation GKButton
 
-- (void)replayAndApplyStyleWithSystemContentChange:(BOOL)a3
+- (void)replayAndApplyStyleWithSystemContentChange:(BOOL)change
 {
   if (self->_baseStyle)
   {
-    v3 = a3;
+    changeCopy = change;
     for (i = 0; i != 4; ++i)
     {
       v6 = replayAndApplyStyleWithSystemContentChange__states[i];
       v7 = MEMORY[0x277D0C8B0];
       v8 = [(GKButton *)self attributedTitleForState:v6];
-      v9 = [v7 attributedString:v8 byReplayingFromBaseStyle:self->_baseStyle systemContentSizeDidChange:v3];
+      v9 = [v7 attributedString:v8 byReplayingFromBaseStyle:self->_baseStyle systemContentSizeDidChange:changeCopy];
 
       v14.receiver = self;
       v14.super_class = GKButton;
@@ -32,28 +32,28 @@
     appliedStyle = self->_appliedStyle;
     if (appliedStyle)
     {
-      v12 = [(GKTextStyle *)appliedStyle replayOnBaseStyle:self->_baseStyle systemContentSizeDidChange:v3];
+      v12 = [(GKTextStyle *)appliedStyle replayOnBaseStyle:self->_baseStyle systemContentSizeDidChange:changeCopy];
 
       v10 = v12;
     }
 
     if (v10)
     {
-      v13 = [(GKButton *)self titleLabel];
-      [(GKTextStyle *)v10 applyToLabel:v13];
+      titleLabel = [(GKButton *)self titleLabel];
+      [(GKTextStyle *)v10 applyToLabel:titleLabel];
     }
   }
 }
 
-- (void)setBaseStyle:(id)a3
+- (void)setBaseStyle:(id)style
 {
-  v5 = a3;
-  if (self->_baseStyle != v5)
+  styleCopy = style;
+  if (self->_baseStyle != styleCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_baseStyle, a3);
+    v6 = styleCopy;
+    objc_storeStrong(&self->_baseStyle, style);
     [(GKButton *)self replayAndApplyStyleWithSystemContentChange:0];
-    v5 = v6;
+    styleCopy = v6;
   }
 }
 
@@ -69,17 +69,17 @@
   [v4 setBaseStyle:v5];
 }
 
-- (GKButton)initWithFrame:(CGRect)a3
+- (GKButton)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = GKButton;
-  v3 = [(GKButton *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKButton *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v5 != 1 || (v6 = 0x277D0C8B8, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
+    if (userInterfaceIdiom != 1 || (v6 = 0x277D0C8B8, *MEMORY[0x277D0C258] == 1) && (*MEMORY[0x277D0C8F0] & 1) == 0)
     {
       v6 = 0x277D0C8C0;
     }
@@ -91,13 +91,13 @@
   return v3;
 }
 
-- (void)applyTextStyle:(id)a3
+- (void)applyTextStyle:(id)style
 {
-  appliedStyle = a3;
+  appliedStyle = style;
   v6 = appliedStyle;
   if (self->_appliedStyle != appliedStyle)
   {
-    objc_storeStrong(&self->_appliedStyle, a3);
+    objc_storeStrong(&self->_appliedStyle, style);
     appliedStyle = self->_appliedStyle;
   }
 
@@ -107,18 +107,18 @@
   }
 }
 
-- (void)setAttributedTitle:(id)a3 forState:(unint64_t)a4
+- (void)setAttributedTitle:(id)title forState:(unint64_t)state
 {
   v5.receiver = self;
   v5.super_class = GKButton;
-  [(GKButton *)&v5 setAttributedTitle:a3 forState:a4];
+  [(GKButton *)&v5 setAttributedTitle:title forState:state];
   [(GKButton *)self replayAndApplyStyleWithSystemContentChange:0];
 }
 
-- (void)applyButtonStyle:(id)a3
+- (void)applyButtonStyle:(id)style
 {
-  objc_storeStrong(&self->_appliedButtonStyle, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_appliedButtonStyle, style);
+  styleCopy = style;
   [(GKButtonStyle *)self->_appliedButtonStyle applyToButton:self];
 }
 

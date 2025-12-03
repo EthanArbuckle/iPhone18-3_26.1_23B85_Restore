@@ -6,20 +6,20 @@
 
 - (id)_PDFViewParentViewController
 {
-  v1 = [a1 nextResponder];
+  nextResponder = [self nextResponder];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = v1;
+    _PDFViewParentViewController = nextResponder;
 LABEL_5:
-    v3 = v2;
+    v3 = _PDFViewParentViewController;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 _PDFViewParentViewController];
+    _PDFViewParentViewController = [nextResponder _PDFViewParentViewController];
     goto LABEL_5;
   }
 

@@ -1,6 +1,6 @@
 @interface CallControlsMenuViewController
-- (_TtC15ConversationKit30CallControlsMenuViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC15ConversationKit30CallControlsMenuViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -8,24 +8,24 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   CallControlsMenuViewController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  CallControlsMenuViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  CallControlsMenuViewController.viewDidAppear(_:)(appear);
 }
 
-- (_TtC15ConversationKit30CallControlsMenuViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit30CallControlsMenuViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   CallControlsMenuViewController.init(nibName:bundle:)();
 }
 

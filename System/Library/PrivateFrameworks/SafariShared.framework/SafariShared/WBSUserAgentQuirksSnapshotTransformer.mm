@@ -1,13 +1,13 @@
 @interface WBSUserAgentQuirksSnapshotTransformer
-- (id)objectFromData:(id)a3;
+- (id)objectFromData:(id)data;
 @end
 
 @implementation WBSUserAgentQuirksSnapshotTransformer
 
-- (id)objectFromData:(id)a3
+- (id)objectFromData:(id)data
 {
-  v3 = a3;
-  v4 = [[WBSUserAgentQuirksSnapshot alloc] initWithSnapshotData:v3 error:0];
+  dataCopy = data;
+  v4 = [[WBSUserAgentQuirksSnapshot alloc] initWithSnapshotData:dataCopy error:0];
 
   return v4;
 }

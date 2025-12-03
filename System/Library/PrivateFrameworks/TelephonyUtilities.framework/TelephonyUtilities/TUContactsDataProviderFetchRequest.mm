@@ -1,9 +1,9 @@
 @interface TUContactsDataProviderFetchRequest
 - (TUContactsDataProviderFetchRequest)init;
-- (TUContactsDataProviderFetchRequest)initWithCall:(id)a3;
-- (TUContactsDataProviderFetchRequest)initWithHandle:(id)a3;
-- (TUContactsDataProviderFetchRequest)initWithHandles:(id)a3;
-- (TUContactsDataProviderFetchRequest)initWithHandles:(id)a3 isConversation:(BOOL)a4;
+- (TUContactsDataProviderFetchRequest)initWithCall:(id)call;
+- (TUContactsDataProviderFetchRequest)initWithHandle:(id)handle;
+- (TUContactsDataProviderFetchRequest)initWithHandles:(id)handles;
+- (TUContactsDataProviderFetchRequest)initWithHandles:(id)handles isConversation:(BOOL)conversation;
 - (id)description;
 - (void)removePsuedHandles;
 @end
@@ -13,8 +13,8 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(TUContactsDataProviderFetchRequest *)self contactIdentifier];
-  [v3 appendFormat:@" cI=%@", v4];
+  contactIdentifier = [(TUContactsDataProviderFetchRequest *)self contactIdentifier];
+  [v3 appendFormat:@" cI=%@", contactIdentifier];
 
   [v3 appendFormat:@" uNCC=%d", -[TUContactsDataProviderFetchRequest useNetworkCountryCode](self, "useNetworkCountryCode")];
   [v3 appendFormat:@" iEM=%d", -[TUContactsDataProviderFetchRequest isEmergency](self, "isEmergency")];
@@ -22,22 +22,22 @@
   [v3 appendFormat:@" c=%d", -[TUContactsDataProviderFetchRequest isConversation](self, "isConversation")];
   [v3 appendFormat:@" v=%d", -[TUContactsDataProviderFetchRequest isVerified](self, "isVerified")];
   [v3 appendFormat:@" i=%d", -[TUContactsDataProviderFetchRequest isIncoming](self, "isIncoming")];
-  v5 = [(TUContactsDataProviderFetchRequest *)self isoCountryCode];
-  [v3 appendFormat:@" isoCN=%@", v5];
+  isoCountryCode = [(TUContactsDataProviderFetchRequest *)self isoCountryCode];
+  [v3 appendFormat:@" isoCN=%@", isoCountryCode];
 
-  v6 = [(TUContactsDataProviderFetchRequest *)self handles];
-  [v3 appendFormat:@" hdls=%@", v6];
+  handles = [(TUContactsDataProviderFetchRequest *)self handles];
+  [v3 appendFormat:@" hdls=%@", handles];
 
-  v7 = [(TUContactsDataProviderFetchRequest *)self phoneNumberPrefixHint];
-  [v3 appendFormat:@" pnpH=%@", v7];
+  phoneNumberPrefixHint = [(TUContactsDataProviderFetchRequest *)self phoneNumberPrefixHint];
+  [v3 appendFormat:@" pnpH=%@", phoneNumberPrefixHint];
 
-  v8 = [(TUContactsDataProviderFetchRequest *)self auxiliaryKeysToFetch];
-  v9 = [v8 count];
+  auxiliaryKeysToFetch = [(TUContactsDataProviderFetchRequest *)self auxiliaryKeysToFetch];
+  v9 = [auxiliaryKeysToFetch count];
 
   if (v9)
   {
-    v10 = [(TUContactsDataProviderFetchRequest *)self auxiliaryKeysToFetch];
-    [v3 appendFormat:@" aKTF=%@", v10];
+    auxiliaryKeysToFetch2 = [(TUContactsDataProviderFetchRequest *)self auxiliaryKeysToFetch];
+    [v3 appendFormat:@" aKTF=%@", auxiliaryKeysToFetch2];
   }
 
   [v3 appendString:@">"];
@@ -50,15 +50,15 @@
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
-  v4 = [(TUContactsDataProviderFetchRequest *)self handles];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  handles = [(TUContactsDataProviderFetchRequest *)self handles];
+  v5 = [v3 initWithCapacity:{objc_msgSend(handles, "count")}];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(TUContactsDataProviderFetchRequest *)self handles];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  handles2 = [(TUContactsDataProviderFetchRequest *)self handles];
+  v7 = [handles2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (!v7)
   {
     goto LABEL_13;
@@ -73,14 +73,14 @@
     {
       if (*v17 != v10)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(handles2);
       }
 
       v12 = *(*(&v16 + 1) + 8 * i);
-      v13 = [v12 value];
-      v14 = [v13 destinationIdIsPseudonym];
+      value = [v12 value];
+      destinationIdIsPseudonym = [value destinationIdIsPseudonym];
 
-      if (v14)
+      if (destinationIdIsPseudonym)
       {
         v9 = 1;
       }
@@ -91,15 +91,15 @@
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v8 = [handles2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   }
 
   while (v8);
 
   if (v9)
   {
-    v6 = [v5 copy];
-    [(TUContactsDataProviderFetchRequest *)self setHandles:v6];
+    handles2 = [v5 copy];
+    [(TUContactsDataProviderFetchRequest *)self setHandles:handles2];
 LABEL_13:
   }
 
@@ -108,38 +108,38 @@ LABEL_13:
 
 - (TUContactsDataProviderFetchRequest)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"TUContactsDataProviderFetchRequest.m" lineNumber:19 description:{@"%s is not available. Use a designated initializer instead.", "-[TUContactsDataProviderFetchRequest init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"TUContactsDataProviderFetchRequest.m" lineNumber:19 description:{@"%s is not available. Use a designated initializer instead.", "-[TUContactsDataProviderFetchRequest init]"}];
 
   return 0;
 }
 
-- (TUContactsDataProviderFetchRequest)initWithCall:(id)a3
+- (TUContactsDataProviderFetchRequest)initWithCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v13.receiver = self;
   v13.super_class = TUContactsDataProviderFetchRequest;
   v5 = [(TUContactsDataProviderFetchRequest *)&v13 init];
   if (v5)
   {
-    if (!v4)
+    if (!callCopy)
     {
       [TUContactsDataProviderFetchRequest initWithCall:];
     }
 
-    v5->_emergency = [v4 isEmergency];
-    v6 = [v4 isoCountryCode];
+    v5->_emergency = [callCopy isEmergency];
+    isoCountryCode = [callCopy isoCountryCode];
     isoCountryCode = v5->_isoCountryCode;
-    v5->_isoCountryCode = v6;
+    v5->_isoCountryCode = isoCountryCode;
 
-    v5->_blocked = [v4 isBlocked];
-    v5->_conversation = [v4 isConversation];
-    v5->_verified = [v4 verificationStatus] == 1;
-    v5->_incoming = [v4 isIncoming];
-    v8 = [v4 remoteParticipantHandles];
-    v9 = [v8 allObjects];
+    v5->_blocked = [callCopy isBlocked];
+    v5->_conversation = [callCopy isConversation];
+    v5->_verified = [callCopy verificationStatus] == 1;
+    v5->_incoming = [callCopy isIncoming];
+    remoteParticipantHandles = [callCopy remoteParticipantHandles];
+    allObjects = [remoteParticipantHandles allObjects];
     handles = v5->_handles;
-    v5->_handles = v9;
+    v5->_handles = allObjects;
 
     auxiliaryKeysToFetch = v5->_auxiliaryKeysToFetch;
     v5->_auxiliaryKeysToFetch = MEMORY[0x1E695E0F0];
@@ -148,52 +148,52 @@ LABEL_13:
   return v5;
 }
 
-- (TUContactsDataProviderFetchRequest)initWithHandles:(id)a3 isConversation:(BOOL)a4
+- (TUContactsDataProviderFetchRequest)initWithHandles:(id)handles isConversation:(BOOL)conversation
 {
-  v7 = a3;
+  handlesCopy = handles;
   v11.receiver = self;
   v11.super_class = TUContactsDataProviderFetchRequest;
   v8 = [(TUContactsDataProviderFetchRequest *)&v11 init];
   if (v8)
   {
-    if (!v7)
+    if (!handlesCopy)
     {
       [TUContactsDataProviderFetchRequest initWithHandles:isConversation:];
     }
 
-    objc_storeStrong(&v8->_handles, a3);
+    objc_storeStrong(&v8->_handles, handles);
     auxiliaryKeysToFetch = v8->_auxiliaryKeysToFetch;
     v8->_auxiliaryKeysToFetch = MEMORY[0x1E695E0F0];
 
-    v8->_conversation = a4;
+    v8->_conversation = conversation;
   }
 
   return v8;
 }
 
-- (TUContactsDataProviderFetchRequest)initWithHandles:(id)a3
+- (TUContactsDataProviderFetchRequest)initWithHandles:(id)handles
 {
-  v4 = a3;
-  if (!v4)
+  handlesCopy = handles;
+  if (!handlesCopy)
   {
     [TUContactsDataProviderFetchRequest initWithHandles:];
   }
 
-  v5 = [(TUContactsDataProviderFetchRequest *)self initWithHandles:v4 isConversation:0];
+  v5 = [(TUContactsDataProviderFetchRequest *)self initWithHandles:handlesCopy isConversation:0];
 
   return v5;
 }
 
-- (TUContactsDataProviderFetchRequest)initWithHandle:(id)a3
+- (TUContactsDataProviderFetchRequest)initWithHandle:(id)handle
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  handleCopy = handle;
+  if (!handleCopy)
   {
     [TUContactsDataProviderFetchRequest initWithHandle:];
   }
 
-  v9[0] = v4;
+  v9[0] = handleCopy;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v6 = [(TUContactsDataProviderFetchRequest *)self initWithHandles:v5];
 

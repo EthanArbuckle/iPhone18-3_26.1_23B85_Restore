@@ -1,28 +1,28 @@
 @interface NNMKSyncServiceEndpoint
-- (BOOL)_willIdRepeat:(id)a3;
-- (NNMKSyncServiceEndpoint)initWithIDSServiceName:(id)a3 queue:(id)a4;
+- (BOOL)_willIdRepeat:(id)repeat;
+- (NNMKSyncServiceEndpoint)initWithIDSServiceName:(id)name queue:(id)queue;
 - (void)_initializeServiceTransport;
 - (void)_removeExpiredRepeatPreventionRecords;
-- (void)_storeRepeatPreventionId:(id)a3 priority:(unint64_t)a4;
+- (void)_storeRepeatPreventionId:(id)id priority:(unint64_t)priority;
 - (void)dealloc;
-- (void)syncServiceTransport:(id)a3 didReadProtobufData:(id)a4 type:(unint64_t)a5;
-- (void)syncServiceTransport:(id)a3 didRecieveDataAtURL:(id)a4 metadata:(id)a5;
+- (void)syncServiceTransport:(id)transport didReadProtobufData:(id)data type:(unint64_t)type;
+- (void)syncServiceTransport:(id)transport didRecieveDataAtURL:(id)l metadata:(id)metadata;
 @end
 
 @implementation NNMKSyncServiceEndpoint
 
-- (NNMKSyncServiceEndpoint)initWithIDSServiceName:(id)a3 queue:(id)a4
+- (NNMKSyncServiceEndpoint)initWithIDSServiceName:(id)name queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  queueCopy = queue;
   v20.receiver = self;
   v20.super_class = NNMKSyncServiceEndpoint;
   v9 = [(NNMKSyncServiceEndpoint *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_serviceQueue, a4);
-    objc_storeStrong(&v10->_idsServiceName, a3);
+    objc_storeStrong(&v9->_serviceQueue, queue);
+    objc_storeStrong(&v10->_idsServiceName, name);
     [(NNMKSyncServiceEndpoint *)v10 _initializeServiceTransport];
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     repeatPreventionRecords = v10->_repeatPreventionRecords;
@@ -71,28 +71,28 @@ void __56__NNMKSyncServiceEndpoint_initWithIDSServiceName_queue___block_invoke(u
   MEMORY[0x2821F96F8]();
 }
 
-- (void)syncServiceTransport:(id)a3 didReadProtobufData:(id)a4 type:(unint64_t)a5
+- (void)syncServiceTransport:(id)transport didReadProtobufData:(id)data type:(unint64_t)type
 {
-  v10 = a3;
-  v8 = a4;
+  transportCopy = transport;
+  dataCopy = data;
   v9 = objc_autoreleasePoolPush();
-  [(NNMKSyncServiceEndpoint *)self readProtobufData:v8 type:a5];
+  [(NNMKSyncServiceEndpoint *)self readProtobufData:dataCopy type:type];
   objc_autoreleasePoolPop(v9);
 }
 
-- (void)syncServiceTransport:(id)a3 didRecieveDataAtURL:(id)a4 metadata:(id)a5
+- (void)syncServiceTransport:(id)transport didRecieveDataAtURL:(id)l metadata:(id)metadata
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  transportCopy = transport;
+  lCopy = l;
+  metadataCopy = metadata;
   v10 = objc_autoreleasePoolPush();
-  [(NNMKSyncServiceEndpoint *)self readResourceAtURL:v8 metadata:v9];
+  [(NNMKSyncServiceEndpoint *)self readResourceAtURL:lCopy metadata:metadataCopy];
   objc_autoreleasePoolPop(v10);
 }
 
-- (BOOL)_willIdRepeat:(id)a3
+- (BOOL)_willIdRepeat:(id)repeat
 {
-  v3 = [(NSMutableDictionary *)self->_repeatPreventionRecords objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_repeatPreventionRecords objectForKeyedSubscript:repeat];
   v4 = v3;
   if (v3)
   {
@@ -108,9 +108,9 @@ void __56__NNMKSyncServiceEndpoint_initWithIDSServiceName_queue___block_invoke(u
   return v6;
 }
 
-- (void)_storeRepeatPreventionId:(id)a3 priority:(unint64_t)a4
+- (void)_storeRepeatPreventionId:(id)id priority:(unint64_t)priority
 {
-  if (a4 == 300)
+  if (priority == 300)
   {
     v5 = 5.0;
   }
@@ -121,9 +121,9 @@ void __56__NNMKSyncServiceEndpoint_initWithIDSServiceName_queue___block_invoke(u
   }
 
   v6 = MEMORY[0x277CBEAA8];
-  v7 = a3;
+  idCopy = id;
   v10 = [v6 dateWithTimeIntervalSinceNow:v5];
-  [(NSMutableDictionary *)self->_repeatPreventionRecords setObject:v10 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)self->_repeatPreventionRecords setObject:v10 forKeyedSubscript:idCopy];
 
   repeatPreventionCleanupTimer = self->_repeatPreventionCleanupTimer;
   v9 = dispatch_time(0, (v5 * 1000000000.0));
@@ -137,8 +137,8 @@ void __56__NNMKSyncServiceEndpoint_initWithIDSServiceName_queue___block_invoke(u
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMutableDictionary *)self->_repeatPreventionRecords allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allKeys = [(NSMutableDictionary *)self->_repeatPreventionRecords allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -149,7 +149,7 @@ void __56__NNMKSyncServiceEndpoint_initWithIDSServiceName_queue___block_invoke(u
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -159,7 +159,7 @@ void __56__NNMKSyncServiceEndpoint_initWithIDSServiceName_queue___block_invoke(u
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);

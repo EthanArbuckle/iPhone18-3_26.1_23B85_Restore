@@ -1,8 +1,8 @@
 @interface TVPPlaybackImageLoadInfo
 - (CGSize)maxSize;
 - (id)description;
-- (void)callCompletionHandlerWithImage:(id)a3 actualCMTime:(id *)a4 actualDate:(id)a5;
-- (void)setRequestedCMTime:(id *)a3;
+- (void)callCompletionHandlerWithImage:(id)image actualCMTime:(id *)time actualDate:(id)date;
+- (void)setRequestedCMTime:(id *)time;
 @end
 
 @implementation TVPPlaybackImageLoadInfo
@@ -14,49 +14,49 @@
   v5 = v4;
   [(TVPPlaybackImageLoadInfo *)self maxSize];
   v6 = NSStringFromCGSize(v11);
-  v7 = [(TVPPlaybackImageLoadInfo *)self identifier];
-  v8 = [v3 stringWithFormat:@"requestedTime: %f, maxSize: %@, identifier: %@", v5, v6, v7];
+  identifier = [(TVPPlaybackImageLoadInfo *)self identifier];
+  v8 = [v3 stringWithFormat:@"requestedTime: %f, maxSize: %@, identifier: %@", v5, v6, identifier];
 
   return v8;
 }
 
-- (void)callCompletionHandlerWithImage:(id)a3 actualCMTime:(id *)a4 actualDate:(id)a5
+- (void)callCompletionHandlerWithImage:(id)image actualCMTime:(id *)time actualDate:(id)date
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  imageCopy = image;
+  dateCopy = date;
+  if (imageCopy)
   {
-    v13 = *a4;
+    v13 = *time;
     CMTimeGetSeconds(&v13);
   }
 
-  v10 = [(TVPPlaybackImageLoadInfo *)self dateBasedHandler];
-  if (v10)
+  dateBasedHandler = [(TVPPlaybackImageLoadInfo *)self dateBasedHandler];
+  if (dateBasedHandler)
   {
-    v11 = [(TVPPlaybackImageLoadInfo *)self identifier];
-    v12 = [(TVPPlaybackImageLoadInfo *)self requestedDate];
-    (v10)[2](v10, v11, v8, v12, v9);
+    identifier = [(TVPPlaybackImageLoadInfo *)self identifier];
+    requestedDate = [(TVPPlaybackImageLoadInfo *)self requestedDate];
+    (dateBasedHandler)[2](dateBasedHandler, identifier, imageCopy, requestedDate, dateCopy);
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v11 = [(TVPPlaybackImageLoadInfo *)self timeBasedHandler];
-  if (v11)
+  identifier = [(TVPPlaybackImageLoadInfo *)self timeBasedHandler];
+  if (identifier)
   {
-    v12 = [(TVPPlaybackImageLoadInfo *)self identifier];
+    requestedDate = [(TVPPlaybackImageLoadInfo *)self identifier];
     [(TVPPlaybackImageLoadInfo *)self requestedTime];
-    (v11)[2](v11, v12, v8);
+    (identifier)[2](identifier, requestedDate, imageCopy);
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (void)setRequestedCMTime:(id *)a3
+- (void)setRequestedCMTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_requestedCMTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_requestedCMTime.epoch = time->var3;
   *&self->_requestedCMTime.value = v3;
 }
 

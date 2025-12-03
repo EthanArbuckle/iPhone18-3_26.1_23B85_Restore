@@ -17,13 +17,13 @@
 {
   if ((BSFloatIsOne() & 1) == 0)
   {
-    v8 = [a1 layer];
-    v4 = [v8 valueForKeyPath:@"filters.gaussianBlur.inputRadius"];
+    layer = [self layer];
+    v4 = [layer valueForKeyPath:@"filters.gaussianBlur.inputRadius"];
     [v4 doubleValue];
     v6 = v5;
 
     v7 = [MEMORY[0x277CCABB0] numberWithDouble:v6 * a2];
-    [v8 setValue:v7 forKeyPath:@"filters.gaussianBlur.inputRadius"];
+    [layer setValue:v7 forKeyPath:@"filters.gaussianBlur.inputRadius"];
   }
 }
 

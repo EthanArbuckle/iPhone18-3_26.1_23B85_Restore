@@ -1,31 +1,31 @@
 @interface WBSBrowsingDataImportController
 + (NSArray)allowedImportContentTypes;
 + (NSString)suggestedImportedBookmarksFolderName;
-+ (id)localizedDescriptionOfTheNumberOfItems:(unint64_t)a3 exportType:(id)a4;
-+ (id)localizedStringForExtensionsConflictViewWithNumberOfFailedExtensionsFailedToImport:(unint64_t)a3 appsCount:(unint64_t)a4;
-+ (id)localizedStringForNumberOfItemsToBeImported:(id)a3;
-+ (id)localizedStringForPasswordsConflictViewWithNumberOfPasswordsFailedToImport:(unint64_t)a3;
-+ (id)localizedSuccessStringForImportedItems:(id)a3;
-+ (id)uniqueImportedBookmarksFolderNameWithSuggestedName:(id)a3 existingFolderNames:(id)a4;
-+ (int64_t)importedDataClassificationFromImportedItems:(id)a3;
-- (id)importErrorAlertMessageForFailureReason:(int64_t)a3 filename:(id)a4;
-- (void)_computeNumberOfBookmarksToBeImportedFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_computeNumberOfChromeExtensionsToBeImportedFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_computeNumberOfChromeHistorySitesToBeImportedFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_computeNumberOfCreditCardsToBeImportedFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_computeNumberOfExtensionsToBeImportedFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_computeNumberOfHistorySitesToBeImportedFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_importBookmarksFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_importChromeExtensionsFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_importChromeHistoryFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_importCreditCardsFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_importExtensionsFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_importHistoryFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_removeTemporaryUnzippedDirectoryURLs:(id)a3 sandboxExtensionHandles:(id)a4;
-- (void)_scanImportURLs:(id)a3 sandboxExtensions:(id)a4 completionHandler:(id)a5;
-- (void)computeNumberOfItemsToBeImportedFromFiles:(id)a3 withCompletionHandler:(id)a4;
-- (void)importBrowsingDataFromFiles:(id)a3 withCompletionHandler:(id)a4;
-- (void)scanImportURLs:(id)a3 completionHandler:(id)a4;
++ (id)localizedDescriptionOfTheNumberOfItems:(unint64_t)items exportType:(id)type;
++ (id)localizedStringForExtensionsConflictViewWithNumberOfFailedExtensionsFailedToImport:(unint64_t)import appsCount:(unint64_t)count;
++ (id)localizedStringForNumberOfItemsToBeImported:(id)imported;
++ (id)localizedStringForPasswordsConflictViewWithNumberOfPasswordsFailedToImport:(unint64_t)import;
++ (id)localizedSuccessStringForImportedItems:(id)items;
++ (id)uniqueImportedBookmarksFolderNameWithSuggestedName:(id)name existingFolderNames:(id)names;
++ (int64_t)importedDataClassificationFromImportedItems:(id)items;
+- (id)importErrorAlertMessageForFailureReason:(int64_t)reason filename:(id)filename;
+- (void)_computeNumberOfBookmarksToBeImportedFromURL:(id)l completionHandler:(id)handler;
+- (void)_computeNumberOfChromeExtensionsToBeImportedFromURL:(id)l completionHandler:(id)handler;
+- (void)_computeNumberOfChromeHistorySitesToBeImportedFromURL:(id)l completionHandler:(id)handler;
+- (void)_computeNumberOfCreditCardsToBeImportedFromURL:(id)l completionHandler:(id)handler;
+- (void)_computeNumberOfExtensionsToBeImportedFromURL:(id)l completionHandler:(id)handler;
+- (void)_computeNumberOfHistorySitesToBeImportedFromURL:(id)l completionHandler:(id)handler;
+- (void)_importBookmarksFromURL:(id)l completionHandler:(id)handler;
+- (void)_importChromeExtensionsFromURL:(id)l completionHandler:(id)handler;
+- (void)_importChromeHistoryFromURL:(id)l completionHandler:(id)handler;
+- (void)_importCreditCardsFromURL:(id)l completionHandler:(id)handler;
+- (void)_importExtensionsFromURL:(id)l completionHandler:(id)handler;
+- (void)_importHistoryFromURL:(id)l completionHandler:(id)handler;
+- (void)_removeTemporaryUnzippedDirectoryURLs:(id)ls sandboxExtensionHandles:(id)handles;
+- (void)_scanImportURLs:(id)ls sandboxExtensions:(id)extensions completionHandler:(id)handler;
+- (void)computeNumberOfItemsToBeImportedFromFiles:(id)files withCompletionHandler:(id)handler;
+- (void)importBrowsingDataFromFiles:(id)files withCompletionHandler:(id)handler;
+- (void)scanImportURLs:(id)ls completionHandler:(id)handler;
 @end
 
 @implementation WBSBrowsingDataImportController
@@ -42,18 +42,18 @@
   CFRelease(v3);
   v7 = MEMORY[0x1E696AEC0];
   v8 = _WBSLocalizedString();
-  v9 = [v7 localizedStringWithFormat:v8, StringWithDate];
+  stringWithDate = [v7 localizedStringWithFormat:v8, StringWithDate];
 
-  return v9;
+  return stringWithDate;
 }
 
-+ (id)uniqueImportedBookmarksFolderNameWithSuggestedName:(id)a3 existingFolderNames:(id)a4
++ (id)uniqueImportedBookmarksFolderNameWithSuggestedName:(id)name existingFolderNames:(id)names
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
+  nameCopy = name;
+  namesCopy = names;
+  v7 = nameCopy;
   v8 = v7;
-  if ([v6 containsObject:v7])
+  if ([namesCopy containsObject:v7])
   {
     v9 = 2;
     v10 = v7;
@@ -62,7 +62,7 @@
       v11 = v9 + 1;
       v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %lu", v7, v9];
 
-      v12 = [v6 containsObject:v8];
+      v12 = [namesCopy containsObject:v8];
       v10 = v8;
       v9 = v11;
     }
@@ -96,18 +96,18 @@
   return v7;
 }
 
-+ (id)localizedDescriptionOfTheNumberOfItems:(unint64_t)a3 exportType:(id)a4
++ (id)localizedDescriptionOfTheNumberOfItems:(unint64_t)items exportType:(id)type
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3)
+  typeCopy = type;
+  v6 = typeCopy;
+  if (items)
   {
-    if ([v5 isEqualToString:*MEMORY[0x1E69C8B00]])
+    if ([typeCopy isEqualToString:*MEMORY[0x1E69C8B00]])
     {
       v7 = MEMORY[0x1E696AEC0];
 LABEL_7:
       v8 = _WBSLocalizedString();
-      a3 = [v7 localizedStringWithFormat:v8, a3];
+      items = [v7 localizedStringWithFormat:v8, items];
 
       goto LABEL_8;
     }
@@ -136,21 +136,21 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    a3 = 0;
+    items = 0;
   }
 
 LABEL_8:
 
-  return a3;
+  return items;
 }
 
-+ (id)localizedSuccessStringForImportedItems:(id)a3
++ (id)localizedSuccessStringForImportedItems:(id)items
 {
-  v4 = a3;
-  if ([v4 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = [v4 mutableCopy];
+    array = [MEMORY[0x1E695DF70] array];
+    v6 = [itemsCopy mutableCopy];
     v7 = *MEMORY[0x1E69C8B10];
     v8 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C8B10]];
     if (v8)
@@ -177,9 +177,9 @@ LABEL_8:
     v22[1] = 3221225472;
     v22[2] = __74__WBSBrowsingDataImportController_localizedSuccessStringForImportedItems___block_invoke;
     v22[3] = &unk_1E7FC6BE0;
-    v16 = v5;
+    v16 = array;
     v23 = v16;
-    v24 = a1;
+    selfCopy = self;
     [v6 enumerateKeysAndObjectsUsingBlock:v22];
     if ([v16 count])
     {
@@ -215,13 +215,13 @@ void __74__WBSBrowsingDataImportController_localizedSuccessStringForImportedItem
   }
 }
 
-+ (id)localizedStringForNumberOfItemsToBeImported:(id)a3
++ (id)localizedStringForNumberOfItemsToBeImported:(id)imported
 {
-  v4 = a3;
-  if ([v4 count])
+  importedCopy = imported;
+  if ([importedCopy count])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = [v4 mutableCopy];
+    array = [MEMORY[0x1E695DF70] array];
+    v6 = [importedCopy mutableCopy];
     v7 = *MEMORY[0x1E69C8B10];
     v8 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69C8B10]];
     if (v8)
@@ -234,9 +234,9 @@ void __74__WBSBrowsingDataImportController_localizedSuccessStringForImportedItem
       {
         v12 = MEMORY[0x1E696AD98];
         v13 = [v6 objectForKeyedSubscript:v10];
-        v14 = [v13 unsignedIntegerValue];
+        unsignedIntegerValue = [v13 unsignedIntegerValue];
         v15 = [v6 objectForKeyedSubscript:v7];
-        v16 = [v12 numberWithUnsignedInteger:{objc_msgSend(v15, "unsignedIntegerValue") + v14}];
+        v16 = [v12 numberWithUnsignedInteger:{objc_msgSend(v15, "unsignedIntegerValue") + unsignedIntegerValue}];
         [v6 setObject:v16 forKeyedSubscript:v10];
 
         [v6 setObject:0 forKeyedSubscript:v7];
@@ -255,9 +255,9 @@ void __74__WBSBrowsingDataImportController_localizedSuccessStringForImportedItem
       {
         v22 = MEMORY[0x1E696AD98];
         v23 = [v6 objectForKeyedSubscript:v20];
-        v24 = [v23 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v23 unsignedIntegerValue];
         v25 = [v6 objectForKeyedSubscript:v17];
-        v26 = [v22 numberWithUnsignedInteger:{objc_msgSend(v25, "unsignedIntegerValue") + v24}];
+        v26 = [v22 numberWithUnsignedInteger:{objc_msgSend(v25, "unsignedIntegerValue") + unsignedIntegerValue2}];
         [v6 setObject:v26 forKeyedSubscript:v20];
 
         [v6 setObject:0 forKeyedSubscript:v17];
@@ -268,9 +268,9 @@ void __74__WBSBrowsingDataImportController_localizedSuccessStringForImportedItem
     v31 = 3221225472;
     v32 = __79__WBSBrowsingDataImportController_localizedStringForNumberOfItemsToBeImported___block_invoke;
     v33 = &unk_1E7FC6C08;
-    v27 = v5;
+    v27 = array;
     v34 = v27;
-    v35 = a1;
+    selfCopy = self;
     [v6 enumerateKeysAndObjectsUsingBlock:&v30];
     if ([v27 count])
     {
@@ -303,32 +303,32 @@ void __79__WBSBrowsingDataImportController_localizedStringForNumberOfItemsToBeIm
   }
 }
 
-+ (id)localizedStringForPasswordsConflictViewWithNumberOfPasswordsFailedToImport:(unint64_t)a3
++ (id)localizedStringForPasswordsConflictViewWithNumberOfPasswordsFailedToImport:(unint64_t)import
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = _WBSLocalizedString();
-  v6 = [v4 localizedStringWithFormat:v5, a3];
+  import = [v4 localizedStringWithFormat:v5, import];
 
-  return v6;
+  return import;
 }
 
-+ (id)localizedStringForExtensionsConflictViewWithNumberOfFailedExtensionsFailedToImport:(unint64_t)a3 appsCount:(unint64_t)a4
++ (id)localizedStringForExtensionsConflictViewWithNumberOfFailedExtensionsFailedToImport:(unint64_t)import appsCount:(unint64_t)count
 {
   v5 = MEMORY[0x1E696AEC0];
   v6 = _WBSLocalizedString();
-  v7 = [v5 localizedStringWithFormat:v6, a3];
+  import = [v5 localizedStringWithFormat:v6, import];
 
-  return v7;
+  return import;
 }
 
-+ (int64_t)importedDataClassificationFromImportedItems:(id)a3
++ (int64_t)importedDataClassificationFromImportedItems:(id)items
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69C8CC8]];
+  itemsCopy = items;
+  v4 = [itemsCopy objectForKeyedSubscript:*MEMORY[0x1E69C8CC8]];
 
   if (v4)
   {
-    if ([v3 count] <= 1)
+    if ([itemsCopy count] <= 1)
     {
       v4 = 1;
     }
@@ -342,12 +342,12 @@ void __79__WBSBrowsingDataImportController_localizedStringForNumberOfItemsToBeIm
   return v4;
 }
 
-- (id)importErrorAlertMessageForFailureReason:(int64_t)a3 filename:(id)a4
+- (id)importErrorAlertMessageForFailureReason:(int64_t)reason filename:(id)filename
 {
-  v6 = a4;
-  if (a3)
+  filenameCopy = filename;
+  if (reason)
   {
-    if (a3 != 1)
+    if (reason != 1)
     {
       goto LABEL_6;
     }
@@ -361,34 +361,34 @@ void __79__WBSBrowsingDataImportController_localizedStringForNumberOfItemsToBeIm
   }
 
   v8 = _WBSLocalizedString();
-  v4 = [v7 localizedStringWithFormat:v8, v6];
+  filenameCopy = [v7 localizedStringWithFormat:v8, filenameCopy];
 
 LABEL_6:
 
-  return v4;
+  return filenameCopy;
 }
 
-- (void)_scanImportURLs:(id)a3 sandboxExtensions:(id)a4 completionHandler:(id)a5
+- (void)_scanImportURLs:(id)ls sandboxExtensions:(id)extensions completionHandler:(id)handler
 {
   v6 = MEMORY[0x1E696ABC0];
   v7 = *MEMORY[0x1E696A798];
-  v8 = a5;
+  handlerCopy = handler;
   v9 = [v6 errorWithDomain:v7 code:14 userInfo:0];
-  (*(a5 + 2))(v8, 0, v9);
+  (*(handler + 2))(handlerCopy, 0, v9);
 }
 
-- (void)scanImportURLs:(id)a3 completionHandler:(id)a4
+- (void)scanImportURLs:(id)ls completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_60];
+  handlerCopy = handler;
+  lsCopy = ls;
+  v8 = [lsCopy safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_60];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __68__WBSBrowsingDataImportController_scanImportURLs_completionHandler___block_invoke_95;
   v10[3] = &unk_1E7FC6C80;
-  v11 = v6;
-  v9 = v6;
-  [(WBSBrowsingDataImportController *)self _scanImportURLs:v7 sandboxExtensions:v8 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [(WBSBrowsingDataImportController *)self _scanImportURLs:lsCopy sandboxExtensions:v8 completionHandler:v10];
 }
 
 id __68__WBSBrowsingDataImportController_scanImportURLs_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -465,71 +465,71 @@ void __68__WBSBrowsingDataImportController_scanImportURLs_completionHandler___bl
   }
 }
 
-- (void)_importChromeExtensionsFromURL:(id)a3 completionHandler:(id)a4
+- (void)_importChromeExtensionsFromURL:(id)l completionHandler:(id)handler
 {
   v5 = MEMORY[0x1E696ABC0];
   v6 = *MEMORY[0x1E696A798];
-  v7 = a4;
+  handlerCopy = handler;
   v8 = [v5 errorWithDomain:v6 code:14 userInfo:0];
-  (*(a4 + 2))(v7, 0, v8);
+  (*(handler + 2))(handlerCopy, 0, v8);
 }
 
-- (void)_importHistoryFromURL:(id)a3 completionHandler:(id)a4
+- (void)_importHistoryFromURL:(id)l completionHandler:(id)handler
 {
   v5 = MEMORY[0x1E696ABC0];
   v6 = *MEMORY[0x1E696A798];
-  v7 = a4;
+  handlerCopy = handler;
   v8 = [v5 errorWithDomain:v6 code:14 userInfo:0];
-  (*(a4 + 2))(v7, 0, v8);
+  (*(handler + 2))(handlerCopy, 0, v8);
 }
 
-- (void)_importBookmarksFromURL:(id)a3 completionHandler:(id)a4
+- (void)_importBookmarksFromURL:(id)l completionHandler:(id)handler
 {
   v5 = MEMORY[0x1E696ABC0];
   v6 = *MEMORY[0x1E696A798];
-  v7 = a4;
+  handlerCopy = handler;
   v8 = [v5 errorWithDomain:v6 code:14 userInfo:0];
-  (*(a4 + 2))(v7, 0, v8);
+  (*(handler + 2))(handlerCopy, 0, v8);
 }
 
-- (void)_importExtensionsFromURL:(id)a3 completionHandler:(id)a4
+- (void)_importExtensionsFromURL:(id)l completionHandler:(id)handler
 {
   v5 = MEMORY[0x1E696ABC0];
   v6 = *MEMORY[0x1E696A798];
-  v7 = a4;
+  handlerCopy = handler;
   v8 = [v5 errorWithDomain:v6 code:14 userInfo:0];
-  (*(a4 + 2))(v7, 0, v8);
+  (*(handler + 2))(handlerCopy, 0, v8);
 }
 
-- (void)_importCreditCardsFromURL:(id)a3 completionHandler:(id)a4
+- (void)_importCreditCardsFromURL:(id)l completionHandler:(id)handler
 {
   v5 = MEMORY[0x1E696ABC0];
   v6 = *MEMORY[0x1E696A798];
-  v7 = a4;
+  handlerCopy = handler;
   v8 = [v5 errorWithDomain:v6 code:14 userInfo:0];
-  (*(a4 + 2))(v7, 0, v8);
+  (*(handler + 2))(handlerCopy, 0, v8);
 }
 
-- (void)_importChromeHistoryFromURL:(id)a3 completionHandler:(id)a4
+- (void)_importChromeHistoryFromURL:(id)l completionHandler:(id)handler
 {
   v5 = MEMORY[0x1E696ABC0];
   v6 = *MEMORY[0x1E696A798];
-  v7 = a4;
+  handlerCopy = handler;
   v8 = [v5 errorWithDomain:v6 code:14 userInfo:0];
-  (*(a4 + 2))(v7, 0, v8);
+  (*(handler + 2))(handlerCopy, 0, v8);
 }
 
-- (void)importBrowsingDataFromFiles:(id)a3 withCompletionHandler:(id)a4
+- (void)importBrowsingDataFromFiles:(id)files withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __85__WBSBrowsingDataImportController_importBrowsingDataFromFiles_withCompletionHandler___block_invoke;
   v8[3] = &unk_1E7FC6D70;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(WBSBrowsingDataImportController *)self scanImportURLs:a3 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(WBSBrowsingDataImportController *)self scanImportURLs:files completionHandler:v8];
 }
 
 void __85__WBSBrowsingDataImportController_importBrowsingDataFromFiles_withCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5)
@@ -1142,71 +1142,71 @@ uint64_t __85__WBSBrowsingDataImportController_importBrowsingDataFromFiles_withC
   return v2();
 }
 
-- (void)_computeNumberOfHistorySitesToBeImportedFromURL:(id)a3 completionHandler:(id)a4
+- (void)_computeNumberOfHistorySitesToBeImportedFromURL:(id)l completionHandler:(id)handler
 {
   v5 = MEMORY[0x1E696ABC0];
   v6 = *MEMORY[0x1E696A798];
-  v7 = a4;
+  handlerCopy = handler;
   v8 = [v5 errorWithDomain:v6 code:14 userInfo:0];
-  (*(a4 + 2))(v7, 0, v8);
+  (*(handler + 2))(handlerCopy, 0, v8);
 }
 
-- (void)_computeNumberOfChromeHistorySitesToBeImportedFromURL:(id)a3 completionHandler:(id)a4
+- (void)_computeNumberOfChromeHistorySitesToBeImportedFromURL:(id)l completionHandler:(id)handler
 {
   v5 = MEMORY[0x1E696ABC0];
   v6 = *MEMORY[0x1E696A798];
-  v7 = a4;
+  handlerCopy = handler;
   v8 = [v5 errorWithDomain:v6 code:14 userInfo:0];
-  (*(a4 + 2))(v7, 0, v8);
+  (*(handler + 2))(handlerCopy, 0, v8);
 }
 
-- (void)_computeNumberOfExtensionsToBeImportedFromURL:(id)a3 completionHandler:(id)a4
+- (void)_computeNumberOfExtensionsToBeImportedFromURL:(id)l completionHandler:(id)handler
 {
   v5 = MEMORY[0x1E696ABC0];
   v6 = *MEMORY[0x1E696A798];
-  v7 = a4;
+  handlerCopy = handler;
   v8 = [v5 errorWithDomain:v6 code:14 userInfo:0];
-  (*(a4 + 2))(v7, 0, v8);
+  (*(handler + 2))(handlerCopy, 0, v8);
 }
 
-- (void)_computeNumberOfBookmarksToBeImportedFromURL:(id)a3 completionHandler:(id)a4
+- (void)_computeNumberOfBookmarksToBeImportedFromURL:(id)l completionHandler:(id)handler
 {
   v5 = MEMORY[0x1E696ABC0];
   v6 = *MEMORY[0x1E696A798];
-  v7 = a4;
+  handlerCopy = handler;
   v8 = [v5 errorWithDomain:v6 code:14 userInfo:0];
-  (*(a4 + 2))(v7, 0, v8);
+  (*(handler + 2))(handlerCopy, 0, v8);
 }
 
-- (void)_computeNumberOfCreditCardsToBeImportedFromURL:(id)a3 completionHandler:(id)a4
+- (void)_computeNumberOfCreditCardsToBeImportedFromURL:(id)l completionHandler:(id)handler
 {
   v5 = MEMORY[0x1E696ABC0];
   v6 = *MEMORY[0x1E696A798];
-  v7 = a4;
+  handlerCopy = handler;
   v8 = [v5 errorWithDomain:v6 code:14 userInfo:0];
-  (*(a4 + 2))(v7, 0, v8);
+  (*(handler + 2))(handlerCopy, 0, v8);
 }
 
-- (void)_computeNumberOfChromeExtensionsToBeImportedFromURL:(id)a3 completionHandler:(id)a4
+- (void)_computeNumberOfChromeExtensionsToBeImportedFromURL:(id)l completionHandler:(id)handler
 {
   v5 = MEMORY[0x1E696ABC0];
   v6 = *MEMORY[0x1E696A798];
-  v7 = a4;
+  handlerCopy = handler;
   v8 = [v5 errorWithDomain:v6 code:14 userInfo:0];
-  (*(a4 + 2))(v7, 0, v8);
+  (*(handler + 2))(handlerCopy, 0, v8);
 }
 
-- (void)computeNumberOfItemsToBeImportedFromFiles:(id)a3 withCompletionHandler:(id)a4
+- (void)computeNumberOfItemsToBeImportedFromFiles:(id)files withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __99__WBSBrowsingDataImportController_computeNumberOfItemsToBeImportedFromFiles_withCompletionHandler___block_invoke;
   v8[3] = &unk_1E7FC6D70;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(WBSBrowsingDataImportController *)self scanImportURLs:a3 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(WBSBrowsingDataImportController *)self scanImportURLs:files completionHandler:v8];
 }
 
 void __99__WBSBrowsingDataImportController_computeNumberOfItemsToBeImportedFromFiles_withCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5)
@@ -1653,19 +1653,19 @@ uint64_t __99__WBSBrowsingDataImportController_computeNumberOfItemsToBeImportedF
   return v2();
 }
 
-- (void)_removeTemporaryUnzippedDirectoryURLs:(id)a3 sandboxExtensionHandles:(id)a4
+- (void)_removeTemporaryUnzippedDirectoryURLs:(id)ls sandboxExtensionHandles:(id)handles
 {
-  v5 = a3;
-  v6 = a4;
+  lsCopy = ls;
+  handlesCopy = handles;
   v7 = dispatch_get_global_queue(25, 0);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __97__WBSBrowsingDataImportController__removeTemporaryUnzippedDirectoryURLs_sandboxExtensionHandles___block_invoke;
   v10[3] = &unk_1E7FB6E30;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = lsCopy;
+  v12 = handlesCopy;
+  v8 = handlesCopy;
+  v9 = lsCopy;
   dispatch_async(v7, v10);
 }
 

@@ -1,16 +1,16 @@
 @interface SleepScheduleClockHand
 - (BOOL)accessibilityHandIsBedtime;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
 - (BOOL)isHighlighted;
-- (_TtC13SleepHealthUI22SleepScheduleClockHand)initWithCoder:(id)a3;
-- (_TtC13SleepHealthUI22SleepScheduleClockHand)initWithFrame:(CGRect)a3;
+- (_TtC13SleepHealthUI22SleepScheduleClockHand)initWithCoder:(id)coder;
+- (_TtC13SleepHealthUI22SleepScheduleClockHand)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation SleepScheduleClockHand
 
-- (_TtC13SleepHealthUI22SleepScheduleClockHand)initWithCoder:(id)a3
+- (_TtC13SleepHealthUI22SleepScheduleClockHand)initWithCoder:(id)coder
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -37,7 +37,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_269D2FD78();
 }
 
@@ -53,14 +53,14 @@
 
   v5.receiver = self;
   v5.super_class = type metadata accessor for SleepScheduleClockHand();
-  v3 = [(SleepScheduleClockHand *)&v5 isHighlighted];
+  isHighlighted = [(SleepScheduleClockHand *)&v5 isHighlighted];
 
-  return v3;
+  return isHighlighted;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   sub_269D9A8E0();
   sub_269D9A8D0();
   sub_269D9A880();
@@ -71,17 +71,17 @@
 
   v15.receiver = self;
   v15.super_class = type metadata accessor for SleepScheduleClockHand();
-  v5 = self;
-  [(SleepScheduleClockHand *)&v15 setHighlighted:v3];
-  v7 = *(&v5->super.super.super._responderFlags + OBJC_IVAR____TtC13SleepHealthUI22SleepScheduleClockHand_configuration);
-  v8 = *(&v5->super.super._constraintsExceptingSubviewAutoresizingConstraints + OBJC_IVAR____TtC13SleepHealthUI22SleepScheduleClockHand_configuration);
-  v9 = *(&v5->super.super._cachedTraitCollection + OBJC_IVAR____TtC13SleepHealthUI22SleepScheduleClockHand_configuration);
-  v16[0] = *(&v5->super.super.super.super.isa + OBJC_IVAR____TtC13SleepHealthUI22SleepScheduleClockHand_configuration);
+  selfCopy = self;
+  [(SleepScheduleClockHand *)&v15 setHighlighted:highlightedCopy];
+  v7 = *(&selfCopy->super.super.super._responderFlags + OBJC_IVAR____TtC13SleepHealthUI22SleepScheduleClockHand_configuration);
+  v8 = *(&selfCopy->super.super._constraintsExceptingSubviewAutoresizingConstraints + OBJC_IVAR____TtC13SleepHealthUI22SleepScheduleClockHand_configuration);
+  v9 = *(&selfCopy->super.super._cachedTraitCollection + OBJC_IVAR____TtC13SleepHealthUI22SleepScheduleClockHand_configuration);
+  v16[0] = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC13SleepHealthUI22SleepScheduleClockHand_configuration);
   v6 = v16[0];
   v16[1] = v7;
   v16[2] = v8;
   v16[3] = v9;
-  v17 = *(&v5->super.super._swiftAnimationInfo + OBJC_IVAR____TtC13SleepHealthUI22SleepScheduleClockHand_configuration);
+  v17 = *(&selfCopy->super.super._swiftAnimationInfo + OBJC_IVAR____TtC13SleepHealthUI22SleepScheduleClockHand_configuration);
   v10 = v17;
   v11 = v6;
   v12 = v7;
@@ -90,7 +90,7 @@
   sub_269D2F550(v16);
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -118,7 +118,7 @@
   return !(v3 >> 12) && v3 == 0;
 }
 
-- (_TtC13SleepHealthUI22SleepScheduleClockHand)initWithFrame:(CGRect)a3
+- (_TtC13SleepHealthUI22SleepScheduleClockHand)initWithFrame:(CGRect)frame
 {
   sub_269D9A8E0();
   sub_269D9A8D0();

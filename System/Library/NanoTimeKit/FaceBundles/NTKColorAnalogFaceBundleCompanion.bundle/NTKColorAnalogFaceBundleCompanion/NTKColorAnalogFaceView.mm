@@ -1,32 +1,32 @@
 @interface NTKColorAnalogFaceView
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4;
-- (CGRect)_frameForComplicationDisplayWrapper:(id)a3 inSlot:(id)a4;
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device;
+- (CGRect)_frameForComplicationDisplayWrapper:(id)wrapper inSlot:(id)slot;
 - (CGRect)_monogramReferenceFrame;
-- (CGRect)_monogramReferenceFrameForStyle:(unint64_t)a3;
-- (NTKColorAnalogFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
+- (CGRect)_monogramReferenceFrameForStyle:(unint64_t)style;
+- (NTKColorAnalogFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
 - (UIEdgeInsets)_monogramKeylinePadding;
-- (double)_edgeGapForState:(int64_t)a3;
-- (double)_keylineCornerRadiusForComplicationSlot:(id)a3;
-- (double)_keylinePaddingForState:(int64_t)a3;
-- (double)_lisaGapForState:(int64_t)a3;
-- (id)_colorComplicationViewForSlot:(id)a3;
-- (id)_complicationContainerViewForSlot:(id)a3;
-- (id)_keylineViewForComplicationSlot:(id)a3;
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
-- (int64_t)_complicationPickerStyleForSlot:(id)a3;
-- (int64_t)_keylineStyleForComplicationSlot:(id)a3;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_cleanupAfterTransitionToOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
-- (void)_configureTimeView:(id)a3;
-- (void)_enumerateColorComplicationSlotsWithBlock:(id)a3;
-- (void)_fadeComplicationFraction:(double)a3 entry:(double)a4 exit:(double)a5 slot:(id)a6;
+- (double)_edgeGapForState:(int64_t)state;
+- (double)_keylineCornerRadiusForComplicationSlot:(id)slot;
+- (double)_keylinePaddingForState:(int64_t)state;
+- (double)_lisaGapForState:(int64_t)state;
+- (id)_colorComplicationViewForSlot:(id)slot;
+- (id)_complicationContainerViewForSlot:(id)slot;
+- (id)_keylineViewForComplicationSlot:(id)slot;
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
+- (int64_t)_complicationPickerStyleForSlot:(id)slot;
+- (int64_t)_keylineStyleForComplicationSlot:(id)slot;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_cleanupAfterTransitionToOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
+- (void)_configureTimeView:(id)view;
+- (void)_enumerateColorComplicationSlotsWithBlock:(id)block;
+- (void)_fadeComplicationFraction:(double)fraction entry:(double)entry exit:(double)exit slot:(id)slot;
 - (void)_loadSnapshotContentViews;
 - (void)_unloadSnapshotContentViews;
 - (void)_updateMonogramLayoutRule;
@@ -35,11 +35,11 @@
 
 @implementation NTKColorAnalogFaceView
 
-- (NTKColorAnalogFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKColorAnalogFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
   v12.receiver = self;
   v12.super_class = NTKColorAnalogFaceView;
-  v5 = [(NTKColorAnalogFaceView *)&v12 initWithFaceStyle:a3 forDevice:a4 clientIdentifier:a5];
+  v5 = [(NTKColorAnalogFaceView *)&v12 initWithFaceStyle:style forDevice:device clientIdentifier:identifier];
   if (v5)
   {
     v6 = [UIView alloc];
@@ -48,8 +48,8 @@
     backgroundComplicationContainerView = v5->_backgroundComplicationContainerView;
     v5->_backgroundComplicationContainerView = v7;
 
-    v9 = [(NTKColorAnalogFaceView *)v5 contentView];
-    [v9 insertSubview:v5->_backgroundComplicationContainerView atIndex:0];
+    contentView = [(NTKColorAnalogFaceView *)v5 contentView];
+    [contentView insertSubview:v5->_backgroundComplicationContainerView atIndex:0];
 
     size = CGRectNull.size;
     v5->_monogramOverrideFrame.origin = CGRectNull.origin;
@@ -70,17 +70,17 @@
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(NTKColorAnalogFaceView *)self device];
-  v13 = [(NTKColorAnalogBackgroundView *)v3 initWithFrame:v12 device:v5, v7, v9, v11];
+  device = [(NTKColorAnalogFaceView *)self device];
+  v13 = [(NTKColorAnalogBackgroundView *)v3 initWithFrame:device device:v5, v7, v9, v11];
   backgroundView = self->_backgroundView;
   self->_backgroundView = v13;
 
-  v15 = [(NTKColorAnalogFaceView *)self contentView];
-  [v15 addSubview:self->_backgroundView];
+  contentView = [(NTKColorAnalogFaceView *)self contentView];
+  [contentView addSubview:self->_backgroundView];
 
-  v16 = [(NTKColorAnalogFaceView *)self contentView];
+  contentView2 = [(NTKColorAnalogFaceView *)self contentView];
   v17 = +[UIColor blackColor];
-  [v16 setBackgroundColor:v17];
+  [contentView2 setBackgroundColor:v17];
 }
 
 - (void)_unloadSnapshotContentViews
@@ -92,19 +92,19 @@
   backgroundView = self->_backgroundView;
   self->_backgroundView = 0;
 
-  v4 = [(NTKColorAnalogFaceView *)self contentView];
+  contentView = [(NTKColorAnalogFaceView *)self contentView];
   v5 = +[UIColor clearColor];
-  [v4 setBackgroundColor:v5];
+  [contentView setBackgroundColor:v5];
 }
 
-- (id)_complicationContainerViewForSlot:(id)a3
+- (id)_complicationContainerViewForSlot:(id)slot
 {
-  v4 = a3;
-  if ([v4 isEqualToString:NTKComplicationSlotMonogram])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotMonogram])
   {
     v8.receiver = self;
     v8.super_class = NTKColorAnalogFaceView;
-    v5 = [(NTKColorAnalogFaceView *)&v8 _complicationContainerViewForSlot:v4];
+    v5 = [(NTKColorAnalogFaceView *)&v8 _complicationContainerViewForSlot:slotCopy];
   }
 
   else
@@ -117,29 +117,29 @@
   return v6;
 }
 
-- (void)_configureTimeView:(id)a3
+- (void)_configureTimeView:(id)view
 {
   v6.receiver = self;
   v6.super_class = NTKColorAnalogFaceView;
-  v3 = a3;
-  [(NTKColorAnalogFaceView *)&v6 _configureTimeView:v3];
-  v4 = [v3 secondHandView];
+  viewCopy = view;
+  [(NTKColorAnalogFaceView *)&v6 _configureTimeView:viewCopy];
+  secondHandView = [viewCopy secondHandView];
 
   v5 = +[UIColor systemOrangeColor];
-  [v4 setColor:v5];
+  [secondHandView setColor:v5];
 }
 
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
   v7 = NTKComplicationSlotMonogram;
-  v8 = a3;
-  LODWORD(a5) = [a5 isEqualToString:v7];
-  v9 = [v8 complicationType];
+  complicationCopy = complication;
+  LODWORD(slot) = [slot isEqualToString:v7];
+  complicationType = [complicationCopy complicationType];
 
-  v10 = [NTKCircularComplicationView viewForComplicationType:v9];
+  v10 = [NTKCircularComplicationView viewForComplicationType:complicationType];
   v11 = v10;
   v12 = &OBJC_IVAR___NTKColorAnalogFaceView__complicationForegroundColor;
-  if (a5)
+  if (slot)
   {
     v12 = &OBJC_IVAR___NTKColorAnalogFaceView__monogramForegroundColor;
   }
@@ -150,10 +150,10 @@
   return v11;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v10 = a3;
-  v6 = [a4 isEqualToString:NTKComplicationSlotMonogram];
+  viewCopy = view;
+  v6 = [slot isEqualToString:NTKComplicationSlotMonogram];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -164,18 +164,18 @@
     }
 
     v8 = *&self->NTKAnalogFaceView_opaque[*v7];
-    v9 = v10;
+    v9 = viewCopy;
     [v9 setForegroundColor:v8];
     [v9 setPlatterColor:self->_complicationPlatterColor];
     [v9 setUseRoundedFontDesign:1];
   }
 }
 
-- (CGRect)_frameForComplicationDisplayWrapper:(id)a3 inSlot:(id)a4
+- (CGRect)_frameForComplicationDisplayWrapper:(id)wrapper inSlot:(id)slot
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:NTKComplicationSlotMonogram] && !CGRectIsNull(self->_monogramOverrideFrame))
+  wrapperCopy = wrapper;
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:NTKComplicationSlotMonogram] && !CGRectIsNull(self->_monogramOverrideFrame))
   {
     x = self->_monogramOverrideFrame.origin.x;
     y = self->_monogramOverrideFrame.origin.y;
@@ -187,7 +187,7 @@
   {
     v20.receiver = self;
     v20.super_class = NTKColorAnalogFaceView;
-    [(NTKColorAnalogFaceView *)&v20 _frameForComplicationDisplayWrapper:v6 inSlot:v7];
+    [(NTKColorAnalogFaceView *)&v20 _frameForComplicationDisplayWrapper:wrapperCopy inSlot:slotCopy];
     x = v8;
     y = v10;
     width = v12;
@@ -213,20 +213,20 @@
   [(NTKColorAnalogFaceView *)self layoutComplicationViews];
 }
 
-- (id)_keylineViewForComplicationSlot:(id)a3
+- (id)_keylineViewForComplicationSlot:(id)slot
 {
   v4 = NTKComplicationSlotMonogram;
-  v5 = a3;
-  if ([v5 isEqualToString:v4])
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:v4])
   {
-    v6 = [(NTKColorAnalogFaceView *)self _defaultKeylineViewForComplicationSlot:v5];
+    v6 = [(NTKColorAnalogFaceView *)self _defaultKeylineViewForComplicationSlot:slotCopy];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = NTKColorAnalogFaceView;
-    v6 = [(NTKColorAnalogFaceView *)&v9 _keylineViewForComplicationSlot:v5];
+    v6 = [(NTKColorAnalogFaceView *)&v9 _keylineViewForComplicationSlot:slotCopy];
   }
 
   v7 = v6;
@@ -234,26 +234,26 @@
   return v7;
 }
 
-- (double)_edgeGapForState:(int64_t)a3
+- (double)_edgeGapForState:(int64_t)state
 {
-  if ((a3 - 2) >= 2)
+  if ((state - 2) >= 2)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
-      v3 = [(NTKColorAnalogFaceView *)self device];
+      device = [(NTKColorAnalogFaceView *)self device];
       NTKColorFaceViewEdgeGapEditing();
     }
 
     else
     {
-      v3 = [(NTKColorAnalogFaceView *)self device];
+      device = [(NTKColorAnalogFaceView *)self device];
       NTKColorFaceViewEdgeGapNormal();
     }
   }
 
   else
   {
-    v3 = [(NTKColorAnalogFaceView *)self device];
+    device = [(NTKColorAnalogFaceView *)self device];
     NTKColorFaceViewEdgeGapDeselected();
   }
 
@@ -262,14 +262,14 @@
   return v5;
 }
 
-- (double)_keylinePaddingForState:(int64_t)a3
+- (double)_keylinePaddingForState:(int64_t)state
 {
   v3 = 0.0;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((state & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     NTKKeylineWidth();
     v6 = v5;
-    v7 = [(NTKColorAnalogFaceView *)self device];
+    device = [(NTKColorAnalogFaceView *)self device];
     NTKColorFaceViewDeselectedKeylineInnerPadding();
     v3 = v6 + v8;
   }
@@ -277,14 +277,14 @@
   return v3;
 }
 
-- (double)_lisaGapForState:(int64_t)a3
+- (double)_lisaGapForState:(int64_t)state
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  if ((state & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
     return 0.0;
   }
 
-  v3 = [(NTKColorAnalogFaceView *)self device];
+  device = [(NTKColorAnalogFaceView *)self device];
   NTKColorFaceViewLisaKeylineGap();
   v5 = v4;
 
@@ -295,14 +295,14 @@
 {
   NTKKeylineWidth();
   v4 = v3;
-  v5 = [(NTKColorAnalogFaceView *)self device];
-  sub_755C(v5, v16);
+  device = [(NTKColorAnalogFaceView *)self device];
+  sub_755C(device, v16);
   v6 = v4 + v17;
 
   NTKKeylineWidth();
   v8 = v7;
-  v9 = [(NTKColorAnalogFaceView *)self device];
-  sub_755C(v9, v15);
+  device2 = [(NTKColorAnalogFaceView *)self device];
+  sub_755C(device2, v15);
   v10 = v8 + v15[6];
 
   v11 = v6;
@@ -316,21 +316,21 @@
   return result;
 }
 
-- (CGRect)_monogramReferenceFrameForStyle:(unint64_t)a3
+- (CGRect)_monogramReferenceFrameForStyle:(unint64_t)style
 {
-  v5 = [(NTKColorAnalogFaceView *)self device];
+  device = [(NTKColorAnalogFaceView *)self device];
   v30 = 0;
   memset(v29, 0, sizeof(v29));
   v28 = 0u;
-  sub_755C(v5, &v28);
+  sub_755C(device, &v28);
   [(NTKColorAnalogFaceView *)self _monogramKeylinePadding];
   v8 = v6;
   v10 = v9;
   v11 = v7;
   v13 = v12;
-  if (a3)
+  if (style)
   {
-    if (a3 != 1)
+    if (style != 1)
     {
       goto LABEL_7;
     }
@@ -344,7 +344,7 @@
   }
 
   v15 = v7 + v6 + *v14 - *(&v28 + 1);
-  [NTKAnalogUtilities dialSizeForDevice:v5];
+  [NTKAnalogUtilities dialSizeForDevice:device];
   [(NTKColorAnalogFaceView *)self bounds];
 LABEL_7:
   [(NTKColorAnalogFaceView *)self bounds];
@@ -368,9 +368,9 @@ LABEL_7:
 - (CGRect)_monogramReferenceFrame
 {
   v3 = [(NTKColorAnalogFaceView *)self optionForCustomEditMode:15 slot:0];
-  v4 = [v3 style];
+  style = [v3 style];
 
-  [(NTKColorAnalogFaceView *)self _monogramReferenceFrameForStyle:v4];
+  [(NTKColorAnalogFaceView *)self _monogramReferenceFrameForStyle:style];
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -378,23 +378,23 @@ LABEL_7:
   return result;
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 15)
+  optionCopy = option;
+  slotCopy = slot;
+  if (mode == 15)
   {
-    v17 = [v8 style];
-    self->_currentStyle = v17;
-    [(NTKColorAnalogBackgroundView *)self->_backgroundView applyStyle:v17];
+    style = [optionCopy style];
+    self->_currentStyle = style;
+    [(NTKColorAnalogBackgroundView *)self->_backgroundView applyStyle:style];
     [(NTKColorAnalogFaceView *)self _monogramReferenceFrameForStyle:self->_currentStyle];
     self->_monogramOverrideFrame.origin.x = v18;
     self->_monogramOverrideFrame.origin.y = v19;
     self->_monogramOverrideFrame.size.width = v20;
     self->_monogramOverrideFrame.size.height = v21;
-    v22 = [(NTKColorAnalogFaceView *)self device];
-    v23 = [(NTKColorAnalogFaceView *)self faceColorPalette];
-    v10 = [NTKFaceColorScheme colorSchemeForDevice:v22 withFaceColorPalette:v23 units:49];
+    device = [(NTKColorAnalogFaceView *)self device];
+    faceColorPalette = [(NTKColorAnalogFaceView *)self faceColorPalette];
+    faceColorPalette2 = [NTKFaceColorScheme colorSchemeForDevice:device withFaceColorPalette:faceColorPalette units:49];
 
     if (self->_currentStyle)
     {
@@ -403,7 +403,7 @@ LABEL_7:
 
     else
     {
-      [v10 shiftedForegroundColor];
+      [faceColorPalette2 shiftedForegroundColor];
     }
     v25 = ;
     objc_storeStrong(&self->_monogramForegroundColor, v25);
@@ -412,26 +412,26 @@ LABEL_7:
     [v26 setForegroundColor:self->_monogramForegroundColor];
 
     [(NTKColorAnalogFaceView *)self invalidateComplicationLayout];
-    v27 = [(NTKColorAnalogFaceView *)self delegate];
-    [v27 faceViewDidChangeWantsStatusBarIconShadow];
+    delegate = [(NTKColorAnalogFaceView *)self delegate];
+    [delegate faceViewDidChangeWantsStatusBarIconShadow];
 
     goto LABEL_11;
   }
 
-  if (a4 == 10)
+  if (mode == 10)
   {
-    v10 = [(NTKColorAnalogFaceView *)self faceColorPalette];
+    faceColorPalette2 = [(NTKColorAnalogFaceView *)self faceColorPalette];
     backgroundView = self->_backgroundView;
-    v12 = [v10 primaryColor];
-    [(NTKColorAnalogBackgroundView *)backgroundView applyColor:v12];
+    primaryColor = [faceColorPalette2 primaryColor];
+    [(NTKColorAnalogBackgroundView *)backgroundView applyColor:primaryColor];
 
-    v13 = [v10 primaryShiftedColor];
+    primaryShiftedColor = [faceColorPalette2 primaryShiftedColor];
     complicationForegroundColor = self->_complicationForegroundColor;
-    self->_complicationForegroundColor = v13;
+    self->_complicationForegroundColor = primaryShiftedColor;
 
-    v15 = [v10 secondaryShiftedColor];
+    secondaryShiftedColor = [faceColorPalette2 secondaryShiftedColor];
     complicationPlatterColor = self->_complicationPlatterColor;
-    self->_complicationPlatterColor = v15;
+    self->_complicationPlatterColor = secondaryShiftedColor;
 
     if (self->_currentStyle)
     {
@@ -440,7 +440,7 @@ LABEL_7:
 
     else
     {
-      [v10 primaryShiftedColor];
+      [faceColorPalette2 primaryShiftedColor];
     }
     v24 = ;
     objc_storeStrong(&self->_monogramForegroundColor, v24);
@@ -455,38 +455,38 @@ LABEL_11:
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v12 = a4;
-  v13 = a5;
+  optionCopy = option;
+  toOptionCopy = toOption;
   v42.receiver = self;
   v42.super_class = NTKColorAnalogFaceView;
-  [(NTKColorAnalogFaceView *)&v42 _applyTransitionFraction:v12 fromOption:v13 toOption:a6 forCustomEditMode:a7 slot:a3];
-  if (a6 == 15)
+  [(NTKColorAnalogFaceView *)&v42 _applyTransitionFraction:optionCopy fromOption:toOptionCopy toOption:mode forCustomEditMode:slot slot:fraction];
+  if (mode == 15)
   {
-    v30 = [v12 style];
-    v31 = [v13 style];
-    [(NTKColorAnalogBackgroundView *)self->_backgroundView applyTransitionFraction:v30 fromStyle:v31 toStyle:a3];
-    if (a3 <= 0.5)
+    style = [optionCopy style];
+    style2 = [toOptionCopy style];
+    [(NTKColorAnalogBackgroundView *)self->_backgroundView applyTransitionFraction:style fromStyle:style2 toStyle:fraction];
+    if (fraction <= 0.5)
     {
-      v32 = v30;
+      v32 = style;
     }
 
     else
     {
-      v32 = v31;
+      v32 = style2;
     }
 
     self->_currentStyle = v32;
-    v14 = [(NTKColorAnalogFaceView *)self _colorComplicationViewForSlot:NTKComplicationSlotMonogram];
+    interpolatedColorPalette = [(NTKColorAnalogFaceView *)self _colorComplicationViewForSlot:NTKComplicationSlotMonogram];
     v33 = _MonogramDarkForegroundColor();
-    v34 = [(NTKColorAnalogFaceView *)self faceColorPalette];
-    v35 = [v34 primaryShiftedColor];
+    faceColorPalette = [(NTKColorAnalogFaceView *)self faceColorPalette];
+    primaryShiftedColor = [faceColorPalette primaryShiftedColor];
     v36 = NTKInterpolateBetweenColors();
-    [v14 setForegroundColor:v36];
+    [interpolatedColorPalette setForegroundColor:v36];
 
-    [(NTKColorAnalogFaceView *)self _monogramReferenceFrameForStyle:v30];
-    [(NTKColorAnalogFaceView *)self _monogramReferenceFrameForStyle:v31];
+    [(NTKColorAnalogFaceView *)self _monogramReferenceFrameForStyle:style];
+    [(NTKColorAnalogFaceView *)self _monogramReferenceFrameForStyle:style2];
     CLKInterpolateBetweenRects();
     self->_monogramOverrideFrame.origin.x = v37;
     self->_monogramOverrideFrame.origin.y = v38;
@@ -498,109 +498,109 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a6 == 10)
+  if (mode == 10)
   {
-    v41 = v12;
-    v14 = [(NTKColorAnalogFaceView *)self interpolatedColorPalette];
+    v41 = optionCopy;
+    interpolatedColorPalette = [(NTKColorAnalogFaceView *)self interpolatedColorPalette];
     backgroundView = self->_backgroundView;
-    [v14 transitionFraction];
+    [interpolatedColorPalette transitionFraction];
     v17 = v16;
-    v18 = [v14 fromPalette];
-    v19 = [v18 primaryColor];
-    v20 = [v14 toPalette];
-    v21 = [v20 primaryColor];
-    v22 = [v14 primaryColor];
-    v23 = [v14 primaryShiftedColor];
-    [(NTKColorAnalogBackgroundView *)backgroundView applyTransitionFraction:v19 fromColor:v21 toColor:v22 withPrimaryColor:v23 boostedColor:v17];
+    fromPalette = [interpolatedColorPalette fromPalette];
+    primaryColor = [fromPalette primaryColor];
+    toPalette = [interpolatedColorPalette toPalette];
+    primaryColor2 = [toPalette primaryColor];
+    primaryColor3 = [interpolatedColorPalette primaryColor];
+    primaryShiftedColor2 = [interpolatedColorPalette primaryShiftedColor];
+    [(NTKColorAnalogBackgroundView *)backgroundView applyTransitionFraction:primaryColor fromColor:primaryColor2 toColor:primaryColor3 withPrimaryColor:primaryShiftedColor2 boostedColor:v17];
 
     if (!self->_currentStyle)
     {
       CLKCompressFraction();
       v25 = v24;
-      v26 = [(NTKColorAnalogFaceView *)self interpolatedColorPalette];
-      [v26 setTransitionFraction:v25];
+      interpolatedColorPalette2 = [(NTKColorAnalogFaceView *)self interpolatedColorPalette];
+      [interpolatedColorPalette2 setTransitionFraction:v25];
 
       v27 = [(NTKColorAnalogFaceView *)self _colorComplicationViewForSlot:NTKComplicationSlotMonogram];
-      v28 = [(NTKColorAnalogFaceView *)self interpolatedColorPalette];
-      v29 = [v28 primaryShiftedColor];
-      [v27 setForegroundColor:v29];
+      interpolatedColorPalette3 = [(NTKColorAnalogFaceView *)self interpolatedColorPalette];
+      primaryShiftedColor3 = [interpolatedColorPalette3 primaryShiftedColor];
+      [v27 setForegroundColor:primaryShiftedColor3];
     }
 
-    [(NTKColorAnalogFaceView *)self _fadeComplicationFraction:NTKComplicationSlotTopRight entry:a3 exit:0.05 slot:0.15];
-    [(NTKColorAnalogFaceView *)self _fadeComplicationFraction:NTKComplicationSlotBottomRight entry:a3 exit:0.35 slot:0.45];
-    [(NTKColorAnalogFaceView *)self _fadeComplicationFraction:NTKComplicationSlotBottomLeft entry:a3 exit:0.55 slot:0.65];
-    [(NTKColorAnalogFaceView *)self _fadeComplicationFraction:NTKComplicationSlotTopLeft entry:a3 exit:0.85 slot:0.95];
-    v12 = v41;
+    [(NTKColorAnalogFaceView *)self _fadeComplicationFraction:NTKComplicationSlotTopRight entry:fraction exit:0.05 slot:0.15];
+    [(NTKColorAnalogFaceView *)self _fadeComplicationFraction:NTKComplicationSlotBottomRight entry:fraction exit:0.35 slot:0.45];
+    [(NTKColorAnalogFaceView *)self _fadeComplicationFraction:NTKComplicationSlotBottomLeft entry:fraction exit:0.55 slot:0.65];
+    [(NTKColorAnalogFaceView *)self _fadeComplicationFraction:NTKComplicationSlotTopLeft entry:fraction exit:0.85 slot:0.95];
+    optionCopy = v41;
     goto LABEL_10;
   }
 
 LABEL_11:
 }
 
-- (void)_fadeComplicationFraction:(double)a3 entry:(double)a4 exit:(double)a5 slot:(id)a6
+- (void)_fadeComplicationFraction:(double)fraction entry:(double)entry exit:(double)exit slot:(id)slot
 {
-  v7 = a6;
+  slotCopy = slot;
   CLKCompressFraction();
   v9 = v8;
-  v10 = [(NTKColorAnalogFaceView *)self interpolatedColorPalette];
-  [v10 setTransitionFraction:v9];
+  interpolatedColorPalette = [(NTKColorAnalogFaceView *)self interpolatedColorPalette];
+  [interpolatedColorPalette setTransitionFraction:v9];
 
-  v11 = [(NTKColorAnalogFaceView *)self normalComplicationDisplayWrapperForSlot:v7];
+  v11 = [(NTKColorAnalogFaceView *)self normalComplicationDisplayWrapperForSlot:slotCopy];
 
-  v17 = [v11 display];
+  display = [v11 display];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v17;
-    v13 = [(NTKColorAnalogFaceView *)self interpolatedColorPalette];
-    v14 = [v13 primaryShiftedColor];
-    [v12 setForegroundColor:v14];
+    v12 = display;
+    interpolatedColorPalette2 = [(NTKColorAnalogFaceView *)self interpolatedColorPalette];
+    primaryShiftedColor = [interpolatedColorPalette2 primaryShiftedColor];
+    [v12 setForegroundColor:primaryShiftedColor];
 
-    v15 = [(NTKColorAnalogFaceView *)self interpolatedColorPalette];
-    v16 = [v15 secondaryShiftedColor];
-    [v12 setPlatterColor:v16];
+    interpolatedColorPalette3 = [(NTKColorAnalogFaceView *)self interpolatedColorPalette];
+    secondaryShiftedColor = [interpolatedColorPalette3 secondaryShiftedColor];
+    [v12 setPlatterColor:secondaryShiftedColor];
   }
 }
 
 - (void)_updateMonogramLayoutRule
 {
   NTKEnumerateComplicationStates();
-  v3 = [(NTKColorAnalogFaceView *)self delegate];
-  [v3 faceViewDidHideOrShowComplicationSlot];
+  delegate = [(NTKColorAnalogFaceView *)self delegate];
+  [delegate faceViewDidHideOrShowComplicationSlot];
 }
 
-- (void)_cleanupAfterTransitionToOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_cleanupAfterTransitionToOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 == 15)
+  if (mode == 15)
   {
     [(NTKColorAnalogFaceView *)self _updateMonogramLayoutRule];
   }
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v14.receiver = self;
   v14.super_class = NTKColorAnalogFaceView;
   [(NTKColorAnalogFaceView *)&v14 _configureForEditMode:?];
-  v5 = [(NTKColorAnalogFaceView *)self timeView];
-  v6 = v5;
+  timeView = [(NTKColorAnalogFaceView *)self timeView];
+  v6 = timeView;
   v7 = NTKEditModeDimmedAlpha;
-  v8 = a3 == 15 || a3 == 10;
+  v8 = mode == 15 || mode == 10;
   v9 = 0.0;
   if (v8)
   {
     v9 = NTKEditModeDimmedAlpha;
   }
 
-  if (!a3)
+  if (!mode)
   {
     v9 = 1.0;
   }
 
-  [v5 setAlpha:v9];
+  [timeView setAlpha:v9];
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     v10 = v7;
   }
@@ -612,7 +612,7 @@ LABEL_11:
 
   [(NTKColorAnalogBackgroundView *)self->_backgroundView setAlpha:v10];
   v11 = 0.975;
-  if (a3 < 2)
+  if (mode < 2)
   {
     v11 = 1.0;
   }
@@ -620,17 +620,17 @@ LABEL_11:
   backgroundView = self->_backgroundView;
   CGAffineTransformMakeScale(&v13, v11, v11);
   [(NTKColorAnalogBackgroundView *)backgroundView setTransform:&v13];
-  [(NTKColorAnalogFaceView *)self setClipsToBounds:a3 != 10];
+  [(NTKColorAnalogFaceView *)self setClipsToBounds:mode != 10];
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v25.receiver = self;
   v25.super_class = NTKColorAnalogFaceView;
   [NTKColorAnalogFaceView _configureForTransitionFraction:"_configureForTransitionFraction:fromEditMode:toEditMode:" fromEditMode:? toEditMode:?];
-  v9 = [(NTKColorAnalogFaceView *)self timeView];
+  timeView = [(NTKColorAnalogFaceView *)self timeView];
   CLKInterpolateBetweenFloatsClipped();
-  [v9 setAlpha:?];
+  [timeView setAlpha:?];
 
   backgroundView = self->_backgroundView;
   CLKInterpolateBetweenFloatsClipped();
@@ -639,15 +639,15 @@ LABEL_11:
   v11 = self->_backgroundView;
   CGAffineTransformMakeScale(&v24, v12, v12);
   [(NTKColorAnalogBackgroundView *)v11 setTransform:&v24];
-  v13 = [(NTKColorAnalogFaceView *)self device];
-  v14 = [(NTKColorAnalogFaceView *)self faceColorPalette];
-  v15 = [NTKFaceColorScheme colorSchemeForDevice:v13 withFaceColorPalette:v14 units:49];
+  device = [(NTKColorAnalogFaceView *)self device];
+  faceColorPalette = [(NTKColorAnalogFaceView *)self faceColorPalette];
+  v15 = [NTKFaceColorScheme colorSchemeForDevice:device withFaceColorPalette:faceColorPalette units:49];
 
   v16 = [(NTKColorAnalogFaceView *)self _colorComplicationViewForSlot:NTKComplicationSlotMonogram];
   v17 = [(NTKColorAnalogFaceView *)self optionForCustomEditMode:15 slot:0];
-  v18 = [v17 style];
+  style = [v17 style];
 
-  if (v18)
+  if (style)
   {
     _MonogramDarkForegroundColor();
   }
@@ -657,45 +657,45 @@ LABEL_11:
     [v15 shiftedForegroundColor];
   }
   v19 = ;
-  v20 = v19;
-  if (a4 == 1)
+  shiftedForegroundColor = v19;
+  if (mode == 1)
   {
-    v20 = [v15 shiftedForegroundColor];
+    shiftedForegroundColor = [v15 shiftedForegroundColor];
   }
 
-  v21 = v19;
-  if (a5 == 1)
+  shiftedForegroundColor2 = v19;
+  if (editMode == 1)
   {
-    v21 = [v15 shiftedForegroundColor];
+    shiftedForegroundColor2 = [v15 shiftedForegroundColor];
   }
 
   v22 = NTKInterpolateBetweenColors();
   [v16 setForegroundColor:v22];
 
-  if (a3 <= 0.5)
+  if (fraction <= 0.5)
   {
-    v23 = v20;
+    v23 = shiftedForegroundColor;
   }
 
   else
   {
-    v23 = v21;
+    v23 = shiftedForegroundColor2;
   }
 
   objc_storeStrong(&self->_monogramForegroundColor, v23);
 }
 
-- (int64_t)_keylineStyleForComplicationSlot:(id)a3
+- (int64_t)_keylineStyleForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NTKColorAnalogFaceView *)self device];
-  if ([v5 deviceCategory] == &dword_0 + 1)
+  slotCopy = slot;
+  device = [(NTKColorAnalogFaceView *)self device];
+  if ([device deviceCategory] == &dword_0 + 1)
   {
   }
 
   else
   {
-    v6 = [v4 isEqual:NTKComplicationSlotMonogram];
+    v6 = [slotCopy isEqual:NTKComplicationSlotMonogram];
 
     if ((v6 & 1) == 0)
     {
@@ -710,19 +710,19 @@ LABEL_6:
   return v7;
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v13.receiver = self;
   v13.super_class = NTKColorAnalogFaceView;
-  [(NTKColorAnalogFaceView *)&v13 _applyBreathingFraction:a4 forCustomEditMode:a5 slot:?];
+  [(NTKColorAnalogFaceView *)&v13 _applyBreathingFraction:mode forCustomEditMode:slot slot:?];
   NTKLargeElementScaleForBreathingFraction();
   memset(&v12, 0, sizeof(v12));
   CGAffineTransformMakeScale(&v12, v7, v7);
-  if (a4 == 10)
+  if (mode == 10)
   {
-    v8 = [(NTKColorAnalogFaceView *)self foregroundContainerView];
+    foregroundContainerView = [(NTKColorAnalogFaceView *)self foregroundContainerView];
     v11 = v12;
-    [v8 setTransform:&v11];
+    [foregroundContainerView setTransform:&v11];
 
     backgroundComplicationContainerView = self->_backgroundComplicationContainerView;
     v11 = v12;
@@ -734,19 +734,19 @@ LABEL_6:
   [(NTKColorAnalogBackgroundView *)backgroundView setTransform:&v11];
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   v16.receiver = self;
   v16.super_class = NTKColorAnalogFaceView;
-  [(NTKColorAnalogFaceView *)&v16 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:?];
-  if (a4)
+  [(NTKColorAnalogFaceView *)&v16 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:?];
+  if (mode)
   {
     NTKLargeElementScaleForBreathingFraction();
     memset(&v15, 0, sizeof(v15));
     CGAffineTransformMakeScale(&v15, v7, v7);
-    v8 = [(NTKColorAnalogFaceView *)self foregroundContainerView];
+    foregroundContainerView = [(NTKColorAnalogFaceView *)self foregroundContainerView];
     v14 = v15;
-    [v8 setTransform:&v14];
+    [foregroundContainerView setTransform:&v14];
 
     backgroundComplicationContainerView = self->_backgroundComplicationContainerView;
     v14 = v15;
@@ -756,25 +756,25 @@ LABEL_6:
     [(NTKColorAnalogBackgroundView *)backgroundView setTransform:&v14];
     NTKAlphaForRubberBandingFraction();
     v12 = v11;
-    v13 = [(NTKColorAnalogFaceView *)self foregroundContainerView];
-    [v13 setAlpha:v12];
+    foregroundContainerView2 = [(NTKColorAnalogFaceView *)self foregroundContainerView];
+    [foregroundContainerView2 setAlpha:v12];
 
     [(UIView *)self->_backgroundComplicationContainerView setAlpha:v12];
     [(NTKColorAnalogBackgroundView *)self->_backgroundView setAlpha:v12];
   }
 }
 
-- (int64_t)_complicationPickerStyleForSlot:(id)a3
+- (int64_t)_complicationPickerStyleForSlot:(id)slot
 {
-  v3 = [(NTKColorAnalogFaceView *)self device];
-  v4 = [v3 deviceCategory] != &dword_0 + 1;
+  device = [(NTKColorAnalogFaceView *)self device];
+  v4 = [device deviceCategory] != &dword_0 + 1;
 
   return v4;
 }
 
-- (double)_keylineCornerRadiusForComplicationSlot:(id)a3
+- (double)_keylineCornerRadiusForComplicationSlot:(id)slot
 {
-  if ([a3 isEqual:NTKComplicationSlotMonogram])
+  if ([slot isEqual:NTKComplicationSlotMonogram])
   {
 
     _NTKKeylineCornerRadiusSmall();
@@ -789,28 +789,28 @@ LABEL_6:
   return result;
 }
 
-- (void)_enumerateColorComplicationSlotsWithBlock:(id)a3
+- (void)_enumerateColorComplicationSlotsWithBlock:(id)block
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_68C8;
   v5[3] = &unk_10570;
-  v6 = a3;
-  v4 = v6;
+  blockCopy = block;
+  v4 = blockCopy;
   [(NTKColorAnalogFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v5];
 }
 
-- (id)_colorComplicationViewForSlot:(id)a3
+- (id)_colorComplicationViewForSlot:(id)slot
 {
-  v3 = [(NTKColorAnalogFaceView *)self normalComplicationDisplayWrapperForSlot:a3];
-  v4 = [v3 display];
+  v3 = [(NTKColorAnalogFaceView *)self normalComplicationDisplayWrapperForSlot:slot];
+  display = [v3 display];
 
-  return v4;
+  return display;
 }
 
-+ (id)_swatchForEditModeDependsOnOptions:(int64_t)a3 forDevice:(id)a4
++ (id)_swatchForEditModeDependsOnOptions:(int64_t)options forDevice:(id)device
 {
-  if (a3 == 15)
+  if (options == 15)
   {
     return &off_11330;
   }
@@ -821,15 +821,15 @@ LABEL_6:
   }
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = a5;
+  optionCopy = option;
+  optionsCopy = options;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v8;
-    v11 = [v9 objectForKeyedSubscript:&off_10E40];
+    v10 = optionCopy;
+    v11 = [optionsCopy objectForKeyedSubscript:&off_10E40];
 
     if (!qword_156A0)
     {
@@ -842,30 +842,30 @@ LABEL_6:
     v15 = [qword_156A0 objectForKey:v14];
     if (!v15)
     {
-      v16 = [v10 style];
-      if (v16 > 2)
+      style = [v10 style];
+      if (style > 2)
       {
         v17 = 0;
       }
 
       else
       {
-        v17 = [NTKColorAnalogFaceBundle imageWithName:*(&off_105B0 + v16)];
+        v17 = [NTKColorAnalogFaceBundle imageWithName:*(&off_105B0 + style)];
       }
 
-      v18 = [(NTKColorAnalogFaceView *)self faceColorPalette];
-      v19 = [v18 copy];
+      faceColorPalette = [(NTKColorAnalogFaceView *)self faceColorPalette];
+      v19 = [faceColorPalette copy];
 
       v20 = [NTKFaceColorPaletteConfiguration alloc];
-      v21 = [v11 pigmentEditOption];
-      v22 = [v20 initWithPigmentEditOption:v21];
+      pigmentEditOption = [v11 pigmentEditOption];
+      v22 = [v20 initWithPigmentEditOption:pigmentEditOption];
       [v19 setConfiguration:v22];
 
-      v23 = [(NTKColorAnalogFaceView *)self device];
-      v24 = [NTKFaceColorScheme colorSchemeForDevice:v23 withFaceColorPalette:v19 units:1];
+      device = [(NTKColorAnalogFaceView *)self device];
+      v24 = [NTKFaceColorScheme colorSchemeForDevice:device withFaceColorPalette:v19 units:1];
 
-      v25 = [v24 foregroundColor];
-      v15 = [v17 _flatImageWithColor:v25];
+      foregroundColor = [v24 foregroundColor];
+      v15 = [v17 _flatImageWithColor:foregroundColor];
 
       [qword_156A0 setObject:v15 forKey:v14];
     }
@@ -875,7 +875,7 @@ LABEL_6:
   {
     v27.receiver = self;
     v27.super_class = NTKColorAnalogFaceView;
-    v15 = [(NTKColorAnalogFaceView *)&v27 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:v9];
+    v15 = [(NTKColorAnalogFaceView *)&v27 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy];
   }
 
   return v15;

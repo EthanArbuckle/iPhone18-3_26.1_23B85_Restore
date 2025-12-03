@@ -1,34 +1,34 @@
 @interface NUArticleViewControllerFactory
-- (NUArticleViewControllerFactory)initWithArticleDataProviderFactory:(id)a3 appStateMonitor:(id)a4 keyCommandManager:(id)a5 headerBlueprintProvider:(id)a6 articlePrefetcher:(id)a7 articleScrollPositionManager:(id)a8 spotlightManager:(id)a9 resolver:(id)a10;
-- (id)createArticleViewControllerWithArticle:(id)a3 issue:(id)a4 context:(id)a5 relativePriority:(int64_t)a6 articleHostViewController:(id)a7;
+- (NUArticleViewControllerFactory)initWithArticleDataProviderFactory:(id)factory appStateMonitor:(id)monitor keyCommandManager:(id)manager headerBlueprintProvider:(id)provider articlePrefetcher:(id)prefetcher articleScrollPositionManager:(id)positionManager spotlightManager:(id)spotlightManager resolver:(id)self0;
+- (id)createArticleViewControllerWithArticle:(id)article issue:(id)issue context:(id)context relativePriority:(int64_t)priority articleHostViewController:(id)controller;
 @end
 
 @implementation NUArticleViewControllerFactory
 
-- (NUArticleViewControllerFactory)initWithArticleDataProviderFactory:(id)a3 appStateMonitor:(id)a4 keyCommandManager:(id)a5 headerBlueprintProvider:(id)a6 articlePrefetcher:(id)a7 articleScrollPositionManager:(id)a8 spotlightManager:(id)a9 resolver:(id)a10
+- (NUArticleViewControllerFactory)initWithArticleDataProviderFactory:(id)factory appStateMonitor:(id)monitor keyCommandManager:(id)manager headerBlueprintProvider:(id)provider articlePrefetcher:(id)prefetcher articleScrollPositionManager:(id)positionManager spotlightManager:(id)spotlightManager resolver:(id)self0
 {
-  v29 = a3;
-  v28 = a4;
-  v27 = a5;
-  v26 = a6;
-  v25 = a7;
-  v24 = a8;
-  v23 = a9;
-  v17 = a10;
+  factoryCopy = factory;
+  monitorCopy = monitor;
+  managerCopy = manager;
+  providerCopy = provider;
+  prefetcherCopy = prefetcher;
+  positionManagerCopy = positionManager;
+  spotlightManagerCopy = spotlightManager;
+  resolverCopy = resolver;
   v30.receiver = self;
   v30.super_class = NUArticleViewControllerFactory;
   v18 = [(NUArticleViewControllerFactory *)&v30 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_articleDataProviderFactory, a3);
-    objc_storeStrong(&v19->_appStateMonitor, a4);
-    objc_storeStrong(&v19->_keyCommandManager, a5);
-    objc_storeStrong(&v19->_headerBlueprintProvider, a6);
-    objc_storeStrong(&v19->_articlePrefetcher, a7);
-    objc_storeStrong(&v19->_articleScrollPositionManager, a8);
-    objc_storeStrong(&v19->_spotlightManager, a9);
-    objc_storeStrong(&v19->_resolver, a10);
+    objc_storeStrong(&v18->_articleDataProviderFactory, factory);
+    objc_storeStrong(&v19->_appStateMonitor, monitor);
+    objc_storeStrong(&v19->_keyCommandManager, manager);
+    objc_storeStrong(&v19->_headerBlueprintProvider, provider);
+    objc_storeStrong(&v19->_articlePrefetcher, prefetcher);
+    objc_storeStrong(&v19->_articleScrollPositionManager, positionManager);
+    objc_storeStrong(&v19->_spotlightManager, spotlightManager);
+    objc_storeStrong(&v19->_resolver, resolver);
     v20 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
     loadingListeners = v19->_loadingListeners;
     v19->_loadingListeners = v20;
@@ -37,15 +37,15 @@
   return v19;
 }
 
-- (id)createArticleViewControllerWithArticle:(id)a3 issue:(id)a4 context:(id)a5 relativePriority:(int64_t)a6 articleHostViewController:(id)a7
+- (id)createArticleViewControllerWithArticle:(id)article issue:(id)issue context:(id)context relativePriority:(int64_t)priority articleHostViewController:(id)controller
 {
-  v12 = a3;
-  v54 = a4;
-  v13 = a7;
-  v53 = a5;
-  v14 = [(NUArticleViewControllerFactory *)self articlePrefetcher];
-  v15 = [v12 articleID];
-  v16 = [v14 prefetchedArticleDataProviderForArticleID:v15];
+  articleCopy = article;
+  issueCopy = issue;
+  controllerCopy = controller;
+  contextCopy = context;
+  articlePrefetcher = [(NUArticleViewControllerFactory *)self articlePrefetcher];
+  articleID = [articleCopy articleID];
+  v16 = [articlePrefetcher prefetchedArticleDataProviderForArticleID:articleID];
   v17 = v16;
   if (v16)
   {
@@ -54,25 +54,25 @@
 
   else
   {
-    v19 = [(NUArticleViewControllerFactory *)self articleDataProviderFactory];
-    v18 = [v19 createArticleDataProviderWithArticle:v12];
+    articleDataProviderFactory = [(NUArticleViewControllerFactory *)self articleDataProviderFactory];
+    v18 = [articleDataProviderFactory createArticleDataProviderWithArticle:articleCopy];
   }
 
-  [v18 setRelativePriority:a6];
-  v20 = [(NUArticleViewControllerFactory *)self resolver];
-  v21 = [v20 resolveClass:objc_opt_class()];
+  [v18 setRelativePriority:priority];
+  resolver = [(NUArticleViewControllerFactory *)self resolver];
+  v21 = [resolver resolveClass:objc_opt_class()];
 
-  v22 = [(NUArticleViewControllerFactory *)self resolver];
+  resolver2 = [(NUArticleViewControllerFactory *)self resolver];
   v23 = objc_opt_class();
   v66[0] = MEMORY[0x277D85DD0];
   v66[1] = 3221225472;
   v66[2] = __130__NUArticleViewControllerFactory_createArticleViewControllerWithArticle_issue_context_relativePriority_articleHostViewController___block_invoke;
   v66[3] = &unk_2799A3378;
-  v24 = v12;
+  v24 = articleCopy;
   v67 = v24;
-  v25 = [v22 resolveClass:v23 contextBlock:v66];
+  v25 = [resolver2 resolveClass:v23 contextBlock:v66];
 
-  v26 = [(NUArticleViewControllerFactory *)self resolver];
+  resolver3 = [(NUArticleViewControllerFactory *)self resolver];
   v27 = objc_opt_class();
   v64[0] = MEMORY[0x277D85DD0];
   v64[1] = 3221225472;
@@ -80,10 +80,10 @@
   v64[3] = &unk_2799A3378;
   v28 = v24;
   v65 = v28;
-  v29 = [v26 resolveClass:v27 contextBlock:v64];
+  v29 = [resolver3 resolveClass:v27 contextBlock:v64];
 
-  v30 = [[NUArticleHostViewControllerProvider alloc] initWithArticleHostViewController:v13];
-  v31 = [(NUArticleViewControllerFactory *)self resolver];
+  v30 = [[NUArticleHostViewControllerProvider alloc] initWithArticleHostViewController:controllerCopy];
+  resolver4 = [(NUArticleViewControllerFactory *)self resolver];
   v32 = objc_opt_class();
   v56[0] = MEMORY[0x277D85DD0];
   v56[1] = 3221225472;
@@ -94,33 +94,33 @@
   v59 = v28;
   v60 = v30;
   v61 = v21;
-  v62 = v54;
+  v62 = issueCopy;
   v63 = v18;
   v47 = v18;
-  v52 = v54;
+  v52 = issueCopy;
   v55 = v21;
   v50 = v30;
   v51 = v28;
   v48 = v29;
   v49 = v25;
-  v46 = [v31 resolveClass:v32 contextBlock:v56];
+  v46 = [resolver4 resolveClass:v32 contextBlock:v56];
 
-  v33 = [(NUArticleViewControllerFactory *)self resolver];
-  v45 = [v33 resolveProtocol:&unk_286E2C160];
+  resolver5 = [(NUArticleViewControllerFactory *)self resolver];
+  v45 = [resolver5 resolveProtocol:&unk_286E2C160];
 
-  v34 = [(NUArticleViewControllerFactory *)self resolver];
-  v35 = [v34 resolveProtocol:&unk_286E2F2E0];
+  resolver6 = [(NUArticleViewControllerFactory *)self resolver];
+  v35 = [resolver6 resolveProtocol:&unk_286E2F2E0];
 
   v36 = [NUArticleViewController alloc];
-  v37 = [(NUArticleViewControllerFactory *)self appStateMonitor];
-  v38 = [(NUArticleViewControllerFactory *)self keyCommandManager];
-  v39 = [(NUArticleViewControllerFactory *)self loadingListeners];
-  v40 = [(NUArticleViewControllerFactory *)self headerBlueprintProvider];
-  v41 = [(NUArticleViewControllerFactory *)self articleScrollPositionManager];
-  v42 = [(NUArticleViewControllerFactory *)self spotlightManager];
-  v43 = [(NUArticleViewController *)v36 initWithArticleDataProvider:v47 scrollViewController:v46 appStateMonitor:v37 keyCommandManager:v38 loadingListeners:v39 headerBlueprintProvider:v40 debugSettingsProvider:v45 videoPlayerViewControllerManager:v55 articleScrollPositionManager:v41 chromeControl:v35 spotlightManager:v42];
+  appStateMonitor = [(NUArticleViewControllerFactory *)self appStateMonitor];
+  keyCommandManager = [(NUArticleViewControllerFactory *)self keyCommandManager];
+  loadingListeners = [(NUArticleViewControllerFactory *)self loadingListeners];
+  headerBlueprintProvider = [(NUArticleViewControllerFactory *)self headerBlueprintProvider];
+  articleScrollPositionManager = [(NUArticleViewControllerFactory *)self articleScrollPositionManager];
+  spotlightManager = [(NUArticleViewControllerFactory *)self spotlightManager];
+  v43 = [(NUArticleViewController *)v36 initWithArticleDataProvider:v47 scrollViewController:v46 appStateMonitor:appStateMonitor keyCommandManager:keyCommandManager loadingListeners:loadingListeners headerBlueprintProvider:headerBlueprintProvider debugSettingsProvider:v45 videoPlayerViewControllerManager:v55 articleScrollPositionManager:articleScrollPositionManager chromeControl:v35 spotlightManager:spotlightManager];
 
-  [(NUArticleViewController *)v43 setArticleContext:v53];
+  [(NUArticleViewController *)v43 setArticleContext:contextCopy];
 
   return v43;
 }

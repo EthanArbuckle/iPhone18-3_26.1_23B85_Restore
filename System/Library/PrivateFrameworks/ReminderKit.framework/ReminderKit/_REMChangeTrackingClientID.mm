@@ -1,45 +1,45 @@
 @interface _REMChangeTrackingClientID
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_REMChangeTrackingClientID)initWithClientName:(id)a3 accountIdentifier:(id)a4;
-- (_REMChangeTrackingClientID)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_REMChangeTrackingClientID)initWithClientName:(id)name accountIdentifier:(id)identifier;
+- (_REMChangeTrackingClientID)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _REMChangeTrackingClientID
 
-- (_REMChangeTrackingClientID)initWithClientName:(id)a3 accountIdentifier:(id)a4
+- (_REMChangeTrackingClientID)initWithClientName:(id)name accountIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = _REMChangeTrackingClientID;
   v9 = [(_REMChangeTrackingClientID *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientName, a3);
-    objc_storeStrong(&v10->_accountIdentifier, a4);
+    objc_storeStrong(&v9->_clientName, name);
+    objc_storeStrong(&v10->_accountIdentifier, identifier);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_REMChangeTrackingClientID *)self clientName];
-  [v4 encodeObject:v5 forKey:@"clientName"];
+  coderCopy = coder;
+  clientName = [(_REMChangeTrackingClientID *)self clientName];
+  [coderCopy encodeObject:clientName forKey:@"clientName"];
 
-  v6 = [(_REMChangeTrackingClientID *)self accountIdentifier];
-  [v4 encodeObject:v6 forKey:@"accountIdentifier"];
+  accountIdentifier = [(_REMChangeTrackingClientID *)self accountIdentifier];
+  [coderCopy encodeObject:accountIdentifier forKey:@"accountIdentifier"];
 }
 
-- (_REMChangeTrackingClientID)initWithCoder:(id)a3
+- (_REMChangeTrackingClientID)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientName"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientName"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
 
   if (v5)
   {
@@ -53,40 +53,40 @@
 
   if (v7)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_REMChangeTrackingClientID *)self initWithClientName:v5 accountIdentifier:v6];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(_REMChangeTrackingClientID *)self clientName];
-      v8 = [(_REMChangeTrackingClientID *)v6 clientName];
-      v9 = v8;
-      if (v7 == v8)
+      clientName = [(_REMChangeTrackingClientID *)self clientName];
+      clientName2 = [(_REMChangeTrackingClientID *)v6 clientName];
+      v9 = clientName2;
+      if (clientName == clientName2)
       {
       }
 
       else
       {
-        v10 = [(_REMChangeTrackingClientID *)self clientName];
-        v11 = [(_REMChangeTrackingClientID *)v6 clientName];
-        v12 = [v10 isEqual:v11];
+        clientName3 = [(_REMChangeTrackingClientID *)self clientName];
+        clientName4 = [(_REMChangeTrackingClientID *)v6 clientName];
+        v12 = [clientName3 isEqual:clientName4];
 
         if (!v12)
         {
@@ -94,18 +94,18 @@
         }
       }
 
-      v14 = [(_REMChangeTrackingClientID *)self accountIdentifier];
-      v15 = [(_REMChangeTrackingClientID *)v6 accountIdentifier];
-      if (v14 == v15)
+      accountIdentifier = [(_REMChangeTrackingClientID *)self accountIdentifier];
+      accountIdentifier2 = [(_REMChangeTrackingClientID *)v6 accountIdentifier];
+      if (accountIdentifier == accountIdentifier2)
       {
         v13 = 1;
       }
 
       else
       {
-        v16 = [(_REMChangeTrackingClientID *)self accountIdentifier];
-        v17 = [(_REMChangeTrackingClientID *)v6 accountIdentifier];
-        v13 = [v16 isEqual:v17];
+        accountIdentifier3 = [(_REMChangeTrackingClientID *)self accountIdentifier];
+        accountIdentifier4 = [(_REMChangeTrackingClientID *)v6 accountIdentifier];
+        v13 = [accountIdentifier3 isEqual:accountIdentifier4];
       }
 
       goto LABEL_12;
@@ -130,9 +130,9 @@ LABEL_13:
   v10.super_class = _REMChangeTrackingClientID;
   v3 = [(_REMChangeTrackingClientID *)&v10 description];
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(_REMChangeTrackingClientID *)self clientName];
-  v6 = [(_REMChangeTrackingClientID *)self accountIdentifier];
-  v7 = [v4 stringWithFormat:@" - {clientName: %@, accountIdentifier: %@}", v5, v6];;
+  clientName = [(_REMChangeTrackingClientID *)self clientName];
+  accountIdentifier = [(_REMChangeTrackingClientID *)self accountIdentifier];
+  v7 = [v4 stringWithFormat:@" - {clientName: %@, accountIdentifier: %@}", clientName, accountIdentifier];;
   v8 = [v3 stringByAppendingString:v7];
 
   return v8;

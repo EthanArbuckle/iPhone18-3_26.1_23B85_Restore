@@ -1,8 +1,8 @@
 @interface SBMainDisplayDarkener
 + (id)sharedInstance;
-- (SBMainDisplayDarkener)initWithRootView:(id)a3;
+- (SBMainDisplayDarkener)initWithRootView:(id)view;
 - (void)_configureDarkeningView;
-- (void)setDarkeningPercentage:(double)a3;
+- (void)setDarkeningPercentage:(double)percentage;
 @end
 
 @implementation SBMainDisplayDarkener
@@ -29,26 +29,26 @@ void __39__SBMainDisplayDarkener_sharedInstance__block_invoke()
   sharedInstance___sharedInstance_10 = v2;
 }
 
-- (SBMainDisplayDarkener)initWithRootView:(id)a3
+- (SBMainDisplayDarkener)initWithRootView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = SBMainDisplayDarkener;
   v6 = [(SBMainDisplayDarkener *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rootView, a3);
+    objc_storeStrong(&v6->_rootView, view);
   }
 
   return v7;
 }
 
-- (void)setDarkeningPercentage:(double)a3
+- (void)setDarkeningPercentage:(double)percentage
 {
-  if (self->_darkeningPercentage != a3)
+  if (self->_darkeningPercentage != percentage)
   {
-    self->_darkeningPercentage = a3;
+    self->_darkeningPercentage = percentage;
     [(SBMainDisplayDarkener *)self _configureDarkeningView];
   }
 }
@@ -68,13 +68,13 @@ void __39__SBMainDisplayDarkener_sharedInstance__block_invoke()
       self->_darkeningView = v6;
 
       v8 = self->_darkeningView;
-      v9 = [MEMORY[0x277D75348] blackColor];
-      [(UIView *)v8 setBackgroundColor:v9];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [(UIView *)v8 setBackgroundColor:blackColor];
 
       [(UIView *)self->_darkeningView setAutoresizingMask:18];
       [(UIView *)self->_darkeningView setUserInteractionEnabled:0];
-      v10 = [(UIView *)self->_darkeningView layer];
-      [v10 setAllowsHitTesting:0];
+      layer = [(UIView *)self->_darkeningView layer];
+      [layer setAllowsHitTesting:0];
 
       [(UIView *)self->_rootView addSubview:self->_darkeningView];
       darkeningView = self->_darkeningView;

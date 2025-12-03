@@ -1,31 +1,31 @@
 @interface _SFPBRFTableHeaderCardSection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFTableHeaderCardSection)initWithDictionary:(id)a3;
-- (_SFPBRFTableHeaderCardSection)initWithFacade:(id)a3;
-- (_SFPBRFTableHeaderCardSection)initWithJSON:(id)a3;
+- (_SFPBRFTableHeaderCardSection)initWithDictionary:(id)dictionary;
+- (_SFPBRFTableHeaderCardSection)initWithFacade:(id)facade;
+- (_SFPBRFTableHeaderCardSection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCells:(id)a3;
-- (void)addColumns:(id)a3;
-- (void)addCompact_cells:(id)a3;
-- (void)setCells:(id)a3;
-- (void)setColumns:(id)a3;
-- (void)setCompact_cells:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCells:(id)cells;
+- (void)addColumns:(id)columns;
+- (void)addCompact_cells:(id)compact_cells;
+- (void)setCells:(id)cells;
+- (void)setColumns:(id)columns;
+- (void)setCompact_cells:(id)compact_cells;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFTableHeaderCardSection
 
-- (_SFPBRFTableHeaderCardSection)initWithFacade:(id)a3
+- (_SFPBRFTableHeaderCardSection)initWithFacade:(id)facade
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFTableHeaderCardSection *)self init];
   if (v5)
   {
-    v6 = [v4 columns];
-    if (v6)
+    columns = [facadeCopy columns];
+    if (columns)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -39,8 +39,8 @@
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v8 = [v4 columns];
-    v9 = [v8 countByEnumeratingWithState:&v42 objects:v48 count:16];
+    columns2 = [facadeCopy columns];
+    v9 = [columns2 countByEnumeratingWithState:&v42 objects:v48 count:16];
     if (v9)
     {
       v10 = v9;
@@ -51,7 +51,7 @@
         {
           if (*v43 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(columns2);
           }
 
           v13 = [[_SFPBRFTableColumnDefinition alloc] initWithFacade:*(*(&v42 + 1) + 8 * i)];
@@ -61,15 +61,15 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v42 objects:v48 count:16];
+        v10 = [columns2 countByEnumeratingWithState:&v42 objects:v48 count:16];
       }
 
       while (v10);
     }
 
     [(_SFPBRFTableHeaderCardSection *)v5 setColumns:v7];
-    v14 = [v4 cells];
-    if (v14)
+    cells = [facadeCopy cells];
+    if (cells)
     {
       v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -83,8 +83,8 @@
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v16 = [v4 cells];
-    v17 = [v16 countByEnumeratingWithState:&v38 objects:v47 count:16];
+    cells2 = [facadeCopy cells];
+    v17 = [cells2 countByEnumeratingWithState:&v38 objects:v47 count:16];
     if (v17)
     {
       v18 = v17;
@@ -95,7 +95,7 @@
         {
           if (*v39 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(cells2);
           }
 
           v21 = [[_SFPBRFTableCell alloc] initWithFacade:*(*(&v38 + 1) + 8 * j)];
@@ -105,16 +105,16 @@
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v38 objects:v47 count:16];
+        v18 = [cells2 countByEnumeratingWithState:&v38 objects:v47 count:16];
       }
 
       while (v18);
     }
 
     [(_SFPBRFTableHeaderCardSection *)v5 setCells:v15];
-    v22 = [v4 compact_cells];
+    compact_cells = [facadeCopy compact_cells];
     v33 = v5;
-    if (v22)
+    if (compact_cells)
     {
       v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -128,8 +128,8 @@
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v24 = [v4 compact_cells];
-    v25 = [v24 countByEnumeratingWithState:&v34 objects:v46 count:16];
+    compact_cells2 = [facadeCopy compact_cells];
+    v25 = [compact_cells2 countByEnumeratingWithState:&v34 objects:v46 count:16];
     if (v25)
     {
       v26 = v25;
@@ -140,7 +140,7 @@
         {
           if (*v35 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(compact_cells2);
           }
 
           v29 = [[_SFPBRFTableCell alloc] initWithFacade:*(*(&v34 + 1) + 8 * k)];
@@ -150,7 +150,7 @@
           }
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v34 objects:v46 count:16];
+        v26 = [compact_cells2 countByEnumeratingWithState:&v34 objects:v46 count:16];
       }
 
       while (v26);
@@ -158,14 +158,14 @@
 
     v5 = v33;
     [(_SFPBRFTableHeaderCardSection *)v33 setCompact_cells:v23];
-    if ([v4 hasShould_repeat_header_in_flow_layout])
+    if ([facadeCopy hasShould_repeat_header_in_flow_layout])
     {
-      -[_SFPBRFTableHeaderCardSection setShould_repeat_header_in_flow_layout:](v33, "setShould_repeat_header_in_flow_layout:", [v4 should_repeat_header_in_flow_layout]);
+      -[_SFPBRFTableHeaderCardSection setShould_repeat_header_in_flow_layout:](v33, "setShould_repeat_header_in_flow_layout:", [facadeCopy should_repeat_header_in_flow_layout]);
     }
 
-    if ([v4 hasVertical_alignment])
+    if ([facadeCopy hasVertical_alignment])
     {
-      -[_SFPBRFTableHeaderCardSection setVertical_alignment:](v33, "setVertical_alignment:", [v4 vertical_alignment]);
+      -[_SFPBRFTableHeaderCardSection setVertical_alignment:](v33, "setVertical_alignment:", [facadeCopy vertical_alignment]);
     }
 
     v30 = v33;
@@ -175,16 +175,16 @@
   return v5;
 }
 
-- (_SFPBRFTableHeaderCardSection)initWithDictionary:(id)a3
+- (_SFPBRFTableHeaderCardSection)initWithDictionary:(id)dictionary
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v50.receiver = self;
   v50.super_class = _SFPBRFTableHeaderCardSection;
   v5 = [(_SFPBRFTableHeaderCardSection *)&v50 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"columns"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"columns"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -226,7 +226,7 @@
       v6 = v7;
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"cells"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"cells"];
     objc_opt_class();
     v37 = v15;
     if (objc_opt_isKindOfClass())
@@ -266,7 +266,7 @@
       }
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"compactCells"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"compactCells"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -309,14 +309,14 @@
       v15 = v37;
     }
 
-    v31 = [v4 objectForKeyedSubscript:{@"shouldRepeatHeaderInFlowLayout", v36}];
+    v31 = [dictionaryCopy objectForKeyedSubscript:{@"shouldRepeatHeaderInFlowLayout", v36}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBRFTableHeaderCardSection setShould_repeat_header_in_flow_layout:](v5, "setShould_repeat_header_in_flow_layout:", [v31 intValue]);
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"verticalAlignment"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"verticalAlignment"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -330,30 +330,30 @@
   return v5;
 }
 
-- (_SFPBRFTableHeaderCardSection)initWithJSON:(id)a3
+- (_SFPBRFTableHeaderCardSection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFTableHeaderCardSection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFTableHeaderCardSection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFTableHeaderCardSection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -367,10 +367,10 @@
 - (id)dictionaryRepresentation
 {
   v49 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_cells count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
@@ -390,16 +390,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v42 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v42 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -409,12 +409,12 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"cells"];
+    [dictionary setObject:array forKeyedSubscript:@"cells"];
   }
 
   if ([(NSArray *)self->_columns count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
@@ -434,16 +434,16 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v38 + 1) + 8 * j) dictionaryRepresentation];
-          if (v18)
+          dictionaryRepresentation2 = [*(*(&v38 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v12 addObject:v18];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v19 = [MEMORY[0x1E695DFB0] null];
-            [v12 addObject:v19];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -453,12 +453,12 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"columns"];
+    [dictionary setObject:array2 forKeyedSubscript:@"columns"];
   }
 
   if ([(NSArray *)self->_compact_cells count])
   {
-    v20 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -478,16 +478,16 @@
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v34 + 1) + 8 * k) dictionaryRepresentation];
-          if (v26)
+          dictionaryRepresentation3 = [*(*(&v34 + 1) + 8 * k) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v20 addObject:v26];
+            [array3 addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v27 = [MEMORY[0x1E695DFB0] null];
-            [v20 addObject:v27];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array3 addObject:null3];
           }
         }
 
@@ -497,44 +497,44 @@
       while (v23);
     }
 
-    [v3 setObject:v20 forKeyedSubscript:@"compactCells"];
+    [dictionary setObject:array3 forKeyedSubscript:@"compactCells"];
   }
 
   if (self->_should_repeat_header_in_flow_layout)
   {
-    v28 = [(_SFPBRFTableHeaderCardSection *)self should_repeat_header_in_flow_layout];
-    if (v28 >= 3)
+    should_repeat_header_in_flow_layout = [(_SFPBRFTableHeaderCardSection *)self should_repeat_header_in_flow_layout];
+    if (should_repeat_header_in_flow_layout >= 3)
     {
-      v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v28];
+      v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", should_repeat_header_in_flow_layout];
     }
 
     else
     {
-      v29 = off_1E7ACE548[v28];
+      v29 = off_1E7ACE548[should_repeat_header_in_flow_layout];
     }
 
-    [v3 setObject:v29 forKeyedSubscript:@"shouldRepeatHeaderInFlowLayout"];
+    [dictionary setObject:v29 forKeyedSubscript:@"shouldRepeatHeaderInFlowLayout"];
   }
 
   if (self->_vertical_alignment)
   {
-    v30 = [(_SFPBRFTableHeaderCardSection *)self vertical_alignment];
-    if (v30 >= 7)
+    vertical_alignment = [(_SFPBRFTableHeaderCardSection *)self vertical_alignment];
+    if (vertical_alignment >= 7)
     {
-      v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v30];
+      v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", vertical_alignment];
     }
 
     else
     {
-      v31 = off_1E7ACE4C8[v30];
+      v31 = off_1E7ACE4C8[vertical_alignment];
     }
 
-    [v3 setObject:v31 forKeyedSubscript:@"verticalAlignment"];
+    [dictionary setObject:v31 forKeyedSubscript:@"verticalAlignment"];
   }
 
   v32 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -544,28 +544,28 @@
   return v4 ^ v3 ^ [(NSArray *)self->_compact_cells hash]^ (2654435761 * self->_should_repeat_header_in_flow_layout) ^ (2654435761 * self->_vertical_alignment);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_SFPBRFTableHeaderCardSection *)self columns];
-  v6 = [v4 columns];
-  if ((v5 != 0) == (v6 == 0))
+  columns = [(_SFPBRFTableHeaderCardSection *)self columns];
+  columns2 = [equalCopy columns];
+  if ((columns != 0) == (columns2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_SFPBRFTableHeaderCardSection *)self columns];
-  if (v7)
+  columns3 = [(_SFPBRFTableHeaderCardSection *)self columns];
+  if (columns3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRFTableHeaderCardSection *)self columns];
-    v10 = [v4 columns];
-    v11 = [v9 isEqual:v10];
+    v8 = columns3;
+    columns4 = [(_SFPBRFTableHeaderCardSection *)self columns];
+    columns5 = [equalCopy columns];
+    v11 = [columns4 isEqual:columns5];
 
     if (!v11)
     {
@@ -577,20 +577,20 @@
   {
   }
 
-  v5 = [(_SFPBRFTableHeaderCardSection *)self cells];
-  v6 = [v4 cells];
-  if ((v5 != 0) == (v6 == 0))
+  columns = [(_SFPBRFTableHeaderCardSection *)self cells];
+  columns2 = [equalCopy cells];
+  if ((columns != 0) == (columns2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_SFPBRFTableHeaderCardSection *)self cells];
-  if (v12)
+  cells = [(_SFPBRFTableHeaderCardSection *)self cells];
+  if (cells)
   {
-    v13 = v12;
-    v14 = [(_SFPBRFTableHeaderCardSection *)self cells];
-    v15 = [v4 cells];
-    v16 = [v14 isEqual:v15];
+    v13 = cells;
+    cells2 = [(_SFPBRFTableHeaderCardSection *)self cells];
+    cells3 = [equalCopy cells];
+    v16 = [cells2 isEqual:cells3];
 
     if (!v16)
     {
@@ -602,22 +602,22 @@
   {
   }
 
-  v5 = [(_SFPBRFTableHeaderCardSection *)self compact_cells];
-  v6 = [v4 compact_cells];
-  if ((v5 != 0) == (v6 == 0))
+  columns = [(_SFPBRFTableHeaderCardSection *)self compact_cells];
+  columns2 = [equalCopy compact_cells];
+  if ((columns != 0) == (columns2 == 0))
   {
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v17 = [(_SFPBRFTableHeaderCardSection *)self compact_cells];
-  if (v17)
+  compact_cells = [(_SFPBRFTableHeaderCardSection *)self compact_cells];
+  if (compact_cells)
   {
-    v18 = v17;
-    v19 = [(_SFPBRFTableHeaderCardSection *)self compact_cells];
-    v20 = [v4 compact_cells];
-    v21 = [v19 isEqual:v20];
+    v18 = compact_cells;
+    compact_cells2 = [(_SFPBRFTableHeaderCardSection *)self compact_cells];
+    compact_cells3 = [equalCopy compact_cells];
+    v21 = [compact_cells2 isEqual:compact_cells3];
 
     if (!v21)
     {
@@ -630,10 +630,10 @@ LABEL_16:
   }
 
   should_repeat_header_in_flow_layout = self->_should_repeat_header_in_flow_layout;
-  if (should_repeat_header_in_flow_layout == [v4 should_repeat_header_in_flow_layout])
+  if (should_repeat_header_in_flow_layout == [equalCopy should_repeat_header_in_flow_layout])
   {
     vertical_alignment = self->_vertical_alignment;
-    v22 = vertical_alignment == [v4 vertical_alignment];
+    v22 = vertical_alignment == [equalCopy vertical_alignment];
     goto LABEL_18;
   }
 
@@ -644,16 +644,16 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBRFTableHeaderCardSection *)self columns];
+  toCopy = to;
+  columns = [(_SFPBRFTableHeaderCardSection *)self columns];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v32 objects:v38 count:16];
+  v6 = [columns countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v6)
   {
     v7 = v6;
@@ -665,7 +665,7 @@ LABEL_18:
       {
         if (*v33 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(columns);
         }
 
         v10 = *(*(&v32 + 1) + 8 * v9);
@@ -674,18 +674,18 @@ LABEL_18:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v32 objects:v38 count:16];
+      v7 = [columns countByEnumeratingWithState:&v32 objects:v38 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(_SFPBRFTableHeaderCardSection *)self cells];
+  cells = [(_SFPBRFTableHeaderCardSection *)self cells];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v12 = [v11 countByEnumeratingWithState:&v28 objects:v37 count:16];
+  v12 = [cells countByEnumeratingWithState:&v28 objects:v37 count:16];
   if (v12)
   {
     v13 = v12;
@@ -697,7 +697,7 @@ LABEL_18:
       {
         if (*v29 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(cells);
         }
 
         v16 = *(*(&v28 + 1) + 8 * v15);
@@ -706,18 +706,18 @@ LABEL_18:
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v28 objects:v37 count:16];
+      v13 = [cells countByEnumeratingWithState:&v28 objects:v37 count:16];
     }
 
     while (v13);
   }
 
-  v17 = [(_SFPBRFTableHeaderCardSection *)self compact_cells];
+  compact_cells = [(_SFPBRFTableHeaderCardSection *)self compact_cells];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v18 = [v17 countByEnumeratingWithState:&v24 objects:v36 count:16];
+  v18 = [compact_cells countByEnumeratingWithState:&v24 objects:v36 count:16];
   if (v18)
   {
     v19 = v18;
@@ -729,7 +729,7 @@ LABEL_18:
       {
         if (*v25 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(compact_cells);
         }
 
         v22 = *(*(&v24 + 1) + 8 * v21);
@@ -738,7 +738,7 @@ LABEL_18:
       }
 
       while (v19 != v21);
-      v19 = [v17 countByEnumeratingWithState:&v24 objects:v36 count:16];
+      v19 = [compact_cells countByEnumeratingWithState:&v24 objects:v36 count:16];
     }
 
     while (v19);
@@ -757,81 +757,81 @@ LABEL_18:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addCompact_cells:(id)a3
+- (void)addCompact_cells:(id)compact_cells
 {
-  v4 = a3;
+  compact_cellsCopy = compact_cells;
   compact_cells = self->_compact_cells;
-  v8 = v4;
+  v8 = compact_cellsCopy;
   if (!compact_cells)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_compact_cells;
-    self->_compact_cells = v6;
+    self->_compact_cells = array;
 
-    v4 = v8;
+    compact_cellsCopy = v8;
     compact_cells = self->_compact_cells;
   }
 
-  [(NSArray *)compact_cells addObject:v4];
+  [(NSArray *)compact_cells addObject:compact_cellsCopy];
 }
 
-- (void)setCompact_cells:(id)a3
+- (void)setCompact_cells:(id)compact_cells
 {
-  v4 = [a3 copy];
+  v4 = [compact_cells copy];
   compact_cells = self->_compact_cells;
   self->_compact_cells = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addCells:(id)a3
+- (void)addCells:(id)cells
 {
-  v4 = a3;
+  cellsCopy = cells;
   cells = self->_cells;
-  v8 = v4;
+  v8 = cellsCopy;
   if (!cells)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_cells;
-    self->_cells = v6;
+    self->_cells = array;
 
-    v4 = v8;
+    cellsCopy = v8;
     cells = self->_cells;
   }
 
-  [(NSArray *)cells addObject:v4];
+  [(NSArray *)cells addObject:cellsCopy];
 }
 
-- (void)setCells:(id)a3
+- (void)setCells:(id)cells
 {
-  v4 = [a3 copy];
+  v4 = [cells copy];
   cells = self->_cells;
   self->_cells = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addColumns:(id)a3
+- (void)addColumns:(id)columns
 {
-  v4 = a3;
+  columnsCopy = columns;
   columns = self->_columns;
-  v8 = v4;
+  v8 = columnsCopy;
   if (!columns)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_columns;
-    self->_columns = v6;
+    self->_columns = array;
 
-    v4 = v8;
+    columnsCopy = v8;
     columns = self->_columns;
   }
 
-  [(NSArray *)columns addObject:v4];
+  [(NSArray *)columns addObject:columnsCopy];
 }
 
-- (void)setColumns:(id)a3
+- (void)setColumns:(id)columns
 {
-  v4 = [a3 copy];
+  v4 = [columns copy];
   columns = self->_columns;
   self->_columns = v4;
 

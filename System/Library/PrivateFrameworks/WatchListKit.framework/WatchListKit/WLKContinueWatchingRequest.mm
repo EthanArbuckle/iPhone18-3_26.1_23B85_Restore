@@ -1,6 +1,6 @@
 @interface WLKContinueWatchingRequest
 - (WLKContinueWatchingRequest)init;
-- (void)makeRequestWithCompletion:(id)a3;
+- (void)makeRequestWithCompletion:(id)completion;
 @end
 
 @implementation WLKContinueWatchingRequest
@@ -18,9 +18,9 @@
   return result;
 }
 
-- (void)makeRequestWithCompletion:(id)a3
+- (void)makeRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(WLKContinueWatchingRequestOperation);
   objc_initWeak(&location, self);
   objc_initWeak(&from, v5);
@@ -30,11 +30,11 @@
   v8[3] = &unk_279E5E9E8;
   objc_copyWeak(&v10, &location);
   objc_copyWeak(&v11, &from);
-  v6 = v4;
+  v6 = completionCopy;
   v9 = v6;
   [(WLKContinueWatchingRequestOperation *)v5 setCompletionBlock:v8];
-  v7 = [MEMORY[0x277CCABD8] wlkDefaultQueue];
-  [v7 addOperation:v5];
+  wlkDefaultQueue = [MEMORY[0x277CCABD8] wlkDefaultQueue];
+  [wlkDefaultQueue addOperation:v5];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&v10);

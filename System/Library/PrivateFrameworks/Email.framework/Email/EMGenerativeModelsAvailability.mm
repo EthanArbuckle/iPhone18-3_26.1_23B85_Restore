@@ -2,7 +2,7 @@
 - (_TtC5Email30EMGenerativeModelsAvailability)init;
 - (int64_t)feature;
 - (void)dealloc;
-- (void)setFeature:(int64_t)a3;
+- (void)setFeature:(int64_t)feature;
 @end
 
 @implementation EMGenerativeModelsAvailability
@@ -14,25 +14,25 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setFeature:(int64_t)a3
+- (void)setFeature:(int64_t)feature
 {
   v5 = OBJC_IVAR____TtC5Email30EMGenerativeModelsAvailability_feature;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = feature;
 }
 
 - (void)dealloc
 {
   if (*(&self->super.isa + OBJC_IVAR____TtC5Email30EMGenerativeModelsAvailability_availabilityNotification))
   {
-    v3 = self;
+    selfCopy = self;
 
     sub_1C672574C();
   }
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
   }
 
   v5.receiver = self;

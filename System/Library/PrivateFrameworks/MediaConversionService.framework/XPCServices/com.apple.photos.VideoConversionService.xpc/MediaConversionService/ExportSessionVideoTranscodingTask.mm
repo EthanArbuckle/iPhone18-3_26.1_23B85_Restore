@@ -4,17 +4,17 @@
 - (double)currentFractionCompleted;
 - (id)exportPresetName;
 - (id)exportSessionCompletionHandler;
-- (id)exportSessionForInputAsset:(id)a3 presetName:(id)a4;
-- (id)metadataItemsFromOptionsAndInputAsset:(id)a3;
-- (id)outputFileTypeForExportSession:(id)a3;
-- (void)addOutputMetadataFromOptionsAndInputAsset:(id)a3 toExportSession:(id)a4;
+- (id)exportSessionForInputAsset:(id)asset presetName:(id)name;
+- (id)metadataItemsFromOptionsAndInputAsset:(id)asset;
+- (id)outputFileTypeForExportSession:(id)session;
+- (void)addOutputMetadataFromOptionsAndInputAsset:(id)asset toExportSession:(id)session;
 - (void)cancelTranscode;
-- (void)configureOutputForExportSession:(id)a3 outputFileType:(id)a4;
+- (void)configureOutputForExportSession:(id)session outputFileType:(id)type;
 - (void)dumpStatistics;
 - (void)performExport;
 - (void)performMetadataTrackExtractionConversion;
 - (void)performPassthroughConversion;
-- (void)startExportSession:(id)a3;
+- (void)startExportSession:(id)session;
 @end
 
 @implementation ExportSessionVideoTranscodingTask
@@ -33,16 +33,16 @@
 
 - (void)dumpStatistics
 {
-  v3 = [(VideoConversionTask *)self conversionEndTime];
-  v4 = [(VideoConversionTask *)self conversionStartTime];
-  [v3 timeIntervalSinceDate:v4];
+  conversionEndTime = [(VideoConversionTask *)self conversionEndTime];
+  conversionStartTime = [(VideoConversionTask *)self conversionStartTime];
+  [conversionEndTime timeIntervalSinceDate:conversionStartTime];
   v6 = v5;
 
-  v7 = [(VideoConversionTask *)self asset];
-  v8 = v7;
-  if (v7)
+  asset = [(VideoConversionTask *)self asset];
+  v8 = asset;
+  if (asset)
   {
-    [v7 duration];
+    [asset duration];
   }
 
   else
@@ -52,8 +52,8 @@
 
   Seconds = CMTimeGetSeconds(&v20);
   v10 = [PFMediaUtilities tracksWithMediaType:AVMediaTypeVideo forAsset:v8];
-  v11 = [v10 firstObject];
-  [v11 nominalFrameRate];
+  firstObject = [v10 firstObject];
+  [firstObject nominalFrameRate];
   v13 = v12;
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
@@ -61,13 +61,13 @@
     v14 = v13;
     v15 = Seconds * v14 / v6;
     v16 = v6 / Seconds;
-    v17 = [(VideoConversionTask *)self identifier];
-    v18 = [(ExportSessionVideoTranscodingTask *)self exportSession];
-    v19 = [v18 status];
+    identifier = [(VideoConversionTask *)self identifier];
+    exportSession = [(ExportSessionVideoTranscodingTask *)self exportSession];
+    status = [exportSession status];
     LODWORD(v20.value) = 138544898;
-    *(&v20.value + 4) = v17;
+    *(&v20.value + 4) = identifier;
     LOWORD(v20.flags) = 2048;
-    *(&v20.flags + 2) = v19;
+    *(&v20.flags + 2) = status;
     HIWORD(v20.epoch) = 2048;
     v21 = v6;
     v22 = 2048;
@@ -82,26 +82,26 @@
   }
 }
 
-- (id)outputFileTypeForExportSession:(id)a3
+- (id)outputFileTypeForExportSession:(id)session
 {
-  v5 = a3;
-  if (!v5)
+  sessionCopy = session;
+  if (!sessionCopy)
   {
     v14 = +[NSAssertionHandler currentHandler];
     [v14 handleFailureInMethod:a2 object:self file:@"VideoConversionService.m" lineNumber:1147 description:{@"Invalid parameter not satisfying: %@", @"exportSession"}];
   }
 
-  v6 = [(VideoConversionTask *)self options];
-  v7 = [v6 objectForKey:@"PAMediaConversionServiceOptionOutputFileTypeKey"];
+  options = [(VideoConversionTask *)self options];
+  v7 = [options objectForKey:@"PAMediaConversionServiceOptionOutputFileTypeKey"];
 
-  v8 = [v5 supportedFileTypes];
-  v9 = v8;
-  if (!v7 || ([v8 containsObject:v7] & 1) == 0)
+  supportedFileTypes = [sessionCopy supportedFileTypes];
+  v9 = supportedFileTypes;
+  if (!v7 || ([supportedFileTypes containsObject:v7] & 1) == 0)
   {
-    v10 = [v9 firstObject];
+    firstObject = [v9 firstObject];
 
-    v7 = v10;
-    if (!v10)
+    v7 = firstObject;
+    if (!firstObject)
     {
       [(VideoConversionTask *)self setStatus:2];
       v15 = NSLocalizedDescriptionKey;
@@ -120,8 +120,8 @@
 
 - (id)exportPresetName
 {
-  v2 = [(VideoConversionTask *)self options];
-  v3 = [v2 objectForKey:@"PAMediaConversionServiceOptionExportPresetNameKey"];
+  options = [(VideoConversionTask *)self options];
+  v3 = [options objectForKey:@"PAMediaConversionServiceOptionExportPresetNameKey"];
 
   if (!v3)
   {
@@ -131,29 +131,29 @@
   return v3;
 }
 
-- (id)metadataItemsFromOptionsAndInputAsset:(id)a3
+- (id)metadataItemsFromOptionsAndInputAsset:(id)asset
 {
-  v4 = [a3 metadata];
-  v5 = [(VideoConversionTask *)self options];
+  metadata = [asset metadata];
+  options = [(VideoConversionTask *)self options];
   v6 = objc_opt_new();
-  v7 = [v5 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataIncludeLocationKey"];
-  v8 = [v7 BOOLValue];
+  v7 = [options objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataIncludeLocationKey"];
+  bOOLValue = [v7 BOOLValue];
 
-  v9 = [v5 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataLocationKey"];
+  v9 = [options objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataLocationKey"];
   v10 = v9;
-  if (!v8 || v9)
+  if (!bOOLValue || v9)
   {
     [v6 addObject:AVMetadataIdentifierQuickTimeMetadataLocationISO6709];
     [v6 addObject:AVMetadataIdentifierQuickTimeUserDataLocationISO6709];
     [v6 addObject:AVMetadataIdentifier3GPUserDataLocation];
   }
 
-  v11 = [v5 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataIncludeDescriptionKey"];
-  v12 = [v11 BOOLValue];
+  v11 = [options objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataIncludeDescriptionKey"];
+  bOOLValue2 = [v11 BOOLValue];
 
-  v13 = [v5 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataDescriptionKey"];
+  v13 = [options objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataDescriptionKey"];
   v14 = v13;
-  if (!v12 || v13)
+  if (!bOOLValue2 || v13)
   {
     [v6 addObject:AVMetadataCommonIdentifierDescription];
     [v6 addObject:AVMetadataIdentifierQuickTimeMetadataDescription];
@@ -162,23 +162,23 @@
   }
 
   v55 = v14;
-  v15 = [v5 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataIncludeAccessibilityDescriptionKey"];
-  v16 = [v15 BOOLValue];
+  v15 = [options objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataIncludeAccessibilityDescriptionKey"];
+  bOOLValue3 = [v15 BOOLValue];
 
-  v17 = [v5 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataAccessibilityDescriptionKey"];
+  v17 = [options objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataAccessibilityDescriptionKey"];
   v18 = v17;
-  if (!v16 || v17)
+  if (!bOOLValue3 || v17)
   {
     [v6 addObject:AVMetadataCommonKeyAccessibilityDescription];
   }
 
-  v57 = [v5 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataKeywordsKey"];
+  v57 = [options objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataKeywordsKey"];
   if (v57)
   {
     [v6 addObject:AVMetadataIdentifierQuickTimeMetadataKeywords];
   }
 
-  v56 = [v5 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataContentCreationDateKey"];
+  v56 = [options objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataContentCreationDateKey"];
   if (v56)
   {
     [v6 addObject:AVMetadataCommonIdentifierCreationDate];
@@ -187,7 +187,7 @@
   }
 
   v53 = v18;
-  v19 = [v5 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataTitleKey"];
+  v19 = [options objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataTitleKey"];
   if (v19)
   {
     [v6 addObject:AVMetadataIdentifierQuickTimeMetadataTitle];
@@ -196,14 +196,14 @@
   v20 = +[NSMutableArray array];
   v58 = v19;
   v54 = v10;
-  if ([v4 count])
+  if ([metadata count])
   {
     v65 = 0u;
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v52 = v4;
-    v21 = v4;
+    v52 = metadata;
+    v21 = metadata;
     v22 = [v21 countByEnumeratingWithState:&v63 objects:v68 count:16];
     if (v22)
     {
@@ -219,8 +219,8 @@
           }
 
           v26 = *(*(&v63 + 1) + 8 * i);
-          v27 = [v26 identifier];
-          v28 = [v6 containsObject:v27];
+          identifier = [v26 identifier];
+          v28 = [v6 containsObject:identifier];
 
           if ((v28 & 1) == 0)
           {
@@ -234,18 +234,18 @@
       while (v23);
     }
 
-    v4 = v52;
+    metadata = v52;
     v10 = v54;
     v19 = v58;
   }
 
   if (v10)
   {
-    v29 = [v10 iso6709Notation];
+    iso6709Notation = [v10 iso6709Notation];
     v30 = +[AVMutableMetadataItem metadataItem];
     [v30 setKeySpace:AVMetadataKeySpaceCommon];
     [v30 setKey:AVMetadataCommonKeyLocation];
-    [v30 setValue:v29];
+    [v30 setValue:iso6709Notation];
     v31 = +[NSLocale currentLocale];
     [v30 setLocale:v31];
 
@@ -314,16 +314,16 @@ LABEL_38:
     v39 = +[AVMutableMetadataItem metadataItem];
     [v39 setKeySpace:AVMetadataKeySpaceCommon];
     [v39 setKey:AVMetadataCommonKeyCreationDate];
-    v40 = [objc_opt_class() videoDateFormatter];
-    v41 = [v5 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataContentCreationDateTimeZoneOffsetKey"];
+    videoDateFormatter = [objc_opt_class() videoDateFormatter];
+    v41 = [options objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataContentCreationDateTimeZoneOffsetKey"];
     v42 = v41;
     if (v41)
     {
       v43 = +[NSTimeZone timeZoneForSecondsFromGMT:](NSTimeZone, "timeZoneForSecondsFromGMT:", [v41 integerValue]);
-      [v40 setTimeZone:v43];
+      [videoDateFormatter setTimeZone:v43];
     }
 
-    v44 = [v40 stringFromDate:v56];
+    v44 = [videoDateFormatter stringFromDate:v56];
     [v39 setValue:v44];
     [v20 addObject:v39];
 
@@ -358,40 +358,40 @@ LABEL_38:
 
   v48 = objc_opt_class();
   v49 = [v20 copy];
-  v50 = [v48 metadataItemsByApplyingSignatureMetadataFromOptions:v5 toMetadataItems:v49];
+  v50 = [v48 metadataItemsByApplyingSignatureMetadataFromOptions:options toMetadataItems:v49];
 
   return v50;
 }
 
-- (void)addOutputMetadataFromOptionsAndInputAsset:(id)a3 toExportSession:(id)a4
+- (void)addOutputMetadataFromOptionsAndInputAsset:(id)asset toExportSession:(id)session
 {
-  v11 = a4;
-  v6 = [(ExportSessionVideoTranscodingTask *)self metadataItemsFromOptionsAndInputAsset:a3];
-  [v11 setMetadata:v6];
+  sessionCopy = session;
+  v6 = [(ExportSessionVideoTranscodingTask *)self metadataItemsFromOptionsAndInputAsset:asset];
+  [sessionCopy setMetadata:v6];
 
-  v7 = [(VideoConversionTask *)self options];
-  v8 = [v7 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataIncludeLocationKey"];
-  v9 = [v8 BOOLValue];
+  options = [(VideoConversionTask *)self options];
+  v8 = [options objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVMetadataIncludeLocationKey"];
+  bOOLValue = [v8 BOOLValue];
 
-  if ((v9 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v10 = +[AVMetadataItemFilter metadataItemFilterForSharing];
-    [v11 setMetadataItemFilter:v10];
+    [sessionCopy setMetadataItemFilter:v10];
   }
 }
 
-- (id)exportSessionForInputAsset:(id)a3 presetName:(id)a4
+- (id)exportSessionForInputAsset:(id)asset presetName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[AVAssetExportSession alloc] initWithAsset:v6 presetName:v7];
+  assetCopy = asset;
+  nameCopy = name;
+  v8 = [[AVAssetExportSession alloc] initWithAsset:assetCopy presetName:nameCopy];
 
   if (!v8)
   {
     [(VideoConversionTask *)self setStatus:2];
-    v9 = [(VideoConversionTask *)self identifier];
+    identifier = [(VideoConversionTask *)self identifier];
     v18 = NSLocalizedDescriptionKey;
-    v10 = [NSString stringWithFormat:@"Unable to create export session for job %@", v9];
+    v10 = [NSString stringWithFormat:@"Unable to create export session for job %@", identifier];
     v19 = v10;
     v11 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v12 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:3 userInfo:v11];
@@ -400,9 +400,9 @@ LABEL_38:
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543619;
-      v15 = v9;
+      v15 = identifier;
       v16 = 2113;
-      v17 = v6;
+      v17 = assetCopy;
       _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Unable to create export session for job %{public}@, asset %{private}@", buf, 0x16u);
     }
 
@@ -414,27 +414,27 @@ LABEL_38:
 
 - (void)performMetadataTrackExtractionConversion
 {
-  v3 = [(VideoConversionTask *)self identifier];
-  v4 = [(VideoConversionTask *)self asset];
-  v5 = [PFMediaUtilities tracksWithMediaType:AVMediaTypeMetadata forAsset:v4];
+  identifier = [(VideoConversionTask *)self identifier];
+  asset = [(VideoConversionTask *)self asset];
+  v5 = [PFMediaUtilities tracksWithMediaType:AVMediaTypeMetadata forAsset:asset];
 
   if ([v5 count])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
       v6 = [v5 count];
-      v7 = [(VideoConversionTask *)self asset];
+      asset2 = [(VideoConversionTask *)self asset];
       *buf = 138543874;
-      *&buf[4] = v3;
+      *&buf[4] = identifier;
       *&buf[12] = 2048;
       *&buf[14] = v6;
       *&buf[22] = 2112;
-      *&buf[24] = v7;
+      *&buf[24] = asset2;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Metadata track extraction job %{public}@: found %lu input metadata tracks in asset %@", buf, 0x20u);
     }
 
-    v27 = self;
-    v29 = v3;
+    selfCopy = self;
+    v29 = identifier;
     v8 = objc_opt_new();
     v33 = 0u;
     v34 = 0u;
@@ -476,32 +476,32 @@ LABEL_38:
           v18 = v17;
           if ((v16 & 1) == 0)
           {
-            [(VideoConversionTask *)v27 setStatus:2];
+            [(VideoConversionTask *)selfCopy setStatus:2];
             v37[0] = NSLocalizedDescriptionKey;
-            v3 = v29;
+            identifier = v29;
             v19 = [NSString stringWithFormat:@"Unable to create export session for job %@", v29];
             v37[1] = NSUnderlyingErrorKey;
             v38[0] = v19;
             v38[1] = v18;
             v20 = [NSDictionary dictionaryWithObjects:v38 forKeys:v37 count:2];
             v21 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:8 userInfo:v20];
-            [(VideoConversionTask *)v27 setError:v21];
+            [(VideoConversionTask *)selfCopy setError:v21];
 
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
             {
-              v26 = [(VideoConversionTask *)v27 asset];
+              asset3 = [(VideoConversionTask *)selfCopy asset];
               *v39 = 138544130;
               *&v39[4] = v29;
               *&v39[12] = 2114;
               *&v39[14] = v14;
               *&v39[22] = 2112;
-              *&v39[24] = v26;
+              *&v39[24] = asset3;
               LOWORD(v40) = 2114;
               *(&v40 + 2) = v18;
               _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Metadata track extraction job %{public}@: Unable to insert metadata track %{public}@ of input asset %@: %{public}@", v39, 0x2Au);
             }
 
-            [(VideoTranscodingTask *)v27 callCompletionHandler];
+            [(VideoTranscodingTask *)selfCopy callCompletionHandler];
 
             goto LABEL_21;
           }
@@ -517,17 +517,17 @@ LABEL_38:
       }
     }
 
-    v9 = [(ExportSessionVideoTranscodingTask *)v27 exportSessionForInputAsset:v8 presetName:AVAssetExportPresetPassthrough];
+    v9 = [(ExportSessionVideoTranscodingTask *)selfCopy exportSessionForInputAsset:v8 presetName:AVAssetExportPresetPassthrough];
     if (v9)
     {
-      v15 = [(ExportSessionVideoTranscodingTask *)v27 outputFileTypeForExportSession:v9];
+      v15 = [(ExportSessionVideoTranscodingTask *)selfCopy outputFileTypeForExportSession:v9];
       if (v15)
       {
-        [(ExportSessionVideoTranscodingTask *)v27 configureOutputForExportSession:v9 outputFileType:v15];
-        [(ExportSessionVideoTranscodingTask *)v27 startExportSession:v9];
+        [(ExportSessionVideoTranscodingTask *)selfCopy configureOutputForExportSession:v9 outputFileType:v15];
+        [(ExportSessionVideoTranscodingTask *)selfCopy startExportSession:v9];
       }
 
-      v3 = v29;
+      identifier = v29;
 LABEL_21:
       v5 = v28;
     }
@@ -535,7 +535,7 @@ LABEL_21:
     else
     {
       v5 = v28;
-      v3 = v29;
+      identifier = v29;
     }
   }
 
@@ -543,7 +543,7 @@ LABEL_21:
   {
     [(VideoConversionTask *)self setStatus:2];
     v44 = NSLocalizedDescriptionKey;
-    v22 = [NSString stringWithFormat:@"Metadata track extraction for job %@ failed because the input video has no metadata tracks", v3];
+    v22 = [NSString stringWithFormat:@"Metadata track extraction for job %@ failed because the input video has no metadata tracks", identifier];
     v45 = v22;
     v23 = [NSDictionary dictionaryWithObjects:&v45 forKeys:&v44 count:1];
     v24 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:7 userInfo:v23];
@@ -551,11 +551,11 @@ LABEL_21:
 
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [(VideoConversionTask *)self asset];
+      asset4 = [(VideoConversionTask *)self asset];
       *buf = 138543618;
-      *&buf[4] = v3;
+      *&buf[4] = identifier;
       *&buf[12] = 2112;
-      *&buf[14] = v25;
+      *&buf[14] = asset4;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Metadata track extraction job %{public}@: input asset has no metadata tracks: %@", buf, 0x16u);
     }
 
@@ -565,16 +565,16 @@ LABEL_21:
 
 - (void)performPassthroughConversion
 {
-  v3 = [(VideoConversionTask *)self asset];
-  v6 = [(ExportSessionVideoTranscodingTask *)self exportSessionForInputAsset:v3 presetName:AVAssetExportPresetPassthrough];
+  asset = [(VideoConversionTask *)self asset];
+  v6 = [(ExportSessionVideoTranscodingTask *)self exportSessionForInputAsset:asset presetName:AVAssetExportPresetPassthrough];
 
   if (v6)
   {
     v4 = [(ExportSessionVideoTranscodingTask *)self outputFileTypeForExportSession:v6];
     if (v4)
     {
-      v5 = [(VideoConversionTask *)self asset];
-      [(ExportSessionVideoTranscodingTask *)self addOutputMetadataFromOptionsAndInputAsset:v5 toExportSession:v6];
+      asset2 = [(VideoConversionTask *)self asset];
+      [(ExportSessionVideoTranscodingTask *)self addOutputMetadataFromOptionsAndInputAsset:asset2 toExportSession:v6];
 
       [(ExportSessionVideoTranscodingTask *)self configureOutputForExportSession:v6 outputFileType:v4];
       [(ExportSessionVideoTranscodingTask *)self startExportSession:v6];
@@ -586,21 +586,21 @@ LABEL_21:
 
 - (void)cancelTranscode
 {
-  v5 = [(ExportSessionVideoTranscodingTask *)self exportSession];
-  if (!v5)
+  exportSession = [(ExportSessionVideoTranscodingTask *)self exportSession];
+  if (!exportSession)
   {
     v4 = +[NSAssertionHandler currentHandler];
     [v4 handleFailureInMethod:a2 object:self file:@"VideoConversionService.m" lineNumber:907 description:@"Unexpected missing video export session with job in running state"];
   }
 
   [(VideoTranscodingTask *)self logCancellation];
-  [v5 cancelExport];
+  [exportSession cancelExport];
 }
 
 - (double)currentFractionCompleted
 {
-  v2 = [(ExportSessionVideoTranscodingTask *)self exportSession];
-  [v2 progress];
+  exportSession = [(ExportSessionVideoTranscodingTask *)self exportSession];
+  [exportSession progress];
   v4 = v3;
 
   return v4;
@@ -608,8 +608,8 @@ LABEL_21:
 
 - (BOOL)hasProgress
 {
-  v2 = [(ExportSessionVideoTranscodingTask *)self exportSession];
-  v3 = v2 != 0;
+  exportSession = [(ExportSessionVideoTranscodingTask *)self exportSession];
+  v3 = exportSession != 0;
 
   return v3;
 }
@@ -626,30 +626,30 @@ LABEL_21:
   return v2;
 }
 
-- (void)startExportSession:(id)a3
+- (void)startExportSession:(id)session
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100019200;
   v4[3] = &unk_10003D520;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(VideoTranscodingTask *)v5 transitionToRunningStateAndConditionallyRunBlock:v4];
+  selfCopy = self;
+  sessionCopy = session;
+  v3 = sessionCopy;
+  [(VideoTranscodingTask *)selfCopy transitionToRunningStateAndConditionallyRunBlock:v4];
 }
 
-- (void)configureOutputForExportSession:(id)a3 outputFileType:(id)a4
+- (void)configureOutputForExportSession:(id)session outputFileType:(id)type
 {
-  v6 = a3;
-  [v6 setOutputFileType:a4];
-  v7 = [(VideoConversionTask *)self outputMainResourceURL];
-  [v6 setOutputURL:v7];
+  sessionCopy = session;
+  [sessionCopy setOutputFileType:type];
+  outputMainResourceURL = [(VideoConversionTask *)self outputMainResourceURL];
+  [sessionCopy setOutputURL:outputMainResourceURL];
 }
 
 - (void)performExport
 {
-  v3 = [(VideoConversionTask *)self asset];
-  if (!v3)
+  asset = [(VideoConversionTask *)self asset];
+  if (!asset)
   {
     [(VideoConversionTask *)self setStatus:2];
     [(VideoTranscodingTask *)self callCompletionHandler];
@@ -664,8 +664,8 @@ LABEL_21:
       goto LABEL_32;
     }
 
-    v4 = [(ExportSessionVideoTranscodingTask *)self exportPresetName];
-    if (!v4)
+    exportPresetName = [(ExportSessionVideoTranscodingTask *)self exportPresetName];
+    if (!exportPresetName)
     {
       v49 = NSLocalizedDescriptionKey;
       v50 = @"Unable to determine export preset";
@@ -680,10 +680,10 @@ LABEL_31:
       goto LABEL_32;
     }
 
-    v5 = [PFMediaUtilities tracksWithMediaType:AVMediaTypeVideo forAsset:v3];
-    v6 = [v5 firstObject];
+    v5 = [PFMediaUtilities tracksWithMediaType:AVMediaTypeVideo forAsset:asset];
+    firstObject = [v5 firstObject];
 
-    if (!v6)
+    if (!firstObject)
     {
       [(VideoConversionTask *)self setStatus:2];
       v47 = NSLocalizedDescriptionKey;
@@ -703,7 +703,7 @@ LABEL_30:
     v42 = 0x3032000000;
     v43 = sub_1000162F0;
     v44 = sub_100016300;
-    v7 = v3;
+    v7 = asset;
     v45 = v7;
     v34 = 0;
     v35 = &v34;
@@ -713,8 +713,8 @@ LABEL_30:
     v39 = 0;
     if ([(VideoTranscodingTask *)self hasSlowMotionAdjustments])
     {
-      v8 = [(VideoConversionTask *)self options];
-      v9 = [v8 objectForKeyedSubscript:@"PAMediaConversionServiceOptionVideoAdjustmentsPropertyListKey"];
+      options = [(VideoConversionTask *)self options];
+      v9 = [options objectForKeyedSubscript:@"PAMediaConversionServiceOptionVideoAdjustmentsPropertyListKey"];
 
       v10 = [[PFVideoAdjustments alloc] initWithPropertyListDictionary:v9];
       if (!v10)
@@ -722,9 +722,9 @@ LABEL_30:
         v30 = &_os_log_default;
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
         {
-          v32 = [(VideoConversionTask *)self identifier];
+          identifier = [(VideoConversionTask *)self identifier];
           LODWORD(time.value) = 138543618;
-          *(&time.value + 4) = v32;
+          *(&time.value + 4) = identifier;
           LOWORD(time.flags) = 2114;
           *(&time.flags + 2) = v9;
           _os_log_error_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_ERROR, "Unable to create adjustments for conversion task %{public}@ from property list %{public}@", &time, 0x16u);
@@ -746,12 +746,12 @@ LABEL_30:
       v33[4] = self;
       v33[5] = &v34;
       v33[6] = &v40;
-      [v12 requestExportSessionWithExportPreset:v4 resultHandler:v33];
+      [v12 requestExportSessionWithExportPreset:exportPresetName resultHandler:v33];
     }
 
     else
     {
-      v17 = [(ExportSessionVideoTranscodingTask *)self exportSessionForInputAsset:v41[5] presetName:v4];
+      v17 = [(ExportSessionVideoTranscodingTask *)self exportSessionForInputAsset:v41[5] presetName:exportPresetName];
       v9 = v35[5];
       v35[5] = v17;
     }
@@ -766,7 +766,7 @@ LABEL_29:
     }
 
     v18 = objc_opt_class();
-    v19 = [(VideoConversionTask *)self options];
+    options2 = [(VideoConversionTask *)self options];
     v20 = v41[5];
     if (v20)
     {
@@ -779,27 +779,27 @@ LABEL_29:
     }
 
     Seconds = CMTimeGetSeconds(&time);
-    v22 = [(VideoConversionTask *)self identifier];
-    v23 = [v18 shouldMaximizeVideoConversionPowerEfficiencyForOptions:v19 inputAssetDuration:v22 taskIdentifier:Seconds];
+    identifier2 = [(VideoConversionTask *)self identifier];
+    v23 = [v18 shouldMaximizeVideoConversionPowerEfficiencyForOptions:options2 inputAssetDuration:identifier2 taskIdentifier:Seconds];
     [v35[5] setMaximizePowerEfficiency:v23];
 
     v9 = [(ExportSessionVideoTranscodingTask *)self outputFileTypeForExportSession:v35[5]];
     if (v9)
     {
-      v24 = [(VideoConversionTask *)self options];
-      v25 = [v24 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAudioTrackGroupHandlingKey"];
+      options3 = [(VideoConversionTask *)self options];
+      v25 = [options3 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAudioTrackGroupHandlingKey"];
 
       if (v25)
       {
-        v26 = [v25 integerValue];
-        [v35[5] setAudioTrackGroupHandling:v26];
+        integerValue = [v25 integerValue];
+        [v35[5] setAudioTrackGroupHandling:integerValue];
       }
 
-      v27 = [(VideoConversionTask *)self options];
-      v28 = [v27 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVIncludeMetadataKey"];
-      v29 = [v28 BOOLValue];
+      options4 = [(VideoConversionTask *)self options];
+      v28 = [options4 objectForKeyedSubscript:@"PAMediaConversionServiceOptionAVIncludeMetadataKey"];
+      bOOLValue = [v28 BOOLValue];
 
-      if (v29)
+      if (bOOLValue)
       {
         [(ExportSessionVideoTranscodingTask *)self addOutputMetadataFromOptionsAndInputAsset:v7 toExportSession:v35[5]];
       }

@@ -1,8 +1,8 @@
 @interface BTSDeviceLE
-+ (id)deviceWithPeripheral:(id)a3 manager:(id)a4;
++ (id)deviceWithPeripheral:(id)peripheral manager:(id)manager;
 - (BOOL)cloudPaired;
 - (BOOL)connect;
-- (BOOL)isApplePencil:(int *)a3;
+- (BOOL)isApplePencil:(int *)pencil;
 - (BOOL)isHIDDevice;
 - (BOOL)isManagedByAliroWallet;
 - (BOOL)isManagedByDeviceAccess;
@@ -10,7 +10,7 @@
 - (BOOL)isMyDevice;
 - (BOOL)paired;
 - (BOOL)supportsANCS;
-- (BTSDeviceLE)initWithPeripheral:(id)a3 manager:(id)a4;
+- (BTSDeviceLE)initWithPeripheral:(id)peripheral manager:(id)manager;
 - (id)classicDevice;
 - (id)description;
 - (id)healthDeviceType;
@@ -19,24 +19,24 @@
 - (id)name;
 - (id)relatedFutureRadioAddress;
 - (int)userSelectedHealthDataSyncConfig;
-- (void)setANCSAuthorization:(BOOL)a3;
-- (void)setDenyIncomingClassicConnection:(BOOL)a3;
-- (void)setUserSelectedHealthDataSyncConfig:(int)a3;
+- (void)setANCSAuthorization:(BOOL)authorization;
+- (void)setDenyIncomingClassicConnection:(BOOL)connection;
+- (void)setUserSelectedHealthDataSyncConfig:(int)config;
 - (void)unpair;
 @end
 
 @implementation BTSDeviceLE
 
-- (BTSDeviceLE)initWithPeripheral:(id)a3 manager:(id)a4
+- (BTSDeviceLE)initWithPeripheral:(id)peripheral manager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  peripheralCopy = peripheral;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = BTSDeviceLE;
   v9 = [(BTSDeviceLE *)&v11 init];
   if (v9)
   {
-    if ([v7 hasTag:@"IsHearingAid"])
+    if ([peripheralCopy hasTag:@"IsHearingAid"])
     {
 
       v9 = 0;
@@ -44,19 +44,19 @@
 
     else
     {
-      objc_storeStrong(&v9->_peripheral, a3);
-      objc_storeStrong(&v9->_centralManager, a4);
+      objc_storeStrong(&v9->_peripheral, peripheral);
+      objc_storeStrong(&v9->_centralManager, manager);
     }
   }
 
   return v9;
 }
 
-+ (id)deviceWithPeripheral:(id)a3 manager:(id)a4
++ (id)deviceWithPeripheral:(id)peripheral manager:(id)manager
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[BTSDeviceLE alloc] initWithPeripheral:v6 manager:v5];
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  v7 = [[BTSDeviceLE alloc] initWithPeripheral:peripheralCopy manager:managerCopy];
 
   return v7;
 }
@@ -102,50 +102,50 @@
 
 - (id)identifier
 {
-  v2 = [(CBPeripheral *)self->_peripheral identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(CBPeripheral *)self->_peripheral identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)name
 {
-  v3 = [self->_underlyingDADevice name];
+  name = [self->_underlyingDADevice name];
 
-  if (v3)
+  if (name)
   {
-    v4 = [self->_underlyingDADevice name];
+    name2 = [self->_underlyingDADevice name];
   }
 
   else
   {
-    v5 = [(BTSDeviceLE *)self healthDeviceType];
+    healthDeviceType = [(BTSDeviceLE *)self healthDeviceType];
 
-    if (v5)
+    if (healthDeviceType)
     {
       v6 = MEMORY[0x1E696AEC0];
-      v7 = [(CBPeripheral *)self->_peripheral name];
-      v4 = [v6 stringWithFormat:@"GHSS %@", v7];
+      name3 = [(CBPeripheral *)self->_peripheral name];
+      name2 = [v6 stringWithFormat:@"GHSS %@", name3];
     }
 
     else
     {
-      v8 = [(CBPeripheral *)self->_peripheral name];
-      v9 = v8;
-      if (v8)
+      name4 = [(CBPeripheral *)self->_peripheral name];
+      v9 = name4;
+      if (name4)
       {
-        v4 = v8;
+        name2 = name4;
       }
 
       else
       {
         v10 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-        v4 = [v10 localizedStringForKey:@"ACCESSORY" value:&stru_1F20FAB50 table:@"Devices"];
+        name2 = [v10 localizedStringForKey:@"ACCESSORY" value:&stru_1F20FAB50 table:@"Devices"];
       }
     }
   }
 
-  return v4;
+  return name2;
 }
 
 - (id)healthDeviceType
@@ -181,40 +181,40 @@
 
 - (BOOL)paired
 {
-  v2 = self;
-  v3 = [(CBCentralManager *)self->_centralManager sharedPairingAgent];
-  LOBYTE(v2) = [v3 isPeerPaired:v2->_peripheral];
+  selfCopy = self;
+  sharedPairingAgent = [(CBCentralManager *)self->_centralManager sharedPairingAgent];
+  LOBYTE(selfCopy) = [sharedPairingAgent isPeerPaired:selfCopy->_peripheral];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)cloudPaired
 {
-  v2 = self;
-  v3 = [(CBCentralManager *)self->_centralManager sharedPairingAgent];
-  LOBYTE(v2) = [v3 isPeerCloudPaired:v2->_peripheral];
+  selfCopy = self;
+  sharedPairingAgent = [(CBCentralManager *)self->_centralManager sharedPairingAgent];
+  LOBYTE(selfCopy) = [sharedPairingAgent isPeerCloudPaired:selfCopy->_peripheral];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)classicDevice
 {
   if ([(BTSDeviceLE *)self supportsCTKD])
   {
-    v3 = [MEMORY[0x1E698F468] sharedInstance];
-    v4 = [(CBPeripheral *)self->_peripheral identifier];
-    v5 = [v3 deviceFromIdentifier:v4];
+    mEMORY[0x1E698F468] = [MEMORY[0x1E698F468] sharedInstance];
+    identifier = [(CBPeripheral *)self->_peripheral identifier];
+    v5 = [mEMORY[0x1E698F468] deviceFromIdentifier:identifier];
 
     v6 = [BTSDeviceClassic deviceWithDevice:v5];
-    v7 = [v6 classicDevice];
+    classicDevice = [v6 classicDevice];
   }
 
   else
   {
-    v7 = 0;
+    classicDevice = 0;
   }
 
-  return v7;
+  return classicDevice;
 }
 
 - (BOOL)isMyDevice
@@ -229,13 +229,13 @@
 
 - (BOOL)connect
 {
-  v3 = [(CBPeripheral *)self->_peripheral isConnectedToSystem];
-  if ((v3 & 1) == 0)
+  isConnectedToSystem = [(CBPeripheral *)self->_peripheral isConnectedToSystem];
+  if ((isConnectedToSystem & 1) == 0)
   {
     [(CBCentralManager *)self->_centralManager connectPeripheral:self->_peripheral options:0];
   }
 
-  return v3 ^ 1;
+  return isConnectedToSystem ^ 1;
 }
 
 - (void)unpair
@@ -254,8 +254,8 @@
     }
   }
 
-  v5 = [(CBCentralManager *)self->_centralManager sharedPairingAgent];
-  [v5 unpairPeer:self->_peripheral];
+  sharedPairingAgent = [(CBCentralManager *)self->_centralManager sharedPairingAgent];
+  [sharedPairingAgent unpairPeer:self->_peripheral];
 }
 
 - (BOOL)supportsANCS
@@ -342,13 +342,13 @@
   return v3;
 }
 
-- (void)setDenyIncomingClassicConnection:(BOOL)a3
+- (void)setDenyIncomingClassicConnection:(BOOL)connection
 {
-  v3 = a3;
-  v5 = [(BTSDeviceLE *)self shouldDenyIncomingClassicConnection];
-  if (v3)
+  connectionCopy = connection;
+  shouldDenyIncomingClassicConnection = [(BTSDeviceLE *)self shouldDenyIncomingClassicConnection];
+  if (connectionCopy)
   {
-    if (!v5)
+    if (!shouldDenyIncomingClassicConnection)
     {
       peripheral = self->_peripheral;
 
@@ -356,7 +356,7 @@
     }
   }
 
-  else if (v5)
+  else if (shouldDenyIncomingClassicConnection)
   {
     v7 = self->_peripheral;
 
@@ -364,11 +364,11 @@
   }
 }
 
-- (void)setANCSAuthorization:(BOOL)a3
+- (void)setANCSAuthorization:(BOOL)authorization
 {
   peripheral = self->_peripheral;
-  v5 = !a3;
-  if (a3)
+  v5 = !authorization;
+  if (authorization)
   {
     v6 = @"ANCSAuthorized";
   }
@@ -396,9 +396,9 @@
 
 - (int)userSelectedHealthDataSyncConfig
 {
-  v3 = [(BTSDeviceLE *)self healthDeviceType];
+  healthDeviceType = [(BTSDeviceLE *)self healthDeviceType];
 
-  if (!v3)
+  if (!healthDeviceType)
   {
     return 2;
   }
@@ -423,22 +423,22 @@
   return v5;
 }
 
-- (void)setUserSelectedHealthDataSyncConfig:(int)a3
+- (void)setUserSelectedHealthDataSyncConfig:(int)config
 {
-  v5 = [(BTSDeviceLE *)self healthDeviceType];
+  healthDeviceType = [(BTSDeviceLE *)self healthDeviceType];
 
-  if (v5)
+  if (healthDeviceType)
   {
     v6 = @"0";
     v7 = @"HealthDataSyncNever";
-    if (!a3)
+    if (!config)
     {
       v7 = @"HealthDataSyncAlways";
       v6 = @"1";
     }
 
-    v8 = a3 == 1;
-    if (a3 == 1)
+    v8 = config == 1;
+    if (config == 1)
     {
       v9 = @"HealthDataSyncWithUserConfirm";
     }
@@ -471,7 +471,7 @@
   }
 }
 
-- (BOOL)isApplePencil:(int *)a3
+- (BOOL)isApplePencil:(int *)pencil
 {
   if (([(CBPeripheral *)self->_peripheral hasTag:@"A1603"]& 1) != 0)
   {
@@ -502,7 +502,7 @@ LABEL_2:
   }
 
 LABEL_5:
-  *a3 = v5;
+  *pencil = v5;
   LOBYTE(v6) = 1;
   return v6;
 }

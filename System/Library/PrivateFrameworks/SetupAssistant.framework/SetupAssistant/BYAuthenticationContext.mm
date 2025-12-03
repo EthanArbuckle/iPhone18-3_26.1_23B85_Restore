@@ -1,21 +1,21 @@
 @interface BYAuthenticationContext
-+ (void)createContextWithSecret:(id)a3 policy:(int64_t)a4 options:(id)a5 completion:(id)a6;
-- (BYAuthenticationContext)initWithSecret:(id)a3;
-- (void)event:(int64_t)a3 params:(id)a4 reply:(id)a5;
++ (void)createContextWithSecret:(id)secret policy:(int64_t)policy options:(id)options completion:(id)completion;
+- (BYAuthenticationContext)initWithSecret:(id)secret;
+- (void)event:(int64_t)event params:(id)params reply:(id)reply;
 @end
 
 @implementation BYAuthenticationContext
 
-- (BYAuthenticationContext)initWithSecret:(id)a3
+- (BYAuthenticationContext)initWithSecret:(id)secret
 {
-  v5 = a3;
+  secretCopy = secret;
   v11.receiver = self;
   v11.super_class = BYAuthenticationContext;
   v6 = [(BYAuthenticationContext *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_secret, a3);
+    objc_storeStrong(&v6->_secret, secret);
     v8 = objc_alloc_init(MEMORY[0x1E696EE50]);
     underlyingContext = v7->_underlyingContext;
     v7->_underlyingContext = v8;
@@ -26,23 +26,23 @@
   return v7;
 }
 
-+ (void)createContextWithSecret:(id)a3 policy:(int64_t)a4 options:(id)a5 completion:(id)a6
++ (void)createContextWithSecret:(id)secret policy:(int64_t)policy options:(id)options completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
-  v12 = [[BYAuthenticationContext alloc] initWithSecret:v11];
+  completionCopy = completion;
+  optionsCopy = options;
+  secretCopy = secret;
+  v12 = [[BYAuthenticationContext alloc] initWithSecret:secretCopy];
 
-  v13 = [(BYAuthenticationContext *)v12 underlyingContext];
+  underlyingContext = [(BYAuthenticationContext *)v12 underlyingContext];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __77__BYAuthenticationContext_createContextWithSecret_policy_options_completion___block_invoke;
   v16[3] = &unk_1E7D02930;
   v17 = v12;
-  v18 = v9;
+  v18 = completionCopy;
   v14 = v12;
-  v15 = v9;
-  [v13 evaluatePolicy:a4 options:v10 reply:v16];
+  v15 = completionCopy;
+  [underlyingContext evaluatePolicy:policy options:optionsCopy reply:v16];
 }
 
 void __77__BYAuthenticationContext_createContextWithSecret_policy_options_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -54,11 +54,11 @@ void __77__BYAuthenticationContext_createContextWithSecret_policy_options_comple
   (*(v3 + 16))(v3, v6, v5);
 }
 
-- (void)event:(int64_t)a3 params:(id)a4 reply:(id)a5
+- (void)event:(int64_t)event params:(id)params reply:(id)reply
 {
-  v7 = [a4 objectForKeyedSubscript:&unk_1F30A7610];
+  v7 = [params objectForKeyedSubscript:&unk_1F30A7610];
   v8 = v7;
-  if (a3 == 2 && [v7 BOOLValue])
+  if (event == 2 && [v7 BOOLValue])
   {
     v9 = _BYLoggingFacility();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -66,12 +66,12 @@ void __77__BYAuthenticationContext_createContextWithSecret_policy_options_comple
       [BYAuthenticationContext event:v9 params:? reply:?];
     }
 
-    v10 = [(BYAuthenticationContext *)self secret];
-    v11 = [v10 dataUsingEncoding:4];
+    secret = [(BYAuthenticationContext *)self secret];
+    v11 = [secret dataUsingEncoding:4];
 
     [(BYAuthenticationContext *)self setSecret:0];
-    v12 = [(BYAuthenticationContext *)self underlyingContext];
-    [v12 setCredential:v11 forProcessedEvent:2 credentialType:-1 reply:&__block_literal_global_2];
+    underlyingContext = [(BYAuthenticationContext *)self underlyingContext];
+    [underlyingContext setCredential:v11 forProcessedEvent:2 credentialType:-1 reply:&__block_literal_global_2];
   }
 }
 

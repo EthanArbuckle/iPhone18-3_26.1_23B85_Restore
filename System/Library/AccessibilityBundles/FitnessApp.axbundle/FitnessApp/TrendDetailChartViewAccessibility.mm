@@ -1,5 +1,5 @@
 @interface TrendDetailChartViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
@@ -7,29 +7,29 @@
 
 @implementation TrendDetailChartViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"FitnessApp.TrendDetailChartView" hasInstanceMethod:@"accessibilityDateIntervalForIndex:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"FitnessApp.TrendDetailChartView" hasInstanceMethod:@"accessibilityQuantityForIndex:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"FitnessApp.TrendDetailChartView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"FitnessApp.TrendDetailChartView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FitnessApp.TrendDetailChartView" hasInstanceMethod:@"chartMaxLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FitnessApp.TrendDetailChartView" hasInstanceMethod:@"accessibilityUnit" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FitnessApp.TrendDetailChartView" hasInstanceMethod:@"barStops" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"FitnessApp.TrendDetailChartView" hasInstanceMethod:@"accessibilityDateIntervalForIndex:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"FitnessApp.TrendDetailChartView" hasInstanceMethod:@"accessibilityQuantityForIndex:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"FitnessApp.TrendDetailChartView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"FitnessApp.TrendDetailChartView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FitnessApp.TrendDetailChartView" hasInstanceMethod:@"chartMaxLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FitnessApp.TrendDetailChartView" hasInstanceMethod:@"accessibilityUnit" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FitnessApp.TrendDetailChartView" hasInstanceMethod:@"barStops" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityElements
 {
-  v2 = self;
+  selfCopy = self;
   v40 = [(TrendDetailChartViewAccessibility *)self _accessibilityValueForKey:kUIAccessibilityStorageKeyChildren];
   if (!v40)
   {
-    v38 = [(TrendDetailChartViewAccessibility *)v2 _accessibilityGraphData];
-    v41 = [v38 count];
+    _accessibilityGraphData = [(TrendDetailChartViewAccessibility *)selfCopy _accessibilityGraphData];
+    v41 = [_accessibilityGraphData count];
     v3 = [NSMutableArray arrayWithCapacity:?];
-    [(TrendDetailChartViewAccessibility *)v2 _accessibilitySetRetainedValue:v3 forKey:kUIAccessibilityStorageKeyChildren];
-    v4 = [(TrendDetailChartViewAccessibility *)v2 safeUIViewForKey:@"titleLabel"];
+    [(TrendDetailChartViewAccessibility *)selfCopy _accessibilitySetRetainedValue:v3 forKey:kUIAccessibilityStorageKeyChildren];
+    v4 = [(TrendDetailChartViewAccessibility *)selfCopy safeUIViewForKey:@"titleLabel"];
     [v4 _accessibilityAddTrait:UIAccessibilityTraitHeader];
     v40 = v3;
     [v3 addObject:v4];
@@ -54,7 +54,7 @@
       v13 = 2.22507386e-308;
       v14 = 1.79769313e308;
       v15 = &unk_1C4D8;
-      v35 = v2;
+      v35 = selfCopy;
       do
       {
         v42 = 0;
@@ -80,7 +80,7 @@
 
         LOBYTE(v42) = 0;
         objc_opt_class();
-        v19 = [(TrendDetailChartViewAccessibility *)v2 safeValueForKey:@"accessibilityUnit"];
+        v19 = [(TrendDetailChartViewAccessibility *)selfCopy safeValueForKey:@"accessibilityUnit"];
         v20 = __UIAccessibilityCastAsClass();
 
         if (v42 == 1)
@@ -93,7 +93,7 @@
           [v16 doubleValueForUnit:v20];
           v22 = v21;
           v23 = [[UIAccessibilityElement alloc] initWithAccessibilityContainer:v39];
-          v24 = [v38 objectAtIndexedSubscript:v10];
+          v24 = [_accessibilityGraphData objectAtIndexedSubscript:v10];
           [v24 floatValue];
           v26 = v12 + v25;
 
@@ -106,7 +106,7 @@
           v30 = [NSString stringWithFormat:v28, v29, v20];
           [v23 setAccessibilityValue:v30];
 
-          v2 = v35;
+          selfCopy = v35;
           [v40 addObject:v23];
           if (v22 > v13)
           {
@@ -125,15 +125,15 @@
 
       while (v41 != v10);
       v31 = [NSNumber numberWithDouble:floor(v14 * 100.0 + 0.5) / 100.0];
-      [(TrendDetailChartViewAccessibility *)v2 _accessibilitySetRetainedValue:v31 forKey:@"kAXTrendDetailGraphCachedMin"];
+      [(TrendDetailChartViewAccessibility *)selfCopy _accessibilitySetRetainedValue:v31 forKey:@"kAXTrendDetailGraphCachedMin"];
 
       v32 = [NSNumber numberWithDouble:floor(v13 * 100.0 + 0.5) / 100.0];
-      [(TrendDetailChartViewAccessibility *)v2 _accessibilitySetRetainedValue:v32 forKey:@"kAXTrendDetailGraphCachedMax"];
+      [(TrendDetailChartViewAccessibility *)selfCopy _accessibilitySetRetainedValue:v32 forKey:@"kAXTrendDetailGraphCachedMax"];
 
       v4 = v34;
     }
 
-    [(TrendDetailChartViewAccessibility *)v2 _accessibilitySetRetainedValue:v40 forKey:kUIAccessibilityStorageKeyChildren];
+    [(TrendDetailChartViewAccessibility *)selfCopy _accessibilitySetRetainedValue:v40 forKey:kUIAccessibilityStorageKeyChildren];
   }
 
   return v40;
@@ -168,17 +168,17 @@ uint64_t __58__TrendDetailChartViewAccessibility_accessibilityElements__block_in
   v4 = v3;
   if (v3 && [v3 count] && (objc_msgSend(v4, "firstObject"), v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass & 1) != 0))
   {
-    v7 = self;
+    selfCopy2 = self;
     v8 = v4;
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
     v8 = 0;
   }
 
-  [(TrendDetailChartViewAccessibility *)v7 _accessibilitySetRetainedValue:v8 forKey:@"kAXTrendDetailGraphElements"];
+  [(TrendDetailChartViewAccessibility *)selfCopy2 _accessibilitySetRetainedValue:v8 forKey:@"kAXTrendDetailGraphElements"];
   [(TrendDetailChartViewAccessibility *)self _accessibilitySetRetainedValue:0 forKey:kUIAccessibilityStorageKeyChildren];
 }
 

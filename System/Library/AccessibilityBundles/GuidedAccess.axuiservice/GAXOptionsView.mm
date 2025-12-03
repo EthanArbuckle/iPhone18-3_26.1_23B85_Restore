@@ -1,21 +1,21 @@
 @interface GAXOptionsView
-- (GAXOptionsView)initWithFeatureViews:(id)a3 styleProvider:(id)a4 userInterfaceServer:(id)a5;
-- (id)_separatorViewsWithCount:(unint64_t)a3 styleProvider:(id)a4;
+- (GAXOptionsView)initWithFeatureViews:(id)views styleProvider:(id)provider userInterfaceServer:(id)server;
+- (id)_separatorViewsWithCount:(unint64_t)count styleProvider:(id)provider;
 - (int64_t)applicationInterfaceOrientation;
-- (void)dismissOptionsAnimated:(BOOL)a3;
+- (void)dismissOptionsAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)presentOptionsInView:(id)a3 animated:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)presentOptionsInView:(id)view animated:(BOOL)animated;
+- (void)scrollViewDidScroll:(id)scroll;
 - (void)updateConstraints;
 - (void)updateFeatureMasks;
 @end
 
 @implementation GAXOptionsView
 
-- (id)_separatorViewsWithCount:(unint64_t)a3 styleProvider:(id)a4
+- (id)_separatorViewsWithCount:(unint64_t)count styleProvider:(id)provider
 {
   v5 = objc_opt_new();
-  if (a3)
+  if (count)
   {
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
@@ -29,10 +29,10 @@
       [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
       [v5 addObject:v9];
 
-      --a3;
+      --count;
     }
 
-    while (a3);
+    while (count);
   }
 
   v11 = [v5 copy];
@@ -40,25 +40,25 @@
   return v11;
 }
 
-- (GAXOptionsView)initWithFeatureViews:(id)a3 styleProvider:(id)a4 userInterfaceServer:(id)a5
+- (GAXOptionsView)initWithFeatureViews:(id)views styleProvider:(id)provider userInterfaceServer:(id)server
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewsCopy = views;
+  providerCopy = provider;
+  serverCopy = server;
   v105.receiver = self;
   v105.super_class = GAXOptionsView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v14 = [(GAXOptionsView *)&v105 initWithFrame:CGRectZero.origin.x, y, width, height];
-  v15 = v14;
-  if (v14)
+  height = [(GAXOptionsView *)&v105 initWithFrame:CGRectZero.origin.x, y, width, height];
+  v15 = height;
+  if (height)
   {
-    [(GAXOptionsView *)v14 setFeatureViews:v8];
+    [(GAXOptionsView *)height setFeatureViews:viewsCopy];
     v84 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [v84 setAlpha:0.6];
-    v16 = [v9 optionsViewBackgroundDimmingColor];
-    [v84 setBackgroundColor:v16];
+    optionsViewBackgroundDimmingColor = [providerCopy optionsViewBackgroundDimmingColor];
+    [v84 setBackgroundColor:optionsViewBackgroundDimmingColor];
 
     [v84 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(GAXOptionsView *)v15 setBackgroundDimmingView:v84];
@@ -68,48 +68,48 @@
     [(GAXOptionsView *)v15 setModalView:v17];
     [(GAXOptionsView *)v15 addSubview:v17];
     v18 = [UIVisualEffectView alloc];
-    [v9 featureViewOptionsBlurEffect];
-    v19 = v85 = v10;
+    [providerCopy featureViewOptionsBlurEffect];
+    v19 = v85 = serverCopy;
     v20 = [v18 initWithEffect:v19];
 
     [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(GAXOptionsView *)v15 setOverrideUserInterfaceStyle:2];
     [v17 addSubview:v20];
-    v21 = [[GAXOptionsScrollView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-    [(GAXOptionsScrollView *)v21 setDelegate:v15];
-    [(GAXOptionsScrollView *)v21 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(GAXOptionsView *)v15 setFeaturesScrollView:v21];
-    v22 = [v20 contentView];
-    [v22 addSubview:v21];
+    height2 = [[GAXOptionsScrollView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    [(GAXOptionsScrollView *)height2 setDelegate:v15];
+    [(GAXOptionsScrollView *)height2 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(GAXOptionsView *)v15 setFeaturesScrollView:height2];
+    contentView = [v20 contentView];
+    [contentView addSubview:height2];
 
     v23 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(GAXOptionsView *)v15 setFeaturesContentView:v23];
-    [(GAXOptionsScrollView *)v21 addSubview:v23];
+    [(GAXOptionsScrollView *)height2 addSubview:v23];
     v103[0] = _NSConcreteStackBlock;
     v103[1] = 3221225472;
     v103[2] = sub_26A80;
     v103[3] = &unk_5DC20;
     v24 = v23;
     v104 = v24;
-    [v8 enumerateObjectsUsingBlock:v103];
-    [v9 optionsViewSeparatorHeight];
+    [viewsCopy enumerateObjectsUsingBlock:v103];
+    [providerCopy optionsViewSeparatorHeight];
     v26 = v25;
-    [v9 optionsViewSeparatorHorizontalPadding];
+    [providerCopy optionsViewSeparatorHorizontalPadding];
     v28 = v27;
-    [v9 optionsViewSeparatorHorizontalPadding];
+    [providerCopy optionsViewSeparatorHorizontalPadding];
     v30 = -v29;
-    v83 = -[GAXOptionsView _separatorViewsWithCount:styleProvider:](v15, "_separatorViewsWithCount:styleProvider:", [v8 count] - 1, v9);
+    v83 = -[GAXOptionsView _separatorViewsWithCount:styleProvider:](v15, "_separatorViewsWithCount:styleProvider:", [viewsCopy count] - 1, providerCopy);
     v96[0] = _NSConcreteStackBlock;
     v96[1] = 3221225472;
     v96[2] = sub_26A8C;
     v96[3] = &unk_5DC48;
-    v31 = v9;
+    v31 = providerCopy;
     v97 = v31;
     v78 = v31;
     v98 = v24;
     v32 = v98;
-    v79 = v8;
+    v79 = viewsCopy;
     v99 = v79;
     v100 = v26;
     v101 = v28;
@@ -128,42 +128,42 @@
     [v20 ax_constrainLayoutAttribute:5 asEqualToValueOfView:v17];
     [v20 ax_constrainLayoutAttribute:6 asEqualToValueOfView:v17];
     [v20 ax_constrainLayoutAttribute:3 asEqualToValueOfView:v17];
-    [(GAXOptionsScrollView *)v21 ax_constrainLayoutAttribute:5 asEqualToValueOfView:v17];
-    [(GAXOptionsScrollView *)v21 ax_constrainLayoutAttribute:6 asEqualToValueOfView:v17];
-    [(GAXOptionsScrollView *)v21 ax_constrainLayoutAttribute:3 asEqualToValueOfView:v17];
-    v76 = [v32 bottomAnchor];
-    v75 = [(GAXOptionsScrollView *)v21 bottomAnchor];
-    v74 = [v76 constraintEqualToAnchor:v75];
+    [(GAXOptionsScrollView *)height2 ax_constrainLayoutAttribute:5 asEqualToValueOfView:v17];
+    [(GAXOptionsScrollView *)height2 ax_constrainLayoutAttribute:6 asEqualToValueOfView:v17];
+    [(GAXOptionsScrollView *)height2 ax_constrainLayoutAttribute:3 asEqualToValueOfView:v17];
+    bottomAnchor = [v32 bottomAnchor];
+    bottomAnchor2 = [(GAXOptionsScrollView *)height2 bottomAnchor];
+    v74 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v106[0] = v74;
-    v71 = [v32 leadingAnchor];
-    v72 = [(GAXOptionsScrollView *)v21 safeAreaLayoutGuide];
-    v70 = [v72 leadingAnchor];
-    v69 = [v71 constraintEqualToAnchor:v70];
+    leadingAnchor = [v32 leadingAnchor];
+    safeAreaLayoutGuide = [(GAXOptionsScrollView *)height2 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v69 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v106[1] = v69;
     v33 = v32;
     v73 = v32;
-    v67 = [v32 trailingAnchor];
-    v77 = v21;
-    v68 = [(GAXOptionsScrollView *)v21 safeAreaLayoutGuide];
-    v66 = [v68 trailingAnchor];
-    v65 = [v67 constraintEqualToAnchor:v66];
+    trailingAnchor = [v32 trailingAnchor];
+    v77 = height2;
+    safeAreaLayoutGuide2 = [(GAXOptionsScrollView *)height2 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+    v65 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v106[2] = v65;
-    v34 = [v32 topAnchor];
-    [(GAXOptionsScrollView *)v21 topAnchor];
-    v35 = v86 = v9;
-    [v34 constraintEqualToAnchor:v35];
-    v36 = v87 = v8;
+    topAnchor = [v32 topAnchor];
+    [(GAXOptionsScrollView *)height2 topAnchor];
+    v35 = v86 = providerCopy;
+    [topAnchor constraintEqualToAnchor:v35];
+    v36 = v87 = viewsCopy;
     v106[3] = v36;
-    v37 = [v33 widthAnchor];
-    v38 = [(GAXOptionsScrollView *)v21 safeAreaLayoutGuide];
-    v39 = [v38 widthAnchor];
-    v40 = [v37 constraintEqualToAnchor:v39];
+    widthAnchor = [v33 widthAnchor];
+    safeAreaLayoutGuide3 = [(GAXOptionsScrollView *)height2 safeAreaLayoutGuide];
+    widthAnchor2 = [safeAreaLayoutGuide3 widthAnchor];
+    v40 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v106[4] = v40;
     v41 = [NSArray arrayWithObjects:v106 count:5];
     [NSLayoutConstraint activateConstraints:v41];
 
-    v8 = v87;
-    v9 = v86;
+    viewsCopy = v87;
+    providerCopy = v86;
 
     [v78 featureViewFrameEdgeInsets];
     v43 = v42;
@@ -214,7 +214,7 @@
     [(GAXOptionsView *)v15 setModalViewBottomConstraint:v62];
     [(GAXOptionsView *)v15 addConstraint:v62];
     v63 = v50;
-    v10 = v85;
+    serverCopy = v85;
     [(GAXOptionsView *)v15 setStyleProvider:v63];
     [(GAXOptionsView *)v15 setUserInterfaceServer:v85];
   }
@@ -227,12 +227,12 @@
   v7.receiver = self;
   v7.super_class = GAXOptionsView;
   [(GAXOptionsView *)&v7 updateConstraints];
-  v3 = [(GAXOptionsView *)self featuresContentView];
-  [v3 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
+  featuresContentView = [(GAXOptionsView *)self featuresContentView];
+  [featuresContentView systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
   v5 = v4;
 
-  v6 = [(GAXOptionsView *)self featuresScrollViewHeightConstraint];
-  [v6 setConstant:v5];
+  featuresScrollViewHeightConstraint = [(GAXOptionsView *)self featuresScrollViewHeightConstraint];
+  [featuresScrollViewHeightConstraint setConstant:v5];
 }
 
 - (void)layoutSubviews
@@ -240,24 +240,24 @@
   v5.receiver = self;
   v5.super_class = GAXOptionsView;
   [(GAXOptionsView *)&v5 layoutSubviews];
-  v3 = [(GAXOptionsView *)self featuresScrollView];
-  [v3 setNeedsLayout];
+  featuresScrollView = [(GAXOptionsView *)self featuresScrollView];
+  [featuresScrollView setNeedsLayout];
 
-  v4 = [(GAXOptionsView *)self featuresScrollView];
-  [v4 layoutIfNeeded];
+  featuresScrollView2 = [(GAXOptionsView *)self featuresScrollView];
+  [featuresScrollView2 layoutIfNeeded];
 }
 
-- (void)dismissOptionsAnimated:(BOOL)a3
+- (void)dismissOptionsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(GAXOptionsView *)self isOptionsVisible])
   {
-    v5 = [(GAXOptionsView *)self styleProvider];
-    v6 = v5;
+    styleProvider = [(GAXOptionsView *)self styleProvider];
+    v6 = styleProvider;
     v7 = 0.0;
-    if (v3)
+    if (animatedCopy)
     {
-      [v5 defaultAnimationDuration];
+      [styleProvider defaultAnimationDuration];
     }
 
     v9[0] = _NSConcreteStackBlock;
@@ -277,23 +277,23 @@
 
 - (void)updateFeatureMasks
 {
-  v2 = [(GAXOptionsView *)self featureViews];
-  [v2 enumerateObjectsUsingBlock:&stru_5DCB0];
+  featureViews = [(GAXOptionsView *)self featureViews];
+  [featureViews enumerateObjectsUsingBlock:&stru_5DCB0];
 }
 
-- (void)presentOptionsInView:(id)a3 animated:(BOOL)a4
+- (void)presentOptionsInView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  viewCopy = view;
   if (![(GAXOptionsView *)self isOptionsVisible])
   {
-    v7 = [(GAXOptionsView *)self styleProvider];
-    [v6 addSubview:self];
+    styleProvider = [(GAXOptionsView *)self styleProvider];
+    [viewCopy addSubview:self];
     v8 = 0.0;
-    v9 = [NSLayoutConstraint constraintWithItem:self attribute:4 relatedBy:0 toItem:v6 attribute:4 multiplier:1.0 constant:0.0];
-    v10 = [NSLayoutConstraint constraintWithItem:self attribute:5 relatedBy:0 toItem:v6 attribute:5 multiplier:1.0 constant:0.0];
-    v11 = [NSLayoutConstraint constraintWithItem:self attribute:6 relatedBy:0 toItem:v6 attribute:6 multiplier:1.0 constant:0.0];
-    v12 = [NSLayoutConstraint constraintWithItem:self attribute:3 relatedBy:0 toItem:v6 attribute:3 multiplier:1.0 constant:0.0];
+    v9 = [NSLayoutConstraint constraintWithItem:self attribute:4 relatedBy:0 toItem:viewCopy attribute:4 multiplier:1.0 constant:0.0];
+    v10 = [NSLayoutConstraint constraintWithItem:self attribute:5 relatedBy:0 toItem:viewCopy attribute:5 multiplier:1.0 constant:0.0];
+    v11 = [NSLayoutConstraint constraintWithItem:self attribute:6 relatedBy:0 toItem:viewCopy attribute:6 multiplier:1.0 constant:0.0];
+    v12 = [NSLayoutConstraint constraintWithItem:self attribute:3 relatedBy:0 toItem:viewCopy attribute:3 multiplier:1.0 constant:0.0];
     v20[0] = v9;
     v20[1] = v10;
     v20[2] = v11;
@@ -301,19 +301,19 @@
     v13 = [NSArray arrayWithObjects:v20 count:4];
     [(GAXOptionsView *)self setOptionsViewPresentationConstraints:v13];
 
-    v14 = [(GAXOptionsView *)self optionsViewPresentationConstraints];
+    optionsViewPresentationConstraints = [(GAXOptionsView *)self optionsViewPresentationConstraints];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_273A0;
     v18[3] = &unk_5DCD8;
-    v19 = v6;
-    [v14 enumerateObjectsUsingBlock:v18];
+    v19 = viewCopy;
+    [optionsViewPresentationConstraints enumerateObjectsUsingBlock:v18];
 
     [(GAXOptionsView *)self layoutIfNeeded];
     [(GAXOptionsView *)self updateFeatureMasks];
-    if (v4)
+    if (animatedCopy)
     {
-      [v7 defaultAnimationDuration];
+      [styleProvider defaultAnimationDuration];
       v8 = v15;
     }
 
@@ -335,30 +335,30 @@
 - (int64_t)applicationInterfaceOrientation
 {
   v2 = +[AXUIDisplayManager sharedDisplayManager];
-  v3 = [v2 activeInterfaceOrientation];
+  activeInterfaceOrientation = [v2 activeInterfaceOrientation];
 
-  return v3;
+  return activeInterfaceOrientation;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v11 = a3;
-  v4 = [(GAXOptionsView *)self featuresScrollView];
+  scrollCopy = scroll;
+  featuresScrollView = [(GAXOptionsView *)self featuresScrollView];
 
-  v5 = v11;
-  if (v4 == v11)
+  v5 = scrollCopy;
+  if (featuresScrollView == scrollCopy)
   {
-    [v11 contentOffset];
+    [scrollCopy contentOffset];
     v7 = v6;
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
-    v8 = [(GAXOptionsView *)self featuresContentView];
-    v9 = [v8 layer];
-    v10 = [v9 mask];
-    [v10 setPosition:{0.0, v7}];
+    featuresContentView = [(GAXOptionsView *)self featuresContentView];
+    layer = [featuresContentView layer];
+    mask = [layer mask];
+    [mask setPosition:{0.0, v7}];
 
     +[CATransaction commit];
-    v5 = v11;
+    v5 = scrollCopy;
   }
 }
 

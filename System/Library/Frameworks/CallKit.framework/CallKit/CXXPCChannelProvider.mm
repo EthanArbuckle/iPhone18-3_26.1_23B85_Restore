@@ -1,5 +1,5 @@
 @interface CXXPCChannelProvider
-- (CXXPCChannelProvider)initWithConfiguration:(id)a3;
+- (CXXPCChannelProvider)initWithConfiguration:(id)configuration;
 - (id)hostProtocolDelegate;
 - (void)dealloc;
 - (void)invalidate;
@@ -7,40 +7,40 @@
 
 @implementation CXXPCChannelProvider
 
-- (CXXPCChannelProvider)initWithConfiguration:(id)a3
+- (CXXPCChannelProvider)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v38.receiver = self;
   v38.super_class = CXXPCChannelProvider;
-  v5 = [(CXChannelProvider *)&v38 initWithConfiguration:v4];
+  v5 = [(CXChannelProvider *)&v38 initWithConfiguration:configurationCopy];
   if (v5)
   {
     v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.callkit.queue.%@.%p", objc_opt_class(), v5];
-    v6 = [v31 UTF8String];
+    uTF8String = [v31 UTF8String];
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v8 = dispatch_queue_create(v6, v7);
+    v8 = dispatch_queue_create(uTF8String, v7);
 
     objc_storeStrong(&v5->_queue, v8);
     v9 = objc_alloc_init(CXChannelServiceDefinition);
     objc_storeStrong(&v5->_definition, v9);
     v10 = MEMORY[0x1E698F498];
-    v11 = [(CXChannelServiceDefinition *)v5->_definition domain];
-    v12 = [v11 machName];
-    v13 = [(CXChannelServiceDefinition *)v9 name];
-    v14 = [v10 endpointForMachName:v12 service:v13 instance:0];
+    domain = [(CXChannelServiceDefinition *)v5->_definition domain];
+    machName = [domain machName];
+    name = [(CXChannelServiceDefinition *)v9 name];
+    v14 = [v10 endpointForMachName:machName service:name instance:0];
 
     v15 = MEMORY[0x1E698F470];
-    v16 = [(CXChannelServiceDefinition *)v9 name];
-    v17 = [v15 interfaceWithIdentifier:v16];
+    name2 = [(CXChannelServiceDefinition *)v9 name];
+    v17 = [v15 interfaceWithIdentifier:name2];
 
     v18 = MEMORY[0x1E698E710];
-    v19 = [(CXChannelServiceDefinition *)v9 clientXPCInterface];
-    v20 = [v18 protocolForProtocol:v19];
+    clientXPCInterface = [(CXChannelServiceDefinition *)v9 clientXPCInterface];
+    v20 = [v18 protocolForProtocol:clientXPCInterface];
     [v17 setClient:v20];
 
     v21 = MEMORY[0x1E698E710];
-    v22 = [(CXChannelServiceDefinition *)v9 serverXPCInterface];
-    v23 = [v21 protocolForProtocol:v22];
+    serverXPCInterface = [(CXChannelServiceDefinition *)v9 serverXPCInterface];
+    v23 = [v21 protocolForProtocol:serverXPCInterface];
     [v17 setServer:v23];
 
     objc_initWeak(&location, v5);
@@ -186,16 +186,16 @@ void __46__CXXPCChannelProvider_initWithConfiguration___block_invoke_9(uint64_t 
 
 - (void)invalidate
 {
-  v2 = [(CXXPCChannelProvider *)self connection];
-  [v2 invalidate];
+  connection = [(CXXPCChannelProvider *)self connection];
+  [connection invalidate];
 }
 
 - (id)hostProtocolDelegate
 {
-  v2 = [(CXXPCChannelProvider *)self connection];
-  v3 = [v2 remoteTarget];
+  connection = [(CXXPCChannelProvider *)self connection];
+  remoteTarget = [connection remoteTarget];
 
-  return v3;
+  return remoteTarget;
 }
 
 @end

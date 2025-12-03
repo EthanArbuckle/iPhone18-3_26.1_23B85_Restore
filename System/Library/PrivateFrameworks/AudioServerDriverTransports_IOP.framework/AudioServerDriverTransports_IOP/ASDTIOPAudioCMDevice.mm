@@ -1,23 +1,23 @@
 @interface ASDTIOPAudioCMDevice
-- (BOOL)disableInDirection:(unsigned int)a3;
-- (BOOL)enableInDirection:(unsigned int)a3;
-- (BOOL)getCurrentPowerState:(unsigned int *)a3;
-- (BOOL)getEnableState:(BOOL *)a3;
-- (BOOL)getNodeProperty:(unsigned int)a3 withValue:(id)a4;
-- (BOOL)makePowerRequestForState:(unsigned int)a3 andDirection:(unsigned int)a4;
+- (BOOL)disableInDirection:(unsigned int)direction;
+- (BOOL)enableInDirection:(unsigned int)direction;
+- (BOOL)getCurrentPowerState:(unsigned int *)state;
+- (BOOL)getEnableState:(BOOL *)state;
+- (BOOL)getNodeProperty:(unsigned int)property withValue:(id)value;
+- (BOOL)makePowerRequestForState:(unsigned int)state andDirection:(unsigned int)direction;
 - (BOOL)open;
-- (BOOL)setNodeProperty:(unsigned int)a3 withValue:(id)a4;
-- (id)initForIOObject:(unsigned int)a3 andIDValue:(id)a4;
+- (BOOL)setNodeProperty:(unsigned int)property withValue:(id)value;
+- (id)initForIOObject:(unsigned int)object andIDValue:(id)value;
 - (void)close;
 - (void)open;
 @end
 
 @implementation ASDTIOPAudioCMDevice
 
-- (id)initForIOObject:(unsigned int)a3 andIDValue:(id)a4
+- (id)initForIOObject:(unsigned int)object andIDValue:(id)value
 {
   v5 = *MEMORY[0x277D85DE8];
-  [a4 clientType];
+  [value clientType];
   operator new();
 }
 
@@ -59,7 +59,7 @@
   v4();
 }
 
-- (BOOL)enableInDirection:(unsigned int)a3
+- (BOOL)enableInDirection:(unsigned int)direction
 {
   v9 = *MEMORY[0x277D85DE8];
   ptr = self->_userClient.__ptr_;
@@ -68,7 +68,7 @@
     [ASDTIOPAudioCMDevice enableInDirection:];
   }
 
-  v5 = ASDT::IOPAudio::ClientManager::UserClient::Enable(ptr, a3);
+  v5 = ASDT::IOPAudio::ClientManager::UserClient::Enable(ptr, direction);
   if (!v5)
   {
     v6 = ASDTIOPLogType();
@@ -84,7 +84,7 @@
   return v5;
 }
 
-- (BOOL)disableInDirection:(unsigned int)a3
+- (BOOL)disableInDirection:(unsigned int)direction
 {
   v9 = *MEMORY[0x277D85DE8];
   ptr = self->_userClient.__ptr_;
@@ -93,7 +93,7 @@
     [ASDTIOPAudioCMDevice disableInDirection:];
   }
 
-  v5 = ASDT::IOPAudio::ClientManager::UserClient::Disable(ptr, a3);
+  v5 = ASDT::IOPAudio::ClientManager::UserClient::Disable(ptr, direction);
   if (!v5)
   {
     v6 = ASDTIOPLogType();
@@ -109,7 +109,7 @@
   return v5;
 }
 
-- (BOOL)getEnableState:(BOOL *)a3
+- (BOOL)getEnableState:(BOOL *)state
 {
   v9 = *MEMORY[0x277D85DE8];
   ptr = self->_userClient.__ptr_;
@@ -118,12 +118,12 @@
     [ASDTIOPAudioCMDevice getEnableState:];
   }
 
-  if (!a3)
+  if (!state)
   {
     [ASDTIOPAudioCMDevice getEnableState:];
   }
 
-  EnableState = ASDT::IOPAudio::ClientManager::UserClient::GetEnableState(ptr, a3);
+  EnableState = ASDT::IOPAudio::ClientManager::UserClient::GetEnableState(ptr, state);
   if (!EnableState)
   {
     v6 = ASDTIOPLogType();
@@ -139,7 +139,7 @@
   return EnableState;
 }
 
-- (BOOL)getCurrentPowerState:(unsigned int *)a3
+- (BOOL)getCurrentPowerState:(unsigned int *)state
 {
   v9 = *MEMORY[0x277D85DE8];
   ptr = self->_userClient.__ptr_;
@@ -148,12 +148,12 @@
     [ASDTIOPAudioCMDevice getCurrentPowerState:];
   }
 
-  if (!a3)
+  if (!state)
   {
     [ASDTIOPAudioCMDevice getCurrentPowerState:];
   }
 
-  CurrentPowerState = ASDT::IOPAudio::ClientManager::UserClient::GetCurrentPowerState(ptr, a3);
+  CurrentPowerState = ASDT::IOPAudio::ClientManager::UserClient::GetCurrentPowerState(ptr, state);
   if (!CurrentPowerState)
   {
     v6 = ASDTIOPLogType();
@@ -169,7 +169,7 @@
   return CurrentPowerState;
 }
 
-- (BOOL)makePowerRequestForState:(unsigned int)a3 andDirection:(unsigned int)a4
+- (BOOL)makePowerRequestForState:(unsigned int)state andDirection:(unsigned int)direction
 {
   v31 = *MEMORY[0x277D85DE8];
   ptr = self->_userClient.__ptr_;
@@ -178,52 +178,52 @@
     [ASDTIOPAudioCMDevice makePowerRequestForState:andDirection:];
   }
 
-  v18[0] = a3;
-  v18[1] = a4;
+  v18[0] = state;
+  v18[1] = direction;
   PowerRequest = ASDT::IOPAudio::ClientManager::UserClient::MakePowerRequest(ptr, v18);
   if (!PowerRequest)
   {
     v9 = ASDTIOPLogType();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v12 = [(ASDTIOService *)self idValue];
-      v13 = v12;
-      v14 = HIBYTE(a3);
-      if ((a3 - 0x20000000) >> 24 >= 0x5F)
+      idValue = [(ASDTIOService *)self idValue];
+      v13 = idValue;
+      v14 = HIBYTE(state);
+      if ((state - 0x20000000) >> 24 >= 0x5F)
       {
         v14 = 32;
       }
 
-      v15 = BYTE2(a3);
-      if (BYTE2(a3) - 32 >= 0x5F)
+      v15 = BYTE2(state);
+      if (BYTE2(state) - 32 >= 0x5F)
       {
         v15 = 32;
       }
 
       *buf = 138413570;
-      v20 = v12;
-      v16 = BYTE1(a3);
-      if (BYTE1(a3) - 32 >= 0x5F)
+      v20 = idValue;
+      v16 = BYTE1(state);
+      if (BYTE1(state) - 32 >= 0x5F)
       {
         v16 = 32;
       }
 
       v21 = 1024;
       v22 = v14;
-      v17 = a3;
+      stateCopy = state;
       v23 = 1024;
       v24 = v15;
       v25 = 1024;
       v26 = v16;
       v27 = 1024;
-      if (a3 - 32 >= 0x5F)
+      if (state - 32 >= 0x5F)
       {
-        v17 = 32;
+        stateCopy = 32;
       }
 
-      v28 = v17;
+      v28 = stateCopy;
       v29 = 1024;
-      v30 = a4;
+      directionCopy = direction;
       _os_log_error_impl(&dword_2416E9000, v9, OS_LOG_TYPE_ERROR, "%@: Failed to make power request to state '%c%c%c%c' with direction %x", buf, 0x2Au);
     }
   }
@@ -232,18 +232,18 @@
   return PowerRequest;
 }
 
-- (BOOL)setNodeProperty:(unsigned int)a3 withValue:(id)a4
+- (BOOL)setNodeProperty:(unsigned int)property withValue:(id)value
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = v6;
+  valueCopy = value;
+  v7 = valueCopy;
   ptr = self->_userClient.__ptr_;
   if (!ptr)
   {
     __assert_rtn("[ASDTIOPAudioCMDevice setNodeProperty:withValue:]", "ASDTIOPAudioCMDevice.mm", 144, "_userClient");
   }
 
-  v9 = ASDT::IOPAudio::ClientManager::UserClient::SetNodeProperty(ptr, a3, [v6 length], objc_msgSend(v6, "bytes"));
+  v9 = ASDT::IOPAudio::ClientManager::UserClient::SetNodeProperty(ptr, property, [valueCopy length], objc_msgSend(valueCopy, "bytes"));
   if (!v9)
   {
     v10 = ASDTIOPLogType();
@@ -259,18 +259,18 @@
   return v9;
 }
 
-- (BOOL)getNodeProperty:(unsigned int)a3 withValue:(id)a4
+- (BOOL)getNodeProperty:(unsigned int)property withValue:(id)value
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = v6;
+  valueCopy = value;
+  v7 = valueCopy;
   if (!self->_userClient.__ptr_)
   {
     __assert_rtn("[ASDTIOPAudioCMDevice getNodeProperty:withValue:]", "ASDTIOPAudioCMDevice.mm", 157, "_userClient");
   }
 
-  v13 = [v6 length];
-  NodeProperty = ASDT::IOPAudio::ClientManager::UserClient::GetNodeProperty(self->_userClient.__ptr_, a3, &v13, [v7 mutableBytes]);
+  v13 = [valueCopy length];
+  NodeProperty = ASDT::IOPAudio::ClientManager::UserClient::GetNodeProperty(self->_userClient.__ptr_, property, &v13, [v7 mutableBytes]);
   if (NodeProperty)
   {
     v9 = v13;

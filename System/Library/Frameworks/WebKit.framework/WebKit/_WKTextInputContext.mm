@@ -1,24 +1,24 @@
 @interface _WKTextInputContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)boundingRect;
 - (id).cxx_construct;
-- (id)_initWithTextInputContext:(const void *)a3;
+- (id)_initWithTextInputContext:(const void *)context;
 @end
 
 @implementation _WKTextInputContext
 
-- (id)_initWithTextInputContext:(const void *)a3
+- (id)_initWithTextInputContext:(const void *)context
 {
   v8.receiver = self;
   v8.super_class = _WKTextInputContext;
   result = [(_WKTextInputContext *)&v8 init];
   if (result)
   {
-    *(result + 1) = *a3;
-    v5 = *(a3 + 1);
-    v6 = *(a3 + 2);
-    v7 = *(a3 + 3);
-    *(result + 10) = *(a3 + 8);
+    *(result + 1) = *context;
+    v5 = *(context + 1);
+    v6 = *(context + 2);
+    v7 = *(context + 3);
+    *(result + 10) = *(context + 8);
     *(result + 3) = v6;
     *(result + 4) = v7;
     *(result + 2) = v5;
@@ -37,16 +37,16 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v4) = 1;
   }
 
   else
   {
-    v4 = WTF::dynamic_objc_cast<_WKTextInputContext>(a3);
+    v4 = WTF::dynamic_objc_cast<_WKTextInputContext>(equal);
     if (v4)
     {
       v5 = self->_textInputContext.boundingRect.m_location.m_x == *(v4 + 16) && self->_textInputContext.boundingRect.m_location.m_y == *(v4 + 20);

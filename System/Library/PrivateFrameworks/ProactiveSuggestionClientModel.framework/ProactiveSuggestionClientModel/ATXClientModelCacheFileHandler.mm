@@ -1,13 +1,13 @@
 @interface ATXClientModelCacheFileHandler
-+ (id)readSuggestionsFromCacheFromReadOnlyFileHandle:(id)a3;
-+ (id)unarchiveCacheFileFromReadOnlyFileHandle:(id)a3;
-- (ATXClientModelCacheFileHandler)initWithCacheFileBasePath:(id)a3 clientModelId:(id)a4;
-- (BOOL)createCacheFileForClientModelCacheUpdate:(id)a3;
++ (id)readSuggestionsFromCacheFromReadOnlyFileHandle:(id)handle;
++ (id)unarchiveCacheFileFromReadOnlyFileHandle:(id)handle;
+- (ATXClientModelCacheFileHandler)initWithCacheFileBasePath:(id)path clientModelId:(id)id;
+- (BOOL)createCacheFileForClientModelCacheUpdate:(id)update;
 - (BOOL)deleteCachedSuggestionsFile;
-- (BOOL)writeSerializedDataToCacheFile:(id)a3;
+- (BOOL)writeSerializedDataToCacheFile:(id)file;
 - (id)readOnlyFileHandleForSuggestionsCache;
 - (id)readSuggestionsFromCache;
-- (id)serializeSuggestionsData:(id)a3;
+- (id)serializeSuggestionsData:(id)data;
 @end
 
 @implementation ATXClientModelCacheFileHandler
@@ -25,8 +25,8 @@
   }
 
   v5 = objc_opt_class();
-  v6 = [(ATXClientModelCacheFileHandler *)self readOnlyFileHandleForSuggestionsCache];
-  v7 = [v5 readSuggestionsFromCacheFromReadOnlyFileHandle:v6];
+  readOnlyFileHandleForSuggestionsCache = [(ATXClientModelCacheFileHandler *)self readOnlyFileHandleForSuggestionsCache];
+  v7 = [v5 readSuggestionsFromCacheFromReadOnlyFileHandle:readOnlyFileHandleForSuggestionsCache];
 
   v8 = *MEMORY[0x1E69E9840];
 
@@ -36,24 +36,24 @@
 - (id)readOnlyFileHandleForSuggestionsCache
 {
   v2 = MEMORY[0x1E696AC00];
-  v3 = [(ATXClientModelCacheFileHandler *)self cacheFilePath];
-  v4 = [v2 fileHandleForReadingAtPath:v3];
+  cacheFilePath = [(ATXClientModelCacheFileHandler *)self cacheFilePath];
+  v4 = [v2 fileHandleForReadingAtPath:cacheFilePath];
 
   return v4;
 }
 
-- (ATXClientModelCacheFileHandler)initWithCacheFileBasePath:(id)a3 clientModelId:(id)a4
+- (ATXClientModelCacheFileHandler)initWithCacheFileBasePath:(id)path clientModelId:(id)id
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  idCopy = id;
   v12.receiver = self;
   v12.super_class = ATXClientModelCacheFileHandler;
   v9 = [(ATXClientModelCacheFileHandler *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cacheFileBasePath, a3);
-    objc_storeStrong(&v10->_clientModelId, a4);
+    objc_storeStrong(&v9->_cacheFileBasePath, path);
+    objc_storeStrong(&v10->_clientModelId, id);
   }
 
   return v10;
@@ -62,10 +62,10 @@
 - (BOOL)deleteCachedSuggestionsFile
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(ATXClientModelCacheFileHandler *)self cacheFilePath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  cacheFilePath = [(ATXClientModelCacheFileHandler *)self cacheFilePath];
   v17 = 0;
-  v5 = [v3 removeItemAtPath:v4 error:&v17];
+  v5 = [defaultManager removeItemAtPath:cacheFilePath error:&v17];
   v6 = v17;
   v7 = v6;
   if (!v6)
@@ -79,7 +79,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v4;
+      v19 = cacheFilePath;
       v9 = "Blending: Deleted file at path: %@";
       v10 = v8;
       v11 = 12;
@@ -91,17 +91,17 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v12 = [v6 userInfo];
-  v13 = [v12 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
-  v14 = [v13 code];
+  userInfo = [v6 userInfo];
+  v13 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+  code = [v13 code];
 
-  if (v14 != 2)
+  if (code != 2)
   {
     v8 = __atxlog_handle_blending();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v19 = v4;
+      v19 = cacheFilePath;
       v20 = 2112;
       v21 = v7;
       v9 = "Blending: Failed to delete file at path: %@ with error: %@";
@@ -117,11 +117,11 @@ LABEL_10:
   return v5;
 }
 
-- (BOOL)createCacheFileForClientModelCacheUpdate:(id)a3
+- (BOOL)createCacheFileForClientModelCacheUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(ATXClientModelCacheFileHandler *)self serializeSuggestionsData:v4];
+  v6 = [(ATXClientModelCacheFileHandler *)self serializeSuggestionsData:updateCopy];
   if (v6)
   {
     v7 = [(ATXClientModelCacheFileHandler *)self writeSerializedDataToCacheFile:v6];
@@ -136,15 +136,15 @@ LABEL_10:
   return v7;
 }
 
-- (id)serializeSuggestionsData:(id)a3
+- (id)serializeSuggestionsData:(id)data
 {
-  v4 = a3;
-  [v4 setFeedbackMetadata:0];
-  v5 = [v4 encodeAsProto];
+  dataCopy = data;
+  [dataCopy setFeedbackMetadata:0];
+  encodeAsProto = [dataCopy encodeAsProto];
 
-  if (v5)
+  if (encodeAsProto)
   {
-    v6 = v5;
+    v6 = encodeAsProto;
   }
 
   else
@@ -156,15 +156,15 @@ LABEL_10:
     }
   }
 
-  return v5;
+  return encodeAsProto;
 }
 
-- (BOOL)writeSerializedDataToCacheFile:(id)a3
+- (BOOL)writeSerializedDataToCacheFile:(id)file
 {
-  v4 = a3;
-  v5 = [(ATXClientModelCacheFileHandler *)self cacheFilePath];
+  fileCopy = file;
+  cacheFilePath = [(ATXClientModelCacheFileHandler *)self cacheFilePath];
   v10 = 0;
-  v6 = [v4 writeToFile:v5 options:1073741825 error:&v10];
+  v6 = [fileCopy writeToFile:cacheFilePath options:1073741825 error:&v10];
 
   v7 = v10;
   if ((v6 & 1) == 0)
@@ -179,10 +179,10 @@ LABEL_10:
   return v6;
 }
 
-+ (id)unarchiveCacheFileFromReadOnlyFileHandle:(id)a3
++ (id)unarchiveCacheFileFromReadOnlyFileHandle:(id)handle
 {
   v9 = 0;
-  v3 = [a3 readDataToEndOfFileAndReturnError:&v9];
+  v3 = [handle readDataToEndOfFileAndReturnError:&v9];
   v4 = v9;
   v5 = v4;
   if (v3)
@@ -202,13 +202,13 @@ LABEL_10:
   return v3;
 }
 
-+ (id)readSuggestionsFromCacheFromReadOnlyFileHandle:(id)a3
++ (id)readSuggestionsFromCacheFromReadOnlyFileHandle:(id)handle
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  handleCopy = handle;
+  if (handleCopy)
   {
-    v4 = [objc_opt_class() unarchiveCacheFileFromReadOnlyFileHandle:v3];
+    v4 = [objc_opt_class() unarchiveCacheFileFromReadOnlyFileHandle:handleCopy];
     if (v4)
     {
       v5 = objc_autoreleasePoolPush();
@@ -220,9 +220,9 @@ LABEL_10:
       {
         if (v8)
         {
-          v9 = [(ATXClientModelCacheUpdate *)v6 suggestions];
+          suggestions = [(ATXClientModelCacheUpdate *)v6 suggestions];
           v13 = 134217984;
-          v14 = [v9 count];
+          v14 = [suggestions count];
           _os_log_impl(&dword_1DEFC4000, v7, OS_LOG_TYPE_DEFAULT, "Blending: Deserialized to get %lu suggestions.", &v13, 0xCu);
         }
 

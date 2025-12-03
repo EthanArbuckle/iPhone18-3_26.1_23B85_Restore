@@ -1,13 +1,13 @@
 @interface SVXHomeHubManagerObserver
-- (SVXHomeHubManagerObserver)initWithRemoraVirtualDeviceManager:(id)a3 platformDependenciesTracker:(id)a4;
+- (SVXHomeHubManagerObserver)initWithRemoraVirtualDeviceManager:(id)manager platformDependenciesTracker:(id)tracker;
 @end
 
 @implementation SVXHomeHubManagerObserver
 
-- (SVXHomeHubManagerObserver)initWithRemoraVirtualDeviceManager:(id)a3 platformDependenciesTracker:(id)a4
+- (SVXHomeHubManagerObserver)initWithRemoraVirtualDeviceManager:(id)manager platformDependenciesTracker:(id)tracker
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  trackerCopy = tracker;
   v13.receiver = self;
   v13.super_class = SVXHomeHubManagerObserver;
   v9 = [(SVXHomeHubManagerObserver *)&v13 init];
@@ -17,8 +17,8 @@
     mainQueuePerformer = v9->_mainQueuePerformer;
     v9->_mainQueuePerformer = v10;
 
-    objc_storeStrong(&v9->_remoraVirtualDeviceManager, a3);
-    objc_storeStrong(&v9->_platformDependenciesTracker, a4);
+    objc_storeStrong(&v9->_remoraVirtualDeviceManager, manager);
+    objc_storeStrong(&v9->_platformDependenciesTracker, tracker);
   }
 
   return v9;

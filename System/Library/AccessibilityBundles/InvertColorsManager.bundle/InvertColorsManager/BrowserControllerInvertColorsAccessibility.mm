@@ -19,17 +19,17 @@
   v3 = [(BrowserControllerInvertColorsAccessibility *)self safeValueForKey:@"rootViewController"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 view];
-  v6 = [v5 window];
+  view = [v4 view];
+  window = [view window];
 
   if (UIAccessibilityIsInvertColorsEnabled())
   {
-    v7 = [AXInvertColorsAppHelper insertBackgroundView:v6 alpha:1.0];
+    v7 = [AXInvertColorsAppHelper insertBackgroundView:window alpha:1.0];
   }
 
   else
   {
-    [AXInvertColorsAppHelper removeBackgroundView:v6];
+    [AXInvertColorsAppHelper removeBackgroundView:window];
   }
 }
 

@@ -1,6 +1,6 @@
 @interface TrainDetectorController
 - (AXSDLearnMoreDelegate)learnMoreDelegate;
-- (id)locStringForKShotCategory:(id)a3 key:(id)a4;
+- (id)locStringForKShotCategory:(id)category key:(id)key;
 - (void)_constrainCheckmarkStackView;
 - (void)_constrainSavedSoundLabel;
 - (void)_constrainVerticalStackView;
@@ -11,23 +11,23 @@
 - (void)_setupSavedSoundLabel;
 - (void)_setupVerticalStackView;
 - (void)_setupVisualizationView;
-- (void)_updateLabelText:(id)a3;
-- (void)_updateVisualizerWithValues:(id)a3;
+- (void)_updateLabelText:(id)text;
+- (void)_updateVisualizerWithValues:(id)values;
 - (void)enterDoneState;
-- (void)enterListeningStateWithCheckmarkIndex:(int)a3;
-- (void)enterModelSimilarityWarningState:(int)a3;
+- (void)enterListeningStateWithCheckmarkIndex:(int)index;
+- (void)enterModelSimilarityWarningState:(int)state;
 - (void)enterPreListeningState;
-- (void)enterSavingStateWithCheckmarkIndex:(int)a3;
+- (void)enterSavingStateWithCheckmarkIndex:(int)index;
 - (void)enterTimeoutState;
-- (void)enterWaitingForSaveState:(int)a3;
+- (void)enterWaitingForSaveState:(int)state;
 - (void)enterWaitingForSoundState;
 - (void)presentLearnMorePane;
-- (void)updateCheckmarkState:(int64_t)a3 checkmarkIndex:(int)a4;
-- (void)updateProgressToState:(int64_t)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateCheckmarkState:(int64_t)state checkmarkIndex:(int)index;
+- (void)updateProgressToState:(int64_t)state;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation TrainDetectorController
@@ -50,11 +50,11 @@
   [(TrainDetectorController *)self enterPreListeningState];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = TrainDetectorController;
-  [(TrainDetectorController *)&v6 viewDidAppear:a3];
+  [(TrainDetectorController *)&v6 viewDidAppear:appear];
   v4 = +[AXSDAudioLevelsHelper sharedInstance];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -74,11 +74,11 @@ void __41__TrainDetectorController_viewDidAppear___block_invoke(uint64_t a1, voi
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = TrainDetectorController;
-  [(TrainDetectorController *)&v5 viewWillDisappear:a3];
+  [(TrainDetectorController *)&v5 viewWillDisappear:disappear];
   v4 = +[AXSDAudioLevelsHelper sharedInstance];
   [v4 deregisterListener:self];
 }
@@ -93,53 +93,53 @@ void __41__TrainDetectorController_viewDidAppear___block_invoke(uint64_t a1, voi
 - (void)enterPreListeningState
 {
   v3 = UIAccessibilityAnnouncementNotification;
-  v4 = [(TrainDetectorController *)self savedSoundLabel];
-  v5 = [v4 text];
-  UIAccessibilityPostNotification(v3, v5);
+  savedSoundLabel = [(TrainDetectorController *)self savedSoundLabel];
+  text = [savedSoundLabel text];
+  UIAccessibilityPostNotification(v3, text);
 
-  v6 = [(TrainDetectorController *)self visualizationView];
-  [v6 setHidden:1];
+  visualizationView = [(TrainDetectorController *)self visualizationView];
+  [visualizationView setHidden:1];
 
-  v7 = [(TrainDetectorController *)self visualizationView];
+  visualizationView2 = [(TrainDetectorController *)self visualizationView];
   v8 = +[UIColor systemGrayColor];
-  [v7 setTintColor:v8];
+  [visualizationView2 setTintColor:v8];
 
-  v9 = [(TrainDetectorController *)self category];
-  v10 = [(TrainDetectorController *)self locStringForKShotCategory:v9 key:@"PRE_LISTENING_LABEL"];
+  category = [(TrainDetectorController *)self category];
+  v10 = [(TrainDetectorController *)self locStringForKShotCategory:category key:@"PRE_LISTENING_LABEL"];
   [(TrainDetectorController *)self _updateLabelText:v10];
 
   v11 = +[UIColor labelColor];
-  v12 = [(TrainDetectorController *)self label];
-  [v12 setTextColor:v11];
+  label = [(TrainDetectorController *)self label];
+  [label setTextColor:v11];
 
-  v13 = [(TrainDetectorController *)self learnMoreLinkButton];
-  [v13 setHidden:1];
+  learnMoreLinkButton = [(TrainDetectorController *)self learnMoreLinkButton];
+  [learnMoreLinkButton setHidden:1];
 }
 
 - (void)enterWaitingForSoundState
 {
   if (self->_state != 5)
   {
-    v4 = [(TrainDetectorController *)self savedSoundLabel];
-    [v4 setHidden:1];
+    savedSoundLabel = [(TrainDetectorController *)self savedSoundLabel];
+    [savedSoundLabel setHidden:1];
 
-    v5 = [(TrainDetectorController *)self visualizationView];
-    [v5 setHidden:0];
+    visualizationView = [(TrainDetectorController *)self visualizationView];
+    [visualizationView setHidden:0];
 
-    v6 = [(TrainDetectorController *)self visualizationView];
+    visualizationView2 = [(TrainDetectorController *)self visualizationView];
     v7 = +[UIColor systemGrayColor];
-    [v6 setTintColor:v7];
+    [visualizationView2 setTintColor:v7];
 
-    v8 = [(TrainDetectorController *)self category];
-    v9 = [(TrainDetectorController *)self locStringForKShotCategory:v8 key:@"START_LISTENING_LABEL"];
+    category = [(TrainDetectorController *)self category];
+    v9 = [(TrainDetectorController *)self locStringForKShotCategory:category key:@"START_LISTENING_LABEL"];
     [(TrainDetectorController *)self _updateLabelText:v9];
 
     v10 = +[UIColor systemGrayColor];
-    v11 = [(TrainDetectorController *)self label];
-    [v11 setTextColor:v10];
+    label = [(TrainDetectorController *)self label];
+    [label setTextColor:v10];
 
-    v12 = [(TrainDetectorController *)self learnMoreLinkButton];
-    [v12 setHidden:1];
+    learnMoreLinkButton = [(TrainDetectorController *)self learnMoreLinkButton];
+    [learnMoreLinkButton setHidden:1];
 
     v13 = dispatch_time(0, 2000000000);
 
@@ -153,55 +153,55 @@ void __52__TrainDetectorController_enterWaitingForSoundState__block_invoke(id a1
   [v1 setSoundDetectionKShotListeningState:1];
 }
 
-- (void)enterListeningStateWithCheckmarkIndex:(int)a3
+- (void)enterListeningStateWithCheckmarkIndex:(int)index
 {
-  v3 = *&a3;
-  v5 = [(TrainDetectorController *)self savedSoundLabel];
-  [v5 setHidden:1];
+  v3 = *&index;
+  savedSoundLabel = [(TrainDetectorController *)self savedSoundLabel];
+  [savedSoundLabel setHidden:1];
 
-  v6 = [(TrainDetectorController *)self visualizationView];
-  [v6 setHidden:0];
+  visualizationView = [(TrainDetectorController *)self visualizationView];
+  [visualizationView setHidden:0];
 
-  v7 = [(TrainDetectorController *)self visualizationView];
+  visualizationView2 = [(TrainDetectorController *)self visualizationView];
   v8 = +[UIColor systemBlueColor];
-  [v7 setTintColor:v8];
+  [visualizationView2 setTintColor:v8];
 
   [(TrainDetectorController *)self updateCheckmarkState:1 checkmarkIndex:v3];
-  v9 = [(TrainDetectorController *)self category];
-  v10 = [(TrainDetectorController *)self locStringForKShotCategory:v9 key:@"LISTENING"];
+  category = [(TrainDetectorController *)self category];
+  v10 = [(TrainDetectorController *)self locStringForKShotCategory:category key:@"LISTENING"];
   [(TrainDetectorController *)self _updateLabelText:v10];
 
-  v11 = [(TrainDetectorController *)self learnMoreLinkButton];
-  [v11 setHidden:1];
+  learnMoreLinkButton = [(TrainDetectorController *)self learnMoreLinkButton];
+  [learnMoreLinkButton setHidden:1];
 }
 
-- (void)updateCheckmarkState:(int64_t)a3 checkmarkIndex:(int)a4
+- (void)updateCheckmarkState:(int64_t)state checkmarkIndex:(int)index
 {
-  v7 = [(TrainDetectorController *)self checkmarkViews];
-  v6 = [v7 objectAtIndexedSubscript:a4];
-  [v6 setCheckmarkState:a3];
+  checkmarkViews = [(TrainDetectorController *)self checkmarkViews];
+  v6 = [checkmarkViews objectAtIndexedSubscript:index];
+  [v6 setCheckmarkState:state];
 }
 
 - (void)enterTimeoutState
 {
-  v3 = [(TrainDetectorController *)self category];
-  v4 = [(TrainDetectorController *)self locStringForKShotCategory:v3 key:@"TIMEOUT"];
+  category = [(TrainDetectorController *)self category];
+  v4 = [(TrainDetectorController *)self locStringForKShotCategory:category key:@"TIMEOUT"];
   [(TrainDetectorController *)self _updateLabelText:v4];
 
   v5 = +[UIColor labelColor];
-  v6 = [(TrainDetectorController *)self label];
-  [v6 setTextColor:v5];
+  label = [(TrainDetectorController *)self label];
+  [label setTextColor:v5];
 
-  v7 = [(TrainDetectorController *)self savedSoundLabel];
-  [v7 setHidden:1];
+  savedSoundLabel = [(TrainDetectorController *)self savedSoundLabel];
+  [savedSoundLabel setHidden:1];
 
-  v8 = [(TrainDetectorController *)self visualizationView];
-  [v8 setHidden:1];
+  visualizationView = [(TrainDetectorController *)self visualizationView];
+  [visualizationView setHidden:1];
 
   if (self->_learnMoreLinkButton)
   {
-    v9 = [(TrainDetectorController *)self learnMoreLinkButton];
-    [v9 setHidden:0];
+    learnMoreLinkButton = [(TrainDetectorController *)self learnMoreLinkButton];
+    [learnMoreLinkButton setHidden:0];
   }
 
   else
@@ -211,29 +211,29 @@ void __52__TrainDetectorController_enterWaitingForSoundState__block_invoke(id a1
   }
 }
 
-- (void)enterWaitingForSaveState:(int)a3
+- (void)enterWaitingForSaveState:(int)state
 {
-  v3 = *&a3;
-  v5 = [(TrainDetectorController *)self savedSoundLabel];
-  [v5 setHidden:1];
+  v3 = *&state;
+  savedSoundLabel = [(TrainDetectorController *)self savedSoundLabel];
+  [savedSoundLabel setHidden:1];
 
-  v6 = [(TrainDetectorController *)self visualizationView];
-  [v6 setHidden:1];
+  visualizationView = [(TrainDetectorController *)self visualizationView];
+  [visualizationView setHidden:1];
 
   v7 = +[UIColor labelColor];
-  v8 = [(TrainDetectorController *)self label];
-  [v8 setTextColor:v7];
+  label = [(TrainDetectorController *)self label];
+  [label setTextColor:v7];
 
-  v9 = [(TrainDetectorController *)self category];
-  v10 = [(TrainDetectorController *)self locStringForKShotCategory:v9 key:@"WAITING_FOR_SAVE"];
+  category = [(TrainDetectorController *)self category];
+  v10 = [(TrainDetectorController *)self locStringForKShotCategory:category key:@"WAITING_FOR_SAVE"];
   [(TrainDetectorController *)self _updateLabelText:v10];
 
   [(TrainDetectorController *)self updateCheckmarkState:3 checkmarkIndex:v3];
 }
 
-- (void)enterSavingStateWithCheckmarkIndex:(int)a3
+- (void)enterSavingStateWithCheckmarkIndex:(int)index
 {
-  v3 = *&a3;
+  v3 = *&index;
   v5 = settingsLocString(@"SAVING_SOUND", @"SoundDetection");
   [(TrainDetectorController *)self _updateLabelText:v5];
 
@@ -242,13 +242,13 @@ void __52__TrainDetectorController_enterWaitingForSoundState__block_invoke(id a1
 
 - (void)presentLearnMorePane
 {
-  v2 = [(TrainDetectorController *)self learnMoreDelegate];
-  [v2 presentLearnMorePane];
+  learnMoreDelegate = [(TrainDetectorController *)self learnMoreDelegate];
+  [learnMoreDelegate presentLearnMorePane];
 }
 
-- (void)enterModelSimilarityWarningState:(int)a3
+- (void)enterModelSimilarityWarningState:(int)state
 {
-  v3 = *&a3;
+  v3 = *&state;
   v5 = settingsLocString(@"MODEL_SIMILARITY_WARNING", @"SoundDetection");
   [(TrainDetectorController *)self _updateLabelText:v5];
 
@@ -257,46 +257,46 @@ void __52__TrainDetectorController_enterWaitingForSoundState__block_invoke(id a1
 
 - (void)enterDoneState
 {
-  v3 = [(TrainDetectorController *)self headerView];
+  headerView = [(TrainDetectorController *)self headerView];
   v4 = settingsLocString(@"RECORDING_COMPLETE", @"SoundDetection");
-  [v3 setDetailText:v4];
+  [headerView setDetailText:v4];
 
-  v5 = [(TrainDetectorController *)self visualizationView];
-  [v5 setHidden:1];
+  visualizationView = [(TrainDetectorController *)self visualizationView];
+  [visualizationView setHidden:1];
 
-  v6 = [(TrainDetectorController *)self savedSoundLabel];
-  [v6 setHidden:1];
+  savedSoundLabel = [(TrainDetectorController *)self savedSoundLabel];
+  [savedSoundLabel setHidden:1];
 
-  v7 = [(TrainDetectorController *)self learnMoreLinkButton];
-  [v7 setHidden:1];
+  learnMoreLinkButton = [(TrainDetectorController *)self learnMoreLinkButton];
+  [learnMoreLinkButton setHidden:1];
 
   v8 = +[UIColor labelColor];
-  v9 = [(TrainDetectorController *)self label];
-  [v9 setTextColor:v8];
+  label = [(TrainDetectorController *)self label];
+  [label setTextColor:v8];
 
   v10 = settingsLocString(@"TRAINING_TIME_EXPLANATION", @"SoundDetection");
   [(TrainDetectorController *)self _updateLabelText:v10];
 }
 
-- (void)_updateLabelText:(id)a3
+- (void)_updateLabelText:(id)text
 {
-  v4 = a3;
-  v5 = [(TrainDetectorController *)self label];
-  [v5 setText:v4];
+  textCopy = text;
+  label = [(TrainDetectorController *)self label];
+  [label setText:textCopy];
 
-  v6 = [(TrainDetectorController *)self label];
-  [v6 sizeToFit];
+  label2 = [(TrainDetectorController *)self label];
+  [label2 sizeToFit];
 
-  LODWORD(v6) = UIAccessibilityLayoutChangedNotification;
-  v7 = [(TrainDetectorController *)self label];
-  UIAccessibilityPostNotification(v6, v7);
+  LODWORD(label2) = UIAccessibilityLayoutChangedNotification;
+  label3 = [(TrainDetectorController *)self label];
+  UIAccessibilityPostNotification(label2, label3);
 }
 
-- (void)_updateVisualizerWithValues:(id)a3
+- (void)_updateVisualizerWithValues:(id)values
 {
-  v4 = a3;
-  v5 = [(TrainDetectorController *)self visualizationView];
-  [v5 updateWithMagnitudes:v4];
+  valuesCopy = values;
+  visualizationView = [(TrainDetectorController *)self visualizationView];
+  [visualizationView updateWithMagnitudes:valuesCopy];
 }
 
 - (void)_setupVerticalStackView
@@ -304,54 +304,54 @@ void __52__TrainDetectorController_enterWaitingForSoundState__block_invoke(id a1
   v3 = objc_alloc_init(UIStackView);
   [(TrainDetectorController *)self setVerticalStackView:v3];
 
-  v4 = [(TrainDetectorController *)self verticalStackView];
-  [v4 setDistribution:4];
+  verticalStackView = [(TrainDetectorController *)self verticalStackView];
+  [verticalStackView setDistribution:4];
 
-  v5 = [(TrainDetectorController *)self verticalStackView];
-  [v5 setAxis:1];
+  verticalStackView2 = [(TrainDetectorController *)self verticalStackView];
+  [verticalStackView2 setAxis:1];
 
-  v6 = [(TrainDetectorController *)self verticalStackView];
-  [v6 setSpacing:10.0];
+  verticalStackView3 = [(TrainDetectorController *)self verticalStackView];
+  [verticalStackView3 setSpacing:10.0];
 
-  v7 = [(TrainDetectorController *)self verticalStackView];
-  [v7 setAlignment:3];
+  verticalStackView4 = [(TrainDetectorController *)self verticalStackView];
+  [verticalStackView4 setAlignment:3];
 
-  v9 = [(TrainDetectorController *)self contentView];
-  v8 = [(TrainDetectorController *)self verticalStackView];
-  [v9 addSubview:v8];
+  contentView = [(TrainDetectorController *)self contentView];
+  verticalStackView5 = [(TrainDetectorController *)self verticalStackView];
+  [contentView addSubview:verticalStackView5];
 }
 
 - (void)_constrainVerticalStackView
 {
-  v3 = [(TrainDetectorController *)self verticalStackView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  verticalStackView = [(TrainDetectorController *)self verticalStackView];
+  [verticalStackView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(TrainDetectorController *)self verticalStackView];
-  v5 = [v4 leftAnchor];
-  v6 = [(TrainDetectorController *)self contentView];
-  v7 = [v6 leftAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7 constant:10.0];
+  verticalStackView2 = [(TrainDetectorController *)self verticalStackView];
+  leftAnchor = [verticalStackView2 leftAnchor];
+  contentView = [(TrainDetectorController *)self contentView];
+  leftAnchor2 = [contentView leftAnchor];
+  v8 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:10.0];
   [v8 setActive:1];
 
-  v9 = [(TrainDetectorController *)self verticalStackView];
-  v10 = [v9 rightAnchor];
-  v11 = [(TrainDetectorController *)self contentView];
-  v12 = [v11 rightAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12 constant:-10.0];
+  verticalStackView3 = [(TrainDetectorController *)self verticalStackView];
+  rightAnchor = [verticalStackView3 rightAnchor];
+  contentView2 = [(TrainDetectorController *)self contentView];
+  rightAnchor2 = [contentView2 rightAnchor];
+  v13 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-10.0];
   [v13 setActive:1];
 
-  v14 = [(TrainDetectorController *)self verticalStackView];
-  v15 = [v14 topAnchor];
-  v16 = [(TrainDetectorController *)self checkmarkStackView];
-  v17 = [v16 bottomAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17 constant:70.0];
+  verticalStackView4 = [(TrainDetectorController *)self verticalStackView];
+  topAnchor = [verticalStackView4 topAnchor];
+  checkmarkStackView = [(TrainDetectorController *)self checkmarkStackView];
+  bottomAnchor = [checkmarkStackView bottomAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:70.0];
   [v18 setActive:1];
 
-  v23 = [(TrainDetectorController *)self verticalStackView];
-  v19 = [v23 bottomAnchor];
-  v20 = [(TrainDetectorController *)self contentView];
-  v21 = [v20 bottomAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21 constant:-70.0];
+  verticalStackView5 = [(TrainDetectorController *)self verticalStackView];
+  bottomAnchor2 = [verticalStackView5 bottomAnchor];
+  contentView3 = [(TrainDetectorController *)self contentView];
+  bottomAnchor3 = [contentView3 bottomAnchor];
+  v22 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-70.0];
   [v22 setActive:1];
 }
 
@@ -360,19 +360,19 @@ void __52__TrainDetectorController_enterWaitingForSoundState__block_invoke(id a1
   v3 = objc_alloc_init(SoundDetectionAudioVisualizationView);
   [(TrainDetectorController *)self setVisualizationView:v3];
 
-  v4 = [(TrainDetectorController *)self verticalStackView];
-  v5 = [(TrainDetectorController *)self visualizationView];
-  [v4 addArrangedSubview:v5];
+  verticalStackView = [(TrainDetectorController *)self verticalStackView];
+  visualizationView = [(TrainDetectorController *)self visualizationView];
+  [verticalStackView addArrangedSubview:visualizationView];
 
-  v6 = [(TrainDetectorController *)self visualizationView];
-  [v6 setHidden:1];
+  visualizationView2 = [(TrainDetectorController *)self visualizationView];
+  [visualizationView2 setHidden:1];
 }
 
 - (void)_setupCheckmarkViews
 {
-  v3 = [(TrainDetectorController *)self checkmarkViews];
+  checkmarkViews = [(TrainDetectorController *)self checkmarkViews];
 
-  if (!v3)
+  if (!checkmarkViews)
   {
     v4 = +[NSMutableArray array];
     [(TrainDetectorController *)self setCheckmarkViews:v4];
@@ -382,59 +382,59 @@ void __52__TrainDetectorController_enterWaitingForSoundState__block_invoke(id a1
   do
   {
     v6 = objc_alloc_init(CheckmarkTrainingView);
-    v7 = [(TrainDetectorController *)self checkmarkViews];
-    [v7 addObject:v6];
+    checkmarkViews2 = [(TrainDetectorController *)self checkmarkViews];
+    [checkmarkViews2 addObject:v6];
 
     --v5;
   }
 
   while (v5);
   v8 = [UIStackView alloc];
-  v9 = [(TrainDetectorController *)self checkmarkViews];
-  v10 = [v8 initWithArrangedSubviews:v9];
+  checkmarkViews3 = [(TrainDetectorController *)self checkmarkViews];
+  v10 = [v8 initWithArrangedSubviews:checkmarkViews3];
   [(TrainDetectorController *)self setCheckmarkStackView:v10];
 
-  v11 = [(TrainDetectorController *)self checkmarkStackView];
-  [v11 setDistribution:4];
+  checkmarkStackView = [(TrainDetectorController *)self checkmarkStackView];
+  [checkmarkStackView setDistribution:4];
 
-  v12 = [(TrainDetectorController *)self checkmarkStackView];
-  [v12 setAxis:0];
+  checkmarkStackView2 = [(TrainDetectorController *)self checkmarkStackView];
+  [checkmarkStackView2 setAxis:0];
 
-  v13 = [(TrainDetectorController *)self checkmarkStackView];
-  [v13 setSpacing:10.0];
+  checkmarkStackView3 = [(TrainDetectorController *)self checkmarkStackView];
+  [checkmarkStackView3 setSpacing:10.0];
 
-  v14 = [(TrainDetectorController *)self checkmarkStackView];
-  [v14 setAlignment:3];
+  checkmarkStackView4 = [(TrainDetectorController *)self checkmarkStackView];
+  [checkmarkStackView4 setAlignment:3];
 
-  v16 = [(TrainDetectorController *)self contentView];
-  v15 = [(TrainDetectorController *)self checkmarkStackView];
-  [v16 addSubview:v15];
+  contentView = [(TrainDetectorController *)self contentView];
+  checkmarkStackView5 = [(TrainDetectorController *)self checkmarkStackView];
+  [contentView addSubview:checkmarkStackView5];
 }
 
 - (void)_constrainCheckmarkStackView
 {
-  v3 = [(TrainDetectorController *)self checkmarkStackView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  checkmarkStackView = [(TrainDetectorController *)self checkmarkStackView];
+  [checkmarkStackView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(TrainDetectorController *)self checkmarkStackView];
-  v5 = [v4 leftAnchor];
-  v6 = [(TrainDetectorController *)self contentView];
-  v7 = [v6 leftAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7 constant:10.0];
+  checkmarkStackView2 = [(TrainDetectorController *)self checkmarkStackView];
+  leftAnchor = [checkmarkStackView2 leftAnchor];
+  contentView = [(TrainDetectorController *)self contentView];
+  leftAnchor2 = [contentView leftAnchor];
+  v8 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:10.0];
   [v8 setActive:1];
 
-  v9 = [(TrainDetectorController *)self checkmarkStackView];
-  v10 = [v9 rightAnchor];
-  v11 = [(TrainDetectorController *)self contentView];
-  v12 = [v11 rightAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12 constant:-10.0];
+  checkmarkStackView3 = [(TrainDetectorController *)self checkmarkStackView];
+  rightAnchor = [checkmarkStackView3 rightAnchor];
+  contentView2 = [(TrainDetectorController *)self contentView];
+  rightAnchor2 = [contentView2 rightAnchor];
+  v13 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-10.0];
   [v13 setActive:1];
 
-  v18 = [(TrainDetectorController *)self checkmarkStackView];
-  v14 = [v18 topAnchor];
-  v15 = [(TrainDetectorController *)self contentView];
-  v16 = [v15 topAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16 constant:70.0];
+  checkmarkStackView4 = [(TrainDetectorController *)self checkmarkStackView];
+  topAnchor = [checkmarkStackView4 topAnchor];
+  contentView3 = [(TrainDetectorController *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:70.0];
   [v17 setActive:1];
 }
 
@@ -445,24 +445,24 @@ void __52__TrainDetectorController_enterWaitingForSoundState__block_invoke(id a1
   self->_label = v3;
 
   v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  v6 = [(TrainDetectorController *)self label];
-  [v6 setFont:v5];
+  label = [(TrainDetectorController *)self label];
+  [label setFont:v5];
 
-  v7 = [(TrainDetectorController *)self label];
-  [v7 setTextAlignment:1];
+  label2 = [(TrainDetectorController *)self label];
+  [label2 setTextAlignment:1];
 
-  v8 = [(TrainDetectorController *)self label];
-  [v8 setNumberOfLines:0];
+  label3 = [(TrainDetectorController *)self label];
+  [label3 setNumberOfLines:0];
 
-  v9 = [(TrainDetectorController *)self label];
-  [v9 setLineBreakMode:0];
+  label4 = [(TrainDetectorController *)self label];
+  [label4 setLineBreakMode:0];
 
-  v10 = [(TrainDetectorController *)self label];
-  [v10 setAdjustsFontForContentSizeCategory:1];
+  label5 = [(TrainDetectorController *)self label];
+  [label5 setAdjustsFontForContentSizeCategory:1];
 
-  v12 = [(TrainDetectorController *)self verticalStackView];
-  v11 = [(TrainDetectorController *)self label];
-  [v12 addArrangedSubview:v11];
+  verticalStackView = [(TrainDetectorController *)self verticalStackView];
+  label6 = [(TrainDetectorController *)self label];
+  [verticalStackView addArrangedSubview:label6];
 }
 
 - (void)_setupSavedSoundLabel
@@ -472,57 +472,57 @@ void __52__TrainDetectorController_enterWaitingForSoundState__block_invoke(id a1
   self->_savedSoundLabel = v3;
 
   v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  v6 = [(TrainDetectorController *)self savedSoundLabel];
-  [v6 setFont:v5];
+  savedSoundLabel = [(TrainDetectorController *)self savedSoundLabel];
+  [savedSoundLabel setFont:v5];
 
-  v7 = [(TrainDetectorController *)self savedSoundLabel];
-  [v7 setTextAlignment:1];
+  savedSoundLabel2 = [(TrainDetectorController *)self savedSoundLabel];
+  [savedSoundLabel2 setTextAlignment:1];
 
   v8 = +[UIColor secondaryLabelColor];
-  v9 = [(TrainDetectorController *)self savedSoundLabel];
-  [v9 setTextColor:v8];
+  savedSoundLabel3 = [(TrainDetectorController *)self savedSoundLabel];
+  [savedSoundLabel3 setTextColor:v8];
 
-  v10 = [(TrainDetectorController *)self savedSoundLabel];
-  [v10 setNumberOfLines:0];
+  savedSoundLabel4 = [(TrainDetectorController *)self savedSoundLabel];
+  [savedSoundLabel4 setNumberOfLines:0];
 
-  v11 = [(TrainDetectorController *)self savedSoundLabel];
-  [v11 setLineBreakMode:0];
+  savedSoundLabel5 = [(TrainDetectorController *)self savedSoundLabel];
+  [savedSoundLabel5 setLineBreakMode:0];
 
-  v12 = [(TrainDetectorController *)self savedSoundLabel];
-  [v12 setAdjustsFontForContentSizeCategory:1];
+  savedSoundLabel6 = [(TrainDetectorController *)self savedSoundLabel];
+  [savedSoundLabel6 setAdjustsFontForContentSizeCategory:1];
 
-  v13 = [(TrainDetectorController *)self contentView];
-  v14 = [(TrainDetectorController *)self savedSoundLabel];
-  [v13 addSubview:v14];
+  contentView = [(TrainDetectorController *)self contentView];
+  savedSoundLabel7 = [(TrainDetectorController *)self savedSoundLabel];
+  [contentView addSubview:savedSoundLabel7];
 
-  v15 = [(TrainDetectorController *)self savedSoundLabel];
-  [v15 setHidden:1];
+  savedSoundLabel8 = [(TrainDetectorController *)self savedSoundLabel];
+  [savedSoundLabel8 setHidden:1];
 }
 
 - (void)_constrainSavedSoundLabel
 {
-  v3 = [(TrainDetectorController *)self savedSoundLabel];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  savedSoundLabel = [(TrainDetectorController *)self savedSoundLabel];
+  [savedSoundLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(TrainDetectorController *)self savedSoundLabel];
-  v5 = [v4 leftAnchor];
-  v6 = [(TrainDetectorController *)self contentView];
-  v7 = [v6 leftAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7 constant:10.0];
+  savedSoundLabel2 = [(TrainDetectorController *)self savedSoundLabel];
+  leftAnchor = [savedSoundLabel2 leftAnchor];
+  contentView = [(TrainDetectorController *)self contentView];
+  leftAnchor2 = [contentView leftAnchor];
+  v8 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:10.0];
   [v8 setActive:1];
 
-  v9 = [(TrainDetectorController *)self savedSoundLabel];
-  v10 = [v9 rightAnchor];
-  v11 = [(TrainDetectorController *)self contentView];
-  v12 = [v11 rightAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12 constant:-10.0];
+  savedSoundLabel3 = [(TrainDetectorController *)self savedSoundLabel];
+  rightAnchor = [savedSoundLabel3 rightAnchor];
+  contentView2 = [(TrainDetectorController *)self contentView];
+  rightAnchor2 = [contentView2 rightAnchor];
+  v13 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-10.0];
   [v13 setActive:1];
 
-  v18 = [(TrainDetectorController *)self savedSoundLabel];
-  v14 = [v18 topAnchor];
-  v15 = [(TrainDetectorController *)self checkmarkStackView];
-  v16 = [v15 bottomAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16 constant:10.0];
+  savedSoundLabel4 = [(TrainDetectorController *)self savedSoundLabel];
+  topAnchor = [savedSoundLabel4 topAnchor];
+  checkmarkStackView = [(TrainDetectorController *)self checkmarkStackView];
+  bottomAnchor = [checkmarkStackView bottomAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:10.0];
   [v17 setActive:1];
 }
 
@@ -532,114 +532,114 @@ void __52__TrainDetectorController_enterWaitingForSoundState__block_invoke(id a1
   learnMoreLinkButton = self->_learnMoreLinkButton;
   self->_learnMoreLinkButton = v3;
 
-  v5 = [(TrainDetectorController *)self learnMoreLinkButton];
-  [v5 addTarget:self action:"presentLearnMorePane" forControlEvents:64];
+  learnMoreLinkButton = [(TrainDetectorController *)self learnMoreLinkButton];
+  [learnMoreLinkButton addTarget:self action:"presentLearnMorePane" forControlEvents:64];
 
-  v6 = [(TrainDetectorController *)self learnMoreLinkButton];
-  [v6 setFrame:{0.0, 0.0, 150.0, 50.0}];
+  learnMoreLinkButton2 = [(TrainDetectorController *)self learnMoreLinkButton];
+  [learnMoreLinkButton2 setFrame:{0.0, 0.0, 150.0, 50.0}];
 
-  v7 = [(TrainDetectorController *)self learnMoreLinkButton];
+  learnMoreLinkButton3 = [(TrainDetectorController *)self learnMoreLinkButton];
   v8 = +[UIColor systemBlueColor];
-  [v7 setTitleColor:v8 forState:0];
+  [learnMoreLinkButton3 setTitleColor:v8 forState:0];
 
-  v9 = [(TrainDetectorController *)self learnMoreLinkButton];
+  learnMoreLinkButton4 = [(TrainDetectorController *)self learnMoreLinkButton];
   v10 = settingsLocString(@"LEARN_MORE_BUTTON", @"SoundDetection");
-  [v9 setTitle:v10 forState:0];
+  [learnMoreLinkButton4 setTitle:v10 forState:0];
 
-  v11 = [(TrainDetectorController *)self learnMoreLinkButton];
-  v12 = [v11 titleLabel];
+  learnMoreLinkButton5 = [(TrainDetectorController *)self learnMoreLinkButton];
+  titleLabel = [learnMoreLinkButton5 titleLabel];
   v13 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-  [v12 setFont:v13];
+  [titleLabel setFont:v13];
 
-  v14 = [(TrainDetectorController *)self learnMoreLinkButton];
-  v15 = [v14 titleLabel];
-  [v15 setAdjustsFontForContentSizeCategory:1];
+  learnMoreLinkButton6 = [(TrainDetectorController *)self learnMoreLinkButton];
+  titleLabel2 = [learnMoreLinkButton6 titleLabel];
+  [titleLabel2 setAdjustsFontForContentSizeCategory:1];
 
-  v16 = [(TrainDetectorController *)self learnMoreLinkButton];
-  v17 = [v16 titleLabel];
-  [v17 setNumberOfLines:0];
+  learnMoreLinkButton7 = [(TrainDetectorController *)self learnMoreLinkButton];
+  titleLabel3 = [learnMoreLinkButton7 titleLabel];
+  [titleLabel3 setNumberOfLines:0];
 
-  v18 = [(TrainDetectorController *)self learnMoreLinkButton];
-  v19 = [v18 titleLabel];
-  [v19 setLineBreakMode:0];
+  learnMoreLinkButton8 = [(TrainDetectorController *)self learnMoreLinkButton];
+  titleLabel4 = [learnMoreLinkButton8 titleLabel];
+  [titleLabel4 setLineBreakMode:0];
 
-  v20 = [(TrainDetectorController *)self learnMoreLinkButton];
-  v21 = [v20 titleLabel];
-  [v21 setTextAlignment:1];
+  learnMoreLinkButton9 = [(TrainDetectorController *)self learnMoreLinkButton];
+  titleLabel5 = [learnMoreLinkButton9 titleLabel];
+  [titleLabel5 setTextAlignment:1];
 
-  v23 = [(TrainDetectorController *)self verticalStackView];
-  v22 = [(TrainDetectorController *)self learnMoreLinkButton];
-  [v23 addArrangedSubview:v22];
+  verticalStackView = [(TrainDetectorController *)self verticalStackView];
+  learnMoreLinkButton10 = [(TrainDetectorController *)self learnMoreLinkButton];
+  [verticalStackView addArrangedSubview:learnMoreLinkButton10];
 }
 
 - (void)_constrainVisualizationView
 {
-  v3 = [(TrainDetectorController *)self visualizationView];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  visualizationView = [(TrainDetectorController *)self visualizationView];
+  [visualizationView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(TrainDetectorController *)self visualizationView];
-  v5 = [v4 leftAnchor];
-  v6 = [(TrainDetectorController *)self verticalStackView];
-  v7 = [v6 leftAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7 constant:10.0];
+  visualizationView2 = [(TrainDetectorController *)self visualizationView];
+  leftAnchor = [visualizationView2 leftAnchor];
+  verticalStackView = [(TrainDetectorController *)self verticalStackView];
+  leftAnchor2 = [verticalStackView leftAnchor];
+  v8 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:10.0];
   [v8 setActive:1];
 
-  v9 = [(TrainDetectorController *)self visualizationView];
-  v10 = [v9 rightAnchor];
-  v11 = [(TrainDetectorController *)self verticalStackView];
-  v12 = [v11 rightAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12 constant:-10.0];
+  visualizationView3 = [(TrainDetectorController *)self visualizationView];
+  rightAnchor = [visualizationView3 rightAnchor];
+  verticalStackView2 = [(TrainDetectorController *)self verticalStackView];
+  rightAnchor2 = [verticalStackView2 rightAnchor];
+  v13 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-10.0];
   [v13 setActive:1];
 
-  v16 = [(TrainDetectorController *)self visualizationView];
-  v14 = [v16 heightAnchor];
-  v15 = [v14 constraintEqualToConstant:90.0];
+  visualizationView4 = [(TrainDetectorController *)self visualizationView];
+  heightAnchor = [visualizationView4 heightAnchor];
+  v15 = [heightAnchor constraintEqualToConstant:90.0];
   [v15 setActive:1];
 }
 
-- (void)updateProgressToState:(int64_t)a3
+- (void)updateProgressToState:(int64_t)state
 {
-  self->_state = a3;
-  v3 = a3 - 1;
-  if ((a3 - 1) <= 4)
+  self->_state = state;
+  v3 = state - 1;
+  if ((state - 1) <= 4)
   {
     v6 = 0;
     do
     {
-      v7 = [(TrainDetectorController *)self checkmarkViews];
-      v8 = [v7 objectAtIndexedSubscript:v6];
+      checkmarkViews = [(TrainDetectorController *)self checkmarkViews];
+      v8 = [checkmarkViews objectAtIndexedSubscript:v6];
       [v8 setCheckmarkState:2];
 
       ++v6;
     }
 
-    while (a3 != v6);
+    while (state != v6);
     if (v3 < 4)
     {
       v9 = off_258DE8[v3];
-      v10 = [(TrainDetectorController *)self savedSoundLabel];
+      savedSoundLabel = [(TrainDetectorController *)self savedSoundLabel];
       v11 = settingsLocString(v9, @"SoundDetection");
-      [v10 setText:v11];
+      [savedSoundLabel setText:v11];
     }
 
-    v12 = [(TrainDetectorController *)self savedSoundLabel];
-    [v12 setHidden:0];
+    savedSoundLabel2 = [(TrainDetectorController *)self savedSoundLabel];
+    [savedSoundLabel2 setHidden:0];
 
-    v13 = [(TrainDetectorController *)self savedSoundLabel];
-    [v13 sizeToFit];
+    savedSoundLabel3 = [(TrainDetectorController *)self savedSoundLabel];
+    [savedSoundLabel3 sizeToFit];
   }
 }
 
-- (id)locStringForKShotCategory:(id)a3 key:(id)a4
+- (id)locStringForKShotCategory:(id)category key:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:AXSDDetectorCategoryAlarm])
+  categoryCopy = category;
+  keyCopy = key;
+  if ([categoryCopy isEqualToString:AXSDDetectorCategoryAlarm])
   {
     v7 = @"_ALARM";
   }
 
-  else if ([v5 isEqualToString:AXSDDetectorCategoryHousehold])
+  else if ([categoryCopy isEqualToString:AXSDDetectorCategoryHousehold])
   {
     v7 = @"_APPLIANCE";
   }
@@ -649,7 +649,7 @@ void __52__TrainDetectorController_enterWaitingForSoundState__block_invoke(id a1
     v7 = &stru_25D420;
   }
 
-  v8 = [v6 stringByAppendingString:v7];
+  v8 = [keyCopy stringByAppendingString:v7];
 
   v9 = settingsLocString(v8, @"SoundDetection");
 

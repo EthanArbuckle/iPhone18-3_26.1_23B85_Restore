@@ -1,15 +1,15 @@
 @interface ATDeviceMessageLink
 + (id)deviceMessageLink;
-- (ATDeviceMessageLink)initWithSocket:(id)a3;
+- (ATDeviceMessageLink)initWithSocket:(id)socket;
 @end
 
 @implementation ATDeviceMessageLink
 
-- (ATDeviceMessageLink)initWithSocket:(id)a3
+- (ATDeviceMessageLink)initWithSocket:(id)socket
 {
   v6.receiver = self;
   v6.super_class = ATDeviceMessageLink;
-  v3 = [(ATConcreteMessageLink *)&v6 initWithSocket:a3];
+  v3 = [(ATConcreteMessageLink *)&v6 initWithSocket:socket];
   if (v3)
   {
     v4 = +[ATDeviceSettings sharedInstance];

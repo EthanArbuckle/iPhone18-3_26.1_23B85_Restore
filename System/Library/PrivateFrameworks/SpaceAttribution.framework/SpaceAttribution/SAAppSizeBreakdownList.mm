@@ -1,13 +1,13 @@
 @interface SAAppSizeBreakdownList
 - (SAAppSizeBreakdownList)init;
 - (id)generateDictionary;
-- (void)addPluginSize:(unint64_t)a3 bundleIDs:(id)a4;
-- (void)addTagSize:(unint64_t)a3 bundleIDs:(id)a4;
-- (void)mergeBundleIDs:(id)a3 withBundleIDs:(id)a4 newBundleIDs:(id)a5;
-- (void)updateBundleIDs:(id)a3 newIDs:(id)a4;
-- (void)updatePath:(id)a3 cacheSize:(unint64_t)a4 bundleIDs:(id)a5;
-- (void)updatePath:(id)a3 cloneSize:(unint64_t)a4 bundleIDs:(id)a5;
-- (void)updateTagsWithCloneSize:(unint64_t)a3 bundleIDs:(id)a4;
+- (void)addPluginSize:(unint64_t)size bundleIDs:(id)ds;
+- (void)addTagSize:(unint64_t)size bundleIDs:(id)ds;
+- (void)mergeBundleIDs:(id)ds withBundleIDs:(id)iDs newBundleIDs:(id)bundleIDs;
+- (void)updateBundleIDs:(id)ds newIDs:(id)iDs;
+- (void)updatePath:(id)path cacheSize:(unint64_t)size bundleIDs:(id)ds;
+- (void)updatePath:(id)path cloneSize:(unint64_t)size bundleIDs:(id)ds;
+- (void)updateTagsWithCloneSize:(unint64_t)size bundleIDs:(id)ds;
 @end
 
 @implementation SAAppSizeBreakdownList
@@ -27,54 +27,54 @@
   return v2;
 }
 
-- (void)addTagSize:(unint64_t)a3 bundleIDs:(id)a4
+- (void)addTagSize:(unint64_t)size bundleIDs:(id)ds
 {
-  v7 = a4;
+  dsCopy = ds;
   v6 = [(NSMutableDictionary *)self->_appSizeBreakdownList objectForKeyedSubscript:?];
   if (!v6)
   {
     v6 = objc_opt_new();
-    [(NSMutableDictionary *)self->_appSizeBreakdownList setObject:v6 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_appSizeBreakdownList setObject:v6 forKeyedSubscript:dsCopy];
   }
 
-  [v6 addTagSize:a3];
+  [v6 addTagSize:size];
 }
 
-- (void)updatePath:(id)a3 cacheSize:(unint64_t)a4 bundleIDs:(id)a5
+- (void)updatePath:(id)path cacheSize:(unint64_t)size bundleIDs:(id)ds
 {
-  v10 = a3;
-  v8 = a5;
-  v9 = [(NSMutableDictionary *)self->_appSizeBreakdownList objectForKeyedSubscript:v8];
+  pathCopy = path;
+  dsCopy = ds;
+  v9 = [(NSMutableDictionary *)self->_appSizeBreakdownList objectForKeyedSubscript:dsCopy];
   if (!v9)
   {
     v9 = objc_opt_new();
-    [(NSMutableDictionary *)self->_appSizeBreakdownList setObject:v9 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_appSizeBreakdownList setObject:v9 forKeyedSubscript:dsCopy];
   }
 
-  [v9 updatePath:v10 cacheSize:a4];
+  [v9 updatePath:pathCopy cacheSize:size];
 }
 
-- (void)addPluginSize:(unint64_t)a3 bundleIDs:(id)a4
+- (void)addPluginSize:(unint64_t)size bundleIDs:(id)ds
 {
-  v7 = a4;
+  dsCopy = ds;
   v6 = [(NSMutableDictionary *)self->_appSizeBreakdownList objectForKeyedSubscript:?];
   if (!v6)
   {
     v6 = objc_opt_new();
-    [(NSMutableDictionary *)self->_appSizeBreakdownList setObject:v6 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_appSizeBreakdownList setObject:v6 forKeyedSubscript:dsCopy];
   }
 
-  [v6 addPluginCacheSize:a3];
+  [v6 addPluginCacheSize:size];
 }
 
-- (void)updateBundleIDs:(id)a3 newIDs:(id)a4
+- (void)updateBundleIDs:(id)ds newIDs:(id)iDs
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_appSizeBreakdownList objectForKeyedSubscript:v10];
+  dsCopy = ds;
+  iDsCopy = iDs;
+  v7 = [(NSMutableDictionary *)self->_appSizeBreakdownList objectForKeyedSubscript:dsCopy];
   if (v7)
   {
-    v8 = [(NSMutableDictionary *)self->_appSizeBreakdownList objectForKeyedSubscript:v6];
+    v8 = [(NSMutableDictionary *)self->_appSizeBreakdownList objectForKeyedSubscript:iDsCopy];
     v9 = v8;
     if (v8)
     {
@@ -83,45 +83,45 @@
 
     else
     {
-      [(NSMutableDictionary *)self->_appSizeBreakdownList setObject:v7 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_appSizeBreakdownList setObject:v7 forKeyedSubscript:iDsCopy];
     }
 
-    [(NSMutableDictionary *)self->_appSizeBreakdownList removeObjectForKey:v10];
+    [(NSMutableDictionary *)self->_appSizeBreakdownList removeObjectForKey:dsCopy];
   }
 }
 
-- (void)mergeBundleIDs:(id)a3 withBundleIDs:(id)a4 newBundleIDs:(id)a5
+- (void)mergeBundleIDs:(id)ds withBundleIDs:(id)iDs newBundleIDs:(id)bundleIDs
 {
   appSizeBreakdownList = self->_appSizeBreakdownList;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v13 = [(NSMutableDictionary *)appSizeBreakdownList objectForKeyedSubscript:v11];
-  v12 = [(NSMutableDictionary *)self->_appSizeBreakdownList objectForKeyedSubscript:v10];
+  bundleIDsCopy = bundleIDs;
+  iDsCopy = iDs;
+  dsCopy = ds;
+  v13 = [(NSMutableDictionary *)appSizeBreakdownList objectForKeyedSubscript:dsCopy];
+  v12 = [(NSMutableDictionary *)self->_appSizeBreakdownList objectForKeyedSubscript:iDsCopy];
   [v13 mergeWithAppSizeBreakdown:v12];
-  [(NSMutableDictionary *)self->_appSizeBreakdownList removeObjectForKey:v10];
+  [(NSMutableDictionary *)self->_appSizeBreakdownList removeObjectForKey:iDsCopy];
 
-  [(SAAppSizeBreakdownList *)self updateBundleIDs:v11 newIDs:v9];
+  [(SAAppSizeBreakdownList *)self updateBundleIDs:dsCopy newIDs:bundleIDsCopy];
 }
 
-- (void)updatePath:(id)a3 cloneSize:(unint64_t)a4 bundleIDs:(id)a5
+- (void)updatePath:(id)path cloneSize:(unint64_t)size bundleIDs:(id)ds
 {
-  v10 = a3;
-  v8 = [(NSMutableDictionary *)self->_appSizeBreakdownList objectForKeyedSubscript:a5];
+  pathCopy = path;
+  v8 = [(NSMutableDictionary *)self->_appSizeBreakdownList objectForKeyedSubscript:ds];
   v9 = v8;
   if (v8)
   {
-    [v8 updatePath:v10 cloneSize:a4];
+    [v8 updatePath:pathCopy cloneSize:size];
   }
 }
 
-- (void)updateTagsWithCloneSize:(unint64_t)a3 bundleIDs:(id)a4
+- (void)updateTagsWithCloneSize:(unint64_t)size bundleIDs:(id)ds
 {
-  v5 = [(NSMutableDictionary *)self->_appSizeBreakdownList objectForKeyedSubscript:a4];
+  v5 = [(NSMutableDictionary *)self->_appSizeBreakdownList objectForKeyedSubscript:ds];
   if (v5)
   {
     v6 = v5;
-    [v5 addTagSize:a3];
+    [v5 addTagSize:size];
     v5 = v6;
   }
 }

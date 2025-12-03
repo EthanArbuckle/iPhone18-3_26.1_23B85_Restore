@@ -1,12 +1,12 @@
 @interface TSAlertArticleUnavailable
 - (TSAlertArticleUnavailable)init;
-- (TSAlertArticleUnavailable)initWithBlockedReason:(unint64_t)a3;
-- (TSAlertArticleUnavailable)initWithType:(int64_t)a3;
+- (TSAlertArticleUnavailable)initWithBlockedReason:(unint64_t)reason;
+- (TSAlertArticleUnavailable)initWithType:(int64_t)type;
 @end
 
 @implementation TSAlertArticleUnavailable
 
-- (TSAlertArticleUnavailable)initWithBlockedReason:(unint64_t)a3
+- (TSAlertArticleUnavailable)initWithBlockedReason:(unint64_t)reason
 {
   v4 = sub_219BDE254();
   v5 = *(v4 - 8);
@@ -20,9 +20,9 @@
   return [(TSAlertArticleUnavailable *)&v10 init];
 }
 
-- (TSAlertArticleUnavailable)initWithType:(int64_t)a3
+- (TSAlertArticleUnavailable)initWithType:(int64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     v4 = MEMORY[0x277D2FEB8];
 LABEL_5:
@@ -35,7 +35,7 @@ LABEL_5:
     return [(TSAlertArticleUnavailable *)&v9 init];
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = MEMORY[0x277D2FEC0];
     goto LABEL_5;

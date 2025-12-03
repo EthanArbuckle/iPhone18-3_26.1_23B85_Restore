@@ -1,26 +1,26 @@
 @interface HDAssociationSyncEntity
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7;
-+ (id)_syncPredicateForSession:(uint64_t)a1;
-+ (id)decodeSyncObjectWithData:(id)a3;
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7;
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error;
++ (id)_syncPredicateForSession:(uint64_t)session;
++ (id)decodeSyncObjectWithData:(id)data;
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error;
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDAssociationSyncEntity
 
-+ (id)_syncPredicateForSession:(uint64_t)a1
++ (id)_syncPredicateForSession:(uint64_t)session
 {
   v2 = a2;
   objc_opt_self();
   v3 = HDAssociationEntityPredicateForAssociationEntityWithType(0);
-  v4 = [v2 syncPredicate];
-  v5 = [v4 defaultMaximumObjectAge];
+  syncPredicate = [v2 syncPredicate];
+  defaultMaximumObjectAge = [syncPredicate defaultMaximumObjectAge];
 
-  if (v5)
+  if (defaultMaximumObjectAge)
   {
-    v6 = [v2 startDate];
-    [v5 doubleValue];
-    v8 = [v6 dateByAddingTimeInterval:-v7];
+    startDate = [v2 startDate];
+    [defaultMaximumObjectAge doubleValue];
+    v8 = [startDate dateByAddingTimeInterval:-v7];
 
     v9 = HDAssociationEntityPredicateForChildEndDate(6, v8);
     v10 = [MEMORY[0x277D10B20] compoundPredicateWithPredicate:v3 otherPredicate:v9];
@@ -34,17 +34,17 @@
   return v10;
 }
 
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error
 {
-  end = a4.end;
-  start = a4.start;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v29 = [(HDAssociationSyncEntity *)a1 _syncPredicateForSession:v12];
+  end = range.end;
+  start = range.start;
+  sessionCopy = session;
+  profileCopy = profile;
+  handlerCopy = handler;
+  v29 = [(HDAssociationSyncEntity *)self _syncPredicateForSession:sessionCopy];
   v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v31 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v16 = [v12 maxEncodedBytesPerCodableChangeForSyncEntityClass:a1];
+  v16 = [sessionCopy maxEncodedBytesPerCodableChangeForSyncEntityClass:self];
   if (v16 >= 0)
   {
     v17 = v16;
@@ -69,9 +69,9 @@
   v51 = __Block_byref_object_copy__163;
   v52 = __Block_byref_object_dispose__163;
   v53 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v18 = [v13 database];
-  v19 = a7;
-  v20 = v14;
+  database = [profileCopy database];
+  errorCopy = error;
+  v20 = handlerCopy;
   v21 = v17 >> 7;
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
@@ -79,13 +79,13 @@
   v36[3] = &unk_278629CF8;
   v30 = v29;
   v37 = v30;
-  v44 = a1;
-  v22 = v12;
+  selfCopy = self;
+  v22 = sessionCopy;
   v45 = start;
   v46 = end;
   v38 = v22;
   v42 = &v54;
-  v23 = v13;
+  v23 = profileCopy;
   v39 = v23;
   v24 = v31;
   v40 = v24;
@@ -93,10 +93,10 @@
   v41 = v25;
   v43 = v58;
   v47 = v21;
-  v26 = v19;
-  LOBYTE(v19) = [(HDHealthEntity *)HDSyncIdentityEntity performReadTransactionWithHealthDatabase:v18 error:v19 block:v36];
+  v26 = errorCopy;
+  LOBYTE(errorCopy) = [(HDHealthEntity *)HDSyncIdentityEntity performReadTransactionWithHealthDatabase:database error:errorCopy block:v36];
 
-  if (v19)
+  if (errorCopy)
   {
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
@@ -234,12 +234,12 @@ void __102__HDAssociationSyncEntity_generateSyncObjectsForSession_syncAnchorRang
   [*(*(*(a1 + 40) + 8) + 40) addObject:v10];
 }
 
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a3;
-  v12 = [(HDAssociationSyncEntity *)a1 _syncPredicateForSession:v11];
+  profileCopy = profile;
+  sessionCopy = session;
+  v12 = [(HDAssociationSyncEntity *)self _syncPredicateForSession:sessionCopy];
   v13 = [MEMORY[0x277D10B60] isNotNullPredicateWithProperty:@"child_id_objects.uuid"];
   v14 = [MEMORY[0x277D10B60] isNotNullPredicateWithProperty:@"parent_id_objects.uuid"];
   v15 = MEMORY[0x277D10B20];
@@ -250,28 +250,28 @@ void __102__HDAssociationSyncEntity_generateSyncObjectsForSession_syncAnchorRang
 
   v18 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v17 otherPredicate:v12];
 
-  v19 = [v10 database];
+  database = [profileCopy database];
 
-  v20 = [(HDHealthEntity *)HDAssociationEntity nextSyncAnchorWithStartAnchor:a4 predicate:v18 session:v11 healthDatabase:v19 error:a6];
+  v20 = [(HDHealthEntity *)HDAssociationEntity nextSyncAnchorWithStartAnchor:anchor predicate:v18 session:sessionCopy healthDatabase:database error:error];
   v21 = *MEMORY[0x277D85DE8];
   return v20;
 }
 
-+ (id)decodeSyncObjectWithData:(id)a3
++ (id)decodeSyncObjectWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[HDCodableObjectAssociation alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[HDCodableObjectAssociation alloc] initWithData:dataCopy];
 
   return v4;
 }
 
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error
 {
-  v7 = [HDAssociationEntity _insertCodableObjectAssociations:a3 syncStore:a5 profile:a6 error:a7];
+  v7 = [HDAssociationEntity _insertCodableObjectAssociations:objects syncStore:store profile:profile error:error];
   if (v7)
   {
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 postNotificationName:@"HDAssociationEntityDidReceiveSyncObjectsNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"HDAssociationEntityDidReceiveSyncObjectsNotification" object:0];
   }
 
   return !v7;

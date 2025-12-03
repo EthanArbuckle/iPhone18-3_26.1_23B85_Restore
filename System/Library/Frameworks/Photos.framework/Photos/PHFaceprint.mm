@@ -1,16 +1,16 @@
 @interface PHFaceprint
-- (PHFaceprint)initWithDictionaryRepresentation:(id)a3;
-- (PHFaceprint)initWithFaceprintData:(id)a3 faceprintVersion:(int64_t)a4;
+- (PHFaceprint)initWithDictionaryRepresentation:(id)representation;
+- (PHFaceprint)initWithFaceprintData:(id)data faceprintVersion:(int64_t)version;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation PHFaceprint
 
-- (PHFaceprint)initWithDictionaryRepresentation:(id)a3
+- (PHFaceprint)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"faceprintData"];
-  v6 = [v4 objectForKeyedSubscript:@"faceprintVersion"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"faceprintData"];
+  v6 = [representationCopy objectForKeyedSubscript:@"faceprintVersion"];
 
   v7 = -[PHFaceprint initWithFaceprintData:faceprintVersion:](self, "initWithFaceprintData:faceprintVersion:", v5, [v6 integerValue]);
   return v7;
@@ -31,13 +31,13 @@
   return v5;
 }
 
-- (PHFaceprint)initWithFaceprintData:(id)a3 faceprintVersion:(int64_t)a4
+- (PHFaceprint)initWithFaceprintData:(id)data faceprintVersion:(int64_t)version
 {
-  v8 = a3;
-  if (!v8)
+  dataCopy = data;
+  if (!dataCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PHFaceprint.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"data != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHFaceprint.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"data != nil"}];
   }
 
   v13.receiver = self;
@@ -46,8 +46,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_faceprintData, a3);
-    v10->_faceprintVersion = a4;
+    objc_storeStrong(&v9->_faceprintData, data);
+    v10->_faceprintVersion = version;
   }
 
   return v10;

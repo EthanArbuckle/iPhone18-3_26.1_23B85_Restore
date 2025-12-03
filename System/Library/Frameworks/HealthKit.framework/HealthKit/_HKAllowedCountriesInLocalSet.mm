@@ -1,15 +1,15 @@
 @interface _HKAllowedCountriesInLocalSet
 - (BOOL)someRegionIsSupported;
-- (_HKAllowedCountriesInLocalSet)initWithLocalCountrySet:(id)a3;
-- (unint64_t)ineligibilityReasonsForOnboardingCountryCode:(id)a3;
+- (_HKAllowedCountriesInLocalSet)initWithLocalCountrySet:(id)set;
+- (unint64_t)ineligibilityReasonsForOnboardingCountryCode:(id)code;
 @end
 
 @implementation _HKAllowedCountriesInLocalSet
 
-- (unint64_t)ineligibilityReasonsForOnboardingCountryCode:(id)a3
+- (unint64_t)ineligibilityReasonsForOnboardingCountryCode:(id)code
 {
-  v4 = a3;
-  if (v4 && (-[HKAllowedCountries localCountrySet](self, "localCountrySet"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 containsCountryCode:v4], v5, (v6 & 1) != 0))
+  codeCopy = code;
+  if (codeCopy && (-[HKAllowedCountries localCountrySet](self, "localCountrySet"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 containsCountryCode:codeCopy], v5, (v6 & 1) != 0))
   {
     v7 = 0;
   }
@@ -24,20 +24,20 @@
 
 - (BOOL)someRegionIsSupported
 {
-  v2 = [(HKAllowedCountries *)self localCountrySet];
-  v3 = [v2 isEmpty];
+  localCountrySet = [(HKAllowedCountries *)self localCountrySet];
+  isEmpty = [localCountrySet isEmpty];
 
-  return v3 ^ 1;
+  return isEmpty ^ 1;
 }
 
-- (_HKAllowedCountriesInLocalSet)initWithLocalCountrySet:(id)a3
+- (_HKAllowedCountriesInLocalSet)initWithLocalCountrySet:(id)set
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = MEMORY[0x1E696AD98];
-  v6 = a3;
-  v7 = [v5 numberWithInteger:{objc_msgSend(v6, "contentVersion")}];
+  setCopy = set;
+  v7 = [v5 numberWithInteger:{objc_msgSend(setCopy, "contentVersion")}];
   v8 = [v4 stringWithFormat:@"%@_%@", @"localSet", v7];
-  v9 = [(HKAllowedCountries *)self _initWithCategory:v8 version:v6 localCountrySet:1 remoteState:0 remoteCountrySet:?];
+  v9 = [(HKAllowedCountries *)self _initWithCategory:v8 version:setCopy localCountrySet:1 remoteState:0 remoteCountrySet:?];
 
   return v9;
 }

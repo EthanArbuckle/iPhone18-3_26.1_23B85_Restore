@@ -1,26 +1,26 @@
 @interface WFOnScreenContentManager
 - (WFOnScreenContentManager)init;
-- (id)visibleApplicationsFromLayout:(id)a3;
-- (void)finishGettingVisibleApplicationsWithLayout:(id)a3;
-- (void)getContentForLayoutElement:(id)a3 serviceOptions:(id)a4 completionHandler:(id)a5;
-- (void)getNodeForGlobalUserActivityWithCompletionHandler:(id)a3;
-- (void)getOnScreenContentWithOptions:(id)a3 completion:(id)a4;
-- (void)getOnScreenContentWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)getVisibleApplicationsWithCompletionHandler:(id)a3;
+- (id)visibleApplicationsFromLayout:(id)layout;
+- (void)finishGettingVisibleApplicationsWithLayout:(id)layout;
+- (void)getContentForLayoutElement:(id)element serviceOptions:(id)options completionHandler:(id)handler;
+- (void)getNodeForGlobalUserActivityWithCompletionHandler:(id)handler;
+- (void)getOnScreenContentWithOptions:(id)options completion:(id)completion;
+- (void)getOnScreenContentWithOptions:(id)options completionHandler:(id)handler;
+- (void)getVisibleApplicationsWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFOnScreenContentManager
 
-- (void)getNodeForGlobalUserActivityWithCompletionHandler:(id)a3
+- (void)getNodeForGlobalUserActivityWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = MEMORY[0x277D77BA8];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __78__WFOnScreenContentManager_getNodeForGlobalUserActivityWithCompletionHandler___block_invoke;
   v6[3] = &unk_2788FFE70;
-  v7 = v3;
-  v5 = v3;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [v4 currentUserActivityUUIDWithOptions:0 completionHandler:v6];
 }
 
@@ -231,14 +231,14 @@ LABEL_24:
 LABEL_32:
 }
 
-- (id)visibleApplicationsFromLayout:(id)a3
+- (id)visibleApplicationsFromLayout:(id)layout
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 elements], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6))
+  layoutCopy = layout;
+  v4 = layoutCopy;
+  if (layoutCopy && ([layoutCopy elements], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6))
   {
-    v7 = [v4 elements];
-    v8 = [v7 if_compactMap:&__block_literal_global_6454];
+    elements = [v4 elements];
+    v8 = [elements if_compactMap:&__block_literal_global_6454];
   }
 
   else
@@ -265,21 +265,21 @@ id __58__WFOnScreenContentManager_visibleApplicationsFromLayout___block_invoke(u
   return v3;
 }
 
-- (void)finishGettingVisibleApplicationsWithLayout:(id)a3
+- (void)finishGettingVisibleApplicationsWithLayout:(id)layout
 {
-  v8 = a3;
+  layoutCopy = layout;
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(WFOnScreenContentManager *)self layoutMonitor];
-  [v4 invalidate];
+  layoutMonitor = [(WFOnScreenContentManager *)self layoutMonitor];
+  [layoutMonitor invalidate];
 
   [(WFOnScreenContentManager *)self setLayoutMonitor:0];
-  v5 = [(WFOnScreenContentManager *)self visibleApplicationFetchCompletionHandler];
+  visibleApplicationFetchCompletionHandler = [(WFOnScreenContentManager *)self visibleApplicationFetchCompletionHandler];
 
-  if (v5)
+  if (visibleApplicationFetchCompletionHandler)
   {
-    v6 = [(WFOnScreenContentManager *)self visibleApplicationFetchCompletionHandler];
-    v7 = [(WFOnScreenContentManager *)self visibleApplicationsFromLayout:v8];
-    (v6)[2](v6, v7, 0);
+    visibleApplicationFetchCompletionHandler2 = [(WFOnScreenContentManager *)self visibleApplicationFetchCompletionHandler];
+    v7 = [(WFOnScreenContentManager *)self visibleApplicationsFromLayout:layoutCopy];
+    (visibleApplicationFetchCompletionHandler2)[2](visibleApplicationFetchCompletionHandler2, v7, 0);
 
     [(WFOnScreenContentManager *)self setVisibleApplicationFetchCompletionHandler:0];
   }
@@ -287,35 +287,35 @@ id __58__WFOnScreenContentManager_visibleApplicationsFromLayout___block_invoke(u
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)getVisibleApplicationsWithCompletionHandler:(id)a3
+- (void)getVisibleApplicationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(WFOnScreenContentManager *)self layoutMonitor];
+  layoutMonitor = [(WFOnScreenContentManager *)self layoutMonitor];
 
-  v6 = [(WFOnScreenContentManager *)self visibleApplicationFetchCompletionHandler];
+  visibleApplicationFetchCompletionHandler = [(WFOnScreenContentManager *)self visibleApplicationFetchCompletionHandler];
 
   os_unfair_lock_unlock(&self->_lock);
-  if (v5 && v6)
+  if (layoutMonitor && visibleApplicationFetchCompletionHandler)
   {
     [(WFOnScreenContentManager *)self finishGettingVisibleApplicationsWithLayout:0];
   }
 
-  v7 = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
+  configurationForDefaultMainDisplayMonitor = [MEMORY[0x277D0AD20] configurationForDefaultMainDisplayMonitor];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __72__WFOnScreenContentManager_getVisibleApplicationsWithCompletionHandler___block_invoke;
   v13[3] = &unk_2788FFE00;
   v13[4] = self;
-  [v7 setTransitionHandler:v13];
-  [v7 setNeedsUserInteractivePriority:1];
-  v8 = [MEMORY[0x277D0AD08] monitorWithConfiguration:v7];
+  [configurationForDefaultMainDisplayMonitor setTransitionHandler:v13];
+  [configurationForDefaultMainDisplayMonitor setNeedsUserInteractivePriority:1];
+  v8 = [MEMORY[0x277D0AD08] monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
   os_unfair_lock_lock(&self->_lock);
   layoutMonitor = self->_layoutMonitor;
   self->_layoutMonitor = v8;
   v10 = v8;
 
-  v11 = [v4 copy];
+  v11 = [handlerCopy copy];
   visibleApplicationFetchCompletionHandler = self->_visibleApplicationFetchCompletionHandler;
   self->_visibleApplicationFetchCompletionHandler = v11;
 
@@ -332,26 +332,26 @@ uint64_t __72__WFOnScreenContentManager_getVisibleApplicationsWithCompletionHand
   return result;
 }
 
-- (void)getContentForLayoutElement:(id)a3 serviceOptions:(id)a4 completionHandler:(id)a5
+- (void)getContentForLayoutElement:(id)element serviceOptions:(id)options completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = MEMORY[0x277CD3C60];
-  v9 = a4;
-  v10 = a3;
+  optionsCopy = options;
+  elementCopy = element;
   v11 = [v8 alloc];
-  v12 = [v10 identifier];
-  v13 = [v11 initWithSceneIdentifier:v12 serviceOptions:v9];
+  identifier = [elementCopy identifier];
+  v13 = [v11 initWithSceneIdentifier:identifier serviceOptions:optionsCopy];
 
   v14 = objc_alloc(MEMORY[0x277CD3A78]);
-  v15 = [v10 bundleIdentifier];
+  bundleIdentifier = [elementCopy bundleIdentifier];
 
-  v16 = [v14 initWithBundleIdentifier:v15 intentForwardingAction:v13];
+  v16 = [v14 initWithBundleIdentifier:bundleIdentifier intentForwardingAction:v13];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __88__WFOnScreenContentManager_getContentForLayoutElement_serviceOptions_completionHandler___block_invoke;
   v18[3] = &unk_2788FFDD8;
-  v19 = v7;
-  v17 = v7;
+  v19 = handlerCopy;
+  v17 = handlerCopy;
   [v16 deliverIntentForwardingActionWithResponseHandler:v18];
 }
 
@@ -373,16 +373,16 @@ void __88__WFOnScreenContentManager_getContentForLayoutElement_serviceOptions_co
   }
 }
 
-- (void)getOnScreenContentWithOptions:(id)a3 completion:(id)a4
+- (void)getOnScreenContentWithOptions:(id)options completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __69__WFOnScreenContentManager_getOnScreenContentWithOptions_completion___block_invoke;
   v8[3] = &unk_2788FFDB0;
-  v9 = v6;
-  v7 = v6;
-  [(WFOnScreenContentManager *)self getOnScreenContentWithOptions:a3 completionHandler:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [(WFOnScreenContentManager *)self getOnScreenContentWithOptions:options completionHandler:v8];
 }
 
 void __69__WFOnScreenContentManager_getOnScreenContentWithOptions_completion___block_invoke(uint64_t a1, void *a2)
@@ -404,22 +404,22 @@ void __69__WFOnScreenContentManager_getOnScreenContentWithOptions_completion___b
   }
 }
 
-- (void)getOnScreenContentWithOptions:(id)a3 completionHandler:(id)a4
+- (void)getOnScreenContentWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v8 = os_transaction_create();
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __76__WFOnScreenContentManager_getOnScreenContentWithOptions_completionHandler___block_invoke;
   v12[3] = &unk_2788FFD88;
   v12[4] = self;
-  v13 = v6;
+  v13 = optionsCopy;
   v14 = v8;
-  v15 = v7;
+  v15 = handlerCopy;
   v9 = v8;
-  v10 = v6;
-  v11 = v7;
+  v10 = optionsCopy;
+  v11 = handlerCopy;
   [(WFOnScreenContentManager *)self getNodeForGlobalUserActivityWithCompletionHandler:v12];
 }
 

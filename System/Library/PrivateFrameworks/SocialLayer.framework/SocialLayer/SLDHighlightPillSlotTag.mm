@@ -1,64 +1,64 @@
 @interface SLDHighlightPillSlotTag
-+ (id)tagForHighlightAttributions:(id)a3 maxWidth:(double)a4 maxSendersToDisplay:(unint64_t)a5 variant:(unint64_t)a6;
-- (BOOL)isEqual:(id)a3;
-- (SLDHighlightPillSlotTag)initWithCoder:(id)a3;
-- (SLDHighlightPillSlotTag)initWithHighlightAttributions:(id)a3 maxWidth:(double)a4 maxSendersToDisplay:(unint64_t)a5 variant:(unint64_t)a6;
-- (id)_personOtherThanPerson:(id)a3 inArray:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)tagForHighlightAttributions:(id)attributions maxWidth:(double)width maxSendersToDisplay:(unint64_t)display variant:(unint64_t)variant;
+- (BOOL)isEqual:(id)equal;
+- (SLDHighlightPillSlotTag)initWithCoder:(id)coder;
+- (SLDHighlightPillSlotTag)initWithHighlightAttributions:(id)attributions maxWidth:(double)width maxSendersToDisplay:(unint64_t)display variant:(unint64_t)variant;
+- (id)_personOtherThanPerson:(id)person inArray:(id)array;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)resolvedStyleForStyle:(id)a3;
+- (id)resolvedStyleForStyle:(id)style;
 - (unint64_t)allSendersCount;
 - (unint64_t)hash;
 - (unint64_t)maxPossibleImageCount;
-- (void)_generateCollaborationSendersForMultipleAttributions:(id)a3 maxSendersToDisplay:(unint64_t)a4;
-- (void)_generateCollaborationSendersForSingleAttribution:(id)a3 maxSendersToDisplay:(unint64_t)a4;
-- (void)_generateSendersWithDisplayPolicyForAttributions:(id)a3 maxSendersToDisplay:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_generateCollaborationSendersForMultipleAttributions:(id)attributions maxSendersToDisplay:(unint64_t)display;
+- (void)_generateCollaborationSendersForSingleAttribution:(id)attribution maxSendersToDisplay:(unint64_t)display;
+- (void)_generateSendersWithDisplayPolicyForAttributions:(id)attributions maxSendersToDisplay:(unint64_t)display;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SLDHighlightPillSlotTag
 
-+ (id)tagForHighlightAttributions:(id)a3 maxWidth:(double)a4 maxSendersToDisplay:(unint64_t)a5 variant:(unint64_t)a6
++ (id)tagForHighlightAttributions:(id)attributions maxWidth:(double)width maxSendersToDisplay:(unint64_t)display variant:(unint64_t)variant
 {
-  v9 = a3;
-  v10 = [[SLDHighlightPillSlotTag alloc] initWithHighlightAttributions:v9 maxWidth:a5 maxSendersToDisplay:a6 variant:a4];
+  attributionsCopy = attributions;
+  v10 = [[SLDHighlightPillSlotTag alloc] initWithHighlightAttributions:attributionsCopy maxWidth:display maxSendersToDisplay:variant variant:width];
 
   return v10;
 }
 
-- (SLDHighlightPillSlotTag)initWithHighlightAttributions:(id)a3 maxWidth:(double)a4 maxSendersToDisplay:(unint64_t)a5 variant:(unint64_t)a6
+- (SLDHighlightPillSlotTag)initWithHighlightAttributions:(id)attributions maxWidth:(double)width maxSendersToDisplay:(unint64_t)display variant:(unint64_t)variant
 {
-  v10 = a3;
+  attributionsCopy = attributions;
   v18.receiver = self;
   v18.super_class = SLDHighlightPillSlotTag;
   v11 = [(SLDHighlightPillSlotTag *)&v18 init];
   v13 = v11;
   if (v11)
   {
-    v11->_maxWidth = a4;
-    *&v12 = a4;
+    v11->_maxWidth = width;
+    *&v12 = width;
     v14 = [MEMORY[0x277CCABB0] numberWithFloat:v12];
     widthNumber = v13->_widthNumber;
     v13->_widthNumber = v14;
 
-    v13->_variant = a6;
-    if (a6 <= 0xA && ((1 << a6) & 0x4AA) != 0)
+    v13->_variant = variant;
+    if (variant <= 0xA && ((1 << variant) & 0x4AA) != 0)
     {
-      if ([v10 count] == 1)
+      if ([attributionsCopy count] == 1)
       {
-        v16 = [v10 firstObject];
-        [(SLDHighlightPillSlotTag *)v13 _generateCollaborationSendersForSingleAttribution:v16 maxSendersToDisplay:a5];
+        firstObject = [attributionsCopy firstObject];
+        [(SLDHighlightPillSlotTag *)v13 _generateCollaborationSendersForSingleAttribution:firstObject maxSendersToDisplay:display];
       }
 
       else
       {
-        [(SLDHighlightPillSlotTag *)v13 _generateCollaborationSendersForMultipleAttributions:v10 maxSendersToDisplay:a5];
+        [(SLDHighlightPillSlotTag *)v13 _generateCollaborationSendersForMultipleAttributions:attributionsCopy maxSendersToDisplay:display];
       }
     }
 
     else
     {
-      [(SLDHighlightPillSlotTag *)v13 _generateSendersWithDisplayPolicyForAttributions:v10 maxSendersToDisplay:a5];
+      [(SLDHighlightPillSlotTag *)v13 _generateSendersWithDisplayPolicyForAttributions:attributionsCopy maxSendersToDisplay:display];
     }
   }
 
@@ -68,47 +68,47 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SLDHighlightPillSlotTag *)self widthNumber];
-  v5 = [v3 stringWithFormat:@"<SLDHighlightPillSlotTag: %p> maxWidth:[%@]", self, v4];
+  widthNumber = [(SLDHighlightPillSlotTag *)self widthNumber];
+  v5 = [v3 stringWithFormat:@"<SLDHighlightPillSlotTag: %p> maxWidth:[%@]", self, widthNumber];
 
   return v5;
 }
 
-- (id)resolvedStyleForStyle:(id)a3
+- (id)resolvedStyleForStyle:(id)style
 {
   v15 = MEMORY[0x277D777E0];
-  v3 = a3;
-  v4 = [v3 accessibilityButtonShapes];
-  v5 = [v3 accessibilityContrast];
-  v6 = [v3 displayScale];
-  v7 = [v3 layoutDirection];
-  v8 = [v3 localization];
-  v9 = [v3 preferredContentSizeCategory];
+  styleCopy = style;
+  accessibilityButtonShapes = [styleCopy accessibilityButtonShapes];
+  accessibilityContrast = [styleCopy accessibilityContrast];
+  displayScale = [styleCopy displayScale];
+  layoutDirection = [styleCopy layoutDirection];
+  localization = [styleCopy localization];
+  preferredContentSizeCategory = [styleCopy preferredContentSizeCategory];
   ConstantColor = CGColorGetConstantColor(*MEMORY[0x277CBF3C0]);
-  v11 = [v3 userInterfaceIdiom];
-  v12 = [v3 userInterfaceStyle];
+  userInterfaceIdiom = [styleCopy userInterfaceIdiom];
+  userInterfaceStyle = [styleCopy userInterfaceStyle];
 
-  v13 = [v15 slotStyleWithAccessibilityButtonShapes:v4 accessibilityContrast:v5 displayRange:1 displayScale:v6 layoutDirection:v7 legibilityWeight:0 localization:v8 preferredContentSizeCategory:v9 tintColor:ConstantColor userInterfaceIdiom:v11 userInterfaceStyle:v12];
+  v13 = [v15 slotStyleWithAccessibilityButtonShapes:accessibilityButtonShapes accessibilityContrast:accessibilityContrast displayRange:1 displayScale:displayScale layoutDirection:layoutDirection legibilityWeight:0 localization:localization preferredContentSizeCategory:preferredContentSizeCategory tintColor:ConstantColor userInterfaceIdiom:userInterfaceIdiom userInterfaceStyle:userInterfaceStyle];
 
   return v13;
 }
 
-- (SLDHighlightPillSlotTag)initWithCoder:(id)a3
+- (SLDHighlightPillSlotTag)initWithCoder:(id)coder
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = SLDHighlightPillSlotTag;
   v5 = [(SLDHighlightPillSlotTag *)&v29 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"maxWidth"];
+    [coderCopy decodeDoubleForKey:@"maxWidth"];
     v5->_maxWidth = v6;
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maxWidthNumber"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maxWidthNumber"];
     widthNumber = v5->_widthNumber;
     v5->_widthNumber = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"allSendersCount"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"allSendersCount"];
     v10 = v9;
     if (v9)
     {
@@ -126,28 +126,28 @@
     v30[1] = objc_opt_class();
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:2];
     v14 = [v12 setWithArray:v13];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"sendersToDisplay"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"sendersToDisplay"];
     sendersToDisplay = v5->_sendersToDisplay;
     v5->_sendersToDisplay = v15;
 
-    v5->_variant = [v4 decodeIntegerForKey:@"variant"];
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pinnedSender"];
+    v5->_variant = [coderCopy decodeIntegerForKey:@"variant"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pinnedSender"];
     pinnedSender = v5->_pinnedSender;
     v5->_pinnedSender = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"meSender"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"meSender"];
     meSender = v5->_meSender;
     v5->_meSender = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupID"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupID"];
     groupID = v5->_groupID;
     v5->_groupID = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupPhotoPath"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupPhotoPath"];
     groupPhotoPath = v5->_groupPhotoPath;
     v5->_groupPhotoPath = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupName"];
     groupName = v5->_groupName;
     v5->_groupName = v25;
   }
@@ -156,77 +156,77 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(SLDHighlightPillSlotTag *)self maxWidth];
-  [v4 encodeDouble:@"maxWidth" forKey:?];
-  v5 = [(SLDHighlightPillSlotTag *)self widthNumber];
-  [v4 encodeObject:v5 forKey:@"maxWidthNumber"];
+  [coderCopy encodeDouble:@"maxWidth" forKey:?];
+  widthNumber = [(SLDHighlightPillSlotTag *)self widthNumber];
+  [coderCopy encodeObject:widthNumber forKey:@"maxWidthNumber"];
 
-  v6 = [(SLDHighlightPillSlotTag *)self allSendersNumber];
-  [v4 encodeObject:v6 forKey:@"allSendersCount"];
+  allSendersNumber = [(SLDHighlightPillSlotTag *)self allSendersNumber];
+  [coderCopy encodeObject:allSendersNumber forKey:@"allSendersCount"];
 
-  v7 = [(SLDHighlightPillSlotTag *)self sendersToDisplay];
-  [v4 encodeObject:v7 forKey:@"sendersToDisplay"];
+  sendersToDisplay = [(SLDHighlightPillSlotTag *)self sendersToDisplay];
+  [coderCopy encodeObject:sendersToDisplay forKey:@"sendersToDisplay"];
 
-  [v4 encodeInteger:-[SLDHighlightPillSlotTag variant](self forKey:{"variant"), @"variant"}];
-  v8 = [(SLDHighlightPillSlotTag *)self pinnedSender];
-  [v4 encodeObject:v8 forKey:@"pinnedSender"];
+  [coderCopy encodeInteger:-[SLDHighlightPillSlotTag variant](self forKey:{"variant"), @"variant"}];
+  pinnedSender = [(SLDHighlightPillSlotTag *)self pinnedSender];
+  [coderCopy encodeObject:pinnedSender forKey:@"pinnedSender"];
 
-  v9 = [(SLDHighlightPillSlotTag *)self meSender];
-  [v4 encodeObject:v9 forKey:@"meSender"];
+  meSender = [(SLDHighlightPillSlotTag *)self meSender];
+  [coderCopy encodeObject:meSender forKey:@"meSender"];
 
-  v10 = [(SLDHighlightPillSlotTag *)self groupID];
-  [v4 encodeObject:v10 forKey:@"groupID"];
+  groupID = [(SLDHighlightPillSlotTag *)self groupID];
+  [coderCopy encodeObject:groupID forKey:@"groupID"];
 
-  v11 = [(SLDHighlightPillSlotTag *)self groupPhotoPath];
-  [v4 encodeObject:v11 forKey:@"groupPhotoPath"];
+  groupPhotoPath = [(SLDHighlightPillSlotTag *)self groupPhotoPath];
+  [coderCopy encodeObject:groupPhotoPath forKey:@"groupPhotoPath"];
 
-  v12 = [(SLDHighlightPillSlotTag *)self groupName];
-  [v4 encodeObject:v12 forKey:@"groupName"];
+  groupName = [(SLDHighlightPillSlotTag *)self groupName];
+  [coderCopy encodeObject:groupName forKey:@"groupName"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [(SLDHighlightPillSlotTag *)self maxWidth];
   [v4 setMaxWidth:?];
-  v5 = [(SLDHighlightPillSlotTag *)self widthNumber];
-  [v4 setWidthNumber:v5];
+  widthNumber = [(SLDHighlightPillSlotTag *)self widthNumber];
+  [v4 setWidthNumber:widthNumber];
 
-  v6 = [(SLDHighlightPillSlotTag *)self sendersToDisplay];
-  [v4 setSendersToDisplay:v6];
+  sendersToDisplay = [(SLDHighlightPillSlotTag *)self sendersToDisplay];
+  [v4 setSendersToDisplay:sendersToDisplay];
 
-  v7 = [(SLDHighlightPillSlotTag *)self allSendersNumber];
-  [v4 setAllSendersNumber:v7];
+  allSendersNumber = [(SLDHighlightPillSlotTag *)self allSendersNumber];
+  [v4 setAllSendersNumber:allSendersNumber];
 
   [v4 setVariant:{-[SLDHighlightPillSlotTag variant](self, "variant")}];
-  v8 = [(SLDHighlightPillSlotTag *)self pinnedSender];
-  [v4 setPinnedSender:v8];
+  pinnedSender = [(SLDHighlightPillSlotTag *)self pinnedSender];
+  [v4 setPinnedSender:pinnedSender];
 
-  v9 = [(SLDHighlightPillSlotTag *)self meSender];
-  [v4 setMeSender:v9];
+  meSender = [(SLDHighlightPillSlotTag *)self meSender];
+  [v4 setMeSender:meSender];
 
-  v10 = [(SLDHighlightPillSlotTag *)self groupID];
-  [v4 setGroupID:v10];
+  groupID = [(SLDHighlightPillSlotTag *)self groupID];
+  [v4 setGroupID:groupID];
 
-  v11 = [(SLDHighlightPillSlotTag *)self groupPhotoPath];
-  [v4 setGroupPhotoPath:v11];
+  groupPhotoPath = [(SLDHighlightPillSlotTag *)self groupPhotoPath];
+  [v4 setGroupPhotoPath:groupPhotoPath];
 
-  v12 = [(SLDHighlightPillSlotTag *)self groupName];
-  [v4 setGroupName:v12];
+  groupName = [(SLDHighlightPillSlotTag *)self groupName];
+  [v4 setGroupName:groupName];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = equalCopy;
     v7 = v6;
     if (v6 == self)
     {
@@ -244,28 +244,28 @@ LABEL_61:
       goto LABEL_60;
     }
 
-    v11 = [(SLDHighlightPillSlotTag *)self allSendersNumber];
-    if (v11 || ([(SLDHighlightPillSlotTag *)v7 allSendersNumber], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    allSendersNumber = [(SLDHighlightPillSlotTag *)self allSendersNumber];
+    if (allSendersNumber || ([(SLDHighlightPillSlotTag *)v7 allSendersNumber], (widthNumber = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v12 = [(SLDHighlightPillSlotTag *)self allSendersNumber];
-      if (!v12)
+      allSendersNumber2 = [(SLDHighlightPillSlotTag *)self allSendersNumber];
+      if (!allSendersNumber2)
       {
         goto LABEL_22;
       }
 
-      v13 = v12;
-      v14 = [(SLDHighlightPillSlotTag *)v7 allSendersNumber];
-      if (!v14)
+      v13 = allSendersNumber2;
+      allSendersNumber3 = [(SLDHighlightPillSlotTag *)v7 allSendersNumber];
+      if (!allSendersNumber3)
       {
         goto LABEL_21;
       }
 
-      v15 = v14;
-      v16 = [(SLDHighlightPillSlotTag *)self allSendersNumber];
-      v17 = [(SLDHighlightPillSlotTag *)v7 allSendersNumber];
-      v18 = [v16 isEqualToNumber:v17];
+      v15 = allSendersNumber3;
+      allSendersNumber4 = [(SLDHighlightPillSlotTag *)self allSendersNumber];
+      allSendersNumber5 = [(SLDHighlightPillSlotTag *)v7 allSendersNumber];
+      v18 = [allSendersNumber4 isEqualToNumber:allSendersNumber5];
 
-      if (v11)
+      if (allSendersNumber)
       {
 
         if (!v18)
@@ -284,21 +284,21 @@ LABEL_61:
       }
     }
 
-    v11 = [(SLDHighlightPillSlotTag *)self widthNumber];
-    if (!v11)
+    allSendersNumber = [(SLDHighlightPillSlotTag *)self widthNumber];
+    if (!allSendersNumber)
     {
-      v3 = [(SLDHighlightPillSlotTag *)v7 widthNumber];
-      if (!v3)
+      widthNumber = [(SLDHighlightPillSlotTag *)v7 widthNumber];
+      if (!widthNumber)
       {
 LABEL_26:
-        v26 = [(SLDHighlightPillSlotTag *)self sendersToDisplay];
-        if (v26 || ([(SLDHighlightPillSlotTag *)v7 sendersToDisplay], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        sendersToDisplay = [(SLDHighlightPillSlotTag *)self sendersToDisplay];
+        if (sendersToDisplay || ([(SLDHighlightPillSlotTag *)v7 sendersToDisplay], (widthNumber = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v27 = [(SLDHighlightPillSlotTag *)self sendersToDisplay];
-          v28 = [(SLDHighlightPillSlotTag *)v7 sendersToDisplay];
-          v29 = SLPersonArrayisEqualToArray(v27, v28);
+          sendersToDisplay2 = [(SLDHighlightPillSlotTag *)self sendersToDisplay];
+          sendersToDisplay3 = [(SLDHighlightPillSlotTag *)v7 sendersToDisplay];
+          v29 = SLPersonArrayisEqualToArray(sendersToDisplay2, sendersToDisplay3);
 
-          if (v26)
+          if (sendersToDisplay)
           {
 
             if (!v29)
@@ -317,14 +317,14 @@ LABEL_26:
           }
         }
 
-        v30 = [(SLDHighlightPillSlotTag *)self pinnedSender];
-        if (v30 || ([(SLDHighlightPillSlotTag *)v7 pinnedSender], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        pinnedSender = [(SLDHighlightPillSlotTag *)self pinnedSender];
+        if (pinnedSender || ([(SLDHighlightPillSlotTag *)v7 pinnedSender], (widthNumber = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v31 = [(SLDHighlightPillSlotTag *)self pinnedSender];
-          v32 = [(SLDHighlightPillSlotTag *)v7 pinnedSender];
-          IsEqualToPerson = SLPersonIsEqualToPerson(v31, v32);
+          pinnedSender2 = [(SLDHighlightPillSlotTag *)self pinnedSender];
+          pinnedSender3 = [(SLDHighlightPillSlotTag *)v7 pinnedSender];
+          IsEqualToPerson = SLPersonIsEqualToPerson(pinnedSender2, pinnedSender3);
 
-          if (v30)
+          if (pinnedSender)
           {
 
             if (!IsEqualToPerson)
@@ -343,14 +343,14 @@ LABEL_26:
           }
         }
 
-        v34 = [(SLDHighlightPillSlotTag *)self meSender];
-        if (v34 || ([(SLDHighlightPillSlotTag *)v7 meSender], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        meSender = [(SLDHighlightPillSlotTag *)self meSender];
+        if (meSender || ([(SLDHighlightPillSlotTag *)v7 meSender], (widthNumber = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v35 = [(SLDHighlightPillSlotTag *)self meSender];
-          v36 = [(SLDHighlightPillSlotTag *)v7 meSender];
-          v37 = SLPersonIsEqualToPerson(v35, v36);
+          meSender2 = [(SLDHighlightPillSlotTag *)self meSender];
+          meSender3 = [(SLDHighlightPillSlotTag *)v7 meSender];
+          v37 = SLPersonIsEqualToPerson(meSender2, meSender3);
 
-          if (v34)
+          if (meSender)
           {
 
             if (!v37)
@@ -369,17 +369,17 @@ LABEL_26:
           }
         }
 
-        v38 = [(SLDHighlightPillSlotTag *)self variant];
-        if (v38 == [(SLDHighlightPillSlotTag *)v7 variant])
+        variant = [(SLDHighlightPillSlotTag *)self variant];
+        if (variant == [(SLDHighlightPillSlotTag *)v7 variant])
         {
-          v39 = [(SLDHighlightPillSlotTag *)self groupID];
-          if (v39 || ([(SLDHighlightPillSlotTag *)v7 groupID], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+          groupID = [(SLDHighlightPillSlotTag *)self groupID];
+          if (groupID || ([(SLDHighlightPillSlotTag *)v7 groupID], (widthNumber = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v40 = [(SLDHighlightPillSlotTag *)self groupID];
-            v41 = [(SLDHighlightPillSlotTag *)v7 groupID];
-            v42 = [v40 isEqualToString:v41];
+            groupID2 = [(SLDHighlightPillSlotTag *)self groupID];
+            groupID3 = [(SLDHighlightPillSlotTag *)v7 groupID];
+            v42 = [groupID2 isEqualToString:groupID3];
 
-            if (v39)
+            if (groupID)
             {
 
               if (!v42)
@@ -398,21 +398,21 @@ LABEL_26:
             }
           }
 
-          v43 = [(SLDHighlightPillSlotTag *)self groupPhotoPath];
-          if (!v43)
+          groupPhotoPath = [(SLDHighlightPillSlotTag *)self groupPhotoPath];
+          if (!groupPhotoPath)
           {
-            v3 = [(SLDHighlightPillSlotTag *)v7 groupPhotoPath];
-            if (!v3)
+            widthNumber = [(SLDHighlightPillSlotTag *)v7 groupPhotoPath];
+            if (!widthNumber)
             {
 LABEL_55:
-              v11 = [(SLDHighlightPillSlotTag *)self groupName];
-              if (v11 || ([(SLDHighlightPillSlotTag *)v7 groupName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+              allSendersNumber = [(SLDHighlightPillSlotTag *)self groupName];
+              if (allSendersNumber || ([(SLDHighlightPillSlotTag *)v7 groupName], (widthNumber = objc_claimAutoreleasedReturnValue()) != 0))
               {
-                v47 = [(SLDHighlightPillSlotTag *)self groupName];
-                v48 = [(SLDHighlightPillSlotTag *)v7 groupName];
-                v19 = [v47 isEqual:v48];
+                groupName = [(SLDHighlightPillSlotTag *)self groupName];
+                groupName2 = [(SLDHighlightPillSlotTag *)v7 groupName];
+                v19 = [groupName isEqual:groupName2];
 
-                if (v11)
+                if (allSendersNumber)
                 {
 LABEL_24:
 
@@ -429,11 +429,11 @@ LABEL_24:
             }
           }
 
-          v44 = [(SLDHighlightPillSlotTag *)self groupPhotoPath];
-          v45 = [(SLDHighlightPillSlotTag *)v7 groupPhotoPath];
-          v46 = [v44 isEqual:v45];
+          groupPhotoPath2 = [(SLDHighlightPillSlotTag *)self groupPhotoPath];
+          groupPhotoPath3 = [(SLDHighlightPillSlotTag *)v7 groupPhotoPath];
+          v46 = [groupPhotoPath2 isEqual:groupPhotoPath3];
 
-          if (v43)
+          if (groupPhotoPath)
           {
 
             if (v46)
@@ -458,29 +458,29 @@ LABEL_60:
       }
     }
 
-    v20 = [(SLDHighlightPillSlotTag *)self widthNumber];
-    if (!v20)
+    widthNumber2 = [(SLDHighlightPillSlotTag *)self widthNumber];
+    if (!widthNumber2)
     {
 LABEL_22:
       v19 = 0;
-      if (!v11)
+      if (!allSendersNumber)
       {
-        v11 = v3;
+        allSendersNumber = widthNumber;
       }
 
       goto LABEL_24;
     }
 
-    v13 = v20;
-    v21 = [(SLDHighlightPillSlotTag *)v7 widthNumber];
-    if (v21)
+    v13 = widthNumber2;
+    widthNumber3 = [(SLDHighlightPillSlotTag *)v7 widthNumber];
+    if (widthNumber3)
     {
-      v22 = v21;
-      v23 = [(SLDHighlightPillSlotTag *)self widthNumber];
-      v24 = [(SLDHighlightPillSlotTag *)v7 widthNumber];
-      v25 = [v23 isEqualToNumber:v24];
+      v22 = widthNumber3;
+      widthNumber4 = [(SLDHighlightPillSlotTag *)self widthNumber];
+      widthNumber5 = [(SLDHighlightPillSlotTag *)v7 widthNumber];
+      v25 = [widthNumber4 isEqualToNumber:widthNumber5];
 
-      if (v11)
+      if (allSendersNumber)
       {
 
         if (!v25)
@@ -514,44 +514,44 @@ LABEL_62:
 
 - (unint64_t)hash
 {
-  v3 = [(SLDHighlightPillSlotTag *)self widthNumber];
-  v4 = [v3 hash];
-  v5 = [(SLDHighlightPillSlotTag *)self sendersToDisplay];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SLDHighlightPillSlotTag *)self allSendersNumber];
-  v8 = [v7 hash];
-  v9 = [(SLDHighlightPillSlotTag *)self pinnedSender];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(SLDHighlightPillSlotTag *)self meSender];
-  v12 = [v11 hash];
+  widthNumber = [(SLDHighlightPillSlotTag *)self widthNumber];
+  v4 = [widthNumber hash];
+  sendersToDisplay = [(SLDHighlightPillSlotTag *)self sendersToDisplay];
+  v6 = [sendersToDisplay hash] ^ v4;
+  allSendersNumber = [(SLDHighlightPillSlotTag *)self allSendersNumber];
+  v8 = [allSendersNumber hash];
+  pinnedSender = [(SLDHighlightPillSlotTag *)self pinnedSender];
+  v10 = v6 ^ v8 ^ [pinnedSender hash];
+  meSender = [(SLDHighlightPillSlotTag *)self meSender];
+  v12 = [meSender hash];
   v13 = v12 ^ [(SLDHighlightPillSlotTag *)self variant];
-  v14 = [(SLDHighlightPillSlotTag *)self groupID];
-  v15 = v10 ^ v13 ^ [v14 hash];
-  v16 = [(SLDHighlightPillSlotTag *)self groupPhotoPath];
-  v17 = [v16 hash];
-  v18 = [(SLDHighlightPillSlotTag *)self groupName];
-  v19 = v17 ^ [v18 hash];
+  groupID = [(SLDHighlightPillSlotTag *)self groupID];
+  v15 = v10 ^ v13 ^ [groupID hash];
+  groupPhotoPath = [(SLDHighlightPillSlotTag *)self groupPhotoPath];
+  v17 = [groupPhotoPath hash];
+  groupName = [(SLDHighlightPillSlotTag *)self groupName];
+  v19 = v17 ^ [groupName hash];
 
   return v15 ^ v19;
 }
 
 - (unint64_t)maxPossibleImageCount
 {
-  v3 = [(SLDHighlightPillSlotTag *)self groupPhotoPath];
-  if (v3 && (v4 = v3, [(SLDHighlightPillSlotTag *)self groupID], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  groupPhotoPath = [(SLDHighlightPillSlotTag *)self groupPhotoPath];
+  if (groupPhotoPath && (v4 = groupPhotoPath, [(SLDHighlightPillSlotTag *)self groupID], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(SLDHighlightPillSlotTag *)self sendersToDisplay];
-    v6 = [v7 count];
+    sendersToDisplay = [(SLDHighlightPillSlotTag *)self sendersToDisplay];
+    v6 = [sendersToDisplay count];
   }
 
-  v8 = [(SLDHighlightPillSlotTag *)self pinnedSender];
+  pinnedSender = [(SLDHighlightPillSlotTag *)self pinnedSender];
 
-  if (v8)
+  if (pinnedSender)
   {
     return v6 + 1;
   }
@@ -564,39 +564,39 @@ LABEL_62:
 
 - (unint64_t)allSendersCount
 {
-  v3 = [(SLDHighlightPillSlotTag *)self allSendersNumber];
+  allSendersNumber = [(SLDHighlightPillSlotTag *)self allSendersNumber];
 
-  if (!v3)
+  if (!allSendersNumber)
   {
     return 0;
   }
 
-  v4 = [(SLDHighlightPillSlotTag *)self allSendersNumber];
-  v5 = [v4 unsignedIntegerValue];
+  allSendersNumber2 = [(SLDHighlightPillSlotTag *)self allSendersNumber];
+  unsignedIntegerValue = [allSendersNumber2 unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
-- (void)_generateCollaborationSendersForSingleAttribution:(id)a3 maxSendersToDisplay:(unint64_t)a4
+- (void)_generateCollaborationSendersForSingleAttribution:(id)attribution maxSendersToDisplay:(unint64_t)display
 {
-  v43 = a4;
+  displayCopy = display;
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v45 = [MEMORY[0x277CBEA60] array];
+  attributionCopy = attribution;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEA60] array];
   v48 = +[SLPerson fetchMeContact];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = [v4 relatedPersons];
+  obj = [attributionCopy relatedPersons];
   v6 = [obj countByEnumeratingWithState:&v50 objects:v54 count:16];
-  v49 = v5;
+  v49 = array;
   if (v6)
   {
     v7 = v6;
     v8 = *v51;
-    v9 = v4;
+    v9 = attributionCopy;
     do
     {
       for (i = 0; i != v7; ++i)
@@ -607,10 +607,10 @@ LABEL_62:
         }
 
         v11 = *(*(&v50 + 1) + 8 * i);
-        if ([v4 isFromMe])
+        if ([attributionCopy isFromMe])
         {
-          v12 = [v4 sender];
-          IsEqualToPerson = SLPersonIsEqualToPerson(v12, v11);
+          sender = [attributionCopy sender];
+          IsEqualToPerson = SLPersonIsEqualToPerson(sender, v11);
         }
 
         else
@@ -618,18 +618,18 @@ LABEL_62:
           IsEqualToPerson = 0;
         }
 
-        v14 = [v11 contact];
-        v15 = [v14 identifier];
-        v16 = [v48 identifier];
-        v17 = [v15 isEqualToString:v16];
+        contact = [v11 contact];
+        identifier = [contact identifier];
+        identifier2 = [v48 identifier];
+        v17 = [identifier isEqualToString:identifier2];
 
-        v5 = v49;
+        array = v49;
         if ((SLPersonArrayContainsPerson(v49, v11) & 1) == 0 && (IsEqualToPerson & 1) == 0 && (v17 & 1) == 0)
         {
           [v49 addObject:v11];
         }
 
-        v4 = v9;
+        attributionCopy = v9;
       }
 
       v7 = [obj countByEnumeratingWithState:&v50 objects:v54 count:16];
@@ -638,45 +638,45 @@ LABEL_62:
     while (v7);
   }
 
-  if (![v5 count])
+  if (![array count])
   {
-    v18 = [v4 relatedPersons];
-    v19 = [v18 count];
+    relatedPersons = [attributionCopy relatedPersons];
+    v19 = [relatedPersons count];
 
     if (v19)
     {
-      v20 = [v4 relatedPersons];
-      v21 = [v20 firstObject];
-      [v49 addObject:v21];
+      relatedPersons2 = [attributionCopy relatedPersons];
+      firstObject = [relatedPersons2 firstObject];
+      [v49 addObject:firstObject];
     }
   }
 
-  v22 = [v4 groupPhotoPath];
-  [(SLDHighlightPillSlotTag *)self setGroupPhotoPath:v22];
+  groupPhotoPath = [attributionCopy groupPhotoPath];
+  [(SLDHighlightPillSlotTag *)self setGroupPhotoPath:groupPhotoPath];
 
-  v23 = [v4 groupID];
-  v24 = [v23 UUIDString];
-  [(SLDHighlightPillSlotTag *)self setGroupID:v24];
+  groupID = [attributionCopy groupID];
+  uUIDString = [groupID UUIDString];
+  [(SLDHighlightPillSlotTag *)self setGroupID:uUIDString];
 
-  v25 = [v4 groupDisplayName];
-  v26 = [v25 length];
+  groupDisplayName = [attributionCopy groupDisplayName];
+  v26 = [groupDisplayName length];
 
   if (v26)
   {
-    v27 = [v4 groupDisplayName];
-    [(SLDHighlightPillSlotTag *)self setGroupName:v27];
+    groupDisplayName2 = [attributionCopy groupDisplayName];
+    [(SLDHighlightPillSlotTag *)self setGroupName:groupDisplayName2];
 
-    v28 = [(SLDHighlightPillSlotTag *)self groupPhotoPath];
-    if (v28)
+    groupPhotoPath2 = [(SLDHighlightPillSlotTag *)self groupPhotoPath];
+    if (groupPhotoPath2)
     {
-      v29 = v28;
-      v30 = [(SLDHighlightPillSlotTag *)self groupID];
+      v29 = groupPhotoPath2;
+      groupID2 = [(SLDHighlightPillSlotTag *)self groupID];
 
-      if (v30)
+      if (groupID2)
       {
         v31 = 1;
         v32 = v49;
-        v33 = v45;
+        v33 = array2;
         goto LABEL_31;
       }
     }
@@ -694,14 +694,14 @@ LABEL_62:
 
     v37 = v34;
     v31 = 1;
-    v35 = v45;
+    v35 = array2;
   }
 
   else
   {
     v32 = v49;
     v31 = [v49 count];
-    v35 = v45;
+    v35 = array2;
     if (v31 >= v44)
     {
       v36 = [v49 subarrayWithRange:0];
@@ -722,35 +722,35 @@ LABEL_31:
   sendersToDisplay = self->_sendersToDisplay;
   self->_sendersToDisplay = v38;
 
-  v40 = [v4 isPinned];
-  if (v40)
+  isPinned = [attributionCopy isPinned];
+  if (isPinned)
   {
-    v41 = [v4 sender];
+    sender2 = [attributionCopy sender];
   }
 
   else
   {
-    v41 = 0;
+    sender2 = 0;
   }
 
-  objc_storeStrong(&self->_pinnedSender, v41);
-  if (v40)
+  objc_storeStrong(&self->_pinnedSender, sender2);
+  if (isPinned)
   {
   }
 
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_generateCollaborationSendersForMultipleAttributions:(id)a3 maxSendersToDisplay:(unint64_t)a4
+- (void)_generateCollaborationSendersForMultipleAttributions:(id)attributions maxSendersToDisplay:(unint64_t)display
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attributionsCopy = attributions;
   v5 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"timestamp" ascending:0];
   v6 = [MEMORY[0x277CBEA60] arrayWithObject:v5];
-  v7 = [v4 sortedArrayUsingDescriptors:v6];
+  v7 = [attributionsCopy sortedArrayUsingDescriptors:v6];
 
-  v8 = [MEMORY[0x277CBEB18] array];
-  v47 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
@@ -758,7 +758,7 @@ LABEL_31:
   v9 = v7;
   v10 = [v9 countByEnumeratingWithState:&v59 objects:v65 count:16];
   v44 = v5;
-  v45 = v4;
+  v45 = attributionsCopy;
   if (v10)
   {
     v11 = v10;
@@ -775,12 +775,12 @@ LABEL_31:
         v14 = *(*(&v59 + 1) + 8 * i);
         if ([v14 isPinned])
         {
-          v15 = [v14 sender];
+          sender = [v14 sender];
           if ([v14 isFromMe])
           {
-            v16 = [v14 sender];
-            v17 = [v14 relatedPersons];
-            v18 = [(SLDHighlightPillSlotTag *)self _personOtherThanPerson:v16 inArray:v17];
+            sender2 = [v14 sender];
+            relatedPersons = [v14 relatedPersons];
+            v18 = [(SLDHighlightPillSlotTag *)self _personOtherThanPerson:sender2 inArray:relatedPersons];
             v19 = v18;
             if (v18)
             {
@@ -789,16 +789,16 @@ LABEL_31:
 
             else
             {
-              v20 = v15;
+              v20 = sender;
             }
 
             v21 = v20;
 
-            v15 = v21;
+            sender = v21;
           }
 
-          [v47 addObject:v15];
-          [v8 addObject:v15];
+          [array2 addObject:sender];
+          [array addObject:sender];
           goto LABEL_16;
         }
       }
@@ -813,9 +813,9 @@ LABEL_31:
     }
   }
 
-  v15 = 0;
+  sender = 0;
 LABEL_16:
-  v43 = v15;
+  v43 = sender;
 
   v57 = 0u;
   v58 = 0u;
@@ -838,12 +838,12 @@ LABEL_16:
         v23 = *(*(&v55 + 1) + 8 * j);
         if (([v23 isPinned] & 1) == 0)
         {
-          v24 = [v23 sender];
+          sender3 = [v23 sender];
           if ([v23 isFromMe])
           {
-            v25 = [v23 sender];
-            v26 = [v23 relatedPersons];
-            v27 = [(SLDHighlightPillSlotTag *)self _personOtherThanPerson:v25 inArray:v26];
+            sender4 = [v23 sender];
+            relatedPersons2 = [v23 relatedPersons];
+            v27 = [(SLDHighlightPillSlotTag *)self _personOtherThanPerson:sender4 inArray:relatedPersons2];
             v28 = v27;
             if (v27)
             {
@@ -852,18 +852,18 @@ LABEL_16:
 
             else
             {
-              v29 = v24;
+              v29 = sender3;
             }
 
             v30 = v29;
 
-            v24 = v30;
+            sender3 = v30;
           }
 
-          if ((SLPersonArrayContainsPerson(v8, v24) & 1) == 0)
+          if ((SLPersonArrayContainsPerson(array, sender3) & 1) == 0)
           {
-            [v47 addObject:v24];
-            [v8 addObject:v24];
+            [array2 addObject:sender3];
+            [array addObject:sender3];
           }
         }
 
@@ -871,8 +871,8 @@ LABEL_16:
         v54 = 0u;
         v51 = 0u;
         v52 = 0u;
-        v31 = [v23 relatedPersons];
-        v32 = [v31 countByEnumeratingWithState:&v51 objects:v63 count:16];
+        relatedPersons3 = [v23 relatedPersons];
+        v32 = [relatedPersons3 countByEnumeratingWithState:&v51 objects:v63 count:16];
         if (v32)
         {
           v33 = v32;
@@ -883,14 +883,14 @@ LABEL_16:
             {
               if (*v52 != v34)
               {
-                objc_enumerationMutation(v31);
+                objc_enumerationMutation(relatedPersons3);
               }
 
               v36 = *(*(&v51 + 1) + 8 * k);
               if ([v23 isFromMe])
               {
-                v37 = [v23 sender];
-                IsEqualToPerson = SLPersonIsEqualToPerson(v37, v36);
+                sender5 = [v23 sender];
+                IsEqualToPerson = SLPersonIsEqualToPerson(sender5, v36);
 
                 if (IsEqualToPerson)
                 {
@@ -898,13 +898,13 @@ LABEL_16:
                 }
               }
 
-              if ((SLPersonArrayContainsPerson(v8, v36) & 1) == 0)
+              if ((SLPersonArrayContainsPerson(array, v36) & 1) == 0)
               {
-                [v8 addObject:v36];
+                [array addObject:v36];
               }
             }
 
-            v33 = [v31 countByEnumeratingWithState:&v51 objects:v63 count:16];
+            v33 = [relatedPersons3 countByEnumeratingWithState:&v51 objects:v63 count:16];
           }
 
           while (v33);
@@ -917,8 +917,8 @@ LABEL_16:
     while (v50);
   }
 
-  self->_allSendersNumber = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
-  v39 = [v47 copy];
+  self->_allSendersNumber = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(array, "count")}];
+  v39 = [array2 copy];
   sendersToDisplay = self->_sendersToDisplay;
   self->_sendersToDisplay = v39;
 
@@ -928,17 +928,17 @@ LABEL_16:
   v42 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_generateSendersWithDisplayPolicyForAttributions:(id)a3 maxSendersToDisplay:(unint64_t)a4
+- (void)_generateSendersWithDisplayPolicyForAttributions:(id)attributions maxSendersToDisplay:(unint64_t)display
 {
   v54 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  attributionsCopy = attributions;
   v40 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"timestamp" ascending:0];
   v6 = [MEMORY[0x277CBEA60] arrayWithObject:?];
-  v42 = v5;
-  v7 = [v5 sortedArrayUsingDescriptors:v6];
+  v42 = attributionsCopy;
+  v7 = [attributionsCopy sortedArrayUsingDescriptors:v6];
 
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
@@ -949,13 +949,13 @@ LABEL_16:
   {
 
     v39 = 0;
-    v14 = 0;
+    sender2 = 0;
     goto LABEL_30;
   }
 
   v12 = v11;
-  v13 = 0;
-  v14 = 0;
+  sender3 = 0;
+  sender2 = 0;
   v15 = *v49;
   obj = v10;
   while (2)
@@ -968,30 +968,30 @@ LABEL_16:
       }
 
       v17 = *(*(&v48 + 1) + 8 * i);
-      if (v14 && v13)
+      if (sender2 && sender3)
       {
         v10 = obj;
 
 LABEL_23:
-        if ((SLPersonArrayContainsPerson(v8, v14) & 1) == 0)
+        if ((SLPersonArrayContainsPerson(array, sender2) & 1) == 0)
         {
-          [v8 addObject:v14];
-          [v9 addObject:v14];
+          [array addObject:sender2];
+          [array2 addObject:sender2];
         }
 
         goto LABEL_25;
       }
 
-      v18 = [*(*(&v48 + 1) + 8 * i) sender];
+      sender = [*(*(&v48 + 1) + 8 * i) sender];
 
-      if (v18)
+      if (sender)
       {
-        if (!v14)
+        if (!sender2)
         {
           if (![v17 isPinned])
           {
-            v14 = 0;
-            if (v13)
+            sender2 = 0;
+            if (sender3)
             {
               continue;
             }
@@ -999,10 +999,10 @@ LABEL_23:
             goto LABEL_13;
           }
 
-          v14 = [v17 sender];
+          sender2 = [v17 sender];
         }
 
-        if (v13)
+        if (sender3)
         {
           continue;
         }
@@ -1010,12 +1010,12 @@ LABEL_23:
 LABEL_13:
         if ([v17 isFromMe])
         {
-          v13 = [v17 sender];
+          sender3 = [v17 sender];
         }
 
         else
         {
-          v13 = 0;
+          sender3 = 0;
         }
 
         continue;
@@ -1032,19 +1032,19 @@ LABEL_13:
     break;
   }
 
-  if (v14)
+  if (sender2)
   {
     goto LABEL_23;
   }
 
 LABEL_25:
-  if (v13)
+  if (sender3)
   {
-    v39 = v13;
-    if ((SLPersonArrayContainsPerson(v8, v13) & 1) == 0)
+    v39 = sender3;
+    if ((SLPersonArrayContainsPerson(array, sender3) & 1) == 0)
     {
-      [v8 addObject:v13];
-      [v9 addObject:v13];
+      [array addObject:sender3];
+      [array2 addObject:sender3];
     }
   }
 
@@ -1054,7 +1054,7 @@ LABEL_25:
   }
 
 LABEL_30:
-  v38 = v14;
+  v38 = sender2;
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
@@ -1075,26 +1075,26 @@ LABEL_30:
         }
 
         v24 = *(*(&v44 + 1) + 8 * j);
-        v25 = [v24 sender];
-        if (v25)
+        sender4 = [v24 sender];
+        if (sender4)
         {
-          v26 = v25;
-          v27 = [v24 isFromMe];
+          v26 = sender4;
+          isFromMe = [v24 isFromMe];
 
-          if ((v27 & 1) == 0)
+          if ((isFromMe & 1) == 0)
           {
-            v28 = [v24 sender];
-            v29 = SLPersonArrayContainsPerson(v8, v28);
+            sender5 = [v24 sender];
+            v29 = SLPersonArrayContainsPerson(array, sender5);
 
             if ((v29 & 1) == 0)
             {
-              v30 = [v24 sender];
-              [v8 addObject:v30];
+              sender6 = [v24 sender];
+              [array addObject:sender6];
 
-              if ([v9 count] < a4)
+              if ([array2 count] < display)
               {
-                v31 = [v24 sender];
-                [v9 addObject:v31];
+                sender7 = [v24 sender];
+                [array2 addObject:sender7];
               }
             }
           }
@@ -1107,8 +1107,8 @@ LABEL_30:
     while (v21);
   }
 
-  self->_allSendersNumber = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
-  v32 = [v9 copy];
+  self->_allSendersNumber = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(array, "count")}];
+  v32 = [array2 copy];
   sendersToDisplay = self->_sendersToDisplay;
   self->_sendersToDisplay = v32;
 
@@ -1122,16 +1122,16 @@ LABEL_30:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_personOtherThanPerson:(id)a3 inArray:(id)a4
+- (id)_personOtherThanPerson:(id)person inArray:(id)array
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  personCopy = person;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  arrayCopy = array;
+  v7 = [arrayCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -1141,18 +1141,18 @@ LABEL_30:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrayCopy);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ((SLPersonIsEqualToPerson(v10, v5) & 1) == 0)
+        if ((SLPersonIsEqualToPerson(v10, personCopy) & 1) == 0)
         {
           v7 = v10;
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [arrayCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;

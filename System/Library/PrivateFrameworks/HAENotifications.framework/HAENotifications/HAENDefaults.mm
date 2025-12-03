@@ -3,10 +3,10 @@
 + (BOOL)isCurrentProcessMediaserverd;
 + (BOOL)isRunningCITests;
 + (id)sharedInstance;
-- (BOOL)_shouldRepromptSinceDate:(id)a3;
+- (BOOL)_shouldRepromptSinceDate:(id)date;
 - (BOOL)isConnectedUnknownWiredDeviceHeadphone;
 - (BOOL)isCurrentAudioAccessoryHeadphone;
-- (BOOL)isCurrentAudioAccessoryHeadphoneWithKey:(id)a3;
+- (BOOL)isCurrentAudioAccessoryHeadphoneWithKey:(id)key;
 - (BOOL)isHAENFeatureEnabled;
 - (BOOL)isHAENFeatureMandatory;
 - (BOOL)isHAENFeatureOptedIn;
@@ -17,19 +17,19 @@
 - (double)getLiveMonitorTimeWindowInSeconds;
 - (double)getLiveMonitoringThreshold;
 - (double)volumeReductionDelta;
-- (id)_generateAccessoryKeyWithManufacture:(id)a3 andSerialNumber:(id)a4;
+- (id)_generateAccessoryKeyWithManufacture:(id)manufacture andSerialNumber:(id)number;
 - (int)getReduceLoudSoundThreshold;
 - (int64_t)getAudioAccessoryConnectionInfo;
-- (int64_t)getAudioAccessoryConnectionInfoWithKey:(id)a3;
-- (void)_registerNotification:(id)a3;
+- (int64_t)getAudioAccessoryConnectionInfoWithKey:(id)key;
+- (void)_registerNotification:(id)notification;
 - (void)forceReadDefaults;
 - (void)getAudioAccessoryConnectionInfo;
 - (void)removeAllAdapters;
-- (void)setAudioAccessoryIsConnectedToHeadphones:(int64_t)a3 withKey:(id)a4 name:(id)a5;
-- (void)setAudioAccessoryIsConnectedToHeadphones:(int64_t)a3 withName:(id)a4;
-- (void)setUserVolumeWithValue:(float)a3 mininum:(float)a4;
-- (void)updateAudioAccessoryIsConnectedToHeadphones:(int64_t)a3;
-- (void)updateAudioAccessoryIsConnectedToHeadphones:(int64_t)a3 WithKey:(id)a4;
+- (void)setAudioAccessoryIsConnectedToHeadphones:(int64_t)headphones withKey:(id)key name:(id)name;
+- (void)setAudioAccessoryIsConnectedToHeadphones:(int64_t)headphones withName:(id)name;
+- (void)setUserVolumeWithValue:(float)value mininum:(float)mininum;
+- (void)updateAudioAccessoryIsConnectedToHeadphones:(int64_t)headphones;
+- (void)updateAudioAccessoryIsConnectedToHeadphones:(int64_t)headphones WithKey:(id)key;
 - (void)updateRLSSettings;
 - (void)updateUserVolumeForVolumeLimit;
 - (void)wiredDeviceStatusDidChange;
@@ -197,9 +197,9 @@ uint64_t __30__HAENDefaults_sharedInstance__block_invoke()
     goto LABEL_6;
   }
 
-  v9 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  if ((v9 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v8 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
@@ -221,7 +221,7 @@ uint64_t __46__HAENDefaults_updateUserVolumeForVolumeLimit__block_invoke(uint64_
   return [*(a1 + 32) setUserVolumeWithValue:a2 mininum:a3];
 }
 
-- (void)setUserVolumeWithValue:(float)a3 mininum:(float)a4
+- (void)setUserVolumeWithValue:(float)value mininum:(float)mininum
 {
   v14 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D27060];
@@ -248,7 +248,7 @@ LABEL_4:
     _os_log_impl(&dword_25081E000, v8, OS_LOG_TYPE_DEFAULT, "[VolumeLimit] current Volume  %f", buf, 0xCu);
   }
 
-  if (a4 < -1.0)
+  if (mininum < -1.0)
   {
     getpid();
     v10 = CMSessionManagerPerformVolumeOperationWithSequenceNumber();
@@ -307,16 +307,16 @@ LABEL_5:
   v6 = _os_feature_enabled_impl();
   v7 = +[HAENDefaults HAENSupportedForCurrentDeviceClass];
   v8 = v7;
-  v9 = 0;
+  bOOLValue = 0;
   if (v6 && v7)
   {
-    v9 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   v10 = HAENotificationsLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithBool:v9];
+    v11 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
     v12 = [MEMORY[0x277CCABB0] numberWithBool:v6];
     v13 = [MEMORY[0x277CCABB0] numberWithBool:v8];
     v16 = 138413314;
@@ -333,7 +333,7 @@ LABEL_5:
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return v9;
+  return bOOLValue;
 }
 
 - (BOOL)isHAENFeatureOptedIn
@@ -346,39 +346,39 @@ LABEL_5:
   os_unfair_lock_unlock(&self->_lock);
   if ([v4 BOOLValue])
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 - (BOOL)isHAENFeatureMandatory
 {
-  v2 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->_lock);
   v3 = objc_alloc_init(MEMORY[0x277CEFB38]);
   v4 = [v3 getPreferenceFor:*MEMORY[0x277CEFAF8]];
 
-  os_unfair_lock_unlock(&v2->_lock);
-  LOBYTE(v2) = [v4 BOOLValue];
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  LOBYTE(selfCopy) = [v4 BOOLValue];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isConnectedUnknownWiredDeviceHeadphone
 {
-  v2 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)v2->_domainSettings objectForKey:*MEMORY[0x277CEFAB0]];
-  os_unfair_lock_unlock(&v2->_lock);
-  LOBYTE(v2) = [v3 BOOLValue];
+  v3 = [(NSMutableDictionary *)selfCopy->_domainSettings objectForKey:*MEMORY[0x277CEFAB0]];
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  LOBYTE(selfCopy) = [v3 BOOLValue];
 
-  return v2;
+  return selfCopy;
 }
 
 - (double)getLiveMonitorTimeWindowInSeconds
@@ -402,42 +402,42 @@ LABEL_5:
 
 - (BOOL)isReduceLoudSoundEnabled
 {
-  v2 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)v2->_domainSettings objectForKey:*MEMORY[0x277CEFB20]];
-  os_unfair_lock_unlock(&v2->_lock);
-  LOBYTE(v2) = [v3 BOOLValue];
+  v3 = [(NSMutableDictionary *)selfCopy->_domainSettings objectForKey:*MEMORY[0x277CEFB20]];
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  LOBYTE(selfCopy) = [v3 BOOLValue];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isHKWriteEnabled
 {
   v2 = objc_alloc_init(MEMORY[0x277CEFB38]);
   v3 = [v2 getPreferenceFor:*MEMORY[0x277CEFAB8]];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isHAEOtherDevicesEnabled
 {
   v2 = objc_alloc_init(MEMORY[0x277CEFB38]);
   v3 = [v2 getPreferenceFor:*MEMORY[0x277CEFAC0]];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (int)getReduceLoudSoundThreshold
 {
-  v2 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)v2->_domainSettings objectForKey:*MEMORY[0x277CEFB28]];
-  os_unfair_lock_unlock(&v2->_lock);
-  LODWORD(v2) = [v3 intValue];
+  v3 = [(NSMutableDictionary *)selfCopy->_domainSettings objectForKey:*MEMORY[0x277CEFB28]];
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  LODWORD(selfCopy) = [v3 intValue];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)updateRLSSettings
@@ -512,20 +512,20 @@ LABEL_5:
   return v6;
 }
 
-- (id)_generateAccessoryKeyWithManufacture:(id)a3 andSerialNumber:(id)a4
+- (id)_generateAccessoryKeyWithManufacture:(id)manufacture andSerialNumber:(id)number
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithFormat:@"%@_%@", v7, v6];
+  numberCopy = number;
+  manufactureCopy = manufacture;
+  numberCopy = [[v5 alloc] initWithFormat:@"%@_%@", manufactureCopy, numberCopy];
 
-  return v8;
+  return numberCopy;
 }
 
-- (int64_t)getAudioAccessoryConnectionInfoWithKey:(id)a3
+- (int64_t)getAudioAccessoryConnectionInfoWithKey:(id)key
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
   v5 = [(NSMutableDictionary *)self->_domainSettings objectForKey:*MEMORY[0x277CEFAE0]];
   os_unfair_lock_unlock(&self->_lock);
@@ -535,7 +535,7 @@ LABEL_5:
     goto LABEL_25;
   }
 
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:keyCopy];
   v7 = v6;
   if (!v6)
   {
@@ -546,15 +546,15 @@ LABEL_24:
   }
 
   v8 = [v6 objectForKey:@"value"];
-  v9 = [v8 intValue];
+  intValue = [v8 intValue];
 
-  if (v9 == 1)
+  if (intValue == 1)
   {
     v11 = 1;
     goto LABEL_24;
   }
 
-  if (v9)
+  if (intValue)
   {
     v10 = HAENotificationsLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -570,15 +570,15 @@ LABEL_24:
   if (![v10 isEqualToString:@"iPad"]|| (MGGetBoolAnswer() & 1) == 0)
   {
     v12 = [v7 objectForKey:@"count"];
-    v13 = [v12 intValue];
+    intValue2 = [v12 intValue];
 
-    if (v13 <= 2 && ([v7 objectForKey:@"date"], v14 = objc_claimAutoreleasedReturnValue(), v15 = -[HAENDefaults _shouldRepromptSinceDate:](self, "_shouldRepromptSinceDate:", v14), v14, v15))
+    if (intValue2 <= 2 && ([v7 objectForKey:@"date"], v14 = objc_claimAutoreleasedReturnValue(), v15 = -[HAENDefaults _shouldRepromptSinceDate:](self, "_shouldRepromptSinceDate:", v14), v14, v15))
     {
       v16 = HAENotificationsLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 67109120;
-        v20 = v13;
+        v20 = intValue2;
         _os_log_impl(&dword_25081E000, v16, OS_LOG_TYPE_DEFAULT, "re-surfacing prompt for not headphone. query count: %d", &v19, 8u);
       }
 
@@ -591,7 +591,7 @@ LABEL_24:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 67109120;
-        v20 = v13;
+        v20 = intValue2;
         _os_log_impl(&dword_25081E000, v16, OS_LOG_TYPE_DEFAULT, "skipped re-surfacing prompt for not headphone. query count: %d", &v19, 8u);
       }
 
@@ -627,9 +627,9 @@ LABEL_25:
 
   if (v6)
   {
-    v11 = [v3 manufacturer];
-    v12 = [v3 serialNumber];
-    v13 = [(HAENDefaults *)self _generateAccessoryKeyWithManufacture:v11 andSerialNumber:v12];
+    manufacturer = [v3 manufacturer];
+    serialNumber = [v3 serialNumber];
+    v13 = [(HAENDefaults *)self _generateAccessoryKeyWithManufacture:manufacturer andSerialNumber:serialNumber];
 
     v10 = [(HAENDefaults *)self getAudioAccessoryConnectionInfoWithKey:v13];
     goto LABEL_14;
@@ -638,12 +638,12 @@ LABEL_25:
   if (v4)
   {
     v7 = HAENAccessoryInfoErrorDomain;
-    v8 = [v4 domain];
-    if (([(__CFString *)v7 isEqualToString:v8]& 1) != 0)
+    domain = [v4 domain];
+    if (([(__CFString *)v7 isEqualToString:domain]& 1) != 0)
     {
-      v9 = [v5 code];
+      code = [v5 code];
 
-      if (v9 == 1)
+      if (code == 1)
       {
         goto LABEL_8;
       }
@@ -672,9 +672,9 @@ LABEL_15:
   return v10;
 }
 
-- (BOOL)isCurrentAudioAccessoryHeadphoneWithKey:(id)a3
+- (BOOL)isCurrentAudioAccessoryHeadphoneWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (+[HAENDefaults isRunningCITests])
   {
     [(HAENDefaults *)self forceReadDefaults];
@@ -685,11 +685,11 @@ LABEL_15:
   os_unfair_lock_unlock(&self->_lock);
   if (!v5)
   {
-    LOBYTE(v9) = 1;
+    LOBYTE(intValue) = 1;
     goto LABEL_12;
   }
 
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:keyCopy];
   v7 = v6;
   if (!v6)
   {
@@ -697,9 +697,9 @@ LABEL_15:
   }
 
   v8 = [v6 objectForKey:@"value"];
-  v9 = [v8 intValue];
+  intValue = [v8 intValue];
 
-  if (v9 >= 2)
+  if (intValue >= 2)
   {
     v10 = HAENotificationsLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -708,11 +708,11 @@ LABEL_15:
     }
 
 LABEL_9:
-    LOBYTE(v9) = 1;
+    LOBYTE(intValue) = 1;
   }
 
 LABEL_12:
-  return v9;
+  return intValue;
 }
 
 - (BOOL)isCurrentAudioAccessoryHeadphone
@@ -733,9 +733,9 @@ LABEL_12:
 
   if (v6)
   {
-    v11 = [v3 manufacturer];
-    v12 = [v3 serialNumber];
-    v13 = [(HAENDefaults *)self _generateAccessoryKeyWithManufacture:v11 andSerialNumber:v12];
+    manufacturer = [v3 manufacturer];
+    serialNumber = [v3 serialNumber];
+    v13 = [(HAENDefaults *)self _generateAccessoryKeyWithManufacture:manufacturer andSerialNumber:serialNumber];
 
     v10 = [(HAENDefaults *)self isCurrentAudioAccessoryHeadphoneWithKey:v13];
     goto LABEL_14;
@@ -744,12 +744,12 @@ LABEL_12:
   if (v4)
   {
     v7 = HAENAccessoryInfoErrorDomain;
-    v8 = [v4 domain];
-    if (([(__CFString *)v7 isEqualToString:v8]& 1) != 0)
+    domain = [v4 domain];
+    if (([(__CFString *)v7 isEqualToString:domain]& 1) != 0)
     {
-      v9 = [v5 code];
+      code = [v5 code];
 
-      if (v9 == 1)
+      if (code == 1)
       {
         goto LABEL_8;
       }
@@ -778,13 +778,13 @@ LABEL_15:
   return v10;
 }
 
-- (BOOL)_shouldRepromptSinceDate:(id)a3
+- (BOOL)_shouldRepromptSinceDate:(id)date
 {
   v18 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
+  dateCopy = date;
   v6 = [v4 now];
-  [v6 timeIntervalSinceDate:v5];
+  [v6 timeIntervalSinceDate:dateCopy];
   v8 = v7;
 
   os_unfair_lock_lock(&self->_lock);
@@ -819,11 +819,11 @@ LABEL_15:
   return v8 >= v12;
 }
 
-- (void)setAudioAccessoryIsConnectedToHeadphones:(int64_t)a3 withKey:(id)a4 name:(id)a5
+- (void)setAudioAccessoryIsConnectedToHeadphones:(int64_t)headphones withKey:(id)key name:(id)name
 {
   v36[4] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_lock);
   v34 = *MEMORY[0x277CEFAE0];
   v10 = [(NSMutableDictionary *)self->_domainSettings objectForKey:?];
@@ -839,21 +839,21 @@ LABEL_15:
   }
 
   v12 = v11;
-  v13 = [v11 objectForKey:v8];
+  v13 = [v11 objectForKey:keyCopy];
   v33 = v13;
-  if (v13 && (v14 = v13, [v13 objectForKey:@"value"], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "intValue"), v15, v16 == a3))
+  if (v13 && (v14 = v13, [v13 objectForKey:@"value"], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "intValue"), v15, v16 == headphones))
   {
     v17 = [v14 mutableCopy];
     v18 = [v14 objectForKey:@"count"];
-    v19 = [v18 intValue];
+    intValue = [v18 intValue];
 
-    v20 = [MEMORY[0x277CCABB0] numberWithInt:(v19 + 1)];
+    v20 = [MEMORY[0x277CCABB0] numberWithInt:(intValue + 1)];
     [v17 setObject:v20 forKey:@"count"];
 
     v21 = [MEMORY[0x277CBEAA8] now];
     [v17 setObject:v21 forKey:@"date"];
 
-    [v17 setObject:v9 forKey:@"name"];
+    [v17 setObject:nameCopy forKey:@"name"];
   }
 
   else
@@ -865,38 +865,38 @@ LABEL_15:
     v23 = [MEMORY[0x277CBEAA8] now];
     v36[1] = v23;
     v35[2] = @"value";
-    [MEMORY[0x277CCABB0] numberWithInteger:a3];
-    v24 = a3;
+    [MEMORY[0x277CCABB0] numberWithInteger:headphones];
+    headphonesCopy = headphones;
     v25 = v10;
-    v26 = v8;
-    v28 = v27 = v9;
+    v26 = keyCopy;
+    v28 = v27 = nameCopy;
     v35[3] = @"name";
     v36[2] = v28;
     v36[3] = v27;
     v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:4];
     v17 = [v22 dictionaryWithDictionary:v29];
 
-    v9 = v27;
-    v8 = v26;
+    nameCopy = v27;
+    keyCopy = v26;
     v10 = v25;
-    a3 = v24;
+    headphones = headphonesCopy;
   }
 
-  [v12 setValue:v17 forKey:v8];
+  [v12 setValue:v17 forKey:keyCopy];
   os_unfair_lock_lock(&self->_lock);
   [(NSMutableDictionary *)self->_domainSettings setObject:v12 forKey:v34];
   os_unfair_lock_unlock(&self->_lock);
   [(HAENDefaults *)self _updateSetting:v34 value:v12 notify:1];
   v30 = *MEMORY[0x277CEFAB0];
-  v31 = [MEMORY[0x277CCABB0] numberWithBool:a3 == 1];
+  v31 = [MEMORY[0x277CCABB0] numberWithBool:headphones == 1];
   [(HAENDefaults *)self _updateSetting:v30 value:v31 notify:1];
 
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAudioAccessoryIsConnectedToHeadphones:(int64_t)a3 withName:(id)a4
+- (void)setAudioAccessoryIsConnectedToHeadphones:(int64_t)headphones withName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v14 = 0;
   v7 = [HAENAccessoryInfo getAccessoryInfo:&v14];
   v8 = v14;
@@ -913,11 +913,11 @@ LABEL_15:
 
   if (v10)
   {
-    v12 = [v7 manufacturer];
-    v13 = [v7 serialNumber];
-    v11 = [(HAENDefaults *)self _generateAccessoryKeyWithManufacture:v12 andSerialNumber:v13];
+    manufacturer = [v7 manufacturer];
+    serialNumber = [v7 serialNumber];
+    v11 = [(HAENDefaults *)self _generateAccessoryKeyWithManufacture:manufacturer andSerialNumber:serialNumber];
 
-    [(HAENDefaults *)self setAudioAccessoryIsConnectedToHeadphones:a3 withKey:v11 name:v6];
+    [(HAENDefaults *)self setAudioAccessoryIsConnectedToHeadphones:headphones withKey:v11 name:nameCopy];
   }
 
   else
@@ -930,10 +930,10 @@ LABEL_15:
   }
 }
 
-- (void)updateAudioAccessoryIsConnectedToHeadphones:(int64_t)a3 WithKey:(id)a4
+- (void)updateAudioAccessoryIsConnectedToHeadphones:(int64_t)headphones WithKey:(id)key
 {
   v24[3] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_lock);
   v7 = *MEMORY[0x277CEFAE0];
   v8 = [(NSMutableDictionary *)self->_domainSettings objectForKey:*MEMORY[0x277CEFAE0]];
@@ -949,9 +949,9 @@ LABEL_15:
   }
 
   v10 = v9;
-  v11 = [v9 objectForKey:v6];
+  v11 = [v9 objectForKey:keyCopy];
   v12 = v11;
-  if (!v11 || ([v11 objectForKey:@"value"], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "intValue"), v13, v14 != a3))
+  if (!v11 || ([v11 objectForKey:@"value"], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "intValue"), v13, v14 != headphones))
   {
     v15 = HAENotificationsLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -967,12 +967,12 @@ LABEL_15:
     v17 = [MEMORY[0x277CBEAA8] now];
     v24[1] = v17;
     v23[2] = @"value";
-    v18 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v18 = [MEMORY[0x277CCABB0] numberWithInteger:headphones];
     v24[2] = v18;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:3];
     v20 = [v16 dictionaryWithDictionary:v19];
 
-    [v10 setValue:v20 forKey:v6];
+    [v10 setValue:v20 forKey:keyCopy];
     os_unfair_lock_lock(&self->_lock);
     [(NSMutableDictionary *)self->_domainSettings setObject:v10 forKey:v7];
     os_unfair_lock_unlock(&self->_lock);
@@ -982,14 +982,14 @@ LABEL_15:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateAudioAccessoryIsConnectedToHeadphones:(int64_t)a3
+- (void)updateAudioAccessoryIsConnectedToHeadphones:(int64_t)headphones
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = HAENotificationsLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v16 = a3;
+    headphonesCopy = headphones;
     _os_log_impl(&dword_25081E000, v5, OS_LOG_TYPE_DEFAULT, "Update AudioAccessory Is Connected To Headphones %d", buf, 8u);
   }
 
@@ -998,7 +998,7 @@ LABEL_15:
     if (MGGetBoolAnswer())
     {
       v6 = +[HAENUnknownDeviceManager sharedInstance];
-      v7 = [v6 getDeviceUID];
+      getDeviceUID = [v6 getDeviceUID];
     }
 
     else
@@ -1009,26 +1009,26 @@ LABEL_15:
       v6 = v9;
       if (!v8 || v9)
       {
-        v10 = HAENotificationsLog();
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+        manufacturer = HAENotificationsLog();
+        if (os_log_type_enabled(manufacturer, OS_LOG_TYPE_ERROR))
         {
           [HAENDefaults setAudioAccessoryIsConnectedToHeadphones:withName:];
         }
 
-        v7 = 0;
+        getDeviceUID = 0;
       }
 
       else
       {
-        v10 = [v8 manufacturer];
-        v11 = [v8 serialNumber];
-        v7 = [(HAENDefaults *)self _generateAccessoryKeyWithManufacture:v10 andSerialNumber:v11];
+        manufacturer = [v8 manufacturer];
+        serialNumber = [v8 serialNumber];
+        getDeviceUID = [(HAENDefaults *)self _generateAccessoryKeyWithManufacture:manufacturer andSerialNumber:serialNumber];
       }
     }
 
-    if (v7)
+    if (getDeviceUID)
     {
-      [(HAENDefaults *)self updateAudioAccessoryIsConnectedToHeadphones:a3 WithKey:v7];
+      [(HAENDefaults *)self updateAudioAccessoryIsConnectedToHeadphones:headphones WithKey:getDeviceUID];
     }
 
     else
@@ -1043,11 +1043,11 @@ LABEL_15:
 
   else
   {
-    v7 = HAENotificationsLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    getDeviceUID = HAENotificationsLog();
+    if (os_log_type_enabled(getDeviceUID, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_25081E000, v7, OS_LOG_TYPE_DEFAULT, "do not update accessory database since HAEN is disabled", buf, 2u);
+      _os_log_impl(&dword_25081E000, getDeviceUID, OS_LOG_TYPE_DEFAULT, "do not update accessory database since HAEN is disabled", buf, 2u);
     }
   }
 
@@ -1086,7 +1086,7 @@ LABEL_15:
     os_unfair_lock_unlock(&self->_lock);
     -[HAENDefaults updateAudioAccessoryIsConnectedToHeadphones:](self, "updateAudioAccessoryIsConnectedToHeadphones:", [v5 BOOLValue]);
     v7 = +[HAENUnknownDeviceManager sharedInstance];
-    v8 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
     v9 = v7;
   }
 
@@ -1096,10 +1096,10 @@ LABEL_15:
     os_unfair_lock_unlock(&self->_lock);
     v9 = +[HAENUnknownDeviceManager sharedInstance];
     v7 = v9;
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  [v9 unknownWiredConnectionDidChange:v8];
+  [v9 unknownWiredConnectionDidChange:bOOLValue];
 
   v10 = HAENotificationsLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1112,17 +1112,17 @@ LABEL_15:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerNotification:(id)a3
+- (void)_registerNotification:(id)notification
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterAddObserver(DarwinNotifyCenter, self, settingsChanged, v4, 0, 0);
+  CFNotificationCenterAddObserver(DarwinNotifyCenter, self, settingsChanged, notificationCopy, 0, 0);
   v6 = HAENotificationsLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = notificationCopy;
     _os_log_impl(&dword_25081E000, v6, OS_LOG_TYPE_DEFAULT, "HAENDefaults registered darwin notification: %@", &v8, 0xCu);
   }
 

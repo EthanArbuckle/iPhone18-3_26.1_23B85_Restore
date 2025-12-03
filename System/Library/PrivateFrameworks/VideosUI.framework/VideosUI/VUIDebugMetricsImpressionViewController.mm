@@ -1,12 +1,12 @@
 @interface VUIDebugMetricsImpressionViewController
 - (VUIDebugMetricsImpressionViewController)init;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)object;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)setArray:(id)a3;
-- (void)setObject:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)setArray:(id)array;
+- (void)setObject:(id)object;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -24,26 +24,26 @@
   v6.receiver = self;
   v6.super_class = VUIDebugMetricsImpressionViewController;
   [(VUIDebugMetricsImpressionViewController *)&v6 viewDidLoad];
-  v3 = [(VUIDebugMetricsImpressionViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"cell"];
+  tableView = [(VUIDebugMetricsImpressionViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"cell"];
 
-  v4 = [(VUIDebugMetricsImpressionViewController *)self tableView];
-  [v4 registerClass:objc_opt_class() forCellReuseIdentifier:@"VUIDebugImpressionTableViewCellReuseIdentifier"];
+  tableView2 = [(VUIDebugMetricsImpressionViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"VUIDebugImpressionTableViewCellReuseIdentifier"];
 
-  v5 = [(VUIDebugMetricsImpressionViewController *)self tableView];
-  [v5 registerClass:objc_opt_class() forCellReuseIdentifier:@"detail"];
+  tableView3 = [(VUIDebugMetricsImpressionViewController *)self tableView];
+  [tableView3 registerClass:objc_opt_class() forCellReuseIdentifier:@"detail"];
 }
 
-- (void)setArray:(id)a3
+- (void)setArray:(id)array
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  arrayCopy = array;
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = arrayCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -81,16 +81,16 @@
   array = self->_array;
   self->_array = v5;
 
-  v15 = [(VUIDebugMetricsImpressionViewController *)self tableView];
-  [v15 reloadData];
+  tableView = [(VUIDebugMetricsImpressionViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)setObject:(id)a3
+- (void)setObject:(id)object
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v8[0] = a3;
+  v8[0] = object;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  objectCopy = object;
   v6 = [v4 arrayWithObjects:v8 count:1];
   array = self->_array;
   self->_array = v6;
@@ -114,47 +114,47 @@ LABEL_5:
   return v3;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_array objectAtIndexedSubscript:a4];
-  v5 = [v4 orderedOtherKeys];
-  v6 = [v5 count];
+  v4 = [(NSArray *)self->_array objectAtIndexedSubscript:section];
+  orderedOtherKeys = [v4 orderedOtherKeys];
+  v6 = [orderedOtherKeys count];
 
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_array, "objectAtIndexedSubscript:", [v7 section]);
-  if ([v7 row])
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_array, "objectAtIndexedSubscript:", [pathCopy section]);
+  if ([pathCopy row])
   {
-    v9 = [v8 orderedOtherKeys];
-    v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v7, "row") - 1}];
+    orderedOtherKeys = [v8 orderedOtherKeys];
+    v10 = [orderedOtherKeys objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row") - 1}];
 
-    v11 = [v8 objectForKeyedSubscript:v10];
+    name2 = [v8 objectForKeyedSubscript:v10];
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v12 = [v6 dequeueReusableCellWithIdentifier:@"cell" forIndexPath:v7];
-      v13 = [v12 textLabel];
+      v12 = [viewCopy dequeueReusableCellWithIdentifier:@"cell" forIndexPath:pathCopy];
+      textLabel = [v12 textLabel];
       v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v10];
-      [v13 setText:v14];
+      [textLabel setText:v14];
 
       [v12 setAccessoryType:1];
     }
 
     else
     {
-      v12 = [v6 dequeueReusableCellWithIdentifier:@"detail" forIndexPath:v7];
-      v25 = [v12 textLabel];
+      v12 = [viewCopy dequeueReusableCellWithIdentifier:@"detail" forIndexPath:pathCopy];
+      textLabel2 = [v12 textLabel];
       v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v10];
-      [v25 setText:v26];
+      [textLabel2 setText:v26];
 
-      v27 = [v12 detailTextLabel];
-      v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v11];
-      [v27 setText:v28];
+      detailTextLabel = [v12 detailTextLabel];
+      v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", name2];
+      [detailTextLabel setText:v28];
     }
 
     [v12 layoutMargins];
@@ -164,38 +164,38 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  v12 = [v6 dequeueReusableCellWithIdentifier:@"VUIDebugImpressionTableViewCellReuseIdentifier" forIndexPath:v7];
-  v15 = [v8 name];
-  [v12 setName:v15];
+  v12 = [viewCopy dequeueReusableCellWithIdentifier:@"VUIDebugImpressionTableViewCellReuseIdentifier" forIndexPath:pathCopy];
+  name = [v8 name];
+  [v12 setName:name];
 
-  v16 = [v8 type];
-  [v12 setType:v16];
+  type = [v8 type];
+  [v12 setType:type];
 
-  v17 = [v8 identifier];
-  [v12 setIdStr:v17];
+  identifier = [v8 identifier];
+  [v12 setIdStr:identifier];
 
-  v18 = [v8 idType];
-  [v12 setIdType:v18];
+  idType = [v8 idType];
+  [v12 setIdType:idType];
 
-  v19 = [v8 impressionId];
-  [v12 setImpressionId:v19];
+  impressionId = [v8 impressionId];
+  [v12 setImpressionId:impressionId];
 
-  v20 = [v8 impressionIndex];
-  [v12 setImpressionIndex:v20];
+  impressionIndex = [v8 impressionIndex];
+  [v12 setImpressionIndex:impressionIndex];
 
-  v21 = [v8 parentId];
+  parentId = [v8 parentId];
 
-  if (v21)
+  if (parentId)
   {
-    v22 = [v8 parentId];
-    v23 = [v22 integerValue];
+    parentId2 = [v8 parentId];
+    integerValue = [parentId2 integerValue];
 
-    v10 = [(NSArray *)self->_array objectAtIndexedSubscript:v23 - 1];
-    v24 = [v8 parentId];
-    [v12 setImpressionParentId:v24];
+    v10 = [(NSArray *)self->_array objectAtIndexedSubscript:integerValue - 1];
+    parentId3 = [v8 parentId];
+    [v12 setImpressionParentId:parentId3];
 
-    v11 = [v10 name];
-    [v12 setImpressionParentName:v11];
+    name2 = [v10 name];
+    [v12 setImpressionParentName:name2];
 LABEL_9:
 
     goto LABEL_10;
@@ -208,16 +208,16 @@ LABEL_10:
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a4;
-  v5 = [v13 row];
-  v6 = v13;
+  pathCopy = path;
+  v5 = [pathCopy row];
+  v6 = pathCopy;
   if (v5)
   {
-    v7 = -[NSArray objectAtIndexedSubscript:](self->_array, "objectAtIndexedSubscript:", [v13 section]);
-    v8 = [v7 orderedOtherKeys];
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v13, "row") - 1}];
+    v7 = -[NSArray objectAtIndexedSubscript:](self->_array, "objectAtIndexedSubscript:", [pathCopy section]);
+    orderedOtherKeys = [v7 orderedOtherKeys];
+    v9 = [orderedOtherKeys objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row") - 1}];
 
     v10 = [v7 objectForKeyedSubscript:v9];
     v11 = objc_alloc_init(VUIDebugMetricsArrayViewController);
@@ -225,17 +225,17 @@ LABEL_10:
     if (objc_opt_isKindOfClass())
     {
       [(VUIDebugMetricsArrayViewController *)v11 setArray:v10];
-      v12 = [(VUIDebugMetricsImpressionViewController *)self navigationController];
-      [v12 pushViewController:v11 animated:1];
+      navigationController = [(VUIDebugMetricsImpressionViewController *)self navigationController];
+      [navigationController pushViewController:v11 animated:1];
     }
 
-    v6 = v13;
+    v6 = pathCopy;
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v4 = [a4 row];
+  v4 = [path row];
   result = 44.0;
   if (!v4)
   {

@@ -1,113 +1,113 @@
 @interface _BKBaseSceneController
-+ (id)sceneInfoFromSceneSession:(id)a3;
++ (id)sceneInfoFromSceneSession:(id)session;
 - (BCExternalURLOpenPrompter)externalURLLoadPrompter;
 - (BCExternalURLOpenPrompter)externalURLOpenPrompter;
 - (BKSceneInfo)sceneInfo;
-- (BOOL)_assetSupportsSnapshots:(id)a3;
-- (BOOL)continueActivity:(id)a3 sceneController:(id)a4;
+- (BOOL)_assetSupportsSnapshots:(id)snapshots;
+- (BOOL)continueActivity:(id)activity sceneController:(id)controller;
 - (BOOL)isStateRestorationDisabled;
 - (BOOL)welcomePresenterIsPresentingWelcome;
-- (BOOL)willContinueActivityWithType:(id)a3 sceneController:(id)a4;
-- (_BKBaseSceneController)initWithSceneType:(unint64_t)a3;
+- (BOOL)willContinueActivityWithType:(id)type sceneController:(id)controller;
+- (_BKBaseSceneController)initWithSceneType:(unint64_t)type;
 - (id)_assetPresenters;
-- (id)_optionsForContinueOpenBookActivity:(BOOL)a3;
+- (id)_optionsForContinueOpenBookActivity:(BOOL)activity;
 - (id)_viewControllerForWelcomePresenting;
 - (id)_viewControllerFromWhichToPresentAlerts;
-- (id)_windowWithScene:(id)a3 sceneType:(unint64_t)a4;
+- (id)_windowWithScene:(id)scene sceneType:(unint64_t)type;
 - (id)dataForStateRestoration;
-- (id)newShowAssetTransactionWithTargetSceneDescriptor:(id)a3;
-- (id)newShowURLTransactionWithTargetSceneDescriptor:(id)a3;
-- (id)newTransactionWithName:(id)a3 targetSceneDescriptor:(id)a4;
-- (id)stateRestorationActivityForScene:(id)a3;
-- (void)_continueOpenBookActivity:(id)a3 assetLogID:(id)a4 isStateRestoration:(BOOL)a5;
-- (void)_doInterruptReadAloud:(BOOL)a3;
-- (void)_handleOpenBookActivityWithAssetID:(id)a3 isStateRestoration:(BOOL)a4;
+- (id)newShowAssetTransactionWithTargetSceneDescriptor:(id)descriptor;
+- (id)newShowURLTransactionWithTargetSceneDescriptor:(id)descriptor;
+- (id)newTransactionWithName:(id)name targetSceneDescriptor:(id)descriptor;
+- (id)stateRestorationActivityForScene:(id)scene;
+- (void)_continueOpenBookActivity:(id)activity assetLogID:(id)d isStateRestoration:(BOOL)restoration;
+- (void)_doInterruptReadAloud:(BOOL)aloud;
+- (void)_handleOpenBookActivityWithAssetID:(id)d isStateRestoration:(BOOL)restoration;
 - (void)_handleStateRestorationCompleted;
-- (void)_interruptReadAloud:(BOOL)a3;
+- (void)_interruptReadAloud:(BOOL)aloud;
 - (void)_setupStatusBarBlurBackground;
-- (void)dismissWelcomeViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)handleStateRestorationFromData:(id)a3;
-- (void)openURL:(id)a3 options:(id)a4;
-- (void)presentAlertController:(id)a3 promptContext:(id)a4;
-- (void)presentModalViewController:(id)a3 animated:(BOOL)a4;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentWelcomeViewController:(id)a3 completion:(id)a4;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willContinueUserActivityWithType:(id)a4;
-- (void)welcomePresenterFinishOngoingModalTransitionAnimations:(id)a3;
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
+- (void)dismissWelcomeViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)handleStateRestorationFromData:(id)data;
+- (void)openURL:(id)l options:(id)options;
+- (void)presentAlertController:(id)controller promptContext:(id)context;
+- (void)presentModalViewController:(id)controller animated:(BOOL)animated;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)presentWelcomeViewController:(id)controller completion:(id)completion;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene didFailToContinueUserActivityWithType:(id)type error:(id)error;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willContinueUserActivityWithType:(id)type;
+- (void)welcomePresenterFinishOngoingModalTransitionAnimations:(id)animations;
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler;
 @end
 
 @implementation _BKBaseSceneController
 
 - (void)_setupStatusBarBlurBackground
 {
-  v5 = [(_BKBaseSceneController *)self bk_window];
-  v3 = [[BCStatusBarBackgroundController alloc] initWithWindow:v5];
+  bk_window = [(_BKBaseSceneController *)self bk_window];
+  v3 = [[BCStatusBarBackgroundController alloc] initWithWindow:bk_window];
   [(_BKBaseSceneController *)self setStatusBarBackgroundController:v3];
 
-  v4 = [(_BKBaseSceneController *)self statusBarBackgroundController];
-  [v4 setup];
+  statusBarBackgroundController = [(_BKBaseSceneController *)self statusBarBackgroundController];
+  [statusBarBackgroundController setup];
 }
 
 - (BOOL)isStateRestorationDisabled
 {
   v3 = objc_opt_class();
-  v4 = [(_BKBaseSceneController *)self sceneType];
+  sceneType = [(_BKBaseSceneController *)self sceneType];
 
-  return [v3 isStateRestorationDisabledForSceneType:v4];
+  return [v3 isStateRestorationDisabledForSceneType:sceneType];
 }
 
-- (_BKBaseSceneController)initWithSceneType:(unint64_t)a3
+- (_BKBaseSceneController)initWithSceneType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = _BKBaseSceneController;
   result = [(_BKBaseSceneController *)&v5 init];
   if (result)
   {
-    result->_sceneType = a3;
+    result->_sceneType = type;
   }
 
   return result;
 }
 
-- (id)newTransactionWithName:(id)a3 targetSceneDescriptor:(id)a4
+- (id)newTransactionWithName:(id)name targetSceneDescriptor:(id)descriptor
 {
-  v6 = a4;
-  v7 = a3;
+  descriptorCopy = descriptor;
+  nameCopy = name;
   v8 = +[BKAppDelegate sceneManager];
-  v9 = [v8 newTransactionWithName:v7 originatingSceneController:self targetSceneDescriptor:v6];
+  v9 = [v8 newTransactionWithName:nameCopy originatingSceneController:self targetSceneDescriptor:descriptorCopy];
 
   return v9;
 }
 
-- (id)newShowAssetTransactionWithTargetSceneDescriptor:(id)a3
+- (id)newShowAssetTransactionWithTargetSceneDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v5 = +[BKAppDelegate sceneManager];
-  v6 = [v5 newShowAssetTransactionWithOriginatingSceneController:self targetSceneDescriptor:v4];
+  v6 = [v5 newShowAssetTransactionWithOriginatingSceneController:self targetSceneDescriptor:descriptorCopy];
 
   return v6;
 }
 
-- (id)newShowURLTransactionWithTargetSceneDescriptor:(id)a3
+- (id)newShowURLTransactionWithTargetSceneDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v5 = +[BKAppDelegate sceneManager];
-  v6 = [v5 newShowURLTransactionWithOriginatingSceneController:self targetSceneDescriptor:v4];
+  v6 = [v5 newShowURLTransactionWithOriginatingSceneController:self targetSceneDescriptor:descriptorCopy];
 
   return v6;
 }
 
-- (id)_windowWithScene:(id)a3 sceneType:(unint64_t)a4
+- (id)_windowWithScene:(id)scene sceneType:(unint64_t)type
 {
-  v4 = a3;
-  v5 = [v4 screen];
-  [v5 setWantsSoftwareDimming:1];
+  sceneCopy = scene;
+  screen = [sceneCopy screen];
+  [screen setWantsSoftwareDimming:1];
 
-  v6 = [[UIWindow alloc] initWithWindowScene:v4];
+  v6 = [[UIWindow alloc] initWithWindowScene:sceneCopy];
   v7 = +[UIColor clearColor];
   [v6 setBackgroundColor:v7];
 
@@ -116,52 +116,52 @@
   return v6;
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
   v10 = BCSceneLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v20 = v8;
+    v20 = controllerCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "_BKBaseSceneController: presentViewController: %{public}@", buf, 0xCu);
   }
 
-  if (v6)
+  if (animatedCopy)
   {
-    v11 = [(_BKBaseSceneController *)self launchCoordinator];
-    LOBYTE(v6) = [v11 appLaunchCoordinatorHasAppLaunched];
+    launchCoordinator = [(_BKBaseSceneController *)self launchCoordinator];
+    LOBYTE(animatedCopy) = [launchCoordinator appLaunchCoordinatorHasAppLaunched];
   }
 
-  v12 = [(_BKBaseSceneController *)self launchCoordinator];
+  launchCoordinator2 = [(_BKBaseSceneController *)self launchCoordinator];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000A4D20;
   v15[3] = &unk_100A057C8;
   v15[4] = self;
-  v16 = v8;
-  v18 = v6;
-  v17 = v9;
-  v13 = v9;
-  v14 = v8;
-  [v12 appLaunchCoordinatorPerformWhenLaunched:@"presentVC" block:v15];
+  v16 = controllerCopy;
+  v18 = animatedCopy;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = controllerCopy;
+  [launchCoordinator2 appLaunchCoordinatorPerformWhenLaunched:@"presentVC" block:v15];
 }
 
-- (void)presentModalViewController:(id)a3 animated:(BOOL)a4
+- (void)presentModalViewController:(id)controller animated:(BOOL)animated
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = BCSceneLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v5;
+    v9 = controllerCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "_BKBaseSceneController: presentModalViewController: %{public}@", &v8, 0xCu);
   }
 
-  v7 = [(_BKBaseSceneController *)self _viewControllerFromWhichToPresentAlerts];
-  [v7 presentModalViewController:v5 withTransition:8];
+  _viewControllerFromWhichToPresentAlerts = [(_BKBaseSceneController *)self _viewControllerFromWhichToPresentAlerts];
+  [_viewControllerFromWhichToPresentAlerts presentModalViewController:controllerCopy withTransition:8];
 }
 
 - (BCExternalURLOpenPrompter)externalURLOpenPrompter
@@ -229,56 +229,56 @@
 
 - (id)_viewControllerFromWhichToPresentAlerts
 {
-  v2 = [(_BKBaseSceneController *)self bk_window];
-  v3 = [v2 rootViewController];
-  v4 = [v3 bc_deepestPresentedViewController];
+  bk_window = [(_BKBaseSceneController *)self bk_window];
+  rootViewController = [bk_window rootViewController];
+  bc_deepestPresentedViewController = [rootViewController bc_deepestPresentedViewController];
 
-  if ([v4 isBeingDismissed])
+  if ([bc_deepestPresentedViewController isBeingDismissed])
   {
     do
     {
-      v5 = [v4 presentingViewController];
+      presentingViewController = [bc_deepestPresentedViewController presentingViewController];
 
-      v4 = v5;
+      bc_deepestPresentedViewController = presentingViewController;
     }
 
-    while (([v5 isBeingDismissed] & 1) != 0);
+    while (([presentingViewController isBeingDismissed] & 1) != 0);
   }
 
   else
   {
-    v5 = v4;
+    presentingViewController = bc_deepestPresentedViewController;
   }
 
-  return v5;
+  return presentingViewController;
 }
 
-- (void)_interruptReadAloud:(BOOL)a3
+- (void)_interruptReadAloud:(BOOL)aloud
 {
-  v5 = [(_BKBaseSceneController *)self launchCoordinator];
-  if ([v5 appLaunchCoordinatorIsConditionSatisfied:6])
+  launchCoordinator = [(_BKBaseSceneController *)self launchCoordinator];
+  if ([launchCoordinator appLaunchCoordinatorIsConditionSatisfied:6])
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000A528C;
     v6[3] = &unk_100A05D78;
     v6[4] = self;
-    v7 = a3;
-    [v5 appLaunchCoordinatorOnConditionMask:1 blockID:@"Interrupt ReadAloud" performBlock:v6];
+    aloudCopy = aloud;
+    [launchCoordinator appLaunchCoordinatorOnConditionMask:1 blockID:@"Interrupt ReadAloud" performBlock:v6];
   }
 }
 
-- (void)_doInterruptReadAloud:(BOOL)a3
+- (void)_doInterruptReadAloud:(BOOL)aloud
 {
-  v3 = a3;
-  v12 = [(_BKBaseSceneController *)self bk_window];
-  v4 = [v12 rootViewController];
-  if (!v4)
+  aloudCopy = aloud;
+  bk_window = [(_BKBaseSceneController *)self bk_window];
+  rootViewController = [bk_window rootViewController];
+  if (!rootViewController)
   {
     sub_10078C5B8();
   }
 
-  v5 = [v4 im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKBookPresenting];
+  v5 = [rootViewController im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKBookPresenting];
   if (!v5)
   {
     sub_10078C5F0();
@@ -292,17 +292,17 @@
 
   objc_opt_class();
   v7 = [v5 bookPresenterCurrentlyOpenBookForSingleScene:v6];
-  v8 = [v7 assetPresenterAssetViewController];
+  assetPresenterAssetViewController = [v7 assetPresenterAssetViewController];
   v9 = BUDynamicCast();
 
   if (v9)
   {
-    v10 = [v9 book];
-    v11 = [v10 hasMediaOverlayElements];
+    book = [v9 book];
+    hasMediaOverlayElements = [book hasMediaOverlayElements];
 
-    if (v3)
+    if (aloudCopy)
     {
-      if (v11)
+      if (hasMediaOverlayElements)
       {
         [v9 pauseReadAloud];
       }
@@ -313,7 +313,7 @@
 
     else
     {
-      if (v11)
+      if (hasMediaOverlayElements)
       {
         [v9 resumeReadAloud];
       }
@@ -325,18 +325,18 @@
 
 - (BKSceneInfo)sceneInfo
 {
-  v3 = [(_BKBaseSceneController *)self scene];
+  scene = [(_BKBaseSceneController *)self scene];
 
-  if (!v3)
+  if (!scene)
   {
     sub_10078C660();
   }
 
-  v4 = [(_BKBaseSceneController *)self dataForStateRestoration];
+  dataForStateRestoration = [(_BKBaseSceneController *)self dataForStateRestoration];
   v5 = [_BKBaseSceneInfo alloc];
-  v6 = [(_BKBaseSceneController *)self scene];
-  v7 = [v6 session];
-  v8 = [(_BKBaseSceneInfo *)v5 initWithSceneSession:v7 userData:v4];
+  scene2 = [(_BKBaseSceneController *)self scene];
+  session = [scene2 session];
+  v8 = [(_BKBaseSceneInfo *)v5 initWithSceneSession:session userData:dataForStateRestoration];
 
   v9 = BUProtocolCast();
   [(_BKBaseSceneInfo *)v8 setSceneController:v9];
@@ -344,40 +344,40 @@
   return v8;
 }
 
-+ (id)sceneInfoFromSceneSession:(id)a3
++ (id)sceneInfoFromSceneSession:(id)session
 {
-  v3 = a3;
+  sessionCopy = session;
   v4 = +[BKAppDelegate sceneManager];
-  v5 = [v4 _lastKnownStateRestorationUserInfoForSceneSession:v3];
+  v5 = [v4 _lastKnownStateRestorationUserInfoForSceneSession:sessionCopy];
 
-  v6 = [[_BKBaseSceneInfo alloc] initWithSceneSession:v3 userData:v5];
+  v6 = [[_BKBaseSceneInfo alloc] initWithSceneSession:sessionCopy userData:v5];
 
   return v6;
 }
 
-- (void)scene:(id)a3 willContinueUserActivityWithType:(id)a4
+- (void)scene:(id)scene willContinueUserActivityWithType:(id)type
 {
-  v4 = a4;
+  typeCopy = type;
   v5 = BCSceneLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = typeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "scene willContinueUserActivityWithType: Preparing for activity with type %{public}@", &v8, 0xCu);
   }
 
   v6 = +[BKUserActivityManager sharedInstance];
   v7 = BUProtocolCast();
-  [v6 willContinueActivityWithType:v4 sceneController:v7];
+  [v6 willContinueActivityWithType:typeCopy sceneController:v7];
 }
 
-- (BOOL)willContinueActivityWithType:(id)a3 sceneController:(id)a4
+- (BOOL)willContinueActivityWithType:(id)type sceneController:(id)controller
 {
-  v5 = a3;
-  v6 = [(_BKBaseSceneController *)self scene];
-  v7 = [v6 session];
-  v8 = [v7 stateRestorationActivity];
-  if (v8 && [v5 isEqualToString:@"com.apple.iBooks.sceneStateRestoration"])
+  typeCopy = type;
+  scene = [(_BKBaseSceneController *)self scene];
+  session = [scene session];
+  stateRestorationActivity = [session stateRestorationActivity];
+  if (stateRestorationActivity && [typeCopy isEqualToString:@"com.apple.iBooks.sceneStateRestoration"])
   {
     v9 = ![(_BKBaseSceneController *)self isStateRestorationDisabled];
   }
@@ -390,37 +390,37 @@
   return v9;
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
-  v4 = a4;
+  activityCopy = activity;
   v5 = BCSceneLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 activityType];
-    v7 = [v4 userInfo];
+    activityType = [activityCopy activityType];
+    userInfo = [activityCopy userInfo];
     v10 = 138543618;
-    v11 = v6;
+    v11 = activityType;
     v12 = 2112;
-    v13 = v7;
+    v13 = userInfo;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "scene continueUserActivity: Handling activity activityType=%{public}@, userInfo=%@", &v10, 0x16u);
   }
 
   v8 = +[BKUserActivityManager sharedInstance];
   v9 = BUProtocolCast();
-  [v8 continueActivity:v4 sceneController:v9];
+  [v8 continueActivity:activityCopy sceneController:v9];
 }
 
-- (BOOL)continueActivity:(id)a3 sceneController:(id)a4
+- (BOOL)continueActivity:(id)activity sceneController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  activityCopy = activity;
+  controllerCopy = controller;
+  if (!activityCopy)
   {
     goto LABEL_4;
   }
 
-  v8 = [v6 activityType];
-  v9 = [v8 isEqualToString:@"com.apple.iBooks.sceneStateRestoration"];
+  activityType = [activityCopy activityType];
+  v9 = [activityType isEqualToString:@"com.apple.iBooks.sceneStateRestoration"];
   if (!v9)
   {
 LABEL_6:
@@ -428,12 +428,12 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v10 = [(_BKBaseSceneController *)self isStateRestorationDisabled];
+  isStateRestorationDisabled = [(_BKBaseSceneController *)self isStateRestorationDisabled];
 
-  if ((v10 & 1) == 0)
+  if ((isStateRestorationDisabled & 1) == 0)
   {
-    v8 = [v6 userInfo];
-    [(_BKBaseSceneController *)self handleStateRestorationFromData:v8];
+    activityType = [activityCopy userInfo];
+    [(_BKBaseSceneController *)self handleStateRestorationFromData:activityType];
     goto LABEL_6;
   }
 
@@ -447,27 +447,27 @@ LABEL_7:
 - (void)_handleStateRestorationCompleted
 {
   v4 = +[BKAppDelegate sceneManager];
-  v3 = [(_BKBaseSceneController *)self scene];
-  [v4 _didFinishSceneStateRestoration:v3];
+  scene = [(_BKBaseSceneController *)self scene];
+  [v4 _didFinishSceneStateRestoration:scene];
 }
 
-- (void)handleStateRestorationFromData:(id)a3
+- (void)handleStateRestorationFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ([(_BKBaseSceneController *)self handledStateRestoration])
   {
     goto LABEL_16;
   }
 
   [(_BKBaseSceneController *)self setHandledStateRestoration:1];
-  v5 = [v4 objectForKeyedSubscript:BCContinuationActivityAssetIDKey];
+  v5 = [dataCopy objectForKeyedSubscript:BCContinuationActivityAssetIDKey];
   if (!v5)
   {
     goto LABEL_10;
   }
 
-  v6 = [(_BKBaseSceneController *)self _lastOpenBookManager];
-  v7 = [v6 shouldAutoOpenAsset:v5];
+  _lastOpenBookManager = [(_BKBaseSceneController *)self _lastOpenBookManager];
+  v7 = [_lastOpenBookManager shouldAutoOpenAsset:v5];
 
   v8 = BCSceneLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -494,15 +494,15 @@ LABEL_10:
   [(_BKBaseSceneController *)self setWillAttemptBookReopen:1];
   [(_BKBaseSceneController *)self _handleOpenBookActivityWithAssetID:v5 isStateRestoration:1];
 LABEL_11:
-  v17 = [v4 objectForKeyedSubscript:BCBookDisplayTitle];
+  v17 = [dataCopy objectForKeyedSubscript:BCBookDisplayTitle];
 
   if (v17)
   {
     objc_opt_class();
-    v18 = [v4 objectForKeyedSubscript:BCBookDisplayTitle];
+    v18 = [dataCopy objectForKeyedSubscript:BCBookDisplayTitle];
     v19 = BUDynamicCast();
-    v20 = [(_BKBaseSceneController *)self scene];
-    [v20 setTitle:v19];
+    scene = [(_BKBaseSceneController *)self scene];
+    [scene setTitle:v19];
   }
 
   if ((v9 & 1) == 0)
@@ -513,28 +513,28 @@ LABEL_11:
 LABEL_16:
 }
 
-- (void)_handleOpenBookActivityWithAssetID:(id)a3 isStateRestoration:(BOOL)a4
+- (void)_handleOpenBookActivityWithAssetID:(id)d isStateRestoration:(BOOL)restoration
 {
-  v6 = a3;
+  dCopy = d;
   [(_BKBaseSceneController *)self launchCoordinator];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000A5C70;
   v9[3] = &unk_100A05DA0;
-  v11 = v10 = v6;
-  v12 = self;
-  v13 = a4;
+  v11 = v10 = dCopy;
+  selfCopy = self;
+  restorationCopy = restoration;
   v7 = v11;
-  v8 = v6;
+  v8 = dCopy;
   [v7 appLaunchCoordinatorOnConditionMask:1 blockID:@"handle openBookActivity" performBlock:v9];
 }
 
-- (id)_optionsForContinueOpenBookActivity:(BOOL)a3
+- (id)_optionsForContinueOpenBookActivity:(BOOL)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v4 = objc_alloc_init(NSMutableDictionary);
   v5 = v4;
-  if (v3)
+  if (activityCopy)
   {
     [v4 setObject:&__kCFBooleanTrue forKeyedSubscript:AEAudiobookOptionsShouldNotAutoplayKey];
   }
@@ -542,13 +542,13 @@ LABEL_16:
   return v5;
 }
 
-- (BOOL)_assetSupportsSnapshots:(id)a3
+- (BOOL)_assetSupportsSnapshots:(id)snapshots
 {
-  v3 = a3;
-  if ([v3 length])
+  snapshotsCopy = snapshots;
+  if ([snapshotsCopy length])
   {
     v4 = +[BKLibraryManager defaultManager];
-    v5 = [v4 libraryAssetOnMainQueueWithAssetID:v3];
+    v5 = [v4 libraryAssetOnMainQueueWithAssetID:snapshotsCopy];
 
     v6 = +[BKAssetUtilities supportsRestorationSnapshots:](BKAssetUtilities, "supportsRestorationSnapshots:", [v5 contentType]);
   }
@@ -561,21 +561,21 @@ LABEL_16:
   return v6;
 }
 
-- (void)_continueOpenBookActivity:(id)a3 assetLogID:(id)a4 isStateRestoration:(BOOL)a5
+- (void)_continueOpenBookActivity:(id)activity assetLogID:(id)d isStateRestoration:(BOOL)restoration
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [(_BKBaseSceneController *)self bk_window];
-  v11 = [v10 rootViewController];
-  v12 = [v11 im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL____BKEnqueuedBookPresenting];
+  restorationCopy = restoration;
+  activityCopy = activity;
+  dCopy = d;
+  bk_window = [(_BKBaseSceneController *)self bk_window];
+  rootViewController = [bk_window rootViewController];
+  v12 = [rootViewController im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL____BKEnqueuedBookPresenting];
 
-  v13 = [(_BKBaseSceneController *)self _optionsForContinueOpenBookActivity:v5];
+  v13 = [(_BKBaseSceneController *)self _optionsForContinueOpenBookActivity:restorationCopy];
   v14 = [v13 mutableCopy];
 
-  if ([(_BKBaseSceneController *)self _assetSupportsSnapshots:v8])
+  if ([(_BKBaseSceneController *)self _assetSupportsSnapshots:activityCopy])
   {
-    v15 = [[BKRestorationScrimView alloc] initWithAssetID:v8 window:v10];
+    v15 = [[BKRestorationScrimView alloc] initWithAssetID:activityCopy window:bk_window];
     [v14 setObject:&__kCFBooleanTrue forKeyedSubscript:@"BKBookPresentWithoutAnimations"];
   }
 
@@ -584,7 +584,7 @@ LABEL_16:
     v15 = 0;
   }
 
-  [v14 setObject:v9 forKeyedSubscript:AEAssetLogID];
+  [v14 setObject:dCopy forKeyedSubscript:AEAssetLogID];
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x2020000000;
@@ -597,13 +597,13 @@ LABEL_16:
   v17[4] = self;
   v16 = v15;
   v18 = v16;
-  [v12 enqueueShowAssetWithTransactionProvider:self assetID:v8 location:0 options:v14 completion:v17];
+  [v12 enqueueShowAssetWithTransactionProvider:self assetID:activityCopy location:0 options:v14 completion:v17];
   [(BKRestorationScrimView *)v16 show];
 
   _Block_object_dispose(v20, 8);
 }
 
-- (void)scene:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5
+- (void)scene:(id)scene didFailToContinueUserActivityWithType:(id)type error:(id)error
 {
   v6 = BCSceneLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -620,34 +620,34 @@ LABEL_16:
   v3 = objc_alloc_init(NSMutableDictionary);
   [v3 setObject:&__kCFBooleanFalse forKeyedSubscript:@"BKSceneInfoIsAudiobookKey"];
   [v3 setObject:&__kCFBooleanFalse forKeyedSubscript:@"BKSceneInfoIsSupplementalContentKey"];
-  v4 = [(_BKBaseSceneController *)self launchCoordinator];
-  v5 = [v4 appLaunchCoordinatorIsConditionSatisfied:0];
+  launchCoordinator = [(_BKBaseSceneController *)self launchCoordinator];
+  v5 = [launchCoordinator appLaunchCoordinatorIsConditionSatisfied:0];
 
   if (v5)
   {
-    v6 = [(_BKBaseSceneController *)self bk_window];
-    v7 = [v6 rootViewController];
-    v8 = [v7 im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKBookPresenting];
+    bk_window = [(_BKBaseSceneController *)self bk_window];
+    rootViewController = [bk_window rootViewController];
+    v8 = [rootViewController im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKBookPresenting];
 
     v9 = BUProtocolCast();
     v10 = [v8 bookPresenterCurrentlyOpenBookForSingleScene:v9];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 assetPresenterAssetID];
-      if (v12)
+      assetPresenterAssetID = [v10 assetPresenterAssetID];
+      if (assetPresenterAssetID)
       {
-        [v3 setObject:v12 forKeyedSubscript:BCContinuationActivityAssetIDKey];
+        [v3 setObject:assetPresenterAssetID forKeyedSubscript:BCContinuationActivityAssetIDKey];
         v13 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v11 assetPresenterIsAudiobook]);
         [v3 setObject:v13 forKeyedSubscript:@"BKSceneInfoIsAudiobookKey"];
 
         v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v11 isSupplementalContent]);
         [v3 setObject:v14 forKeyedSubscript:@"BKSceneInfoIsSupplementalContentKey"];
 
-        v15 = [v11 assetPresenterAssetViewController];
-        v16 = [v15 asset];
-        v17 = [v16 displayTitle];
-        [v3 setObject:v17 forKeyedSubscript:BCBookDisplayTitle];
+        assetPresenterAssetViewController = [v11 assetPresenterAssetViewController];
+        asset = [assetPresenterAssetViewController asset];
+        displayTitle = [asset displayTitle];
+        [v3 setObject:displayTitle forKeyedSubscript:BCBookDisplayTitle];
       }
     }
   }
@@ -655,7 +655,7 @@ LABEL_16:
   return v3;
 }
 
-- (id)stateRestorationActivityForScene:(id)a3
+- (id)stateRestorationActivityForScene:(id)scene
 {
   if ([(_BKBaseSceneController *)self isStateRestorationDisabled])
   {
@@ -663,7 +663,7 @@ LABEL_16:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 134217984;
-      v21 = [(_BKBaseSceneController *)self sceneType];
+      sceneType = [(_BKBaseSceneController *)self sceneType];
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Not Saving Scene activity for scene type=%lu", &v20, 0xCu);
     }
 
@@ -677,44 +677,44 @@ LABEL_16:
 
   else
   {
-    v6 = [(_BKBaseSceneController *)self sceneType];
+    sceneType2 = [(_BKBaseSceneController *)self sceneType];
     v7 = [NSUserActivity alloc];
-    if (v6 == 3)
+    if (sceneType2 == 3)
     {
       v5 = [v7 initWithActivityType:@"com.apple.iBooks.sceneStateRestorationForEndOfBook"];
-      v8 = [(_BKBaseSceneController *)self dataForStateRestoration];
-      [v5 setUserInfo:v8];
+      dataForStateRestoration = [(_BKBaseSceneController *)self dataForStateRestoration];
+      [v5 setUserInfo:dataForStateRestoration];
     }
 
     else
     {
       v5 = [v7 initWithActivityType:@"com.apple.iBooks.sceneStateRestoration"];
-      v8 = [(_BKBaseSceneController *)self dataForStateRestoration];
-      [v5 setUserInfo:v8];
-      v9 = [v5 userInfo];
-      v10 = [v9 objectForKeyedSubscript:BCContinuationActivityAssetIDKey];
+      dataForStateRestoration = [(_BKBaseSceneController *)self dataForStateRestoration];
+      [v5 setUserInfo:dataForStateRestoration];
+      userInfo = [v5 userInfo];
+      v10 = [userInfo objectForKeyedSubscript:BCContinuationActivityAssetIDKey];
 
       objc_opt_class();
-      v11 = [v5 userInfo];
-      v12 = [v11 objectForKeyedSubscript:@"BKSceneInfoIsSupplementalContentKey"];
+      userInfo2 = [v5 userInfo];
+      v12 = [userInfo2 objectForKeyedSubscript:@"BKSceneInfoIsSupplementalContentKey"];
       v13 = BUDynamicCast();
-      v14 = [v13 BOOLValue];
+      bOOLValue = [v13 BOOLValue];
 
-      if (v10 && (v14 & 1) == 0)
+      if (v10 && (bOOLValue & 1) == 0)
       {
-        v15 = [(_BKBaseSceneController *)self _lastOpenBookManager];
-        [v15 updateSuccessfullyOpenedBookForAssetID:v10 successfullyOpenedBook:1];
+        _lastOpenBookManager = [(_BKBaseSceneController *)self _lastOpenBookManager];
+        [_lastOpenBookManager updateSuccessfullyOpenedBookForAssetID:v10 successfullyOpenedBook:1];
       }
 
       v16 = BCSceneLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v5 activityType];
-        v18 = [v5 userInfo];
+        activityType = [v5 activityType];
+        userInfo3 = [v5 userInfo];
         v20 = 138543618;
-        v21 = v17;
+        sceneType = activityType;
         v22 = 2112;
-        v23 = v18;
+        v23 = userInfo3;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Scene save user activity: activityType=%{public}@, userInfo=%@", &v20, 0x16u);
       }
     }
@@ -723,37 +723,37 @@ LABEL_16:
   return v5;
 }
 
-- (void)presentAlertController:(id)a3 promptContext:(id)a4
+- (void)presentAlertController:(id)controller promptContext:(id)context
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = BCSceneLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v5;
+    v8 = controllerCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "_BKBaseSceneController: presentAlertController: %{public}@", &v7, 0xCu);
   }
 
-  [(_BKBaseSceneController *)self presentViewController:v5 animated:+[UIView completion:"areAnimationsEnabled"], 0];
+  [(_BKBaseSceneController *)self presentViewController:controllerCopy animated:+[UIView completion:"areAnimationsEnabled"], 0];
 }
 
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
-  v6 = a5;
-  v7 = a4;
+  handlerCopy = handler;
+  itemCopy = item;
   v9 = +[BKAppDelegate delegate];
   v8 = BUProtocolCast();
-  [v9 performActionForShortcutItem:v7 sceneController:v8 completionHandler:v6];
+  [v9 performActionForShortcutItem:itemCopy sceneController:v8 completionHandler:handlerCopy];
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
-  v5 = a4;
+  contextsCopy = contexts;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [contextsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -764,7 +764,7 @@ LABEL_16:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(contextsCopy);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -773,86 +773,86 @@ LABEL_16:
         [(_BKBaseSceneController *)self openURL:v12 options:v11];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [contextsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)openURL:(id)a3 options:(id)a4
+- (void)openURL:(id)l options:(id)options
 {
-  v5 = a4;
-  v6 = a3;
+  optionsCopy = options;
+  lCopy = l;
   v8 = BUProtocolCast();
   v7 = +[BKAppDelegate delegate];
-  [v7 applicationOpenURL:v6 options:v5 sceneController:v8];
+  [v7 applicationOpenURL:lCopy options:optionsCopy sceneController:v8];
 }
 
 - (id)_viewControllerForWelcomePresenting
 {
-  v2 = [(_BKBaseSceneController *)self bk_window];
-  v3 = [v2 rootViewController];
+  bk_window = [(_BKBaseSceneController *)self bk_window];
+  rootViewController = [bk_window rootViewController];
 
-  return v3;
+  return rootViewController;
 }
 
-- (void)presentWelcomeViewController:(id)a3 completion:(id)a4
+- (void)presentWelcomeViewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   v8 = BCSceneLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v15 = v6;
+    v15 = controllerCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "_BKBaseSceneController: presentWelcomeViewController: %{public}@", buf, 0xCu);
   }
 
-  [(_BKBaseSceneController *)self setWelcomeViewController:v6];
-  v9 = [(_BKBaseSceneController *)self _viewControllerForWelcomePresenting];
-  v10 = [(_BKBaseSceneController *)self welcomeViewController];
+  [(_BKBaseSceneController *)self setWelcomeViewController:controllerCopy];
+  _viewControllerForWelcomePresenting = [(_BKBaseSceneController *)self _viewControllerForWelcomePresenting];
+  welcomeViewController = [(_BKBaseSceneController *)self welcomeViewController];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000A6C1C;
   v12[3] = &unk_100A03920;
-  v13 = v7;
-  v11 = v7;
-  [v9 presentViewController:v10 animated:0 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [_viewControllerForWelcomePresenting presentViewController:welcomeViewController animated:0 completion:v12];
 }
 
-- (void)dismissWelcomeViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissWelcomeViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(_BKBaseSceneController *)self _viewControllerForWelcomePresenting];
-  v8 = [v7 presentedViewController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  _viewControllerForWelcomePresenting = [(_BKBaseSceneController *)self _viewControllerForWelcomePresenting];
+  presentedViewController = [_viewControllerForWelcomePresenting presentedViewController];
   v9 = BCSceneLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v18 = v7;
+    v18 = _viewControllerForWelcomePresenting;
     v19 = 2114;
-    v20 = v8;
+    v20 = presentedViewController;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "_BKBaseSceneController: dismissWelcomeViewControllerAnimated: presenter: %{public}@ presented: %{public}@", buf, 0x16u);
   }
 
-  v10 = [(_BKBaseSceneController *)self welcomeViewController];
-  if (v10 && (v11 = v10, [(_BKBaseSceneController *)self welcomeViewController], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v8 == v12))
+  welcomeViewController = [(_BKBaseSceneController *)self welcomeViewController];
+  if (welcomeViewController && (v11 = welcomeViewController, [(_BKBaseSceneController *)self welcomeViewController], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, presentedViewController == v12))
   {
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1000A6E34;
     v15[3] = &unk_100A03788;
     v15[4] = self;
-    v16 = v6;
-    [v7 dismissViewControllerAnimated:v4 completion:v15];
+    v16 = completionCopy;
+    [_viewControllerForWelcomePresenting dismissViewControllerAnimated:animatedCopy completion:v15];
   }
 
   else
   {
     [(_BKBaseSceneController *)self setWelcomeViewController:0];
-    v13 = objc_retainBlock(v6);
+    v13 = objc_retainBlock(completionCopy);
     v14 = v13;
     if (v13)
     {
@@ -861,37 +861,37 @@ LABEL_16:
   }
 }
 
-- (void)welcomePresenterFinishOngoingModalTransitionAnimations:(id)a3
+- (void)welcomePresenterFinishOngoingModalTransitionAnimations:(id)animations
 {
-  v4 = a3;
-  v5 = [(_BKBaseSceneController *)self _viewControllerForWelcomePresenting];
-  v7 = v5;
-  if (v5)
+  animationsCopy = animations;
+  _viewControllerForWelcomePresenting = [(_BKBaseSceneController *)self _viewControllerForWelcomePresenting];
+  v7 = _viewControllerForWelcomePresenting;
+  if (_viewControllerForWelcomePresenting)
   {
-    [v5 im_finishOngoingModalTransitionAnimations:v4];
+    [_viewControllerForWelcomePresenting im_finishOngoingModalTransitionAnimations:animationsCopy];
   }
 
   else
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(animationsCopy);
 
     if (v6)
     {
       v6[2](v6);
     }
 
-    v4 = v6;
+    animationsCopy = v6;
   }
 }
 
 - (BOOL)welcomePresenterIsPresentingWelcome
 {
-  v3 = [(_BKBaseSceneController *)self _viewControllerForWelcomePresenting];
-  v4 = [(_BKBaseSceneController *)self welcomeViewController];
-  if (v4)
+  _viewControllerForWelcomePresenting = [(_BKBaseSceneController *)self _viewControllerForWelcomePresenting];
+  welcomeViewController = [(_BKBaseSceneController *)self welcomeViewController];
+  if (welcomeViewController)
   {
-    v5 = [v3 presentedViewController];
-    v6 = v4 == v5;
+    presentedViewController = [_viewControllerForWelcomePresenting presentedViewController];
+    v6 = welcomeViewController == presentedViewController;
   }
 
   else
@@ -905,9 +905,9 @@ LABEL_16:
 - (id)_assetPresenters
 {
   v2 = BUProtocolCast();
-  v3 = [v2 bookFlowAssetPresenting];
+  bookFlowAssetPresenting = [v2 bookFlowAssetPresenting];
 
-  v4 = [v3 presenterViewControllersConformingToProtocol:&OBJC_PROTOCOL___BKAssetPresenting];
+  v4 = [bookFlowAssetPresenting presenterViewControllersConformingToProtocol:&OBJC_PROTOCOL___BKAssetPresenting];
 
   return v4;
 }

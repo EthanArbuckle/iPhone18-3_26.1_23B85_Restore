@@ -1,6 +1,6 @@
 @interface SSVPlayActivityFeedSerialization
 + (id)defaultOverrideHTTPHeaderFields;
-- (id)propertyListObjectWithPlayActivityEvent:(id)a3;
+- (id)propertyListObjectWithPlayActivityEvent:(id)event;
 @end
 
 @implementation SSVPlayActivityFeedSerialization
@@ -16,136 +16,136 @@
   return v2;
 }
 
-- (id)propertyListObjectWithPlayActivityEvent:(id)a3
+- (id)propertyListObjectWithPlayActivityEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
-    v6 = [v4 eventType];
+    eventType = [eventCopy eventType];
     v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:0];
-    v8 = [v5 enqueuerProperties];
+    enqueuerProperties = [v5 enqueuerProperties];
     v9 = v7;
     v10 = v9;
-    if (v8)
+    if (enqueuerProperties)
     {
       v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
 
       v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v13 = [v8 isSBEnabled];
-      v14 = [MEMORY[0x1E696AD98] numberWithBool:v13];
+      isSBEnabled = [enqueuerProperties isSBEnabled];
+      v14 = [MEMORY[0x1E696AD98] numberWithBool:isSBEnabled];
       [v12 setObject:v14 forKey:@"sb-enabled"];
 
-      v15 = [v8 deviceName];
-      if ([v15 length])
+      deviceName = [enqueuerProperties deviceName];
+      if ([deviceName length])
       {
-        [v12 setObject:v15 forKey:@"device-name"];
+        [v12 setObject:deviceName forKey:@"device-name"];
       }
 
-      v122 = self;
+      selfCopy = self;
       v124 = v11;
-      v16 = [v8 storeFrontID];
-      if ([v16 length])
+      storeFrontID = [enqueuerProperties storeFrontID];
+      if ([storeFrontID length])
       {
-        [v12 setObject:v16 forKey:@"store-front"];
+        [v12 setObject:storeFrontID forKey:@"store-front"];
       }
 
-      v119 = v16;
-      v117 = [v8 timeZone];
-      v17 = [v117 secondsFromGMT];
-      v18 = [MEMORY[0x1E696AD98] numberWithLongLong:v17];
+      v119 = storeFrontID;
+      timeZone = [enqueuerProperties timeZone];
+      secondsFromGMT = [timeZone secondsFromGMT];
+      v18 = [MEMORY[0x1E696AD98] numberWithLongLong:secondsFromGMT];
       [v12 setObject:v18 forKey:@"utc-offset-in-seconds"];
 
-      v19 = [v8 buildVersion];
-      if ([v19 length])
+      buildVersion = [enqueuerProperties buildVersion];
+      if ([buildVersion length])
       {
-        [v12 setObject:v19 forKey:@"build-version"];
+        [v12 setObject:buildVersion forKey:@"build-version"];
       }
 
-      v20 = [v8 deviceGUID];
-      if ([v20 length])
+      deviceGUID = [enqueuerProperties deviceGUID];
+      if ([deviceGUID length])
       {
-        [v12 setObject:v20 forKey:@"guid"];
+        [v12 setObject:deviceGUID forKey:@"guid"];
       }
 
-      v21 = [v8 isPrivateListeningEnabled];
-      if (v21)
+      isPrivateListeningEnabled = [enqueuerProperties isPrivateListeningEnabled];
+      if (isPrivateListeningEnabled)
       {
-        [v12 setObject:v21 forKey:@"private-enabled"];
+        [v12 setObject:isPrivateListeningEnabled forKey:@"private-enabled"];
       }
 
-      if ([v8 systemReleaseType] == 4)
+      if ([enqueuerProperties systemReleaseType] == 4)
       {
         [v12 setObject:MEMORY[0x1E695E118] forKey:@"internal-build"];
       }
 
-      v22 = [v8 storeAccountID];
-      v23 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v22];
+      storeAccountID = [enqueuerProperties storeAccountID];
+      v23 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:storeAccountID];
       [v12 setObject:v23 forKey:@"dsid"];
 
       [v9 setObject:v12 forKey:@"enqueuer"];
-      self = v122;
+      self = selfCopy;
       v10 = v124;
     }
 
     v24 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v5, "isSBEnabled")}];
     [v10 setObject:v24 forKey:@"sb-enabled"];
 
-    v25 = [v5 deviceName];
-    if ([v25 length])
+    deviceName2 = [v5 deviceName];
+    if ([deviceName2 length])
     {
-      [v10 setObject:v25 forKey:@"device-name"];
+      [v10 setObject:deviceName2 forKey:@"device-name"];
     }
 
-    v26 = [v5 storeFrontID];
-    if (!v26)
+    storeFrontID2 = [v5 storeFrontID];
+    if (!storeFrontID2)
     {
-      v26 = self->_currentStoreFrontID;
+      storeFrontID2 = self->_currentStoreFrontID;
     }
 
-    if ([(NSString *)v26 length])
+    if ([(NSString *)storeFrontID2 length])
     {
-      [v10 setObject:v26 forKey:@"store-front"];
+      [v10 setObject:storeFrontID2 forKey:@"store-front"];
     }
 
-    v27 = [v5 eventTimeZone];
-    v28 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v27, "secondsFromGMT")}];
+    eventTimeZone = [v5 eventTimeZone];
+    v28 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(eventTimeZone, "secondsFromGMT")}];
     [v10 setObject:v28 forKey:@"utc-offset-in-seconds"];
 
-    v29 = [v5 buildVersion];
-    if ([v29 length])
+    buildVersion2 = [v5 buildVersion];
+    if ([buildVersion2 length])
     {
-      [v10 setObject:v29 forKey:@"build-version"];
+      [v10 setObject:buildVersion2 forKey:@"build-version"];
     }
 
-    v30 = v6;
+    v30 = eventType;
     if ([v5 systemReleaseType] == 4)
     {
       [v10 setObject:MEMORY[0x1E695E118] forKey:@"internal-build"];
     }
 
-    v31 = [v5 isPrivateListeningEnabled];
-    if (v31)
+    isPrivateListeningEnabled2 = [v5 isPrivateListeningEnabled];
+    if (isPrivateListeningEnabled2)
     {
-      [v10 setObject:v31 forKey:@"private-enabled"];
+      [v10 setObject:isPrivateListeningEnabled2 forKey:@"private-enabled"];
     }
 
-    if (v8 && v10 != v9)
+    if (enqueuerProperties && v10 != v9)
     {
       [v9 setObject:v10 forKey:@"player"];
     }
 
-    v32 = [v5 containerType];
+    containerType = [v5 containerType];
     v33 = v30;
-    v115 = v32;
-    if ((v32 - 1) > 3)
+    v115 = containerType;
+    if ((containerType - 1) > 3)
     {
       v34 = 0;
     }
 
     else
     {
-      v34 = qword_1D4B38EC8[v32 - 1];
+      v34 = qword_1D4B38EC8[containerType - 1];
     }
 
     v36 = [MEMORY[0x1E696AD98] numberWithInteger:v34];
@@ -155,10 +155,10 @@
     {
 LABEL_46:
       v109 = v33;
-      v45 = [v5 featureName];
-      if ([v45 length])
+      featureName = [v5 featureName];
+      if ([featureName length])
       {
-        [v9 setObject:v45 forKey:@"feature-name"];
+        [v9 setObject:featureName forKey:@"feature-name"];
       }
 
       [v5 itemDuration];
@@ -169,42 +169,42 @@ LABEL_46:
       v49 = [MEMORY[0x1E696AD98] numberWithInteger:v48];
       [v9 setObject:v49 forKey:@"media-type"];
 
-      v50 = [v5 isOffline];
-      v51 = [MEMORY[0x1E696AD98] numberWithBool:v50];
+      isOffline = [v5 isOffline];
+      v51 = [MEMORY[0x1E696AD98] numberWithBool:isOffline];
       [v9 setObject:v51 forKey:@"offline"];
 
-      v52 = [v5 persistentID];
-      if (v52)
+      persistentID = [v5 persistentID];
+      if (persistentID)
       {
-        v53 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lli", v52];
+        v53 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lli", persistentID];
         [v9 setObject:v53 forKey:@"persistent-id"];
       }
 
-      v54 = [v5 eventDate];
-      v55 = v54;
-      if (v54)
+      eventDate = [v5 eventDate];
+      v55 = eventDate;
+      if (eventDate)
       {
-        [v54 timeIntervalSinceNow];
+        [eventDate timeIntervalSinceNow];
         v57 = [MEMORY[0x1E696AD98] numberWithLongLong:(v56 * -1000.0) & ~((v56 * -1000.0) >> 63)];
         [v9 setObject:v57 forKey:@"milliseconds-since-play"];
       }
 
-      v58 = [v5 recommendationData];
-      if (v58)
+      recommendationData = [v5 recommendationData];
+      if (recommendationData)
       {
-        [v9 setObject:v58 forKey:@"reco-data"];
+        [v9 setObject:recommendationData forKey:@"reco-data"];
       }
 
-      v118 = v58;
-      v59 = [v5 sourceType];
-      if (v59 == 2)
+      v118 = recommendationData;
+      sourceType = [v5 sourceType];
+      if (sourceType == 2)
       {
         v60 = 7;
       }
 
       else
       {
-        v60 = v59 == 1;
+        v60 = sourceType == 1;
       }
 
       v61 = [MEMORY[0x1E696AD98] numberWithInteger:v60];
@@ -214,96 +214,96 @@ LABEL_46:
       v63 = [MEMORY[0x1E696AD98] numberWithLongLong:(v62 * 1000.0)];
       [v9 setObject:v63 forKey:@"start-position-in-milliseconds"];
 
-      v64 = [v5 timedMetadata];
-      if ([v64 length])
+      timedMetadata = [v5 timedMetadata];
+      if ([timedMetadata length])
       {
-        [v9 setObject:v64 forKey:@"timed-metadata"];
+        [v9 setObject:timedMetadata forKey:@"timed-metadata"];
       }
 
-      v123 = [v5 trackInfo];
-      if ([v123 length])
+      trackInfo = [v5 trackInfo];
+      if ([trackInfo length])
       {
-        v65 = [MEMORY[0x1E696AE40] propertyListWithData:v123 options:0 format:0 error:0];
+        v65 = [MEMORY[0x1E696AE40] propertyListWithData:trackInfo options:0 format:0 error:0];
         if (v65)
         {
           [v9 setObject:v65 forKey:@"track-info"];
         }
       }
 
-      v121 = v45;
-      v66 = [v5 itemType];
-      v114 = v64;
-      if ((v66 - 1) > 8)
+      v121 = featureName;
+      itemType = [v5 itemType];
+      v114 = timedMetadata;
+      if ((itemType - 1) > 8)
       {
         v67 = 0;
       }
 
       else
       {
-        v67 = qword_1D4B38F58[v66 - 1];
+        v67 = qword_1D4B38F58[itemType - 1];
       }
 
       v68 = [MEMORY[0x1E696AD98] numberWithInteger:v67];
       [v9 setObject:v68 forKey:@"type"];
 
-      v69 = [v5 requestingBundleIdentifier];
-      if (v69)
+      requestingBundleIdentifier = [v5 requestingBundleIdentifier];
+      if (requestingBundleIdentifier)
       {
-        [v9 setObject:v69 forKey:@"bundle-id"];
+        [v9 setObject:requestingBundleIdentifier forKey:@"bundle-id"];
       }
 
-      v70 = v8;
-      v71 = [v5 requestingBundleVersion];
-      if (v71)
+      v70 = enqueuerProperties;
+      requestingBundleVersion = [v5 requestingBundleVersion];
+      if (requestingBundleVersion)
       {
-        [v9 setObject:v71 forKey:@"bundle-version"];
+        [v9 setObject:requestingBundleVersion forKey:@"bundle-version"];
       }
 
-      v72 = [v5 householdID];
-      if ([v72 length])
+      householdID = [v5 householdID];
+      if ([householdID length])
       {
-        [v9 setObject:v72 forKey:@"household-id"];
+        [v9 setObject:householdID forKey:@"household-id"];
       }
 
-      v111 = v72;
-      v73 = [v5 isSiriInitiated];
-      if (v73)
+      v111 = householdID;
+      isSiriInitiated = [v5 isSiriInitiated];
+      if (isSiriInitiated)
       {
-        [v9 setObject:v73 forKey:@"siri-initiated"];
+        [v9 setObject:isSiriInitiated forKey:@"siri-initiated"];
       }
 
-      v110 = v73;
+      v110 = isSiriInitiated;
       v120 = v55;
       v74 = v70;
       v125 = v10;
-      v112 = v71;
-      v113 = v69;
+      v112 = requestingBundleVersion;
+      v113 = requestingBundleIdentifier;
       if ([v5 version] <= 1)
       {
-        v75 = [v5 containerID];
-        if (v75)
+        containerID = [v5 containerID];
+        if (containerID)
         {
-          [v9 setObject:v75 forKey:@"container-id"];
+          [v9 setObject:containerID forKey:@"container-id"];
         }
 
-        v76 = [v5 externalID];
+        externalID = [v5 externalID];
         v77 = v121;
         v78 = v111;
-        if (v76)
+        if (externalID)
         {
-          [v9 setObject:v76 forKey:@"external-identifier"];
+          [v9 setObject:externalID forKey:@"external-identifier"];
         }
 
-        v79 = [v5 personalizedContainerID];
-        if ([v79 length])
+        personalizedContainerID = [v5 personalizedContainerID];
+        if ([personalizedContainerID length])
         {
-          [v9 setObject:v79 forKey:@"personalized-container-id"];
+          [v9 setObject:personalizedContainerID forKey:@"personalized-container-id"];
         }
 
-        v80 = [v5 storeID];
-        if ([v80 length])
+        storeID = [v5 storeID];
+        if ([storeID length])
         {
-          [v9 setObject:v80 forKey:@"id"];
+          [v9 setObject:storeID forKey:@"id"];
         }
 
 LABEL_135:
@@ -339,28 +339,28 @@ LABEL_135:
       v83 = [MEMORY[0x1E696AD98] numberWithInteger:v82];
       [v9 setObject:v83 forKey:@"event-type"];
 
-      v75 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:1];
-      v84 = [v5 itemIDs];
-      v76 = v84;
+      containerID = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:1];
+      itemIDs = [v5 itemIDs];
+      externalID = itemIDs;
       if (v115 == 1)
       {
-        v85 = [v84 radioAdamID];
-        if (!v85)
+        radioAdamID = [itemIDs radioAdamID];
+        if (!radioAdamID)
         {
           goto LABEL_101;
         }
 
-        v86 = v85;
+        v86 = radioAdamID;
         v87 = @"radio-adam-id";
       }
 
       else
       {
-        v88 = [v84 subscriptionAdamID];
-        v86 = v88;
-        if (v66 == 6)
+        subscriptionAdamID = [itemIDs subscriptionAdamID];
+        v86 = subscriptionAdamID;
+        if (itemType == 6)
         {
-          if (!v88)
+          if (!subscriptionAdamID)
           {
             goto LABEL_101;
           }
@@ -370,67 +370,67 @@ LABEL_135:
 
         else
         {
-          if (v88)
+          if (subscriptionAdamID)
           {
-            v89 = [MEMORY[0x1E696AD98] numberWithLongLong:v88];
-            [v75 setObject:v89 forKey:@"subscription-adam-id"];
+            v89 = [MEMORY[0x1E696AD98] numberWithLongLong:subscriptionAdamID];
+            [containerID setObject:v89 forKey:@"subscription-adam-id"];
           }
 
-          v90 = [v76 equivalencySourceAdamID];
-          if (v90)
+          equivalencySourceAdamID = [externalID equivalencySourceAdamID];
+          if (equivalencySourceAdamID)
           {
-            v91 = [MEMORY[0x1E696AD98] numberWithLongLong:v90];
-            [v75 setObject:v91 forKey:@"orig-sf-adam-id"];
+            v91 = [MEMORY[0x1E696AD98] numberWithLongLong:equivalencySourceAdamID];
+            [containerID setObject:v91 forKey:@"orig-sf-adam-id"];
           }
 
-          v92 = [v76 purchasedAdamID];
-          if (v92)
+          purchasedAdamID = [externalID purchasedAdamID];
+          if (purchasedAdamID)
           {
-            v93 = [MEMORY[0x1E696AD98] numberWithLongLong:v92];
-            [v75 setObject:v93 forKey:@"purchased-adam-id"];
+            v93 = [MEMORY[0x1E696AD98] numberWithLongLong:purchasedAdamID];
+            [containerID setObject:v93 forKey:@"purchased-adam-id"];
           }
 
-          v94 = [v76 cloudID];
-          if (!v94)
+          cloudID = [externalID cloudID];
+          if (!cloudID)
           {
 LABEL_101:
-            v79 = [v76 lyricsID];
-            if ([v79 length])
+            personalizedContainerID = [externalID lyricsID];
+            if ([personalizedContainerID length])
             {
-              [v75 setObject:v79 forKey:@"lyric-id"];
+              [containerID setObject:personalizedContainerID forKey:@"lyric-id"];
             }
 
-            if ([v75 count])
+            if ([containerID count])
             {
-              [v9 setObject:v75 forKey:@"ids"];
+              [v9 setObject:containerID forKey:@"ids"];
             }
 
-            v80 = [v5 containerIDs];
+            storeID = [v5 containerIDs];
             v96 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:1];
             if (v115 <= 2)
             {
               if (v115 == 1)
               {
                 v116 = v74;
-                v97 = [v80 stationHash];
-                if ([v97 length])
+                stationHash = [storeID stationHash];
+                if ([stationHash length])
                 {
-                  [v96 setObject:v97 forKey:@"station-hash"];
+                  [v96 setObject:stationHash forKey:@"station-hash"];
                 }
 
-                v98 = [v80 stationStringID];
-                if ([v98 length])
+                stationStringID = [storeID stationStringID];
+                if ([stationStringID length])
                 {
-                  [v96 setObject:v98 forKey:@"station-id"];
+                  [v96 setObject:stationStringID forKey:@"station-id"];
                 }
 
-                v105 = [v80 stationID];
-                if (!v105)
+                stationID = [storeID stationID];
+                if (!stationID)
                 {
                   goto LABEL_127;
                 }
 
-                v100 = [MEMORY[0x1E696AD98] numberWithLongLong:v105];
+                v100 = [MEMORY[0x1E696AD98] numberWithLongLong:stationID];
                 v101 = @"station-personalized-id";
                 goto LABEL_126;
               }
@@ -438,25 +438,25 @@ LABEL_101:
               if (v115 == 2)
               {
                 v116 = v74;
-                v97 = [v80 globalPlaylistID];
-                if ([v97 length])
+                stationHash = [storeID globalPlaylistID];
+                if ([stationHash length])
                 {
-                  [v96 setObject:v97 forKey:@"global-playlist-id"];
+                  [v96 setObject:stationHash forKey:@"global-playlist-id"];
                 }
 
-                v98 = [v80 playlistVersionHash];
-                if ([v98 length])
+                stationStringID = [storeID playlistVersionHash];
+                if ([stationStringID length])
                 {
-                  [v96 setObject:v98 forKey:@"playlist-version-hash"];
+                  [v96 setObject:stationStringID forKey:@"playlist-version-hash"];
                 }
 
-                v99 = [v80 cloudPlaylistID];
-                if (!v99)
+                cloudPlaylistID = [storeID cloudPlaylistID];
+                if (!cloudPlaylistID)
                 {
                   goto LABEL_127;
                 }
 
-                v100 = [MEMORY[0x1E696AD98] numberWithLongLong:v99];
+                v100 = [MEMORY[0x1E696AD98] numberWithLongLong:cloudPlaylistID];
                 v101 = @"cloud-playlist-id";
 LABEL_126:
                 [v96 setObject:v100 forKey:v101];
@@ -479,13 +479,13 @@ LABEL_132:
 
             if (v115 == 3)
             {
-              v106 = [v80 adamID];
-              if (!v106)
+              adamID = [storeID adamID];
+              if (!adamID)
               {
                 goto LABEL_132;
               }
 
-              v97 = [MEMORY[0x1E696AD98] numberWithLongLong:v106];
+              stationHash = [MEMORY[0x1E696AD98] numberWithLongLong:adamID];
               v104 = @"artist-adam-id";
             }
 
@@ -496,15 +496,15 @@ LABEL_132:
                 goto LABEL_132;
               }
 
-              v102 = [v80 adamID];
-              if (v102)
+              adamID2 = [storeID adamID];
+              if (adamID2)
               {
-                v103 = [MEMORY[0x1E696AD98] numberWithLongLong:v102];
+                v103 = [MEMORY[0x1E696AD98] numberWithLongLong:adamID2];
                 [v96 setObject:v103 forKey:@"album-adam-id"];
               }
 
-              v97 = [v80 cloudAlbumID];
-              if (![v97 length])
+              stationHash = [storeID cloudAlbumID];
+              if (![stationHash length])
               {
                 goto LABEL_131;
               }
@@ -512,17 +512,17 @@ LABEL_132:
               v104 = @"cloud-album-id";
             }
 
-            [v96 setObject:v97 forKey:v104];
+            [v96 setObject:stationHash forKey:v104];
             goto LABEL_131;
           }
 
-          v86 = v94;
+          v86 = cloudID;
           v87 = @"cloud-id";
         }
       }
 
       v95 = [MEMORY[0x1E696AD98] numberWithLongLong:v86];
-      [v75 setObject:v95 forKey:v87];
+      [containerID setObject:v95 forKey:v87];
 
       goto LABEL_101;
     }
@@ -539,8 +539,8 @@ LABEL_132:
       v42 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v5, "lyricsDisplayedCharacterCount")}];
       [v9 setObject:v42 forKey:@"character-displayed-count"];
 
-      v43 = [v5 lyricsLanguage];
-      if (![v43 length])
+      lyricsLanguage = [v5 lyricsLanguage];
+      if (![lyricsLanguage length])
       {
 LABEL_45:
 
@@ -568,11 +568,11 @@ LABEL_45:
         v40 = qword_1D4B38EE8[v39];
       }
 
-      v43 = [MEMORY[0x1E696AD98] numberWithInteger:v40];
+      lyricsLanguage = [MEMORY[0x1E696AD98] numberWithInteger:v40];
       v44 = @"end-reason-type";
     }
 
-    [v9 setObject:v43 forKey:v44];
+    [v9 setObject:lyricsLanguage forKey:v44];
     goto LABEL_45;
   }
 

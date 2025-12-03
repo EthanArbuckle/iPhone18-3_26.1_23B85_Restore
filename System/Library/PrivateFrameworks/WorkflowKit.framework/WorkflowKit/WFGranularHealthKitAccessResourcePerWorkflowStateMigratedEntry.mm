@@ -1,18 +1,18 @@
 @interface WFGranularHealthKitAccessResourcePerWorkflowStateMigratedEntry
-- (WFGranularHealthKitAccessResourcePerWorkflowStateMigratedEntry)initWithCoder:(id)a3;
+- (WFGranularHealthKitAccessResourcePerWorkflowStateMigratedEntry)initWithCoder:(id)coder;
 @end
 
 @implementation WFGranularHealthKitAccessResourcePerWorkflowStateMigratedEntry
 
-- (WFGranularHealthKitAccessResourcePerWorkflowStateMigratedEntry)initWithCoder:(id)a3
+- (WFGranularHealthKitAccessResourcePerWorkflowStateMigratedEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFGranularHealthKitAccessResourcePerWorkflowStateMigratedEntry;
   v5 = [(WFGranularHealthKitAccessResourcePerWorkflowStateMigratedEntry *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isAuthorized"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isAuthorized"];
     authorized = v5->authorized;
     v5->authorized = v6;
 

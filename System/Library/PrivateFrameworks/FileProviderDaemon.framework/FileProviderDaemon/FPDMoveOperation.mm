@@ -1,41 +1,41 @@
 @interface FPDMoveOperation
-+ (BOOL)_validateInfo:(id)a3;
-- (FPDMoveOperation)initWithActionInfo:(id)a3 request:(id)a4 server:(id)a5;
++ (BOOL)_validateInfo:(id)info;
+- (FPDMoveOperation)initWithActionInfo:(id)info request:(id)request server:(id)server;
 - (void)_t_unblockReader;
 - (void)cancel;
-- (void)cancelRoot:(id)a3;
-- (void)dumpStateTo:(id)a3;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)cancelRoot:(id)root;
+- (void)dumpStateTo:(id)to;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
-- (void)sendPastUpdatesToClient:(id)a3;
+- (void)sendPastUpdatesToClient:(id)client;
 @end
 
 @implementation FPDMoveOperation
 
-+ (BOOL)_validateInfo:(id)a3
++ (BOOL)_validateInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (FPDMoveOperation)initWithActionInfo:(id)a3 request:(id)a4 server:(id)a5
+- (FPDMoveOperation)initWithActionInfo:(id)info request:(id)request server:(id)server
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([FPDMoveOperation _validateInfo:v8])
+  infoCopy = info;
+  requestCopy = request;
+  serverCopy = server;
+  if ([FPDMoveOperation _validateInfo:infoCopy])
   {
     v23.receiver = self;
     v23.super_class = FPDMoveOperation;
-    v11 = [(FPDActionOperation *)&v23 initWithActionInfo:v8 request:v9 server:v10];
+    v11 = [(FPDActionOperation *)&v23 initWithActionInfo:infoCopy request:requestCopy server:serverCopy];
     if (v11)
     {
       v12 = [FPDActionOperationQueue alloc];
-      v13 = [(FPDActionOperation *)v11 info];
-      v14 = [(FPDActionOperationQueue *)v12 initWithMoveInfo:v13];
+      info = [(FPDActionOperation *)v11 info];
+      v14 = [(FPDActionOperationQueue *)v12 initWithMoveInfo:info];
       queue = v11->_queue;
       v11->_queue = v14;
 
@@ -50,21 +50,21 @@
     }
 
     self = v11;
-    v21 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v21 = 0;
+    selfCopy = 0;
   }
 
-  return v21;
+  return selfCopy;
 }
 
 - (void)main
 {
   v8 = *MEMORY[0x1E69E9840];
-  v1 = *a1;
+  v1 = *self;
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_2_0();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -419,12 +419,12 @@ void __24__FPDMoveOperation_main__block_invoke_4_30(uint64_t a1)
   [v4 completedWithResult:v5 error:*(a1 + 32)];
 }
 
-- (void)sendPastUpdatesToClient:(id)a3
+- (void)sendPastUpdatesToClient:(id)client
 {
   v27 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v4 = [(FPOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v4);
+  clientCopy = client;
+  callbackQueue = [(FPOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   section = __fp_create_section();
   v5 = fp_current_or_default_log();
@@ -448,13 +448,13 @@ void __24__FPDMoveOperation_main__block_invoke_4_30(uint64_t a1)
   {
     if ([(FPDActionOperation *)self hasFinishedPreflight])
     {
-      [v20 remoteOperationProgressesAreReady];
+      [clientCopy remoteOperationProgressesAreReady];
       v23 = 0u;
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v7 = [(FPDActionOperation *)self progressByRoot];
-      v8 = [v7 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      progressByRoot = [(FPDActionOperation *)self progressByRoot];
+      v8 = [progressByRoot countByEnumeratingWithState:&v21 objects:v26 count:16];
       if (v8)
       {
         v9 = *v22;
@@ -465,34 +465,34 @@ void __24__FPDMoveOperation_main__block_invoke_4_30(uint64_t a1)
           {
             if (*v22 != v9)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(progressByRoot);
             }
 
             v11 = *(*(&v21 + 1) + 8 * v10);
-            v12 = [(FPDActionOperation *)self createdItemByRoot];
-            v13 = [v12 objectForKeyedSubscript:v11];
+            createdItemByRoot = [(FPDActionOperation *)self createdItemByRoot];
+            v13 = [createdItemByRoot objectForKeyedSubscript:v11];
 
-            v14 = [(FPDActionOperation *)self completedRoots];
-            v15 = [v14 containsObject:v11];
+            completedRoots = [(FPDActionOperation *)self completedRoots];
+            v15 = [completedRoots containsObject:v11];
 
-            v16 = [(FPDActionOperation *)self errorsByRoot];
-            v17 = [v16 objectForKeyedSubscript:v11];
+            errorsByRoot = [(FPDActionOperation *)self errorsByRoot];
+            v17 = [errorsByRoot objectForKeyedSubscript:v11];
 
             if (v15)
             {
-              [v20 remoteOperationCompletedRoot:v11 resultingItem:v13 error:v17 completion:&__block_literal_global_32];
+              [clientCopy remoteOperationCompletedRoot:v11 resultingItem:v13 error:v17 completion:&__block_literal_global_32];
             }
 
             else if (v13)
             {
-              [v20 remoteOperationCreatedRoot:v11 resultingItem:v13 completion:&__block_literal_global_34];
+              [clientCopy remoteOperationCreatedRoot:v11 resultingItem:v13 completion:&__block_literal_global_34];
             }
 
             ++v10;
           }
 
           while (v8 != v10);
-          v8 = [v7 countByEnumeratingWithState:&v21 objects:v26 count:16];
+          v8 = [progressByRoot countByEnumeratingWithState:&v21 objects:v26 count:16];
         }
 
         while (v8);
@@ -505,7 +505,7 @@ void __24__FPDMoveOperation_main__block_invoke_4_30(uint64_t a1)
       [FPDMoveOperation sendPastUpdatesToClient:];
     }
 
-    [v20 remoteOperationFinishedSendingPastUpdates];
+    [clientCopy remoteOperationFinishedSendingPastUpdates];
   }
 
   __fp_leave_section_Debug();
@@ -513,12 +513,12 @@ void __24__FPDMoveOperation_main__block_invoke_4_30(uint64_t a1)
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(FPOperation *)self callbackQueue];
-  dispatch_assert_queue_V2(v8);
+  errorCopy = error;
+  resultCopy = result;
+  callbackQueue = [(FPOperation *)self callbackQueue];
+  dispatch_assert_queue_V2(callbackQueue);
 
   [(FPDActionOperationQueue *)self->_queue cancel];
   [(FPDMoveReader *)self->_reader cancel];
@@ -532,7 +532,7 @@ void __24__FPDMoveOperation_main__block_invoke_4_30(uint64_t a1)
   queue = self->_queue;
   self->_queue = 0;
 
-  [(FPDActionOperation *)self setError:v6];
+  [(FPDActionOperation *)self setError:errorCopy];
   v12 = fp_current_or_default_log();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -541,21 +541,21 @@ void __24__FPDMoveOperation_main__block_invoke_4_30(uint64_t a1)
 
   v13.receiver = self;
   v13.super_class = FPDMoveOperation;
-  [(FPDActionOperation *)&v13 finishWithResult:v7 error:v6];
+  [(FPDActionOperation *)&v13 finishWithResult:resultCopy error:errorCopy];
 }
 
-- (void)cancelRoot:(id)a3
+- (void)cancelRoot:(id)root
 {
-  v4 = a3;
-  v5 = [(FPOperation *)self callbackQueue];
+  rootCopy = root;
+  callbackQueue = [(FPOperation *)self callbackQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__FPDMoveOperation_cancelRoot___block_invoke;
   v7[3] = &unk_1E83BE158;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = rootCopy;
+  selfCopy = self;
+  v6 = rootCopy;
+  dispatch_sync(callbackQueue, v7);
 }
 
 uint64_t __31__FPDMoveOperation_cancelRoot___block_invoke(uint64_t a1)
@@ -572,13 +572,13 @@ uint64_t __31__FPDMoveOperation_cancelRoot___block_invoke(uint64_t a1)
 
 - (void)cancel
 {
-  v3 = [(FPOperation *)self callbackQueue];
+  callbackQueue = [(FPOperation *)self callbackQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __26__FPDMoveOperation_cancel__block_invoke;
   block[3] = &unk_1E83BE068;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(callbackQueue, block);
 
   v4.receiver = self;
   v4.super_class = FPDMoveOperation;
@@ -594,21 +594,21 @@ uint64_t __26__FPDMoveOperation_cancel__block_invoke(uint64_t a1)
   return [v2 cancel];
 }
 
-- (void)dumpStateTo:(id)a3
+- (void)dumpStateTo:(id)to
 {
-  v4 = a3;
-  v5 = [(FPOperation *)self callbackQueue];
-  dispatch_activate(v5);
+  toCopy = to;
+  callbackQueue = [(FPOperation *)self callbackQueue];
+  dispatch_activate(callbackQueue);
 
-  v6 = [(FPOperation *)self callbackQueue];
+  callbackQueue2 = [(FPOperation *)self callbackQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __32__FPDMoveOperation_dumpStateTo___block_invoke;
   v8[3] = &unk_1E83BE158;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = toCopy;
+  selfCopy = self;
+  v7 = toCopy;
+  dispatch_sync(callbackQueue2, v8);
 }
 
 uint64_t __32__FPDMoveOperation_dumpStateTo___block_invoke(uint64_t a1)
@@ -661,13 +661,13 @@ uint64_t __32__FPDMoveOperation_dumpStateTo___block_invoke(uint64_t a1)
 
 - (void)_t_unblockReader
 {
-  v3 = [(FPOperation *)self callbackQueue];
+  callbackQueue = [(FPOperation *)self callbackQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __36__FPDMoveOperation__t_unblockReader__block_invoke;
   block[3] = &unk_1E83BE068;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(callbackQueue, block);
 }
 
 void __24__FPDMoveOperation_main__block_invoke_3_cold_1(uint64_t a1)

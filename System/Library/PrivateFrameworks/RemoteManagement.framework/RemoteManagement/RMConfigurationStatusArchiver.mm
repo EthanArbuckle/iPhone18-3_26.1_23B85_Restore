@@ -1,29 +1,29 @@
 @interface RMConfigurationStatusArchiver
-+ (BOOL)_removeStatusFileAndParentIfEmptyAtURL:(id)a3 madeChanges:(BOOL *)a4 error:(id *)a5;
-+ (BOOL)_removeStatusFileDirectoryAtURL:(id)a3 madeChanges:(BOOL *)a4 error:(id *)a5;
-+ (BOOL)removeAllStatusForStoreIdentifier:(id)a3 error:(id *)a4;
-+ (BOOL)removeStatusForStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 declarationServerToken:(id)a5 error:(id *)a6;
-+ (BOOL)removeStatusForStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 declarationServerToken:(id)a5 sourceIdentifier:(id)a6 error:(id *)a7;
-+ (BOOL)validStatusForStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 serverToken:(id)a5;
-+ (id)_getStatusFileURLForStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 declarationServerToken:(id)a5 sourceIdentifier:(id)a6;
++ (BOOL)_removeStatusFileAndParentIfEmptyAtURL:(id)l madeChanges:(BOOL *)changes error:(id *)error;
++ (BOOL)_removeStatusFileDirectoryAtURL:(id)l madeChanges:(BOOL *)changes error:(id *)error;
++ (BOOL)removeAllStatusForStoreIdentifier:(id)identifier error:(id *)error;
++ (BOOL)removeStatusForStoreIdentifier:(id)identifier declarationIdentifier:(id)declarationIdentifier declarationServerToken:(id)token error:(id *)error;
++ (BOOL)removeStatusForStoreIdentifier:(id)identifier declarationIdentifier:(id)declarationIdentifier declarationServerToken:(id)token sourceIdentifier:(id)sourceIdentifier error:(id *)error;
++ (BOOL)validStatusForStoreIdentifier:(id)identifier declarationIdentifier:(id)declarationIdentifier serverToken:(id)token;
++ (id)_getStatusFileURLForStoreIdentifier:(id)identifier declarationIdentifier:(id)declarationIdentifier declarationServerToken:(id)token sourceIdentifier:(id)sourceIdentifier;
 + (id)fileSystemSafeCharacterSet;
-+ (id)statusForStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 serverToken:(id)a5;
++ (id)statusForStoreIdentifier:(id)identifier declarationIdentifier:(id)declarationIdentifier serverToken:(id)token;
 @end
 
 @implementation RMConfigurationStatusArchiver
 
-+ (id)statusForStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 serverToken:(id)a5
++ (id)statusForStoreIdentifier:(id)identifier declarationIdentifier:(id)declarationIdentifier serverToken:(id)token
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [RMConfigurationStatusArchiver _getStatusDirectoryURLWithStoreIdentifier:a3 declarationIdentifier:v7 declarationServerToken:v8 createIfNeeded:0];
+  declarationIdentifierCopy = declarationIdentifier;
+  tokenCopy = token;
+  v9 = [RMConfigurationStatusArchiver _getStatusDirectoryURLWithStoreIdentifier:identifier declarationIdentifier:declarationIdentifierCopy declarationServerToken:tokenCopy createIfNeeded:0];
   v10 = +[NSFileManager defaultManager];
   v11 = [v10 contentsOfDirectoryAtURL:v9 includingPropertiesForKeys:0 options:1 error:0];
 
   if ([v11 count])
   {
-    v31 = v8;
-    v32 = v7;
+    v31 = tokenCopy;
+    v32 = declarationIdentifierCopy;
     v33 = objc_opt_new();
     v37 = 0u;
     v38 = 0u;
@@ -57,9 +57,9 @@
           if (v21)
           {
             v22 = [v21 objectForKeyedSubscript:@"valid"];
-            v23 = [v22 BOOLValue];
+            bOOLValue = [v22 BOOLValue];
 
-            v17 &= v23;
+            v17 &= bOOLValue;
             v24 = [v21 objectForKeyedSubscript:@"reasons"];
             if (v24)
             {
@@ -98,8 +98,8 @@
 
     v41[0] = @"identifier";
     v41[1] = @"server-token";
-    v8 = v31;
-    v7 = v32;
+    tokenCopy = v31;
+    declarationIdentifierCopy = v32;
     v42[0] = v32;
     v42[1] = v31;
     v41[2] = @"valid";
@@ -125,29 +125,29 @@
   return v25;
 }
 
-+ (BOOL)validStatusForStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 serverToken:(id)a5
++ (BOOL)validStatusForStoreIdentifier:(id)identifier declarationIdentifier:(id)declarationIdentifier serverToken:(id)token
 {
-  v5 = [RMConfigurationStatusArchiver statusForStoreIdentifier:a3 declarationIdentifier:a4 serverToken:a5];
+  v5 = [RMConfigurationStatusArchiver statusForStoreIdentifier:identifier declarationIdentifier:declarationIdentifier serverToken:token];
   v6 = v5;
   if (v5)
   {
     v7 = [v5 objectForKeyedSubscript:@"valid"];
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-+ (BOOL)removeStatusForStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 declarationServerToken:(id)a5 error:(id *)a6
++ (BOOL)removeStatusForStoreIdentifier:(id)identifier declarationIdentifier:(id)declarationIdentifier declarationServerToken:(id)token error:(id *)error
 {
-  v8 = [RMConfigurationStatusArchiver _getStatusDirectoryURLWithStoreIdentifier:a3 declarationIdentifier:a4 declarationServerToken:a5 createIfNeeded:0];
+  v8 = [RMConfigurationStatusArchiver _getStatusDirectoryURLWithStoreIdentifier:identifier declarationIdentifier:declarationIdentifier declarationServerToken:token createIfNeeded:0];
   v14 = 0;
-  v9 = [a1 _removeStatusFileDirectoryAtURL:v8 madeChanges:&v14 error:a6];
+  v9 = [self _removeStatusFileDirectoryAtURL:v8 madeChanges:&v14 error:error];
   if (v9 && v14 == 1)
   {
     v10 = +[RMSubscribedStatusKeyPathUpdater sharedUpdater];
@@ -163,11 +163,11 @@
   return v9;
 }
 
-+ (BOOL)removeStatusForStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 declarationServerToken:(id)a5 sourceIdentifier:(id)a6 error:(id *)a7
++ (BOOL)removeStatusForStoreIdentifier:(id)identifier declarationIdentifier:(id)declarationIdentifier declarationServerToken:(id)token sourceIdentifier:(id)sourceIdentifier error:(id *)error
 {
-  v9 = [a1 _getStatusFileURLForStoreIdentifier:a3 declarationIdentifier:a4 declarationServerToken:a5 sourceIdentifier:a6];
+  v9 = [self _getStatusFileURLForStoreIdentifier:identifier declarationIdentifier:declarationIdentifier declarationServerToken:token sourceIdentifier:sourceIdentifier];
   v15 = 0;
-  v10 = [a1 _removeStatusFileAndParentIfEmptyAtURL:v9 madeChanges:&v15 error:a7];
+  v10 = [self _removeStatusFileAndParentIfEmptyAtURL:v9 madeChanges:&v15 error:error];
   if (v10 && v15 == 1)
   {
     v11 = +[RMSubscribedStatusKeyPathUpdater sharedUpdater];
@@ -183,16 +183,16 @@
   return v10;
 }
 
-+ (BOOL)removeAllStatusForStoreIdentifier:(id)a3 error:(id *)a4
++ (BOOL)removeAllStatusForStoreIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [RMLocations statusDirectoryURLCreateIfNeeded:0];
-  v7 = [v6 URLByAppendingPathComponent:v5 isDirectory:1];
+  v7 = [v6 URLByAppendingPathComponent:identifierCopy isDirectory:1];
 
   v20 = 0;
   v8 = +[NSFileManager defaultManager];
-  v9 = [v7 path];
-  v10 = [v8 fileExistsAtPath:v9 isDirectory:&v20];
+  path = [v7 path];
+  v10 = [v8 fileExistsAtPath:path isDirectory:&v20];
 
   if (v10)
   {
@@ -222,10 +222,10 @@
         sub_100025AA8();
       }
 
-      if (a4 && v12)
+      if (error && v12)
       {
         v18 = v12;
-        *a4 = v12;
+        *error = v12;
       }
     }
   }
@@ -256,29 +256,29 @@
   return v3;
 }
 
-+ (id)_getStatusFileURLForStoreIdentifier:(id)a3 declarationIdentifier:(id)a4 declarationServerToken:(id)a5 sourceIdentifier:(id)a6
++ (id)_getStatusFileURLForStoreIdentifier:(id)identifier declarationIdentifier:(id)declarationIdentifier declarationServerToken:(id)token sourceIdentifier:(id)sourceIdentifier
 {
-  v9 = a6;
-  v10 = [RMConfigurationStatusArchiver _getStatusDirectoryURLWithStoreIdentifier:a3 declarationIdentifier:a4 declarationServerToken:a5 createIfNeeded:1];
-  v11 = [NSString stringWithFormat:@"%@.json", v9];
+  sourceIdentifierCopy = sourceIdentifier;
+  v10 = [RMConfigurationStatusArchiver _getStatusDirectoryURLWithStoreIdentifier:identifier declarationIdentifier:declarationIdentifier declarationServerToken:token createIfNeeded:1];
+  sourceIdentifierCopy = [NSString stringWithFormat:@"%@.json", sourceIdentifierCopy];
 
-  v12 = [v10 URLByAppendingPathComponent:v11 isDirectory:0];
+  v12 = [v10 URLByAppendingPathComponent:sourceIdentifierCopy isDirectory:0];
 
   return v12;
 }
 
-+ (BOOL)_removeStatusFileDirectoryAtURL:(id)a3 madeChanges:(BOOL *)a4 error:(id *)a5
++ (BOOL)_removeStatusFileDirectoryAtURL:(id)l madeChanges:(BOOL *)changes error:(id *)error
 {
-  v7 = a3;
+  lCopy = l;
   v18 = 0;
   v8 = +[NSFileManager defaultManager];
-  v9 = [v7 path];
-  v10 = [v8 fileExistsAtPath:v9 isDirectory:&v18];
+  path = [lCopy path];
+  v10 = [v8 fileExistsAtPath:path isDirectory:&v18];
 
   if (v10)
   {
     v17 = 0;
-    v11 = [v8 removeItemAtURL:v7 error:&v17];
+    v11 = [v8 removeItemAtURL:lCopy error:&v17];
     v12 = v17;
     v13 = +[RMLog configurationStatusArchiver];
     v14 = v13;
@@ -289,7 +289,7 @@
         sub_100025CC4();
       }
 
-      *a4 = 1;
+      *changes = 1;
     }
 
     else
@@ -299,10 +299,10 @@
         sub_100025C5C();
       }
 
-      if (a5 && v12)
+      if (error && v12)
       {
         v16 = v12;
-        *a5 = v12;
+        *error = v12;
       }
     }
   }
@@ -321,18 +321,18 @@
   return v11;
 }
 
-+ (BOOL)_removeStatusFileAndParentIfEmptyAtURL:(id)a3 madeChanges:(BOOL *)a4 error:(id *)a5
++ (BOOL)_removeStatusFileAndParentIfEmptyAtURL:(id)l madeChanges:(BOOL *)changes error:(id *)error
 {
-  v7 = a3;
+  lCopy = l;
   v27 = 0;
   v8 = +[NSFileManager defaultManager];
-  v9 = [v7 path];
-  v10 = [v8 fileExistsAtPath:v9 isDirectory:&v27];
+  path = [lCopy path];
+  v10 = [v8 fileExistsAtPath:path isDirectory:&v27];
 
   if (v10)
   {
     v26 = 0;
-    v11 = [v8 removeItemAtURL:v7 error:&v26];
+    v11 = [v8 removeItemAtURL:lCopy error:&v26];
     v12 = v26;
     v13 = +[RMLog configurationStatusArchiver];
     v14 = v13;
@@ -343,15 +343,15 @@
         sub_100025DFC();
       }
 
-      v15 = [v7 path];
-      v16 = [v15 stringByDeletingLastPathComponent];
+      path2 = [lCopy path];
+      stringByDeletingLastPathComponent = [path2 stringByDeletingLastPathComponent];
 
-      v17 = [v8 contentsOfDirectoryAtPath:v16 error:0];
+      v17 = [v8 contentsOfDirectoryAtPath:stringByDeletingLastPathComponent error:0];
       v18 = v17;
       if (v17 && ![v17 count])
       {
         v25 = v12;
-        v21 = [v8 removeItemAtPath:v16 error:&v25];
+        v21 = [v8 removeItemAtPath:stringByDeletingLastPathComponent error:&v25];
         v19 = v25;
 
         v22 = +[RMLog configurationStatusArchiver];
@@ -375,7 +375,7 @@
         v19 = v12;
       }
 
-      *a4 = 1;
+      *changes = 1;
 
       v12 = v19;
     }
@@ -387,10 +387,10 @@
         sub_100025D94();
       }
 
-      if (a5 && v12)
+      if (error && v12)
       {
         v20 = v12;
-        *a5 = v12;
+        *error = v12;
       }
     }
   }

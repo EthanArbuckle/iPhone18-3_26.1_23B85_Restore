@@ -1,10 +1,10 @@
 @interface PDSUserTracker
 + (id)standardAccountStore;
-- (BOOL)validUser:(id)a3 withError:(id *)a4;
-- (PDSUserTracker)initWithAccountStoreBlock:(id)a3;
-- (id)_accountForUser:(id)a3 withError:(id *)a4;
-- (id)tokenAndIdentifier:(id *)a3 forUser:(id)a4 withError:(id *)a5;
-- (void)refreshCredentialsForUser:(id)a3 withError:(id *)a4 completion:(id)a5;
+- (BOOL)validUser:(id)user withError:(id *)error;
+- (PDSUserTracker)initWithAccountStoreBlock:(id)block;
+- (id)_accountForUser:(id)user withError:(id *)error;
+- (id)tokenAndIdentifier:(id *)identifier forUser:(id)user withError:(id *)error;
+- (void)refreshCredentialsForUser:(id)user withError:(id *)error completion:(id)completion;
 @end
 
 @implementation PDSUserTracker
@@ -16,10 +16,10 @@
   return v2;
 }
 
-- (PDSUserTracker)initWithAccountStoreBlock:(id)a3
+- (PDSUserTracker)initWithAccountStoreBlock:(id)block
 {
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [PDSUserTracker initWithAccountStoreBlock:];
   }
@@ -29,7 +29,7 @@
   v5 = [(PDSUserTracker *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x25F8A7090](v4);
+    v6 = MEMORY[0x25F8A7090](blockCopy);
     accountStoreBlock = v5->_accountStoreBlock;
     v5->_accountStoreBlock = v6;
   }
@@ -37,16 +37,16 @@
   return v5;
 }
 
-- (BOOL)validUser:(id)a3 withError:(id *)a4
+- (BOOL)validUser:(id)user withError:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  userCopy = user;
+  if (!userCopy)
   {
     [PDSUserTracker validUser:withError:];
   }
 
-  if ([v6 userType] == 1 && (objc_msgSend(v6, "userID"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v8))
+  if ([userCopy userType] == 1 && (objc_msgSend(userCopy, "userID"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v8))
   {
     v9 = (*(self->_accountStoreBlock + 2))();
     v10 = v9;
@@ -60,7 +60,7 @@
       if (v12)
       {
         v27 = v13;
-        v15 = [v6 userID];
+        userID = [userCopy userID];
         v28 = v12;
         v29 = v10;
         [v10 accountsWithAccountType:v12];
@@ -82,11 +82,11 @@
                 objc_enumerationMutation(v16);
               }
 
-              v21 = [*(*(&v30 + 1) + 8 * i) accountProperties];
-              v22 = [v21 objectForKeyedSubscript:@"personID"];
+              accountProperties = [*(*(&v30 + 1) + 8 * i) accountProperties];
+              v22 = [accountProperties objectForKeyedSubscript:@"personID"];
 
-              LODWORD(v21) = [v15 isEqualToString:v22];
-              if (v21)
+              LODWORD(accountProperties) = [userID isEqualToString:v22];
+              if (accountProperties)
               {
 
                 v23 = 1;
@@ -104,10 +104,10 @@
           }
         }
 
-        if (a4)
+        if (error)
         {
           [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B18] code:-102 userInfo:0];
-          *a4 = v23 = 0;
+          *error = v23 = 0;
         }
 
         else
@@ -121,11 +121,11 @@ LABEL_23:
         v14 = v27;
       }
 
-      else if (a4)
+      else if (error)
       {
         v24 = v13;
         v23 = 0;
-        *a4 = v14;
+        *error = v14;
       }
 
       else
@@ -134,10 +134,10 @@ LABEL_23:
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B18] code:-101 userInfo:0];
-      *a4 = v23 = 0;
+      *error = v23 = 0;
     }
 
     else
@@ -146,10 +146,10 @@ LABEL_23:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B18] code:-100 userInfo:0];
-    *a4 = v23 = 0;
+    *error = v23 = 0;
   }
 
   else
@@ -161,16 +161,16 @@ LABEL_23:
   return v23;
 }
 
-- (id)tokenAndIdentifier:(id *)a3 forUser:(id)a4 withError:(id *)a5
+- (id)tokenAndIdentifier:(id *)identifier forUser:(id)user withError:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  if (!v8)
+  userCopy = user;
+  if (!userCopy)
   {
     [PDSUserTracker tokenAndIdentifier:forUser:withError:];
   }
 
-  if ([v8 userType] == 1 && (objc_msgSend(v8, "userID"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, v10))
+  if ([userCopy userType] == 1 && (objc_msgSend(userCopy, "userID"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "length"), v9, v10))
   {
     v11 = (*(self->_accountStoreBlock + 2))();
     v12 = v11;
@@ -184,7 +184,7 @@ LABEL_23:
       if (v14)
       {
         v30 = v15;
-        v17 = [v8 userID];
+        userID = [userCopy userID];
         v31 = v14;
         v32 = v12;
         [v12 accountsWithAccountType:v14];
@@ -207,8 +207,8 @@ LABEL_9:
             }
 
             v23 = *(*(&v33 + 1) + 8 * v22);
-            v24 = [v23 aida_dsid];
-            if ([v17 isEqualToString:v24])
+            aida_dsid = [v23 aida_dsid];
+            if ([userID isEqualToString:aida_dsid])
             {
               break;
             }
@@ -233,9 +233,9 @@ LABEL_9:
           }
 
           v25 = [v26 aida_tokenWithExpiryCheckForService:@"com.apple.gs.global.auth"];
-          if (a3)
+          if (identifier)
           {
-            *a3 = [v26 aida_alternateDSID];
+            *identifier = [v26 aida_alternateDSID];
           }
         }
 
@@ -244,10 +244,10 @@ LABEL_9:
 LABEL_15:
 
 LABEL_25:
-          if (a5)
+          if (error)
           {
             [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B18] code:-102 userInfo:0];
-            *a5 = v25 = 0;
+            *error = v25 = 0;
           }
 
           else
@@ -261,11 +261,11 @@ LABEL_25:
         v16 = v30;
       }
 
-      else if (a5)
+      else if (error)
       {
         v27 = v15;
         v25 = 0;
-        *a5 = v16;
+        *error = v16;
       }
 
       else
@@ -274,10 +274,10 @@ LABEL_25:
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B18] code:-101 userInfo:0];
-      *a5 = v25 = 0;
+      *error = v25 = 0;
     }
 
     else
@@ -286,10 +286,10 @@ LABEL_25:
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B18] code:-100 userInfo:0];
-    *a5 = v25 = 0;
+    *error = v25 = 0;
   }
 
   else
@@ -302,41 +302,41 @@ LABEL_25:
   return v25;
 }
 
-- (void)refreshCredentialsForUser:(id)a3 withError:(id *)a4 completion:(id)a5
+- (void)refreshCredentialsForUser:(id)user withError:(id *)error completion:(id)completion
 {
-  v11 = a3;
-  v8 = a5;
+  userCopy = user;
+  completionCopy = completion;
   v9 = (*(self->_accountStoreBlock + 2))();
   if (v9)
   {
-    v10 = [(PDSUserTracker *)self _accountForUser:v11 withError:a4];
+    v10 = [(PDSUserTracker *)self _accountForUser:userCopy withError:error];
     if (v10)
     {
-      [v9 aida_renewCredentialsForAccount:v10 services:&unk_286FBBBD0 completion:v8];
+      [v9 aida_renewCredentialsForAccount:v10 services:&unk_286FBBBD0 completion:completionCopy];
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B18] code:-102 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B18] code:-102 userInfo:0];
     }
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B18] code:-101 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B18] code:-101 userInfo:0];
   }
 }
 
-- (id)_accountForUser:(id)a3 withError:(id *)a4
+- (id)_accountForUser:(id)user withError:(id *)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  userCopy = user;
+  if (!userCopy)
   {
     [PDSUserTracker _accountForUser:withError:];
   }
 
-  if ([v6 userType] == 1 && (objc_msgSend(v6, "userID"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v8))
+  if ([userCopy userType] == 1 && (objc_msgSend(userCopy, "userID"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v8))
   {
     v9 = (*(self->_accountStoreBlock + 2))();
     v10 = v9;
@@ -350,7 +350,7 @@ LABEL_25:
       if (v12)
       {
         v27 = v13;
-        v15 = [v6 userID];
+        userID = [userCopy userID];
         v28 = v12;
         [v10 accountsWithAccountType:v12];
         v29 = 0u;
@@ -372,8 +372,8 @@ LABEL_9:
             }
 
             v21 = *(*(&v29 + 1) + 8 * v20);
-            v22 = [v21 aida_dsid];
-            if ([v15 isEqualToString:v22])
+            aida_dsid = [v21 aida_dsid];
+            if ([userID isEqualToString:aida_dsid])
             {
               break;
             }
@@ -408,10 +408,10 @@ LABEL_15:
           v12 = v28;
         }
 
-        if (a4)
+        if (error)
         {
           [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B18] code:-102 userInfo:0];
-          *a4 = v23 = 0;
+          *error = v23 = 0;
         }
 
         else
@@ -422,11 +422,11 @@ LABEL_15:
 LABEL_28:
       }
 
-      else if (a4)
+      else if (error)
       {
         v24 = v13;
         v23 = 0;
-        *a4 = v14;
+        *error = v14;
       }
 
       else
@@ -435,10 +435,10 @@ LABEL_28:
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B18] code:-101 userInfo:0];
-      *a4 = v23 = 0;
+      *error = v23 = 0;
     }
 
     else
@@ -447,10 +447,10 @@ LABEL_28:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D37B18] code:-100 userInfo:0];
-    *a4 = v23 = 0;
+    *error = v23 = 0;
   }
 
   else

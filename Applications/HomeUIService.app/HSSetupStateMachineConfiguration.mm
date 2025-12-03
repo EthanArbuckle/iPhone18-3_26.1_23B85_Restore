@@ -1,10 +1,10 @@
 @interface HSSetupStateMachineConfiguration
-+ (id)configureService:(id)a3 withName:(id)a4;
-+ (id)configureServices:(id)a3 withNames:(id)a4;
-+ (id)disableServices:(id)a3;
-+ (id)enableServices:(id)a3;
-+ (id)writeConfigurationState:(int64_t)a3 toService:(id)a4;
-+ (id)writeVisibilityState:(id)a3 toInputSourceService:(id)a4;
++ (id)configureService:(id)service withName:(id)name;
++ (id)configureServices:(id)services withNames:(id)names;
++ (id)disableServices:(id)services;
++ (id)enableServices:(id)services;
++ (id)writeConfigurationState:(int64_t)state toService:(id)service;
++ (id)writeVisibilityState:(id)state toInputSourceService:(id)service;
 - (BOOL)chipDevicePairingIsNew;
 - (BOOL)isSetupInitiatedByOtherMatterEcosystem;
 - (BOOL)requiresOwnerToPair;
@@ -13,96 +13,96 @@
 - (HMAccessoryCategory)category;
 - (HMCameraProfile)cameraProfile;
 - (HMSetupAccessoryDescription)setupDescription;
-- (HSSetupStateMachineConfiguration)initWithAccessory:(id)a3;
-- (HSSetupStateMachineConfiguration)initWithError:(id)a3;
-- (HSSetupStateMachineConfiguration)initWithHome:(id)a3;
+- (HSSetupStateMachineConfiguration)initWithAccessory:(id)accessory;
+- (HSSetupStateMachineConfiguration)initWithError:(id)error;
+- (HSSetupStateMachineConfiguration)initWithHome:(id)home;
 - (HSSetupStateMachineConfigurationDelegate)delegate;
 - (MTRCommissioneeInfo)matterCommissioneeInfo;
 - (MTSDeviceSetupRequest)matterDeviceSetupRequest;
 - (NSUUID)chipDevicePairingUUID;
 - (id)configureAccessoryDateAdded;
 - (id)configureAccessoryName;
-- (id)configureAccessoryWithName:(id)a3;
+- (id)configureAccessoryWithName:(id)name;
 - (id)configureRoom;
-- (id)updateUserGivenAccessoryName:(id)a3;
-- (id)validateName:(id)a3;
-- (id)validateNames:(id)a3;
-- (void)setHome:(id)a3;
-- (void)setIsReadyToPair:(BOOL)a3;
-- (void)setIsShareSiriAnalyticsEnabled:(BOOL)a3;
-- (void)setPairingError:(id)a3;
+- (id)updateUserGivenAccessoryName:(id)name;
+- (id)validateName:(id)name;
+- (id)validateNames:(id)names;
+- (void)setHome:(id)home;
+- (void)setIsReadyToPair:(BOOL)pair;
+- (void)setIsShareSiriAnalyticsEnabled:(BOOL)enabled;
+- (void)setPairingError:(id)error;
 @end
 
 @implementation HSSetupStateMachineConfiguration
 
 - (BOOL)requiresOwnerToPair
 {
-  v3 = [(HSSetupStateMachineConfiguration *)self category];
-  v4 = [v3 categoryType];
-  if ([v4 isEqualToString:HMAccessoryCategoryTypeSpeaker])
+  category = [(HSSetupStateMachineConfiguration *)self category];
+  categoryType = [category categoryType];
+  if ([categoryType isEqualToString:HMAccessoryCategoryTypeSpeaker])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(HSSetupStateMachineConfiguration *)self category];
-    v7 = [v6 categoryType];
-    v5 = [v7 isEqualToString:HMAccessoryCategoryTypeAirPort];
+    category2 = [(HSSetupStateMachineConfiguration *)self category];
+    categoryType2 = [category2 categoryType];
+    v5 = [categoryType2 isEqualToString:HMAccessoryCategoryTypeAirPort];
   }
 
   return v5;
 }
 
-- (void)setIsReadyToPair:(BOOL)a3
+- (void)setIsReadyToPair:(BOOL)pair
 {
-  self->_isReadyToPair = a3;
-  if (!a3)
+  self->_isReadyToPair = pair;
+  if (!pair)
   {
     return;
   }
 
-  v4 = [(HSSetupStateMachineConfiguration *)self setupDescription];
-  v5 = [v4 isSetupInitiatedByOtherMatterEcosystem];
+  setupDescription = [(HSSetupStateMachineConfiguration *)self setupDescription];
+  isSetupInitiatedByOtherMatterEcosystem = [setupDescription isSetupInitiatedByOtherMatterEcosystem];
 
-  if (v5)
+  if (isSetupInitiatedByOtherMatterEcosystem)
   {
     goto LABEL_3;
   }
 
-  v6 = [(HSSetupStateMachineConfiguration *)self home];
+  home = [(HSSetupStateMachineConfiguration *)self home];
 
-  if (!v6)
+  if (!home)
   {
     return;
   }
 
   if ([(HSSetupStateMachineConfiguration *)self requiresOwnerToPair])
   {
-    v7 = [(HSSetupStateMachineConfiguration *)self home];
-    v8 = [v7 hf_currentUserIsOwner];
+    home2 = [(HSSetupStateMachineConfiguration *)self home];
+    hf_currentUserIsOwner = [home2 hf_currentUserIsOwner];
 
-    if ((v8 & 1) == 0)
+    if ((hf_currentUserIsOwner & 1) == 0)
     {
-      v16 = HULocalizedString();
-      v11 = [(HSSetupStateMachineConfiguration *)self home];
-      v13 = [v11 name];
+      delegate = HULocalizedString();
+      home3 = [(HSSetupStateMachineConfiguration *)self home];
+      name = [home3 name];
       v14 = HULocalizedStringWithFormat();
-      v15 = [NSError hf_errorWithCode:61 title:v16 description:v14, v13];
+      v15 = [NSError hf_errorWithCode:61 title:delegate description:v14, name];
       [(HSSetupStateMachineConfiguration *)self setPairingError:v15];
 
       goto LABEL_11;
     }
   }
 
-  v9 = [(HSSetupStateMachineConfiguration *)self home];
-  v10 = [v9 hf_currentUserIsAdministrator];
+  home4 = [(HSSetupStateMachineConfiguration *)self home];
+  hf_currentUserIsAdministrator = [home4 hf_currentUserIsAdministrator];
 
-  if ((v10 & 1) == 0)
+  if ((hf_currentUserIsAdministrator & 1) == 0)
   {
-    v16 = HULocalizedString();
-    v11 = HULocalizedString();
-    v12 = [NSError hf_errorWithCode:61 title:v16 description:v11];
+    delegate = HULocalizedString();
+    home3 = HULocalizedString();
+    v12 = [NSError hf_errorWithCode:61 title:delegate description:home3];
     [(HSSetupStateMachineConfiguration *)self setPairingError:v12];
 
 LABEL_11:
@@ -110,106 +110,106 @@ LABEL_11:
   }
 
 LABEL_3:
-  v16 = [(HSSetupStateMachineConfiguration *)self delegate];
-  [v16 stateMachineConfigurationIsReadyToPair:self];
+  delegate = [(HSSetupStateMachineConfiguration *)self delegate];
+  [delegate stateMachineConfigurationIsReadyToPair:self];
 LABEL_12:
 }
 
-- (void)setPairingError:(id)a3
+- (void)setPairingError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[HSSetupStateMachineConfiguration setPairingError:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s *** Setting pairingError *** = %@", &v7, 0x16u);
   }
 
   pairingError = self->_pairingError;
-  self->_pairingError = v4;
+  self->_pairingError = errorCopy;
 }
 
-- (id)updateUserGivenAccessoryName:(id)a3
+- (id)updateUserGivenAccessoryName:(id)name
 {
-  v4 = a3;
-  v5 = [(HSSetupStateMachineConfiguration *)self validateName:v4];
+  nameCopy = name;
+  v5 = [(HSSetupStateMachineConfiguration *)self validateName:nameCopy];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10001D234;
   v9[3] = &unk_1000C6220;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = nameCopy;
+  v6 = nameCopy;
   v7 = [v5 flatMap:v9];
 
   return v7;
 }
 
-- (void)setHome:(id)a3
+- (void)setHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   p_home = &self->_home;
-  if (self->_home != v5)
+  if (self->_home != homeCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_home, a3);
-    v7 = [(HSSetupStateMachineConfiguration *)self delegate];
-    [v7 stateMachineConfiguration:self didUpdateHome:v8];
+    v8 = homeCopy;
+    objc_storeStrong(p_home, home);
+    delegate = [(HSSetupStateMachineConfiguration *)self delegate];
+    [delegate stateMachineConfiguration:self didUpdateHome:v8];
   }
 
   _objc_release_x2(p_home);
 }
 
-- (HSSetupStateMachineConfiguration)initWithHome:(id)a3
+- (HSSetupStateMachineConfiguration)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v9.receiver = self;
   v9.super_class = HSSetupStateMachineConfiguration;
   v6 = [(HSSetupStateMachineConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v7->_isReadyToPair = 0;
   }
 
   return v7;
 }
 
-- (HSSetupStateMachineConfiguration)initWithAccessory:(id)a3
+- (HSSetupStateMachineConfiguration)initWithAccessory:(id)accessory
 {
-  v5 = a3;
+  accessoryCopy = accessory;
   v12.receiver = self;
   v12.super_class = HSSetupStateMachineConfiguration;
   v6 = [(HSSetupStateMachineConfiguration *)&v12 init];
   if (v6)
   {
-    v7 = [v5 home];
+    home = [accessoryCopy home];
     home = v6->_home;
-    v6->_home = v7;
+    v6->_home = home;
 
-    objc_storeStrong(&v6->_addedAccessory, a3);
-    v9 = [v5 name];
+    objc_storeStrong(&v6->_addedAccessory, accessory);
+    name = [accessoryCopy name];
     userGivenAccessoryName = v6->_userGivenAccessoryName;
-    v6->_userGivenAccessoryName = v9;
+    v6->_userGivenAccessoryName = name;
   }
 
   return v6;
 }
 
-- (HSSetupStateMachineConfiguration)initWithError:(id)a3
+- (HSSetupStateMachineConfiguration)initWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   v9.receiver = self;
   v9.super_class = HSSetupStateMachineConfiguration;
   v6 = [(HSSetupStateMachineConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pairingError, a3);
+    objc_storeStrong(&v6->_pairingError, error);
   }
 
   return v7;
@@ -217,111 +217,111 @@ LABEL_12:
 
 - (HMSetupAccessoryDescription)setupDescription
 {
-  v3 = [(HSSetupStateMachineConfiguration *)self delegate];
-  v4 = [v3 stateMachineConfigurationGetSetupAccessoryDescription:self];
+  delegate = [(HSSetupStateMachineConfiguration *)self delegate];
+  v4 = [delegate stateMachineConfigurationGetSetupAccessoryDescription:self];
 
   return v4;
 }
 
 - (MTSDeviceSetupRequest)matterDeviceSetupRequest
 {
-  v3 = [(HSSetupStateMachineConfiguration *)self delegate];
-  v4 = [v3 stateMachineConfigurationGetMatterDeviceSetupRequest:self];
+  delegate = [(HSSetupStateMachineConfiguration *)self delegate];
+  v4 = [delegate stateMachineConfigurationGetMatterDeviceSetupRequest:self];
 
   return v4;
 }
 
 - (HMAccessoryCategory)category
 {
-  v3 = [(HSSetupStateMachineConfiguration *)self addedAccessory];
-  v4 = [v3 category];
-  v5 = v4;
-  if (v4)
+  addedAccessory = [(HSSetupStateMachineConfiguration *)self addedAccessory];
+  category = [addedAccessory category];
+  v5 = category;
+  if (category)
   {
-    v6 = v4;
+    category2 = category;
   }
 
   else
   {
-    v7 = [(HSSetupStateMachineConfiguration *)self setupDescription];
-    v6 = [v7 category];
+    setupDescription = [(HSSetupStateMachineConfiguration *)self setupDescription];
+    category2 = [setupDescription category];
   }
 
-  return v6;
+  return category2;
 }
 
 - (HFAccessoryItem)addedAccessoryItem
 {
   v3 = [HFAccessoryItem alloc];
-  v4 = [(HSSetupStateMachineConfiguration *)self addedAccessory];
+  addedAccessory = [(HSSetupStateMachineConfiguration *)self addedAccessory];
   v5 = objc_alloc_init(HFNullValueSource);
-  v6 = [v3 initWithAccessory:v4 valueSource:v5];
+  v6 = [v3 initWithAccessory:addedAccessory valueSource:v5];
 
   return v6;
 }
 
-- (void)setIsShareSiriAnalyticsEnabled:(BOOL)a3
+- (void)setIsShareSiriAnalyticsEnabled:(BOOL)enabled
 {
-  if (self->_isShareSiriAnalyticsEnabled != a3)
+  if (self->_isShareSiriAnalyticsEnabled != enabled)
   {
-    v3 = a3;
+    enabledCopy = enabled;
     v5 = HFLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 136315394;
       v7 = "[HSSetupStateMachineConfiguration setIsShareSiriAnalyticsEnabled:]";
       v8 = 1024;
-      v9 = v3;
+      v9 = enabledCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s *** Setting the value for  isShareSiriAnalyticsEnabled *** = %{BOOL}d", &v6, 0x12u);
     }
 
-    self->_isShareSiriAnalyticsEnabled = v3;
+    self->_isShareSiriAnalyticsEnabled = enabledCopy;
   }
 }
 
 - (MTRCommissioneeInfo)matterCommissioneeInfo
 {
-  v2 = [(HSSetupStateMachineConfiguration *)self setupDescription];
-  v3 = [v2 matterCommissioneeInfo];
+  setupDescription = [(HSSetupStateMachineConfiguration *)self setupDescription];
+  matterCommissioneeInfo = [setupDescription matterCommissioneeInfo];
 
-  return v3;
+  return matterCommissioneeInfo;
 }
 
 - (NSUUID)chipDevicePairingUUID
 {
-  v2 = [(HSSetupStateMachineConfiguration *)self setupDescription];
-  v3 = [v2 matterSystemCommissionerPairingUUID];
+  setupDescription = [(HSSetupStateMachineConfiguration *)self setupDescription];
+  matterSystemCommissionerPairingUUID = [setupDescription matterSystemCommissionerPairingUUID];
 
-  return v3;
+  return matterSystemCommissionerPairingUUID;
 }
 
 - (BOOL)chipDevicePairingIsNew
 {
-  v2 = [(HSSetupStateMachineConfiguration *)self setupDescription];
-  v3 = [v2 matterSystemCommissionerPairingIsNew];
+  setupDescription = [(HSSetupStateMachineConfiguration *)self setupDescription];
+  matterSystemCommissionerPairingIsNew = [setupDescription matterSystemCommissionerPairingIsNew];
 
-  return v3;
+  return matterSystemCommissionerPairingIsNew;
 }
 
 - (HMCameraProfile)cameraProfile
 {
-  v2 = [(HSSetupStateMachineConfiguration *)self addedAccessory];
-  v3 = [v2 cameraProfiles];
-  v4 = [v3 firstObject];
+  addedAccessory = [(HSSetupStateMachineConfiguration *)self addedAccessory];
+  cameraProfiles = [addedAccessory cameraProfiles];
+  firstObject = [cameraProfiles firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (BOOL)supportsRichConfiguration
 {
-  v2 = [(HSSetupStateMachineConfiguration *)self cameraProfile];
-  v3 = [v2 userSettings];
+  cameraProfile = [(HSSetupStateMachineConfiguration *)self cameraProfile];
+  userSettings = [cameraProfile userSettings];
 
-  if (v3)
+  if (userSettings)
   {
-    v4 = [v3 supportedFeatures];
-    v5 = [v3 supportedFeatures];
-    v6 = v5 & (v4 >> 1) & ([v3 supportedFeatures] >> 2) & 1;
+    supportedFeatures = [userSettings supportedFeatures];
+    supportedFeatures2 = [userSettings supportedFeatures];
+    v6 = supportedFeatures2 & (supportedFeatures >> 1) & ([userSettings supportedFeatures] >> 2) & 1;
   }
 
   else
@@ -339,35 +339,35 @@ LABEL_12:
   return WeakRetained;
 }
 
-- (id)validateName:(id)a3
+- (id)validateName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = +[HFHomeKitDispatcher sharedDispatcher];
-  v6 = [v5 homeManager];
+  homeManager = [v5 homeManager];
 
   [(HSSetupStateMachineConfiguration *)self home];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10002AE00;
   v12[3] = &unk_1000C6990;
-  v13 = v6;
-  v15 = v14 = v4;
+  v13 = homeManager;
+  v15 = v14 = nameCopy;
   v7 = v15;
-  v8 = v4;
-  v9 = v6;
+  v8 = nameCopy;
+  v9 = homeManager;
   v10 = [NAFuture futureWithBlock:v12];
 
   return v10;
 }
 
-- (id)validateNames:(id)a3
+- (id)validateNames:(id)names
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002B1F8;
   v7[3] = &unk_1000C69B8;
   v7[4] = self;
-  v3 = [a3 na_map:v7];
+  v3 = [names na_map:v7];
   v4 = +[NAScheduler mainThreadScheduler];
   v5 = [NAFuture combineAllFutures:v3 ignoringErrors:0 scheduler:v4];
 
@@ -378,34 +378,34 @@ LABEL_12:
 {
   if ([(HSSetupStateMachineConfiguration *)self isSetupInitiatedByOtherMatterEcosystem]&& ([(HSSetupStateMachineConfiguration *)self addedAccessory], v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
   {
-    v11 = +[NAFuture futureWithNoResult];
+    commitItem = +[NAFuture futureWithNoResult];
   }
 
   else
   {
-    v5 = [(HSSetupStateMachineConfiguration *)self addedAccessory];
-    if (!v5)
+    addedAccessory = [(HSSetupStateMachineConfiguration *)self addedAccessory];
+    if (!addedAccessory)
     {
       sub_100078BDC(a2, self);
     }
 
-    v6 = [(HSSetupStateMachineConfiguration *)self home];
-    if (!v6)
+    home = [(HSSetupStateMachineConfiguration *)self home];
+    if (!home)
     {
       sub_100078C50(a2, self);
     }
 
-    v7 = [(HSSetupStateMachineConfiguration *)self roomName];
-    if (v7)
+    roomName = [(HSSetupStateMachineConfiguration *)self roomName];
+    if (roomName)
     {
-      v8 = [v6 rooms];
+      rooms = [home rooms];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_10002B4CC;
       v21[3] = &unk_1000C69E0;
-      v9 = v7;
+      v9 = roomName;
       v22 = v9;
-      v10 = [v8 na_firstObjectPassingTest:v21];
+      v10 = [rooms na_firstObjectPassingTest:v21];
 
       if (v10)
       {
@@ -413,20 +413,20 @@ LABEL_12:
         v17[1] = 3221225472;
         v17[2] = sub_10002B510;
         v17[3] = &unk_1000C62C0;
-        v18 = v6;
-        v19 = v5;
+        v18 = home;
+        v19 = addedAccessory;
         v20 = v10;
-        v11 = [NAFuture futureWithErrorOnlyHandlerAdapterBlock:v17];
+        commitItem = [NAFuture futureWithErrorOnlyHandlerAdapterBlock:v17];
 
         v12 = v18;
       }
 
       else
       {
-        v12 = [[HFRoomBuilder alloc] initWithHome:v6];
+        v12 = [[HFRoomBuilder alloc] initWithHome:home];
         [v12 setName:v9];
-        [v12 addAccessory:v5];
-        v11 = [v12 commitItem];
+        [v12 addAccessory:addedAccessory];
+        commitItem = [v12 commitItem];
       }
 
       v15[0] = _NSConcreteStackBlock;
@@ -434,32 +434,32 @@ LABEL_12:
       v15[2] = sub_10002B524;
       v15[3] = &unk_1000C5658;
       v16 = v9;
-      v13 = [v11 addCompletionBlock:v15];
+      v13 = [commitItem addCompletionBlock:v15];
     }
 
     else
     {
-      v11 = +[NAFuture futureWithNoResult];
+      commitItem = +[NAFuture futureWithNoResult];
     }
   }
 
-  return v11;
+  return commitItem;
 }
 
 - (id)configureAccessoryName
 {
-  v3 = [(HSSetupStateMachineConfiguration *)self userGivenAccessoryName];
-  if (v3)
+  userGivenAccessoryName = [(HSSetupStateMachineConfiguration *)self userGivenAccessoryName];
+  if (userGivenAccessoryName)
   {
     if ([(HSSetupStateMachineConfiguration *)self isSetupInitiatedByOtherMatterEcosystem]&& ([(HSSetupStateMachineConfiguration *)self addedAccessory], v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
     {
       v8 = objc_opt_class();
-      v9 = self;
-      if (v9)
+      selfCopy = self;
+      if (selfCopy)
       {
         if (objc_opt_isKindOfClass())
         {
-          v10 = v9;
+          v10 = selfCopy;
         }
 
         else
@@ -470,7 +470,7 @@ LABEL_12:
         v11 = v10;
         if (!v11)
         {
-          sub_1000774F0(v9, v8);
+          sub_1000774F0(selfCopy, v8);
         }
       }
 
@@ -479,15 +479,15 @@ LABEL_12:
         v11 = 0;
       }
 
-      v12 = [(HSSetupStateMachineConfiguration *)v11 targetEcosystem];
-      v13 = v12;
-      if (v12)
+      targetEcosystem = [(HSSetupStateMachineConfiguration *)v11 targetEcosystem];
+      v13 = targetEcosystem;
+      if (targetEcosystem)
       {
         v17[0] = _NSConcreteStackBlock;
         v17[1] = 3221225472;
         v17[2] = sub_10002B86C;
         v17[3] = &unk_1000C63A0;
-        v18 = v12;
+        v18 = targetEcosystem;
         v19 = v11;
         v6 = [NAFuture futureWithErrorOnlyHandlerAdapterBlock:v17];
 
@@ -509,8 +509,8 @@ LABEL_12:
 
     else
     {
-      v5 = [(HSSetupStateMachineConfiguration *)self userGivenAccessoryName];
-      v6 = [(HSSetupStateMachineConfiguration *)self configureAccessoryWithName:v5];
+      userGivenAccessoryName2 = [(HSSetupStateMachineConfiguration *)self userGivenAccessoryName];
+      v6 = [(HSSetupStateMachineConfiguration *)self configureAccessoryWithName:userGivenAccessoryName2];
     }
   }
 
@@ -528,28 +528,28 @@ LABEL_12:
   return v6;
 }
 
-- (id)configureAccessoryWithName:(id)a3
+- (id)configureAccessoryWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(HSSetupStateMachineConfiguration *)self addedAccessory];
-    v7 = [(HSSetupStateMachineConfiguration *)self home];
-    v8 = [(HSSetupStateMachineConfiguration *)self userGivenAccessoryName];
+    addedAccessory = [(HSSetupStateMachineConfiguration *)self addedAccessory];
+    home = [(HSSetupStateMachineConfiguration *)self home];
+    userGivenAccessoryName = [(HSSetupStateMachineConfiguration *)self userGivenAccessoryName];
     *buf = 138412802;
-    v56 = v6;
+    v56 = addedAccessory;
     v57 = 2112;
-    v58 = v7;
+    v58 = home;
     v59 = 2112;
-    v60 = v8;
+    v60 = userGivenAccessoryName;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Attempting to configure %@ in %@, with userGivenAccessoryName %@", buf, 0x20u);
   }
 
   v9 = objc_opt_new();
-  v10 = [(HSSetupStateMachineConfiguration *)self addedAccessory];
-  v11 = [v10 name];
-  v12 = [v4 isEqualToString:v11];
+  addedAccessory2 = [(HSSetupStateMachineConfiguration *)self addedAccessory];
+  name = [addedAccessory2 name];
+  v12 = [nameCopy isEqualToString:name];
 
   if ((v12 & 1) == 0)
   {
@@ -557,9 +557,9 @@ LABEL_12:
     v52[1] = 3221225472;
     v52[2] = sub_10002BE9C;
     v52[3] = &unk_1000C63A0;
-    v13 = v10;
+    v13 = addedAccessory2;
     v53 = v13;
-    v14 = v4;
+    v14 = nameCopy;
     v54 = v14;
     v15 = [NAFuture futureWithErrorOnlyHandlerAdapterBlock:v52];
     v49[0] = _NSConcreteStackBlock;
@@ -572,41 +572,41 @@ LABEL_12:
     [v9 addObject:v15];
   }
 
-  v17 = [v10 hf_primaryService];
-  v18 = [v17 serviceType];
-  v19 = [v18 isEqualToString:HMServiceTypeTelevision];
+  hf_primaryService = [addedAccessory2 hf_primaryService];
+  serviceType = [hf_primaryService serviceType];
+  v19 = [serviceType isEqualToString:HMServiceTypeTelevision];
 
   if (!v19)
   {
-    if (![v10 hf_isSingleServiceLikeAccessory])
+    if (![addedAccessory2 hf_isSingleServiceLikeAccessory])
     {
       goto LABEL_14;
     }
 
-    v24 = [v10 hf_visibleServices];
-    v25 = [v24 anyObject];
-    if (v25)
+    hf_visibleServices = [addedAccessory2 hf_visibleServices];
+    anyObject = [hf_visibleServices anyObject];
+    if (anyObject)
     {
-      v26 = v25;
+      hf_primaryService2 = anyObject;
     }
 
     else
     {
-      v26 = [v10 hf_primaryService];
+      hf_primaryService2 = [addedAccessory2 hf_primaryService];
 
-      if (v26)
+      if (hf_primaryService2)
       {
         goto LABEL_12;
       }
 
       NSLog(@"Attempted to name a single service accessory without a visible service");
-      v24 = HFLogForCategory();
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+      hf_visibleServices = HFLogForCategory();
+      if (os_log_type_enabled(hf_visibleServices, OS_LOG_TYPE_ERROR))
       {
         sub_100078DBC();
       }
 
-      v26 = 0;
+      hf_primaryService2 = 0;
     }
 
 LABEL_12:
@@ -614,12 +614,12 @@ LABEL_12:
     v40[1] = 3221225472;
     v40[2] = sub_10002C1A8;
     v40[3] = &unk_1000C62C0;
-    v41 = v26;
-    v27 = v4;
+    v41 = hf_primaryService2;
+    v27 = nameCopy;
     v42 = v27;
-    v28 = v10;
+    v28 = addedAccessory2;
     v43 = v28;
-    v23 = v26;
+    v23 = hf_primaryService2;
     v29 = [NAFuture futureWithErrorOnlyHandlerAdapterBlock:v40];
     v34 = _NSConcreteStackBlock;
     v35 = 3221225472;
@@ -637,8 +637,8 @@ LABEL_12:
   v46[1] = 3221225472;
   v46[2] = sub_10002C058;
   v46[3] = &unk_1000C63A0;
-  v47 = v10;
-  v20 = v4;
+  v47 = addedAccessory2;
+  v20 = nameCopy;
   v48 = v20;
   v21 = [NAFuture futureWithErrorOnlyHandlerAdapterBlock:v46];
   v44[0] = _NSConcreteStackBlock;
@@ -661,28 +661,28 @@ LABEL_14:
 
 - (id)configureAccessoryDateAdded
 {
-  v3 = [(HSSetupStateMachineConfiguration *)self addedAccessory];
-  v4 = v3;
-  if (!v3)
+  addedAccessory = [(HSSetupStateMachineConfiguration *)self addedAccessory];
+  v4 = addedAccessory;
+  if (!addedAccessory)
   {
 LABEL_6:
     v9 = +[NAFuture futureWithNoResult];
     goto LABEL_8;
   }
 
-  v5 = [v3 hf_dateAdded];
+  hf_dateAdded = [addedAccessory hf_dateAdded];
 
-  if (v5)
+  if (hf_dateAdded)
   {
     v6 = HFLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(HSSetupStateMachineConfiguration *)self addedAccessory];
-      v8 = [v4 hf_dateAdded];
+      addedAccessory2 = [(HSSetupStateMachineConfiguration *)self addedAccessory];
+      hf_dateAdded2 = [v4 hf_dateAdded];
       *buf = 138412546;
-      v14 = v7;
+      v14 = addedAccessory2;
       v15 = 2112;
-      v16 = v8;
+      v16 = hf_dateAdded2;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Not updating date added for %@ because it is already set to %@", buf, 0x16u);
     }
 
@@ -701,12 +701,12 @@ LABEL_8:
   return v9;
 }
 
-+ (id)configureService:(id)a3 withName:(id)a4
++ (id)configureService:(id)service withName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 defaultName];
-  v8 = [v6 isEqualToString:v7];
+  serviceCopy = service;
+  nameCopy = name;
+  defaultName = [serviceCopy defaultName];
+  v8 = [nameCopy isEqualToString:defaultName];
 
   if (v8)
   {
@@ -719,36 +719,36 @@ LABEL_8:
     v11[1] = 3221225472;
     v11[2] = sub_10002C894;
     v11[3] = &unk_1000C63A0;
-    v12 = v5;
-    v13 = v6;
+    v12 = serviceCopy;
+    v13 = nameCopy;
     v9 = [NAFuture futureWithErrorOnlyHandlerAdapterBlock:v11];
   }
 
   return v9;
 }
 
-+ (id)configureServices:(id)a3 withNames:(id)a4
++ (id)configureServices:(id)services withNames:(id)names
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 == [v6 count])
+  servicesCopy = services;
+  namesCopy = names;
+  v7 = [servicesCopy count];
+  if (v7 == [namesCopy count])
   {
     v8 = objc_opt_new();
-    if ([v5 count])
+    if ([servicesCopy count])
     {
       v9 = 0;
       do
       {
-        v10 = [v5 objectAtIndexedSubscript:v9];
-        v11 = [v6 objectAtIndexedSubscript:v9];
+        v10 = [servicesCopy objectAtIndexedSubscript:v9];
+        v11 = [namesCopy objectAtIndexedSubscript:v9];
         v12 = [HSSetupStateMachineConfiguration configureService:v10 withName:v11];
         [v8 na_safeAddObject:v12];
 
         ++v9;
       }
 
-      while (v9 < [v5 count]);
+      while (v9 < [servicesCopy count]);
     }
 
     v13 = +[NAScheduler mainThreadScheduler];
@@ -760,48 +760,48 @@ LABEL_8:
     v15 = HFLogForCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      sub_100078FE4(v5, v6, v15);
+      sub_100078FE4(servicesCopy, namesCopy, v15);
     }
 
-    NSLog(@"%s passed different count services [%ld] and names [%ld]", "+[HSSetupStateMachineConfiguration(Helpers) configureServices:withNames:]", [v5 count], objc_msgSend(v6, "count"));
+    NSLog(@"%s passed different count services [%ld] and names [%ld]", "+[HSSetupStateMachineConfiguration(Helpers) configureServices:withNames:]", [servicesCopy count], objc_msgSend(namesCopy, "count"));
     v14 = +[NAFuture futureWithNoResult];
   }
 
   return v14;
 }
 
-+ (id)enableServices:(id)a3
++ (id)enableServices:(id)services
 {
-  v3 = [a3 na_map:&stru_1000C6A20];
-  v4 = [v3 allObjects];
+  v3 = [services na_map:&stru_1000C6A20];
+  allObjects = [v3 allObjects];
   v5 = +[NAScheduler mainThreadScheduler];
-  v6 = [NAFuture combineAllFutures:v4 ignoringErrors:1 scheduler:v5];
+  v6 = [NAFuture combineAllFutures:allObjects ignoringErrors:1 scheduler:v5];
 
   return v6;
 }
 
-+ (id)disableServices:(id)a3
++ (id)disableServices:(id)services
 {
-  v3 = [a3 na_map:&stru_1000C6A40];
-  v4 = [v3 allObjects];
+  v3 = [services na_map:&stru_1000C6A40];
+  allObjects = [v3 allObjects];
   v5 = +[NAScheduler mainThreadScheduler];
-  v6 = [NAFuture combineAllFutures:v4 ignoringErrors:1 scheduler:v5];
+  v6 = [NAFuture combineAllFutures:allObjects ignoringErrors:1 scheduler:v5];
 
   return v6;
 }
 
-+ (id)writeVisibilityState:(id)a3 toInputSourceService:(id)a4
++ (id)writeVisibilityState:(id)state toInputSourceService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  serviceCopy = service;
   v8 = HMServiceTypeInputSource;
-  v9 = [v7 hf_characteristicEqualToType:HMCharacteristicTypeTargetVisibilityState forServiceType:HMServiceTypeInputSource];
+  v9 = [serviceCopy hf_characteristicEqualToType:HMCharacteristicTypeTargetVisibilityState forServiceType:HMServiceTypeInputSource];
   if (v9)
   {
-    v10 = [v7 hf_characteristicEqualToType:HMCharacteristicTypeCurrentVisibilityState forServiceType:v8];
-    v11 = [v10 value];
-    v12 = v11;
-    if (v11 && [v11 isEqualToNumber:v6])
+    v10 = [serviceCopy hf_characteristicEqualToType:HMCharacteristicTypeCurrentVisibilityState forServiceType:v8];
+    value = [v10 value];
+    v12 = value;
+    if (value && [value isEqualToNumber:stateCopy])
     {
       v13 = +[NAFuture futureWithNoResult];
     }
@@ -813,7 +813,7 @@ LABEL_8:
       v21[2] = sub_10002CFF4;
       v21[3] = &unk_1000C63A0;
       v22 = v9;
-      v14 = v6;
+      v14 = stateCopy;
       v23 = v14;
       v13 = [NAFuture futureWithErrorOnlyHandlerAdapterBlock:v21];
       v18[0] = _NSConcreteStackBlock;
@@ -821,7 +821,7 @@ LABEL_8:
       v18[2] = sub_10002D004;
       v18[3] = &unk_1000C6A68;
       v19 = v14;
-      v20 = a1;
+      selfCopy = self;
       v15 = [v13 addCompletionBlock:v18];
     }
   }
@@ -840,15 +840,15 @@ LABEL_8:
   return v13;
 }
 
-+ (id)writeConfigurationState:(int64_t)a3 toService:(id)a4
++ (id)writeConfigurationState:(int64_t)state toService:(id)service
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10002D1AC;
   v8[3] = &unk_1000C6A90;
-  v9 = a4;
-  v10 = a3;
-  v5 = v9;
+  serviceCopy = service;
+  stateCopy = state;
+  v5 = serviceCopy;
   v6 = [NAFuture futureWithErrorOnlyHandlerAdapterBlock:v8];
 
   return v6;
@@ -856,10 +856,10 @@ LABEL_8:
 
 - (BOOL)isSetupInitiatedByOtherMatterEcosystem
 {
-  v2 = [(HSSetupStateMachineConfiguration *)self setupDescription];
-  v3 = [v2 isSetupInitiatedByOtherMatterEcosystem];
+  setupDescription = [(HSSetupStateMachineConfiguration *)self setupDescription];
+  isSetupInitiatedByOtherMatterEcosystem = [setupDescription isSetupInitiatedByOtherMatterEcosystem];
 
-  return v3;
+  return isSetupInitiatedByOtherMatterEcosystem;
 }
 
 @end

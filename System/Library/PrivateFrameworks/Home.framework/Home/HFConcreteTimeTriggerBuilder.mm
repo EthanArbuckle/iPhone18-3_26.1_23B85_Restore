@@ -1,16 +1,16 @@
 @interface HFConcreteTimeTriggerBuilder
-+ (id)builderForExistingTrigger:(id)a3 inHome:(id)a4 context:(id)a5;
++ (id)builderForExistingTrigger:(id)trigger inHome:(id)home context:(id)context;
 @end
 
 @implementation HFConcreteTimeTriggerBuilder
 
-+ (id)builderForExistingTrigger:(id)a3 inHome:(id)a4 context:(id)a5
++ (id)builderForExistingTrigger:(id)trigger inHome:(id)home context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  triggerCopy = trigger;
+  homeCopy = home;
+  contextCopy = context;
   objc_opt_class();
-  v10 = v7;
+  v10 = triggerCopy;
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
@@ -25,7 +25,7 @@
 
   if (v12)
   {
-    v13 = [[HFTimerBasedTimeTriggerBuilder alloc] initWithExistingObject:v12 inHome:v8 context:v9];
+    v13 = [[HFTimerBasedTimeTriggerBuilder alloc] initWithExistingObject:v12 inHome:homeCopy context:contextCopy];
   }
 
   else
@@ -46,7 +46,7 @@
 
     if (v16)
     {
-      v13 = [[HFEventTriggerBuilder alloc] initWithExistingObject:v16 inHome:v8 context:v9];
+      v13 = [[HFEventTriggerBuilder alloc] initWithExistingObject:v16 inHome:homeCopy context:contextCopy];
     }
 
     else

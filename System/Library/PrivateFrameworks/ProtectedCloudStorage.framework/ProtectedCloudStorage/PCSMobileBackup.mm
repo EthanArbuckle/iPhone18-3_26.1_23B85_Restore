@@ -83,9 +83,9 @@ uint64_t __38__PCSMobileBackup_defaultMobileBackup__block_invoke()
   {
     v9 = v2;
     v10 = v3;
-    v5 = [(MBManager *)self->_backupManager isBackupEnabled];
+    isBackupEnabled = [(MBManager *)self->_backupManager isBackupEnabled];
     v4 = os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT);
-    if (v5)
+    if (isBackupEnabled)
     {
       if (v4)
       {

@@ -1,18 +1,18 @@
 @interface IMAbstractDatabaseArchiver
-- (BOOL)copyDatabase:(id)a3;
-- (BOOL)deleteFailedArchiveAtPath:(id)a3 error:(id *)a4;
-- (IMAbstractDatabaseArchiver)initWithSourceDatabasePath:(id)a3 destinationDatabasePath:(id)a4;
+- (BOOL)copyDatabase:(id)database;
+- (BOOL)deleteFailedArchiveAtPath:(id)path error:(id *)error;
+- (IMAbstractDatabaseArchiver)initWithSourceDatabasePath:(id)path destinationDatabasePath:(id)databasePath;
 - (void)dealloc;
 @end
 
 @implementation IMAbstractDatabaseArchiver
 
-- (IMAbstractDatabaseArchiver)initWithSourceDatabasePath:(id)a3 destinationDatabasePath:(id)a4
+- (IMAbstractDatabaseArchiver)initWithSourceDatabasePath:(id)path destinationDatabasePath:(id)databasePath
 {
-  if (a3)
+  if (path)
   {
 LABEL_6:
-    if (a4)
+    if (databasePath)
     {
       goto LABEL_11;
     }
@@ -34,7 +34,7 @@ LABEL_6:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       sub_1B7CEFAB0(v12, v16, v17, v18, v19, v20, v21, v22);
-      if (a4)
+      if (databasePath)
       {
         goto LABEL_11;
       }
@@ -46,7 +46,7 @@ LABEL_6:
   }
 
   v13(v12);
-  if (a4)
+  if (databasePath)
   {
     goto LABEL_11;
   }
@@ -80,9 +80,9 @@ LABEL_11:
   v41 = [(IMAbstractDatabaseArchiver *)&v51 init];
   if (v41)
   {
-    v42 = objc_msgSend_stringByExpandingTildeInPath(a3, v39, v40);
+    v42 = objc_msgSend_stringByExpandingTildeInPath(path, v39, v40);
     v41->_sourcePath = objc_msgSend_copy(v42, v43, v44);
-    v47 = objc_msgSend_stringByExpandingTildeInPath(a4, v45, v46);
+    v47 = objc_msgSend_stringByExpandingTildeInPath(databasePath, v45, v46);
     v41->_destinationPath = objc_msgSend_copy(v47, v48, v49);
   }
 
@@ -96,7 +96,7 @@ LABEL_11:
   [(IMAbstractDatabaseArchiver *)&v3 dealloc];
 }
 
-- (BOOL)copyDatabase:(id)a3
+- (BOOL)copyDatabase:(id)database
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = IMFileLocationTrimFileName();
@@ -106,7 +106,7 @@ LABEL_11:
   if (v10)
   {
     v10(v9);
-    if (!a3)
+    if (!database)
     {
       return 0;
     }
@@ -118,7 +118,7 @@ LABEL_11:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     sub_1B7CEFAB0(v9, v13, v14, v15, v16, v17, v18, v19);
-    if (!a3)
+    if (!database)
     {
       return 0;
     }
@@ -126,25 +126,25 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  if (a3)
+  if (database)
   {
 LABEL_6:
-    (*(a3 + 2))(a3, 0, 0);
+    (*(database + 2))(database, 0, 0);
   }
 
   return 0;
 }
 
-- (BOOL)deleteFailedArchiveAtPath:(id)a3 error:(id *)a4
+- (BOOL)deleteFailedArchiveAtPath:(id)path error:(id *)error
 {
-  NSLog(&cfstr_AttemptingToDe.isa, a2, a3, a4);
+  NSLog(&cfstr_AttemptingToDe.isa, a2, path, error);
   v10 = 0;
-  IMDDatabaseDelete(a3, &v10);
+  IMDDatabaseDelete(path, &v10);
   v7 = v10;
   if (v10)
   {
     v8 = objc_msgSend_localizedDescription(v10, v5, v6);
-    NSLog(&cfstr_UnableToDelete.isa, v8, a3);
+    NSLog(&cfstr_UnableToDelete.isa, v8, path);
   }
 
   return v7 == 0;

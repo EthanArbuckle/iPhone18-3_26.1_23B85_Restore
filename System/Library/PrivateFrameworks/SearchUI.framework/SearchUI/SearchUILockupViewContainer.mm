@@ -1,17 +1,17 @@
 @interface SearchUILockupViewContainer
-- (SearchUILockupViewContainer)initWithLockupView:(id)a3;
+- (SearchUILockupViewContainer)initWithLockupView:(id)view;
 - (void)didMoveToWindow;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SearchUILockupViewContainer
 
-- (SearchUILockupViewContainer)initWithLockupView:(id)a3
+- (SearchUILockupViewContainer)initWithLockupView:(id)view
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v10[0] = v5;
+  viewCopy = view;
+  v10[0] = viewCopy;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   v9.receiver = self;
   v9.super_class = SearchUILockupViewContainer;
@@ -19,20 +19,20 @@
 
   if (v7)
   {
-    objc_storeStrong(&v7->_lockupView, a3);
+    objc_storeStrong(&v7->_lockupView, view);
   }
 
   return v7;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = SearchUILockupViewContainer;
-  [(SearchUILockupViewContainer *)&v9 traitCollectionDidChange:v4];
-  v5 = [(SearchUILockupViewContainer *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(SearchUILockupViewContainer *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(SearchUILockupViewContainer *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -40,11 +40,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(SearchUILockupViewContainer *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(SearchUILockupViewContainer *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -60,22 +60,22 @@ LABEL_5:
   [(SearchUILockupViewContainer *)self tlk_updateWithCurrentAppearance];
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
-  v9 = a3;
+  appearanceCopy = appearance;
   v15.receiver = self;
   v15.super_class = SearchUILockupViewContainer;
-  [(SearchUILockupViewContainer *)&v15 tlk_updateForAppearance:v9];
-  v10 = [v9 isVibrant];
-  if (v10)
+  [(SearchUILockupViewContainer *)&v15 tlk_updateForAppearance:appearanceCopy];
+  isVibrant = [appearanceCopy isVibrant];
+  if (isVibrant)
   {
     v11 = objc_alloc(MEMORY[0x1E698B3E8]);
-    v3 = [v9 quaternaryColor];
-    v4 = [v9 secondaryButtonColor];
-    v5 = [v9 secondaryColor];
-    v6 = [v9 secondaryButtonColor];
-    v7 = [v9 tertiaryColor];
-    v12 = [v11 initWithTitleBackgroundColor:v3 titleTextColor:v4 subtitleTextColor:v5 iconTintColor:v6 progressColor:v7];
+    quaternaryColor = [appearanceCopy quaternaryColor];
+    secondaryButtonColor = [appearanceCopy secondaryButtonColor];
+    secondaryColor = [appearanceCopy secondaryColor];
+    secondaryButtonColor2 = [appearanceCopy secondaryButtonColor];
+    tertiaryColor = [appearanceCopy tertiaryColor];
+    v12 = [v11 initWithTitleBackgroundColor:quaternaryColor titleTextColor:secondaryButtonColor subtitleTextColor:secondaryColor iconTintColor:secondaryButtonColor2 progressColor:tertiaryColor];
   }
 
   else
@@ -83,15 +83,15 @@ LABEL_5:
     v12 = 0;
   }
 
-  v13 = [(SearchUILockupViewContainer *)self lockupView];
-  [v13 setOfferTheme:v12];
+  lockupView = [(SearchUILockupViewContainer *)self lockupView];
+  [lockupView setOfferTheme:v12];
 
-  if (v10)
+  if (isVibrant)
   {
   }
 
-  v14 = [(SearchUILockupViewContainer *)self lockupView];
-  [v9 enableAppearanceForView:v14];
+  lockupView2 = [(SearchUILockupViewContainer *)self lockupView];
+  [appearanceCopy enableAppearanceForView:lockupView2];
 }
 
 @end

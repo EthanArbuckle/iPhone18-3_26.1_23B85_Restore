@@ -1,19 +1,19 @@
 @interface _SFPBPointSize
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBPointSize)initWithCGSize:(CGSize)a3;
-- (_SFPBPointSize)initWithDictionary:(id)a3;
-- (_SFPBPointSize)initWithJSON:(id)a3;
+- (_SFPBPointSize)initWithCGSize:(CGSize)size;
+- (_SFPBPointSize)initWithDictionary:(id)dictionary;
+- (_SFPBPointSize)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBPointSize
 
-- (_SFPBPointSize)initWithCGSize:(CGSize)a3
+- (_SFPBPointSize)initWithCGSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = _SFPBPointSize;
   v5 = [(_SFPBPointSize *)&v10 init];
@@ -31,15 +31,15 @@
   return v5;
 }
 
-- (_SFPBPointSize)initWithDictionary:(id)a3
+- (_SFPBPointSize)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = _SFPBPointSize;
   v5 = [(_SFPBPointSize *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"width"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"width"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -47,7 +47,7 @@
       [(_SFPBPointSize *)v5 setWidth:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"height"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"height"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,30 +61,30 @@
   return v5;
 }
 
-- (_SFPBPointSize)initWithJSON:(id)a3
+- (_SFPBPointSize)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBPointSize *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBPointSize *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBPointSize *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -97,64 +97,64 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_height)
   {
-    v4 = [(_SFPBPointSize *)self height];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    height = [(_SFPBPointSize *)self height];
+    dictionaryRepresentation = [height dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"height"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"height"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"height"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"height"];
     }
   }
 
   if (self->_width)
   {
-    v7 = [(_SFPBPointSize *)self width];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    width = [(_SFPBPointSize *)self width];
+    dictionaryRepresentation2 = [width dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"width"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"width"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"width"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"width"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBPointSize *)self width];
-  v6 = [v4 width];
-  if ((v5 != 0) == (v6 == 0))
+  width = [(_SFPBPointSize *)self width];
+  width2 = [equalCopy width];
+  if ((width != 0) == (width2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBPointSize *)self width];
-  if (v7)
+  width3 = [(_SFPBPointSize *)self width];
+  if (width3)
   {
-    v8 = v7;
-    v9 = [(_SFPBPointSize *)self width];
-    v10 = [v4 width];
-    v11 = [v9 isEqual:v10];
+    v8 = width3;
+    width4 = [(_SFPBPointSize *)self width];
+    width5 = [equalCopy width];
+    v11 = [width4 isEqual:width5];
 
     if (!v11)
     {
@@ -166,12 +166,12 @@
   {
   }
 
-  v5 = [(_SFPBPointSize *)self height];
-  v6 = [v4 height];
-  if ((v5 != 0) != (v6 == 0))
+  width = [(_SFPBPointSize *)self height];
+  width2 = [equalCopy height];
+  if ((width != 0) != (width2 == 0))
   {
-    v12 = [(_SFPBPointSize *)self height];
-    if (!v12)
+    height = [(_SFPBPointSize *)self height];
+    if (!height)
     {
 
 LABEL_15:
@@ -179,10 +179,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBPointSize *)self height];
-    v15 = [v4 height];
-    v16 = [v14 isEqual:v15];
+    v13 = height;
+    height2 = [(_SFPBPointSize *)self height];
+    height3 = [equalCopy height];
+    v16 = [height2 isEqual:height3];
 
     if (v16)
     {
@@ -202,17 +202,17 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_SFPBPointSize *)self width];
-  if (v4)
+  toCopy = to;
+  width = [(_SFPBPointSize *)self width];
+  if (width)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBPointSize *)self height];
-  if (v5)
+  height = [(_SFPBPointSize *)self height];
+  if (height)
   {
     PBDataWriterWriteSubmessage();
   }

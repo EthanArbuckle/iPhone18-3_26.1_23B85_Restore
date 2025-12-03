@@ -1,16 +1,16 @@
 @interface iCloudFileHandlingUtilities
-+ (unint64_t)isURLDatalessFault:(id)a3;
++ (unint64_t)isURLDatalessFault:(id)fault;
 @end
 
 @implementation iCloudFileHandlingUtilities
 
-+ (unint64_t)isURLDatalessFault:(id)a3
++ (unint64_t)isURLDatalessFault:(id)fault
 {
   v13 = *MEMORY[0x277D85DE8];
   cf = 0;
   propertyValueTypeRefPtr = 0;
-  v3 = a3;
-  if (CFURLCopyResourcePropertyForKey(v3, *MEMORY[0x277CBECC0], &propertyValueTypeRefPtr, &cf))
+  faultCopy = fault;
+  if (CFURLCopyResourcePropertyForKey(faultCopy, *MEMORY[0x277CBECC0], &propertyValueTypeRefPtr, &cf))
   {
     v4 = propertyValueTypeRefPtr == 0;
   }

@@ -1,26 +1,26 @@
 @interface NSManagedObjectContext
-- (BOOL)ic_saveWithLogDescription:(id)a3;
-- (id)reduceIntoDictionaryByRootEntityNamesWithManagedObjectIDs:(id)a3;
-- (id)rootEntityNameWithEntityName:(id)a3;
-- (void)ic_performBlock:(id)a3 andPerformBlockOnMainThread:(id)a4;
-- (void)ic_performBlockAndWait:(id)a3 andPerformBlockAndWaitOnMainThread:(id)a4;
+- (BOOL)ic_saveWithLogDescription:(id)description;
+- (id)reduceIntoDictionaryByRootEntityNamesWithManagedObjectIDs:(id)ds;
+- (id)rootEntityNameWithEntityName:(id)name;
+- (void)ic_performBlock:(id)block andPerformBlockOnMainThread:(id)thread;
+- (void)ic_performBlockAndWait:(id)wait andPerformBlockAndWaitOnMainThread:(id)thread;
 @end
 
 @implementation NSManagedObjectContext
 
-- (BOOL)ic_saveWithLogDescription:(id)a3
+- (BOOL)ic_saveWithLogDescription:(id)description
 {
-  v4 = a3;
+  descriptionCopy = description;
   if ([(NSManagedObjectContext *)self hasChanges])
   {
     v12 = 0;
     v5 = [(NSManagedObjectContext *)self save:&v12];
     v6 = v12;
-    if (v4)
+    if (descriptionCopy)
     {
       *buf = &v14;
       v7 = [NSString alloc];
-      v8 = [v7 initWithFormat:v4 arguments:*buf];
+      v8 = [v7 initWithFormat:descriptionCopy arguments:*buf];
       v9 = v8;
       if (v5)
       {
@@ -77,37 +77,37 @@ LABEL_18:
   return v5;
 }
 
-- (void)ic_performBlock:(id)a3 andPerformBlockOnMainThread:(id)a4
+- (void)ic_performBlock:(id)block andPerformBlockOnMainThread:(id)thread
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000E5F64;
   v8[3] = &unk_1008DC770;
-  v9 = a3;
-  v10 = a4;
-  v6 = v10;
-  v7 = v9;
+  blockCopy = block;
+  threadCopy = thread;
+  v6 = threadCopy;
+  v7 = blockCopy;
   [(NSManagedObjectContext *)self performBlock:v8];
 }
 
-- (void)ic_performBlockAndWait:(id)a3 andPerformBlockAndWaitOnMainThread:(id)a4
+- (void)ic_performBlockAndWait:(id)wait andPerformBlockAndWaitOnMainThread:(id)thread
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000E6064;
   v8[3] = &unk_1008DA020;
-  v9 = a3;
-  v6 = v9;
-  v7 = a4;
+  waitCopy = wait;
+  v6 = waitCopy;
+  threadCopy = thread;
   [(NSManagedObjectContext *)self performBlockAndWait:v8];
-  performBlockOnMainThread(v7);
+  performBlockOnMainThread(threadCopy);
 }
 
-- (id)reduceIntoDictionaryByRootEntityNamesWithManagedObjectIDs:(id)a3
+- (id)reduceIntoDictionaryByRootEntityNamesWithManagedObjectIDs:(id)ds
 {
   sub_1000060C8(0, &qword_100943230, NSManagedObjectID_ptr);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_1005B0420(v4);
 
   sub_1000F5104(&qword_100937028, &qword_100791C10);
@@ -116,11 +116,11 @@ LABEL_18:
   return v6.super.isa;
 }
 
-- (id)rootEntityNameWithEntityName:(id)a3
+- (id)rootEntityNameWithEntityName:(id)name
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1005B0C78(v4, v6);
   v9 = v8;
 

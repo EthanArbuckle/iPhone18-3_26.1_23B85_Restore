@@ -1,22 +1,22 @@
 @interface SUIQueryContextBuilder
-+ (id)queryContextWithPerformEntityQueryCommands:(id)a3 view:(id)a4;
-+ (id)updateQueryContext:(id)a3 withSearchString:(id)a4 showSuggestions:(BOOL)a5 view:(id)a6;
-+ (void)setCommonPropertiesOnQueryContext:(id)a3 withView:(id)a4;
++ (id)queryContextWithPerformEntityQueryCommands:(id)commands view:(id)view;
++ (id)updateQueryContext:(id)context withSearchString:(id)string showSuggestions:(BOOL)suggestions view:(id)view;
++ (void)setCommonPropertiesOnQueryContext:(id)context withView:(id)view;
 @end
 
 @implementation SUIQueryContextBuilder
 
-+ (id)queryContextWithPerformEntityQueryCommands:(id)a3 view:(id)a4
++ (id)queryContextWithPerformEntityQueryCommands:(id)commands view:(id)view
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  commandsCopy = commands;
+  viewCopy = view;
   v8 = objc_opt_new();
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v9 = v6;
+  v9 = commandsCopy;
   v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
@@ -35,15 +35,15 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [v14 fromSuggestion];
+          fromSuggestion = [v14 fromSuggestion];
         }
 
         else
         {
-          v15 = 0;
+          fromSuggestion = 0;
         }
 
-        v16 = [MEMORY[0x277D65890] searchEntityWithCommand:v14 fromSuggestion:{v15, v22}];
+        v16 = [MEMORY[0x277D65890] searchEntityWithCommand:v14 fromSuggestion:{fromSuggestion, v22}];
         [v8 addObject:v16];
       }
 
@@ -56,35 +56,35 @@
   v17 = objc_opt_new();
   [v17 setQueryKind:9];
   [v17 setSearchEntities:v8];
-  v18 = [v8 firstObject];
-  v19 = [v18 searchString];
-  [v17 setSearchString:v19];
+  firstObject = [v8 firstObject];
+  searchString = [firstObject searchString];
+  [v17 setSearchString:searchString];
 
   [v17 setWhyQuery:8];
-  [a1 setCommonPropertiesOnQueryContext:v17 withView:v7];
+  [self setCommonPropertiesOnQueryContext:v17 withView:viewCopy];
 
   v20 = *MEMORY[0x277D85DE8];
 
   return v17;
 }
 
-+ (id)updateQueryContext:(id)a3 withSearchString:(id)a4 showSuggestions:(BOOL)a5 view:(id)a6
++ (id)updateQueryContext:(id)context withSearchString:(id)string showSuggestions:(BOOL)suggestions view:(id)view
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
-  v12 = a4;
+  suggestionsCopy = suggestions;
+  contextCopy = context;
+  viewCopy = view;
+  stringCopy = string;
   if ((isMacOS() & 1) == 0)
   {
-    [v10 incrementQueryId];
+    [contextCopy incrementQueryId];
   }
 
-  v13 = [v10 searchEntities];
-  v14 = [v13 count];
+  searchEntities = [contextCopy searchEntities];
+  v14 = [searchEntities count];
 
-  if (v10)
+  if (contextCopy)
   {
-    v15 = v7;
+    v15 = suggestionsCopy;
   }
 
   else
@@ -96,17 +96,17 @@
   {
     v16 = objc_opt_new();
 
-    v10 = v16;
+    contextCopy = v16;
   }
 
-  if (!v10)
+  if (!contextCopy)
   {
-    v10 = objc_opt_new();
+    contextCopy = objc_opt_new();
   }
 
-  [v10 setSearchString:v12];
+  [contextCopy setSearchString:stringCopy];
 
-  if (v7)
+  if (suggestionsCopy)
   {
     v17 = 1;
   }
@@ -116,7 +116,7 @@
     v17 = 8;
   }
 
-  if (v7)
+  if (suggestionsCopy)
   {
     v18 = 2;
   }
@@ -126,7 +126,7 @@
     v18 = 5;
   }
 
-  [v10 setWhyQuery:v17];
+  [contextCopy setWhyQuery:v17];
   if (v14)
   {
     v19 = 9;
@@ -137,21 +137,21 @@
     v19 = v18;
   }
 
-  [v10 setQueryKind:v19];
-  [a1 setCommonPropertiesOnQueryContext:v10 withView:v11];
+  [contextCopy setQueryKind:v19];
+  [self setCommonPropertiesOnQueryContext:contextCopy withView:viewCopy];
 
-  return v10;
+  return contextCopy;
 }
 
-+ (void)setCommonPropertiesOnQueryContext:(id)a3 withView:(id)a4
++ (void)setCommonPropertiesOnQueryContext:(id)context withView:(id)view
 {
-  v5 = a4;
-  v8 = a3;
-  [v8 setDeviceAuthenticationState:{+[SUIUtilities deviceAuthenticationStateForView:](SUIUtilities, "deviceAuthenticationStateForView:", v5)}];
-  [v5 tlks_scale];
+  viewCopy = view;
+  contextCopy = context;
+  [contextCopy setDeviceAuthenticationState:{+[SUIUtilities deviceAuthenticationStateForView:](SUIUtilities, "deviceAuthenticationStateForView:", viewCopy)}];
+  [viewCopy tlks_scale];
   v7 = v6;
 
-  [v8 setScaleFactor:v7];
+  [contextCopy setScaleFactor:v7];
 }
 
 @end

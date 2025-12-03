@@ -1,9 +1,9 @@
 @interface MusicKit_SoftLinking_MPCloudServiceStatusController
-+ (MusicKit_SoftLinking_MPCloudServiceStatusController)controllerWithUserIdentity:(id)a3;
++ (MusicKit_SoftLinking_MPCloudServiceStatusController)controllerWithUserIdentity:(id)identity;
 + (MusicKit_SoftLinking_MPCloudServiceStatusController)sharedController;
 + (id)instanceManager;
-- (id)_initWithUnderlyingServiceStatusController:(id)a3;
-- (void)_handleCloudLibraryEnabledDidChangeNotification:(id)a3;
+- (id)_initWithUnderlyingServiceStatusController:(id)controller;
+- (void)_handleCloudLibraryEnabledDidChangeNotification:(id)notification;
 - (void)dealloc;
 @end
 
@@ -33,28 +33,28 @@
   return v3;
 }
 
-+ (MusicKit_SoftLinking_MPCloudServiceStatusController)controllerWithUserIdentity:(id)a3
++ (MusicKit_SoftLinking_MPCloudServiceStatusController)controllerWithUserIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [a1 instanceManager];
-  v6 = [v5 sharedInstanceForKey:v4];
+  identityCopy = identity;
+  instanceManager = [self instanceManager];
+  v6 = [instanceManager sharedInstanceForKey:identityCopy];
 
   return v6;
 }
 
-- (id)_initWithUnderlyingServiceStatusController:(id)a3
+- (id)_initWithUnderlyingServiceStatusController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = MusicKit_SoftLinking_MPCloudServiceStatusController;
   v6 = [(MusicKit_SoftLinking_MPCloudServiceStatusController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingServiceStatusController, a3);
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
+    objc_storeStrong(&v6->_underlyingServiceStatusController, controller);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v9 = getMPCloudServiceStatusControllerCloudLibraryEnabledDidChangeNotification();
-    [v8 addObserver:v7 selector:sel__handleCloudLibraryEnabledDidChangeNotification_ name:v9 object:v7->_underlyingServiceStatusController];
+    [defaultCenter addObserver:v7 selector:sel__handleCloudLibraryEnabledDidChangeNotification_ name:v9 object:v7->_underlyingServiceStatusController];
   }
 
   return v7;
@@ -62,23 +62,23 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = getMPCloudServiceStatusControllerCloudLibraryEnabledDidChangeNotification();
-  [v3 removeObserver:self name:v4 object:self->_underlyingServiceStatusController];
+  [defaultCenter removeObserver:self name:v4 object:self->_underlyingServiceStatusController];
 
   v5.receiver = self;
   v5.super_class = MusicKit_SoftLinking_MPCloudServiceStatusController;
   [(MusicKit_SoftLinking_MPCloudServiceStatusController *)&v5 dealloc];
 }
 
-- (void)_handleCloudLibraryEnabledDidChangeNotification:(id)a3
+- (void)_handleCloudLibraryEnabledDidChangeNotification:(id)notification
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v7 = [v4 defaultCenter];
-  v6 = [v5 userInfo];
+  notificationCopy = notification;
+  defaultCenter = [v4 defaultCenter];
+  userInfo = [notificationCopy userInfo];
 
-  [v7 postNotificationName:@"MusicKit_SoftLinking_MPCloudServiceStatusControllerEnabledDidChangeNotification" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"MusicKit_SoftLinking_MPCloudServiceStatusControllerEnabledDidChangeNotification" object:self userInfo:userInfo];
 }
 
 @end

@@ -1,40 +1,40 @@
 @interface PVInstructionGraphSourceTrackNode
-+ (id)newSourceTrackNode:(int)a3 animation:(id)a4 fillMode:(int)a5 clipNaturalSize:(CGSize)a6;
-+ (id)newSourceTrackNode:(int)a3 transform:(CGAffineTransform *)a4 cropRect:(CGRect)a5 clipNaturalSize:(CGSize)a6;
-+ (id)newSourceTrackNodeWithStabilizationDelegate:(id)a3 userContext:(id)a4 trackID:(int)a5 dataTrackID:(int)a6 transform:(CGAffineTransform *)a7 clipNaturalSize:(CGSize)a8;
-+ (id)newSourceTrackNodeWithStabilizationDelegate:(id)a3 userContext:(id)a4 trackID:(int)a5 transform:(CGAffineTransform *)a6 clipNaturalSize:(CGSize)a7;
++ (id)newSourceTrackNode:(int)node animation:(id)animation fillMode:(int)mode clipNaturalSize:(CGSize)size;
++ (id)newSourceTrackNode:(int)node transform:(CGAffineTransform *)transform cropRect:(CGRect)rect clipNaturalSize:(CGSize)size;
++ (id)newSourceTrackNodeWithStabilizationDelegate:(id)delegate userContext:(id)context trackID:(int)d dataTrackID:(int)iD transform:(CGAffineTransform *)transform clipNaturalSize:(CGSize)size;
++ (id)newSourceTrackNodeWithStabilizationDelegate:(id)delegate userContext:(id)context trackID:(int)d transform:(CGAffineTransform *)transform clipNaturalSize:(CGSize)size;
 - (BOOL)isPassthru;
 - (CGRect)cropRect;
 - (CGSize)clipNaturalSize;
-- (HGRef<HGNode>)internalHGNodeForTime:(id *)a3 trackInputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6;
-- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)a3 igContext:(id)a4;
-- (PCRect<double>)inputSizeForPVEffect:(id)a3 igContext:(HGRef<PVInstructionGraphContext>)a4;
+- (HGRef<HGNode>)internalHGNodeForTime:(id *)time trackInputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context;
+- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)effect igContext:(id)context;
+- (PCRect<double>)inputSizeForPVEffect:(id)effect igContext:(HGRef<PVInstructionGraphContext>)context;
 - (PVInstructionGraphSourceTrackNode)init;
-- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)a3;
+- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)label;
 - (id)instructionGraphNodeDescription;
 - (id)requiredSourceSampleDataTrackIDs;
 - (id)requiredSourceTrackIDs;
-- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)a3 returnLoadedEffects:(id)a4;
+- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)node returnLoadedEffects:(id)effects;
 - (void)unloadIGNode;
 @end
 
 @implementation PVInstructionGraphSourceTrackNode
 
-+ (id)newSourceTrackNode:(int)a3 transform:(CGAffineTransform *)a4 cropRect:(CGRect)a5 clipNaturalSize:(CGSize)a6
++ (id)newSourceTrackNode:(int)node transform:(CGAffineTransform *)transform cropRect:(CGRect)rect clipNaturalSize:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  v8 = a5.size.height;
-  v9 = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = *&a3;
+  height = size.height;
+  width = size.width;
+  v8 = rect.size.height;
+  v9 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v13 = *&node;
   v14 = objc_alloc_init(PVInstructionGraphSourceTrackNode);
   [(PVInstructionGraphSourceTrackNode *)v14 setTrackID:v13];
-  v15 = *&a4->c;
-  v17[0] = *&a4->a;
+  v15 = *&transform->c;
+  v17[0] = *&transform->a;
   v17[1] = v15;
-  v17[2] = *&a4->tx;
+  v17[2] = *&transform->tx;
   [(PVInstructionGraphSourceNode *)v14 setTransform:v17];
   [(PVInstructionGraphSourceTrackNode *)v14 setCropRect:x, y, v9, v8];
   [(PVInstructionGraphSourceTrackNode *)v14 setFillMode:0];
@@ -42,48 +42,48 @@
   return v14;
 }
 
-+ (id)newSourceTrackNode:(int)a3 animation:(id)a4 fillMode:(int)a5 clipNaturalSize:(CGSize)a6
++ (id)newSourceTrackNode:(int)node animation:(id)animation fillMode:(int)mode clipNaturalSize:(CGSize)size
 {
-  height = a6.height;
-  width = a6.width;
-  v8 = *&a5;
-  v9 = *&a3;
-  v10 = a4;
+  height = size.height;
+  width = size.width;
+  v8 = *&mode;
+  v9 = *&node;
+  animationCopy = animation;
   v11 = objc_alloc_init(PVInstructionGraphSourceTrackNode);
   [(PVInstructionGraphSourceTrackNode *)v11 setTrackID:v9];
-  [(PVInstructionGraphSourceNode *)v11 setTransformAnimation:v10];
+  [(PVInstructionGraphSourceNode *)v11 setTransformAnimation:animationCopy];
   [(PVInstructionGraphSourceTrackNode *)v11 setFillMode:v8];
   [(PVInstructionGraphSourceTrackNode *)v11 setClipNaturalSize:width, height];
 
   return v11;
 }
 
-+ (id)newSourceTrackNodeWithStabilizationDelegate:(id)a3 userContext:(id)a4 trackID:(int)a5 transform:(CGAffineTransform *)a6 clipNaturalSize:(CGSize)a7
++ (id)newSourceTrackNodeWithStabilizationDelegate:(id)delegate userContext:(id)context trackID:(int)d transform:(CGAffineTransform *)transform clipNaturalSize:(CGSize)size
 {
-  v7 = *&a6->c;
-  v9[0] = *&a6->a;
+  v7 = *&transform->c;
+  v9[0] = *&transform->a;
   v9[1] = v7;
-  v9[2] = *&a6->tx;
-  return [a1 newSourceTrackNodeWithStabilizationDelegate:a3 userContext:a4 trackID:*&a5 dataTrackID:0 transform:v9 clipNaturalSize:{a7.width, a7.height}];
+  v9[2] = *&transform->tx;
+  return [self newSourceTrackNodeWithStabilizationDelegate:delegate userContext:context trackID:*&d dataTrackID:0 transform:v9 clipNaturalSize:{size.width, size.height}];
 }
 
-+ (id)newSourceTrackNodeWithStabilizationDelegate:(id)a3 userContext:(id)a4 trackID:(int)a5 dataTrackID:(int)a6 transform:(CGAffineTransform *)a7 clipNaturalSize:(CGSize)a8
++ (id)newSourceTrackNodeWithStabilizationDelegate:(id)delegate userContext:(id)context trackID:(int)d dataTrackID:(int)iD transform:(CGAffineTransform *)transform clipNaturalSize:(CGSize)size
 {
-  height = a8.height;
-  width = a8.width;
-  v11 = *&a6;
-  v12 = *&a5;
-  v15 = a3;
-  v16 = a4;
-  v17 = *&a7->c;
-  v20[0] = *&a7->a;
+  height = size.height;
+  width = size.width;
+  v11 = *&iD;
+  v12 = *&d;
+  delegateCopy = delegate;
+  contextCopy = context;
+  v17 = *&transform->c;
+  v20[0] = *&transform->a;
   v20[1] = v17;
-  v20[2] = *&a7->tx;
-  v18 = [a1 newSourceTrackNode:v12 transform:v20 cropRect:*MEMORY[0x277CBF3A0] clipNaturalSize:{*(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), width, height}];
+  v20[2] = *&transform->tx;
+  v18 = [self newSourceTrackNode:v12 transform:v20 cropRect:*MEMORY[0x277CBF3A0] clipNaturalSize:{*(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24), width, height}];
   [v18 setDataTrackID:v11];
-  [v18 setStabilizationDelegate:v15];
+  [v18 setStabilizationDelegate:delegateCopy];
   [v18 setStabilizationDelegateRespondsToDidStabilize:objc_opt_respondsToSelector() & 1];
-  [v18 setUserContext:v16];
+  [v18 setUserContext:contextCopy];
 
   return v18;
 }
@@ -165,8 +165,8 @@ LABEL_6:
     return 0;
   }
 
-  v5 = [(PVInstructionGraphSourceTrackNode *)self stabilizationDelegate];
-  if (v5)
+  stabilizationDelegate = [(PVInstructionGraphSourceTrackNode *)self stabilizationDelegate];
+  if (stabilizationDelegate)
   {
     IsIdentity = 0;
   }
@@ -180,33 +180,33 @@ LABEL_6:
   return IsIdentity;
 }
 
-- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)a3 returnLoadedEffects:(id)a4
+- (void)loadIGNode:(HGRef<PVInstructionGraphContext>)node returnLoadedEffects:(id)effects
 {
-  v7 = [(PVInstructionGraphSourceTrackNode *)self stabilizationDelegate:a3.m_Obj];
+  v7 = [(PVInstructionGraphSourceTrackNode *)self stabilizationDelegate:node.m_Obj];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) != 0 && !atomic_fetch_add(&self->super._transform.ty, 1u))
   {
-    v8 = [(PVInstructionGraphSourceTrackNode *)self stabilizationDelegate];
-    v6 = [(PVInstructionGraphSourceTrackNode *)self userContext];
-    [v8 loadWithUserContext:v6];
+    stabilizationDelegate = [(PVInstructionGraphSourceTrackNode *)self stabilizationDelegate];
+    userContext = [(PVInstructionGraphSourceTrackNode *)self userContext];
+    [stabilizationDelegate loadWithUserContext:userContext];
   }
 }
 
 - (void)unloadIGNode
 {
-  v5 = [(PVInstructionGraphSourceTrackNode *)self stabilizationDelegate];
+  stabilizationDelegate = [(PVInstructionGraphSourceTrackNode *)self stabilizationDelegate];
   v3 = objc_opt_respondsToSelector();
 
   if ((v3 & 1) != 0 && atomic_fetch_add(&self->super._transform.ty, 0xFFFFFFFF) == 1)
   {
-    v6 = [(PVInstructionGraphSourceTrackNode *)self stabilizationDelegate];
-    v4 = [(PVInstructionGraphSourceTrackNode *)self userContext];
-    [v6 unloadWithUserContext:v4];
+    stabilizationDelegate2 = [(PVInstructionGraphSourceTrackNode *)self stabilizationDelegate];
+    userContext = [(PVInstructionGraphSourceTrackNode *)self userContext];
+    [stabilizationDelegate2 unloadWithUserContext:userContext];
   }
 }
 
-- (HGRef<HGNode>)internalHGNodeForTime:(id *)a3 trackInputs:(const void *)a4 renderer:(const void *)a5 igContext:(HGRef<PVInstructionGraphContext>)a6
+- (HGRef<HGNode>)internalHGNodeForTime:(id *)time trackInputs:(const void *)inputs renderer:(const void *)renderer igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v11 = v6;
   HGTraceGuard::HGTraceGuard(v194, "kPVInstructionGraphToHeliumGraphLogContext", 1, "[PVInstructionGraphSourceTrackNode hgNodeForTime:...]");
@@ -216,8 +216,8 @@ LABEL_6:
     HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "SourceTrackID: %d dataTrackID: %d depthTrackID: %d metadataTrackID: %d\n", v12, v13, self->_sourceTrackloaded.__a_.__a_value, *&self->_stabilizationDelegateRespondsToDidStabilize, self->_trackID, self->_dataTrackID);
   }
 
-  PVInputHGNodeMap<PVInstructionGraphSourceNode * {__strong}>::GetNode(a4, self, v11);
-  PVInputHGNodeMap<PVInstructionGraphSourceNode * {__strong}>::GetFrameDataPixelBuffer(a4, self, &v193);
+  PVInputHGNodeMap<PVInstructionGraphSourceNode * {__strong}>::GetNode(inputs, self, v11);
+  PVInputHGNodeMap<PVInstructionGraphSourceNode * {__strong}>::GetFrameDataPixelBuffer(inputs, self, &v193);
   if (v193 && (v15 = v193[16]) != 0)
   {
     v16 = *(v15 + 24);
@@ -234,30 +234,30 @@ LABEL_6:
     (*(*v193 + 24))(v193);
   }
 
-  v18 = [(PVInstructionGraphSourceTrackNode *)self stabilizationDelegate];
-  *&t1.a = *&a3->var0;
-  *&t1.c = a3->var3;
-  v19 = [(PVInstructionGraphSourceTrackNode *)self userContext];
+  stabilizationDelegate = [(PVInstructionGraphSourceTrackNode *)self stabilizationDelegate];
+  *&t1.a = *&time->var0;
+  *&t1.c = time->var3;
+  userContext = [(PVInstructionGraphSourceTrackNode *)self userContext];
   v175 = v17;
-  v20 = [v18 timedStabilizationConfigForTime:&t1 frameData:v17 userContext:v19];
+  v20 = [stabilizationDelegate timedStabilizationConfigForTime:&t1 frameData:v17 userContext:userContext];
 
   v174 = v20;
-  v21 = [v20 object];
-  if ([v21 isValid])
+  object = [v20 object];
+  if ([object isValid])
   {
-    PVInputHGNodeMap<PVInstructionGraphSourceNode * {__strong}>::GetInputSize(a4, self, &t1);
+    PVInputHGNodeMap<PVInstructionGraphSourceNode * {__strong}>::GetInputSize(inputs, self, &t1);
     a = t1.a;
     b = t1.b;
     d = t1.d;
     c = t1.c;
-    [v21 cleanAperture];
+    [object cleanAperture];
     v173 = v24;
     v172 = v25;
     rect2 = v26;
     v28 = v27;
     v29 = *MEMORY[0x277CBF348];
     v30 = *(MEMORY[0x277CBF348] + 8);
-    [v21 normalizedCleanAperture];
+    [object normalizedCleanAperture];
     v167 = v31;
     v33 = v32;
     v35 = v34;
@@ -318,7 +318,7 @@ LABEL_6:
       }
 
       t1 = v192;
-      v47 = (*(**a6.m_Obj + 64))();
+      v47 = (*(**context.m_Obj + 64))();
       HGXFormForCGAffineTransform(&v191, &t1, v47, &t2);
       v48 = *v11;
       v49 = t2.a;
@@ -350,7 +350,7 @@ LABEL_6:
       (*(*v42 + 24))(v42);
     }
 
-    [v21 homography];
+    [object homography];
     v50 = v29 - rect2 * 0.5;
     v51 = v30 - v28 * 0.5;
     v156.size.width = rect2;
@@ -377,7 +377,7 @@ LABEL_6:
     }
 
     t1 = v192;
-    v56 = (*(**a6.m_Obj + 64))();
+    v56 = (*(**context.m_Obj + 64))();
     HGXFormForCGAffineTransform(&v190, &t1, v56, &t2);
     v57 = *v11;
     v58 = t2.a;
@@ -413,7 +413,7 @@ LABEL_6:
       (*(*v59 + 16))(v59);
     }
 
-    v60 = (*(**a6.m_Obj + 64))();
+    v60 = (*(**context.m_Obj + 64))();
     v199.columns[0] = vtrn1q_s32(0, v166);
     v199.columns[0].i64[0] = v166.i64[0];
     v199.columns[1] = vtrn1q_s32(0, v165);
@@ -461,7 +461,7 @@ LABEL_6:
 
     t2 = v192;
     CGAffineTransformInvert(&t1, &t2);
-    v64 = (*(**a6.m_Obj + 64))();
+    v64 = (*(**context.m_Obj + 64))();
     HGXFormForCGAffineTransform(&v188, &t1, v64, &v195);
     v65 = *v11;
     v66 = v195.a;
@@ -494,7 +494,7 @@ LABEL_6:
     CGAffineTransformMakeScale(&t1, rect2 / v167, v28 / v37);
     CGAffineTransformMakeTranslation(&t2, rect2 * 0.5, v28 * 0.5);
     CGAffineTransformConcat(&v187, &t1, &t2);
-    [v21 cropRect];
+    [object cropRect];
     t1 = v187;
     v203 = CGRectApplyAffineTransform(v202, &t1);
     x = v203.origin.x;
@@ -535,11 +535,11 @@ LABEL_6:
 LABEL_102:
         if ([(PVInstructionGraphSourceTrackNode *)self stabilizationDelegateRespondsToDidStabilize])
         {
-          v102 = [(PVInstructionGraphSourceTrackNode *)self stabilizationDelegate];
-          *&t1.a = *&a3->var0;
-          *&t1.c = a3->var3;
-          v103 = [(PVInstructionGraphSourceTrackNode *)self userContext];
-          [v102 didStabilize:v20 time:&t1 frameData:v175 inputSize:v103 cleanAperture:c centeredCleanAperture:d cleanApertureOriginZero:v173 cropRect:v172 homography:*&v163 homographyMatrix4x4:*&v162 userContext:{*&rect2, *&v28, 0, 0, *&rect2, *&v28, *&v74, *&v75, *&v76, *&v77, v166.i64[0], v166.u32[2], v165.i64[0], v165.u32[2], v164.i64[0], v164.u32[2], *&v160, *&v159, 0, 1065353216, *&v161}];
+          stabilizationDelegate2 = [(PVInstructionGraphSourceTrackNode *)self stabilizationDelegate];
+          *&t1.a = *&time->var0;
+          *&t1.c = time->var3;
+          userContext2 = [(PVInstructionGraphSourceTrackNode *)self userContext];
+          [stabilizationDelegate2 didStabilize:v20 time:&t1 frameData:v175 inputSize:userContext2 cleanAperture:c centeredCleanAperture:d cleanApertureOriginZero:v173 cropRect:v172 homography:*&v163 homographyMatrix4x4:*&v162 userContext:{*&rect2, *&v28, 0, 0, *&rect2, *&v28, *&v74, *&v75, *&v76, *&v77, v166.i64[0], v166.u32[2], v165.i64[0], v165.u32[2], v164.i64[0], v164.u32[2], *&v160, *&v159, 0, 1065353216, *&v161}];
         }
 
         goto LABEL_104;
@@ -586,22 +586,22 @@ LABEL_102:
     v158 = v210.origin.y;
     v83 = v210.size.width;
     v84 = v210.size.height;
-    v85 = [v21 fillMode];
-    v86 = v85;
-    if (!v85)
+    fillMode = [object fillMode];
+    v86 = fillMode;
+    if (!fillMode)
     {
       goto LABEL_102;
     }
 
     v157 = v77;
-    if (v85 > 2)
+    if (fillMode > 2)
     {
       v87 = v76;
       v89 = d;
       v88 = c;
-      if (v85 != 3)
+      if (fillMode != 3)
       {
-        if (v85 == 13)
+        if (fillMode == 13)
         {
           v88 = c;
           v89 = c / (v83 / v84);
@@ -611,7 +611,7 @@ LABEL_102:
         {
           v88 = v83;
           v89 = v84;
-          if (v85 == 14)
+          if (fillMode == 14)
           {
             v89 = d;
             v88 = d * (v83 / v84);
@@ -698,7 +698,7 @@ LABEL_92:
         }
 
         t1 = v186;
-        v99 = (*(**a6.m_Obj + 64))();
+        v99 = (*(**context.m_Obj + 64))();
         HGXFormForCGAffineTransform(&v185, &t1, v99, &t2);
         v100 = *v11;
         v101 = t2.a;
@@ -734,7 +734,7 @@ LABEL_92:
       goto LABEL_92;
     }
 
-    if (v85 == 1)
+    if (fillMode == 1)
     {
       v87 = v76;
       if (c <= d)
@@ -761,7 +761,7 @@ LABEL_92:
       v87 = v76;
       v88 = v83;
       v89 = v84;
-      if (v85 != 2)
+      if (fillMode != 2)
       {
         goto LABEL_77;
       }
@@ -797,11 +797,11 @@ LABEL_104:
   *&v192.tx = *(MEMORY[0x277CBF2C0] + 32);
   userContext = self->_userContext;
   v106 = self->_clipNaturalSize.width;
-  v108 = (*(**a6.m_Obj + 40))();
+  v108 = (*(**context.m_Obj + 40))();
   v110 = v109;
-  v111 = [(PVInstructionGraphSourceNode *)self transformAnimationContentMode];
-  v112 = v111;
-  if (!v111 || v111 == 3)
+  transformAnimationContentMode = [(PVInstructionGraphSourceNode *)self transformAnimationContentMode];
+  v112 = transformAnimationContentMode;
+  if (!transformAnimationContentMode || transformAnimationContentMode == 3)
   {
     v113 = v110;
     v114 = v108;
@@ -876,8 +876,8 @@ LABEL_123:
   }
 
 LABEL_125:
-  v118 = [(PVInstructionGraphSourceNode *)self transformAnimation];
-  [v118 aspectRatio];
+  transformAnimation = [(PVInstructionGraphSourceNode *)self transformAnimation];
+  [transformAnimation aspectRatio];
   v120 = self->_depthTrackID;
   if (v120 <= 3)
   {
@@ -936,18 +936,18 @@ LABEL_125:
   }
 
 LABEL_129:
-  v121 = [(PVInstructionGraphSourceNode *)self transformAnimation];
+  transformAnimation2 = [(PVInstructionGraphSourceNode *)self transformAnimation];
   rect2a = v110;
-  *&v187.a = *&a3->var0;
-  *&v187.c = a3->var3;
-  v122 = [PVTransformAnimation getTransformInfoFromAnimation:v121 atTime:&v187 renderSize:v112 contentMode:0 invertY:&t1 outInfo:v114, v113];
+  *&v187.a = *&time->var0;
+  *&v187.c = time->var3;
+  v113 = [PVTransformAnimation getTransformInfoFromAnimation:transformAnimation2 atTime:&v187 renderSize:v112 contentMode:0 invertY:&t1 outInfo:v114, v113];
 
   v123 = 0.0;
   v124 = 1.0;
   v125 = 1.0;
   v126 = 0uLL;
   v115 = v174;
-  if (v122)
+  if (v113)
   {
     ty = t1.ty;
     v123 = v184;
@@ -1083,7 +1083,7 @@ LABEL_165:
   }
 
   t1 = t2;
-  v144 = (*(**a6.m_Obj + 64))();
+  v144 = (*(**context.m_Obj + 64))();
   HGXFormForCGAffineTransform(&v179, &t1, v144, &v195);
   v145 = *v11;
   v146 = v195.a;
@@ -1119,8 +1119,8 @@ LABEL_165:
     (*(*v147 + 16))(v147);
   }
 
-  (*(**a6.m_Obj + 56))(&t1);
-  v148 = (*(**a6.m_Obj + 64))();
+  (*(**context.m_Obj + 56))(&t1);
+  v148 = (*(**context.m_Obj + 64))();
   HGXFormForCGAffineTransform(&v178, &t1, v148, &v195);
   v149 = *v11;
   v150 = v195.a;
@@ -1149,9 +1149,9 @@ LABEL_165:
     (*(*v178 + 24))(v178);
   }
 
-  if (-[PVInstructionGraphNode isDebugDrawingEnabled](self, "isDebugDrawingEnabled") && [v21 isValid])
+  if (-[PVInstructionGraphNode isDebugDrawingEnabled](self, "isDebugDrawingEnabled") && [object isValid])
   {
-    v151 = (*(**a6.m_Obj + 40))();
+    v151 = (*(**context.m_Obj + 40))();
     v153 = v152;
     v154 = HGObject::operator new(0x280uLL);
     HGHWMultiBlend::HGHWMultiBlend(v154);
@@ -1167,10 +1167,10 @@ LABEL_165:
   return v155;
 }
 
-- (PCRect<double>)inputSizeForPVEffect:(id)a3 igContext:(HGRef<PVInstructionGraphContext>)a4
+- (PCRect<double>)inputSizeForPVEffect:(id)effect igContext:(HGRef<PVInstructionGraphContext>)context
 {
   v6 = v4;
-  v7 = a3;
+  effectCopy = effect;
   *v6 = 0;
   *(v6 + 8) = 0;
   __asm { FMOV            V0.2D, #-1.0 }
@@ -1179,16 +1179,16 @@ LABEL_165:
   p_userContext = &self->_userContext;
   v15 = p_userContext->f64[0];
   v14 = p_userContext->f64[1];
-  v23 = v7;
+  v23 = effectCopy;
   if (v14 <= p_userContext->f64[0])
   {
-    [v7 outputSize];
+    [effectCopy outputSize];
     v17 = v15 / v18;
   }
 
   else
   {
-    [v7 outputSize];
+    [effectCopy outputSize];
     v17 = v14 / v16;
   }
 
@@ -1201,15 +1201,15 @@ LABEL_165:
   return result;
 }
 
-- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)a3 igContext:(id)a4
+- (PCMatrix44Tmpl<double>)pixelTransformForPVEffect:(SEL)effect igContext:(id)context
 {
-  v27 = a4;
+  contextCopy = context;
   v7 = (*(**a5.m_Obj + 40))();
   v9 = v8;
   v10 = (*(**a5.m_Obj + 48))();
-  [v27 outputSize];
+  [contextCopy outputSize];
   v12 = v11;
-  [v27 outputSize];
+  [contextCopy outputSize];
   v13 = v7;
   v14 = v9;
   v15 = v10 * v13;
@@ -1218,7 +1218,7 @@ LABEL_165:
   v19 = (v13 / v14);
   if (vabdd_f64(v18, v19) >= 0.0000001)
   {
-    v20 = v27;
+    v20 = contextCopy;
     if (v18 > v19)
     {
 LABEL_5:
@@ -1230,7 +1230,7 @@ LABEL_5:
 
   else
   {
-    v20 = v27;
+    v20 = contextCopy;
     if (v16 > v15)
     {
       goto LABEL_5;
@@ -1258,9 +1258,9 @@ LABEL_7:
   return result;
 }
 
-- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)a3
+- (id)dotTreeLabel:(HGRef<PVInstructionGraphContext>)label
 {
-  v8 = *a3.m_Obj;
+  v8 = *label.m_Obj;
   if (v8)
   {
     (*(*v8 + 16))(v8, a2);
@@ -1283,8 +1283,8 @@ LABEL_7:
 {
   v13.receiver = self;
   v13.super_class = PVInstructionGraphSourceTrackNode;
-  v3 = [(PVInstructionGraphSourceNode *)&v13 instructionGraphNodeDescription];
-  v4 = [v3 mutableCopy];
+  instructionGraphNodeDescription = [(PVInstructionGraphSourceNode *)&v13 instructionGraphNodeDescription];
+  v4 = [instructionGraphNodeDescription mutableCopy];
 
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);

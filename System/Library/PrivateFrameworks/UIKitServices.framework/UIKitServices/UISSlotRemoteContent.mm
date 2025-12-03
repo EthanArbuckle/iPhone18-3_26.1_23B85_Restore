@@ -1,29 +1,29 @@
 @interface UISSlotRemoteContent
 + (id)newLayerContext;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)contentSize;
-- (UISSlotRemoteContent)initWithCoder:(id)a3;
-- (UISSlotRemoteContent)initWithContentSize:(CGSize)a3 contentScale:(unsigned __int8)a4 localImage:(CGImage *)a5 toLayerContext:(id *)a6;
-- (id)newTouchAuthenticationSpecificationWithAuthenticationMessageContext:(unint64_t)a3 backgroundStatisticsRegion:(id)a4 backgroundStatisticsForeground:(float)a5 backgroundStatisticsPassingContrast:(float)a6 backgroundStatisticsFailingContrast:(float)a7 hitTestInformationMask:(unint64_t)a8 initialSampleEvent:(int64_t)a9 secureName:(unsigned int)a10;
-- (void)encodeWithCoder:(id)a3;
+- (UISSlotRemoteContent)initWithCoder:(id)coder;
+- (UISSlotRemoteContent)initWithContentSize:(CGSize)size contentScale:(unsigned __int8)scale localImage:(CGImage *)image toLayerContext:(id *)context;
+- (id)newTouchAuthenticationSpecificationWithAuthenticationMessageContext:(unint64_t)context backgroundStatisticsRegion:(id)region backgroundStatisticsForeground:(float)foreground backgroundStatisticsPassingContrast:(float)contrast backgroundStatisticsFailingContrast:(float)failingContrast hitTestInformationMask:(unint64_t)mask initialSampleEvent:(int64_t)event secureName:(unsigned int)self0;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UISSlotRemoteContent
 
-- (UISSlotRemoteContent)initWithContentSize:(CGSize)a3 contentScale:(unsigned __int8)a4 localImage:(CGImage *)a5 toLayerContext:(id *)a6
+- (UISSlotRemoteContent)initWithContentSize:(CGSize)size contentScale:(unsigned __int8)scale localImage:(CGImage *)image toLayerContext:(id *)context
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v21.receiver = self;
   v21.super_class = UISSlotRemoteContent;
   v12 = [(UISSlotRemoteContent *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    v12->_contentScale = a4;
+    v12->_contentScale = scale;
     v12->_contentSize.width = width;
     v12->_contentSize.height = height;
-    v14 = *a6;
+    v14 = *context;
     v15 = 1;
     while (1)
     {
@@ -33,9 +33,9 @@
         v14 = +[UISSlotRemoteContent newLayerContext];
       }
 
-      v17 = [v14 createSlot];
-      v13->_slotID = v17;
-      if (v17)
+      createSlot = [v14 createSlot];
+      v13->_slotID = createSlot;
+      if (createSlot)
       {
         break;
       }
@@ -49,35 +49,35 @@
       }
     }
 
-    [v14 setObject:a5 forSlot:v17];
+    [v14 setObject:image forSlot:createSlot];
     v18 = v14;
 LABEL_9:
-    objc_storeStrong(a6, v18);
+    objc_storeStrong(context, v18);
     if (!v13->_slotID)
     {
-      v20 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v20 handleFailureInMethod:a2 object:v13 file:@"UISSlotRemoteContent.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"_slotID"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v13 file:@"UISSlotRemoteContent.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"_slotID"}];
     }
   }
 
   return v13;
 }
 
-- (UISSlotRemoteContent)initWithCoder:(id)a3
+- (UISSlotRemoteContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = UISSlotRemoteContent;
   v5 = [(UISSlotRemoteContent *)&v10 init];
   if (v5)
   {
-    v5->_contentScale = [v4 decodeIntForKey:@"scale"];
-    [v4 decodeDoubleForKey:@"sizeWidth"];
+    v5->_contentScale = [coderCopy decodeIntForKey:@"scale"];
+    [coderCopy decodeDoubleForKey:@"sizeWidth"];
     v7 = v6;
-    [v4 decodeDoubleForKey:@"sizeHeight"];
+    [coderCopy decodeDoubleForKey:@"sizeHeight"];
     v5->_contentSize.width = v7;
     v5->_contentSize.height = v8;
-    v5->_slotID = [v4 decodeIntegerForKey:@"slotID"];
+    v5->_slotID = [coderCopy decodeIntegerForKey:@"slotID"];
   }
 
   return v5;
@@ -92,21 +92,21 @@ LABEL_9:
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contentScale = self->_contentScale;
-  v5 = a3;
-  [v5 encodeInt:contentScale forKey:@"scale"];
-  [v5 encodeDouble:@"sizeWidth" forKey:self->_contentSize.width];
-  [v5 encodeDouble:@"sizeHeight" forKey:self->_contentSize.height];
-  [v5 encodeInteger:self->_slotID forKey:@"slotID"];
+  coderCopy = coder;
+  [coderCopy encodeInt:contentScale forKey:@"scale"];
+  [coderCopy encodeDouble:@"sizeWidth" forKey:self->_contentSize.width];
+  [coderCopy encodeDouble:@"sizeHeight" forKey:self->_contentSize.height];
+  [coderCopy encodeInteger:self->_slotID forKey:@"slotID"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v6 = (objc_opt_isKindOfClass() & 1) != 0 && self->_contentScale == *(v4 + 8) && (self->_contentSize.width == v4[2] ? (v5 = self->_contentSize.height == v4[3]) : (v5 = 0), v5) && self->_slotID == *(v4 + 8);
+  v6 = (objc_opt_isKindOfClass() & 1) != 0 && self->_contentScale == *(equalCopy + 8) && (self->_contentSize.width == equalCopy[2] ? (v5 = self->_contentSize.height == equalCopy[3]) : (v5 = 0), v5) && self->_slotID == *(equalCopy + 8);
 
   return v6;
 }
@@ -129,21 +129,21 @@ LABEL_9:
   return v5;
 }
 
-- (id)newTouchAuthenticationSpecificationWithAuthenticationMessageContext:(unint64_t)a3 backgroundStatisticsRegion:(id)a4 backgroundStatisticsForeground:(float)a5 backgroundStatisticsPassingContrast:(float)a6 backgroundStatisticsFailingContrast:(float)a7 hitTestInformationMask:(unint64_t)a8 initialSampleEvent:(int64_t)a9 secureName:(unsigned int)a10
+- (id)newTouchAuthenticationSpecificationWithAuthenticationMessageContext:(unint64_t)context backgroundStatisticsRegion:(id)region backgroundStatisticsForeground:(float)foreground backgroundStatisticsPassingContrast:(float)contrast backgroundStatisticsFailingContrast:(float)failingContrast hitTestInformationMask:(unint64_t)mask initialSampleEvent:(int64_t)event secureName:(unsigned int)self0
 {
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __275__UISSlotRemoteContent_newTouchAuthenticationSpecificationWithAuthenticationMessageContext_backgroundStatisticsRegion_backgroundStatisticsForeground_backgroundStatisticsPassingContrast_backgroundStatisticsFailingContrast_hitTestInformationMask_initialSampleEvent_secureName___block_invoke;
   v11[3] = &unk_1E7459598;
   v11[4] = self;
-  v11[5] = a3;
-  v16 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v11[6] = a8;
-  v11[7] = a9;
-  v15 = a10;
+  v11[5] = context;
+  regionCopy = region;
+  foregroundCopy = foreground;
+  contrastCopy = contrast;
+  failingContrastCopy = failingContrast;
+  v11[6] = mask;
+  v11[7] = event;
+  nameCopy = name;
   [MEMORY[0x1E698E430] buildSpecification:v11];
   return objc_claimAutoreleasedReturnValue();
 }

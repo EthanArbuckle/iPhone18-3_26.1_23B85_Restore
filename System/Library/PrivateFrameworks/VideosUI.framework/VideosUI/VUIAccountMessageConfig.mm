@@ -14,9 +14,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(VUIAccountMessageConfig *)v2 _createVisibilityDictionary];
+    _createVisibilityDictionary = [(VUIAccountMessageConfig *)v2 _createVisibilityDictionary];
     visibilityBehaviours = v3->_visibilityBehaviours;
-    v3->_visibilityBehaviours = v4;
+    v3->_visibilityBehaviours = _createVisibilityDictionary;
 
     v3->_fallbackVisibilityType = [(VUIAccountMessageConfig *)v3 _getFallbackVisibilityType];
     *&v3->_alwaysForceOpenSidebarAnimated = 0;

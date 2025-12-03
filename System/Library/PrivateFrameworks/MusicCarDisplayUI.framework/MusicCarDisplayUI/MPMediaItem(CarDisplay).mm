@@ -6,8 +6,8 @@
 
 - (id)albumImageWithFallbackForSize:()CarDisplay doubleLineRow:
 {
-  v5 = [a1 artwork];
-  v6 = [v5 imageWithSize:{a2, a3}];
+  artwork = [self artwork];
+  v6 = [artwork imageWithSize:{a2, a3}];
 
   if (!v6)
   {

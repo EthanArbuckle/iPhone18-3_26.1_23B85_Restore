@@ -1,8 +1,8 @@
 @interface CNAvatarCacheFingerprintCollector
 - (CNAvatarCacheFingerprintCollector)init;
 - (NSArray)fingerprintsOfAffectedContacts;
-- (void)visitDeleteContactEvent:(id)a3;
-- (void)visitUpdateContactEvent:(id)a3;
+- (void)visitDeleteContactEvent:(id)event;
+- (void)visitUpdateContactEvent:(id)event;
 @end
 
 @implementation CNAvatarCacheFingerprintCollector
@@ -26,29 +26,29 @@
 
 - (NSArray)fingerprintsOfAffectedContacts
 {
-  v2 = [(NSMutableOrderedSet *)self->_fingerprints array];
-  v3 = [v2 copy];
+  array = [(NSMutableOrderedSet *)self->_fingerprints array];
+  v3 = [array copy];
 
   return v3;
 }
 
-- (void)visitUpdateContactEvent:(id)a3
+- (void)visitUpdateContactEvent:(id)event
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 contact];
-  v6 = [v5 isUnified];
+  eventCopy = event;
+  contact = [eventCopy contact];
+  isUnified = [contact isUnified];
 
-  if (v6)
+  if (isUnified)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [v4 contact];
-    v8 = [v7 linkedContacts];
+    contact2 = [eventCopy contact];
+    linkedContacts = [contact2 linkedContacts];
 
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v9 = [linkedContacts countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -60,7 +60,7 @@
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(linkedContacts);
           }
 
           v13 = [CNUILikenessFingerprint fingerprintForContact:*(*(&v16 + 1) + 8 * v12)];
@@ -70,23 +70,23 @@
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [linkedContacts countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v10);
     }
   }
 
-  v14 = [v4 contact];
-  v15 = [CNUILikenessFingerprint fingerprintForContact:v14];
+  contact3 = [eventCopy contact];
+  v15 = [CNUILikenessFingerprint fingerprintForContact:contact3];
 
   [(NSMutableOrderedSet *)self->_fingerprints addObject:v15];
 }
 
-- (void)visitDeleteContactEvent:(id)a3
+- (void)visitDeleteContactEvent:(id)event
 {
-  v4 = [a3 contactIdentifier];
-  v5 = [CNUILikenessFingerprint fingerprintForContactIdentifier:v4];
+  contactIdentifier = [event contactIdentifier];
+  v5 = [CNUILikenessFingerprint fingerprintForContactIdentifier:contactIdentifier];
 
   [(NSMutableOrderedSet *)self->_fingerprints addObject:v5];
 }

@@ -1,27 +1,27 @@
 @interface MRSetVolumeMessage
 - (MRRequestDetails)details;
-- (MRSetVolumeMessage)initWithVolume:(float)a3 outputDeviceUID:(id)a4 details:(id)a5;
+- (MRSetVolumeMessage)initWithVolume:(float)volume outputDeviceUID:(id)d details:(id)details;
 - (NSString)outputDeviceUID;
 - (float)volume;
 @end
 
 @implementation MRSetVolumeMessage
 
-- (MRSetVolumeMessage)initWithVolume:(float)a3 outputDeviceUID:(id)a4 details:(id)a5
+- (MRSetVolumeMessage)initWithVolume:(float)volume outputDeviceUID:(id)d details:(id)details
 {
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  detailsCopy = details;
   v15.receiver = self;
   v15.super_class = MRSetVolumeMessage;
   v10 = [(MRProtocolMessage *)&v15 init];
   if (v10)
   {
     v11 = objc_alloc_init(_MRSetVolumeMessageProtobuf);
-    [(_MRSetVolumeMessageProtobuf *)v11 setOutputDeviceUID:v8];
-    *&v12 = a3;
+    [(_MRSetVolumeMessageProtobuf *)v11 setOutputDeviceUID:dCopy];
+    *&v12 = volume;
     [(_MRSetVolumeMessageProtobuf *)v11 setVolume:v12];
-    v13 = [v9 protobuf];
-    [(_MRSetVolumeMessageProtobuf *)v11 setDetails:v13];
+    protobuf = [detailsCopy protobuf];
+    [(_MRSetVolumeMessageProtobuf *)v11 setDetails:protobuf];
 
     [(MRProtocolMessage *)v10 setUnderlyingCodableMessage:v11];
   }
@@ -31,16 +31,16 @@
 
 - (NSString)outputDeviceUID
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = [v2 outputDeviceUID];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  outputDeviceUID = [underlyingCodableMessage outputDeviceUID];
 
-  return v3;
+  return outputDeviceUID;
 }
 
 - (float)volume
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  [v2 volume];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  [underlyingCodableMessage volume];
   v4 = v3;
 
   return v4;
@@ -49,9 +49,9 @@
 - (MRRequestDetails)details
 {
   v3 = [MRRequestDetails alloc];
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v5 = [v4 details];
-  v6 = [(MRRequestDetails *)v3 initWithProtobuf:v5];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  details = [underlyingCodableMessage details];
+  v6 = [(MRRequestDetails *)v3 initWithProtobuf:details];
 
   return v6;
 }

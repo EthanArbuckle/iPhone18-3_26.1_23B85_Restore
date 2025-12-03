@@ -5,53 +5,53 @@
 - (NSString)localizedParticipantList;
 - (PXSharedLibraryAssistantViewModel)init;
 - (PXSharedLibraryRule)sharedLibraryRule;
-- (id)localizedSelectedPeopleWithAdditionalPeopleCount:(int64_t *)a3;
+- (id)localizedSelectedPeopleWithAdditionalPeopleCount:(int64_t *)count;
 - (int64_t)shouldShowPeopleState;
 - (void)_didChangePreviewRelatedProperty;
 - (void)_didChangeShareCountRelatedProperty;
-- (void)_recalculateCustomShareCountsWithCompletion:(id)a3;
-- (void)_recalculateEverythingShareCountsWithCompletion:(id)a3;
-- (void)_recalculateManualSelectionShareCountsWithCompletion:(id)a3;
+- (void)_recalculateCustomShareCountsWithCompletion:(id)completion;
+- (void)_recalculateEverythingShareCountsWithCompletion:(id)completion;
+- (void)_recalculateManualSelectionShareCountsWithCompletion:(id)completion;
 - (void)_recalculateShareCountsIfNeeded;
 - (void)_recalculateSuggestedStartDateIfNeeded;
-- (void)_setCachedShareCounts:(id *)a3;
+- (void)_setCachedShareCounts:(id *)counts;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)performChanges:(id)a3 shareCountsCompletionHandler:(id)a4;
-- (void)performInitialChanges:(id)a3;
-- (void)setAssetLocalIdentifiers:(id)a3;
-- (void)setAutoShareEnabled:(BOOL)a3;
-- (void)setAutoSharePolicy:(int64_t)a3;
-- (void)setInfosWithBothPeopleAndParticipants:(id)a3;
-- (void)setIsCancelingAssistant:(BOOL)a3;
-- (void)setMode:(int64_t)a3;
-- (void)setParticipantDataSource:(id)a3;
-- (void)setParticipantsImage:(id)a3;
-- (void)setPersonUUIDs:(id)a3;
-- (void)setSelectedRuleType:(int64_t)a3;
-- (void)setSharedLibrary:(id)a3;
-- (void)setSourceLibraryInfo:(id)a3;
-- (void)setStartDate:(id)a3;
-- (void)setSuggestedStartDate:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)performChanges:(id)changes shareCountsCompletionHandler:(id)handler;
+- (void)performInitialChanges:(id)changes;
+- (void)setAssetLocalIdentifiers:(id)identifiers;
+- (void)setAutoShareEnabled:(BOOL)enabled;
+- (void)setAutoSharePolicy:(int64_t)policy;
+- (void)setInfosWithBothPeopleAndParticipants:(id)participants;
+- (void)setIsCancelingAssistant:(BOOL)assistant;
+- (void)setMode:(int64_t)mode;
+- (void)setParticipantDataSource:(id)source;
+- (void)setParticipantsImage:(id)image;
+- (void)setPersonUUIDs:(id)ds;
+- (void)setSelectedRuleType:(int64_t)type;
+- (void)setSharedLibrary:(id)library;
+- (void)setSourceLibraryInfo:(id)info;
+- (void)setStartDate:(id)date;
+- (void)setSuggestedStartDate:(id)date;
 @end
 
 @implementation PXSharedLibraryAssistantViewModel
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (_PXSharedLibraryParticipantDataSourceManagerObservationContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (_PXSharedLibraryParticipantDataSourceManagerObservationContext != context)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantViewModel.m" lineNumber:460 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantViewModel.m" lineNumber:460 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v10 = v9;
-  if (v6)
+  v10 = observableCopy;
+  if (changeCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -65,18 +65,18 @@
 
 - (void)_recalculateSuggestedStartDateIfNeeded
 {
-  v3 = [(PXSharedLibraryAssistantViewModel *)self currentChanges];
-  if (([objc_opt_class() suggestedStartDateChangeDescriptors] & v3) != 0 && !self->_suggestedStartDate)
+  currentChanges = [(PXSharedLibraryAssistantViewModel *)self currentChanges];
+  if (([objc_opt_class() suggestedStartDateChangeDescriptors] & currentChanges) != 0 && !self->_suggestedStartDate)
   {
     objc_initWeak(&location, self);
-    v4 = [(PXSharedLibraryAssistantViewModel *)self sourceLibraryInfo];
-    v5 = [(PXSharedLibraryAssistantViewModel *)self personUUIDs];
+    sourceLibraryInfo = [(PXSharedLibraryAssistantViewModel *)self sourceLibraryInfo];
+    personUUIDs = [(PXSharedLibraryAssistantViewModel *)self personUUIDs];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __75__PXSharedLibraryAssistantViewModel__recalculateSuggestedStartDateIfNeeded__block_invoke;
     v6[3] = &unk_1E7749B70;
     objc_copyWeak(&v7, &location);
-    [v4 fetchSuggestedStartDateForPersonUUIDs:v5 completion:v6];
+    [sourceLibraryInfo fetchSuggestedStartDateForPersonUUIDs:personUUIDs completion:v6];
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
@@ -120,26 +120,26 @@ void __75__PXSharedLibraryAssistantViewModel__recalculateSuggestedStartDateIfNee
   }
 }
 
-- (void)setSuggestedStartDate:(id)a3
+- (void)setSuggestedStartDate:(id)date
 {
-  v5 = a3;
-  if (([v5 isEqualToDate:self->_suggestedStartDate] & 1) == 0)
+  dateCopy = date;
+  if (([dateCopy isEqualToDate:self->_suggestedStartDate] & 1) == 0)
   {
-    objc_storeStrong(&self->_suggestedStartDate, a3);
+    objc_storeStrong(&self->_suggestedStartDate, date);
     [(PXSharedLibraryAssistantViewModel *)self signalChange:0x2000];
   }
 }
 
-- (void)_recalculateManualSelectionShareCountsWithCompletion:(id)a3
+- (void)_recalculateManualSelectionShareCountsWithCompletion:(id)completion
 {
   v10 = 0uLL;
   v11 = 0;
-  v4 = a3;
-  v5 = [(PXSharedLibraryAssistantViewModel *)self sourceLibraryInfo];
-  v6 = [(PXSharedLibraryAssistantViewModel *)self assetLocalIdentifiers];
-  if (v5)
+  completionCopy = completion;
+  sourceLibraryInfo = [(PXSharedLibraryAssistantViewModel *)self sourceLibraryInfo];
+  assetLocalIdentifiers = [(PXSharedLibraryAssistantViewModel *)self assetLocalIdentifiers];
+  if (sourceLibraryInfo)
   {
-    [v5 assetsCountsForAssetLocalIdentifiers:v6];
+    [sourceLibraryInfo assetsCountsForAssetLocalIdentifiers:assetLocalIdentifiers];
   }
 
   else
@@ -148,44 +148,44 @@ void __75__PXSharedLibraryAssistantViewModel__recalculateSuggestedStartDateIfNee
     v11 = 0;
   }
 
-  v7 = v4[2];
+  v7 = completionCopy[2];
   v8 = v10;
   v9 = v11;
-  v7(v4, &v8);
+  v7(completionCopy, &v8);
 }
 
-- (void)_recalculateCustomShareCountsWithCompletion:(id)a3
+- (void)_recalculateCustomShareCountsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PXSharedLibraryAssistantViewModel *)self startDate];
-  v6 = [(PXSharedLibraryAssistantViewModel *)self personUUIDs];
-  v7 = v6;
-  if (v5 || [v6 count])
+  completionCopy = completion;
+  startDate = [(PXSharedLibraryAssistantViewModel *)self startDate];
+  personUUIDs = [(PXSharedLibraryAssistantViewModel *)self personUUIDs];
+  v7 = personUUIDs;
+  if (startDate || [personUUIDs count])
   {
-    v8 = [(PXSharedLibraryAssistantViewModel *)self sourceLibraryInfo];
-    [v8 fetchEstimatedAssetsCountsForStartDate:v5 personUUIDs:v7 completion:v4];
+    sourceLibraryInfo = [(PXSharedLibraryAssistantViewModel *)self sourceLibraryInfo];
+    [sourceLibraryInfo fetchEstimatedAssetsCountsForStartDate:startDate personUUIDs:v7 completion:completionCopy];
   }
 
   else
   {
-    v9 = v4[2];
+    v9 = completionCopy[2];
     v10 = *off_1E7721F78;
     v11 = *(off_1E7721F78 + 2);
-    v9(v4, &v10);
+    v9(completionCopy, &v10);
   }
 }
 
-- (void)_recalculateEverythingShareCountsWithCompletion:(id)a3
+- (void)_recalculateEverythingShareCountsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PXSharedLibraryAssistantViewModel *)self sourceLibraryInfo];
-  [v5 fetchEstimatedAssetsCountsShareEverythingPolicyWithCompletion:v4];
+  completionCopy = completion;
+  sourceLibraryInfo = [(PXSharedLibraryAssistantViewModel *)self sourceLibraryInfo];
+  [sourceLibraryInfo fetchEstimatedAssetsCountsShareEverythingPolicyWithCompletion:completionCopy];
 }
 
 - (void)_recalculateShareCountsIfNeeded
 {
-  v3 = [(PXSharedLibraryAssistantViewModel *)self currentChanges];
-  if (([objc_opt_class() shareCountChangeDescriptors] & v3) != 0)
+  currentChanges = [(PXSharedLibraryAssistantViewModel *)self currentChanges];
+  if (([objc_opt_class() shareCountChangeDescriptors] & currentChanges) != 0)
   {
     v4 = self->_cachedShareCounts.photosCount == 0x7FFFFFFFFFFFFFFFLL || self->_cachedShareCounts.videosCount == 0x7FFFFFFFFFFFFFFFLL;
     if (v4 || self->_cachedShareCounts.othersCount == 0x7FFFFFFFFFFFFFFFLL)
@@ -207,7 +207,7 @@ void __75__PXSharedLibraryAssistantViewModel__recalculateSuggestedStartDateIfNee
       v13 = 3221225472;
       v14 = __68__PXSharedLibraryAssistantViewModel__recalculateShareCountsIfNeeded__block_invoke;
       v15 = &unk_1E7749B20;
-      v16 = self;
+      selfCopy = self;
       v17 = v7;
       v9 = v7;
       v10 = _Block_copy(&v12);
@@ -257,12 +257,12 @@ uint64_t __68__PXSharedLibraryAssistantViewModel__recalculateShareCountsIfNeeded
   return result;
 }
 
-- (void)_setCachedShareCounts:(id *)a3
+- (void)_setCachedShareCounts:(id *)counts
 {
-  if (self->_cachedShareCounts.photosCount != a3->var0 || self->_cachedShareCounts.videosCount != a3->var1 || self->_cachedShareCounts.othersCount != a3->var2)
+  if (self->_cachedShareCounts.photosCount != counts->var0 || self->_cachedShareCounts.videosCount != counts->var1 || self->_cachedShareCounts.othersCount != counts->var2)
   {
-    v5 = *&a3->var0;
-    self->_cachedShareCounts.othersCount = a3->var2;
+    v5 = *&counts->var0;
+    self->_cachedShareCounts.othersCount = counts->var2;
     *&self->_cachedShareCounts.photosCount = v5;
     [(PXSharedLibraryAssistantViewModel *)self signalChange:2048];
   }
@@ -279,25 +279,25 @@ uint64_t __68__PXSharedLibraryAssistantViewModel__recalculateShareCountsIfNeeded
 {
   if (!self->_performingInitialChanges && !self->_previewIsOutdated)
   {
-    v3 = [(PXSharedLibraryAssistantViewModel *)self sharedLibrary];
-    v4 = [v3 isInPreview];
+    sharedLibrary = [(PXSharedLibraryAssistantViewModel *)self sharedLibrary];
+    isInPreview = [sharedLibrary isInPreview];
 
-    if (v4)
+    if (isInPreview)
     {
       self->_previewIsOutdated = 1;
     }
   }
 }
 
-- (void)setInfosWithBothPeopleAndParticipants:(id)a3
+- (void)setInfosWithBothPeopleAndParticipants:(id)participants
 {
-  v4 = a3;
+  participantsCopy = participants;
   infosWithBothPeopleAndParticipants = self->_infosWithBothPeopleAndParticipants;
-  if (infosWithBothPeopleAndParticipants != v4)
+  if (infosWithBothPeopleAndParticipants != participantsCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)infosWithBothPeopleAndParticipants isEqual:v4];
-    v4 = v9;
+    v9 = participantsCopy;
+    v6 = [(NSArray *)infosWithBothPeopleAndParticipants isEqual:participantsCopy];
+    participantsCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSArray *)v9 copy];
@@ -305,16 +305,16 @@ uint64_t __68__PXSharedLibraryAssistantViewModel__recalculateShareCountsIfNeeded
       self->_infosWithBothPeopleAndParticipants = v7;
 
       [(PXSharedLibraryAssistantViewModel *)self signalChange:0x4000];
-      v4 = v9;
+      participantsCopy = v9;
     }
   }
 }
 
-- (void)setSelectedRuleType:(int64_t)a3
+- (void)setSelectedRuleType:(int64_t)type
 {
-  if (self->_selectedRuleType != a3)
+  if (self->_selectedRuleType != type)
   {
-    self->_selectedRuleType = a3;
+    self->_selectedRuleType = type;
     [(PXSharedLibraryAssistantViewModel *)self signalChange:1024];
     [(PXSharedLibraryAssistantViewModel *)self _didChangePreviewRelatedProperty];
 
@@ -322,42 +322,42 @@ uint64_t __68__PXSharedLibraryAssistantViewModel__recalculateShareCountsIfNeeded
   }
 }
 
-- (void)setSourceLibraryInfo:(id)a3
+- (void)setSourceLibraryInfo:(id)info
 {
-  v5 = a3;
-  if (self->_sourceLibraryInfo != v5)
+  infoCopy = info;
+  if (self->_sourceLibraryInfo != infoCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_sourceLibraryInfo, a3);
+    v6 = infoCopy;
+    objc_storeStrong(&self->_sourceLibraryInfo, info);
     [(PXSharedLibraryAssistantViewModel *)self signalChange:256];
-    v5 = v6;
+    infoCopy = v6;
   }
 }
 
-- (void)setSharedLibrary:(id)a3
+- (void)setSharedLibrary:(id)library
 {
-  v5 = a3;
-  if (self->_sharedLibrary != v5)
+  libraryCopy = library;
+  if (self->_sharedLibrary != libraryCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_sharedLibrary, a3);
+    v7 = libraryCopy;
+    objc_storeStrong(&self->_sharedLibrary, library);
     [(PXSharedLibraryAssistantViewModel *)self signalChange:64];
-    v6 = [(PXSharedLibrary *)self->_sharedLibrary isInPreview];
-    v5 = v7;
-    if (v6)
+    isInPreview = [(PXSharedLibrary *)self->_sharedLibrary isInPreview];
+    libraryCopy = v7;
+    if (isInPreview)
     {
       self->_hasChangedUserInputValues = 1;
     }
   }
 }
 
-- (void)setParticipantDataSource:(id)a3
+- (void)setParticipantDataSource:(id)source
 {
-  v5 = a3;
-  if (!v5)
+  sourceCopy = source;
+  if (!sourceCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantViewModel.m" lineNumber:305 description:{@"Invalid parameter not satisfying: %@", @"participantDataSource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantViewModel.m" lineNumber:305 description:{@"Invalid parameter not satisfying: %@", @"participantDataSource"}];
   }
 
   participantDataSourceManager = self->_participantDataSourceManager;
@@ -365,35 +365,35 @@ uint64_t __68__PXSharedLibraryAssistantViewModel__recalculateShareCountsIfNeeded
   v9[1] = 3221225472;
   v9[2] = __62__PXSharedLibraryAssistantViewModel_setParticipantDataSource___block_invoke;
   v9[3] = &unk_1E7749AD0;
-  v10 = v5;
-  v7 = v5;
+  v10 = sourceCopy;
+  v7 = sourceCopy;
   [(PXSharedLibraryParticipantDataSourceManager *)participantDataSourceManager performChanges:v9];
 }
 
-- (void)setIsCancelingAssistant:(BOOL)a3
+- (void)setIsCancelingAssistant:(BOOL)assistant
 {
-  if (self->_isCancelingAssistant != a3)
+  if (self->_isCancelingAssistant != assistant)
   {
-    self->_isCancelingAssistant = a3;
+    self->_isCancelingAssistant = assistant;
     [(PXSharedLibraryAssistantViewModel *)self signalChange:4096];
   }
 }
 
-- (void)setAutoShareEnabled:(BOOL)a3
+- (void)setAutoShareEnabled:(BOOL)enabled
 {
-  if (self->_autoShareEnabled != a3)
+  if (self->_autoShareEnabled != enabled)
   {
-    self->_autoShareEnabled = a3;
+    self->_autoShareEnabled = enabled;
     [(PXSharedLibraryAssistantViewModel *)self signalChange:2];
   }
 }
 
-- (void)setAssetLocalIdentifiers:(id)a3
+- (void)setAssetLocalIdentifiers:(id)identifiers
 {
-  v8 = a3;
+  identifiersCopy = identifiers;
   v5 = self->_assetLocalIdentifiers;
   v6 = v5;
-  if (v5 == v8)
+  if (v5 == identifiersCopy)
   {
   }
 
@@ -403,7 +403,7 @@ uint64_t __68__PXSharedLibraryAssistantViewModel__recalculateShareCountsIfNeeded
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_assetLocalIdentifiers, a3);
+      objc_storeStrong(&self->_assetLocalIdentifiers, identifiers);
       [(PXSharedLibraryAssistantViewModel *)self signalChange:512];
       [(PXSharedLibraryAssistantViewModel *)self _didChangePreviewRelatedProperty];
       [(PXSharedLibraryAssistantViewModel *)self _didChangeShareCountRelatedProperty];
@@ -411,15 +411,15 @@ uint64_t __68__PXSharedLibraryAssistantViewModel__recalculateShareCountsIfNeeded
   }
 }
 
-- (void)setParticipantsImage:(id)a3
+- (void)setParticipantsImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   participantsImage = self->_participantsImage;
-  if (participantsImage != v4)
+  if (participantsImage != imageCopy)
   {
-    v9 = v4;
-    v6 = [(UIImage *)participantsImage isEqual:v4];
-    v4 = v9;
+    v9 = imageCopy;
+    v6 = [(UIImage *)participantsImage isEqual:imageCopy];
+    imageCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(UIImage *)v9 copy];
@@ -427,24 +427,24 @@ uint64_t __68__PXSharedLibraryAssistantViewModel__recalculateShareCountsIfNeeded
       self->_participantsImage = v7;
 
       [(PXSharedLibraryAssistantViewModel *)self signalChange:16];
-      v4 = v9;
+      imageCopy = v9;
     }
   }
 }
 
-- (void)setPersonUUIDs:(id)a3
+- (void)setPersonUUIDs:(id)ds
 {
-  v5 = a3;
-  v9 = v5;
-  if (!v5)
+  dsCopy = ds;
+  v9 = dsCopy;
+  if (!dsCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantViewModel.m" lineNumber:258 description:{@"Invalid parameter not satisfying: %@", @"personUUIDs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantViewModel.m" lineNumber:258 description:{@"Invalid parameter not satisfying: %@", @"personUUIDs"}];
 
-    v5 = 0;
+    dsCopy = 0;
   }
 
-  v6 = [v5 copy];
+  v6 = [dsCopy copy];
   personUUIDs = self->_personUUIDs;
   self->_personUUIDs = v6;
 
@@ -454,15 +454,15 @@ uint64_t __68__PXSharedLibraryAssistantViewModel__recalculateShareCountsIfNeeded
   [(PXSharedLibraryAssistantViewModel *)self _didChangeShareCountRelatedProperty];
 }
 
-- (void)setStartDate:(id)a3
+- (void)setStartDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   startDate = self->_startDate;
-  if (startDate != v4)
+  if (startDate != dateCopy)
   {
-    v9 = v4;
-    v6 = [(NSDate *)startDate isEqual:v4];
-    v4 = v9;
+    v9 = dateCopy;
+    v6 = [(NSDate *)startDate isEqual:dateCopy];
+    dateCopy = v9;
     if ((v6 & 1) == 0)
     {
       v7 = [(NSDate *)v9 copy];
@@ -472,16 +472,16 @@ uint64_t __68__PXSharedLibraryAssistantViewModel__recalculateShareCountsIfNeeded
       [(PXSharedLibraryAssistantViewModel *)self signalChange:4];
       [(PXSharedLibraryAssistantViewModel *)self _didChangePreviewRelatedProperty];
       [(PXSharedLibraryAssistantViewModel *)self _didChangeShareCountRelatedProperty];
-      v4 = v9;
+      dateCopy = v9;
     }
   }
 }
 
-- (void)setAutoSharePolicy:(int64_t)a3
+- (void)setAutoSharePolicy:(int64_t)policy
 {
-  if (self->_autoSharePolicy != a3)
+  if (self->_autoSharePolicy != policy)
   {
-    self->_autoSharePolicy = a3;
+    self->_autoSharePolicy = policy;
     [(PXSharedLibraryAssistantViewModel *)self signalChange:128];
     [(PXSharedLibraryAssistantViewModel *)self _didChangePreviewRelatedProperty];
 
@@ -489,26 +489,26 @@ uint64_t __68__PXSharedLibraryAssistantViewModel__recalculateShareCountsIfNeeded
   }
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
+    self->_mode = mode;
     [(PXSharedLibraryAssistantViewModel *)self signalChange:1];
   }
 }
 
-- (void)performInitialChanges:(id)a3
+- (void)performInitialChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   performingInitialChanges = self->_performingInitialChanges;
   self->_performingInitialChanges = 1;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __59__PXSharedLibraryAssistantViewModel_performInitialChanges___block_invoke;
   v7[3] = &unk_1E7749AA8;
-  v8 = v4;
-  v6 = v4;
+  v8 = changesCopy;
+  v6 = changesCopy;
   [(PXSharedLibraryAssistantViewModel *)self performChanges:v7];
   self->_performingInitialChanges = performingInitialChanges;
 }
@@ -527,16 +527,16 @@ uint64_t __68__PXSharedLibraryAssistantViewModel__recalculateShareCountsIfNeeded
   [(PXSharedLibraryAssistantViewModel *)self _recalculateSuggestedStartDateIfNeeded];
 }
 
-- (void)performChanges:(id)a3 shareCountsCompletionHandler:(id)a4
+- (void)performChanges:(id)changes shareCountsCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = [a4 copy];
+  changesCopy = changes;
+  v7 = [handler copy];
   shareCountsCompletionHandler = self->_shareCountsCompletionHandler;
   self->_shareCountsCompletionHandler = v7;
 
   v11.receiver = self;
   v11.super_class = PXSharedLibraryAssistantViewModel;
-  [(PXSharedLibraryAssistantViewModel *)&v11 performChanges:v6];
+  [(PXSharedLibraryAssistantViewModel *)&v11 performChanges:changesCopy];
 
   v9 = self->_shareCountsCompletionHandler;
   if (v9)
@@ -547,29 +547,29 @@ uint64_t __68__PXSharedLibraryAssistantViewModel__recalculateShareCountsIfNeeded
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXSharedLibraryAssistantViewModel;
-  [(PXSharedLibraryAssistantViewModel *)&v3 performChanges:a3];
+  [(PXSharedLibraryAssistantViewModel *)&v3 performChanges:changes];
 }
 
 - (NSArray)phoneNumbers
 {
-  v2 = [(PXSharedLibraryAssistantViewModel *)self participantDataSource];
-  v3 = [v2 phoneNumbers];
-  v4 = [v3 allObjects];
+  participantDataSource = [(PXSharedLibraryAssistantViewModel *)self participantDataSource];
+  phoneNumbers = [participantDataSource phoneNumbers];
+  allObjects = [phoneNumbers allObjects];
 
-  return v4;
+  return allObjects;
 }
 
 - (NSArray)emailAddresses
 {
-  v2 = [(PXSharedLibraryAssistantViewModel *)self participantDataSource];
-  v3 = [v2 emailAddresses];
-  v4 = [v3 allObjects];
+  participantDataSource = [(PXSharedLibraryAssistantViewModel *)self participantDataSource];
+  emailAddresses = [participantDataSource emailAddresses];
+  allObjects = [emailAddresses allObjects];
 
-  return v4;
+  return allObjects;
 }
 
 - (int64_t)shouldShowPeopleState
@@ -577,10 +577,10 @@ uint64_t __68__PXSharedLibraryAssistantViewModel__recalculateShareCountsIfNeeded
   result = self->_shouldShowPeopleState;
   if (!result)
   {
-    v4 = [(PXSharedLibraryAssistantViewModel *)self sourceLibraryInfo];
+    sourceLibraryInfo = [(PXSharedLibraryAssistantViewModel *)self sourceLibraryInfo];
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v5 = v4;
+      v5 = sourceLibraryInfo;
     }
 
     else
@@ -588,14 +588,14 @@ uint64_t __68__PXSharedLibraryAssistantViewModel__recalculateShareCountsIfNeeded
       v5 = 0;
     }
 
-    v6 = [v5 photoLibrary];
+    photoLibrary = [v5 photoLibrary];
 
-    if (v6)
+    if (photoLibrary)
     {
-      v7 = [[PXPeopleProgressManager alloc] initWithPhotoLibrary:v6];
-      v8 = [(PXPeopleProgressManager *)v7 featureUnlocked];
+      v7 = [[PXPeopleProgressManager alloc] initWithPhotoLibrary:photoLibrary];
+      featureUnlocked = [(PXPeopleProgressManager *)v7 featureUnlocked];
       v9 = 1;
-      if (!v8)
+      if (!featureUnlocked)
       {
         v9 = 2;
       }
@@ -616,8 +616,8 @@ uint64_t __68__PXSharedLibraryAssistantViewModel__recalculateShareCountsIfNeeded
 
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)shareCounts
 {
-  v5 = [(PXSharedLibraryAssistantViewModel *)self sharedLibrary];
-  if ([v5 isInPreview])
+  sharedLibrary = [(PXSharedLibraryAssistantViewModel *)self sharedLibrary];
+  if ([sharedLibrary isInPreview])
   {
     v6 = !self->_previewIsOutdated;
   }
@@ -627,25 +627,25 @@ uint64_t __68__PXSharedLibraryAssistantViewModel__recalculateShareCountsIfNeeded
     v6 = 0;
   }
 
-  v7 = [(PXSharedLibraryAssistantViewModel *)self sharedLibrary];
-  if ([v7 isPublished])
+  sharedLibrary2 = [(PXSharedLibraryAssistantViewModel *)self sharedLibrary];
+  if ([sharedLibrary2 isPublished])
   {
-    v8 = [(PXSharedLibraryAssistantViewModel *)self sharedLibrary];
-    v9 = [v8 isOwned];
+    sharedLibrary3 = [(PXSharedLibraryAssistantViewModel *)self sharedLibrary];
+    isOwned = [sharedLibrary3 isOwned];
   }
 
   else
   {
-    v9 = 0;
+    isOwned = 0;
   }
 
-  if ((v6 | v9))
+  if ((v6 | isOwned))
   {
-    v11 = [(PXSharedLibraryAssistantViewModel *)self sharedLibrary];
-    v12 = v11;
-    if (v11)
+    sharedLibrary4 = [(PXSharedLibraryAssistantViewModel *)self sharedLibrary];
+    v12 = sharedLibrary4;
+    if (sharedLibrary4)
     {
-      [v11 fetchItemCounts];
+      [sharedLibrary4 fetchItemCounts];
     }
 
     else
@@ -669,27 +669,27 @@ uint64_t __68__PXSharedLibraryAssistantViewModel__recalculateShareCountsIfNeeded
 
 - (NSString)localizedParticipantList
 {
-  v2 = [(PXSharedLibraryAssistantViewModel *)self participantDataSource];
-  v3 = [v2 names];
+  participantDataSource = [(PXSharedLibraryAssistantViewModel *)self participantDataSource];
+  names = [participantDataSource names];
 
-  v4 = [MEMORY[0x1E696AD08] localizedStringByJoiningStrings:v3];
+  v4 = [MEMORY[0x1E696AD08] localizedStringByJoiningStrings:names];
 
   return v4;
 }
 
-- (id)localizedSelectedPeopleWithAdditionalPeopleCount:(int64_t *)a3
+- (id)localizedSelectedPeopleWithAdditionalPeopleCount:(int64_t *)count
 {
   v29 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!count)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantViewModel.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"additionalPeopleCount"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryAssistantViewModel.m" lineNumber:108 description:{@"Invalid parameter not satisfying: %@", @"additionalPeopleCount"}];
   }
 
-  v5 = [(PXSharedLibraryAssistantViewModel *)self sourceLibraryInfo];
+  sourceLibraryInfo = [(PXSharedLibraryAssistantViewModel *)self sourceLibraryInfo];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v6 = v5;
+    v6 = sourceLibraryInfo;
   }
 
   else
@@ -697,13 +697,13 @@ uint64_t __68__PXSharedLibraryAssistantViewModel__recalculateShareCountsIfNeeded
     v6 = 0;
   }
 
-  v7 = [v6 photoLibrary];
+  photoLibrary = [v6 photoLibrary];
 
-  if (v7)
+  if (photoLibrary)
   {
-    v8 = [(PXSharedLibraryAssistantViewModel *)self personUUIDs];
-    v9 = [v7 librarySpecificFetchOptions];
-    v10 = [MEMORY[0x1E6978980] fetchPersonsWithLocalIdentifiers:v8 options:v9];
+    personUUIDs = [(PXSharedLibraryAssistantViewModel *)self personUUIDs];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+    v10 = [MEMORY[0x1E6978980] fetchPersonsWithLocalIdentifiers:personUUIDs options:librarySpecificFetchOptions];
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v24 = 0u;
     v25 = 0u;
@@ -724,10 +724,10 @@ uint64_t __68__PXSharedLibraryAssistantViewModel__recalculateShareCountsIfNeeded
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v24 + 1) + 8 * i) px_localizedName];
-          if ([v17 length])
+          px_localizedName = [*(*(&v24 + 1) + 8 * i) px_localizedName];
+          if ([px_localizedName length])
           {
-            [v11 addObject:v17];
+            [v11 addObject:px_localizedName];
             if ([v11 count] >= 3)
             {
 
@@ -766,35 +766,35 @@ LABEL_20:
     v11 = MEMORY[0x1E695E0F0];
   }
 
-  *a3 = v18;
+  *count = v18;
 
   return v11;
 }
 
 - (PXSharedLibraryRule)sharedLibraryRule
 {
-  v3 = [(PXSharedLibraryAssistantViewModel *)self autoSharePolicy];
-  if (v3 == 2)
+  autoSharePolicy = [(PXSharedLibraryAssistantViewModel *)self autoSharePolicy];
+  if (autoSharePolicy == 2)
   {
-    v6 = [(PXSharedLibraryAssistantViewModel *)self startDate];
-    v7 = [(PXSharedLibraryAssistantViewModel *)self personUUIDs];
-    v5 = [PXSharedLibraryRule customizedRuleWithStartDate:v6 personUUIDs:v7];
+    startDate = [(PXSharedLibraryAssistantViewModel *)self startDate];
+    personUUIDs = [(PXSharedLibraryAssistantViewModel *)self personUUIDs];
+    v5 = [PXSharedLibraryRule customizedRuleWithStartDate:startDate personUUIDs:personUUIDs];
   }
 
-  else if (v3 == 1)
+  else if (autoSharePolicy == 1)
   {
     v5 = +[PXSharedLibraryRule everythingRule];
   }
 
-  else if (v3)
+  else if (autoSharePolicy)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = [(PXSharedLibraryAssistantViewModel *)self assetLocalIdentifiers];
-    v5 = [PXSharedLibraryRule manualRuleWithAssetLocalIdentifiers:v4];
+    assetLocalIdentifiers = [(PXSharedLibraryAssistantViewModel *)self assetLocalIdentifiers];
+    v5 = [PXSharedLibraryRule manualRuleWithAssetLocalIdentifiers:assetLocalIdentifiers];
   }
 
   return v5;

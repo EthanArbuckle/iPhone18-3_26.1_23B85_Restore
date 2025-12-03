@@ -1,20 +1,20 @@
 @interface HKCodableSleepingSampleAggregate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMorningIndex:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMorningIndex:(BOOL)index;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableSleepingSampleAggregate
 
-- (void)setHasMorningIndex:(BOOL)a3
+- (void)setHasMorningIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }
@@ -33,86 +33,86 @@
   v8.receiver = self;
   v8.super_class = HKCodableSleepingSampleAggregate;
   v4 = [(HKCodableSleepingSampleAggregate *)&v8 description];
-  v5 = [(HKCodableSleepingSampleAggregate *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableSleepingSampleAggregate *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_morningIndex];
-    [v3 setObject:v4 forKey:@"morningIndex"];
+    [dictionary setObject:v4 forKey:@"morningIndex"];
   }
 
   quantity = self->_quantity;
   if (quantity)
   {
-    v6 = [(HKCodableQuantity *)quantity dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"quantity"];
+    dictionaryRepresentation = [(HKCodableQuantity *)quantity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"quantity"];
   }
 
   if (*&self->_has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_latestSampleEndDate];
-    [v3 setObject:v7 forKey:@"latestSampleEndDate"];
+    [dictionary setObject:v7 forKey:@"latestSampleEndDate"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     PBDataWriterWriteInt64Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_quantity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[2] = self->_morningIndex;
-    *(v4 + 32) |= 2u;
+    toCopy[2] = self->_morningIndex;
+    *(toCopy + 32) |= 2u;
   }
 
   if (self->_quantity)
   {
-    v5 = v4;
-    [v4 setQuantity:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setQuantity:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[1] = *&self->_latestSampleEndDate;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = *&self->_latestSampleEndDate;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -120,7 +120,7 @@
     *(v5 + 32) |= 2u;
   }
 
-  v7 = [(HKCodableQuantity *)self->_quantity copyWithZone:a3];
+  v7 = [(HKCodableQuantity *)self->_quantity copyWithZone:zone];
   v8 = *(v6 + 24);
   *(v6 + 24) = v7;
 
@@ -133,10 +133,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
@@ -144,19 +144,19 @@
   has = self->_has;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_morningIndex != *(v4 + 2))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_morningIndex != *(equalCopy + 2))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_14;
   }
 
   quantity = self->_quantity;
-  if (quantity | *(v4 + 3))
+  if (quantity | *(equalCopy + 3))
   {
     if (![(HKCodableQuantity *)quantity isEqual:?])
     {
@@ -168,10 +168,10 @@ LABEL_14:
     has = self->_has;
   }
 
-  v7 = (*(v4 + 32) & 1) == 0;
+  v7 = (*(equalCopy + 32) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_latestSampleEndDate != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_latestSampleEndDate != *(equalCopy + 1))
     {
       goto LABEL_14;
     }
@@ -233,13 +233,13 @@ LABEL_15:
   return v4 ^ v3 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[4] & 2) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[4] & 2) != 0)
   {
-    self->_morningIndex = v4[2];
+    self->_morningIndex = fromCopy[2];
     *&self->_has |= 2u;
   }
 

@@ -1,22 +1,22 @@
 @interface SSCellularSetupMultiSIMActivatingViewController
-- (BOOL)isPlanInstalledAndNotEnabled:(unint64_t)a3 item:(id)a4;
-- (SSCellularSetupMultiSIMActivatingViewController)initWithPlanInfos:(id)a3;
+- (BOOL)isPlanInstalledAndNotEnabled:(unint64_t)enabled item:(id)item;
+- (SSCellularSetupMultiSIMActivatingViewController)initWithPlanInfos:(id)infos;
 - (TSSIMSetupFlowDelegate)delegate;
-- (id)_statusDescription:(unint64_t)a3 info:(id)a4;
-- (id)accessoryViewForStatus:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)_statusDescription:(unint64_t)description info:(id)info;
+- (id)accessoryViewForStatus:(id)status;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_setupTableView;
-- (void)prepare:(id)a3;
-- (void)updateInstallationStatus:(unint64_t)a3 forPlanID:(id)a4;
+- (void)prepare:(id)prepare;
+- (void)updateInstallationStatus:(unint64_t)status forPlanID:(id)d;
 - (void)viewDidLoad;
 @end
 
 @implementation SSCellularSetupMultiSIMActivatingViewController
 
-- (SSCellularSetupMultiSIMActivatingViewController)initWithPlanInfos:(id)a3
+- (SSCellularSetupMultiSIMActivatingViewController)initWithPlanInfos:(id)infos
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  infosCopy = infos;
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"SETTING_UP_CELLULAR" value:&stru_28753DF48 table:@"Localizable"];
   v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -27,13 +27,13 @@
 
   if (v10)
   {
-    objc_storeStrong(&v10->_plans, a3);
+    objc_storeStrong(&v10->_plans, infos);
     v11 = objc_opt_new();
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v12 = v5;
+    v12 = infosCopy;
     v13 = [v12 countByEnumeratingWithState:&v23 objects:v30 count:16];
     if (!v13)
     {
@@ -52,11 +52,11 @@
         }
 
         v17 = *(*(&v23 + 1) + 8 * i);
-        v18 = [v17 identifier];
-        if ([v18 length])
+        identifier = [v17 identifier];
+        if ([identifier length])
         {
           v19 = -[SSCellularSetupMultiSIMActivatingViewController _statusDescription:info:](v10, "_statusDescription:info:", [v17 status], v17);
-          [(NSMutableDictionary *)v11 setObject:v19 forKeyedSubscript:v18];
+          [(NSMutableDictionary *)v11 setObject:v19 forKeyedSubscript:identifier];
         }
 
         else
@@ -93,21 +93,21 @@ LABEL_15:
   return v10;
 }
 
-- (void)updateInstallationStatus:(unint64_t)a3 forPlanID:(id)a4
+- (void)updateInstallationStatus:(unint64_t)status forPlanID:(id)d
 {
-  v6 = a4;
-  v7 = findPlanInfoWithPlanID(self->_plans, v6);
+  dCopy = d;
+  v7 = findPlanInfoWithPlanID(self->_plans, dCopy);
   if (v7)
   {
-    if (a3 != 10002 && a3 != 10001 && a3 != 10003)
+    if (status != 10002 && status != 10001 && status != 10003)
     {
-      v10 = [(SSCellularSetupMultiSIMActivatingViewController *)self _statusDescription:a3 info:v7];
-      v11 = [(NSMutableDictionary *)self->_planStatusDescriptions objectForKeyedSubscript:v6];
+      v10 = [(SSCellularSetupMultiSIMActivatingViewController *)self _statusDescription:status info:v7];
+      v11 = [(NSMutableDictionary *)self->_planStatusDescriptions objectForKeyedSubscript:dCopy];
       if (([v10 isEqualToString:v11] & 1) == 0)
       {
-        [(NSMutableDictionary *)self->_planStatusDescriptions setObject:v10 forKeyedSubscript:v6];
-        v12 = [(OBTableWelcomeController *)self tableView];
-        [v12 reloadData];
+        [(NSMutableDictionary *)self->_planStatusDescriptions setObject:v10 forKeyedSubscript:dCopy];
+        tableView = [(OBTableWelcomeController *)self tableView];
+        [tableView reloadData];
       }
     }
   }
@@ -117,18 +117,18 @@ LABEL_15:
     v13 = _TSLogDomain();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
-      [SSCellularSetupMultiSIMActivatingViewController updateInstallationStatus:v6 forPlanID:v13];
+      [SSCellularSetupMultiSIMActivatingViewController updateInstallationStatus:dCopy forPlanID:v13];
     }
   }
 }
 
-- (BOOL)isPlanInstalledAndNotEnabled:(unint64_t)a3 item:(id)a4
+- (BOOL)isPlanInstalledAndNotEnabled:(unint64_t)enabled item:(id)item
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5 && (a3 == 14 || a3 == 10004))
+  itemCopy = item;
+  v6 = itemCopy;
+  if (itemCopy && (enabled == 14 || enabled == 10004))
   {
-    v7 = [v5 isSelected] ^ 1;
+    v7 = [itemCopy isSelected] ^ 1;
   }
 
   else
@@ -139,21 +139,21 @@ LABEL_15:
   return v7;
 }
 
-- (id)accessoryViewForStatus:(id)a3
+- (id)accessoryViewForStatus:(id)status
 {
-  v3 = [a3 status];
-  if (v3 == 10004)
+  status = [status status];
+  if (status == 10004)
   {
     goto LABEL_4;
   }
 
   v4 = 0;
-  if (v3 > 0xE)
+  if (status > 0xE)
   {
     goto LABEL_5;
   }
 
-  if (((1 << v3) & 0x339E) != 0)
+  if (((1 << status) & 0x339E) != 0)
   {
 LABEL_4:
     v4 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
@@ -161,17 +161,17 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (((1 << v3) & 0xC20) != 0)
+  if (((1 << status) & 0xC20) != 0)
   {
     v6 = [MEMORY[0x277D755B8] systemImageNamed:@"exclamationmark.triangle"];
     v4 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v6];
-    v7 = [MEMORY[0x277D75348] systemYellowColor];
-    [v4 setTintColor:v7];
+    systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+    [v4 setTintColor:systemYellowColor];
   }
 
   else
   {
-    if (v3 != 14)
+    if (status != 14)
     {
       goto LABEL_5;
     }
@@ -185,23 +185,23 @@ LABEL_5:
   return v4;
 }
 
-- (id)_statusDescription:(unint64_t)a3 info:(id)a4
+- (id)_statusDescription:(unint64_t)description info:(id)info
 {
-  v6 = a4;
-  v7 = [v6 displayPlan];
-  if (v7)
+  infoCopy = info;
+  displayPlan = [infoCopy displayPlan];
+  if (displayPlan)
   {
-    v8 = [v6 displayPlan];
-    v9 = [v8 plan];
+    displayPlan2 = [infoCopy displayPlan];
+    plan = [displayPlan2 plan];
   }
 
   else
   {
-    v9 = 0;
+    plan = 0;
   }
 
-  v10 = [v6 planItem];
-  v11 = [(SSCellularSetupMultiSIMActivatingViewController *)self isPlanInstalledAndNotEnabled:a3 item:v10];
+  planItem = [infoCopy planItem];
+  v11 = [(SSCellularSetupMultiSIMActivatingViewController *)self isPlanInstalledAndNotEnabled:description item:planItem];
 
   if (v11)
   {
@@ -216,7 +216,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (a3 == 10004)
+  if (description == 10004)
   {
 LABEL_7:
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -226,19 +226,19 @@ LABEL_7:
   }
 
   v13 = &stru_28753DF48;
-  if (a3 <= 6)
+  if (description <= 6)
   {
-    if (a3 > 4)
+    if (description > 4)
     {
-      if (a3 == 5)
+      if (description == 5)
       {
 LABEL_29:
-        v17 = [v6 installError];
-        v13 = [TSUtilities getErrorDescription:v17];
+        installError = [infoCopy installError];
+        v13 = [TSUtilities getErrorDescription:installError];
 
         if (![(__CFString *)v13 length])
         {
-          if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+          if (plan && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
             v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v19 = v18;
@@ -263,7 +263,7 @@ LABEL_29:
 
     else
     {
-      if (a3 - 1 < 4)
+      if (description - 1 < 4)
       {
 LABEL_15:
         v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -272,7 +272,7 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      if (a3)
+      if (description)
       {
         goto LABEL_18;
       }
@@ -284,11 +284,11 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (a3 <= 10)
+  if (description <= 10)
   {
-    if (a3 - 7 >= 3)
+    if (description - 7 >= 3)
     {
-      if (a3 != 10)
+      if (description != 10)
       {
         goto LABEL_18;
       }
@@ -302,9 +302,9 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (a3 <= 12)
+  if (description <= 12)
   {
-    if (a3 != 11)
+    if (description != 11)
     {
       goto LABEL_15;
     }
@@ -312,12 +312,12 @@ LABEL_15:
     goto LABEL_29;
   }
 
-  if (a3 == 13)
+  if (description == 13)
   {
     goto LABEL_7;
   }
 
-  if (a3 == 14)
+  if (description == 14)
   {
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v13 = v12;
@@ -351,42 +351,42 @@ LABEL_18:
   v4 = [v3 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v4];
 
-  v5 = [(OBTableWelcomeController *)self tableView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(OBTableWelcomeController *)self tableView];
-  [v6 setRowHeight:*MEMORY[0x277D76F30]];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setRowHeight:*MEMORY[0x277D76F30]];
 
-  v7 = [(OBTableWelcomeController *)self tableView];
-  [v7 setEstimatedRowHeight:1.0];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setEstimatedRowHeight:1.0];
 
-  v8 = [(OBTableWelcomeController *)self tableView];
-  [v8 setAllowsMultipleSelection:0];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setAllowsMultipleSelection:0];
 
-  v9 = [(OBTableWelcomeController *)self tableView];
-  [v9 setScrollEnabled:1];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setScrollEnabled:1];
 
-  v10 = [(OBTableWelcomeController *)self tableView];
-  [v10 setShowsVerticalScrollIndicator:0];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  [tableView6 setShowsVerticalScrollIndicator:0];
 
-  v11 = [(OBTableWelcomeController *)self tableView];
-  v12 = [MEMORY[0x277D75348] clearColor];
-  [v11 setBackgroundColor:v12];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView7 setBackgroundColor:clearColor];
 
-  v13 = [(OBTableWelcomeController *)self tableView];
-  [v13 setDataSource:self];
+  tableView8 = [(OBTableWelcomeController *)self tableView];
+  [tableView8 setDataSource:self];
 
-  v14 = [(OBTableWelcomeController *)self tableView];
-  [v14 reloadData];
+  tableView9 = [(OBTableWelcomeController *)self tableView];
+  [tableView9 reloadData];
 
-  v15 = [(OBBaseWelcomeController *)self navigationItem];
-  [v15 setHidesBackButton:1];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 row];
+  pathCopy = path;
+  v6 = [pathCopy row];
   if (v6 >= [(NSArray *)self->_plans count])
   {
     v17 = _TSLogDomain();
@@ -400,22 +400,22 @@ LABEL_18:
 
   else
   {
-    v7 = -[NSArray objectAtIndexedSubscript:](self->_plans, "objectAtIndexedSubscript:", [v5 row]);
-    v8 = [v7 identifier];
-    v9 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:3 reuseIdentifier:v8];
-    v10 = [v9 defaultConfig];
-    v11 = [v7 text];
-    [v10 setText:v11];
+    v7 = -[NSArray objectAtIndexedSubscript:](self->_plans, "objectAtIndexedSubscript:", [pathCopy row]);
+    identifier = [v7 identifier];
+    v9 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:3 reuseIdentifier:identifier];
+    defaultConfig = [v9 defaultConfig];
+    text = [v7 text];
+    [defaultConfig setText:text];
 
-    v12 = [(NSMutableDictionary *)self->_planStatusDescriptions objectForKeyedSubscript:v8];
-    [v10 setSecondaryText:v12];
+    v12 = [(NSMutableDictionary *)self->_planStatusDescriptions objectForKeyedSubscript:identifier];
+    [defaultConfig setSecondaryText:v12];
 
     v13 = MEMORY[0x277D755B8];
-    v14 = [v7 imageName];
-    v15 = [v13 systemImageNamed:v14];
-    [v10 setImage:v15];
+    imageName = [v7 imageName];
+    v15 = [v13 systemImageNamed:imageName];
+    [defaultConfig setImage:v15];
 
-    [v9 setContentConfiguration:v10];
+    [v9 setContentConfiguration:defaultConfig];
     v16 = [(SSCellularSetupMultiSIMActivatingViewController *)self accessoryViewForStatus:v7];
     [v9 setAccessoryView:v16];
   }
@@ -423,13 +423,13 @@ LABEL_18:
   return v9;
 }
 
-- (void)prepare:(id)a3
+- (void)prepare:(id)prepare
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  prepareCopy = prepare;
   if ([(NSArray *)self->_plans count]> 1)
   {
-    v4[2](v4, 1);
+    prepareCopy[2](prepareCopy, 1);
   }
 
   else
@@ -445,7 +445,7 @@ LABEL_18:
       _os_log_impl(&dword_262AA8000, v5, OS_LOG_TYPE_DEFAULT, "skip. count : %lu @%s", &v8, 0x16u);
     }
 
-    v4[2](v4, 0);
+    prepareCopy[2](prepareCopy, 0);
   }
 
   v7 = *MEMORY[0x277D85DE8];

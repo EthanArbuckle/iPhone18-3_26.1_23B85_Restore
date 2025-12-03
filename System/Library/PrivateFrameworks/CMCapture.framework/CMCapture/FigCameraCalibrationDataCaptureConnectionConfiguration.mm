@@ -1,24 +1,24 @@
 @interface FigCameraCalibrationDataCaptureConnectionConfiguration
-- (BOOL)isEqual:(id)a3;
-- (FigCameraCalibrationDataCaptureConnectionConfiguration)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (FigCameraCalibrationDataCaptureConnectionConfiguration)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (id)description;
 @end
 
 @implementation FigCameraCalibrationDataCaptureConnectionConfiguration
 
-- (FigCameraCalibrationDataCaptureConnectionConfiguration)initWithXPCEncoding:(id)a3
+- (FigCameraCalibrationDataCaptureConnectionConfiguration)initWithXPCEncoding:(id)encoding
 {
-  if (a3)
+  if (encoding)
   {
     v6.receiver = self;
     v6.super_class = FigCameraCalibrationDataCaptureConnectionConfiguration;
     v4 = [(FigCaptureConnectionConfiguration *)&v6 initWithXPCEncoding:?];
     if (v4)
     {
-      *(&v4->super._enabled + 1) = xpc_dictionary_get_BOOL(a3, "mirroringEnabled");
-      *(&v4->super._enabled + 1) = xpc_dictionary_get_int64(a3, "rotationDegrees");
+      *(&v4->super._enabled + 1) = xpc_dictionary_get_BOOL(encoding, "mirroringEnabled");
+      *(&v4->super._enabled + 1) = xpc_dictionary_get_int64(encoding, "rotationDegrees");
     }
   }
 
@@ -35,16 +35,16 @@
 {
   v5.receiver = self;
   v5.super_class = FigCameraCalibrationDataCaptureConnectionConfiguration;
-  v3 = [(FigCaptureConnectionConfiguration *)&v5 copyXPCEncoding];
-  xpc_dictionary_set_BOOL(v3, "mirroringEnabled", [(FigCameraCalibrationDataCaptureConnectionConfiguration *)self mirroringEnabled]);
-  xpc_dictionary_set_int64(v3, "rotationDegrees", [(FigCameraCalibrationDataCaptureConnectionConfiguration *)self rotationDegrees]);
-  return v3;
+  copyXPCEncoding = [(FigCaptureConnectionConfiguration *)&v5 copyXPCEncoding];
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "mirroringEnabled", [(FigCameraCalibrationDataCaptureConnectionConfiguration *)self mirroringEnabled]);
+  xpc_dictionary_set_int64(copyXPCEncoding, "rotationDegrees", [(FigCameraCalibrationDataCaptureConnectionConfiguration *)self rotationDegrees]);
+  return copyXPCEncoding;
 }
 
 - (id)description
 {
-  v3 = [(FigCaptureConnectionConfiguration *)self underlyingDeviceType];
-  if (v3 == [(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] sourceDeviceType])
+  underlyingDeviceType = [(FigCaptureConnectionConfiguration *)self underlyingDeviceType];
+  if (underlyingDeviceType == [(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] sourceDeviceType])
   {
     v4 = &stru_1F216A3D0;
   }
@@ -59,17 +59,17 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = FigCameraCalibrationDataCaptureConnectionConfiguration;
-  v4 = [(FigCaptureConnectionConfiguration *)&v6 copyWithZone:a3];
+  v4 = [(FigCaptureConnectionConfiguration *)&v6 copyWithZone:zone];
   [v4 setMirroringEnabled:{-[FigCameraCalibrationDataCaptureConnectionConfiguration mirroringEnabled](self, "mirroringEnabled")}];
   [v4 setRotationDegrees:{-[FigCameraCalibrationDataCaptureConnectionConfiguration rotationDegrees](self, "rotationDegrees")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v9.receiver = self;
   v9.super_class = FigCameraCalibrationDataCaptureConnectionConfiguration;
@@ -77,10 +77,10 @@
   if (v5)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v6 = -[FigCameraCalibrationDataCaptureConnectionConfiguration mirroringEnabled](self, "mirroringEnabled"), v6 == [a3 mirroringEnabled]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v6 = -[FigCameraCalibrationDataCaptureConnectionConfiguration mirroringEnabled](self, "mirroringEnabled"), v6 == [equal mirroringEnabled]))
     {
-      v7 = [(FigCameraCalibrationDataCaptureConnectionConfiguration *)self rotationDegrees];
-      LOBYTE(v5) = v7 == [a3 rotationDegrees];
+      rotationDegrees = [(FigCameraCalibrationDataCaptureConnectionConfiguration *)self rotationDegrees];
+      LOBYTE(v5) = rotationDegrees == [equal rotationDegrees];
     }
 
     else

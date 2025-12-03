@@ -1,33 +1,33 @@
 @interface CEKWheelScrubberSectionDividerView
-- (CEKWheelScrubberSectionDividerView)initWithFrame:(CGRect)a3;
+- (CEKWheelScrubberSectionDividerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation CEKWheelScrubberSectionDividerView
 
-- (CEKWheelScrubberSectionDividerView)initWithFrame:(CGRect)a3
+- (CEKWheelScrubberSectionDividerView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = CEKWheelScrubberSectionDividerView;
-  v3 = [(CEKWheelScrubberSectionDividerView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CEKWheelScrubberSectionDividerView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
     separatorView = v3->__separatorView;
     v3->__separatorView = v4;
 
-    v6 = [MEMORY[0x1E69DC888] quaternaryLabelColor];
-    [(UIView *)v3->__separatorView setBackgroundColor:v6];
+    quaternaryLabelColor = [MEMORY[0x1E69DC888] quaternaryLabelColor];
+    [(UIView *)v3->__separatorView setBackgroundColor:quaternaryLabelColor];
 
-    v7 = [(UIView *)v3->__separatorView layer];
-    [v7 setMasksToBounds:1];
+    layer = [(UIView *)v3->__separatorView layer];
+    [layer setMasksToBounds:1];
 
     v8 = *MEMORY[0x1E69796E8];
-    v9 = [(UIView *)v3->__separatorView layer];
-    [v9 setCornerCurve:v8];
+    layer2 = [(UIView *)v3->__separatorView layer];
+    [layer2 setCornerCurve:v8];
 
-    v10 = [(UIView *)v3->__separatorView layer];
-    [v10 setCornerRadius:2.0];
+    layer3 = [(UIView *)v3->__separatorView layer];
+    [layer3 setCornerRadius:2.0];
 
     [(CEKWheelScrubberSectionDividerView *)v3 addSubview:v3->__separatorView];
   }

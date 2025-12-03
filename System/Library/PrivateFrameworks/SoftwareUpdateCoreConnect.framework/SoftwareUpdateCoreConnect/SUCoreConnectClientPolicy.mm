@@ -1,17 +1,17 @@
 @interface SUCoreConnectClientPolicy
-+ (id)_getAllowlistedClassesForKey:(id)a3;
++ (id)_getAllowlistedClassesForKey:(id)key;
 + (id)_getSharedClientAccessQueue;
 + (id)_getSharedClientAllowlistedClasses;
-+ (id)getAllowlistedClassesForKey:(id)a3;
++ (id)getAllowlistedClassesForKey:(id)key;
 + (void)clearAllowlistedClasses;
-+ (void)setAllowlistedClass:(Class)a3 forKey:(id)a4;
-+ (void)setAllowlistedClasses:(id)a3 forKey:(id)a4;
-+ (void)setAllowlistedClasses:(id)a3 forKeys:(id)a4;
++ (void)setAllowlistedClass:(Class)class forKey:(id)key;
++ (void)setAllowlistedClasses:(id)classes forKey:(id)key;
++ (void)setAllowlistedClasses:(id)classes forKeys:(id)keys;
 - (NSString)description;
 - (SUCoreConnectClientDelegate)clientDelegate;
-- (id)initForServiceName:(id)a3 delegate:(id)a4;
-- (id)initForServiceName:(id)a3 delegate:(id)a4 clientID:(id)a5;
-- (void)setProxyObjectClasses:(id)a3;
+- (id)initForServiceName:(id)name delegate:(id)delegate;
+- (id)initForServiceName:(id)name delegate:(id)delegate clientID:(id)d;
+- (void)setProxyObjectClasses:(id)classes;
 @end
 
 @implementation SUCoreConnectClientPolicy
@@ -43,36 +43,36 @@
   return v3;
 }
 
-- (id)initForServiceName:(id)a3 delegate:(id)a4
+- (id)initForServiceName:(id)name delegate:(id)delegate
 {
-  v5 = [MEMORY[0x277D64428] sharedDiag];
-  [v5 trackAnomaly:@"SUCoreConnectClientPolicy" forReason:@"initForServiceName:delegate: is deprecated withResult:use initForServiceName:delegate:clientID instead" withError:{8123, 0}];
+  mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+  [mEMORY[0x277D64428] trackAnomaly:@"SUCoreConnectClientPolicy" forReason:@"initForServiceName:delegate: is deprecated withResult:use initForServiceName:delegate:clientID instead" withError:{8123, 0}];
 
   return 0;
 }
 
-- (id)initForServiceName:(id)a3 delegate:(id)a4 clientID:(id)a5
+- (id)initForServiceName:(id)name delegate:(id)delegate clientID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  delegateCopy = delegate;
+  dCopy = d;
   v20.receiver = self;
   v20.super_class = SUCoreConnectClientPolicy;
   v12 = [(SUCoreConnectClientPolicy *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_serviceName, a3);
-    objc_storeWeak(&v13->_clientDelegate, v10);
+    objc_storeStrong(&v12->_serviceName, name);
+    objc_storeWeak(&v13->_clientDelegate, delegateCopy);
     v14 = MEMORY[0x277CCACA8];
-    v15 = [MEMORY[0x277CCAC38] processInfo];
-    v16 = [v14 stringWithFormat:@"%@.<%d>", v11, objc_msgSend(v15, "processIdentifier")];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    v16 = [v14 stringWithFormat:@"%@.<%d>", dCopy, objc_msgSend(processInfo, "processIdentifier")];
     clientID = v13->_clientID;
     v13->_clientID = v16;
 
-    objc_storeStrong(&v13->_clientIDRaw, a5);
-    v18 = [MEMORY[0x277CCAC38] processInfo];
-    v13->_clientProcessIdentifier = [v18 processIdentifier];
+    objc_storeStrong(&v13->_clientIDRaw, d);
+    processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+    v13->_clientProcessIdentifier = [processInfo2 processIdentifier];
 
     v13->_usesPersistentXPCConnections = 0;
   }
@@ -80,22 +80,22 @@
   return v13;
 }
 
-- (void)setProxyObjectClasses:(id)a3
+- (void)setProxyObjectClasses:(id)classes
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D64460] sharedLogger];
-  v6 = [v5 oslog];
+  classesCopy = classes;
+  mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+  oslog = [mEMORY[0x277D64460] oslog];
 
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v4;
-    _os_log_impl(&dword_22E2D6000, v6, OS_LOG_TYPE_DEFAULT, "[SUCoreConnectClientPolicy] Setting proxy object classes: %{public}@", &v9, 0xCu);
+    v10 = classesCopy;
+    _os_log_impl(&dword_22E2D6000, oslog, OS_LOG_TYPE_DEFAULT, "[SUCoreConnectClientPolicy] Setting proxy object classes: %{public}@", &v9, 0xCu);
   }
 
   proxyObjectClasses = self->_proxyObjectClasses;
-  self->_proxyObjectClasses = v4;
+  self->_proxyObjectClasses = classesCopy;
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -116,26 +116,26 @@ uint64_t __63__SUCoreConnectClientPolicy__getSharedClientAllowlistedClasses__blo
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)_getAllowlistedClassesForKey:(id)a3
++ (id)_getAllowlistedClassesForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[SUCoreConnectClientPolicy _getSharedClientAccessQueue];
   dispatch_assert_queue_V2(v4);
 
-  if (v3)
+  if (keyCopy)
   {
     v5 = +[SUCoreConnectClientPolicy _getSharedClientAllowlistedClasses];
-    v6 = [v5 safeObjectForKey:v3 ofClass:objc_opt_class()];
+    v6 = [v5 safeObjectForKey:keyCopy ofClass:objc_opt_class()];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D64460] sharedLogger];
-    v8 = [v7 oslog];
+    mEMORY[0x277D64460] = [MEMORY[0x277D64460] sharedLogger];
+    oslog = [mEMORY[0x277D64460] oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      [SUCoreConnectClientPolicy _getAllowlistedClassesForKey:v8];
+      [SUCoreConnectClientPolicy _getAllowlistedClassesForKey:oslog];
     }
 
     v6 = 0;
@@ -144,9 +144,9 @@ uint64_t __63__SUCoreConnectClientPolicy__getSharedClientAllowlistedClasses__blo
   return v6;
 }
 
-+ (id)getAllowlistedClassesForKey:(id)a3
++ (id)getAllowlistedClassesForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[SUCoreConnectClientPolicy _getSharedClientAccessQueue];
   dispatch_assert_queue_not_V2(v4);
 
@@ -161,9 +161,9 @@ uint64_t __63__SUCoreConnectClientPolicy__getSharedClientAllowlistedClasses__blo
   v9[1] = 3221225472;
   v9[2] = __57__SUCoreConnectClientPolicy_getAllowlistedClassesForKey___block_invoke;
   v9[3] = &unk_2787BC968;
-  v10 = v3;
+  v10 = keyCopy;
   v11 = &v12;
-  v6 = v3;
+  v6 = keyCopy;
   dispatch_sync(v5, v9);
 
   v7 = v13[5];
@@ -182,45 +182,45 @@ uint64_t __57__SUCoreConnectClientPolicy_getAllowlistedClassesForKey___block_inv
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)setAllowlistedClass:(Class)a3 forKey:(id)a4
++ (void)setAllowlistedClass:(Class)class forKey:(id)key
 {
   v5 = MEMORY[0x277CBEB98];
-  v6 = a4;
-  v8 = [v5 setWithObject:a3];
-  v7 = [MEMORY[0x277CBEB98] setWithObject:v6];
+  keyCopy = key;
+  v8 = [v5 setWithObject:class];
+  v7 = [MEMORY[0x277CBEB98] setWithObject:keyCopy];
 
   [SUCoreConnectClientPolicy setAllowlistedClasses:v8 forKeys:v7];
 }
 
-+ (void)setAllowlistedClasses:(id)a3 forKey:(id)a4
++ (void)setAllowlistedClasses:(id)classes forKey:(id)key
 {
   v5 = MEMORY[0x277CBEB98];
-  v6 = a3;
-  v7 = [v5 setWithObject:a4];
-  [SUCoreConnectClientPolicy setAllowlistedClasses:v6 forKeys:v7];
+  classesCopy = classes;
+  v7 = [v5 setWithObject:key];
+  [SUCoreConnectClientPolicy setAllowlistedClasses:classesCopy forKeys:v7];
 }
 
-+ (void)setAllowlistedClasses:(id)a3 forKeys:(id)a4
++ (void)setAllowlistedClasses:(id)classes forKeys:(id)keys
 {
-  v5 = a3;
-  v6 = a4;
+  classesCopy = classes;
+  keysCopy = keys;
   v7 = +[SUCoreConnectClientPolicy _getSharedClientAccessQueue];
   dispatch_assert_queue_not_V2(v7);
 
-  if (!v6 || ![v6 count])
+  if (!keysCopy || ![keysCopy count])
   {
-    v9 = [MEMORY[0x277D64428] sharedDiag];
-    [v9 trackAnomaly:@"SUCoreConnectClientPolicy" forReason:@"Cannot set allowlisted classes for a nil/empty NSSet of keys" withResult:8102 withError:0];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    [mEMORY[0x277D64428] trackAnomaly:@"SUCoreConnectClientPolicy" forReason:@"Cannot set allowlisted classes for a nil/empty NSSet of keys" withResult:8102 withError:0];
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  if (!v5 || ![v5 count])
+  if (!classesCopy || ![classesCopy count])
   {
-    v9 = [MEMORY[0x277D64428] sharedDiag];
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot set nil/empty NSSet of classes for keys %@", v6];
-    [v9 trackAnomaly:@"SUCoreConnectClientPolicy" forReason:v10 withResult:8102 withError:0];
+    mEMORY[0x277D64428] = [MEMORY[0x277D64428] sharedDiag];
+    keysCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot set nil/empty NSSet of classes for keys %@", keysCopy];
+    [mEMORY[0x277D64428] trackAnomaly:@"SUCoreConnectClientPolicy" forReason:keysCopy withResult:8102 withError:0];
 
     goto LABEL_8;
   }
@@ -230,8 +230,8 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __59__SUCoreConnectClientPolicy_setAllowlistedClasses_forKeys___block_invoke;
   block[3] = &unk_2787BC990;
-  v12 = v6;
-  v13 = v5;
+  v12 = keysCopy;
+  v13 = classesCopy;
   dispatch_sync(v8, block);
 
 LABEL_9:
@@ -320,9 +320,9 @@ void __52__SUCoreConnectClientPolicy_clearAllowlistedClasses__block_invoke()
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SUCoreConnectClientPolicy *)self serviceName];
-  v5 = [(SUCoreConnectClientPolicy *)self clientID];
-  v6 = [v3 stringWithFormat:@"SUCoreConnectClientPolicy(serviceName:%@|clientID:%@)", v4, v5];
+  serviceName = [(SUCoreConnectClientPolicy *)self serviceName];
+  clientID = [(SUCoreConnectClientPolicy *)self clientID];
+  v6 = [v3 stringWithFormat:@"SUCoreConnectClientPolicy(serviceName:%@|clientID:%@)", serviceName, clientID];
 
   return v6;
 }

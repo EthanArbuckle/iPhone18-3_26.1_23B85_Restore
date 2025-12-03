@@ -7,9 +7,9 @@
 - (id)_geoBusinessHours;
 - (int)closureTypeAction;
 - (void)_captureAnalytics;
-- (void)_fillSubmissionParameters:(id)a3;
-- (void)_setupSubmissionParameters:(id)a3;
-- (void)setSelectedIssue:(id)a3;
+- (void)_fillSubmissionParameters:(id)parameters;
+- (void)_setupSubmissionParameters:(id)parameters;
+- (void)setSelectedIssue:(id)issue;
 @end
 
 @implementation RAPPlaceClosureQuestion
@@ -17,78 +17,78 @@
 - (id)_geoBusinessHours
 {
   v3 = objc_alloc_init(GEORPFeedbackBusinessHours);
-  v4 = [(RAPPlaceClosureQuestion *)self selectedIssue];
-  v5 = [v4 kind];
+  selectedIssue = [(RAPPlaceClosureQuestion *)self selectedIssue];
+  kind = [selectedIssue kind];
 
-  if (v5 <= 2)
+  if (kind <= 2)
   {
-    [v3 setHoursType:(4 - v5)];
+    [v3 setHoursType:(4 - kind)];
   }
 
   return v3;
 }
 
-- (void)_setupSubmissionParameters:(id)a3
+- (void)_setupSubmissionParameters:(id)parameters
 {
-  v10 = a3;
-  v4 = [v10 commonContext];
+  parametersCopy = parameters;
+  commonContext = [parametersCopy commonContext];
 
-  if (!v4)
+  if (!commonContext)
   {
     v5 = objc_alloc_init(GEORPFeedbackCommonContext);
-    [v10 setCommonContext:v5];
+    [parametersCopy setCommonContext:v5];
   }
 
-  v6 = [v10 commonContext];
-  [v6 addUserPath:9];
+  commonContext2 = [parametersCopy commonContext];
+  [commonContext2 addUserPath:9];
 
-  v7 = [v10 details];
+  details = [parametersCopy details];
 
-  if (!v7)
+  if (!details)
   {
     v8 = objc_opt_new();
-    [v10 setDetails:v8];
+    [parametersCopy setDetails:v8];
   }
 
-  v9 = [(RAPPlaceClosureQuestion *)self commentQuestion];
-  [v9 _fillSubmissionParameters:v10];
+  commentQuestion = [(RAPPlaceClosureQuestion *)self commentQuestion];
+  [commentQuestion _fillSubmissionParameters:parametersCopy];
 }
 
-- (void)_fillSubmissionParameters:(id)a3
+- (void)_fillSubmissionParameters:(id)parameters
 {
-  v12 = a3;
-  [(RAPPlaceClosureQuestion *)self _setupSubmissionParameters:v12];
-  v4 = [v12 details];
-  v5 = [v4 poiFeedback];
+  parametersCopy = parameters;
+  [(RAPPlaceClosureQuestion *)self _setupSubmissionParameters:parametersCopy];
+  details = [parametersCopy details];
+  poiFeedback = [details poiFeedback];
 
-  if (!v5)
+  if (!poiFeedback)
   {
-    v5 = objc_alloc_init(GEORPPoiFeedback);
-    v6 = [v12 details];
-    [v6 setPoiFeedback:v5];
+    poiFeedback = objc_alloc_init(GEORPPoiFeedback);
+    details2 = [parametersCopy details];
+    [details2 setPoiFeedback:poiFeedback];
   }
 
-  v7 = [v5 corrections];
+  corrections = [poiFeedback corrections];
 
-  if (!v7)
+  if (!corrections)
   {
     v8 = objc_opt_new();
-    [v5 setCorrections:v8];
+    [poiFeedback setCorrections:v8];
   }
 
-  [v5 setCorrectionType:2];
-  v9 = [v5 corrections];
-  v10 = [(RAPPlaceClosureQuestion *)self _geoBusinessHours];
-  [v9 addBusinessHours:v10];
+  [poiFeedback setCorrectionType:2];
+  corrections2 = [poiFeedback corrections];
+  _geoBusinessHours = [(RAPPlaceClosureQuestion *)self _geoBusinessHours];
+  [corrections2 addBusinessHours:_geoBusinessHours];
 
-  v11 = [(RAPPlaceClosureQuestion *)self commentQuestion];
-  [v11 _fillSubmissionParameters:v12];
+  commentQuestion = [(RAPPlaceClosureQuestion *)self commentQuestion];
+  [commentQuestion _fillSubmissionParameters:parametersCopy];
 }
 
 - (BOOL)isComplete
 {
-  v2 = [(RAPPlaceClosureQuestion *)self selectedIssue];
-  v3 = v2 != 0;
+  selectedIssue = [(RAPPlaceClosureQuestion *)self selectedIssue];
+  v3 = selectedIssue != 0;
 
   return v3;
 }
@@ -99,11 +99,11 @@
   if (!commentQuestion)
   {
     v4 = [RAPCommentQuestion alloc];
-    v5 = [(RAPQuestion *)self report];
+    report = [(RAPQuestion *)self report];
     v6 = +[RAPCommentQuestion _localizedOptionalInformationTitle];
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"Tell us more about this closure" value:@"localized string not found" table:0];
-    v9 = [(RAPCommentQuestion *)v4 initWithReport:v5 parentQuestion:self title:v6 placeholderText:v8 emphasis:5];
+    v9 = [(RAPCommentQuestion *)v4 initWithReport:report parentQuestion:self title:v6 placeholderText:v8 emphasis:5];
     v10 = self->_commentQuestion;
     self->_commentQuestion = v9;
 
@@ -115,10 +115,10 @@
 
 - (int)closureTypeAction
 {
-  v2 = [(RAPPlaceClosureQuestion *)self selectedIssue];
-  v3 = [v2 kind];
+  selectedIssue = [(RAPPlaceClosureQuestion *)self selectedIssue];
+  kind = [selectedIssue kind];
 
-  if (v3 == 1)
+  if (kind == 1)
   {
     v4 = 10135;
   }
@@ -128,7 +128,7 @@
     v4 = 10134;
   }
 
-  if (v3 == 2)
+  if (kind == 2)
   {
     return 10136;
   }
@@ -145,18 +145,18 @@
   [v3 captureUserAction:-[RAPPlaceClosureQuestion closureTypeAction](self onTarget:"closureTypeAction") eventValue:{-[RAPPlaceClosureQuestion analyticTarget](self, "analyticTarget"), 0}];
 }
 
-- (void)setSelectedIssue:(id)a3
+- (void)setSelectedIssue:(id)issue
 {
-  v5 = a3;
-  if (self->_selectedIssue != v5)
+  issueCopy = issue;
+  if (self->_selectedIssue != issueCopy)
   {
-    v12 = v5;
-    objc_storeStrong(&self->_selectedIssue, a3);
-    v6 = [(RAPPlaceClosureIssue *)v12 kind];
+    v12 = issueCopy;
+    objc_storeStrong(&self->_selectedIssue, issue);
+    kind = [(RAPPlaceClosureIssue *)v12 kind];
     commentQuestion = self->_commentQuestion;
     v8 = +[NSBundle mainBundle];
     v9 = v8;
-    if (v6 == 2)
+    if (kind == 2)
     {
       v10 = @"Tell us more about the new hours";
     }
@@ -171,7 +171,7 @@
 
     [(RAPQuestion *)self _didChange];
     [(RAPPlaceClosureQuestion *)self _captureAnalytics];
-    v5 = v12;
+    issueCopy = v12;
   }
 }
 

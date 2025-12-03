@@ -1,12 +1,12 @@
 @interface NTKDigitalFaceView
-- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)a3 faceBounds:(CGRect)a4;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)mode faceBounds:(CGRect)bounds;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_createTimeViewIfNecessary;
 - (void)_loadSnapshotContentViews;
 - (void)_unloadSnapshotContentViews;
 - (void)invalidateDigitalTimeLabelStyle;
 - (void)layoutSubviews;
-- (void)setViewMode:(int64_t)a3 updateTimeViewStyle:(BOOL)a4;
+- (void)setViewMode:(int64_t)mode updateTimeViewStyle:(BOOL)style;
 @end
 
 @implementation NTKDigitalFaceView
@@ -25,8 +25,8 @@
   v4.receiver = self;
   v4.super_class = NTKDigitalFaceView;
   [(NTKFaceView *)&v4 _unloadSnapshotContentViews];
-  v3 = [(NTKFaceView *)self timeView];
-  [v3 removeFromSuperview];
+  timeView = [(NTKFaceView *)self timeView];
+  [timeView removeFromSuperview];
 
   [(NTKFaceView *)self setTimeView:0];
 }
@@ -36,19 +36,19 @@
   v7.receiver = self;
   v7.super_class = NTKDigitalFaceView;
   [(NTKFaceView *)&v7 layoutSubviews];
-  v3 = [(NTKFaceView *)self timeView];
-  [v3 setFrameUsingCurrentStyle];
+  timeView = [(NTKFaceView *)self timeView];
+  [timeView setFrameUsingCurrentStyle];
 
-  v4 = [(NTKFaceView *)self rootContainerView];
-  v5 = [(NTKFaceView *)self timeView];
-  v6 = [(NTKFaceView *)self complicationContainerView];
-  [v4 insertSubview:v5 belowSubview:v6];
+  rootContainerView = [(NTKFaceView *)self rootContainerView];
+  timeView2 = [(NTKFaceView *)self timeView];
+  complicationContainerView = [(NTKFaceView *)self complicationContainerView];
+  [rootContainerView insertSubview:timeView2 belowSubview:complicationContainerView];
 }
 
-- (void)setViewMode:(int64_t)a3 updateTimeViewStyle:(BOOL)a4
+- (void)setViewMode:(int64_t)mode updateTimeViewStyle:(BOOL)style
 {
-  self->_viewMode = a3;
-  if (a4)
+  self->_viewMode = mode;
+  if (style)
   {
     [(NTKDigitalFaceView *)self invalidateDigitalTimeLabelStyle];
   }
@@ -61,56 +61,56 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(NTKFaceView *)self timeView];
+  timeView = [(NTKFaceView *)self timeView];
   v12 = [(NTKDigitalFaceView *)self _digitalTimeLabelStyleFromViewMode:self->_viewMode faceBounds:v4, v6, v8, v10];
-  [v11 setStyle:v12];
+  [timeView setStyle:v12];
 
   [(NTKDigitalFaceView *)self setNeedsLayout];
 }
 
-- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)a3 faceBounds:(CGRect)a4
+- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)mode faceBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = [(NTKFaceView *)self device];
-  v9 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:0 withRightSideMargin:v8 applyAdvanceFudge:x forDevice:y, width, height, 0.0];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  device = [(NTKFaceView *)self device];
+  v9 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:0 withRightSideMargin:device applyAdvanceFudge:x forDevice:y, width, height, 0.0];
 
   return v9;
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v7.receiver = self;
   v7.super_class = NTKDigitalFaceView;
   [NTKFaceView _configureForTransitionFraction:sel__configureForTransitionFraction_fromEditMode_toEditMode_ fromEditMode:? toEditMode:?];
-  v6 = [(NTKFaceView *)self timeView];
+  timeView = [(NTKFaceView *)self timeView];
   CLKInterpolateBetweenFloatsClipped();
-  [v6 setAlpha:?];
+  [timeView setAlpha:?];
 }
 
 - (void)_createTimeViewIfNecessary
 {
-  v3 = [(NTKFaceView *)self timeView];
+  timeView = [(NTKFaceView *)self timeView];
 
-  if (!v3)
+  if (!timeView)
   {
-    v4 = [(NTKDigitalFaceView *)self _timeLabelOptions];
-    v5 = [(NTKFaceView *)self device];
-    v9 = [(CLKUITimeLabel *)NTKDigitalTimeLabel labelWithOptions:v4 forDevice:v5];
+    _timeLabelOptions = [(NTKDigitalFaceView *)self _timeLabelOptions];
+    device = [(NTKFaceView *)self device];
+    v9 = [(CLKUITimeLabel *)NTKDigitalTimeLabel labelWithOptions:_timeLabelOptions forDevice:device];
 
     [v9 setUsesLegibility:{-[NTKDigitalFaceView _timeLabelUsesLegibility](self, "_timeLabelUsesLegibility")}];
-    v6 = [MEMORY[0x277D75348] whiteColor];
-    [v9 setTextColor:v6];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v9 setTextColor:whiteColor];
 
     v7 = +[NTKTimeOffsetManager sharedManager];
     [v7 timeOffset];
     [v9 setTimeOffset:?];
 
     [(NTKFaceView *)self setTimeView:v9];
-    v8 = [(NTKFaceView *)self rootContainerView];
-    [v8 addSubview:v9];
+    rootContainerView = [(NTKFaceView *)self rootContainerView];
+    [rootContainerView addSubview:v9];
 
     [(NTKDigitalFaceView *)self invalidateDigitalTimeLabelStyle];
   }

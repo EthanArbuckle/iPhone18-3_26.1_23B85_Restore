@@ -1,10 +1,10 @@
 @interface ICNotePasteboardData
-+ (id)pasteboardDataFromPersistenceData:(id)a3;
++ (id)pasteboardDataFromPersistenceData:(id)data;
 - (ICNotePasteboardData)init;
-- (ICNotePasteboardData)initWithAttributedStringData:(id)a3 dataPersister:(id)a4;
-- (ICNotePasteboardData)initWithCoder:(id)a3;
+- (ICNotePasteboardData)initWithAttributedStringData:(id)data dataPersister:(id)persister;
+- (ICNotePasteboardData)initWithCoder:(id)coder;
 - (id)persistenceData;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)persistenceData;
 @end
 
@@ -17,18 +17,18 @@
   return 0;
 }
 
-- (ICNotePasteboardData)initWithAttributedStringData:(id)a3 dataPersister:(id)a4
+- (ICNotePasteboardData)initWithAttributedStringData:(id)data dataPersister:(id)persister
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  persisterCopy = persister;
   v12.receiver = self;
   v12.super_class = ICNotePasteboardData;
   v9 = [(ICNotePasteboardData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_attributedStringData, a3);
-    objc_storeStrong(&v10->_dataPersister, a4);
+    objc_storeStrong(&v9->_attributedStringData, data);
+    objc_storeStrong(&v10->_dataPersister, persister);
   }
 
   return v10;
@@ -51,12 +51,12 @@
   return v2;
 }
 
-+ (id)pasteboardDataFromPersistenceData:(id)a3
++ (id)pasteboardDataFromPersistenceData:(id)data
 {
   v3 = MEMORY[0x277CCAAC8];
-  v4 = a3;
+  dataCopy = data;
   v17 = 0;
-  v5 = [[v3 alloc] initForReadingFromData:v4 error:&v17];
+  v5 = [[v3 alloc] initForReadingFromData:dataCopy error:&v17];
 
   v6 = v17;
   if (v6)
@@ -91,22 +91,22 @@
   return v14;
 }
 
-- (ICNotePasteboardData)initWithCoder:(id)a3
+- (ICNotePasteboardData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = ICNotePasteboardData;
   v5 = [(ICNotePasteboardData *)&v13 init];
   if (v5)
   {
     objc_opt_class();
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attributedStringData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attributedStringData"];
     v7 = ICCheckedDynamicCast();
     attributedStringData = v5->_attributedStringData;
     v5->_attributedStringData = v7;
 
     objc_opt_class();
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dataPersister"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dataPersister"];
     v10 = ICCheckedDynamicCast();
     dataPersister = v5->_dataPersister;
     v5->_dataPersister = v10;
@@ -115,27 +115,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(ICNotePasteboardData *)self attributedStringData];
-  [v7 encodeObject:v4 forKey:@"attributedStringData"];
+  coderCopy = coder;
+  attributedStringData = [(ICNotePasteboardData *)self attributedStringData];
+  [coderCopy encodeObject:attributedStringData forKey:@"attributedStringData"];
 
-  v5 = [(ICNotePasteboardData *)self dataPersister];
+  dataPersister = [(ICNotePasteboardData *)self dataPersister];
 
-  if (v5)
+  if (dataPersister)
   {
-    v6 = [(ICNotePasteboardData *)self dataPersister];
-    [v7 encodeObject:v6 forKey:@"dataPersister"];
+    dataPersister2 = [(ICNotePasteboardData *)self dataPersister];
+    [coderCopy encodeObject:dataPersister2 forKey:@"dataPersister"];
   }
 }
 
 - (void)persistenceData
 {
   v6 = *MEMORY[0x277D85DE8];
-  v3 = [a1 localizedDescription];
+  localizedDescription = [self localizedDescription];
   v4 = 138412290;
-  v5 = v3;
+  v5 = localizedDescription;
   _os_log_error_impl(&dword_214D51000, a2, OS_LOG_TYPE_ERROR, "Error while serializing persistence data: %@", &v4, 0xCu);
 }
 

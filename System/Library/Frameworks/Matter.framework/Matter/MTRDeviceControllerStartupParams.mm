@@ -1,8 +1,8 @@
 @interface MTRDeviceControllerStartupParams
 - (MTRDeviceControllerStartupParams)initWithIPK:(NSData *)ipk fabricID:(NSNumber *)fabricID nocSigner:(id)nocSigner;
 - (MTRDeviceControllerStartupParams)initWithIPK:(NSData *)ipk operationalKeypair:(id)operationalKeypair operationalCertificate:(MTRCertificateDERBytes)operationalCertificate intermediateCertificate:(MTRCertificateDERBytes)intermediateCertificate rootCertificate:(MTRCertificateDERBytes)rootCertificate;
-- (MTRDeviceControllerStartupParams)initWithParameters:(id)a3 error:(ChipError *)a4;
-- (MTRDeviceControllerStartupParams)initWithParams:(id)a3;
+- (MTRDeviceControllerStartupParams)initWithParameters:(id)parameters error:(ChipError *)error;
+- (MTRDeviceControllerStartupParams)initWithParams:(id)params;
 - (MTRDeviceControllerStartupParams)initWithSigningKeypair:(id)nocSigner fabricId:(uint64_t)fabricId ipk:(NSData *)ipk;
 - (uint64_t)fabricId;
 @end
@@ -30,9 +30,9 @@ LABEL_8:
     v19 = sub_2393D9044(0);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v20 = [(NSNumber *)v9 unsignedLongLongValue];
+      unsignedLongLongValue = [(NSNumber *)v9 unsignedLongLongValue];
       *buf = 134217984;
-      v25 = v20;
+      v25 = unsignedLongLongValue;
       _os_log_impl(&dword_238DAE000, v19, OS_LOG_TYPE_ERROR, "%llu is not a valid fabric id to initialize a device controller with", buf, 0xCu);
     }
 
@@ -54,9 +54,9 @@ LABEL_8:
   v15 = v11->_ipk;
   v11->_ipk = v14;
 
-  v16 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   uniqueIdentifier = v11->_uniqueIdentifier;
-  v11->_uniqueIdentifier = v16;
+  v11->_uniqueIdentifier = uUID;
 
   v18 = v11;
 LABEL_9:
@@ -103,9 +103,9 @@ LABEL_9:
       v29 = v17->_ipk;
       v17->_ipk = v28;
 
-      v30 = [MEMORY[0x277CCAD78] UUID];
+      uUID = [MEMORY[0x277CCAD78] UUID];
       uniqueIdentifier = v17->_uniqueIdentifier;
-      v17->_uniqueIdentifier = v30;
+      v17->_uniqueIdentifier = uUID;
 
       v20 = v17;
       goto LABEL_6;
@@ -118,65 +118,65 @@ LABEL_6:
   return v20;
 }
 
-- (MTRDeviceControllerStartupParams)initWithParams:(id)a3
+- (MTRDeviceControllerStartupParams)initWithParams:(id)params
 {
-  v4 = a3;
+  paramsCopy = params;
   v34.receiver = self;
   v34.super_class = MTRDeviceControllerStartupParams;
   v5 = [(MTRDeviceControllerStartupParams *)&v34 init];
   if (v5)
   {
-    v6 = [v4 nocSigner];
+    nocSigner = [paramsCopy nocSigner];
     nocSigner = v5->_nocSigner;
-    v5->_nocSigner = v6;
+    v5->_nocSigner = nocSigner;
 
-    v8 = [v4 fabricID];
+    fabricID = [paramsCopy fabricID];
     fabricID = v5->_fabricID;
-    v5->_fabricID = v8;
+    v5->_fabricID = fabricID;
 
-    v10 = [v4 ipk];
+    v10 = [paramsCopy ipk];
     ipk = v5->_ipk;
     v5->_ipk = v10;
 
-    v12 = [v4 vendorID];
+    vendorID = [paramsCopy vendorID];
     vendorID = v5->_vendorID;
-    v5->_vendorID = v12;
+    v5->_vendorID = vendorID;
 
-    v14 = [v4 nodeID];
+    nodeID = [paramsCopy nodeID];
     nodeID = v5->_nodeID;
-    v5->_nodeID = v14;
+    v5->_nodeID = nodeID;
 
-    v16 = [v4 caseAuthenticatedTags];
+    caseAuthenticatedTags = [paramsCopy caseAuthenticatedTags];
     caseAuthenticatedTags = v5->_caseAuthenticatedTags;
-    v5->_caseAuthenticatedTags = v16;
+    v5->_caseAuthenticatedTags = caseAuthenticatedTags;
 
-    v18 = [v4 rootCertificate];
+    rootCertificate = [paramsCopy rootCertificate];
     rootCertificate = v5->_rootCertificate;
-    v5->_rootCertificate = v18;
+    v5->_rootCertificate = rootCertificate;
 
-    v20 = [v4 intermediateCertificate];
+    intermediateCertificate = [paramsCopy intermediateCertificate];
     intermediateCertificate = v5->_intermediateCertificate;
-    v5->_intermediateCertificate = v20;
+    v5->_intermediateCertificate = intermediateCertificate;
 
-    v22 = [v4 operationalCertificate];
+    operationalCertificate = [paramsCopy operationalCertificate];
     operationalCertificate = v5->_operationalCertificate;
-    v5->_operationalCertificate = v22;
+    v5->_operationalCertificate = operationalCertificate;
 
-    v24 = [v4 operationalKeypair];
+    operationalKeypair = [paramsCopy operationalKeypair];
     operationalKeypair = v5->_operationalKeypair;
-    v5->_operationalKeypair = v24;
+    v5->_operationalKeypair = operationalKeypair;
 
-    v26 = [v4 operationalCertificateIssuer];
+    operationalCertificateIssuer = [paramsCopy operationalCertificateIssuer];
     operationalCertificateIssuer = v5->_operationalCertificateIssuer;
-    v5->_operationalCertificateIssuer = v26;
+    v5->_operationalCertificateIssuer = operationalCertificateIssuer;
 
-    v28 = [v4 operationalCertificateIssuerQueue];
+    operationalCertificateIssuerQueue = [paramsCopy operationalCertificateIssuerQueue];
     operationalCertificateIssuerQueue = v5->_operationalCertificateIssuerQueue;
-    v5->_operationalCertificateIssuerQueue = v28;
+    v5->_operationalCertificateIssuerQueue = operationalCertificateIssuerQueue;
 
-    v30 = [v4 uniqueIdentifier];
+    uniqueIdentifier = [paramsCopy uniqueIdentifier];
     uniqueIdentifier = v5->_uniqueIdentifier;
-    v5->_uniqueIdentifier = v30;
+    v5->_uniqueIdentifier = uniqueIdentifier;
 
     v32 = v5;
   }
@@ -184,9 +184,9 @@ LABEL_6:
   return v5;
 }
 
-- (MTRDeviceControllerStartupParams)initWithParameters:(id)a3 error:(ChipError *)a4
+- (MTRDeviceControllerStartupParams)initWithParameters:(id)parameters error:(ChipError *)error
 {
-  v6 = a3;
+  parametersCopy = parameters;
   v40.receiver = self;
   v40.super_class = MTRDeviceControllerStartupParams;
   v7 = [(MTRDeviceControllerStartupParams *)&v40 init];
@@ -195,8 +195,8 @@ LABEL_6:
   {
     v16 = 0x9300000003;
 LABEL_11:
-    *&a4->mError = v16;
-    a4->mFile = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDeviceControllerStartupParams.mm";
+    *&error->mError = v16;
+    error->mFile = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDeviceControllerStartupParams.mm";
     goto LABEL_14;
   }
 
@@ -223,17 +223,17 @@ LABEL_11:
   nocSigner = v7->_nocSigner;
   v7->_nocSigner = 0;
 
-  v10 = [v6 operationalCertificate];
+  operationalCertificate = [parametersCopy operationalCertificate];
   v39 = 0;
   *buf = 0;
-  v11 = sub_239220D54(v10, buf, &v39);
+  v11 = sub_239220D54(operationalCertificate, buf, &v39);
   v13 = v12;
   v14 = v39;
   v15 = v39;
-  *&a4->mError = v11;
-  a4->mFile = v13;
+  *&error->mError = v11;
+  error->mFile = v13;
 
-  if (a4->mError)
+  if (error->mError)
   {
     v7 = 0;
   }
@@ -241,13 +241,13 @@ LABEL_11:
   else
   {
     objc_storeStrong(&v7->_fabricID, v14);
-    v18 = [v6 ipk];
+    v18 = [parametersCopy ipk];
     ipk = v7->_ipk;
     v7->_ipk = v18;
 
-    v20 = [v6 vendorID];
+    vendorID = [parametersCopy vendorID];
     vendorID = v7->_vendorID;
-    v7->_vendorID = v20;
+    v7->_vendorID = vendorID;
 
     nodeID = v7->_nodeID;
     v7->_nodeID = 0;
@@ -255,33 +255,33 @@ LABEL_11:
     caseAuthenticatedTags = v7->_caseAuthenticatedTags;
     v7->_caseAuthenticatedTags = 0;
 
-    v24 = [v6 rootCertificate];
+    rootCertificate = [parametersCopy rootCertificate];
     rootCertificate = v7->_rootCertificate;
-    v7->_rootCertificate = v24;
+    v7->_rootCertificate = rootCertificate;
 
-    v26 = [v6 intermediateCertificate];
+    intermediateCertificate = [parametersCopy intermediateCertificate];
     intermediateCertificate = v7->_intermediateCertificate;
-    v7->_intermediateCertificate = v26;
+    v7->_intermediateCertificate = intermediateCertificate;
 
-    v28 = [v6 operationalCertificate];
+    operationalCertificate2 = [parametersCopy operationalCertificate];
     operationalCertificate = v7->_operationalCertificate;
-    v7->_operationalCertificate = v28;
+    v7->_operationalCertificate = operationalCertificate2;
 
-    v30 = [v6 operationalKeypair];
+    operationalKeypair = [parametersCopy operationalKeypair];
     operationalKeypair = v7->_operationalKeypair;
-    v7->_operationalKeypair = v30;
+    v7->_operationalKeypair = operationalKeypair;
 
-    v32 = [v6 operationalCertificateIssuer];
+    operationalCertificateIssuer = [parametersCopy operationalCertificateIssuer];
     operationalCertificateIssuer = v7->_operationalCertificateIssuer;
-    v7->_operationalCertificateIssuer = v32;
+    v7->_operationalCertificateIssuer = operationalCertificateIssuer;
 
-    v34 = [v6 operationalCertificateIssuerQueue];
+    operationalCertificateIssuerQueue = [parametersCopy operationalCertificateIssuerQueue];
     operationalCertificateIssuerQueue = v7->_operationalCertificateIssuerQueue;
-    v7->_operationalCertificateIssuerQueue = v34;
+    v7->_operationalCertificateIssuerQueue = operationalCertificateIssuerQueue;
 
-    v36 = [v6 uniqueIdentifier];
+    uniqueIdentifier = [parametersCopy uniqueIdentifier];
     uniqueIdentifier = v7->_uniqueIdentifier;
-    v7->_uniqueIdentifier = v36;
+    v7->_uniqueIdentifier = uniqueIdentifier;
 
     v7 = v7;
   }
@@ -292,10 +292,10 @@ LABEL_14:
 
 - (uint64_t)fabricId
 {
-  v2 = [(MTRDeviceControllerStartupParams *)self fabricID];
-  v3 = [v2 unsignedLongLongValue];
+  fabricID = [(MTRDeviceControllerStartupParams *)self fabricID];
+  unsignedLongLongValue = [fabricID unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (MTRDeviceControllerStartupParams)initWithSigningKeypair:(id)nocSigner fabricId:(uint64_t)fabricId ipk:(NSData *)ipk

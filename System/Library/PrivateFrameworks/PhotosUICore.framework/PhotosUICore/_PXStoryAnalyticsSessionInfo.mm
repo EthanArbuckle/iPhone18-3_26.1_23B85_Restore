@@ -1,19 +1,19 @@
 @interface _PXStoryAnalyticsSessionInfo
-- (_PXStoryAnalyticsSessionInfo)initWithEvent:(id)a3;
+- (_PXStoryAnalyticsSessionInfo)initWithEvent:(id)event;
 @end
 
 @implementation _PXStoryAnalyticsSessionInfo
 
-- (_PXStoryAnalyticsSessionInfo)initWithEvent:(id)a3
+- (_PXStoryAnalyticsSessionInfo)initWithEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = _PXStoryAnalyticsSessionInfo;
   v6 = [(_PXStoryAnalyticsSessionInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_startEvent, a3);
+    objc_storeStrong(&v6->_startEvent, event);
   }
 
   return v7;

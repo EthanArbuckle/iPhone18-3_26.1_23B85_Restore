@@ -1,53 +1,53 @@
 @interface REMICloudIsOffDataViewFetchHasAnyCKDirtyObjectInAccountInvocationResult
-- (BOOL)isEqual:(id)a3;
-- (REMICloudIsOffDataViewFetchHasAnyCKDirtyObjectInAccountInvocationResult)initWithCoder:(id)a3;
-- (REMICloudIsOffDataViewFetchHasAnyCKDirtyObjectInAccountInvocationResult)initWithHasAnyDirtyCloudObject:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMICloudIsOffDataViewFetchHasAnyCKDirtyObjectInAccountInvocationResult)initWithCoder:(id)coder;
+- (REMICloudIsOffDataViewFetchHasAnyCKDirtyObjectInAccountInvocationResult)initWithHasAnyDirtyCloudObject:(id)object;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMICloudIsOffDataViewFetchHasAnyCKDirtyObjectInAccountInvocationResult
 
-- (REMICloudIsOffDataViewFetchHasAnyCKDirtyObjectInAccountInvocationResult)initWithHasAnyDirtyCloudObject:(id)a3
+- (REMICloudIsOffDataViewFetchHasAnyCKDirtyObjectInAccountInvocationResult)initWithHasAnyDirtyCloudObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = REMICloudIsOffDataViewFetchHasAnyCKDirtyObjectInAccountInvocationResult;
   v6 = [(REMStoreInvocationValueStorage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_hasAnyDirtyCloudObject, a3);
+    objc_storeStrong(&v6->_hasAnyDirtyCloudObject, object);
   }
 
   return v7;
 }
 
-- (REMICloudIsOffDataViewFetchHasAnyCKDirtyObjectInAccountInvocationResult)initWithCoder:(id)a3
+- (REMICloudIsOffDataViewFetchHasAnyCKDirtyObjectInAccountInvocationResult)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeBoolForKey:@"hasAnyDirtyCloudObject"];
+  v4 = [coder decodeBoolForKey:@"hasAnyDirtyCloudObject"];
   v5 = [MEMORY[0x1E696AD98] numberWithBool:v4];
   v6 = [(REMICloudIsOffDataViewFetchHasAnyCKDirtyObjectInAccountInvocationResult *)self initWithHasAnyDirtyCloudObject:v5];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMICloudIsOffDataViewFetchHasAnyCKDirtyObjectInAccountInvocationResult *)self hasAnyDirtyCloudObject];
-  [v4 encodeBool:objc_msgSend(v5 forKey:{"BOOLValue"), @"hasAnyDirtyCloudObject"}];
+  coderCopy = coder;
+  hasAnyDirtyCloudObject = [(REMICloudIsOffDataViewFetchHasAnyCKDirtyObjectInAccountInvocationResult *)self hasAnyDirtyCloudObject];
+  [coderCopy encodeBool:objc_msgSend(hasAnyDirtyCloudObject forKey:{"BOOLValue"), @"hasAnyDirtyCloudObject"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(REMICloudIsOffDataViewFetchHasAnyCKDirtyObjectInAccountInvocationResult *)self hasAnyDirtyCloudObject];
-    v6 = [v4 hasAnyDirtyCloudObject];
-    v7 = v5 == v6;
+    hasAnyDirtyCloudObject = [(REMICloudIsOffDataViewFetchHasAnyCKDirtyObjectInAccountInvocationResult *)self hasAnyDirtyCloudObject];
+    hasAnyDirtyCloudObject2 = [equalCopy hasAnyDirtyCloudObject];
+    v7 = hasAnyDirtyCloudObject == hasAnyDirtyCloudObject2;
   }
 
   else
@@ -60,10 +60,10 @@
 
 - (unint64_t)hash
 {
-  v2 = [(REMICloudIsOffDataViewFetchHasAnyCKDirtyObjectInAccountInvocationResult *)self hasAnyDirtyCloudObject];
-  v3 = [v2 unsignedIntegerValue];
+  hasAnyDirtyCloudObject = [(REMICloudIsOffDataViewFetchHasAnyCKDirtyObjectInAccountInvocationResult *)self hasAnyDirtyCloudObject];
+  unsignedIntegerValue = [hasAnyDirtyCloudObject unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 @end

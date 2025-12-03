@@ -1,34 +1,34 @@
 @interface PKApplyProgramConsentViewController
-- (PKApplyProgramConsentViewController)initWithController:(id)a3 setupDelegate:(id)a4 context:(int64_t)a5 applyPage:(id)a6;
-- (void)_termsAccepted:(BOOL)a3 actionIdentifier:(id)a4;
+- (PKApplyProgramConsentViewController)initWithController:(id)controller setupDelegate:(id)delegate context:(int64_t)context applyPage:(id)page;
+- (void)_termsAccepted:(BOOL)accepted actionIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)explanationViewDidSelectBodyButton:(id)a3;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)explanationViewDidSelectSetupLater:(id)a3;
+- (void)explanationViewDidSelectBodyButton:(id)button;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)explanationViewDidSelectSetupLater:(id)later;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKApplyProgramConsentViewController
 
-- (PKApplyProgramConsentViewController)initWithController:(id)a3 setupDelegate:(id)a4 context:(int64_t)a5 applyPage:(id)a6
+- (PKApplyProgramConsentViewController)initWithController:(id)controller setupDelegate:(id)delegate context:(int64_t)context applyPage:(id)page
 {
-  v10 = a3;
+  controllerCopy = controller;
   v19.receiver = self;
   v19.super_class = PKApplyProgramConsentViewController;
-  v11 = [(PKApplyExplanationViewController *)&v19 initWithController:v10 setupDelegate:a4 context:a5 applyPage:a6];
+  v11 = [(PKApplyExplanationViewController *)&v19 initWithController:controllerCopy setupDelegate:delegate context:context applyPage:page];
   if (v11)
   {
-    v12 = [v10 featureApplication];
-    v13 = [v12 declineDetails];
+    featureApplication = [controllerCopy featureApplication];
+    declineDetails = [featureApplication declineDetails];
 
-    v14 = [v13 pathTermsIdentifier];
+    pathTermsIdentifier = [declineDetails pathTermsIdentifier];
     pathTermsIdentifier = v11->_pathTermsIdentifier;
-    v11->_pathTermsIdentifier = v14;
+    v11->_pathTermsIdentifier = pathTermsIdentifier;
 
-    v16 = [v13 pathIdentifier];
+    pathIdentifier = [declineDetails pathIdentifier];
     pathIdentifier = v11->_pathIdentifier;
-    v11->_pathIdentifier = v16;
+    v11->_pathIdentifier = pathIdentifier;
   }
 
   return v11;
@@ -39,22 +39,22 @@
   v6.receiver = self;
   v6.super_class = PKApplyProgramConsentViewController;
   [(PKApplyExplanationViewController *)&v6 viewDidLoad];
-  v3 = [(PKExplanationViewController *)self explanationView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
   v4 = PKUIImageNamed(@"PTACAppleCardTitanium");
-  [v3 setImage:v4];
+  [explanationView setImage:v4];
 
   v5 = PKUIImageNamed(@"PTACTitle");
-  [v3 setTitleImage:v5];
+  [explanationView setTitleImage:v5];
 
-  [v3 setTopLogoBottomPadding:12.0];
-  [v3 setBodyButtonNumberOfLines:2];
+  [explanationView setTopLogoBottomPadding:12.0];
+  [explanationView setBodyButtonNumberOfLines:2];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = PKApplyProgramConsentViewController;
-  [(PKApplyProgramConsentViewController *)&v6 viewWillDisappear:a3];
+  [(PKApplyProgramConsentViewController *)&v6 viewWillDisappear:disappear];
   inUseAssertion = self->_inUseAssertion;
   if (inUseAssertion)
   {
@@ -79,7 +79,7 @@
   [(PKApplyProgramConsentViewController *)&v5 dealloc];
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   v4 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -88,12 +88,12 @@
     _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, "Program terms accepted", v7, 2u);
   }
 
-  v5 = [(PKApplyExplanationViewController *)self currentPage];
-  v6 = [v5 primaryActionIdentifier];
-  [(PKApplyProgramConsentViewController *)self _termsAccepted:1 actionIdentifier:v6];
+  currentPage = [(PKApplyExplanationViewController *)self currentPage];
+  primaryActionIdentifier = [currentPage primaryActionIdentifier];
+  [(PKApplyProgramConsentViewController *)self _termsAccepted:1 actionIdentifier:primaryActionIdentifier];
 }
 
-- (void)explanationViewDidSelectSetupLater:(id)a3
+- (void)explanationViewDidSelectSetupLater:(id)later
 {
   v4 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -102,30 +102,30 @@
     _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, "Program terms declined", v7, 2u);
   }
 
-  v5 = [(PKApplyExplanationViewController *)self currentPage];
-  v6 = [v5 secondaryActionIdentifier];
-  [(PKApplyProgramConsentViewController *)self _termsAccepted:0 actionIdentifier:v6];
+  currentPage = [(PKApplyExplanationViewController *)self currentPage];
+  secondaryActionIdentifier = [currentPage secondaryActionIdentifier];
+  [(PKApplyProgramConsentViewController *)self _termsAccepted:0 actionIdentifier:secondaryActionIdentifier];
 }
 
-- (void)explanationViewDidSelectBodyButton:(id)a3
+- (void)explanationViewDidSelectBodyButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   [(PKApplyExplanationViewController *)self showNavigationBarSpinner:1];
   v5 = [PKApplyTermsAndConditionsViewController alloc];
-  v6 = [(PKApplyExplanationViewController *)self controller];
-  v7 = [(PKApplyExplanationViewController *)self setupDelegate];
-  v8 = [(PKApplyTermsAndConditionsViewController *)v5 initWithController:v6 setupDelegate:v7 context:[(PKExplanationViewController *)self context] termsIdentifier:self->_pathTermsIdentifier];
+  controller = [(PKApplyExplanationViewController *)self controller];
+  setupDelegate = [(PKApplyExplanationViewController *)self setupDelegate];
+  v8 = [(PKApplyTermsAndConditionsViewController *)v5 initWithController:controller setupDelegate:setupDelegate context:[(PKExplanationViewController *)self context] termsIdentifier:self->_pathTermsIdentifier];
 
   [(PKApplyTermsAndConditionsViewController *)v8 setPreflightPDFTerms:1];
   [(PKFeatureTermsAndConditionsViewController *)v8 setUseModalPresentation:1];
   objc_initWeak(&location, self);
-  v9 = [(PKApplyProgramConsentViewController *)self navigationController];
+  navigationController = [(PKApplyProgramConsentViewController *)self navigationController];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __74__PKApplyProgramConsentViewController_explanationViewDidSelectBodyButton___block_invoke;
   v10[3] = &unk_1E8011180;
   objc_copyWeak(&v11, &location);
-  [v9 pk_presentPaymentSetupViewController:v8 animated:1 completion:v10];
+  [navigationController pk_presentPaymentSetupViewController:v8 animated:1 completion:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -142,10 +142,10 @@ void __74__PKApplyProgramConsentViewController_explanationViewDidSelectBodyButto
   }
 }
 
-- (void)_termsAccepted:(BOOL)a3 actionIdentifier:(id)a4
+- (void)_termsAccepted:(BOOL)accepted actionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = a4;
+  acceptedCopy = accepted;
+  identifierCopy = identifier;
   if (!self->_inUseAssertion)
   {
     v7 = MEMORY[0x1E695FBE0];
@@ -157,7 +157,7 @@ void __74__PKApplyProgramConsentViewController_explanationViewDidSelectBodyButto
 
   [(PKApplyExplanationViewController *)self showNavigationBarSpinner:1];
   objc_initWeak(&location, self);
-  v11 = [(PKApplyExplanationViewController *)self controller];
+  controller = [(PKApplyExplanationViewController *)self controller];
   pathTermsIdentifier = self->_pathTermsIdentifier;
   pathIdentifier = self->_pathIdentifier;
   v14[0] = MEMORY[0x1E69E9820];
@@ -165,7 +165,7 @@ void __74__PKApplyProgramConsentViewController_explanationViewDidSelectBodyButto
   v14[2] = __71__PKApplyProgramConsentViewController__termsAccepted_actionIdentifier___block_invoke;
   v14[3] = &unk_1E80162F0;
   objc_copyWeak(&v15, &location);
-  [v11 termsAccepted:v4 termsIdentifier:pathTermsIdentifier secondaryIdentifier:pathIdentifier actionIdentifier:v6 completion:v14];
+  [controller termsAccepted:acceptedCopy termsIdentifier:pathTermsIdentifier secondaryIdentifier:pathIdentifier actionIdentifier:identifierCopy completion:v14];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);

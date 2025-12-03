@@ -1,54 +1,54 @@
 @interface NFValueAddedServiceTransaction
-- (NFValueAddedServiceTransaction)initWithCoder:(id)a3;
-- (NFValueAddedServiceTransaction)initWithDictionary:(id)a3;
+- (NFValueAddedServiceTransaction)initWithCoder:(id)coder;
+- (NFValueAddedServiceTransaction)initWithDictionary:(id)dictionary;
 - (id)asDictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFValueAddedServiceTransaction
 
-- (NFValueAddedServiceTransaction)initWithDictionary:(id)a3
+- (NFValueAddedServiceTransaction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = NFValueAddedServiceTransaction;
   v5 = [(NFValueAddedServiceTransaction *)&v27 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"MerchantId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"MerchantId"];
     merchantId = v5->_merchantId;
     v5->_merchantId = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"SignupUrl"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"SignupUrl"];
     signupUrl = v5->_signupUrl;
     v5->_signupUrl = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"TerminalAppVersion"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"TerminalAppVersion"];
     terminalAppVersion = v5->_terminalAppVersion;
     v5->_terminalAppVersion = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"TerminalMode"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"TerminalMode"];
     terminalMode = v5->_terminalMode;
     v5->_terminalMode = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"PassData"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"PassData"];
     passData = v5->_passData;
     v5->_passData = v14;
 
-    v16 = [v4 objectForKeyedSubscript:@"Token"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"Token"];
     token = v5->_token;
     v5->_token = v16;
 
-    v18 = [v4 objectForKeyedSubscript:@"Filter"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"Filter"];
     filter = v5->_filter;
     v5->_filter = v18;
 
-    v20 = [v4 objectForKeyedSubscript:@"FilterType"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"FilterType"];
     filterType = v5->_filterType;
     v5->_filterType = v20;
 
-    v22 = [v4 objectForKeyedSubscript:@"Error"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"Error"];
     if (v22)
     {
       objc_opt_class();
@@ -61,7 +61,7 @@
       }
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"Result"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"Result"];
 
     if (v25)
     {
@@ -76,75 +76,75 @@
   return v5;
 }
 
-- (NFValueAddedServiceTransaction)initWithCoder:(id)a3
+- (NFValueAddedServiceTransaction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = NFValueAddedServiceTransaction;
   v5 = [(NFValueAddedServiceTransaction *)&v27 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MerchantId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MerchantId"];
     merchantId = v5->_merchantId;
     v5->_merchantId = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SignupUrl"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SignupUrl"];
     signupUrl = v5->_signupUrl;
     v5->_signupUrl = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TerminalAppVersion"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TerminalAppVersion"];
     terminalAppVersion = v5->_terminalAppVersion;
     v5->_terminalAppVersion = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TerminalMode"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TerminalMode"];
     terminalMode = v5->_terminalMode;
     v5->_terminalMode = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PassData"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PassData"];
     passData = v5->_passData;
     v5->_passData = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Token"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Token"];
     token = v5->_token;
     v5->_token = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Error"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Error"];
     error = v5->_error;
     v5->_error = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DidSucceed"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DidSucceed"];
     didSucceed = v5->_didSucceed;
     v5->_didSucceed = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Filter"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Filter"];
     filter = v5->_filter;
     v5->_filter = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FilterType"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FilterType"];
     filterType = v5->_filterType;
     v5->_filterType = v24;
 
-    v5->_result = [v4 decodeInt32ForKey:@"Result"];
+    v5->_result = [coderCopy decodeInt32ForKey:@"Result"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   merchantId = self->_merchantId;
-  v5 = a3;
-  [v5 encodeObject:merchantId forKey:@"MerchantId"];
-  [v5 encodeObject:self->_signupUrl forKey:@"SignupUrl"];
-  [v5 encodeObject:self->_terminalAppVersion forKey:@"TerminalAppVersion"];
-  [v5 encodeObject:self->_terminalMode forKey:@"TerminalMode"];
-  [v5 encodeObject:self->_passData forKey:@"PassData"];
-  [v5 encodeObject:self->_token forKey:@"Token"];
-  [v5 encodeObject:self->_error forKey:@"Error"];
-  [v5 encodeObject:self->_didSucceed forKey:@"DidSucceed"];
-  [v5 encodeObject:self->_filter forKey:@"Filter"];
-  [v5 encodeObject:self->_filterType forKey:@"FilterType"];
-  [v5 encodeInt32:self->_result forKey:@"Result"];
+  coderCopy = coder;
+  [coderCopy encodeObject:merchantId forKey:@"MerchantId"];
+  [coderCopy encodeObject:self->_signupUrl forKey:@"SignupUrl"];
+  [coderCopy encodeObject:self->_terminalAppVersion forKey:@"TerminalAppVersion"];
+  [coderCopy encodeObject:self->_terminalMode forKey:@"TerminalMode"];
+  [coderCopy encodeObject:self->_passData forKey:@"PassData"];
+  [coderCopy encodeObject:self->_token forKey:@"Token"];
+  [coderCopy encodeObject:self->_error forKey:@"Error"];
+  [coderCopy encodeObject:self->_didSucceed forKey:@"DidSucceed"];
+  [coderCopy encodeObject:self->_filter forKey:@"Filter"];
+  [coderCopy encodeObject:self->_filterType forKey:@"FilterType"];
+  [coderCopy encodeInt32:self->_result forKey:@"Result"];
 }
 
 - (id)description

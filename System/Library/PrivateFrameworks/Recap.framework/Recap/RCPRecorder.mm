@@ -1,10 +1,10 @@
 @interface RCPRecorder
 + (BOOL)shouldRecordSenderProperties;
 + (id)sharedRecorder;
-+ (void)registerEventStreamRecorder:(id)a3;
-+ (void)unregisterEventStreamRecorder:(id)a3;
++ (void)registerEventStreamRecorder:(id)recorder;
++ (void)unregisterEventStreamRecorder:(id)recorder;
 - (__IOHIDEvent)_initialLocationEvent;
-- (__IOHIDEvent)_newLocationEventFromNormalPoint:(CGPoint)a3;
+- (__IOHIDEvent)_newLocationEventFromNormalPoint:(CGPoint)point;
 - (void)_registerIOHIDClient;
 @end
 
@@ -37,21 +37,21 @@ void __29__RCPRecorder_sharedRecorder__block_invoke()
 
 + (BOOL)shouldRecordSenderProperties
 {
-  v2 = [a1 sharedRecorder];
-  v3 = [v2 shouldRecordSenderProperties];
+  sharedRecorder = [self sharedRecorder];
+  shouldRecordSenderProperties = [sharedRecorder shouldRecordSenderProperties];
 
-  return v3;
+  return shouldRecordSenderProperties;
 }
 
-+ (void)registerEventStreamRecorder:(id)a3
++ (void)registerEventStreamRecorder:(id)recorder
 {
-  v3 = a3;
+  recorderCopy = recorder;
   v5 = +[RCPRecorder sharedRecorder];
-  [v5[2] addObject:v3];
-  v4 = [v3 config];
+  [v5[2] addObject:recorderCopy];
+  config = [recorderCopy config];
 
-  LOBYTE(v3) = [v4 ignoreSenderProperties];
-  if ((v3 & 1) == 0)
+  LOBYTE(recorderCopy) = [config ignoreSenderProperties];
+  if ((recorderCopy & 1) == 0)
   {
     [v5 setShouldRecordSenderProperties:1];
   }
@@ -59,12 +59,12 @@ void __29__RCPRecorder_sharedRecorder__block_invoke()
   [v5 _registerIOHIDClient];
 }
 
-+ (void)unregisterEventStreamRecorder:(id)a3
++ (void)unregisterEventStreamRecorder:(id)recorder
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  recorderCopy = recorder;
   v4 = +[RCPRecorder sharedRecorder];
-  [v4[2] removeObject:v3];
+  [v4[2] removeObject:recorderCopy];
   if (![v4[2] count])
   {
     [v4 _unregisterIOHIDClient];
@@ -90,10 +90,10 @@ void __29__RCPRecorder_sharedRecorder__block_invoke()
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) config];
-        v11 = [v10 ignoreSenderProperties];
+        config = [*(*(&v12 + 1) + 8 * i) config];
+        ignoreSenderProperties = [config ignoreSenderProperties];
 
-        if ((v11 & 1) == 0)
+        if ((ignoreSenderProperties & 1) == 0)
         {
           [v4 setShouldRecordSenderProperties:1];
           goto LABEL_13;
@@ -113,7 +113,7 @@ void __29__RCPRecorder_sharedRecorder__block_invoke()
 LABEL_13:
 }
 
-- (__IOHIDEvent)_newLocationEventFromNormalPoint:(CGPoint)a3
+- (__IOHIDEvent)_newLocationEventFromNormalPoint:(CGPoint)point
 {
   v3 = IOHIDEventCreate();
   IOHIDEventSetFloatValue();
@@ -123,8 +123,8 @@ LABEL_13:
 
 - (__IOHIDEvent)_initialLocationEvent
 {
-  v3 = [MEMORY[0x277CF0720] sharedInstance];
-  [v3 normalizedGlobalPointerPosition];
+  mEMORY[0x277CF0720] = [MEMORY[0x277CF0720] sharedInstance];
+  [mEMORY[0x277CF0720] normalizedGlobalPointerPosition];
   v5 = v4;
   v7 = v6;
 
@@ -142,7 +142,7 @@ LABEL_13:
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v25 = self;
+    selfCopy = self;
     obj = self->_activeRecorders;
     v23 = [(NSMutableSet *)obj countByEnumeratingWithState:&v40 objects:v47 count:16];
     if (v23)
@@ -166,10 +166,10 @@ LABEL_13:
           v37 = 0u;
           v38 = 0u;
           v39 = 0u;
-          v8 = [v7 config];
-          v9 = [v8 deviceUsagePageArray];
+          config = [v7 config];
+          deviceUsagePageArray = [config deviceUsagePageArray];
 
-          v10 = [v9 countByEnumeratingWithState:&v36 objects:v46 count:16];
+          v10 = [deviceUsagePageArray countByEnumeratingWithState:&v36 objects:v46 count:16];
           if (v10)
           {
             v11 = *v37;
@@ -179,7 +179,7 @@ LABEL_13:
               {
                 if (*v37 != v11)
                 {
-                  objc_enumerationMutation(v9);
+                  objc_enumerationMutation(deviceUsagePageArray);
                 }
 
                 v13 = *(*(&v36 + 1) + 8 * i);
@@ -193,11 +193,11 @@ LABEL_13:
                 v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
                 [v4 addObject:v14];
 
-                v15 = [v13 stringValue];
-                [v3 addObject:v15];
+                stringValue = [v13 stringValue];
+                [v3 addObject:stringValue];
               }
 
-              v10 = [v9 countByEnumeratingWithState:&v36 objects:v46 count:16];
+              v10 = [deviceUsagePageArray countByEnumeratingWithState:&v36 objects:v46 count:16];
             }
 
             while (v10);
@@ -230,10 +230,10 @@ LABEL_13:
     v28 = v19;
     v20 = v4;
     v29 = v20;
-    v30 = v25;
+    v30 = selfCopy;
     [v17 detachNewThreadWithBlock:v26];
     dispatch_semaphore_wait(v18, 0xFFFFFFFFFFFFFFFFLL);
-    v25->_ioRunLoop = v33[3];
+    selfCopy->_ioRunLoop = v33[3];
 
     _Block_object_dispose(&v32, 8);
   }

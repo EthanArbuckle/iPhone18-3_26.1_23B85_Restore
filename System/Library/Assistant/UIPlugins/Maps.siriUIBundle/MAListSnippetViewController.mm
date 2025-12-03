@@ -1,15 +1,15 @@
 @interface MAListSnippetViewController
-- (double)desiredHeightForWidth:(double)a3;
-- (id)_headerLocationForSearchCenter:(id)a3 location:(CLLocationCoordinate2D)a4 forMapItem:(id)a5;
+- (double)desiredHeightForWidth:(double)width;
+- (id)_headerLocationForSearchCenter:(id)center location:(CLLocationCoordinate2D)location forMapItem:(id)item;
 - (id)_listSnippetView;
-- (id)_nearCityString:(id)a3;
-- (id)_titleForList:(id)a3;
-- (void)_updateTitleAndSubtitleWithCompletionHandler:(id)a3;
+- (id)_nearCityString:(id)string;
+- (id)_titleForList:(id)list;
+- (void)_updateTitleAndSubtitleWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)listView:(id)a3 didChooseMapItem:(id)a4 accessoryButtonTapped:(BOOL)a5;
+- (void)listView:(id)view didChooseMapItem:(id)item accessoryButtonTapped:(BOOL)tapped;
 - (void)loadView;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 @end
 
 @implementation MAListSnippetViewController
@@ -18,8 +18,8 @@
 {
   if ([(MAListSnippetViewController *)self isViewLoaded])
   {
-    v3 = [(MAListSnippetViewController *)self _listSnippetView];
-    [v3 setDelegate:0];
+    _listSnippetView = [(MAListSnippetViewController *)self _listSnippetView];
+    [_listSnippetView setDelegate:0];
   }
 
   v4.receiver = self;
@@ -27,9 +27,9 @@
   [(MABaseSnippetViewController *)&v4 dealloc];
 }
 
-- (id)_titleForList:(id)a3
+- (id)_titleForList:(id)list
 {
-  v3 = +[NSNumberFormatter _ma_localizedStringFromInteger:](NSNumberFormatter, "_ma_localizedStringFromInteger:", [a3 count]);
+  v3 = +[NSNumberFormatter _ma_localizedStringFromInteger:](NSNumberFormatter, "_ma_localizedStringFromInteger:", [list count]);
   v4 = +[NSBundle _ma_bundle];
   v5 = [v4 siriUILocalizedStringForKey:@"%@ Results"];
 
@@ -38,53 +38,53 @@
   return v6;
 }
 
-- (id)_nearCityString:(id)a3
+- (id)_nearCityString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v3 = a3;
+    stringCopy = string;
     v4 = +[NSBundle _ma_bundle];
     v5 = [v4 siriUILocalizedStringForKey:@"Near %@"];
 
-    v6 = [NSString stringWithFormat:v5, v3];
+    stringCopy = [NSString stringWithFormat:v5, stringCopy];
   }
 
   else
   {
-    v6 = 0;
+    stringCopy = 0;
   }
 
-  return v6;
+  return stringCopy;
 }
 
-- (id)_headerLocationForSearchCenter:(id)a3 location:(CLLocationCoordinate2D)a4 forMapItem:(id)a5
+- (id)_headerLocationForSearchCenter:(id)center location:(CLLocationCoordinate2D)location forMapItem:(id)item
 {
-  v7 = a5;
-  v8 = [a3 city];
-  v9 = v8;
-  if (v8)
+  itemCopy = item;
+  city = [center city];
+  v9 = city;
+  if (city)
   {
-    v10 = v8;
+    city2 = city;
   }
 
   else
   {
-    v11 = [v7 location];
-    v10 = [v11 city];
+    location = [itemCopy location];
+    city2 = [location city];
   }
 
-  if (a3)
+  if (center)
   {
     goto LABEL_7;
   }
 
-  v12 = [v7 location];
-  v13 = [v12 latitude];
-  [v13 doubleValue];
+  location2 = [itemCopy location];
+  latitude = [location2 latitude];
+  [latitude doubleValue];
   v15 = v14;
-  v16 = [v7 location];
-  v17 = [v16 longitude];
-  [v17 doubleValue];
+  location3 = [itemCopy location];
+  longitude = [location3 longitude];
+  [longitude doubleValue];
   v19 = CLLocationCoordinate2DMake(v15, v18);
   v24 = v19;
 
@@ -92,7 +92,7 @@
   if (v20 >= 5000.0)
   {
 LABEL_7:
-    v22 = [(MAListSnippetViewController *)self _nearCityString:v10, v24, *&a4.latitude, *&a4.longitude];
+    v22 = [(MAListSnippetViewController *)self _nearCityString:city2, v24, *&location.latitude, *&location.longitude];
   }
 
   else
@@ -109,15 +109,15 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = MAListSnippetViewController;
   [(MAListSnippetViewController *)&v8 loadView];
-  v3 = [(MABaseSnippetViewController *)self mapItemSnippet];
-  v4 = [v3 items];
+  mapItemSnippet = [(MABaseSnippetViewController *)self mapItemSnippet];
+  items = [mapItemSnippet items];
 
-  v5 = [[MAListSnippetView alloc] initWithFrame:v4 mapItems:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
-  v6 = [(MABaseSnippetViewController *)self mapItemSnippet];
-  -[MAListSnippetView setDisplayForSAR:](v5, "setDisplayForSAR:", [v6 searchAlongRoute]);
+  v5 = [[MAListSnippetView alloc] initWithFrame:items mapItems:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
+  mapItemSnippet2 = [(MABaseSnippetViewController *)self mapItemSnippet];
+  -[MAListSnippetView setDisplayForSAR:](v5, "setDisplayForSAR:", [mapItemSnippet2 searchAlongRoute]);
 
-  v7 = [(MABaseSnippetViewController *)self mapItemSnippet];
-  -[MAListSnippetView setShouldDisplayLocationDetail:](v5, "setShouldDisplayLocationDetail:", [v7 chainResultSet]);
+  mapItemSnippet3 = [(MABaseSnippetViewController *)self mapItemSnippet];
+  -[MAListSnippetView setShouldDisplayLocationDetail:](v5, "setShouldDisplayLocationDetail:", [mapItemSnippet3 chainResultSet]);
 
   [(MAListSnippetView *)v5 setDelegate:self];
   [(MAListSnippetView *)v5 _ma_updateSemanticContentAttribute];
@@ -125,12 +125,12 @@ LABEL_7:
   [(MAListSnippetViewController *)self setView:v5];
 }
 
-- (void)_updateTitleAndSubtitleWithCompletionHandler:(id)a3
+- (void)_updateTitleAndSubtitleWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MABaseSnippetViewController *)self mapItemSnippet];
-  v6 = [v5 items];
-  v7 = [(MAListSnippetViewController *)self _titleForList:v6];
+  handlerCopy = handler;
+  mapItemSnippet = [(MABaseSnippetViewController *)self mapItemSnippet];
+  items = [mapItemSnippet items];
+  v7 = [(MAListSnippetViewController *)self _titleForList:items];
   [(MAListSnippetViewController *)self setTitle:v7];
 
   v8 = +[MKLocationManager sharedLocationManager];
@@ -139,36 +139,36 @@ LABEL_7:
   v12[2] = sub_53E0;
   v12[3] = &unk_2C6B0;
   v12[4] = self;
-  v13 = v5;
-  v14 = v4;
-  v9 = v4;
-  v10 = v5;
+  v13 = mapItemSnippet;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = mapItemSnippet;
   v11 = [v8 singleLocationUpdateWithDesiredAccuracy:v12 handler:kCLLocationAccuracyHundredMeters timeout:1.0];
   [v11 start];
 }
 
-- (void)listView:(id)a3 didChooseMapItem:(id)a4 accessoryButtonTapped:(BOOL)a5
+- (void)listView:(id)view didChooseMapItem:(id)item accessoryButtonTapped:(BOOL)tapped
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [a3 mapItems];
-  v10 = [v9 indexOfObject:v8];
+  tappedCopy = tapped;
+  itemCopy = item;
+  mapItems = [view mapItems];
+  v10 = [mapItems indexOfObject:itemCopy];
 
-  if (v5)
+  if (tappedCopy)
   {
-    v11 = [(MABaseSnippetViewController *)self mapItemSnippet];
-    v12 = [v11 searchAlongRoute];
+    mapItemSnippet = [(MABaseSnippetViewController *)self mapItemSnippet];
+    searchAlongRoute = [mapItemSnippet searchAlongRoute];
   }
 
   else
   {
-    v12 = 0;
+    searchAlongRoute = 0;
   }
 
-  v13 = [MKMapItem mapItemWithLocalSearchMapItem:v8];
+  v13 = [MKMapItem mapItemWithLocalSearchMapItem:itemCopy];
   v14 = [GEOPlaceActionDetails actionDetailsWithMapItem:v13 timestamp:v10 resultIndex:0.0];
 
-  if (v12)
+  if (searchAlongRoute)
   {
     v15 = 3001;
   }
@@ -178,14 +178,14 @@ LABEL_7:
     v15 = 2007;
   }
 
-  v16 = [v8 placeData2];
-  [(MABaseSnippetViewController *)self captureUserAction:v15 details:v14 resultIndex:v10 mapItemPlaceData:v16];
+  placeData2 = [itemCopy placeData2];
+  [(MABaseSnippetViewController *)self captureUserAction:v15 details:v14 resultIndex:v10 mapItemPlaceData:placeData2];
 
-  v17 = [(MAListSnippetViewController *)self delegate];
-  v18 = [v8 commands];
-  [v17 siriViewController:self performAceCommands:v18];
+  delegate = [(MAListSnippetViewController *)self delegate];
+  commands = [itemCopy commands];
+  [delegate siriViewController:self performAceCommands:commands];
 
-  if (v12)
+  if (searchAlongRoute)
   {
     [(MABaseSnippetViewController *)self setSelectedMapItemIndex:v10];
     [(MABaseSnippetViewController *)self openURLWithSnippetMapItemsAndSelectedMapItem];
@@ -193,41 +193,41 @@ LABEL_7:
 
   else
   {
-    v19 = [(MABaseSnippetViewController *)self mapItemSnippet];
-    [v19 setSelectedItemIndex:v10];
-    v20 = [(MAListSnippetViewController *)self delegate];
-    v22 = v19;
+    mapItemSnippet2 = [(MABaseSnippetViewController *)self mapItemSnippet];
+    [mapItemSnippet2 setSelectedItemIndex:v10];
+    delegate2 = [(MAListSnippetViewController *)self delegate];
+    v22 = mapItemSnippet2;
     v21 = [NSArray arrayWithObjects:&v22 count:1];
-    [v20 siriSnippetViewController:self pushSirilandSnippets:v21];
+    [delegate2 siriSnippetViewController:self pushSirilandSnippets:v21];
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = [a4 lastObject];
-  v5 = [(MAListSnippetViewController *)self _listSnippetView];
-  [v5 setUserLocation:v6];
+  lastObject = [locations lastObject];
+  _listSnippetView = [(MAListSnippetViewController *)self _listSnippetView];
+  [_listSnippetView setUserLocation:lastObject];
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v7.receiver = self;
   v7.super_class = MAListSnippetViewController;
-  v4 = a3;
-  [(MABaseSnippetViewController *)&v7 locationManagerDidChangeAuthorization:v4];
-  v5 = [v4 authorizationStatus];
+  authorizationCopy = authorization;
+  [(MABaseSnippetViewController *)&v7 locationManagerDidChangeAuthorization:authorizationCopy];
+  authorizationStatus = [authorizationCopy authorizationStatus];
 
-  if (v5 == 2)
+  if (authorizationStatus == 2)
   {
-    v6 = [(MAListSnippetViewController *)self _listSnippetView];
-    [v6 setUserLocation:0];
+    _listSnippetView = [(MAListSnippetViewController *)self _listSnippetView];
+    [_listSnippetView setUserLocation:0];
   }
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
-  v3 = [(MAListSnippetViewController *)self _listSnippetView];
-  [v3 desiredHeight];
+  _listSnippetView = [(MAListSnippetViewController *)self _listSnippetView];
+  [_listSnippetView desiredHeight];
   v5 = v4;
 
   return v5;
@@ -235,19 +235,19 @@ LABEL_7:
 
 - (id)_listSnippetView
 {
-  v3 = [(MAListSnippetViewController *)self view];
+  view = [(MAListSnippetViewController *)self view];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(MAListSnippetViewController *)self view];
+    view2 = [(MAListSnippetViewController *)self view];
   }
 
   else
   {
-    v4 = 0;
+    view2 = 0;
   }
 
-  return v4;
+  return view2;
 }
 
 @end

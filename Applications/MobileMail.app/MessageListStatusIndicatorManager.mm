@@ -1,12 +1,12 @@
 @interface MessageListStatusIndicatorManager
 + (id)log;
-- (CGRect)_layoutHorizontalStatusIndicatorViewsInRect:(CGRect)a3 contentView:(id)a4 midX:(double)MidX pointY:(double)a6 shouldAlignWithCenter:(BOOL)a7;
-- (LayoutStatusIndicatorInfo)layoutStatusIndicatorViewsInRect:(SEL)a3 contentView:(CGRect)a4 verticalPositions:(id)a5 avatarVerticalPostions:(id)a6 horizontalPoint:(id)a7 shouldAlignWithCenter:(CGPoint)a8;
+- (CGRect)_layoutHorizontalStatusIndicatorViewsInRect:(CGRect)rect contentView:(id)view midX:(double)MidX pointY:(double)y shouldAlignWithCenter:(BOOL)center;
+- (LayoutStatusIndicatorInfo)layoutStatusIndicatorViewsInRect:(SEL)rect contentView:(CGRect)view verticalPositions:(id)positions avatarVerticalPostions:(id)postions horizontalPoint:(id)point shouldAlignWithCenter:(CGPoint)center;
 - (NSArray)statusIndicatorViews;
-- (id)_accessibilityIdentifierForTier:(unint64_t)a3;
-- (id)_createStatusIndicatorViews:(unint64_t)a3;
+- (id)_accessibilityIdentifierForTier:(unint64_t)tier;
+- (id)_createStatusIndicatorViews:(unint64_t)views;
 - (id)primaryStatusIndicatorImage;
-- (unint64_t)tierForIndicator:(unint64_t)a3;
+- (unint64_t)tierForIndicator:(unint64_t)indicator;
 - (void)_setUpIndicatorViews;
 - (void)prepareForReuse;
 @end
@@ -65,7 +65,7 @@
   block[1] = 3221225472;
   block[2] = sub_10016A7FC;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD340 != -1)
   {
     dispatch_once(&qword_1006DD340, block);
@@ -83,14 +83,14 @@
   return v2;
 }
 
-- (unint64_t)tierForIndicator:(unint64_t)a3
+- (unint64_t)tierForIndicator:(unint64_t)indicator
 {
   result = 0;
   v4 = &qword_1004FC280;
   for (i = &qword_1004FC280; ; ++i)
   {
     v6 = result >= 3 ? v4 : i;
-    if ((*v6 & a3) != 0)
+    if ((*v6 & indicator) != 0)
     {
       break;
     }
@@ -106,12 +106,12 @@
   return result;
 }
 
-- (id)_accessibilityIdentifierForTier:(unint64_t)a3
+- (id)_accessibilityIdentifierForTier:(unint64_t)tier
 {
-  v4 = &qword_1004FC280[a3];
-  if (a3 >= 3)
+  v4 = &qword_1004FC280[tier];
+  if (tier >= 3)
   {
-    v4 = (&unk_1004FC298 + 8 * a3 - 24);
+    v4 = (&unk_1004FC298 + 8 * tier - 24);
   }
 
   v5 = *v4;
@@ -171,41 +171,41 @@ LABEL_15:
   return v7;
 }
 
-- (CGRect)_layoutHorizontalStatusIndicatorViewsInRect:(CGRect)a3 contentView:(id)a4 midX:(double)MidX pointY:(double)a6 shouldAlignWithCenter:(BOOL)a7
+- (CGRect)_layoutHorizontalStatusIndicatorViewsInRect:(CGRect)rect contentView:(id)view midX:(double)MidX pointY:(double)y shouldAlignWithCenter:(BOOL)center
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v50 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
   if (pthread_main_np() != 1)
   {
     v49 = +[NSAssertionHandler currentHandler];
     [v49 handleFailureInMethod:a2 object:self file:@"MessageListStatusIndicatorManager.m" lineNumber:149 description:@"Current thread must be main"];
   }
 
-  v16 = [v50 mf_prefersRightToLeftInterfaceLayout];
+  mf_prefersRightToLeftInterfaceLayout = [viewCopy mf_prefersRightToLeftInterfaceLayout];
   [(MessageStatusIndicatorManager *)self midXToMidXSpacing];
   v55[1] = 3221225472;
   v55[0] = _NSConcreteStackBlock;
   v55[2] = sub_10016AD88;
   v55[3] = &unk_1006522D0;
-  if (!v16)
+  if (!mf_prefersRightToLeftInterfaceLayout)
   {
     v17 = -v17;
   }
 
   v57 = v17;
-  v59 = a7;
-  v18 = v50;
+  centerCopy = center;
+  v18 = viewCopy;
   v56 = v18;
-  v58 = a6;
+  yCopy = y;
   v19 = objc_retainBlock(v55);
   v20 = x;
-  v21 = y;
+  yCopy2 = y;
   v22 = width;
   v23 = height;
-  if (v16)
+  if (mf_prefersRightToLeftInterfaceLayout)
   {
     MinX = CGRectGetMinX(*&v20);
   }
@@ -235,8 +235,8 @@ LABEL_15:
         }
 
         v30 = *(*(&v51 + 1) + 8 * i);
-        v31 = [v30 image];
-        [v31 size];
+        image = [v30 image];
+        [image size];
         v33 = v32;
         v35 = v34;
 
@@ -247,8 +247,8 @@ LABEL_15:
         [v30 setFrame:?];
         [v30 frame];
         MidX = CGRectGetMidX(v61);
-        v43 = [v30 superview];
-        v44 = v43 == 0;
+        superview = [v30 superview];
+        v44 = superview == 0;
 
         if (v44)
         {
@@ -283,7 +283,7 @@ LABEL_15:
   return result;
 }
 
-- (id)_createStatusIndicatorViews:(unint64_t)a3
+- (id)_createStatusIndicatorViews:(unint64_t)views
 {
   if (pthread_main_np() != 1)
   {
@@ -291,7 +291,7 @@ LABEL_15:
     [v25 handleFailureInMethod:a2 object:self file:@"MessageListStatusIndicatorManager.m" lineNumber:200 description:@"Current thread must be main"];
   }
 
-  if (a3 == 3)
+  if (views == 3)
   {
     v26 = +[NSAssertionHandler currentHandler];
     [v26 handleFailureInMethod:a2 object:self file:@"MessageListStatusIndicatorManager.m" lineNumber:201 description:@"Cannot create status indicator views for MessageStatusIndicatorPositionsAll"];
@@ -307,7 +307,7 @@ LABEL_15:
   {
     v28 = +[NSMutableArray array];
     v27 = &v27;
-    if (a3 == 2)
+    if (views == 2)
     {
       v7 = 3;
     }
@@ -317,7 +317,7 @@ LABEL_15:
       v7 = 0;
     }
 
-    v8 = (((a3 << 63) >> 63) & 3) + (((a3 << 62) >> 63) & 9);
+    v8 = (((views << 63) >> 63) & 3) + (((views << 62) >> 63) & 9);
     if (v8)
     {
       v9 = (&unk_1004FC298 + 8 * v7 - 24);
@@ -410,20 +410,20 @@ LABEL_15:
   return v23;
 }
 
-- (LayoutStatusIndicatorInfo)layoutStatusIndicatorViewsInRect:(SEL)a3 contentView:(CGRect)a4 verticalPositions:(id)a5 avatarVerticalPostions:(id)a6 horizontalPoint:(id)a7 shouldAlignWithCenter:(CGPoint)a8
+- (LayoutStatusIndicatorInfo)layoutStatusIndicatorViewsInRect:(SEL)rect contentView:(CGRect)view verticalPositions:(id)positions avatarVerticalPostions:(id)postions horizontalPoint:(id)point shouldAlignWithCenter:(CGPoint)center
 {
   v9 = a9;
-  y = a4.origin.y;
-  height = a4.size.height;
-  width = a4.size.width;
-  x = a4.origin.x;
-  v55 = a5;
-  v53 = a6;
-  v16 = a7;
+  y = view.origin.y;
+  height = view.size.height;
+  width = view.size.width;
+  x = view.origin.x;
+  positionsCopy = positions;
+  postionsCopy = postions;
+  pointCopy = point;
   if (pthread_main_np() != 1)
   {
     v48 = +[NSAssertionHandler currentHandler];
-    [v48 handleFailureInMethod:a3 object:self file:@"MessageListStatusIndicatorManager.m" lineNumber:247 description:@"Current thread must be main"];
+    [v48 handleFailureInMethod:rect object:self file:@"MessageListStatusIndicatorManager.m" lineNumber:247 description:@"Current thread must be main"];
   }
 
   size = CGRectZero.size;
@@ -440,19 +440,19 @@ LABEL_15:
   v57.size.width = width;
   v57.size.height = height;
   MaxY = CGRectGetMaxY(v57);
-  v23 = [(MessageListStatusIndicatorManager *)self verticalStatusIndicatorViews];
-  v24 = [v16 count];
-  v25 = v53;
+  verticalStatusIndicatorViews = [(MessageListStatusIndicatorManager *)self verticalStatusIndicatorViews];
+  v24 = [pointCopy count];
+  v25 = postionsCopy;
   if (v24)
   {
-    v25 = v16;
+    v25 = pointCopy;
   }
 
   v26 = v25;
   v49 = v9;
   if (!v9)
   {
-    [v16 count];
+    [pointCopy count];
   }
 
   v27 = 0;
@@ -460,15 +460,15 @@ LABEL_15:
   v29 = 0;
   while (1)
   {
-    if (v28 >= [v23 count])
+    if (v28 >= [verticalStatusIndicatorViews count])
     {
       retstr->var1 = v27;
       goto LABEL_19;
     }
 
-    v30 = [v23 objectAtIndex:v28];
-    v31 = [v30 image];
-    [v31 size];
+    v30 = [verticalStatusIndicatorViews objectAtIndex:v28];
+    image = [v30 image];
+    [image size];
     v33 = v32;
     v35 = v34;
 
@@ -493,11 +493,11 @@ LABEL_15:
       break;
     }
 
-    v41 = [v30 superview];
+    superview = [v30 superview];
 
-    if (!v41)
+    if (!superview)
     {
-      [v55 addSubview:v30];
+      [positionsCopy addSubview:v30];
     }
 
     ++v28;
@@ -508,7 +508,7 @@ LABEL_15:
   retstr->var1 = v27 - 1;
 
 LABEL_19:
-  [(MessageListStatusIndicatorManager *)self _layoutHorizontalStatusIndicatorViewsInRect:v55 contentView:v49 midX:x pointY:y shouldAlignWithCenter:width, height, a8.x, a8.y];
+  [(MessageListStatusIndicatorManager *)self _layoutHorizontalStatusIndicatorViewsInRect:positionsCopy contentView:v49 midX:x pointY:y shouldAlignWithCenter:width, height, center.x, center.y];
   retstr->var0.origin.x = v43;
   retstr->var0.origin.y = v44;
   retstr->var0.size.width = v45;

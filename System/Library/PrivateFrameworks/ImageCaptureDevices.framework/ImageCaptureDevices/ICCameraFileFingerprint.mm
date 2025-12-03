@@ -1,10 +1,10 @@
 @interface ICCameraFileFingerprint
 - (ICCameraFileFingerprint)init;
 - (NSString)zeroByteFileFingerprint;
-- (id)fingerprintForData:(id)a3 error:(id *)a4;
-- (id)fingerprintForFD:(int)a3 error:(id *)a4;
-- (id)fingerprintForFileAtURL:(id)a3 error:(id *)a4;
-- (id)fixupFileHandleError:(id)a3;
+- (id)fingerprintForData:(id)data error:(id *)error;
+- (id)fingerprintForFD:(int)d error:(id *)error;
+- (id)fingerprintForFileAtURL:(id)l error:(id *)error;
+- (id)fixupFileHandleError:(id)error;
 - (void)_createSignatureGenerator;
 @end
 
@@ -17,45 +17,45 @@
   return [(ICCameraFileFingerprint *)&v3 init];
 }
 
-- (id)fixupFileHandleError:(id)a3
+- (id)fixupFileHandleError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
+  errorCopy = error;
+  domain = [errorCopy domain];
   v5 = *MEMORY[0x29EDB9E30];
-  v6 = [v4 isEqualToString:*MEMORY[0x29EDB9E30]];
+  v6 = [domain isEqualToString:*MEMORY[0x29EDB9E30]];
 
   if (v6)
   {
-    v7 = [v3 userInfo];
+    userInfo = [errorCopy userInfo];
     v8 = *MEMORY[0x29EDB9F18];
-    v9 = [v7 objectForKey:*MEMORY[0x29EDB9F18]];
+    v9 = [userInfo objectForKey:*MEMORY[0x29EDB9F18]];
 
     if (!v9)
     {
-      v10 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:objc_msgSend(v3 userInfo:{"code"), 0}];
-      v11 = [v3 userInfo];
-      v12 = [v11 mutableCopy];
+      v10 = [MEMORY[0x29EDB9FA0] errorWithDomain:*MEMORY[0x29EDB9EF8] code:objc_msgSend(errorCopy userInfo:{"code"), 0}];
+      userInfo2 = [errorCopy userInfo];
+      v12 = [userInfo2 mutableCopy];
       v13 = v12;
       if (v12)
       {
-        v14 = v12;
+        dictionary = v12;
       }
 
       else
       {
-        v14 = [MEMORY[0x29EDB8E00] dictionary];
+        dictionary = [MEMORY[0x29EDB8E00] dictionary];
       }
 
-      v15 = v14;
+      v15 = dictionary;
 
       [v15 setObject:v10 forKey:v8];
-      v16 = [MEMORY[0x29EDB9FA0] errorWithDomain:v5 code:objc_msgSend(v3 userInfo:{"code"), v15}];
+      v16 = [MEMORY[0x29EDB9FA0] errorWithDomain:v5 code:objc_msgSend(errorCopy userInfo:{"code"), v15}];
 
-      v3 = v16;
+      errorCopy = v16;
     }
   }
 
-  return v3;
+  return errorCopy;
 }
 
 - (void)_createSignatureGenerator
@@ -66,20 +66,20 @@
   return v3;
 }
 
-- (id)fingerprintForFileAtURL:(id)a3 error:(id *)a4
+- (id)fingerprintForFileAtURL:(id)l error:(id *)error
 {
-  v6 = [MEMORY[0x29EDB9FB0] fileHandleForReadingFromURL:a3 error:?];
+  v6 = [MEMORY[0x29EDB9FB0] fileHandleForReadingFromURL:l error:?];
   v7 = v6;
   if (v6)
   {
-    v8 = -[ICCameraFileFingerprint fingerprintForFD:error:](self, "fingerprintForFD:error:", [v6 fileDescriptor], a4);
+    v8 = -[ICCameraFileFingerprint fingerprintForFD:error:](self, "fingerprintForFD:error:", [v6 fileDescriptor], error);
     [v7 closeFile];
   }
 
-  else if (a4)
+  else if (error)
   {
-    [(ICCameraFileFingerprint *)self fixupFileHandleError:*a4];
-    *a4 = v8 = 0;
+    [(ICCameraFileFingerprint *)self fixupFileHandleError:*error];
+    *error = v8 = 0;
   }
 
   else
@@ -90,14 +90,14 @@
   return v8;
 }
 
-- (id)fingerprintForData:(id)a3 error:(id *)a4
+- (id)fingerprintForData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [(ICCameraFileFingerprint *)self _createSignatureGenerator];
-  v7 = [v5 bytes];
-  v8 = [v5 length];
+  dataCopy = data;
+  _createSignatureGenerator = [(ICCameraFileFingerprint *)self _createSignatureGenerator];
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
 
-  MEMORY[0x29EDA9470](v6, v7, v8, 1);
+  MEMORY[0x29EDA9470](_createSignatureGenerator, bytes, v8, 1);
   v9 = MMCSSignatureGeneratorFinish();
   v10 = [objc_alloc(MEMORY[0x29EDB8DA0]) initWithBytesNoCopy:v9 length:MEMORY[0x29EDA9440](v9) freeWhenDone:1];
   v11 = [v10 base64EncodedStringWithOptions:0];
@@ -105,13 +105,13 @@
   return v11;
 }
 
-- (id)fingerprintForFD:(int)a3 error:(id *)a4
+- (id)fingerprintForFD:(int)d error:(id *)error
 {
-  lseek(a3, 0, 0);
+  lseek(d, 0, 0);
   v6 = malloc_type_malloc(0x20000uLL, 0x100004077774924uLL);
   for (i = [(ICCameraFileFingerprint *)self _createSignatureGenerator]; ; MEMORY[0x29EDA9470](i, v6, v8, 1))
   {
-    v8 = read(a3, v6, 0x20000uLL);
+    v8 = read(d, v6, 0x20000uLL);
     if (!v8)
     {
       break;
@@ -150,9 +150,9 @@
   os_unfair_lock_lock(&self->_lock);
   if (!self->_zeroByteFileFingerprint)
   {
-    v3 = [MEMORY[0x29EDB8DA0] data];
+    data = [MEMORY[0x29EDB8DA0] data];
     v9 = 0;
-    v4 = [(ICCameraFileFingerprint *)self fingerprintForData:v3 error:&v9];
+    v4 = [(ICCameraFileFingerprint *)self fingerprintForData:data error:&v9];
     v5 = v9;
     zeroByteFileFingerprint = self->_zeroByteFileFingerprint;
     self->_zeroByteFileFingerprint = v4;

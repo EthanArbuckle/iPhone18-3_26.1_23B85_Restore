@@ -1,7 +1,7 @@
 @interface CNFRegViewAccountController
 - (id)bagKey;
 - (void)cancelTapped;
-- (void)completeHandoffWithStatus:(int)a3 appleID:(id)a4 authID:(id)a5 authToken:(id)a6;
+- (void)completeHandoffWithStatus:(int)status appleID:(id)d authID:(id)iD authToken:(id)token;
 - (void)dealloc;
 @end
 
@@ -17,10 +17,10 @@
 
 - (id)bagKey
 {
-  v2 = [(CNFRegServerWebViewController *)self regController];
-  v3 = [v2 serviceType];
+  regController = [(CNFRegServerWebViewController *)self regController];
+  serviceType = [regController serviceType];
 
-  if (v3 == 1)
+  if (serviceType == 1)
   {
     return @"md-profile-edit-page";
   }
@@ -33,15 +33,15 @@
 
 - (void)cancelTapped
 {
-  v3 = [(CNFRegViewAccountController *)self delegate];
-  [v3 viewAccountControllerDidFinish:self withAppleId:0];
+  delegate = [(CNFRegViewAccountController *)self delegate];
+  [delegate viewAccountControllerDidFinish:self withAppleId:0];
 }
 
-- (void)completeHandoffWithStatus:(int)a3 appleID:(id)a4 authID:(id)a5 authToken:(id)a6
+- (void)completeHandoffWithStatus:(int)status appleID:(id)d authID:(id)iD authToken:(id)token
 {
-  v7 = a4;
-  v8 = [(CNFRegViewAccountController *)self delegate];
-  [v8 viewAccountControllerDidFinish:self withAppleId:v7];
+  dCopy = d;
+  delegate = [(CNFRegViewAccountController *)self delegate];
+  [delegate viewAccountControllerDidFinish:self withAppleId:dCopy];
 }
 
 @end

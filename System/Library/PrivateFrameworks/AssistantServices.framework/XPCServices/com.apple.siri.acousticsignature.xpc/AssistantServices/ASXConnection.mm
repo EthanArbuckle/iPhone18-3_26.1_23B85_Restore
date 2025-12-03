@@ -1,6 +1,6 @@
 @interface ASXConnection
 - (id)_extractor;
-- (void)getSignature:(id)a3;
+- (void)getSignature:(id)signature;
 - (void)reset;
 @end
 
@@ -8,19 +8,19 @@
 
 - (void)reset
 {
-  v2 = [(ASXConnection *)self _extractor];
-  [v2 reset];
+  _extractor = [(ASXConnection *)self _extractor];
+  [_extractor reset];
 }
 
-- (void)getSignature:(id)a3
+- (void)getSignature:(id)signature
 {
-  v6 = a3;
-  v4 = [(ASXConnection *)self _extractor];
-  v5 = [v4 currentSignature];
+  signatureCopy = signature;
+  _extractor = [(ASXConnection *)self _extractor];
+  currentSignature = [_extractor currentSignature];
 
-  if (v6)
+  if (signatureCopy)
   {
-    v6[2](v6, v5);
+    signatureCopy[2](signatureCopy, currentSignature);
   }
 }
 

@@ -1,19 +1,19 @@
 @interface VNRectangleTracker
-+ (id)_trackingRectAroundPoint:(CGPoint)a3 trackingRectSize:(CGSize)a4;
-+ (id)supportedComputeDevicesForOptions:(id)a3 error:(id *)a4;
++ (id)_trackingRectAroundPoint:(CGPoint)point trackingRectSize:(CGSize)size;
++ (id)supportedComputeDevicesForOptions:(id)options error:(id *)error;
 + (id)trackedCorners;
 - (BOOL)isTracking;
-- (BOOL)reset:(id *)a3;
-- (VNRectangleTracker)initWithOptions:(id)a3 error:(id *)a4;
-- (id)_convertCornerObservationsToRectangleObservation:(id)a3 error:(id *)a4;
-- (id)_parseInputObservations:(id)a3 imageBuffer:(id)a4 error:(id *)a5;
-- (id)setTrackedObjects:(id)a3 inFrame:(id)a4 error:(id *)a5;
-- (id)trackInFrame:(id)a3 error:(id *)a4;
+- (BOOL)reset:(id *)reset;
+- (VNRectangleTracker)initWithOptions:(id)options error:(id *)error;
+- (id)_convertCornerObservationsToRectangleObservation:(id)observation error:(id *)error;
+- (id)_parseInputObservations:(id)observations imageBuffer:(id)buffer error:(id *)error;
+- (id)setTrackedObjects:(id)objects inFrame:(id)frame error:(id *)error;
+- (id)trackInFrame:(id)frame error:(id *)error;
 @end
 
 @implementation VNRectangleTracker
 
-- (id)_convertCornerObservationsToRectangleObservation:(id)a3 error:(id *)a4
+- (id)_convertCornerObservationsToRectangleObservation:(id)observation error:(id *)error
 {
   v69 = 0;
   v70 = &v69;
@@ -85,14 +85,14 @@
   v17[10] = &v48;
   v17[11] = &v55;
   v17[12] = &v41;
-  [a3 enumerateKeysAndObjectsUsingBlock:v17];
+  [observation enumerateKeysAndObjectsUsingBlock:v17];
   v6 = v70[5];
   if (v6)
   {
     v7 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v6;
+      *error = v6;
     }
   }
 
@@ -102,9 +102,9 @@
     v9 = v35[7];
     v10 = v27[6];
     v11 = v27[7];
-    v12 = [(VNTracker *)self originatingRequestSpecifier];
+    originatingRequestSpecifier = [(VNTracker *)self originatingRequestSpecifier];
     v13 = [VNRectangleObservation alloc];
-    v7 = [(VNRectangleObservation *)v13 initWithOriginatingRequestSpecifier:v12 topLeft:v49[6] topRight:v49[7] bottomRight:v42[6] bottomLeft:v42[7] boundingBox:v56[6], v56[7], v63[6], v63[7], *&v8, *&v9, v10 - v8, v11 - v9];
+    v7 = [(VNRectangleObservation *)v13 initWithOriginatingRequestSpecifier:originatingRequestSpecifier topLeft:v49[6] topRight:v49[7] bottomRight:v42[6] bottomLeft:v42[7] boundingBox:v56[6], v56[7], v63[6], v63[7], *&v8, *&v9, v10 - v8, v11 - v9];
     *&v14 = v23[6] / v19[3];
     [(VNObservation *)v7 setConfidence:v14];
     v15 = [(VNTracker *)self key];
@@ -203,16 +203,16 @@ LABEL_14:
 LABEL_15:
 }
 
-- (id)_parseInputObservations:(id)a3 imageBuffer:(id)a4 error:(id *)a5
+- (id)_parseInputObservations:(id)observations imageBuffer:(id)buffer error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  observationsCopy = observations;
+  bufferCopy = buffer;
+  v9 = observationsCopy;
   if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    [v8 width];
-    [v8 height];
+    [bufferCopy width];
+    [bufferCopy height];
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [v9 bottomLeft];
     v11 = [VNRectangleTracker _trackingRectAroundPoint:"_trackingRectAroundPoint:trackingRectSize:" trackingRectSize:?];
@@ -230,16 +230,16 @@ LABEL_15:
     v14 = [VNRectangleTracker _trackingRectAroundPoint:"_trackingRectAroundPoint:trackingRectSize:" trackingRectSize:?];
     [v10 setObject:v14 forKey:@"VNRectangleTracking_TopRightTracker"];
 
-    v15 = [v9 uuid];
-    v18 = v15;
+    uuid = [v9 uuid];
+    v18 = uuid;
     v19[0] = v10;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
   }
 
-  else if (a5)
+  else if (error)
   {
     [VNError errorForInvalidArgumentWithLocalizedDescription:@"VNRectangleObservation object is expected to initialize Rectangle Tracker"];
-    *a5 = v16 = 0;
+    *error = v16 = 0;
   }
 
   else
@@ -274,7 +274,7 @@ void __32__VNRectangleTracker_isTracking__block_invoke(uint64_t a1, uint64_t a2,
   *(*(*(a1 + 32) + 8) + 24) |= [v4 isTracking];
 }
 
-- (BOOL)reset:(id *)a3
+- (BOOL)reset:(id *)reset
 {
   if (self->super.mTrackerImpl.__ptr_)
   {
@@ -300,10 +300,10 @@ void __32__VNRectangleTracker_isTracking__block_invoke(uint64_t a1, uint64_t a2,
     v7 = v6 == 0;
     if (v6)
     {
-      if (a3)
+      if (reset)
       {
         v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Resetting tracker failed with error: %llu", v18[3]];
-        *a3 = [VNError errorForInternalErrorWithLocalizedDescription:v8 underlyingError:v12[5]];
+        *reset = [VNError errorForInternalErrorWithLocalizedDescription:v8 underlyingError:v12[5]];
       }
     }
 
@@ -318,10 +318,10 @@ void __32__VNRectangleTracker_isTracking__block_invoke(uint64_t a1, uint64_t a2,
     _Block_object_dispose(&v17, 8);
   }
 
-  else if (a3)
+  else if (reset)
   {
     [VNError errorForInternalErrorWithLocalizedDescription:@"Tracker is not initialized"];
-    *a3 = v7 = 0;
+    *reset = v7 = 0;
   }
 
   else
@@ -346,10 +346,10 @@ void __28__VNRectangleTracker_reset___block_invoke(uint64_t a1, uint64_t a2, voi
   }
 }
 
-- (id)trackInFrame:(id)a3 error:(id *)a4
+- (id)trackInFrame:(id)frame error:(id *)error
 {
   v43[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  frameCopy = frame;
   cornerTrackersImpl = self->_cornerTrackersImpl;
   if (cornerTrackersImpl && (v8 = -[NSMutableDictionary count](cornerTrackersImpl, "count"), +[VNRectangleTracker trackedCorners](VNRectangleTracker, "trackedCorners"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 count], v9, v8 == v10))
   {
@@ -360,20 +360,20 @@ void __28__VNRectangleTracker_reset___block_invoke(uint64_t a1, uint64_t a2, voi
     v41 = __Block_byref_object_dispose__7417;
     v42 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v11 = v38[5];
-    v12 = [MEMORY[0x1E695DFB0] null];
-    [v11 setObject:v12 forKey:@"VNRectangleTracking_BottomLeftTracker"];
+    null = [MEMORY[0x1E695DFB0] null];
+    [v11 setObject:null forKey:@"VNRectangleTracking_BottomLeftTracker"];
 
     v13 = v38[5];
-    v14 = [MEMORY[0x1E695DFB0] null];
-    [v13 setObject:v14 forKey:@"VNRectangleTracking_BottomRightTracker"];
+    null2 = [MEMORY[0x1E695DFB0] null];
+    [v13 setObject:null2 forKey:@"VNRectangleTracking_BottomRightTracker"];
 
     v15 = v38[5];
-    v16 = [MEMORY[0x1E695DFB0] null];
-    [v15 setObject:v16 forKey:@"VNRectangleTracking_TopLeftTracker"];
+    null3 = [MEMORY[0x1E695DFB0] null];
+    [v15 setObject:null3 forKey:@"VNRectangleTracking_TopLeftTracker"];
 
     v17 = v38[5];
-    v18 = [MEMORY[0x1E695DFB0] null];
-    [v17 setObject:v18 forKey:@"VNRectangleTracking_TopRightTracker"];
+    null4 = [MEMORY[0x1E695DFB0] null];
+    [v17 setObject:null4 forKey:@"VNRectangleTracking_TopRightTracker"];
 
     v19 = dispatch_group_create();
     v20 = self->_cornerTrackersImpl;
@@ -383,19 +383,19 @@ void __28__VNRectangleTracker_reset___block_invoke(uint64_t a1, uint64_t a2, voi
     v32 = &unk_1E77B30C8;
     v21 = v19;
     v33 = v21;
-    v34 = self;
+    selfCopy = self;
     v36 = &v37;
-    v22 = v6;
+    v22 = frameCopy;
     v35 = v22;
     [(NSMutableDictionary *)v20 enumerateKeysAndObjectsUsingBlock:&v29];
     dispatch_group_wait(v21, 0xFFFFFFFFFFFFFFFFLL);
-    v23 = [(VNRectangleTracker *)self _convertCornerObservationsToRectangleObservation:v38[5] error:a4, v29, v30, v31, v32];
+    v23 = [(VNRectangleTracker *)self _convertCornerObservationsToRectangleObservation:v38[5] error:error, v29, v30, v31, v32];
     v24 = v23;
     if (v23)
     {
       v43[0] = v23;
       v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:1];
-      v26 = [(VNTracker *)self _postProcessTrackingResults:v22 trackerResults:v25 error:a4];
+      v26 = [(VNTracker *)self _postProcessTrackingResults:v22 trackerResults:v25 error:error];
 
       if (v26)
       {
@@ -412,10 +412,10 @@ void __28__VNRectangleTracker_reset___block_invoke(uint64_t a1, uint64_t a2, voi
     _Block_object_dispose(&v37, 8);
   }
 
-  else if (a4)
+  else if (error)
   {
     [VNError errorForInternalErrorWithLocalizedDescription:@"Tracker is not initialized"];
-    *a4 = v26 = 0;
+    *error = v26 = 0;
   }
 
   else
@@ -506,12 +506,12 @@ LABEL_9:
 LABEL_10:
 }
 
-- (id)setTrackedObjects:(id)a3 inFrame:(id)a4 error:(id *)a5
+- (id)setTrackedObjects:(id)objects inFrame:(id)frame error:(id *)error
 {
   v45[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(VNRectangleTracker *)self _parseInputObservations:v8 imageBuffer:v9 error:a5];
+  objectsCopy = objects;
+  frameCopy = frame;
+  v10 = [(VNRectangleTracker *)self _parseInputObservations:objectsCopy imageBuffer:frameCopy error:error];
   v11 = v10;
   if (!v10)
   {
@@ -520,8 +520,8 @@ LABEL_10:
 
   if ([v10 count] == 1)
   {
-    v12 = [v11 allValues];
-    v13 = [v12 objectAtIndexedSubscript:0];
+    allValues = [v11 allValues];
+    v13 = [allValues objectAtIndexedSubscript:0];
 
     v39 = 0;
     v40 = &v39;
@@ -530,23 +530,23 @@ LABEL_10:
     v43 = __Block_byref_object_dispose__7417;
     v44 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v14 = v40[5];
-    v15 = [MEMORY[0x1E695DFB0] null];
-    [v14 setObject:v15 forKey:@"VNRectangleTracking_BottomLeftTracker"];
+    null = [MEMORY[0x1E695DFB0] null];
+    [v14 setObject:null forKey:@"VNRectangleTracking_BottomLeftTracker"];
 
     v16 = v40[5];
-    v17 = [MEMORY[0x1E695DFB0] null];
-    [v16 setObject:v17 forKey:@"VNRectangleTracking_BottomRightTracker"];
+    null2 = [MEMORY[0x1E695DFB0] null];
+    [v16 setObject:null2 forKey:@"VNRectangleTracking_BottomRightTracker"];
 
     v18 = v40[5];
-    v19 = [MEMORY[0x1E695DFB0] null];
-    [v18 setObject:v19 forKey:@"VNRectangleTracking_TopLeftTracker"];
+    null3 = [MEMORY[0x1E695DFB0] null];
+    [v18 setObject:null3 forKey:@"VNRectangleTracking_TopLeftTracker"];
 
     v20 = v40[5];
-    v21 = [MEMORY[0x1E695DFB0] null];
-    [v20 setObject:v21 forKey:@"VNRectangleTracking_TopRightTracker"];
+    null4 = [MEMORY[0x1E695DFB0] null];
+    [v20 setObject:null4 forKey:@"VNRectangleTracking_TopRightTracker"];
 
     v22 = dispatch_group_create();
-    v23 = [(VNTracker *)self originatingRequestSpecifier];
+    originatingRequestSpecifier = [(VNTracker *)self originatingRequestSpecifier];
     cornerTrackersImpl = self->_cornerTrackersImpl;
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
@@ -554,16 +554,16 @@ LABEL_10:
     v32[3] = &unk_1E77B3078;
     v25 = v22;
     v33 = v25;
-    v34 = self;
+    selfCopy = self;
     v38 = &v39;
     v26 = v13;
     v35 = v26;
-    v27 = v23;
+    v27 = originatingRequestSpecifier;
     v36 = v27;
-    v37 = v9;
+    v37 = frameCopy;
     [(NSMutableDictionary *)cornerTrackersImpl enumerateKeysAndObjectsUsingBlock:v32];
     dispatch_group_wait(v25, 0xFFFFFFFFFFFFFFFFLL);
-    v28 = [(VNRectangleTracker *)self _convertCornerObservationsToRectangleObservation:v40[5] error:a5];
+    v28 = [(VNRectangleTracker *)self _convertCornerObservationsToRectangleObservation:v40[5] error:error];
     v29 = v28;
     if (v28)
     {
@@ -583,10 +583,10 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  if (a5)
+  if (error)
   {
     [VNError errorForInvalidArgumentWithLocalizedDescription:@"No objects to track passed to the tracker"];
-    *a5 = v30 = 0;
+    *error = v30 = 0;
   }
 
   else
@@ -699,13 +699,13 @@ void __54__VNRectangleTracker_setTrackedObjects_inFrame_error___block_invoke_2(u
   }
 }
 
-- (VNRectangleTracker)initWithOptions:(id)a3 error:(id *)a4
+- (VNRectangleTracker)initWithOptions:(id)options error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  optionsCopy = options;
   v25.receiver = self;
   v25.super_class = VNRectangleTracker;
-  v7 = [(VNTracker *)&v25 initWithOptions:v6 error:a4];
+  v7 = [(VNTracker *)&v25 initWithOptions:optionsCopy error:error];
   if (v7)
   {
     v19 = +[VNRectangleTracker trackedCorners];
@@ -732,7 +732,7 @@ void __54__VNRectangleTracker_setTrackedObjects_inFrame_error___block_invoke_2(u
           }
 
           v13 = *(*(&v21 + 1) + 8 * i);
-          v14 = [[VNObjectTrackerRevision1 alloc] initWithOptions:v6 error:a4];
+          v14 = [[VNObjectTrackerRevision1 alloc] initWithOptions:optionsCopy error:error];
           if (!v14)
           {
 
@@ -752,7 +752,7 @@ void __54__VNRectangleTracker_setTrackedObjects_inFrame_error___block_invoke_2(u
       }
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"VNTrackingOption_ProcessingQueue"];
+    v15 = [optionsCopy objectForKeyedSubscript:@"VNTrackingOption_ProcessingQueue"];
     rectangleTrackingProcessingQueue = v7->_rectangleTrackingProcessingQueue;
     v7->_rectangleTrackingProcessingQueue = v15;
 
@@ -761,10 +761,10 @@ void __54__VNRectangleTracker_setTrackedObjects_inFrame_error___block_invoke_2(u
       v17 = v7;
     }
 
-    else if (a4)
+    else if (error)
     {
       [VNError errorForMissingOptionNamed:@"VNTrackingOption_ProcessingQueue"];
-      *a4 = v17 = 0;
+      *error = v17 = 0;
     }
 
     else
@@ -782,17 +782,17 @@ LABEL_13:
   return v17;
 }
 
-+ (id)_trackingRectAroundPoint:(CGPoint)a3 trackingRectSize:(CGSize)a4
++ (id)_trackingRectAroundPoint:(CGPoint)point trackingRectSize:(CGSize)size
 {
   {
-    height = a4.height;
-    width = a4.width;
-    y = a3.y;
-    x = a3.x;
-    a4.width = width;
-    a3.x = x;
-    a3.y = y;
-    a4.height = height;
+    height = size.height;
+    width = size.width;
+    y = point.y;
+    x = point.x;
+    size.width = width;
+    point.x = x;
+    point.y = y;
+    size.height = height;
     if (v8)
     {
       *+[VNRectangleTracker _trackingRectAroundPoint:trackingRectSize:]::fullFrame = 0;
@@ -800,16 +800,16 @@ LABEL_13:
       __asm { FMOV            V0.2D, #1.0 }
 
       *&+[VNRectangleTracker _trackingRectAroundPoint:trackingRectSize:]::fullFrame[16] = _Q0;
-      a4.width = width;
-      a3.x = x;
-      a3.y = y;
-      a4.height = height;
+      size.width = width;
+      point.x = x;
+      point.y = y;
+      size.height = height;
     }
   }
 
-  v4 = a3.x - a4.width * 0.5;
-  v5 = a3.y - a4.height * 0.5;
-  v19 = CGRectIntersection(*&a4.width, *+[VNRectangleTracker _trackingRectAroundPoint:trackingRectSize:]::fullFrame);
+  v4 = point.x - size.width * 0.5;
+  v5 = point.y - size.height * 0.5;
+  v19 = CGRectIntersection(*&size.width, *+[VNRectangleTracker _trackingRectAroundPoint:trackingRectSize:]::fullFrame);
   DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v19);
 
   return DictionaryRepresentation;
@@ -839,9 +839,9 @@ void __36__VNRectangleTracker_trackedCorners__block_invoke()
   +[VNRectangleTracker trackedCorners]::trackedCorners = v0;
 }
 
-+ (id)supportedComputeDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeDevicesForOptions:(id)options error:(id *)error
 {
-  v4 = [VNComputeDeviceUtilities allCPUComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allCPUComputeDevices:options];
 
   return v4;
 }

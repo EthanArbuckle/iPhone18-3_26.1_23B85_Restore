@@ -1,47 +1,47 @@
 @interface SFSectionEngagementFeedback
-- (SFSectionEngagementFeedback)initWithCoder:(id)a3;
-- (SFSectionEngagementFeedback)initWithSection:(id)a3 triggerEvent:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SFSectionEngagementFeedback)initWithCoder:(id)coder;
+- (SFSectionEngagementFeedback)initWithSection:(id)section triggerEvent:(unint64_t)event;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFSectionEngagementFeedback
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SFSectionEngagementFeedback;
-  v4 = a3;
-  [(SFFeedback *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_section forKey:{@"_section", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_triggerEvent forKey:@"_triggerEvent"];
+  coderCopy = coder;
+  [(SFFeedback *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_section forKey:{@"_section", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_triggerEvent forKey:@"_triggerEvent"];
 }
 
-- (SFSectionEngagementFeedback)initWithCoder:(id)a3
+- (SFSectionEngagementFeedback)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SFSectionEngagementFeedback;
-  v5 = [(SFFeedback *)&v9 initWithCoder:v4];
+  v5 = [(SFFeedback *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_section"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_section"];
     section = v5->_section;
     v5->_section = v6;
 
-    v5->_triggerEvent = [v4 decodeIntegerForKey:@"_triggerEvent"];
+    v5->_triggerEvent = [coderCopy decodeIntegerForKey:@"_triggerEvent"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = SFSectionEngagementFeedback;
-  v4 = [(SFFeedback *)&v9 copyWithZone:a3];
-  v5 = [(SFSectionEngagementFeedback *)self section];
-  v6 = [v5 copy];
+  v4 = [(SFFeedback *)&v9 copyWithZone:zone];
+  section = [(SFSectionEngagementFeedback *)self section];
+  v6 = [section copy];
   v7 = v4[3];
   v4[3] = v6;
 
@@ -49,22 +49,22 @@
   return v4;
 }
 
-- (SFSectionEngagementFeedback)initWithSection:(id)a3 triggerEvent:(unint64_t)a4
+- (SFSectionEngagementFeedback)initWithSection:(id)section triggerEvent:(unint64_t)event
 {
-  v6 = a3;
+  sectionCopy = section;
   v13.receiver = self;
   v13.super_class = SFSectionEngagementFeedback;
   v7 = [(SFFeedback *)&v13 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [sectionCopy copy];
     section = v7->_section;
     v7->_section = v8;
 
-    v7->_triggerEvent = a4;
-    v10 = [(SFResultSection *)v7->_section results];
-    v11 = [v10 firstObject];
-    v7->super._queryId = [v11 queryId];
+    v7->_triggerEvent = event;
+    results = [(SFResultSection *)v7->_section results];
+    firstObject = [results firstObject];
+    v7->super._queryId = [firstObject queryId];
   }
 
   return v7;

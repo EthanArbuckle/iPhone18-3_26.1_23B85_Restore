@@ -1,36 +1,36 @@
 @interface DASharedCalendarContext
-- (DASharedCalendarContext)initWithCalendarID:(id)a3 accountID:(id)a4 queue:(id)a5 completionBlock:(id)a6;
-- (void)finishedWithError:(id)a3;
+- (DASharedCalendarContext)initWithCalendarID:(id)d accountID:(id)iD queue:(id)queue completionBlock:(id)block;
+- (void)finishedWithError:(id)error;
 @end
 
 @implementation DASharedCalendarContext
 
-- (DASharedCalendarContext)initWithCalendarID:(id)a3 accountID:(id)a4 queue:(id)a5 completionBlock:(id)a6
+- (DASharedCalendarContext)initWithCalendarID:(id)d accountID:(id)iD queue:(id)queue completionBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
+  blockCopy = block;
+  if (!dCopy)
   {
     [DASharedCalendarContext initWithCalendarID:accountID:queue:completionBlock:];
   }
 
-  if (!v12)
+  if (!iDCopy)
   {
     [DASharedCalendarContext initWithCalendarID:accountID:queue:completionBlock:];
   }
 
-  v15 = v14;
+  v15 = blockCopy;
   v21.receiver = self;
   v21.super_class = DASharedCalendarContext;
   v16 = [(DASharedCalendarContext *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_calendarID, a3);
-    objc_storeStrong(&v17->_accountID, a4);
-    objc_storeStrong(&v17->_queue, a5);
+    objc_storeStrong(&v16->_calendarID, d);
+    objc_storeStrong(&v17->_accountID, iD);
+    objc_storeStrong(&v17->_queue, queue);
     v18 = [v15 copy];
     completionBlock = v17->_completionBlock;
     v17->_completionBlock = v18;
@@ -39,10 +39,10 @@
   return v17;
 }
 
-- (void)finishedWithError:(id)a3
+- (void)finishedWithError:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = DALoggingwithCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -55,7 +55,7 @@
     _os_log_impl(&dword_242505000, v5, OS_LOG_TYPE_DEBUG, "Share of calendar ID %@ for account %@ completed.", buf, 0x16u);
   }
 
-  if (!v4 && [(DASharedCalendarContext *)self shouldSyncCalendar])
+  if (!errorCopy && [(DASharedCalendarContext *)self shouldSyncCalendar])
   {
     v8 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
@@ -85,7 +85,7 @@
     v13[2] = __45__DASharedCalendarContext_finishedWithError___block_invoke_2;
     v13[3] = &unk_278D542B8;
     v13[4] = self;
-    v14 = v4;
+    v14 = errorCopy;
     dispatch_async(v11, v13);
   }
 

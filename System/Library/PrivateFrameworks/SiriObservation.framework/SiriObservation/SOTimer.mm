@@ -1,81 +1,81 @@
 @interface SOTimer
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SOTimer)initWithBuilder:(id)a3;
-- (SOTimer)initWithCoder:(id)a3;
-- (SOTimer)initWithTimerID:(id)a3 timerURL:(id)a4 isFiring:(BOOL)a5 title:(id)a6 state:(int64_t)a7 duration:(double)a8 type:(int64_t)a9 fireTimeInterval:(double)a10 fireDate:(id)a11 firedDate:(id)a12 dismissedDate:(id)a13 lastModifiedDate:(id)a14;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SOTimer)initWithBuilder:(id)builder;
+- (SOTimer)initWithCoder:(id)coder;
+- (SOTimer)initWithTimerID:(id)d timerURL:(id)l isFiring:(BOOL)firing title:(id)title state:(int64_t)state duration:(double)duration type:(int64_t)type fireTimeInterval:(double)self0 fireDate:(id)self1 firedDate:(id)self2 dismissedDate:(id)self3 lastModifiedDate:(id)self4;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SOTimer
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timerID = self->_timerID;
-  v10 = a3;
-  [v10 encodeObject:timerID forKey:@"SOTimer::timerID"];
-  [v10 encodeObject:self->_timerURL forKey:@"SOTimer::timerURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:timerID forKey:@"SOTimer::timerID"];
+  [coderCopy encodeObject:self->_timerURL forKey:@"SOTimer::timerURL"];
   v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_isFiring];
-  [v10 encodeObject:v5 forKey:@"SOTimer::isFiring"];
+  [coderCopy encodeObject:v5 forKey:@"SOTimer::isFiring"];
 
-  [v10 encodeObject:self->_title forKey:@"SOTimer::title"];
+  [coderCopy encodeObject:self->_title forKey:@"SOTimer::title"];
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:self->_state];
-  [v10 encodeObject:v6 forKey:@"SOTimer::state"];
+  [coderCopy encodeObject:v6 forKey:@"SOTimer::state"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_duration];
-  [v10 encodeObject:v7 forKey:@"SOTimer::duration"];
+  [coderCopy encodeObject:v7 forKey:@"SOTimer::duration"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:self->_type];
-  [v10 encodeObject:v8 forKey:@"SOTimer::type"];
+  [coderCopy encodeObject:v8 forKey:@"SOTimer::type"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:self->_fireTimeInterval];
-  [v10 encodeObject:v9 forKey:@"SOTimer::fireTimeInterval"];
+  [coderCopy encodeObject:v9 forKey:@"SOTimer::fireTimeInterval"];
 
-  [v10 encodeObject:self->_fireDate forKey:@"SOTimer::fireDate"];
-  [v10 encodeObject:self->_firedDate forKey:@"SOTimer::firedDate"];
-  [v10 encodeObject:self->_dismissedDate forKey:@"SOTimer::dismissedDate"];
-  [v10 encodeObject:self->_lastModifiedDate forKey:@"SOTimer::lastModifiedDate"];
+  [coderCopy encodeObject:self->_fireDate forKey:@"SOTimer::fireDate"];
+  [coderCopy encodeObject:self->_firedDate forKey:@"SOTimer::firedDate"];
+  [coderCopy encodeObject:self->_dismissedDate forKey:@"SOTimer::dismissedDate"];
+  [coderCopy encodeObject:self->_lastModifiedDate forKey:@"SOTimer::lastModifiedDate"];
 }
 
-- (SOTimer)initWithCoder:(id)a3
+- (SOTimer)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::timerID"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::timerURL"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::isFiring"];
-  v24 = [v6 BOOLValue];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::timerID"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::timerURL"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::isFiring"];
+  bOOLValue = [v6 BOOLValue];
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::title"];
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::state"];
-  v9 = [v8 integerValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::title"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::state"];
+  integerValue = [v8 integerValue];
 
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::duration"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::duration"];
   [v10 doubleValue];
   v12 = v11;
 
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::type"];
-  v14 = [v13 integerValue];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::type"];
+  integerValue2 = [v13 integerValue];
 
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::fireTimeInterval"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::fireTimeInterval"];
   [v15 doubleValue];
   v17 = v16;
 
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::fireDate"];
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::firedDate"];
-  v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::dismissedDate"];
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::lastModifiedDate"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::fireDate"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::firedDate"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::dismissedDate"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SOTimer::lastModifiedDate"];
 
-  v22 = [(SOTimer *)self initWithTimerID:v4 timerURL:v5 isFiring:v24 title:v7 state:v9 duration:v14 type:v12 fireTimeInterval:v17 fireDate:v18 firedDate:v19 dismissedDate:v20 lastModifiedDate:v21];
+  v22 = [(SOTimer *)self initWithTimerID:v4 timerURL:v5 isFiring:bOOLValue title:v7 state:integerValue duration:integerValue2 type:v12 fireTimeInterval:v17 fireDate:v18 firedDate:v19 dismissedDate:v20 lastModifiedDate:v21];
   return v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -85,37 +85,37 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       isFiring = self->_isFiring;
       if (isFiring == [(SOTimer *)v5 isFiring]&& (state = self->_state, state == [(SOTimer *)v5 state]) && (duration = self->_duration, [(SOTimer *)v5 duration], duration == v9) && (type = self->_type, type == [(SOTimer *)v5 type]) && (fireTimeInterval = self->_fireTimeInterval, [(SOTimer *)v5 fireTimeInterval], fireTimeInterval == v12))
       {
-        v15 = [(SOTimer *)v5 timerID];
+        timerID = [(SOTimer *)v5 timerID];
         timerID = self->_timerID;
-        if (timerID == v15 || [(NSUUID *)timerID isEqual:v15])
+        if (timerID == timerID || [(NSUUID *)timerID isEqual:timerID])
         {
-          v17 = [(SOTimer *)v5 timerURL];
+          timerURL = [(SOTimer *)v5 timerURL];
           timerURL = self->_timerURL;
-          if (timerURL == v17 || [(NSURL *)timerURL isEqual:v17])
+          if (timerURL == timerURL || [(NSURL *)timerURL isEqual:timerURL])
           {
-            v19 = [(SOTimer *)v5 title];
+            title = [(SOTimer *)v5 title];
             title = self->_title;
-            if (title == v19 || [(NSString *)title isEqual:v19])
+            if (title == title || [(NSString *)title isEqual:title])
             {
-              v21 = [(SOTimer *)v5 fireDate];
+              fireDate = [(SOTimer *)v5 fireDate];
               fireDate = self->_fireDate;
-              if (fireDate == v21 || [(NSDate *)fireDate isEqual:v21])
+              if (fireDate == fireDate || [(NSDate *)fireDate isEqual:fireDate])
               {
-                v23 = [(SOTimer *)v5 firedDate];
+                firedDate = [(SOTimer *)v5 firedDate];
                 firedDate = self->_firedDate;
-                if (firedDate == v23 || [(NSDate *)firedDate isEqual:v23])
+                if (firedDate == firedDate || [(NSDate *)firedDate isEqual:firedDate])
                 {
-                  v25 = [(SOTimer *)v5 dismissedDate];
+                  dismissedDate = [(SOTimer *)v5 dismissedDate];
                   dismissedDate = self->_dismissedDate;
-                  if (dismissedDate == v25 || [(NSDate *)dismissedDate isEqual:v25])
+                  if (dismissedDate == dismissedDate || [(NSDate *)dismissedDate isEqual:dismissedDate])
                   {
-                    v27 = [(SOTimer *)v5 lastModifiedDate];
+                    lastModifiedDate = [(SOTimer *)v5 lastModifiedDate];
                     lastModifiedDate = self->_lastModifiedDate;
-                    v13 = lastModifiedDate == v27 || [(NSDate *)lastModifiedDate isEqual:v27];
+                    v13 = lastModifiedDate == lastModifiedDate || [(NSDate *)lastModifiedDate isEqual:lastModifiedDate];
                   }
 
                   else
@@ -192,7 +192,7 @@
   return v16 ^ v19;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v20.receiver = self;
@@ -242,38 +242,38 @@
   return v18;
 }
 
-- (SOTimer)initWithTimerID:(id)a3 timerURL:(id)a4 isFiring:(BOOL)a5 title:(id)a6 state:(int64_t)a7 duration:(double)a8 type:(int64_t)a9 fireTimeInterval:(double)a10 fireDate:(id)a11 firedDate:(id)a12 dismissedDate:(id)a13 lastModifiedDate:(id)a14
+- (SOTimer)initWithTimerID:(id)d timerURL:(id)l isFiring:(BOOL)firing title:(id)title state:(int64_t)state duration:(double)duration type:(int64_t)type fireTimeInterval:(double)self0 fireDate:(id)self1 firedDate:(id)self2 dismissedDate:(id)self3 lastModifiedDate:(id)self4
 {
-  v21 = a3;
-  v22 = a4;
-  v23 = a6;
-  v24 = a11;
-  v25 = a12;
-  v26 = a13;
-  v27 = a14;
+  dCopy = d;
+  lCopy = l;
+  titleCopy = title;
+  dateCopy = date;
+  firedDateCopy = firedDate;
+  dismissedDateCopy = dismissedDate;
+  modifiedDateCopy = modifiedDate;
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __138__SOTimer_initWithTimerID_timerURL_isFiring_title_state_duration_type_fireTimeInterval_fireDate_firedDate_dismissedDate_lastModifiedDate___block_invoke;
   v38[3] = &unk_279C3D520;
-  v39 = v21;
-  v40 = v22;
-  v50 = a5;
-  v47 = a8;
-  v48 = a9;
-  v49 = a10;
-  v41 = v23;
-  v42 = v24;
-  v43 = v25;
-  v44 = v26;
-  v45 = v27;
-  v46 = a7;
-  v28 = v27;
-  v29 = v26;
-  v30 = v25;
-  v31 = v24;
-  v32 = v23;
-  v33 = v22;
-  v34 = v21;
+  v39 = dCopy;
+  v40 = lCopy;
+  firingCopy = firing;
+  durationCopy = duration;
+  typeCopy = type;
+  intervalCopy = interval;
+  v41 = titleCopy;
+  v42 = dateCopy;
+  v43 = firedDateCopy;
+  v44 = dismissedDateCopy;
+  v45 = modifiedDateCopy;
+  stateCopy = state;
+  v28 = modifiedDateCopy;
+  v29 = dismissedDateCopy;
+  v30 = firedDateCopy;
+  v31 = dateCopy;
+  v32 = titleCopy;
+  v33 = lCopy;
+  v34 = dCopy;
   v35 = [(SOTimer *)self initWithBuilder:v38];
 
   return v35;
@@ -297,32 +297,32 @@ void __138__SOTimer_initWithTimerID_timerURL_isFiring_title_state_duration_type_
   [v4 setLastModifiedDate:*(a1 + 80)];
 }
 
-- (SOTimer)initWithBuilder:(id)a3
+- (SOTimer)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v32.receiver = self;
   v32.super_class = SOTimer;
   v5 = [(SOTimer *)&v32 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_SOTimerMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_SOTimerMutation *)v7 isDirty])
     {
-      v8 = [(_SOTimerMutation *)v7 getTimerID];
-      v9 = [v8 copy];
+      getTimerID = [(_SOTimerMutation *)v7 getTimerID];
+      v9 = [getTimerID copy];
       timerID = v6->_timerID;
       v6->_timerID = v9;
 
-      v11 = [(_SOTimerMutation *)v7 getTimerURL];
-      v12 = [v11 copy];
+      getTimerURL = [(_SOTimerMutation *)v7 getTimerURL];
+      v12 = [getTimerURL copy];
       timerURL = v6->_timerURL;
       v6->_timerURL = v12;
 
       v6->_isFiring = [(_SOTimerMutation *)v7 getIsFiring];
-      v14 = [(_SOTimerMutation *)v7 getTitle];
-      v15 = [v14 copy];
+      getTitle = [(_SOTimerMutation *)v7 getTitle];
+      v15 = [getTitle copy];
       title = v6->_title;
       v6->_title = v15;
 
@@ -332,23 +332,23 @@ void __138__SOTimer_initWithTimerID_timerURL_isFiring_title_state_duration_type_
       v6->_type = [(_SOTimerMutation *)v7 getType];
       [(_SOTimerMutation *)v7 getFireTimeInterval];
       v6->_fireTimeInterval = v18;
-      v19 = [(_SOTimerMutation *)v7 getFireDate];
-      v20 = [v19 copy];
+      getFireDate = [(_SOTimerMutation *)v7 getFireDate];
+      v20 = [getFireDate copy];
       fireDate = v6->_fireDate;
       v6->_fireDate = v20;
 
-      v22 = [(_SOTimerMutation *)v7 getFiredDate];
-      v23 = [v22 copy];
+      getFiredDate = [(_SOTimerMutation *)v7 getFiredDate];
+      v23 = [getFiredDate copy];
       firedDate = v6->_firedDate;
       v6->_firedDate = v23;
 
-      v25 = [(_SOTimerMutation *)v7 getDismissedDate];
-      v26 = [v25 copy];
+      getDismissedDate = [(_SOTimerMutation *)v7 getDismissedDate];
+      v26 = [getDismissedDate copy];
       dismissedDate = v6->_dismissedDate;
       v6->_dismissedDate = v26;
 
-      v28 = [(_SOTimerMutation *)v7 getLastModifiedDate];
-      v29 = [v28 copy];
+      getLastModifiedDate = [(_SOTimerMutation *)v7 getLastModifiedDate];
+      v29 = [getLastModifiedDate copy];
       lastModifiedDate = v6->_lastModifiedDate;
       v6->_lastModifiedDate = v29;
     }
@@ -357,37 +357,37 @@ void __138__SOTimer_initWithTimerID_timerURL_isFiring_title_state_duration_type_
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SOTimerMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_SOTimerMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(SOTimer);
-      v7 = [(_SOTimerMutation *)v5 getTimerID];
-      v8 = [v7 copy];
+      getTimerID = [(_SOTimerMutation *)v5 getTimerID];
+      v8 = [getTimerID copy];
       timerID = v6->_timerID;
       v6->_timerID = v8;
 
-      v10 = [(_SOTimerMutation *)v5 getTimerURL];
-      v11 = [v10 copy];
+      getTimerURL = [(_SOTimerMutation *)v5 getTimerURL];
+      v11 = [getTimerURL copy];
       timerURL = v6->_timerURL;
       v6->_timerURL = v11;
 
       v6->_isFiring = [(_SOTimerMutation *)v5 getIsFiring];
-      v13 = [(_SOTimerMutation *)v5 getTitle];
-      v14 = [v13 copy];
+      getTitle = [(_SOTimerMutation *)v5 getTitle];
+      v14 = [getTitle copy];
       title = v6->_title;
       v6->_title = v14;
 
@@ -397,23 +397,23 @@ void __138__SOTimer_initWithTimerID_timerURL_isFiring_title_state_duration_type_
       v6->_type = [(_SOTimerMutation *)v5 getType];
       [(_SOTimerMutation *)v5 getFireTimeInterval];
       v6->_fireTimeInterval = v17;
-      v18 = [(_SOTimerMutation *)v5 getFireDate];
-      v19 = [v18 copy];
+      getFireDate = [(_SOTimerMutation *)v5 getFireDate];
+      v19 = [getFireDate copy];
       fireDate = v6->_fireDate;
       v6->_fireDate = v19;
 
-      v21 = [(_SOTimerMutation *)v5 getFiredDate];
-      v22 = [v21 copy];
+      getFiredDate = [(_SOTimerMutation *)v5 getFiredDate];
+      v22 = [getFiredDate copy];
       firedDate = v6->_firedDate;
       v6->_firedDate = v22;
 
-      v24 = [(_SOTimerMutation *)v5 getDismissedDate];
-      v25 = [v24 copy];
+      getDismissedDate = [(_SOTimerMutation *)v5 getDismissedDate];
+      v25 = [getDismissedDate copy];
       dismissedDate = v6->_dismissedDate;
       v6->_dismissedDate = v25;
 
-      v27 = [(_SOTimerMutation *)v5 getLastModifiedDate];
-      v28 = [v27 copy];
+      getLastModifiedDate = [(_SOTimerMutation *)v5 getLastModifiedDate];
+      v28 = [getLastModifiedDate copy];
       lastModifiedDate = v6->_lastModifiedDate;
       v6->_lastModifiedDate = v28;
     }

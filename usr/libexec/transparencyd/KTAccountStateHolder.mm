@@ -1,16 +1,16 @@
 @interface KTAccountStateHolder
-- (BOOL)persistAccountChanges:(id)a3;
-- (KTAccountStateHolder)initWithFileStorage:(id)a3;
+- (BOOL)persistAccountChanges:(id)changes;
+- (KTAccountStateHolder)initWithFileStorage:(id)storage;
 - (id)loadAccountMetadata;
 - (void)clearAccountMetadata;
 @end
 
 @implementation KTAccountStateHolder
 
-- (KTAccountStateHolder)initWithFileStorage:(id)a3
+- (KTAccountStateHolder)initWithFileStorage:(id)storage
 {
-  v4 = a3;
-  if (v4)
+  storageCopy = storage;
+  if (storageCopy)
   {
 LABEL_4:
     v11.receiver = self;
@@ -19,7 +19,7 @@ LABEL_4:
     v8 = v7;
     if (v7)
     {
-      [(KTAccountStateHolder *)v7 setUrl:v4];
+      [(KTAccountStateHolder *)v7 setUrl:storageCopy];
     }
 
     goto LABEL_11;
@@ -30,7 +30,7 @@ LABEL_4:
   v6 = v12;
   if (v5)
   {
-    v4 = [v5 URLByAppendingPathComponent:@"AccountState.pblist"];
+    storageCopy = [v5 URLByAppendingPathComponent:@"AccountState.pblist"];
 
     goto LABEL_4;
   }
@@ -48,7 +48,7 @@ LABEL_4:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "TransparencyFileSupport transparencyFilesPath: %@", buf, 0xCu);
   }
 
-  v4 = 0;
+  storageCopy = 0;
   v8 = 0;
 LABEL_11:
 
@@ -90,16 +90,16 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)persistAccountChanges:(id)a3
+- (BOOL)persistAccountChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(KTAccountStateHolder *)self loadAccountMetadata];
-  if (!v5)
+  changesCopy = changes;
+  loadAccountMetadata = [(KTAccountStateHolder *)self loadAccountMetadata];
+  if (!loadAccountMetadata)
   {
-    v5 = objc_alloc_init(KTAccountState);
+    loadAccountMetadata = objc_alloc_init(KTAccountState);
   }
 
-  v6 = v4[2](v4, v5);
+  v6 = changesCopy[2](changesCopy, loadAccountMetadata);
 
   v19 = 0;
   v7 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v19];

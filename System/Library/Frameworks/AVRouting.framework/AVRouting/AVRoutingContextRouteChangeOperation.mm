@@ -2,12 +2,12 @@
 + (void)initialize;
 - (AVInputContextDestinationChange)resultInput;
 - (AVOutputContextDestinationChange)result;
-- (AVRoutingContextRouteChangeOperation)initWithRoutingContext:(OpaqueFigRoutingContext *)a3 successNotification:(__CFString *)a4 routeChangeBlock:(id)a5 isInputContextOperation:(BOOL)a6;
+- (AVRoutingContextRouteChangeOperation)initWithRoutingContext:(OpaqueFigRoutingContext *)context successNotification:(__CFString *)notification routeChangeBlock:(id)block isInputContextOperation:(BOOL)operation;
 - (void)_routeChangeComplete;
-- (void)_routeChangeStartedWithID:(__CFNumber *)a3;
-- (void)_routeChangeWithID:(__CFNumber *)a3 endedWithReason:(__CFString *)a4;
-- (void)_setResultIfNotAlreadySet:(id)a3;
-- (void)_setResultInputIfNotAlreadySet:(id)a3;
+- (void)_routeChangeStartedWithID:(__CFNumber *)d;
+- (void)_routeChangeWithID:(__CFNumber *)d endedWithReason:(__CFString *)reason;
+- (void)_setResultIfNotAlreadySet:(id)set;
+- (void)_setResultInputIfNotAlreadySet:(id)set;
 - (void)dealloc;
 - (void)start;
 @end
@@ -16,7 +16,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -120,7 +120,7 @@ id __51__AVRoutingContextRouteChangeOperation_resultInput__block_invoke(uint64_t
   return result;
 }
 
-- (void)_setResultIfNotAlreadySet:(id)a3
+- (void)_setResultIfNotAlreadySet:(id)set
 {
   notificationManagementQueue = self->_notificationManagementQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -128,7 +128,7 @@ id __51__AVRoutingContextRouteChangeOperation_resultInput__block_invoke(uint64_t
   v4[2] = __66__AVRoutingContextRouteChangeOperation__setResultIfNotAlreadySet___block_invoke;
   v4[3] = &unk_1E794E9A8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = set;
   dispatch_sync(notificationManagementQueue, v4);
 }
 
@@ -144,7 +144,7 @@ id *__66__AVRoutingContextRouteChangeOperation__setResultIfNotAlreadySet___block
   return result;
 }
 
-- (void)_setResultInputIfNotAlreadySet:(id)a3
+- (void)_setResultInputIfNotAlreadySet:(id)set
 {
   notificationManagementQueue = self->_notificationManagementQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -152,7 +152,7 @@ id *__66__AVRoutingContextRouteChangeOperation__setResultIfNotAlreadySet___block
   v4[2] = __71__AVRoutingContextRouteChangeOperation__setResultInputIfNotAlreadySet___block_invoke;
   v4[3] = &unk_1E794E9A8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = set;
   dispatch_sync(notificationManagementQueue, v4);
 }
 
@@ -193,7 +193,7 @@ id *__71__AVRoutingContextRouteChangeOperation__setResultInputIfNotAlreadySet___
   }
 }
 
-- (void)_routeChangeStartedWithID:(__CFNumber *)a3
+- (void)_routeChangeStartedWithID:(__CFNumber *)d
 {
   notificationManagementQueue = self->_notificationManagementQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -201,7 +201,7 @@ id *__71__AVRoutingContextRouteChangeOperation__setResultInputIfNotAlreadySet___
   v4[2] = __66__AVRoutingContextRouteChangeOperation__routeChangeStartedWithID___block_invoke;
   v4[3] = &unk_1E794ED50;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = d;
   dispatch_sync(notificationManagementQueue, v4);
 }
 
@@ -224,7 +224,7 @@ void *__66__AVRoutingContextRouteChangeOperation__routeChangeStartedWithID___blo
   return result;
 }
 
-- (void)_routeChangeWithID:(__CFNumber *)a3 endedWithReason:(__CFString *)a4
+- (void)_routeChangeWithID:(__CFNumber *)d endedWithReason:(__CFString *)reason
 {
   v15 = 0;
   v16 = &v15;
@@ -239,19 +239,19 @@ void *__66__AVRoutingContextRouteChangeOperation__routeChangeStartedWithID___blo
   block[3] = &unk_1E794E930;
   block[4] = self;
   block[5] = &v15;
-  block[6] = a3;
+  block[6] = d;
   dispatch_sync(notificationManagementQueue, block);
   if (v16[3])
   {
     if (self->_inputRoutePicked)
     {
-      [(AVInputContextDestinationChange *)v8 changeToTerminalStatusBasedOnInputRouteChangeEndedReason:a4];
+      [(AVInputContextDestinationChange *)v8 changeToTerminalStatusBasedOnInputRouteChangeEndedReason:reason];
       [(AVRoutingContextRouteChangeOperation *)self _setResultInputIfNotAlreadySet:v8];
     }
 
     else
     {
-      [(AVOutputContextDestinationChange *)v7 changeToTerminalStatusBasedOnRouteChangeEndedReason:a4];
+      [(AVOutputContextDestinationChange *)v7 changeToTerminalStatusBasedOnRouteChangeEndedReason:reason];
       [(AVRoutingContextRouteChangeOperation *)self _setResultIfNotAlreadySet:v7];
     }
 
@@ -335,7 +335,7 @@ uint64_t __75__AVRoutingContextRouteChangeOperation__routeChangeWithID_endedWith
   _Block_object_dispose(&v7, 8);
 }
 
-- (AVRoutingContextRouteChangeOperation)initWithRoutingContext:(OpaqueFigRoutingContext *)a3 successNotification:(__CFString *)a4 routeChangeBlock:(id)a5 isInputContextOperation:(BOOL)a6
+- (AVRoutingContextRouteChangeOperation)initWithRoutingContext:(OpaqueFigRoutingContext *)context successNotification:(__CFString *)notification routeChangeBlock:(id)block isInputContextOperation:(BOOL)operation
 {
   OUTLINED_FUNCTION_1_2();
   [AVRoutingCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];

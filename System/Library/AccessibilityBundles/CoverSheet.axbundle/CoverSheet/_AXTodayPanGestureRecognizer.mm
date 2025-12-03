@@ -1,16 +1,16 @@
 @interface _AXTodayPanGestureRecognizer
-- (CGPoint)translationInView:(id)a3;
-- (CGPoint)velocityInView:(id)a3;
+- (CGPoint)translationInView:(id)view;
+- (CGPoint)velocityInView:(id)view;
 @end
 
 @implementation _AXTodayPanGestureRecognizer
 
-- (CGPoint)translationInView:(id)a3
+- (CGPoint)translationInView:(id)view
 {
-  v4 = [(_AXTodayPanGestureRecognizer *)self show];
-  v5 = [(_AXTodayPanGestureRecognizer *)self _accessibilityIsRTL];
+  show = [(_AXTodayPanGestureRecognizer *)self show];
+  _accessibilityIsRTL = [(_AXTodayPanGestureRecognizer *)self _accessibilityIsRTL];
   v6 = -5000.0;
-  if (v5 != v4)
+  if (_accessibilityIsRTL != show)
   {
     v6 = 5000.0;
   }
@@ -21,12 +21,12 @@
   return result;
 }
 
-- (CGPoint)velocityInView:(id)a3
+- (CGPoint)velocityInView:(id)view
 {
-  v4 = [(_AXTodayPanGestureRecognizer *)self show];
-  v5 = [(_AXTodayPanGestureRecognizer *)self _accessibilityIsRTL];
+  show = [(_AXTodayPanGestureRecognizer *)self show];
+  _accessibilityIsRTL = [(_AXTodayPanGestureRecognizer *)self _accessibilityIsRTL];
   v6 = -5000.0;
-  if (v5 != v4)
+  if (_accessibilityIsRTL != show)
   {
     v6 = 5000.0;
   }

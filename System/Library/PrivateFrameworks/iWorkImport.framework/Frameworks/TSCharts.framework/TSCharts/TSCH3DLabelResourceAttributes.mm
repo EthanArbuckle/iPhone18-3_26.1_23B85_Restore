@@ -1,37 +1,37 @@
 @interface TSCH3DLabelResourceAttributes
-+ (id)labelAttributesWithParagraphStyle:(id)a3 string:(id)a4 bitmapContextInfo:(id)a5 labelWidth:(double)a6 renderSamples:(double)a7 styleProvidingSource:(id)a8;
-- (BOOL)isEqual:(id)a3;
-- (TSCH3DLabelResourceAttributes)initWithParagraphStyle:(id)a3 string:(id)a4 bitmapContextInfo:(id)a5 labelWidth:(double)a6 renderSamples:(double)a7 styleProvidingSource:(id)a8;
++ (id)labelAttributesWithParagraphStyle:(id)style string:(id)string bitmapContextInfo:(id)info labelWidth:(double)width renderSamples:(double)samples styleProvidingSource:(id)source;
+- (BOOL)isEqual:(id)equal;
+- (TSCH3DLabelResourceAttributes)initWithParagraphStyle:(id)style string:(id)string bitmapContextInfo:(id)info labelWidth:(double)width renderSamples:(double)samples styleProvidingSource:(id)source;
 - (TSWPStyleProviding)styleProvidingSource;
 - (id)description;
 @end
 
 @implementation TSCH3DLabelResourceAttributes
 
-+ (id)labelAttributesWithParagraphStyle:(id)a3 string:(id)a4 bitmapContextInfo:(id)a5 labelWidth:(double)a6 renderSamples:(double)a7 styleProvidingSource:(id)a8
++ (id)labelAttributesWithParagraphStyle:(id)style string:(id)string bitmapContextInfo:(id)info labelWidth:(double)width renderSamples:(double)samples styleProvidingSource:(id)source
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  v18 = [a1 alloc];
-  v21 = objc_msgSend_initWithParagraphStyle_string_bitmapContextInfo_labelWidth_renderSamples_styleProvidingSource_(v18, v19, a6, a7, v20, v14, v15, v16, v17);
+  styleCopy = style;
+  stringCopy = string;
+  infoCopy = info;
+  sourceCopy = source;
+  v18 = [self alloc];
+  v21 = objc_msgSend_initWithParagraphStyle_string_bitmapContextInfo_labelWidth_renderSamples_styleProvidingSource_(v18, v19, width, samples, v20, styleCopy, stringCopy, infoCopy, sourceCopy);
 
   return v21;
 }
 
-- (TSCH3DLabelResourceAttributes)initWithParagraphStyle:(id)a3 string:(id)a4 bitmapContextInfo:(id)a5 labelWidth:(double)a6 renderSamples:(double)a7 styleProvidingSource:(id)a8
+- (TSCH3DLabelResourceAttributes)initWithParagraphStyle:(id)style string:(id)string bitmapContextInfo:(id)info labelWidth:(double)width renderSamples:(double)samples styleProvidingSource:(id)source
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
+  styleCopy = style;
+  stringCopy = string;
+  infoCopy = info;
+  sourceCopy = source;
   v52.receiver = self;
   v52.super_class = TSCH3DLabelResourceAttributes;
   v20 = [(TSCH3DLabelResourceAttributes *)&v52 init];
   if (v20)
   {
-    if (!v15)
+    if (!styleCopy)
     {
       v24 = MEMORY[0x277D81150];
       v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, v21, v22, v23, "[TSCH3DLabelResourceAttributes initWithParagraphStyle:string:bitmapContextInfo:labelWidth:renderSamples:styleProvidingSource:]");
@@ -41,27 +41,27 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v35, v36, v37, v38);
     }
 
-    objc_storeStrong(&v20->_paragraphStyle, a3);
-    v43 = objc_msgSend_copy(v16, v39, v40, v41, v42);
+    objc_storeStrong(&v20->_paragraphStyle, style);
+    v43 = objc_msgSend_copy(stringCopy, v39, v40, v41, v42);
     string = v20->_string;
     v20->_string = v43;
 
-    v49 = objc_msgSend_copy(v17, v45, v46, v47, v48);
+    v49 = objc_msgSend_copy(infoCopy, v45, v46, v47, v48);
     bitmapContextInfo = v20->_bitmapContextInfo;
     v20->_bitmapContextInfo = v49;
 
-    v20->_labelWidth = a6;
-    v20->_renderSamples = a7;
-    objc_storeWeak(&v20->_styleProvidingSource, v18);
+    v20->_labelWidth = width;
+    v20->_renderSamples = samples;
+    objc_storeWeak(&v20->_styleProvidingSource, sourceCopy);
   }
 
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }

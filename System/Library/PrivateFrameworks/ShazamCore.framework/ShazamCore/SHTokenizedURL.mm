@@ -1,16 +1,16 @@
 @interface SHTokenizedURL
-+ (id)replaceToken:(int64_t)a3 withValue:(id)a4 urlString:(id)a5;
-+ (id)tokenForTokenType:(int64_t)a3;
-- (BOOL)containsToken:(int64_t)a3;
++ (id)replaceToken:(int64_t)token withValue:(id)value urlString:(id)string;
++ (id)tokenForTokenType:(int64_t)type;
+- (BOOL)containsToken:(int64_t)token;
 - (BOOL)containsTokens;
-- (BOOL)path:(id)a3 containsToken:(int64_t)a4;
-- (BOOL)updateToken:(int64_t)a3 withValue:(id)a4;
-- (SHTokenizedURL)initWithBaseURL:(id)a3 URLPath:(id)a4;
-- (SHTokenizedURL)initWithHost:(id)a3 URLPath:(id)a4;
-- (SHTokenizedURL)initWithString:(id)a3;
-- (SHTokenizedURL)initWithURLComponents:(id)a3;
+- (BOOL)path:(id)path containsToken:(int64_t)token;
+- (BOOL)updateToken:(int64_t)token withValue:(id)value;
+- (SHTokenizedURL)initWithBaseURL:(id)l URLPath:(id)path;
+- (SHTokenizedURL)initWithHost:(id)host URLPath:(id)path;
+- (SHTokenizedURL)initWithString:(id)string;
+- (SHTokenizedURL)initWithURLComponents:(id)components;
 - (id)URLRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)originalURLString;
 - (id)tokenizedURLString;
@@ -18,91 +18,91 @@
 
 @implementation SHTokenizedURL
 
-- (SHTokenizedURL)initWithString:(id)a3
+- (SHTokenizedURL)initWithString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v4 = MEMORY[0x277CCACE0];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithString:v5];
+    stringCopy = string;
+    v6 = [[v4 alloc] initWithString:stringCopy];
 
     self = [(SHTokenizedURL *)self initWithURLComponents:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (SHTokenizedURL)initWithBaseURL:(id)a3 URLPath:(id)a4
+- (SHTokenizedURL)initWithBaseURL:(id)l URLPath:(id)path
 {
-  v5 = [MEMORY[0x277CBEBC0] URLWithString:a4 relativeToURL:a3];
+  v5 = [MEMORY[0x277CBEBC0] URLWithString:path relativeToURL:l];
   v6 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v5 resolvingAgainstBaseURL:1];
   v7 = [(SHTokenizedURL *)self initWithURLComponents:v6];
 
   return v7;
 }
 
-- (SHTokenizedURL)initWithHost:(id)a3 URLPath:(id)a4
+- (SHTokenizedURL)initWithHost:(id)host URLPath:(id)path
 {
   v6 = MEMORY[0x277CCACE0];
-  v7 = a4;
-  v8 = a3;
+  pathCopy = path;
+  hostCopy = host;
   v9 = objc_alloc_init(v6);
   [v9 setScheme:@"https"];
-  [v9 setHost:v8];
+  [v9 setHost:hostCopy];
 
-  [v9 setPath:v7];
+  [v9 setPath:pathCopy];
   v10 = [(SHTokenizedURL *)self initWithURLComponents:v9];
 
   return v10;
 }
 
-- (SHTokenizedURL)initWithURLComponents:(id)a3
+- (SHTokenizedURL)initWithURLComponents:(id)components
 {
-  v5 = a3;
+  componentsCopy = components;
   v11.receiver = self;
   v11.super_class = SHTokenizedURL;
   v6 = [(SHTokenizedURL *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_originalComponents, a3);
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v6->_originalComponents, components);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     tokenDictionary = v7->_tokenDictionary;
-    v7->_tokenDictionary = v8;
+    v7->_tokenDictionary = dictionary;
   }
 
   return v7;
 }
 
-+ (id)replaceToken:(int64_t)a3 withValue:(id)a4 urlString:(id)a5
++ (id)replaceToken:(int64_t)token withValue:(id)value urlString:(id)string
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a1 tokenForTokenType:a3];
-  v11 = [v8 stringByReplacingOccurrencesOfString:v10 withString:v9];
+  stringCopy = string;
+  valueCopy = value;
+  v10 = [self tokenForTokenType:token];
+  v11 = [stringCopy stringByReplacingOccurrencesOfString:v10 withString:valueCopy];
 
   return v11;
 }
 
-- (BOOL)updateToken:(int64_t)a3 withValue:(id)a4
+- (BOOL)updateToken:(int64_t)token withValue:(id)value
 {
-  v6 = a4;
-  v7 = [(SHTokenizedURL *)self originalURLString];
-  v8 = [objc_opt_class() tokenForTokenType:a3];
-  v9 = [v7 containsString:v8];
+  valueCopy = value;
+  originalURLString = [(SHTokenizedURL *)self originalURLString];
+  v8 = [objc_opt_class() tokenForTokenType:token];
+  v9 = [originalURLString containsString:v8];
 
   if (v9)
   {
-    v10 = [objc_opt_class() tokenForTokenType:a3];
-    v11 = [(SHTokenizedURL *)self tokenDictionary];
-    v12 = [v6 copy];
-    [v11 setValue:v12 forKey:v10];
+    v10 = [objc_opt_class() tokenForTokenType:token];
+    tokenDictionary = [(SHTokenizedURL *)self tokenDictionary];
+    v12 = [valueCopy copy];
+    [tokenDictionary setValue:v12 forKey:v10];
   }
 
   return v9;
@@ -110,38 +110,38 @@
 
 - (id)originalURLString
 {
-  v2 = [(SHTokenizedURL *)self originalComponents];
-  v3 = [v2 string];
-  v4 = [v3 stringByRemovingPercentEncoding];
+  originalComponents = [(SHTokenizedURL *)self originalComponents];
+  string = [originalComponents string];
+  stringByRemovingPercentEncoding = [string stringByRemovingPercentEncoding];
 
-  return v4;
+  return stringByRemovingPercentEncoding;
 }
 
-+ (id)tokenForTokenType:(int64_t)a3
++ (id)tokenForTokenType:(int64_t)type
 {
-  if ((a3 - 1) > 0xD)
+  if ((type - 1) > 0xD)
   {
     return @"{deviceid}";
   }
 
   else
   {
-    return off_2788FB090[a3 - 1];
+    return off_2788FB090[type - 1];
   }
 }
 
 - (id)tokenizedURLString
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(SHTokenizedURL *)self originalURLString];
-  v4 = [v3 copy];
+  originalURLString = [(SHTokenizedURL *)self originalURLString];
+  v4 = [originalURLString copy];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(SHTokenizedURL *)self tokenDictionary];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  tokenDictionary = [(SHTokenizedURL *)self tokenDictionary];
+  v6 = [tokenDictionary countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -154,12 +154,12 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(tokenDictionary);
         }
 
         v11 = *(*(&v16 + 1) + 8 * v9);
-        v12 = [(SHTokenizedURL *)self tokenDictionary];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        tokenDictionary2 = [(SHTokenizedURL *)self tokenDictionary];
+        v13 = [tokenDictionary2 objectForKeyedSubscript:v11];
 
         v4 = [v10 stringByReplacingOccurrencesOfString:v11 withString:v13];
 
@@ -168,7 +168,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [tokenDictionary countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -182,33 +182,33 @@
 - (id)URLRepresentation
 {
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [(SHTokenizedURL *)self tokenizedURLString];
-  v4 = [v2 URLWithString:v3];
+  tokenizedURLString = [(SHTokenizedURL *)self tokenizedURLString];
+  v4 = [v2 URLWithString:tokenizedURLString];
 
   return v4;
 }
 
-- (BOOL)containsToken:(int64_t)a3
+- (BOOL)containsToken:(int64_t)token
 {
-  v5 = [(SHTokenizedURL *)self tokenizedURLString];
-  LOBYTE(a3) = [(SHTokenizedURL *)self path:v5 containsToken:a3];
+  tokenizedURLString = [(SHTokenizedURL *)self tokenizedURLString];
+  LOBYTE(token) = [(SHTokenizedURL *)self path:tokenizedURLString containsToken:token];
 
-  return a3;
+  return token;
 }
 
-- (BOOL)path:(id)a3 containsToken:(int64_t)a4
+- (BOOL)path:(id)path containsToken:(int64_t)token
 {
-  v5 = a3;
-  v6 = [objc_opt_class() tokenForTokenType:a4];
-  v7 = [v5 containsString:v6];
+  pathCopy = path;
+  v6 = [objc_opt_class() tokenForTokenType:token];
+  v7 = [pathCopy containsString:v6];
 
   return v7;
 }
 
 - (BOOL)containsTokens
 {
-  v3 = [(SHTokenizedURL *)self tokenizedURLString];
-  v4 = [v3 copy];
+  tokenizedURLString = [(SHTokenizedURL *)self tokenizedURLString];
+  v4 = [tokenizedURLString copy];
 
   if (![(SHTokenizedURL *)self path:v4 containsToken:0])
   {
@@ -233,20 +233,20 @@ LABEL_4:
 
 - (id)description
 {
-  v2 = [(SHTokenizedURL *)self URLRepresentation];
-  v3 = [v2 absoluteString];
+  uRLRepresentation = [(SHTokenizedURL *)self URLRepresentation];
+  absoluteString = [uRLRepresentation absoluteString];
 
-  return v3;
+  return absoluteString;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [SHTokenizedURL allocWithZone:?];
-  v6 = [(SHTokenizedURL *)self originalURLString];
-  v7 = [(SHTokenizedURL *)v5 initWithString:v6];
+  originalURLString = [(SHTokenizedURL *)self originalURLString];
+  v7 = [(SHTokenizedURL *)v5 initWithString:originalURLString];
 
-  v8 = [(SHTokenizedURL *)self tokenDictionary];
-  v9 = [v8 mutableCopyWithZone:a3];
+  tokenDictionary = [(SHTokenizedURL *)self tokenDictionary];
+  v9 = [tokenDictionary mutableCopyWithZone:zone];
   [(SHTokenizedURL *)v7 setTokenDictionary:v9];
 
   return v7;

@@ -1,16 +1,16 @@
 @interface MBManifestDBDownloadHelper
-- (id)fileHandleWithPath:(id)a3 flags:(int)a4 mode:(unsigned __int16)a5 error:(id *)a6;
+- (id)fileHandleWithPath:(id)path flags:(int)flags mode:(unsigned __int16)mode error:(id *)error;
 @end
 
 @implementation MBManifestDBDownloadHelper
 
-- (id)fileHandleWithPath:(id)a3 flags:(int)a4 mode:(unsigned __int16)a5 error:(id *)a6
+- (id)fileHandleWithPath:(id)path flags:(int)flags mode:(unsigned __int16)mode error:(id *)error
 {
   properties = self->_properties;
   keybag = self->_keybag;
-  v9 = a3;
-  v10 = [(MBProperties *)properties manifestEncryptionKey];
-  v11 = [MBEncryptedFileHandle encryptedFileHandleForRestoreWithPath:v9 keybag:keybag key:v10 error:a6];
+  pathCopy = path;
+  manifestEncryptionKey = [(MBProperties *)properties manifestEncryptionKey];
+  v11 = [MBEncryptedFileHandle encryptedFileHandleForRestoreWithPath:pathCopy keybag:keybag key:manifestEncryptionKey error:error];
 
   if (v11)
   {

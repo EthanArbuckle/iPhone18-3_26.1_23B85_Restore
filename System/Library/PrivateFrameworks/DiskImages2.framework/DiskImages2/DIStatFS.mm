@@ -1,49 +1,49 @@
 @interface DIStatFS
-- (DIStatFS)initWithCoder:(id)a3;
-- (DIStatFS)initWithFileDescriptor:(int)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)logWithHeader:(id)a3;
+- (DIStatFS)initWithCoder:(id)coder;
+- (DIStatFS)initWithFileDescriptor:(int)descriptor error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
+- (void)logWithHeader:(id)header;
 @end
 
 @implementation DIStatFS
 
-- (DIStatFS)initWithCoder:(id)a3
+- (DIStatFS)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = DIStatFS;
   v5 = [(DIStatFS *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mountedOnURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mountedOnURL"];
     mountedOnURL = v5->_mountedOnURL;
     v5->_mountedOnURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mountedFrom"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mountedFrom"];
     mountedFrom = v5->_mountedFrom;
     v5->_mountedFrom = v8;
 
-    v5->_blockSize = [v4 decodeIntegerForKey:@"blockSize"];
-    v5->_supportsBarrier = [v4 decodeBoolForKey:@"supportsBarrier"];
+    v5->_blockSize = [coderCopy decodeIntegerForKey:@"blockSize"];
+    v5->_supportsBarrier = [coderCopy decodeBoolForKey:@"supportsBarrier"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(DIStatFS *)self mountedOnURL];
-  [v6 encodeObject:v4 forKey:@"mountedOnURL"];
+  coderCopy = coder;
+  mountedOnURL = [(DIStatFS *)self mountedOnURL];
+  [coderCopy encodeObject:mountedOnURL forKey:@"mountedOnURL"];
 
-  v5 = [(DIStatFS *)self mountedFrom];
-  [v6 encodeObject:v5 forKey:@"mountedFrom"];
+  mountedFrom = [(DIStatFS *)self mountedFrom];
+  [coderCopy encodeObject:mountedFrom forKey:@"mountedFrom"];
 
-  [v6 encodeInteger:-[DIStatFS blockSize](self forKey:{"blockSize"), @"blockSize"}];
-  [v6 encodeBool:-[DIStatFS supportsBarrier](self forKey:{"supportsBarrier"), @"supportsBarrier"}];
+  [coderCopy encodeInteger:-[DIStatFS blockSize](self forKey:{"blockSize"), @"blockSize"}];
+  [coderCopy encodeBool:-[DIStatFS supportsBarrier](self forKey:{"supportsBarrier"), @"supportsBarrier"}];
 }
 
-- (DIStatFS)initWithFileDescriptor:(int)a3 error:(id *)a4
+- (DIStatFS)initWithFileDescriptor:(int)descriptor error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
   v29.receiver = self;
@@ -56,9 +56,9 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (fstatfs(a3, &v36) < 0)
+  if (fstatfs(descriptor, &v36) < 0)
   {
-    v21 = [DIError nilWithPOSIXCode:*__error() verboseInfo:@"fstatfs failed" error:a4];
+    v21 = [DIError nilWithPOSIXCode:*__error() verboseInfo:@"fstatfs failed" error:error];
 LABEL_24:
     v22 = v21;
     goto LABEL_25;
@@ -117,11 +117,11 @@ LABEL_16:
   }
 
   objc_storeStrong(&v6->_mountedFrom, v12);
-  v13 = [[DIIOMedia alloc] initWithDevName:v12 error:a4];
+  v13 = [[DIIOMedia alloc] initWithDevName:v12 error:error];
   v14 = v13;
   if (v13)
   {
-    v15 = [(DIIOMedia *)v13 copyBlockDeviceWithError:a4];
+    v15 = [(DIIOMedia *)v13 copyBlockDeviceWithError:error];
     if (v15)
     {
       v16 = [v15 copyPropertyWithClass:objc_opt_class() key:@"IOStorageFeatures"];
@@ -132,15 +132,15 @@ LABEL_16:
         v19 = v18;
         if (v18)
         {
-          v20 = [v18 BOOLValue];
+          bOOLValue = [v18 BOOLValue];
         }
 
         else
         {
-          v20 = 0;
+          bOOLValue = 0;
         }
 
-        v6->_supportsBarrier = v20;
+        v6->_supportsBarrier = bOOLValue;
       }
 
       goto LABEL_16;
@@ -154,24 +154,24 @@ LABEL_25:
   return v22;
 }
 
-- (void)logWithHeader:(id)a3
+- (void)logWithHeader:(id)header
 {
   v42 = *MEMORY[0x277D85DE8];
-  v27 = a3;
+  headerCopy = header;
   v6 = *__error();
   if (DIForwardLogs())
   {
     v7 = getDIOSLog();
     os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    v8 = [(DIStatFS *)self mountedOnURL];
-    v9 = [v8 path];
-    v10 = [(DIStatFS *)self blockSize];
-    v11 = [(DIStatFS *)self mountedFrom];
-    if (v11)
+    mountedOnURL = [(DIStatFS *)self mountedOnURL];
+    path = [mountedOnURL path];
+    blockSize = [(DIStatFS *)self blockSize];
+    mountedFrom = [(DIStatFS *)self mountedFrom];
+    if (mountedFrom)
     {
       v12 = MEMORY[0x277CCACA8];
-      v4 = [(DIStatFS *)self mountedFrom];
-      v13 = [v12 stringWithFormat:@"locally mounted from %@", v4];
+      mountedFrom2 = [(DIStatFS *)self mountedFrom];
+      v13 = [v12 stringWithFormat:@"locally mounted from %@", mountedFrom2];
     }
 
     else
@@ -179,29 +179,29 @@ LABEL_25:
       v13 = @"remote mount";
     }
 
-    v21 = [(DIStatFS *)self supportsBarrier];
+    supportsBarrier = [(DIStatFS *)self supportsBarrier];
     v29 = 26;
     v22 = @"not ";
     v30 = 2080;
     v31 = "[DIStatFS logWithHeader:]";
     *buf = 68159235;
     v32 = 2114;
-    if (v21)
+    if (supportsBarrier)
     {
       v22 = &stru_285C05C28;
     }
 
-    v33 = v27;
+    v33 = headerCopy;
     v34 = 2113;
-    v35 = v9;
+    v35 = path;
     v36 = 1024;
-    v37 = v10;
+    v37 = blockSize;
     v38 = 2114;
     v39 = v13;
     v40 = 2112;
     v41 = v22;
     v23 = _os_log_send_and_compose_impl();
-    if (v11)
+    if (mountedFrom)
     {
     }
 
@@ -217,15 +217,15 @@ LABEL_25:
     v14 = getDIOSLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(DIStatFS *)self mountedOnURL];
-      v16 = [v15 path];
-      v17 = [(DIStatFS *)self blockSize];
-      v18 = [(DIStatFS *)self mountedFrom];
-      if (v18)
+      mountedOnURL2 = [(DIStatFS *)self mountedOnURL];
+      path2 = [mountedOnURL2 path];
+      blockSize2 = [(DIStatFS *)self blockSize];
+      mountedFrom3 = [(DIStatFS *)self mountedFrom];
+      if (mountedFrom3)
       {
         v19 = MEMORY[0x277CCACA8];
-        v3 = [(DIStatFS *)self mountedFrom];
-        v20 = [v19 stringWithFormat:@"locally mounted from %@", v3];
+        mountedFrom4 = [(DIStatFS *)self mountedFrom];
+        v20 = [v19 stringWithFormat:@"locally mounted from %@", mountedFrom4];
       }
 
       else
@@ -233,29 +233,29 @@ LABEL_25:
         v20 = @"remote mount";
       }
 
-      v24 = [(DIStatFS *)self supportsBarrier];
+      supportsBarrier2 = [(DIStatFS *)self supportsBarrier];
       v29 = 26;
       v25 = @"not ";
       v30 = 2080;
       v31 = "[DIStatFS logWithHeader:]";
       *buf = 68159235;
       v32 = 2114;
-      if (v24)
+      if (supportsBarrier2)
       {
         v25 = &stru_285C05C28;
       }
 
-      v33 = v27;
+      v33 = headerCopy;
       v34 = 2113;
-      v35 = v16;
+      v35 = path2;
       v36 = 1024;
-      v37 = v17;
+      v37 = blockSize2;
       v38 = 2114;
       v39 = v20;
       v40 = 2112;
       v41 = v25;
       _os_log_impl(&dword_248DE0000, v14, OS_LOG_TYPE_DEFAULT, "%.*s: %{public}@: mounted on %{private}@, %u bytes block size, %{public}@, barriers %@supported", buf, 0x40u);
-      if (v18)
+      if (mountedFrom3)
       {
       }
     }

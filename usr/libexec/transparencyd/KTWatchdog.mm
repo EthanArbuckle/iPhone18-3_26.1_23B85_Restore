@@ -1,9 +1,9 @@
 @interface KTWatchdog
 - (NSString)description;
 - (_TtC13transparencyd10KTWatchdog)init;
-- (_TtC13transparencyd10KTWatchdog)initWithControl:(id)a3;
+- (_TtC13transparencyd10KTWatchdog)initWithControl:(id)control;
 - (id)checkWatchDogs;
-- (void)addWithNamed:(id)a3 watcher:(id)a4;
+- (void)addWithNamed:(id)named watcher:(id)watcher;
 - (void)resume;
 - (void)runWatchDog;
 - (void)stopWatchDog;
@@ -11,10 +11,10 @@
 
 @implementation KTWatchdog
 
-- (_TtC13transparencyd10KTWatchdog)initWithControl:(id)a3
+- (_TtC13transparencyd10KTWatchdog)initWithControl:(id)control
 {
   swift_unknownObjectRetain();
-  v4 = sub_100148600(a3);
+  v4 = sub_100148600(control);
   swift_unknownObjectRelease();
   return v4;
 }
@@ -22,7 +22,7 @@
 - (NSString)description
 {
   v2 = *((swift_isaMask & self->super.isa) + 0x88);
-  v3 = self;
+  selfCopy = self;
   v2();
   sub_100095820(&qword_100387898, &unk_1002DCBC0);
   sub_1000D29A4(&qword_1003878A0, &qword_100387898, &unk_1002DCBC0);
@@ -46,7 +46,7 @@
 - (void)resume
 {
   v2 = *((swift_isaMask & self->super.isa) + 0xB8);
-  v3 = self;
+  selfCopy = self;
   if (v2())
   {
 
@@ -55,24 +55,24 @@
 
   else
   {
-    (*((swift_isaMask & v3->super.isa) + 0xD8))();
+    (*((swift_isaMask & selfCopy->super.isa) + 0xD8))();
   }
 }
 
-- (void)addWithNamed:(id)a3 watcher:(id)a4
+- (void)addWithNamed:(id)named watcher:(id)watcher
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(watcher);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   v9 = swift_allocObject();
   *(v9 + 16) = v5;
-  v10 = self;
+  selfCopy = self;
   KTWatchdog.add(named:watcher:)(v6, v8, sub_100148F34, v9);
 }
 
 - (id)checkWatchDogs
 {
-  v2 = self;
+  selfCopy = self;
   sub_100146440();
 
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -82,14 +82,14 @@
 
 - (void)runWatchDog
 {
-  v2 = self;
+  selfCopy = self;
   sub_100146F90();
 }
 
 - (void)stopWatchDog
 {
   v2 = *((swift_isaMask & self->super.isa) + 0xB8);
-  v3 = self;
+  selfCopy = self;
   if (v2())
   {
     swift_getObjectType();

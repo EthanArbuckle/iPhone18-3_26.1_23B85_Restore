@@ -1,23 +1,23 @@
 @interface FSFNLUFeature
-- (FSFNLUFeature)initWithContent:(id)a3 dataVersion:(unsigned int)a4;
-- (FSFNLUFeature)initWithData:(id)a3 dataVersion:(unsigned int)a4;
+- (FSFNLUFeature)initWithContent:(id)content dataVersion:(unsigned int)version;
+- (FSFNLUFeature)initWithData:(id)data dataVersion:(unsigned int)version;
 - (id)content;
 - (id)interactionId;
 @end
 
 @implementation FSFNLUFeature
 
-- (FSFNLUFeature)initWithData:(id)a3 dataVersion:(unsigned int)a4
+- (FSFNLUFeature)initWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = FSFNLUFeature;
   v7 = [(FSFNLUFeature *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_dataVersion = a4;
-    v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v6 encoding:4];
+    v7->_dataVersion = version;
+    v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:dataCopy encoding:4];
     content = v8->_content;
     v8->_content = v9;
   }
@@ -25,9 +25,9 @@
   return v8;
 }
 
-- (FSFNLUFeature)initWithContent:(id)a3 dataVersion:(unsigned int)a4
+- (FSFNLUFeature)initWithContent:(id)content dataVersion:(unsigned int)version
 {
-  v7 = a3;
+  contentCopy = content;
   if (+[FSFUtils isSupportedPlatform])
   {
     v12.receiver = self;
@@ -36,21 +36,21 @@
     v9 = v8;
     if (v8)
     {
-      v8->_dataVersion = a4;
-      objc_storeStrong(&v8->_content, a3);
+      v8->_dataVersion = version;
+      objc_storeStrong(&v8->_content, content);
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"This method is not implemented for the current platform"];
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)content

@@ -1,15 +1,15 @@
 @interface WFVCalendarFormatter
-+ (id)ICSFromCalendarItems:(id)a3;
-+ (id)foldString:(id)a3 withOctetCount:(int64_t)a4;
-+ (id)hexColorFromCGColor:(CGColor *)a3;
-+ (id)stringRepresentationOfParticipant:(id)a3;
++ (id)ICSFromCalendarItems:(id)items;
++ (id)foldString:(id)string withOctetCount:(int64_t)count;
++ (id)hexColorFromCGColor:(CGColor *)color;
++ (id)stringRepresentationOfParticipant:(id)participant;
 @end
 
 @implementation WFVCalendarFormatter
 
-+ (id)hexColorFromCGColor:(CGColor *)a3
++ (id)hexColorFromCGColor:(CGColor *)color
 {
-  v3 = [MEMORY[0x277D79E20] colorWithCGColor:a3];
+  v3 = [MEMORY[0x277D79E20] colorWithCGColor:color];
   v6 = 0;
   v7 = 0.0;
   v8 = 0.0;
@@ -20,59 +20,59 @@
   return v4;
 }
 
-+ (id)stringRepresentationOfParticipant:(id)a3
++ (id)stringRepresentationOfParticipant:(id)participant
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAB68] string];
-  v5 = [v3 name];
+  participantCopy = participant;
+  string = [MEMORY[0x277CCAB68] string];
+  name = [participantCopy name];
 
-  if (v5)
+  if (name)
   {
-    v6 = [v3 name];
-    [v4 appendFormat:@";CN=%@", v6];
+    name2 = [participantCopy name];
+    [string appendFormat:@";CN=%@", name2];
   }
 
-  v7 = [v3 participantRole] - 1;
+  v7 = [participantCopy participantRole] - 1;
   if (v7 <= 3)
   {
-    [v4 appendFormat:@";ROLE=%@", off_278346A18[v7]];
+    [string appendFormat:@";ROLE=%@", off_278346A18[v7]];
   }
 
-  v8 = [v3 participantStatus] - 1;
+  v8 = [participantCopy participantStatus] - 1;
   if (v8 <= 6)
   {
-    [v4 appendFormat:@";PARTSTAT=%@", off_278346A38[v8]];
+    [string appendFormat:@";PARTSTAT=%@", off_278346A38[v8]];
   }
 
-  v9 = [v3 participantType];
-  if (v9 <= 4)
+  participantType = [participantCopy participantType];
+  if (participantType <= 4)
   {
-    [v4 appendFormat:@";CUTYPE=%@", off_278346A70[v9]];
+    [string appendFormat:@";CUTYPE=%@", off_278346A70[participantType]];
   }
 
-  v10 = [v3 URL];
+  v10 = [participantCopy URL];
 
   if (v10)
   {
-    v11 = [v3 URL];
-    v12 = [v11 absoluteString];
-    [v4 appendFormat:@":%@", v12];
+    v11 = [participantCopy URL];
+    absoluteString = [v11 absoluteString];
+    [string appendFormat:@":%@", absoluteString];
   }
 
-  return v4;
+  return string;
 }
 
-+ (id)foldString:(id)a3 withOctetCount:(int64_t)a4
++ (id)foldString:(id)string withOctetCount:(int64_t)count
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CCAB68] string];
-  v7 = [v5 dataUsingEncoding:4 allowLossyConversion:1];
+  stringCopy = string;
+  string = [MEMORY[0x277CCAB68] string];
+  v7 = [stringCopy dataUsingEncoding:4 allowLossyConversion:1];
   if ([v7 length])
   {
     v8 = 0;
     do
     {
-      v9 = a4 - (v8 > 0);
+      v9 = count - (v8 > 0);
       if (v9 + v8 > [v7 length])
       {
         v9 = [v7 length] - v8;
@@ -100,12 +100,12 @@
 
       if (v8)
       {
-        [v6 appendFormat:@"\r\n %@", v12];
+        [string appendFormat:@"\r\n %@", v12];
       }
 
       else
       {
-        [v6 appendString:v12];
+        [string appendString:v12];
       }
 
       v8 += v9;
@@ -114,23 +114,23 @@
     while (v8 < [v7 length]);
   }
 
-  v13 = v6;
+  v13 = string;
 LABEL_13:
 
   return v13;
 }
 
-+ (id)ICSFromCalendarItems:(id)a3
++ (id)ICSFromCalendarItems:(id)items
 {
   v158 = *MEMORY[0x277D85DE8];
-  v126 = a3;
-  v3 = [MEMORY[0x277CCAB68] string];
+  itemsCopy = items;
+  string = [MEMORY[0x277CCAB68] string];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __45__WFVCalendarFormatter_ICSFromCalendarItems___block_invoke;
   aBlock[3] = &unk_2783469A0;
-  v148 = a1;
-  v115 = v3;
+  selfCopy = self;
+  v115 = string;
   v147 = v115;
   v4 = _Block_copy(aBlock);
   v144[0] = MEMORY[0x277D85DD0];
@@ -142,16 +142,16 @@ LABEL_13:
   v5 = _Block_copy(v144);
   v5[2](v5, @"BEGIN", @"VCALENDAR");
   v5[2](v5, @"VERSION", @"2.0");
-  if ([v126 count])
+  if ([itemsCopy count])
   {
-    v6 = [v126 firstObject];
-    v7 = [v6 calendar];
+    firstObject = [itemsCopy firstObject];
+    calendar = [firstObject calendar];
 
     v142 = 0u;
     v143 = 0u;
     v140 = 0u;
     v141 = 0u;
-    v8 = v126;
+    v8 = itemsCopy;
     v9 = [(__CFString *)v8 countByEnumeratingWithState:&v140 objects:v157 count:16];
     if (v9)
     {
@@ -166,15 +166,15 @@ LABEL_13:
             objc_enumerationMutation(v8);
           }
 
-          v12 = [*(*(&v140 + 1) + 8 * v11) calendar];
-          v13 = [v12 calendarIdentifier];
-          v14 = [(__CFString *)v7 calendarIdentifier];
-          v15 = [v13 isEqualToString:v14];
+          calendar2 = [*(*(&v140 + 1) + 8 * v11) calendar];
+          calendarIdentifier = [calendar2 calendarIdentifier];
+          calendarIdentifier2 = [(__CFString *)calendar calendarIdentifier];
+          v15 = [calendarIdentifier isEqualToString:calendarIdentifier2];
 
           if (!v15)
           {
-            v17 = v7;
-            v7 = v8;
+            v17 = calendar;
+            calendar = v8;
             goto LABEL_13;
           }
 
@@ -192,12 +192,12 @@ LABEL_13:
       }
     }
 
-    if (v7)
+    if (calendar)
     {
-      v16 = [(__CFString *)v7 title];
-      v5[2](v5, @"X-WR-CALNAME", v16);
+      title = [(__CFString *)calendar title];
+      v5[2](v5, @"X-WR-CALNAME", title);
 
-      v17 = [a1 hexColorFromCGColor:{-[__CFString CGColor](v7, "CGColor")}];
+      v17 = [self hexColorFromCGColor:{-[__CFString CGColor](calendar, "CGColor")}];
       v5[2](v5, @"X-APPLE-CALENDAR-COLOR", v17);
 LABEL_13:
     }
@@ -207,7 +207,7 @@ LABEL_13:
   v139 = 0u;
   v136 = 0u;
   v137 = 0u;
-  obj = v126;
+  obj = itemsCopy;
   v119 = [obj countByEnumeratingWithState:&v136 objects:v156 count:16];
   if (v119)
   {
@@ -237,26 +237,26 @@ LABEL_13:
 
         v121 = v21;
         (v5[2])(v5, @"BEGIN");
-        v22 = [v122 title];
+        title2 = [v122 title];
 
-        if (v22)
+        if (title2)
         {
-          v23 = [v122 title];
-          v5[2](v5, @"SUMMARY", v23);
+          title3 = [v122 title];
+          v5[2](v5, @"SUMMARY", title3);
         }
 
         if ([v122 hasNotes])
         {
-          v24 = [v122 notes];
-          v5[2](v5, @"DESCRIPTION", v24);
+          notes = [v122 notes];
+          v5[2](v5, @"DESCRIPTION", notes);
         }
 
-        v25 = [v122 location];
+        location = [v122 location];
 
-        if (v25)
+        if (location)
         {
-          v26 = [v122 location];
-          v5[2](v5, @"LOCATION", v26);
+          location2 = [v122 location];
+          v5[2](v5, @"LOCATION", location2);
         }
 
         v27 = [v122 URL];
@@ -265,17 +265,17 @@ LABEL_13:
         {
           v28 = MEMORY[0x277CCACA8];
           v29 = [v122 URL];
-          v30 = [v29 absoluteString];
-          v31 = [v28 stringWithFormat:@"URLVALUE=URI:%@", v30];;
+          absoluteString = [v29 absoluteString];
+          v31 = [v28 stringWithFormat:@"URLVALUE=URI:%@", absoluteString];;
           (*(v127 + 2))(v127, v31);
         }
 
-        v32 = [v122 calendarItemExternalIdentifier];
+        calendarItemExternalIdentifier = [v122 calendarItemExternalIdentifier];
 
-        if (v32)
+        if (calendarItemExternalIdentifier)
         {
-          v33 = [v122 calendarItemExternalIdentifier];
-          v5[2](v5, @"UID", v33);
+          calendarItemExternalIdentifier2 = [v122 calendarItemExternalIdentifier];
+          v5[2](v5, @"UID", calendarItemExternalIdentifier2);
         }
 
         v124 = objc_alloc_init(MEMORY[0x277CCA968]);
@@ -286,26 +286,26 @@ LABEL_13:
         v35 = [MEMORY[0x277CBEBB0] timeZoneWithName:@"UTC"];
         [v124 setTimeZone:v35];
 
-        v36 = [v122 creationDate];
+        creationDate = [v122 creationDate];
 
-        if (v36)
+        if (creationDate)
         {
-          v37 = [v122 creationDate];
-          v38 = [v124 stringFromDate:v37];
+          creationDate2 = [v122 creationDate];
+          v38 = [v124 stringFromDate:creationDate2];
           v5[2](v5, @"CREATED", v38);
         }
 
-        v39 = [v122 lastModifiedDate];
+        lastModifiedDate = [v122 lastModifiedDate];
 
-        if (v39)
+        if (lastModifiedDate)
         {
-          v40 = [v122 lastModifiedDate];
-          v41 = [v124 stringFromDate:v40];
+          lastModifiedDate2 = [v122 lastModifiedDate];
+          v41 = [v124 stringFromDate:lastModifiedDate2];
           v5[2](v5, @"LAST-MODIFIED", v41);
         }
 
-        v42 = [MEMORY[0x277CBEAA8] date];
-        v43 = [v124 stringFromDate:v42];
+        date = [MEMORY[0x277CBEAA8] date];
+        v43 = [v124 stringFromDate:date];
         v5[2](v5, @"DTSTAMP", v43);
 
         if ([v122 hasAttendees])
@@ -314,8 +314,8 @@ LABEL_13:
           v135 = 0u;
           v132 = 0u;
           v133 = 0u;
-          v44 = [v122 attendees];
-          v45 = [v44 countByEnumeratingWithState:&v132 objects:v155 count:16];
+          attendees = [v122 attendees];
+          v45 = [attendees countByEnumeratingWithState:&v132 objects:v155 count:16];
           if (v45)
           {
             v46 = *v133;
@@ -326,11 +326,11 @@ LABEL_13:
               {
                 if (*v133 != v46)
                 {
-                  objc_enumerationMutation(v44);
+                  objc_enumerationMutation(attendees);
                 }
 
                 v48 = MEMORY[0x277CCACA8];
-                v49 = [a1 stringRepresentationOfParticipant:*(*(&v132 + 1) + 8 * v47)];
+                v49 = [self stringRepresentationOfParticipant:*(*(&v132 + 1) + 8 * v47)];
                 v50 = [v48 stringWithFormat:@"ATTENDEE%@", v49];
                 (*(v127 + 2))(v127, v50);
 
@@ -338,7 +338,7 @@ LABEL_13:
               }
 
               while (v45 != v47);
-              v45 = [v44 countByEnumeratingWithState:&v132 objects:v155 count:16];
+              v45 = [attendees countByEnumeratingWithState:&v132 objects:v155 count:16];
             }
 
             while (v45);
@@ -351,8 +351,8 @@ LABEL_13:
           v131 = 0u;
           v128 = 0u;
           v129 = 0u;
-          v123 = [v122 alarms];
-          v51 = [v123 countByEnumeratingWithState:&v128 objects:v154 count:16];
+          alarms = [v122 alarms];
+          v51 = [alarms countByEnumeratingWithState:&v128 objects:v154 count:16];
           if (v51)
           {
             v52 = *v129;
@@ -363,20 +363,20 @@ LABEL_13:
               {
                 if (*v129 != v52)
                 {
-                  objc_enumerationMutation(v123);
+                  objc_enumerationMutation(alarms);
                 }
 
                 v54 = *(*(&v128 + 1) + 8 * v53);
                 v5[2](v5, @"BEGIN", @"VALARM");
                 v5[2](v5, @"ACTION", @"DISPLAY");
                 v5[2](v5, @"DESCRIPTION", @"Reminder");
-                v55 = [v54 absoluteDate];
+                absoluteDate = [v54 absoluteDate];
 
-                if (v55)
+                if (absoluteDate)
                 {
                   v56 = MEMORY[0x277CCACA8];
-                  v57 = [v54 absoluteDate];
-                  v58 = [v124 stringFromDate:v57];
+                  absoluteDate2 = [v54 absoluteDate];
+                  v58 = [v124 stringFromDate:absoluteDate2];
                   v59 = [v56 stringWithFormat:@"TRIGGERVALUE=DATE-TIME:%@", v58];;
                   (*(v127 + 2))(v127, v59);
                 }
@@ -386,7 +386,7 @@ LABEL_13:
                   [v54 relativeOffset];
                   v61 = v60;
                   v62 = [MEMORY[0x277CCAB68] stringWithString:@"-P"];
-                  v57 = v62;
+                  absoluteDate2 = v62;
                   v63 = -v61;
                   if ((v63 + 86399) >= 0x2A2FF)
                   {
@@ -404,24 +404,24 @@ LABEL_13:
                   if (v70 < 0xFFFFFFFFFFFFE3E1 || v71 < 0xFFFFFF89 || v69)
                   {
                     v72 = v70 < 0xFFFFFFFFFFFFE3E1;
-                    [(__CFString *)v57 appendString:@"T"];
+                    [(__CFString *)absoluteDate2 appendString:@"T"];
                     if (v72)
                     {
-                      [(__CFString *)v57 appendFormat:@"%ldH", v65];
+                      [(__CFString *)absoluteDate2 appendFormat:@"%ldH", v65];
                     }
 
                     if (v71 <= 0xFFFFFF88)
                     {
-                      [(__CFString *)v57 appendFormat:@"%ldM", v68];
+                      [(__CFString *)absoluteDate2 appendFormat:@"%ldM", v68];
                     }
 
                     if (v69)
                     {
-                      [(__CFString *)v57 appendFormat:@"%ldS", v69];
+                      [(__CFString *)absoluteDate2 appendFormat:@"%ldS", v69];
                     }
                   }
 
-                  v5[2](v5, @"TRIGGER", v57);
+                  v5[2](v5, @"TRIGGER", absoluteDate2);
                 }
 
                 v5[2](v5, @"END", @"VALARM");
@@ -429,7 +429,7 @@ LABEL_13:
               }
 
               while (v51 != v53);
-              v51 = [v123 countByEnumeratingWithState:&v128 objects:v154 count:16];
+              v51 = [alarms countByEnumeratingWithState:&v128 objects:v154 count:16];
             }
 
             while (v51);
@@ -464,34 +464,34 @@ LABEL_13:
 
           v86 = v122;
           v87 = [MEMORY[0x277CBEA80] calendarWithIdentifier:v116];
-          v88 = [v86 startDateComponents];
+          startDateComponents = [v86 startDateComponents];
 
-          if (v88)
+          if (startDateComponents)
           {
-            v89 = [v86 startDateComponents];
-            v90 = [v87 dateFromComponents:v89];
+            startDateComponents2 = [v86 startDateComponents];
+            v90 = [v87 dateFromComponents:startDateComponents2];
 
             v91 = [v124 stringFromDate:v90];
             v5[2](v5, @"DTSTART", v91);
           }
 
-          v92 = [v86 dueDateComponents];
+          dueDateComponents = [v86 dueDateComponents];
 
-          if (v92)
+          if (dueDateComponents)
           {
-            v93 = [v86 dueDateComponents];
-            v94 = [v87 dateFromComponents:v93];
+            dueDateComponents2 = [v86 dueDateComponents];
+            v94 = [v87 dateFromComponents:dueDateComponents2];
 
             v95 = [v124 stringFromDate:v94];
             v5[2](v5, @"DUE", v95);
           }
 
-          v96 = [v86 completionDate];
+          completionDate = [v86 completionDate];
 
-          if (v96)
+          if (completionDate)
           {
-            v97 = [v86 completionDate];
-            v98 = [v124 stringFromDate:v97];
+            completionDate2 = [v86 completionDate];
+            v98 = [v124 stringFromDate:completionDate2];
             v5[2](v5, @"COMPLETED", v98);
           }
 
@@ -508,12 +508,12 @@ LABEL_13:
           [(__CFString *)v76 setDateFormat:@"yyyyMMdd"];
           v77 = objc_alloc_init(MEMORY[0x277CBEAB8]);
           [(__CFString *)v77 setDay:1];
-          v78 = [v75 startDate];
-          v79 = [(__CFString *)v76 stringFromDate:v78];
+          startDate = [v75 startDate];
+          v79 = [(__CFString *)v76 stringFromDate:startDate];
 
-          v80 = [MEMORY[0x277CBEA80] currentCalendar];
-          v81 = [v75 startDate];
-          v82 = [v80 dateByAddingComponents:v77 toDate:v81 options:0];
+          currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+          startDate2 = [v75 startDate];
+          v82 = [currentCalendar dateByAddingComponents:v77 toDate:startDate2 options:0];
           v83 = [(__CFString *)v76 stringFromDate:v82];
 
           v84 = [MEMORY[0x277CCACA8] stringWithFormat:@"DTSTARTVALUE=DATE:%@", v79];;
@@ -525,40 +525,40 @@ LABEL_13:
 
         else
         {
-          v100 = [v75 startDate];
-          if (!v100)
+          startDate3 = [v75 startDate];
+          if (!startDate3)
           {
             goto LABEL_84;
           }
 
-          v101 = [v75 endDate];
-          v102 = v101 == 0;
+          endDate = [v75 endDate];
+          v102 = endDate == 0;
 
           if (v102)
           {
             goto LABEL_84;
           }
 
-          v103 = [v75 startDate];
-          v76 = [v124 stringFromDate:v103];
+          startDate4 = [v75 startDate];
+          v76 = [v124 stringFromDate:startDate4];
 
-          v104 = [v75 endDate];
-          v77 = [v124 stringFromDate:v104];
+          endDate2 = [v75 endDate];
+          v77 = [v124 stringFromDate:endDate2];
 
           v5[2](v5, @"DTSTART", v76);
           v5[2](v5, @"DTEND", v77);
         }
 
 LABEL_84:
-        v105 = [v75 organizer];
+        organizer = [v75 organizer];
 
-        if (v105)
+        if (organizer)
         {
           v106 = MEMORY[0x277CCACA8];
-          v107 = [v75 organizer];
-          v108 = [a1 stringRepresentationOfParticipant:v107];
-          v109 = [v106 stringWithFormat:@"ORGANIZER%@", v108];
-          (*(v127 + 2))(v127, v109);
+          organizer2 = [v75 organizer];
+          v108 = [self stringRepresentationOfParticipant:organizer2];
+          v108 = [v106 stringWithFormat:@"ORGANIZER%@", v108];
+          (*(v127 + 2))(v127, v108);
         }
 
         v110 = [v75 status] - 1;
@@ -567,14 +567,14 @@ LABEL_84:
           v5[2](v5, @"STATUS", off_278346A00[v110]);
         }
 
-        v111 = [v75 availability];
-        if (!v111)
+        availability = [v75 availability];
+        if (!availability)
         {
           v112 = @"OPAQUE";
           goto LABEL_92;
         }
 
-        if (v111 == 1)
+        if (availability == 1)
         {
           v112 = @"TRANSPARENT";
 LABEL_92:

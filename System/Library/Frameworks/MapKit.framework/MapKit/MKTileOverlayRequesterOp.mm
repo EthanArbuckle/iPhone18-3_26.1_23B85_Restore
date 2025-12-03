@@ -1,7 +1,7 @@
 @interface MKTileOverlayRequesterOp
 - (MKTileOverlayRequesterOp)init;
 - (_MKOverlayTileRequester)delegate;
-- (uint64_t)setKey:(uint64_t)a3;
+- (uint64_t)setKey:(uint64_t)key;
 - (void)_cancel;
 - (void)_start;
 - (void)cancel;
@@ -17,9 +17,9 @@
   return WeakRetained;
 }
 
-- (uint64_t)setKey:(uint64_t)a3
+- (uint64_t)setKey:(uint64_t)key
 {
-  *(result + 8) = a3;
+  *(result + 8) = key;
   *(result + 16) = a4;
   return result;
 }
@@ -37,9 +37,9 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 isGeometryFlipped];
+    isGeometryFlipped = [v4 isGeometryFlipped];
     v7 = *&self->_key.var0;
-    if (v6)
+    if (isGeometryFlipped)
     {
       v8 = *&self->_key.var0 & 0x3F;
       v9 = *&self->_anon_c[1];
@@ -118,9 +118,9 @@
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 isGeometryFlipped];
+    isGeometryFlipped = [v5 isGeometryFlipped];
     v8 = *&self->_key.var0;
-    if (v7)
+    if (isGeometryFlipped)
     {
       v9 = *&self->_key.var0 & 0x3F;
       v10 = *&self->_anon_c[1];

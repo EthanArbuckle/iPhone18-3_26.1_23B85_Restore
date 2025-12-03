@@ -1,11 +1,11 @@
 @interface FCBundleSubscriptionLookUpEntryManager
 - (FCBundleSubscriptionLookUpEntry)bundleSubscriptionLookUpEntry;
-- (FCBundleSubscriptionLookUpEntryManager)initWithLocalStore:(id)a3;
-- (void)addBundleChannelIDs:(id)a3 bundleChannelIDsVersion:(id)a4 purchaseID:(id)a5 inTrialPeriod:(BOOL)a6 isPurchaser:(BOOL)a7 servicesBundlePurchaseID:(id)a8 isAmplifyUser:(BOOL)a9 initialPurchaseTimestamp:(id)a10 isPaidBundleViaOfferActivated:(BOOL)a11;
+- (FCBundleSubscriptionLookUpEntryManager)initWithLocalStore:(id)store;
+- (void)addBundleChannelIDs:(id)ds bundleChannelIDsVersion:(id)version purchaseID:(id)d inTrialPeriod:(BOOL)period isPurchaser:(BOOL)purchaser servicesBundlePurchaseID:(id)iD isAmplifyUser:(BOOL)user initialPurchaseTimestamp:(id)self0 isPaidBundleViaOfferActivated:(BOOL)self1;
 - (void)cleanupStaleExpiredEntry;
 - (void)loadLocalCachesFromStore;
-- (void)setBundleSubscriptionLookUpEntry:(id)a3;
-- (void)updateEntry:(id)a3;
+- (void)setBundleSubscriptionLookUpEntry:(id)entry;
+- (void)updateEntry:(id)entry;
 @end
 
 @implementation FCBundleSubscriptionLookUpEntryManager
@@ -18,14 +18,14 @@
   v10 = __Block_byref_object_copy__29;
   v11 = __Block_byref_object_dispose__29;
   v12 = 0;
-  v3 = [(FCBundleSubscriptionLookUpEntryManager *)self lock];
+  lock = [(FCBundleSubscriptionLookUpEntryManager *)self lock];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __71__FCBundleSubscriptionLookUpEntryManager_bundleSubscriptionLookUpEntry__block_invoke;
   v6[3] = &unk_1E7C37160;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performWithLockSync:v6];
+  [lock performWithLockSync:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -40,10 +40,10 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [(FCBundleSubscriptionLookUpEntryManager *)self localStore];
-  v4 = [v3 allKeys];
+  localStore = [(FCBundleSubscriptionLookUpEntryManager *)self localStore];
+  allKeys = [localStore allKeys];
 
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -54,13 +54,13 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
         objc_opt_class();
-        v10 = [(FCBundleSubscriptionLookUpEntryManager *)self localStore];
-        v11 = [v10 objectForKey:v9];
+        localStore2 = [(FCBundleSubscriptionLookUpEntryManager *)self localStore];
+        v11 = [localStore2 objectForKey:v9];
         if (v11)
         {
           if (objc_opt_isKindOfClass())
@@ -99,7 +99,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v17 objects:v23 count:16];
     }
 
     while (v6);
@@ -118,9 +118,9 @@ uint64_t __71__FCBundleSubscriptionLookUpEntryManager_bundleSubscriptionLookUpEn
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (FCBundleSubscriptionLookUpEntryManager)initWithLocalStore:(id)a3
+- (FCBundleSubscriptionLookUpEntryManager)initWithLocalStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = FCBundleSubscriptionLookUpEntryManager;
   v5 = [(FCBundleSubscriptionLookUpEntryManager *)&v9 init];
@@ -130,22 +130,22 @@ uint64_t __71__FCBundleSubscriptionLookUpEntryManager_bundleSubscriptionLookUpEn
     lock = v5->_lock;
     v5->_lock = v6;
 
-    [(FCBundleSubscriptionLookUpEntryManager *)v5 setLocalStore:v4];
+    [(FCBundleSubscriptionLookUpEntryManager *)v5 setLocalStore:storeCopy];
     [(FCBundleSubscriptionLookUpEntryManager *)v5 loadLocalCachesFromStore];
   }
 
   return v5;
 }
 
-- (void)addBundleChannelIDs:(id)a3 bundleChannelIDsVersion:(id)a4 purchaseID:(id)a5 inTrialPeriod:(BOOL)a6 isPurchaser:(BOOL)a7 servicesBundlePurchaseID:(id)a8 isAmplifyUser:(BOOL)a9 initialPurchaseTimestamp:(id)a10 isPaidBundleViaOfferActivated:(BOOL)a11
+- (void)addBundleChannelIDs:(id)ds bundleChannelIDsVersion:(id)version purchaseID:(id)d inTrialPeriod:(BOOL)period isPurchaser:(BOOL)purchaser servicesBundlePurchaseID:(id)iD isAmplifyUser:(BOOL)user initialPurchaseTimestamp:(id)self0 isPaidBundleViaOfferActivated:(BOOL)self1
 {
   v40 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a8;
-  v20 = a10;
-  if (!v18 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dsCopy = ds;
+  versionCopy = version;
+  dCopy = d;
+  iDCopy = iD;
+  timestampCopy = timestamp;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v27 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "purchaseID"];
     *buf = 136315906;
@@ -159,7 +159,7 @@ uint64_t __71__FCBundleSubscriptionLookUpEntryManager_bundleSubscriptionLookUpEn
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if (!v16 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!dsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "channelIDs"];
     *buf = 136315906;
@@ -173,51 +173,51 @@ uint64_t __71__FCBundleSubscriptionLookUpEntryManager_bundleSubscriptionLookUpEn
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v21 = [(FCBundleSubscriptionLookUpEntryManager *)self _bundleSubscriptionLookupEntryForPurchaseID:v18];
-  BYTE1(v30) = a11;
-  LOBYTE(v30) = a9;
-  BYTE2(v29) = a7;
-  BYTE1(v29) = a6;
+  v21 = [(FCBundleSubscriptionLookUpEntryManager *)self _bundleSubscriptionLookupEntryForPurchaseID:dCopy];
+  BYTE1(v30) = activated;
+  LOBYTE(v30) = user;
+  BYTE2(v29) = purchaser;
+  BYTE1(v29) = period;
   LOBYTE(v29) = 0;
-  v22 = [FCBundleSubscriptionLookUpEntry initWithEntryID:"initWithEntryID:bundleChannelIDs:bundleChannelIDsVersion:purchaseID:purchaseValidationState:dateOfExpiration:hasShownRenewalNotice:inTrialPeriod:isPurchaser:servicesBundlePurchaseID:isAmplifyUser:isPaidBundleViaOfferActivated:initialPurchaseTimestamp:" bundleChannelIDs:v21 bundleChannelIDsVersion:v16 purchaseID:v17 purchaseValidationState:v18 dateOfExpiration:0 hasShownRenewalNotice:0 inTrialPeriod:v29 isPurchaser:v19 servicesBundlePurchaseID:v30 isAmplifyUser:v20 isPaidBundleViaOfferActivated:? initialPurchaseTimestamp:?];
+  v22 = [FCBundleSubscriptionLookUpEntry initWithEntryID:"initWithEntryID:bundleChannelIDs:bundleChannelIDsVersion:purchaseID:purchaseValidationState:dateOfExpiration:hasShownRenewalNotice:inTrialPeriod:isPurchaser:servicesBundlePurchaseID:isAmplifyUser:isPaidBundleViaOfferActivated:initialPurchaseTimestamp:" bundleChannelIDs:v21 bundleChannelIDsVersion:dsCopy purchaseID:versionCopy purchaseValidationState:dCopy dateOfExpiration:0 hasShownRenewalNotice:0 inTrialPeriod:v29 isPurchaser:iDCopy servicesBundlePurchaseID:v30 isAmplifyUser:timestampCopy isPaidBundleViaOfferActivated:? initialPurchaseTimestamp:?];
   [(FCBundleSubscriptionLookUpEntryManager *)self setBundleSubscriptionLookUpEntry:v22];
-  v23 = [(FCBundleSubscriptionLookUpEntryManager *)self localStore];
-  v24 = [(FCBundleSubscriptionLookUpEntry *)v22 dictionaryRepresentation];
-  v25 = [(FCBundleSubscriptionLookUpEntry *)v22 identifier];
-  [v23 setObject:v24 forKey:v25];
+  localStore = [(FCBundleSubscriptionLookUpEntryManager *)self localStore];
+  dictionaryRepresentation = [(FCBundleSubscriptionLookUpEntry *)v22 dictionaryRepresentation];
+  identifier = [(FCBundleSubscriptionLookUpEntry *)v22 identifier];
+  [localStore setObject:dictionaryRepresentation forKey:identifier];
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateEntry:(id)a3
+- (void)updateEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  entryCopy = entry;
+  v5 = [entryCopy copy];
   [(FCBundleSubscriptionLookUpEntryManager *)self setBundleSubscriptionLookUpEntry:v5];
 
-  v8 = [(FCBundleSubscriptionLookUpEntryManager *)self localStore];
-  v6 = [v4 dictionaryRepresentation];
-  v7 = [v4 identifier];
+  localStore = [(FCBundleSubscriptionLookUpEntryManager *)self localStore];
+  dictionaryRepresentation = [entryCopy dictionaryRepresentation];
+  identifier = [entryCopy identifier];
 
-  [v8 setObject:v6 forKey:v7];
+  [localStore setObject:dictionaryRepresentation forKey:identifier];
 }
 
 - (void)cleanupStaleExpiredEntry
 {
-  v10 = [(FCBundleSubscriptionLookUpEntryManager *)self bundleSubscriptionLookUpEntry];
-  if ([v10 purchaseValidationState] == 1)
+  bundleSubscriptionLookUpEntry = [(FCBundleSubscriptionLookUpEntryManager *)self bundleSubscriptionLookUpEntry];
+  if ([bundleSubscriptionLookUpEntry purchaseValidationState] == 1)
   {
-    v3 = [(FCBundleSubscriptionLookUpEntryManager *)self bundleSubscriptionLookUpEntry];
-    v4 = [v3 dateOfExpiration];
-    v5 = [MEMORY[0x1E695DF00] date];
-    v6 = [v4 fc_isWithinTimeInterval:v5 ofDate:864000.0];
+    bundleSubscriptionLookUpEntry2 = [(FCBundleSubscriptionLookUpEntryManager *)self bundleSubscriptionLookUpEntry];
+    dateOfExpiration = [bundleSubscriptionLookUpEntry2 dateOfExpiration];
+    date = [MEMORY[0x1E695DF00] date];
+    v6 = [dateOfExpiration fc_isWithinTimeInterval:date ofDate:864000.0];
 
     if ((v6 & 1) == 0)
     {
-      v7 = [(FCBundleSubscriptionLookUpEntryManager *)self localStore];
-      v8 = [(FCBundleSubscriptionLookUpEntryManager *)self bundleSubscriptionLookUpEntry];
-      v9 = [v8 identifier];
-      [v7 removeObjectForKey:v9];
+      localStore = [(FCBundleSubscriptionLookUpEntryManager *)self localStore];
+      bundleSubscriptionLookUpEntry3 = [(FCBundleSubscriptionLookUpEntryManager *)self bundleSubscriptionLookUpEntry];
+      identifier = [bundleSubscriptionLookUpEntry3 identifier];
+      [localStore removeObjectForKey:identifier];
 
       [(FCBundleSubscriptionLookUpEntryManager *)self setBundleSubscriptionLookUpEntry:0];
     }
@@ -228,18 +228,18 @@ uint64_t __71__FCBundleSubscriptionLookUpEntryManager_bundleSubscriptionLookUpEn
   }
 }
 
-- (void)setBundleSubscriptionLookUpEntry:(id)a3
+- (void)setBundleSubscriptionLookUpEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [(FCBundleSubscriptionLookUpEntryManager *)self lock];
+  entryCopy = entry;
+  lock = [(FCBundleSubscriptionLookUpEntryManager *)self lock];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __75__FCBundleSubscriptionLookUpEntryManager_setBundleSubscriptionLookUpEntry___block_invoke;
   v7[3] = &unk_1E7C36C58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performWithLockSync:v7];
+  v8 = entryCopy;
+  v6 = entryCopy;
+  [lock performWithLockSync:v7];
 }
 
 @end

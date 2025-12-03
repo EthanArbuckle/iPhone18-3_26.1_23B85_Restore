@@ -1,30 +1,30 @@
 @interface PLUSSchemaPLUSTMDCGroundTruth
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLUSSchemaPLUSTMDCGroundTruth)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSTMDCGroundTruth)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PLUSSchemaPLUSTMDCGroundTruth)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSTMDCGroundTruth)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsCorrectionEligible:(BOOL)a3;
-- (void)setHasIsTTSMispronounced:(BOOL)a3;
-- (void)setHasIsTmdcPluginEnabled:(BOOL)a3;
-- (void)setHasSelfLogSource:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsCorrectionEligible:(BOOL)eligible;
+- (void)setHasIsTTSMispronounced:(BOOL)mispronounced;
+- (void)setHasIsTmdcPluginEnabled:(BOOL)enabled;
+- (void)setHasSelfLogSource:(BOOL)source;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSTMDCGroundTruth
 
-- (PLUSSchemaPLUSTMDCGroundTruth)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSTMDCGroundTruth)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = PLUSSchemaPLUSTMDCGroundTruth;
   v5 = [(PLUSSchemaPLUSTMDCGroundTruth *)&v33 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"groundTruthId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"groundTruthId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,7 +32,7 @@
       [(PLUSSchemaPLUSTMDCGroundTruth *)v5 setGroundTruthId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"asrRawRecognitionLinkId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"asrRawRecognitionLinkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       [(PLUSSchemaPLUSTMDCGroundTruth *)v5 setAsrRawRecognitionLinkId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"asrPostItnLinkId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"asrPostItnLinkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,7 +48,7 @@
       [(PLUSSchemaPLUSTMDCGroundTruth *)v5 setAsrPostItnLinkId:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"ttsCurrentPhonemes"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"ttsCurrentPhonemes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,7 +56,7 @@
       [(PLUSSchemaPLUSTMDCGroundTruth *)v5 setTtsCurrentPhonemes:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"phonemesToPhonemesDistance"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"phonemesToPhonemesDistance"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,14 +66,14 @@
 
     v30 = v14;
     v31 = v12;
-    v15 = [v4 objectForKeyedSubscript:@"isTTSMispronounced"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"isTTSMispronounced"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSTMDCGroundTruth setIsTTSMispronounced:](v5, "setIsTTSMispronounced:", [v15 BOOLValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:{@"ttsSuggestedPhonemes", v15}];
+    v16 = [dictionaryCopy objectForKeyedSubscript:{@"ttsSuggestedPhonemes", v15}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,7 +81,7 @@
       [(PLUSSchemaPLUSTMDCGroundTruth *)v5 setTtsSuggestedPhonemes:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"siriCurrentPronunciation"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"siriCurrentPronunciation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -90,7 +90,7 @@
     }
 
     v32 = v10;
-    v20 = [v4 objectForKeyedSubscript:@"correctedPronunciation"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"correctedPronunciation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -99,7 +99,7 @@
     }
 
     v22 = v8;
-    v23 = [v4 objectForKeyedSubscript:@"selfLogSource"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"selfLogSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -107,14 +107,14 @@
     }
 
     v24 = v6;
-    v25 = [v4 objectForKeyedSubscript:@"isTmdcPluginEnabled"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"isTmdcPluginEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSTMDCGroundTruth setIsTmdcPluginEnabled:](v5, "setIsTmdcPluginEnabled:", [v25 BOOLValue]);
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"isCorrectionEligible"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"isCorrectionEligible"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -127,30 +127,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSTMDCGroundTruth)initWithJSON:(id)a3
+- (PLUSSchemaPLUSTMDCGroundTruth)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSTMDCGroundTruth *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSTMDCGroundTruth *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSTMDCGroundTruth *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -163,68 +163,68 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_asrPostItnLinkId)
   {
-    v4 = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrPostItnLinkId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    asrPostItnLinkId = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrPostItnLinkId];
+    dictionaryRepresentation = [asrPostItnLinkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"asrPostItnLinkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"asrPostItnLinkId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"asrPostItnLinkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"asrPostItnLinkId"];
     }
   }
 
   if (self->_asrRawRecognitionLinkId)
   {
-    v7 = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrRawRecognitionLinkId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    asrRawRecognitionLinkId = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrRawRecognitionLinkId];
+    dictionaryRepresentation2 = [asrRawRecognitionLinkId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"asrRawRecognitionLinkId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"asrRawRecognitionLinkId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"asrRawRecognitionLinkId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"asrRawRecognitionLinkId"];
     }
   }
 
   if (self->_correctedPronunciation)
   {
-    v10 = [(PLUSSchemaPLUSTMDCGroundTruth *)self correctedPronunciation];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    correctedPronunciation = [(PLUSSchemaPLUSTMDCGroundTruth *)self correctedPronunciation];
+    dictionaryRepresentation3 = [correctedPronunciation dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"correctedPronunciation"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"correctedPronunciation"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"correctedPronunciation"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"correctedPronunciation"];
     }
   }
 
   if (self->_groundTruthId)
   {
-    v13 = [(PLUSSchemaPLUSTMDCGroundTruth *)self groundTruthId];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    groundTruthId = [(PLUSSchemaPLUSTMDCGroundTruth *)self groundTruthId];
+    dictionaryRepresentation4 = [groundTruthId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"groundTruthId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"groundTruthId"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"groundTruthId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"groundTruthId"];
     }
   }
 
@@ -232,7 +232,7 @@
   if ((v16 & 0x10) != 0)
   {
     v22 = [MEMORY[0x1E696AD98] numberWithBool:{-[PLUSSchemaPLUSTMDCGroundTruth isCorrectionEligible](self, "isCorrectionEligible")}];
-    [v3 setObject:v22 forKeyedSubscript:@"isCorrectionEligible"];
+    [dictionary setObject:v22 forKeyedSubscript:@"isCorrectionEligible"];
 
     v16 = *(&self->_isCorrectionEligible + 1);
     if ((v16 & 2) == 0)
@@ -253,7 +253,7 @@ LABEL_23:
   }
 
   v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[PLUSSchemaPLUSTMDCGroundTruth isTTSMispronounced](self, "isTTSMispronounced")}];
-  [v3 setObject:v23 forKeyedSubscript:@"isTTSMispronounced"];
+  [dictionary setObject:v23 forKeyedSubscript:@"isTTSMispronounced"];
 
   v16 = *(&self->_isCorrectionEligible + 1);
   if ((v16 & 8) == 0)
@@ -268,7 +268,7 @@ LABEL_38:
     v25 = MEMORY[0x1E696AD98];
     [(PLUSSchemaPLUSTMDCGroundTruth *)self phonemesToPhonemesDistance];
     v26 = [v25 numberWithDouble:?];
-    [v3 setObject:v26 forKeyedSubscript:@"phonemesToPhonemesDistance"];
+    [dictionary setObject:v26 forKeyedSubscript:@"phonemesToPhonemesDistance"];
 
     if ((*(&self->_isCorrectionEligible + 1) & 4) == 0)
     {
@@ -280,7 +280,7 @@ LABEL_38:
 
 LABEL_37:
   v24 = [MEMORY[0x1E696AD98] numberWithBool:{-[PLUSSchemaPLUSTMDCGroundTruth isTmdcPluginEnabled](self, "isTmdcPluginEnabled")}];
-  [v3 setObject:v24 forKeyedSubscript:@"isTmdcPluginEnabled"];
+  [dictionary setObject:v24 forKeyedSubscript:@"isTmdcPluginEnabled"];
 
   v16 = *(&self->_isCorrectionEligible + 1);
   if (v16)
@@ -295,14 +295,14 @@ LABEL_25:
   }
 
 LABEL_26:
-  v17 = [(PLUSSchemaPLUSTMDCGroundTruth *)self selfLogSource];
+  selfLogSource = [(PLUSSchemaPLUSTMDCGroundTruth *)self selfLogSource];
   v18 = @"PLUSTMDCSELFLOGSOURCE_UNKNOWN";
-  if (v17 == 1)
+  if (selfLogSource == 1)
   {
     v18 = @"PLUSTMDCSELFLOGSOURCE_CLIENT";
   }
 
-  if (v17 == 2)
+  if (selfLogSource == 2)
   {
     v19 = @"PLUSTMDCSELFLOGSOURCE_INTERNAL";
   }
@@ -312,41 +312,41 @@ LABEL_26:
     v19 = v18;
   }
 
-  [v3 setObject:v19 forKeyedSubscript:@"selfLogSource"];
+  [dictionary setObject:v19 forKeyedSubscript:@"selfLogSource"];
 LABEL_32:
   if (self->_siriCurrentPronunciation)
   {
-    v20 = [(PLUSSchemaPLUSTMDCGroundTruth *)self siriCurrentPronunciation];
-    v21 = [v20 dictionaryRepresentation];
-    if (v21)
+    siriCurrentPronunciation = [(PLUSSchemaPLUSTMDCGroundTruth *)self siriCurrentPronunciation];
+    dictionaryRepresentation5 = [siriCurrentPronunciation dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v21 forKeyedSubscript:@"siriCurrentPronunciation"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"siriCurrentPronunciation"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"siriCurrentPronunciation"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"siriCurrentPronunciation"];
     }
   }
 
   if (self->_ttsCurrentPhonemes)
   {
-    v28 = [(PLUSSchemaPLUSTMDCGroundTruth *)self ttsCurrentPhonemes];
-    v29 = [v28 copy];
-    [v3 setObject:v29 forKeyedSubscript:@"ttsCurrentPhonemes"];
+    ttsCurrentPhonemes = [(PLUSSchemaPLUSTMDCGroundTruth *)self ttsCurrentPhonemes];
+    v29 = [ttsCurrentPhonemes copy];
+    [dictionary setObject:v29 forKeyedSubscript:@"ttsCurrentPhonemes"];
   }
 
   if (self->_ttsSuggestedPhonemes)
   {
-    v30 = [(PLUSSchemaPLUSTMDCGroundTruth *)self ttsSuggestedPhonemes];
-    v31 = [v30 copy];
-    [v3 setObject:v31 forKeyedSubscript:@"ttsSuggestedPhonemes"];
+    ttsSuggestedPhonemes = [(PLUSSchemaPLUSTMDCGroundTruth *)self ttsSuggestedPhonemes];
+    v31 = [ttsSuggestedPhonemes copy];
+    [dictionary setObject:v31 forKeyedSubscript:@"ttsSuggestedPhonemes"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -439,28 +439,28 @@ LABEL_15:
   return v3 ^ v20 ^ v4 ^ v5 ^ v8 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_44;
   }
 
-  v5 = [(PLUSSchemaPLUSTMDCGroundTruth *)self groundTruthId];
-  v6 = [v4 groundTruthId];
-  if ((v5 != 0) == (v6 == 0))
+  groundTruthId = [(PLUSSchemaPLUSTMDCGroundTruth *)self groundTruthId];
+  groundTruthId2 = [equalCopy groundTruthId];
+  if ((groundTruthId != 0) == (groundTruthId2 == 0))
   {
     goto LABEL_43;
   }
 
-  v7 = [(PLUSSchemaPLUSTMDCGroundTruth *)self groundTruthId];
-  if (v7)
+  groundTruthId3 = [(PLUSSchemaPLUSTMDCGroundTruth *)self groundTruthId];
+  if (groundTruthId3)
   {
-    v8 = v7;
-    v9 = [(PLUSSchemaPLUSTMDCGroundTruth *)self groundTruthId];
-    v10 = [v4 groundTruthId];
-    v11 = [v9 isEqual:v10];
+    v8 = groundTruthId3;
+    groundTruthId4 = [(PLUSSchemaPLUSTMDCGroundTruth *)self groundTruthId];
+    groundTruthId5 = [equalCopy groundTruthId];
+    v11 = [groundTruthId4 isEqual:groundTruthId5];
 
     if (!v11)
     {
@@ -472,20 +472,20 @@ LABEL_15:
   {
   }
 
-  v5 = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrRawRecognitionLinkId];
-  v6 = [v4 asrRawRecognitionLinkId];
-  if ((v5 != 0) == (v6 == 0))
+  groundTruthId = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrRawRecognitionLinkId];
+  groundTruthId2 = [equalCopy asrRawRecognitionLinkId];
+  if ((groundTruthId != 0) == (groundTruthId2 == 0))
   {
     goto LABEL_43;
   }
 
-  v12 = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrRawRecognitionLinkId];
-  if (v12)
+  asrRawRecognitionLinkId = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrRawRecognitionLinkId];
+  if (asrRawRecognitionLinkId)
   {
-    v13 = v12;
-    v14 = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrRawRecognitionLinkId];
-    v15 = [v4 asrRawRecognitionLinkId];
-    v16 = [v14 isEqual:v15];
+    v13 = asrRawRecognitionLinkId;
+    asrRawRecognitionLinkId2 = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrRawRecognitionLinkId];
+    asrRawRecognitionLinkId3 = [equalCopy asrRawRecognitionLinkId];
+    v16 = [asrRawRecognitionLinkId2 isEqual:asrRawRecognitionLinkId3];
 
     if (!v16)
     {
@@ -497,20 +497,20 @@ LABEL_15:
   {
   }
 
-  v5 = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrPostItnLinkId];
-  v6 = [v4 asrPostItnLinkId];
-  if ((v5 != 0) == (v6 == 0))
+  groundTruthId = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrPostItnLinkId];
+  groundTruthId2 = [equalCopy asrPostItnLinkId];
+  if ((groundTruthId != 0) == (groundTruthId2 == 0))
   {
     goto LABEL_43;
   }
 
-  v17 = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrPostItnLinkId];
-  if (v17)
+  asrPostItnLinkId = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrPostItnLinkId];
+  if (asrPostItnLinkId)
   {
-    v18 = v17;
-    v19 = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrPostItnLinkId];
-    v20 = [v4 asrPostItnLinkId];
-    v21 = [v19 isEqual:v20];
+    v18 = asrPostItnLinkId;
+    asrPostItnLinkId2 = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrPostItnLinkId];
+    asrPostItnLinkId3 = [equalCopy asrPostItnLinkId];
+    v21 = [asrPostItnLinkId2 isEqual:asrPostItnLinkId3];
 
     if (!v21)
     {
@@ -522,20 +522,20 @@ LABEL_15:
   {
   }
 
-  v5 = [(PLUSSchemaPLUSTMDCGroundTruth *)self ttsCurrentPhonemes];
-  v6 = [v4 ttsCurrentPhonemes];
-  if ((v5 != 0) == (v6 == 0))
+  groundTruthId = [(PLUSSchemaPLUSTMDCGroundTruth *)self ttsCurrentPhonemes];
+  groundTruthId2 = [equalCopy ttsCurrentPhonemes];
+  if ((groundTruthId != 0) == (groundTruthId2 == 0))
   {
     goto LABEL_43;
   }
 
-  v22 = [(PLUSSchemaPLUSTMDCGroundTruth *)self ttsCurrentPhonemes];
-  if (v22)
+  ttsCurrentPhonemes = [(PLUSSchemaPLUSTMDCGroundTruth *)self ttsCurrentPhonemes];
+  if (ttsCurrentPhonemes)
   {
-    v23 = v22;
-    v24 = [(PLUSSchemaPLUSTMDCGroundTruth *)self ttsCurrentPhonemes];
-    v25 = [v4 ttsCurrentPhonemes];
-    v26 = [v24 isEqual:v25];
+    v23 = ttsCurrentPhonemes;
+    ttsCurrentPhonemes2 = [(PLUSSchemaPLUSTMDCGroundTruth *)self ttsCurrentPhonemes];
+    ttsCurrentPhonemes3 = [equalCopy ttsCurrentPhonemes];
+    v26 = [ttsCurrentPhonemes2 isEqual:ttsCurrentPhonemes3];
 
     if (!v26)
     {
@@ -548,7 +548,7 @@ LABEL_15:
   }
 
   v27 = *(&self->_isCorrectionEligible + 1);
-  v28 = v4[86];
+  v28 = equalCopy[86];
   if ((v27 & 1) != (v28 & 1))
   {
     goto LABEL_44;
@@ -557,14 +557,14 @@ LABEL_15:
   if (v27)
   {
     phonemesToPhonemesDistance = self->_phonemesToPhonemesDistance;
-    [v4 phonemesToPhonemesDistance];
+    [equalCopy phonemesToPhonemesDistance];
     if (phonemesToPhonemesDistance != v30)
     {
       goto LABEL_44;
     }
 
     v27 = *(&self->_isCorrectionEligible + 1);
-    v28 = v4[86];
+    v28 = equalCopy[86];
   }
 
   v31 = (v27 >> 1) & 1;
@@ -576,26 +576,26 @@ LABEL_15:
   if (v31)
   {
     isTTSMispronounced = self->_isTTSMispronounced;
-    if (isTTSMispronounced != [v4 isTTSMispronounced])
+    if (isTTSMispronounced != [equalCopy isTTSMispronounced])
     {
       goto LABEL_44;
     }
   }
 
-  v5 = [(PLUSSchemaPLUSTMDCGroundTruth *)self ttsSuggestedPhonemes];
-  v6 = [v4 ttsSuggestedPhonemes];
-  if ((v5 != 0) == (v6 == 0))
+  groundTruthId = [(PLUSSchemaPLUSTMDCGroundTruth *)self ttsSuggestedPhonemes];
+  groundTruthId2 = [equalCopy ttsSuggestedPhonemes];
+  if ((groundTruthId != 0) == (groundTruthId2 == 0))
   {
     goto LABEL_43;
   }
 
-  v33 = [(PLUSSchemaPLUSTMDCGroundTruth *)self ttsSuggestedPhonemes];
-  if (v33)
+  ttsSuggestedPhonemes = [(PLUSSchemaPLUSTMDCGroundTruth *)self ttsSuggestedPhonemes];
+  if (ttsSuggestedPhonemes)
   {
-    v34 = v33;
-    v35 = [(PLUSSchemaPLUSTMDCGroundTruth *)self ttsSuggestedPhonemes];
-    v36 = [v4 ttsSuggestedPhonemes];
-    v37 = [v35 isEqual:v36];
+    v34 = ttsSuggestedPhonemes;
+    ttsSuggestedPhonemes2 = [(PLUSSchemaPLUSTMDCGroundTruth *)self ttsSuggestedPhonemes];
+    ttsSuggestedPhonemes3 = [equalCopy ttsSuggestedPhonemes];
+    v37 = [ttsSuggestedPhonemes2 isEqual:ttsSuggestedPhonemes3];
 
     if (!v37)
     {
@@ -607,20 +607,20 @@ LABEL_15:
   {
   }
 
-  v5 = [(PLUSSchemaPLUSTMDCGroundTruth *)self siriCurrentPronunciation];
-  v6 = [v4 siriCurrentPronunciation];
-  if ((v5 != 0) == (v6 == 0))
+  groundTruthId = [(PLUSSchemaPLUSTMDCGroundTruth *)self siriCurrentPronunciation];
+  groundTruthId2 = [equalCopy siriCurrentPronunciation];
+  if ((groundTruthId != 0) == (groundTruthId2 == 0))
   {
     goto LABEL_43;
   }
 
-  v38 = [(PLUSSchemaPLUSTMDCGroundTruth *)self siriCurrentPronunciation];
-  if (v38)
+  siriCurrentPronunciation = [(PLUSSchemaPLUSTMDCGroundTruth *)self siriCurrentPronunciation];
+  if (siriCurrentPronunciation)
   {
-    v39 = v38;
-    v40 = [(PLUSSchemaPLUSTMDCGroundTruth *)self siriCurrentPronunciation];
-    v41 = [v4 siriCurrentPronunciation];
-    v42 = [v40 isEqual:v41];
+    v39 = siriCurrentPronunciation;
+    siriCurrentPronunciation2 = [(PLUSSchemaPLUSTMDCGroundTruth *)self siriCurrentPronunciation];
+    siriCurrentPronunciation3 = [equalCopy siriCurrentPronunciation];
+    v42 = [siriCurrentPronunciation2 isEqual:siriCurrentPronunciation3];
 
     if (!v42)
     {
@@ -632,22 +632,22 @@ LABEL_15:
   {
   }
 
-  v5 = [(PLUSSchemaPLUSTMDCGroundTruth *)self correctedPronunciation];
-  v6 = [v4 correctedPronunciation];
-  if ((v5 != 0) == (v6 == 0))
+  groundTruthId = [(PLUSSchemaPLUSTMDCGroundTruth *)self correctedPronunciation];
+  groundTruthId2 = [equalCopy correctedPronunciation];
+  if ((groundTruthId != 0) == (groundTruthId2 == 0))
   {
 LABEL_43:
 
     goto LABEL_44;
   }
 
-  v43 = [(PLUSSchemaPLUSTMDCGroundTruth *)self correctedPronunciation];
-  if (v43)
+  correctedPronunciation = [(PLUSSchemaPLUSTMDCGroundTruth *)self correctedPronunciation];
+  if (correctedPronunciation)
   {
-    v44 = v43;
-    v45 = [(PLUSSchemaPLUSTMDCGroundTruth *)self correctedPronunciation];
-    v46 = [v4 correctedPronunciation];
-    v47 = [v45 isEqual:v46];
+    v44 = correctedPronunciation;
+    correctedPronunciation2 = [(PLUSSchemaPLUSTMDCGroundTruth *)self correctedPronunciation];
+    correctedPronunciation3 = [equalCopy correctedPronunciation];
+    v47 = [correctedPronunciation2 isEqual:correctedPronunciation3];
 
     if (!v47)
     {
@@ -661,19 +661,19 @@ LABEL_43:
 
   v50 = *(&self->_isCorrectionEligible + 1);
   v51 = (v50 >> 2) & 1;
-  v52 = v4[86];
+  v52 = equalCopy[86];
   if (v51 == ((v52 >> 2) & 1))
   {
     if (v51)
     {
       selfLogSource = self->_selfLogSource;
-      if (selfLogSource != [v4 selfLogSource])
+      if (selfLogSource != [equalCopy selfLogSource])
       {
         goto LABEL_44;
       }
 
       v50 = *(&self->_isCorrectionEligible + 1);
-      v52 = v4[86];
+      v52 = equalCopy[86];
     }
 
     v54 = (v50 >> 3) & 1;
@@ -682,19 +682,19 @@ LABEL_43:
       if (v54)
       {
         isTmdcPluginEnabled = self->_isTmdcPluginEnabled;
-        if (isTmdcPluginEnabled != [v4 isTmdcPluginEnabled])
+        if (isTmdcPluginEnabled != [equalCopy isTmdcPluginEnabled])
         {
           goto LABEL_44;
         }
 
         v50 = *(&self->_isCorrectionEligible + 1);
-        v52 = v4[86];
+        v52 = equalCopy[86];
       }
 
       v56 = (v50 >> 4) & 1;
       if (v56 == ((v52 >> 4) & 1))
       {
-        if (!v56 || (isCorrectionEligible = self->_isCorrectionEligible, isCorrectionEligible == [v4 isCorrectionEligible]))
+        if (!v56 || (isCorrectionEligible = self->_isCorrectionEligible, isCorrectionEligible == [equalCopy isCorrectionEligible]))
         {
           v48 = 1;
           goto LABEL_45;
@@ -710,36 +710,36 @@ LABEL_45:
   return v48;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v19 = a3;
-  v4 = [(PLUSSchemaPLUSTMDCGroundTruth *)self groundTruthId];
+  toCopy = to;
+  groundTruthId = [(PLUSSchemaPLUSTMDCGroundTruth *)self groundTruthId];
 
-  if (v4)
+  if (groundTruthId)
   {
-    v5 = [(PLUSSchemaPLUSTMDCGroundTruth *)self groundTruthId];
+    groundTruthId2 = [(PLUSSchemaPLUSTMDCGroundTruth *)self groundTruthId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrRawRecognitionLinkId];
+  asrRawRecognitionLinkId = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrRawRecognitionLinkId];
 
-  if (v6)
+  if (asrRawRecognitionLinkId)
   {
-    v7 = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrRawRecognitionLinkId];
+    asrRawRecognitionLinkId2 = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrRawRecognitionLinkId];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrPostItnLinkId];
+  asrPostItnLinkId = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrPostItnLinkId];
 
-  if (v8)
+  if (asrPostItnLinkId)
   {
-    v9 = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrPostItnLinkId];
+    asrPostItnLinkId2 = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrPostItnLinkId];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(PLUSSchemaPLUSTMDCGroundTruth *)self ttsCurrentPhonemes];
+  ttsCurrentPhonemes = [(PLUSSchemaPLUSTMDCGroundTruth *)self ttsCurrentPhonemes];
 
-  if (v10)
+  if (ttsCurrentPhonemes)
   {
     PBDataWriterWriteStringField();
   }
@@ -756,26 +756,26 @@ LABEL_45:
     PBDataWriterWriteBOOLField();
   }
 
-  v12 = [(PLUSSchemaPLUSTMDCGroundTruth *)self ttsSuggestedPhonemes];
+  ttsSuggestedPhonemes = [(PLUSSchemaPLUSTMDCGroundTruth *)self ttsSuggestedPhonemes];
 
-  if (v12)
+  if (ttsSuggestedPhonemes)
   {
     PBDataWriterWriteStringField();
   }
 
-  v13 = [(PLUSSchemaPLUSTMDCGroundTruth *)self siriCurrentPronunciation];
+  siriCurrentPronunciation = [(PLUSSchemaPLUSTMDCGroundTruth *)self siriCurrentPronunciation];
 
-  if (v13)
+  if (siriCurrentPronunciation)
   {
-    v14 = [(PLUSSchemaPLUSTMDCGroundTruth *)self siriCurrentPronunciation];
+    siriCurrentPronunciation2 = [(PLUSSchemaPLUSTMDCGroundTruth *)self siriCurrentPronunciation];
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(PLUSSchemaPLUSTMDCGroundTruth *)self correctedPronunciation];
+  correctedPronunciation = [(PLUSSchemaPLUSTMDCGroundTruth *)self correctedPronunciation];
 
-  if (v15)
+  if (correctedPronunciation)
   {
-    v16 = [(PLUSSchemaPLUSTMDCGroundTruth *)self correctedPronunciation];
+    correctedPronunciation2 = [(PLUSSchemaPLUSTMDCGroundTruth *)self correctedPronunciation];
     PBDataWriterWriteSubmessage();
   }
 
@@ -786,24 +786,24 @@ LABEL_45:
     v17 = *(&self->_isCorrectionEligible + 1);
   }
 
-  v18 = v19;
+  v18 = toCopy;
   if ((v17 & 8) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v18 = v19;
+    v18 = toCopy;
     v17 = *(&self->_isCorrectionEligible + 1);
   }
 
   if ((v17 & 0x10) != 0)
   {
     PBDataWriterWriteBOOLField();
-    v18 = v19;
+    v18 = toCopy;
   }
 }
 
-- (void)setHasIsCorrectionEligible:(BOOL)a3
+- (void)setHasIsCorrectionEligible:(BOOL)eligible
 {
-  if (a3)
+  if (eligible)
   {
     v3 = 16;
   }
@@ -816,9 +816,9 @@ LABEL_45:
   *(&self->_isCorrectionEligible + 1) = *(&self->_isCorrectionEligible + 1) & 0xEF | v3;
 }
 
-- (void)setHasIsTmdcPluginEnabled:(BOOL)a3
+- (void)setHasIsTmdcPluginEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 8;
   }
@@ -831,9 +831,9 @@ LABEL_45:
   *(&self->_isCorrectionEligible + 1) = *(&self->_isCorrectionEligible + 1) & 0xF7 | v3;
 }
 
-- (void)setHasSelfLogSource:(BOOL)a3
+- (void)setHasSelfLogSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 4;
   }
@@ -846,9 +846,9 @@ LABEL_45:
   *(&self->_isCorrectionEligible + 1) = *(&self->_isCorrectionEligible + 1) & 0xFB | v3;
 }
 
-- (void)setHasIsTTSMispronounced:(BOOL)a3
+- (void)setHasIsTTSMispronounced:(BOOL)mispronounced
 {
-  if (a3)
+  if (mispronounced)
   {
     v3 = 2;
   }
@@ -861,83 +861,83 @@ LABEL_45:
   *(&self->_isCorrectionEligible + 1) = *(&self->_isCorrectionEligible + 1) & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v22.receiver = self;
   v22.super_class = PLUSSchemaPLUSTMDCGroundTruth;
-  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v22 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(PLUSSchemaPLUSTMDCGroundTruth *)self deleteTtsCurrentPhonemes];
     [(PLUSSchemaPLUSTMDCGroundTruth *)self deleteTtsSuggestedPhonemes];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(PLUSSchemaPLUSTMDCGroundTruth *)self deleteTtsCurrentPhonemes];
     [(PLUSSchemaPLUSTMDCGroundTruth *)self deleteTtsSuggestedPhonemes];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(PLUSSchemaPLUSTMDCGroundTruth *)self deleteTtsCurrentPhonemes];
     [(PLUSSchemaPLUSTMDCGroundTruth *)self deleteTtsSuggestedPhonemes];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(PLUSSchemaPLUSTMDCGroundTruth *)self deleteTtsCurrentPhonemes];
     [(PLUSSchemaPLUSTMDCGroundTruth *)self deleteTtsSuggestedPhonemes];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(PLUSSchemaPLUSTMDCGroundTruth *)self deleteTtsCurrentPhonemes];
     [(PLUSSchemaPLUSTMDCGroundTruth *)self deleteTtsSuggestedPhonemes];
   }
 
-  v6 = [(PLUSSchemaPLUSTMDCGroundTruth *)self groundTruthId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  groundTruthId = [(PLUSSchemaPLUSTMDCGroundTruth *)self groundTruthId];
+  v7 = [groundTruthId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PLUSSchemaPLUSTMDCGroundTruth *)self deleteGroundTruthId];
   }
 
-  v9 = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrRawRecognitionLinkId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  asrRawRecognitionLinkId = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrRawRecognitionLinkId];
+  v10 = [asrRawRecognitionLinkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PLUSSchemaPLUSTMDCGroundTruth *)self deleteAsrRawRecognitionLinkId];
   }
 
-  v12 = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrPostItnLinkId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  asrPostItnLinkId = [(PLUSSchemaPLUSTMDCGroundTruth *)self asrPostItnLinkId];
+  v13 = [asrPostItnLinkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PLUSSchemaPLUSTMDCGroundTruth *)self deleteAsrPostItnLinkId];
   }
 
-  v15 = [(PLUSSchemaPLUSTMDCGroundTruth *)self siriCurrentPronunciation];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  siriCurrentPronunciation = [(PLUSSchemaPLUSTMDCGroundTruth *)self siriCurrentPronunciation];
+  v16 = [siriCurrentPronunciation applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(PLUSSchemaPLUSTMDCGroundTruth *)self deleteSiriCurrentPronunciation];
   }
 
-  v18 = [(PLUSSchemaPLUSTMDCGroundTruth *)self correctedPronunciation];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  correctedPronunciation = [(PLUSSchemaPLUSTMDCGroundTruth *)self correctedPronunciation];
+  v19 = [correctedPronunciation applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(PLUSSchemaPLUSTMDCGroundTruth *)self deleteCorrectedPronunciation];
   }

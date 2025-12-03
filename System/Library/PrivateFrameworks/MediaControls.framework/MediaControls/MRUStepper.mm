@@ -1,28 +1,28 @@
 @interface MRUStepper
-- (MRUStepper)initWithFrame:(CGRect)a3;
+- (MRUStepper)initWithFrame:(CGRect)frame;
 - (MRUStepperDelegate)delegate;
-- (void)decreaseButtonHoldBegan:(id)a3;
-- (void)decreaseButtonHoldReleased:(id)a3;
-- (void)decreaseTouchUpInside:(id)a3;
-- (void)increaseButtonHoldBegan:(id)a3;
-- (void)increaseButtonHoldReleased:(id)a3;
-- (void)increaseTouchUpInside:(id)a3;
+- (void)decreaseButtonHoldBegan:(id)began;
+- (void)decreaseButtonHoldReleased:(id)released;
+- (void)decreaseTouchUpInside:(id)inside;
+- (void)increaseButtonHoldBegan:(id)began;
+- (void)increaseButtonHoldReleased:(id)released;
+- (void)increaseTouchUpInside:(id)inside;
 - (void)layoutSubviews;
-- (void)setDecrementImage:(id)a3;
-- (void)setIncrementImage:(id)a3;
-- (void)setPreferredSymbolConfiguration:(id)a3;
-- (void)setStylingProvider:(id)a3;
+- (void)setDecrementImage:(id)image;
+- (void)setIncrementImage:(id)image;
+- (void)setPreferredSymbolConfiguration:(id)configuration;
+- (void)setStylingProvider:(id)provider;
 - (void)updateVisualStyling;
 @end
 
 @implementation MRUStepper
 
-- (MRUStepper)initWithFrame:(CGRect)a3
+- (MRUStepper)initWithFrame:(CGRect)frame
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = MRUStepper;
-  v3 = [(MRUStepper *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUStepper *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
@@ -41,8 +41,8 @@
 
     [(MRUTransportButton *)v3->_decrementButton setShowHighlightCircle:0];
     [(MRUTransportButton *)v3->_decrementButton setPointerStyle:1];
-    v10 = [(MRUTransportButton *)v3->_decrementButton imageView];
-    [v10 setContentMode:1];
+    imageView = [(MRUTransportButton *)v3->_decrementButton imageView];
+    [imageView setContentMode:1];
 
     [(MRUTransportButton *)v3->_decrementButton addTarget:v3 action:sel_decreaseTouchUpInside_ forControlEvents:64];
     [(MRUTransportButton *)v3->_decrementButton addTarget:v3 action:sel_decreaseButtonHoldBegan_ forControlEvents:0x1000000];
@@ -54,8 +54,8 @@
 
     [(MRUTransportButton *)v3->_incrementButton setShowHighlightCircle:0];
     [(MRUTransportButton *)v3->_incrementButton setPointerStyle:1];
-    v13 = [(MRUTransportButton *)v3->_incrementButton imageView];
-    [v13 setContentMode:1];
+    imageView2 = [(MRUTransportButton *)v3->_incrementButton imageView];
+    [imageView2 setContentMode:1];
 
     [(MRUTransportButton *)v3->_incrementButton addTarget:v3 action:sel_increaseTouchUpInside_ forControlEvents:64];
     [(MRUTransportButton *)v3->_incrementButton addTarget:v3 action:sel_increaseButtonHoldBegan_ forControlEvents:0x1000000];
@@ -142,43 +142,43 @@
   [(UIView *)self->_incrementBackground _setContinuousCornerRadius:CGRectGetHeight(v26) * 0.5];
 }
 
-- (void)setDecrementImage:(id)a3
+- (void)setDecrementImage:(id)image
 {
-  objc_storeStrong(&self->_decrementImage, a3);
-  v5 = a3;
-  [(MRUTransportButton *)self->_decrementButton setImage:v5 forState:0];
+  objc_storeStrong(&self->_decrementImage, image);
+  imageCopy = image;
+  [(MRUTransportButton *)self->_decrementButton setImage:imageCopy forState:0];
 }
 
-- (void)setIncrementImage:(id)a3
+- (void)setIncrementImage:(id)image
 {
-  objc_storeStrong(&self->_incrementImage, a3);
-  v5 = a3;
-  [(MRUTransportButton *)self->_incrementButton setImage:v5 forState:0];
+  objc_storeStrong(&self->_incrementImage, image);
+  imageCopy = image;
+  [(MRUTransportButton *)self->_incrementButton setImage:imageCopy forState:0];
 }
 
-- (void)setPreferredSymbolConfiguration:(id)a3
+- (void)setPreferredSymbolConfiguration:(id)configuration
 {
-  objc_storeStrong(&self->_preferredSymbolConfiguration, a3);
-  v5 = a3;
-  [(MRUTransportButton *)self->_incrementButton setPreferredSymbolConfiguration:v5 forImageInState:0];
-  [(MRUTransportButton *)self->_decrementButton setPreferredSymbolConfiguration:v5 forImageInState:0];
+  objc_storeStrong(&self->_preferredSymbolConfiguration, configuration);
+  configurationCopy = configuration;
+  [(MRUTransportButton *)self->_incrementButton setPreferredSymbolConfiguration:configurationCopy forImageInState:0];
+  [(MRUTransportButton *)self->_decrementButton setPreferredSymbolConfiguration:configurationCopy forImageInState:0];
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUStepper *)self updateVisualStyling];
     [(MRUTransportButton *)self->_incrementButton setStylingProvider:v6];
     [(MRUTransportButton *)self->_decrementButton setStylingProvider:v6];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)decreaseTouchUpInside:(id)a3
+- (void)decreaseTouchUpInside:(id)inside
 {
   if (![(MPButton *)self->_decrementButton isHolding])
   {
@@ -187,7 +187,7 @@
   }
 }
 
-- (void)decreaseButtonHoldBegan:(id)a3
+- (void)decreaseButtonHoldBegan:(id)began
 {
   if (objc_opt_respondsToSelector())
   {
@@ -196,7 +196,7 @@
   }
 }
 
-- (void)decreaseButtonHoldReleased:(id)a3
+- (void)decreaseButtonHoldReleased:(id)released
 {
   if ([(MPButton *)self->_decrementButton isHolding]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -205,7 +205,7 @@
   }
 }
 
-- (void)increaseTouchUpInside:(id)a3
+- (void)increaseTouchUpInside:(id)inside
 {
   if (![(MPButton *)self->_incrementButton isHolding])
   {
@@ -214,7 +214,7 @@
   }
 }
 
-- (void)increaseButtonHoldBegan:(id)a3
+- (void)increaseButtonHoldBegan:(id)began
 {
   if ([(MPButton *)self->_incrementButton isHolding]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -223,7 +223,7 @@
   }
 }
 
-- (void)increaseButtonHoldReleased:(id)a3
+- (void)increaseButtonHoldReleased:(id)released
 {
   if ([(MPButton *)self->_incrementButton isHolding]&& (objc_opt_respondsToSelector() & 1) != 0)
   {
@@ -236,13 +236,13 @@
 {
   stylingProvider = self->_stylingProvider;
   decrementBackground = self->_decrementBackground;
-  v5 = [(MRUStepper *)self traitCollection];
-  [(MRUVisualStylingProvider *)stylingProvider applyStyle:2 toView:decrementBackground traitCollection:v5];
+  traitCollection = [(MRUStepper *)self traitCollection];
+  [(MRUVisualStylingProvider *)stylingProvider applyStyle:2 toView:decrementBackground traitCollection:traitCollection];
 
   v6 = self->_stylingProvider;
   incrementBackground = self->_incrementBackground;
-  v8 = [(MRUStepper *)self traitCollection];
-  [(MRUVisualStylingProvider *)v6 applyStyle:2 toView:incrementBackground traitCollection:v8];
+  traitCollection2 = [(MRUStepper *)self traitCollection];
+  [(MRUVisualStylingProvider *)v6 applyStyle:2 toView:incrementBackground traitCollection:traitCollection2];
 }
 
 - (MRUStepperDelegate)delegate

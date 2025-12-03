@@ -1,6 +1,6 @@
 @interface ISPlayerContent
-- (BOOL)isEqual:(id)a3;
-- (ISPlayerContent)initWithPhoto:(CGImage *)a3 photoIsOriginal:(BOOL)a4 photoEXIFOrientation:(int)a5 photoTime:(id *)a6 videoDuration:(id *)a7 photoHasColorAdjustments:(BOOL)a8 videoPlayerItem:(id)a9 variationIdentifier:(id)a10 supportsVitality:(BOOL)a11;
+- (BOOL)isEqual:(id)equal;
+- (ISPlayerContent)initWithPhoto:(CGImage *)photo photoIsOriginal:(BOOL)original photoEXIFOrientation:(int)orientation photoTime:(id *)time videoDuration:(id *)duration photoHasColorAdjustments:(BOOL)adjustments videoPlayerItem:(id)item variationIdentifier:(id)self0 supportsVitality:(BOOL)self1;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
@@ -19,13 +19,13 @@
   return &v6[[(NSNumber *)self->_variationIdentifier hash]+ self->_supportsVitality + v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = equalCopy;
     photo = self->_photo;
     if (photo != [v6 photo])
     {
@@ -53,8 +53,8 @@ LABEL_9:
     }
 
     videoPlayerItem = self->_videoPlayerItem;
-    v11 = [v6 videoPlayerItem];
-    if (videoPlayerItem != v11)
+    videoPlayerItem = [v6 videoPlayerItem];
+    if (videoPlayerItem != videoPlayerItem)
     {
       goto LABEL_21;
     }
@@ -86,12 +86,12 @@ LABEL_22:
     }
 
     variationIdentifier = self->_variationIdentifier;
-    v15 = [v6 variationIdentifier];
-    if (variationIdentifier == v15 || (v16 = self->_variationIdentifier, [v6 variationIdentifier], v3 = objc_claimAutoreleasedReturnValue(), -[NSNumber isEqual:](v16, "isEqual:", v3)))
+    variationIdentifier = [v6 variationIdentifier];
+    if (variationIdentifier == variationIdentifier || (v16 = self->_variationIdentifier, [v6 variationIdentifier], v3 = objc_claimAutoreleasedReturnValue(), -[NSNumber isEqual:](v16, "isEqual:", v3)))
     {
       supportsVitality = self->_supportsVitality;
       v8 = supportsVitality == [v6 supportsVitality];
-      if (variationIdentifier == v15)
+      if (variationIdentifier == variationIdentifier)
       {
 LABEL_25:
 
@@ -124,28 +124,28 @@ LABEL_10:
   [(ISPlayerContent *)&v4 dealloc];
 }
 
-- (ISPlayerContent)initWithPhoto:(CGImage *)a3 photoIsOriginal:(BOOL)a4 photoEXIFOrientation:(int)a5 photoTime:(id *)a6 videoDuration:(id *)a7 photoHasColorAdjustments:(BOOL)a8 videoPlayerItem:(id)a9 variationIdentifier:(id)a10 supportsVitality:(BOOL)a11
+- (ISPlayerContent)initWithPhoto:(CGImage *)photo photoIsOriginal:(BOOL)original photoEXIFOrientation:(int)orientation photoTime:(id *)time videoDuration:(id *)duration photoHasColorAdjustments:(BOOL)adjustments videoPlayerItem:(id)item variationIdentifier:(id)self0 supportsVitality:(BOOL)self1
 {
-  v17 = a9;
-  v18 = a10;
+  itemCopy = item;
+  identifierCopy = identifier;
   v24.receiver = self;
   v24.super_class = ISPlayerContent;
   v19 = [(ISPlayerContent *)&v24 init];
   if (v19)
   {
-    *(v19 + 2) = CGImageRetain(a3);
-    *(v19 + 3) = a5;
-    v19[8] = a8;
-    var3 = a6->var3;
-    *(v19 + 40) = *&a6->var0;
+    *(v19 + 2) = CGImageRetain(photo);
+    *(v19 + 3) = orientation;
+    v19[8] = adjustments;
+    var3 = time->var3;
+    *(v19 + 40) = *&time->var0;
     *(v19 + 7) = var3;
-    v21 = a7->var3;
-    *(v19 + 4) = *&a7->var0;
+    v21 = duration->var3;
+    *(v19 + 4) = *&duration->var0;
     *(v19 + 10) = v21;
-    objc_storeStrong(v19 + 3, a9);
-    v19[9] = a4;
-    objc_storeStrong(v19 + 4, a10);
-    v19[10] = a11;
+    objc_storeStrong(v19 + 3, item);
+    v19[9] = original;
+    objc_storeStrong(v19 + 4, identifier);
+    v19[10] = vitality;
   }
 
   return v19;

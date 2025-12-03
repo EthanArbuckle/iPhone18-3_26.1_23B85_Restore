@@ -1,15 +1,15 @@
 @interface SHMatchResultUserNotificationPayload
-+ (id)notificationFromLegacyUserInfoFormat:(id)a3;
-+ (id)payloadFromNotificationContentUserInfo:(id)a3;
-+ (id)userInfoPayloadForMediaItem:(id)a3 bundleIdentifier:(id)a4;
++ (id)notificationFromLegacyUserInfoFormat:(id)format;
++ (id)payloadFromNotificationContentUserInfo:(id)info;
++ (id)userInfoPayloadForMediaItem:(id)item bundleIdentifier:(id)identifier;
 @end
 
 @implementation SHMatchResultUserNotificationPayload
 
-+ (id)payloadFromNotificationContentUserInfo:(id)a3
++ (id)payloadFromNotificationContentUserInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"com.apple.ShazamNotifications.user-info.payload"];
+  infoCopy = info;
+  v4 = [infoCopy objectForKeyedSubscript:@"com.apple.ShazamNotifications.user-info.payload"];
   if (v4)
   {
     v11 = 0;
@@ -42,32 +42,32 @@
 
   else
   {
-    v9 = [objc_opt_class() notificationFromLegacyUserInfoFormat:v3];
+    v9 = [objc_opt_class() notificationFromLegacyUserInfoFormat:infoCopy];
   }
 
   return v9;
 }
 
-+ (id)userInfoPayloadForMediaItem:(id)a3 bundleIdentifier:(id)a4
++ (id)userInfoPayloadForMediaItem:(id)item bundleIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  itemCopy = item;
   v7 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-  [v7 encodeObject:v6 forKey:@"com.apple.ShazamNotifications.user-info.media-item"];
+  [v7 encodeObject:itemCopy forKey:@"com.apple.ShazamNotifications.user-info.media-item"];
 
-  [v7 encodeObject:v5 forKey:@"com.apple.ShazamNotifications.user-info.attribution"];
-  v8 = [v7 encodedData];
+  [v7 encodeObject:identifierCopy forKey:@"com.apple.ShazamNotifications.user-info.attribution"];
+  encodedData = [v7 encodedData];
   v11 = @"com.apple.ShazamNotifications.user-info.payload";
-  v12 = v8;
+  v12 = encodedData;
   v9 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
 
   return v9;
 }
 
-+ (id)notificationFromLegacyUserInfoFormat:(id)a3
++ (id)notificationFromLegacyUserInfoFormat:(id)format
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"com.apple.ShazamNotifications.user-info.apple-music"];
+  formatCopy = format;
+  v4 = [formatCopy objectForKeyedSubscript:@"com.apple.ShazamNotifications.user-info.apple-music"];
   objc_opt_class();
   v5 = 0;
   if ((objc_opt_isKindOfClass() & 1) != 0 && v4)
@@ -77,7 +77,7 @@
     {
       v7 = v6;
       v5 = objc_alloc_init(SHMatchResultUserNotificationPayload);
-      v8 = [v3 objectForKeyedSubscript:@"com.apple.ShazamNotifications.user-info.attribution"];
+      v8 = [formatCopy objectForKeyedSubscript:@"com.apple.ShazamNotifications.user-info.attribution"];
       [(SHMatchResultUserNotificationPayload *)v5 setBundleIdentifier:v8];
 
       v12 = SHMediaItemAppleMusicURL;

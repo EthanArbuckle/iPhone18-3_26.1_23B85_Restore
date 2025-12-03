@@ -1,77 +1,77 @@
 @interface VUIFamilyMemberCell
-+ (id)_monogramViewForFamilyMemberCell:(id)a3;
-+ (void)configureVUIFamilyMemberCell:(id)a3 withFamilyMember:(id)a4 metricsOnly:(BOOL)a5;
-- (CGSize)_iOS_layoutSubviewsWithSize:(CGSize)a3 computationOnly:(BOOL)a4;
++ (id)_monogramViewForFamilyMemberCell:(id)cell;
++ (void)configureVUIFamilyMemberCell:(id)cell withFamilyMember:(id)member metricsOnly:(BOOL)only;
+- (CGSize)_iOS_layoutSubviewsWithSize:(CGSize)size computationOnly:(BOOL)only;
 - (CGSize)monogramSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (VUIFamilyMemberCell)initWithFrame:(CGRect)a3;
-- (void)configureMonogramImageLayoutForWindowWidth:(double)a3;
-- (void)familyMember:(id)a3 photoRequestDidCompleteWithImage:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (VUIFamilyMemberCell)initWithFrame:(CGRect)frame;
+- (void)configureMonogramImageLayoutForWindowWidth:(double)width;
+- (void)familyMember:(id)member photoRequestDidCompleteWithImage:(id)image;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setFamilyMemberImageView:(id)a3;
-- (void)setMonogramView:(id)a3;
-- (void)setNameLabel:(id)a3;
+- (void)setFamilyMemberImageView:(id)view;
+- (void)setMonogramView:(id)view;
+- (void)setNameLabel:(id)label;
 @end
 
 @implementation VUIFamilyMemberCell
 
-+ (void)configureVUIFamilyMemberCell:(id)a3 withFamilyMember:(id)a4 metricsOnly:(BOOL)a5
++ (void)configureVUIFamilyMemberCell:(id)cell withFamilyMember:(id)member metricsOnly:(BOOL)only
 {
-  v22 = a3;
-  v7 = a4;
-  [v22 setFamilyMember:v7];
-  v8 = [v7 memberImage];
-  if (v8)
+  cellCopy = cell;
+  memberCopy = member;
+  [cellCopy setFamilyMember:memberCopy];
+  memberImage = [memberCopy memberImage];
+  if (memberImage)
   {
     v9 = objc_alloc_init(MEMORY[0x1E69D5998]);
-    [v9 setImage:v8];
-    [v22 setFamilyMemberImageView:v9];
+    [v9 setImage:memberImage];
+    [cellCopy setFamilyMemberImageView:v9];
   }
 
-  if (!a5)
+  if (!only)
   {
-    [v7 setDelegate:v22];
+    [memberCopy setDelegate:cellCopy];
   }
 
   v10 = objc_alloc_init(VUITextLayout);
   [(VUITextLayout *)v10 setTextStyle:13];
-  v11 = [MEMORY[0x1E69DC888] vui_primaryTextColor];
-  [(VUITextLayout *)v10 setColor:v11];
+  vui_primaryTextColor = [MEMORY[0x1E69DC888] vui_primaryTextColor];
+  [(VUITextLayout *)v10 setColor:vui_primaryTextColor];
 
-  v12 = [MEMORY[0x1E69DC888] whiteColor];
-  [(VUITextLayout *)v10 setHighlightOrSelectedColor:v12];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(VUITextLayout *)v10 setHighlightOrSelectedColor:whiteColor];
 
-  -[VUITextLayout setAlignment:](v10, "setAlignment:", 2 * ([v22 effectiveUserInterfaceLayoutDirection] == 1));
+  -[VUITextLayout setAlignment:](v10, "setAlignment:", 2 * ([cellCopy effectiveUserInterfaceLayoutDirection] == 1));
   [(VUITextLayout *)v10 setFontWeight:0];
   v13 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-  v14 = [v7 firstName];
-  [v13 setGivenName:v14];
+  firstName = [memberCopy firstName];
+  [v13 setGivenName:firstName];
 
-  v15 = [v7 lastName];
-  [v13 setFamilyName:v15];
+  lastName = [memberCopy lastName];
+  [v13 setFamilyName:lastName];
 
   v16 = objc_alloc_init(MEMORY[0x1E696ADF8]);
   [v16 setStyle:2];
   v17 = [v16 stringFromPersonNameComponents:v13];
-  v18 = [v22 nameLabel];
-  v19 = [VUILabel labelWithString:v17 textLayout:v10 existingLabel:v18];
+  nameLabel = [cellCopy nameLabel];
+  v19 = [VUILabel labelWithString:v17 textLayout:v10 existingLabel:nameLabel];
 
-  [v22 setNameLabel:v19];
-  v20 = [VUIFamilyMemberCell _monogramViewForFamilyMemberCell:v22];
-  v21 = [v7 memberImage];
+  [cellCopy setNameLabel:v19];
+  v20 = [VUIFamilyMemberCell _monogramViewForFamilyMemberCell:cellCopy];
+  memberImage2 = [memberCopy memberImage];
 
-  if (!v21)
+  if (!memberImage2)
   {
-    [v22 setMonogramView:v20];
+    [cellCopy setMonogramView:v20];
   }
 }
 
-- (VUIFamilyMemberCell)initWithFrame:(CGRect)a3
+- (VUIFamilyMemberCell)initWithFrame:(CGRect)frame
 {
   v26.receiver = self;
   v26.super_class = VUIFamilyMemberCell;
-  v3 = [(VUIFamilyMemberCell *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUIFamilyMemberCell *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     +[VUIFamilyMemberCell maxMonogramHeight];
@@ -87,8 +87,8 @@
     bottomSeparatorView = v3->_bottomSeparatorView;
     v3->_bottomSeparatorView = v9;
 
-    v11 = [(VUIFamilyMemberCell *)v3 contentView];
-    [v11 addSubview:v3->_bottomSeparatorView];
+    contentView = [(VUIFamilyMemberCell *)v3 contentView];
+    [contentView addSubview:v3->_bottomSeparatorView];
 
     v12 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"chevron.forward"];
     v13 = [VUIVideosImageView alloc];
@@ -97,24 +97,24 @@
     v3->_chevronImageView = v14;
 
     v16 = v3->_chevronImageView;
-    v17 = [MEMORY[0x1E69DC888] lightGrayColor];
-    v18 = [v12 imageWithTintColor:v17 renderingMode:1];
+    lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+    v18 = [v12 imageWithTintColor:lightGrayColor renderingMode:1];
     [(VUIVideosImageView *)v16 setImage:v18];
 
     v19 = v3->_chevronImageView;
-    v20 = [MEMORY[0x1E69DC888] whiteColor];
-    v21 = [v12 imageWithTintColor:v20 renderingMode:1];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v21 = [v12 imageWithTintColor:whiteColor renderingMode:1];
     [(VUIVideosImageView *)v19 setHighlightOrSelectedImage:v21];
 
-    v22 = [(VUIFamilyMemberCell *)v3 contentView];
-    [v22 addSubview:v3->_chevronImageView];
+    contentView2 = [(VUIFamilyMemberCell *)v3 contentView];
+    [contentView2 addSubview:v3->_chevronImageView];
 
-    v23 = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
-    [(VUIListCollectionViewCell *)v3 setBackgroundColor:v23];
+    vui_primaryDynamicBackgroundColor = [MEMORY[0x1E69DC888] vui_primaryDynamicBackgroundColor];
+    [(VUIListCollectionViewCell *)v3 setBackgroundColor:vui_primaryDynamicBackgroundColor];
 
-    v24 = [MEMORY[0x1E69DC888] vui_keyColor];
+    vui_keyColor = [MEMORY[0x1E69DC888] vui_keyColor];
 
-    [(VUIListCollectionViewCell *)v3 setHighlightedBackgroundColor:v24];
+    [(VUIListCollectionViewCell *)v3 setHighlightedBackgroundColor:vui_keyColor];
   }
 
   return v3;
@@ -125,8 +125,8 @@
   v4.receiver = self;
   v4.super_class = VUIFamilyMemberCell;
   [(VUIListCollectionViewCell *)&v4 prepareForReuse];
-  v3 = [(VUIFamilyMemberCell *)self familyMember];
-  [v3 setDelegate:0];
+  familyMember = [(VUIFamilyMemberCell *)self familyMember];
+  [familyMember setDelegate:0];
 
   [(VUIFamilyMemberCell *)self setFamilyMember:0];
   [(VUIFamilyMemberCell *)self setFamilyMemberImageView:0];
@@ -136,87 +136,87 @@
   [(VUIFamilyMemberCell *)self setBottomSeparatorView:0];
 }
 
-- (void)setNameLabel:(id)a3
+- (void)setNameLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   nameLabel = self->_nameLabel;
-  if (nameLabel != v5)
+  if (nameLabel != labelCopy)
   {
-    v10 = v5;
+    v10 = labelCopy;
     [(VUILabel *)nameLabel removeFromSuperview];
     if (v10)
     {
-      v7 = [(VUIFamilyMemberCell *)self contentView];
-      v8 = [(VUILabel *)v10 isDescendantOfView:v7];
+      contentView = [(VUIFamilyMemberCell *)self contentView];
+      v8 = [(VUILabel *)v10 isDescendantOfView:contentView];
 
       if ((v8 & 1) == 0)
       {
-        v9 = [(VUIFamilyMemberCell *)self contentView];
-        [v9 addSubview:v10];
+        contentView2 = [(VUIFamilyMemberCell *)self contentView];
+        [contentView2 addSubview:v10];
       }
     }
 
-    objc_storeStrong(&self->_nameLabel, a3);
+    objc_storeStrong(&self->_nameLabel, label);
     [(VUIFamilyMemberCell *)self setNeedsLayout];
-    v5 = v10;
+    labelCopy = v10;
   }
 }
 
-- (void)setFamilyMemberImageView:(id)a3
+- (void)setFamilyMemberImageView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   familyMemberImageView = self->_familyMemberImageView;
-  if (familyMemberImageView != v5)
+  if (familyMemberImageView != viewCopy)
   {
-    v10 = v5;
+    v10 = viewCopy;
     [(_TVImageView *)familyMemberImageView removeFromSuperview];
-    objc_storeStrong(&self->_familyMemberImageView, a3);
+    objc_storeStrong(&self->_familyMemberImageView, view);
     if (v10)
     {
-      v7 = [(VUIFamilyMemberCell *)self contentView];
-      v8 = [(_TVImageView *)v10 isDescendantOfView:v7];
+      contentView = [(VUIFamilyMemberCell *)self contentView];
+      v8 = [(_TVImageView *)v10 isDescendantOfView:contentView];
 
       if ((v8 & 1) == 0)
       {
-        v9 = [(VUIFamilyMemberCell *)self contentView];
-        [v9 addSubview:self->_familyMemberImageView];
+        contentView2 = [(VUIFamilyMemberCell *)self contentView];
+        [contentView2 addSubview:self->_familyMemberImageView];
       }
     }
 
     [(VUIFamilyMemberCell *)self setNeedsLayout];
-    v5 = v10;
+    viewCopy = v10;
   }
 }
 
-- (void)setMonogramView:(id)a3
+- (void)setMonogramView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   monogramView = self->_monogramView;
-  if (monogramView != v5)
+  if (monogramView != viewCopy)
   {
-    v10 = v5;
+    v10 = viewCopy;
     [(_TVMonogramView *)monogramView removeFromSuperview];
     if (v10)
     {
-      v7 = [(VUIFamilyMemberCell *)self contentView];
-      v8 = [(_TVMonogramView *)v10 isDescendantOfView:v7];
+      contentView = [(VUIFamilyMemberCell *)self contentView];
+      v8 = [(_TVMonogramView *)v10 isDescendantOfView:contentView];
 
       if ((v8 & 1) == 0)
       {
-        v9 = [(VUIFamilyMemberCell *)self contentView];
-        [v9 addSubview:v10];
+        contentView2 = [(VUIFamilyMemberCell *)self contentView];
+        [contentView2 addSubview:v10];
       }
     }
 
-    objc_storeStrong(&self->_monogramView, a3);
+    objc_storeStrong(&self->_monogramView, view);
     [(VUIFamilyMemberCell *)self setNeedsLayout];
-    v5 = v10;
+    viewCopy = v10;
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(VUIFamilyMemberCell *)self _iOS_layoutSubviewsWithSize:1 computationOnly:a3.width, a3.height];
+  [(VUIFamilyMemberCell *)self _iOS_layoutSubviewsWithSize:1 computationOnly:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -231,11 +231,11 @@
   [(VUIFamilyMemberCell *)self _iOS_layoutSubviewsWithSize:0 computationOnly:v3, v4];
 }
 
-- (void)familyMember:(id)a3 photoRequestDidCompleteWithImage:(id)a4
+- (void)familyMember:(id)member photoRequestDidCompleteWithImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  memberCopy = member;
+  imageCopy = image;
+  if (imageCopy)
   {
     objc_initWeak(&location, self);
     v9[0] = MEMORY[0x1E69E9820];
@@ -243,7 +243,7 @@
     v10 = __69__VUIFamilyMemberCell_familyMember_photoRequestDidCompleteWithImage___block_invoke;
     v11 = &unk_1E872F038;
     objc_copyWeak(&v13, &location);
-    v12 = v7;
+    v12 = imageCopy;
     v8 = v9;
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
@@ -286,17 +286,17 @@ void __69__VUIFamilyMemberCell_familyMember_photoRequestDidCompleteWithImage___b
   return result;
 }
 
-+ (id)_monogramViewForFamilyMemberCell:(id)a3
++ (id)_monogramViewForFamilyMemberCell:(id)cell
 {
   v3 = MEMORY[0x1E69DC888];
-  v4 = a3;
+  cellCopy = cell;
   v24 = [v3 colorWithRed:0.4 green:0.4 blue:0.4 alpha:1.0];
   v5 = [MEMORY[0x1E69DC888] colorWithRed:0.780392 green:0.780392 blue:0.8 alpha:0.8];
   v6 = [objc_alloc(MEMORY[0x1E69D5968]) initWithStyle:0];
   [v6 setUnfocusedBgColor:v5];
   [v6 setFocusedBgColor:v24];
-  v7 = [v4 monogramImageLayout];
-  [v7 decoratorSize];
+  monogramImageLayout = [cellCopy monogramImageLayout];
+  [monogramImageLayout decoratorSize];
   v9 = v8;
   v11 = v10;
 
@@ -304,21 +304,21 @@ void __69__VUIFamilyMemberCell_familyMember_photoRequestDidCompleteWithImage___b
   [v12 setControlState:0 animated:0];
   [v6 focusedSizeIncrease];
   [v12 setFocusedSizeIncrease:?];
-  v13 = [v4 monogramImageLayout];
-  [v12 tv_setLayout:v13];
+  monogramImageLayout2 = [cellCopy monogramImageLayout];
+  [v12 tv_setLayout:monogramImageLayout2];
 
   [v12 setFocusedStateEnabled:1];
   v14 = [MEMORY[0x1E69DB878] systemFontOfSize:21.0 weight:*MEMORY[0x1E69DB968]];
-  v15 = [v14 fontDescriptor];
+  fontDescriptor = [v14 fontDescriptor];
 
-  v16 = [MEMORY[0x1E69DB878] fontWithDescriptor:v15 size:21.0];
+  v16 = [MEMORY[0x1E69DB878] fontWithDescriptor:fontDescriptor size:21.0];
   v17 = objc_alloc(MEMORY[0x1E69D59A0]);
-  v18 = [v4 familyMember];
-  v19 = [v18 firstName];
-  v20 = [v4 familyMember];
+  familyMember = [cellCopy familyMember];
+  firstName = [familyMember firstName];
+  familyMember2 = [cellCopy familyMember];
 
-  v21 = [v20 lastName];
-  v22 = [v17 initWithFirstName:v19 lastName:v21 imageURL:0 font:v16];
+  lastName = [familyMember2 lastName];
+  v22 = [v17 initWithFirstName:firstName lastName:lastName imageURL:0 font:v16];
 
   [v22 setCornerRadius:v9 * 0.5];
   [v22 setSize:{v9, v11}];
@@ -330,7 +330,7 @@ void __69__VUIFamilyMemberCell_familyMember_photoRequestDidCompleteWithImage___b
   return v12;
 }
 
-- (void)configureMonogramImageLayoutForWindowWidth:(double)a3
+- (void)configureMonogramImageLayoutForWindowWidth:(double)width
 {
   +[VUIFamilyMemberCell maxMonogramHeight];
   v5 = v4;
@@ -341,15 +341,15 @@ void __69__VUIFamilyMemberCell_familyMember_photoRequestDidCompleteWithImage___b
   self->_monogramImageLayout = v6;
 }
 
-- (CGSize)_iOS_layoutSubviewsWithSize:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)_iOS_layoutSubviewsWithSize:(CGSize)size computationOnly:(BOOL)only
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a3.width == *MEMORY[0x1E695F060] && a3.height == *(MEMORY[0x1E695F060] + 8);
-  v101 = a3.height;
+  height = size.height;
+  width = size.width;
+  v6 = size.width == *MEMORY[0x1E695F060] && size.height == *(MEMORY[0x1E695F060] + 8);
+  v101 = size.height;
   if (!v6)
   {
-    v9 = [MEMORY[0x1E69DD2E8] vui_currentSizeClassForWindowWidth:a3.width];
+    v9 = [MEMORY[0x1E69DD2E8] vui_currentSizeClassForWindowWidth:size.width];
     if ((v9 - 3) >= 3)
     {
       v10 = 50.0;
@@ -374,7 +374,7 @@ void __69__VUIFamilyMemberCell_familyMember_photoRequestDidCompleteWithImage___b
     [MEMORY[0x1E69DD2E8] vui_paddingForWindowWidth:width];
     v99 = v16;
     v85 = v17;
-    v18 = [(VUIFamilyMemberCell *)self effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [(VUIFamilyMemberCell *)self effectiveUserInterfaceLayoutDirection];
     [(VUIFamilyMemberCell *)self bounds];
     monogramView = self->_monogramView;
     v97 = v15;
@@ -472,13 +472,13 @@ void __69__VUIFamilyMemberCell_familyMember_photoRequestDidCompleteWithImage___b
     v37 = v13;
     if (chevronImageView)
     {
-      v38 = [(VUIVideosImageView *)chevronImageView image];
-      [v38 size];
+      image = [(VUIVideosImageView *)chevronImageView image];
+      [image size];
       v40 = v39;
       v42 = v41;
 
       v36 = (height - v42) * 0.5;
-      if (v18 == 1)
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
         VUIRectWithFlippedOriginRelativeToBoundingRect();
         v37 = v43;
@@ -504,7 +504,7 @@ void __69__VUIFamilyMemberCell_familyMember_photoRequestDidCompleteWithImage___b
       if (monogramView)
       {
         v89 = v37;
-        if (v18 == 1)
+        if (effectiveUserInterfaceLayoutDirection == 1)
         {
           v46 = v37;
           v47 = v23;
@@ -579,13 +579,13 @@ void __69__VUIFamilyMemberCell_familyMember_photoRequestDidCompleteWithImage___b
     if (self->_familyMemberImageView)
     {
       v26 = (v101 - v81) * 0.5;
-      if (v18 == 1)
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
         VUIRectWithFlippedOriginRelativeToBoundingRect();
         v26 = v68;
         v83 = v69;
         v66 = v70;
-        if (a4)
+        if (only)
         {
           goto LABEL_48;
         }
@@ -597,7 +597,7 @@ void __69__VUIFamilyMemberCell_familyMember_photoRequestDidCompleteWithImage___b
     else if (self->_monogramView)
     {
       v65 = (v101 - v98) * 0.5;
-      if (v18 == 1)
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
         VUIRectWithFlippedOriginRelativeToBoundingRect();
         v86 = v71;
@@ -608,7 +608,7 @@ void __69__VUIFamilyMemberCell_familyMember_photoRequestDidCompleteWithImage___b
     }
 
     v67 = v80;
-    if (a4)
+    if (only)
     {
 LABEL_48:
 

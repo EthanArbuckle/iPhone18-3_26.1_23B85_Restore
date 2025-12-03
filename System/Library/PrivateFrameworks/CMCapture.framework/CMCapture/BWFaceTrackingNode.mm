@@ -1,44 +1,44 @@
 @interface BWFaceTrackingNode
-- (BWFaceTrackingNode)initWithFigThreadPriority:(unsigned int)a3 pearlModuleType:(int)a4 useUnfilteredDepth:(BOOL)a5 queueDepth:(unsigned int)a6 passthroughInputs:(BOOL)a7 allowPixelTransfer:(BOOL)a8;
-- (uint64_t)_depthIntrinsicsExtrinsicsFromRGBIntrisics:(unint64_t)a3 colorWidth:(unint64_t)a4 colorHeight:(unint64_t)a5 depthWidth:(double)a6 depthHeight:(double)a7;
+- (BWFaceTrackingNode)initWithFigThreadPriority:(unsigned int)priority pearlModuleType:(int)type useUnfilteredDepth:(BOOL)depth queueDepth:(unsigned int)queueDepth passthroughInputs:(BOOL)inputs allowPixelTransfer:(BOOL)transfer;
+- (uint64_t)_depthIntrinsicsExtrinsicsFromRGBIntrisics:(unint64_t)intrisics colorWidth:(unint64_t)width colorHeight:(unint64_t)height depthWidth:(double)depthWidth depthHeight:(double)depthHeight;
 - (uint64_t)_prepareDecompressionResources;
 - (uint64_t)_setupCVA;
-- (void)_processSampleBuffer:(uint64_t)a1;
+- (void)_processSampleBuffer:(uint64_t)buffer;
 - (void)_releaseDecompressionResources;
-- (void)_startProcessingSampleSampleBuffer:(uint64_t)a1;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)_startProcessingSampleSampleBuffer:(uint64_t)buffer;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setSkipProcessing:(BOOL)a3;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setSkipProcessing:(BOOL)processing;
 @end
 
 @implementation BWFaceTrackingNode
 
 - (void)_releaseDecompressionResources
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_assert_not_owner((a1 + 256));
-    os_unfair_lock_lock((a1 + 256));
+    os_unfair_lock_assert_not_owner((self + 256));
+    os_unfair_lock_lock((self + 256));
 
-    *(a1 + 240) = 0;
-    v2 = *(a1 + 248);
+    *(self + 240) = 0;
+    v2 = *(self + 248);
     if (v2)
     {
       CFRelease(v2);
-      *(a1 + 248) = 0;
+      *(self + 248) = 0;
     }
 
-    os_unfair_lock_unlock((a1 + 256));
+    os_unfair_lock_unlock((self + 256));
   }
 }
 
-- (BWFaceTrackingNode)initWithFigThreadPriority:(unsigned int)a3 pearlModuleType:(int)a4 useUnfilteredDepth:(BOOL)a5 queueDepth:(unsigned int)a6 passthroughInputs:(BOOL)a7 allowPixelTransfer:(BOOL)a8
+- (BWFaceTrackingNode)initWithFigThreadPriority:(unsigned int)priority pearlModuleType:(int)type useUnfilteredDepth:(BOOL)depth queueDepth:(unsigned int)queueDepth passthroughInputs:(BOOL)inputs allowPixelTransfer:(BOOL)transfer
 {
-  v10 = *&a6;
-  v11 = a5;
+  v10 = *&queueDepth;
+  depthCopy = depth;
   v25.receiver = self;
   v25.super_class = BWFaceTrackingNode;
   v13 = [(BWNode *)&v25 init];
@@ -46,13 +46,13 @@
   {
     v13->_processingSemaphore = dispatch_semaphore_create(0);
     v13->_faceTrackingMachThreadPriority = FigThreadGetMachThreadPriorityValue();
-    v13->_pearlModuleType = a4;
+    v13->_pearlModuleType = type;
     v13->_faceTrackingFailureFieldOfViewModifier = -1.0;
-    v13->_passthroughInputs = a7;
-    if (a4)
+    v13->_passthroughInputs = inputs;
+    if (type)
     {
       v13->_depthAttachedMediaKey = @"Depth";
-      if (v11 && v13->_pearlModuleType == 2)
+      if (depthCopy && v13->_pearlModuleType == 2)
       {
         v13->_depthAttachedMediaKey = @"UnfilteredDepth";
       }
@@ -69,7 +69,7 @@
       v15 = [[BWNodeInput alloc] initWithMediaType:1986618469 node:v13];
       [(BWNodeInput *)v15 setRetainedBufferCount:v10];
       [(BWNodeInput *)v15 setPassthroughMode:v13->_passthroughInputs];
-      if (!a8)
+      if (!transfer)
       {
         v16 = objc_alloc_init(BWVideoFormatRequirements);
         [(BWVideoFormatRequirements *)v16 setSupportedPixelFormats:&unk_1F2248490];
@@ -96,9 +96,9 @@
       if (passthroughInputs)
       {
         v21 = [(BWNodeOutput *)v20 initWithMediaType:1986618469 node:v13];
-        v22 = [(BWNodeOutput *)v21 primaryMediaConfiguration];
-        [(BWNodeOutputMediaConfiguration *)v22 setFormatRequirements:[(BWNodeInputMediaConfiguration *)[(BWNodeInput *)v15 primaryMediaConfiguration] formatRequirements]];
-        [(BWNodeOutputMediaConfiguration *)v22 setPassthroughMode:1];
+        primaryMediaConfiguration = [(BWNodeOutput *)v21 primaryMediaConfiguration];
+        [(BWNodeOutputMediaConfiguration *)primaryMediaConfiguration setFormatRequirements:[(BWNodeInputMediaConfiguration *)[(BWNodeInput *)v15 primaryMediaConfiguration] formatRequirements]];
+        [(BWNodeOutputMediaConfiguration *)primaryMediaConfiguration setPassthroughMode:1];
       }
 
       else
@@ -140,28 +140,28 @@
   [(BWNode *)&v5 dealloc];
 }
 
-- (void)setSkipProcessing:(BOOL)a3
+- (void)setSkipProcessing:(BOOL)processing
 {
-  self->_skipProcessing = a3;
-  if (a3 && !self->_nextSbufQueue)
+  self->_skipProcessing = processing;
+  if (processing && !self->_nextSbufQueue)
   {
     [(BWFaceTrackingNode *)self _releaseDecompressionResources];
   }
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
   if (self->_passthroughInputs)
   {
-    [(BWNodeOutput *)self->super._output setFormat:a3];
+    [(BWNodeOutput *)self->super._output setFormat:format];
   }
 
-  v7 = FigCaptureUncompressedPixelFormatForPixelFormat([a3 pixelFormat]);
-  if (v7 != [a3 pixelFormat])
+  v7 = FigCaptureUncompressedPixelFormatForPixelFormat([format pixelFormat]);
+  if (v7 != [format pixelFormat])
   {
     v8 = objc_alloc_init(BWVideoFormatRequirements);
-    -[BWVideoFormatRequirements setWidth:](v8, "setWidth:", [a3 width]);
-    -[BWVideoFormatRequirements setHeight:](v8, "setHeight:", [a3 height]);
+    -[BWVideoFormatRequirements setWidth:](v8, "setWidth:", [format width]);
+    -[BWVideoFormatRequirements setHeight:](v8, "setHeight:", [format height]);
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v7];
     -[BWVideoFormatRequirements setSupportedPixelFormats:](v8, "setSupportedPixelFormats:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v11 count:1]);
 
@@ -171,10 +171,10 @@
 
   v9.receiver = self;
   v9.super_class = BWFaceTrackingNode;
-  [(BWNode *)&v9 didSelectFormat:a3 forInput:a4];
+  [(BWNode *)&v9 didSelectFormat:format forInput:input];
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
   if (self->_nextSbufQueue)
   {
@@ -191,14 +191,14 @@
   {
     output = self->super._output;
 
-    [(BWNodeOutput *)output makeConfiguredFormatLive:a3];
+    [(BWNodeOutput *)output makeConfiguredFormatLive:d];
   }
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
   uncompressedVideoBufferPool = self->_uncompressedVideoBufferPool;
-  if (uncompressedVideoBufferPool && ![(BWVideoFormat *)self->_uncompressedVideoFormat isEqual:[(BWPixelBufferPool *)uncompressedVideoBufferPool videoFormat:a3]])
+  if (uncompressedVideoBufferPool && ![(BWVideoFormat *)self->_uncompressedVideoFormat isEqual:[(BWPixelBufferPool *)uncompressedVideoBufferPool videoFormat:d]])
   {
     [(BWFaceTrackingNode *)self _releaseDecompressionResources];
   }
@@ -211,7 +211,7 @@
     v9[2] = __64__BWFaceTrackingNode_didReachEndOfDataForConfigurationID_input___block_invoke;
     v9[3] = &unk_1E798F898;
     v9[4] = self;
-    v9[5] = a3;
+    v9[5] = d;
     dispatch_async(processingQueue, v9);
   }
 
@@ -219,18 +219,18 @@
   {
     output = self->super._output;
 
-    [(BWNodeOutput *)output markEndOfLiveOutputForConfigurationID:a3, a4];
+    [(BWNodeOutput *)output markEndOfLiveOutputForConfigurationID:d, input];
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  if (self->_passthroughInputs || (v13 = CMGetAttachment(a3, @"DepthDisabled", 0), !self->_skipProcessing) && ([v13 BOOLValue] & 1) == 0)
+  if (self->_passthroughInputs || (v13 = CMGetAttachment(buffer, @"DepthDisabled", 0), !self->_skipProcessing) && ([v13 BOOLValue] & 1) == 0)
   {
     v6 = MEMORY[0x1E695FF58];
     if (*MEMORY[0x1E695FF58] == 1)
     {
-      CMSampleBufferGetPresentationTimeStamp(&v14, a3);
+      CMSampleBufferGetPresentationTimeStamp(&v14, buffer);
       time = v14;
       CMTimeGetSeconds(&time);
       kdebug_trace();
@@ -242,9 +242,9 @@
       processing = self->_processing;
       Count = CMSimpleQueueGetCount(self->_nextSbufQueue);
       Capacity = CMSimpleQueueGetCapacity(self->_nextSbufQueue);
-      if (a3)
+      if (buffer)
       {
-        CFRetain(a3);
+        CFRetain(buffer);
       }
 
       if (self->_processing)
@@ -258,18 +258,18 @@
           }
         }
 
-        CMSimpleQueueEnqueue(self->_nextSbufQueue, a3);
+        CMSimpleQueueEnqueue(self->_nextSbufQueue, buffer);
       }
 
       self->_processing = 1;
       os_unfair_lock_unlock(&self->_processingLock);
       if (!processing)
       {
-        [(BWFaceTrackingNode *)self _startProcessingSampleSampleBuffer:a3];
+        [(BWFaceTrackingNode *)self _startProcessingSampleSampleBuffer:buffer];
       }
 
       v11 = *v6;
-      if (!a3)
+      if (!buffer)
       {
         goto LABEL_26;
       }
@@ -279,7 +279,7 @@
         goto LABEL_26;
       }
 
-      CMSampleBufferGetPresentationTimeStamp(&v14, a3);
+      CMSampleBufferGetPresentationTimeStamp(&v14, buffer);
       time = v14;
       CMTimeGetSeconds(&time);
       kdebug_trace();
@@ -287,7 +287,7 @@
 
     else
     {
-      [(BWFaceTrackingNode *)self _processSampleBuffer:a3];
+      [(BWFaceTrackingNode *)self _processSampleBuffer:buffer];
     }
 
     v11 = *v6;
@@ -299,25 +299,25 @@ LABEL_26:
   }
 }
 
-- (void)_processSampleBuffer:(uint64_t)a1
+- (void)_processSampleBuffer:(uint64_t)buffer
 {
-  if (!a1)
+  if (!buffer)
   {
     return;
   }
 
-  v3 = a1;
-  if (*(a1 + 168) && !_FigIsCurrentDispatchQueue())
+  bufferCopy = buffer;
+  if (*(buffer + 168) && !_FigIsCurrentDispatchQueue())
   {
     [BWFaceTrackingNode _processSampleBuffer:];
   }
 
-  if (*(v3 + 178) == 1)
+  if (*(bufferCopy + 178) == 1)
   {
     v4 = CMGetAttachment(target, @"DepthDisabled", 0);
-    if ((*(v3 + 228) & 1) != 0 || [v4 BOOLValue])
+    if ((*(bufferCopy + 228) & 1) != 0 || [v4 BOOLValue])
     {
-      v5 = *(v3 + 16);
+      v5 = *(bufferCopy + 16);
 
       [v5 emitSampleBuffer:target];
       return;
@@ -330,7 +330,7 @@ LABEL_26:
   v70 = __Block_byref_object_copy__15;
   v71 = __Block_byref_object_dispose__15;
   v72 = 0;
-  if ([(BWFaceTrackingNode *)v3 _setupCVA])
+  if ([(BWFaceTrackingNode *)bufferCopy _setupCVA])
   {
     v6 = 0;
     goto LABEL_42;
@@ -347,7 +347,7 @@ LABEL_26:
   }
 
   CFRetain(ImageBuffer);
-  if (!*(v3 + 232))
+  if (!*(bufferCopy + 232))
   {
 LABEL_18:
     [v6 setObject:cf forKeyedSubscript:getkCVAFaceTracking_Color()];
@@ -356,20 +356,20 @@ LABEL_18:
     if (v9)
     {
       v10 = [v9 objectForKeyedSubscript:*off_1E798B218];
-      v44 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       if ([v10 count])
       {
-        v11 = FigCaptureRotationDegreesWithMirroring(*(v3 + 192), *(v3 + 196));
+        v11 = FigCaptureRotationDegreesWithMirroring(*(bufferCopy + 192), *(bufferCopy + 196));
         v47 = 0u;
         memset(time, 0, sizeof(time));
-        FigCaptureMakeMirrorAndRotateVideoTransform(1, 1, *(v3 + 196), v11, time);
-        v12 = *(v3 + 196);
+        FigCaptureMakeMirrorAndRotateVideoTransform(1, 1, *(bufferCopy + 196), v11, time);
+        v12 = *(bufferCopy + 196);
         v66[0] = *time;
         v66[1] = *&time[16];
         v66[2] = v47;
         v13 = BWCreateTransformedFacesArray(v10, v66, v11, v12);
         v38 = v6;
-        v39 = v3;
+        v39 = bufferCopy;
         v40 = target;
         v62 = 0u;
         v63 = 0u;
@@ -394,32 +394,32 @@ LABEL_18:
               }
 
               v21 = *(*(&v62 + 1) + 8 * i);
-              v22 = [MEMORY[0x1E695DF90] dictionary];
+              dictionary = [MEMORY[0x1E695DF90] dictionary];
               v23 = [v21 objectForKeyedSubscript:v16];
               if (v23)
               {
-                [v22 setObject:v23 forKeyedSubscript:getkCVAFaceTracking_DetectedFaceFaceID()];
+                [dictionary setObject:v23 forKeyedSubscript:getkCVAFaceTracking_DetectedFaceFaceID()];
               }
 
               v24 = [v21 objectForKeyedSubscript:v17];
               if (v24)
               {
-                [v22 setObject:v24 forKeyedSubscript:getkCVAFaceTracking_Timestamp()];
+                [dictionary setObject:v24 forKeyedSubscript:getkCVAFaceTracking_Timestamp()];
               }
 
               v25 = [v21 objectForKeyedSubscript:v18];
               if (v25)
               {
-                [v22 setObject:v25 forKeyedSubscript:getkCVAFaceTracking_DetectedFaceRect()];
+                [dictionary setObject:v25 forKeyedSubscript:getkCVAFaceTracking_DetectedFaceRect()];
               }
 
               v26 = [v21 objectForKeyedSubscript:v19];
               if (v26)
               {
-                [v22 setObject:v26 forKeyedSubscript:getkCVAFaceTracking_DetectedFaceAngleInfoRoll()];
+                [dictionary setObject:v26 forKeyedSubscript:getkCVAFaceTracking_DetectedFaceAngleInfoRoll()];
               }
 
-              [v44 addObject:v22];
+              [array addObject:dictionary];
             }
 
             v14 = [obj countByEnumeratingWithState:&v62 objects:v61 count:16];
@@ -428,17 +428,17 @@ LABEL_18:
           while (v14);
         }
 
-        v3 = v39;
+        bufferCopy = v39;
         target = v40;
         v6 = v38;
       }
 
-      [v6 setObject:v44 forKeyedSubscript:getkCVAFaceTracking_DetectedFacesArray()];
+      [v6 setObject:array forKeyedSubscript:getkCVAFaceTracking_DetectedFacesArray()];
       v60[0] = MEMORY[0x1E69E9820];
       v60[1] = 3221225472;
       v60[2] = __43__BWFaceTrackingNode__processSampleBuffer___block_invoke;
       v60[3] = &unk_1E7991508;
-      v60[4] = v3;
+      v60[4] = bufferCopy;
       v60[5] = &v67;
       [v6 setObject:objc_msgSend(v60 forKeyedSubscript:{"copy"), getkCVAFaceTracking_Callback()}];
       v58 = 0u;
@@ -499,8 +499,8 @@ LABEL_18:
     goto LABEL_48;
   }
 
-  os_unfair_lock_lock((v3 + 256));
-  if (-[BWFaceTrackingNode _prepareDecompressionResources](v3) || (v8 = [*(v3 + 240) newPixelBuffer]) == 0)
+  os_unfair_lock_lock((bufferCopy + 256));
+  if (-[BWFaceTrackingNode _prepareDecompressionResources](bufferCopy) || (v8 = [*(bufferCopy + 240) newPixelBuffer]) == 0)
   {
 LABEL_48:
     fig_log_get_emitter();
@@ -508,10 +508,10 @@ LABEL_48:
     goto LABEL_41;
   }
 
-  if (!VTPixelTransferSessionTransferImage(*(v3 + 248), cf, v8))
+  if (!VTPixelTransferSessionTransferImage(*(bufferCopy + 248), cf, v8))
   {
     CFRelease(cf);
-    os_unfair_lock_unlock((v3 + 256));
+    os_unfair_lock_unlock((bufferCopy + 256));
     cf = v8;
     goto LABEL_18;
   }
@@ -520,9 +520,9 @@ LABEL_41:
   CFRelease(cf);
 LABEL_42:
 
-  if (*(v3 + 178) == 1)
+  if (*(bufferCopy + 178) == 1)
   {
-    [*(v3 + 16) emitSampleBuffer:target];
+    [*(bufferCopy + 16) emitSampleBuffer:target];
   }
 
   _Block_object_dispose(&v67, 8);
@@ -575,18 +575,18 @@ intptr_t __43__BWFaceTrackingNode__processSampleBuffer___block_invoke(uint64_t a
 
 - (uint64_t)_prepareDecompressionResources
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    os_unfair_lock_assert_owner(a1 + 64);
-    if (*&v1[58]._os_unfair_lock_opaque && !*&v1[60]._os_unfair_lock_opaque)
+    os_unfair_lock_assert_owner(self + 64);
+    if (*&selfCopy[58]._os_unfair_lock_opaque && !*&selfCopy[60]._os_unfair_lock_opaque)
     {
-      v2 = -[BWPixelBufferPool initWithVideoFormat:capacity:name:memoryPool:]([BWPixelBufferPool alloc], "initWithVideoFormat:capacity:name:memoryPool:", *&v1[58]._os_unfair_lock_opaque, 1, @"FaceTrackingNode uncompressed image pool", [*&v1[4]._os_unfair_lock_opaque memoryPool]);
-      *&v1[60]._os_unfair_lock_opaque = v2;
+      v2 = -[BWPixelBufferPool initWithVideoFormat:capacity:name:memoryPool:]([BWPixelBufferPool alloc], "initWithVideoFormat:capacity:name:memoryPool:", *&selfCopy[58]._os_unfair_lock_opaque, 1, @"FaceTrackingNode uncompressed image pool", [*&selfCopy[4]._os_unfair_lock_opaque memoryPool]);
+      *&selfCopy[60]._os_unfair_lock_opaque = v2;
       if (v2)
       {
-        v1 = VTPixelTransferSessionCreate(*MEMORY[0x1E695E480], &v1[62]);
-        if (v1)
+        selfCopy = VTPixelTransferSessionCreate(*MEMORY[0x1E695E480], &selfCopy[62]);
+        if (selfCopy)
         {
           fig_log_get_emitter();
           OUTLINED_FUNCTION_1_6();
@@ -609,19 +609,19 @@ intptr_t __43__BWFaceTrackingNode__processSampleBuffer___block_invoke(uint64_t a
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)_startProcessingSampleSampleBuffer:(uint64_t)a1
+- (void)_startProcessingSampleSampleBuffer:(uint64_t)buffer
 {
-  if (a1)
+  if (buffer)
   {
-    v2 = *(a1 + 144);
+    v2 = *(buffer + 144);
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __57__BWFaceTrackingNode__startProcessingSampleSampleBuffer___block_invoke;
     v3[3] = &unk_1E7990178;
-    v3[4] = a1;
+    v3[4] = buffer;
     v3[5] = a2;
     dispatch_async(v2, v3);
   }
@@ -629,12 +629,12 @@ intptr_t __43__BWFaceTrackingNode__processSampleBuffer___block_invoke(uint64_t a
 
 - (uint64_t)_setupCVA
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (*(a1 + 168) && !_FigIsCurrentDispatchQueue())
+  if (*(self + 168) && !_FigIsCurrentDispatchQueue())
   {
     fig_log_get_emitter();
     v19 = v1;
@@ -642,38 +642,38 @@ intptr_t __43__BWFaceTrackingNode__processSampleBuffer___block_invoke(uint64_t a
     FigDebugAssert3();
   }
 
-  if (*(a1 + 176))
+  if (*(self + 176))
   {
     return 0;
   }
 
-  v3 = *(a1 + 184);
+  v3 = *(self + 184);
   v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:5];
-  [MEMORY[0x1E696AD98] numberWithInt:*(a1 + 200)];
+  [MEMORY[0x1E696AD98] numberWithInt:*(self + 200)];
   v5 = getkCVAFaceTracking_ThreadPriority();
   OUTLINED_FUNCTION_1_46(v5);
-  [MEMORY[0x1E696AD98] numberWithBool:*(a1 + 212)];
+  [MEMORY[0x1E696AD98] numberWithBool:*(self + 212)];
   v6 = getkCVAFaceTracking_UseRecognition();
   OUTLINED_FUNCTION_1_46(v6);
-  if (*(a1 + 216) > 0.0)
+  if (*(self + 216) > 0.0)
   {
     [MEMORY[0x1E696AD98] numberWithFloat:?];
     v7 = getkCVAFaceTracking_NetworkFailureThresholdMultiplier();
     OUTLINED_FUNCTION_1_46(v7);
   }
 
-  if (*(a1 + 224) >= 0.0)
+  if (*(self + 224) >= 0.0)
   {
     [MEMORY[0x1E696AD98] numberWithFloat:?];
     v8 = getkCVAFaceTracking_TrackingFailureFieldOfViewModifier();
     OUTLINED_FUNCTION_1_46(v8);
   }
 
-  [v4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", *(a1 + 220), v18, v19), getkCVA_tmrLADzZUFnL94QtJ4Eb9fgi()}];
+  [v4 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", *(self + 220), v18, v19), getkCVA_tmrLADzZUFnL94QtJ4Eb9fgi()}];
   [MEMORY[0x1E696AD98] numberWithBool:v3 == 0];
   v9 = getkCVAFaceTracking_ColorOnly();
   OUTLINED_FUNCTION_1_46(v9);
-  v10 = *(a1 + 204);
+  v10 = *(self + 204);
   if (v10 == 1 || v10 == 3)
   {
     getkCVAFaceTracking_DepthSource_Pearl();
@@ -690,51 +690,51 @@ LABEL_18:
   }
 
 LABEL_19:
-  if (*(a1 + 208) >= 1)
+  if (*(self + 208) >= 1)
   {
     [MEMORY[0x1E696AD98] numberWithInt:?];
     v13 = getkCVAFaceTracking_NumTrackedFaces();
     OUTLINED_FUNCTION_1_46(v13);
   }
 
-  v14 = *(a1 + 128);
+  v14 = *(self + 128);
   if (v14)
   {
     CFRelease(v14);
-    *(a1 + 128) = 0;
+    *(self + 128) = 0;
   }
 
-  v15 = soft_CVAFaceTrackingCreate(*MEMORY[0x1E695E480], v4, a1 + 128);
+  v15 = soft_CVAFaceTrackingCreate(*MEMORY[0x1E695E480], v4, self + 128);
   if (v15)
   {
-    v17 = *(a1 + 128);
+    v17 = *(self + 128);
     if (v17)
     {
       CFRelease(v17);
-      *(a1 + 128) = 0;
+      *(self + 128) = 0;
     }
   }
 
   else
   {
-    *(a1 + 176) = 1;
+    *(self + 176) = 1;
   }
 
   return v15;
 }
 
-- (uint64_t)_depthIntrinsicsExtrinsicsFromRGBIntrisics:(unint64_t)a3 colorWidth:(unint64_t)a4 colorHeight:(unint64_t)a5 depthWidth:(double)a6 depthHeight:(double)a7
+- (uint64_t)_depthIntrinsicsExtrinsicsFromRGBIntrisics:(unint64_t)intrisics colorWidth:(unint64_t)width colorHeight:(unint64_t)height depthWidth:(double)depthWidth depthHeight:(double)depthHeight
 {
   if (result)
   {
-    v9 = a6;
-    *&a6 = a4;
-    v10 = a5;
-    v11 = a4 / a5;
+    depthWidthCopy = depthWidth;
+    *&depthWidth = width;
+    heightCopy = height;
+    v11 = width / height;
     v12 = a2;
-    v13 = a3;
-    v14 = a2 / a3;
-    v15 = *(&a7 + 1);
+    intrisicsCopy = intrisics;
+    v14 = a2 / intrisics;
+    v15 = *(&depthHeight + 1);
     v16 = *(&a8 + 1);
     v17 = v11 - v14;
     if (v11 < v14)
@@ -744,11 +744,11 @@ LABEL_19:
 
     if (v17 < 0.01)
     {
-      v18 = *&a6 / v12;
-      v19 = v10 / v13;
-      *&a6 = *&v9 * (*&a6 / v12);
+      v18 = *&depthWidth / v12;
+      v19 = heightCopy / intrisicsCopy;
+      *&depthWidth = *&depthWidthCopy * (*&depthWidth / v12);
       v32 = *&a8;
-      v42[0] = [MEMORY[0x1E696AD98] numberWithFloat:a6];
+      v42[0] = [MEMORY[0x1E696AD98] numberWithFloat:depthWidth];
       v42[1] = &unk_1F2243660;
       v42[2] = [MEMORY[0x1E696AD98] numberWithDouble:(v32 + 0.5) * v18 + -0.5];
       v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:3];
@@ -789,14 +789,14 @@ LABEL_11:
 
     if (v26 < 0.01)
     {
-      v19 = v10 / v12;
-      v27 = *&a6 / v13;
-      *&a6 = *(&a7 + 1) * (*&a6 / v13);
-      v31 = v9;
+      v19 = heightCopy / v12;
+      v27 = *&depthWidth / intrisicsCopy;
+      *&depthWidth = *(&depthHeight + 1) * (*&depthWidth / intrisicsCopy);
+      v31 = depthWidthCopy;
       v33 = *&a8;
-      v39[0] = [MEMORY[0x1E696AD98] numberWithFloat:a6];
+      v39[0] = [MEMORY[0x1E696AD98] numberWithFloat:depthWidth];
       v39[1] = &unk_1F2243660;
-      v39[2] = [MEMORY[0x1E696AD98] numberWithDouble:a4 - (v16 + 0.5) * v27 + -0.5];
+      v39[2] = [MEMORY[0x1E696AD98] numberWithDouble:width - (v16 + 0.5) * v27 + -0.5];
       v40 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:3];
       v38[0] = &unk_1F2243660;
       HIDWORD(v28) = HIDWORD(v31);

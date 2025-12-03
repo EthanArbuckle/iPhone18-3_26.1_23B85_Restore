@@ -8,11 +8,11 @@
 
 - (NSString)callProviderIdentifier
 {
-  v2 = [(NSUserActivity *)self userInfo];
-  v3 = v2;
-  if (v2)
+  userInfo = [(NSUserActivity *)self userInfo];
+  v3 = userInfo;
+  if (userInfo)
   {
-    v4 = [v2 objectForKeyedSubscript:TUCallUserActivityProviderIdentifierKey];
+    v4 = [userInfo objectForKeyedSubscript:TUCallUserActivityProviderIdentifierKey];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,42 +35,42 @@
 
 - (int)callService
 {
-  v2 = [(NSUserActivity *)self userInfo];
-  v3 = v2;
-  if (v2)
+  userInfo = [(NSUserActivity *)self userInfo];
+  v3 = userInfo;
+  if (userInfo)
   {
-    v4 = [v2 objectForKeyedSubscript:@"TUCallUserActivityServiceKey"];
+    v4 = [userInfo objectForKeyedSubscript:@"TUCallUserActivityServiceKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 intValue];
+      intValue = [v4 intValue];
     }
 
     else
     {
-      v5 = 0;
+      intValue = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    intValue = 0;
   }
 
-  return v5;
+  return intValue;
 }
 
 - (TUHandle)handle
 {
-  v2 = [(NSUserActivity *)self userInfo];
-  v3 = v2;
-  if (!v2)
+  userInfo = [(NSUserActivity *)self userInfo];
+  v3 = userInfo;
+  if (!userInfo)
   {
     v5 = 0;
     goto LABEL_16;
   }
 
-  v4 = [v2 objectForKeyedSubscript:TUCallUserActivityHandleKey];
+  v4 = [userInfo objectForKeyedSubscript:TUCallUserActivityHandleKey];
   if (!v4)
   {
     v6 = sub_100003B9C();

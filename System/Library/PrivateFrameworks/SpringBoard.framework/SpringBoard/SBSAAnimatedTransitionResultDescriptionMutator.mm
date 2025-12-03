@@ -1,35 +1,35 @@
 @interface SBSAAnimatedTransitionResultDescriptionMutator
-- (SBSAAnimatedTransitionResultDescriptionMutator)initWithAnimatedTransitionResultDescription:(id)a3;
-- (void)setTargetedMilestone:(double)a3;
+- (SBSAAnimatedTransitionResultDescriptionMutator)initWithAnimatedTransitionResultDescription:(id)description;
+- (void)setTargetedMilestone:(double)milestone;
 @end
 
 @implementation SBSAAnimatedTransitionResultDescriptionMutator
 
-- (SBSAAnimatedTransitionResultDescriptionMutator)initWithAnimatedTransitionResultDescription:(id)a3
+- (SBSAAnimatedTransitionResultDescriptionMutator)initWithAnimatedTransitionResultDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   v9.receiver = self;
   v9.super_class = SBSAAnimatedTransitionResultDescriptionMutator;
   v6 = [(SBSAAnimatedTransitionResultDescriptionMutator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_animatedTransitionResultDescription, a3);
+    objc_storeStrong(&v6->_animatedTransitionResultDescription, description);
   }
 
   return v7;
 }
 
-- (void)setTargetedMilestone:(double)a3
+- (void)setTargetedMilestone:(double)milestone
 {
-  if (a3 != 1.79769313e308 && (a3 < 0.0 || a3 > 1.0))
+  if (milestone != 1.79769313e308 && (milestone < 0.0 || milestone > 1.0))
   {
     [SBSAAnimatedTransitionResultDescriptionMutator setTargetedMilestone:];
   }
 
   animatedTransitionResultDescription = self->_animatedTransitionResultDescription;
 
-  [(SBSAAnimatedTransitionResultDescription *)animatedTransitionResultDescription _setTargetedMilestone:a3];
+  [(SBSAAnimatedTransitionResultDescription *)animatedTransitionResultDescription _setTargetedMilestone:milestone];
 }
 
 - (void)setTargetedMilestone:.cold.1()

@@ -1,22 +1,22 @@
 @interface STShowHourlyWeatherForecastRequest
-- (STShowHourlyWeatherForecastRequest)initWithCoder:(id)a3;
-- (id)_initWithCurrentAttributes:(id)a3 hourlyAttributes:(id)a4 city:(id)a5 startHour:(int64_t)a6 forecastType:(int64_t)a7;
+- (STShowHourlyWeatherForecastRequest)initWithCoder:(id)coder;
+- (id)_initWithCurrentAttributes:(id)attributes hourlyAttributes:(id)hourlyAttributes city:(id)city startHour:(int64_t)hour forecastType:(int64_t)type;
 - (id)createResponse;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STShowHourlyWeatherForecastRequest
 
-- (STShowHourlyWeatherForecastRequest)initWithCoder:(id)a3
+- (STShowHourlyWeatherForecastRequest)initWithCoder:(id)coder
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = STShowHourlyWeatherForecastRequest;
-  v5 = [(AFSiriRequest *)&v17 initWithCoder:v4];
+  v5 = [(AFSiriRequest *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_currentAttributes"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_currentAttributes"];
     currentAttributes = v5->_currentAttributes;
     v5->_currentAttributes = v6;
 
@@ -25,33 +25,33 @@
     v18[1] = objc_opt_class();
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
     v10 = [v8 setWithArray:v9];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"_hourlyAttributes"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"_hourlyAttributes"];
     hourlyAttributes = v5->_hourlyAttributes;
     v5->_hourlyAttributes = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_city"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_city"];
     city = v5->_city;
     v5->_city = v13;
 
-    v5->_startHour = [v4 decodeIntegerForKey:@"_startHour"];
-    v5->_forecastType = [v4 decodeIntegerForKey:@"_forecastType"];
+    v5->_startHour = [coderCopy decodeIntegerForKey:@"_startHour"];
+    v5->_forecastType = [coderCopy decodeIntegerForKey:@"_forecastType"];
   }
 
   v15 = *MEMORY[0x277D85DE8];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STShowHourlyWeatherForecastRequest;
-  v4 = a3;
-  [(AFSiriRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_currentAttributes forKey:{@"_currentAttributes", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_hourlyAttributes forKey:@"_hourlyAttributes"];
-  [v4 encodeObject:self->_city forKey:@"_city"];
-  [v4 encodeInteger:self->_startHour forKey:@"_startHour"];
-  [v4 encodeInteger:self->_forecastType forKey:@"_forecastType"];
+  coderCopy = coder;
+  [(AFSiriRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_currentAttributes forKey:{@"_currentAttributes", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_hourlyAttributes forKey:@"_hourlyAttributes"];
+  [coderCopy encodeObject:self->_city forKey:@"_city"];
+  [coderCopy encodeInteger:self->_startHour forKey:@"_startHour"];
+  [coderCopy encodeInteger:self->_forecastType forKey:@"_forecastType"];
 }
 
 - (id)createResponse
@@ -61,25 +61,25 @@
   return v2;
 }
 
-- (id)_initWithCurrentAttributes:(id)a3 hourlyAttributes:(id)a4 city:(id)a5 startHour:(int64_t)a6 forecastType:(int64_t)a7
+- (id)_initWithCurrentAttributes:(id)attributes hourlyAttributes:(id)hourlyAttributes city:(id)city startHour:(int64_t)hour forecastType:(int64_t)type
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  attributesCopy = attributes;
+  hourlyAttributesCopy = hourlyAttributes;
+  cityCopy = city;
   v21.receiver = self;
   v21.super_class = STShowHourlyWeatherForecastRequest;
   v16 = [(AFSiriRequest *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_currentAttributes, a3);
-    v18 = [v14 copy];
+    objc_storeStrong(&v16->_currentAttributes, attributes);
+    v18 = [hourlyAttributesCopy copy];
     hourlyAttributes = v17->_hourlyAttributes;
     v17->_hourlyAttributes = v18;
 
-    objc_storeStrong(&v17->_city, a5);
-    v17->_startHour = a6;
-    v17->_forecastType = a7;
+    objc_storeStrong(&v17->_city, city);
+    v17->_startHour = hour;
+    v17->_forecastType = type;
   }
 
   return v17;

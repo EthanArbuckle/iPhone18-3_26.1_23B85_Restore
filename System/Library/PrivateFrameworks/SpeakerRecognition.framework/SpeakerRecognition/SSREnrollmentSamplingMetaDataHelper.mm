@@ -1,43 +1,43 @@
 @interface SSREnrollmentSamplingMetaDataHelper
-+ (id)_convertToMetaDataDict:(id)a3;
-+ (id)_getMetaDataForLocale:(id)a3 error:(id *)a4;
-+ (id)_getMetaDataForLocale:(id)a3 metaDataDict:(id)a4 error:(id *)a5;
-+ (id)_getVoiceProfileAndUpdateMetaDataWithLocale:(id)a3 error:(id *)a4;
-+ (id)_getVoiceProfileWithEnrollmentId:(id)a3 error:(id *)a4;
-+ (id)_getVoiceProfileWithLocale:(id)a3 error:(id *)a4;
++ (id)_convertToMetaDataDict:(id)dict;
++ (id)_getMetaDataForLocale:(id)locale error:(id *)error;
++ (id)_getMetaDataForLocale:(id)locale metaDataDict:(id)dict error:(id *)error;
++ (id)_getVoiceProfileAndUpdateMetaDataWithLocale:(id)locale error:(id *)error;
++ (id)_getVoiceProfileWithEnrollmentId:(id)id error:(id *)error;
++ (id)_getVoiceProfileWithLocale:(id)locale error:(id *)error;
 + (id)_loadMetaDataDict;
-+ (id)_writeMetaData:(id)a3 locale:(id)a4;
-+ (id)getDonationDataFromVoiceProfile:(id)a3;
-+ (id)getDonationDataWithEnrollmentId:(id)a3 error:(id *)a4;
-+ (id)getDonationDataWithVoiceProfileId:(id)a3 error:(id *)a4;
-+ (id)getDonationIdsWithEnrollmentId:(id)a3 error:(id *)a4;
-+ (id)getEnrollmentDateWithLocale:(id)a3 error:(id *)a4;
-+ (id)getEnrollmentIdWithLocale:(id)a3 error:(id *)a4;
-+ (id)getEnrollmentMetaDataWithVoiceProfileId:(id)a3;
-+ (unint64_t)getEnrollmentSelectionStatusWithLocale:(id)a3 error:(id *)a4;
-+ (void)_writeMetaData:(id)a3 locale:(id)a4 completion:(id)a5;
-+ (void)_writeMetaDataDict:(id)a3;
++ (id)_writeMetaData:(id)data locale:(id)locale;
++ (id)getDonationDataFromVoiceProfile:(id)profile;
++ (id)getDonationDataWithEnrollmentId:(id)id error:(id *)error;
++ (id)getDonationDataWithVoiceProfileId:(id)id error:(id *)error;
++ (id)getDonationIdsWithEnrollmentId:(id)id error:(id *)error;
++ (id)getEnrollmentDateWithLocale:(id)locale error:(id *)error;
++ (id)getEnrollmentIdWithLocale:(id)locale error:(id *)error;
++ (id)getEnrollmentMetaDataWithVoiceProfileId:(id)id;
++ (unint64_t)getEnrollmentSelectionStatusWithLocale:(id)locale error:(id *)error;
++ (void)_writeMetaData:(id)data locale:(id)locale completion:(id)completion;
++ (void)_writeMetaDataDict:(id)dict;
 + (void)removeAllSamplingMetaData;
-+ (void)removeMetaDataWithVoiceProfileId:(id)a3 completion:(id)a4;
-+ (void)updateSelectionStatus:(unint64_t)a3 languageCode:(id)a4 completion:(id)a5;
-+ (void)writeMetaDataWithSamplingSelectionStatus:(unint64_t)a3 voiceProfileId:(id)a4 locale:(id)a5 completion:(id)a6;
++ (void)removeMetaDataWithVoiceProfileId:(id)id completion:(id)completion;
++ (void)updateSelectionStatus:(unint64_t)status languageCode:(id)code completion:(id)completion;
++ (void)writeMetaDataWithSamplingSelectionStatus:(unint64_t)status voiceProfileId:(id)id locale:(id)locale completion:(id)completion;
 @end
 
 @implementation SSREnrollmentSamplingMetaDataHelper
 
-+ (void)_writeMetaData:(id)a3 locale:(id)a4 completion:(id)a5
++ (void)_writeMetaData:(id)data locale:(id)locale completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __72__SSREnrollmentSamplingMetaDataHelper__writeMetaData_locale_completion___block_invoke;
   v13[3] = &unk_278579690;
-  v14 = v7;
-  v8 = v7;
-  v9 = a4;
-  v10 = a3;
+  v14 = completionCopy;
+  v8 = completionCopy;
+  localeCopy = locale;
+  dataCopy = data;
   v11 = MEMORY[0x22AA71400](v13);
-  v12 = [SSREnrollmentSamplingMetaDataHelper _writeMetaData:v10 locale:v9];
+  v12 = [SSREnrollmentSamplingMetaDataHelper _writeMetaData:dataCopy locale:localeCopy];
 
   (v11)[2](v11, v12);
 }
@@ -65,18 +65,18 @@ void __72__SSREnrollmentSamplingMetaDataHelper__writeMetaData_locale_completion_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_writeMetaData:(id)a3 locale:(id)a4
++ (id)_writeMetaData:(id)data locale:(id)locale
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  dataCopy = data;
+  localeCopy = locale;
+  if (dataCopy)
   {
     v7 = +[SSREnrollmentSamplingMetaDataHelper _loadMetaDataDict];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 objectForKey:v6];
+      v9 = [v7 objectForKey:localeCopy];
 
       if (v9)
       {
@@ -86,12 +86,12 @@ void __72__SSREnrollmentSamplingMetaDataHelper__writeMetaData_locale_completion_
           v14 = 136315394;
           v15 = "+[SSREnrollmentSamplingMetaDataHelper _writeMetaData:locale:]";
           v16 = 2112;
-          v17 = v6;
+          v17 = localeCopy;
           _os_log_impl(&dword_225E12000, v10, OS_LOG_TYPE_DEFAULT, "%s locale already exists: %@, overwriting metaData", &v14, 0x16u);
         }
       }
 
-      [v8 setObject:v5 forKeyedSubscript:v6];
+      [v8 setObject:dataCopy forKeyedSubscript:localeCopy];
       [SSREnrollmentSamplingMetaDataHelper _writeMetaDataDict:v8];
       v11 = 0;
     }
@@ -112,10 +112,10 @@ void __72__SSREnrollmentSamplingMetaDataHelper__writeMetaData_locale_completion_
   return v11;
 }
 
-+ (void)_writeMetaDataDict:(id)a3
++ (void)_writeMetaDataDict:(id)dict
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  dictCopy = dict;
   v5 = objc_alloc_init(v3);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -123,7 +123,7 @@ void __72__SSREnrollmentSamplingMetaDataHelper__writeMetaData_locale_completion_
   v8[3] = &unk_278578B18;
   v9 = v5;
   v6 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v8];
+  [dictCopy enumerateKeysAndObjectsUsingBlock:v8];
 
   v7 = +[SSRVoiceProfileStorePrefs sharedStorePrefs];
   [v7 saveEnrollmentSamplingMetaDataDict:v6];
@@ -136,19 +136,19 @@ void __58__SSREnrollmentSamplingMetaDataHelper__writeMetaDataDict___block_invoke
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-+ (id)_convertToMetaDataDict:(id)a3
++ (id)_convertToMetaDataDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v5 = v4;
-  if (v3)
+  if (dictCopy)
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __62__SSREnrollmentSamplingMetaDataHelper__convertToMetaDataDict___block_invoke;
     v7[3] = &unk_278578AF0;
     v8 = v4;
-    [v3 enumerateKeysAndObjectsUsingBlock:v7];
+    [dictCopy enumerateKeysAndObjectsUsingBlock:v7];
   }
 
   return v5;
@@ -186,29 +186,29 @@ void __62__SSREnrollmentSamplingMetaDataHelper__convertToMetaDataDict___block_in
 + (id)_loadMetaDataDict
 {
   v2 = +[SSRVoiceProfileStorePrefs sharedStorePrefs];
-  v3 = [v2 loadEnrollmentSamplingMetaDataDict];
+  loadEnrollmentSamplingMetaDataDict = [v2 loadEnrollmentSamplingMetaDataDict];
 
-  if (!v3)
+  if (!loadEnrollmentSamplingMetaDataDict)
   {
-    v3 = objc_alloc_init(MEMORY[0x277CBEAC0]);
+    loadEnrollmentSamplingMetaDataDict = objc_alloc_init(MEMORY[0x277CBEAC0]);
   }
 
-  v4 = [SSREnrollmentSamplingMetaDataHelper _convertToMetaDataDict:v3];
+  v4 = [SSREnrollmentSamplingMetaDataHelper _convertToMetaDataDict:loadEnrollmentSamplingMetaDataDict];
 
   return v4;
 }
 
-+ (id)_getMetaDataForLocale:(id)a3 metaDataDict:(id)a4 error:(id *)a5
++ (id)_getMetaDataForLocale:(id)locale metaDataDict:(id)dict error:(id *)error
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v8)
+  localeCopy = locale;
+  dictCopy = dict;
+  v9 = dictCopy;
+  if (!dictCopy)
   {
     v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"Sampling meta data is not loaded"];
-    v10 = v21;
-    if (!a5)
+    allKeys = v21;
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -226,8 +226,8 @@ void __62__SSREnrollmentSamplingMetaDataHelper__convertToMetaDataDict___block_in
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = [v8 allKeys];
-  v11 = [v10 countByEnumeratingWithState:&v25 objects:v31 count:16];
+  allKeys = [dictCopy allKeys];
+  v11 = [allKeys countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v11)
   {
     v12 = v11;
@@ -238,18 +238,18 @@ void __62__SSREnrollmentSamplingMetaDataHelper__convertToMetaDataDict___block_in
       {
         if (*v26 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allKeys);
         }
 
         v15 = *(*(&v25 + 1) + 8 * i);
-        if ([v15 isEqualToString:v7])
+        if ([v15 isEqualToString:localeCopy])
         {
-          a5 = [v9 objectForKeyedSubscript:v15];
+          error = [v9 objectForKeyedSubscript:v15];
           goto LABEL_16;
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v25 objects:v31 count:16];
+      v12 = [allKeys countByEnumeratingWithState:&v25 objects:v31 count:16];
       if (v12)
       {
         continue;
@@ -259,55 +259,55 @@ void __62__SSREnrollmentSamplingMetaDataHelper__convertToMetaDataDict___block_in
     }
   }
 
-  v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"not found for locale: %@", v7];
-  v10 = v16;
-  if (a5)
+  localeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"not found for locale: %@", localeCopy];
+  allKeys = localeCopy;
+  if (error)
   {
     v17 = MEMORY[0x277CCA9B8];
     v29 = @"reason";
-    v30 = v16;
+    v30 = localeCopy;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
     v19 = v17;
     v20 = 1254;
 LABEL_15:
-    *a5 = [v19 errorWithDomain:@"com.apple.speakerrecognition" code:v20 userInfo:v18];
+    *error = [v19 errorWithDomain:@"com.apple.speakerrecognition" code:v20 userInfo:v18];
 
-    a5 = 0;
+    error = 0;
   }
 
 LABEL_16:
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return a5;
+  return error;
 }
 
-+ (id)_getMetaDataForLocale:(id)a3 error:(id *)a4
++ (id)_getMetaDataForLocale:(id)locale error:(id *)error
 {
-  v5 = a3;
+  localeCopy = locale;
   v6 = +[SSREnrollmentSamplingMetaDataHelper _loadMetaDataDict];
-  v7 = [SSREnrollmentSamplingMetaDataHelper _getMetaDataForLocale:v5 metaDataDict:v6 error:a4];
+  v7 = [SSREnrollmentSamplingMetaDataHelper _getMetaDataForLocale:localeCopy metaDataDict:v6 error:error];
 
   return v7;
 }
 
-+ (id)_getVoiceProfileWithLocale:(id)a3 error:(id *)a4
++ (id)_getVoiceProfileWithLocale:(id)locale error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  localeCopy = locale;
   v6 = +[SSRVoiceProfileStore sharedInstance];
-  v7 = [v6 loadCurrentVoiceProfiles];
+  loadCurrentVoiceProfiles = [v6 loadCurrentVoiceProfiles];
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v8 = v7;
+  v8 = loadCurrentVoiceProfiles;
   v9 = [v8 countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v9)
   {
     v10 = v9;
-    v30 = a4;
+    errorCopy = error;
     v11 = 0;
     v12 = *v32;
     while (2)
@@ -320,13 +320,13 @@ LABEL_16:
         }
 
         v14 = *(*(&v31 + 1) + 8 * i);
-        v15 = [v14 locale];
-        v16 = [v15 isEqualToString:v5];
+        locale = [v14 locale];
+        v16 = [locale isEqualToString:localeCopy];
 
         if (v16)
         {
-          v17 = [v14 appDomain];
-          v18 = [v17 isEqualToString:@"com.apple.siri"];
+          appDomain = [v14 appDomain];
+          v18 = [appDomain isEqualToString:@"com.apple.siri"];
 
           if (v18)
           {
@@ -348,13 +348,13 @@ LABEL_16:
       break;
     }
 
-    a4 = v30;
+    error = errorCopy;
     if (v11)
     {
-      v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"locale: %@ is found, but not with domain: %@", v5, @"com.apple.siri"];
+      localeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"locale: %@ is found, but not with domain: %@", localeCopy, @"com.apple.siri"];
       v20 = MEMORY[0x277CCA9B8];
       v35 = @"reason";
-      v36 = v19;
+      v36 = localeCopy;
       v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
       v22 = v20;
       v23 = 1264;
@@ -366,21 +366,21 @@ LABEL_16:
   {
   }
 
-  v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"voiceProfile with locale: %@ is not found", v5];
+  localeCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"voiceProfile with locale: %@ is not found", localeCopy];
   v26 = MEMORY[0x277CCA9B8];
   v37 = @"reason";
-  v38 = v19;
+  v38 = localeCopy;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
   v22 = v26;
   v23 = 1260;
 LABEL_16:
   v25 = [v22 errorWithDomain:@"com.apple.speakerrecognition" code:v23 userInfo:v21];
 
-  if (a4)
+  if (error)
   {
     v27 = v25;
     v24 = 0;
-    *a4 = v25;
+    *error = v25;
   }
 
   else
@@ -395,40 +395,40 @@ LABEL_19:
   return v24;
 }
 
-+ (id)_getVoiceProfileAndUpdateMetaDataWithLocale:(id)a3 error:(id *)a4
++ (id)_getVoiceProfileAndUpdateMetaDataWithLocale:(id)locale error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [SSREnrollmentSamplingMetaDataHelper _getMetaDataForLocale:v5 error:a4];
+  localeCopy = locale;
+  v6 = [SSREnrollmentSamplingMetaDataHelper _getMetaDataForLocale:localeCopy error:error];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 voiceProfileId];
-    v9 = [SSREnrollmentSamplingMetaDataHelper _getVoiceProfileWithLocale:v5 error:a4];
+    voiceProfileId = [v6 voiceProfileId];
+    v9 = [SSREnrollmentSamplingMetaDataHelper _getVoiceProfileWithLocale:localeCopy error:error];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 profileID];
-      v12 = [v11 isEqualToString:v8];
+      profileID = [v9 profileID];
+      v12 = [profileID isEqualToString:voiceProfileId];
 
       if ((v12 & 1) == 0)
       {
         v13 = [SSREnrollmentSamplingMetaData alloc];
-        v14 = [v10 profileID];
-        v15 = [(SSREnrollmentSamplingMetaData *)v13 initWithSelectionStatus:&unk_283933930 voiceProfileId:v14];
+        profileID2 = [v10 profileID];
+        v15 = [(SSREnrollmentSamplingMetaData *)v13 initWithSelectionStatus:&unk_283933930 voiceProfileId:profileID2];
 
-        v16 = [SSREnrollmentSamplingMetaDataHelper _writeMetaData:v15 locale:v5];
+        v16 = [SSREnrollmentSamplingMetaDataHelper _writeMetaData:v15 locale:localeCopy];
         v17 = *MEMORY[0x277D01970];
         if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
         {
           v18 = v17;
-          v19 = [v10 profileID];
+          profileID3 = [v10 profileID];
           v23 = 136315906;
           v24 = "+[SSREnrollmentSamplingMetaDataHelper _getVoiceProfileAndUpdateMetaDataWithLocale:error:]";
           v25 = 2112;
-          v26 = v5;
+          v26 = localeCopy;
           v27 = 2112;
-          v28 = v19;
+          v28 = profileID3;
           v29 = 2112;
           v30 = v16;
           _os_log_impl(&dword_225E12000, v18, OS_LOG_TYPE_DEFAULT, "%s update metaData for locale: %@ profileId: %@ with error: %@", &v23, 0x2Au);
@@ -449,18 +449,18 @@ LABEL_19:
   return v10;
 }
 
-+ (id)_getVoiceProfileWithEnrollmentId:(id)a3 error:(id *)a4
++ (id)_getVoiceProfileWithEnrollmentId:(id)id error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  idCopy = id;
   v6 = +[SSRVoiceProfileStore sharedInstance];
-  v7 = [v6 loadCurrentVoiceProfiles];
+  loadCurrentVoiceProfiles = [v6 loadCurrentVoiceProfiles];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v7;
+  v8 = loadCurrentVoiceProfiles;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v9)
   {
@@ -476,13 +476,13 @@ LABEL_19:
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [v13 enrollmentId];
-        v15 = [v14 isEqualToString:v5];
+        enrollmentId = [v13 enrollmentId];
+        v15 = [enrollmentId isEqualToString:idCopy];
 
         if (v15)
         {
-          a4 = v13;
-          v16 = v8;
+          error = v13;
+          idCopy = v8;
           goto LABEL_12;
         }
       }
@@ -497,39 +497,39 @@ LABEL_19:
     }
   }
 
-  if (a4)
+  if (error)
   {
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"voiceProfile with enrollmentId: %@ is not found", v5];
+    idCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"voiceProfile with enrollmentId: %@ is not found", idCopy];
     v17 = MEMORY[0x277CCA9B8];
     v25 = @"reason";
-    v26 = v16;
+    v26 = idCopy;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-    *a4 = [v17 errorWithDomain:@"com.apple.speakerrecognition" code:1260 userInfo:v18];
+    *error = [v17 errorWithDomain:@"com.apple.speakerrecognition" code:1260 userInfo:v18];
 
-    a4 = 0;
+    error = 0;
 LABEL_12:
   }
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return a4;
+  return error;
 }
 
-+ (id)getDonationDataFromVoiceProfile:(id)a3
++ (id)getDonationDataFromVoiceProfile:(id)profile
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 getDonationIds];
+  profileCopy = profile;
+  getDonationIds = [profileCopy getDonationIds];
 
-  if (v4)
+  if (getDonationIds)
   {
-    v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
+    getDonationIds = objc_alloc_init(MEMORY[0x277CBEB18]);
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = [v3 getDonationIds];
-    v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    getDonationIds2 = [profileCopy getDonationIds];
+    v6 = [getDonationIds2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
       v7 = v6;
@@ -540,37 +540,37 @@ LABEL_12:
         {
           if (*v18 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(getDonationIds2);
           }
 
           v10 = *(*(&v17 + 1) + 8 * i);
           v11 = [SSRDonationUtteranceData alloc];
-          v12 = [v3 locale];
-          v13 = [(SSRDonationUtteranceData *)v11 initWithDonationInfoString:v10 locale:v12];
+          locale = [profileCopy locale];
+          v13 = [(SSRDonationUtteranceData *)v11 initWithDonationInfoString:v10 locale:locale];
 
           if (v13)
           {
-            [v4 addObject:v13];
+            [getDonationIds addObject:v13];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v7 = [getDonationIds2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v7);
     }
   }
 
-  v14 = [v4 copy];
+  v14 = [getDonationIds copy];
 
   v15 = *MEMORY[0x277D85DE8];
 
   return v14;
 }
 
-+ (id)getEnrollmentMetaDataWithVoiceProfileId:(id)a3
++ (id)getEnrollmentMetaDataWithVoiceProfileId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = +[SSREnrollmentSamplingMetaDataHelper _loadMetaDataDict];
   if (v4)
   {
@@ -584,7 +584,7 @@ LABEL_12:
     v7[1] = 3221225472;
     v7[2] = __79__SSREnrollmentSamplingMetaDataHelper_getEnrollmentMetaDataWithVoiceProfileId___block_invoke;
     v7[3] = &unk_278578AC8;
-    v8 = v3;
+    v8 = idCopy;
     v9 = &v10;
     [v4 enumerateKeysAndObjectsUsingBlock:v7];
     v5 = v11[5];
@@ -619,15 +619,15 @@ void __79__SSREnrollmentSamplingMetaDataHelper_getEnrollmentMetaDataWithVoicePro
   [v2 saveEnrollmentSamplingMetaDataDict:0];
 }
 
-+ (id)getDonationDataWithVoiceProfileId:(id)a3 error:(id *)a4
++ (id)getDonationDataWithVoiceProfileId:(id)id error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  idCopy = id;
+  if (idCopy)
   {
-    v7 = [SSRVoiceProfileLoader getVoiceProfileWithVoiceProfileId:v6];
+    v7 = [SSRVoiceProfileLoader getVoiceProfileWithVoiceProfileId:idCopy];
     if (v7)
     {
-      v8 = [a1 getDonationDataFromVoiceProfile:v7];
+      v8 = [self getDonationDataFromVoiceProfile:v7];
     }
 
     else
@@ -636,10 +636,10 @@ void __79__SSREnrollmentSamplingMetaDataHelper_getEnrollmentMetaDataWithVoicePro
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.speakerrecognition" code:113 userInfo:&unk_283933720];
-    *a4 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else
@@ -650,15 +650,15 @@ void __79__SSREnrollmentSamplingMetaDataHelper_getEnrollmentMetaDataWithVoicePro
   return v8;
 }
 
-+ (id)getDonationDataWithEnrollmentId:(id)a3 error:(id *)a4
++ (id)getDonationDataWithEnrollmentId:(id)id error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  idCopy = id;
+  if (idCopy)
   {
-    v7 = [a1 _getVoiceProfileWithEnrollmentId:v6 error:a4];
+    v7 = [self _getVoiceProfileWithEnrollmentId:idCopy error:error];
     if (v7)
     {
-      v8 = [a1 getDonationDataFromVoiceProfile:v7];
+      v8 = [self getDonationDataFromVoiceProfile:v7];
     }
 
     else
@@ -667,10 +667,10 @@ void __79__SSREnrollmentSamplingMetaDataHelper_getEnrollmentMetaDataWithVoicePro
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.speakerrecognition" code:113 userInfo:&unk_2839336F8];
-    *a4 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else
@@ -681,15 +681,15 @@ void __79__SSREnrollmentSamplingMetaDataHelper_getEnrollmentMetaDataWithVoicePro
   return v8;
 }
 
-+ (void)removeMetaDataWithVoiceProfileId:(id)a3 completion:(id)a4
++ (void)removeMetaDataWithVoiceProfileId:(id)id completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __83__SSREnrollmentSamplingMetaDataHelper_removeMetaDataWithVoiceProfileId_completion___block_invoke;
   v24[3] = &unk_278579690;
-  v7 = v6;
+  v7 = completionCopy;
   v25 = v7;
   v8 = MEMORY[0x22AA71400](v24);
   v9 = +[SSREnrollmentSamplingMetaDataHelper _loadMetaDataDict];
@@ -701,7 +701,7 @@ void __79__SSREnrollmentSamplingMetaDataHelper_getEnrollmentMetaDataWithVoicePro
   v14 = 3221225472;
   v15 = __83__SSREnrollmentSamplingMetaDataHelper_removeMetaDataWithVoiceProfileId_completion___block_invoke_24;
   v16 = &unk_278578AA0;
-  v10 = v5;
+  v10 = idCopy;
   v17 = v10;
   v11 = v9;
   v18 = v11;
@@ -773,31 +773,31 @@ void __83__SSREnrollmentSamplingMetaDataHelper_removeMetaDataWithVoiceProfileId_
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)updateSelectionStatus:(unint64_t)a3 languageCode:(id)a4 completion:(id)a5
++ (void)updateSelectionStatus:(unint64_t)status languageCode:(id)code completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  codeCopy = code;
+  completionCopy = completion;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __85__SSREnrollmentSamplingMetaDataHelper_updateSelectionStatus_languageCode_completion___block_invoke;
   v20[3] = &unk_278579690;
-  v9 = v8;
+  v9 = completionCopy;
   v21 = v9;
   v10 = MEMORY[0x22AA71400](v20);
   v19 = 0;
-  v11 = [SSREnrollmentSamplingMetaDataHelper _getVoiceProfileWithLocale:v7 error:&v19];
+  v11 = [SSREnrollmentSamplingMetaDataHelper _getVoiceProfileWithLocale:codeCopy error:&v19];
   v12 = v19;
   if (v11)
   {
     v13 = [SSREnrollmentSamplingMetaData alloc];
-    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    v15 = [v11 profileID];
-    v16 = [(SSREnrollmentSamplingMetaData *)v13 initWithSelectionStatus:v14 voiceProfileId:v15];
+    v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:status];
+    profileID = [v11 profileID];
+    v16 = [(SSREnrollmentSamplingMetaData *)v13 initWithSelectionStatus:v14 voiceProfileId:profileID];
 
     if (v16)
     {
       v17 = +[SSREnrollmentSamplingMetaDataHelper _loadMetaDataDict];
-      [v17 setObject:v16 forKeyedSubscript:v7];
+      [v17 setObject:v16 forKeyedSubscript:codeCopy];
       [SSREnrollmentSamplingMetaDataHelper _writeMetaDataDict:v17];
       v18 = 0;
     }
@@ -840,28 +840,28 @@ void __85__SSREnrollmentSamplingMetaDataHelper_updateSelectionStatus_languageCod
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)writeMetaDataWithSamplingSelectionStatus:(unint64_t)a3 voiceProfileId:(id)a4 locale:(id)a5 completion:(id)a6
++ (void)writeMetaDataWithSamplingSelectionStatus:(unint64_t)status voiceProfileId:(id)id locale:(id)locale completion:(id)completion
 {
-  v15 = a4;
-  v9 = a5;
-  v10 = a6;
-  if (v15 && v9)
+  idCopy = id;
+  localeCopy = locale;
+  completionCopy = completion;
+  if (idCopy && localeCopy)
   {
     v11 = [SSREnrollmentSamplingMetaData alloc];
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    v13 = [(SSREnrollmentSamplingMetaData *)v11 initWithSelectionStatus:v12 voiceProfileId:v15];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:status];
+    v13 = [(SSREnrollmentSamplingMetaData *)v11 initWithSelectionStatus:v12 voiceProfileId:idCopy];
 
     if (v13)
     {
-      [SSREnrollmentSamplingMetaDataHelper _writeMetaData:v13 locale:v9 completion:v10];
+      [SSREnrollmentSamplingMetaDataHelper _writeMetaData:v13 locale:localeCopy completion:completionCopy];
     }
 
     else
     {
-      if (v10)
+      if (completionCopy)
       {
         v14 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.speakerrecognition" code:113 userInfo:&unk_283933680];
-        v10[2](v10, v14);
+        completionCopy[2](completionCopy, v14);
       }
 
       v13 = 0;
@@ -871,17 +871,17 @@ void __85__SSREnrollmentSamplingMetaDataHelper_updateSelectionStatus_languageCod
   else
   {
     v13 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.speakerrecognition" code:113 userInfo:&unk_283933658];
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, v13);
+      completionCopy[2](completionCopy, v13);
     }
   }
 }
 
-+ (id)getDonationIdsWithEnrollmentId:(id)a3 error:(id *)a4
++ (id)getDonationIdsWithEnrollmentId:(id)id error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [a1 getDonationDataWithEnrollmentId:a3 error:a4];
+  v4 = [self getDonationDataWithEnrollmentId:id error:error];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -904,8 +904,8 @@ void __85__SSREnrollmentSamplingMetaDataHelper_updateSelectionStatus_languageCod
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v15 + 1) + 8 * i) donationId];
-          [v5 addObject:v11];
+          donationId = [*(*(&v15 + 1) + 8 * i) donationId];
+          [v5 addObject:donationId];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -927,63 +927,63 @@ void __85__SSREnrollmentSamplingMetaDataHelper_updateSelectionStatus_languageCod
   return v12;
 }
 
-+ (unint64_t)getEnrollmentSelectionStatusWithLocale:(id)a3 error:(id *)a4
++ (unint64_t)getEnrollmentSelectionStatusWithLocale:(id)locale error:(id *)error
 {
-  v5 = a3;
-  v6 = [SSREnrollmentSamplingMetaDataHelper _getMetaDataForLocale:v5 error:a4];
+  localeCopy = locale;
+  v6 = [SSREnrollmentSamplingMetaDataHelper _getMetaDataForLocale:localeCopy error:error];
   if (!v6)
   {
-    v8 = [SSREnrollmentSamplingMetaDataHelper _getVoiceProfileWithLocale:v5 error:a4];
+    selectionStatus = [SSREnrollmentSamplingMetaDataHelper _getVoiceProfileWithLocale:localeCopy error:error];
 
-    if (v8)
+    if (selectionStatus)
     {
-      v9 = 0;
-      if (a4)
+      unsignedIntegerValue = 0;
+      if (error)
       {
-        *a4 = 0;
+        *error = 0;
       }
     }
 
     else
     {
-      v9 = 4;
+      unsignedIntegerValue = 4;
     }
 
     goto LABEL_9;
   }
 
-  v7 = [SSREnrollmentSamplingMetaDataHelper _getVoiceProfileAndUpdateMetaDataWithLocale:v5 error:a4];
+  v7 = [SSREnrollmentSamplingMetaDataHelper _getVoiceProfileAndUpdateMetaDataWithLocale:localeCopy error:error];
 
   if (v7)
   {
-    v8 = [v6 selectionStatus];
-    v9 = [v8 unsignedIntegerValue];
+    selectionStatus = [v6 selectionStatus];
+    unsignedIntegerValue = [selectionStatus unsignedIntegerValue];
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v9 = 4;
+  unsignedIntegerValue = 4;
 LABEL_10:
 
-  return v9;
+  return unsignedIntegerValue;
 }
 
-+ (id)getEnrollmentIdWithLocale:(id)a3 error:(id *)a4
++ (id)getEnrollmentIdWithLocale:(id)locale error:(id *)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [SSREnrollmentSamplingMetaDataHelper _getVoiceProfileWithLocale:a3 error:a4];
-  v5 = [v4 enrollmentId];
-  v6 = [v4 enrollmentId];
+  v4 = [SSREnrollmentSamplingMetaDataHelper _getVoiceProfileWithLocale:locale error:error];
+  enrollmentId = [v4 enrollmentId];
+  enrollmentId2 = [v4 enrollmentId];
 
-  if (v6)
+  if (enrollmentId2)
   {
-    v7 = v5;
+    profileID = enrollmentId;
   }
 
   else
   {
-    v7 = [v4 profileID];
+    profileID = [v4 profileID];
 
     v8 = *MEMORY[0x277D01970];
     if (os_log_type_enabled(*MEMORY[0x277D01970], OS_LOG_TYPE_DEFAULT))
@@ -991,22 +991,22 @@ LABEL_10:
       v11 = 136315394;
       v12 = "+[SSREnrollmentSamplingMetaDataHelper getEnrollmentIdWithLocale:error:]";
       v13 = 2112;
-      v14 = v7;
+      v14 = profileID;
       _os_log_impl(&dword_225E12000, v8, OS_LOG_TYPE_DEFAULT, "%s currentProfile is legacy voice profile before RPI, using voiceprofileId: %@", &v11, 0x16u);
     }
   }
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return profileID;
 }
 
-+ (id)getEnrollmentDateWithLocale:(id)a3 error:(id *)a4
++ (id)getEnrollmentDateWithLocale:(id)locale error:(id *)error
 {
-  v4 = [SSREnrollmentSamplingMetaDataHelper _getVoiceProfileWithLocale:a3 error:a4];
-  v5 = [v4 dateAdded];
+  v4 = [SSREnrollmentSamplingMetaDataHelper _getVoiceProfileWithLocale:locale error:error];
+  dateAdded = [v4 dateAdded];
 
-  return v5;
+  return dateAdded;
 }
 
 @end

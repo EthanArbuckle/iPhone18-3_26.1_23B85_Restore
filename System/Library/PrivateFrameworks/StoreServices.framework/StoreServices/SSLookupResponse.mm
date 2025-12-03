@@ -1,21 +1,21 @@
 @interface SSLookupResponse
 - (NSArray)allItems;
 - (NSDictionary)responseDictionary;
-- (SSLookupResponse)initWithLocationResponseDictionary:(id)a3;
-- (SSLookupResponse)initWithResponseDictionary:(id)a3;
-- (SSLookupResponse)initWithXPCEncoding:(id)a3;
+- (SSLookupResponse)initWithLocationResponseDictionary:(id)dictionary;
+- (SSLookupResponse)initWithResponseDictionary:(id)dictionary;
+- (SSLookupResponse)initWithXPCEncoding:(id)encoding;
 - (SSMetricsConfiguration)metricsConfiguration;
-- (id)appStoreURLWithReason:(int64_t)a3 initialIndex:(int64_t)a4;
+- (id)appStoreURLWithReason:(int64_t)reason initialIndex:(int64_t)index;
 - (id)copyXPCEncoding;
-- (id)itemForKey:(id)a3;
-- (id)valueForProperty:(id)a3;
-- (void)_enumerateItemsWithBlock:(id)a3;
+- (id)itemForKey:(id)key;
+- (id)valueForProperty:(id)property;
+- (void)_enumerateItemsWithBlock:(id)block;
 - (void)dealloc;
 @end
 
 @implementation SSLookupResponse
 
-- (SSLookupResponse)initWithLocationResponseDictionary:(id)a3
+- (SSLookupResponse)initWithLocationResponseDictionary:(id)dictionary
 {
   v34 = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -33,9 +33,9 @@
     return 0;
   }
 
-  v5 = [a3 objectForKey:@"storePlatformData"];
+  v5 = [dictionary objectForKey:@"storePlatformData"];
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && ((v6 = [a3 objectForKey:@"storePlatformPrewarmDataKey"], objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? (v7 = @"lockup-search") : (v7 = v6), v8 = objc_msgSend(v5, "objectForKey:", v7), objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 && ((v6 = [dictionary objectForKey:@"storePlatformPrewarmDataKey"], objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) ? (v7 = @"lockup-search") : (v7 = v6), v8 = objc_msgSend(v5, "objectForKey:", v7), objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     v24 = [v8 mutableCopy];
     v25 = [objc_msgSend(v24 objectForKey:{@"results", "mutableCopy"}];
@@ -47,7 +47,7 @@
     v25 = 0;
   }
 
-  v9 = [a3 objectForKey:@"results"];
+  v9 = [dictionary objectForKey:@"results"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -118,7 +118,7 @@
     v27[3] = &unk_1E84B1340;
     v27[4] = v22;
     v27[5] = v24;
-    [a3 enumerateKeysAndObjectsUsingBlock:v27];
+    [dictionary enumerateKeysAndObjectsUsingBlock:v27];
     [v24 setObject:v25 forKey:@"results"];
   }
 
@@ -140,7 +140,7 @@ uint64_t __55__SSLookupResponse_initWithLocationResponseDictionary___block_invok
   return result;
 }
 
-- (SSLookupResponse)initWithResponseDictionary:(id)a3
+- (SSLookupResponse)initWithResponseDictionary:(id)dictionary
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -150,7 +150,7 @@ uint64_t __55__SSLookupResponse_initWithLocationResponseDictionary___block_invok
     v5 = [(SSLookupResponse *)&v7 init];
     if (v5)
     {
-      v5->_response = [a3 copy];
+      v5->_response = [dictionary copy];
     }
   }
 
@@ -172,26 +172,26 @@ uint64_t __55__SSLookupResponse_initWithLocationResponseDictionary___block_invok
 
 - (NSArray)allItems
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __28__SSLookupResponse_allItems__block_invoke;
   v5[3] = &unk_1E84B1368;
-  v5[4] = v3;
+  v5[4] = array;
   [(SSLookupResponse *)self _enumerateItemsWithBlock:v5];
-  return v3;
+  return array;
 }
 
-- (id)appStoreURLWithReason:(int64_t)a3 initialIndex:(int64_t)a4
+- (id)appStoreURLWithReason:(int64_t)reason initialIndex:(int64_t)index
 {
-  v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"itms-apps2://?action=lookup&i=%ld&r=%ld", a4, a3];
+  reason = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"itms-apps2://?action=lookup&i=%ld&r=%ld", index, reason];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__SSLookupResponse_appStoreURLWithReason_initialIndex___block_invoke;
   v8[3] = &unk_1E84B1368;
-  v8[4] = v5;
+  v8[4] = reason;
   [(SSLookupResponse *)self _enumerateItemsWithBlock:v8];
-  v6 = [MEMORY[0x1E695DFF8] URLWithString:v5];
+  v6 = [MEMORY[0x1E695DFF8] URLWithString:reason];
 
   return v6;
 }
@@ -221,11 +221,11 @@ uint64_t __55__SSLookupResponse_appStoreURLWithReason_initialIndex___block_invok
   return result;
 }
 
-- (id)itemForKey:(id)a3
+- (id)itemForKey:(id)key
 {
   v4 = [(NSDictionary *)self->_response objectForKey:@"results"];
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && (v5 = [v4 objectForKey:a3], objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 && (v5 = [v4 objectForKey:key], objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     v6 = [[SSLookupItem alloc] initWithLookupDictionary:v5];
   }
@@ -245,9 +245,9 @@ uint64_t __55__SSLookupResponse_appStoreURLWithReason_initialIndex___block_invok
   return v2;
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
-  v3 = [(NSDictionary *)self->_response objectForKey:a3];
+  v3 = [(NSDictionary *)self->_response objectForKey:property];
 
   return v3;
 }
@@ -259,7 +259,7 @@ uint64_t __55__SSLookupResponse_appStoreURLWithReason_initialIndex___block_invok
   return v2;
 }
 
-- (void)_enumerateItemsWithBlock:(id)a3
+- (void)_enumerateItemsWithBlock:(id)block
 {
   v5 = [(NSDictionary *)self->_response objectForKey:@"results"];
   objc_opt_class();
@@ -273,7 +273,7 @@ uint64_t __55__SSLookupResponse_appStoreURLWithReason_initialIndex___block_invok
       v9[2] = __45__SSLookupResponse__enumerateItemsWithBlock___block_invoke;
       v9[3] = &unk_1E84B1398;
       v9[4] = v5;
-      v9[5] = a3;
+      v9[5] = block;
       [(NSMutableArray *)itemOrder enumerateObjectsUsingBlock:v9];
     }
 
@@ -287,7 +287,7 @@ uint64_t __55__SSLookupResponse_appStoreURLWithReason_initialIndex___block_invok
       v7[1] = 3221225472;
       v7[2] = __45__SSLookupResponse__enumerateItemsWithBlock___block_invoke_2;
       v7[3] = &unk_1E84B13C0;
-      v7[4] = a3;
+      v7[4] = block;
       v7[5] = v8;
       [v5 enumerateKeysAndObjectsUsingBlock:v7];
       _Block_object_dispose(v8, 8);
@@ -335,9 +335,9 @@ void __45__SSLookupResponse__enumerateItemsWithBlock___block_invoke_2(uint64_t a
   return v3;
 }
 
-- (SSLookupResponse)initWithXPCEncoding:(id)a3
+- (SSLookupResponse)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v12.receiver = self;
     v12.super_class = SSLookupResponse;
@@ -345,10 +345,10 @@ void __45__SSLookupResponse__enumerateItemsWithBlock___block_invoke_2(uint64_t a
     if (v5)
     {
       objc_opt_class();
-      v5->_expirationDate = SSXPCDictionaryCopyCFObjectWithClass(a3, "0");
+      v5->_expirationDate = SSXPCDictionaryCopyCFObjectWithClass(encoding, "0");
       objc_opt_class();
-      v5->_response = SSXPCDictionaryCopyCFObjectWithClass(a3, "2");
-      value = xpc_dictionary_get_value(a3, "1");
+      v5->_response = SSXPCDictionaryCopyCFObjectWithClass(encoding, "2");
+      value = xpc_dictionary_get_value(encoding, "1");
       if (value)
       {
         v8 = value;
@@ -365,7 +365,7 @@ void __45__SSLookupResponse__enumerateItemsWithBlock___block_invoke_2(uint64_t a
       }
 
       objc_opt_class();
-      v9 = SSXPCDictionaryCopyCFObjectWithClass(a3, "3");
+      v9 = SSXPCDictionaryCopyCFObjectWithClass(encoding, "3");
       if (v9)
       {
         v10 = v9;

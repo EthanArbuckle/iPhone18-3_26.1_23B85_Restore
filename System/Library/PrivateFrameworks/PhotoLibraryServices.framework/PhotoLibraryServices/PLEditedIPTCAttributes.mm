@@ -1,24 +1,24 @@
 @interface PLEditedIPTCAttributes
-+ (id)distinctValuesForKeyPath:(id)a3 inManagedObjectContext:(id)a4;
++ (id)distinctValuesForKeyPath:(id)path inManagedObjectContext:(id)context;
 + (id)iptcKeyMap;
 - (BOOL)supportsCloudUpload;
-- (id)payloadForChangedKeys:(id)a3;
+- (id)payloadForChangedKeys:(id)keys;
 - (id)payloadID;
 - (void)clearEditedIPTCData;
-- (void)setIPTCData:(id)a3;
+- (void)setIPTCData:(id)data;
 - (void)willSave;
 @end
 
 @implementation PLEditedIPTCAttributes
 
-- (id)payloadForChangedKeys:(id)a3
+- (id)payloadForChangedKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(PLEditedIPTCAttributes *)self assetAttributes];
-  v6 = [v5 asset];
-  if ([v6 isValidForJournalPersistence])
+  keysCopy = keys;
+  assetAttributes = [(PLEditedIPTCAttributes *)self assetAttributes];
+  asset = [assetAttributes asset];
+  if ([asset isValidForJournalPersistence])
   {
-    v7 = [[PLAssetJournalEntryPayload alloc] initWithEditedIPTCAttributes:self changedKeys:v4];
+    v7 = [[PLAssetJournalEntryPayload alloc] initWithEditedIPTCAttributes:self changedKeys:keysCopy];
   }
 
   else
@@ -31,10 +31,10 @@
 
 - (id)payloadID
 {
-  v2 = [(PLEditedIPTCAttributes *)self assetAttributes];
-  v3 = [v2 asset];
-  v4 = [v3 uuid];
-  v5 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v4];
+  assetAttributes = [(PLEditedIPTCAttributes *)self assetAttributes];
+  asset = [assetAttributes asset];
+  uuid = [asset uuid];
+  v5 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:uuid];
 
   return v5;
 }
@@ -44,27 +44,27 @@
   v14.receiver = self;
   v14.super_class = PLEditedIPTCAttributes;
   [(PLManagedObject *)&v14 willSave];
-  v3 = [(PLEditedIPTCAttributes *)self managedObjectContext];
+  managedObjectContext = [(PLEditedIPTCAttributes *)self managedObjectContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(PLEditedIPTCAttributes *)self assetAttributes];
-    v5 = [v4 asset];
-    v6 = [v5 isDeleted];
+    assetAttributes = [(PLEditedIPTCAttributes *)self assetAttributes];
+    asset = [assetAttributes asset];
+    isDeleted = [asset isDeleted];
 
-    if ((v6 & 1) == 0)
+    if ((isDeleted & 1) == 0)
     {
-      v7 = [(PLEditedIPTCAttributes *)self assetAttributes];
-      v8 = [v7 asset];
-      v9 = [v8 changedValues];
-      v10 = [v9 objectForKeyedSubscript:@"modificationDate"];
+      assetAttributes2 = [(PLEditedIPTCAttributes *)self assetAttributes];
+      asset2 = [assetAttributes2 asset];
+      changedValues = [asset2 changedValues];
+      v10 = [changedValues objectForKeyedSubscript:@"modificationDate"];
 
       if (!v10)
       {
-        v11 = [(PLEditedIPTCAttributes *)self assetAttributes];
-        v12 = [v11 asset];
-        v13 = [MEMORY[0x1E695DF00] date];
-        [v12 setModificationDate:v13];
+        assetAttributes3 = [(PLEditedIPTCAttributes *)self assetAttributes];
+        asset3 = [assetAttributes3 asset];
+        date = [MEMORY[0x1E695DF00] date];
+        [asset3 setModificationDate:date];
       }
     }
   }
@@ -82,12 +82,12 @@
   [(PLEditedIPTCAttributes *)self setData:0];
 }
 
-- (void)setIPTCData:(id)a3
+- (void)setIPTCData:(id)data
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v12 = 0;
-  v5 = [MEMORY[0x1E696AE40] propertyListWithData:v4 options:0 format:0 error:&v12];
+  v5 = [MEMORY[0x1E696AE40] propertyListWithData:dataCopy options:0 format:0 error:&v12];
   v6 = v12;
   if (v6)
   {
@@ -109,10 +109,10 @@
     v9[2] = __38__PLEditedIPTCAttributes_setIPTCData___block_invoke;
     v9[3] = &unk_1E7578238;
     v10 = v8;
-    v11 = self;
+    selfCopy = self;
     v7 = v8;
     [v5 enumerateKeysAndObjectsUsingBlock:v9];
-    [(PLEditedIPTCAttributes *)self setData:v4];
+    [(PLEditedIPTCAttributes *)self setData:dataCopy];
   }
 }
 
@@ -140,31 +140,31 @@ void __38__PLEditedIPTCAttributes_setIPTCData___block_invoke(uint64_t a1, uint64
 
 - (BOOL)supportsCloudUpload
 {
-  v2 = [(PLEditedIPTCAttributes *)self assetAttributes];
-  v3 = [v2 supportsCloudUpload];
+  assetAttributes = [(PLEditedIPTCAttributes *)self assetAttributes];
+  supportsCloudUpload = [assetAttributes supportsCloudUpload];
 
-  return v3;
+  return supportsCloudUpload;
 }
 
-+ (id)distinctValuesForKeyPath:(id)a3 inManagedObjectContext:(id)a4
++ (id)distinctValuesForKeyPath:(id)path inManagedObjectContext:(id)context
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
+  pathCopy = path;
+  contextCopy = context;
+  array = [MEMORY[0x1E695DF70] array];
   context = objc_autoreleasePoolPush();
   v8 = MEMORY[0x1E695D5E0];
   v9 = +[PLEditedIPTCAttributes entityName];
   v10 = [v8 fetchRequestWithEntityName:v9];
 
-  v28[0] = v5;
+  v28[0] = pathCopy;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
   [v10 setPropertiesToFetch:v11];
 
   [v10 setReturnsDistinctResults:1];
   [v10 setResultType:2];
   v26 = 0;
-  v12 = [v6 executeFetchRequest:v10 error:&v26];
+  v12 = [contextCopy executeFetchRequest:v10 error:&v26];
   v13 = v26;
   v22 = 0u;
   v23 = 0u;
@@ -185,10 +185,10 @@ void __38__PLEditedIPTCAttributes_setIPTCData___block_invoke(uint64_t a1, uint64
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * i) objectForKey:v5];
+        v19 = [*(*(&v22 + 1) + 8 * i) objectForKey:pathCopy];
         if (v19)
         {
-          [v7 addObject:v19];
+          [array addObject:v19];
         }
       }
 
@@ -200,7 +200,7 @@ void __38__PLEditedIPTCAttributes_setIPTCData___block_invoke(uint64_t a1, uint64
 
   objc_autoreleasePoolPop(context);
 
-  return v7;
+  return array;
 }
 
 + (id)iptcKeyMap

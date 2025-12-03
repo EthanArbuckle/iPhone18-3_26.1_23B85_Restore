@@ -1,33 +1,33 @@
 @interface PHUniqueObjectIDCache
-- (id)uniquedOIDs:(id)a1;
-- (id)uniquedOIDsFromObjects:(void *)a1;
-- (void)_verifyObjectIDIsTagged:(id)a3;
+- (id)uniquedOIDs:(id)ds;
+- (id)uniquedOIDsFromObjects:(void *)objects;
+- (void)_verifyObjectIDIsTagged:(id)tagged;
 @end
 
 @implementation PHUniqueObjectIDCache
 
-- (void)_verifyObjectIDIsTagged:(id)a3
+- (void)_verifyObjectIDIsTagged:(id)tagged
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3 >= 1)
+  taggedCopy = tagged;
+  if (taggedCopy >= 1)
   {
     v4 = PLBackendGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
     {
       v5 = 138412290;
-      v6 = v3;
+      v6 = taggedCopy;
       _os_log_impl(&dword_19C86F000, v4, OS_LOG_TYPE_FAULT, "Unexpected non-tagged NSManagedObjectID: %@", &v5, 0xCu);
     }
   }
 }
 
-- (id)uniquedOIDs:(id)a1
+- (id)uniquedOIDs:(id)ds
 {
   v15 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (ds)
   {
     v12 = 0u;
     v13 = 0u;
@@ -47,7 +47,7 @@
             objc_enumerationMutation(v4);
           }
 
-          [a1 _verifyObjectIDIsTagged:*(*(&v10 + 1) + 8 * i)];
+          [ds _verifyObjectIDIsTagged:*(*(&v10 + 1) + 8 * i)];
         }
 
         v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -56,19 +56,19 @@
       while (v6);
     }
 
-    a1 = v4;
+    ds = v4;
   }
 
-  return a1;
+  return ds;
 }
 
-- (id)uniquedOIDsFromObjects:(void *)a1
+- (id)uniquedOIDsFromObjects:(void *)objects
 {
   v32 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (!a1 || !v3)
+  if (!objects || !v3)
   {
     goto LABEL_26;
   }
@@ -127,10 +127,10 @@ LABEL_16:
         for (i = 0; i != v7; ++i)
         {
           v18 = *&v12[8 * i];
-          v19 = [v18 objectID];
-          [a1 _verifyObjectIDIsTagged:v19];
+          objectID = [v18 objectID];
+          [objects _verifyObjectIDIsTagged:objectID];
           v20 = v14[i];
-          v14[i] = v19;
+          v14[i] = objectID;
         }
 
         v4 = v30;

@@ -1,27 +1,27 @@
 @interface VideoReaderRand
 - (id).cxx_construct;
-- (id)initFromFile:(id)a3 frameTimes:(const void *)a4;
-- (id)initFromFile:(id)a3 withParams:(id)a4;
-- (int)getFrameAtTime:(id *)a3 frame:(opaqueCMSampleBuffer *)a4 rawFrameIndex:(unsigned int *)a5;
-- (int)indexForTime:(id *)a3;
+- (id)initFromFile:(id)file frameTimes:(const void *)times;
+- (id)initFromFile:(id)file withParams:(id)params;
+- (int)getFrameAtTime:(id *)time frame:(opaqueCMSampleBuffer *)frame rawFrameIndex:(unsigned int *)index;
+- (int)indexForTime:(id *)time;
 - (int)reset;
 @end
 
 @implementation VideoReaderRand
 
-- (id)initFromFile:(id)a3 frameTimes:(const void *)a4
+- (id)initFromFile:(id)file frameTimes:(const void *)times
 {
-  v6 = a3;
+  fileCopy = file;
   v12.receiver = self;
   v12.super_class = VideoReaderRand;
-  v7 = [(VideoReader *)&v12 initFromFile:v6];
+  v7 = [(VideoReader *)&v12 initFromFile:fileCopy];
   v8 = v7;
   if (v7)
   {
     v9 = v7 + 40;
-    if (v7 + 40 != a4)
+    if (v7 + 40 != times)
     {
-      sub_2418DF350(v7 + 40, *a4, *(a4 + 1), 0xAAAAAAAAAAAAAAABLL * ((*(a4 + 1) - *a4) >> 3));
+      sub_2418DF350(v7 + 40, *times, *(times + 1), 0xAAAAAAAAAAAAAAABLL * ((*(times + 1) - *times) >> 3));
     }
 
     v8[87] = -1431655765 * ((v9[1] - *v9) >> 3);
@@ -33,11 +33,11 @@
   return v8;
 }
 
-- (id)initFromFile:(id)a3 withParams:(id)a4
+- (id)initFromFile:(id)file withParams:(id)params
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[VideoReaderRand initFromFile:frameTimes:](self, "initFromFile:frameTimes:", v6, [v7 frameTimes]);
+  fileCopy = file;
+  paramsCopy = params;
+  v8 = -[VideoReaderRand initFromFile:frameTimes:](self, "initFromFile:frameTimes:", fileCopy, [paramsCopy frameTimes]);
 
   return v8;
 }
@@ -50,9 +50,9 @@
   return [(VideoReader *)&v3 reset];
 }
 
-- (int)indexForTime:(id *)a3
+- (int)indexForTime:(id *)time
 {
-  time1 = *a3;
+  time1 = *time;
   begin = self->_frameTimes.__begin_;
   v6 = *(begin + 2);
   *&v19.var0 = *begin;
@@ -65,7 +65,7 @@
   else
   {
     lastFrameDex = self->_lastFrameDex;
-    if ((lastFrameDex & 0x80000000) != 0 || (time1 = *a3, v8 = self->_frameTimes.__begin_ + 24 * lastFrameDex, v9 = *(v8 + 2), *&v19.var0 = *v8, v19.var3 = v9, CMTimeCompare(&time1, &v19) < 1))
+    if ((lastFrameDex & 0x80000000) != 0 || (time1 = *time, v8 = self->_frameTimes.__begin_ + 24 * lastFrameDex, v9 = *(v8 + 2), *&v19.var0 = *v8, v19.var3 = v9, CMTimeCompare(&time1, &v19) < 1))
     {
       v10 = 0;
     }
@@ -85,12 +85,12 @@
         v14 = *(v13 + 2);
         *&time1.value = *v13;
         time1.epoch = v14;
-        v19 = *a3;
+        v19 = *time;
         if (CMTimeCompare(&time1, &v19) <= 0)
         {
-          *&time1.value = *&a3->var0;
+          *&time1.value = *&time->var0;
           v15 = self->_frameTimes.__begin_;
-          time1.epoch = a3->var3;
+          time1.epoch = time->var3;
           v16 = v15 + i;
           v17 = *(v15 + i + 40);
           *&v19.var0 = *(v16 + 24);
@@ -113,9 +113,9 @@
   return v11;
 }
 
-- (int)getFrameAtTime:(id *)a3 frame:(opaqueCMSampleBuffer *)a4 rawFrameIndex:(unsigned int *)a5
+- (int)getFrameAtTime:(id *)time frame:(opaqueCMSampleBuffer *)frame rawFrameIndex:(unsigned int *)index
 {
-  v20 = *a3;
+  v20 = *time;
   v8 = [(VideoReaderRand *)self indexForTime:&v20];
   if ((v8 & 0x80000000) != 0)
   {
@@ -153,7 +153,7 @@ LABEL_7:
   v15 = 7;
   while (1)
   {
-    result = [(VideoReader *)self getFrameAsSampleBuf:a4];
+    result = [(VideoReader *)self getFrameAsSampleBuf:frame];
     if (result)
     {
       break;
@@ -172,7 +172,7 @@ LABEL_7:
     self->_lastFrameDex = v17;
     if (!result)
     {
-      *a5 = v17;
+      *index = v17;
       return result;
     }
 

@@ -1,139 +1,139 @@
 @interface RTMotionActivityManager
-+ (BOOL)supportsNotificationName:(id)a3;
-+ (RTMotionActivityManager)allocWithZone:(_NSZone *)a3;
-+ (double)ratioOfMotionActivityType:(unint64_t)a3 forActivities:(id)a4 startDate:(id)a5 endDate:(id)a6;
-+ (id)activityAlarmTriggerToString:(int64_t)a3;
-+ (id)motionActivityVehicleConnectedStateToString:(unint64_t)a3;
-+ (id)motionSettledStateToString:(unint64_t)a3;
-+ (void)removeActivities:(id)a3 stoppedBeforeDate:(id)a4;
-- (RTMotionActivityManager)initWithPlatform:(id)a3 vehicleStore:(id)a4;
-- (void)_fetchMotionActivitiesFromStartDate:(id)a3 endDate:(id)a4 handler:(id)a5;
-- (void)_fetchPredominantMotionActivityTypeFromStartDate:(id)a3 toEndDate:(id)a4 withHandler:(id)a5;
-- (void)_fetchPredominantMotionActivityWithHandler:(id)a3;
-- (void)_subscribeForPedometerDataWithStartDate:(id)a3 handler:(id)a4;
-- (void)_subscribeForPedometerEventsWithUUID:(id)a3 handler:(id)a4;
-- (void)_unsubscribeForPedometerData:(id)a3;
-- (void)fetchMotionActivitiesFromStartDate:(id)a3 endDate:(id)a4 handler:(id)a5;
-- (void)fetchPredominantMotionActivityTypeFromStartDate:(id)a3 toEndDate:(id)a4 withHandler:(id)a5;
-- (void)fetchPredominantMotionActivityWithHandler:(id)a3;
-- (void)internalAddObserver:(id)a3 name:(id)a4;
-- (void)internalRemoveObserver:(id)a3 name:(id)a4;
-- (void)subscribeForPedometerDataWithStartDate:(id)a3 handler:(id)a4;
-- (void)subscribeForPedometerEventsWithUUID:(id)a3 handler:(id)a4;
-- (void)unsubscribeForPedometerData:(id)a3;
++ (BOOL)supportsNotificationName:(id)name;
++ (RTMotionActivityManager)allocWithZone:(_NSZone *)zone;
++ (double)ratioOfMotionActivityType:(unint64_t)type forActivities:(id)activities startDate:(id)date endDate:(id)endDate;
++ (id)activityAlarmTriggerToString:(int64_t)string;
++ (id)motionActivityVehicleConnectedStateToString:(unint64_t)string;
++ (id)motionSettledStateToString:(unint64_t)string;
++ (void)removeActivities:(id)activities stoppedBeforeDate:(id)date;
+- (RTMotionActivityManager)initWithPlatform:(id)platform vehicleStore:(id)store;
+- (void)_fetchMotionActivitiesFromStartDate:(id)date endDate:(id)endDate handler:(id)handler;
+- (void)_fetchPredominantMotionActivityTypeFromStartDate:(id)date toEndDate:(id)endDate withHandler:(id)handler;
+- (void)_fetchPredominantMotionActivityWithHandler:(id)handler;
+- (void)_subscribeForPedometerDataWithStartDate:(id)date handler:(id)handler;
+- (void)_subscribeForPedometerEventsWithUUID:(id)d handler:(id)handler;
+- (void)_unsubscribeForPedometerData:(id)data;
+- (void)fetchMotionActivitiesFromStartDate:(id)date endDate:(id)endDate handler:(id)handler;
+- (void)fetchPredominantMotionActivityTypeFromStartDate:(id)date toEndDate:(id)endDate withHandler:(id)handler;
+- (void)fetchPredominantMotionActivityWithHandler:(id)handler;
+- (void)internalAddObserver:(id)observer name:(id)name;
+- (void)internalRemoveObserver:(id)observer name:(id)name;
+- (void)subscribeForPedometerDataWithStartDate:(id)date handler:(id)handler;
+- (void)subscribeForPedometerEventsWithUUID:(id)d handler:(id)handler;
+- (void)unsubscribeForPedometerData:(id)data;
 @end
 
 @implementation RTMotionActivityManager
 
-+ (RTMotionActivityManager)allocWithZone:(_NSZone *)a3
++ (RTMotionActivityManager)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [RTMotionActivityManager_CoreMotion allocWithZone:a3];
+    return [RTMotionActivityManager_CoreMotion allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___RTMotionActivityManager;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 
-- (RTMotionActivityManager)initWithPlatform:(id)a3 vehicleStore:(id)a4
+- (RTMotionActivityManager)initWithPlatform:(id)platform vehicleStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  platformCopy = platform;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = RTMotionActivityManager;
   v9 = [(RTNotifier *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_platform, a3);
-    objc_storeStrong(&v10->_vehicleStore, a4);
+    objc_storeStrong(&v9->_platform, platform);
+    objc_storeStrong(&v10->_vehicleStore, store);
   }
 
   return v10;
 }
 
-+ (id)motionActivityVehicleConnectedStateToString:(unint64_t)a3
++ (id)motionActivityVehicleConnectedStateToString:(unint64_t)string
 {
-  if (a3 > 2)
+  if (string > 2)
   {
     return @"Invalid";
   }
 
   else
   {
-    return off_2788CC6D0[a3];
+    return off_2788CC6D0[string];
   }
 }
 
-+ (id)motionSettledStateToString:(unint64_t)a3
++ (id)motionSettledStateToString:(unint64_t)string
 {
-  if (a3 > 2)
+  if (string > 2)
   {
     return @"Invalid";
   }
 
   else
   {
-    return off_2788CC6E8[a3];
+    return off_2788CC6E8[string];
   }
 }
 
-+ (id)activityAlarmTriggerToString:(int64_t)a3
++ (id)activityAlarmTriggerToString:(int64_t)string
 {
-  if ((a3 + 1) > 0xB)
+  if ((string + 1) > 0xB)
   {
     return @"Invalid";
   }
 
   else
   {
-    return off_2788CC700[a3 + 1];
+    return off_2788CC700[string + 1];
   }
 }
 
-- (void)internalAddObserver:(id)a3 name:(id)a4
+- (void)internalAddObserver:(id)observer name:(id)name
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  if (([objc_opt_class() supportsNotificationName:v4] & 1) == 0)
+  nameCopy = name;
+  if (([objc_opt_class() supportsNotificationName:nameCopy] & 1) == 0)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityMotionActivity);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = nameCopy;
       _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "unsupported notification, %@", &v6, 0xCu);
     }
   }
 }
 
-- (void)internalRemoveObserver:(id)a3 name:(id)a4
+- (void)internalRemoveObserver:(id)observer name:(id)name
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a4;
-  if (([objc_opt_class() supportsNotificationName:v4] & 1) == 0)
+  nameCopy = name;
+  if (([objc_opt_class() supportsNotificationName:nameCopy] & 1) == 0)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityMotionActivity);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = nameCopy;
       _os_log_error_impl(&dword_2304B3000, v5, OS_LOG_TYPE_ERROR, "unsupported notification, %@", &v6, 0xCu);
     }
   }
 }
 
-+ (BOOL)supportsNotificationName:(id)a3
++ (BOOL)supportsNotificationName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[(RTNotification *)RTMotionActivityManagerNotificationActivity];
-  if ([v3 isEqualToString:v4])
+  if ([nameCopy isEqualToString:v4])
   {
     v5 = 1;
   }
@@ -141,7 +141,7 @@
   else
   {
     v6 = +[(RTNotification *)RTMotionActivityManagerNotificationDominantMotionActivityChange];
-    if ([v3 isEqualToString:v6])
+    if ([nameCopy isEqualToString:v6])
     {
       v5 = 1;
     }
@@ -149,7 +149,7 @@
     else
     {
       v7 = +[(RTNotification *)RTMotionActivityManagerNotificationMotionSettledStateChange];
-      if ([v3 isEqualToString:v7])
+      if ([nameCopy isEqualToString:v7])
       {
         v5 = 1;
       }
@@ -157,7 +157,7 @@
       else
       {
         v8 = +[(RTNotification *)RTMotionActivityManagerNotificationVehicleExit];
-        if ([v3 isEqualToString:v8])
+        if ([nameCopy isEqualToString:v8])
         {
           v5 = 1;
         }
@@ -165,7 +165,7 @@
         else
         {
           v9 = +[(RTNotification *)RTMotionActivityManagerNotificationVehicleConnected];
-          if ([v3 isEqualToString:v9])
+          if ([nameCopy isEqualToString:v9])
           {
             v5 = 1;
           }
@@ -173,7 +173,7 @@
           else
           {
             v10 = +[(RTNotification *)RTMotionActivityManagerNotificationActivityAlarm];
-            v5 = [v3 isEqualToString:v10];
+            v5 = [nameCopy isEqualToString:v10];
           }
         }
       }
@@ -183,174 +183,174 @@
   return v5;
 }
 
-- (void)fetchMotionActivitiesFromStartDate:(id)a3 endDate:(id)a4 handler:(id)a5
+- (void)fetchMotionActivitiesFromStartDate:(id)date endDate:(id)endDate handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v11 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __78__RTMotionActivityManager_fetchMotionActivitiesFromStartDate_endDate_handler___block_invoke;
     v12[3] = &unk_2788C5530;
     v12[4] = self;
-    v13 = v8;
-    v14 = v9;
-    v15 = v10;
-    dispatch_async(v11, v12);
+    v13 = dateCopy;
+    v14 = endDateCopy;
+    v15 = handlerCopy;
+    dispatch_async(queue, v12);
   }
 }
 
-- (void)_fetchMotionActivitiesFromStartDate:(id)a3 endDate:(id)a4 handler:(id)a5
+- (void)_fetchMotionActivitiesFromStartDate:(id)date endDate:(id)endDate handler:(id)handler
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  if (a5)
+  if (handler)
   {
     v9 = *MEMORY[0x277CCA450];
     v10[0] = @"Not supported on this platform.";
     v5 = MEMORY[0x277CBEAC0];
-    v6 = a5;
+    handlerCopy = handler;
     v7 = [v5 dictionaryWithObjects:v10 forKeys:&v9 count:1];
     v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:1 userInfo:v7];
-    v6[2](v6, 0, v8);
+    handlerCopy[2](handlerCopy, 0, v8);
   }
 }
 
-- (void)fetchPredominantMotionActivityTypeFromStartDate:(id)a3 toEndDate:(id)a4 withHandler:(id)a5
+- (void)fetchPredominantMotionActivityTypeFromStartDate:(id)date toEndDate:(id)endDate withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  dateCopy = date;
+  endDateCopy = endDate;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v11 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __97__RTMotionActivityManager_fetchPredominantMotionActivityTypeFromStartDate_toEndDate_withHandler___block_invoke;
     v12[3] = &unk_2788C5530;
     v12[4] = self;
-    v13 = v8;
-    v14 = v9;
-    v15 = v10;
-    dispatch_async(v11, v12);
+    v13 = dateCopy;
+    v14 = endDateCopy;
+    v15 = handlerCopy;
+    dispatch_async(queue, v12);
   }
 }
 
-- (void)_fetchPredominantMotionActivityTypeFromStartDate:(id)a3 toEndDate:(id)a4 withHandler:(id)a5
+- (void)_fetchPredominantMotionActivityTypeFromStartDate:(id)date toEndDate:(id)endDate withHandler:(id)handler
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = *MEMORY[0x277CCA450];
   v10[0] = @"Not supported on this platform.";
   v5 = MEMORY[0x277CBEAC0];
-  v6 = a5;
+  handlerCopy = handler;
   v7 = [v5 dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:1 userInfo:v7];
-  v6[2](v6, 0, v8);
+  handlerCopy[2](handlerCopy, 0, v8);
 }
 
-- (void)fetchPredominantMotionActivityWithHandler:(id)a3
+- (void)fetchPredominantMotionActivityWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __69__RTMotionActivityManager_fetchPredominantMotionActivityWithHandler___block_invoke;
     v6[3] = &unk_2788C4938;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = handlerCopy;
+    dispatch_async(queue, v6);
   }
 }
 
-- (void)_fetchPredominantMotionActivityWithHandler:(id)a3
+- (void)_fetchPredominantMotionActivityWithHandler:(id)handler
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277CCA450];
   v8[0] = @"Not supported on this platform.";
   v3 = MEMORY[0x277CBEAC0];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [v3 dictionaryWithObjects:v8 forKeys:&v7 count:1];
   v6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:1 userInfo:v5];
-  v4[2](v4, 0, v6);
+  handlerCopy[2](handlerCopy, 0, v6);
 }
 
-- (void)subscribeForPedometerDataWithStartDate:(id)a3 handler:(id)a4
+- (void)subscribeForPedometerDataWithStartDate:(id)date handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  dateCopy = date;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__RTMotionActivityManager_subscribeForPedometerDataWithStartDate_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dateCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dateCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_subscribeForPedometerDataWithStartDate:(id)a3 handler:(id)a4
+- (void)_subscribeForPedometerDataWithStartDate:(id)date handler:(id)handler
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v8 = *MEMORY[0x277CCA450];
   v9[0] = @"Not supported on this platform.";
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a4;
+  handlerCopy = handler;
   v6 = [v4 dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:1 userInfo:v6];
-  (*(v5 + 2))(v5, 0, 0, v7);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v7);
 }
 
-- (void)subscribeForPedometerEventsWithUUID:(id)a3 handler:(id)a4
+- (void)subscribeForPedometerEventsWithUUID:(id)d handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  dCopy = d;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__RTMotionActivityManager_subscribeForPedometerEventsWithUUID_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_subscribeForPedometerEventsWithUUID:(id)a3 handler:(id)a4
+- (void)_subscribeForPedometerEventsWithUUID:(id)d handler:(id)handler
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v8 = *MEMORY[0x277CCA450];
   v9[0] = @"Not supported on this platform.";
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a4;
+  handlerCopy = handler;
   v6 = [v4 dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01448] code:1 userInfo:v6];
-  (*(v5 + 2))(v5, 0, 0, v7);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, v7);
 }
 
-- (void)unsubscribeForPedometerData:(id)a3
+- (void)unsubscribeForPedometerData:(id)data
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  dataCopy = data;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__RTMotionActivityManager_unsubscribeForPedometerData___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dataCopy;
+  v6 = dataCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_unsubscribeForPedometerData:(id)a3
+- (void)_unsubscribeForPedometerData:(id)data
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v8 = *MEMORY[0x277CCA450];
@@ -366,15 +366,15 @@
   }
 }
 
-+ (void)removeActivities:(id)a3 stoppedBeforeDate:(id)a4
++ (void)removeActivities:(id)activities stoppedBeforeDate:(id)date
 {
-  v5 = a3;
-  if (v5 && a4)
+  activitiesCopy = activities;
+  if (activitiesCopy && date)
   {
     v6 = MEMORY[0x277CCA970];
-    v10 = v5;
-    v7 = a4;
-    v8 = [[v6 alloc] initWithStartDate:v7 duration:0.0];
+    v10 = activitiesCopy;
+    dateCopy = date;
+    v8 = [[v6 alloc] initWithStartDate:dateCopy duration:0.0];
 
     v9 = [v10 indexOfObject:v8 inSortedRange:0 options:objc_msgSend(v10 usingComparator:{"count"), 1280, &__block_literal_global_194}];
     if (v9 >= 2)
@@ -382,7 +382,7 @@
       [v10 removeObjectsInRange:{0, v9 - 1}];
     }
 
-    v5 = v10;
+    activitiesCopy = v10;
   }
 }
 
@@ -396,20 +396,20 @@ uint64_t __62__RTMotionActivityManager_removeActivities_stoppedBeforeDate___bloc
   return v7;
 }
 
-+ (double)ratioOfMotionActivityType:(unint64_t)a3 forActivities:(id)a4 startDate:(id)a5 endDate:(id)a6
++ (double)ratioOfMotionActivityType:(unint64_t)type forActivities:(id)activities startDate:(id)date endDate:(id)endDate
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = v11;
+  activitiesCopy = activities;
+  dateCopy = date;
+  endDateCopy = endDate;
+  v12 = endDateCopy;
   v13 = 0.0;
-  if (v10 && v11 && [v10 compare:v11] == -1)
+  if (dateCopy && endDateCopy && [dateCopy compare:endDateCopy] == -1)
   {
-    v14 = [[RTMotionActivityHistogram alloc] initWithActivites:v9 betweenDate:v10 andDate:v12];
-    v15 = [(RTMotionActivityHistogram *)v14 binForType:a3];
+    v14 = [[RTMotionActivityHistogram alloc] initWithActivites:activitiesCopy betweenDate:dateCopy andDate:v12];
+    v15 = [(RTMotionActivityHistogram *)v14 binForType:type];
     [v15 interval];
     v17 = v16;
-    [v12 timeIntervalSinceDate:v10];
+    [v12 timeIntervalSinceDate:dateCopy];
     v13 = v17 / v18;
   }
 

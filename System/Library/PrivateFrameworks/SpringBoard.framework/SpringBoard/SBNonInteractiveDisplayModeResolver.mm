@@ -1,22 +1,22 @@
 @interface SBNonInteractiveDisplayModeResolver
 - (SBDisplayWindowingModeResolverDelegate)delegate;
-- (SBNonInteractiveDisplayModeResolver)initWithRootDisplay:(id)a3 applicationController:(id)a4 userAuthenticationProvider:(id)a5 monitoredWindowScene:(id)a6;
-- (void)_appProcessStateDidChange:(id)a3;
-- (void)_authenicationStateDidChange:(id)a3;
+- (SBNonInteractiveDisplayModeResolver)initWithRootDisplay:(id)display applicationController:(id)controller userAuthenticationProvider:(id)provider monitoredWindowScene:(id)scene;
+- (void)_appProcessStateDidChange:(id)change;
+- (void)_authenicationStateDidChange:(id)change;
 - (void)_evaluateAndNotifyOfStateChanges;
 @end
 
 @implementation SBNonInteractiveDisplayModeResolver
 
-- (SBNonInteractiveDisplayModeResolver)initWithRootDisplay:(id)a3 applicationController:(id)a4 userAuthenticationProvider:(id)a5 monitoredWindowScene:(id)a6
+- (SBNonInteractiveDisplayModeResolver)initWithRootDisplay:(id)display applicationController:(id)controller userAuthenticationProvider:(id)provider monitoredWindowScene:(id)scene
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if ([v11 isRootIdentity])
+  displayCopy = display;
+  controllerCopy = controller;
+  providerCopy = provider;
+  sceneCopy = scene;
+  if ([displayCopy isRootIdentity])
   {
-    if (v12)
+    if (controllerCopy)
     {
       goto LABEL_3;
     }
@@ -25,17 +25,17 @@
   else
   {
     [SBNonInteractiveDisplayModeResolver initWithRootDisplay:applicationController:userAuthenticationProvider:monitoredWindowScene:];
-    if (v12)
+    if (controllerCopy)
     {
 LABEL_3:
-      if (v13)
+      if (providerCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_14:
       [SBNonInteractiveDisplayModeResolver initWithRootDisplay:applicationController:userAuthenticationProvider:monitoredWindowScene:];
-      if (v14)
+      if (sceneCopy)
       {
         goto LABEL_5;
       }
@@ -45,13 +45,13 @@ LABEL_14:
   }
 
   [SBNonInteractiveDisplayModeResolver initWithRootDisplay:applicationController:userAuthenticationProvider:monitoredWindowScene:];
-  if (!v13)
+  if (!providerCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_4:
-  if (v14)
+  if (sceneCopy)
   {
     goto LABEL_5;
   }
@@ -65,19 +65,19 @@ LABEL_5:
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_rootDisplayIdentity, a3);
-    objc_storeStrong(&v16->_applicationController, a4);
-    objc_storeStrong(&v16->_userAuthenticationProvider, a5);
-    objc_storeStrong(&v16->_monitoredWindowScene, a6);
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
+    objc_storeStrong(&v15->_rootDisplayIdentity, display);
+    objc_storeStrong(&v16->_applicationController, controller);
+    objc_storeStrong(&v16->_userAuthenticationProvider, provider);
+    objc_storeStrong(&v16->_monitoredWindowScene, scene);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     if ([(FBSDisplayIdentity *)v16->_rootDisplayIdentity _sb_requiresUserAuthenticationFirst])
     {
-      [v17 addObserver:v16 selector:sel__authenicationStateDidChange_ name:*MEMORY[0x277D66078] object:0];
+      [defaultCenter addObserver:v16 selector:sel__authenicationStateDidChange_ name:*MEMORY[0x277D66078] object:0];
     }
 
     if ([(FBSDisplayIdentity *)v16->_rootDisplayIdentity _sb_requiresAppRunningFirst])
     {
-      [v17 addObserver:v16 selector:sel__appProcessStateDidChange_ name:@"SBApplicationProcessStateDidChange" object:0];
+      [defaultCenter addObserver:v16 selector:sel__appProcessStateDidChange_ name:@"SBApplicationProcessStateDidChange" object:0];
     }
 
     [(SBNonInteractiveDisplayModeResolver *)v16 _evaluateAndNotifyOfStateChanges];
@@ -86,7 +86,7 @@ LABEL_5:
   return v16;
 }
 
-- (void)_authenicationStateDidChange:(id)a3
+- (void)_authenicationStateDidChange:(id)change
 {
   if ([(SBFAuthenticationStatusProvider *)self->_userAuthenticationProvider isAuthenticated])
   {
@@ -95,17 +95,17 @@ LABEL_5:
   }
 }
 
-- (void)_appProcessStateDidChange:(id)a3
+- (void)_appProcessStateDidChange:(id)change
 {
-  v4 = a3;
-  v8 = [v4 object];
-  v5 = [v8 processState];
-  v6 = [v4 userInfo];
+  changeCopy = change;
+  object = [changeCopy object];
+  processState = [object processState];
+  userInfo = [changeCopy userInfo];
 
-  v7 = [v6 objectForKey:@"previousProcessState"];
+  v7 = [userInfo objectForKey:@"previousProcessState"];
 
-  LODWORD(v6) = [v5 isRunning];
-  if (v6 != [v7 isRunning])
+  LODWORD(userInfo) = [processState isRunning];
+  if (userInfo != [v7 isRunning])
   {
     [(SBNonInteractiveDisplayModeResolver *)self _evaluateAndNotifyOfStateChanges];
   }
@@ -120,8 +120,8 @@ LABEL_5:
   }
 
   rootDisplayIdentity = self->_rootDisplayIdentity;
-  v4 = [(SBWindowScene *)self->_monitoredWindowScene switcherController];
-  v5 = [(FBSDisplayIdentity *)rootDisplayIdentity _sb_nonInteractiveAvailableWithSwitcher:v4 applicationController:self->_applicationController authenticationState:self->_haveAuthenticatedOnce];
+  switcherController = [(SBWindowScene *)self->_monitoredWindowScene switcherController];
+  v5 = [(FBSDisplayIdentity *)rootDisplayIdentity _sb_nonInteractiveAvailableWithSwitcher:switcherController applicationController:self->_applicationController authenticationState:self->_haveAuthenticatedOnce];
 
   if (self->_nonInteractiveModeAvailableOnPhysicalDisplay != v5)
   {

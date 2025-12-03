@@ -1,17 +1,17 @@
 @interface ML3LibraryNotificationManager
-- (BOOL)observerShouldForwardDistributedNotification:(id)a3;
-- (ML3LibraryNotificationManager)initWithLibrary:(id)a3 distributedAndLocalNames:(id)a4;
+- (BOOL)observerShouldForwardDistributedNotification:(id)notification;
+- (ML3LibraryNotificationManager)initWithLibrary:(id)library distributedAndLocalNames:(id)names;
 - (ML3MusicLibrary)library;
-- (id)_observerForDistributedName:(id)a3;
-- (id)_observerForLocalName:(id)a3;
+- (id)_observerForDistributedName:(id)name;
+- (id)_observerForLocalName:(id)name;
 - (void)_postEnqueuedDistributedNotifications;
 - (void)_postEnqueuedLocalNotifications;
-- (void)addObserverForDistributedName:(id)a3 localName:(id)a4;
-- (void)enqueueDistributedNotificationNamed:(id)a3;
-- (void)enqueueLocalNotification:(id)a3;
-- (void)enqueueLocalNotificationNamed:(id)a3;
-- (void)removeObserverWithDistributedName:(id)a3;
-- (void)removeObserverWithLocalName:(id)a3;
+- (void)addObserverForDistributedName:(id)name localName:(id)localName;
+- (void)enqueueDistributedNotificationNamed:(id)named;
+- (void)enqueueLocalNotification:(id)notification;
+- (void)enqueueLocalNotificationNamed:(id)named;
+- (void)removeObserverWithDistributedName:(id)name;
+- (void)removeObserverWithLocalName:(id)name;
 @end
 
 @implementation ML3LibraryNotificationManager
@@ -182,10 +182,10 @@ uint64_t __64__ML3LibraryNotificationManager__postEnqueuedLocalNotifications__bl
   return [v6 removeAllObjects];
 }
 
-- (id)_observerForDistributedName:(id)a3
+- (id)_observerForDistributedName:(id)name
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -205,8 +205,8 @@ uint64_t __64__ML3LibraryNotificationManager__postEnqueuedLocalNotifications__bl
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 distributedName];
-        v11 = [v10 isEqualToString:v4];
+        distributedName = [v9 distributedName];
+        v11 = [distributedName isEqualToString:nameCopy];
 
         if (v11)
         {
@@ -230,10 +230,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)_observerForLocalName:(id)a3
+- (id)_observerForLocalName:(id)name
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -253,8 +253,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 localName];
-        v11 = [v10 isEqualToString:v4];
+        localName = [v9 localName];
+        v11 = [localName isEqualToString:nameCopy];
 
         if (v11)
         {
@@ -278,26 +278,26 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)observerShouldForwardDistributedNotification:(id)a3
+- (BOOL)observerShouldForwardDistributedNotification:(id)notification
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 localName];
-  if (v5)
+  notificationCopy = notification;
+  localName = [notificationCopy localName];
+  if (localName)
   {
     WeakRetained = objc_loadWeakRetained(&self->_library);
-    v7 = [WeakRetained databasePath];
-    v8 = [v7 hash];
+    databasePath = [WeakRetained databasePath];
+    v8 = [databasePath hash];
 
     v13 = 0;
-    notify_get_state([v4 notifyToken], &v13);
+    notify_get_state([notificationCopy notifyToken], &v13);
     if (v13 == v8)
     {
       v14 = @"isSourceExternal";
       v15[0] = MEMORY[0x277CBEC38];
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
       v10 = objc_loadWeakRetained(&self->_library);
-      v11 = [objc_alloc(MEMORY[0x277CCAB88]) initWithName:v5 object:v10 userInfo:v9];
+      v11 = [objc_alloc(MEMORY[0x277CCAB88]) initWithName:localName object:v10 userInfo:v9];
       [(ML3LibraryNotificationManager *)self enqueueLocalNotification:v11];
     }
   }
@@ -305,17 +305,17 @@ LABEL_11:
   return 0;
 }
 
-- (void)enqueueDistributedNotificationNamed:(id)a3
+- (void)enqueueDistributedNotificationNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__ML3LibraryNotificationManager_enqueueDistributedNotificationNamed___block_invoke;
   v7[3] = &unk_2787660F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = namedCopy;
+  v6 = namedCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -333,28 +333,28 @@ uint64_t __69__ML3LibraryNotificationManager_enqueueDistributedNotificationNamed
   return result;
 }
 
-- (void)enqueueLocalNotificationNamed:(id)a3
+- (void)enqueueLocalNotificationNamed:(id)named
 {
   v4 = MEMORY[0x277CCAB88];
-  v5 = a3;
+  namedCopy = named;
   v6 = [v4 alloc];
   WeakRetained = objc_loadWeakRetained(&self->_library);
-  v8 = [v6 initWithName:v5 object:WeakRetained userInfo:0];
+  v8 = [v6 initWithName:namedCopy object:WeakRetained userInfo:0];
 
   [(ML3LibraryNotificationManager *)self enqueueLocalNotification:v8];
 }
 
-- (void)enqueueLocalNotification:(id)a3
+- (void)enqueueLocalNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__ML3LibraryNotificationManager_enqueueLocalNotification___block_invoke;
   v7[3] = &unk_2787660F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = notificationCopy;
+  v6 = notificationCopy;
   dispatch_sync(serialQueue, v7);
 }
 
@@ -382,10 +382,10 @@ uint64_t __58__ML3LibraryNotificationManager_enqueueLocalNotification___block_in
   return v5;
 }
 
-- (void)removeObserverWithLocalName:(id)a3
+- (void)removeObserverWithLocalName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -406,8 +406,8 @@ LABEL_3:
       }
 
       v10 = *(*(&v14 + 1) + 8 * v9);
-      v11 = [v10 localName];
-      v12 = [v11 isEqualToString:v4];
+      localName = [v10 localName];
+      v12 = [localName isEqualToString:nameCopy];
 
       if (v12)
       {
@@ -442,10 +442,10 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)removeObserverWithDistributedName:(id)a3
+- (void)removeObserverWithDistributedName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -466,8 +466,8 @@ LABEL_3:
       }
 
       v10 = *(*(&v14 + 1) + 8 * v9);
-      v11 = [v10 distributedName];
-      v12 = [v11 isEqualToString:v4];
+      distributedName = [v10 distributedName];
+      v12 = [distributedName isEqualToString:nameCopy];
 
       if (v12)
       {
@@ -502,32 +502,32 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)addObserverForDistributedName:(id)a3 localName:(id)a4
+- (void)addObserverForDistributedName:(id)name localName:(id)localName
 {
   v6 = MEMORY[0x277D27F00];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithDistributedName:v8 localName:v7 queue:0];
+  localNameCopy = localName;
+  nameCopy = name;
+  v9 = [[v6 alloc] initWithDistributedName:nameCopy localName:localNameCopy queue:0];
 
   [(NSMutableArray *)self->_notificationObservers addObject:v9];
 }
 
-- (ML3LibraryNotificationManager)initWithLibrary:(id)a3 distributedAndLocalNames:(id)a4
+- (ML3LibraryNotificationManager)initWithLibrary:(id)library distributedAndLocalNames:(id)names
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  namesCopy = names;
   v26.receiver = self;
   v26.super_class = ML3LibraryNotificationManager;
   v9 = [(ML3LibraryNotificationManager *)&v26 init];
   if (v9)
   {
-    if (!v7)
+    if (!libraryCopy)
     {
-      v23 = [MEMORY[0x277CCA890] currentHandler];
-      [v23 handleFailureInMethod:a2 object:v9 file:@"ML3LibraryNotificationManager.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"library"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v9 file:@"ML3LibraryNotificationManager.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"library"}];
     }
 
-    objc_storeWeak(&v9->_library, v7);
+    objc_storeWeak(&v9->_library, libraryCopy);
     v10 = MEMORY[0x277CCACA8];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
@@ -554,7 +554,7 @@ LABEL_13:
     v24[2] = __74__ML3LibraryNotificationManager_initWithLibrary_distributedAndLocalNames___block_invoke;
     v24[3] = &unk_2787655E8;
     v25 = v9;
-    [v8 enumerateKeysAndObjectsUsingBlock:v24];
+    [namesCopy enumerateKeysAndObjectsUsingBlock:v24];
   }
 
   return v9;

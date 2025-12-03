@@ -1,12 +1,12 @@
 @interface ULPersistenceMigrator
 - (BOOL)_databaseMigrationTransaction;
 - (BOOL)migrateToLatestVersion;
-- (ULPersistenceMigrator)initWithDbStore:(ULDatabaseStoreInterface *)a3 andDbManagement:(ULDatabaseManagementInterface *)a4;
+- (ULPersistenceMigrator)initWithDbStore:(ULDatabaseStoreInterface *)store andDbManagement:(ULDatabaseManagementInterface *)management;
 @end
 
 @implementation ULPersistenceMigrator
 
-- (ULPersistenceMigrator)initWithDbStore:(ULDatabaseStoreInterface *)a3 andDbManagement:(ULDatabaseManagementInterface *)a4
+- (ULPersistenceMigrator)initWithDbStore:(ULDatabaseStoreInterface *)store andDbManagement:(ULDatabaseManagementInterface *)management
 {
   v9.receiver = self;
   v9.super_class = ULPersistenceMigrator;
@@ -14,8 +14,8 @@
   v7 = v6;
   if (v6)
   {
-    [(ULPersistenceMigrator *)v6 setDbStore:a3];
-    [(ULPersistenceMigrator *)v7 setDbManagement:a4];
+    [(ULPersistenceMigrator *)v6 setDbStore:store];
+    [(ULPersistenceMigrator *)v7 setDbManagement:management];
   }
 
   return v7;
@@ -35,8 +35,8 @@
     _os_log_impl(&dword_258FE9000, v3, OS_LOG_TYPE_DEFAULT, "Migrating store to latest version", buf, 2u);
   }
 
-  v4 = [(ULPersistenceMigrator *)self dbManagement];
-  if ((*(v4->var0 + 8))(v4))
+  dbManagement = [(ULPersistenceMigrator *)self dbManagement];
+  if ((*(dbManagement->var0 + 8))(dbManagement))
   {
     *buf = 0;
     v11 = buf;
@@ -85,33 +85,33 @@ uint64_t __47__ULPersistenceMigrator_migrateToLatestVersion__block_invoke(uint64
 - (BOOL)_databaseMigrationTransaction
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [(ULPersistenceMigrator *)self dbStore];
-  v4 = (*(v3->var0 + 2))(v3);
-  v5 = [v4 persistenceStore];
-  v6 = [v5 isMigrationToLatestModelRequired];
+  dbStore = [(ULPersistenceMigrator *)self dbStore];
+  v4 = (*(dbStore->var0 + 2))(dbStore);
+  persistenceStore = [v4 persistenceStore];
+  isMigrationToLatestModelRequired = [persistenceStore isMigrationToLatestModelRequired];
 
-  if (v6)
+  if (isMigrationToLatestModelRequired)
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v8 = [[ULVersionMigrationStore alloc] initWithDbStore:[(ULPersistenceMigrator *)self dbStore]];
-    v9 = [(ULPersistenceMigrator *)self dbStore];
-    v10 = (*(v9->var0 + 2))(v9);
-    v11 = [v10 persistenceStore];
-    v12 = [v11 storeModelVersionBeforeMigration];
+    dbStore2 = [(ULPersistenceMigrator *)self dbStore];
+    v10 = (*(dbStore2->var0 + 2))(dbStore2);
+    persistenceStore2 = [v10 persistenceStore];
+    storeModelVersionBeforeMigration = [persistenceStore2 storeModelVersionBeforeMigration];
 
-    v13 = [(ULVersionMigrationStore *)v8 performVersionMigrationForModelVersion:v12];
-    if (v12 && [v12 unsignedIntValue] <= 1)
+    v13 = [(ULVersionMigrationStore *)v8 performVersionMigrationForModelVersion:storeModelVersionBeforeMigration];
+    if (storeModelVersionBeforeMigration && [storeModelVersionBeforeMigration unsignedIntValue] <= 1)
     {
-      v14 = [(ULPersistenceMigrator *)self dbManagement];
-      v13 &= (*(v14->var0 + 4))(v14);
+      dbManagement = [(ULPersistenceMigrator *)self dbManagement];
+      v13 &= (*(dbManagement->var0 + 4))(dbManagement);
     }
 
-    v15 = [(ULPersistenceMigrator *)self dbStore];
-    v16 = (*(v15->var0 + 2))(v15);
-    v17 = [v16 persistenceStore];
-    [v17 setMigrationComplete];
+    dbStore3 = [(ULPersistenceMigrator *)self dbStore];
+    v16 = (*(dbStore3->var0 + 2))(dbStore3);
+    persistenceStore3 = [v16 persistenceStore];
+    [persistenceStore3 setMigrationComplete];
 
-    [v7 timeIntervalSinceNow];
+    [date timeIntervalSinceNow];
     v19 = v18;
     if (onceToken_MicroLocation_Default != -1)
     {
@@ -131,10 +131,10 @@ uint64_t __47__ULPersistenceMigrator_migrateToLatestVersion__block_invoke(uint64
         v21 = "fail";
       }
 
-      v22 = [(ULPersistenceMigrator *)self dbStore];
-      v23 = (*(v22->var0 + 2))(v22);
-      v24 = [v23 getLocalStoreURL];
-      v25 = [v24 path];
+      dbStore4 = [(ULPersistenceMigrator *)self dbStore];
+      v23 = (*(dbStore4->var0 + 2))(dbStore4);
+      getLocalStoreURL = [v23 getLocalStoreURL];
+      path = [getLocalStoreURL path];
       v29[0] = 68289795;
       v29[1] = 0;
       v30 = 2082;
@@ -144,7 +144,7 @@ uint64_t __47__ULPersistenceMigrator_migrateToLatestVersion__block_invoke(uint64
       v34 = 2049;
       v35 = -v19;
       v36 = 2113;
-      v37 = v25;
+      v37 = path;
       _os_log_impl(&dword_258FE9000, v20, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Version Migration complete, result:%{public, location:escape_only}s, duration [s]:%{private}f, store path:%{private, location:escape_only}@}", v29, 0x30u);
     }
   }

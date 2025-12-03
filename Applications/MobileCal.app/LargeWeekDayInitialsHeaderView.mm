@@ -1,17 +1,17 @@
 @interface LargeWeekDayInitialsHeaderView
 + (id)dayInitialFont;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)dayFrameRightInset;
 - (int64_t)dayInitialTextAlignment;
 @end
 
 @implementation LargeWeekDayInitialsHeaderView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [objc_opt_class() dayInitialFont];
-  [v5 lineHeight];
+  width = fits.width;
+  dayInitialFont = [objc_opt_class() dayInitialFont];
+  [dayInitialFont lineHeight];
   [EKUILargeTextUtilities contentSizeCategoryScaledValueForDefaultValue:0 maximumValue:7.5 shouldScaleForSmallerSizes:9.0];
   [(LargeWeekDayInitialsHeaderView *)self bottomPadding];
   CalRoundToScreenScale();
@@ -33,7 +33,7 @@
 
 - (int64_t)dayInitialTextAlignment
 {
-  v2 = [(LargeWeekDayInitialsHeaderView *)self traitCollection];
+  traitCollection = [(LargeWeekDayInitialsHeaderView *)self traitCollection];
   v3 = EKUIUsesLargeTextLayout();
 
   if (v3)
@@ -49,7 +49,7 @@
 
 - (double)dayFrameRightInset
 {
-  v2 = [(LargeWeekDayInitialsHeaderView *)self traitCollection];
+  traitCollection = [(LargeWeekDayInitialsHeaderView *)self traitCollection];
   v3 = EKUIUsesLargeTextLayout();
 
   result = 10.0;

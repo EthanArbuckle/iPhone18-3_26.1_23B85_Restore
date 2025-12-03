@@ -3,10 +3,10 @@
 - (BOOL)resignFirstResponder;
 - (BOOL)supportsImagePaste;
 - (NSString)textInputContextIdentifier;
-- (_TtC7ChatKit28TapbackPickerInputController)initWithCoder:(id)a3;
-- (_TtC7ChatKit28TapbackPickerInputController)initWithFrame:(CGRect)a3 textContainer:(id)a4;
-- (void)handlePayload:(id)a3 withPayloadId:(id)a4;
-- (void)insertAdaptiveImageGlyph:(id)a3 replacementRange:(id)a4;
+- (_TtC7ChatKit28TapbackPickerInputController)initWithCoder:(id)coder;
+- (_TtC7ChatKit28TapbackPickerInputController)initWithFrame:(CGRect)frame textContainer:(id)container;
+- (void)handlePayload:(id)payload withPayloadId:(id)id;
+- (void)insertAdaptiveImageGlyph:(id)glyph replacementRange:(id)range;
 @end
 
 @implementation TapbackPickerInputController
@@ -19,7 +19,7 @@
     v4 = *(v3 + 1);
     swift_getObjectType();
     v5 = *(v4 + 32);
-    v6 = self;
+    selfCopy = self;
     v7 = v5();
     swift_unknownObjectRelease();
   }
@@ -41,7 +41,7 @@
     v5 = *(v3 + 1);
     swift_getObjectType();
     v6 = *(v5 + 40);
-    v7 = self;
+    selfCopy = self;
     v6();
     v9 = v8;
 
@@ -62,7 +62,7 @@
   return Strong;
 }
 
-- (_TtC7ChatKit28TapbackPickerInputController)initWithCoder:(id)a3
+- (_TtC7ChatKit28TapbackPickerInputController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC7ChatKit28TapbackPickerInputController_inputControllerDelegate) = 0;
   swift_unknownObjectWeakInit();
@@ -74,7 +74,7 @@
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_190CE8DD0();
 
   return v3 & 1;
@@ -82,22 +82,22 @@
 
 - (BOOL)resignFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_190CE8FD0();
 
   return v3 & 1;
 }
 
-- (void)handlePayload:(id)a3 withPayloadId:(id)a4
+- (void)handlePayload:(id)payload withPayloadId:(id)id
 {
-  v4 = a4;
-  if (a3)
+  idCopy = id;
+  if (payload)
   {
     v6 = sub_190D56D90();
-    if (v4)
+    if (idCopy)
     {
 LABEL_3:
-      v4 = sub_190D56F10();
+      idCopy = sub_190D56F10();
       v8 = v7;
       goto LABEL_6;
     }
@@ -106,7 +106,7 @@ LABEL_3:
   else
   {
     v6 = 0;
-    if (a4)
+    if (id)
     {
       goto LABEL_3;
     }
@@ -114,19 +114,19 @@ LABEL_3:
 
   v8 = 0;
 LABEL_6:
-  v9 = self;
-  sub_190CE917C(v6, v4, v8);
+  selfCopy = self;
+  sub_190CE917C(v6, idCopy, v8);
 }
 
-- (void)insertAdaptiveImageGlyph:(id)a3 replacementRange:(id)a4
+- (void)insertAdaptiveImageGlyph:(id)glyph replacementRange:(id)range
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_190CE9F60(v6);
+  glyphCopy = glyph;
+  rangeCopy = range;
+  selfCopy = self;
+  sub_190CE9F60(glyphCopy);
 }
 
-- (_TtC7ChatKit28TapbackPickerInputController)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC7ChatKit28TapbackPickerInputController)initWithFrame:(CGRect)frame textContainer:(id)container
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

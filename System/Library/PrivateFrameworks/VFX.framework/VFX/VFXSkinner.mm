@@ -1,44 +1,44 @@
 @interface VFXSkinner
-+ (VFXSkinner)skinnerWithBaseGeometry:(id)a3 bones:(id)a4 boneInverseBindTransforms:(id)a5 boneWeights:(id)a6 boneIndices:(id)a7;
-+ (VFXSkinner)skinnerWithSkinnerRef:(__CFXSkinner *)a3;
-+ (__CFXSkinner)_createSkinnerWithBones:(id)a3 boneWeights:(id)a4 boneIndices:(id)a5 baseMesh:(id)a6;
-+ (__CFXSkinner)_createSkinnerWithCompressedData:(id)a3 bonesCount:(unint64_t)a4 vertexCount:(unint64_t)a5;
-- (BOOL)_setSkeleton:(id)a3;
++ (VFXSkinner)skinnerWithBaseGeometry:(id)geometry bones:(id)bones boneInverseBindTransforms:(id)transforms boneWeights:(id)weights boneIndices:(id)indices;
++ (VFXSkinner)skinnerWithSkinnerRef:(__CFXSkinner *)ref;
++ (__CFXSkinner)_createSkinnerWithBones:(id)bones boneWeights:(id)weights boneIndices:(id)indices baseMesh:(id)mesh;
++ (__CFXSkinner)_createSkinnerWithCompressedData:(id)data bonesCount:(unint64_t)count vertexCount:(unint64_t)vertexCount;
+- (BOOL)_setSkeleton:(id)skeleton;
 - (NSArray)boneInverseBindTransforms;
 - (NSArray)bones;
 - (VFXMeshSource)boneIndices;
 - (VFXMeshSource)boneWeights;
-- (VFXSkinner)initWithCoder:(id)a3;
-- (VFXSkinner)initWithSkinnerRef:(__CFXSkinner *)a3;
+- (VFXSkinner)initWithCoder:(id)coder;
+- (VFXSkinner)initWithSkinnerRef:(__CFXSkinner *)ref;
 - (VFXWorld)world;
 - (__CFXWorld)worldRef;
 - (__n128)baseGeometryBindTransform;
 - (id)baseMesh;
-- (id)copyWithZone:(_NSZone *)a3;
-- (uint64_t)setBaseGeometryBindTransform:(uint64_t)a3;
-- (void)_setBaseGeometry:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (uint64_t)setBaseGeometryBindTransform:(uint64_t)transform;
+- (void)_setBaseGeometry:(id)geometry;
 - (void)_updateModelFromPresentation;
-- (void)addWorldReference:(id)a3;
+- (void)addWorldReference:(id)reference;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateReferencesForOperation:(int64_t)a3 usingBlock:(id)a4;
-- (void)removeWorldReference:(id)a3;
-- (void)setBoneInverseBindTransforms:(id)a3;
-- (void)setBones:(id)a3;
-- (void)setSkeleton:(id)a3;
-- (void)setWorld:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateReferencesForOperation:(int64_t)operation usingBlock:(id)block;
+- (void)removeWorldReference:(id)reference;
+- (void)setBoneInverseBindTransforms:(id)transforms;
+- (void)setBones:(id)bones;
+- (void)setSkeleton:(id)skeleton;
+- (void)setWorld:(id)world;
 @end
 
 @implementation VFXSkinner
 
-- (VFXSkinner)initWithSkinnerRef:(__CFXSkinner *)a3
+- (VFXSkinner)initWithSkinnerRef:(__CFXSkinner *)ref
 {
   v10.receiver = self;
   v10.super_class = VFXSkinner;
   v4 = [(VFXSkinner *)&v10 init];
   if (v4)
   {
-    v5 = CFRetain(a3);
+    v5 = CFRetain(ref);
     v4->_skinner = v5;
     if (v5)
     {
@@ -51,13 +51,13 @@
   return v4;
 }
 
-+ (VFXSkinner)skinnerWithSkinnerRef:(__CFXSkinner *)a3
++ (VFXSkinner)skinnerWithSkinnerRef:(__CFXSkinner *)ref
 {
-  result = sub_1AF16CDEC(a3);
+  result = sub_1AF16CDEC(ref);
   if (!result)
   {
-    v6 = [a1 alloc];
-    v9 = objc_msgSend_initWithSkinnerRef_(v6, v7, a3, v8);
+    v6 = [self alloc];
+    v9 = objc_msgSend_initWithSkinnerRef_(v6, v7, ref, v8);
 
     return v9;
   }
@@ -88,7 +88,7 @@
   [(VFXSkinner *)&v8 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = sub_1AF1C8CC0(self->_skinner);
   v5 = [VFXSkinner alloc];
@@ -101,15 +101,15 @@
   return v8;
 }
 
-- (BOOL)_setSkeleton:(id)a3
+- (BOOL)_setSkeleton:(id)skeleton
 {
   Weak = objc_loadWeak(&self->_skeleton);
-  if (Weak != a3)
+  if (Weak != skeleton)
   {
-    objc_storeWeak(&self->_skeleton, a3);
+    objc_storeWeak(&self->_skeleton, skeleton);
   }
 
-  return Weak != a3;
+  return Weak != skeleton;
 }
 
 - (void)_updateModelFromPresentation
@@ -133,10 +133,10 @@
   objc_msgSend__setSkeleton_(self, v8, v7, v9);
 }
 
-- (void)setSkeleton:(id)a3
+- (void)setSkeleton:(id)skeleton
 {
-  v6 = objc_msgSend_skeleton(self, a2, a3, v3);
-  if (objc_msgSend__setSkeleton_(self, v7, a3, v8))
+  v6 = objc_msgSend_skeleton(self, a2, skeleton, v3);
+  if (objc_msgSend__setSkeleton_(self, v7, skeleton, v8))
   {
     if (self->_skinner)
     {
@@ -145,7 +145,7 @@
       v10[2] = sub_1AF32CF08;
       v10[3] = &unk_1E7A7E3B0;
       v10[4] = self;
-      v10[5] = a3;
+      v10[5] = skeleton;
       v10[6] = v6;
       objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v9, self, v10);
     }
@@ -166,44 +166,44 @@
   }
 }
 
-- (void)_setBaseGeometry:(id)a3
+- (void)_setBaseGeometry:(id)geometry
 {
-  if (a3)
+  if (geometry)
   {
     baseGeometry = self->_baseGeometry;
-    if (baseGeometry != a3)
+    if (baseGeometry != geometry)
     {
 
-      self->_baseGeometry = a3;
+      self->_baseGeometry = geometry;
     }
   }
 }
 
-+ (__CFXSkinner)_createSkinnerWithBones:(id)a3 boneWeights:(id)a4 boneIndices:(id)a5 baseMesh:(id)a6
++ (__CFXSkinner)_createSkinnerWithBones:(id)bones boneWeights:(id)weights boneIndices:(id)indices baseMesh:(id)mesh
 {
   v146 = *MEMORY[0x1E69E9840];
-  v9 = objc_msgSend_count(a3, a2, a3, a4);
+  v9 = objc_msgSend_count(bones, a2, bones, weights);
   v13 = v9;
   if (v9 < 2)
   {
-    v68 = objc_msgSend_meshRef(a6, v10, v11, v12);
+    v68 = objc_msgSend_meshRef(mesh, v10, v11, v12);
     v69 = sub_1AF1C6FF8(0, v13, 0, v68);
     sub_1AF130CFC(v69, 1);
   }
 
   else
   {
-    v14 = objc_msgSend_meshSourcesForSemantic_(a6, v10, @"kGeometrySourceSemanticPosition", v12);
+    v14 = objc_msgSend_meshSourcesForSemantic_(mesh, v10, @"kGeometrySourceSemanticPosition", v12);
     Object = objc_msgSend_firstObject(v14, v15, v16, v17);
     v22 = objc_msgSend_vectorCount(Object, v19, v20, v21);
-    v26 = objc_msgSend_data(a4, v23, v24, v25);
+    v26 = objc_msgSend_data(weights, v23, v24, v25);
     v30 = objc_msgSend_length(v26, v27, v28, v29);
-    v34 = objc_msgSend_bytesPerComponent(a4, v31, v32, v33);
-    v38 = objc_msgSend_data(a5, v35, v36, v37);
+    v34 = objc_msgSend_bytesPerComponent(weights, v31, v32, v33);
+    v38 = objc_msgSend_data(indices, v35, v36, v37);
     v42 = objc_msgSend_length(v38, v39, v40, v41);
-    v46 = objc_msgSend_bytesPerComponent(a5, v43, v44, v45);
-    v50 = objc_msgSend_vectorCount(a5, v47, v48, v49);
-    if (v50 != objc_msgSend_vectorCount(a4, v51, v52, v53) || (v57 = v30 / v22 / v34, v42 / v22 / v46 != v57))
+    v46 = objc_msgSend_bytesPerComponent(indices, v43, v44, v45);
+    v50 = objc_msgSend_vectorCount(indices, v47, v48, v49);
+    if (v50 != objc_msgSend_vectorCount(weights, v51, v52, v53) || (v57 = v30 / v22 / v34, v42 / v22 / v46 != v57))
     {
       v71 = sub_1AF0D5194();
       if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
@@ -214,7 +214,7 @@
       return 0;
     }
 
-    if (!objc_msgSend_floatComponents(a4, v54, v55, v56) || objc_msgSend_bytesPerComponent(a4, v58, v59, v60) != 4)
+    if (!objc_msgSend_floatComponents(weights, v54, v55, v56) || objc_msgSend_bytesPerComponent(weights, v58, v59, v60) != 4)
     {
       v73 = sub_1AF0D5194();
       if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
@@ -225,7 +225,7 @@
       return 0;
     }
 
-    if (objc_msgSend_bytesPerComponent(a5, v61, v62, v63) >= 3)
+    if (objc_msgSend_bytesPerComponent(indices, v61, v62, v63) >= 3)
     {
       v67 = sub_1AF0D5194();
       if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
@@ -236,9 +236,9 @@
       return 0;
     }
 
-    v74 = objc_msgSend_dataStride(a5, v64, v65, v66);
-    v78 = objc_msgSend_componentsPerVector(a5, v75, v76, v77);
-    if (v74 != objc_msgSend_bytesPerComponent(a5, v79, v80, v81) * v78)
+    v74 = objc_msgSend_dataStride(indices, v64, v65, v66);
+    v78 = objc_msgSend_componentsPerVector(indices, v75, v76, v77);
+    if (v74 != objc_msgSend_bytesPerComponent(indices, v79, v80, v81) * v78)
     {
       v139 = sub_1AF0D5194();
       if (os_log_type_enabled(v139, OS_LOG_TYPE_ERROR))
@@ -249,9 +249,9 @@
       return 0;
     }
 
-    v85 = objc_msgSend_dataStride(a4, v82, v83, v84);
-    v89 = objc_msgSend_componentsPerVector(a4, v86, v87, v88);
-    if (v85 != objc_msgSend_bytesPerComponent(a4, v90, v91, v92) * v89)
+    v85 = objc_msgSend_dataStride(weights, v82, v83, v84);
+    v89 = objc_msgSend_componentsPerVector(weights, v86, v87, v88);
+    if (v85 != objc_msgSend_bytesPerComponent(weights, v90, v91, v92) * v89)
     {
       v140 = sub_1AF0D5194();
       if (os_log_type_enabled(v140, OS_LOG_TYPE_ERROR))
@@ -263,7 +263,7 @@
     }
 
     v96 = v57 * v22;
-    v97 = objc_msgSend_meshRef(a6, v93, v94, v95);
+    v97 = objc_msgSend_meshRef(mesh, v93, v94, v95);
     v69 = sub_1AF1C6FF8(v22, v13, v57 * v22, v97);
     sub_1AF130CFC(v69, v57);
     v142 = 0;
@@ -308,13 +308,13 @@
       while (v103);
     }
 
-    v109 = objc_msgSend_data(a5, v98, v99, v100);
+    v109 = objc_msgSend_data(indices, v98, v99, v100);
     v113 = objc_msgSend_bytes(v109, v110, v111, v112);
-    v117 = objc_msgSend_data(a5, v114, v115, v116);
+    v117 = objc_msgSend_data(indices, v114, v115, v116);
     v121 = objc_msgSend_bytes(v117, v118, v119, v120);
-    v125 = objc_msgSend_data(a4, v122, v123, v124);
+    v125 = objc_msgSend_data(weights, v122, v123, v124);
     v129 = objc_msgSend_bytes(v125, v126, v127, v128);
-    v133 = objc_msgSend_bytesPerComponent(a5, v130, v131, v132);
+    v133 = objc_msgSend_bytesPerComponent(indices, v130, v131, v132);
     if (v96 >= 1)
     {
       v134 = v133;
@@ -360,11 +360,11 @@
   return v70;
 }
 
-+ (__CFXSkinner)_createSkinnerWithCompressedData:(id)a3 bonesCount:(unint64_t)a4 vertexCount:(unint64_t)a5
++ (__CFXSkinner)_createSkinnerWithCompressedData:(id)data bonesCount:(unint64_t)count vertexCount:(unint64_t)vertexCount
 {
-  if (objc_msgSend_count(a3, a2, a3, a4) != 3)
+  if (objc_msgSend_count(data, a2, data, count) != 3)
   {
-    if (objc_msgSend_count(a3, v8, v9, v10) != 1)
+    if (objc_msgSend_count(data, v8, v9, v10) != 1)
     {
       v36 = sub_1AF0D5194();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_FAULT))
@@ -373,7 +373,7 @@
       }
     }
 
-    v21 = objc_msgSend_objectAtIndexedSubscript_(a3, v34, 0, v35);
+    v21 = objc_msgSend_objectAtIndexedSubscript_(data, v34, 0, v35);
     v28 = objc_msgSend_length(v21, v42, v43, v44);
     v11 = 0;
     v18 = 0;
@@ -381,20 +381,20 @@
     goto LABEL_14;
   }
 
-  v11 = objc_msgSend_objectAtIndexedSubscript_(a3, v8, 0, v10);
-  if (objc_msgSend_length(v11, v12, v13, v14) == a5)
+  v11 = objc_msgSend_objectAtIndexedSubscript_(data, v8, 0, v10);
+  if (objc_msgSend_length(v11, v12, v13, v14) == vertexCount)
   {
     v17 = 1;
-    v18 = objc_msgSend_objectAtIndexedSubscript_(a3, v15, 1, v16);
-    v21 = objc_msgSend_objectAtIndexedSubscript_(a3, v19, 2, v20);
+    v18 = objc_msgSend_objectAtIndexedSubscript_(data, v15, 1, v16);
+    v21 = objc_msgSend_objectAtIndexedSubscript_(data, v19, 2, v20);
     v28 = objc_msgSend_length(v21, v22, v23, v24);
     if (v11)
     {
       v29 = objc_msgSend_bytes(v11, v25, v26, v27);
-      if (a5)
+      if (vertexCount)
       {
         v30 = 1;
-        v31 = a5;
+        vertexCountCopy = vertexCount;
         do
         {
           v33 = *v29++;
@@ -404,15 +404,15 @@
             v30 = v32;
           }
 
-          --v31;
+          --vertexCountCopy;
         }
 
-        while (v31);
+        while (vertexCountCopy);
         v17 = 0;
 LABEL_15:
-        v45 = sub_1AF1C6FF8(a5, a4, v28, 0);
+        v45 = sub_1AF1C6FF8(vertexCount, count, v28, 0);
         sub_1AF130CFC(v45, v30);
-        if (a4 < 2)
+        if (count < 2)
         {
 LABEL_55:
           v54 = sub_1AF1C8C0C(v45);
@@ -426,11 +426,11 @@ LABEL_55:
         sub_1AF1C78C4(v45, &v87, &v86, &v85);
         if (v17)
         {
-          if (a5)
+          if (vertexCount)
           {
             v49 = 0;
             v50 = v87;
-            v51 = a5;
+            vertexCountCopy2 = vertexCount;
             do
             {
               if (v49 >= v28)
@@ -449,10 +449,10 @@ LABEL_55:
               }
 
               *v50++ = v52;
-              --v51;
+              --vertexCountCopy2;
             }
 
-            while (v51);
+            while (vertexCountCopy2);
             goto LABEL_34;
           }
         }
@@ -460,27 +460,27 @@ LABEL_55:
         else
         {
           v55 = objc_msgSend_bytes(v11, v46, v47, v48);
-          if (a5)
+          if (vertexCount)
           {
             LODWORD(v49) = 0;
             v56 = v87;
-            v57 = a5;
+            vertexCountCopy3 = vertexCount;
             do
             {
               *v56++ = v49;
               v58 = *v55++;
               LODWORD(v49) = v49 + v58;
-              --v57;
+              --vertexCountCopy3;
             }
 
-            while (v57);
+            while (vertexCountCopy3);
             goto LABEL_34;
           }
         }
 
         LODWORD(v49) = 0;
 LABEL_34:
-        v87[a5] = v49;
+        v87[vertexCount] = v49;
         v62 = objc_msgSend_bytes(v21, v46, v47, v48);
         if (v18)
         {
@@ -586,9 +586,9 @@ LABEL_14:
   return 0;
 }
 
-+ (VFXSkinner)skinnerWithBaseGeometry:(id)a3 bones:(id)a4 boneInverseBindTransforms:(id)a5 boneWeights:(id)a6 boneIndices:(id)a7
++ (VFXSkinner)skinnerWithBaseGeometry:(id)geometry bones:(id)bones boneInverseBindTransforms:(id)transforms boneWeights:(id)weights boneIndices:(id)indices
 {
-  if (!a4 || !objc_msgSend_count(a4, a2, a3, a4))
+  if (!bones || !objc_msgSend_count(bones, a2, geometry, bones))
   {
     v38 = sub_1AF0D5194();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
@@ -599,7 +599,7 @@ LABEL_14:
     return 0;
   }
 
-  if (!a3)
+  if (!geometry)
   {
     v39 = sub_1AF0D5194();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -610,8 +610,8 @@ LABEL_14:
     return 0;
   }
 
-  v16 = objc_msgSend_count(a4, v13, v14, v15);
-  if (v16 != objc_msgSend_count(a5, v17, v18, v19))
+  v16 = objc_msgSend_count(bones, v13, v14, v15);
+  if (v16 != objc_msgSend_count(transforms, v17, v18, v19))
   {
     v40 = sub_1AF0D5194();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -625,12 +625,12 @@ LABEL_14:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    SkinnerWithBones_boneWeights_boneIndices_baseMesh = objc_msgSend__createSkinnerWithBones_boneWeights_boneIndices_baseMesh_(a1, v20, a4, a6, a7, a3);
+    SkinnerWithBones_boneWeights_boneIndices_baseMesh = objc_msgSend__createSkinnerWithBones_boneWeights_boneIndices_baseMesh_(self, v20, bones, weights, indices, geometry);
   }
 
   else
   {
-    SkinnerWithBones_boneWeights_boneIndices_baseMesh = objc_msgSend__createSkinnerWithBones_boneWeights_boneIndices_baseMesh_(a1, v20, a4, a6, a7, 0);
+    SkinnerWithBones_boneWeights_boneIndices_baseMesh = objc_msgSend__createSkinnerWithBones_boneWeights_boneIndices_baseMesh_(self, v20, bones, weights, indices, 0);
   }
 
   if (!SkinnerWithBones_boneWeights_boneIndices_baseMesh)
@@ -639,13 +639,13 @@ LABEL_14:
   }
 
   v22 = SkinnerWithBones_boneWeights_boneIndices_baseMesh;
-  v23 = [a1 alloc];
+  v23 = [self alloc];
   v26 = objc_msgSend_initWithSkinnerRef_(v23, v24, v22, v25);
   CFRelease(v22);
-  objc_msgSend_setBones_(v26, v27, a4, v28);
-  objc_msgSend_setBoneInverseBindTransforms_(v26, v29, a5, v30);
-  objc_msgSend__setBaseGeometry_(v26, v31, a3, v32);
-  v34 = sub_1AF32CD28(a4, v33);
+  objc_msgSend_setBones_(v26, v27, bones, v28);
+  objc_msgSend_setBoneInverseBindTransforms_(v26, v29, transforms, v30);
+  objc_msgSend__setBaseGeometry_(v26, v31, geometry, v32);
+  v34 = sub_1AF32CD28(bones, v33);
   objc_msgSend__setSkeleton_(v26, v35, v34, v36);
 
   return v26;
@@ -653,14 +653,14 @@ LABEL_14:
 
 - (__n128)baseGeometryBindTransform
 {
-  v5 = objc_msgSend_worldRef(a1, a2, a3, a4);
+  v5 = objc_msgSend_worldRef(self, a2, a3, a4);
   v6 = v5;
   if (v5)
   {
     sub_1AF1CEA20(v5);
   }
 
-  v7 = sub_1AF15B294(a1[1]);
+  v7 = sub_1AF15B294(self[1]);
   if (v7)
   {
     result = *sub_1AF1BA1FC(v7);
@@ -684,16 +684,16 @@ LABEL_14:
   return v9;
 }
 
-- (uint64_t)setBaseGeometryBindTransform:(uint64_t)a3
+- (uint64_t)setBaseGeometryBindTransform:(uint64_t)transform
 {
-  v9 = objc_msgSend_worldRef(a1, a2, a3, a4);
+  v9 = objc_msgSend_worldRef(self, a2, transform, a4);
   v10 = v9;
   if (v9)
   {
     sub_1AF1CEA20(v9);
   }
 
-  result = sub_1AF15B294(a1[1]);
+  result = sub_1AF15B294(self[1]);
   if (result)
   {
     result = sub_1AF1C7934(result, a5, a6, a7, a8);
@@ -993,9 +993,9 @@ LABEL_28:
   return v8;
 }
 
-- (void)setBoneInverseBindTransforms:(id)a3
+- (void)setBoneInverseBindTransforms:(id)transforms
 {
-  v6 = objc_msgSend_worldRef(self, a2, a3, v3);
+  v6 = objc_msgSend_worldRef(self, a2, transforms, v3);
   v7 = v6;
   if (v6)
   {
@@ -1021,7 +1021,7 @@ LABEL_10:
 
   v9 = v8;
   v10 = sub_1AF1C7940(v8);
-  if (objc_msgSend_count(a3, v11, v12, v13) == v10)
+  if (objc_msgSend_count(transforms, v11, v12, v13) == v10)
   {
     v14 = sub_1AF15B364(v9);
     if (v10)
@@ -1030,7 +1030,7 @@ LABEL_10:
       v18 = (v14 + 32);
       do
       {
-        v19 = objc_msgSend_objectAtIndex_(a3, v15, v17, v16);
+        v19 = objc_msgSend_objectAtIndex_(transforms, v15, v17, v16);
         objc_msgSend_VFXMatrix4Value(v19, v20, v21, v22);
         *(v18 - 2) = v23;
         *(v18 - 1) = v24;
@@ -1055,7 +1055,7 @@ LABEL_10:
     v27 = sub_1AF0D5194();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      sub_1AFDF8D78(v10, a3, v27, v28);
+      sub_1AFDF8D78(v10, transforms, v27, v28);
     }
   }
 }
@@ -1091,17 +1091,17 @@ LABEL_10:
   return v20;
 }
 
-- (void)setBones:(id)a3
+- (void)setBones:(id)bones
 {
   v32 = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695DF70];
-  v7 = objc_msgSend_count(a3, a2, a3, v3);
+  v7 = objc_msgSend_count(bones, a2, bones, v3);
   v10 = objc_msgSend_arrayWithCapacity_(v6, v8, v7, v9);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v11, &v27, v31, 16);
+  v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(bones, v11, &v27, v31, 16);
   if (v12)
   {
     v16 = v12;
@@ -1112,7 +1112,7 @@ LABEL_10:
       {
         if (*v28 != v17)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(bones);
         }
 
         v19 = *(*(&v27 + 1) + 8 * i);
@@ -1121,7 +1121,7 @@ LABEL_10:
         objc_msgSend_setIsJoint_(v19, v23, 1, v24);
       }
 
-      v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v13, &v27, v31, 16);
+      v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(bones, v13, &v27, v31, 16);
     }
 
     while (v16);
@@ -1142,17 +1142,17 @@ LABEL_10:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v103 = *MEMORY[0x1E69E9840];
-  v6 = objc_msgSend_skeleton(self, a2, a3, v3);
-  objc_msgSend_encodeObject_forKey_(a3, v7, v6, @"skeleton");
+  v6 = objc_msgSend_skeleton(self, a2, coder, v3);
+  objc_msgSend_encodeObject_forKey_(coder, v7, v6, @"skeleton");
   v11 = objc_msgSend_baseGeometry(self, v8, v9, v10);
-  objc_msgSend_encodeObject_forKey_(a3, v12, v11, @"baseGeometry");
+  objc_msgSend_encodeObject_forKey_(coder, v12, v11, @"baseGeometry");
   objc_msgSend_baseGeometryBindTransform(self, v13, v14, v15);
-  sub_1AF371B50(a3, @"baseGeometryBindTransform", v16, v17, v18, v19);
+  sub_1AF371B50(coder, @"baseGeometryBindTransform", v16, v17, v18, v19);
   v23 = objc_msgSend_bones(self, v20, v21, v22);
-  objc_msgSend_encodeObject_forKey_(a3, v24, v23, @"bones");
+  objc_msgSend_encodeObject_forKey_(coder, v24, v23, @"bones");
   if (objc_msgSend_count(v23, v25, v26, v27) >= 2)
   {
     if (self->_bonesAndIndicesCompression)
@@ -1238,15 +1238,15 @@ LABEL_10:
         v76 = objc_msgSend_arrayWithObjects_(MEMORY[0x1E695DEC8], v71, v58, v72, v66, v38, 0);
       }
 
-      objc_msgSend_encodeObject_forKey_(a3, v77, v76, @"compressedSkinData");
+      objc_msgSend_encodeObject_forKey_(coder, v77, v76, @"compressedSkinData");
     }
 
     else
     {
       v51 = objc_msgSend_boneWeights(self, v28, v29, v30);
-      objc_msgSend_encodeObject_forKey_(a3, v52, v51, @"boneWeights");
+      objc_msgSend_encodeObject_forKey_(coder, v52, v51, @"boneWeights");
       v56 = objc_msgSend_boneIndices(self, v53, v54, v55);
-      objc_msgSend_encodeObject_forKey_(a3, v57, v56, @"boneIndices");
+      objc_msgSend_encodeObject_forKey_(coder, v57, v56, @"boneIndices");
     }
   }
 
@@ -1260,12 +1260,12 @@ LABEL_10:
       v87 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v83, @"baseGeometryBindTransform-%d", v84, j);
       v90 = objc_msgSend_objectAtIndex_(v78, v88, j, v89);
       objc_msgSend_VFXMatrix4Value(v90, v91, v92, v93);
-      sub_1AF371B50(a3, v87, v94, v95, v96, v97);
+      sub_1AF371B50(coder, v87, v94, v95, v96, v97);
     }
   }
 }
 
-- (VFXSkinner)initWithCoder:(id)a3
+- (VFXSkinner)initWithCoder:(id)coder
 {
   v100.receiver = self;
   v100.super_class = VFXSkinner;
@@ -1275,9 +1275,9 @@ LABEL_10:
     v98 = objc_msgSend_immediateMode(VFXTransaction, v4, v5, v6);
     objc_msgSend_setImmediateMode_(VFXTransaction, v8, 1, v9);
     v10 = objc_opt_class();
-    v97 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v11, v10, @"skeleton");
+    v97 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v11, v10, @"skeleton");
     v12 = sub_1AF2C11F4();
-    v14 = objc_msgSend_decodeObjectOfClasses_forKey_(a3, v13, v12, @"baseGeometry");
+    v14 = objc_msgSend_decodeObjectOfClasses_forKey_(coder, v13, v12, @"baseGeometry");
     v15 = v14;
     if (v14)
     {
@@ -1288,7 +1288,7 @@ LABEL_10:
     else
     {
       v17 = objc_opt_class();
-      v19 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v18, v17, @"baseMesh");
+      v19 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v18, v17, @"baseMesh");
       if (v19)
       {
         v16 = v19;
@@ -1298,7 +1298,7 @@ LABEL_10:
       else
       {
         v20 = objc_opt_class();
-        v22 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v21, v20, @"baseModel");
+        v22 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v21, v20, @"baseModel");
         v16 = objc_msgSend_mesh(v22, v23, v24, v25);
         v99 = 1;
       }
@@ -1320,9 +1320,9 @@ LABEL_10:
     Object = objc_msgSend_firstObject(v29, v30, v31, v32);
     v37 = objc_msgSend_vectorCount(Object, v34, v35, v36);
     v38 = objc_opt_class();
-    v40 = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(a3, v39, v38, @"bones");
+    v40 = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(coder, v39, v38, @"bones");
     v41 = objc_opt_class();
-    v43 = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(a3, v42, v41, @"compressedSkinData");
+    v43 = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(coder, v42, v41, @"compressedSkinData");
     if (v43)
     {
       v44 = v43;
@@ -1335,9 +1335,9 @@ LABEL_10:
     else
     {
       v55 = objc_opt_class();
-      v57 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v56, v55, @"boneWeights");
+      v57 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v56, v55, @"boneWeights");
       v58 = objc_opt_class();
-      v60 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v59, v58, @"boneIndices");
+      v60 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v59, v58, @"boneIndices");
       v61 = objc_opt_class();
       SkinnerWithCompressedData_bonesCount_vertexCount = objc_msgSend__createSkinnerWithBones_boneWeights_boneIndices_baseMesh_(v61, v62, v40, v57, v60, v28);
     }
@@ -1366,7 +1366,7 @@ LABEL_10:
         v73 = @"baseModelBindTransform-%d";
         for (i = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v68, @"baseModelBindTransform-%d", v69, 0); ; i = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v68, v73, v69, v71))
         {
-          *&v75 = sub_1AF371C4C(a3, i).n128_u64[0];
+          *&v75 = sub_1AF371C4C(coder, i).n128_u64[0];
           v79 = objc_msgSend_valueWithVFXMatrix4_(MEMORY[0x1E696B098], v76, v77, v78, v75);
           objc_msgSend_addObject_(v63, v80, v79, v81);
           if (v70 == ++v71)
@@ -1397,7 +1397,7 @@ LABEL_20:
         v85 = v84;
       }
 
-      *&v86 = sub_1AF371C4C(a3, v85).n128_u64[0];
+      *&v86 = sub_1AF371C4C(coder, v85).n128_u64[0];
       objc_msgSend_setBaseGeometryBindTransform_(v7, v87, v88, v89, v86);
       objc_msgSend_setBoneInverseBindTransforms_(v7, v90, v63, v91);
       objc_msgSend_setSkeleton_(v7, v92, v97, v93);
@@ -1413,12 +1413,12 @@ LABEL_20:
   return v7;
 }
 
-- (void)enumerateReferencesForOperation:(int64_t)a3 usingBlock:(id)a4
+- (void)enumerateReferencesForOperation:(int64_t)operation usingBlock:(id)block
 {
   v38 = *MEMORY[0x1E69E9840];
-  if (a3 != 1)
+  if (operation != 1)
   {
-    v6 = objc_msgSend_skeleton(self, a2, a3, a4);
+    v6 = objc_msgSend_skeleton(self, a2, operation, block);
     if (v6)
     {
       v36[0] = MEMORY[0x1E69E9820];
@@ -1426,7 +1426,7 @@ LABEL_20:
       v36[2] = sub_1AF32EE00;
       v36[3] = &unk_1E7A7C0C8;
       v36[4] = self;
-      (*(a4 + 2))(a4, v6, 1, v36);
+      (*(block + 2))(block, v6, 1, v36);
     }
 
     else
@@ -1464,7 +1464,7 @@ LABEL_20:
               v25[3] = &unk_1E7A7F188;
               v25[4] = v10;
               v25[5] = &v30;
-              (*(a4 + 2))(a4, v18, 1, v25);
+              (*(block + 2))(block, v18, 1, v25);
             }
           }
 
@@ -1485,10 +1485,10 @@ LABEL_20:
   }
 }
 
-- (void)addWorldReference:(id)a3
+- (void)addWorldReference:(id)reference
 {
   world = self->_world;
-  if (world == a3)
+  if (world == reference)
   {
     v6 = self->_worldReferenceCounter + 1;
   }
@@ -1500,17 +1500,17 @@ LABEL_20:
       self->_worldReferenceCounter = 0;
     }
 
-    objc_msgSend_setWorld_(self, a2, a3, v3);
+    objc_msgSend_setWorld_(self, a2, reference, v3);
     v6 = 1;
   }
 
   self->_worldReferenceCounter = v6;
 }
 
-- (void)removeWorldReference:(id)a3
+- (void)removeWorldReference:(id)reference
 {
   p_world = &self->_world;
-  if (!a3 || self->_world == a3)
+  if (!reference || self->_world == reference)
   {
     worldReferenceCounter = self->_worldReferenceCounter;
     if (worldReferenceCounter)
@@ -1535,10 +1535,10 @@ LABEL_20:
   }
 }
 
-- (void)setWorld:(id)a3
+- (void)setWorld:(id)world
 {
   world = self->_world;
-  if (world != a3)
+  if (world != world)
   {
     v9[9] = v3;
     v9[10] = v4;
@@ -1552,8 +1552,8 @@ LABEL_20:
       objc_msgSend_enumerateReferencesForOperation_usingBlock_(self, a2, 1, v9);
     }
 
-    self->_world = a3;
-    if (a3)
+    self->_world = world;
+    if (world)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;

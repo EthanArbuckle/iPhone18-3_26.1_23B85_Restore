@@ -1,20 +1,20 @@
 @interface PUFilmstripTileViewController
 - (CGSize)expandedSize;
-- (CGSize)targetSizeForProposedTargetSize:(CGSize)a3;
+- (CGSize)targetSizeForProposedTargetSize:(CGSize)size;
 - (CGSize)unexpandedSize;
 - (id)_currentIndicatorInfos;
 - (id)loadView;
 - (void)_updateFilmStripContents;
 - (void)_updateFilmstripView;
-- (void)applyLayoutInfo:(id)a3;
-- (void)assetViewModelDidChange:(id)a3;
+- (void)applyLayoutInfo:(id)info;
+- (void)assetViewModelDidChange:(id)change;
 - (void)becomeReusable;
 - (void)didChangeAnimating;
 - (void)didChangeVisibleRect;
-- (void)setExpanded:(BOOL)a3;
-- (void)setExpandedSize:(CGSize)a3;
-- (void)setVideoPlayer:(id)a3;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setExpandedSize:(CGSize)size;
+- (void)setVideoPlayer:(id)player;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUFilmstripTileViewController
@@ -37,38 +37,38 @@
   return result;
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v6 = a4;
+  changeCopy = change;
   v16.receiver = self;
   v16.super_class = PUFilmstripTileViewController;
-  [(PUImageTileViewController *)&v16 viewModel:a3 didChange:v6];
-  v7 = [v6 highlightTimeRangesChanged];
-  if ([v6 videoPlayerDidChange])
+  [(PUImageTileViewController *)&v16 viewModel:model didChange:changeCopy];
+  highlightTimeRangesChanged = [changeCopy highlightTimeRangesChanged];
+  if ([changeCopy videoPlayerDidChange])
   {
-    v8 = [(PUImageTileViewController *)self assetViewModel];
-    v9 = [v8 videoPlayer];
-    [(PUFilmstripTileViewController *)self setVideoPlayer:v9];
+    assetViewModel = [(PUImageTileViewController *)self assetViewModel];
+    videoPlayer = [assetViewModel videoPlayer];
+    [(PUFilmstripTileViewController *)self setVideoPlayer:videoPlayer];
   }
 
-  v10 = [v6 videoPlayerChange];
-  if ([v10 playerItemDidChange])
+  videoPlayerChange = [changeCopy videoPlayerChange];
+  if ([videoPlayerChange playerItemDidChange])
   {
     v11 = 1;
   }
 
   else
   {
-    v12 = [v6 videoPlayerChange];
-    v13 = [v12 avPlayerDidChange];
+    videoPlayerChange2 = [changeCopy videoPlayerChange];
+    avPlayerDidChange = [videoPlayerChange2 avPlayerDidChange];
 
-    v11 = v13 | v7;
+    v11 = avPlayerDidChange | highlightTimeRangesChanged;
   }
 
-  v14 = [v6 irisPlayerChange];
-  v15 = [v14 currentlyDisplayedTimesDidChange];
+  irisPlayerChange = [changeCopy irisPlayerChange];
+  currentlyDisplayedTimesDidChange = [irisPlayerChange currentlyDisplayedTimesDidChange];
 
-  if (v15 & 1) != 0 || (v11)
+  if (currentlyDisplayedTimesDidChange & 1) != 0 || (v11)
   {
     [(PUFilmstripTileViewController *)self _updateFilmstripView];
   }
@@ -78,15 +78,15 @@
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = [(PUImageTileViewController *)self assetViewModel];
-  v5 = [v4 irisPlayer];
-  v6 = [v4 videoPlayer];
-  v7 = [(PUImageTileViewController *)self asset];
-  if (![v7 canPlayPhotoIris])
+  assetViewModel = [(PUImageTileViewController *)self assetViewModel];
+  irisPlayer = [assetViewModel irisPlayer];
+  videoPlayer = [assetViewModel videoPlayer];
+  asset = [(PUImageTileViewController *)self asset];
+  if (![asset canPlayPhotoIris])
   {
-    if (v6)
+    if (videoPlayer)
     {
-      [v6 duration];
+      [videoPlayer duration];
       goto LABEL_6;
     }
 
@@ -97,12 +97,12 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!v5)
+  if (!irisPlayer)
   {
     goto LABEL_7;
   }
 
-  [v5 currentVideoDuration];
+  [irisPlayer currentVideoDuration];
 LABEL_6:
   flags = time1.flags;
   epoch = time1.epoch;
@@ -120,15 +120,15 @@ LABEL_8:
 
   else
   {
-    [v7 duration];
+    [asset duration];
   }
 
   v11 = Seconds;
   if (Seconds > 0.0)
   {
-    if (v5)
+    if (irisPlayer)
     {
-      v12 = [v5 currentlyDisplayedTimes];
+      currentlyDisplayedTimes = [irisPlayer currentlyDisplayedTimes];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __55__PUFilmstripTileViewController__currentIndicatorInfos__block_invoke;
@@ -136,13 +136,13 @@ LABEL_8:
       v17 = v11;
       v15[4] = self;
       v16 = v3;
-      [v12 enumerateObjectsUsingBlock:v15];
+      [currentlyDisplayedTimes enumerateObjectsUsingBlock:v15];
     }
 
-    else if (v6 && [v6 desiredPlayState] == 3 && (objc_msgSend(v6, "isActivated") & 1) == 0)
+    else if (videoPlayer && [videoPlayer desiredPlayState] == 3 && (objc_msgSend(videoPlayer, "isActivated") & 1) == 0)
     {
       memset(&time1, 0, sizeof(time1));
-      [v6 currentTime];
+      [videoPlayer currentTime];
       time2 = time1;
       v14 = [[PUFilmStripViewIndicatorInfo alloc] initWithLocation:0 preferredColor:CMTimeGetSeconds(&time2) / v11];
       [v3 addObject:v14];
@@ -166,21 +166,21 @@ void __55__PUFilmstripTileViewController__currentIndicatorInfos__block_invoke(ui
 
 - (void)_updateFilmstripView
 {
-  v3 = [(PUFilmstripTileViewController *)self wrapperView];
-  v4 = [v3 filmstripView];
-  v5 = [(PUFilmstripTileViewController *)self isExpanded];
-  if (v5 && !v4)
+  wrapperView = [(PUFilmstripTileViewController *)self wrapperView];
+  filmstripView = [wrapperView filmstripView];
+  isExpanded = [(PUFilmstripTileViewController *)self isExpanded];
+  if (isExpanded && !filmstripView)
   {
     v6 = [PUFilmstripView alloc];
-    [v3 bounds];
-    v4 = [(PUFilmstripView *)v6 initWithFrame:?];
-    [(PUFilmstripView *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v3 setFilmstripView:v4];
+    [wrapperView bounds];
+    filmstripView = [(PUFilmstripView *)v6 initWithFrame:?];
+    [(PUFilmstripView *)filmstripView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [wrapperView setFilmstripView:filmstripView];
   }
 
-  if (v4)
+  if (filmstripView)
   {
-    v7 = v5;
+    v7 = isExpanded;
   }
 
   else
@@ -190,13 +190,13 @@ void __55__PUFilmstripTileViewController__currentIndicatorInfos__block_invoke(ui
 
   if ((v7 & 1) == 0 && ![(PUTileController *)self isAnimating])
   {
-    [v3 setFilmstripView:0 leavingPreviousViewInPlace:1];
+    [wrapperView setFilmstripView:0 leavingPreviousViewInPlace:1];
     v8 = MEMORY[0x1E69DD250];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __53__PUFilmstripTileViewController__updateFilmstripView__block_invoke;
     v13[3] = &unk_1E7B80DD0;
-    v14 = v4;
+    v14 = filmstripView;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __53__PUFilmstripTileViewController__updateFilmstripView__block_invoke_2;
@@ -204,7 +204,7 @@ void __55__PUFilmstripTileViewController__currentIndicatorInfos__block_invoke(ui
     v12 = v14;
     [v8 animateWithDuration:v13 animations:v11 completion:0.25];
 
-    v4 = 0;
+    filmstripView = 0;
   }
 
   if (![(PUTileController *)self isAnimating])
@@ -212,88 +212,88 @@ void __55__PUFilmstripTileViewController__currentIndicatorInfos__block_invoke(ui
     [(PUFilmstripTileViewController *)self _updateFilmStripContents];
   }
 
-  v9 = [(PUImageTileViewController *)self image];
-  [(PUFilmstripView *)v4 setPlaceholderImage:v9];
+  image = [(PUImageTileViewController *)self image];
+  [(PUFilmstripView *)filmstripView setPlaceholderImage:image];
 
-  v10 = [(PUFilmstripTileViewController *)self _currentIndicatorInfos];
-  [(PUFilmstripView *)v4 setIndicatorInfos:v10];
+  _currentIndicatorInfos = [(PUFilmstripTileViewController *)self _currentIndicatorInfos];
+  [(PUFilmstripView *)filmstripView setIndicatorInfos:_currentIndicatorInfos];
 
-  [v3 setAnimating:{-[PUTileController isAnimating](self, "isAnimating")}];
+  [wrapperView setAnimating:{-[PUTileController isAnimating](self, "isAnimating")}];
   [(PUTileViewController *)self visibleRect];
-  [v3 setVisibleRect:?];
-  [v3 setExpanded:{-[PUFilmstripTileViewController isExpanded](self, "isExpanded")}];
+  [wrapperView setVisibleRect:?];
+  [wrapperView setExpanded:{-[PUFilmstripTileViewController isExpanded](self, "isExpanded")}];
   [(PUFilmstripTileViewController *)self expandedSize];
-  [v3 setExpandedSize:?];
+  [wrapperView setExpandedSize:?];
 }
 
 - (void)_updateFilmStripContents
 {
-  v3 = [(PUFilmstripTileViewController *)self wrapperView];
-  v15 = [v3 filmstripView];
+  wrapperView = [(PUFilmstripTileViewController *)self wrapperView];
+  filmstripView = [wrapperView filmstripView];
 
-  v4 = [(PUImageTileViewController *)self assetViewModel];
-  v5 = [v4 videoPlayer];
-  v6 = [v5 playerItem];
-  v7 = [v6 asset];
+  assetViewModel = [(PUImageTileViewController *)self assetViewModel];
+  videoPlayer = [assetViewModel videoPlayer];
+  playerItem = [videoPlayer playerItem];
+  asset = [playerItem asset];
 
-  if (!v7)
+  if (!asset)
   {
-    v8 = [(PUImageTileViewController *)self assetViewModel];
-    v9 = [v8 irisPlayer];
-    v10 = [v9 playerItem];
-    v7 = [v10 asset];
+    assetViewModel2 = [(PUImageTileViewController *)self assetViewModel];
+    irisPlayer = [assetViewModel2 irisPlayer];
+    playerItem2 = [irisPlayer playerItem];
+    asset = [playerItem2 asset];
   }
 
-  v11 = [(PUImageTileViewController *)self assetViewModel];
-  v12 = [v11 videoPlayer];
-  v13 = [v12 playerItem];
-  v14 = [v13 videoComposition];
+  assetViewModel3 = [(PUImageTileViewController *)self assetViewModel];
+  videoPlayer2 = [assetViewModel3 videoPlayer];
+  playerItem3 = [videoPlayer2 playerItem];
+  videoComposition = [playerItem3 videoComposition];
 
-  [v15 setAsset:v7 videoComposition:v14];
+  [filmstripView setAsset:asset videoComposition:videoComposition];
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
-  if (self->_isExpanded != a3)
+  if (self->_isExpanded != expanded)
   {
-    self->_isExpanded = a3;
+    self->_isExpanded = expanded;
     [(PUFilmstripTileViewController *)self _updateFilmstripView];
   }
 }
 
-- (void)setExpandedSize:(CGSize)a3
+- (void)setExpandedSize:(CGSize)size
 {
-  if (self->_expandedSize.width != a3.width || self->_expandedSize.height != a3.height)
+  if (self->_expandedSize.width != size.width || self->_expandedSize.height != size.height)
   {
-    self->_expandedSize = a3;
+    self->_expandedSize = size;
     [(PUFilmstripTileViewController *)self _updateFilmstripView];
   }
 }
 
-- (void)setVideoPlayer:(id)a3
+- (void)setVideoPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   videoPlayer = self->_videoPlayer;
-  if (videoPlayer != v5)
+  if (videoPlayer != playerCopy)
   {
-    v7 = v5;
+    v7 = playerCopy;
     [(PUBrowsingVideoPlayer *)videoPlayer unregisterTimeObserver:self];
-    objc_storeStrong(&self->_videoPlayer, a3);
+    objc_storeStrong(&self->_videoPlayer, player);
     videoPlayer = [(PUBrowsingVideoPlayer *)self->_videoPlayer registerTimeObserver:self];
-    v5 = v7;
+    playerCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](videoPlayer, v5);
+  MEMORY[0x1EEE66BB8](videoPlayer, playerCopy);
 }
 
-- (void)assetViewModelDidChange:(id)a3
+- (void)assetViewModelDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = PUFilmstripTileViewController;
-  [(PUImageTileViewController *)&v6 assetViewModelDidChange:a3];
-  v4 = [(PUImageTileViewController *)self assetViewModel];
-  v5 = [v4 videoPlayer];
-  [(PUFilmstripTileViewController *)self setVideoPlayer:v5];
+  [(PUImageTileViewController *)&v6 assetViewModelDidChange:change];
+  assetViewModel = [(PUImageTileViewController *)self assetViewModel];
+  videoPlayer = [assetViewModel videoPlayer];
+  [(PUFilmstripTileViewController *)self setVideoPlayer:videoPlayer];
 
   [(PUFilmstripTileViewController *)self _updateFilmstripView];
 }
@@ -322,29 +322,29 @@ void __55__PUFilmstripTileViewController__currentIndicatorInfos__block_invoke(ui
   [(PUImageTileViewController *)self setAssetViewModel:0];
   [(PUFilmstripTileViewController *)self setExpanded:0];
   [(PUFilmstripTileViewController *)self setExpandedSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
-  v3 = [(PUFilmstripTileViewController *)self wrapperView];
-  [v3 setAnchoredLeft:0];
+  wrapperView = [(PUFilmstripTileViewController *)self wrapperView];
+  [wrapperView setAnchoredLeft:0];
 }
 
-- (CGSize)targetSizeForProposedTargetSize:(CGSize)a3
+- (CGSize)targetSizeForProposedTargetSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PUFilmstripTileViewController *)self unexpandedSize];
   if (v7 != *MEMORY[0x1E695F060] || v6 != *(MEMORY[0x1E695F060] + 8))
   {
-    v9 = [(PUTileViewController *)self view];
-    v10 = [v9 window];
-    v11 = [v10 screen];
-    [v11 scale];
+    view = [(PUTileViewController *)self view];
+    window = [view window];
+    screen = [window screen];
+    [screen scale];
     v13 = v12;
 
     if (v13 < 1.0)
     {
-      v14 = [(PUTileController *)self tilingView];
-      v15 = [v14 window];
-      v16 = [v15 screen];
-      [v16 scale];
+      tilingView = [(PUTileController *)self tilingView];
+      window2 = [tilingView window];
+      screen2 = [window2 screen];
+      [screen2 scale];
       v13 = v17;
     }
 
@@ -367,20 +367,20 @@ void __55__PUFilmstripTileViewController__currentIndicatorInfos__block_invoke(ui
   return result;
 }
 
-- (void)applyLayoutInfo:(id)a3
+- (void)applyLayoutInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v18.receiver = self;
   v18.super_class = PUFilmstripTileViewController;
-  [(PUImageTileViewController *)&v18 applyLayoutInfo:v5];
+  [(PUImageTileViewController *)&v18 applyLayoutInfo:infoCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PUFilmstripTileViewController.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"[layoutInfo isKindOfClass:PUExpandableTileLayoutInfo.class]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUFilmstripTileViewController.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"[layoutInfo isKindOfClass:PUExpandableTileLayoutInfo.class]"}];
   }
 
-  v6 = v5;
+  v6 = infoCopy;
   [v6 expandedSize];
   [(PUFilmstripTileViewController *)self setExpandedSize:?];
   -[PUFilmstripTileViewController setExpanded:](self, "setExpanded:", [v6 isExpanded]);
@@ -388,34 +388,34 @@ void __55__PUFilmstripTileViewController__currentIndicatorInfos__block_invoke(ui
   [(PUFilmstripTileViewController *)self setUnexpandedSize:?];
   [v6 cornerRadius];
   v8 = v7;
-  v9 = [(PUImageTileViewController *)self imageView];
-  v10 = [v9 layer];
-  [v10 setCornerRadius:v8];
+  imageView = [(PUImageTileViewController *)self imageView];
+  layer = [imageView layer];
+  [layer setCornerRadius:v8];
 
-  v11 = [v6 cornerCurve];
-  v12 = [(PUImageTileViewController *)self imageView];
-  v13 = [v12 layer];
-  [v13 setCornerCurve:v11];
+  cornerCurve = [v6 cornerCurve];
+  imageView2 = [(PUImageTileViewController *)self imageView];
+  layer2 = [imageView2 layer];
+  [layer2 setCornerCurve:cornerCurve];
 
-  v14 = [v6 cornerMask];
-  v15 = [(PUImageTileViewController *)self imageView];
-  v16 = [v15 layer];
-  [v16 setMaskedCorners:v14];
+  cornerMask = [v6 cornerMask];
+  imageView3 = [(PUImageTileViewController *)self imageView];
+  layer3 = [imageView3 layer];
+  [layer3 setMaskedCorners:cornerMask];
 }
 
 - (id)loadView
 {
   v7.receiver = self;
   v7.super_class = PUFilmstripTileViewController;
-  v3 = [(PUImageTileViewController *)&v7 loadView];
+  loadView = [(PUImageTileViewController *)&v7 loadView];
   v4 = [PUFilmstripWrapperView alloc];
-  [v3 bounds];
+  [loadView bounds];
   v5 = [(PUFilmstripWrapperView *)v4 initWithFrame:?];
   [(PUFilmstripWrapperView *)v5 setUserInteractionEnabled:0];
   [(PUFilmstripTileViewController *)self expandedSize];
   [(PUFilmstripWrapperView *)v5 setExpandedSize:?];
   objc_storeStrong(&self->_wrapperView, v5);
-  [(PUFilmstripWrapperView *)v5 setBackgroundView:v3];
+  [(PUFilmstripWrapperView *)v5 setBackgroundView:loadView];
 
   return v5;
 }

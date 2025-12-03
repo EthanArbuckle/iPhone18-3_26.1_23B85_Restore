@@ -1,15 +1,15 @@
 @interface NavdGeodesicLocation
 - ($F24F406B2B787EFB06265DBA3D28CBD5)location;
-- (NavdGeodesicLocation)initWithLocation:(id)a3 timeInterval:(double)a4;
-- (double)distanceTo:(id)a3;
+- (NavdGeodesicLocation)initWithLocation:(id)location timeInterval:(double)interval;
+- (double)distanceTo:(id)to;
 @end
 
 @implementation NavdGeodesicLocation
 
-- (NavdGeodesicLocation)initWithLocation:(id)a3 timeInterval:(double)a4
+- (NavdGeodesicLocation)initWithLocation:(id)location timeInterval:(double)interval
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = location.var1;
+  var0 = location.var0;
   v8.receiver = self;
   v8.super_class = NavdGeodesicLocation;
   result = [(NavdGeodesicLocation *)&v8 init];
@@ -17,13 +17,13 @@
   {
     result->_location.latitude = var0;
     result->_location.longitude = var1;
-    result->_timeInterval = a4;
+    result->_timeInterval = interval;
   }
 
   return result;
 }
 
-- (double)distanceTo:(id)a3
+- (double)distanceTo:(id)to
 {
   latitude = self->_location.latitude;
   longitude = self->_location.longitude;

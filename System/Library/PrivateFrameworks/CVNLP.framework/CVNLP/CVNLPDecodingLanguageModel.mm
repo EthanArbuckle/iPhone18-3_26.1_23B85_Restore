@@ -1,35 +1,35 @@
 @interface CVNLPDecodingLanguageModel
-+ (id)_decodingLanguageModelForLocale:(id)a3 modelType:(int)a4 decodingWeight:(id)a5 lowerBoundLogProbability:(id)a6 type:(int)a7;
-+ (id)pathForLanguageModelForLocale:(id)a3 modelType:(int)a4 resourceType:(int)a5;
-+ (unsigned)_normalizedLMTokenIDForWord:(id)a3 withTokenID:(unsigned int)TokenIDForString sourceLanguageModel:(id)a5 outScore:(double *)a6;
-- (CVNLPDecodingLanguageModel)initWithCVNLPLanguageModel:(CVNLPLanguageModel *)a3 locale:(id)a4 decodingWeight:(id)a5;
-- (CVNLPDecodingLanguageModel)initWithLMLanguageModel:(void *)a3 locale:(id)a4 decodingWeight:(id)a5;
-- (CVNLPDecodingLanguageModel)initWithLanguageModel:(void *)a3 locale:(id)a4;
-- (id)_initWithLanguageModel:(void *)a3 locale:(id)a4 decodingWeight:(id)a5 lowerBoundLogProbability:(id)a6 type:(int)a7;
-- (int64_t)requiredContextLengthForStringLength:(int64_t)a3;
++ (id)_decodingLanguageModelForLocale:(id)locale modelType:(int)type decodingWeight:(id)weight lowerBoundLogProbability:(id)probability type:(int)a7;
++ (id)pathForLanguageModelForLocale:(id)locale modelType:(int)type resourceType:(int)resourceType;
++ (unsigned)_normalizedLMTokenIDForWord:(id)word withTokenID:(unsigned int)TokenIDForString sourceLanguageModel:(id)model outScore:(double *)score;
+- (CVNLPDecodingLanguageModel)initWithCVNLPLanguageModel:(CVNLPLanguageModel *)model locale:(id)locale decodingWeight:(id)weight;
+- (CVNLPDecodingLanguageModel)initWithLMLanguageModel:(void *)model locale:(id)locale decodingWeight:(id)weight;
+- (CVNLPDecodingLanguageModel)initWithLanguageModel:(void *)model locale:(id)locale;
+- (id)_initWithLanguageModel:(void *)model locale:(id)locale decodingWeight:(id)weight lowerBoundLogProbability:(id)probability type:(int)type;
+- (int64_t)requiredContextLengthForStringLength:(int64_t)length;
 - (vector<unsigned)characterTokenIDsForString:(CVNLPDecodingLanguageModel *)self;
-- (vector<unsigned)wordTokenIDsForString:(CVNLPDecodingLanguageModel *)self outTokenRanges:(SEL)a3;
+- (vector<unsigned)wordTokenIDsForString:(CVNLPDecodingLanguageModel *)self outTokenRanges:(SEL)ranges;
 - (void)dealloc;
 @end
 
 @implementation CVNLPDecodingLanguageModel
 
-- (id)_initWithLanguageModel:(void *)a3 locale:(id)a4 decodingWeight:(id)a5 lowerBoundLogProbability:(id)a6 type:(int)a7
+- (id)_initWithLanguageModel:(void *)model locale:(id)locale decodingWeight:(id)weight lowerBoundLogProbability:(id)probability type:(int)type
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  localeCopy = locale;
+  weightCopy = weight;
+  probabilityCopy = probability;
   v19.receiver = self;
   v19.super_class = CVNLPDecodingLanguageModel;
-  v16 = [(CVNLPInformationStream *)&v19 initWithDecodingWeight:v14 lowerBoundLogProbability:v15];
+  v16 = [(CVNLPInformationStream *)&v19 initWithDecodingWeight:weightCopy lowerBoundLogProbability:probabilityCopy];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_locale, a4);
-    v17->_lmSPIType = a7;
-    if ((a7 - 1) < 2)
+    objc_storeStrong(&v16->_locale, locale);
+    v17->_lmSPIType = type;
+    if ((type - 1) < 2)
     {
-      v17->_languageModel = CFRetain(a3);
+      v17->_languageModel = CFRetain(model);
     }
 
     v17->_tokenizer = LMStreamTokenizerCreate();
@@ -38,32 +38,32 @@
   return v17;
 }
 
-- (CVNLPDecodingLanguageModel)initWithLMLanguageModel:(void *)a3 locale:(id)a4 decodingWeight:(id)a5
+- (CVNLPDecodingLanguageModel)initWithLMLanguageModel:(void *)model locale:(id)locale decodingWeight:(id)weight
 {
-  v8 = a4;
-  v9 = a5;
+  localeCopy = locale;
+  weightCopy = weight;
   v13 = objc_msgSend_defaultLowerBoundLogProbability(CVNLPInformationStream, v10, v11, v12);
-  v15 = objc_msgSend__initWithLanguageModel_locale_decodingWeight_lowerBoundLogProbability_type_(self, v14, a3, v8, v9, v13, 1);
+  v15 = objc_msgSend__initWithLanguageModel_locale_decodingWeight_lowerBoundLogProbability_type_(self, v14, model, localeCopy, weightCopy, v13, 1);
 
   return v15;
 }
 
-- (CVNLPDecodingLanguageModel)initWithCVNLPLanguageModel:(CVNLPLanguageModel *)a3 locale:(id)a4 decodingWeight:(id)a5
+- (CVNLPDecodingLanguageModel)initWithCVNLPLanguageModel:(CVNLPLanguageModel *)model locale:(id)locale decodingWeight:(id)weight
 {
-  v8 = a4;
-  v9 = a5;
+  localeCopy = locale;
+  weightCopy = weight;
   v13 = objc_msgSend_defaultLowerBoundLogProbability(CVNLPInformationStream, v10, v11, v12);
-  v15 = objc_msgSend__initWithLanguageModel_locale_decodingWeight_lowerBoundLogProbability_type_(self, v14, a3, v8, v9, v13, 2);
+  v15 = objc_msgSend__initWithLanguageModel_locale_decodingWeight_lowerBoundLogProbability_type_(self, v14, model, localeCopy, weightCopy, v13, 2);
 
   return v15;
 }
 
-- (CVNLPDecodingLanguageModel)initWithLanguageModel:(void *)a3 locale:(id)a4
+- (CVNLPDecodingLanguageModel)initWithLanguageModel:(void *)model locale:(id)locale
 {
-  v6 = a4;
+  localeCopy = locale;
   v10 = objc_msgSend_defaultDecodingWeight(CVNLPInformationStream, v7, v8, v9);
   v14 = objc_msgSend_defaultLowerBoundLogProbability(CVNLPInformationStream, v11, v12, v13);
-  v16 = objc_msgSend__initWithLanguageModel_locale_decodingWeight_lowerBoundLogProbability_type_(self, v15, a3, v6, v10, v14, 1);
+  v16 = objc_msgSend__initWithLanguageModel_locale_decodingWeight_lowerBoundLogProbability_type_(self, v15, model, localeCopy, v10, v14, 1);
 
   return v16;
 }
@@ -92,18 +92,18 @@
   [(CVNLPDecodingLanguageModel *)&v5 dealloc];
 }
 
-+ (id)_decodingLanguageModelForLocale:(id)a3 modelType:(int)a4 decodingWeight:(id)a5 lowerBoundLogProbability:(id)a6 type:(int)a7
++ (id)_decodingLanguageModelForLocale:(id)locale modelType:(int)type decodingWeight:(id)weight lowerBoundLogProbability:(id)probability type:(int)a7
 {
   v72[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v16 = a6;
+  localeCopy = locale;
+  weightCopy = weight;
+  probabilityCopy = probability;
   if (a7 == 2)
   {
     v67[0] = @"CVNLPLocaleKey";
-    v24 = objc_msgSend_localeIdentifier(v11, v13, v14, v15);
+    v24 = objc_msgSend_localeIdentifier(localeCopy, v13, v14, v15);
     v27 = v24;
-    if (a4 == 2)
+    if (type == 2)
     {
       v28 = 2;
     }
@@ -129,12 +129,12 @@ LABEL_7:
     goto LABEL_21;
   }
 
-  if (a4 != 1)
+  if (type != 1)
   {
-    if (a4 == 2)
+    if (type == 2)
     {
       v71 = *MEMORY[0x1E69ABF90];
-      v17 = objc_msgSend_localeIdentifier(v11, v13, v14, v15);
+      v17 = objc_msgSend_localeIdentifier(localeCopy, v13, v14, v15);
       v72[0] = v17;
       v19 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v18, v72, &v71, 1);
 
@@ -142,7 +142,7 @@ LABEL_7:
       if (v20)
       {
         v21 = [CVNLPDecodingLanguageModel alloc];
-        v23 = objc_msgSend__initWithLanguageModel_locale_decodingWeight_lowerBoundLogProbability_type_(v21, v22, v20, v11, v12, v16, 1);
+        v23 = objc_msgSend__initWithLanguageModel_locale_decodingWeight_lowerBoundLogProbability_type_(v21, v22, v20, localeCopy, weightCopy, probabilityCopy, 1);
         LMLanguageModelRelease();
       }
 
@@ -173,7 +173,7 @@ LABEL_7:
 
     v48 = objc_msgSend_stringByDeletingLastPathComponent(v36, v45, v46, v47);
     v69[0] = *MEMORY[0x1E69ABF90];
-    v52 = objc_msgSend_languageCode(v11, v49, v50, v51);
+    v52 = objc_msgSend_languageCode(localeCopy, v49, v50, v51);
     v70[0] = v52;
     v70[1] = MEMORY[0x1E695E110];
     v53 = *MEMORY[0x1E69ABF70];
@@ -188,7 +188,7 @@ LABEL_7:
     if (v56)
     {
       v57 = [CVNLPDecodingLanguageModel alloc];
-      v23 = objc_msgSend__initWithLanguageModel_locale_decodingWeight_lowerBoundLogProbability_type_(v57, v58, v56, v11, v12, v16, 1);
+      v23 = objc_msgSend__initWithLanguageModel_locale_decodingWeight_lowerBoundLogProbability_type_(v57, v58, v56, localeCopy, weightCopy, probabilityCopy, 1);
       LMLanguageModelRelease();
     }
 
@@ -211,15 +211,15 @@ LABEL_21:
   return v23;
 }
 
-+ (id)pathForLanguageModelForLocale:(id)a3 modelType:(int)a4 resourceType:(int)a5
++ (id)pathForLanguageModelForLocale:(id)locale modelType:(int)type resourceType:(int)resourceType
 {
-  v7 = a3;
-  v11 = v7;
+  localeCopy = locale;
+  v11 = localeCopy;
   memset(&v40, 0, sizeof(v40));
   v39 = &unk_1F554E258;
-  if (a4 == 2 && a5 == 1)
+  if (type == 2 && resourceType == 1)
   {
-    v12 = objc_msgSend_languageCode(v7, v8, v9, v10);
+    v12 = objc_msgSend_languageCode(localeCopy, v8, v9, v10);
     v15 = objc_msgSend_stringByAppendingPathExtension_(v12, v13, @"lm", v14);
     sub_1D9D87968(v15, v37);
 
@@ -248,12 +248,12 @@ LABEL_21:
 
   else
   {
-    if (a4 != 1 || a5 != 2)
+    if (type != 1 || resourceType != 2)
     {
       goto LABEL_18;
     }
 
-    v16 = objc_msgSend_languageCode(v7, v8, v9, v10);
+    v16 = objc_msgSend_languageCode(localeCopy, v8, v9, v10);
     sub_1D9D87968(v16, v37);
 
     strcpy(v30, "Models");
@@ -400,12 +400,12 @@ LABEL_39:
   return v25;
 }
 
-- (int64_t)requiredContextLengthForStringLength:(int64_t)a3
+- (int64_t)requiredContextLengthForStringLength:(int64_t)length
 {
   lmSPIType = self->_lmSPIType;
   if (lmSPIType == 2)
   {
-    return a3;
+    return length;
   }
 
   if (lmSPIType == 1)
@@ -443,7 +443,7 @@ LABEL_39:
   return result;
 }
 
-- (vector<unsigned)wordTokenIDsForString:(CVNLPDecodingLanguageModel *)self outTokenRanges:(SEL)a3
+- (vector<unsigned)wordTokenIDsForString:(CVNLPDecodingLanguageModel *)self outTokenRanges:(SEL)ranges
 {
   v48[0] = 0;
   v48[1] = v48;
@@ -495,16 +495,16 @@ LABEL_39:
   operator new[]();
 }
 
-+ (unsigned)_normalizedLMTokenIDForWord:(id)a3 withTokenID:(unsigned int)TokenIDForString sourceLanguageModel:(id)a5 outScore:(double *)a6
++ (unsigned)_normalizedLMTokenIDForWord:(id)word withTokenID:(unsigned int)TokenIDForString sourceLanguageModel:(id)model outScore:(double *)score
 {
-  v8 = a3;
-  objc_msgSend_languageModel(a5, v9, v10, v11);
+  wordCopy = word;
+  objc_msgSend_languageModel(model, v9, v10, v11);
   if (!TokenIDForString)
   {
     TokenIDForString = LMLanguageModelGetTokenIDForString();
     if (!TokenIDForString)
     {
-      v15 = objc_msgSend_lowercaseString(v8, v12, v13, v14);
+      v15 = objc_msgSend_lowercaseString(wordCopy, v12, v13, v14);
       TokenIDForString = LMLanguageModelGetTokenIDForString();
     }
   }

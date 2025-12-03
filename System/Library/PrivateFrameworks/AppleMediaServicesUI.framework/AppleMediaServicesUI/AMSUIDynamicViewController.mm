@@ -4,8 +4,8 @@
 - (ACAccount)account;
 - (AMSBagProtocol)bag;
 - (AMSProcessInfo)clientInfo;
-- (AMSUIDynamicViewController)initWithBag:(id)a3 URL:(id)a4;
-- (AMSUIDynamicViewController)initWithBag:(id)a3 bagValue:(id)a4;
+- (AMSUIDynamicViewController)initWithBag:(id)bag URL:(id)l;
+- (AMSUIDynamicViewController)initWithBag:(id)bag bagValue:(id)value;
 - (AMSUIDynamicViewControllerDelegate)delegate;
 - (AMSUIMediaContentDelegate)mediaContentDelegate;
 - (BOOL)anonymousMetrics;
@@ -20,33 +20,33 @@
 - (id)title;
 - (void)_setup;
 - (void)reloadContentViewImpressionItems;
-- (void)setAccount:(id)a3;
-- (void)setBag:(id)a3;
-- (void)setClientInfo:(id)a3;
-- (void)setClientOptions:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setInternalClientOptions:(id)a3;
-- (void)setMediaClientIdentifier:(id)a3;
-- (void)setMediaContentDelegate:(id)a3;
-- (void)setMetricsOverlay:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setAccount:(id)account;
+- (void)setBag:(id)bag;
+- (void)setClientInfo:(id)info;
+- (void)setClientOptions:(id)options;
+- (void)setDelegate:(id)delegate;
+- (void)setInternalClientOptions:(id)options;
+- (void)setMediaClientIdentifier:(id)identifier;
+- (void)setMediaContentDelegate:(id)delegate;
+- (void)setMetricsOverlay:(id)overlay;
+- (void)setTitle:(id)title;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation AMSUIDynamicViewController
 
-- (AMSUIDynamicViewController)initWithBag:(id)a3 bagValue:(id)a4
+- (AMSUIDynamicViewController)initWithBag:(id)bag bagValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  bagCopy = bag;
+  valueCopy = value;
   v13.receiver = self;
   v13.super_class = AMSUIDynamicViewController;
   v8 = [(AMSUICommonViewController *)&v13 init];
   if (v8)
   {
-    v9 = [[AMSEngagementOfflineBag alloc] initWithUnderlyingBag:v6];
-    v10 = [objc_alloc(getAMSUIDDynamicViewControllerClass()) initWithBag:v9 bagValue:v7];
+    v9 = [[AMSEngagementOfflineBag alloc] initWithUnderlyingBag:bagCopy];
+    v10 = [objc_alloc(getAMSUIDDynamicViewControllerClass()) initWithBag:v9 bagValue:valueCopy];
     dynamicViewController = v8->_dynamicViewController;
     v8->_dynamicViewController = v10;
 
@@ -56,17 +56,17 @@
   return v8;
 }
 
-- (AMSUIDynamicViewController)initWithBag:(id)a3 URL:(id)a4
+- (AMSUIDynamicViewController)initWithBag:(id)bag URL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  bagCopy = bag;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = AMSUIDynamicViewController;
   v8 = [(AMSUICommonViewController *)&v13 init];
   if (v8)
   {
-    v9 = [[AMSEngagementOfflineBag alloc] initWithUnderlyingBag:v6];
-    v10 = [objc_alloc(getAMSUIDDynamicViewControllerClass()) initWithBag:v9 URL:v7];
+    v9 = [[AMSEngagementOfflineBag alloc] initWithUnderlyingBag:bagCopy];
+    v10 = [objc_alloc(getAMSUIDDynamicViewControllerClass()) initWithBag:v9 URL:lCopy];
     dynamicViewController = v8->_dynamicViewController;
     v8->_dynamicViewController = v10;
 
@@ -78,151 +78,151 @@
 
 - (ACAccount)account
 {
-  v2 = [(AMSUIDynamicViewController *)self dynamicViewController];
-  v3 = [v2 account];
+  dynamicViewController = [(AMSUIDynamicViewController *)self dynamicViewController];
+  account = [dynamicViewController account];
 
-  return v3;
+  return account;
 }
 
 - (BOOL)anonymousMetrics
 {
-  v2 = [(AMSUIDynamicViewController *)self dynamicViewController];
-  v3 = [v2 anonymousMetrics];
+  dynamicViewController = [(AMSUIDynamicViewController *)self dynamicViewController];
+  anonymousMetrics = [dynamicViewController anonymousMetrics];
 
-  return v3;
+  return anonymousMetrics;
 }
 
 - (AMSBagProtocol)bag
 {
-  v2 = [(AMSUIDynamicViewController *)self dynamicViewController];
-  v3 = [v2 bag];
+  dynamicViewController = [(AMSUIDynamicViewController *)self dynamicViewController];
+  v3 = [dynamicViewController bag];
 
   return v3;
 }
 
 - (AMSProcessInfo)clientInfo
 {
-  v2 = [(AMSUIDynamicViewController *)self dynamicViewController];
-  v3 = [v2 clientInfo];
+  dynamicViewController = [(AMSUIDynamicViewController *)self dynamicViewController];
+  clientInfo = [dynamicViewController clientInfo];
 
-  return v3;
+  return clientInfo;
 }
 
 - (NSDictionary)clientOptions
 {
-  v2 = [(AMSUIDynamicViewController *)self dynamicViewController];
-  v3 = [v2 clientOptions];
+  dynamicViewController = [(AMSUIDynamicViewController *)self dynamicViewController];
+  clientOptions = [dynamicViewController clientOptions];
 
-  return v3;
+  return clientOptions;
 }
 
 - (AMSUIDynamicViewControllerDelegate)delegate
 {
-  v2 = [(AMSUIDynamicViewController *)self delegateProxy];
-  v3 = [v2 delegate];
+  delegateProxy = [(AMSUIDynamicViewController *)self delegateProxy];
+  delegate = [delegateProxy delegate];
 
-  return v3;
+  return delegate;
 }
 
 - (NSDictionary)internalClientOptions
 {
-  v2 = [(AMSUIDynamicViewController *)self dynamicViewController];
-  v3 = [v2 internalClientOptions];
+  dynamicViewController = [(AMSUIDynamicViewController *)self dynamicViewController];
+  internalClientOptions = [dynamicViewController internalClientOptions];
 
-  return v3;
+  return internalClientOptions;
 }
 
 - (NSString)mediaClientIdentifier
 {
-  v2 = [(AMSUIDynamicViewController *)self dynamicViewController];
-  v3 = [v2 mediaClientIdentifier];
+  dynamicViewController = [(AMSUIDynamicViewController *)self dynamicViewController];
+  mediaClientIdentifier = [dynamicViewController mediaClientIdentifier];
 
-  return v3;
+  return mediaClientIdentifier;
 }
 
 - (NSDictionary)metricsOverlay
 {
-  v2 = [(AMSUIDynamicViewController *)self dynamicViewController];
-  v3 = [v2 metricsOverlay];
+  dynamicViewController = [(AMSUIDynamicViewController *)self dynamicViewController];
+  metricsOverlay = [dynamicViewController metricsOverlay];
 
-  return v3;
+  return metricsOverlay;
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(AMSUIDynamicViewController *)self dynamicViewController];
-  [v5 setAccount:v4];
+  accountCopy = account;
+  dynamicViewController = [(AMSUIDynamicViewController *)self dynamicViewController];
+  [dynamicViewController setAccount:accountCopy];
 }
 
-- (void)setBag:(id)a3
+- (void)setBag:(id)bag
 {
-  v4 = a3;
-  v5 = [(AMSUIDynamicViewController *)self dynamicViewController];
-  [v5 setBag:v4];
+  bagCopy = bag;
+  dynamicViewController = [(AMSUIDynamicViewController *)self dynamicViewController];
+  [dynamicViewController setBag:bagCopy];
 }
 
-- (void)setClientInfo:(id)a3
+- (void)setClientInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(AMSUIDynamicViewController *)self dynamicViewController];
-  [v5 setClientInfo:v4];
+  infoCopy = info;
+  dynamicViewController = [(AMSUIDynamicViewController *)self dynamicViewController];
+  [dynamicViewController setClientInfo:infoCopy];
 }
 
-- (void)setClientOptions:(id)a3
+- (void)setClientOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(AMSUIDynamicViewController *)self dynamicViewController];
-  [v5 setClientOptions:v4];
+  optionsCopy = options;
+  dynamicViewController = [(AMSUIDynamicViewController *)self dynamicViewController];
+  [dynamicViewController setClientOptions:optionsCopy];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(AMSUIDynamicViewController *)self delegateProxy];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  delegateProxy = [(AMSUIDynamicViewController *)self delegateProxy];
+  [delegateProxy setDelegate:delegateCopy];
 }
 
-- (void)setInternalClientOptions:(id)a3
+- (void)setInternalClientOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(AMSUIDynamicViewController *)self dynamicViewController];
-  [v5 setInternalClientOptions:v4];
+  optionsCopy = options;
+  dynamicViewController = [(AMSUIDynamicViewController *)self dynamicViewController];
+  [dynamicViewController setInternalClientOptions:optionsCopy];
 }
 
-- (void)setMediaClientIdentifier:(id)a3
+- (void)setMediaClientIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(AMSUIDynamicViewController *)self dynamicViewController];
-  [v5 setMediaClientIdentifier:v4];
+  identifierCopy = identifier;
+  dynamicViewController = [(AMSUIDynamicViewController *)self dynamicViewController];
+  [dynamicViewController setMediaClientIdentifier:identifierCopy];
 }
 
-- (void)setMediaContentDelegate:(id)a3
+- (void)setMediaContentDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(AMSUIDynamicViewController *)self dynamicViewController];
-  [v5 setMediaContentDelegate:v4];
+  delegateCopy = delegate;
+  dynamicViewController = [(AMSUIDynamicViewController *)self dynamicViewController];
+  [dynamicViewController setMediaContentDelegate:delegateCopy];
 }
 
-- (void)setMetricsOverlay:(id)a3
+- (void)setMetricsOverlay:(id)overlay
 {
-  v4 = a3;
-  v5 = [(AMSUIDynamicViewController *)self dynamicViewController];
-  [v5 setMetricsOverlay:v4];
+  overlayCopy = overlay;
+  dynamicViewController = [(AMSUIDynamicViewController *)self dynamicViewController];
+  [dynamicViewController setMetricsOverlay:overlayCopy];
 }
 
 - (id)preload
 {
-  v2 = [(AMSUIDynamicViewController *)self dynamicViewController];
-  v3 = [v2 preload];
+  dynamicViewController = [(AMSUIDynamicViewController *)self dynamicViewController];
+  preload = [dynamicViewController preload];
 
-  return v3;
+  return preload;
 }
 
 - (void)reloadContentViewImpressionItems
 {
-  v2 = [(AMSUIDynamicViewController *)self dynamicViewController];
-  [v2 reloadContentViewImpressionItems];
+  dynamicViewController = [(AMSUIDynamicViewController *)self dynamicViewController];
+  [dynamicViewController reloadContentViewImpressionItems];
 }
 
 - (void)_setup
@@ -239,14 +239,14 @@
 
 - (BOOL)isBeingDismissed
 {
-  v3 = [(AMSUIDynamicViewController *)self parentViewController];
+  parentViewController = [(AMSUIDynamicViewController *)self parentViewController];
 
-  if (v3)
+  if (parentViewController)
   {
-    v4 = [(AMSUIDynamicViewController *)self parentViewController];
-    v5 = [v4 isBeingDismissed];
+    parentViewController2 = [(AMSUIDynamicViewController *)self parentViewController];
+    isBeingDismissed = [parentViewController2 isBeingDismissed];
 
-    return v5;
+    return isBeingDismissed;
   }
 
   else
@@ -259,14 +259,14 @@
 
 - (BOOL)isMovingFromParentViewController
 {
-  v3 = [(AMSUIDynamicViewController *)self parentViewController];
+  parentViewController = [(AMSUIDynamicViewController *)self parentViewController];
 
-  if (v3)
+  if (parentViewController)
   {
-    v4 = [(AMSUIDynamicViewController *)self parentViewController];
-    v5 = [v4 isMovingFromParentViewController];
+    parentViewController2 = [(AMSUIDynamicViewController *)self parentViewController];
+    isMovingFromParentViewController = [parentViewController2 isMovingFromParentViewController];
 
-    return v5;
+    return isMovingFromParentViewController;
   }
 
   else
@@ -279,59 +279,59 @@
 
 - (id)navigationItem
 {
-  v3 = [(AMSUIDynamicViewController *)self parentViewController];
-  if (v3 && (v4 = v3, [(AMSUIDynamicViewController *)self parentViewController], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, v4, (isKindOfClass & 1) == 0))
+  parentViewController = [(AMSUIDynamicViewController *)self parentViewController];
+  if (parentViewController && (v4 = parentViewController, [(AMSUIDynamicViewController *)self parentViewController], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, v4, (isKindOfClass & 1) == 0))
   {
-    v8 = [(AMSUIDynamicViewController *)self parentViewController];
-    v7 = [v8 navigationItem];
+    parentViewController2 = [(AMSUIDynamicViewController *)self parentViewController];
+    navigationItem = [parentViewController2 navigationItem];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = AMSUIDynamicViewController;
-    v7 = [(AMSUIDynamicViewController *)&v10 navigationItem];
+    navigationItem = [(AMSUIDynamicViewController *)&v10 navigationItem];
   }
 
-  return v7;
+  return navigationItem;
 }
 
 - (id)title
 {
-  v3 = [(AMSUIDynamicViewController *)self parentViewController];
+  parentViewController = [(AMSUIDynamicViewController *)self parentViewController];
 
-  if (v3)
+  if (parentViewController)
   {
-    v4 = [(AMSUIDynamicViewController *)self parentViewController];
-    v5 = [v4 title];
+    parentViewController2 = [(AMSUIDynamicViewController *)self parentViewController];
+    title = [parentViewController2 title];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = AMSUIDynamicViewController;
-    v5 = [(AMSUIDynamicViewController *)&v7 title];
+    title = [(AMSUIDynamicViewController *)&v7 title];
   }
 
-  return v5;
+  return title;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(AMSUIDynamicViewController *)self parentViewController];
+  titleCopy = title;
+  parentViewController = [(AMSUIDynamicViewController *)self parentViewController];
 
-  if (v5)
+  if (parentViewController)
   {
-    v6 = [(AMSUIDynamicViewController *)self parentViewController];
-    [v6 setTitle:v4];
+    parentViewController2 = [(AMSUIDynamicViewController *)self parentViewController];
+    [parentViewController2 setTitle:titleCopy];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = AMSUIDynamicViewController;
-    [(AMSUIDynamicViewController *)&v7 setTitle:v4];
+    [(AMSUIDynamicViewController *)&v7 setTitle:titleCopy];
   }
 }
 
@@ -340,8 +340,8 @@
   v4.receiver = self;
   v4.super_class = AMSUIDynamicViewController;
   [(AMSUIDynamicViewController *)&v4 viewDidLoad];
-  v3 = [(AMSUIDynamicViewController *)self dynamicViewController];
-  [(AMSUICommonViewController *)self setChildViewController:v3];
+  dynamicViewController = [(AMSUIDynamicViewController *)self dynamicViewController];
+  [(AMSUICommonViewController *)self setChildViewController:dynamicViewController];
 }
 
 - (void)viewWillLayoutSubviews
@@ -349,25 +349,25 @@
   v14.receiver = self;
   v14.super_class = AMSUIDynamicViewController;
   [(AMSUIDynamicViewController *)&v14 viewWillLayoutSubviews];
-  v3 = [(AMSUICommonViewController *)self view];
-  [v3 bounds];
+  view = [(AMSUICommonViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(AMSUIDynamicViewController *)self dynamicViewController];
-  v13 = [v12 view];
-  [v13 setFrame:{v5, v7, v9, v11}];
+  dynamicViewController = [(AMSUIDynamicViewController *)self dynamicViewController];
+  view2 = [dynamicViewController view];
+  [view2 setFrame:{v5, v7, v9, v11}];
 }
 
 + (AMSBagKeySet)bagKeySet
 {
   v2 = objc_alloc_init(MEMORY[0x1E698CA40]);
-  v3 = [MEMORY[0x1E698C9E0] bagKeySet];
-  [v2 unionBagKeySet:v3];
+  bagKeySet = [MEMORY[0x1E698C9E0] bagKeySet];
+  [v2 unionBagKeySet:bagKeySet];
 
-  v4 = [MEMORY[0x1E698CAE8] bagKeySet];
-  [v2 unionBagKeySet:v4];
+  bagKeySet2 = [MEMORY[0x1E698CAE8] bagKeySet];
+  [v2 unionBagKeySet:bagKeySet2];
 
   return v2;
 }
@@ -375,15 +375,15 @@
 + (id)createBagForSubProfile
 {
   v2 = MEMORY[0x1E698C7E0];
-  v3 = [objc_opt_class() bagKeySet];
-  v4 = [objc_opt_class() bagSubProfile];
-  v5 = [objc_opt_class() bagSubProfileVersion];
-  [v2 registerBagKeySet:v3 forProfile:v4 profileVersion:v5];
+  bagKeySet = [objc_opt_class() bagKeySet];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  [v2 registerBagKeySet:bagKeySet forProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   v6 = MEMORY[0x1E698C7D8];
-  v7 = [objc_opt_class() bagSubProfile];
-  v8 = [objc_opt_class() bagSubProfileVersion];
-  v9 = [v6 bagForProfile:v7 profileVersion:v8];
+  bagSubProfile2 = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion2 = [objc_opt_class() bagSubProfileVersion];
+  v9 = [v6 bagForProfile:bagSubProfile2 profileVersion:bagSubProfileVersion2];
 
   return v9;
 }

@@ -1,11 +1,11 @@
 @interface HeroGradientView
-- (_TtC20ProductPageExtension16HeroGradientView)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension16HeroGradientView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation HeroGradientView
 
-- (_TtC20ProductPageExtension16HeroGradientView)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension16HeroGradientView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension16HeroGradientView_gradient;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(CAGradientLayer) init];

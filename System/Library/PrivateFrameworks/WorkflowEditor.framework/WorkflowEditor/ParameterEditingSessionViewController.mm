@@ -1,7 +1,7 @@
 @interface ParameterEditingSessionViewController
-- (_TtC14WorkflowEditorP33_2752CA8C95F7CD441264E696EB76D2D537ParameterEditingSessionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC14WorkflowEditorP33_2752CA8C95F7CD441264E696EB76D2D537ParameterEditingSessionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)cancelEditing;
-- (void)finishEditingWithParameterState:(id)a3;
+- (void)finishEditingWithParameterState:(id)state;
 - (void)viewDidLoad;
 @end
 
@@ -9,32 +9,32 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2745036DC();
 }
 
 - (void)cancelEditing
 {
-  v2 = self;
+  selfCopy = self;
   sub_274503D34();
 }
 
-- (void)finishEditingWithParameterState:(id)a3
+- (void)finishEditingWithParameterState:(id)state
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_274503DDC();
   swift_unknownObjectRelease();
 }
 
-- (_TtC14WorkflowEditorP33_2752CA8C95F7CD441264E696EB76D2D537ParameterEditingSessionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14WorkflowEditorP33_2752CA8C95F7CD441264E696EB76D2D537ParameterEditingSessionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_27463B6AC();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_274503EB8();
 }
 

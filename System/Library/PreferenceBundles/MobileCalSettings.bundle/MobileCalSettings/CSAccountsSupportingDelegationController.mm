@@ -3,7 +3,7 @@
 - (id)specifiers;
 - (id)specifiersForAccountsSupportingDelegation;
 - (void)reloadDelegates;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation CSAccountsSupportingDelegationController
@@ -25,23 +25,23 @@
   return v2;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v16.receiver = self;
   v16.super_class = CSAccountsSupportingDelegationController;
-  [(CSAccountsSupportingDelegationController *)&v16 viewDidAppear:a3];
+  [(CSAccountsSupportingDelegationController *)&v16 viewDidAppear:appear];
   v4 = [NSURL URLWithString:@"settings-navigation://com.apple.Settings.Apps/com.apple.mobilecal/DELEGATE_CALENDARS"];
   v5 = [_NSLocalizedStringResource alloc];
   v6 = +[NSLocale currentLocale];
   v7 = [NSBundle bundleForClass:objc_opt_class()];
-  v8 = [v7 bundleURL];
-  v9 = [v5 initWithKey:@"Delegate Calendars" table:@"MobileCalSettings" locale:v6 bundleURL:v8];
+  bundleURL = [v7 bundleURL];
+  v9 = [v5 initWithKey:@"Delegate Calendars" table:@"MobileCalSettings" locale:v6 bundleURL:bundleURL];
 
   v10 = [_NSLocalizedStringResource alloc];
   v11 = +[NSLocale currentLocale];
   v12 = [NSBundle bundleForClass:objc_opt_class()];
-  v13 = [v12 bundleURL];
-  v14 = [v10 initWithKey:@"Calendar" table:@"MobileCalSettings" locale:v11 bundleURL:v13];
+  bundleURL2 = [v12 bundleURL];
+  v14 = [v10 initWithKey:@"Calendar" table:@"MobileCalSettings" locale:v11 bundleURL:bundleURL2];
 
   v17 = v14;
   v15 = [NSArray arrayWithObjects:&v17 count:1];
@@ -50,9 +50,9 @@
 
 - (void)reloadDelegates
 {
-  v3 = [(EKEventStore *)self->_eventStore sources];
+  sources = [(EKEventStore *)self->_eventStore sources];
   v4 = [NSPredicate predicateWithBlock:&stru_20D68];
-  v5 = [v3 filteredArrayUsingPredicate:v4];
+  v5 = [sources filteredArrayUsingPredicate:v4];
 
   accountsSupportingDelegation = self->_accountsSupportingDelegation;
   self->_accountsSupportingDelegation = v5;
@@ -86,8 +86,8 @@
         v9 = CUIKDisplayedTitleForSource();
         v10 = [PSSpecifier preferenceSpecifierNamed:v9 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
-        v11 = [v8 sourceIdentifier];
-        [v10 setIdentifier:v11];
+        sourceIdentifier = [v8 sourceIdentifier];
+        [v10 setIdentifier:sourceIdentifier];
 
         [v10 setProperty:v8 forKey:@"CSSourceKey"];
         [v10 setProperty:&__kCFBooleanTrue forKey:@"CSPresentedFromDisambiguationControllerKey"];
@@ -115,8 +115,8 @@
     v8 = [PSSpecifier groupSpecifierWithName:v7];
 
     [v5 addObject:v8];
-    v9 = [(CSAccountsSupportingDelegationController *)self specifiersForAccountsSupportingDelegation];
-    [v5 addObjectsFromArray:v9];
+    specifiersForAccountsSupportingDelegation = [(CSAccountsSupportingDelegationController *)self specifiersForAccountsSupportingDelegation];
+    [v5 addObjectsFromArray:specifiersForAccountsSupportingDelegation];
 
     v10 = *&self->PSListController_opaque[v3];
     *&self->PSListController_opaque[v3] = v5;

@@ -1,21 +1,21 @@
 @interface PIVTokenKeychainKey
-- (PIVTokenKeychainKey)initWithCertificate:(__SecCertificate *)a3 objectID:(id)a4 certificateID:(id)a5;
+- (PIVTokenKeychainKey)initWithCertificate:(__SecCertificate *)certificate objectID:(id)d certificateID:(id)iD;
 - (unsigned)algID;
 - (unsigned)keyID;
 @end
 
 @implementation PIVTokenKeychainKey
 
-- (PIVTokenKeychainKey)initWithCertificate:(__SecCertificate *)a3 objectID:(id)a4 certificateID:(id)a5
+- (PIVTokenKeychainKey)initWithCertificate:(__SecCertificate *)certificate objectID:(id)d certificateID:(id)iD
 {
-  v9 = a5;
+  iDCopy = iD;
   v13.receiver = self;
   v13.super_class = PIVTokenKeychainKey;
-  v10 = [(PIVTokenKeychainKey *)&v13 initWithCertificate:a3 objectID:a4];
+  v10 = [(PIVTokenKeychainKey *)&v13 initWithCertificate:certificate objectID:d];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_certificateID, a5);
+    objc_storeStrong(&v10->_certificateID, iD);
   }
 
   return v11;
@@ -23,16 +23,16 @@
 
 - (unsigned)keyID
 {
-  v2 = [(PIVTokenKeychainKey *)self objectID];
-  v3 = [v2 unsignedCharValue];
+  objectID = [(PIVTokenKeychainKey *)self objectID];
+  unsignedCharValue = [objectID unsignedCharValue];
 
-  return v3;
+  return unsignedCharValue;
 }
 
 - (unsigned)algID
 {
-  v3 = [(PIVTokenKeychainKey *)self keyType];
-  v4 = [v3 isEqual:kSecAttrKeyTypeECSECPrimeRandom];
+  keyType = [(PIVTokenKeychainKey *)self keyType];
+  v4 = [keyType isEqual:kSecAttrKeyTypeECSECPrimeRandom];
 
   if (v4)
   {
@@ -44,8 +44,8 @@
 
   else
   {
-    v9 = [(PIVTokenKeychainKey *)self keyType];
-    v10 = [v9 isEqual:kSecAttrKeyTypeRSA];
+    keyType2 = [(PIVTokenKeychainKey *)self keyType];
+    v10 = [keyType2 isEqual:kSecAttrKeyTypeRSA];
 
     if (!v10)
     {
@@ -58,8 +58,8 @@
     v8 = 2048;
   }
 
-  v11 = [(PIVTokenKeychainKey *)self keySizeInBits];
-  if (v11 == v8)
+  keySizeInBits = [(PIVTokenKeychainKey *)self keySizeInBits];
+  if (keySizeInBits == v8)
   {
     v12 = v6;
   }
@@ -69,7 +69,7 @@
     v12 = 0;
   }
 
-  if (v11 == v7)
+  if (keySizeInBits == v7)
   {
     return v5;
   }

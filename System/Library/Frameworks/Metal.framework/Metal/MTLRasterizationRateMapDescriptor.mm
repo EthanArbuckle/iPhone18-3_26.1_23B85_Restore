@@ -1,24 +1,24 @@
 @interface MTLRasterizationRateMapDescriptor
-+ (MTLRasterizationRateMapDescriptor)allocWithZone:(_NSZone *)a3;
++ (MTLRasterizationRateMapDescriptor)allocWithZone:(_NSZone *)zone;
 + (MTLRasterizationRateMapDescriptor)rasterizationRateMapDescriptorWithScreenSize:(MTLSize *)screenSize layer:(MTLRasterizationRateLayerDescriptor *)layer;
 + (MTLRasterizationRateMapDescriptor)rasterizationRateMapDescriptorWithScreenSize:(MTLSize *)screenSize layerCount:(NSUInteger)layerCount layers:(MTLRasterizationRateLayerDescriptor *const *)layers;
 @end
 
 @implementation MTLRasterizationRateMapDescriptor
 
-+ (MTLRasterizationRateMapDescriptor)allocWithZone:(_NSZone *)a3
++ (MTLRasterizationRateMapDescriptor)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [MTLRasterizationRateMapDescriptorInternal allocWithZone:a3];
+    return [MTLRasterizationRateMapDescriptorInternal allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___MTLRasterizationRateMapDescriptor;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 

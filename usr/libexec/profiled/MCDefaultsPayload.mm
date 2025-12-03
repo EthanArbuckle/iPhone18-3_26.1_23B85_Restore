@@ -1,13 +1,13 @@
 @interface MCDefaultsPayload
-- (id)handlerWithProfileHandler:(id)a3;
+- (id)handlerWithProfileHandler:(id)handler;
 @end
 
 @implementation MCDefaultsPayload
 
-- (id)handlerWithProfileHandler:(id)a3
+- (id)handlerWithProfileHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [[MCNewDefaultsPayloadHandler alloc] initWithPayload:self profileHandler:v4];
+  handlerCopy = handler;
+  v5 = [[MCNewDefaultsPayloadHandler alloc] initWithPayload:self profileHandler:handlerCopy];
 
   return v5;
 }

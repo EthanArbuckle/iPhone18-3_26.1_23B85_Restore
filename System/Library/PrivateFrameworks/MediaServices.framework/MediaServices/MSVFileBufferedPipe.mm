@@ -2,8 +2,8 @@
 + (id)pipe;
 - (MSVFileBufferedPipe)init;
 - (void)_createBufferFiles;
-- (void)_inputReadyForReading:(unint64_t)a3;
-- (void)_outputReadyForWriting:(unint64_t)a3;
+- (void)_inputReadyForReading:(unint64_t)reading;
+- (void)_outputReadyForWriting:(unint64_t)writing;
 - (void)_writeBufferedData;
 @end
 
@@ -32,15 +32,15 @@
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v30 = self;
+          selfCopy5 = self;
           _os_log_impl(&dword_1AC81F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Have valid _dataPendingWrite, resuming write source", buf, 0xCu);
         }
       }
 
-      v6 = [(NSPipe *)self->_outputPipe fileHandleForWriting];
-      v7 = [v6 fileDescriptor];
+      fileHandleForWriting = [(NSPipe *)self->_outputPipe fileHandleForWriting];
+      fileDescriptor = [fileHandleForWriting fileDescriptor];
 
-      if (fcntl(v7, 3) == -1 || (v8 = write(v7, [(NSData *)self->_dataPendingWrite bytes]+ self->_dataPendingOffset, [(NSData *)self->_dataPendingWrite length]- self->_dataPendingOffset), v8 < 1))
+      if (fcntl(fileDescriptor, 3) == -1 || (v8 = write(fileDescriptor, [(NSData *)self->_dataPendingWrite bytes]+ self->_dataPendingOffset, [(NSData *)self->_dataPendingWrite length]- self->_dataPendingOffset), v8 < 1))
       {
         v11 = *__error();
         uniqueWriteErrors = self->_uniqueWriteErrors;
@@ -58,7 +58,7 @@
           {
             v17 = strerror(v11);
             *buf = v28;
-            v30 = self;
+            selfCopy5 = self;
             v31 = 2080;
             v32 = v17;
             _os_log_impl(&dword_1AC81F000, v16, OS_LOG_TYPE_ERROR, "%{public}@: write failed with err=%s, breaking out of _writeBufferedData", buf, 0x16u);
@@ -106,7 +106,7 @@ LABEL_24:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v30 = self;
+    selfCopy5 = self;
     _os_log_impl(&dword_1AC81F000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: No data left in the read file - swapping buffer file handles", buf, 0xCu);
   }
 
@@ -136,7 +136,7 @@ LABEL_24:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v30 = self;
+        selfCopy5 = self;
         _os_log_impl(&dword_1AC81F000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@: Suspending write source", buf, 0xCu);
       }
     }
@@ -149,7 +149,7 @@ LABEL_24:
     {
       writeSourceState = self->_writeSourceState;
       *buf = v28;
-      v30 = self;
+      selfCopy5 = self;
       v31 = 1024;
       LODWORD(v32) = writeSourceState;
       _os_log_impl(&dword_1AC81F000, v26, OS_LOG_TYPE_DEFAULT, "%{public}@: No valid data to write, fileHandleForReading is invalid. writerSourceState=%d", buf, 0x12u);
@@ -169,16 +169,16 @@ LABEL_25:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_inputReadyForReading:(unint64_t)a3
+- (void)_inputReadyForReading:(unint64_t)reading
 {
-  if (a3)
+  if (reading)
   {
     if (self->_dataPendingWrite)
     {
       if (self->_writeBufferFileHandle || ([(MSVFileBufferedPipe *)self _createBufferFiles], self->_writeBufferFileHandle))
       {
-        v5 = [(NSPipe *)self->_inputPipe fileHandleForReading];
-        v10 = [v5 readDataOfLength:a3];
+        fileHandleForReading = [(NSPipe *)self->_inputPipe fileHandleForReading];
+        v10 = [fileHandleForReading readDataOfLength:reading];
 
         [(NSFileHandle *)self->_writeBufferFileHandle writeData:v10];
       }
@@ -186,8 +186,8 @@ LABEL_25:
 
     else
     {
-      v7 = [(NSPipe *)self->_inputPipe fileHandleForReading];
-      v8 = [v7 readDataOfLength:a3];
+      fileHandleForReading2 = [(NSPipe *)self->_inputPipe fileHandleForReading];
+      v8 = [fileHandleForReading2 readDataOfLength:reading];
 
       dataPendingWrite = self->_dataPendingWrite;
       self->_dataPendingWrite = v8;
@@ -206,9 +206,9 @@ LABEL_25:
   }
 }
 
-- (void)_outputReadyForWriting:(unint64_t)a3
+- (void)_outputReadyForWriting:(unint64_t)writing
 {
-  if (a3)
+  if (writing)
   {
     self->_readyForData = 1;
     [(MSVFileBufferedPipe *)self _writeBufferedData];
@@ -255,7 +255,7 @@ LABEL_25:
       {
         v16 = strerror(v14);
         *buf = 138543618;
-        v22 = self;
+        selfCopy2 = self;
         v23 = 2080;
         v24 = v16;
         _os_log_impl(&dword_1AC81F000, v15, OS_LOG_TYPE_ERROR, "%{public}@: failed to create tmp file for reading. err=%s", buf, 0x16u);
@@ -276,7 +276,7 @@ LABEL_25:
     {
       v13 = strerror(v11);
       *buf = 138543618;
-      v22 = self;
+      selfCopy2 = self;
       v23 = 2080;
       v24 = v13;
       _os_log_impl(&dword_1AC81F000, v12, OS_LOG_TYPE_ERROR, "%{public}@: failed to create tmp file for writing. err=%s", buf, 0x16u);
@@ -297,37 +297,37 @@ LABEL_25:
     v4 = *(v2 + 10);
     *(v2 + 10) = v3;
 
-    v5 = [MEMORY[0x1E696AE00] pipe];
+    pipe = [MEMORY[0x1E696AE00] pipe];
     v6 = *(v2 + 3);
-    *(v2 + 3) = v5;
+    *(v2 + 3) = pipe;
 
-    v7 = [MEMORY[0x1E696AE00] pipe];
+    pipe2 = [MEMORY[0x1E696AE00] pipe];
     v8 = *(v2 + 4);
-    *(v2 + 4) = v7;
+    *(v2 + 4) = pipe2;
 
-    v9 = [*(v2 + 4) fileHandleForReading];
+    fileHandleForReading = [*(v2 + 4) fileHandleForReading];
     v10 = *(v2 + 13);
-    *(v2 + 13) = v9;
+    *(v2 + 13) = fileHandleForReading;
 
-    v11 = [*(v2 + 3) fileHandleForWriting];
+    fileHandleForWriting = [*(v2 + 3) fileHandleForWriting];
     v12 = *(v2 + 14);
-    *(v2 + 14) = v11;
+    *(v2 + 14) = fileHandleForWriting;
 
     v13 = [MEMORY[0x1E695DFA8] set];
     v14 = *(v2 + 11);
     *(v2 + 11) = v13;
 
-    v15 = [*(v2 + 4) fileHandleForWriting];
-    v16 = [v15 fileDescriptor];
+    fileHandleForWriting2 = [*(v2 + 4) fileHandleForWriting];
+    fileDescriptor = [fileHandleForWriting2 fileDescriptor];
 
-    fcntl(v16, 73, 1);
-    v17 = fcntl(v16, 3);
-    fcntl(v16, 4, v17 | 4u);
+    fcntl(fileDescriptor, 73, 1);
+    v17 = fcntl(fileDescriptor, 3);
+    fcntl(fileDescriptor, 4, v17 | 4u);
     *(v2 + 56) = 0;
     objc_initWeak(&location, v2);
-    v18 = [*(v2 + 4) fileHandleForWriting];
-    v19 = [v18 fileDescriptor];
-    v20 = dispatch_source_create(MEMORY[0x1E69E9730], v19, 0, *(v2 + 10));
+    fileHandleForWriting3 = [*(v2 + 4) fileHandleForWriting];
+    fileDescriptor2 = [fileHandleForWriting3 fileDescriptor];
+    v20 = dispatch_source_create(MEMORY[0x1E69E9730], fileDescriptor2, 0, *(v2 + 10));
 
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
@@ -347,9 +347,9 @@ LABEL_25:
     objc_storeStrong(v22 + 5, v20);
     v22[12] = 1;
     dispatch_resume(v22[5]);
-    v23 = [*(v2 + 3) fileHandleForReading];
-    v24 = [v23 fileDescriptor];
-    v25 = dispatch_source_create(MEMORY[0x1E69E96F8], v24, 0, *(v2 + 10));
+    fileHandleForReading2 = [*(v2 + 3) fileHandleForReading];
+    fileDescriptor3 = [fileHandleForReading2 fileDescriptor];
+    v25 = dispatch_source_create(MEMORY[0x1E69E96F8], fileDescriptor3, 0, *(v2 + 10));
 
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;

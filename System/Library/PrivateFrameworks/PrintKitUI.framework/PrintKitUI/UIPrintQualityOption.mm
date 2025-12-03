@@ -1,26 +1,26 @@
 @interface UIPrintQualityOption
 - (BOOL)shouldShow;
-- (UIPrintQualityOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4;
+- (UIPrintQualityOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller;
 - (id)createPrintOptionTableViewCell;
 - (id)printQualities;
 - (id)summaryString;
-- (void)changeQuality:(int64_t)a3;
+- (void)changeQuality:(int64_t)quality;
 - (void)currentPrinterChanged;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)updateFromPrintInfo;
 @end
 
 @implementation UIPrintQualityOption
 
-- (UIPrintQualityOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4
+- (UIPrintQualityOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller
 {
   v38[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  controllerCopy = controller;
   v37.receiver = self;
   v37.super_class = UIPrintQualityOption;
-  v8 = [(UIPrintOption *)&v37 initWithPrintInfo:v6 printPanelViewController:v7];
+  v8 = [(UIPrintOption *)&v37 initWithPrintInfo:infoCopy printPanelViewController:controllerCopy];
   if (v8)
   {
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -61,20 +61,20 @@
     v22 = [v19 actionWithTitle:v21 image:0 identifier:0 handler:v30];
     [(UIPrintQualityOption *)v8 setBestQualityAction:v22];
 
-    v23 = [(UIPrintQualityOption *)v8 draftQualityAction];
-    v38[0] = v23;
-    v24 = [(UIPrintQualityOption *)v8 normalQualityAction];
-    v38[1] = v24;
-    v25 = [(UIPrintQualityOption *)v8 bestQualityAction];
-    v38[2] = v25;
+    draftQualityAction = [(UIPrintQualityOption *)v8 draftQualityAction];
+    v38[0] = draftQualityAction;
+    normalQualityAction = [(UIPrintQualityOption *)v8 normalQualityAction];
+    v38[1] = normalQualityAction;
+    bestQualityAction = [(UIPrintQualityOption *)v8 bestQualityAction];
+    v38[2] = bestQualityAction;
     v26 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:3];
     [(UIPrintQualityOption *)v8 setQualityActions:v26];
 
-    v27 = [(UIPrintOption *)v8 printInfo];
-    [v27 addObserver:v8 forKeyPath:0x2871AF270 options:0 context:0];
+    printInfo = [(UIPrintOption *)v8 printInfo];
+    [printInfo addObserver:v8 forKeyPath:0x2871AF270 options:0 context:0];
 
-    v28 = [(UIPrintOption *)v8 printInfo];
-    [v28 addObserver:v8 forKeyPath:0x2871AF150 options:0 context:0];
+    printInfo2 = [(UIPrintOption *)v8 printInfo];
+    [printInfo2 addObserver:v8 forKeyPath:0x2871AF150 options:0 context:0];
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(&v33);
@@ -105,27 +105,27 @@ void __67__UIPrintQualityOption_initWithPrintInfo_printPanelViewController___blo
 
 - (void)dealloc
 {
-  v3 = [(UIPrintOption *)self printInfo];
-  [v3 removeObserver:self forKeyPath:0x2871AF270];
+  printInfo = [(UIPrintOption *)self printInfo];
+  [printInfo removeObserver:self forKeyPath:0x2871AF270];
 
-  v4 = [(UIPrintOption *)self printInfo];
-  [v4 removeObserver:self forKeyPath:0x2871AF150];
+  printInfo2 = [(UIPrintOption *)self printInfo];
+  [printInfo2 removeObserver:self forKeyPath:0x2871AF150];
 
   v5.receiver = self;
   v5.super_class = UIPrintQualityOption;
   [(UIPrintQualityOption *)&v5 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
+  pathCopy = path;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __71__UIPrintQualityOption_observeValueForKeyPath_ofObject_change_context___block_invoke;
   v9[3] = &unk_279A9BF78;
-  v10 = v7;
-  v11 = self;
-  v8 = v7;
+  v10 = pathCopy;
+  selfCopy = self;
+  v8 = pathCopy;
   dispatch_async(MEMORY[0x277D85CD0], v9);
 }
 
@@ -150,17 +150,17 @@ uint64_t __71__UIPrintQualityOption_observeValueForKeyPath_ofObject_change_conte
 {
   if (!self->_qualities)
   {
-    v3 = [(UIPrintOption *)self printInfo];
-    v4 = [v3 currentPrinter];
-    v5 = [v4 printerInfoDict];
+    printInfo = [(UIPrintOption *)self printInfo];
+    currentPrinter = [printInfo currentPrinter];
+    printerInfoDict = [currentPrinter printerInfoDict];
 
-    if (v5)
+    if (printerInfoDict)
     {
-      v6 = [(UIPrintOption *)self printInfo];
-      v7 = [v6 currentPrinter];
-      v8 = [v7 supportedQualities];
+      printInfo2 = [(UIPrintOption *)self printInfo];
+      currentPrinter2 = [printInfo2 currentPrinter];
+      supportedQualities = [currentPrinter2 supportedQualities];
       qualities = self->_qualities;
-      self->_qualities = v8;
+      self->_qualities = supportedQualities;
     }
   }
 
@@ -178,27 +178,27 @@ uint64_t __71__UIPrintQualityOption_observeValueForKeyPath_ofObject_change_conte
 
 - (BOOL)shouldShow
 {
-  v2 = [(UIPrintQualityOption *)self printQualities];
-  v3 = [v2 count] > 1;
+  printQualities = [(UIPrintQualityOption *)self printQualities];
+  v3 = [printQualities count] > 1;
 
   return v3;
 }
 
-- (void)changeQuality:(int64_t)a3
+- (void)changeQuality:(int64_t)quality
 {
-  v4 = [(UIPrintOption *)self printInfo];
-  [v4 setQuality:a3];
+  printInfo = [(UIPrintOption *)self printInfo];
+  [printInfo setQuality:quality];
 }
 
 - (id)createPrintOptionTableViewCell
 {
-  v3 = [(UIPrintOption *)self printPanelViewController];
-  v4 = [v3 printOptionsTableView];
-  v5 = [v4 dequeueReusableCellWithIdentifier:@"UIPrintOptionPopupCell"];
+  printPanelViewController = [(UIPrintOption *)self printPanelViewController];
+  printOptionsTableView = [printPanelViewController printOptionsTableView];
+  v5 = [printOptionsTableView dequeueReusableCellWithIdentifier:@"UIPrintOptionPopupCell"];
 
-  v6 = [(UIPrintOption *)self title];
-  v7 = [v5 textLabel];
-  [v7 setText:v6];
+  title = [(UIPrintOption *)self title];
+  textLabel = [v5 textLabel];
+  [textLabel setText:title];
 
   [v5 setSelectionStyle:0];
   [(UIPrintOption *)self setTableViewCell:v5];
@@ -210,57 +210,57 @@ uint64_t __71__UIPrintQualityOption_observeValueForKeyPath_ofObject_change_conte
 - (void)updateFromPrintInfo
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v3 = [(UIPrintQualityOption *)self summaryString];
-  [(UIPrintOption *)self setSummary:v3];
+  summaryString = [(UIPrintQualityOption *)self summaryString];
+  [(UIPrintOption *)self setSummary:summaryString];
 
-  v4 = [(UIPrintOption *)self printInfo];
-  v5 = [v4 quality];
+  printInfo = [(UIPrintOption *)self printInfo];
+  quality = [printInfo quality];
 
-  switch(v5)
+  switch(quality)
   {
     case 5:
-      v6 = [(UIPrintQualityOption *)self bestQualityAction];
+      bestQualityAction = [(UIPrintQualityOption *)self bestQualityAction];
       goto LABEL_7;
     case 4:
-      v6 = [(UIPrintQualityOption *)self normalQualityAction];
+      bestQualityAction = [(UIPrintQualityOption *)self normalQualityAction];
       goto LABEL_7;
     case 3:
-      v6 = [(UIPrintQualityOption *)self draftQualityAction];
+      bestQualityAction = [(UIPrintQualityOption *)self draftQualityAction];
 LABEL_7:
-      v7 = v6;
+      v7 = bestQualityAction;
       goto LABEL_9;
   }
 
   v7 = 0;
 LABEL_9:
-  v8 = [(UIPrintQualityOption *)self draftQualityAction];
-  v9 = [(UIPrintQualityOption *)self draftQualityAction];
-  [v9 setState:v7 == v8];
+  draftQualityAction = [(UIPrintQualityOption *)self draftQualityAction];
+  draftQualityAction2 = [(UIPrintQualityOption *)self draftQualityAction];
+  [draftQualityAction2 setState:v7 == draftQualityAction];
 
-  v10 = [(UIPrintQualityOption *)self normalQualityAction];
-  v11 = [(UIPrintQualityOption *)self normalQualityAction];
-  [v11 setState:v7 == v10];
+  normalQualityAction = [(UIPrintQualityOption *)self normalQualityAction];
+  normalQualityAction2 = [(UIPrintQualityOption *)self normalQualityAction];
+  [normalQualityAction2 setState:v7 == normalQualityAction];
 
-  v12 = [(UIPrintQualityOption *)self bestQualityAction];
-  v13 = [(UIPrintQualityOption *)self bestQualityAction];
-  [v13 setState:v7 == v12];
+  bestQualityAction2 = [(UIPrintQualityOption *)self bestQualityAction];
+  bestQualityAction3 = [(UIPrintQualityOption *)self bestQualityAction];
+  [bestQualityAction3 setState:v7 == bestQualityAction2];
 
-  v14 = [(UIPrintOption *)self tableViewCell];
-  if (v14)
+  tableViewCell = [(UIPrintOption *)self tableViewCell];
+  if (tableViewCell)
   {
-    v15 = [(UIPrintQualityOption *)self qualityActions];
-    v17[0] = v15;
+    qualityActions = [(UIPrintQualityOption *)self qualityActions];
+    v17[0] = qualityActions;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
-    [v14 setPopupActions:v16];
+    [tableViewCell setPopupActions:v16];
   }
 }
 
 - (id)summaryString
 {
-  v3 = [(UIPrintOption *)self printInfo];
-  v4 = [v3 quality];
+  printInfo = [(UIPrintOption *)self printInfo];
+  quality = [printInfo quality];
 
-  if (v4 == 3)
+  if (quality == 3)
   {
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = v5;
@@ -269,12 +269,12 @@ LABEL_9:
 
   else
   {
-    v8 = [(UIPrintOption *)self printInfo];
-    v9 = [v8 quality];
+    printInfo2 = [(UIPrintOption *)self printInfo];
+    quality2 = [printInfo2 quality];
 
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v6 = v5;
-    if (v9 == 5)
+    if (quality2 == 5)
     {
       v7 = @"Best";
     }

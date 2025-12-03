@@ -1,23 +1,23 @@
 @interface SFUnifiedBarContentArrangement
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)allContentViews;
-- (SFUnifiedBarContentArrangement)initWithInlineContentView:(id)a3 standaloneContentViews:(id)a4;
+- (SFUnifiedBarContentArrangement)initWithInlineContentView:(id)view standaloneContentViews:(id)views;
 @end
 
 @implementation SFUnifiedBarContentArrangement
 
-- (SFUnifiedBarContentArrangement)initWithInlineContentView:(id)a3 standaloneContentViews:(id)a4
+- (SFUnifiedBarContentArrangement)initWithInlineContentView:(id)view standaloneContentViews:(id)views
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  viewsCopy = views;
   v15.receiver = self;
   v15.super_class = SFUnifiedBarContentArrangement;
   v9 = [(SFUnifiedBarContentArrangement *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_inlineContentView, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_inlineContentView, view);
+    v11 = [viewsCopy copy];
     standaloneContentViews = v10->_standaloneContentViews;
     v10->_standaloneContentViews = v11;
 
@@ -27,10 +27,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -38,7 +38,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_inlineContentView == v4->_inlineContentView && [(NSArray *)self->_standaloneContentViews isEqualToArray:v4->_standaloneContentViews];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_inlineContentView == equalCopy->_inlineContentView && [(NSArray *)self->_standaloneContentViews isEqualToArray:equalCopy->_standaloneContentViews];
   }
 
   return v5;
@@ -46,10 +46,10 @@
 
 - (NSArray)allContentViews
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safari_addObjectUnlessNil:self->_inlineContentView];
-  [v3 addObjectsFromArray:self->_standaloneContentViews];
-  v4 = [v3 copy];
+  array = [MEMORY[0x1E695DF70] array];
+  [array safari_addObjectUnlessNil:self->_inlineContentView];
+  [array addObjectsFromArray:self->_standaloneContentViews];
+  v4 = [array copy];
 
   return v4;
 }

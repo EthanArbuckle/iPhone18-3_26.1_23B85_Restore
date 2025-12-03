@@ -1,13 +1,13 @@
 @interface CalDAVUpdateOwnerItem
 - (id)copyParseRules;
 - (id)description;
-- (void)setAddressItem:(id)a3;
-- (void)setDisplayNameItem:(id)a3;
-- (void)setDtstampItem:(id)a3;
-- (void)setEmailAddressItem:(id)a3;
-- (void)setFirstNameItem:(id)a3;
-- (void)setLastNameItem:(id)a3;
-- (void)setPhoneNumberItem:(id)a3;
+- (void)setAddressItem:(id)item;
+- (void)setDisplayNameItem:(id)item;
+- (void)setDtstampItem:(id)item;
+- (void)setEmailAddressItem:(id)item;
+- (void)setFirstNameItem:(id)item;
+- (void)setLastNameItem:(id)item;
+- (void)setPhoneNumberItem:(id)item;
 @end
 
 @implementation CalDAVUpdateOwnerItem
@@ -16,37 +16,37 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CalDAVUpdateOwnerItem *)self firstName];
-  v6 = [(CalDAVUpdateOwnerItem *)self lastName];
-  v7 = [(CalDAVUpdateOwnerItem *)self displayName];
-  v8 = [(CalDAVUpdateOwnerItem *)self address];
-  v9 = v8;
-  if (v8)
+  firstName = [(CalDAVUpdateOwnerItem *)self firstName];
+  lastName = [(CalDAVUpdateOwnerItem *)self lastName];
+  displayName = [(CalDAVUpdateOwnerItem *)self displayName];
+  address = [(CalDAVUpdateOwnerItem *)self address];
+  v9 = address;
+  if (address)
   {
     v10 = 0;
-    v11 = v8;
+    phoneNumber = address;
   }
 
   else
   {
-    v12 = [(CalDAVUpdateOwnerItem *)self emailAddress];
-    if (v12)
+    emailAddress = [(CalDAVUpdateOwnerItem *)self emailAddress];
+    if (emailAddress)
     {
       v10 = 0;
-      v16 = v12;
-      v11 = v12;
+      v16 = emailAddress;
+      phoneNumber = emailAddress;
     }
 
     else
     {
-      v11 = [(CalDAVUpdateOwnerItem *)self phoneNumber];
+      phoneNumber = [(CalDAVUpdateOwnerItem *)self phoneNumber];
       v16 = 0;
       v10 = 1;
     }
   }
 
-  v13 = [(CalDAVUpdateOwnerItem *)self dtstamp];
-  v14 = [v3 stringWithFormat:@"[<%@ %p> %@ %@ %@ %@ %@]", v4, self, v5, v6, v7, v11, v13];
+  dtstamp = [(CalDAVUpdateOwnerItem *)self dtstamp];
+  v14 = [v3 stringWithFormat:@"[<%@ %p> %@ %@ %@ %@ %@]", v4, self, firstName, lastName, displayName, phoneNumber, dtstamp];
 
   if (v10)
   {
@@ -59,48 +59,48 @@
   return v14;
 }
 
-- (void)setAddressItem:(id)a3
+- (void)setAddressItem:(id)item
 {
-  v4 = [a3 payloadAsFullURL];
-  [(CalDAVUpdateOwnerItem *)self setAddress:v4];
+  payloadAsFullURL = [item payloadAsFullURL];
+  [(CalDAVUpdateOwnerItem *)self setAddress:payloadAsFullURL];
 }
 
-- (void)setEmailAddressItem:(id)a3
+- (void)setEmailAddressItem:(id)item
 {
-  v4 = [a3 payloadAsString];
-  [(CalDAVUpdateOwnerItem *)self setEmailAddress:v4];
+  payloadAsString = [item payloadAsString];
+  [(CalDAVUpdateOwnerItem *)self setEmailAddress:payloadAsString];
 }
 
-- (void)setDisplayNameItem:(id)a3
+- (void)setDisplayNameItem:(id)item
 {
-  v4 = [a3 payloadAsString];
-  [(CalDAVUpdateOwnerItem *)self setDisplayName:v4];
+  payloadAsString = [item payloadAsString];
+  [(CalDAVUpdateOwnerItem *)self setDisplayName:payloadAsString];
 }
 
-- (void)setFirstNameItem:(id)a3
+- (void)setFirstNameItem:(id)item
 {
-  v4 = [a3 payloadAsString];
-  [(CalDAVUpdateOwnerItem *)self setFirstName:v4];
+  payloadAsString = [item payloadAsString];
+  [(CalDAVUpdateOwnerItem *)self setFirstName:payloadAsString];
 }
 
-- (void)setLastNameItem:(id)a3
+- (void)setLastNameItem:(id)item
 {
-  v4 = [a3 payloadAsString];
-  [(CalDAVUpdateOwnerItem *)self setLastName:v4];
+  payloadAsString = [item payloadAsString];
+  [(CalDAVUpdateOwnerItem *)self setLastName:payloadAsString];
 }
 
-- (void)setDtstampItem:(id)a3
+- (void)setDtstampItem:(id)item
 {
   v4 = MEMORY[0x277D7F100];
-  v6 = [a3 payloadAsString];
-  v5 = [v4 dateFromICSString:v6];
+  payloadAsString = [item payloadAsString];
+  v5 = [v4 dateFromICSString:payloadAsString];
   [(CalDAVUpdateOwnerItem *)self setDtstamp:v5];
 }
 
-- (void)setPhoneNumberItem:(id)a3
+- (void)setPhoneNumberItem:(id)item
 {
-  v4 = [a3 payloadAsString];
-  [(CalDAVUpdateOwnerItem *)self setPhoneNumber:v4];
+  payloadAsString = [item payloadAsString];
+  [(CalDAVUpdateOwnerItem *)self setPhoneNumber:payloadAsString];
 }
 
 - (id)copyParseRules

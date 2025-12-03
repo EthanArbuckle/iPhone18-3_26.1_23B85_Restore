@@ -1,29 +1,29 @@
 @interface CLKComplicationTemplateGraphicRectangularMetadata
-+ (id)templateWithMetadata:(id)a3;
-- (CLKComplicationTemplateGraphicRectangularMetadata)initWithMetadata:(id)a3;
++ (id)templateWithMetadata:(id)metadata;
+- (CLKComplicationTemplateGraphicRectangularMetadata)initWithMetadata:(id)metadata;
 @end
 
 @implementation CLKComplicationTemplateGraphicRectangularMetadata
 
-- (CLKComplicationTemplateGraphicRectangularMetadata)initWithMetadata:(id)a3
+- (CLKComplicationTemplateGraphicRectangularMetadata)initWithMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v8.receiver = self;
   v8.super_class = CLKComplicationTemplateGraphicRectangularMetadata;
-  v5 = [(CLKComplicationTemplate *)&v8 initPrivate];
-  v6 = v5;
-  if (v5)
+  initPrivate = [(CLKComplicationTemplate *)&v8 initPrivate];
+  v6 = initPrivate;
+  if (initPrivate)
   {
-    [(CLKComplicationTemplate *)v5 setMetadata:v4];
+    [(CLKComplicationTemplate *)initPrivate setMetadata:metadataCopy];
   }
 
   return v6;
 }
 
-+ (id)templateWithMetadata:(id)a3
++ (id)templateWithMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithMetadata:v4];
+  metadataCopy = metadata;
+  v5 = [[self alloc] initWithMetadata:metadataCopy];
 
   return v5;
 }

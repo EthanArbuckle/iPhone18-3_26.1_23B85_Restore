@@ -1,18 +1,18 @@
 @interface PKSpotlightDocumentDonationHandler
-+ (id)extractAttributes:(id)a3;
-+ (id)processorForPass:(id)a3;
++ (id)extractAttributes:(id)attributes;
++ (id)processorForPass:(id)pass;
 @end
 
 @implementation PKSpotlightDocumentDonationHandler
 
-+ (id)extractAttributes:(id)a3
++ (id)extractAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [a1 processorForPass:v4];
+  attributesCopy = attributes;
+  v5 = [self processorForPass:attributesCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 processDocument:v4];
+    v7 = [v5 processDocument:attributesCopy];
   }
 
   else
@@ -23,23 +23,23 @@
   return v7;
 }
 
-+ (id)processorForPass:(id)a3
++ (id)processorForPass:(id)pass
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  passCopy = pass;
+  v4 = passCopy;
+  if (!passCopy)
   {
     goto LABEL_5;
   }
 
-  v5 = [v3 style];
-  if (v5 == 4)
+  style = [passCopy style];
+  if (style == 4)
   {
     v6 = off_1E79C1A80;
     goto LABEL_7;
   }
 
-  if (v5 != 6)
+  if (style != 6)
   {
 LABEL_5:
     v7 = 0;

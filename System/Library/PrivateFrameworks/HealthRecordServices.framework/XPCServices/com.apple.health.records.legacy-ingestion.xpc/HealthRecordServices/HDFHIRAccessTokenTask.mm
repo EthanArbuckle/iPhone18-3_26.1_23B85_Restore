@@ -1,27 +1,27 @@
 @interface HDFHIRAccessTokenTask
-- (HDFHIRAccessTokenTask)initWithTokenSession:(id)a3 FHIRSession:(id)a4 completion:(id)a5;
-- (id)errorForRequest:(id)a3 response:(id)a4 data:(id)a5;
-- (void)createURLRequestWithCompletion:(id)a3;
-- (void)handleError:(id)a3 endState:(id)a4;
-- (void)handleResponse:(id)a3 JSONData:(id)a4 endState:(id)a5;
+- (HDFHIRAccessTokenTask)initWithTokenSession:(id)session FHIRSession:(id)rSession completion:(id)completion;
+- (id)errorForRequest:(id)request response:(id)response data:(id)data;
+- (void)createURLRequestWithCompletion:(id)completion;
+- (void)handleError:(id)error endState:(id)state;
+- (void)handleResponse:(id)response JSONData:(id)data endState:(id)state;
 @end
 
 @implementation HDFHIRAccessTokenTask
 
-- (HDFHIRAccessTokenTask)initWithTokenSession:(id)a3 FHIRSession:(id)a4 completion:(id)a5
+- (HDFHIRAccessTokenTask)initWithTokenSession:(id)session FHIRSession:(id)rSession completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  sessionCopy = session;
+  completionCopy = completion;
   v16.receiver = self;
   v16.super_class = HDFHIRAccessTokenTask;
-  v10 = [(HDFHIRRequestTask *)&v16 initWithSession:a4];
+  v10 = [(HDFHIRRequestTask *)&v16 initWithSession:rSession];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [sessionCopy copy];
     tokenSession = v10->_tokenSession;
     v10->_tokenSession = v11;
 
-    v13 = [v9 copy];
+    v13 = [completionCopy copy];
     completionHandler = v10->_completionHandler;
     v10->_completionHandler = v13;
   }
@@ -29,29 +29,29 @@
   return v10;
 }
 
-- (void)createURLRequestWithCompletion:(id)a3
+- (void)createURLRequestWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDFHIRRequestTask *)self session];
-  v6 = [v5 specification];
+  completionCopy = completion;
+  session = [(HDFHIRRequestTask *)self session];
+  specification = [session specification];
 
-  v7 = [v6 authorizationSchemaForType:1];
+  v7 = [specification authorizationSchemaForType:1];
   if (v7)
   {
     v31[0] = HKFHIREndpointSchemaVariableCode;
-    v28 = v4;
-    v27 = [(HKOAuth2TokenSession *)self->_tokenSession code];
-    v32[0] = v27;
+    v28 = completionCopy;
+    code = [(HKOAuth2TokenSession *)self->_tokenSession code];
+    v32[0] = code;
     v31[1] = HKFHIREndpointSchemaVariableState;
-    v26 = [(HKOAuth2TokenSession *)self->_tokenSession state];
-    v25 = [v26 UUIDString];
-    v32[1] = v25;
+    state = [(HKOAuth2TokenSession *)self->_tokenSession state];
+    uUIDString = [state UUIDString];
+    v32[1] = uUIDString;
     v31[2] = HKFHIREndpointSchemaVariablePKCEVerifier;
-    v8 = [(HKOAuth2TokenSession *)self->_tokenSession pkceVerifier];
-    v9 = v8;
-    if (v8)
+    pkceVerifier = [(HKOAuth2TokenSession *)self->_tokenSession pkceVerifier];
+    v9 = pkceVerifier;
+    if (pkceVerifier)
     {
-      v10 = v8;
+      v10 = pkceVerifier;
     }
 
     else
@@ -61,13 +61,13 @@
 
     v32[2] = v10;
     v31[3] = HKFHIREndpointSchemaVariableClientID;
-    v24 = [v6 connection];
-    v11 = [v24 authentication];
-    v12 = [v11 clientID];
-    v13 = v12;
-    if (v12)
+    connection = [specification connection];
+    authentication = [connection authentication];
+    clientID = [authentication clientID];
+    v13 = clientID;
+    if (clientID)
     {
-      v14 = v12;
+      v14 = clientID;
     }
 
     else
@@ -77,13 +77,13 @@
 
     v32[3] = v14;
     v31[4] = HKFHIREndpointSchemaVariableClientSecret;
-    v15 = [v6 connection];
-    v16 = [v15 authentication];
-    v17 = [v16 clientSecret];
-    v18 = v17;
-    if (v17)
+    connection2 = [specification connection];
+    authentication2 = [connection2 authentication];
+    clientSecret = [authentication2 clientSecret];
+    v18 = clientSecret;
+    if (clientSecret)
     {
-      v19 = v17;
+      v19 = clientSecret;
     }
 
     else
@@ -104,18 +104,18 @@
 
   else
   {
-    v23 = [NSError hk_error:100 format:@"Unable to fetch access token schema from specification %@", v6];
-    (*(v4 + 2))(v4, 0, v23);
+    v23 = [NSError hk_error:100 format:@"Unable to fetch access token schema from specification %@", specification];
+    (*(completionCopy + 2))(completionCopy, 0, v23);
   }
 }
 
-- (void)handleResponse:(id)a3 JSONData:(id)a4 endState:(id)a5
+- (void)handleResponse:(id)response JSONData:(id)data endState:(id)state
 {
-  if (a4)
+  if (data)
   {
     v22 = 0;
-    v8 = a5;
-    v9 = [NSJSONSerialization JSONObjectWithData:a4 options:0 error:&v22];
+    stateCopy = state;
+    v9 = [NSJSONSerialization JSONObjectWithData:data options:0 error:&v22];
     v10 = v22;
     if (v9)
     {
@@ -126,14 +126,14 @@
 
       if (v11)
       {
-        v13 = [(HDFHIRRequestTask *)self session];
-        v14 = [v13 specification];
-        v15 = [v14 connection];
-        v16 = [v15 gateway];
-        v17 = [v16 baseURL];
+        session = [(HDFHIRRequestTask *)self session];
+        specification = [session specification];
+        connection = [specification connection];
+        gateway = [connection gateway];
+        baseURL = [gateway baseURL];
 
         v21[0] = v12;
-        v18 = [HDFHIRAuthResponse authResponseFromServerResponseDictionary:v11 baseURL:v17 previousCredential:0 error:v21];
+        v18 = [HDFHIRAuthResponse authResponseFromServerResponseDictionary:v11 baseURL:baseURL previousCredential:0 error:v21];
         v10 = v21[0];
       }
 
@@ -152,40 +152,40 @@
 
   else
   {
-    v19 = a5;
+    stateCopy2 = state;
     v10 = [NSError hk_error:3 description:@"nil JSON data"];
     v18 = 0;
   }
 
-  v20 = [(HDFHIRAccessTokenTask *)self completionHandler];
-  (v20)[2](v20, v18, a5, v10);
+  completionHandler = [(HDFHIRAccessTokenTask *)self completionHandler];
+  (completionHandler)[2](completionHandler, v18, state, v10);
 }
 
-- (void)handleError:(id)a3 endState:(id)a4
+- (void)handleError:(id)error endState:(id)state
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  errorCopy = error;
+  stateCopy = state;
+  if (!errorCopy)
   {
     sub_10000C748(a2, self);
   }
 
-  v12 = v7;
+  v12 = errorCopy;
   v9 = [NSArray arrayWithObjects:&v12 count:1];
   v10 = [NSError hrs_accumulatedErrorWithAuthorizationFailures:v9 resourceFetchFailures:0 otherErrors:0];
 
-  v11 = [(HDFHIRAccessTokenTask *)self completionHandler];
-  (v11)[2](v11, 0, v8, v10);
+  completionHandler = [(HDFHIRAccessTokenTask *)self completionHandler];
+  (completionHandler)[2](completionHandler, 0, stateCopy, v10);
 }
 
-- (id)errorForRequest:(id)a3 response:(id)a4 data:(id)a5
+- (id)errorForRequest:(id)request response:(id)response data:(id)data
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(HDFHIRRequestTask *)self session];
-  v12 = [v11 specification];
-  v13 = [v12 errorForAuthorizationRequest:v10 response:v9 data:v8];
+  dataCopy = data;
+  responseCopy = response;
+  requestCopy = request;
+  session = [(HDFHIRRequestTask *)self session];
+  specification = [session specification];
+  v13 = [specification errorForAuthorizationRequest:requestCopy response:responseCopy data:dataCopy];
 
   return v13;
 }

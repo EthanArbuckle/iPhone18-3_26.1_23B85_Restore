@@ -1,48 +1,48 @@
 @interface WFDetectedDate
-- (WFDetectedDate)initWithCoder:(id)a3;
-- (WFDetectedDate)initWithDate:(id)a3 timeIsSignificant:(BOOL)a4;
-- (WFDetectedDate)initWithDateCheckingResult:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFDetectedDate)initWithCoder:(id)coder;
+- (WFDetectedDate)initWithDate:(id)date timeIsSignificant:(BOOL)significant;
+- (WFDetectedDate)initWithDateCheckingResult:(id)result;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFDetectedDate
 
-- (WFDetectedDate)initWithCoder:(id)a3
+- (WFDetectedDate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
-  v6 = [v4 decodeBoolForKey:@"timeIsSignificant"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  v6 = [coderCopy decodeBoolForKey:@"timeIsSignificant"];
 
   v7 = [(WFDetectedDate *)self initWithDate:v5 timeIsSignificant:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(WFDetectedDate *)self date];
-  [v5 encodeObject:v4 forKey:@"date"];
+  coderCopy = coder;
+  date = [(WFDetectedDate *)self date];
+  [coderCopy encodeObject:date forKey:@"date"];
 
-  [v5 encodeBool:-[WFDetectedDate timeIsSignificant](self forKey:{"timeIsSignificant"), @"timeIsSignificant"}];
+  [coderCopy encodeBool:-[WFDetectedDate timeIsSignificant](self forKey:{"timeIsSignificant"), @"timeIsSignificant"}];
 }
 
-- (WFDetectedDate)initWithDateCheckingResult:(id)a3
+- (WFDetectedDate)initWithDateCheckingResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 date];
-  v6 = [v4 timeIsSignificant];
+  resultCopy = result;
+  date = [resultCopy date];
+  timeIsSignificant = [resultCopy timeIsSignificant];
 
-  v7 = [(WFDetectedDate *)self initWithDate:v5 timeIsSignificant:v6];
+  v7 = [(WFDetectedDate *)self initWithDate:date timeIsSignificant:timeIsSignificant];
   return v7;
 }
 
-- (WFDetectedDate)initWithDate:(id)a3 timeIsSignificant:(BOOL)a4
+- (WFDetectedDate)initWithDate:(id)date timeIsSignificant:(BOOL)significant
 {
-  v8 = a3;
-  if (!v8)
+  dateCopy = date;
+  if (!dateCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFDateDetector.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"date"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDateDetector.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"date"}];
   }
 
   v14.receiver = self;
@@ -51,8 +51,8 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_date, a3);
-    v10->_timeIsSignificant = a4;
+    objc_storeStrong(&v9->_date, date);
+    v10->_timeIsSignificant = significant;
     v11 = v10;
   }
 

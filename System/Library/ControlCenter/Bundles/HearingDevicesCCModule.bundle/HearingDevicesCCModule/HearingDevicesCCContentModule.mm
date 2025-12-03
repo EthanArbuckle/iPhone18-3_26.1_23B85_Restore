@@ -1,10 +1,10 @@
 @interface HearingDevicesCCContentModule
-- (id)contentViewControllerForContext:(id)a3;
+- (id)contentViewControllerForContext:(id)context;
 @end
 
 @implementation HearingDevicesCCContentModule
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
   moduleViewController = self->_moduleViewController;
   if (!moduleViewController)
@@ -16,7 +16,7 @@
     moduleViewController = self->_moduleViewController;
   }
 
-  v8 = objc_msgSend_contentModuleContext(self, a2, a3, v3);
+  v8 = objc_msgSend_contentModuleContext(self, a2, context, v3);
   objc_msgSend_setContentModuleContext_(moduleViewController, v9, v8, v10);
 
   v11 = self->_moduleViewController;

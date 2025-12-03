@@ -1,28 +1,28 @@
 @interface THWScrollableCanvasControlRep
-- (THWScrollableCanvasControlRep)initWithLayout:(id)a3 canvas:(id)a4;
-- (void)addChildViewsToArray:(id)a3;
+- (THWScrollableCanvasControlRep)initWithLayout:(id)layout canvas:(id)canvas;
+- (void)addChildViewsToArray:(id)array;
 - (void)canvasDidBeginFreeTransform;
 - (void)dealloc;
-- (void)didAddChildView:(id)a3;
+- (void)didAddChildView:(id)view;
 - (void)updateFromLayout;
 - (void)viewScrollingEnded;
 - (void)willBeRemoved;
-- (void)willRemoveChildView:(id)a3;
+- (void)willRemoveChildView:(id)view;
 @end
 
 @implementation THWScrollableCanvasControlRep
 
-- (THWScrollableCanvasControlRep)initWithLayout:(id)a3 canvas:(id)a4
+- (THWScrollableCanvasControlRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v23.receiver = self;
   v23.super_class = THWScrollableCanvasControlRep;
   v6 = [THWScrollableCanvasControlRep initWithLayout:"initWithLayout:canvas:" canvas:?];
   if (v6)
   {
-    v6->_scrollableCanvasController = -[THWScrollableCanvasController initWithDocumentRoot:]([THWScrollableCanvasController alloc], "initWithDocumentRoot:", [a4 documentRoot]);
-    v7 = [(THWScrollableCanvasControlRep *)v6 canvas];
-    [a3 frameInRoot];
-    [v7 convertUnscaledToBoundsRect:?];
+    v6->_scrollableCanvasController = -[THWScrollableCanvasController initWithDocumentRoot:]([THWScrollableCanvasController alloc], "initWithDocumentRoot:", [canvas documentRoot]);
+    canvas = [(THWScrollableCanvasControlRep *)v6 canvas];
+    [layout frameInRoot];
+    [canvas convertUnscaledToBoundsRect:?];
     scrollableCanvasController = v6->_scrollableCanvasController;
     [-[THWScrollableCanvasControlRep canvas](v6 "canvas")];
     v14 = v13;
@@ -59,17 +59,17 @@
   [(THWScrollableCanvasController *)scrollableCanvasController setFrame:v8 scale:v10, v12, v14, v16];
 }
 
-- (void)addChildViewsToArray:(id)a3
+- (void)addChildViewsToArray:(id)array
 {
   if (!+[NSThread isMainThread])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = [(THWScrollableCanvasControlRep *)self layout];
-  v6 = [(THWScrollableCanvasControlRep *)self canvas];
-  [v5 frameInRoot];
-  [v6 convertUnscaledToBoundsRect:?];
+  layout = [(THWScrollableCanvasControlRep *)self layout];
+  canvas = [(THWScrollableCanvasControlRep *)self canvas];
+  [layout frameInRoot];
+  [canvas convertUnscaledToBoundsRect:?];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -77,11 +77,11 @@
   scrollableCanvasController = self->_scrollableCanvasController;
   [-[THWScrollableCanvasControlRep canvas](self "canvas")];
   [(THWScrollableCanvasController *)scrollableCanvasController createViewIfNeededWithFrame:v8 viewScale:v10, v12, v14, v16];
-  v17 = [(THWScrollableCanvasController *)self->_scrollableCanvasController mainView];
-  if (v17)
+  mainView = [(THWScrollableCanvasController *)self->_scrollableCanvasController mainView];
+  if (mainView)
   {
 
-    [a3 addObject:v17];
+    [array addObject:mainView];
   }
 }
 
@@ -95,19 +95,19 @@
   [(THWScrollableCanvasController *)self->_scrollableCanvasController setDelegate:0];
 }
 
-- (void)willRemoveChildView:(id)a3
+- (void)willRemoveChildView:(id)view
 {
   if (!+[NSThread isMainThread])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (a3)
+  if (view)
   {
     scrollableCanvasController = self->_scrollableCanvasController;
     if (scrollableCanvasController)
     {
-      if ([(THWScrollableCanvasController *)scrollableCanvasController mainView]== a3)
+      if ([(THWScrollableCanvasController *)scrollableCanvasController mainView]== view)
       {
         [NSObject cancelPreviousPerformRequestsWithTarget:[(THWScrollableCanvasController *)self->_scrollableCanvasController scrollView] selector:"flashScrollIndicators" object:0];
         v6 = self->_scrollableCanvasController;
@@ -118,14 +118,14 @@
   }
 }
 
-- (void)didAddChildView:(id)a3
+- (void)didAddChildView:(id)view
 {
   if (!+[NSThread isMainThread])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  if (a3)
+  if (view)
   {
     scrollableCanvasController = self->_scrollableCanvasController;
 
@@ -138,17 +138,17 @@
   if ([(THWScrollableCanvasControlRep *)self isVisibleOnCanvas])
   {
     [NSObject cancelPreviousPerformRequestsWithTarget:[(THWScrollableCanvasController *)self->_scrollableCanvasController scrollView] selector:"flashScrollIndicators" object:0];
-    v3 = [(THWScrollableCanvasController *)self->_scrollableCanvasController scrollView];
+    scrollView = [(THWScrollableCanvasController *)self->_scrollableCanvasController scrollView];
 
-    [(TSKScrollView *)v3 performSelector:"flashScrollIndicators" withObject:0 afterDelay:0.2];
+    [(TSKScrollView *)scrollView performSelector:"flashScrollIndicators" withObject:0 afterDelay:0.2];
   }
 }
 
 - (void)canvasDidBeginFreeTransform
 {
-  v2 = [(THWScrollableCanvasController *)self->_scrollableCanvasController interactiveCanvasController];
+  interactiveCanvasController = [(THWScrollableCanvasController *)self->_scrollableCanvasController interactiveCanvasController];
 
-  [(THInteractiveCanvasController *)v2 didBeginFreeTransform];
+  [(THInteractiveCanvasController *)interactiveCanvasController didBeginFreeTransform];
 }
 
 @end

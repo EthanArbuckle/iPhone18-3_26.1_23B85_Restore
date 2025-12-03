@@ -1,13 +1,13 @@
 @interface BKAudiobookPlayer
 + (BKAudiobookPlayer)sharedInstance;
-+ (float)playbackRateFrom:(int64_t)a3;
++ (float)playbackRateFrom:(int64_t)from;
 + (id)testInstance;
-+ (int64_t)playbackSpeedFrom:(float)a3;
++ (int64_t)playbackSpeedFrom:(float)from;
 - (BKAudiobookBufferInfo)bufferInfo;
 - (BKAudiobookChapter)currentChapter;
 - (BKAudiobookPlayer)init;
 - (BKAudiobookTrack)currentTrack;
-- (BOOL)_setCurrentChapterIndex:(unint64_t)a3 offset:(double)a4 completion:(id)a5;
+- (BOOL)_setCurrentChapterIndex:(unint64_t)index offset:(double)offset completion:(id)completion;
 - (BOOL)isLoadingResources;
 - (BOOL)isPlaying;
 - (BOOL)isPositionValid;
@@ -15,8 +15,8 @@
 - (BOOL)isStalling;
 - (BOOL)isStreaming;
 - (BOOL)nextChapterOrRestartAudiobook;
-- (BOOL)playChapterAtIndex:(unint64_t)a3;
-- (BOOL)playChapterAtIndex:(unint64_t)a3 offset:(double)a4;
+- (BOOL)playChapterAtIndex:(unint64_t)index;
+- (BOOL)playChapterAtIndex:(unint64_t)index offset:(double)offset;
 - (BOOL)playNextChapter;
 - (BOOL)playPreviousChapter;
 - (BOOL)previousChapterOrRestartChapter;
@@ -34,16 +34,16 @@
 - (double)timeRemainingInCurrentTrack;
 - (float)playbackRate;
 - (float)volume;
-- (id)_playerErrorWithPlayer:(id)a3 error:(id)a4;
+- (id)_playerErrorWithPlayer:(id)player error:(id)error;
 - (id)_stateString;
 - (id)allObservers;
 - (id)mediaItem;
 - (int64_t)state;
-- (unint64_t)_chapterAtOffset:(double)a3 inTrack:(unint64_t)a4;
-- (void)_addTimeObserversForTrack:(id)a3;
+- (unint64_t)_chapterAtOffset:(double)offset inTrack:(unint64_t)track;
+- (void)_addTimeObserversForTrack:(id)track;
 - (void)_configureAudioSession;
-- (void)_resetPlayer:(id)a3;
-- (void)_sendArtworkDidChangeTo:(id)a3;
+- (void)_resetPlayer:(id)player;
+- (void)_sendArtworkDidChangeTo:(id)to;
 - (void)_sendAudiobookDidChange;
 - (void)_sendAudiobookWillChange;
 - (void)_sendBufferedTimeRangesDidChange;
@@ -52,41 +52,41 @@
 - (void)_sendIsScrubbing;
 - (void)_sendIsStallingAndIsLoadingResources;
 - (void)_sendPlaybackRateDidChange;
-- (void)_sendPlayerFailedWithError:(id)a3;
-- (void)_sendPlayerStalledWithError:(id)a3;
+- (void)_sendPlayerFailedWithError:(id)error;
+- (void)_sendPlayerStalledWithError:(id)error;
 - (void)_sendReachedEndOfAudiobook;
-- (void)_sendStateDidChangeFrom:(int64_t)a3 to:(int64_t)a4;
-- (void)_setCurrentPosition:(double)a3 track:(unint64_t)a4 chapter:(unint64_t)a5 completion:(id)a6;
-- (void)_setCurrentTrackIndex:(unint64_t)a3 offset:(double)a4 completion:(id)a5;
-- (void)_updatePlayerWithOffsetInTrack:(double)a3 chapterIndex:(unint64_t)a4 hasTrackChanged:(BOOL)a5 changedArtworkBlock:(id)a6 currentTimeCompletion:(id)a7;
-- (void)_updateTimeBeforeCurrentTrackWithTrackIndex:(unint64_t)a3;
-- (void)addObserver:(id)a3;
+- (void)_sendStateDidChangeFrom:(int64_t)from to:(int64_t)to;
+- (void)_setCurrentPosition:(double)position track:(unint64_t)track chapter:(unint64_t)chapter completion:(id)completion;
+- (void)_setCurrentTrackIndex:(unint64_t)index offset:(double)offset completion:(id)completion;
+- (void)_updatePlayerWithOffsetInTrack:(double)track chapterIndex:(unint64_t)index hasTrackChanged:(BOOL)changed changedArtworkBlock:(id)block currentTimeCompletion:(id)completion;
+- (void)_updateTimeBeforeCurrentTrackWithTrackIndex:(unint64_t)index;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)decrementPrecisionRate;
-- (void)fadeIn:(double)a3;
-- (void)fadeOut:(double)a3;
+- (void)fadeIn:(double)in;
+- (void)fadeOut:(double)out;
 - (void)incrementPrecisionRate;
-- (void)movePositionInCurrentAudiobook:(double)a3 completion:(id)a4;
-- (void)movePositionInCurrentChapter:(double)a3 completion:(id)a4;
+- (void)movePositionInCurrentAudiobook:(double)audiobook completion:(id)completion;
+- (void)movePositionInCurrentChapter:(double)chapter completion:(id)completion;
 - (void)pause;
 - (void)play;
-- (void)player:(id)a3 bitrateChangedFrom:(float)a4 to:(float)a5;
-- (void)player:(id)a3 didReachPosition:(double)a4;
-- (void)player:(id)a3 failedWithError:(id)a4;
-- (void)player:(id)a3 loadedTimeRangesDidChange:(id)a4 durations:(id)a5;
-- (void)player:(id)a3 loadingResourcesStateDidChange:(BOOL)a4;
-- (void)player:(id)a3 playbackStalledWithError:(id)a4;
-- (void)player:(id)a3 positionDidChange:(double)a4;
-- (void)player:(id)a3 stallingStateDidChange:(BOOL)a4;
-- (void)player:(id)a3 stateChangedFrom:(int64_t)a4 to:(int64_t)a5;
-- (void)player:(id)a3 volumeDidChange:(float)a4;
-- (void)playerCurrentItemEnded:(id)a3;
-- (void)playerWasInterrupted:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setCurrentAudiobook:(id)a3 initialPosition:(double)a4;
-- (void)setPlaybackRate:(float)a3;
-- (void)setPlaybackSpeed:(int64_t)a3;
-- (void)setVolume:(float)a3;
+- (void)player:(id)player bitrateChangedFrom:(float)from to:(float)to;
+- (void)player:(id)player didReachPosition:(double)position;
+- (void)player:(id)player failedWithError:(id)error;
+- (void)player:(id)player loadedTimeRangesDidChange:(id)change durations:(id)durations;
+- (void)player:(id)player loadingResourcesStateDidChange:(BOOL)change;
+- (void)player:(id)player playbackStalledWithError:(id)error;
+- (void)player:(id)player positionDidChange:(double)change;
+- (void)player:(id)player stallingStateDidChange:(BOOL)change;
+- (void)player:(id)player stateChangedFrom:(int64_t)from to:(int64_t)to;
+- (void)player:(id)player volumeDidChange:(float)change;
+- (void)playerCurrentItemEnded:(id)ended;
+- (void)playerWasInterrupted:(id)interrupted;
+- (void)removeObserver:(id)observer;
+- (void)setCurrentAudiobook:(id)audiobook initialPosition:(double)position;
+- (void)setPlaybackRate:(float)rate;
+- (void)setPlaybackSpeed:(int64_t)speed;
+- (void)setVolume:(float)volume;
 - (void)stop;
 - (void)togglePlayPause;
 @end
@@ -99,7 +99,7 @@
   block[1] = 3221225472;
   block[2] = sub_19754;
   block[3] = &unk_3D090;
-  block[4] = a1;
+  block[4] = self;
   if (qword_47A60 != -1)
   {
     dispatch_once(&qword_47A60, block);
@@ -112,7 +112,7 @@
 
 + (id)testInstance
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -172,8 +172,8 @@
 {
   [(BKAudiobookPlayer *)self stop];
   [(BKAudiobookPlayer *)self setObservers:0];
-  v3 = [(BKAudiobookPlayer *)self player];
-  [v3 setDelegate:0];
+  player = [(BKAudiobookPlayer *)self player];
+  [player setDelegate:0];
 
   [(BKAudiobookPlayer *)self setPlayer:0];
   v4.receiver = self;
@@ -183,44 +183,44 @@
 
 - (NSError)lastError
 {
-  v2 = [(BKAudiobookPlayer *)self player];
-  v3 = [v2 lastError];
+  player = [(BKAudiobookPlayer *)self player];
+  lastError = [player lastError];
 
-  return v3;
+  return lastError;
 }
 
-- (void)setCurrentAudiobook:(id)a3 initialPosition:(double)a4
+- (void)setCurrentAudiobook:(id)audiobook initialPosition:(double)position
 {
-  v7 = a3;
-  if (self->_currentAudiobook != v7)
+  audiobookCopy = audiobook;
+  if (self->_currentAudiobook != audiobookCopy)
   {
     [(BKAudiobookPlayer *)self _sendAudiobookWillChange];
-    v8 = [(BKAudiobookPlayer *)self player];
-    [v8 setDelegate:0];
+    player = [(BKAudiobookPlayer *)self player];
+    [player setDelegate:0];
 
     v9.f64[0] = NAN;
     v9.f64[1] = NAN;
     *&self->_currentTrackIndex = vnegq_f64(v9);
-    objc_storeStrong(&self->_currentAudiobook, a3);
-    if (v7)
+    objc_storeStrong(&self->_currentAudiobook, audiobook);
+    if (audiobookCopy)
     {
-      v10 = [(BKAudiobookPlayer *)self player];
+      player2 = [(BKAudiobookPlayer *)self player];
 
-      if (!v10)
+      if (!player2)
       {
         v11 = [BKAVPlayer alloc];
-        v12 = [(BKAudiobookPlayer *)self dataSource];
-        v13 = [(BKAVPlayer *)v11 initWithResourceLoader:v12];
+        dataSource = [(BKAudiobookPlayer *)self dataSource];
+        v13 = [(BKAVPlayer *)v11 initWithResourceLoader:dataSource];
         [(BKAudiobookPlayer *)self setPlayer:v13];
 
         [(BKAudiobookPlayer *)self volume];
         v15 = v14;
-        v16 = [(BKAudiobookPlayer *)self player];
+        player3 = [(BKAudiobookPlayer *)self player];
         LODWORD(v17) = v15;
-        [v16 setVolume:v17];
+        [player3 setVolume:v17];
 
-        v18 = [(BKAudiobookPlayer *)self player];
-        [v18 playbackRate];
+        player4 = [(BKAudiobookPlayer *)self player];
+        [player4 playbackRate];
         v19 = [BKAudiobookPlayer playbackSpeedFrom:?];
 
         if (v19 != -1)
@@ -228,8 +228,8 @@
           self->_playbackSpeed = v19;
         }
 
-        v20 = [(BKAudiobookPlayer *)self player];
-        [v20 playbackRate];
+        player5 = [(BKAudiobookPlayer *)self player];
+        [player5 playbackRate];
         [(BKAudiobookPlayer *)self setPlaybackRate:?];
       }
     }
@@ -239,17 +239,17 @@
       [(BKAudiobookPlayer *)self setPlayer:0];
     }
 
-    v21 = [(BKAudiobookPlayer *)self player];
-    [v21 setDelegate:self];
+    player6 = [(BKAudiobookPlayer *)self player];
+    [player6 setDelegate:self];
 
     v22 = BKAudiobooksLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
-      v23 = [(BKAudiobook *)self->_currentAudiobook title];
+      title = [(BKAudiobook *)self->_currentAudiobook title];
       *buf = 138412546;
-      v36 = v23;
+      v36 = title;
       v37 = 2048;
-      v38 = a4;
+      positionCopy = position;
       _os_log_impl(&dword_0, v22, OS_LOG_TYPE_INFO, "setCurrentAudiobook: %@ initialPosition:%.1lf", buf, 0x16u);
     }
 
@@ -258,8 +258,8 @@
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v24 = [(BKAudiobook *)self->_currentAudiobook tracks];
-    v25 = [v24 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    tracks = [(BKAudiobook *)self->_currentAudiobook tracks];
+    v25 = [tracks countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v25)
     {
       v26 = v25;
@@ -270,75 +270,75 @@
         {
           if (*v31 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(tracks);
           }
 
           [*(*(&v30 + 1) + 8 * i) duration];
           self->_durationOfCurrentAudiobook = v29 + self->_durationOfCurrentAudiobook;
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v26 = [tracks countByEnumeratingWithState:&v30 objects:v34 count:16];
       }
 
       while (v26);
     }
 
-    [(BKAudiobookPlayer *)self movePositionInCurrentAudiobook:0 completion:a4];
-    [(BKAudiobookPlayer *)self setListeningSessionStartTime:a4];
+    [(BKAudiobookPlayer *)self movePositionInCurrentAudiobook:0 completion:position];
+    [(BKAudiobookPlayer *)self setListeningSessionStartTime:position];
     [(BKAudiobookPlayer *)self _sendAudiobookDidChange];
   }
 }
 
 - (BOOL)isStreaming
 {
-  v2 = [(BKAudiobookPlayer *)self player];
-  v3 = [v2 isStreaming];
+  player = [(BKAudiobookPlayer *)self player];
+  isStreaming = [player isStreaming];
 
-  return v3;
+  return isStreaming;
 }
 
 - (BOOL)isStalling
 {
-  v2 = [(BKAudiobookPlayer *)self player];
-  v3 = [v2 isStalling];
+  player = [(BKAudiobookPlayer *)self player];
+  isStalling = [player isStalling];
 
-  return v3;
+  return isStalling;
 }
 
 - (BOOL)isLoadingResources
 {
-  v2 = [(BKAudiobookPlayer *)self player];
-  v3 = [v2 isLoadingResources];
+  player = [(BKAudiobookPlayer *)self player];
+  isLoadingResources = [player isLoadingResources];
 
-  return v3;
+  return isLoadingResources;
 }
 
 - (NSNumber)timeRemainingInBuffer
 {
-  v3 = [(BKAudiobookPlayer *)self bufferProducer];
+  bufferProducer = [(BKAudiobookPlayer *)self bufferProducer];
   [(BKAudiobookPlayer *)self positionInCurrentTrack];
-  v4 = [v3 timeRemainingInBufferFromTrackPosition:?];
+  v4 = [bufferProducer timeRemainingInBufferFromTrackPosition:?];
 
   return v4;
 }
 
 - (BKAudiobookBufferInfo)bufferInfo
 {
-  v2 = [(BKAudiobookPlayer *)self bufferProducer];
-  v3 = [v2 bufferInfo];
+  bufferProducer = [(BKAudiobookPlayer *)self bufferProducer];
+  bufferInfo = [bufferProducer bufferInfo];
 
-  return v3;
+  return bufferInfo;
 }
 
 - (BKAudiobookTrack)currentTrack
 {
   [(BKAudiobookPlayer *)self currentTrackIndex];
-  v3 = [(BKAudiobookPlayer *)self currentTrackIndex];
-  v4 = [(BKAudiobookPlayer *)self currentAudiobook];
-  v5 = [v4 tracks];
-  v6 = [v5 count];
+  currentTrackIndex = [(BKAudiobookPlayer *)self currentTrackIndex];
+  currentAudiobook = [(BKAudiobookPlayer *)self currentAudiobook];
+  tracks = [currentAudiobook tracks];
+  v6 = [tracks count];
 
-  if (v3 >= v6)
+  if (currentTrackIndex >= v6)
   {
     v10 = BKAudiobooksLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -351,9 +351,9 @@
 
   else
   {
-    v7 = [(BKAudiobookPlayer *)self currentAudiobook];
-    v8 = [v7 tracks];
-    v9 = [v8 objectAtIndexedSubscript:{-[BKAudiobookPlayer currentTrackIndex](self, "currentTrackIndex")}];
+    currentAudiobook2 = [(BKAudiobookPlayer *)self currentAudiobook];
+    tracks2 = [currentAudiobook2 tracks];
+    v9 = [tracks2 objectAtIndexedSubscript:{-[BKAudiobookPlayer currentTrackIndex](self, "currentTrackIndex")}];
   }
 
   return v9;
@@ -364,24 +364,24 @@
   if (self->_currentAudiobook)
   {
     [(BKAudiobookPlayer *)self currentChapterIndex];
-    v3 = [(BKAudiobookPlayer *)self currentChapterIndex];
-    v4 = [(BKAudiobookPlayer *)self currentAudiobook];
-    v5 = [v4 chapters];
-    v6 = [v5 count];
+    currentChapterIndex = [(BKAudiobookPlayer *)self currentChapterIndex];
+    currentAudiobook = [(BKAudiobookPlayer *)self currentAudiobook];
+    chapters = [currentAudiobook chapters];
+    v6 = [chapters count];
 
-    if (v3 < v6)
+    if (currentChapterIndex < v6)
     {
-      v7 = [(BKAudiobookPlayer *)self currentAudiobook];
-      v8 = [v7 chapters];
-      v9 = [v8 objectAtIndexedSubscript:{-[BKAudiobookPlayer currentChapterIndex](self, "currentChapterIndex")}];
+      currentAudiobook2 = [(BKAudiobookPlayer *)self currentAudiobook];
+      chapters2 = [currentAudiobook2 chapters];
+      v9 = [chapters2 objectAtIndexedSubscript:{-[BKAudiobookPlayer currentChapterIndex](self, "currentChapterIndex")}];
 
       goto LABEL_11;
     }
 
-    v10 = [(BKAudiobookPlayer *)self currentChapterIndex];
+    currentChapterIndex2 = [(BKAudiobookPlayer *)self currentChapterIndex];
     v11 = BKAudiobooksLog();
     v12 = v11;
-    if (v10 == 0x7FFFFFFFFFFFFFFFLL)
+    if (currentChapterIndex2 == 0x7FFFFFFFFFFFFFFFLL)
     {
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
@@ -402,75 +402,75 @@ LABEL_11:
   return v9;
 }
 
-- (void)_addTimeObserversForTrack:(id)a3
+- (void)_addTimeObserversForTrack:(id)track
 {
-  v4 = a3;
-  v5 = [(BKAudiobookPlayer *)self player];
-  [v5 removeAllTimeObservers];
+  trackCopy = track;
+  player = [(BKAudiobookPlayer *)self player];
+  [player removeAllTimeObservers];
 
   v6 = objc_opt_new();
-  v7 = [v4 alternateArtworkTimes];
-  v8 = [v7 objectEnumerator];
+  alternateArtworkTimes = [trackCopy alternateArtworkTimes];
+  objectEnumerator = [alternateArtworkTimes objectEnumerator];
 
-  v9 = [v4 chapters];
-  v10 = [v9 objectEnumerator];
+  chapters = [trackCopy chapters];
+  objectEnumerator2 = [chapters objectEnumerator];
 
-  v11 = [v8 nextObject];
-  v12 = [v10 nextObject];
-  v13 = v12;
-  while (v11 && v13)
+  nextObject = [objectEnumerator nextObject];
+  nextObject2 = [objectEnumerator2 nextObject];
+  v13 = nextObject2;
+  while (nextObject && v13)
   {
     [v13 timeRangeInTrack];
     time = v41;
     v14 = [NSNumber numberWithDouble:CMTimeGetSeconds(&time)];
-    [v11 doubleValue];
+    [nextObject doubleValue];
     v16 = v15;
     [v14 doubleValue];
     if (vabdd_f64(v16, v17) >= 0.01)
     {
-      [v11 doubleValue];
+      [nextObject doubleValue];
       v22 = v21;
       [v14 doubleValue];
       if (v22 >= v23)
       {
         [v6 addObject:v14];
-        v25 = [v10 nextObject];
+        nextObject3 = [objectEnumerator2 nextObject];
         v20 = v13;
-        v13 = v25;
+        v13 = nextObject3;
       }
 
       else
       {
-        [v6 addObject:v11];
-        v24 = [v8 nextObject];
-        v20 = v11;
-        v11 = v24;
+        [v6 addObject:nextObject];
+        nextObject4 = [objectEnumerator nextObject];
+        v20 = nextObject;
+        nextObject = nextObject4;
       }
     }
 
     else
     {
-      [v6 addObject:v11];
-      v18 = [v8 nextObject];
+      [v6 addObject:nextObject];
+      nextObject5 = [objectEnumerator nextObject];
 
-      v19 = [v10 nextObject];
+      nextObject6 = [objectEnumerator2 nextObject];
       v20 = v13;
-      v13 = v19;
-      v11 = v18;
+      v13 = nextObject6;
+      nextObject = nextObject5;
     }
   }
 
-  if (v11)
+  if (nextObject)
   {
     do
     {
-      [v6 addObject:v11];
-      v26 = [v8 nextObject];
+      [v6 addObject:nextObject];
+      nextObject7 = [objectEnumerator nextObject];
 
-      v11 = v26;
+      nextObject = nextObject7;
     }
 
-    while (v26);
+    while (nextObject7);
   }
 
   if (v13)
@@ -481,12 +481,12 @@ LABEL_11:
       time = v40;
       v27 = [NSNumber numberWithDouble:CMTimeGetSeconds(&time)];
       [v6 addObject:v27];
-      v28 = [v10 nextObject];
+      nextObject8 = [objectEnumerator2 nextObject];
 
-      v13 = v28;
+      v13 = nextObject8;
     }
 
-    while (v28);
+    while (nextObject8);
   }
 
   v38 = 0u;
@@ -509,9 +509,9 @@ LABEL_11:
         }
 
         v34 = *(*(&v36 + 1) + 8 * i);
-        v35 = [(BKAudiobookPlayer *)self player];
+        player2 = [(BKAudiobookPlayer *)self player];
         [v34 doubleValue];
-        [v35 addTimeObserver:?];
+        [player2 addTimeObserver:?];
       }
 
       v31 = [v29 countByEnumeratingWithState:&v36 objects:v43 count:16];
@@ -521,37 +521,37 @@ LABEL_11:
   }
 }
 
-- (void)_setCurrentPosition:(double)a3 track:(unint64_t)a4 chapter:(unint64_t)a5 completion:(id)a6
+- (void)_setCurrentPosition:(double)position track:(unint64_t)track chapter:(unint64_t)chapter completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v11 = BKAudiobooksLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218496;
-    v24 = a4;
+    trackCopy = track;
     v25 = 2048;
-    v26 = a5;
+    chapterCopy = chapter;
     v27 = 2048;
-    v28 = a3;
+    positionCopy = position;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "_setCurrentPosition: (track,chapter,offset) = (%lu,%lu,%f)", buf, 0x20u);
   }
 
-  if (self->_currentTrackIndex == a4)
+  if (self->_currentTrackIndex == track)
   {
-    [(BKAudiobookPlayer *)self _updatePlayerWithOffsetInTrack:a5 chapterIndex:0 hasTrackChanged:0 changedArtworkBlock:v10 currentTimeCompletion:a3];
+    [(BKAudiobookPlayer *)self _updatePlayerWithOffsetInTrack:chapter chapterIndex:0 hasTrackChanged:0 changedArtworkBlock:completionCopy currentTimeCompletion:position];
   }
 
   else
   {
-    self->_currentTrackIndex = a4;
-    v12 = [(BKAudiobookPlayer *)self currentAudiobook];
-    v13 = [v12 tracks];
-    v14 = [v13 objectAtIndexedSubscript:a4];
+    self->_currentTrackIndex = track;
+    currentAudiobook = [(BKAudiobookPlayer *)self currentAudiobook];
+    tracks = [currentAudiobook tracks];
+    v14 = [tracks objectAtIndexedSubscript:track];
 
     objc_initWeak(buf, self);
-    v15 = [(BKAudiobookPlayer *)self player];
-    v16 = [v14 assetURL];
-    v17 = [(BKAudiobookPlayer *)self audibleDRMGroupID];
+    player = [(BKAudiobookPlayer *)self player];
+    assetURL = [v14 assetURL];
+    audibleDRMGroupID = [(BKAudiobookPlayer *)self audibleDRMGroupID];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_1A6C0;
@@ -559,32 +559,32 @@ LABEL_11:
     objc_copyWeak(v22, buf);
     v18 = v14;
     v20 = v18;
-    v22[1] = a4;
-    v22[2] = *&a3;
-    v22[3] = a5;
-    v21 = v10;
-    [v15 setAssetURL:v16 audibleDRMGroupID:v17 completion:v19];
+    v22[1] = track;
+    v22[2] = *&position;
+    v22[3] = chapter;
+    v21 = completionCopy;
+    [player setAssetURL:assetURL audibleDRMGroupID:audibleDRMGroupID completion:v19];
 
     objc_destroyWeak(v22);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)_updatePlayerWithOffsetInTrack:(double)a3 chapterIndex:(unint64_t)a4 hasTrackChanged:(BOOL)a5 changedArtworkBlock:(id)a6 currentTimeCompletion:(id)a7
+- (void)_updatePlayerWithOffsetInTrack:(double)track chapterIndex:(unint64_t)index hasTrackChanged:(BOOL)changed changedArtworkBlock:(id)block currentTimeCompletion:(id)completion
 {
-  v8 = a5;
-  v19 = a6;
-  v12 = a7;
-  v13 = [(BKAudiobookPlayer *)self player];
-  [v13 currentTime];
+  changedCopy = changed;
+  blockCopy = block;
+  completionCopy = completion;
+  player = [(BKAudiobookPlayer *)self player];
+  [player currentTime];
   v15 = v14;
 
-  if (v15 != a3)
+  if (v15 != track)
   {
-    v16 = [(BKAudiobookPlayer *)self player];
-    [v16 setCurrentTime:v12 completion:a3];
+    player2 = [(BKAudiobookPlayer *)self player];
+    [player2 setCurrentTime:completionCopy completion:track];
 
-    if (self->_currentChapterIndex == a4)
+    if (self->_currentChapterIndex == index)
     {
       goto LABEL_7;
     }
@@ -592,18 +592,18 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  if (self->_currentChapterIndex != a4)
+  if (self->_currentChapterIndex != index)
   {
 LABEL_6:
-    self->_currentChapterIndex = a4;
+    self->_currentChapterIndex = index;
     [(BKAudiobookPlayer *)self _sendChapterDidChange];
     goto LABEL_7;
   }
 
-  if (!v8)
+  if (!changedCopy)
   {
 LABEL_12:
-    v17 = objc_retainBlock(v12);
+    v17 = objc_retainBlock(completionCopy);
     v18 = v17;
     if (v17)
     {
@@ -619,12 +619,12 @@ LABEL_7:
     [(BKAudiobookPlayer *)self _sendCurrentPositionDidChange];
   }
 
-  if (v8)
+  if (changedCopy)
   {
-    [(BKAudiobookPlayer *)self _sendArtworkDidChangeTo:v19];
+    [(BKAudiobookPlayer *)self _sendArtworkDidChangeTo:blockCopy];
   }
 
-  if (v15 == a3)
+  if (v15 == track)
   {
     goto LABEL_12;
   }
@@ -632,29 +632,29 @@ LABEL_7:
 LABEL_15:
 }
 
-- (void)_updateTimeBeforeCurrentTrackWithTrackIndex:(unint64_t)a3
+- (void)_updateTimeBeforeCurrentTrackWithTrackIndex:(unint64_t)index
 {
   self->_timeBeforeCurrentTrack = 0.0;
-  if (a3)
+  if (index)
   {
-    for (i = 0; i != a3; ++i)
+    for (i = 0; i != index; ++i)
     {
-      v6 = [(BKAudiobook *)self->_currentAudiobook tracks];
-      v7 = [v6 objectAtIndexedSubscript:i];
+      tracks = [(BKAudiobook *)self->_currentAudiobook tracks];
+      v7 = [tracks objectAtIndexedSubscript:i];
       [v7 duration];
       self->_timeBeforeCurrentTrack = v8 + self->_timeBeforeCurrentTrack;
     }
   }
 }
 
-- (void)_setCurrentTrackIndex:(unint64_t)a3 offset:(double)a4 completion:(id)a5
+- (void)_setCurrentTrackIndex:(unint64_t)index offset:(double)offset completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(BKAudiobookPlayer *)self currentAudiobook];
-  v10 = [v9 tracks];
-  v11 = [v10 count];
+  completionCopy = completion;
+  currentAudiobook = [(BKAudiobookPlayer *)self currentAudiobook];
+  tracks = [currentAudiobook tracks];
+  v11 = [tracks count];
 
-  if (v11 <= a3)
+  if (v11 <= index)
   {
     v16 = BKAudiobooksLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -662,7 +662,7 @@ LABEL_15:
       sub_21C44();
     }
 
-    v17 = objc_retainBlock(v8);
+    v17 = objc_retainBlock(completionCopy);
     v14 = v17;
     if (v17)
     {
@@ -672,12 +672,12 @@ LABEL_15:
 
   else
   {
-    v12 = [(BKAudiobookPlayer *)self currentAudiobook];
-    v13 = [v12 tracks];
-    v14 = [v13 objectAtIndexedSubscript:a3];
+    currentAudiobook2 = [(BKAudiobookPlayer *)self currentAudiobook];
+    tracks2 = [currentAudiobook2 tracks];
+    v14 = [tracks2 objectAtIndexedSubscript:index];
 
     [v14 duration];
-    if (v15 <= a4)
+    if (v15 <= offset)
     {
       v18 = BKAudiobooksLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -685,7 +685,7 @@ LABEL_15:
         sub_21CB4();
       }
 
-      v19 = objc_retainBlock(v8);
+      v19 = objc_retainBlock(completionCopy);
       v20 = v19;
       if (v19)
       {
@@ -695,19 +695,19 @@ LABEL_15:
 
     else
     {
-      [(BKAudiobookPlayer *)self _setCurrentPosition:a3 track:[(BKAudiobookPlayer *)self _chapterAtOffset:a3 inTrack:a4] chapter:v8 completion:a4];
+      [(BKAudiobookPlayer *)self _setCurrentPosition:index track:[(BKAudiobookPlayer *)self _chapterAtOffset:index inTrack:offset] chapter:completionCopy completion:offset];
     }
   }
 }
 
-- (BOOL)_setCurrentChapterIndex:(unint64_t)a3 offset:(double)a4 completion:(id)a5
+- (BOOL)_setCurrentChapterIndex:(unint64_t)index offset:(double)offset completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(BKAudiobookPlayer *)self currentAudiobook];
-  v10 = [v9 chapters];
-  v11 = [v10 count];
+  completionCopy = completion;
+  currentAudiobook = [(BKAudiobookPlayer *)self currentAudiobook];
+  chapters = [currentAudiobook chapters];
+  v11 = [chapters count];
 
-  if (v11 <= a3)
+  if (v11 <= index)
   {
     v16 = BKAudiobooksLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -715,7 +715,7 @@ LABEL_15:
       sub_21D28();
     }
 
-    v17 = objc_retainBlock(v8);
+    v17 = objc_retainBlock(completionCopy);
     v14 = v17;
     if (v17)
     {
@@ -725,12 +725,12 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  v12 = [(BKAudiobookPlayer *)self currentAudiobook];
-  v13 = [v12 chapters];
-  v14 = [v13 objectAtIndexedSubscript:a3];
+  currentAudiobook2 = [(BKAudiobookPlayer *)self currentAudiobook];
+  chapters2 = [currentAudiobook2 chapters];
+  v14 = [chapters2 objectAtIndexedSubscript:index];
 
   [v14 duration];
-  if (v15 <= a4)
+  if (v15 <= offset)
   {
     v18 = BKAudiobooksLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -738,7 +738,7 @@ LABEL_15:
       sub_21D98();
     }
 
-    v19 = objc_retainBlock(v8);
+    v19 = objc_retainBlock(completionCopy);
     v20 = v19;
     if (v19)
     {
@@ -761,7 +761,7 @@ LABEL_14:
   }
 
   time = v23;
-  -[BKAudiobookPlayer _setCurrentPosition:track:chapter:completion:](self, "_setCurrentPosition:track:chapter:completion:", [v14 albumTrackNumber], a3, v8, CMTimeGetSeconds(&time) + a4);
+  -[BKAudiobookPlayer _setCurrentPosition:track:chapter:completion:](self, "_setCurrentPosition:track:chapter:completion:", [v14 albumTrackNumber], index, completionCopy, CMTimeGetSeconds(&time) + offset);
   v21 = 1;
 LABEL_17:
 
@@ -782,13 +782,13 @@ LABEL_17:
   return result;
 }
 
-- (void)movePositionInCurrentAudiobook:(double)a3 completion:(id)a4
+- (void)movePositionInCurrentAudiobook:(double)audiobook completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(BKAudiobookPlayer *)self currentAudiobook];
-  v8 = [v7 tracks];
+  completionCopy = completion;
+  currentAudiobook = [(BKAudiobookPlayer *)self currentAudiobook];
+  tracks = [currentAudiobook tracks];
 
-  v9 = [v8 count];
+  v9 = [tracks count];
   if (v9)
   {
     v10 = v9;
@@ -796,10 +796,10 @@ LABEL_17:
     v12 = 0.0;
     while (1)
     {
-      v13 = [v8 objectAtIndexedSubscript:v11];
+      v13 = [tracks objectAtIndexedSubscript:v11];
       [v13 duration];
       v15 = v12 + v14;
-      if (v12 <= a3 && v15 > a3)
+      if (v12 <= audiobook && v15 > audiobook)
       {
         break;
       }
@@ -812,7 +812,7 @@ LABEL_17:
       }
     }
 
-    [(BKAudiobookPlayer *)self _setCurrentTrackIndex:v11 offset:v6 completion:a3 - v12];
+    [(BKAudiobookPlayer *)self _setCurrentTrackIndex:v11 offset:completionCopy completion:audiobook - v12];
   }
 
   else
@@ -824,7 +824,7 @@ LABEL_9:
       sub_21E0C(self);
     }
 
-    [(BKAudiobookPlayer *)self _setCurrentTrackIndex:0 offset:v6 completion:0.0];
+    [(BKAudiobookPlayer *)self _setCurrentTrackIndex:0 offset:completionCopy completion:0.0];
   }
 }
 
@@ -838,8 +838,8 @@ LABEL_9:
 
 - (double)positionInCurrentTrack
 {
-  v2 = [(BKAudiobookPlayer *)self player];
-  [v2 currentTime];
+  player = [(BKAudiobookPlayer *)self player];
+  [player currentTime];
   v4 = v3;
 
   return v4;
@@ -847,16 +847,16 @@ LABEL_9:
 
 - (BOOL)isPositionValid
 {
-  v2 = [(BKAudiobookPlayer *)self player];
-  v3 = [v2 isCurrentTimeValid];
+  player = [(BKAudiobookPlayer *)self player];
+  isCurrentTimeValid = [player isCurrentTimeValid];
 
-  return v3;
+  return isCurrentTimeValid;
 }
 
 - (double)durationOfCurrentTrack
 {
-  v2 = [(BKAudiobookPlayer *)self currentTrack];
-  [v2 duration];
+  currentTrack = [(BKAudiobookPlayer *)self currentTrack];
+  [currentTrack duration];
   v4 = v3;
 
   return v4;
@@ -872,12 +872,12 @@ LABEL_9:
 
 - (double)pausedDuration
 {
-  v3 = [(BKAudiobookPlayer *)self pausedTime];
-  if (v3)
+  pausedTime = [(BKAudiobookPlayer *)self pausedTime];
+  if (pausedTime)
   {
     v4 = +[NSDate date];
-    v5 = [(BKAudiobookPlayer *)self pausedTime];
-    [v4 timeIntervalSinceDate:v5];
+    pausedTime2 = [(BKAudiobookPlayer *)self pausedTime];
+    [v4 timeIntervalSinceDate:pausedTime2];
     v7 = v6;
   }
 
@@ -891,11 +891,11 @@ LABEL_9:
 
 - (double)positionInCurrentChapter
 {
-  v3 = [(BKAudiobookPlayer *)self currentChapter];
-  v4 = v3;
-  if (v3)
+  currentChapter = [(BKAudiobookPlayer *)self currentChapter];
+  v4 = currentChapter;
+  if (currentChapter)
   {
-    [v3 timeRangeInTrack];
+    [currentChapter timeRangeInTrack];
   }
 
   else
@@ -912,12 +912,12 @@ LABEL_9:
   return v7;
 }
 
-- (void)movePositionInCurrentChapter:(double)a3 completion:(id)a4
+- (void)movePositionInCurrentChapter:(double)chapter completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(BKAudiobookPlayer *)self currentChapter];
-  v8 = v7;
-  if (a3 < 0.0 || ([v7 duration], v9 <= a3))
+  completionCopy = completion;
+  currentChapter = [(BKAudiobookPlayer *)self currentChapter];
+  v8 = currentChapter;
+  if (chapter < 0.0 || ([currentChapter duration], v9 <= chapter))
   {
     v10 = BKAudiobooksLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -925,7 +925,7 @@ LABEL_9:
       sub_21EB4();
     }
 
-    v11 = objc_retainBlock(v6);
+    v11 = objc_retainBlock(completionCopy);
     v12 = v11;
     if (v11)
     {
@@ -946,7 +946,7 @@ LABEL_9:
     }
 
     time = v13;
-    [(BKAudiobookPlayer *)self _setCurrentPosition:[(BKAudiobookPlayer *)self currentTrackIndex] track:[(BKAudiobookPlayer *)self currentChapterIndex] chapter:v6 completion:CMTimeGetSeconds(&time) + a3];
+    [(BKAudiobookPlayer *)self _setCurrentPosition:[(BKAudiobookPlayer *)self currentTrackIndex] track:[(BKAudiobookPlayer *)self currentChapterIndex] chapter:completionCopy completion:CMTimeGetSeconds(&time) + chapter];
   }
 }
 
@@ -960,8 +960,8 @@ LABEL_9:
 
 - (double)durationOfCurrentChapter
 {
-  v2 = [(BKAudiobookPlayer *)self currentChapter];
-  [v2 duration];
+  currentChapter = [(BKAudiobookPlayer *)self currentChapter];
+  [currentChapter duration];
   v4 = v3;
 
   return v4;
@@ -969,47 +969,47 @@ LABEL_9:
 
 - (void)play
 {
-  v2 = [(BKAudiobookPlayer *)self player];
-  [v2 play];
+  player = [(BKAudiobookPlayer *)self player];
+  [player play];
 }
 
 - (void)pause
 {
-  v2 = [(BKAudiobookPlayer *)self player];
-  [v2 pause];
+  player = [(BKAudiobookPlayer *)self player];
+  [player pause];
 }
 
 - (void)togglePlayPause
 {
-  v2 = [(BKAudiobookPlayer *)self player];
-  [v2 togglePlayPause];
+  player = [(BKAudiobookPlayer *)self player];
+  [player togglePlayPause];
 }
 
 - (void)stop
 {
-  v2 = [(BKAudiobookPlayer *)self player];
-  [v2 stop];
+  player = [(BKAudiobookPlayer *)self player];
+  [player stop];
 }
 
-- (void)fadeIn:(double)a3
+- (void)fadeIn:(double)in
 {
-  v4 = [(BKAudiobookPlayer *)self player];
-  [v4 fadeIn:a3];
+  player = [(BKAudiobookPlayer *)self player];
+  [player fadeIn:in];
 }
 
-- (void)fadeOut:(double)a3
+- (void)fadeOut:(double)out
 {
-  v4 = [(BKAudiobookPlayer *)self player];
-  [v4 fadeOut:a3];
+  player = [(BKAudiobookPlayer *)self player];
+  [player fadeOut:out];
 }
 
-- (BOOL)playChapterAtIndex:(unint64_t)a3
+- (BOOL)playChapterAtIndex:(unint64_t)index
 {
-  v5 = [(BKAudiobookPlayer *)self currentAudiobook];
-  v6 = [v5 chapters];
-  v7 = [v6 count];
+  currentAudiobook = [(BKAudiobookPlayer *)self currentAudiobook];
+  chapters = [currentAudiobook chapters];
+  v7 = [chapters count];
 
-  if (v7 <= a3)
+  if (v7 <= index)
   {
     v8 = BKAudiobooksLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1023,23 +1023,23 @@ LABEL_9:
   else
   {
 
-    return [(BKAudiobookPlayer *)self playChapterAtIndex:a3 offset:0.0];
+    return [(BKAudiobookPlayer *)self playChapterAtIndex:index offset:0.0];
   }
 }
 
-- (BOOL)playChapterAtIndex:(unint64_t)a3 offset:(double)a4
+- (BOOL)playChapterAtIndex:(unint64_t)index offset:(double)offset
 {
   v7 = BKAudiobooksLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218240;
-    v11 = a3;
+    indexCopy = index;
     v12 = 2048;
-    v13 = a4;
+    offsetCopy = offset;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "playChapterAtIndex:%lu offset:%f", &v10, 0x16u);
   }
 
-  v8 = [(BKAudiobookPlayer *)self _setCurrentChapterIndex:a3 offset:0 completion:a4];
+  v8 = [(BKAudiobookPlayer *)self _setCurrentChapterIndex:index offset:0 completion:offset];
   if (v8)
   {
     [(BKAudiobookPlayer *)self play];
@@ -1050,14 +1050,14 @@ LABEL_9:
 
 - (BOOL)playNextChapter
 {
-  v3 = [(BKAudiobookPlayer *)self currentAudiobook];
+  currentAudiobook = [(BKAudiobookPlayer *)self currentAudiobook];
 
-  if (v3)
+  if (currentAudiobook)
   {
     v4 = self->_currentChapterIndex + 1;
-    v5 = [(BKAudiobookPlayer *)self currentAudiobook];
-    v6 = [v5 chapters];
-    v7 = [v6 count];
+    currentAudiobook2 = [(BKAudiobookPlayer *)self currentAudiobook];
+    chapters = [currentAudiobook2 chapters];
+    v7 = [chapters count];
 
     if (v4 < v7)
     {
@@ -1080,24 +1080,24 @@ LABEL_9:
 
 - (BOOL)playPreviousChapter
 {
-  v3 = [(BKAudiobookPlayer *)self currentAudiobook];
-  if (v3)
+  currentAudiobook = [(BKAudiobookPlayer *)self currentAudiobook];
+  if (currentAudiobook)
   {
     currentChapterIndex = self->_currentChapterIndex;
 
     if (currentChapterIndex)
     {
       [(BKAudiobookPlayer *)self playChapterAtIndex:self->_currentChapterIndex - 1];
-      LOBYTE(v3) = 1;
+      LOBYTE(currentAudiobook) = 1;
     }
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(currentAudiobook) = 0;
     }
   }
 
-  return v3;
+  return currentAudiobook;
 }
 
 - (BOOL)previousChapterOrRestartChapter
@@ -1134,14 +1134,14 @@ LABEL_9:
 - (BOOL)nextChapterOrRestartAudiobook
 {
   v2 = +[BKAudiobookPlayer sharedInstance];
-  v3 = [v2 currentChapterIndex];
-  v4 = [v2 currentAudiobook];
-  v5 = [v4 chapters];
-  v6 = [v5 count] - 1;
+  currentChapterIndex = [v2 currentChapterIndex];
+  currentAudiobook = [v2 currentAudiobook];
+  chapters = [currentAudiobook chapters];
+  v6 = [chapters count] - 1;
 
   v7 = BKAudiobooksLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v3 >= v6)
+  if (currentChapterIndex >= v6)
   {
     if (v8)
     {
@@ -1170,44 +1170,44 @@ LABEL_9:
 
 - (int64_t)state
 {
-  v2 = [(BKAudiobookPlayer *)self player];
-  v3 = [v2 state];
+  player = [(BKAudiobookPlayer *)self player];
+  state = [player state];
 
-  return v3;
+  return state;
 }
 
 - (BOOL)isPlaying
 {
-  v2 = [(BKAudiobookPlayer *)self player];
-  v3 = [v2 isPlaying];
+  player = [(BKAudiobookPlayer *)self player];
+  isPlaying = [player isPlaying];
 
-  return v3;
+  return isPlaying;
 }
 
 - (BOOL)isScrubbing
 {
-  v2 = [(BKAudiobookPlayer *)self player];
-  v3 = [v2 isScrubbing];
+  player = [(BKAudiobookPlayer *)self player];
+  isScrubbing = [player isScrubbing];
 
-  return v3;
+  return isScrubbing;
 }
 
 - (float)playbackRate
 {
-  v2 = [(BKAudiobookPlayer *)self player];
-  [v2 playbackRate];
+  player = [(BKAudiobookPlayer *)self player];
+  [player playbackRate];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setPlaybackRate:(float)a3
+- (void)setPlaybackRate:(float)rate
 {
-  v5 = [(BKAudiobookPlayer *)self player];
-  *&v6 = a3;
-  [v5 setPlaybackRate:v6];
+  player = [(BKAudiobookPlayer *)self player];
+  *&v6 = rate;
+  [player setPlaybackRate:v6];
 
-  *&v7 = a3;
+  *&v7 = rate;
   v8 = [BKAudiobookPlayer playbackSpeedFrom:v7];
   if (v8 != -1)
   {
@@ -1227,22 +1227,22 @@ LABEL_9:
 
 - (void)incrementPrecisionRate
 {
-  v3 = [(BKAudiobookPlayer *)self player];
-  [v3 playbackRate];
+  player = [(BKAudiobookPlayer *)self player];
+  [player playbackRate];
   v5 = v4;
 
-  v6 = [(BKAudiobookPlayer *)self precisionRates];
+  precisionRates = [(BKAudiobookPlayer *)self precisionRates];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1BE04;
   v13[3] = &unk_3D150;
   v14 = v5;
-  v7 = [v6 indexOfObjectPassingTest:v13];
+  v7 = [precisionRates indexOfObjectPassingTest:v13];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = BKAudiobooksLog();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    precisionRates3 = BKAudiobooksLog();
+    if (os_log_type_enabled(precisionRates3, OS_LOG_TYPE_ERROR))
     {
       sub_21FEC();
     }
@@ -1250,8 +1250,8 @@ LABEL_9:
 
   else
   {
-    v9 = [(BKAudiobookPlayer *)self precisionRates];
-    v10 = [v9 count] - 1;
+    precisionRates2 = [(BKAudiobookPlayer *)self precisionRates];
+    v10 = [precisionRates2 count] - 1;
 
     if (v7 == v10)
     {
@@ -1263,8 +1263,8 @@ LABEL_9:
       v11 = v7 + 1;
     }
 
-    v8 = [(BKAudiobookPlayer *)self precisionRates];
-    v12 = [v8 objectAtIndexedSubscript:v11];
+    precisionRates3 = [(BKAudiobookPlayer *)self precisionRates];
+    v12 = [precisionRates3 objectAtIndexedSubscript:v11];
     [v12 floatValue];
     [(BKAudiobookPlayer *)self setPlaybackRate:?];
   }
@@ -1272,17 +1272,17 @@ LABEL_9:
 
 - (void)decrementPrecisionRate
 {
-  v3 = [(BKAudiobookPlayer *)self player];
-  [v3 playbackRate];
+  player = [(BKAudiobookPlayer *)self player];
+  [player playbackRate];
   v5 = v4;
 
-  v6 = [(BKAudiobookPlayer *)self precisionRates];
+  precisionRates = [(BKAudiobookPlayer *)self precisionRates];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1BF8C;
   v10[3] = &unk_3D150;
   v11 = v5;
-  v7 = [v6 indexOfObjectPassingTest:v10];
+  v7 = [precisionRates indexOfObjectPassingTest:v10];
 
   if (!v7)
   {
@@ -1293,16 +1293,16 @@ LABEL_9:
   {
     --v7;
 LABEL_6:
-    v8 = [(BKAudiobookPlayer *)self precisionRates];
-    v9 = [v8 objectAtIndexedSubscript:v7];
+    precisionRates2 = [(BKAudiobookPlayer *)self precisionRates];
+    v9 = [precisionRates2 objectAtIndexedSubscript:v7];
     [v9 floatValue];
     [(BKAudiobookPlayer *)self setPlaybackRate:?];
 
     goto LABEL_7;
   }
 
-  v8 = BKAudiobooksLog();
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  precisionRates2 = BKAudiobooksLog();
+  if (os_log_type_enabled(precisionRates2, OS_LOG_TYPE_ERROR))
   {
     sub_22064();
   }
@@ -1312,11 +1312,11 @@ LABEL_7:
 
 - (float)volume
 {
-  v3 = [(BKAudiobookPlayer *)self player];
-  v4 = v3;
-  if (v3)
+  player = [(BKAudiobookPlayer *)self player];
+  v4 = player;
+  if (player)
   {
-    [v3 volume];
+    [player volume];
     volume = v5;
   }
 
@@ -1328,30 +1328,30 @@ LABEL_7:
   return volume;
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
-  if (self->_volume != a3)
+  if (self->_volume != volume)
   {
-    self->_volume = a3;
-    v5 = [(BKAudiobookPlayer *)self player];
-    *&v4 = a3;
-    [v5 setVolume:v4];
+    self->_volume = volume;
+    player = [(BKAudiobookPlayer *)self player];
+    *&v4 = volume;
+    [player setVolume:v4];
   }
 }
 
-- (void)setPlaybackSpeed:(int64_t)a3
+- (void)setPlaybackSpeed:(int64_t)speed
 {
-  [BKAudiobookPlayer playbackRateFrom:a3];
+  [BKAudiobookPlayer playbackRateFrom:speed];
 
   [(BKAudiobookPlayer *)self setPlaybackRate:?];
 }
 
-+ (float)playbackRateFrom:(int64_t)a3
++ (float)playbackRateFrom:(int64_t)from
 {
   result = 0.0;
-  if (a3 <= 1)
+  if (from <= 1)
   {
-    if (a3 == -1)
+    if (from == -1)
     {
       v6 = BKAudiobooksLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -1364,12 +1364,12 @@ LABEL_7:
 
     else
     {
-      if (a3 == 1)
+      if (from == 1)
       {
         result = 1.0;
       }
 
-      if (!a3)
+      if (!from)
       {
         return 0.75;
       }
@@ -1380,27 +1380,27 @@ LABEL_7:
   {
     v4 = 1.75;
     v5 = 2.0;
-    if (a3 != 5)
+    if (from != 5)
     {
       v5 = 0.0;
     }
 
-    if (a3 != 4)
+    if (from != 4)
     {
       v4 = v5;
     }
 
-    if (a3 == 3)
+    if (from == 3)
     {
       result = 1.5;
     }
 
-    if (a3 == 2)
+    if (from == 2)
     {
       result = 1.25;
     }
 
-    if (a3 > 3)
+    if (from > 3)
     {
       return v4;
     }
@@ -1409,35 +1409,35 @@ LABEL_7:
   return result;
 }
 
-+ (int64_t)playbackSpeedFrom:(float)a3
++ (int64_t)playbackSpeedFrom:(float)from
 {
-  v3 = a3;
-  if (fabs(v3 + -0.75) < 0.00999999978)
+  fromCopy = from;
+  if (fabs(fromCopy + -0.75) < 0.00999999978)
   {
     return 0;
   }
 
-  if (fabs(v3 + -1.0) < 0.00999999978)
+  if (fabs(fromCopy + -1.0) < 0.00999999978)
   {
     return 1;
   }
 
-  if (fabs(v3 + -1.25) < 0.00999999978)
+  if (fabs(fromCopy + -1.25) < 0.00999999978)
   {
     return 2;
   }
 
-  if (fabs(v3 + -1.5) < 0.00999999978)
+  if (fabs(fromCopy + -1.5) < 0.00999999978)
   {
     return 3;
   }
 
-  if (fabs(v3 + -1.75) < 0.00999999978)
+  if (fabs(fromCopy + -1.75) < 0.00999999978)
   {
     return 4;
   }
 
-  if (fabs(v3 + -2.0) >= 0.00999999978)
+  if (fabs(fromCopy + -2.0) >= 0.00999999978)
   {
     return -1;
   }
@@ -1458,9 +1458,9 @@ LABEL_7:
   [v3 setCategory:AVAudioSessionCategoryPlayback mode:AVAudioSessionModeSpokenAudio routeSharingPolicy:1 options:0 error:0];
 }
 
-- (void)_resetPlayer:(id)a3
+- (void)_resetPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -1490,7 +1490,7 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (unint64_t)_chapterAtOffset:(double)a3 inTrack:(unint64_t)a4
+- (unint64_t)_chapterAtOffset:(double)offset inTrack:(unint64_t)track
 {
   v7 = BKAudiobooksLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -1503,9 +1503,9 @@ LABEL_7:
   v17 = 0x2020000000;
   v18 = 0;
   memset(&v14, 0, sizeof(v14));
-  CMTimeMake(&v14, ((a3 + 0.001) * 1000.0), 1000);
-  v8 = [(BKAudiobookPlayer *)self currentAudiobook];
-  v9 = [v8 chapters];
+  CMTimeMake(&v14, ((offset + 0.001) * 1000.0), 1000);
+  currentAudiobook = [(BKAudiobookPlayer *)self currentAudiobook];
+  chapters = [currentAudiobook chapters];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
@@ -1513,30 +1513,30 @@ LABEL_7:
   v12[3] = &unk_3D178;
   v13 = v14;
   v12[4] = &v15;
-  v12[5] = a4;
-  [v9 enumerateObjectsUsingBlock:v12];
+  v12[5] = track;
+  [chapters enumerateObjectsUsingBlock:v12];
   v10 = v16[3];
 
   _Block_object_dispose(&v15, 8);
   return v10;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_accessLock);
-  v5 = [(BKAudiobookPlayer *)self observers];
-  [v5 addObject:v4];
+  observers = [(BKAudiobookPlayer *)self observers];
+  [observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_accessLock);
-  v5 = [(BKAudiobookPlayer *)self observers];
-  [v5 removeObject:v4];
+  observers = [(BKAudiobookPlayer *)self observers];
+  [observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_accessLock);
 }
@@ -1544,12 +1544,12 @@ LABEL_7:
 - (id)allObservers
 {
   os_unfair_lock_lock(&self->_accessLock);
-  v3 = [(BKAudiobookPlayer *)self observers];
-  v4 = [v3 allObjects];
+  observers = [(BKAudiobookPlayer *)self observers];
+  allObjects = [observers allObjects];
 
   os_unfair_lock_unlock(&self->_accessLock);
 
-  return v4;
+  return allObjects;
 }
 
 - (void)_sendAudiobookWillChange
@@ -1557,9 +1557,9 @@ LABEL_7:
   v3 = BKAudiobooksLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(BKAudiobookPlayer *)self currentAudiobook];
+    currentAudiobook = [(BKAudiobookPlayer *)self currentAudiobook];
     *buf = 138412290;
-    v18 = v4;
+    v18 = currentAudiobook;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "observer: audiobook will change = %@", buf, 0xCu);
   }
 
@@ -1567,8 +1567,8 @@ LABEL_7:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(BKAudiobookPlayer *)self allObservers];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allObservers = [(BKAudiobookPlayer *)self allObservers];
+  v6 = [allObservers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1580,21 +1580,21 @@ LABEL_7:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObservers);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [(BKAudiobookPlayer *)self currentAudiobook];
-          [v10 player:self audiobookWillChange:v11];
+          currentAudiobook2 = [(BKAudiobookPlayer *)self currentAudiobook];
+          [v10 player:self audiobookWillChange:currentAudiobook2];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allObservers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -1606,9 +1606,9 @@ LABEL_7:
   v3 = BKAudiobooksLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(BKAudiobookPlayer *)self currentAudiobook];
+    currentAudiobook = [(BKAudiobookPlayer *)self currentAudiobook];
     *buf = 138412290;
-    v18 = v4;
+    v18 = currentAudiobook;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "observer: audiobook did change = %@", buf, 0xCu);
   }
 
@@ -1616,8 +1616,8 @@ LABEL_7:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(BKAudiobookPlayer *)self allObservers];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allObservers = [(BKAudiobookPlayer *)self allObservers];
+  v6 = [allObservers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1629,21 +1629,21 @@ LABEL_7:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObservers);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [(BKAudiobookPlayer *)self currentAudiobook];
-          [v10 player:self audiobookDidChange:v11];
+          currentAudiobook2 = [(BKAudiobookPlayer *)self currentAudiobook];
+          [v10 player:self audiobookDidChange:currentAudiobook2];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allObservers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -1656,7 +1656,7 @@ LABEL_7:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v17 = [(BKAudiobookPlayer *)self currentChapterIndex];
+    currentChapterIndex = [(BKAudiobookPlayer *)self currentChapterIndex];
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "observer: chapter = %lu", buf, 0xCu);
   }
 
@@ -1664,8 +1664,8 @@ LABEL_7:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(BKAudiobookPlayer *)self allObservers];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allObservers = [(BKAudiobookPlayer *)self allObservers];
+  v5 = [allObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1677,21 +1677,21 @@ LABEL_7:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allObservers);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
         if (objc_opt_respondsToSelector())
         {
-          v10 = [(BKAudiobookPlayer *)self currentChapter];
-          [v9 player:self chapterDidChange:v10];
+          currentChapter = [(BKAudiobookPlayer *)self currentChapter];
+          [v9 player:self chapterDidChange:currentChapter];
         }
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1700,17 +1700,17 @@ LABEL_7:
   [(BKAudiobookPlayer *)self _sendBufferedTimeRangesDidChange];
 }
 
-- (void)_sendArtworkDidChangeTo:(id)a3
+- (void)_sendArtworkDidChangeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_supportsAlternateArtwork)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [(BKAudiobookPlayer *)self allObservers];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+    allObservers = [(BKAudiobookPlayer *)self allObservers];
+    v6 = [allObservers countByEnumeratingWithState:&v15 objects:v21 count:16];
     if (v6)
     {
       v8 = v6;
@@ -1725,13 +1725,13 @@ LABEL_7:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allObservers);
           }
 
           v12 = *(*(&v15 + 1) + 8 * v11);
           if (objc_opt_respondsToSelector())
           {
-            if (v4 && !v9)
+            if (toCopy && !v9)
             {
               v13 = BKAudiobooksLog();
               if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1741,7 +1741,7 @@ LABEL_7:
                 _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "observer: artwork = %p", buf, 0xCu);
               }
 
-              v9 = v4[2](v4);
+              v9 = toCopy[2](toCopy);
             }
 
             [v12 player:self artworkDidChange:{v9, v14}];
@@ -1751,7 +1751,7 @@ LABEL_7:
         }
 
         while (v8 != v11);
-        v8 = [v5 countByEnumeratingWithState:&v15 objects:v21 count:16];
+        v8 = [allObservers countByEnumeratingWithState:&v15 objects:v21 count:16];
       }
 
       while (v8);
@@ -1761,26 +1761,26 @@ LABEL_7:
 
 - (id)_stateString
 {
-  v2 = [(BKAudiobookPlayer *)self state];
-  if ((v2 - 1) > 3)
+  state = [(BKAudiobookPlayer *)self state];
+  if ((state - 1) > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_3D1C0[v2 - 1];
+    return off_3D1C0[state - 1];
   }
 }
 
-- (void)_sendStateDidChangeFrom:(int64_t)a3 to:(int64_t)a4
+- (void)_sendStateDidChangeFrom:(int64_t)from to:(int64_t)to
 {
   v7 = BKAudiobooksLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(BKAudiobookPlayer *)self _stateString];
+    _stateString = [(BKAudiobookPlayer *)self _stateString];
     *buf = 138412290;
-    v21 = v8;
+    v21 = _stateString;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "observer: state = %@", buf, 0xCu);
   }
 
@@ -1788,8 +1788,8 @@ LABEL_7:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [(BKAudiobookPlayer *)self allObservers];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allObservers = [(BKAudiobookPlayer *)self allObservers];
+  v10 = [allObservers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1801,20 +1801,20 @@ LABEL_7:
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allObservers);
         }
 
         v14 = *(*(&v15 + 1) + 8 * v13);
         if (objc_opt_respondsToSelector())
         {
-          [v14 player:self stateDidChangeFrom:a3 to:a4];
+          [v14 player:self stateDidChangeFrom:from to:to];
         }
 
         v13 = v13 + 1;
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [allObservers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
@@ -1833,8 +1833,8 @@ LABEL_7:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BKAudiobookPlayer *)self allObservers];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allObservers = [(BKAudiobookPlayer *)self allObservers];
+  v5 = [allObservers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1846,7 +1846,7 @@ LABEL_7:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allObservers);
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
@@ -1854,16 +1854,16 @@ LABEL_7:
         {
           [(BKAudiobookPlayer *)self positionInCurrentChapter];
           v11 = v10;
-          v12 = [(BKAudiobookPlayer *)self currentChapterIndex];
+          currentChapterIndex = [(BKAudiobookPlayer *)self currentChapterIndex];
           [(BKAudiobookPlayer *)self positionInCurrentAudiobook];
-          [v9 player:self currentPositionDidChange:v12 inChapter:v11 absolutePosition:v13];
+          [v9 player:self currentPositionDidChange:currentChapterIndex inChapter:v11 absolutePosition:v13];
         }
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [allObservers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -1885,8 +1885,8 @@ LABEL_7:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [(BKAudiobookPlayer *)self allObservers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allObservers = [(BKAudiobookPlayer *)self allObservers];
+  v6 = [allObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1898,7 +1898,7 @@ LABEL_7:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObservers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
@@ -1912,16 +1912,16 @@ LABEL_7:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_sendPlayerFailedWithError:(id)a3
+- (void)_sendPlayerFailedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = BKAudiobooksLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -1932,8 +1932,8 @@ LABEL_7:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(BKAudiobookPlayer *)self allObservers];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allObservers = [(BKAudiobookPlayer *)self allObservers];
+  v7 = [allObservers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1945,29 +1945,29 @@ LABEL_7:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObservers);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 player:self failedWithError:v4];
+          [v11 player:self failedWithError:errorCopy];
         }
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [allObservers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_sendPlayerStalledWithError:(id)a3
+- (void)_sendPlayerStalledWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = BKAudiobooksLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -1978,8 +1978,8 @@ LABEL_7:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [(BKAudiobookPlayer *)self allObservers];
-  v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allObservers = [(BKAudiobookPlayer *)self allObservers];
+  v7 = [allObservers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1991,20 +1991,20 @@ LABEL_7:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allObservers);
         }
 
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 player:self playbackStalledWithError:v4];
+          [v11 player:self playbackStalledWithError:errorCopy];
         }
 
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [allObservers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v8);
@@ -2016,9 +2016,9 @@ LABEL_7:
   v3 = BKAudiobooksLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(BKAudiobookPlayer *)self currentAudiobook];
+    currentAudiobook = [(BKAudiobookPlayer *)self currentAudiobook];
     *buf = 138412290;
-    v18 = v4;
+    v18 = currentAudiobook;
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "observer: audiobook = %@", buf, 0xCu);
   }
 
@@ -2026,8 +2026,8 @@ LABEL_7:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(BKAudiobookPlayer *)self allObservers];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allObservers = [(BKAudiobookPlayer *)self allObservers];
+  v6 = [allObservers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2039,21 +2039,21 @@ LABEL_7:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObservers);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [(BKAudiobookPlayer *)self currentAudiobook];
-          [v10 player:self reachedEndOfAudiobook:v11];
+          currentAudiobook2 = [(BKAudiobookPlayer *)self currentAudiobook];
+          [v10 player:self reachedEndOfAudiobook:currentAudiobook2];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allObservers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -2072,8 +2072,8 @@ LABEL_7:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(BKAudiobookPlayer *)self allObservers];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allObservers = [(BKAudiobookPlayer *)self allObservers];
+  v5 = [allObservers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2085,7 +2085,7 @@ LABEL_7:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allObservers);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
@@ -2098,7 +2098,7 @@ LABEL_7:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allObservers countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -2117,8 +2117,8 @@ LABEL_7:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BKAudiobookPlayer *)self allObservers];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allObservers = [(BKAudiobookPlayer *)self allObservers];
+  v5 = [allObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2130,23 +2130,23 @@ LABEL_7:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allObservers);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
         if (objc_opt_respondsToSelector())
         {
-          v10 = [(BKAudiobookPlayer *)self player];
-          v11 = [v10 isStalling];
-          v12 = [(BKAudiobookPlayer *)self player];
-          [v9 player:self isStalling:v11 isLoadingResources:{objc_msgSend(v12, "isLoadingResources")}];
+          player = [(BKAudiobookPlayer *)self player];
+          isStalling = [player isStalling];
+          player2 = [(BKAudiobookPlayer *)self player];
+          [v9 player:self isStalling:isStalling isLoadingResources:{objc_msgSend(player2, "isLoadingResources")}];
         }
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -2155,18 +2155,18 @@ LABEL_7:
 
 - (void)_sendBufferedTimeRangesDidChange
 {
-  v3 = [(BKAudiobookPlayer *)self bufferProducer];
-  v4 = [(BKAudiobookPlayer *)self currentChapter];
-  v5 = [(BKAudiobookPlayer *)self bufferedStartTimes];
-  v6 = [(BKAudiobookPlayer *)self bufferedDurations];
-  [v3 updateWithChapter:v4 bufferedTrackPositions:v5 bufferedTrackDurations:v6];
+  bufferProducer = [(BKAudiobookPlayer *)self bufferProducer];
+  currentChapter = [(BKAudiobookPlayer *)self currentChapter];
+  bufferedStartTimes = [(BKAudiobookPlayer *)self bufferedStartTimes];
+  bufferedDurations = [(BKAudiobookPlayer *)self bufferedDurations];
+  [bufferProducer updateWithChapter:currentChapter bufferedTrackPositions:bufferedStartTimes bufferedTrackDurations:bufferedDurations];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(BKAudiobookPlayer *)self allObservers];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allObservers = [(BKAudiobookPlayer *)self allObservers];
+  v8 = [allObservers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2178,36 +2178,36 @@ LABEL_7:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allObservers);
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          v13 = [(BKAudiobookPlayer *)self currentChapterIndex];
-          v14 = [(BKAudiobookPlayer *)self bufferInfo];
-          [v12 player:self bufferedPositionsDidChangeInChapter:v13 bufferInfo:v14];
+          currentChapterIndex = [(BKAudiobookPlayer *)self currentChapterIndex];
+          bufferInfo = [(BKAudiobookPlayer *)self bufferInfo];
+          [v12 player:self bufferedPositionsDidChangeInChapter:currentChapterIndex bufferInfo:bufferInfo];
         }
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [allObservers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)player:(id)a3 stateChangedFrom:(int64_t)a4 to:(int64_t)a5
+- (void)player:(id)player stateChangedFrom:(int64_t)from to:(int64_t)to
 {
-  v8 = a3;
+  playerCopy = player;
   v9 = BKAudiobooksLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = NSStringFromBKAudiobookPlayerState(a4);
-    v11 = NSStringFromBKAudiobookPlayerState(a5);
+    v10 = NSStringFromBKAudiobookPlayerState(from);
+    v11 = NSStringFromBKAudiobookPlayerState(to);
     v14 = 138412546;
     v15 = v10;
     v16 = 2112;
@@ -2215,15 +2215,15 @@ LABEL_7:
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Player state changed from %@ to %@", &v14, 0x16u);
   }
 
-  v12 = [(BKAudiobookPlayer *)self player];
+  player = [(BKAudiobookPlayer *)self player];
 
-  if (v12 == v8)
+  if (player == playerCopy)
   {
-    if (a5 >= 3)
+    if (to >= 3)
     {
-      if (a5 == 3)
+      if (to == 3)
       {
-        if (a4 != 3)
+        if (from != 3)
         {
           v13 = +[NSDate date];
           [(BKAudiobookPlayer *)self setPausedTime:v13];
@@ -2232,10 +2232,10 @@ LABEL_7:
         goto LABEL_9;
       }
 
-      if (a5 != 4)
+      if (to != 4)
       {
 LABEL_9:
-        [(BKAudiobookPlayer *)self _sendStateDidChangeFrom:a4 to:a5];
+        [(BKAudiobookPlayer *)self _sendStateDidChangeFrom:from to:to];
         return;
       }
 
@@ -2247,49 +2247,49 @@ LABEL_9:
   }
 }
 
-- (void)player:(id)a3 positionDidChange:(double)a4
+- (void)player:(id)player positionDidChange:(double)change
 {
-  v5 = a3;
-  v6 = [(BKAudiobookPlayer *)self player];
+  playerCopy = player;
+  player = [(BKAudiobookPlayer *)self player];
 
-  if (v6 == v5)
+  if (player == playerCopy)
   {
 
     [(BKAudiobookPlayer *)self _sendCurrentPositionDidChange];
   }
 }
 
-- (void)player:(id)a3 failedWithError:(id)a4
+- (void)player:(id)player failedWithError:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(BKAudiobookPlayer *)self player];
+  playerCopy = player;
+  errorCopy = error;
+  player = [(BKAudiobookPlayer *)self player];
 
-  if (v7 == v9)
+  if (player == playerCopy)
   {
-    v8 = [(BKAudiobookPlayer *)self _playerErrorWithPlayer:v9 error:v6];
+    v8 = [(BKAudiobookPlayer *)self _playerErrorWithPlayer:playerCopy error:errorCopy];
     [(BKAudiobookPlayer *)self _sendPlayerFailedWithError:v8];
   }
 }
 
-- (void)player:(id)a3 playbackStalledWithError:(id)a4
+- (void)player:(id)player playbackStalledWithError:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(BKAudiobookPlayer *)self player];
+  playerCopy = player;
+  errorCopy = error;
+  player = [(BKAudiobookPlayer *)self player];
 
-  if (v7 == v9)
+  if (player == playerCopy)
   {
-    v8 = [(BKAudiobookPlayer *)self _playerErrorWithPlayer:v9 error:v6];
+    v8 = [(BKAudiobookPlayer *)self _playerErrorWithPlayer:playerCopy error:errorCopy];
     [(BKAudiobookPlayer *)self _sendPlayerStalledWithError:v8];
   }
 }
 
-- (id)_playerErrorWithPlayer:(id)a3 error:(id)a4
+- (id)_playerErrorWithPlayer:(id)player error:(id)error
 {
-  v5 = a4;
-  v6 = [a3 assetNetworkError];
-  if (v6)
+  errorCopy = error;
+  assetNetworkError = [player assetNetworkError];
+  if (assetNetworkError)
   {
     v7 = BKAudiobooksLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -2297,22 +2297,22 @@ LABEL_9:
       sub_2236C();
     }
 
-    v8 = v5;
+    v8 = errorCopy;
     v9 = 1;
-    v5 = v6;
+    errorCopy = assetNetworkError;
 LABEL_5:
 
     v10 = 0;
     goto LABEL_13;
   }
 
-  v11 = [v5 domain];
-  v12 = [v11 isEqualToString:AVFoundationErrorDomain];
+  domain = [errorCopy domain];
+  v12 = [domain isEqualToString:AVFoundationErrorDomain];
 
   if (v12)
   {
-    v13 = [v5 code];
-    if (v13 == -11819)
+    code = [errorCopy code];
+    if (code == -11819)
     {
       v8 = BKAudiobooksLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -2324,7 +2324,7 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    if (v13 == -11835)
+    if (code == -11835)
     {
       v8 = BKAudiobooksLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -2340,8 +2340,8 @@ LABEL_5:
   v9 = 0;
   v10 = 1;
 LABEL_13:
-  v14 = [v5 domain];
-  if (![v14 isEqualToString:BLErrorDomain])
+  domain2 = [errorCopy domain];
+  if (![domain2 isEqualToString:BLErrorDomain])
   {
 
     if (!v10)
@@ -2357,7 +2357,7 @@ LABEL_23:
     }
 
     v9 = 0;
-    if (v5)
+    if (errorCopy)
     {
       goto LABEL_21;
     }
@@ -2365,9 +2365,9 @@ LABEL_23:
     goto LABEL_26;
   }
 
-  v15 = [v5 code];
+  code2 = [errorCopy code];
 
-  if (v15 == stru_20.segname)
+  if (code2 == stru_20.segname)
   {
     v16 = 0;
   }
@@ -2377,7 +2377,7 @@ LABEL_23:
     v16 = v10;
   }
 
-  if (v15 == stru_20.segname)
+  if (code2 == stru_20.segname)
   {
     v9 = 5;
   }
@@ -2388,11 +2388,11 @@ LABEL_23:
   }
 
 LABEL_20:
-  if (v5)
+  if (errorCopy)
   {
 LABEL_21:
     v21 = NSUnderlyingErrorKey;
-    v22 = v5;
+    v22 = errorCopy;
     v17 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
     goto LABEL_27;
   }
@@ -2405,53 +2405,53 @@ LABEL_27:
   return v19;
 }
 
-- (void)player:(id)a3 stallingStateDidChange:(BOOL)a4
+- (void)player:(id)player stallingStateDidChange:(BOOL)change
 {
-  v5 = a3;
-  v6 = [(BKAudiobookPlayer *)self player];
+  playerCopy = player;
+  player = [(BKAudiobookPlayer *)self player];
 
-  if (v6 == v5)
+  if (player == playerCopy)
   {
 
     [(BKAudiobookPlayer *)self _sendIsStallingAndIsLoadingResources];
   }
 }
 
-- (void)player:(id)a3 loadingResourcesStateDidChange:(BOOL)a4
+- (void)player:(id)player loadingResourcesStateDidChange:(BOOL)change
 {
-  v5 = a3;
-  v6 = [(BKAudiobookPlayer *)self player];
+  playerCopy = player;
+  player = [(BKAudiobookPlayer *)self player];
 
-  if (v6 == v5)
+  if (player == playerCopy)
   {
 
     [(BKAudiobookPlayer *)self _sendIsStallingAndIsLoadingResources];
   }
 }
 
-- (void)player:(id)a3 didReachPosition:(double)a4
+- (void)player:(id)player didReachPosition:(double)position
 {
-  v6 = a3;
+  playerCopy = player;
   v7 = BKAudiobooksLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v28 = a4;
+    positionCopy = position;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "handling boundary time: %.1f", buf, 0xCu);
   }
 
-  v8 = [(BKAudiobookPlayer *)self player];
+  player = [(BKAudiobookPlayer *)self player];
 
-  if (v8 == v6)
+  if (player == playerCopy)
   {
-    if ([v6 isScrubbing])
+    if ([playerCopy isScrubbing])
     {
-      [v6 pause];
+      [playerCopy pause];
     }
 
     else
     {
-      v9 = [(BKAudiobookPlayer *)self _chapterAtOffset:self->_currentTrackIndex inTrack:a4];
+      v9 = [(BKAudiobookPlayer *)self _chapterAtOffset:self->_currentTrackIndex inTrack:position];
       if (v9 == self->_currentChapterIndex)
       {
         v10 = BKAudiobooksLog();
@@ -2468,10 +2468,10 @@ LABEL_27:
         [(BKAudiobookPlayer *)self _sendCurrentPositionDidChange];
       }
 
-      v11 = [(BKAudiobookPlayer *)self currentTrack];
-      if ([v11 hasAlternateArtwork])
+      currentTrack = [(BKAudiobookPlayer *)self currentTrack];
+      if ([currentTrack hasAlternateArtwork])
       {
-        [v11 alternateArtworkTimes];
+        [currentTrack alternateArtworkTimes];
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
@@ -2492,13 +2492,13 @@ LABEL_27:
 
               v17 = *(*(&v22 + 1) + 8 * i);
               [v17 doubleValue];
-              if (vabdd_f64(v18, a4) < 0.01)
+              if (vabdd_f64(v18, position) < 0.01)
               {
                 v19[0] = _NSConcreteStackBlock;
                 v19[1] = 3221225472;
                 v19[2] = sub_1E6B4;
                 v19[3] = &unk_3D1A0;
-                v20 = v11;
+                v20 = currentTrack;
                 v21 = v17;
                 [(BKAudiobookPlayer *)self _sendArtworkDidChangeTo:v19];
 
@@ -2522,12 +2522,12 @@ LABEL_22:
   }
 }
 
-- (void)playerCurrentItemEnded:(id)a3
+- (void)playerCurrentItemEnded:(id)ended
 {
-  v4 = a3;
-  v5 = [(BKAudiobookPlayer *)self player];
+  endedCopy = ended;
+  player = [(BKAudiobookPlayer *)self player];
 
-  if (v5 == v4)
+  if (player == endedCopy)
   {
     v6 = BKAudiobooksLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2537,9 +2537,9 @@ LABEL_22:
     }
 
     v7 = [(BKAudiobookPlayer *)self currentTrackIndex]+ 1;
-    v8 = [(BKAudiobookPlayer *)self currentAudiobook];
-    v9 = [v8 tracks];
-    v10 = [v9 count];
+    currentAudiobook = [(BKAudiobookPlayer *)self currentAudiobook];
+    tracks = [currentAudiobook tracks];
+    v10 = [tracks count];
 
     if (v7 >= v10)
     {
@@ -2562,20 +2562,20 @@ LABEL_22:
   }
 }
 
-- (void)player:(id)a3 loadedTimeRangesDidChange:(id)a4 durations:(id)a5
+- (void)player:(id)player loadedTimeRangesDidChange:(id)change durations:(id)durations
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(BKAudiobookPlayer *)self player];
+  changeCopy = change;
+  durationsCopy = durations;
+  playerCopy = player;
+  player = [(BKAudiobookPlayer *)self player];
 
-  if (v11 == v10)
+  if (player == playerCopy)
   {
-    v12 = [v8 count];
-    if (v12 == [v9 count])
+    v12 = [changeCopy count];
+    if (v12 == [durationsCopy count])
     {
-      [(BKAudiobookPlayer *)self setBufferedStartTimes:v8];
-      [(BKAudiobookPlayer *)self setBufferedDurations:v9];
+      [(BKAudiobookPlayer *)self setBufferedStartTimes:changeCopy];
+      [(BKAudiobookPlayer *)self setBufferedDurations:durationsCopy];
       [(BKAudiobookPlayer *)self _sendBufferedTimeRangesDidChange];
     }
 
@@ -2590,7 +2590,7 @@ LABEL_22:
   }
 }
 
-- (void)playerWasInterrupted:(id)a3
+- (void)playerWasInterrupted:(id)interrupted
 {
   if (self->_secondsToRewindAfterInterruption)
   {
@@ -2601,13 +2601,13 @@ LABEL_22:
   }
 }
 
-- (void)player:(id)a3 bitrateChangedFrom:(float)a4 to:(float)a5
+- (void)player:(id)player bitrateChangedFrom:(float)from to:(float)to
 {
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [(BKAudiobookPlayer *)self allObservers:a3];
+  v8 = [(BKAudiobookPlayer *)self allObservers:player];
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -2626,8 +2626,8 @@ LABEL_22:
         v13 = *(*(&v16 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          *&v14 = a4;
-          *&v15 = a5;
+          *&v14 = from;
+          *&v15 = to;
           [v13 player:self bitRateChangedFrom:v14 to:v15];
         }
 
@@ -2642,14 +2642,14 @@ LABEL_22:
   }
 }
 
-- (void)player:(id)a3 volumeDidChange:(float)a4
+- (void)player:(id)player volumeDidChange:(float)change
 {
-  self->_volume = a4;
+  self->_volume = change;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(BKAudiobookPlayer *)self allObservers:a3];
+  v6 = [(BKAudiobookPlayer *)self allObservers:player];
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -2668,7 +2668,7 @@ LABEL_22:
         v11 = *(*(&v13 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          *&v12 = a4;
+          *&v12 = change;
           [v11 player:self volumeDidChange:v12];
         }
 
@@ -2685,10 +2685,10 @@ LABEL_22:
 
 - (id)mediaItem
 {
-  v2 = [(BKAudiobookPlayer *)self currentAudiobook];
-  v3 = [v2 representativeItem];
+  currentAudiobook = [(BKAudiobookPlayer *)self currentAudiobook];
+  representativeItem = [currentAudiobook representativeItem];
 
-  return v3;
+  return representativeItem;
 }
 
 - (_NSRange)currentChapterRange

@@ -1,20 +1,20 @@
 @interface HDRProcessorEx
-- (int)processWithMSRColorConfigs:(id *)a3 MSRScaler:(__IOSurfaceAccelerator *)a4 InputSurfaces:(__IOSurface *)a5 OutputSurfaces:(__IOSurface *)a6 CropRects:(id *)a7 NumOfCropRectsInAGroup:(int *)a8 NumOfGroup:(int)a9;
+- (int)processWithMSRColorConfigs:(id *)configs MSRScaler:(__IOSurfaceAccelerator *)scaler InputSurfaces:(__IOSurface *)surfaces OutputSurfaces:(__IOSurface *)outputSurfaces CropRects:(id *)rects NumOfCropRectsInAGroup:(int *)group NumOfGroup:(int)ofGroup;
 @end
 
 @implementation HDRProcessorEx
 
-- (int)processWithMSRColorConfigs:(id *)a3 MSRScaler:(__IOSurfaceAccelerator *)a4 InputSurfaces:(__IOSurface *)a5 OutputSurfaces:(__IOSurface *)a6 CropRects:(id *)a7 NumOfCropRectsInAGroup:(int *)a8 NumOfGroup:(int)a9
+- (int)processWithMSRColorConfigs:(id *)configs MSRScaler:(__IOSurfaceAccelerator *)scaler InputSurfaces:(__IOSurface *)surfaces OutputSurfaces:(__IOSurface *)outputSurfaces CropRects:(id *)rects NumOfCropRectsInAGroup:(int *)group NumOfGroup:(int)ofGroup
 {
   v35[3] = *MEMORY[0x277D85DE8];
-  if (a9 < 1)
+  if (ofGroup < 1)
   {
 LABEL_13:
     v23 = 0;
     goto LABEL_15;
   }
 
-  v12 = a3;
+  configsCopy2 = configs;
   v13 = 0;
   v31 = *MEMORY[0x277D1AE28];
   v30 = *MEMORY[0x277D1AE58];
@@ -23,8 +23,8 @@ LABEL_13:
   {
     v14 = malloc_type_malloc(0x28uLL, 0x10000407607B2BCuLL);
     *v14 = 3;
-    v14[1] = [v12[v13] bytes];
-    *(v14 + 4) = [v12[v13] length];
+    v14[1] = [configsCopy2[v13] bytes];
+    *(v14 + 4) = [configsCopy2[v13] length];
     *(v14 + 28) = 0;
     *(v14 + 20) = 0;
     v15 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:v14 length:40 freeWhenDone:1];
@@ -38,16 +38,16 @@ LABEL_13:
     v35[2] = MEMORY[0x277CBEC28];
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:3];
 
-    if (a7)
+    if (rects)
     {
-      if (a8 && a7[v13])
+      if (group && rects[v13])
       {
         break;
       }
     }
 
-    v24 = a5[v13];
-    v25 = a6[v13];
+    v24 = surfaces[v13];
+    v25 = outputSurfaces[v13];
     v23 = IOSurfaceAcceleratorTransformSurface();
     if (v23)
     {
@@ -56,14 +56,14 @@ LABEL_13:
 
 LABEL_12:
 
-    v12 = a3;
-    if (++v13 == a9)
+    configsCopy2 = configs;
+    if (++v13 == ofGroup)
     {
       goto LABEL_13;
     }
   }
 
-  if (a8[v13] < 1)
+  if (group[v13] < 1)
   {
     goto LABEL_12;
   }
@@ -72,9 +72,9 @@ LABEL_12:
   v19 = 0;
   while (1)
   {
-    v20 = a5[v13];
-    v21 = a6[v13];
-    v22 = a7[v13];
+    v20 = surfaces[v13];
+    v21 = outputSurfaces[v13];
+    v22 = rects[v13];
     v23 = IOSurfaceAcceleratorTransformSurface();
     if (v23)
     {
@@ -83,7 +83,7 @@ LABEL_12:
 
     ++v19;
     v18 += 48;
-    if (v19 >= a8[v13])
+    if (v19 >= group[v13])
     {
       goto LABEL_12;
     }

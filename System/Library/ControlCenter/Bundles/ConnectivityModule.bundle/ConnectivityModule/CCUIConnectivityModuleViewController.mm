@@ -1,44 +1,44 @@
 @interface CCUIConnectivityModuleViewController
 - (BOOL)_isCurrentGridSizeClassImplicitlyExpanded;
-- (BOOL)performPrimaryActionForControlTemplateView:(id)a3;
-- (CCUIConnectivityModuleViewController)initWithContentModuleContext:(id)a3;
-- (CGSize)_sizeForGridSizeClass:(int64_t)a3;
+- (BOOL)performPrimaryActionForControlTemplateView:(id)view;
+- (CCUIConnectivityModuleViewController)initWithContentModuleContext:(id)context;
+- (CGSize)_sizeForGridSizeClass:(int64_t)class;
 - (NSArray)containerViewsForPlatterTreatment;
-- (id)_makeButtonWithClass:(Class)a3;
-- (id)presentedViewControllerForContentModuleDetailClickPresentationInteractionController:(id)a3;
-- (void)_addViewControllers:(id)a3 withSuperview:(id)a4 forwardingAppearanceMethods:(BOOL)a5;
+- (id)_makeButtonWithClass:(Class)class;
+- (id)presentedViewControllerForContentModuleDetailClickPresentationInteractionController:(id)controller;
+- (void)_addViewControllers:(id)controllers withSuperview:(id)superview forwardingAppearanceMethods:(BOOL)methods;
 - (void)_initializeButtons;
 - (void)_initializeCollapsedView;
 - (void)_initializeExpandedView;
 - (void)_layoutExpandedView;
-- (void)_refreshMenuAffordanceVisibilityForExpandedButtonViewController:(id)a3;
+- (void)_refreshMenuAffordanceVisibilityForExpandedButtonViewController:(id)controller;
 - (void)_updateContentRenderingModeForAllViewControllers;
 - (void)_updateTelephonyState;
-- (void)contentModuleDetailClickPresentationInteractionController:(id)a3 requestsAuthenticationForPresentationWithCompletionHandler:(id)a4;
-- (void)dataSettingsChanged:(id)a3;
-- (void)didTransitionToExpandedContentMode:(BOOL)a3;
+- (void)contentModuleDetailClickPresentationInteractionController:(id)controller requestsAuthenticationForPresentationWithCompletionHandler:(id)handler;
+- (void)dataSettingsChanged:(id)changed;
+- (void)didTransitionToExpandedContentMode:(BOOL)mode;
 - (void)loadView;
-- (void)setCompactContinuousCornerRadius:(double)a3;
-- (void)setContentMetrics:(id)a3;
-- (void)setContentRenderingMode:(unint64_t)a3;
-- (void)setGridSizeClass:(int64_t)a3;
+- (void)setCompactContinuousCornerRadius:(double)radius;
+- (void)setContentMetrics:(id)metrics;
+- (void)setContentRenderingMode:(unint64_t)mode;
+- (void)setGridSizeClass:(int64_t)class;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation CCUIConnectivityModuleViewController
 
-- (CCUIConnectivityModuleViewController)initWithContentModuleContext:(id)a3
+- (CCUIConnectivityModuleViewController)initWithContentModuleContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = CCUIConnectivityModuleViewController;
   v6 = [(CCUIConnectivityModuleViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentModuleContext, a3);
+    objc_storeStrong(&v6->_contentModuleContext, context);
     v7->_testOverrideGridSizeClass = -1;
   }
 
@@ -89,20 +89,20 @@
   objc_msgSend__updateTelephonyState(self, v31, v32);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = CCUIConnectivityModuleViewController;
-  v7 = a4;
-  [(CCUIConnectivityModuleViewController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(CCUIConnectivityModuleViewController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v9[0] = MEMORY[0x29EDCA5F8];
   v9[1] = 3221225472;
   v9[2] = sub_29C963EA4;
   v9[3] = &unk_29F3373A8;
   v9[4] = self;
-  objc_msgSend_animateAlongsideTransition_completion_(v7, v8, v9, 0);
+  objc_msgSend_animateAlongsideTransition_completion_(coordinatorCopy, v8, v9, 0);
 }
 
 - (void)viewWillLayoutSubviews
@@ -312,38 +312,38 @@ LABEL_33:
   objc_msgSend__updateButtonContentMode_(self, v85, isExpanded);
 }
 
-- (void)setCompactContinuousCornerRadius:(double)a3
+- (void)setCompactContinuousCornerRadius:(double)radius
 {
-  if (self->_compactContinuousCornerRadius != a3)
+  if (self->_compactContinuousCornerRadius != radius)
   {
-    self->_compactContinuousCornerRadius = a3;
+    self->_compactContinuousCornerRadius = radius;
     objc_msgSend_loadViewIfNeeded(self, a2, v3);
     v15 = objc_msgSend_collapsedContainerView(self, v6, v7);
-    objc_msgSend__setContinuousCornerRadius_(v15, v8, v9, a3);
+    objc_msgSend__setContinuousCornerRadius_(v15, v8, v9, radius);
     v12 = objc_msgSend_view(self, v10, v11);
-    objc_msgSend__setContinuousCornerRadius_(v12, v13, v14, a3);
+    objc_msgSend__setContinuousCornerRadius_(v12, v13, v14, radius);
   }
 }
 
-- (void)setContentRenderingMode:(unint64_t)a3
+- (void)setContentRenderingMode:(unint64_t)mode
 {
-  if (self->_contentRenderingMode != a3)
+  if (self->_contentRenderingMode != mode)
   {
-    self->_contentRenderingMode = a3;
-    objc_msgSend__updateContentRenderingModeForAllViewControllers(self, a2, a3);
+    self->_contentRenderingMode = mode;
+    objc_msgSend__updateContentRenderingModeForAllViewControllers(self, a2, mode);
   }
 }
 
-- (void)setContentMetrics:(id)a3
+- (void)setContentMetrics:(id)metrics
 {
   v42 = *MEMORY[0x29EDCA608];
-  v5 = a3;
+  metricsCopy = metrics;
   contentMetrics = self->_contentMetrics;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_contentMetrics, a3);
+    objc_storeStrong(&self->_contentMetrics, metrics);
     objc_msgSend_loadViewIfNeeded(self, v7, v8);
-    v36 = self;
+    selfCopy = self;
     v11 = objc_msgSend_orderedButtonViewControllers(self, v9, v10);
     v37 = 0u;
     v38 = 0u;
@@ -388,7 +388,7 @@ LABEL_33:
 
             v26 = v22;
 
-            objc_msgSend_setContentMetrics_(v26, v27, v5);
+            objc_msgSend_setContentMetrics_(v26, v27, metricsCopy);
           }
 
           else
@@ -416,7 +416,7 @@ LABEL_33:
             v28 = v25;
 
             v26 = objc_msgSend_templateView(v28, v29, v30);
-            objc_msgSend_setContentMetrics_(v26, v31, v5);
+            objc_msgSend_setContentMetrics_(v26, v31, metricsCopy);
           }
         }
 
@@ -426,17 +426,17 @@ LABEL_33:
       while (v16);
     }
 
-    v32 = objc_msgSend_view(v36, v14, v15);
+    v32 = objc_msgSend_view(selfCopy, v14, v15);
     objc_msgSend_setNeedsLayout(v32, v33, v34);
   }
 
   v35 = *MEMORY[0x29EDCA608];
 }
 
-- (void)didTransitionToExpandedContentMode:(BOOL)a3
+- (void)didTransitionToExpandedContentMode:(BOOL)mode
 {
   objc_msgSend_setTransitioning_(self, a2, 0);
-  if (!a3)
+  if (!mode)
   {
     v9 = objc_msgSend_expandedContainerView(self, v5, v6);
     objc_msgSend_removeFromSuperview(v9, v7, v8);
@@ -465,14 +465,14 @@ LABEL_33:
   return v12;
 }
 
-- (void)setGridSizeClass:(int64_t)a3
+- (void)setGridSizeClass:(int64_t)class
 {
-  if (self->_gridSizeClass != a3)
+  if (self->_gridSizeClass != class)
   {
     v11[7] = v3;
     v11[8] = v4;
-    self->_gridSizeClass = a3;
-    if (objc_msgSend__isExpanded(self, a2, a3))
+    self->_gridSizeClass = class;
+    if (objc_msgSend__isExpanded(self, a2, class))
     {
       if ((objc_msgSend_isExpandedViewInitialized(self, v6, v7) & 1) == 0)
       {
@@ -507,7 +507,7 @@ LABEL_33:
   }
 }
 
-- (void)dataSettingsChanged:(id)a3
+- (void)dataSettingsChanged:(id)changed
 {
   block[0] = MEMORY[0x29EDCA5F8];
   block[1] = 3221225472;
@@ -594,16 +594,16 @@ LABEL_33:
 
 - (void)_initializeExpandedView
 {
-  v3 = self;
+  selfCopy = self;
   if ((objc_msgSend_isExpandedViewInitialized(self, a2, v2) & 1) == 0)
   {
-    v101 = objc_msgSend_expandedContainerView(v3, v4, v5);
-    v8 = objc_msgSend_contentMetrics(v3, v6, v7);
-    v11 = objc_msgSend_contentModuleContext(v3, v9, v10);
+    v101 = objc_msgSend_expandedContainerView(selfCopy, v4, v5);
+    v8 = objc_msgSend_contentMetrics(selfCopy, v6, v7);
+    v11 = objc_msgSend_contentModuleContext(selfCopy, v9, v10);
     v100 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
-    v14 = objc_msgSend_orderedExpandedButtonViewControllers(v3, v12, v13);
-    isCurrentGridSizeClassImplicitlyExpanded = objc_msgSend__isCurrentGridSizeClassImplicitlyExpanded(v3, v15, v16);
-    objc_msgSend__addViewControllers_withSuperview_forwardingAppearanceMethods_(v3, v18, v14, v101, isCurrentGridSizeClassImplicitlyExpanded ^ 1u);
+    v14 = objc_msgSend_orderedExpandedButtonViewControllers(selfCopy, v12, v13);
+    isCurrentGridSizeClassImplicitlyExpanded = objc_msgSend__isCurrentGridSizeClassImplicitlyExpanded(selfCopy, v15, v16);
+    objc_msgSend__addViewControllers_withSuperview_forwardingAppearanceMethods_(selfCopy, v18, v14, v101, isCurrentGridSizeClassImplicitlyExpanded ^ 1u);
     if (objc_msgSend_count(v14, v19, v20))
     {
       v23 = 0;
@@ -651,7 +651,7 @@ LABEL_33:
 
           if ((objc_msgSend_providesTemplateViewDelegateForExpandedConnectivityModule(v39, v47, v48) & 1) == 0)
           {
-            objc_msgSend_setDelegate_(v42, v49, v3);
+            objc_msgSend_setDelegate_(v42, v49, selfCopy);
           }
 
           if (objc_msgSend_providesTemplateViewContextMenuDelegateForExpandedConnectivityModule(v39, v49, v50))
@@ -691,15 +691,15 @@ LABEL_33:
             else
             {
               v73 = objc_alloc(MEMORY[0x29EDC0CB8]);
-              v75 = objc_msgSend_initWithPresentingViewController_delegate_(v73, v74, v3, v3);
+              v75 = objc_msgSend_initWithPresentingViewController_delegate_(v73, v74, selfCopy, selfCopy);
               objc_msgSend_setViewForInteraction_(v75, v76, v42);
-              objc_msgSend_clickPresentationInteractionManagers(v3, v77, v78);
-              v79 = v3;
+              objc_msgSend_clickPresentationInteractionManagers(selfCopy, v77, v78);
+              v79 = selfCopy;
               v81 = v80 = v8;
               objc_msgSend_addObject_(v81, v82, v75);
 
               v8 = v80;
-              v3 = v79;
+              selfCopy = v79;
               v11 = v98;
             }
           }
@@ -726,7 +726,7 @@ LABEL_33:
         objc_msgSend_setContentMetrics_(v42, v87, v8);
         objc_msgSend_addObject_(v100, v88, v42);
         objc_msgSend_addSubview_(v101, v89, v42);
-        objc_msgSend__refreshMenuAffordanceVisibilityForExpandedButtonViewController_(v3, v90, v30);
+        objc_msgSend__refreshMenuAffordanceVisibilityForExpandedButtonViewController_(selfCopy, v90, v30);
 
         ++v23;
         v14 = v99;
@@ -735,10 +735,10 @@ LABEL_33:
       while (v23 < objc_msgSend_count(v99, v91, v92));
     }
 
-    v93 = objc_msgSend_expandedPlatterViews(v3, v21, v22);
+    v93 = objc_msgSend_expandedPlatterViews(selfCopy, v21, v22);
     objc_msgSend_addObjectsFromArray_(v93, v94, v100);
     objc_msgSend_invalidateContainerViewsForPlatterTreatment(v11, v95, v96);
-    objc_msgSend_setExpandedViewInitialized_(v3, v97, 1);
+    objc_msgSend_setExpandedViewInitialized_(selfCopy, v97, 1);
   }
 }
 
@@ -995,9 +995,9 @@ LABEL_37:
   v20 = *MEMORY[0x29EDCA608];
 }
 
-- (void)_refreshMenuAffordanceVisibilityForExpandedButtonViewController:(id)a3
+- (void)_refreshMenuAffordanceVisibilityForExpandedButtonViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v7 = objc_msgSend_wifiModuleViewController(self, v5, v6);
 
   v10 = objc_msgSend_cellularDataModuleViewController(self, v8, v9);
@@ -1009,7 +1009,7 @@ LABEL_37:
   v19 = objc_msgSend_satelliteModuleViewController(self, v17, v18);
 
   v20 = objc_opt_class();
-  v32 = v4;
+  v32 = controllerCopy;
   if (v20)
   {
     if (objc_opt_isKindOfClass())
@@ -1041,12 +1041,12 @@ LABEL_37:
   }
   v27 = ;
   v28 = 1;
-  if (v7 == v4 || v13 == v4)
+  if (v7 == controllerCopy || v13 == controllerCopy)
   {
     goto LABEL_15;
   }
 
-  if (v16 != v4 && v10 != v4 && v19 != v4)
+  if (v16 != controllerCopy && v10 != controllerCopy && v19 != controllerCopy)
   {
     v29 = objc_msgSend_contextMenuItems(v22, v25, v26);
     v28 = objc_msgSend_count(v29, v30, v31) != 0;
@@ -1056,11 +1056,11 @@ LABEL_15:
   }
 }
 
-- (id)_makeButtonWithClass:(Class)a3
+- (id)_makeButtonWithClass:(Class)class
 {
-  if (objc_msgSend_isSupported(a3, a2, a3))
+  if (objc_msgSend_isSupported(class, a2, class))
   {
-    v4 = objc_alloc_init(a3);
+    v4 = objc_alloc_init(class);
   }
 
   else
@@ -1149,17 +1149,17 @@ LABEL_15:
   objc_msgSend__updateContentRenderingModeForAllViewControllers(self, v51, v52);
 }
 
-- (void)_addViewControllers:(id)a3 withSuperview:(id)a4 forwardingAppearanceMethods:(BOOL)a5
+- (void)_addViewControllers:(id)controllers withSuperview:(id)superview forwardingAppearanceMethods:(BOOL)methods
 {
-  v5 = a5;
+  methodsCopy = methods;
   v30 = *MEMORY[0x29EDCA608];
-  v8 = a3;
-  v9 = a4;
+  controllersCopy = controllers;
+  superviewCopy = superview;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v10, &v25, v29, 16);
+  v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(controllersCopy, v10, &v25, v29, 16);
   if (v11)
   {
     v13 = v11;
@@ -1170,7 +1170,7 @@ LABEL_15:
       {
         if (*v26 != v14)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(controllersCopy);
         }
 
         v16 = *(*(&v25 + 1) + 8 * i);
@@ -1183,17 +1183,17 @@ LABEL_15:
 
         else
         {
-          objc_msgSend_bs_addChildViewController_withSuperview_(self, v17, v16, v9);
+          objc_msgSend_bs_addChildViewController_withSuperview_(self, v17, v16, superviewCopy);
         }
       }
 
-      v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v12, &v25, v29, 16);
+      v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(controllersCopy, v12, &v25, v29, 16);
     }
 
     while (v13);
   }
 
-  if (v5)
+  if (methodsCopy)
   {
     objc_msgSend_ccui_safelyBeginAppearanceTransitionForChildViewControllers_animated_(self, v12, 1, 0);
     objc_msgSend_ccui_safelyEndAppearanceTransitionForChildViewControllers(self, v22, v23);
@@ -1213,9 +1213,9 @@ LABEL_15:
   return (objc_msgSend_implicitlyExpandedGridSizeClasses(self, v5, v6) & (1 << v4)) != 0;
 }
 
-- (CGSize)_sizeForGridSizeClass:(int64_t)a3
+- (CGSize)_sizeForGridSizeClass:(int64_t)class
 {
-  v3 = objc_msgSend_contentMetrics(self, a2, a3);
+  v3 = objc_msgSend_contentMetrics(self, a2, class);
   objc_msgSend_gridGeometryInfo(v3, v4, v5);
   CCUIBoundsSizeForGridSizeClassWithGeometry();
   v7 = v6;
@@ -1228,11 +1228,11 @@ LABEL_15:
   return result;
 }
 
-- (id)presentedViewControllerForContentModuleDetailClickPresentationInteractionController:(id)a3
+- (id)presentedViewControllerForContentModuleDetailClickPresentationInteractionController:(id)controller
 {
   v41 = *MEMORY[0x29EDCA608];
   self->_presentingMenuViewController = 1;
-  v4 = objc_msgSend_viewForInteraction(a3, a2, a3);
+  v4 = objc_msgSend_viewForInteraction(controller, a2, controller);
   objc_msgSend_orderedExpandedButtonViewControllers(self, v5, v6);
   v36 = 0u;
   v37 = 0u;
@@ -1301,25 +1301,25 @@ LABEL_13:
   return v26;
 }
 
-- (void)contentModuleDetailClickPresentationInteractionController:(id)a3 requestsAuthenticationForPresentationWithCompletionHandler:(id)a4
+- (void)contentModuleDetailClickPresentationInteractionController:(id)controller requestsAuthenticationForPresentationWithCompletionHandler:(id)handler
 {
-  v7 = a4;
-  if (v7)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v8 = objc_msgSend_contentModuleContext(self, v5, v6);
     v10[0] = MEMORY[0x29EDCA5F8];
     v10[1] = 3221225472;
     v10[2] = sub_29C9663B8;
     v10[3] = &unk_29F3373D0;
-    v11 = v7;
+    v11 = handlerCopy;
     objc_msgSend_requestAuthenticationWithCompletionHandler_(v8, v9, v10);
   }
 }
 
-- (BOOL)performPrimaryActionForControlTemplateView:(id)a3
+- (BOOL)performPrimaryActionForControlTemplateView:(id)view
 {
   v27 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  viewCopy = view;
   objc_msgSend_clickPresentationInteractionManagers(self, v5, v6);
   v22 = 0u;
   v23 = 0u;
@@ -1342,7 +1342,7 @@ LABEL_13:
         v15 = *(*(&v22 + 1) + 8 * i);
         v16 = objc_msgSend_viewForInteraction(v15, v10, v11, v22);
         v19 = v16;
-        if (v16 == v4)
+        if (v16 == viewCopy)
         {
           objc_msgSend_presentViewController(v15, v17, v18);
 

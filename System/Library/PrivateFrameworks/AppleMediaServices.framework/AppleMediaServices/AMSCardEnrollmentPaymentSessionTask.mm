@@ -1,17 +1,17 @@
 @interface AMSCardEnrollmentPaymentSessionTask
-+ (id)_paymentServiceURLStringForMerchantURL:(id)a3;
-+ (id)_performPaymentSessionWithBag:(id)a3 isForParentalVerification:(BOOL)a4;
-+ (id)_performSilentEnrollmentPaymentSessionWithContext:(id)a3;
-+ (void)paymentSessionWithBag:(id)a3 completion:(id)a4;
++ (id)_paymentServiceURLStringForMerchantURL:(id)l;
++ (id)_performPaymentSessionWithBag:(id)bag isForParentalVerification:(BOOL)verification;
++ (id)_performSilentEnrollmentPaymentSessionWithContext:(id)context;
++ (void)paymentSessionWithBag:(id)bag completion:(id)completion;
 @end
 
 @implementation AMSCardEnrollmentPaymentSessionTask
 
-+ (void)paymentSessionWithBag:(id)a3 completion:(id)a4
++ (void)paymentSessionWithBag:(id)bag completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a1 performPaymentSessionEnrollmentWithBag:a3];
+  completionCopy = completion;
+  v7 = [self performPaymentSessionEnrollmentWithBag:bag];
   v15 = 0;
   v8 = [v7 resultWithError:&v15];
   v9 = v15;
@@ -24,8 +24,8 @@
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v12 = objc_opt_class();
       v13 = v12;
@@ -36,21 +36,21 @@
       v19 = v14;
       v20 = 2114;
       v21 = v9;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Payment session failed with error: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Payment session failed with error: %{public}@", buf, 0x20u);
     }
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, v8, v9);
+    completionCopy[2](completionCopy, v8, v9);
   }
 }
 
-+ (id)_performPaymentSessionWithBag:(id)a3 isForParentalVerification:(BOOL)a4
++ (id)_performPaymentSessionWithBag:(id)bag isForParentalVerification:(BOOL)verification
 {
-  v4 = a4;
+  verificationCopy = verification;
   v76 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  bagCopy = bag;
   v67 = AMSSetLogKeyIfNeeded();
   v7 = objc_alloc_init(AMSMutablePromise);
   v8 = +[AMSLogConfig sharedConfig];
@@ -59,31 +59,31 @@
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
     *&buf[4] = objc_opt_class();
     *&buf[12] = 2114;
     *&buf[14] = v67;
     v10 = *&buf[4];
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing silent-enrollment payment session task", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing silent-enrollment payment session task", buf, 0x16u);
   }
 
-  v11 = [v6 BOOLForKey:@"use-silent-enrollment"];
+  v11 = [bagCopy BOOLForKey:@"use-silent-enrollment"];
   v12 = [v11 valueWithError:0];
   if (objc_opt_respondsToSelector())
   {
-    v13 = [v6 BOOLForKey:@"use-silent-enrollment"];
+    v13 = [bagCopy BOOLForKey:@"use-silent-enrollment"];
     v14 = [v13 valueWithError:0];
-    v15 = [v14 BOOLValue];
+    bOOLValue = [v14 BOOLValue];
 
-    if (v15)
+    if (bOOLValue)
     {
-      v16 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-      v17 = [v16 ams_activeiTunesAccount];
+      ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+      ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
 
-      if (!v17)
+      if (!ams_activeiTunesAccount)
       {
         v40 = +[AMSLogConfig sharedConfig];
         if (!v40)
@@ -91,8 +91,8 @@
           v40 = +[AMSLogConfig sharedConfig];
         }
 
-        v41 = [v40 OSLogObject];
-        if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
+        oSLogObject2 = [v40 OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
         {
           v42 = objc_opt_class();
           *buf = 138543618;
@@ -100,41 +100,41 @@
           *&buf[12] = 2114;
           *&buf[14] = v67;
           v43 = v42;
-          _os_log_impl(&dword_192869000, v41, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Silent-enrollment payment session failed for no active iTunes account", buf, 0x16u);
+          _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Silent-enrollment payment session failed for no active iTunes account", buf, 0x16u);
         }
 
-        v19 = AMSError(103, @"Silent Enrollment Error", @"No active iTunes account", 0);
-        [(AMSMutablePromise *)v7 finishWithError:v19];
+        ams_activeiCloudAccount = AMSError(103, @"Silent Enrollment Error", @"No active iTunes account", 0);
+        [(AMSMutablePromise *)v7 finishWithError:ams_activeiCloudAccount];
         v35 = v7;
         goto LABEL_45;
       }
 
-      v18 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-      v19 = [v18 ams_activeiCloudAccount];
+      ams_sharedAccountStore2 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+      ams_activeiCloudAccount = [ams_sharedAccountStore2 ams_activeiCloudAccount];
 
-      if (v19)
+      if (ams_activeiCloudAccount)
       {
-        v20 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-        v21 = [v20 ams_isActiveAccountCombined];
+        ams_sharedAccountStore3 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+        ams_isActiveAccountCombined = [ams_sharedAccountStore3 ams_isActiveAccountCombined];
 
-        if (v21)
+        if (ams_isActiveAccountCombined)
         {
-          v66 = [[AMSURLRequestEncoder alloc] initWithBag:v6];
-          [(AMSURLRequestEncoder *)v66 setAccount:v19];
-          v22 = [v6 URLForKey:@"applePayPaymentSession"];
+          v66 = [[AMSURLRequestEncoder alloc] initWithBag:bagCopy];
+          [(AMSURLRequestEncoder *)v66 setAccount:ams_activeiCloudAccount];
+          v22 = [bagCopy URLForKey:@"applePayPaymentSession"];
           v65 = [v22 valueWithError:0];
 
           v62 = +[AMSCardEnrollment paymentServicesMerchantURL];
-          v64 = [a1 _paymentServiceURLStringForMerchantURL:v62];
+          v64 = [self _paymentServiceURLStringForMerchantURL:v62];
           v23 = MEMORY[0x1E696AEC0];
-          v24 = [v65 absoluteString];
-          v63 = [v23 stringWithFormat:@"%@?paymentServiceUrl=%@", v24, v64];
+          absoluteString = [v65 absoluteString];
+          v63 = [v23 stringWithFormat:@"%@?paymentServiceUrl=%@", absoluteString, v64];
 
-          if (v4)
+          if (verificationCopy)
           {
             v25 = MEMORY[0x1E696AEC0];
-            v26 = [v65 absoluteString];
-            v27 = [v25 stringWithFormat:@"%@?isPVK=true&paymentServiceUrl=%@", v26, v64];
+            absoluteString2 = [v65 absoluteString];
+            v27 = [v25 stringWithFormat:@"%@?isPVK=true&paymentServiceUrl=%@", absoluteString2, v64];
 
             v63 = v27;
           }
@@ -152,8 +152,8 @@
               v31 = +[AMSLogConfig sharedConfig];
             }
 
-            v32 = [v31 OSLogObject];
-            if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+            oSLogObject3 = [v31 OSLogObject];
+            if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
             {
               v33 = objc_opt_class();
               *buf = 138543874;
@@ -163,7 +163,7 @@
               *&buf[22] = 2114;
               v74 = v30;
               v34 = v33;
-              _os_log_impl(&dword_192869000, v32, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Silent-enrollment payment session failed to encode request with error: %{public}@", buf, 0x20u);
+              _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Silent-enrollment payment session failed to encode request with error: %{public}@", buf, 0x20u);
             }
 
             [(AMSMutablePromise *)v7 finishWithError:v30];
@@ -172,7 +172,7 @@
 
           else
           {
-            [v29 ams_addSilentEnrollmentHeadersForAccount:v19];
+            [v29 ams_addSilentEnrollmentHeadersForAccount:ams_activeiCloudAccount];
             v69 = 0;
             v70 = &v69;
             v71 = 0x2050000000;
@@ -192,8 +192,8 @@
             v53 = v52;
             _Block_object_dispose(&v69, 8);
             v54 = objc_alloc_init(v52);
-            v55 = [v19 ams_DSID];
-            [v54 setAccountIdentifier:v55];
+            ams_DSID = [ams_activeiCloudAccount ams_DSID];
+            [v54 setAccountIdentifier:ams_DSID];
 
             v56 = [v29 valueForHTTPHeaderField:@"X-Apple-ADSID"];
             [v54 setHeaderADSID:v56];
@@ -211,7 +211,7 @@
             [v54 setHeaderMMeDeviceId:v60];
 
             [v54 setURLString:v63];
-            v35 = [a1 _performSilentEnrollmentPaymentSessionWithContext:v54];
+            v35 = [self _performSilentEnrollmentPaymentSessionWithContext:v54];
           }
 
           goto LABEL_44;
@@ -223,8 +223,8 @@
           v48 = +[AMSLogConfig sharedConfig];
         }
 
-        v49 = [v48 OSLogObject];
-        if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
+        oSLogObject4 = [v48 OSLogObject];
+        if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
         {
           v50 = objc_opt_class();
           *buf = 138543618;
@@ -232,7 +232,7 @@
           *&buf[12] = 2114;
           *&buf[14] = v67;
           v51 = v50;
-          _os_log_impl(&dword_192869000, v49, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Silent-enrollment payment session failed for no combined account", buf, 0x16u);
+          _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Silent-enrollment payment session failed for no combined account", buf, 0x16u);
         }
 
         v66 = AMSError(105, @"Silent Enrollment Error", @"Split Account", 0);
@@ -247,8 +247,8 @@
           v44 = +[AMSLogConfig sharedConfig];
         }
 
-        v45 = [v44 OSLogObject];
-        if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
+        oSLogObject5 = [v44 OSLogObject];
+        if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
         {
           v46 = objc_opt_class();
           *buf = 138543618;
@@ -256,7 +256,7 @@
           *&buf[12] = 2114;
           *&buf[14] = v67;
           v47 = v46;
-          _os_log_impl(&dword_192869000, v45, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Silent-enrollment payment session failed for no active iCloud account", buf, 0x16u);
+          _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Silent-enrollment payment session failed for no active iCloud account", buf, 0x16u);
         }
 
         v66 = AMSError(103, @"Silent Enrollment Error", @"No active iCloud account", 0);
@@ -281,8 +281,8 @@ LABEL_45:
     v36 = +[AMSLogConfig sharedConfig];
   }
 
-  v37 = [v36 OSLogObject];
-  if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+  oSLogObject6 = [v36 OSLogObject];
+  if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_ERROR))
   {
     v38 = objc_opt_class();
     *buf = 138543618;
@@ -290,45 +290,45 @@ LABEL_45:
     *&buf[12] = 2114;
     *&buf[14] = v67;
     v39 = v38;
-    _os_log_impl(&dword_192869000, v37, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Silent-enrollment payment session failed for feature not enabled", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject6, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Silent-enrollment payment session failed for feature not enabled", buf, 0x16u);
   }
 
-  v17 = AMSError(5, @"Silent Enrollment Error", @"Feature Not Enabled", 0);
-  [(AMSMutablePromise *)v7 finishWithError:v17];
+  ams_activeiTunesAccount = AMSError(5, @"Silent Enrollment Error", @"Feature Not Enabled", 0);
+  [(AMSMutablePromise *)v7 finishWithError:ams_activeiTunesAccount];
   v35 = v7;
 LABEL_46:
 
   return v35;
 }
 
-+ (id)_paymentServiceURLStringForMerchantURL:(id)a3
++ (id)_paymentServiceURLStringForMerchantURL:(id)l
 {
-  v3 = [a3 ams_URLByDeletingTrailingSlash];
-  v4 = [v3 absoluteString];
-  v5 = [v3 host];
-  v6 = [v4 rangeOfString:v5];
+  ams_URLByDeletingTrailingSlash = [l ams_URLByDeletingTrailingSlash];
+  absoluteString = [ams_URLByDeletingTrailingSlash absoluteString];
+  host = [ams_URLByDeletingTrailingSlash host];
+  v6 = [absoluteString rangeOfString:host];
 
-  v7 = [v3 absoluteString];
-  v8 = [v7 substringFromIndex:v6];
+  absoluteString2 = [ams_URLByDeletingTrailingSlash absoluteString];
+  v8 = [absoluteString2 substringFromIndex:v6];
 
   v9 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@":/"];
-  v10 = [v9 invertedSet];
-  v11 = [v8 stringByAddingPercentEncodingWithAllowedCharacters:v10];
+  invertedSet = [v9 invertedSet];
+  v11 = [v8 stringByAddingPercentEncodingWithAllowedCharacters:invertedSet];
 
   return v11;
 }
 
-+ (id)_performSilentEnrollmentPaymentSessionWithContext:(id)a3
++ (id)_performSilentEnrollmentPaymentSessionWithContext:(id)context
 {
-  v4 = a3;
-  objc_initWeak(&location, a1);
+  contextCopy = context;
+  objc_initWeak(&location, self);
   v5 = [AMSMutableLazyPromise alloc];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __89__AMSCardEnrollmentPaymentSessionTask__performSilentEnrollmentPaymentSessionWithContext___block_invoke;
   v9[3] = &unk_1E73B5678;
   objc_copyWeak(&v11, &location);
-  v6 = v4;
+  v6 = contextCopy;
   v10 = v6;
   v7 = [(AMSMutableLazyPromise *)v5 initWithBlock:v9];
 

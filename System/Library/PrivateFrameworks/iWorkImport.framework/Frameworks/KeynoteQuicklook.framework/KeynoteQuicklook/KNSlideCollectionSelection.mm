@@ -1,23 +1,23 @@
 @interface KNSlideCollectionSelection
 - (BOOL)isContiguous;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (KNSlideCollectionSelection)init;
-- (KNSlideCollectionSelection)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (KNSlideCollectionSelection)initWithSlideNode:(id)a3;
-- (KNSlideCollectionSelection)initWithSlideNodes:(id)a3 slideNodeToEdit:(id)a4;
+- (KNSlideCollectionSelection)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (KNSlideCollectionSelection)initWithSlideNode:(id)node;
+- (KNSlideCollectionSelection)initWithSlideNodes:(id)nodes slideNodeToEdit:(id)edit;
 - (id)UUIDDescription;
 - (id)description;
 - (unint64_t)hash;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation KNSlideCollectionSelection
 
-- (KNSlideCollectionSelection)initWithSlideNodes:(id)a3 slideNodeToEdit:(id)a4
+- (KNSlideCollectionSelection)initWithSlideNodes:(id)nodes slideNodeToEdit:(id)edit
 {
-  v6 = a3;
-  v8 = a4;
-  if (v8 && (objc_msgSend_containsObject_(v6, v7, v8) & 1) == 0)
+  nodesCopy = nodes;
+  editCopy = edit;
+  if (editCopy && (objc_msgSend_containsObject_(nodesCopy, v7, editCopy) & 1) == 0)
   {
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[KNSlideCollectionSelection initWithSlideNodes:slideNodeToEdit:]");
@@ -32,22 +32,22 @@
   v19 = [(KNSlideCollectionSelection *)&v23 init];
   if (v19)
   {
-    v20 = objc_msgSend_copy(v6, v17, v18);
+    v20 = objc_msgSend_copy(nodesCopy, v17, v18);
     slideNodes = v19->_slideNodes;
     v19->_slideNodes = v20;
 
-    objc_storeStrong(&v19->_slideNodeToEdit, a4);
+    objc_storeStrong(&v19->_slideNodeToEdit, edit);
   }
 
   return v19;
 }
 
-- (KNSlideCollectionSelection)initWithSlideNode:(id)a3
+- (KNSlideCollectionSelection)initWithSlideNode:(id)node
 {
-  v6 = a3;
-  if (v6)
+  nodeCopy = node;
+  if (nodeCopy)
   {
-    objc_msgSend_orderedSetWithObject_(MEMORY[0x277CBEB70], v4, v6);
+    objc_msgSend_orderedSetWithObject_(MEMORY[0x277CBEB70], v4, nodeCopy);
   }
 
   else
@@ -55,7 +55,7 @@
     objc_msgSend_orderedSet(MEMORY[0x277CBEB70], v4, v5);
   }
   v7 = ;
-  v9 = objc_msgSend_initWithSlideNodes_slideNodeToEdit_(self, v8, v7, v6);
+  v9 = objc_msgSend_initWithSlideNodes_slideNodeToEdit_(self, v8, v7, nodeCopy);
 
   return v9;
 }
@@ -83,7 +83,7 @@
 {
   v49 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBEB58]);
-  v42 = self;
+  selfCopy = self;
   v6 = objc_msgSend_slideNodes(self, v4, v5);
   v9 = objc_msgSend_count(v6, v7, v8);
   v11 = objc_msgSend_initWithCapacity_(v3, v10, v9);
@@ -126,17 +126,17 @@
   v30 = MEMORY[0x277CCACA8];
   v31 = objc_opt_class();
   v32 = NSStringFromClass(v31);
-  v35 = objc_msgSend_slideNodeToEdit(v42, v33, v34);
+  v35 = objc_msgSend_slideNodeToEdit(selfCopy, v33, v34);
   v38 = objc_msgSend_objectUUIDPath(v35, v36, v37);
-  v40 = objc_msgSend_stringWithFormat_(v30, v39, @"<%@ %p slideNodes=(%@) slideNodeToEdit=%@>", v32, v42, v11, v38);
+  v40 = objc_msgSend_stringWithFormat_(v30, v39, @"<%@ %p slideNodes=(%@) slideNodeToEdit=%@>", v32, selfCopy, v11, v38);
 
   return v40;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     isEqual = 1;
   }
@@ -144,9 +144,9 @@
   else
   {
     v5 = objc_opt_class();
-    if (objc_msgSend_isMemberOfClass_(v4, v6, v5))
+    if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
     {
-      v7 = v4;
+      v7 = equalCopy;
       v10 = objc_msgSend_slideNodes(self, v8, v9);
       v13 = objc_msgSend_slideNodes(v7, v11, v12);
       v16 = objc_msgSend_slideNodeToEdit(self, v14, v15);
@@ -230,9 +230,9 @@
   return v24 & 1;
 }
 
-- (KNSlideCollectionSelection)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (KNSlideCollectionSelection)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v22.receiver = self;
   v22.super_class = KNSlideCollectionSelection;
   v7 = [(KNSlideCollectionSelection *)&v22 init];
@@ -245,11 +245,11 @@
     v20[3] = &unk_27A697A10;
     v9 = v7;
     v21 = v9;
-    v10 = v6;
+    v10 = unarchiverCopy;
     v11 = objc_opt_class();
-    objc_msgSend_readRepeatedWeakReferenceMessage_class_protocol_completion_(v10, v12, a3 + 24, v11, 0, v20);
+    objc_msgSend_readRepeatedWeakReferenceMessage_class_protocol_completion_(v10, v12, archive + 24, v11, 0, v20);
 
-    v13 = *(a3 + 9);
+    v13 = *(archive + 9);
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = sub_275DBD7F8;
@@ -271,32 +271,32 @@
   return v8;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v17 = a4;
+  archiverCopy = archiver;
   v8 = objc_msgSend_array(self->_slideNodes, v6, v7);
-  objc_msgSend_setWeakReferenceArray_message_(v17, v9, v8, a3 + 24);
+  objc_msgSend_setWeakReferenceArray_message_(archiverCopy, v9, v8, archive + 24);
 
   v12 = objc_msgSend_slideNodeToEdit(self, v10, v11);
 
   if (v12)
   {
     slideNodeToEdit = self->_slideNodeToEdit;
-    *(a3 + 4) |= 1u;
-    v15 = *(a3 + 9);
+    *(archive + 4) |= 1u;
+    v15 = *(archive + 9);
     if (!v15)
     {
-      v16 = *(a3 + 1);
+      v16 = *(archive + 1);
       if (v16)
       {
         v16 = *(v16 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v15 = MEMORY[0x277C8F050](v16);
-      *(a3 + 9) = v15;
+      *(archive + 9) = v15;
     }
 
-    objc_msgSend_setWeakReference_message_(v17, v13, slideNodeToEdit, v15);
+    objc_msgSend_setWeakReference_message_(archiverCopy, v13, slideNodeToEdit, v15);
   }
 }
 

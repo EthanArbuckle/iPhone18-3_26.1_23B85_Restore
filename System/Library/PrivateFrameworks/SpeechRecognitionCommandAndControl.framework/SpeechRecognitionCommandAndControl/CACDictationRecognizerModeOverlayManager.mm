@@ -1,6 +1,6 @@
 @interface CACDictationRecognizerModeOverlayManager
 - (CACDictationRecognizerModeOverlayManagerDelegate)delegate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)showOverlayForDictiationRecognizerMode;
 @end
 
@@ -35,9 +35,9 @@ void __82__CACDictationRecognizerModeOverlayManager_showOverlayForDictiationReco
   [v4 setImageRect:?];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)

@@ -1,12 +1,12 @@
 @interface NonHighlightableTextView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (_TtC26AppDistributionLaunchAngel24NonHighlightableTextView)initWithCoder:(id)a3;
-- (_TtC26AppDistributionLaunchAngel24NonHighlightableTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (_TtC26AppDistributionLaunchAngel24NonHighlightableTextView)initWithCoder:(id)coder;
+- (_TtC26AppDistributionLaunchAngel24NonHighlightableTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
 @end
 
 @implementation NonHighlightableTextView
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -16,19 +16,19 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v6 = a4;
-  v7 = self;
+  eventCopy = event;
+  selfCopy = self;
   v8 = sub_100041238();
 
   return v8 & 1;
 }
 
-- (_TtC26AppDistributionLaunchAngel24NonHighlightableTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC26AppDistributionLaunchAngel24NonHighlightableTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -39,12 +39,12 @@
 
   v12.receiver = self;
   v12.super_class = type metadata accessor for NonHighlightableTextView();
-  v10 = [(NonHighlightableTextView *)&v12 initWithFrame:a4 textContainer:x, y, width, height];
+  height = [(NonHighlightableTextView *)&v12 initWithFrame:container textContainer:x, y, width, height];
 
-  return v10;
+  return height;
 }
 
-- (_TtC26AppDistributionLaunchAngel24NonHighlightableTextView)initWithCoder:(id)a3
+- (_TtC26AppDistributionLaunchAngel24NonHighlightableTextView)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -56,8 +56,8 @@
 
   v8.receiver = self;
   v8.super_class = type metadata accessor for NonHighlightableTextView();
-  v5 = a3;
-  v6 = [(NonHighlightableTextView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(NonHighlightableTextView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

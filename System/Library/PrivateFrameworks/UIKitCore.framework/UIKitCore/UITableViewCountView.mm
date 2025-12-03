@@ -1,52 +1,52 @@
 @interface UITableViewCountView
-- (UITableViewCountView)initWithFrame:(CGRect)a3 withCountString:(id)a4 withCount:(int64_t)a5;
-- (void)setCount:(int64_t)a3;
-- (void)setCountString:(id)a3 withCount:(int64_t)a4;
+- (UITableViewCountView)initWithFrame:(CGRect)frame withCountString:(id)string withCount:(int64_t)count;
+- (void)setCount:(int64_t)count;
+- (void)setCountString:(id)string withCount:(int64_t)count;
 @end
 
 @implementation UITableViewCountView
 
-- (UITableViewCountView)initWithFrame:(CGRect)a3 withCountString:(id)a4 withCount:(int64_t)a5
+- (UITableViewCountView)initWithFrame:(CGRect)frame withCountString:(id)string withCount:(int64_t)count
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  stringCopy = string;
   v16.receiver = self;
   v16.super_class = UITableViewCountView;
-  v12 = [(UILabel *)&v16 initWithFrame:x, y, width, height];
-  if (v12)
+  height = [(UILabel *)&v16 initWithFrame:x, y, width, height];
+  if (height)
   {
     v13 = +[UIColor grayColor];
-    [(UILabel *)v12 setTextColor:v13];
+    [(UILabel *)height setTextColor:v13];
 
     v14 = [off_1E70ECC18 systemFontOfSize:20.0];
-    [(UILabel *)v12 setFont:v14];
+    [(UILabel *)height setFont:v14];
 
-    [(UILabel *)v12 setUserInteractionEnabled:0];
-    [(UILabel *)v12 setTextAlignment:1];
-    [(UIView *)v12 setBackgroundColor:0];
-    [(UITableViewCountView *)v12 setCountString:v11 withCount:a5];
+    [(UILabel *)height setUserInteractionEnabled:0];
+    [(UILabel *)height setTextAlignment:1];
+    [(UIView *)height setBackgroundColor:0];
+    [(UITableViewCountView *)height setCountString:stringCopy withCount:count];
   }
 
-  return v12;
+  return height;
 }
 
-- (void)setCountString:(id)a3 withCount:(int64_t)a4
+- (void)setCountString:(id)string withCount:(int64_t)count
 {
-  v6 = [a3 copy];
+  v6 = [string copy];
   countString = self->_countString;
   self->_countString = v6;
 
-  [(UITableViewCountView *)self setCount:a4];
+  [(UITableViewCountView *)self setCount:count];
 }
 
-- (void)setCount:(int64_t)a3
+- (void)setCount:(int64_t)count
 {
-  self->_count = a3;
+  self->_count = count;
   v4 = 0.0;
-  if (a3 > 19)
+  if (count > 19)
   {
     v4 = 1.0;
   }

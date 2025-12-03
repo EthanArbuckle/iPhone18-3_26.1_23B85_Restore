@@ -1,37 +1,37 @@
 @interface VOTEventFactory
 + (void)initialize;
-- (BOOL)_atvEventFilter:(id)a3;
-- (BOOL)_canScribbleWithElement:(id)a3;
-- (BOOL)_gestureEventIsInvalid:(id)a3;
-- (BOOL)_handleAccessibilityEvent:(id)a3;
-- (BOOL)_handleDirectInteractionEvent:(id)a3;
-- (BOOL)_handleVoiceOverGreySupportAccessibilityEvent:(id)a3;
-- (BOOL)_iosEventFilter:(id)a3;
-- (BOOL)_isEdgePressSupportedAtPosition:(CGPoint)a3;
+- (BOOL)_atvEventFilter:(id)filter;
+- (BOOL)_canScribbleWithElement:(id)element;
+- (BOOL)_gestureEventIsInvalid:(id)invalid;
+- (BOOL)_handleAccessibilityEvent:(id)event;
+- (BOOL)_handleDirectInteractionEvent:(id)event;
+- (BOOL)_handleVoiceOverGreySupportAccessibilityEvent:(id)event;
+- (BOOL)_iosEventFilter:(id)filter;
+- (BOOL)_isEdgePressSupportedAtPosition:(CGPoint)position;
 - (BOOL)_isPreviewElementSelected;
 - (BOOL)_isTapAndHoldPending;
 - (BOOL)_shouldAttemptTracking;
 - (BOOL)_shouldUseGesturedTextInputManager;
-- (BOOL)_twoFingersDistant:(id)a3;
-- (BOOL)_updateFingersInSystemControlLocation:(CGPoint)a3 fingerCount:(unint64_t)a4 isLift:(BOOL)a5;
-- (BOOL)_willStartEdgePanGestureForEvent:(id)a3;
+- (BOOL)_twoFingersDistant:(id)distant;
+- (BOOL)_updateFingersInSystemControlLocation:(CGPoint)location fingerCount:(unint64_t)count isLift:(BOOL)lift;
+- (BOOL)_willStartEdgePanGestureForEvent:(id)event;
 - (BOOL)brailleInputActive;
 - (BOOL)brailleInputAllowsElementMovement;
 - (BOOL)brailleInputShouldBeDeactivatedByEscape;
 - (BOOL)brailleInputWantsToStayActive;
-- (BOOL)handleVOSGesture:(id)a3;
+- (BOOL)handleVOSGesture:(id)gesture;
 - (BOOL)handwritingInputActive;
 - (BOOL)mapsExplorationInputActive;
-- (BOOL)processEventAsGesturedTextInput:(id)a3;
+- (BOOL)processEventAsGesturedTextInput:(id)input;
 - (BOOL)registerForEvents;
 - (CGPoint)_averagePointForLastDownEvent;
-- (CGPoint)_convertZoomPointToDevicePoint:(CGPoint)a3;
-- (CGPoint)_startPointForScribbleWithElement:(id)a3 originalStartPoint:(CGPoint)a4;
-- (CGPoint)_updateTapAndHoldLocationDataForElement:(id)a3;
-- (CGPoint)adjustedPointForFactoryPoint:(CGPoint)a3 forOrientation:(int64_t)a4;
-- (CGPoint)convertDevicePointToZoomedPoint:(CGPoint)a3;
+- (CGPoint)_convertZoomPointToDevicePoint:(CGPoint)point;
+- (CGPoint)_startPointForScribbleWithElement:(id)element originalStartPoint:(CGPoint)point;
+- (CGPoint)_updateTapAndHoldLocationDataForElement:(id)element;
+- (CGPoint)adjustedPointForFactoryPoint:(CGPoint)point forOrientation:(int64_t)orientation;
+- (CGPoint)convertDevicePointToZoomedPoint:(CGPoint)point;
 - (CGPoint)fingerPosition;
-- (CGRect)_convertFrame:(CGRect)a3 toPortraitFromOrientation:(int64_t)a4;
+- (CGRect)_convertFrame:(CGRect)frame toPortraitFromOrientation:(int64_t)orientation;
 - (VOTDirectTouchManagementProtocol)directTouchManager;
 - (VOTElement)currentElement;
 - (VOTElementManagementProtocol)elementManager;
@@ -39,104 +39,104 @@
 - (VOTEventFactoryCallbackProtocol)delegate;
 - (VOTHandwritingManager)handwritingManager;
 - (VOTRotorManagementProtocol)rotorManager;
-- (double)_edgeGestureScaleFactor:(BOOL)a3;
+- (double)_edgeGestureScaleFactor:(BOOL)factor;
 - (double)_edgePanGestureStartThreshold;
 - (id)_brailleGestureManager;
 - (id)_commandResolver;
-- (id)_currentGesturedTextInputManagerAndCommandResolver:(id)a3 forCommandResolver:(BOOL)a4;
-- (id)_handleGestureKeyboardTappingCallback:(unint64_t)a3 fingerCount:(unint64_t)a4 isDown:(BOOL)a5 originalLocation:(CGPoint)a6 convertedLocation:(CGPoint)a7;
-- (id)_mapAXEventToVOTEvent:(id)a3;
+- (id)_currentGesturedTextInputManagerAndCommandResolver:(id)resolver forCommandResolver:(BOOL)commandResolver;
+- (id)_handleGestureKeyboardTappingCallback:(unint64_t)callback fingerCount:(unint64_t)count isDown:(BOOL)down originalLocation:(CGPoint)location convertedLocation:(CGPoint)convertedLocation;
+- (id)_mapAXEventToVOTEvent:(id)event;
 - (id)_mapsExplorationGestureManager;
-- (id)_preprocessEventForSimulator:(id)a3;
-- (id)_touchLocationsForGestureEvent:(id)a3;
-- (id)_updateEdgePanGestureForState:(int64_t)a3;
+- (id)_preprocessEventForSimulator:(id)simulator;
+- (id)_touchLocationsForGestureEvent:(id)event;
+- (id)_updateEdgePanGestureForState:(int64_t)state;
 - (id)tapAndHoldContextNumbers;
-- (id)votActionForEdgePanGestureState:(unint64_t)a3;
-- (int)_registerForAXNotifications:(BOOL)a3;
-- (int)_systemControlPosition:(CGPoint)a3 fingerCount:(unint64_t)a4;
+- (id)votActionForEdgePanGestureState:(unint64_t)state;
+- (int)_registerForAXNotifications:(BOOL)notifications;
+- (int)_systemControlPosition:(CGPoint)position fingerCount:(unint64_t)count;
 - (int64_t)brailleInputTypingMode;
-- (void)_audioAccPostEvent:(id)a3 withButton:(unint64_t)a4 timeOffset:(double)a5;
+- (void)_audioAccPostEvent:(id)event withButton:(unint64_t)button timeOffset:(double)offset;
 - (void)_beginAudiographScrubbingMode;
-- (void)_beginNativeSliding:(id)a3;
+- (void)_beginNativeSliding:(id)sliding;
 - (void)_cancelScribbleTapAndHoldModeTimeout;
-- (void)_cancelTapAndHold:(CGPoint)a3 forScribble:(BOOL)a4;
-- (void)_cancelTapAndHoldWithValue:(id)a3;
+- (void)_cancelTapAndHold:(CGPoint)hold forScribble:(BOOL)scribble;
+- (void)_cancelTapAndHoldWithValue:(id)value;
 - (void)_cancelUpdateScribbleTapAndHoldModeOffset;
 - (void)_commitDeferredZoomInfo;
 - (void)_commitDeferredZoomInfoIfAppropriate;
-- (void)_contextlessTouchWithHandType:(unsigned int)a3 location:(CGPoint)a4 force:(double)a5 altitude:(double)a6 azimuth:(double)a7;
-- (void)_convertZoomRecordToDeviceRecord:(id)a3;
+- (void)_contextlessTouchWithHandType:(unsigned int)type location:(CGPoint)location force:(double)force altitude:(double)altitude azimuth:(double)azimuth;
+- (void)_convertZoomRecordToDeviceRecord:(id)record;
 - (void)_edgePanGestureSpeakHintTimerFired;
 - (void)_endAudiographScrubbingMode;
 - (void)_endScribbleTapAndHoldMode;
-- (void)_feedEventToHandwritingRecognition:(id)a3;
-- (void)_gestureTrackingCallbackWithFactory:(id)a3 isHandlingSystemControlEvent:(BOOL)a4;
+- (void)_feedEventToHandwritingRecognition:(id)recognition;
+- (void)_gestureTrackingCallbackWithFactory:(id)factory isHandlingSystemControlEvent:(BOOL)event;
 - (void)_handleAudiographScrubbingPositionChanged;
-- (void)_handleBSIStateChangedNotification:(id)a3;
-- (void)_handleElementPreviewNotification:(id)a3;
-- (void)_handleEventWithData:(id)a3;
-- (void)_handleIOHIDEvent:(id)a3;
-- (void)_handleRotorChangedNotification:(id)a3;
+- (void)_handleBSIStateChangedNotification:(id)notification;
+- (void)_handleElementPreviewNotification:(id)notification;
+- (void)_handleEventWithData:(id)data;
+- (void)_handleIOHIDEvent:(id)event;
+- (void)_handleRotorChangedNotification:(id)notification;
 - (void)_handleSOSMedicalIDShown;
-- (void)_liftFromTapAndHoldAndResetFingers:(BOOL)a3;
+- (void)_liftFromTapAndHoldAndResetFingers:(BOOL)fingers;
 - (void)_liftPreviewFinger;
 - (void)_markTapAndHoldOffsetAsDirty;
 - (void)_outputElementSummaryFired;
-- (void)_playFeedbackForGestureState:(unint64_t)a3 gestureComplete:(BOOL)a4;
-- (void)_processGestureEvent:(id)a3;
-- (void)_processIdle:(CGPoint)a3;
-- (void)_processTapAndHoldMode:(id)a3;
-- (void)_reducePreviewFingerStartingForce:(double)a3;
+- (void)_playFeedbackForGestureState:(unint64_t)state gestureComplete:(BOOL)complete;
+- (void)_processGestureEvent:(id)event;
+- (void)_processIdle:(CGPoint)idle;
+- (void)_processTapAndHoldMode:(id)mode;
+- (void)_reducePreviewFingerStartingForce:(double)force;
 - (void)_registerForIOHIDUsage;
 - (void)_registerForZoomListener;
 - (void)_resetSystemControlStatus;
 - (void)_scheduleUpdateScribbleTapAndHoldModeOffset;
-- (void)_sendSystemControlEvent:(id)a3;
-- (void)_setFingerCount:(unint64_t)a3;
+- (void)_sendSystemControlEvent:(id)event;
+- (void)_setFingerCount:(unint64_t)count;
 - (void)_simulateEdgePress;
 - (void)_simulatePeekAndSwitchToTapHoldMode;
 - (void)_simulatePop;
 - (void)_simulatePreviewActionGesture;
 - (void)_startLabelElementSoundPlay;
 - (void)_startScribbleTapAndHoldModeTimeout;
-- (void)_startTouchDownForTapAndHoldActionWithCenter:(id)a3 force:(id)a4 altitude:(id)a5 azimuth:(id)a6;
+- (void)_startTouchDownForTapAndHoldActionWithCenter:(id)center force:(id)force altitude:(id)altitude azimuth:(id)azimuth;
 - (void)_stopMemorizingSession;
 - (void)_switchToTrackingMode;
 - (void)_systemControlLocationTimer;
-- (void)_tapHoldFired:(id)a3;
+- (void)_tapHoldFired:(id)fired;
 - (void)_threeFingerHoldFired;
-- (void)_touchDownAtPoint:(CGPoint)a3 withForce:(double)a4 altitude:(double)a5 azimuth:(double)a6;
-- (void)_touchDragAtPoint:(CGPoint)a3 withForce:(double)a4 altitude:(double)a5 azimuth:(double)a6;
-- (void)_touchLiftAtPoint:(CGPoint)a3;
-- (void)_transitionToGestureState:(unint64_t)a3 playHaptic:(BOOL)a4;
+- (void)_touchDownAtPoint:(CGPoint)point withForce:(double)force altitude:(double)altitude azimuth:(double)azimuth;
+- (void)_touchDragAtPoint:(CGPoint)point withForce:(double)force altitude:(double)altitude azimuth:(double)azimuth;
+- (void)_touchLiftAtPoint:(CGPoint)point;
+- (void)_transitionToGestureState:(unint64_t)state playHaptic:(BOOL)haptic;
 - (void)_twoFingerHoldFired;
 - (void)_updateCurrentElementOrbGestureMode;
 - (void)_updateDelayUntilSpeakUnderTouch;
-- (void)_updateFirstnessOfTrackingEvent:(id)a3;
+- (void)_updateFirstnessOfTrackingEvent:(id)event;
 - (void)_updateTapSpeedFromPreferences;
 - (void)_updateVoiceOverHandGesturesActionCustomizations;
 - (void)_volumeChangeTimer;
 - (void)_wakeTapFired;
-- (void)brailleGestureManager:(id)a3 setForcedOrientation:(int64_t)a4 shouldAnnounce:(BOOL)a5;
-- (void)brailleGestureManager:(id)a3 unsetForcedOrientationAndAnnounce:(BOOL)a4;
-- (void)cancelTapAndHold:(CGPoint)a3;
-- (void)currentElementDidUpdate:(id)a3;
+- (void)brailleGestureManager:(id)manager setForcedOrientation:(int64_t)orientation shouldAnnounce:(BOOL)announce;
+- (void)brailleGestureManager:(id)manager unsetForcedOrientationAndAnnounce:(BOOL)announce;
+- (void)cancelTapAndHold:(CGPoint)hold;
+- (void)currentElementDidUpdate:(id)update;
 - (void)dealloc;
-- (void)directInteractionElementsUpdated:(id)a3;
-- (void)directInteractionModeStatus:(BOOL)a3;
-- (void)firstResponderDidUpdate:(id)a3;
-- (void)gestureFactoryDidBeginSplitGesture:(id)a3;
-- (void)gestureSplitTappingCallbackWithFactory:(id)a3;
-- (void)gestureTappingCallbackWithFactory:(id)a3;
-- (void)gesturedTextInputManager:(id)a3 accessCurrentGesturedTextInputElement:(id)a4;
-- (void)gesturedTextInputManager:(id)a3 moveToElementMatchingRotorType:(int64_t)a4 inDirection:(int64_t)a5;
-- (void)nowPlayingChanged:(id)a3;
-- (void)processEvent:(id)a3;
+- (void)directInteractionElementsUpdated:(id)updated;
+- (void)directInteractionModeStatus:(BOOL)status;
+- (void)firstResponderDidUpdate:(id)update;
+- (void)gestureFactoryDidBeginSplitGesture:(id)gesture;
+- (void)gestureSplitTappingCallbackWithFactory:(id)factory;
+- (void)gestureTappingCallbackWithFactory:(id)factory;
+- (void)gesturedTextInputManager:(id)manager accessCurrentGesturedTextInputElement:(id)element;
+- (void)gesturedTextInputManager:(id)manager moveToElementMatchingRotorType:(int64_t)type inDirection:(int64_t)direction;
+- (void)nowPlayingChanged:(id)changed;
+- (void)processEvent:(id)event;
 - (void)screenLockOccurred;
-- (void)setCurrentElement:(id)a3;
-- (void)setElementManager:(id)a3;
+- (void)setCurrentElement:(id)element;
+- (void)setElementManager:(id)manager;
 - (void)shutdown;
-- (void)startTapAndHoldMode:(BOOL)a3;
+- (void)startTapAndHoldMode:(BOOL)mode;
 - (void)unregisterForEvents;
 - (void)updateOrientation;
 @end
@@ -160,10 +160,10 @@
 
 - (BOOL)handwritingInputActive
 {
-  v2 = [(VOTEventFactory *)self handwritingManager];
-  v3 = [v2 isActive];
+  handwritingManager = [(VOTEventFactory *)self handwritingManager];
+  isActive = [handwritingManager isActive];
 
-  return v3;
+  return isActive;
 }
 
 - (id)_brailleGestureManager
@@ -185,42 +185,42 @@
 
 - (BOOL)brailleInputActive
 {
-  v2 = [(VOTEventFactory *)self _brailleGestureManager];
-  v3 = [v2 isActive];
+  _brailleGestureManager = [(VOTEventFactory *)self _brailleGestureManager];
+  isActive = [_brailleGestureManager isActive];
 
-  return v3;
+  return isActive;
 }
 
 - (int64_t)brailleInputTypingMode
 {
-  v2 = [(VOTEventFactory *)self _brailleGestureManager];
-  v3 = [v2 typingMode];
+  _brailleGestureManager = [(VOTEventFactory *)self _brailleGestureManager];
+  typingMode = [_brailleGestureManager typingMode];
 
-  return v3;
+  return typingMode;
 }
 
 - (BOOL)brailleInputAllowsElementMovement
 {
-  v2 = [(VOTEventFactory *)self _brailleGestureManager];
-  v3 = [v2 allowsElementMovement];
+  _brailleGestureManager = [(VOTEventFactory *)self _brailleGestureManager];
+  allowsElementMovement = [_brailleGestureManager allowsElementMovement];
 
-  return v3;
+  return allowsElementMovement;
 }
 
 - (BOOL)brailleInputWantsToStayActive
 {
-  v2 = [(VOTEventFactory *)self _brailleGestureManager];
-  v3 = [v2 wantsToStayActive];
+  _brailleGestureManager = [(VOTEventFactory *)self _brailleGestureManager];
+  wantsToStayActive = [_brailleGestureManager wantsToStayActive];
 
-  return v3;
+  return wantsToStayActive;
 }
 
 - (BOOL)brailleInputShouldBeDeactivatedByEscape
 {
-  v2 = [(VOTEventFactory *)self _brailleGestureManager];
-  v3 = [v2 shouldBeDeactivatedByEscape];
+  _brailleGestureManager = [(VOTEventFactory *)self _brailleGestureManager];
+  shouldBeDeactivatedByEscape = [_brailleGestureManager shouldBeDeactivatedByEscape];
 
-  return v3;
+  return shouldBeDeactivatedByEscape;
 }
 
 - (id)_mapsExplorationGestureManager
@@ -252,7 +252,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = +[ZoomServices sharedInstance];
     [v2 registerInterestInZoomAttributes];
@@ -413,9 +413,9 @@
     [v56 playHapticFeedbackForType:20];
 
     v57 = +[AXSettings sharedInstance];
-    v58 = [v57 voiceOverHandGesturesActionCustomizations];
+    voiceOverHandGesturesActionCustomizations = [v57 voiceOverHandGesturesActionCustomizations];
     v59 = v50[106];
-    v50[106] = v58;
+    v50[106] = voiceOverHandGesturesActionCustomizations;
 
     v60 = +[AXSettings sharedInstance];
     v63[0] = _NSConcreteStackBlock;
@@ -517,28 +517,28 @@ LABEL_18:
   [(NSMutableArray *)self->_snarfedWatchWakeRecords removeAllObjects];
 }
 
-- (void)_handleIOHIDEvent:(id)a3
+- (void)_handleIOHIDEvent:(id)event
 {
-  v4 = [(VOTEventFactory *)self _denormalizeEventRepresentation:a3];
+  v4 = [(VOTEventFactory *)self _denormalizeEventRepresentation:event];
   if ([v4 type] == 3001)
   {
-    v5 = [v4 handInfo];
-    if ([v5 eventType] == 1)
+    handInfo = [v4 handInfo];
+    if ([handInfo eventType] == 1)
     {
     }
 
     else
     {
-      v6 = [v4 handInfo];
-      if ([v6 eventType] != 5)
+      handInfo2 = [v4 handInfo];
+      if ([handInfo2 eventType] != 5)
       {
 
         goto LABEL_9;
       }
 
-      v7 = [v4 handInfo];
-      v8 = [v7 paths];
-      v9 = [v8 count];
+      handInfo3 = [v4 handInfo];
+      paths = [handInfo3 paths];
+      v9 = [paths count];
 
       if (v9 != 1)
       {
@@ -559,12 +559,12 @@ LABEL_9:
     }
   }
 
-  v11 = [v4 type];
-  if (v11 > 1199)
+  type = [v4 type];
+  if (type > 1199)
   {
-    if ((v11 - 1200) <= 7)
+    if ((type - 1200) <= 7)
     {
-      if (((1 << (v11 + 80)) & 0xAF) != 0)
+      if (((1 << (type + 80)) & 0xAF) != 0)
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         v13 = WeakRetained;
@@ -574,38 +574,38 @@ LABEL_9:
 
       else
       {
-        v29 = [(VOTEventFactory *)self currentElement];
-        v30 = [v29 isRTL];
+        currentElement = [(VOTEventFactory *)self currentElement];
+        isRTL = [currentElement isRTL];
 
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
         v13 = WeakRetained;
         v14 = v4;
-        v15 = v30;
+        v15 = isRTL;
       }
 
       [WeakRetained handleAppleTVRemoteEvent:v14 eventOrigin:7 isRTL:v15];
       goto LABEL_43;
     }
 
-    if ((v11 - 4500) >= 2)
+    if ((type - 4500) >= 2)
     {
-      if (v11 != 3001)
+      if (type != 3001)
       {
         goto LABEL_44;
       }
 
-      v19 = [v4 handInfo];
-      v20 = [v19 eventType];
+      handInfo4 = [v4 handInfo];
+      eventType = [handInfo4 eventType];
 
-      if (v20 == 10)
+      if (eventType == 10)
       {
         goto LABEL_44;
       }
 
-      v21 = [v4 handInfo];
-      v22 = [v21 eventType];
+      handInfo5 = [v4 handInfo];
+      eventType2 = [handInfo5 eventType];
 
-      if (v22 == 11)
+      if (eventType2 == 11)
       {
         goto LABEL_44;
       }
@@ -614,10 +614,10 @@ LABEL_9:
       if ([(VOTEventFactory *)self shouldSnarfEventForTapWakeGesture:v4])
       {
         v23 = sub_1000C50AC([v4 HIDTime]);
-        v24 = [v4 handInfo];
-        v25 = [v24 eventType];
+        handInfo6 = [v4 handInfo];
+        eventType3 = [handInfo6 eventType];
 
-        if (v25 == 6)
+        if (eventType3 == 6)
         {
           wakeTapTimer = self->_wakeTapTimer;
           ++self->_watchWakeTapCount;
@@ -657,9 +657,9 @@ LABEL_43:
     goto LABEL_44;
   }
 
-  if (v11 <= 1028)
+  if (type <= 1028)
   {
-    if ((v11 - 10) >= 3)
+    if ((type - 10) >= 3)
     {
       goto LABEL_44;
     }
@@ -667,12 +667,12 @@ LABEL_43:
     goto LABEL_40;
   }
 
-  if ((v11 - 1029) <= 4 && v11 != 1031)
+  if ((type - 1029) <= 4 && type != 1031)
   {
     goto LABEL_40;
   }
 
-  if (v11 == 1100)
+  if (type == 1100)
   {
     v31 = sub_1000C50AC([v4 HIDTime]);
     if (v31 - self->_lastScrollEventTime >= 0.25)
@@ -688,15 +688,15 @@ LABEL_43:
 
     self->_scrollWheelIsActive = v32;
     self->_lastScrollEventTime = v31;
-    v33 = [v4 scrollAmount];
+    scrollAmount = [v4 scrollAmount];
     if ([VOTSharedWorkspace deviceOrientation] == 2)
     {
-      v34 = -v33;
+      v34 = -scrollAmount;
     }
 
     else
     {
-      v34 = v33;
+      v34 = scrollAmount;
     }
 
     v35 = v34 + self->_currentAccumulatedScroll;
@@ -728,7 +728,7 @@ LABEL_43:
     goto LABEL_61;
   }
 
-  if (v11 == 1102)
+  if (type == 1102)
   {
     self->_lastWatchWakeUpTime = sub_1000C50AC([v4 HIDTime]);
     if (!self->_aotEnabled || ([v4 location], v17 == CGPointZero.x) && v16 == CGPointZero.y)
@@ -757,13 +757,13 @@ LABEL_44:
   [VOTSharedWorkspace userInteractedWithDeviceWithHand:{objc_msgSend(v4, "type") == 3001}];
 }
 
-- (id)_preprocessEventForSimulator:(id)a3
+- (id)_preprocessEventForSimulator:(id)simulator
 {
-  v3 = [a3 denormalizedEventRepresentation:1 descale:1];
-  v4 = [v3 handInfo];
-  v5 = [v4 paths];
-  v6 = [v5 firstPath];
-  [v6 pathLocation];
+  v3 = [simulator denormalizedEventRepresentation:1 descale:1];
+  handInfo = [v3 handInfo];
+  paths = [handInfo paths];
+  firstPath = [paths firstPath];
+  [firstPath pathLocation];
   v8 = v7;
   v10 = v9;
 
@@ -775,33 +775,33 @@ LABEL_44:
   _AXUIScreenConvertToCAScreen();
   v14 = v13;
   v16 = v15;
-  v17 = [v3 handInfo];
-  v18 = [v17 paths];
-  v19 = [v18 firstPath];
-  [v19 setPathLocation:{v14, v16}];
+  handInfo2 = [v3 handInfo];
+  paths2 = [handInfo2 paths];
+  firstPath2 = [paths2 firstPath];
+  [firstPath2 setPathLocation:{v14, v16}];
 
   return v3;
 }
 
-- (BOOL)_atvEventFilter:(id)a3
+- (BOOL)_atvEventFilter:(id)filter
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 type] && objc_msgSend(v5, "senderID") != 0x8000000817319373 && objc_msgSend(v5, "senderID") != 0x8000000817319375)
+  filterCopy = filter;
+  v5 = filterCopy;
+  if (filterCopy && [filterCopy type] && objc_msgSend(v5, "senderID") != 0x8000000817319373 && objc_msgSend(v5, "senderID") != 0x8000000817319375)
   {
     if ([v5 type] == 3001)
     {
-      v8 = [(VOTEventFactory *)self elementManager];
-      v6 = [v8 inDirectTouchMode];
+      elementManager = [(VOTEventFactory *)self elementManager];
+      inDirectTouchMode = [elementManager inDirectTouchMode];
 
-      v9 = [(VOTEventFactory *)self elementManager];
-      v10 = [v9 tvIsInteractingWithRotor];
+      elementManager2 = [(VOTEventFactory *)self elementManager];
+      tvIsInteractingWithRotor = [elementManager2 tvIsInteractingWithRotor];
 
-      v11 = [(VOTSimpleClickButtonInterceptor *)self->_selectButtonInterceptor touchEventOccurred:v5 inTVDirectTouch:v6];
-      if (!v6 || (v10 & 1) == 0 && [v5 fingerCount] < 2)
+      v11 = [(VOTSimpleClickButtonInterceptor *)self->_selectButtonInterceptor touchEventOccurred:v5 inTVDirectTouch:inDirectTouchMode];
+      if (!inDirectTouchMode || (tvIsInteractingWithRotor & 1) == 0 && [v5 fingerCount] < 2)
       {
-        LOBYTE(v6) = v6 ^ 1;
-        if (((v11 ^ 1 | v10) & 1) == 0)
+        LOBYTE(inDirectTouchMode) = inDirectTouchMode ^ 1;
+        if (((v11 ^ 1 | tvIsInteractingWithRotor) & 1) == 0)
         {
           goto LABEL_6;
         }
@@ -812,7 +812,7 @@ LABEL_17:
       }
 
 LABEL_16:
-      LOBYTE(v6) = 1;
+      LOBYTE(inDirectTouchMode) = 1;
       goto LABEL_17;
     }
 
@@ -857,9 +857,9 @@ LABEL_26:
       {
         if ([v5 type] != 1221 && objc_msgSend(v5, "type") != 1219)
         {
-          v6 = [v5 keyInfo];
+          inDirectTouchMode = [v5 keyInfo];
 
-          if (!v6)
+          if (!inDirectTouchMode)
           {
             goto LABEL_6;
           }
@@ -888,33 +888,33 @@ LABEL_26:
 
     [menuButtonInterceptor buttonUpOccurred:v5];
 LABEL_27:
-    LOBYTE(v6) = 1;
+    LOBYTE(inDirectTouchMode) = 1;
     goto LABEL_6;
   }
 
 LABEL_5:
-  LOBYTE(v6) = 0;
+  LOBYTE(inDirectTouchMode) = 0;
 LABEL_6:
   AXPerformBlockOnMainThread();
 LABEL_7:
 
-  return v6;
+  return inDirectTouchMode;
 }
 
-- (void)_audioAccPostEvent:(id)a3 withButton:(unint64_t)a4 timeOffset:(double)a5
+- (void)_audioAccPostEvent:(id)event withButton:(unint64_t)button timeOffset:(double)offset
 {
-  v6 = a3;
-  v9 = v6;
+  eventCopy = event;
+  v9 = eventCopy;
   if (!self->_audioAccIOSystemPostBackClient)
   {
     self->_audioAccIOSystemPostBackClient = IOHIDEventSystemClientCreate();
-    v6 = v9;
+    eventCopy = v9;
   }
 
-  v7 = [v6 creatorHIDEvent];
+  creatorHIDEvent = [eventCopy creatorHIDEvent];
   if (self->_audioAccIOSystemPostBackClient)
   {
-    v8 = v7 == 0;
+    v8 = creatorHIDEvent == 0;
   }
 
   else
@@ -934,27 +934,27 @@ LABEL_7:
   }
 }
 
-- (void)nowPlayingChanged:(id)a3
+- (void)nowPlayingChanged:(id)changed
 {
   v3 = dispatch_get_global_queue(0, 0);
   MRMediaRemoteGetNowPlayingApplicationIsPlaying();
 }
 
-- (BOOL)_iosEventFilter:(id)a3
+- (BOOL)_iosEventFilter:(id)filter
 {
-  v4 = a3;
-  if ([v4 senderID] == 0x8000000817319373 || objc_msgSend(v4, "senderID") == 0x8000000817319375 || objc_msgSend(v4, "senderID") == 0x8000000817319372 || objc_msgSend(v4, "type") == 1013 || objc_msgSend(v4, "type") == 1012)
+  filterCopy = filter;
+  if ([filterCopy senderID] == 0x8000000817319373 || objc_msgSend(filterCopy, "senderID") == 0x8000000817319375 || objc_msgSend(filterCopy, "senderID") == 0x8000000817319372 || objc_msgSend(filterCopy, "type") == 1013 || objc_msgSend(filterCopy, "type") == 1012)
   {
     goto LABEL_6;
   }
 
-  v7 = [v4 keyInfo];
-  if ([v7 keyCode] == 10)
+  keyInfo = [filterCopy keyInfo];
+  if ([keyInfo keyCode] == 10)
   {
-    v8 = [v4 keyInfo];
-    v9 = [v8 usagePage];
+    keyInfo2 = [filterCopy keyInfo];
+    usagePage = [keyInfo2 usagePage];
 
-    if (v9 == 255)
+    if (usagePage == 255)
     {
       goto LABEL_6;
     }
@@ -964,28 +964,28 @@ LABEL_7:
   {
   }
 
-  v10 = [v4 type];
+  type = [filterCopy type];
   if (AXDeviceIsPhone())
   {
-    if (v10 == 10)
+    if (type == 10)
     {
-      v11 = [v4 keyInfo];
-      [v11 translateKeycode];
+      keyInfo3 = [filterCopy keyInfo];
+      [keyInfo3 translateKeycode];
 
-      v12 = [v4 keyInfo];
-      v13 = [v12 keyCode];
+      keyInfo4 = [filterCopy keyInfo];
+      keyCode = [keyInfo4 keyCode];
 
-      v14 = [v4 keyInfo];
-      v15 = [v14 modifierState];
+      keyInfo5 = [filterCopy keyInfo];
+      modifierState = [keyInfo5 modifierState];
 
-      v16 = [v4 keyInfo];
-      v17 = [v16 modifierState];
+      keyInfo6 = [filterCopy keyInfo];
+      modifierState2 = [keyInfo6 modifierState];
 
-      if ((v15 & 1) != 0 && v13 == 43)
+      if ((modifierState & 1) != 0 && keyCode == 43)
       {
         v18 = +[VOTSpringBoardConnection defaultConnection];
         v19 = v18;
-        if ((v17 & 8) != 0)
+        if ((modifierState2 & 8) != 0)
         {
           [v18 sendProgrammaticAppSwitch:0];
 
@@ -1003,96 +1003,96 @@ LABEL_7:
     }
   }
 
-  if (!v4 || ![v4 type] || (objc_msgSend(v4, "type"), (AXEventTypeIsHomeButtonPress() & 1) != 0) || (objc_msgSend(v4, "type"), (AXEventTypeIsLockButtonPress() & 1) != 0))
+  if (!filterCopy || ![filterCopy type] || (objc_msgSend(filterCopy, "type"), (AXEventTypeIsHomeButtonPress() & 1) != 0) || (objc_msgSend(filterCopy, "type"), (AXEventTypeIsLockButtonPress() & 1) != 0))
   {
 LABEL_6:
     v5 = 0;
     goto LABEL_7;
   }
 
-  [v4 type];
+  [filterCopy type];
   if (AXEventTypeIsVolumeButtonPress())
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained handleTurnOffSoundAndCurtainEvent:v4];
+    [WeakRetained handleTurnOffSoundAndCurtainEvent:filterCopy];
 
     goto LABEL_6;
   }
 
-  if ([v4 senderID] == 0x8000000817319375)
+  if ([filterCopy senderID] == 0x8000000817319375)
   {
     goto LABEL_6;
   }
 
-  if ([v4 type] == 3001)
+  if ([filterCopy type] == 3001)
   {
-    v21 = [v4 handInfo];
-    v22 = [v21 eventType];
+    handInfo = [filterCopy handInfo];
+    eventType = [handInfo eventType];
 
-    if (v22 == 12)
+    if (eventType == 12)
     {
       goto LABEL_6;
     }
   }
 
-  if ([v4 type] == 1100)
+  if ([filterCopy type] == 1100)
   {
-    v23 = [(VOTEventFactory *)self elementManager];
-    v24 = [v23 shouldSnarfCrown];
+    elementManager = [(VOTEventFactory *)self elementManager];
+    shouldSnarfCrown = [elementManager shouldSnarfCrown];
 
-    if (!v24)
+    if (!shouldSnarfCrown)
     {
       goto LABEL_6;
     }
   }
 
-  if ([v4 type] == 3200)
+  if ([filterCopy type] == 3200)
   {
     goto LABEL_6;
   }
 
-  v25 = [v4 type] != 1102 && objc_msgSend(v4, "type") != 1101;
-  if ([v4 type] == 5000)
+  v25 = [filterCopy type] != 1102 && objc_msgSend(filterCopy, "type") != 1101;
+  if ([filterCopy type] == 5000)
   {
-    v26 = [v4 accessibilityData];
-    v27 = [v26 page];
+    accessibilityData = [filterCopy accessibilityData];
+    page = [accessibilityData page];
 
-    if (v27 == 2)
+    if (page == 2)
     {
-      v28 = [(VOTEventFactory *)self _handleVoiceOverGreySupportAccessibilityEvent:v4];
+      v28 = [(VOTEventFactory *)self _handleVoiceOverGreySupportAccessibilityEvent:filterCopy];
 LABEL_40:
       v5 = v28;
       goto LABEL_7;
     }
   }
 
-  if ([v4 type] == 5000)
+  if ([filterCopy type] == 5000)
   {
-    v28 = [(VOTEventFactory *)self _handleAccessibilityEvent:v4];
+    v28 = [(VOTEventFactory *)self _handleAccessibilityEvent:filterCopy];
     goto LABEL_40;
   }
 
-  if ([v4 type] == 3001)
+  if ([filterCopy type] == 3001)
   {
-    v29 = [v4 handInfo];
-    v30 = [v29 handEventMask];
+    handInfo2 = [filterCopy handInfo];
+    handEventMask = [handInfo2 handEventMask];
 
-    if ((v30 & 0x20000) != 0)
+    if ((handEventMask & 0x20000) != 0)
     {
       goto LABEL_6;
     }
   }
 
-  [(VOTEventFactory *)self performSelectorOnMainThread:"_handleIOHIDEvent:" withObject:v4 waitUntilDone:0];
-  v31 = [v4 handInfo];
-  v32 = [v31 paths];
+  [(VOTEventFactory *)self performSelectorOnMainThread:"_handleIOHIDEvent:" withObject:filterCopy waitUntilDone:0];
+  handInfo3 = [filterCopy handInfo];
+  paths = [handInfo3 paths];
 
-  if ((self->_flags.allowingSystemGesturePassthrough || v32 && [v32 count] >= 5 && AXDeviceIsPad() && !self->_flags.sendingToDirectTouch) && (-[VOTEventFactory _currentGesturedTextInputManager](self, "_currentGesturedTextInputManager"), v33 = objc_claimAutoreleasedReturnValue(), v33, !v33))
+  if ((self->_flags.allowingSystemGesturePassthrough || paths && [paths count] >= 5 && AXDeviceIsPad() && !self->_flags.sendingToDirectTouch) && (-[VOTEventFactory _currentGesturedTextInputManager](self, "_currentGesturedTextInputManager"), v33 = objc_claimAutoreleasedReturnValue(), v33, !v33))
   {
-    if (v32 && [v32 count])
+    if (paths && [paths count])
     {
-      v34 = [v4 handInfo];
-      v35 = [v34 currentFingerCount] != 0;
+      handInfo4 = [filterCopy handInfo];
+      v35 = [handInfo4 currentFingerCount] != 0;
     }
 
     else
@@ -1106,7 +1106,7 @@ LABEL_40:
 
   else
   {
-    v36 = [v4 type] != 1042 && objc_msgSend(v4, "type") != 1043 && v25;
+    v36 = [filterCopy type] != 1042 && objc_msgSend(filterCopy, "type") != 1043 && v25;
   }
 
   v5 = v36;
@@ -1122,16 +1122,16 @@ LABEL_7:
 
   if (AXDeviceIsAudioAccessory())
   {
-    v4 = [(VOTEventFactory *)self eventProcessor];
-    v5 = v4;
+    eventProcessor = [(VOTEventFactory *)self eventProcessor];
+    v5 = eventProcessor;
     v6 = 3;
   }
 
   else
   {
     IsTV = AXDeviceIsTV();
-    v4 = [(VOTEventFactory *)self eventProcessor];
-    v5 = v4;
+    eventProcessor = [(VOTEventFactory *)self eventProcessor];
+    v5 = eventProcessor;
     if (IsTV)
     {
       v6 = 256;
@@ -1143,26 +1143,26 @@ LABEL_7:
     }
   }
 
-  [v4 setHIDEventFilterMask:v6];
+  [eventProcessor setHIDEventFilterMask:v6];
 
   objc_initWeak(&location, self);
-  v8 = [(VOTEventFactory *)self eventProcessor];
-  [v8 setFailedToHandleEventInTime:&stru_1001CA978];
+  eventProcessor2 = [(VOTEventFactory *)self eventProcessor];
+  [eventProcessor2 setFailedToHandleEventInTime:&stru_1001CA978];
 
-  LOBYTE(v8) = AXDeviceIsAudioAccessory();
+  LOBYTE(eventProcessor2) = AXDeviceIsAudioAccessory();
   v9 = AXDeviceIsTV();
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000C6548;
   v12[3] = &unk_1001CA9A0;
-  v14 = v8;
+  v14 = eventProcessor2;
   objc_copyWeak(&v13, &location);
   v15 = v9;
-  v10 = [(VOTEventFactory *)self eventProcessor];
-  [v10 setHIDEventHandler:v12];
+  eventProcessor3 = [(VOTEventFactory *)self eventProcessor];
+  [eventProcessor3 setHIDEventHandler:v12];
 
-  v11 = [(VOTEventFactory *)self eventProcessor];
-  [v11 beginHandlingHIDEventsForReason:@"VoiceOver wants them"];
+  eventProcessor4 = [(VOTEventFactory *)self eventProcessor];
+  [eventProcessor4 beginHandlingHIDEventsForReason:@"VoiceOver wants them"];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -1194,8 +1194,8 @@ LABEL_7:
 
 - (void)shutdown
 {
-  v3 = [(VOTEventFactory *)self eventProcessor];
-  [v3 endHandlingHIDEventsForReason:@"VoiceOver wants them"];
+  eventProcessor = [(VOTEventFactory *)self eventProcessor];
+  [eventProcessor endHandlingHIDEventsForReason:@"VoiceOver wants them"];
 
   [(VOTEventFactory *)self setEventProcessor:0];
 
@@ -1215,8 +1215,8 @@ LABEL_7:
   v4 = +[ZoomServices sharedInstance];
   [v4 removeCoalescedZoomAttributesChangedHandler:self->_zoomListenerIdentifier];
 
-  v5 = [(VOTEventFactory *)self eventProcessor];
-  [v5 cleanup];
+  eventProcessor = [(VOTEventFactory *)self eventProcessor];
+  [eventProcessor cleanup];
 
   previewFingerContextId = self->_previewFingerContextId;
   self->_previewFingerContextId = 0;
@@ -1276,68 +1276,68 @@ LABEL_7:
 
 - (void)screenLockOccurred
 {
-  v3 = [(VOTEventFactory *)self handwritingManager];
-  [v3 setActive:0];
+  handwritingManager = [(VOTEventFactory *)self handwritingManager];
+  [handwritingManager setActive:0];
 
   brailleGestureManager = self->_brailleGestureManager;
 
   [(VOTBrailleGestureManager *)brailleGestureManager setActive:0];
 }
 
-- (void)_handleRotorChangedNotification:(id)a3
+- (void)_handleRotorChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"kVOTRotorChangedNotificationOldRotor"];
-  v7 = [v6 intValue];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:@"kVOTRotorChangedNotificationOldRotor"];
+  intValue = [v6 intValue];
 
-  v8 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v9 = [v8 objectForKey:@"kVOTRotorChangedNotificationNewRotor"];
-  v10 = [v9 intValue];
-  v11 = v10;
+  v9 = [userInfo2 objectForKey:@"kVOTRotorChangedNotificationNewRotor"];
+  intValue2 = [v9 intValue];
+  v11 = intValue2;
 
-  if (v10 == 60)
+  if (intValue2 == 60)
   {
-    v12 = [(VOTEventFactory *)self currentElement];
-    v13 = [v12 elementForGesturedTextInput];
+    currentElement = [(VOTEventFactory *)self currentElement];
+    elementForGesturedTextInput = [currentElement elementForGesturedTextInput];
 
-    if (!v13)
+    if (!elementForGesturedTextInput)
     {
       _AXAssert();
     }
 
-    [v13 updateGesturedTextInputAttributes];
-    v14 = [v13 gesturedTextInputAttributes];
-    v15 = [(VOTEventFactory *)self handwritingManager];
-    [v15 updateCharacterModesWithHandwritingAttributes:v14];
+    [elementForGesturedTextInput updateGesturedTextInputAttributes];
+    gesturedTextInputAttributes = [elementForGesturedTextInput gesturedTextInputAttributes];
+    handwritingManager = [(VOTEventFactory *)self handwritingManager];
+    [handwritingManager updateCharacterModesWithHandwritingAttributes:gesturedTextInputAttributes];
 
-    v16 = [(VOTEventFactory *)self handwritingManager];
-    [v16 announceActiveCharacterModeWithDelay:1];
+    handwritingManager2 = [(VOTEventFactory *)self handwritingManager];
+    [handwritingManager2 announceActiveCharacterModeWithDelay:1];
 
     goto LABEL_7;
   }
 
-  if (v7 == 60)
+  if (intValue == 60)
   {
-    v17 = [(VOTEventFactory *)self handwritingManager];
-    [v17 cancelAnnounceActiveCharacterMode];
+    handwritingManager3 = [(VOTEventFactory *)self handwritingManager];
+    [handwritingManager3 cancelAnnounceActiveCharacterMode];
 
-    v13 = [(VOTEventFactory *)self handwritingManager];
-    [v13 clearCurrentString];
+    elementForGesturedTextInput = [(VOTEventFactory *)self handwritingManager];
+    [elementForGesturedTextInput clearCurrentString];
 LABEL_7:
   }
 
-  v18 = [(VOTEventFactory *)self handwritingManager];
-  [v18 setActive:v11 == 60];
+  handwritingManager4 = [(VOTEventFactory *)self handwritingManager];
+  [handwritingManager4 setActive:v11 == 60];
 
-  if (v11 == 61 || v7 == 61 && (-[VOTEventFactory _brailleGestureManager](self, "_brailleGestureManager"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 shouldBeDeactivatedByEscape], v20, v21))
+  if (v11 == 61 || intValue == 61 && (-[VOTEventFactory _brailleGestureManager](self, "_brailleGestureManager"), v20 = objc_claimAutoreleasedReturnValue(), v21 = [v20 shouldBeDeactivatedByEscape], v20, v21))
   {
-    v19 = [(VOTEventFactory *)self _brailleGestureManager];
-    [v19 setActive:v11 == 61];
+    _brailleGestureManager = [(VOTEventFactory *)self _brailleGestureManager];
+    [_brailleGestureManager setActive:v11 == 61];
   }
 
-  if (sub_1000F8768(v11) && !sub_1000F8768(v7))
+  if (sub_1000F8768(v11) && !sub_1000F8768(intValue))
   {
     v22 = VOTLogHandwriting();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
@@ -1350,7 +1350,7 @@ LABEL_7:
     goto LABEL_22;
   }
 
-  if (!sub_1000F8768(v11) && sub_1000F8768(v7))
+  if (!sub_1000F8768(v11) && sub_1000F8768(intValue))
   {
     v22 = VOTLogHandwriting();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
@@ -1367,24 +1367,24 @@ LABEL_22:
   }
 }
 
-- (void)_handleBSIStateChangedNotification:(id)a3
+- (void)_handleBSIStateChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"VOTBSIStateChangedNotificationActive"];
-  v7 = [v6 BOOLValue];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo objectForKey:@"VOTBSIStateChangedNotificationActive"];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKey:@"VOTBSIStateChangedNotificationUsage"];
-  v10 = [v9 integerValue];
+  userInfo2 = [notificationCopy userInfo];
+  v9 = [userInfo2 objectForKey:@"VOTBSIStateChangedNotificationUsage"];
+  integerValue = [v9 integerValue];
 
-  v11 = [v4 userInfo];
+  userInfo3 = [notificationCopy userInfo];
 
-  v12 = [v11 objectForKey:@"VOTBSIStateChangedNotificationPreferSingleHand"];
-  v13 = [v12 BOOLValue];
+  v12 = [userInfo3 objectForKey:@"VOTBSIStateChangedNotificationPreferSingleHand"];
+  bOOLValue2 = [v12 BOOLValue];
 
-  v14 = [(VOTEventFactory *)self _brailleGestureManager];
-  [v14 setActive:v7 usage:v10 preferSingleHand:v13];
+  _brailleGestureManager = [(VOTEventFactory *)self _brailleGestureManager];
+  [_brailleGestureManager setActive:bOOLValue usage:integerValue preferSingleHand:bOOLValue2];
 }
 
 - (void)unregisterForEvents
@@ -1478,9 +1478,9 @@ LABEL_18:
   }
 
   v14 = +[AXSubsystemVoiceOver sharedInstance];
-  v15 = [v14 ignoreLogging];
+  ignoreLogging = [v14 ignoreLogging];
 
-  if ((v15 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v16 = +[AXSubsystemVoiceOver identifier];
     v10 = AXLoggerForFacility();
@@ -1508,16 +1508,16 @@ LABEL_19:
   return 0;
 }
 
-- (int)_registerForAXNotifications:(BOOL)a3
+- (int)_registerForAXNotifications:(BOOL)notifications
 {
-  v3 = a3;
+  notificationsCopy = notifications;
   v5 = +[AXUIElement systemWideAXUIElement];
-  v6 = [(VOTEventFactory *)self _notificationsToRegister];
-  if ([v6 count])
+  _notificationsToRegister = [(VOTEventFactory *)self _notificationsToRegister];
+  if ([_notificationsToRegister count])
   {
     v8 = 0;
     v9 = 0;
-    if (v3)
+    if (notificationsCopy)
     {
       v10 = @"register";
     }
@@ -1533,16 +1533,16 @@ LABEL_19:
     do
     {
       axEventObserver = self->_axEventObserver;
-      v13 = [v6 objectAtIndexedSubscript:{v8, v23}];
-      v14 = [v13 intValue];
-      if (v3)
+      v13 = [_notificationsToRegister objectAtIndexedSubscript:{v8, v23}];
+      intValue = [v13 intValue];
+      if (notificationsCopy)
       {
-        v15 = AXObserverAddNotification(axEventObserver, v5, v14, self);
+        v15 = AXObserverAddNotification(axEventObserver, v5, intValue, self);
       }
 
       else
       {
-        v15 = AXObserverRemoveNotification(axEventObserver, v5, v14);
+        v15 = AXObserverRemoveNotification(axEventObserver, v5, intValue);
       }
 
       v16 = v15;
@@ -1552,12 +1552,12 @@ LABEL_19:
         v17 = VOTLogNotifications();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          v19 = [v6 objectAtIndexedSubscript:v8];
-          v20 = [v19 intValue];
+          v19 = [_notificationsToRegister objectAtIndexedSubscript:v8];
+          intValue2 = [v19 intValue];
           *buf = v23;
           v25 = v10;
           v26 = 1024;
-          v27 = v20;
+          v27 = intValue2;
           v28 = 1024;
           v29 = v16;
           _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "Unable to %{public}@ for notification %d. Error: %d", buf, 0x18u);
@@ -1572,7 +1572,7 @@ LABEL_19:
       v8 = v11;
     }
 
-    while ([v6 count] > v11++);
+    while ([_notificationsToRegister count] > v11++);
     if (v9)
     {
       v21 = VOTLogNotifications();
@@ -1612,11 +1612,11 @@ LABEL_19:
   v3 = +[VOSCommandResolver resolverForCurrentHost];
   v4 = [(VOTEventFactory *)self _currentGesturedTextInputManagerAndCommandResolver:v3 forCommandResolver:1];
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 voiceOverNavigationDirectionMode];
+  voiceOverNavigationDirectionMode = [v5 voiceOverNavigationDirectionMode];
 
-  if (v6)
+  if (voiceOverNavigationDirectionMode)
   {
-    if (v6 == 2)
+    if (voiceOverNavigationDirectionMode == 2)
     {
       v7 = v3;
       v8 = 0;
@@ -1624,7 +1624,7 @@ LABEL_19:
 
     else
     {
-      if (v6 != 1)
+      if (voiceOverNavigationDirectionMode != 1)
       {
         goto LABEL_8;
       }
@@ -1638,8 +1638,8 @@ LABEL_19:
 
   else
   {
-    v9 = [(VOTEventFactory *)self currentElement];
-    [v3 setShouldApplyRTL:{objc_msgSend(v9, "applicationIsRTL")}];
+    currentElement = [(VOTEventFactory *)self currentElement];
+    [v3 setShouldApplyRTL:{objc_msgSend(currentElement, "applicationIsRTL")}];
   }
 
 LABEL_8:
@@ -1647,16 +1647,16 @@ LABEL_8:
   return v3;
 }
 
-- (id)_currentGesturedTextInputManagerAndCommandResolver:(id)a3 forCommandResolver:(BOOL)a4
+- (id)_currentGesturedTextInputManagerAndCommandResolver:(id)resolver forCommandResolver:(BOOL)commandResolver
 {
-  v4 = a4;
-  v6 = a3;
+  commandResolverCopy = commandResolver;
+  resolverCopy = resolver;
   v7 = +[VOTCommandHelper commandHelper];
-  v8 = [v7 helpEnabled];
+  helpEnabled = [v7 helpEnabled];
 
-  if (v8)
+  if (helpEnabled)
   {
-    v9 = !v4;
+    v9 = !commandResolverCopy;
   }
 
   else
@@ -1679,19 +1679,19 @@ LABEL_8:
     v10 = CGSizeZero.height != v15 || CGSizeZero.width != v13;
   }
 
-  v16 = [(VOTEventFactory *)self rotorManager];
-  v17 = [v16 currentRotorType];
+  rotorManager = [(VOTEventFactory *)self rotorManager];
+  currentRotorType = [rotorManager currentRotorType];
 
-  if (v17 == 60)
+  if (currentRotorType == 60)
   {
-    v8 = [(VOTEventFactory *)self currentElement];
-    if ([v8 doesHaveTraitsForGesturedTextInput])
+    helpEnabled = [(VOTEventFactory *)self currentElement];
+    if ([helpEnabled doesHaveTraitsForGesturedTextInput])
     {
 
 LABEL_19:
-      v20 = [(VOTEventFactory *)self handwritingManager];
-      v8 = +[VOSScreenreaderMode Handwriting];
-      [v6 setScreenreaderMode:v8];
+      handwritingManager = [(VOTEventFactory *)self handwritingManager];
+      helpEnabled = +[VOSScreenreaderMode Handwriting];
+      [resolverCopy setScreenreaderMode:helpEnabled];
 LABEL_22:
 
       goto LABEL_23;
@@ -1699,7 +1699,7 @@ LABEL_22:
 
     if (!v10)
     {
-      v20 = 0;
+      handwritingManager = 0;
       goto LABEL_22;
     }
   }
@@ -1710,28 +1710,28 @@ LABEL_22:
   }
 
   v18 = +[AXSettings sharedInstance];
-  v19 = [v18 voiceOverHelpMode];
+  voiceOverHelpMode = [v18 voiceOverHelpMode];
 
-  if (v17 == 60)
+  if (currentRotorType == 60)
   {
   }
 
-  if (v19 == 1)
+  if (voiceOverHelpMode == 1)
   {
     goto LABEL_19;
   }
 
 LABEL_20:
-  v20 = 0;
+  handwritingManager = 0;
 LABEL_23:
-  v21 = [(VOTEventFactory *)self _brailleGestureManager];
-  v22 = [v21 isActive];
-  if ((v22 & 1) == 0 && v10)
+  _brailleGestureManager = [(VOTEventFactory *)self _brailleGestureManager];
+  isActive = [_brailleGestureManager isActive];
+  if ((isActive & 1) == 0 && v10)
   {
     v23 = +[AXSettings sharedInstance];
-    v24 = [v23 voiceOverHelpMode];
+    voiceOverHelpMode2 = [v23 voiceOverHelpMode];
 
-    if (v24 != 2)
+    if (voiceOverHelpMode2 != 2)
     {
       goto LABEL_29;
     }
@@ -1739,50 +1739,50 @@ LABEL_23:
     goto LABEL_28;
   }
 
-  if (v22)
+  if (isActive)
   {
 LABEL_28:
-    v25 = [(VOTEventFactory *)self _brailleGestureManager];
+    _brailleGestureManager2 = [(VOTEventFactory *)self _brailleGestureManager];
 
     v26 = +[VOSScreenreaderMode BrailleScreenInput];
-    [v6 setScreenreaderMode:v26];
+    [resolverCopy setScreenreaderMode:v26];
 
-    [v6 setBsiTypingMode:{objc_msgSend(v25, "typingMode") == 0}];
-    v20 = v25;
+    [resolverCopy setBsiTypingMode:{objc_msgSend(_brailleGestureManager2, "typingMode") == 0}];
+    handwritingManager = _brailleGestureManager2;
   }
 
 LABEL_29:
-  if (v17 == 64)
+  if (currentRotorType == 64)
   {
-    v27 = [(VOTEventFactory *)self _mapsExplorationGestureManager];
-    v28 = [v27 isActive];
+    _mapsExplorationGestureManager = [(VOTEventFactory *)self _mapsExplorationGestureManager];
+    isActive2 = [_mapsExplorationGestureManager isActive];
 
-    if (v28)
+    if (isActive2)
     {
-      v29 = [(VOTEventFactory *)self _mapsExplorationGestureManager];
+      _mapsExplorationGestureManager2 = [(VOTEventFactory *)self _mapsExplorationGestureManager];
 
-      v20 = v29;
+      handwritingManager = _mapsExplorationGestureManager2;
     }
   }
 
-  return v20;
+  return handwritingManager;
 }
 
-- (BOOL)processEventAsGesturedTextInput:(id)a3
+- (BOOL)processEventAsGesturedTextInput:(id)input
 {
-  v4 = a3;
-  if ([v4 isSystemServerEvent])
+  inputCopy = input;
+  if ([inputCopy isSystemServerEvent])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(VOTEventFactory *)self _currentGesturedTextInputManager];
-    v7 = v6;
-    if (v6)
+    _currentGesturedTextInputManager = [(VOTEventFactory *)self _currentGesturedTextInputManager];
+    v7 = _currentGesturedTextInputManager;
+    if (_currentGesturedTextInputManager)
     {
-      v5 = [v6 processEvent:v4];
+      v5 = [_currentGesturedTextInputManager processEvent:inputCopy];
     }
 
     else
@@ -1794,15 +1794,15 @@ LABEL_29:
   return v5;
 }
 
-- (void)processEvent:(id)a3
+- (void)processEvent:(id)event
 {
-  v4 = a3;
-  if (![(VOTEventFactory *)self processEventAsGesturedTextInput:v4])
+  eventCopy = event;
+  if (![(VOTEventFactory *)self processEventAsGesturedTextInput:eventCopy])
   {
-    v5 = [(VOTEventFactory *)self directInteractionKeyboardManager];
-    v6 = [v5 inDirectInteractionTypingMode];
+    directInteractionKeyboardManager = [(VOTEventFactory *)self directInteractionKeyboardManager];
+    inDirectInteractionTypingMode = [directInteractionKeyboardManager inDirectInteractionTypingMode];
 
-    if (!v6 || (-[VOTEventFactory directInteractionKeyboardManager](self, "directInteractionKeyboardManager"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 processEvent:v4], v7, (v8 & 1) == 0))
+    if (!inDirectInteractionTypingMode || (-[VOTEventFactory directInteractionKeyboardManager](self, "directInteractionKeyboardManager"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 processEvent:eventCopy], v7, (v8 & 1) == 0))
     {
       v9 = VOTLogEvent();
       if (os_signpost_enabled(v9))
@@ -1811,14 +1811,14 @@ LABEL_29:
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v9, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "ProcessEvent", "", v15, 2u);
       }
 
-      v10 = [v4 command];
-      if (![v10 isEqualToString:kVOTEventCommandIdle])
+      command = [eventCopy command];
+      if (![command isEqualToString:kVOTEventCommandIdle])
       {
-        v11 = [v4 command];
-        if (![v11 isEqualToString:kVOTEventCommandWatchWakeDoubleTap])
+        command2 = [eventCopy command];
+        if (![command2 isEqualToString:kVOTEventCommandWatchWakeDoubleTap])
         {
-          v13 = [v4 command];
-          v14 = [v13 isEqualToString:kVOTEventCommandWatchWakeTripleTap];
+          command3 = [eventCopy command];
+          v14 = [command3 isEqualToString:kVOTEventCommandWatchWakeTripleTap];
 
           if ((v14 & 1) == 0)
           {
@@ -1831,69 +1831,69 @@ LABEL_29:
 
 LABEL_10:
       WeakRetained = objc_loadWeakRetained(&self->_elementManager);
-      [WeakRetained handleEvent:v4];
+      [WeakRetained handleEvent:eventCopy];
     }
   }
 }
 
 - (BOOL)_isTapAndHoldPending
 {
-  v3 = [(SCRCTargetSelectorTimer *)self->_tapHoldTimer isPending];
-  if (v3)
+  isPending = [(SCRCTargetSelectorTimer *)self->_tapHoldTimer isPending];
+  if (isPending)
   {
-    LOBYTE(v3) = [(SCRCTargetSelectorTimer *)self->_tapHoldTimer isCancelled]^ 1;
+    LOBYTE(isPending) = [(SCRCTargetSelectorTimer *)self->_tapHoldTimer isCancelled]^ 1;
   }
 
-  return v3;
+  return isPending;
 }
 
 - (BOOL)_shouldAttemptTracking
 {
   if (self->_flags.tapAndHoldMode)
   {
-    v3 = [(VOTEventFactory *)self _tapAndHoldModeIsForScribble];
-    if (!v3)
+    _tapAndHoldModeIsForScribble = [(VOTEventFactory *)self _tapAndHoldModeIsForScribble];
+    if (!_tapAndHoldModeIsForScribble)
     {
-      return v3;
+      return _tapAndHoldModeIsForScribble;
     }
 
-    v4 = [(VOTEventFactory *)self _isStylusGesture];
+    _isStylusGesture = [(VOTEventFactory *)self _isStylusGesture];
   }
 
   else
   {
-    v4 = 0;
+    _isStylusGesture = 0;
   }
 
-  LOBYTE(v3) = 0;
-  if (self->_fingerCount && (v4 & 1) == 0)
+  LOBYTE(_tapAndHoldModeIsForScribble) = 0;
+  if (self->_fingerCount && (_isStylusGesture & 1) == 0)
   {
     if ([(VOTEventFactory *)self _isTapAndHoldPending])
     {
-      LOBYTE(v3) = self->_travelDistance >= 0.119999997;
+      LOBYTE(_tapAndHoldModeIsForScribble) = self->_travelDistance >= 0.119999997;
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(_tapAndHoldModeIsForScribble) = 1;
     }
   }
 
-  return v3;
+  return _tapAndHoldModeIsForScribble;
 }
 
-- (BOOL)_isEdgePressSupportedAtPosition:(CGPoint)a3
+- (BOOL)_isEdgePressSupportedAtPosition:(CGPoint)position
 {
-  x = a3.x;
+  x = position.x;
   if ([VOTSharedWorkspace supportsHomeGestures])
   {
     return 0;
   }
 
   v5 = +[VOTElement springBoardApplication];
-  v6 = [v5 applicationIsRTL];
+  applicationIsRTL = [v5 applicationIsRTL];
 
-  if (v6)
+  if (applicationIsRTL)
   {
     return x > 0.93;
   }
@@ -1904,24 +1904,24 @@ LABEL_10:
   }
 }
 
-- (void)_updateFirstnessOfTrackingEvent:(id)a3
+- (void)_updateFirstnessOfTrackingEvent:(id)event
 {
   if (self->_flags.hasSentFirstTrackingEventForGesture)
   {
 
-    [a3 setObject:&__kCFBooleanFalse forIndex:113];
+    [event setObject:&__kCFBooleanFalse forIndex:113];
   }
 
   else
   {
-    [a3 setObject:&__kCFBooleanTrue forIndex:113];
+    [event setObject:&__kCFBooleanTrue forIndex:113];
     self->_flags.hasSentFirstTrackingEventForGesture = 1;
   }
 }
 
-- (void)_gestureTrackingCallbackWithFactory:(id)a3 isHandlingSystemControlEvent:(BOOL)a4
+- (void)_gestureTrackingCallbackWithFactory:(id)factory isHandlingSystemControlEvent:(BOOL)event
 {
-  v6 = a3;
+  factoryCopy = factory;
   Current = CFAbsoluteTimeGetCurrent();
   [(VOTGestureEvent *)self->_lastDownEvent time];
   if (Current - v8 >= self->_delayUntilSpeakInterval)
@@ -1930,7 +1930,7 @@ LABEL_10:
     {
       v9 = [VOTEvent touchEventWithCommand:kVOTEventCommandTracking info:0];
       v10 = VOTSharedWorkspace;
-      [v6 rawLocation];
+      [factoryCopy rawLocation];
       [v10 convertDevicePointToZoomedPoint:sub_1000517DC(v11)];
       [v9 setTouchPoint:?];
       [(VOTEventFactory *)self _updateFirstnessOfTrackingEvent:v9];
@@ -1966,7 +1966,7 @@ LABEL_10:
 
       else
       {
-        [v6 firstFingerPressure];
+        [factoryCopy firstFingerPressure];
         currentTouchForce = v16;
       }
 
@@ -1983,12 +1983,12 @@ LABEL_32:
         {
           if (self->_flags.sendingToNativeSlide && ![(VOTGestureEvent *)self->_currentGestureEvent isDownEvent])
           {
-            v24 = [(VOTGestureEvent *)self->_currentGestureEvent eventRepresentation];
-            v25 = [v24 copy];
+            eventRepresentation = [(VOTGestureEvent *)self->_currentGestureEvent eventRepresentation];
+            v25 = [eventRepresentation copy];
 
-            v26 = [v25 handInfo];
-            v27 = [v26 paths];
-            v28 = [v27 objectAtIndex:0];
+            handInfo = [v25 handInfo];
+            paths = [handInfo paths];
+            v28 = [paths objectAtIndex:0];
             [v28 pathLocation];
             v30 = v29;
             v32 = v31;
@@ -1998,14 +1998,14 @@ LABEL_32:
             [v33 repostEvent:v25];
           }
 
-          if (!a4)
+          if (!event)
           {
             v34 = [VOTEvent touchEventWithCommand:kVOTEventCommandTracking info:0];
-            [v6 firstFingerPressure];
+            [factoryCopy firstFingerPressure];
             [v34 setTouchForce:?];
-            [v6 rawLocation];
+            [factoryCopy rawLocation];
             [v34 setTouchRawLocation:?];
-            [v6 rawLocation];
+            [factoryCopy rawLocation];
             [(VOTEventFactory *)self convertDevicePointToZoomedPoint:sub_1000517DC(v35)];
             [v34 setTouchPoint:?];
             [v34 setObject:self->_currentGestureEvent forIndex:108];
@@ -2027,7 +2027,7 @@ LABEL_32:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
         v39 = v15 > 1.0;
-        [v6 firstFingerPressure];
+        [factoryCopy firstFingerPressure];
         v41 = v40;
         AXForceTouchThresholdPeek();
         isInPreview = self->_isInPreview;
@@ -2055,7 +2055,7 @@ LABEL_32:
       AXForceTouchThresholdPeek();
       if (currentTouchForce > v20)
       {
-        [v6 rawLocation];
+        [factoryCopy rawLocation];
         if ([(VOTEventFactory *)self _isEdgePressSupportedAtPosition:?])
         {
           [(VOTEventFactory *)self _simulateEdgePress];
@@ -2091,10 +2091,10 @@ LABEL_32:
         goto LABEL_32;
       }
 
-      v36 = [(VOTEventFactory *)self currentElement];
-      v37 = [v36 supportsDirectionOrbManipulation];
+      currentElement = [(VOTEventFactory *)self currentElement];
+      supportsDirectionOrbManipulation = [currentElement supportsDirectionOrbManipulation];
 
-      if (v37)
+      if (supportsDirectionOrbManipulation)
       {
         v38 = VOTLogEvent();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
@@ -2152,11 +2152,11 @@ LABEL_46:
   }
 }
 
-- (int)_systemControlPosition:(CGPoint)a3 fingerCount:(unint64_t)a4
+- (int)_systemControlPosition:(CGPoint)position fingerCount:(unint64_t)count
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [VOTSharedWorkspace deviceOrientation];
+  y = position.y;
+  x = position.x;
+  deviceOrientation = [VOTSharedWorkspace deviceOrientation];
   IsPad = AXDeviceIsPad();
   v10 = 60.0;
   if (IsPad)
@@ -2198,7 +2198,7 @@ LABEL_46:
     v11 = 3;
   }
 
-  if (v8 == 4)
+  if (deviceOrientation == 4)
   {
     v12 = v11 - 1;
     if ((v11 - 1) > 3)
@@ -2209,7 +2209,7 @@ LABEL_46:
     v13 = &unk_10017E5B0;
   }
 
-  else if (v8 == 3)
+  else if (deviceOrientation == 3)
   {
     v12 = v11 - 1;
     if ((v11 - 1) >= 4)
@@ -2222,7 +2222,7 @@ LABEL_46:
 
   else
   {
-    if (v8 != 2)
+    if (deviceOrientation != 2)
     {
       goto LABEL_26;
     }
@@ -2238,7 +2238,7 @@ LABEL_46:
 
   v11 = v13[v12];
 LABEL_26:
-  if (a4 == 1)
+  if (count == 1)
   {
     v14 = v11;
   }
@@ -2248,7 +2248,7 @@ LABEL_26:
     v14 = 0;
   }
 
-  if (v11 == 1 && a4 == 2)
+  if (v11 == 1 && count == 2)
   {
     v16 = 5;
   }
@@ -2272,11 +2272,11 @@ LABEL_26:
   }
 }
 
-- (void)_sendSystemControlEvent:(id)a3
+- (void)_sendSystemControlEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   systemControlPosition = self->_systemControlPosition;
-  v7 = v4;
+  v7 = eventCopy;
   if (systemControlPosition <= 2)
   {
     if (systemControlPosition == 1)
@@ -2305,7 +2305,7 @@ LABEL_26:
       case 5:
         v6 = &kVOTEventCommandSystemControlTwoTop;
 LABEL_12:
-        [v4 setCommand:*v6];
+        [eventCopy setCommand:*v6];
         goto LABEL_13;
     }
   }
@@ -2326,13 +2326,13 @@ LABEL_13:
 
 - (CGPoint)_averagePointForLastDownEvent
 {
-  v2 = [(VOTGestureEvent *)self->_lastDownEvent eventRepresentation];
-  v3 = [v2 handInfo];
-  v4 = [v3 paths];
+  eventRepresentation = [(VOTGestureEvent *)self->_lastDownEvent eventRepresentation];
+  handInfo = [eventRepresentation handInfo];
+  paths = [handInfo paths];
 
   x = CGPointZero.x;
   y = CGPointZero.y;
-  v7 = [v4 count];
+  v7 = [paths count];
   if (v7)
   {
     v8 = v7;
@@ -2340,7 +2340,7 @@ LABEL_13:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = v4;
+    v9 = paths;
     v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
@@ -2379,11 +2379,11 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)_updateFingersInSystemControlLocation:(CGPoint)a3 fingerCount:(unint64_t)a4 isLift:(BOOL)a5
+- (BOOL)_updateFingersInSystemControlLocation:(CGPoint)location fingerCount:(unint64_t)count isLift:(BOOL)lift
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(VOTEventFactory *)self _systemControlPosition:a4 fingerCount:a5];
+  y = location.y;
+  x = location.x;
+  v8 = [(VOTEventFactory *)self _systemControlPosition:count fingerCount:lift];
   v9 = v8;
   if (!self->_systemControlActivated)
   {
@@ -2438,9 +2438,9 @@ LABEL_18:
         [(VOTGestureEvent *)self->_lastDownEvent time];
         if (Current - v18 <= 1.75)
         {
-          v19 = [(VOTEventFactory *)self currentElement];
-          v20 = [v19 doesHaveTraits:kAXKeyboardKeyTrait];
-          [v19 frame];
+          currentElement = [(VOTEventFactory *)self currentElement];
+          v20 = [currentElement doesHaveTraits:kAXKeyboardKeyTrait];
+          [currentElement frame];
           if (!v20 || (v32.x = x, v32.y = y, !CGRectContainsPoint(*&v21, v32)))
           {
             if (!self->_systemControlActivated)
@@ -2458,11 +2458,11 @@ LABEL_18:
     return 0;
   }
 
-  v10 = [VOTSharedWorkspace deviceOrientation];
+  deviceOrientation = [VOTSharedWorkspace deviceOrientation];
   v11 = 0.0;
-  if ((v10 - 2) <= 2)
+  if ((deviceOrientation - 2) <= 2)
   {
-    v11 = dbl_10017E5C8[(v10 - 2)];
+    v11 = dbl_10017E5C8[(deviceOrientation - 2)];
   }
 
   v12 = v11 + 0.0;
@@ -2548,10 +2548,10 @@ LABEL_45:
   return 0;
 }
 
-- (void)gestureSplitTappingCallbackWithFactory:(id)a3
+- (void)gestureSplitTappingCallbackWithFactory:(id)factory
 {
-  v15 = a3;
-  v4 = [(VOTEventFactory *)self _currentGesturedTextInputManager];
+  factoryCopy = factory;
+  _currentGesturedTextInputManager = [(VOTEventFactory *)self _currentGesturedTextInputManager];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2559,16 +2559,16 @@ LABEL_45:
 
   else
   {
-    v5 = [(VOTEventFactory *)self _shouldUseGesturedTextInputManager];
+    _shouldUseGesturedTextInputManager = [(VOTEventFactory *)self _shouldUseGesturedTextInputManager];
 
-    v6 = v15;
-    if (v5)
+    v6 = factoryCopy;
+    if (_shouldUseGesturedTextInputManager)
     {
       goto LABEL_5;
     }
   }
 
-  [v15 rawLocation];
+  [factoryCopy rawLocation];
   [(VOTEventFactory *)self convertDevicePointToZoomedPoint:sub_1000517DC(v7)];
   v9 = v8;
   v11 = v10;
@@ -2579,11 +2579,11 @@ LABEL_45:
   v14 = [VOTEvent touchEventWithCommand:kVOTEventCommandSplitTapTap info:v12];
   [(VOTEventFactory *)self processEvent:v14];
 
-  v6 = v15;
+  v6 = factoryCopy;
 LABEL_5:
 }
 
-- (void)gestureFactoryDidBeginSplitGesture:(id)a3
+- (void)gestureFactoryDidBeginSplitGesture:(id)gesture
 {
   if (!self->_flags.splitSlide)
   {
@@ -2593,28 +2593,28 @@ LABEL_5:
       sub_10012E2B0();
     }
 
-    v5 = [(VOTEventFactory *)self _currentGesturedTextInputManager];
-    [v5 eventFactoryDidBeginSplitGesture:self];
+    _currentGesturedTextInputManager = [(VOTEventFactory *)self _currentGesturedTextInputManager];
+    [_currentGesturedTextInputManager eventFactoryDidBeginSplitGesture:self];
   }
 }
 
-- (id)_handleGestureKeyboardTappingCallback:(unint64_t)a3 fingerCount:(unint64_t)a4 isDown:(BOOL)a5 originalLocation:(CGPoint)a6 convertedLocation:(CGPoint)a7
+- (id)_handleGestureKeyboardTappingCallback:(unint64_t)callback fingerCount:(unint64_t)count isDown:(BOOL)down originalLocation:(CGPoint)location convertedLocation:(CGPoint)convertedLocation
 {
-  y = a7.y;
-  x = a7.x;
-  v9 = a6.y;
-  v10 = a6.x;
+  y = convertedLocation.y;
+  x = convertedLocation.x;
+  v9 = location.y;
+  v10 = location.x;
   v15 = +[VOTWorkspace sharedWorkspace];
-  v16 = [v15 userCommandManager];
+  userCommandManager = [v15 userCommandManager];
 
-  v17 = [(VOTEventFactory *)self directInteractionKeyboardManager];
-  [v17 gestureKeyboardRegion];
+  directInteractionKeyboardManager = [(VOTEventFactory *)self directInteractionKeyboardManager];
+  [directInteractionKeyboardManager gestureKeyboardRegion];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
 
-  if (a3 == 1 && a4 == 1)
+  if (callback == 1 && count == 1)
   {
     v32.origin.x = v19;
     v32.origin.y = v21;
@@ -2636,11 +2636,11 @@ LABEL_5:
   else
   {
     v26 = 0;
-    if (a3 == 2 && a4 == 2 && !a5)
+    if (callback == 2 && count == 2 && !down)
     {
       v27 = +[VOSGesture TwoFingerDoubleTap];
-      v28 = [(VOTEventFactory *)self _commandResolver];
-      v26 = [v16 eventForTouchGesture:v27 resolver:v28];
+      _commandResolver = [(VOTEventFactory *)self _commandResolver];
+      v26 = [userCommandManager eventForTouchGesture:v27 resolver:_commandResolver];
     }
   }
 
@@ -2649,27 +2649,27 @@ LABEL_5:
   return v26;
 }
 
-- (void)gestureTappingCallbackWithFactory:(id)a3
+- (void)gestureTappingCallbackWithFactory:(id)factory
 {
-  v4 = a3;
+  factoryCopy = factory;
   v5 = VOTLogEvent();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_10012E2E4(v4);
+    sub_10012E2E4(factoryCopy);
   }
 
   v6 = +[VOTWorkspace sharedWorkspace];
-  v7 = [v6 userCommandManager];
+  userCommandManager = [v6 userCommandManager];
 
-  [v4 rawLocation];
+  [factoryCopy rawLocation];
   [(VOTEventFactory *)self convertDevicePointToZoomedPoint:sub_1000517DC(v8)];
   v10 = v9;
   v12 = v11;
-  [v4 firstFingerPressure];
+  [factoryCopy firstFingerPressure];
   v14 = v13;
-  v15 = [v4 tapCount] + self->_watchWakeTapCount;
+  v15 = [factoryCopy tapCount] + self->_watchWakeTapCount;
   v16 = self->_delayUntilSpeakInterval > 0.001 && v15 == 1;
-  if (v16 && [v4 fingerCount] == 1)
+  if (v16 && [factoryCopy fingerCount] == 1)
   {
     v17 = VOTLogEvent();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -2683,11 +2683,11 @@ LABEL_5:
     goto LABEL_129;
   }
 
-  v19 = [v4 tapIsDown];
-  -[VOTEventFactory _setFingerCount:](self, "_setFingerCount:", [v4 fingerCount]);
+  tapIsDown = [factoryCopy tapIsDown];
+  -[VOTEventFactory _setFingerCount:](self, "_setFingerCount:", [factoryCopy fingerCount]);
   if (objc_opt_respondsToSelector())
   {
-    [v4 tapTotalFingerCount];
+    [factoryCopy tapTotalFingerCount];
   }
 
   if (self->_flags.tapAndHoldMode && [(VOTEventFactory *)self _tapAndHoldModeIsForScribble]&& [(VOTEventFactory *)self _isStylusGesture])
@@ -2703,28 +2703,28 @@ LABEL_5:
   }
 
   [(VOTEventFactory *)self _cancelTapAndHold:CGPointZero.x, CGPointZero.y];
-  v20 = [(VOTEventFactory *)self _currentGesturedTextInputManager];
-  v17 = v20;
-  if (v20 && ([v20 processTapWithFingerCount:self->_fingerCount]& 1) != 0)
+  _currentGesturedTextInputManager = [(VOTEventFactory *)self _currentGesturedTextInputManager];
+  v17 = _currentGesturedTextInputManager;
+  if (_currentGesturedTextInputManager && ([_currentGesturedTextInputManager processTapWithFingerCount:self->_fingerCount]& 1) != 0)
   {
     goto LABEL_129;
   }
 
-  v21 = [(VOTDirectInteractionKeyboardManager *)self->_directInteractionKeyboardManager inDirectInteractionTypingMode];
+  inDirectInteractionTypingMode = [(VOTDirectInteractionKeyboardManager *)self->_directInteractionKeyboardManager inDirectInteractionTypingMode];
   v22 = +[VOTElement systemWideElement];
-  v23 = [(VOTDirectInteractionKeyboardManager *)self->_directInteractionKeyboardManager keyboardElement];
-  [v22 convertPoint:objc_msgSend(v23 toContextId:{"windowContextId"), v10, v12}];
+  keyboardElement = [(VOTDirectInteractionKeyboardManager *)self->_directInteractionKeyboardManager keyboardElement];
+  [v22 convertPoint:objc_msgSend(keyboardElement toContextId:{"windowContextId"), v10, v12}];
   v25 = v24;
   v27 = v26;
 
-  if (v21)
+  if (inDirectInteractionTypingMode)
   {
     [(VOTDirectInteractionKeyboardManager *)self->_directInteractionKeyboardManager gestureKeyboardRegion];
     v85.x = v25;
     v85.y = v27;
     if (CGRectContainsPoint(v86, v85) && (![(VOTDirectInteractionKeyboardManager *)self->_directInteractionKeyboardManager isEmojiKeyboard]|| [(VOTDirectInteractionKeyboardManager *)self->_directInteractionKeyboardManager isEmojiKey]))
     {
-      v28 = [(VOTEventFactory *)self _handleGestureKeyboardTappingCallback:v15 fingerCount:self->_fingerCount isDown:v19 originalLocation:v10 convertedLocation:v12, v25, v27];
+      v28 = [(VOTEventFactory *)self _handleGestureKeyboardTappingCallback:v15 fingerCount:self->_fingerCount isDown:tapIsDown originalLocation:v10 convertedLocation:v12, v25, v27];
       if (v28)
       {
         v29 = v28;
@@ -2753,7 +2753,7 @@ LABEL_5:
 
           v32 = [VOTEvent touchEventWithCommand:kVOTEventCommandTracking info:0];
           [v32 setTouchPoint:v10, v12];
-          [v4 rawLocation];
+          [factoryCopy rawLocation];
           [v32 setTouchRawLocation:?];
           [v32 setTouchForce:v14];
           if (v32)
@@ -2766,16 +2766,16 @@ LABEL_5:
           goto LABEL_124;
         }
 
-        if (!((fingerCount != 4) | v19 & 1))
+        if (!((fingerCount != 4) | tapIsDown & 1))
         {
           v47 = +[VOSGesture FourFingerSingleTap];
-          v48 = [(VOTEventFactory *)self _commandResolver];
-          v32 = [v7 eventForTouchGesture:v47 resolver:v48];
+          _commandResolver = [(VOTEventFactory *)self _commandResolver];
+          v32 = [userCommandManager eventForTouchGesture:v47 resolver:_commandResolver];
 
           if (!v32)
           {
-            [v4 tapPoint];
-            -[VOTEventFactory adjustedPointForFactoryPoint:forOrientation:](self, "adjustedPointForFactoryPoint:forOrientation:", [v4 orientation], v49, v50);
+            [factoryCopy tapPoint];
+            -[VOTEventFactory adjustedPointForFactoryPoint:forOrientation:](self, "adjustedPointForFactoryPoint:forOrientation:", [factoryCopy orientation], v49, v50);
             v52 = v51;
             v54 = v53;
             if (AXDeviceIsPad() && fabs(v54 + -0.5) <= fabs(v52 + -0.5))
@@ -2814,12 +2814,12 @@ LABEL_124:
         goto LABEL_125;
       }
 
-      if (v19)
+      if (tapIsDown)
       {
         goto LABEL_125;
       }
 
-      if ([(VOTEventFactory *)self _twoFingersDistant:v4])
+      if ([(VOTEventFactory *)self _twoFingersDistant:factoryCopy])
       {
         +[VOSGesture TwoDistantFingerSingleTap];
       }
@@ -2834,7 +2834,7 @@ LABEL_124:
 
     if (self->_flags.firedElementSummaryTimer)
     {
-      if (v19)
+      if (tapIsDown)
       {
         goto LABEL_125;
       }
@@ -2851,12 +2851,12 @@ LABEL_88:
     }
 
     elementSummaryTimer = self->_elementSummaryTimer;
-    if ((v19 & 1) == 0)
+    if ((tapIsDown & 1) == 0)
     {
       [(SCRCTargetSelectorTimer *)elementSummaryTimer cancel];
       v62 = +[VOSGesture ThreeFingerSingleTap];
-      v63 = [(VOTEventFactory *)self _commandResolver];
-      v32 = [v7 eventForTouchGesture:v62 resolver:v63];
+      _commandResolver2 = [(VOTEventFactory *)self _commandResolver];
+      v32 = [userCommandManager eventForTouchGesture:v62 resolver:_commandResolver2];
 
       goto LABEL_88;
     }
@@ -2878,11 +2878,11 @@ LABEL_95:
     v43 = self->_fingerCount;
     if (v43 != 1)
     {
-      if ((v43 != 3) | v19 & 1)
+      if ((v43 != 3) | tapIsDown & 1)
       {
-        if ((v43 != 2) | v19 & 1)
+        if ((v43 != 2) | tapIsDown & 1)
         {
-          if ((v43 != 4) | v19 & 1)
+          if ((v43 != 4) | tapIsDown & 1)
           {
             goto LABEL_125;
           }
@@ -2904,7 +2904,7 @@ LABEL_95:
       goto LABEL_121;
     }
 
-    if (v19)
+    if (tapIsDown)
     {
       goto LABEL_125;
     }
@@ -2927,7 +2927,7 @@ LABEL_95:
     v34 = self->_fingerCount;
     if (v34 == 3)
     {
-      if ((v19 & 1) == 0)
+      if ((tapIsDown & 1) == 0)
       {
         v38 = +[VOSGesture ThreeFingerDoubleTap];
         goto LABEL_121;
@@ -2936,9 +2936,9 @@ LABEL_95:
       if ((AXDeviceIsPad() & 1) == 0)
       {
         v64 = +[AXSettings sharedInstance];
-        v65 = [v64 voiceOverTouchBrailleGesturesActivationGestureEnabled];
+        voiceOverTouchBrailleGesturesActivationGestureEnabled = [v64 voiceOverTouchBrailleGesturesActivationGestureEnabled];
 
-        if (!v65)
+        if (!voiceOverTouchBrailleGesturesActivationGestureEnabled)
         {
           goto LABEL_125;
         }
@@ -2954,9 +2954,9 @@ LABEL_95:
 
     if (v34 == 2)
     {
-      if ([(VOTEventFactory *)self _twoFingersDistant:v4])
+      if ([(VOTEventFactory *)self _twoFingersDistant:factoryCopy])
       {
-        if (v19)
+        if (tapIsDown)
         {
           goto LABEL_125;
         }
@@ -2967,11 +2967,11 @@ LABEL_95:
       else
       {
         v67 = +[VOTCommandHelper commandHelper];
-        v68 = [v67 helpEnabled];
+        helpEnabled = [v67 helpEnabled];
 
-        if (v68)
+        if (helpEnabled)
         {
-          if (v19)
+          if (tapIsDown)
           {
             v55 = &kVOTEventCommandLabelElement;
 LABEL_134:
@@ -2989,7 +2989,7 @@ LABEL_135:
 
         else
         {
-          if (v19)
+          if (tapIsDown)
           {
             [(SCRCTargetSelectorTimer *)self->_twoFingerHoldTimer cancel];
             self->_flags.memorizingData = 1;
@@ -3012,9 +3012,9 @@ LABEL_135:
 
     if (v34 != 1)
     {
-      if ((v34 != 4) | v19 & 1)
+      if ((v34 != 4) | tapIsDown & 1)
       {
-        if ((v34 != 5) | v19 & 1)
+        if ((v34 != 5) | tapIsDown & 1)
         {
           goto LABEL_125;
         }
@@ -3030,12 +3030,12 @@ LABEL_135:
       goto LABEL_121;
     }
 
-    if (v19)
+    if (tapIsDown)
     {
-      [v4 multiTapFrame];
+      [factoryCopy multiTapFrame];
       if (!v17 && v35 < 0.330000013 && v36 < 0.330000013)
       {
-        [v4 tapInterval];
+        [factoryCopy tapInterval];
         if (v37 > 0.100000001 && self->_travelDistance < 0.100000001)
         {
           [(SCRCTargetSelectorTimer *)self->_tapHoldTimer dispatchAfterDelay:&__kCFBooleanTrue withObject:0.5];
@@ -3046,9 +3046,9 @@ LABEL_135:
     }
 
     v69 = +[VOTWorkspace sharedWorkspace];
-    v70 = [v69 voiceOverIsIdle];
+    voiceOverIsIdle = [v69 voiceOverIsIdle];
 
-    if (v70)
+    if (voiceOverIsIdle)
     {
       v42 = &kVOTEventCommandWatchWakeDoubleTap;
       goto LABEL_109;
@@ -3069,15 +3069,15 @@ LABEL_135:
   v39 = self->_fingerCount;
   if (v39 == 1)
   {
-    if (v19)
+    if (tapIsDown)
     {
       goto LABEL_125;
     }
 
     v40 = +[VOTWorkspace sharedWorkspace];
-    v41 = [v40 voiceOverIsIdle];
+    voiceOverIsIdle2 = [v40 voiceOverIsIdle];
 
-    if (v41)
+    if (voiceOverIsIdle2)
     {
       v42 = &kVOTEventCommandWatchWakeTripleTap;
 LABEL_109:
@@ -3091,22 +3091,22 @@ LABEL_109:
 
     v46 = +[VOSGesture OneFingerTripleTap];
 LABEL_116:
-    v75 = v46;
-    v76 = [(VOTEventFactory *)self _commandResolver];
-    v32 = [v7 eventForTouchGesture:v75 resolver:v76 info:v44];
+    _commandResolver4 = v46;
+    _commandResolver3 = [(VOTEventFactory *)self _commandResolver];
+    v32 = [userCommandManager eventForTouchGesture:_commandResolver4 resolver:_commandResolver3 info:v44];
 
     goto LABEL_122;
   }
 
-  if (!((v39 != 3) | v19 & 1))
+  if (!((v39 != 3) | tapIsDown & 1))
   {
     v38 = +[VOSGesture ThreeFingerTripleTap];
     goto LABEL_121;
   }
 
-  if (!((v39 != 2) | v19 & 1))
+  if (!((v39 != 2) | tapIsDown & 1))
   {
-    if ([(VOTEventFactory *)self _twoFingersDistant:v4])
+    if ([(VOTEventFactory *)self _twoFingersDistant:factoryCopy])
     {
       +[VOSGesture TwoDistantFingerTripleTap];
     }
@@ -3119,8 +3119,8 @@ LABEL_116:
     v38 = LABEL_50:;
 LABEL_121:
     v44 = v38;
-    v75 = [(VOTEventFactory *)self _commandResolver];
-    v32 = [v7 eventForTouchGesture:v44 resolver:v75];
+    _commandResolver4 = [(VOTEventFactory *)self _commandResolver];
+    v32 = [userCommandManager eventForTouchGesture:v44 resolver:_commandResolver4];
 LABEL_122:
 
     if (v32)
@@ -3131,11 +3131,11 @@ LABEL_122:
     goto LABEL_125;
   }
 
-  if (!((v39 != 4) | v19 & 1))
+  if (!((v39 != 4) | tapIsDown & 1))
   {
     v56 = +[VOSGesture FourFingerTripleTap];
-    v57 = [(VOTEventFactory *)self _commandResolver];
-    v32 = [v7 eventForTouchGesture:v56 resolver:v57];
+    _commandResolver5 = [(VOTEventFactory *)self _commandResolver];
+    v32 = [userCommandManager eventForTouchGesture:v56 resolver:_commandResolver5];
 
     if (v32)
     {
@@ -3167,7 +3167,7 @@ LABEL_125:
     v78 = self->_fingerCount;
     v79 = @"UP";
     *v80 = 134218498;
-    if (v19)
+    if (tapIsDown)
     {
       v79 = @"DOWN";
     }
@@ -3180,7 +3180,7 @@ LABEL_125:
     _os_log_debug_impl(&_mh_execute_header, v77, OS_LOG_TYPE_DEBUG, "fingerCount: %ld tapCount: %ld %{public}@", v80, 0x20u);
   }
 
-  if ((v19 & 1) == 0)
+  if ((tapIsDown & 1) == 0)
   {
     [(VOTEventFactory *)self _setFingerCount:0];
   }
@@ -3191,13 +3191,13 @@ LABEL_125:
 LABEL_129:
 }
 
-- (BOOL)_twoFingersDistant:(id)a3
+- (BOOL)_twoFingersDistant:(id)distant
 {
-  v3 = a3;
-  [v3 rawLocation];
+  distantCopy = distant;
+  [distantCopy rawLocation];
   v5 = v4;
   v7 = v6;
-  [v3 rawAverageLocation];
+  [distantCopy rawAverageLocation];
   v9 = v8;
   v11 = v10;
 
@@ -3217,53 +3217,53 @@ LABEL_129:
   }
 }
 
-- (CGPoint)adjustedPointForFactoryPoint:(CGPoint)a3 forOrientation:(int64_t)a4
+- (CGPoint)adjustedPointForFactoryPoint:(CGPoint)point forOrientation:(int64_t)orientation
 {
-  v4 = 1.0 - a3.x;
-  if (a4 == 1)
+  v4 = 1.0 - point.x;
+  if (orientation == 1)
   {
-    y = 1.0 - a3.y;
+    y = 1.0 - point.y;
   }
 
   else
   {
-    y = a3.y;
+    y = point.y;
   }
 
-  if (a4 == 1)
+  if (orientation == 1)
   {
-    x = 1.0 - a3.x;
-  }
-
-  else
-  {
-    x = a3.x;
-  }
-
-  if (a4 == 2)
-  {
-    v7 = 1.0 - a3.y;
+    x = 1.0 - point.x;
   }
 
   else
   {
-    a3.x = y;
+    x = point.x;
+  }
+
+  if (orientation == 2)
+  {
+    v7 = 1.0 - point.y;
+  }
+
+  else
+  {
+    point.x = y;
     v7 = x;
   }
 
-  if (a4 == 3)
+  if (orientation == 3)
   {
     v8 = v4;
   }
 
   else
   {
-    v8 = a3.x;
+    v8 = point.x;
   }
 
-  if (a4 == 3)
+  if (orientation == 3)
   {
-    v9 = a3.y;
+    v9 = point.y;
   }
 
   else
@@ -3277,47 +3277,47 @@ LABEL_129:
   return result;
 }
 
-- (void)_feedEventToHandwritingRecognition:(id)a3
+- (void)_feedEventToHandwritingRecognition:(id)recognition
 {
-  v4 = a3;
-  v5 = [(VOTEventFactory *)self _currentGesturedTextInputManager];
-  v6 = [(VOTEventFactory *)self handwritingManager];
-  if (v5 != v6 || [v4 fingerCount] > 1)
+  recognitionCopy = recognition;
+  _currentGesturedTextInputManager = [(VOTEventFactory *)self _currentGesturedTextInputManager];
+  handwritingManager = [(VOTEventFactory *)self handwritingManager];
+  if (_currentGesturedTextInputManager != handwritingManager || [recognitionCopy fingerCount] > 1)
   {
 
 LABEL_4:
-    v7 = [(VOTEventFactory *)self _handwritingCaptureTimer];
-    [v7 cancel];
+    _handwritingCaptureTimer = [(VOTEventFactory *)self _handwritingCaptureTimer];
+    [_handwritingCaptureTimer cancel];
     goto LABEL_5;
   }
 
-  v8 = [v4 isCancelEvent];
+  isCancelEvent = [recognitionCopy isCancelEvent];
 
-  if (v8)
+  if (isCancelEvent)
   {
     goto LABEL_4;
   }
 
-  v7 = [(VOTEventFactory *)self handwritingManager];
-  if (![v4 isLiftEvent])
+  _handwritingCaptureTimer = [(VOTEventFactory *)self handwritingManager];
+  if (![recognitionCopy isLiftEvent])
   {
-    v11 = [(VOTEventFactory *)self _handwritingCaptureTimer];
-    [v11 cancel];
+    _handwritingCaptureTimer2 = [(VOTEventFactory *)self _handwritingCaptureTimer];
+    [_handwritingCaptureTimer2 cancel];
 
-    v12 = [v4 eventRepresentation];
-    v13 = [v12 handInfo];
-    v14 = [v13 paths];
-    v15 = [v14 firstPath];
-    [v15 pathLocation];
+    eventRepresentation = [recognitionCopy eventRepresentation];
+    handInfo = [eventRepresentation handInfo];
+    paths = [handInfo paths];
+    firstPath = [paths firstPath];
+    [firstPath pathLocation];
     v17 = v16;
     v19 = v18;
 
-    v20 = [(VOTEventFactory *)self handwritingManager];
-    [v20 addPointToSession:{v17, v19}];
+    handwritingManager2 = [(VOTEventFactory *)self handwritingManager];
+    [handwritingManager2 addPointToSession:{v17, v19}];
 
-    if ([v7 state])
+    if ([_handwritingCaptureTimer state])
     {
-      if ([v7 state] != 2)
+      if ([_handwritingCaptureTimer state] != 2)
       {
 LABEL_16:
 
@@ -3332,19 +3332,19 @@ LABEL_16:
       v21 = 1;
     }
 
-    [v7 setState:v21];
+    [_handwritingCaptureTimer setState:v21];
     goto LABEL_16;
   }
 
-  [v7 endCurrentStroke];
-  v9 = [(VOTEventFactory *)self _handwritingCaptureTimer];
+  [_handwritingCaptureTimer endCurrentStroke];
+  _handwritingCaptureTimer3 = [(VOTEventFactory *)self _handwritingCaptureTimer];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_1000CA0A0;
   v22[3] = &unk_1001C76E8;
-  v10 = v7;
+  v10 = _handwritingCaptureTimer;
   v23 = v10;
-  [v9 afterDelay:v22 processBlock:0.25];
+  [_handwritingCaptureTimer3 afterDelay:v22 processBlock:0.25];
 
   if ([v10 state] == 1)
   {
@@ -3356,16 +3356,16 @@ LABEL_5:
 
 - (BOOL)_shouldUseGesturedTextInputManager
 {
-  v2 = [(VOTEventFactory *)self _currentGesturedTextInputManager];
-  v3 = v2 != 0;
+  _currentGesturedTextInputManager = [(VOTEventFactory *)self _currentGesturedTextInputManager];
+  v3 = _currentGesturedTextInputManager != 0;
 
   return v3;
 }
 
-- (BOOL)_handleDirectInteractionEvent:(id)a3
+- (BOOL)_handleDirectInteractionEvent:(id)event
 {
-  v4 = a3;
-  if (-[VOTEventFactory _willStartEdgePanGestureForEvent:](self, "_willStartEdgePanGestureForEvent:", v4) || self->_edgePanGestureState || (-[VOTEventFactory directInteractionKeyboardManager](self, "directInteractionKeyboardManager"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 inDirectInteractionTypingMode], v5, (v6 & 1) != 0) || (WeakRetained = objc_loadWeakRetained(&self->_directTouchManager), v8 = objc_msgSend(WeakRetained, "inDirectTouchMode"), WeakRetained, !v8))
+  eventCopy = event;
+  if (-[VOTEventFactory _willStartEdgePanGestureForEvent:](self, "_willStartEdgePanGestureForEvent:", eventCopy) || self->_edgePanGestureState || (-[VOTEventFactory directInteractionKeyboardManager](self, "directInteractionKeyboardManager"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 inDirectInteractionTypingMode], v5, (v6 & 1) != 0) || (WeakRetained = objc_loadWeakRetained(&self->_directTouchManager), v8 = objc_msgSend(WeakRetained, "inDirectTouchMode"), WeakRetained, !v8))
   {
     v58 = 0;
     goto LABEL_53;
@@ -3431,14 +3431,14 @@ LABEL_8:
       }
     }
 
-    else if (-[VOTGestureEvent isDownEvent](v4, "isDownEvent") || (v34 = objc_loadWeakRetained(&self->_directTouchManager), v35 = [v34 shouldTurnTrackingIntoDirectTouch], v34, v35))
+    else if (-[VOTGestureEvent isDownEvent](eventCopy, "isDownEvent") || (v34 = objc_loadWeakRetained(&self->_directTouchManager), v35 = [v34 shouldTurnTrackingIntoDirectTouch], v34, v35))
     {
       v81 = 0u;
       v82 = 0u;
       v79 = 0u;
       v80 = 0u;
-      v36 = [(VOTGestureEvent *)v4 fingers];
-      v37 = [v36 countByEnumeratingWithState:&v79 objects:v88 count:16];
+      fingers = [(VOTGestureEvent *)eventCopy fingers];
+      v37 = [fingers countByEnumeratingWithState:&v79 objects:v88 count:16];
       if (v37)
       {
         v38 = v37;
@@ -3449,7 +3449,7 @@ LABEL_8:
           {
             if (*v80 != v39)
             {
-              objc_enumerationMutation(v36);
+              objc_enumerationMutation(fingers);
             }
 
             [*(*(&v79 + 1) + 8 * i) location];
@@ -3461,8 +3461,8 @@ LABEL_8:
             v92.size.height = v31;
             if (CGRectContainsPoint(v92, v90))
             {
-              v43 = [(VOTEventFactory *)self currentElement];
-              v44 = [v43 isEqual:v14];
+              currentElement = [(VOTEventFactory *)self currentElement];
+              v44 = [currentElement isEqual:v14];
 
               if ((v44 & 1) == 0)
               {
@@ -3476,7 +3476,7 @@ LABEL_8:
             }
           }
 
-          v38 = [v36 countByEnumeratingWithState:&v79 objects:v88 count:16];
+          v38 = [fingers countByEnumeratingWithState:&v79 objects:v88 count:16];
           if (v38)
           {
             continue;
@@ -3490,16 +3490,16 @@ LABEL_8:
 LABEL_30:
 
       v46 = objc_loadWeakRetained(&self->_directTouchManager);
-      v47 = [v46 shouldTurnTrackingIntoDirectTouch];
+      shouldTurnTrackingIntoDirectTouch = [v46 shouldTurnTrackingIntoDirectTouch];
 
-      if (v47)
+      if (shouldTurnTrackingIntoDirectTouch)
       {
         v48 = self->_lastDownEvent;
 
         v49 = objc_loadWeakRetained(&self->_directTouchManager);
         [v49 setShouldTurnTrackingIntoDirectTouch:0];
 
-        v4 = v48;
+        eventCopy = v48;
       }
 
       if (v12)
@@ -3523,8 +3523,8 @@ LABEL_44:
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v50 = [(VOTGestureEvent *)v4 fingers];
-    v51 = [v50 countByEnumeratingWithState:&v75 objects:v87 count:16];
+    fingers2 = [(VOTGestureEvent *)eventCopy fingers];
+    v51 = [fingers2 countByEnumeratingWithState:&v75 objects:v87 count:16];
     if (v51)
     {
       v52 = v51;
@@ -3535,7 +3535,7 @@ LABEL_44:
         {
           if (*v76 != v53)
           {
-            objc_enumerationMutation(v50);
+            objc_enumerationMutation(fingers2);
           }
 
           [*(*(&v75 + 1) + 8 * j) location];
@@ -3553,7 +3553,7 @@ LABEL_44:
           }
         }
 
-        v52 = [v50 countByEnumeratingWithState:&v75 objects:v87 count:16];
+        v52 = [fingers2 countByEnumeratingWithState:&v75 objects:v87 count:16];
         if (v52)
         {
           continue;
@@ -3592,9 +3592,9 @@ LABEL_46:
   }
 
   v60 = objc_loadWeakRetained(&self->_elementManager);
-  v61 = [v60 currentElement];
+  currentElement2 = [v60 currentElement];
 
-  if ([(NSArray *)self->_directInteractionElements containsObject:v61])
+  if ([(NSArray *)self->_directInteractionElements containsObject:currentElement2])
   {
     v9 = v72;
   }
@@ -3602,8 +3602,8 @@ LABEL_46:
   else
   {
     directInteractionElements = self->_directInteractionElements;
-    v63 = [(VOTEventFactory *)self lastTouchedDirectTouchElement];
-    LODWORD(directInteractionElements) = [(NSArray *)directInteractionElements containsObject:v63];
+    lastTouchedDirectTouchElement = [(VOTEventFactory *)self lastTouchedDirectTouchElement];
+    LODWORD(directInteractionElements) = [(NSArray *)directInteractionElements containsObject:lastTouchedDirectTouchElement];
 
     v9 = v72;
     if (directInteractionElements)
@@ -3619,20 +3619,20 @@ LABEL_46:
     }
     v64 = ;
 
-    v61 = v64;
+    currentElement2 = v64;
   }
 
-  v65 = [v61 windowContextId];
-  v66 = [(VOTGestureEvent *)v4 eventRepresentation];
-  [v66 setContextId:v65];
+  windowContextId = [currentElement2 windowContextId];
+  eventRepresentation = [(VOTGestureEvent *)eventCopy eventRepresentation];
+  [eventRepresentation setContextId:windowContextId];
 
-  v67 = [(VOTGestureEvent *)v4 eventRepresentation];
-  [v67 setSenderID:0x8000000817319373];
+  eventRepresentation2 = [(VOTGestureEvent *)eventCopy eventRepresentation];
+  [eventRepresentation2 setSenderID:0x8000000817319373];
 
   v68 = +[AXBackBoardServer server];
-  v69 = [(VOTGestureEvent *)v4 eventRepresentation];
+  eventRepresentation3 = [(VOTGestureEvent *)eventCopy eventRepresentation];
   v58 = 1;
-  v70 = [v69 normalizedEventRepresentation:0 scale:1];
+  v70 = [eventRepresentation3 normalizedEventRepresentation:0 scale:1];
   [v68 postEvent:v70 systemEvent:0];
 
   self->_flags.sendingToDirectTouch = 1;
@@ -3644,53 +3644,53 @@ LABEL_53:
   return v58;
 }
 
-- (BOOL)_gestureEventIsInvalid:(id)a3
+- (BOOL)_gestureEventIsInvalid:(id)invalid
 {
-  v4 = a3;
-  if ([v4 isLiftEvent])
+  invalidCopy = invalid;
+  if ([invalidCopy isLiftEvent])
   {
     if (!self->_flags.gestureSawDownEvent)
     {
-      v5 = 1;
+      isNonLiftingInRangeEvent = 1;
       goto LABEL_9;
     }
 
     self->_flags.gestureSawDownEvent = 0;
   }
 
-  if (([v4 isDownEvent] & 1) != 0 || objc_msgSend(v4, "isMovedEvent"))
+  if (([invalidCopy isDownEvent] & 1) != 0 || objc_msgSend(invalidCopy, "isMovedEvent"))
   {
     self->_flags.gestureSawDownEvent = 1;
   }
 
-  v5 = [v4 isNonLiftingInRangeEvent];
+  isNonLiftingInRangeEvent = [invalidCopy isNonLiftingInRangeEvent];
 LABEL_9:
 
-  return v5;
+  return isNonLiftingInRangeEvent;
 }
 
 - (void)updateOrientation
 {
-  v2 = [(VOTEventFactory *)self directInteractionKeyboardManager];
-  [v2 updateKeyboardElement];
+  directInteractionKeyboardManager = [(VOTEventFactory *)self directInteractionKeyboardManager];
+  [directInteractionKeyboardManager updateKeyboardElement];
 }
 
-- (id)_touchLocationsForGestureEvent:(id)a3
+- (id)_touchLocationsForGestureEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = +[NSMutableDictionary dictionary];
-  if (([v4 isLiftEvent] & 1) == 0 && (objc_msgSend(v4, "isCancelEvent") & 1) == 0)
+  if (([eventCopy isLiftEvent] & 1) == 0 && (objc_msgSend(eventCopy, "isCancelEvent") & 1) == 0)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v19 = v4;
-    v6 = [v4 eventRepresentation];
-    v7 = [v6 handInfo];
-    v8 = [v7 paths];
+    v19 = eventCopy;
+    eventRepresentation = [eventCopy eventRepresentation];
+    handInfo = [eventRepresentation handInfo];
+    paths = [handInfo paths];
 
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v9 = [paths countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v9)
     {
       v10 = v9;
@@ -3701,7 +3701,7 @@ LABEL_9:
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(paths);
           }
 
           v13 = *(*(&v20 + 1) + 8 * i);
@@ -3711,29 +3711,29 @@ LABEL_9:
           [v5 setObject:v16 forKeyedSubscript:v17];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v10 = [paths countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v10);
     }
 
-    v4 = v19;
+    eventCopy = v19;
   }
 
   return v5;
 }
 
-- (BOOL)_willStartEdgePanGestureForEvent:(id)a3
+- (BOOL)_willStartEdgePanGestureForEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (([VOTSharedWorkspace supportsHomeGestures] & 1) != 0 || objc_msgSend(VOTSharedWorkspace, "inUnitTestMode"))
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v5 = [v4 fingers];
-    v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    fingers = [eventCopy fingers];
+    v6 = [fingers countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v6)
     {
       v7 = v6;
@@ -3744,19 +3744,19 @@ LABEL_9:
         {
           if (*v23 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(fingers);
           }
 
           v10 = *(*(&v22 + 1) + 8 * i);
-          v11 = [(SCRCGestureFactory *)self->_gestureFactory orientation];
+          orientation = [(SCRCGestureFactory *)self->_gestureFactory orientation];
           [v10 location];
-          [(VOTEventFactory *)self adjustedPointForFactoryPoint:v11 forOrientation:?];
+          [(VOTEventFactory *)self adjustedPointForFactoryPoint:orientation forOrientation:?];
           v13 = v12;
           [(VOTEventFactory *)self _edgePanGestureStartThreshold];
           v15 = v14;
-          v16 = [VOTSharedWorkspace reachabilityActive];
+          reachabilityActive = [VOTSharedWorkspace reachabilityActive];
           v17 = v15;
-          if (v16)
+          if (reachabilityActive)
           {
             [VOTSharedWorkspace reachabilityOffset];
             v17 = v15 + v18;
@@ -3773,7 +3773,7 @@ LABEL_9:
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:{16, v17}];
+        v7 = [fingers countByEnumeratingWithState:&v22 objects:v26 count:{16, v17}];
       }
 
       while (v7);
@@ -3791,10 +3791,10 @@ LABEL_19:
   return v20;
 }
 
-- (double)_edgeGestureScaleFactor:(BOOL)a3
+- (double)_edgeGestureScaleFactor:(BOOL)factor
 {
-  v3 = a3;
-  if (!a3 && AXDeviceIsPhone())
+  factorCopy = factor;
+  if (!factor && AXDeviceIsPhone())
   {
     AXDeviceSizeMM();
     v6 = fmax(v4, v5);
@@ -3807,7 +3807,7 @@ LABEL_19:
     AXDeviceSizeMM();
     v10 = fmin(v8, v9);
     v6 = fmax(v8, v9);
-    if (v3)
+    if (factorCopy)
     {
       v6 = v10;
     }
@@ -3818,21 +3818,21 @@ LABEL_19:
   return v7;
 }
 
-- (id)_updateEdgePanGestureForState:(int64_t)a3
+- (id)_updateEdgePanGestureForState:(int64_t)state
 {
   if (![VOTSharedWorkspace supportsHomeGestures])
   {
     goto LABEL_43;
   }
 
-  v5 = [(SCRCGestureFactory *)self->_gestureFactory orientation];
-  v6 = v5;
+  orientation = [(SCRCGestureFactory *)self->_gestureFactory orientation];
+  v6 = orientation;
   v7 = 0;
-  if (a3 > 1)
+  if (state > 1)
   {
-    if (a3 != 2)
+    if (state != 2)
     {
-      if (a3 != 8)
+      if (state != 8)
       {
         goto LABEL_44;
       }
@@ -3848,9 +3848,9 @@ LABEL_43:
       goto LABEL_44;
     }
 
-    v24 = v5 & 0xFFFFFFFFFFFFFFFELL;
+    v24 = orientation & 0xFFFFFFFFFFFFFFFELL;
     y = self->_edgePanGestureStartPoint.y;
-    v26 = y != 1.0;
+    helpEnabled = y != 1.0;
     [(SCRCGestureFactory *)self->_gestureFactory endLocation];
     [(VOTEventFactory *)self adjustedPointForFactoryPoint:v6 forOrientation:?];
     v28 = v27;
@@ -3928,25 +3928,25 @@ LABEL_38:
           v60 = +[AXSpringBoardServer server];
           if ([v60 isNotificationCenterVisible])
           {
-            v61 = 1;
+            isControlCenterVisible = 1;
           }
 
           else
           {
             v62 = +[AXSpringBoardServer server];
-            v61 = [v62 isControlCenterVisible];
+            isControlCenterVisible = [v62 isControlCenterVisible];
           }
 
-          if (y != 1.0 && v61)
+          if (y != 1.0 && isControlCenterVisible)
           {
             v63 = +[VOTCommandHelper commandHelper];
-            v26 = [v63 helpEnabled];
+            helpEnabled = [v63 helpEnabled];
           }
 
           if (y != 1.0 || ((v59 ^ 1) & 1) != 0)
           {
             v67 = y == 1.0;
-            v66 = (y == 1.0) | v26;
+            v66 = (y == 1.0) | helpEnabled;
             v68 = 4;
             v69 = 7;
           }
@@ -3954,10 +3954,10 @@ LABEL_38:
           else
           {
             v64 = +[VOTCommandHelper commandHelper];
-            v65 = [v64 helpEnabled];
+            helpEnabled2 = [v64 helpEnabled];
 
-            v66 = v65 | v26;
-            v67 = v65 == 0;
+            v66 = helpEnabled2 | helpEnabled;
+            v67 = helpEnabled2 == 0;
             v68 = 7;
             v69 = 4;
           }
@@ -4090,7 +4090,7 @@ LABEL_80:
     goto LABEL_38;
   }
 
-  if (!a3)
+  if (!state)
   {
     v23 = [(VOTEventFactory *)self votActionForEdgePanGestureState:self->_edgePanGestureState];
     if (v23)
@@ -4109,7 +4109,7 @@ LABEL_80:
     goto LABEL_44;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     [(SCRCGestureFactory *)self->_gestureFactory startLocation];
     [(VOTEventFactory *)self adjustedPointForFactoryPoint:v6 forOrientation:?];
@@ -4117,10 +4117,10 @@ LABEL_80:
     v11 = v10;
     [(VOTEventFactory *)self _edgePanGestureStartThreshold];
     v13 = v12;
-    v14 = [VOTSharedWorkspace reachabilityActive];
-    v15 = v14;
+    reachabilityActive = [VOTSharedWorkspace reachabilityActive];
+    v15 = reachabilityActive;
     v16 = v13;
-    if (v14)
+    if (reachabilityActive)
     {
       [VOTSharedWorkspace reachabilityOffset];
       v16 = v13 + v17;
@@ -4156,22 +4156,22 @@ LABEL_44:
   return v7;
 }
 
-- (void)_transitionToGestureState:(unint64_t)a3 playHaptic:(BOOL)a4
+- (void)_transitionToGestureState:(unint64_t)state playHaptic:(BOOL)haptic
 {
-  if (self->_edgePanGestureState != a3)
+  if (self->_edgePanGestureState != state)
   {
-    v4 = a4;
+    hapticCopy = haptic;
     v7 = VOTLogEvent();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      if (a3 > 0xA)
+      if (state > 0xA)
       {
         v8 = &stru_1001CBF90;
       }
 
       else
       {
-        v8 = off_1001CAA30[a3];
+        v8 = off_1001CAA30[state];
       }
 
       v9 = NSStringFromBOOL();
@@ -4182,26 +4182,26 @@ LABEL_44:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "_transitionToGestureState=%@, playHaptic=%@", &v10, 0x16u);
     }
 
-    self->_edgePanGestureState = a3;
-    if (v4)
+    self->_edgePanGestureState = state;
+    if (hapticCopy)
     {
-      [(VOTEventFactory *)self _playFeedbackForGestureState:a3 gestureComplete:0];
+      [(VOTEventFactory *)self _playFeedbackForGestureState:state gestureComplete:0];
     }
   }
 }
 
-- (void)_playFeedbackForGestureState:(unint64_t)a3 gestureComplete:(BOOL)a4
+- (void)_playFeedbackForGestureState:(unint64_t)state gestureComplete:(BOOL)complete
 {
   v4 = 0;
   v5 = 0;
   v6 = -1;
-  if (a3 <= 5)
+  if (state <= 5)
   {
-    if (a3 > 2)
+    if (state > 2)
     {
-      if (a3 != 3)
+      if (state != 3)
       {
-        if (a3 != 4)
+        if (state != 4)
         {
           goto LABEL_26;
         }
@@ -4214,7 +4214,7 @@ LABEL_44:
 
     v8 = -1;
     v10 = @"Sounds/VOTOrbSound1-OrbHW.aiff";
-    if (a3 == 2)
+    if (state == 2)
     {
       v11 = 1;
     }
@@ -4225,13 +4225,13 @@ LABEL_44:
       v11 = 0;
     }
 
-    if (a3 == 2)
+    if (state == 2)
     {
       v6 = 8;
     }
 
-    v7 = a3 == 1;
-    if (a3 == 1)
+    v7 = state == 1;
+    if (state == 1)
     {
       v5 = @"Sounds/VOTOrbSound1-OrbHW.aiff";
     }
@@ -4241,7 +4241,7 @@ LABEL_44:
       v5 = v10;
     }
 
-    if (a3 == 1)
+    if (state == 1)
     {
       v9 = 0;
     }
@@ -4254,9 +4254,9 @@ LABEL_44:
     goto LABEL_21;
   }
 
-  if (a3 <= 8)
+  if (state <= 8)
   {
-    if (a3 == 6)
+    if (state == 6)
     {
 LABEL_27:
       v4 = 1;
@@ -4265,7 +4265,7 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    if (a3 == 7)
+    if (state == 7)
     {
 LABEL_34:
       v5 = @"Sounds/VOTOrbSound3-OrbHW.aiff";
@@ -4273,7 +4273,7 @@ LABEL_34:
       goto LABEL_35;
     }
 
-    v7 = a3 == 8;
+    v7 = state == 8;
     v8 = 11;
     v5 = 0;
     v9 = 1;
@@ -4291,7 +4291,7 @@ LABEL_21:
     goto LABEL_29;
   }
 
-  if (a3 - 9 < 2)
+  if (state - 9 < 2)
   {
 LABEL_26:
     v5 = 0;
@@ -4306,7 +4306,7 @@ LABEL_28:
   }
 
 LABEL_29:
-  if (!a4)
+  if (!complete)
   {
     if (!v5)
     {
@@ -4317,7 +4317,7 @@ LABEL_29:
   }
 
 LABEL_35:
-  if (a4)
+  if (complete)
   {
     v5 = 0;
     v12 = 12;
@@ -4339,17 +4339,17 @@ LABEL_31:
   }
 }
 
-- (void)_processGestureEvent:(id)a3
+- (void)_processGestureEvent:(id)event
 {
-  v5 = a3;
-  objc_storeStrong(&self->_currentGestureEvent, a3);
-  v6 = [(VOTEventFactory *)self _currentGesturedTextInputManager];
+  eventCopy = event;
+  objc_storeStrong(&self->_currentGestureEvent, event);
+  _currentGesturedTextInputManager = [(VOTEventFactory *)self _currentGesturedTextInputManager];
   v7 = +[VOTWorkspace sharedWorkspace];
-  v8 = [v7 userCommandManager];
+  userCommandManager = [v7 userCommandManager];
 
-  if (!v6 && [(VOTEventFactory *)self _handleDirectInteractionEvent:v5])
+  if (!_currentGesturedTextInputManager && [(VOTEventFactory *)self _handleDirectInteractionEvent:eventCopy])
   {
-    if (([v5 isCancelEvent] & 1) != 0 || objc_msgSend(v5, "isLiftEvent"))
+    if (([eventCopy isCancelEvent] & 1) != 0 || objc_msgSend(eventCopy, "isLiftEvent"))
     {
       self->_flags.sendingToDirectTouch = 0;
     }
@@ -4365,26 +4365,26 @@ LABEL_31:
     goto LABEL_251;
   }
 
-  if ([(VOTEventFactory *)self _gestureEventIsInvalid:v5])
+  if ([(VOTEventFactory *)self _gestureEventIsInvalid:eventCopy])
   {
     goto LABEL_251;
   }
 
-  if ([(VOTEventFactory *)self _handleOrbEvent:v5])
+  if ([(VOTEventFactory *)self _handleOrbEvent:eventCopy])
   {
     v10 = 1;
   }
 
   else
   {
-    [(VOTEventFactory *)self _feedEventToHandwritingRecognition:v5];
-    v11 = [(VOTEventFactory *)self _brailleGestureManager];
+    [(VOTEventFactory *)self _feedEventToHandwritingRecognition:eventCopy];
+    _brailleGestureManager = [(VOTEventFactory *)self _brailleGestureManager];
 
-    if (v6 == v11)
+    if (_currentGesturedTextInputManager == _brailleGestureManager)
     {
-      v12 = [(VOTEventFactory *)self _brailleGestureManager];
-      v13 = [(VOTEventFactory *)self _touchLocationsForGestureEvent:v5];
-      v10 = [v12 processTouchLocations:v13 isFirstTouch:objc_msgSend(v5 isCancelTouch:{"isDownEvent"), objc_msgSend(v5, "isCancelEvent")}];
+      _brailleGestureManager2 = [(VOTEventFactory *)self _brailleGestureManager];
+      v13 = [(VOTEventFactory *)self _touchLocationsForGestureEvent:eventCopy];
+      v10 = [_brailleGestureManager2 processTouchLocations:v13 isFirstTouch:objc_msgSend(eventCopy isCancelTouch:{"isDownEvent"), objc_msgSend(eventCopy, "isCancelEvent")}];
     }
 
     else
@@ -4395,7 +4395,7 @@ LABEL_31:
 
   [(SCRCGestureFactory *)self->_gestureFactory setSplitFlickEnabled:[(VOTEventFactory *)self brailleInputActive]];
   [(SCRCGestureFactory *)self->_gestureFactory setUsesAbsoluteDistanceForPinch:[(VOTEventFactory *)self brailleInputActive]];
-  [(SCRCGestureFactory *)self->_gestureFactory handleGestureEvent:v5];
+  [(SCRCGestureFactory *)self->_gestureFactory handleGestureEvent:eventCopy];
   if (v10)
   {
     [(VOTEventFactory *)self resetEventFactory];
@@ -4405,15 +4405,15 @@ LABEL_31:
 
   [(SCRCGestureFactory *)self->_gestureFactory distance];
   v15 = v14;
-  if (!self->_flags.tapAndHoldMode || -[VOTEventFactory _tapAndHoldModeIsForScribble](self, "_tapAndHoldModeIsForScribble") && ![v5 isStylusEvent])
+  if (!self->_flags.tapAndHoldMode || -[VOTEventFactory _tapAndHoldModeIsForScribble](self, "_tapAndHoldModeIsForScribble") && ![eventCopy isStylusEvent])
   {
-    v16 = [(SCRCGestureFactory *)self->_gestureFactory gestureState];
-    v17 = [(SCRCGestureFactory *)self->_gestureFactory direction];
-    v18 = [(SCRCGestureFactory *)self->_gestureFactory fingerCount];
-    v19 = [v5 fingerCount];
-    if ([v5 isDownEvent])
+    gestureState = [(SCRCGestureFactory *)self->_gestureFactory gestureState];
+    direction = [(SCRCGestureFactory *)self->_gestureFactory direction];
+    fingerCount = [(SCRCGestureFactory *)self->_gestureFactory fingerCount];
+    fingerCount2 = [eventCopy fingerCount];
+    if ([eventCopy isDownEvent])
     {
-      objc_storeStrong(&self->_lastDownEvent, a3);
+      objc_storeStrong(&self->_lastDownEvent, event);
       v20 = AXLogCommon();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
@@ -4426,7 +4426,7 @@ LABEL_31:
       self->_flags.hasSentFirstTrackingEventForGesture = 0;
     }
 
-    if (v19)
+    if (fingerCount2)
     {
       [(SCRCGestureFactory *)self->_gestureFactory distance];
       self->_travelDistance = v22 + self->_travelDistance;
@@ -4437,27 +4437,27 @@ LABEL_31:
       self->_travelDistance = 0.0;
     }
 
-    if (self->_flags.memorizingData && [v5 fingerCount] != 2)
+    if (self->_flags.memorizingData && [eventCopy fingerCount] != 2)
     {
       [(VOTEventFactory *)self _stopMemorizingSession];
       v28 = 0;
 LABEL_250:
-      self->_state = v16;
-      self->_direction = v17;
+      self->_state = gestureState;
+      self->_direction = direction;
       [(VOTEventFactory *)self _commitDeferredZoomInfoIfAppropriate];
 
       goto LABEL_251;
     }
 
-    v216 = v17;
+    v216 = direction;
     [(SCRCGestureFactory *)self->_gestureFactory rawAverageLocation];
     [(VOTEventFactory *)self convertDevicePointToZoomedPoint:sub_1000517DC(v23)];
-    v26 = -[VOTEventFactory _updateFingersInSystemControlLocation:fingerCount:isLift:](self, "_updateFingersInSystemControlLocation:fingerCount:isLift:", -[SCRCGestureFactory fingerCount](self->_gestureFactory, "fingerCount"), [v5 isLiftEvent], v24, v25);
+    v26 = -[VOTEventFactory _updateFingersInSystemControlLocation:fingerCount:isLift:](self, "_updateFingersInSystemControlLocation:fingerCount:isLift:", -[SCRCGestureFactory fingerCount](self->_gestureFactory, "fingerCount"), [eventCopy isLiftEvent], v24, v25);
     systemControlActivated = self->_systemControlActivated;
-    v28 = [(VOTEventFactory *)self _updateEdgePanGestureForState:v16];
+    v28 = [(VOTEventFactory *)self _updateEdgePanGestureForState:gestureState];
     v29 = 0;
     v30 = systemControlActivated | v26;
-    switch(v16)
+    switch(gestureState)
     {
       case 0uLL:
         v29 = 0;
@@ -4468,7 +4468,7 @@ LABEL_250:
       case 3uLL:
         goto LABEL_205;
       case 2uLL:
-        [v5 time];
+        [eventCopy time];
         v77 = v76;
         if (vabdd_f64(v76, self->_lastEchoTime) <= 0.00100000005)
         {
@@ -4480,14 +4480,14 @@ LABEL_250:
         v29 = 1;
         goto LABEL_205;
       case 4uLL:
-        v201 = v19;
+        v201 = fingerCount2;
         WeakRetained = objc_loadWeakRetained(&self->_rotorManager);
-        v58 = [WeakRetained rotorEnabled];
+        rotorEnabled = [WeakRetained rotorEnabled];
 
-        if (!v58)
+        if (!rotorEnabled)
         {
           v29 = 0;
-          v19 = v201;
+          fingerCount2 = v201;
           goto LABEL_205;
         }
 
@@ -4520,7 +4520,7 @@ LABEL_250:
         v86 = v64;
 LABEL_143:
         self->_rotorSoundZone = v62;
-        [v5 time];
+        [eventCopy time];
         rotateStartTime = self->_rotateStartTime;
         if (rotateStartTime == -3061152000.0)
         {
@@ -4555,8 +4555,8 @@ LABEL_143:
 
           v110 = v86;
           v114 = +[VOSGesture TwoFingerRotateClockwise];
-          v115 = [(VOTEventFactory *)self _commandResolver];
-          v208 = [v8 eventForTouchGesture:v114 resolver:v115];
+          _commandResolver = [(VOTEventFactory *)self _commandResolver];
+          v208 = [userCommandManager eventForTouchGesture:v114 resolver:_commandResolver];
 
           v113 = +[VOSOutputEvent DidSelectNextRotor];
         }
@@ -4565,8 +4565,8 @@ LABEL_143:
         {
           v110 = v86;
           v111 = +[VOSGesture TwoFingerRotateCounterclockwise];
-          v112 = [(VOTEventFactory *)self _commandResolver];
-          v208 = [v8 eventForTouchGesture:v111 resolver:v112];
+          _commandResolver2 = [(VOTEventFactory *)self _commandResolver];
+          v208 = [userCommandManager eventForTouchGesture:v111 resolver:_commandResolver2];
 
           v113 = +[VOSOutputEvent DidSelectPreviousRotor];
         }
@@ -4575,7 +4575,7 @@ LABEL_143:
         v28 = v208;
 
 LABEL_154:
-        v19 = v201;
+        fingerCount2 = v201;
         if (v86)
         {
           +[VOTOutputManager outputManager];
@@ -4645,7 +4645,7 @@ LABEL_203:
         [(VOTEventFactory *)self _stopMemorizingSession];
         goto LABEL_204;
       case 6uLL:
-        if (v18 != 2)
+        if (fingerCount != 2)
         {
           goto LABEL_204;
         }
@@ -4715,12 +4715,12 @@ LABEL_203:
         goto LABEL_205;
       case 8uLL:
       case 9uLL:
-        if ([v5 didFallThruToDevice])
+        if ([eventCopy didFallThruToDevice])
         {
           goto LABEL_204;
         }
 
-        v31 = v19;
+        v31 = fingerCount2;
         v32 = [objc_allocWithZone(AXIndexMap) init];
         [(SCRCGestureFactory *)self->_gestureFactory startLocation];
         v34 = v33;
@@ -4784,8 +4784,8 @@ LABEL_203:
 LABEL_179:
               v128 = v43;
               v215 = v43;
-              v209 = [(VOTEventFactory *)self _commandResolver];
-              v96 = [v8 eventForTouchGesture:v128 resolver:v209 info:v32];
+              _commandResolver3 = [(VOTEventFactory *)self _commandResolver];
+              v96 = [userCommandManager eventForTouchGesture:v128 resolver:_commandResolver3 info:v32];
 
               v28 = v215;
               goto LABEL_180;
@@ -4795,7 +4795,7 @@ LABEL_181:
 
 LABEL_182:
             v29 = 0;
-            v19 = v31;
+            fingerCount2 = v31;
             goto LABEL_205;
           }
 
@@ -4814,23 +4814,23 @@ LABEL_180:
         v28 = v96;
         goto LABEL_181;
       case 0xAuLL:
-        v31 = v19;
+        v31 = fingerCount2;
         v81 = objc_loadWeakRetained(&self->_rotorManager);
-        v82 = [v81 rotorEnabled];
+        rotorEnabled2 = [v81 rotorEnabled];
 
-        if (!v82)
+        if (!rotorEnabled2)
         {
           goto LABEL_182;
         }
 
-        [v5 time];
+        [eventCopy time];
         if (v83 - self->_rotateStartTime < 0.2 && !self->_continuityZone)
         {
           if (self->_rotateDirection < 0)
           {
             v143 = +[VOSGesture TwoFingerRotateCounterclockwise];
-            v144 = [(VOTEventFactory *)self _commandResolver];
-            v212 = [v8 eventForTouchGesture:v143 resolver:v144];
+            _commandResolver4 = [(VOTEventFactory *)self _commandResolver];
+            v212 = [userCommandManager eventForTouchGesture:v143 resolver:_commandResolver4];
 
             +[VOSOutputEvent DidSelectPreviousRotor];
           }
@@ -4838,8 +4838,8 @@ LABEL_180:
           else
           {
             v84 = +[VOSGesture TwoFingerRotateClockwise];
-            v85 = [(VOTEventFactory *)self _commandResolver];
-            v212 = [v8 eventForTouchGesture:v84 resolver:v85];
+            _commandResolver5 = [(VOTEventFactory *)self _commandResolver];
+            v212 = [userCommandManager eventForTouchGesture:v84 resolver:_commandResolver5];
 
             +[VOSOutputEvent DidSelectNextRotor];
           }
@@ -4852,7 +4852,7 @@ LABEL_180:
           }
         }
 
-        v19 = v31;
+        fingerCount2 = v31;
         self->_flags.rotating = 0;
         self->_rotorSoundZone = 0;
         self->_continuityZone = 0;
@@ -4869,21 +4869,21 @@ LABEL_180:
 
         v53 = +[VOSGesture TwoFingerPinch];
         [(VOTEventFactory *)self _commandResolver];
-        v55 = v54 = v19;
-        [v8 eventForTouchGesture:v53 resolver:v55];
-        v56 = v205 = v18;
+        v55 = v54 = fingerCount2;
+        [userCommandManager eventForTouchGesture:v53 resolver:v55];
+        v56 = v205 = fingerCount;
 
-        v19 = v54;
+        fingerCount2 = v54;
         v29 = 0;
         v28 = v56;
-        v18 = v205;
+        fingerCount = v205;
         goto LABEL_205;
       case 0xCuLL:
-        if ((v18 != 2) | v30 & 1)
+        if ((fingerCount != 2) | v30 & 1)
         {
-          if (v18 != 3 || v19)
+          if (fingerCount != 3 || fingerCount2)
           {
-            if (v18 != 4 || v19)
+            if (fingerCount != 4 || fingerCount2)
             {
               v29 = 0;
               goto LABEL_205;
@@ -4910,8 +4910,8 @@ LABEL_180:
               v90 = ;
 LABEL_272:
               v194 = v90;
-              v195 = [(VOTEventFactory *)self _commandResolver];
-              v187 = [v8 eventForTouchGesture:v194 resolver:v195];
+              _commandResolver6 = [(VOTEventFactory *)self _commandResolver];
+              v187 = [userCommandManager eventForTouchGesture:v194 resolver:_commandResolver6];
 
               v214 = 0;
               v188 = 6;
@@ -4950,8 +4950,8 @@ LABEL_272:
                     +[VOSGesture ThreeFingerDoubleTapHoldAndFlickLeft];
                   }
                   v196 = ;
-                  v197 = [(VOTEventFactory *)self _commandResolver];
-                  v192 = [v8 eventForTouchGesture:v196 resolver:v197];
+                  _commandResolver7 = [(VOTEventFactory *)self _commandResolver];
+                  v192 = [userCommandManager eventForTouchGesture:v196 resolver:_commandResolver7];
 
                   v193 = VOTLogEvent();
                   if (os_log_type_enabled(v193, OS_LOG_TYPE_DEBUG))
@@ -4981,8 +4981,8 @@ LABEL_279:
                     +[VOSGesture ThreeFingerDoubleTapHoldAndFlickUp];
                   }
                   v190 = ;
-                  v191 = [(VOTEventFactory *)self _commandResolver];
-                  v192 = [v8 eventForTouchGesture:v190 resolver:v191];
+                  _commandResolver8 = [(VOTEventFactory *)self _commandResolver];
+                  v192 = [userCommandManager eventForTouchGesture:v190 resolver:_commandResolver8];
 
                   v193 = VOTLogEvent();
                   if (os_log_type_enabled(v193, OS_LOG_TYPE_DEBUG))
@@ -4991,8 +4991,8 @@ LABEL_279:
                   }
                 }
 
-                v18 = 3;
-                v19 = 0;
+                fingerCount = 3;
+                fingerCount2 = 0;
 
                 v28 = v192;
                 goto LABEL_279;
@@ -5028,8 +5028,8 @@ LABEL_171:
                   v216 = 6;
                   v28 = v124;
 LABEL_274:
-                  v18 = v88;
-                  v19 = 0;
+                  fingerCount = v88;
+                  fingerCount2 = 0;
                   goto LABEL_207;
                 }
 
@@ -5053,8 +5053,8 @@ LABEL_274:
           }
           v141 = ;
           v185 = v141;
-          v186 = [(VOTEventFactory *)self _commandResolver];
-          v187 = [v8 eventForTouchGesture:v185 resolver:v186];
+          _commandResolver9 = [(VOTEventFactory *)self _commandResolver];
+          v187 = [userCommandManager eventForTouchGesture:v185 resolver:_commandResolver9];
 
           v214 = 0;
           v188 = 5;
@@ -5064,7 +5064,7 @@ LABEL_273:
           goto LABEL_274;
         }
 
-        if (!v19 && self->_flags.twoFingerTapAndSlide)
+        if (!fingerCount2 && self->_flags.twoFingerTapAndSlide)
         {
           self->_flags.twoFingerTapAndSlide = 0;
           self->_volumeChangeDistance = 0.0;
@@ -5075,66 +5075,66 @@ LABEL_284:
           self->_zigzag.continuityDistance = 0.0;
 LABEL_205:
           v214 = v29;
-          if (v19 == 1)
+          if (fingerCount2 == 1)
           {
-            if (![v5 isDownEvent])
+            if (![eventCopy isDownEvent])
             {
               goto LABEL_217;
             }
 
-            v206 = v18;
+            v206 = fingerCount;
             v210 = v28;
             v148 = 1;
-            v204 = v16;
-            v149 = [(VOTEventFactory *)self currentElement];
-            v151 = [v5 eventRepresentation];
-            v152 = [v151 handInfo];
-            v153 = [v152 paths];
-            v154 = [v153 firstPath];
-            [v154 pathLocation];
+            v204 = gestureState;
+            currentElement = [(VOTEventFactory *)self currentElement];
+            eventRepresentation = [eventCopy eventRepresentation];
+            handInfo = [eventRepresentation handInfo];
+            paths = [handInfo paths];
+            firstPath = [paths firstPath];
+            [firstPath pathLocation];
             v156 = v155;
             v158 = v157;
 
-            if (![v149 doesHaveTraits:kAXAllowsNativeSlidingTrait])
+            if (![currentElement doesHaveTraits:kAXAllowsNativeSlidingTrait])
             {
-              v16 = v204;
-              v18 = v206;
+              gestureState = v204;
+              fingerCount = v206;
               goto LABEL_216;
             }
 
-            [v149 frame];
+            [currentElement frame];
             v218.x = v156;
             v218.y = v158;
-            v16 = v204;
-            v18 = v206;
+            gestureState = v204;
+            fingerCount = v206;
             if (!CGRectContainsPoint(v219, v218) || CFAbsoluteTimeGetCurrent() - self->_lastNativeSlideCancel <= 1.0)
             {
               goto LABEL_216;
             }
 
             self->_flags.sendingToNativeSlide = 1;
-            v150 = [(VOTGestureEvent *)self->_currentGestureEvent eventRepresentation];
-            v159 = [v150 handInfo];
-            v160 = [v159 paths];
-            v161 = [v160 firstPath];
-            [v161 pathLocation];
+            eventRepresentation2 = [(VOTGestureEvent *)self->_currentGestureEvent eventRepresentation];
+            handInfo2 = [eventRepresentation2 handInfo];
+            paths2 = [handInfo2 paths];
+            firstPath2 = [paths2 firstPath];
+            [firstPath2 pathLocation];
             self->_nativeSlidingOffset.x = v162;
             self->_nativeSlidingOffset.y = v163;
 
-            v18 = v206;
-            v16 = v204;
+            fingerCount = v206;
+            gestureState = v204;
 
-            [v149 centerPoint];
+            [currentElement centerPoint];
             self->_nativeSlidingCenter.x = v164;
             self->_nativeSlidingCenter.y = v165;
-            sub_1000C4128(v150, v164, v165);
+            sub_1000C4128(eventRepresentation2, v164, v165);
             v166 = +[VOTElement systemWideElement];
-            [v166 repostEvent:v150];
+            [v166 repostEvent:eventRepresentation2];
 
 LABEL_209:
 LABEL_216:
 
-            v19 = v148;
+            fingerCount2 = v148;
             v28 = v210;
 LABEL_217:
             if (!v28)
@@ -5144,10 +5144,10 @@ LABEL_217:
 
             [(SCRCGestureFactory *)self->_gestureFactory velocity];
             [v28 setTouchVelocity:?];
-            [v28 setFingerCount:v18];
+            [v28 setFingerCount:fingerCount];
             v167 = VOTLogEvent();
             v168 = os_log_type_enabled(v167, OS_LOG_TYPE_DEBUG);
-            if (!v6)
+            if (!_currentGesturedTextInputManager)
             {
               if (v168)
               {
@@ -5163,7 +5163,7 @@ LABEL_217:
               sub_10012E748();
             }
 
-            v169 = [v6 processEvent:v28];
+            v169 = [_currentGesturedTextInputManager processEvent:v28];
             v170 = v169;
             if (qword_1001FEDE8 == -1)
             {
@@ -5171,8 +5171,8 @@ LABEL_217:
               {
 LABEL_223:
                 v171 = qword_1001FEDE0;
-                v172 = [v28 command];
-                if ([v171 containsObject:v172])
+                command = [v28 command];
+                if ([v171 containsObject:command])
                 {
 
 LABEL_229:
@@ -5196,14 +5196,14 @@ LABEL_229:
 LABEL_235:
                 v178 = 0;
 LABEL_236:
-                if (v16 == 2)
+                if (gestureState == 2)
                 {
-                  v179 = v18;
+                  v179 = fingerCount;
                 }
 
                 else
                 {
-                  v179 = v19;
+                  v179 = fingerCount2;
                 }
 
                 self->_fingerCount = v179;
@@ -5214,7 +5214,7 @@ LABEL_236:
 
                 if (!self->_flags.tapAndHoldMode)
                 {
-                  if (v16)
+                  if (gestureState)
                   {
                     if (self->_state == 2)
                     {
@@ -5246,7 +5246,7 @@ LABEL_247:
                   [(VOTEventFactory *)self setLastGestureEvent:v28];
                 }
 
-                v17 = v216;
+                direction = v216;
                 goto LABEL_250;
               }
             }
@@ -5261,15 +5261,15 @@ LABEL_247:
             }
 
 LABEL_232:
-            v175 = [(VOTEventFactory *)self _handwritingCaptureTimer];
-            [v175 cancel];
+            _handwritingCaptureTimer = [(VOTEventFactory *)self _handwritingCaptureTimer];
+            [_handwritingCaptureTimer cancel];
 
-            v176 = [(VOTEventFactory *)self handwritingManager];
+            handwritingManager = [(VOTEventFactory *)self handwritingManager];
 
-            if (v6 == v176)
+            if (_currentGesturedTextInputManager == handwritingManager)
             {
-              v177 = [(VOTEventFactory *)self handwritingManager];
-              [v177 resetSession];
+              handwritingManager2 = [(VOTEventFactory *)self handwritingManager];
+              [handwritingManager2 resetSession];
             }
 
 LABEL_234:
@@ -5277,7 +5277,7 @@ LABEL_234:
             goto LABEL_236;
           }
 
-          if (v19)
+          if (fingerCount2)
           {
             goto LABEL_217;
           }
@@ -5292,11 +5292,11 @@ LABEL_207:
           }
 
           v210 = v28;
-          v148 = v19;
+          v148 = fingerCount2;
           self->_flags.sendingToNativeSlide = 0;
-          v149 = +[VOTElement systemWideElement];
-          v150 = [(VOTGestureEvent *)self->_currentGestureEvent eventRepresentation];
-          [v149 repostEvent:v150];
+          currentElement = +[VOTElement systemWideElement];
+          eventRepresentation2 = [(VOTGestureEvent *)self->_currentGestureEvent eventRepresentation];
+          [currentElement repostEvent:eventRepresentation2];
           goto LABEL_209;
         }
 
@@ -5314,23 +5314,23 @@ LABEL_207:
 
           v129 = +[VOSGesture TwoFingerScrub];
           [(VOTEventFactory *)self _commandResolver];
-          v131 = v130 = v18;
-          v132 = [v8 eventForTouchGesture:v129 resolver:v131];
+          v131 = v130 = fingerCount;
+          v132 = [userCommandManager eventForTouchGesture:v129 resolver:v131];
           v133 = v28;
-          v134 = v19;
+          v134 = fingerCount2;
           v135 = v132;
 
-          v18 = v130;
+          fingerCount = v130;
           v136 = v135;
-          v19 = v134;
+          fingerCount2 = v134;
           v28 = v136;
           goto LABEL_284;
         }
 
         if (v216 == 5)
         {
-          v203 = v19;
-          v121 = v18;
+          v203 = fingerCount2;
+          v121 = fingerCount;
           [(SCRCGestureFactory *)self->_gestureFactory distance];
           if (v182 >= 0.0)
           {
@@ -5353,12 +5353,12 @@ LABEL_207:
 
           [(SCRCGestureFactory *)self->_gestureFactory distance];
           v119 = v118;
-          v120 = [(VOTDirectInteractionKeyboardManager *)self->_directInteractionKeyboardManager inGestureMode];
-          v203 = v19;
-          v121 = v18;
+          inGestureMode = [(VOTDirectInteractionKeyboardManager *)self->_directInteractionKeyboardManager inGestureMode];
+          v203 = fingerCount2;
+          v121 = fingerCount;
           if (v119 >= 0.0)
           {
-            if (v120)
+            if (inGestureMode)
             {
               v122 = &kVOTEventCommandGestureTypingPreviousKeyplane;
               goto LABEL_266;
@@ -5369,7 +5369,7 @@ LABEL_207:
 
           else
           {
-            if (v120)
+            if (inGestureMode)
             {
               v122 = &kVOTEventCommandGestureTypingNextKeyplane;
 LABEL_266:
@@ -5377,8 +5377,8 @@ LABEL_266:
 
               v28 = v189;
 LABEL_283:
-              v18 = v121;
-              v19 = v203;
+              fingerCount = v121;
+              fingerCount2 = v203;
               goto LABEL_284;
             }
 
@@ -5387,8 +5387,8 @@ LABEL_283:
         }
 
         v198 = v183;
-        v199 = [(VOTEventFactory *)self _commandResolver];
-        v200 = [v8 eventForTouchGesture:v198 resolver:v199];
+        _commandResolver10 = [(VOTEventFactory *)self _commandResolver];
+        v200 = [userCommandManager eventForTouchGesture:v198 resolver:_commandResolver10];
 
         v28 = v200;
         goto LABEL_283;
@@ -5400,7 +5400,7 @@ LABEL_283:
 
         self->_flags.splitSlide = 1;
         v29 = 0;
-        self->_splitSlideFingerCount = v19;
+        self->_splitSlideFingerCount = fingerCount2;
         goto LABEL_205;
       case 0x13uLL:
         if (self->_flags.splitSlide)
@@ -5425,8 +5425,8 @@ LABEL_283:
             v207 = v28;
             v211 = v44;
             [(SCRCGestureFactory *)self->_gestureFactory distance];
-            v50 = v19;
-            v51 = v18;
+            v50 = fingerCount2;
+            v51 = fingerCount;
             if (v52 >= 0.0)
             {
               +[VOSGesture TwoFingerSplitFlickRight];
@@ -5437,12 +5437,12 @@ LABEL_283:
               +[VOSGesture TwoFingerSplitFlickLeft];
             }
             v98 = ;
-            v99 = [(VOTEventFactory *)self _commandResolver];
-            v100 = [v8 eventForTouchGesture:v98 resolver:v99];
+            _commandResolver11 = [(VOTEventFactory *)self _commandResolver];
+            v100 = [userCommandManager eventForTouchGesture:v98 resolver:_commandResolver11];
 
             v101 = v100;
-            v18 = v51;
-            v19 = v50;
+            fingerCount = v51;
+            fingerCount2 = v50;
             v28 = v101;
             v44 = v211;
           }
@@ -5476,8 +5476,8 @@ LABEL_283:
         {
           if (v216 == 4)
           {
-            v202 = v19;
-            v79 = v18;
+            v202 = fingerCount2;
+            v79 = fingerCount;
             v80 = +[VOSGesture OneFingerSplitFlickDown];
           }
 
@@ -5488,16 +5488,16 @@ LABEL_283:
               goto LABEL_175;
             }
 
-            v202 = v19;
-            v79 = v18;
+            v202 = fingerCount2;
+            v79 = fingerCount;
             v80 = +[VOSGesture OneFingerSplitFlickUp];
           }
         }
 
         else if (v216 == 1)
         {
-          v202 = v19;
-          v79 = v18;
+          v202 = fingerCount2;
+          v79 = fingerCount;
           v80 = +[VOSGesture OneFingerSplitFlickLeft];
         }
 
@@ -5508,18 +5508,18 @@ LABEL_283:
             goto LABEL_175;
           }
 
-          v202 = v19;
-          v79 = v18;
+          v202 = fingerCount2;
+          v79 = fingerCount;
           v80 = +[VOSGesture OneFingerSplitFlickRight];
         }
 
         v125 = v80;
-        v126 = [(VOTEventFactory *)self _commandResolver];
-        v127 = [v8 eventForTouchGesture:v125 resolver:v126];
+        _commandResolver12 = [(VOTEventFactory *)self _commandResolver];
+        v127 = [userCommandManager eventForTouchGesture:v125 resolver:_commandResolver12];
 
         v28 = v127;
-        v18 = v79;
-        v19 = v202;
+        fingerCount = v79;
+        fingerCount2 = v202;
 LABEL_175:
         *&self->_flags.splitFlick = 256;
 LABEL_204:
@@ -5536,12 +5536,12 @@ LABEL_204:
     }
   }
 
-  if ([v5 fingerCount])
+  if ([eventCopy fingerCount])
   {
     self->_travelDistance = v15 + self->_travelDistance;
   }
 
-  [(VOTEventFactory *)self _processTapAndHoldMode:v5];
+  [(VOTEventFactory *)self _processTapAndHoldMode:eventCopy];
 LABEL_251:
 }
 
@@ -5564,7 +5564,7 @@ LABEL_251:
   }
 }
 
-- (void)setCurrentElement:(id)a3
+- (void)setCurrentElement:(id)element
 {
   v10 = 0;
   v11 = &v10;
@@ -5574,15 +5574,15 @@ LABEL_251:
   v6[6] = 3221225472;
   v6[7] = sub_1000CD1B4;
   v6[8] = &unk_1001C77A0;
-  v4 = a3;
-  v7 = v4;
-  v8 = self;
+  elementCopy = element;
+  v7 = elementCopy;
+  selfCopy = self;
   v9 = &v10;
   AX_PERFORM_WITH_LOCK();
-  if ([v4 doesHaveTraits:kAXKeyboardKeyTrait])
+  if ([elementCopy doesHaveTraits:kAXKeyboardKeyTrait])
   {
-    v5 = [(VOTEventFactory *)self directInteractionKeyboardManager];
-    [v5 updateKeyboardElement];
+    directInteractionKeyboardManager = [(VOTEventFactory *)self directInteractionKeyboardManager];
+    [directInteractionKeyboardManager updateKeyboardElement];
   }
 
   if (*(v11 + 24) == 1 && [(VOTEventFactory *)self brailleInputActive])
@@ -5613,39 +5613,39 @@ LABEL_251:
   return v2;
 }
 
-- (void)startTapAndHoldMode:(BOOL)a3
+- (void)startTapAndHoldMode:(BOOL)mode
 {
   tapHoldTimer = self->_tapHoldTimer;
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:mode];
   [(SCRCTargetSelectorTimer *)tapHoldTimer dispatchAfterDelay:v4 withObject:0.0];
 }
 
-- (void)_beginNativeSliding:(id)a3
+- (void)_beginNativeSliding:(id)sliding
 {
-  if (a3)
+  if (sliding)
   {
     currentGestureEvent = self->_currentGestureEvent;
     if (currentGestureEvent)
     {
-      v5 = a3;
-      v16 = [(VOTGestureEvent *)currentGestureEvent eventRepresentation];
+      slidingCopy = sliding;
+      eventRepresentation = [(VOTGestureEvent *)currentGestureEvent eventRepresentation];
       self->_flags.sendingToNativeSlide = 1;
-      v6 = [v16 handInfo];
-      v7 = [v6 paths];
-      v8 = [v7 firstPath];
-      [v8 pathLocation];
+      handInfo = [eventRepresentation handInfo];
+      paths = [handInfo paths];
+      firstPath = [paths firstPath];
+      [firstPath pathLocation];
       self->_nativeSlidingOffset.x = v9;
       self->_nativeSlidingOffset.y = v10;
 
-      [v5 centerPoint];
+      [slidingCopy centerPoint];
       v12 = v11;
       v14 = v13;
 
       self->_nativeSlidingCenter.x = v12;
       self->_nativeSlidingCenter.y = v14;
-      sub_1000C4128(v16, v12, v14);
+      sub_1000C4128(eventRepresentation, v12, v14);
       v15 = +[VOTElement systemWideElement];
-      [v15 repostEvent:v16];
+      [v15 repostEvent:eventRepresentation];
     }
   }
 }
@@ -5657,28 +5657,28 @@ LABEL_251:
   [(VOTEventFactory *)self processEvent:v3];
 }
 
-- (void)cancelTapAndHold:(CGPoint)a3
+- (void)cancelTapAndHold:(CGPoint)hold
 {
   threadKey = self->_threadKey;
-  v5 = [NSValue valueWithPoint:a3.x, a3.y];
+  v5 = [NSValue valueWithPoint:hold.x, hold.y];
   [(VOTEventFactory *)self performSelector:"_cancelTapAndHoldWithValue:" withThreadKey:threadKey count:1 objects:v5];
 }
 
-- (void)_cancelTapAndHoldWithValue:(id)a3
+- (void)_cancelTapAndHoldWithValue:(id)value
 {
-  [a3 pointValue];
+  [value pointValue];
 
   [(VOTEventFactory *)self _cancelTapAndHold:?];
 }
 
-- (void)_cancelTapAndHold:(CGPoint)a3 forScribble:(BOOL)a4
+- (void)_cancelTapAndHold:(CGPoint)hold forScribble:(BOOL)scribble
 {
   if (self->_flags.tapAndHoldMode)
   {
-    v5 = a4;
-    y = a3.y;
-    x = a3.x;
-    if ([(VOTEventFactory *)self _tapAndHoldModeIsForScribble]&& !v5)
+    scribbleCopy = scribble;
+    y = hold.y;
+    x = hold.x;
+    if ([(VOTEventFactory *)self _tapAndHoldModeIsForScribble]&& !scribbleCopy)
     {
       v8 = VOTLogEvent();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -5715,10 +5715,10 @@ LABEL_251:
       {
         *buf = 0;
         SCRCMathGetVectorAndDistanceForPoints();
-        a3.x = 0.0;
+        hold.x = 0.0;
         if (0.0 > 37.5)
         {
-          a3.x = 0.0;
+          hold.x = 0.0;
           if (0.0 > 255.0 && 0.0 < 290.0)
           {
             self->_systemControlPosition = 1;
@@ -5735,9 +5735,9 @@ LABEL_20:
   [(SCRCTargetSelectorTimer *)self->_tapHoldTimer cancel];
 }
 
-- (void)setElementManager:(id)a3
+- (void)setElementManager:(id)manager
 {
-  obj = a3;
+  obj = manager;
   WeakRetained = objc_loadWeakRetained(&self->_elementManager);
 
   if (WeakRetained != obj)
@@ -5747,33 +5747,33 @@ LABEL_20:
   }
 }
 
-- (void)directInteractionElementsUpdated:(id)a3
+- (void)directInteractionElementsUpdated:(id)updated
 {
-  v4 = [a3 copy];
+  v4 = [updated copy];
   directInteractionElements = self->_directInteractionElements;
   self->_directInteractionElements = v4;
 
   _objc_release_x1(v4, directInteractionElements);
 }
 
-- (void)currentElementDidUpdate:(id)a3
+- (void)currentElementDidUpdate:(id)update
 {
-  v4 = a3;
-  [(VOTEventFactory *)self setCurrentElement:v4];
-  [VOTSharedWorkspace currentElementDidUpdate:v4];
+  updateCopy = update;
+  [(VOTEventFactory *)self setCurrentElement:updateCopy];
+  [VOTSharedWorkspace currentElementDidUpdate:updateCopy];
 }
 
-- (void)firstResponderDidUpdate:(id)a3
+- (void)firstResponderDidUpdate:(id)update
 {
-  v5 = a3;
-  if (self->_firstResponder != v5)
+  updateCopy = update;
+  if (self->_firstResponder != updateCopy)
   {
-    objc_storeStrong(&self->_firstResponder, a3);
+    objc_storeStrong(&self->_firstResponder, update);
     if (self->_flags.tapAndHoldMode)
     {
       if ([(VOTEventFactory *)self _tapAndHoldModeIsForScribble])
       {
-        v6 = [(VOTEventFactory *)self _canScribbleWithElement:v5];
+        v6 = [(VOTEventFactory *)self _canScribbleWithElement:updateCopy];
         v7 = VOTLogEvent();
         v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
         if (v6)
@@ -5784,7 +5784,7 @@ LABEL_20:
             _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Scribble: Switching to new first responder while scribbling.", buf, 2u);
           }
 
-          objc_storeStrong(&self->_tapAndHoldScribbleElement, a3);
+          objc_storeStrong(&self->_tapAndHoldScribbleElement, update);
           self->_flags.tapAndHoldOffsetNeedsUpdate = 1;
         }
 
@@ -5846,9 +5846,9 @@ LABEL_20:
   }
 }
 
-- (void)_tapHoldFired:(id)a3
+- (void)_tapHoldFired:(id)fired
 {
-  v4 = a3;
+  firedCopy = fired;
   if ([VOTSharedWorkspace inUnitTestMode])
   {
     v5 = +[NSNotificationCenter defaultCenter];
@@ -5856,17 +5856,17 @@ LABEL_20:
   }
 
   v6 = +[VOTCommandHelper commandHelper];
-  v7 = [v6 helpEnabled];
+  helpEnabled = [v6 helpEnabled];
 
-  if (v7)
+  if (helpEnabled)
   {
-    v8 = [VOTEvent touchEventWithCommand:kVOTEventCommandTapAndHoldMode info:0];
+    currentElement = [VOTEvent touchEventWithCommand:kVOTEventCommandTapAndHoldMode info:0];
     [(SCRCGestureFactory *)self->_gestureFactory rawLocation];
     [(VOTEventFactory *)self convertDevicePointToZoomedPoint:sub_1000517DC(v9)];
-    [v8 setTouchPoint:?];
+    [currentElement setTouchPoint:?];
     [(SCRCGestureFactory *)self->_gestureFactory rawLocation];
-    [v8 setTouchRawLocation:?];
-    [(VOTEventFactory *)self processEvent:v8];
+    [currentElement setTouchRawLocation:?];
+    [(VOTEventFactory *)self processEvent:currentElement];
   }
 
   else
@@ -5876,10 +5876,10 @@ LABEL_20:
       goto LABEL_7;
     }
 
-    v8 = [(VOTEventFactory *)self currentElement];
-    if (v8)
+    currentElement = [(VOTEventFactory *)self currentElement];
+    if (currentElement)
     {
-      if (AXDeviceSupportsSonification() && ([v8 supportsAudiographs] & 1) != 0)
+      if (AXDeviceSupportsSonification() && ([currentElement supportsAudiographs] & 1) != 0)
       {
         if (AXDeviceSupportsSonification())
         {
@@ -5908,7 +5908,7 @@ LABEL_20:
       [(SCRCGestureFactory *)self->_gestureFactory firstFingerAzimuth];
       v17 = v16;
       self->_tapAndHoldFingerType = [(VOTEventFactory *)self _isStylusGesture];
-      if (self->_firstResponder && [v8 isEqual:*&v17] && -[VOTEventFactory _canScribbleWithElement:](self, "_canScribbleWithElement:", v8) && self->_tapAndHoldFingerType == 1)
+      if (self->_firstResponder && [currentElement isEqual:*&v17] && -[VOTEventFactory _canScribbleWithElement:](self, "_canScribbleWithElement:", currentElement) && self->_tapAndHoldFingerType == 1)
       {
         v18 = VOTLogEvent();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -5917,7 +5917,7 @@ LABEL_20:
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Scribble: Starting.", buf, 2u);
         }
 
-        objc_storeStrong(&self->_tapAndHoldScribbleElement, v8);
+        objc_storeStrong(&self->_tapAndHoldScribbleElement, currentElement);
       }
 
       else
@@ -5931,15 +5931,15 @@ LABEL_20:
 
       if ([(VOTEventFactory *)self _tapAndHoldModeIsForScribble])
       {
-        v20 = 0;
+        prefersContextlessPassthrough = 0;
       }
 
       else
       {
-        v20 = [v8 prefersContextlessPassthrough];
+        prefersContextlessPassthrough = [currentElement prefersContextlessPassthrough];
       }
 
-      [(VOTEventFactory *)self _updateTapAndHoldLocationDataForElement:v8];
+      [(VOTEventFactory *)self _updateTapAndHoldLocationDataForElement:currentElement];
       v22 = v21;
       v24 = v23;
       if (![(VOTEventFactory *)self _tapAndHoldModeIsForScribble])
@@ -5948,19 +5948,19 @@ LABEL_20:
         [v25 clearCursorFrame];
       }
 
-      v26 = [v8 windowContextId];
+      windowContextId = [currentElement windowContextId];
       v27 = +[AXBackBoardServer server];
-      v28 = [v27 contextIdHostingContextId:v26];
+      v28 = [v27 contextIdHostingContextId:windowContextId];
 
       v44 = _NSConcreteStackBlock;
       v45 = 3221225472;
       v46 = sub_1000CE1EC;
       v47 = &unk_1001C7900;
-      v48 = self;
-      v49 = v26;
+      selfCopy = self;
+      v49 = windowContextId;
       v50 = v28;
       AX_PERFORM_WITH_LOCK();
-      self->_flags.tapAndHoldModeContextless = v20;
+      self->_flags.tapAndHoldModeContextless = prefersContextlessPassthrough;
       self->_flags.tapAndHoldMode = 1;
       if ([(VOTEventFactory *)self _tapAndHoldModeIsForScribble])
       {
@@ -5969,7 +5969,7 @@ LABEL_20:
         [v29 sendEvent:v30];
       }
 
-      else if (v4 && !self->_flags.orbMode && [VOTSharedWorkspace soundEffectsEnabled])
+      else if (firedCopy && !self->_flags.orbMode && [VOTSharedWorkspace soundEffectsEnabled])
       {
         objc_initWeak(buf, self);
         v35 = +[VOTOutputManager outputManager];
@@ -6007,20 +6007,20 @@ LABEL_5:
 LABEL_7:
 }
 
-- (CGPoint)_updateTapAndHoldLocationDataForElement:(id)a3
+- (CGPoint)_updateTapAndHoldLocationDataForElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   self->_flags.tapAndHoldOffsetNeedsUpdate = 0;
-  [v4 centerPoint];
+  [elementCopy centerPoint];
   v6 = -1.0;
   v8 = v7 == -1.0 && v5 == -1.0;
   x = -1.0;
   if (!v8)
   {
-    [v4 updateVisiblePoint];
-    [v4 visiblePoint];
-    [v4 windowContextId];
-    [v4 displayId];
+    [elementCopy updateVisiblePoint];
+    [elementCopy visiblePoint];
+    [elementCopy windowContextId];
+    [elementCopy displayId];
     AXConvertPointFromHostedCoordinates();
     x = v10;
     v6 = v11;
@@ -6034,9 +6034,9 @@ LABEL_7:
   v20 = v19;
 
   v21 = CGPointZero.y == v16 && CGPointZero.x == v14;
-  if (([v4 doesHaveTraits:{kAXIsEditingTrait, CGPointZero.x}] & 1) != 0 || (objc_msgSend(v4, "doesHaveTraits:", kAXTextAreaTrait) & 1) == 0)
+  if (([elementCopy doesHaveTraits:{kAXIsEditingTrait, CGPointZero.x}] & 1) != 0 || (objc_msgSend(elementCopy, "doesHaveTraits:", kAXTextAreaTrait) & 1) == 0)
   {
-    v22 = [v4 doesHaveTraits:kAXWebContentTrait | kAXStaticTextTrait] ^ 1;
+    v22 = [elementCopy doesHaveTraits:kAXWebContentTrait | kAXStaticTextTrait] ^ 1;
   }
 
   else
@@ -6055,11 +6055,11 @@ LABEL_7:
   v45.size.height = v20;
   MidY = CGRectGetMidY(v45);
   v25 = +[VOTElement systemWideElement];
-  [v25 convertPoint:objc_msgSend(v4 toContextId:{"windowContextId"), MidX, MidY}];
+  [v25 convertPoint:objc_msgSend(elementCopy toContextId:{"windowContextId"), MidX, MidY}];
   v27 = v26;
   v29 = v28;
 
-  if (((v21 | v22) & 1) == 0 || ([v4 dataDetectorURL:{v27, v29}], v30 = objc_claimAutoreleasedReturnValue(), v30, v30))
+  if (((v21 | v22) & 1) == 0 || ([elementCopy dataDetectorURL:{v27, v29}], v30 = objc_claimAutoreleasedReturnValue(), v30, v30))
   {
     v6 = MidY;
     x = MidX;
@@ -6086,7 +6086,7 @@ LABEL_7:
       goto LABEL_22;
     }
 
-    [(VOTEventFactory *)self _startPointForScribbleWithElement:v4 originalStartPoint:x, v6];
+    [(VOTEventFactory *)self _startPointForScribbleWithElement:elementCopy originalStartPoint:x, v6];
     x = v38;
     v6 = v39;
   }
@@ -6105,7 +6105,7 @@ LABEL_22:
 LABEL_25:
   self->_systemControlStartPoint.x = x;
   self->_systemControlStartPoint.y = v6;
-  if ([v4 doesHaveTraits:kAXTableIndexTrait])
+  if ([elementCopy doesHaveTraits:kAXTableIndexTrait])
   {
     if ([VOTSharedWorkspace deviceOrientation] - 3 >= 2)
     {
@@ -6127,21 +6127,21 @@ LABEL_25:
   return result;
 }
 
-- (CGPoint)_startPointForScribbleWithElement:(id)a3 originalStartPoint:(CGPoint)a4
+- (CGPoint)_startPointForScribbleWithElement:(id)element originalStartPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = [(SCRCGestureFactory *)self->_gestureFactory orientation];
-  if (v6 > 1)
+  y = point.y;
+  x = point.x;
+  orientation = [(SCRCGestureFactory *)self->_gestureFactory orientation];
+  if (orientation > 1)
   {
-    if (v6 == 2)
+    if (orientation == 2)
     {
       v8 = -30.0;
     }
 
     else
     {
-      if (v6 != 3)
+      if (orientation != 3)
       {
         goto LABEL_12;
       }
@@ -6153,13 +6153,13 @@ LABEL_25:
     goto LABEL_12;
   }
 
-  if (!v6)
+  if (!orientation)
   {
     v7 = 30.0;
     goto LABEL_9;
   }
 
-  if (v6 == 1)
+  if (orientation == 1)
   {
     v7 = -30.0;
 LABEL_9:
@@ -6174,23 +6174,23 @@ LABEL_12:
   return result;
 }
 
-- (void)_startTouchDownForTapAndHoldActionWithCenter:(id)a3 force:(id)a4 altitude:(id)a5 azimuth:(id)a6
+- (void)_startTouchDownForTapAndHoldActionWithCenter:(id)center force:(id)force altitude:(id)altitude azimuth:(id)azimuth
 {
   if (self->_flags.tapAndHoldMode)
   {
-    v11 = a6;
-    v12 = a5;
-    v13 = a4;
-    [a3 pointValue];
+    azimuthCopy = azimuth;
+    altitudeCopy = altitude;
+    forceCopy = force;
+    [center pointValue];
     v15 = v14;
     v17 = v16;
-    [v13 doubleValue];
+    [forceCopy doubleValue];
     v19 = v18;
 
-    [v12 doubleValue];
+    [altitudeCopy doubleValue];
     v21 = v20;
 
-    [v11 doubleValue];
+    [azimuthCopy doubleValue];
     v23 = v22;
 
     [(VOTEventFactory *)self _touchDownAtPoint:v15 withForce:v17 altitude:v19 azimuth:v21, v23];
@@ -6204,11 +6204,11 @@ LABEL_12:
   self->_flags.memorizingData = 0;
   [(SCRCTargetSelectorTimer *)self->_memorizeSoundTimer cancel];
   v3 = +[VOTWorkspace sharedWorkspace];
-  v9 = [v3 userCommandManager];
+  userCommandManager = [v3 userCommandManager];
 
   v4 = +[VOSGesture TwoFingerSingleTapAndHold];
-  v5 = [(VOTEventFactory *)self _commandResolver];
-  v6 = [v9 eventForTouchGesture:v4 resolver:v5 info:0];
+  _commandResolver = [(VOTEventFactory *)self _commandResolver];
+  v6 = [userCommandManager eventForTouchGesture:v4 resolver:_commandResolver info:0];
 
   v7 = +[VOTOutputManager outputManager];
   v8 = +[VOSOutputEvent ItemMemorizationSucceeded];
@@ -6243,61 +6243,61 @@ LABEL_12:
   _objc_release_x1(v4, v5);
 }
 
-- (void)_contextlessTouchWithHandType:(unsigned int)a3 location:(CGPoint)a4 force:(double)a5 altitude:(double)a6 azimuth:(double)a7
+- (void)_contextlessTouchWithHandType:(unsigned int)type location:(CGPoint)location force:(double)force altitude:(double)altitude azimuth:(double)azimuth
 {
-  v10 = *&a3;
+  v10 = *&type;
   AXNormalizePoint();
   v33 = [AXEventRepresentation touchRepresentationWithHandType:v10 location:?];
-  v12 = [v33 handInfo];
-  v13 = [v12 paths];
-  v14 = [v13 firstPath];
-  [v14 setTransducerType:2];
+  handInfo = [v33 handInfo];
+  paths = [handInfo paths];
+  firstPath = [paths firstPath];
+  [firstPath setTransducerType:2];
 
-  v15 = [v33 handInfo];
-  v16 = [v15 paths];
-  v17 = [v16 firstPath];
-  *&a5 = a5;
-  LODWORD(v18) = LODWORD(a5);
-  [v17 setOrbValue:v18];
+  handInfo2 = [v33 handInfo];
+  paths2 = [handInfo2 paths];
+  firstPath2 = [paths2 firstPath];
+  *&force = force;
+  LODWORD(v18) = LODWORD(force);
+  [firstPath2 setOrbValue:v18];
 
   if (self->_tapAndHoldFingerType == 1)
   {
-    v19 = [v33 handInfo];
-    v20 = [v19 paths];
-    v21 = [v20 firstPath];
-    [v21 setTransducerType:0];
+    handInfo3 = [v33 handInfo];
+    paths3 = [handInfo3 paths];
+    firstPath3 = [paths3 firstPath];
+    [firstPath3 setTransducerType:0];
 
-    v23 = [v33 handInfo];
-    v24 = [v23 paths];
-    v25 = [v24 firstPath];
-    v22 = a6;
-    *&v26 = v22;
-    [v25 setAltitude:v26];
+    handInfo4 = [v33 handInfo];
+    paths4 = [handInfo4 paths];
+    firstPath4 = [paths4 firstPath];
+    altitudeCopy = altitude;
+    *&v26 = altitudeCopy;
+    [firstPath4 setAltitude:v26];
 
-    v28 = [v33 handInfo];
-    v29 = [v28 paths];
-    v30 = [v29 firstPath];
-    v27 = a7;
-    *&v31 = v27;
-    [v30 setAzimuth:v31];
+    handInfo5 = [v33 handInfo];
+    paths5 = [handInfo5 paths];
+    firstPath5 = [paths5 firstPath];
+    azimuthCopy = azimuth;
+    *&v31 = azimuthCopy;
+    [firstPath5 setAzimuth:v31];
   }
 
   v32 = +[AXEventTapManager sharedManager];
   [v32 sendHIDSystemEvent:v33 senderID:0x8000000817319373];
 }
 
-- (void)_touchDownAtPoint:(CGPoint)a3 withForce:(double)a4 altitude:(double)a5 azimuth:(double)a6
+- (void)_touchDownAtPoint:(CGPoint)point withForce:(double)force altitude:(double)altitude azimuth:(double)azimuth
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (!self->_flags.tapAndHoldModeContextless)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = [(VOTEventFactory *)self tapAndHoldContextNumbers];
-    v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    tapAndHoldContextNumbers = [(VOTEventFactory *)self tapAndHoldContextNumbers];
+    v13 = [tapAndHoldContextNumbers countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (!v13)
     {
       goto LABEL_17;
@@ -6311,7 +6311,7 @@ LABEL_12:
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(tapAndHoldContextNumbers);
         }
 
         v17 = *(*(&v21 + 1) + 8 * i);
@@ -6321,7 +6321,7 @@ LABEL_12:
           if (!tapAndHoldFingerType)
           {
             v19 = +[VOTElement systemWideElement];
-            [v19 postFingerTouchAtPoint:objc_msgSend(v17 withForce:"unsignedIntValue") withContextId:{x, y, a4}];
+            [v19 postFingerTouchAtPoint:objc_msgSend(v17 withForce:"unsignedIntValue") withContextId:{x, y, force}];
             goto LABEL_15;
           }
 
@@ -6330,11 +6330,11 @@ LABEL_12:
         }
 
         v19 = +[VOTElement systemWideElement];
-        [v19 postStylusTouchAtPoint:objc_msgSend(v17 withForce:"unsignedIntValue") altitude:x azimuth:y withContextId:{a4, a5, a6}];
+        [v19 postStylusTouchAtPoint:objc_msgSend(v17 withForce:"unsignedIntValue") altitude:x azimuth:y withContextId:{force, altitude, azimuth}];
 LABEL_15:
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v14 = [tapAndHoldContextNumbers countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (!v14)
       {
 LABEL_17:
@@ -6347,18 +6347,18 @@ LABEL_17:
   [VOTEventFactory _contextlessTouchWithHandType:"_contextlessTouchWithHandType:location:force:altitude:azimuth:" location:1 force:? altitude:? azimuth:?];
 }
 
-- (void)_touchDragAtPoint:(CGPoint)a3 withForce:(double)a4 altitude:(double)a5 azimuth:(double)a6
+- (void)_touchDragAtPoint:(CGPoint)point withForce:(double)force altitude:(double)altitude azimuth:(double)azimuth
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (!self->_flags.tapAndHoldModeContextless)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = [(VOTEventFactory *)self tapAndHoldContextNumbers];
-    v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    tapAndHoldContextNumbers = [(VOTEventFactory *)self tapAndHoldContextNumbers];
+    v13 = [tapAndHoldContextNumbers countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (!v13)
     {
       goto LABEL_17;
@@ -6372,7 +6372,7 @@ LABEL_17:
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(tapAndHoldContextNumbers);
         }
 
         v17 = *(*(&v21 + 1) + 8 * i);
@@ -6382,7 +6382,7 @@ LABEL_17:
           if (!tapAndHoldFingerType)
           {
             v19 = +[VOTElement systemWideElement];
-            [v19 postFingerDragAtPoint:objc_msgSend(v17 withForce:"unsignedIntValue") withContextId:{x, y, a4}];
+            [v19 postFingerDragAtPoint:objc_msgSend(v17 withForce:"unsignedIntValue") withContextId:{x, y, force}];
             goto LABEL_15;
           }
 
@@ -6391,11 +6391,11 @@ LABEL_17:
         }
 
         v19 = +[VOTElement systemWideElement];
-        [v19 postStylusDragAtPoint:objc_msgSend(v17 withForce:"unsignedIntValue") altitude:x azimuth:y withContextId:{a4, a5, a6}];
+        [v19 postStylusDragAtPoint:objc_msgSend(v17 withForce:"unsignedIntValue") altitude:x azimuth:y withContextId:{force, altitude, azimuth}];
 LABEL_15:
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v14 = [tapAndHoldContextNumbers countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (!v14)
       {
 LABEL_17:
@@ -6423,13 +6423,13 @@ LABEL_17:
   return v2;
 }
 
-- (void)_touchLiftAtPoint:(CGPoint)a3
+- (void)_touchLiftAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (self->_flags.tapAndHoldModeContextless)
   {
-    [(VOTEventFactory *)self _contextlessTouchWithHandType:6 location:a3.x force:a3.y altitude:0.0 azimuth:0.0, 0.0];
+    [(VOTEventFactory *)self _contextlessTouchWithHandType:6 location:point.x force:point.y altitude:0.0 azimuth:0.0, 0.0];
     goto LABEL_16;
   }
 
@@ -6437,8 +6437,8 @@ LABEL_17:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(VOTEventFactory *)self tapAndHoldContextNumbers];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  tapAndHoldContextNumbers = [(VOTEventFactory *)self tapAndHoldContextNumbers];
+  v7 = [tapAndHoldContextNumbers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (!v7)
   {
     goto LABEL_15;
@@ -6453,7 +6453,7 @@ LABEL_17:
     {
       if (*v16 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(tapAndHoldContextNumbers);
       }
 
       v11 = *(*(&v15 + 1) + 8 * v10);
@@ -6479,7 +6479,7 @@ LABEL_13:
     }
 
     while (v8 != v10);
-    v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v8 = [tapAndHoldContextNumbers countByEnumeratingWithState:&v15 objects:v19 count:16];
   }
 
   while (v8);
@@ -6492,10 +6492,10 @@ LABEL_16:
   }
 }
 
-- (void)_processIdle:(CGPoint)a3
+- (void)_processIdle:(CGPoint)idle
 {
-  y = a3.y;
-  x = a3.x;
+  y = idle.y;
+  x = idle.x;
   *&self->_flags.twoFingerTapAndSlide = 0;
   [(VOTEventFactory *)self _cancelTapAndHold:?];
   [(VOTEventFactory *)self _stopMemorizingSession];
@@ -6518,9 +6518,9 @@ LABEL_16:
   }
 }
 
-- (void)_processTapAndHoldMode:(id)a3
+- (void)_processTapAndHoldMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   if (self->_flags.orbMode && ([(SCRCGestureFactory *)self->_gestureFactory firstFingerPressure], v6 = v5, AXForceTouchThresholdPeek(), v6 < v7))
   {
     [(VOTEventFactory *)self _switchToTrackingMode];
@@ -6529,11 +6529,11 @@ LABEL_16:
   else
   {
     v8 = +[VOTCommandHelper commandHelper];
-    v9 = [v8 helpEnabled];
+    helpEnabled = [v8 helpEnabled];
 
-    if ((v9 & 1) == 0)
+    if ((helpEnabled & 1) == 0)
     {
-      if ([v4 fingerCount] == 1)
+      if ([modeCopy fingerCount] == 1)
       {
         if (self->_flags.audiographScrubbingMode)
         {
@@ -6554,7 +6554,7 @@ LABEL_16:
           v17 = v16;
           [(SCRCGestureFactory *)self->_gestureFactory firstFingerAzimuth];
           v19 = v18;
-          if (-[VOTEventFactory _tapAndHoldModeIsForScribble](self, "_tapAndHoldModeIsForScribble") && [v4 isDownEvent])
+          if (-[VOTEventFactory _tapAndHoldModeIsForScribble](self, "_tapAndHoldModeIsForScribble") && [modeCopy isDownEvent])
           {
             if (self->_flags.tapAndHoldOffsetNeedsUpdate)
             {
@@ -6717,13 +6717,13 @@ LABEL_16:
   self->_flags.tapAndHoldOffsetNeedsUpdate = 1;
 }
 
-- (void)_liftFromTapAndHoldAndResetFingers:(BOOL)a3
+- (void)_liftFromTapAndHoldAndResetFingers:(BOOL)fingers
 {
-  v3 = a3;
+  fingersCopy = fingers;
   v5 = VOTLogEvent();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_10012E980(v3, v5);
+    sub_10012E980(fingersCopy, v5);
   }
 
   [(SCRCGestureFactory *)self->_gestureFactory rawLocation];
@@ -6733,18 +6733,18 @@ LABEL_16:
   [(VOTEventFactory *)self _touchLiftAtPoint:v7 + self->_tapHoldOffset.x, v9 + self->_tapHoldOffset.y];
   [(VOTEventFactory *)self _liftPreviewFinger];
   AXPerformBlockOnMainThreadAfterDelay();
-  if (v3)
+  if (fingersCopy)
   {
     [(VOTEventFactory *)self _setFingerCount:0];
   }
 }
 
-- (BOOL)_canScribbleWithElement:(id)a3
+- (BOOL)_canScribbleWithElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   if (AXDeviceSupportsPencil())
   {
-    v4 = [v3 doesHaveTraits:kAXTextEntryTrait];
+    v4 = [elementCopy doesHaveTraits:kAXTextEntryTrait];
   }
 
   else
@@ -6858,9 +6858,9 @@ LABEL_15:
   if (AXDeviceSupportsSonification())
   {
     v3 = +[VOTAudiographManager sharedManager];
-    v4 = [v3 isScrubbing];
+    isScrubbing = [v3 isScrubbing];
 
-    if (v4)
+    if (isScrubbing)
     {
       v5 = +[VOTAudiographManager sharedManager];
       [v5 endScrubbingSession];
@@ -6870,9 +6870,9 @@ LABEL_15:
   }
 }
 
-- (void)_handleElementPreviewNotification:(id)a3
+- (void)_handleElementPreviewNotification:(id)notification
 {
-  v4 = [a3 isEqualToNumber:&__kCFBooleanTrue];
+  v4 = [notification isEqualToNumber:&__kCFBooleanTrue];
   self->_isInPreview = v4;
   if (v4)
   {
@@ -6890,10 +6890,10 @@ LABEL_15:
   }
 }
 
-- (CGPoint)convertDevicePointToZoomedPoint:(CGPoint)a3
+- (CGPoint)convertDevicePointToZoomedPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (_AXSZoomTouchEnabled() && *&dword_1001FED98 > 1.0 && !CGRectIsEmpty(*ymmword_1001FEDA0) && (AXInCheckerBoardScenario() & 1) == 0 && (AXInPreboardScenario() & 1) == 0)
   {
     LODWORD(v6) = dword_1001FED98;
@@ -6921,21 +6921,21 @@ LABEL_15:
   return result;
 }
 
-- (CGRect)_convertFrame:(CGRect)a3 toPortraitFromOrientation:(int64_t)a4
+- (CGRect)_convertFrame:(CGRect)frame toPortraitFromOrientation:(int64_t)orientation
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  switch(a4)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  switch(orientation)
   {
     case 3:
       v12 = *&xmmword_1001FF150;
-      v9 = v12 - CGRectGetMaxY(a3);
+      v9 = v12 - CGRectGetMaxY(frame);
       goto LABEL_7;
     case 2:
       v11 = *(&xmmword_1001FF150 + 1);
-      x = v11 - CGRectGetMaxX(a3);
+      x = v11 - CGRectGetMaxX(frame);
       v9 = y;
 LABEL_7:
       v13 = height;
@@ -6943,7 +6943,7 @@ LABEL_7:
       goto LABEL_10;
     case 1:
       v8 = *&xmmword_1001FF150;
-      v9 = v8 - CGRectGetMaxX(a3);
+      v9 = v8 - CGRectGetMaxX(frame);
       v10 = *(&xmmword_1001FF150 + 1);
       v17.origin.x = x;
       v17.origin.y = y;
@@ -6952,8 +6952,8 @@ LABEL_7:
       x = v10 - CGRectGetMaxY(v17);
       break;
     default:
-      v9 = a3.origin.x;
-      x = a3.origin.y;
+      v9 = frame.origin.x;
+      x = frame.origin.y;
       break;
   }
 
@@ -6969,10 +6969,10 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)_convertZoomPointToDevicePoint:(CGPoint)a3
+- (CGPoint)_convertZoomPointToDevicePoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(VOTEventFactory *)self _convertFrame:[(SCRCGestureFactory *)self->_gestureFactory orientation] toPortraitFromOrientation:*ymmword_1001FEDA0, *&ymmword_1001FEDA0[8], *&ymmword_1001FEDA0[16], *&ymmword_1001FEDA0[24]];
   v9 = *&xmmword_1001FF150 * ((x - v5) / v7);
   v10 = *(&xmmword_1001FF150 + 1) * ((y - v6) / v8);
@@ -6981,19 +6981,19 @@ LABEL_10:
   return result;
 }
 
-- (void)_convertZoomRecordToDeviceRecord:(id)a3
+- (void)_convertZoomRecordToDeviceRecord:(id)record
 {
-  v4 = a3;
-  if ([v4 type] == 3001)
+  recordCopy = record;
+  if ([recordCopy type] == 3001)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [v4 handInfo];
-    v6 = [v5 paths];
+    handInfo = [recordCopy handInfo];
+    paths = [handInfo paths];
 
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v7 = [paths countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -7004,7 +7004,7 @@ LABEL_10:
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(paths);
           }
 
           v11 = *(*(&v12 + 1) + 8 * i);
@@ -7013,7 +7013,7 @@ LABEL_10:
           [v11 setPathLocation:?];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [paths countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -7021,20 +7021,20 @@ LABEL_10:
   }
 }
 
-- (void)_handleEventWithData:(id)a3
+- (void)_handleEventWithData:(id)data
 {
-  v4 = [AXEventRepresentation representationWithData:a3];
-  v5 = v4;
-  if (v4)
+  additionalFlags = [AXEventRepresentation representationWithData:data];
+  v5 = additionalFlags;
+  if (additionalFlags)
   {
-    v14 = v4;
-    v4 = [v4 additionalFlags];
+    v14 = additionalFlags;
+    additionalFlags = [additionalFlags additionalFlags];
     v5 = v14;
-    if ((v4 & 0x2000000) != 0)
+    if ((additionalFlags & 0x2000000) != 0)
     {
-      v4 = [v14 senderID];
+      additionalFlags = [v14 senderID];
       v5 = v14;
-      if (v4 != 0x8000000817319373)
+      if (additionalFlags != 0x8000000817319373)
       {
         if (_AXSZoomTouchEnabled())
         {
@@ -7045,11 +7045,11 @@ LABEL_10:
           }
         }
 
-        v7 = [v14 originalType];
-        v8 = v7;
-        if (v7 > 1024)
+        originalType = [v14 originalType];
+        v8 = originalType;
+        if (originalType > 1024)
         {
-          if (v7 < 1031)
+          if (originalType < 1031)
           {
             WeakRetained = objc_loadWeakRetained(&self->_delegate);
             [WeakRetained handleMediaKeyPress:v14];
@@ -7058,16 +7058,16 @@ LABEL_32:
             goto LABEL_33;
           }
 
-          if ((v7 - 1032) >= 2)
+          if ((originalType - 1032) >= 2)
           {
-            if (v7 != 1031)
+            if (originalType != 1031)
             {
-              if (v7 == 3001)
+              if (originalType == 3001)
               {
                 v10 = +[AXElement systemWideElement];
-                v11 = [v10 isPassivelyListeningForEvents];
+                isPassivelyListeningForEvents = [v10 isPassivelyListeningForEvents];
 
-                if ((v11 & 1) == 0)
+                if ((isPassivelyListeningForEvents & 1) == 0)
                 {
                   _AXAssert();
                 }
@@ -7090,16 +7090,16 @@ LABEL_28:
           goto LABEL_32;
         }
 
-        if (v7 > 1009)
+        if (originalType > 1009)
         {
-          if ((v7 - 1012) < 2)
+          if ((originalType - 1012) < 2)
           {
             goto LABEL_28;
           }
 
-          if (v7 != 1010)
+          if (originalType != 1010)
           {
-            if (v7 == 1011)
+            if (originalType == 1011)
             {
               WeakRetained = objc_loadWeakRetained(&self->_delegate);
               [WeakRetained handleLockButtonPress:v14];
@@ -7107,7 +7107,7 @@ LABEL_28:
             }
 
 LABEL_33:
-            v4 = [VOTSharedWorkspace userInteractedWithDeviceWithHand:v8 == 3001];
+            additionalFlags = [VOTSharedWorkspace userInteractedWithDeviceWithHand:v8 == 3001];
             v5 = v14;
             goto LABEL_34;
           }
@@ -7115,9 +7115,9 @@ LABEL_33:
 
         else
         {
-          if (v7 != 1001)
+          if (originalType != 1001)
           {
-            if (v7 != 1007 && v7 != 1009)
+            if (originalType != 1007 && originalType != 1009)
             {
               goto LABEL_33;
             }
@@ -7139,7 +7139,7 @@ LABEL_33:
 
 LABEL_34:
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(additionalFlags, v5);
 }
 
 - (CGPoint)fingerPosition
@@ -7152,21 +7152,21 @@ LABEL_34:
   return result;
 }
 
-- (void)_setFingerCount:(unint64_t)a3
+- (void)_setFingerCount:(unint64_t)count
 {
-  self->_fingerCount = a3;
-  if (!a3)
+  self->_fingerCount = count;
+  if (!count)
   {
     [(VOTEventFactory *)self _commitDeferredZoomInfo];
   }
 }
 
-- (void)directInteractionModeStatus:(BOOL)a3
+- (void)directInteractionModeStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
-    v4 = [(VOTEventFactory *)self directInteractionKeyboardManager];
-    [v4 gestureKeyboardRegion];
+    directInteractionKeyboardManager = [(VOTEventFactory *)self directInteractionKeyboardManager];
+    [directInteractionKeyboardManager gestureKeyboardRegion];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -7195,9 +7195,9 @@ LABEL_34:
 
 - (BOOL)_isPreviewElementSelected
 {
-  v2 = [(VOTEventFactory *)self currentElement];
-  v3 = [v2 identifier];
-  v4 = [v3 isEqualToString:@"PreviewContainerElement"];
+  currentElement = [(VOTEventFactory *)self currentElement];
+  identifier = [currentElement identifier];
+  v4 = [identifier isEqualToString:@"PreviewContainerElement"];
 
   return v4;
 }
@@ -7252,11 +7252,11 @@ LABEL_34:
   AXPerformBlockOnMainThreadAfterDelay();
 }
 
-- (void)_reducePreviewFingerStartingForce:(double)a3
+- (void)_reducePreviewFingerStartingForce:(double)force
 {
-  for (i = self->_previewFingerStartingForce; i > a3; i = self->_previewFingerStartingForce)
+  for (i = self->_previewFingerStartingForce; i > force; i = self->_previewFingerStartingForce)
   {
-    self->_previewFingerStartingForce = fmax(a3, i + -2.0);
+    self->_previewFingerStartingForce = fmax(force, i + -2.0);
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -7357,11 +7357,11 @@ LABEL_34:
     self->_lastEdgePressTime = CFAbsoluteTimeGetCurrent();
     v6 = objc_alloc_init(VOTEvent);
     [(VOTEvent *)v6 setCommand:kVOTEventCommandHomeButtonPress];
-    v3 = [(VOTEventFactory *)self elementManager];
-    [v3 handleEvent:v6];
+    elementManager = [(VOTEventFactory *)self elementManager];
+    [elementManager handleEvent:v6];
 
-    v4 = [(VOTEventFactory *)self elementManager];
-    [v4 handleEvent:v6];
+    elementManager2 = [(VOTEventFactory *)self elementManager];
+    [elementManager2 handleEvent:v6];
 
     v5 = +[AXSpringBoardServer server];
     [v5 simulateEdgePressHaptics];
@@ -7370,11 +7370,11 @@ LABEL_34:
 
 - (void)_simulatePeekAndSwitchToTapHoldMode
 {
-  v3 = [(VOTEventFactory *)self currentElement];
-  v4 = v3;
-  if (v3)
+  currentElement = [(VOTEventFactory *)self currentElement];
+  v4 = currentElement;
+  if (currentElement)
   {
-    [v3 centerPoint];
+    [currentElement centerPoint];
     v6 = -1.0;
     v8 = v7 == -1.0 && v5 == -1.0;
     v9 = -1.0;
@@ -7428,16 +7428,16 @@ LABEL_34:
       v9 = MidX;
     }
 
-    v31 = [v4 windowContextId];
+    windowContextId = [v4 windowContextId];
     v32 = +[AXBackBoardServer server];
-    v33 = [v32 contextIdHostingContextId:v31];
+    v33 = [v32 contextIdHostingContextId:windowContextId];
 
     v48 = _NSConcreteStackBlock;
     v49 = 3221225472;
     v50 = sub_1000D1388;
     v51 = &unk_1001C7900;
-    v52 = self;
-    v53 = v31;
+    selfCopy = self;
+    v53 = windowContextId;
     v54 = v33;
     AX_PERFORM_WITH_LOCK();
     self->_currentTouchForce = 0.0;
@@ -7450,8 +7450,8 @@ LABEL_34:
         v47 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v35 = [(VOTEventFactory *)self tapAndHoldContextNumbers];
-        v36 = [v35 countByEnumeratingWithState:&v44 objects:v55 count:16];
+        tapAndHoldContextNumbers = [(VOTEventFactory *)self tapAndHoldContextNumbers];
+        v36 = [tapAndHoldContextNumbers countByEnumeratingWithState:&v44 objects:v55 count:16];
         if (v36)
         {
           v37 = v36;
@@ -7462,7 +7462,7 @@ LABEL_34:
             {
               if (*v45 != v38)
               {
-                objc_enumerationMutation(v35);
+                objc_enumerationMutation(tapAndHoldContextNumbers);
               }
 
               v40 = *(*(&v44 + 1) + 8 * i);
@@ -7470,7 +7470,7 @@ LABEL_34:
               [v41 postFingerTouchAtPoint:objc_msgSend(v40 withForce:"unsignedIntValue") withContextId:{v9, v6, self->_currentTouchForce}];
             }
 
-            v37 = [v35 countByEnumeratingWithState:&v44 objects:v55 count:16];
+            v37 = [tapAndHoldContextNumbers countByEnumeratingWithState:&v44 objects:v55 count:16];
           }
 
           while (v37);
@@ -7508,17 +7508,17 @@ LABEL_34:
     self->_previewFingerLocation.x = v9;
     self->_previewFingerLocation.y = v10;
     self->_previewPopDelayTime = CFAbsoluteTimeGetCurrent();
-    v13 = [(VOTEventFactory *)self currentElement];
-    if (v13)
+    currentElement = [(VOTEventFactory *)self currentElement];
+    if (currentElement)
     {
       [(NSMutableArray *)self->_previewFingerContextId removeAllObjects];
-      v14 = [v13 windowContextId];
+      windowContextId = [currentElement windowContextId];
       previewFingerContextId = self->_previewFingerContextId;
-      v16 = [NSNumber numberWithUnsignedInt:v14];
+      v16 = [NSNumber numberWithUnsignedInt:windowContextId];
       [(NSMutableArray *)previewFingerContextId addObject:v16];
 
       v17 = +[AXBackBoardServer server];
-      v18 = [v17 contextIdHostingContextId:v14];
+      v18 = [v17 contextIdHostingContextId:windowContextId];
 
       v19 = self->_previewFingerContextId;
       v20 = [NSNumber numberWithUnsignedInt:v18];
@@ -7584,14 +7584,14 @@ LABEL_34:
 - (void)_updateCurrentElementOrbGestureMode
 {
   self->_currentOrbGestureMode = 2;
-  v3 = [(VOTEventFactory *)self currentElement];
-  v4 = [v3 isValid];
+  currentElement = [(VOTEventFactory *)self currentElement];
+  isValid = [currentElement isValid];
 
-  if (v4)
+  if (isValid)
   {
-    v5 = [(VOTEventFactory *)self currentElement];
-    v6 = [v5 uiElement];
-    v7 = [v6 arrayWithAXAttribute:2063];
+    currentElement2 = [(VOTEventFactory *)self currentElement];
+    uiElement = [currentElement2 uiElement];
+    v7 = [uiElement arrayWithAXAttribute:2063];
 
     v19 = 0u;
     v20 = 0u;
@@ -7614,9 +7614,9 @@ LABEL_34:
 
           v13 = *(*(&v17 + 1) + 8 * i);
           v14 = [v13 objectForKeyedSubscript:{@"AXSupportedGestureTypeKey", v17}];
-          v15 = [v14 integerValue];
+          integerValue = [v14 integerValue];
 
-          if (v15 == 6)
+          if (integerValue == 6)
           {
             v16 = [v13 objectForKeyedSubscript:@"AXOrbGestureMode"];
             self->_currentOrbGestureMode = [v16 intValue];
@@ -7652,10 +7652,10 @@ LABEL_12:
   return result;
 }
 
-- (id)votActionForEdgePanGestureState:(unint64_t)a3
+- (id)votActionForEdgePanGestureState:(unint64_t)state
 {
-  v4 = a3 - 3;
-  if (a3 - 3 <= 7 && ((0xDFu >> v4) & 1) != 0)
+  v4 = state - 3;
+  if (state - 3 <= 7 && ((0xDFu >> v4) & 1) != 0)
   {
     v5 = **(&off_1001CAAB8 + v4);
   }
@@ -7668,49 +7668,49 @@ LABEL_12:
   return v5;
 }
 
-- (void)gesturedTextInputManager:(id)a3 moveToElementMatchingRotorType:(int64_t)a4 inDirection:(int64_t)a5
+- (void)gesturedTextInputManager:(id)manager moveToElementMatchingRotorType:(int64_t)type inDirection:(int64_t)direction
 {
-  v7 = [(VOTEventFactory *)self elementManager];
-  [v7 moveToElementMatchingRotorType:a4 inDirection:a5];
+  elementManager = [(VOTEventFactory *)self elementManager];
+  [elementManager moveToElementMatchingRotorType:type inDirection:direction];
 }
 
-- (void)gesturedTextInputManager:(id)a3 accessCurrentGesturedTextInputElement:(id)a4
+- (void)gesturedTextInputManager:(id)manager accessCurrentGesturedTextInputElement:(id)element
 {
-  v7 = a4;
-  v5 = [(VOTEventFactory *)self currentElement];
-  v6 = [v5 elementForGesturedTextInput];
+  elementCopy = element;
+  currentElement = [(VOTEventFactory *)self currentElement];
+  elementForGesturedTextInput = [currentElement elementForGesturedTextInput];
 
-  if (!v6)
+  if (!elementForGesturedTextInput)
   {
-    v6 = [(VOTEventFactory *)self currentElement];
+    elementForGesturedTextInput = [(VOTEventFactory *)self currentElement];
   }
 
-  v7[2](v7, v6);
+  elementCopy[2](elementCopy, elementForGesturedTextInput);
 }
 
-- (void)brailleGestureManager:(id)a3 setForcedOrientation:(int64_t)a4 shouldAnnounce:(BOOL)a5
+- (void)brailleGestureManager:(id)manager setForcedOrientation:(int64_t)orientation shouldAnnounce:(BOOL)announce
 {
-  v5 = a5;
+  announceCopy = announce;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained handleSetForcedOrientation:a4 shouldAnnounce:v5];
+  [WeakRetained handleSetForcedOrientation:orientation shouldAnnounce:announceCopy];
 }
 
-- (void)brailleGestureManager:(id)a3 unsetForcedOrientationAndAnnounce:(BOOL)a4
+- (void)brailleGestureManager:(id)manager unsetForcedOrientationAndAnnounce:(BOOL)announce
 {
-  v4 = a4;
+  announceCopy = announce;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained handleUnsetForcedOrientationAndAnnounce:v4];
+  [WeakRetained handleUnsetForcedOrientationAndAnnounce:announceCopy];
 }
 
-- (BOOL)_handleAccessibilityEvent:(id)a3
+- (BOOL)_handleAccessibilityEvent:(id)event
 {
-  v4 = [a3 accessibilityData];
-  if ([v4 page] != 1)
+  accessibilityData = [event accessibilityData];
+  if ([accessibilityData page] != 1)
   {
     goto LABEL_8;
   }
 
-  if ([v4 usage] == 1)
+  if ([accessibilityData usage] == 1)
   {
     +[VOSGesture BackTapDoubleTap];
   }
@@ -7721,10 +7721,10 @@ LABEL_12:
   }
   v5 = ;
   v6 = +[VOTWorkspace sharedWorkspace];
-  v7 = [v6 userCommandManager];
+  userCommandManager = [v6 userCommandManager];
 
-  v8 = [(VOTEventFactory *)self _commandResolver];
-  v9 = [v7 eventForTouchGesture:v5 resolver:v8];
+  _commandResolver = [(VOTEventFactory *)self _commandResolver];
+  v9 = [userCommandManager eventForTouchGesture:v5 resolver:_commandResolver];
 
   if (!v9)
   {
@@ -7743,17 +7743,17 @@ LABEL_9:
   return v11;
 }
 
-- (BOOL)handleVOSGesture:(id)a3
+- (BOOL)handleVOSGesture:(id)gesture
 {
-  v4 = a3;
-  if (!v4)
+  gestureCopy = gesture;
+  if (!gestureCopy)
   {
     goto LABEL_5;
   }
 
-  v5 = [VOTSharedWorkspace userCommandManager];
-  v6 = [(VOTEventFactory *)self _commandResolver];
-  v7 = [v5 eventForTouchGesture:v4 resolver:v6];
+  userCommandManager = [VOTSharedWorkspace userCommandManager];
+  _commandResolver = [(VOTEventFactory *)self _commandResolver];
+  v7 = [userCommandManager eventForTouchGesture:gestureCopy resolver:_commandResolver];
 
   if (!v7)
   {
@@ -7775,14 +7775,14 @@ LABEL_6:
 - (void)_updateVoiceOverHandGesturesActionCustomizations
 {
   v5 = +[AXSettings sharedInstance];
-  v3 = [v5 voiceOverHandGesturesActionCustomizations];
+  voiceOverHandGesturesActionCustomizations = [v5 voiceOverHandGesturesActionCustomizations];
   handGestureCommandDict = self->_handGestureCommandDict;
-  self->_handGestureCommandDict = v3;
+  self->_handGestureCommandDict = voiceOverHandGesturesActionCustomizations;
 }
 
-- (BOOL)_handleVoiceOverGreySupportAccessibilityEvent:(id)a3
+- (BOOL)_handleVoiceOverGreySupportAccessibilityEvent:(id)event
 {
-  v3 = [(VOTEventFactory *)self _mapAXEventToVOTEvent:a3];
+  v3 = [(VOTEventFactory *)self _mapAXEventToVOTEvent:event];
   v4 = v3;
   if (v3)
   {
@@ -7793,11 +7793,11 @@ LABEL_6:
   return v4 != 0;
 }
 
-- (id)_mapAXEventToVOTEvent:(id)a3
+- (id)_mapAXEventToVOTEvent:(id)event
 {
-  v4 = [a3 accessibilityData];
+  accessibilityData = [event accessibilityData];
   handGestureCommandDict = self->_handGestureCommandDict;
-  v6 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v4 usage]);
+  v6 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [accessibilityData usage]);
   v7 = [(NSDictionary *)handGestureCommandDict objectForKeyedSubscript:v6];
 
   if (v7)

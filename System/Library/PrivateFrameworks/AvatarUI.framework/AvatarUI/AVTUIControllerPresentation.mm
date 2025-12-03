@@ -1,6 +1,6 @@
 @interface AVTUIControllerPresentation
-+ (AVTUIControllerPresentation)presentationWithWrappingForController:(id)a3;
-- (AVTUIControllerPresentation)initWithController:(id)a3;
++ (AVTUIControllerPresentation)presentationWithWrappingForController:(id)controller;
+- (AVTUIControllerPresentation)initWithController:(id)controller;
 - (AVTUIControllerPresentationDelegate)delegate;
 - (MSMessagesAppViewController)modalMessagesController;
 - (void)viewWillBeObstructed;
@@ -8,33 +8,33 @@
 
 @implementation AVTUIControllerPresentation
 
-+ (AVTUIControllerPresentation)presentationWithWrappingForController:(id)a3
++ (AVTUIControllerPresentation)presentationWithWrappingForController:(id)controller
 {
-  v3 = a3;
-  v4 = [[AVTTransparentNavigationController alloc] initWithRootViewController:v3];
+  controllerCopy = controller;
+  v4 = [[AVTTransparentNavigationController alloc] initWithRootViewController:controllerCopy];
   v5 = objc_alloc_init(AVTAvatarContainerViewController);
-  v6 = [(AVTAvatarContainerViewController *)v5 view];
-  v7 = [(AVTTransparentNavigationController *)v4 view];
-  [v6 addSubview:v7];
+  view = [(AVTAvatarContainerViewController *)v5 view];
+  view2 = [(AVTTransparentNavigationController *)v4 view];
+  [view addSubview:view2];
 
   [(AVTAvatarContainerViewController *)v5 addChildViewController:v4];
   [(AVTTransparentNavigationController *)v4 didMoveToParentViewController:v5];
   v8 = [[AVTUIControllerPresentation alloc] initWithController:v5];
-  [(AVTUIControllerPresentation *)v8 setDelegate:v3];
+  [(AVTUIControllerPresentation *)v8 setDelegate:controllerCopy];
 
   return v8;
 }
 
-- (AVTUIControllerPresentation)initWithController:(id)a3
+- (AVTUIControllerPresentation)initWithController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = AVTUIControllerPresentation;
   v6 = [(AVTUIControllerPresentation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_controller, a3);
+    objc_storeStrong(&v6->_controller, controller);
   }
 
   return v7;
@@ -42,12 +42,12 @@
 
 - (void)viewWillBeObstructed
 {
-  v3 = [(AVTUIControllerPresentation *)self delegate];
+  delegate = [(AVTUIControllerPresentation *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(AVTUIControllerPresentation *)self delegate];
-    [v4 controllerPresentationWillObstructView:self];
+    delegate2 = [(AVTUIControllerPresentation *)self delegate];
+    [delegate2 controllerPresentationWillObstructView:self];
   }
 }
 

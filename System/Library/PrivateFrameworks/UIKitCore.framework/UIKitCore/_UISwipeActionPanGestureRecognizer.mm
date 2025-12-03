@@ -1,19 +1,19 @@
 @interface _UISwipeActionPanGestureRecognizer
-- (BOOL)_isGestureType:(int64_t)a3;
-- (BOOL)_shouldReceiveTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)_shouldTryToBeginWithEvent:(id)a3;
-- (_UISwipeActionPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (void)setState:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (BOOL)_isGestureType:(int64_t)type;
+- (BOOL)_shouldReceiveTouch:(id)touch withEvent:(id)event;
+- (BOOL)_shouldTryToBeginWithEvent:(id)event;
+- (_UISwipeActionPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (void)setState:(int64_t)state;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation _UISwipeActionPanGestureRecognizer
 
-- (_UISwipeActionPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_UISwipeActionPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = _UISwipeActionPanGestureRecognizer;
-  v4 = [(UIPanGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UIPanGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -25,11 +25,11 @@
   return v5;
 }
 
-- (BOOL)_shouldReceiveTouch:(id)a3 withEvent:(id)a4
+- (BOOL)_shouldReceiveTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 _containsHIDPointerEvent])
+  touchCopy = touch;
+  eventCopy = event;
+  if ([eventCopy _containsHIDPointerEvent])
   {
     v8 = 0;
   }
@@ -38,15 +38,15 @@
   {
     v10.receiver = self;
     v10.super_class = _UISwipeActionPanGestureRecognizer;
-    v8 = [(UIGestureRecognizer *)&v10 _shouldReceiveTouch:v6 withEvent:v7];
+    v8 = [(UIGestureRecognizer *)&v10 _shouldReceiveTouch:touchCopy withEvent:eventCopy];
   }
 
   return v8;
 }
 
-- (BOOL)_isGestureType:(int64_t)a3
+- (BOOL)_isGestureType:(int64_t)type
 {
-  if (a3 == 21)
+  if (type == 21)
   {
     return 1;
   }
@@ -58,15 +58,15 @@
   return [(UIPanGestureRecognizer *)&v6 _isGestureType:?];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v10.receiver = self;
   v10.super_class = _UISwipeActionPanGestureRecognizer;
-  [(UIGestureRecognizer *)&v10 setState:a3];
+  [(UIGestureRecognizer *)&v10 setState:state];
   if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStateBegan)
   {
-    v4 = [(UIGestureRecognizer *)self view];
-    [(UIPanGestureRecognizer *)self translationInView:v4];
+    view = [(UIGestureRecognizer *)self view];
+    [(UIPanGestureRecognizer *)self translationInView:view];
     v6 = v5;
     v8 = v7;
 
@@ -79,14 +79,14 @@
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if ([(UIGestureRecognizer *)self state]== UIGestureRecognizerStatePossible)
   {
-    v8 = [(UIPanGestureRecognizer *)&self->super.super.super.isa _activeTouches];
-    v9 = [v8 count];
+    _activeTouches = [(UIPanGestureRecognizer *)&self->super.super.super.isa _activeTouches];
+    v9 = [_activeTouches count];
 
     if (v9)
     {
@@ -96,13 +96,13 @@
 
   v10.receiver = self;
   v10.super_class = _UISwipeActionPanGestureRecognizer;
-  [(UIPanGestureRecognizer *)&v10 touchesBegan:v6 withEvent:v7];
+  [(UIPanGestureRecognizer *)&v10 touchesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (BOOL)_shouldTryToBeginWithEvent:(id)a3
+- (BOOL)_shouldTryToBeginWithEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 type] == 10 && (-[UIGestureRecognizer view](self, "view"), v5 = objc_claimAutoreleasedReturnValue(), -[UIPanGestureRecognizer velocityInView:](self, "velocityInView:", v5), v7 = v6, v5, v7 == 0.0))
+  eventCopy = event;
+  if ([eventCopy type] == 10 && (-[UIGestureRecognizer view](self, "view"), v5 = objc_claimAutoreleasedReturnValue(), -[UIPanGestureRecognizer velocityInView:](self, "velocityInView:", v5), v7 = v6, v5, v7 == 0.0))
   {
     v8 = 0;
   }
@@ -111,7 +111,7 @@
   {
     v10.receiver = self;
     v10.super_class = _UISwipeActionPanGestureRecognizer;
-    v8 = [(UIPanGestureRecognizer *)&v10 _shouldTryToBeginWithEvent:v4];
+    v8 = [(UIPanGestureRecognizer *)&v10 _shouldTryToBeginWithEvent:eventCopy];
   }
 
   return v8;

@@ -8,9 +8,9 @@
 
 - (id)Coherence_attributedSubstringFromRange:()CRTT
 {
-  v7 = [a1 string];
-  v8 = [v7 rangeOfComposedCharacterSequencesForRange:{a3, a4}];
-  v10 = [a1 attributedSubstringFromRange:{v8, v9}];
+  string = [self string];
+  v8 = [string rangeOfComposedCharacterSequencesForRange:{a3, a4}];
+  v10 = [self attributedSubstringFromRange:{v8, v9}];
 
   return v10;
 }
@@ -33,7 +33,7 @@
   v15 = v12;
   v16 = v17;
   v13 = v12;
-  [a1 enumerateAttribute:a3 inRange:a4 options:a5 usingBlock:{a6, v14}];
+  [self enumerateAttribute:a3 inRange:a4 options:a5 usingBlock:{a6, v14}];
 
   _Block_object_dispose(v17, 8);
 }
@@ -45,7 +45,7 @@
   if (a5)
   {
     v24 = 0;
-    v14 = [a1 length];
+    v14 = [self length];
     v15 = a4 + ((a5 - 1) & (a6 << 62 >> 63));
     if ((a6 & 0x100000) != 0)
     {
@@ -53,7 +53,7 @@
     }
 
 LABEL_3:
-    for (i = [a1 attribute:v12 atIndex:v15 longestEffectiveRange:&v22 inRange:{0, v14}];
+    for (i = [self attribute:v12 atIndex:v15 longestEffectiveRange:&v22 inRange:{0, v14}];
     {
       v17 = i;
       v13[2](v13, i, v22, v23, &v24);
@@ -74,7 +74,7 @@ LABEL_3:
 
       else
       {
-        v18 = [a1 length];
+        v18 = [self length];
         v19 = v18 - v14 + v22 + v23;
         v20 = a5 - v14 + v18;
         v21 = v18 == v14;
@@ -106,7 +106,7 @@ LABEL_3:
       }
 
 LABEL_4:
-      [a1 attribute:v12 atIndex:v15 effectiveRange:&v22];
+      [self attribute:v12 atIndex:v15 effectiveRange:&v22];
     }
   }
 }

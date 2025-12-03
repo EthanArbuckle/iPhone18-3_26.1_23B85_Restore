@@ -1,20 +1,20 @@
 @interface ATMD5SignatureProvider
-- (id)createSignature:(id *)a3 forData:(id)a4;
-- (id)verifySignature:(id)a3 forData:(id)a4;
+- (id)createSignature:(id *)signature forData:(id)data;
+- (id)verifySignature:(id)signature forData:(id)data;
 @end
 
 @implementation ATMD5SignatureProvider
 
-- (id)verifySignature:(id)a3 forData:(id)a4
+- (id)verifySignature:(id)signature forData:(id)data
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 length] && objc_msgSend(v5, "length"))
+  signatureCopy = signature;
+  dataCopy = data;
+  if ([dataCopy length] && objc_msgSend(signatureCopy, "length"))
   {
     v7 = malloc_type_malloc(0x10uLL, 0x1A9840CuLL);
-    CC_MD5([v6 bytes], objc_msgSend(v6, "length"), v7);
+    CC_MD5([dataCopy bytes], objc_msgSend(dataCopy, "length"), v7);
     v8 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:v7 length:16 freeWhenDone:1];
-    if ([v8 isEqualToData:v5])
+    if ([v8 isEqualToData:signatureCopy])
     {
       v9 = 0;
     }
@@ -32,7 +32,7 @@
     }
   }
 
-  else if ([v6 length] || objc_msgSend(v5, "length"))
+  else if ([dataCopy length] || objc_msgSend(signatureCopy, "length"))
   {
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ATError" code:4 userInfo:0];
   }
@@ -45,18 +45,18 @@
   return v9;
 }
 
-- (id)createSignature:(id *)a3 forData:(id)a4
+- (id)createSignature:(id *)signature forData:(id)data
 {
-  v5 = a4;
-  v6 = [v5 length];
+  dataCopy = data;
+  v6 = [dataCopy length];
   if (v6)
   {
     v7 = malloc_type_malloc(0x10uLL, 0xDF9A226AuLL);
-    CC_MD5([v5 bytes], objc_msgSend(v5, "length"), v7);
+    CC_MD5([dataCopy bytes], objc_msgSend(dataCopy, "length"), v7);
     v6 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:v7 length:16 freeWhenDone:1];
   }
 
-  *a3 = v6;
+  *signature = v6;
 
   return 0;
 }

@@ -1,24 +1,24 @@
 @interface LockoutViewController
-- (LockoutViewController)initWithEndDate:(id)a3;
-- (id)_descriptionStringForEndDate:(id)a3;
+- (LockoutViewController)initWithEndDate:(id)date;
+- (id)_descriptionStringForEndDate:(id)date;
 - (void)viewDidLoad;
 @end
 
 @implementation LockoutViewController
 
-- (LockoutViewController)initWithEndDate:(id)a3
+- (LockoutViewController)initWithEndDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"LOCKOUT_TITLE" value:&stru_100028E90 table:0];
 
-  v7 = [(LockoutViewController *)self _descriptionStringForEndDate:v4];
+  v7 = [(LockoutViewController *)self _descriptionStringForEndDate:dateCopy];
   v12.receiver = self;
   v12.super_class = LockoutViewController;
   v8 = [(LockoutViewController *)&v12 initWithTitle:v6 detailText:v7 symbolName:0];
   if (v8)
   {
-    v9 = [v4 copy];
+    v9 = [dateCopy copy];
     endDate = v8->_endDate;
     v8->_endDate = v9;
   }
@@ -31,15 +31,15 @@
   v8.receiver = self;
   v8.super_class = LockoutViewController;
   [(LockoutViewController *)&v8 viewDidLoad];
-  v3 = [(LockoutViewController *)self navigationItem];
-  [v3 setHidesBackButton:1 animated:1];
+  navigationItem = [(LockoutViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:1];
 
-  v4 = [(LockoutViewController *)self lockoutTimer];
+  lockoutTimer = [(LockoutViewController *)self lockoutTimer];
 
-  if (v4)
+  if (lockoutTimer)
   {
-    v5 = [(LockoutViewController *)self lockoutTimer];
-    [v5 invalidate];
+    lockoutTimer2 = [(LockoutViewController *)self lockoutTimer];
+    [lockoutTimer2 invalidate];
   }
 
   v7[0] = _NSConcreteStackBlock;
@@ -51,9 +51,9 @@
   [(LockoutViewController *)self setLockoutTimer:v6];
 }
 
-- (id)_descriptionStringForEndDate:(id)a3
+- (id)_descriptionStringForEndDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"LOCKOUT_DETAIL_FORMAT" value:&stru_100028E90 table:0];
 
@@ -62,7 +62,7 @@
   [v6 setAllowedUnits:96];
   [v6 setZeroFormattingBehavior:1];
   v7 = +[NSDate now];
-  [v3 timeIntervalSinceDate:v7];
+  [dateCopy timeIntervalSinceDate:v7];
   v9 = v8;
 
   v10 = [v6 stringFromTimeInterval:v9 + 60.0];

@@ -1,19 +1,19 @@
 @interface MCDLoadingContentView
-- (MCDLoadingContentView)initWithFrame:(CGRect)a3;
+- (MCDLoadingContentView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MCDLoadingContentView
 
-- (MCDLoadingContentView)initWithFrame:(CGRect)a3
+- (MCDLoadingContentView)initWithFrame:(CGRect)frame
 {
   v49[7] = *MEMORY[0x277D85DE8];
   v48.receiver = self;
   v48.super_class = MCDLoadingContentView;
-  v3 = [(MCDLoadingContentView *)&v48 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MCDLoadingContentView *)&v48 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] tableBackgroundColor];
-    [(MCDLoadingContentView *)v3 setBackgroundColor:v4];
+    tableBackgroundColor = [MEMORY[0x277D75348] tableBackgroundColor];
+    [(MCDLoadingContentView *)v3 setBackgroundColor:tableBackgroundColor];
 
     v5 = objc_alloc(MEMORY[0x277D756B8]);
     v6 = *MEMORY[0x277CBF3A0];
@@ -31,13 +31,13 @@
 
     [v10 setTextAlignment:1];
     [v10 setNumberOfLines:0];
-    v14 = [MEMORY[0x277D75348] labelColor];
-    [v10 setTextColor:v14];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [v10 setTextColor:labelColor];
 
     v15 = [objc_alloc(MEMORY[0x277D750E8]) initWithFrame:{v6, v7, v8, v9}];
     [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v16 = [MEMORY[0x277D75348] labelColor];
-    [v15 setColor:v16];
+    labelColor2 = [MEMORY[0x277D75348] labelColor];
+    [v15 setColor:labelColor2];
 
     [v15 setActivityIndicatorViewStyle:21];
     [v15 sizeToFit];
@@ -47,37 +47,37 @@
     [(MCDLoadingContentView *)v3 addSubview:v15];
     [(MCDLoadingContentView *)v3 addSubview:v10];
     v36 = MEMORY[0x277CCAAD0];
-    v46 = [v17 topAnchor];
-    v47 = [(MCDLoadingContentView *)v3 safeAreaLayoutGuide];
-    v45 = [v47 topAnchor];
-    [v46 constraintEqualToAnchor:v45];
+    topAnchor = [v17 topAnchor];
+    safeAreaLayoutGuide = [(MCDLoadingContentView *)v3 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide topAnchor];
+    [topAnchor constraintEqualToAnchor:topAnchor2];
     v44 = v43 = v17;
     v49[0] = v44;
-    v42 = [v17 heightAnchor];
-    v41 = [(MCDLoadingContentView *)v3 heightAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41 multiplier:0.15 constant:0.0];
+    heightAnchor = [v17 heightAnchor];
+    heightAnchor2 = [(MCDLoadingContentView *)v3 heightAnchor];
+    v40 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.15 constant:0.0];
     v49[1] = v40;
-    v39 = [v10 topAnchor];
-    v38 = [v17 bottomAnchor];
-    v37 = [v39 constraintEqualToAnchor:v38];
+    topAnchor3 = [v10 topAnchor];
+    bottomAnchor = [v17 bottomAnchor];
+    v37 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
     v49[2] = v37;
-    v34 = [v10 leadingAnchor];
-    v35 = [(MCDLoadingContentView *)v3 safeAreaLayoutGuide];
-    v33 = [v35 leadingAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33 constant:12.0];
+    leadingAnchor = [v10 leadingAnchor];
+    safeAreaLayoutGuide2 = [(MCDLoadingContentView *)v3 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide2 leadingAnchor];
+    v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:12.0];
     v49[3] = v32;
-    v30 = [v10 trailingAnchor];
-    v31 = [(MCDLoadingContentView *)v3 safeAreaLayoutGuide];
-    v29 = [v31 trailingAnchor];
-    v28 = [v30 constraintEqualToAnchor:v29 constant:-12.0];
+    trailingAnchor = [v10 trailingAnchor];
+    safeAreaLayoutGuide3 = [(MCDLoadingContentView *)v3 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide3 trailingAnchor];
+    v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-12.0];
     v49[4] = v28;
-    v18 = [v15 centerXAnchor];
-    v19 = [(MCDLoadingContentView *)v3 centerXAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    centerXAnchor = [v15 centerXAnchor];
+    centerXAnchor2 = [(MCDLoadingContentView *)v3 centerXAnchor];
+    v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v49[5] = v20;
-    v21 = [v15 topAnchor];
-    v22 = [v10 bottomAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22 constant:28.0];
+    topAnchor4 = [v15 topAnchor];
+    bottomAnchor2 = [v10 bottomAnchor];
+    v23 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:28.0];
     v49[6] = v23;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:7];
     [v36 activateConstraints:v24];

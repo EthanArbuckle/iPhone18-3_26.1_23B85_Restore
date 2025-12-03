@@ -28,9 +28,9 @@
     self->_startupLanguagePackCheckTimer = 0;
 
     v5 = +[CACLanguageAssetManager sharedManager];
-    v6 = [v5 installationStatusAvailable];
+    installationStatusAvailable = [v5 installationStatusAvailable];
 
-    if ((v6 & 1) == 0)
+    if ((installationStatusAvailable & 1) == 0)
     {
       v16 = CACLogAssetDownload();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -50,16 +50,16 @@
     }
 
     v7 = +[CACPreferences sharedPreferences];
-    v8 = [v7 bestLocaleIdentifier];
+    bestLocaleIdentifier = [v7 bestLocaleIdentifier];
 
-    v9 = [v8 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+    v9 = [bestLocaleIdentifier stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
 
     v10 = +[CACLanguageAssetManager sharedManager];
-    v11 = [v10 cachedInstallationStatus];
-    v12 = [v11 objectForKey:v9];
+    cachedInstallationStatus = [v10 cachedInstallationStatus];
+    v12 = [cachedInstallationStatus objectForKey:v9];
 
     v13 = +[CACLanguageAssetManager sharedManager];
-    v14 = [v13 supportedLocaleIdentifiers];
+    supportedLocaleIdentifiers = [v13 supportedLocaleIdentifiers];
 
     if ([v12 hasPrefix:kCACLanguageAssetInstallationStatusPrefixInstalled])
     {
@@ -93,7 +93,7 @@
     else
     {
       v39 = [v9 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
-      v40 = [v14 containsObject:v39];
+      v40 = [supportedLocaleIdentifiers containsObject:v39];
 
       if (v40)
       {
@@ -113,12 +113,12 @@ LABEL_37:
       else
       {
         v44 = +[CACPreferences sharedPreferences];
-        v45 = [v44 didShowOnboarding];
+        didShowOnboarding = [v44 didShowOnboarding];
 
         v46 = +[CACLanguageAssetManager sharedManager];
         [v46 startDownloadOfLanguage:v9];
 
-        if ((v45 & 1) == 0)
+        if ((didShowOnboarding & 1) == 0)
         {
           v47 = dispatch_time(0, 500000000);
           block[0] = _NSConcreteStackBlock;
@@ -153,17 +153,17 @@ LABEL_37:
     else
     {
       v28 = +[AXElement systemWideElement];
-      v29 = [v28 systemApplication];
-      v30 = [v29 currentApplications];
-      v31 = [v30 firstObject];
-      v32 = [v31 bundleId];
-      v33 = [v32 isEqualToString:@"com.apple.Preferences"];
+      systemApplication = [v28 systemApplication];
+      currentApplications = [systemApplication currentApplications];
+      firstObject = [currentApplications firstObject];
+      bundleId = [firstObject bundleId];
+      v33 = [bundleId isEqualToString:@"com.apple.Preferences"];
 
       v34 = [CACLocaleUtilities localizedUIStringForKey:@"AssetDownload.InstallFailedAlertDescription"];
       v35 = +[CACDisplayManager sharedManager];
-      LODWORD(v30) = [v35 carPlayConnected];
+      LODWORD(currentApplications) = [v35 carPlayConnected];
 
-      if (v30)
+      if (currentApplications)
       {
         v36 = CACLogGeneral();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -220,9 +220,9 @@ LABEL_37:
   v2 = qword_10000CAE0;
   if (!qword_10000CAE0)
   {
-    v3 = [[CARSessionStatus alloc] initAndWaitUntilSessionUpdated];
+    initAndWaitUntilSessionUpdated = [[CARSessionStatus alloc] initAndWaitUntilSessionUpdated];
     v4 = qword_10000CAE0;
-    qword_10000CAE0 = v3;
+    qword_10000CAE0 = initAndWaitUntilSessionUpdated;
 
     v5 = objc_opt_new();
     v6 = qword_10000CAE8;
@@ -232,8 +232,8 @@ LABEL_37:
     v2 = qword_10000CAE0;
   }
 
-  v7 = [v2 currentSession];
-  v8 = v7 != 0;
+  currentSession = [v2 currentSession];
+  v8 = currentSession != 0;
 
   return v8;
 }
@@ -251,7 +251,7 @@ LABEL_37:
     if (v3)
     {
 
-      LOBYTE(v3) = [a1 isCarPlayConnected];
+      LOBYTE(v3) = [self isCarPlayConnected];
     }
   }
 

@@ -1,24 +1,24 @@
 @interface SyncedLyricsLineViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation SyncedLyricsLineViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicCoreUI.SyncedLyricsLineView" isKindOfClass:@"UIControl"];
-  [v3 validateClass:@"UIControl" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MusicCoreUI.SyncedLyricsLineView" hasSwiftField:@"containerView" withSwiftType:"UIView"];
-  [v3 validateClass:@"MusicTextContentView"];
-  [v3 validateClass:@"MusicTextContentView" hasSwiftField:@"label" withSwiftType:"UILabel"];
-  [v3 validateClass:@"MusicSBS_TextContentView"];
-  [v3 validateClass:@"MusicSBS_TextContentView" hasSwiftField:@"text" withSwiftType:"Optional<String>"];
-  [v3 validateClass:@"MusicSBS_TextContentView" hasSwiftField:@"attributedText" withSwiftType:"Optional<NSAttributedString>"];
-  [v3 validateClass:@"MusicInstrumentalContentView"];
-  [v3 validateClass:@"MusicCoreUI.SyncedLyricsLineView" hasInstanceMethod:@"setSelected:animator:" withFullSignature:{"v", "B", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicCoreUI.SyncedLyricsLineView" isKindOfClass:@"UIControl"];
+  [validationsCopy validateClass:@"UIControl" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MusicCoreUI.SyncedLyricsLineView" hasSwiftField:@"containerView" withSwiftType:"UIView"];
+  [validationsCopy validateClass:@"MusicTextContentView"];
+  [validationsCopy validateClass:@"MusicTextContentView" hasSwiftField:@"label" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"MusicSBS_TextContentView"];
+  [validationsCopy validateClass:@"MusicSBS_TextContentView" hasSwiftField:@"text" withSwiftType:"Optional<String>"];
+  [validationsCopy validateClass:@"MusicSBS_TextContentView" hasSwiftField:@"attributedText" withSwiftType:"Optional<NSAttributedString>"];
+  [validationsCopy validateClass:@"MusicInstrumentalContentView"];
+  [validationsCopy validateClass:@"MusicCoreUI.SyncedLyricsLineView" hasInstanceMethod:@"setSelected:animator:" withFullSignature:{"v", "B", "@", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -49,7 +49,7 @@
     if (v7)
     {
       v8 = v7;
-      v9 = v8;
+      accessibilityLabel = v8;
       goto LABEL_11;
     }
 
@@ -57,7 +57,7 @@
     v14 = [v6 safeSwiftValueForKey:@"attributedText"];
     v12 = __UIAccessibilityCastAsClass();
 
-    v13 = [v12 string];
+    string = [v12 string];
     goto LABEL_9;
   }
 
@@ -71,27 +71,27 @@
   v10 = [v8 safeSwiftValueForKey:@"label"];
   v11 = __UIAccessibilityCastAsClass();
 
-  v9 = [v11 accessibilityLabel];
+  accessibilityLabel = [v11 accessibilityLabel];
 
-  if (!v9)
+  if (!accessibilityLabel)
   {
 LABEL_6:
     v12 = [v4 _accessibilityDescendantOfType:MEMORY[0x29C2E2DD0](@"MusicInstrumentalContentView")];
     if (!v12)
     {
-      v9 = 0;
+      accessibilityLabel = 0;
       goto LABEL_10;
     }
 
-    v13 = accessibilityMusicLocalizedString(@"instrumental.break");
+    string = accessibilityMusicLocalizedString(@"instrumental.break");
 LABEL_9:
-    v9 = v13;
+    accessibilityLabel = string;
 LABEL_10:
   }
 
 LABEL_11:
 
-  return v9;
+  return accessibilityLabel;
 }
 
 @end

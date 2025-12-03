@@ -1,12 +1,12 @@
 @interface TTRIAccountsListsRecentlyDeletedCell_collectionView
 - (NSArray)accessibilityCustomActions;
-- (_TtC9Reminders51TTRIAccountsListsRecentlyDeletedCell_collectionView)initWithCoder:(id)a3;
+- (_TtC9Reminders51TTRIAccountsListsRecentlyDeletedCell_collectionView)initWithCoder:(id)coder;
 - (void)setAccessibilityCustomActions:(id)isa;
 @end
 
 @implementation TTRIAccountsListsRecentlyDeletedCell_collectionView
 
-- (_TtC9Reminders51TTRIAccountsListsRecentlyDeletedCell_collectionView)initWithCoder:(id)a3
+- (_TtC9Reminders51TTRIAccountsListsRecentlyDeletedCell_collectionView)initWithCoder:(id)coder
 {
   *&self->super.super.viewModelObserver[OBJC_IVAR____TtC9Reminders51TTRIAccountsListsRecentlyDeletedCell_collectionView_delegate] = 0;
   swift_unknownObjectWeakInit();
@@ -20,7 +20,7 @@
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1005B4598();
 
   if (v3)
@@ -44,13 +44,13 @@
   {
     sub_100003540(0, &qword_10076BCE0);
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
-    v6 = self;
+    selfCopy = self;
     isa = Array._bridgeToObjectiveC()().super.isa;
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;

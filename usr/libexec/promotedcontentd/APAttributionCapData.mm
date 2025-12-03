@@ -1,16 +1,16 @@
 @interface APAttributionCapData
-- (BOOL)_loadAllDataFromKeychainForKey:(id)a3 clickCountData:(id *)a4 downloadData:(id *)a5;
-- (BOOL)capDataFromKeyChain:(id)a3 adamID:(id)a4;
-- (id)restoreCapDataArrayFromPlist:(id)a3;
+- (BOOL)_loadAllDataFromKeychainForKey:(id)key clickCountData:(id *)data downloadData:(id *)downloadData;
+- (BOOL)capDataFromKeyChain:(id)chain adamID:(id)d;
+- (id)restoreCapDataArrayFromPlist:(id)plist;
 - (void)_clearCapDownloadDataProperties;
-- (void)loadCapData:(id)a3;
+- (void)loadCapData:(id)data;
 @end
 
 @implementation APAttributionCapData
 
-- (void)loadCapData:(id)a3
+- (void)loadCapData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v22[0] = @"ADCapDataKeychainKey";
   v22[1] = @"ADLandingCapDataKeychainKey";
   v22[2] = @"ADIris1CapDataKeychainKey";
@@ -31,9 +31,9 @@ LABEL_11:
     v13 = APLogForCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v4 stringValue];
+      stringValue = [dataCopy stringValue];
       *buf = 138543362;
-      v20 = v14;
+      v20 = stringValue;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "No Cap data found for adamID %{public}@", buf, 0xCu);
     }
 
@@ -54,7 +54,7 @@ LABEL_11:
 
       v11 = *(*(&v15 + 1) + 8 * i);
       v12 = objc_autoreleasePoolPush();
-      v8 |= [(APAttributionCapData *)self capDataFromKeyChain:v11 adamID:v4, v15];
+      v8 |= [(APAttributionCapData *)self capDataFromKeyChain:v11 adamID:dataCopy, v15];
       objc_autoreleasePoolPop(v12);
     }
 
@@ -71,12 +71,12 @@ LABEL_11:
 LABEL_14:
 }
 
-- (BOOL)_loadAllDataFromKeychainForKey:(id)a3 clickCountData:(id *)a4 downloadData:(id *)a5
+- (BOOL)_loadAllDataFromKeychainForKey:(id)key clickCountData:(id *)data downloadData:(id *)downloadData
 {
-  v8 = a3;
+  keyCopy = key;
   v9 = objc_autoreleasePoolPush();
   v22 = 0;
-  v10 = [APKeychainServices objectForPropertyListKey:v8 error:&v22];
+  v10 = [APKeychainServices objectForPropertyListKey:keyCopy error:&v22];
   v11 = v22;
   if (v10 && [v10 length])
   {
@@ -104,16 +104,16 @@ LABEL_14:
       v15 = v18 != 0;
       if (v18)
       {
-        if (a4)
+        if (data)
         {
           v19 = [v12 objectForKey:@"ADToroClickTypeKey"];
-          *a4 = [(APAttributionCapData *)self restoreCapDataArrayFromPlist:v19];
+          *data = [(APAttributionCapData *)self restoreCapDataArrayFromPlist:v19];
         }
 
-        if (a5)
+        if (downloadData)
         {
           v20 = [v12 objectForKey:@"ADDownloadTypeKey"];
-          *a5 = [(APAttributionCapData *)self restoreCapDataArrayFromPlist:v20];
+          *downloadData = [(APAttributionCapData *)self restoreCapDataArrayFromPlist:v20];
         }
       }
 
@@ -141,14 +141,14 @@ LABEL_14:
   return v15;
 }
 
-- (BOOL)capDataFromKeyChain:(id)a3 adamID:(id)a4
+- (BOOL)capDataFromKeyChain:(id)chain adamID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  chainCopy = chain;
+  dCopy = d;
   v8 = objc_autoreleasePoolPush();
   v84 = 0;
   v85 = 0;
-  v9 = [(APAttributionCapData *)self _loadAllDataFromKeychainForKey:v6 clickCountData:&v85 downloadData:&v84];
+  v9 = [(APAttributionCapData *)self _loadAllDataFromKeychainForKey:chainCopy clickCountData:&v85 downloadData:&v84];
   v10 = v85;
   v75 = v84;
   objc_autoreleasePoolPop(v8);
@@ -162,9 +162,9 @@ LABEL_14:
   v11 = APLogForCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v7 stringValue];
+    stringValue = [dCopy stringValue];
     *buf = 138543362;
-    v88 = v12;
+    v88 = stringValue;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Attempting to attach click information for Adam ID: %{public}@", buf, 0xCu);
   }
 
@@ -172,14 +172,14 @@ LABEL_14:
   v83 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v13 = [v10 reverseObjectEnumerator];
-  v14 = [v13 countByEnumeratingWithState:&v80 objects:v93 count:16];
+  reverseObjectEnumerator = [v10 reverseObjectEnumerator];
+  v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v80 objects:v93 count:16];
   v74 = v10;
   if (v14)
   {
     v15 = v14;
-    v72 = self;
-    v16 = v6;
+    selfCopy = self;
+    v16 = chainCopy;
     v17 = *v81;
 LABEL_6:
     v18 = 0;
@@ -187,13 +187,13 @@ LABEL_6:
     {
       if (*v81 != v17)
       {
-        objc_enumerationMutation(v13);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v19 = *(*(&v80 + 1) + 8 * v18);
-      v20 = [v19 identifier];
-      v21 = [v7 stringValue];
-      v22 = [v20 isEqualToString:v21];
+      identifier = [v19 identifier];
+      stringValue2 = [dCopy stringValue];
+      v22 = [identifier isEqualToString:stringValue2];
 
       if (v22)
       {
@@ -202,38 +202,38 @@ LABEL_6:
 
       if (v15 == ++v18)
       {
-        v15 = [v13 countByEnumeratingWithState:&v80 objects:v93 count:16];
+        v15 = [reverseObjectEnumerator countByEnumeratingWithState:&v80 objects:v93 count:16];
         if (v15)
         {
           goto LABEL_6;
         }
 
         v23 = 0;
-        v6 = v16;
+        chainCopy = v16;
         v24 = v75;
-        self = v72;
+        self = selfCopy;
         goto LABEL_30;
       }
     }
 
     v26 = APLogForCategory();
-    v6 = v16;
+    chainCopy = v16;
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [v7 stringValue];
-      v28 = [v19 dictionaryRepresentation];
-      v29 = [v28 jsonString];
+      stringValue3 = [dCopy stringValue];
+      dictionaryRepresentation = [v19 dictionaryRepresentation];
+      jsonString = [dictionaryRepresentation jsonString];
       *buf = 138543874;
       v88 = v16;
       v89 = 2114;
-      v90 = v27;
+      v90 = stringValue3;
       v91 = 2114;
-      v92 = v29;
+      v92 = jsonString;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Found a click cap object from %{public}@ for Adam ID %{public}@: %{public}@", buf, 0x20u);
     }
 
     v23 = v19;
-    self = v72;
+    self = selfCopy;
     if (!v23)
     {
       v24 = v75;
@@ -242,18 +242,18 @@ LABEL_6:
 
     [v23 timestamp];
     v31 = v30;
-    [(APAttributionCapData *)v72 searchAdClickTimestamp];
+    [(APAttributionCapData *)selfCopy searchAdClickTimestamp];
     v24 = v75;
     if (v31 <= v32)
     {
       goto LABEL_31;
     }
 
-    v33 = [v23 dictionaryRepresentation];
-    v34 = [v33 jsonString];
-    v13 = [NSString stringWithFormat:@" click cap data with data from %@:\n%@", v6, v34];
+    dictionaryRepresentation2 = [v23 dictionaryRepresentation];
+    jsonString2 = [dictionaryRepresentation2 jsonString];
+    reverseObjectEnumerator = [NSString stringWithFormat:@" click cap data with data from %@:\n%@", chainCopy, jsonString2];
 
-    [(APAttributionCapData *)v72 searchAdClickTimestamp];
+    [(APAttributionCapData *)selfCopy searchAdClickTimestamp];
     v36 = v35;
     v37 = APLogForCategory();
     v38 = os_log_type_enabled(v37, OS_LOG_TYPE_INFO);
@@ -262,7 +262,7 @@ LABEL_6:
       if (v38)
       {
         *buf = 138543362;
-        v88 = v13;
+        v88 = reverseObjectEnumerator;
         v39 = "Adding %{public}@";
 LABEL_25:
         _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, v39, buf, 0xCu);
@@ -272,18 +272,18 @@ LABEL_25:
     else if (v38)
     {
       *buf = 138543362;
-      v88 = v13;
+      v88 = reverseObjectEnumerator;
       v39 = "Replacing %{public}@";
       goto LABEL_25;
     }
 
     [v23 timestamp];
-    [(APAttributionCapData *)v72 setSearchAdClickTimestamp:?];
-    v40 = [v23 adMetadata];
-    [(APAttributionCapData *)v72 setAdMetadata:v40];
+    [(APAttributionCapData *)selfCopy setSearchAdClickTimestamp:?];
+    adMetadata = [v23 adMetadata];
+    [(APAttributionCapData *)selfCopy setAdMetadata:adMetadata];
 
-    [(APAttributionCapData *)v72 _clearCapDownloadDataProperties];
-    if ([v6 isEqualToString:@"ADCapDataKeychainKey"])
+    [(APAttributionCapData *)selfCopy _clearCapDownloadDataProperties];
+    if ([chainCopy isEqualToString:@"ADCapDataKeychainKey"])
     {
       v41 = 1;
     }
@@ -293,7 +293,7 @@ LABEL_25:
       v41 = 2;
     }
 
-    [(APAttributionCapData *)v72 setClickOrigin:v41];
+    [(APAttributionCapData *)selfCopy setClickOrigin:v41];
     goto LABEL_30;
   }
 
@@ -305,9 +305,9 @@ LABEL_31:
   v42 = APLogForCategory();
   if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
   {
-    v43 = [v7 stringValue];
+    stringValue4 = [dCopy stringValue];
     *buf = 138543362;
-    v88 = v43;
+    v88 = stringValue4;
     _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_INFO, "Attempting to attach download information for Adam ID: %{public}@", buf, 0xCu);
   }
 
@@ -317,8 +317,8 @@ LABEL_31:
   v79 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v44 = [v24 reverseObjectEnumerator];
-  v45 = [v44 countByEnumeratingWithState:&v76 objects:v86 count:16];
+  reverseObjectEnumerator2 = [v24 reverseObjectEnumerator];
+  v45 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v76 objects:v86 count:16];
   if (!v45)
   {
     v53 = 0;
@@ -327,7 +327,7 @@ LABEL_31:
   }
 
   v46 = v45;
-  v71 = v6;
+  v71 = chainCopy;
   v47 = *v77;
   while (2)
   {
@@ -335,31 +335,31 @@ LABEL_31:
     {
       if (*v77 != v47)
       {
-        objc_enumerationMutation(v44);
+        objc_enumerationMutation(reverseObjectEnumerator2);
       }
 
       v49 = *(*(&v76 + 1) + 8 * i);
-      v50 = [v49 identifier];
-      v51 = [v7 stringValue];
-      v52 = [v50 isEqualToString:v51];
+      identifier2 = [v49 identifier];
+      stringValue5 = [dCopy stringValue];
+      v52 = [identifier2 isEqualToString:stringValue5];
 
       if (v52)
       {
         v54 = APLogForCategory();
         if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
         {
-          v55 = [v7 stringValue];
-          v56 = [v49 dictionaryRepresentation];
-          v57 = [v56 jsonString];
+          stringValue6 = [dCopy stringValue];
+          dictionaryRepresentation3 = [v49 dictionaryRepresentation];
+          jsonString3 = [dictionaryRepresentation3 jsonString];
           *buf = 138543618;
-          v88 = v55;
+          v88 = stringValue6;
           v89 = 2114;
-          v90 = v57;
+          v90 = jsonString3;
           _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_INFO, "Found a download object for Adam ID %{public}@: %{public}@", buf, 0x16u);
         }
 
         v53 = v49;
-        v6 = v71;
+        chainCopy = v71;
         v10 = v74;
         if (!v53 || ([v53 timestamp], v59 = v58, -[APAttributionCapData downloadClickTimestamp](self, "downloadClickTimestamp"), v59 <= v60))
         {
@@ -367,9 +367,9 @@ LABEL_31:
           goto LABEL_60;
         }
 
-        v61 = [v53 dictionaryRepresentation];
-        v62 = [v61 jsonString];
-        v44 = [NSString stringWithFormat:@" download cap data with data from %@:\n%@", v71, v62];
+        dictionaryRepresentation4 = [v53 dictionaryRepresentation];
+        jsonString4 = [dictionaryRepresentation4 jsonString];
+        reverseObjectEnumerator2 = [NSString stringWithFormat:@" download cap data with data from %@:\n%@", v71, jsonString4];
 
         [(APAttributionCapData *)self downloadClickTimestamp];
         v64 = v63;
@@ -380,7 +380,7 @@ LABEL_31:
           if (v66)
           {
             *buf = 138543362;
-            v88 = v44;
+            v88 = reverseObjectEnumerator2;
             v67 = "Adding %{public}@";
 LABEL_53:
             _os_log_impl(&_mh_execute_header, v65, OS_LOG_TYPE_INFO, v67, buf, 0xCu);
@@ -390,7 +390,7 @@ LABEL_53:
         else if (v66)
         {
           *buf = 138543362;
-          v88 = v44;
+          v88 = reverseObjectEnumerator2;
           v67 = "Replacing %{public}@";
           goto LABEL_53;
         }
@@ -398,8 +398,8 @@ LABEL_53:
         -[APAttributionCapData setAttributionDownloadType:](self, "setAttributionDownloadType:", [v53 downloadType]);
         [v53 timestamp];
         [(APAttributionCapData *)self setDownloadClickTimestamp:?];
-        v68 = [v53 adMetadata];
-        [(APAttributionCapData *)self setAdMetadata:v68];
+        adMetadata2 = [v53 adMetadata];
+        [(APAttributionCapData *)self setAdMetadata:adMetadata2];
 
         if ([v71 isEqualToString:@"ADCapDataKeychainKey"])
         {
@@ -416,7 +416,7 @@ LABEL_53:
       }
     }
 
-    v46 = [v44 countByEnumeratingWithState:&v76 objects:v86 count:16];
+    v46 = [reverseObjectEnumerator2 countByEnumeratingWithState:&v76 objects:v86 count:16];
     if (v46)
     {
       continue;
@@ -426,7 +426,7 @@ LABEL_53:
   }
 
   v53 = 0;
-  v6 = v71;
+  chainCopy = v71;
   v10 = v74;
 LABEL_58:
   v24 = v75;
@@ -446,17 +446,17 @@ LABEL_61:
   [(APAttributionCapData *)self setAttributionDownloadType:0];
 }
 
-- (id)restoreCapDataArrayFromPlist:(id)a3
+- (id)restoreCapDataArrayFromPlist:(id)plist
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
-  if (v3)
+  plistCopy = plist;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [plistCopy count]);
+  if (plistCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v3;
+    v5 = plistCopy;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {

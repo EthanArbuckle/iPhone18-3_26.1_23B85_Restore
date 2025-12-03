@@ -1,33 +1,33 @@
 @interface CSVTUIKeywordDetector
-- (CSVTUIKeywordDetector)initWithAsset:(id)a3;
-- (id)analyzeWithBuffer:(id)a3;
-- (id)triggeredUtteranceWithVoiceTriggerEventInfo:(id)a3;
-- (unint64_t)_sampleLengthFrom:(unsigned int)a3 To:(unsigned int)a4;
+- (CSVTUIKeywordDetector)initWithAsset:(id)asset;
+- (id)analyzeWithBuffer:(id)buffer;
+- (id)triggeredUtteranceWithVoiceTriggerEventInfo:(id)info;
+- (unint64_t)_sampleLengthFrom:(unsigned int)from To:(unsigned int)to;
 - (void)reset;
 @end
 
 @implementation CSVTUIKeywordDetector
 
-- (unint64_t)_sampleLengthFrom:(unsigned int)a3 To:(unsigned int)a4
+- (unint64_t)_sampleLengthFrom:(unsigned int)from To:(unsigned int)to
 {
-  v4 = -a3;
-  if (a3 > a4)
+  v4 = -from;
+  if (from > to)
   {
-    v4 = ~a3;
+    v4 = ~from;
   }
 
-  return v4 + a4;
+  return v4 + to;
 }
 
-- (id)triggeredUtteranceWithVoiceTriggerEventInfo:(id)a3
+- (id)triggeredUtteranceWithVoiceTriggerEventInfo:(id)info
 {
-  v4 = [a3 objectForKeyedSubscript:*MEMORY[0x277D01F00]];
-  v5 = [v4 unsignedIntValue];
+  v4 = [info objectForKeyedSubscript:*MEMORY[0x277D01F00]];
+  unsignedIntValue = [v4 unsignedIntValue];
 
   extraSamplesAtStart = self->_extraSamplesAtStart;
-  if (extraSamplesAtStart <= v5)
+  if (extraSamplesAtStart <= unsignedIntValue)
   {
-    v7 = v5 - extraSamplesAtStart;
+    v7 = unsignedIntValue - extraSamplesAtStart;
   }
 
   else
@@ -41,13 +41,13 @@
   return v9;
 }
 
-- (id)analyzeWithBuffer:(id)a3
+- (id)analyzeWithBuffer:(id)buffer
 {
-  v4 = a3;
-  v5 = [v4 length];
+  bufferCopy = buffer;
+  v5 = [bufferCopy length];
   v6 = v5 / [MEMORY[0x277D016E0] inputRecordingBytesPerFrame];
-  -[CSAudioCircularBuffer addSamples:numSamples:](self->_audioBuffer, "addSamples:numSamples:", [v4 bytes], v6);
-  v7 = [(SSRTriggerPhraseDetectorNDAPI *)self->_keywordAnalyzer analyzeWavData:v4 numSamples:v6];
+  -[CSAudioCircularBuffer addSamples:numSamples:](self->_audioBuffer, "addSamples:numSamples:", [bufferCopy bytes], v6);
+  v7 = [(SSRTriggerPhraseDetectorNDAPI *)self->_keywordAnalyzer analyzeWavData:bufferCopy numSamples:v6];
   v8 = v7;
   if (v7)
   {
@@ -56,38 +56,38 @@
     lastKeywordScore = self->_lastKeywordScore;
     v12 = lastKeywordScore >= v10 && lastKeywordScore >= self->_keywordThreshold;
     v14 = lastKeywordScore >= v10;
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "bestStart")}];
-    [v13 setObject:v15 forKey:*MEMORY[0x277D01F00]];
+    [dictionary setObject:v15 forKey:*MEMORY[0x277D01F00]];
 
     v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "bestEnd")}];
-    [v13 setObject:v16 forKey:*MEMORY[0x277D01EA8]];
+    [dictionary setObject:v16 forKey:*MEMORY[0x277D01EA8]];
 
     v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "samplesFed")}];
-    [v13 setObject:v17 forKey:*MEMORY[0x277D01E78]];
+    [dictionary setObject:v17 forKey:*MEMORY[0x277D01E78]];
 
     *&v18 = self->_lastKeywordScore;
     v19 = [MEMORY[0x277CCABB0] numberWithFloat:v18];
-    [v13 setObject:v19 forKey:*MEMORY[0x277D01EF0]];
+    [dictionary setObject:v19 forKey:*MEMORY[0x277D01EF0]];
 
     v20 = [MEMORY[0x277CCABB0] numberWithBool:v12];
-    [v13 setObject:v20 forKey:*MEMORY[0x277D01DF8]];
+    [dictionary setObject:v20 forKey:*MEMORY[0x277D01DF8]];
 
     v21 = [MEMORY[0x277CCABB0] numberWithBool:v14];
-    [v13 setObject:v21 forKey:*MEMORY[0x277D01DE0]];
+    [dictionary setObject:v21 forKey:*MEMORY[0x277D01DE0]];
 
     v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "phId")}];
-    [v13 setObject:v22 forKey:*MEMORY[0x277D01CF8]];
+    [dictionary setObject:v22 forKey:*MEMORY[0x277D01CF8]];
 
     self->_lastKeywordScore = v10;
   }
 
   else
   {
-    v13 = 0;
+    dictionary = 0;
   }
 
-  return v13;
+  return dictionary;
 }
 
 - (void)reset
@@ -99,10 +99,10 @@
   [(CSAudioCircularBuffer *)audioBuffer reset];
 }
 
-- (CSVTUIKeywordDetector)initWithAsset:(id)a3
+- (CSVTUIKeywordDetector)initWithAsset:(id)asset
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   v29.receiver = self;
   v29.super_class = CSVTUIKeywordDetector;
   v5 = [(CSVTUIKeywordDetector *)&v29 init];
@@ -111,7 +111,7 @@
     goto LABEL_5;
   }
 
-  if (!v4)
+  if (!assetCopy)
   {
     v25 = *MEMORY[0x277D015D8];
     if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_ERROR))
@@ -124,9 +124,9 @@
     goto LABEL_11;
   }
 
-  v6 = [v4 resourcePath];
-  v7 = [v6 stringByAppendingPathComponent:@"config.txt"];
-  v8 = [[SSRTriggerPhraseDetectorNDAPI alloc] initWithConfigPath:v7 resourcePath:v6 phId:0];
+  resourcePath = [assetCopy resourcePath];
+  v7 = [resourcePath stringByAppendingPathComponent:@"config.txt"];
+  v8 = [[SSRTriggerPhraseDetectorNDAPI alloc] initWithConfigPath:v7 resourcePath:resourcePath phId:0];
   keywordAnalyzer = v5->_keywordAnalyzer;
   v5->_keywordAnalyzer = v8;
 
@@ -145,10 +145,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v10 = [MEMORY[0x277D016E8] decodeConfigFrom:v4];
+  v10 = [MEMORY[0x277D016E8] decodeConfigFrom:assetCopy];
   [v10 threshold];
   v5->_keywordThreshold = v11;
-  v12 = [MEMORY[0x277D01958] decodeConfigFrom:v4 forFirstPassSource:0];
+  v12 = [MEMORY[0x277D01958] decodeConfigFrom:assetCopy forFirstPassSource:0];
   [v12 preTriggerAudioTime];
   v14 = v13;
   [MEMORY[0x277D016E0] inputRecordingSampleRate];

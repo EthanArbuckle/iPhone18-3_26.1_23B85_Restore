@@ -1,15 +1,15 @@
 @interface SVDDeviceUnitSwift
 - (NSString)description;
-- (SVDDeviceUnitSwift)initWithIdentifier:(id)a3 assistantId:(id)a4 builder:(id)a5;
+- (SVDDeviceUnitSwift)initWithIdentifier:(id)identifier assistantId:(id)id builder:(id)builder;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SVDDeviceUnitSwift
 
-- (SVDDeviceUnitSwift)initWithIdentifier:(id)a3 assistantId:(id)a4 builder:(id)a5
+- (SVDDeviceUnitSwift)initWithIdentifier:(id)identifier assistantId:(id)id builder:(id)builder
 {
-  v5 = _Block_copy(a5);
+  v5 = _Block_copy(builder);
   v6 = sub_26990390C();
   v8 = v7;
   v9 = sub_26990390C();
@@ -28,16 +28,16 @@
   return DeviceUnit.init(identifier:assistantId:builder:)(v6, v8, v9, v11, v12);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_2698DD7D8(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_2698DD7D8(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_2698DDAE4();
 
   v3 = sub_2699038FC();
@@ -47,7 +47,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2698DDEA4();
 
   return v3;

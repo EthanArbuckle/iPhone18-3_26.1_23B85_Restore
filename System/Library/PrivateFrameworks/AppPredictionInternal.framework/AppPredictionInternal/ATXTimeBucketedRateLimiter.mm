@@ -1,5 +1,5 @@
 @interface ATXTimeBucketedRateLimiter
-- (ATXTimeBucketedRateLimiter)initWithMaxCount:(unint64_t)a3 perPeriod:(double)a4;
+- (ATXTimeBucketedRateLimiter)initWithMaxCount:(unint64_t)count perPeriod:(double)period;
 - (BOOL)tryToIncrementCountAndReturnSuccess;
 - (NSDate)now;
 - (void)_resetBucketIfNeeded;
@@ -9,18 +9,18 @@
 
 - (BOOL)tryToIncrementCountAndReturnSuccess
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  [(ATXTimeBucketedRateLimiter *)v2 _resetBucketIfNeeded];
-  countForCurrentBucket = v2->_countForCurrentBucket;
-  maxCount = v2->_maxCount;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(ATXTimeBucketedRateLimiter *)selfCopy _resetBucketIfNeeded];
+  countForCurrentBucket = selfCopy->_countForCurrentBucket;
+  maxCount = selfCopy->_maxCount;
   if (countForCurrentBucket != maxCount)
   {
-    v2->_countForCurrentBucket = countForCurrentBucket + 1;
+    selfCopy->_countForCurrentBucket = countForCurrentBucket + 1;
   }
 
   v5 = countForCurrentBucket != maxCount;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
@@ -58,7 +58,7 @@
   return v3;
 }
 
-- (ATXTimeBucketedRateLimiter)initWithMaxCount:(unint64_t)a3 perPeriod:(double)a4
+- (ATXTimeBucketedRateLimiter)initWithMaxCount:(unint64_t)count perPeriod:(double)period
 {
   v11.receiver = self;
   v11.super_class = ATXTimeBucketedRateLimiter;
@@ -66,12 +66,12 @@
   v7 = v6;
   if (v6)
   {
-    v6->_maxCount = a3;
-    v6->_period = a4;
+    v6->_maxCount = count;
+    v6->_period = period;
     v6->_countForCurrentBucket = 0;
-    v8 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     endOfCurrentBucket = v7->_endOfCurrentBucket;
-    v7->_endOfCurrentBucket = v8;
+    v7->_endOfCurrentBucket = distantPast;
   }
 
   return v7;

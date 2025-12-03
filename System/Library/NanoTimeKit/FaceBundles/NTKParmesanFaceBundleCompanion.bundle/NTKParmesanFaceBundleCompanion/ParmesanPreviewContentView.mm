@@ -1,11 +1,11 @@
 @interface ParmesanPreviewContentView
-- (_TtC30NTKParmesanFaceBundleCompanion26ParmesanPreviewContentView)initWithCoder:(id)a3;
+- (_TtC30NTKParmesanFaceBundleCompanion26ParmesanPreviewContentView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation ParmesanPreviewContentView
 
-- (_TtC30NTKParmesanFaceBundleCompanion26ParmesanPreviewContentView)initWithCoder:(id)a3
+- (_TtC30NTKParmesanFaceBundleCompanion26ParmesanPreviewContentView)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC30NTKParmesanFaceBundleCompanion26ParmesanPreviewContentView_configuration);
   *v3 = 0u;

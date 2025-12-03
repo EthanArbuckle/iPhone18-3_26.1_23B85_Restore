@@ -1,29 +1,29 @@
 @interface CSCompanionService
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (BOOL)syncget_isCompanionConnected;
 - (BOOL)syncget_isCompanionPaired;
 - (CSCompanionService)init;
 - (void)beginService;
 - (void)notifyCompanionOfForwardMsgCompatibility;
-- (void)notifyCompanionOfLocalCrash:(id)a3 forMode:(int)a4 martyIsBicycle:(BOOL)a5;
-- (void)queryCompanion:(int)a3;
-- (void)registerClient:(id)a3;
-- (void)returnQueryToCompanion:(id)a3;
+- (void)notifyCompanionOfLocalCrash:(id)crash forMode:(int)mode martyIsBicycle:(BOOL)bicycle;
+- (void)queryCompanion:(int)companion;
+- (void)registerClient:(id)client;
+- (void)returnQueryToCompanion:(id)companion;
 - (void)sendTestTrigger;
-- (void)testTriggerHandler:(double)a3;
-- (void)unregisterClient:(id)a3;
+- (void)testTriggerHandler:(double)handler;
+- (void)unregisterClient:(id)client;
 @end
 
 @implementation CSCompanionService
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v6 = a3;
-  v5 = a4 + 1;
-  if (v5 < [v6 count])
+  blockedCopy = blocked;
+  v5 = index + 1;
+  if (v5 < [blockedCopy count])
   {
-    [objc_msgSend(v6 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", v6, v5}];
+    [objc_msgSend(blockedCopy objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blockedCopy, v5}];
   }
 }
 
@@ -77,14 +77,14 @@
   objc_destroyWeak(buf);
 }
 
-- (void)testTriggerHandler:(double)a3
+- (void)testTriggerHandler:(double)handler
 {
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(CSCompanionService *)self clients];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  clients = [(CSCompanionService *)self clients];
+  v4 = [clients countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -92,7 +92,7 @@
     {
       if (*v9 != v5)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(clients);
       }
 
       if (qword_100456868 != -1)
@@ -109,7 +109,7 @@
 
       if (!--v4)
       {
-        v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v4 = [clients countByEnumeratingWithState:&v8 objects:v12 count:16];
         if (!v4)
         {
           break;
@@ -119,9 +119,9 @@
   }
 }
 
-- (void)registerClient:(id)a3
+- (void)registerClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   if (qword_100456868 != -1)
   {
     sub_10034BBDC();
@@ -134,12 +134,12 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "registerClient", v6, 2u);
   }
 
-  [(NSHashTable *)self->_clients addObject:v4];
+  [(NSHashTable *)self->_clients addObject:clientCopy];
 }
 
-- (void)unregisterClient:(id)a3
+- (void)unregisterClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   if (qword_100456868 != -1)
   {
     sub_10034BBDC();
@@ -152,7 +152,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "unregisterClient", v6, 2u);
   }
 
-  [(NSHashTable *)self->_clients removeObject:v4];
+  [(NSHashTable *)self->_clients removeObject:clientCopy];
 }
 
 - (BOOL)syncget_isCompanionConnected
@@ -188,17 +188,17 @@
   }
 
   [(CompanionDelegate *)self->_delegate updateIDSStatus];
-  v4 = [(CompanionDelegate *)self->_delegate pairedDevice];
-  v5 = [v4 isLocallyPaired];
+  pairedDevice = [(CompanionDelegate *)self->_delegate pairedDevice];
+  isLocallyPaired = [pairedDevice isLocallyPaired];
 
-  return v5;
+  return isLocallyPaired;
 }
 
-- (void)notifyCompanionOfLocalCrash:(id)a3 forMode:(int)a4 martyIsBicycle:(BOOL)a5
+- (void)notifyCompanionOfLocalCrash:(id)crash forMode:(int)mode martyIsBicycle:(BOOL)bicycle
 {
-  v5 = a5;
-  v8 = a3;
-  if (!a4)
+  bicycleCopy = bicycle;
+  crashCopy = crash;
+  if (!mode)
   {
     if (qword_100456868 != -1)
     {
@@ -229,9 +229,9 @@
 
   *buf = 0;
   v18 = 0;
-  if (v8)
+  if (crashCopy)
   {
-    [v8 getUUIDBytes:buf];
+    [crashCopy getUUIDBytes:buf];
     if (qword_100456868 != -1)
     {
       sub_10034BBF0();
@@ -240,14 +240,14 @@
     v10 = qword_100456870;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v11 = [v8 UUIDString];
+      uUIDString = [crashCopy UUIDString];
       *v16 = 138412290;
-      *&v16[4] = v11;
+      *&v16[4] = uUIDString;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Test UUID bytes %@", v16, 0xCu);
     }
   }
 
-  if (a4 == 1)
+  if (mode == 1)
   {
     v12 = 6;
 LABEL_22:
@@ -259,9 +259,9 @@ LABEL_23:
     return;
   }
 
-  if (a4 == 2)
+  if (mode == 2)
   {
-    if (v5)
+    if (bicycleCopy)
     {
       v12 = 306;
     }
@@ -300,9 +300,9 @@ LABEL_23:
   [(CompanionDelegate *)delegate sendData:v5 type:11];
 }
 
-- (void)queryCompanion:(int)a3
+- (void)queryCompanion:(int)companion
 {
-  v8 = a3;
+  companionCopy = companion;
   if (qword_100456868 != -1)
   {
     sub_10034BBDC();
@@ -312,18 +312,18 @@ LABEL_23:
   if (os_log_type_enabled(qword_100456870, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    v10 = a3;
+    companionCopy2 = companion;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "queryCompanion type:%d", buf, 8u);
   }
 
   delegate = self->_delegate;
-  v7 = [NSData dataWithBytes:&v8 length:4];
+  v7 = [NSData dataWithBytes:&companionCopy length:4];
   [(CompanionDelegate *)delegate sendData:v7 type:9];
 }
 
-- (void)returnQueryToCompanion:(id)a3
+- (void)returnQueryToCompanion:(id)companion
 {
-  v4 = a3;
+  companionCopy = companion;
   if (qword_100456868 != -1)
   {
     sub_10034BBDC();
@@ -336,7 +336,7 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "returnQueryToCompanion", v6, 2u);
   }
 
-  [(CompanionDelegate *)self->_delegate sendData:v4 type:10];
+  [(CompanionDelegate *)self->_delegate sendData:companionCopy type:10];
 }
 
 - (void)sendTestTrigger

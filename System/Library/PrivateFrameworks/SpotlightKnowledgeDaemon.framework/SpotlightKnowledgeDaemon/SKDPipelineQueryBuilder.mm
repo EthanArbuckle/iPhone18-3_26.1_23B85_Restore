@@ -1,8 +1,8 @@
 @interface SKDPipelineQueryBuilder
-+ (id)queryForItemsFromBundles:(id)a3 inverse:(BOOL)a4;
-+ (id)queryForItemsFromProtectionClasses:(id)a3 inverse:(BOOL)a4;
-+ (id)queryForItemsNeedingProcessingByPipelineWithName:(id)a3 inverse:(BOOL)a4;
-+ (id)queryForItemsProcessedByPipelineWithName:(id)a3 inverse:(BOOL)a4;
++ (id)queryForItemsFromBundles:(id)bundles inverse:(BOOL)inverse;
++ (id)queryForItemsFromProtectionClasses:(id)classes inverse:(BOOL)inverse;
++ (id)queryForItemsNeedingProcessingByPipelineWithName:(id)name inverse:(BOOL)inverse;
++ (id)queryForItemsProcessedByPipelineWithName:(id)name inverse:(BOOL)inverse;
 + (id)queryForValidItems;
 @end
 
@@ -11,89 +11,89 @@
 + (id)queryForValidItems
 {
   v15 = objc_alloc_init(SKGQueryStringBuilder);
-  v19 = [(SKGQueryStringBuilder *)v15 beginGroup];
-  v18 = [v19 withAttribute];
-  v17 = (v18)[2](v18, @"*", @"=", @"*");
+  beginGroup = [(SKGQueryStringBuilder *)v15 beginGroup];
+  withAttribute = [beginGroup withAttribute];
+  v17 = (withAttribute)[2](withAttribute, @"*", @"=", @"*");
   v16 = [v17 and];
-  v2 = [v16 withAttribute];
-  v14 = (v2)[2](v2, @"_kMDItemUserActivityType", @"!=", @"*");
+  withAttribute2 = [v16 withAttribute];
+  v14 = (withAttribute2)[2](withAttribute2, @"_kMDItemUserActivityType", @"!=", @"*");
   v3 = [v14 and];
-  v4 = [v3 beginGroup];
-  v5 = [v4 withAttribute];
-  v6 = (v5)[2](v5, @"_kMDItemIsZombie", @"!=", @"*");
+  beginGroup2 = [v3 beginGroup];
+  withAttribute3 = [beginGroup2 withAttribute];
+  v6 = (withAttribute3)[2](withAttribute3, @"_kMDItemIsZombie", @"!=", @"*");
   v7 = [v6 or];
-  v8 = [v7 withAttribute];
-  v9 = (v8)[2](v8, @"_kMDItemIsZombie", @"!=", &unk_2846E7A70);
-  v10 = [v9 endGroup];
-  v11 = [v10 endGroup];
+  withAttribute4 = [v7 withAttribute];
+  v9 = (withAttribute4)[2](withAttribute4, @"_kMDItemIsZombie", @"!=", &unk_2846E7A70);
+  endGroup = [v9 endGroup];
+  v10EndGroup = [endGroup endGroup];
 
-  v12 = [v11 build];
+  build = [v10EndGroup build];
 
-  return v12;
+  return build;
 }
 
-+ (id)queryForItemsFromBundles:(id)a3 inverse:(BOOL)a4
++ (id)queryForItemsFromBundles:(id)bundles inverse:(BOOL)inverse
 {
-  v4 = a4;
-  v5 = a3;
+  inverseCopy = inverse;
+  bundlesCopy = bundles;
   v6 = objc_alloc_init(SKGQueryStringBuilder);
   v7 = v6;
-  if (v4)
+  if (inverseCopy)
   {
-    v8 = [(SKGQueryStringBuilder *)v6 not];
-    v9 = [v8 withFieldMatch];
-    v10 = (*(v9 + 16))(v9, @"_kMDItemBundleID", v5);
+    withFieldMatch2 = [(SKGQueryStringBuilder *)v6 not];
+    withFieldMatch = [withFieldMatch2 withFieldMatch];
+    v10 = (*(withFieldMatch + 16))(withFieldMatch, @"_kMDItemBundleID", bundlesCopy);
 
-    v5 = v7;
-    v7 = v9;
+    bundlesCopy = v7;
+    v7 = withFieldMatch;
   }
 
   else
   {
-    v8 = [(SKGQueryStringBuilder *)v6 withFieldMatch];
-    v10 = (v8)[2](v8, @"_kMDItemBundleID", v5);
+    withFieldMatch2 = [(SKGQueryStringBuilder *)v6 withFieldMatch];
+    v10 = (withFieldMatch2)[2](withFieldMatch2, @"_kMDItemBundleID", bundlesCopy);
   }
 
-  v11 = [v10 build];
+  build = [v10 build];
 
-  return v11;
+  return build;
 }
 
-+ (id)queryForItemsFromProtectionClasses:(id)a3 inverse:(BOOL)a4
++ (id)queryForItemsFromProtectionClasses:(id)classes inverse:(BOOL)inverse
 {
-  v4 = a4;
-  v5 = a3;
+  inverseCopy = inverse;
+  classesCopy = classes;
   v6 = objc_alloc_init(SKGQueryStringBuilder);
   v7 = v6;
-  if (v4)
+  if (inverseCopy)
   {
-    v8 = [(SKGQueryStringBuilder *)v6 not];
-    v9 = [v8 withFieldMatch];
-    v10 = (*(v9 + 16))(v9, @"_kMDItemProtectionClass", v5);
+    withFieldMatch2 = [(SKGQueryStringBuilder *)v6 not];
+    withFieldMatch = [withFieldMatch2 withFieldMatch];
+    v10 = (*(withFieldMatch + 16))(withFieldMatch, @"_kMDItemProtectionClass", classesCopy);
 
-    v5 = v7;
-    v7 = v9;
+    classesCopy = v7;
+    v7 = withFieldMatch;
   }
 
   else
   {
-    v8 = [(SKGQueryStringBuilder *)v6 withFieldMatch];
-    v10 = (v8)[2](v8, @"_kMDItemProtectionClass", v5);
+    withFieldMatch2 = [(SKGQueryStringBuilder *)v6 withFieldMatch];
+    v10 = (withFieldMatch2)[2](withFieldMatch2, @"_kMDItemProtectionClass", classesCopy);
   }
 
-  v11 = [v10 build];
+  build = [v10 build];
 
-  return v11;
+  return build;
 }
 
-+ (id)queryForItemsProcessedByPipelineWithName:(id)a3 inverse:(BOOL)a4
++ (id)queryForItemsProcessedByPipelineWithName:(id)name inverse:(BOOL)inverse
 {
-  v4 = a4;
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"kMDItem%@Version", a3];
+  inverseCopy = inverse;
+  name = [MEMORY[0x277CCACA8] stringWithFormat:@"kMDItem%@Version", name];
   v6 = objc_alloc_init(SKGQueryStringBuilder);
-  v7 = [(SKGQueryStringBuilder *)v6 withAttribute];
-  v8 = v7;
-  if (v4)
+  withAttribute = [(SKGQueryStringBuilder *)v6 withAttribute];
+  v8 = withAttribute;
+  if (inverseCopy)
   {
     v9 = @"!=";
   }
@@ -103,21 +103,21 @@
     v9 = @"=";
   }
 
-  v10 = (*(v7 + 16))(v7, v5, v9, @"*");
+  v10 = (*(withAttribute + 16))(withAttribute, name, v9, @"*");
 
-  v11 = [v10 build];
+  build = [v10 build];
 
-  return v11;
+  return build;
 }
 
-+ (id)queryForItemsNeedingProcessingByPipelineWithName:(id)a3 inverse:(BOOL)a4
++ (id)queryForItemsNeedingProcessingByPipelineWithName:(id)name inverse:(BOOL)inverse
 {
-  v4 = a4;
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"_kMDItemNeeds%@", a3];
+  inverseCopy = inverse;
+  name = [MEMORY[0x277CCACA8] stringWithFormat:@"_kMDItemNeeds%@", name];
   v6 = objc_alloc_init(SKGQueryStringBuilder);
-  v7 = [(SKGQueryStringBuilder *)v6 withAttribute];
-  v8 = v7;
-  if (v4)
+  withAttribute = [(SKGQueryStringBuilder *)v6 withAttribute];
+  v8 = withAttribute;
+  if (inverseCopy)
   {
     v9 = @"!=";
   }
@@ -127,11 +127,11 @@
     v9 = @"=";
   }
 
-  v10 = (*(v7 + 16))(v7, v5, v9, @"*");
+  v10 = (*(withAttribute + 16))(withAttribute, name, v9, @"*");
 
-  v11 = [v10 build];
+  build = [v10 build];
 
-  return v11;
+  return build;
 }
 
 @end

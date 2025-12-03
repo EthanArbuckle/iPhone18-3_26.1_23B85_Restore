@@ -1,31 +1,31 @@
 @interface SiriTTSTrainerSession
-+ (id)getInstallingProgressBlockForAsset:(id)a3;
-+ (void)setInstallingProgressBlock:(id)a3 forAsset:(id)a4;
++ (id)getInstallingProgressBlockForAsset:(id)asset;
++ (void)setInstallingProgressBlock:(id)block forAsset:(id)asset;
 - (SiriTTSTrainerSession)init;
 - (id)getAllAvailableLocales;
-- (id)getAllAvailableLocalesWithVer:(int64_t)a3;
-- (id)getAllAvailableScriptNames:(id)a3;
-- (id)installableTrainingAssetsForLanguage:(id)a3 name:(id)a4 type:(int64_t)a5;
-- (id)installedTrainingAssetsForLanguage:(id)a3 name:(id)a4 type:(int64_t)a5;
-- (void)cancelTask:(id)a3 reply:(id)a4;
-- (void)cleanUpTaskQueue:(id)a3;
-- (void)getAllTasks:(id)a3;
-- (void)getCurrentAssetVersion:(id)a3 name:(id)a4 reply:(id)a5;
-- (void)getRecordingMetadata:(id)a3 name:(id)a4 reply:(id)a5;
-- (void)getTaskById:(id)a3 completion:(id)a4;
-- (void)installTrainingAsset:(id)a3 progress:(id)a4 completion:(id)a5;
-- (void)installingTrainingAsset:(id)a3 progress:(float)a4;
-- (void)startRequest:(id)a3 completion:(id)a4;
-- (void)uninstallTrainingAsset:(id)a3 completion:(id)a4;
+- (id)getAllAvailableLocalesWithVer:(int64_t)ver;
+- (id)getAllAvailableScriptNames:(id)names;
+- (id)installableTrainingAssetsForLanguage:(id)language name:(id)name type:(int64_t)type;
+- (id)installedTrainingAssetsForLanguage:(id)language name:(id)name type:(int64_t)type;
+- (void)cancelTask:(id)task reply:(id)reply;
+- (void)cleanUpTaskQueue:(id)queue;
+- (void)getAllTasks:(id)tasks;
+- (void)getCurrentAssetVersion:(id)version name:(id)name reply:(id)reply;
+- (void)getRecordingMetadata:(id)metadata name:(id)name reply:(id)reply;
+- (void)getTaskById:(id)id completion:(id)completion;
+- (void)installTrainingAsset:(id)asset progress:(id)progress completion:(id)completion;
+- (void)installingTrainingAsset:(id)asset progress:(float)progress;
+- (void)startRequest:(id)request completion:(id)completion;
+- (void)uninstallTrainingAsset:(id)asset completion:(id)completion;
 @end
 
 @implementation SiriTTSTrainerSession
 
-+ (id)getInstallingProgressBlockForAsset:(id)a3
++ (id)getInstallingProgressBlockForAsset:(id)asset
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static SiriTTSTrainerSession.getInstallingProgressBlock(for:)(v4);
+  assetCopy = asset;
+  v5 = static SiriTTSTrainerSession.getInstallingProgressBlock(for:)(assetCopy);
   v7 = v6;
 
   if (v5)
@@ -42,9 +42,9 @@
   return v5;
 }
 
-+ (void)setInstallingProgressBlock:(id)a3 forAsset:(id)a4
++ (void)setInstallingProgressBlock:(id)block forAsset:(id)asset
 {
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(block);
   if (v5)
   {
     v6 = swift_allocObject();
@@ -58,8 +58,8 @@
   }
 
   swift_getObjCClassMetadata();
-  v7 = a4;
-  static SiriTTSTrainerSession.set(installingProgressBlock:for:)(v5, v6, v7);
+  assetCopy = asset;
+  static SiriTTSTrainerSession.set(installingProgressBlock:for:)(v5, v6, assetCopy);
   sub_63C4(v5);
 }
 
@@ -69,9 +69,9 @@
   v17.super_class = SiriTTSTrainerSession;
   v2 = [(SiriTTSTrainerSession *)&v17 init];
   v3 = +[NSBundle mainBundle];
-  v4 = [v3 bundleIdentifier];
+  bundleIdentifier = [v3 bundleIdentifier];
   appId = v2->_appId;
-  v2->_appId = v4;
+  v2->_appId = bundleIdentifier;
 
   v6 = [[NSXPCConnection alloc] initWithMachServiceName:@"com.apple.SiriTTSTrainingAgent" options:0];
   connection = v2->_connection;
@@ -127,28 +127,28 @@ void __29__SiriTTSTrainerSession_init__block_invoke_102(id a1)
   }
 }
 
-- (void)startRequest:(id)a3 completion:(id)a4
+- (void)startRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = SiriTTSTrainerGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v6;
+    v15 = requestCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Sending request %@", buf, 0xCu);
   }
 
-  [v6 setAppId:self->_appId];
+  [requestCopy setAppId:self->_appId];
   connection = self->_connection;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = __49__SiriTTSTrainerSession_startRequest_completion___block_invoke;
   v12[3] = &unk_26C530;
-  v13 = v7;
-  v10 = v7;
+  v13 = completionCopy;
+  v10 = completionCopy;
   v11 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v12];
-  [v11 startRequest:v6 reply:v10];
+  [v11 startRequest:requestCopy reply:v10];
 }
 
 void __49__SiriTTSTrainerSession_startRequest_completion___block_invoke(uint64_t a1, void *a2)
@@ -165,16 +165,16 @@ void __49__SiriTTSTrainerSession_startRequest_completion___block_invoke(uint64_t
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)cleanUpTaskQueue:(id)a3
+- (void)cleanUpTaskQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   connection = self->_connection;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __42__SiriTTSTrainerSession_cleanUpTaskQueue___block_invoke;
   v8[3] = &unk_26C530;
-  v9 = v4;
-  v6 = v4;
+  v9 = queueCopy;
+  v6 = queueCopy;
   v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v8];
   [v7 cleanUpTaskQueue:v6];
 }
@@ -193,15 +193,15 @@ void __42__SiriTTSTrainerSession_cleanUpTaskQueue___block_invoke(uint64_t a1, vo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getTaskById:(id)a3 completion:(id)a4
+- (void)getTaskById:(id)id completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v8 = SiriTTSTrainerGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v6;
+    v15 = idCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "TaskId %@", buf, 0xCu);
   }
 
@@ -210,10 +210,10 @@ void __42__SiriTTSTrainerSession_cleanUpTaskQueue___block_invoke(uint64_t a1, vo
   v12[1] = 3221225472;
   v12[2] = __48__SiriTTSTrainerSession_getTaskById_completion___block_invoke;
   v12[3] = &unk_26C530;
-  v13 = v7;
-  v10 = v7;
+  v13 = completionCopy;
+  v10 = completionCopy;
   v11 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v12];
-  [v11 getTaskById:v6 reply:v10];
+  [v11 getTaskById:idCopy reply:v10];
 }
 
 void __48__SiriTTSTrainerSession_getTaskById_completion___block_invoke(uint64_t a1, void *a2)
@@ -230,11 +230,11 @@ void __48__SiriTTSTrainerSession_getTaskById_completion___block_invoke(uint64_t 
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getRecordingMetadata:(id)a3 name:(id)a4 reply:(id)a5
+- (void)getRecordingMetadata:(id)metadata name:(id)name reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  replyCopy = reply;
+  nameCopy = name;
+  metadataCopy = metadata;
   v11 = SiriTTSTrainerGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -247,10 +247,10 @@ void __48__SiriTTSTrainerSession_getTaskById_completion___block_invoke(uint64_t 
   v15[1] = 3221225472;
   v15[2] = __57__SiriTTSTrainerSession_getRecordingMetadata_name_reply___block_invoke;
   v15[3] = &unk_26C530;
-  v16 = v8;
-  v13 = v8;
+  v16 = replyCopy;
+  v13 = replyCopy;
   v14 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v15];
-  [v14 getRecordingMetadata:v10 name:v9 reply:v13];
+  [v14 getRecordingMetadata:metadataCopy name:nameCopy reply:v13];
 }
 
 void __57__SiriTTSTrainerSession_getRecordingMetadata_name_reply___block_invoke(uint64_t a1, void *a2)
@@ -267,15 +267,15 @@ void __57__SiriTTSTrainerSession_getRecordingMetadata_name_reply___block_invoke(
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)cancelTask:(id)a3 reply:(id)a4
+- (void)cancelTask:(id)task reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  replyCopy = reply;
   v8 = SiriTTSTrainerGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v6;
+    v15 = taskCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "cancel task %@", buf, 0xCu);
   }
 
@@ -284,10 +284,10 @@ void __57__SiriTTSTrainerSession_getRecordingMetadata_name_reply___block_invoke(
   v12[1] = 3221225472;
   v12[2] = __42__SiriTTSTrainerSession_cancelTask_reply___block_invoke;
   v12[3] = &unk_26C530;
-  v13 = v7;
-  v10 = v7;
+  v13 = replyCopy;
+  v10 = replyCopy;
   v11 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v12];
-  [v11 cancelTask:v6 reply:v10];
+  [v11 cancelTask:taskCopy reply:v10];
 }
 
 void __42__SiriTTSTrainerSession_cancelTask_reply___block_invoke(uint64_t a1, void *a2)
@@ -304,9 +304,9 @@ void __42__SiriTTSTrainerSession_cancelTask_reply___block_invoke(uint64_t a1, vo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getAllTasks:(id)a3
+- (void)getAllTasks:(id)tasks
 {
-  v4 = a3;
+  tasksCopy = tasks;
   v5 = SiriTTSTrainerGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -319,8 +319,8 @@ void __42__SiriTTSTrainerSession_cancelTask_reply___block_invoke(uint64_t a1, vo
   v9[1] = 3221225472;
   v9[2] = __37__SiriTTSTrainerSession_getAllTasks___block_invoke;
   v9[3] = &unk_26C530;
-  v10 = v4;
-  v7 = v4;
+  v10 = tasksCopy;
+  v7 = tasksCopy;
   v8 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v9];
   [v8 getAllTasksWithReply:v7];
 }
@@ -339,11 +339,11 @@ void __37__SiriTTSTrainerSession_getAllTasks___block_invoke(uint64_t a1, void *a
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getCurrentAssetVersion:(id)a3 name:(id)a4 reply:(id)a5
+- (void)getCurrentAssetVersion:(id)version name:(id)name reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  replyCopy = reply;
+  nameCopy = name;
+  versionCopy = version;
   v11 = SiriTTSTrainerGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -356,10 +356,10 @@ void __37__SiriTTSTrainerSession_getAllTasks___block_invoke(uint64_t a1, void *a
   v15[1] = 3221225472;
   v15[2] = __59__SiriTTSTrainerSession_getCurrentAssetVersion_name_reply___block_invoke;
   v15[3] = &unk_26C530;
-  v16 = v8;
-  v13 = v8;
+  v16 = replyCopy;
+  v13 = replyCopy;
   v14 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v15];
-  [v14 getCurrentAssetVersion:v10 name:v9 reply:v13];
+  [v14 getCurrentAssetVersion:versionCopy name:nameCopy reply:v13];
 }
 
 void __59__SiriTTSTrainerSession_getCurrentAssetVersion_name_reply___block_invoke(uint64_t a1, void *a2)
@@ -383,40 +383,40 @@ void __59__SiriTTSTrainerSession_getCurrentAssetVersion_name_reply___block_invok
   return v2;
 }
 
-- (id)getAllAvailableLocalesWithVer:(int64_t)a3
+- (id)getAllAvailableLocalesWithVer:(int64_t)ver
 {
-  if (a3 == 1)
+  if (ver == 1)
   {
-    v5 = &off_286450;
+    getAllAvailableLocales = &off_286450;
   }
 
-  else if (a3 == 2)
+  else if (ver == 2)
   {
-    v5 = &off_286468;
+    getAllAvailableLocales = &off_286468;
   }
 
   else
   {
-    v5 = [(SiriTTSTrainerSession *)self getAllAvailableLocales];
+    getAllAvailableLocales = [(SiriTTSTrainerSession *)self getAllAvailableLocales];
   }
 
-  return v5;
+  return getAllAvailableLocales;
 }
 
-- (id)getAllAvailableScriptNames:(id)a3
+- (id)getAllAvailableScriptNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   v5 = [[NSArray alloc] initWithObjects:{@"en-US", @"cmn-CN", @"es-MX", 0}];
   v6 = objc_alloc_init(NSArray);
-  if ([v5 containsObject:v4])
+  if ([v5 containsObject:namesCopy])
   {
     v7 = [[NSArray alloc] initWithObjects:{@"default", @"threewords", 0}];
   }
 
   else
   {
-    v8 = [(SiriTTSTrainerSession *)self getAllAvailableLocales];
-    v9 = [v8 containsObject:v4];
+    getAllAvailableLocales = [(SiriTTSTrainerSession *)self getAllAvailableLocales];
+    v9 = [getAllAvailableLocales containsObject:namesCopy];
 
     if (!v9)
     {
@@ -434,17 +434,17 @@ LABEL_6:
   return v6;
 }
 
-- (id)installableTrainingAssetsForLanguage:(id)a3 name:(id)a4 type:(int64_t)a5
+- (id)installableTrainingAssetsForLanguage:(id)language name:(id)name type:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  languageCopy = language;
+  nameCopy = name;
   v10 = SiriTTSTrainerGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = languageCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = nameCopy;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "installableTrainingAssets for %@ %@", buf, 0x16u);
   }
 
@@ -470,7 +470,7 @@ LABEL_6:
   v20 = buf;
   v15 = v13;
   v19 = v15;
-  [v14 installableTrainingAssetsForLanguage:v8 name:v9 type:a5 reply:v18];
+  [v14 installableTrainingAssetsForLanguage:languageCopy name:nameCopy type:type reply:v18];
 
   dispatch_semaphore_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
   v16 = *(*&buf[8] + 40);
@@ -501,17 +501,17 @@ void __72__SiriTTSTrainerSession_installableTrainingAssetsForLanguage_name_type_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)installedTrainingAssetsForLanguage:(id)a3 name:(id)a4 type:(int64_t)a5
+- (id)installedTrainingAssetsForLanguage:(id)language name:(id)name type:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  languageCopy = language;
+  nameCopy = name;
   v10 = SiriTTSTrainerGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = languageCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = nameCopy;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "installedTrainingAssets for %@ %@", buf, 0x16u);
   }
 
@@ -527,7 +527,7 @@ void __72__SiriTTSTrainerSession_installableTrainingAssetsForLanguage_name_type_
   v14[2] = __70__SiriTTSTrainerSession_installedTrainingAssetsForLanguage_name_type___block_invoke_135;
   v14[3] = &unk_26C5A8;
   v14[4] = buf;
-  [v11 installedTrainingAssetsForLanguage:v8 name:v9 type:a5 reply:v14];
+  [v11 installedTrainingAssetsForLanguage:languageCopy name:nameCopy type:type reply:v14];
 
   v12 = *(*&buf[8] + 40);
   _Block_object_dispose(buf, 8);
@@ -547,23 +547,23 @@ void __70__SiriTTSTrainerSession_installedTrainingAssetsForLanguage_name_type___
   }
 }
 
-- (void)installTrainingAsset:(id)a3 progress:(id)a4 completion:(id)a5
+- (void)installTrainingAsset:(id)asset progress:(id)progress completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  progressCopy = progress;
+  completionCopy = completion;
   v11 = SiriTTSTrainerGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 factor];
+    factor = [assetCopy factor];
     *buf = 138412290;
-    v26 = v12;
+    v26 = factor;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "installTrainingAsset %@", buf, 0xCu);
   }
 
-  if (v9)
+  if (progressCopy)
   {
-    [SiriTTSTrainerSession setInstallingProgressBlock:v9 forAsset:v8];
+    [SiriTTSTrainerSession setInstallingProgressBlock:progressCopy forAsset:assetCopy];
   }
 
   connection = self->_connection;
@@ -571,9 +571,9 @@ void __70__SiriTTSTrainerSession_installedTrainingAssetsForLanguage_name_type___
   v22[1] = 3221225472;
   v22[2] = __66__SiriTTSTrainerSession_installTrainingAsset_progress_completion___block_invoke;
   v22[3] = &unk_26C5D0;
-  v14 = v8;
+  v14 = assetCopy;
   v23 = v14;
-  v15 = v10;
+  v15 = completionCopy;
   v24 = v15;
   v16 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v22];
   v19[0] = _NSConcreteStackBlock;
@@ -617,16 +617,16 @@ void __66__SiriTTSTrainerSession_installTrainingAsset_progress_completion___bloc
   }
 }
 
-- (void)uninstallTrainingAsset:(id)a3 completion:(id)a4
+- (void)uninstallTrainingAsset:(id)asset completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  completionCopy = completion;
   v8 = SiriTTSTrainerGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 factor];
+    factor = [assetCopy factor];
     *buf = 138412290;
-    v19 = v9;
+    v19 = factor;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "uninstallTrainingAsset %@", buf, 0xCu);
   }
 
@@ -635,7 +635,7 @@ void __66__SiriTTSTrainerSession_installTrainingAsset_progress_completion___bloc
   v16[1] = 3221225472;
   v16[2] = __59__SiriTTSTrainerSession_uninstallTrainingAsset_completion___block_invoke;
   v16[3] = &unk_26C530;
-  v11 = v7;
+  v11 = completionCopy;
   v17 = v11;
   v12 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v16];
   v14[0] = _NSConcreteStackBlock;
@@ -644,7 +644,7 @@ void __66__SiriTTSTrainerSession_installTrainingAsset_progress_completion___bloc
   v14[3] = &unk_26C620;
   v15 = v11;
   v13 = v11;
-  [v12 uninstallTrainingAsset:v6 reply:v14];
+  [v12 uninstallTrainingAsset:assetCopy reply:v14];
 }
 
 void __59__SiriTTSTrainerSession_uninstallTrainingAsset_completion___block_invoke(uint64_t a1, void *a2)
@@ -676,13 +676,13 @@ uint64_t __59__SiriTTSTrainerSession_uninstallTrainingAsset_completion___block_i
   return result;
 }
 
-- (void)installingTrainingAsset:(id)a3 progress:(float)a4
+- (void)installingTrainingAsset:(id)asset progress:(float)progress
 {
-  v5 = [SiriTTSTrainerSession getInstallingProgressBlockForAsset:a3];
+  v5 = [SiriTTSTrainerSession getInstallingProgressBlockForAsset:asset];
   if (v5)
   {
     v6 = v5;
-    v5[2](a4);
+    v5[2](progress);
     v5 = v6;
   }
 }

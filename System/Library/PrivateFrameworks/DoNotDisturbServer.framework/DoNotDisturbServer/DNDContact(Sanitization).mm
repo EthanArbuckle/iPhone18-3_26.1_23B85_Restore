@@ -6,14 +6,14 @@
 
 - (BOOL)needsSanitization
 {
-  v2 = [a1 contactIdentifier];
-  if (v2)
+  contactIdentifier = [self contactIdentifier];
+  if (contactIdentifier)
   {
-    v3 = [a1 phoneNumbers];
-    if ([v3 count])
+    phoneNumbers = [self phoneNumbers];
+    if ([phoneNumbers count])
     {
-      v4 = [a1 emailAddresses];
-      v5 = [v4 count] == 0;
+      emailAddresses = [self emailAddresses];
+      v5 = [emailAddresses count] == 0;
     }
 
     else

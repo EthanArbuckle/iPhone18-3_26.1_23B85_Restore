@@ -1,18 +1,18 @@
 @interface BKActivityURLItemSource
-- (BKActivityURLItemSource)initWithPath:(id)a3;
+- (BKActivityURLItemSource)initWithPath:(id)path;
 @end
 
 @implementation BKActivityURLItemSource
 
-- (BKActivityURLItemSource)initWithPath:(id)a3
+- (BKActivityURLItemSource)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = BKActivityURLItemSource;
   v5 = [(BKActivityURLItemSource *)&v9 init];
   if (v5)
   {
-    v6 = [NSURL fileURLWithPath:v4];
+    v6 = [NSURL fileURLWithPath:pathCopy];
     url = v5->_url;
     v5->_url = v6;
   }

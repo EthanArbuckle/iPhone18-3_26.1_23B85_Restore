@@ -1,15 +1,15 @@
 @interface CIBilateralSolverGPU
-- (CIBilateralSolverGPU)initWithWidth:(int)a3 height:(int)a4 maxVertices:(unint64_t)a5 commandBuffer:(id)a6;
-- (int)_doBistochastizeWithCommandBuffer:(id)a3 t_tex:(id)a4 c_tex:(id)a5 lambda:(float)a6 nIterations:(int)a7;
-- (int)_doPCGWithCommandBuffer:(id)a3 nIterations:(int)a4;
-- (int)_doSliceTrilinearWithCommandBuffer:(id)a3 ref_tex:(id)a4 o_tex:(id)a5;
-- (int)_doSliceWithCommandBuffer:(id)a3 o_tex:(id)a4;
-- (int)doSolveWithBilateralGridhash:(id)a3 reference:(id)a4 disparity:(id)a5 confidence:(id)a6 output:(id)a7 lambda:(float)a8 maxIterations:(int)a9 offsets:(id *)a10;
-- (void)_prepareResources:(id)a3;
+- (CIBilateralSolverGPU)initWithWidth:(int)width height:(int)height maxVertices:(unint64_t)vertices commandBuffer:(id)buffer;
+- (int)_doBistochastizeWithCommandBuffer:(id)buffer t_tex:(id)t_tex c_tex:(id)c_tex lambda:(float)lambda nIterations:(int)iterations;
+- (int)_doPCGWithCommandBuffer:(id)buffer nIterations:(int)iterations;
+- (int)_doSliceTrilinearWithCommandBuffer:(id)buffer ref_tex:(id)ref_tex o_tex:(id)o_tex;
+- (int)_doSliceWithCommandBuffer:(id)buffer o_tex:(id)o_tex;
+- (int)doSolveWithBilateralGridhash:(id)gridhash reference:(id)reference disparity:(id)disparity confidence:(id)confidence output:(id)output lambda:(float)lambda maxIterations:(int)iterations offsets:(id *)self0;
+- (void)_prepareResources:(id)resources;
 - (void)_setupBuffer;
 - (void)_setupMetal;
 - (void)_setupPipelineCache;
-- (void)_setupPipelinesAsync:(id)a3;
+- (void)_setupPipelinesAsync:(id)async;
 @end
 
 @implementation CIBilateralSolverGPU
@@ -86,9 +86,9 @@ void __43__CIBilateralSolverGPU__setupPipelineCache__block_invoke_2(uint64_t a1)
   objc_sync_exit(v3);
 }
 
-- (CIBilateralSolverGPU)initWithWidth:(int)a3 height:(int)a4 maxVertices:(unint64_t)a5 commandBuffer:(id)a6
+- (CIBilateralSolverGPU)initWithWidth:(int)width height:(int)height maxVertices:(unint64_t)vertices commandBuffer:(id)buffer
 {
-  v11 = a6;
+  bufferCopy = buffer;
   v15.receiver = self;
   v15.super_class = CIBilateralSolverGPU;
   v12 = [(CIBilateralSolverGPU *)&v15 init];
@@ -96,10 +96,10 @@ void __43__CIBilateralSolverGPU__setupPipelineCache__block_invoke_2(uint64_t a1)
   if (v12)
   {
     v12->_useTrilinearInterpolation = 1;
-    v12->_width = a3;
-    v12->_height = a4;
-    v12->_maxVertices = a5;
-    objc_storeStrong(&v12->_commandBuffer, a6);
+    v12->_width = width;
+    v12->_height = height;
+    v12->_maxVertices = vertices;
+    objc_storeStrong(&v12->_commandBuffer, buffer);
     [(CIBilateralSolverGPU *)v13 _setupMetal];
     [(CIBilateralSolverGPU *)v13 _setupPipelineCache];
     [(CIBilateralSolverGPU *)v13 _setupBuffer];
@@ -108,34 +108,34 @@ void __43__CIBilateralSolverGPU__setupPipelineCache__block_invoke_2(uint64_t a1)
   return v13;
 }
 
-- (int)doSolveWithBilateralGridhash:(id)a3 reference:(id)a4 disparity:(id)a5 confidence:(id)a6 output:(id)a7 lambda:(float)a8 maxIterations:(int)a9 offsets:(id *)a10
+- (int)doSolveWithBilateralGridhash:(id)gridhash reference:(id)reference disparity:(id)disparity confidence:(id)confidence output:(id)output lambda:(float)lambda maxIterations:(int)iterations offsets:(id *)self0
 {
-  v10 = *&a9;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  self->_params.lambda = a8;
-  self->_params.N = [v17 countVertices];
-  self->_params.dims = [v17 countDims];
-  self->_params.sigma_s = [v17 sigma_s];
-  self->_params.sigma_r_luma = [v17 sigma_r_luma];
-  *self->_anon_ac = *a10;
-  v22 = v18;
-  v23 = v19;
-  v24 = v20;
-  v25 = v21;
+  v10 = *&iterations;
+  gridhashCopy = gridhash;
+  referenceCopy = reference;
+  disparityCopy = disparity;
+  confidenceCopy = confidence;
+  outputCopy = output;
+  self->_params.lambda = lambda;
+  self->_params.N = [gridhashCopy countVertices];
+  self->_params.dims = [gridhashCopy countDims];
+  self->_params.sigma_s = [gridhashCopy sigma_s];
+  self->_params.sigma_r_luma = [gridhashCopy sigma_r_luma];
+  *self->_anon_ac = *offsets;
+  v22 = referenceCopy;
+  v23 = disparityCopy;
+  v24 = confidenceCopy;
+  v25 = outputCopy;
   v26 = self->_commandBuffer;
-  if ([v17 countVertices] < 1)
+  if ([gridhashCopy countVertices] < 1)
   {
     v28 = 1;
   }
 
   else
   {
-    [(CIBilateralSolverGPU *)self _prepareResources:v17];
-    *&v27 = a8;
+    [(CIBilateralSolverGPU *)self _prepareResources:gridhashCopy];
+    *&v27 = lambda;
     [(CIBilateralSolverGPU *)self _doBistochastizeWithCommandBuffer:v26 t_tex:v23 c_tex:v24 lambda:10 nIterations:v27];
     [(CIBilateralSolverGPU *)self _doPCGWithCommandBuffer:v26 nIterations:v10];
     if (self->_useTrilinearInterpolation)
@@ -161,9 +161,9 @@ void __43__CIBilateralSolverGPU__setupPipelineCache__block_invoke_2(uint64_t a1)
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_setupPipelinesAsync:(id)a3
+- (void)_setupPipelinesAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   v14 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v5 = [MTLDevice newDefaultLibraryWithBundle:"newDefaultLibraryWithBundle:error:" error:?];
   v6 = dispatch_group_create();
@@ -190,7 +190,7 @@ void __43__CIBilateralSolverGPU__setupPipelineCache__block_invoke_2(uint64_t a1)
     v18 = v8;
     v15[4] = self;
     v17 = v19;
-    v13 = v4;
+    v13 = asyncCopy;
     v16 = v13;
     [(MTLDevice *)metalDevice newComputePipelineStateWithFunction:v11 completionHandler:v15];
 
@@ -273,41 +273,41 @@ void __45__CIBilateralSolverGPU__setupPipelinesAsync___block_invoke(uint64_t a1,
   while ((v19 & 1) != 0);
 }
 
-- (void)_prepareResources:(id)a3
+- (void)_prepareResources:(id)resources
 {
-  v4 = a3;
-  v5 = [v4 countVertices];
+  resourcesCopy = resources;
+  countVertices = [resourcesCopy countVertices];
   width = self->_width;
   height = self->_height;
-  self->_threadGroupInfo.dispatchThreadgroups.width = (v5 + 127) >> 7;
+  self->_threadGroupInfo.dispatchThreadgroups.width = (countVertices + 127) >> 7;
   *&self->_threadGroupInfo.dispatchThreadgroups.height = vdupq_n_s64(1uLL);
   *&self->_threadGroupInfo.threadsPerThreadgroup.width = xmmword_19CF22E80;
   self->_threadGroupInfo.threadsPerThreadgroup.depth = 1;
-  v7 = [v4 hash_table];
-  v8 = *(v7 + 24 * v5 - 4);
-  v9 = [v4 blur_table];
-  v29 = [v4 coord_indices];
-  v30 = [v4 coord_table];
-  v31 = [v4 hash_matrix];
-  v10 = [v4 interp_indices];
-  v33 = [v4 interp_table];
-  v34 = [v4 interp_pad];
+  hash_table = [resourcesCopy hash_table];
+  v8 = *(hash_table + 24 * countVertices - 4);
+  blur_table = [resourcesCopy blur_table];
+  coord_indices = [resourcesCopy coord_indices];
+  coord_table = [resourcesCopy coord_table];
+  hash_matrix = [resourcesCopy hash_matrix];
+  interp_indices = [resourcesCopy interp_indices];
+  interp_table = [resourcesCopy interp_table];
+  interp_pad = [resourcesCopy interp_pad];
 
-  v11 = 4 * v5;
-  v12 = *(v10 + v11);
-  v13 = [(MTLDevice *)self->_metalDevice newBufferWithBytes:v7 length:24 * v5 options:0];
+  v11 = 4 * countVertices;
+  v12 = *(interp_indices + v11);
+  v13 = [(MTLDevice *)self->_metalDevice newBufferWithBytes:hash_table length:24 * countVertices options:0];
   gridHashBuffer = self->_gridHashBuffer;
   self->_gridHashBuffer = v13;
 
-  v15 = [(MTLDevice *)self->_metalDevice newBufferWithBytes:v9 length:4 * v8 options:0];
+  v15 = [(MTLDevice *)self->_metalDevice newBufferWithBytes:blur_table length:4 * v8 options:0];
   gridBlurBuffer = self->_gridBlurBuffer;
   self->_gridBlurBuffer = v15;
 
-  v17 = [(MTLDevice *)self->_metalDevice newBufferWithBytes:v29 length:v11 + 4 options:0];
+  v17 = [(MTLDevice *)self->_metalDevice newBufferWithBytes:coord_indices length:v11 + 4 options:0];
   gridCoordIndicesBuffer = self->_gridCoordIndicesBuffer;
   self->_gridCoordIndicesBuffer = v17;
 
-  v19 = [(MTLDevice *)self->_metalDevice newBufferWithBytes:v30 length:4 * height * width options:0];
+  v19 = [(MTLDevice *)self->_metalDevice newBufferWithBytes:coord_table length:4 * height * width options:0];
   gridCoordTableBuffer = self->_gridCoordTableBuffer;
   self->_gridCoordTableBuffer = v19;
 
@@ -316,16 +316,16 @@ void __45__CIBilateralSolverGPU__setupPipelinesAsync___block_invoke(uint64_t a1,
   v35[3] = width;
   v35[4] = height;
   v35[5] = 1;
-  [(MTLTexture *)gridHashMatrix replaceRegion:v35 mipmapLevel:0 withBytes:v31 bytesPerRow:4 * width];
-  v22 = [(MTLDevice *)self->_metalDevice newBufferWithBytes:v10 length:v11 + 4 options:0];
+  [(MTLTexture *)gridHashMatrix replaceRegion:v35 mipmapLevel:0 withBytes:hash_matrix bytesPerRow:4 * width];
+  v22 = [(MTLDevice *)self->_metalDevice newBufferWithBytes:interp_indices length:v11 + 4 options:0];
   gridInterpIndicesBuffer = self->_gridInterpIndicesBuffer;
   self->_gridInterpIndicesBuffer = v22;
 
-  v24 = [(MTLDevice *)self->_metalDevice newBufferWithBytes:v33 length:4 * v12 options:0];
+  v24 = [(MTLDevice *)self->_metalDevice newBufferWithBytes:interp_table length:4 * v12 options:0];
   gridInterpTableBuffer = self->_gridInterpTableBuffer;
   self->_gridInterpTableBuffer = v24;
 
-  v26 = [(MTLDevice *)self->_metalDevice newBufferWithBytes:v34 length:v12 options:0];
+  v26 = [(MTLDevice *)self->_metalDevice newBufferWithBytes:interp_pad length:v12 options:0];
   gridInterpPadBuffer = self->_gridInterpPadBuffer;
   self->_gridInterpPadBuffer = v26;
 
@@ -336,42 +336,42 @@ void __45__CIBilateralSolverGPU__setupPipelinesAsync___block_invoke(uint64_t a1,
   }
 }
 
-- (int)_doBistochastizeWithCommandBuffer:(id)a3 t_tex:(id)a4 c_tex:(id)a5 lambda:(float)a6 nIterations:(int)a7
+- (int)_doBistochastizeWithCommandBuffer:(id)buffer t_tex:(id)t_tex c_tex:(id)c_tex lambda:(float)lambda nIterations:(int)iterations
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  bufferCopy = buffer;
+  t_texCopy = t_tex;
+  c_texCopy = c_tex;
   *&self->_idxDnBufIn = 0;
-  v14 = [v11 computeCommandEncoder];
-  [v14 setComputePipelineState:self->_computePipelines[0]];
-  [v14 setBuffer:self->_gridHashBuffer offset:0 atIndex:0];
-  [v14 setBuffer:self->_gridBlurBuffer offset:0 atIndex:1];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[0]];
+  [computeCommandEncoder setBuffer:self->_gridHashBuffer offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:self->_gridBlurBuffer offset:0 atIndex:1];
   Dn_buf = self->_Dn_buf;
-  [v14 setBuffer:self->_Dn_buf[self->_idxDnBufIn] offset:0 atIndex:2];
-  [v14 setBytes:&self->_params length:20 atIndex:3];
+  [computeCommandEncoder setBuffer:self->_Dn_buf[self->_idxDnBufIn] offset:0 atIndex:2];
+  [computeCommandEncoder setBytes:&self->_params length:20 atIndex:3];
   v21 = *&self->_threadGroupInfo.dispatchThreadgroups.width;
   depth = self->_threadGroupInfo.dispatchThreadgroups.depth;
   threadsPerThreadgroup = self->_threadGroupInfo.threadsPerThreadgroup;
-  [v14 dispatchThreadgroups:&v21 threadsPerThreadgroup:&threadsPerThreadgroup];
-  [v14 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:&v21 threadsPerThreadgroup:&threadsPerThreadgroup];
+  [computeCommandEncoder endEncoding];
 
-  if (a7 >= 2)
+  if (iterations >= 2)
   {
-    v16 = a7 - 1;
+    v16 = iterations - 1;
     do
     {
-      v17 = [v11 computeCommandEncoder];
-      [v17 setComputePipelineState:self->_computePipelines[1]];
-      [v17 setBuffer:self->_gridHashBuffer offset:0 atIndex:0];
-      [v17 setBuffer:self->_gridBlurBuffer offset:0 atIndex:1];
-      [v17 setBuffer:Dn_buf[self->_idxDnBufIn] offset:0 atIndex:2];
-      [v17 setBuffer:Dn_buf[self->_idxDnBufIn ^ 1] offset:0 atIndex:3];
-      [v17 setBytes:&self->_params length:20 atIndex:4];
+      computeCommandEncoder2 = [bufferCopy computeCommandEncoder];
+      [computeCommandEncoder2 setComputePipelineState:self->_computePipelines[1]];
+      [computeCommandEncoder2 setBuffer:self->_gridHashBuffer offset:0 atIndex:0];
+      [computeCommandEncoder2 setBuffer:self->_gridBlurBuffer offset:0 atIndex:1];
+      [computeCommandEncoder2 setBuffer:Dn_buf[self->_idxDnBufIn] offset:0 atIndex:2];
+      [computeCommandEncoder2 setBuffer:Dn_buf[self->_idxDnBufIn ^ 1] offset:0 atIndex:3];
+      [computeCommandEncoder2 setBytes:&self->_params length:20 atIndex:4];
       v21 = *&self->_threadGroupInfo.dispatchThreadgroups.width;
       depth = self->_threadGroupInfo.dispatchThreadgroups.depth;
       threadsPerThreadgroup = self->_threadGroupInfo.threadsPerThreadgroup;
-      [v17 dispatchThreadgroups:&v21 threadsPerThreadgroup:&threadsPerThreadgroup];
-      [v17 endEncoding];
+      [computeCommandEncoder2 dispatchThreadgroups:&v21 threadsPerThreadgroup:&threadsPerThreadgroup];
+      [computeCommandEncoder2 endEncoding];
       self->_idxDnBufIn ^= 1u;
 
       --v16;
@@ -380,61 +380,61 @@ void __45__CIBilateralSolverGPU__setupPipelinesAsync___block_invoke(uint64_t a1,
     while (v16);
   }
 
-  v18 = [v11 computeCommandEncoder];
-  [v18 setComputePipelineState:self->_computePipelines[2]];
-  [v18 setBuffer:self->_gridHashBuffer offset:0 atIndex:0];
-  [v18 setBuffer:self->_gridBlurBuffer offset:0 atIndex:1];
-  [v18 setBuffer:self->_gridCoordIndicesBuffer offset:0 atIndex:2];
-  [v18 setBuffer:self->_gridCoordTableBuffer offset:0 atIndex:3];
-  [v18 setTexture:v12 atIndex:0];
-  [v18 setTexture:v13 atIndex:1];
-  [v18 setBuffer:Dn_buf[self->_idxDnBufIn] offset:0 atIndex:4];
-  [v18 setBuffer:self->_A_buf offset:0 atIndex:5];
-  [v18 setBuffer:self->_b_buf offset:0 atIndex:6];
-  [v18 setBuffer:self->_x_buf[self->_idxSwapBufIn] offset:0 atIndex:7];
-  [v18 setBytes:&self->_params length:20 atIndex:8];
-  [v18 setBytes:self->_anon_ac length:16 atIndex:9];
+  computeCommandEncoder3 = [bufferCopy computeCommandEncoder];
+  [computeCommandEncoder3 setComputePipelineState:self->_computePipelines[2]];
+  [computeCommandEncoder3 setBuffer:self->_gridHashBuffer offset:0 atIndex:0];
+  [computeCommandEncoder3 setBuffer:self->_gridBlurBuffer offset:0 atIndex:1];
+  [computeCommandEncoder3 setBuffer:self->_gridCoordIndicesBuffer offset:0 atIndex:2];
+  [computeCommandEncoder3 setBuffer:self->_gridCoordTableBuffer offset:0 atIndex:3];
+  [computeCommandEncoder3 setTexture:t_texCopy atIndex:0];
+  [computeCommandEncoder3 setTexture:c_texCopy atIndex:1];
+  [computeCommandEncoder3 setBuffer:Dn_buf[self->_idxDnBufIn] offset:0 atIndex:4];
+  [computeCommandEncoder3 setBuffer:self->_A_buf offset:0 atIndex:5];
+  [computeCommandEncoder3 setBuffer:self->_b_buf offset:0 atIndex:6];
+  [computeCommandEncoder3 setBuffer:self->_x_buf[self->_idxSwapBufIn] offset:0 atIndex:7];
+  [computeCommandEncoder3 setBytes:&self->_params length:20 atIndex:8];
+  [computeCommandEncoder3 setBytes:self->_anon_ac length:16 atIndex:9];
   v21 = *&self->_threadGroupInfo.dispatchThreadgroups.width;
   depth = self->_threadGroupInfo.dispatchThreadgroups.depth;
   threadsPerThreadgroup = self->_threadGroupInfo.threadsPerThreadgroup;
-  [v18 dispatchThreadgroups:&v21 threadsPerThreadgroup:&threadsPerThreadgroup];
-  [v18 endEncoding];
+  [computeCommandEncoder3 dispatchThreadgroups:&v21 threadsPerThreadgroup:&threadsPerThreadgroup];
+  [computeCommandEncoder3 endEncoding];
 
   return 0;
 }
 
-- (int)_doPCGWithCommandBuffer:(id)a3 nIterations:(int)a4
+- (int)_doPCGWithCommandBuffer:(id)buffer nIterations:(int)iterations
 {
-  v6 = a3;
+  bufferCopy = buffer;
   v7 = [(MTLDevice *)self->_metalDevice newBufferWithLength:4 options:0];
   v21 = [(MTLDevice *)self->_metalDevice newBufferWithLength:4 options:0];
   v8 = [(MTLDevice *)self->_metalDevice newBufferWithLength:1 options:0];
-  v22 = v6;
-  v9 = v6;
+  v22 = bufferCopy;
+  v9 = bufferCopy;
   v10 = v8;
-  v11 = [v9 computeCommandEncoder];
-  [v11 setComputePipelineState:self->_computePipelines[3]];
-  [v11 setBuffer:self->_gridHashBuffer offset:0 atIndex:0];
-  [v11 setBuffer:self->_gridBlurBuffer offset:0 atIndex:1];
-  [v11 setBuffer:self->_Dn_buf[self->_idxDnBufIn] offset:0 atIndex:2];
-  [v11 setBuffer:self->_A_buf offset:0 atIndex:3];
-  [v11 setBuffer:self->_b_buf offset:0 atIndex:4];
-  [v11 setBuffer:self->_x_buf[self->_idxSwapBufIn] offset:0 atIndex:5];
-  [v11 setBuffer:self->_r_buf[self->_idxSwapBufIn] offset:0 atIndex:6];
+  computeCommandEncoder = [v9 computeCommandEncoder];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[3]];
+  [computeCommandEncoder setBuffer:self->_gridHashBuffer offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:self->_gridBlurBuffer offset:0 atIndex:1];
+  [computeCommandEncoder setBuffer:self->_Dn_buf[self->_idxDnBufIn] offset:0 atIndex:2];
+  [computeCommandEncoder setBuffer:self->_A_buf offset:0 atIndex:3];
+  [computeCommandEncoder setBuffer:self->_b_buf offset:0 atIndex:4];
+  [computeCommandEncoder setBuffer:self->_x_buf[self->_idxSwapBufIn] offset:0 atIndex:5];
+  [computeCommandEncoder setBuffer:self->_r_buf[self->_idxSwapBufIn] offset:0 atIndex:6];
   d_buf = self->_d_buf;
-  [v11 setBuffer:self->_d_buf[self->_idxSwapBufIn] offset:0 atIndex:7];
-  [v11 setBuffer:v7 offset:0 atIndex:8];
-  [v11 setBuffer:v10 offset:0 atIndex:9];
-  [v11 setBytes:&self->_params length:20 atIndex:10];
+  [computeCommandEncoder setBuffer:self->_d_buf[self->_idxSwapBufIn] offset:0 atIndex:7];
+  [computeCommandEncoder setBuffer:v7 offset:0 atIndex:8];
+  [computeCommandEncoder setBuffer:v10 offset:0 atIndex:9];
+  [computeCommandEncoder setBytes:&self->_params length:20 atIndex:10];
   v24 = *&self->_threadGroupInfo.dispatchThreadgroups.width;
   depth = self->_threadGroupInfo.dispatchThreadgroups.depth;
   threadsPerThreadgroup = self->_threadGroupInfo.threadsPerThreadgroup;
-  [v11 dispatchThreadgroups:&v24 threadsPerThreadgroup:&threadsPerThreadgroup];
-  [v11 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:&v24 threadsPerThreadgroup:&threadsPerThreadgroup];
+  [computeCommandEncoder endEncoding];
 
-  if (a4 < 1)
+  if (iterations < 1)
   {
-    v13 = v7;
+    dn_buf = v7;
   }
 
   else
@@ -444,86 +444,86 @@ void __45__CIBilateralSolverGPU__setupPipelinesAsync___block_invoke(uint64_t a1,
     x_buf = self->_x_buf;
     do
     {
-      v13 = [(MTLDevice *)self->_metalDevice newBufferWithLength:4 options:0, Dn_buf];
-      v14 = [v22 computeCommandEncoder];
-      [v14 setComputePipelineState:self->_computePipelines[4]];
-      [v14 setBuffer:self->_gridHashBuffer offset:0 atIndex:0];
-      [v14 setBuffer:self->_gridBlurBuffer offset:0 atIndex:1];
-      [v14 setBuffer:Dn_buf[self->_idxDnBufIn] offset:0 atIndex:2];
-      [v14 setBuffer:self->_A_buf offset:0 atIndex:3];
-      [v14 setBuffer:d_buf[self->_idxSwapBufIn] offset:0 atIndex:4];
-      [v14 setBuffer:self->_q_buf offset:0 atIndex:5];
-      [v14 setBuffer:v21 offset:0 atIndex:6];
-      [v14 setBuffer:v10 offset:0 atIndex:7];
-      [v14 setBytes:&self->_params length:20 atIndex:8];
+      dn_buf = [(MTLDevice *)self->_metalDevice newBufferWithLength:4 options:0, Dn_buf];
+      computeCommandEncoder2 = [v22 computeCommandEncoder];
+      [computeCommandEncoder2 setComputePipelineState:self->_computePipelines[4]];
+      [computeCommandEncoder2 setBuffer:self->_gridHashBuffer offset:0 atIndex:0];
+      [computeCommandEncoder2 setBuffer:self->_gridBlurBuffer offset:0 atIndex:1];
+      [computeCommandEncoder2 setBuffer:Dn_buf[self->_idxDnBufIn] offset:0 atIndex:2];
+      [computeCommandEncoder2 setBuffer:self->_A_buf offset:0 atIndex:3];
+      [computeCommandEncoder2 setBuffer:d_buf[self->_idxSwapBufIn] offset:0 atIndex:4];
+      [computeCommandEncoder2 setBuffer:self->_q_buf offset:0 atIndex:5];
+      [computeCommandEncoder2 setBuffer:v21 offset:0 atIndex:6];
+      [computeCommandEncoder2 setBuffer:v10 offset:0 atIndex:7];
+      [computeCommandEncoder2 setBytes:&self->_params length:20 atIndex:8];
       v24 = *&self->_threadGroupInfo.dispatchThreadgroups.width;
       depth = self->_threadGroupInfo.dispatchThreadgroups.depth;
       threadsPerThreadgroup = self->_threadGroupInfo.threadsPerThreadgroup;
-      [v14 dispatchThreadgroups:&v24 threadsPerThreadgroup:&threadsPerThreadgroup];
-      [v14 endEncoding];
+      [computeCommandEncoder2 dispatchThreadgroups:&v24 threadsPerThreadgroup:&threadsPerThreadgroup];
+      [computeCommandEncoder2 endEncoding];
 
-      v15 = [v22 computeCommandEncoder];
-      [v15 setComputePipelineState:self->_computePipelines[5]];
-      [v15 setBuffer:self->_A_buf offset:0 atIndex:0];
-      [v15 setBuffer:x_buf[self->_idxSwapBufIn] offset:0 atIndex:1];
-      [v15 setBuffer:r_buf[self->_idxSwapBufIn] offset:0 atIndex:2];
-      [v15 setBuffer:d_buf[self->_idxSwapBufIn] offset:0 atIndex:3];
-      [v15 setBuffer:self->_q_buf offset:0 atIndex:4];
-      [v15 setBuffer:x_buf[self->_idxSwapBufIn ^ 1] offset:0 atIndex:5];
-      [v15 setBuffer:r_buf[self->_idxSwapBufIn ^ 1] offset:0 atIndex:6];
-      [v15 setBuffer:self->_s_buf offset:0 atIndex:7];
-      [v15 setBuffer:v13 offset:0 atIndex:8];
-      [v15 setBuffer:v7 offset:0 atIndex:9];
-      [v15 setBuffer:v21 offset:0 atIndex:10];
-      [v15 setBuffer:v10 offset:0 atIndex:11];
-      [v15 setBytes:&self->_params length:20 atIndex:12];
+      computeCommandEncoder3 = [v22 computeCommandEncoder];
+      [computeCommandEncoder3 setComputePipelineState:self->_computePipelines[5]];
+      [computeCommandEncoder3 setBuffer:self->_A_buf offset:0 atIndex:0];
+      [computeCommandEncoder3 setBuffer:x_buf[self->_idxSwapBufIn] offset:0 atIndex:1];
+      [computeCommandEncoder3 setBuffer:r_buf[self->_idxSwapBufIn] offset:0 atIndex:2];
+      [computeCommandEncoder3 setBuffer:d_buf[self->_idxSwapBufIn] offset:0 atIndex:3];
+      [computeCommandEncoder3 setBuffer:self->_q_buf offset:0 atIndex:4];
+      [computeCommandEncoder3 setBuffer:x_buf[self->_idxSwapBufIn ^ 1] offset:0 atIndex:5];
+      [computeCommandEncoder3 setBuffer:r_buf[self->_idxSwapBufIn ^ 1] offset:0 atIndex:6];
+      [computeCommandEncoder3 setBuffer:self->_s_buf offset:0 atIndex:7];
+      [computeCommandEncoder3 setBuffer:dn_buf offset:0 atIndex:8];
+      [computeCommandEncoder3 setBuffer:v7 offset:0 atIndex:9];
+      [computeCommandEncoder3 setBuffer:v21 offset:0 atIndex:10];
+      [computeCommandEncoder3 setBuffer:v10 offset:0 atIndex:11];
+      [computeCommandEncoder3 setBytes:&self->_params length:20 atIndex:12];
       v24 = *&self->_threadGroupInfo.dispatchThreadgroups.width;
       depth = self->_threadGroupInfo.dispatchThreadgroups.depth;
       threadsPerThreadgroup = self->_threadGroupInfo.threadsPerThreadgroup;
-      [v15 dispatchThreadgroups:&v24 threadsPerThreadgroup:&threadsPerThreadgroup];
-      [v15 endEncoding];
+      [computeCommandEncoder3 dispatchThreadgroups:&v24 threadsPerThreadgroup:&threadsPerThreadgroup];
+      [computeCommandEncoder3 endEncoding];
 
-      v16 = [v22 computeCommandEncoder];
-      [v16 setComputePipelineState:self->_computePipelines[6]];
-      [v16 setBuffer:self->_s_buf offset:0 atIndex:0];
-      [v16 setBuffer:d_buf[self->_idxSwapBufIn] offset:0 atIndex:1];
-      [v16 setBuffer:d_buf[self->_idxSwapBufIn ^ 1] offset:0 atIndex:2];
-      [v16 setBuffer:v7 offset:0 atIndex:3];
-      [v16 setBuffer:v13 offset:0 atIndex:4];
-      [v16 setBuffer:v10 offset:0 atIndex:5];
-      [v16 setBytes:&self->_params length:20 atIndex:6];
+      computeCommandEncoder4 = [v22 computeCommandEncoder];
+      [computeCommandEncoder4 setComputePipelineState:self->_computePipelines[6]];
+      [computeCommandEncoder4 setBuffer:self->_s_buf offset:0 atIndex:0];
+      [computeCommandEncoder4 setBuffer:d_buf[self->_idxSwapBufIn] offset:0 atIndex:1];
+      [computeCommandEncoder4 setBuffer:d_buf[self->_idxSwapBufIn ^ 1] offset:0 atIndex:2];
+      [computeCommandEncoder4 setBuffer:v7 offset:0 atIndex:3];
+      [computeCommandEncoder4 setBuffer:dn_buf offset:0 atIndex:4];
+      [computeCommandEncoder4 setBuffer:v10 offset:0 atIndex:5];
+      [computeCommandEncoder4 setBytes:&self->_params length:20 atIndex:6];
       v24 = *&self->_threadGroupInfo.dispatchThreadgroups.width;
       depth = self->_threadGroupInfo.dispatchThreadgroups.depth;
       threadsPerThreadgroup = self->_threadGroupInfo.threadsPerThreadgroup;
-      [v16 dispatchThreadgroups:&v24 threadsPerThreadgroup:&threadsPerThreadgroup];
-      [v16 endEncoding];
+      [computeCommandEncoder4 dispatchThreadgroups:&v24 threadsPerThreadgroup:&threadsPerThreadgroup];
+      [computeCommandEncoder4 endEncoding];
 
       self->_idxSwapBufIn ^= 1u;
-      v7 = v13;
-      --a4;
+      v7 = dn_buf;
+      --iterations;
     }
 
-    while (a4);
+    while (iterations);
   }
 
   return 0;
 }
 
-- (int)_doSliceWithCommandBuffer:(id)a3 o_tex:(id)a4
+- (int)_doSliceWithCommandBuffer:(id)buffer o_tex:(id)o_tex
 {
   width = self->_width;
   height = self->_height;
   v8 = self->_computePipelines[7];
-  v9 = a4;
-  v10 = a3;
+  o_texCopy = o_tex;
+  bufferCopy = buffer;
   LODWORD(v8) = [(MTLComputePipelineState *)v8 threadExecutionWidth];
   v11 = [(MTLComputePipelineState *)self->_computePipelines[7] maxTotalThreadsPerThreadgroup]/ v8;
-  v12 = [v10 computeCommandEncoder];
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-  [v12 setComputePipelineState:self->_computePipelines[7]];
-  [v12 setTexture:self->_gridHashMatrix atIndex:0];
-  [v12 setBuffer:self->_x_buf[self->_idxSwapBufIn] offset:0 atIndex:0];
-  [v12 setTexture:v9 atIndex:1];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[7]];
+  [computeCommandEncoder setTexture:self->_gridHashMatrix atIndex:0];
+  [computeCommandEncoder setBuffer:self->_x_buf[self->_idxSwapBufIn] offset:0 atIndex:0];
+  [computeCommandEncoder setTexture:o_texCopy atIndex:1];
 
   v15[0] = (width + v8 - 1) / v8;
   v15[1] = (height + v11 - 1) / v11;
@@ -531,43 +531,43 @@ void __45__CIBilateralSolverGPU__setupPipelinesAsync___block_invoke(uint64_t a1,
   v14[0] = v8;
   v14[1] = v11;
   v14[2] = 1;
-  [v12 dispatchThreadgroups:v15 threadsPerThreadgroup:v14];
-  [v12 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v15 threadsPerThreadgroup:v14];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }
 
-- (int)_doSliceTrilinearWithCommandBuffer:(id)a3 ref_tex:(id)a4 o_tex:(id)a5
+- (int)_doSliceTrilinearWithCommandBuffer:(id)buffer ref_tex:(id)ref_tex o_tex:(id)o_tex
 {
   width = self->_width;
   height = self->_height;
   v10 = self->_computePipelines[8];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  LODWORD(a3) = [(MTLComputePipelineState *)v10 threadExecutionWidth];
-  LODWORD(v10) = [(MTLComputePipelineState *)self->_computePipelines[8] maxTotalThreadsPerThreadgroup]/ a3;
-  v14 = [v13 computeCommandEncoder];
+  o_texCopy = o_tex;
+  ref_texCopy = ref_tex;
+  bufferCopy = buffer;
+  LODWORD(buffer) = [(MTLComputePipelineState *)v10 threadExecutionWidth];
+  LODWORD(v10) = [(MTLComputePipelineState *)self->_computePipelines[8] maxTotalThreadsPerThreadgroup]/ buffer;
+  computeCommandEncoder = [bufferCopy computeCommandEncoder];
 
-  [v14 setComputePipelineState:self->_computePipelines[8]];
-  [v14 setTexture:self->_gridHashMatrix atIndex:0];
-  [v14 setBuffer:self->_gridInterpIndicesBuffer offset:0 atIndex:0];
-  [v14 setBuffer:self->_gridInterpTableBuffer offset:0 atIndex:1];
-  [v14 setBuffer:self->_gridInterpPadBuffer offset:0 atIndex:2];
-  [v14 setBuffer:self->_x_buf[self->_idxSwapBufIn] offset:0 atIndex:3];
-  [v14 setTexture:v12 atIndex:1];
+  [computeCommandEncoder setComputePipelineState:self->_computePipelines[8]];
+  [computeCommandEncoder setTexture:self->_gridHashMatrix atIndex:0];
+  [computeCommandEncoder setBuffer:self->_gridInterpIndicesBuffer offset:0 atIndex:0];
+  [computeCommandEncoder setBuffer:self->_gridInterpTableBuffer offset:0 atIndex:1];
+  [computeCommandEncoder setBuffer:self->_gridInterpPadBuffer offset:0 atIndex:2];
+  [computeCommandEncoder setBuffer:self->_x_buf[self->_idxSwapBufIn] offset:0 atIndex:3];
+  [computeCommandEncoder setTexture:ref_texCopy atIndex:1];
 
-  [v14 setTexture:v11 atIndex:2];
-  [v14 setBytes:&self->_params length:20 atIndex:4];
-  [v14 setBytes:self->_anon_ac length:16 atIndex:5];
-  v17[0] = (a3 + width / 2 - 1) / a3;
+  [computeCommandEncoder setTexture:o_texCopy atIndex:2];
+  [computeCommandEncoder setBytes:&self->_params length:20 atIndex:4];
+  [computeCommandEncoder setBytes:self->_anon_ac length:16 atIndex:5];
+  v17[0] = (buffer + width / 2 - 1) / buffer;
   v17[1] = (v10 + height / 2 - 1) / v10;
   v17[2] = 1;
-  v16[0] = a3;
+  v16[0] = buffer;
   v16[1] = v10;
   v16[2] = 1;
-  [v14 dispatchThreadgroups:v17 threadsPerThreadgroup:v16];
-  [v14 endEncoding];
+  [computeCommandEncoder dispatchThreadgroups:v17 threadsPerThreadgroup:v16];
+  [computeCommandEncoder endEncoding];
 
   return 0;
 }

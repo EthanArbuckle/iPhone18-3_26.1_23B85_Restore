@@ -1,24 +1,24 @@
 @interface LPPushRegistrar
-+ (id)bundleIdFromTopic:(id)a3;
++ (id)bundleIdFromTopic:(id)topic;
 + (id)sharedInstance;
-- (BOOL)_setTopicEnabled:(BOOL)a3 forConnection:(id)a4 appBundleIdentifier:(id)a5;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_setTopicEnabled:(BOOL)enabled forConnection:(id)connection appBundleIdentifier:(id)identifier;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (LPPushRegistrar)init;
-- (id)_apsConnectionForEnvironment:(id)a3;
-- (id)_findOrCreateApplicationWithBundleIdentifier:(id)a3;
-- (id)_topicsForWhichInstalledAppIsNotPresentWithAPNSDevelopmentEnvironment:(id)a3;
-- (void)_addOrMoveTopic:(id)a3 forConnection:(id)a4 toList:(unint64_t)a5;
-- (void)_invalidateTokenForTopic:(id)a3 fromConnection:(id)a4;
-- (void)_removeTopic:(id)a3 forConnection:(id)a4;
+- (id)_apsConnectionForEnvironment:(id)environment;
+- (id)_findOrCreateApplicationWithBundleIdentifier:(id)identifier;
+- (id)_topicsForWhichInstalledAppIsNotPresentWithAPNSDevelopmentEnvironment:(id)environment;
+- (void)_addOrMoveTopic:(id)topic forConnection:(id)connection toList:(unint64_t)list;
+- (void)_invalidateTokenForTopic:(id)topic fromConnection:(id)connection;
+- (void)_removeTopic:(id)topic forConnection:(id)connection;
 - (void)_removeUnneededSandboxTopicsFromDevelopmentConnection;
-- (void)_unregisterLocationPushApplication:(id)a3;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
-- (void)connectionDidReconnect:(id)a3;
-- (void)handleApplicationUninstalledNotification:(id)a3;
-- (void)registerForPushToken:(id)a3 completion:(id)a4;
-- (void)setLocationPushesActive:(BOOL)a3 forAppBundleIdentifier:(id)a4 completion:(id)a5;
+- (void)_unregisterLocationPushApplication:(id)application;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
+- (void)connectionDidReconnect:(id)reconnect;
+- (void)handleApplicationUninstalledNotification:(id)notification;
+- (void)registerForPushToken:(id)token completion:(id)completion;
+- (void)setLocationPushesActive:(BOOL)active forAppBundleIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation LPPushRegistrar
@@ -54,27 +54,27 @@
     bundleIdentifierToApplication = v2->_bundleIdentifierToApplication;
     v2->_bundleIdentifierToApplication = v7;
 
-    v9 = [(LPPushRegistrar *)v2 apsdQueue];
+    apsdQueue = [(LPPushRegistrar *)v2 apsdQueue];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100002AE4;
     handler[3] = &unk_10000C468;
     v10 = v2;
     v25 = v10;
-    xpc_set_event_stream_handler("com.apple.distnoted.matching", v9, handler);
+    xpc_set_event_stream_handler("com.apple.distnoted.matching", apsdQueue, handler);
 
     v11 = [APSConnection alloc];
     v12 = APSEnvironmentProduction;
-    v13 = [v10 apsdQueue];
-    v14 = [v11 initWithEnvironmentName:v12 namedDelegatePort:@"com.apple.aps.locationpushd.production" queue:v13];
+    apsdQueue2 = [v10 apsdQueue];
+    v14 = [v11 initWithEnvironmentName:v12 namedDelegatePort:@"com.apple.aps.locationpushd.production" queue:apsdQueue2];
     v15 = v10[2];
     v10[2] = v14;
 
     [v10[2] setDelegate:v10];
     v16 = [APSConnection alloc];
     v17 = APSEnvironmentDevelopment;
-    v18 = [v10 apsdQueue];
-    v19 = [v16 initWithEnvironmentName:v17 namedDelegatePort:@"com.apple.aps.locationpushd.development" queue:v18];
+    apsdQueue3 = [v10 apsdQueue];
+    v19 = [v16 initWithEnvironmentName:v17 namedDelegatePort:@"com.apple.aps.locationpushd.development" queue:apsdQueue3];
     v20 = v10[3];
     v10[3] = v19;
 
@@ -90,15 +90,15 @@
   return v2;
 }
 
-- (id)_topicsForWhichInstalledAppIsNotPresentWithAPNSDevelopmentEnvironment:(id)a3
+- (id)_topicsForWhichInstalledAppIsNotPresentWithAPNSDevelopmentEnvironment:(id)environment
 {
-  v3 = a3;
+  environmentCopy = environment;
   v17 = objc_alloc_init(NSMutableArray);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v3;
+  obj = environmentCopy;
   v4 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
@@ -120,8 +120,8 @@
         v19 = 0;
         v12 = [v11 initWithBundleIdentifier:v10 allowPlaceholder:1 error:&v19];
         v13 = v19;
-        v14 = [v12 entitlements];
-        v15 = [v14 objectForKey:@"aps-environment" ofClass:objc_opt_class()];
+        entitlements = [v12 entitlements];
+        v15 = [entitlements objectForKey:@"aps-environment" ofClass:objc_opt_class()];
         if (([v15 isEqualToString:v7] & 1) == 0)
         {
           [v17 addObject:v9];
@@ -140,12 +140,12 @@
 - (void)_removeUnneededSandboxTopicsFromDevelopmentConnection
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [self->_developmentAPSConnection opportunisticTopics];
-  v5 = [self->_developmentAPSConnection ignoredTopics];
-  v6 = [(LPPushRegistrar *)self _topicsForWhichInstalledAppIsNotPresentWithAPNSDevelopmentEnvironment:v4];
+  opportunisticTopics = [self->_developmentAPSConnection opportunisticTopics];
+  ignoredTopics = [self->_developmentAPSConnection ignoredTopics];
+  v6 = [(LPPushRegistrar *)self _topicsForWhichInstalledAppIsNotPresentWithAPNSDevelopmentEnvironment:opportunisticTopics];
   [v3 addObjectsFromArray:v6];
 
-  v7 = [(LPPushRegistrar *)self _topicsForWhichInstalledAppIsNotPresentWithAPNSDevelopmentEnvironment:v5];
+  v7 = [(LPPushRegistrar *)self _topicsForWhichInstalledAppIsNotPresentWithAPNSDevelopmentEnvironment:ignoredTopics];
   [v3 addObjectsFromArray:v7];
 
   v17 = 0u;
@@ -194,32 +194,32 @@
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___LPPushTokenServerProtocol];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
-  [v5 setExportedObject:self];
-  v7 = [v5 valueForEntitlement:@"com.apple.private.locationpushd.pushtokenregistration"];
-  v8 = [v7 BOOLValue];
+  [connectionCopy setExportedObject:self];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.private.locationpushd.pushtokenregistration"];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
-    [v5 resume];
+    [connectionCopy resume];
   }
 
   else
   {
-    [v5 invalidate];
+    [connectionCopy invalidate];
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (void)connectionDidReconnect:(id)a3
+- (void)connectionDidReconnect:(id)reconnect
 {
-  v4 = a3;
+  reconnectCopy = reconnect;
   if (qword_100010A78 != -1)
   {
     sub_100005108();
@@ -229,17 +229,17 @@
   if (os_log_type_enabled(qword_100010A80, OS_LOG_TYPE_INFO))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = reconnectCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "APSConnection: %{public}@ did reconnect", &v6, 0xCu);
   }
 
   [(LPPushRegistrar *)self _removeUnneededSandboxTopicsFromDevelopmentConnection];
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v5 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  tokenCopy = token;
   if (qword_100010A78 != -1)
   {
     sub_100005108();
@@ -249,17 +249,17 @@
   if (os_log_type_enabled(qword_100010A80, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138543362;
-    v9 = v5;
+    v9 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "APSConnection: %{public}@ did receive publicToken", &v8, 0xCu);
   }
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  connectionCopy = connection;
+  tokenCopy = token;
+  topicCopy = topic;
+  identifierCopy = identifier;
   if (qword_100010A78 != -1)
   {
     sub_100005108();
@@ -269,22 +269,22 @@
   if (os_log_type_enabled(qword_100010A80, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138544130;
-    v20 = v10;
+    v20 = connectionCopy;
     v21 = 2114;
-    v22 = v11;
+    v22 = tokenCopy;
     v23 = 2114;
-    v24 = v12;
+    v24 = topicCopy;
     v25 = 2114;
-    v26 = v13;
+    v26 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "for connection: %{public}@ token: %{public}@ topic: %{public}@ identifier: %{public}@", &v19, 0x2Au);
   }
 
-  v15 = [objc_opt_class() bundleIdFromTopic:v12];
+  v15 = [objc_opt_class() bundleIdFromTopic:topicCopy];
   v16 = [(LPPushRegistrar *)self _findOrCreateApplicationWithBundleIdentifier:v15];
   v17 = v16;
   if (v16)
   {
-    [v16 deliverToken:v11];
+    [v16 deliverToken:tokenCopy];
   }
 
   else
@@ -304,13 +304,13 @@
   }
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v5 = a4;
-  v6 = [v5 topic];
-  v7 = [v5 userInfo];
+  messageCopy = message;
+  topic = [messageCopy topic];
+  userInfo = [messageCopy userInfo];
 
-  v8 = [objc_opt_class() bundleIdFromTopic:v6];
+  v8 = [objc_opt_class() bundleIdFromTopic:topic];
   if (qword_100010A78 != -1)
   {
     sub_100005108();
@@ -320,11 +320,11 @@
   if (os_log_type_enabled(qword_100010A80, OS_LOG_TYPE_DEBUG))
   {
     v17 = 138543875;
-    v18 = v6;
+    v18 = topic;
     v19 = 2114;
     *v20 = v8;
     *&v20[8] = 2113;
-    v21 = v7;
+    v21 = userInfo;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Incoming message has topic: %{public}@ bundleID: %{public}@ userInfo %{private}@", &v17, 0x20u);
   }
 
@@ -348,12 +348,12 @@
   else
   {
     v12 = [(LPPushRegistrar *)self _findOrCreateApplicationWithBundleIdentifier:v8];
-    v13 = [v12 hasLocationPushEntitlement];
-    v14 = [v12 hasLocationPushServiceExtension];
-    v15 = v14;
-    if (v13 && v14)
+    hasLocationPushEntitlement = [v12 hasLocationPushEntitlement];
+    hasLocationPushServiceExtension = [v12 hasLocationPushServiceExtension];
+    v15 = hasLocationPushServiceExtension;
+    if (hasLocationPushEntitlement && hasLocationPushServiceExtension)
     {
-      [v12 deliverLocationPayloadToExtension:v7];
+      [v12 deliverLocationPayloadToExtension:userInfo];
     }
 
     else
@@ -367,9 +367,9 @@
       if (os_log_type_enabled(qword_100010A80, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138543874;
-        v18 = v6;
+        v18 = topic;
         v19 = 1026;
-        *v20 = v13;
+        *v20 = hasLocationPushEntitlement;
         *&v20[4] = 1026;
         *&v20[6] = v15;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Incoming message for %{public}@ caused push token deregistration because entitlement is %{public}d or extension is %{public}d", &v17, 0x18u);
@@ -380,25 +380,25 @@
   }
 }
 
-- (id)_findOrCreateApplicationWithBundleIdentifier:(id)a3
+- (id)_findOrCreateApplicationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_100003838;
   v16 = sub_100003848;
   v17 = 0;
-  v5 = [(LPPushRegistrar *)self dictionaryMutationQueue];
+  dictionaryMutationQueue = [(LPPushRegistrar *)self dictionaryMutationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100003850;
   block[3] = &unk_10000C368;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = identifierCopy;
+  dispatch_sync(dictionaryMutationQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -406,10 +406,10 @@
   return v7;
 }
 
-- (void)registerForPushToken:(id)a3 completion:(id)a4
+- (void)registerForPushToken:(id)token completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  completionCopy = completion;
   if (qword_100010A78 != -1)
   {
     sub_100005108();
@@ -419,13 +419,13 @@
   if (os_log_type_enabled(qword_100010A80, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v28 = v6;
+    v28 = tokenCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Asked to register bundle ID %{public}@ for location pushes", buf, 0xCu);
   }
 
-  if (v6)
+  if (tokenCopy)
   {
-    v9 = [(LPPushRegistrar *)self _findOrCreateApplicationWithBundleIdentifier:v6];
+    v9 = [(LPPushRegistrar *)self _findOrCreateApplicationWithBundleIdentifier:tokenCopy];
     v10 = v9;
     if (v9)
     {
@@ -433,13 +433,13 @@
       {
         if ([v10 hasLocationPushServiceExtension])
         {
-          v11 = [v10 apsEnvironment];
-          if (v11)
+          apsEnvironment = [v10 apsEnvironment];
+          if (apsEnvironment)
           {
-            v12 = [(LPPushRegistrar *)self _apsConnectionForEnvironment:v11];
-            v13 = [objc_opt_class() topicFromBundleId:v6];
-            [v10 addPendingTokenReply:v7];
-            v14 = [(LPPushRegistrar *)self apsdQueue];
+            v12 = [(LPPushRegistrar *)self _apsConnectionForEnvironment:apsEnvironment];
+            v13 = [objc_opt_class() topicFromBundleId:tokenCopy];
+            [v10 addPendingTokenReply:completionCopy];
+            apsdQueue = [(LPPushRegistrar *)self apsdQueue];
             block[0] = _NSConcreteStackBlock;
             block[1] = 3221225472;
             block[2] = sub_100003E6C;
@@ -447,8 +447,8 @@
             block[4] = self;
             v15 = v12;
             v25 = v15;
-            v26 = v6;
-            dispatch_sync(v14, block);
+            v26 = tokenCopy;
+            dispatch_sync(apsdQueue, block);
 
             if (qword_100010A78 != -1)
             {
@@ -477,12 +477,12 @@
             if (os_log_type_enabled(qword_100010A80, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v28 = v6;
+              v28 = tokenCopy;
               _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Ignoring registerBundleIdentifier: request because no valid aps-environment present for %@", buf, 0xCu);
             }
 
             v15 = [NSError errorWithDomain:CLLocationPushServiceErrorDomain code:2 userInfo:0];
-            v7[2](v7, 0, v15);
+            completionCopy[2](completionCopy, 0, v15);
           }
 
           goto LABEL_36;
@@ -497,7 +497,7 @@
         if (os_log_type_enabled(qword_100010A80, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v28 = v6;
+          v28 = tokenCopy;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Ignoring registerBundleIdentifier: request because no Location Push Service Extension present for %@", buf, 0xCu);
         }
 
@@ -516,7 +516,7 @@
         if (os_log_type_enabled(qword_100010A80, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138543362;
-          v28 = v6;
+          v28 = tokenCopy;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "Ignoring registerBundleIdentifier: request because location push entitlement is missing from  %{public}@", buf, 0xCu);
         }
 
@@ -543,8 +543,8 @@
       v20 = 22;
     }
 
-    v11 = [NSError errorWithDomain:v19 code:v20 userInfo:0];
-    v7[2](v7, 0, v11);
+    apsEnvironment = [NSError errorWithDomain:v19 code:v20 userInfo:0];
+    completionCopy[2](completionCopy, 0, apsEnvironment);
 LABEL_36:
 
     goto LABEL_37;
@@ -563,51 +563,51 @@ LABEL_36:
   }
 
   v10 = [NSError errorWithDomain:NSPOSIXErrorDomain code:22 userInfo:0];
-  v7[2](v7, 0, v10);
+  completionCopy[2](completionCopy, 0, v10);
 LABEL_37:
 }
 
-- (void)setLocationPushesActive:(BOOL)a3 forAppBundleIdentifier:(id)a4 completion:(id)a5
+- (void)setLocationPushesActive:(BOOL)active forAppBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(LPPushRegistrar *)self _findOrCreateApplicationWithBundleIdentifier:v8];
-  v11 = [v10 apsEnvironment];
-  v12 = [(LPPushRegistrar *)self _apsConnectionForEnvironment:v11];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v10 = [(LPPushRegistrar *)self _findOrCreateApplicationWithBundleIdentifier:identifierCopy];
+  apsEnvironment = [v10 apsEnvironment];
+  v12 = [(LPPushRegistrar *)self _apsConnectionForEnvironment:apsEnvironment];
 
-  v13 = [(LPPushRegistrar *)self apsdQueue];
+  apsdQueue = [(LPPushRegistrar *)self apsdQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100003FC0;
   block[3] = &unk_10000C490;
   v18 = v12;
-  v19 = self;
-  v22 = a3;
-  v20 = v8;
-  v21 = v9;
-  v14 = v9;
-  v15 = v8;
+  selfCopy = self;
+  activeCopy = active;
+  v20 = identifierCopy;
+  v21 = completionCopy;
+  v14 = completionCopy;
+  v15 = identifierCopy;
   v16 = v12;
-  dispatch_async(v13, block);
+  dispatch_async(apsdQueue, block);
 }
 
-- (void)handleApplicationUninstalledNotification:(id)a3
+- (void)handleApplicationUninstalledNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(LPPushRegistrar *)self apsdQueue];
+  notificationCopy = notification;
+  apsdQueue = [(LPPushRegistrar *)self apsdQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000040D0;
   v7[3] = &unk_10000C2F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(apsdQueue, v7);
 }
 
-- (void)_unregisterLocationPushApplication:(id)a3
+- (void)_unregisterLocationPushApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   if (qword_100010A78 != -1)
   {
     sub_100005108();
@@ -617,14 +617,14 @@ LABEL_37:
   if (os_log_type_enabled(qword_100010A80, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v17 = v4;
+    v17 = applicationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Unregistering application %{public}@ from Location Pushes", buf, 0xCu);
   }
 
-  v6 = [objc_opt_class() topicFromBundleId:v4];
-  v7 = [(LPPushRegistrar *)self _findOrCreateApplicationWithBundleIdentifier:v4];
-  v8 = [v7 apsEnvironment];
-  v9 = [(LPPushRegistrar *)self _apsConnectionForEnvironment:v8];
+  v6 = [objc_opt_class() topicFromBundleId:applicationCopy];
+  v7 = [(LPPushRegistrar *)self _findOrCreateApplicationWithBundleIdentifier:applicationCopy];
+  apsEnvironment = [v7 apsEnvironment];
+  v9 = [(LPPushRegistrar *)self _apsConnectionForEnvironment:apsEnvironment];
 
   if (v9)
   {
@@ -633,58 +633,58 @@ LABEL_37:
 
   else
   {
-    v10 = [(LPPushRegistrar *)self productionAPSConnection];
-    [(LPPushRegistrar *)self _invalidateTokenForTopic:v6 fromConnection:v10];
+    productionAPSConnection = [(LPPushRegistrar *)self productionAPSConnection];
+    [(LPPushRegistrar *)self _invalidateTokenForTopic:v6 fromConnection:productionAPSConnection];
 
-    v11 = [(LPPushRegistrar *)self developmentAPSConnection];
-    [(LPPushRegistrar *)self _invalidateTokenForTopic:v6 fromConnection:v11];
+    developmentAPSConnection = [(LPPushRegistrar *)self developmentAPSConnection];
+    [(LPPushRegistrar *)self _invalidateTokenForTopic:v6 fromConnection:developmentAPSConnection];
   }
 
-  v12 = [(LPPushRegistrar *)self dictionaryMutationQueue];
+  dictionaryMutationQueue = [(LPPushRegistrar *)self dictionaryMutationQueue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100004450;
   v14[3] = &unk_10000C2F0;
   v14[4] = self;
-  v15 = v4;
-  v13 = v4;
-  dispatch_sync(v12, v14);
+  v15 = applicationCopy;
+  v13 = applicationCopy;
+  dispatch_sync(dictionaryMutationQueue, v14);
 }
 
-- (void)_invalidateTokenForTopic:(id)a3 fromConnection:(id)a4
+- (void)_invalidateTokenForTopic:(id)topic fromConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  [(LPPushRegistrar *)self _removeTopic:v7 forConnection:v6];
-  [v6 invalidateTokenForTopic:v7 identifier:&stru_10000C690];
+  connectionCopy = connection;
+  topicCopy = topic;
+  [(LPPushRegistrar *)self _removeTopic:topicCopy forConnection:connectionCopy];
+  [connectionCopy invalidateTokenForTopic:topicCopy identifier:&stru_10000C690];
 }
 
-- (void)_removeTopic:(id)a3 forConnection:(id)a4
+- (void)_removeTopic:(id)topic forConnection:(id)connection
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 opportunisticTopics];
-  v10 = [v7 mutableCopy];
+  connectionCopy = connection;
+  topicCopy = topic;
+  opportunisticTopics = [connectionCopy opportunisticTopics];
+  v10 = [opportunisticTopics mutableCopy];
 
-  [v10 removeObject:v6];
-  [v5 _setOpportunisticTopics:v10];
-  v8 = [v5 ignoredTopics];
-  v9 = [v8 mutableCopy];
+  [v10 removeObject:topicCopy];
+  [connectionCopy _setOpportunisticTopics:v10];
+  ignoredTopics = [connectionCopy ignoredTopics];
+  v9 = [ignoredTopics mutableCopy];
 
-  [v9 removeObject:v6];
-  [v5 _setIgnoredTopics:v9];
+  [v9 removeObject:topicCopy];
+  [connectionCopy _setIgnoredTopics:v9];
 }
 
-- (void)_addOrMoveTopic:(id)a3 forConnection:(id)a4 toList:(unint64_t)a5
+- (void)_addOrMoveTopic:(id)topic forConnection:(id)connection toList:(unint64_t)list
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 opportunisticTopics];
-  v10 = [v9 containsObject:v7];
+  topicCopy = topic;
+  connectionCopy = connection;
+  opportunisticTopics = [connectionCopy opportunisticTopics];
+  v10 = [opportunisticTopics containsObject:topicCopy];
 
   if (v10)
   {
-    if (a5 == 1)
+    if (list == 1)
     {
       if (qword_100010A78 != -1)
       {
@@ -698,7 +698,7 @@ LABEL_37:
         v35 = 2082;
         v36 = "";
         v37 = 2114;
-        v38 = v7;
+        listCopy3 = topicCopy;
         v12 = "{msg%{public}.0s:Not adding to OpportunisticTopics since it's already an added topic, topic:%{public, location:escape_only}@}";
 LABEL_13:
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, v12, &v34, 0x1Cu);
@@ -720,28 +720,28 @@ LABEL_13:
       v35 = 2082;
       v36 = "";
       v37 = 2114;
-      v38 = v7;
+      listCopy3 = topicCopy;
       v39 = 2114;
-      v40 = v8;
+      v40 = connectionCopy;
       v41 = 2050;
-      v42 = a5;
+      listCopy4 = list;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Moving topic from opportunisitic list connection, topic:%{public, location:escape_only}@, connection:%{public, location:escape_only}@, toList:%{public}lu}", &v34, 0x30u);
     }
 
-    v16 = v8;
-    v17 = v7;
+    v16 = connectionCopy;
+    v17 = topicCopy;
     v18 = 1;
 LABEL_33:
-    [v16 moveTopic:v17 fromList:v18 toList:a5];
+    [v16 moveTopic:v17 fromList:v18 toList:list];
     goto LABEL_42;
   }
 
-  v13 = [v8 ignoredTopics];
-  v14 = [v13 containsObject:v7];
+  ignoredTopics = [connectionCopy ignoredTopics];
+  v14 = [ignoredTopics containsObject:topicCopy];
 
   if (!v14)
   {
-    if (a5 == 2)
+    if (list == 2)
     {
       if (qword_100010A78 != -1)
       {
@@ -755,32 +755,32 @@ LABEL_33:
         v35 = 2082;
         v36 = "";
         v37 = 2114;
-        v38 = v7;
+        listCopy3 = topicCopy;
         v39 = 2114;
-        v40 = v8;
+        v40 = connectionCopy;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Adding topic to ignored list, topic:%{public, location:escape_only}@, connection:%{public, location:escape_only}@}", &v34, 0x26u);
       }
 
       v20 = objc_alloc_init(NSMutableSet);
-      v28 = [v8 ignoredTopics];
-      v29 = v28;
+      ignoredTopics2 = [connectionCopy ignoredTopics];
+      v29 = ignoredTopics2;
       v30 = &__NSArray0__struct;
-      if (v28)
+      if (ignoredTopics2)
       {
-        v30 = v28;
+        v30 = ignoredTopics2;
       }
 
       v31 = v30;
 
       [v20 addObjectsFromArray:v31];
-      [v20 addObject:v7];
-      v25 = [v20 allObjects];
-      [v8 _setIgnoredTopics:v25];
+      [v20 addObject:topicCopy];
+      allObjects = [v20 allObjects];
+      [connectionCopy _setIgnoredTopics:allObjects];
     }
 
     else
     {
-      if (a5 != 1)
+      if (list != 1)
       {
         if (qword_100010A78 != -1)
         {
@@ -794,7 +794,7 @@ LABEL_33:
           v35 = 2082;
           v36 = "";
           v37 = 2050;
-          v38 = a5;
+          listCopy3 = list;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_FAULT, "{msg%{public}.0s:Not adding topic due to unknown list, toList:%{public}lu}", &v34, 0x1Cu);
         }
 
@@ -810,7 +810,7 @@ LABEL_33:
           v35 = 2082;
           v36 = "";
           v37 = 2050;
-          v38 = a5;
+          listCopy3 = list;
           _os_signpost_emit_with_name_impl(&_mh_execute_header, v33, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "Not adding topic due to unknown list", "{msg%{public}.0s:Not adding topic due to unknown list, toList:%{public}lu}", &v34, 0x1Cu);
         }
 
@@ -829,33 +829,33 @@ LABEL_33:
         v35 = 2082;
         v36 = "";
         v37 = 2114;
-        v38 = v7;
+        listCopy3 = topicCopy;
         v39 = 2114;
-        v40 = v8;
+        v40 = connectionCopy;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Adding topic to opportunistic list, topic:%{public, location:escape_only}@, connection:%{public, location:escape_only}@}", &v34, 0x26u);
       }
 
       v20 = objc_alloc_init(NSMutableSet);
-      v21 = [v8 opportunisticTopics];
-      v22 = v21;
+      opportunisticTopics2 = [connectionCopy opportunisticTopics];
+      v22 = opportunisticTopics2;
       v23 = &__NSArray0__struct;
-      if (v21)
+      if (opportunisticTopics2)
       {
-        v23 = v21;
+        v23 = opportunisticTopics2;
       }
 
       v24 = v23;
 
       [v20 addObjectsFromArray:v24];
-      [v20 addObject:v7];
-      v25 = [v20 allObjects];
-      [v8 _setOpportunisticTopics:v25];
+      [v20 addObject:topicCopy];
+      allObjects = [v20 allObjects];
+      [connectionCopy _setOpportunisticTopics:allObjects];
     }
 
     goto LABEL_42;
   }
 
-  if (a5 != 2)
+  if (list != 2)
   {
     if (qword_100010A78 != -1)
     {
@@ -869,16 +869,16 @@ LABEL_33:
       v35 = 2082;
       v36 = "";
       v37 = 2114;
-      v38 = v7;
+      listCopy3 = topicCopy;
       v39 = 2114;
-      v40 = v8;
+      v40 = connectionCopy;
       v41 = 2050;
-      v42 = a5;
+      listCopy4 = list;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Moving topic from ignored list connection, topic:%{public, location:escape_only}@, connection:%{public, location:escape_only}@, toList:%{public}lu}", &v34, 0x30u);
     }
 
-    v16 = v8;
-    v17 = v7;
+    v16 = connectionCopy;
+    v17 = topicCopy;
     v18 = 2;
     goto LABEL_33;
   }
@@ -895,7 +895,7 @@ LABEL_33:
     v35 = 2082;
     v36 = "";
     v37 = 2114;
-    v38 = v7;
+    listCopy3 = topicCopy;
     v12 = "{msg%{public}.0s:Not adding to IgnoredTopics since it's already an added topic, topic:%{public, location:escape_only}@}";
     goto LABEL_13;
   }
@@ -903,19 +903,19 @@ LABEL_33:
 LABEL_42:
 }
 
-- (BOOL)_setTopicEnabled:(BOOL)a3 forConnection:(id)a4 appBundleIdentifier:(id)a5
+- (BOOL)_setTopicEnabled:(BOOL)enabled forConnection:(id)connection appBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_opt_class() topicFromBundleId:v9];
-  v11 = [(LPPushRegistrar *)self _findOrCreateApplicationWithBundleIdentifier:v9];
+  enabledCopy = enabled;
+  connectionCopy = connection;
+  identifierCopy = identifier;
+  v10 = [objc_opt_class() topicFromBundleId:identifierCopy];
+  v11 = [(LPPushRegistrar *)self _findOrCreateApplicationWithBundleIdentifier:identifierCopy];
   v12 = v11;
   if (v11)
   {
     if ([v11 hasLocationPushEntitlement])
     {
-      if (v6)
+      if (enabledCopy)
       {
         v13 = 1;
       }
@@ -925,12 +925,12 @@ LABEL_42:
         v13 = 2;
       }
 
-      [(LPPushRegistrar *)self _addOrMoveTopic:v10 forConnection:v8 toList:v13];
+      [(LPPushRegistrar *)self _addOrMoveTopic:v10 forConnection:connectionCopy toList:v13];
     }
 
     else
     {
-      [(LPPushRegistrar *)self _removeTopic:v10 forConnection:v8];
+      [(LPPushRegistrar *)self _removeTopic:v10 forConnection:connectionCopy];
     }
   }
 
@@ -945,7 +945,7 @@ LABEL_42:
     if (os_log_type_enabled(qword_100010A80, OS_LOG_TYPE_DEBUG))
     {
       v16 = 138543362;
-      v17 = v9;
+      v17 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "Ignoring setLocationPushesActive: request because application %{public}@ is not valid", &v16, 0xCu);
     }
   }
@@ -953,20 +953,20 @@ LABEL_42:
   return v12 != 0;
 }
 
-- (id)_apsConnectionForEnvironment:(id)a3
+- (id)_apsConnectionForEnvironment:(id)environment
 {
-  v4 = a3;
-  if ([v4 isEqualToString:APSEnvironmentProduction])
+  environmentCopy = environment;
+  if ([environmentCopy isEqualToString:APSEnvironmentProduction])
   {
-    v5 = [(LPPushRegistrar *)self productionAPSConnection];
+    productionAPSConnection = [(LPPushRegistrar *)self productionAPSConnection];
 LABEL_5:
-    v6 = v5;
+    v6 = productionAPSConnection;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:APSEnvironmentDevelopment])
+  if ([environmentCopy isEqualToString:APSEnvironmentDevelopment])
   {
-    v5 = [(LPPushRegistrar *)self developmentAPSConnection];
+    productionAPSConnection = [(LPPushRegistrar *)self developmentAPSConnection];
     goto LABEL_5;
   }
 
@@ -976,10 +976,10 @@ LABEL_7:
   return v6;
 }
 
-+ (id)bundleIdFromTopic:(id)a3
++ (id)bundleIdFromTopic:(id)topic
 {
-  v3 = a3;
-  v4 = [v3 substringWithRange:{0, objc_msgSend(v3, "length") + ~objc_msgSend(@"location-query", "length")}];
+  topicCopy = topic;
+  v4 = [topicCopy substringWithRange:{0, objc_msgSend(topicCopy, "length") + ~objc_msgSend(@"location-query", "length")}];
 
   return v4;
 }

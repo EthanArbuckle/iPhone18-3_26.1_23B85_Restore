@@ -1,15 +1,15 @@
 @interface BMContextSyncAppInFocus
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMContextSyncAppInFocus)initWithID:(id)a3 deviceUUID:(id)a4 AppInFocus:(id)a5;
-- (BMContextSyncAppInFocus)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BOOL)isEqual:(id)a3;
+- (BMContextSyncAppInFocus)initWithID:(id)d deviceUUID:(id)iD AppInFocus:(id)focus;
+- (BMContextSyncAppInFocus)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMContextSyncAppInFocus
@@ -30,13 +30,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(BMContextSyncAppInFocus *)self ID];
     v7 = [v5 ID];
     v8 = v7;
@@ -56,18 +56,18 @@
       }
     }
 
-    v13 = [(BMContextSyncAppInFocus *)self deviceUUID];
-    v14 = [v5 deviceUUID];
-    v15 = v14;
-    if (v13 == v14)
+    deviceUUID = [(BMContextSyncAppInFocus *)self deviceUUID];
+    deviceUUID2 = [v5 deviceUUID];
+    v15 = deviceUUID2;
+    if (deviceUUID == deviceUUID2)
     {
     }
 
     else
     {
-      v16 = [(BMContextSyncAppInFocus *)self deviceUUID];
-      v17 = [v5 deviceUUID];
-      v18 = [v16 isEqual:v17];
+      deviceUUID3 = [(BMContextSyncAppInFocus *)self deviceUUID];
+      deviceUUID4 = [v5 deviceUUID];
+      v18 = [deviceUUID3 isEqual:deviceUUID4];
 
       if (!v18)
       {
@@ -79,18 +79,18 @@ LABEL_15:
       }
     }
 
-    v19 = [(BMContextSyncAppInFocus *)self AppInFocus];
-    v20 = [v5 AppInFocus];
-    if (v19 == v20)
+    appInFocus = [(BMContextSyncAppInFocus *)self AppInFocus];
+    appInFocus2 = [v5 AppInFocus];
+    if (appInFocus == appInFocus2)
     {
       v12 = 1;
     }
 
     else
     {
-      v21 = [(BMContextSyncAppInFocus *)self AppInFocus];
-      v22 = [v5 AppInFocus];
-      v12 = [v21 isEqual:v22];
+      appInFocus3 = [(BMContextSyncAppInFocus *)self AppInFocus];
+      appInFocus4 = [v5 AppInFocus];
+      v12 = [appInFocus3 isEqual:appInFocus4];
     }
 
     goto LABEL_15;
@@ -106,38 +106,38 @@ LABEL_16:
 {
   v14[3] = *MEMORY[0x1E69E9840];
   v3 = [(BMContextSyncAppInFocus *)self ID];
-  v4 = [(BMContextSyncAppInFocus *)self deviceUUID];
-  v5 = [(BMContextSyncAppInFocus *)self AppInFocus];
-  v6 = [v5 jsonDictionary];
+  deviceUUID = [(BMContextSyncAppInFocus *)self deviceUUID];
+  appInFocus = [(BMContextSyncAppInFocus *)self AppInFocus];
+  jsonDictionary = [appInFocus jsonDictionary];
 
   v13[0] = @"ID";
-  v7 = v3;
+  null = v3;
   if (!v3)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[0] = v7;
+  v14[0] = null;
   v13[1] = @"deviceUUID";
-  v8 = v4;
-  if (!v4)
+  null2 = deviceUUID;
+  if (!deviceUUID)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[1] = v8;
+  v14[1] = null2;
   v13[2] = @"AppInFocus";
-  v9 = v6;
-  if (!v6)
+  null3 = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[2] = v9;
+  v14[2] = null3;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
-  if (v6)
+  if (jsonDictionary)
   {
-    if (v4)
+    if (deviceUUID)
     {
       goto LABEL_9;
     }
@@ -152,7 +152,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v4)
+  if (!deviceUUID)
   {
     goto LABEL_14;
   }
@@ -171,16 +171,16 @@ LABEL_10:
   return v10;
 }
 
-- (BMContextSyncAppInFocus)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMContextSyncAppInFocus)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"ID"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"ID"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"deviceUUID"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"deviceUUID"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -214,7 +214,7 @@ LABEL_4:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"AppInFocus"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"AppInFocus"];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -303,14 +303,14 @@ LABEL_14:
 {
   v3 = objc_opt_new();
   [(BMContextSyncAppInFocus *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_ID)
   {
     PBDataWriterWriteStringField();
@@ -324,14 +324,14 @@ LABEL_14:
   if (self->_AppInFocus)
   {
     PBDataWriterPlaceMark();
-    [(BMAppInFocus *)self->_AppInFocus writeTo:v4];
+    [(BMAppInFocus *)self->_AppInFocus writeTo:toCopy];
     PBDataWriterRecallMark();
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v24.receiver = self;
   v24.super_class = BMContextSyncAppInFocus;
   v5 = [(BMEventBase *)&v24 init];
@@ -340,12 +340,12 @@ LABEL_14:
     goto LABEL_31;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -356,18 +356,18 @@ LABEL_14:
       while (1)
       {
         LOBYTE(v25[0]) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:v25 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v25 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v25[0] & 0x7F) << v7;
@@ -384,9 +384,9 @@ LABEL_14:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -401,7 +401,7 @@ LABEL_16:
           goto LABEL_30;
         }
 
-        v19 = [[BMAppInFocus alloc] initByReadFrom:v4];
+        v19 = [[BMAppInFocus alloc] initByReadFrom:fromCopy];
         if (!v19)
         {
           goto LABEL_30;
@@ -442,13 +442,13 @@ LABEL_16:
       }
 
 LABEL_28:
-      v21 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v21 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_30:
     v22 = 0;
@@ -467,27 +467,27 @@ LABEL_31:
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = [(BMContextSyncAppInFocus *)self ID];
-  v5 = [(BMContextSyncAppInFocus *)self deviceUUID];
-  v6 = [(BMContextSyncAppInFocus *)self AppInFocus];
-  v7 = [v3 initWithFormat:@"BMContextSyncAppInFocus with ID: %@, deviceUUID: %@, AppInFocus: %@", v4, v5, v6];
+  deviceUUID = [(BMContextSyncAppInFocus *)self deviceUUID];
+  appInFocus = [(BMContextSyncAppInFocus *)self AppInFocus];
+  v7 = [v3 initWithFormat:@"BMContextSyncAppInFocus with ID: %@, deviceUUID: %@, AppInFocus: %@", v4, deviceUUID, appInFocus];
 
   return v7;
 }
 
-- (BMContextSyncAppInFocus)initWithID:(id)a3 deviceUUID:(id)a4 AppInFocus:(id)a5
+- (BMContextSyncAppInFocus)initWithID:(id)d deviceUUID:(id)iD AppInFocus:(id)focus
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  focusCopy = focus;
   v14.receiver = self;
   v14.super_class = BMContextSyncAppInFocus;
   v12 = [(BMEventBase *)&v14 init];
   if (v12)
   {
     v12->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v12->_ID, a3);
-    objc_storeStrong(&v12->_deviceUUID, a4);
-    objc_storeStrong(&v12->_AppInFocus, a5);
+    objc_storeStrong(&v12->_ID, d);
+    objc_storeStrong(&v12->_deviceUUID, iD);
+    objc_storeStrong(&v12->_AppInFocus, focus);
   }
 
   return v12;
@@ -518,9 +518,9 @@ id __34__BMContextSyncAppInFocus_columns__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -528,8 +528,8 @@ id __34__BMContextSyncAppInFocus_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMContextSyncAppInFocus alloc] initByReadFrom:v7];
     v4 = v8;

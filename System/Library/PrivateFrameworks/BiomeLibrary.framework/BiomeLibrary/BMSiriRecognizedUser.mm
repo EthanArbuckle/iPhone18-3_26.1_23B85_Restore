@@ -1,38 +1,38 @@
 @interface BMSiriRecognizedUser
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMSiriRecognizedUser)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMSiriRecognizedUser)initWithSharedUserId:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BMSiriRecognizedUser)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMSiriRecognizedUser)initWithSharedUserId:(id)id;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMSiriRecognizedUser
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMSiriRecognizedUser *)self sharedUserId];
-    v7 = [v5 sharedUserId];
-    if (v6 == v7)
+    v5 = equalCopy;
+    sharedUserId = [(BMSiriRecognizedUser *)self sharedUserId];
+    sharedUserId2 = [v5 sharedUserId];
+    if (sharedUserId == sharedUserId2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [(BMSiriRecognizedUser *)self sharedUserId];
-      v9 = [v5 sharedUserId];
-      v10 = [v8 isEqual:v9];
+      sharedUserId3 = [(BMSiriRecognizedUser *)self sharedUserId];
+      sharedUserId4 = [v5 sharedUserId];
+      v10 = [sharedUserId3 isEqual:sharedUserId4];
     }
   }
 
@@ -47,17 +47,17 @@
 - (id)jsonDictionary
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v2 = [(BMSiriRecognizedUser *)self sharedUserId];
+  sharedUserId = [(BMSiriRecognizedUser *)self sharedUserId];
   v7 = @"sharedUserId";
-  v3 = v2;
-  if (!v2)
+  null = sharedUserId;
+  if (!sharedUserId)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v8[0] = v3;
+  v8[0] = null;
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
-  if (!v2)
+  if (!sharedUserId)
   {
   }
 
@@ -66,27 +66,27 @@
   return v4;
 }
 
-- (BMSiriRecognizedUser)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMSiriRecognizedUser)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = [a3 objectForKeyedSubscript:@"sharedUserId"];
+  v6 = [dictionary objectForKeyedSubscript:@"sharedUserId"];
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    a4 = 0;
+    error = 0;
 LABEL_4:
-    self = [(BMSiriRecognizedUser *)self initWithSharedUserId:a4];
-    v7 = self;
+    self = [(BMSiriRecognizedUser *)self initWithSharedUserId:error];
+    selfCopy = self;
     goto LABEL_5;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a4 = v6;
+    error = v6;
     goto LABEL_4;
   }
 
-  if (a4)
+  if (error)
   {
     v10 = objc_alloc(MEMORY[0x1E696ABC0]);
     v11 = *MEMORY[0x1E698F240];
@@ -94,28 +94,28 @@ LABEL_4:
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"sharedUserId"];
     v15[0] = v12;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-    *a4 = [v10 initWithDomain:v11 code:2 userInfo:v13];
+    *error = [v10 initWithDomain:v11 code:2 userInfo:v13];
 
-    a4 = 0;
+    error = 0;
   }
 
-  v7 = 0;
+  selfCopy = 0;
 LABEL_5:
 
   v8 = *MEMORY[0x1E69E9840];
-  return v7;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMSiriRecognizedUser *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_sharedUserId)
   {
@@ -123,9 +123,9 @@ LABEL_5:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v20.receiver = self;
   v20.super_class = BMSiriRecognizedUser;
   v5 = [(BMEventBase *)&v20 init];
@@ -134,12 +134,12 @@ LABEL_5:
     goto LABEL_24;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -150,18 +150,18 @@ LABEL_5:
       while (1)
       {
         v21 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v21 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v21 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v21 & 0x7F) << v7;
@@ -178,9 +178,9 @@ LABEL_5:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -197,13 +197,13 @@ LABEL_16:
         goto LABEL_23;
       }
 
-      v17 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v17 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_23:
     v18 = 0;
@@ -221,22 +221,22 @@ LABEL_24:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMSiriRecognizedUser *)self sharedUserId];
-  v5 = [v3 initWithFormat:@"BMSiriRecognizedUser with sharedUserId: %@", v4];
+  sharedUserId = [(BMSiriRecognizedUser *)self sharedUserId];
+  v5 = [v3 initWithFormat:@"BMSiriRecognizedUser with sharedUserId: %@", sharedUserId];
 
   return v5;
 }
 
-- (BMSiriRecognizedUser)initWithSharedUserId:(id)a3
+- (BMSiriRecognizedUser)initWithSharedUserId:(id)id
 {
-  v5 = a3;
+  idCopy = id;
   v8.receiver = self;
   v8.super_class = BMSiriRecognizedUser;
   v6 = [(BMEventBase *)&v8 init];
   if (v6)
   {
     v6->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v6->_sharedUserId, a3);
+    objc_storeStrong(&v6->_sharedUserId, id);
   }
 
   return v6;
@@ -266,9 +266,9 @@ LABEL_24:
   return v3;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -276,8 +276,8 @@ LABEL_24:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMSiriRecognizedUser alloc] initByReadFrom:v7];
     v4 = v8;

@@ -1,22 +1,22 @@
 @interface KmlSharingRecordsUpdater
-- (KmlSharingRecordsUpdater)initWithEndpoint:(id)a3;
+- (KmlSharingRecordsUpdater)initWithEndpoint:(id)endpoint;
 @end
 
 @implementation KmlSharingRecordsUpdater
 
-- (KmlSharingRecordsUpdater)initWithEndpoint:(id)a3
+- (KmlSharingRecordsUpdater)initWithEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v15.receiver = self;
   v15.super_class = KmlSharingRecordsUpdater;
   v6 = [(KmlSharingRecordsUpdater *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_endpoint, a3);
-    v9 = [v5 subjectIdentifier];
+    objc_storeStrong(&v6->_endpoint, endpoint);
+    subjectIdentifier = [endpointCopy subjectIdentifier];
     endpointIdentifier = v7->_endpointIdentifier;
-    v7->_endpointIdentifier = v9;
+    v7->_endpointIdentifier = subjectIdentifier;
 
     v11 = +[NSMutableDictionary dictionary];
     invitationIdToConfigMap = v7->_invitationIdToConfigMap;

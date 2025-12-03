@@ -1,33 +1,33 @@
 @interface _UILibArchiveStreamingReader
 - (BOOL)_openArchive;
-- (BOOL)_readItemsWithShouldVisitBlock:(id)a3 visitorBlock:(id)a4 error:(id *)a5;
-- (BOOL)_shouldReportAsAppleDoubleItem:(id)a3 withConfirmedAppleDoubleFiles:(id)a4;
-- (BOOL)_shouldReportAsLogicalItem:(id)a3 withConfirmedAppleDoubleFiles:(id)a4;
-- (BOOL)readLogicalItemsWithBlock:(id)a3 error:(id *)a4;
+- (BOOL)_readItemsWithShouldVisitBlock:(id)block visitorBlock:(id)visitorBlock error:(id *)error;
+- (BOOL)_shouldReportAsAppleDoubleItem:(id)item withConfirmedAppleDoubleFiles:(id)files;
+- (BOOL)_shouldReportAsLogicalItem:(id)item withConfirmedAppleDoubleFiles:(id)files;
+- (BOOL)readLogicalItemsWithBlock:(id)block error:(id *)error;
 - (id)_debugLoadAndPrintAllRemainingItems;
-- (id)_loadItemByReadingAttributesFromUnderlyingArchiveEntry:(ui_archive_entry *)a3;
+- (id)_loadItemByReadingAttributesFromUnderlyingArchiveEntry:(ui_archive_entry *)entry;
 - (id)_nextSimpleItemFromPendingQueueOrLibArchiveRead;
-- (id)initForReadingArchivePath:(id)a3;
+- (id)initForReadingArchivePath:(id)path;
 - (void)_closeArchive;
 @end
 
 @implementation _UILibArchiveStreamingReader
 
-- (id)initForReadingArchivePath:(id)a3
+- (id)initForReadingArchivePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = _UILibArchiveStreamingReader;
   v6 = [(_UILibArchiveStreamingReader *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_archivePath, a3);
+    objc_storeStrong(&v6->_archivePath, path);
     v7->_state = 0;
     v7->_laProcessingState = 0;
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     readableLoadedItemEntryQueue = v7->_readableLoadedItemEntryQueue;
-    v7->_readableLoadedItemEntryQueue = v8;
+    v7->_readableLoadedItemEntryQueue = array;
 
     v7->_appleDoubleIdentificationType = 1;
     v7->_laArchiveType = -1;
@@ -38,24 +38,24 @@
   return v7;
 }
 
-- (BOOL)readLogicalItemsWithBlock:(id)a3 error:(id *)a4
+- (BOOL)readLogicalItemsWithBlock:(id)block error:(id *)error
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __64___UILibArchiveStreamingReader_readLogicalItemsWithBlock_error___block_invoke;
   v5[3] = &unk_1E7105928;
   v5[4] = self;
-  return [(_UILibArchiveStreamingReader *)self _readItemsWithShouldVisitBlock:v5 visitorBlock:a3 error:a4];
+  return [(_UILibArchiveStreamingReader *)self _readItemsWithShouldVisitBlock:v5 visitorBlock:block error:error];
 }
 
-- (BOOL)_readItemsWithShouldVisitBlock:(id)a3 visitorBlock:(id)a4 error:(id *)a5
+- (BOOL)_readItemsWithShouldVisitBlock:(id)block visitorBlock:(id)visitorBlock error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  blockCopy = block;
+  visitorBlockCopy = visitorBlock;
+  if (!blockCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"_UILibArchiveStreamingReader.m" lineNumber:94 description:@"Invalid parameter"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UILibArchiveStreamingReader.m" lineNumber:94 description:@"Invalid parameter"];
   }
 
   readError = self->_readError;
@@ -71,32 +71,32 @@
   v14 = self->_readError;
   if (!v14)
   {
-    v15 = 0;
+    _nextSimpleItemFromPendingQueueOrLibArchiveRead = 0;
     do
     {
-      v16 = v15;
-      v15 = [(_UILibArchiveStreamingReader *)self _nextSimpleItemFromPendingQueueOrLibArchiveRead];
+      v16 = _nextSimpleItemFromPendingQueueOrLibArchiveRead;
+      _nextSimpleItemFromPendingQueueOrLibArchiveRead = [(_UILibArchiveStreamingReader *)self _nextSimpleItemFromPendingQueueOrLibArchiveRead];
 
-      if (!v15)
+      if (!_nextSimpleItemFromPendingQueueOrLibArchiveRead)
       {
         break;
       }
 
       if (self->_appleDoubleIdentificationType == 1)
       {
-        [v13 confirmExactAppleDoubleFilesForItem:v15];
+        [v13 confirmExactAppleDoubleFilesForItem:_nextSimpleItemFromPendingQueueOrLibArchiveRead];
       }
 
-      v17 = [v13 pathToRealFileIfConfirmedAppleDoubleItem:v15];
-      [v15 setPathToAppleDoubleRealFileCounterpart:v17];
+      v17 = [v13 pathToRealFileIfConfirmedAppleDoubleItem:_nextSimpleItemFromPendingQueueOrLibArchiveRead];
+      [_nextSimpleItemFromPendingQueueOrLibArchiveRead setPathToAppleDoubleRealFileCounterpart:v17];
 
-      v18 = [v15 pathToAppleDoubleRealFileCounterpart];
-      [v15 setIsAppleDoubleFile:{objc_msgSend(v18, "length") != 0}];
+      pathToAppleDoubleRealFileCounterpart = [_nextSimpleItemFromPendingQueueOrLibArchiveRead pathToAppleDoubleRealFileCounterpart];
+      [_nextSimpleItemFromPendingQueueOrLibArchiveRead setIsAppleDoubleFile:{objc_msgSend(pathToAppleDoubleRealFileCounterpart, "length") != 0}];
 
-      if (v9[2](v9, v15, v13))
+      if (blockCopy[2](blockCopy, _nextSimpleItemFromPendingQueueOrLibArchiveRead, v13))
       {
         v22 = 0;
-        v10[2](v10, v15, &v22);
+        visitorBlockCopy[2](visitorBlockCopy, _nextSimpleItemFromPendingQueueOrLibArchiveRead, &v22);
         if (v22)
         {
           break;
@@ -108,20 +108,20 @@
     v14 = self->_readError;
   }
 
-  if (a5)
+  if (error)
   {
     v19 = v14;
-    *a5 = v14;
+    *error = v14;
     v14 = self->_readError;
   }
 
   return v14 == 0;
 }
 
-- (BOOL)_shouldReportAsLogicalItem:(id)a3 withConfirmedAppleDoubleFiles:(id)a4
+- (BOOL)_shouldReportAsLogicalItem:(id)item withConfirmedAppleDoubleFiles:(id)files
 {
-  v6 = a3;
-  if ([(_UILibArchiveStreamingReader *)self _shouldReportAsAppleDoubleItem:v6 withConfirmedAppleDoubleFiles:a4])
+  itemCopy = item;
+  if ([(_UILibArchiveStreamingReader *)self _shouldReportAsAppleDoubleItem:itemCopy withConfirmedAppleDoubleFiles:files])
   {
     v7 = 0;
   }
@@ -134,8 +134,8 @@
     }
 
     v8 = _MergedGlobals_1065;
-    v9 = [v6 pathInArchive];
-    LOBYTE(v8) = [v8 containsObject:v9];
+    pathInArchive = [itemCopy pathInArchive];
+    LOBYTE(v8) = [v8 containsObject:pathInArchive];
 
     v7 = v8 ^ 1;
   }
@@ -143,15 +143,15 @@
   return v7;
 }
 
-- (BOOL)_shouldReportAsAppleDoubleItem:(id)a3 withConfirmedAppleDoubleFiles:(id)a4
+- (BOOL)_shouldReportAsAppleDoubleItem:(id)item withConfirmedAppleDoubleFiles:(id)files
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  itemCopy = item;
+  filesCopy = files;
+  v8 = filesCopy;
   appleDoubleIdentificationType = self->_appleDoubleIdentificationType;
   if (appleDoubleIdentificationType == 2)
   {
-    v10 = [_UILibArchiveAppleDoublePathSet isPossibleAppleDoubleByApplyingMatchingHeuristicToItem:v6];
+    v10 = [_UILibArchiveAppleDoublePathSet isPossibleAppleDoubleByApplyingMatchingHeuristicToItem:itemCopy];
   }
 
   else
@@ -162,7 +162,7 @@
       goto LABEL_7;
     }
 
-    v10 = [v7 isConfirmedExactAppleDoubleItem:v6];
+    v10 = [filesCopy isConfirmedExactAppleDoubleItem:itemCopy];
   }
 
   v11 = v10;
@@ -198,10 +198,10 @@ LABEL_7:
 
         if (*p_laArchive)
         {
-          v9 = [(_UILibArchiveStreamingReader *)self _nextSimpleItemFromPendingQueueOrLibArchiveRead];
-          if (v9)
+          _nextSimpleItemFromPendingQueueOrLibArchiveRead = [(_UILibArchiveStreamingReader *)self _nextSimpleItemFromPendingQueueOrLibArchiveRead];
+          if (_nextSimpleItemFromPendingQueueOrLibArchiveRead)
           {
-            v10 = [MEMORY[0x1E695DF70] arrayWithObject:v9];
+            v10 = [MEMORY[0x1E695DF70] arrayWithObject:_nextSimpleItemFromPendingQueueOrLibArchiveRead];
             readableLoadedItemEntryQueue = self->_readableLoadedItemEntryQueue;
             self->_readableLoadedItemEntryQueue = v10;
           }
@@ -251,11 +251,11 @@ LABEL_7:
 
 - (id)_nextSimpleItemFromPendingQueueOrLibArchiveRead
 {
-  v3 = [(NSMutableArray *)self->_readableLoadedItemEntryQueue firstObject];
-  if (v3)
+  firstObject = [(NSMutableArray *)self->_readableLoadedItemEntryQueue firstObject];
+  if (firstObject)
   {
     [(NSMutableArray *)self->_readableLoadedItemEntryQueue removeObjectAtIndex:0];
-    v4 = v3;
+    v4 = firstObject;
 LABEL_3:
     v5 = v4;
     goto LABEL_6;
@@ -286,9 +286,9 @@ LABEL_6:
   return v5;
 }
 
-- (id)_loadItemByReadingAttributesFromUnderlyingArchiveEntry:(ui_archive_entry *)a3
+- (id)_loadItemByReadingAttributesFromUnderlyingArchiveEntry:(ui_archive_entry *)entry
 {
-  v4 = [(_UILibArchiveItem *)_UILibArchiveReaderLoadedItem itemByReadingAttributesFromUnderlyingArchiveEntry:a3 archive:self->_laArchive];
+  v4 = [(_UILibArchiveItem *)_UILibArchiveReaderLoadedItem itemByReadingAttributesFromUnderlyingArchiveEntry:entry archive:self->_laArchive];
   [v4 setSequenceIndex:self->_nextLoadedItemEntrySequenceIndex++];
 
   return v4;
@@ -297,31 +297,31 @@ LABEL_6:
 - (id)_debugLoadAndPrintAllRemainingItems
 {
   v3 = [[_UILibArchiveStreamingReader alloc] initForReadingArchivePath:self->_archivePath];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [v3 open];
-  v5 = [v3 _nextSimpleItemFromPendingQueueOrLibArchiveRead];
-  if (v5)
+  _nextSimpleItemFromPendingQueueOrLibArchiveRead = [v3 _nextSimpleItemFromPendingQueueOrLibArchiveRead];
+  if (_nextSimpleItemFromPendingQueueOrLibArchiveRead)
   {
-    v6 = v5;
+    v6 = _nextSimpleItemFromPendingQueueOrLibArchiveRead;
     do
     {
       if ([v6 sequenceIndex] >= self->_nextLoadedItemEntrySequenceIndex)
       {
-        [v4 addObject:v6];
+        [array addObject:v6];
       }
 
-      v7 = [v3 _nextSimpleItemFromPendingQueueOrLibArchiveRead];
+      _nextSimpleItemFromPendingQueueOrLibArchiveRead2 = [v3 _nextSimpleItemFromPendingQueueOrLibArchiveRead];
 
-      v6 = v7;
+      v6 = _nextSimpleItemFromPendingQueueOrLibArchiveRead2;
     }
 
-    while (v7);
+    while (_nextSimpleItemFromPendingQueueOrLibArchiveRead2);
   }
 
   [v3 close];
   NSLog(&cfstr_Remainingitems.isa, 0);
 
-  return v4;
+  return array;
 }
 
 @end

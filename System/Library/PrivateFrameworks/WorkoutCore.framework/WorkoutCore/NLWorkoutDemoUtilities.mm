@@ -1,5 +1,5 @@
 @interface NLWorkoutDemoUtilities
-+ (id)estimatedCaloriesFor:(id)a3 duration:(double)a4 distance:(id)a5;
++ (id)estimatedCaloriesFor:(id)for duration:(double)duration distance:(id)distance;
 + (id)workoutDemoSession;
 - (NLWorkoutDemoUtilities)init;
 @end
@@ -13,12 +13,12 @@
   return v2;
 }
 
-+ (id)estimatedCaloriesFor:(id)a3 duration:(double)a4 distance:(id)a5
++ (id)estimatedCaloriesFor:(id)for duration:(double)duration distance:(id)distance
 {
   v8 = objc_allocWithZone(MEMORY[0x277D0A810]);
-  v9 = a3;
-  v10 = a5;
-  v12 = [v8 initWithWorkoutActivityType_];
+  forCopy = for;
+  distanceCopy = distance;
+  initWithWorkoutActivityType_ = [v8 initWithWorkoutActivityType_];
   if (one-time initialization token for shared != -1)
   {
     swift_once();
@@ -29,8 +29,8 @@
     swift_once();
   }
 
-  v11.value.super.isa = v10;
-  v13 = FIUIWorkoutActivityType.estimatedCalories(healthStore:duration:distance:)(static WorkoutCoreInjector.healthStore, a4, v11);
+  v11.value.super.isa = distanceCopy;
+  v13 = FIUIWorkoutActivityType.estimatedCalories(healthStore:duration:distance:)(static WorkoutCoreInjector.healthStore, duration, v11);
 
   return v13;
 }

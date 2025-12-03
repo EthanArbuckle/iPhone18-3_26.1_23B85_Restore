@@ -2,7 +2,7 @@
 + (id)AdaptiveVolume;
 + (id)configurationForAdaptiveVolume;
 + (id)storeConfigurationForAdaptiveVolume;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)AdaptiveVolume
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForAdaptiveVolume];
+  configurationForAdaptiveVolume = [self configurationForAdaptiveVolume];
   v3 = +[BMDeviceAdaptiveVolume columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Audio.AdaptiveVolume" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Audio.AdaptiveVolume" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Audio.AdaptiveVolume" schema:v9 configuration:configurationForAdaptiveVolume];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -40,30 +40,30 @@
 
 + (id)configurationForAdaptiveVolume
 {
-  v3 = [a1 storeConfigurationForAdaptiveVolume];
-  v4 = [a1 syncPolicyForAdaptiveVolume];
+  storeConfigurationForAdaptiveVolume = [self storeConfigurationForAdaptiveVolume];
+  syncPolicyForAdaptiveVolume = [self syncPolicyForAdaptiveVolume];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"93FD2516-B85F-4218-95D2-164BD5247738"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Audio.AdaptiveVolume" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Audio.AdaptiveVolume" eventClass:objc_opt_class() storeConfig:storeConfigurationForAdaptiveVolume syncPolicy:syncPolicyForAdaptiveVolume legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"AdaptiveVolume"])
+  if ([name isEqualToString:@"AdaptiveVolume"])
   {
-    v4 = [a1 AdaptiveVolume];
+    adaptiveVolume = [self AdaptiveVolume];
   }
 
   else
   {
-    v4 = 0;
+    adaptiveVolume = 0;
   }
 
-  return v4;
+  return adaptiveVolume;
 }
 
 + (id)validKeyPaths

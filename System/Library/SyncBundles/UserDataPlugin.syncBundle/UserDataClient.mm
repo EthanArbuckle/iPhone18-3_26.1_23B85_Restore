@@ -1,6 +1,6 @@
 @interface UserDataClient
-- (UsageMetrics)_appUsageMetricsUsingCacheDeleteData:(SEL)a3;
-- (UsageMetrics)_cacheDeleteUsageMetricsUsingCacheDeleteData:(SEL)a3;
+- (UsageMetrics)_appUsageMetricsUsingCacheDeleteData:(SEL)data;
+- (UsageMetrics)_cacheDeleteUsageMetricsUsingCacheDeleteData:(SEL)data;
 - (UsageMetrics)_fileUsageMetrics;
 - (UsageMetrics)_iCloudUsageMetrics;
 - (id)installedAssetMetrics;
@@ -8,7 +8,7 @@
 
 @implementation UserDataClient
 
-- (UsageMetrics)_cacheDeleteUsageMetricsUsingCacheDeleteData:(SEL)a3
+- (UsageMetrics)_cacheDeleteUsageMetricsUsingCacheDeleteData:(SEL)data
 {
   retstr->var0 = 0;
   retstr->var1 = 0;
@@ -43,7 +43,7 @@
   return result;
 }
 
-- (UsageMetrics)_appUsageMetricsUsingCacheDeleteData:(SEL)a3
+- (UsageMetrics)_appUsageMetricsUsingCacheDeleteData:(SEL)data
 {
   v5 = a4;
   v15 = 0;
@@ -174,11 +174,11 @@
             v15 = ATGetPhysicalSizeForLogicalSize();
 
             v16 = [v11 valueForKey:@"Document Count"];
-            v17 = [v16 unsignedLongLongValue];
+            unsignedLongLongValue = [v16 unsignedLongLongValue];
 
             v6 += v13;
             v26 += v15;
-            v7 += v17;
+            v7 += unsignedLongLongValue;
           }
         }
 
@@ -324,10 +324,10 @@
   v60 = 0;
   v5 = dispatch_group_create();
   v6 = +[NSThread currentThread];
-  v7 = [v6 qualityOfService];
+  qualityOfService = [v6 qualityOfService];
 
   v8 = dispatch_queue_attr_make_with_autorelease_frequency(&_dispatch_queue_attr_concurrent, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v9 = dispatch_queue_attr_make_with_qos_class(v8, v7, 0);
+  v9 = dispatch_queue_attr_make_with_qos_class(v8, qualityOfService, 0);
   v10 = dispatch_queue_create("com.apple.amp.UserDataClient.updateQueue", v9);
 
   dispatch_group_enter(v5);

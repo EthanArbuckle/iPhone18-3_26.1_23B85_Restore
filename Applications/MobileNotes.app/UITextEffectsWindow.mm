@@ -1,19 +1,19 @@
 @interface UITextEffectsWindow
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation UITextEffectsWindow
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if (_AXSAutomationEnabled())
   {
     v13.receiver = self;
     v13.super_class = UITextEffectsWindow;
-    [(UITextEffectsWindow *)&v13 _accessibilityHitTest:v7 withEvent:x, y];
+    [(UITextEffectsWindow *)&v13 _accessibilityHitTest:eventCopy withEvent:x, y];
     v9 = LABEL_8:;
     goto LABEL_9;
   }
@@ -23,18 +23,18 @@
   {
     v12.receiver = self;
     v12.super_class = UITextEffectsWindow;
-    [(UITextEffectsWindow *)&v12 _accessibilityHitTest:v7 withEvent:x, y];
+    [(UITextEffectsWindow *)&v12 _accessibilityHitTest:eventCopy withEvent:x, y];
     goto LABEL_8;
   }
 
-  v8 = [(UITextEffectsWindow *)self _icaxKeyboardImpl];
-  [(UITextEffectsWindow *)self convertPoint:v8 toView:x, y];
-  v9 = [v8 _accessibilityHitTest:v7 withEvent:?];
+  _icaxKeyboardImpl = [(UITextEffectsWindow *)self _icaxKeyboardImpl];
+  [(UITextEffectsWindow *)self convertPoint:_icaxKeyboardImpl toView:x, y];
+  v9 = [_icaxKeyboardImpl _accessibilityHitTest:eventCopy withEvent:?];
   if (!v9)
   {
     v11.receiver = self;
     v11.super_class = UITextEffectsWindow;
-    v9 = [(UITextEffectsWindow *)&v11 _accessibilityHitTest:v7 withEvent:x, y];
+    v9 = [(UITextEffectsWindow *)&v11 _accessibilityHitTest:eventCopy withEvent:x, y];
   }
 
 LABEL_9:

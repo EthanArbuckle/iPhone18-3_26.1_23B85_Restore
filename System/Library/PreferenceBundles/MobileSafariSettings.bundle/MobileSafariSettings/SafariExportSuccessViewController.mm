@@ -1,15 +1,15 @@
 @interface SafariExportSuccessViewController
-- (SafariExportSuccessViewController)initWithExportURL:(id)a3 exportLocation:(int64_t)a4;
+- (SafariExportSuccessViewController)initWithExportURL:(id)l exportLocation:(int64_t)location;
 - (void)viewDidLoad;
 @end
 
 @implementation SafariExportSuccessViewController
 
-- (SafariExportSuccessViewController)initWithExportURL:(id)a3 exportLocation:(int64_t)a4
+- (SafariExportSuccessViewController)initWithExportURL:(id)l exportLocation:(int64_t)location
 {
-  v7 = a3;
+  lCopy = l;
   v8 = _WBSLocalizedString();
-  if (a4 > 2)
+  if (location > 2)
   {
     v9 = 0;
   }
@@ -33,10 +33,10 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_exportURL, a3);
-    v13->_exportLocation = a4;
-    v14 = [(SafariExportSuccessViewController *)v13 navigationItem];
-    [v14 setHidesBackButton:1];
+    objc_storeStrong(&v12->_exportURL, l);
+    v13->_exportLocation = location;
+    navigationItem = [(SafariExportSuccessViewController *)v13 navigationItem];
+    [navigationItem setHidesBackButton:1];
 
     v15 = v13;
   }
@@ -72,8 +72,8 @@ void __70__SafariExportSuccessViewController_initWithExportURL_exportLocation___
   v5[3] = &unk_895D8;
   v5[4] = self;
   [(NSURL *)exportURL safari_accessingSecurityScopedResource:v5];
-  v4 = [(SafariImportExportSheetController *)self button];
-  [v4 setAccessibilityIdentifier:@"DoneButton"];
+  button = [(SafariImportExportSheetController *)self button];
+  [button setAccessibilityIdentifier:@"DoneButton"];
 }
 
 void __48__SafariExportSuccessViewController_viewDidLoad__block_invoke(uint64_t a1)

@@ -1,28 +1,28 @@
 @interface Daemon
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)handleAssetDetectedMsg:(id)a3;
-- (void)isUpdateWaitingWithReply:(id)a3;
-- (void)purgeAllAssetsWithReply:(id)a3;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)handleAssetDetectedMsg:(id)msg;
+- (void)isUpdateWaitingWithReply:(id)reply;
+- (void)purgeAllAssetsWithReply:(id)reply;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation Daemon
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10001439C(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_10001439C(connectionCopy);
 
   return v9;
 }
 
-- (void)isUpdateWaitingWithReply:(id)a3
+- (void)isUpdateWaitingWithReply:(id)reply
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(reply);
   if (v4)
   {
     v5 = v4;
@@ -37,14 +37,14 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_10001098C(v7, v6);
   sub_100014F34(v7);
 }
 
-- (void)purgeAllAssetsWithReply:(id)a3
+- (void)purgeAllAssetsWithReply:(id)reply
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(reply);
   if (v3)
   {
     v4 = v3;
@@ -59,9 +59,9 @@
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context
 {
-  if (a5)
+  if (identifier)
   {
     v14 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v16 = v15;
@@ -73,17 +73,17 @@
     v16 = 0;
   }
 
-  v17 = a3;
-  v18 = a4;
-  v19 = a7;
-  v20 = a8;
-  v21 = self;
-  sub_100014708(v14, v16, a6, a7);
+  serviceCopy = service;
+  accountCopy = account;
+  errorCopy = error;
+  contextCopy = context;
+  selfCopy = self;
+  sub_100014708(v14, v16, success, error);
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
-  if (a6)
+  if (d)
   {
     v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v14 = v13;
@@ -95,28 +95,28 @@
     v14 = 0;
   }
 
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = self;
-  sub_10001491C(a4, a5, v12, v14);
+  serviceCopy = service;
+  accountCopy = account;
+  protobufCopy = protobuf;
+  contextCopy = context;
+  selfCopy = self;
+  sub_10001491C(account, protobuf, v12, v14);
 }
 
-- (void)handleAssetDetectedMsg:(id)a3
+- (void)handleAssetDetectedMsg:(id)msg
 {
-  v4 = a3;
-  v5 = self;
-  sub_100014AF4(v4);
+  msgCopy = msg;
+  selfCopy = self;
+  sub_100014AF4(msgCopy);
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   _Block_copy(v6);
-  v7 = a4;
+  responseCopy = response;
   os_transaction_create();
-  sub_100012860(v7, v6);
+  sub_100012860(responseCopy, v6);
   _Block_release(v6);
   swift_unknownObjectRelease();
 }

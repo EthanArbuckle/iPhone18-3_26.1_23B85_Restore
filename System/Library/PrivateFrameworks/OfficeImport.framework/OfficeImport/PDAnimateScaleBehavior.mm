@@ -1,5 +1,5 @@
 @interface PDAnimateScaleBehavior
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)by;
 - (CGPoint)from;
 - (CGPoint)to;
@@ -43,11 +43,11 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = TSUDynamicCast(v5, v4);
+  v6 = TSUDynamicCast(v5, equalCopy);
   v7 = v6;
   if (v6 && ((v8 = self->mTo.x, v9 = self->mTo.y, [v6 to], v8 == v11) ? (v12 = v9 == v10) : (v12 = 0), v12 && ((v13 = self->mFrom.x, v14 = self->mFrom.y, objc_msgSend(v7, "from"), v13 == v16) ? (v17 = v14 == v15) : (v17 = 0), v17)))
   {
@@ -61,7 +61,7 @@
     {
       v27.receiver = self;
       v27.super_class = PDAnimateScaleBehavior;
-      v18 = [(PDAnimateBehavior *)&v27 isEqual:v4];
+      v18 = [(PDAnimateBehavior *)&v27 isEqual:equalCopy];
       goto LABEL_13;
     }
   }

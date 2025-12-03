@@ -1,17 +1,17 @@
 @interface SearchUIVerticalLayoutCardSectionView
-+ (id)dragTitleForCardSection:(id)a3;
++ (id)dragTitleForCardSection:(id)section;
 - (CGRect)highlightFrame;
 - (id)highlightReferenceView;
 - (id)setupContentView;
 - (void)buildThumbnailOverlayContainerIfNecessary;
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5;
-- (void)containerViewDidLayoutArrangedSubviews:(id)a3;
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason;
+- (void)containerViewDidLayoutArrangedSubviews:(id)subviews;
 - (void)didMoveToWindow;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateChevronVisible:(BOOL)a3 leaveSpaceForChevron:(BOOL)a4;
-- (void)updateThumbnailOverlayContainerWithText:(id)a3;
-- (void)updateWithRowModel:(id)a3;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateChevronVisible:(BOOL)visible leaveSpaceForChevron:(BOOL)chevron;
+- (void)updateThumbnailOverlayContainerWithText:(id)text;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIVerticalLayoutCardSectionView
@@ -23,34 +23,34 @@
   v3 = objc_opt_new();
   [(SearchUIVerticalLayoutCardSectionView *)self setThumbnailView:v3];
 
-  v4 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
-  [v4 setMinimumLayoutSize:{60.0, 60.0}];
+  thumbnailView = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
+  [thumbnailView setMinimumLayoutSize:{60.0, 60.0}];
 
   v5 = [MEMORY[0x1E69D9138] cachedFontForTextStyle:*MEMORY[0x1E69DDD80] isShort:0 isBold:0];
   v6 = objc_opt_new();
   [(SearchUIVerticalLayoutCardSectionView *)self setTitleLabel:v6];
 
-  v7 = [(SearchUIVerticalLayoutCardSectionView *)self titleLabel];
-  [v7 setFont:v5];
+  titleLabel = [(SearchUIVerticalLayoutCardSectionView *)self titleLabel];
+  [titleLabel setFont:v5];
 
-  v8 = [(SearchUIVerticalLayoutCardSectionView *)self titleLabel];
-  [v8 setSupportsColorGlyphs:1];
+  titleLabel2 = [(SearchUIVerticalLayoutCardSectionView *)self titleLabel];
+  [titleLabel2 setSupportsColorGlyphs:1];
 
   v9 = +[(TLKLabel *)SearchUILabel];
   [(SearchUIVerticalLayoutCardSectionView *)self setFootnoteLabel:v9];
 
-  v10 = [(SearchUIVerticalLayoutCardSectionView *)self footnoteLabel];
-  [v10 setFont:v5];
+  footnoteLabel = [(SearchUIVerticalLayoutCardSectionView *)self footnoteLabel];
+  [footnoteLabel setFont:v5];
 
-  v11 = [(SearchUIVerticalLayoutCardSectionView *)self footnoteLabel];
-  [v11 setSupportsColorGlyphs:1];
+  footnoteLabel2 = [(SearchUIVerticalLayoutCardSectionView *)self footnoteLabel];
+  [footnoteLabel2 setSupportsColorGlyphs:1];
 
   v12 = objc_alloc(MEMORY[0x1E698B730]);
-  v13 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
-  v14 = [(SearchUIVerticalLayoutCardSectionView *)self titleLabel];
-  v19[1] = v14;
-  v15 = [(SearchUIVerticalLayoutCardSectionView *)self footnoteLabel];
-  v19[2] = v15;
+  thumbnailView2 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
+  titleLabel3 = [(SearchUIVerticalLayoutCardSectionView *)self titleLabel];
+  v19[1] = titleLabel3;
+  footnoteLabel3 = [(SearchUIVerticalLayoutCardSectionView *)self footnoteLabel];
+  v19[2] = footnoteLabel3;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:3];
   v17 = [v12 initWithArrangedSubviews:v16];
 
@@ -65,15 +65,15 @@
 
 - (CGRect)highlightFrame
 {
-  v3 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
-  [v3 frame];
+  thumbnailView = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
+  [thumbnailView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
-  v13 = [v12 superview];
-  [(SearchUIVerticalLayoutCardSectionView *)self convertRect:v13 fromView:v5, v7, v9, v11];
+  thumbnailView2 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
+  superview = [thumbnailView2 superview];
+  [(SearchUIVerticalLayoutCardSectionView *)self convertRect:superview fromView:v5, v7, v9, v11];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -92,34 +92,34 @@
 
 - (id)highlightReferenceView
 {
-  v2 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
-  v3 = [v2 highlightReferenceView];
+  thumbnailView = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
+  highlightReferenceView = [thumbnailView highlightReferenceView];
 
-  return v3;
+  return highlightReferenceView;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v12.receiver = self;
   v12.super_class = SearchUIVerticalLayoutCardSectionView;
-  v4 = a3;
-  [(SearchUICardSectionView *)&v12 updateWithRowModel:v4];
-  v5 = [v4 cardSection];
-  -[SearchUIVerticalLayoutCardSectionView setUseAppIconMetrics:](self, "setUseAppIconMetrics:", [v5 useAppIconMetrics]);
-  v6 = [v4 identifyingResult];
+  modelCopy = model;
+  [(SearchUICardSectionView *)&v12 updateWithRowModel:modelCopy];
+  cardSection = [modelCopy cardSection];
+  -[SearchUIVerticalLayoutCardSectionView setUseAppIconMetrics:](self, "setUseAppIconMetrics:", [cardSection useAppIconMetrics]);
+  identifyingResult = [modelCopy identifyingResult];
 
-  v7 = [v6 sectionBundleIdentifier];
-  -[SearchUIVerticalLayoutCardSectionView setUseToolTips:](self, "setUseToolTips:", [v7 hasPrefix:@"com.apple.spotlight.zkw"]);
+  sectionBundleIdentifier = [identifyingResult sectionBundleIdentifier];
+  -[SearchUIVerticalLayoutCardSectionView setUseToolTips:](self, "setUseToolTips:", [sectionBundleIdentifier hasPrefix:@"com.apple.spotlight.zkw"]);
 
-  v8 = [(SearchUICardSectionView *)self contentView];
+  contentView = [(SearchUICardSectionView *)self contentView];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60__SearchUIVerticalLayoutCardSectionView_updateWithRowModel___block_invoke;
   v10[3] = &unk_1E85B2540;
   v10[4] = self;
-  v11 = v5;
-  v9 = v5;
-  [v8 performBatchUpdates:v10];
+  v11 = cardSection;
+  v9 = cardSection;
+  [contentView performBatchUpdates:v10];
 }
 
 uint64_t __60__SearchUIVerticalLayoutCardSectionView_updateWithRowModel___block_invoke(uint64_t a1)
@@ -368,14 +368,14 @@ uint64_t __60__SearchUIVerticalLayoutCardSectionView_updateWithRowModel___block_
   return [v86 tlk_updateWithCurrentAppearance];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = SearchUIVerticalLayoutCardSectionView;
-  [(SearchUIVerticalLayoutCardSectionView *)&v9 traitCollectionDidChange:v4];
-  v5 = [(SearchUIVerticalLayoutCardSectionView *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(SearchUIVerticalLayoutCardSectionView *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(SearchUIVerticalLayoutCardSectionView *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -383,11 +383,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(SearchUIVerticalLayoutCardSectionView *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(SearchUIVerticalLayoutCardSectionView *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -403,29 +403,29 @@ LABEL_5:
   [(SearchUIVerticalLayoutCardSectionView *)self tlk_updateWithCurrentAppearance];
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
-  v4 = a3;
+  appearanceCopy = appearance;
   v27.receiver = self;
   v27.super_class = SearchUIVerticalLayoutCardSectionView;
-  [(SearchUIVerticalLayoutCardSectionView *)&v27 tlk_updateForAppearance:v4];
-  v5 = [(SearchUICardSectionView *)self rowModel];
-  v6 = [v5 cardSection];
+  [(SearchUIVerticalLayoutCardSectionView *)&v27 tlk_updateForAppearance:appearanceCopy];
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  cardSection = [rowModel cardSection];
 
-  if (v6)
+  if (cardSection)
   {
-    v7 = [v6 thumbnail];
+    thumbnail = [cardSection thumbnail];
     if ([(SearchUIVerticalLayoutCardSectionView *)self useAppIconMetrics])
     {
-      v8 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
-      [v8 minimumLayoutSize];
+      thumbnailView = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
+      [thumbnailView minimumLayoutSize];
       v10 = v9;
       v12 = v11;
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [(SearchUIImage *)SearchUISymbolImage imageWithSFImage:v7];
+        v13 = [(SearchUIImage *)SearchUISymbolImage imageWithSFImage:thumbnail];
         v14 = v13;
         if (v10 >= v12)
         {
@@ -438,29 +438,29 @@ LABEL_5:
         }
 
         [v13 setPreferredSymbolFontSize:v15 * 0.5];
-        if ([v4 isDark])
+        if ([appearanceCopy isDark])
         {
-          [v4 quaternaryColor];
+          [appearanceCopy quaternaryColor];
         }
 
         else
         {
-          [v4 quinaryColor];
+          [appearanceCopy quinaryColor];
         }
         v20 = ;
         [v14 setCustomBackgroundColor:v20];
 
-        v21 = [v4 isDark];
-        v22 = [v4 primaryColor];
-        v23 = v22;
-        if (v21)
+        isDark = [appearanceCopy isDark];
+        primaryColor = [appearanceCopy primaryColor];
+        v23 = primaryColor;
+        if (isDark)
         {
-          [v14 setCustomForegroundColor:v22];
+          [v14 setCustomForegroundColor:primaryColor];
         }
 
         else
         {
-          v24 = [v22 colorWithAlphaComponent:0.75];
+          v24 = [primaryColor colorWithAlphaComponent:0.75];
           [v14 setCustomForegroundColor:v24];
         }
 
@@ -469,7 +469,7 @@ LABEL_5:
 
       else
       {
-        v14 = v7;
+        v14 = thumbnail;
       }
 
       objc_opt_class();
@@ -499,8 +499,8 @@ LABEL_5:
       if (objc_opt_isKindOfClass())
       {
         v16 = MEMORY[0x1E696AEC0];
-        v17 = [v7 photoIdentifier];
-        v18 = [v16 stringWithFormat:@"photoIdentifier: %@", v17];
+        photoIdentifier = [thumbnail photoIdentifier];
+        v18 = [v16 stringWithFormat:@"photoIdentifier: %@", photoIdentifier];
         [(SearchUIVerticalLayoutCardSectionView *)self setAccessibilityIdentifier:v18];
       }
 
@@ -510,42 +510,42 @@ LABEL_5:
       }
 
       v19 = 2;
-      v14 = v7;
+      v14 = thumbnail;
     }
 
-    v25 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
-    [v25 setAlignment:v19];
+    thumbnailView2 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
+    [thumbnailView2 setAlignment:v19];
 
-    v26 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
-    [v26 updateWithImage:v14];
+    thumbnailView3 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
+    [thumbnailView3 updateWithImage:v14];
   }
 }
 
 - (void)buildThumbnailOverlayContainerIfNecessary
 {
   v32[3] = *MEMORY[0x1E69E9840];
-  v3 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayContainer];
+  thumbnailOverlayContainer = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayContainer];
 
-  if (!v3)
+  if (!thumbnailOverlayContainer)
   {
     v4 = objc_opt_new();
     [(SearchUIVerticalLayoutCardSectionView *)self setGradientImageView:v4];
 
-    v5 = [(SearchUIVerticalLayoutCardSectionView *)self gradientImageView];
-    [v5 setAlpha:0.4];
+    gradientImageView = [(SearchUIVerticalLayoutCardSectionView *)self gradientImageView];
+    [gradientImageView setAlpha:0.4];
 
     v6 = MEMORY[0x1E69DCAB8];
     v7 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v8 = [v6 imageNamed:@"PXBadgeGradientRight" inBundle:v7 compatibleWithTraitCollection:0];
-    v9 = [(SearchUIVerticalLayoutCardSectionView *)self gradientImageView];
-    [v9 setImage:v8];
+    gradientImageView2 = [(SearchUIVerticalLayoutCardSectionView *)self gradientImageView];
+    [gradientImageView2 setImage:v8];
 
     v10 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:12.0];
     v11 = objc_opt_new();
     [(SearchUIVerticalLayoutCardSectionView *)self setThumbnailOverlayLabel:v11];
 
-    v12 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayLabel];
-    [v12 setFont:v10];
+    thumbnailOverlayLabel = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayLabel];
+    [thumbnailOverlayLabel setFont:v10];
 
     if ([MEMORY[0x1E69D91A8] isLTR])
     {
@@ -557,76 +557,76 @@ LABEL_5:
       v13 = 0;
     }
 
-    v14 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayLabel];
-    [v14 setTextAlignment:v13];
+    thumbnailOverlayLabel2 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayLabel];
+    [thumbnailOverlayLabel2 setTextAlignment:v13];
 
     v15 = objc_opt_new();
     [(SearchUIVerticalLayoutCardSectionView *)self setThumbnailOverlayImageView:v15];
 
-    v16 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayImageView];
-    [v16 setSymbolFont:v10];
+    thumbnailOverlayImageView = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayImageView];
+    [thumbnailOverlayImageView setSymbolFont:v10];
 
-    v17 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayImageView];
-    [v17 setProminence:0];
+    thumbnailOverlayImageView2 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayImageView];
+    [thumbnailOverlayImageView2 setProminence:0];
 
     v18 = objc_alloc(MEMORY[0x1E698B718]);
-    v19 = [(SearchUIVerticalLayoutCardSectionView *)self gradientImageView];
-    v20 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayLabel];
-    v32[1] = v20;
-    v21 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayImageView];
-    v32[2] = v21;
+    gradientImageView3 = [(SearchUIVerticalLayoutCardSectionView *)self gradientImageView];
+    thumbnailOverlayLabel3 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayLabel];
+    v32[1] = thumbnailOverlayLabel3;
+    thumbnailOverlayImageView3 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayImageView];
+    v32[2] = thumbnailOverlayImageView3;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:3];
     v23 = [v18 initWithArrangedSubviews:v22];
     [(SearchUIVerticalLayoutCardSectionView *)self setThumbnailOverlayContainer:v23];
 
-    v24 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayContainer];
-    [v24 setHorizontalAlignment:4];
+    thumbnailOverlayContainer2 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayContainer];
+    [thumbnailOverlayContainer2 setHorizontalAlignment:4];
 
-    v25 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayContainer];
-    [v25 setVerticalAlignment:4];
+    thumbnailOverlayContainer3 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayContainer];
+    [thumbnailOverlayContainer3 setVerticalAlignment:4];
 
     v26 = [MEMORY[0x1E69D9108] appearanceWithStyle:1];
-    v27 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayContainer];
-    [v26 overrideAppearanceForView:v27];
+    thumbnailOverlayContainer4 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayContainer];
+    [v26 overrideAppearanceForView:thumbnailOverlayContainer4];
 
-    v28 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
-    v29 = [v28 imageView];
-    v30 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayContainer];
-    [v29 addSubview:v30];
+    thumbnailView = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
+    imageView = [thumbnailView imageView];
+    thumbnailOverlayContainer5 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayContainer];
+    [imageView addSubview:thumbnailOverlayContainer5];
 
-    v31 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayContainer];
-    [SearchUIAutoLayout fillContainerWithView:v31];
+    thumbnailOverlayContainer6 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayContainer];
+    [SearchUIAutoLayout fillContainerWithView:thumbnailOverlayContainer6];
   }
 }
 
-- (void)updateChevronVisible:(BOOL)a3 leaveSpaceForChevron:(BOOL)a4
+- (void)updateChevronVisible:(BOOL)visible leaveSpaceForChevron:(BOOL)chevron
 {
   v4.receiver = self;
   v4.super_class = SearchUIVerticalLayoutCardSectionView;
   [(SearchUICardSectionView *)&v4 updateChevronVisible:0 leaveSpaceForChevron:0];
 }
 
-- (void)updateThumbnailOverlayContainerWithText:(id)a3
+- (void)updateThumbnailOverlayContainerWithText:(id)text
 {
-  v15 = a3;
-  v4 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayContainer];
-  [v4 setHidden:v15 == 0];
+  textCopy = text;
+  thumbnailOverlayContainer = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayContainer];
+  [thumbnailOverlayContainer setHidden:textCopy == 0];
 
-  v5 = [(SearchUICardSectionView *)self section];
-  v6 = [v5 thumbnailOverlayText];
-  v7 = [v6 icons];
-  v8 = [v7 firstObject];
+  section = [(SearchUICardSectionView *)self section];
+  thumbnailOverlayText = [section thumbnailOverlayText];
+  icons = [thumbnailOverlayText icons];
+  firstObject = [icons firstObject];
 
-  v9 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayImageView];
-  [v9 updateWithImage:v8];
+  thumbnailOverlayImageView = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayImageView];
+  [thumbnailOverlayImageView updateWithImage:firstObject];
 
-  v10 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayImageView];
-  [v10 setHidden:v8 == 0];
+  thumbnailOverlayImageView2 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayImageView];
+  [thumbnailOverlayImageView2 setHidden:firstObject == 0];
 
-  v11 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayLabel];
-  [v11 setSfText:v15];
+  thumbnailOverlayLabel = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayLabel];
+  [thumbnailOverlayLabel setSfText:textCopy];
 
-  if (v8)
+  if (firstObject)
   {
     v12 = 0;
     v13 = 1;
@@ -634,8 +634,8 @@ LABEL_5:
 
   else
   {
-    v11 = [v15 formattedTextPieces];
-    if (v11)
+    thumbnailOverlayLabel = [textCopy formattedTextPieces];
+    if (thumbnailOverlayLabel)
     {
       v12 = 0;
       v13 = 0;
@@ -643,51 +643,51 @@ LABEL_5:
 
     else
     {
-      v10 = [v15 text];
-      v13 = v10 == 0;
+      thumbnailOverlayImageView2 = [textCopy text];
+      v13 = thumbnailOverlayImageView2 == 0;
       v12 = 1;
     }
   }
 
-  v14 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayLabel];
-  [v14 setHidden:v13];
+  thumbnailOverlayLabel2 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayLabel];
+  [thumbnailOverlayLabel2 setHidden:v13];
 
   if (v12)
   {
   }
 
-  if (!v8)
+  if (!firstObject)
   {
   }
 }
 
-- (void)containerViewDidLayoutArrangedSubviews:(id)a3
+- (void)containerViewDidLayoutArrangedSubviews:(id)subviews
 {
-  v26 = a3;
+  subviewsCopy = subviews;
   if (![MEMORY[0x1E69D9240] isMacOS] || !-[SearchUIVerticalLayoutCardSectionView useAppIconMetrics](self, "useAppIconMetrics"))
   {
-    v4 = [(SearchUICardSectionView *)self contentView];
-    if (v4 != v26)
+    contentView = [(SearchUICardSectionView *)self contentView];
+    if (contentView != subviewsCopy)
     {
 LABEL_4:
 
       goto LABEL_6;
     }
 
-    v5 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
-    v6 = [v5 currentImage];
-    v7 = [(SearchUICardSectionView *)self section];
-    v8 = [v7 thumbnail];
+    thumbnailView = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
+    currentImage = [thumbnailView currentImage];
+    section = [(SearchUICardSectionView *)self section];
+    thumbnail = [section thumbnail];
 
-    if (v6 == v8)
+    if (currentImage == thumbnail)
     {
-      v9 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayLabel];
-      v4 = [v9 font];
+      thumbnailOverlayLabel = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayLabel];
+      contentView = [thumbnailOverlayLabel font];
 
-      v10 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayImageView];
-      v11 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
-      [v11 bounds];
-      [v10 cornerRadiusForSize:1 roundingStyle:{v12, v13}];
+      thumbnailOverlayImageView = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayImageView];
+      thumbnailView2 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailView];
+      [thumbnailView2 bounds];
+      [thumbnailOverlayImageView cornerRadiusForSize:1 roundingStyle:{v12, v13}];
       v15 = v14;
 
       v16 = v15 * 1.74 + -18.0;
@@ -700,14 +700,14 @@ LABEL_4:
       v18 = -v17;
       v19 = -1.0 - v17;
       v20 = MEMORY[0x1E69D91A8];
-      [v4 descender];
+      [contentView descender];
       [v20 deviceScaledRoundedValue:self forView:v21 * 0.5];
       v23 = v18 - v22;
-      v24 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayLabel];
-      [v24 setCustomAlignmentRectInsets:{0.0, 0.0, v23, v19}];
+      thumbnailOverlayLabel2 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayLabel];
+      [thumbnailOverlayLabel2 setCustomAlignmentRectInsets:{0.0, 0.0, v23, v19}];
 
-      v25 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayImageView];
-      [v25 setCustomAlignmentRectInsets:{0.0, 0.0, v18, v19}];
+      thumbnailOverlayImageView2 = [(SearchUIVerticalLayoutCardSectionView *)self thumbnailOverlayImageView];
+      [thumbnailOverlayImageView2 setCustomAlignmentRectInsets:{0.0, 0.0, v18, v19}];
 
       goto LABEL_4;
     }
@@ -716,50 +716,50 @@ LABEL_4:
 LABEL_6:
 }
 
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  if (v9 == self && !a5 && [(SearchUIVerticalLayoutCardSectionView *)self useAppIconMetrics])
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  if (viewCopy == self && !reason && [(SearchUIVerticalLayoutCardSectionView *)self useAppIconMetrics])
   {
-    v10 = [(SearchUIVerticalLayoutCardSectionView *)self titleLabel];
-    v11 = [v10 richText];
-    if (([v11 hasContent] & 1) == 0)
+    titleLabel = [(SearchUIVerticalLayoutCardSectionView *)self titleLabel];
+    richText = [titleLabel richText];
+    if (([richText hasContent] & 1) == 0)
     {
 
       goto LABEL_8;
     }
 
-    v12 = [(SearchUIVerticalLayoutCardSectionView *)self footnoteLabel];
-    v13 = [v12 richText];
-    v14 = [v13 hasContent];
+    footnoteLabel = [(SearchUIVerticalLayoutCardSectionView *)self footnoteLabel];
+    richText2 = [footnoteLabel richText];
+    hasContent = [richText2 hasContent];
 
-    if (v14)
+    if (hasContent)
     {
-      v15 = [(SearchUIVerticalLayoutCardSectionView *)self titleLabel];
-      [v15 textRectForBounds:1 limitedToNumberOfLines:{0.0, 0.0, width + -16.0, 1.79769313e308}];
+      titleLabel2 = [(SearchUIVerticalLayoutCardSectionView *)self titleLabel];
+      [titleLabel2 textRectForBounds:1 limitedToNumberOfLines:{0.0, 0.0, width + -16.0, 1.79769313e308}];
       v17 = v16;
 
-      v18 = [(SearchUIVerticalLayoutCardSectionView *)self titleLabel];
-      [v18 textRectForBounds:0 limitedToNumberOfLines:{0.0, 0.0, width + -16.0, 1.79769313e308}];
+      titleLabel3 = [(SearchUIVerticalLayoutCardSectionView *)self titleLabel];
+      [titleLabel3 textRectForBounds:0 limitedToNumberOfLines:{0.0, 0.0, width + -16.0, 1.79769313e308}];
       v20 = v19;
 
-      v10 = [(SearchUIVerticalLayoutCardSectionView *)self footnoteLabel];
-      [v10 setHidden:v20 > ceil(v17)];
+      titleLabel = [(SearchUIVerticalLayoutCardSectionView *)self footnoteLabel];
+      [titleLabel setHidden:v20 > ceil(v17)];
 LABEL_8:
     }
   }
 
   v21.receiver = self;
   v21.super_class = SearchUIVerticalLayoutCardSectionView;
-  [(SearchUICardSectionView *)&v21 containerView:v9 willMeasureArrangedSubviewsFittingSize:a5 forReason:width, height];
+  [(SearchUICardSectionView *)&v21 containerView:viewCopy willMeasureArrangedSubviewsFittingSize:reason forReason:width, height];
 }
 
-+ (id)dragTitleForCardSection:(id)a3
++ (id)dragTitleForCardSection:(id)section
 {
-  v3 = [a3 title];
-  v4 = [SearchUIUtilities stringForSFRichText:v3];
+  title = [section title];
+  v4 = [SearchUIUtilities stringForSFRichText:title];
 
   return v4;
 }

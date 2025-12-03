@@ -1,13 +1,13 @@
 @interface VCMediaControlInfoFaceTimeAudio
 - (VCMediaControlInfoFaceTimeAudio)init;
-- (VCMediaControlInfoFaceTimeAudio)initWithBuffer:(const char *)a3 length:(unint64_t)a4 optionalControlInfo:(id *)a5 version:(unsigned __int8)a6;
+- (VCMediaControlInfoFaceTimeAudio)initWithBuffer:(const char *)buffer length:(unint64_t)length optionalControlInfo:(id *)info version:(unsigned __int8)version;
 - (id)description;
-- (int)configureWithBuffer:(const char *)a3 length:(unint64_t)a4 optionalControlInfo:(id *)a5;
-- (int)getInfo:(void *)a3 bufferLength:(unint64_t)a4 infoSize:(unint64_t *)a5 type:(unsigned int)a6;
-- (int)getInfoUnserialized:(id *)a3 type:(unsigned int)a4;
-- (int)handleOptionalControlInfo:(id *)a3;
-- (int)setInfo:(void *)a3 size:(unint64_t)a4 type:(unsigned int)a5;
-- (int)setInfoUnserialized:(id *)a3 type:(unsigned int)a4;
+- (int)configureWithBuffer:(const char *)buffer length:(unint64_t)length optionalControlInfo:(id *)info;
+- (int)getInfo:(void *)info bufferLength:(unint64_t)length infoSize:(unint64_t *)size type:(unsigned int)type;
+- (int)getInfoUnserialized:(id *)unserialized type:(unsigned int)type;
+- (int)handleOptionalControlInfo:(id *)info;
+- (int)setInfo:(void *)info size:(unint64_t)size type:(unsigned int)type;
+- (int)setInfoUnserialized:(id *)unserialized type:(unsigned int)type;
 - (unint64_t)feedbackSize;
 @end
 
@@ -28,12 +28,12 @@
   return result;
 }
 
-- (VCMediaControlInfoFaceTimeAudio)initWithBuffer:(const char *)a3 length:(unint64_t)a4 optionalControlInfo:(id *)a5 version:(unsigned __int8)a6
+- (VCMediaControlInfoFaceTimeAudio)initWithBuffer:(const char *)buffer length:(unint64_t)length optionalControlInfo:(id *)info version:(unsigned __int8)version
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = VCMediaControlInfoFaceTimeAudio;
-  result = [(VCMediaControlInfo *)&v7 initWithBuffer:a3 length:a4 optionalControlInfo:a5 version:a6];
+  result = [(VCMediaControlInfo *)&v7 initWithBuffer:buffer length:length optionalControlInfo:info version:version];
   if (result)
   {
     result->super._vtableC.serializedSize = VCMediaControlInfoFaceTimeAudio_SerializedSize;
@@ -104,13 +104,13 @@
   return v3;
 }
 
-- (int)configureWithBuffer:(const char *)a3 length:(unint64_t)a4 optionalControlInfo:(id *)a5
+- (int)configureWithBuffer:(const char *)buffer length:(unint64_t)length optionalControlInfo:(id *)info
 {
   v27 = *MEMORY[0x1E69E9840];
   v18 = 0;
   v17 = 0;
   version = self->super._version;
-  v7 = VCMediaControlInfoUnserializeWithData(&self->_controlFeedbackParameter, a3, a4, &version);
+  v7 = VCMediaControlInfoUnserializeWithData(&self->_controlFeedbackParameter, buffer, length, &version);
   v8 = v7;
   if (v17 == 1)
   {
@@ -155,7 +155,7 @@
 
   else
   {
-    v8 = [(VCMediaControlInfoFaceTimeAudio *)self handleOptionalControlInfo:a5];
+    v8 = [(VCMediaControlInfoFaceTimeAudio *)self handleOptionalControlInfo:info];
     if (v8)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -200,40 +200,40 @@
   return v8;
 }
 
-- (int)getInfoUnserialized:(id *)a3 type:(unsigned int)a4
+- (int)getInfoUnserialized:(id *)unserialized type:(unsigned int)type
 {
   v4 = -2144403455;
-  if (a3)
+  if (unserialized)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       if ((self->super._bitmap & 0x80) != 0)
       {
         v4 = 0;
-        a3->var10 = self->_controlFeedbackParameter.owrd;
-        a3->var8 = self->_controlFeedbackParameter.queuingDelay;
-        a3->var9 = self->_controlFeedbackParameter.sendTimestamp;
+        unserialized->var10 = self->_controlFeedbackParameter.owrd;
+        unserialized->var8 = self->_controlFeedbackParameter.queuingDelay;
+        unserialized->var9 = self->_controlFeedbackParameter.sendTimestamp;
         return v4;
       }
 
       return 0;
     }
 
-    if (!a4)
+    if (!type)
     {
       bitmap = self->super._bitmap;
       if (bitmap)
       {
-        *&a3->var0 = *&self->_controlFeedbackParameter.timeStamp;
-        *&a3->var4 = *&self->_controlFeedbackParameter.audioBurstLoss;
-        *&a3->var6 = *&self->_controlFeedbackParameter.totalReceivedKBytes;
+        *&unserialized->var0 = *&self->_controlFeedbackParameter.timeStamp;
+        *&unserialized->var4 = *&self->_controlFeedbackParameter.audioBurstLoss;
+        *&unserialized->var6 = *&self->_controlFeedbackParameter.totalReceivedKBytes;
         bitmap = self->super._bitmap;
       }
 
       if ((bitmap & 8) != 0)
       {
         v4 = 0;
-        *&a3->var12 = *&self->_controlFeedbackParameter.ecnECT1Count;
+        *&unserialized->var12 = *&self->_controlFeedbackParameter.ecnECT1Count;
         return v4;
       }
 
@@ -253,9 +253,9 @@
   return v4;
 }
 
-- (int)setInfo:(void *)a3 size:(unint64_t)a4 type:(unsigned int)a5
+- (int)setInfo:(void *)info size:(unint64_t)size type:(unsigned int)type
 {
-  switch(a5)
+  switch(type)
   {
     case 0u:
     case 1u:
@@ -282,52 +282,52 @@
     case 2u:
       v5 = 0;
       self->super._bitmap |= 2u;
-      self->_controlFeedbackParameter.connectionStatsBuffer = *a3;
+      self->_controlFeedbackParameter.connectionStatsBuffer = *info;
       return v5;
     case 0xAu:
       v5 = 0;
       self->super._bitmap |= 0x40u;
-      self->_controlInfoArrivalTime = *a3;
+      self->_controlInfoArrivalTime = *info;
       return v5;
     case 0xBu:
       v5 = 0;
       self->super._bitmap |= 0x20u;
-      v6 = *a3;
+      v6 = *info;
       v7 = 68;
       goto LABEL_15;
     case 0xCu:
       v5 = 0;
       self->super._bitmap |= 0x10u;
-      v6 = *a3;
+      v6 = *info;
       v7 = 64;
       goto LABEL_15;
     case 0xDu:
       v5 = 0;
       self->super._bitmap |= 0x400u;
-      self->_controlInfoSequenceNumber = *a3;
+      self->_controlInfoSequenceNumber = *info;
       return v5;
     case 0xEu:
       v5 = 0;
       self->super._bitmap |= 0x800u;
-      v8 = *a3;
+      v8 = *info;
       v9 = 132;
       goto LABEL_17;
     case 0xFu:
       v5 = 0;
       self->super._bitmap |= 0x1000u;
-      v8 = *a3;
+      v8 = *info;
       v9 = 133;
       goto LABEL_17;
     case 0x10u:
       v5 = 0;
       self->super._bitmap |= 0x200u;
-      v6 = *a3;
+      v6 = *info;
       v7 = 72;
       goto LABEL_15;
     case 0x11u:
       v5 = 0;
       self->super._bitmap |= 0x100u;
-      v6 = *a3;
+      v6 = *info;
       v7 = 76;
 LABEL_15:
       *(&self->super.super.isa + v7) = v6;
@@ -335,13 +335,13 @@ LABEL_15:
     case 0x12u:
       v5 = 0;
       self->super._bitmap |= 0x2000u;
-      v8 = *a3;
+      v8 = *info;
       v9 = 135;
       goto LABEL_17;
     case 0x15u:
       v5 = 0;
       self->super._bitmap |= 0x15u;
-      v8 = *a3;
+      v8 = *info;
       v9 = 136;
 LABEL_17:
       *(&self->super.super.isa + v9) = v8;
@@ -355,21 +355,21 @@ LABEL_17:
   return v5;
 }
 
-- (int)setInfoUnserialized:(id *)a3 type:(unsigned int)a4
+- (int)setInfoUnserialized:(id *)unserialized type:(unsigned int)type
 {
   v4 = -2144403455;
-  if (a3)
+  if (unserialized)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       v4 = 0;
       self->super._bitmap |= 0x80u;
-      self->_controlFeedbackParameter.owrd = a3->var10;
-      self->_controlFeedbackParameter.queuingDelay = a3->var8;
-      self->_controlFeedbackParameter.sendTimestamp = a3->var9;
+      self->_controlFeedbackParameter.owrd = unserialized->var10;
+      self->_controlFeedbackParameter.queuingDelay = unserialized->var8;
+      self->_controlFeedbackParameter.sendTimestamp = unserialized->var9;
     }
 
-    else if (a4)
+    else if (type)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -395,39 +395,39 @@ LABEL_17:
       if (self->_ecnEnabled)
       {
         self->super._bitmap = v6 | 8;
-        *&self->_controlFeedbackParameter.ecnECT1Count = *&a3->var12;
+        *&self->_controlFeedbackParameter.ecnECT1Count = *&unserialized->var12;
       }
 
       v4 = 0;
-      *&self->_controlFeedbackParameter.timeStamp = *&a3->var0;
-      *&self->_controlFeedbackParameter.audioBurstLoss = *&a3->var4;
-      *&self->_controlFeedbackParameter.totalReceivedKBytes = *&a3->var6;
+      *&self->_controlFeedbackParameter.timeStamp = *&unserialized->var0;
+      *&self->_controlFeedbackParameter.audioBurstLoss = *&unserialized->var4;
+      *&self->_controlFeedbackParameter.totalReceivedKBytes = *&unserialized->var6;
     }
   }
 
   return v4;
 }
 
-- (int)getInfo:(void *)a3 bufferLength:(unint64_t)a4 infoSize:(unint64_t *)a5 type:(unsigned int)a6
+- (int)getInfo:(void *)info bufferLength:(unint64_t)length infoSize:(unint64_t *)size type:(unsigned int)type
 {
   result = -2144403442;
-  if (!a3)
+  if (!info)
   {
     return -2144403455;
   }
 
-  if (a6 > 13)
+  if (type > 13)
   {
-    if (a6 <= 15)
+    if (type <= 15)
     {
-      if (a6 == 14)
+      if (type == 14)
       {
         if ((self->super._bitmap & 0x800) == 0)
         {
           return -2144403434;
         }
 
-        if (!a4)
+        if (!length)
         {
           return result;
         }
@@ -442,7 +442,7 @@ LABEL_17:
           return -2144403434;
         }
 
-        if (!a4)
+        if (!length)
         {
           return result;
         }
@@ -453,14 +453,14 @@ LABEL_17:
 
     else
     {
-      if (a6 == 16)
+      if (type == 16)
       {
         if ((self->super._bitmap & 0x200) == 0)
         {
           return -2144403434;
         }
 
-        if (a4 < 4)
+        if (length < 4)
         {
           return result;
         }
@@ -469,14 +469,14 @@ LABEL_17:
         goto LABEL_53;
       }
 
-      if (a6 == 17)
+      if (type == 17)
       {
         if ((self->super._bitmap & 0x100) == 0)
         {
           return -2144403434;
         }
 
-        if (a4 < 4)
+        if (length < 4)
         {
           return result;
         }
@@ -485,8 +485,8 @@ LABEL_17:
 LABEL_53:
         connectionStatsBuffer = *(&self->super.super.isa + v11);
 LABEL_54:
-        *a3 = connectionStatsBuffer;
-        if (a5)
+        *info = connectionStatsBuffer;
+        if (size)
         {
           result = 0;
           v8 = 4;
@@ -496,7 +496,7 @@ LABEL_54:
         return 0;
       }
 
-      if (a6 != 18)
+      if (type != 18)
       {
         goto LABEL_46;
       }
@@ -506,7 +506,7 @@ LABEL_54:
         return -2144403434;
       }
 
-      if (!a4)
+      if (!length)
       {
         return result;
       }
@@ -514,8 +514,8 @@ LABEL_54:
       v9 = 135;
     }
 
-    *a3 = *(&self->super.super.isa + v9);
-    if (a5)
+    *info = *(&self->super.super.isa + v9);
+    if (size)
     {
       result = 0;
       v8 = 1;
@@ -525,16 +525,16 @@ LABEL_54:
     return 0;
   }
 
-  if (a6 <= 10)
+  if (type <= 10)
   {
-    if (a6 == 2)
+    if (type == 2)
     {
       if ((self->super._bitmap & 2) == 0)
       {
         return -2144403434;
       }
 
-      if (a4 < 4)
+      if (length < 4)
       {
         return result;
       }
@@ -543,14 +543,14 @@ LABEL_54:
       goto LABEL_54;
     }
 
-    if (a6 == 10)
+    if (type == 10)
     {
       if ((self->super._bitmap & 0x40) != 0)
       {
-        if (a4 >= 8)
+        if (length >= 8)
         {
-          *a3 = self->_controlInfoArrivalTime;
-          if (a5)
+          *info = self->_controlInfoArrivalTime;
+          if (size)
           {
             result = 0;
             v8 = 8;
@@ -579,14 +579,14 @@ LABEL_46:
     return -2144403455;
   }
 
-  if (a6 == 11)
+  if (type == 11)
   {
     if ((self->super._bitmap & 0x20) == 0)
     {
       return -2144403434;
     }
 
-    if (a4 < 4)
+    if (length < 4)
     {
       return result;
     }
@@ -595,14 +595,14 @@ LABEL_46:
     goto LABEL_53;
   }
 
-  if (a6 == 12)
+  if (type == 12)
   {
     if ((self->super._bitmap & 0x10) == 0)
     {
       return -2144403434;
     }
 
-    if (a4 < 4)
+    if (length < 4)
     {
       return result;
     }
@@ -616,15 +616,15 @@ LABEL_46:
     return -2144403434;
   }
 
-  if (a4 >= 2)
+  if (length >= 2)
   {
-    *a3 = self->_controlInfoSequenceNumber;
-    if (a5)
+    *info = self->_controlInfoSequenceNumber;
+    if (size)
     {
       result = 0;
       v8 = 2;
 LABEL_56:
-      *a5 = v8;
+      *size = v8;
       return result;
     }
 
@@ -634,14 +634,14 @@ LABEL_56:
   return result;
 }
 
-- (int)handleOptionalControlInfo:(id *)a3
+- (int)handleOptionalControlInfo:(id *)info
 {
-  if (!a3)
+  if (!info)
   {
     return 1;
   }
 
-  v5 = [(VCMediaControlInfoFaceTimeAudio *)self setInfo:a3 size:8 type:10];
+  v5 = [(VCMediaControlInfoFaceTimeAudio *)self setInfo:info size:8 type:10];
   if (v5 < 0)
   {
     v14 = v5;
@@ -721,7 +721,7 @@ LABEL_56:
 
           else
           {
-            v10 = [(VCMediaControlInfoFaceTimeAudio *)self setInfo:&a3->var7 size:2 type:13];
+            v10 = [(VCMediaControlInfoFaceTimeAudio *)self setInfo:&info->var7 size:2 type:13];
             if (v10 < 0)
             {
               v14 = v10;

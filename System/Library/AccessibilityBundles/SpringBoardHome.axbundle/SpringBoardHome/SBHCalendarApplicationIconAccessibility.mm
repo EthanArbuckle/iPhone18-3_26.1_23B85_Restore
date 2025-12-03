@@ -9,7 +9,7 @@
   if (accessibilityValue_didSet != 1 || CFAbsoluteTimeGetCurrent() - *&accessibilityValue_LastSetTime > 300.0 || (accessibilityValue_didSet & 1) == 0)
   {
     accessibilityValue_didSet = 1;
-    v3 = [MEMORY[0x29EDB8DB0] date];
+    date = [MEMORY[0x29EDB8DB0] date];
     v4 = AXDateStringForFormat();
 
     v5 = accessibilityValue_Value;

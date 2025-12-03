@@ -1,21 +1,21 @@
 @interface ICNoteTimelineSection
-- (ICNoteTimelineSection)initWithIdentifier:(id)a3 objectIDs:(id)a4;
+- (ICNoteTimelineSection)initWithIdentifier:(id)identifier objectIDs:(id)ds;
 @end
 
 @implementation ICNoteTimelineSection
 
-- (ICNoteTimelineSection)initWithIdentifier:(id)a3 objectIDs:(id)a4
+- (ICNoteTimelineSection)initWithIdentifier:(id)identifier objectIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  dsCopy = ds;
   v12.receiver = self;
   v12.super_class = ICNoteTimelineSection;
   v8 = [(ICNoteTimelineSection *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    [(ICNoteTimelineSection *)v8 setIdentifier:v6];
-    v10 = [v7 copy];
+    [(ICNoteTimelineSection *)v8 setIdentifier:identifierCopy];
+    v10 = [dsCopy copy];
     [(ICNoteTimelineSection *)v9 setObjectIDs:v10];
   }
 

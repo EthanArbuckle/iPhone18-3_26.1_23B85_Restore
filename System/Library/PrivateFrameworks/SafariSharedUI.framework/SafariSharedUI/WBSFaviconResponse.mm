@@ -1,20 +1,20 @@
 @interface WBSFaviconResponse
-- (WBSFaviconResponse)initWithURL:(id)a3 favicon:(id)a4 faviconType:(unint64_t)a5;
+- (WBSFaviconResponse)initWithURL:(id)l favicon:(id)favicon faviconType:(unint64_t)type;
 @end
 
 @implementation WBSFaviconResponse
 
-- (WBSFaviconResponse)initWithURL:(id)a3 favicon:(id)a4 faviconType:(unint64_t)a5
+- (WBSFaviconResponse)initWithURL:(id)l favicon:(id)favicon faviconType:(unint64_t)type
 {
-  v9 = a4;
+  faviconCopy = favicon;
   v14.receiver = self;
   v14.super_class = WBSFaviconResponse;
-  v10 = [(WBSSiteMetadataResponse *)&v14 initWithURL:a3];
+  v10 = [(WBSSiteMetadataResponse *)&v14 initWithURL:l];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_favicon, a4);
-    v11->_faviconType = a5;
+    objc_storeStrong(&v10->_favicon, favicon);
+    v11->_faviconType = type;
     v12 = v11;
   }
 

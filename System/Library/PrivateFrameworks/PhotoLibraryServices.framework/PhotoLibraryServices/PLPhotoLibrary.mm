@@ -1,122 +1,122 @@
 @interface PLPhotoLibrary
 + (BOOL)areOpportunisticTasksDisabled;
-+ (BOOL)canSaveVideoToLibrary:(id)a3;
-+ (BOOL)isAdjustmentEnvelopeExtension:(id)a3;
-+ (BOOL)isAudioFileExtension:(id)a3;
-+ (BOOL)isBackgroundProcessingEnabledWithManagedObjectContext:(id)a3;
-+ (BOOL)isImageFileExtension:(id)a3;
-+ (BOOL)isNonRawImageFileExtension:(id)a3;
-+ (BOOL)isRawImageFileExtension:(id)a3;
-+ (BOOL)isVideoFileExtension:(id)a3;
-+ (BOOL)removeFaceMetadataAtURL:(id)a3 includingPeople:(BOOL)a4;
-+ (BOOL)shouldTryFastPathWithLibraryBundle:(id)a3;
++ (BOOL)canSaveVideoToLibrary:(id)library;
++ (BOOL)isAdjustmentEnvelopeExtension:(id)extension;
++ (BOOL)isAudioFileExtension:(id)extension;
++ (BOOL)isBackgroundProcessingEnabledWithManagedObjectContext:(id)context;
++ (BOOL)isImageFileExtension:(id)extension;
++ (BOOL)isNonRawImageFileExtension:(id)extension;
++ (BOOL)isRawImageFileExtension:(id)extension;
++ (BOOL)isVideoFileExtension:(id)extension;
++ (BOOL)removeFaceMetadataAtURL:(id)l includingPeople:(BOOL)people;
++ (BOOL)shouldTryFastPathWithLibraryBundle:(id)bundle;
 + (BOOL)systemPhotoLibraryIsObtainable;
 + (id)_debugStatisticsDescription;
 + (id)_internalSystemPhotoLibrary;
-+ (id)_resourcesInfoFromMoc:(id)a3;
++ (id)_resourcesInfoFromMoc:(id)moc;
 + (id)_stateDictionary;
-+ (id)deferredPhotoPreviewDestinationURLForPrimaryAssetURL:(id)a3;
-+ (id)fileReservationForFileAtPath:(id)a3 exclusive:(BOOL)a4;
-+ (id)masterURLFromSidecarURLs:(id)a3;
-+ (id)newPhotoLibraryWithName:(const char *)a3 loadedFromBundle:(id)a4 options:(id)a5 error:(id *)a6;
-+ (id)newPhotoLibraryWithName:(const char *)a3 loadedFromURL:(id)a4 options:(id)a5 error:(id *)a6;
++ (id)deferredPhotoPreviewDestinationURLForPrimaryAssetURL:(id)l;
++ (id)fileReservationForFileAtPath:(id)path exclusive:(BOOL)exclusive;
++ (id)masterURLFromSidecarURLs:(id)ls;
++ (id)newPhotoLibraryWithName:(const char *)name loadedFromBundle:(id)bundle options:(id)options error:(id *)error;
++ (id)newPhotoLibraryWithName:(const char *)name loadedFromURL:(id)l options:(id)options error:(id *)error;
 + (id)opportunisticTaskIsolationQueue;
 + (id)photoOutboundSharingTmpDirectoryURL;
 + (id)queueStatusDescription;
-+ (id)requestIdentifierFromDeferredIdentifier:(id)a3;
-+ (id)savedPhotosOriginalsSizeWithSizeDataRef:(id)a3;
-+ (id)savedPhotosReferenceMediaSizeWithSizeDataRef:(id)a3;
-+ (id)stringFromLibraryRole:(unint64_t)a3;
++ (id)requestIdentifierFromDeferredIdentifier:(id)identifier;
++ (id)savedPhotosOriginalsSizeWithSizeDataRef:(id)ref;
++ (id)savedPhotosReferenceMediaSizeWithSizeDataRef:(id)ref;
++ (id)stringFromLibraryRole:(unint64_t)role;
 + (id)systemMainQueuePhotoLibrary;
-+ (int)priorityForFileExtension:(id)a3;
-+ (os_state_data_s)_stateDataWithHints:(os_state_hints_s *)a3;
++ (int)priorityForFileExtension:(id)extension;
++ (os_state_data_s)_stateDataWithHints:(os_state_hints_s *)hints;
 + (unint64_t)CloudPhotoLibrarySize;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_ABORT_4_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_AUTH_23_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_BUSY_5_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_CANTOPEN_14_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_CONSTRAINT_19_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_CORRUPT_11_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_DONE_101_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_EMPTY_16_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_ERROR_1_SQLITE_ERROR_SNAPSHOT_769_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_ERROR_1_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_FORMAT_24_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_FULL_13_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_INTERNAL_2_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_INTERRUPT_9_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_IOERR_10_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_LOCKED_6_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_MISMATCH_20_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_MISUSE_21_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_NOLFS_22_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_NOMEM_7_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_NOTADB_26_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_NOTFOUND_12_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_NOTICE_27_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_OTHER_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_PERM_3_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_PROTOCOL_15_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_RANGE_25_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_READONLY_8_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_ROW_100_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_SCHEMA_17_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_TOOBIG_18_withCode:(int)a3;
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_WARNING_28_withCode:(int)a3;
-+ (void)_context:(id)a3 saveFailedWithError:(id)a4;
-+ (void)_contextSaveFailedDueToChangingSPL:(id)a3;
-+ (void)_contextSaveFailedDueToClientRequestedShutdown:(id)a3;
-+ (void)_contextSaveFailedWithCocoaError:(id)a3 message:(id)a4;
-+ (void)_contextSaveFailedWithError:(id)a3;
-+ (void)_contextSaveFailedWithNSManagedObjectConstraintValidationError:(id)a3;
-+ (void)_contextSaveFailedWithNSManagedObjectContextRecursiveSaveError:(id)a3;
-+ (void)_contextSaveFailedWithNSManagedObjectValidationError:(id)a3;
-+ (void)_contextSaveFailedWithNSPersistentStoreSaveError:(id)a3;
-+ (void)_contextSaveFailedWithNSPersistentStoreTimeoutError:(id)a3;
-+ (void)_contextSaveFailedWithNSValidationDateTooLateError:(id)a3;
-+ (void)_contextSaveFailedWithNSValidationDateTooSoonError:(id)a3;
-+ (void)_contextSaveFailedWithNSValidationInvalidDateError:(id)a3;
-+ (void)_contextSaveFailedWithNSValidationInvalidURIError:(id)a3;
-+ (void)_contextSaveFailedWithNSValidationMissingMandatoryPropertyError:(id)a3;
-+ (void)_contextSaveFailedWithNSValidationMultipleErrorsError:(id)a3;
-+ (void)_contextSaveFailedWithNSValidationNumberTooLargeError:(id)a3;
-+ (void)_contextSaveFailedWithNSValidationNumberTooSmallError:(id)a3;
-+ (void)_contextSaveFailedWithNSValidationRelationshipDeniedDeleteError:(id)a3;
-+ (void)_contextSaveFailedWithNSValidationRelationshipExceedsMaximumCountError:(id)a3;
-+ (void)_contextSaveFailedWithNSValidationRelationshipLacksMinimumCountError:(id)a3;
-+ (void)_contextSaveFailedWithNSValidationStringPatternMatchingError:(id)a3;
-+ (void)_contextSaveFailedWithNSValidationStringTooLongError:(id)a3;
-+ (void)_contextSaveFailedWithNSValidationStringTooShortError:(id)a3;
-+ (void)_contextSaveFailedWithNoPersistentStores:(id)a3;
-+ (void)_contextSaveFailedWithOtherCocoaError:(id)a3;
-+ (void)_contextSaveFailedWithTimeoutError:(id)a3;
-+ (void)_getResourceData:(id)a3 nonDerivativeSizeOut:(unint64_t *)a4 derivativesSizeOut:(unint64_t *)a5 fileBackedThumbnailsSizeOut:(unint64_t *)a6 tableThumbnailsSizeOut:(unint64_t *)a7;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_ABORT_4_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_AUTH_23_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_BUSY_5_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_CANTOPEN_14_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_CONSTRAINT_19_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_CORRUPT_11_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_DONE_101_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_EMPTY_16_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_ERROR_1_SQLITE_ERROR_SNAPSHOT_769_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_ERROR_1_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_FORMAT_24_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_FULL_13_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_INTERNAL_2_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_INTERRUPT_9_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_IOERR_10_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_LOCKED_6_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_MISMATCH_20_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_MISUSE_21_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_NOLFS_22_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_NOMEM_7_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_NOTADB_26_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_NOTFOUND_12_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_NOTICE_27_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_OTHER_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_PERM_3_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_PROTOCOL_15_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_RANGE_25_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_READONLY_8_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_ROW_100_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_SCHEMA_17_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_TOOBIG_18_withCode:(int)code;
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_WARNING_28_withCode:(int)code;
++ (void)_context:(id)_context saveFailedWithError:(id)error;
++ (void)_contextSaveFailedDueToChangingSPL:(id)l;
++ (void)_contextSaveFailedDueToClientRequestedShutdown:(id)shutdown;
++ (void)_contextSaveFailedWithCocoaError:(id)error message:(id)message;
++ (void)_contextSaveFailedWithError:(id)error;
++ (void)_contextSaveFailedWithNSManagedObjectConstraintValidationError:(id)error;
++ (void)_contextSaveFailedWithNSManagedObjectContextRecursiveSaveError:(id)error;
++ (void)_contextSaveFailedWithNSManagedObjectValidationError:(id)error;
++ (void)_contextSaveFailedWithNSPersistentStoreSaveError:(id)error;
++ (void)_contextSaveFailedWithNSPersistentStoreTimeoutError:(id)error;
++ (void)_contextSaveFailedWithNSValidationDateTooLateError:(id)error;
++ (void)_contextSaveFailedWithNSValidationDateTooSoonError:(id)error;
++ (void)_contextSaveFailedWithNSValidationInvalidDateError:(id)error;
++ (void)_contextSaveFailedWithNSValidationInvalidURIError:(id)error;
++ (void)_contextSaveFailedWithNSValidationMissingMandatoryPropertyError:(id)error;
++ (void)_contextSaveFailedWithNSValidationMultipleErrorsError:(id)error;
++ (void)_contextSaveFailedWithNSValidationNumberTooLargeError:(id)error;
++ (void)_contextSaveFailedWithNSValidationNumberTooSmallError:(id)error;
++ (void)_contextSaveFailedWithNSValidationRelationshipDeniedDeleteError:(id)error;
++ (void)_contextSaveFailedWithNSValidationRelationshipExceedsMaximumCountError:(id)error;
++ (void)_contextSaveFailedWithNSValidationRelationshipLacksMinimumCountError:(id)error;
++ (void)_contextSaveFailedWithNSValidationStringPatternMatchingError:(id)error;
++ (void)_contextSaveFailedWithNSValidationStringTooLongError:(id)error;
++ (void)_contextSaveFailedWithNSValidationStringTooShortError:(id)error;
++ (void)_contextSaveFailedWithNoPersistentStores:(id)stores;
++ (void)_contextSaveFailedWithOtherCocoaError:(id)error;
++ (void)_contextSaveFailedWithTimeoutError:(id)error;
++ (void)_getResourceData:(id)data nonDerivativeSizeOut:(unint64_t *)out derivativesSizeOut:(unint64_t *)sizeOut fileBackedThumbnailsSizeOut:(unint64_t *)thumbnailsSizeOut tableThumbnailsSizeOut:(unint64_t *)tableThumbnailsSizeOut;
 + (void)_loadFileExtensionInformation;
 + (void)_registerStateHandler;
-+ (void)_withDispatchGroup:(id)a3 onContext:(id)a4 synchronously:(BOOL)a5 shouldSave:(BOOL)a6 refreshAfterSave:(BOOL)a7 performTransaction:(id)a8 completionHandler:(id)a9;
-+ (void)configureEnumeratorForLibrarySizeInfo:(id)a3 completion:(id)a4;
-+ (void)contextExecuteFailedWithSQLiteResultCode:(int)a3;
++ (void)_withDispatchGroup:(id)group onContext:(id)context synchronously:(BOOL)synchronously shouldSave:(BOOL)save refreshAfterSave:(BOOL)afterSave performTransaction:(id)transaction completionHandler:(id)handler;
++ (void)configureEnumeratorForLibrarySizeInfo:(id)info completion:(id)completion;
++ (void)contextExecuteFailedWithSQLiteResultCode:(int)code;
 + (void)postGlobalPhotoLibraryAvailableIfNecessary;
-+ (void)refreshCachedCountsAndDates:(BOOL)a3 onAssetsContainerClass:(Class)a4 inContext:(id)a5 withPredicate:(id)a6;
-+ (void)refreshCachedCountsOnAllAssetContainersInContext:(id)a3;
-+ (void)setCloudAlbumSharingEnabled:(BOOL)a3;
-+ (void)setPhotoStreamEnabled:(BOOL)a3;
++ (void)refreshCachedCountsAndDates:(BOOL)dates onAssetsContainerClass:(Class)class inContext:(id)context withPredicate:(id)predicate;
++ (void)refreshCachedCountsOnAllAssetContainersInContext:(id)context;
++ (void)setCloudAlbumSharingEnabled:(BOOL)enabled;
++ (void)setPhotoStreamEnabled:(BOOL)enabled;
 - (BOOL)_hasIncompleteAsset;
-- (BOOL)_isUnknownAssetColumnError:(id)a3;
-- (BOOL)batchDeleteAssetsWithPredicate:(id)a3 reason:(id)a4 error:(id *)a5;
-- (BOOL)batchDeleteObjectsWithEntity:(id)a3 predicate:(id)a4 error:(id *)a5;
-- (BOOL)deleteAllDiagnosticFiles:(id *)a3;
-- (BOOL)getPhotoCount:(unint64_t *)a3 videoCount:(unint64_t *)a4 excludeTrashed:(BOOL)a5 excludeInvisible:(BOOL)a6 excludeCloudShared:(BOOL)a7;
+- (BOOL)_isUnknownAssetColumnError:(id)error;
+- (BOOL)batchDeleteAssetsWithPredicate:(id)predicate reason:(id)reason error:(id *)error;
+- (BOOL)batchDeleteObjectsWithEntity:(id)entity predicate:(id)predicate error:(id *)error;
+- (BOOL)deleteAllDiagnosticFiles:(id *)files;
+- (BOOL)getPhotoCount:(unint64_t *)count videoCount:(unint64_t *)videoCount excludeTrashed:(BOOL)trashed excludeInvisible:(BOOL)invisible excludeCloudShared:(BOOL)shared;
 - (BOOL)hasCompletedMomentAnalysis;
 - (BOOL)hasCompletedRestorePostProcessing;
 - (BOOL)hasITunesSyncedContent;
-- (BOOL)hasPendingAssetsIgnoreiTunes:(BOOL)a3;
+- (BOOL)hasPendingAssetsIgnoreiTunes:(BOOL)tunes;
 - (BOOL)isBackgroundProcessingEnabled;
 - (BOOL)isCloudPhotoLibraryEnabled;
 - (BOOL)isReadyForCloudPhotoLibrary;
 - (BOOL)isWalrusEnabled;
-- (BOOL)loadDatabaseWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)safeSave:(id)a3 error:(id *)a4;
+- (BOOL)loadDatabaseWithOptions:(id)options error:(id *)error;
+- (BOOL)safeSave:(id)save error:(id *)error;
 - (NSArray)photoStreamAlbums;
 - (NSArray)photoStreamAlbumsForPreferences;
 - (NSArray)syncedAlbums;
@@ -127,125 +127,125 @@
 - (PLLibraryServicesManager)libraryServicesManager;
 - (PLManagedObjectContext)managedObjectContext;
 - (PLPhotoLibrary)init;
-- (PLPhotoLibrary)initWithName:(const char *)a3 libraryBundle:(id)a4 options:(id)a5;
+- (PLPhotoLibrary)initWithName:(const char *)name libraryBundle:(id)bundle options:(id)options;
 - (PLThumbnailIndexes)thumbnailIndexes;
-- (id)_fetchCompleteAssetIDsWithValidatedSavedAssetTypeMask:(unsigned int)a3 context:(id)a4;
-- (id)_fetchedObjectsForDeleteWithEntity:(id)a3 predicate:(id)a4 batchSize:(unint64_t)a5 error:(id *)a6;
-- (id)_initWithPathManager:(id)a3;
+- (id)_fetchCompleteAssetIDsWithValidatedSavedAssetTypeMask:(unsigned int)mask context:(id)context;
+- (id)_fetchedObjectsForDeleteWithEntity:(id)entity predicate:(id)predicate batchSize:(unint64_t)size error:(id *)error;
+- (id)_initWithPathManager:(id)manager;
 - (id)_internal_managedObjectContext;
 - (id)_loadClientDatabaseContextFastPath;
-- (id)_loadClientDatabaseContextWithOptions:(id)a3 error:(id *)a4;
-- (id)_loadDatabaseContextWithOptions:(id)a3 error:(id *)a4;
-- (id)_loadServerDatabaseContextWithOptions:(id)a3 error:(id *)a4;
-- (id)addBackgroundJobWorkItemIfNeededWithIdentifier:(id)a3 jobType:(signed __int16)a4 jobFlags:(int64_t)a5;
-- (id)addBackgroundJobWorkItemWithIdentifier:(id)a3 jobType:(signed __int16)a4 jobFlags:(int64_t)a5;
-- (id)addDCIMEntryAtFileURL:(id)a3 mainFileMetadata:(id)a4 previewImage:(id)a5 thumbnailImage:(id)a6 savedAssetType:(signed __int16)a7 replacementUUID:(id)a8 publicGlobalUUID:(id)a9 extendedInfo:(id)a10 withUUID:(id)a11 isPlaceholder:(BOOL)a12 placeholderFileURL:(id)a13 forFinalCameraImage:(BOOL)a14;
-- (id)albumListForAlbumOfKind:(int)a3;
-- (id)albumListForContentMode:(int)a3;
-- (id)allImportedPhotosAlbumCreateIfNeeded:(BOOL)a3;
-- (id)assetWithUUID:(id)a3 inContainer:(id)a4;
+- (id)_loadClientDatabaseContextWithOptions:(id)options error:(id *)error;
+- (id)_loadDatabaseContextWithOptions:(id)options error:(id *)error;
+- (id)_loadServerDatabaseContextWithOptions:(id)options error:(id *)error;
+- (id)addBackgroundJobWorkItemIfNeededWithIdentifier:(id)identifier jobType:(signed __int16)type jobFlags:(int64_t)flags;
+- (id)addBackgroundJobWorkItemWithIdentifier:(id)identifier jobType:(signed __int16)type jobFlags:(int64_t)flags;
+- (id)addDCIMEntryAtFileURL:(id)l mainFileMetadata:(id)metadata previewImage:(id)image thumbnailImage:(id)thumbnailImage savedAssetType:(signed __int16)type replacementUUID:(id)d publicGlobalUUID:(id)iD extendedInfo:(id)self0 withUUID:(id)self1 isPlaceholder:(BOOL)self2 placeholderFileURL:(id)self3 forFinalCameraImage:(BOOL)self4;
+- (id)albumListForAlbumOfKind:(int)kind;
+- (id)albumListForContentMode:(int)mode;
+- (id)allImportedPhotosAlbumCreateIfNeeded:(BOOL)needed;
+- (id)assetWithUUID:(id)d inContainer:(id)container;
 - (id)cplStatus;
 - (id)description;
 - (id)estimatedLibrarySizes;
-- (id)eventAlbumContainingPhoto:(id)a3;
-- (id)eventWithName:(id)a3 andImportSessionIdentifier:(id)a4;
+- (id)eventAlbumContainingPhoto:(id)photo;
+- (id)eventWithName:(id)name andImportSessionIdentifier:(id)identifier;
 - (id)fingerprintContext;
 - (id)iTunesSyncedContentInfo;
 - (id)incompleteRestoreProcesses;
-- (id)lastImportedPhotosAlbumCreateIfNeeded:(BOOL)a3;
+- (id)lastImportedPhotosAlbumCreateIfNeeded:(BOOL)needed;
 - (id)librarySizes;
-- (id)librarySizesFromDB:(BOOL)a3;
-- (id)librarySizesFromDBForLibraryKindMask:(unint64_t)a3;
+- (id)librarySizesFromDB:(BOOL)b;
+- (id)librarySizesFromDBForLibraryKindMask:(unint64_t)mask;
 - (id)mainScopeIdentifier;
 - (id)managedObjectContextStoreUUID;
-- (id)objectWithObjectID:(id)a3;
+- (id)objectWithObjectID:(id)d;
 - (id)personInfoManager;
 - (id)photoAnalysisClient;
 - (id)photoOutboundSharingTmpDirectoryURL;
-- (id)shortLivedLibraryCopyByAppendingName:(const char *)a3;
-- (id)syncProgressAlbumsIgnoreiTunes:(BOOL)a3;
+- (id)shortLivedLibraryCopyByAppendingName:(const char *)name;
+- (id)syncProgressAlbumsIgnoreiTunes:(BOOL)tunes;
 - (id)syncedAlbumSubtitleStringFormat;
 - (unint64_t)_dbFileSizes;
-- (unint64_t)_fileSizeAtPath:(id)a3;
-- (unint64_t)countOfLocalAlbumsContainingAssets:(id)a3 assetsInSomeAlbumCount:(int64_t *)a4;
-- (unint64_t)numberOfCPLSupportedAssetsOfKind:(signed __int16)a3 includingTrashedSinceDate:(id)a4;
-- (unint64_t)numberOfUnpushedAssetsOfKind:(signed __int16)a3;
+- (unint64_t)_fileSizeAtPath:(id)path;
+- (unint64_t)countOfLocalAlbumsContainingAssets:(id)assets assetsInSomeAlbumCount:(int64_t *)count;
+- (unint64_t)numberOfCPLSupportedAssetsOfKind:(signed __int16)kind includingTrashedSinceDate:(id)date;
+- (unint64_t)numberOfUnpushedAssetsOfKind:(signed __int16)kind;
 - (unint64_t)role;
 - (unint64_t)sharedStreamsSize;
 - (void)_cancelAllDeferredPrewarming;
-- (void)_deleteEmptyImportAlbumsWithAddedAlbums:(id)a3;
+- (void)_deleteEmptyImportAlbumsWithAddedAlbums:(id)albums;
 - (void)_deleteObsoleteMetadataFiles;
-- (void)_enumerateFilesAtURL:(id)a3 withBlock:(id)a4;
-- (void)_enumerateFilesAtURLs:(id)a3 withBlock:(id)a4;
-- (void)_filterAlbums:(id)a3 toTrashableAlbums:(id *)a4 deletableAlbums:(id *)a5 otherAlbums:(id *)a6;
-- (void)_filterAssets:(id)a3 toTrashableAssets:(id *)a4 deletableAssets:(id *)a5 otherAssets:(id *)a6;
-- (void)_inq_createPhotoStreamAlbumStreamID:(id)a3;
-- (void)_markForRebuildAndAbortWithReason:(int64_t)a3 error:(id)a4;
+- (void)_enumerateFilesAtURL:(id)l withBlock:(id)block;
+- (void)_enumerateFilesAtURLs:(id)ls withBlock:(id)block;
+- (void)_filterAlbums:(id)albums toTrashableAlbums:(id *)trashableAlbums deletableAlbums:(id *)deletableAlbums otherAlbums:(id *)otherAlbums;
+- (void)_filterAssets:(id)assets toTrashableAssets:(id *)trashableAssets deletableAssets:(id *)deletableAssets otherAssets:(id *)otherAssets;
+- (void)_inq_createPhotoStreamAlbumStreamID:(id)d;
+- (void)_markForRebuildAndAbortWithReason:(int64_t)reason error:(id)error;
 - (void)_pauseChangeHandlingNotifications;
 - (void)_photoLibraryCorruptNotification;
 - (void)_photoLibraryForceClientExitNotification;
 - (void)_reallyDisableOpportunisticTasks;
 - (void)_reallyEnableOpportunisticTasks;
-- (void)_recreateItemsFromMetadataAtDirectoryURLs:(id)a3 includeAlbums:(BOOL)a4;
+- (void)_recreateItemsFromMetadataAtDirectoryURLs:(id)ls includeAlbums:(BOOL)albums;
 - (void)_removeOldFaceMetadataAsync;
 - (void)_resumeChangeHandlingNotifications;
-- (void)_setManagedObjectContext:(id)a3;
-- (void)_updateAssetCountKeyPath:(id)a3 withPendingCountKeyPath:(id)a4 inContext:(id)a5;
-- (void)_updateMemoryCountKeyPath:(id)a3 withPendingCountKeyPath:(id)a4 inContext:(id)a5;
-- (void)_userApplyTrashedState:(signed __int16)a3 toAlbums:(id)a4;
-- (void)_userApplyTrashedState:(signed __int16)a3 toAssets:(id)a4 localOnlyDelete:(BOOL)a5 trashedReason:(unsigned __int16)a6 expungeReasonFromClient:(id)a7;
-- (void)_userDeleteAlbums:(id)a3;
-- (void)_userDeleteAssets:(id)a3 withReason:(id)a4 localOnlyDelete:(BOOL)a5;
-- (void)addCompletionHandlerToCurrentTransaction:(id)a3;
-- (void)batchDeleteAssets:(id)a3 withReason:(id)a4;
+- (void)_setManagedObjectContext:(id)context;
+- (void)_updateAssetCountKeyPath:(id)path withPendingCountKeyPath:(id)keyPath inContext:(id)context;
+- (void)_updateMemoryCountKeyPath:(id)path withPendingCountKeyPath:(id)keyPath inContext:(id)context;
+- (void)_userApplyTrashedState:(signed __int16)state toAlbums:(id)albums;
+- (void)_userApplyTrashedState:(signed __int16)state toAssets:(id)assets localOnlyDelete:(BOOL)delete trashedReason:(unsigned __int16)reason expungeReasonFromClient:(id)client;
+- (void)_userDeleteAlbums:(id)albums;
+- (void)_userDeleteAssets:(id)assets withReason:(id)reason localOnlyDelete:(BOOL)delete;
+- (void)addCompletionHandlerToCurrentTransaction:(id)transaction;
+- (void)batchDeleteAssets:(id)assets withReason:(id)reason;
 - (void)cleanupAfterImportAllDCIMAssets;
 - (void)cleanupIncompleteAssetsAfterOTARestore;
 - (void)clearTransactionCompletionHandlers;
 - (void)clientApplicationWillEnterForeground;
-- (void)countOfReferencedMediaWithCompletionHandler:(id)a3;
-- (void)createPhotoStreamAlbumWithStreamID:(id)a3;
+- (void)countOfReferencedMediaWithCompletionHandler:(id)handler;
+- (void)createPhotoStreamAlbumWithStreamID:(id)d;
 - (void)dataMigratorSupportCleanupModelForDataMigrationPurgeMissingSynced;
 - (void)dealloc;
 - (void)deleteExpiredTrashedAssetsAndAlbums;
 - (void)deleteExpiredTrashedResources;
 - (void)deleteITunesSyncedContentForEnablingiCPL;
 - (void)deleteTTRDeferredIntermediates;
-- (void)deleteUnknownDeferredIntermediatesWithCompletionHandler:(id)a3;
+- (void)deleteUnknownDeferredIntermediatesWithCompletionHandler:(id)handler;
 - (void)deleteUnusedCameraMetadataPaths;
 - (void)disableOpportunisticTasks;
 - (void)enableOpportunisticTasks;
-- (void)handlePersistentStoreRemoval:(id)a3;
-- (void)handlePossibleCoreDataError:(id)a3;
-- (void)invalidateWithReason:(id)a3;
-- (void)modifyDCIMEntryForPhoto:(id)a3;
-- (void)old_refreshCachedCountsOnAllAssetContainersInContext:(id)a3;
-- (void)performBlock:(id)a3;
-- (void)performBlock:(id)a3 completionHandler:(id)a4;
-- (void)performBlock:(id)a3 completionHandler:(id)a4 withPriority:(int64_t)a5;
-- (void)performBlock:(id)a3 withPriority:(int64_t)a4;
-- (void)performBlockAndWait:(id)a3;
-- (void)performBlockAndWait:(id)a3 completionHandler:(id)a4;
-- (void)performBlockAndWait:(id)a3 forceSave:(BOOL)a4;
-- (void)performTransaction:(id)a3;
-- (void)performTransaction:(id)a3 completionHandler:(id)a4;
-- (void)performTransaction:(id)a3 completionHandler:(id)a4 withPriority:(int64_t)a5;
-- (void)performTransaction:(id)a3 withPriority:(int64_t)a4;
-- (void)performTransactionAndWait:(id)a3;
-- (void)performTransactionAndWait:(id)a3 completionHandler:(id)a4;
+- (void)handlePersistentStoreRemoval:(id)removal;
+- (void)handlePossibleCoreDataError:(id)error;
+- (void)invalidateWithReason:(id)reason;
+- (void)modifyDCIMEntryForPhoto:(id)photo;
+- (void)old_refreshCachedCountsOnAllAssetContainersInContext:(id)context;
+- (void)performBlock:(id)block;
+- (void)performBlock:(id)block completionHandler:(id)handler;
+- (void)performBlock:(id)block completionHandler:(id)handler withPriority:(int64_t)priority;
+- (void)performBlock:(id)block withPriority:(int64_t)priority;
+- (void)performBlockAndWait:(id)wait;
+- (void)performBlockAndWait:(id)wait completionHandler:(id)handler;
+- (void)performBlockAndWait:(id)wait forceSave:(BOOL)save;
+- (void)performTransaction:(id)transaction;
+- (void)performTransaction:(id)transaction completionHandler:(id)handler;
+- (void)performTransaction:(id)transaction completionHandler:(id)handler withPriority:(int64_t)priority;
+- (void)performTransaction:(id)transaction withPriority:(int64_t)priority;
+- (void)performTransactionAndWait:(id)wait;
+- (void)performTransactionAndWait:(id)wait completionHandler:(id)handler;
 - (void)recreateAlbumsAndPersonsFromMetadata;
 - (void)recreateMemoriesAndPersonsFromMetadata;
 - (void)recreatePersonsFromMetadata;
 - (void)repairSingletonObjects;
 - (void)reportLibrarySizeToDAS;
-- (void)resetCachedImportAlbumsIfNeededForAlbum:(id)a3;
+- (void)resetCachedImportAlbumsIfNeededForAlbum:(id)album;
 - (void)signalBackgroundProcessingNeeded;
-- (void)signalBackgroundProcessingNeededForWorkerTypes:(id)a3;
-- (void)updateAssetPlayShareViewCountsInContext:(id)a3;
-- (void)updateMemoryPlayShareViewCountsInContext:(id)a3;
-- (void)userExpungeAssets:(id)a3 localOnlyDelete:(BOOL)a4 expungeReasonFromClient:(id)a5;
-- (void)withDispatchGroup:(id)a3 performBlock:(id)a4;
-- (void)withDispatchGroup:(id)a3 performTransaction:(id)a4;
-- (void)withDispatchGroup:(id)a3 performTransaction:(id)a4 completionHandler:(id)a5;
+- (void)signalBackgroundProcessingNeededForWorkerTypes:(id)types;
+- (void)updateAssetPlayShareViewCountsInContext:(id)context;
+- (void)updateMemoryPlayShareViewCountsInContext:(id)context;
+- (void)userExpungeAssets:(id)assets localOnlyDelete:(BOOL)delete expungeReasonFromClient:(id)client;
+- (void)withDispatchGroup:(id)group performBlock:(id)block;
+- (void)withDispatchGroup:(id)group performTransaction:(id)transaction;
+- (void)withDispatchGroup:(id)group performTransaction:(id)transaction completionHandler:(id)handler;
 @end
 
 @implementation PLPhotoLibrary
@@ -254,12 +254,12 @@
 {
   if (PLIsAssetsd())
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"PLPhotoLibrary.m" lineNumber:1390 description:@"Only called by assetsd clients"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:1390 description:@"Only called by assetsd clients"];
   }
 
-  v4 = a1;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if ((systemPhotoLibraryIsObtainable_obtainable & 1) == 0)
   {
     if (PLIsPTPD())
@@ -276,7 +276,7 @@
     systemPhotoLibraryIsObtainable_obtainable = v6;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return systemPhotoLibraryIsObtainable_obtainable;
 }
@@ -284,15 +284,15 @@
 - (id)_loadClientDatabaseContextFastPath
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(PLPhotoLibrary *)self libraryBundle];
-  v4 = [PLPhotoLibrary shouldTryFastPathWithLibraryBundle:v3];
+  libraryBundle = [(PLPhotoLibrary *)self libraryBundle];
+  v4 = [PLPhotoLibrary shouldTryFastPathWithLibraryBundle:libraryBundle];
 
   if (v4)
   {
-    v5 = [(PLPhotoLibrary *)self options];
-    v6 = [v5 automaticallyMergesContext];
-    v7 = [(PLPhotoLibrary *)self options];
-    v8 = +[PLManagedObjectContext contextForUninitializedPhotoLibrary:automaticallyMerges:automaticallyPinToFirstFetch:](PLManagedObjectContext, "contextForUninitializedPhotoLibrary:automaticallyMerges:automaticallyPinToFirstFetch:", self, v6, [v7 automaticallyPinToFirstFetch]);
+    options = [(PLPhotoLibrary *)self options];
+    automaticallyMergesContext = [options automaticallyMergesContext];
+    options2 = [(PLPhotoLibrary *)self options];
+    v8 = +[PLManagedObjectContext contextForUninitializedPhotoLibrary:automaticallyMerges:automaticallyPinToFirstFetch:](PLManagedObjectContext, "contextForUninitializedPhotoLibrary:automaticallyMerges:automaticallyPinToFirstFetch:", self, automaticallyMergesContext, [options2 automaticallyPinToFirstFetch]);
 
     if (v8)
     {
@@ -302,9 +302,9 @@
     v9 = PLBackendGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(PLPhotoLibrary *)self pathManager];
+      pathManager = [(PLPhotoLibrary *)self pathManager];
       v12 = 138412290;
-      v13 = v10;
+      v13 = pathManager;
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "PLPhotoLibrary %@ fast path loading context failed, falling back to slow path.", &v12, 0xCu);
     }
   }
@@ -323,14 +323,14 @@ LABEL_7:
   {
     name = self->_name;
     *buf = 134218242;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = name;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "PLPhotoLibrary %p dealloc %@", buf, 0x16u);
   }
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(PAVideoConversionServiceClient *)self->_videoConversionServiceClient invalidateAfterPendingRequestCompletion];
   [PLPhotoLibrary reportLibraryDidDealloc:self];
@@ -341,10 +341,10 @@ LABEL_7:
 
 - (unint64_t)role
 {
-  v2 = [(PLPhotoLibrary *)self options];
-  v3 = [v2 libraryRole];
+  options = [(PLPhotoLibrary *)self options];
+  libraryRole = [options libraryRole];
 
-  return v3;
+  return libraryRole;
 }
 
 - (id)_internal_managedObjectContext
@@ -356,8 +356,8 @@ LABEL_7:
 
 - (PLManagedObjectContext)managedObjectContext
 {
-  v2 = [(PLPhotoLibrary *)self _internal_managedObjectContext];
-  if (!v2)
+  _internal_managedObjectContext = [(PLPhotoLibrary *)self _internal_managedObjectContext];
+  if (!_internal_managedObjectContext)
   {
     v3 = PLBackendGetLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -373,32 +373,32 @@ LABEL_7:
     }
   }
 
-  return v2;
+  return _internal_managedObjectContext;
 }
 
 + (BOOL)areOpportunisticTasksDisabled
 {
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"PLPhotoLibrary.m" lineNumber:438 description:@"areOpportunisticTasksDisabled can only be called from assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:438 description:@"areOpportunisticTasksDisabled can only be called from assetsd"];
   }
 
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v4 = [a1 opportunisticTaskIsolationQueue];
+  opportunisticTaskIsolationQueue = [self opportunisticTaskIsolationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__PLPhotoLibrary_areOpportunisticTasksDisabled__block_invoke;
   block[3] = &unk_1E7577EA0;
   block[4] = &v8;
-  dispatch_sync(v4, block);
+  dispatch_sync(opportunisticTaskIsolationQueue, block);
 
-  LOBYTE(v4) = *(v9 + 24);
+  LOBYTE(opportunisticTaskIsolationQueue) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return v4;
+  return opportunisticTaskIsolationQueue;
 }
 
 + (id)opportunisticTaskIsolationQueue
@@ -426,8 +426,8 @@ uint64_t __47__PLPhotoLibrary_areOpportunisticTasksDisabled__block_invoke(uint64
 - (PLGlobalValues)globalValues
 {
   v3 = [PLGlobalValues alloc];
-  v4 = [(PLPhotoLibrary *)self managedObjectContext];
-  v5 = [(PLGlobalValues *)v3 initWithManagedObjectContext:v4];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  v5 = [(PLGlobalValues *)v3 initWithManagedObjectContext:managedObjectContext];
 
   return v5;
 }
@@ -439,30 +439,30 @@ uint64_t __47__PLPhotoLibrary_areOpportunisticTasksDisabled__block_invoke(uint64
   return WeakRetained;
 }
 
-- (void)signalBackgroundProcessingNeededForWorkerTypes:(id)a3
+- (void)signalBackgroundProcessingNeededForWorkerTypes:(id)types
 {
-  v4 = a3;
-  v6 = [(PLPhotoLibrary *)self libraryServicesManager];
-  v5 = [v6 backgroundJobService];
-  [v5 signalBackgroundProcessingNeededOnLibrary:self workerTypes:v4];
+  typesCopy = types;
+  libraryServicesManager = [(PLPhotoLibrary *)self libraryServicesManager];
+  backgroundJobService = [libraryServicesManager backgroundJobService];
+  [backgroundJobService signalBackgroundProcessingNeededOnLibrary:self workerTypes:typesCopy];
 }
 
-- (id)addBackgroundJobWorkItemIfNeededWithIdentifier:(id)a3 jobType:(signed __int16)a4 jobFlags:(int64_t)a5
+- (id)addBackgroundJobWorkItemIfNeededWithIdentifier:(id)identifier jobType:(signed __int16)type jobFlags:(int64_t)flags
 {
-  v6 = a4;
-  v8 = a3;
+  typeCopy = type;
+  identifierCopy = identifier;
   if ([(PLPhotoLibrary *)self isBackgroundProcessingEnabled])
   {
-    v9 = [(PLPhotoLibrary *)self managedObjectContext];
-    if ([v9 hasRecordedBackgroundWorkItemWithIdentifier:v8 jobType:v6 jobFlags:a5])
+    managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+    if ([managedObjectContext hasRecordedBackgroundWorkItemWithIdentifier:identifierCopy jobType:typeCopy jobFlags:flags])
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = [PLBackgroundJobWorkItem insertBackgroundJobWorkItemWithIdentifier:v8 jobType:v6 jobFlags:a5 inManagedObjectContext:v9];
-      [v9 recordBackgroundJobWorkItemCreated:v10];
+      v10 = [PLBackgroundJobWorkItem insertBackgroundJobWorkItemWithIdentifier:identifierCopy jobType:typeCopy jobFlags:flags inManagedObjectContext:managedObjectContext];
+      [managedObjectContext recordBackgroundJobWorkItemCreated:v10];
     }
   }
 
@@ -474,14 +474,14 @@ uint64_t __47__PLPhotoLibrary_areOpportunisticTasksDisabled__block_invoke(uint64
   return v10;
 }
 
-- (id)addBackgroundJobWorkItemWithIdentifier:(id)a3 jobType:(signed __int16)a4 jobFlags:(int64_t)a5
+- (id)addBackgroundJobWorkItemWithIdentifier:(id)identifier jobType:(signed __int16)type jobFlags:(int64_t)flags
 {
-  v6 = a4;
-  v8 = a3;
+  typeCopy = type;
+  identifierCopy = identifier;
   if ([(PLPhotoLibrary *)self isBackgroundProcessingEnabled])
   {
-    v9 = [(PLPhotoLibrary *)self managedObjectContext];
-    v10 = [PLBackgroundJobWorkItem insertBackgroundJobWorkItemWithIdentifier:v8 jobType:v6 jobFlags:a5 inManagedObjectContext:v9];
+    managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+    v10 = [PLBackgroundJobWorkItem insertBackgroundJobWorkItemWithIdentifier:identifierCopy jobType:typeCopy jobFlags:flags inManagedObjectContext:managedObjectContext];
   }
 
   else
@@ -494,16 +494,16 @@ uint64_t __47__PLPhotoLibrary_areOpportunisticTasksDisabled__block_invoke(uint64
 
 - (void)signalBackgroundProcessingNeeded
 {
-  v4 = [(PLPhotoLibrary *)self libraryServicesManager];
-  v3 = [v4 backgroundJobService];
-  [v3 signalBackgroundProcessingNeededOnLibrary:self];
+  libraryServicesManager = [(PLPhotoLibrary *)self libraryServicesManager];
+  backgroundJobService = [libraryServicesManager backgroundJobService];
+  [backgroundJobService signalBackgroundProcessingNeededOnLibrary:self];
 }
 
 - (BOOL)isBackgroundProcessingEnabled
 {
   v3 = objc_opt_class();
-  v4 = [(PLPhotoLibrary *)self managedObjectContext];
-  LOBYTE(v3) = [v3 isBackgroundProcessingEnabledWithManagedObjectContext:v4];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  LOBYTE(v3) = [v3 isBackgroundProcessingEnabledWithManagedObjectContext:managedObjectContext];
 
   return v3;
 }
@@ -513,10 +513,10 @@ uint64_t __47__PLPhotoLibrary_areOpportunisticTasksDisabled__block_invoke(uint64
   v3 = _PLIsCloudPhotoLibraryEnabledForCurrentUserWithDataclass(*MEMORY[0x1E6959638]);
   if (v3)
   {
-    v4 = [(PLPhotoLibrary *)self cplStatus];
-    v5 = [v4 isWalrusEnabled];
+    cplStatus = [(PLPhotoLibrary *)self cplStatus];
+    isWalrusEnabled = [cplStatus isWalrusEnabled];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(v3) = isWalrusEnabled;
   }
 
   return v3;
@@ -524,57 +524,57 @@ uint64_t __47__PLPhotoLibrary_areOpportunisticTasksDisabled__block_invoke(uint64
 
 - (id)cplStatus
 {
-  v3 = [(PLPhotoLibrary *)self pathManager];
-  v4 = [v3 isSystemPhotoLibraryPathManager];
+  pathManager = [(PLPhotoLibrary *)self pathManager];
+  isSystemPhotoLibraryPathManager = [pathManager isSystemPhotoLibraryPathManager];
 
-  if (v4)
+  if (isSystemPhotoLibraryPathManager)
   {
     if (PLIsAssetsd())
     {
-      v5 = [(PLPhotoLibrary *)self libraryServicesManager];
-      v6 = [v5 cloudPhotoLibraryManager];
-      v7 = [v6 cplStatus];
+      libraryServicesManager = [(PLPhotoLibrary *)self libraryServicesManager];
+      cloudPhotoLibraryManager = [libraryServicesManager cloudPhotoLibraryManager];
+      cplStatus = [cloudPhotoLibraryManager cplStatus];
 
-      if (!v7)
+      if (!cplStatus)
       {
-        v8 = [(PLPhotoLibrary *)self pathManager];
-        v7 = CPLStatusFromPathManager(v8);
+        pathManager2 = [(PLPhotoLibrary *)self pathManager];
+        cplStatus = CPLStatusFromPathManager(pathManager2);
       }
     }
 
     else
     {
-      v5 = [(PLPhotoLibrary *)self pathManager];
-      v7 = CPLStatusFromPathManager(v5);
+      libraryServicesManager = [(PLPhotoLibrary *)self pathManager];
+      cplStatus = CPLStatusFromPathManager(libraryServicesManager);
     }
   }
 
   else
   {
-    v7 = 0;
+    cplStatus = 0;
   }
 
-  return v7;
+  return cplStatus;
 }
 
 - (id)personInfoManager
 {
-  v2 = [(PLPhotoLibrary *)self libraryBundle];
-  v3 = [v2 personInfoManager];
+  libraryBundle = [(PLPhotoLibrary *)self libraryBundle];
+  personInfoManager = [libraryBundle personInfoManager];
 
-  return v3;
+  return personInfoManager;
 }
 
-- (unint64_t)numberOfUnpushedAssetsOfKind:(signed __int16)a3
+- (unint64_t)numberOfUnpushedAssetsOfKind:(signed __int16)kind
 {
-  v3 = a3;
+  kindCopy = kind;
   v25[2] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695D5E0];
   v6 = +[PLManagedAsset entityName];
   v7 = [v5 fetchRequestWithEntityName:v6];
 
   v8 = MEMORY[0x1E696AE18];
-  v9 = [MEMORY[0x1E696AD98] numberWithShort:v3];
+  v9 = [MEMORY[0x1E696AD98] numberWithShort:kindCopy];
   v10 = [v8 predicateWithFormat:@"noindex(kind) == %@ && noindex(cloudLocalState) == %@ && trashedState != %d", v9, &unk_1F0FBAB70, 2];
 
   v11 = MEMORY[0x1E696AB28];
@@ -585,9 +585,9 @@ uint64_t __47__PLPhotoLibrary_areOpportunisticTasksDisabled__block_invoke(uint64
   v14 = [v11 andPredicateWithSubpredicates:v13];
 
   [v7 setPredicate:v14];
-  v15 = [(PLPhotoLibrary *)self managedObjectContext];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
   v20 = 0;
-  v16 = [v15 countForFetchRequest:v7 error:&v20];
+  v16 = [managedObjectContext countForFetchRequest:v7 error:&v20];
   v17 = v20;
 
   if (v16 == 0x7FFFFFFFFFFFFFFFLL)
@@ -598,7 +598,7 @@ uint64_t __47__PLPhotoLibrary_areOpportunisticTasksDisabled__block_invoke(uint64
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109378;
-        v22 = v3;
+        v22 = kindCopy;
         v23 = 2112;
         v24 = v17;
         _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "Could not fetch count of unpushed assets with type %d: %@", buf, 0x12u);
@@ -611,17 +611,17 @@ uint64_t __47__PLPhotoLibrary_areOpportunisticTasksDisabled__block_invoke(uint64
   return v16;
 }
 
-- (unint64_t)numberOfCPLSupportedAssetsOfKind:(signed __int16)a3 includingTrashedSinceDate:(id)a4
+- (unint64_t)numberOfCPLSupportedAssetsOfKind:(signed __int16)kind includingTrashedSinceDate:(id)date
 {
-  v4 = a3;
+  kindCopy = kind;
   v30[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  dateCopy = date;
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLManagedAsset entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
 
   v10 = MEMORY[0x1E696AE18];
-  v11 = [MEMORY[0x1E696AD98] numberWithShort:v4];
+  v11 = [MEMORY[0x1E696AD98] numberWithShort:kindCopy];
   v12 = [v10 predicateWithFormat:@"kind == %@", v11];
 
   v13 = MEMORY[0x1E696AB28];
@@ -631,9 +631,9 @@ uint64_t __47__PLPhotoLibrary_areOpportunisticTasksDisabled__block_invoke(uint64
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
   v16 = [v13 andPredicateWithSubpredicates:v15];
 
-  if (v6)
+  if (dateCopy)
   {
-    v17 = [MEMORY[0x1E696AE18] predicateWithFormat:@"trashedDate >= %@ || trashedState == %d", v6, 0];
+    v17 = [MEMORY[0x1E696AE18] predicateWithFormat:@"trashedDate >= %@ || trashedState == %d", dateCopy, 0];
     v18 = MEMORY[0x1E696AB28];
     v29[0] = v16;
     v29[1] = v17;
@@ -644,9 +644,9 @@ uint64_t __47__PLPhotoLibrary_areOpportunisticTasksDisabled__block_invoke(uint64
   }
 
   [v9 setPredicate:v16];
-  v21 = [(PLPhotoLibrary *)self managedObjectContext];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
   v26 = 0;
-  v22 = [v21 countForFetchRequest:v9 error:&v26];
+  v22 = [managedObjectContext countForFetchRequest:v9 error:&v26];
   v23 = v26;
 
   if (v22 == 0x7FFFFFFFFFFFFFFFLL)
@@ -670,13 +670,13 @@ uint64_t __47__PLPhotoLibrary_areOpportunisticTasksDisabled__block_invoke(uint64
 
 - (id)fingerprintContext
 {
-  v2 = [(PLPhotoLibrary *)self libraryBundle];
-  v3 = v2;
-  if (v2)
+  libraryBundle = [(PLPhotoLibrary *)self libraryBundle];
+  v3 = libraryBundle;
+  if (libraryBundle)
   {
-    v4 = [v2 libraryServicesManager];
+    libraryServicesManager = [libraryBundle libraryServicesManager];
 
-    if (v4)
+    if (libraryServicesManager)
     {
       [v3 libraryServicesManager];
     }
@@ -686,50 +686,50 @@ uint64_t __47__PLPhotoLibrary_areOpportunisticTasksDisabled__block_invoke(uint64
       [PLCPLSettings settingsWithLibraryBundle:v3];
     }
     v7 = ;
-    v5 = [v7 fingerprintContext];
+    fingerprintContext = [v7 fingerprintContext];
 
-    if (v5)
+    if (fingerprintContext)
     {
       goto LABEL_8;
     }
 
 LABEL_5:
-    v6 = [MEMORY[0x1E6994AD8] sharedContext];
+    mEMORY[0x1E6994AD8] = [MEMORY[0x1E6994AD8] sharedContext];
     goto LABEL_9;
   }
 
-  v5 = [MEMORY[0x1E6994AD8] sharedContext];
-  if (!v5)
+  fingerprintContext = [MEMORY[0x1E6994AD8] sharedContext];
+  if (!fingerprintContext)
   {
     goto LABEL_5;
   }
 
 LABEL_8:
-  v6 = v5;
+  mEMORY[0x1E6994AD8] = fingerprintContext;
 LABEL_9:
-  v8 = v6;
+  v8 = mEMORY[0x1E6994AD8];
 
   return v8;
 }
 
 - (id)mainScopeIdentifier
 {
-  v2 = [(PLPhotoLibrary *)self libraryBundle];
-  v3 = v2;
-  if (v2)
+  libraryBundle = [(PLPhotoLibrary *)self libraryBundle];
+  v3 = libraryBundle;
+  if (libraryBundle)
   {
-    v4 = [v2 libraryServicesManager];
+    libraryServicesManager = [libraryBundle libraryServicesManager];
 
-    if (v4)
+    if (libraryServicesManager)
     {
-      v5 = [v3 libraryServicesManager];
-      [v5 mainScopeIdentifier];
+      libraryServicesManager2 = [v3 libraryServicesManager];
+      [libraryServicesManager2 mainScopeIdentifier];
     }
 
     else
     {
-      v5 = [PLCPLSettings settingsWithLibraryBundle:v3];
-      [v5 deriveMainScopeIdentifier];
+      libraryServicesManager2 = [PLCPLSettings settingsWithLibraryBundle:v3];
+      [libraryServicesManager2 deriveMainScopeIdentifier];
     }
     v6 = ;
   }
@@ -744,32 +744,32 @@ LABEL_9:
 
 - (BOOL)isCloudPhotoLibraryEnabled
 {
-  v3 = [(PLPhotoLibrary *)self libraryServicesManager];
-  v4 = v3;
-  if (v3)
+  libraryServicesManager = [(PLPhotoLibrary *)self libraryServicesManager];
+  v4 = libraryServicesManager;
+  if (libraryServicesManager)
   {
-    v5 = [v3 isCloudPhotoLibraryEnabled];
+    isCloudPhotoLibraryEnabled = [libraryServicesManager isCloudPhotoLibraryEnabled];
   }
 
   else
   {
-    v6 = [(PLPhotoLibrary *)self pathManager];
-    v7 = [v6 libraryURL];
-    v5 = PLIsCloudPhotoLibraryEnabledForPhotoLibraryURL(v7);
+    pathManager = [(PLPhotoLibrary *)self pathManager];
+    libraryURL = [pathManager libraryURL];
+    isCloudPhotoLibraryEnabled = PLIsCloudPhotoLibraryEnabledForPhotoLibraryURL(libraryURL);
   }
 
-  return v5;
+  return isCloudPhotoLibraryEnabled;
 }
 
 - (unint64_t)sharedStreamsSize
 {
   v11[2] = *MEMORY[0x1E69E9840];
   v3 = [(PLPhotoLibraryPathManager *)self->_pathManager photoDirectoryWithType:23];
-  v4 = [(PLPhotoLibrary *)self pathManager];
-  v5 = [v4 isUBF];
+  pathManager = [(PLPhotoLibrary *)self pathManager];
+  isUBF = [pathManager isUBF];
 
   pathManager = self->_pathManager;
-  if (v5)
+  if (isUBF)
   {
     [(PLPhotoLibraryPathManager *)pathManager photoDirectoryWithType:15];
   }
@@ -790,13 +790,13 @@ LABEL_9:
 - (void)deleteTTRDeferredIntermediates
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v4 = [(PLPhotoLibraryPathManager *)self->_pathManager photoDirectoryWithType:1];
   v5 = [v4 stringByAppendingString:@"/Deferred/tmpCaptureContainers"];
-  if ([v3 fileExistsAtPath:v5])
+  if ([defaultManager fileExistsAtPath:v5])
   {
     v9 = 0;
-    v6 = [v3 removeItemAtPath:v5 error:&v9];
+    v6 = [defaultManager removeItemAtPath:v5 error:&v9];
     v7 = v9;
     if ((v6 & 1) == 0)
     {
@@ -825,13 +825,13 @@ LABEL_9:
   v8 = [v6 predicateWithFormat:@"deferredProcessingNeeded IN %@", v7];
 
   [v5 setPredicate:v8];
-  v9 = [(PLPhotoLibrary *)self pathManager];
-  v10 = [v9 privateDirectoryWithSubType:9 createIfNeeded:0 error:0];
+  pathManager = [(PLPhotoLibrary *)self pathManager];
+  v10 = [pathManager privateDirectoryWithSubType:9 createIfNeeded:0 error:0];
 
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v12 = MEMORY[0x1E695DFA8];
   v22 = 0;
-  v13 = [v11 contentsOfDirectoryAtPath:v10 error:&v22];
+  v13 = [defaultManager contentsOfDirectoryAtPath:v10 error:&v22];
   v14 = v22;
   v15 = [v12 setWithArray:v13];
 
@@ -843,7 +843,7 @@ LABEL_9:
     v17[3] = &unk_1E75730F8;
     v17[4] = self;
     v18 = v5;
-    v19 = v11;
+    v19 = defaultManager;
     v20 = v15;
     v21 = v10;
     [(PLPhotoLibrary *)self performBlockAndWait:v17];
@@ -968,13 +968,13 @@ void __49__PLPhotoLibrary_deleteUnusedCameraMetadataPaths__block_invoke_2(uint64
   }
 }
 
-- (void)deleteUnknownDeferredIntermediatesWithCompletionHandler:(id)a3
+- (void)deleteUnknownDeferredIntermediatesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PLPhotoLibrary *)self libraryBundle];
-  v6 = [v5 isSystemPhotoLibrary];
+  handlerCopy = handler;
+  libraryBundle = [(PLPhotoLibrary *)self libraryBundle];
+  isSystemPhotoLibrary = [libraryBundle isSystemPhotoLibrary];
 
-  if (v6)
+  if (isSystemPhotoLibrary)
   {
     v7 = MEMORY[0x1E695D5E0];
     v8 = +[PLManagedAsset entityName];
@@ -992,7 +992,7 @@ void __49__PLPhotoLibrary_deleteUnusedCameraMetadataPaths__block_invoke_2(uint64
     v14[3] = &unk_1E7576F38;
     v14[4] = self;
     v15 = v9;
-    v16 = v4;
+    v16 = handlerCopy;
     v13 = v9;
     [(PLPhotoLibrary *)self performBlockAndWait:v14];
   }
@@ -1289,8 +1289,8 @@ void __53__PLPhotoLibrary_deleteExpiredTrashedAssetsAndAlbums__block_invoke_2(vo
   v5 = [v3 fetchRequestWithEntityName:v4];
 
   v6 = MEMORY[0x1E696AE18];
-  v7 = [MEMORY[0x1E695DF00] date];
-  v8 = [v6 predicateWithFormat:@"(trashedState = %d OR trashedState = %d) AND trashedDate < %@", 1, 2, v7];
+  date = [MEMORY[0x1E695DF00] date];
+  v8 = [v6 predicateWithFormat:@"(trashedState = %d OR trashedState = %d) AND trashedDate < %@", 1, 2, date];
 
   [v5 setPredicate:v8];
   v10[0] = MEMORY[0x1E69E9820];
@@ -1352,28 +1352,28 @@ void __47__PLPhotoLibrary_deleteExpiredTrashedResources__block_invoke_931(uint64
   [v2 applyTrashedState:2];
 }
 
-- (void)_updateMemoryCountKeyPath:(id)a3 withPendingCountKeyPath:(id)a4 inContext:(id)a5
+- (void)_updateMemoryCountKeyPath:(id)path withPendingCountKeyPath:(id)keyPath inContext:(id)context
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  keyPathCopy = keyPath;
+  contextCopy = context;
   v11 = MEMORY[0x1E695D5E0];
   v12 = +[PLMemory entityName];
   v13 = [v11 fetchRequestWithEntityName:v12];
 
-  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K > 0", v9];
-  [v13 setPredicate:v14];
+  keyPathCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K > 0", keyPathCopy];
+  [v13 setPredicate:keyPathCopy];
   [v13 setFetchBatchSize:100];
-  v29[0] = v9;
-  v29[1] = v8;
+  v29[0] = keyPathCopy;
+  v29[1] = pathCopy;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
   [v13 setPropertiesToFetch:v15];
 
   v24 = 0;
-  v16 = [v10 executeFetchRequest:v13 error:&v24];
+  v16 = [contextCopy executeFetchRequest:v13 error:&v24];
   v17 = v24;
-  if (!v16 || (v21[0] = MEMORY[0x1E69E9820], v21[1] = 3221225472, v21[2] = __78__PLPhotoLibrary__updateMemoryCountKeyPath_withPendingCountKeyPath_inContext___block_invoke, v21[3] = &unk_1E7565428, v22 = v9, v23 = v8, [v10 enumerateWithIncrementalSaveUsingObjects:v16 withBlock:v21], v18 = objc_claimAutoreleasedReturnValue(), v17, v23, v22, (v17 = v18) != 0))
+  if (!v16 || (v21[0] = MEMORY[0x1E69E9820], v21[1] = 3221225472, v21[2] = __78__PLPhotoLibrary__updateMemoryCountKeyPath_withPendingCountKeyPath_inContext___block_invoke, v21[3] = &unk_1E7565428, v22 = keyPathCopy, v23 = pathCopy, [contextCopy enumerateWithIncrementalSaveUsingObjects:v16 withBlock:v21], v18 = objc_claimAutoreleasedReturnValue(), v17, v23, v22, (v17 = v18) != 0))
   {
     v19 = PLBackendGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1403,36 +1403,36 @@ void __78__PLPhotoLibrary__updateMemoryCountKeyPath_withPendingCountKeyPath_inCo
   [v4 setValue:v9 forKeyPath:*(a1 + 40)];
 }
 
-- (void)updateMemoryPlayShareViewCountsInContext:(id)a3
+- (void)updateMemoryPlayShareViewCountsInContext:(id)context
 {
-  v4 = a3;
-  [(PLPhotoLibrary *)self _updateMemoryCountKeyPath:@"playCount" withPendingCountKeyPath:@"pendingPlayCount" inContext:v4];
-  [(PLPhotoLibrary *)self _updateMemoryCountKeyPath:@"shareCount" withPendingCountKeyPath:@"pendingShareCount" inContext:v4];
-  [(PLPhotoLibrary *)self _updateMemoryCountKeyPath:@"viewCount" withPendingCountKeyPath:@"pendingViewCount" inContext:v4];
+  contextCopy = context;
+  [(PLPhotoLibrary *)self _updateMemoryCountKeyPath:@"playCount" withPendingCountKeyPath:@"pendingPlayCount" inContext:contextCopy];
+  [(PLPhotoLibrary *)self _updateMemoryCountKeyPath:@"shareCount" withPendingCountKeyPath:@"pendingShareCount" inContext:contextCopy];
+  [(PLPhotoLibrary *)self _updateMemoryCountKeyPath:@"viewCount" withPendingCountKeyPath:@"pendingViewCount" inContext:contextCopy];
 }
 
-- (void)_updateAssetCountKeyPath:(id)a3 withPendingCountKeyPath:(id)a4 inContext:(id)a5
+- (void)_updateAssetCountKeyPath:(id)path withPendingCountKeyPath:(id)keyPath inContext:(id)context
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  keyPathCopy = keyPath;
+  contextCopy = context;
   v11 = MEMORY[0x1E695D5E0];
   v12 = +[PLAdditionalAssetAttributes entityName];
   v13 = [v11 fetchRequestWithEntityName:v12];
 
-  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K > 0", v9];
-  [v13 setPredicate:v14];
+  keyPathCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K > 0", keyPathCopy];
+  [v13 setPredicate:keyPathCopy];
   [v13 setFetchBatchSize:100];
-  v29[0] = v9;
-  v29[1] = v8;
+  v29[0] = keyPathCopy;
+  v29[1] = pathCopy;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
   [v13 setPropertiesToFetch:v15];
 
   v24 = 0;
-  v16 = [v10 executeFetchRequest:v13 error:&v24];
+  v16 = [contextCopy executeFetchRequest:v13 error:&v24];
   v17 = v24;
-  if (!v16 || (v21[0] = MEMORY[0x1E69E9820], v21[1] = 3221225472, v21[2] = __77__PLPhotoLibrary__updateAssetCountKeyPath_withPendingCountKeyPath_inContext___block_invoke, v21[3] = &unk_1E7565400, v22 = v9, v23 = v8, [v10 enumerateWithIncrementalSaveUsingObjects:v16 withBlock:v21], v18 = objc_claimAutoreleasedReturnValue(), v17, v23, v22, (v17 = v18) != 0))
+  if (!v16 || (v21[0] = MEMORY[0x1E69E9820], v21[1] = 3221225472, v21[2] = __77__PLPhotoLibrary__updateAssetCountKeyPath_withPendingCountKeyPath_inContext___block_invoke, v21[3] = &unk_1E7565400, v22 = keyPathCopy, v23 = pathCopy, [contextCopy enumerateWithIncrementalSaveUsingObjects:v16 withBlock:v21], v18 = objc_claimAutoreleasedReturnValue(), v17, v23, v22, (v17 = v18) != 0))
   {
     v19 = PLBackendGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1462,18 +1462,18 @@ void __77__PLPhotoLibrary__updateAssetCountKeyPath_withPendingCountKeyPath_inCon
   [v4 setValue:v9 forKeyPath:*(a1 + 40)];
 }
 
-- (void)updateAssetPlayShareViewCountsInContext:(id)a3
+- (void)updateAssetPlayShareViewCountsInContext:(id)context
 {
-  v4 = a3;
-  [(PLPhotoLibrary *)self _updateAssetCountKeyPath:@"playCount" withPendingCountKeyPath:@"pendingPlayCount" inContext:v4];
-  [(PLPhotoLibrary *)self _updateAssetCountKeyPath:@"shareCount" withPendingCountKeyPath:@"pendingShareCount" inContext:v4];
-  [(PLPhotoLibrary *)self _updateAssetCountKeyPath:@"viewCount" withPendingCountKeyPath:@"pendingViewCount" inContext:v4];
+  contextCopy = context;
+  [(PLPhotoLibrary *)self _updateAssetCountKeyPath:@"playCount" withPendingCountKeyPath:@"pendingPlayCount" inContext:contextCopy];
+  [(PLPhotoLibrary *)self _updateAssetCountKeyPath:@"shareCount" withPendingCountKeyPath:@"pendingShareCount" inContext:contextCopy];
+  [(PLPhotoLibrary *)self _updateAssetCountKeyPath:@"viewCount" withPendingCountKeyPath:@"pendingViewCount" inContext:contextCopy];
 }
 
-- (void)old_refreshCachedCountsOnAllAssetContainersInContext:(id)a3
+- (void)old_refreshCachedCountsOnAllAssetContainersInContext:(id)context
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  contextCopy = context;
   v4 = MEMORY[0x1E695D5E0];
   v5 = +[PLManagedAsset entityName];
   v6 = [v4 fetchRequestWithEntityName:v5];
@@ -1484,24 +1484,24 @@ void __77__PLPhotoLibrary__updateAssetCountKeyPath_withPendingCountKeyPath_inCon
   [v6 setPredicate:v7];
 
   [v6 setReturnsObjectsAsFaults:0];
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__PLPhotoLibrary_old_refreshCachedCountsOnAllAssetContainersInContext___block_invoke_2;
   aBlock[3] = &unk_1E7565388;
-  v9 = v8;
+  v9 = dictionary;
   v40 = v9;
   v10 = _Block_copy(aBlock);
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __71__PLPhotoLibrary_old_refreshCachedCountsOnAllAssetContainersInContext___block_invoke_3;
   v36[3] = &unk_1E75653B0;
-  v28 = v3;
+  v28 = contextCopy;
   v29 = v10;
   v37 = v29;
   v38 = &__block_literal_global_865;
   v25 = v6;
-  v11 = [v3 enumerateObjectsFromFetchRequest:v6 count:0 batchSize:500 usingBlock:v36];
+  v11 = [contextCopy enumerateObjectsFromFetchRequest:v6 count:0 batchSize:500 usingBlock:v36];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -1529,22 +1529,22 @@ void __77__PLPhotoLibrary__updateAssetCountKeyPath_withPendingCountKeyPath_inCon
         {
           v17 = old_refreshCachedCountsOnAllAssetContainersInContext__cachedKeys[i];
           v18 = [v14 valueForKey:v17];
-          v19 = [v18 integerValue];
+          integerValue = [v18 integerValue];
 
           ValueAtIndex = CFArrayGetValueAtIndex(v15, i);
-          if (v19 != ValueAtIndex)
+          if (integerValue != ValueAtIndex)
           {
             v21 = ValueAtIndex;
             v22 = PLBackendGetLog();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
             {
-              v23 = [v14 objectID];
+              objectID = [v14 objectID];
               *buf = 138413058;
               v42 = v17;
               v43 = 2112;
-              v44 = v23;
+              v44 = objectID;
               v45 = 2048;
-              v46 = v19;
+              v46 = integerValue;
               v47 = 2048;
               v48 = v21;
               _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_DEFAULT, "Resetting %@ for %@ (%ld -> %ld)", buf, 0x2Au);
@@ -1662,11 +1662,11 @@ LABEL_6:
 
 - (id)syncedAlbumSubtitleStringFormat
 {
-  v2 = [(PLPhotoLibraryPathManager *)self->_pathManager syncInfoPath];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v3 fileExistsAtPath:v2])
+  syncInfoPath = [(PLPhotoLibraryPathManager *)self->_pathManager syncInfoPath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:syncInfoPath])
   {
-    v4 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:v2];
+    v4 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:syncInfoPath];
     v5 = [v4 objectForKey:@"userAgent"];
     v6 = [v4 objectForKey:@"libraryKind"];
     v7 = v6;
@@ -1719,8 +1719,8 @@ LABEL_13:
 {
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:3566 description:{@"%s Must be called from assetsd directly!", "-[PLPhotoLibrary hasCompletedMomentAnalysis]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:3566 description:{@"%s Must be called from assetsd directly!", "-[PLPhotoLibrary hasCompletedMomentAnalysis]"}];
   }
 
   v8 = 0;
@@ -1772,8 +1772,8 @@ void __44__PLPhotoLibrary_hasCompletedMomentAnalysis__block_invoke(uint64_t a1)
 {
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:3546 description:@"Only Assetsd should be creating the photostream album!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:3546 description:@"Only Assetsd should be creating the photostream album!"];
   }
 
   if (PLIsAssetsd())
@@ -1783,14 +1783,14 @@ void __44__PLPhotoLibrary_hasCompletedMomentAnalysis__block_invoke(uint64_t a1)
     v11 = 3221225472;
     v12 = __44__PLPhotoLibrary_incompleteRestoreProcesses__block_invoke;
     v13 = &unk_1E7578848;
-    v14 = self;
+    selfCopy = self;
     v5 = v4;
     v15 = v5;
     [(PLPhotoLibrary *)self performBlockAndWait:&v10];
     v6 = [(PLPhotoLibrary *)self thumbnailManager:v10];
-    v7 = [v6 hasRebuildThumbnailsRequest];
+    hasRebuildThumbnailsRequest = [v6 hasRebuildThumbnailsRequest];
 
-    if (v7)
+    if (hasRebuildThumbnailsRequest)
     {
       [v5 addObject:@"thumbnailsRebuild"];
     }
@@ -1852,23 +1852,23 @@ uint64_t __40__PLPhotoLibrary_reportLibrarySizeToDAS__block_invoke(uint64_t a1)
 
     if (!WeakRetained)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:3528 description:{@"Invalid parameter not satisfying: %@", @"_libraryServicesManager"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:3528 description:{@"Invalid parameter not satisfying: %@", @"_libraryServicesManager"}];
     }
 
-    v5 = objc_loadWeakRetained(&self->_libraryServicesManager);
-    v6 = [v5 cplReadiness];
-    v7 = [v6 isReadyForCloudPhotoLibraryWithStatus:0];
+    assetsdClient = objc_loadWeakRetained(&self->_libraryServicesManager);
+    cplReadiness = [assetsdClient cplReadiness];
+    isReadyForCloudPhotoLibrary = [cplReadiness isReadyForCloudPhotoLibraryWithStatus:0];
   }
 
   else
   {
-    v5 = [(PLPhotoLibrary *)self assetsdClient];
-    v6 = [v5 cloudInternalClient];
-    v7 = [v6 isReadyForCloudPhotoLibrary];
+    assetsdClient = [(PLPhotoLibrary *)self assetsdClient];
+    cplReadiness = [assetsdClient cloudInternalClient];
+    isReadyForCloudPhotoLibrary = [cplReadiness isReadyForCloudPhotoLibrary];
   }
 
-  v8 = v7;
+  v8 = isReadyForCloudPhotoLibrary;
 
   return v8;
 }
@@ -1878,8 +1878,8 @@ uint64_t __40__PLPhotoLibrary_reportLibrarySizeToDAS__block_invoke(uint64_t a1)
   v27 = *MEMORY[0x1E69E9840];
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:3493 description:{@"%s Must be called from assetsd directly!", "-[PLPhotoLibrary hasCompletedRestorePostProcessing]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:3493 description:{@"%s Must be called from assetsd directly!", "-[PLPhotoLibrary hasCompletedRestorePostProcessing]"}];
   }
 
   v21 = 0;
@@ -1916,9 +1916,9 @@ uint64_t __40__PLPhotoLibrary_reportLibrarySizeToDAS__block_invoke(uint64_t a1)
     v6 = *(v22 + 24);
     if (v6 == 1)
     {
-      v7 = [(PLPhotoLibrary *)self thumbnailManager];
-      v8 = [v7 hasRebuildThumbnailsRequest];
-      *(v22 + 24) = v8 ^ 1;
+      thumbnailManager = [(PLPhotoLibrary *)self thumbnailManager];
+      hasRebuildThumbnailsRequest = [thumbnailManager hasRebuildThumbnailsRequest];
+      *(v22 + 24) = hasRebuildThumbnailsRequest ^ 1;
 
       LOBYTE(v6) = *(v22 + 24);
       if ((v6 & 1) == 0)
@@ -1980,18 +1980,18 @@ void __51__PLPhotoLibrary_hasCompletedRestorePostProcessing__block_invoke(uint64
   *(v4 + 40) = v3;
 }
 
-- (BOOL)hasPendingAssetsIgnoreiTunes:(BOOL)a3
+- (BOOL)hasPendingAssetsIgnoreiTunes:(BOOL)tunes
 {
-  v3 = a3;
+  tunesCopy = tunes;
   v22 = *MEMORY[0x1E69E9840];
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:3467 description:{@"%s Must be called from assetsd directly!", "-[PLPhotoLibrary hasPendingAssetsIgnoreiTunes:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:3467 description:{@"%s Must be called from assetsd directly!", "-[PLPhotoLibrary hasPendingAssetsIgnoreiTunes:]"}];
   }
 
-  v6 = [(PLPhotoLibrary *)self syncProgressAlbumsIgnoreiTunes:v3];
-  if (v3 && [(PLPhotoLibrary *)self _hasIncompleteAsset])
+  v6 = [(PLPhotoLibrary *)self syncProgressAlbumsIgnoreiTunes:tunesCopy];
+  if (tunesCopy && [(PLPhotoLibrary *)self _hasIncompleteAsset])
   {
     LOBYTE(v7) = 1;
   }
@@ -2017,11 +2017,11 @@ void __51__PLPhotoLibrary_hasCompletedRestorePostProcessing__block_invoke(uint64
           }
 
           v11 = *(*(&v17 + 1) + 8 * i);
-          v12 = [v11 pendingItemsCount];
-          v13 = [v11 pendingItemsType];
-          if (v12)
+          pendingItemsCount = [v11 pendingItemsCount];
+          pendingItemsType = [v11 pendingItemsType];
+          if (pendingItemsCount)
           {
-            v14 = v13 == 1;
+            v14 = pendingItemsType == 1;
           }
 
           else
@@ -2048,43 +2048,43 @@ LABEL_18:
   return v7;
 }
 
-- (id)syncProgressAlbumsIgnoreiTunes:(BOOL)a3
+- (id)syncProgressAlbumsIgnoreiTunes:(BOOL)tunes
 {
-  v5 = [MEMORY[0x1E695DF70] array];
-  if (!a3)
+  array = [MEMORY[0x1E695DF70] array];
+  if (!tunes)
   {
-    v6 = [(PLPhotoLibrary *)self syncProgressAlbum];
-    if (v6)
+    syncProgressAlbum = [(PLPhotoLibrary *)self syncProgressAlbum];
+    if (syncProgressAlbum)
     {
-      v7 = v6;
-      [v5 addObject:v6];
+      v7 = syncProgressAlbum;
+      [array addObject:syncProgressAlbum];
     }
   }
 
-  v8 = [(PLPhotoLibrary *)self otaRestoreProgressAlbum];
-  if (v8)
+  otaRestoreProgressAlbum = [(PLPhotoLibrary *)self otaRestoreProgressAlbum];
+  if (otaRestoreProgressAlbum)
   {
-    [v5 addObject:v8];
+    [array addObject:otaRestoreProgressAlbum];
   }
 
-  v9 = [(PLPhotoLibrary *)self filesystemImportProgressAlbum];
+  filesystemImportProgressAlbum = [(PLPhotoLibrary *)self filesystemImportProgressAlbum];
 
-  if (v9)
+  if (filesystemImportProgressAlbum)
   {
-    [v5 addObject:v9];
+    [array addObject:filesystemImportProgressAlbum];
   }
 
-  return v5;
+  return array;
 }
 
 - (id)librarySizes
 {
   v99[1] = *MEMORY[0x1E69E9840];
   Current = CFAbsoluteTimeGetCurrent();
-  v4 = [(PLPhotoLibrary *)self pathManager];
-  v83 = v4;
-  v81 = [v4 isUBF];
-  if (v81)
+  pathManager = [(PLPhotoLibrary *)self pathManager];
+  v83 = pathManager;
+  isUBF = [pathManager isUBF];
+  if (isUBF)
   {
     v5 = MEMORY[0x1E695D5E0];
     v6 = +[PLInternalResource entityName];
@@ -2106,15 +2106,15 @@ LABEL_18:
 
     [v7 setResultType:2];
     [v7 setReturnsObjectsAsFaults:0];
-    v12 = [(PLPhotoLibrary *)self managedObjectContext];
+    managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __30__PLPhotoLibrary_librarySizes__block_invoke;
     aBlock[3] = &unk_1E75652E8;
     v85 = v7;
-    v86 = self;
-    v87 = v12;
-    v71 = v12;
+    selfCopy = self;
+    v87 = managedObjectContext;
+    v71 = managedObjectContext;
     v70 = v7;
     v13 = _Block_copy(aBlock);
     v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"localAvailability", 1];
@@ -2134,10 +2134,10 @@ LABEL_18:
     v22 = [v20 andPredicateWithSubpredicates:v21];
     v79 = v13[2](v13, v22);
 
-    v23 = v76;
+    pathsForFinderSyncFilesystemSizeCalculation = v76;
     v24 = v13[2](v13, v14);
 
-    v25 = v73;
+    allObjects = v73;
     v26 = v83;
 
     v27 = -1;
@@ -2145,12 +2145,12 @@ LABEL_18:
 
   else
   {
-    v28 = [v4 photoDirectoryWithType:4];
-    v77 = [v4 photoDirectoryWithType:29];
-    v29 = [v4 photoDirectoryWithType:30];
-    v74 = [v4 photoMetadataDirectoryForMediaInMainDirectory:v28];
-    v30 = [v4 photoMetadataDirectoryForMediaInMainDirectory:v29];
-    v31 = [v4 photoDirectoryWithType:9];
+    v28 = [pathManager photoDirectoryWithType:4];
+    v77 = [pathManager photoDirectoryWithType:29];
+    v29 = [pathManager photoDirectoryWithType:30];
+    v74 = [pathManager photoMetadataDirectoryForMediaInMainDirectory:v28];
+    v30 = [pathManager photoMetadataDirectoryForMediaInMainDirectory:v29];
+    v31 = [pathManager photoDirectoryWithType:9];
     v32 = [v77 stringByAppendingPathComponent:@"CPL"];
     v95[0] = v28;
     v95[1] = v29;
@@ -2184,16 +2184,16 @@ LABEL_18:
 
     v79 = v41;
 
-    v23 = [v83 pathsForFinderSyncFilesystemSizeCalculation];
-    v25 = [v23 allObjects];
-    v27 = _sizeOfDirectories(v25);
+    pathsForFinderSyncFilesystemSizeCalculation = [v83 pathsForFinderSyncFilesystemSizeCalculation];
+    allObjects = [pathsForFinderSyncFilesystemSizeCalculation allObjects];
+    v27 = _sizeOfDirectories(allObjects);
   }
 
-  v42 = [(PLPhotoLibrary *)self sharedStreamsSize];
+  sharedStreamsSize = [(PLPhotoLibrary *)self sharedStreamsSize];
   v43 = [PLDiskSpaceManagement performCloudSharingSpaceManagementWithBytesToPurge:0 shouldFreeSpace:0 shouldKeepRecentlyViewedAssets:0 fromPhotoLibrary:self];
-  if (v42 >= v43)
+  if (sharedStreamsSize >= v43)
   {
-    v44 = v42 - v43;
+    v44 = sharedStreamsSize - v43;
   }
 
   else
@@ -2202,7 +2202,7 @@ LABEL_18:
   }
 
   v45 = [v26 photoDirectoryWithType:15];
-  if (v81)
+  if (isUBF)
   {
     [v26 photoDirectoryWithType:24];
   }
@@ -2222,7 +2222,7 @@ LABEL_18:
   v51 = [v26 photoDirectoryWithType:11];
   [v50 addObject:v51];
 
-  if (v81)
+  if (isUBF)
   {
     v52 = [v26 photoDirectoryWithType:12];
     [v50 addObject:v52];
@@ -2254,28 +2254,28 @@ LABEL_18:
     _os_log_impl(&dword_19BF1F000, v57, OS_LOG_TYPE_INFO, "librarySizes took: %fs)", buf, 0xCu);
   }
 
-  v78 = [&unk_1F0FBAAF8 stringValue];
-  v88[0] = v78;
+  stringValue = [&unk_1F0FBAAF8 stringValue];
+  v88[0] = stringValue;
   v75 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v54 + v24];
   v89[0] = v75;
-  v72 = [&unk_1F0FBAB10 stringValue];
-  v88[1] = v72;
+  stringValue2 = [&unk_1F0FBAB10 stringValue];
+  v88[1] = stringValue2;
   v59 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v55 + v48];
   v89[1] = v59;
-  v60 = [&unk_1F0FBAB28 stringValue];
-  v88[2] = v60;
+  stringValue3 = [&unk_1F0FBAB28 stringValue];
+  v88[2] = stringValue3;
   v61 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v56 + v44];
   v89[2] = v61;
-  v62 = [&unk_1F0FBAB40 stringValue];
-  v88[3] = v62;
+  stringValue4 = [&unk_1F0FBAB40 stringValue];
+  v88[3] = stringValue4;
   v63 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v49 + v27];
   v89[3] = v63;
-  v64 = [&unk_1F0FBAAC8 stringValue];
-  v88[4] = v64;
+  stringValue5 = [&unk_1F0FBAAC8 stringValue];
+  v88[4] = stringValue5;
   v65 = [MEMORY[0x1E696AD98] numberWithLongLong:v79];
   v89[4] = v65;
-  v66 = [&unk_1F0FBAAB0 stringValue];
-  v88[5] = v66;
+  stringValue6 = [&unk_1F0FBAAB0 stringValue];
+  v88[5] = stringValue6;
   v67 = [MEMORY[0x1E696AD98] numberWithLongLong:v80];
   v89[5] = v67;
   v68 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v89 forKeys:v88 count:6];
@@ -2331,90 +2331,90 @@ void __30__PLPhotoLibrary_librarySizes__block_invoke_2(uint64_t a1)
   }
 
   Current = CFAbsoluteTimeGetCurrent();
-  v89 = [(PLPhotoLibrary *)self pathManager];
+  pathManager = [(PLPhotoLibrary *)self pathManager];
   context = objc_autoreleasePoolPush();
-  v6 = [(PLPhotoLibrary *)self managedObjectContext];
-  v7 = [PLPhotoLibrary _resourcesInfoFromMoc:v6];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  v7 = [PLPhotoLibrary _resourcesInfoFromMoc:managedObjectContext];
 
   v8 = [v7 objectForKeyedSubscript:@"PLSavedPhotosSize"];
   v9 = [v8 objectForKeyedSubscript:@"PLInternalSizeOriginals"];
-  v88 = [v9 unsignedIntegerValue];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
   v10 = [v7 objectForKeyedSubscript:@"PLSavedPhotosSize"];
   v11 = [v10 objectForKeyedSubscript:@"PLInternalSizeDerivative"];
-  v86 = [v11 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v11 unsignedIntegerValue];
 
   v12 = [v7 objectForKeyedSubscript:@"PLSavedPhotosSize"];
   v13 = [v12 objectForKeyedSubscript:@"PLInternalSizeFileBackedThumbnail"];
-  v84 = [v13 unsignedIntegerValue];
+  unsignedIntegerValue3 = [v13 unsignedIntegerValue];
 
   v14 = [v7 objectForKeyedSubscript:@"PLReferenceMediaSize"];
   v15 = [v14 objectForKeyedSubscript:@"PLInternalSizeDerivative"];
-  v81 = [v15 unsignedIntegerValue];
+  unsignedIntegerValue4 = [v15 unsignedIntegerValue];
 
   v16 = [v7 objectForKeyedSubscript:@"PLReferenceMediaSize"];
   v17 = [v16 objectForKeyedSubscript:@"PLInternalSizeFileBackedThumbnail"];
-  v80 = [v17 unsignedIntegerValue];
+  unsignedIntegerValue5 = [v17 unsignedIntegerValue];
 
   v18 = [v7 objectForKeyedSubscript:@"PLFinderSyncSize"];
   v19 = [v18 objectForKeyedSubscript:@"PLInternalSizeOriginals"];
-  v79 = [v19 unsignedIntegerValue];
+  unsignedIntegerValue6 = [v19 unsignedIntegerValue];
 
   v20 = [v7 objectForKeyedSubscript:@"PLFinderSyncSize"];
   v21 = [v20 objectForKeyedSubscript:@"PLInternalSizeDerivative"];
-  v78 = [v21 unsignedIntegerValue];
+  unsignedIntegerValue7 = [v21 unsignedIntegerValue];
 
   v22 = [v7 objectForKeyedSubscript:@"PLFinderSyncSize"];
   v23 = [v22 objectForKeyedSubscript:@"PLInternalSizeFileBackedThumbnail"];
-  v77 = [v23 unsignedIntegerValue];
+  unsignedIntegerValue8 = [v23 unsignedIntegerValue];
 
   v24 = [v7 objectForKeyedSubscript:@"PLFinderSyncSize"];
   v25 = [v24 objectForKeyedSubscript:@"PLInternalSizeTableThumbnail"];
-  v76 = [v25 unsignedIntegerValue];
+  unsignedIntegerValue9 = [v25 unsignedIntegerValue];
 
   v26 = [v7 objectForKeyedSubscript:@"PLPhotoStreamSize"];
   v27 = [v26 objectForKeyedSubscript:@"PLInternalSizeOriginals"];
-  v75 = [v27 unsignedIntegerValue];
+  unsignedIntegerValue10 = [v27 unsignedIntegerValue];
 
   v28 = [v7 objectForKeyedSubscript:@"PLPhotoStreamSize"];
   v29 = [v28 objectForKeyedSubscript:@"PLInternalSizeDerivative"];
-  v74 = [v29 unsignedIntegerValue];
+  unsignedIntegerValue11 = [v29 unsignedIntegerValue];
 
   v30 = [v7 objectForKeyedSubscript:@"PLPhotoStreamSize"];
   v31 = [v30 objectForKeyedSubscript:@"PLInternalSizeFileBackedThumbnail"];
-  v73 = [v31 unsignedIntegerValue];
+  unsignedIntegerValue12 = [v31 unsignedIntegerValue];
 
   v32 = [v7 objectForKeyedSubscript:@"PLPhotoStreamSize"];
   v33 = [v32 objectForKeyedSubscript:@"PLInternalSizeTableThumbnail"];
-  v72 = [v33 unsignedIntegerValue];
+  unsignedIntegerValue13 = [v33 unsignedIntegerValue];
 
   v34 = [v7 objectForKeyedSubscript:@"PLSharedStreamSize"];
   v35 = [v34 objectForKeyedSubscript:@"PLInternalSizeOriginals"];
-  v36 = [v35 unsignedIntegerValue];
+  unsignedIntegerValue14 = [v35 unsignedIntegerValue];
 
   v37 = [v7 objectForKeyedSubscript:@"PLSharedStreamSize"];
   v38 = [v37 objectForKeyedSubscript:@"PLInternalSizeDerivative"];
-  v39 = [v38 unsignedIntegerValue];
+  unsignedIntegerValue15 = [v38 unsignedIntegerValue];
 
   v40 = [v7 objectForKeyedSubscript:@"PLSharedStreamSize"];
   v41 = [v40 objectForKeyedSubscript:@"PLInternalSizeFileBackedThumbnail"];
-  v42 = [v41 unsignedIntegerValue];
+  unsignedIntegerValue16 = [v41 unsignedIntegerValue];
 
   v43 = [v7 objectForKeyedSubscript:@"PLSharedStreamSize"];
   v44 = [v43 objectForKeyedSubscript:@"PLInternalSizeTableThumbnail"];
-  v45 = [v44 unsignedIntegerValue];
+  unsignedIntegerValue17 = [v44 unsignedIntegerValue];
 
   v71 = [PLManagedAsset totalPurgeableSizeOnDiskInLibrary:self urgency:1];
-  v46 = [(PLPhotoLibrary *)self thumbnailManager];
-  v47 = [v46 _diskFootprintOfTableThumbnailTables];
+  thumbnailManager = [(PLPhotoLibrary *)self thumbnailManager];
+  _diskFootprintOfTableThumbnailTables = [thumbnailManager _diskFootprintOfTableThumbnailTables];
 
   objc_autoreleasePoolPop(context);
-  v48 = [v89 photoDirectoryWithType:6];
+  v48 = [pathManager photoDirectoryWithType:6];
   v92 = v48;
   v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v92 count:1];
   v50 = _sizeOfDirectories(v49);
 
-  v51 = [(PLPhotoLibrary *)self _dbFileSizes];
+  _dbFileSizes = [(PLPhotoLibrary *)self _dbFileSizes];
   v52 = [PLDiskSpaceManagement performCloudSharingSpaceManagementWithBytesToPurge:0 shouldFreeSpace:0 shouldKeepRecentlyViewedAssets:0 fromPhotoLibrary:self];
   v53 = PLBackendGetLog();
   if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
@@ -2425,7 +2425,7 @@ void __30__PLPhotoLibrary_librarySizes__block_invoke_2(uint64_t a1)
     _os_log_impl(&dword_19BF1F000, v53, OS_LOG_TYPE_DEFAULT, "estimatedLibrarySizes took: %fs", buf, 0xCu);
   }
 
-  v55 = v39 + v36 + v42 + v45;
+  v55 = unsignedIntegerValue15 + unsignedIntegerValue14 + unsignedIntegerValue16 + unsignedIntegerValue17;
   v56 = v55 >= v52;
   v57 = v55 - v52;
   if (v56)
@@ -2438,31 +2438,31 @@ void __30__PLPhotoLibrary_librarySizes__block_invoke_2(uint64_t a1)
     v58 = 0;
   }
 
-  v59 = v86 + v88 + v84 + v81 + v80 + v47 + v50;
+  v59 = unsignedIntegerValue2 + unsignedIntegerValue + unsignedIntegerValue3 + unsignedIntegerValue4 + unsignedIntegerValue5 + _diskFootprintOfTableThumbnailTables + v50;
 
-  v87 = [&unk_1F0FBAAF8 stringValue];
-  v90[0] = v87;
-  v85 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v59 + v51];
+  stringValue = [&unk_1F0FBAAF8 stringValue];
+  v90[0] = stringValue;
+  v85 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v59 + _dbFileSizes];
   v91[0] = v85;
   contexta = [&unk_1F0FBAB10 stringValue];
   v90[1] = contexta;
-  v60 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v74 + v75 + v73 + v72];
+  v60 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:unsignedIntegerValue11 + unsignedIntegerValue10 + unsignedIntegerValue12 + unsignedIntegerValue13];
   v91[1] = v60;
-  v61 = [&unk_1F0FBAB28 stringValue];
-  v90[2] = v61;
+  stringValue2 = [&unk_1F0FBAB28 stringValue];
+  v90[2] = stringValue2;
   v62 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v58];
   v91[2] = v62;
-  v63 = [&unk_1F0FBAB40 stringValue];
-  v90[3] = v63;
-  v64 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v78 + v79 + v77 + v76];
+  stringValue3 = [&unk_1F0FBAB40 stringValue];
+  v90[3] = stringValue3;
+  v64 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:unsignedIntegerValue7 + unsignedIntegerValue6 + unsignedIntegerValue8 + unsignedIntegerValue9];
   v91[3] = v64;
-  v65 = [&unk_1F0FBAAC8 stringValue];
-  v90[4] = v65;
+  stringValue4 = [&unk_1F0FBAAC8 stringValue];
+  v90[4] = stringValue4;
   v66 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v71];
   v91[4] = v66;
-  v67 = [&unk_1F0FBAAB0 stringValue];
-  v90[5] = v67;
-  v68 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v88];
+  stringValue5 = [&unk_1F0FBAAB0 stringValue];
+  v90[5] = stringValue5;
+  v68 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:unsignedIntegerValue];
   v91[5] = v68;
   v69 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v91 forKeys:v90 count:6];
 
@@ -2472,13 +2472,13 @@ void __30__PLPhotoLibrary_librarySizes__block_invoke_2(uint64_t a1)
 - (unint64_t)_dbFileSizes
 {
   v21 = *MEMORY[0x1E69E9840];
-  v15 = [(PLPhotoLibrary *)self pathManager];
-  v3 = [v15 knownDBPaths];
+  pathManager = [(PLPhotoLibrary *)self pathManager];
+  knownDBPaths = [pathManager knownDBPaths];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v4 = [knownDBPaths countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2490,7 +2490,7 @@ void __30__PLPhotoLibrary_librarySizes__block_invoke_2(uint64_t a1)
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(knownDBPaths);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
@@ -2501,7 +2501,7 @@ void __30__PLPhotoLibrary_librarySizes__block_invoke_2(uint64_t a1)
         v6 = v12 + [(PLPhotoLibrary *)self _fileSizeAtPath:v13];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [knownDBPaths countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
@@ -2515,12 +2515,12 @@ void __30__PLPhotoLibrary_librarySizes__block_invoke_2(uint64_t a1)
   return v6;
 }
 
-- (unint64_t)_fileSizeAtPath:(id)a3
+- (unint64_t)_fileSizeAtPath:(id)path
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pathCopy = path;
   memset(&v14, 0, sizeof(v14));
-  if (stat([v3 fileSystemRepresentation], &v14))
+  if (stat([pathCopy fileSystemRepresentation], &v14))
   {
     v4 = __error();
     v5 = *v4;
@@ -2530,7 +2530,7 @@ void __30__PLPhotoLibrary_librarySizes__block_invoke_2(uint64_t a1)
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
         *__strerrbuf = 138412290;
-        v22 = v3;
+        v22 = pathCopy;
         v7 = "Can't get size for %@, no such file or directory";
         v8 = __strerrbuf;
         v9 = v6;
@@ -2548,7 +2548,7 @@ LABEL_8:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412802;
-        v16 = v3;
+        v16 = pathCopy;
         v17 = 1024;
         v18 = v5;
         v19 = 2082;
@@ -2572,13 +2572,13 @@ LABEL_10:
   return st_size;
 }
 
-- (id)librarySizesFromDBForLibraryKindMask:(unint64_t)a3
+- (id)librarySizesFromDBForLibraryKindMask:(unint64_t)mask
 {
-  v3 = a3;
+  maskCopy = mask;
   v46[3] = *MEMORY[0x1E69E9840];
-  if ((a3 & 0x20) == 0)
+  if ((mask & 0x20) == 0)
   {
-    v5 = 0;
+    longLongValue = 0;
     goto LABEL_12;
   }
 
@@ -2616,13 +2616,13 @@ LABEL_10:
   {
     if ([v20 count] != 1)
     {
-      v5 = 0;
+      longLongValue = 0;
       goto LABEL_11;
     }
 
     v22 = [v20 objectAtIndexedSubscript:0];
     v23 = [v22 objectForKeyedSubscript:@"totalFileSize"];
-    v5 = [v23 longLongValue];
+    longLongValue = [v23 longLongValue];
   }
 
   else
@@ -2638,14 +2638,14 @@ LABEL_10:
       _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_ERROR, "%@ failed to calculate size %@", buf, 0x16u);
     }
 
-    v5 = 0;
+    longLongValue = 0;
   }
 
 LABEL_11:
 LABEL_12:
   if ([(PLPhotoLibrary *)self isCloudPhotoLibraryEnabled])
   {
-    if ((v3 & 0x10) != 0)
+    if ((maskCopy & 0x10) != 0)
     {
       v25 = [PLManagedAsset totalPurgeableSizeOnDiskInLibrary:self urgency:1 sizeOption:1];
     }
@@ -2655,12 +2655,12 @@ LABEL_12:
       v25 = 0;
     }
 
-    v27 = [(PLPhotoLibrary *)self libraryBundle];
-    v28 = [PLCPLSettings settingsWithLibraryBundle:v27];
+    libraryBundle = [(PLPhotoLibrary *)self libraryBundle];
+    v28 = [PLCPLSettings settingsWithLibraryBundle:libraryBundle];
 
-    v29 = [v28 isKeepOriginalsEnabled];
+    isKeepOriginalsEnabled = [v28 isKeepOriginalsEnabled];
     v26 = 0;
-    if ((v3 & 0x40) != 0 && (v29 & 1) == 0)
+    if ((maskCopy & 0x40) != 0 && (isKeepOriginalsEnabled & 1) == 0)
     {
       v26 = [PLManagedAsset totalPurgeableSizeOnDiskInLibrary:self urgency:1 sizeOption:2];
       v25 += v26;
@@ -2673,16 +2673,16 @@ LABEL_12:
     v25 = 0;
   }
 
-  v30 = [&unk_1F0FBAAB0 stringValue];
-  v39[0] = v30;
-  v31 = [MEMORY[0x1E696AD98] numberWithLongLong:v5];
+  stringValue = [&unk_1F0FBAAB0 stringValue];
+  v39[0] = stringValue;
+  v31 = [MEMORY[0x1E696AD98] numberWithLongLong:longLongValue];
   v40[0] = v31;
-  v32 = [&unk_1F0FBAAC8 stringValue];
-  v39[1] = v32;
+  stringValue2 = [&unk_1F0FBAAC8 stringValue];
+  v39[1] = stringValue2;
   v33 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v25];
   v40[1] = v33;
-  v34 = [&unk_1F0FBAAE0 stringValue];
-  v39[2] = v34;
+  stringValue3 = [&unk_1F0FBAAE0 stringValue];
+  v39[2] = stringValue3;
   v35 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v26];
   v40[2] = v35;
   v36 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:3];
@@ -2690,14 +2690,14 @@ LABEL_12:
   return v36;
 }
 
-- (id)librarySizesFromDB:(BOOL)a3
+- (id)librarySizesFromDB:(BOOL)b
 {
-  v3 = a3;
+  bCopy = b;
   v18 = *MEMORY[0x1E69E9840];
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if (v3)
+    if (bCopy)
     {
       v6 = @"YES";
     }
@@ -2717,7 +2717,7 @@ LABEL_12:
     _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_DEFAULT, "Starting getLibrarySizesFromDB:%@ QoS:%@", &v14, 0x16u);
   }
 
-  if (v3)
+  if (bCopy)
   {
     [(PLPhotoLibrary *)self librarySizesFromDB];
   }
@@ -2730,7 +2730,7 @@ LABEL_12:
   v10 = PLBackendGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    if (v3)
+    if (bCopy)
     {
       v11 = @"YES";
     }
@@ -2751,9 +2751,9 @@ LABEL_12:
   return v9;
 }
 
-- (void)countOfReferencedMediaWithCompletionHandler:(id)a3
+- (void)countOfReferencedMediaWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x1E695D5E0];
   v6 = +[PLInternalResource entityName];
   v7 = [v5 fetchRequestWithEntityName:v6];
@@ -2761,24 +2761,24 @@ LABEL_12:
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"fileSystemBookmark != nil"];
   [v7 setPredicate:v8];
 
-  v9 = [(PLPhotoLibrary *)self managedObjectContext];
-  v10 = v9;
-  if (v9)
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  v10 = managedObjectContext;
+  if (managedObjectContext)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __62__PLPhotoLibrary_countOfReferencedMediaWithCompletionHandler___block_invoke;
     v12[3] = &unk_1E7576F38;
-    v13 = v9;
+    v13 = managedObjectContext;
     v14 = v7;
-    v15 = v4;
+    v15 = handlerCopy;
     [(PLPhotoLibrary *)self performBlock:v12];
   }
 
   else
   {
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:41003 userInfo:0];
-    (*(v4 + 2))(v4, 0x7FFFFFFFFFFFFFFFLL, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0x7FFFFFFFFFFFFFFFLL, v11);
   }
 }
 
@@ -2792,27 +2792,27 @@ void __62__PLPhotoLibrary_countOfReferencedMediaWithCompletionHandler___block_in
   (*(a1[6] + 16))();
 }
 
-- (BOOL)getPhotoCount:(unint64_t *)a3 videoCount:(unint64_t *)a4 excludeTrashed:(BOOL)a5 excludeInvisible:(BOOL)a6 excludeCloudShared:(BOOL)a7
+- (BOOL)getPhotoCount:(unint64_t *)count videoCount:(unint64_t *)videoCount excludeTrashed:(BOOL)trashed excludeInvisible:(BOOL)invisible excludeCloudShared:(BOOL)shared
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v13 = [(PLPhotoLibrary *)self managedObjectContext];
-  v14 = [(PLPhotoLibrary *)self isCloudPhotoLibraryEnabled];
-  *a3 = [PLManagedAsset countUsedAssetsWithKind:0 excludeTrashed:v9 excludeInvisible:v8 excludeCloudShared:v7 excludePhotoStream:v14 inManagedObjectContext:v13];
-  *a4 = [PLManagedAsset countUsedAssetsWithKind:1 excludeTrashed:v9 excludeInvisible:v8 excludeCloudShared:v7 excludePhotoStream:v14 inManagedObjectContext:v13];
+  sharedCopy = shared;
+  invisibleCopy = invisible;
+  trashedCopy = trashed;
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  isCloudPhotoLibraryEnabled = [(PLPhotoLibrary *)self isCloudPhotoLibraryEnabled];
+  *count = [PLManagedAsset countUsedAssetsWithKind:0 excludeTrashed:trashedCopy excludeInvisible:invisibleCopy excludeCloudShared:sharedCopy excludePhotoStream:isCloudPhotoLibraryEnabled inManagedObjectContext:managedObjectContext];
+  *videoCount = [PLManagedAsset countUsedAssetsWithKind:1 excludeTrashed:trashedCopy excludeInvisible:invisibleCopy excludeCloudShared:sharedCopy excludePhotoStream:isCloudPhotoLibraryEnabled inManagedObjectContext:managedObjectContext];
 
   return 1;
 }
 
-- (id)albumListForContentMode:(int)a3
+- (id)albumListForContentMode:(int)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     v3 = [PLManagedAlbumList allStreamedAlbumsListInPhotoLibrary:self];
   }
 
-  else if (a3 == 13)
+  else if (mode == 13)
   {
     v3 = [PLManagedAlbumList albumListInPhotoLibrary:self];
   }
@@ -2828,33 +2828,33 @@ void __62__PLPhotoLibrary_countOfReferencedMediaWithCompletionHandler___block_in
 - (PLKeywordManager)keywordManager
 {
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v3 = [WeakRetained keywordManager];
+  keywordManager = [WeakRetained keywordManager];
 
-  return v3;
+  return keywordManager;
 }
 
-- (id)addDCIMEntryAtFileURL:(id)a3 mainFileMetadata:(id)a4 previewImage:(id)a5 thumbnailImage:(id)a6 savedAssetType:(signed __int16)a7 replacementUUID:(id)a8 publicGlobalUUID:(id)a9 extendedInfo:(id)a10 withUUID:(id)a11 isPlaceholder:(BOOL)a12 placeholderFileURL:(id)a13 forFinalCameraImage:(BOOL)a14
+- (id)addDCIMEntryAtFileURL:(id)l mainFileMetadata:(id)metadata previewImage:(id)image thumbnailImage:(id)thumbnailImage savedAssetType:(signed __int16)type replacementUUID:(id)d publicGlobalUUID:(id)iD extendedInfo:(id)self0 withUUID:(id)self1 isPlaceholder:(BOOL)self2 placeholderFileURL:(id)self3 forFinalCameraImage:(BOOL)self4
 {
-  v42 = a3;
-  v19 = a4;
-  v45 = a5;
-  v46 = a6;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a13;
-  if (v20 && v23)
+  lCopy = l;
+  metadataCopy = metadata;
+  imageCopy = image;
+  thumbnailImageCopy = thumbnailImage;
+  dCopy = d;
+  iDCopy = iD;
+  infoCopy = info;
+  uIDCopy = uID;
+  rLCopy = rL;
+  if (dCopy && uIDCopy)
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:2597 description:@"Cannot specify both replacementUUID and newUUID"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:2597 description:@"Cannot specify both replacementUUID and newUUID"];
   }
 
   if (!self->_pendingTransactions)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v39 = NSStringFromSelector(a2);
-    [v38 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:2598 description:{@"Can only call %@ from within a transaction.", v39}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:2598 description:{@"Can only call %@ from within a transaction.", v39}];
   }
 
   v64 = 0;
@@ -2869,33 +2869,33 @@ void __62__PLPhotoLibrary_countOfReferencedMediaWithCompletionHandler___block_in
   aBlock[3] = &unk_1E7565278;
   v60 = &v64;
   aBlock[4] = self;
-  v43 = v42;
+  v43 = lCopy;
   v51 = v43;
-  v41 = v19;
+  v41 = metadataCopy;
   v52 = v41;
-  v61 = a7;
-  v25 = v23;
+  typeCopy = type;
+  v25 = uIDCopy;
   v53 = v25;
-  v26 = v20;
+  v26 = dCopy;
   v54 = v26;
-  v62 = a12;
-  v27 = v24;
+  placeholderCopy = placeholder;
+  v27 = rLCopy;
   v55 = v27;
-  v28 = v22;
+  v28 = infoCopy;
   v56 = v28;
-  v29 = v21;
+  v29 = iDCopy;
   v57 = v29;
-  v30 = v45;
+  v30 = imageCopy;
   v58 = v30;
-  v31 = v46;
+  v31 = thumbnailImageCopy;
   v59 = v31;
-  v63 = a14;
+  cameraImageCopy = cameraImage;
   v32 = _Block_copy(aBlock);
-  v33 = [(PLPhotoLibrary *)self libraryServicesManager];
-  if (!v33)
+  libraryServicesManager = [(PLPhotoLibrary *)self libraryServicesManager];
+  if (!libraryServicesManager)
   {
-    v47 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v47 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:2714 description:{@"Invalid parameter not satisfying: %@", @"libraryServicesManager"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:2714 description:{@"Invalid parameter not satisfying: %@", @"libraryServicesManager"}];
   }
 
   v48[0] = MEMORY[0x1E69E9820];
@@ -2904,7 +2904,7 @@ void __62__PLPhotoLibrary_countOfReferencedMediaWithCompletionHandler___block_in
   v48[3] = &unk_1E7576AA0;
   v34 = v32;
   v49 = v34;
-  [v33 performBlockWithImportMutex:v48];
+  [libraryServicesManager performBlockWithImportMutex:v48];
   v35 = v65[5];
 
   _Block_object_dispose(&v64, 8);
@@ -3061,21 +3061,21 @@ void __208__PLPhotoLibrary_addDCIMEntryAtFileURL_mainFileMetadata_previewImage_t
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)modifyDCIMEntryForPhoto:(id)a3
+- (void)modifyDCIMEntryForPhoto:(id)photo
 {
-  v4 = a3;
-  v5 = [v4 pathForOriginalFile];
-  if (v5 && [v4 isPhoto])
+  photoCopy = photo;
+  pathForOriginalFile = [photoCopy pathForOriginalFile];
+  if (pathForOriginalFile && [photoCopy isPhoto])
   {
-    v6 = [v4 photoLibrary];
+    photoLibrary = [photoCopy photoLibrary];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __42__PLPhotoLibrary_modifyDCIMEntryForPhoto___block_invoke;
     v7[3] = &unk_1E75761B8;
-    v8 = v5;
-    v9 = self;
-    v10 = v4;
-    [v6 performTransaction:v7 completionHandler:0];
+    v8 = pathForOriginalFile;
+    selfCopy = self;
+    v10 = photoCopy;
+    [photoLibrary performTransaction:v7 completionHandler:0];
   }
 }
 
@@ -3115,34 +3115,34 @@ void __42__PLPhotoLibrary_modifyDCIMEntryForPhoto___block_invoke(uint64_t a1)
 
 - (NSArray)syncedAlbums
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(PLPhotoLibrary *)self managedObjectContext];
-  v5 = [(PLGenericAlbum *)PLManagedAlbum albumsWithKind:1603 inManagedObjectContext:v4];
-  [v3 addObjectsFromArray:v5];
+  array = [MEMORY[0x1E695DF70] array];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  v5 = [(PLGenericAlbum *)PLManagedAlbum albumsWithKind:1603 inManagedObjectContext:managedObjectContext];
+  [array addObjectsFromArray:v5];
 
-  v6 = [(PLPhotoLibrary *)self managedObjectContext];
-  v7 = [(PLGenericAlbum *)PLManagedAlbum albumsWithKind:1604 inManagedObjectContext:v6];
-  [v3 addObjectsFromArray:v7];
+  managedObjectContext2 = [(PLPhotoLibrary *)self managedObjectContext];
+  v7 = [(PLGenericAlbum *)PLManagedAlbum albumsWithKind:1604 inManagedObjectContext:managedObjectContext2];
+  [array addObjectsFromArray:v7];
 
-  v8 = [(PLPhotoLibrary *)self managedObjectContext];
-  v9 = [(PLGenericAlbum *)PLManagedAlbum albumsWithKind:2 inManagedObjectContext:v8];
-  [v3 addObjectsFromArray:v9];
+  managedObjectContext3 = [(PLPhotoLibrary *)self managedObjectContext];
+  v9 = [(PLGenericAlbum *)PLManagedAlbum albumsWithKind:2 inManagedObjectContext:managedObjectContext3];
+  [array addObjectsFromArray:v9];
 
-  v10 = [(PLPhotoLibrary *)self managedObjectContext];
-  v11 = [(PLGenericAlbum *)PLManagedAlbum albumsWithKind:1550 inManagedObjectContext:v10];
-  [v3 addObjectsFromArray:v11];
+  managedObjectContext4 = [(PLPhotoLibrary *)self managedObjectContext];
+  v11 = [(PLGenericAlbum *)PLManagedAlbum albumsWithKind:1550 inManagedObjectContext:managedObjectContext4];
+  [array addObjectsFromArray:v11];
 
-  return v3;
+  return array;
 }
 
-- (void)resetCachedImportAlbumsIfNeededForAlbum:(id)a3
+- (void)resetCachedImportAlbumsIfNeededForAlbum:(id)album
 {
-  v4 = a3;
+  albumCopy = album;
   p_lastImportedPhotosAlbum = &self->_lastImportedPhotosAlbum;
   lastImportedPhotosAlbum = self->_lastImportedPhotosAlbum;
-  if (lastImportedPhotosAlbum == v4)
+  if (lastImportedPhotosAlbum == albumCopy)
   {
-    v9 = v4;
+    v9 = albumCopy;
   }
 
   else
@@ -3150,43 +3150,43 @@ void __42__PLPhotoLibrary_modifyDCIMEntryForPhoto___block_invoke(uint64_t a1)
     allImportedPhotosAlbum = self->_allImportedPhotosAlbum;
     p_allImportedPhotosAlbum = &self->_allImportedPhotosAlbum;
     lastImportedPhotosAlbum = allImportedPhotosAlbum;
-    if (allImportedPhotosAlbum != v4)
+    if (allImportedPhotosAlbum != albumCopy)
     {
       goto LABEL_6;
     }
 
-    v9 = v4;
+    v9 = albumCopy;
     p_lastImportedPhotosAlbum = p_allImportedPhotosAlbum;
   }
 
   *p_lastImportedPhotosAlbum = 0;
 
-  v4 = v9;
+  albumCopy = v9;
 LABEL_6:
 }
 
-- (id)lastImportedPhotosAlbumCreateIfNeeded:(BOOL)a3
+- (id)lastImportedPhotosAlbumCreateIfNeeded:(BOOL)needed
 {
   v19 = *MEMORY[0x1E69E9840];
   lastImportedPhotosAlbum = self->_lastImportedPhotosAlbum;
   if (!lastImportedPhotosAlbum)
   {
-    v5 = a3;
-    v6 = [(PLPhotoLibrary *)self managedObjectContext];
-    v7 = [PLGenericAlbum albumWithKind:1603 inManagedObjectContext:v6];
+    neededCopy = needed;
+    managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+    v7 = [PLGenericAlbum albumWithKind:1603 inManagedObjectContext:managedObjectContext];
     v8 = self->_lastImportedPhotosAlbum;
     self->_lastImportedPhotosAlbum = v7;
 
     lastImportedPhotosAlbum = self->_lastImportedPhotosAlbum;
-    if (!lastImportedPhotosAlbum && v5)
+    if (!lastImportedPhotosAlbum && neededCopy)
     {
       v9 = [PLGenericAlbum insertNewAlbumWithKind:1603 title:0 intoLibrary:self];
       v10 = self->_lastImportedPhotosAlbum;
       self->_lastImportedPhotosAlbum = v9;
 
-      v11 = [(PLPhotoLibrary *)self managedObjectContext];
+      managedObjectContext2 = [(PLPhotoLibrary *)self managedObjectContext];
       v16 = 0;
-      v12 = [v11 save:&v16];
+      v12 = [managedObjectContext2 save:&v16];
       v13 = v16;
 
       if ((v12 & 1) == 0)
@@ -3207,28 +3207,28 @@ LABEL_6:
   return lastImportedPhotosAlbum;
 }
 
-- (id)allImportedPhotosAlbumCreateIfNeeded:(BOOL)a3
+- (id)allImportedPhotosAlbumCreateIfNeeded:(BOOL)needed
 {
   v19 = *MEMORY[0x1E69E9840];
   allImportedPhotosAlbum = self->_allImportedPhotosAlbum;
   if (!allImportedPhotosAlbum)
   {
-    v5 = a3;
-    v6 = [(PLPhotoLibrary *)self managedObjectContext];
-    v7 = [PLGenericAlbum albumWithKind:1604 inManagedObjectContext:v6];
+    neededCopy = needed;
+    managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+    v7 = [PLGenericAlbum albumWithKind:1604 inManagedObjectContext:managedObjectContext];
     v8 = self->_allImportedPhotosAlbum;
     self->_allImportedPhotosAlbum = v7;
 
     allImportedPhotosAlbum = self->_allImportedPhotosAlbum;
-    if (!allImportedPhotosAlbum && v5)
+    if (!allImportedPhotosAlbum && neededCopy)
     {
       v9 = [PLGenericAlbum insertNewAlbumWithKind:1604 title:0 intoLibrary:self];
       v10 = self->_allImportedPhotosAlbum;
       self->_allImportedPhotosAlbum = v9;
 
-      v11 = [(PLPhotoLibrary *)self managedObjectContext];
+      managedObjectContext2 = [(PLPhotoLibrary *)self managedObjectContext];
       v16 = 0;
-      v12 = [v11 save:&v16];
+      v12 = [managedObjectContext2 save:&v16];
       v13 = v16;
 
       if ((v12 & 1) == 0)
@@ -3269,15 +3269,15 @@ void __45__PLPhotoLibrary__removeOldFaceMetadataAsync__block_invoke(uint64_t a1)
   [PLPhotoLibrary removeFaceMetadataAtURL:v4 includingPeople:1];
 }
 
-- (void)_enumerateFilesAtURL:(id)a3 withBlock:(id)a4
+- (void)_enumerateFilesAtURL:(id)l withBlock:(id)block
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  lCopy = l;
+  blockCopy = block;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v20[0] = *MEMORY[0x1E695DC30];
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-  v9 = [v7 enumeratorAtURL:v5 includingPropertiesForKeys:v8 options:0 errorHandler:&__block_literal_global_659];
+  v9 = [defaultManager enumeratorAtURL:lCopy includingPropertiesForKeys:v8 options:0 errorHandler:&__block_literal_global_659];
 
   v17 = 0u;
   v18 = 0u;
@@ -3299,7 +3299,7 @@ void __45__PLPhotoLibrary__removeOldFaceMetadataAsync__block_invoke(uint64_t a1)
           objc_enumerationMutation(v10);
         }
 
-        v6[2](v6, *(*(&v15 + 1) + 8 * v14++));
+        blockCopy[2](blockCopy, *(*(&v15 + 1) + 8 * v14++));
       }
 
       while (v12 != v14);
@@ -3329,16 +3329,16 @@ uint64_t __49__PLPhotoLibrary__enumerateFilesAtURL_withBlock___block_invoke(uint
   return 1;
 }
 
-- (void)_enumerateFilesAtURLs:(id)a3 withBlock:(id)a4
+- (void)_enumerateFilesAtURLs:(id)ls withBlock:(id)block
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lsCopy = ls;
+  blockCopy = block;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v8 = [lsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -3350,54 +3350,54 @@ uint64_t __49__PLPhotoLibrary__enumerateFilesAtURL_withBlock___block_invoke(uint
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(lsCopy);
         }
 
-        [(PLPhotoLibrary *)self _enumerateFilesAtURL:*(*(&v12 + 1) + 8 * v11++) withBlock:v7];
+        [(PLPhotoLibrary *)self _enumerateFilesAtURL:*(*(&v12 + 1) + 8 * v11++) withBlock:blockCopy];
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [lsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)_recreateItemsFromMetadataAtDirectoryURLs:(id)a3 includeAlbums:(BOOL)a4
+- (void)_recreateItemsFromMetadataAtDirectoryURLs:(id)ls includeAlbums:(BOOL)albums
 {
   v301 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v232 = [(PLPhotoLibrary *)self isCloudPhotoLibraryEnabled];
-  v235 = [MEMORY[0x1E695DF70] array];
-  v234 = [(PLPhotoLibrary *)self managedObjectContext];
-  v219 = [v234 hasChanges];
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = [MEMORY[0x1E695DF70] array];
-  v11 = [MEMORY[0x1E695DF70] array];
+  lsCopy = ls;
+  isCloudPhotoLibraryEnabled = [(PLPhotoLibrary *)self isCloudPhotoLibraryEnabled];
+  array = [MEMORY[0x1E695DF70] array];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  hasChanges = [managedObjectContext hasChanges];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
+  array5 = [MEMORY[0x1E695DF70] array];
+  array6 = [MEMORY[0x1E695DF70] array];
   v221 = [MEMORY[0x1E695DFA8] set];
-  v223 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v227 = [MEMORY[0x1E695DF70] array];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  array7 = [MEMORY[0x1E695DF70] array];
   v280[0] = MEMORY[0x1E69E9820];
   v280[1] = 3221225472;
   v280[2] = __74__PLPhotoLibrary__recreateItemsFromMetadataAtDirectoryURLs_includeAlbums___block_invoke;
   v280[3] = &unk_1E7565228;
-  v286 = a4;
-  v12 = v8;
+  albumsCopy = albums;
+  v12 = array3;
   v281 = v12;
-  v225 = v9;
+  v225 = array4;
   v282 = v225;
-  v215 = v7;
+  v215 = array2;
   v283 = v215;
-  v214 = v10;
+  v214 = array5;
   v284 = v214;
-  v208 = v11;
+  v208 = array6;
   v285 = v208;
-  v233 = self;
-  v206 = v6;
-  [(PLPhotoLibrary *)self _enumerateFilesAtURLs:v6 withBlock:v280];
+  selfCopy = self;
+  v206 = lsCopy;
+  [(PLPhotoLibrary *)self _enumerateFilesAtURLs:lsCopy withBlock:v280];
   [v12 sortUsingComparator:&__block_literal_global_635];
   v278 = 0u;
   v279 = 0u;
@@ -3426,15 +3426,15 @@ uint64_t __49__PLPhotoLibrary__enumerateFilesAtURL_withBlock___block_invoke(uint
         v21 = v20;
         if (v20)
         {
-          v22 = [(PLPersistedAlbumMetadata *)v20 kind];
-          v23 = [v22 integerValue];
+          kind = [(PLPersistedAlbumMetadata *)v20 kind];
+          integerValue = [kind integerValue];
 
           v24 = v14;
-          v25 = [*(v14 + 3776) isUserCreatedForKind:v23];
-          v26 = [*(v24 + 3776) isSmartAlbumForKind:v23];
-          if (v232)
+          v25 = [*(v14 + 3776) isUserCreatedForKind:integerValue];
+          v26 = [*(v24 + 3776) isSmartAlbumForKind:integerValue];
+          if (isCloudPhotoLibraryEnabled)
           {
-            v27 = [*(v24 + 3776) is1WaySyncKind:v23];
+            v27 = [*(v24 + 3776) is1WaySyncKind:integerValue];
           }
 
           else
@@ -3442,16 +3442,16 @@ uint64_t __49__PLPhotoLibrary__enumerateFilesAtURL_withBlock___block_invoke(uint
             v27 = 0;
           }
 
-          if (v23 == 1508)
+          if (integerValue == 1508)
           {
-            v31 = [(PLPersistedAlbumMetadata *)v21 projectDocumentType];
+            projectDocumentType = [(PLPersistedAlbumMetadata *)v21 projectDocumentType];
 
             if (v25 & 1) == 0 && ((v26 | v27))
             {
               goto LABEL_22;
             }
 
-            if (!v31)
+            if (!projectDocumentType)
             {
               v32 = PLMigrationGetLog();
               if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -3485,8 +3485,8 @@ LABEL_22:
             }
 
 LABEL_27:
-            v30 = [v18 path];
-            [v235 addObject:v30];
+            path = [v18 path];
+            [array addObject:path];
 LABEL_28:
             v14 = 0x1E755F000;
             goto LABEL_32;
@@ -3495,28 +3495,28 @@ LABEL_28:
           v35 = PLMigrationGetLog();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
           {
-            v36 = [v18 path];
+            path2 = [v18 path];
             *buf = 138412290;
-            v297 = v36;
+            v297 = path2;
             _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_DEBUG, "Processing album metadata from %@", buf, 0xCu);
           }
 
           v14 = 0x1E755F000uLL;
-          v37 = [(PLPersistedAlbumMetadata *)v21 uuid];
-          v30 = [PLGenericAlbum albumWithUUID:v37 inLibrary:v233];
+          uuid = [(PLPersistedAlbumMetadata *)v21 uuid];
+          path = [PLGenericAlbum albumWithUUID:uuid inLibrary:selfCopy];
 
-          v38 = [v30 isSmartAlbum];
-          if (!v30)
+          isSmartAlbum = [path isSmartAlbum];
+          if (!path)
           {
-            v39 = v38;
-            v40 = [(PLPersistedAlbumMetadata *)v21 cloudGUID];
-            v30 = [PLGenericAlbum albumWithCloudGUID:v40 inLibrary:v233];
+            v39 = isSmartAlbum;
+            cloudGUID = [(PLPersistedAlbumMetadata *)v21 cloudGUID];
+            path = [PLGenericAlbum albumWithCloudGUID:cloudGUID inLibrary:selfCopy];
 
-            v41 = [(PLPersistedAlbumMetadata *)v21 cloudGUID];
+            cloudGUID2 = [(PLPersistedAlbumMetadata *)v21 cloudGUID];
 
             v42 = PLMigrationGetLog();
             v43 = v42;
-            if (v41 && v30)
+            if (cloudGUID2 && path)
             {
               if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
               {
@@ -3525,8 +3525,8 @@ LABEL_28:
                 _os_log_impl(&dword_19BF1F000, v43, OS_LOG_TYPE_ERROR, "Found album with the same cloudGUID will skip and delete %@", buf, 0xCu);
               }
 
-              v44 = [v18 path];
-              [v235 addObject:v44];
+              path3 = [v18 path];
+              [array addObject:path3];
 
               goto LABEL_28;
             }
@@ -3546,11 +3546,11 @@ LABEL_28:
               _os_log_impl(&dword_19BF1F000, v43, OS_LOG_TYPE_DEFAULT, "Creating new%@ album from metadata %@", buf, 0x16u);
             }
 
-            v46 = [(PLPersistedAlbumMetadata *)v21 insertAlbumFromDataInManagedObjectContext:v234];
+            v46 = [(PLPersistedAlbumMetadata *)v21 insertAlbumFromDataInManagedObjectContext:managedObjectContext];
 
             if (!v46)
             {
-              v30 = 0;
+              path = 0;
               goto LABEL_28;
             }
 
@@ -3558,10 +3558,10 @@ LABEL_28:
             v14 = 0x1E755F000;
             if ((v39 & 1) == 0)
             {
-              [(PLPersistedAlbumMetadata *)v21 updateChildrenOrderingInAlbum:v46 includePendingAssetChanges:v219];
+              [(PLPersistedAlbumMetadata *)v21 updateChildrenOrderingInAlbum:v46 includePendingAssetChanges:hasChanges];
             }
 
-            v30 = v46;
+            path = v46;
           }
         }
 
@@ -3570,14 +3570,14 @@ LABEL_28:
           v28 = PLMigrationGetLog();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
           {
-            v29 = [v18 path];
+            path4 = [v18 path];
             *buf = 138412290;
-            v297 = v29;
+            v297 = path4;
             _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_ERROR, "Failed to read invalid or missing metadata, will skip and delete %@", buf, 0xCu);
           }
 
-          v30 = [v18 path];
-          [v235 addObject:v30];
+          path = [v18 path];
+          [array addObject:path];
         }
 
 LABEL_32:
@@ -3594,8 +3594,8 @@ LABEL_32:
     while (v47);
   }
 
-  v222 = [(PLGenericAlbum *)PLManagedFolder rootFolderInLibrary:v233];
-  v218 = [(PLGenericAlbum *)PLManagedFolder projectAlbumRootFolderInLibrary:v233];
+  v222 = [(PLGenericAlbum *)PLManagedFolder rootFolderInLibrary:selfCopy];
+  v218 = [(PLGenericAlbum *)PLManagedFolder projectAlbumRootFolderInLibrary:selfCopy];
   v272 = 0u;
   v273 = 0u;
   v274 = 0u;
@@ -3606,7 +3606,7 @@ LABEL_32:
   {
     v213 = 0;
     v217 = 0;
-    v51 = v227;
+    v51 = array7;
     goto LABEL_99;
   }
 
@@ -3614,7 +3614,7 @@ LABEL_32:
   v213 = 0;
   v217 = 0;
   v50 = *v273;
-  v51 = v227;
+  v51 = array7;
   do
   {
     v52 = 0;
@@ -3634,9 +3634,9 @@ LABEL_32:
         v59 = PLMigrationGetLog();
         if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
         {
-          v65 = [v53 path];
+          path5 = [v53 path];
           *buf = 138412290;
-          v297 = v65;
+          v297 = path5;
           v66 = v59;
           v67 = OS_LOG_TYPE_ERROR;
           v68 = "Failed to read invalid or missing metadata, will skip and delete %@";
@@ -3645,15 +3645,15 @@ LABEL_32:
 
 LABEL_67:
 
-        v64 = [v53 path];
-        [v235 addObject:v64];
+        path6 = [v53 path];
+        [array addObject:path6];
         goto LABEL_84;
       }
 
-      v57 = [(PLPersistedFolderMetadata *)v55 kind];
-      v58 = [v57 integerValue];
+      kind2 = [(PLPersistedFolderMetadata *)v55 kind];
+      integerValue2 = [kind2 integerValue];
 
-      if (v232 && [PLGenericAlbum is1WaySyncKind:v58])
+      if (isCloudPhotoLibraryEnabled && [PLGenericAlbum is1WaySyncKind:integerValue2])
       {
         v59 = PLMigrationGetLog();
         if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
@@ -3677,28 +3677,28 @@ LABEL_67:
         }
 
         [v51 addObject:v56];
-        v61 = [(PLPersistedFolderMetadata *)v56 uuid];
-        v62 = [v222 uuid];
-        v63 = [v61 isEqualToString:v62];
+        uuid2 = [(PLPersistedFolderMetadata *)v56 uuid];
+        uuid3 = [v222 uuid];
+        v63 = [uuid2 isEqualToString:uuid3];
 
         if (v63)
         {
-          v64 = v217;
+          path6 = v217;
           v217 = v56;
 LABEL_83:
-          v51 = v227;
+          v51 = array7;
           goto LABEL_84;
         }
 
         v73 = PLMigrationGetLog();
         if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
         {
-          v74 = [(PLPersistedFolderMetadata *)v56 uuid];
-          v75 = [v222 uuid];
+          uuid4 = [(PLPersistedFolderMetadata *)v56 uuid];
+          uuid5 = [v222 uuid];
           *buf = 138412546;
-          v297 = v74;
+          v297 = uuid4;
           v298 = 2112;
-          v299 = v75;
+          v299 = uuid5;
           v76 = v73;
           v77 = "Root folder metadata uuid %@ doesn't match current root folder %@, will delete";
           goto LABEL_81;
@@ -3718,13 +3718,13 @@ LABEL_83:
         }
 
         [v51 addObject:v56];
-        v70 = [(PLPersistedFolderMetadata *)v56 uuid];
-        v71 = [v218 uuid];
-        v72 = [v70 isEqualToString:v71];
+        uuid6 = [(PLPersistedFolderMetadata *)v56 uuid];
+        uuid7 = [v218 uuid];
+        v72 = [uuid6 isEqualToString:uuid7];
 
         if (v72)
         {
-          v64 = v213;
+          path6 = v213;
           v213 = v56;
           goto LABEL_83;
         }
@@ -3732,12 +3732,12 @@ LABEL_83:
         v73 = PLMigrationGetLog();
         if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
         {
-          v74 = [(PLPersistedFolderMetadata *)v56 uuid];
-          v75 = [v218 uuid];
+          uuid4 = [(PLPersistedFolderMetadata *)v56 uuid];
+          uuid5 = [v218 uuid];
           *buf = 138412546;
-          v297 = v74;
+          v297 = uuid4;
           v298 = 2112;
-          v299 = v75;
+          v299 = uuid5;
           v76 = v73;
           v77 = "Project Root folder metadata uuid %@ doesn't match current project root folder %@, will delete";
 LABEL_81:
@@ -3746,24 +3746,24 @@ LABEL_81:
 
 LABEL_82:
 
-        v64 = [v53 path];
-        [v235 addObject:v64];
+        path6 = [v53 path];
+        [array addObject:path6];
         goto LABEL_83;
       }
 
-      v78 = [(PLPersistedFolderMetadata *)v56 cloudGUID];
-      if ([v78 isEqualToString:@"----Project-Root-Folder----"])
+      cloudGUID3 = [(PLPersistedFolderMetadata *)v56 cloudGUID];
+      if ([cloudGUID3 isEqualToString:@"----Project-Root-Folder----"])
       {
-        v79 = [(PLPersistedFolderMetadata *)v56 isProjectAlbumRootFolder];
+        isProjectAlbumRootFolder = [(PLPersistedFolderMetadata *)v56 isProjectAlbumRootFolder];
 
-        if (!v79)
+        if (!isProjectAlbumRootFolder)
         {
           v59 = PLMigrationGetLog();
           if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
           {
-            v65 = [(PLPersistedFolderMetadata *)v56 uuid];
+            path5 = [(PLPersistedFolderMetadata *)v56 uuid];
             *buf = 138412290;
-            v297 = v65;
+            v297 = path5;
             v66 = v59;
             v67 = OS_LOG_TYPE_DEFAULT;
             v68 = "found project root album folderMetadata (uuid: %@) with incorrect folder type, will delete";
@@ -3782,16 +3782,16 @@ LABEL_66:
       v80 = PLMigrationGetLog();
       if (os_log_type_enabled(v80, OS_LOG_TYPE_DEBUG))
       {
-        v81 = [v53 path];
+        path7 = [v53 path];
         *buf = 138412290;
-        v297 = v81;
+        v297 = path7;
         _os_log_impl(&dword_19BF1F000, v80, OS_LOG_TYPE_DEBUG, "Processing folder metadata from %@", buf, 0xCu);
       }
 
-      v82 = [(PLPersistedFolderMetadata *)v56 uuid];
-      v64 = [PLGenericAlbum albumWithUUID:v82 inLibrary:v233];
+      uuid8 = [(PLPersistedFolderMetadata *)v56 uuid];
+      path6 = [PLGenericAlbum albumWithUUID:uuid8 inLibrary:selfCopy];
 
-      if (v64)
+      if (path6)
       {
         goto LABEL_95;
       }
@@ -3804,13 +3804,13 @@ LABEL_66:
         _os_log_impl(&dword_19BF1F000, v83, OS_LOG_TYPE_DEFAULT, "Creating new folder from metadata %@", buf, 0xCu);
       }
 
-      v84 = [(PLPersistedFolderMetadata *)v56 insertFolderFromDataInManagedObjectContext:v234];
+      v84 = [(PLPersistedFolderMetadata *)v56 insertFolderFromDataInManagedObjectContext:managedObjectContext];
       if (v84)
       {
-        v64 = v84;
+        path6 = v84;
         [v221 addObject:v84];
 LABEL_95:
-        [v223 setObject:v56 forKey:v64];
+        [strongToStrongObjectsMapTable setObject:v56 forKey:path6];
 LABEL_84:
       }
 
@@ -3845,26 +3845,26 @@ LABEL_99:
           objc_enumerationMutation(v228);
         }
 
-        v90 = [*(*(&v268 + 1) + 8 * i) path];
+        path8 = [*(*(&v268 + 1) + 8 * i) path];
         v91 = PLMigrationGetLog();
         if (os_log_type_enabled(v91, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v297 = v90;
+          v297 = path8;
           _os_log_impl(&dword_19BF1F000, v91, OS_LOG_TYPE_DEFAULT, "Processing metadata for albumlist %@", buf, 0xCu);
         }
 
-        if (![PLManagedAlbumList restoreAlbumListFromPersistedDataAtPath:v90 library:v233])
+        if (![PLManagedAlbumList restoreAlbumListFromPersistedDataAtPath:path8 library:selfCopy])
         {
           v92 = PLMigrationGetLog();
           if (os_log_type_enabled(v92, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v297 = v90;
+            v297 = path8;
             _os_log_impl(&dword_19BF1F000, v92, OS_LOG_TYPE_ERROR, "Found metadata for a invalid album list kind, will skip and delete %@", buf, 0xCu);
           }
 
-          [v235 addObject:v90];
+          [array addObject:path8];
         }
       }
 
@@ -3874,26 +3874,26 @@ LABEL_99:
     while (v87);
   }
 
-  v93 = [MEMORY[0x1E695DFA0] orderedSet];
-  v94 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet2 = [MEMORY[0x1E695DFA0] orderedSet];
   if (v217)
   {
-    v95 = [(PLPersistedFolderMetadata *)v217 childUUIDs];
-    [v93 unionOrderedSet:v95];
+    childUUIDs = [(PLPersistedFolderMetadata *)v217 childUUIDs];
+    [orderedSet unionOrderedSet:childUUIDs];
 
     [v51 removeObject:v217];
   }
 
-  v96 = v234;
+  v96 = managedObjectContext;
   if (v213)
   {
-    v97 = [(PLPersistedFolderMetadata *)v213 childUUIDs];
-    [v94 unionOrderedSet:v97];
+    childUUIDs2 = [(PLPersistedFolderMetadata *)v213 childUUIDs];
+    [orderedSet2 unionOrderedSet:childUUIDs2];
 
     [v51 removeObject:v213];
   }
 
-  v209 = v94;
+  v209 = orderedSet2;
   v266 = 0u;
   v267 = 0u;
   v264 = 0u;
@@ -3918,8 +3918,8 @@ LABEL_99:
         v261 = 0u;
         v262 = 0u;
         v263 = 0u;
-        v103 = [v102 childUUIDs];
-        v104 = [v103 countByEnumeratingWithState:&v260 objects:v292 count:16];
+        childUUIDs3 = [v102 childUUIDs];
+        v104 = [childUUIDs3 countByEnumeratingWithState:&v260 objects:v292 count:16];
         if (v104)
         {
           v105 = v104;
@@ -3930,13 +3930,13 @@ LABEL_99:
             {
               if (*v261 != v106)
               {
-                objc_enumerationMutation(v103);
+                objc_enumerationMutation(childUUIDs3);
               }
 
-              [v93 addObject:*(*(&v260 + 1) + 8 * k)];
+              [orderedSet addObject:*(*(&v260 + 1) + 8 * k)];
             }
 
-            v105 = [v103 countByEnumeratingWithState:&v260 objects:v292 count:16];
+            v105 = [childUUIDs3 countByEnumeratingWithState:&v260 objects:v292 count:16];
           }
 
           while (v105);
@@ -3949,9 +3949,9 @@ LABEL_99:
     while (v99);
   }
 
-  if ([v93 count])
+  if ([orderedSet count])
   {
-    [PLPersistedFolderMetadata updateChildrenOrderingInFolder:v222 usingChildUUIDs:v93 sourceDescription:0 includePendingChanges:1];
+    [PLPersistedFolderMetadata updateChildrenOrderingInFolder:v222 usingChildUUIDs:orderedSet sourceDescription:0 includePendingChanges:1];
   }
 
   if ([v209 count])
@@ -3963,7 +3963,7 @@ LABEL_99:
   v259 = 0u;
   v256 = 0u;
   v257 = 0u;
-  v108 = v223;
+  v108 = strongToStrongObjectsMapTable;
   v109 = [v108 countByEnumeratingWithState:&v256 objects:v291 count:16];
   if (v109)
   {
@@ -3989,7 +3989,7 @@ LABEL_99:
     while (v110);
   }
 
-  [(PLPhotoLibrary *)v233 _deleteEmptyImportAlbumsWithAddedAlbums:v221];
+  [(PLPhotoLibrary *)selfCopy _deleteEmptyImportAlbumsWithAddedAlbums:v221];
   v254 = 0u;
   v255 = 0u;
   v252 = 0u;
@@ -4012,9 +4012,9 @@ LABEL_99:
         v120 = *(*(&v252 + 1) + 8 * n);
         if (([v120 isRegularRootFolder] & 1) == 0 && (objc_msgSend(v120, "isProjectAlbumRootFolder") & 1) == 0)
         {
-          v121 = [v120 parentFolder];
+          parentFolder = [v120 parentFolder];
 
-          if (!v121)
+          if (!parentFolder)
           {
             if ([v120 isProjectAlbum])
             {
@@ -4026,8 +4026,8 @@ LABEL_99:
               v122 = v222;
             }
 
-            v123 = [v122 albums];
-            [v123 addObject:v120];
+            albums = [v122 albums];
+            [albums addObject:v120];
           }
         }
       }
@@ -4038,23 +4038,23 @@ LABEL_99:
     while (v117);
   }
 
-  if ([v234 hasChanges])
+  if ([managedObjectContext hasChanges])
   {
     v251 = 0;
-    v124 = [v234 save:&v251];
+    v124 = [managedObjectContext save:&v251];
     v125 = v251;
     if ((v124 & 1) == 0)
     {
-      v201 = [MEMORY[0x1E696AEC0] stringWithFormat:@"recreateAlbumsFromMetadta failed to save context %@: %@", v234, v125];
+      v125 = [MEMORY[0x1E696AEC0] stringWithFormat:@"recreateAlbumsFromMetadta failed to save context %@: %@", managedObjectContext, v125];
       v202 = PLMigrationGetLog();
       if (os_log_type_enabled(v202, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v297 = v201;
+        v297 = v125;
         _os_log_impl(&dword_19BF1F000, v202, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
 
-      v203 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:v201 userInfo:0];
+      v203 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:v125 userInfo:0];
       objc_exception_throw(v203);
     }
   }
@@ -4086,19 +4086,19 @@ LABEL_99:
         v133 = v132;
         if (v132)
         {
-          v134 = [(PLPersistedMemoryMetadata *)v132 uuid];
-          v135 = [PLMemory memoryWithUUID:v134 inPhotoLibrary:v233];
+          uuid9 = [(PLPersistedMemoryMetadata *)v132 uuid];
+          path10 = [PLMemory memoryWithUUID:uuid9 inPhotoLibrary:selfCopy];
 
-          if (v135)
+          if (path10)
           {
             goto LABEL_185;
           }
 
-          v136 = [(PLPersistedMemoryMetadata *)v133 isObsolete];
-          if (!v232 || v136)
+          isObsolete = [(PLPersistedMemoryMetadata *)v133 isObsolete];
+          if (!isCloudPhotoLibraryEnabled || isObsolete)
           {
-            v137 = v234;
-            if (v136)
+            v137 = managedObjectContext;
+            if (isObsolete)
             {
               goto LABEL_182;
             }
@@ -4106,8 +4106,8 @@ LABEL_99:
 
           else
           {
-            v137 = v234;
-            if (![(PLPersistedMemoryMetadata *)v133 hasAllAssetsAvailableInManagedObjectContext:v234 includePendingAssetChanges:v219])
+            v137 = managedObjectContext;
+            if (![(PLPersistedMemoryMetadata *)v133 hasAllAssetsAvailableInManagedObjectContext:managedObjectContext includePendingAssetChanges:hasChanges])
             {
               v142 = PLMigrationGetLog();
               if (os_log_type_enabled(v142, OS_LOG_TYPE_DEFAULT))
@@ -4127,7 +4127,7 @@ LABEL_182:
               }
 
               [(PLPersistedMemoryMetadata *)v133 removePersistedData];
-              v135 = 0;
+              path10 = 0;
               goto LABEL_185;
             }
           }
@@ -4140,8 +4140,8 @@ LABEL_182:
             _os_log_impl(&dword_19BF1F000, v140, OS_LOG_TYPE_DEFAULT, "Creating new memory from metadata %@", buf, 0xCu);
           }
 
-          v135 = [(PLPersistedMemoryMetadata *)v133 insertMemoryFromDataInManagedObjectContext:v137];
-          if (v135 && ![(PLPersistedMemoryMetadata *)v133 updateAssetsInMemory:v135 includePendingAssetChanges:v219])
+          path10 = [(PLPersistedMemoryMetadata *)v133 insertMemoryFromDataInManagedObjectContext:v137];
+          if (path10 && ![(PLPersistedMemoryMetadata *)v133 updateAssetsInMemory:path10 includePendingAssetChanges:hasChanges])
           {
             v141 = PLMigrationGetLog();
             if (os_log_type_enabled(v141, OS_LOG_TYPE_ERROR))
@@ -4158,41 +4158,41 @@ LABEL_182:
           v138 = PLMigrationGetLog();
           if (os_log_type_enabled(v138, OS_LOG_TYPE_ERROR))
           {
-            v139 = [v130 path];
+            path9 = [v130 path];
             *buf = 138412290;
-            v297 = v139;
+            v297 = path9;
             _os_log_impl(&dword_19BF1F000, v138, OS_LOG_TYPE_ERROR, "Failed to read invalid or missing metadata, will skip and delete %@", buf, 0xCu);
           }
 
-          v135 = [v130 path];
-          [v235 addObject:v135];
+          path10 = [v130 path];
+          [array addObject:path10];
         }
 
 LABEL_185:
 
-        v96 = v234;
-        if ([v234 hasChanges])
+        v96 = managedObjectContext;
+        if ([managedObjectContext hasChanges])
         {
           v246 = 0;
-          v144 = [v234 save:&v246];
+          v144 = [managedObjectContext save:&v246];
           v145 = v246;
           if ((v144 & 1) == 0)
           {
             v146 = PLMigrationGetLog();
             if (os_log_type_enabled(v146, OS_LOG_TYPE_ERROR))
             {
-              v147 = [v130 path];
+              path11 = [v130 path];
               *buf = 138412546;
-              v297 = v147;
+              v297 = path11;
               v298 = 2112;
               v299 = v145;
               _os_log_impl(&dword_19BF1F000, v146, OS_LOG_TYPE_ERROR, "recreateAlbumsFromMetadata failed to rebuild memory from %@: %@", buf, 0x16u);
             }
 
-            [v234 rollback];
+            [managedObjectContext rollback];
           }
 
-          v96 = v234;
+          v96 = managedObjectContext;
         }
 
         objc_autoreleasePoolPop(v131);
@@ -4204,11 +4204,11 @@ LABEL_185:
     while (v127);
   }
 
-  v148 = v233;
-  v149 = [(PLPhotoLibrary *)v233 libraryBundle];
-  v150 = [v149 indicatorFileCoordinator];
+  v148 = selfCopy;
+  libraryBundle = [(PLPhotoLibrary *)selfCopy libraryBundle];
+  indicatorFileCoordinator = [libraryBundle indicatorFileCoordinator];
 
-  if (![v150 isRebuildingPersons])
+  if (![indicatorFileCoordinator isRebuildingPersons])
   {
     v151 = +[PLPerson fetchRequest];
     v245 = 0;
@@ -4217,7 +4217,7 @@ LABEL_185:
     v152 = v207;
     if (v153)
     {
-      v155 = v150;
+      v155 = indicatorFileCoordinator;
       if (v153 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v192 = PLMigrationGetLog();
@@ -4227,9 +4227,9 @@ LABEL_185:
           _os_log_impl(&dword_19BF1F000, v192, OS_LOG_TYPE_DEFAULT, "Found existing persons in library, skipping filesystem person rebuild", buf, 2u);
         }
 
-        [PLSocialGroup rebuildWithLibrary:v233];
-        [PLAssetResourceUploadJobConfiguration rebuildWithLibrary:v233];
-        v150 = v155;
+        [PLSocialGroup rebuildWithLibrary:selfCopy];
+        [PLAssetResourceUploadJobConfiguration rebuildWithLibrary:selfCopy];
+        indicatorFileCoordinator = v155;
         goto LABEL_262;
       }
 
@@ -4241,7 +4241,7 @@ LABEL_185:
         _os_log_impl(&dword_19BF1F000, v156, OS_LOG_TYPE_ERROR, "Error fetching count of persons in library, will proceed with person rebuild: %@", buf, 0xCu);
       }
 
-      v150 = v155;
+      indicatorFileCoordinator = v155;
     }
 
     goto LABEL_202;
@@ -4257,8 +4257,8 @@ LABEL_185:
 
 LABEL_202:
 
-  [v150 setIsRebuildingPersons:1];
-  v220 = [PLPersistedPersonMetadata personUUIDsToDedupeWithMetadataURLs:v208 cplEnabled:[(PLPhotoLibrary *)v233 isCloudPhotoLibraryEnabled]];
+  [indicatorFileCoordinator setIsRebuildingPersons:1];
+  v220 = [PLPersistedPersonMetadata personUUIDsToDedupeWithMetadataURLs:v208 cplEnabled:[(PLPhotoLibrary *)selfCopy isCloudPhotoLibraryEnabled]];
   v210 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v208, "count")}];
   v241 = 0u;
   v242 = 0u;
@@ -4276,7 +4276,7 @@ LABEL_202:
 
   v159 = v158;
   v224 = v157;
-  v204 = v150;
+  v204 = indicatorFileCoordinator;
   v211 = 0;
   v212 = 0;
   v216 = 1;
@@ -4293,26 +4293,26 @@ LABEL_202:
 
       v162 = *(*(&v241 + 1) + 8 * v161);
       v163 = objc_autoreleasePoolPush();
-      v164 = [[PLPersistedPersonMetadata alloc] initWithPersistedDataAtURL:v162 deferUnarchiving:1 cplEnabled:[(PLPhotoLibrary *)v233 isCloudPhotoLibraryEnabled]];
+      v164 = [[PLPersistedPersonMetadata alloc] initWithPersistedDataAtURL:v162 deferUnarchiving:1 cplEnabled:[(PLPhotoLibrary *)selfCopy isCloudPhotoLibraryEnabled]];
       v165 = v164;
       if (!v164)
       {
         v173 = PLMigrationGetLog();
         if (os_log_type_enabled(v173, OS_LOG_TYPE_ERROR))
         {
-          v174 = [v162 path];
+          path12 = [v162 path];
           *buf = 138412290;
-          v297 = v174;
+          v297 = path12;
           _os_log_impl(&dword_19BF1F000, v173, OS_LOG_TYPE_ERROR, "Failed to read invalid or missing metadata, will skip and delete %@", buf, 0xCu);
         }
 
-        v166 = [v162 path];
-        [v235 addObject:v166];
+        path13 = [v162 path];
+        [array addObject:path13];
         goto LABEL_238;
       }
 
-      v166 = [(PLPersistedPersonMetadata *)v164 personUUID];
-      if (!v166)
+      path13 = [(PLPersistedPersonMetadata *)v164 personUUID];
+      if (!path13)
       {
         v167 = PLMigrationGetLog();
         if (!os_log_type_enabled(v167, OS_LOG_TYPE_ERROR))
@@ -4320,25 +4320,25 @@ LABEL_202:
           goto LABEL_219;
         }
 
-        v168 = [v162 path];
+        path14 = [v162 path];
         *buf = 138412290;
-        v297 = v168;
+        v297 = path14;
         v169 = v167;
         v170 = OS_LOG_TYPE_ERROR;
         v171 = "Invalid person metadata missing person UUID, will skip and delete %@";
         goto LABEL_217;
       }
 
-      if ([v220 containsObject:v166])
+      if ([v220 containsObject:path13])
       {
         v167 = PLMigrationGetLog();
         if (os_log_type_enabled(v167, OS_LOG_TYPE_DEFAULT))
         {
-          v168 = [v162 path];
+          path14 = [v162 path];
           *buf = 138412546;
           v297 = v165;
           v298 = 2112;
-          v299 = v168;
+          v299 = path14;
           v169 = v167;
           v170 = OS_LOG_TYPE_DEFAULT;
           v171 = "Person from metadata %@ will be deduped, will skip and delete %@";
@@ -4349,34 +4349,34 @@ LABEL_202:
         goto LABEL_219;
       }
 
-      v176 = [PLPerson personWithUUID:v166 inManagedObjectContext:v96];
+      v176 = [PLPerson personWithUUID:path13 inManagedObjectContext:v96];
       if (v176)
       {
-        v175 = v176;
-        v177 = PLMigrationGetLog();
-        if (os_log_type_enabled(v177, OS_LOG_TYPE_DEFAULT))
+        path15 = v176;
+        mergeTargetPersonUUID = PLMigrationGetLog();
+        if (os_log_type_enabled(mergeTargetPersonUUID, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
           v297 = v165;
-          _os_log_impl(&dword_19BF1F000, v177, OS_LOG_TYPE_DEFAULT, "Person for metadata already exists: %@", buf, 0xCu);
+          _os_log_impl(&dword_19BF1F000, mergeTargetPersonUUID, OS_LOG_TYPE_DEFAULT, "Person for metadata already exists: %@", buf, 0xCu);
         }
 
         goto LABEL_236;
       }
 
-      v178 = [(PLPersistedPersonMetadata *)v165 readMetadata];
+      readMetadata = [(PLPersistedPersonMetadata *)v165 readMetadata];
       v179 = PLMigrationGetLog();
       v167 = v179;
-      if (!v178)
+      if (!readMetadata)
       {
         if (!os_log_type_enabled(v179, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_219;
         }
 
-        v168 = [v162 path];
+        path14 = [v162 path];
         *buf = 138412290;
-        v297 = v168;
+        v297 = path14;
         v169 = v167;
         v170 = OS_LOG_TYPE_ERROR;
         v171 = "Failed to read invalid or missing metadata, will skip and delete %@";
@@ -4386,8 +4386,8 @@ LABEL_218:
         _os_log_impl(&dword_19BF1F000, v169, v170, v171, buf, v172);
 
 LABEL_219:
-        v175 = [v162 path];
-        [v235 addObject:v175];
+        path15 = [v162 path];
+        [array addObject:path15];
         goto LABEL_237;
       }
 
@@ -4398,19 +4398,19 @@ LABEL_219:
         _os_log_impl(&dword_19BF1F000, v167, OS_LOG_TYPE_DEFAULT, "Creating new person from metadata %@", buf, 0xCu);
       }
 
-      v180 = [(PLPersistedPersonMetadata *)v165 fromVersion];
+      fromVersion = [(PLPersistedPersonMetadata *)v165 fromVersion];
       v181 = v212;
-      if (v180 > v212)
+      if (fromVersion > v212)
       {
-        v181 = v180;
+        v181 = fromVersion;
       }
 
       v212 = v181;
-      v182 = [(PLPersistedPersonMetadata *)v165 insertPersonFromDataInManagedObjectContext:v234];
+      v182 = [(PLPersistedPersonMetadata *)v165 insertPersonFromDataInManagedObjectContext:managedObjectContext];
       if (v182)
       {
-        v175 = v182;
-        if (![(PLPersistedPersonMetadata *)v165 updateFacesInPerson:v182 fromDataInManagedObjectContext:v234 deferUnmatched:v232])
+        path15 = v182;
+        if (![(PLPersistedPersonMetadata *)v165 updateFacesInPerson:v182 fromDataInManagedObjectContext:managedObjectContext deferUnmatched:isCloudPhotoLibraryEnabled])
         {
           v183 = PLMigrationGetLog();
           if (os_log_type_enabled(v183, OS_LOG_TYPE_ERROR))
@@ -4421,10 +4421,10 @@ LABEL_219:
           }
         }
 
-        v177 = [(PLPersistedPersonMetadata *)v165 mergeTargetPersonUUID];
-        if (v177)
+        mergeTargetPersonUUID = [(PLPersistedPersonMetadata *)v165 mergeTargetPersonUUID];
+        if (mergeTargetPersonUUID)
         {
-          [v210 setObject:v177 forKey:v166];
+          [v210 setObject:mergeTargetPersonUUID forKey:path13];
         }
 
         v211 = (v211 + 1);
@@ -4433,18 +4433,18 @@ LABEL_236:
 
       else
       {
-        v175 = PLMigrationGetLog();
-        if (os_log_type_enabled(v175, OS_LOG_TYPE_ERROR))
+        path15 = PLMigrationGetLog();
+        if (os_log_type_enabled(path15, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
           v297 = v165;
-          _os_log_impl(&dword_19BF1F000, v175, OS_LOG_TYPE_ERROR, "Failed to create new person from metadata %@", buf, 0xCu);
+          _os_log_impl(&dword_19BF1F000, path15, OS_LOG_TYPE_ERROR, "Failed to create new person from metadata %@", buf, 0xCu);
         }
       }
 
 LABEL_237:
 
-      v96 = v234;
+      v96 = managedObjectContext;
 LABEL_238:
 
       if ([v96 hasChanges])
@@ -4457,16 +4457,16 @@ LABEL_238:
           v186 = PLMigrationGetLog();
           if (os_log_type_enabled(v186, OS_LOG_TYPE_ERROR))
           {
-            v187 = [v162 path];
+            path16 = [v162 path];
             *buf = 138412546;
-            v297 = v187;
+            v297 = path16;
             v298 = 2112;
             v299 = v185;
             _os_log_impl(&dword_19BF1F000, v186, OS_LOG_TYPE_ERROR, "recreateAlbumsFromMetadata failed to rebuild person from %@: %@", buf, 0x16u);
           }
 
-          v96 = v234;
-          [v234 rollback];
+          v96 = managedObjectContext;
+          [managedObjectContext rollback];
           v216 = 0;
         }
       }
@@ -4497,9 +4497,9 @@ LABEL_238:
     [PLPersistedPersonMetadata performPostImportMigrationFromVersion:v212 fromDataInManagedObjectContext:v96];
   }
 
-  v148 = v233;
+  v148 = selfCopy;
   v152 = v207;
-  v150 = v204;
+  indicatorFileCoordinator = v204;
   v190 = v216;
 LABEL_255:
   v191 = PLMigrationGetLog();
@@ -4518,24 +4518,24 @@ LABEL_262:
     [(PLPhotoLibrary *)v148 _removeOldFaceMetadataAsync];
   }
 
-  [v150 setIsRebuildingPersons:0];
-  if ([v235 count])
+  [indicatorFileCoordinator setIsRebuildingPersons:0];
+  if ([array count])
   {
     v193 = PLMigrationGetLog();
     if (os_log_type_enabled(v193, OS_LOG_TYPE_DEFAULT))
     {
-      v194 = [v235 count];
+      v194 = [array count];
       *buf = 67109120;
       LODWORD(v297) = v194;
       _os_log_impl(&dword_19BF1F000, v193, OS_LOG_TYPE_DEFAULT, "Removing %d stale 1-way sync album metadata files", buf, 8u);
     }
 
-    v195 = [MEMORY[0x1E69BF238] fileManager];
+    fileManager = [MEMORY[0x1E69BF238] fileManager];
     v236 = 0u;
     v237 = 0u;
     v238 = 0u;
     v239 = 0u;
-    v196 = v235;
+    v196 = array;
     v197 = [v196 countByEnumeratingWithState:&v236 objects:v287 count:16];
     if (v197)
     {
@@ -4550,7 +4550,7 @@ LABEL_262:
             objc_enumerationMutation(v196);
           }
 
-          [v195 removeItemAtPath:*(*(&v236 + 1) + 8 * jj) error:0];
+          [fileManager removeItemAtPath:*(*(&v236 + 1) + 8 * jj) error:0];
         }
 
         v198 = [v196 countByEnumeratingWithState:&v236 objects:v287 count:16];
@@ -4636,18 +4636,18 @@ uint64_t __74__PLPhotoLibrary__recreateItemsFromMetadataAtDirectoryURLs_includeA
   return v7;
 }
 
-- (void)_deleteEmptyImportAlbumsWithAddedAlbums:(id)a3
+- (void)_deleteEmptyImportAlbumsWithAddedAlbums:(id)albums
 {
   v39 = *MEMORY[0x1E69E9840];
-  v28 = a3;
+  albumsCopy = albums;
   v4 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"Album"];
   v5 = [&unk_1F0FBF2E0 arrayByAddingObject:&unk_1F0FBAA68];
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(kind in %@) AND (assets.@count = 0)", v5];
   [v4 setPredicate:v6];
 
-  v7 = [(PLPhotoLibrary *)self managedObjectContext];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
   v33 = 0;
-  v8 = [v7 executeFetchRequest:v4 error:&v33];
+  v8 = [managedObjectContext executeFetchRequest:v4 error:&v33];
   v9 = v33;
 
   if (v8)
@@ -4677,20 +4677,20 @@ uint64_t __74__PLPhotoLibrary__recreateItemsFromMetadataAtDirectoryURLs_includeA
 
           v15 = *(*(&v29 + 1) + 8 * i);
           v16 = objc_autoreleasePoolPush();
-          v17 = [v15 kind];
-          v18 = [&unk_1F0FBF2E0 containsObject:v17];
+          kind = [v15 kind];
+          v18 = [&unk_1F0FBF2E0 containsObject:kind];
 
-          if (!v18 || [v28 containsObject:v15] && (objc_msgSend(v15, "assets"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "count"), v19, !v20))
+          if (!v18 || [albumsCopy containsObject:v15] && (objc_msgSend(v15, "assets"), v19 = objc_claimAutoreleasedReturnValue(), v20 = objc_msgSend(v19, "count"), v19, !v20))
           {
             v21 = PLMigrationGetLog();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
             {
-              v22 = [v15 uuid];
-              v23 = [v15 kind];
+              uuid = [v15 uuid];
+              kind2 = [v15 kind];
               *buf = 138412546;
-              v35 = v22;
+              v35 = uuid;
               v36 = 2112;
-              v37 = v23;
+              v37 = kind2;
               _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEFAULT, "Deleting empty album %@ of kind %@", buf, 0x16u);
             }
 
@@ -4727,8 +4727,8 @@ uint64_t __74__PLPhotoLibrary__recreateItemsFromMetadataAtDirectoryURLs_includeA
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DFF8];
-  v4 = [(PLPhotoLibrary *)self pathManager];
-  v5 = [v4 privateDirectoryWithSubType:5 createIfNeeded:1 error:0];
+  pathManager = [(PLPhotoLibrary *)self pathManager];
+  v5 = [pathManager privateDirectoryWithSubType:5 createIfNeeded:1 error:0];
   v6 = [v3 fileURLWithPath:v5 isDirectory:1];
   v8[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
@@ -4740,13 +4740,13 @@ uint64_t __74__PLPhotoLibrary__recreateItemsFromMetadataAtDirectoryURLs_includeA
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DFF8];
-  v4 = [(PLPhotoLibrary *)self pathManager];
-  v5 = [v4 privateDirectoryWithSubType:4 createIfNeeded:1 error:0];
+  pathManager = [(PLPhotoLibrary *)self pathManager];
+  v5 = [pathManager privateDirectoryWithSubType:4 createIfNeeded:1 error:0];
   v6 = [v3 fileURLWithPath:v5 isDirectory:1];
 
   v7 = MEMORY[0x1E695DFF8];
-  v8 = [(PLPhotoLibrary *)self pathManager];
-  v9 = [v8 privateDirectoryWithSubType:5 createIfNeeded:1 error:0];
+  pathManager2 = [(PLPhotoLibrary *)self pathManager];
+  v9 = [pathManager2 privateDirectoryWithSubType:5 createIfNeeded:1 error:0];
   v10 = [v7 fileURLWithPath:v9 isDirectory:1];
 
   v12[0] = v6;
@@ -4759,13 +4759,13 @@ uint64_t __74__PLPhotoLibrary__recreateItemsFromMetadataAtDirectoryURLs_includeA
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DFF8];
-  v4 = [(PLPhotoLibrary *)self pathManager];
-  v5 = [v4 privateDirectoryWithSubType:4 createIfNeeded:1 error:0];
+  pathManager = [(PLPhotoLibrary *)self pathManager];
+  v5 = [pathManager privateDirectoryWithSubType:4 createIfNeeded:1 error:0];
   v6 = [v3 fileURLWithPath:v5 isDirectory:1];
 
   v7 = MEMORY[0x1E695DFF8];
-  v8 = [(PLPhotoLibrary *)self pathManager];
-  v9 = [v8 privateDirectoryWithSubType:5 createIfNeeded:1 error:0];
+  pathManager2 = [(PLPhotoLibrary *)self pathManager];
+  v9 = [pathManager2 privateDirectoryWithSubType:5 createIfNeeded:1 error:0];
   v10 = [v7 fileURLWithPath:v9 isDirectory:1];
 
   v12[0] = v6;
@@ -4774,23 +4774,23 @@ uint64_t __74__PLPhotoLibrary__recreateItemsFromMetadataAtDirectoryURLs_includeA
   [(PLPhotoLibrary *)self _recreateItemsFromMetadataAtDirectoryURLs:v11 includeAlbums:1];
 }
 
-- (void)invalidateWithReason:(id)a3
+- (void)invalidateWithReason:(id)reason
 {
-  v6 = a3;
-  v4 = [(PLPhotoLibrary *)self _internal_managedObjectContext];
-  v5 = v4;
-  if (v4)
+  reasonCopy = reason;
+  _internal_managedObjectContext = [(PLPhotoLibrary *)self _internal_managedObjectContext];
+  v5 = _internal_managedObjectContext;
+  if (_internal_managedObjectContext)
   {
-    [v4 invalidateWithReason:v6];
+    [_internal_managedObjectContext invalidateWithReason:reasonCopy];
   }
 }
 
 - (id)managedObjectContextStoreUUID
 {
-  v2 = [(PLPhotoLibrary *)self managedObjectContext];
-  v3 = [v2 storeUUID];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  storeUUID = [managedObjectContext storeUUID];
 
-  return v3;
+  return storeUUID;
 }
 
 - (void)repairSingletonObjects
@@ -4799,16 +4799,16 @@ uint64_t __74__PLPhotoLibrary__recreateItemsFromMetadataAtDirectoryURLs_includeA
   if (PLIsAssetsd())
   {
     WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-    v3 = [WeakRetained modelMigrator];
-    [v3 repairSingletonObjectsInDatabase];
+    modelMigrator = [WeakRetained modelMigrator];
+    [modelMigrator repairSingletonObjectsInDatabase];
   }
 
   else
   {
-    v4 = [(PLPhotoLibrary *)self assetsdClient];
-    v5 = [v4 libraryClient];
+    assetsdClient = [(PLPhotoLibrary *)self assetsdClient];
+    libraryClient = [assetsdClient libraryClient];
     v10 = 0;
-    v6 = [v5 synchronouslyRepairSingletonObjectsWithError:&v10];
+    v6 = [libraryClient synchronouslyRepairSingletonObjectsWithError:&v10];
     v7 = v10;
 
     if ((v6 & 1) == 0)
@@ -4824,69 +4824,69 @@ uint64_t __74__PLPhotoLibrary__recreateItemsFromMetadataAtDirectoryURLs_includeA
   }
 }
 
-- (id)_loadDatabaseContextWithOptions:(id)a3 error:(id *)a4
+- (id)_loadDatabaseContextWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   if (PLIsAssetsd())
   {
-    [(PLPhotoLibrary *)self _loadServerDatabaseContextWithOptions:v6 error:a4];
+    [(PLPhotoLibrary *)self _loadServerDatabaseContextWithOptions:optionsCopy error:error];
   }
 
   else
   {
     v7 = +[PLPhotoLibraryForceExitObserver sharedInstance];
-    [(PLPhotoLibrary *)self _loadClientDatabaseContextWithOptions:v6 error:a4];
+    [(PLPhotoLibrary *)self _loadClientDatabaseContextWithOptions:optionsCopy error:error];
   }
   v8 = ;
 
   return v8;
 }
 
-- (id)_loadServerDatabaseContextWithOptions:(id)a3 error:(id *)a4
+- (id)_loadServerDatabaseContextWithOptions:(id)options error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  optionsCopy = options;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v38 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v38 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:1848 description:@"Can only be called in assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:1848 description:@"Can only be called in assetsd"];
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = [(PLPhotoLibrary *)self options];
+  options = [(PLPhotoLibrary *)self options];
 
-  if (v9)
+  if (options)
   {
-    v10 = [(PLPhotoLibrary *)self options];
-    v11 = [v10 requiredState];
+    options2 = [(PLPhotoLibrary *)self options];
+    requiredState = [options2 requiredState];
 
-    if (v11)
+    if (requiredState)
     {
-      v12 = [(PLPhotoLibrary *)self options];
-      v13 = [v12 requiredState];
+      options3 = [(PLPhotoLibrary *)self options];
+      requiredState2 = [options3 requiredState];
     }
 
     else
     {
-      v13 = 7;
+      requiredState2 = 7;
     }
 
-    v15 = [(PLPhotoLibrary *)self options];
-    v16 = [v15 preventsWaitingForRequiredState];
+    options4 = [(PLPhotoLibrary *)self options];
+    preventsWaitingForRequiredState = [options4 preventsWaitingForRequiredState];
 
-    v14 = v16 ^ 1;
+    v14 = preventsWaitingForRequiredState ^ 1;
   }
 
   else
   {
     v14 = 1;
-    v13 = 7;
+    requiredState2 = 7;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v18 = [WeakRetained state];
+  state = [WeakRetained state];
 
-  if (v18 >= v13)
+  if (state >= requiredState2)
   {
     v22 = 0;
   }
@@ -4898,7 +4898,7 @@ uint64_t __74__PLPhotoLibrary__recreateItemsFromMetadataAtDirectoryURLs_includeA
       v25 = MEMORY[0x1E696ABC0];
       v26 = *MEMORY[0x1E69BFF48];
       v42[0] = @"requiredState";
-      v27 = [MEMORY[0x1E696AD98] numberWithInteger:v13];
+      v27 = [MEMORY[0x1E696AD98] numberWithInteger:requiredState2];
       v42[1] = @"libraryState";
       v43[0] = v27;
       v28 = MEMORY[0x1E696AD98];
@@ -4913,7 +4913,7 @@ uint64_t __74__PLPhotoLibrary__recreateItemsFromMetadataAtDirectoryURLs_includeA
 
     v19 = objc_loadWeakRetained(&self->_libraryServicesManager);
     v39 = 0;
-    v20 = [v19 awaitLibraryState:v13 error:&v39];
+    v20 = [v19 awaitLibraryState:requiredState2 error:&v39];
     v21 = v39;
 
     if ((v20 & 1) == 0)
@@ -4930,11 +4930,11 @@ uint64_t __74__PLPhotoLibrary__recreateItemsFromMetadataAtDirectoryURLs_includeA
 LABEL_22:
 
       objc_autoreleasePoolPop(v8);
-      if (a4)
+      if (error)
       {
         v36 = v21;
         v24 = 0;
-        *a4 = v21;
+        *error = v21;
       }
 
       else
@@ -4949,8 +4949,8 @@ LABEL_22:
     v22 = v21;
   }
 
-  v23 = [(PLPhotoLibrary *)self options];
-  v24 = +[PLManagedObjectContext contextForUninitializedPhotoLibrary:automaticallyMerges:automaticallyPinToFirstFetch:](PLManagedObjectContext, "contextForUninitializedPhotoLibrary:automaticallyMerges:automaticallyPinToFirstFetch:", self, [v23 automaticallyMergesContext], objc_msgSend(v7, "automaticallyPinToFirstFetch"));
+  options5 = [(PLPhotoLibrary *)self options];
+  v24 = +[PLManagedObjectContext contextForUninitializedPhotoLibrary:automaticallyMerges:automaticallyPinToFirstFetch:](PLManagedObjectContext, "contextForUninitializedPhotoLibrary:automaticallyMerges:automaticallyPinToFirstFetch:", self, [options5 automaticallyMergesContext], objc_msgSend(optionsCopy, "automaticallyPinToFirstFetch"));
 
   if (!v24)
   {
@@ -4981,29 +4981,29 @@ LABEL_26:
   return v24;
 }
 
-- (id)_loadClientDatabaseContextWithOptions:(id)a3 error:(id *)a4
+- (id)_loadClientDatabaseContextWithOptions:(id)options error:(id *)error
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  optionsCopy = options;
   if (PLIsAssetsd())
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:1809 description:@"Can not be called in assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:1809 description:@"Can not be called in assetsd"];
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = [(PLPhotoLibrary *)self _loadClientDatabaseContextFastPath];
-  if (v9)
+  _loadClientDatabaseContextFastPath = [(PLPhotoLibrary *)self _loadClientDatabaseContextFastPath];
+  if (_loadClientDatabaseContextFastPath)
   {
-    v10 = v9;
+    v10 = _loadClientDatabaseContextFastPath;
     objc_autoreleasePoolPop(v8);
     goto LABEL_22;
   }
 
-  v11 = [(PLPhotoLibrary *)self assetsdClient];
-  v12 = [v11 libraryClient];
+  assetsdClient = [(PLPhotoLibrary *)self assetsdClient];
+  libraryClient = [assetsdClient libraryClient];
   v26 = 0;
-  v13 = [v12 openPhotoLibraryDatabaseWithoutProgressIfNeededWithOptions:v7 error:&v26];
+  v13 = [libraryClient openPhotoLibraryDatabaseWithoutProgressIfNeededWithOptions:optionsCopy error:&v26];
   v14 = v26;
 
   if (!v13)
@@ -5020,7 +5020,7 @@ LABEL_26:
     goto LABEL_17;
   }
 
-  if ([v7 automaticallyPinToFirstFetch] && ((objc_msgSend(v7, "automaticallyMergesContext") & 1) != 0 || objc_msgSend(v7, "refreshesAfterSave")))
+  if ([optionsCopy automaticallyPinToFirstFetch] && ((objc_msgSend(optionsCopy, "automaticallyMergesContext") & 1) != 0 || objc_msgSend(optionsCopy, "refreshesAfterSave")))
   {
     v15 = PLBackendGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -5029,10 +5029,10 @@ LABEL_26:
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_FAULT, "automaticallyMergesContext/refreshesAfterSave cannot be set with automaticallyPinToFirstFetch on PLPhotoLibaryOptions, disabling automaticallyPinToFirstFetch...", buf, 2u);
     }
 
-    [v7 setAutomaticallyPinToFirstFetch:0];
+    [optionsCopy setAutomaticallyPinToFirstFetch:0];
   }
 
-  v16 = +[PLManagedObjectContext contextForUninitializedPhotoLibrary:automaticallyMerges:automaticallyPinToFirstFetch:](PLManagedObjectContext, "contextForUninitializedPhotoLibrary:automaticallyMerges:automaticallyPinToFirstFetch:", self, [v7 automaticallyMergesContext], objc_msgSend(v7, "automaticallyPinToFirstFetch"));
+  v16 = +[PLManagedObjectContext contextForUninitializedPhotoLibrary:automaticallyMerges:automaticallyPinToFirstFetch:](PLManagedObjectContext, "contextForUninitializedPhotoLibrary:automaticallyMerges:automaticallyPinToFirstFetch:", self, [optionsCopy automaticallyMergesContext], objc_msgSend(optionsCopy, "automaticallyPinToFirstFetch"));
   if (!v16)
   {
     v22 = MEMORY[0x1E696ABC0];
@@ -5053,11 +5053,11 @@ LABEL_26:
 LABEL_17:
 
     objc_autoreleasePoolPop(v8);
-    if (a4)
+    if (error)
     {
       v20 = v19;
       v17 = 0;
-      *a4 = v19;
+      *error = v19;
     }
 
     else
@@ -5090,8 +5090,8 @@ LABEL_22:
   }
 
   v5 = [MEMORY[0x1E69BF360] transaction:"-[PLPhotoLibrary cleanupIncompleteAssetsAfterOTARestore]"];
-  v6 = [MEMORY[0x1E69BF238] fileManager];
-  v7 = [(PLPhotoLibrary *)self managedObjectContext];
+  fileManager = [MEMORY[0x1E69BF238] fileManager];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
   v8 = objc_autoreleasePoolPush();
   v9 = MEMORY[0x1E695D5E0];
   v10 = +[PLManagedAsset entityName];
@@ -5106,7 +5106,7 @@ LABEL_22:
   [v11 setRelationshipKeyPathsForPrefetching:v13];
 
   v30 = 0;
-  v14 = [v7 executeFetchRequest:v11 error:&v30];
+  v14 = [managedObjectContext executeFetchRequest:v11 error:&v30];
   v15 = v30;
   if (!v14)
   {
@@ -5134,19 +5134,19 @@ LABEL_22:
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "Found %d incomplete assets", buf, 8u);
     }
 
-    v20 = [(PLPhotoLibrary *)self libraryServicesManager];
-    v21 = [v20 modelMigrator];
-    v22 = [v21 deviceRestoreMigrationSupport];
-    v23 = [v22 isRestoreFromBackupSourceMegaBackup];
+    libraryServicesManager = [(PLPhotoLibrary *)self libraryServicesManager];
+    modelMigrator = [libraryServicesManager modelMigrator];
+    deviceRestoreMigrationSupport = [modelMigrator deviceRestoreMigrationSupport];
+    isRestoreFromBackupSourceMegaBackup = [deviceRestoreMigrationSupport isRestoreFromBackupSourceMegaBackup];
 
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __56__PLPhotoLibrary_cleanupIncompleteAssetsAfterOTARestore__block_invoke;
     v26[3] = &unk_1E7565200;
-    v29 = v23;
-    v27 = v6;
-    v28 = self;
-    v24 = [v7 enumerateWithIncrementalSaveUsingObjects:v14 shouldRefreshAfterSave:1 withBlock:v26];
+    v29 = isRestoreFromBackupSourceMegaBackup;
+    v27 = fileManager;
+    selfCopy = self;
+    v24 = [managedObjectContext enumerateWithIncrementalSaveUsingObjects:v14 shouldRefreshAfterSave:1 withBlock:v26];
   }
 
   v25[0] = MEMORY[0x1E69E9820];
@@ -5242,10 +5242,10 @@ void __56__PLPhotoLibrary_cleanupIncompleteAssetsAfterOTARestore__block_invoke_5
 - (void)dataMigratorSupportCleanupModelForDataMigrationPurgeMissingSynced
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(PLPhotoLibrary *)self pathManager];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v3 iTunesSyncedAssetsDirectory];
-  v6 = [v4 contentsOfDirectoryAtPath:v5 error:0];
+  pathManager = [(PLPhotoLibrary *)self pathManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  iTunesSyncedAssetsDirectory = [pathManager iTunesSyncedAssetsDirectory];
+  v6 = [defaultManager contentsOfDirectoryAtPath:iTunesSyncedAssetsDirectory error:0];
 
   v7 = PLMigrationGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -5259,15 +5259,15 @@ void __56__PLPhotoLibrary_cleanupIncompleteAssetsAfterOTARestore__block_invoke_5
 
   if (![v6 count])
   {
-    v8 = [(PLPhotoLibrary *)self managedObjectContext];
+    managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __83__PLPhotoLibrary_dataMigratorSupportCleanupModelForDataMigrationPurgeMissingSynced__block_invoke;
     v11[3] = &unk_1E75761B8;
     v12 = v6;
-    v13 = self;
-    v14 = v8;
-    v9 = v8;
+    selfCopy = self;
+    v14 = managedObjectContext;
+    v9 = managedObjectContext;
     [(PLPhotoLibrary *)self performBlockAndWait:v11];
   }
 
@@ -5326,12 +5326,12 @@ void __83__PLPhotoLibrary_dataMigratorSupportCleanupModelForDataMigrationPurgeMi
   }
 }
 
-- (id)_fetchCompleteAssetIDsWithValidatedSavedAssetTypeMask:(unsigned int)a3 context:(id)a4
+- (id)_fetchCompleteAssetIDsWithValidatedSavedAssetTypeMask:(unsigned int)mask context:(id)context
 {
-  v4 = *&a3;
+  v4 = *&mask;
   v23[2] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695D5E0];
-  v6 = a4;
+  contextCopy = context;
   v7 = +[PLManagedAsset entityName];
   v8 = [v5 fetchRequestWithEntityName:v7];
 
@@ -5347,7 +5347,7 @@ void __83__PLPhotoLibrary_dataMigratorSupportCleanupModelForDataMigrationPurgeMi
   [v8 setResultType:1];
   [v8 setIncludesPropertyValues:0];
   v18 = 0;
-  v14 = [v6 executeFetchRequest:v8 error:&v18];
+  v14 = [contextCopy executeFetchRequest:v8 error:&v18];
 
   v15 = v18;
   if (!v14)
@@ -5366,19 +5366,19 @@ void __83__PLPhotoLibrary_dataMigratorSupportCleanupModelForDataMigrationPurgeMi
   return v14;
 }
 
-- (BOOL)batchDeleteObjectsWithEntity:(id)a3 predicate:(id)a4 error:(id *)a5
+- (BOOL)batchDeleteObjectsWithEntity:(id)entity predicate:(id)predicate error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  entityCopy = entity;
+  predicateCopy = predicate;
+  if (!predicateCopy)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:1616 description:{@"Invalid parameter not satisfying: %@", @"predicate"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:1616 description:{@"Invalid parameter not satisfying: %@", @"predicate"}];
   }
 
   v38 = 0;
-  v11 = [(PLPhotoLibrary *)self _fetchedObjectsForDeleteWithEntity:v9 predicate:v10 batchSize:100 error:&v38];
+  v11 = [(PLPhotoLibrary *)self _fetchedObjectsForDeleteWithEntity:entityCopy predicate:predicateCopy batchSize:100 error:&v38];
   v12 = v38;
   if (v11)
   {
@@ -5388,23 +5388,23 @@ void __83__PLPhotoLibrary_dataMigratorSupportCleanupModelForDataMigrationPurgeMi
       v14 = PLBackendGetLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v9 name];
+        name = [entityCopy name];
         *buf = 134218242;
         v40 = v13;
         v41 = 2114;
-        v42 = v15;
+        v42 = name;
         _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEFAULT, "Batch deleting %ld %{public}@", buf, 0x16u);
       }
     }
 
-    v16 = [(PLPhotoLibrary *)self managedObjectContext];
+    managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
     if (v13)
     {
-      v34 = v9;
-      v35 = self;
+      v34 = entityCopy;
+      selfCopy = self;
       v31 = v12;
-      v32 = a5;
-      v33 = v10;
+      errorCopy = error;
+      v33 = predicateCopy;
       v17 = 0;
       v18 = 0;
       do
@@ -5414,7 +5414,7 @@ void __83__PLPhotoLibrary_dataMigratorSupportCleanupModelForDataMigrationPurgeMi
         do
         {
           v20 = [v11 objectAtIndex:v18 + v19];
-          [v16 deleteObject:v20];
+          [managedObjectContext deleteObject:v20];
 
           v21 = v19 + 1;
           v22 = v18 + v19 + 1;
@@ -5428,7 +5428,7 @@ void __83__PLPhotoLibrary_dataMigratorSupportCleanupModelForDataMigrationPurgeMi
 
         while (v22 < v13);
         v37 = v17;
-        v23 = [(PLPhotoLibrary *)v35 safeSave:v16 error:&v37];
+        v23 = [(PLPhotoLibrary *)selfCopy safeSave:managedObjectContext error:&v37];
         v24 = v37;
 
         objc_autoreleasePoolPop(context);
@@ -5442,7 +5442,7 @@ void __83__PLPhotoLibrary_dataMigratorSupportCleanupModelForDataMigrationPurgeMi
       }
 
       while (v22 < v13);
-      if (v32)
+      if (errorCopy)
       {
         v25 = v23;
       }
@@ -5452,15 +5452,15 @@ void __83__PLPhotoLibrary_dataMigratorSupportCleanupModelForDataMigrationPurgeMi
         v25 = 1;
       }
 
-      v9 = v34;
+      entityCopy = v34;
       if ((v25 & 1) == 0)
       {
         v26 = v24;
         LOBYTE(v23) = 0;
-        *v32 = v24;
+        *errorCopy = v24;
       }
 
-      v10 = v33;
+      predicateCopy = v33;
       v12 = v31;
     }
 
@@ -5481,11 +5481,11 @@ void __83__PLPhotoLibrary_dataMigratorSupportCleanupModelForDataMigrationPurgeMi
       _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_ERROR, "Failed to fetch objects to be deleted: %{public}@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v28 = v12;
       LOBYTE(v23) = 0;
-      *a5 = v12;
+      *error = v12;
     }
 
     else
@@ -5497,21 +5497,21 @@ void __83__PLPhotoLibrary_dataMigratorSupportCleanupModelForDataMigrationPurgeMi
   return v23;
 }
 
-- (BOOL)batchDeleteAssetsWithPredicate:(id)a3 reason:(id)a4 error:(id *)a5
+- (BOOL)batchDeleteAssetsWithPredicate:(id)predicate reason:(id)reason error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  predicateCopy = predicate;
+  reasonCopy = reason;
+  if (!predicateCopy)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:1577 description:{@"Invalid parameter not satisfying: %@", @"assetsPredicate"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:1577 description:{@"Invalid parameter not satisfying: %@", @"assetsPredicate"}];
   }
 
-  v36 = [(PLPhotoLibrary *)self managedObjectContext];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
   v11 = [(PLManagedObject *)PLManagedAsset entityInManagedObjectContext:?];
   v39 = 0;
-  v12 = [(PLPhotoLibrary *)self _fetchedObjectsForDeleteWithEntity:v11 predicate:v9 batchSize:100 error:&v39];
+  v12 = [(PLPhotoLibrary *)self _fetchedObjectsForDeleteWithEntity:v11 predicate:predicateCopy batchSize:100 error:&v39];
   v13 = v39;
   if (v12)
   {
@@ -5519,21 +5519,21 @@ void __83__PLPhotoLibrary_dataMigratorSupportCleanupModelForDataMigrationPurgeMi
     v15 = PLBackendGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v10 reason];
+      reason = [reasonCopy reason];
       *buf = 134218242;
       v41 = v14;
       v42 = 2114;
-      v43 = v16;
+      v43 = reason;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "Batch deleting %ld assets: %{public}@", buf, 0x16u);
     }
 
     if (v14)
     {
-      v34 = v9;
-      v35 = self;
+      v34 = predicateCopy;
+      selfCopy = self;
       v31 = v13;
       v32 = v11;
-      v33 = a5;
+      errorCopy = error;
       v17 = 0;
       v18 = 0;
       do
@@ -5543,7 +5543,7 @@ void __83__PLPhotoLibrary_dataMigratorSupportCleanupModelForDataMigrationPurgeMi
         do
         {
           v20 = [v12 objectAtIndex:v18 + v19];
-          [v20 deleteWithReason:v10];
+          [v20 deleteWithReason:reasonCopy];
 
           v21 = v19 + 1;
           v22 = v18 + v19 + 1;
@@ -5557,7 +5557,7 @@ void __83__PLPhotoLibrary_dataMigratorSupportCleanupModelForDataMigrationPurgeMi
 
         while (v22 < v14);
         v38 = v17;
-        v23 = [(PLPhotoLibrary *)v35 safeSave:v36 error:&v38];
+        v23 = [(PLPhotoLibrary *)selfCopy safeSave:managedObjectContext error:&v38];
         v24 = v38;
 
         objc_autoreleasePoolPop(context);
@@ -5571,8 +5571,8 @@ void __83__PLPhotoLibrary_dataMigratorSupportCleanupModelForDataMigrationPurgeMi
       }
 
       while (v22 < v14);
-      v9 = v34;
-      if (v33)
+      predicateCopy = v34;
+      if (errorCopy)
       {
         v25 = v23;
       }
@@ -5586,7 +5586,7 @@ void __83__PLPhotoLibrary_dataMigratorSupportCleanupModelForDataMigrationPurgeMi
       {
         v26 = v24;
         LOBYTE(v23) = 0;
-        *v33 = v24;
+        *errorCopy = v24;
       }
 
       v13 = v31;
@@ -5610,11 +5610,11 @@ void __83__PLPhotoLibrary_dataMigratorSupportCleanupModelForDataMigrationPurgeMi
       _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_ERROR, "could not batch fault in to-be-deleted assets: %@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v28 = v13;
       LOBYTE(v23) = 0;
-      *a5 = v13;
+      *error = v13;
     }
 
     else
@@ -5626,43 +5626,43 @@ void __83__PLPhotoLibrary_dataMigratorSupportCleanupModelForDataMigrationPurgeMi
   return v23;
 }
 
-- (id)_fetchedObjectsForDeleteWithEntity:(id)a3 predicate:(id)a4 batchSize:(unint64_t)a5 error:(id *)a6
+- (id)_fetchedObjectsForDeleteWithEntity:(id)entity predicate:(id)predicate batchSize:(unint64_t)size error:(id *)error
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [(PLPhotoLibrary *)self managedObjectContext];
+  predicateCopy = predicate;
+  entityCopy = entity;
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
   v13 = objc_alloc_init(MEMORY[0x1E695D5E0]);
-  [v13 setEntity:v11];
+  [v13 setEntity:entityCopy];
   [v13 setReturnsObjectsAsFaults:0];
-  [v13 setFetchBatchSize:a5];
-  v14 = [v11 relationshipsByName];
+  [v13 setFetchBatchSize:size];
+  relationshipsByName = [entityCopy relationshipsByName];
 
-  v15 = [v14 allKeys];
-  [v13 setRelationshipKeyPathsForPrefetching:v15];
+  allKeys = [relationshipsByName allKeys];
+  [v13 setRelationshipKeyPathsForPrefetching:allKeys];
 
-  [v13 setPredicate:v10];
-  v16 = [v12 executeFetchRequest:v13 error:a6];
+  [v13 setPredicate:predicateCopy];
+  v16 = [managedObjectContext executeFetchRequest:v13 error:error];
 
   return v16;
 }
 
-- (void)batchDeleteAssets:(id)a3 withReason:(id)a4
+- (void)batchDeleteAssets:(id)assets withReason:(id)reason
 {
-  v8 = a3;
-  v6 = a4;
-  if ([v8 count])
+  assetsCopy = assets;
+  reasonCopy = reason;
+  if ([assetsCopy count])
   {
-    v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v8];
-    [(PLPhotoLibrary *)self batchDeleteAssetsWithPredicate:v7 reason:v6 error:0];
+    assetsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", assetsCopy];
+    [(PLPhotoLibrary *)self batchDeleteAssetsWithPredicate:assetsCopy reason:reasonCopy error:0];
   }
 }
 
-- (BOOL)safeSave:(id)a3 error:(id *)a4
+- (BOOL)safeSave:(id)save error:(id *)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  saveCopy = save;
   v12 = 0;
-  v6 = [v5 save:&v12];
+  v6 = [saveCopy save:&v12];
   v7 = v12;
   if (v6)
   {
@@ -5679,12 +5679,12 @@ void __83__PLPhotoLibrary_dataMigratorSupportCleanupModelForDataMigrationPurgeMi
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "Save failed. We might lose data. Rolling back any changes. (%{public}@)", buf, 0xCu);
     }
 
-    [v5 rollback];
-    if (a4)
+    [saveCopy rollback];
+    if (error)
     {
       v10 = v7;
       v8 = 0;
-      *a4 = v7;
+      *error = v7;
     }
 
     else
@@ -5707,8 +5707,8 @@ void __83__PLPhotoLibrary_dataMigratorSupportCleanupModelForDataMigrationPurgeMi
       _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEFAULT, "Removing obsolete metadata files", v5, 2u);
     }
 
-    v4 = [(PLPhotoLibrary *)self managedObjectContext];
-    [PLInternalResource deleteObsoleteResourcesInManagedObjectContext:v4 error:0];
+    managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+    [PLInternalResource deleteObsoleteResourcesInManagedObjectContext:managedObjectContext error:0];
 
     [(PLPhotoLibrary *)self _deleteObsoleteMetadataFiles];
   }
@@ -5717,27 +5717,27 @@ void __83__PLPhotoLibrary_dataMigratorSupportCleanupModelForDataMigrationPurgeMi
 - (void)_deleteObsoleteMetadataFiles
 {
   v46 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69BF238] fileManager];
-  v4 = [(PLPhotoLibrary *)self thumbnailManager];
-  [v4 removeObsoleteMetadata];
+  fileManager = [MEMORY[0x1E69BF238] fileManager];
+  thumbnailManager = [(PLPhotoLibrary *)self thumbnailManager];
+  [thumbnailManager removeObsoleteMetadata];
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v6 = MEMORY[0x1E695D5E0];
   v7 = +[PLManagedAsset entityName];
   v8 = [v6 fetchRequestWithEntityName:v7];
 
-  v9 = [(PLPhotoLibrary *)self managedObjectContext];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __46__PLPhotoLibrary__deleteObsoleteMetadataFiles__block_invoke;
   v38[3] = &unk_1E7567F48;
   v10 = v5;
   v39 = v10;
-  v11 = v3;
+  v11 = fileManager;
   v40 = v11;
-  v41 = self;
+  selfCopy = self;
   v25 = v8;
-  v12 = [v9 enumerateObjectsFromFetchRequest:v8 count:0 usingDefaultBatchSizeWithBlock:v38];
+  v12 = [managedObjectContext enumerateObjectsFromFetchRequest:v8 count:0 usingDefaultBatchSizeWithBlock:v38];
 
   v36 = 0u;
   v37 = 0u;
@@ -5912,7 +5912,7 @@ void __46__PLPhotoLibrary__deleteObsoleteMetadataFiles__block_invoke(uint64_t a1
   }
 }
 
-- (BOOL)deleteAllDiagnosticFiles:(id *)a3
+- (BOOL)deleteAllDiagnosticFiles:(id *)files
 {
   v33 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E695D5E0];
@@ -5920,15 +5920,15 @@ void __46__PLPhotoLibrary__deleteObsoleteMetadataFiles__block_invoke(uint64_t a1
   v7 = [v5 fetchRequestWithEntityName:v6];
 
   [v7 setFetchBatchSize:100];
-  v8 = [(PLPhotoLibrary *)self managedObjectContext];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
   v31 = 0;
-  v9 = [v8 executeFetchRequest:v7 error:&v31];
+  v9 = [managedObjectContext executeFetchRequest:v7 error:&v31];
   v10 = v31;
 
   if (!v9)
   {
     v20 = 0;
-    if (!a3)
+    if (!files)
     {
       goto LABEL_22;
     }
@@ -5947,7 +5947,7 @@ void __46__PLPhotoLibrary__deleteObsoleteMetadataFiles__block_invoke(uint64_t a1
   {
     v14 = v13;
     v23 = v7;
-    v24 = a3;
+    filesCopy = files;
     v15 = *v28;
     while (2)
     {
@@ -5958,9 +5958,9 @@ void __46__PLPhotoLibrary__deleteObsoleteMetadataFiles__block_invoke(uint64_t a1
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v27 + 1) + 8 * i) pathForDiagnosticFile];
+        pathForDiagnosticFile = [*(*(&v27 + 1) + 8 * i) pathForDiagnosticFile];
         v26 = 0;
-        if (v17 && [v11 fileExistsAtPath:v17 isDirectory:&v26])
+        if (pathForDiagnosticFile && [v11 fileExistsAtPath:pathForDiagnosticFile isDirectory:&v26])
         {
           if (v26)
           {
@@ -5973,7 +5973,7 @@ LABEL_18:
           }
 
           v25 = v10;
-          v18 = [v11 removeItemAtPath:v17 error:&v25];
+          v18 = [v11 removeItemAtPath:pathForDiagnosticFile error:&v25];
           v19 = v25;
 
           v10 = v19;
@@ -5996,7 +5996,7 @@ LABEL_18:
     v20 = 1;
 LABEL_19:
     v7 = v23;
-    a3 = v24;
+    files = filesCopy;
   }
 
   else
@@ -6004,11 +6004,11 @@ LABEL_19:
     v20 = 1;
   }
 
-  if (a3)
+  if (files)
   {
 LABEL_21:
     v21 = v10;
-    *a3 = v10;
+    *files = v10;
   }
 
 LABEL_22:
@@ -6016,29 +6016,29 @@ LABEL_22:
   return v20;
 }
 
-- (void)createPhotoStreamAlbumWithStreamID:(id)a3
+- (void)createPhotoStreamAlbumWithStreamID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:1347 description:@"Only Assetsd should be creating the photostream album!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:1347 description:@"Only Assetsd should be creating the photostream album!"];
   }
 
-  [(PLPhotoLibrary *)self _inq_createPhotoStreamAlbumStreamID:v6];
+  [(PLPhotoLibrary *)self _inq_createPhotoStreamAlbumStreamID:dCopy];
 }
 
-- (void)_inq_createPhotoStreamAlbumStreamID:(id)a3
+- (void)_inq_createPhotoStreamAlbumStreamID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (PLIsAssetsd())
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __54__PLPhotoLibrary__inq_createPhotoStreamAlbumStreamID___block_invoke;
     v5[3] = &unk_1E7578848;
-    v6 = v4;
-    v7 = self;
+    v6 = dCopy;
+    selfCopy = self;
     [(PLPhotoLibrary *)self performTransactionAndWait:v5];
   }
 }
@@ -6053,32 +6053,32 @@ void __54__PLPhotoLibrary__inq_createPhotoStreamAlbumStreamID___block_invoke(uin
   }
 }
 
-- (void)userExpungeAssets:(id)a3 localOnlyDelete:(BOOL)a4 expungeReasonFromClient:(id)a5
+- (void)userExpungeAssets:(id)assets localOnlyDelete:(BOOL)delete expungeReasonFromClient:(id)client
 {
-  [(PLPhotoLibrary *)self _userApplyTrashedState:2 toAssets:a3 localOnlyDelete:a4 trashedReason:0 expungeReasonFromClient:a5];
-  v6 = [(PLPhotoLibrary *)self libraryBundle];
-  [v6 touch];
+  [(PLPhotoLibrary *)self _userApplyTrashedState:2 toAssets:assets localOnlyDelete:delete trashedReason:0 expungeReasonFromClient:client];
+  libraryBundle = [(PLPhotoLibrary *)self libraryBundle];
+  [libraryBundle touch];
 }
 
-- (void)_userApplyTrashedState:(signed __int16)a3 toAssets:(id)a4 localOnlyDelete:(BOOL)a5 trashedReason:(unsigned __int16)a6 expungeReasonFromClient:(id)a7
+- (void)_userApplyTrashedState:(signed __int16)state toAssets:(id)assets localOnlyDelete:(BOOL)delete trashedReason:(unsigned __int16)reason expungeReasonFromClient:(id)client
 {
-  v8 = a6;
-  v71 = a5;
-  v9 = a3;
+  reasonCopy = reason;
+  deleteCopy = delete;
+  stateCopy = state;
   v94 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v67 = a7;
+  assetsCopy = assets;
+  clientCopy = client;
   v88 = 0;
   v89 = 0;
-  v65 = v11;
-  [(PLPhotoLibrary *)self _filterAssets:v11 toTrashableAssets:&v89 deletableAssets:&v88 otherAssets:0];
+  v65 = assetsCopy;
+  [(PLPhotoLibrary *)self _filterAssets:assetsCopy toTrashableAssets:&v89 deletableAssets:&v88 otherAssets:0];
   v12 = v89;
   v13 = v88;
-  v69 = v9;
-  if ((v9 - 1) <= 1u)
+  v69 = stateCopy;
+  if ((stateCopy - 1) <= 1u)
   {
     v14 = [PLAssetTransactionReason transactionReason:@"[_userApplyTrashedState]Directly deleting assets whose state is either trashed or expunged, and types that never make it to the trash bin."];
-    [(PLPhotoLibrary *)self _userDeleteAssets:v13 withReason:v14 localOnlyDelete:v71];
+    [(PLPhotoLibrary *)self _userDeleteAssets:v13 withReason:v14 localOnlyDelete:deleteCopy];
   }
 
   v64 = v13;
@@ -6157,7 +6157,7 @@ LABEL_21:
   v81 = 0u;
   obj = v15;
   v24 = [obj countByEnumeratingWithState:&v80 objects:v92 count:16];
-  v25 = v67;
+  v25 = clientCopy;
   v68 = v18;
   v26 = v69;
   if (!v24)
@@ -6189,20 +6189,20 @@ LABEL_21:
         v31 = 1;
       }
 
-      [v30 setLocalOnlyDelete:v71];
+      [v30 setLocalOnlyDelete:deleteCopy];
       if (![v30 isPartOfBurst] || !objc_msgSend(v18, "containsObject:", v30))
       {
         if ([v30 isPartOfBurst] && objc_msgSend(v19, "containsObject:", v30))
         {
           v41 = [PLAvalanche alloc];
-          v42 = [v30 avalancheUUID];
-          v43 = [v30 photoLibrary];
+          avalancheUUID = [v30 avalancheUUID];
+          photoLibrary = [v30 photoLibrary];
           v44 = v41;
           v26 = v69;
-          v45 = [(PLAvalanche *)v44 initWithUUID:v42 sourceType:v31 photoLibrary:v43];
+          v45 = [(PLAvalanche *)v44 initWithUUID:avalancheUUID sourceType:v31 photoLibrary:photoLibrary];
 
           v18 = v68;
-          [(PLAvalanche *)v45 applyTrashedState:v69 withTrashedReason:v8];
+          [(PLAvalanche *)v45 applyTrashedState:v69 withTrashedReason:reasonCopy];
 
           goto LABEL_39;
         }
@@ -6213,29 +6213,29 @@ LABEL_21:
       if (([v30 avalanchePickType] & 8) == 0)
       {
 LABEL_38:
-        [v30 applyTrashedState:v26 withTrashedReason:v8 expungeReasonFromClient:v25];
+        [v30 applyTrashedState:v26 withTrashedReason:reasonCopy expungeReasonFromClient:v25];
         goto LABEL_39;
       }
 
-      v32 = v8;
+      v32 = reasonCopy;
       v33 = [PLAvalanche alloc];
       [v30 avalancheUUID];
-      v35 = v34 = v26;
-      v36 = [v30 photoLibrary];
-      v37 = [(PLAvalanche *)v33 initWithUUID:v35 sourceType:v31 photoLibrary:v36];
+      v35 = trashedState = v26;
+      photoLibrary2 = [v30 photoLibrary];
+      v37 = [(PLAvalanche *)v33 initWithUUID:v35 sourceType:v31 photoLibrary:photoLibrary2];
 
-      v38 = [(PLAvalanche *)v37 stackAsset];
-      v39 = v38;
-      if (v38)
+      stackAsset = [(PLAvalanche *)v37 stackAsset];
+      v39 = stackAsset;
+      if (stackAsset)
       {
-        v34 = [v38 trashedState];
+        trashedState = [stackAsset trashedState];
       }
 
-      v40 = v34;
-      v8 = v32;
-      [v30 applyTrashedState:v40 withTrashedReason:v32 expungeReasonFromClient:v67];
+      v40 = trashedState;
+      reasonCopy = v32;
+      [v30 applyTrashedState:v40 withTrashedReason:v32 expungeReasonFromClient:clientCopy];
 
-      v25 = v67;
+      v25 = clientCopy;
       v18 = v68;
       v26 = v69;
       v19 = v66;
@@ -6271,7 +6271,7 @@ LABEL_41:
     if (v48)
     {
       v49 = v48;
-      v50 = 0;
+      photoLibrary3 = 0;
       v51 = *v77;
       do
       {
@@ -6286,12 +6286,12 @@ LABEL_41:
           [PLAvalanche removeFavoriteStatus:v53, v64];
           if ([v53 isPartOfBurst])
           {
-            v54 = [v53 avalancheUUID];
-            [v46 addObject:v54];
+            avalancheUUID2 = [v53 avalancheUUID];
+            [v46 addObject:avalancheUUID2];
 
-            if (!v50)
+            if (!photoLibrary3)
             {
-              v50 = [v53 photoLibrary];
+              photoLibrary3 = [v53 photoLibrary];
             }
           }
         }
@@ -6304,7 +6304,7 @@ LABEL_41:
 
     else
     {
-      v50 = 0;
+      photoLibrary3 = 0;
     }
 
     v74 = 0u;
@@ -6327,10 +6327,10 @@ LABEL_41:
           }
 
           v60 = *(*(&v72 + 1) + 8 * k);
-          v61 = [v50 managedObjectContext];
-          v62 = [PLAvalanche assetsWithAvalancheUUID:v60 sourceType:1 inManagedObjectContext:v61];
+          managedObjectContext = [photoLibrary3 managedObjectContext];
+          v62 = [PLAvalanche assetsWithAvalancheUUID:v60 sourceType:1 inManagedObjectContext:managedObjectContext];
 
-          v63 = [PLAvalanche revalidateAvalancheAssets:v62 inLibrary:v50 deleteNonPicks:0 allowDissolve:1];
+          v63 = [PLAvalanche revalidateAvalancheAssets:v62 inLibrary:photoLibrary3 deleteNonPicks:0 allowDissolve:1];
         }
 
         v57 = [v55 countByEnumeratingWithState:&v72 objects:v90 count:16];
@@ -6339,19 +6339,19 @@ LABEL_41:
       while (v57);
     }
 
-    v25 = v67;
+    v25 = clientCopy;
     v18 = v68;
   }
 }
 
-- (void)_filterAssets:(id)a3 toTrashableAssets:(id *)a4 deletableAssets:(id *)a5 otherAssets:(id *)a6
+- (void)_filterAssets:(id)assets toTrashableAssets:(id *)trashableAssets deletableAssets:(id *)deletableAssets otherAssets:(id *)otherAssets
 {
   v29 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (a4)
+  assetsCopy = assets;
+  if (trashableAssets)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (a5)
+    if (deletableAssets)
     {
 LABEL_3:
       v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -6362,7 +6362,7 @@ LABEL_3:
   else
   {
     v10 = 0;
-    if (a5)
+    if (deletableAssets)
     {
       goto LABEL_3;
     }
@@ -6370,17 +6370,17 @@ LABEL_3:
 
   v11 = 0;
 LABEL_6:
-  v23 = a6;
-  if (a6)
+  otherAssetsCopy = otherAssets;
+  if (otherAssets)
   {
-    a6 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    otherAssets = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v12 = v9;
+  v12 = assetsCopy;
   v13 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v13)
   {
@@ -6396,22 +6396,22 @@ LABEL_6:
         }
 
         v17 = *(*(&v24 + 1) + 8 * i);
-        v18 = [v17 canMoveToTrash];
-        v19 = v10;
-        if ((v18 & 1) == 0)
+        canMoveToTrash = [v17 canMoveToTrash];
+        otherAssetsCopy2 = v10;
+        if ((canMoveToTrash & 1) == 0)
         {
           if ([v17 canPerformEditOperation:1])
           {
-            v19 = v11;
+            otherAssetsCopy2 = v11;
           }
 
           else
           {
-            v19 = a6;
+            otherAssetsCopy2 = otherAssets;
           }
         }
 
-        [v19 addObject:v17];
+        [otherAssetsCopy2 addObject:v17];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -6420,37 +6420,37 @@ LABEL_6:
     while (v14);
   }
 
-  if (a4)
+  if (trashableAssets)
   {
     v20 = v10;
-    *a4 = v10;
+    *trashableAssets = v10;
   }
 
-  if (a5)
+  if (deletableAssets)
   {
     v21 = v11;
-    *a5 = v11;
+    *deletableAssets = v11;
   }
 
-  if (v23)
+  if (otherAssetsCopy)
   {
-    v22 = a6;
-    *v23 = a6;
+    otherAssetsCopy3 = otherAssets;
+    *otherAssetsCopy = otherAssets;
   }
 }
 
-- (void)_userDeleteAssets:(id)a3 withReason:(id)a4 localOnlyDelete:(BOOL)a5
+- (void)_userDeleteAssets:(id)assets withReason:(id)reason localOnlyDelete:(BOOL)delete
 {
-  v5 = a5;
+  deleteCopy = delete;
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x1E695DF70] array];
+  assetsCopy = assets;
+  reasonCopy = reason;
+  array = [MEMORY[0x1E695DF70] array];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v11 = v8;
+  v11 = assetsCopy;
   v12 = [v11 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v12)
   {
@@ -6468,7 +6468,7 @@ LABEL_6:
         v16 = *(*(&v30 + 1) + 8 * i);
         if ([v16 isCloudSharedAsset])
         {
-          [v10 addObject:v16];
+          [array addObject:v16];
         }
       }
 
@@ -6478,13 +6478,13 @@ LABEL_6:
     while (v13);
   }
 
-  v17 = [(PLPhotoLibrary *)self libraryBundle];
-  v18 = [v17 isSystemPhotoLibrary];
+  libraryBundle = [(PLPhotoLibrary *)self libraryBundle];
+  isSystemPhotoLibrary = [libraryBundle isSystemPhotoLibrary];
 
-  if (v18 && [v10 count])
+  if (isSystemPhotoLibrary && [array count])
   {
     v19 = [PLCollectionShare syncBackendForKind:2 photoLibrary:self];
-    [v19 deleteSharedStreamAssetsFromServer:v10];
+    [v19 deleteSharedStreamAssetsFromServer:array];
   }
 
   v28 = 0u;
@@ -6507,8 +6507,8 @@ LABEL_6:
         }
 
         v25 = *(*(&v26 + 1) + 8 * j);
-        [v25 setLocalOnlyDelete:{v5, v26}];
-        [v25 deleteWithReason:v9];
+        [v25 setLocalOnlyDelete:{deleteCopy, v26}];
+        [v25 deleteWithReason:reasonCopy];
       }
 
       v22 = [v20 countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -6518,19 +6518,19 @@ LABEL_6:
   }
 }
 
-- (id)assetWithUUID:(id)a3 inContainer:(id)a4
+- (id)assetWithUUID:(id)d inContainer:(id)container
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dCopy = d;
+  containerCopy = container;
+  if (!dCopy)
   {
     v13 = 0;
     goto LABEL_22;
   }
 
-  v8 = [(PLPhotoLibrary *)self managedObjectContext];
-  v9 = [PLManagedAsset assetWithUUID:v6 inManagedObjectContext:v8];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  v9 = [PLManagedAsset assetWithUUID:dCopy inManagedObjectContext:managedObjectContext];
 
   if (!v9)
   {
@@ -6539,14 +6539,14 @@ LABEL_18:
     goto LABEL_21;
   }
 
-  if (v7)
+  if (containerCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v7;
-      v11 = [v9 albums];
-      v12 = [v11 containsObject:v10];
+      assets = containerCopy;
+      albums = [v9 albums];
+      v12 = [albums containsObject:assets];
 
       if (!v12)
       {
@@ -6565,8 +6565,8 @@ LABEL_20:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [v7 assets];
-    v14 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    assets = [containerCopy assets];
+    v14 = [assets countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v14)
     {
       v15 = v14;
@@ -6577,7 +6577,7 @@ LABEL_11:
       {
         if (*v20 != v16)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(assets);
         }
 
         if (*(*(&v19 + 1) + 8 * v17) == v9)
@@ -6587,7 +6587,7 @@ LABEL_11:
 
         if (v15 == ++v17)
         {
-          v15 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v15 = [assets countByEnumeratingWithState:&v19 objects:v23 count:16];
           if (v15)
           {
             goto LABEL_11;
@@ -6609,13 +6609,13 @@ LABEL_22:
   return v13;
 }
 
-- (id)objectWithObjectID:(id)a3
+- (id)objectWithObjectID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = a3;
-    v5 = [(PLPhotoLibrary *)self managedObjectContext];
-    v6 = [v5 objectWithID:v4];
+    dCopy = d;
+    managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+    v6 = [managedObjectContext objectWithID:dCopy];
   }
 
   else
@@ -6626,16 +6626,16 @@ LABEL_22:
   return v6;
 }
 
-- (unint64_t)countOfLocalAlbumsContainingAssets:(id)a3 assetsInSomeAlbumCount:(int64_t *)a4
+- (unint64_t)countOfLocalAlbumsContainingAssets:(id)assets assetsInSomeAlbumCount:(int64_t *)count
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  assetsCopy = assets;
   v6 = [MEMORY[0x1E695DFA8] set];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v5;
+  v7 = assetsCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -6651,8 +6651,8 @@ LABEL_22:
           objc_enumerationMutation(v7);
         }
 
-        v13 = [*(*(&v17 + 1) + 8 * i) albums];
-        v14 = [v13 objectsPassingTest:&__block_literal_global_519];
+        albums = [*(*(&v17 + 1) + 8 * i) albums];
+        v14 = [albums objectsPassingTest:&__block_literal_global_519];
         if ([v14 count])
         {
           [v6 unionSet:v14];
@@ -6672,37 +6672,37 @@ LABEL_22:
   }
 
   v15 = [v6 count];
-  if (a4)
+  if (count)
   {
-    *a4 = v10;
+    *count = v10;
   }
 
   return v15;
 }
 
-- (id)eventAlbumContainingPhoto:(id)a3
+- (id)eventAlbumContainingPhoto:(id)photo
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = a3;
-  v5 = [v3 predicateWithFormat:@"(kind == %d) ||(kind == %d) ||(kind == %d)", 12, 1000, 1500];
-  v6 = [v4 albums];
+  photoCopy = photo;
+  1500 = [v3 predicateWithFormat:@"(kind == %d) ||(kind == %d) ||(kind == %d)", 12, 1000, 1500];
+  albums = [photoCopy albums];
 
-  v7 = [v6 filteredSetUsingPredicate:v5];
-  v8 = [v7 anyObject];
+  v7 = [albums filteredSetUsingPredicate:1500];
+  anyObject = [v7 anyObject];
 
-  return v8;
+  return anyObject;
 }
 
 - (NSArray)photoStreamAlbumsForPreferences
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [(PLPhotoLibrary *)self photoStreamAlbums];
-  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  photoStreamAlbums = [(PLPhotoLibrary *)self photoStreamAlbums];
+  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(photoStreamAlbums, "count")}];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = v2;
+  v4 = photoStreamAlbums;
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
@@ -6740,15 +6740,15 @@ LABEL_22:
 
 - (NSArray)photoStreamAlbums
 {
-  v2 = [(PLPhotoLibrary *)self managedObjectContext];
-  v3 = [PLGenericAlbum albumsWithKind:1500 inManagedObjectContext:v2];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  v3 = [PLGenericAlbum albumsWithKind:1500 inManagedObjectContext:managedObjectContext];
 
   return v3;
 }
 
-- (id)albumListForAlbumOfKind:(int)a3
+- (id)albumListForAlbumOfKind:(int)kind
 {
-  switch(a3)
+  switch(kind)
   {
     case 4003:
       v3 = [PLManagedAlbumList importListInPhotoLibrary:self];
@@ -6767,16 +6767,16 @@ LABEL_22:
   return v3;
 }
 
-- (void)_userApplyTrashedState:(signed __int16)a3 toAlbums:(id)a4
+- (void)_userApplyTrashedState:(signed __int16)state toAlbums:(id)albums
 {
-  v4 = a3;
+  stateCopy = state;
   v20 = *MEMORY[0x1E69E9840];
   v17 = 0;
   v18 = 0;
-  [(PLPhotoLibrary *)self _filterAlbums:a4 toTrashableAlbums:&v18 deletableAlbums:&v17 otherAlbums:0];
+  [(PLPhotoLibrary *)self _filterAlbums:albums toTrashableAlbums:&v18 deletableAlbums:&v17 otherAlbums:0];
   v6 = v18;
   v7 = v17;
-  if (v4 == 1)
+  if (stateCopy == 1)
   {
     [(PLPhotoLibrary *)self _userDeleteAlbums:v7];
   }
@@ -6801,7 +6801,7 @@ LABEL_22:
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v12++) applyTrashedState:v4 cascade:{1, v13}];
+        [*(*(&v13 + 1) + 8 * v12++) applyTrashedState:stateCopy cascade:{1, v13}];
       }
 
       while (v10 != v12);
@@ -6812,17 +6812,17 @@ LABEL_22:
   }
 }
 
-- (void)_filterAlbums:(id)a3 toTrashableAlbums:(id *)a4 deletableAlbums:(id *)a5 otherAlbums:(id *)a6
+- (void)_filterAlbums:(id)albums toTrashableAlbums:(id *)trashableAlbums deletableAlbums:(id *)deletableAlbums otherAlbums:(id *)otherAlbums
 {
   v30 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v23 = a4;
-  if (a4)
+  albumsCopy = albums;
+  trashableAlbumsCopy = trashableAlbums;
+  if (trashableAlbums)
   {
-    a4 = objc_alloc_init(MEMORY[0x1E695DF70]);
+    trashableAlbums = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
-  if (a5)
+  if (deletableAlbums)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
@@ -6832,8 +6832,8 @@ LABEL_22:
     v10 = 0;
   }
 
-  v24 = a5;
-  if (a6)
+  deletableAlbumsCopy = deletableAlbums;
+  if (otherAlbums)
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
@@ -6847,7 +6847,7 @@ LABEL_22:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v12 = v9;
+  v12 = albumsCopy;
   v13 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v13)
   {
@@ -6863,7 +6863,7 @@ LABEL_22:
         }
 
         v17 = *(*(&v25 + 1) + 8 * i);
-        if ((objc_opt_respondsToSelector() & 1) == 0 || (v18 = [v17 canMoveToTrash], v19 = a4, (v18 & 1) == 0))
+        if ((objc_opt_respondsToSelector() & 1) == 0 || (v18 = [v17 canMoveToTrash], v19 = trashableAlbums, (v18 & 1) == 0))
         {
           if ([v17 canPerformEditOperation:32])
           {
@@ -6885,38 +6885,38 @@ LABEL_22:
     while (v14);
   }
 
-  if (v23)
+  if (trashableAlbumsCopy)
   {
-    v20 = a4;
-    *v23 = a4;
+    trashableAlbumsCopy2 = trashableAlbums;
+    *trashableAlbumsCopy = trashableAlbums;
   }
 
-  if (v24)
+  if (deletableAlbumsCopy)
   {
     v21 = v10;
-    *v24 = v10;
+    *deletableAlbumsCopy = v10;
   }
 
-  if (a6)
+  if (otherAlbums)
   {
     v22 = v11;
-    *a6 = v11;
+    *otherAlbums = v11;
   }
 }
 
-- (void)_userDeleteAlbums:(id)a3
+- (void)_userDeleteAlbums:(id)albums
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  albumsCopy = albums;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v32 objects:v38 count:16];
+  v5 = [albumsCopy countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
+    array = 0;
     v8 = *v33;
     do
     {
@@ -6924,22 +6924,22 @@ LABEL_22:
       {
         if (*v33 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(albumsCopy);
         }
 
         v10 = *(*(&v32 + 1) + 8 * i);
         if ([v10 isCloudSharedAlbum] && objc_msgSend(v10, "conformsToProtocol:", &unk_1F0FFFF38))
         {
-          if (!v7)
+          if (!array)
           {
-            v7 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
           }
 
-          [v7 addObject:v10];
+          [array addObject:v10];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v32 objects:v38 count:16];
+      v6 = [albumsCopy countByEnumeratingWithState:&v32 objects:v38 count:16];
     }
 
     while (v6);
@@ -6947,19 +6947,19 @@ LABEL_22:
 
   else
   {
-    v7 = 0;
+    array = 0;
   }
 
-  v11 = [(PLPhotoLibrary *)self libraryBundle];
-  v12 = [v11 isSystemPhotoLibrary];
+  libraryBundle = [(PLPhotoLibrary *)self libraryBundle];
+  isSystemPhotoLibrary = [libraryBundle isSystemPhotoLibrary];
 
-  if (v12)
+  if (isSystemPhotoLibrary)
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v13 = v7;
+    v13 = array;
     v14 = [v13 countByEnumeratingWithState:&v28 objects:v37 count:16];
     if (v14)
     {
@@ -6988,7 +6988,7 @@ LABEL_22:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v18 = v4;
+  v18 = albumsCopy;
   v19 = [v18 countByEnumeratingWithState:&v24 objects:v36 count:16];
   if (v19)
   {
@@ -7017,16 +7017,16 @@ LABEL_22:
   }
 }
 
-- (id)eventWithName:(id)a3 andImportSessionIdentifier:(id)a4
+- (id)eventWithName:(id)name andImportSessionIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLPhotoLibrary *)self managedObjectContext];
-  v9 = [PLGenericAlbum eventsWithName:v7 andImportSessionIdentifier:v6 inManagedObjectContext:v8];
+  identifierCopy = identifier;
+  nameCopy = name;
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  v9 = [PLGenericAlbum eventsWithName:nameCopy andImportSessionIdentifier:identifierCopy inManagedObjectContext:managedObjectContext];
 
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
 - (void)clearTransactionCompletionHandlers
@@ -7035,16 +7035,16 @@ LABEL_22:
   self->_transactionCompletionHandlers = 0;
 }
 
-- (void)addCompletionHandlerToCurrentTransaction:(id)a3
+- (void)addCompletionHandlerToCurrentTransaction:(id)transaction
 {
-  v5 = a3;
-  v12 = v5;
+  transactionCopy = transaction;
+  v12 = transactionCopy;
   if (!self->_pendingTransactions)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:912 description:@"Can only schedule completion handlers when there is an ongoing transaction."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:912 description:@"Can only schedule completion handlers when there is an ongoing transaction."];
 
-    v5 = v12;
+    transactionCopy = v12;
   }
 
   if (!self->_transactionCompletionHandlers)
@@ -7053,10 +7053,10 @@ LABEL_22:
     transactionCompletionHandlers = self->_transactionCompletionHandlers;
     self->_transactionCompletionHandlers = v6;
 
-    v5 = v12;
+    transactionCopy = v12;
   }
 
-  v8 = [v5 copy];
+  v8 = [transactionCopy copy];
   v9 = self->_transactionCompletionHandlers;
   v10 = _Block_copy(v8);
   [(NSMutableArray *)v9 addObject:v10];
@@ -7320,9 +7320,9 @@ void __40__PLPhotoLibrary_hasITunesSyncedContent__block_invoke(uint64_t a1)
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"complete == 0"];
   [v5 setPredicate:v6];
   [v5 setFetchLimit:1];
-  v7 = [(PLPhotoLibrary *)self managedObjectContext];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
   v12 = 0;
-  v8 = [v7 countForFetchRequest:v5 error:&v12];
+  v8 = [managedObjectContext countForFetchRequest:v5 error:&v12];
   v9 = v12;
 
   if (v9 || v8 == 0x7FFFFFFFFFFFFFFFLL)
@@ -7377,47 +7377,47 @@ void __40__PLPhotoLibrary_hasITunesSyncedContent__block_invoke(uint64_t a1)
 
 - (id)photoAnalysisClient
 {
-  v3 = [(PLPhotoLibrary *)self globalValues];
-  v4 = [v3 libraryCreateOptions];
+  globalValues = [(PLPhotoLibrary *)self globalValues];
+  libraryCreateOptions = [globalValues libraryCreateOptions];
 
-  if (v4)
+  if (libraryCreateOptions)
   {
-    v5 = 0;
+    photoAnalysisServiceClient = 0;
   }
 
   else
   {
-    v5 = [(PLPhotoLibraryBundle *)self->_libraryBundle photoAnalysisServiceClient];
+    photoAnalysisServiceClient = [(PLPhotoLibraryBundle *)self->_libraryBundle photoAnalysisServiceClient];
   }
 
-  return v5;
+  return photoAnalysisServiceClient;
 }
 
 - (void)clientApplicationWillEnterForeground
 {
   if (PLIsAssetsd())
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:765 description:@"cannot be called by assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:765 description:@"cannot be called by assetsd"];
   }
 
-  v4 = [(PLPhotoLibrary *)self libraryBundle];
-  v8 = [v4 indicatorFileCoordinator];
+  libraryBundle = [(PLPhotoLibrary *)self libraryBundle];
+  indicatorFileCoordinator = [libraryBundle indicatorFileCoordinator];
 
-  if (__photoLibraryClient == 1 && [v8 needsRecoveryAfterCrashOptionallyRemoveAllIndicatorFiles:0])
+  if (__photoLibraryClient == 1 && [indicatorFileCoordinator needsRecoveryAfterCrashOptionallyRemoveAllIndicatorFiles:0])
   {
-    v5 = [(PLPhotoLibrary *)self assetsdClient];
-    v6 = [v5 libraryClient];
-    [v6 recoverFromCrashIfNeeded];
+    assetsdClient = [(PLPhotoLibrary *)self assetsdClient];
+    libraryClient = [assetsdClient libraryClient];
+    [libraryClient recoverFromCrashIfNeeded];
   }
 }
 
-- (void)handlePersistentStoreRemoval:(id)a3
+- (void)handlePersistentStoreRemoval:(id)removal
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E695D478]];
+  removalCopy = removal;
+  userInfo = [removalCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E695D478]];
 
   v12 = 0;
   v13 = &v12;
@@ -7442,9 +7442,9 @@ void __40__PLPhotoLibrary_hasITunesSyncedContent__block_invoke(uint64_t a1)
       v9 = PLBackendGetLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v10 = [(PLPhotoLibrary *)self name];
+        name = [(PLPhotoLibrary *)self name];
         *buf = 138412290;
-        v19 = v10;
+        v19 = name;
         _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEBUG, "Unloaded database %@", buf, 0xCu);
       }
     }
@@ -7472,10 +7472,10 @@ void __47__PLPhotoLibrary_handlePersistentStoreRemoval___block_invoke(uint64_t a
   *(v3 + 40) = WeakRetained;
 }
 
-- (BOOL)loadDatabaseWithOptions:(id)a3 error:(id *)a4
+- (BOOL)loadDatabaseWithOptions:(id)options error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  optionsCopy = options;
   os_unfair_lock_lock(&self->_managedObjectContextLock);
   if (self->_managedObjectContext)
   {
@@ -7487,7 +7487,7 @@ void __47__PLPhotoLibrary_handlePersistentStoreRemoval___block_invoke(uint64_t a
   if (PLIsAssetsd())
   {
 LABEL_14:
-    v20 = [(PLPhotoLibrary *)self _loadDatabaseContextWithOptions:v6 error:a4];
+    v20 = [(PLPhotoLibrary *)self _loadDatabaseContextWithOptions:optionsCopy error:error];
     v21 = v20;
     if (!v20)
     {
@@ -7498,22 +7498,22 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v22 = [v20 persistentStoreCoordinator];
-    v23 = [v22 persistentStores];
-    v24 = [v23 firstObject];
+    persistentStoreCoordinator = [v20 persistentStoreCoordinator];
+    persistentStores = [persistentStoreCoordinator persistentStores];
+    firstObject = [persistentStores firstObject];
 
-    v8 = v24 != 0;
-    if (v24)
+    v8 = firstObject != 0;
+    if (firstObject)
     {
-      objc_storeWeak(&self->_loadedPersistentStore, v24);
+      objc_storeWeak(&self->_loadedPersistentStore, firstObject);
       objc_storeStrong(&self->_managedObjectContext, v21);
-      v25 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v25 addObserver:self selector:sel_handlePersistentStoreRemoval_ name:*MEMORY[0x1E695D3F0] object:v22];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel_handlePersistentStoreRemoval_ name:*MEMORY[0x1E695D3F0] object:persistentStoreCoordinator];
     }
 
     else
     {
-      if (!a4)
+      if (!error)
       {
 LABEL_21:
 
@@ -7523,15 +7523,15 @@ LABEL_21:
       v26 = MEMORY[0x1E696ABC0];
       v36 = *MEMORY[0x1E696A278];
       v37 = @"Persistent store is nil";
-      v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-      *a4 = [v26 errorWithDomain:*MEMORY[0x1E69BFF48] code:45001 userInfo:v25];
+      defaultCenter = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
+      *error = [v26 errorWithDomain:*MEMORY[0x1E69BFF48] code:45001 userInfo:defaultCenter];
     }
 
     goto LABEL_21;
   }
 
-  v9 = [MEMORY[0x1E69BF2B0] sharedInstance];
-  v10 = [v9 photosAccessAllowedWithScope:7];
+  mEMORY[0x1E69BF2B0] = [MEMORY[0x1E69BF2B0] sharedInstance];
+  v10 = [mEMORY[0x1E69BF2B0] photosAccessAllowedWithScope:7];
 
   v11 = PLBackendGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -7546,8 +7546,8 @@ LABEL_21:
     goto LABEL_10;
   }
 
-  v12 = [MEMORY[0x1E69BF2B0] sharedInstance];
-  v13 = [v12 checkPhotosAccessAllowedWithScope:7];
+  mEMORY[0x1E69BF2B0]2 = [MEMORY[0x1E69BF2B0] sharedInstance];
+  v13 = [mEMORY[0x1E69BF2B0]2 checkPhotosAccessAllowedWithScope:7];
 
   v14 = PLBackendGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -7565,9 +7565,9 @@ LABEL_10:
       v30 = PLBackendGetLog();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
-        v31 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
         *buf = 138412290;
-        v39 = v31;
+        v39 = callStackSymbols;
         _os_log_impl(&dword_19BF1F000, v30, OS_LOG_TYPE_ERROR, "*** Attempting access to the photo library before it is obtainable. %@", buf, 0xCu);
       }
 
@@ -7577,22 +7577,22 @@ LABEL_10:
 
     if (PLIsSystemLibraryAccessProhibited())
     {
-      v15 = [(PLPhotoLibrary *)self pathManager];
-      v16 = [v15 libraryURL];
-      v17 = [v16 URLByStandardizingPath];
+      pathManager = [(PLPhotoLibrary *)self pathManager];
+      libraryURL = [pathManager libraryURL];
+      uRLByStandardizingPath = [libraryURL URLByStandardizingPath];
 
-      v18 = [MEMORY[0x1E69BF238] realSystemPhotoLibraryPath];
-      v19 = [v17 path];
-      LODWORD(v16) = [v18 isEqualToString:v19];
+      realSystemPhotoLibraryPath = [MEMORY[0x1E69BF238] realSystemPhotoLibraryPath];
+      path = [uRLByStandardizingPath path];
+      LODWORD(libraryURL) = [realSystemPhotoLibraryPath isEqualToString:path];
 
-      if (v16)
+      if (libraryURL)
       {
         v33 = PLBackendGetLog();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
-          v34 = [MEMORY[0x1E696AF00] callStackSymbols];
+          callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
           *buf = 138412290;
-          v39 = v34;
+          v39 = callStackSymbols2;
           _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_ERROR, "*** Attempting access to the system photo library is prohibited. %@", buf, 0xCu);
         }
 
@@ -7607,17 +7607,17 @@ LABEL_10:
   v28 = PLBackendGetLog();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
   {
-    v29 = [MEMORY[0x1E696AF00] callStackSymbols];
+    callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
     *buf = 138412290;
-    v39 = v29;
+    v39 = callStackSymbols3;
     _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_ERROR, "*** This application is not allowed to access Photo data. %@", buf, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:45002 userInfo:0];
     v7 = 0;
-    *a4 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else
@@ -7652,32 +7652,32 @@ id __33__PLPhotoLibrary_unloadDatabase___block_invoke(uint64_t a1)
   return objc_storeWeak(v5, 0);
 }
 
-- (void)_setManagedObjectContext:(id)a3
+- (void)_setManagedObjectContext:(id)context
 {
-  v4 = a3;
-  v3 = v4;
+  contextCopy = context;
+  v3 = contextCopy;
   PLRunWithUnfairLock();
 }
 
-- (PLPhotoLibrary)initWithName:(const char *)a3 libraryBundle:(id)a4 options:(id)a5
+- (PLPhotoLibrary)initWithName:(const char *)name libraryBundle:(id)bundle options:(id)options
 {
   v24 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 pathManager];
-  v12 = [(PLPhotoLibrary *)self _initWithPathManager:v11];
+  bundleCopy = bundle;
+  optionsCopy = options;
+  pathManager = [bundleCopy pathManager];
+  v12 = [(PLPhotoLibrary *)self _initWithPathManager:pathManager];
   v13 = v12;
   if (v12)
   {
     v12->_managedObjectContextLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v12->_libraryBundle, a4);
-    v14 = [v9 libraryServicesManager];
-    objc_storeWeak(&v13->_libraryServicesManager, v14);
+    objc_storeStrong(&v12->_libraryBundle, bundle);
+    libraryServicesManager = [bundleCopy libraryServicesManager];
+    objc_storeWeak(&v13->_libraryServicesManager, libraryServicesManager);
 
-    objc_storeStrong(&v13->_options, a5);
-    if (a3)
+    objc_storeStrong(&v13->_options, options);
+    if (name)
     {
-      v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:a3];
+      v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:name];
       name = v13->_name;
       v13->_name = v15;
     }
@@ -7692,11 +7692,11 @@ id __33__PLPhotoLibrary_unloadDatabase___block_invoke(uint64_t a1)
     v17 = PLPhotosObjectLifecycleGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v18 = [(PLPhotoLibrary *)v13 name];
+      name = [(PLPhotoLibrary *)v13 name];
       v20 = 134218242;
       v21 = v13;
       v22 = 2112;
-      v23 = v18;
+      v23 = name;
       _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEBUG, "PLPhotoLibrary %p initWithName %@", &v20, 0x16u);
     }
   }
@@ -7704,16 +7704,16 @@ id __33__PLPhotoLibrary_unloadDatabase___block_invoke(uint64_t a1)
   return v13;
 }
 
-- (id)_initWithPathManager:(id)a3
+- (id)_initWithPathManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = PLPhotoLibrary;
   v6 = [(PLPhotoLibrary *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pathManager, a3);
+    objc_storeStrong(&v6->_pathManager, manager);
     v8 = v7;
   }
 
@@ -7729,14 +7729,14 @@ id __33__PLPhotoLibrary_unloadDatabase___block_invoke(uint64_t a1)
 - (void)_pauseChangeHandlingNotifications
 {
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v2 = [WeakRetained changeHandlingContainer];
-  [v2 pauseLaunchEventNotifications];
+  changeHandlingContainer = [WeakRetained changeHandlingContainer];
+  [changeHandlingContainer pauseLaunchEventNotifications];
 }
 
 - (void)_reallyDisableOpportunisticTasks
 {
-  v3 = [objc_opt_class() opportunisticTaskIsolationQueue];
-  dispatch_assert_queue_V2(v3);
+  opportunisticTaskIsolationQueue = [objc_opt_class() opportunisticTaskIsolationQueue];
+  dispatch_assert_queue_V2(opportunisticTaskIsolationQueue);
 
   [(PLPhotoLibrary *)self _pauseChangeHandlingNotifications];
 }
@@ -7745,17 +7745,17 @@ id __33__PLPhotoLibrary_unloadDatabase___block_invoke(uint64_t a1)
 {
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:488 description:@"disableOpportunisticTasks can only be called from assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:488 description:@"disableOpportunisticTasks can only be called from assetsd"];
   }
 
-  v4 = [objc_opt_class() opportunisticTaskIsolationQueue];
+  opportunisticTaskIsolationQueue = [objc_opt_class() opportunisticTaskIsolationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__PLPhotoLibrary_disableOpportunisticTasks__block_invoke;
   block[3] = &unk_1E75781E8;
   block[4] = self;
-  dispatch_sync(v4, block);
+  dispatch_sync(opportunisticTaskIsolationQueue, block);
 }
 
 void __43__PLPhotoLibrary_disableOpportunisticTasks__block_invoke(uint64_t a1)
@@ -7795,14 +7795,14 @@ void __43__PLPhotoLibrary_disableOpportunisticTasks__block_invoke(uint64_t a1)
 - (void)_resumeChangeHandlingNotifications
 {
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
-  v2 = [WeakRetained changeHandlingContainer];
-  [v2 unpauseLaunchEventNotifications];
+  changeHandlingContainer = [WeakRetained changeHandlingContainer];
+  [changeHandlingContainer unpauseLaunchEventNotifications];
 }
 
 - (void)_reallyEnableOpportunisticTasks
 {
-  v3 = [objc_opt_class() opportunisticTaskIsolationQueue];
-  dispatch_assert_queue_V2(v3);
+  opportunisticTaskIsolationQueue = [objc_opt_class() opportunisticTaskIsolationQueue];
+  dispatch_assert_queue_V2(opportunisticTaskIsolationQueue);
 
   [(PLPhotoLibrary *)self _resumeChangeHandlingNotifications];
 
@@ -7815,23 +7815,23 @@ void __43__PLPhotoLibrary_disableOpportunisticTasks__block_invoke(uint64_t a1)
 
   if (!WeakRetained)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:449 description:{@"Invalid parameter not satisfying: %@", @"_libraryServicesManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:449 description:{@"Invalid parameter not satisfying: %@", @"_libraryServicesManager"}];
   }
 
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:450 description:@"enableOpportunisticTasks: can only be called from assetsd"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:450 description:@"enableOpportunisticTasks: can only be called from assetsd"];
   }
 
-  v5 = [objc_opt_class() opportunisticTaskIsolationQueue];
+  opportunisticTaskIsolationQueue = [objc_opt_class() opportunisticTaskIsolationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke;
   block[3] = &unk_1E75781E8;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(opportunisticTaskIsolationQueue, block);
 }
 
 void __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke(uint64_t a1)
@@ -7872,25 +7872,25 @@ void __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke(uint64_t a1)
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
-  v6 = [v3 stringWithFormat:@"<%@: %p libraryURL=%@>", v4, self, v5];
+  libraryURL = [(PLPhotoLibraryPathManager *)self->_pathManager libraryURL];
+  v6 = [v3 stringWithFormat:@"<%@: %p libraryURL=%@>", v4, self, libraryURL];
 
   return v6;
 }
 
-- (BOOL)_isUnknownAssetColumnError:(id)a3
+- (BOOL)_isUnknownAssetColumnError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E695D488]];
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E695D488]];
 
   if (v5)
   {
-    v6 = [v5 intValue];
-    v7 = [v3 userInfo];
-    v8 = [v7 objectForKey:@"NSSQLiteDatabaseErrorMessageKey"];
+    intValue = [v5 intValue];
+    userInfo2 = [errorCopy userInfo];
+    v8 = [userInfo2 objectForKey:@"NSSQLiteDatabaseErrorMessageKey"];
 
-    v9 = (v6 == 1) & [v8 containsString:@"no such column: ZASSET"];
+    v9 = (intValue == 1) & [v8 containsString:@"no such column: ZASSET"];
   }
 
   else
@@ -7901,51 +7901,51 @@ void __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (void)_markForRebuildAndAbortWithReason:(int64_t)a3 error:(id)a4
+- (void)_markForRebuildAndAbortWithReason:(int64_t)reason error:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  errorCopy = error;
   v7 = PLBackendGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
   {
-    v8 = PLRebuildReasonToShortString(a3);
+    v8 = PLRebuildReasonToShortString(reason);
     v11 = 138543618;
     v12 = v8;
     v13 = 2112;
-    v14 = v6;
+    v14 = errorCopy;
     _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_FAULT, "Corrupt Database Detected: reason: %{public}@, error: %@", &v11, 0x16u);
   }
 
-  v9 = [(PLPhotoLibrary *)self pathManager];
-  [v9 setSqliteErrorForRebuildReason:a3 allowsExit:1];
+  pathManager = [(PLPhotoLibrary *)self pathManager];
+  [pathManager setSqliteErrorForRebuildReason:reason allowsExit:1];
 
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
   [WeakRetained shutdownLibraryWithDescription:@"CoreData error"];
 }
 
-- (void)handlePossibleCoreDataError:(id)a3
+- (void)handlePossibleCoreDataError:(id)error
 {
-  v8 = a3;
-  v4 = [v8 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E695D488]];
+  errorCopy = error;
+  userInfo = [errorCopy userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E695D488]];
 
   if (v5)
   {
-    v6 = [v5 intValue];
-    if (v6 == 769)
+    intValue = [v5 intValue];
+    if (intValue == 769)
     {
       [objc_opt_class() contextExecuteFailedWithSQLiteResultCode:769];
     }
 
-    else if (v6 == 26 || v6 == 11)
+    else if (intValue == 26 || intValue == 11)
     {
-      [(PLPhotoLibrary *)self _markForRebuildAndAbortWithReason:8 error:v8];
+      [(PLPhotoLibrary *)self _markForRebuildAndAbortWithReason:8 error:errorCopy];
     }
   }
 
-  if ([(PLPhotoLibrary *)self _isUnknownAssetColumnError:v8])
+  if ([(PLPhotoLibrary *)self _isUnknownAssetColumnError:errorCopy])
   {
-    [(PLPhotoLibrary *)self _markForRebuildAndAbortWithReason:21 error:v8];
+    [(PLPhotoLibrary *)self _markForRebuildAndAbortWithReason:21 error:errorCopy];
   }
 }
 
@@ -7983,65 +7983,65 @@ void __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke(uint64_t a1)
 {
   if ((PLIsAssetsd() & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:350 description:@"PLThumbnailIndexes only available in assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:350 description:@"PLThumbnailIndexes only available in assetsd"];
   }
 
   v4 = PLLibraryIDFromPathManager();
   v5 = PLDataStoreForClassIDAndLibraryID(1, v4);
-  v6 = [v5 thumbnailIndexes];
+  thumbnailIndexes = [v5 thumbnailIndexes];
 
-  return v6;
+  return thumbnailIndexes;
 }
 
-- (id)shortLivedLibraryCopyByAppendingName:(const char *)a3
+- (id)shortLivedLibraryCopyByAppendingName:(const char *)name
 {
   if ((PLIsAssetsd() & 1) == 0 && (MEMORY[0x19EAEE520]() & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:307 description:@"Should only be called within assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:307 description:@"Should only be called within assetsd"];
   }
 
-  v6 = [(PLPhotoLibrary *)self name];
-  v7 = [v6 stringByAppendingFormat:@" %s", a3];
+  name = [(PLPhotoLibrary *)self name];
+  name2 = [name stringByAppendingFormat:@" %s", name];
 
-  v8 = [(PLPhotoLibrary *)self libraryServicesManager];
-  v9 = [v8 databaseContext];
-  v10 = [v9 newShortLivedLibraryWithName:{objc_msgSend(v7, "UTF8String")}];
+  libraryServicesManager = [(PLPhotoLibrary *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v10 = [databaseContext newShortLivedLibraryWithName:{objc_msgSend(name2, "UTF8String")}];
 
-  v11 = [(PLPhotoLibrary *)self managedObjectContext];
-  v12 = [v11 changeSource];
-  v13 = [v10 managedObjectContext];
-  [v13 setChangeSource:v12];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  changeSource = [managedObjectContext changeSource];
+  managedObjectContext2 = [v10 managedObjectContext];
+  [managedObjectContext2 setChangeSource:changeSource];
 
   return v10;
 }
 
-+ (BOOL)isBackgroundProcessingEnabledWithManagedObjectContext:(id)a3
++ (BOOL)isBackgroundProcessingEnabledWithManagedObjectContext:(id)context
 {
-  v3 = a3;
-  v4 = [v3 photoLibrary];
-  v5 = [v4 libraryServicesManager];
+  contextCopy = context;
+  photoLibrary = [contextCopy photoLibrary];
+  libraryServicesManager = [photoLibrary libraryServicesManager];
 
-  if (v5)
+  if (libraryServicesManager)
   {
-    v6 = [v5 createOptions];
+    createOptions = [libraryServicesManager createOptions];
   }
 
   else
   {
-    v7 = [[PLGlobalValues alloc] initWithManagedObjectContext:v3];
-    v6 = [(PLGlobalValues *)v7 libraryCreateOptions];
+    v7 = [[PLGlobalValues alloc] initWithManagedObjectContext:contextCopy];
+    createOptions = [(PLGlobalValues *)v7 libraryCreateOptions];
   }
 
-  return (v6 & 0x40) == 0;
+  return (createOptions & 0x40) == 0;
 }
 
 + (unint64_t)CloudPhotoLibrarySize
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
-  v3 = [v2 photoDirectoryWithType:4];
+  systemLibraryPathManager = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
+  v3 = [systemLibraryPathManager photoDirectoryWithType:4];
 
   v7[0] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
@@ -8050,52 +8050,52 @@ void __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke(uint64_t a1)
   return v5;
 }
 
-+ (id)deferredPhotoPreviewDestinationURLForPrimaryAssetURL:(id)a3
++ (id)deferredPhotoPreviewDestinationURLForPrimaryAssetURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 pathExtension];
-  v5 = [v3 path];
+  lCopy = l;
+  pathExtension = [lCopy pathExtension];
+  path = [lCopy path];
 
-  v6 = [v5 stringByDeletingPathExtension];
-  v7 = [v6 stringByAppendingString:*MEMORY[0x1E69BFCF0]];
-  v8 = [v7 stringByAppendingPathExtension:v4];
+  stringByDeletingPathExtension = [path stringByDeletingPathExtension];
+  v7 = [stringByDeletingPathExtension stringByAppendingString:*MEMORY[0x1E69BFCF0]];
+  v8 = [v7 stringByAppendingPathExtension:pathExtension];
 
   v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:v8 isDirectory:0];
 
   return v9;
 }
 
-+ (id)requestIdentifierFromDeferredIdentifier:(id)a3
++ (id)requestIdentifierFromDeferredIdentifier:(id)identifier
 {
-  v3 = [a3 componentsSeparatedByString:@"/"];
-  v4 = [v3 firstObject];
+  v3 = [identifier componentsSeparatedByString:@"/"];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-+ (void)refreshCachedCountsAndDates:(BOOL)a3 onAssetsContainerClass:(Class)a4 inContext:(id)a5 withPredicate:(id)a6
++ (void)refreshCachedCountsAndDates:(BOOL)dates onAssetsContainerClass:(Class)class inContext:(id)context withPredicate:(id)predicate
 {
-  v62 = a3;
+  datesCopy = dates;
   v83[7] = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v51 = a6;
-  if (!a4)
+  contextCopy = context;
+  predicateCopy = predicate;
+  if (!class)
   {
-    v44 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v44 handleFailureInMethod:a2 object:a1 file:@"PLPhotoLibrary.m" lineNumber:3779 description:{@"Invalid parameter not satisfying: %@", @"class != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:3779 description:{@"Invalid parameter not satisfying: %@", @"class != nil"}];
   }
 
-  v63 = v9;
-  if (!v9)
+  v63 = contextCopy;
+  if (!contextCopy)
   {
-    v45 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v45 handleFailureInMethod:a2 object:a1 file:@"PLPhotoLibrary.m" lineNumber:3780 description:{@"Invalid parameter not satisfying: %@", @"context != nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:3780 description:{@"Invalid parameter not satisfying: %@", @"context != nil"}];
   }
 
   v58 = objc_alloc_init(MEMORY[0x1E695D5C8]);
   [v58 setName:@"objectID"];
-  v10 = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
-  [v58 setExpression:v10];
+  expressionForEvaluatedObject = [MEMORY[0x1E696ABC8] expressionForEvaluatedObject];
+  [v58 setExpression:expressionForEvaluatedObject];
 
   [v58 setExpressionResultType:2000];
   v57 = [MEMORY[0x1E696ABC8] expressionWithFormat:@"SUBQUERY(assets, $x, noindex:($x.hidden) = NO && noindex:($x.trashedState) = %d).@count", 0];
@@ -8116,10 +8116,10 @@ void __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke(uint64_t a1)
   [v13 setExpression:v55];
   v54 = v13;
   [v13 setExpressionResultType:200];
-  if (v62)
+  if (datesCopy)
   {
     v14 = MEMORY[0x1E696ABC8];
-    if (objc_opt_class() == a4)
+    if (objc_opt_class() == class)
     {
       v15 = @"addedDate";
     }
@@ -8136,7 +8136,7 @@ void __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke(uint64_t a1)
     v48 = v17;
     [v17 setExpressionResultType:900];
     v18 = MEMORY[0x1E696ABC8];
-    if (objc_opt_class() == a4)
+    if (objc_opt_class() == class)
     {
       v19 = @"addedDate";
     }
@@ -8160,10 +8160,10 @@ void __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke(uint64_t a1)
     v49 = 0;
   }
 
-  v60 = [(objc_class *)a4 entityName];
-  v59 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:v60];
+  entityName = [(objc_class *)class entityName];
+  v59 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:entityName];
   [v59 setResultType:2];
-  if (v62)
+  if (datesCopy)
   {
     v83[0] = @"uuid";
     v83[1] = v52;
@@ -8188,7 +8188,7 @@ void __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke(uint64_t a1)
   v23 = v22;
   [v59 setPropertiesToFetch:v22];
 
-  [v59 setPredicate:v51];
+  [v59 setPredicate:predicateCopy];
   v72 = 0;
   v50 = [v63 executeFetchRequest:v59 error:&v72];
   v47 = v72;
@@ -8231,11 +8231,11 @@ void __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke(uint64_t a1)
                 v32 = PLBackendGetLog();
                 if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
                 {
-                  v33 = [v27 objectID];
+                  objectID = [v27 objectID];
                   *buf = 138413058;
                   v74 = v29;
                   v75 = 2112;
-                  v76 = v33;
+                  v76 = objectID;
                   v77 = 2112;
                   v78 = v31;
                   v79 = 2112;
@@ -8247,7 +8247,7 @@ void __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke(uint64_t a1)
               }
             }
 
-            if (v62)
+            if (datesCopy)
             {
               v34 = 0;
               v35 = 1;
@@ -8262,11 +8262,11 @@ void __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke(uint64_t a1)
                   v40 = PLBackendGetLog();
                   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
                   {
-                    v41 = [v27 objectID];
+                    objectID2 = [v27 objectID];
                     *buf = 138413058;
                     v74 = v37;
                     v75 = 2112;
-                    v76 = v41;
+                    v76 = objectID2;
                     v77 = 2112;
                     v78 = v39;
                     v79 = 2112;
@@ -8292,7 +8292,7 @@ void __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke(uint64_t a1)
             {
               v42 = [v26 objectForKeyedSubscript:@"uuid"];
               *buf = 138412546;
-              v74 = v60;
+              v74 = entityName;
               v75 = 2112;
               v76 = v42;
               _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_ERROR, "Recalc counts - unable to determine objectID for %@ with uuid: %@", buf, 0x16u);
@@ -8319,7 +8319,7 @@ void __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke(uint64_t a1)
       *buf = 138412802;
       v74 = v43;
       v75 = 2112;
-      v76 = v60;
+      v76 = entityName;
       v77 = 2112;
       v78 = v47;
       _os_log_impl(&dword_19BF1F000, obj, OS_LOG_TYPE_ERROR, "%@ failed to fetch counts for %@ %@", buf, 0x20u);
@@ -8327,15 +8327,15 @@ void __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke(uint64_t a1)
   }
 }
 
-+ (void)refreshCachedCountsOnAllAssetContainersInContext:(id)a3
++ (void)refreshCachedCountsOnAllAssetContainersInContext:(id)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  [PLPhotoLibrary refreshCachedCountsAndDates:1 onAssetsContainerClass:objc_opt_class() inContext:v3 withPredicate:0];
-  if ([v3 hasChanges])
+  contextCopy = context;
+  [PLPhotoLibrary refreshCachedCountsAndDates:1 onAssetsContainerClass:objc_opt_class() inContext:contextCopy withPredicate:0];
+  if ([contextCopy hasChanges])
   {
-    v4 = [v3 updatedObjects];
-    v5 = [v4 _pl_map:&__block_literal_global_832];
+    updatedObjects = [contextCopy updatedObjects];
+    v5 = [updatedObjects _pl_map:&__block_literal_global_832];
 
     v6 = PLBackendGetLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -8346,7 +8346,7 @@ void __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke(uint64_t a1)
     }
 
     v24 = 0;
-    v7 = [v3 save:&v24];
+    v7 = [contextCopy save:&v24];
     v8 = v24;
     if ((v7 & 1) == 0)
     {
@@ -8360,11 +8360,11 @@ void __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke(uint64_t a1)
     }
   }
 
-  [PLPhotoLibrary refreshCachedCountsAndDates:0 onAssetsContainerClass:objc_opt_class() inContext:v3 withPredicate:0];
-  if ([v3 hasChanges])
+  [PLPhotoLibrary refreshCachedCountsAndDates:0 onAssetsContainerClass:objc_opt_class() inContext:contextCopy withPredicate:0];
+  if ([contextCopy hasChanges])
   {
-    v10 = [v3 updatedObjects];
-    v11 = [v10 _pl_map:&__block_literal_global_836];
+    updatedObjects2 = [contextCopy updatedObjects];
+    v11 = [updatedObjects2 _pl_map:&__block_literal_global_836];
 
     v12 = PLBackendGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -8375,7 +8375,7 @@ void __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke(uint64_t a1)
     }
 
     v23 = 0;
-    v13 = [v3 save:&v23];
+    v13 = [contextCopy save:&v23];
     v14 = v23;
     if ((v13 & 1) == 0)
     {
@@ -8389,11 +8389,11 @@ void __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke(uint64_t a1)
     }
   }
 
-  [PLPhotoLibrary refreshCachedCountsAndDates:1 onAssetsContainerClass:objc_opt_class() inContext:v3 withPredicate:0];
-  if ([v3 hasChanges])
+  [PLPhotoLibrary refreshCachedCountsAndDates:1 onAssetsContainerClass:objc_opt_class() inContext:contextCopy withPredicate:0];
+  if ([contextCopy hasChanges])
   {
-    v16 = [v3 updatedObjects];
-    v17 = [v16 _pl_map:&__block_literal_global_841];
+    updatedObjects3 = [contextCopy updatedObjects];
+    v17 = [updatedObjects3 _pl_map:&__block_literal_global_841];
 
     v18 = PLBackendGetLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -8404,7 +8404,7 @@ void __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke(uint64_t a1)
     }
 
     v22 = 0;
-    v19 = [v3 save:&v22];
+    v19 = [contextCopy save:&v22];
     v20 = v22;
     if ((v19 & 1) == 0)
     {
@@ -8419,16 +8419,16 @@ void __42__PLPhotoLibrary_enableOpportunisticTasks__block_invoke(uint64_t a1)
   }
 }
 
-+ (BOOL)canSaveVideoToLibrary:(id)a3
++ (BOOL)canSaveVideoToLibrary:(id)library
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  libraryCopy = library;
+  if (libraryCopy)
   {
     v19 = *MEMORY[0x1E6987BD8];
     v20[0] = &unk_1F0FBAB10;
     v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-    v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:v3 isDirectory:0];
+    v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:libraryCopy isDirectory:0];
     v6 = [MEMORY[0x1E6988168] URLAssetWithURL:v5 options:v4];
     v7 = v6;
     if (v6)
@@ -8448,7 +8448,7 @@ LABEL_14:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v16 = v3;
+        v16 = libraryCopy;
         _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "Video %@ cannot be saved to the photo library: reference to remote", buf, 0xCu);
       }
     }
@@ -8462,7 +8462,7 @@ LABEL_14:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v16 = v3;
+        v16 = libraryCopy;
         v17 = 2112;
         v18 = v11;
         _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "Video %@ cannot be saved to the photo library: %@", buf, 0x16u);
@@ -8479,26 +8479,26 @@ LABEL_15:
   return v8;
 }
 
-+ (id)_resourcesInfoFromMoc:(id)a3
++ (id)_resourcesInfoFromMoc:(id)moc
 {
-  v4 = a3;
+  mocCopy = moc;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__2710;
   v15 = __Block_byref_object_dispose__2711;
   v16 = 0;
-  v5 = [[PLLibraryContentsEnumerator alloc] initWithSourceManagedObjectContext:v4 concurrent:0 readOnly:1];
+  v5 = [[PLLibraryContentsEnumerator alloc] initWithSourceManagedObjectContext:mocCopy concurrent:0 readOnly:1];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __40__PLPhotoLibrary__resourcesInfoFromMoc___block_invoke;
   v10[3] = &unk_1E7577790;
   v10[4] = &v11;
-  [a1 configureEnumeratorForLibrarySizeInfo:v5 completion:v10];
+  [self configureEnumeratorForLibrarySizeInfo:v5 completion:v10];
   v9 = 0;
-  LODWORD(a1) = [(PLLibraryContentsEnumerator *)v5 processObjectsWithError:&v9];
+  LODWORD(self) = [(PLLibraryContentsEnumerator *)v5 processObjectsWithError:&v9];
   v6 = v9;
-  if (a1)
+  if (self)
   {
     v7 = v12[5];
   }
@@ -8513,15 +8513,15 @@ LABEL_15:
   return v7;
 }
 
-+ (void)configureEnumeratorForLibrarySizeInfo:(id)a3 completion:(id)a4
++ (void)configureEnumeratorForLibrarySizeInfo:(id)info completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  infoCopy = info;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (!infoCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PLPhotoLibrary.m" lineNumber:3057 description:{@"Invalid parameter not satisfying: %@", @"enumerator"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:3057 description:{@"Invalid parameter not satisfying: %@", @"enumerator"}];
 
     if (v9)
     {
@@ -8529,13 +8529,13 @@ LABEL_15:
     }
 
 LABEL_5:
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"PLPhotoLibrary.m" lineNumber:3058 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLPhotoLibrary.m" lineNumber:3058 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
@@ -8547,17 +8547,17 @@ LABEL_3:
   v19[2] = __67__PLPhotoLibrary_configureEnumeratorForLibrarySizeInfo_completion___block_invoke;
   v19[3] = &__block_descriptor_40_e24_v16__0__PLManagedAsset_8l;
   v19[4] = v10;
-  [v7 addAssetVisitor:v19];
+  [infoCopy addAssetVisitor:v19];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __67__PLPhotoLibrary_configureEnumeratorForLibrarySizeInfo_completion___block_invoke_2;
   v14[3] = &unk_1E75652C0;
-  v17 = a1;
+  selfCopy = self;
   v18 = v10;
   v15 = v9;
   v16 = a2;
   v11 = v9;
-  [v7 addEndOfListVisitor:v14];
+  [infoCopy addEndOfListVisitor:v14];
 }
 
 void __67__PLPhotoLibrary_configureEnumeratorForLibrarySizeInfo_completion___block_invoke(uint64_t a1, void *a2)
@@ -8608,31 +8608,31 @@ void __67__PLPhotoLibrary_configureEnumeratorForLibrarySizeInfo_completion___blo
   (*(*(a1 + 32) + 16))();
 }
 
-+ (id)savedPhotosReferenceMediaSizeWithSizeDataRef:(id)a3
++ (id)savedPhotosReferenceMediaSizeWithSizeDataRef:(id)ref
 {
-  v3 = [a3 objectForKeyedSubscript:@"PLReferenceMediaSize"];
+  v3 = [ref objectForKeyedSubscript:@"PLReferenceMediaSize"];
   v4 = [v3 objectForKeyedSubscript:@"PLInternalSizeOriginals"];
 
   return v4;
 }
 
-+ (id)savedPhotosOriginalsSizeWithSizeDataRef:(id)a3
++ (id)savedPhotosOriginalsSizeWithSizeDataRef:(id)ref
 {
-  v3 = [a3 objectForKeyedSubscript:@"PLSavedPhotosSize"];
+  v3 = [ref objectForKeyedSubscript:@"PLSavedPhotosSize"];
   v4 = [v3 objectForKeyedSubscript:@"PLInternalSizeOriginals"];
 
   return v4;
 }
 
-+ (void)_getResourceData:(id)a3 nonDerivativeSizeOut:(unint64_t *)a4 derivativesSizeOut:(unint64_t *)a5 fileBackedThumbnailsSizeOut:(unint64_t *)a6 tableThumbnailsSizeOut:(unint64_t *)a7
++ (void)_getResourceData:(id)data nonDerivativeSizeOut:(unint64_t *)out derivativesSizeOut:(unint64_t *)sizeOut fileBackedThumbnailsSizeOut:(unint64_t *)thumbnailsSizeOut tableThumbnailsSizeOut:(unint64_t *)tableThumbnailsSizeOut
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  dataCopy = data;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v9 = [dataCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -8643,75 +8643,75 @@ void __67__PLPhotoLibrary_configureEnumeratorForLibrarySizeInfo_completion___blo
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(dataCopy);
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
         if ([v13 localAvailability] >= 1)
         {
-          v14 = [v13 recipeID];
+          recipeID = [v13 recipeID];
           if ([v13 isDerivative])
           {
-            v15 = [v13 dataStore];
+            dataStore = [v13 dataStore];
             v16 = objc_opt_class();
             v17 = objc_opt_class();
 
             if (v16 == v17)
             {
-              v18 = [v13 estimatedDataLength];
-              v19 = a7;
+              estimatedDataLength = [v13 estimatedDataLength];
+              sizeOutCopy = tableThumbnailsSizeOut;
             }
 
             else
             {
-              v18 = [v13 estimatedDataLength];
-              if ((v14 & 0xFFFF0000) == 0x40000)
+              estimatedDataLength = [v13 estimatedDataLength];
+              if ((recipeID & 0xFFFF0000) == 0x40000)
               {
-                v19 = a6;
+                sizeOutCopy = thumbnailsSizeOut;
               }
 
               else
               {
-                v19 = a5;
+                sizeOutCopy = sizeOut;
               }
             }
 
-            atomic_fetch_add(v19, v18);
+            atomic_fetch_add(sizeOutCopy, estimatedDataLength);
           }
 
           else
           {
-            atomic_fetch_add(a4, [v13 estimatedDataLength]);
+            atomic_fetch_add(out, [v13 estimatedDataLength]);
           }
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v10 = [dataCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v10);
   }
 }
 
-+ (int)priorityForFileExtension:(id)a3
++ (int)priorityForFileExtension:(id)extension
 {
-  v3 = [a3 lowercaseString];
-  if ([PLPhotoLibrary isNonRawImageFileExtension:v3])
+  lowercaseString = [extension lowercaseString];
+  if ([PLPhotoLibrary isNonRawImageFileExtension:lowercaseString])
   {
     v4 = 1;
   }
 
-  else if ([PLPhotoLibrary isRawImageFileExtension:v3])
+  else if ([PLPhotoLibrary isRawImageFileExtension:lowercaseString])
   {
     v4 = 2;
   }
 
-  else if ([PLPhotoLibrary isVideoFileExtension:v3])
+  else if ([PLPhotoLibrary isVideoFileExtension:lowercaseString])
   {
     v4 = 3;
   }
 
-  else if ([PLPhotoLibrary isAudioFileExtension:v3])
+  else if ([PLPhotoLibrary isAudioFileExtension:lowercaseString])
   {
     v4 = 4;
   }
@@ -8724,67 +8724,67 @@ void __67__PLPhotoLibrary_configureEnumeratorForLibrarySizeInfo_completion___blo
   return v4;
 }
 
-+ (BOOL)isAdjustmentEnvelopeExtension:(id)a3
++ (BOOL)isAdjustmentEnvelopeExtension:(id)extension
 {
-  v3 = [a3 lowercaseString];
-  v4 = [*MEMORY[0x1E69C0E18] lowercaseString];
-  v5 = [v3 isEqualToString:v4];
+  lowercaseString = [extension lowercaseString];
+  lowercaseString2 = [*MEMORY[0x1E69C0E18] lowercaseString];
+  v5 = [lowercaseString isEqualToString:lowercaseString2];
 
   return v5;
 }
 
-+ (BOOL)isAudioFileExtension:(id)a3
++ (BOOL)isAudioFileExtension:(id)extension
 {
-  v4 = a3;
-  [a1 _loadFileExtensionInformation];
-  v5 = [v4 lowercaseString];
+  extensionCopy = extension;
+  [self _loadFileExtensionInformation];
+  lowercaseString = [extensionCopy lowercaseString];
 
-  LOBYTE(v4) = [_audioFileExtensions containsObject:v5];
-  return v4;
+  LOBYTE(extensionCopy) = [_audioFileExtensions containsObject:lowercaseString];
+  return extensionCopy;
 }
 
-+ (BOOL)isVideoFileExtension:(id)a3
++ (BOOL)isVideoFileExtension:(id)extension
 {
-  v4 = a3;
-  [a1 _loadFileExtensionInformation];
-  v5 = [v4 lowercaseString];
+  extensionCopy = extension;
+  [self _loadFileExtensionInformation];
+  lowercaseString = [extensionCopy lowercaseString];
 
-  v6 = [MEMORY[0x1E6988168] audiovisualMIMETypes];
-  v7 = [MEMORY[0x1E696AF48] sharedMappings];
-  v8 = [v7 MIMETypeForExtension:v5];
+  audiovisualMIMETypes = [MEMORY[0x1E6988168] audiovisualMIMETypes];
+  mEMORY[0x1E696AF48] = [MEMORY[0x1E696AF48] sharedMappings];
+  v8 = [mEMORY[0x1E696AF48] MIMETypeForExtension:lowercaseString];
 
-  if ([v6 containsObject:v8])
+  if ([audiovisualMIMETypes containsObject:v8])
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = [_extraVideoExtensions containsObject:v5];
+    v9 = [_extraVideoExtensions containsObject:lowercaseString];
   }
 
-  if ([_imageFileExtensions containsObject:v5])
+  if ([_imageFileExtensions containsObject:lowercaseString])
   {
     LOBYTE(v10) = 0;
   }
 
   else
   {
-    v10 = [_audioFileExtensions containsObject:v5] ^ 1;
+    v10 = [_audioFileExtensions containsObject:lowercaseString] ^ 1;
   }
 
   return v9 & v10;
 }
 
-+ (BOOL)isNonRawImageFileExtension:(id)a3
++ (BOOL)isNonRawImageFileExtension:(id)extension
 {
-  v4 = a3;
-  [a1 _loadFileExtensionInformation];
-  v5 = [v4 lowercaseString];
+  extensionCopy = extension;
+  [self _loadFileExtensionInformation];
+  lowercaseString = [extensionCopy lowercaseString];
 
-  if ([_imageFileExtensions containsObject:v5])
+  if ([_imageFileExtensions containsObject:lowercaseString])
   {
-    v6 = [_rawImageFileExtensions containsObject:v5] ^ 1;
+    v6 = [_rawImageFileExtensions containsObject:lowercaseString] ^ 1;
   }
 
   else
@@ -8795,24 +8795,24 @@ void __67__PLPhotoLibrary_configureEnumeratorForLibrarySizeInfo_completion___blo
   return v6;
 }
 
-+ (BOOL)isRawImageFileExtension:(id)a3
++ (BOOL)isRawImageFileExtension:(id)extension
 {
-  v4 = a3;
-  [a1 _loadFileExtensionInformation];
-  v5 = [v4 lowercaseString];
+  extensionCopy = extension;
+  [self _loadFileExtensionInformation];
+  lowercaseString = [extensionCopy lowercaseString];
 
-  LOBYTE(v4) = [_rawImageFileExtensions containsObject:v5];
-  return v4;
+  LOBYTE(extensionCopy) = [_rawImageFileExtensions containsObject:lowercaseString];
+  return extensionCopy;
 }
 
-+ (BOOL)isImageFileExtension:(id)a3
++ (BOOL)isImageFileExtension:(id)extension
 {
-  v4 = a3;
-  [a1 _loadFileExtensionInformation];
-  v5 = [v4 lowercaseString];
+  extensionCopy = extension;
+  [self _loadFileExtensionInformation];
+  lowercaseString = [extensionCopy lowercaseString];
 
-  LOBYTE(v4) = [_imageFileExtensions containsObject:v5];
-  return v4;
+  LOBYTE(extensionCopy) = [_imageFileExtensions containsObject:lowercaseString];
+  return extensionCopy;
 }
 
 + (void)_loadFileExtensionInformation
@@ -8846,15 +8846,15 @@ void __47__PLPhotoLibrary__loadFileExtensionInformation__block_invoke()
   _extraVideoExtensions = v10;
 }
 
-+ (id)masterURLFromSidecarURLs:(id)a3
++ (id)masterURLFromSidecarURLs:(id)ls
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v6 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count")}];
-  v7 = [v5 allObjects];
+  lsCopy = ls;
+  v6 = [v4 arrayWithCapacity:{objc_msgSend(lsCopy, "count")}];
+  allObjects = [lsCopy allObjects];
 
-  [v6 addObjectsFromArray:v7];
-  [v6 sortUsingFunction:PrimaryURLSort context:a1];
+  [v6 addObjectsFromArray:allObjects];
+  [v6 sortUsingFunction:PrimaryURLSort context:self];
   v8 = [v6 objectAtIndex:0];
 
   return v8;
@@ -8862,22 +8862,22 @@ void __47__PLPhotoLibrary__loadFileExtensionInformation__block_invoke()
 
 + (id)photoOutboundSharingTmpDirectoryURL
 {
-  v2 = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
-  v3 = [v2 privateDirectoryWithSubType:2 createIfNeeded:1 error:0];
+  systemLibraryPathManager = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
+  v3 = [systemLibraryPathManager privateDirectoryWithSubType:2 createIfNeeded:1 error:0];
   v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:v3 isDirectory:1];
 
   return v4;
 }
 
-+ (BOOL)removeFaceMetadataAtURL:(id)a3 includingPeople:(BOOL)a4
++ (BOOL)removeFaceMetadataAtURL:(id)l includingPeople:(BOOL)people
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
   v44 = 1;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v7 = *MEMORY[0x1E695DC30];
   v51[0] = *MEMORY[0x1E695DC30];
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:1];
@@ -8886,10 +8886,10 @@ void __47__PLPhotoLibrary__loadFileExtensionInformation__block_invoke()
   v40[2] = __58__PLPhotoLibrary_removeFaceMetadataAtURL_includingPeople___block_invoke;
   v40[3] = &unk_1E7565250;
   v40[4] = &v41;
-  v9 = [v6 enumeratorAtURL:v5 includingPropertiesForKeys:v8 options:0 errorHandler:v40];
-  v28 = v5;
+  v9 = [defaultManager enumeratorAtURL:lCopy includingPropertiesForKeys:v8 options:0 errorHandler:v40];
+  v28 = lCopy;
 
-  v29 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v39 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -8913,9 +8913,9 @@ void __47__PLPhotoLibrary__loadFileExtensionInformation__block_invoke()
         v15 = [v14 getResourceValue:&v35 forKey:v7 error:0];
         v16 = v35;
         v17 = v16;
-        if (v15 && [v16 length] && a4 && +[PLPersistedPersonMetadata isValidPath:](PLPersistedPersonMetadata, "isValidPath:", v17))
+        if (v15 && [v16 length] && people && +[PLPersistedPersonMetadata isValidPath:](PLPersistedPersonMetadata, "isValidPath:", v17))
         {
-          [v29 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -8929,7 +8929,7 @@ void __47__PLPhotoLibrary__loadFileExtensionInformation__block_invoke()
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v18 = v29;
+  v18 = array;
   v19 = [v18 countByEnumeratingWithState:&v31 objects:v49 count:16];
   if (v19)
   {
@@ -8945,7 +8945,7 @@ void __47__PLPhotoLibrary__loadFileExtensionInformation__block_invoke()
 
         v22 = *(*(&v31 + 1) + 8 * j);
         v30 = 0;
-        v23 = [v6 removeItemAtURL:v22 error:&v30];
+        v23 = [defaultManager removeItemAtURL:v22 error:&v30];
         v24 = v30;
         if ((v23 & 1) == 0)
         {
@@ -8995,9 +8995,9 @@ uint64_t __58__PLPhotoLibrary_removeFaceMetadataAtURL_includingPeople___block_in
   return 1;
 }
 
-+ (id)fileReservationForFileAtPath:(id)a3 exclusive:(BOOL)a4
++ (id)fileReservationForFileAtPath:(id)path exclusive:(BOOL)exclusive
 {
-  if (a4)
+  if (exclusive)
   {
     v4 = 36;
   }
@@ -9007,7 +9007,7 @@ uint64_t __58__PLPhotoLibrary_removeFaceMetadataAtURL_includingPeople___block_in
     v4 = 16;
   }
 
-  v5 = open([a3 fileSystemRepresentation], v4, 438);
+  v5 = open([path fileSystemRepresentation], v4, 438);
   if ((v5 & 0x80000000) != 0)
   {
     v6 = 0;
@@ -9049,19 +9049,19 @@ uint64_t __60__PLPhotoLibrary_postGlobalPhotoLibraryAvailableIfNecessary__block_
   return result;
 }
 
-+ (BOOL)shouldTryFastPathWithLibraryBundle:(id)a3
++ (BOOL)shouldTryFastPathWithLibraryBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   if (shouldTryFastPathWithLibraryBundle__onceToken != -1)
   {
     dispatch_once(&shouldTryFastPathWithLibraryBundle__onceToken, &__block_literal_global_580);
   }
 
-  if (shouldTryFastPathWithLibraryBundle__cameraOrPhotosApp == 1 && ([v3 sqliteErrorIndicatorFileExists] & 1) == 0)
+  if (shouldTryFastPathWithLibraryBundle__cameraOrPhotosApp == 1 && ([bundleCopy sqliteErrorIndicatorFileExists] & 1) == 0)
   {
     v6 = MEMORY[0x1E69BF2A0];
-    v7 = [v3 libraryURL];
-    v4 = [v6 isSystemPhotoLibraryURL:v7];
+    libraryURL = [bundleCopy libraryURL];
+    v4 = [v6 isSystemPhotoLibraryURL:libraryURL];
 
     if (v4)
     {
@@ -9088,15 +9088,15 @@ void __53__PLPhotoLibrary_shouldTryFastPathWithLibraryBundle___block_invoke()
   }
 }
 
-+ (void)setCloudAlbumSharingEnabled:(BOOL)a3
++ (void)setCloudAlbumSharingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v10 = *MEMORY[0x1E69E9840];
   v4 = PLMyPhotoStreamGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"NO";
-    if (v3)
+    if (enabledCopy)
     {
       v5 = @"YES";
     }
@@ -9106,22 +9106,22 @@ void __53__PLPhotoLibrary_shouldTryFastPathWithLibraryBundle___block_invoke()
     _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_DEFAULT, "+setCloudAlbumSharingEnabled %@", &v8, 0xCu);
   }
 
-  v6 = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
-  [PLCloudSharingEnablingJob enableCloudSharing:v3 withPathManager:v6];
+  systemLibraryPathManager = [MEMORY[0x1E69BF2A0] systemLibraryPathManager];
+  [PLCloudSharingEnablingJob enableCloudSharing:enabledCopy withPathManager:systemLibraryPathManager];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.mobileslideshow.PreferenceChanged", 0, 0, 1u);
 }
 
-+ (void)setPhotoStreamEnabled:(BOOL)a3
++ (void)setPhotoStreamEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v11 = *MEMORY[0x1E69E9840];
   v4 = PLMyPhotoStreamGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = @"NO";
-    if (v3)
+    if (enabledCopy)
     {
       v5 = @"YES";
     }
@@ -9133,7 +9133,7 @@ void __53__PLPhotoLibrary_shouldTryFastPathWithLibraryBundle___block_invoke()
 
   v6 = PLMyPhotoStreamGetLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (enabledCopy)
   {
     if (v7)
     {
@@ -9158,11 +9158,11 @@ void __53__PLPhotoLibrary_shouldTryFastPathWithLibraryBundle___block_invoke()
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.mobileslideshow.PreferenceChanged", 0, 0, 1u);
 }
 
-+ (id)newPhotoLibraryWithName:(const char *)a3 loadedFromBundle:(id)a4 options:(id)a5 error:(id *)a6
++ (id)newPhotoLibraryWithName:(const char *)name loadedFromBundle:(id)bundle options:(id)options error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a4;
+  optionsCopy = options;
+  bundleCopy = bundle;
   v12 = PLPhotoLibraryGetLog();
   v13 = os_signpost_id_generate(v12);
   v14 = v12;
@@ -9170,14 +9170,14 @@ void __53__PLPhotoLibrary_shouldTryFastPathWithLibraryBundle___block_invoke()
   if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
   {
     *buf = 136315138;
-    v25 = a3;
+    nameCopy = name;
     _os_signpost_emit_with_name_impl(&dword_19BF1F000, v15, OS_SIGNPOST_INTERVAL_BEGIN, v13, "newPhotoLibraryWithName", "name: %s", buf, 0xCu);
   }
 
-  v16 = [[a1 alloc] initWithName:a3 libraryBundle:v11 options:v10];
+  v16 = [[self alloc] initWithName:name libraryBundle:bundleCopy options:optionsCopy];
   if (v16)
   {
-    if ([v16 loadDatabaseWithOptions:v10 error:a6])
+    if ([v16 loadDatabaseWithOptions:optionsCopy error:error])
     {
       goto LABEL_11;
     }
@@ -9185,14 +9185,14 @@ void __53__PLPhotoLibrary_shouldTryFastPathWithLibraryBundle___block_invoke()
     goto LABEL_9;
   }
 
-  if (a6)
+  if (error)
   {
     v17 = MEMORY[0x1E696ABC0];
     v18 = *MEMORY[0x1E69BFF48];
     v22 = *MEMORY[0x1E696A278];
     v23 = @"PLPhotoLibrary initWithName:libraryBundle:options: returned nil";
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-    *a6 = [v17 errorWithDomain:v18 code:45001 userInfo:v16];
+    *error = [v17 errorWithDomain:v18 code:45001 userInfo:v16];
 LABEL_9:
   }
 
@@ -9203,21 +9203,21 @@ LABEL_11:
   if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v19))
   {
     *buf = 134217984;
-    v25 = v16;
+    nameCopy = v16;
     _os_signpost_emit_with_name_impl(&dword_19BF1F000, v20, OS_SIGNPOST_INTERVAL_END, v13, "newPhotoLibraryWithName", "instance: %p", buf, 0xCu);
   }
 
   return v16;
 }
 
-+ (id)newPhotoLibraryWithName:(const char *)a3 loadedFromURL:(id)a4 options:(id)a5 error:(id *)a6
++ (id)newPhotoLibraryWithName:(const char *)name loadedFromURL:(id)l options:(id)options error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
+  optionsCopy = options;
+  lCopy = l;
   v12 = +[PLPhotoLibraryBundleController sharedBundleController];
-  v13 = [v12 lookupOrCreateBundleForLibraryURL:v11];
+  v13 = [v12 lookupOrCreateBundleForLibraryURL:lCopy];
 
-  v14 = [a1 newPhotoLibraryWithName:a3 loadedFromBundle:v13 options:v10 error:a6];
+  v14 = [self newPhotoLibraryWithName:name loadedFromBundle:v13 options:optionsCopy error:error];
   return v14;
 }
 
@@ -9229,19 +9229,19 @@ void __49__PLPhotoLibrary_opportunisticTaskIsolationQueue__block_invoke()
   sOpportunisticTaskIsolationQueue = v0;
 }
 
-+ (id)stringFromLibraryRole:(unint64_t)a3
++ (id)stringFromLibraryRole:(unint64_t)role
 {
-  if (a3 >= 5)
+  if (role >= 5)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@".UnknownRole(%tu)", a3];
+    role = [MEMORY[0x1E696AEC0] stringWithFormat:@".UnknownRole(%tu)", role];
   }
 
   else
   {
-    v4 = off_1E7565498[a3];
+    role = off_1E7565498[role];
   }
 
-  return v4;
+  return role;
 }
 
 + (id)_internalSystemPhotoLibrary
@@ -9254,9 +9254,9 @@ void __49__PLPhotoLibrary_opportunisticTaskIsolationQueue__block_invoke()
 
   else
   {
-    v3 = [MEMORY[0x1E69BF2A0] systemLibraryURL];
+    systemLibraryURL = [MEMORY[0x1E69BF2A0] systemLibraryURL];
     v7 = 0;
-    v2 = +[PLPhotoLibrary newPhotoLibraryWithName:loadedFromURL:options:error:](PLPhotoLibrary, "newPhotoLibraryWithName:loadedFromURL:options:error:", "+[PLPhotoLibrary _internalSystemPhotoLibrary]", v3, 0, &v7);
+    v2 = +[PLPhotoLibrary newPhotoLibraryWithName:loadedFromURL:options:error:](PLPhotoLibrary, "newPhotoLibraryWithName:loadedFromURL:options:error:", "+[PLPhotoLibrary _internalSystemPhotoLibrary]", systemLibraryURL, 0, &v7);
     v4 = v7;
     if (!v2)
     {
@@ -9266,7 +9266,7 @@ void __49__PLPhotoLibrary_opportunisticTaskIsolationQueue__block_invoke()
         *buf = 136446722;
         v9 = "+[PLPhotoLibrary _internalSystemPhotoLibrary]";
         v10 = 2112;
-        v11 = v3;
+        v11 = systemLibraryURL;
         v12 = 2112;
         v13 = v4;
         _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_ERROR, "failed to load photo library %{public}s with url %@, %@", buf, 0x20u);
@@ -9282,7 +9282,7 @@ void __49__PLPhotoLibrary_opportunisticTaskIsolationQueue__block_invoke()
   if (PLIsAssetsd())
   {
     PLSimulateCrash();
-    [a1 _internalSystemPhotoLibrary];
+    [self _internalSystemPhotoLibrary];
   }
 
   else
@@ -9294,580 +9294,580 @@ void __49__PLPhotoLibrary_opportunisticTaskIsolationQueue__block_invoke()
   return v3;
 }
 
-- (void)withDispatchGroup:(id)a3 performBlock:(id)a4
+- (void)withDispatchGroup:(id)group performBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  groupCopy = group;
   v8 = objc_opt_class();
-  v9 = [(PLPhotoLibrary *)self managedObjectContext];
-  [v8 _withDispatchGroup:v7 onContext:v9 synchronously:0 shouldSave:0 refreshAfterSave:0 performTransaction:v6 completionHandler:0];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  [v8 _withDispatchGroup:groupCopy onContext:managedObjectContext synchronously:0 shouldSave:0 refreshAfterSave:0 performTransaction:blockCopy completionHandler:0];
 }
 
-- (void)withDispatchGroup:(id)a3 performTransaction:(id)a4 completionHandler:(id)a5
+- (void)withDispatchGroup:(id)group performTransaction:(id)transaction completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  transactionCopy = transaction;
+  groupCopy = group;
   v11 = objc_opt_class();
-  v13 = [(PLPhotoLibrary *)self managedObjectContext];
-  v12 = [(PLPhotoLibrary *)self options];
-  [v11 _withDispatchGroup:v10 onContext:v13 synchronously:0 shouldSave:1 refreshAfterSave:objc_msgSend(v12 performTransaction:"refreshesAfterSave") completionHandler:{v9, v8}];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  options = [(PLPhotoLibrary *)self options];
+  [v11 _withDispatchGroup:groupCopy onContext:managedObjectContext synchronously:0 shouldSave:1 refreshAfterSave:objc_msgSend(options performTransaction:"refreshesAfterSave") completionHandler:{transactionCopy, handlerCopy}];
 }
 
-- (void)withDispatchGroup:(id)a3 performTransaction:(id)a4
+- (void)withDispatchGroup:(id)group performTransaction:(id)transaction
 {
-  v6 = a4;
-  v7 = a3;
+  transactionCopy = transaction;
+  groupCopy = group;
   v8 = objc_opt_class();
-  v10 = [(PLPhotoLibrary *)self managedObjectContext];
-  v9 = [(PLPhotoLibrary *)self options];
-  [v8 _withDispatchGroup:v7 onContext:v10 synchronously:0 shouldSave:1 refreshAfterSave:objc_msgSend(v9 performTransaction:"refreshesAfterSave") completionHandler:{v6, 0}];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  options = [(PLPhotoLibrary *)self options];
+  [v8 _withDispatchGroup:groupCopy onContext:managedObjectContext synchronously:0 shouldSave:1 refreshAfterSave:objc_msgSend(options performTransaction:"refreshesAfterSave") completionHandler:{transactionCopy, 0}];
 }
 
-- (void)performBlockAndWait:(id)a3 completionHandler:(id)a4
+- (void)performBlockAndWait:(id)wait completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  waitCopy = wait;
   v8 = objc_opt_class();
-  v9 = [(PLPhotoLibrary *)self managedObjectContext];
-  [v8 _withDispatchGroup:0 onContext:v9 synchronously:1 shouldSave:0 refreshAfterSave:0 performTransaction:v7 completionHandler:v6];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  [v8 _withDispatchGroup:0 onContext:managedObjectContext synchronously:1 shouldSave:0 refreshAfterSave:0 performTransaction:waitCopy completionHandler:handlerCopy];
 }
 
-- (void)performBlockAndWait:(id)a3 forceSave:(BOOL)a4
+- (void)performBlockAndWait:(id)wait forceSave:(BOOL)save
 {
-  v4 = a4;
-  v6 = a3;
+  saveCopy = save;
+  waitCopy = wait;
   v7 = objc_opt_class();
-  v9 = [(PLPhotoLibrary *)self managedObjectContext];
-  v8 = [(PLPhotoLibrary *)self options];
-  [v7 _withDispatchGroup:0 onContext:v9 synchronously:1 shouldSave:v4 refreshAfterSave:objc_msgSend(v8 performTransaction:"refreshesAfterSave") completionHandler:{v6, 0}];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  options = [(PLPhotoLibrary *)self options];
+  [v7 _withDispatchGroup:0 onContext:managedObjectContext synchronously:1 shouldSave:saveCopy refreshAfterSave:objc_msgSend(options performTransaction:"refreshesAfterSave") completionHandler:{waitCopy, 0}];
 }
 
-- (void)performBlockAndWait:(id)a3
+- (void)performBlockAndWait:(id)wait
 {
-  v4 = a3;
+  waitCopy = wait;
   v5 = objc_opt_class();
-  v6 = [(PLPhotoLibrary *)self managedObjectContext];
-  [v5 _withDispatchGroup:0 onContext:v6 synchronously:1 shouldSave:0 refreshAfterSave:0 performTransaction:v4 completionHandler:0];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  [v5 _withDispatchGroup:0 onContext:managedObjectContext synchronously:1 shouldSave:0 refreshAfterSave:0 performTransaction:waitCopy completionHandler:0];
 }
 
-- (void)performBlock:(id)a3 completionHandler:(id)a4 withPriority:(int64_t)a5
+- (void)performBlock:(id)block completionHandler:(id)handler withPriority:(int64_t)priority
 {
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  blockCopy = block;
   v9 = objc_opt_class();
-  v10 = [(PLPhotoLibrary *)self managedObjectContext];
-  [v9 _withDispatchGroup:0 onContext:v10 synchronously:0 shouldSave:0 refreshAfterSave:0 performTransaction:v8 completionHandler:v7];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  [v9 _withDispatchGroup:0 onContext:managedObjectContext synchronously:0 shouldSave:0 refreshAfterSave:0 performTransaction:blockCopy completionHandler:handlerCopy];
 }
 
-- (void)performBlock:(id)a3 completionHandler:(id)a4
+- (void)performBlock:(id)block completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  blockCopy = block;
   v8 = objc_opt_class();
-  v9 = [(PLPhotoLibrary *)self managedObjectContext];
-  [v8 _withDispatchGroup:0 onContext:v9 synchronously:0 shouldSave:0 refreshAfterSave:0 performTransaction:v7 completionHandler:v6];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  [v8 _withDispatchGroup:0 onContext:managedObjectContext synchronously:0 shouldSave:0 refreshAfterSave:0 performTransaction:blockCopy completionHandler:handlerCopy];
 }
 
-- (void)performBlock:(id)a3 withPriority:(int64_t)a4
+- (void)performBlock:(id)block withPriority:(int64_t)priority
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = objc_opt_class();
-  v7 = [(PLPhotoLibrary *)self managedObjectContext];
-  [v6 _withDispatchGroup:0 onContext:v7 synchronously:0 shouldSave:0 refreshAfterSave:0 performTransaction:v5 completionHandler:0];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  [v6 _withDispatchGroup:0 onContext:managedObjectContext synchronously:0 shouldSave:0 refreshAfterSave:0 performTransaction:blockCopy completionHandler:0];
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_opt_class();
-  v7 = [(PLPhotoLibrary *)self managedObjectContext];
-  v6 = [(PLPhotoLibrary *)self options];
-  [v5 _withDispatchGroup:0 onContext:v7 synchronously:0 shouldSave:0 refreshAfterSave:objc_msgSend(v6 performTransaction:"refreshesAfterSave") completionHandler:{v4, 0}];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  options = [(PLPhotoLibrary *)self options];
+  [v5 _withDispatchGroup:0 onContext:managedObjectContext synchronously:0 shouldSave:0 refreshAfterSave:objc_msgSend(options performTransaction:"refreshesAfterSave") completionHandler:{blockCopy, 0}];
 }
 
-- (void)performTransactionAndWait:(id)a3 completionHandler:(id)a4
+- (void)performTransactionAndWait:(id)wait completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  waitCopy = wait;
   v8 = objc_opt_class();
-  v10 = [(PLPhotoLibrary *)self managedObjectContext];
-  v9 = [(PLPhotoLibrary *)self options];
-  [v8 _withDispatchGroup:0 onContext:v10 synchronously:1 shouldSave:1 refreshAfterSave:objc_msgSend(v9 performTransaction:"refreshesAfterSave") completionHandler:{v7, v6}];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  options = [(PLPhotoLibrary *)self options];
+  [v8 _withDispatchGroup:0 onContext:managedObjectContext synchronously:1 shouldSave:1 refreshAfterSave:objc_msgSend(options performTransaction:"refreshesAfterSave") completionHandler:{waitCopy, handlerCopy}];
 }
 
-- (void)performTransaction:(id)a3 completionHandler:(id)a4
+- (void)performTransaction:(id)transaction completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  transactionCopy = transaction;
   v8 = objc_opt_class();
-  v10 = [(PLPhotoLibrary *)self managedObjectContext];
-  v9 = [(PLPhotoLibrary *)self options];
-  [v8 _withDispatchGroup:0 onContext:v10 synchronously:0 shouldSave:1 refreshAfterSave:objc_msgSend(v9 performTransaction:"refreshesAfterSave") completionHandler:{v7, v6}];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  options = [(PLPhotoLibrary *)self options];
+  [v8 _withDispatchGroup:0 onContext:managedObjectContext synchronously:0 shouldSave:1 refreshAfterSave:objc_msgSend(options performTransaction:"refreshesAfterSave") completionHandler:{transactionCopy, handlerCopy}];
 }
 
-- (void)performTransaction:(id)a3 completionHandler:(id)a4 withPriority:(int64_t)a5
+- (void)performTransaction:(id)transaction completionHandler:(id)handler withPriority:(int64_t)priority
 {
-  v7 = a4;
-  v8 = a3;
+  handlerCopy = handler;
+  transactionCopy = transaction;
   v9 = objc_opt_class();
-  v11 = [(PLPhotoLibrary *)self managedObjectContext];
-  v10 = [(PLPhotoLibrary *)self options];
-  [v9 _withDispatchGroup:0 onContext:v11 synchronously:0 shouldSave:1 refreshAfterSave:objc_msgSend(v10 performTransaction:"refreshesAfterSave") completionHandler:{v8, v7}];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  options = [(PLPhotoLibrary *)self options];
+  [v9 _withDispatchGroup:0 onContext:managedObjectContext synchronously:0 shouldSave:1 refreshAfterSave:objc_msgSend(options performTransaction:"refreshesAfterSave") completionHandler:{transactionCopy, handlerCopy}];
 }
 
-- (void)performTransactionAndWait:(id)a3
+- (void)performTransactionAndWait:(id)wait
 {
-  v4 = a3;
+  waitCopy = wait;
   v5 = objc_opt_class();
-  v7 = [(PLPhotoLibrary *)self managedObjectContext];
-  v6 = [(PLPhotoLibrary *)self options];
-  [v5 _withDispatchGroup:0 onContext:v7 synchronously:1 shouldSave:1 refreshAfterSave:objc_msgSend(v6 performTransaction:"refreshesAfterSave") completionHandler:{v4, 0}];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  options = [(PLPhotoLibrary *)self options];
+  [v5 _withDispatchGroup:0 onContext:managedObjectContext synchronously:1 shouldSave:1 refreshAfterSave:objc_msgSend(options performTransaction:"refreshesAfterSave") completionHandler:{waitCopy, 0}];
 }
 
-- (void)performTransaction:(id)a3
+- (void)performTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = objc_opt_class();
-  v7 = [(PLPhotoLibrary *)self managedObjectContext];
-  v6 = [(PLPhotoLibrary *)self options];
-  [v5 _withDispatchGroup:0 onContext:v7 synchronously:0 shouldSave:1 refreshAfterSave:objc_msgSend(v6 performTransaction:"refreshesAfterSave") completionHandler:{v4, 0}];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  options = [(PLPhotoLibrary *)self options];
+  [v5 _withDispatchGroup:0 onContext:managedObjectContext synchronously:0 shouldSave:1 refreshAfterSave:objc_msgSend(options performTransaction:"refreshesAfterSave") completionHandler:{transactionCopy, 0}];
 }
 
-- (void)performTransaction:(id)a3 withPriority:(int64_t)a4
+- (void)performTransaction:(id)transaction withPriority:(int64_t)priority
 {
-  v5 = a3;
+  transactionCopy = transaction;
   v6 = objc_opt_class();
-  v8 = [(PLPhotoLibrary *)self managedObjectContext];
-  v7 = [(PLPhotoLibrary *)self options];
-  [v6 _withDispatchGroup:0 onContext:v8 synchronously:0 shouldSave:1 refreshAfterSave:objc_msgSend(v7 performTransaction:"refreshesAfterSave") completionHandler:{v5, 0}];
+  managedObjectContext = [(PLPhotoLibrary *)self managedObjectContext];
+  options = [(PLPhotoLibrary *)self options];
+  [v6 _withDispatchGroup:0 onContext:managedObjectContext synchronously:0 shouldSave:1 refreshAfterSave:objc_msgSend(options performTransaction:"refreshesAfterSave") completionHandler:{transactionCopy, 0}];
 }
 
 + (id)queueStatusDescription
 {
   v2 = MEMORY[0x1E696AD60];
-  v3 = [a1 _debugStatisticsDescription];
-  v4 = [v2 stringWithFormat:@"[megamoc] %@", v3];
+  _debugStatisticsDescription = [self _debugStatisticsDescription];
+  v4 = [v2 stringWithFormat:@"[megamoc] %@", _debugStatisticsDescription];
 
   return v4;
 }
 
-+ (void)_context:(id)a3 saveFailedWithError:(id)a4
++ (void)_context:(id)_context saveFailedWithError:(id)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to save context %@: %@", v6, v7];
+  _contextCopy = _context;
+  errorCopy = error;
+  errorCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to save context %@: %@", _contextCopy, errorCopy];
   v9 = PLBackendGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543874;
-    v18 = v6;
+    v18 = _contextCopy;
     v19 = 1024;
-    v20 = [v7 code];
+    code = [errorCopy code];
     v21 = 2112;
-    v22 = v7;
+    v22 = errorCopy;
     _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "Failed to save context %{public}@ [%d] %@", buf, 0x1Cu);
   }
 
-  v10 = [v7 domain];
-  v11 = [v10 isEqualToString:*MEMORY[0x1E69BFF48]];
+  domain = [errorCopy domain];
+  v11 = [domain isEqualToString:*MEMORY[0x1E69BFF48]];
 
   if (!v11)
   {
-    v13 = [v7 domain];
-    v14 = [v13 isEqualToString:*MEMORY[0x1E695D488]];
+    domain2 = [errorCopy domain];
+    v14 = [domain2 isEqualToString:*MEMORY[0x1E695D488]];
 
     if (v14)
     {
-      [a1 contextExecuteFailedWithSQLiteResultCode:{objc_msgSend(v7, "code")}];
+      [self contextExecuteFailedWithSQLiteResultCode:{objc_msgSend(errorCopy, "code")}];
       goto LABEL_16;
     }
 
-    v15 = [v7 domain];
-    v16 = [v15 isEqualToString:*MEMORY[0x1E696A250]];
+    domain3 = [errorCopy domain];
+    v16 = [domain3 isEqualToString:*MEMORY[0x1E696A250]];
 
     if (v16)
     {
-      [a1 _contextSaveFailedWithCocoaError:v7 message:v8];
+      [self _contextSaveFailedWithCocoaError:errorCopy message:errorCopy];
       goto LABEL_16;
     }
 
 LABEL_15:
-    [a1 _contextSaveFailedWithError:v8];
+    [self _contextSaveFailedWithError:errorCopy];
     goto LABEL_16;
   }
 
-  v12 = [v7 code];
-  if ((v12 - 41019) > 6)
+  code2 = [errorCopy code];
+  if ((code2 - 41019) > 6)
   {
 LABEL_13:
-    if (v12 == 46005)
+    if (code2 == 46005)
     {
-      [a1 _contextSaveFailedWithNoPersistentStores:v7];
+      [self _contextSaveFailedWithNoPersistentStores:errorCopy];
       goto LABEL_16;
     }
 
     goto LABEL_15;
   }
 
-  if (((1 << (v12 - 59)) & 0x66) == 0)
+  if (((1 << (code2 - 59)) & 0x66) == 0)
   {
-    if (v12 == 41019)
+    if (code2 == 41019)
     {
-      [a1 _contextSaveFailedDueToChangingSPL:v7];
+      [self _contextSaveFailedDueToChangingSPL:errorCopy];
       goto LABEL_16;
     }
 
     goto LABEL_13;
   }
 
-  [a1 _contextSaveFailedDueToClientRequestedShutdown:v7];
+  [self _contextSaveFailedDueToClientRequestedShutdown:errorCopy];
 LABEL_16:
 }
 
-+ (void)_contextSaveFailedDueToClientRequestedShutdown:(id)a3
++ (void)_contextSaveFailedDueToClientRequestedShutdown:(id)shutdown
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  shutdownCopy = shutdown;
   v4 = PLBackendGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = shutdownCopy;
     _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_FAULT, "Error attempting to save managed object context (Client requested shutdown): %@", &v5, 0xCu);
   }
 }
 
-+ (void)_contextSaveFailedDueToChangingSPL:(id)a3
++ (void)_contextSaveFailedDueToChangingSPL:(id)l
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  lCopy = l;
   v4 = PLBackendGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = lCopy;
     _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_FAULT, "Error attempting to save managed object context (SPL change): %@", &v5, 0xCu);
   }
 }
 
-+ (void)_contextSaveFailedWithNoPersistentStores:(id)a3
++ (void)_contextSaveFailedWithNoPersistentStores:(id)stores
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  storesCopy = stores;
   v4 = PLBackendGetLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = storesCopy;
     _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_FAULT, "Error attempting to save managed object context: %@", &v5, 0xCu);
   }
 }
 
-+ (void)_contextSaveFailedWithError:(id)a3
++ (void)_contextSaveFailedWithError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)_contextSaveFailedWithTimeoutError:(id)a3
++ (void)_contextSaveFailedWithTimeoutError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)_contextSaveFailedWithCocoaError:(id)a3 message:(id)a4
++ (void)_contextSaveFailedWithCocoaError:(id)error message:(id)message
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [v11 code];
-  if (v7 > 1639)
+  errorCopy = error;
+  messageCopy = message;
+  code = [errorCopy code];
+  if (code > 1639)
   {
-    if (v7 > 1689)
+    if (code > 1689)
     {
-      if (v7 <= 134029)
+      if (code <= 134029)
       {
-        if (v7 == 1690)
+        if (code == 1690)
         {
-          [a1 _contextSaveFailedWithNSValidationInvalidURIError:v6];
+          [self _contextSaveFailedWithNSValidationInvalidURIError:messageCopy];
           goto LABEL_49;
         }
 
-        if (v7 == 132001)
+        if (code == 132001)
         {
-          [a1 _contextSaveFailedWithNSManagedObjectContextRecursiveSaveError:v6];
+          [self _contextSaveFailedWithNSManagedObjectContextRecursiveSaveError:messageCopy];
           goto LABEL_49;
         }
       }
 
       else
       {
-        switch(v7)
+        switch(code)
         {
           case 134030:
-            [a1 _contextSaveFailedWithNSPersistentStoreSaveError:v6];
+            [self _contextSaveFailedWithNSPersistentStoreSaveError:messageCopy];
             goto LABEL_49;
           case 134090:
-            [a1 _contextSaveFailedWithNSPersistentStoreTimeoutError:v6];
+            [self _contextSaveFailedWithNSPersistentStoreTimeoutError:messageCopy];
             goto LABEL_49;
           case 134180:
-            v8 = [v11 userInfo];
-            v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E695D488]];
-            v10 = [v9 intValue];
+            userInfo = [errorCopy userInfo];
+            v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E695D488]];
+            intValue = [v9 intValue];
 
-            [a1 contextExecuteFailedWithSQLiteResultCode:v10];
+            [self contextExecuteFailedWithSQLiteResultCode:intValue];
             goto LABEL_49;
         }
       }
     }
 
-    else if (v7 <= 1659)
+    else if (code <= 1659)
     {
-      if (v7 == 1640)
+      if (code == 1640)
       {
-        [a1 _contextSaveFailedWithNSValidationDateTooSoonError:v6];
+        [self _contextSaveFailedWithNSValidationDateTooSoonError:messageCopy];
         goto LABEL_49;
       }
 
-      if (v7 == 1650)
+      if (code == 1650)
       {
-        [a1 _contextSaveFailedWithNSValidationInvalidDateError:v6];
+        [self _contextSaveFailedWithNSValidationInvalidDateError:messageCopy];
         goto LABEL_49;
       }
     }
 
     else
     {
-      switch(v7)
+      switch(code)
       {
         case 1660:
-          [a1 _contextSaveFailedWithNSValidationStringTooLongError:v6];
+          [self _contextSaveFailedWithNSValidationStringTooLongError:messageCopy];
           goto LABEL_49;
         case 1670:
-          [a1 _contextSaveFailedWithNSValidationStringTooShortError:v6];
+          [self _contextSaveFailedWithNSValidationStringTooShortError:messageCopy];
           goto LABEL_49;
         case 1680:
-          [a1 _contextSaveFailedWithNSValidationStringPatternMatchingError:v6];
+          [self _contextSaveFailedWithNSValidationStringPatternMatchingError:messageCopy];
           goto LABEL_49;
       }
     }
   }
 
-  else if (v7 > 1589)
+  else if (code > 1589)
   {
-    if (v7 <= 1609)
+    if (code <= 1609)
     {
-      if (v7 == 1590)
+      if (code == 1590)
       {
-        [a1 _contextSaveFailedWithNSValidationRelationshipExceedsMaximumCountError:v6];
+        [self _contextSaveFailedWithNSValidationRelationshipExceedsMaximumCountError:messageCopy];
         goto LABEL_49;
       }
 
-      if (v7 == 1600)
+      if (code == 1600)
       {
-        [a1 _contextSaveFailedWithNSValidationRelationshipDeniedDeleteError:v6];
+        [self _contextSaveFailedWithNSValidationRelationshipDeniedDeleteError:messageCopy];
         goto LABEL_49;
       }
     }
 
     else
     {
-      switch(v7)
+      switch(code)
       {
         case 1610:
-          [a1 _contextSaveFailedWithNSValidationNumberTooLargeError:v6];
+          [self _contextSaveFailedWithNSValidationNumberTooLargeError:messageCopy];
           goto LABEL_49;
         case 1620:
-          [a1 _contextSaveFailedWithNSValidationNumberTooSmallError:v6];
+          [self _contextSaveFailedWithNSValidationNumberTooSmallError:messageCopy];
           goto LABEL_49;
         case 1630:
-          [a1 _contextSaveFailedWithNSValidationDateTooLateError:v6];
+          [self _contextSaveFailedWithNSValidationDateTooLateError:messageCopy];
           goto LABEL_49;
       }
     }
   }
 
-  else if (v7 <= 1559)
+  else if (code <= 1559)
   {
-    if (v7 == 1550)
+    if (code == 1550)
     {
-      [a1 _contextSaveFailedWithNSManagedObjectValidationError:v6];
+      [self _contextSaveFailedWithNSManagedObjectValidationError:messageCopy];
       goto LABEL_49;
     }
 
-    if (v7 == 1551)
+    if (code == 1551)
     {
-      [a1 _contextSaveFailedWithNSManagedObjectConstraintValidationError:v6];
+      [self _contextSaveFailedWithNSManagedObjectConstraintValidationError:messageCopy];
       goto LABEL_49;
     }
   }
 
   else
   {
-    switch(v7)
+    switch(code)
     {
       case 1560:
-        [a1 _contextSaveFailedWithNSValidationMultipleErrorsError:v6];
+        [self _contextSaveFailedWithNSValidationMultipleErrorsError:messageCopy];
         goto LABEL_49;
       case 1570:
-        [a1 _contextSaveFailedWithNSValidationMissingMandatoryPropertyError:v6];
+        [self _contextSaveFailedWithNSValidationMissingMandatoryPropertyError:messageCopy];
         goto LABEL_49;
       case 1580:
-        [a1 _contextSaveFailedWithNSValidationRelationshipLacksMinimumCountError:v6];
+        [self _contextSaveFailedWithNSValidationRelationshipLacksMinimumCountError:messageCopy];
         goto LABEL_49;
     }
   }
 
-  [a1 _contextSaveFailedWithOtherCocoaError:v6];
+  [self _contextSaveFailedWithOtherCocoaError:messageCopy];
 LABEL_49:
 }
 
-+ (void)_contextSaveFailedWithOtherCocoaError:(id)a3
++ (void)_contextSaveFailedWithOtherCocoaError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)_contextSaveFailedWithNSPersistentStoreTimeoutError:(id)a3
++ (void)_contextSaveFailedWithNSPersistentStoreTimeoutError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)_contextSaveFailedWithNSPersistentStoreSaveError:(id)a3
++ (void)_contextSaveFailedWithNSPersistentStoreSaveError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)_contextSaveFailedWithNSManagedObjectContextRecursiveSaveError:(id)a3
++ (void)_contextSaveFailedWithNSManagedObjectContextRecursiveSaveError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)_contextSaveFailedWithNSValidationInvalidURIError:(id)a3
++ (void)_contextSaveFailedWithNSValidationInvalidURIError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)_contextSaveFailedWithNSValidationStringPatternMatchingError:(id)a3
++ (void)_contextSaveFailedWithNSValidationStringPatternMatchingError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)_contextSaveFailedWithNSValidationStringTooShortError:(id)a3
++ (void)_contextSaveFailedWithNSValidationStringTooShortError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)_contextSaveFailedWithNSValidationStringTooLongError:(id)a3
++ (void)_contextSaveFailedWithNSValidationStringTooLongError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)_contextSaveFailedWithNSValidationInvalidDateError:(id)a3
++ (void)_contextSaveFailedWithNSValidationInvalidDateError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)_contextSaveFailedWithNSValidationDateTooSoonError:(id)a3
++ (void)_contextSaveFailedWithNSValidationDateTooSoonError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)_contextSaveFailedWithNSValidationDateTooLateError:(id)a3
++ (void)_contextSaveFailedWithNSValidationDateTooLateError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)_contextSaveFailedWithNSValidationNumberTooSmallError:(id)a3
++ (void)_contextSaveFailedWithNSValidationNumberTooSmallError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)_contextSaveFailedWithNSValidationNumberTooLargeError:(id)a3
++ (void)_contextSaveFailedWithNSValidationNumberTooLargeError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)_contextSaveFailedWithNSValidationRelationshipDeniedDeleteError:(id)a3
++ (void)_contextSaveFailedWithNSValidationRelationshipDeniedDeleteError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)_contextSaveFailedWithNSValidationRelationshipExceedsMaximumCountError:(id)a3
++ (void)_contextSaveFailedWithNSValidationRelationshipExceedsMaximumCountError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)_contextSaveFailedWithNSValidationRelationshipLacksMinimumCountError:(id)a3
++ (void)_contextSaveFailedWithNSValidationRelationshipLacksMinimumCountError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)_contextSaveFailedWithNSValidationMissingMandatoryPropertyError:(id)a3
++ (void)_contextSaveFailedWithNSValidationMissingMandatoryPropertyError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)_contextSaveFailedWithNSValidationMultipleErrorsError:(id)a3
++ (void)_contextSaveFailedWithNSValidationMultipleErrorsError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)_contextSaveFailedWithNSManagedObjectConstraintValidationError:(id)a3
++ (void)_contextSaveFailedWithNSManagedObjectConstraintValidationError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)_contextSaveFailedWithNSManagedObjectValidationError:(id)a3
++ (void)_contextSaveFailedWithNSManagedObjectValidationError:(id)error
 {
-  [a3 UTF8String];
+  [error UTF8String];
   _os_crash();
   __break(1u);
 }
 
-+ (void)contextExecuteFailedWithSQLiteResultCode:(int)a3
++ (void)contextExecuteFailedWithSQLiteResultCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v9 = *MEMORY[0x1E69E9840];
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -9884,119 +9884,119 @@ LABEL_49:
     case 1:
       if (v3 == 769)
       {
-        [a1 _abortFromMocExecFail_NSMOC_SQLITE_ERROR_1_SQLITE_ERROR_SNAPSHOT_769_withCode:769];
+        [self _abortFromMocExecFail_NSMOC_SQLITE_ERROR_1_SQLITE_ERROR_SNAPSHOT_769_withCode:769];
       }
 
       else
       {
-        [a1 _abortFromMocExecFail_NSMOC_SQLITE_ERROR_1_withCode:v3];
+        [self _abortFromMocExecFail_NSMOC_SQLITE_ERROR_1_withCode:v3];
       }
 
       break;
     case 2:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_INTERNAL_2_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_INTERNAL_2_withCode:v3];
       break;
     case 3:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_PERM_3_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_PERM_3_withCode:v3];
       break;
     case 4:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_ABORT_4_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_ABORT_4_withCode:v3];
       break;
     case 5:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_BUSY_5_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_BUSY_5_withCode:v3];
       break;
     case 6:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_LOCKED_6_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_LOCKED_6_withCode:v3];
       break;
     case 7:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_NOMEM_7_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_NOMEM_7_withCode:v3];
       break;
     case 8:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_READONLY_8_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_READONLY_8_withCode:v3];
       break;
     case 9:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_INTERRUPT_9_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_INTERRUPT_9_withCode:v3];
       break;
     case 10:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_IOERR_10_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_IOERR_10_withCode:v3];
       break;
     case 11:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_CORRUPT_11_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_CORRUPT_11_withCode:v3];
       break;
     case 12:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_NOTFOUND_12_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_NOTFOUND_12_withCode:v3];
       break;
     case 13:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_FULL_13_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_FULL_13_withCode:v3];
       break;
     case 14:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_CANTOPEN_14_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_CANTOPEN_14_withCode:v3];
       break;
     case 15:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_PROTOCOL_15_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_PROTOCOL_15_withCode:v3];
       break;
     case 16:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_EMPTY_16_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_EMPTY_16_withCode:v3];
       break;
     case 17:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_SCHEMA_17_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_SCHEMA_17_withCode:v3];
       break;
     case 18:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_TOOBIG_18_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_TOOBIG_18_withCode:v3];
       break;
     case 19:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_CONSTRAINT_19_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_CONSTRAINT_19_withCode:v3];
       break;
     case 20:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_MISMATCH_20_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_MISMATCH_20_withCode:v3];
       break;
     case 21:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_MISUSE_21_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_MISUSE_21_withCode:v3];
       break;
     case 22:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_NOLFS_22_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_NOLFS_22_withCode:v3];
       break;
     case 23:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_AUTH_23_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_AUTH_23_withCode:v3];
       break;
     case 24:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_FORMAT_24_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_FORMAT_24_withCode:v3];
       break;
     case 25:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_RANGE_25_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_RANGE_25_withCode:v3];
       break;
     case 26:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_NOTADB_26_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_NOTADB_26_withCode:v3];
       break;
     case 27:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_NOTICE_27_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_NOTICE_27_withCode:v3];
       break;
     case 28:
-      [a1 _abortFromMocExecFail_NSMOC_SQLITE_WARNING_28_withCode:v3];
+      [self _abortFromMocExecFail_NSMOC_SQLITE_WARNING_28_withCode:v3];
       break;
     default:
       if (v3 == 100)
       {
-        [a1 _abortFromMocExecFail_NSMOC_SQLITE_ROW_100_withCode:v3];
+        [self _abortFromMocExecFail_NSMOC_SQLITE_ROW_100_withCode:v3];
       }
 
       else if (v3 == 101)
       {
-        [a1 _abortFromMocExecFail_NSMOC_SQLITE_DONE_101_withCode:v3];
+        [self _abortFromMocExecFail_NSMOC_SQLITE_DONE_101_withCode:v3];
       }
 
       else
       {
-        [a1 _abortFromMocExecFail_NSMOC_SQLITE_OTHER_withCode:v3];
+        [self _abortFromMocExecFail_NSMOC_SQLITE_OTHER_withCode:v3];
       }
 
       break;
   }
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_ERROR_1_SQLITE_ERROR_SNAPSHOT_769_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_ERROR_1_SQLITE_ERROR_SNAPSHOT_769_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10012,9 +10012,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_ERROR_1_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_ERROR_1_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10030,9 +10030,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_OTHER_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_OTHER_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10048,9 +10048,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_WARNING_28_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_WARNING_28_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10066,9 +10066,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_TOOBIG_18_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_TOOBIG_18_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10084,9 +10084,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_SCHEMA_17_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_SCHEMA_17_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10102,9 +10102,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_ROW_100_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_ROW_100_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10120,9 +10120,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_READONLY_8_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_READONLY_8_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10138,9 +10138,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_RANGE_25_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_RANGE_25_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10156,9 +10156,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_PROTOCOL_15_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_PROTOCOL_15_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10174,9 +10174,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_PERM_3_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_PERM_3_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10192,9 +10192,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_NOTICE_27_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_NOTICE_27_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10210,9 +10210,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_NOTFOUND_12_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_NOTFOUND_12_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10228,9 +10228,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_NOTADB_26_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_NOTADB_26_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10246,9 +10246,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_NOMEM_7_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_NOMEM_7_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10264,9 +10264,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_NOLFS_22_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_NOLFS_22_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10282,9 +10282,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_MISUSE_21_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_MISUSE_21_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10300,9 +10300,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_MISMATCH_20_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_MISMATCH_20_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10318,9 +10318,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_LOCKED_6_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_LOCKED_6_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10336,9 +10336,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_IOERR_10_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_IOERR_10_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10354,9 +10354,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_INTERRUPT_9_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_INTERRUPT_9_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10372,9 +10372,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_INTERNAL_2_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_INTERNAL_2_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10390,9 +10390,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_FULL_13_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_FULL_13_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10408,9 +10408,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_FORMAT_24_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_FORMAT_24_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10426,9 +10426,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_EMPTY_16_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_EMPTY_16_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10444,9 +10444,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_DONE_101_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_DONE_101_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10462,9 +10462,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_CORRUPT_11_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_CORRUPT_11_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10480,9 +10480,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_CONSTRAINT_19_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_CONSTRAINT_19_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10498,9 +10498,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_CANTOPEN_14_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_CANTOPEN_14_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10516,9 +10516,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_BUSY_5_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_BUSY_5_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10534,9 +10534,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_AUTH_23_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_AUTH_23_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10552,9 +10552,9 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_abortFromMocExecFail_NSMOC_SQLITE_ABORT_4_withCode:(int)a3
++ (void)_abortFromMocExecFail_NSMOC_SQLITE_ABORT_4_withCode:(int)code
 {
-  v3 = *&a3;
+  v3 = *&code;
   v5 = PLBackendGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10570,18 +10570,18 @@ LABEL_49:
   __break(1u);
 }
 
-+ (void)_withDispatchGroup:(id)a3 onContext:(id)a4 synchronously:(BOOL)a5 shouldSave:(BOOL)a6 refreshAfterSave:(BOOL)a7 performTransaction:(id)a8 completionHandler:(id)a9
++ (void)_withDispatchGroup:(id)group onContext:(id)context synchronously:(BOOL)synchronously shouldSave:(BOOL)save refreshAfterSave:(BOOL)afterSave performTransaction:(id)transaction completionHandler:(id)handler
 {
-  v40 = a5;
-  v13 = a3;
-  v14 = a4;
-  v15 = a8;
-  v37 = a9;
+  synchronouslyCopy = synchronously;
+  groupCopy = group;
+  contextCopy = context;
+  transactionCopy = transaction;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __144__PLPhotoLibrary_MegaMocAdditions___withDispatchGroup_onContext_synchronously_shouldSave_refreshAfterSave_performTransaction_completionHandler___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_withDispatchGroup_onContext_synchronously_shouldSave_refreshAfterSave_performTransaction_completionHandler__s_onceToken != -1)
   {
     dispatch_once(&_withDispatchGroup_onContext_synchronously_shouldSave_refreshAfterSave_performTransaction_completionHandler__s_onceToken, block);
@@ -10605,12 +10605,12 @@ LABEL_49:
   v18 = (&s_megamocStatsPerQOS + 32 * v16);
   v19 = clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
   atomic_fetch_add(v18 + 1, 1uLL);
-  v20 = [v14 photoLibrary];
+  photoLibrary = [contextCopy photoLibrary];
   v21 = PLIsAssetsd();
   if (!v21)
   {
     v22 = 0;
-    if (!v13)
+    if (!groupCopy)
     {
       goto LABEL_12;
     }
@@ -10618,11 +10618,11 @@ LABEL_49:
     goto LABEL_11;
   }
 
-  v22 = [MEMORY[0x1E69BF360] transaction:{"+[PLPhotoLibrary(MegaMocAdditions) _withDispatchGroup:onContext:synchronously:shouldSave:refreshAfterSave:performTransaction:completionHandler:]", v37}];
-  if (v13)
+  v22 = [MEMORY[0x1E69BF360] transaction:{"+[PLPhotoLibrary(MegaMocAdditions) _withDispatchGroup:onContext:synchronously:shouldSave:refreshAfterSave:performTransaction:completionHandler:]", handlerCopy}];
+  if (groupCopy)
   {
 LABEL_11:
-    dispatch_group_enter(v13);
+    dispatch_group_enter(groupCopy);
   }
 
 LABEL_12:
@@ -10630,20 +10630,20 @@ LABEL_12:
   aBlock[1] = 3221225472;
   aBlock[2] = __144__PLPhotoLibrary_MegaMocAdditions___withDispatchGroup_onContext_synchronously_shouldSave_refreshAfterSave_performTransaction_completionHandler___block_invoke_2;
   aBlock[3] = &unk_1E756A978;
-  v60 = a6;
-  v23 = v20;
+  saveCopy = save;
+  v23 = photoLibrary;
   v51 = v23;
-  v24 = v15;
+  v24 = transactionCopy;
   v55 = v24;
   v57 = v18;
   v58 = v19;
-  v25 = v14;
+  v25 = contextCopy;
   v52 = v25;
-  v59 = a1;
-  v26 = v37;
+  selfCopy = self;
+  v26 = handlerCopy;
   v56 = v26;
-  v61 = a7;
-  v27 = v13;
+  afterSaveCopy = afterSave;
+  v27 = groupCopy;
   v53 = v27;
   v28 = v22;
   v54 = v28;
@@ -10666,7 +10666,7 @@ LABEL_12:
     v33 = v23;
     v46 = v33;
     v34 = _Block_copy(v43);
-    if (v40)
+    if (synchronouslyCopy)
     {
       if (+[PLManagedObjectContext _pl_megamoc_isInPLMocPerform])
       {
@@ -10689,7 +10689,7 @@ LABEL_12:
 
   else
   {
-    if (v40)
+    if (synchronouslyCopy)
     {
       v35 = 0;
     }
@@ -10945,7 +10945,7 @@ void __144__PLPhotoLibrary_MegaMocAdditions___withDispatchGroup_onContext_synchr
   block[1] = 3221225472;
   block[2] = __57__PLPhotoLibrary_MegaMocAdditions___registerStateHandler__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_registerStateHandler_s_onceToken != -1)
   {
     dispatch_once(&_registerStateHandler_s_onceToken, block);
@@ -10992,11 +10992,11 @@ void __56__PLPhotoLibrary_MegaMocAdditions___activateStatusTimer__block_invoke_2
 
 + (id)_debugStatisticsDescription
 {
-  v2 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v3 = atomic_load(&s_currentLibraryCount);
   v4 = atomic_load(&s_totalLibraryCount);
   v5 = atomic_load(&s_nestedWriteTransactionCount);
-  [v2 appendFormat:@"Library instances currently in memory: %lld, total created in the process: %lld, count of nested write transactions: %lld\n", v3, v4, v5];
+  [string appendFormat:@"Library instances currently in memory: %lld, total created in the process: %lld, count of nested write transactions: %lld\n", v3, v4, v5];
   v6 = 0;
   v7 = &unk_1ED611CC0;
   do
@@ -11026,24 +11026,24 @@ void __56__PLPhotoLibrary_MegaMocAdditions___activateStatusTimer__block_invoke_2
     v16 = atomic_load(v7 - 2);
     v17 = atomic_load(v7);
     v18 = atomic_load(v7 - 1);
-    [v2 appendFormat:@"[%s: executed: %lld (read: %lld / write: %lld), count waiting: %lld, total wait: %g sec, average wait: %g sec]\n", v10, v13, v14, v15, v16, *&v9, v9 / (v18 + v17)];
+    [string appendFormat:@"[%s: executed: %lld (read: %lld / write: %lld), count waiting: %lld, total wait: %g sec, average wait: %g sec]\n", v10, v13, v14, v15, v16, *&v9, v9 / (v18 + v17)];
     ++v6;
     v7 += 4;
   }
 
   while (v6 != 3);
-  [v2 appendString:@"\n"];
+  [string appendString:@"\n"];
   v19 = +[PLConcurrencyLimiter sharedLimiter];
   v20 = [v19 debugDescription];
-  [v2 appendFormat:@"%@", v20];
+  [string appendFormat:@"%@", v20];
 
-  return v2;
+  return string;
 }
 
-+ (os_state_data_s)_stateDataWithHints:(os_state_hints_s *)a3
++ (os_state_data_s)_stateDataWithHints:(os_state_hints_s *)hints
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a3->var2 == 3)
+  if (hints->var2 == 3)
   {
     v4 = PLBackendGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -11053,9 +11053,9 @@ void __56__PLPhotoLibrary_MegaMocAdditions___activateStatusTimer__block_invoke_2
     }
 
     v5 = MEMORY[0x1E696AE40];
-    v6 = [a1 _stateDictionary];
+    _stateDictionary = [self _stateDictionary];
     v15 = 0;
-    v7 = [v5 dataWithPropertyList:v6 format:200 options:0 error:&v15];
+    v7 = [v5 dataWithPropertyList:_stateDictionary format:200 options:0 error:&v15];
     v8 = v15;
 
     if (v7)

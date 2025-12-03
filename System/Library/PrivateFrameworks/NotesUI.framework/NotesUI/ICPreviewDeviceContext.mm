@@ -4,9 +4,9 @@
 - (NSArray)deviceScales;
 - (double)maxDeviceScale;
 - (double)maxSizeOfPreviewDeviceInfoImage;
-- (id)deviceInfoScalable:(BOOL)a3;
+- (id)deviceInfoScalable:(BOOL)scalable;
 - (void)dealloc;
-- (void)screensChangedNotification:(id)a3;
+- (void)screensChangedNotification:(id)notification;
 @end
 
 @implementation ICPreviewDeviceContext
@@ -38,14 +38,14 @@ uint64_t __39__ICPreviewDeviceContext_sharedContext__block_invoke()
   v2 = [(ICPreviewDeviceContext *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel_screensChangedNotification_ name:*MEMORY[0x1E69DE378] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_screensChangedNotification_ name:*MEMORY[0x1E69DE378] object:0];
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v2 selector:sel_screensChangedNotification_ name:*MEMORY[0x1E69DE380] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_screensChangedNotification_ name:*MEMORY[0x1E69DE380] object:0];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel_screensChangedNotification_ name:*MEMORY[0x1E69DE388] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_screensChangedNotification_ name:*MEMORY[0x1E69DE388] object:0];
   }
 
   return v2;
@@ -53,8 +53,8 @@ uint64_t __39__ICPreviewDeviceContext_sharedContext__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICPreviewDeviceContext;
@@ -64,17 +64,17 @@ uint64_t __39__ICPreviewDeviceContext_sharedContext__block_invoke()
 - (NSArray)deviceScales
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  deviceScales = v2->_deviceScales;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  deviceScales = selfCopy->_deviceScales;
   if (!deviceScales)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
-    v5 = [MEMORY[0x1E69DCEB0] screens];
+    array = [MEMORY[0x1E695DF70] array];
+    screens = [MEMORY[0x1E69DCEB0] screens];
     v6 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"scale" ascending:1];
     v23[0] = v6;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
-    v8 = [v5 sortedArrayUsingDescriptors:v7];
+    v8 = [screens sortedArrayUsingDescriptors:v7];
 
     v20 = 0u;
     v21 = 0u;
@@ -97,7 +97,7 @@ uint64_t __39__ICPreviewDeviceContext_sharedContext__block_invoke()
           v13 = MEMORY[0x1E696AD98];
           [*(*(&v18 + 1) + 8 * i) scale];
           v14 = [v13 numberWithDouble:?];
-          [(NSArray *)v4 addObject:v14];
+          [(NSArray *)array addObject:v14];
         }
 
         v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -106,23 +106,23 @@ uint64_t __39__ICPreviewDeviceContext_sharedContext__block_invoke()
       while (v10);
     }
 
-    v15 = v2->_deviceScales;
-    v2->_deviceScales = v4;
+    v15 = selfCopy->_deviceScales;
+    selfCopy->_deviceScales = array;
 
-    deviceScales = v2->_deviceScales;
+    deviceScales = selfCopy->_deviceScales;
   }
 
   v16 = deviceScales;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v16;
 }
 
 - (double)maxDeviceScale
 {
-  v2 = [(ICPreviewDeviceContext *)self deviceScales];
-  v3 = [v2 lastObject];
-  [v3 doubleValue];
+  deviceScales = [(ICPreviewDeviceContext *)self deviceScales];
+  lastObject = [deviceScales lastObject];
+  [lastObject doubleValue];
   v5 = v4;
 
   return v5;
@@ -190,34 +190,34 @@ void __57__ICPreviewDeviceContext_maxSizeOfPreviewDeviceInfoImage__block_invoke_
   *(*(*(a1 + 32) + 8) + 24) = v9;
 }
 
-- (id)deviceInfoScalable:(BOOL)a3
+- (id)deviceInfoScalable:(BOOL)scalable
 {
-  v3 = a3;
+  scalableCopy = scalable;
   v21[2] = *MEMORY[0x1E69E9840];
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (scalableCopy)
   {
-    v5 = [(ICPreviewDeviceContext *)v4 scalableDeviceInfo];
+    scalableDeviceInfo = [(ICPreviewDeviceContext *)selfCopy scalableDeviceInfo];
 
-    if (!v5)
+    if (!scalableDeviceInfo)
     {
       v6 = [objc_alloc(MEMORY[0x1E69B7858]) initWithImageSize:384.0 scale:1.0];
       v21[0] = v6;
       v7 = [objc_alloc(MEMORY[0x1E69B7858]) initWithImageSize:192.0 scale:1.0];
       v21[1] = v7;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
-      [(ICPreviewDeviceContext *)v4 setScalableDeviceInfo:v8];
+      [(ICPreviewDeviceContext *)selfCopy setScalableDeviceInfo:v8];
     }
 
-    v9 = [(ICPreviewDeviceContext *)v4 scalableDeviceInfo];
+    scalableDeviceInfo2 = [(ICPreviewDeviceContext *)selfCopy scalableDeviceInfo];
   }
 
   else
   {
-    v10 = [(ICPreviewDeviceContext *)v4 nonScalableDeviceInfo];
+    nonScalableDeviceInfo = [(ICPreviewDeviceContext *)selfCopy nonScalableDeviceInfo];
 
-    if (!v10)
+    if (!nonScalableDeviceInfo)
     {
       v11 = [objc_alloc(MEMORY[0x1E69B7858]) initWithImageSize:88.0 scale:1.0];
       v20[0] = v11;
@@ -232,19 +232,19 @@ void __57__ICPreviewDeviceContext_maxSizeOfPreviewDeviceInfoImage__block_invoke_
       v16 = [objc_alloc(MEMORY[0x1E69B7858]) initWithImageSize:384.0 scale:3.0];
       v20[5] = v16;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:6];
-      [(ICPreviewDeviceContext *)v4 setNonScalableDeviceInfo:v17];
+      [(ICPreviewDeviceContext *)selfCopy setNonScalableDeviceInfo:v17];
     }
 
-    v9 = [(ICPreviewDeviceContext *)v4 nonScalableDeviceInfo];
+    scalableDeviceInfo2 = [(ICPreviewDeviceContext *)selfCopy nonScalableDeviceInfo];
   }
 
-  v18 = v9;
-  objc_sync_exit(v4);
+  v18 = scalableDeviceInfo2;
+  objc_sync_exit(selfCopy);
 
   return v18;
 }
 
-- (void)screensChangedNotification:(id)a3
+- (void)screensChangedNotification:(id)notification
 {
   obj = self;
   objc_sync_enter(obj);

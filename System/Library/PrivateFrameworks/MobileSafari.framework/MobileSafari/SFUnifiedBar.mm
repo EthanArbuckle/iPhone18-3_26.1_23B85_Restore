@@ -3,16 +3,16 @@
 - (BOOL)inlineContentViewPinsScrollPositionToTrailingEdgeDuringResize;
 - (BOOL)verticallyCentersSquishedContentInExpandedArea;
 - (CGPoint)_inlineContentSquishAnchorPoint;
-- (CGPoint)_squishAnchorPointForStandaloneContentViewAtIndex:(unint64_t)a3;
+- (CGPoint)_squishAnchorPointForStandaloneContentViewAtIndex:(unint64_t)index;
 - (CGRect)boundsForCentering;
-- (SFUnifiedBar)initWithFrame:(CGRect)a3;
+- (SFUnifiedBar)initWithFrame:(CGRect)frame;
 - (double)_backgroundAlpha;
 - (double)_contentViewSpacing;
 - (double)_inlineContentHeight;
 - (double)_itemSpacing;
-- (double)_layOutStandaloneContentView:(id)a3 atIndex:(unint64_t)a4 minY:(double)a5;
-- (double)_layoutIndexes:(id)a3 ofItems:(id)a4 alongEdge:(int64_t)a5 transitioning:(BOOL)a6;
-- (double)_spacingBelowContentView:(id)a3;
+- (double)_layOutStandaloneContentView:(id)view atIndex:(unint64_t)index minY:(double)y;
+- (double)_layoutIndexes:(id)indexes ofItems:(id)items alongEdge:(int64_t)edge transitioning:(BOOL)transitioning;
+- (double)_spacingBelowContentView:(id)view;
 - (double)_squishVerticalOffset;
 - (double)_squishedInlineContentTopOverflow;
 - (double)_topMargin;
@@ -21,16 +21,16 @@
 - (double)squishedHeight;
 - (id)_superviewForInlineContentView;
 - (id)_superviewForItems;
-- (void)_installContentView:(id)a3;
+- (void)_installContentView:(id)view;
 - (void)_layOutInlineContentView;
 - (void)_layOutStandaloneContentViews;
-- (void)_layoutItems:(id)a3 alongEdge:(int64_t)a4;
-- (void)_removeContainerViewsForGroupsWithIdentifiers:(id)a3;
-- (void)_removeViewsForIndexes:(id)a3 ofItems:(id)a4;
-- (void)_setNeedsRemovalForViewsAtIndexes:(id)a3 ofItems:(id)a4;
-- (void)_setShowsSquishedContent:(BOOL)a3;
-- (void)_setUpContainerViewsForGroupsWithIdentifiers:(id)a3;
-- (void)_uninstallContentView:(id)a3;
+- (void)_layoutItems:(id)items alongEdge:(int64_t)edge;
+- (void)_removeContainerViewsForGroupsWithIdentifiers:(id)identifiers;
+- (void)_removeViewsForIndexes:(id)indexes ofItems:(id)items;
+- (void)_setNeedsRemovalForViewsAtIndexes:(id)indexes ofItems:(id)items;
+- (void)_setShowsSquishedContent:(BOOL)content;
+- (void)_setUpContainerViewsForGroupsWithIdentifiers:(id)identifiers;
+- (void)_uninstallContentView:(id)view;
 - (void)_updateBackgroundAlpha;
 - (void)_updateBarMetricsForTraitChange;
 - (void)_updateSeparatorColor;
@@ -39,25 +39,25 @@
 - (void)_updateSuperviewForInlineContentView;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
-- (void)setBackgroundVisibility:(unint64_t)a3;
-- (void)setBarTheme:(id)a3 animated:(BOOL)a4;
-- (void)setChromelessScrollDistance:(double)a3;
-- (void)setContentArrangement:(id)a3;
-- (void)setInlineContentViewPinsScrollPositionToTrailingEdgeDuringResize:(BOOL)a3;
-- (void)setItemArrangement:(id)a3 animated:(BOOL)a4;
-- (void)setMarginLevel:(unint64_t)a3;
-- (void)setScrollPocketInteraction:(id)a3;
-- (void)setShowsSeparator:(BOOL)a3;
-- (void)setUsesFaintSeparator:(BOOL)a3;
+- (void)setBackgroundVisibility:(unint64_t)visibility;
+- (void)setBarTheme:(id)theme animated:(BOOL)animated;
+- (void)setChromelessScrollDistance:(double)distance;
+- (void)setContentArrangement:(id)arrangement;
+- (void)setInlineContentViewPinsScrollPositionToTrailingEdgeDuringResize:(BOOL)resize;
+- (void)setItemArrangement:(id)arrangement animated:(BOOL)animated;
+- (void)setMarginLevel:(unint64_t)level;
+- (void)setScrollPocketInteraction:(id)interaction;
+- (void)setShowsSeparator:(BOOL)separator;
+- (void)setUsesFaintSeparator:(BOOL)separator;
 @end
 
 @implementation SFUnifiedBar
 
-- (SFUnifiedBar)initWithFrame:(CGRect)a3
+- (SFUnifiedBar)initWithFrame:(CGRect)frame
 {
   v53.receiver = self;
   v53.super_class = SFUnifiedBar;
-  v3 = [(SFUnifiedBar *)&v53 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFUnifiedBar *)&v53 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     defaultLayoutMargins();
@@ -73,8 +73,8 @@
     v3->_contentArrangement = v6;
 
     v8 = [SFUnifiedBarMetrics alloc];
-    v9 = [(SFUnifiedBar *)v3 traitCollection];
-    v10 = [(SFUnifiedBarMetrics *)v8 initWithTraitCollection:v9];
+    traitCollection = [(SFUnifiedBar *)v3 traitCollection];
+    v10 = [(SFUnifiedBarMetrics *)v8 initWithTraitCollection:traitCollection];
     barMetrics = v3->_barMetrics;
     v3->_barMetrics = v10;
 
@@ -129,9 +129,9 @@
       objc_destroyWeak(&location);
     }
 
-    v25 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     groupContainerViews = v16->_groupContainerViews;
-    v16->_groupContainerViews = v25;
+    v16->_groupContainerViews = dictionary;
 
     v27 = objc_alloc_init(MEMORY[0x1E69DD250]);
     leadingItemContainerView = v16->_leadingItemContainerView;
@@ -192,8 +192,8 @@ void __30__SFUnifiedBar_initWithFrame___block_invoke(uint64_t a1)
 - (void)_updateBarMetricsForTraitChange
 {
   barMetrics = self->_barMetrics;
-  v4 = [(SFUnifiedBar *)self traitCollection];
-  LODWORD(barMetrics) = [(SFUnifiedBarMetrics *)barMetrics updateWithTraitCollection:v4];
+  traitCollection = [(SFUnifiedBar *)self traitCollection];
+  LODWORD(barMetrics) = [(SFUnifiedBarMetrics *)barMetrics updateWithTraitCollection:traitCollection];
 
   if (barMetrics)
   {
@@ -208,11 +208,11 @@ void __30__SFUnifiedBar_initWithFrame___block_invoke(uint64_t a1)
   v5.receiver = self;
   v5.super_class = SFUnifiedBar;
   [(SFUnifiedBar *)&v5 didMoveToSuperview];
-  v3 = [(SFUnifiedBar *)self superview];
-  if (v3)
+  superview = [(SFUnifiedBar *)self superview];
+  if (superview)
   {
-    v4 = [(_SFBarTheme *)self->_barTheme controlsTintColor];
-    [(SFUnifiedBar *)self setTintColor:v4];
+    controlsTintColor = [(_SFBarTheme *)self->_barTheme controlsTintColor];
+    [(SFUnifiedBar *)self setTintColor:controlsTintColor];
   }
 
   else
@@ -221,38 +221,38 @@ void __30__SFUnifiedBar_initWithFrame___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setItemArrangement:(id)a3 animated:(BOOL)a4
+- (void)setItemArrangement:(id)arrangement animated:(BOOL)animated
 {
-  v7 = a3;
-  if (![(SFUnifiedBarItemArrangement *)self->_itemArrangement isEqual:v7])
+  arrangementCopy = arrangement;
+  if (![(SFUnifiedBarItemArrangement *)self->_itemArrangement isEqual:arrangementCopy])
   {
     [(SFUnifiedBarItemArrangement *)self->_itemArrangement leadingItems];
-    v8 = v24 = a4;
-    v9 = [v7 leadingItems];
+    v8 = v24 = animated;
+    leadingItems = [arrangementCopy leadingItems];
     v29 = v8;
-    v10 = [v9 differenceFromArray:v8 withOptions:4];
-    v30 = [v10 safari_removalIndexes];
-    v11 = [(SFUnifiedBarItemArrangement *)self->_itemArrangement trailingItems];
-    v12 = [v7 trailingItems];
-    v31 = v11;
-    v13 = [v12 differenceFromArray:v11 withOptions:4];
-    v28 = [v13 safari_removalIndexes];
-    v14 = [(SFUnifiedBarItemArrangement *)self->_itemArrangement groupIdentifiers];
-    v15 = [v7 groupIdentifiers];
-    v16 = [v15 safari_setBySubtractingSet:v14];
-    v26 = v15;
-    v17 = v15;
+    v10 = [leadingItems differenceFromArray:v8 withOptions:4];
+    safari_removalIndexes = [v10 safari_removalIndexes];
+    trailingItems = [(SFUnifiedBarItemArrangement *)self->_itemArrangement trailingItems];
+    trailingItems2 = [arrangementCopy trailingItems];
+    v31 = trailingItems;
+    v13 = [trailingItems2 differenceFromArray:trailingItems withOptions:4];
+    safari_removalIndexes2 = [v13 safari_removalIndexes];
+    groupIdentifiers = [(SFUnifiedBarItemArrangement *)self->_itemArrangement groupIdentifiers];
+    groupIdentifiers2 = [arrangementCopy groupIdentifiers];
+    v16 = [groupIdentifiers2 safari_setBySubtractingSet:groupIdentifiers];
+    v26 = groupIdentifiers2;
+    v17 = groupIdentifiers2;
     v18 = v16;
-    v25 = [v14 safari_setBySubtractingSet:v17];
-    objc_storeStrong(&self->_itemArrangement, a3);
+    v25 = [groupIdentifiers safari_setBySubtractingSet:v17];
+    objc_storeStrong(&self->_itemArrangement, arrangement);
     [(SFUnifiedBar *)self setNeedsLayout];
     [(SFUnifiedBar *)self _setUpContainerViewsForGroupsWithIdentifiers:v18];
-    v19 = [v10 safari_insertionIndexes];
-    [(SFUnifiedBar *)self _layoutIndexes:v19 ofItems:v9 alongEdge:0 transitioning:1];
+    safari_insertionIndexes = [v10 safari_insertionIndexes];
+    [(SFUnifiedBar *)self _layoutIndexes:safari_insertionIndexes ofItems:leadingItems alongEdge:0 transitioning:1];
 
-    v20 = [v13 safari_insertionIndexes];
-    v27 = v12;
-    [(SFUnifiedBar *)self _layoutIndexes:v20 ofItems:v12 alongEdge:1 transitioning:1];
+    safari_insertionIndexes2 = [v13 safari_insertionIndexes];
+    v27 = trailingItems2;
+    [(SFUnifiedBar *)self _layoutIndexes:safari_insertionIndexes2 ofItems:trailingItems2 alongEdge:1 transitioning:1];
 
     if (v24)
     {
@@ -262,9 +262,9 @@ void __30__SFUnifiedBar_initWithFrame___block_invoke(uint64_t a1)
       v38[2] = __44__SFUnifiedBar_setItemArrangement_animated___block_invoke;
       v38[3] = &unk_1E721D7C0;
       v38[4] = self;
-      v39 = v30;
+      v39 = safari_removalIndexes;
       v40 = v29;
-      v41 = v28;
+      v41 = safari_removalIndexes2;
       v42 = v31;
       v32[0] = MEMORY[0x1E69E9820];
       v32[1] = 3221225472;
@@ -282,11 +282,11 @@ void __30__SFUnifiedBar_initWithFrame___block_invoke(uint64_t a1)
 
     else
     {
-      [(SFUnifiedBar *)self _setNeedsRemovalForViewsAtIndexes:v30 ofItems:v29];
-      [(SFUnifiedBar *)self _setNeedsRemovalForViewsAtIndexes:v28 ofItems:v31];
-      v23 = self;
+      [(SFUnifiedBar *)self _setNeedsRemovalForViewsAtIndexes:safari_removalIndexes ofItems:v29];
+      [(SFUnifiedBar *)self _setNeedsRemovalForViewsAtIndexes:safari_removalIndexes2 ofItems:v31];
+      selfCopy = self;
       v22 = v25;
-      [(SFUnifiedBar *)v23 _removeContainerViewsForGroupsWithIdentifiers:v25];
+      [(SFUnifiedBar *)selfCopy _removeContainerViewsForGroupsWithIdentifiers:v25];
     }
   }
 }
@@ -310,25 +310,25 @@ uint64_t __44__SFUnifiedBar_setItemArrangement_animated___block_invoke_2(uint64_
   return [v2 _removeContainerViewsForGroupsWithIdentifiers:v3];
 }
 
-- (void)setContentArrangement:(id)a3
+- (void)setContentArrangement:(id)arrangement
 {
   v49 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  arrangementCopy = arrangement;
   v6 = self->_contentArrangement;
-  if (![(SFUnifiedBarContentArrangement *)v6 isEqual:v5])
+  if (![(SFUnifiedBarContentArrangement *)v6 isEqual:arrangementCopy])
   {
-    objc_storeStrong(&self->_contentArrangement, a3);
+    objc_storeStrong(&self->_contentArrangement, arrangement);
     v32 = v6;
-    v7 = [(SFUnifiedBarContentArrangement *)v6 allContentViews];
-    v30 = [v5 allContentViews];
-    v31 = v7;
-    v8 = [v30 differenceFromArray:v7 withOptions:4];
+    allContentViews = [(SFUnifiedBarContentArrangement *)v6 allContentViews];
+    allContentViews2 = [arrangementCopy allContentViews];
+    v31 = allContentViews;
+    v8 = [allContentViews2 differenceFromArray:allContentViews withOptions:4];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v9 = [v8 removals];
-    v10 = [v9 countByEnumeratingWithState:&v42 objects:v48 count:16];
+    removals = [v8 removals];
+    v10 = [removals countByEnumeratingWithState:&v42 objects:v48 count:16];
     if (v10)
     {
       v11 = v10;
@@ -339,14 +339,14 @@ uint64_t __44__SFUnifiedBar_setItemArrangement_animated___block_invoke_2(uint64_
         {
           if (*v43 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(removals);
           }
 
-          v14 = [*(*(&v42 + 1) + 8 * i) object];
-          [(SFUnifiedBar *)self _uninstallContentView:v14];
+          object = [*(*(&v42 + 1) + 8 * i) object];
+          [(SFUnifiedBar *)self _uninstallContentView:object];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v42 objects:v48 count:16];
+        v11 = [removals countByEnumeratingWithState:&v42 objects:v48 count:16];
       }
 
       while (v11);
@@ -356,8 +356,8 @@ uint64_t __44__SFUnifiedBar_setItemArrangement_animated___block_invoke_2(uint64_
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v15 = [v8 insertions];
-    v16 = [v15 countByEnumeratingWithState:&v38 objects:v47 count:16];
+    insertions = [v8 insertions];
+    v16 = [insertions countByEnumeratingWithState:&v38 objects:v47 count:16];
     if (v16)
     {
       v17 = v16;
@@ -368,14 +368,14 @@ uint64_t __44__SFUnifiedBar_setItemArrangement_animated___block_invoke_2(uint64_
         {
           if (*v39 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(insertions);
           }
 
-          v20 = [*(*(&v38 + 1) + 8 * j) object];
-          [(SFUnifiedBar *)self _installContentView:v20];
+          object2 = [*(*(&v38 + 1) + 8 * j) object];
+          [(SFUnifiedBar *)self _installContentView:object2];
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v38 objects:v47 count:16];
+        v17 = [insertions countByEnumeratingWithState:&v38 objects:v47 count:16];
       }
 
       while (v17);
@@ -387,9 +387,9 @@ uint64_t __44__SFUnifiedBar_setItemArrangement_animated___block_invoke_2(uint64_
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v33 = v5;
-    v21 = [v5 standaloneContentViews];
-    v22 = [v21 countByEnumeratingWithState:&v34 objects:v46 count:16];
+    v33 = arrangementCopy;
+    standaloneContentViews = [arrangementCopy standaloneContentViews];
+    v22 = [standaloneContentViews countByEnumeratingWithState:&v34 objects:v46 count:16];
     if (v22)
     {
       v23 = v22;
@@ -401,14 +401,14 @@ uint64_t __44__SFUnifiedBar_setItemArrangement_animated___block_invoke_2(uint64_
         {
           if (*v35 != v25)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(standaloneContentViews);
           }
 
           v27 = *(*(&v34 + 1) + 8 * k);
           if (objc_opt_respondsToSelector())
           {
-            v28 = [v27 barMetrics];
-            [v28 setMetricsCategory:1];
+            barMetrics = [v27 barMetrics];
+            [barMetrics setMetricsCategory:1];
           }
 
           if (objc_opt_respondsToSelector())
@@ -417,7 +417,7 @@ uint64_t __44__SFUnifiedBar_setItemArrangement_animated___block_invoke_2(uint64_
           }
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v34 objects:v46 count:16];
+        v23 = [standaloneContentViews countByEnumeratingWithState:&v34 objects:v46 count:16];
       }
 
       while (v23);
@@ -432,16 +432,16 @@ uint64_t __44__SFUnifiedBar_setItemArrangement_animated___block_invoke_2(uint64_
     [(SFUnifiedBar *)self setNeedsLayout];
 
     v6 = v32;
-    v5 = v33;
+    arrangementCopy = v33;
   }
 }
 
-- (void)_installContentView:(id)a3
+- (void)_installContentView:(id)view
 {
-  v4 = a3;
-  if (v4)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v7 = v4;
+    v7 = viewCopy;
     if (objc_opt_respondsToSelector())
     {
       [(SFUnifiedBar *)self _backgroundAlpha];
@@ -465,12 +465,12 @@ uint64_t __44__SFUnifiedBar_setItemArrangement_animated___block_invoke_2(uint64_
     }
 
     [v7 setInsetsLayoutMarginsFromSafeArea:0];
-    v5 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
+    inlineContentView = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
 
-    if (v5 == v7)
+    if (inlineContentView == v7)
     {
-      v6 = [(SFUnifiedBar *)self _superviewForInlineContentView];
-      [v6 addSubview:v7];
+      _superviewForInlineContentView = [(SFUnifiedBar *)self _superviewForInlineContentView];
+      [_superviewForInlineContentView addSubview:v7];
     }
 
     else
@@ -479,60 +479,60 @@ uint64_t __44__SFUnifiedBar_setItemArrangement_animated___block_invoke_2(uint64_
     }
 
     [(SFUnifiedBar *)self setNeedsLayout];
-    v4 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)_uninstallContentView:(id)a3
+- (void)_uninstallContentView:(id)view
 {
-  if (a3)
+  if (view)
   {
-    [a3 removeFromSuperview];
+    [view removeFromSuperview];
   }
 }
 
 - (BOOL)inlineContentViewPinsScrollPositionToTrailingEdgeDuringResize
 {
-  v2 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
+  inlineContentView = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 pinsScrollPositionToTrailingEdgeDuringResize];
+    pinsScrollPositionToTrailingEdgeDuringResize = [inlineContentView pinsScrollPositionToTrailingEdgeDuringResize];
   }
 
   else
   {
-    v3 = 0;
+    pinsScrollPositionToTrailingEdgeDuringResize = 0;
   }
 
-  return v3;
+  return pinsScrollPositionToTrailingEdgeDuringResize;
 }
 
-- (void)setInlineContentViewPinsScrollPositionToTrailingEdgeDuringResize:(BOOL)a3
+- (void)setInlineContentViewPinsScrollPositionToTrailingEdgeDuringResize:(BOOL)resize
 {
-  v3 = a3;
-  v4 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
+  resizeCopy = resize;
+  inlineContentView = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
   if (objc_opt_respondsToSelector())
   {
-    [v4 setPinsScrollPositionToTrailingEdgeDuringResize:v3];
+    [inlineContentView setPinsScrollPositionToTrailingEdgeDuringResize:resizeCopy];
   }
 }
 
-- (void)_layoutItems:(id)a3 alongEdge:(int64_t)a4
+- (void)_layoutItems:(id)items alongEdge:(int64_t)edge
 {
   v6 = MEMORY[0x1E696AC90];
-  v7 = a3;
-  v8 = [v6 indexSetWithIndexesInRange:{0, objc_msgSend(v7, "count")}];
-  [(SFUnifiedBar *)self _layoutIndexes:v8 ofItems:v7 alongEdge:a4 transitioning:0];
+  itemsCopy = items;
+  v8 = [v6 indexSetWithIndexesInRange:{0, objc_msgSend(itemsCopy, "count")}];
+  [(SFUnifiedBar *)self _layoutIndexes:v8 ofItems:itemsCopy alongEdge:edge transitioning:0];
   v10 = v9;
 
   v11 = &OBJC_IVAR___SFUnifiedBar__trailingItemContainerView;
-  if (!a4)
+  if (!edge)
   {
     v11 = &OBJC_IVAR___SFUnifiedBar__leadingItemContainerView;
   }
 
   v12 = *(&self->super.super.super.isa + *v11);
-  v13 = [(UIView *)self _sf_usesLeftToRightLayout];
+  _sf_usesLeftToRightLayout = [(UIView *)self _sf_usesLeftToRightLayout];
   [(SFUnifiedBar *)self bounds];
   v15 = v14;
   v17 = v16;
@@ -543,7 +543,7 @@ uint64_t __44__SFUnifiedBar_setItemArrangement_animated___block_invoke_2(uint64_
   v64 = v24;
   v26 = v22;
   v27 = v23;
-  if (v13 == a4)
+  if (_sf_usesLeftToRightLayout == edge)
   {
     v28 = v23;
   }
@@ -567,7 +567,7 @@ uint64_t __44__SFUnifiedBar_setItemArrangement_animated___block_invoke_2(uint64_
     v37 = v15;
     v39 = v38;
 
-    if (v13 == a4)
+    if (_sf_usesLeftToRightLayout == edge)
     {
       v40 = v39;
     }
@@ -577,7 +577,7 @@ uint64_t __44__SFUnifiedBar_setItemArrangement_animated___block_invoke_2(uint64_
       v40 = v32;
     }
 
-    if (v13 == a4)
+    if (_sf_usesLeftToRightLayout == edge)
     {
       v41 = v32;
     }
@@ -606,7 +606,7 @@ uint64_t __44__SFUnifiedBar_setItemArrangement_animated___block_invoke_2(uint64_
     }
   }
 
-  if (v13 == a4)
+  if (_sf_usesLeftToRightLayout == edge)
   {
     v69.origin.x = v15;
     v69.origin.y = v17;
@@ -640,18 +640,18 @@ uint64_t __44__SFUnifiedBar_setItemArrangement_animated___block_invoke_2(uint64_
   [v12 setTransform:&v66];
 }
 
-- (double)_layoutIndexes:(id)a3 ofItems:(id)a4 alongEdge:(int64_t)a5 transitioning:(BOOL)a6
+- (double)_layoutIndexes:(id)indexes ofItems:(id)items alongEdge:(int64_t)edge transitioning:(BOOL)transitioning
 {
-  v10 = a3;
-  v11 = a4;
+  indexesCopy = indexes;
+  itemsCopy = items;
   v12 = &OBJC_IVAR___SFUnifiedBar__trailingItemContainerView;
-  if (!a5)
+  if (!edge)
   {
     v12 = &OBJC_IVAR___SFUnifiedBar__leadingItemContainerView;
   }
 
   v13 = *(&self->super.super.super.isa + *v12);
-  v14 = [(UIView *)self _sf_usesLeftToRightLayout];
+  _sf_usesLeftToRightLayout = [(UIView *)self _sf_usesLeftToRightLayout];
   [(SFUnifiedBarMetrics *)self->_barMetrics defaultItemWidth];
   v16 = v15;
   [(SFUnifiedBarMetrics *)self->_barMetrics itemHeight];
@@ -662,7 +662,7 @@ uint64_t __44__SFUnifiedBar_setItemArrangement_animated___block_invoke_2(uint64_
   v22 = v21;
   [(SFUnifiedBar *)self squishTransformFactor];
   v24 = v23;
-  if (v14)
+  if (_sf_usesLeftToRightLayout)
   {
     v25 = 0;
   }
@@ -672,7 +672,7 @@ uint64_t __44__SFUnifiedBar_setItemArrangement_animated___block_invoke_2(uint64_
     v25 = 2;
   }
 
-  v26 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v48 = 0;
   v49 = &v48;
   v50 = 0x2020000000;
@@ -685,21 +685,21 @@ uint64_t __44__SFUnifiedBar_setItemArrangement_animated___block_invoke_2(uint64_
   v42 = v20;
   v43 = v18;
   v44 = v22;
-  v46 = v14;
-  v27 = v11;
+  v46 = _sf_usesLeftToRightLayout;
+  v27 = itemsCopy;
   v35 = v27;
-  v36 = self;
+  selfCopy = self;
   v40 = &v48;
-  v28 = v10;
+  v28 = indexesCopy;
   v37 = v28;
-  v47 = a6;
-  v29 = v26;
+  transitioningCopy = transitioning;
+  v29 = dictionary;
   v38 = v29;
   v30 = v13;
   v39 = v30;
   v45 = v24;
   [v27 enumerateObjectsWithOptions:v25 usingBlock:v34];
-  if (!a6)
+  if (!transitioning)
   {
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
@@ -968,11 +968,11 @@ void __63__SFUnifiedBar__layoutIndexes_ofItems_alongEdge_transitioning___block_i
   [(SFTouchPassthroughView *)self->_glassGroup setFrame:?];
   [(SFUnifiedBar *)self _updateSuperviewForInlineContentView];
   [(SFUnifiedBar *)self _updateSizeClass];
-  v9 = [(SFUnifiedBarItemArrangement *)self->_itemArrangement leadingItems];
-  [(SFUnifiedBar *)self _layoutItems:v9 alongEdge:0];
+  leadingItems = [(SFUnifiedBarItemArrangement *)self->_itemArrangement leadingItems];
+  [(SFUnifiedBar *)self _layoutItems:leadingItems alongEdge:0];
 
-  v10 = [(SFUnifiedBarItemArrangement *)self->_itemArrangement trailingItems];
-  [(SFUnifiedBar *)self _layoutItems:v10 alongEdge:1];
+  trailingItems = [(SFUnifiedBarItemArrangement *)self->_itemArrangement trailingItems];
+  [(SFUnifiedBar *)self _layoutItems:trailingItems alongEdge:1];
 
   [(SFUnifiedBar *)self bounds];
   v12 = v11;
@@ -1000,36 +1000,36 @@ void __63__SFUnifiedBar__layoutIndexes_ofItems_alongEdge_transitioning___block_i
 
 - (void)_layOutInlineContentView
 {
-  v3 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
-  if (v3)
+  inlineContentView = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
+  if (inlineContentView)
   {
     [(SFUnifiedBar *)self bounds];
     v94 = v5;
     v95 = v4;
     v92 = v7;
     v93 = v6;
-    v8 = [(SFUnifiedBar *)self _superviewForItems];
-    [v8 directionalLayoutMargins];
+    _superviewForItems = [(SFUnifiedBar *)self _superviewForItems];
+    [_superviewForItems directionalLayoutMargins];
     rect_16 = v10;
     rect_24 = v9;
-    [v8 layoutMargins];
+    [_superviewForItems layoutMargins];
     v96 = v11;
     rect_8 = v12;
     [(SFUnifiedBar *)self squishTransformFactor];
     v91 = v13;
-    v14 = [(UIView *)self _sf_usesLeftToRightLayout];
-    v15 = [(SFUnifiedBarItemArrangement *)self->_itemArrangement leadingItems];
-    v16 = [v15 lastObject];
+    _sf_usesLeftToRightLayout = [(UIView *)self _sf_usesLeftToRightLayout];
+    leadingItems = [(SFUnifiedBarItemArrangement *)self->_itemArrangement leadingItems];
+    lastObject = [leadingItems lastObject];
 
-    v17 = v16;
-    v18 = [(SFUnifiedBarItemArrangement *)self->_itemArrangement trailingItems];
-    v19 = [v18 firstObject];
+    v17 = lastObject;
+    trailingItems = [(SFUnifiedBarItemArrangement *)self->_itemArrangement trailingItems];
+    firstObject = [trailingItems firstObject];
 
-    v20 = !v14;
-    v21 = v19;
+    v20 = !_sf_usesLeftToRightLayout;
+    v21 = firstObject;
     if (v20)
     {
-      v22 = v19;
+      v22 = firstObject;
     }
 
     else
@@ -1044,7 +1044,7 @@ void __63__SFUnifiedBar__layoutIndexes_ofItems_alongEdge_transitioning___block_i
 
     else
     {
-      v23 = v19;
+      v23 = firstObject;
     }
 
     if (v20)
@@ -1095,7 +1095,7 @@ void __63__SFUnifiedBar__layoutIndexes_ofItems_alongEdge_transitioning___block_i
       v45 = v96;
     }
 
-    v46 = v8;
+    v46 = _superviewForItems;
     if (v27)
     {
       v102.origin.x = rect;
@@ -1134,18 +1134,18 @@ void __63__SFUnifiedBar__layoutIndexes_ofItems_alongEdge_transitioning___block_i
       v49 = v47;
     }
 
-    [v3 preferredSize];
+    [inlineContentView preferredSize];
     v51 = v50;
     if (([MEMORY[0x1E69C8880] isSolariumEnabled] & 1) == 0 && v51 != 1.79769313e308)
     {
-      v52 = [(SFUnifiedBarItemArrangement *)self->_itemArrangement leadingItems];
-      v53 = [v52 count];
-      v54 = [(SFUnifiedBarItemArrangement *)self->_itemArrangement trailingItems];
-      if (v53 == [v54 count])
+      leadingItems2 = [(SFUnifiedBarItemArrangement *)self->_itemArrangement leadingItems];
+      v53 = [leadingItems2 count];
+      trailingItems2 = [(SFUnifiedBarItemArrangement *)self->_itemArrangement trailingItems];
+      if (v53 == [trailingItems2 count])
       {
-        v55 = [(SFUnifiedBarItemArrangement *)self->_itemArrangement allowsCenteringInlineContentView];
+        allowsCenteringInlineContentView = [(SFUnifiedBarItemArrangement *)self->_itemArrangement allowsCenteringInlineContentView];
 
-        if (v55)
+        if (allowsCenteringInlineContentView)
         {
           v104.origin.x = v95;
           v104.origin.y = v94;
@@ -1164,7 +1164,7 @@ void __63__SFUnifiedBar__layoutIndexes_ofItems_alongEdge_transitioning___block_i
       {
       }
 
-      v46 = v8;
+      v46 = _superviewForItems;
     }
 
     [(SFUnifiedBar *)self _topMargin];
@@ -1172,8 +1172,8 @@ void __63__SFUnifiedBar__layoutIndexes_ofItems_alongEdge_transitioning___block_i
     v98 = *MEMORY[0x1E695EFD0];
     v99 = v56;
     v100 = *(MEMORY[0x1E695EFD0] + 32);
-    [v3 setTransform:&v98];
-    [v3 setFrame:_SFRoundRectToPixels(v48)];
+    [inlineContentView setTransform:&v98];
+    [inlineContentView setFrame:_SFRoundRectToPixels(v48)];
     [(SFUnifiedBar *)self _inlineContentSquishAnchorPoint];
     v58 = v57;
     v60 = v59;
@@ -1184,12 +1184,12 @@ void __63__SFUnifiedBar__layoutIndexes_ofItems_alongEdge_transitioning___block_i
     v98 = v97[0];
     v99 = v97[1];
     v100 = v97[2];
-    [v3 setTransform:&v98];
-    [v3 setDirectionalLayoutMargins:{0.0, rect_24, 0.0, rect_16}];
-    v64 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement standaloneContentViews];
-    v65 = [v64 count];
-    v66 = [v3 layer];
-    [v66 setZPosition:v65];
+    [inlineContentView setTransform:&v98];
+    [inlineContentView setDirectionalLayoutMargins:{0.0, rect_24, 0.0, rect_16}];
+    standaloneContentViews = [(SFUnifiedBarContentArrangement *)self->_contentArrangement standaloneContentViews];
+    v65 = [standaloneContentViews count];
+    layer = [inlineContentView layer];
+    [layer setZPosition:v65];
 
     [(SFUnifiedBar *)self boundsForCentering];
     v68 = v67;
@@ -1199,14 +1199,14 @@ void __63__SFUnifiedBar__layoutIndexes_ofItems_alongEdge_transitioning___block_i
     if (objc_opt_respondsToSelector())
     {
       UIRectGetCenter();
-      [v3 convertPoint:self fromView:?];
-      [v3 setMidpointForCenteredContent:?];
+      [inlineContentView convertPoint:self fromView:?];
+      [inlineContentView setMidpointForCenteredContent:?];
     }
 
     v75 = v96;
     if (objc_opt_respondsToSelector())
     {
-      [v3 setSquishTransformFactor:v91];
+      [inlineContentView setSquishTransformFactor:v91];
     }
 
     if (objc_opt_respondsToSelector())
@@ -1230,7 +1230,7 @@ void __63__SFUnifiedBar__layoutIndexes_ofItems_alongEdge_transitioning___block_i
       v106.size.width = v72;
       v106.size.height = v74;
       MidX = CGRectGetMidX(v106);
-      [(SFUnifiedBar *)self convertPoint:v3 toView:_SFInterpolate(MidX, v75, v77), 0.0];
+      [(SFUnifiedBar *)self convertPoint:inlineContentView toView:_SFInterpolate(MidX, v75, v77), 0.0];
       v82 = v81;
       v107.origin.x = v68;
       v107.origin.y = v70;
@@ -1242,13 +1242,13 @@ void __63__SFUnifiedBar__layoutIndexes_ofItems_alongEdge_transitioning___block_i
       v108.size.height = v92;
       v108.size.width = v93;
       Width = CGRectGetWidth(v108);
-      [(SFUnifiedBar *)self convertPoint:v3 toView:_SFInterpolate(v83, Width - v79, v77), 0.0];
+      [(SFUnifiedBar *)self convertPoint:inlineContentView toView:_SFInterpolate(v83, Width - v79, v77), 0.0];
       v86 = v85;
-      [v3 bounds];
-      [v3 setSquishedContentInset:{0.0, v82, 0.0, CGRectGetWidth(v109) - v86}];
+      [inlineContentView bounds];
+      [inlineContentView setSquishedContentInset:{0.0, v82, 0.0, CGRectGetWidth(v109) - v86}];
     }
 
-    [v3 layoutIfNeeded];
+    [inlineContentView layoutIfNeeded];
   }
 }
 
@@ -1261,19 +1261,19 @@ void __63__SFUnifiedBar__layoutIndexes_ofItems_alongEdge_transitioning___block_i
   v4 = v3;
   [(SFUnifiedBar *)self _inlineContentHeight];
   v6 = v4 + v5;
-  v7 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
-  [(SFUnifiedBar *)self _spacingBelowContentView:v7];
+  inlineContentView = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
+  [(SFUnifiedBar *)self _spacingBelowContentView:inlineContentView];
   v9 = v6 + v8;
 
   *&v12[3] = v9;
-  v10 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement standaloneContentViews];
+  standaloneContentViews = [(SFUnifiedBarContentArrangement *)self->_contentArrangement standaloneContentViews];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __45__SFUnifiedBar__layOutStandaloneContentViews__block_invoke;
   v11[3] = &unk_1E721DFC8;
   v11[4] = self;
   v11[5] = v12;
-  [v10 enumerateObjectsUsingBlock:v11];
+  [standaloneContentViews enumerateObjectsUsingBlock:v11];
 
   _Block_object_dispose(v12, 8);
 }
@@ -1287,58 +1287,58 @@ double __45__SFUnifiedBar__layOutStandaloneContentViews__block_invoke(uint64_t a
   return result;
 }
 
-- (double)_layOutStandaloneContentView:(id)a3 atIndex:(unint64_t)a4 minY:(double)a5
+- (double)_layOutStandaloneContentView:(id)view atIndex:(unint64_t)index minY:(double)y
 {
-  v8 = a3;
+  viewCopy = view;
   [(SFUnifiedBar *)self directionalLayoutMargins];
   v48 = v9;
   v11 = v10;
   [(SFUnifiedBar *)self squishTransformFactor];
   v13 = v12;
   contentArrangement = self->_contentArrangement;
-  if (a4)
+  if (index)
   {
-    v15 = [(SFUnifiedBarContentArrangement *)contentArrangement standaloneContentViews];
-    v16 = [v15 objectAtIndexedSubscript:a4 - 1];
+    standaloneContentViews = [(SFUnifiedBarContentArrangement *)contentArrangement standaloneContentViews];
+    inlineContentView = [standaloneContentViews objectAtIndexedSubscript:index - 1];
   }
 
   else
   {
-    v16 = [(SFUnifiedBarContentArrangement *)contentArrangement inlineContentView];
+    inlineContentView = [(SFUnifiedBarContentArrangement *)contentArrangement inlineContentView];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v17 = [v8 isContentHidden];
+    isContentHidden = [viewCopy isContentHidden];
   }
 
   else
   {
-    v17 = 0;
+    isContentHidden = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v18 = [v8 showsSquishedContent];
+    showsSquishedContent = [viewCopy showsSquishedContent];
   }
 
   else
   {
-    v18 = 0;
+    showsSquishedContent = 0;
   }
 
   v19 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    [(SFUnifiedBar *)self _spacingBelowContentView:v16];
+    [(SFUnifiedBar *)self _spacingBelowContentView:inlineContentView];
     v21 = v20;
-    [v8 preferredTopSpacing];
+    [viewCopy preferredTopSpacing];
     v19 = v22 - v21;
   }
 
-  [v8 preferredSize];
+  [viewCopy preferredSize];
   v24 = v23;
-  if (v18)
+  if (showsSquishedContent)
   {
     v25 = 0;
   }
@@ -1348,10 +1348,10 @@ double __45__SFUnifiedBar__layOutStandaloneContentViews__block_invoke(uint64_t a
     v25 = [MEMORY[0x1E69C8880] isSolariumEnabled] ^ 1;
   }
 
-  v26 = v19 + a5;
+  v26 = v19 + y;
   [(SFUnifiedBar *)self bounds];
   Width = CGRectGetWidth(v53);
-  if (v17)
+  if (isContentHidden)
   {
     v54.origin.x = 0.0;
     v54.origin.y = v26;
@@ -1371,7 +1371,7 @@ double __45__SFUnifiedBar__layOutStandaloneContentViews__block_invoke(uint64_t a
   }
 
   v31 = v13;
-  if (v18)
+  if (showsSquishedContent)
   {
     +[SFUnifiedBarMetrics minimumSquishScale];
   }
@@ -1386,9 +1386,9 @@ double __45__SFUnifiedBar__layOutStandaloneContentViews__block_invoke(uint64_t a
   v50 = *MEMORY[0x1E695EFD0];
   v51 = v34;
   v52 = *(MEMORY[0x1E695EFD0] + 32);
-  [v8 setTransform:&v50];
-  [v8 setFrame:_SFRoundRectToPixels(0.0)];
-  [(SFUnifiedBar *)self _squishAnchorPointForStandaloneContentViewAtIndex:a4];
+  [viewCopy setTransform:&v50];
+  [viewCopy setFrame:_SFRoundRectToPixels(0.0)];
+  [(SFUnifiedBar *)self _squishAnchorPointForStandaloneContentViewAtIndex:index];
   v36 = v35;
   v38 = v37;
   [(SFUnifiedBar *)self _squishVerticalOffset];
@@ -1396,58 +1396,58 @@ double __45__SFUnifiedBar__layOutStandaloneContentViews__block_invoke(uint64_t a
   v50 = v49[0];
   v51 = v49[1];
   v52 = v49[2];
-  [v8 setTransform:&v50];
-  [v8 setDirectionalLayoutMargins:{0.0, v48, 0.0, v11}];
-  v40 = a4;
-  v41 = [v8 layer];
-  [v41 setZPosition:v40];
+  [viewCopy setTransform:&v50];
+  [viewCopy setDirectionalLayoutMargins:{0.0, v48, 0.0, v11}];
+  indexCopy = index;
+  layer = [viewCopy layer];
+  [layer setZPosition:indexCopy];
 
-  [v8 setUserInteractionEnabled:v17 ^ 1u];
+  [viewCopy setUserInteractionEnabled:isContentHidden ^ 1u];
   if (objc_opt_respondsToSelector())
   {
-    [v8 setContentInset:{0.0, v48, 0.0, v11}];
+    [viewCopy setContentInset:{0.0, v48, 0.0, v11}];
   }
 
   if (objc_opt_respondsToSelector())
   {
     [(SFUnifiedBar *)self boundsForCentering];
     UIRectGetCenter();
-    [v8 convertPoint:self fromView:?];
-    [v8 setMidpointForCenteredContent:?];
+    [viewCopy convertPoint:self fromView:?];
+    [viewCopy setMidpointForCenteredContent:?];
   }
 
   v42 = objc_opt_respondsToSelector();
   if (v42)
   {
-    [v8 setSquishTransformFactor:v31];
+    [viewCopy setSquishTransformFactor:v31];
   }
 
-  if (v17)
+  if (isContentHidden)
   {
     v43 = 0.0;
-    [v8 setAlpha:0.0];
-    [v8 layoutIfNeeded];
+    [viewCopy setAlpha:0.0];
+    [viewCopy layoutIfNeeded];
   }
 
   else
   {
     if (objc_opt_respondsToSelector())
     {
-      [v8 preferredOpacity];
+      [viewCopy preferredOpacity];
     }
 
     else
     {
       v44 = 1.0;
-      if (((v42 | v18) & 1) == 0)
+      if (((v42 | showsSquishedContent) & 1) == 0)
       {
         v44 = SFBarContentAlphaForSquishTransformFactor(v31);
       }
     }
 
-    [v8 setAlpha:v44];
-    [v8 layoutIfNeeded];
-    [(SFUnifiedBar *)self _spacingBelowContentView:v8];
+    [viewCopy setAlpha:v44];
+    [viewCopy layoutIfNeeded];
+    [(SFUnifiedBar *)self _spacingBelowContentView:viewCopy];
     v43 = v47 + v24 + v45;
   }
 
@@ -1482,26 +1482,26 @@ double __45__SFUnifiedBar__layOutStandaloneContentViews__block_invoke(uint64_t a
   return result;
 }
 
-- (double)_spacingBelowContentView:(id)a3
+- (double)_spacingBelowContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (objc_opt_respondsToSelector())
   {
-    [v4 preferredBottomSpacing];
+    [viewCopy preferredBottomSpacing];
   }
 
   else
   {
-    v6 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement standaloneContentViews];
-    v7 = [v6 lastObject];
-    if (!v7)
+    standaloneContentViews = [(SFUnifiedBarContentArrangement *)self->_contentArrangement standaloneContentViews];
+    lastObject = [standaloneContentViews lastObject];
+    if (!lastObject)
     {
-      v7 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
+      lastObject = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
     }
 
-    v8 = v7;
+    v8 = lastObject;
 
-    if (v8 == v4)
+    if (v8 == viewCopy)
     {
       [(SFUnifiedBar *)self layoutMargins];
       v9 = v11;
@@ -1519,8 +1519,8 @@ LABEL_8:
 
 - (double)_squishedInlineContentTopOverflow
 {
-  v3 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
-  [v3 preferredSize];
+  inlineContentView = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
+  [inlineContentView preferredSize];
   v5 = v4;
   +[SFUnifiedBarMetrics minimumSquishScale];
   v7 = v6;
@@ -1532,7 +1532,7 @@ LABEL_8:
   return v11;
 }
 
-- (CGPoint)_squishAnchorPointForStandaloneContentViewAtIndex:(unint64_t)a3
+- (CGPoint)_squishAnchorPointForStandaloneContentViewAtIndex:(unint64_t)index
 {
   +[SFUnifiedBarMetrics minimumSquishScaleForStandaloneContent];
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -1541,17 +1541,17 @@ LABEL_8:
   aBlock[3] = &__block_descriptor_40_e44_d20__0__UIView_SFUnifiedBarContentView__8B16l;
   aBlock[4] = v5;
   v6 = _Block_copy(aBlock);
-  v7 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement standaloneContentViews];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  standaloneContentViews = [(SFUnifiedBarContentArrangement *)self->_contentArrangement standaloneContentViews];
+  v8 = [standaloneContentViews objectAtIndexedSubscript:index];
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 showsSquishedContent];
+    showsSquishedContent = [v8 showsSquishedContent];
   }
 
   else
   {
-    v9 = 0;
+    showsSquishedContent = 0;
   }
 
   v31[0] = 0;
@@ -1559,23 +1559,23 @@ LABEL_8:
   v31[2] = 0x3032000000;
   v31[3] = __Block_byref_object_copy__6;
   v31[4] = __Block_byref_object_dispose__6;
-  v32 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
+  inlineContentView = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 0;
-  v10 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement standaloneContentViews];
+  standaloneContentViews2 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement standaloneContentViews];
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __66__SFUnifiedBar__squishAnchorPointForStandaloneContentViewAtIndex___block_invoke_76;
   v21 = &unk_1E721E010;
-  v26 = v9;
-  v25 = a3;
+  v26 = showsSquishedContent;
+  indexCopy = index;
   v23 = v31;
   v11 = v6;
   v22 = v11;
   v24 = &v27;
-  [v10 enumerateObjectsUsingBlock:&v18];
+  [standaloneContentViews2 enumerateObjectsUsingBlock:&v18];
 
   [(SFUnifiedBar *)self _inlineContentSquishAnchorPoint:v18];
   v13 = v12;
@@ -1661,16 +1661,16 @@ void __66__SFUnifiedBar__squishAnchorPointForStandaloneContentViewAtIndex___bloc
   }
 }
 
-- (void)setMarginLevel:(unint64_t)a3
+- (void)setMarginLevel:(unint64_t)level
 {
-  if (self->_marginLevel == a3)
+  if (self->_marginLevel == level)
   {
     return;
   }
 
   v8 = v3;
-  self->_marginLevel = a3;
-  switch(a3)
+  self->_marginLevel = level;
+  switch(level)
   {
     case 2uLL:
       goto LABEL_7;
@@ -1687,14 +1687,14 @@ LABEL_7:
   [(SFUnifiedBar *)self setNeedsLayout];
 }
 
-- (void)_setNeedsRemovalForViewsAtIndexes:(id)a3 ofItems:(id)a4
+- (void)_setNeedsRemovalForViewsAtIndexes:(id)indexes ofItems:(id)items
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __58__SFUnifiedBar__setNeedsRemovalForViewsAtIndexes_ofItems___block_invoke;
   v4[3] = &unk_1E721D8F8;
   v4[4] = self;
-  [a4 enumerateObjectsAtIndexes:a3 options:0 usingBlock:v4];
+  [items enumerateObjectsAtIndexes:indexes options:0 usingBlock:v4];
 }
 
 void __58__SFUnifiedBar__setNeedsRemovalForViewsAtIndexes_ofItems___block_invoke(uint64_t a1, void *a2)
@@ -1704,14 +1704,14 @@ void __58__SFUnifiedBar__setNeedsRemovalForViewsAtIndexes_ofItems___block_invoke
   [v2 addObject:v3];
 }
 
-- (void)_removeViewsForIndexes:(id)a3 ofItems:(id)a4
+- (void)_removeViewsForIndexes:(id)indexes ofItems:(id)items
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __47__SFUnifiedBar__removeViewsForIndexes_ofItems___block_invoke;
   v4[3] = &unk_1E721D8F8;
   v4[4] = self;
-  [a4 enumerateObjectsAtIndexes:a3 options:0 usingBlock:v4];
+  [items enumerateObjectsAtIndexes:indexes options:0 usingBlock:v4];
 }
 
 void __47__SFUnifiedBar__removeViewsForIndexes_ofItems___block_invoke(uint64_t a1, void *a2)
@@ -1737,10 +1737,10 @@ LABEL_5:
 
 - (double)_itemSpacing
 {
-  v3 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
+  inlineContentView = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
   if (objc_opt_respondsToSelector())
   {
-    [v3 preferredSize];
+    [inlineContentView preferredSize];
     v5 = v4;
   }
 
@@ -1775,14 +1775,14 @@ LABEL_5:
     v21[4] = &v22;
     v21[5] = &v26;
     v12 = _Block_copy(v21);
-    v13 = [(SFUnifiedBarItemArrangement *)self->_itemArrangement leadingItems];
-    v12[2](v12, v13, 0);
+    leadingItems = [(SFUnifiedBarItemArrangement *)self->_itemArrangement leadingItems];
+    v12[2](v12, leadingItems, 0);
 
-    v14 = [(SFUnifiedBarItemArrangement *)self->_itemArrangement trailingItems];
-    v12[2](v12, v14, 1);
+    trailingItems = [(SFUnifiedBarItemArrangement *)self->_itemArrangement trailingItems];
+    v12[2](v12, trailingItems, 1);
 
-    v15 = [(SFUnifiedBar *)self _superviewForItems];
-    [v15 layoutMargins];
+    _superviewForItems = [(SFUnifiedBar *)self _superviewForItems];
+    [_superviewForItems layoutMargins];
     v17 = v16;
     v19 = v18;
 
@@ -1857,9 +1857,9 @@ LABEL_8:
 
 - (double)_contentViewSpacing
 {
-  v3 = [MEMORY[0x1E69C8880] isSolariumEnabled];
+  isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
   result = 10.0;
-  if ((v3 & 1) == 0)
+  if ((isSolariumEnabled & 1) == 0)
   {
     result = 12.0;
     if (self->_marginLevel - 1 < 2)
@@ -1883,42 +1883,42 @@ LABEL_8:
 
 - (id)_superviewForInlineContentView
 {
-  v2 = self;
+  selfCopy = self;
   if (self->_glassGroup)
   {
     [(SFUnifiedBar *)self squishTransformFactor];
     if (v3 == 1.0)
     {
-      v2 = v2->_glassGroup;
+      selfCopy = selfCopy->_glassGroup;
     }
   }
 
-  v4 = v2;
+  v4 = selfCopy;
 
   return v4;
 }
 
 - (void)_updateSuperviewForInlineContentView
 {
-  v6 = [(SFUnifiedBar *)self _superviewForInlineContentView];
-  v3 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
-  v4 = [v3 superview];
+  _superviewForInlineContentView = [(SFUnifiedBar *)self _superviewForInlineContentView];
+  inlineContentView = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
+  superview = [inlineContentView superview];
 
-  if (v4 != v6)
+  if (superview != _superviewForInlineContentView)
   {
-    [(SFTouchPassthroughView *)v6 addSubview:v3];
+    [(SFTouchPassthroughView *)_superviewForInlineContentView addSubview:inlineContentView];
   }
 
-  v5 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
-  [v5 safari_setGlassGroupEnabled:v6 != self->_glassGroup];
+  inlineContentView2 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
+  [inlineContentView2 safari_setGlassGroupEnabled:_superviewForInlineContentView != self->_glassGroup];
 }
 
 - (double)_inlineContentHeight
 {
   [(SFUnifiedBarMetrics *)self->_barMetrics itemHeight];
   v4 = v3;
-  v5 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
-  [v5 preferredSize];
+  inlineContentView = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
+  [inlineContentView preferredSize];
   v7 = fmax(v4, v6);
 
   return v7;
@@ -1934,11 +1934,11 @@ LABEL_8:
 
   else
   {
-    v5 = [MEMORY[0x1E69DC668] sharedApplication];
-    v6 = [v5 supportsMultipleScenes];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    supportsMultipleScenes = [mEMORY[0x1E69DC668] supportsMultipleScenes];
 
     [(SFUnifiedBar *)self layoutMargins];
-    if (v6)
+    if (supportsMultipleScenes)
     {
       return fmax(result + self->_contentUnderStatusBarHeight, 8.0) - self->_contentUnderStatusBarHeight;
     }
@@ -1952,12 +1952,12 @@ LABEL_8:
   v26 = *MEMORY[0x1E69E9840];
   [(SFUnifiedBar *)self bounds];
   Width = CGRectGetWidth(v27);
-  v4 = [(SFUnifiedBar *)self _screen];
-  [v4 bounds];
+  _screen = [(SFUnifiedBar *)self _screen];
+  [_screen bounds];
   v5 = CGRectGetWidth(v28);
 
-  v6 = [(SFUnifiedBar *)self _screen];
-  [v6 bounds];
+  _screen2 = [(SFUnifiedBar *)self _screen];
+  [_screen2 bounds];
   v7 = CGRectGetWidth(v29);
 
   if (v7 <= 1366.0)
@@ -1972,9 +1972,9 @@ LABEL_13:
 LABEL_11:
     if (_SFDeviceIsPad())
     {
-      v13 = [(SFUnifiedBar *)self window];
-      v14 = [v13 windowScene];
-      v11 = ([v14 interfaceOrientation] - 1) < 2;
+      window = [(SFUnifiedBar *)self window];
+      windowScene = [window windowScene];
+      v11 = ([windowScene interfaceOrientation] - 1) < 2;
 
       goto LABEL_14;
     }
@@ -1982,9 +1982,9 @@ LABEL_11:
     goto LABEL_13;
   }
 
-  v8 = [(SFUnifiedBar *)self traitCollection];
-  v9 = [v8 preferredContentSizeCategory];
-  v10 = UIContentSizeCategoryCompareToCategory(v9, *MEMORY[0x1E69DDC70]);
+  traitCollection = [(SFUnifiedBar *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v10 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC70]);
 
   if (v10 == NSOrderedDescending)
   {
@@ -2009,8 +2009,8 @@ LABEL_14:
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v15 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement allContentViews];
-    v16 = [v15 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    allContentViews = [(SFUnifiedBarContentArrangement *)self->_contentArrangement allContentViews];
+    v16 = [allContentViews countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v16)
     {
       v17 = v16;
@@ -2021,7 +2021,7 @@ LABEL_14:
         {
           if (*v22 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(allContentViews);
           }
 
           v20 = *(*(&v21 + 1) + 8 * i);
@@ -2031,7 +2031,7 @@ LABEL_14:
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v17 = [allContentViews countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v17);
@@ -2039,15 +2039,15 @@ LABEL_14:
   }
 }
 
-- (void)_setUpContainerViewsForGroupsWithIdentifiers:(id)a3
+- (void)_setUpContainerViewsForGroupsWithIdentifiers:(id)identifiers
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [identifiersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2058,7 +2058,7 @@ LABEL_14:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(identifiersCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -2071,22 +2071,22 @@ LABEL_14:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [identifiersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_removeContainerViewsForGroupsWithIdentifiers:(id)a3
+- (void)_removeContainerViewsForGroupsWithIdentifiers:(id)identifiers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [identifiersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2098,12 +2098,12 @@ LABEL_14:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(identifiersCopy);
         }
 
         v9 = *(*(&v13 + 1) + 8 * v8);
-        v10 = [(SFUnifiedBarItemArrangement *)self->_itemArrangement groupIdentifiers];
-        v11 = [v10 containsObject:v9];
+        groupIdentifiers = [(SFUnifiedBarItemArrangement *)self->_itemArrangement groupIdentifiers];
+        v11 = [groupIdentifiers containsObject:v9];
 
         if ((v11 & 1) == 0)
         {
@@ -2117,7 +2117,7 @@ LABEL_14:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [identifiersCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -2131,17 +2131,17 @@ LABEL_14:
   v4 = v3;
   [(SFUnifiedBar *)self _inlineContentHeight];
   v6 = v4 + v5;
-  v7 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
-  [(SFUnifiedBar *)self _spacingBelowContentView:v7];
+  inlineContentView = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
+  [(SFUnifiedBar *)self _spacingBelowContentView:inlineContentView];
   v9 = v6 + v8;
 
-  v10 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
+  inlineContentView2 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v11 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement standaloneContentViews];
-  v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  standaloneContentViews = [(SFUnifiedBarContentArrangement *)self->_contentArrangement standaloneContentViews];
+  v12 = [standaloneContentViews countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v12)
   {
     v13 = v12;
@@ -2153,7 +2153,7 @@ LABEL_14:
       {
         if (*v26 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(standaloneContentViews);
         }
 
         v16 = *(*(&v25 + 1) + 8 * v15);
@@ -2165,7 +2165,7 @@ LABEL_14:
           v9 = v9 + v18 + v19;
           if (objc_opt_respondsToSelector())
           {
-            [(SFUnifiedBar *)self _spacingBelowContentView:v10];
+            [(SFUnifiedBar *)self _spacingBelowContentView:inlineContentView2];
             v21 = v9 - v20;
             [v16 preferredTopSpacing];
             v9 = v21 + v22;
@@ -2173,14 +2173,14 @@ LABEL_14:
 
           v23 = v16;
 
-          v10 = v23;
+          inlineContentView2 = v23;
         }
 
         ++v15;
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v13 = [standaloneContentViews countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v13);
@@ -2200,11 +2200,11 @@ LABEL_14:
     v6 = v4 * v5;
     [(SFUnifiedBar *)self _squishedInlineContentTopOverflow];
     v8 = v6 - v7;
-    v9 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
-    v27 = v9;
+    inlineContentView = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
+    v27 = inlineContentView;
     if (objc_opt_respondsToSelector())
     {
-      [v9 preferredSquishedBottomSpacing];
+      [inlineContentView preferredSquishedBottomSpacing];
       v8 = v8 + v10;
     }
 
@@ -2212,9 +2212,9 @@ LABEL_14:
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v29 = self;
-    v11 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement standaloneContentViews];
-    v12 = [v11 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    selfCopy = self;
+    standaloneContentViews = [(SFUnifiedBarContentArrangement *)self->_contentArrangement standaloneContentViews];
+    v12 = [standaloneContentViews countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v12)
     {
       v13 = v12;
@@ -2225,7 +2225,7 @@ LABEL_14:
         {
           if (*v31 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(standaloneContentViews);
           }
 
           v16 = *(*(&v30 + 1) + 8 * i);
@@ -2249,16 +2249,16 @@ LABEL_14:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v13 = [standaloneContentViews countByEnumeratingWithState:&v30 objects:v34 count:16];
       }
 
       while (v13);
     }
 
     v22 = _SFRoundFloatToPixels(v8);
-    if ([(SFUnifiedBar *)v29 verticallyCentersSquishedContentInExpandedArea])
+    if ([(SFUnifiedBar *)selfCopy verticallyCentersSquishedContentInExpandedArea])
     {
-      [(SFUnifiedBar *)v29 _topMargin];
+      [(SFUnifiedBar *)selfCopy _topMargin];
       v22 = (v4 + v22) * 0.5 + v23;
     }
   }
@@ -2279,14 +2279,14 @@ LABEL_14:
 
 - (BOOL)verticallyCentersSquishedContentInExpandedArea
 {
-  v3 = [MEMORY[0x1E69C8880] isSolariumEnabled];
-  if (v3)
+  isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
+  if (isSolariumEnabled)
   {
 
-    LOBYTE(v3) = [(SFUnifiedBar *)self _isShowingWindowControls];
+    LOBYTE(isSolariumEnabled) = [(SFUnifiedBar *)self _isShowingWindowControls];
   }
 
-  return v3;
+  return isSolariumEnabled;
 }
 
 - (BOOL)_isShowingWindowControls
@@ -2336,10 +2336,10 @@ LABEL_14:
 
 - (CGPoint)_inlineContentSquishAnchorPoint
 {
-  v3 = [(SFUnifiedBar *)self verticallyCentersSquishedContentInExpandedArea];
+  verticallyCentersSquishedContentInExpandedArea = [(SFUnifiedBar *)self verticallyCentersSquishedContentInExpandedArea];
   [(SFUnifiedBar *)self boundsForCentering];
   MidX = CGRectGetMidX(v9);
-  if (v3)
+  if (verticallyCentersSquishedContentInExpandedArea)
   {
     [(SFUnifiedBar *)self _topMargin];
     [(SFUnifiedBar *)self _inlineContentHeight];
@@ -2358,9 +2358,9 @@ LABEL_14:
 
 - (double)_squishVerticalOffset
 {
-  v3 = [(SFUnifiedBar *)self verticallyCentersSquishedContentInExpandedArea];
+  verticallyCentersSquishedContentInExpandedArea = [(SFUnifiedBar *)self verticallyCentersSquishedContentInExpandedArea];
   result = 0.0;
-  if (!v3)
+  if (!verticallyCentersSquishedContentInExpandedArea)
   {
     contentUnderStatusBarHeight = self->_contentUnderStatusBarHeight;
     result = 5.0;
@@ -2377,23 +2377,23 @@ LABEL_14:
   return result;
 }
 
-- (void)_setShowsSquishedContent:(BOOL)a3
+- (void)_setShowsSquishedContent:(BOOL)content
 {
-  if (self->_showsSquishedContent != a3)
+  if (self->_showsSquishedContent != content)
   {
-    v4 = a3;
-    self->_showsSquishedContent = a3;
-    v6 = !a3;
-    [(UIView *)self->_squishedContentView setHidden:!a3];
+    contentCopy = content;
+    self->_showsSquishedContent = content;
+    v6 = !content;
+    [(UIView *)self->_squishedContentView setHidden:!content];
     if (!v6)
     {
       [(SFUnifiedBar *)self _updateSquishedAccessoryViews];
     }
 
-    v7 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
+    inlineContentView = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
     if (objc_opt_respondsToSelector())
     {
-      [v7 setShowsSquishedAccessoryViews:v4];
+      [inlineContentView setShowsSquishedAccessoryViews:contentCopy];
     }
   }
 }
@@ -2405,8 +2405,8 @@ LABEL_14:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(UIView *)self->_squishedContentView subviews];
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  subviews = [(UIView *)self->_squishedContentView subviews];
+  v4 = [subviews countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2418,28 +2418,28 @@ LABEL_14:
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         [*(*(&v18 + 1) + 8 * v7++) removeFromSuperview];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
+  inlineContentView = [(SFUnifiedBarContentArrangement *)self->_contentArrangement inlineContentView];
   if (objc_opt_respondsToSelector())
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v9 = [v8 squishedAccessoryViews];
-    v10 = [v9 countByEnumeratingWithState:&v14 objects:v22 count:16];
+    squishedAccessoryViews = [inlineContentView squishedAccessoryViews];
+    v10 = [squishedAccessoryViews countByEnumeratingWithState:&v14 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -2451,14 +2451,14 @@ LABEL_14:
         {
           if (*v15 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(squishedAccessoryViews);
           }
 
           [(UIView *)self->_squishedContentView addSubview:*(*(&v14 + 1) + 8 * v13++)];
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v14 objects:v22 count:16];
+        v11 = [squishedAccessoryViews countByEnumeratingWithState:&v14 objects:v22 count:16];
       }
 
       while (v11);
@@ -2468,24 +2468,24 @@ LABEL_14:
   [(UIView *)self->_squishedContentView addSubview:self->_squishedBarButton];
 }
 
-- (void)setBarTheme:(id)a3 animated:(BOOL)a4
+- (void)setBarTheme:(id)theme animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (([v7 isEqual:self->_barTheme] & 1) == 0)
+  animatedCopy = animated;
+  themeCopy = theme;
+  if (([themeCopy isEqual:self->_barTheme] & 1) == 0)
   {
-    objc_storeStrong(&self->_barTheme, a3);
+    objc_storeStrong(&self->_barTheme, theme);
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __37__SFUnifiedBar_setBarTheme_animated___block_invoke;
     v13 = &unk_1E721B400;
-    v14 = self;
-    v15 = v7;
+    selfCopy = self;
+    v15 = themeCopy;
     v8 = _Block_copy(&v10);
     v9 = v8;
-    if (v4)
+    if (animatedCopy)
     {
-      [MEMORY[0x1E69DD250] _animateUsingDefaultTimingWithOptions:50331650 animations:v8 completion:{0, v10, v11, v12, v13, v14}];
+      [MEMORY[0x1E69DD250] _animateUsingDefaultTimingWithOptions:50331650 animations:v8 completion:{0, v10, v11, v12, v13, selfCopy}];
     }
 
     else
@@ -2575,12 +2575,12 @@ void __37__SFUnifiedBar_setBarTheme_animated___block_invoke_3(uint64_t a1, void 
   [v3 setBarTheme:v2];
 }
 
-- (void)setShowsSeparator:(BOOL)a3
+- (void)setShowsSeparator:(BOOL)separator
 {
   v21[4] = *MEMORY[0x1E69E9840];
-  if ([(SFUnifiedBar *)self showsSeparator]!= a3)
+  if ([(SFUnifiedBar *)self showsSeparator]!= separator)
   {
-    if (a3)
+    if (separator)
     {
       v5 = objc_alloc_init(MEMORY[0x1E69DD250]);
       separator = self->_separator;
@@ -2590,20 +2590,20 @@ void __37__SFUnifiedBar_setBarTheme_animated___block_invoke_3(uint64_t a1, void 
       [(UIView *)self->_separator setTranslatesAutoresizingMaskIntoConstraints:0];
       [(SFUnifiedBar *)self addSubview:self->_separator];
       v18 = MEMORY[0x1E696ACD8];
-      v20 = [(UIView *)self->_separator leadingAnchor];
-      v19 = [(SFUnifiedBar *)self leadingAnchor];
-      v7 = [v20 constraintEqualToAnchor:v19];
+      leadingAnchor = [(UIView *)self->_separator leadingAnchor];
+      leadingAnchor2 = [(SFUnifiedBar *)self leadingAnchor];
+      v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v21[0] = v7;
-      v8 = [(UIView *)self->_separator topAnchor];
-      v9 = [(SFUnifiedBar *)self bottomAnchor];
-      v10 = [v8 constraintEqualToAnchor:v9];
+      topAnchor = [(UIView *)self->_separator topAnchor];
+      bottomAnchor = [(SFUnifiedBar *)self bottomAnchor];
+      v10 = [topAnchor constraintEqualToAnchor:bottomAnchor];
       v21[1] = v10;
-      v11 = [(SFUnifiedBar *)self trailingAnchor];
-      v12 = [(UIView *)self->_separator trailingAnchor];
-      v13 = [v11 constraintEqualToAnchor:v12];
+      trailingAnchor = [(SFUnifiedBar *)self trailingAnchor];
+      trailingAnchor2 = [(UIView *)self->_separator trailingAnchor];
+      v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v21[2] = v13;
-      v14 = [(UIView *)self->_separator heightAnchor];
-      v15 = [v14 constraintEqualToConstant:_SFOnePixel()];
+      heightAnchor = [(UIView *)self->_separator heightAnchor];
+      v15 = [heightAnchor constraintEqualToConstant:_SFOnePixel()];
       v21[3] = v15;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:4];
       [v18 activateConstraints:v16];
@@ -2618,11 +2618,11 @@ void __37__SFUnifiedBar_setBarTheme_animated___block_invoke_3(uint64_t a1, void 
   }
 }
 
-- (void)setUsesFaintSeparator:(BOOL)a3
+- (void)setUsesFaintSeparator:(BOOL)separator
 {
-  if (self->_usesFaintSeparator != a3)
+  if (self->_usesFaintSeparator != separator)
   {
-    self->_usesFaintSeparator = a3;
+    self->_usesFaintSeparator = separator;
     [(SFUnifiedBar *)self _updateSeparatorColor];
   }
 }
@@ -2642,19 +2642,19 @@ void __37__SFUnifiedBar_setBarTheme_animated___block_invoke_3(uint64_t a1, void 
   [(UIView *)self->_separator setBackgroundColor:v3];
 }
 
-- (void)setBackgroundVisibility:(unint64_t)a3
+- (void)setBackgroundVisibility:(unint64_t)visibility
 {
-  if (self->_backgroundVisibility != a3)
+  if (self->_backgroundVisibility != visibility)
   {
-    self->_backgroundVisibility = a3;
+    self->_backgroundVisibility = visibility;
     [(SFUnifiedBar *)self _updateBackgroundAlpha];
   }
 }
 
-- (void)setChromelessScrollDistance:(double)a3
+- (void)setChromelessScrollDistance:(double)distance
 {
   v18 = *MEMORY[0x1E69E9840];
-  self->_chromelessScrollDistance = a3;
+  self->_chromelessScrollDistance = distance;
   [(SFUnifiedBar *)self _updateBackgroundAlpha];
   [(SFUnifiedBar *)self _themeColorVisibility];
   v5 = v4;
@@ -2666,8 +2666,8 @@ void __37__SFUnifiedBar_setBarTheme_animated___block_invoke_3(uint64_t a1, void 
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement allContentViews];
-    v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    allContentViews = [(SFUnifiedBarContentArrangement *)self->_contentArrangement allContentViews];
+    v8 = [allContentViews countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v8)
     {
       v9 = v8;
@@ -2679,7 +2679,7 @@ void __37__SFUnifiedBar_setBarTheme_animated___block_invoke_3(uint64_t a1, void 
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allContentViews);
           }
 
           v12 = *(*(&v13 + 1) + 8 * v11);
@@ -2692,7 +2692,7 @@ void __37__SFUnifiedBar_setBarTheme_animated___block_invoke_3(uint64_t a1, void 
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v9 = [allContentViews countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v9);
@@ -2713,8 +2713,8 @@ void __37__SFUnifiedBar_setBarTheme_animated___block_invoke_3(uint64_t a1, void 
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(SFUnifiedBarContentArrangement *)self->_contentArrangement allContentViews];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    allContentViews = [(SFUnifiedBarContentArrangement *)self->_contentArrangement allContentViews];
+    v7 = [allContentViews countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2726,7 +2726,7 @@ void __37__SFUnifiedBar_setBarTheme_animated___block_invoke_3(uint64_t a1, void 
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allContentViews);
           }
 
           v11 = *(*(&v12 + 1) + 8 * v10);
@@ -2739,7 +2739,7 @@ void __37__SFUnifiedBar_setBarTheme_animated___block_invoke_3(uint64_t a1, void 
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [allContentViews countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -2764,23 +2764,23 @@ void __37__SFUnifiedBar_setBarTheme_animated___block_invoke_3(uint64_t a1, void 
   return result;
 }
 
-- (void)setScrollPocketInteraction:(id)a3
+- (void)setScrollPocketInteraction:(id)interaction
 {
-  v6 = a3;
+  interactionCopy = interaction;
   if ([MEMORY[0x1E69C8880] isSolariumEnabled])
   {
     v5 = self->_scrollPocketInteraction;
-    if (v5 != v6)
+    if (v5 != interactionCopy)
     {
-      objc_storeStrong(&self->_scrollPocketInteraction, a3);
+      objc_storeStrong(&self->_scrollPocketInteraction, interaction);
       if (v5)
       {
         [(SFUnifiedBar *)self removeInteraction:v5];
       }
 
-      if (v6)
+      if (interactionCopy)
       {
-        [(SFUnifiedBar *)self addInteraction:v6];
+        [(SFUnifiedBar *)self addInteraction:interactionCopy];
       }
     }
   }

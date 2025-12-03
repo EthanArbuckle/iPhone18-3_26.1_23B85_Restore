@@ -1,5 +1,5 @@
 @interface ATXProactiveSuggestionClientModelEvaluatorPublishers
-- (ATXProactiveSuggestionClientModelEvaluatorPublishers)initWithStartTime:(id)a3 endTime:(id)a4;
+- (ATXProactiveSuggestionClientModelEvaluatorPublishers)initWithStartTime:(id)time endTime:(id)endTime;
 - (BPSPublisher)clientModelCacheUpdatePublisher;
 - (BPSPublisher)shadowCandidatePublisher;
 - (BPSPublisher)uiPublisher;
@@ -7,20 +7,20 @@
 
 @implementation ATXProactiveSuggestionClientModelEvaluatorPublishers
 
-- (ATXProactiveSuggestionClientModelEvaluatorPublishers)initWithStartTime:(id)a3 endTime:(id)a4
+- (ATXProactiveSuggestionClientModelEvaluatorPublishers)initWithStartTime:(id)time endTime:(id)endTime
 {
-  v6 = a3;
-  v7 = a4;
+  timeCopy = time;
+  endTimeCopy = endTime;
   v14.receiver = self;
   v14.super_class = ATXProactiveSuggestionClientModelEvaluatorPublishers;
   v8 = [(ATXProactiveSuggestionClientModelEvaluatorPublishers *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [timeCopy copy];
     startTime = v8->_startTime;
     v8->_startTime = v9;
 
-    v11 = [v7 copy];
+    v11 = [endTimeCopy copy];
     endTime = v8->_endTime;
     v8->_endTime = v11;
   }

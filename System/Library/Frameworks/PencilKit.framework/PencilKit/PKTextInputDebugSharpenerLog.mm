@@ -1,27 +1,27 @@
 @interface PKTextInputDebugSharpenerLog
-+ (BOOL)canLoadFromFileAtURL:(id)a3;
++ (BOOL)canLoadFromFileAtURL:(id)l;
 + (id)_environmentMetadataDictionary;
-+ (id)_recommendedFileNameForLogWithDate:(id)a3;
-- (BOOL)_loadFromFileURL:(id)a3 error:(id *)a4;
++ (id)_recommendedFileNameForLogWithDate:(id)date;
+- (BOOL)_loadFromFileURL:(id)l error:(id *)error;
 - (BOOL)hasContent;
-- (BOOL)writeToURL:(id)a3 withContentLevel:(int64_t)a4 excludeEntyIndexes:(id)a5 error:(id *)a6;
-- (PKTextInputDebugSharpenerLog)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (PKTextInputDebugSharpenerLog)initWithLogEntries:(id)a3;
-- (id)_dictionaryRepresentationWithContentLevel:(int64_t)a3 excludeEntyIndexes:(id)a4;
+- (BOOL)writeToURL:(id)l withContentLevel:(int64_t)level excludeEntyIndexes:(id)indexes error:(id *)error;
+- (PKTextInputDebugSharpenerLog)initWithContentsOfURL:(id)l error:(id *)error;
+- (PKTextInputDebugSharpenerLog)initWithLogEntries:(id)entries;
+- (id)_dictionaryRepresentationWithContentLevel:(int64_t)level excludeEntyIndexes:(id)indexes;
 - (id)description;
-- (id)writeLogToTemporaryDirectoryWithContentLevel:(int64_t)a3 excludeEntyIndexes:(id)a4 error:(id *)a5;
+- (id)writeLogToTemporaryDirectoryWithContentLevel:(int64_t)level excludeEntyIndexes:(id)indexes error:(id *)error;
 @end
 
 @implementation PKTextInputDebugSharpenerLog
 
-- (PKTextInputDebugSharpenerLog)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (PKTextInputDebugSharpenerLog)initWithContentsOfURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = PKTextInputDebugSharpenerLog;
   v7 = [(PKTextInputDebugSharpenerLog *)&v10 init];
   v8 = v7;
-  if (v7 && ![(PKTextInputDebugSharpenerLog *)v7 _loadFromFileURL:v6 error:a4])
+  if (v7 && ![(PKTextInputDebugSharpenerLog *)v7 _loadFromFileURL:lCopy error:error])
   {
 
     v8 = 0;
@@ -30,21 +30,21 @@
   return v8;
 }
 
-- (PKTextInputDebugSharpenerLog)initWithLogEntries:(id)a3
+- (PKTextInputDebugSharpenerLog)initWithLogEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   v11.receiver = self;
   v11.super_class = PKTextInputDebugSharpenerLog;
   v5 = [(PKTextInputDebugSharpenerLog *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [entriesCopy copy];
     logEntries = v5->_logEntries;
     v5->_logEntries = v6;
 
-    v8 = [objc_opt_class() _environmentMetadataDictionary];
+    _environmentMetadataDictionary = [objc_opt_class() _environmentMetadataDictionary];
     metadataDictionary = v5->_metadataDictionary;
-    v5->_metadataDictionary = v8;
+    v5->_metadataDictionary = _environmentMetadataDictionary;
   }
 
   return v5;
@@ -55,35 +55,35 @@
   v8.receiver = self;
   v8.super_class = PKTextInputDebugSharpenerLog;
   v3 = [(PKTextInputDebugSharpenerLog *)&v8 description];
-  v4 = [(PKTextInputDebugSharpenerLog *)self metadataDictionary];
-  v5 = [(PKTextInputDebugSharpenerLog *)self logEntries];
-  v6 = [v3 stringByAppendingFormat:@" metadata: %@, entries: %@", v4, v5];
+  metadataDictionary = [(PKTextInputDebugSharpenerLog *)self metadataDictionary];
+  logEntries = [(PKTextInputDebugSharpenerLog *)self logEntries];
+  v6 = [v3 stringByAppendingFormat:@" metadata: %@, entries: %@", metadataDictionary, logEntries];
 
   return v6;
 }
 
 - (BOOL)hasContent
 {
-  v2 = [(PKTextInputDebugSharpenerLog *)self logEntries];
-  v3 = [v2 count] != 0;
+  logEntries = [(PKTextInputDebugSharpenerLog *)self logEntries];
+  v3 = [logEntries count] != 0;
 
   return v3;
 }
 
-- (id)_dictionaryRepresentationWithContentLevel:(int64_t)a3 excludeEntyIndexes:(id)a4
+- (id)_dictionaryRepresentationWithContentLevel:(int64_t)level excludeEntyIndexes:(id)indexes
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  indexesCopy = indexes;
   v7 = MEMORY[0x1E695DF70];
-  v8 = [(PKTextInputDebugSharpenerLog *)self logEntries];
-  v9 = [v7 arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  logEntries = [(PKTextInputDebugSharpenerLog *)self logEntries];
+  v9 = [v7 arrayWithCapacity:{objc_msgSend(logEntries, "count")}];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [(PKTextInputDebugSharpenerLog *)self logEntries];
-  v11 = [v10 countByEnumeratingWithState:&v21 objects:v27 count:16];
+  logEntries2 = [(PKTextInputDebugSharpenerLog *)self logEntries];
+  v11 = [logEntries2 countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v11)
   {
     v12 = v11;
@@ -95,29 +95,29 @@
       {
         if (*v22 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(logEntries2);
         }
 
         v16 = *(*(&v21 + 1) + 8 * i);
-        if (([v6 containsIndex:v13] & 1) == 0)
+        if (([indexesCopy containsIndex:v13] & 1) == 0)
         {
-          v17 = [v16 dictionaryRepresentationWithTargetContentLevel:a3];
+          v17 = [v16 dictionaryRepresentationWithTargetContentLevel:level];
           [v9 addObject:v17];
         }
 
         ++v13;
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v21 objects:v27 count:16];
+      v12 = [logEntries2 countByEnumeratingWithState:&v21 objects:v27 count:16];
     }
 
     while (v12);
   }
 
   v25[0] = @"metadata";
-  v18 = [(PKTextInputDebugSharpenerLog *)self metadataDictionary];
+  metadataDictionary = [(PKTextInputDebugSharpenerLog *)self metadataDictionary];
   v25[1] = @"entries";
-  v26[0] = v18;
+  v26[0] = metadataDictionary;
   v26[1] = v9;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:2];
 
@@ -127,13 +127,13 @@
 + (id)_environmentMetadataDictionary
 {
   v12[4] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AAE8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = v3;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = bundleIdentifier;
   v5 = &stru_1F476BD20;
-  if (v3)
+  if (bundleIdentifier)
   {
-    v5 = v3;
+    v5 = bundleIdentifier;
   }
 
   v6 = v5;
@@ -153,33 +153,33 @@
   return v9;
 }
 
-+ (BOOL)canLoadFromFileAtURL:(id)a3
++ (BOOL)canLoadFromFileAtURL:(id)l
 {
-  v3 = [a3 pathExtension];
-  v4 = [v3 caseInsensitiveCompare:@"plist"] == 0;
+  pathExtension = [l pathExtension];
+  v4 = [pathExtension caseInsensitiveCompare:@"plist"] == 0;
 
   return v4;
 }
 
-- (id)writeLogToTemporaryDirectoryWithContentLevel:(int64_t)a3 excludeEntyIndexes:(id)a4 error:(id *)a5
+- (id)writeLogToTemporaryDirectoryWithContentLevel:(int64_t)level excludeEntyIndexes:(id)indexes error:(id *)error
 {
-  v8 = a4;
-  v9 = [(PKTextInputDebugSharpenerLog *)self logEntries];
-  v10 = [v9 lastObject];
-  v11 = [v10 entryDate];
+  indexesCopy = indexes;
+  logEntries = [(PKTextInputDebugSharpenerLog *)self logEntries];
+  lastObject = [logEntries lastObject];
+  entryDate = [lastObject entryDate];
 
-  if (!v11)
+  if (!entryDate)
   {
-    v11 = [MEMORY[0x1E695DF00] date];
+    entryDate = [MEMORY[0x1E695DF00] date];
   }
 
-  v12 = [PKTextInputDebugSharpenerLog _recommendedFileNameForLogWithDate:v11];
+  v12 = [PKTextInputDebugSharpenerLog _recommendedFileNameForLogWithDate:entryDate];
   v13 = MEMORY[0x1E695DFF8];
   v14 = NSTemporaryDirectory();
   v15 = [v14 stringByAppendingPathComponent:v12];
   v16 = [v13 fileURLWithPath:v15 isDirectory:0];
 
-  v17 = [(PKTextInputDebugSharpenerLog *)self writeToURL:v16 withContentLevel:a3 excludeEntyIndexes:v8 error:a5];
+  v17 = [(PKTextInputDebugSharpenerLog *)self writeToURL:v16 withContentLevel:level excludeEntyIndexes:indexesCopy error:error];
   if (!v17)
   {
 
@@ -189,11 +189,11 @@
   return v16;
 }
 
-- (BOOL)writeToURL:(id)a3 withContentLevel:(int64_t)a4 excludeEntyIndexes:(id)a5 error:(id *)a6
+- (BOOL)writeToURL:(id)l withContentLevel:(int64_t)level excludeEntyIndexes:(id)indexes error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [(PKTextInputDebugSharpenerLog *)self _dictionaryRepresentationWithContentLevel:a4 excludeEntyIndexes:a5];
+  lCopy = l;
+  v11 = [(PKTextInputDebugSharpenerLog *)self _dictionaryRepresentationWithContentLevel:level excludeEntyIndexes:indexes];
   v22 = 0;
   v12 = [MEMORY[0x1E696AE40] dataWithPropertyList:v11 format:100 options:0 error:&v22];
   v13 = v22;
@@ -201,13 +201,13 @@
   if (v12)
   {
     v21 = v13;
-    v15 = [v12 writeToURL:v10 options:0 error:&v21];
+    v15 = [v12 writeToURL:lCopy options:0 error:&v21];
     v16 = v21;
 
     if (v15)
     {
       v17 = 1;
-      if (!a6)
+      if (!error)
       {
         goto LABEL_10;
       }
@@ -225,18 +225,18 @@
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v24 = v10;
+    v24 = lCopy;
     v25 = 2112;
     v26 = v16;
     _os_log_error_impl(&dword_1C7CCA000, v18, OS_LOG_TYPE_ERROR, "Couldn't write PencilSharpener log to %@; Error: %@", buf, 0x16u);
   }
 
   v17 = 0;
-  if (a6)
+  if (error)
   {
 LABEL_9:
     v19 = v16;
-    *a6 = v16;
+    *error = v16;
   }
 
 LABEL_10:
@@ -244,12 +244,12 @@ LABEL_10:
   return v17;
 }
 
-- (BOOL)_loadFromFileURL:(id)a3 error:(id *)a4
+- (BOOL)_loadFromFileURL:(id)l error:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   v44 = 0;
-  v7 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v6 error:&v44];
+  v7 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:lCopy error:&v44];
   v8 = v44;
   if (!v7)
   {
@@ -257,7 +257,7 @@ LABEL_10:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v46 = v6;
+      v46 = lCopy;
       v47 = 2112;
       v48 = v8;
       _os_log_error_impl(&dword_1C7CCA000, v14, OS_LOG_TYPE_ERROR, "Error reading PencilSharpener log from %@; error: %@", buf, 0x16u);
@@ -312,8 +312,8 @@ LABEL_10:
   v17 = v16;
   v33 = v15;
   v34 = v7;
-  v35 = a4;
-  v36 = v6;
+  errorCopy = error;
+  v36 = lCopy;
   v18 = *v41;
   while (2)
   {
@@ -360,8 +360,8 @@ LABEL_10:
 
         v20 = v8;
 LABEL_27:
-        a4 = v35;
-        v6 = v36;
+        error = errorCopy;
+        lCopy = v36;
 
         isKindOfClass = 0;
         v8 = v20;
@@ -385,8 +385,8 @@ LABEL_27:
     break;
   }
 
-  a4 = v35;
-  v6 = v36;
+  error = errorCopy;
+  lCopy = v36;
   isKindOfClass = v37;
 LABEL_28:
   v15 = v33;
@@ -398,26 +398,26 @@ LABEL_30:
   self->_logEntries = v25;
 
 LABEL_31:
-  if (a4)
+  if (error)
   {
     v27 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return isKindOfClass & 1;
 }
 
-+ (id)_recommendedFileNameForLogWithDate:(id)a3
++ (id)_recommendedFileNameForLogWithDate:(id)date
 {
   v3 = MEMORY[0x1E696AB78];
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_alloc_init(v3);
   v6 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"en_US_POSIX"];
   [v5 setLocale:v6];
 
   [v5 setDateFormat:@"yyyy-MM-dd-HHmmss"];
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [v5 stringFromDate:v4];
+  v8 = [v5 stringFromDate:dateCopy];
 
   v9 = [v7 stringWithFormat:@"PencilSharpener-%@", v8];
   v10 = [v9 stringByAppendingPathExtension:@"plist"];

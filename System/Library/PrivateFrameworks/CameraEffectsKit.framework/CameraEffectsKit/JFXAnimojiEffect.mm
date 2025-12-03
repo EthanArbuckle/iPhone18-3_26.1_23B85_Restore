@@ -1,36 +1,36 @@
 @interface JFXAnimojiEffect
 + (BOOL)isAvatarKitAvailable;
 + (id)animojiIDs;
-+ (id)createAnimojiEffectForID:(id)a3;
-+ (id)createMemojiEffectWithContentsOfFile:(id)a3 identifier:(id)a4;
-- (CGAffineTransform)_affineTransformFromEffectRect:(SEL)a3 toSize:(CGRect)a4 basisOrigin:(CGSize)a5;
-- (CGAffineTransform)transform:(SEL)a3 basisOrigin:(CGRect)a4;
-- (JFXAnimojiEffect)initWithCoder:(id)a3;
-- (PVCGPointQuad)_convertRenderEffectPoints:(SEL)a3 toBasisRect:(PVCGPointQuad *)a4 basisOrigin:(CGRect)a5;
++ (id)createAnimojiEffectForID:(id)d;
++ (id)createMemojiEffectWithContentsOfFile:(id)file identifier:(id)identifier;
+- (CGAffineTransform)_affineTransformFromEffectRect:(SEL)rect toSize:(CGRect)size basisOrigin:(CGSize)origin;
+- (CGAffineTransform)transform:(SEL)transform basisOrigin:(CGRect)origin;
+- (JFXAnimojiEffect)initWithCoder:(id)coder;
+- (PVCGPointQuad)_convertRenderEffectPoints:(SEL)points toBasisRect:(PVCGPointQuad *)rect basisOrigin:(CGRect)origin;
 - (UIImage)thumbnail;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dataRepresentation;
 - (unint64_t)avatarVersionNumber;
-- (void)_convertRenderEffectPoints:(CGPoint *)a3 numPoints:(unint64_t)a4 fromBasisRect:(CGRect)a5 basisOrigin:(int)a6;
-- (void)_convertRenderEffectPoints:(CGPoint *)a3 numPoints:(unint64_t)a4 toBasisRect:(CGRect)a5 basisOrigin:(int)a6;
-- (void)encodeWithCoder:(id)a3;
-- (void)loadRenderEffectInBackgroundWithCompletionOnMainQueue:(id)a3;
-- (void)loadRenderEffectOnQueue:(id)a3 completion:(id)a4;
+- (void)_convertRenderEffectPoints:(CGPoint *)points numPoints:(unint64_t)numPoints fromBasisRect:(CGRect)rect basisOrigin:(int)origin;
+- (void)_convertRenderEffectPoints:(CGPoint *)points numPoints:(unint64_t)numPoints toBasisRect:(CGRect)rect basisOrigin:(int)origin;
+- (void)encodeWithCoder:(id)coder;
+- (void)loadRenderEffectInBackgroundWithCompletionOnMainQueue:(id)queue;
+- (void)loadRenderEffectOnQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation JFXAnimojiEffect
 
-- (JFXAnimojiEffect)initWithCoder:(id)a3
+- (JFXAnimojiEffect)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = JFXAnimojiEffect;
-  v5 = [(JFXEffect *)&v8 initWithCoder:v4];
+  v5 = [(JFXEffect *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"kJFXCaptureInterfaceOrientationKey"])
+    if ([coderCopy containsValueForKey:@"kJFXCaptureInterfaceOrientationKey"])
     {
-      v6 = [v4 decodeIntegerForKey:@"kJFXCaptureInterfaceOrientationKey"];
+      v6 = [coderCopy decodeIntegerForKey:@"kJFXCaptureInterfaceOrientationKey"];
     }
 
     else
@@ -44,20 +44,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = JFXAnimojiEffect;
-  v4 = a3;
-  [(JFXEffect *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:-[JFXAnimojiEffect captureInterfaceOrientation](self forKey:{"captureInterfaceOrientation", v5.receiver, v5.super_class), @"kJFXCaptureInterfaceOrientationKey"}];
+  coderCopy = coder;
+  [(JFXEffect *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[JFXAnimojiEffect captureInterfaceOrientation](self forKey:{"captureInterfaceOrientation", v5.receiver, v5.super_class), @"kJFXCaptureInterfaceOrientationKey"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = JFXAnimojiEffect;
-  v4 = [(JFXEffect *)&v6 copyWithZone:a3];
+  v4 = [(JFXEffect *)&v6 copyWithZone:zone];
   [v4 setCaptureInterfaceOrientation:{-[JFXAnimojiEffect captureInterfaceOrientation](self, "captureInterfaceOrientation")}];
   return v4;
 }
@@ -69,16 +69,16 @@
   {
     v2 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v3 = objc_alloc_init(MEMORY[0x277CF0518]);
-    v4 = [MEMORY[0x277CF0500] requestForCustomAvatars];
-    v5 = [v3 avatarsForFetchRequest:v4 error:0];
-    v6 = [v5 reverseObjectEnumerator];
-    v7 = [v6 allObjects];
+    requestForCustomAvatars = [MEMORY[0x277CF0500] requestForCustomAvatars];
+    v5 = [v3 avatarsForFetchRequest:requestForCustomAvatars error:0];
+    reverseObjectEnumerator = [v5 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = v7;
+    v8 = allObjects;
     v9 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v9)
     {
@@ -93,8 +93,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v26 + 1) + 8 * i) identifier];
-          [v2 addObject:v13];
+          identifier = [*(*(&v26 + 1) + 8 * i) identifier];
+          [v2 addObject:identifier];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
@@ -103,8 +103,8 @@
       while (v10);
     }
 
-    v14 = [MEMORY[0x277CF0500] requestForPredefinedAvatars];
-    v15 = [v3 avatarsForFetchRequest:v14 error:0];
+    requestForPredefinedAvatars = [MEMORY[0x277CF0500] requestForPredefinedAvatars];
+    v15 = [v3 avatarsForFetchRequest:requestForPredefinedAvatars error:0];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -123,8 +123,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v22 + 1) + 8 * j) identifier];
-          [v2 addObject:v20];
+          identifier2 = [*(*(&v22 + 1) + 8 * j) identifier];
+          [v2 addObject:identifier2];
         }
 
         v17 = [v15 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -142,32 +142,32 @@
   return v2;
 }
 
-+ (id)createAnimojiEffectForID:(id)a3
++ (id)createAnimojiEffectForID:(id)d
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (d)
   {
     v3 = MEMORY[0x277CF0518];
-    v4 = a3;
+    dCopy = d;
     v5 = objc_alloc_init(v3);
-    v6 = [MEMORY[0x277CF0500] requestForAvatarWithIdentifier:v4];
+    v6 = [MEMORY[0x277CF0500] requestForAvatarWithIdentifier:dCopy];
 
     v21 = 0;
     v7 = [v5 avatarsForFetchRequest:v6 error:&v21];
     v8 = v21;
-    v9 = [v7 firstObject];
-    if (v9)
+    firstObject = [v7 firstObject];
+    if (firstObject)
     {
       v10 = AVTAvatarKitVersionNumber();
-      v11 = [MEMORY[0x277CF0508] avatarForRecord:v9];
-      v12 = [v11 dataRepresentation];
-      v13 = v12;
+      v11 = [MEMORY[0x277CF0508] avatarForRecord:firstObject];
+      dataRepresentation = [v11 dataRepresentation];
+      v13 = dataRepresentation;
       v20 = v8;
-      if (v12)
+      if (dataRepresentation)
       {
         v22[0] = @"JFXAnimojiEffectDataRepresentationKey";
         v22[1] = @"JFXAnimojiEffectAvatarVersionNumberKey";
-        v23[0] = v12;
+        v23[0] = dataRepresentation;
         v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
         v23[1] = v14;
         v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:v22 count:2];
@@ -179,8 +179,8 @@
       }
 
       v17 = +[JFXEffectFactory sharedInstance];
-      v18 = [v9 identifier];
-      v16 = [v17 createEffectForType:7 fromID:v18 withProperties:v15];
+      identifier = [firstObject identifier];
+      v16 = [v17 createEffectForType:7 fromID:identifier withProperties:v15];
 
       v8 = v20;
     }
@@ -199,11 +199,11 @@
   return v16;
 }
 
-+ (id)createMemojiEffectWithContentsOfFile:(id)a3 identifier:(id)a4
++ (id)createMemojiEffectWithContentsOfFile:(id)file identifier:(id)identifier
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:a3];
+  identifierCopy = identifier;
+  v6 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:file];
   if (v6)
   {
     v12[0] = @"JFXAnimojiEffectDataRepresentationKey";
@@ -214,7 +214,7 @@
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
     v9 = +[JFXEffectFactory sharedInstance];
-    v10 = [v9 createEffectForType:7 fromID:v5 withProperties:v8];
+    v10 = [v9 createEffectForType:7 fromID:identifierCopy withProperties:v8];
   }
 
   else
@@ -263,16 +263,16 @@ Class __40__JFXAnimojiEffect_isAvatarKitAvailable__block_invoke()
   if (thumbnail_s_AvatarKitHasAnimojiThumbnails == 1)
   {
     v3 = objc_opt_class();
-    v4 = [(JFXEffect *)self effectID];
-    v5 = [v3 thumbnailForAnimojiNamed:v4 options:0];
+    effectID = [(JFXEffect *)self effectID];
+    v5 = [v3 thumbnailForAnimojiNamed:effectID options:0];
   }
 
   else
   {
     v6 = MEMORY[0x277D755B8];
-    v4 = [(JFXEffect *)self effectID];
+    effectID = [(JFXEffect *)self effectID];
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v5 = [v6 imageNamed:v4 inBundle:v7 compatibleWithTraitCollection:0];
+    v5 = [v6 imageNamed:effectID inBundle:v7 compatibleWithTraitCollection:0];
   }
 
   return v5;
@@ -296,72 +296,72 @@ uint64_t __29__JFXAnimojiEffect_thumbnail__block_invoke()
 
 - (id)dataRepresentation
 {
-  v2 = [(JFXEffect *)self effectParameters];
-  v3 = [v2 objectForKeyedSubscript:@"JFXAnimojiEffectDataRepresentationKey"];
+  effectParameters = [(JFXEffect *)self effectParameters];
+  v3 = [effectParameters objectForKeyedSubscript:@"JFXAnimojiEffectDataRepresentationKey"];
 
   return v3;
 }
 
 - (unint64_t)avatarVersionNumber
 {
-  v2 = [(JFXEffect *)self effectParameters];
-  v3 = [v2 objectForKeyedSubscript:@"JFXAnimojiEffectAvatarVersionNumberKey"];
+  effectParameters = [(JFXEffect *)self effectParameters];
+  v3 = [effectParameters objectForKeyedSubscript:@"JFXAnimojiEffectAvatarVersionNumberKey"];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (void)loadRenderEffectInBackgroundWithCompletionOnMainQueue:(id)a3
+- (void)loadRenderEffectInBackgroundWithCompletionOnMainQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__JFXAnimojiEffect_loadRenderEffectInBackgroundWithCompletionOnMainQueue___block_invoke;
   block[3] = &unk_278D7A168;
-  v6 = v3;
-  v4 = v3;
+  v6 = queueCopy;
+  v4 = queueCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)loadRenderEffectOnQueue:(id)a3 completion:(id)a4
+- (void)loadRenderEffectOnQueue:(id)queue completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__JFXAnimojiEffect_loadRenderEffectOnQueue_completion___block_invoke;
   block[3] = &unk_278D7A168;
-  v8 = v5;
-  v6 = v5;
-  dispatch_async(a3, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(queue, block);
 }
 
-- (CGAffineTransform)transform:(SEL)a3 basisOrigin:(CGRect)a4
+- (CGAffineTransform)transform:(SEL)transform basisOrigin:(CGRect)origin
 {
-  v5 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"not supported" userInfo:{0, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height}];
+  v5 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"not supported" userInfo:{0, origin.origin.x, origin.origin.y, origin.size.width, origin.size.height}];
   objc_exception_throw(v5);
 }
 
-- (PVCGPointQuad)_convertRenderEffectPoints:(SEL)a3 toBasisRect:(PVCGPointQuad *)a4 basisOrigin:(CGRect)a5
+- (PVCGPointQuad)_convertRenderEffectPoints:(SEL)points toBasisRect:(PVCGPointQuad *)rect basisOrigin:(CGRect)origin
 {
-  v6 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"not supported" userInfo:{0, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}];
+  v6 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"not supported" userInfo:{0, origin.origin.x, origin.origin.y, origin.size.width, origin.size.height}];
   objc_exception_throw(v6);
 }
 
-- (void)_convertRenderEffectPoints:(CGPoint *)a3 numPoints:(unint64_t)a4 toBasisRect:(CGRect)a5 basisOrigin:(int)a6
+- (void)_convertRenderEffectPoints:(CGPoint *)points numPoints:(unint64_t)numPoints toBasisRect:(CGRect)rect basisOrigin:(int)origin
 {
-  v6 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"not supported" userInfo:{0, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}];
+  v6 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"not supported" userInfo:{0, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
   objc_exception_throw(v6);
 }
 
-- (void)_convertRenderEffectPoints:(CGPoint *)a3 numPoints:(unint64_t)a4 fromBasisRect:(CGRect)a5 basisOrigin:(int)a6
+- (void)_convertRenderEffectPoints:(CGPoint *)points numPoints:(unint64_t)numPoints fromBasisRect:(CGRect)rect basisOrigin:(int)origin
 {
-  v6 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"not supported" userInfo:{0, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}];
+  v6 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"not supported" userInfo:{0, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
   objc_exception_throw(v6);
 }
 
-- (CGAffineTransform)_affineTransformFromEffectRect:(SEL)a3 toSize:(CGRect)a4 basisOrigin:(CGSize)a5
+- (CGAffineTransform)_affineTransformFromEffectRect:(SEL)rect toSize:(CGRect)size basisOrigin:(CGSize)origin
 {
-  v6 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"not supported" userInfo:{0, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height, a5.width, a5.height}];
+  v6 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"not supported" userInfo:{0, size.origin.x, size.origin.y, size.size.width, size.size.height, origin.width, origin.height}];
   objc_exception_throw(v6);
 }
 

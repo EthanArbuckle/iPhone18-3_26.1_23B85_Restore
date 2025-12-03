@@ -1,13 +1,13 @@
 @interface _UIDefinitionDictionary
-+ (id)_normalizedLanguageStringForLanguageCode:(id)a3;
-- (BOOL)_hasDefinitionForTerm:(id)a3;
++ (id)_normalizedLanguageStringForLanguageCode:(id)code;
+- (BOOL)_hasDefinitionForTerm:(id)term;
 - (BOOL)_isTTYDictionary;
 - (NSString)localizedDictionaryName;
 - (NSString)localizedLanguageName;
-- (_UIDefinitionDictionary)initWithAsset:(id)a3;
-- (id)_HTMLDefinitionForTerm:(id)a3 type:(int64_t)a4;
-- (id)_attributedDefinitionForTerm:(id)a3;
-- (id)_definitionValueForTerm:(id)a3;
+- (_UIDefinitionDictionary)initWithAsset:(id)asset;
+- (id)_HTMLDefinitionForTerm:(id)term type:(int64_t)type;
+- (id)_attributedDefinitionForTerm:(id)term;
+- (id)_definitionValueForTerm:(id)term;
 - (id)description;
 - (void)dealloc;
 - (void)updateAsset;
@@ -15,18 +15,18 @@
 
 @implementation _UIDefinitionDictionary
 
-- (_UIDefinitionDictionary)initWithAsset:(id)a3
+- (_UIDefinitionDictionary)initWithAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v12.receiver = self;
   v12.super_class = _UIDefinitionDictionary;
   v6 = [(_UIDefinitionDictionary *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rawAsset, a3);
-    v8 = [(MAAsset *)v7->_rawAsset attributes];
-    v9 = [v8 objectForKey:@"Language"];
+    objc_storeStrong(&v6->_rawAsset, asset);
+    attributes = [(MAAsset *)v7->_rawAsset attributes];
+    v9 = [attributes objectForKey:@"Language"];
     definitionLanguage = v7->_definitionLanguage;
     v7->_definitionLanguage = v9;
 
@@ -54,8 +54,8 @@
       CFRelease(dictionary);
     }
 
-    v6 = [(MAAsset *)self->_rawAsset attributes];
-    v7 = [(MAAsset *)self->_rawAsset getLocalFileUrl];
+    attributes = [(MAAsset *)self->_rawAsset attributes];
+    getLocalFileUrl = [(MAAsset *)self->_rawAsset getLocalFileUrl];
     v12 = 0;
     v13 = &v12;
     v14 = 0x2020000000;
@@ -72,14 +72,14 @@
     _Block_object_dispose(&v12, 8);
     if (v8)
     {
-      self->_dictionary = v8(v6, v7);
+      self->_dictionary = v8(attributes, getLocalFileUrl);
     }
 
     else
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"DCSDictionaryRef _DCSDictionaryCreateWithAssetAttributes(CFDictionaryRef, CFURLRef)"}];
-      [v10 handleFailureInFunction:v11 file:@"_UIDictionaryManager.m" lineNumber:34 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v11 file:@"_UIDictionaryManager.m" lineNumber:34 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
@@ -109,12 +109,12 @@
 
   else
   {
-    v4 = [(MAAsset *)self->_rawAsset attributes];
-    v5 = [v4 objectForKey:@"IndexLanguages"];
+    attributes = [(MAAsset *)self->_rawAsset attributes];
+    v5 = [attributes objectForKey:@"IndexLanguages"];
 
     v6 = objc_opt_class();
-    v7 = [v5 firstObject];
-    v8 = [v6 _normalizedLanguageStringForLanguageCode:v7];
+    firstObject = [v5 firstObject];
+    v8 = [v6 _normalizedLanguageStringForLanguageCode:firstObject];
 
     if ([v5 count] == 1)
     {
@@ -143,42 +143,42 @@
 
 - (NSString)localizedDictionaryName
 {
-  v2 = [(MAAsset *)self->_rawAsset attributes];
-  v3 = [v2 objectForKey:@"DictionaryPackageDisplayName"];
+  attributes = [(MAAsset *)self->_rawAsset attributes];
+  v3 = [attributes objectForKey:@"DictionaryPackageDisplayName"];
   if (!v3)
   {
-    v3 = [v2 objectForKey:@"DictionaryPackageName"];
+    v3 = [attributes objectForKey:@"DictionaryPackageName"];
   }
 
-  v4 = [v3 stringByDeletingPathExtension];
+  stringByDeletingPathExtension = [v3 stringByDeletingPathExtension];
 
-  if (v4)
+  if (stringByDeletingPathExtension)
   {
-    v5 = v4;
+    v5 = stringByDeletingPathExtension;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DF58] currentLocale];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
     v7 = *MEMORY[0x1E695D9A8];
-    v8 = [v2 objectForKey:@"Language"];
-    v5 = [v6 displayNameForKey:v7 value:v8];
+    v8 = [attributes objectForKey:@"Language"];
+    v5 = [currentLocale displayNameForKey:v7 value:v8];
   }
 
   return v5;
 }
 
-+ (id)_normalizedLanguageStringForLanguageCode:(id)a3
++ (id)_normalizedLanguageStringForLanguageCode:(id)code
 {
   v13[64] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  codeCopy = code;
+  if (!codeCopy)
   {
     v6 = 0;
     goto LABEL_12;
   }
 
-  v4 = [MEMORY[0x1E695DF58] canonicalLanguageIdentifierFromString:v3];
+  v4 = [MEMORY[0x1E695DF58] canonicalLanguageIdentifierFromString:codeCopy];
   if ([v4 isEqual:@"en-US"])
   {
     v5 = _UINSLocalizedStringWithDefaultValue(@"American English", @"American English");
@@ -192,14 +192,14 @@
     }
 
     v12[1] = 0;
-    [v3 UTF8String];
+    [codeCopy UTF8String];
     v7 = uldn_localeDisplayName();
     v8 = v7;
     if (v7 >= 257)
     {
       MEMORY[0x1EEE9AC00](v7);
       v10 = v12 - v9;
-      [v3 UTF8String];
+      [codeCopy UTF8String];
       uldn_localeDisplayName();
       v6 = [MEMORY[0x1E696AEC0] stringWithCharacters:v10 length:v8];
       goto LABEL_11;
@@ -216,10 +216,10 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)_hasDefinitionForTerm:(id)a3
+- (BOOL)_hasDefinitionForTerm:(id)term
 {
-  v4 = a3;
-  v5 = [v4 length];
+  termCopy = term;
+  v5 = [termCopy length];
   if (v5 >= 0xFA)
   {
     v6 = 250;
@@ -230,7 +230,7 @@ LABEL_12:
     v6 = v5;
   }
 
-  v7 = [v4 substringToIndex:v6];
+  v7 = [termCopy substringToIndex:v6];
   v8 = v7;
   dictionary = self->_dictionary;
   if (!dictionary)
@@ -261,21 +261,21 @@ LABEL_9:
     return dictionary;
   }
 
-  v14 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"Boolean _DCSHasDefinitionForTerm(DCSDictionaryRef, CFStringRef, CFRange, DCSTransformStyle, DCSDictionaryRef *)"}];
-  [v14 handleFailureInFunction:v15 file:@"_UIDictionaryManager.m" lineNumber:35 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v15 file:@"_UIDictionaryManager.m" lineNumber:35 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;
 }
 
-- (id)_HTMLDefinitionForTerm:(id)a3 type:(int64_t)a4
+- (id)_HTMLDefinitionForTerm:(id)term type:(int64_t)type
 {
-  v6 = a3;
-  v7 = v6;
+  termCopy = term;
+  v7 = termCopy;
   if (self->_dictionary)
   {
-    v8 = [v6 length];
+    v8 = [termCopy length];
     if (v8 >= 0xFA)
     {
       v9 = 250;
@@ -305,15 +305,15 @@ LABEL_9:
     _Block_object_dispose(&v19, 8);
     if (!v13)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"CFStringRef _DCSCopyDefinitionMarkup(DCSDictionaryRef, CFStringRef, CFRange, DCSTransformStyle, CFURLRef *)"}];
-      [v17 handleFailureInFunction:v18 file:@"_UIDictionaryManager.m" lineNumber:36 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v18 file:@"_UIDictionaryManager.m" lineNumber:36 description:{@"%s", dlerror()}];
 
       __break(1u);
       return result;
     }
 
-    v15 = (v13)(dictionary, v10, 0, v12, a4, 0);
+    v15 = (v13)(dictionary, v10, 0, v12, type, 0);
   }
 
   else
@@ -324,34 +324,34 @@ LABEL_9:
   return v15;
 }
 
-- (id)_attributedDefinitionForTerm:(id)a3
+- (id)_attributedDefinitionForTerm:(id)term
 {
-  v3 = [(_UIDefinitionDictionary *)self _shortHTMLDefinitionForTerm:a3];
+  v3 = [(_UIDefinitionDictionary *)self _shortHTMLDefinitionForTerm:term];
   v4 = [v3 dataUsingEncoding:10];
 
   v5 = [[off_1E70ECB68 alloc] initWithData:v4 options:0];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 attributedString];
+    attributedString = [v5 attributedString];
   }
 
   else
   {
-    v7 = 0;
+    attributedString = 0;
   }
 
-  return v7;
+  return attributedString;
 }
 
-- (id)_definitionValueForTerm:(id)a3
+- (id)_definitionValueForTerm:(id)term
 {
-  v4 = a3;
+  termCopy = term;
   v5 = [_UIDefinitionValue alloc];
-  v6 = [(_UIDefinitionDictionary *)self localizedDictionaryName];
-  v7 = [(_UIDefinitionDictionary *)self _attributedDefinitionForTerm:v4];
-  v8 = [(_UIDefinitionDictionary *)self _fullHTMLDefinitionForTerm:v4];
-  v9 = [(_UIDefinitionValue *)v5 initWithLocalizedDictionaryName:v6 term:v4 definition:v7 longDefinition:v8];
+  localizedDictionaryName = [(_UIDefinitionDictionary *)self localizedDictionaryName];
+  v7 = [(_UIDefinitionDictionary *)self _attributedDefinitionForTerm:termCopy];
+  v8 = [(_UIDefinitionDictionary *)self _fullHTMLDefinitionForTerm:termCopy];
+  v9 = [(_UIDefinitionValue *)v5 initWithLocalizedDictionaryName:localizedDictionaryName term:termCopy definition:v7 longDefinition:v8];
 
   [(_UIDefinitionValue *)v9 setRawAsset:self->_rawAsset];
 
@@ -360,8 +360,8 @@ LABEL_9:
 
 - (BOOL)_isTTYDictionary
 {
-  v2 = [(MAAsset *)self->_rawAsset attributes];
-  v3 = [v2 objectForKey:@"DictionaryPackageName"];
+  attributes = [(MAAsset *)self->_rawAsset attributes];
+  v3 = [attributes objectForKey:@"DictionaryPackageName"];
   v4 = [v3 isEqualToString:@"TTY Abbreviations Dictionary.dictionary"];
 
   return v4;
@@ -372,15 +372,15 @@ LABEL_9:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_UIDefinitionDictionary *)self localizedDictionaryName];
-  v7 = [(_UIDefinitionDictionary *)self activated];
+  localizedDictionaryName = [(_UIDefinitionDictionary *)self localizedDictionaryName];
+  activated = [(_UIDefinitionDictionary *)self activated];
   v8 = @"inactive";
-  if (v7)
+  if (activated)
   {
     v8 = @"active";
   }
 
-  v9 = [v3 stringWithFormat:@"%@ <%p>: Dictionary name: %@ (%@), Asset: %@", v5, self, v6, v8, self->_rawAsset];
+  v9 = [v3 stringWithFormat:@"%@ <%p>: Dictionary name: %@ (%@), Asset: %@", v5, self, localizedDictionaryName, v8, self->_rawAsset];
 
   return v9;
 }

@@ -1,21 +1,21 @@
 @interface PLRegionsDensityClustering
 - (PLRegionsDensityClustering)init;
-- (id)_timeAndLocationBasedClusteringBlockWithTimeIntervalDistance:(double)a3;
-- (id)performWithDataset:(id)a3 progressBlock:(id)a4;
+- (id)_timeAndLocationBasedClusteringBlockWithTimeIntervalDistance:(double)distance;
+- (id)performWithDataset:(id)dataset progressBlock:(id)block;
 @end
 
 @implementation PLRegionsDensityClustering
 
-- (id)performWithDataset:(id)a3 progressBlock:(id)a4
+- (id)performWithDataset:(id)dataset progressBlock:(id)block
 {
   v131 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  datasetCopy = dataset;
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(datasetCopy, "count")}];
   v120 = 0u;
   v121 = 0u;
   v122 = 0u;
   v123 = 0u;
-  v7 = v5;
+  v7 = datasetCopy;
   v8 = [v7 countByEnumeratingWithState:&v120 objects:v130 count:16];
   if (v8)
   {
@@ -118,8 +118,8 @@
                 objc_enumerationMutation(v21);
               }
 
-              v26 = [*(*(&v116 + 1) + 8 * j) objects];
-              [v89 removeObjectsInArray:v26];
+              objects = [*(*(&v116 + 1) + 8 * j) objects];
+              [v89 removeObjectsInArray:objects];
             }
 
             v23 = [v21 countByEnumeratingWithState:&v116 objects:v129 count:16];
@@ -195,8 +195,8 @@
                 objc_enumerationMutation(v31);
               }
 
-              v36 = [*(*(&v112 + 1) + 8 * k) objects];
-              [v89 removeObjectsInArray:v36];
+              objects2 = [*(*(&v112 + 1) + 8 * k) objects];
+              [v89 removeObjectsInArray:objects2];
             }
 
             v33 = [v31 countByEnumeratingWithState:&v112 objects:v128 count:16];
@@ -215,7 +215,7 @@
       v83 = 0;
     }
 
-    v91 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v88 = objc_opt_new();
     if (self->_includeDefiniteClusters)
     {
@@ -239,14 +239,14 @@
             }
 
             v42 = *(*(&v108 + 1) + 8 * m);
-            v43 = [v42 objects];
-            v44 = [v43 count];
+            objects3 = [v42 objects];
+            v44 = [objects3 count];
 
             if (v44)
             {
               v45 = [v42 meanRegion:10.0];
-              v46 = [v42 objects];
-              [v91 setObject:v46 forKeyedSubscript:v45];
+              objects4 = [v42 objects];
+              [dictionary setObject:objects4 forKeyedSubscript:v45];
 
               if (self->_removeExtensiveClustersContainingDefiniteClusters)
               {
@@ -287,8 +287,8 @@
             }
 
             v49 = *(*(&v104 + 1) + 8 * n);
-            v50 = [v49 objects];
-            v51 = [v50 count];
+            objects5 = [v49 objects];
+            v51 = [objects5 count];
 
             if (v51)
             {
@@ -304,8 +304,8 @@
                 v101 = 0u;
                 v98 = 0u;
                 v99 = 0u;
-                v55 = v88;
-                v56 = [v55 countByEnumeratingWithState:&v98 objects:v125 count:16];
+                objects6 = v88;
+                v56 = [objects6 countByEnumeratingWithState:&v98 objects:v125 count:16];
                 if (v56)
                 {
                   v57 = v56;
@@ -316,7 +316,7 @@
                     {
                       if (*v99 != v58)
                       {
-                        objc_enumerationMutation(v55);
+                        objc_enumerationMutation(objects6);
                       }
 
                       [*(*(&v98 + 1) + 8 * ii) center];
@@ -336,7 +336,7 @@
                       goto LABEL_95;
                     }
 
-                    v57 = [v55 countByEnumeratingWithState:&v98 objects:v125 count:16];
+                    v57 = [objects6 countByEnumeratingWithState:&v98 objects:v125 count:16];
                     v7 = v85;
                     if (v57)
                     {
@@ -350,8 +350,8 @@
                 v47 = v86;
               }
 
-              v55 = [v49 objects];
-              [v91 setObject:v55 forKeyedSubscript:v52];
+              objects6 = [v49 objects];
+              [dictionary setObject:objects6 forKeyedSubscript:v52];
 LABEL_95:
             }
           }
@@ -365,7 +365,7 @@ LABEL_95:
       v6 = v82;
     }
 
-    if (![v91 count] && objc_msgSend(v89, "count") >= 2)
+    if (![dictionary count] && objc_msgSend(v89, "count") >= 2)
     {
       if (self->_extensiveClusterTimeIntervalDistance == 0.0)
       {
@@ -400,14 +400,14 @@ LABEL_95:
             }
 
             v70 = *(*(&v92 + 1) + 8 * jj);
-            v71 = [v70 objects];
-            v72 = [v71 count];
+            objects7 = [v70 objects];
+            v72 = [objects7 count];
 
             if (v72)
             {
               v73 = [v70 meanRegion:500.0];
-              v74 = [v70 objects];
-              [v91 setObject:v74 forKeyedSubscript:v73];
+              objects8 = [v70 objects];
+              [dictionary setObject:objects8 forKeyedSubscript:v73];
             }
           }
 
@@ -420,24 +420,24 @@ LABEL_95:
       v7 = v85;
     }
 
-    if (![v91 count])
+    if (![dictionary count])
     {
       v75 = [PLDataCluster clusterWithObjects:v6];
       v76 = [v75 meanRegion:100.0];
       if (v76)
       {
-        v77 = [v75 objects];
-        [v91 setObject:v77 forKeyedSubscript:v76];
+        objects9 = [v75 objects];
+        [dictionary setObject:objects9 forKeyedSubscript:v76];
       }
     }
   }
 
   else
   {
-    v91 = MEMORY[0x1E695E0F8];
+    dictionary = MEMORY[0x1E695E0F8];
   }
 
-  return v91;
+  return dictionary;
 }
 
 uint64_t __63__PLRegionsDensityClustering_performWithDataset_progressBlock___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -450,13 +450,13 @@ uint64_t __63__PLRegionsDensityClustering_performWithDataset_progressBlock___blo
   return v7;
 }
 
-- (id)_timeAndLocationBasedClusteringBlockWithTimeIntervalDistance:(double)a3
+- (id)_timeAndLocationBasedClusteringBlockWithTimeIntervalDistance:(double)distance
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __91__PLRegionsDensityClustering__timeAndLocationBasedClusteringBlockWithTimeIntervalDistance___block_invoke;
   aBlock[3] = &__block_descriptor_40_e65_d24__0___PLRegionsClusteringItem__8___PLRegionsClusteringItem__16l;
-  *&aBlock[4] = a3;
+  *&aBlock[4] = distance;
   v3 = _Block_copy(aBlock);
   v4 = _Block_copy(v3);
 

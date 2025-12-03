@@ -1,12 +1,12 @@
 @interface IDSDaemonXPCInterface
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (IDSDaemonXPCInterface)init;
-- (void)didCacheGroup:(id)a3;
-- (void)didCreateGroup:(id)a3;
-- (void)didReceiveDecryptionFailureForGroup:(id)a3;
+- (void)didCacheGroup:(id)group;
+- (void)didCreateGroup:(id)group;
+- (void)didReceiveDecryptionFailureForGroup:(id)group;
 - (void)didReceiveRegistrationIdentityUpdate;
-- (void)didUpdateGroup:(id)a3 withNewGroup:(id)a4;
+- (void)didUpdateGroup:(id)group withNewGroup:(id)newGroup;
 @end
 
 @implementation IDSDaemonXPCInterface
@@ -46,14 +46,14 @@
     observer = v2->_observer;
     v2->_observer = v4;
 
-    v6 = [(IDSDaemonXPCInterface *)v2 groupContextController];
+    groupContextController = [(IDSDaemonXPCInterface *)v2 groupContextController];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1004DAA04;
     v12[3] = &unk_100BDEB08;
     v7 = v2;
     v13 = v7;
-    [v6 groupContextForProtectionSpace:0 withCompletion:v12];
+    [groupContextController groupContextForProtectionSpace:0 withCompletion:v12];
 
     observerProxies = v7->_observerProxies;
     v7->_observerProxies = 0;
@@ -69,35 +69,35 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v34 = v7;
+    v34 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Incoming Daemon XPC Interface with new connection %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v24 = v7;
+    v24 = connectionCopy;
     _IDSLogV();
   }
 
   v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___IDSGroupContextDaemonProtocol, v24];
-  [v7 setExportedInterface:v9];
+  [connectionCopy setExportedInterface:v9];
 
   v10 = +[IDSDGroupContextController sharedInstance];
-  [v7 setExportedObject:v10];
-  [v7 resume];
-  objc_storeStrong(&self->_connection, a4);
+  [connectionCopy setExportedObject:v10];
+  [connectionCopy resume];
+  objc_storeStrong(&self->_connection, connection);
   v11 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___IDSGroupContextObserverDaemonProtocol];
   [(NSXPCConnection *)self->_connection setRemoteObjectInterface:v11];
 
-  v12 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
   observerProxies = self->_observerProxies;
   if (!observerProxies)
   {
@@ -108,13 +108,13 @@
     observerProxies = self->_observerProxies;
   }
 
-  [(NSMutableArray *)observerProxies addObject:v12];
+  [(NSMutableArray *)observerProxies addObject:remoteObjectProxy];
   v16 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = [(NSMutableArray *)self->_observerProxies count];
     *buf = 138412546;
-    v34 = v12;
+    v34 = remoteObjectProxy;
     v35 = 2048;
     v36 = v17;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "We got remote object proxy %@ new observerProxies count: %lu", buf, 0x16u);
@@ -122,7 +122,7 @@
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v25 = v12;
+    v25 = remoteObjectProxy;
     v26 = [(NSMutableArray *)self->_observerProxies count];
     _IDSLogV();
   }
@@ -133,7 +133,7 @@
   v30[2] = sub_1004DAE54;
   v18 = v30[3] = &unk_100BD6E40;
   v31 = v18;
-  v19 = v12;
+  v19 = remoteObjectProxy;
   v32 = v19;
   [(NSXPCConnection *)self->_connection setInvalidationHandler:v30];
   v27[0] = _NSConcreteStackBlock;
@@ -150,9 +150,9 @@
   return 1;
 }
 
-- (void)didCreateGroup:(id)a3
+- (void)didCreateGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -178,7 +178,7 @@
         v11[1] = 3221225472;
         v11[2] = sub_1004DB258;
         v11[3] = &unk_100BDA900;
-        v12 = v4;
+        v12 = groupCopy;
         v13 = v10;
         [v10 didCreateGroup:v12 completion:v11];
 
@@ -193,9 +193,9 @@
   }
 }
 
-- (void)didCacheGroup:(id)a3
+- (void)didCacheGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -221,7 +221,7 @@
         v11[1] = 3221225472;
         v11[2] = sub_1004DB508;
         v11[3] = &unk_100BDA900;
-        v12 = v4;
+        v12 = groupCopy;
         v13 = v10;
         [v10 didCacheGroup:v12 completion:v11];
 
@@ -236,10 +236,10 @@
   }
 }
 
-- (void)didUpdateGroup:(id)a3 withNewGroup:(id)a4
+- (void)didUpdateGroup:(id)group withNewGroup:(id)newGroup
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  newGroupCopy = newGroup;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -265,9 +265,9 @@
         v15[1] = 3221225472;
         v15[2] = sub_1004DB7E4;
         v15[3] = &unk_100BDD7B8;
-        v13 = v6;
+        v13 = groupCopy;
         v16 = v13;
-        v17 = v7;
+        v17 = newGroupCopy;
         v18 = v12;
         [v12 didUpdateGroup:v13 withNewGroup:v17 completion:v15];
 
@@ -282,9 +282,9 @@
   }
 }
 
-- (void)didReceiveDecryptionFailureForGroup:(id)a3
+- (void)didReceiveDecryptionFailureForGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -310,7 +310,7 @@
         v11[1] = 3221225472;
         v11[2] = sub_1004DBAA8;
         v11[3] = &unk_100BDA900;
-        v12 = v4;
+        v12 = groupCopy;
         v13 = v10;
         [v10 didReceiveDecryptionFailureForGroup:v12 completion:v11];
 

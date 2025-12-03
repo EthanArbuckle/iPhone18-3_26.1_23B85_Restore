@@ -1,18 +1,18 @@
 @interface CBDeviceResponse
-- (CBDeviceResponse)initWithXPCObject:(id)a3 error:(id *)a4;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (CBDeviceResponse)initWithXPCObject:(id)object error:(id *)error;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation CBDeviceResponse
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
-  v5 = v4;
+  objectCopy = object;
+  v5 = objectCopy;
   if (self->_btBand)
   {
-    xpc_dictionary_set_uint64(v4, "btBd", self->_btBand);
+    xpc_dictionary_set_uint64(objectCopy, "btBd", self->_btBand);
   }
 
   if (self->_connectionHandle)
@@ -37,10 +37,10 @@
 
   identifier = self->_identifier;
   xdict = v5;
-  v7 = [(NSString *)identifier UTF8String];
-  if (v7)
+  uTF8String = [(NSString *)identifier UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(xdict, "id", v7);
+    xpc_dictionary_set_string(xdict, "id", uTF8String);
   }
 
   if (self->_rssi)
@@ -68,13 +68,13 @@
   }
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  v4 = a3;
-  if ((a3 & 0x8000000) != 0)
+  levelCopy = level;
+  if ((level & 0x8000000) != 0)
   {
     v6 = 0;
-    if (a3 > 0x14u)
+    if (level > 0x14u)
     {
 LABEL_3:
       if (self->_btBand)
@@ -201,7 +201,7 @@ LABEL_18:
     NSAppendPrintF_safe();
     v6 = 0;
 
-    if (v4 > 0x14)
+    if (levelCopy > 0x14)
     {
       goto LABEL_3;
     }
@@ -327,9 +327,9 @@ LABEL_51:
   return v27;
 }
 
-- (CBDeviceResponse)initWithXPCObject:(id)a3 error:(id *)a4
+- (CBDeviceResponse)initWithXPCObject:(id)object error:(id *)error
 {
-  OUTLINED_FUNCTION_19(self, a2, a3);
+  OUTLINED_FUNCTION_19(self, a2, object);
   v7 = OUTLINED_FUNCTION_18();
   if (!v7)
   {

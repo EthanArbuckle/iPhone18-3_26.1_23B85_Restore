@@ -1,21 +1,21 @@
 @interface SKGEmailNode
-+ (id)emailWithElementIdentifier:(unint64_t)a3 inGraph:(id)a4;
-- (SKGEmailNode)initWithEmailAddress:(id)a3;
++ (id)emailWithElementIdentifier:(unint64_t)identifier inGraph:(id)graph;
+- (SKGEmailNode)initWithEmailAddress:(id)address;
 @end
 
 @implementation SKGEmailNode
 
-- (SKGEmailNode)initWithEmailAddress:(id)a3
+- (SKGEmailNode)initWithEmailAddress:(id)address
 {
   v4.receiver = self;
   v4.super_class = SKGEmailNode;
-  return [(SKGNode *)&v4 initWithValue:a3];
+  return [(SKGNode *)&v4 initWithValue:address];
 }
 
-+ (id)emailWithElementIdentifier:(unint64_t)a3 inGraph:(id)a4
++ (id)emailWithElementIdentifier:(unint64_t)identifier inGraph:(id)graph
 {
-  v5 = [a4 graph];
-  v6 = [v5 nodeForIdentifier:a3];
+  graph = [graph graph];
+  v6 = [graph nodeForIdentifier:identifier];
 
   v7 = [SKGEmailNode alloc];
   v8 = [v6 propertyForKey:@"value"];

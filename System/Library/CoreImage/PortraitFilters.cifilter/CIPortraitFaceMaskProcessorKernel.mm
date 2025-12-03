@@ -1,13 +1,13 @@
 @interface CIPortraitFaceMaskProcessorKernel
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
 @end
 
 @implementation CIPortraitFaceMaskProcessorKernel
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"inputImageExtent", "CGRectValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"inputImageExtent", "CGRectValue"}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -16,7 +16,7 @@
   *&v85[1] = v11;
   *&v85[2] = v13;
   *&v85[3] = v15;
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"faceROI", "CGRectValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"faceROI", "CGRectValue"}];
   v18 = v17;
   v20 = v19;
   v22 = v21;
@@ -40,17 +40,17 @@
   v87.size.width = v22;
   v87.size.height = v24;
   Height = CGRectGetHeight(v87);
-  v26 = [a4 objectForKeyedSubscript:@"faceLandmarks"];
+  v26 = [arguments objectForKeyedSubscript:@"faceLandmarks"];
   v27 = objc_opt_self();
   v28 = [[FaceLandmarks alloc] initWithFaceLandmarks:sub_3C354(v27 forImageRect:v26), v10, v12, v14, v16];
-  v29 = [a3 objectAtIndexedSubscript:0];
+  v29 = [inputs objectAtIndexedSubscript:0];
   [v29 region];
   v31 = v30;
   v33 = v32;
   v35 = v34;
   v37 = v36;
-  v38 = [v29 baseAddress];
-  v39 = [v29 bytesPerRow];
+  baseAddress = [v29 baseAddress];
+  bytesPerRow = [v29 bytesPerRow];
   v88.origin.x = v31;
   v88.origin.y = v33;
   v88.size.width = v35;
@@ -60,7 +60,7 @@
   v89.origin.y = v20;
   v89.size.width = v22;
   v89.size.height = v24;
-  v41 = &v38[(MaxY - CGRectGetMaxY(v89)) * v39];
+  v41 = &baseAddress[(MaxY - CGRectGetMaxY(v89)) * bytesPerRow];
   v90.origin.x = v18;
   v90.origin.y = v20;
   v90.size.width = v22;
@@ -72,7 +72,7 @@
   v91.size.height = v37;
   v43 = &v41[4 * (MinX - CGRectGetMinX(v91))];
   v44 = 4 * Width;
-  [a5 region];
+  [output region];
   v46 = v45;
   v48 = v47;
   v50 = v49;
@@ -99,14 +99,14 @@
   v80 = v105.size.height;
   v81 = v105.size.width;
   v57 = CGRectEqualToRect(v93, v105);
-  v58 = 0;
+  height = 0;
   if (!v57)
   {
-    v58 = [NSMutableData dataWithLength:v44 * Height];
+    height = [NSMutableData dataWithLength:v44 * Height];
   }
 
-  v59 = [a5 baseAddress];
-  v60 = [a5 bytesPerRow];
+  baseAddress2 = [output baseAddress];
+  bytesPerRow2 = [output bytesPerRow];
   v94.origin.x = v46;
   v94.origin.y = v48;
   v94.size.width = v50;
@@ -116,7 +116,7 @@
   v95.origin.y = y;
   v95.size.width = v55;
   v95.size.height = v56;
-  v62 = &v59[(v61 - CGRectGetMaxY(v95)) * v60];
+  v62 = &baseAddress2[(v61 - CGRectGetMaxY(v95)) * bytesPerRow2];
   v96.origin.x = x;
   v96.origin.y = y;
   v96.size.width = v55;
@@ -127,16 +127,16 @@
   v97.size.width = v50;
   v97.size.height = v52;
   v64 = &v62[4 * (v63 - CGRectGetMinX(v97))];
-  v65 = [v29 bytesPerRow];
+  bytesPerRow3 = [v29 bytesPerRow];
   if (v57)
   {
-    sub_EFF0(v28, v85, &v84, v43, v65, v64, [a5 bytesPerRow]);
+    sub_EFF0(v28, v85, &v84, v43, bytesPerRow3, v64, [output bytesPerRow]);
   }
 
   else
   {
-    sub_EFF0(v28, v85, &v84, v43, v65, [(NSMutableData *)v58 mutableBytes], v44);
-    v66 = [(NSMutableData *)v58 bytes];
+    sub_EFF0(v28, v85, &v84, v43, bytesPerRow3, [(NSMutableData *)height mutableBytes], v44);
+    bytes = [(NSMutableData *)height bytes];
     v98.origin.x = v83;
     v98.origin.y = v82;
     v98.size.width = v81;
@@ -167,14 +167,14 @@
     v103.size.width = v55;
     v103.size.height = v56;
     v69 = CGRectGetHeight(v103);
-    v70 = [a5 bytesPerRow];
+    bytesPerRow4 = [output bytesPerRow];
     if (v68)
     {
       v71 = v69;
       if (v69)
       {
-        v72 = v70;
-        v73 = &v66[4 * (v76 - v67) + (v79 - v77) * v44];
+        v72 = bytesPerRow4;
+        v73 = &bytes[4 * (v76 - v67) + (v79 - v77) * v44];
         v74 = 4 * v68;
         do
         {
@@ -192,14 +192,14 @@
   return 1;
 }
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  if (a3)
+  if (input)
   {
     sub_4A234();
   }
 
-  v5 = [a4 objectForKeyedSubscript:{@"faceROI", a5.origin.x, a5.origin.y, a5.size.width, a5.size.height}];
+  v5 = [arguments objectForKeyedSubscript:{@"faceROI", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
 
   [v5 CGRectValue];
   result.size.height = v9;

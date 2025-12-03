@@ -1,12 +1,12 @@
 @interface TransitDirectionsListItemIncident
-- (TransitDirectionsListItemIncident)initWithIncidentMessage:(id)a3;
+- (TransitDirectionsListItemIncident)initWithIncidentMessage:(id)message;
 @end
 
 @implementation TransitDirectionsListItemIncident
 
-- (TransitDirectionsListItemIncident)initWithIncidentMessage:(id)a3
+- (TransitDirectionsListItemIncident)initWithIncidentMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v9.receiver = self;
   v9.super_class = TransitDirectionsListItemIncident;
   v6 = [(TransitDirectionsListItem *)&v9 initWithInstructions:0];
@@ -14,7 +14,7 @@
   if (v6)
   {
     [(TransitDirectionsListItem *)v6 setType:13];
-    objc_storeStrong(&v7->_incidentMessage, a3);
+    objc_storeStrong(&v7->_incidentMessage, message);
   }
 
   return v7;

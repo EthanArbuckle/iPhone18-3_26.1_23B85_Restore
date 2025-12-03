@@ -4,8 +4,8 @@
 - (UIImage)darkGrid;
 - (UIImage)lightGrid;
 - (void)_cancelSnapshots;
-- (void)_saveDarkGrid:(id)a3;
-- (void)_saveLightGrid:(id)a3;
+- (void)_saveDarkGrid:(id)grid;
+- (void)_saveLightGrid:(id)grid;
 - (void)loadPlaceholderGridImages;
 @end
 
@@ -73,25 +73,25 @@
   [(MKMapSnapshotter *)darkSnapshotter cancel];
 }
 
-- (void)_saveDarkGrid:(id)a3
+- (void)_saveDarkGrid:(id)grid
 {
-  v5 = a3;
+  gridCopy = grid;
   os_unfair_lock_lock(&self->_lock);
-  if (v5)
+  if (gridCopy)
   {
-    objc_storeStrong(&self->_darkGrid, a3);
+    objc_storeStrong(&self->_darkGrid, grid);
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_saveLightGrid:(id)a3
+- (void)_saveLightGrid:(id)grid
 {
-  v5 = a3;
+  gridCopy = grid;
   os_unfair_lock_lock(&self->_lock);
-  if (v5)
+  if (gridCopy)
   {
-    objc_storeStrong(&self->_lightGrid, a3);
+    objc_storeStrong(&self->_lightGrid, grid);
   }
 
   os_unfair_lock_unlock(&self->_lock);

@@ -22,7 +22,7 @@
   v5[2] = __48__NSData_EmailFoundationAdditions__ef_md5Digest__block_invoke;
   v5[3] = &__block_descriptor_40_e29_v40__0r_v8__NSRange_QQ_16_B32l;
   v5[4] = &c;
-  [a1 enumerateByteRangesUsingBlock:v5];
+  [self enumerateByteRangesUsingBlock:v5];
   *md = 0;
   v8 = 0;
   CC_MD5_Final(md, &c);
@@ -34,12 +34,12 @@
 
 - (id)ef_hexString
 {
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:2 * v2];
-  v4 = [a1 bytes];
+  bytes = [self bytes];
   if (v2)
   {
-    v5 = v4;
+    v5 = bytes;
     do
     {
       v6 = *v5++;
@@ -101,8 +101,8 @@
     while (v7);
   }
 
-  v12 = a1;
-  CC_SHA256_Update(&c, [a1 bytes], objc_msgSend(a1, "length"));
+  selfCopy = self;
+  CC_SHA256_Update(&c, [self bytes], objc_msgSend(self, "length"));
   CC_SHA256_Final(md, &c);
   v13 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:md length:32];
 
@@ -125,9 +125,9 @@
 
 - (uint64_t)ef_subdataFromIndex:()EmailFoundationAdditions
 {
-  v5 = [a1 length] - a3;
+  v5 = [self length] - a3;
 
-  return [a1 subdataWithRange:{a3, v5}];
+  return [self subdataWithRange:{a3, v5}];
 }
 
 - (void)ef_enumerateSubdataOfSize:()EmailFoundationAdditions usingBlock:
@@ -138,14 +138,14 @@
   v13 = 0;
   do
   {
-    if (v8 >= [a1 length])
+    if (v8 >= [self length])
     {
       break;
     }
 
-    v9 = [a1 length];
+    v9 = [self length];
     v10 = v7 + v9 >= a3 ? a3 : v7 + v9;
-    v11 = [a1 subdataWithRange:{v8, v10}];
+    v11 = [self subdataWithRange:{v8, v10}];
     v6[2](v6, v11, &v13);
     v12 = v13;
 
@@ -159,7 +159,7 @@
 - (uint64_t)ef_rangeOfData:()EmailFoundationAdditions options:
 {
   v6 = a3;
-  v7 = [a1 rangeOfData:v6 options:a4 range:{0, objc_msgSend(a1, "length")}];
+  v7 = [self rangeOfData:v6 options:a4 range:{0, objc_msgSend(self, "length")}];
 
   return v7;
 }
@@ -167,10 +167,10 @@
 - (uint64_t)ef_hasSuffix:()EmailFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 length];
+  v5 = [self length];
   if (v5 >= [v4 length])
   {
-    v7 = [a1 subdataWithRange:{objc_msgSend(a1, "length") - objc_msgSend(v4, "length"), objc_msgSend(v4, "length")}];
+    v7 = [self subdataWithRange:{objc_msgSend(self, "length") - objc_msgSend(v4, "length"), objc_msgSend(v4, "length")}];
     v6 = [v7 isEqualToData:v4];
   }
 
@@ -185,7 +185,7 @@
 - (BOOL)ef_containsData:()EmailFoundationAdditions
 {
   v4 = a3;
-  [a1 ef_rangeOfData:v4];
+  [self ef_rangeOfData:v4];
   v6 = v5 == [v4 length];
 
   return v6;

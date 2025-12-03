@@ -1,22 +1,22 @@
 @interface MSPSenderMinimalStrategy
-+ (double)_etaRefreshIntervalForState:(id)a3;
-- (BOOL)removeParticipant:(id)a3 forReason:(unint64_t)a4;
-- (MSPSenderMinimalStrategy)initWithGroupSession:(id)a3;
-- (id)_filteredParticipantsForState:(id)a3 event:(unint64_t)a4;
++ (double)_etaRefreshIntervalForState:(id)state;
+- (BOOL)removeParticipant:(id)participant forReason:(unint64_t)reason;
+- (MSPSenderMinimalStrategy)initWithGroupSession:(id)session;
+- (id)_filteredParticipantsForState:(id)state event:(unint64_t)event;
 - (void)_sendInitialStateIfNeeded;
-- (void)_setState:(id)a3;
-- (void)addParticipants:(id)a3;
-- (void)didFetchCapabilitiesForParticipants:(id)a3;
-- (void)removeParticipants:(id)a3;
+- (void)_setState:(id)state;
+- (void)addParticipants:(id)participants;
+- (void)didFetchCapabilitiesForParticipants:(id)participants;
+- (void)removeParticipants:(id)participants;
 @end
 
 @implementation MSPSenderMinimalStrategy
 
-- (MSPSenderMinimalStrategy)initWithGroupSession:(id)a3
+- (MSPSenderMinimalStrategy)initWithGroupSession:(id)session
 {
   v7.receiver = self;
   v7.super_class = MSPSenderMinimalStrategy;
-  v3 = [(MSPSenderIDSStrategy *)&v7 initWithGroupSession:a3];
+  v3 = [(MSPSenderIDSStrategy *)&v7 initWithGroupSession:session];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -27,11 +27,11 @@
   return v3;
 }
 
-+ (double)_etaRefreshIntervalForState:(id)a3
++ (double)_etaRefreshIntervalForState:(id)state
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = [a3 etaInfo];
-  [v4 etaTimestamp];
+  etaInfo = [state etaInfo];
+  [etaInfo etaTimestamp];
   v5 = [v3 dateWithTimeIntervalSinceReferenceDate:?];
 
   [v5 timeIntervalSinceNow];
@@ -42,11 +42,11 @@
   return v7;
 }
 
-- (void)_setState:(id)a3
+- (void)_setState:(id)state
 {
   v4.receiver = self;
   v4.super_class = MSPSenderMinimalStrategy;
-  [(MSPSenderStrategy *)&v4 _setState:a3];
+  [(MSPSenderStrategy *)&v4 _setState:state];
   [(MSPSenderMinimalStrategy *)self _sendInitialStateIfNeeded];
 }
 
@@ -65,16 +65,16 @@
       if (v6)
       {
         v7 = MEMORY[0x277CCACA8];
-        v8 = self;
-        v9 = [v7 stringWithFormat:@"%@<%p>", objc_opt_class(), v8];
+        selfCopy = self;
+        selfCopy = [v7 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
 
         participantsNeedingInitialState = self->_participantsNeedingInitialState;
-        v11 = v9;
+        v11 = selfCopy;
         v12 = [(NSMutableSet *)participantsNeedingInitialState count];
         v13 = self->_participantsNeedingInitialState;
 
         *buf = 138543875;
-        v47 = v9;
+        v47 = selfCopy;
         v48 = 2048;
         v49 = v12;
         v50 = 2113;
@@ -103,8 +103,8 @@
             }
 
             v19 = *(*(&v41 + 1) + 8 * i);
-            v20 = [(MSPSenderIDSStrategy *)self capabilitiesByParticipant];
-            v21 = [v20 objectForKeyedSubscript:v19];
+            capabilitiesByParticipant = [(MSPSenderIDSStrategy *)self capabilitiesByParticipant];
+            v21 = [capabilitiesByParticipant objectForKeyedSubscript:v19];
             v22 = [v21 count];
 
             if (v22)
@@ -127,15 +127,15 @@
         if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
         {
           v25 = MEMORY[0x277CCACA8];
-          v26 = self;
-          v27 = [v25 stringWithFormat:@"%@<%p>", objc_opt_class(), v26];
+          selfCopy2 = self;
+          selfCopy2 = [v25 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy2];
 
-          v28 = v27;
+          v28 = selfCopy2;
           v29 = [v5 count];
           v30 = [(NSMutableSet *)self->_participantsNeedingInitialState count];
 
           *buf = 138543874;
-          v47 = v27;
+          v47 = selfCopy2;
           v48 = 2048;
           v49 = v29;
           v50 = 2048;
@@ -154,8 +154,8 @@
     else if (v6)
     {
       v31 = MEMORY[0x277CCACA8];
-      v32 = self;
-      v33 = [v31 stringWithFormat:@"%@<%p>", objc_opt_class(), v32];
+      selfCopy3 = self;
+      selfCopy3 = [v31 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy3];
 
       v34 = [(NSMutableSet *)self->_participantsNeedingInitialState count];
       if ([v3 waypointInfosCount])
@@ -181,7 +181,7 @@
 
       v38 = v37;
       *buf = 138544130;
-      v47 = v33;
+      v47 = selfCopy3;
       v48 = 2048;
       v49 = v34;
       v50 = 2114;
@@ -195,78 +195,78 @@
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addParticipants:(id)a3
+- (void)addParticipants:(id)participants
 {
   v5.receiver = self;
   v5.super_class = MSPSenderMinimalStrategy;
-  v4 = a3;
-  [(MSPSenderIDSStrategy *)&v5 addParticipants:v4];
-  [(NSMutableSet *)self->_participantsNeedingInitialState addObjectsFromArray:v4, v5.receiver, v5.super_class];
+  participantsCopy = participants;
+  [(MSPSenderIDSStrategy *)&v5 addParticipants:participantsCopy];
+  [(NSMutableSet *)self->_participantsNeedingInitialState addObjectsFromArray:participantsCopy, v5.receiver, v5.super_class];
 
   [(MSPSenderMinimalStrategy *)self _sendInitialStateIfNeeded];
 }
 
-- (void)removeParticipants:(id)a3
+- (void)removeParticipants:(id)participants
 {
   v7.receiver = self;
   v7.super_class = MSPSenderMinimalStrategy;
-  v4 = a3;
-  [(MSPSenderStrategy *)&v7 removeParticipants:v4];
+  participantsCopy = participants;
+  [(MSPSenderStrategy *)&v7 removeParticipants:participantsCopy];
   participantsNeedingInitialState = self->_participantsNeedingInitialState;
-  v6 = [MEMORY[0x277CBEB98] setWithArray:{v4, v7.receiver, v7.super_class}];
+  v6 = [MEMORY[0x277CBEB98] setWithArray:{participantsCopy, v7.receiver, v7.super_class}];
 
   [(NSMutableSet *)participantsNeedingInitialState minusSet:v6];
 }
 
-- (BOOL)removeParticipant:(id)a3 forReason:(unint64_t)a4
+- (BOOL)removeParticipant:(id)participant forReason:(unint64_t)reason
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([objc_opt_class() _supportsEvent:9] && -[NSMutableSet containsObject:](self->super.super._participants, "containsObject:", v6))
+  participantCopy = participant;
+  if ([objc_opt_class() _supportsEvent:9] && -[NSMutableSet containsObject:](self->super.super._participants, "containsObject:", participantCopy))
   {
     v7 = MSPGetSharedTripLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = MEMORY[0x277CCACA8];
-      v9 = self;
-      v10 = [v8 stringWithFormat:@"%@<%p>", objc_opt_class(), v9];
+      selfCopy = self;
+      selfCopy = [v8 stringWithFormat:@"%@<%p>", objc_opt_class(), selfCopy];
 
       *buf = 138543618;
-      v18 = v10;
+      v18 = selfCopy;
       v19 = 2048;
-      v20 = a4;
+      reasonCopy = reason;
       _os_log_impl(&dword_25813A000, v7, OS_LOG_TYPE_INFO, "[%{public}@] will remove and send stopped with reason: %lu", buf, 0x16u);
     }
 
     v11 = [(GEOSharedNavState *)self->super.super._state copy];
     [v11 setClosed:1];
-    [v11 setClosureReason:a4];
+    [v11 setClosureReason:reason];
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     [v11 setClosedTimestamp:?];
-    v12 = [MEMORY[0x277CBEB98] setWithObject:v6];
+    v12 = [MEMORY[0x277CBEB98] setWithObject:participantCopy];
     [(MSPSenderIDSStrategy *)self _sendStoppedUpdate:v11 to:v12];
   }
 
   v16.receiver = self;
   v16.super_class = MSPSenderMinimalStrategy;
-  v13 = [(MSPSenderStrategy *)&v16 removeParticipant:v6 forReason:a4];
+  v13 = [(MSPSenderStrategy *)&v16 removeParticipant:participantCopy forReason:reason];
   if (v13)
   {
-    [(NSMutableSet *)self->_participantsNeedingInitialState removeObject:v6];
+    [(NSMutableSet *)self->_participantsNeedingInitialState removeObject:participantCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
   return v13;
 }
 
-- (void)didFetchCapabilitiesForParticipants:(id)a3
+- (void)didFetchCapabilitiesForParticipants:(id)participants
 {
   v7.receiver = self;
   v7.super_class = MSPSenderMinimalStrategy;
-  v4 = a3;
-  [(MSPSenderIDSStrategy *)&v7 didFetchCapabilitiesForParticipants:v4];
+  participantsCopy = participants;
+  [(MSPSenderIDSStrategy *)&v7 didFetchCapabilitiesForParticipants:participantsCopy];
   participantsNeedingInitialState = self->_participantsNeedingInitialState;
-  v6 = [MEMORY[0x277CBEB98] setWithArray:{v4, v7.receiver, v7.super_class}];
+  v6 = [MEMORY[0x277CBEB98] setWithArray:{participantsCopy, v7.receiver, v7.super_class}];
 
   LODWORD(participantsNeedingInitialState) = [(NSMutableSet *)participantsNeedingInitialState intersectsSet:v6];
   if (participantsNeedingInitialState)
@@ -275,11 +275,11 @@
   }
 }
 
-- (id)_filteredParticipantsForState:(id)a3 event:(unint64_t)a4
+- (id)_filteredParticipantsForState:(id)state event:(unint64_t)event
 {
   v8.receiver = self;
   v8.super_class = MSPSenderMinimalStrategy;
-  v5 = [(MSPSenderIDSStrategy *)&v8 _filteredParticipantsForState:a3 event:a4];
+  v5 = [(MSPSenderIDSStrategy *)&v8 _filteredParticipantsForState:state event:event];
   v6 = [v5 mutableCopy];
 
   [v6 minusSet:self->_participantsNeedingInitialState];

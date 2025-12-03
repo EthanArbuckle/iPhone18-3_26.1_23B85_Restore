@@ -1,36 +1,36 @@
 @interface BLML3TrackImporter
-- (BOOL)importLibraryItems:(id)a3 toMusicLibrary:(id)a4 importedItemPids:(id)a5;
-- (id)_absoluteTimeValueForDateValue:(id)a3;
-- (id)_currentTrackChapterDataForTrackPid:(int64_t)a3 libraryItem:(id)a4 usingLibrary:(id)a5;
-- (id)_currentTrackMovieInfoFromMetadata:(id)a3;
-- (id)_extendedContentRatingStringForLibraryItem:(id)a3;
-- (id)_importPropertiesFromLibraryItem:(id)a3 fromAccount:(id)a4 usingLibrary:(id)a5;
-- (id)_storeArtworkTokenFromLibraryItem:(id)a3 metadata:(id)a4;
-- (id)_stringValueForURLValue:(id)a3;
+- (BOOL)importLibraryItems:(id)items toMusicLibrary:(id)library importedItemPids:(id)pids;
+- (id)_absoluteTimeValueForDateValue:(id)value;
+- (id)_currentTrackChapterDataForTrackPid:(int64_t)pid libraryItem:(id)item usingLibrary:(id)library;
+- (id)_currentTrackMovieInfoFromMetadata:(id)metadata;
+- (id)_extendedContentRatingStringForLibraryItem:(id)item;
+- (id)_importPropertiesFromLibraryItem:(id)item fromAccount:(id)account usingLibrary:(id)library;
+- (id)_storeArtworkTokenFromLibraryItem:(id)item metadata:(id)metadata;
+- (id)_stringValueForURLValue:(id)value;
 @end
 
 @implementation BLML3TrackImporter
 
-- (BOOL)importLibraryItems:(id)a3 toMusicLibrary:(id)a4 importedItemPids:(id)a5
+- (BOOL)importLibraryItems:(id)items toMusicLibrary:(id)library importedItemPids:(id)pids
 {
-  v30 = a3;
-  v8 = a4;
-  v29 = a5;
+  itemsCopy = items;
+  libraryCopy = library;
+  pidsCopy = pids;
   v43 = 0;
   v44 = &v43;
   v45 = 0x2020000000;
   v46 = 1;
   v9 = +[BUAccountsProvider sharedProvider];
-  v10 = [v9 activeStoreAccount];
+  activeStoreAccount = [v9 activeStoreAccount];
 
-  if ([v30 count])
+  if ([itemsCopy count])
   {
-    v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v30 count]);
+    v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [itemsCopy count]);
     v42 = 0u;
     v40 = 0u;
     v41 = 0u;
     v39 = 0u;
-    v12 = v30;
+    v12 = itemsCopy;
     v13 = [v12 countByEnumeratingWithState:&v39 objects:v53 count:16];
     if (v13)
     {
@@ -45,7 +45,7 @@
             objc_enumerationMutation(v12);
           }
 
-          v16 = [(BLML3TrackImporter *)self _importPropertiesFromLibraryItem:*(*(&v39 + 1) + 8 * v15) fromAccount:v10 usingLibrary:v8];
+          v16 = [(BLML3TrackImporter *)self _importPropertiesFromLibraryItem:*(*(&v39 + 1) + 8 * v15) fromAccount:activeStoreAccount usingLibrary:libraryCopy];
           [v11 addObject:v16];
 
           v15 = v15 + 1;
@@ -87,8 +87,8 @@
     block[3] = &unk_10011F018;
     v37 = &v43;
     v32 = v17;
-    v33 = self;
-    v34 = v29;
+    selfCopy = self;
+    v34 = pidsCopy;
     v35 = v12;
     v36 = v22;
     v24 = v22;
@@ -104,33 +104,33 @@
   return v26 & 1;
 }
 
-- (id)_importPropertiesFromLibraryItem:(id)a3 fromAccount:(id)a4 usingLibrary:(id)a5
+- (id)_importPropertiesFromLibraryItem:(id)item fromAccount:(id)account usingLibrary:(id)library
 {
-  v8 = a3;
-  v9 = a4;
-  v160 = a5;
+  itemCopy = item;
+  accountCopy = account;
+  libraryCopy = library;
   v10 = [NSMutableDictionary dictionaryWithCapacity:100];
-  v11 = [v8 itemMetadata];
-  v12 = [BLMLImporterItem mediaTypeForStoreDownload:v11];
-  if ([v8 libraryPersistentIdentifier])
+  itemMetadata = [itemCopy itemMetadata];
+  v12 = [BLMLImporterItem mediaTypeForStoreDownload:itemMetadata];
+  if ([itemCopy libraryPersistentIdentifier])
   {
-    v13 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v8 libraryPersistentIdentifier]);
+    v13 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [itemCopy libraryPersistentIdentifier]);
     [v10 setObject:v13 forKeyedSubscript:&off_100129B30];
   }
 
   else
   {
-    v14 = [v8 itemDownloadIdentifier];
+    itemDownloadIdentifier = [itemCopy itemDownloadIdentifier];
 
-    if (!v14)
+    if (!itemDownloadIdentifier)
     {
       goto LABEL_8;
     }
 
-    v15 = [v8 itemDownloadIdentifier];
-    v13 = [ML3ComparisonPredicate predicateWithProperty:ML3TrackPropertyDownloadIdentifier equalToValue:v15];
+    itemDownloadIdentifier2 = [itemCopy itemDownloadIdentifier];
+    v13 = [ML3ComparisonPredicate predicateWithProperty:ML3TrackPropertyDownloadIdentifier equalToValue:itemDownloadIdentifier2];
 
-    v16 = [ML3Track anyInLibrary:v160 predicate:v13];
+    v16 = [ML3Track anyInLibrary:libraryCopy predicate:v13];
     v17 = v16;
     if (v16)
     {
@@ -143,246 +143,246 @@ LABEL_8:
   v19 = [NSNumber numberWithUnsignedInt:v12];
   [v10 setObject:v19 forKey:&off_100129B48];
 
-  v20 = [v11 collectionIndexInCollectionGroup];
+  collectionIndexInCollectionGroup = [itemMetadata collectionIndexInCollectionGroup];
 
-  if (v20)
+  if (collectionIndexInCollectionGroup)
   {
-    v21 = [v11 collectionIndexInCollectionGroup];
-    [v10 setObject:v21 forKey:&off_100129B60];
+    collectionIndexInCollectionGroup2 = [itemMetadata collectionIndexInCollectionGroup];
+    [v10 setObject:collectionIndexInCollectionGroup2 forKey:&off_100129B60];
   }
 
-  v22 = [v11 indexInCollection];
+  indexInCollection = [itemMetadata indexInCollection];
 
-  if (v22)
+  if (indexInCollection)
   {
-    v23 = [v11 indexInCollection];
-    [v10 setObject:v23 forKey:&off_100129B78];
+    indexInCollection2 = [itemMetadata indexInCollection];
+    [v10 setObject:indexInCollection2 forKey:&off_100129B78];
   }
 
-  v24 = [v11 episodeSortIdentifier];
+  episodeSortIdentifier = [itemMetadata episodeSortIdentifier];
 
-  if (v24)
+  if (episodeSortIdentifier)
   {
-    v25 = [v11 episodeSortIdentifier];
-    [v10 setObject:v25 forKey:&off_100129B90];
+    episodeSortIdentifier2 = [itemMetadata episodeSortIdentifier];
+    [v10 setObject:episodeSortIdentifier2 forKey:&off_100129B90];
   }
 
   [v10 setObject:&off_100129BA8 forKey:&off_100129BC0];
   [v10 setObject:&__kCFBooleanFalse forKey:&off_100129BD8];
-  v26 = [v11 artistName];
+  artistName = [itemMetadata artistName];
 
-  if (v26)
+  if (artistName)
   {
-    v27 = [v11 artistName];
-    [v10 setObject:v27 forKey:&off_100129BF0];
+    artistName2 = [itemMetadata artistName];
+    [v10 setObject:artistName2 forKey:&off_100129BF0];
   }
 
-  v28 = [v11 seriesName];
+  seriesName = [itemMetadata seriesName];
 
-  if (v28)
+  if (seriesName)
   {
-    v29 = [v11 seriesName];
-    [v10 setObject:v29 forKey:&off_100129C08];
+    seriesName2 = [itemMetadata seriesName];
+    [v10 setObject:seriesName2 forKey:&off_100129C08];
   }
 
-  v30 = [v11 collectionArtistName];
+  collectionArtistName = [itemMetadata collectionArtistName];
 
-  if (v30)
+  if (collectionArtistName)
   {
-    v31 = [v11 collectionArtistName];
-    [v10 setObject:v31 forKey:&off_100129C20];
+    collectionArtistName2 = [itemMetadata collectionArtistName];
+    [v10 setObject:collectionArtistName2 forKey:&off_100129C20];
   }
 
-  v32 = [v11 genre];
+  genre = [itemMetadata genre];
 
-  if (v32)
+  if (genre)
   {
-    v33 = [v11 genre];
-    [v10 setObject:v33 forKey:&off_100129C38];
+    genre2 = [itemMetadata genre];
+    [v10 setObject:genre2 forKey:&off_100129C38];
   }
 
-  v34 = [v8 itemMediaPath];
+  itemMediaPath = [itemCopy itemMediaPath];
 
-  if (v34)
+  if (itemMediaPath)
   {
-    v35 = [v8 itemMediaPath];
-    [v10 setObject:v35 forKey:&off_100129C50];
+    itemMediaPath2 = [itemCopy itemMediaPath];
+    [v10 setObject:itemMediaPath2 forKey:&off_100129C50];
   }
 
-  v36 = [v11 collectionName];
+  collectionName = [itemMetadata collectionName];
 
-  if (v36)
+  if (collectionName)
   {
-    v37 = [v11 collectionName];
-    [v10 setObject:v37 forKey:&off_100129C68];
+    collectionName2 = [itemMetadata collectionName];
+    [v10 setObject:collectionName2 forKey:&off_100129C68];
   }
 
-  v38 = [v11 composerName];
+  composerName = [itemMetadata composerName];
 
-  if (v38)
+  if (composerName)
   {
-    v39 = [v11 composerName];
-    [v10 setObject:v39 forKey:&off_100129C80];
+    composerName2 = [itemMetadata composerName];
+    [v10 setObject:composerName2 forKey:&off_100129C80];
   }
 
-  v40 = [v11 showComposer];
+  showComposer = [itemMetadata showComposer];
 
-  if (v40)
+  if (showComposer)
   {
-    v41 = [v11 showComposer];
-    [v10 setObject:v41 forKey:&off_100129C98];
+    showComposer2 = [itemMetadata showComposer];
+    [v10 setObject:showComposer2 forKey:&off_100129C98];
   }
 
-  if ([v11 isMusicShow])
+  if ([itemMetadata isMusicShow])
   {
-    v42 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v11 isMusicShow]);
+    v42 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [itemMetadata isMusicShow]);
     [v10 setObject:v42 forKey:&off_100129CB0];
   }
 
-  v43 = [v11 title];
+  title = [itemMetadata title];
 
-  if (v43)
+  if (title)
   {
-    v44 = [v11 title];
-    [v10 setObject:v44 forKey:&off_100129CC8];
+    title2 = [itemMetadata title];
+    [v10 setObject:title2 forKey:&off_100129CC8];
   }
 
-  v45 = [v11 numberOfCollectionsInCollectionGroup];
+  numberOfCollectionsInCollectionGroup = [itemMetadata numberOfCollectionsInCollectionGroup];
 
-  if (v45)
+  if (numberOfCollectionsInCollectionGroup)
   {
-    v46 = [v11 numberOfCollectionsInCollectionGroup];
-    [v10 setObject:v46 forKey:&off_100129CE0];
+    numberOfCollectionsInCollectionGroup2 = [itemMetadata numberOfCollectionsInCollectionGroup];
+    [v10 setObject:numberOfCollectionsInCollectionGroup2 forKey:&off_100129CE0];
   }
 
-  v47 = [v11 numberOfItemsInCollection];
+  numberOfItemsInCollection = [itemMetadata numberOfItemsInCollection];
 
-  if (v47)
+  if (numberOfItemsInCollection)
   {
-    v48 = [v11 numberOfItemsInCollection];
-    [v10 setObject:v48 forKey:&off_100129CF8];
+    numberOfItemsInCollection2 = [itemMetadata numberOfItemsInCollection];
+    [v10 setObject:numberOfItemsInCollection2 forKey:&off_100129CF8];
   }
 
-  v49 = [v11 releaseYear];
+  releaseYear = [itemMetadata releaseYear];
 
-  if (v49)
+  if (releaseYear)
   {
-    v50 = [v11 releaseYear];
-    [v10 setObject:v50 forKey:&off_100129D10];
+    releaseYear2 = [itemMetadata releaseYear];
+    [v10 setObject:releaseYear2 forKey:&off_100129D10];
   }
 
   [v10 setObject:&off_100129BA8 forKey:&off_100129D28];
   v51 = [NSNumber numberWithBool:(v12 >> 1) & 1];
   [v10 setObject:v51 forKey:&off_100129D40];
 
-  v52 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v11 isCompilation]);
+  v52 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [itemMetadata isCompilation]);
   [v10 setObject:v52 forKey:&off_100129D58];
 
-  v53 = [v11 purchaseDate];
-  v54 = [(BLML3TrackImporter *)self _absoluteTimeValueForDateValue:v53];
+  purchaseDate = [itemMetadata purchaseDate];
+  v54 = [(BLML3TrackImporter *)self _absoluteTimeValueForDateValue:purchaseDate];
   [v10 setObject:v54 forKey:&off_100129D70];
 
   [v10 setObject:&off_10012A4E8 forKey:&off_100129D88];
-  v55 = [v11 isExplicitContent];
-  if (v55)
+  isExplicitContent = [itemMetadata isExplicitContent];
+  if (isExplicitContent)
   {
-    v56 = 1;
+    rank = 1;
   }
 
   else
   {
-    v53 = [v11 contentRating];
-    v56 = [v53 rank];
+    purchaseDate = [itemMetadata contentRating];
+    rank = [purchaseDate rank];
   }
 
-  v57 = [NSNumber numberWithInteger:v56];
+  v57 = [NSNumber numberWithInteger:rank];
   [v10 setObject:v57 forKey:&off_100129DA0];
 
-  if ((v55 & 1) == 0)
+  if ((isExplicitContent & 1) == 0)
   {
   }
 
-  v58 = [v11 contentRating];
-  v59 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v58 rank]);
+  contentRating = [itemMetadata contentRating];
+  v59 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [contentRating rank]);
   [v10 setObject:v59 forKey:&off_100129DB8];
 
   [v10 setObject:&__kCFBooleanFalse forKey:&off_100129DD0];
-  v60 = [v11 durationInMilliseconds];
+  durationInMilliseconds = [itemMetadata durationInMilliseconds];
 
-  if (v60)
+  if (durationInMilliseconds)
   {
-    v61 = [v11 durationInMilliseconds];
-    [v10 setObject:v61 forKey:&off_100129DE8];
+    durationInMilliseconds2 = [itemMetadata durationInMilliseconds];
+    [v10 setObject:durationInMilliseconds2 forKey:&off_100129DE8];
   }
 
   [v10 setObject:&off_100129BA8 forKey:&off_100129E00];
   [v10 setObject:&off_100129BA8 forKey:&off_100129E18];
-  v62 = [v11 shortDescription];
+  shortDescription = [itemMetadata shortDescription];
 
-  if (v62)
+  if (shortDescription)
   {
-    v63 = [v11 shortDescription];
-    [v10 setObject:v63 forKey:&off_100129E30];
+    shortDescription2 = [itemMetadata shortDescription];
+    [v10 setObject:shortDescription2 forKey:&off_100129E30];
   }
 
-  v64 = [v11 longDescription];
+  longDescription = [itemMetadata longDescription];
 
-  if (v64)
+  if (longDescription)
   {
-    v65 = [v11 longDescription];
-    [v10 setObject:v65 forKey:&off_100129E48];
+    longDescription2 = [itemMetadata longDescription];
+    [v10 setObject:longDescription2 forKey:&off_100129E48];
   }
 
-  v66 = [v11 longSeasonDescription];
+  longSeasonDescription = [itemMetadata longSeasonDescription];
 
-  if (v66)
+  if (longSeasonDescription)
   {
-    v67 = [v11 longSeasonDescription];
-    [v10 setObject:v67 forKey:&off_100129E60];
+    longSeasonDescription2 = [itemMetadata longSeasonDescription];
+    [v10 setObject:longSeasonDescription2 forKey:&off_100129E60];
   }
 
-  v68 = [v11 copyright];
+  copyright = [itemMetadata copyright];
 
-  if (v68)
+  if (copyright)
   {
-    v69 = [v11 copyright];
-    [v10 setObject:v69 forKey:&off_100129E78];
+    copyright2 = [itemMetadata copyright];
+    [v10 setObject:copyright2 forKey:&off_100129E78];
   }
 
   [v10 setObject:&off_100129BA8 forKey:&off_100129E90];
   v70 = [NSNumber numberWithUnsignedInt:v12];
   [v10 setObject:v70 forKey:&off_100129EA8];
 
-  v71 = [v11 workName];
+  workName = [itemMetadata workName];
 
-  if (v71)
+  if (workName)
   {
-    v72 = [v11 workName];
-    [v10 setObject:v72 forKey:&off_100129EC0];
+    workName2 = [itemMetadata workName];
+    [v10 setObject:workName2 forKey:&off_100129EC0];
   }
 
-  v73 = [v11 movementName];
+  movementName = [itemMetadata movementName];
 
-  if (v73)
+  if (movementName)
   {
-    v74 = [v11 movementName];
-    [v10 setObject:v74 forKey:&off_100129ED8];
+    movementName2 = [itemMetadata movementName];
+    [v10 setObject:movementName2 forKey:&off_100129ED8];
   }
 
-  v75 = [v11 movementNumber];
+  movementNumber = [itemMetadata movementNumber];
 
-  if (v75)
+  if (movementNumber)
   {
-    v76 = [v11 movementNumber];
-    [v10 setObject:v76 forKey:&off_100129EF0];
+    movementNumber2 = [itemMetadata movementNumber];
+    [v10 setObject:movementNumber2 forKey:&off_100129EF0];
   }
 
-  v77 = [v11 movementCount];
+  movementCount = [itemMetadata movementCount];
 
-  if (v77)
+  if (movementCount)
   {
-    v78 = [v11 movementCount];
-    [v10 setObject:v78 forKey:&off_100129F08];
+    movementCount2 = [itemMetadata movementCount];
+    [v10 setObject:movementCount2 forKey:&off_100129F08];
   }
 
   [v10 setObject:&off_100129BA8 forKey:&off_100129F20];
@@ -392,21 +392,21 @@ LABEL_8:
 
   [v10 setObject:&off_10012A4F8 forKey:&off_100129F68];
   [v10 setObject:&off_100129BA8 forKey:&off_100129F80];
-  v80 = [v11 durationInMilliseconds];
+  durationInMilliseconds3 = [itemMetadata durationInMilliseconds];
 
-  if (v80)
+  if (durationInMilliseconds3)
   {
-    v81 = [v11 durationInMilliseconds];
-    [v10 setObject:v81 forKey:&off_100129F98];
+    durationInMilliseconds4 = [itemMetadata durationInMilliseconds];
+    [v10 setObject:durationInMilliseconds4 forKey:&off_100129F98];
   }
 
   [v10 setObject:&off_100129BA8 forKey:&off_100129FB0];
-  v82 = [v8 itemDownloadIdentifier];
+  itemDownloadIdentifier3 = [itemCopy itemDownloadIdentifier];
 
-  if (v82)
+  if (itemDownloadIdentifier3)
   {
-    v83 = [v8 itemDownloadIdentifier];
-    [v10 setObject:v83 forKey:&off_100129FC8];
+    itemDownloadIdentifier4 = [itemCopy itemDownloadIdentifier];
+    [v10 setObject:itemDownloadIdentifier4 forKey:&off_100129FC8];
   }
 
   [v10 setObject:&off_100129BA8 forKey:&off_100129FE0];
@@ -423,85 +423,85 @@ LABEL_8:
 
   [v10 setObject:&off_100129BA8 forKey:&off_10012A088];
   [v10 setObject:&__kCFBooleanFalse forKey:&off_10012A0A0];
-  if ([v11 itemIdentifier])
+  if ([itemMetadata itemIdentifier])
   {
-    v86 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v11 itemIdentifier]);
+    v86 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [itemMetadata itemIdentifier]);
     [v10 setObject:v86 forKey:&off_10012A0B8];
   }
 
-  if ([v11 composerIdentifier])
+  if ([itemMetadata composerIdentifier])
   {
-    v87 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v11 composerIdentifier]);
+    v87 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [itemMetadata composerIdentifier]);
     [v10 setObject:v87 forKey:&off_10012A0D0];
   }
 
-  if ([v11 genreIdentifier])
+  if ([itemMetadata genreIdentifier])
   {
-    v88 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v11 genreIdentifier]);
+    v88 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [itemMetadata genreIdentifier]);
     [v10 setObject:v88 forKey:&off_10012A0E8];
   }
 
-  if ([v11 collectionIdentifier])
+  if ([itemMetadata collectionIdentifier])
   {
-    v89 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v11 collectionIdentifier]);
+    v89 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [itemMetadata collectionIdentifier]);
     [v10 setObject:v89 forKey:&off_10012A100];
   }
 
   [v10 setObject:&off_100129BA8 forKey:&off_10012A118];
-  v90 = [v11 redownloadActionParameters];
+  redownloadActionParameters = [itemMetadata redownloadActionParameters];
 
-  if (v90)
+  if (redownloadActionParameters)
   {
-    v91 = [v11 redownloadActionParameters];
-    [v10 setObject:v91 forKey:&off_10012A130];
+    redownloadActionParameters2 = [itemMetadata redownloadActionParameters];
+    [v10 setObject:redownloadActionParameters2 forKey:&off_10012A130];
   }
 
-  v92 = [v11 cloudIdentifier];
+  cloudIdentifier = [itemMetadata cloudIdentifier];
   v93 = [NSNumber numberWithUnsignedLongLong:BLGetItemIdentifierFromValue()];
   [v10 setObject:v93 forKey:&off_10012A148];
 
   [v10 setObject:&off_100129BA8 forKey:&off_10012A160];
-  if ([v8 protectionType] != 2)
+  if ([itemCopy protectionType] != 2)
   {
     [v10 setObject:&__kCFBooleanTrue forKey:&off_10012A178];
   }
 
   [v10 setObject:&off_100129BA8 forKey:&off_10012A190];
-  v94 = [v11 bl_purchaserAccountIdentifier];
-  v161 = v8;
-  v158 = v9;
-  if (v94)
+  bl_purchaserAccountIdentifier = [itemMetadata bl_purchaserAccountIdentifier];
+  v161 = itemCopy;
+  v158 = accountCopy;
+  if (bl_purchaserAccountIdentifier)
   {
-    v95 = v94;
+    ams_DSID = bl_purchaserAccountIdentifier;
   }
 
   else
   {
-    v95 = [v9 ams_DSID];
+    ams_DSID = [accountCopy ams_DSID];
 
-    if (!v95)
+    if (!ams_DSID)
     {
       goto LABEL_83;
     }
   }
 
-  [v10 setObject:v95 forKey:&off_10012A1A8];
+  [v10 setObject:ams_DSID forKey:&off_10012A1A8];
 LABEL_83:
-  v157 = v95;
-  v96 = [v11 bl_downloaderAccountIdentifier];
-  if (v96)
+  v157 = ams_DSID;
+  bl_downloaderAccountIdentifier = [itemMetadata bl_downloaderAccountIdentifier];
+  if (bl_downloaderAccountIdentifier)
   {
-    v97 = v96;
+    ams_DSID2 = bl_downloaderAccountIdentifier;
 
 LABEL_86:
-    v156 = v97;
-    [v10 setObject:v97 forKey:&off_10012A1C0];
+    v156 = ams_DSID2;
+    [v10 setObject:ams_DSID2 forKey:&off_10012A1C0];
     goto LABEL_87;
   }
 
-  v97 = [v9 ams_DSID];
+  ams_DSID2 = [accountCopy ams_DSID];
 
-  if (v97)
+  if (ams_DSID2)
   {
     goto LABEL_86;
   }
@@ -509,8 +509,8 @@ LABEL_86:
   v156 = 0;
 LABEL_87:
   objc_opt_class();
-  v98 = [v8 additionalEntityProperties];
-  v99 = [v98 objectForKeyedSubscript:ML3TrackPropertyStoreFamilyAccountID];
+  additionalEntityProperties = [itemCopy additionalEntityProperties];
+  v99 = [additionalEntityProperties objectForKeyedSubscript:ML3TrackPropertyStoreFamilyAccountID];
   v100 = BUDynamicCast();
 
   v159 = v100;
@@ -519,84 +519,84 @@ LABEL_87:
     [v10 setObject:v100 forKey:&off_10012A1D8];
   }
 
-  v101 = [v11 purchaseDate];
-  v102 = [(BLML3TrackImporter *)self _absoluteTimeValueForDateValue:v101];
+  purchaseDate2 = [itemMetadata purchaseDate];
+  v102 = [(BLML3TrackImporter *)self _absoluteTimeValueForDateValue:purchaseDate2];
   [v10 setObject:v102 forKey:&off_10012A1F0];
 
-  v103 = [v11 releaseDate];
-  v104 = [(BLML3TrackImporter *)self _absoluteTimeValueForDateValue:v103];
+  releaseDate = [itemMetadata releaseDate];
+  v104 = [(BLML3TrackImporter *)self _absoluteTimeValueForDateValue:releaseDate];
   [v10 setObject:v104 forKey:&off_10012A208];
 
-  v105 = [v11 podcastEpisodeGUID];
+  podcastEpisodeGUID = [itemMetadata podcastEpisodeGUID];
 
-  if (v105)
+  if (podcastEpisodeGUID)
   {
-    v106 = [v11 podcastEpisodeGUID];
-    [v10 setObject:v106 forKey:&off_10012A220];
+    podcastEpisodeGUID2 = [itemMetadata podcastEpisodeGUID];
+    [v10 setObject:podcastEpisodeGUID2 forKey:&off_10012A220];
   }
 
-  v107 = [v11 podcastFeedURL];
-  v108 = [(BLML3TrackImporter *)self _stringValueForURLValue:v107];
+  podcastFeedURL = [itemMetadata podcastFeedURL];
+  v108 = [(BLML3TrackImporter *)self _stringValueForURLValue:podcastFeedURL];
 
   if (v108)
   {
-    v109 = [v11 podcastFeedURL];
-    v110 = [(BLML3TrackImporter *)self _stringValueForURLValue:v109];
+    podcastFeedURL2 = [itemMetadata podcastFeedURL];
+    v110 = [(BLML3TrackImporter *)self _stringValueForURLValue:podcastFeedURL2];
     [v10 setObject:v110 forKey:&off_10012A238];
   }
 
-  v111 = [v11 viewStoreItemURL];
-  v112 = [(BLML3TrackImporter *)self _stringValueForURLValue:v111];
+  viewStoreItemURL = [itemMetadata viewStoreItemURL];
+  v112 = [(BLML3TrackImporter *)self _stringValueForURLValue:viewStoreItemURL];
 
   if (v112)
   {
-    v113 = [v11 viewStoreItemURL];
-    v114 = [(BLML3TrackImporter *)self _stringValueForURLValue:v113];
+    viewStoreItemURL2 = [itemMetadata viewStoreItemURL];
+    v114 = [(BLML3TrackImporter *)self _stringValueForURLValue:viewStoreItemURL2];
     [v10 setObject:v114 forKey:&off_10012A250];
   }
 
-  v115 = [v11 valueForMetadataKey:@"xid"];
+  v115 = [itemMetadata valueForMetadataKey:@"xid"];
 
   if (v115)
   {
-    v116 = [v11 valueForMetadataKey:@"xid"];
+    v116 = [itemMetadata valueForMetadataKey:@"xid"];
     [v10 setObject:v116 forKey:&off_10012A268];
   }
 
-  v117 = [v11 valueForMetadataKey:@"flavor"];
+  chapters = [itemMetadata valueForMetadataKey:@"flavor"];
 
-  if (v117)
+  if (chapters)
   {
-    v118 = [v11 valueForMetadataKey:@"flavor"];
+    v118 = [itemMetadata valueForMetadataKey:@"flavor"];
     [v10 setObject:v118 forKey:&off_10012A280];
   }
 
-  v119 = [v11 launchExtrasUrl];
+  launchExtrasUrl = [itemMetadata launchExtrasUrl];
 
-  if (v119)
+  if (launchExtrasUrl)
   {
-    v120 = [v11 launchExtrasUrl];
-    [v10 setObject:v120 forKey:&off_10012A298];
+    launchExtrasUrl2 = [itemMetadata launchExtrasUrl];
+    [v10 setObject:launchExtrasUrl2 forKey:&off_10012A298];
   }
 
-  v121 = [v11 rentalID];
+  rentalID = [itemMetadata rentalID];
 
-  if (v121)
+  if (rentalID)
   {
-    v122 = [v11 rentalID];
-    [v10 setObject:v122 forKey:&off_10012A2B0];
+    rentalID2 = [itemMetadata rentalID];
+    [v10 setObject:rentalID2 forKey:&off_10012A2B0];
   }
 
-  v123 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v11 isHighDefinition]);
+  v123 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [itemMetadata isHighDefinition]);
   [v10 setObject:v123 forKey:&off_10012A2C8];
 
-  v124 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v11 isRental]);
+  v124 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [itemMetadata isRental]);
   [v10 setObject:v124 forKey:&off_10012A2E0];
 
-  if (v8)
+  if (itemCopy)
   {
-    v117 = [v8 chapters];
-    v125 = v117 != 0;
+    chapters = [itemCopy chapters];
+    v125 = chapters != 0;
   }
 
   else
@@ -607,80 +607,80 @@ LABEL_87:
   v126 = [NSNumber numberWithBool:v125];
   [v10 setObject:v126 forKey:&off_10012A2F8];
 
-  if (v8)
+  if (itemCopy)
   {
   }
 
-  v127 = [v11 seasonNumber];
+  seasonNumber = [itemMetadata seasonNumber];
 
-  if (v127)
+  if (seasonNumber)
   {
-    v128 = [v11 seasonNumber];
-    [v10 setObject:v128 forKey:&off_10012A310];
+    seasonNumber2 = [itemMetadata seasonNumber];
+    [v10 setObject:seasonNumber2 forKey:&off_10012A310];
   }
 
-  v129 = [v11 episodeIdentifier];
+  episodeIdentifier = [itemMetadata episodeIdentifier];
 
-  if (v129)
+  if (episodeIdentifier)
   {
-    v130 = [v11 episodeIdentifier];
-    [v10 setObject:v130 forKey:&off_10012A328];
+    episodeIdentifier2 = [itemMetadata episodeIdentifier];
+    [v10 setObject:episodeIdentifier2 forKey:&off_10012A328];
   }
 
-  v131 = [v11 networkName];
+  networkName = [itemMetadata networkName];
 
-  if (v131)
+  if (networkName)
   {
-    v132 = [v11 networkName];
-    [v10 setObject:v132 forKey:&off_10012A340];
+    networkName2 = [itemMetadata networkName];
+    [v10 setObject:networkName2 forKey:&off_10012A340];
   }
 
-  v133 = [(BLML3TrackImporter *)self _currentTrackMovieInfoFromMetadata:v11];
+  v133 = [(BLML3TrackImporter *)self _currentTrackMovieInfoFromMetadata:itemMetadata];
 
   if (v133)
   {
-    v134 = [(BLML3TrackImporter *)self _currentTrackMovieInfoFromMetadata:v11];
+    v134 = [(BLML3TrackImporter *)self _currentTrackMovieInfoFromMetadata:itemMetadata];
     [v10 setObject:v134 forKey:&off_10012A358];
   }
 
-  v135 = self;
-  v136 = [(BLML3TrackImporter *)self _extendedContentRatingStringForLibraryItem:v8];
+  selfCopy = self;
+  v136 = [(BLML3TrackImporter *)self _extendedContentRatingStringForLibraryItem:itemCopy];
   v155 = v136;
   if ([v136 length])
   {
     [v10 setObject:v136 forKey:&off_10012A370];
   }
 
-  v137 = [v11 hlsPlaylistURL];
+  hlsPlaylistURL = [itemMetadata hlsPlaylistURL];
 
-  if (v137)
+  if (hlsPlaylistURL)
   {
-    v138 = [v11 hlsPlaylistURL];
-    v139 = [v138 absoluteString];
-    [v10 setObject:v139 forKey:&off_10012A388];
+    hlsPlaylistURL2 = [itemMetadata hlsPlaylistURL];
+    absoluteString = [hlsPlaylistURL2 absoluteString];
+    [v10 setObject:absoluteString forKey:&off_10012A388];
   }
 
-  v140 = [v11 valueForMetadataKey:BLDownloadMetadataKeyIsHLS];
+  v140 = [itemMetadata valueForMetadataKey:BLDownloadMetadataKeyIsHLS];
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v140 BOOLValue])
   {
     [v10 setObject:&__kCFBooleanTrue forKey:&off_10012A3A0];
   }
 
-  v141 = [v11 valueForMetadataKey:BLDownloadMetadataKeyHasHDR];
+  v141 = [itemMetadata valueForMetadataKey:BLDownloadMetadataKeyHasHDR];
   if (objc_opt_respondsToSelector())
   {
-    v142 = [v141 BOOLValue];
+    bOOLValue = [v141 BOOLValue];
   }
 
   else
   {
-    v142 = 0;
+    bOOLValue = 0;
   }
 
-  v143 = [v11 valueForMetadataKey:BLDownloadMetadataKeyHasDolbyVision];
+  v143 = [itemMetadata valueForMetadataKey:BLDownloadMetadataKeyHasDolbyVision];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    if ((v142 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       goto LABEL_135;
     }
@@ -693,10 +693,10 @@ LABEL_134:
     goto LABEL_135;
   }
 
-  v144 = [v143 BOOLValue];
-  if (v144)
+  bOOLValue2 = [v143 BOOLValue];
+  if (bOOLValue2)
   {
-    v145 = v142 | 2;
+    v145 = bOOLValue | 2;
   }
 
   else
@@ -704,19 +704,19 @@ LABEL_134:
     v145 = 1;
   }
 
-  if ((v144 | v142))
+  if ((bOOLValue2 | bOOLValue))
   {
     goto LABEL_134;
   }
 
 LABEL_135:
-  v147 = [v11 valueForMetadataKey:BLDownloadMetadataKeyHas4K];
+  v147 = [itemMetadata valueForMetadataKey:BLDownloadMetadataKeyHas4K];
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v147 BOOLValue])
   {
     [v10 setObject:&off_10012A3D0 forKey:&off_10012A3E8];
   }
 
-  v148 = [(BLML3TrackImporter *)self _storeArtworkTokenFromLibraryItem:v161 metadata:v11];
+  v148 = [(BLML3TrackImporter *)self _storeArtworkTokenFromLibraryItem:v161 metadata:itemMetadata];
   if (v148)
   {
     [v10 setObject:v148 forKey:&off_10012A400];
@@ -726,16 +726,16 @@ LABEL_135:
   v150 = v149;
   if (v149)
   {
-    v151 = -[BLML3TrackImporter _currentTrackChapterDataForTrackPid:libraryItem:usingLibrary:](v135, "_currentTrackChapterDataForTrackPid:libraryItem:usingLibrary:", [v149 longLongValue], v161, v160);
+    v151 = -[BLML3TrackImporter _currentTrackChapterDataForTrackPid:libraryItem:usingLibrary:](selfCopy, "_currentTrackChapterDataForTrackPid:libraryItem:usingLibrary:", [v149 longLongValue], v161, libraryCopy);
     if (v151)
     {
       [v10 setObject:v151 forKey:&off_10012A418];
     }
   }
 
-  if ([v11 artistIdentifier])
+  if ([itemMetadata artistIdentifier])
   {
-    v152 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v11 artistIdentifier]);
+    v152 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [itemMetadata artistIdentifier]);
     [v10 setObject:v152 forKey:&off_10012A430];
   }
 
@@ -744,28 +744,28 @@ LABEL_135:
   return v10;
 }
 
-- (id)_absoluteTimeValueForDateValue:(id)a3
+- (id)_absoluteTimeValueForDateValue:(id)value
 {
-  v3 = a3;
-  [v3 timeIntervalSinceReferenceDate];
+  valueCopy = value;
+  [valueCopy timeIntervalSinceReferenceDate];
   v4 = [NSNumber numberWithDouble:?];
 
   return v4;
 }
 
-- (id)_stringValueForURLValue:(id)a3
+- (id)_stringValueForURLValue:(id)value
 {
-  v3 = [a3 absoluteString];
+  absoluteString = [value absoluteString];
 
-  return v3;
+  return absoluteString;
 }
 
-- (id)_currentTrackMovieInfoFromMetadata:(id)a3
+- (id)_currentTrackMovieInfoFromMetadata:(id)metadata
 {
-  v3 = [a3 videoDetailsDictionary];
-  if (v3)
+  videoDetailsDictionary = [metadata videoDetailsDictionary];
+  if (videoDetailsDictionary)
   {
-    v4 = [NSPropertyListSerialization dataWithPropertyList:v3 format:100 options:0 error:0];
+    v4 = [NSPropertyListSerialization dataWithPropertyList:videoDetailsDictionary format:100 options:0 error:0];
     if (v4)
     {
       v5 = [[NSString alloc] initWithData:v4 encoding:4];
@@ -785,74 +785,74 @@ LABEL_135:
   return v5;
 }
 
-- (id)_storeArtworkTokenFromLibraryItem:(id)a3 metadata:(id)a4
+- (id)_storeArtworkTokenFromLibraryItem:(id)item metadata:(id)metadata
 {
-  v5 = a4;
-  if (![a3 hasItemArtwork])
+  metadataCopy = metadata;
+  if (![item hasItemArtwork])
   {
-    v8 = 0;
+    uUIDString = 0;
     goto LABEL_8;
   }
 
-  v6 = [v5 collectionIdentifier];
-  if (v6)
+  collectionIdentifier = [metadataCopy collectionIdentifier];
+  if (collectionIdentifier)
   {
-    v7 = [NSString stringWithFormat:@"store_collection_id=%llu", v6];
+    v7 = [NSString stringWithFormat:@"store_collection_id=%llu", collectionIdentifier];
 LABEL_7:
-    v8 = v7;
+    uUIDString = v7;
     goto LABEL_8;
   }
 
-  v9 = [v5 itemIdentifier];
-  if (v9)
+  itemIdentifier = [metadataCopy itemIdentifier];
+  if (itemIdentifier)
   {
-    v7 = [NSString stringWithFormat:@"store_item_id=%llu", v9];
+    v7 = [NSString stringWithFormat:@"store_item_id=%llu", itemIdentifier];
     goto LABEL_7;
   }
 
   v11 = +[NSUUID UUID];
-  v8 = [v11 UUIDString];
+  uUIDString = [v11 UUIDString];
 
 LABEL_8:
 
-  return v8;
+  return uUIDString;
 }
 
-- (id)_currentTrackChapterDataForTrackPid:(int64_t)a3 libraryItem:(id)a4 usingLibrary:(id)a5
+- (id)_currentTrackChapterDataForTrackPid:(int64_t)pid libraryItem:(id)item usingLibrary:(id)library
 {
-  v7 = a4;
-  v8 = a5;
-  if (!a3)
+  itemCopy = item;
+  libraryCopy = library;
+  if (!pid)
   {
-    a3 = [v7 libraryPersistentIdentifier];
+    pid = [itemCopy libraryPersistentIdentifier];
   }
 
-  v9 = [v7 chapters];
-  v10 = [ML3Track flattenedChapterDataWithImportChapters:v9 library:v8 trackPersistentID:a3];
+  chapters = [itemCopy chapters];
+  v10 = [ML3Track flattenedChapterDataWithImportChapters:chapters library:libraryCopy trackPersistentID:pid];
 
   return v10;
 }
 
-- (id)_extendedContentRatingStringForLibraryItem:(id)a3
+- (id)_extendedContentRatingStringForLibraryItem:(id)item
 {
-  v3 = [a3 itemMetadata];
-  v4 = [v3 contentRating];
-  v5 = v4;
-  if (v4)
+  itemMetadata = [item itemMetadata];
+  contentRating = [itemMetadata contentRating];
+  v5 = contentRating;
+  if (contentRating)
   {
-    v6 = [v4 rank];
-    v7 = [v5 ratingLabel];
+    rank = [contentRating rank];
+    ratingLabel = [v5 ratingLabel];
     v8 = +[BLItemContentRating stringForRatingSystem:](BLItemContentRating, "stringForRatingSystem:", [v5 ratingSystem]);
-    v9 = [v5 ratingDescription];
-    if ([v8 length] && objc_msgSend(v7, "length"))
+    ratingDescription = [v5 ratingDescription];
+    if ([v8 length] && objc_msgSend(ratingLabel, "length"))
     {
       v10 = &stru_100125DB0;
-      if (v9)
+      if (ratingDescription)
       {
-        v10 = v9;
+        v10 = ratingDescription;
       }
 
-      v11 = [NSString stringWithFormat:@"%@|%@|%ld|%@", v8, v7, v6, v10];
+      v11 = [NSString stringWithFormat:@"%@|%@|%ld|%@", v8, ratingLabel, rank, v10];
     }
 
     else

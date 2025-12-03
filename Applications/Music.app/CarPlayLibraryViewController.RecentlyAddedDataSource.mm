@@ -1,16 +1,16 @@
 @interface CarPlayLibraryViewController.RecentlyAddedDataSource
 - (_TtCC5Music28CarPlayLibraryViewController23RecentlyAddedDataSource)init;
-- (void)contentManager:(id)a3 didReceiveResponse:(id)a4;
+- (void)contentManager:(id)manager didReceiveResponse:(id)response;
 @end
 
 @implementation CarPlayLibraryViewController.RecentlyAddedDataSource
 
-- (void)contentManager:(id)a3 didReceiveResponse:(id)a4
+- (void)contentManager:(id)manager didReceiveResponse:(id)response
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1003FC51C(v6);
+  managerCopy = manager;
+  responseCopy = response;
+  selfCopy = self;
+  sub_1003FC51C(managerCopy);
 }
 
 - (_TtCC5Music28CarPlayLibraryViewController23RecentlyAddedDataSource)init

@@ -1,12 +1,12 @@
 @interface BKSHIDEventSimpleProvenanceOriginator
-- (id)buildProvenance:(id)a3;
+- (id)buildProvenance:(id)provenance;
 @end
 
 @implementation BKSHIDEventSimpleProvenanceOriginator
 
-- (id)buildProvenance:(id)a3
+- (id)buildProvenance:(id)provenance
 {
-  v4 = a3;
+  provenanceCopy = provenance;
   key = self->_key;
   if (!key)
   {
@@ -21,8 +21,8 @@
   v11[1] = 3221225472;
   v11[2] = __57__BKSHIDEventSimpleProvenanceOriginator_buildProvenance___block_invoke;
   v11[3] = &unk_1E6F47728;
-  v12 = v4;
-  v8 = v4;
+  v12 = provenanceCopy;
+  v8 = provenanceCopy;
   v9 = [BKSHIDEventSimpleProvenance _withInternalKey:key buildMessage:v11];
 
   return v9;

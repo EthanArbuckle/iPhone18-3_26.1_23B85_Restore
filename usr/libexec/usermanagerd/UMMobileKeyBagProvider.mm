@@ -1,15 +1,15 @@
 @interface UMMobileKeyBagProvider
-- (int)createPersonaKeyForUser:(unsigned int)a3 personaUUID:(id)a4 passcode:(id)a5 homeDir:(id)a6;
-- (int)removePersonaKeyForUser:(unsigned int)a3 personaUUID:(id)a4 volumeUUID:(id)a5;
-- (int)setVolumePath:(id)a3 forPersona:(id)a4;
+- (int)createPersonaKeyForUser:(unsigned int)user personaUUID:(id)d passcode:(id)passcode homeDir:(id)dir;
+- (int)removePersonaKeyForUser:(unsigned int)user personaUUID:(id)d volumeUUID:(id)iD;
+- (int)setVolumePath:(id)path forPersona:(id)persona;
 @end
 
 @implementation UMMobileKeyBagProvider
 
-- (int)createPersonaKeyForUser:(unsigned int)a3 personaUUID:(id)a4 passcode:(id)a5 homeDir:(id)a6
+- (int)createPersonaKeyForUser:(unsigned int)user personaUUID:(id)d passcode:(id)passcode homeDir:(id)dir
 {
-  v7 = a4;
-  v8 = a6;
+  dCopy = d;
+  dirCopy = dir;
   PersonaKeyForUser = MKBUserSessionCreatePersonaKeyForUser();
   if (PersonaKeyForUser)
   {
@@ -85,15 +85,15 @@ LABEL_20:
   return PersonaKeyForUser;
 }
 
-- (int)removePersonaKeyForUser:(unsigned int)a3 personaUUID:(id)a4 volumeUUID:(id)a5
+- (int)removePersonaKeyForUser:(unsigned int)user personaUUID:(id)d volumeUUID:(id)iD
 {
-  v6 = a4;
-  v7 = a5;
-  v8 = v7;
-  if (v7)
+  dCopy = d;
+  iDCopy = iD;
+  v8 = iDCopy;
+  if (iDCopy)
   {
     v19 = @"MKBUserSessionVolumeUUID";
-    v20 = v7;
+    v20 = iDCopy;
     v9 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
   }
 
@@ -177,10 +177,10 @@ LABEL_23:
   return v10;
 }
 
-- (int)setVolumePath:(id)a3 forPersona:(id)a4
+- (int)setVolumePath:(id)path forPersona:(id)persona
 {
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  personaCopy = persona;
   v7 = MKBUserSessionSetVolumeToPersona();
   if (v7)
   {

@@ -1,12 +1,12 @@
 @interface MUPlaceCompactTileContentView
-+ (CGSize)_preferredSizeForViewModel:(id)a3 cellConfiguration:(id)a4 maximumMeasurements:(id)a5;
-+ (CGSize)preferredSizeForViewModels:(id)a3 cellConfiguration:(id)a4 usingMeasurements:(id)a5;
-- (MUPlaceCompactTileContentView)initWithCellConfiguration:(id)a3;
++ (CGSize)_preferredSizeForViewModel:(id)model cellConfiguration:(id)configuration maximumMeasurements:(id)measurements;
++ (CGSize)preferredSizeForViewModels:(id)models cellConfiguration:(id)configuration usingMeasurements:(id)measurements;
+- (MUPlaceCompactTileContentView)initWithCellConfiguration:(id)configuration;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)_updateAppearance;
 - (void)_updateFonts;
-- (void)setViewModel:(id)a3;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation MUPlaceCompactTileContentView
@@ -45,8 +45,8 @@
     objc_destroyWeak(&location);
   }
 
-  v6 = [(MUPlaceTileViewModel *)self->_viewModel tileName];
-  [(MULabelViewProtocol *)self->_primaryLabel setText:v6];
+  tileName = [(MUPlaceTileViewModel *)self->_viewModel tileName];
+  [(MULabelViewProtocol *)self->_primaryLabel setText:tileName];
 
   [(MULabelViewProtocol *)self->_secondaryLabel setNumberOfLines:[(MUPlaceTileViewModel *)self->_viewModel expectedNumberOfFooterLines]];
   v7 = self->_viewModel;
@@ -70,12 +70,12 @@ void __50__MUPlaceCompactTileContentView__updateAppearance__block_invoke(uint64_
   }
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   if (([(MUPlaceTileViewModel *)self->_viewModel isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_viewModel, a3);
+    objc_storeStrong(&self->_viewModel, model);
     [(MUPlaceCompactTileContentView *)self _updateAppearance];
   }
 }
@@ -83,11 +83,11 @@ void __50__MUPlaceCompactTileContentView__updateAppearance__block_invoke(uint64_
 - (void)_setupConstraints
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(MUPlaceTileCellConfiguration *)self->_configuration showIcon])
   {
     v4 = [[MUSizeLayout alloc] initWithItem:self->_iconView size:24.0, 24.0];
-    [v3 addObject:v4];
+    [array addObject:v4];
     v5 = [[MUCompositionalStackLayoutGroup alloc] initWithAxis:1];
     primaryLabel = self->_primaryLabel;
     v21[0] = self->_iconView;
@@ -127,8 +127,8 @@ void __50__MUPlaceCompactTileContentView__updateAppearance__block_invoke(uint64_
   LODWORD(v15) = 1112539136;
   [(MUCompositionalStackLayoutGroup *)v13 setDistributionFittingSizePriority:v15];
   v16 = [[MUCompositionalStackLayout alloc] initWithContainer:self group:v13];
-  [v3 addObject:v16];
-  [MEMORY[0x1E696ACD8] _mapsui_activateLayouts:v3];
+  [array addObject:v16];
+  [MEMORY[0x1E696ACD8] _mapsui_activateLayouts:array];
 
   v17 = *MEMORY[0x1E69E9840];
 }
@@ -167,16 +167,16 @@ void __50__MUPlaceCompactTileContentView__updateAppearance__block_invoke(uint64_
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (MUPlaceCompactTileContentView)initWithCellConfiguration:(id)a3
+- (MUPlaceCompactTileContentView)initWithCellConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = MUPlaceCompactTileContentView;
   v6 = [(MUPlaceCompactTileContentView *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     [(MUPlaceCompactTileContentView *)v7 setAccessibilityIdentifier:@"PlaceCompactTileContent"];
     [(MUPlaceCompactTileContentView *)v7 _setupSubviews];
     [(MUPlaceCompactTileContentView *)v7 _setupConstraints];
@@ -185,17 +185,17 @@ void __50__MUPlaceCompactTileContentView__updateAppearance__block_invoke(uint64_
   return v7;
 }
 
-+ (CGSize)_preferredSizeForViewModel:(id)a3 cellConfiguration:(id)a4 maximumMeasurements:(id)a5
++ (CGSize)_preferredSizeForViewModel:(id)model cellConfiguration:(id)configuration maximumMeasurements:(id)measurements
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  [v8 tileWidth];
+  modelCopy = model;
+  measurementsCopy = measurements;
+  configurationCopy = configuration;
+  [measurementsCopy tileWidth];
   v11 = v10;
-  v12 = [v9 showIcon];
+  showIcon = [configurationCopy showIcon];
 
-  if (v12)
+  if (showIcon)
   {
     v13 = 44.0;
   }
@@ -205,30 +205,30 @@ void __50__MUPlaceCompactTileContentView__updateAppearance__block_invoke(uint64_
     v13 = 16.0;
   }
 
-  v14 = [v7 tileName];
-  v15 = [v14 length];
+  tileName = [modelCopy tileName];
+  v15 = [tileName length];
 
   if (v15)
   {
     v16 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v17 = [v7 tileName];
+    tileName2 = [modelCopy tileName];
     v33 = *MEMORY[0x1E69DB648];
     v18 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD00]];
     v19 = [v18 _mapkit_fontWithSymbolicTraits:0x8000];
     v20 = [v19 _mapkit_fontWithWeight:*MEMORY[0x1E69DB980]];
     v34[0] = v20;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:&v33 count:1];
-    v22 = [v16 initWithString:v17 attributes:v21];
+    v22 = [v16 initWithString:tileName2 attributes:v21];
 
     v36.origin.x = _calculateBoundingRectForAttributedStringWithHeight(v22, v11 + -32.0);
     Height = CGRectGetHeight(v36);
-    [v8 maxTitleHeight];
+    [measurementsCopy maxTitleHeight];
     v13 = fmin(Height, v24) + v13;
   }
 
   v25 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
   v26 = [v25 _mapkit_fontWithSymbolicTraits:0x8000];
-  v27 = [v7 footerAttributedStringForFont:v26];
+  v27 = [modelCopy footerAttributedStringForFont:v26];
 
   if ([v27 length])
   {
@@ -236,7 +236,7 @@ void __50__MUPlaceCompactTileContentView__updateAppearance__block_invoke(uint64_
     v13 = v13 + 8.0 + CGRectGetHeight(v37);
   }
 
-  [v8 tileWidth];
+  [measurementsCopy tileWidth];
   v29 = v28;
 
   v30 = *MEMORY[0x1E69E9840];
@@ -247,19 +247,19 @@ void __50__MUPlaceCompactTileContentView__updateAppearance__block_invoke(uint64_
   return result;
 }
 
-+ (CGSize)preferredSizeForViewModels:(id)a3 cellConfiguration:(id)a4 usingMeasurements:(id)a5
++ (CGSize)preferredSizeForViewModels:(id)models cellConfiguration:(id)configuration usingMeasurements:(id)measurements
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  modelsCopy = models;
+  configurationCopy = configuration;
+  measurementsCopy = measurements;
   v11 = *MEMORY[0x1E695F060];
   v12 = *(MEMORY[0x1E695F060] + 8);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v13 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v13 = [modelsCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v13)
   {
     v14 = v13;
@@ -272,10 +272,10 @@ void __50__MUPlaceCompactTileContentView__updateAppearance__block_invoke(uint64_
       {
         if (*v24 != v15)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(modelsCopy);
         }
 
-        [a1 _preferredSizeForViewModel:*(*(&v23 + 1) + 8 * v16) cellConfiguration:v9 maximumMeasurements:v10];
+        [self _preferredSizeForViewModel:*(*(&v23 + 1) + 8 * v16) cellConfiguration:configurationCopy maximumMeasurements:measurementsCopy];
         v12 = fmax(v19, v17);
         if (v19 > v17)
         {
@@ -287,7 +287,7 @@ void __50__MUPlaceCompactTileContentView__updateAppearance__block_invoke(uint64_
       }
 
       while (v14 != v16);
-      v14 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v14 = [modelsCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v14);

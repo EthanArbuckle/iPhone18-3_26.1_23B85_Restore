@@ -1,6 +1,6 @@
 @interface SNKShotFeaturizationStreamCompletion
 - (MLMultiArray)exemplar;
-- (void)setExemplar:(id)a3;
+- (void)setExemplar:(id)exemplar;
 @end
 
 @implementation SNKShotFeaturizationStreamCompletion
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (void)setExemplar:(id)a3
+- (void)setExemplar:(id)exemplar
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C97B1B84(v4);
+  exemplarCopy = exemplar;
+  selfCopy = self;
+  sub_1C97B1B84(exemplarCopy);
 }
 
 @end

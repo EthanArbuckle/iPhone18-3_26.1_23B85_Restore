@@ -1,20 +1,20 @@
 @interface RemoteUISectionFooter
-- (CGSize)_labelSizeForWidth:(double)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_labelSizeForWidth:(double)width;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (RUITableFooterDelegate)delegate;
-- (RemoteUISectionFooter)initWithAttributes:(id)a3;
+- (RemoteUISectionFooter)initWithAttributes:(id)attributes;
 - (UIButton)linkButton;
 - (void)_linkPressed;
-- (void)setLinkAction:(id)a3;
-- (void)setLinkURL:(id)a3;
-- (void)setText:(id)a3 attributes:(id)a4;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTextColor:(id)a3;
+- (void)setLinkAction:(id)action;
+- (void)setLinkURL:(id)l;
+- (void)setText:(id)text attributes:(id)attributes;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation RemoteUISectionFooter
 
-- (RemoteUISectionFooter)initWithAttributes:(id)a3
+- (RemoteUISectionFooter)initWithAttributes:(id)attributes
 {
   v39[1] = *MEMORY[0x277D85DE8];
   v37.receiver = self;
@@ -23,7 +23,7 @@
   v4 = *(MEMORY[0x277CBF3A0] + 8);
   v5 = *(MEMORY[0x277CBF3A0] + 16);
   v6 = *(MEMORY[0x277CBF3A0] + 24);
-  v7 = [(RemoteUISectionFooter *)&v37 initWithFrame:a3, *MEMORY[0x277CBF3A0], v4, v5, v6];
+  v7 = [(RemoteUISectionFooter *)&v37 initWithFrame:attributes, *MEMORY[0x277CBF3A0], v4, v5, v6];
   if (v7)
   {
     v8 = [[RUILinkLabel alloc] initWithFrame:v3, v4, v5, v6];
@@ -31,16 +31,16 @@
     v7->_linkLabel = v8;
 
     v10 = RemoteUIFooterFont();
-    v11 = [(RUILinkLabel *)v7->_linkLabel textLabel];
-    [v11 setFont:v10];
+    textLabel = [(RUILinkLabel *)v7->_linkLabel textLabel];
+    [textLabel setFont:v10];
 
     v12 = RemoteUIFooterTextColor();
-    v13 = [(RUILinkLabel *)v7->_linkLabel textLabel];
-    [v13 setTextColor:v12];
+    textLabel2 = [(RUILinkLabel *)v7->_linkLabel textLabel];
+    [textLabel2 setTextColor:v12];
 
-    v14 = [MEMORY[0x277D75348] clearColor];
-    v15 = [(RUILinkLabel *)v7->_linkLabel textLabel];
-    [v15 setBackgroundColor:v14];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    textLabel3 = [(RUILinkLabel *)v7->_linkLabel textLabel];
+    [textLabel3 setBackgroundColor:clearColor];
 
     [(RUILinkLabel *)v7->_linkLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     v16 = objc_alloc(MEMORY[0x277D75A68]);
@@ -57,25 +57,25 @@
     v20 = v18;
 
     [(RemoteUISectionFooter *)v7 addSubview:v20];
-    v21 = [(UIStackView *)v20 topAnchor];
-    v22 = [(RemoteUISectionFooter *)v7 topAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22 constant:8.0];
+    topAnchor = [(UIStackView *)v20 topAnchor];
+    topAnchor2 = [(RemoteUISectionFooter *)v7 topAnchor];
+    v23 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:8.0];
     topContraint = v7->_topContraint;
     v7->_topContraint = v23;
 
     v34 = MEMORY[0x277CCAAD0];
     v38[0] = v7->_topContraint;
-    v36 = [(UIStackView *)v20 leadingAnchor];
-    v35 = [(RemoteUISectionFooter *)v7 leadingAnchor];
-    v25 = [v36 constraintEqualToAnchor:v35];
+    leadingAnchor = [(UIStackView *)v20 leadingAnchor];
+    leadingAnchor2 = [(RemoteUISectionFooter *)v7 leadingAnchor];
+    v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v38[1] = v25;
-    v26 = [(UIStackView *)v20 trailingAnchor];
-    v27 = [(RemoteUISectionFooter *)v7 trailingAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    trailingAnchor = [(UIStackView *)v20 trailingAnchor];
+    trailingAnchor2 = [(RemoteUISectionFooter *)v7 trailingAnchor];
+    v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v38[2] = v28;
-    v29 = [(UIStackView *)v20 bottomAnchor];
-    v30 = [(RemoteUISectionFooter *)v7 bottomAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30 constant:-7.0];
+    bottomAnchor = [(UIStackView *)v20 bottomAnchor];
+    bottomAnchor2 = [(RemoteUISectionFooter *)v7 bottomAnchor];
+    v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-7.0];
     v38[3] = v31;
     v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:4];
     [v34 activateConstraints:v32];
@@ -84,10 +84,10 @@
   return v7;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(RemoteUISectionFooter *)self footerHeightForWidth:self inView:a3.width, a3.height];
+  width = fits.width;
+  [(RemoteUISectionFooter *)self footerHeightForWidth:self inView:fits.width, fits.height];
   v5 = v4;
   v6 = width;
   result.height = v5;
@@ -108,19 +108,19 @@
   return [(RUILinkLabel *)linkLabel linkButton];
 }
 
-- (void)setLinkURL:(id)a3
+- (void)setLinkURL:(id)l
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_linkURL != v5)
+  lCopy = l;
+  v6 = lCopy;
+  if (self->_linkURL != lCopy)
   {
-    if (v5)
+    if (lCopy)
     {
       linkAction = self->_linkAction;
       self->_linkAction = 0;
     }
 
-    objc_storeStrong(&self->_linkURL, a3);
+    objc_storeStrong(&self->_linkURL, l);
     objc_initWeak(&location, self);
     linkLabel = self->_linkLabel;
     v9 = MEMORY[0x277D85DD0];
@@ -141,13 +141,13 @@ void __36__RemoteUISectionFooter_setLinkURL___block_invoke(uint64_t a1)
   [WeakRetained _linkPressed];
 }
 
-- (void)setLinkAction:(id)a3
+- (void)setLinkAction:(id)action
 {
-  v4 = a3;
-  if (self->_linkAction != v4)
+  actionCopy = action;
+  if (self->_linkAction != actionCopy)
   {
-    v8 = v4;
-    if (v4)
+    v8 = actionCopy;
+    if (actionCopy)
     {
       linkURL = self->_linkURL;
       self->_linkURL = 0;
@@ -159,46 +159,46 @@ void __36__RemoteUISectionFooter_setLinkURL___block_invoke(uint64_t a1)
 
     [(RUILinkLabel *)self->_linkLabel setAction:self->_linkAction];
     [(RemoteUISectionFooter *)self setNeedsLayout];
-    v4 = v8;
+    actionCopy = v8;
   }
 }
 
-- (void)setText:(id)a3 attributes:(id)a4
+- (void)setText:(id)text attributes:(id)attributes
 {
-  [(RUILinkLabel *)self->_linkLabel setText:a3, a4];
+  [(RUILinkLabel *)self->_linkLabel setText:text, attributes];
 
   [(RemoteUISectionFooter *)self setNeedsLayout];
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  if ([(RUILinkLabel *)self->_linkLabel textAlignment]!= a3)
+  if ([(RUILinkLabel *)self->_linkLabel textAlignment]!= alignment)
   {
     self->_usesCustomTextAlignment = 1;
-    [(RUILinkLabel *)self->_linkLabel setTextAlignment:a3];
+    [(RUILinkLabel *)self->_linkLabel setTextAlignment:alignment];
     [(RemoteUISectionFooter *)self setNeedsLayout];
   }
 
-  if (a3 <= 4)
+  if (alignment <= 4)
   {
-    v5 = qword_21BA91F40[a3];
+    v5 = qword_21BA91F40[alignment];
     stackView = self->_stackView;
 
     [(UIStackView *)stackView setAlignment:v5];
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
   linkLabel = self->_linkLabel;
-  v4 = a3;
-  v5 = [(RUILinkLabel *)linkLabel textLabel];
-  [v5 setTextColor:v4];
+  colorCopy = color;
+  textLabel = [(RUILinkLabel *)linkLabel textLabel];
+  [textLabel setTextColor:colorCopy];
 }
 
-- (CGSize)_labelSizeForWidth:(double)a3
+- (CGSize)_labelSizeForWidth:(double)width
 {
-  [(RemoteUISectionFooter *)self systemLayoutSizeFittingSize:a3, *(MEMORY[0x277D76C78] + 8)];
+  [(RemoteUISectionFooter *)self systemLayoutSizeFittingSize:width, *(MEMORY[0x277D76C78] + 8)];
   result.height = v4;
   result.width = v3;
   return result;
@@ -207,8 +207,8 @@ void __36__RemoteUISectionFooter_setLinkURL___block_invoke(uint64_t a1)
 - (void)_linkPressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [(RemoteUISectionFooter *)self linkURL];
-  [WeakRetained footerView:self activatedLinkWithURL:v3];
+  linkURL = [(RemoteUISectionFooter *)self linkURL];
+  [WeakRetained footerView:self activatedLinkWithURL:linkURL];
 }
 
 - (RUITableFooterDelegate)delegate

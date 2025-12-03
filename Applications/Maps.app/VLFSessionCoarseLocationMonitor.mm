@@ -1,18 +1,18 @@
 @interface VLFSessionCoarseLocationMonitor
 + (BOOL)affectsBannerVisibility;
 + (BOOL)affectsPuckVisibility;
-- (VLFSessionCoarseLocationMonitor)initWithObserver:(id)a3 locationManager:(id)a4;
+- (VLFSessionCoarseLocationMonitor)initWithObserver:(id)observer locationManager:(id)manager;
 - (id)debugDescription;
 - (void)_startAuthorizationDelayTimer;
-- (void)applicationDidBecomeActiveNotification:(id)a3;
-- (void)applicationWillResignActiveNotification:(id)a3;
-- (void)locationManagerApprovalDidChange:(id)a3;
+- (void)applicationDidBecomeActiveNotification:(id)notification;
+- (void)applicationWillResignActiveNotification:(id)notification;
+- (void)locationManagerApprovalDidChange:(id)change;
 - (void)updateStateForCurrentPreciseLocationAuthorizationStatus;
 @end
 
 @implementation VLFSessionCoarseLocationMonitor
 
-- (void)locationManagerApprovalDidChange:(id)a3
+- (void)locationManagerApprovalDidChange:(id)change
 {
   [(VLFSessionCoarseLocationMonitor *)self setAuthorizedDelayTimer:0];
   [(VLFSessionCoarseLocationMonitor *)self setIsDelayingStateChange:0];
@@ -30,10 +30,10 @@
 
   else
   {
-    v6 = [(VLFSessionCoarseLocationMonitor *)self isInBackground];
+    isInBackground = [(VLFSessionCoarseLocationMonitor *)self isInBackground];
     v7 = sub_10006ABB4();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-    if (v6)
+    if (isInBackground)
     {
       if (v8)
       {
@@ -57,7 +57,7 @@
   }
 }
 
-- (void)applicationDidBecomeActiveNotification:(id)a3
+- (void)applicationDidBecomeActiveNotification:(id)notification
 {
   v4 = sub_10006ABB4();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -74,7 +74,7 @@
   }
 }
 
-- (void)applicationWillResignActiveNotification:(id)a3
+- (void)applicationWillResignActiveNotification:(id)notification
 {
   v4 = sub_10006ABB4();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -159,14 +159,14 @@
   }
 
   v11 = v10;
-  v12 = [(VLFSessionMonitor *)self state];
+  state = [(VLFSessionMonitor *)self state];
   v13 = @"Hide";
-  if (v12 == 1)
+  if (state == 1)
   {
     v13 = @"EnablePuck";
   }
 
-  if (v12 == 2)
+  if (state == 2)
   {
     v13 = @"EnablePuckAndBanner";
   }
@@ -178,12 +178,12 @@
 
 - (void)updateStateForCurrentPreciseLocationAuthorizationStatus
 {
-  v3 = [(VLFSessionCoarseLocationMonitor *)self locationManager];
-  v4 = [v3 isAuthorizedForPreciseLocation];
+  locationManager = [(VLFSessionCoarseLocationMonitor *)self locationManager];
+  isAuthorizedForPreciseLocation = [locationManager isAuthorizedForPreciseLocation];
 
   v5 = sub_10006ABB4();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-  if (v4)
+  if (isAuthorizedForPreciseLocation)
   {
     if (v6)
     {
@@ -212,11 +212,11 @@
   [(VLFSessionMonitor *)self setState:v7];
 }
 
-- (VLFSessionCoarseLocationMonitor)initWithObserver:(id)a3 locationManager:(id)a4
+- (VLFSessionCoarseLocationMonitor)initWithObserver:(id)observer locationManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  observerCopy = observer;
+  managerCopy = manager;
+  if (!managerCopy)
   {
     v14 = sub_10006D178();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -247,11 +247,11 @@
 
   v17.receiver = self;
   v17.super_class = VLFSessionCoarseLocationMonitor;
-  v8 = [(VLFSessionMonitor *)&v17 initWithObserver:v6];
+  v8 = [(VLFSessionMonitor *)&v17 initWithObserver:observerCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_locationManager, a4);
+    objc_storeStrong(&v8->_locationManager, manager);
     v10 = +[NSNotificationCenter defaultCenter];
     [v10 addObserver:v9 selector:"locationManagerApprovalDidChange:" name:MKLocationManagerApprovalDidChangeNotification object:0];
 

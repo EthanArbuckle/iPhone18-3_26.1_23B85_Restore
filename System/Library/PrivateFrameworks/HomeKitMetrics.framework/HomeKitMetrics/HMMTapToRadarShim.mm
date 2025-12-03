@@ -3,28 +3,28 @@
 + (id)logCategory;
 - (BOOL)isTapToRadarServiceAuthorized;
 - (HMMTapToRadarShim)init;
-- (id)createRadarComponentWithName:(id)a3 version:(id)a4 identifier:(int64_t)a5;
+- (id)createRadarComponentWithName:(id)name version:(id)version identifier:(int64_t)identifier;
 - (id)createRadarDraft;
-- (void)createDraft:(id)a3 forProcessNamed:(id)a4 withDisplayReason:(id)a5;
+- (void)createDraft:(id)draft forProcessNamed:(id)named withDisplayReason:(id)reason;
 @end
 
 @implementation HMMTapToRadarShim
 
-- (void)createDraft:(id)a3 forProcessNamed:(id)a4 withDisplayReason:(id)a5
+- (void)createDraft:(id)draft forProcessNamed:(id)named withDisplayReason:(id)reason
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMMTapToRadarShim *)self tapToRadarService];
+  draftCopy = draft;
+  namedCopy = named;
+  reasonCopy = reason;
+  tapToRadarService = [(HMMTapToRadarShim *)self tapToRadarService];
   v18 = 0;
-  [v11 createDraft:v8 forProcessNamed:v9 withDisplayReason:v10 error:&v18];
+  [tapToRadarService createDraft:draftCopy forProcessNamed:namedCopy withDisplayReason:reasonCopy error:&v18];
   v12 = v18;
 
   if (v12)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -42,10 +42,10 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createRadarComponentWithName:(id)a3 version:(id)a4 identifier:(int64_t)a5
+- (id)createRadarComponentWithName:(id)name version:(id)version identifier:(int64_t)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  versionCopy = version;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -64,7 +64,7 @@
 
   v10 = v9;
   _Block_object_dispose(&v14, 8);
-  v11 = [[v9 alloc] initWithName:v7 version:v8 identifier:a5];
+  v11 = [[v9 alloc] initWithName:nameCopy version:versionCopy identifier:identifier];
 
   return v11;
 }
@@ -97,14 +97,14 @@
 - (BOOL)isTapToRadarServiceAuthorized
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HMMTapToRadarShim *)self tapToRadarService];
-  v4 = [v3 serviceSettings];
-  v5 = [v4 authorizationStatus];
+  tapToRadarService = [(HMMTapToRadarShim *)self tapToRadarService];
+  serviceSettings = [tapToRadarService serviceSettings];
+  authorizationStatus = [serviceSettings authorizationStatus];
 
-  if (v5 == 2)
+  if (authorizationStatus == 2)
   {
     v6 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -116,10 +116,10 @@
     }
   }
 
-  else if (v5 == 1)
+  else if (authorizationStatus == 1)
   {
     v6 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy2 = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -133,14 +133,14 @@
 
   else
   {
-    if (v5)
+    if (authorizationStatus)
     {
       result = 1;
       goto LABEL_13;
     }
 
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy3 = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -191,9 +191,9 @@ LABEL_13:
 
     v4 = v3;
     _Block_object_dispose(&v11, 8);
-    v5 = [v3 shared];
+    shared = [v3 shared];
     tapToRadarService = v2->_tapToRadarService;
-    v2->_tapToRadarService = v5;
+    v2->_tapToRadarService = shared;
   }
 
   v7 = v2;

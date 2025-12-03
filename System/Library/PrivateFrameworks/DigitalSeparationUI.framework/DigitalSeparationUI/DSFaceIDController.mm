@@ -3,11 +3,11 @@
 - (DSNavigationDelegate)delegate;
 - (void)_didTapCancelButton;
 - (void)beginFaceIDEnrollment;
-- (void)pearlEnrollController:(id)a3 finishedEnrollWithError:(id)a4;
-- (void)ratchetViewController:(id)a3 didFinishWithResult:(id)a4 error:(id)a5;
+- (void)pearlEnrollController:(id)controller finishedEnrollWithError:(id)error;
+- (void)ratchetViewController:(id)controller didFinishWithResult:(id)result error:(id)error;
 - (void)resetFaceID;
-- (void)shouldShowWithCompletion:(id)a3;
-- (void)startRatchetEvalInPresentationContext:(id)a3;
+- (void)shouldShowWithCompletion:(id)completion;
+- (void)startRatchetEvalInPresentationContext:(id)context;
 - (void)updateFaceIDPaneConfiguration;
 - (void)viewDidLoad;
 @end
@@ -32,8 +32,8 @@
   else
   {
     v8 = MEMORY[0x277D755D0];
-    v9 = [MEMORY[0x277D75348] systemBlueColor];
-    v5 = [v8 configurationWithHierarchicalColor:v9];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    v5 = [v8 configurationWithHierarchicalColor:systemBlueColor];
 
     v6 = DSUILocStringForKey(@"FACE_ID");
     v10 = DSUILocStringForKey(@"FACE_ID_DETAIL");
@@ -46,16 +46,16 @@
   return v7;
 }
 
-- (void)shouldShowWithCompletion:(id)a3
+- (void)shouldShowWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = sharedWorkQueue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__DSFaceIDController_shouldShowWithCompletion___block_invoke;
   block[3] = &unk_278F75490;
-  v7 = v3;
-  v5 = v3;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(v4, block);
 }
 
@@ -89,7 +89,7 @@ uint64_t __47__DSFaceIDController_shouldShowWithCompletion___block_invoke(uint64
   v15.super_class = DSFaceIDController;
   [(DSOBWelcomeController *)&v15 viewDidLoad];
   v3 = +[DSFaceIDController isPearlEnrolled];
-  v4 = [(DSFaceIDController *)self headerView];
+  headerView = [(DSFaceIDController *)self headerView];
   v5 = !v3;
   if (v3)
   {
@@ -122,24 +122,24 @@ uint64_t __47__DSFaceIDController_shouldShowWithCompletion___block_invoke(uint64
   }
 
   v9 = DSUILocStringForKey(v6);
-  [v4 setDetailText:v9];
+  [headerView setDetailText:v9];
 
   v10 = DSUILocStringForKey(v7);
   v11 = [DSUIUtilities setUpBoldButtonForController:self title:v10 target:self selector:*v8];
   [(DSFaceIDController *)self setBoldButton:v11];
 
   v12 = DSUILocStringForKey(@"NOT_NOW");
-  v13 = [(DSFaceIDController *)self delegate];
-  v14 = [DSUIUtilities setUpLinkButtonForController:self title:v12 target:v13 selector:sel_pushNextPane];
+  delegate = [(DSFaceIDController *)self delegate];
+  v14 = [DSUIUtilities setUpLinkButtonForController:self title:v12 target:delegate selector:sel_pushNextPane];
 }
 
 - (void)updateFaceIDPaneConfiguration
 {
   v3 = +[DSFaceIDController isPearlEnrolled];
-  v4 = [(DSFaceIDController *)self boldButton];
-  [v4 removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
+  boldButton = [(DSFaceIDController *)self boldButton];
+  [boldButton removeTarget:0 action:0 forControlEvents:0xFFFFFFFFLL];
 
-  v5 = [(DSFaceIDController *)self headerView];
+  headerView = [(DSFaceIDController *)self headerView];
   v6 = !v3;
   if (v3)
   {
@@ -172,14 +172,14 @@ uint64_t __47__DSFaceIDController_shouldShowWithCompletion___block_invoke(uint64
   }
 
   v10 = DSUILocStringForKey(v7);
-  [v5 setDetailText:v10];
+  [headerView setDetailText:v10];
 
-  v11 = [(DSFaceIDController *)self boldButton];
+  boldButton2 = [(DSFaceIDController *)self boldButton];
   v12 = DSUILocStringForKey(v8);
-  [v11 setTitle:v12 forState:0];
+  [boldButton2 setTitle:v12 forState:0];
 
-  v13 = [(DSFaceIDController *)self boldButton];
-  [v13 addTarget:self action:*v9 forControlEvents:64];
+  boldButton3 = [(DSFaceIDController *)self boldButton];
+  [boldButton3 addTarget:self action:*v9 forControlEvents:64];
 }
 
 - (void)resetFaceID
@@ -199,13 +199,13 @@ uint64_t __47__DSFaceIDController_shouldShowWithCompletion___block_invoke(uint64
 
 - (void)beginFaceIDEnrollment
 {
-  v3 = [(DSFaceIDController *)self biometricManager];
+  biometricManager = [(DSFaceIDController *)self biometricManager];
 
-  if (!v3)
+  if (!biometricManager)
   {
     v4 = [DSBiometricManager alloc];
-    v5 = [(DSFaceIDController *)self authContext];
-    v6 = [(DSBiometricManager *)v4 initWithContext:v5];
+    authContext = [(DSFaceIDController *)self authContext];
+    v6 = [(DSBiometricManager *)v4 initWithContext:authContext];
     [(DSFaceIDController *)self setBiometricManager:v6];
   }
 
@@ -229,8 +229,8 @@ uint64_t __47__DSFaceIDController_shouldShowWithCompletion___block_invoke(uint64
   _Block_object_dispose(&v18, 8);
   v9 = objc_alloc_init(v7);
   [v9 setEnrollmentConfiguration:0];
-  v10 = [(DSFaceIDController *)self delegate];
-  v11 = [v10 authContext];
+  delegate = [(DSFaceIDController *)self delegate];
+  authContext2 = [delegate authContext];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -238,8 +238,8 @@ uint64_t __47__DSFaceIDController_shouldShowWithCompletion___block_invoke(uint64
   v14[3] = &unk_278F75A38;
   v14[4] = self;
   v15 = v9;
-  v16 = v11;
-  v12 = v11;
+  v16 = authContext2;
+  v12 = authContext2;
   v13 = v9;
   [v12 evaluatePolicy:1007 options:MEMORY[0x277CBEC10] reply:v14];
 }
@@ -374,58 +374,58 @@ void __43__DSFaceIDController_beginFaceIDEnrollment__block_invoke_2_402(uint64_t
   v1 = [v2 popViewControllerAnimated:1];
 }
 
-- (void)pearlEnrollController:(id)a3 finishedEnrollWithError:(id)a4
+- (void)pearlEnrollController:(id)controller finishedEnrollWithError:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  errorCopy = error;
   v8 = DSLogBiometrics;
   if (os_log_type_enabled(DSLogBiometrics, OS_LOG_TYPE_INFO))
   {
     v20 = 138543362;
-    v21 = v7;
+    v21 = errorCopy;
     _os_log_impl(&dword_248C7E000, v8, OS_LOG_TYPE_INFO, "Enroll finished with error: %{public}@", &v20, 0xCu);
   }
 
-  if (!v7)
+  if (!errorCopy)
   {
-    v11 = [(DSFaceIDController *)self navigationController];
-    [v11 dismissViewControllerAnimated:1 completion:0];
+    navigationController = [(DSFaceIDController *)self navigationController];
+    [navigationController dismissViewControllerAnimated:1 completion:0];
 
-    v12 = [(DSFaceIDController *)self delegate];
-    [v12 pushNextPane];
+    delegate = [(DSFaceIDController *)self delegate];
+    [delegate pushNextPane];
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v9 = [v7 domain];
-  if (![v9 isEqualToString:@"com.apple.biometrickitui.pearl_enroll"])
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:@"com.apple.biometrickitui.pearl_enroll"])
   {
 
 LABEL_9:
-    v13 = [v7 domain];
-    if ([v13 isEqualToString:@"com.apple.biometrickitui.pearl_enroll"])
+    domain2 = [errorCopy domain];
+    if ([domain2 isEqualToString:@"com.apple.biometrickitui.pearl_enroll"])
     {
-      v14 = [v7 code];
+      code = [errorCopy code];
 
-      if (v14 != -2)
+      if (code != -2)
       {
 LABEL_17:
-        v12 = [(DSFaceIDController *)self navigationController];
-        [v12 dismissViewControllerAnimated:1 completion:0];
+        delegate = [(DSFaceIDController *)self navigationController];
+        [delegate dismissViewControllerAnimated:1 completion:0];
         goto LABEL_18;
       }
 
-      v15 = [v7 userInfo];
-      v13 = [v15 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+      userInfo = [errorCopy userInfo];
+      domain2 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
 
-      v16 = [v13 domain];
-      if ([v16 isEqualToString:@"com.apple.preferences.biokit"])
+      v13Domain = [domain2 domain];
+      if ([v13Domain isEqualToString:@"com.apple.preferences.biokit"])
       {
-        v17 = [v13 code];
+        code2 = [domain2 code];
 
-        if (v17 == 8)
+        if (code2 == 8)
         {
           v18 = DSLogBiometrics;
           if (os_log_type_enabled(DSLogBiometrics, OS_LOG_TYPE_ERROR))
@@ -443,9 +443,9 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v10 = [v7 code];
+  code3 = [errorCopy code];
 
-  if (v10 != -1)
+  if (code3 != -1)
   {
     goto LABEL_9;
   }
@@ -458,23 +458,23 @@ LABEL_19:
 
 - (void)_didTapCancelButton
 {
-  v3 = [(DSFaceIDController *)self navigationController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(DSFaceIDController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:0];
 
   [(DSFaceIDController *)self updateFaceIDPaneConfiguration];
 }
 
-- (void)startRatchetEvalInPresentationContext:(id)a3
+- (void)startRatchetEvalInPresentationContext:(id)context
 {
   v19[4] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CD4860];
-  v5 = a3;
+  contextCopy = context;
   v6 = objc_alloc_init(v4);
   v7 = DSUIDTOLocStringForKey(@"RATCHET_ACTION_BUTTON_TITLE");
   [v6 setCountdownPrimaryActionTitle:v7];
 
-  v8 = [(DSFaceIDController *)self delegate];
-  v9 = [v8 deepLinkForCurrentFlowAndPane];
+  delegate = [(DSFaceIDController *)self delegate];
+  deepLinkForCurrentFlowAndPane = [delegate deepLinkForCurrentFlowAndPane];
 
   v10 = MEMORY[0x277CD4858];
   v18[0] = &unk_285BB9268;
@@ -484,10 +484,10 @@ LABEL_19:
   v12 = DSUIDTOLocStringForKey(@"RATCHET_ENDED_DETAIL_FACEID");
   v19[1] = v12;
   v18[2] = &unk_285BB9298;
-  v13 = [MEMORY[0x277CBEBC0] URLWithString:v9];
+  v13 = [MEMORY[0x277CBEBC0] URLWithString:deepLinkForCurrentFlowAndPane];
   v18[3] = &unk_285BB92B0;
   v19[2] = v13;
-  v19[3] = v5;
+  v19[3] = contextCopy;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:4];
   v15 = [v10 makeViewControllerWithOptions:v14 configuration:v6];
   ratchetVC = self->_ratchetVC;
@@ -499,14 +499,14 @@ LABEL_19:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ratchetViewController:(id)a3 didFinishWithResult:(id)a4 error:(id)a5
+- (void)ratchetViewController:(id)controller didFinishWithResult:(id)result error:(id)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(DSFaceIDController *)self delegate];
-  v12 = [v10 objectForKeyedSubscript:&unk_285BB9280];
+  controllerCopy = controller;
+  errorCopy = error;
+  resultCopy = result;
+  delegate = [(DSFaceIDController *)self delegate];
+  v12 = [resultCopy objectForKeyedSubscript:&unk_285BB9280];
 
   if (v12)
   {
@@ -515,37 +515,37 @@ LABEL_19:
     block[2] = __70__DSFaceIDController_ratchetViewController_didFinishWithResult_error___block_invoke;
     block[3] = &unk_278F752F8;
     block[4] = self;
-    v25 = v11;
-    v26 = v8;
+    v25 = delegate;
+    v26 = controllerCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
   else
   {
-    v13 = [v9 userInfo];
-    v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277CD4788]];
+    userInfo = [errorCopy userInfo];
+    v14 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CD4788]];
 
-    if ([v9 code] || !v14)
+    if ([errorCopy code] || !v14)
     {
       v16 = DSLogBiometrics;
       if (os_log_type_enabled(DSLogBiometrics, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v28 = v9;
+        v28 = errorCopy;
         _os_log_impl(&dword_248C7E000, v16, OS_LOG_TYPE_INFO, "FaceID Change Ratchet not armed. Reason: %@", buf, 0xCu);
       }
 
-      v17 = [(DSFaceIDController *)self navigationController];
-      v18 = [v17 topViewController];
+      navigationController = [(DSFaceIDController *)self navigationController];
+      topViewController = [navigationController topViewController];
       v19 = objc_opt_class();
       v20 = objc_opt_class();
 
       if (v19 == v20)
       {
-        v21 = [(DSFaceIDController *)self navigationController];
-        v22 = [v21 popToViewController:self animated:0];
+        navigationController2 = [(DSFaceIDController *)self navigationController];
+        v22 = [navigationController2 popToViewController:self animated:0];
 
-        [v11 pushNextPane];
+        [delegate pushNextPane];
       }
     }
 
@@ -558,7 +558,7 @@ LABEL_19:
         _os_log_impl(&dword_248C7E000, v15, OS_LOG_TYPE_INFO, "FaceID Change Ratchet initiated, timer counting down. User exiting Safety Check.", buf, 2u);
       }
 
-      [v11 exitFlowForRatchetWait];
+      [delegate exitFlowForRatchetWait];
     }
   }
 

@@ -1,32 +1,32 @@
 @interface _INPBDeleteFilePermanentlyIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBDeleteFilePermanentlyIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBDeleteFilePermanentlyIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasSuccess:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasSuccess:(BOOL)success;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBDeleteFilePermanentlyIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBDeleteFilePermanentlyIntentResponse *)self hasConfirm])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBDeleteFilePermanentlyIntentResponse confirm](self, "confirm")}];
-    [v3 setObject:v4 forKeyedSubscript:@"confirm"];
+    [dictionary setObject:v4 forKeyedSubscript:@"confirm"];
   }
 
   if ([(_INPBDeleteFilePermanentlyIntentResponse *)self hasSuccess])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBDeleteFilePermanentlyIntentResponse success](self, "success")}];
-    [v3 setObject:v5 forKeyedSubscript:@"success"];
+    [dictionary setObject:v5 forKeyedSubscript:@"success"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -54,21 +54,21 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8 = 0;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBDeleteFilePermanentlyIntentResponse *)self hasConfirm];
-    if (v5 == [v4 hasConfirm])
+    hasConfirm = [(_INPBDeleteFilePermanentlyIntentResponse *)self hasConfirm];
+    if (hasConfirm == [equalCopy hasConfirm])
     {
-      if (!-[_INPBDeleteFilePermanentlyIntentResponse hasConfirm](self, "hasConfirm") || ![v4 hasConfirm] || (confirm = self->_confirm, confirm == objc_msgSend(v4, "confirm")))
+      if (!-[_INPBDeleteFilePermanentlyIntentResponse hasConfirm](self, "hasConfirm") || ![equalCopy hasConfirm] || (confirm = self->_confirm, confirm == objc_msgSend(equalCopy, "confirm")))
       {
-        v7 = [(_INPBDeleteFilePermanentlyIntentResponse *)self hasSuccess];
-        if (v7 == [v4 hasSuccess])
+        hasSuccess = [(_INPBDeleteFilePermanentlyIntentResponse *)self hasSuccess];
+        if (hasSuccess == [equalCopy hasSuccess])
         {
-          if (!-[_INPBDeleteFilePermanentlyIntentResponse hasSuccess](self, "hasSuccess") || ![v4 hasSuccess] || (success = self->_success, success == objc_msgSend(v4, "success")))
+          if (!-[_INPBDeleteFilePermanentlyIntentResponse hasSuccess](self, "hasSuccess") || ![equalCopy hasSuccess] || (success = self->_success, success == objc_msgSend(equalCopy, "success")))
           {
             v8 = 1;
           }
@@ -80,7 +80,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_INPBDeleteFilePermanentlyIntentResponse allocWithZone:?]];
   if ([(_INPBDeleteFilePermanentlyIntentResponse *)self hasConfirm])
@@ -96,33 +96,33 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBDeleteFilePermanentlyIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBDeleteFilePermanentlyIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBDeleteFilePermanentlyIntentResponse)initWithCoder:(id)a3
+- (_INPBDeleteFilePermanentlyIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBDeleteFilePermanentlyIntentResponse *)self initWithData:v6];
+    self = [(_INPBDeleteFilePermanentlyIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if ([(_INPBDeleteFilePermanentlyIntentResponse *)self hasConfirm])
   {
     confirm = self->_confirm;
@@ -136,9 +136,9 @@
   }
 }
 
-- (void)setHasSuccess:(BOOL)a3
+- (void)setHasSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 2;
   }

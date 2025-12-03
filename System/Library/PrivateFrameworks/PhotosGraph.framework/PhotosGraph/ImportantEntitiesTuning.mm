@@ -1,16 +1,16 @@
 @interface ImportantEntitiesTuning
-+ (BOOL)evaluateChildrenAndPetsInferenceAcrossParametersInGraph:(id)a3 photoLibrary:(id)a4 progressReporter:(id)a5 error:(id *)a6;
++ (BOOL)evaluateChildrenAndPetsInferenceAcrossParametersInGraph:(id)graph photoLibrary:(id)library progressReporter:(id)reporter error:(id *)error;
 - (_TtC11PhotosGraph23ImportantEntitiesTuning)init;
 @end
 
 @implementation ImportantEntitiesTuning
 
-+ (BOOL)evaluateChildrenAndPetsInferenceAcrossParametersInGraph:(id)a3 photoLibrary:(id)a4 progressReporter:(id)a5 error:(id *)a6
++ (BOOL)evaluateChildrenAndPetsInferenceAcrossParametersInGraph:(id)graph photoLibrary:(id)library progressReporter:(id)reporter error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  sub_22F1DABD0(v8, v9, v10);
+  graphCopy = graph;
+  libraryCopy = library;
+  reporterCopy = reporter;
+  sub_22F1DABD0(graphCopy, libraryCopy, reporterCopy);
 
   return 1;
 }

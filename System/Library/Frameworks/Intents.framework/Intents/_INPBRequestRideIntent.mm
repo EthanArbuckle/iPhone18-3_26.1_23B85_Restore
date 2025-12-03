@@ -1,61 +1,61 @@
 @interface _INPBRequestRideIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBRequestRideIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBRequestRideIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBRequestRideIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBRequestRideIntent *)self dropOffLocation];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"dropOffLocation"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dropOffLocation = [(_INPBRequestRideIntent *)self dropOffLocation];
+  dictionaryRepresentation = [dropOffLocation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dropOffLocation"];
 
-  v6 = [(_INPBRequestRideIntent *)self intentMetadata];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBRequestRideIntent *)self intentMetadata];
+  dictionaryRepresentation2 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"intentMetadata"];
 
-  v8 = [(_INPBRequestRideIntent *)self partySize];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"partySize"];
+  partySize = [(_INPBRequestRideIntent *)self partySize];
+  dictionaryRepresentation3 = [partySize dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"partySize"];
 
-  v10 = [(_INPBRequestRideIntent *)self paymentMethod];
-  v11 = [v10 dictionaryRepresentation];
-  [v3 setObject:v11 forKeyedSubscript:@"paymentMethod"];
+  paymentMethod = [(_INPBRequestRideIntent *)self paymentMethod];
+  dictionaryRepresentation4 = [paymentMethod dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"paymentMethod"];
 
-  v12 = [(_INPBRequestRideIntent *)self paymentMethodName];
-  v13 = [v12 dictionaryRepresentation];
-  [v3 setObject:v13 forKeyedSubscript:@"paymentMethodName"];
+  paymentMethodName = [(_INPBRequestRideIntent *)self paymentMethodName];
+  dictionaryRepresentation5 = [paymentMethodName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"paymentMethodName"];
 
-  v14 = [(_INPBRequestRideIntent *)self pickupLocation];
-  v15 = [v14 dictionaryRepresentation];
-  [v3 setObject:v15 forKeyedSubscript:@"pickupLocation"];
+  pickupLocation = [(_INPBRequestRideIntent *)self pickupLocation];
+  dictionaryRepresentation6 = [pickupLocation dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"pickupLocation"];
 
-  v16 = [(_INPBRequestRideIntent *)self pickupTime];
-  v17 = [v16 dictionaryRepresentation];
-  [v3 setObject:v17 forKeyedSubscript:@"pickupTime"];
+  pickupTime = [(_INPBRequestRideIntent *)self pickupTime];
+  dictionaryRepresentation7 = [pickupTime dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"pickupTime"];
 
-  v18 = [(_INPBRequestRideIntent *)self rideOptionName];
-  v19 = [v18 dictionaryRepresentation];
-  [v3 setObject:v19 forKeyedSubscript:@"rideOptionName"];
+  rideOptionName = [(_INPBRequestRideIntent *)self rideOptionName];
+  dictionaryRepresentation8 = [rideOptionName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"rideOptionName"];
 
-  v20 = [(_INPBRequestRideIntent *)self scheduledPickupTime];
-  v21 = [v20 dictionaryRepresentation];
-  [v3 setObject:v21 forKeyedSubscript:@"scheduledPickupTime"];
+  scheduledPickupTime = [(_INPBRequestRideIntent *)self scheduledPickupTime];
+  dictionaryRepresentation9 = [scheduledPickupTime dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"scheduledPickupTime"];
 
   if ([(_INPBRequestRideIntent *)self hasUsesApplePayForPayment])
   {
     v22 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBRequestRideIntent usesApplePayForPayment](self, "usesApplePayForPayment")}];
-    [v3 setObject:v22 forKeyedSubscript:@"usesApplePayForPayment"];
+    [dictionary setObject:v22 forKeyedSubscript:@"usesApplePayForPayment"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -82,28 +82,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_47;
   }
 
-  v5 = [(_INPBRequestRideIntent *)self dropOffLocation];
-  v6 = [v4 dropOffLocation];
-  if ((v5 != 0) == (v6 == 0))
+  dropOffLocation = [(_INPBRequestRideIntent *)self dropOffLocation];
+  dropOffLocation2 = [equalCopy dropOffLocation];
+  if ((dropOffLocation != 0) == (dropOffLocation2 == 0))
   {
     goto LABEL_46;
   }
 
-  v7 = [(_INPBRequestRideIntent *)self dropOffLocation];
-  if (v7)
+  dropOffLocation3 = [(_INPBRequestRideIntent *)self dropOffLocation];
+  if (dropOffLocation3)
   {
-    v8 = v7;
-    v9 = [(_INPBRequestRideIntent *)self dropOffLocation];
-    v10 = [v4 dropOffLocation];
-    v11 = [v9 isEqual:v10];
+    v8 = dropOffLocation3;
+    dropOffLocation4 = [(_INPBRequestRideIntent *)self dropOffLocation];
+    dropOffLocation5 = [equalCopy dropOffLocation];
+    v11 = [dropOffLocation4 isEqual:dropOffLocation5];
 
     if (!v11)
     {
@@ -115,20 +115,20 @@
   {
   }
 
-  v5 = [(_INPBRequestRideIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  dropOffLocation = [(_INPBRequestRideIntent *)self intentMetadata];
+  dropOffLocation2 = [equalCopy intentMetadata];
+  if ((dropOffLocation != 0) == (dropOffLocation2 == 0))
   {
     goto LABEL_46;
   }
 
-  v12 = [(_INPBRequestRideIntent *)self intentMetadata];
-  if (v12)
+  intentMetadata = [(_INPBRequestRideIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v13 = v12;
-    v14 = [(_INPBRequestRideIntent *)self intentMetadata];
-    v15 = [v4 intentMetadata];
-    v16 = [v14 isEqual:v15];
+    v13 = intentMetadata;
+    intentMetadata2 = [(_INPBRequestRideIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v16 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v16)
     {
@@ -140,20 +140,20 @@
   {
   }
 
-  v5 = [(_INPBRequestRideIntent *)self partySize];
-  v6 = [v4 partySize];
-  if ((v5 != 0) == (v6 == 0))
+  dropOffLocation = [(_INPBRequestRideIntent *)self partySize];
+  dropOffLocation2 = [equalCopy partySize];
+  if ((dropOffLocation != 0) == (dropOffLocation2 == 0))
   {
     goto LABEL_46;
   }
 
-  v17 = [(_INPBRequestRideIntent *)self partySize];
-  if (v17)
+  partySize = [(_INPBRequestRideIntent *)self partySize];
+  if (partySize)
   {
-    v18 = v17;
-    v19 = [(_INPBRequestRideIntent *)self partySize];
-    v20 = [v4 partySize];
-    v21 = [v19 isEqual:v20];
+    v18 = partySize;
+    partySize2 = [(_INPBRequestRideIntent *)self partySize];
+    partySize3 = [equalCopy partySize];
+    v21 = [partySize2 isEqual:partySize3];
 
     if (!v21)
     {
@@ -165,20 +165,20 @@
   {
   }
 
-  v5 = [(_INPBRequestRideIntent *)self paymentMethod];
-  v6 = [v4 paymentMethod];
-  if ((v5 != 0) == (v6 == 0))
+  dropOffLocation = [(_INPBRequestRideIntent *)self paymentMethod];
+  dropOffLocation2 = [equalCopy paymentMethod];
+  if ((dropOffLocation != 0) == (dropOffLocation2 == 0))
   {
     goto LABEL_46;
   }
 
-  v22 = [(_INPBRequestRideIntent *)self paymentMethod];
-  if (v22)
+  paymentMethod = [(_INPBRequestRideIntent *)self paymentMethod];
+  if (paymentMethod)
   {
-    v23 = v22;
-    v24 = [(_INPBRequestRideIntent *)self paymentMethod];
-    v25 = [v4 paymentMethod];
-    v26 = [v24 isEqual:v25];
+    v23 = paymentMethod;
+    paymentMethod2 = [(_INPBRequestRideIntent *)self paymentMethod];
+    paymentMethod3 = [equalCopy paymentMethod];
+    v26 = [paymentMethod2 isEqual:paymentMethod3];
 
     if (!v26)
     {
@@ -190,20 +190,20 @@
   {
   }
 
-  v5 = [(_INPBRequestRideIntent *)self paymentMethodName];
-  v6 = [v4 paymentMethodName];
-  if ((v5 != 0) == (v6 == 0))
+  dropOffLocation = [(_INPBRequestRideIntent *)self paymentMethodName];
+  dropOffLocation2 = [equalCopy paymentMethodName];
+  if ((dropOffLocation != 0) == (dropOffLocation2 == 0))
   {
     goto LABEL_46;
   }
 
-  v27 = [(_INPBRequestRideIntent *)self paymentMethodName];
-  if (v27)
+  paymentMethodName = [(_INPBRequestRideIntent *)self paymentMethodName];
+  if (paymentMethodName)
   {
-    v28 = v27;
-    v29 = [(_INPBRequestRideIntent *)self paymentMethodName];
-    v30 = [v4 paymentMethodName];
-    v31 = [v29 isEqual:v30];
+    v28 = paymentMethodName;
+    paymentMethodName2 = [(_INPBRequestRideIntent *)self paymentMethodName];
+    paymentMethodName3 = [equalCopy paymentMethodName];
+    v31 = [paymentMethodName2 isEqual:paymentMethodName3];
 
     if (!v31)
     {
@@ -215,20 +215,20 @@
   {
   }
 
-  v5 = [(_INPBRequestRideIntent *)self pickupLocation];
-  v6 = [v4 pickupLocation];
-  if ((v5 != 0) == (v6 == 0))
+  dropOffLocation = [(_INPBRequestRideIntent *)self pickupLocation];
+  dropOffLocation2 = [equalCopy pickupLocation];
+  if ((dropOffLocation != 0) == (dropOffLocation2 == 0))
   {
     goto LABEL_46;
   }
 
-  v32 = [(_INPBRequestRideIntent *)self pickupLocation];
-  if (v32)
+  pickupLocation = [(_INPBRequestRideIntent *)self pickupLocation];
+  if (pickupLocation)
   {
-    v33 = v32;
-    v34 = [(_INPBRequestRideIntent *)self pickupLocation];
-    v35 = [v4 pickupLocation];
-    v36 = [v34 isEqual:v35];
+    v33 = pickupLocation;
+    pickupLocation2 = [(_INPBRequestRideIntent *)self pickupLocation];
+    pickupLocation3 = [equalCopy pickupLocation];
+    v36 = [pickupLocation2 isEqual:pickupLocation3];
 
     if (!v36)
     {
@@ -240,20 +240,20 @@
   {
   }
 
-  v5 = [(_INPBRequestRideIntent *)self pickupTime];
-  v6 = [v4 pickupTime];
-  if ((v5 != 0) == (v6 == 0))
+  dropOffLocation = [(_INPBRequestRideIntent *)self pickupTime];
+  dropOffLocation2 = [equalCopy pickupTime];
+  if ((dropOffLocation != 0) == (dropOffLocation2 == 0))
   {
     goto LABEL_46;
   }
 
-  v37 = [(_INPBRequestRideIntent *)self pickupTime];
-  if (v37)
+  pickupTime = [(_INPBRequestRideIntent *)self pickupTime];
+  if (pickupTime)
   {
-    v38 = v37;
-    v39 = [(_INPBRequestRideIntent *)self pickupTime];
-    v40 = [v4 pickupTime];
-    v41 = [v39 isEqual:v40];
+    v38 = pickupTime;
+    pickupTime2 = [(_INPBRequestRideIntent *)self pickupTime];
+    pickupTime3 = [equalCopy pickupTime];
+    v41 = [pickupTime2 isEqual:pickupTime3];
 
     if (!v41)
     {
@@ -265,20 +265,20 @@
   {
   }
 
-  v5 = [(_INPBRequestRideIntent *)self rideOptionName];
-  v6 = [v4 rideOptionName];
-  if ((v5 != 0) == (v6 == 0))
+  dropOffLocation = [(_INPBRequestRideIntent *)self rideOptionName];
+  dropOffLocation2 = [equalCopy rideOptionName];
+  if ((dropOffLocation != 0) == (dropOffLocation2 == 0))
   {
     goto LABEL_46;
   }
 
-  v42 = [(_INPBRequestRideIntent *)self rideOptionName];
-  if (v42)
+  rideOptionName = [(_INPBRequestRideIntent *)self rideOptionName];
+  if (rideOptionName)
   {
-    v43 = v42;
-    v44 = [(_INPBRequestRideIntent *)self rideOptionName];
-    v45 = [v4 rideOptionName];
-    v46 = [v44 isEqual:v45];
+    v43 = rideOptionName;
+    rideOptionName2 = [(_INPBRequestRideIntent *)self rideOptionName];
+    rideOptionName3 = [equalCopy rideOptionName];
+    v46 = [rideOptionName2 isEqual:rideOptionName3];
 
     if (!v46)
     {
@@ -290,22 +290,22 @@
   {
   }
 
-  v5 = [(_INPBRequestRideIntent *)self scheduledPickupTime];
-  v6 = [v4 scheduledPickupTime];
-  if ((v5 != 0) == (v6 == 0))
+  dropOffLocation = [(_INPBRequestRideIntent *)self scheduledPickupTime];
+  dropOffLocation2 = [equalCopy scheduledPickupTime];
+  if ((dropOffLocation != 0) == (dropOffLocation2 == 0))
   {
 LABEL_46:
 
     goto LABEL_47;
   }
 
-  v47 = [(_INPBRequestRideIntent *)self scheduledPickupTime];
-  if (v47)
+  scheduledPickupTime = [(_INPBRequestRideIntent *)self scheduledPickupTime];
+  if (scheduledPickupTime)
   {
-    v48 = v47;
-    v49 = [(_INPBRequestRideIntent *)self scheduledPickupTime];
-    v50 = [v4 scheduledPickupTime];
-    v51 = [v49 isEqual:v50];
+    v48 = scheduledPickupTime;
+    scheduledPickupTime2 = [(_INPBRequestRideIntent *)self scheduledPickupTime];
+    scheduledPickupTime3 = [equalCopy scheduledPickupTime];
+    v51 = [scheduledPickupTime2 isEqual:scheduledPickupTime3];
 
     if (!v51)
     {
@@ -317,10 +317,10 @@ LABEL_46:
   {
   }
 
-  v54 = [(_INPBRequestRideIntent *)self hasUsesApplePayForPayment];
-  if (v54 == [v4 hasUsesApplePayForPayment])
+  hasUsesApplePayForPayment = [(_INPBRequestRideIntent *)self hasUsesApplePayForPayment];
+  if (hasUsesApplePayForPayment == [equalCopy hasUsesApplePayForPayment])
   {
-    if (!-[_INPBRequestRideIntent hasUsesApplePayForPayment](self, "hasUsesApplePayForPayment") || ![v4 hasUsesApplePayForPayment] || (usesApplePayForPayment = self->_usesApplePayForPayment, usesApplePayForPayment == objc_msgSend(v4, "usesApplePayForPayment")))
+    if (!-[_INPBRequestRideIntent hasUsesApplePayForPayment](self, "hasUsesApplePayForPayment") || ![equalCopy hasUsesApplePayForPayment] || (usesApplePayForPayment = self->_usesApplePayForPayment, usesApplePayForPayment == objc_msgSend(equalCopy, "usesApplePayForPayment")))
     {
       v52 = 1;
       goto LABEL_48;
@@ -334,34 +334,34 @@ LABEL_48:
   return v52;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBRequestRideIntent allocWithZone:](_INPBRequestRideIntent init];
-  v6 = [(_INPBLocation *)self->_dropOffLocation copyWithZone:a3];
+  v6 = [(_INPBLocation *)self->_dropOffLocation copyWithZone:zone];
   [(_INPBRequestRideIntent *)v5 setDropOffLocation:v6];
 
-  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v7 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBRequestRideIntent *)v5 setIntentMetadata:v7];
 
-  v8 = [(_INPBInteger *)self->_partySize copyWithZone:a3];
+  v8 = [(_INPBInteger *)self->_partySize copyWithZone:zone];
   [(_INPBRequestRideIntent *)v5 setPartySize:v8];
 
-  v9 = [(_INPBPaymentMethod *)self->_paymentMethod copyWithZone:a3];
+  v9 = [(_INPBPaymentMethod *)self->_paymentMethod copyWithZone:zone];
   [(_INPBRequestRideIntent *)v5 setPaymentMethod:v9];
 
-  v10 = [(_INPBDataString *)self->_paymentMethodName copyWithZone:a3];
+  v10 = [(_INPBDataString *)self->_paymentMethodName copyWithZone:zone];
   [(_INPBRequestRideIntent *)v5 setPaymentMethodName:v10];
 
-  v11 = [(_INPBLocation *)self->_pickupLocation copyWithZone:a3];
+  v11 = [(_INPBLocation *)self->_pickupLocation copyWithZone:zone];
   [(_INPBRequestRideIntent *)v5 setPickupLocation:v11];
 
-  v12 = [(_INPBDateTimeRange *)self->_pickupTime copyWithZone:a3];
+  v12 = [(_INPBDateTimeRange *)self->_pickupTime copyWithZone:zone];
   [(_INPBRequestRideIntent *)v5 setPickupTime:v12];
 
-  v13 = [(_INPBDataString *)self->_rideOptionName copyWithZone:a3];
+  v13 = [(_INPBDataString *)self->_rideOptionName copyWithZone:zone];
   [(_INPBRequestRideIntent *)v5 setRideOptionName:v13];
 
-  v14 = [(_INPBDateTimeRange *)self->_scheduledPickupTime copyWithZone:a3];
+  v14 = [(_INPBDateTimeRange *)self->_scheduledPickupTime copyWithZone:zone];
   [(_INPBRequestRideIntent *)v5 setScheduledPickupTime:v14];
 
   if ([(_INPBRequestRideIntent *)self hasUsesApplePayForPayment])
@@ -372,102 +372,102 @@ LABEL_48:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBRequestRideIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBRequestRideIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBRequestRideIntent)initWithCoder:(id)a3
+- (_INPBRequestRideIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBRequestRideIntent *)self initWithData:v6];
+    self = [(_INPBRequestRideIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v23 = a3;
-  v4 = [(_INPBRequestRideIntent *)self dropOffLocation];
+  toCopy = to;
+  dropOffLocation = [(_INPBRequestRideIntent *)self dropOffLocation];
 
-  if (v4)
+  if (dropOffLocation)
   {
-    v5 = [(_INPBRequestRideIntent *)self dropOffLocation];
+    dropOffLocation2 = [(_INPBRequestRideIntent *)self dropOffLocation];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBRequestRideIntent *)self intentMetadata];
+  intentMetadata = [(_INPBRequestRideIntent *)self intentMetadata];
 
-  if (v6)
+  if (intentMetadata)
   {
-    v7 = [(_INPBRequestRideIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBRequestRideIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBRequestRideIntent *)self partySize];
+  partySize = [(_INPBRequestRideIntent *)self partySize];
 
-  if (v8)
+  if (partySize)
   {
-    v9 = [(_INPBRequestRideIntent *)self partySize];
+    partySize2 = [(_INPBRequestRideIntent *)self partySize];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBRequestRideIntent *)self paymentMethod];
+  paymentMethod = [(_INPBRequestRideIntent *)self paymentMethod];
 
-  if (v10)
+  if (paymentMethod)
   {
-    v11 = [(_INPBRequestRideIntent *)self paymentMethod];
+    paymentMethod2 = [(_INPBRequestRideIntent *)self paymentMethod];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(_INPBRequestRideIntent *)self paymentMethodName];
+  paymentMethodName = [(_INPBRequestRideIntent *)self paymentMethodName];
 
-  if (v12)
+  if (paymentMethodName)
   {
-    v13 = [(_INPBRequestRideIntent *)self paymentMethodName];
+    paymentMethodName2 = [(_INPBRequestRideIntent *)self paymentMethodName];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(_INPBRequestRideIntent *)self pickupLocation];
+  pickupLocation = [(_INPBRequestRideIntent *)self pickupLocation];
 
-  if (v14)
+  if (pickupLocation)
   {
-    v15 = [(_INPBRequestRideIntent *)self pickupLocation];
+    pickupLocation2 = [(_INPBRequestRideIntent *)self pickupLocation];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(_INPBRequestRideIntent *)self pickupTime];
+  pickupTime = [(_INPBRequestRideIntent *)self pickupTime];
 
-  if (v16)
+  if (pickupTime)
   {
-    v17 = [(_INPBRequestRideIntent *)self pickupTime];
+    pickupTime2 = [(_INPBRequestRideIntent *)self pickupTime];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(_INPBRequestRideIntent *)self rideOptionName];
+  rideOptionName = [(_INPBRequestRideIntent *)self rideOptionName];
 
-  if (v18)
+  if (rideOptionName)
   {
-    v19 = [(_INPBRequestRideIntent *)self rideOptionName];
+    rideOptionName2 = [(_INPBRequestRideIntent *)self rideOptionName];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(_INPBRequestRideIntent *)self scheduledPickupTime];
+  scheduledPickupTime = [(_INPBRequestRideIntent *)self scheduledPickupTime];
 
-  if (v20)
+  if (scheduledPickupTime)
   {
-    v21 = [(_INPBRequestRideIntent *)self scheduledPickupTime];
+    scheduledPickupTime2 = [(_INPBRequestRideIntent *)self scheduledPickupTime];
     PBDataWriterWriteSubmessage();
   }
 

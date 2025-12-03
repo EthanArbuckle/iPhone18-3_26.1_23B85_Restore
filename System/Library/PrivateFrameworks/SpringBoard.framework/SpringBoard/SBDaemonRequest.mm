@@ -1,26 +1,26 @@
 @interface SBDaemonRequest
-+ (id)requestWithEnabler:(id)a3 disabler:(id)a4;
-- (void)dispatchDisablerOnQueue:(id)a3;
-- (void)dispatchEnablerOnQueue:(id)a3;
++ (id)requestWithEnabler:(id)enabler disabler:(id)disabler;
+- (void)dispatchDisablerOnQueue:(id)queue;
+- (void)dispatchEnablerOnQueue:(id)queue;
 @end
 
 @implementation SBDaemonRequest
 
-+ (id)requestWithEnabler:(id)a3 disabler:(id)a4
++ (id)requestWithEnabler:(id)enabler disabler:(id)disabler
 {
-  v5 = a4;
-  v6 = a3;
+  disablerCopy = disabler;
+  enablerCopy = enabler;
   v7 = objc_alloc_init(SBDaemonRequest);
-  [(SBDaemonRequest *)v7 setEnabler:v6];
+  [(SBDaemonRequest *)v7 setEnabler:enablerCopy];
 
-  [(SBDaemonRequest *)v7 setDisabler:v5];
+  [(SBDaemonRequest *)v7 setDisabler:disablerCopy];
 
   return v7;
 }
 
-- (void)dispatchEnablerOnQueue:(id)a3
+- (void)dispatchEnablerOnQueue:(id)queue
 {
-  queue = a3;
+  queue = queue;
   v4 = MEMORY[0x223D6F7F0](self->_enabler);
   if (v4)
   {
@@ -28,7 +28,7 @@
   }
 }
 
-- (void)dispatchDisablerOnQueue:(id)a3
+- (void)dispatchDisablerOnQueue:(id)queue
 {
   if (self->_disabler)
   {
@@ -37,7 +37,7 @@
     block[2] = __43__SBDaemonRequest_dispatchDisablerOnQueue___block_invoke;
     block[3] = &unk_2783A8C18;
     block[4] = self;
-    dispatch_async(a3, block);
+    dispatch_async(queue, block);
   }
 }
 

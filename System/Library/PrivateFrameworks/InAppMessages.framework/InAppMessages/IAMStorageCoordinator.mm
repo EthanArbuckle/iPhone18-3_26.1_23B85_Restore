@@ -1,18 +1,18 @@
 @interface IAMStorageCoordinator
-+ (id)_propertyNameForGlobalPresentationPolicyGroupLastDisplayTime:(int)a3;
++ (id)_propertyNameForGlobalPresentationPolicyGroupLastDisplayTime:(int)time;
 - (IAMICStorageProvider)iTunesCloudStorageProvider;
-- (IAMStorageCoordinator)initWithMessageEntryProvider:(id)a3 messageMetadataStorage:(id)a4 propertyStorage:(id)a5 messageBundleIdentifiers:(id)a6;
+- (IAMStorageCoordinator)initWithMessageEntryProvider:(id)provider messageMetadataStorage:(id)storage propertyStorage:(id)propertyStorage messageBundleIdentifiers:(id)identifiers;
 - (IAMStorageCoordinatorDelegate)delegate;
-- (void)_fetchMessageEntries:(id)a3;
-- (void)_fetchMessagesMetadata:(id)a3;
-- (void)downloadResourcesForMessageEntry:(id)a3 completion:(id)a4;
-- (void)fetchGlobalPresentationPolicyGroupDisplayTimes:(id)a3;
-- (void)fetchMessagesEntriesAndMetadata:(id)a3;
-- (void)messageEntriesDidChange:(id)a3;
-- (void)removeApplicationBadgeFromMessageEntry:(id)a3 completion:(id)a4;
-- (void)removeMessageEntry:(id)a3 completion:(id)a4;
-- (void)reportEventForMessageIdentifier:(id)a3 withParams:(id)a4 completion:(id)a5;
-- (void)updateMetadata:(id)a3 forMessageEntry:(id)a4 completion:(id)a5;
+- (void)_fetchMessageEntries:(id)entries;
+- (void)_fetchMessagesMetadata:(id)metadata;
+- (void)downloadResourcesForMessageEntry:(id)entry completion:(id)completion;
+- (void)fetchGlobalPresentationPolicyGroupDisplayTimes:(id)times;
+- (void)fetchMessagesEntriesAndMetadata:(id)metadata;
+- (void)messageEntriesDidChange:(id)change;
+- (void)removeApplicationBadgeFromMessageEntry:(id)entry completion:(id)completion;
+- (void)removeMessageEntry:(id)entry completion:(id)completion;
+- (void)reportEventForMessageIdentifier:(id)identifier withParams:(id)params completion:(id)completion;
+- (void)updateMetadata:(id)metadata forMessageEntry:(id)entry completion:(id)completion;
 @end
 
 @implementation IAMStorageCoordinator
@@ -32,63 +32,63 @@
   return iTunesCloudStorageProvider;
 }
 
-- (IAMStorageCoordinator)initWithMessageEntryProvider:(id)a3 messageMetadataStorage:(id)a4 propertyStorage:(id)a5 messageBundleIdentifiers:(id)a6
+- (IAMStorageCoordinator)initWithMessageEntryProvider:(id)provider messageMetadataStorage:(id)storage propertyStorage:(id)propertyStorage messageBundleIdentifiers:(id)identifiers
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  providerCopy = provider;
+  storageCopy = storage;
+  propertyStorageCopy = propertyStorage;
+  identifiersCopy = identifiers;
   v25.receiver = self;
   v25.super_class = IAMStorageCoordinator;
   v14 = [(IAMStorageCoordinator *)&v25 init];
   v15 = v14;
   if (v14)
   {
-    if (v10)
+    if (providerCopy)
     {
       p_messageEntryProvider = &v14->_messageEntryProvider;
-      objc_storeWeak(&v14->_messageEntryProvider, v10);
+      objc_storeWeak(&v14->_messageEntryProvider, providerCopy);
     }
 
     else
     {
-      v17 = [(IAMStorageCoordinator *)v14 iTunesCloudStorageProvider];
-      v18 = [v17 messageEntryProvider];
+      iTunesCloudStorageProvider = [(IAMStorageCoordinator *)v14 iTunesCloudStorageProvider];
+      messageEntryProvider = [iTunesCloudStorageProvider messageEntryProvider];
       p_messageEntryProvider = &v15->_messageEntryProvider;
-      objc_storeWeak(&v15->_messageEntryProvider, v18);
+      objc_storeWeak(&v15->_messageEntryProvider, messageEntryProvider);
     }
 
     WeakRetained = objc_loadWeakRetained(p_messageEntryProvider);
     [WeakRetained setDelegate:v15];
 
-    if (v11)
+    if (storageCopy)
     {
-      objc_storeWeak(&v15->_messageMetadataStorage, v11);
-      if (v12)
+      objc_storeWeak(&v15->_messageMetadataStorage, storageCopy);
+      if (propertyStorageCopy)
       {
 LABEL_7:
-        objc_storeWeak(&v15->_propertyStorage, v12);
+        objc_storeWeak(&v15->_propertyStorage, propertyStorageCopy);
 LABEL_10:
-        objc_storeStrong(&v15->_messageBundleIdentifiers, a6);
+        objc_storeStrong(&v15->_messageBundleIdentifiers, identifiers);
         goto LABEL_11;
       }
     }
 
     else
     {
-      v20 = [(IAMStorageCoordinator *)v15 iTunesCloudStorageProvider];
-      v21 = [v20 messageMetadataStorage];
-      objc_storeWeak(&v15->_messageMetadataStorage, v21);
+      iTunesCloudStorageProvider2 = [(IAMStorageCoordinator *)v15 iTunesCloudStorageProvider];
+      messageMetadataStorage = [iTunesCloudStorageProvider2 messageMetadataStorage];
+      objc_storeWeak(&v15->_messageMetadataStorage, messageMetadataStorage);
 
-      if (v12)
+      if (propertyStorageCopy)
       {
         goto LABEL_7;
       }
     }
 
-    v22 = [(IAMStorageCoordinator *)v15 iTunesCloudStorageProvider];
-    v23 = [v22 propertyStorage];
-    objc_storeWeak(&v15->_propertyStorage, v23);
+    iTunesCloudStorageProvider3 = [(IAMStorageCoordinator *)v15 iTunesCloudStorageProvider];
+    propertyStorage = [iTunesCloudStorageProvider3 propertyStorage];
+    objc_storeWeak(&v15->_propertyStorage, propertyStorage);
 
     goto LABEL_10;
   }
@@ -98,15 +98,15 @@ LABEL_11:
   return v15;
 }
 
-- (void)fetchMessagesEntriesAndMetadata:(id)a3
+- (void)fetchMessagesEntriesAndMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __57__IAMStorageCoordinator_fetchMessagesEntriesAndMetadata___block_invoke;
   v6[3] = &unk_2797A74C8;
-  v5 = v4;
+  v5 = metadataCopy;
   v7 = v5;
   objc_copyWeak(&v8, &location);
   [(IAMStorageCoordinator *)self _fetchMessageEntries:v6];
@@ -159,35 +159,35 @@ uint64_t __57__IAMStorageCoordinator_fetchMessagesEntriesAndMetadata___block_inv
   return (*(v6 + 16))(v6, *(a1 + 32), a2);
 }
 
-- (void)downloadResourcesForMessageEntry:(id)a3 completion:(id)a4
+- (void)downloadResourcesForMessageEntry:(id)entry completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  entryCopy = entry;
+  completionCopy = completion;
   v8 = IAMLogCategoryDefault();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 applicationMessage];
-    v10 = [v9 identifier];
+    applicationMessage = [entryCopy applicationMessage];
+    identifier = [applicationMessage identifier];
     *buf = 138543362;
-    v22 = v10;
+    v22 = identifier;
     _os_log_impl(&dword_254AF4000, v8, OS_LOG_TYPE_DEFAULT, "Asking storage to download resources for message with identifier = %{public}@", buf, 0xCu);
   }
 
-  v11 = [v6 applicationMessage];
-  v12 = [v11 identifier];
+  applicationMessage2 = [entryCopy applicationMessage];
+  identifier2 = [applicationMessage2 identifier];
 
   WeakRetained = objc_loadWeakRetained(&self->_messageEntryProvider);
-  v14 = [v6 bundleIdentifier];
+  bundleIdentifier = [entryCopy bundleIdentifier];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __69__IAMStorageCoordinator_downloadResourcesForMessageEntry_completion___block_invoke;
   v18[3] = &unk_2797A74F0;
-  v19 = v12;
-  v20 = v7;
-  v15 = v7;
-  v16 = v12;
-  [WeakRetained downloadResourcesForMessageWithIdentifier:v16 bundleIdentifier:v14 completion:v18];
+  v19 = identifier2;
+  v20 = completionCopy;
+  v15 = completionCopy;
+  v16 = identifier2;
+  [WeakRetained downloadResourcesForMessageWithIdentifier:v16 bundleIdentifier:bundleIdentifier completion:v18];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -231,25 +231,25 @@ LABEL_8:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeMessageEntry:(id)a3 completion:(id)a4
+- (void)removeMessageEntry:(id)entry completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 applicationMessage];
-  v9 = [v8 identifier];
+  completionCopy = completion;
+  entryCopy = entry;
+  applicationMessage = [entryCopy applicationMessage];
+  identifier = [applicationMessage identifier];
 
   WeakRetained = objc_loadWeakRetained(&self->_messageEntryProvider);
-  v11 = [v7 bundleIdentifier];
+  bundleIdentifier = [entryCopy bundleIdentifier];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __55__IAMStorageCoordinator_removeMessageEntry_completion___block_invoke;
   v14[3] = &unk_2797A74F0;
-  v15 = v9;
-  v16 = v6;
-  v12 = v6;
-  v13 = v9;
-  [WeakRetained removeMessageEntryWithIdentifier:v13 forBundleIdentifier:v11 completion:v14];
+  v15 = identifier;
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = identifier;
+  [WeakRetained removeMessageEntryWithIdentifier:v13 forBundleIdentifier:bundleIdentifier completion:v14];
 }
 
 void __55__IAMStorageCoordinator_removeMessageEntry_completion___block_invoke(uint64_t a1, void *a2)
@@ -289,19 +289,19 @@ LABEL_8:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportEventForMessageIdentifier:(id)a3 withParams:(id)a4 completion:(id)a5
+- (void)reportEventForMessageIdentifier:(id)identifier withParams:(id)params completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_messageEntryProvider);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __79__IAMStorageCoordinator_reportEventForMessageIdentifier_withParams_completion___block_invoke;
   v12[3] = &unk_2797A74F0;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = identifierCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = identifierCopy;
   [WeakRetained reportEventForMessageIdentifier:v11 withParams:MEMORY[0x277CBEC10] completion:v12];
 }
 
@@ -342,26 +342,26 @@ LABEL_8:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateMetadata:(id)a3 forMessageEntry:(id)a4 completion:(id)a5
+- (void)updateMetadata:(id)metadata forMessageEntry:(id)entry completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 applicationMessage];
-  v12 = [v11 identifier];
+  completionCopy = completion;
+  entryCopy = entry;
+  metadataCopy = metadata;
+  applicationMessage = [entryCopy applicationMessage];
+  identifier = [applicationMessage identifier];
 
   WeakRetained = objc_loadWeakRetained(&self->_messageMetadataStorage);
-  v14 = [v9 bundleIdentifier];
+  bundleIdentifier = [entryCopy bundleIdentifier];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __67__IAMStorageCoordinator_updateMetadata_forMessageEntry_completion___block_invoke;
   v17[3] = &unk_2797A74F0;
-  v18 = v12;
-  v19 = v8;
-  v15 = v8;
-  v16 = v12;
-  [WeakRetained updateMetadata:v10 messageIdentifier:v16 bundleIdentifier:v14 completion:v17];
+  v18 = identifier;
+  v19 = completionCopy;
+  v15 = completionCopy;
+  v16 = identifier;
+  [WeakRetained updateMetadata:metadataCopy messageIdentifier:v16 bundleIdentifier:bundleIdentifier completion:v17];
 }
 
 void __67__IAMStorageCoordinator_updateMetadata_forMessageEntry_completion___block_invoke(uint64_t a1, void *a2)
@@ -403,9 +403,9 @@ LABEL_8:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchGlobalPresentationPolicyGroupDisplayTimes:(id)a3
+- (void)fetchGlobalPresentationPolicyGroupDisplayTimes:(id)times
 {
-  v4 = a3;
+  timesCopy = times;
   v29[0] = 0;
   v29[1] = v29;
   v29[2] = 0x3032000000;
@@ -447,7 +447,7 @@ LABEL_8:
   v10[2] = __72__IAMStorageCoordinator_fetchGlobalPresentationPolicyGroupDisplayTimes___block_invoke;
   v10[3] = &unk_2797A72A0;
   v12 = v29;
-  v5 = v4;
+  v5 = timesCopy;
   v11 = v5;
   v13 = v25;
   v14 = v21;
@@ -551,43 +551,43 @@ void __72__IAMStorageCoordinator_fetchGlobalPresentationPolicyGroupDisplayTimes_
   os_unfair_lock_unlock((*(a1[4] + 8) + 32));
 }
 
-- (void)removeApplicationBadgeFromMessageEntry:(id)a3 completion:(id)a4
+- (void)removeApplicationBadgeFromMessageEntry:(id)entry completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  entryCopy = entry;
   WeakRetained = objc_loadWeakRetained(&self->_messageEntryProvider);
-  v9 = [MEMORY[0x277CCA8D8] mainBundle];
-  v10 = [v9 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __75__IAMStorageCoordinator_removeApplicationBadgeFromMessageEntry_completion___block_invoke;
   v12[3] = &unk_2797A7540;
-  v13 = v6;
-  v11 = v6;
-  [WeakRetained removeApplicationBadgeForBundleIdentifier:v10 fromPresentedMessageEntry:v7 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [WeakRetained removeApplicationBadgeForBundleIdentifier:bundleIdentifier fromPresentedMessageEntry:entryCopy completion:v12];
 }
 
-- (void)messageEntriesDidChange:(id)a3
+- (void)messageEntriesDidChange:(id)change
 {
-  v4 = [(IAMStorageCoordinator *)self delegate];
-  if (v4)
+  delegate = [(IAMStorageCoordinator *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
-    v6 = [(IAMStorageCoordinator *)self delegate];
+    v5 = delegate;
+    delegate2 = [(IAMStorageCoordinator *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(IAMStorageCoordinator *)self delegate];
-      [v8 storageCoordinatorMessageEntriesChanged:self];
+      delegate3 = [(IAMStorageCoordinator *)self delegate];
+      [delegate3 storageCoordinatorMessageEntriesChanged:self];
     }
   }
 }
 
-- (void)_fetchMessageEntries:(id)a3
+- (void)_fetchMessageEntries:(id)entries
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  entriesCopy = entries;
   v5 = self->_messageBundleIdentifiers;
   v6 = IAMLogCategoryDefault();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -602,8 +602,8 @@ void __72__IAMStorageCoordinator_fetchGlobalPresentationPolicyGroupDisplayTimes_
   v10[1] = 3221225472;
   v10[2] = __46__IAMStorageCoordinator__fetchMessageEntries___block_invoke;
   v10[3] = &unk_2797A7568;
-  v11 = v4;
-  v8 = v4;
+  v11 = entriesCopy;
+  v8 = entriesCopy;
   [WeakRetained messageEntriesForBundleIdentifiers:v5 completion:v10];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -637,10 +637,10 @@ void __46__IAMStorageCoordinator__fetchMessageEntries___block_invoke(uint64_t a1
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchMessagesMetadata:(id)a3
+- (void)_fetchMessagesMetadata:(id)metadata
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = self->_messageBundleIdentifiers;
   v6 = IAMLogCategoryDefault();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -655,8 +655,8 @@ void __46__IAMStorageCoordinator__fetchMessageEntries___block_invoke(uint64_t a1
   v10[1] = 3221225472;
   v10[2] = __48__IAMStorageCoordinator__fetchMessagesMetadata___block_invoke;
   v10[3] = &unk_2797A7590;
-  v11 = v4;
-  v8 = v4;
+  v11 = metadataCopy;
+  v8 = metadataCopy;
   [WeakRetained metadataForBundleIdentifiers:v5 completion:v10];
 
   v9 = *MEMORY[0x277D85DE8];
@@ -742,9 +742,9 @@ void __81__IAMStorageCoordinator__updateLastDisplayTime_forGlobalPresentationPol
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_propertyNameForGlobalPresentationPolicyGroupLastDisplayTime:(int)a3
++ (id)_propertyNameForGlobalPresentationPolicyGroupLastDisplayTime:(int)time
 {
-  if (a3 == 1)
+  if (time == 1)
   {
     return @"LastDisplayTime_GlobalPresentationPolicyGroup_Restricted";
   }

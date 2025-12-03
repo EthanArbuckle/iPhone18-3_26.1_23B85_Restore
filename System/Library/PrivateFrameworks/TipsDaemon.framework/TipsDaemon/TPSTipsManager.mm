@@ -1,67 +1,67 @@
 @interface TPSTipsManager
-+ (BOOL)deviceLocalesContainLanguage:(id)a3;
-+ (BOOL)needImmediateNotificationForType:(unint64_t)a3;
++ (BOOL)deviceLocalesContainLanguage:(id)language;
++ (BOOL)needImmediateNotificationForType:(unint64_t)type;
 + (BOOL)tipKitProcessingEligible;
 + (id)experiment;
-+ (id)immediateNotificationIdentifierForType:(unint64_t)a3;
++ (id)immediateNotificationIdentifierForType:(unint64_t)type;
 + (id)rulesVersion;
 + (void)presentReentryNotificationIfNeeded;
 + (void)removeWelcomeDocumentCache;
 + (void)removeWidgetUpdateDate;
-- (BOOL)checklistCollectionHasMinSuggestedTips:(id)a3 tipMap:(id)a4;
+- (BOOL)checklistCollectionHasMinSuggestedTips:(id)tips tipMap:(id)map;
 - (BOOL)hasWidgetDocument;
-- (BOOL)isContentIdentifierHoldoutCamp:(id)a3;
+- (BOOL)isContentIdentifierHoldoutCamp:(id)camp;
 - (BOOL)isHardwareWelcome;
 - (BOOL)shouldPerformWidgetUpdate;
-- (BOOL)widgetController:(id)a3 validForDocument:(id)a4 documentDeliveryInfoMap:(id)a5 deliveryInfoMap:(id)a6;
+- (BOOL)widgetController:(id)controller validForDocument:(id)document documentDeliveryInfoMap:(id)map deliveryInfoMap:(id)infoMap;
 - (NSDictionary)cachedUserGuideMap;
 - (NSString)lastFetchedLanguage;
-- (TPSTipsManager)initWithTipStatusController:(id)a3;
+- (TPSTipsManager)initWithTipStatusController:(id)controller;
 - (TPSTipsManagerDelegate)delegate;
-- (id)categorizedMapWithDocumentMap:(id)a3;
-- (id)collectionSectionMapWithCollections:(id)a3 availableCollectionSections:(id)a4 collectionIdToCollectionLabelMap:(id)a5;
-- (id)collectionSectionsFromCollectionMap:(id)a3 exclude:(id)a4;
-- (id)collectionSectionsWithEligibleCollectionSections:(id)a3 collectionSectionMap:(id)a4 featuredCollection:(id)a5;
-- (id)collectionStatusForCollection:(id)a3;
-- (id)featureCollectionFromCollectionMap:(id)a3 collectionOrder:(id)a4 tipMap:(id)a5;
-- (id)hmtFeaturedCollectionsWithCollectionMap:(id)a3 collectionDeliveryInfoMap:(id)a4 deliveryInfoMap:(id)a5;
-- (id)processUserGuidesFromContentPackage:(id)a3;
-- (id)updateDocumentContent:(id)a3 withClientConditions:(id)a4 metadata:(id)a5 checklistCompletedConditions:(id)a6 usingDictionary:(id)a7;
-- (id)updatedHMTCollectionSectionMapFromMap:(id)a3 featuredCollections:(id)a4;
-- (id)welcomeCollectionFromContentPackage:(id)a3;
-- (id)welcomeDocumentFromContentPackage:(id)a3;
-- (void)_updatePauseStatus:(BOOL)a3;
-- (void)contentForVariantIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)contentFromOrigin:(BOOL)a3 systemEducationRequest:(BOOL)a4 processTipKitContent:(BOOL)a5 contextualEligibility:(BOOL)a6 widgetEligibility:(BOOL)a7 notificationEligibility:(BOOL)a8 preferredNotificationIdentifiers:(id)a9 shouldDeferBlock:(id)a10 completionHandler:(id)a11;
-- (void)contentWithMetaDictionary:(id)a3 documentsDictionary:(id)a4 processTipKitContent:(BOOL)a5 contextualEligibility:(BOOL)a6 widgetEligibility:(BOOL)a7 notificationEligibility:(BOOL)a8 userGuideEligibility:(BOOL)a9 preferredNotificationIdentifiers:(id)a10 completionHandler:(id)a11;
-- (void)deleteAllSearchableItemsWithCompletionHandler:(id)a3;
-- (void)finalEligibleContentWithCollections:(id)a3 collectionsMap:(id)a4 collectionDeliveryInfoMap:(id)a5 eligibleTipIdentifiers:(id)a6 eligibleContextualTipIdentifiers:(id)a7 allFullTipsMap:(id)a8 tipDeliveryInfoMap:(id)a9 deliveryInfoMap:(id)a10 metadata:(id)a11 completionHandler:(id)a12;
-- (void)processClientConditions:(id)a3 targetingCache:(id)a4 completionHandler:(id)a5;
-- (void)processCollection:(id)a3 collectionsMap:(id)a4 deliveryInfoMap:(id)a5 ignoreSection:(BOOL)a6 completionHandler:(id)a7;
-- (void)processTipDocumentsDictionary:(id)a3 completionHandler:(id)a4;
-- (void)processTipsDeliveryInfo:(id)a3 deliveryInfoMap:(id)a4 targetingCache:(id)a5 completionHandler:(id)a6;
-- (void)reindexAllSearchableItemsWithCompletionHandler:(id)a3;
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)requestWithURL:(id)a3 identifier:(id)a4 attributionIdentifier:(id)a5 requestType:(id)a6 priority:(float)a7 shouldDeferBlock:(id)a8 completionHandler:(id)a9;
-- (void)setCachedUserGuideMap:(id)a3;
-- (void)setLastFetchedLanguage:(id)a3;
-- (void)updateContentIfOverrideImmediately:(BOOL)a3;
-- (void)updateSupplementalIdentifiersForIdentifier:(id)a3 fromDictionary:(id)a4;
-- (void)userGuideMapWithUserGuideCollection:(id)a3 tipMap:(id)a4 completionHandler:(id)a5;
+- (id)categorizedMapWithDocumentMap:(id)map;
+- (id)collectionSectionMapWithCollections:(id)collections availableCollectionSections:(id)sections collectionIdToCollectionLabelMap:(id)map;
+- (id)collectionSectionsFromCollectionMap:(id)map exclude:(id)exclude;
+- (id)collectionSectionsWithEligibleCollectionSections:(id)sections collectionSectionMap:(id)map featuredCollection:(id)collection;
+- (id)collectionStatusForCollection:(id)collection;
+- (id)featureCollectionFromCollectionMap:(id)map collectionOrder:(id)order tipMap:(id)tipMap;
+- (id)hmtFeaturedCollectionsWithCollectionMap:(id)map collectionDeliveryInfoMap:(id)infoMap deliveryInfoMap:(id)deliveryInfoMap;
+- (id)processUserGuidesFromContentPackage:(id)package;
+- (id)updateDocumentContent:(id)content withClientConditions:(id)conditions metadata:(id)metadata checklistCompletedConditions:(id)completedConditions usingDictionary:(id)dictionary;
+- (id)updatedHMTCollectionSectionMapFromMap:(id)map featuredCollections:(id)collections;
+- (id)welcomeCollectionFromContentPackage:(id)package;
+- (id)welcomeDocumentFromContentPackage:(id)package;
+- (void)_updatePauseStatus:(BOOL)status;
+- (void)contentForVariantIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)contentFromOrigin:(BOOL)origin systemEducationRequest:(BOOL)request processTipKitContent:(BOOL)content contextualEligibility:(BOOL)eligibility widgetEligibility:(BOOL)widgetEligibility notificationEligibility:(BOOL)notificationEligibility preferredNotificationIdentifiers:(id)identifiers shouldDeferBlock:(id)self0 completionHandler:(id)self1;
+- (void)contentWithMetaDictionary:(id)dictionary documentsDictionary:(id)documentsDictionary processTipKitContent:(BOOL)content contextualEligibility:(BOOL)eligibility widgetEligibility:(BOOL)widgetEligibility notificationEligibility:(BOOL)notificationEligibility userGuideEligibility:(BOOL)guideEligibility preferredNotificationIdentifiers:(id)self0 completionHandler:(id)self1;
+- (void)deleteAllSearchableItemsWithCompletionHandler:(id)handler;
+- (void)finalEligibleContentWithCollections:(id)collections collectionsMap:(id)map collectionDeliveryInfoMap:(id)infoMap eligibleTipIdentifiers:(id)identifiers eligibleContextualTipIdentifiers:(id)tipIdentifiers allFullTipsMap:(id)tipsMap tipDeliveryInfoMap:(id)deliveryInfoMap deliveryInfoMap:(id)self0 metadata:(id)self1 completionHandler:(id)self2;
+- (void)processClientConditions:(id)conditions targetingCache:(id)cache completionHandler:(id)handler;
+- (void)processCollection:(id)collection collectionsMap:(id)map deliveryInfoMap:(id)infoMap ignoreSection:(BOOL)section completionHandler:(id)handler;
+- (void)processTipDocumentsDictionary:(id)dictionary completionHandler:(id)handler;
+- (void)processTipsDeliveryInfo:(id)info deliveryInfoMap:(id)map targetingCache:(id)cache completionHandler:(id)handler;
+- (void)reindexAllSearchableItemsWithCompletionHandler:(id)handler;
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)requestWithURL:(id)l identifier:(id)identifier attributionIdentifier:(id)attributionIdentifier requestType:(id)type priority:(float)priority shouldDeferBlock:(id)block completionHandler:(id)handler;
+- (void)setCachedUserGuideMap:(id)map;
+- (void)setLastFetchedLanguage:(id)language;
+- (void)updateContentIfOverrideImmediately:(BOOL)immediately;
+- (void)updateSupplementalIdentifiersForIdentifier:(id)identifier fromDictionary:(id)dictionary;
+- (void)userGuideMapWithUserGuideCollection:(id)collection tipMap:(id)map completionHandler:(id)handler;
 @end
 
 @implementation TPSTipsManager
 
-+ (BOOL)needImmediateNotificationForType:(unint64_t)a3
++ (BOOL)needImmediateNotificationForType:(unint64_t)type
 {
-  v3 = [objc_opt_class() immediateNotificationIdentifierForType:a3];
-  v4 = [MEMORY[0x277D716E8] sharedInstance];
-  v5 = [v4 collectionStatusForCollectionIdentifier:v3];
+  v3 = [objc_opt_class() immediateNotificationIdentifierForType:type];
+  mEMORY[0x277D716E8] = [MEMORY[0x277D716E8] sharedInstance];
+  v5 = [mEMORY[0x277D716E8] collectionStatusForCollectionIdentifier:v3];
 
   if ([v5 canNotify])
   {
-    v6 = [v5 firstViewedDate];
-    v7 = v6 == 0;
+    firstViewedDate = [v5 firstViewedDate];
+    v7 = firstViewedDate == 0;
   }
 
   else
@@ -72,19 +72,19 @@
   return v7;
 }
 
-+ (BOOL)deviceLocalesContainLanguage:(id)a3
++ (BOOL)deviceLocalesContainLanguage:(id)language
 {
   v3 = MEMORY[0x277D71708];
-  v4 = a3;
+  languageCopy = language;
   v5 = [v3 preferredLocalizationsWithCount:5];
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:languageCopy];
 
   return v6;
 }
 
-+ (id)immediateNotificationIdentifierForType:(unint64_t)a3
++ (id)immediateNotificationIdentifierForType:(unint64_t)type
 {
-  if (a3 == 2)
+  if (type == 2)
   {
     return @"HomePod";
   }
@@ -97,11 +97,11 @@
 
 + (void)removeWelcomeDocumentCache
 {
-  v2 = [MEMORY[0x277D71778] welcome];
-  if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+  welcome = [MEMORY[0x277D71778] welcome];
+  if (os_log_type_enabled(welcome, OS_LOG_TYPE_DEFAULT))
   {
     *v3 = 0;
-    _os_log_impl(&dword_232D6F000, v2, OS_LOG_TYPE_DEFAULT, "Remove welcome document cache", v3, 2u);
+    _os_log_impl(&dword_232D6F000, welcome, OS_LOG_TYPE_DEFAULT, "Remove welcome document cache", v3, 2u);
   }
 
   [MEMORY[0x277D717A8] archivedDataWithRootObject:0 forKey:@"TPSWelcomeDocumentCache"];
@@ -109,14 +109,14 @@
 
 + (void)removeWidgetUpdateDate
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v2 removeObjectForKey:@"TPSWidgetUpdateDate"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults removeObjectForKey:@"TPSWidgetUpdateDate"];
 }
 
 + (id)rulesVersion
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"DeliveryInfoVersion"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"DeliveryInfoVersion"];
 
   return v3;
 }
@@ -131,47 +131,47 @@
 
 + (BOOL)tipKitProcessingEligible
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"TPSTipKitProcessedDate"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"TPSTipKitProcessedDate"];
   [v3 timeIntervalSinceNow];
   v5 = fabs(v4) > 43200.0 || v4 >= 0.0;
   if (v5)
   {
     v6 = [MEMORY[0x277CBEAA8] now];
-    [v2 setObject:v6 forKey:@"TPSTipKitProcessedDate"];
+    [standardUserDefaults setObject:v6 forKey:@"TPSTipKitProcessedDate"];
 
-    [v2 synchronize];
+    [standardUserDefaults synchronize];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D71778] daemon];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    daemon = [MEMORY[0x277D71778] daemon];
+    if (os_log_type_enabled(daemon, OS_LOG_TYPE_DEFAULT))
     {
       *v9 = 0;
-      _os_log_impl(&dword_232D6F000, v7, OS_LOG_TYPE_DEFAULT, "TipKit Content Processing has already ran within the last 12 hours, skipping.", v9, 2u);
+      _os_log_impl(&dword_232D6F000, daemon, OS_LOG_TYPE_DEFAULT, "TipKit Content Processing has already ran within the last 12 hours, skipping.", v9, 2u);
     }
   }
 
   return v5;
 }
 
-- (TPSTipsManager)initWithTipStatusController:(id)a3
+- (TPSTipsManager)initWithTipStatusController:(id)controller
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  controllerCopy = controller;
   v25.receiver = self;
   v25.super_class = TPSTipsManager;
   v6 = [(TPSTipsManager *)&v25 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v6->_contextualTipsInactive = [v7 BOOLForKey:@"contextualTipsInactive"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v6->_contextualTipsInactive = [standardUserDefaults BOOLForKey:@"contextualTipsInactive"];
     v8 = +[TPSTipsManager rulesVersion];
     rulesVersion = v6->_rulesVersion;
     v6->_rulesVersion = v8;
 
-    objc_storeStrong(&v6->_tipStatusController, a3);
+    objc_storeStrong(&v6->_tipStatusController, controller);
     v10 = +[TPSTipsManager experiment];
     experiment = v6->_experiment;
     v6->_experiment = v10;
@@ -183,18 +183,18 @@
       v6->_experiment = v12;
     }
 
-    v14 = [MEMORY[0x277D71778] discoverability];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    discoverability = [MEMORY[0x277D71778] discoverability];
+    if (os_log_type_enabled(discoverability, OS_LOG_TYPE_DEFAULT))
     {
       v15 = [(TPSExperiment *)v6->_experiment debugDescription];
       *buf = 138412290;
       v27 = v15;
-      _os_log_impl(&dword_232D6F000, v14, OS_LOG_TYPE_DEFAULT, "Current experiment %@", buf, 0xCu);
+      _os_log_impl(&dword_232D6F000, discoverability, OS_LOG_TYPE_DEFAULT, "Current experiment %@", buf, 0xCu);
     }
 
-    v16 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     sessionItems = v6->_sessionItems;
-    v6->_sessionItems = v16;
+    v6->_sessionItems = array;
 
     v18 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v19 = dispatch_queue_create("com.apple.tipsManager.syncQueue", v18);
@@ -214,41 +214,41 @@
 
 - (BOOL)hasWidgetDocument
 {
-  v2 = [(TPSTipsManager *)self widgetController];
-  v3 = [v2 preferredDocument];
-  v4 = v3 != 0;
+  widgetController = [(TPSTipsManager *)self widgetController];
+  preferredDocument = [widgetController preferredDocument];
+  v4 = preferredDocument != 0;
 
   return v4;
 }
 
-- (void)_updatePauseStatus:(BOOL)a3
+- (void)_updatePauseStatus:(BOOL)status
 {
-  if (self->_contextualTipsInactive != a3)
+  if (self->_contextualTipsInactive != status)
   {
-    self->_contextualTipsInactive = a3;
-    v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    self->_contextualTipsInactive = status;
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
     if (self->_contextualTipsInactive)
     {
-      [v5 setBool:1 forKey:@"contextualTipsInactive"];
+      [standardUserDefaults setBool:1 forKey:@"contextualTipsInactive"];
     }
 
     else
     {
-      [v5 removeObjectForKey:@"contextualTipsInactive"];
+      [standardUserDefaults removeObjectForKey:@"contextualTipsInactive"];
     }
 
-    [v5 synchronize];
+    [standardUserDefaults synchronize];
   }
 }
 
-- (BOOL)isContentIdentifierHoldoutCamp:(id)a3
+- (BOOL)isContentIdentifierHoldoutCamp:(id)camp
 {
-  v4 = a3;
-  v5 = [(TPSTipsManager *)self experiment];
-  if ([v5 camp] == 2)
+  campCopy = camp;
+  experiment = [(TPSTipsManager *)self experiment];
+  if ([experiment camp] == 2)
   {
-    v6 = [(TPSTipsManager *)self tipStatusController];
-    v7 = [v6 isOverrideHoldoutForIdentifier:v4] ^ 1;
+    tipStatusController = [(TPSTipsManager *)self tipStatusController];
+    v7 = [tipStatusController isOverrideHoldoutForIdentifier:campCopy] ^ 1;
   }
 
   else
@@ -259,31 +259,31 @@
   return v7;
 }
 
-- (void)updateContentIfOverrideImmediately:(BOOL)a3
+- (void)updateContentIfOverrideImmediately:(BOOL)immediately
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D71740] requestInterval];
-  v6 = v5;
-  if (v5)
+  immediatelyCopy = immediately;
+  requestInterval = [MEMORY[0x277D71740] requestInterval];
+  v6 = requestInterval;
+  if (requestInterval)
   {
-    [v5 doubleValue];
+    [requestInterval doubleValue];
     v8 = v7;
     if (v7 > 0.0 || (v7 == 0.0 ? (v9 = TPSNumberOfOverrideFetch == 0) : (v9 = 0), v9))
     {
       objc_initWeak(&location, self);
-      v10 = [(TPSTipsManager *)self notificationController];
-      v11 = [v10 isNotificationSettingValid];
+      notificationController = [(TPSTipsManager *)self notificationController];
+      isNotificationSettingValid = [notificationController isNotificationSettingValid];
 
-      if (v11)
+      if (isNotificationSettingValid)
       {
-        v12 = [(TPSTipsManager *)self delegate];
-        v13 = [v12 canCheckForNewTipNotification:self];
+        delegate = [(TPSTipsManager *)self delegate];
+        v13 = [delegate canCheckForNewTipNotification:self];
       }
 
       else
       {
-        v12 = [(TPSTipsManager *)self notificationController];
-        [v12 clearNotificationCache];
+        delegate = [(TPSTipsManager *)self notificationController];
+        [delegate clearNotificationCache];
         v13 = 0;
       }
 
@@ -297,7 +297,7 @@
       v14 = _Block_copy(aBlock);
       v15 = v14;
       ++TPSNumberOfOverrideFetch;
-      if (v3)
+      if (immediatelyCopy)
       {
         v14[2](v14);
       }
@@ -311,8 +311,8 @@
         v19[3] = &unk_2789AFB28;
         v20 = v14;
         v17 = [v16 timerWithTimeInterval:0 repeats:v19 block:v8];
-        v18 = [MEMORY[0x277CBEB88] currentRunLoop];
-        [v18 addTimer:v17 forMode:*MEMORY[0x277CBE640]];
+        currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+        [currentRunLoop addTimer:v17 forMode:*MEMORY[0x277CBE640]];
       }
 
       objc_destroyWeak(&v22);
@@ -361,16 +361,16 @@ void __53__TPSTipsManager_updateContentIfOverrideImmediately___block_invoke_2(ui
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)contentForVariantIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)contentForVariantIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 componentsJoinedByString:{@", "}];
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  v8 = [identifiersCopy componentsJoinedByString:{@", "}];
   v9 = [MEMORY[0x277D71708] contentRequestURLWithContentMapHash:0 variantIdentifiers:v8 useLanguageDefault:0];
   v10 = [MEMORY[0x277CCAB70] requestWithURL:v9];
   [v10 setCachePolicy:5];
   objc_initWeak(&location, self);
-  v11 = [(TPSTipsManager *)self syncQueue];
+  syncQueue = [(TPSTipsManager *)self syncQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __65__TPSTipsManager_contentForVariantIdentifiers_completionHandler___block_invoke;
@@ -378,13 +378,13 @@ void __53__TPSTipsManager_updateContentIfOverrideImmediately___block_invoke_2(ui
   objc_copyWeak(&v21, &location);
   v17 = v10;
   v18 = v8;
-  v19 = v6;
-  v20 = v7;
-  v12 = v7;
-  v13 = v6;
+  v19 = identifiersCopy;
+  v20 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = identifiersCopy;
   v14 = v8;
   v15 = v10;
-  dispatch_async(v11, v16);
+  dispatch_async(syncQueue, v16);
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -498,18 +498,18 @@ void __65__TPSTipsManager_contentForVariantIdentifiers_completionHandler___block
   [v2 removeObject:*(*(*(a1 + 40) + 8) + 40)];
 }
 
-- (void)contentFromOrigin:(BOOL)a3 systemEducationRequest:(BOOL)a4 processTipKitContent:(BOOL)a5 contextualEligibility:(BOOL)a6 widgetEligibility:(BOOL)a7 notificationEligibility:(BOOL)a8 preferredNotificationIdentifiers:(id)a9 shouldDeferBlock:(id)a10 completionHandler:(id)a11
+- (void)contentFromOrigin:(BOOL)origin systemEducationRequest:(BOOL)request processTipKitContent:(BOOL)content contextualEligibility:(BOOL)eligibility widgetEligibility:(BOOL)widgetEligibility notificationEligibility:(BOOL)notificationEligibility preferredNotificationIdentifiers:(id)identifiers shouldDeferBlock:(id)self0 completionHandler:(id)self1
 {
-  v11 = a8;
-  v36 = a6;
-  v37 = a7;
-  v12 = a4;
-  v13 = a3;
+  notificationEligibilityCopy = notificationEligibility;
+  eligibilityCopy = eligibility;
+  widgetEligibilityCopy = widgetEligibility;
+  requestCopy = request;
+  originCopy = origin;
   v72 = *MEMORY[0x277D85DE8];
-  v15 = a9;
-  v16 = a10;
-  v34 = a11;
-  if (v15)
+  identifiersCopy = identifiers;
+  blockCopy = block;
+  handlerCopy = handler;
+  if (identifiersCopy)
   {
     v17 = 1;
   }
@@ -522,26 +522,26 @@ void __65__TPSTipsManager_contentForVariantIdentifiers_completionHandler___block
   if (!+[TPSNotificationController supportsNotification]|| !v17)
   {
 
-    v15 = 0;
-    v11 = 0;
+    identifiersCopy = 0;
+    notificationEligibilityCopy = 0;
   }
 
-  v18 = [MEMORY[0x277D71778] daemon];
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+  daemon = [MEMORY[0x277D71778] daemon];
+  if (os_log_type_enabled(daemon, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67110402;
-    *&buf[4] = v13;
+    *&buf[4] = originCopy;
     LOWORD(v69) = 1024;
-    *(&v69 + 2) = v12;
+    *(&v69 + 2) = requestCopy;
     HIWORD(v69) = 1024;
-    LODWORD(v70) = v36;
+    LODWORD(v70) = eligibilityCopy;
     WORD2(v70) = 1024;
-    *(&v70 + 6) = v37;
+    *(&v70 + 6) = widgetEligibilityCopy;
     WORD5(v70) = 1024;
-    HIDWORD(v70) = v11;
+    HIDWORD(v70) = notificationEligibilityCopy;
     LOWORD(v71) = 2112;
-    *(&v71 + 2) = v15;
-    _os_log_impl(&dword_232D6F000, v18, OS_LOG_TYPE_DEFAULT, "update content from origin: %d systemEducationRequest: %d contextualEligibility:%d widgetEligibility:%d notificationEligibility: %d preferredNotificationIdentifiers: %@", buf, 0x2Au);
+    *(&v71 + 2) = identifiersCopy;
+    _os_log_impl(&dword_232D6F000, daemon, OS_LOG_TYPE_DEFAULT, "update content from origin: %d systemEducationRequest: %d contextualEligibility:%d widgetEligibility:%d notificationEligibility: %d preferredNotificationIdentifiers: %@", buf, 0x2Au);
   }
 
   objc_initWeak(&location, self);
@@ -569,7 +569,7 @@ void __65__TPSTipsManager_contentForVariantIdentifiers_completionHandler___block
   v61[3] = __Block_byref_object_copy__1;
   v61[4] = __Block_byref_object_dispose__1;
   v19 = @"com.apple.tipsd";
-  if (!v12)
+  if (!requestCopy)
   {
     v19 = 0;
   }
@@ -585,7 +585,7 @@ void __65__TPSTipsManager_contentForVariantIdentifiers_completionHandler___block
   v56[3] = &unk_2789AFBF0;
   v56[4] = self;
   v58 = v61;
-  v23 = v16;
+  v23 = blockCopy;
   v57 = v23;
   v59 = buf;
   v60 = v63;
@@ -615,13 +615,13 @@ void __65__TPSTipsManager_contentForVariantIdentifiers_completionHandler___block
   v42 = buf;
   v43 = v65;
   v44 = v63;
-  v46 = a5;
-  v47 = v36;
-  v48 = v37;
-  v49 = v11;
-  v29 = v15;
+  contentCopy = content;
+  v47 = eligibilityCopy;
+  v48 = widgetEligibilityCopy;
+  v49 = notificationEligibilityCopy;
+  v29 = identifiersCopy;
   v39 = v29;
-  v30 = v34;
+  v30 = handlerCopy;
   v41 = v30;
   v31 = v20;
   v40 = v31;
@@ -782,15 +782,15 @@ uint64_t __212__TPSTipsManager_contentFromOrigin_systemEducationRequest_processT
   return v2();
 }
 
-- (void)requestWithURL:(id)a3 identifier:(id)a4 attributionIdentifier:(id)a5 requestType:(id)a6 priority:(float)a7 shouldDeferBlock:(id)a8 completionHandler:(id)a9
+- (void)requestWithURL:(id)l identifier:(id)identifier attributionIdentifier:(id)attributionIdentifier requestType:(id)type priority:(float)priority shouldDeferBlock:(id)block completionHandler:(id)handler
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a8;
-  v21 = a9;
-  v22 = [MEMORY[0x277CCAB70] requestWithURL:v16];
+  lCopy = l;
+  identifierCopy = identifier;
+  attributionIdentifierCopy = attributionIdentifier;
+  typeCopy = type;
+  blockCopy = block;
+  handlerCopy = handler;
+  v22 = [MEMORY[0x277CCAB70] requestWithURL:lCopy];
   v50 = 0;
   v51 = &v50;
   v52 = 0x3032000000;
@@ -805,7 +805,7 @@ uint64_t __212__TPSTipsManager_contentFromOrigin_systemEducationRequest_processT
     goto LABEL_6;
   }
 
-  if (v20 && v20[2](v20))
+  if (blockCopy && blockCopy[2](blockCopy))
   {
     v23 = @"com.apple.tips.TPSTipsManager";
     v24 = 4;
@@ -817,7 +817,7 @@ LABEL_6:
 
   if (v51[5])
   {
-    v21[2](v21, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -829,34 +829,34 @@ LABEL_6:
     v46 = __Block_byref_object_copy__1;
     v47 = __Block_byref_object_dispose__1;
     v48 = 0;
-    v27 = [MEMORY[0x277D71768] sharedInstance];
+    mEMORY[0x277D71768] = [MEMORY[0x277D71768] sharedInstance];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __122__TPSTipsManager_requestWithURL_identifier_attributionIdentifier_requestType_priority_shouldDeferBlock_completionHandler___block_invoke;
     v34[3] = &unk_2789AFCB8;
     v40 = &v50;
-    v38 = v20;
-    v35 = v16;
-    v36 = v17;
-    v37 = self;
+    v38 = blockCopy;
+    v35 = lCopy;
+    v36 = identifierCopy;
+    selfCopy = self;
     objc_copyWeak(&v42, &location);
     v41 = &v43;
-    v39 = v21;
-    *&v28 = a7;
-    v29 = [v27 formattedDataForRequest:v22 identifier:v36 attributionIdentifier:v18 requestType:v19 priority:v34 completionHandler:v28];
+    v39 = handlerCopy;
+    *&v28 = priority;
+    v29 = [mEMORY[0x277D71768] formattedDataForRequest:v22 identifier:v36 attributionIdentifier:attributionIdentifierCopy requestType:typeCopy priority:v34 completionHandler:v28];
     v30 = v44[5];
     v44[5] = v29;
 
     if (v44[5])
     {
-      v31 = [(TPSTipsManager *)self syncQueue];
+      syncQueue = [(TPSTipsManager *)self syncQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __122__TPSTipsManager_requestWithURL_identifier_attributionIdentifier_requestType_priority_shouldDeferBlock_completionHandler___block_invoke_2;
       block[3] = &unk_2789AFC90;
       objc_copyWeak(&v33, &location);
       block[4] = &v43;
-      dispatch_async(v31, block);
+      dispatch_async(syncQueue, block);
 
       objc_destroyWeak(&v33);
     }
@@ -971,18 +971,18 @@ void __122__TPSTipsManager_requestWithURL_identifier_attributionIdentifier_reque
   [v2 addObject:*(*(*(a1 + 32) + 8) + 40)];
 }
 
-- (void)contentWithMetaDictionary:(id)a3 documentsDictionary:(id)a4 processTipKitContent:(BOOL)a5 contextualEligibility:(BOOL)a6 widgetEligibility:(BOOL)a7 notificationEligibility:(BOOL)a8 userGuideEligibility:(BOOL)a9 preferredNotificationIdentifiers:(id)a10 completionHandler:(id)a11
+- (void)contentWithMetaDictionary:(id)dictionary documentsDictionary:(id)documentsDictionary processTipKitContent:(BOOL)content contextualEligibility:(BOOL)eligibility widgetEligibility:(BOOL)widgetEligibility notificationEligibility:(BOOL)notificationEligibility userGuideEligibility:(BOOL)guideEligibility preferredNotificationIdentifiers:(id)self0 completionHandler:(id)self1
 {
-  v81 = a8;
-  v82 = a7;
-  v83 = a6;
-  v80 = a5;
+  notificationEligibilityCopy = notificationEligibility;
+  widgetEligibilityCopy = widgetEligibility;
+  eligibilityCopy = eligibility;
+  contentCopy = content;
   v245 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v93 = a4;
-  v90 = a10;
-  v95 = a11;
-  v96 = [MEMORY[0x277D71780] metadataFromDictionary:v13];
+  dictionaryCopy = dictionary;
+  documentsDictionaryCopy = documentsDictionary;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  v96 = [MEMORY[0x277D71780] metadataFromDictionary:dictionaryCopy];
   v14 = [objc_alloc(MEMORY[0x277D71780]) initWithDictionary:v96];
   v15 = v14;
   if (v14)
@@ -990,41 +990,41 @@ void __122__TPSTipsManager_requestWithURL_identifier_attributionIdentifier_reque
     v86 = v14;
     objc_initWeak(&location, self);
     v92 = [v96 TPSSafeStringForKey:@"rulesHash"];
-    v16 = [(TPSTipsManager *)self rulesVersion];
-    v17 = [v16 isEqualToString:v92];
+    rulesVersion = [(TPSTipsManager *)self rulesVersion];
+    v17 = [rulesVersion isEqualToString:v92];
 
     if ((v17 & 1) == 0)
     {
       [(TPSTipsManager *)self setRulesVersion:v92];
-      v18 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      [v18 setObject:v92 forKey:@"DeliveryInfoVersion"];
-      [v18 synchronize];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      [standardUserDefaults setObject:v92 forKey:@"DeliveryInfoVersion"];
+      [standardUserDefaults synchronize];
     }
 
     v87 = [v96 TPSSafeDictionaryForKey:@"experiment"];
-    v19 = [(TPSTipsManager *)self experiment];
-    v20 = [v19 camp];
+    experiment = [(TPSTipsManager *)self experiment];
+    camp = [experiment camp];
 
-    v21 = [(TPSTipsManager *)self experiment];
-    v22 = [v21 updateWithExperimentDictionary:v87];
+    experiment2 = [(TPSTipsManager *)self experiment];
+    v22 = [experiment2 updateWithExperimentDictionary:v87];
 
     if (v22)
     {
       [(TPSTipsManager *)self _updateExperimentCache];
-      v23 = [MEMORY[0x277D71778] discoverability];
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+      discoverability = [MEMORY[0x277D71778] discoverability];
+      if (os_log_type_enabled(discoverability, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [(TPSTipsManager *)self experiment];
-        v25 = [v24 debugDescription];
+        experiment3 = [(TPSTipsManager *)self experiment];
+        v25 = [experiment3 debugDescription];
         LODWORD(buf) = 138412290;
         *(&buf + 4) = v25;
-        _os_log_impl(&dword_232D6F000, v23, OS_LOG_TYPE_DEFAULT, "Experiment changed %@", &buf, 0xCu);
+        _os_log_impl(&dword_232D6F000, discoverability, OS_LOG_TYPE_DEFAULT, "Experiment changed %@", &buf, 0xCu);
       }
 
-      v26 = [(TPSTipsManager *)self experiment];
-      v27 = [v26 camp];
+      experiment4 = [(TPSTipsManager *)self experiment];
+      camp2 = [experiment4 camp];
 
-      v29 = v20 == 2 && v27 == 1;
+      v29 = camp == 2 && camp2 == 1;
     }
 
     else
@@ -1032,7 +1032,7 @@ void __122__TPSTipsManager_requestWithURL_identifier_attributionIdentifier_reque
       v29 = 0;
     }
 
-    v30 = [(TPSTipsManager *)self syncQueue];
+    syncQueue = [(TPSTipsManager *)self syncQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __221__TPSTipsManager_contentWithMetaDictionary_documentsDictionary_processTipKitContent_contextualEligibility_widgetEligibility_notificationEligibility_userGuideEligibility_preferredNotificationIdentifiers_completionHandler___block_invoke;
@@ -1040,7 +1040,7 @@ void __122__TPSTipsManager_requestWithURL_identifier_attributionIdentifier_reque
     objc_copyWeak(&v238, &location);
     v31 = v86;
     v237 = v31;
-    dispatch_async(v30, block);
+    dispatch_async(syncQueue, block);
 
     v32 = objc_alloc_init(MEMORY[0x277CCABD8]);
     [v32 setMaxConcurrentOperationCount:4];
@@ -1056,7 +1056,7 @@ void __122__TPSTipsManager_requestWithURL_identifier_attributionIdentifier_reque
     v233[2] = __221__TPSTipsManager_contentWithMetaDictionary_documentsDictionary_processTipKitContent_contextualEligibility_widgetEligibility_notificationEligibility_userGuideEligibility_preferredNotificationIdentifiers_completionHandler___block_invoke_2;
     v233[3] = &unk_2789AFD30;
     v233[4] = self;
-    v34 = v93;
+    v34 = documentsDictionaryCopy;
     v234 = v34;
     p_buf = &buf;
     v35 = [v33 initWithAsyncBlock:v233];
@@ -1099,9 +1099,9 @@ void __122__TPSTipsManager_requestWithURL_identifier_attributionIdentifier_reque
     v221[3] = __Block_byref_object_copy__1;
     v221[4] = __Block_byref_object_dispose__1;
     v222 = 0;
-    v36 = [v13 TPSSafeStringForKey:@"rootCollectionId"];
-    v37 = [v13 TPSSafeDictionaryForKey:@"collectionsMap"];
-    v38 = [MEMORY[0x277D71748] deliveryInfoForDictionary:v13];
+    v36 = [dictionaryCopy TPSSafeStringForKey:@"rootCollectionId"];
+    v37 = [dictionaryCopy TPSSafeDictionaryForKey:@"collectionsMap"];
+    v38 = [MEMORY[0x277D71748] deliveryInfoForDictionary:dictionaryCopy];
     [v37 TPSSafeDictionaryForKey:v36];
     v78 = v74 = v34;
     v39 = [v78 TPSSafeDictionaryForKey:@"collection"];
@@ -1112,7 +1112,7 @@ void __122__TPSTipsManager_requestWithURL_identifier_attributionIdentifier_reque
     v209[3] = &unk_2789AFD80;
     v75 = v36;
     v210 = v75;
-    v211 = self;
+    selfCopy = self;
     v41 = v39;
     v212 = v41;
     v76 = v37;
@@ -1140,7 +1140,7 @@ void __122__TPSTipsManager_requestWithURL_identifier_attributionIdentifier_reque
     v205[3] = __Block_byref_object_copy__1;
     v205[4] = __Block_byref_object_dispose__1;
     v206 = 0;
-    v44 = [v13 TPSSafeDictionaryForKey:@"documentsMap"];
+    v44 = [dictionaryCopy TPSSafeDictionaryForKey:@"documentsMap"];
     v79 = v41;
     if ([v44 count])
     {
@@ -1253,7 +1253,7 @@ void __122__TPSTipsManager_requestWithURL_identifier_attributionIdentifier_reque
     v164[3] = __Block_byref_object_copy__1;
     v164[4] = __Block_byref_object_dispose__1;
     v165 = 0;
-    if (a9)
+    if (guideEligibility)
     {
       v49 = objc_alloc(MEMORY[0x277D716B8]);
       v163[0] = MEMORY[0x277D85DD0];
@@ -1270,15 +1270,15 @@ void __122__TPSTipsManager_requestWithURL_identifier_attributionIdentifier_reque
       [v32 addOperation:v50];
     }
 
-    if (v83)
+    if (eligibilityCopy)
     {
       if ([(TPSTipsManager *)self contextualTipsInactive])
       {
-        v51 = [MEMORY[0x277D71778] discoverability];
-        if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
+        discoverability2 = [MEMORY[0x277D71778] discoverability];
+        if (os_log_type_enabled(discoverability2, OS_LOG_TYPE_DEFAULT))
         {
           *v151 = 0;
-          _os_log_impl(&dword_232D6F000, v51, OS_LOG_TYPE_DEFAULT, "Contextual tips content inactive, skipping.", v151, 2u);
+          _os_log_impl(&dword_232D6F000, discoverability2, OS_LOG_TYPE_DEFAULT, "Contextual tips content inactive, skipping.", v151, 2u);
         }
       }
 
@@ -1310,7 +1310,7 @@ void __122__TPSTipsManager_requestWithURL_identifier_attributionIdentifier_reque
     v154 = __Block_byref_object_copy__1;
     v155 = __Block_byref_object_dispose__1;
     v156 = 0;
-    v55 = [v13 TPSSafeDictionaryForKey:@"globalConditions"];
+    v55 = [dictionaryCopy TPSSafeDictionaryForKey:@"globalConditions"];
     v56 = [v55 TPSSafeDictionaryForKey:@"clientConditions"];
     v57 = v54;
     v84 = v55;
@@ -1338,7 +1338,7 @@ void __122__TPSTipsManager_requestWithURL_identifier_attributionIdentifier_reque
       objc_destroyWeak(&v150);
     }
 
-    if (v82)
+    if (widgetEligibilityCopy)
     {
       v59 = objc_alloc(MEMORY[0x277D716B8]);
       v134[0] = MEMORY[0x277D85DD0];
@@ -1360,15 +1360,15 @@ void __122__TPSTipsManager_requestWithURL_identifier_attributionIdentifier_reque
       objc_destroyWeak(&v140);
     }
 
-    if (v81)
+    if (notificationEligibilityCopy)
     {
       v61 = objc_opt_class();
-      v62 = [v47 language];
-      LODWORD(v61) = [v61 deviceLocalesContainLanguage:v62];
+      language = [v47 language];
+      LODWORD(v61) = [v61 deviceLocalesContainLanguage:language];
 
       if (v61)
       {
-        if (v90)
+        if (identifiersCopy)
         {
           v63 = 0;
         }
@@ -1399,7 +1399,7 @@ void __122__TPSTipsManager_requestWithURL_identifier_attributionIdentifier_reque
         v118[3] = &unk_2789AFFB0;
         objc_copyWeak(&v128, &location);
         v122 = &buf;
-        v119 = v90;
+        v119 = identifiersCopy;
         v123 = v196;
         v124 = v194;
         v125 = v192;
@@ -1421,7 +1421,7 @@ void __122__TPSTipsManager_requestWithURL_identifier_attributionIdentifier_reque
       }
     }
 
-    if (v80 && +[TPSTipsManager tipKitProcessingEligible])
+    if (contentCopy && +[TPSTipsManager tipKitProcessingEligible])
     {
       v67 = objc_alloc(MEMORY[0x277D716B8]);
       v117[0] = MEMORY[0x277D85DD0];
@@ -1438,7 +1438,7 @@ void __122__TPSTipsManager_requestWithURL_identifier_attributionIdentifier_reque
       v113[1] = 3221225472;
       v113[2] = __221__TPSTipsManager_contentWithMetaDictionary_documentsDictionary_processTipKitContent_contextualEligibility_widgetEligibility_notificationEligibility_userGuideEligibility_preferredNotificationIdentifiers_completionHandler___block_invoke_210;
       v113[3] = &unk_2789AFD30;
-      v114 = v13;
+      v114 = dictionaryCopy;
       v115 = v74;
       v116 = v151;
       v70 = [v69 initWithAsyncBlock:v113];
@@ -1461,13 +1461,13 @@ void __122__TPSTipsManager_requestWithURL_identifier_attributionIdentifier_reque
     v71 = v88;
     v99 = v71;
     v107 = v196;
-    v112 = a9;
+    guideEligibilityCopy = guideEligibility;
     v108 = v184;
     v109 = v164;
     v110 = v229;
     v72 = v79;
     v100 = v72;
-    v101 = v95;
+    v101 = handlerCopy;
     [v32 addBarrierBlock:v97];
 
     objc_destroyWeak(&v111);
@@ -1507,7 +1507,7 @@ void __122__TPSTipsManager_requestWithURL_identifier_attributionIdentifier_reque
 
   else
   {
-    (*(v95 + 2))(v95, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   v73 = *MEMORY[0x277D85DE8];
@@ -2089,32 +2089,32 @@ void __221__TPSTipsManager_contentWithMetaDictionary_documentsDictionary_process
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (id)updateDocumentContent:(id)a3 withClientConditions:(id)a4 metadata:(id)a5 checklistCompletedConditions:(id)a6 usingDictionary:(id)a7
+- (id)updateDocumentContent:(id)content withClientConditions:(id)conditions metadata:(id)metadata checklistCompletedConditions:(id)completedConditions usingDictionary:(id)dictionary
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if ([v12 count])
+  contentCopy = content;
+  conditionsCopy = conditions;
+  metadataCopy = metadata;
+  completedConditionsCopy = completedConditions;
+  dictionaryCopy = dictionary;
+  if ([conditionsCopy count])
   {
-    v16 = [v15 mutableCopy];
+    v16 = [dictionaryCopy mutableCopy];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __115__TPSTipsManager_updateDocumentContent_withClientConditions_metadata_checklistCompletedConditions_usingDictionary___block_invoke;
     v20[3] = &unk_2789B0050;
-    v21 = v15;
-    v22 = v14;
-    v23 = v12;
+    v21 = dictionaryCopy;
+    v22 = completedConditionsCopy;
+    v23 = conditionsCopy;
     v24 = v16;
-    v25 = v13;
+    v25 = metadataCopy;
     v17 = v16;
-    v18 = v15;
-    [v11 enumerateObjectsUsingBlock:v20];
-    v15 = [v17 copy];
+    v18 = dictionaryCopy;
+    [contentCopy enumerateObjectsUsingBlock:v20];
+    dictionaryCopy = [v17 copy];
   }
 
-  return v15;
+  return dictionaryCopy;
 }
 
 void __115__TPSTipsManager_updateDocumentContent_withClientConditions_metadata_checklistCompletedConditions_usingDictionary___block_invoke(uint64_t a1, void *a2)
@@ -2164,13 +2164,13 @@ LABEL_5:
   }
 }
 
-- (void)processTipDocumentsDictionary:(id)a3 completionHandler:(id)a4
+- (void)processTipDocumentsDictionary:(id)dictionary completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 count];
+  handlerCopy = handler;
+  dictionaryCopy = dictionary;
+  v8 = [dictionaryCopy count];
   v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v8];
-  v10 = [MEMORY[0x277D716D8] documentsForDictionary:v7];
+  v10 = [MEMORY[0x277D716D8] documentsForDictionary:dictionaryCopy];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -2179,16 +2179,16 @@ LABEL_5:
   v11 = v9;
   v19 = v11;
   [v10 enumerateObjectsUsingBlock:v18];
-  v12 = [(TPSTipsManager *)self syncQueue];
+  syncQueue = [(TPSTipsManager *)self syncQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__TPSTipsManager_processTipDocumentsDictionary_completionHandler___block_invoke_2;
   block[3] = &unk_2789B00A0;
   v16 = v11;
-  v17 = v6;
+  v17 = handlerCopy;
   v13 = v11;
-  v14 = v6;
-  dispatch_async(v12, block);
+  v14 = handlerCopy;
+  dispatch_async(syncQueue, block);
 }
 
 void __66__TPSTipsManager_processTipDocumentsDictionary_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2208,20 +2208,20 @@ void __66__TPSTipsManager_processTipDocumentsDictionary_completionHandler___bloc
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)processCollection:(id)a3 collectionsMap:(id)a4 deliveryInfoMap:(id)a5 ignoreSection:(BOOL)a6 completionHandler:(id)a7
+- (void)processCollection:(id)collection collectionsMap:(id)map deliveryInfoMap:(id)infoMap ignoreSection:(BOOL)section completionHandler:(id)handler
 {
   v58 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v42 = a4;
-  v35 = a5;
-  v31 = a7;
-  v40 = [MEMORY[0x277CBEB18] array];
-  v34 = [MEMORY[0x277CBEB18] array];
-  v39 = [MEMORY[0x277CBEB38] dictionary];
-  v38 = [MEMORY[0x277CBEB38] dictionary];
-  v37 = [MEMORY[0x277CBEB38] dictionary];
-  v32 = v10;
-  [v10 TPSSafeArrayForKey:@"collectionIds"];
+  collectionCopy = collection;
+  mapCopy = map;
+  infoMapCopy = infoMap;
+  handlerCopy = handler;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
+  v32 = collectionCopy;
+  [collectionCopy TPSSafeArrayForKey:@"collectionIds"];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
@@ -2241,7 +2241,7 @@ void __66__TPSTipsManager_processTipDocumentsDictionary_completionHandler___bloc
         }
 
         v15 = *(*(&v49 + 1) + 8 * i);
-        v16 = [v42 TPSSafeDictionaryForKey:v15];
+        v16 = [mapCopy TPSSafeDictionaryForKey:v15];
         v17 = [v16 TPSSafeDictionaryForKey:@"collection"];
         v18 = [v17 TPSSafeStringForKey:@"type"];
         v19 = [v18 containsString:@"collection-order"];
@@ -2265,49 +2265,49 @@ void __66__TPSTipsManager_processTipDocumentsDictionary_completionHandler___bloc
         {
           if (v19)
           {
-            if (a6)
+            if (section)
             {
               goto LABEL_19;
             }
 
-            [v34 addObject:v20];
+            [array2 addObject:v20];
             v22 = [v20 isEqualToString:@"supportFlow"];
             v43[0] = MEMORY[0x277D85DD0];
             v43[1] = 3221225472;
             v43[2] = __99__TPSTipsManager_processCollection_collectionsMap_deliveryInfoMap_ignoreSection_completionHandler___block_invoke;
             v43[3] = &unk_2789B00C8;
-            v44 = v40;
-            v45 = v34;
-            v46 = v39;
-            v47 = v38;
-            v48 = v37;
-            [(TPSTipsManager *)self processCollection:v17 collectionsMap:v42 deliveryInfoMap:v35 ignoreSection:v22 ^ 1u completionHandler:v43];
+            v44 = array;
+            v45 = array2;
+            v46 = dictionary;
+            v47 = dictionary2;
+            v48 = dictionary3;
+            [(TPSTipsManager *)self processCollection:v17 collectionsMap:mapCopy deliveryInfoMap:infoMapCopy ignoreSection:v22 ^ 1u completionHandler:v43];
 
-            v23 = v44;
+            default = v44;
           }
 
           else
           {
-            [v40 addObject:v17];
-            [v39 setObject:v17 forKeyedSubscript:v20];
+            [array addObject:v17];
+            [dictionary setObject:v17 forKeyedSubscript:v20];
             v24 = [MEMORY[0x277D71748] deliveryInfoIdForDictionary:v16];
-            [v38 setObject:v24 forKeyedSubscript:v20];
+            [dictionary2 setObject:v24 forKeyedSubscript:v20];
 
-            v23 = [MEMORY[0x277D716D8] collectionOrderIdentifierForDictionary:v17];
-            [v37 setObject:v20 forKeyedSubscript:v23];
+            default = [MEMORY[0x277D716D8] collectionOrderIdentifierForDictionary:v17];
+            [dictionary3 setObject:v20 forKeyedSubscript:default];
           }
         }
 
         else
         {
-          v23 = [MEMORY[0x277D71778] default];
-          if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
+          default = [MEMORY[0x277D71778] default];
+          if (os_log_type_enabled(default, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412546;
             v54 = v15;
             v55 = 2112;
             v56 = v17;
-            _os_log_debug_impl(&dword_232D6F000, v23, OS_LOG_TYPE_DEBUG, "Collection unique id: %@ is missing collectionLabel in the payload %@", buf, 0x16u);
+            _os_log_debug_impl(&dword_232D6F000, default, OS_LOG_TYPE_DEBUG, "Collection unique id: %@ is missing collectionLabel in the payload %@", buf, 0x16u);
           }
         }
 
@@ -2320,12 +2320,12 @@ LABEL_19:
     while (v12);
   }
 
-  v25 = [v40 copy];
-  v26 = [v34 copy];
-  v27 = [v39 copy];
-  v28 = [v38 copy];
-  v29 = [v37 copy];
-  v31[2](v31, v25, v26, v27, v28, v29);
+  v25 = [array copy];
+  v26 = [array2 copy];
+  v27 = [dictionary copy];
+  v28 = [dictionary2 copy];
+  v29 = [dictionary3 copy];
+  handlerCopy[2](handlerCopy, v25, v26, v27, v28, v29);
 
   v30 = *MEMORY[0x277D85DE8];
 }
@@ -2363,21 +2363,21 @@ void __99__TPSTipsManager_processCollection_collectionsMap_deliveryInfoMap_ignor
   }
 }
 
-- (id)collectionSectionsFromCollectionMap:(id)a3 exclude:(id)a4
+- (id)collectionSectionsFromCollectionMap:(id)map exclude:(id)exclude
 {
-  v5 = a4;
+  excludeCopy = exclude;
   v6 = MEMORY[0x277CBEB18];
-  v7 = a3;
-  v8 = [v6 arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  mapCopy = map;
+  v8 = [v6 arrayWithCapacity:{objc_msgSend(mapCopy, "count")}];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __62__TPSTipsManager_collectionSectionsFromCollectionMap_exclude___block_invoke;
   v16 = &unk_2789B00F0;
-  v17 = v5;
+  v17 = excludeCopy;
   v9 = v8;
   v18 = v9;
-  v10 = v5;
-  [v7 enumerateKeysAndObjectsUsingBlock:&v13];
+  v10 = excludeCopy;
+  [mapCopy enumerateKeysAndObjectsUsingBlock:&v13];
 
   if ([v9 count])
   {
@@ -2408,12 +2408,12 @@ uint64_t __62__TPSTipsManager_collectionSectionsFromCollectionMap_exclude___bloc
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)processTipsDeliveryInfo:(id)a3 deliveryInfoMap:(id)a4 targetingCache:(id)a5 completionHandler:(id)a6
+- (void)processTipsDeliveryInfo:(id)info deliveryInfoMap:(id)map targetingCache:(id)cache completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  infoCopy = info;
+  mapCopy = map;
+  cacheCopy = cache;
+  handlerCopy = handler;
   v47 = 0;
   v48 = &v47;
   v49 = 0x3032000000;
@@ -2426,7 +2426,7 @@ uint64_t __62__TPSTipsManager_collectionSectionsFromCollectionMap_exclude___bloc
   v44 = __Block_byref_object_copy__1;
   v45 = __Block_byref_object_dispose__1;
   v46 = 0;
-  v14 = [v10 count];
+  v14 = [infoCopy count];
   if (v14)
   {
     v15 = [MEMORY[0x277CBEB58] setWithCapacity:v14];
@@ -2442,14 +2442,14 @@ uint64_t __62__TPSTipsManager_collectionSectionsFromCollectionMap_exclude___bloc
     v40[0] = 0;
     v40[1] = v40;
     v40[2] = 0x2020000000;
-    v20 = [(TPSTipsManager *)self experiment];
-    v21 = [v20 camp];
+    experiment = [(TPSTipsManager *)self experiment];
+    camp = [experiment camp];
 
-    v40[3] = v21;
+    v40[3] = camp;
     objc_initWeak(&location, self);
-    if (!v12)
+    if (!cacheCopy)
     {
-      v12 = objc_alloc_init(TPSTargetingCache);
+      cacheCopy = objc_alloc_init(TPSTargetingCache);
     }
 
     v22 = [MEMORY[0x277D71790] transactionWithName:@"com.apple.TipsDaemon.precondition-check"];
@@ -2457,16 +2457,16 @@ uint64_t __62__TPSTipsManager_collectionSectionsFromCollectionMap_exclude___bloc
     v31[1] = 3221225472;
     v31[2] = __91__TPSTipsManager_processTipsDeliveryInfo_deliveryInfoMap_targetingCache_completionHandler___block_invoke;
     v31[3] = &unk_2789B01B8;
-    v32 = v11;
+    v32 = mapCopy;
     objc_copyWeak(&v38, &location);
     v35 = v40;
-    v12 = v12;
-    v33 = v12;
+    cacheCopy = cacheCopy;
+    v33 = cacheCopy;
     v36 = &v47;
     v23 = v19;
     v34 = v23;
     v37 = &v41;
-    [v10 enumerateKeysAndObjectsUsingBlock:v31];
+    [infoCopy enumerateKeysAndObjectsUsingBlock:v31];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __91__TPSTipsManager_processTipsDeliveryInfo_deliveryInfoMap_targetingCache_completionHandler___block_invoke_3;
@@ -2476,7 +2476,7 @@ uint64_t __62__TPSTipsManager_collectionSectionsFromCollectionMap_exclude___bloc
     v29 = &v41;
     v24 = v22;
     v26 = v24;
-    v27 = v13;
+    v27 = handlerCopy;
     [v23 addOperationWithBlock:v25];
 
     objc_destroyWeak(&v30);
@@ -2488,7 +2488,7 @@ uint64_t __62__TPSTipsManager_collectionSectionsFromCollectionMap_exclude___bloc
 
   else
   {
-    (*(v13 + 2))(v13, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   _Block_object_dispose(&v41, 8);
@@ -2826,27 +2826,27 @@ void __91__TPSTipsManager_processTipsDeliveryInfo_deliveryInfoMap_targetingCache
   (*(v5 + 16))(v5, v7, v6);
 }
 
-- (void)processClientConditions:(id)a3 targetingCache:(id)a4 completionHandler:(id)a5
+- (void)processClientConditions:(id)conditions targetingCache:(id)cache completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277D71778] targeting];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+  conditionsCopy = conditions;
+  cacheCopy = cache;
+  handlerCopy = handler;
+  targeting = [MEMORY[0x277D71778] targeting];
+  if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
   {
-    [TPSTipsManager processClientConditions:v8 targetingCache:? completionHandler:?];
+    [TPSTipsManager processClientConditions:conditionsCopy targetingCache:? completionHandler:?];
   }
 
-  if ([v8 count])
+  if ([conditionsCopy count])
   {
     v12 = [MEMORY[0x277CBEB58] set];
-    v13 = [MEMORY[0x277D71740] matchedClientConditions];
-    if (v13)
+    matchedClientConditions = [MEMORY[0x277D71740] matchedClientConditions];
+    if (matchedClientConditions)
     {
-      v14 = [MEMORY[0x277CBEB58] setWithArray:v13];
+      v14 = [MEMORY[0x277CBEB58] setWithArray:matchedClientConditions];
       v15 = MEMORY[0x277CBEB98];
-      v16 = [v8 allKeys];
-      v17 = [v15 setWithArray:v16];
+      allKeys = [conditionsCopy allKeys];
+      v17 = [v15 setWithArray:allKeys];
       [v14 intersectSet:v17];
 
       v18 = [v12 setByAddingObjectsFromSet:v14];
@@ -2854,21 +2854,21 @@ void __91__TPSTipsManager_processTipsDeliveryInfo_deliveryInfoMap_targetingCache
       v41[1] = 3221225472;
       v41[2] = __75__TPSTipsManager_processClientConditions_targetingCache_completionHandler___block_invoke;
       v41[3] = &unk_2789B0230;
-      v42 = v8;
+      v42 = conditionsCopy;
       v19 = v12;
       v43 = v19;
       [v14 enumerateObjectsUsingBlock:v41];
       v20 = [v14 copy];
       v21 = [v19 copy];
-      v10[2](v10, v20, v21);
+      handlerCopy[2](handlerCopy, v20, v21);
 
       v22 = v42;
     }
 
     else
     {
-      v23 = [MEMORY[0x277D71740] matchedClientConditionTargeting];
-      v24 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v8, "count")}];
+      matchedClientConditionTargeting = [MEMORY[0x277D71740] matchedClientConditionTargeting];
+      v24 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(conditionsCopy, "count")}];
       v25 = objc_alloc_init(MEMORY[0x277CCABD8]);
       objc_initWeak(&location, self);
       v33[0] = MEMORY[0x277D85DD0];
@@ -2876,8 +2876,8 @@ void __91__TPSTipsManager_processTipsDeliveryInfo_deliveryInfoMap_targetingCache
       v33[2] = __75__TPSTipsManager_processClientConditions_targetingCache_completionHandler___block_invoke_2;
       v33[3] = &unk_2789B02A8;
       objc_copyWeak(&v39, &location);
-      v34 = v9;
-      v14 = v23;
+      v34 = cacheCopy;
+      v14 = matchedClientConditionTargeting;
       v35 = v14;
       v26 = v24;
       v36 = v26;
@@ -2885,12 +2885,12 @@ void __91__TPSTipsManager_processTipsDeliveryInfo_deliveryInfoMap_targetingCache
       v37 = v27;
       v28 = v25;
       v38 = v28;
-      [v8 enumerateKeysAndObjectsUsingBlock:v33];
+      [conditionsCopy enumerateKeysAndObjectsUsingBlock:v33];
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __75__TPSTipsManager_processClientConditions_targetingCache_completionHandler___block_invoke_248;
       v29[3] = &unk_2789B02D0;
-      v32 = v10;
+      v32 = handlerCopy;
       v22 = v26;
       v30 = v22;
       v31 = v27;
@@ -2903,7 +2903,7 @@ void __91__TPSTipsManager_processTipsDeliveryInfo_deliveryInfoMap_targetingCache
 
   else
   {
-    v10[2](v10, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 }
 
@@ -3008,45 +3008,45 @@ void __75__TPSTipsManager_processClientConditions_targetingCache_completionHandl
   (*(v2 + 16))(v2, v4, v3);
 }
 
-- (void)finalEligibleContentWithCollections:(id)a3 collectionsMap:(id)a4 collectionDeliveryInfoMap:(id)a5 eligibleTipIdentifiers:(id)a6 eligibleContextualTipIdentifiers:(id)a7 allFullTipsMap:(id)a8 tipDeliveryInfoMap:(id)a9 deliveryInfoMap:(id)a10 metadata:(id)a11 completionHandler:(id)a12
+- (void)finalEligibleContentWithCollections:(id)collections collectionsMap:(id)map collectionDeliveryInfoMap:(id)infoMap eligibleTipIdentifiers:(id)identifiers eligibleContextualTipIdentifiers:(id)tipIdentifiers allFullTipsMap:(id)tipsMap tipDeliveryInfoMap:(id)deliveryInfoMap deliveryInfoMap:(id)self0 metadata:(id)self1 completionHandler:(id)self2
 {
   v123 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v57 = a4;
-  v64 = a5;
-  v73 = a6;
-  v18 = a7;
-  v78 = a8;
-  v76 = a9;
+  collectionsCopy = collections;
+  mapCopy = map;
+  infoMapCopy = infoMap;
+  identifiersCopy = identifiers;
+  tipIdentifiersCopy = tipIdentifiers;
+  tipsMapCopy = tipsMap;
+  deliveryInfoMapCopy = deliveryInfoMap;
   v75 = a10;
-  v72 = a11;
-  v61 = a12;
-  v69 = [MEMORY[0x277D71740] showAllCollections];
-  v60 = v17;
-  v19 = [v17 count];
+  metadataCopy = metadata;
+  handlerCopy = handler;
+  showAllCollections = [MEMORY[0x277D71740] showAllCollections];
+  v60 = collectionsCopy;
+  v19 = [collectionsCopy count];
   v63 = objc_opt_new();
   v66 = objc_opt_new();
   v65 = objc_opt_new();
   v74 = objc_opt_new();
   v58 = objc_opt_new();
   v77 = objc_opt_new();
-  v59 = v18;
-  v71 = [MEMORY[0x277CBEB58] setWithSet:v18];
-  if (!v19 && ![v78 count])
+  v59 = tipIdentifiersCopy;
+  v71 = [MEMORY[0x277CBEB58] setWithSet:tipIdentifiersCopy];
+  if (!v19 && ![tipsMapCopy count])
   {
     v67 = 0;
     goto LABEL_28;
   }
 
   v20 = MEMORY[0x277CBEB98];
-  v21 = [v78 allKeys];
-  v70 = [v20 setWithArray:v21];
+  allKeys = [tipsMapCopy allKeys];
+  v70 = [v20 setWithArray:allKeys];
 
   v120 = 0u;
   v121 = 0u;
   v118 = 0u;
   v119 = 0u;
-  obj = v17;
+  obj = collectionsCopy;
   v81 = [obj countByEnumeratingWithState:&v118 objects:v122 count:16];
   if (!v81)
   {
@@ -3088,25 +3088,25 @@ void __75__TPSTipsManager_processClientConditions_targetingCache_completionHandl
         v93[1] = 3221225472;
         v93[2] = __228__TPSTipsManager_finalEligibleContentWithCollections_collectionsMap_collectionDeliveryInfoMap_eligibleTipIdentifiers_eligibleContextualTipIdentifiers_allFullTipsMap_tipDeliveryInfoMap_deliveryInfoMap_metadata_completionHandler___block_invoke;
         v93[3] = &unk_2789B02F8;
-        v94 = v73;
+        v94 = identifiersCopy;
         v95 = v70;
         v27 = v26;
         v96 = v27;
         v97 = v74;
         v28 = v24;
         v98 = v28;
-        v99 = v78;
-        v29 = v72;
+        v99 = tipsMapCopy;
+        v29 = metadataCopy;
         v100 = v29;
-        v101 = v76;
+        v101 = deliveryInfoMapCopy;
         v102 = v75;
         v103 = &v110;
         v104 = &v114;
         v105 = &v106;
         [v25 enumerateObjectsUsingBlock:v93];
         v30 = MEMORY[0x277CBEB98];
-        v31 = [v25 array];
-        v32 = [v30 setWithArray:v31];
+        array = [v25 array];
+        v32 = [v30 setWithArray:array];
 
         v33 = [MEMORY[0x277CBEB58] setWithSet:v71];
         [v33 intersectSet:v32];
@@ -3122,38 +3122,38 @@ void __75__TPSTipsManager_processClientConditions_targetingCache_completionHandl
           *(v107 + 24) = 0;
         }
 
-        if (([v25 count] != 0) | v69 & 1 || (objc_msgSend(MEMORY[0x277D716E8], "savedTipsCollectionIdentifier"), v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(v28, "isEqualToString:", v34), v34, v35))
+        if (([v25 count] != 0) | showAllCollections & 1 || (objc_msgSend(MEMORY[0x277D716E8], "savedTipsCollectionIdentifier"), v34 = objc_claimAutoreleasedReturnValue(), v35 = objc_msgSend(v28, "isEqualToString:", v34), v34, v35))
         {
           v36 = [objc_alloc(MEMORY[0x277D716D8]) initWithDictionary:v23 metadata:v29];
-          v37 = [v25 array];
-          [v36 setTipIdentifiers:v37];
+          array2 = [v25 array];
+          [v36 setTipIdentifiers:array2];
 
           [v36 setContainsIntroTip:*(v111 + 24)];
           [v36 setContainsOutroTip:*(v107 + 24)];
-          v38 = [v36 identifier];
-          v39 = [v38 isEqualToString:@"YourDevicesGuides"];
+          identifier = [v36 identifier];
+          v39 = [identifier isEqualToString:@"YourDevicesGuides"];
 
           if (v39)
           {
-            v40 = v67;
+            identifier2 = v67;
             v67 = v36;
             goto LABEL_20;
           }
 
           if (v36)
           {
-            v40 = [v36 identifier];
-            v41 = [v36 supportID];
-            v42 = v41 == 0;
+            identifier2 = [v36 identifier];
+            supportID = [v36 supportID];
+            v42 = supportID == 0;
 
             if (v42)
             {
-              [v63 addObject:v40];
+              [v63 addObject:identifier2];
             }
 
-            [v66 setObject:v36 forKeyedSubscript:v40];
-            v43 = [v64 objectForKeyedSubscript:v40];
-            [v65 setObject:v43 forKeyedSubscript:v40];
+            [v66 setObject:v36 forKeyedSubscript:identifier2];
+            v43 = [infoMapCopy objectForKeyedSubscript:identifier2];
+            [v65 setObject:v43 forKeyedSubscript:identifier2];
 
 LABEL_20:
           }
@@ -3174,29 +3174,29 @@ LABEL_20:
 LABEL_27:
 
 LABEL_28:
-  v44 = [MEMORY[0x277D716E8] sharedInstance];
-  v45 = [v44 majorVersion];
+  mEMORY[0x277D716E8] = [MEMORY[0x277D716E8] sharedInstance];
+  majorVersion = [mEMORY[0x277D716E8] majorVersion];
 
   v85[0] = MEMORY[0x277D85DD0];
   v85[1] = 3221225472;
   v85[2] = __228__TPSTipsManager_finalEligibleContentWithCollections_collectionsMap_collectionDeliveryInfoMap_eligibleTipIdentifiers_eligibleContextualTipIdentifiers_allFullTipsMap_tipDeliveryInfoMap_deliveryInfoMap_metadata_completionHandler___block_invoke_2;
   v85[3] = &unk_2789B0320;
-  v86 = v76;
+  v86 = deliveryInfoMapCopy;
   v87 = v58;
   v88 = v59;
   v89 = v74;
   v90 = v75;
-  v91 = self;
-  v92 = v45;
-  v46 = v45;
+  selfCopy = self;
+  v92 = majorVersion;
+  v46 = majorVersion;
   v84 = v75;
   v47 = v74;
   v82 = v59;
   v48 = v58;
-  v80 = v76;
-  [v78 enumerateKeysAndObjectsUsingBlock:v85];
-  v49 = [(TPSTipsManager *)self tipStatusController];
-  [v49 updateCacheData];
+  v80 = deliveryInfoMapCopy;
+  [tipsMapCopy enumerateKeysAndObjectsUsingBlock:v85];
+  tipStatusController = [(TPSTipsManager *)self tipStatusController];
+  [tipStatusController updateCacheData];
 
   v50 = [v63 copy];
   v51 = [v66 copy];
@@ -3204,7 +3204,7 @@ LABEL_28:
   v53 = [v47 copy];
   v54 = [v48 copy];
   v55 = [v77 copy];
-  v61[2](v61, v67, v50, v51, v52, v53, v54, v55);
+  handlerCopy[2](handlerCopy, v67, v50, v51, v52, v53, v54, v55);
 
   v56 = *MEMORY[0x277D85DE8];
 }
@@ -3321,20 +3321,20 @@ void __228__TPSTipsManager_finalEligibleContentWithCollections_collectionsMap_co
   [v13 updateLastUsedVersionForIdentifier:v14 value:*(a1 + 80)];
 }
 
-- (id)collectionSectionMapWithCollections:(id)a3 availableCollectionSections:(id)a4 collectionIdToCollectionLabelMap:(id)a5
+- (id)collectionSectionMapWithCollections:(id)collections availableCollectionSections:(id)sections collectionIdToCollectionLabelMap:(id)map
 {
   v64 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 count];
+  collectionsCopy = collections;
+  sectionsCopy = sections;
+  mapCopy = map;
+  v10 = [sectionsCopy count];
   v37 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v10];
   v38 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v10];
   v58 = 0u;
   v59 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v8;
+  obj = sectionsCopy;
   v42 = [obj countByEnumeratingWithState:&v56 objects:v63 count:16];
   if (!v42)
   {
@@ -3390,10 +3390,10 @@ LABEL_8:
               objc_enumerationMutation(v17);
             }
 
-            v21 = [v9 objectForKeyedSubscript:*(*(&v52 + 1) + 8 * i)];
+            v21 = [mapCopy objectForKeyedSubscript:*(*(&v52 + 1) + 8 * i)];
             if (v21)
             {
-              v22 = [v7 objectForKeyedSubscript:v21];
+              v22 = [collectionsCopy objectForKeyedSubscript:v21];
               if (v22)
               {
                 [v14 addObject:v22];
@@ -3416,17 +3416,17 @@ LABEL_8:
           v15 = v24;
           if (v24)
           {
-            v25 = [v24 supportID];
+            supportID = [v24 supportID];
             v26 = v37;
-            if (v25)
+            if (supportID)
             {
               v26 = v38;
             }
 
             v27 = v26;
 
-            v28 = [v15 identifier];
-            [v27 setObject:v15 forKeyedSubscript:v28];
+            identifier = [v15 identifier];
+            [v27 setObject:v15 forKeyedSubscript:identifier];
 
             goto LABEL_8;
           }
@@ -3495,11 +3495,11 @@ void __115__TPSTipsManager_collectionSectionMapWithCollections_availableCollecti
   *a4 = *(*(*(a1 + 40) + 8) + 24);
 }
 
-- (id)categorizedMapWithDocumentMap:(id)a3
+- (id)categorizedMapWithDocumentMap:(id)map
 {
   v24[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 count];
+  mapCopy = map;
+  v4 = [mapCopy count];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -3518,7 +3518,7 @@ void __115__TPSTipsManager_collectionSectionMapWithCollections_availableCollecti
   v10[3] = &unk_2789B0370;
   v10[4] = &v17;
   v10[5] = &v11;
-  [v3 enumerateKeysAndObjectsUsingBlock:v10];
+  [mapCopy enumerateKeysAndObjectsUsingBlock:v10];
   v23[0] = @"tips";
   v5 = [v18[5] copy];
   v23[1] = @"supportFlow";
@@ -3564,24 +3564,24 @@ void __48__TPSTipsManager_categorizedMapWithDocumentMap___block_invoke(uint64_t 
   [v9 setObject:v10 forKeyedSubscript:v11];
 }
 
-- (void)userGuideMapWithUserGuideCollection:(id)a3 tipMap:(id)a4 completionHandler:(id)a5
+- (void)userGuideMapWithUserGuideCollection:(id)collection tipMap:(id)map completionHandler:(id)handler
 {
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  collectionCopy = collection;
+  mapCopy = map;
+  handlerCopy = handler;
   if ([MEMORY[0x277D71740] ignoreTargetingValidator])
   {
     v10 = +[TPSUserGuideManager allUserGuideMap];
-    v9[2](v9, v10);
+    handlerCopy[2](handlerCopy, v10);
   }
 
   else
   {
-    v29 = v9;
-    v11 = [MEMORY[0x277CBEB38] dictionary];
-    v30 = v7;
-    v12 = [v7 tipIdentifiers];
+    v29 = handlerCopy;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v30 = collectionCopy;
+    tipIdentifiers = [collectionCopy tipIdentifiers];
     v13 = +[TPSCloudDeviceValidation idsDevices];
     v14 = [TPSUserGuideManager cloudDeviceDataSourceWithDevices:v13];
 
@@ -3589,7 +3589,7 @@ void __48__TPSTipsManager_categorizedMapWithDocumentMap___block_invoke(uint64_t 
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    obj = v12;
+    obj = tipIdentifiers;
     v15 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v15)
     {
@@ -3604,16 +3604,16 @@ void __48__TPSTipsManager_categorizedMapWithDocumentMap___block_invoke(uint64_t 
             objc_enumerationMutation(obj);
           }
 
-          v19 = [v8 objectForKeyedSubscript:*(*(&v32 + 1) + 8 * i)];
-          v20 = [v19 linkedDocument];
-          v21 = [v20 product];
+          v19 = [mapCopy objectForKeyedSubscript:*(*(&v32 + 1) + 8 * i)];
+          linkedDocument = [v19 linkedDocument];
+          product = [linkedDocument product];
 
-          v22 = [v19 title];
-          v23 = [TPSUserGuideManager userGuideWithIdentifier:v21 title:v22 dataSource:v14];
+          title = [v19 title];
+          v23 = [TPSUserGuideManager userGuideWithIdentifier:product title:title dataSource:v14];
 
           if (v23)
           {
-            [v11 setObject:v23 forKeyedSubscript:v21];
+            [dictionary setObject:v23 forKeyedSubscript:product];
           }
         }
 
@@ -3623,19 +3623,19 @@ void __48__TPSTipsManager_categorizedMapWithDocumentMap___block_invoke(uint64_t 
       while (v16);
     }
 
-    v24 = [MEMORY[0x277D716E8] deviceGuideIdentifier];
-    v25 = [v11 objectForKeyedSubscript:v24];
+    deviceGuideIdentifier = [MEMORY[0x277D716E8] deviceGuideIdentifier];
+    v25 = [dictionary objectForKeyedSubscript:deviceGuideIdentifier];
 
-    v9 = v29;
+    handlerCopy = v29;
     if (!v25)
     {
       v26 = +[TPSUserGuideManager mainUserGuide];
-      [v11 setObject:v26 forKeyedSubscript:v24];
+      [dictionary setObject:v26 forKeyedSubscript:deviceGuideIdentifier];
     }
 
-    if ([v11 count])
+    if ([dictionary count])
     {
-      v27 = [v11 copy];
+      v27 = [dictionary copy];
       v29[2](v29, v27);
     }
 
@@ -3644,23 +3644,23 @@ void __48__TPSTipsManager_categorizedMapWithDocumentMap___block_invoke(uint64_t 
       v29[2](v29, 0);
     }
 
-    v7 = v30;
+    collectionCopy = v30;
   }
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)collectionSectionsWithEligibleCollectionSections:(id)a3 collectionSectionMap:(id)a4 featuredCollection:(id)a5
+- (id)collectionSectionsWithEligibleCollectionSections:(id)sections collectionSectionMap:(id)map featuredCollection:(id)collection
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  sectionsCopy = sections;
+  mapCopy = map;
+  v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(sectionsCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v6;
+  v9 = sectionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -3675,7 +3675,7 @@ void __48__TPSTipsManager_categorizedMapWithDocumentMap___block_invoke(uint64_t 
           objc_enumerationMutation(v9);
         }
 
-        v14 = [v7 objectForKeyedSubscript:{*(*(&v18 + 1) + 8 * i), v18}];
+        v14 = [mapCopy objectForKeyedSubscript:{*(*(&v18 + 1) + 8 * i), v18}];
         if (v14)
         {
           [v8 addObject:v14];
@@ -3703,29 +3703,29 @@ void __48__TPSTipsManager_categorizedMapWithDocumentMap___block_invoke(uint64_t 
   return v15;
 }
 
-- (id)featureCollectionFromCollectionMap:(id)a3 collectionOrder:(id)a4 tipMap:(id)a5
+- (id)featureCollectionFromCollectionMap:(id)map collectionOrder:(id)order tipMap:(id)tipMap
 {
   v78 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v66 = self;
+  mapCopy = map;
+  orderCopy = order;
+  tipMapCopy = tipMap;
+  selfCopy = self;
   if (![objc_opt_class() supportsFeaturedCollection])
   {
     v34 = 0;
     goto LABEL_55;
   }
 
-  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
-  v12 = [MEMORY[0x277D71740] featuredCollection];
+  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(orderCopy, "count")}];
+  featuredCollection = [MEMORY[0x277D71740] featuredCollection];
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v13 = v9;
+  v13 = orderCopy;
   v14 = [v13 countByEnumeratingWithState:&v72 objects:v77 count:16];
   v60 = v11;
-  v61 = v12;
+  v61 = featuredCollection;
   if (!v14)
   {
 
@@ -3735,10 +3735,10 @@ void __48__TPSTipsManager_categorizedMapWithDocumentMap___block_invoke(uint64_t 
     v26 = 0;
     v27 = 1;
 LABEL_38:
-    v36 = [MEMORY[0x277D71778] default];
-    if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
+    default = [MEMORY[0x277D71778] default];
+    if (os_log_type_enabled(default, OS_LOG_TYPE_DEBUG))
     {
-      [TPSTipsManager featureCollectionFromCollectionMap:v36 collectionOrder:? tipMap:?];
+      [TPSTipsManager featureCollectionFromCollectionMap:default collectionOrder:? tipMap:?];
     }
 
     if (!v27)
@@ -3764,8 +3764,8 @@ LABEL_46:
   }
 
   v15 = v14;
-  v57 = v9;
-  v58 = v10;
+  v57 = orderCopy;
+  v58 = tipMapCopy;
   v64 = 0;
   v65 = 0;
   v62 = 0;
@@ -3783,38 +3783,38 @@ LABEL_46:
         objc_enumerationMutation(v13);
       }
 
-      v18 = [v8 objectForKeyedSubscript:*(*(&v72 + 1) + 8 * v17)];
+      v18 = [mapCopy objectForKeyedSubscript:*(*(&v72 + 1) + 8 * v17)];
       if ([v18 priority] == 1)
       {
         [v11 addObject:v18];
-        v19 = [v18 identifier];
-        v20 = [v19 isEqualToString:v12];
+        identifier = [v18 identifier];
+        v20 = [identifier isEqualToString:featuredCollection];
 
         if (v20)
         {
           [v18 setTopFeatured:1];
           v34 = v18;
 
-          v9 = v57;
-          v10 = v58;
+          orderCopy = v57;
+          tipMapCopy = v58;
           v35 = v64;
           v26 = v65;
           goto LABEL_54;
         }
 
-        v21 = [(TPSTipsManager *)v66 collectionStatusForCollection:v18];
-        v22 = [v21 featuredDate];
-        if (v22)
+        v21 = [(TPSTipsManager *)selfCopy collectionStatusForCollection:v18];
+        featuredDate = [v21 featuredDate];
+        if (featuredDate)
         {
-          if (!v65 || [v65 compare:v22] == -1)
+          if (!v65 || [v65 compare:featuredDate] == -1)
           {
             v23 = v18;
 
-            v24 = v22;
+            v24 = featuredDate;
             v64 = v23;
             v65 = v24;
             v11 = v60;
-            v12 = v61;
+            featuredCollection = v61;
           }
 
           v15 = v63;
@@ -3832,7 +3832,7 @@ LABEL_18:
             goto LABEL_18;
           }
 
-          if (![v18 isChecklist] || -[TPSTipsManager checklistCollectionHasMinSuggestedTips:tipMap:](v66, "checklistCollectionHasMinSuggestedTips:tipMap:", v18, v58))
+          if (![v18 isChecklist] || -[TPSTipsManager checklistCollectionHasMinSuggestedTips:tipMap:](selfCopy, "checklistCollectionHasMinSuggestedTips:tipMap:", v18, v58))
           {
             v62 = v18;
             v59 = 0;
@@ -3855,7 +3855,7 @@ LABEL_18:
 
   v26 = v65;
   v27 = v64 == 0;
-  v10 = v58;
+  tipMapCopy = v58;
   if (!v64)
   {
     goto LABEL_77;
@@ -3885,8 +3885,8 @@ LABEL_18:
   }
 
   v32 = fabs(v29);
-  v33 = [MEMORY[0x277D71778] default];
-  if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
+  default2 = [MEMORY[0x277D71778] default];
+  if (os_log_type_enabled(default2, OS_LOG_TYPE_DEBUG))
   {
     [TPSTipsManager featureCollectionFromCollectionMap:v64 collectionOrder:? tipMap:?];
   }
@@ -3896,20 +3896,20 @@ LABEL_18:
 LABEL_59:
     if ([v64 isChecklist])
     {
-      v46 = ![(TPSTipsManager *)v66 checklistCollectionHasMinSuggestedTips:v64 tipMap:v58];
+      v46 = ![(TPSTipsManager *)selfCopy checklistCollectionHasMinSuggestedTips:v64 tipMap:v58];
     }
 
     else
     {
-      v47 = [v64 tipIdentifiers];
-      v48 = [MEMORY[0x277D716E8] sharedInstance];
-      v49 = [v48 tipStatusController];
+      tipIdentifiers = [v64 tipIdentifiers];
+      mEMORY[0x277D716E8] = [MEMORY[0x277D716E8] sharedInstance];
+      tipStatusController = [mEMORY[0x277D716E8] tipStatusController];
 
       v70 = 0u;
       v71 = 0u;
       v68 = 0u;
       v69 = 0u;
-      v50 = v47;
+      v50 = tipIdentifiers;
       v51 = [v50 countByEnumeratingWithState:&v68 objects:v76 count:16];
       if (v51)
       {
@@ -3924,7 +3924,7 @@ LABEL_59:
               objc_enumerationMutation(v50);
             }
 
-            if (![v49 isContentViewedForIdentifier:*(*(&v68 + 1) + 8 * i)])
+            if (![tipStatusController isContentViewedForIdentifier:*(*(&v68 + 1) + 8 * i)])
             {
               v46 = 0;
               goto LABEL_71;
@@ -3953,8 +3953,8 @@ LABEL_71:
       v11 = v60;
     }
 
-    v55 = [MEMORY[0x277D71778] default];
-    if (os_log_type_enabled(v55, OS_LOG_TYPE_DEBUG))
+    default3 = [MEMORY[0x277D71778] default];
+    if (os_log_type_enabled(default3, OS_LOG_TYPE_DEBUG))
     {
       [TPSTipsManager featureCollectionFromCollectionMap:v64 collectionOrder:? tipMap:?];
     }
@@ -3966,15 +3966,15 @@ LABEL_71:
 
 LABEL_79:
     v39 = v64;
-    v56 = [MEMORY[0x277D71778] default];
-    if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
+    default4 = [MEMORY[0x277D71778] default];
+    if (os_log_type_enabled(default4, OS_LOG_TYPE_DEBUG))
     {
       [TPSTipsManager featureCollectionFromCollectionMap:v39 collectionOrder:? tipMap:?];
     }
 
     v35 = v39;
-    v9 = v57;
-    v12 = v61;
+    orderCopy = v57;
+    featuredCollection = v61;
     goto LABEL_51;
   }
 
@@ -3984,7 +3984,7 @@ LABEL_79:
   }
 
 LABEL_77:
-  v9 = v57;
+  orderCopy = v57;
   v35 = v64;
   if (v59)
   {
@@ -4003,9 +4003,9 @@ LABEL_44:
   v62 = 0;
   v67 = v39;
 LABEL_48:
-  v12 = v61;
-  v40 = [MEMORY[0x277D71778] default];
-  if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
+  featuredCollection = v61;
+  default5 = [MEMORY[0x277D71778] default];
+  if (os_log_type_enabled(default5, OS_LOG_TYPE_DEBUG))
   {
     [TPSTipsManager featureCollectionFromCollectionMap:v39 collectionOrder:? tipMap:?];
   }
@@ -4015,12 +4015,12 @@ LABEL_48:
 LABEL_51:
     if (([v39 isEqual:v35] & 1) == 0)
     {
-      v41 = [(TPSTipsManager *)v66 collectionStatusForCollection:v39];
-      v42 = [MEMORY[0x277CBEAA8] date];
-      [v41 setFeaturedDate:v42];
+      v41 = [(TPSTipsManager *)selfCopy collectionStatusForCollection:v39];
+      date = [MEMORY[0x277CBEAA8] date];
+      [v41 setFeaturedDate:date];
 
-      v43 = [MEMORY[0x277D716E8] sharedInstance];
-      [v43 syncCollectionStatusMap];
+      mEMORY[0x277D716E8]2 = [MEMORY[0x277D716E8] sharedInstance];
+      [mEMORY[0x277D716E8]2 syncCollectionStatusMap];
 
       v11 = v60;
     }
@@ -4036,10 +4036,10 @@ LABEL_55:
   return v34;
 }
 
-- (BOOL)checklistCollectionHasMinSuggestedTips:(id)a3 tipMap:(id)a4
+- (BOOL)checklistCollectionHasMinSuggestedTips:(id)tips tipMap:(id)map
 {
-  v5 = a3;
-  v6 = a4;
+  tipsCopy = tips;
+  mapCopy = map;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -4048,22 +4048,22 @@ LABEL_55:
   v14[1] = v14;
   v14[2] = 0x2020000000;
   v14[3] = 0;
-  v7 = [v5 tipIdentifiers];
+  tipIdentifiers = [tipsCopy tipIdentifiers];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __64__TPSTipsManager_checklistCollectionHasMinSuggestedTips_tipMap___block_invoke;
   v10[3] = &unk_2789B0398;
-  v8 = v6;
+  v8 = mapCopy;
   v11 = v8;
   v12 = v14;
   v13 = &v15;
-  [v7 enumerateObjectsUsingBlock:v10];
+  [tipIdentifiers enumerateObjectsUsingBlock:v10];
 
-  LOBYTE(v7) = *(v16 + 24);
+  LOBYTE(tipIdentifiers) = *(v16 + 24);
   _Block_object_dispose(v14, 8);
   _Block_object_dispose(&v15, 8);
 
-  return v7;
+  return tipIdentifiers;
 }
 
 uint64_t __64__TPSTipsManager_checklistCollectionHasMinSuggestedTips_tipMap___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, _BYTE *a4)
@@ -4080,41 +4080,41 @@ uint64_t __64__TPSTipsManager_checklistCollectionHasMinSuggestedTips_tipMap___bl
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)collectionStatusForCollection:(id)a3
+- (id)collectionStatusForCollection:(id)collection
 {
   v3 = MEMORY[0x277D716E8];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v4 identifier];
+  collectionCopy = collection;
+  sharedInstance = [v3 sharedInstance];
+  identifier = [collectionCopy identifier];
 
-  v7 = [v5 collectionStatusForCollectionIdentifier:v6];
+  v7 = [sharedInstance collectionStatusForCollectionIdentifier:identifier];
 
   return v7;
 }
 
-- (void)updateSupplementalIdentifiersForIdentifier:(id)a3 fromDictionary:(id)a4
+- (void)updateSupplementalIdentifiersForIdentifier:(id)identifier fromDictionary:(id)dictionary
 {
   v6 = *MEMORY[0x277D71950];
-  v7 = a4;
-  v8 = a3;
-  v15 = [v7 TPSSafeStringForKey:v6];
-  v9 = [(TPSTipsManager *)self tipStatusController];
-  [v9 updateVariantIdentifierForIdentifier:v8 value:v15];
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
+  v15 = [dictionaryCopy TPSSafeStringForKey:v6];
+  tipStatusController = [(TPSTipsManager *)self tipStatusController];
+  [tipStatusController updateVariantIdentifierForIdentifier:identifierCopy value:v15];
 
-  v10 = [v7 TPSSafeDictionaryForKey:*MEMORY[0x277D71948]];
+  v10 = [dictionaryCopy TPSSafeDictionaryForKey:*MEMORY[0x277D71948]];
 
   v11 = [v10 TPSSafeStringForKey:*MEMORY[0x277D71938]];
-  v12 = [(TPSTipsManager *)self tipStatusController];
-  [v12 updateCorrelationIdentifierForIdentifier:v8 value:v11];
+  tipStatusController2 = [(TPSTipsManager *)self tipStatusController];
+  [tipStatusController2 updateCorrelationIdentifierForIdentifier:identifierCopy value:v11];
 
   v13 = [v10 TPSSafeStringForKey:*MEMORY[0x277D71930]];
-  v14 = [(TPSTipsManager *)self tipStatusController];
-  [v14 updateClonedFromIdentifierForIdentifier:v8 value:v13];
+  tipStatusController3 = [(TPSTipsManager *)self tipStatusController];
+  [tipStatusController3 updateClonedFromIdentifierForIdentifier:identifierCopy value:v13];
 }
 
-- (void)reindexAllSearchableItemsWithCompletionHandler:(id)a3
+- (void)reindexAllSearchableItemsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v36[0] = 0;
   v36[1] = v36;
@@ -4189,7 +4189,7 @@ uint64_t __64__TPSTipsManager_checklistCollectionHasMinSuggestedTips_tipMap___bl
   v18[1] = 3221225472;
   v18[2] = __65__TPSTipsManager_reindexAllSearchableItemsWithCompletionHandler___block_invoke_274;
   v18[3] = &unk_2789B0488;
-  v14 = v4;
+  v14 = handlerCopy;
   v22 = v14;
   v23 = v32;
   v15 = v8;
@@ -4479,27 +4479,27 @@ LABEL_11:
   *(v18 + 40) = 0;
 }
 
-- (void)reindexSearchableItemsWithIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)reindexSearchableItemsWithIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
     v5 = MEMORY[0x277CCA9B8];
-    v6 = a4;
+    handlerCopy = handler;
     v7 = [v5 errorWithDomain:@"com.apple.tips.TPSTipsManager" code:7 userInfo:0];
-    (*(a4 + 2))(v6, v7);
+    (*(handler + 2))(handlerCopy, v7);
   }
 }
 
-- (void)deleteAllSearchableItemsWithCompletionHandler:(id)a3
+- (void)deleteAllSearchableItemsWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = +[TPSSearchItemIndexer default];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __64__TPSTipsManager_deleteAllSearchableItemsWithCompletionHandler___block_invoke;
   v6[3] = &unk_2789B0410;
-  v7 = v3;
-  v5 = v3;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [v4 deleteAllItemsWithQualityOfService:9 completionHandler:v6];
 }
 
@@ -4516,28 +4516,28 @@ uint64_t __64__TPSTipsManager_deleteAllSearchableItemsWithCompletionHandler___bl
 
 - (BOOL)isHardwareWelcome
 {
-  v2 = [MEMORY[0x277D716E8] sharedInstance];
-  v3 = [v2 userType] == 0;
+  mEMORY[0x277D716E8] = [MEMORY[0x277D716E8] sharedInstance];
+  v3 = [mEMORY[0x277D716E8] userType] == 0;
 
   return v3;
 }
 
-- (id)welcomeCollectionFromContentPackage:(id)a3
+- (id)welcomeCollectionFromContentPackage:(id)package
 {
-  v3 = a3;
-  if (v3)
+  packageCopy = package;
+  if (packageCopy)
   {
-    v4 = [MEMORY[0x277D716E8] sharedInstance];
-    v5 = [v4 collectionIdentifierForCurrentUserType];
+    mEMORY[0x277D716E8] = [MEMORY[0x277D716E8] sharedInstance];
+    collectionIdentifierForCurrentUserType = [mEMORY[0x277D716E8] collectionIdentifierForCurrentUserType];
 
-    v6 = [v3 collectionMap];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    collectionMap = [packageCopy collectionMap];
+    v7 = [collectionMap objectForKeyedSubscript:collectionIdentifierForCurrentUserType];
 
     if (!v7)
     {
-      v8 = [v3 collectionMap];
-      v9 = [MEMORY[0x277D716E8] softwareWelcomeCollectionIdentifier];
-      v7 = [v8 objectForKeyedSubscript:v9];
+      collectionMap2 = [packageCopy collectionMap];
+      softwareWelcomeCollectionIdentifier = [MEMORY[0x277D716E8] softwareWelcomeCollectionIdentifier];
+      v7 = [collectionMap2 objectForKeyedSubscript:softwareWelcomeCollectionIdentifier];
     }
   }
 
@@ -4549,56 +4549,56 @@ uint64_t __64__TPSTipsManager_deleteAllSearchableItemsWithCompletionHandler___bl
   return v7;
 }
 
-- (id)welcomeDocumentFromContentPackage:(id)a3
+- (id)welcomeDocumentFromContentPackage:(id)package
 {
-  v4 = a3;
-  v5 = [v4 language];
+  packageCopy = package;
+  language = [packageCopy language];
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__1;
   v28 = __Block_byref_object_dispose__1;
   v29 = 0;
-  v6 = [(TPSTipsManager *)self syncQueue];
+  syncQueue = [(TPSTipsManager *)self syncQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__TPSTipsManager_welcomeDocumentFromContentPackage___block_invoke;
   block[3] = &unk_2789B04B0;
   block[4] = &v24;
-  dispatch_sync(v6, block);
+  dispatch_sync(syncQueue, block);
 
-  if (v4 || (v7 = v25[5]) == 0)
+  if (packageCopy || (v7 = v25[5]) == 0)
   {
-    v9 = [(TPSTipsManager *)self welcomeCollectionFromContentPackage:v4];
+    v9 = [(TPSTipsManager *)self welcomeCollectionFromContentPackage:packageCopy];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 notification];
-      v21 = [v11 title];
-      v12 = [v11 text];
+      notification = [v9 notification];
+      title = [notification title];
+      text = [notification text];
       v13 = objc_alloc_init(MEMORY[0x277D71788]);
-      [v13 setTitle:v21];
-      [v13 setText:v12];
+      [v13 setTitle:title];
+      [v13 setText:text];
       v14 = objc_alloc_init(TPSWelcomeDocument);
       v15 = v25[5];
       v25[5] = v14;
 
-      v16 = [v10 identifier];
-      [v25[5] setIdentifier:v16];
+      identifier = [v10 identifier];
+      [v25[5] setIdentifier:identifier];
 
       [v25[5] setNotification:v13];
-      [v25[5] setLanguage:v5];
-      v17 = [MEMORY[0x277D716E8] sharedInstance];
-      v18 = [v17 majorVersion];
-      [v25[5] setMajorVersion:v18];
+      [v25[5] setLanguage:language];
+      mEMORY[0x277D716E8] = [MEMORY[0x277D716E8] sharedInstance];
+      majorVersion = [mEMORY[0x277D716E8] majorVersion];
+      [v25[5] setMajorVersion:majorVersion];
 
-      v19 = [(TPSTipsManager *)self syncQueue];
+      syncQueue2 = [(TPSTipsManager *)self syncQueue];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __52__TPSTipsManager_welcomeDocumentFromContentPackage___block_invoke_2;
       v22[3] = &unk_2789B04B0;
       v22[4] = &v24;
-      dispatch_async(v19, v22);
+      dispatch_async(syncQueue2, v22);
 
       v8 = v25[5];
     }
@@ -4631,15 +4631,15 @@ uint64_t __52__TPSTipsManager_welcomeDocumentFromContentPackage___block_invoke(u
 
 - (BOOL)shouldPerformWidgetUpdate
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"TPSWidgetUpdateDate"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"TPSWidgetUpdateDate"];
   if (v3)
   {
-    v4 = [MEMORY[0x277D71740] requestInterval];
-    v5 = v4;
-    if (v4)
+    requestInterval = [MEMORY[0x277D71740] requestInterval];
+    v5 = requestInterval;
+    if (requestInterval)
     {
-      [v4 doubleValue];
+      [requestInterval doubleValue];
       v7 = v6;
     }
 
@@ -4648,8 +4648,8 @@ uint64_t __52__TPSTipsManager_welcomeDocumentFromContentPackage___block_invoke(u
       v7 = 86400.0;
     }
 
-    v9 = [MEMORY[0x277CBEAA8] date];
-    v8 = [v9 isTimeToDate:v3 withinTimeInterval:v7];
+    date = [MEMORY[0x277CBEAA8] date];
+    v8 = [date isTimeToDate:v3 withinTimeInterval:v7];
   }
 
   else
@@ -4660,17 +4660,17 @@ uint64_t __52__TPSTipsManager_welcomeDocumentFromContentPackage___block_invoke(u
   return v8;
 }
 
-- (BOOL)widgetController:(id)a3 validForDocument:(id)a4 documentDeliveryInfoMap:(id)a5 deliveryInfoMap:(id)a6
+- (BOOL)widgetController:(id)controller validForDocument:(id)document documentDeliveryInfoMap:(id)map deliveryInfoMap:(id)infoMap
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  documentCopy = document;
+  mapCopy = map;
+  infoMapCopy = infoMap;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v9 identifier];
-    v13 = [(TPSTipsManager *)self tipStatusController];
-    v14 = [v13 isTipAppDisplayEligibleForIdentifier:v12];
+    identifier = [documentCopy identifier];
+    tipStatusController = [(TPSTipsManager *)self tipStatusController];
+    v14 = [tipStatusController isTipAppDisplayEligibleForIdentifier:identifier];
 
     if (v14)
     {
@@ -4679,17 +4679,17 @@ uint64_t __52__TPSTipsManager_welcomeDocumentFromContentPackage___block_invoke(u
 
     else
     {
-      v16 = [(TPSTipsManager *)self notificationController];
-      v15 = [v16 preconditionValidForIdentifier:v12 documentDeliveryInfoMap:v10 deliveryInfoMap:v11 overrideOptOutContentOnly:0 ignoreSuppressContent:1];
+      notificationController = [(TPSTipsManager *)self notificationController];
+      v15 = [notificationController preconditionValidForIdentifier:identifier documentDeliveryInfoMap:mapCopy deliveryInfoMap:infoMapCopy overrideOptOutContentOnly:0 ignoreSuppressContent:1];
 
-      v17 = [(TPSTipsManager *)self notificationController];
-      v18 = [v17 canUpdateHintEligibilityForIdentifier:v12];
+      notificationController2 = [(TPSTipsManager *)self notificationController];
+      v18 = [notificationController2 canUpdateHintEligibilityForIdentifier:identifier];
 
       if (v18)
       {
-        v19 = v9;
-        v20 = [(TPSTipsManager *)self notificationController];
-        [v20 updateHintEligibleForTip:v19 isValid:v15];
+        v19 = documentCopy;
+        notificationController3 = [(TPSTipsManager *)self notificationController];
+        [notificationController3 updateHintEligibleForTip:v19 isValid:v15];
       }
     }
   }
@@ -4711,12 +4711,12 @@ uint64_t __52__TPSTipsManager_welcomeDocumentFromContentPackage___block_invoke(u
   return v3;
 }
 
-- (void)setLastFetchedLanguage:(id)a3
+- (void)setLastFetchedLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   os_unfair_lock_lock(&_sharedLock);
   lastFetchedLanguage = self->_lastFetchedLanguage;
-  self->_lastFetchedLanguage = v4;
+  self->_lastFetchedLanguage = languageCopy;
 
   os_unfair_lock_unlock(&_sharedLock);
 }
@@ -4730,35 +4730,35 @@ uint64_t __52__TPSTipsManager_welcomeDocumentFromContentPackage___block_invoke(u
   return v3;
 }
 
-- (void)setCachedUserGuideMap:(id)a3
+- (void)setCachedUserGuideMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   os_unfair_lock_lock(&_sharedLock);
   cachedUserGuideMap = self->_cachedUserGuideMap;
-  self->_cachedUserGuideMap = v4;
+  self->_cachedUserGuideMap = mapCopy;
 
   os_unfair_lock_unlock(&_sharedLock);
 }
 
-- (id)processUserGuidesFromContentPackage:(id)a3
+- (id)processUserGuidesFromContentPackage:(id)package
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  packageCopy = package;
+  v4 = packageCopy;
+  if (packageCopy)
   {
-    v5 = [v3 userGuideMap];
-    v6 = [v5 mutableCopy];
+    userGuideMap = [packageCopy userGuideMap];
+    v6 = [userGuideMap mutableCopy];
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
     v24 = v4;
-    v7 = [v4 tipMap];
-    v8 = [v7 allValues];
+    tipMap = [v4 tipMap];
+    allValues = [tipMap allValues];
 
-    v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    v9 = [allValues countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v9)
     {
       v10 = v9;
@@ -4769,29 +4769,29 @@ uint64_t __52__TPSTipsManager_welcomeDocumentFromContentPackage___block_invoke(u
         {
           if (*v26 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allValues);
           }
 
-          v13 = [*(*(&v25 + 1) + 8 * i) linkedDocument];
-          v14 = [v13 product];
-          if ([v14 length])
+          linkedDocument = [*(*(&v25 + 1) + 8 * i) linkedDocument];
+          product = [linkedDocument product];
+          if ([product length])
           {
-            v15 = [v6 objectForKeyedSubscript:v14];
+            v15 = [v6 objectForKeyedSubscript:product];
 
             if (!v15)
             {
               v16 = objc_alloc(MEMORY[0x277D717E8]);
-              v17 = [v13 productVersion];
-              v18 = [v13 platform];
-              v19 = [v16 initWithIdentifier:v14 version:v17 text:0 symbol:&stru_284826B40 platform:v18 platformIndependent:0 gradientColorStrings:MEMORY[0x277CBEBF8]];
+              productVersion = [linkedDocument productVersion];
+              platform = [linkedDocument platform];
+              v19 = [v16 initWithIdentifier:product version:productVersion text:0 symbol:&stru_284826B40 platform:platform platformIndependent:0 gradientColorStrings:MEMORY[0x277CBEBF8]];
 
-              v20 = [v19 identifier];
-              [v6 setObject:v19 forKeyedSubscript:v20];
+              identifier = [v19 identifier];
+              [v6 setObject:v19 forKeyedSubscript:identifier];
             }
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v10 = [allValues countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v10);
@@ -4827,23 +4827,23 @@ uint64_t __52__TPSTipsManager_welcomeDocumentFromContentPackage___block_invoke(u
   return WeakRetained;
 }
 
-- (id)hmtFeaturedCollectionsWithCollectionMap:(id)a3 collectionDeliveryInfoMap:(id)a4 deliveryInfoMap:(id)a5
+- (id)hmtFeaturedCollectionsWithCollectionMap:(id)map collectionDeliveryInfoMap:(id)infoMap deliveryInfoMap:(id)deliveryInfoMap
 {
-  v6 = a3;
-  if (a3)
+  mapCopy = map;
+  if (map)
   {
     sub_232DB3688(0, &qword_2814E7C18, 0x277D716D8);
-    v6 = sub_232E01470();
+    mapCopy = sub_232E01470();
   }
 
   v8 = sub_232E01470();
-  if (a5)
+  if (deliveryInfoMap)
   {
-    a5 = sub_232E01470();
+    deliveryInfoMap = sub_232E01470();
   }
 
-  v9 = self;
-  v10 = _sSo14TPSTipsManagerC10TipsDaemonE22hmtFeaturedCollections4with25collectionDeliveryInfoMap08deliverykL0SaySo13TPSCollectionCGSgSDySSAIGSg_SDyS2SGSDySSyXlGSgtF_0(v6, v8, a5);
+  selfCopy = self;
+  v10 = _sSo14TPSTipsManagerC10TipsDaemonE22hmtFeaturedCollections4with25collectionDeliveryInfoMap08deliverykL0SaySo13TPSCollectionCGSgSDySSAIGSg_SDyS2SGSDySSyXlGSgtF_0(mapCopy, v8, deliveryInfoMap);
 
   if (v10)
   {
@@ -4859,23 +4859,23 @@ uint64_t __52__TPSTipsManager_welcomeDocumentFromContentPackage___block_invoke(u
   return v11;
 }
 
-- (id)updatedHMTCollectionSectionMapFromMap:(id)a3 featuredCollections:(id)a4
+- (id)updatedHMTCollectionSectionMapFromMap:(id)map featuredCollections:(id)collections
 {
-  v5 = a3;
-  if (a3)
+  mapCopy = map;
+  if (map)
   {
     sub_232DB3688(0, &qword_2814E7BF0, 0x277D716E0);
-    v5 = sub_232E01470();
+    mapCopy = sub_232E01470();
   }
 
-  if (a4)
+  if (collections)
   {
     sub_232DB3688(0, &qword_2814E7C18, 0x277D716D8);
-    a4 = sub_232E015D0();
+    collections = sub_232E015D0();
   }
 
-  v7 = self;
-  _sSo14TPSTipsManagerC10TipsDaemonE30updatedHMTCollectionSectionMap4from19featuredCollectionsSDySSSo013TPSCollectionG0CGSgAJ_SaySo0L0CGSgtF_0(v5, a4);
+  selfCopy = self;
+  _sSo14TPSTipsManagerC10TipsDaemonE30updatedHMTCollectionSectionMap4from19featuredCollectionsSDySSSo013TPSCollectionG0CGSgAJ_SaySo0L0CGSgtF_0(mapCopy, collections);
   v9 = v8;
 
   if (v9)

@@ -1,29 +1,29 @@
 @interface UIRowMoveUpdateItem
 - (id)_moveDestinationDescription;
 - (id)collectionViewUpdateItem;
-- (id)initWithOldIndexPath:(void *)a3 newIndexPath:;
+- (id)initWithOldIndexPath:(void *)path newIndexPath:;
 - (id)newIndexPath;
 @end
 
 @implementation UIRowMoveUpdateItem
 
-- (id)initWithOldIndexPath:(void *)a3 newIndexPath:
+- (id)initWithOldIndexPath:(void *)path newIndexPath:
 {
-  v6 = a3;
-  if (a1)
+  pathCopy = path;
+  if (self)
   {
     v7 = a2;
     _UIAssertValidUpdateIndexPath(v7);
-    _UIAssertValidUpdateIndexPath(v6);
-    a1 = [(UIUpdateItem *)a1 initWithAction:v7 forIndexPath:5 animation:?];
+    _UIAssertValidUpdateIndexPath(pathCopy);
+    self = [(UIUpdateItem *)self initWithAction:v7 forIndexPath:5 animation:?];
 
-    if (a1)
+    if (self)
     {
-      objc_storeStrong(a1 + 5, a3);
+      objc_storeStrong(self + 5, path);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (id)collectionViewUpdateItem
@@ -53,21 +53,21 @@
   }
 
   v7 = indexPath;
-  v8 = [(UIRowMoveUpdateItem *)&self->super.super.isa newIndexPath];
-  v9 = [(UICollectionViewUpdateItem *)v5 initWithInitialIndexPath:v7 finalIndexPath:v8 updateAction:v4];
+  newIndexPath = [(UIRowMoveUpdateItem *)&self->super.super.isa newIndexPath];
+  v9 = [(UICollectionViewUpdateItem *)v5 initWithInitialIndexPath:v7 finalIndexPath:newIndexPath updateAction:v4];
 
   return v9;
 }
 
 - (id)newIndexPath
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[5];
+    self = self[5];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_moveDestinationDescription
@@ -75,15 +75,15 @@
   if (self && (*&self->super._updateItemFlags & 1) != 0)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v3 = [MEMORY[0x1E696AD98] numberWithInteger:{-[NSIndexPath section](self->_newIndexPath, "section")}];
-    [v4 stringWithFormat:@"->(%@)", v3];
+    _ui_shortDescription = [MEMORY[0x1E696AD98] numberWithInteger:{-[NSIndexPath section](self->_newIndexPath, "section")}];
+    [v4 stringWithFormat:@"->(%@)", _ui_shortDescription];
   }
 
   else
   {
     v2 = MEMORY[0x1E696AEC0];
-    v3 = [(NSIndexPath *)self->_newIndexPath _ui_shortDescription];
-    [v2 stringWithFormat:@"->%@", v3];
+    _ui_shortDescription = [(NSIndexPath *)self->_newIndexPath _ui_shortDescription];
+    [v2 stringWithFormat:@"->%@", _ui_shortDescription];
   }
   v5 = ;
 

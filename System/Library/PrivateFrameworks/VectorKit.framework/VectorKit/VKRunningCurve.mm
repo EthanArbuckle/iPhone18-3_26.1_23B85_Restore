@@ -1,9 +1,9 @@
 @interface VKRunningCurve
-- ($D8B2136A31EEBB1C63127827D1855744)stateAtTime:(SEL)a3;
-- (BOOL)hasStateAtTime:(double)a3;
+- ($D8B2136A31EEBB1C63127827D1855744)stateAtTime:(SEL)time;
+- (BOOL)hasStateAtTime:(double)time;
 - (VKRunningCurve)init;
 - (id).cxx_construct;
-- (void)appendPosition:()Matrix<double coordinate:()3 atTime:(1>)a3;
+- (void)appendPosition:()Matrix<double coordinate:()3 atTime:(1>)time;
 - (void)reset;
 @end
 
@@ -46,7 +46,7 @@
   self->_mbValid = 0;
 }
 
-- ($D8B2136A31EEBB1C63127827D1855744)stateAtTime:(SEL)a3
+- ($D8B2136A31EEBB1C63127827D1855744)stateAtTime:(SEL)time
 {
   p_engaged = &self[2].var0.__engaged_;
   *&self[2].var3._e[2] = 0u;
@@ -346,16 +346,16 @@ LABEL_63:
   return [(VKRunningCurve *)v51 hasStateAtTime:v52, v53];
 }
 
-- (BOOL)hasStateAtTime:(double)a3
+- (BOOL)hasStateAtTime:(double)time
 {
   t0 = self->_t0;
   result = t0 >= 0.0 && (t1 = self->_t1, t1 >= 0.0) && (self->_tu - t0) / (t1 - t0) <= 1.0;
   return result;
 }
 
-- (void)appendPosition:()Matrix<double coordinate:()3 atTime:(1>)a3
+- (void)appendPosition:()Matrix<double coordinate:()3 atTime:(1>)time
 {
-  v5 = a3._e[2];
+  v5 = time._e[2];
   if (self->_t0 >= 0.0)
   {
     if (self->_t1 >= 0.0)
@@ -397,8 +397,8 @@ LABEL_63:
       }
 
       self->_t1 = a5;
-      self->_p1.position.var0.__val_._e[0] = a3._e[0];
-      self->_p1.position.var0.__val_._e[1] = a3._e[1];
+      self->_p1.position.var0.__val_._e[0] = time._e[0];
+      self->_p1.position.var0.__val_._e[1] = time._e[1];
       self->_p1.position.var0.__val_._e[2] = v5;
       v49 = self->_p1.position.__engaged_;
       if (!v49)
@@ -608,7 +608,7 @@ LABEL_63:
     else
     {
       self->_t1 = a5;
-      self->_p1.position.var0.__val_ = a3;
+      self->_p1.position.var0.__val_ = time;
       v8 = self->_p1.position.__engaged_;
       if (!v8)
       {
@@ -808,7 +808,7 @@ LABEL_100:
 
   self->_t0 = a5;
   v7 = self->_p0.position.__engaged_;
-  self->_p0.position.var0.__val_ = a3;
+  self->_p0.position.var0.__val_ = time;
   if (!v7)
   {
     self->_p0.position.__engaged_ = 1;

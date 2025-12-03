@@ -1,18 +1,18 @@
 @interface MTL4GPUDebugArchive
-- (id)newBinaryFunctionWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 error:(id *)a5;
-- (id)newComputePipelineStateWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newComputePipelineStateWithName:(id)a3 dynamicLinkingDescriptor:(id)a4 error:(id *)a5;
-- (id)newComputePipelineStateWithName:(id)a3 error:(id *)a4;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 error:(id *)a5;
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 error:(id *)a4;
-- (id)newRenderPipelineStateWithName:(id)a3 dynamicLinkingDescriptor:(id)a4 error:(id *)a5;
-- (id)newRenderPipelineStateWithName:(id)a3 error:(id *)a4;
+- (id)newBinaryFunctionWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor error:(id *)error;
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newComputePipelineStateWithName:(id)name dynamicLinkingDescriptor:(id)descriptor error:(id *)error;
+- (id)newComputePipelineStateWithName:(id)name error:(id *)error;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor error:(id *)error;
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor error:(id *)error;
+- (id)newRenderPipelineStateWithName:(id)name dynamicLinkingDescriptor:(id)descriptor error:(id *)error;
+- (id)newRenderPipelineStateWithName:(id)name error:(id *)error;
 @end
 
 @implementation MTL4GPUDebugArchive
 
-- (id)newComputePipelineStateWithName:(id)a3 error:(id *)a4
+- (id)newComputePipelineStateWithName:(id)name error:(id *)error
 {
   v7 = objc_autoreleasePoolPush();
   v11.receiver = self;
@@ -33,12 +33,12 @@
   return v9;
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 error:(id *)a4
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor error:(id *)error
 {
   v7 = objc_autoreleasePoolPush();
   v12.receiver = self;
   v12.super_class = MTL4GPUDebugArchive;
-  v8 = [(MTLDevice *)[(MTLToolsObject *)&v12 device] newUnwrappedMTL4PipelineDescriptor:a3];
+  v8 = [(MTLDevice *)[(MTLToolsObject *)&v12 device] newUnwrappedMTL4PipelineDescriptor:descriptor];
   v9 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v9)
   {
@@ -54,7 +54,7 @@
   return v10;
 }
 
-- (id)newRenderPipelineStateWithName:(id)a3 error:(id *)a4
+- (id)newRenderPipelineStateWithName:(id)name error:(id *)error
 {
   v7 = objc_autoreleasePoolPush();
   v11.receiver = self;
@@ -75,12 +75,12 @@
   return v9;
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 error:(id *)a4
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor error:(id *)error
 {
   v7 = objc_autoreleasePoolPush();
   v12.receiver = self;
   v12.super_class = MTL4GPUDebugArchive;
-  v8 = [(MTLDevice *)[(MTLToolsObject *)&v12 device] newUnwrappedMTL4PipelineDescriptor:a3];
+  v8 = [(MTLDevice *)[(MTLToolsObject *)&v12 device] newUnwrappedMTL4PipelineDescriptor:descriptor];
   v9 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v9)
   {
@@ -96,16 +96,16 @@
   return v10;
 }
 
-- (id)newComputePipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 error:(id *)a5
+- (id)newComputePipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor error:(id *)error
 {
   v9 = objc_autoreleasePoolPush();
   v15.receiver = self;
   v15.super_class = MTL4GPUDebugArchive;
-  v10 = [(MTLToolsObject *)&v15 device];
-  v11 = [(MTLDevice *)v10 newUnwrappedMTL4PipelineDescriptor:a3];
-  if (a4)
+  device = [(MTLToolsObject *)&v15 device];
+  v11 = [(MTLDevice *)device newUnwrappedMTL4PipelineDescriptor:descriptor];
+  if (linkingDescriptor)
   {
-    a4 = [(MTLDevice *)v10 newUnwrappedMTL4PipelineStageDynamicLinkingDescriptor:a4];
+    linkingDescriptor = [(MTLDevice *)device newUnwrappedMTL4PipelineStageDynamicLinkingDescriptor:linkingDescriptor];
   }
 
   v12 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -123,15 +123,15 @@
   return v13;
 }
 
-- (id)newComputePipelineStateWithName:(id)a3 dynamicLinkingDescriptor:(id)a4 error:(id *)a5
+- (id)newComputePipelineStateWithName:(id)name dynamicLinkingDescriptor:(id)descriptor error:(id *)error
 {
   v9 = objc_autoreleasePoolPush();
   v14.receiver = self;
   v14.super_class = MTL4GPUDebugArchive;
-  v10 = [(MTLToolsObject *)&v14 device];
-  if (a4)
+  device = [(MTLToolsObject *)&v14 device];
+  if (descriptor)
   {
-    a4 = [(MTLDevice *)v10 newUnwrappedMTL4PipelineStageDynamicLinkingDescriptor:a4];
+    descriptor = [(MTLDevice *)device newUnwrappedMTL4PipelineStageDynamicLinkingDescriptor:descriptor];
   }
 
   v11 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -149,16 +149,16 @@
   return v12;
 }
 
-- (id)newRenderPipelineStateWithDescriptor:(id)a3 dynamicLinkingDescriptor:(id)a4 error:(id *)a5
+- (id)newRenderPipelineStateWithDescriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor error:(id *)error
 {
   v9 = objc_autoreleasePoolPush();
   v15.receiver = self;
   v15.super_class = MTL4GPUDebugArchive;
-  v10 = [(MTLToolsObject *)&v15 device];
-  v11 = [(MTLDevice *)v10 newUnwrappedMTL4PipelineDescriptor:a3];
-  if (a4)
+  device = [(MTLToolsObject *)&v15 device];
+  v11 = [(MTLDevice *)device newUnwrappedMTL4PipelineDescriptor:descriptor];
+  if (linkingDescriptor)
   {
-    a4 = [(MTLDevice *)v10 newUnwrappedMTL4RenderPipelineDynamicLinkingDescriptor:a4];
+    linkingDescriptor = [(MTLDevice *)device newUnwrappedMTL4RenderPipelineDynamicLinkingDescriptor:linkingDescriptor];
   }
 
   v12 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -172,7 +172,7 @@
     v13 = 0;
   }
 
-  if (a4)
+  if (linkingDescriptor)
   {
   }
 
@@ -180,15 +180,15 @@
   return v13;
 }
 
-- (id)newRenderPipelineStateWithName:(id)a3 dynamicLinkingDescriptor:(id)a4 error:(id *)a5
+- (id)newRenderPipelineStateWithName:(id)name dynamicLinkingDescriptor:(id)descriptor error:(id *)error
 {
   v9 = objc_autoreleasePoolPush();
   v14.receiver = self;
   v14.super_class = MTL4GPUDebugArchive;
-  v10 = [(MTLToolsObject *)&v14 device];
-  if (a4)
+  device = [(MTLToolsObject *)&v14 device];
+  if (descriptor)
   {
-    a4 = [(MTLDevice *)v10 newUnwrappedMTL4RenderPipelineDynamicLinkingDescriptor:a4];
+    descriptor = [(MTLDevice *)device newUnwrappedMTL4RenderPipelineDynamicLinkingDescriptor:descriptor];
   }
 
   v11 = [-[MTLToolsObject baseObject](self "baseObject")];
@@ -206,12 +206,12 @@
   return v12;
 }
 
-- (id)newBinaryFunctionWithDescriptor:(id)a3 error:(id *)a4
+- (id)newBinaryFunctionWithDescriptor:(id)descriptor error:(id *)error
 {
   v7 = objc_autoreleasePoolPush();
   v12.receiver = self;
   v12.super_class = MTL4GPUDebugArchive;
-  v8 = [(MTLDevice *)[(MTLToolsObject *)&v12 device] newUnwrappedMTL4BinaryFunctionDescriptor:a3];
+  v8 = [(MTLDevice *)[(MTLToolsObject *)&v12 device] newUnwrappedMTL4BinaryFunctionDescriptor:descriptor];
   v9 = [-[MTLToolsObject baseObject](self "baseObject")];
   if (v9)
   {

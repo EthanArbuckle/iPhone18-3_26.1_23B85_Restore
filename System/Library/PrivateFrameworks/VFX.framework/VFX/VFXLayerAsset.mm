@@ -1,11 +1,11 @@
 @interface VFXLayerAsset
 - (CALayer)rootLayer;
-- (VFXLayerAsset)initWithCoder:(id)a3;
+- (VFXLayerAsset)initWithCoder:(id)coder;
 - (id)stateController;
-- (void)copyTo:(id)a3 withContext:(id)a4;
+- (void)copyTo:(id)to withContext:(id)context;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setActiveStateName:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setActiveStateName:(id)name;
 - (void)updateActiveState;
 @end
 
@@ -85,32 +85,32 @@
   return self->_rootLayer;
 }
 
-- (void)copyTo:(id)a3 withContext:(id)a4
+- (void)copyTo:(id)to withContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = VFXLayerAsset;
-  [(VFXFileAsset *)&v5 copyTo:a3 withContext:a4];
-  *(a3 + 56) = 0;
+  [(VFXFileAsset *)&v5 copyTo:to withContext:context];
+  *(to + 56) = 0;
 }
 
-- (void)setActiveStateName:(id)a3
+- (void)setActiveStateName:(id)name
 {
-  if (self->_activeStateName != a3)
+  if (self->_activeStateName != name)
   {
-    v3 = a3;
+    nameCopy = name;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = 0;
+      nameCopy = 0;
     }
 
-    self->_activeStateName = v3;
+    self->_activeStateName = nameCopy;
 
     objc_msgSend_updateActiveState(self, v5, v6, v7);
   }
 }
 
-- (VFXLayerAsset)initWithCoder:(id)a3
+- (VFXLayerAsset)initWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = VFXLayerAsset;
@@ -118,24 +118,24 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v7 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"activeStateName");
+    v7 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"activeStateName");
     objc_msgSend_setActiveStateName_(v4, v8, v7, v9);
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (objc_msgSend_activeStateName(self, a2, a3, v3))
+  if (objc_msgSend_activeStateName(self, a2, coder, v3))
   {
     active = objc_msgSend_activeStateName(self, v6, v7, v8);
-    objc_msgSend_encodeObject_forKey_(a3, v10, active, @"activeStateName");
+    objc_msgSend_encodeObject_forKey_(coder, v10, active, @"activeStateName");
   }
 
   v11.receiver = self;
   v11.super_class = VFXLayerAsset;
-  [(VFXFileAsset *)&v11 encodeWithCoder:a3];
+  [(VFXFileAsset *)&v11 encodeWithCoder:coder];
 }
 
 @end

@@ -2,12 +2,12 @@
 - (__CVBuffer)prevDisparity;
 - (__CVBuffer)prevFeatures;
 - (id)getIntermediates;
-- (id)initForInputSource:(unint64_t)a3 parameters:(id)a4;
+- (id)initForInputSource:(unint64_t)source parameters:(id)parameters;
 - (int64_t)allocateIntermediateBuffers;
-- (int64_t)executeWithDisparity:(__CVBuffer *)a3 normalizationMultiplier:(float)a4 normalizationOffset:(float)a5 color:(__CVBuffer *)a6 outDisparity:(__CVBuffer *)a7;
-- (int64_t)postProcessDisparity:(__CVBuffer *)a3 output:(__CVBuffer *)a4;
-- (int64_t)preProcessDisparity:(__CVBuffer *)a3 normalizationMultiplier:(float)a4 normalizationOffset:(float)a5 output:(__CVBuffer *)a6;
-- (int64_t)prepareForEngineType:(unint64_t)a3 inputColorROI:(CGRect)a4;
+- (int64_t)executeWithDisparity:(__CVBuffer *)disparity normalizationMultiplier:(float)multiplier normalizationOffset:(float)offset color:(__CVBuffer *)color outDisparity:(__CVBuffer *)outDisparity;
+- (int64_t)postProcessDisparity:(__CVBuffer *)disparity output:(__CVBuffer *)output;
+- (int64_t)preProcessDisparity:(__CVBuffer *)disparity normalizationMultiplier:(float)multiplier normalizationOffset:(float)offset output:(__CVBuffer *)output;
+- (int64_t)prepareForEngineType:(unint64_t)type inputColorROI:(CGRect)i;
 - (void)dealloc;
 - (void)deallocateEspressoBuffers;
 @end
@@ -171,17 +171,17 @@
   [(ADExecutor *)&v3 dealloc];
 }
 
-- (int64_t)executeWithDisparity:(__CVBuffer *)a3 normalizationMultiplier:(float)a4 normalizationOffset:(float)a5 color:(__CVBuffer *)a6 outDisparity:(__CVBuffer *)a7
+- (int64_t)executeWithDisparity:(__CVBuffer *)disparity normalizationMultiplier:(float)multiplier normalizationOffset:(float)offset color:(__CVBuffer *)color outDisparity:(__CVBuffer *)outDisparity
 {
   v104[4] = *MEMORY[0x277D85DE8];
-  v12 = self;
-  objc_sync_enter(v12);
-  Width = CVPixelBufferGetWidth(a6);
-  Height = CVPixelBufferGetHeight(a6);
-  if (!v12->_isPrepared)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  Width = CVPixelBufferGetWidth(color);
+  Height = CVPixelBufferGetHeight(color);
+  if (!selfCopy->_isPrepared)
   {
-    v15 = [(ADPCEDisparityColorExecutor *)v12 prepareForEngineType:v12->super._engineType inputColorROI:0.0, 0.0, Width, Height];
-    if (v15)
+    height = [(ADPCEDisparityColorExecutor *)selfCopy prepareForEngineType:selfCopy->super._engineType inputColorROI:0.0, 0.0, Width, Height];
+    if (height)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -193,87 +193,87 @@
     }
   }
 
-  if (v12->super._espressoRunner)
+  if (selfCopy->super._espressoRunner)
   {
-    if (a7)
+    if (outDisparity)
     {
-      v16 = [(ADExecutor *)v12 executorParameters];
-      v98 = [v16 logger];
+      executorParameters = [(ADExecutor *)selfCopy executorParameters];
+      logger = [executorParameters logger];
 
-      v17 = [MEMORY[0x277CCAC38] processInfo];
-      [v17 systemUptime];
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
+      [processInfo systemUptime];
       v97 = v18;
 
       *buf = 335684600;
       v101 = 0u;
       v102 = 0u;
       kdebug_trace();
-      [v98 logPixelBuffer:a3 name:"inputDisparity" timestamp:v97];
-      [v98 logPixelBuffer:a6 name:"inputColor" timestamp:v97];
+      [logger logPixelBuffer:disparity name:"inputDisparity" timestamp:v97];
+      [logger logPixelBuffer:color name:"inputColor" timestamp:v97];
       v103[0] = @"DisparityNormalizationMultiplier";
-      *&v19 = a4;
+      *&v19 = multiplier;
       v20 = [MEMORY[0x277CCABB0] numberWithFloat:v19];
       v104[0] = v20;
       v103[1] = @"DisparityNormalizationOffset";
-      *&v21 = a5;
+      *&v21 = offset;
       v22 = [MEMORY[0x277CCABB0] numberWithFloat:v21];
       v104[1] = v22;
       v103[2] = @"PCEBias";
       v23 = MEMORY[0x277CCABB0];
-      v24 = [(ADPCEDisparityColorPipeline *)v12->_pipeline pipelineParameters];
-      [v24 pceBias];
+      pipelineParameters = [(ADPCEDisparityColorPipeline *)selfCopy->_pipeline pipelineParameters];
+      [pipelineParameters pceBias];
       v25 = [v23 numberWithFloat:?];
       v104[2] = v25;
       v103[3] = @"NetworkTrainingWidth";
       v26 = MEMORY[0x277CCABB0];
-      v27 = [(ADPCEDisparityColorPipeline *)v12->_pipeline pipelineParameters];
-      v28 = [v26 numberWithUnsignedInteger:{objc_msgSend(v27, "trainingWidth")}];
+      pipelineParameters2 = [(ADPCEDisparityColorPipeline *)selfCopy->_pipeline pipelineParameters];
+      v28 = [v26 numberWithUnsignedInteger:{objc_msgSend(pipelineParameters2, "trainingWidth")}];
       v104[3] = v28;
       v96 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v104 forKeys:v103 count:4];
 
-      [v98 logDictionary:v96 name:"frameMetadata" timestamp:v97];
-      v29 = [MEMORY[0x277CED0C0] adjustLayout:objc_msgSend(MEMORY[0x277CED0C0] sourceOrientation:"layoutForSize:" toRotationPreference:{v12->super._inputRoi.size.width, v12->super._inputRoi.size.height), 1, 2}];
-      x = v12->super._inputRoi.origin.x;
-      y = v12->super._inputRoi.origin.y;
-      v32 = v12->super._inputRoi.size.width;
-      v33 = v12->super._inputRoi.size.height;
-      v34 = [(ADExecutor *)v12 executorParameters];
-      LODWORD(v27) = [v34 disparityPreprocessingActive];
+      [logger logDictionary:v96 name:"frameMetadata" timestamp:v97];
+      v29 = [MEMORY[0x277CED0C0] adjustLayout:objc_msgSend(MEMORY[0x277CED0C0] sourceOrientation:"layoutForSize:" toRotationPreference:{selfCopy->super._inputRoi.size.width, selfCopy->super._inputRoi.size.height), 1, 2}];
+      x = selfCopy->super._inputRoi.origin.x;
+      y = selfCopy->super._inputRoi.origin.y;
+      v32 = selfCopy->super._inputRoi.size.width;
+      v33 = selfCopy->super._inputRoi.size.height;
+      executorParameters2 = [(ADExecutor *)selfCopy executorParameters];
+      LODWORD(pipelineParameters2) = [executorParameters2 disparityPreprocessingActive];
 
-      if (!v27)
+      if (!pipelineParameters2)
       {
         v37 = 0;
         goto LABEL_24;
       }
 
-      v35 = [(ADExecutor *)v12 executorParameters];
-      v36 = [v35 disparityRotation] == 3;
+      executorParameters3 = [(ADExecutor *)selfCopy executorParameters];
+      v36 = [executorParameters3 disparityRotation] == 3;
 
       if (v36)
       {
-        x = v12->super._inputRoi.origin.y;
-        y = CVPixelBufferGetWidth(a6) - v12->super._inputRoi.origin.x;
-        v32 = v12->super._inputRoi.size.height;
-        v33 = -v12->super._inputRoi.size.width;
+        x = selfCopy->super._inputRoi.origin.y;
+        y = CVPixelBufferGetWidth(color) - selfCopy->super._inputRoi.origin.x;
+        v32 = selfCopy->super._inputRoi.size.height;
+        v33 = -selfCopy->super._inputRoi.size.width;
       }
 
       else
       {
-        v38 = [(ADExecutor *)v12 executorParameters];
-        v39 = [v38 disparityRotation] == 2;
+        executorParameters4 = [(ADExecutor *)selfCopy executorParameters];
+        v39 = [executorParameters4 disparityRotation] == 2;
 
         if (v39)
         {
           v37 = 0;
-          x = CVPixelBufferGetWidth(a6) - v12->super._inputRoi.origin.x;
-          y = CVPixelBufferGetHeight(a6) - v12->super._inputRoi.origin.y;
-          v32 = -v12->super._inputRoi.size.width;
-          v33 = -v12->super._inputRoi.size.height;
+          x = CVPixelBufferGetWidth(color) - selfCopy->super._inputRoi.origin.x;
+          y = CVPixelBufferGetHeight(color) - selfCopy->super._inputRoi.origin.y;
+          v32 = -selfCopy->super._inputRoi.size.width;
+          v33 = -selfCopy->super._inputRoi.size.height;
           goto LABEL_23;
         }
 
-        v40 = [(ADExecutor *)v12 executorParameters];
-        v41 = [v40 disparityRotation] == 1;
+        executorParameters5 = [(ADExecutor *)selfCopy executorParameters];
+        v41 = [executorParameters5 disparityRotation] == 1;
 
         if (!v41)
         {
@@ -281,11 +281,11 @@
           goto LABEL_23;
         }
 
-        v42 = CVPixelBufferGetHeight(a6);
-        y = v12->super._inputRoi.origin.x;
-        x = v42 - v12->super._inputRoi.origin.y;
-        v33 = v12->super._inputRoi.size.width;
-        v32 = -v12->super._inputRoi.size.height;
+        v42 = CVPixelBufferGetHeight(color);
+        y = selfCopy->super._inputRoi.origin.x;
+        x = v42 - selfCopy->super._inputRoi.origin.y;
+        v33 = selfCopy->super._inputRoi.size.width;
+        v32 = -selfCopy->super._inputRoi.size.height;
       }
 
       v37 = 1;
@@ -300,27 +300,27 @@ LABEL_23:
       v32 = v106.size.width;
       v33 = v106.size.height;
 LABEL_24:
-      v43 = CVPixelBufferGetWidth(a3);
+      v43 = CVPixelBufferGetWidth(disparity);
       if (v37)
       {
-        v44 = CVPixelBufferGetHeight(a6);
+        v44 = CVPixelBufferGetHeight(color);
       }
 
       else
       {
-        v44 = CVPixelBufferGetWidth(a6);
+        v44 = CVPixelBufferGetWidth(color);
       }
 
       v45 = v44;
-      v46 = CVPixelBufferGetHeight(a3);
+      v46 = CVPixelBufferGetHeight(disparity);
       if (v37)
       {
-        v47 = CVPixelBufferGetWidth(a6);
+        v47 = CVPixelBufferGetWidth(color);
       }
 
       else
       {
-        v47 = CVPixelBufferGetHeight(a6);
+        v47 = CVPixelBufferGetHeight(color);
       }
 
       v48 = (v43 / v45);
@@ -341,23 +341,23 @@ LABEL_24:
           _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "color and disparity layouts don't match", v99, 2u);
         }
 
-        v15 = -22957;
+        height = -22957;
         goto LABEL_44;
       }
 
-      v53 = [(ADExecutor *)v12 executorParameters];
-      v54 = [v53 stepsToExecute];
+      executorParameters6 = [(ADExecutor *)selfCopy executorParameters];
+      stepsToExecute = [executorParameters6 stepsToExecute];
 
-      v55 = [(ADExecutor *)v12 executorParameters];
-      v95 = [v55 timeProfiler];
+      executorParameters7 = [(ADExecutor *)selfCopy executorParameters];
+      timeProfiler = [executorParameters7 timeProfiler];
 
-      if (v54 >= 1)
+      if (stepsToExecute >= 1)
       {
         kdebug_trace();
-        [v95 startWithUTFString:"preprocess color"];
-        [(ADExecutor *)v12 frameExecutionStart];
-        v15 = [ADUtils scaleConvertRotateImage:a6 rotateBy:LOBYTE(v12->super._rotationConstant) cropBy:v12->_itmPreProcessedColor scaleInto:&v12->_itmCroppedScaledColor intermediateScalingBuffer:&v12->_itmRotatedColor intermediateRotatingBuffer:1 useVT:v12->super._inputRoi.origin.x, v12->super._inputRoi.origin.y, v12->super._inputRoi.size.width, v12->super._inputRoi.size.height];
-        if (v15)
+        [timeProfiler startWithUTFString:"preprocess color"];
+        [(ADExecutor *)selfCopy frameExecutionStart];
+        height = [ADUtils scaleConvertRotateImage:color rotateBy:LOBYTE(selfCopy->super._rotationConstant) cropBy:selfCopy->_itmPreProcessedColor scaleInto:&selfCopy->_itmCroppedScaledColor intermediateScalingBuffer:&selfCopy->_itmRotatedColor intermediateRotatingBuffer:1 useVT:selfCopy->super._inputRoi.origin.x, selfCopy->super._inputRoi.origin.y, selfCopy->super._inputRoi.size.width, selfCopy->super._inputRoi.size.height];
+        if (height)
         {
           if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
@@ -377,26 +377,26 @@ LABEL_37:
           goto LABEL_43;
         }
 
-        [v98 logPixelBuffer:v12->_itmPreProcessedColor name:"preProcessedColor" timestamp:v97];
-        [v95 stopWithUTFString:"preprocess color"];
+        [logger logPixelBuffer:selfCopy->_itmPreProcessedColor name:"preProcessedColor" timestamp:v97];
+        [timeProfiler stopWithUTFString:"preprocess color"];
         kdebug_trace();
-        if (v54 != 1)
+        if (stepsToExecute != 1)
         {
           kdebug_trace();
-          [v95 startWithUTFString:"preprocess disparity"];
-          PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-          v60 = [(ADPCEDisparityColorPipeline *)v12->_pipeline inferenceDescriptor];
-          v61 = [v60 disparityInput];
-          v62 = [v61 imageDescriptor];
+          [timeProfiler startWithUTFString:"preprocess disparity"];
+          PixelFormatType = CVPixelBufferGetPixelFormatType(disparity);
+          inferenceDescriptor = [(ADPCEDisparityColorPipeline *)selfCopy->_pipeline inferenceDescriptor];
+          disparityInput = [inferenceDescriptor disparityInput];
+          imageDescriptor = [disparityInput imageDescriptor];
           v63 = 1751411059;
-          v65 = [v62 pixelFormat] == 1751411059 && PixelFormatType == 1717856627;
+          v65 = [imageDescriptor pixelFormat] == 1751411059 && PixelFormatType == 1717856627;
 
           if (!v65)
           {
-            v66 = [(ADPCEDisparityColorPipeline *)v12->_pipeline inferenceDescriptor];
-            v67 = [v66 disparityInput];
-            v68 = [v67 imageDescriptor];
-            v70 = [v68 pixelFormat] == 1717856627 && PixelFormatType == 1751411059;
+            inferenceDescriptor2 = [(ADPCEDisparityColorPipeline *)selfCopy->_pipeline inferenceDescriptor];
+            disparityInput2 = [inferenceDescriptor2 disparityInput];
+            imageDescriptor2 = [disparityInput2 imageDescriptor];
+            v70 = [imageDescriptor2 pixelFormat] == 1717856627 && PixelFormatType == 1751411059;
 
             if (v70)
             {
@@ -409,17 +409,17 @@ LABEL_37:
             }
           }
 
-          v71 = CVPixelBufferGetWidth(a3);
-          if ([ADUtils updatePixelBufferAllocationWithNewSize:v63 pixelFormat:&v12->_itmProcessedUnfilteredDisparity pixelBuffer:v71, CVPixelBufferGetHeight(a3)])
+          v71 = CVPixelBufferGetWidth(disparity);
+          if ([ADUtils updatePixelBufferAllocationWithNewSize:v63 pixelFormat:&selfCopy->_itmProcessedUnfilteredDisparity pixelBuffer:v71, CVPixelBufferGetHeight(disparity)])
           {
-            CVPixelBufferRelease(v12->_itmCroppedScaledDisparity);
-            v12->_itmCroppedScaledDisparity = 0;
-            CVPixelBufferRelease(v12->_itmRotatedDisparity);
-            v12->_itmRotatedDisparity = 0;
+            CVPixelBufferRelease(selfCopy->_itmCroppedScaledDisparity);
+            selfCopy->_itmCroppedScaledDisparity = 0;
+            CVPixelBufferRelease(selfCopy->_itmRotatedDisparity);
+            selfCopy->_itmRotatedDisparity = 0;
           }
 
-          v15 = [ADUtils scaleConvertRotateImage:a3 rotateBy:LOBYTE(v12->super._rotationConstant) cropBy:v12->_itmProcessedUnfilteredDisparity scaleInto:&v12->_itmCroppedScaledDisparity intermediateScalingBuffer:&v12->_itmRotatedDisparity intermediateRotatingBuffer:1 useVT:floor(x * v48), floor(y * v49), v50, v51];
-          if (v15)
+          height = [ADUtils scaleConvertRotateImage:disparity rotateBy:LOBYTE(selfCopy->super._rotationConstant) cropBy:selfCopy->_itmProcessedUnfilteredDisparity scaleInto:&selfCopy->_itmCroppedScaledDisparity intermediateScalingBuffer:&selfCopy->_itmRotatedDisparity intermediateRotatingBuffer:1 useVT:floor(x * v48), floor(y * v49), v50, v51];
+          if (height)
           {
             if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
@@ -432,16 +432,16 @@ LABEL_37:
             goto LABEL_37;
           }
 
-          [v98 logPixelBuffer:v12->_itmProcessedUnfilteredDisparity name:"preProcessedUnfilteredDisparity" timestamp:v97];
-          v72 = [(ADExecutor *)v12 executorParameters];
-          v73 = [v72 disparityPreprocessingActive];
+          [logger logPixelBuffer:selfCopy->_itmProcessedUnfilteredDisparity name:"preProcessedUnfilteredDisparity" timestamp:v97];
+          executorParameters8 = [(ADExecutor *)selfCopy executorParameters];
+          disparityPreprocessingActive = [executorParameters8 disparityPreprocessingActive];
 
-          if (v73)
+          if (disparityPreprocessingActive)
           {
-            *&v74 = a4;
-            *&v75 = a5;
-            v15 = [(ADPCEDisparityColorExecutor *)v12 preProcessDisparity:v12->_itmProcessedUnfilteredDisparity normalizationMultiplier:v12->_itmPreProcessedDisparity normalizationOffset:v74 output:v75];
-            if (v15)
+            *&v74 = multiplier;
+            *&v75 = offset;
+            height = [(ADPCEDisparityColorExecutor *)selfCopy preProcessDisparity:selfCopy->_itmProcessedUnfilteredDisparity normalizationMultiplier:selfCopy->_itmPreProcessedDisparity normalizationOffset:v74 output:v75];
+            if (height)
             {
               if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
               {
@@ -457,20 +457,20 @@ LABEL_37:
 
           else
           {
-            PixelBufferUtils::copyPixelBuffer(v12->_itmPreProcessedDisparity, v12->_itmProcessedUnfilteredDisparity, 0);
+            PixelBufferUtils::copyPixelBuffer(selfCopy->_itmPreProcessedDisparity, selfCopy->_itmProcessedUnfilteredDisparity, 0);
           }
 
-          [v98 logPixelBuffer:v12->_itmPreProcessedDisparity name:"preProcessedDisparity" timestamp:v97];
-          [v98 logPixelBuffer:v12->_itmPrevDisparity name:"prevDisparity" timestamp:v97];
-          [v98 logPixelBuffer:v12->_itmPrevFeatures name:"prevFeatures" timestamp:v97];
-          [v95 stopWithUTFString:"preprocess disparity"];
+          [logger logPixelBuffer:selfCopy->_itmPreProcessedDisparity name:"preProcessedDisparity" timestamp:v97];
+          [logger logPixelBuffer:selfCopy->_itmPrevDisparity name:"prevDisparity" timestamp:v97];
+          [logger logPixelBuffer:selfCopy->_itmPrevFeatures name:"prevFeatures" timestamp:v97];
+          [timeProfiler stopWithUTFString:"preprocess disparity"];
           kdebug_trace();
-          if (v54 >= 3)
+          if (stepsToExecute >= 3)
           {
             kdebug_trace();
-            [v95 startWithUTFString:"network execution"];
-            v15 = [(ADEspressoRunnerProtocol *)v12->super._espressoRunner execute];
-            if (v15)
+            [timeProfiler startWithUTFString:"network execution"];
+            height = [(ADEspressoRunnerProtocol *)selfCopy->super._espressoRunner execute];
+            if (height)
             {
               if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
               {
@@ -483,25 +483,25 @@ LABEL_37:
               goto LABEL_37;
             }
 
-            [v98 logPixelBuffer:v12->_itmUnprocessedOutputDisparity name:"outputDisparity" timestamp:v97];
-            [v98 logPixelBuffer:v12->_itmFeaturesOutput name:"outputFeatures" timestamp:v97];
-            [v95 stopWithUTFString:"network execution"];
+            [logger logPixelBuffer:selfCopy->_itmUnprocessedOutputDisparity name:"outputDisparity" timestamp:v97];
+            [logger logPixelBuffer:selfCopy->_itmFeaturesOutput name:"outputFeatures" timestamp:v97];
+            [timeProfiler stopWithUTFString:"network execution"];
             kdebug_trace();
-            if (v54 != 3)
+            if (stepsToExecute != 3)
             {
               kdebug_trace();
-              [v95 startWithUTFString:"postprocess depth"];
-              itmUnprocessedOutputDisparity = v12->_itmUnprocessedOutputDisparity;
-              v77 = [(ADExecutor *)v12 executorParameters];
-              v78 = [v77 disparityPostprocessingActive];
+              [timeProfiler startWithUTFString:"postprocess depth"];
+              itmUnprocessedOutputDisparity = selfCopy->_itmUnprocessedOutputDisparity;
+              executorParameters9 = [(ADExecutor *)selfCopy executorParameters];
+              disparityPostprocessingActive = [executorParameters9 disparityPostprocessingActive];
 
-              if (v78)
+              if (disparityPostprocessingActive)
               {
-                v79 = CVPixelBufferGetWidth(v12->_itmUnprocessedOutputDisparity);
-                v80 = CVPixelBufferGetHeight(v12->_itmUnprocessedOutputDisparity);
-                [ADUtils updatePixelBufferAllocationWithNewSize:CVPixelBufferGetPixelFormatType(v12->_itmUnprocessedOutputDisparity) pixelFormat:&v12->_itmPostProcessedDisparity pixelBuffer:v79, v80];
-                v15 = [(ADPCEDisparityColorExecutor *)v12 postProcessDisparity:v12->_itmUnprocessedOutputDisparity output:v12->_itmPostProcessedDisparity];
-                if (v15)
+                v79 = CVPixelBufferGetWidth(selfCopy->_itmUnprocessedOutputDisparity);
+                v80 = CVPixelBufferGetHeight(selfCopy->_itmUnprocessedOutputDisparity);
+                [ADUtils updatePixelBufferAllocationWithNewSize:CVPixelBufferGetPixelFormatType(selfCopy->_itmUnprocessedOutputDisparity) pixelFormat:&selfCopy->_itmPostProcessedDisparity pixelBuffer:v79, v80];
+                height = [(ADPCEDisparityColorExecutor *)selfCopy postProcessDisparity:selfCopy->_itmUnprocessedOutputDisparity output:selfCopy->_itmPostProcessedDisparity];
+                if (height)
                 {
                   if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                   {
@@ -514,17 +514,17 @@ LABEL_37:
                   goto LABEL_37;
                 }
 
-                itmUnprocessedOutputDisparity = v12->_itmPostProcessedDisparity;
+                itmUnprocessedOutputDisparity = selfCopy->_itmPostProcessedDisparity;
               }
 
-              [v98 logPixelBuffer:itmUnprocessedOutputDisparity name:"postProcessedOutputDisparity" timestamp:v97];
-              if (!*a7)
+              [logger logPixelBuffer:itmUnprocessedOutputDisparity name:"postProcessedOutputDisparity" timestamp:v97];
+              if (!*outDisparity)
               {
-                *a7 = PixelBufferUtils::createPixelBufferWithSameSize(itmUnprocessedOutputDisparity, 0x66646973, 1);
+                *outDisparity = PixelBufferUtils::createPixelBufferWithSameSize(itmUnprocessedOutputDisparity, 0x66646973, 1);
               }
 
-              v15 = [ADUtils postProcessDepth:itmUnprocessedOutputDisparity depthOutput:?];
-              if (v15)
+              height = [ADUtils postProcessDepth:itmUnprocessedOutputDisparity depthOutput:?];
+              if (height)
               {
                 if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                 {
@@ -537,27 +537,27 @@ LABEL_37:
                 goto LABEL_37;
               }
 
-              [v98 logPixelBuffer:*a7 name:"outputConvertedUnits" timestamp:v97];
-              [v95 stopWithUTFString:"postprocess depth"];
+              [logger logPixelBuffer:*outDisparity name:"outputConvertedUnits" timestamp:v97];
+              [timeProfiler stopWithUTFString:"postprocess depth"];
               kdebug_trace();
-              if (v54 >= 5)
+              if (stepsToExecute >= 5)
               {
                 kdebug_trace();
-                [v95 startWithUTFString:"postprocess previous depth"];
-                v81 = [(ADExecutor *)v12 executorParameters];
-                v82 = [v81 temporalConsistencyActive];
+                [timeProfiler startWithUTFString:"postprocess previous depth"];
+                executorParameters10 = [(ADExecutor *)selfCopy executorParameters];
+                temporalConsistencyActive = [executorParameters10 temporalConsistencyActive];
 
-                if (v82)
+                if (temporalConsistencyActive)
                 {
-                  v12->_prevDisparityIsZeros = 0;
-                  espressoRunner = v12->super._espressoRunner;
-                  v84 = [(ADPCEDisparityColorPipeline *)v12->_pipeline inferenceDescriptor];
-                  v85 = [v84 prevDisparityInput];
-                  v86 = [(ADPCEDisparityColorPipeline *)v12->_pipeline inferenceDescriptor];
-                  v87 = [v86 disparityOutput];
-                  v15 = [(ADEspressoRunnerProtocol *)espressoRunner updateFeedbackLoopInputBuffer:&v12->_itmPrevDisparity inputDescriptor:v85 outputBuffer:&v12->_itmUnprocessedOutputDisparity outputDescriptor:v87];
+                  selfCopy->_prevDisparityIsZeros = 0;
+                  espressoRunner = selfCopy->super._espressoRunner;
+                  inferenceDescriptor3 = [(ADPCEDisparityColorPipeline *)selfCopy->_pipeline inferenceDescriptor];
+                  prevDisparityInput = [inferenceDescriptor3 prevDisparityInput];
+                  inferenceDescriptor4 = [(ADPCEDisparityColorPipeline *)selfCopy->_pipeline inferenceDescriptor];
+                  disparityOutput = [inferenceDescriptor4 disparityOutput];
+                  height = [(ADEspressoRunnerProtocol *)espressoRunner updateFeedbackLoopInputBuffer:&selfCopy->_itmPrevDisparity inputDescriptor:prevDisparityInput outputBuffer:&selfCopy->_itmUnprocessedOutputDisparity outputDescriptor:disparityOutput];
 
-                  if (v15)
+                  if (height)
                   {
                     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                     {
@@ -570,16 +570,16 @@ LABEL_37:
                     goto LABEL_37;
                   }
 
-                  if (v12->_itmPrevFeatures)
+                  if (selfCopy->_itmPrevFeatures)
                   {
-                    v90 = v12->super._espressoRunner;
-                    v91 = [(ADPCEDisparityColorPipeline *)v12->_pipeline inferenceDescriptor];
-                    v92 = [v91 prevFeaturesInput];
-                    v93 = [(ADPCEDisparityColorPipeline *)v12->_pipeline inferenceDescriptor];
-                    v94 = [v93 featuresOutput];
-                    v15 = [(ADEspressoRunnerProtocol *)v90 updateFeedbackLoopInputBuffer:&v12->_itmPrevFeatures inputDescriptor:v92 outputBuffer:&v12->_itmFeaturesOutput outputDescriptor:v94];
+                    v90 = selfCopy->super._espressoRunner;
+                    inferenceDescriptor5 = [(ADPCEDisparityColorPipeline *)selfCopy->_pipeline inferenceDescriptor];
+                    prevFeaturesInput = [inferenceDescriptor5 prevFeaturesInput];
+                    inferenceDescriptor6 = [(ADPCEDisparityColorPipeline *)selfCopy->_pipeline inferenceDescriptor];
+                    featuresOutput = [inferenceDescriptor6 featuresOutput];
+                    height = [(ADEspressoRunnerProtocol *)v90 updateFeedbackLoopInputBuffer:&selfCopy->_itmPrevFeatures inputDescriptor:prevFeaturesInput outputBuffer:&selfCopy->_itmFeaturesOutput outputDescriptor:featuresOutput];
 
-                    if (v15)
+                    if (height)
                     {
                       if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
                       {
@@ -594,22 +594,22 @@ LABEL_37:
                   }
                 }
 
-                else if (!v12->_prevDisparityIsZeros)
+                else if (!selfCopy->_prevDisparityIsZeros)
                 {
-                  CVPixelBufferLockBaseAddress(v12->_itmPrevDisparity, 0);
-                  BaseAddress = CVPixelBufferGetBaseAddress(v12->_itmPrevDisparity);
-                  DataSize = CVPixelBufferGetDataSize(v12->_itmPrevDisparity);
+                  CVPixelBufferLockBaseAddress(selfCopy->_itmPrevDisparity, 0);
+                  BaseAddress = CVPixelBufferGetBaseAddress(selfCopy->_itmPrevDisparity);
+                  DataSize = CVPixelBufferGetDataSize(selfCopy->_itmPrevDisparity);
                   bzero(BaseAddress, DataSize);
-                  CVPixelBufferUnlockBaseAddress(v12->_itmPrevDisparity, 0);
-                  v12->_prevDisparityIsZeros = 1;
+                  CVPixelBufferUnlockBaseAddress(selfCopy->_itmPrevDisparity, 0);
+                  selfCopy->_prevDisparityIsZeros = 1;
                 }
 
-                [v95 stopWithUTFString:"postprocess previous depth"];
+                [timeProfiler stopWithUTFString:"postprocess previous depth"];
                 kdebug_trace();
-                if (v54 != 5)
+                if (stepsToExecute != 5)
                 {
-                  [(ADExecutor *)v12 frameExecutionEnd];
-                  v15 = 0;
+                  [(ADExecutor *)selfCopy frameExecutionEnd];
+                  height = 0;
                   goto LABEL_43;
                 }
               }
@@ -618,7 +618,7 @@ LABEL_37:
         }
       }
 
-      v15 = -22977;
+      height = -22977;
       goto LABEL_43;
     }
 
@@ -628,7 +628,7 @@ LABEL_37:
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "must provide an output pointer to CVPixelBufferRef", buf, 2u);
     }
 
-    v15 = -22953;
+    height = -22953;
   }
 
   else
@@ -639,26 +639,26 @@ LABEL_37:
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "executor could not be initialized", buf, 2u);
     }
 
-    v15 = -22960;
+    height = -22960;
   }
 
 LABEL_45:
-  objc_sync_exit(v12);
+  objc_sync_exit(selfCopy);
 
-  return v15;
+  return height;
 }
 
-- (int64_t)postProcessDisparity:(__CVBuffer *)a3 output:(__CVBuffer *)a4
+- (int64_t)postProcessDisparity:(__CVBuffer *)disparity output:(__CVBuffer *)output
 {
-  v5 = a3;
-  if (CVPixelBufferGetIOSurface(a3))
+  disparityCopy = disparity;
+  if (CVPixelBufferGetIOSurface(disparity))
   {
     goto LABEL_12;
   }
 
-  Width = CVPixelBufferGetWidth(v5);
-  Height = CVPixelBufferGetHeight(v5);
-  if ([ADUtils updatePixelBufferAllocationWithNewSize:CVPixelBufferGetPixelFormatType(v5) pixelFormat:&self->_postprocessorInputMetalHelper pixelBuffer:Width, Height])
+  Width = CVPixelBufferGetWidth(disparityCopy);
+  Height = CVPixelBufferGetHeight(disparityCopy);
+  if ([ADUtils updatePixelBufferAllocationWithNewSize:CVPixelBufferGetPixelFormatType(disparityCopy) pixelFormat:&self->_postprocessorInputMetalHelper pixelBuffer:Width, Height])
   {
     if (ADDebugUtilsADVerboseLogsEnabled == 1)
     {
@@ -684,20 +684,20 @@ LABEL_8:
   }
 
   postprocessorInputMetalHelper = self->_postprocessorInputMetalHelper;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(v5);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(disparityCopy);
   if (PixelFormatType == CVPixelBufferGetPixelFormatType(postprocessorInputMetalHelper))
   {
-    copyPixelBufferVImage(postprocessorInputMetalHelper, *MEMORY[0x277CBF348], v5, *MEMORY[0x277CBF3A0]);
+    copyPixelBufferVImage(postprocessorInputMetalHelper, *MEMORY[0x277CBF348], disparityCopy, *MEMORY[0x277CBF3A0]);
   }
 
-  v5 = self->_postprocessorInputMetalHelper;
+  disparityCopy = self->_postprocessorInputMetalHelper;
 LABEL_12:
-  postprocessorOutputMetalHelper = a4;
-  if (!CVPixelBufferGetIOSurface(a4))
+  postprocessorOutputMetalHelper = output;
+  if (!CVPixelBufferGetIOSurface(output))
   {
-    v15 = CVPixelBufferGetWidth(a4);
-    v16 = CVPixelBufferGetHeight(a4);
-    if ([ADUtils updatePixelBufferAllocationWithNewSize:CVPixelBufferGetPixelFormatType(a4) pixelFormat:&self->_postprocessorOutputMetalHelper pixelBuffer:v15, v16])
+    v15 = CVPixelBufferGetWidth(output);
+    v16 = CVPixelBufferGetHeight(output);
+    if ([ADUtils updatePixelBufferAllocationWithNewSize:CVPixelBufferGetPixelFormatType(output) pixelFormat:&self->_postprocessorOutputMetalHelper pixelBuffer:v15, v16])
     {
       if (ADDebugUtilsADVerboseLogsEnabled == 1)
       {
@@ -725,13 +725,13 @@ LABEL_19:
     postprocessorOutputMetalHelper = self->_postprocessorOutputMetalHelper;
   }
 
-  v20 = [ADMetalUtils bindPixelBufferToMTL2DTexture:v5 metalDevice:self->_metalDevice];
+  v20 = [ADMetalUtils bindPixelBufferToMTL2DTexture:disparityCopy metalDevice:self->_metalDevice];
   v21 = [ADMetalUtils bindPixelBufferToMTL2DTexture:postprocessorOutputMetalHelper metalDevice:self->_metalDevice];
   cmdQueue = self->_cmdQueue;
   if (cmdQueue || (v23 = [(MTLDevice *)self->_metalDevice newCommandQueue], v24 = self->_cmdQueue, self->_cmdQueue = v23, v24, (cmdQueue = self->_cmdQueue) != 0))
   {
-    v25 = [(MTLCommandQueue *)cmdQueue commandBuffer];
-    v26 = [(ADPCEDisparityColorPipeline *)self->_pipeline encodeDisparityPostprocessingToCommandBuffer:v25 input:v20 output:v21];
+    commandBuffer = [(MTLCommandQueue *)cmdQueue commandBuffer];
+    v26 = [(ADPCEDisparityColorPipeline *)self->_pipeline encodeDisparityPostprocessingToCommandBuffer:commandBuffer input:v20 output:v21];
     if (v26)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -743,9 +743,9 @@ LABEL_19:
 
     else
     {
-      [v25 commit];
-      [v25 waitUntilCompleted];
-      if (postprocessorOutputMetalHelper == a4 || (v27 = CVPixelBufferGetPixelFormatType(postprocessorOutputMetalHelper), v27 == CVPixelBufferGetPixelFormatType(a4)) && !copyPixelBufferVImage(a4, *MEMORY[0x277CBF348], postprocessorOutputMetalHelper, *MEMORY[0x277CBF3A0]))
+      [commandBuffer commit];
+      [commandBuffer waitUntilCompleted];
+      if (postprocessorOutputMetalHelper == output || (v27 = CVPixelBufferGetPixelFormatType(postprocessorOutputMetalHelper), v27 == CVPixelBufferGetPixelFormatType(output)) && !copyPixelBufferVImage(output, *MEMORY[0x277CBF348], postprocessorOutputMetalHelper, *MEMORY[0x277CBF3A0]))
       {
         v26 = 0;
       }
@@ -777,17 +777,17 @@ LABEL_19:
   return v26;
 }
 
-- (int64_t)preProcessDisparity:(__CVBuffer *)a3 normalizationMultiplier:(float)a4 normalizationOffset:(float)a5 output:(__CVBuffer *)a6
+- (int64_t)preProcessDisparity:(__CVBuffer *)disparity normalizationMultiplier:(float)multiplier normalizationOffset:(float)offset output:(__CVBuffer *)output
 {
-  v9 = a3;
-  if (CVPixelBufferGetIOSurface(a3))
+  disparityCopy = disparity;
+  if (CVPixelBufferGetIOSurface(disparity))
   {
     goto LABEL_12;
   }
 
-  Width = CVPixelBufferGetWidth(v9);
-  Height = CVPixelBufferGetHeight(v9);
-  if ([ADUtils updatePixelBufferAllocationWithNewSize:CVPixelBufferGetPixelFormatType(v9) pixelFormat:&self->_preprocessorInputMetalHelper pixelBuffer:Width, Height])
+  Width = CVPixelBufferGetWidth(disparityCopy);
+  Height = CVPixelBufferGetHeight(disparityCopy);
+  if ([ADUtils updatePixelBufferAllocationWithNewSize:CVPixelBufferGetPixelFormatType(disparityCopy) pixelFormat:&self->_preprocessorInputMetalHelper pixelBuffer:Width, Height])
   {
     if (ADDebugUtilsADVerboseLogsEnabled == 1)
     {
@@ -813,20 +813,20 @@ LABEL_8:
   }
 
   preprocessorInputMetalHelper = self->_preprocessorInputMetalHelper;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(v9);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(disparityCopy);
   if (PixelFormatType == CVPixelBufferGetPixelFormatType(preprocessorInputMetalHelper))
   {
-    copyPixelBufferVImage(preprocessorInputMetalHelper, *MEMORY[0x277CBF348], v9, *MEMORY[0x277CBF3A0]);
+    copyPixelBufferVImage(preprocessorInputMetalHelper, *MEMORY[0x277CBF348], disparityCopy, *MEMORY[0x277CBF3A0]);
   }
 
-  v9 = self->_preprocessorInputMetalHelper;
+  disparityCopy = self->_preprocessorInputMetalHelper;
 LABEL_12:
-  preprocessorOutputMetalHelper = a6;
-  if (!CVPixelBufferGetIOSurface(a6))
+  preprocessorOutputMetalHelper = output;
+  if (!CVPixelBufferGetIOSurface(output))
   {
-    v19 = CVPixelBufferGetWidth(a6);
-    v20 = CVPixelBufferGetHeight(a6);
-    if ([ADUtils updatePixelBufferAllocationWithNewSize:CVPixelBufferGetPixelFormatType(a6) pixelFormat:&self->_preprocessorOutputMetalHelper pixelBuffer:v19, v20])
+    v19 = CVPixelBufferGetWidth(output);
+    v20 = CVPixelBufferGetHeight(output);
+    if ([ADUtils updatePixelBufferAllocationWithNewSize:CVPixelBufferGetPixelFormatType(output) pixelFormat:&self->_preprocessorOutputMetalHelper pixelBuffer:v19, v20])
     {
       if (ADDebugUtilsADVerboseLogsEnabled == 1)
       {
@@ -854,20 +854,20 @@ LABEL_19:
     preprocessorOutputMetalHelper = self->_preprocessorOutputMetalHelper;
   }
 
-  v24 = [ADMetalUtils bindPixelBufferToMTL2DTexture:v9 metalDevice:self->_metalDevice];
+  v24 = [ADMetalUtils bindPixelBufferToMTL2DTexture:disparityCopy metalDevice:self->_metalDevice];
   v25 = [ADMetalUtils bindPixelBufferToMTL2DTexture:preprocessorOutputMetalHelper metalDevice:self->_metalDevice];
   cmdQueue = self->_cmdQueue;
   if (cmdQueue || (v27 = [(MTLDevice *)self->_metalDevice newCommandQueue], v28 = self->_cmdQueue, self->_cmdQueue = v27, v28, (cmdQueue = self->_cmdQueue) != 0))
   {
-    v29 = [(MTLCommandQueue *)cmdQueue commandBuffer];
+    commandBuffer = [(MTLCommandQueue *)cmdQueue commandBuffer];
     pipeline = self->_pipeline;
-    v31 = [(ADExecutor *)self executorParameters];
-    v32 = [v31 disparityInvalidValue];
-    v33 = [(ADExecutor *)self executorParameters];
-    v34 = [v33 disparityRotation];
-    *&v35 = a4;
-    *&v36 = a5;
-    v37 = [(ADPCEDisparityColorPipeline *)pipeline encodeDisparityPreprocessingToCommandBuffer:v29 input:v24 normalizationMultiplier:v32 normalizationOffset:v34 invalidValue:v25 rotation:v35 output:v36];
+    executorParameters = [(ADExecutor *)self executorParameters];
+    disparityInvalidValue = [executorParameters disparityInvalidValue];
+    executorParameters2 = [(ADExecutor *)self executorParameters];
+    disparityRotation = [executorParameters2 disparityRotation];
+    *&v35 = multiplier;
+    *&v36 = offset;
+    v37 = [(ADPCEDisparityColorPipeline *)pipeline encodeDisparityPreprocessingToCommandBuffer:commandBuffer input:v24 normalizationMultiplier:disparityInvalidValue normalizationOffset:disparityRotation invalidValue:v25 rotation:v35 output:v36];
 
     if (v37)
     {
@@ -880,9 +880,9 @@ LABEL_19:
 
     else
     {
-      [v29 commit];
-      [v29 waitUntilCompleted];
-      if (preprocessorOutputMetalHelper == a6 || (v38 = CVPixelBufferGetPixelFormatType(preprocessorOutputMetalHelper), v38 == CVPixelBufferGetPixelFormatType(a6)) && !copyPixelBufferVImage(a6, *MEMORY[0x277CBF348], preprocessorOutputMetalHelper, *MEMORY[0x277CBF3A0]))
+      [commandBuffer commit];
+      [commandBuffer waitUntilCompleted];
+      if (preprocessorOutputMetalHelper == output || (v38 = CVPixelBufferGetPixelFormatType(preprocessorOutputMetalHelper), v38 == CVPixelBufferGetPixelFormatType(output)) && !copyPixelBufferVImage(output, *MEMORY[0x277CBF348], preprocessorOutputMetalHelper, *MEMORY[0x277CBF3A0]))
       {
         v37 = 0;
       }
@@ -916,10 +916,10 @@ LABEL_19:
 
 - (__CVBuffer)prevFeatures
 {
-  v3 = [(ADExecutor *)self executorParameters];
-  v4 = [v3 temporalConsistencyActive];
+  executorParameters = [(ADExecutor *)self executorParameters];
+  temporalConsistencyActive = [executorParameters temporalConsistencyActive];
 
-  if (v4)
+  if (temporalConsistencyActive)
   {
     return self->_itmPrevFeatures;
   }
@@ -932,10 +932,10 @@ LABEL_19:
 
 - (__CVBuffer)prevDisparity
 {
-  v3 = [(ADExecutor *)self executorParameters];
-  v4 = [v3 temporalConsistencyActive];
+  executorParameters = [(ADExecutor *)self executorParameters];
+  temporalConsistencyActive = [executorParameters temporalConsistencyActive];
 
-  if (!v4)
+  if (!temporalConsistencyActive)
   {
     return 0;
   }
@@ -944,20 +944,20 @@ LABEL_19:
   return self->_itmPrevDisparity;
 }
 
-- (int64_t)prepareForEngineType:(unint64_t)a3 inputColorROI:(CGRect)a4
+- (int64_t)prepareForEngineType:(unint64_t)type inputColorROI:(CGRect)i
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = self;
-  objc_sync_enter(v9);
+  height = i.size.height;
+  width = i.size.width;
+  y = i.origin.y;
+  x = i.origin.x;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v19 = 335680668;
   v20 = 0u;
   v21 = 0u;
   kdebug_trace();
-  v10 = [(ADPCEDisparityColorPipeline *)v9->_pipeline adjustForEngine:a3];
-  if (v10)
+  height = [(ADPCEDisparityColorPipeline *)selfCopy->_pipeline adjustForEngine:type];
+  if (height)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -968,12 +968,12 @@ LABEL_19:
 
   else
   {
-    v11 = [(ADPCEDisparityColorPipeline *)v9->_pipeline inferenceDescriptor];
-    v12 = [v11 colorInput];
-    v13 = [v12 imageDescriptor];
-    v10 = [(ADExecutor *)v9 prepareForEngineType:a3 roi:v13 descriptorForROI:1 exifOrientation:2 rotationPreference:v11 inferenceDescriptor:x, y, width, height];
+    inferenceDescriptor = [(ADPCEDisparityColorPipeline *)selfCopy->_pipeline inferenceDescriptor];
+    colorInput = [inferenceDescriptor colorInput];
+    imageDescriptor = [colorInput imageDescriptor];
+    height = [(ADExecutor *)selfCopy prepareForEngineType:type roi:imageDescriptor descriptorForROI:1 exifOrientation:2 rotationPreference:inferenceDescriptor inferenceDescriptor:x, y, width, height];
 
-    if (v10)
+    if (height)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -984,61 +984,61 @@ LABEL_19:
 
     else
     {
-      v10 = [(ADPCEDisparityColorExecutor *)v9 allocateIntermediateBuffers];
-      CVPixelBufferLockBaseAddress(v9->_itmPrevDisparity, 0);
-      BaseAddress = CVPixelBufferGetBaseAddress(v9->_itmPrevDisparity);
-      DataSize = CVPixelBufferGetDataSize(v9->_itmPrevDisparity);
+      height = [(ADPCEDisparityColorExecutor *)selfCopy allocateIntermediateBuffers];
+      CVPixelBufferLockBaseAddress(selfCopy->_itmPrevDisparity, 0);
+      BaseAddress = CVPixelBufferGetBaseAddress(selfCopy->_itmPrevDisparity);
+      DataSize = CVPixelBufferGetDataSize(selfCopy->_itmPrevDisparity);
       bzero(BaseAddress, DataSize);
-      CVPixelBufferUnlockBaseAddress(v9->_itmPrevDisparity, 0);
-      v9->_prevDisparityIsZeros = 1;
-      PixelBufferUtils::blacken(v9->_itmPrevFeatures, v16);
-      v9->_isPrepared = v10 == 0;
+      CVPixelBufferUnlockBaseAddress(selfCopy->_itmPrevDisparity, 0);
+      selfCopy->_prevDisparityIsZeros = 1;
+      PixelBufferUtils::blacken(selfCopy->_itmPrevFeatures, v16);
+      selfCopy->_isPrepared = height == 0;
     }
   }
 
   kdebug_trace();
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 
-  return v10;
+  return height;
 }
 
 - (int64_t)allocateIntermediateBuffers
 {
   [(ADPCEDisparityColorExecutor *)self deallocateEspressoBuffers];
   espressoRunner = self->super._espressoRunner;
-  v4 = [(ADPCEDisparityColorPipeline *)self->_pipeline inferenceDescriptor];
-  v5 = [v4 colorInput];
-  self->_itmPreProcessedColor = [(ADEspressoRunnerProtocol *)espressoRunner createAndRegisterPixelBufferForDescriptor:v5];
+  inferenceDescriptor = [(ADPCEDisparityColorPipeline *)self->_pipeline inferenceDescriptor];
+  colorInput = [inferenceDescriptor colorInput];
+  self->_itmPreProcessedColor = [(ADEspressoRunnerProtocol *)espressoRunner createAndRegisterPixelBufferForDescriptor:colorInput];
 
   v6 = self->super._espressoRunner;
-  v7 = [(ADPCEDisparityColorPipeline *)self->_pipeline inferenceDescriptor];
-  v8 = [v7 disparityInput];
-  self->_itmPreProcessedDisparity = [(ADEspressoRunnerProtocol *)v6 createAndRegisterPixelBufferForDescriptor:v8];
+  inferenceDescriptor2 = [(ADPCEDisparityColorPipeline *)self->_pipeline inferenceDescriptor];
+  disparityInput = [inferenceDescriptor2 disparityInput];
+  self->_itmPreProcessedDisparity = [(ADEspressoRunnerProtocol *)v6 createAndRegisterPixelBufferForDescriptor:disparityInput];
 
   v9 = self->super._espressoRunner;
-  v10 = [(ADPCEDisparityColorPipeline *)self->_pipeline inferenceDescriptor];
-  v11 = [v10 disparityOutput];
-  self->_itmUnprocessedOutputDisparity = [(ADEspressoRunnerProtocol *)v9 createAndRegisterPixelBufferForDescriptor:v11];
+  inferenceDescriptor3 = [(ADPCEDisparityColorPipeline *)self->_pipeline inferenceDescriptor];
+  disparityOutput = [inferenceDescriptor3 disparityOutput];
+  self->_itmUnprocessedOutputDisparity = [(ADEspressoRunnerProtocol *)v9 createAndRegisterPixelBufferForDescriptor:disparityOutput];
 
   v12 = self->super._espressoRunner;
-  v13 = [(ADPCEDisparityColorPipeline *)self->_pipeline inferenceDescriptor];
-  v14 = [v13 prevDisparityInput];
-  self->_itmPrevDisparity = [(ADEspressoRunnerProtocol *)v12 createAndRegisterPixelBufferForDescriptor:v14];
+  inferenceDescriptor4 = [(ADPCEDisparityColorPipeline *)self->_pipeline inferenceDescriptor];
+  prevDisparityInput = [inferenceDescriptor4 prevDisparityInput];
+  self->_itmPrevDisparity = [(ADEspressoRunnerProtocol *)v12 createAndRegisterPixelBufferForDescriptor:prevDisparityInput];
 
-  v15 = [(ADPCEDisparityColorPipeline *)self->_pipeline inferenceDescriptor];
-  v16 = [v15 prevFeaturesInput];
+  inferenceDescriptor5 = [(ADPCEDisparityColorPipeline *)self->_pipeline inferenceDescriptor];
+  prevFeaturesInput = [inferenceDescriptor5 prevFeaturesInput];
 
-  if (v16)
+  if (prevFeaturesInput)
   {
     v17 = self->super._espressoRunner;
-    v18 = [(ADPCEDisparityColorPipeline *)self->_pipeline inferenceDescriptor];
-    v19 = [v18 prevFeaturesInput];
-    self->_itmPrevFeatures = [(ADEspressoRunnerProtocol *)v17 createAndRegisterPixelBufferForDescriptor:v19];
+    inferenceDescriptor6 = [(ADPCEDisparityColorPipeline *)self->_pipeline inferenceDescriptor];
+    prevFeaturesInput2 = [inferenceDescriptor6 prevFeaturesInput];
+    self->_itmPrevFeatures = [(ADEspressoRunnerProtocol *)v17 createAndRegisterPixelBufferForDescriptor:prevFeaturesInput2];
 
     v20 = self->super._espressoRunner;
-    v21 = [(ADPCEDisparityColorPipeline *)self->_pipeline inferenceDescriptor];
-    v22 = [v21 featuresOutput];
-    self->_itmFeaturesOutput = [(ADEspressoRunnerProtocol *)v20 createAndRegisterPixelBufferForDescriptor:v22];
+    inferenceDescriptor7 = [(ADPCEDisparityColorPipeline *)self->_pipeline inferenceDescriptor];
+    featuresOutput = [inferenceDescriptor7 featuresOutput];
+    self->_itmFeaturesOutput = [(ADEspressoRunnerProtocol *)v20 createAndRegisterPixelBufferForDescriptor:featuresOutput];
 
     if (!self->_itmPreProcessedColor)
     {
@@ -1061,9 +1061,9 @@ LABEL_19:
     goto LABEL_15;
   }
 
-  v23 = [(ADPCEDisparityColorPipeline *)self->_pipeline inferenceDescriptor];
-  v24 = [v23 prevFeaturesInput];
-  if (!v24)
+  inferenceDescriptor8 = [(ADPCEDisparityColorPipeline *)self->_pipeline inferenceDescriptor];
+  prevFeaturesInput3 = [inferenceDescriptor8 prevFeaturesInput];
+  if (!prevFeaturesInput3)
   {
 
     return 0;
@@ -1102,9 +1102,9 @@ LABEL_15:
   self->_itmFeaturesOutput = 0;
 }
 
-- (id)initForInputSource:(unint64_t)a3 parameters:(id)a4
+- (id)initForInputSource:(unint64_t)source parameters:(id)parameters
 {
-  v6 = a4;
+  parametersCopy = parameters;
   v21 = 335685520;
   v22 = 0u;
   v23 = 0u;
@@ -1118,8 +1118,8 @@ LABEL_15:
   }
 
   v8 = [ADPCEDisparityColorPipeline alloc];
-  v9 = [v6 pipelineParameters];
-  v10 = [(ADPCEDisparityColorPipeline *)v8 initWithParameters:v9 inputSource:a3 metalDevice:0];
+  pipelineParameters = [parametersCopy pipelineParameters];
+  v10 = [(ADPCEDisparityColorPipeline *)v8 initWithParameters:pipelineParameters inputSource:source metalDevice:0];
   pipeline = v7->_pipeline;
   v7->_pipeline = v10;
 
@@ -1128,22 +1128,22 @@ LABEL_15:
     goto LABEL_11;
   }
 
-  if (v6)
+  if (parametersCopy)
   {
-    [(ADExecutor *)v7 setExecutorParameters:v6];
+    [(ADExecutor *)v7 setExecutorParameters:parametersCopy];
   }
 
   else
   {
     v12 = [ADPCEDisparityColorExecutorParameters alloc];
-    v13 = [(ADPCEDisparityColorPipeline *)v7->_pipeline pipelineParameters];
-    v14 = [(ADPCEDisparityColorExecutorParameters *)v12 initForPipelineParameters:v13 inputSource:a3];
+    pipelineParameters2 = [(ADPCEDisparityColorPipeline *)v7->_pipeline pipelineParameters];
+    v14 = [(ADPCEDisparityColorExecutorParameters *)v12 initForPipelineParameters:pipelineParameters2 inputSource:source];
     [(ADExecutor *)v7 setExecutorParameters:v14];
   }
 
-  v15 = [(ADExecutor *)v7 executorParameters];
+  executorParameters = [(ADExecutor *)v7 executorParameters];
 
-  if (v15)
+  if (executorParameters)
   {
     v16 = MTLCreateSystemDefaultDevice();
     metalDevice = v7->_metalDevice;
@@ -1170,7 +1170,7 @@ LABEL_15:
       v7->_prevDisparityIsZeros = 0;
       v7->_isPrepared = 0;
 LABEL_9:
-      v15 = v7;
+      executorParameters = v7;
       goto LABEL_12;
     }
 
@@ -1178,18 +1178,18 @@ LABEL_9:
     {
       *v19 = 0;
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Cannot create default metal device", v19, 2u);
-      v15 = 0;
+      executorParameters = 0;
       goto LABEL_12;
     }
 
 LABEL_11:
-    v15 = 0;
+    executorParameters = 0;
   }
 
 LABEL_12:
   kdebug_trace();
 
-  return v15;
+  return executorParameters;
 }
 
 @end

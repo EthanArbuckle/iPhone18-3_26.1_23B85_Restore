@@ -1,32 +1,32 @@
 @interface ENRegionServerNKDConfiguration
-- (ENRegionServerNKDConfiguration)initWithCoder:(id)a3;
-- (ENRegionServerNKDConfiguration)initWithServerResponseDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ENRegionServerNKDConfiguration)initWithCoder:(id)coder;
+- (ENRegionServerNKDConfiguration)initWithServerResponseDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ENRegionServerNKDConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   healthAuthorityID = self->_healthAuthorityID;
-  v5 = a3;
-  [v5 encodeObject:healthAuthorityID forKey:@"healthAuthorityID"];
-  [v5 encodeObject:self->_region forKey:@"region"];
-  [v5 encodeObject:self->_tekLocalDownloadBaseURL forKey:@"tekLocalDownloadBasePath"];
-  [v5 encodeObject:self->_tekLocalDownloadIndexURL forKey:@"tekLocalDownloadIndexFile"];
-  [v5 encodeDouble:@"tekPublishInterval" forKey:self->_tekPublishInterval];
-  [v5 encodeObject:self->_tekUploadURL forKey:@"tekUploadURL"];
-  [v5 encodeObject:self->_acceptedReportTypes forKey:@"acceptedReportTypes"];
-  [v5 encodeObject:self->_testVerificationAPIKey forKey:@"testVerificationAPIKey"];
-  [v5 encodeObject:self->_testVerificationCertificateURL forKey:@"testVerificationCertificateURL"];
-  [v5 encodeObject:self->_testVerificationURL forKey:@"testVerificationURL"];
-  [v5 encodeObject:self->_travelerDownloadConfigurations forKey:@"tekTravelerDownloadURLs"];
+  coderCopy = coder;
+  [coderCopy encodeObject:healthAuthorityID forKey:@"healthAuthorityID"];
+  [coderCopy encodeObject:self->_region forKey:@"region"];
+  [coderCopy encodeObject:self->_tekLocalDownloadBaseURL forKey:@"tekLocalDownloadBasePath"];
+  [coderCopy encodeObject:self->_tekLocalDownloadIndexURL forKey:@"tekLocalDownloadIndexFile"];
+  [coderCopy encodeDouble:@"tekPublishInterval" forKey:self->_tekPublishInterval];
+  [coderCopy encodeObject:self->_tekUploadURL forKey:@"tekUploadURL"];
+  [coderCopy encodeObject:self->_acceptedReportTypes forKey:@"acceptedReportTypes"];
+  [coderCopy encodeObject:self->_testVerificationAPIKey forKey:@"testVerificationAPIKey"];
+  [coderCopy encodeObject:self->_testVerificationCertificateURL forKey:@"testVerificationCertificateURL"];
+  [coderCopy encodeObject:self->_testVerificationURL forKey:@"testVerificationURL"];
+  [coderCopy encodeObject:self->_travelerDownloadConfigurations forKey:@"tekTravelerDownloadURLs"];
 }
 
-- (ENRegionServerNKDConfiguration)initWithServerResponseDictionary:(id)a3
+- (ENRegionServerNKDConfiguration)initWithServerResponseDictionary:(id)dictionary
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v53.receiver = self;
   v53.super_class = ENRegionServerNKDConfiguration;
   v5 = [(ENRegionServerNKDConfiguration *)&v53 init];
@@ -43,7 +43,7 @@
   OUTLINED_FUNCTION_1_0();
   v7 = CFDictionaryGetTypedValue();
   OUTLINED_FUNCTION_5(v7);
-  v8 = [ENRegion regionFromServerResponseDictionary:v4];
+  v8 = [ENRegion regionFromServerResponseDictionary:dictionaryCopy];
   v9 = v8;
   if (!v8)
   {
@@ -193,7 +193,7 @@ LABEL_24:
     else
     {
       v42 = v6;
-      v43 = v4;
+      v43 = dictionaryCopy;
       travelerDownloadConfigurations = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v29, "count")}];
       v48 = 0u;
       v49 = 0u;
@@ -232,7 +232,7 @@ LABEL_24:
       v5->_travelerDownloadConfigurations = v37;
 
       v6 = v42;
-      v4 = v43;
+      dictionaryCopy = v43;
     }
 
     v39 = v5;
@@ -270,17 +270,17 @@ LABEL_46:
   return v39;
 }
 
-- (ENRegionServerNKDConfiguration)initWithCoder:(id)a3
+- (ENRegionServerNKDConfiguration)initWithCoder:(id)coder
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  obj = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tekLocalDownloadBasePath"];
+  coderCopy = coder;
+  obj = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tekLocalDownloadBasePath"];
   if (obj)
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tekLocalDownloadIndexFile"];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tekLocalDownloadIndexFile"];
     if (v5)
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"region"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"region"];
       if (v6)
       {
         v7 = MEMORY[0x277CBEB98];
@@ -289,7 +289,7 @@ LABEL_46:
         v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v38 count:2];
         v9 = [v7 setWithArray:v8];
 
-        v10 = [v4 decodeObjectOfClasses:v9 forKey:@"tekTravelerDownloadURLs"];
+        v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"tekTravelerDownloadURLs"];
         if (v10)
         {
           v11 = MEMORY[0x277CBEB98];
@@ -298,7 +298,7 @@ LABEL_46:
           v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:2];
           v13 = [v11 setWithArray:v12];
 
-          v14 = [v4 decodeObjectOfClasses:v13 forKey:@"acceptedReportTypes"];
+          v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"acceptedReportTypes"];
           v15 = v14;
           if (v14)
           {
@@ -317,29 +317,29 @@ LABEL_46:
           v18 = [(ENRegionServerNKDConfiguration *)&v36 init];
           if (v18)
           {
-            v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"healthAuthorityID"];
+            v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"healthAuthorityID"];
             healthAuthorityID = v18->_healthAuthorityID;
             v18->_healthAuthorityID = v19;
 
             objc_storeStrong(&v18->_region, v6);
             objc_storeStrong(&v18->_tekLocalDownloadBaseURL, obj);
             objc_storeStrong(&v18->_tekLocalDownloadIndexURL, v5);
-            [v4 decodeDoubleForKey:@"tekPublishInterval"];
+            [coderCopy decodeDoubleForKey:@"tekPublishInterval"];
             v18->_tekPublishInterval = v21;
-            v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tekUploadURL"];
+            v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tekUploadURL"];
             tekUploadURL = v18->_tekUploadURL;
             v18->_tekUploadURL = v22;
 
             objc_storeStrong(&v18->_acceptedReportTypes, v16);
-            v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"testVerificationAPIKey"];
+            v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"testVerificationAPIKey"];
             testVerificationAPIKey = v18->_testVerificationAPIKey;
             v18->_testVerificationAPIKey = v24;
 
-            v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"testVerificationCertificateURL"];
+            v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"testVerificationCertificateURL"];
             testVerificationCertificateURL = v18->_testVerificationCertificateURL;
             v18->_testVerificationCertificateURL = v26;
 
-            v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"testVerificationURL"];
+            v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"testVerificationURL"];
             testVerificationURL = v18->_testVerificationURL;
             v18->_testVerificationURL = v28;
 
@@ -351,34 +351,34 @@ LABEL_46:
           self = v18;
 
           v9 = v13;
-          v32 = self;
+          selfCopy = self;
         }
 
         else
         {
-          v32 = 0;
+          selfCopy = 0;
         }
       }
 
       else
       {
-        v32 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v32 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v32 = 0;
+    selfCopy = 0;
   }
 
   v33 = *MEMORY[0x277D85DE8];
-  return v32;
+  return selfCopy;
 }
 
 @end

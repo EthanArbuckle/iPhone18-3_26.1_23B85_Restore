@@ -1,13 +1,13 @@
 @interface AXFirstResponderValueChangeManager
 + (id)sharedInstance;
-- (id)_handleApostropheIfNeeded:(id)a3;
-- (id)_outputValueChangeForNewValue:(id)a3 oldValue:(id)a4 isFirstResponderValid:(BOOL)a5 selectedTextRange:(_NSRange)a6 oldSelectedTextRange:(_NSRange)a7 shouldEchoDeletion:(BOOL)a8 optionalValueChangeType:(unint64_t)a9 derivedValueChangeType:(unint64_t *)a10 didHitBorder:(BOOL *)a11 isBreakSpaceCharacter:(BOOL *)a12 isSingleInsert:(BOOL)a13 selectionDeleted:(BOOL)a14 feedbackType:(unint64_t)a15 textOperationOccurred:(BOOL *)a16 lastKeyboardKeyPress:(double)a17 isSingleCharacterInsertOrDelete:(BOOL *)a18 singleInsertDeleteAttString:(id *)a19 singleInsertDeleteString:(id *)a20 isSingleCharacterUpdate:(BOOL *)a21 wordRangeToFindMisspelled:(_NSRange *)a22 pasteOperationSucceeded:(BOOL *)a23 shouldOutputSingleCharactersOnly:(BOOL)a24 processApostrophes:(BOOL)a25;
-- (id)outputValueChangeForNewValue:(id)a3 oldValue:(id)a4 isFirstResponderValid:(BOOL)a5 selectedTextRange:(_NSRange)a6 oldSelectedTextRange:(_NSRange)a7 shouldEchoDeletion:(BOOL)a8 optionalValueChangeType:(unint64_t)a9 derivedValueChangeType:(unint64_t *)a10 didHitBorder:(BOOL *)a11 isBreakSpaceCharacter:(BOOL *)a12 isSingleInsert:(BOOL)a13 selectionDeleted:(BOOL)a14 feedbackType:(unint64_t)a15 textOperationOccurred:(BOOL *)a16 lastKeyboardKeyPress:(double)a17 isSingleCharacterInsertOrDelete:(BOOL *)a18 singleInsertDeleteAttString:(id *)a19 singleInsertDeleteString:(id *)a20 isSingleCharacterUpdate:(BOOL *)a21 wordRangeToFindMisspelled:(_NSRange *)a22 pasteOperationSucceeded:(BOOL *)a23 processApostrophes:(BOOL)a24;
-- (id)outputValueChangeForNewValue:(id)a3 oldValue:(id)a4 selectedTextRange:(_NSRange)a5 oldSelectedTextRange:(_NSRange)a6 shouldEchoDeletion:(BOOL)a7 isSingleInsert:(BOOL)a8 feedbackType:(unint64_t)a9 lastKeyboardKeyPress:(double)a10;
-- (id)outputValueChangeForNewValue:(id)a3 oldValue:(id)a4 selectedTextRange:(_NSRange)a5 shouldEchoDeletion:(BOOL)a6 isSingleInsert:(BOOL)a7 feedbackType:(unint64_t)a8 lastKeyboardKeyPress:(double)a9;
-- (id)outputValueChangeForNewValue:(id)a3 oldValue:(id)a4 selectedTextRange:(_NSRange)a5 shouldEchoDeletion:(BOOL)a6 isSingleInsert:(BOOL)a7 feedbackType:(unint64_t)a8 lastKeyboardKeyPress:(double)a9 shouldOutputSingleCharactersOnly:(BOOL)a10;
+- (id)_handleApostropheIfNeeded:(id)needed;
+- (id)_outputValueChangeForNewValue:(id)value oldValue:(id)oldValue isFirstResponderValid:(BOOL)valid selectedTextRange:(_NSRange)range oldSelectedTextRange:(_NSRange)textRange shouldEchoDeletion:(BOOL)deletion optionalValueChangeType:(unint64_t)type derivedValueChangeType:(unint64_t *)self0 didHitBorder:(BOOL *)self1 isBreakSpaceCharacter:(BOOL *)self2 isSingleInsert:(BOOL)self3 selectionDeleted:(BOOL)self4 feedbackType:(unint64_t)self5 textOperationOccurred:(BOOL *)self6 lastKeyboardKeyPress:(double)self7 isSingleCharacterInsertOrDelete:(BOOL *)self8 singleInsertDeleteAttString:(id *)self9 singleInsertDeleteString:(id *)deleteString isSingleCharacterUpdate:(BOOL *)update wordRangeToFindMisspelled:(_NSRange *)misspelled pasteOperationSucceeded:(BOOL *)succeeded shouldOutputSingleCharactersOnly:(BOOL)only processApostrophes:(BOOL)apostrophes;
+- (id)outputValueChangeForNewValue:(id)value oldValue:(id)oldValue isFirstResponderValid:(BOOL)valid selectedTextRange:(_NSRange)range oldSelectedTextRange:(_NSRange)textRange shouldEchoDeletion:(BOOL)deletion optionalValueChangeType:(unint64_t)type derivedValueChangeType:(unint64_t *)self0 didHitBorder:(BOOL *)self1 isBreakSpaceCharacter:(BOOL *)self2 isSingleInsert:(BOOL)self3 selectionDeleted:(BOOL)self4 feedbackType:(unint64_t)self5 textOperationOccurred:(BOOL *)self6 lastKeyboardKeyPress:(double)self7 isSingleCharacterInsertOrDelete:(BOOL *)self8 singleInsertDeleteAttString:(id *)self9 singleInsertDeleteString:(id *)deleteString isSingleCharacterUpdate:(BOOL *)update wordRangeToFindMisspelled:(_NSRange *)misspelled pasteOperationSucceeded:(BOOL *)succeeded processApostrophes:(BOOL)apostrophes;
+- (id)outputValueChangeForNewValue:(id)value oldValue:(id)oldValue selectedTextRange:(_NSRange)range oldSelectedTextRange:(_NSRange)textRange shouldEchoDeletion:(BOOL)deletion isSingleInsert:(BOOL)insert feedbackType:(unint64_t)type lastKeyboardKeyPress:(double)self0;
+- (id)outputValueChangeForNewValue:(id)value oldValue:(id)oldValue selectedTextRange:(_NSRange)range shouldEchoDeletion:(BOOL)deletion isSingleInsert:(BOOL)insert feedbackType:(unint64_t)type lastKeyboardKeyPress:(double)press;
+- (id)outputValueChangeForNewValue:(id)value oldValue:(id)oldValue selectedTextRange:(_NSRange)range shouldEchoDeletion:(BOOL)deletion isSingleInsert:(BOOL)insert feedbackType:(unint64_t)type lastKeyboardKeyPress:(double)press shouldOutputSingleCharactersOnly:(BOOL)self0;
 - (id)wordBreakSet;
-- (void)_handleAttributedApostropheIfNeeded:(id)a3;
+- (void)_handleAttributedApostropheIfNeeded:(id)needed;
 @end
 
 @implementation AXFirstResponderValueChangeManager
@@ -31,48 +31,48 @@ uint64_t __52__AXFirstResponderValueChangeManager_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)outputValueChangeForNewValue:(id)a3 oldValue:(id)a4 selectedTextRange:(_NSRange)a5 shouldEchoDeletion:(BOOL)a6 isSingleInsert:(BOOL)a7 feedbackType:(unint64_t)a8 lastKeyboardKeyPress:(double)a9
+- (id)outputValueChangeForNewValue:(id)value oldValue:(id)oldValue selectedTextRange:(_NSRange)range shouldEchoDeletion:(BOOL)deletion isSingleInsert:(BOOL)insert feedbackType:(unint64_t)type lastKeyboardKeyPress:(double)press
 {
-  BYTE1(v10) = a7;
-  LOBYTE(v10) = a6;
-  return [(AXFirstResponderValueChangeManager *)self outputValueChangeForNewValue:a3 oldValue:a4 selectedTextRange:a5.location oldSelectedTextRange:a5.length shouldEchoDeletion:0x7FFFFFFFLL isSingleInsert:0 feedbackType:a9 lastKeyboardKeyPress:v10, a8];
+  BYTE1(v10) = insert;
+  LOBYTE(v10) = deletion;
+  return [(AXFirstResponderValueChangeManager *)self outputValueChangeForNewValue:value oldValue:oldValue selectedTextRange:range.location oldSelectedTextRange:range.length shouldEchoDeletion:0x7FFFFFFFLL isSingleInsert:0 feedbackType:press lastKeyboardKeyPress:v10, type];
 }
 
-- (id)outputValueChangeForNewValue:(id)a3 oldValue:(id)a4 selectedTextRange:(_NSRange)a5 shouldEchoDeletion:(BOOL)a6 isSingleInsert:(BOOL)a7 feedbackType:(unint64_t)a8 lastKeyboardKeyPress:(double)a9 shouldOutputSingleCharactersOnly:(BOOL)a10
+- (id)outputValueChangeForNewValue:(id)value oldValue:(id)oldValue selectedTextRange:(_NSRange)range shouldEchoDeletion:(BOOL)deletion isSingleInsert:(BOOL)insert feedbackType:(unint64_t)type lastKeyboardKeyPress:(double)press shouldOutputSingleCharactersOnly:(BOOL)self0
 {
   BYTE1(v13) = 1;
-  LOBYTE(v13) = a10;
-  LOWORD(v12) = a7;
-  LOBYTE(v11) = a6;
-  return [(AXFirstResponderValueChangeManager *)self _outputValueChangeForNewValue:a3 oldValue:a4 isFirstResponderValid:1 selectedTextRange:a5.location oldSelectedTextRange:a5.length shouldEchoDeletion:a9 optionalValueChangeType:0x7FFFFFFFLL derivedValueChangeType:0 didHitBorder:v11 isBreakSpaceCharacter:0 isSingleInsert:0 selectionDeleted:0 feedbackType:0 textOperationOccurred:v12 lastKeyboardKeyPress:a8 isSingleCharacterInsertOrDelete:0 singleInsertDeleteAttString:0 singleInsertDeleteString:0 isSingleCharacterUpdate:0 wordRangeToFindMisspelled:0 pasteOperationSucceeded:0 shouldOutputSingleCharactersOnly:0 processApostrophes:v13];
+  LOBYTE(v13) = only;
+  LOWORD(v12) = insert;
+  LOBYTE(v11) = deletion;
+  return [(AXFirstResponderValueChangeManager *)self _outputValueChangeForNewValue:value oldValue:oldValue isFirstResponderValid:1 selectedTextRange:range.location oldSelectedTextRange:range.length shouldEchoDeletion:press optionalValueChangeType:0x7FFFFFFFLL derivedValueChangeType:0 didHitBorder:v11 isBreakSpaceCharacter:0 isSingleInsert:0 selectionDeleted:0 feedbackType:0 textOperationOccurred:v12 lastKeyboardKeyPress:type isSingleCharacterInsertOrDelete:0 singleInsertDeleteAttString:0 singleInsertDeleteString:0 isSingleCharacterUpdate:0 wordRangeToFindMisspelled:0 pasteOperationSucceeded:0 shouldOutputSingleCharactersOnly:0 processApostrophes:v13];
 }
 
-- (id)outputValueChangeForNewValue:(id)a3 oldValue:(id)a4 selectedTextRange:(_NSRange)a5 oldSelectedTextRange:(_NSRange)a6 shouldEchoDeletion:(BOOL)a7 isSingleInsert:(BOOL)a8 feedbackType:(unint64_t)a9 lastKeyboardKeyPress:(double)a10
+- (id)outputValueChangeForNewValue:(id)value oldValue:(id)oldValue selectedTextRange:(_NSRange)range oldSelectedTextRange:(_NSRange)textRange shouldEchoDeletion:(BOOL)deletion isSingleInsert:(BOOL)insert feedbackType:(unint64_t)type lastKeyboardKeyPress:(double)self0
 {
   LOBYTE(v13) = 1;
-  LOWORD(v12) = a8;
-  LOBYTE(v11) = a7;
-  return [(AXFirstResponderValueChangeManager *)self outputValueChangeForNewValue:a3 oldValue:a4 isFirstResponderValid:1 selectedTextRange:a5.location oldSelectedTextRange:a5.length shouldEchoDeletion:a10 optionalValueChangeType:a6.location derivedValueChangeType:a6.length didHitBorder:v11 isBreakSpaceCharacter:0 isSingleInsert:0 selectionDeleted:0 feedbackType:0 textOperationOccurred:v12 lastKeyboardKeyPress:a9 isSingleCharacterInsertOrDelete:0 singleInsertDeleteAttString:0 singleInsertDeleteString:0 isSingleCharacterUpdate:0 wordRangeToFindMisspelled:0 pasteOperationSucceeded:0 processApostrophes:0, v13];
+  LOWORD(v12) = insert;
+  LOBYTE(v11) = deletion;
+  return [(AXFirstResponderValueChangeManager *)self outputValueChangeForNewValue:value oldValue:oldValue isFirstResponderValid:1 selectedTextRange:range.location oldSelectedTextRange:range.length shouldEchoDeletion:press optionalValueChangeType:textRange.location derivedValueChangeType:textRange.length didHitBorder:v11 isBreakSpaceCharacter:0 isSingleInsert:0 selectionDeleted:0 feedbackType:0 textOperationOccurred:v12 lastKeyboardKeyPress:type isSingleCharacterInsertOrDelete:0 singleInsertDeleteAttString:0 singleInsertDeleteString:0 isSingleCharacterUpdate:0 wordRangeToFindMisspelled:0 pasteOperationSucceeded:0 processApostrophes:0, v13];
 }
 
-- (id)outputValueChangeForNewValue:(id)a3 oldValue:(id)a4 isFirstResponderValid:(BOOL)a5 selectedTextRange:(_NSRange)a6 oldSelectedTextRange:(_NSRange)a7 shouldEchoDeletion:(BOOL)a8 optionalValueChangeType:(unint64_t)a9 derivedValueChangeType:(unint64_t *)a10 didHitBorder:(BOOL *)a11 isBreakSpaceCharacter:(BOOL *)a12 isSingleInsert:(BOOL)a13 selectionDeleted:(BOOL)a14 feedbackType:(unint64_t)a15 textOperationOccurred:(BOOL *)a16 lastKeyboardKeyPress:(double)a17 isSingleCharacterInsertOrDelete:(BOOL *)a18 singleInsertDeleteAttString:(id *)a19 singleInsertDeleteString:(id *)a20 isSingleCharacterUpdate:(BOOL *)a21 wordRangeToFindMisspelled:(_NSRange *)a22 pasteOperationSucceeded:(BOOL *)a23 processApostrophes:(BOOL)a24
+- (id)outputValueChangeForNewValue:(id)value oldValue:(id)oldValue isFirstResponderValid:(BOOL)valid selectedTextRange:(_NSRange)range oldSelectedTextRange:(_NSRange)textRange shouldEchoDeletion:(BOOL)deletion optionalValueChangeType:(unint64_t)type derivedValueChangeType:(unint64_t *)self0 didHitBorder:(BOOL *)self1 isBreakSpaceCharacter:(BOOL *)self2 isSingleInsert:(BOOL)self3 selectionDeleted:(BOOL)self4 feedbackType:(unint64_t)self5 textOperationOccurred:(BOOL *)self6 lastKeyboardKeyPress:(double)self7 isSingleCharacterInsertOrDelete:(BOOL *)self8 singleInsertDeleteAttString:(id *)self9 singleInsertDeleteString:(id *)deleteString isSingleCharacterUpdate:(BOOL *)update wordRangeToFindMisspelled:(_NSRange *)misspelled pasteOperationSucceeded:(BOOL *)succeeded processApostrophes:(BOOL)apostrophes
 {
-  BYTE1(v27) = a24;
+  BYTE1(v27) = apostrophes;
   LOBYTE(v27) = 0;
-  LOWORD(v26) = __PAIR16__(a14, a13);
-  LOBYTE(v25) = a8;
-  return [(AXFirstResponderValueChangeManager *)self _outputValueChangeForNewValue:a3 oldValue:a4 isFirstResponderValid:a5 selectedTextRange:a6.location oldSelectedTextRange:a6.length shouldEchoDeletion:a17 optionalValueChangeType:a7.location derivedValueChangeType:a7.length didHitBorder:v25 isBreakSpaceCharacter:a9 isSingleInsert:a10 selectionDeleted:a11 feedbackType:a12 textOperationOccurred:v26 lastKeyboardKeyPress:a15 isSingleCharacterInsertOrDelete:a16 singleInsertDeleteAttString:a18 singleInsertDeleteString:a19 isSingleCharacterUpdate:a20 wordRangeToFindMisspelled:a21 pasteOperationSucceeded:a22 shouldOutputSingleCharactersOnly:a23 processApostrophes:v27];
+  LOWORD(v26) = __PAIR16__(deleted, insert);
+  LOBYTE(v25) = deletion;
+  return [(AXFirstResponderValueChangeManager *)self _outputValueChangeForNewValue:value oldValue:oldValue isFirstResponderValid:valid selectedTextRange:range.location oldSelectedTextRange:range.length shouldEchoDeletion:press optionalValueChangeType:textRange.location derivedValueChangeType:textRange.length didHitBorder:v25 isBreakSpaceCharacter:type isSingleInsert:changeType selectionDeleted:border feedbackType:character textOperationOccurred:v26 lastKeyboardKeyPress:feedbackType isSingleCharacterInsertOrDelete:occurred singleInsertDeleteAttString:delete singleInsertDeleteString:string isSingleCharacterUpdate:deleteString wordRangeToFindMisspelled:update pasteOperationSucceeded:misspelled shouldOutputSingleCharactersOnly:succeeded processApostrophes:v27];
 }
 
-- (id)_outputValueChangeForNewValue:(id)a3 oldValue:(id)a4 isFirstResponderValid:(BOOL)a5 selectedTextRange:(_NSRange)a6 oldSelectedTextRange:(_NSRange)a7 shouldEchoDeletion:(BOOL)a8 optionalValueChangeType:(unint64_t)a9 derivedValueChangeType:(unint64_t *)a10 didHitBorder:(BOOL *)a11 isBreakSpaceCharacter:(BOOL *)a12 isSingleInsert:(BOOL)a13 selectionDeleted:(BOOL)a14 feedbackType:(unint64_t)a15 textOperationOccurred:(BOOL *)a16 lastKeyboardKeyPress:(double)a17 isSingleCharacterInsertOrDelete:(BOOL *)a18 singleInsertDeleteAttString:(id *)a19 singleInsertDeleteString:(id *)a20 isSingleCharacterUpdate:(BOOL *)a21 wordRangeToFindMisspelled:(_NSRange *)a22 pasteOperationSucceeded:(BOOL *)a23 shouldOutputSingleCharactersOnly:(BOOL)a24 processApostrophes:(BOOL)a25
+- (id)_outputValueChangeForNewValue:(id)value oldValue:(id)oldValue isFirstResponderValid:(BOOL)valid selectedTextRange:(_NSRange)range oldSelectedTextRange:(_NSRange)textRange shouldEchoDeletion:(BOOL)deletion optionalValueChangeType:(unint64_t)type derivedValueChangeType:(unint64_t *)self0 didHitBorder:(BOOL *)self1 isBreakSpaceCharacter:(BOOL *)self2 isSingleInsert:(BOOL)self3 selectionDeleted:(BOOL)self4 feedbackType:(unint64_t)self5 textOperationOccurred:(BOOL *)self6 lastKeyboardKeyPress:(double)self7 isSingleCharacterInsertOrDelete:(BOOL *)self8 singleInsertDeleteAttString:(id *)self9 singleInsertDeleteString:(id *)deleteString isSingleCharacterUpdate:(BOOL *)update wordRangeToFindMisspelled:(_NSRange *)misspelled pasteOperationSucceeded:(BOOL *)succeeded shouldOutputSingleCharactersOnly:(BOOL)only processApostrophes:(BOOL)apostrophes
 {
-  location = a6.location;
-  v27 = a5;
-  v185 = a3;
-  v29 = a4;
-  if (a16)
+  location = range.location;
+  validCopy = valid;
+  valueCopy = value;
+  oldValueCopy = oldValue;
+  if (occurred)
   {
-    v178 = *a16;
+    v178 = *occurred;
   }
 
   else
@@ -80,26 +80,26 @@ uint64_t __52__AXFirstResponderValueChangeManager_sharedInstance__block_invoke()
     v178 = 0;
   }
 
-  v183 = [MEMORY[0x1E6988D60] string];
-  v30 = [MEMORY[0x1E696AEC0] string];
-  v31 = [v29 length];
-  v32 = [v185 length];
-  v182 = v29;
-  v184 = v30;
-  if ([v185 isAXAttributedString])
+  string = [MEMORY[0x1E6988D60] string];
+  string2 = [MEMORY[0x1E696AEC0] string];
+  v31 = [oldValueCopy length];
+  v32 = [valueCopy length];
+  v182 = oldValueCopy;
+  v184 = string2;
+  if ([valueCopy isAXAttributedString])
   {
     v188 = 0;
     v189 = 0;
-    v33 = [v185 attributesAtIndex:0 effectiveRange:&v188];
+    v33 = [valueCopy attributesAtIndex:0 effectiveRange:&v188];
     v34 = [v33 objectForKey:*MEMORY[0x1E6988EF8]];
-    v35 = [v34 BOOLValue];
+    bOOLValue = [v34 BOOLValue];
 
-    if (v35)
+    if (bOOLValue)
     {
-      v36 = [AXValueChangeUtilities phoneNumberWithoutFormattingCharacters:v29];
+      v36 = [AXValueChangeUtilities phoneNumberWithoutFormattingCharacters:oldValueCopy];
       v37 = [v36 length];
 
-      v38 = [AXValueChangeUtilities phoneNumberWithoutFormattingCharacters:v185];
+      v38 = [AXValueChangeUtilities phoneNumberWithoutFormattingCharacters:valueCopy];
       v39 = [v38 length];
 
       if (v37 <= v39)
@@ -111,13 +111,13 @@ uint64_t __52__AXFirstResponderValueChangeManager_sharedInstance__block_invoke()
           goto LABEL_102;
         }
 
-        v40 = [AXValueChangeUtilities handleValueChangeForPhoneDeletionWithOldString:v185 newString:v29];
+        v40 = [AXValueChangeUtilities handleValueChangeForPhoneDeletionWithOldString:valueCopy newString:oldValueCopy];
         v41 = 1;
       }
 
       else
       {
-        v40 = [AXValueChangeUtilities handleValueChangeForPhoneDeletionWithOldString:v29 newString:v185];
+        v40 = [AXValueChangeUtilities handleValueChangeForPhoneDeletionWithOldString:oldValueCopy newString:valueCopy];
         v41 = 2;
       }
 
@@ -136,25 +136,25 @@ LABEL_104:
       goto LABEL_105;
     }
 
-    v30 = v184;
+    string2 = v184;
   }
 
-  v42 = a9 != 2 && v31 <= v32;
+  v42 = type != 2 && v31 <= v32;
   v43 = !v42;
-  if (a9 == 1 || !v43 || !a8)
+  if (type == 1 || !v43 || !deletion)
   {
-    v46 = a9 == 1 || v31 < v32;
-    if (a9 != 2 && v46)
+    v46 = type == 1 || v31 < v32;
+    if (type != 2 && v46)
     {
-      v170 = a7.location;
+      v170 = textRange.location;
       v171 = v31 - v32;
       v47 = location - 1;
-      if (location == 0x80000000 || (v48 = location - 1, v47 > [v185 length]))
+      if (location == 0x80000000 || (v48 = location - 1, v47 > [valueCopy length]))
       {
-        v48 = [AXValueChangeUtilities findLocationOfDifferenceInOldString:v185 withNewString:v29];
+        v48 = [AXValueChangeUtilities findLocationOfDifferenceInOldString:valueCopy withNewString:oldValueCopy];
       }
 
-      v175 = [(AXFirstResponderValueChangeManager *)self wordBreakSet];
+      wordBreakSet = [(AXFirstResponderValueChangeManager *)self wordBreakSet];
       v49 = v32 - v31;
       if (v32 - v31 >= 0)
       {
@@ -166,13 +166,13 @@ LABEL_104:
         v50 = v31 - v32;
       }
 
-      if (v50 >= 2 && !a13 && !a14)
+      if (v50 >= 2 && !insert && !deleted)
       {
         if (v48 < v32)
         {
           v51 = &stru_1EFE6D570;
           v52 = v48;
-          while (([v175 characterIsMember:{objc_msgSend(v185, "characterAtIndex:", v52)}] & 1) == 0)
+          while (([wordBreakSet characterIsMember:{objc_msgSend(valueCopy, "characterAtIndex:", v52)}] & 1) == 0)
           {
             if (v32 == ++v52)
             {
@@ -183,8 +183,8 @@ LABEL_104:
             }
           }
 
-          v115 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-          v53 = [v115 characterIsMember:{objc_msgSend(v185, "characterAtIndex:", v52)}] ^ 1;
+          whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+          v53 = [whitespaceCharacterSet characterIsMember:{objc_msgSend(valueCopy, "characterAtIndex:", v52)}] ^ 1;
 
           v172 = 0;
           goto LABEL_118;
@@ -193,7 +193,7 @@ LABEL_104:
         goto LABEL_77;
       }
 
-      if (!a13 && !a14)
+      if (!insert && !deleted)
       {
 LABEL_77:
         v53 = 0;
@@ -205,7 +205,7 @@ LABEL_118:
         goto LABEL_119;
       }
 
-      if ((v48 & 0x8000000000000000) != 0 || v48 >= [v185 length])
+      if ((v48 & 0x8000000000000000) != 0 || v48 >= [valueCopy length])
       {
         v53 = 0;
         v172 = 0;
@@ -213,10 +213,10 @@ LABEL_118:
         goto LABEL_117;
       }
 
-      v187 = [v185 characterAtIndex:v48];
+      v187 = [valueCopy characterAtIndex:v48];
       v181 = [objc_allocWithZone(MEMORY[0x1E696AEC0]) initWithCharacters:&v187 length:1];
-      v79 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-      v80 = [v79 characterIsMember:v187];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+      v80 = [whitespaceAndNewlineCharacterSet characterIsMember:v187];
 
       if (v80)
       {
@@ -225,11 +225,11 @@ LABEL_118:
           goto LABEL_283;
         }
 
-        v81 = [v185 rangeOfComposedCharacterSequenceAtIndex:v48 - 1];
-        v83 = [v185 substringWithRange:{v81, v82}];
+        v81 = [valueCopy rangeOfComposedCharacterSequenceAtIndex:v48 - 1];
+        v83 = [valueCopy substringWithRange:{v81, v82}];
         if ([v83 length] == 1)
         {
-          v80 = [v175 characterIsMember:{objc_msgSend(v83, "characterAtIndex:", 0)}];
+          v80 = [wordBreakSet characterIsMember:{objc_msgSend(v83, "characterAtIndex:", 0)}];
         }
 
         else
@@ -240,7 +240,7 @@ LABEL_118:
         v47 = location - 1;
       }
 
-      if ((a15 & 0xFFFFFFFFFFFFFFFDLL) != 1 && !v80)
+      if ((feedbackType & 0xFFFFFFFFFFFFFFFDLL) != 1 && !v80)
       {
         v172 = 0;
         v51 = &stru_1EFE6D570;
@@ -261,10 +261,10 @@ LABEL_119:
           v90 = v32 - 1;
         }
 
-        if (v90 < [v185 length] && v90 < objc_msgSend(v29, "length"))
+        if (v90 < [valueCopy length] && v90 < objc_msgSend(oldValueCopy, "length"))
         {
-          v91 = [v185 length];
-          if (v91 < [v29 length] && objc_msgSend(v185, "characterAtIndex:", v90) == 8230 && objc_msgSend(v29, "characterAtIndex:", v90) == 46)
+          v91 = [valueCopy length];
+          if (v91 < [oldValueCopy length] && objc_msgSend(valueCopy, "characterAtIndex:", v90) == 8230 && objc_msgSend(oldValueCopy, "characterAtIndex:", v90) == 46)
           {
 
             v92 = 0;
@@ -278,9 +278,9 @@ LABEL_153:
           }
         }
 
-        if ((v90 & 0x8000000000000000) == 0 && v90 < [v185 length])
+        if ((v90 & 0x8000000000000000) == 0 && v90 < [valueCopy length])
         {
-          v93 = [v175 characterIsMember:{objc_msgSend(v185, "characterAtIndex:", v90)}];
+          v93 = [wordBreakSet characterIsMember:{objc_msgSend(valueCopy, "characterAtIndex:", v90)}];
           v94 = v171 >= 0 ? v171 : -v171;
           if (v93 && v94 == 1)
           {
@@ -292,7 +292,7 @@ LABEL_153:
               v97 = v90;
               while (1)
               {
-                v98 = [v175 characterIsMember:{objc_msgSend(v185, "characterAtIndex:", --v97)}];
+                v98 = [wordBreakSet characterIsMember:{objc_msgSend(valueCopy, "characterAtIndex:", --v97)}];
                 if (v98 && v95 == 0)
                 {
                   break;
@@ -320,17 +320,17 @@ LABEL_153:
 LABEL_146:
             v97 = -1;
 LABEL_147:
-            if ((a15 & 0xFFFFFFFFFFFFFFFELL) == 2)
+            if ((feedbackType & 0xFFFFFFFFFFFFFFFELL) == 2)
             {
               v57 = v90 - (v97 & ~(v97 >> 63));
               v180 = v97 & ~(v97 >> 63);
-              v100 = [v185 substringWithRange:?];
+              v100 = [valueCopy substringWithRange:?];
 
               if (!v100)
               {
                 v51 = 0;
                 v56 = v172;
-                v131 = v175;
+                v131 = wordBreakSet;
 LABEL_262:
                 v146 = [(__CFString *)v51 length];
                 if (v146)
@@ -353,9 +353,9 @@ LABEL_266:
                 goto LABEL_267;
               }
 
-              if ([v185 isAXAttributedString])
+              if ([valueCopy isAXAttributedString])
               {
-                v101 = [v185 attributeValueForKey:*MEMORY[0x1E6988D98]];
+                v101 = [valueCopy attributeValueForKey:*MEMORY[0x1E6988D98]];
               }
 
               else
@@ -363,14 +363,14 @@ LABEL_266:
                 v101 = 0;
               }
 
-              v132 = [(__CFString *)v100 stringByTrimmingEmptySpaceEdges];
+              stringByTrimmingEmptySpaceEdges = [(__CFString *)v100 stringByTrimmingEmptySpaceEdges];
               v133 = [v101 length];
-              v134 = v133 - [v132 length];
-              v135 = [v183 string];
-              if ([v135 length] == 1)
+              v134 = v133 - [stringByTrimmingEmptySpaceEdges length];
+              v183String = [string string];
+              if ([v183String length] == 1)
               {
-                v136 = [v183 string];
-                [v136 stringByTrimmingEmptySpaceEdges];
+                v183String2 = [string string];
+                [v183String2 stringByTrimmingEmptySpaceEdges];
                 v138 = v137 = v134;
                 v139 = [v138 isEqualToString:&stru_1EFE6D570];
 
@@ -385,27 +385,27 @@ LABEL_266:
 
               v56 = v172;
 
-              if ((v134 & 0x8000000000000000) != 0 || v134 >= [v101 length] || (objc_msgSend(v101, "substringFromIndex:", v134), v141 = objc_claimAutoreleasedReturnValue(), v142 = objc_msgSend(v141, "isEqualToString:", v132), v141, v140 & 1 | ((v142 & 1) == 0)))
+              if ((v134 & 0x8000000000000000) != 0 || v134 >= [v101 length] || (objc_msgSend(v101, "substringFromIndex:", v134), v141 = objc_claimAutoreleasedReturnValue(), v142 = objc_msgSend(v141, "isEqualToString:", stringByTrimmingEmptySpaceEdges), v141, v140 & 1 | ((v142 & 1) == 0)))
               {
-                v131 = v175;
+                v131 = wordBreakSet;
               }
 
               else
               {
-                v131 = v175;
-                if (location - a7.location >= 2)
+                v131 = wordBreakSet;
+                if (location - textRange.location >= 2)
                 {
                   v143 = +[AXSettings sharedInstance];
-                  v144 = [v143 voiceOverInlineTextCompletionInsertionFeedback];
+                  voiceOverInlineTextCompletionInsertionFeedback = [v143 voiceOverInlineTextCompletionInsertionFeedback];
 
                   v145 = [MEMORY[0x1E6988D60] axAttributedStringWithString:v101];
-                  if ((v144 & 2) != 0)
+                  if ((voiceOverInlineTextCompletionInsertionFeedback & 2) != 0)
                   {
-                    if ((v144 & 8) != 0)
+                    if ((voiceOverInlineTextCompletionInsertionFeedback & 8) != 0)
                     {
 LABEL_258:
                       [v145 setAttribute:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6988E58]];
-                      if ((v144 & 2) == 0)
+                      if ((voiceOverInlineTextCompletionInsertionFeedback & 2) == 0)
                       {
                         goto LABEL_306;
                       }
@@ -418,13 +418,13 @@ LABEL_258:
                   {
 
                     v100 = 0;
-                    if ((v144 & 8) != 0)
+                    if ((voiceOverInlineTextCompletionInsertionFeedback & 8) != 0)
                     {
                       goto LABEL_258;
                     }
                   }
 
-                  if ((v144 & 2) == 0)
+                  if ((voiceOverInlineTextCompletionInsertionFeedback & 2) == 0)
                   {
 LABEL_306:
 
@@ -455,7 +455,7 @@ LABEL_152:
           }
         }
 
-        if (a13)
+        if (insert)
         {
           goto LABEL_152;
         }
@@ -474,9 +474,9 @@ LABEL_155:
 
         if (v178)
         {
-          if (v48 + v49 <= [v185 length])
+          if (v48 + v49 <= [valueCopy length])
           {
-            v114 = [v185 substringWithRange:{v48, v49}];
+            v114 = [valueCopy substringWithRange:{v48, v49}];
 
             v92 = 0;
             v57 = 0;
@@ -489,19 +489,19 @@ LABEL_155:
           goto LABEL_155;
         }
 
-        if (a15 - 1 > 2 || [(__CFString *)v51 length]&& CFAbsoluteTimeGetCurrent() - a17 >= 0.5)
+        if (feedbackType - 1 > 2 || [(__CFString *)v51 length]&& CFAbsoluteTimeGetCurrent() - press >= 0.5)
         {
           if ((v53 & 1) == 0)
           {
 
-            if ((v90 & 0x8000000000000000) == 0 && v90 < [v185 length])
+            if ((v90 & 0x8000000000000000) == 0 && v90 < [valueCopy length])
             {
               v58 = 0;
               v92 = 0;
               v180 = 0x7FFFFFFFLL;
               v51 = &stru_1EFE6D570;
               v57 = 0;
-              if (![v175 characterIsMember:{objc_msgSend(v185, "characterAtIndex:", v90)}] || (v171 & 0x8000000000000000) == 0)
+              if (![wordBreakSet characterIsMember:{objc_msgSend(valueCopy, "characterAtIndex:", v90)}] || (v171 & 0x8000000000000000) == 0)
               {
 LABEL_156:
                 if ([(__CFString *)v51 length]== 1)
@@ -517,14 +517,14 @@ LABEL_156:
                 v173 = v103;
                 if ([(__CFString *)v51 length])
                 {
-                  v104 = v175;
+                  v104 = wordBreakSet;
                   v54 = ([(__CFString *)v51 isEqualToString:@" "]& 1) != 0 || [(__CFString *)v51 characterAtIndex:0]== 160;
                 }
 
                 else
                 {
                   v54 = 0;
-                  v104 = v175;
+                  v104 = wordBreakSet;
                 }
 
                 v176 = 0;
@@ -542,7 +542,7 @@ LABEL_156:
                   break;
                 }
 
-                v120 = [v175 characterIsMember:{objc_msgSend(v185, "characterAtIndex:", v119)}];
+                v120 = [wordBreakSet characterIsMember:{objc_msgSend(valueCopy, "characterAtIndex:", v119)}];
                 v121 = v120 & v118;
                 v118 |= v120 ^ 1;
                 if (v121 == 1)
@@ -555,7 +555,7 @@ LABEL_156:
 LABEL_324:
               v57 = v90 - (v119 & ~(v119 >> 63));
               v180 = v119 & ~(v119 >> 63);
-              v51 = [v185 substringWithRange:?];
+              v51 = [valueCopy substringWithRange:?];
 LABEL_325:
               v92 = 0;
               v58 = 0;
@@ -574,19 +574,19 @@ LABEL_267:
           goto LABEL_155;
         }
 
-        if (!v49 && location && location == a7.location)
+        if (!v49 && location && location == textRange.location)
         {
           v49 = 1;
         }
 
         else
         {
-          if (a7.location != 0x7FFFFFFF)
+          if (textRange.location != 0x7FFFFFFF)
           {
 LABEL_295:
-            if (v49 >= 1 && v170 + v49 <= [v185 length])
+            if (v49 >= 1 && v170 + v49 <= [valueCopy length])
             {
-              v160 = [v185 substringWithRange:{v170, v49}];
+              v160 = [valueCopy substringWithRange:{v170, v49}];
 
               v51 = v160;
             }
@@ -594,14 +594,14 @@ LABEL_295:
             if ([(__CFString *)v51 isEqualToString:&stru_1EFE6D570])
             {
               v161 = v170 + 1;
-              if ((v170 + 1) < 0 || v161 >= [v185 length])
+              if ((v170 + 1) < 0 || v161 >= [valueCopy length])
               {
                 v162 = 0;
               }
 
               else
               {
-                v162 = [v185 substringFromIndex:v161];
+                v162 = [valueCopy substringFromIndex:v161];
               }
             }
 
@@ -618,21 +618,21 @@ LABEL_295:
               if (v165)
               {
                 v166 = +[AXSettings sharedInstance];
-                v167 = [v166 voiceOverInlineTextCompletionAppearanceFeedback];
+                voiceOverInlineTextCompletionAppearanceFeedback = [v166 voiceOverInlineTextCompletionAppearanceFeedback];
 
-                if ((v167 & 2) == 0)
+                if ((voiceOverInlineTextCompletionAppearanceFeedback & 2) == 0)
                 {
 
                   v51 = 0;
                 }
 
                 v56 = v172;
-                if ((v167 & 8) != 0)
+                if ((voiceOverInlineTextCompletionAppearanceFeedback & 8) != 0)
                 {
                   [(__CFString *)v162 setAttribute:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6988EB8]];
                 }
 
-                if ((v167 & 2) != 0)
+                if ((voiceOverInlineTextCompletionAppearanceFeedback & 2) != 0)
                 {
                   v168 = v162;
 
@@ -675,16 +675,16 @@ LABEL_319:
       }
 
 LABEL_283:
-      if ([v185 isAXAttributedString])
+      if ([valueCopy isAXAttributedString])
       {
         v179 = v47;
         v188 = 0;
         v189 = 0;
-        v153 = [v185 attributesAtIndex:v48 effectiveRange:&v188];
+        v153 = [valueCopy attributesAtIndex:v48 effectiveRange:&v188];
         v186[0] = 0;
         v186[1] = 0;
         v154 = MEMORY[0x1E6988E98];
-        v174 = [v185 attribute:*MEMORY[0x1E6988E98] atIndex:v48 effectiveRange:v186];
+        v174 = [valueCopy attribute:*MEMORY[0x1E6988E98] atIndex:v48 effectiveRange:v186];
         if (v174 && v48 != v186[0])
         {
           v155 = [v153 mutableCopy];
@@ -703,7 +703,7 @@ LABEL_283:
 
         v51 = v158;
         v172 = 1;
-        v183 = v51;
+        string = v51;
       }
 
       else
@@ -719,29 +719,29 @@ LABEL_283:
       goto LABEL_289;
     }
 
-    v59 = [v29 isEqualToString:v185];
-    if ((a15 & 0xFFFFFFFFFFFFFFFDLL) == 1 && v59 && v32 == 1 && location != a7.location)
+    v59 = [oldValueCopy isEqualToString:valueCopy];
+    if ((feedbackType & 0xFFFFFFFFFFFFFFFDLL) == 1 && v59 && v32 == 1 && location != textRange.location)
     {
       v60 = location - 1;
-      if (location == 0x80000000 || v60 > [v185 length])
+      if (location == 0x80000000 || v60 > [valueCopy length])
       {
-        v60 = [AXValueChangeUtilities findLocationOfDifferenceInOldString:v185 withNewString:v29];
+        v60 = [AXValueChangeUtilities findLocationOfDifferenceInOldString:valueCopy withNewString:oldValueCopy];
       }
 
-      if ((v60 & 0x8000000000000000) == 0 && v60 < [v185 length])
+      if ((v60 & 0x8000000000000000) == 0 && v60 < [valueCopy length])
       {
-        LOWORD(v186[0]) = [v185 characterAtIndex:v60];
+        LOWORD(v186[0]) = [valueCopy characterAtIndex:v60];
         v61 = [objc_allocWithZone(MEMORY[0x1E696AEC0]) initWithCharacters:v186 length:1];
-        if ([v185 isAXAttributedString])
+        if ([valueCopy isAXAttributedString])
         {
           v188 = 0;
           v189 = 0;
-          v62 = [v185 attributesAtIndex:v60 effectiveRange:&v188];
+          v62 = [valueCopy attributesAtIndex:v60 effectiveRange:&v188];
           v63 = [MEMORY[0x1E6988D60] axAttributedStringWithString:v61];
           [v63 setAttributes:v62];
           v51 = v63;
 
-          v183 = v51;
+          string = v51;
         }
 
         else
@@ -774,7 +774,7 @@ LABEL_283:
       goto LABEL_166;
     }
 
-    v73 = [v29 isEqualToString:v185];
+    v73 = [oldValueCopy isEqualToString:valueCopy];
     v57 = 0;
     if (v32 > 0)
     {
@@ -788,7 +788,7 @@ LABEL_283:
 
     v51 = &stru_1EFE6D570;
     v180 = 0x7FFFFFFFLL;
-    if ((a15 & 0xFFFFFFFFFFFFFFFDLL) != 1 || v74 || v31 != v32 || v32 < 1)
+    if ((feedbackType & 0xFFFFFFFFFFFFFFFDLL) != 1 || v74 || v31 != v32 || v32 < 1)
     {
       v54 = 0;
       v55 = 0;
@@ -822,9 +822,9 @@ LABEL_113:
       v116 = 0;
     }
 
-    if ([v185 length] >= location)
+    if ([valueCopy length] >= location)
     {
-      v125 = [v185 substringToIndex:location];
+      v125 = [valueCopy substringToIndex:location];
     }
 
     else
@@ -878,9 +878,9 @@ LABEL_241:
         while (1)
         {
           v149 = v126 - 1;
-          if ([v185 length] >= (v126 - 1) && objc_msgSend(v182, "length") >= v149)
+          if ([valueCopy length] >= (v126 - 1) && objc_msgSend(v182, "length") >= v149)
           {
-            v150 = [v185 characterAtIndex:v126 - 1];
+            v150 = [valueCopy characterAtIndex:v126 - 1];
             if (v150 == [v182 characterAtIndex:v126 - 1])
             {
               break;
@@ -896,14 +896,14 @@ LABEL_241:
         }
       }
 
-      if ([v185 length] < location || (v151 = v126 & ~(v126 >> 63), objc_msgSend(v185, "length") < v151))
+      if ([valueCopy length] < location || (v151 = v126 & ~(v126 >> 63), objc_msgSend(valueCopy, "length") < v151))
       {
         v173 = 0;
         v51 = &stru_1EFE6D570;
         goto LABEL_241;
       }
 
-      v169 = [v185 substringWithRange:{v126 & ~(v126 >> 63), location - v151}];
+      v169 = [valueCopy substringWithRange:{v126 & ~(v126 >> 63), location - v151}];
     }
 
     v51 = v169;
@@ -911,9 +911,9 @@ LABEL_241:
     goto LABEL_241;
   }
 
-  if (a9 == 2)
+  if (type == 2)
   {
-    if (v27)
+    if (validCopy)
     {
       v44 = location;
     }
@@ -926,7 +926,7 @@ LABEL_241:
 
   else
   {
-    v44 = [AXValueChangeUtilities findLocationOfDifferenceInOldString:v29 withNewString:v185];
+    v44 = [AXValueChangeUtilities findLocationOfDifferenceInOldString:oldValueCopy withNewString:valueCopy];
   }
 
   if (v44 >= v31)
@@ -945,7 +945,7 @@ LABEL_241:
 
     else
     {
-      v75 = [v185 isEqualToString:v29];
+      v75 = [valueCopy isEqualToString:oldValueCopy];
       if (v44)
       {
         v76 = 0;
@@ -977,9 +977,9 @@ LABEL_241:
         v78 = v77;
       }
 
-      if (v78 + v44 <= [v29 length])
+      if (v78 + v44 <= [oldValueCopy length])
       {
-        v51 = [v29 substringWithRange:{v44, v78}];
+        v51 = [oldValueCopy substringWithRange:{v44, v78}];
       }
     }
   }
@@ -1008,10 +1008,10 @@ LABEL_105:
       {
         [v182 substringFromIndex:{objc_msgSend(v182, "length") - 1}];
         v85 = v84 = v54;
-        v86 = [v85 decomposedStringWithCanonicalMapping];
+        decomposedStringWithCanonicalMapping = [v85 decomposedStringWithCanonicalMapping];
 
-        [v86 rangeOfComposedCharacterSequenceAtIndex:0];
-        v88 = [v86 substringFromIndex:v87 - 1];
+        [decomposedStringWithCanonicalMapping rangeOfComposedCharacterSequenceAtIndex:0];
+        v88 = [decomposedStringWithCanonicalMapping substringFromIndex:v87 - 1];
 
         v55 = 0;
         v57 = 0;
@@ -1029,17 +1029,17 @@ LABEL_105:
 
     v64 = v54;
     v65 = [v182 substringFromIndex:{objc_msgSend(v182, "length") - 1}];
-    v66 = [v65 decomposedStringWithCanonicalMapping];
+    decomposedStringWithCanonicalMapping2 = [v65 decomposedStringWithCanonicalMapping];
 
-    v67 = [v185 substringFromIndex:{objc_msgSend(v185, "length") - 1}];
-    v68 = [v67 decomposedStringWithCanonicalMapping];
+    v67 = [valueCopy substringFromIndex:{objc_msgSend(valueCopy, "length") - 1}];
+    decomposedStringWithCanonicalMapping3 = [v67 decomposedStringWithCanonicalMapping];
 
-    [v66 rangeOfComposedCharacterSequenceAtIndex:0];
+    [decomposedStringWithCanonicalMapping2 rangeOfComposedCharacterSequenceAtIndex:0];
     v70 = v69;
-    [v68 rangeOfComposedCharacterSequenceAtIndex:0];
+    [decomposedStringWithCanonicalMapping3 rangeOfComposedCharacterSequenceAtIndex:0];
     if (v70 <= v71)
     {
-      if ([v182 isEqualToString:v185])
+      if ([v182 isEqualToString:valueCopy])
       {
         v173 = 2;
 LABEL_246:
@@ -1049,10 +1049,10 @@ LABEL_246:
       }
 
       v122 = [v182 substringWithRange:{0, objc_msgSend(v182, "length") - 1}];
-      v123 = [v185 substringWithRange:{0, objc_msgSend(v185, "length") - 1}];
+      v123 = [valueCopy substringWithRange:{0, objc_msgSend(valueCopy, "length") - 1}];
       if ([v123 isEqualToString:v122])
       {
-        v124 = v68;
+        v124 = decomposedStringWithCanonicalMapping3;
 
         v173 = 1;
         v51 = v124;
@@ -1070,7 +1070,7 @@ LABEL_246:
 
     else
     {
-      v72 = [v66 substringFromIndex:v70 - 1];
+      v72 = [decomposedStringWithCanonicalMapping2 substringFromIndex:v70 - 1];
       v173 = 2;
     }
 
@@ -1083,7 +1083,7 @@ LABEL_246:
   v56 = 0;
   v58 = 0;
 LABEL_166:
-  if (a24 && (AXLanguageIsSpeakableEmojiString() & 1) == 0)
+  if (only && (AXLanguageIsSpeakableEmojiString() & 1) == 0)
   {
     [(__CFString *)v51 rangeOfComposedCharacterSequenceAtIndex:0];
     if (v105 < [(__CFString *)v51 length])
@@ -1093,7 +1093,7 @@ LABEL_166:
     }
   }
 
-  if (a25)
+  if (apostrophes)
   {
     [(AXFirstResponderValueChangeManager *)self _handleApostropheIfNeeded:v51];
     v106 = v58;
@@ -1101,64 +1101,64 @@ LABEL_166:
 
     v109 = [(AXFirstResponderValueChangeManager *)self _handleApostropheIfNeeded:v184];
 
-    [(AXFirstResponderValueChangeManager *)self _handleAttributedApostropheIfNeeded:v183];
+    [(AXFirstResponderValueChangeManager *)self _handleAttributedApostropheIfNeeded:string];
     v51 = v108;
     v54 = v107;
     v58 = v106;
     v184 = v109;
   }
 
-  if (a11)
+  if (border)
   {
-    *a11 = v176;
+    *border = v176;
   }
 
-  if (a12)
+  if (character)
   {
-    *a12 = v54;
+    *character = v54;
   }
 
-  if (a16)
+  if (occurred)
   {
-    *a16 = v178;
+    *occurred = v178;
   }
 
-  if (a18)
+  if (delete)
   {
-    *a18 = v56;
+    *delete = v56;
   }
 
-  if (a21)
+  if (update)
   {
-    *a21 = v55;
+    *update = v55;
   }
 
-  if (a19)
+  if (string)
   {
-    v110 = v183;
-    *a19 = v183;
+    v110 = string;
+    *string = string;
   }
 
-  if (a20)
+  if (deleteString)
   {
     v111 = v184;
-    *a20 = v184;
+    *deleteString = v184;
   }
 
-  if (a22)
+  if (misspelled)
   {
-    a22->location = v180;
-    a22->length = v57;
+    misspelled->location = v180;
+    misspelled->length = v57;
   }
 
-  if (a23)
+  if (succeeded)
   {
-    *a23 = v58;
+    *succeeded = v58;
   }
 
-  if (a10)
+  if (changeType)
   {
-    *a10 = v173;
+    *changeType = v173;
   }
 
   v112 = v51;
@@ -1166,17 +1166,17 @@ LABEL_166:
   return v51;
 }
 
-- (id)_handleApostropheIfNeeded:(id)a3
+- (id)_handleApostropheIfNeeded:(id)needed
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"‘"])
+  neededCopy = needed;
+  if ([neededCopy isEqualToString:@"‘"])
   {
     v10 = @"typing.feedback.opening.single.quotation.mark";
   }
 
   else
   {
-    if (![v3 isEqualToString:@"’"])
+    if (![neededCopy isEqualToString:@"’"])
     {
       goto LABEL_6;
     }
@@ -1186,23 +1186,23 @@ LABEL_166:
 
   v11 = AXParameterizedLocalizedString(1, v10, v4, v5, v6, v7, v8, v9, v13);
 
-  v3 = v11;
+  neededCopy = v11;
 LABEL_6:
 
-  return v3;
+  return neededCopy;
 }
 
-- (void)_handleAttributedApostropheIfNeeded:(id)a3
+- (void)_handleAttributedApostropheIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [v4 string];
-  [v4 replaceString:{-[AXFirstResponderValueChangeManager _handleApostropheIfNeeded:](self, "_handleApostropheIfNeeded:", v5)}];
+  neededCopy = needed;
+  string = [neededCopy string];
+  [neededCopy replaceString:{-[AXFirstResponderValueChangeManager _handleApostropheIfNeeded:](self, "_handleApostropheIfNeeded:", string)}];
 }
 
 - (id)wordBreakSet
 {
-  v2 = [MEMORY[0x1E696AB08] wordBreakCharacterSet];
-  v3 = [v2 mutableCopy];
+  wordBreakCharacterSet = [MEMORY[0x1E696AB08] wordBreakCharacterSet];
+  v3 = [wordBreakCharacterSet mutableCopy];
 
   [v3 removeCharactersInString:@"'’"];
 

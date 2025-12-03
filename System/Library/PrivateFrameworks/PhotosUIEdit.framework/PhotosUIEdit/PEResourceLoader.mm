@@ -1,38 +1,38 @@
 @interface PEResourceLoader
-+ (void)_processResult:(id)a3 forRequest:(id)a4 resultHandler:(id)a5;
-- (BOOL)_adjustmentDataIsSupported:(id)a3;
++ (void)_processResult:(id)result forRequest:(id)request resultHandler:(id)handler;
+- (BOOL)_adjustmentDataIsSupported:(id)supported;
 - (BOOL)cancelAllRequests;
-- (PEResourceLoader)initWithAsset:(id)a3 loadingQueue:(id)a4;
-- (int64_t)workImageVersionForContentEditingInput:(id)a3;
+- (PEResourceLoader)initWithAsset:(id)asset loadingQueue:(id)queue;
+- (int64_t)workImageVersionForContentEditingInput:(id)input;
 - (void)_dequeueRequestIfNeeded;
-- (void)_downloadSignpostEvent:(const char *)a3;
-- (void)_handleSuccess:(BOOL)a3 withResult:(id)a4 forRequest:(id)a5 error:(id)a6;
-- (void)_initiateRequest:(id)a3;
-- (void)_processContentEditingInputRequestCompletion:(id)a3 info:(id)a4 forRequest:(id)a5;
-- (void)_processLoadedContentEditingInput:(id)a3 info:(id)a4 forRequest:(id)a5;
-- (void)_requestContentEditingInputForRequest:(id)a3 networkAccessAllowed:(BOOL)a4;
-- (void)_setResourcesAvailability:(int64_t)a3;
-- (void)enqueueRequest:(id)a3;
-- (void)setCurrentRequest:(id)a3;
+- (void)_downloadSignpostEvent:(const char *)event;
+- (void)_handleSuccess:(BOOL)success withResult:(id)result forRequest:(id)request error:(id)error;
+- (void)_initiateRequest:(id)request;
+- (void)_processContentEditingInputRequestCompletion:(id)completion info:(id)info forRequest:(id)request;
+- (void)_processLoadedContentEditingInput:(id)input info:(id)info forRequest:(id)request;
+- (void)_requestContentEditingInputForRequest:(id)request networkAccessAllowed:(BOOL)allowed;
+- (void)_setResourcesAvailability:(int64_t)availability;
+- (void)enqueueRequest:(id)request;
+- (void)setCurrentRequest:(id)request;
 @end
 
 @implementation PEResourceLoader
 
-- (void)_downloadSignpostEvent:(const char *)a3
+- (void)_downloadSignpostEvent:(const char *)event
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [(PEResourceLoader *)self currentRequest];
-  if (v4)
+  currentRequest = [(PEResourceLoader *)self currentRequest];
+  if (currentRequest)
   {
     v5 = PLPhotoEditGetLog();
-    v6 = os_signpost_id_make_with_pointer(v5, v4);
+    v6 = os_signpost_id_make_with_pointer(v5, currentRequest);
 
     v7 = PLPhotoEditGetLog();
     v8 = v7;
     if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
     {
       v9 = 136315138;
-      v10 = a3;
+      eventCopy = event;
       _os_signpost_emit_with_name_impl(&dword_25E6E9000, v8, OS_SIGNPOST_EVENT, v6, "EnterEditResourceRequest", "%s", &v9, 0xCu);
     }
   }
@@ -40,23 +40,23 @@
 
 - (void)_dequeueRequestIfNeeded
 {
-  v4 = [(PEResourceLoader *)self _enqueuedRequests];
-  if ([v4 count])
+  _enqueuedRequests = [(PEResourceLoader *)self _enqueuedRequests];
+  if ([_enqueuedRequests count])
   {
-    v3 = [v4 objectAtIndexedSubscript:0];
-    [v4 removeObject:v3];
+    v3 = [_enqueuedRequests objectAtIndexedSubscript:0];
+    [_enqueuedRequests removeObject:v3];
     [(PEResourceLoader *)self _initiateRequest:v3];
   }
 }
 
-- (void)_handleSuccess:(BOOL)a3 withResult:(id)a4 forRequest:(id)a5 error:(id)a6
+- (void)_handleSuccess:(BOOL)success withResult:(id)result forRequest:(id)request error:(id)error
 {
-  v8 = a3;
+  successCopy = success;
   v22[1] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v11 delegate];
+  resultCopy = result;
+  requestCopy = request;
+  errorCopy = error;
+  delegate = [requestCopy delegate];
   if ([(PEResourceLoader *)self simulateEditEntryError])
   {
     v14 = PLPhotoEditGetLog();
@@ -71,15 +71,15 @@
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"PEProtoSettingsErrorDomain" code:0 userInfo:v15];
 
-    v8 = 0;
-    v12 = v16;
+    successCopy = 0;
+    errorCopy = v16;
   }
 
   v17 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v18 = @"NO";
-    if (v8)
+    if (successCopy)
     {
       v18 = @"YES";
     }
@@ -89,15 +89,15 @@
     _os_log_impl(&dword_25E6E9000, v17, OS_LOG_TYPE_DEFAULT, "Resource loading success: %@", &v19, 0xCu);
   }
 
-  if (v8)
+  if (successCopy)
   {
-    [v10 _setRetrievedVersion:{objc_msgSend(v11, "_resolvedVersion")}];
-    [v13 resourceLoader:self request:v11 didCompleteWithResult:v10];
+    [resultCopy _setRetrievedVersion:{objc_msgSend(requestCopy, "_resolvedVersion")}];
+    [delegate resourceLoader:self request:requestCopy didCompleteWithResult:resultCopy];
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    [v13 resourceLoader:self request:v11 mediaLoadDidFailWithError:v12];
+    [delegate resourceLoader:self request:requestCopy mediaLoadDidFailWithError:errorCopy];
   }
 
   [(PEResourceLoader *)self setCurrentRequest:0];
@@ -105,11 +105,11 @@
   [(PEResourceLoader *)self _dequeueRequestIfNeeded];
 }
 
-- (void)_requestContentEditingInputForRequest:(id)a3 networkAccessAllowed:(BOOL)a4
+- (void)_requestContentEditingInputForRequest:(id)request networkAccessAllowed:(BOOL)allowed
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PEResourceLoader *)self asset];
+  allowedCopy = allowed;
+  requestCopy = request;
+  asset = [(PEResourceLoader *)self asset];
   objc_initWeak(&location, self);
   v8 = [MEMORY[0x277CBEAA8] now];
   if ([(PEResourceLoader *)self resourcesAvailability]== 1)
@@ -145,21 +145,21 @@
 LABEL_10:
   v11 = objc_alloc_init(MEMORY[0x277CD9850]);
   [v11 setForceReturnFullLivePhoto:1];
-  [v6 targetSize];
+  [requestCopy targetSize];
   [v11 setTargetSize:?];
   [v11 setContentMode:0];
-  v12 = [v6 version] == 1 || -[PEResourceLoader forceRunAsUnadjustedAsset](self, "forceRunAsUnadjustedAsset");
+  v12 = [requestCopy version] == 1 || -[PEResourceLoader forceRunAsUnadjustedAsset](self, "forceRunAsUnadjustedAsset");
   [v11 setForceRunAsUnadjustedAsset:v12];
   [v11 setSkipDisplaySizeImage:{-[PEResourceLoader skipDisplaySizeImage](self, "skipDisplaySizeImage")}];
-  [v11 setSkipLivePhotoImageAndAVAsset:{objc_msgSend(v6, "skipLivePhotoImageAndAVAsset")}];
-  v13 = [(PEResourceLoader *)self loadingQueue];
-  [v11 setResultHandlerQueue:v13];
+  [v11 setSkipLivePhotoImageAndAVAsset:{objc_msgSend(requestCopy, "skipLivePhotoImageAndAVAsset")}];
+  loadingQueue = [(PEResourceLoader *)self loadingQueue];
+  [v11 setResultHandlerQueue:loadingQueue];
 
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __79__PEResourceLoader__requestContentEditingInputForRequest_networkAccessAllowed___block_invoke;
   v35[3] = &unk_279A31258;
-  v14 = v6;
+  v14 = requestCopy;
   v36 = v14;
   [v11 setCanHandleRAW:v35];
   v33[0] = MEMORY[0x277D85DD0];
@@ -169,12 +169,12 @@ LABEL_10:
   objc_copyWeak(&v34, &location);
   [v11 setCanHandleAdjustmentData:v33];
   [v11 setRequireOriginalsDownloaded:{objc_msgSend(v14, "requireOriginalsDownloaded")}];
-  if (v4)
+  if (allowedCopy)
   {
-    v15 = [v14 delegate];
+    delegate = [v14 delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v15 photoEditResourceLoadRequestWillBeginDownload:v14];
+      [delegate photoEditResourceLoadRequestWillBeginDownload:v14];
     }
 
     if (objc_opt_respondsToSelector())
@@ -183,8 +183,8 @@ LABEL_10:
       v29[1] = 3221225472;
       v29[2] = __79__PEResourceLoader__requestContentEditingInputForRequest_networkAccessAllowed___block_invoke_3;
       v29[3] = &unk_279A312D0;
-      v30 = v15;
-      v31 = self;
+      v30 = delegate;
+      selfCopy = self;
       v32 = v14;
       [v11 setProgressHandler:v29];
     }
@@ -219,11 +219,11 @@ LABEL_10:
   v22 = buf;
   v17 = v8;
   v20 = v17;
-  v24 = v4;
+  v24 = allowedCopy;
   objc_copyWeak(&v23, &location);
   v18 = v14;
   v21 = v18;
-  self->__contentEditingRequestID = [v7 requestContentEditingInputWithOptions:v11 completionHandler:v19];
+  self->__contentEditingRequestID = [asset requestContentEditingInputWithOptions:v11 completionHandler:v19];
 
   objc_destroyWeak(&v23);
   _Block_object_dispose(buf, 8);
@@ -336,16 +336,16 @@ void __79__PEResourceLoader__requestContentEditingInputForRequest_networkAccessA
   }
 }
 
-- (BOOL)_adjustmentDataIsSupported:(id)a3
+- (BOOL)_adjustmentDataIsSupported:(id)supported
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  supportedCopy = supported;
   v4 = objc_alloc_init(MEMORY[0x277D3AD18]);
-  v5 = [v3 data];
-  v6 = [v3 formatIdentifier];
-  v7 = [v3 formatVersion];
+  data = [supportedCopy data];
+  formatIdentifier = [supportedCopy formatIdentifier];
+  formatVersion = [supportedCopy formatVersion];
   v18 = 0;
-  v8 = [v4 loadCompositionFrom:v5 formatIdentifier:v6 formatVersion:v7 sidecarData:0 error:&v18];
+  v8 = [v4 loadCompositionFrom:data formatIdentifier:formatIdentifier formatVersion:formatVersion sidecarData:0 error:&v18];
   v9 = v18;
 
   v10 = PLPhotoEditGetLog();
@@ -354,12 +354,12 @@ void __79__PEResourceLoader__requestContentEditingInputForRequest_networkAccessA
   {
     if (v11)
     {
-      v12 = [v3 formatIdentifier];
-      v13 = [v3 formatVersion];
+      formatIdentifier2 = [supportedCopy formatIdentifier];
+      formatVersion2 = [supportedCopy formatVersion];
       *buf = 138412546;
-      v20 = v12;
+      v20 = formatIdentifier2;
       v21 = 2112;
-      v22 = v13;
+      v22 = formatVersion2;
       v14 = "PEResourceLoader: Loaded previous adjustments from data with a supported format: %@/%@";
       v15 = v10;
       v16 = 22;
@@ -370,12 +370,12 @@ LABEL_6:
 
   else if (v11)
   {
-    v12 = [v3 formatIdentifier];
-    v13 = [v3 formatVersion];
+    formatIdentifier2 = [supportedCopy formatIdentifier];
+    formatVersion2 = [supportedCopy formatVersion];
     *buf = 138412802;
-    v20 = v12;
+    v20 = formatIdentifier2;
     v21 = 2112;
-    v22 = v13;
+    v22 = formatVersion2;
     v23 = 2112;
     v24 = v9;
     v14 = "PEResourceLoader: Previous adjustments data has an unsupported format (%@/%@) or unsupported adjustments. Starting from current render, treating previous adjustments as opaque. Error: %@";
@@ -387,16 +387,16 @@ LABEL_6:
   return v8 != 0;
 }
 
-- (void)_processContentEditingInputRequestCompletion:(id)a3 info:(id)a4 forRequest:(id)a5
+- (void)_processContentEditingInputRequestCompletion:(id)completion info:(id)info forRequest:(id)request
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PEResourceLoader *)self asset];
-  v12 = [v9 objectForKeyedSubscript:*MEMORY[0x277CD9BA8]];
-  v13 = [v9 objectForKeyedSubscript:*MEMORY[0x277CD9BB0]];
-  v14 = [v13 BOOLValue];
+  completionCopy = completion;
+  infoCopy = info;
+  requestCopy = request;
+  asset = [(PEResourceLoader *)self asset];
+  v12 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CD9BA8]];
+  v13 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CD9BB0]];
+  bOOLValue = [v13 BOOLValue];
 
   if ([(PEResourceLoader *)self resourcesAvailability]== 2)
   {
@@ -405,40 +405,40 @@ LABEL_6:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v27) = v8 != 0;
+      LODWORD(v27) = completionCopy != 0;
       _os_log_impl(&dword_25E6E9000, v15, OS_LOG_TYPE_DEFAULT, "download completed - success: %d", buf, 8u);
     }
 
-    v16 = [v10 delegate];
+    delegate = [requestCopy delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v16 photoEditResourceLoadRequestDidCompleteDownload:v10];
+      [delegate photoEditResourceLoadRequestDidCompleteDownload:requestCopy];
     }
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    [(PEResourceLoader *)self _processLoadedContentEditingInput:v8 info:v9 forRequest:v10];
+    [(PEResourceLoader *)self _processLoadedContentEditingInput:completionCopy info:infoCopy forRequest:requestCopy];
   }
 
-  else if (v14 && [(PEResourceLoader *)self resourcesAvailability]== 1)
+  else if (bOOLValue && [(PEResourceLoader *)self resourcesAvailability]== 1)
   {
     v17 = PLPhotoEditGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v27 = v11;
+      v27 = asset;
       _os_log_impl(&dword_25E6E9000, v17, OS_LOG_TYPE_DEFAULT, "download is required for asset: %@", buf, 0xCu);
     }
 
     [(PEResourceLoader *)self _downloadSignpostEvent:"Download is required"];
     [(PEResourceLoader *)self _setResourcesAvailability:2];
-    [(PEResourceLoader *)self _requestContentEditingInputForRequest:v10 networkAccessAllowed:1];
+    [(PEResourceLoader *)self _requestContentEditingInputForRequest:requestCopy networkAccessAllowed:1];
   }
 
   else
   {
-    v18 = [v9 objectForKeyedSubscript:*MEMORY[0x277CD9BA0]];
+    v18 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CD9BA0]];
     if ([v18 BOOLValue])
     {
       [(PEResourceLoader *)self _downloadSignpostEvent:"Canceled download"];
@@ -453,15 +453,15 @@ LABEL_6:
     }
 
     [(PEResourceLoader *)self _setResourcesAvailability:4];
-    v20 = [v10 delegate];
+    delegate2 = [requestCopy delegate];
     if (objc_opt_respondsToSelector())
     {
-      v21 = [v20 callbackQueue];
+      callbackQueue = [delegate2 callbackQueue];
     }
 
     else
     {
-      v21 = MEMORY[0x277D85CD0];
+      callbackQueue = MEMORY[0x277D85CD0];
       v22 = MEMORY[0x277D85CD0];
     }
 
@@ -470,19 +470,19 @@ LABEL_6:
     block[2] = __81__PEResourceLoader__processContentEditingInputRequestCompletion_info_forRequest___block_invoke;
     block[3] = &unk_279A31230;
     block[4] = self;
-    v24 = v10;
+    v24 = requestCopy;
     v12 = v12;
     v25 = v12;
-    dispatch_async(v21, block);
+    dispatch_async(callbackQueue, block);
   }
 }
 
-- (void)_processLoadedContentEditingInput:(id)a3 info:(id)a4 forRequest:(id)a5
+- (void)_processLoadedContentEditingInput:(id)input info:(id)info forRequest:(id)request
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [(PEResourceLoader *)self asset];
+  inputCopy = input;
+  requestCopy = request;
+  asset = [(PEResourceLoader *)self asset];
   v10 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -496,7 +496,7 @@ LABEL_6:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v30 = v9;
+      v30 = asset;
       _os_log_impl(&dword_25E6E9000, v11, OS_LOG_TYPE_DEFAULT, "nothing to download, can continue loading stuff right away for asset: %@", buf, 0xCu);
     }
 
@@ -504,11 +504,11 @@ LABEL_6:
   }
 
   [(PEResourceLoader *)self _setResourcesAvailability:3];
-  [v8 _resolveVersionIfNeededWithWorkVersion:{-[PEResourceLoader workImageVersionForContentEditingInput:](self, "workImageVersionForContentEditingInput:", v7)}];
-  v12 = [v7 uniformTypeIdentifier];
-  if (v12)
+  [requestCopy _resolveVersionIfNeededWithWorkVersion:{-[PEResourceLoader workImageVersionForContentEditingInput:](self, "workImageVersionForContentEditingInput:", inputCopy)}];
+  uniformTypeIdentifier = [inputCopy uniformTypeIdentifier];
+  if (uniformTypeIdentifier)
   {
-    v13 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v12];
+    v13 = [MEMORY[0x277CE1CB8] typeWithIdentifier:uniformTypeIdentifier];
     v14 = [v13 conformsToType:*MEMORY[0x277CE1E48]];
   }
 
@@ -517,36 +517,36 @@ LABEL_6:
     v14 = 0;
   }
 
-  v15 = +[PEResourceLoadResult _resultWithContentEditingInput:asset:assetLoadingAsRaw:](PEResourceLoadResult, "_resultWithContentEditingInput:asset:assetLoadingAsRaw:", v7, v9, [v8 assetLoadingAsRaw] & v14);
-  [v15 _setRetrievedVersion:{objc_msgSend(v8, "_resolvedVersion")}];
-  v16 = [(PEResourceLoader *)self adjustmentIdentifierAndVersion];
-  [v15 _setAdjustmentIdentifierAndVersion:v16];
+  v15 = +[PEResourceLoadResult _resultWithContentEditingInput:asset:assetLoadingAsRaw:](PEResourceLoadResult, "_resultWithContentEditingInput:asset:assetLoadingAsRaw:", inputCopy, asset, [requestCopy assetLoadingAsRaw] & v14);
+  [v15 _setRetrievedVersion:{objc_msgSend(requestCopy, "_resolvedVersion")}];
+  adjustmentIdentifierAndVersion = [(PEResourceLoader *)self adjustmentIdentifierAndVersion];
+  [v15 _setAdjustmentIdentifierAndVersion:adjustmentIdentifierAndVersion];
 
-  v17 = [v8 delegate];
+  delegate = [requestCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    v18 = [v17 callbackQueue];
+    callbackQueue = [delegate callbackQueue];
   }
 
   else
   {
-    v18 = MEMORY[0x277D85CD0];
+    callbackQueue = MEMORY[0x277D85CD0];
     v19 = MEMORY[0x277D85CD0];
   }
 
-  v20 = [(PEResourceLoader *)self processingQueue];
+  processingQueue = [(PEResourceLoader *)self processingQueue];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __70__PEResourceLoader__processLoadedContentEditingInput_info_forRequest___block_invoke;
   v24[3] = &unk_279A31208;
   v25 = v15;
-  v26 = v8;
-  v27 = v18;
-  v28 = self;
-  v21 = v18;
-  v22 = v8;
+  v26 = requestCopy;
+  v27 = callbackQueue;
+  selfCopy = self;
+  v21 = callbackQueue;
+  v22 = requestCopy;
   v23 = v15;
-  dispatch_async(v20, v24);
+  dispatch_async(processingQueue, v24);
 }
 
 void __70__PEResourceLoader__processLoadedContentEditingInput_info_forRequest___block_invoke(id *a1)
@@ -595,16 +595,16 @@ void __70__PEResourceLoader__processLoadedContentEditingInput_info_forRequest___
   dispatch_async(v7, block);
 }
 
-- (int64_t)workImageVersionForContentEditingInput:(id)a3
+- (int64_t)workImageVersionForContentEditingInput:(id)input
 {
-  v3 = [a3 baseVersion];
+  baseVersion = [input baseVersion];
   v4 = 2;
-  if (v3 != 1)
+  if (baseVersion != 1)
   {
     v4 = 3;
   }
 
-  if (v3)
+  if (baseVersion)
   {
     return v4;
   }
@@ -615,32 +615,32 @@ void __70__PEResourceLoader__processLoadedContentEditingInput_info_forRequest___
   }
 }
 
-- (void)_initiateRequest:(id)a3
+- (void)_initiateRequest:(id)request
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(PEResourceLoader *)self setCurrentRequest:v4];
+  requestCopy = request;
+  [(PEResourceLoader *)self setCurrentRequest:requestCopy];
   v5 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PEResourceLoader *)self asset];
+    asset = [(PEResourceLoader *)self asset];
     v7 = 138412290;
-    v8 = v6;
+    v8 = asset;
     _os_log_impl(&dword_25E6E9000, v5, OS_LOG_TYPE_DEFAULT, "[PEResourceLoader _initiateRequest:]: initiating request for: %@", &v7, 0xCu);
   }
 
   [(PEResourceLoader *)self _setResourcesAvailability:1];
-  [(PEResourceLoader *)self _requestContentEditingInputForRequest:v4 networkAccessAllowed:0];
+  [(PEResourceLoader *)self _requestContentEditingInputForRequest:requestCopy networkAccessAllowed:0];
 }
 
-- (void)setCurrentRequest:(id)a3
+- (void)setCurrentRequest:(id)request
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  requestCopy = request;
   currentRequest = self->_currentRequest;
   p_currentRequest = &self->_currentRequest;
   v6 = currentRequest;
-  if (currentRequest != v5)
+  if (currentRequest != requestCopy)
   {
     if (v6)
     {
@@ -656,29 +656,29 @@ void __70__PEResourceLoader__processLoadedContentEditingInput_info_forRequest___
       }
     }
 
-    if (v5)
+    if (requestCopy)
     {
       v13 = PLPhotoEditGetLog();
-      v14 = os_signpost_id_make_with_pointer(v13, v5);
+      v14 = os_signpost_id_make_with_pointer(v13, requestCopy);
 
       v15 = PLPhotoEditGetLog();
       v16 = v15;
       if (v14 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
       {
-        v17 = [(PEResourceLoadRequest *)*p_currentRequest version];
-        v18 = [(PEResourceLoadRequest *)*p_currentRequest requireLocalResources];
-        v19 = [(PEResourceLoadRequest *)*p_currentRequest requireAdjustments];
+        version = [(PEResourceLoadRequest *)*p_currentRequest version];
+        requireLocalResources = [(PEResourceLoadRequest *)*p_currentRequest requireLocalResources];
+        requireAdjustments = [(PEResourceLoadRequest *)*p_currentRequest requireAdjustments];
         [(PEResourceLoadRequest *)*p_currentRequest targetSize];
         *&v20 = v20;
         v21 = *&v20;
         [(PEResourceLoadRequest *)*p_currentRequest targetSize];
         *&v22 = v22;
         v23[0] = 67110144;
-        v23[1] = v17;
+        v23[1] = version;
         v24 = 1024;
-        v25 = v18;
+        v25 = requireLocalResources;
         v26 = 1024;
-        v27 = v19;
+        v27 = requireAdjustments;
         v28 = 2048;
         v29 = v21;
         v30 = 2048;
@@ -687,20 +687,20 @@ void __70__PEResourceLoader__processLoadedContentEditingInput_info_forRequest___
       }
     }
 
-    objc_storeStrong(p_currentRequest, a3);
+    objc_storeStrong(p_currentRequest, request);
   }
 }
 
-- (void)_setResourcesAvailability:(int64_t)a3
+- (void)_setResourcesAvailability:(int64_t)availability
 {
   v28 = *MEMORY[0x277D85DE8];
-  if (self->_resourcesAvailability == a3)
+  if (self->_resourcesAvailability == availability)
   {
     return;
   }
 
-  v5 = [(PEResourceLoader *)self currentRequest];
-  v6 = [v5 delegate];
+  currentRequest = [(PEResourceLoader *)self currentRequest];
+  delegate = [currentRequest delegate];
 
   v7 = objc_opt_respondsToSelector();
   v8 = PLPhotoEditGetLog();
@@ -708,10 +708,10 @@ void __70__PEResourceLoader__processLoadedContentEditingInput_info_forRequest___
   v10 = os_signpost_id_make_with_pointer(v9, self);
 
   resourcesAvailability = self->_resourcesAvailability;
-  v12 = a3 - 1;
-  if (a3 != 1 || resourcesAvailability == 1)
+  v12 = availability - 1;
+  if (availability != 1 || resourcesAvailability == 1)
   {
-    if (a3 != 1 && resourcesAvailability == 1)
+    if (availability != 1 && resourcesAvailability == 1)
     {
       v19 = v8;
       v20 = v19;
@@ -724,7 +724,7 @@ void __70__PEResourceLoader__processLoadedContentEditingInput_info_forRequest___
       resourcesAvailability = self->_resourcesAvailability;
     }
 
-    if (a3 == 2 && resourcesAvailability != 2)
+    if (availability == 2 && resourcesAvailability != 2)
     {
       v21 = v8;
       if (v10 - 1 > 0xFFFFFFFFFFFFFFFDLL)
@@ -758,7 +758,7 @@ void __70__PEResourceLoader__processLoadedContentEditingInput_info_forRequest___
     resourcesAvailability = self->_resourcesAvailability;
   }
 
-  if (a3 == 2 || resourcesAvailability != 2)
+  if (availability == 2 || resourcesAvailability != 2)
   {
     goto LABEL_26;
   }
@@ -781,11 +781,11 @@ LABEL_25:
 
   resourcesAvailability = self->_resourcesAvailability;
 LABEL_26:
-  self->_resourcesAvailability = a3;
+  self->_resourcesAvailability = availability;
   if (v7)
   {
-    v23 = [(PEResourceLoader *)self currentRequest];
-    [v6 photoEditResourceLoadRequestResourcesAvailabilityChanged:v23 previousAvailability:resourcesAvailability currentAvailability:a3];
+    currentRequest2 = [(PEResourceLoader *)self currentRequest];
+    [delegate photoEditResourceLoadRequestResourcesAvailabilityChanged:currentRequest2 previousAvailability:resourcesAvailability currentAvailability:availability];
   }
 
   v24 = PLPhotoEditGetLog();
@@ -809,14 +809,14 @@ LABEL_26:
 
 - (BOOL)cancelAllRequests
 {
-  v3 = [(PEResourceLoader *)self _enqueuedRequests];
-  [v3 removeAllObjects];
+  _enqueuedRequests = [(PEResourceLoader *)self _enqueuedRequests];
+  [_enqueuedRequests removeAllObjects];
 
   contentEditingRequestID = self->__contentEditingRequestID;
   if (contentEditingRequestID)
   {
-    v5 = [(PEResourceLoader *)self asset];
-    [v5 cancelContentEditingInputRequest:self->__contentEditingRequestID];
+    asset = [(PEResourceLoader *)self asset];
+    [asset cancelContentEditingInputRequest:self->__contentEditingRequestID];
   }
 
   self->__contentEditingRequestID = 0;
@@ -824,21 +824,21 @@ LABEL_26:
   return contentEditingRequestID != 0;
 }
 
-- (void)enqueueRequest:(id)a3
+- (void)enqueueRequest:(id)request
 {
-  v6 = [a3 copy];
-  v4 = [(PEResourceLoader *)self currentRequest];
+  v6 = [request copy];
+  currentRequest = [(PEResourceLoader *)self currentRequest];
 
-  if (v4)
+  if (currentRequest)
   {
-    v5 = [(PEResourceLoader *)self _enqueuedRequests];
-    if (!v5)
+    _enqueuedRequests = [(PEResourceLoader *)self _enqueuedRequests];
+    if (!_enqueuedRequests)
     {
-      v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      [(PEResourceLoader *)self _setEnqueuedRequests:v5];
+      _enqueuedRequests = objc_alloc_init(MEMORY[0x277CBEB18]);
+      [(PEResourceLoader *)self _setEnqueuedRequests:_enqueuedRequests];
     }
 
-    [v5 addObject:v6];
+    [_enqueuedRequests addObject:v6];
   }
 
   else
@@ -847,24 +847,24 @@ LABEL_26:
   }
 }
 
-- (PEResourceLoader)initWithAsset:(id)a3 loadingQueue:(id)a4
+- (PEResourceLoader)initWithAsset:(id)asset loadingQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
+  assetCopy = asset;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = PEResourceLoader;
   v10 = [(PEResourceLoader *)&v16 init];
   if (v10)
   {
-    if (!v8)
+    if (!assetCopy)
     {
-      v15 = [MEMORY[0x277CCA890] currentHandler];
-      [v15 handleFailureInMethod:a2 object:v10 file:@"PEResourceLoader.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v10 file:@"PEResourceLoader.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"asset"}];
     }
 
-    objc_storeStrong(&v10->_asset, a3);
-    objc_storeStrong(&v10->_loadingQueue, a4);
-    if (([v8 isResourceDownloadPossible] & 1) == 0)
+    objc_storeStrong(&v10->_asset, asset);
+    objc_storeStrong(&v10->_loadingQueue, queue);
+    if (([assetCopy isResourceDownloadPossible] & 1) == 0)
     {
       v10->_resourcesAvailability = 3;
     }
@@ -878,25 +878,25 @@ LABEL_26:
   return v10;
 }
 
-+ (void)_processResult:(id)a3 forRequest:(id)a4 resultHandler:(id)a5
++ (void)_processResult:(id)result forRequest:(id)request resultHandler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a5;
-  v8 = [v6 editSource];
-  v9 = [v6 contentEditingInput];
+  resultCopy = result;
+  handlerCopy = handler;
+  editSource = [resultCopy editSource];
+  contentEditingInput = [resultCopy contentEditingInput];
   v35 = 0;
-  v10 = [PESerializationUtility compositionControllerForContentEditingInput:v9 asShot:0 source:v8 error:&v35];
+  v10 = [PESerializationUtility compositionControllerForContentEditingInput:contentEditingInput asShot:0 source:editSource error:&v35];
   v11 = v35;
   if (v10)
   {
     v34 = 0;
-    v12 = [PESerializationUtility compositionControllerForContentEditingInput:v9 asShot:1 source:v8 error:&v34];
+    v12 = [PESerializationUtility compositionControllerForContentEditingInput:contentEditingInput asShot:1 source:editSource error:&v34];
     v30 = v34;
-    v13 = [v12 composition];
+    composition = [v12 composition];
 
-    [v6 _setCompositionController:v10];
-    [v6 _setOriginalComposition:v13];
+    [resultCopy _setCompositionController:v10];
+    [resultCopy _setOriginalComposition:composition];
     v14 = PLPhotoEditGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -904,21 +904,21 @@ LABEL_26:
       _os_log_impl(&dword_25E6E9000, v14, OS_LOG_TYPE_DEFAULT, "Compositions rehydrated", buf, 2u);
     }
 
-    if ([v8 mediaType] != 3 && objc_msgSend(v8, "mediaType") != 2)
+    if ([editSource mediaType] != 3 && objc_msgSend(editSource, "mediaType") != 2)
     {
       v20 = 0;
 LABEL_22:
-      v7[2](v7, 1, v20);
+      handlerCopy[2](handlerCopy, 1, v20);
 
       goto LABEL_23;
     }
 
-    v28 = v13;
+    v28 = composition;
     v29 = v11;
     v15 = MEMORY[0x277D3A938];
-    v16 = [v6 compositionController];
-    v17 = [v16 composition];
-    v18 = [v15 videoPropertiesRequestWithComposition:v17];
+    compositionController = [resultCopy compositionController];
+    composition2 = [compositionController composition];
+    v18 = [v15 videoPropertiesRequestWithComposition:composition2];
 
     [v18 setName:@"PEResourceLoader-videoProperties"];
     v33 = 0;
@@ -930,9 +930,9 @@ LABEL_22:
       if (objc_opt_isKindOfClass())
       {
         v27 = v19;
-        v21 = [v8 videoEditSource];
-        v22 = [v21 videoURL];
-        v23 = [v22 path];
+        videoEditSource = [editSource videoEditSource];
+        videoURL = [videoEditSource videoURL];
+        path = [videoURL path];
         v26 = PFVideoComplementMetadataForVideoAtPath();
 
         if (v26)
@@ -950,14 +950,14 @@ LABEL_22:
         v19 = v27;
         *buf = v31;
         v37 = v32;
-        [v6 setVideoComplementOriginalStillImageTime:buf];
+        [resultCopy setVideoComplementOriginalStillImageTime:buf];
 
         goto LABEL_21;
       }
 
       *buf = *MEMORY[0x277CC08F0];
       v37 = *(MEMORY[0x277CC08F0] + 16);
-      [v6 setVideoComplementOriginalStillImageTime:buf];
+      [resultCopy setVideoComplementOriginalStillImageTime:buf];
     }
 
     else
@@ -974,7 +974,7 @@ LABEL_22:
     v11 = v29;
 LABEL_21:
 
-    v13 = v28;
+    composition = v28;
     goto LABEL_22;
   }
 
@@ -986,7 +986,7 @@ LABEL_21:
     _os_log_impl(&dword_25E6E9000, v24, OS_LOG_TYPE_ERROR, "Unable to load image properties: %@", buf, 0xCu);
   }
 
-  v7[2](v7, 0, v11);
+  handlerCopy[2](handlerCopy, 0, v11);
   v20 = 0;
 LABEL_23:
 }

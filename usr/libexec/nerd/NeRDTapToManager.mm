@@ -1,44 +1,44 @@
 @interface NeRDTapToManager
 + (void)cleanDataVolumeIfNeeded;
-+ (void)cleanFilesUnderFolder:(id)a3 logger:(id)a4;
-- (BOOL)_queue_drawAnimation:(id)a3 withRefreshTime:(int)a4;
-- (BOOL)draw:(id)a3 withDrawType:(int)a4;
-- (BOOL)drawImageFromPath:(id)a3 withMapFromPath:(id)a4;
-- (BOOL)setNeRDUIStepDisplayData:(int)a3 params:(char *)a4;
++ (void)cleanFilesUnderFolder:(id)folder logger:(id)logger;
+- (BOOL)_queue_drawAnimation:(id)animation withRefreshTime:(int)time;
+- (BOOL)draw:(id)draw withDrawType:(int)type;
+- (BOOL)drawImageFromPath:(id)path withMapFromPath:(id)fromPath;
+- (BOOL)setNeRDUIStepDisplayData:(int)data params:(char *)params;
 - (BOOL)suspendTTR;
-- (id)initManagerWithCompletion:(id)a3 setupCompletion:(id)a4 commandCallback:(id)a5;
+- (id)initManagerWithCompletion:(id)completion setupCompletion:(id)setupCompletion commandCallback:(id)callback;
 - (void)_queue_deregisterForButtonPress;
-- (void)_setupKitServerEventHandler:(id)a3;
-- (void)activate:(id)a3;
+- (void)_setupKitServerEventHandler:(id)handler;
+- (void)activate:(id)activate;
 - (void)activateScreenOffTimer;
-- (void)beginTapToSetup:(BOOL)a3;
+- (void)beginTapToSetup:(BOOL)setup;
 - (void)deactivateScreenOffTimer;
 - (void)dealloc;
-- (void)endTapToSetup:(id)a3;
-- (void)handleOSRMessage:(id)a3;
+- (void)endTapToSetup:(id)setup;
+- (void)handleOSRMessage:(id)message;
 - (void)hidePassCodeHandler;
-- (void)overallCompletionHandler:(id)a3;
+- (void)overallCompletionHandler:(id)handler;
 - (void)resetStateOnUpdateError;
 - (void)restartRecoveryAdvertisement;
-- (void)sendMessage:(id)a3 completion:(id)a4;
+- (void)sendMessage:(id)message completion:(id)completion;
 - (void)setupMangerToAwaitRedRingBypass;
-- (void)showPassCodeHandler:(id)a3;
+- (void)showPassCodeHandler:(id)handler;
 - (void)tapToManagerRegisterForButtonPress;
 @end
 
 @implementation NeRDTapToManager
 
-- (BOOL)setNeRDUIStepDisplayData:(int)a3 params:(char *)a4
+- (BOOL)setNeRDUIStepDisplayData:(int)data params:(char *)params
 {
   if ([(NeRDTapToManager *)self fakeUI])
   {
-    v7 = [(NeRDTapToManager *)self logger];
-    v8 = [v7 oslog];
+    logger = [(NeRDTapToManager *)self logger];
+    oslog = [logger oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       *v10 = 0;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Internal: Skipping call to setNeRDUIStepDisplayData per user preference", v10, 2u);
+      _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Internal: Skipping call to setNeRDUIStepDisplayData per user preference", v10, 2u);
     }
 
     return 1;
@@ -47,21 +47,21 @@
   else
   {
 
-    return setNeRDUIStepDisplayData(a3, a4);
+    return setNeRDUIStepDisplayData(data, params);
   }
 }
 
-- (void)showPassCodeHandler:(id)a3
+- (void)showPassCodeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   managerQueue = self->_managerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __40__NeRDTapToManager_showPassCodeHandler___block_invoke;
   v7[3] = &unk_100099400;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(managerQueue, v7);
 }
 
@@ -184,17 +184,17 @@ void __39__NeRDTapToManager_hidePassCodeHandler__block_invoke(uint64_t a1)
   }
 }
 
-- (void)overallCompletionHandler:(id)a3
+- (void)overallCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   managerQueue = self->_managerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __45__NeRDTapToManager_overallCompletionHandler___block_invoke;
   v7[3] = &unk_100099400;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(managerQueue, v7);
 }
 
@@ -335,17 +335,17 @@ id __43__NeRDTapToManager_resetStateOnUpdateError__block_invoke(uint64_t a1)
   return [*(a1 + 32) setConnectionValid:0];
 }
 
-- (void)activate:(id)a3
+- (void)activate:(id)activate
 {
-  v4 = a3;
+  activateCopy = activate;
   managerQueue = self->_managerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __29__NeRDTapToManager_activate___block_invoke;
   v7[3] = &unk_100099400;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = activateCopy;
+  v6 = activateCopy;
   dispatch_async(managerQueue, v7);
 }
 
@@ -549,30 +549,30 @@ void __29__NeRDTapToManager_activate___block_invoke_438(uint64_t a1)
   (v2)[2](v2, v3, 0);
 }
 
-- (BOOL)_queue_drawAnimation:(id)a3 withRefreshTime:(int)a4
+- (BOOL)_queue_drawAnimation:(id)animation withRefreshTime:(int)time
 {
-  v6 = a3;
-  v7 = [(NeRDTapToManager *)self logger];
-  v8 = [v7 oslog];
+  animationCopy = animation;
+  logger = [(NeRDTapToManager *)self logger];
+  oslog = [logger oslog];
 
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138543618;
-    v19 = v6;
+    v19 = animationCopy;
     v20 = 1024;
-    v21 = a4;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Displaying animation %{public}@ with refresh time %d", &v18, 0x12u);
+    timeCopy = time;
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Displaying animation %{public}@ with refresh time %d", &v18, 0x12u);
   }
 
-  setAnimationRefreshTime(a4, v9, v10, v11, v12, v13, v14, v15);
-  v16 = [(NeRDTapToManager *)self _queue_draw:v6 withDrawType:5];
+  setAnimationRefreshTime(time, v9, v10, v11, v12, v13, v14, v15);
+  v16 = [(NeRDTapToManager *)self _queue_draw:animationCopy withDrawType:5];
 
   return v16;
 }
 
-- (BOOL)draw:(id)a3 withDrawType:(int)a4
+- (BOOL)draw:(id)draw withDrawType:(int)type
 {
-  v6 = a3;
+  drawCopy = draw;
   dispatch_assert_queue_not_V2(self->_managerQueue);
   v14 = 0;
   v15 = &v14;
@@ -583,11 +583,11 @@ void __29__NeRDTapToManager_activate___block_invoke_438(uint64_t a1)
   v10[1] = 3221225472;
   v10[2] = __38__NeRDTapToManager_draw_withDrawType___block_invoke;
   v10[3] = &unk_100099478;
-  v11 = v6;
+  v11 = drawCopy;
   v12 = &v14;
   v10[4] = self;
-  v13 = a4;
-  v8 = v6;
+  typeCopy = type;
+  v8 = drawCopy;
   dispatch_sync(managerQueue, v10);
   LOBYTE(self) = *(v15 + 24);
 
@@ -602,13 +602,13 @@ id __38__NeRDTapToManager_draw_withDrawType___block_invoke(uint64_t a1)
   return result;
 }
 
-+ (void)cleanFilesUnderFolder:(id)a3 logger:(id)a4
++ (void)cleanFilesUnderFolder:(id)folder logger:(id)logger
 {
-  v5 = a3;
-  v6 = a4;
+  folderCopy = folder;
+  loggerCopy = logger;
   v7 = +[NSFileManager defaultManager];
   v31 = 0;
-  v8 = [v7 contentsOfDirectoryAtPath:v5 error:&v31];
+  v8 = [v7 contentsOfDirectoryAtPath:folderCopy error:&v31];
   v9 = v31;
   v10 = v9;
   if (v8)
@@ -627,14 +627,14 @@ id __38__NeRDTapToManager_draw_withDrawType___block_invoke(uint64_t a1)
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v12 = v8;
-    v13 = [v12 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    oslog2 = v8;
+    v13 = [oslog2 countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v13)
     {
       v14 = v13;
       v23 = v8;
       v24 = v10;
-      v25 = v6;
+      v25 = loggerCopy;
       v15 = *v28;
       do
       {
@@ -642,35 +642,35 @@ id __38__NeRDTapToManager_draw_withDrawType___block_invoke(uint64_t a1)
         {
           if (*v28 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(oslog2);
           }
 
           v17 = *(*(&v27 + 1) + 8 * i);
-          v18 = [v5 stringByAppendingPathComponent:{v17, v23, v24}];
+          v18 = [folderCopy stringByAppendingPathComponent:{v17, v23, v24}];
           v26 = 0;
           v19 = [v7 removeItemAtPath:v18 error:&v26];
           v20 = v26;
 
           if ((v19 & 1) == 0)
           {
-            v21 = [v25 oslog];
-            if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+            oslog = [v25 oslog];
+            if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
             {
-              v22 = [v5 stringByAppendingPathComponent:v17];
+              v22 = [folderCopy stringByAppendingPathComponent:v17];
               *buf = 138543618;
               v34 = v22;
               v35 = 2114;
               v36 = v20;
-              _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Failed removing %{public}@, error:%{public}@", buf, 0x16u);
+              _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Failed removing %{public}@, error:%{public}@", buf, 0x16u);
             }
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v14 = [oslog2 countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v14);
-      v6 = v25;
+      loggerCopy = v25;
       v8 = v23;
       v10 = v24;
     }
@@ -678,14 +678,14 @@ id __38__NeRDTapToManager_draw_withDrawType___block_invoke(uint64_t a1)
 
   else
   {
-    v12 = [v6 oslog];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    oslog2 = [loggerCopy oslog];
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v34 = v5;
+      v34 = folderCopy;
       v35 = 2114;
       v36 = v10;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Couldn't get any files for  %{public}@, error:%{public}@", buf, 0x16u);
+      _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "Couldn't get any files for  %{public}@, error:%{public}@", buf, 0x16u);
     }
   }
 }
@@ -789,17 +789,17 @@ void __43__NeRDTapToManager_cleanDataVolumeIfNeeded__block_invoke_2(id a1)
   }
 }
 
-- (void)_setupKitServerEventHandler:(id)a3
+- (void)_setupKitServerEventHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   managerQueue = self->_managerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __48__NeRDTapToManager__setupKitServerEventHandler___block_invoke;
   v7[3] = &unk_100099400;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(managerQueue, v7);
 }
 
@@ -1216,11 +1216,11 @@ void __48__NeRDTapToManager__setupKitServerEventHandler___block_invoke_465(uint6
   [(NeRDTapToManager *)&v2 dealloc];
 }
 
-- (id)initManagerWithCompletion:(id)a3 setupCompletion:(id)a4 commandCallback:(id)a5
+- (id)initManagerWithCompletion:(id)completion setupCompletion:(id)setupCompletion commandCallback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  completionCopy = completion;
+  setupCompletionCopy = setupCompletion;
+  callbackCopy = callback;
   v61.receiver = self;
   v61.super_class = NeRDTapToManager;
   v11 = [(NeRDTapToManager *)&v61 init];
@@ -1248,13 +1248,13 @@ void __48__NeRDTapToManager__setupKitServerEventHandler___block_invoke_465(uint6
   clientQueue = v11->_clientQueue;
   v11->_clientQueue = v19;
 
-  v21 = [(NeRDTapToManager *)v11 logger];
-  v22 = [v21 oslog];
+  logger = [(NeRDTapToManager *)v11 logger];
+  oslog = [logger oslog];
 
-  if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "init managerIsActive NO", buf, 2u);
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "init managerIsActive NO", buf, 2u);
   }
 
   v11->_managerIsActive = 0;
@@ -1296,37 +1296,37 @@ void __48__NeRDTapToManager__setupKitServerEventHandler___block_invoke_465(uint6
     v30 = v29;
     if (v29)
     {
-      v31 = [v29 objectForKeyedSubscript:@"TTRCodeOverride"];
-      if (v31)
+      oslog4 = [v29 objectForKeyedSubscript:@"TTRCodeOverride"];
+      if (oslog4)
       {
         v32 = +[NSCharacterSet decimalDigitCharacterSet];
-        v33 = [v32 invertedSet];
+        invertedSet = [v32 invertedSet];
 
-        if (-[NSObject length](v31, "length") == 6 && (-[NSObject stringByTrimmingCharactersInSet:](v31, "stringByTrimmingCharactersInSet:", v33), v34 = objc_claimAutoreleasedReturnValue(), v35 = [v34 isEqualToString:v31], v34, v35))
+        if (-[NSObject length](oslog4, "length") == 6 && (-[NSObject stringByTrimmingCharactersInSet:](oslog4, "stringByTrimmingCharactersInSet:", invertedSet), v34 = objc_claimAutoreleasedReturnValue(), v35 = [v34 isEqualToString:oslog4], v34, v35))
         {
-          v36 = [(NeRDTapToManager *)v11 logger];
-          v37 = [v36 oslog];
+          logger2 = [(NeRDTapToManager *)v11 logger];
+          oslog2 = [logger2 oslog];
 
-          if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v63 = v31;
-            _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "Setting tap-to-recover code to %{public}@", buf, 0xCu);
+            v63 = oslog4;
+            _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "Setting tap-to-recover code to %{public}@", buf, 0xCu);
           }
 
-          [(SKSetupServer *)v11->_server setPassword:v31];
+          [(SKSetupServer *)v11->_server setPassword:oslog4];
         }
 
         else
         {
-          v39 = [(NeRDTapToManager *)v11 logger];
-          v40 = [v39 oslog];
+          logger3 = [(NeRDTapToManager *)v11 logger];
+          oslog3 = [logger3 oslog];
 
-          if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v63 = v31;
-            _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Invalid value passed in for tap-to-recover code override: %{public}@", buf, 0xCu);
+            v63 = oslog4;
+            _os_log_impl(&_mh_execute_header, oslog3, OS_LOG_TYPE_DEFAULT, "Invalid value passed in for tap-to-recover code override: %{public}@", buf, 0xCu);
           }
         }
       }
@@ -1334,23 +1334,23 @@ void __48__NeRDTapToManager__setupKitServerEventHandler___block_invoke_465(uint6
 
     else
     {
-      v38 = [(NeRDTapToManager *)v11 logger];
-      v31 = [v38 oslog];
+      logger4 = [(NeRDTapToManager *)v11 logger];
+      oslog4 = [logger4 oslog];
 
-      if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "No BootedOSState dict found", buf, 2u);
+        _os_log_impl(&_mh_execute_header, oslog4, OS_LOG_TYPE_DEFAULT, "No BootedOSState dict found", buf, 2u);
       }
     }
 
-    v41 = [(NeRDTapToManager *)v11 logger];
-    v42 = [v41 oslog];
+    logger5 = [(NeRDTapToManager *)v11 logger];
+    oslog5 = [logger5 oslog];
 
-    if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "checking auth-tag override", buf, 2u);
+      _os_log_impl(&_mh_execute_header, oslog5, OS_LOG_TYPE_DEFAULT, "checking auth-tag override", buf, 2u);
     }
 
     v43 = copy_nvram_variable(@"nerd-auth-tag");
@@ -1372,18 +1372,18 @@ void __48__NeRDTapToManager__setupKitServerEventHandler___block_invoke_465(uint6
       if (v47 != CFStringGetTypeID())
       {
 LABEL_26:
-        v49 = [(SKSetupServer *)v11->_server authTagOverride];
+        authTagOverride = [(SKSetupServer *)v11->_server authTagOverride];
 
-        if (v49)
+        if (authTagOverride)
         {
-          v50 = [(NeRDTapToManager *)v11 logger];
-          v51 = [v50 oslog];
+          logger6 = [(NeRDTapToManager *)v11 logger];
+          oslog6 = [logger6 oslog];
 
-          if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oslog6, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
             v63 = v44;
-            _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "found auth-tag override %{public}@", buf, 0xCu);
+            _os_log_impl(&_mh_execute_header, oslog6, OS_LOG_TYPE_DEFAULT, "found auth-tag override %{public}@", buf, 0xCu);
           }
         }
 
@@ -1410,23 +1410,23 @@ LABEL_32:
   v59[3] = &unk_100099508;
   objc_copyWeak(&v60, buf);
   [(SKSetupServer *)v11->_server setEventHandler:v59];
-  if (v8)
+  if (completionCopy)
   {
-    v52 = objc_retainBlock(v8);
+    v52 = objc_retainBlock(completionCopy);
     clientCompletion = v11->_clientCompletion;
     v11->_clientCompletion = v52;
   }
 
-  if (v9)
+  if (setupCompletionCopy)
   {
-    v54 = objc_retainBlock(v9);
+    v54 = objc_retainBlock(setupCompletionCopy);
     setupCompletion = v11->_setupCompletion;
     v11->_setupCompletion = v54;
   }
 
-  if (v10)
+  if (callbackCopy)
   {
-    v56 = objc_retainBlock(v10);
+    v56 = objc_retainBlock(callbackCopy);
     commandCallback = v11->_commandCallback;
     v11->_commandCallback = v56;
   }
@@ -1478,14 +1478,14 @@ id __48__NeRDTapToManager_restartRecoveryAdvertisement__block_invoke(uint64_t a1
 {
   if ([(NeRDTapToManager *)self registeredForButtonPress])
   {
-    v3 = [(NeRDTapToManager *)self logger];
-    v4 = [v3 oslog];
+    logger = [(NeRDTapToManager *)self logger];
+    oslog = [logger oslog];
 
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 134217984;
-      v8 = self;
-      _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Calling HIDEventSystemClose by %p\n", &v7, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Calling HIDEventSystemClose by %p\n", &v7, 0xCu);
     }
 
     if ([(NeRDTapToManager *)self hidEventSystem])
@@ -1501,14 +1501,14 @@ id __48__NeRDTapToManager_restartRecoveryAdvertisement__block_invoke(uint64_t a1
 
   else if ([(NeRDTapToManager *)self hidEventSystem])
   {
-    v5 = [(NeRDTapToManager *)self logger];
-    v6 = [v5 oslog];
+    logger2 = [(NeRDTapToManager *)self logger];
+    oslog2 = [logger2 oslog];
 
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 134217984;
-      v8 = self;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Releasing HIDEventSystem by %p\n", &v7, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "Releasing HIDEventSystem by %p\n", &v7, 0xCu);
     }
 
     CFRelease([(NeRDTapToManager *)self hidEventSystem]);
@@ -1516,17 +1516,17 @@ id __48__NeRDTapToManager_restartRecoveryAdvertisement__block_invoke(uint64_t a1
   }
 }
 
-- (void)endTapToSetup:(id)a3
+- (void)endTapToSetup:(id)setup
 {
-  v4 = a3;
+  setupCopy = setup;
   managerQueue = self->_managerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __34__NeRDTapToManager_endTapToSetup___block_invoke;
   v7[3] = &unk_100099580;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = setupCopy;
+  v6 = setupCopy;
   dispatch_async(managerQueue, v7);
 }
 
@@ -1640,16 +1640,16 @@ void __34__NeRDTapToManager_endTapToSetup___block_invoke_489(uint64_t a1)
   }
 }
 
-- (BOOL)drawImageFromPath:(id)a3 withMapFromPath:(id)a4
+- (BOOL)drawImageFromPath:(id)path withMapFromPath:(id)fromPath
 {
-  v4 = [(NeRDTapToManager *)self logger:a3];
-  v5 = [v4 oslog];
+  v4 = [(NeRDTapToManager *)self logger:path];
+  oslog = [v4 oslog];
 
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136446210;
     v8 = "[NeRDTapToManager drawImageFromPath:withMapFromPath:]";
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s not supported in this environment", &v7, 0xCu);
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "%{public}s not supported in this environment", &v7, 0xCu);
   }
 
   return 0;
@@ -1678,77 +1678,77 @@ void __51__NeRDTapToManager_setupMangerToAwaitRedRingBypass__block_invoke(uint64
   }
 }
 
-- (void)handleOSRMessage:(id)a3
+- (void)handleOSRMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(NeRDTapToManager *)self logger];
-  v6 = [v5 oslog];
+  messageCopy = message;
+  logger = [(NeRDTapToManager *)self logger];
+  oslog = [logger oslog];
 
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543362;
-    v16 = v4;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Got OSR message %{public}@", &v15, 0xCu);
+    v16 = messageCopy;
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Got OSR message %{public}@", &v15, 0xCu);
   }
 
   if (![(NeRDTapToManager *)self setupCompleted])
   {
-    v7 = [(NeRDTapToManager *)self logger];
-    v8 = [v7 oslog];
+    logger2 = [(NeRDTapToManager *)self logger];
+    oslog2 = [logger2 oslog];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v15) = 0;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Setup not completed, is this a bug?", &v15, 2u);
+      _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "Setup not completed, is this a bug?", &v15, 2u);
     }
   }
 
-  v9 = [(NeRDTapToManager *)self commandCallback];
+  commandCallback = [(NeRDTapToManager *)self commandCallback];
 
-  if (v9)
+  if (commandCallback)
   {
-    v10 = [v4 objectForKeyedSubscript:@"NeRDCommand"];
-    if ([v10 isEqual:@"NeRDCommandRecover"])
+    oslog3 = [messageCopy objectForKeyedSubscript:@"NeRDCommand"];
+    if ([oslog3 isEqual:@"NeRDCommandRecover"])
     {
       [(NeRDTapToManager *)self setLastCommand:1];
-      v11 = [(NeRDTapToManager *)self commandCallback];
-      isa = v11[2].isa;
+      commandCallback2 = [(NeRDTapToManager *)self commandCallback];
+      isa = commandCallback2[2].isa;
     }
 
-    else if ([v10 isEqual:@"NeRDOOBCommandSelectSU"])
+    else if ([oslog3 isEqual:@"NeRDOOBCommandSelectSU"])
     {
       [(NeRDTapToManager *)self setLastCommand:4];
-      v11 = [(NeRDTapToManager *)self commandCallback];
-      isa = v11[2].isa;
+      commandCallback2 = [(NeRDTapToManager *)self commandCallback];
+      isa = commandCallback2[2].isa;
     }
 
-    else if ([v10 isEqual:@"NeRDCommandEACS"])
+    else if ([oslog3 isEqual:@"NeRDCommandEACS"])
     {
       [(NeRDTapToManager *)self setLastCommand:2];
-      v11 = [(NeRDTapToManager *)self commandCallback];
-      isa = v11[2].isa;
+      commandCallback2 = [(NeRDTapToManager *)self commandCallback];
+      isa = commandCallback2[2].isa;
     }
 
     else
     {
-      if (![v10 isEqual:@"NeRDCommandReboot"])
+      if (![oslog3 isEqual:@"NeRDCommandReboot"])
       {
-        v14 = [(NeRDTapToManager *)self logger];
-        v11 = [v14 oslog];
+        logger3 = [(NeRDTapToManager *)self logger];
+        commandCallback2 = [logger3 oslog];
 
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(commandCallback2, OS_LOG_TYPE_DEFAULT))
         {
           v15 = 138543362;
-          v16 = v10;
-          _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Unknown command %{public}@", &v15, 0xCu);
+          v16 = oslog3;
+          _os_log_impl(&_mh_execute_header, commandCallback2, OS_LOG_TYPE_DEFAULT, "Unknown command %{public}@", &v15, 0xCu);
         }
 
         goto LABEL_15;
       }
 
       [(NeRDTapToManager *)self setLastCommand:3];
-      v11 = [(NeRDTapToManager *)self commandCallback];
-      isa = v11[2].isa;
+      commandCallback2 = [(NeRDTapToManager *)self commandCallback];
+      isa = commandCallback2[2].isa;
     }
 
     isa();
@@ -1757,19 +1757,19 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v13 = [(NeRDTapToManager *)self logger];
-  v10 = [v13 oslog];
+  logger4 = [(NeRDTapToManager *)self logger];
+  oslog3 = [logger4 oslog];
 
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
   {
     LOWORD(v15) = 0;
-    _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "command callback is missing, is this a bug?", &v15, 2u);
+    _os_log_impl(&_mh_execute_header, oslog3, OS_LOG_TYPE_DEFAULT, "command callback is missing, is this a bug?", &v15, 2u);
   }
 
 LABEL_16:
 }
 
-- (void)beginTapToSetup:(BOOL)a3
+- (void)beginTapToSetup:(BOOL)setup
 {
   managerQueue = self->_managerQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -1777,7 +1777,7 @@ LABEL_16:
   v4[2] = __36__NeRDTapToManager_beginTapToSetup___block_invoke;
   v4[3] = &unk_1000994E0;
   v4[4] = self;
-  v5 = a3;
+  setupCopy = setup;
   dispatch_async(managerQueue, v4);
 }
 
@@ -2167,20 +2167,20 @@ void __44__NeRDTapToManager_deactivateScreenOffTimer__block_invoke(uint64_t a1)
   }
 }
 
-- (void)sendMessage:(id)a3 completion:(id)a4
+- (void)sendMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   managerQueue = self->_managerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __43__NeRDTapToManager_sendMessage_completion___block_invoke;
   block[3] = &unk_100099698;
-  v12 = v6;
-  v13 = v7;
+  v12 = messageCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = messageCopy;
+  v10 = completionCopy;
   dispatch_async(managerQueue, block);
 }
 

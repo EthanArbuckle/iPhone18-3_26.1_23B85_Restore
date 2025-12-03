@@ -1,18 +1,18 @@
 @interface PKVirtualCardEnrollmentRequest
-- (BOOL)isEqual:(id)a3;
-- (PKVirtualCardEnrollmentRequest)initWithCoder:(id)a3;
-- (PKVirtualCardEnrollmentRequest)initWithPaymentPass:(id)a3;
-- (id)initRefreshRequestWithPaymentPass:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKVirtualCardEnrollmentRequest)initWithCoder:(id)coder;
+- (PKVirtualCardEnrollmentRequest)initWithPaymentPass:(id)pass;
+- (id)initRefreshRequestWithPaymentPass:(id)pass;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKVirtualCardEnrollmentRequest
 
-- (PKVirtualCardEnrollmentRequest)initWithPaymentPass:(id)a3
+- (PKVirtualCardEnrollmentRequest)initWithPaymentPass:(id)pass
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  passCopy = pass;
   v22.receiver = self;
   v22.super_class = PKVirtualCardEnrollmentRequest;
   v5 = [(PKPaymentRequest *)&v22 init];
@@ -20,7 +20,7 @@
   if (v5)
   {
     [(PKPaymentRequest *)v5 setRequestType:12];
-    v7 = [v4 devicePrimaryInAppPaymentApplication];
+    devicePrimaryInAppPaymentApplication = [passCopy devicePrimaryInAppPaymentApplication];
     v8 = PKLocalizedVirtualCardString(&cfstr_VirtualCardSet.isa, 0);
     v9 = [MEMORY[0x1E696AB90] decimalNumberWithString:@"0"];
     v10 = [PKPaymentSummaryItem summaryItemWithLabel:v8 amount:v9 type:0];
@@ -30,7 +30,7 @@
 
     [(PKPaymentRequest *)v6 setCurrencyCode:@"USD"];
     [(PKPaymentRequest *)v6 setCountryCode:@"US"];
-    v12 = PKPaymentNetworkNameForPaymentCredentialType([v7 paymentNetworkIdentifier]);
+    v12 = PKPaymentNetworkNameForPaymentCredentialType([devicePrimaryInAppPaymentApplication paymentNetworkIdentifier]);
     v25 = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
     [(PKPaymentRequest *)v6 setSupportedNetworks:v13];
@@ -38,19 +38,19 @@
     v14 = +[PKPaymentWebService sharedService];
     v15 = [PKWebServiceVirtualCardFeature virtualCardFeatureWithWebService:v14];
 
-    v16 = [v15 merchantId];
-    [(PKPaymentRequest *)v6 setMerchantIdentifier:v16];
+    merchantId = [v15 merchantId];
+    [(PKPaymentRequest *)v6 setMerchantIdentifier:merchantId];
 
     [(PKPaymentRequest *)v6 setMerchantCapabilities:1];
     v17 = PKLocalizedVirtualCardString(&cfstr_VirtualCardSet_0.isa, 0);
     [(PKPaymentRequest *)v6 setLocalizedErrorMessage:v17];
 
     [(PKPaymentRequest *)v6 setConfirmationStyle:1];
-    v18 = [v4 serialNumber];
-    [(PKPaymentRequest *)v6 setPassSerialNumber:v18];
+    serialNumber = [passCopy serialNumber];
+    [(PKPaymentRequest *)v6 setPassSerialNumber:serialNumber];
 
-    v19 = [v4 passTypeIdentifier];
-    [(PKPaymentRequest *)v6 setPassTypeIdentifier:v19];
+    passTypeIdentifier = [passCopy passTypeIdentifier];
+    [(PKPaymentRequest *)v6 setPassTypeIdentifier:passTypeIdentifier];
 
     v23[0] = @"subject";
     v23[1] = @"pageTag";
@@ -60,16 +60,16 @@
     [(PKPaymentRequest *)v6 setClientAnalyticsParameters:v20];
 
     [(PKPaymentRequest *)v6 setUseLocationBasedAuthorization:1];
-    v6->_isPeerPaymentPass = [v4 isPeerPaymentPass];
+    v6->_isPeerPaymentPass = [passCopy isPeerPaymentPass];
   }
 
   return v6;
 }
 
-- (id)initRefreshRequestWithPaymentPass:(id)a3
+- (id)initRefreshRequestWithPaymentPass:(id)pass
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PKVirtualCardEnrollmentRequest *)self initWithPaymentPass:a3];
+  v3 = [(PKVirtualCardEnrollmentRequest *)self initWithPaymentPass:pass];
   v4 = v3;
   if (v3)
   {
@@ -85,16 +85,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v9.receiver = self, v9.super_class = PKVirtualCardEnrollmentRequest, [(PKPaymentRequest *)&v9 isEqual:v5]))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v9.receiver = self, v9.super_class = PKVirtualCardEnrollmentRequest, [(PKPaymentRequest *)&v9 isEqual:v5]))
   {
     isPeerPaymentPass = self->_isPeerPaymentPass;
     v7 = isPeerPaymentPass == [(PKVirtualCardEnrollmentRequest *)v5 isPeerPaymentPass];
@@ -110,34 +110,34 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_isPeerPaymentPass - v4 + 32 * v4;
 
   return v5;
 }
 
-- (PKVirtualCardEnrollmentRequest)initWithCoder:(id)a3
+- (PKVirtualCardEnrollmentRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PKVirtualCardEnrollmentRequest;
-  v5 = [(PKPaymentRequest *)&v7 initWithCoder:v4];
+  v5 = [(PKPaymentRequest *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_isPeerPaymentPass = [v4 decodeBoolForKey:@"isPeerPaymentPass"];
+    v5->_isPeerPaymentPass = [coderCopy decodeBoolForKey:@"isPeerPaymentPass"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKVirtualCardEnrollmentRequest;
-  v4 = a3;
-  [(PKPaymentRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_isPeerPaymentPass forKey:{@"isPeerPaymentPass", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKPaymentRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_isPeerPaymentPass forKey:{@"isPeerPaymentPass", v5.receiver, v5.super_class}];
 }
 
 @end

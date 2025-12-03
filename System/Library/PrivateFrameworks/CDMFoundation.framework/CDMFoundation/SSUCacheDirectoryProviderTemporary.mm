@@ -1,5 +1,5 @@
 @interface SSUCacheDirectoryProviderTemporary
-- (id)lookupOrCreateCacheDirectory:(id *)a3;
+- (id)lookupOrCreateCacheDirectory:(id *)directory;
 - (void)dealloc;
 @end
 
@@ -21,10 +21,10 @@
       _os_log_debug_impl(&dword_1DC287000, v3, OS_LOG_TYPE_DEBUG, "%s Cleaning up temporary cache directory: %@", buf, 0x16u);
     }
 
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v5 = self->__directory;
     v13 = 0;
-    v6 = [v4 removeItemAtURL:v5 error:&v13];
+    v6 = [defaultManager removeItemAtURL:v5 error:&v13];
     v7 = v13;
 
     if ((v6 & 1) == 0)
@@ -50,7 +50,7 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)lookupOrCreateCacheDirectory:(id *)a3
+- (id)lookupOrCreateCacheDirectory:(id *)directory
 {
   v27[2] = *MEMORY[0x1E69E9840];
   directory = self->__directory;
@@ -67,13 +67,13 @@
   v11 = self->__directory;
   self->__directory = v10;
 
-  v12 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v13 = self->__directory;
   v25 = 0;
-  v14 = [v12 createDirectoryAtURL:v13 withIntermediateDirectories:1 attributes:0 error:&v25];
+  v14 = [defaultManager createDirectoryAtURL:v13 withIntermediateDirectories:1 attributes:0 error:&v25];
   v15 = v25;
 
-  if (a3 && (v14 & 1) == 0)
+  if (directory && (v14 & 1) == 0)
   {
     v16 = *MEMORY[0x1E696A578];
     v27[0] = @"Could not create cache directory.";
@@ -86,22 +86,22 @@
     v27[1] = v20;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:2];
 
-    *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"SSUCacheDirectoryProviderErrorDomain" code:2 userInfo:v21];
+    *directory = [MEMORY[0x1E696ABC0] errorWithDomain:@"SSUCacheDirectoryProviderErrorDomain" code:2 userInfo:v21];
   }
 
   if (v14)
   {
     directory = self->__directory;
 LABEL_7:
-    v22 = directory;
+    directoryCopy = directory;
     goto LABEL_8;
   }
 
-  v22 = 0;
+  directoryCopy = 0;
 LABEL_8:
   v23 = *MEMORY[0x1E69E9840];
 
-  return v22;
+  return directoryCopy;
 }
 
 @end

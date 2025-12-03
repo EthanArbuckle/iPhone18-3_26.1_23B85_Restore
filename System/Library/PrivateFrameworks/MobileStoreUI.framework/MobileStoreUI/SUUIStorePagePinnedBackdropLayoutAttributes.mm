@@ -1,16 +1,16 @@
 @interface SUUIStorePagePinnedBackdropLayoutAttributes
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation SUUIStorePagePinnedBackdropLayoutAttributes
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = SUUIStorePagePinnedBackdropLayoutAttributes;
-  v4 = [(UICollectionViewLayoutAttributes *)&v6 copyWithZone:a3];
+  v4 = [(UICollectionViewLayoutAttributes *)&v6 copyWithZone:zone];
   [v4 setBackdropColor:self->_backdropColor];
   [v4 setBackdropGroupName:self->_backdropGroupName];
   [v4 setBackdropStyle:self->_backdropStyle];
@@ -35,10 +35,10 @@
   return v4 ^ v5 ^ self->_backdropStyle ^ v6 ^ llround(self->_transitionProgress * 1000.0);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -48,7 +48,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v10.receiver = self;
       v10.super_class = SUUIStorePagePinnedBackdropLayoutAttributes;
       v8 = [(UICollectionViewLayoutAttributes *)&v10 isEqual:v5]&& ((backdropColor = self->_backdropColor, backdropColor == v5->_backdropColor) || [(UIColor *)backdropColor isEqual:?]) && ((backdropGroupName = self->_backdropGroupName, backdropGroupName == v5->_backdropGroupName) || [(NSString *)backdropGroupName isEqualToString:?]) && self->_backdropStyle == v5->_backdropStyle && self->_hidesBackdropView == v5->_hidesBackdropView && self->_transitionProgress != v5->_transitionProgress;

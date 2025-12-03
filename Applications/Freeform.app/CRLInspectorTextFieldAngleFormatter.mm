@@ -1,10 +1,10 @@
 @interface CRLInspectorTextFieldAngleFormatter
 - (CRLInspectorTextFieldAngleFormatter)init;
-- (CRLInspectorTextFieldAngleFormatter)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)crlaxLocalizedDescriptionFromValue:(id)a3;
-- (id)p_clampNumber:(id)a3 toMinimum:(id)a4 andMaximum:(id)a5 wasNumberClamped:(BOOL *)a6;
-- (id)stringForObjectValue:(id)a3 originalValue:(id)a4;
+- (CRLInspectorTextFieldAngleFormatter)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)crlaxLocalizedDescriptionFromValue:(id)value;
+- (id)p_clampNumber:(id)number toMinimum:(id)minimum andMaximum:(id)maximum wasNumberClamped:(BOOL *)clamped;
+- (id)stringForObjectValue:(id)value originalValue:(id)originalValue;
 - (void)p_commonInitAngleFormatter;
 @end
 
@@ -21,11 +21,11 @@
   [(CRLInspectorTextFieldAngleFormatter *)self setMaximumFractionDigits:0];
 }
 
-- (CRLInspectorTextFieldAngleFormatter)initWithCoder:(id)a3
+- (CRLInspectorTextFieldAngleFormatter)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CRLInspectorTextFieldAngleFormatter;
-  v3 = [(CRLInspectorTextFieldClampNumberFormatter *)&v6 initWithCoder:a3];
+  v3 = [(CRLInspectorTextFieldClampNumberFormatter *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -49,55 +49,55 @@
   return v3;
 }
 
-- (id)stringForObjectValue:(id)a3 originalValue:(id)a4
+- (id)stringForObjectValue:(id)value originalValue:(id)originalValue
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  originalValueCopy = originalValue;
   v8 = objc_opt_class();
-  v9 = sub_100014370(v8, v6);
+  v9 = sub_100014370(v8, valueCopy);
   v10 = v9;
   if (v9)
   {
     [v9 doubleValue];
     v12 = [NSNumber numberWithDouble:fmod(v11, 360.0)];
 
-    v6 = v12;
+    valueCopy = v12;
   }
 
   v15.receiver = self;
   v15.super_class = CRLInspectorTextFieldAngleFormatter;
-  v13 = [(CRLInspectorTextFieldClampNumberFormatter *)&v15 stringForObjectValue:v6 originalValue:v7];
+  v13 = [(CRLInspectorTextFieldClampNumberFormatter *)&v15 stringForObjectValue:valueCopy originalValue:originalValueCopy];
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CRLInspectorTextFieldAngleFormatter;
-  v4 = [(CRLInspectorTextFieldNumberFormatter *)&v6 copyWithZone:a3];
+  v4 = [(CRLInspectorTextFieldNumberFormatter *)&v6 copyWithZone:zone];
   [v4 setNormalizesAngle:{-[CRLInspectorTextFieldAngleFormatter normalizesAngle](self, "normalizesAngle")}];
   return v4;
 }
 
-- (id)p_clampNumber:(id)a3 toMinimum:(id)a4 andMaximum:(id)a5 wasNumberClamped:(BOOL *)a6
+- (id)p_clampNumber:(id)number toMinimum:(id)minimum andMaximum:(id)maximum wasNumberClamped:(BOOL *)clamped
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  numberCopy = number;
+  minimumCopy = minimum;
+  maximumCopy = maximum;
   if (![(CRLInspectorTextFieldAngleFormatter *)self normalizesAngle])
   {
     v19.receiver = self;
     v19.super_class = CRLInspectorTextFieldAngleFormatter;
-    v13 = [(CRLInspectorTextFieldClampNumberFormatter *)&v19 p_clampNumber:v10 toMinimum:v11 andMaximum:v12 wasNumberClamped:a6];
+    v13 = [(CRLInspectorTextFieldClampNumberFormatter *)&v19 p_clampNumber:numberCopy toMinimum:minimumCopy andMaximum:maximumCopy wasNumberClamped:clamped];
     goto LABEL_11;
   }
 
-  v13 = v10;
+  v13 = numberCopy;
   if ([v13 compare:&off_1018E3080] != -1 && objc_msgSend(v13, "compare:", &off_1018E3090) != 1)
   {
     v17 = 0;
-    if (!a6)
+    if (!clamped)
     {
       goto LABEL_11;
     }
@@ -116,10 +116,10 @@
 
   v17 = 1;
   v13 = v16;
-  if (a6)
+  if (clamped)
   {
 LABEL_10:
-    *a6 = v17;
+    *clamped = v17;
   }
 
 LABEL_11:
@@ -127,13 +127,13 @@ LABEL_11:
   return v13;
 }
 
-- (id)crlaxLocalizedDescriptionFromValue:(id)a3
+- (id)crlaxLocalizedDescriptionFromValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = CRLAccessibilityStringsDictKey(@"angle.unit.degrees");
   if (v5)
   {
-    [v4 crl_CGFloatValue];
+    [valueCopy crl_CGFloatValue];
     v7 = v6;
 
     v8 = [NSString localizedStringWithFormat:v5, v7];
@@ -141,7 +141,7 @@ LABEL_11:
 
   else
   {
-    v8 = [(CRLInspectorTextFieldAngleFormatter *)self stringFromNumber:v4];
+    v8 = [(CRLInspectorTextFieldAngleFormatter *)self stringFromNumber:valueCopy];
   }
 
   return v8;

@@ -1,13 +1,13 @@
 @interface CNChildDelegateAccountsStore
 + (id)os_log;
-+ (void)configureChildAccount:(id)a3 withSettingsFromDelegateInfo:(id)a4 parent:(id)a5;
-- (BOOL)updateAccounts:(id)a3 error:(id *)a4;
-- (CNChildDelegateAccountsStore)initWithParentAccount:(id)a3 accountStore:(id)a4;
++ (void)configureChildAccount:(id)account withSettingsFromDelegateInfo:(id)info parent:(id)parent;
+- (BOOL)updateAccounts:(id)accounts error:(id *)error;
+- (CNChildDelegateAccountsStore)initWithParentAccount:(id)account accountStore:(id)store;
 - (NSString)description;
-- (id)addChildWithDelegateInfo:(id)a3;
+- (id)addChildWithDelegateInfo:(id)info;
 - (id)delegateAccounts;
-- (id)removeAccount:(id)a3;
-- (id)updateAccount:(id)a3;
+- (id)removeAccount:(id)account;
+- (id)updateAccount:(id)account;
 @end
 
 @implementation CNChildDelegateAccountsStore
@@ -33,18 +33,18 @@ uint64_t __38__CNChildDelegateAccountsStore_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNChildDelegateAccountsStore)initWithParentAccount:(id)a3 accountStore:(id)a4
+- (CNChildDelegateAccountsStore)initWithParentAccount:(id)account accountStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = CNChildDelegateAccountsStore;
   v9 = [(CNChildDelegateAccountsStore *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_parentAccount, a3);
-    objc_storeStrong(&v10->_accountStore, a4);
+    objc_storeStrong(&v9->_parentAccount, account);
+    objc_storeStrong(&v10->_accountStore, store);
     v11 = v10;
   }
 
@@ -56,37 +56,37 @@ uint64_t __38__CNChildDelegateAccountsStore_os_log__block_invoke()
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"parentAccount" object:self->_parentAccount];
   v5 = [v3 appendName:@"accountStore" object:self->_accountStore];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 - (id)delegateAccounts
 {
-  v2 = [(ACAccount *)self->_parentAccount childAccounts];
-  v3 = [v2 _cn_map:CNCoreDelegateInfoFromACAccount];
+  childAccounts = [(ACAccount *)self->_parentAccount childAccounts];
+  v3 = [childAccounts _cn_map:CNCoreDelegateInfoFromACAccount];
 
   return v3;
 }
 
-- (BOOL)updateAccounts:(id)a3 error:(id *)a4
+- (BOOL)updateAccounts:(id)accounts error:(id *)error
 {
   v70 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  accountsCopy = accounts;
+  if (accountsCopy)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v8 = [(CNChildDelegateAccountsStore *)self parentAccount];
-    v9 = [v8 childAccounts];
-    v10 = [v9 _cn_indexBy:&__block_literal_global_11_0];
+    parentAccount = [(CNChildDelegateAccountsStore *)self parentAccount];
+    childAccounts = [parentAccount childAccounts];
+    v10 = [childAccounts _cn_indexBy:&__block_literal_global_11_0];
     v11 = [v10 mutableCopy];
 
     v61 = 0u;
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v47 = v6;
-    obj = v6;
+    v47 = accountsCopy;
+    obj = accountsCopy;
     v12 = [obj countByEnumeratingWithState:&v59 objects:v69 count:16];
     if (!v12)
     {
@@ -108,31 +108,31 @@ uint64_t __38__CNChildDelegateAccountsStore_os_log__block_invoke()
         }
 
         v16 = *(*(&v59 + 1) + 8 * v15);
-        v17 = [v16 principalPath];
-        if (v17)
+        principalPath = [v16 principalPath];
+        if (principalPath)
         {
-          v18 = [v11 objectForKeyedSubscript:v17];
+          v18 = [v11 objectForKeyedSubscript:principalPath];
           if (v18)
           {
-            v19 = v18;
-            v20 = [v18 accountProperties];
+            os_log = v18;
+            accountProperties = [v18 accountProperties];
             v21 = v14;
             v22 = v11;
-            v23 = [v20 copy];
+            v23 = [accountProperties copy];
 
             v24 = objc_opt_class();
-            v25 = [(CNChildDelegateAccountsStore *)self parentAccount];
+            parentAccount2 = [(CNChildDelegateAccountsStore *)self parentAccount];
             v26 = v24;
             v7 = v48;
-            [v26 configureChildAccount:v19 withSettingsFromDelegateInfo:v16 parent:v25];
+            [v26 configureChildAccount:os_log withSettingsFromDelegateInfo:v16 parent:parentAccount2];
 
-            v27 = [v19 accountProperties];
-            LOBYTE(v25) = [v23 isEqualToDictionary:v27];
+            accountProperties2 = [os_log accountProperties];
+            LOBYTE(parentAccount2) = [v23 isEqualToDictionary:accountProperties2];
 
             v11 = v22;
             v14 = v21;
             v13 = v49;
-            if (v25)
+            if (parentAccount2)
             {
               goto LABEL_15;
             }
@@ -140,26 +140,26 @@ uint64_t __38__CNChildDelegateAccountsStore_os_log__block_invoke()
 
           else
           {
-            v19 = [(CNChildDelegateAccountsStore *)self addChildWithDelegateInfo:v16];
+            os_log = [(CNChildDelegateAccountsStore *)self addChildWithDelegateInfo:v16];
           }
 
-          v29 = [(CNChildDelegateAccountsStore *)self updateAccount:v19];
+          v29 = [(CNChildDelegateAccountsStore *)self updateAccount:os_log];
           [v7 addObject:v29];
 
 LABEL_15:
-          [v11 removeObjectForKey:v17];
+          [v11 removeObjectForKey:principalPath];
           goto LABEL_16;
         }
 
-        v19 = [objc_opt_class() os_log];
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+        os_log = [objc_opt_class() os_log];
+        if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
         {
-          v28 = [v16 dsid];
+          dsid = [v16 dsid];
           *buf = 138543618;
-          v66 = v28;
+          v66 = dsid;
           v67 = 2112;
           v68 = v16;
-          _os_log_error_impl(&dword_1859F0000, v19, OS_LOG_TYPE_ERROR, "Unexpected condition updating accounts - no principal path for delegateInfo: %{public}@ %@", buf, 0x16u);
+          _os_log_error_impl(&dword_1859F0000, os_log, OS_LOG_TYPE_ERROR, "Unexpected condition updating accounts - no principal path for delegateInfo: %{public}@ %@", buf, 0x16u);
 
           v7 = v48;
         }
@@ -179,8 +179,8 @@ LABEL_18:
         v58 = 0u;
         v55 = 0u;
         v56 = 0u;
-        v30 = [v11 allValues];
-        v31 = [v30 countByEnumeratingWithState:&v55 objects:v64 count:16];
+        allValues = [v11 allValues];
+        v31 = [allValues countByEnumeratingWithState:&v55 objects:v64 count:16];
         if (v31)
         {
           v32 = v31;
@@ -191,14 +191,14 @@ LABEL_18:
             {
               if (*v56 != v33)
               {
-                objc_enumerationMutation(v30);
+                objc_enumerationMutation(allValues);
               }
 
               v35 = [(CNChildDelegateAccountsStore *)self removeAccount:*(*(&v55 + 1) + 8 * i)];
               [v7 addObject:v35];
             }
 
-            v32 = [v30 countByEnumeratingWithState:&v55 objects:v64 count:16];
+            v32 = [allValues countByEnumeratingWithState:&v55 objects:v64 count:16];
           }
 
           while (v32);
@@ -232,60 +232,60 @@ LABEL_18:
           while (v38);
         }
 
-        v6 = v47;
+        accountsCopy = v47;
         goto LABEL_37;
       }
     }
   }
 
-  v42 = [objc_opt_class() os_log];
-  if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
+  os_log2 = [objc_opt_class() os_log];
+  if (os_log_type_enabled(os_log2, OS_LOG_TYPE_ERROR))
   {
-    [CNChildDelegateAccountsStore updateAccounts:v42 error:?];
+    [CNChildDelegateAccountsStore updateAccounts:os_log2 error:?];
   }
 
   v43 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CNContactsFoundationErrorDomain" code:9 userInfo:0];
   v36 = v43;
-  if (a4)
+  if (error)
   {
     v44 = v43;
-    *a4 = v36;
+    *error = v36;
   }
 
 LABEL_37:
 
   v45 = *MEMORY[0x1E69E9840];
-  return v6 != 0;
+  return accountsCopy != 0;
 }
 
-- (id)addChildWithDelegateInfo:(id)a3
+- (id)addChildWithDelegateInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(CNChildDelegateAccountsStore *)self accountStore];
-  v6 = [v5 accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E6959820]];
+  infoCopy = info;
+  accountStore = [(CNChildDelegateAccountsStore *)self accountStore];
+  v6 = [accountStore accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E6959820]];
 
   v7 = [objc_alloc(MEMORY[0x1E6959A28]) initWithAccountType:v6];
   v8 = objc_opt_class();
-  v9 = [(CNChildDelegateAccountsStore *)self parentAccount];
-  [v8 configureChildAccount:v7 withSettingsFromDelegateInfo:v4 parent:v9];
+  parentAccount = [(CNChildDelegateAccountsStore *)self parentAccount];
+  [v8 configureChildAccount:v7 withSettingsFromDelegateInfo:infoCopy parent:parentAccount];
 
-  v10 = [v7 _cn_principalPath];
-  [v7 setObject:v10 forKeyedSubscript:@"serverRootPath"];
+  _cn_principalPath = [v7 _cn_principalPath];
+  [v7 setObject:_cn_principalPath forKeyedSubscript:@"serverRootPath"];
 
-  v11 = [(CNChildDelegateAccountsStore *)self parentAccount];
-  [v7 setParentAccount:v11];
+  parentAccount2 = [(CNChildDelegateAccountsStore *)self parentAccount];
+  [v7 setParentAccount:parentAccount2];
 
   [v7 setAuthenticationType:@"parent"];
 
   return v7;
 }
 
-+ (void)configureChildAccount:(id)a3 withSettingsFromDelegateInfo:(id)a4 parent:(id)a5
++ (void)configureChildAccount:(id)account withSettingsFromDelegateInfo:(id)info parent:(id)parent
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  [v7 setPropertiesFromDelegateInfo:a4];
+  accountCopy = account;
+  parentCopy = parent;
+  [accountCopy setPropertiesFromDelegateInfo:info];
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
@@ -305,12 +305,12 @@ LABEL_37:
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v7 objectForKeyedSubscript:v13];
+        v14 = [accountCopy objectForKeyedSubscript:v13];
 
         if (!v14)
         {
-          v15 = [v8 objectForKeyedSubscript:v13];
-          [v7 setObject:v15 forKeyedSubscript:v13];
+          v15 = [parentCopy objectForKeyedSubscript:v13];
+          [accountCopy setObject:v15 forKeyedSubscript:v13];
         }
       }
 
@@ -323,18 +323,18 @@ LABEL_37:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)updateAccount:(id)a3
+- (id)updateAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(CNChildDelegateAccountsStore *)self accountStore];
-  v6 = [v5 _cn_canSaveAccount:v4];
+  accountCopy = account;
+  accountStore = [(CNChildDelegateAccountsStore *)self accountStore];
+  v6 = [accountStore _cn_canSaveAccount:accountCopy];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __46__CNChildDelegateAccountsStore_updateAccount___block_invoke;
   v16[3] = &unk_1E6ED59E0;
   v16[4] = self;
-  v7 = v4;
+  v7 = accountCopy;
   v17 = v7;
   [v6 addFailureBlock:v16];
   v14[0] = MEMORY[0x1E69E9820];
@@ -424,18 +424,18 @@ void __46__CNChildDelegateAccountsStore_updateAccount___block_invoke_29(uint64_t
   }
 }
 
-- (id)removeAccount:(id)a3
+- (id)removeAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(CNChildDelegateAccountsStore *)self accountStore];
-  v6 = [v5 _cn_removeAccount:v4];
+  accountCopy = account;
+  accountStore = [(CNChildDelegateAccountsStore *)self accountStore];
+  v6 = [accountStore _cn_removeAccount:accountCopy];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __46__CNChildDelegateAccountsStore_removeAccount___block_invoke;
   v12[3] = &unk_1E6ED59E0;
   v12[4] = self;
-  v7 = v4;
+  v7 = accountCopy;
   v13 = v7;
   [v6 addFailureBlock:v12];
   v10[0] = MEMORY[0x1E69E9820];

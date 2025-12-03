@@ -1,17 +1,17 @@
 @interface ResolvedContentMetrics
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_TtC18ActivityUIServices22ResolvedContentMetrics)init;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation ResolvedContentMetrics
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_18E65FB60();
     swift_unknownObjectRelease();
@@ -20,7 +20,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_18E641560(v8);
@@ -31,7 +31,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_18E641780();
 
   v3 = sub_18E65F8F0();
@@ -39,11 +39,11 @@
   return v3;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_18E641D98(a3);
+  selfCopy = self;
+  sub_18E641D98(coder);
   swift_unknownObjectRelease();
 }
 

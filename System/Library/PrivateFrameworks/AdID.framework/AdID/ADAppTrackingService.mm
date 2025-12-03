@@ -1,16 +1,16 @@
 @interface ADAppTrackingService
 + (id)sharedInstance;
 - (ADAppTrackingService)init;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)deviceRegionEnabledPerStorefront:(id)a3;
-- (void)getAccountLevelSwitchDisabledReasonWithHandler:(id)a3;
-- (void)iTunesAccountStorefront:(id)a3;
-- (void)latestPersonalizedAdsConsentVersion:(id)a3;
-- (void)localAdServicesEnabled:(id)a3;
-- (void)reconcileDataForRecord:(id)a3;
-- (void)sendPersonalizedAdsAndReconcileDataForRecord:(id)a3;
-- (void)shouldAppStoreDisplayAdvertisingScreen:(id)a3;
-- (void)shouldDisplayPersonalizedAdsUI:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)deviceRegionEnabledPerStorefront:(id)storefront;
+- (void)getAccountLevelSwitchDisabledReasonWithHandler:(id)handler;
+- (void)iTunesAccountStorefront:(id)storefront;
+- (void)latestPersonalizedAdsConsentVersion:(id)version;
+- (void)localAdServicesEnabled:(id)enabled;
+- (void)reconcileDataForRecord:(id)record;
+- (void)sendPersonalizedAdsAndReconcileDataForRecord:(id)record;
+- (void)shouldAppStoreDisplayAdvertisingScreen:(id)screen;
+- (void)shouldDisplayPersonalizedAdsUI:(id)i;
 @end
 
 @implementation ADAppTrackingService
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __38__ADAppTrackingService_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__onceToken_2 != -1)
   {
     dispatch_once(&sharedInstance__onceToken_2, block);
@@ -58,33 +58,33 @@ uint64_t __38__ADAppTrackingService_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.private.iad.opt-in-control"];
-  v7 = [v6 BOOLValue];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.private.iad.opt-in-control"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
-    [v5 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v8 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_28510E220];
-    [v5 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
-    [v5 setInvalidationHandler:&__block_literal_global_5];
-    [v5 setInterruptionHandler:&__block_literal_global_43];
+    [connectionCopy setInvalidationHandler:&__block_literal_global_5];
+    [connectionCopy setInterruptionHandler:&__block_literal_global_43];
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Accepted connection from ADTrackingTransparency client."];
     _ADLog();
 
-    [v5 resume];
+    [connectionCopy resume];
   }
 
   else
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Rejected ADTrackingTransparency connection client with PID %d lacking the appropriate entitlement (%@).", objc_msgSend(v5, "processIdentifier"), @"com.apple.private.iad.opt-in-control"];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Rejected ADTrackingTransparency connection client with PID %d lacking the appropriate entitlement (%@).", objc_msgSend(connectionCopy, "processIdentifier"), @"com.apple.private.iad.opt-in-control"];
     _ADLog();
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 void __59__ADAppTrackingService_listener_shouldAcceptNewConnection___block_invoke()
@@ -99,16 +99,16 @@ void __59__ADAppTrackingService_listener_shouldAcceptNewConnection___block_invok
   _ADLog();
 }
 
-- (void)sendPersonalizedAdsAndReconcileDataForRecord:(id)a3
+- (void)sendPersonalizedAdsAndReconcileDataForRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__ADAppTrackingService_sendPersonalizedAdsAndReconcileDataForRecord___block_invoke;
   v6[3] = &unk_278C586D8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = recordCopy;
+  v5 = recordCopy;
   [v5 sendPersonalizedAdsStatusToAdPlatforms:v6];
 }
 
@@ -126,10 +126,10 @@ uint64_t __69__ADAppTrackingService_sendPersonalizedAdsAndReconcileDataForRecord
   return [v4 reconcileDataForRecord:v5];
 }
 
-- (void)reconcileDataForRecord:(id)a3
+- (void)reconcileDataForRecord:(id)record
 {
-  v3 = [MEMORY[0x277CE9658] sharedInstance];
-  [v3 deleteRecords:&__block_literal_global_56];
+  mEMORY[0x277CE9658] = [MEMORY[0x277CE9658] sharedInstance];
+  [mEMORY[0x277CE9658] deleteRecords:&__block_literal_global_56];
 }
 
 void __47__ADAppTrackingService_reconcileDataForRecord___block_invoke()
@@ -155,22 +155,22 @@ void __47__ADAppTrackingService_reconcileDataForRecord___block_invoke_3(uint64_t
   }
 }
 
-- (void)getAccountLevelSwitchDisabledReasonWithHandler:(id)a3
+- (void)getAccountLevelSwitchDisabledReasonWithHandler:(id)handler
 {
-  v6 = a3;
-  v3 = [MEMORY[0x277CE9658] sharedInstance];
-  v4 = [v3 activeDSIDRecord];
-  if ([v4 accountIsU13])
+  handlerCopy = handler;
+  mEMORY[0x277CE9658] = [MEMORY[0x277CE9658] sharedInstance];
+  activeDSIDRecord = [mEMORY[0x277CE9658] activeDSIDRecord];
+  if ([activeDSIDRecord accountIsU13])
   {
     v5 = 1;
   }
 
-  else if ([v4 accountIsU18])
+  else if ([activeDSIDRecord accountIsU18])
   {
     v5 = 2;
   }
 
-  else if ([v4 accountAgeUnknown])
+  else if ([activeDSIDRecord accountAgeUnknown])
   {
     v5 = 5;
   }
@@ -180,131 +180,131 @@ void __47__ADAppTrackingService_reconcileDataForRecord___block_invoke_3(uint64_t
     v5 = 0;
   }
 
-  v6[2](v6, v5);
+  handlerCopy[2](handlerCopy, v5);
 }
 
-- (void)shouldDisplayPersonalizedAdsUI:(id)a3
+- (void)shouldDisplayPersonalizedAdsUI:(id)i
 {
-  v11 = a3;
+  iCopy = i;
   if (MGGetBoolAnswer() && ([MEMORY[0x277CE9630] sharedInstance], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "BOOLForKey:", @"ForceNonAdLocale"), v3, v4))
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: Ad Enabled Locality is forced OFF by internal default.", objc_opt_class()];
     _ADLog();
 
-    v11[2](v11, 0);
+    iCopy[2](iCopy, 0);
   }
 
   else
   {
     v6 = +[ADAdTrackingSchedulingManager sharedInstance];
-    v7 = [v6 isNewsOrStocksEnabledLocality];
-    v8 = v11;
-    if (v7)
+    isNewsOrStocksEnabledLocality = [v6 isNewsOrStocksEnabledLocality];
+    v8 = iCopy;
+    if (isNewsOrStocksEnabledLocality)
     {
       v9 = 1;
     }
 
     else
     {
-      v10 = [v6 isSearchAdsEnabled];
-      v8 = v11;
-      v9 = v10;
+      isSearchAdsEnabled = [v6 isSearchAdsEnabled];
+      v8 = iCopy;
+      v9 = isSearchAdsEnabled;
     }
 
     v8[2](v8, v9);
   }
 }
 
-- (void)shouldAppStoreDisplayAdvertisingScreen:(id)a3
+- (void)shouldAppStoreDisplayAdvertisingScreen:(id)screen
 {
-  v7 = a3;
+  screenCopy = screen;
   if (MGGetBoolAnswer() && ([MEMORY[0x277CE9630] sharedInstance], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "BOOLForKey:", @"ForceNonAdLocale"), v3, v4))
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: Ad Enabled Locality is forced OFF by internal default.", objc_opt_class()];
     _ADLog();
 
-    v7[2](v7, 0);
+    screenCopy[2](screenCopy, 0);
   }
 
   else
   {
     v6 = +[ADAdTrackingSchedulingManager sharedInstance];
-    v7[2](v7, [v6 isSearchAdsEnabled]);
+    screenCopy[2](screenCopy, [v6 isSearchAdsEnabled]);
   }
 }
 
-- (void)latestPersonalizedAdsConsentVersion:(id)a3
+- (void)latestPersonalizedAdsConsentVersion:(id)version
 {
-  v3 = a3;
+  versionCopy = version;
   v4 = +[ADAdTrackingSchedulingManager sharedInstance];
-  v3[2](v3, [v4 latestPersonalizedConsentVersion]);
+  versionCopy[2](versionCopy, [v4 latestPersonalizedConsentVersion]);
 }
 
-- (void)iTunesAccountStorefront:(id)a3
+- (void)iTunesAccountStorefront:(id)storefront
 {
-  v8 = a3;
-  v3 = [MEMORY[0x277CE9658] sharedInstance];
-  v4 = [v3 activeDSIDRecord];
-  v5 = [v4 isPlaceholderAccount];
+  storefrontCopy = storefront;
+  mEMORY[0x277CE9658] = [MEMORY[0x277CE9658] sharedInstance];
+  activeDSIDRecord = [mEMORY[0x277CE9658] activeDSIDRecord];
+  isPlaceholderAccount = [activeDSIDRecord isPlaceholderAccount];
 
-  if (v5)
+  if (isPlaceholderAccount)
   {
-    v6 = @"NONE";
+    iTunesStorefront = @"NONE";
   }
 
   else
   {
-    v7 = [MEMORY[0x277CE9638] sharedInstance];
-    v6 = [v7 iTunesStorefront];
+    mEMORY[0x277CE9638] = [MEMORY[0x277CE9638] sharedInstance];
+    iTunesStorefront = [mEMORY[0x277CE9638] iTunesStorefront];
   }
 
-  if (v8)
+  if (storefrontCopy)
   {
-    v8[2](v8, v6);
+    storefrontCopy[2](storefrontCopy, iTunesStorefront);
   }
 }
 
-- (void)localAdServicesEnabled:(id)a3
+- (void)localAdServicesEnabled:(id)enabled
 {
-  v12 = a3;
-  v3 = [MEMORY[0x277CE9658] sharedInstance];
-  v4 = [v3 activeDSIDRecord];
-  if ([v4 isPlaceholderAccount])
+  enabledCopy = enabled;
+  mEMORY[0x277CE9658] = [MEMORY[0x277CE9658] sharedInstance];
+  activeDSIDRecord = [mEMORY[0x277CE9658] activeDSIDRecord];
+  if ([activeDSIDRecord isPlaceholderAccount])
   {
-    v12[2](v12, 0);
+    enabledCopy[2](enabledCopy, 0);
   }
 
   else
   {
-    v5 = [MEMORY[0x277CE9638] sharedInstance];
-    v6 = [v4 accountIsU13];
-    v7 = [v5 isManagedAppleID];
-    v8 = [v5 educationModeEnabled];
-    v9 = [v5 isProtoU13state];
-    v10 = [v5 isProtoTeenState];
-    if ((v6 & 1) != 0 || (v7 & 1) != 0 || (v8 & 1) != 0 || (v9 & 1) != 0 || v10)
+    mEMORY[0x277CE9638] = [MEMORY[0x277CE9638] sharedInstance];
+    accountIsU13 = [activeDSIDRecord accountIsU13];
+    isManagedAppleID = [mEMORY[0x277CE9638] isManagedAppleID];
+    educationModeEnabled = [mEMORY[0x277CE9638] educationModeEnabled];
+    isProtoU13state = [mEMORY[0x277CE9638] isProtoU13state];
+    isProtoTeenState = [mEMORY[0x277CE9638] isProtoTeenState];
+    if ((accountIsU13 & 1) != 0 || (isManagedAppleID & 1) != 0 || (educationModeEnabled & 1) != 0 || (isProtoU13state & 1) != 0 || isProtoTeenState)
     {
-      v12[2](v12, 0);
+      enabledCopy[2](enabledCopy, 0);
     }
 
     else
     {
-      v11 = [v5 iTunesStorefront];
-      v12[2](v12, [v11 containsString:@"143441"]);
+      iTunesStorefront = [mEMORY[0x277CE9638] iTunesStorefront];
+      enabledCopy[2](enabledCopy, [iTunesStorefront containsString:@"143441"]);
     }
   }
 }
 
-- (void)deviceRegionEnabledPerStorefront:(id)a3
+- (void)deviceRegionEnabledPerStorefront:(id)storefront
 {
-  v6 = a3;
-  v3 = [MEMORY[0x277CBEAF8] currentLocale];
-  v4 = [v3 objectForKey:*MEMORY[0x277CBE690]];
+  storefrontCopy = storefront;
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v4 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
 
   v5 = [&unk_28510BE28 containsObject:v4];
-  if (v6)
+  if (storefrontCopy)
   {
-    v6[2](v6, v5);
+    storefrontCopy[2](storefrontCopy, v5);
   }
 }
 

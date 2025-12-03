@@ -1,19 +1,19 @@
 @interface PKDashboardActionButtonCollectionViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDashboardActionButtonCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDashboardActionButtonCollectionViewCell)initWithFrame:(CGRect)frame;
 - (id)_textColor;
 - (void)_layoutTitleLabel;
 - (void)layoutSubviews;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PKDashboardActionButtonCollectionViewCell
 
-- (PKDashboardActionButtonCollectionViewCell)initWithFrame:(CGRect)a3
+- (PKDashboardActionButtonCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = PKDashboardActionButtonCollectionViewCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -27,17 +27,17 @@
 
     [(UILabel *)v3->_titleLabel setNumberOfLines:1];
     [(UILabel *)v3->_titleLabel setTextAlignment:1];
-    v9 = [(PKDashboardActionButtonCollectionViewCell *)v3 contentView];
-    [v9 addSubview:v3->_titleLabel];
+    contentView = [(PKDashboardActionButtonCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_titleLabel];
   }
 
   return v3;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(PKDashboardActionButtonCollectionViewCell *)self _contentHeightWithWidth:a3.width + -16.0, a3.height];
+  width = fits.width;
+  [(PKDashboardActionButtonCollectionViewCell *)self _contentHeightWithWidth:fits.width + -16.0, fits.height];
   v5 = fmax(v4 + 16.0, 55.0);
   v6 = width;
   result.height = v5;
@@ -50,8 +50,8 @@
   v12.receiver = self;
   v12.super_class = PKDashboardActionButtonCollectionViewCell;
   [(PKDashboardCollectionViewCell *)&v12 layoutSubviews];
-  v3 = [(PKDashboardActionButtonCollectionViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKDashboardActionButtonCollectionViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -60,12 +60,12 @@
   [(UILabel *)self->_titleLabel setFrame:v5 + 8.0, v7 + 8.0, v9 + -16.0, v11 + -16.0];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v6 = a3;
+  titleCopy = title;
   if ((PKEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [titleCopy copy];
     title = self->_title;
     self->_title = v4;
 
@@ -77,8 +77,8 @@
 {
   [(UILabel *)self->_titleLabel setText:self->_title];
   titleLabel = self->_titleLabel;
-  v4 = [(PKDashboardActionButtonCollectionViewCell *)self _textColor];
-  [(UILabel *)titleLabel setTextColor:v4];
+  _textColor = [(PKDashboardActionButtonCollectionViewCell *)self _textColor];
+  [(UILabel *)titleLabel setTextColor:_textColor];
 
   [(PKDashboardActionButtonCollectionViewCell *)self setNeedsLayout];
 }

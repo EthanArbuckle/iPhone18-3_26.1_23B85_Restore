@@ -1,15 +1,15 @@
 @interface _BSUIOrientationTransformedContentView
-- (_BSUIOrientationTransformedContentView)initWithFrame:(CGRect)a3;
+- (_BSUIOrientationTransformedContentView)initWithFrame:(CGRect)frame;
 - (id)description;
 @end
 
 @implementation _BSUIOrientationTransformedContentView
 
-- (_BSUIOrientationTransformedContentView)initWithFrame:(CGRect)a3
+- (_BSUIOrientationTransformedContentView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = _BSUIOrientationTransformedContentView;
-  result = [(_BSUIOrientationTransformedContentView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(_BSUIOrientationTransformedContentView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_contentOrientation = 1;
@@ -24,10 +24,10 @@
   v3 = BSInterfaceOrientationDescription();
   v4 = [v2 appendObject:v3 withName:@"content"];
 
-  v5 = [v2 appendSuper];
-  v6 = [v2 build];
+  appendSuper = [v2 appendSuper];
+  build = [v2 build];
 
-  return v6;
+  return build;
 }
 
 @end

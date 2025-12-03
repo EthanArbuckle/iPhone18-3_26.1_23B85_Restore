@@ -1,10 +1,10 @@
 @interface SUUIRedeemITunesPassLearnMoreView
 - (UIControl)button;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setButtonTitle:(id)a3;
-- (void)setExplanationString:(id)a3;
-- (void)setHeaderImage:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setButtonTitle:(id)title;
+- (void)setExplanationString:(id)string;
+- (void)setHeaderImage:(id)image;
 @end
 
 @implementation SUUIRedeemITunesPassLearnMoreView
@@ -19,12 +19,12 @@
     self->_button = v4;
 
     v6 = self->_button;
-    v7 = [(SUUIRedeemITunesPassLearnMoreView *)self backgroundColor];
-    [(UIButton *)v6 setBackgroundColor:v7];
+    backgroundColor = [(SUUIRedeemITunesPassLearnMoreView *)self backgroundColor];
+    [(UIButton *)v6 setBackgroundColor:backgroundColor];
 
-    v8 = [(UIButton *)self->_button titleLabel];
+    titleLabel = [(UIButton *)self->_button titleLabel];
     v9 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
-    [v8 setFont:v9];
+    [titleLabel setFont:v9];
 
     [(SUUIRedeemITunesPassLearnMoreView *)self addSubview:self->_button];
     button = self->_button;
@@ -33,20 +33,20 @@
   return button;
 }
 
-- (void)setButtonTitle:(id)a3
+- (void)setButtonTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(SUUIRedeemITunesPassLearnMoreView *)self button];
-  [v5 setTitle:v4 forState:0];
+  titleCopy = title;
+  button = [(SUUIRedeemITunesPassLearnMoreView *)self button];
+  [button setTitle:titleCopy forState:0];
 
   [(SUUIRedeemITunesPassLearnMoreView *)self setNeedsLayout];
 }
 
-- (void)setExplanationString:(id)a3
+- (void)setExplanationString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   explanationLabel = self->_explanationLabel;
-  v14 = v4;
+  v14 = stringCopy;
   if (!explanationLabel)
   {
     v6 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -54,8 +54,8 @@
     self->_explanationLabel = v6;
 
     v8 = self->_explanationLabel;
-    v9 = [(SUUIRedeemITunesPassLearnMoreView *)self backgroundColor];
-    [(UILabel *)v8 setBackgroundColor:v9];
+    backgroundColor = [(SUUIRedeemITunesPassLearnMoreView *)self backgroundColor];
+    [(UILabel *)v8 setBackgroundColor:backgroundColor];
 
     v10 = self->_explanationLabel;
     v11 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
@@ -68,19 +68,19 @@
     [(UILabel *)v12 setTextColor:v13];
 
     [(SUUIRedeemITunesPassLearnMoreView *)self addSubview:self->_explanationLabel];
-    v4 = v14;
+    stringCopy = v14;
     explanationLabel = self->_explanationLabel;
   }
 
-  [(UILabel *)explanationLabel setText:v4];
+  [(UILabel *)explanationLabel setText:stringCopy];
   [(SUUIRedeemITunesPassLearnMoreView *)self setNeedsLayout];
 }
 
-- (void)setHeaderImage:(id)a3
+- (void)setHeaderImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   headerImageView = self->_headerImageView;
-  v10 = v4;
+  v10 = imageCopy;
   if (!headerImageView)
   {
     v6 = objc_alloc_init(MEMORY[0x277D755E8]);
@@ -88,15 +88,15 @@
     self->_headerImageView = v6;
 
     v8 = self->_headerImageView;
-    v9 = [(SUUIRedeemITunesPassLearnMoreView *)self backgroundColor];
-    [(UIImageView *)v8 setBackgroundColor:v9];
+    backgroundColor = [(SUUIRedeemITunesPassLearnMoreView *)self backgroundColor];
+    [(UIImageView *)v8 setBackgroundColor:backgroundColor];
 
     [(SUUIRedeemITunesPassLearnMoreView *)self addSubview:self->_headerImageView];
-    v4 = v10;
+    imageCopy = v10;
     headerImageView = self->_headerImageView;
   }
 
-  [(UIImageView *)headerImageView setImage:v4];
+  [(UIImageView *)headerImageView setImage:imageCopy];
   [(SUUIRedeemITunesPassLearnMoreView *)self setNeedsLayout];
 }
 
@@ -150,16 +150,16 @@
   [(UIButton *)button setFrame:v27, MaxY + v19, v31, v33];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   button = self->_button;
-  v5 = a3;
-  [(UIButton *)button setBackgroundColor:v5];
-  [(UILabel *)self->_explanationLabel setBackgroundColor:v5];
-  [(UIImageView *)self->_headerImageView setBackgroundColor:v5];
+  colorCopy = color;
+  [(UIButton *)button setBackgroundColor:colorCopy];
+  [(UILabel *)self->_explanationLabel setBackgroundColor:colorCopy];
+  [(UIImageView *)self->_headerImageView setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUIRedeemITunesPassLearnMoreView;
-  [(SUUIRedeemITunesPassLearnMoreView *)&v6 setBackgroundColor:v5];
+  [(SUUIRedeemITunesPassLearnMoreView *)&v6 setBackgroundColor:colorCopy];
 }
 
 @end

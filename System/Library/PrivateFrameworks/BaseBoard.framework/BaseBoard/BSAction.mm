@@ -1,26 +1,26 @@
 @interface BSAction
 - (BOOL)_expectsResponse;
-- (BOOL)isEqual:(id)a3;
-- (BSAction)initWithBSXPCCoder:(id)a3;
-- (BSAction)initWithCoder:(id)a3;
-- (BSAction)initWithInfo:(id)a3 responder:(id)a4;
-- (BSAction)initWithInfo:(id)a3 timeout:(double)a4 forResponseOnQueue:(id)a5 withHandler:(id)a6;
-- (BSAction)initWithXPCDictionary:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 debug:;
-- (id)_initWithInfo:(void *)a3 responder:;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BSAction)initWithBSXPCCoder:(id)coder;
+- (BSAction)initWithCoder:(id)coder;
+- (BSAction)initWithInfo:(id)info responder:(id)responder;
+- (BSAction)initWithInfo:(id)info timeout:(double)timeout forResponseOnQueue:(id)queue withHandler:(id)handler;
+- (BSAction)initWithXPCDictionary:(id)dictionary;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix debug:;
+- (id)_initWithInfo:(void *)info responder:;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 - (void)invalidate;
-- (void)sendResponse:(id)a3;
-- (void)sendResponse:(id)a3 withCompletion:(id)a4;
+- (void)sendResponse:(id)response;
+- (void)sendResponse:(id)response withCompletion:(id)completion;
 @end
 
 @implementation BSAction
@@ -52,28 +52,28 @@
 - (id)succinctDescriptionBuilder
 {
   v3 = [BSDescriptionBuilder builderWithObject:self];
-  v4 = [(_BSActionResponder *)self->_responder action_shortIdentifier];
-  v5 = [v3 appendObject:v4 withName:@"id" skipIfNil:1];
+  action_shortIdentifier = [(_BSActionResponder *)self->_responder action_shortIdentifier];
+  v5 = [v3 appendObject:action_shortIdentifier withName:@"id" skipIfNil:1];
 
   return v3;
 }
 
 - (id)succinctDescription
 {
-  v3 = [(_BSActionResponder *)self->_responder action_fullIdentifier];
-  v4 = v3;
-  if (v3)
+  action_fullIdentifier = [(_BSActionResponder *)self->_responder action_fullIdentifier];
+  v4 = action_fullIdentifier;
+  if (action_fullIdentifier)
   {
-    v5 = v3;
+    build = action_fullIdentifier;
   }
 
   else
   {
-    v6 = [(BSAction *)self succinctDescriptionBuilder];
-    v5 = [v6 build];
+    succinctDescriptionBuilder = [(BSAction *)self succinctDescriptionBuilder];
+    build = [succinctDescriptionBuilder build];
   }
 
-  return v5;
+  return build;
 }
 
 - (unint64_t)hash
@@ -112,15 +112,15 @@
   return v3 & 1;
 }
 
-- (id)_initWithInfo:(void *)a3 responder:
+- (id)_initWithInfo:(void *)info responder:
 {
   v30 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  infoCopy = info;
+  v7 = infoCopy;
+  if (self)
   {
-    if (!v6)
+    if (!infoCopy)
     {
       v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"responder"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -133,7 +133,7 @@
         v20 = 2114;
         v21 = v15;
         v22 = 2048;
-        v23 = a1;
+        selfCopy = self;
         v24 = 2114;
         v25 = @"BSAction.m";
         v26 = 1024;
@@ -149,7 +149,7 @@
       JUMPOUT(0x18FF82A00);
     }
 
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = BSAction;
     v8 = objc_msgSendSuper2(&v17, sel_init);
     if (v8)
@@ -160,7 +160,7 @@
 
       [*(v8 + 3) setDescriptionProvider:v8];
       *(v8 + 16) = 0;
-      objc_storeStrong(v8 + 1, a3);
+      objc_storeStrong(v8 + 1, info);
     }
   }
 
@@ -172,24 +172,24 @@
   return v8;
 }
 
-- (BSAction)initWithInfo:(id)a3 responder:(id)a4
+- (BSAction)initWithInfo:(id)info responder:(id)responder
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  infoCopy = info;
+  responderCopy = responder;
+  v8 = responderCopy;
+  if (responderCopy)
   {
-    os_unfair_lock_lock(v7 + 10);
-    v9 = [(BSActionResponder *)v8 _lock_underlying];
+    os_unfair_lock_lock(responderCopy + 10);
+    _lock_underlying = [(BSActionResponder *)v8 _lock_underlying];
     os_unfair_lock_unlock(v8 + 10);
   }
 
   else
   {
-    v9 = +[_BSActionResponder originator_nullResponder];
+    _lock_underlying = +[_BSActionResponder originator_nullResponder];
   }
 
-  v10 = [(BSAction *)self _initWithInfo:v6 responder:v9];
+  v10 = [(BSAction *)self _initWithInfo:infoCopy responder:_lock_underlying];
   v11 = v10;
   if (v10)
   {
@@ -201,15 +201,15 @@
   return v11;
 }
 
-- (BSAction)initWithInfo:(id)a3 timeout:(double)a4 forResponseOnQueue:(id)a5 withHandler:(id)a6
+- (BSAction)initWithInfo:(id)info timeout:(double)timeout forResponseOnQueue:(id)queue withHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v12)
+  infoCopy = info;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v13 = v11;
-    if (!v11)
+    v13 = queueCopy;
+    if (!queueCopy)
     {
       LODWORD(v14) = qos_class_self();
       if (v14 <= 0x15)
@@ -225,8 +225,8 @@
       v13 = dispatch_get_global_queue(v14, 0);
     }
 
-    v15 = [_BSActionResponder originator_responderOnQueue:v13 forHandler:v12];
-    if (!v11)
+    v15 = [_BSActionResponder originator_responderOnQueue:v13 forHandler:handlerCopy];
+    if (!queueCopy)
     {
     }
 
@@ -237,9 +237,9 @@
       os_unfair_lock_unlock((v15 + 96));
     }
 
-    if (a4 > 0.0 && fabs(a4) >= 2.22044605e-16)
+    if (timeout > 0.0 && fabs(timeout) >= 2.22044605e-16)
     {
-      v16 = dispatch_time(0, (a4 * 1000000000.0));
+      v16 = dispatch_time(0, (timeout * 1000000000.0));
       [(_BSActionResponder *)v15 originator_setTimeout:v16];
     }
   }
@@ -249,7 +249,7 @@
     v15 = +[_BSActionResponder originator_nullResponder];
   }
 
-  v17 = [(BSAction *)self _initWithInfo:v10 responder:v15];
+  v17 = [(BSAction *)self _initWithInfo:infoCopy responder:v15];
   v18 = v17;
   if (v17)
   {
@@ -262,42 +262,42 @@
   return v18;
 }
 
-- (BSAction)initWithBSXPCCoder:(id)a3
+- (BSAction)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"i"];
-  v6 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"r"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"i"];
+  v6 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"r"];
   v7 = [_BSActionResponder action_decodeFromXPCObject:v6];
 
   v8 = [(BSAction *)self _initWithInfo:v5 responder:v7];
   return v8;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_info forKey:@"i"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_info forKey:@"i"];
   v4 = [(_BSActionResponder *)self->_responder action_encode:?];
-  [v5 encodeObject:v4 forKey:@"r"];
+  [coderCopy encodeObject:v4 forKey:@"r"];
 }
 
-- (BSAction)initWithXPCDictionary:(id)a3
+- (BSAction)initWithXPCDictionary:(id)dictionary
 {
-  v4 = [BSXPCCoder coderWithMessage:a3];
+  v4 = [BSXPCCoder coderWithMessage:dictionary];
   v5 = [(BSAction *)self initWithBSXPCCoder:v4];
 
   return v5;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v4 = [BSXPCCoder coderWithMessage:a3];
+  v4 = [BSXPCCoder coderWithMessage:dictionary];
   [(BSAction *)self encodeWithBSXPCCoder:?];
 }
 
-- (BSAction)initWithCoder:(id)a3
+- (BSAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -309,7 +309,7 @@
     [v5 raise:*MEMORY[0x1E695D940] format:{@"An %@ can only be decoded with an instance of NSXPCCoder; attempting to decode with %@", v7, v9}];
   }
 
-  v10 = v4;
+  v10 = coderCopy;
   v11 = [v10 decodeObjectOfClass:objc_opt_class() forKey:@"i"];
   v12 = [v10 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"r"];
   v13 = [_BSActionResponder action_decodeFromXPCObject:v12];
@@ -318,13 +318,13 @@
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v11;
+    v4 = coderCopy;
     v5 = v4;
     info = self->_info;
     if (info)
@@ -350,13 +350,13 @@
   }
 }
 
-- (void)sendResponse:(id)a3
+- (void)sendResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   responder = self->_responder;
-  v6 = v4;
-  v8 = v4;
-  if (!v4)
+  v6 = responseCopy;
+  v8 = responseCopy;
+  if (!responseCopy)
   {
     v6 = [BSActionResponse responseForErrorCode:?];
   }
@@ -370,22 +370,22 @@
   }
 }
 
-- (void)sendResponse:(id)a3 withCompletion:(id)a4
+- (void)sendResponse:(id)response withCompletion:(id)completion
 {
-  v10 = a3;
-  v6 = a4;
+  responseCopy = response;
+  completionCopy = completion;
   responder = self->_responder;
-  v8 = v10;
-  if (!v10)
+  v8 = responseCopy;
+  if (!responseCopy)
   {
     v8 = [BSActionResponse responseForErrorCode:?];
   }
 
   v9 = [(_BSActionResponder *)responder action:v8 sendResponse:?];
-  if (!v10)
+  if (!responseCopy)
   {
 
-    if (!v6)
+    if (!completionCopy)
     {
       goto LABEL_8;
     }
@@ -393,20 +393,20 @@
     goto LABEL_7;
   }
 
-  if (v6)
+  if (completionCopy)
   {
 LABEL_7:
-    v6[2](v6, v9);
+    completionCopy[2](completionCopy, v9);
   }
 
 LABEL_8:
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     goto LABEL_11;
   }
@@ -420,7 +420,7 @@ LABEL_6:
   }
 
   v7 = 0;
-  if (v4 && responder->_isOriginatorNull)
+  if (equalCopy && responder->_isOriginatorNull)
   {
     v8 = objc_opt_class();
     if (v8 != objc_opt_class())
@@ -450,47 +450,47 @@ LABEL_12:
   return v7;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSAction *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSAction *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSAction *)self _descriptionBuilderWithMultilinePrefix:a3 debug:0];
+  v3 = [(BSAction *)self _descriptionBuilderWithMultilinePrefix:prefix debug:0];
 
   return v3;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 debug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix debug:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = [a1 succinctDescriptionBuilder];
-    [v6 setActiveMultilinePrefix:v5];
-    [v6 setUseDebugDescription:a3];
-    v7 = [v6 appendObject:a1[3] withName:@"info"];
-    v8 = [v6 appendObject:a1[1] withName:@"responder"];
+    succinctDescriptionBuilder = [self succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    v7 = [succinctDescriptionBuilder appendObject:self[3] withName:@"info"];
+    v8 = [succinctDescriptionBuilder appendObject:self[1] withName:@"responder"];
   }
 
   else
   {
-    v6 = 0;
+    succinctDescriptionBuilder = 0;
   }
 
-  return v6;
+  return succinctDescriptionBuilder;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSAction *)self _descriptionBuilderWithMultilinePrefix:a3 debug:1];
-  v4 = [v3 build];
+  v3 = [(BSAction *)self _descriptionBuilderWithMultilinePrefix:prefix debug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

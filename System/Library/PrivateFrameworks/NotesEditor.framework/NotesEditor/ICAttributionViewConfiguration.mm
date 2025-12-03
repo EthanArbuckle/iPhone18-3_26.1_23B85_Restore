@@ -3,8 +3,8 @@
 - (BOOL)hasValidRange;
 - (BOOL)isAttributionHidden;
 - (BOOL)isDisclosureImageHidden;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAttributionViewConfiguration:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAttributionViewConfiguration:(id)configuration;
 - (BOOL)isStatusImageHidden;
 - (BOOL)isTimestampHidden;
 - (CGRect)adjustedFormattedTimestampFrame;
@@ -14,30 +14,30 @@
 - (CGRect)disclosureImageFrame;
 - (CGRect)formattedTimestampFrame;
 - (CGRect)frame;
-- (CGRect)rectForRange:(_NSRange)a3;
+- (CGRect)rectForRange:(_NSRange)range;
 - (CGRect)statusImageFrame;
-- (ICAttributionViewConfiguration)initWithConfiguration:(id)a3;
-- (ICAttributionViewConfiguration)initWithSharedState:(id)a3 editGroups:(id)a4 parentConfiguration:(id)a5;
-- (ICAttributionViewConfiguration)initWithSharedState:(id)a3 textEdit:(id)a4 parentConfiguration:(id)a5;
+- (ICAttributionViewConfiguration)initWithConfiguration:(id)configuration;
+- (ICAttributionViewConfiguration)initWithSharedState:(id)state editGroups:(id)groups parentConfiguration:(id)configuration;
+- (ICAttributionViewConfiguration)initWithSharedState:(id)state textEdit:(id)edit parentConfiguration:(id)configuration;
 - (ICAttributionViewConfiguration)parentConfiguration;
 - (NSOrderedSet)userIDs;
 - (NSString)attributionUserID;
 - (UIImage)disclosureImage;
 - (_NSRange)range;
 - (_NSRange)trimmedRange;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (id)editGroupForRange:(_NSRange)a3;
+- (id)editGroupForRange:(_NSRange)range;
 - (unint64_t)hash;
-- (void)addEditGroup:(id)a3;
-- (void)commonInitWithSharedState:(id)a3 range:(_NSRange)a4;
-- (void)drawStatusImageInContext:(CGContext *)a3 canvasSize:(CGSize)a4;
-- (void)loadDataWithCompletion:(id)a3;
-- (void)setAdjustedFrame:(CGRect)a3;
-- (void)setBlurred:(BOOL)a3;
-- (void)setFocused:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setTrimmedRange:(_NSRange)a3;
+- (void)addEditGroup:(id)group;
+- (void)commonInitWithSharedState:(id)state range:(_NSRange)range;
+- (void)drawStatusImageInContext:(CGContext *)context canvasSize:(CGSize)size;
+- (void)loadDataWithCompletion:(id)completion;
+- (void)setAdjustedFrame:(CGRect)frame;
+- (void)setBlurred:(BOOL)blurred;
+- (void)setFocused:(BOOL)focused;
+- (void)setFrame:(CGRect)frame;
+- (void)setTrimmedRange:(_NSRange)range;
 - (void)synchronouslyLoadData;
 - (void)updateAttribution;
 - (void)updateAttributionTextStorage;
@@ -75,132 +75,132 @@ void __47__ICAttributionViewConfiguration_loadDataQueue__block_invoke()
   loadDataQueue_loadDataQueue = v1;
 }
 
-- (ICAttributionViewConfiguration)initWithConfiguration:(id)a3
+- (ICAttributionViewConfiguration)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v77.receiver = self;
   v77.super_class = ICAttributionViewConfiguration;
   v5 = [(ICAttributionViewConfiguration *)&v77 init];
   if (v5)
   {
-    v6 = [v4 sharedState];
+    sharedState = [configurationCopy sharedState];
     sharedState = v5->_sharedState;
-    v5->_sharedState = v6;
+    v5->_sharedState = sharedState;
 
-    v8 = [v4 editGroups];
-    v9 = [v8 copy];
+    editGroups = [configurationCopy editGroups];
+    v9 = [editGroups copy];
     editGroups = v5->_editGroups;
     v5->_editGroups = v9;
 
-    v11 = [v4 textEdit];
+    textEdit = [configurationCopy textEdit];
     textEdit = v5->_textEdit;
-    v5->_textEdit = v11;
+    v5->_textEdit = textEdit;
 
-    v5->_range.location = [v4 range];
+    v5->_range.location = [configurationCopy range];
     v5->_range.length = v13;
-    v5->_trimmedRange.location = [v4 trimmedRange];
+    v5->_trimmedRange.location = [configurationCopy trimmedRange];
     v5->_trimmedRange.length = v14;
-    [v4 frame];
+    [configurationCopy frame];
     v5->_frame.origin.x = v15;
     v5->_frame.origin.y = v16;
     v5->_frame.size.width = v17;
     v5->_frame.size.height = v18;
-    [v4 adjustedFrame];
+    [configurationCopy adjustedFrame];
     v5->_adjustedFrame.origin.x = v19;
     v5->_adjustedFrame.origin.y = v20;
     v5->_adjustedFrame.size.width = v21;
     v5->_adjustedFrame.size.height = v22;
-    [v4 associatedTextFrame];
+    [configurationCopy associatedTextFrame];
     v5->_associatedTextFrame.origin.x = v23;
     v5->_associatedTextFrame.origin.y = v24;
     v5->_associatedTextFrame.size.width = v25;
     v5->_associatedTextFrame.size.height = v26;
-    v27 = [v4 attribution];
+    attribution = [configurationCopy attribution];
     attribution = v5->_attribution;
-    v5->_attribution = v27;
+    v5->_attribution = attribution;
 
-    [v4 attributionFrame];
+    [configurationCopy attributionFrame];
     v5->_attributionFrame.origin.x = v29;
     v5->_attributionFrame.origin.y = v30;
     v5->_attributionFrame.size.width = v31;
     v5->_attributionFrame.size.height = v32;
-    v5->_forcesAttributionHidden = [v4 forcesAttributionHidden];
-    v33 = [v4 attributionTextStorage];
+    v5->_forcesAttributionHidden = [configurationCopy forcesAttributionHidden];
+    attributionTextStorage = [configurationCopy attributionTextStorage];
     attributionTextStorage = v5->_attributionTextStorage;
-    v5->_attributionTextStorage = v33;
+    v5->_attributionTextStorage = attributionTextStorage;
 
-    v35 = [v4 timestamp];
+    timestamp = [configurationCopy timestamp];
     timestamp = v5->_timestamp;
-    v5->_timestamp = v35;
+    v5->_timestamp = timestamp;
 
-    v5->_forcesTimestampHidden = [v4 forcesTimestampHidden];
-    v37 = [v4 formattedTimestamp];
+    v5->_forcesTimestampHidden = [configurationCopy forcesTimestampHidden];
+    formattedTimestamp = [configurationCopy formattedTimestamp];
     formattedTimestamp = v5->_formattedTimestamp;
-    v5->_formattedTimestamp = v37;
+    v5->_formattedTimestamp = formattedTimestamp;
 
-    [v4 formattedTimestampFrame];
+    [configurationCopy formattedTimestampFrame];
     v5->_formattedTimestampFrame.origin.x = v39;
     v5->_formattedTimestampFrame.origin.y = v40;
     v5->_formattedTimestampFrame.size.width = v41;
     v5->_formattedTimestampFrame.size.height = v42;
-    v43 = [v4 formattedTimestampTextStorage];
+    formattedTimestampTextStorage = [configurationCopy formattedTimestampTextStorage];
     formattedTimestampTextStorage = v5->_formattedTimestampTextStorage;
-    v5->_formattedTimestampTextStorage = v43;
+    v5->_formattedTimestampTextStorage = formattedTimestampTextStorage;
 
-    [v4 adjustedFormattedTimestampFrame];
+    [configurationCopy adjustedFormattedTimestampFrame];
     v5->_adjustedFormattedTimestampFrame.origin.x = v45;
     v5->_adjustedFormattedTimestampFrame.origin.y = v46;
     v5->_adjustedFormattedTimestampFrame.size.width = v47;
     v5->_adjustedFormattedTimestampFrame.size.height = v48;
-    v49 = [v4 explicitTimestamp];
+    explicitTimestamp = [configurationCopy explicitTimestamp];
     explicitTimestamp = v5->_explicitTimestamp;
-    v5->_explicitTimestamp = v49;
+    v5->_explicitTimestamp = explicitTimestamp;
 
-    [v4 disclosureImageFrame];
+    [configurationCopy disclosureImageFrame];
     v5->_disclosureImageFrame.origin.x = v51;
     v5->_disclosureImageFrame.origin.y = v52;
     v5->_disclosureImageFrame.size.width = v53;
     v5->_disclosureImageFrame.size.height = v54;
-    v55 = [v4 statusImage];
+    statusImage = [configurationCopy statusImage];
     statusImage = v5->_statusImage;
-    v5->_statusImage = v55;
+    v5->_statusImage = statusImage;
 
-    [v4 statusImageFrame];
+    [configurationCopy statusImageFrame];
     v5->_statusImageFrame.origin.x = v57;
     v5->_statusImageFrame.origin.y = v58;
     v5->_statusImageFrame.size.width = v59;
     v5->_statusImageFrame.size.height = v60;
-    [v4 appliedHorizontalAdjustmentRatio];
+    [configurationCopy appliedHorizontalAdjustmentRatio];
     v5->_appliedHorizontalAdjustmentRatio = v61;
-    [v4 preferredHighlightValue];
+    [configurationCopy preferredHighlightValue];
     v5->_preferredHighlightValue = v62;
     v63 = objc_alloc(MEMORY[0x277CBEB18]);
-    v64 = [v4 highlightConfigurations];
-    v65 = [v63 initWithArray:v64 copyItems:1];
+    highlightConfigurations = [configurationCopy highlightConfigurations];
+    v65 = [v63 initWithArray:highlightConfigurations copyItems:1];
     highlightConfigurations = v5->_highlightConfigurations;
     v5->_highlightConfigurations = v65;
 
-    v67 = [v4 childConfigurations];
+    childConfigurations = [configurationCopy childConfigurations];
     v75[0] = MEMORY[0x277D85DD0];
     v75[1] = 3221225472;
     v75[2] = __56__ICAttributionViewConfiguration_initWithConfiguration___block_invoke;
     v75[3] = &unk_2781AE460;
     v68 = v5;
     v76 = v68;
-    v69 = [v67 ic_map:v75];
+    v69 = [childConfigurations ic_map:v75];
     childConfigurations = v68->_childConfigurations;
     v68->_childConfigurations = v69;
 
-    v68->_preview = [v4 isPreview];
-    v68->_focused = [v4 isFocused];
-    v68->_blurred = [v4 isBlurred];
-    v71 = [v4 unreadUserIDs];
-    v72 = [v71 copy];
+    v68->_preview = [configurationCopy isPreview];
+    v68->_focused = [configurationCopy isFocused];
+    v68->_blurred = [configurationCopy isBlurred];
+    unreadUserIDs = [configurationCopy unreadUserIDs];
+    v72 = [unreadUserIDs copy];
     unreadUserIDs = v68->_unreadUserIDs;
     v68->_unreadUserIDs = v72;
 
-    v68->_forceVisible = [v4 forceVisible];
-    v68->_dataLoaded = [v4 isDataLoaded];
+    v68->_forceVisible = [configurationCopy forceVisible];
+    v68->_dataLoaded = [configurationCopy isDataLoaded];
   }
 
   return v5;
@@ -214,42 +214,42 @@ id __56__ICAttributionViewConfiguration_initWithConfiguration___block_invoke(uin
   return v3;
 }
 
-- (ICAttributionViewConfiguration)initWithSharedState:(id)a3 editGroups:(id)a4 parentConfiguration:(id)a5
+- (ICAttributionViewConfiguration)initWithSharedState:(id)state editGroups:(id)groups parentConfiguration:(id)configuration
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  groupsCopy = groups;
+  configurationCopy = configuration;
   v17.receiver = self;
   v17.super_class = ICAttributionViewConfiguration;
   v11 = [(ICAttributionViewConfiguration *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_editGroups, a4);
-    objc_storeWeak(&v12->_parentConfiguration, v10);
-    v13 = [v9 firstObject];
-    v14 = [v13 range];
-    [(ICAttributionViewConfiguration *)v12 commonInitWithSharedState:v8 range:v14, v15];
+    objc_storeStrong(&v11->_editGroups, groups);
+    objc_storeWeak(&v12->_parentConfiguration, configurationCopy);
+    firstObject = [groupsCopy firstObject];
+    range = [firstObject range];
+    [(ICAttributionViewConfiguration *)v12 commonInitWithSharedState:stateCopy range:range, v15];
   }
 
   return v12;
 }
 
-- (ICAttributionViewConfiguration)initWithSharedState:(id)a3 textEdit:(id)a4 parentConfiguration:(id)a5
+- (ICAttributionViewConfiguration)initWithSharedState:(id)state textEdit:(id)edit parentConfiguration:(id)configuration
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  editCopy = edit;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = ICAttributionViewConfiguration;
   v11 = [(ICAttributionViewConfiguration *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_textEdit, a4);
-    objc_storeWeak(&v12->_parentConfiguration, v10);
-    v13 = [v9 range];
-    [(ICAttributionViewConfiguration *)v12 commonInitWithSharedState:v8 range:v13, v14];
+    objc_storeStrong(&v11->_textEdit, edit);
+    objc_storeWeak(&v12->_parentConfiguration, configurationCopy);
+    range = [editCopy range];
+    [(ICAttributionViewConfiguration *)v12 commonInitWithSharedState:stateCopy range:range, v14];
   }
 
   return v12;
@@ -260,44 +260,44 @@ id __56__ICAttributionViewConfiguration_initWithConfiguration___block_invoke(uin
   if ([(ICAttributionViewConfiguration *)self forcesAttributionHidden])
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [(ICAttributionViewConfiguration *)self attribution];
-    v5 = [v4 string];
-    v6 = [v3 stringWithFormat:@"[%@]", v5];
+    attribution = [(ICAttributionViewConfiguration *)self attribution];
+    string = [attribution string];
+    string2 = [v3 stringWithFormat:@"[%@]", string];
   }
 
   else
   {
-    v4 = [(ICAttributionViewConfiguration *)self attribution];
-    v6 = [v4 string];
+    attribution = [(ICAttributionViewConfiguration *)self attribution];
+    string2 = [attribution string];
   }
 
   if ([(ICAttributionViewConfiguration *)self forcesTimestampHidden])
   {
     v7 = MEMORY[0x277CCACA8];
-    v8 = [(ICAttributionViewConfiguration *)self formattedTimestamp];
-    v9 = [v8 string];
-    v10 = [v7 stringWithFormat:@"[%@]", v9];
+    formattedTimestamp = [(ICAttributionViewConfiguration *)self formattedTimestamp];
+    string3 = [formattedTimestamp string];
+    string4 = [v7 stringWithFormat:@"[%@]", string3];
   }
 
   else
   {
-    v8 = [(ICAttributionViewConfiguration *)self formattedTimestamp];
-    v10 = [v8 string];
+    formattedTimestamp = [(ICAttributionViewConfiguration *)self formattedTimestamp];
+    string4 = [formattedTimestamp string];
   }
 
-  v11 = [(ICAttributionViewConfiguration *)self childConfigurations];
-  v12 = [v11 count];
+  childConfigurations = [(ICAttributionViewConfiguration *)self childConfigurations];
+  v12 = [childConfigurations count];
 
   if (v12)
   {
-    v13 = [(ICAttributionViewConfiguration *)self childConfigurations];
-    v14 = [v13 ic_map:&__block_literal_global_22];
+    childConfigurations2 = [(ICAttributionViewConfiguration *)self childConfigurations];
+    v14 = [childConfigurations2 ic_map:&__block_literal_global_22];
     v15 = [v14 componentsJoinedByString:@"\n"];
 
     v16 = MEMORY[0x277CCACA8];
     [(ICAttributionViewConfiguration *)self adjustedFrame];
     v17 = ICStringFromRect();
-    v18 = [v16 stringWithFormat:@"<Frame: %@\n Name: %@\n Time: %@\n%@>", v17, v6, v10, v15];
+    v18 = [v16 stringWithFormat:@"<Frame: %@\n Name: %@\n Time: %@\n%@>", v17, string2, string4, v15];
   }
 
   else
@@ -305,7 +305,7 @@ id __56__ICAttributionViewConfiguration_initWithConfiguration___block_invoke(uin
     v19 = MEMORY[0x277CCACA8];
     [(ICAttributionViewConfiguration *)self adjustedFrame];
     v15 = ICStringFromRect();
-    v18 = [v19 stringWithFormat:@"<Frame: %@\n Name: %@\n Time: %@>", v15, v6, v10];
+    v18 = [v19 stringWithFormat:@"<Frame: %@\n Name: %@\n Time: %@>", v15, string2, string4];
   }
 
   return v18;
@@ -321,35 +321,35 @@ id __50__ICAttributionViewConfiguration_debugDescription__block_invoke(uint64_t 
   return v5;
 }
 
-- (BOOL)isEqualToAttributionViewConfiguration:(id)a3
+- (BOOL)isEqualToAttributionViewConfiguration:(id)configuration
 {
-  v7 = a3;
-  v8 = [(ICAttributionViewConfiguration *)self textEdit];
-  if (!v8)
+  configurationCopy = configuration;
+  textEdit = [(ICAttributionViewConfiguration *)self textEdit];
+  if (!textEdit)
   {
-    v15 = [v7 textEdit];
-    if (!v15)
+    textEdit2 = [configurationCopy textEdit];
+    if (!textEdit2)
     {
-      v15 = 0;
+      textEdit2 = 0;
       v9 = 0;
       goto LABEL_7;
     }
   }
 
-  v3 = [(ICAttributionViewConfiguration *)self textEdit];
-  v4 = [v7 textEdit];
-  if ([v3 isEqual:v4])
+  textEdit3 = [(ICAttributionViewConfiguration *)self textEdit];
+  textEdit4 = [configurationCopy textEdit];
+  if ([textEdit3 isEqual:textEdit4])
   {
     v9 = 1;
 LABEL_7:
-    v11 = [(ICAttributionViewConfiguration *)self editGroups];
-    if (v11 || ([v7 editGroups], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+    editGroups = [(ICAttributionViewConfiguration *)self editGroups];
+    if (editGroups || ([configurationCopy editGroups], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v12 = [(ICAttributionViewConfiguration *)self editGroups];
-      v13 = [v7 editGroups];
-      v10 = [v12 isEqual:v13];
+      editGroups2 = [(ICAttributionViewConfiguration *)self editGroups];
+      editGroups3 = [configurationCopy editGroups];
+      v10 = [editGroups2 isEqual:editGroups3];
 
-      if (v11)
+      if (editGroups)
       {
         goto LABEL_13;
       }
@@ -373,7 +373,7 @@ LABEL_13:
 LABEL_14:
 
 LABEL_15:
-  if (!v8)
+  if (!textEdit)
   {
   }
 
@@ -384,22 +384,22 @@ LABEL_15:
 {
   if (![(ICAttributionViewConfiguration *)self forcesAttributionHidden]&& ![(ICAttributionViewConfiguration *)self isBlurred])
   {
-    v5 = [(ICAttributionViewConfiguration *)self parentConfiguration];
-    if (!v5 && [(ICAttributionViewConfiguration *)self isFocused])
+    parentConfiguration = [(ICAttributionViewConfiguration *)self parentConfiguration];
+    if (!parentConfiguration && [(ICAttributionViewConfiguration *)self isFocused])
     {
-      v4 = 1;
+      isBlurred = 1;
 LABEL_12:
 
-      return v4;
+      return isBlurred;
     }
 
-    v6 = [(ICAttributionViewConfiguration *)self parentConfiguration];
-    if (!v6 || (-[ICAttributionViewConfiguration parentConfiguration](self, "parentConfiguration"), v2 = objc_claimAutoreleasedReturnValue(), [v2 isFocused]))
+    parentConfiguration2 = [(ICAttributionViewConfiguration *)self parentConfiguration];
+    if (!parentConfiguration2 || (-[ICAttributionViewConfiguration parentConfiguration](self, "parentConfiguration"), v2 = objc_claimAutoreleasedReturnValue(), [v2 isFocused]))
     {
-      v7 = [(ICAttributionViewConfiguration *)self parentConfiguration];
-      v4 = [v7 isBlurred];
+      parentConfiguration3 = [(ICAttributionViewConfiguration *)self parentConfiguration];
+      isBlurred = [parentConfiguration3 isBlurred];
 
-      if (!v6)
+      if (!parentConfiguration2)
       {
         goto LABEL_12;
       }
@@ -407,7 +407,7 @@ LABEL_12:
 
     else
     {
-      v4 = 1;
+      isBlurred = 1;
     }
 
     goto LABEL_12;
@@ -425,11 +425,11 @@ LABEL_12:
 
   else
   {
-    v5 = [(ICAttributionViewConfiguration *)self parentConfiguration];
-    if (v5)
+    parentConfiguration = [(ICAttributionViewConfiguration *)self parentConfiguration];
+    if (parentConfiguration)
     {
-      v6 = [(ICAttributionViewConfiguration *)self parentConfiguration];
-      v3 = [v6 isFocused] ^ 1;
+      parentConfiguration2 = [(ICAttributionViewConfiguration *)self parentConfiguration];
+      v3 = [parentConfiguration2 isFocused] ^ 1;
     }
 
     else
@@ -446,35 +446,35 @@ LABEL_12:
   [(ICAttributionViewConfiguration *)self statusImageFrame];
   v4 = v3;
   v6 = v5;
-  v7 = [(ICAttributionViewConfiguration *)self unreadUserIDs];
-  if ([v7 count])
+  unreadUserIDs = [(ICAttributionViewConfiguration *)self unreadUserIDs];
+  if ([unreadUserIDs count])
   {
-    v8 = 1;
+    isBlurred = 1;
     if (![(ICAttributionViewConfiguration *)self isFocused]&& v6 != 0.0 && v4 != 0.0)
     {
-      v9 = [(ICAttributionViewConfiguration *)self parentConfiguration];
-      if (v9)
+      parentConfiguration = [(ICAttributionViewConfiguration *)self parentConfiguration];
+      if (parentConfiguration)
       {
-        v10 = [(ICAttributionViewConfiguration *)self parentConfiguration];
-        if ([v10 isFocused])
+        parentConfiguration2 = [(ICAttributionViewConfiguration *)self parentConfiguration];
+        if ([parentConfiguration2 isFocused])
         {
-          v8 = [(ICAttributionViewConfiguration *)self isBlurred];
+          isBlurred = [(ICAttributionViewConfiguration *)self isBlurred];
         }
       }
 
       else
       {
-        v8 = [(ICAttributionViewConfiguration *)self isBlurred];
+        isBlurred = [(ICAttributionViewConfiguration *)self isBlurred];
       }
     }
   }
 
   else
   {
-    v8 = 1;
+    isBlurred = 1;
   }
 
-  return v8;
+  return isBlurred;
 }
 
 - (BOOL)isDisclosureImageHidden
@@ -486,16 +486,16 @@ LABEL_12:
 
   else
   {
-    v4 = [(ICAttributionViewConfiguration *)self parentConfiguration];
-    if (v4)
+    parentConfiguration = [(ICAttributionViewConfiguration *)self parentConfiguration];
+    if (parentConfiguration)
     {
       LOBYTE(v3) = 1;
     }
 
     else
     {
-      v5 = [(ICAttributionViewConfiguration *)self childConfigurations];
-      if ([v5 count] > 1)
+      childConfigurations = [(ICAttributionViewConfiguration *)self childConfigurations];
+      if ([childConfigurations count] > 1)
       {
         LOBYTE(v3) = 0;
       }
@@ -510,10 +510,10 @@ LABEL_12:
   return v3;
 }
 
-- (void)setFocused:(BOOL)a3
+- (void)setFocused:(BOOL)focused
 {
-  self->_focused = a3;
-  if (a3)
+  self->_focused = focused;
+  if (focused)
   {
     self->_blurred = 0;
   }
@@ -521,10 +521,10 @@ LABEL_12:
   [(ICAttributionViewConfiguration *)self updateHighlightAlpha];
 }
 
-- (void)setBlurred:(BOOL)a3
+- (void)setBlurred:(BOOL)blurred
 {
-  self->_blurred = a3;
-  if (a3)
+  self->_blurred = blurred;
+  if (blurred)
   {
     self->_focused = 0;
   }
@@ -532,13 +532,13 @@ LABEL_12:
   [(ICAttributionViewConfiguration *)self updateHighlightAlpha];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(self->_frame, a3))
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (!CGRectEqualToRect(self->_frame, frame))
   {
     self->_frame.origin.x = x;
     self->_frame.origin.y = y;
@@ -549,19 +549,19 @@ LABEL_12:
   }
 }
 
-- (void)setAdjustedFrame:(CGRect)a3
+- (void)setAdjustedFrame:(CGRect)frame
 {
-  y = a3.origin.y;
+  y = frame.origin.y;
   v20 = *MEMORY[0x277D85DE8];
-  self->_adjustedFrame = a3;
+  self->_adjustedFrame = frame;
   [(ICAttributionViewConfiguration *)self frame];
   v6 = y - v5;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(ICAttributionViewConfiguration *)self highlightConfigurations];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  highlightConfigurations = [(ICAttributionViewConfiguration *)self highlightConfigurations];
+  v8 = [highlightConfigurations countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -572,7 +572,7 @@ LABEL_12:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(highlightConfigurations);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
@@ -580,20 +580,20 @@ LABEL_12:
         [v12 setAdjustedFrame:?];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [highlightConfigurations countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
   }
 
-  v13 = [(ICAttributionViewConfiguration *)self childConfigurations];
+  childConfigurations = [(ICAttributionViewConfiguration *)self childConfigurations];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __51__ICAttributionViewConfiguration_setAdjustedFrame___block_invoke;
   v14[3] = &unk_2781AE4C8;
   *&v14[5] = v6;
   v14[4] = self;
-  [v13 enumerateObjectsUsingBlock:v14];
+  [childConfigurations enumerateObjectsUsingBlock:v14];
 }
 
 void __51__ICAttributionViewConfiguration_setAdjustedFrame___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -680,62 +680,62 @@ void __51__ICAttributionViewConfiguration_setAdjustedFrame___block_invoke(uint64
   }
 }
 
-- (void)setTrimmedRange:(_NSRange)a3
+- (void)setTrimmedRange:(_NSRange)range
 {
-  if (self->_trimmedRange.location != a3.location || self->_trimmedRange.length != a3.length)
+  if (self->_trimmedRange.location != range.location || self->_trimmedRange.length != range.length)
   {
-    self->_trimmedRange = a3;
+    self->_trimmedRange = range;
     [(ICAttributionViewConfiguration *)self rectForRange:?];
 
     [(ICAttributionViewConfiguration *)self setAssociatedTextFrame:?];
   }
 }
 
-- (void)addEditGroup:(id)a3
+- (void)addEditGroup:(id)group
 {
-  v18 = a3;
-  v4 = [(ICAttributionViewConfiguration *)self editGroups];
-  v5 = [v4 arrayByAddingObject:v18];
+  groupCopy = group;
+  editGroups = [(ICAttributionViewConfiguration *)self editGroups];
+  v5 = [editGroups arrayByAddingObject:groupCopy];
   editGroups = self->_editGroups;
   self->_editGroups = v5;
 
-  v20.location = [v18 range];
+  v20.location = [groupCopy range];
   v20.length = v7;
   self->_range = NSUnionRange(self->_range, v20);
   if ([(ICAttributionViewConfiguration *)self hasValidRange])
   {
-    v8 = [(ICAttributionViewConfiguration *)self sharedState];
-    v9 = [v8 noteTextStorage];
-    v10 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v11 = [v18 range];
-    v13 = [v9 ic_rangeByTrimmingCharactersInSet:v10 inRange:{v11, v12}];
+    sharedState = [(ICAttributionViewConfiguration *)self sharedState];
+    noteTextStorage = [sharedState noteTextStorage];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    range = [groupCopy range];
+    range2 = [noteTextStorage ic_rangeByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet inRange:{range, v12}];
     v15 = v14;
 
-    if (v13 == 0x7FFFFFFFFFFFFFFFLL)
+    if (range2 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v13 = [v18 range];
+      range2 = [groupCopy range];
       v15 = v16;
     }
 
-    v21.location = v13;
+    v21.location = range2;
     v21.length = v15;
     v17 = NSUnionRange(self->_trimmedRange, v21);
     [(ICAttributionViewConfiguration *)self setTrimmedRange:v17.location, v17.length];
   }
 }
 
-- (void)loadDataWithCompletion:(id)a3
+- (void)loadDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [objc_opt_class() loadDataQueue];
+  completionCopy = completion;
+  loadDataQueue = [objc_opt_class() loadDataQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__ICAttributionViewConfiguration_loadDataWithCompletion___block_invoke;
   v7[3] = &unk_2781AE4F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(loadDataQueue, v7);
 }
 
 uint64_t __57__ICAttributionViewConfiguration_loadDataWithCompletion___block_invoke(uint64_t a1)
@@ -757,21 +757,21 @@ uint64_t __57__ICAttributionViewConfiguration_loadDataWithCompletion___block_inv
   v18 = *MEMORY[0x277D85DE8];
   if ([(ICAttributionViewConfiguration *)self hasValidRange])
   {
-    v3 = [(ICAttributionViewConfiguration *)self sharedState];
-    v4 = [v3 note];
-    v5 = [v4 managedObjectContext];
+    sharedState = [(ICAttributionViewConfiguration *)self sharedState];
+    note = [sharedState note];
+    managedObjectContext = [note managedObjectContext];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __55__ICAttributionViewConfiguration_synchronouslyLoadData__block_invoke;
     v16[3] = &unk_2781ABCF8;
     v16[4] = self;
-    [v5 performBlockAndWait:v16];
+    [managedObjectContext performBlockAndWait:v16];
 
     [(ICAttributionViewConfiguration *)self updateStatusImage];
     [(ICAttributionViewConfiguration *)self updateFrames];
-    v6 = [(ICAttributionViewConfiguration *)self parentConfiguration];
+    parentConfiguration = [(ICAttributionViewConfiguration *)self parentConfiguration];
 
-    if (!v6)
+    if (!parentConfiguration)
     {
       [(ICAttributionViewConfiguration *)self updateHighlightFrames];
       [(ICAttributionViewConfiguration *)self updateChildConfigurations];
@@ -779,8 +779,8 @@ uint64_t __57__ICAttributionViewConfiguration_loadDataWithCompletion___block_inv
       v15 = 0u;
       v12 = 0u;
       v13 = 0u;
-      v7 = [(ICAttributionViewConfiguration *)self childConfigurations];
-      v8 = [v7 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      childConfigurations = [(ICAttributionViewConfiguration *)self childConfigurations];
+      v8 = [childConfigurations countByEnumeratingWithState:&v12 objects:v17 count:16];
       if (v8)
       {
         v9 = v8;
@@ -792,14 +792,14 @@ uint64_t __57__ICAttributionViewConfiguration_loadDataWithCompletion___block_inv
           {
             if (*v13 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(childConfigurations);
             }
 
             [*(*(&v12 + 1) + 8 * v11++) synchronouslyLoadData];
           }
 
           while (v9 != v11);
-          v9 = [v7 countByEnumeratingWithState:&v12 objects:v17 count:16];
+          v9 = [childConfigurations countByEnumeratingWithState:&v12 objects:v17 count:16];
         }
 
         while (v9);
@@ -821,17 +821,17 @@ uint64_t __55__ICAttributionViewConfiguration_synchronouslyLoadData__block_invok
 
 - (BOOL)hasValidRange
 {
-  v3 = [(ICAttributionViewConfiguration *)self sharedState];
-  v4 = [v3 noteTextStorage];
-  v5 = [v4 string];
-  v6 = [(ICAttributionViewConfiguration *)self range];
-  if ([v5 ic_rangeIsValid:{v6, v7}])
+  sharedState = [(ICAttributionViewConfiguration *)self sharedState];
+  noteTextStorage = [sharedState noteTextStorage];
+  string = [noteTextStorage string];
+  range = [(ICAttributionViewConfiguration *)self range];
+  if ([string ic_rangeIsValid:{range, v7}])
   {
-    v8 = [(ICAttributionViewConfiguration *)self sharedState];
-    v9 = [v8 noteTextStorage];
-    v10 = [v9 string];
-    v11 = [(ICAttributionViewConfiguration *)self trimmedRange];
-    v13 = [v10 ic_rangeIsValid:{v11, v12}];
+    sharedState2 = [(ICAttributionViewConfiguration *)self sharedState];
+    noteTextStorage2 = [sharedState2 noteTextStorage];
+    string2 = [noteTextStorage2 string];
+    trimmedRange = [(ICAttributionViewConfiguration *)self trimmedRange];
+    v13 = [string2 ic_rangeIsValid:{trimmedRange, v12}];
   }
 
   else
@@ -842,18 +842,18 @@ uint64_t __55__ICAttributionViewConfiguration_synchronouslyLoadData__block_invok
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ICAttributionViewConfiguration *)self isEqualToAttributionViewConfiguration:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ICAttributionViewConfiguration *)self isEqualToAttributionViewConfiguration:v5];
   }
 
   return v6;
@@ -865,15 +865,15 @@ uint64_t __55__ICAttributionViewConfiguration_synchronouslyLoadData__block_invok
   result = self->_hash;
   if (!result)
   {
-    v4 = [(ICAttributionViewConfiguration *)self textEdit];
-    v5 = [v4 hash];
+    textEdit = [(ICAttributionViewConfiguration *)self textEdit];
+    v5 = [textEdit hash];
     if (!v5)
     {
-      v6 = [MEMORY[0x277CBEB68] null];
-      v5 = [v6 hash];
+      null = [MEMORY[0x277CBEB68] null];
+      v5 = [null hash];
     }
 
-    v7 = [(ICAttributionViewConfiguration *)self editGroups];
+    editGroups = [(ICAttributionViewConfiguration *)self editGroups];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
     v10 = [v9 hash];
@@ -882,7 +882,7 @@ uint64_t __55__ICAttributionViewConfiguration_synchronouslyLoadData__block_invok
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v11 = v7;
+    v11 = editGroups;
     v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v12)
     {
@@ -913,19 +913,19 @@ uint64_t __55__ICAttributionViewConfiguration_synchronouslyLoadData__block_invok
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ICAttributionViewConfiguration allocWithZone:a3];
+  v4 = [ICAttributionViewConfiguration allocWithZone:zone];
 
   return [(ICAttributionViewConfiguration *)v4 initWithConfiguration:self];
 }
 
-- (void)commonInitWithSharedState:(id)a3 range:(_NSRange)a4
+- (void)commonInitWithSharedState:(id)state range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v17 = a3;
-  objc_storeStrong(&self->_sharedState, a3);
+  length = range.length;
+  location = range.location;
+  stateCopy = state;
+  objc_storeStrong(&self->_sharedState, state);
   self->_range.location = location;
   self->_range.length = length;
   v8 = *(MEMORY[0x277CBF3A0] + 16);
@@ -935,10 +935,10 @@ uint64_t __55__ICAttributionViewConfiguration_synchronouslyLoadData__block_invok
   *&self->_focused = 0;
   if ([(ICAttributionViewConfiguration *)self hasValidRange])
   {
-    v9 = [(ICAttributionViewConfiguration *)self sharedState];
-    v10 = [v9 noteTextStorage];
-    v11 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v12 = [v10 ic_rangeByTrimmingCharactersInSet:v11 inRange:{location, length}];
+    sharedState = [(ICAttributionViewConfiguration *)self sharedState];
+    noteTextStorage = [sharedState noteTextStorage];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v12 = [noteTextStorage ic_rangeByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet inRange:{location, length}];
     v14 = v13;
 
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
@@ -969,25 +969,25 @@ uint64_t __55__ICAttributionViewConfiguration_synchronouslyLoadData__block_invok
 - (void)updateAttribution
 {
   v36[2] = *MEMORY[0x277D85DE8];
-  v3 = [(ICAttributionViewConfiguration *)self attributionUserID];
-  v4 = [(ICAttributionViewConfiguration *)self sharedState];
-  v5 = [v4 shortNameForUserID:v3];
+  attributionUserID = [(ICAttributionViewConfiguration *)self attributionUserID];
+  sharedState = [(ICAttributionViewConfiguration *)self sharedState];
+  v5 = [sharedState shortNameForUserID:attributionUserID];
 
   v6 = *MEMORY[0x277D740C0];
   v35[0] = *MEMORY[0x277D740C0];
-  v7 = [(ICAttributionViewConfiguration *)self sharedState];
-  v8 = [v7 highlightColorForUserID:v3];
+  sharedState2 = [(ICAttributionViewConfiguration *)self sharedState];
+  v8 = [sharedState2 highlightColorForUserID:attributionUserID];
   v36[0] = v8;
   v9 = *MEMORY[0x277D740A8];
   v35[1] = *MEMORY[0x277D740A8];
-  v10 = [(ICAttributionViewConfiguration *)self sharedState];
-  v11 = [v10 primaryFont];
-  v36[1] = v11;
+  sharedState3 = [(ICAttributionViewConfiguration *)self sharedState];
+  primaryFont = [sharedState3 primaryFont];
+  v36[1] = primaryFont;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:v35 count:2];
 
   v13 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v5 attributes:v12];
-  v14 = [(ICAttributionViewConfiguration *)self userIDs];
-  v15 = [v14 count];
+  userIDs = [(ICAttributionViewConfiguration *)self userIDs];
+  v15 = [userIDs count];
 
   if (v15 >= 2)
   {
@@ -1004,20 +1004,20 @@ uint64_t __55__ICAttributionViewConfiguration_synchronouslyLoadData__block_invok
     v16 = ;
     v33[1] = v9;
     v34[0] = v16;
-    v17 = [(ICAttributionViewConfiguration *)self sharedState];
-    v18 = [v17 secondaryFont];
-    v34[1] = v18;
+    sharedState4 = [(ICAttributionViewConfiguration *)self sharedState];
+    secondaryFont = [sharedState4 secondaryFont];
+    v34[1] = secondaryFont;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:2];
 
     v20 = MEMORY[0x277CCACA8];
-    v21 = [(ICAttributionViewConfiguration *)self userIDs];
-    v22 = [v20 localizedStringWithFormat:@" + %lu", objc_msgSend(v21, "count") - 1];
+    userIDs2 = [(ICAttributionViewConfiguration *)self userIDs];
+    v22 = [v20 localizedStringWithFormat:@" + %lu", objc_msgSend(userIDs2, "count") - 1];
 
     v23 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v22 attributes:v19];
     [v13 appendAttributedString:v23];
   }
 
-  v24 = [(ICAttributionViewConfiguration *)self attribution];
+  attribution = [(ICAttributionViewConfiguration *)self attribution];
   v25 = *MEMORY[0x277CBEEE8];
   if (*MEMORY[0x277CBEEE8] == v13)
   {
@@ -1030,14 +1030,14 @@ uint64_t __55__ICAttributionViewConfiguration_synchronouslyLoadData__block_invok
   }
 
   v27 = v26;
-  if (v25 == v24)
+  if (v25 == attribution)
   {
     v28 = 0;
   }
 
   else
   {
-    v28 = v24;
+    v28 = attribution;
   }
 
   v29 = v28;
@@ -1103,13 +1103,13 @@ uint64_t __51__ICAttributionViewConfiguration_updateStatusImage__block_invoke(do
   return [v3 drawStatusImageInContext:v4 canvasSize:{v5, v6}];
 }
 
-- (void)drawStatusImageInContext:(CGContext *)a3 canvasSize:(CGSize)a4
+- (void)drawStatusImageInContext:(CGContext *)context canvasSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v27 = *MEMORY[0x277D85DE8];
-  v8 = [(ICAttributionViewConfiguration *)self unreadUserIDs];
-  if ([v8 count] <= 2)
+  unreadUserIDs = [(ICAttributionViewConfiguration *)self unreadUserIDs];
+  if ([unreadUserIDs count] <= 2)
   {
     v9 = 4.0;
   }
@@ -1119,12 +1119,12 @@ uint64_t __51__ICAttributionViewConfiguration_updateStatusImage__block_invoke(do
     v9 = 3.0;
   }
 
-  v10 = [v8 count];
+  v10 = [unreadUserIDs count];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v11 = v8;
+  v11 = unreadUserIDs;
   v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v12)
   {
@@ -1149,12 +1149,12 @@ uint64_t __51__ICAttributionViewConfiguration_updateStatusImage__block_invoke(do
           v20 = [(ICAttributionViewConfiguration *)self sharedState:v18];
           v21 = [v20 highlightColorForUserID:v19];
 
-          CGContextSetFillColorWithColor(a3, [v21 CGColor]);
+          CGContextSetFillColorWithColor(context, [v21 CGColor]);
           v28.size.width = 10.0;
           v28.size.height = 10.0;
           v28.origin.x = v15;
           v28.origin.y = v14;
-          CGContextFillEllipseInRect(a3, v28);
+          CGContextFillEllipseInRect(context, v28);
           v15 = v9 + v15;
         }
 
@@ -1172,56 +1172,56 @@ uint64_t __51__ICAttributionViewConfiguration_updateStatusImage__block_invoke(do
 - (void)updateTimestamp
 {
   v35[2] = *MEMORY[0x277D85DE8];
-  v3 = [(ICAttributionViewConfiguration *)self explicitTimestamp];
+  explicitTimestamp = [(ICAttributionViewConfiguration *)self explicitTimestamp];
 
-  if (v3)
+  if (explicitTimestamp)
   {
-    v4 = [(ICAttributionViewConfiguration *)self explicitTimestamp];
+    explicitTimestamp2 = [(ICAttributionViewConfiguration *)self explicitTimestamp];
     goto LABEL_9;
   }
 
-  v5 = [(ICAttributionViewConfiguration *)self textEdit];
+  textEdit = [(ICAttributionViewConfiguration *)self textEdit];
 
-  if (v5)
+  if (textEdit)
   {
-    v6 = [(ICAttributionViewConfiguration *)self textEdit];
-    v4 = [v6 timestamp];
+    textEdit2 = [(ICAttributionViewConfiguration *)self textEdit];
+    explicitTimestamp2 = [textEdit2 timestamp];
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v7 = [(ICAttributionViewConfiguration *)self editGroups];
-  v8 = [v7 firstObject];
-  v4 = [v8 latestTimestamp];
+  editGroups = [(ICAttributionViewConfiguration *)self editGroups];
+  firstObject = [editGroups firstObject];
+  explicitTimestamp2 = [firstObject latestTimestamp];
 
-  v6 = [(ICAttributionViewConfiguration *)self editGroups];
-  if ([v6 count] <= 1)
+  textEdit2 = [(ICAttributionViewConfiguration *)self editGroups];
+  if ([textEdit2 count] <= 1)
   {
     goto LABEL_8;
   }
 
   v9 = MEMORY[0x277CBEB98];
-  v10 = [(ICAttributionViewConfiguration *)self editGroups];
-  v11 = [v10 ic_compactMap:&__block_literal_global_50];
+  editGroups2 = [(ICAttributionViewConfiguration *)self editGroups];
+  v11 = [editGroups2 ic_compactMap:&__block_literal_global_50];
   v12 = [v9 setWithArray:v11];
   v13 = [v12 count];
 
   if (v13 == 1)
   {
-    v14 = [(ICAttributionViewConfiguration *)self editGroups];
-    v15 = [v14 valueForKeyPath:@"@max.latestTimestamp"];
+    editGroups3 = [(ICAttributionViewConfiguration *)self editGroups];
+    v15 = [editGroups3 valueForKeyPath:@"@max.latestTimestamp"];
 
-    v4 = v15;
+    explicitTimestamp2 = v15;
   }
 
 LABEL_9:
-  v16 = [v4 ic_briefFormattedDate];
-  v17 = v16;
+  ic_briefFormattedDate = [explicitTimestamp2 ic_briefFormattedDate];
+  v17 = ic_briefFormattedDate;
   v18 = &stru_282757698;
-  if (v16)
+  if (ic_briefFormattedDate)
   {
-    v18 = v16;
+    v18 = ic_briefFormattedDate;
   }
 
   v19 = v18;
@@ -1239,14 +1239,14 @@ LABEL_9:
   v20 = ;
   v35[0] = v20;
   v34[1] = *MEMORY[0x277D740A8];
-  v21 = [(ICAttributionViewConfiguration *)self sharedState];
-  v22 = [v21 secondaryFont];
-  v35[1] = v22;
+  sharedState = [(ICAttributionViewConfiguration *)self sharedState];
+  secondaryFont = [sharedState secondaryFont];
+  v35[1] = secondaryFont;
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:2];
 
   v24 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:v19 attributes:v23];
-  [(ICAttributionViewConfiguration *)self setTimestamp:v4];
-  v25 = [(ICAttributionViewConfiguration *)self formattedTimestamp];
+  [(ICAttributionViewConfiguration *)self setTimestamp:explicitTimestamp2];
+  formattedTimestamp = [(ICAttributionViewConfiguration *)self formattedTimestamp];
   v26 = *MEMORY[0x277CBEEE8];
   if (*MEMORY[0x277CBEEE8] == v24)
   {
@@ -1259,14 +1259,14 @@ LABEL_9:
   }
 
   v28 = v27;
-  if (v26 == v25)
+  if (v26 == formattedTimestamp)
   {
     v29 = 0;
   }
 
   else
   {
-    v29 = v25;
+    v29 = formattedTimestamp;
   }
 
   v30 = v29;
@@ -1310,17 +1310,17 @@ uint64_t __49__ICAttributionViewConfiguration_updateTimestamp__block_invoke(uint
 
 - (UIImage)disclosureImage
 {
-  v3 = [(ICAttributionViewConfiguration *)self isFocused];
-  v4 = [(ICAttributionViewConfiguration *)self sharedState];
-  v5 = v4;
-  if (v3)
+  isFocused = [(ICAttributionViewConfiguration *)self isFocused];
+  sharedState = [(ICAttributionViewConfiguration *)self sharedState];
+  v5 = sharedState;
+  if (isFocused)
   {
-    [v4 expandedDisclosureImage];
+    [sharedState expandedDisclosureImage];
   }
 
   else
   {
-    [v4 collapsedDisclosureImage];
+    [sharedState collapsedDisclosureImage];
   }
   v6 = ;
 
@@ -1331,19 +1331,19 @@ uint64_t __49__ICAttributionViewConfiguration_updateTimestamp__block_invoke(uint
 {
   if ([(ICAttributionViewConfiguration *)self hasValidRange])
   {
-    v3 = [(ICAttributionViewConfiguration *)self sharedState];
-    v4 = [v3 primaryFont];
-    [v4 lineHeight];
+    sharedState = [(ICAttributionViewConfiguration *)self sharedState];
+    primaryFont = [sharedState primaryFont];
+    [primaryFont lineHeight];
     v6 = v5;
 
-    v7 = [(ICAttributionViewConfiguration *)self sharedState];
-    v8 = [v7 secondaryFont];
-    [v8 lineHeight];
+    sharedState2 = [(ICAttributionViewConfiguration *)self sharedState];
+    secondaryFont = [sharedState2 secondaryFont];
+    [secondaryFont lineHeight];
     v10 = v9;
 
-    v11 = [(ICAttributionViewConfiguration *)self sharedState];
-    v12 = [v11 expandedDisclosureImage];
-    [v12 size];
+    sharedState3 = [(ICAttributionViewConfiguration *)self sharedState];
+    expandedDisclosureImage = [sharedState3 expandedDisclosureImage];
+    [expandedDisclosureImage size];
     v14 = v13 + 4.0;
 
     if ([(ICAttributionViewConfiguration *)self forcesAttributionHidden])
@@ -1356,8 +1356,8 @@ uint64_t __49__ICAttributionViewConfiguration_updateTimestamp__block_invoke(uint
       v15 = v6;
     }
 
-    v16 = [(ICAttributionViewConfiguration *)self sharedState];
-    [v16 panelWidth];
+    sharedState4 = [(ICAttributionViewConfiguration *)self sharedState];
+    [sharedState4 panelWidth];
     v18 = v17 - v14 + -16.0;
 
     self->_attributionFrame.origin.x = 0.0;
@@ -1368,9 +1368,9 @@ uint64_t __49__ICAttributionViewConfiguration_updateTimestamp__block_invoke(uint
     self->_disclosureImageFrame.origin.y = 0.0;
     self->_disclosureImageFrame.size.width = v14;
     self->_disclosureImageFrame.size.height = v15;
-    v19 = [(ICAttributionViewConfiguration *)self isAttributionHidden];
+    isAttributionHidden = [(ICAttributionViewConfiguration *)self isAttributionHidden];
     v20 = (v15 - v15) * -0.5;
-    if (!v19)
+    if (!isAttributionHidden)
     {
       v20 = 0.0;
     }
@@ -1388,8 +1388,8 @@ uint64_t __49__ICAttributionViewConfiguration_updateTimestamp__block_invoke(uint
     self->_formattedTimestampFrame.origin.y = self->_attributionFrame.size.height;
     self->_formattedTimestampFrame.size.width = v18;
     self->_formattedTimestampFrame.size.height = v10;
-    v22 = [(ICAttributionViewConfiguration *)self trimmedRange];
-    [(ICAttributionViewConfiguration *)self rectForRange:v22, v23];
+    trimmedRange = [(ICAttributionViewConfiguration *)self trimmedRange];
+    [(ICAttributionViewConfiguration *)self rectForRange:trimmedRange, v23];
     self->_associatedTextFrame.origin.x = v24;
     self->_associatedTextFrame.origin.y = v25;
     self->_associatedTextFrame.size.width = v26;
@@ -1402,15 +1402,15 @@ uint64_t __49__ICAttributionViewConfiguration_updateTimestamp__block_invoke(uint
       [(ICAttributionViewConfiguration *)self frame];
       if (v31 == 0.0)
       {
-        v32 = [(ICAttributionViewConfiguration *)self sharedState];
-        [v32 topTextViewInset];
+        sharedState5 = [(ICAttributionViewConfiguration *)self sharedState];
+        [sharedState5 topTextViewInset];
         v34 = v33;
         y = self->_associatedTextFrame.origin.y;
-        v36 = [(ICAttributionViewConfiguration *)self parentConfiguration];
-        [v36 adjustedFrame];
+        parentConfiguration = [(ICAttributionViewConfiguration *)self parentConfiguration];
+        [parentConfiguration adjustedFrame];
         v38 = v37;
 
-        v39 = [(ICAttributionViewConfiguration *)self trimmedRange];
+        trimmedRange2 = [(ICAttributionViewConfiguration *)self trimmedRange];
         v60 = 0;
         v61 = &v60;
         v62 = 0x2020000000;
@@ -1419,9 +1419,9 @@ uint64_t __49__ICAttributionViewConfiguration_updateTimestamp__block_invoke(uint
         v53 = 3221225472;
         v54 = __46__ICAttributionViewConfiguration_updateFrames__block_invoke;
         v55 = &unk_2781AE560;
-        v58 = v39;
+        v58 = trimmedRange2;
         v59 = 1;
-        v56 = self;
+        selfCopy = self;
         v57 = &v60;
         performBlockOnMainThreadAndWait();
         v29 = v34 + y - v38;
@@ -1451,10 +1451,10 @@ uint64_t __49__ICAttributionViewConfiguration_updateTimestamp__block_invoke(uint
     size = self->_frame.size;
     self->_adjustedFrame.origin = self->_frame.origin;
     self->_adjustedFrame.size = size;
-    v47 = [(ICAttributionViewConfiguration *)self sharedState];
-    v48 = [v47 isRTL];
+    sharedState6 = [(ICAttributionViewConfiguration *)self sharedState];
+    isRTL = [sharedState6 isRTL];
 
-    if (v48)
+    if (isRTL)
     {
       self->_statusImageFrame.origin.x = 0.0;
       v49 = self->_statusImageFrame.size.width + 0.0;
@@ -1500,11 +1500,11 @@ void __46__ICAttributionViewConfiguration_updateFrames__block_invoke_2(uint64_t 
 {
   if ([(ICAttributionViewConfiguration *)self hasValidRange])
   {
-    v3 = [(ICAttributionViewConfiguration *)self parentConfiguration];
+    parentConfiguration = [(ICAttributionViewConfiguration *)self parentConfiguration];
 
-    v4 = [MEMORY[0x277CBEB18] array];
-    v5 = v4;
-    if (v3)
+    array = [MEMORY[0x277CBEB18] array];
+    v5 = array;
+    if (parentConfiguration)
     {
       highlightConfigurations = self->_highlightConfigurations;
       self->_highlightConfigurations = v5;
@@ -1513,7 +1513,7 @@ void __46__ICAttributionViewConfiguration_updateFrames__block_invoke_2(uint64_t 
     else
     {
       v8 = MEMORY[0x277D85DD0];
-      v7 = v4;
+      v7 = array;
       performBlockOnMainThreadAndWait();
       if (([(NSMutableArray *)self->_highlightConfigurations isEqualToArray:v7, v8, 3221225472, __55__ICAttributionViewConfiguration_updateHighlightFrames__block_invoke, &unk_2781ABEB8, self]& 1) == 0)
       {
@@ -1629,9 +1629,9 @@ LABEL_8:
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [(ICAttributionViewConfiguration *)self isBlurred];
+        isBlurred = [(ICAttributionViewConfiguration *)self isBlurred];
         v10 = 0.0;
-        if (!v9)
+        if (!isBlurred)
         {
           [(ICAttributionViewConfiguration *)self preferredHighlightValue];
         }
@@ -1652,14 +1652,14 @@ LABEL_8:
   childConfigurations = self->_childConfigurations;
   self->_childConfigurations = MEMORY[0x277CBEBF8];
 
-  v4 = [(ICAttributionViewConfiguration *)self parentConfiguration];
+  parentConfiguration = [(ICAttributionViewConfiguration *)self parentConfiguration];
 
-  if (v4)
+  if (parentConfiguration)
   {
     return;
   }
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v130 = 0u;
   v131 = 0u;
   v132 = 0u;
@@ -1685,8 +1685,8 @@ LABEL_8:
 
         v116 = v9;
         v10 = *(*(&v130 + 1) + 8 * v9);
-        v11 = [(ICAttributionViewConfiguration *)self editGroups];
-        v12 = [v11 count];
+        editGroups = [(ICAttributionViewConfiguration *)self editGroups];
+        v12 = [editGroups count];
 
         if (v12 >= 2)
         {
@@ -1695,18 +1695,18 @@ LABEL_8:
           v129[0] = __59__ICAttributionViewConfiguration_updateChildConfigurations__block_invoke;
           v129[1] = &unk_2781AE588;
           v129[2] = v10;
-          v13 = [v5 ic_objectPassingTest:v128];
+          v13 = [array ic_objectPassingTest:v128];
           if (v13)
           {
-            v14 = [v10 latestTimestamp];
-            v15 = [v13 timestamp];
-            v16 = [v14 ic_isLaterThanDate:v15];
+            latestTimestamp = [v10 latestTimestamp];
+            timestamp = [v13 timestamp];
+            v16 = [latestTimestamp ic_isLaterThanDate:timestamp];
 
             v17 = v116;
             if (v16)
             {
-              v18 = [v10 latestTimestamp];
-              [v13 setExplicitTimestamp:v18];
+              latestTimestamp2 = [v10 latestTimestamp];
+              [v13 setExplicitTimestamp:latestTimestamp2];
               goto LABEL_25;
             }
           }
@@ -1714,26 +1714,26 @@ LABEL_8:
           else
           {
             v30 = [ICAttributionViewConfiguration alloc];
-            v31 = [(ICAttributionViewConfiguration *)self sharedState];
+            sharedState = [(ICAttributionViewConfiguration *)self sharedState];
             v136 = v10;
             v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v136 count:1];
-            v18 = [(ICAttributionViewConfiguration *)v30 initWithSharedState:v31 editGroups:v32 parentConfiguration:self];
+            latestTimestamp2 = [(ICAttributionViewConfiguration *)v30 initWithSharedState:sharedState editGroups:v32 parentConfiguration:self];
 
-            [(ICAttributionViewConfiguration *)v18 synchronouslyLoadData];
+            [(ICAttributionViewConfiguration *)latestTimestamp2 synchronouslyLoadData];
             [(ICAttributionViewConfiguration *)self frame];
             v34 = v33;
-            [(ICAttributionViewConfiguration *)v18 frame];
+            [(ICAttributionViewConfiguration *)latestTimestamp2 frame];
             v36 = v35;
-            v37 = [v5 lastObject];
-            if (v37)
+            lastObject = [array lastObject];
+            if (lastObject)
             {
-              [(ICAttributionViewConfiguration *)v18 frame];
+              [(ICAttributionViewConfiguration *)latestTimestamp2 frame];
               v39 = v38;
               v34 = v40;
               v36 = v41;
-              [v37 frame];
+              [lastObject frame];
               v43 = v42;
-              [v37 frame];
+              [lastObject frame];
               v45 = v43 + v44;
             }
 
@@ -1743,9 +1743,9 @@ LABEL_8:
               v39 = 0.0;
             }
 
-            [(ICAttributionViewConfiguration *)v18 setFrame:v39, v45, v34, v36];
-            [(ICAttributionViewConfiguration *)v18 setForceVisible:1];
-            [v5 addObject:v18];
+            [(ICAttributionViewConfiguration *)latestTimestamp2 setFrame:v39, v45, v34, v36];
+            [(ICAttributionViewConfiguration *)latestTimestamp2 setForceVisible:1];
+            [array addObject:latestTimestamp2];
 
             v17 = v116;
 LABEL_25:
@@ -1758,8 +1758,8 @@ LABEL_25:
         v127 = 0u;
         v124 = 0u;
         v125 = 0u;
-        v19 = [v10 edits];
-        v20 = [v19 countByEnumeratingWithState:&v124 objects:v135 count:16];
+        edits = [v10 edits];
+        v20 = [edits countByEnumeratingWithState:&v124 objects:v135 count:16];
         if (v20)
         {
           v21 = v20;
@@ -1770,16 +1770,16 @@ LABEL_25:
             {
               if (*v125 != v22)
               {
-                objc_enumerationMutation(v19);
+                objc_enumerationMutation(edits);
               }
 
               v24 = *(*(&v124 + 1) + 8 * i);
               v25 = [ICAttributionViewConfiguration alloc];
-              v26 = [(ICAttributionViewConfiguration *)self sharedState];
-              v27 = [(ICAttributionViewConfiguration *)v25 initWithSharedState:v26 textEdit:v24 parentConfiguration:self];
+              sharedState2 = [(ICAttributionViewConfiguration *)self sharedState];
+              v27 = [(ICAttributionViewConfiguration *)v25 initWithSharedState:sharedState2 textEdit:v24 parentConfiguration:self];
 
-              -[ICAttributionViewConfiguration setForcesAttributionHidden:](v27, "setForcesAttributionHidden:", [v5 count] != 0);
-              if (![v5 count])
+              -[ICAttributionViewConfiguration setForcesAttributionHidden:](v27, "setForcesAttributionHidden:", [array count] != 0);
+              if (![array count])
               {
                 [(ICAttributionViewConfiguration *)self frame];
                 v29 = v28;
@@ -1788,10 +1788,10 @@ LABEL_25:
                 [(ICAttributionViewConfiguration *)v27 setForceVisible:1];
               }
 
-              [v5 addObject:v27];
+              [array addObject:v27];
             }
 
-            v21 = [v19 countByEnumeratingWithState:&v124 objects:v135 count:16];
+            v21 = [edits countByEnumeratingWithState:&v124 objects:v135 count:16];
           }
 
           while (v21);
@@ -1811,12 +1811,12 @@ LABEL_27:
     while (v7);
   }
 
-  v46 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v120 = 0u;
   v121 = 0u;
   v122 = 0u;
   v123 = 0u;
-  v113 = v5;
+  v113 = array;
   v117 = [v113 countByEnumeratingWithState:&v120 objects:v134 count:16];
   if (!v117)
   {
@@ -1825,7 +1825,7 @@ LABEL_27:
 
   obja = *v121;
   v111 = v119;
-  v109 = v46;
+  v109 = array2;
   do
   {
     for (j = 0; j != v117; ++j)
@@ -1844,35 +1844,35 @@ LABEL_27:
         v119[0] = __59__ICAttributionViewConfiguration_updateChildConfigurations__block_invoke_2;
         v119[1] = &unk_2781AE588;
         v119[2] = v48;
-        v49 = [v46 ic_objectPassingTest:v118];
+        v49 = [array2 ic_objectPassingTest:v118];
         if (v49)
         {
           v50 = v49;
-          v51 = [v48 timestamp];
-          v52 = [v50 timestamp];
-          v53 = [v51 ic_isLaterThanDate:v52];
+          timestamp2 = [v48 timestamp];
+          timestamp3 = [v50 timestamp];
+          v53 = [timestamp2 ic_isLaterThanDate:timestamp3];
 
           if (v53)
           {
-            v54 = [v48 timestamp];
-            [v50 setExplicitTimestamp:v54];
+            timestamp4 = [v48 timestamp];
+            [v50 setExplicitTimestamp:timestamp4];
           }
 
           goto LABEL_61;
         }
       }
 
-      v55 = [v46 lastObject];
-      v50 = v55;
-      if (!v55)
+      lastObject2 = [array2 lastObject];
+      v50 = lastObject2;
+      if (!lastObject2)
       {
         [v48 forceVisible];
 LABEL_60:
-        [v46 addObject:v48];
+        [array2 addObject:v48];
         goto LABEL_61;
       }
 
-      [v55 frame];
+      [lastObject2 frame];
       v57 = v56;
       v59 = v58;
       v61 = v60;
@@ -1897,18 +1897,18 @@ LABEL_60:
         }
       }
 
-      v71 = [v50 timestamp];
-      v72 = [v48 timestamp];
-      if ([v71 ic_isEarlierThanDate:v72] && !objc_msgSend(v50, "forceVisible"))
+      timestamp5 = [v50 timestamp];
+      timestamp6 = [v48 timestamp];
+      if ([timestamp5 ic_isEarlierThanDate:timestamp6] && !objc_msgSend(v50, "forceVisible"))
       {
-        v103 = [v48 forceVisible];
+        forceVisible = [v48 forceVisible];
 
-        if ((v103 & 1) == 0)
+        if ((forceVisible & 1) == 0)
         {
           [v48 setForcesAttributionHidden:{objc_msgSend(v50, "isAttributionHidden")}];
           [v50 frame];
           [v48 setFrame:?];
-          [v46 removeObject:v50];
+          [array2 removeObject:v50];
           goto LABEL_60;
         }
       }
@@ -1917,12 +1917,12 @@ LABEL_60:
       {
       }
 
-      v73 = [v48 editGroups];
-      if ([v73 count])
+      editGroups2 = [v48 editGroups];
+      if ([editGroups2 count])
       {
-        v74 = [v48 isAttributionHidden];
+        isAttributionHidden = [v48 isAttributionHidden];
 
-        if ((v74 & 1) == 0)
+        if ((isAttributionHidden & 1) == 0)
         {
           [v48 frame];
           v76 = v75;
@@ -1930,9 +1930,9 @@ LABEL_60:
           v80 = v79;
           [v50 frame];
           v83 = v81 + v82;
-          v84 = [v48 textEdit];
-          v85 = [v84 range];
-          [(ICAttributionViewConfiguration *)self rectForRange:v85, v86];
+          textEdit = [v48 textEdit];
+          range = [textEdit range];
+          [(ICAttributionViewConfiguration *)self rectForRange:range, v86];
           v88 = v87;
           v90 = v89;
 
@@ -1952,15 +1952,15 @@ LABEL_49:
 
       v91 = 1;
 LABEL_53:
-      v92 = [v48 formattedTimestamp];
-      v93 = [v92 string];
-      v94 = [v50 formattedTimestamp];
-      v95 = [v94 string];
-      v96 = [v93 isEqualToString:v95];
+      formattedTimestamp = [v48 formattedTimestamp];
+      string = [formattedTimestamp string];
+      formattedTimestamp2 = [v50 formattedTimestamp];
+      string2 = [formattedTimestamp2 string];
+      v96 = [string isEqualToString:string2];
 
-      v97 = [v48 timestamp];
-      v98 = [v50 timestamp];
-      [v97 timeIntervalSinceDate:v98];
+      timestamp7 = [v48 timestamp];
+      timestamp8 = [v50 timestamp];
+      [timestamp7 timeIntervalSinceDate:timestamp8];
       v100 = v99;
 
       v101 = -v100;
@@ -1970,7 +1970,7 @@ LABEL_53:
       }
 
       v102 = v101 >= 86400.0;
-      v46 = v109;
+      array2 = v109;
       if (([v48 forceVisible] & 1) != 0 || (v102 & ~(v91 | v96)) != 0)
       {
         goto LABEL_60;
@@ -1985,14 +1985,14 @@ LABEL_61:
   while (v117);
 LABEL_63:
 
-  if ([v46 count] == 1)
+  if ([array2 count] == 1)
   {
-    v104 = [(ICAttributionViewConfiguration *)self timestamp];
-    v105 = [v46 firstObject];
-    [v105 setExplicitTimestamp:v104];
+    timestamp9 = [(ICAttributionViewConfiguration *)self timestamp];
+    firstObject = [array2 firstObject];
+    [firstObject setExplicitTimestamp:timestamp9];
   }
 
-  v106 = [v46 copy];
+  v106 = [array2 copy];
   v107 = self->_childConfigurations;
   self->_childConfigurations = v106;
 }
@@ -2024,7 +2024,7 @@ uint64_t __59__ICAttributionViewConfiguration_updateChildConfigurations__block_i
   return v4;
 }
 
-- (CGRect)rectForRange:(_NSRange)a3
+- (CGRect)rectForRange:(_NSRange)range
 {
   v12 = 0;
   v13 = &v12;
@@ -2062,54 +2062,54 @@ void __47__ICAttributionViewConfiguration_rectForRange___block_invoke(uint64_t a
   v3[7] = v7;
 }
 
-- (id)editGroupForRange:(_NSRange)a3
+- (id)editGroupForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v5 = [(ICAttributionViewConfiguration *)self editGroups];
+  length = range.length;
+  location = range.location;
+  editGroups = [(ICAttributionViewConfiguration *)self editGroups];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __52__ICAttributionViewConfiguration_editGroupForRange___block_invoke;
   v8[3] = &__block_descriptor_48_e34_B32__0__ICTTTextEditGroup_8Q16_B24l;
   v8[4] = location;
   v8[5] = length;
-  v6 = [v5 ic_objectPassingTest:v8];
+  v6 = [editGroups ic_objectPassingTest:v8];
 
   return v6;
 }
 
 - (NSString)attributionUserID
 {
-  v3 = [(ICAttributionViewConfiguration *)self textEdit];
-  if (v3)
+  textEdit = [(ICAttributionViewConfiguration *)self textEdit];
+  if (textEdit)
   {
-    v4 = [(ICAttributionViewConfiguration *)self sharedState];
-    v5 = [v4 note];
-    v6 = [(ICAttributionViewConfiguration *)self textEdit];
-    v7 = [v6 replicaID];
-    v8 = [v5 userIDForReplicaID:v7];
+    sharedState = [(ICAttributionViewConfiguration *)self sharedState];
+    note = [sharedState note];
+    textEdit2 = [(ICAttributionViewConfiguration *)self textEdit];
+    replicaID = [textEdit2 replicaID];
+    userID = [note userIDForReplicaID:replicaID];
   }
 
   else
   {
-    v4 = [(ICAttributionViewConfiguration *)self editGroups];
-    v5 = [v4 firstObject];
-    v8 = [v5 userID];
+    sharedState = [(ICAttributionViewConfiguration *)self editGroups];
+    note = [sharedState firstObject];
+    userID = [note userID];
   }
 
-  return v8;
+  return userID;
 }
 
 - (NSOrderedSet)userIDs
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB40] orderedSet];
-  v4 = [(ICAttributionViewConfiguration *)self textEdit];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  textEdit = [(ICAttributionViewConfiguration *)self textEdit];
 
-  if (v4)
+  if (textEdit)
   {
-    v5 = [(ICAttributionViewConfiguration *)self attributionUserID];
-    [v3 ic_addNonNilObject:v5];
+    attributionUserID = [(ICAttributionViewConfiguration *)self attributionUserID];
+    [orderedSet ic_addNonNilObject:attributionUserID];
   }
 
   else
@@ -2118,8 +2118,8 @@ void __47__ICAttributionViewConfiguration_rectForRange___block_invoke(uint64_t a
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(ICAttributionViewConfiguration *)self editGroups];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    attributionUserID = [(ICAttributionViewConfiguration *)self editGroups];
+    v6 = [attributionUserID countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -2130,21 +2130,21 @@ void __47__ICAttributionViewConfiguration_rectForRange___block_invoke(uint64_t a
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(attributionUserID);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) userID];
-          [v3 ic_addNonNilObject:v10];
+          userID = [*(*(&v13 + 1) + 8 * i) userID];
+          [orderedSet ic_addNonNilObject:userID];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [attributionUserID countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);
     }
   }
 
-  v11 = [v3 copy];
+  v11 = [orderedSet copy];
 
   return v11;
 }
@@ -2152,36 +2152,36 @@ void __47__ICAttributionViewConfiguration_rectForRange___block_invoke(uint64_t a
 - (void)updateUnreadUserIDs
 {
   v28 = *MEMORY[0x277D85DE8];
-  v22 = [MEMORY[0x277CBEB40] orderedSet];
-  v3 = [(ICAttributionViewConfiguration *)self textEdit];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  textEdit = [(ICAttributionViewConfiguration *)self textEdit];
 
-  if (v3)
+  if (textEdit)
   {
-    v4 = [(ICAttributionViewConfiguration *)self sharedState];
-    v5 = [(ICAttributionViewConfiguration *)self timestamp];
-    v6 = [(ICAttributionViewConfiguration *)self attributionUserID];
-    v7 = [v4 isTimestampUnread:v5 forUserID:v6];
+    sharedState = [(ICAttributionViewConfiguration *)self sharedState];
+    timestamp = [(ICAttributionViewConfiguration *)self timestamp];
+    attributionUserID = [(ICAttributionViewConfiguration *)self attributionUserID];
+    v7 = [sharedState isTimestampUnread:timestamp forUserID:attributionUserID];
 
     if (v7)
     {
-      v8 = [(ICAttributionViewConfiguration *)self attributionUserID];
-      [v22 ic_addNonNilObject:v8];
+      attributionUserID2 = [(ICAttributionViewConfiguration *)self attributionUserID];
+      [orderedSet ic_addNonNilObject:attributionUserID2];
 LABEL_14:
     }
   }
 
   else
   {
-    v9 = [(ICAttributionViewConfiguration *)self editGroups];
+    editGroups = [(ICAttributionViewConfiguration *)self editGroups];
 
-    if (v9)
+    if (editGroups)
     {
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v8 = [(ICAttributionViewConfiguration *)self editGroups];
-      v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      attributionUserID2 = [(ICAttributionViewConfiguration *)self editGroups];
+      v10 = [attributionUserID2 countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v10)
       {
         v11 = v10;
@@ -2192,23 +2192,23 @@ LABEL_14:
           {
             if (*v24 != v12)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(attributionUserID2);
             }
 
             v14 = *(*(&v23 + 1) + 8 * i);
-            v15 = [(ICAttributionViewConfiguration *)self sharedState];
-            v16 = [v14 latestTimestamp];
-            v17 = [v14 userID];
-            v18 = [v15 isTimestampUnread:v16 forUserID:v17];
+            sharedState2 = [(ICAttributionViewConfiguration *)self sharedState];
+            latestTimestamp = [v14 latestTimestamp];
+            userID = [v14 userID];
+            v18 = [sharedState2 isTimestampUnread:latestTimestamp forUserID:userID];
 
             if (v18)
             {
-              v19 = [v14 userID];
-              [v22 ic_addNonNilObject:v19];
+              userID2 = [v14 userID];
+              [orderedSet ic_addNonNilObject:userID2];
             }
           }
 
-          v11 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+          v11 = [attributionUserID2 countByEnumeratingWithState:&v23 objects:v27 count:16];
         }
 
         while (v11);
@@ -2218,9 +2218,9 @@ LABEL_14:
     }
   }
 
-  v20 = [v22 array];
+  array = [orderedSet array];
   unreadUserIDs = self->_unreadUserIDs;
-  self->_unreadUserIDs = v20;
+  self->_unreadUserIDs = array;
 }
 
 - (_NSRange)range
@@ -2354,13 +2354,13 @@ LABEL_14:
 
 - (void)updateAttributionTextStorage
 {
-  v2 = self;
+  selfCopy = self;
   sub_21539AF9C(&selRef_attribution, &selRef_setAttributionTextStorage_);
 }
 
 - (void)updateFormattedTimestampTextStorage
 {
-  v2 = self;
+  selfCopy = self;
   sub_21539AF9C(&selRef_formattedTimestamp, &selRef_setFormattedTimestampTextStorage_);
 }
 

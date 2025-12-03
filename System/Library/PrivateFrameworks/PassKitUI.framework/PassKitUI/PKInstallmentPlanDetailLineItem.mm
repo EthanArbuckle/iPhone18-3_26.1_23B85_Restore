@@ -1,37 +1,37 @@
 @interface PKInstallmentPlanDetailLineItem
-- (PKInstallmentPlanDetailLineItem)initWithLineItem:(id)a3 currencyCode:(id)a4;
+- (PKInstallmentPlanDetailLineItem)initWithLineItem:(id)item currencyCode:(id)code;
 @end
 
 @implementation PKInstallmentPlanDetailLineItem
 
-- (PKInstallmentPlanDetailLineItem)initWithLineItem:(id)a3 currencyCode:(id)a4
+- (PKInstallmentPlanDetailLineItem)initWithLineItem:(id)item currencyCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  codeCopy = code;
   v24.receiver = self;
   v24.super_class = PKInstallmentPlanDetailLineItem;
   v8 = [(PKInstallmentPlanDetailLineItem *)&v24 init];
   if (v8)
   {
-    v9 = [v6 type];
-    v10 = [v6 state];
-    v11 = [v6 amount];
+    type = [itemCopy type];
+    state = [itemCopy state];
+    amount = [itemCopy amount];
 
     v12 = 0;
-    if (v7 && v11)
+    if (codeCopy && amount)
     {
-      v13 = [v6 amount];
-      v12 = PKCurrencyAmountCreate(v13, v7);
+      amount2 = [itemCopy amount];
+      v12 = PKCurrencyAmountCreate(amount2, codeCopy);
     }
 
     v14 = 0;
-    if (v9 <= 2)
+    if (type <= 2)
     {
-      if (!v9)
+      if (!type)
       {
 LABEL_17:
-        v15 = [v6 itemDescription];
-        if (!v15)
+        itemDescription = [itemCopy itemDescription];
+        if (!itemDescription)
         {
           goto LABEL_24;
         }
@@ -39,10 +39,10 @@ LABEL_17:
         goto LABEL_23;
       }
 
-      if (v9 == 1)
+      if (type == 1)
       {
-        v15 = [v6 itemDescription];
-        if (!v15)
+        itemDescription = [itemCopy itemDescription];
+        if (!itemDescription)
         {
 LABEL_24:
           v17 = PKLocalizedFeatureString();
@@ -50,14 +50,14 @@ LABEL_24:
         }
 
 LABEL_23:
-        v17 = v15;
+        v17 = itemDescription;
 LABEL_25:
         v14 = v17;
 
         goto LABEL_26;
       }
 
-      if (v9 != 2)
+      if (type != 2)
       {
         goto LABEL_26;
       }
@@ -65,17 +65,17 @@ LABEL_25:
 
     else
     {
-      if (v9 > 4)
+      if (type > 4)
       {
-        if (v9 == 5)
+        if (type == 5)
         {
           v14 = PKLocalizedFeatureString();
-          if (v10 == 3)
+          if (state == 3)
           {
 LABEL_27:
-            v18 = PKLocalizedFeatureString();
+            formattedStringValue = PKLocalizedFeatureString();
 LABEL_29:
-            v19 = v18;
+            v19 = formattedStringValue;
             label = v8->_label;
             v8->_label = v14;
             v21 = v14;
@@ -86,18 +86,18 @@ LABEL_29:
             goto LABEL_30;
           }
 
-          v16 = [v12 negativeValue];
+          negativeValue = [v12 negativeValue];
 
-          v12 = v16;
+          v12 = negativeValue;
 LABEL_28:
-          v18 = [v12 formattedStringValue];
+          formattedStringValue = [v12 formattedStringValue];
           goto LABEL_29;
         }
 
-        if (v9 != 6)
+        if (type != 6)
         {
 LABEL_26:
-          if (v10 == 3)
+          if (state == 3)
           {
             goto LABEL_27;
           }
@@ -105,8 +105,8 @@ LABEL_26:
           goto LABEL_28;
         }
 
-        v15 = [v6 itemDescription];
-        if (!v15)
+        itemDescription = [itemCopy itemDescription];
+        if (!itemDescription)
         {
           goto LABEL_24;
         }
@@ -114,7 +114,7 @@ LABEL_26:
         goto LABEL_23;
       }
 
-      if (v9 != 3)
+      if (type != 3)
       {
         goto LABEL_17;
       }

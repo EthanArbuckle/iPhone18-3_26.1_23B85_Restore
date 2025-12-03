@@ -1,46 +1,46 @@
 @interface AWDSymptomsCellularSDMAdviceChange
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsNewAdvice:(id)a3;
-- (int)StringAsNewAdviceCause:(id)a3;
-- (int)StringAsPreviousAdvice:(id)a3;
-- (int)StringAsPreviousAdviceCause:(id)a3;
-- (int)StringAsPreviousAdviceInitialCause:(id)a3;
+- (int)StringAsNewAdvice:(id)advice;
+- (int)StringAsNewAdviceCause:(id)cause;
+- (int)StringAsPreviousAdvice:(id)advice;
+- (int)StringAsPreviousAdviceCause:(id)cause;
+- (int)StringAsPreviousAdviceInitialCause:(id)cause;
 - (int)newAdvice;
 - (int)newAdviceCause;
 - (int)previousAdvice;
 - (int)previousAdviceCause;
 - (int)previousAdviceInitialCause;
 - (unint64_t)hash;
-- (void)addAdviceInitiatingNames:(id)a3;
-- (void)addOldAdvicePartipants:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDlSubsequentThroughputBytesPerSec:(BOOL)a3;
-- (void)setHasNewAdvice:(BOOL)a3;
-- (void)setHasNewAdviceAdditionalFlags:(BOOL)a3;
-- (void)setHasNewAdviceCause:(BOOL)a3;
-- (void)setHasNewScreenIsDark:(BOOL)a3;
-- (void)setHasNewScreenIsLocked:(BOOL)a3;
-- (void)setHasPreviousAdvice:(BOOL)a3;
-- (void)setHasPreviousAdviceCause:(BOOL)a3;
-- (void)setHasPreviousAdviceDuration:(BOOL)a3;
-- (void)setHasPreviousAdviceInitialCause:(BOOL)a3;
-- (void)setHasPreviousScreenIsDark:(BOOL)a3;
-- (void)setHasPreviousScreenIsLocked:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasUlPriorThroughputBytesPerSec:(BOOL)a3;
-- (void)setHasUlSubsequentThroughputBytesPerSec:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAdviceInitiatingNames:(id)names;
+- (void)addOldAdvicePartipants:(id)partipants;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDlSubsequentThroughputBytesPerSec:(BOOL)sec;
+- (void)setHasNewAdvice:(BOOL)advice;
+- (void)setHasNewAdviceAdditionalFlags:(BOOL)flags;
+- (void)setHasNewAdviceCause:(BOOL)cause;
+- (void)setHasNewScreenIsDark:(BOOL)dark;
+- (void)setHasNewScreenIsLocked:(BOOL)locked;
+- (void)setHasPreviousAdvice:(BOOL)advice;
+- (void)setHasPreviousAdviceCause:(BOOL)cause;
+- (void)setHasPreviousAdviceDuration:(BOOL)duration;
+- (void)setHasPreviousAdviceInitialCause:(BOOL)cause;
+- (void)setHasPreviousScreenIsDark:(BOOL)dark;
+- (void)setHasPreviousScreenIsLocked:(BOOL)locked;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasUlPriorThroughputBytesPerSec:(BOOL)sec;
+- (void)setHasUlSubsequentThroughputBytesPerSec:(BOOL)sec;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSymptomsCellularSDMAdviceChange
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 16;
   }
@@ -66,9 +66,9 @@
   }
 }
 
-- (void)setHasPreviousAdvice:(BOOL)a3
+- (void)setHasPreviousAdvice:(BOOL)advice
 {
-  if (a3)
+  if (advice)
   {
     v3 = 512;
   }
@@ -81,30 +81,30 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (int)StringAsPreviousAdvice:(id)a3
+- (int)StringAsPreviousAdvice:(id)advice
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ThroughputLowConfidenceLow"])
+  adviceCopy = advice;
+  if ([adviceCopy isEqualToString:@"ThroughputLowConfidenceLow"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ThroughputHighConfidenceLow"])
+  else if ([adviceCopy isEqualToString:@"ThroughputHighConfidenceLow"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ThroughputLowConfidenceHigh"])
+  else if ([adviceCopy isEqualToString:@"ThroughputLowConfidenceHigh"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ThroughputHighConfidenceHigh"])
+  else if ([adviceCopy isEqualToString:@"ThroughputHighConfidenceHigh"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ThroughputAdviceDisabled"])
+  else if ([adviceCopy isEqualToString:@"ThroughputAdviceDisabled"])
   {
     v4 = 4;
   }
@@ -130,9 +130,9 @@
   }
 }
 
-- (void)setHasPreviousAdviceCause:(BOOL)a3
+- (void)setHasPreviousAdviceCause:(BOOL)cause
 {
-  if (a3)
+  if (cause)
   {
     v3 = 1024;
   }
@@ -145,50 +145,50 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (int)StringAsPreviousAdviceCause:(id)a3
+- (int)StringAsPreviousAdviceCause:(id)cause
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LargeTransfer"])
+  causeCopy = cause;
+  if ([causeCopy isEqualToString:@"LargeTransfer"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AVFlow"])
+  else if ([causeCopy isEqualToString:@"AVFlow"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"HighInterfaceUse"])
+  else if ([causeCopy isEqualToString:@"HighInterfaceUse"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"MediaserverdAssetDownload"])
+  else if ([causeCopy isEqualToString:@"MediaserverdAssetDownload"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SceenOnDefault"])
+  else if ([causeCopy isEqualToString:@"SceenOnDefault"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"SceenDarkDefault"])
+  else if ([causeCopy isEqualToString:@"SceenDarkDefault"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"SceenLockedDefault"])
+  else if ([causeCopy isEqualToString:@"SceenLockedDefault"])
   {
     v4 = 64;
   }
 
-  else if ([v3 isEqualToString:@"AdminOverride"])
+  else if ([causeCopy isEqualToString:@"AdminOverride"])
   {
     v4 = 128;
   }
 
-  else if ([v3 isEqualToString:@"BackgroundTransfer"])
+  else if ([causeCopy isEqualToString:@"BackgroundTransfer"])
   {
     v4 = 256;
   }
@@ -201,9 +201,9 @@
   return v4;
 }
 
-- (void)setHasPreviousAdviceDuration:(BOOL)a3
+- (void)setHasPreviousAdviceDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 8;
   }
@@ -216,9 +216,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasUlPriorThroughputBytesPerSec:(BOOL)a3
+- (void)setHasUlPriorThroughputBytesPerSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 32;
   }
@@ -244,9 +244,9 @@
   }
 }
 
-- (void)setHasNewAdvice:(BOOL)a3
+- (void)setHasNewAdvice:(BOOL)advice
 {
-  if (a3)
+  if (advice)
   {
     v3 = 128;
   }
@@ -259,30 +259,30 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (int)StringAsNewAdvice:(id)a3
+- (int)StringAsNewAdvice:(id)advice
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ThroughputLowConfidenceLow"])
+  adviceCopy = advice;
+  if ([adviceCopy isEqualToString:@"ThroughputLowConfidenceLow"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ThroughputHighConfidenceLow"])
+  else if ([adviceCopy isEqualToString:@"ThroughputHighConfidenceLow"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ThroughputLowConfidenceHigh"])
+  else if ([adviceCopy isEqualToString:@"ThroughputLowConfidenceHigh"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ThroughputHighConfidenceHigh"])
+  else if ([adviceCopy isEqualToString:@"ThroughputHighConfidenceHigh"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"ThroughputAdviceDisabled"])
+  else if ([adviceCopy isEqualToString:@"ThroughputAdviceDisabled"])
   {
     v4 = 4;
   }
@@ -308,9 +308,9 @@
   }
 }
 
-- (void)setHasNewAdviceCause:(BOOL)a3
+- (void)setHasNewAdviceCause:(BOOL)cause
 {
-  if (a3)
+  if (cause)
   {
     v3 = 256;
   }
@@ -323,50 +323,50 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (int)StringAsNewAdviceCause:(id)a3
+- (int)StringAsNewAdviceCause:(id)cause
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LargeTransfer"])
+  causeCopy = cause;
+  if ([causeCopy isEqualToString:@"LargeTransfer"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AVFlow"])
+  else if ([causeCopy isEqualToString:@"AVFlow"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"HighInterfaceUse"])
+  else if ([causeCopy isEqualToString:@"HighInterfaceUse"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"MediaserverdAssetDownload"])
+  else if ([causeCopy isEqualToString:@"MediaserverdAssetDownload"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SceenOnDefault"])
+  else if ([causeCopy isEqualToString:@"SceenOnDefault"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"SceenDarkDefault"])
+  else if ([causeCopy isEqualToString:@"SceenDarkDefault"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"SceenLockedDefault"])
+  else if ([causeCopy isEqualToString:@"SceenLockedDefault"])
   {
     v4 = 64;
   }
 
-  else if ([v3 isEqualToString:@"AdminOverride"])
+  else if ([causeCopy isEqualToString:@"AdminOverride"])
   {
     v4 = 128;
   }
 
-  else if ([v3 isEqualToString:@"BackgroundTransfer"])
+  else if ([causeCopy isEqualToString:@"BackgroundTransfer"])
   {
     v4 = 256;
   }
@@ -379,9 +379,9 @@
   return v4;
 }
 
-- (void)setHasNewAdviceAdditionalFlags:(BOOL)a3
+- (void)setHasNewAdviceAdditionalFlags:(BOOL)flags
 {
-  if (a3)
+  if (flags)
   {
     v3 = 4;
   }
@@ -394,9 +394,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasDlSubsequentThroughputBytesPerSec:(BOOL)a3
+- (void)setHasDlSubsequentThroughputBytesPerSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 2;
   }
@@ -409,9 +409,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasUlSubsequentThroughputBytesPerSec:(BOOL)a3
+- (void)setHasUlSubsequentThroughputBytesPerSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 64;
   }
@@ -424,45 +424,45 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)addAdviceInitiatingNames:(id)a3
+- (void)addAdviceInitiatingNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   adviceInitiatingNames = self->_adviceInitiatingNames;
-  v8 = v4;
+  v8 = namesCopy;
   if (!adviceInitiatingNames)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_adviceInitiatingNames;
     self->_adviceInitiatingNames = v6;
 
-    v4 = v8;
+    namesCopy = v8;
     adviceInitiatingNames = self->_adviceInitiatingNames;
   }
 
-  [(NSMutableArray *)adviceInitiatingNames addObject:v4];
+  [(NSMutableArray *)adviceInitiatingNames addObject:namesCopy];
 }
 
-- (void)addOldAdvicePartipants:(id)a3
+- (void)addOldAdvicePartipants:(id)partipants
 {
-  v4 = a3;
+  partipantsCopy = partipants;
   oldAdvicePartipants = self->_oldAdvicePartipants;
-  v8 = v4;
+  v8 = partipantsCopy;
   if (!oldAdvicePartipants)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_oldAdvicePartipants;
     self->_oldAdvicePartipants = v6;
 
-    v4 = v8;
+    partipantsCopy = v8;
     oldAdvicePartipants = self->_oldAdvicePartipants;
   }
 
-  [(NSMutableArray *)oldAdvicePartipants addObject:v4];
+  [(NSMutableArray *)oldAdvicePartipants addObject:partipantsCopy];
 }
 
-- (void)setHasPreviousScreenIsDark:(BOOL)a3
+- (void)setHasPreviousScreenIsDark:(BOOL)dark
 {
-  if (a3)
+  if (dark)
   {
     v3 = 0x4000;
   }
@@ -475,9 +475,9 @@
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasPreviousScreenIsLocked:(BOOL)a3
+- (void)setHasPreviousScreenIsLocked:(BOOL)locked
 {
-  if (a3)
+  if (locked)
   {
     v3 = 0x8000;
   }
@@ -490,9 +490,9 @@
   *&self->_has = v3 & 0x8000 | *&self->_has & 0x7FFF;
 }
 
-- (void)setHasNewScreenIsDark:(BOOL)a3
+- (void)setHasNewScreenIsDark:(BOOL)dark
 {
-  if (a3)
+  if (dark)
   {
     v3 = 4096;
   }
@@ -505,9 +505,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasNewScreenIsLocked:(BOOL)a3
+- (void)setHasNewScreenIsLocked:(BOOL)locked
 {
-  if (a3)
+  if (locked)
   {
     v3 = 0x2000;
   }
@@ -533,9 +533,9 @@
   }
 }
 
-- (void)setHasPreviousAdviceInitialCause:(BOOL)a3
+- (void)setHasPreviousAdviceInitialCause:(BOOL)cause
 {
-  if (a3)
+  if (cause)
   {
     v3 = 2048;
   }
@@ -548,50 +548,50 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (int)StringAsPreviousAdviceInitialCause:(id)a3
+- (int)StringAsPreviousAdviceInitialCause:(id)cause
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LargeTransfer"])
+  causeCopy = cause;
+  if ([causeCopy isEqualToString:@"LargeTransfer"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"AVFlow"])
+  else if ([causeCopy isEqualToString:@"AVFlow"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"HighInterfaceUse"])
+  else if ([causeCopy isEqualToString:@"HighInterfaceUse"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"MediaserverdAssetDownload"])
+  else if ([causeCopy isEqualToString:@"MediaserverdAssetDownload"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SceenOnDefault"])
+  else if ([causeCopy isEqualToString:@"SceenOnDefault"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"SceenDarkDefault"])
+  else if ([causeCopy isEqualToString:@"SceenDarkDefault"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"SceenLockedDefault"])
+  else if ([causeCopy isEqualToString:@"SceenLockedDefault"])
   {
     v4 = 64;
   }
 
-  else if ([v3 isEqualToString:@"AdminOverride"])
+  else if ([causeCopy isEqualToString:@"AdminOverride"])
   {
     v4 = 128;
   }
 
-  else if ([v3 isEqualToString:@"BackgroundTransfer"])
+  else if ([causeCopy isEqualToString:@"BackgroundTransfer"])
   {
     v4 = 256;
   }
@@ -610,8 +610,8 @@
   v8.receiver = self;
   v8.super_class = AWDSymptomsCellularSDMAdviceChange;
   v4 = [(AWDSymptomsCellularSDMAdviceChange *)&v8 description];
-  v5 = [(AWDSymptomsCellularSDMAdviceChange *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDSymptomsCellularSDMAdviceChange *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -619,12 +619,12 @@
 - (id)dictionaryRepresentation
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v15 forKey:@"timestamp"];
+    [dictionary setObject:v15 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 0x200) == 0)
@@ -655,7 +655,7 @@ LABEL_3:
     v17 = off_27898EF68[previousAdvice];
   }
 
-  [v3 setObject:v17 forKey:@"previousAdvice"];
+  [dictionary setObject:v17 forKey:@"previousAdvice"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -737,7 +737,7 @@ LABEL_45:
 
   v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", self->_previousAdviceCause];
 LABEL_87:
-  [v3 setObject:v25 forKey:@"previousAdviceCause"];
+  [dictionary setObject:v25 forKey:@"previousAdviceCause"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -753,7 +753,7 @@ LABEL_5:
 
 LABEL_88:
   v28 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_previousAdviceDuration];
-  [v3 setObject:v28 forKey:@"previousAdviceDuration"];
+  [dictionary setObject:v28 forKey:@"previousAdviceDuration"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -769,7 +769,7 @@ LABEL_6:
 
 LABEL_89:
   v29 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_dlPriorThroughputBytesPerSec];
-  [v3 setObject:v29 forKey:@"dlPriorThroughputBytesPerSec"];
+  [dictionary setObject:v29 forKey:@"dlPriorThroughputBytesPerSec"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -785,7 +785,7 @@ LABEL_7:
 
 LABEL_90:
   v30 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_ulPriorThroughputBytesPerSec];
-  [v3 setObject:v30 forKey:@"ulPriorThroughputBytesPerSec"];
+  [dictionary setObject:v30 forKey:@"ulPriorThroughputBytesPerSec"];
 
   has = self->_has;
   if ((has & 0x80) == 0)
@@ -811,7 +811,7 @@ LABEL_91:
     v32 = off_27898EF68[newAdvice];
   }
 
-  [v3 setObject:v32 forKey:@"newAdvice"];
+  [dictionary setObject:v32 forKey:@"newAdvice"];
 
   has = self->_has;
   if ((has & 0x100) == 0)
@@ -893,7 +893,7 @@ LABEL_95:
 
   v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", self->_newAdviceCause];
 LABEL_117:
-  [v3 setObject:v34 forKey:@"newAdviceCause"];
+  [dictionary setObject:v34 forKey:@"newAdviceCause"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -909,7 +909,7 @@ LABEL_10:
 
 LABEL_118:
   v35 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_newAdviceAdditionalFlags];
-  [v3 setObject:v35 forKey:@"newAdviceAdditionalFlags"];
+  [dictionary setObject:v35 forKey:@"newAdviceAdditionalFlags"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -925,20 +925,20 @@ LABEL_11:
 
 LABEL_119:
   v36 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_dlSubsequentThroughputBytesPerSec];
-  [v3 setObject:v36 forKey:@"dlSubsequentThroughputBytesPerSec"];
+  [dictionary setObject:v36 forKey:@"dlSubsequentThroughputBytesPerSec"];
 
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_12:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_ulSubsequentThroughputBytesPerSec];
-    [v3 setObject:v5 forKey:@"ulSubsequentThroughputBytesPerSec"];
+    [dictionary setObject:v5 forKey:@"ulSubsequentThroughputBytesPerSec"];
   }
 
 LABEL_13:
   adviceInitiatingNames = self->_adviceInitiatingNames;
   if (adviceInitiatingNames)
   {
-    [v3 setObject:adviceInitiatingNames forKey:@"adviceInitiatingNames"];
+    [dictionary setObject:adviceInitiatingNames forKey:@"adviceInitiatingNames"];
   }
 
   if ([(NSMutableArray *)self->_oldAdvicePartipants count])
@@ -963,8 +963,8 @@ LABEL_13:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v37 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v37 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v37 objects:v41 count:16];
@@ -973,14 +973,14 @@ LABEL_13:
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"oldAdvicePartipants"];
+    [dictionary setObject:v7 forKey:@"oldAdvicePartipants"];
   }
 
   v14 = self->_has;
   if ((v14 & 0x4000) != 0)
   {
     v18 = [MEMORY[0x277CCABB0] numberWithBool:self->_previousScreenIsDark];
-    [v3 setObject:v18 forKey:@"previousScreenIsDark"];
+    [dictionary setObject:v18 forKey:@"previousScreenIsDark"];
 
     v14 = self->_has;
     if ((v14 & 0x8000) == 0)
@@ -1001,7 +1001,7 @@ LABEL_26:
   }
 
   v19 = [MEMORY[0x277CCABB0] numberWithBool:self->_previousScreenIsLocked];
-  [v3 setObject:v19 forKey:@"previousScreenIsLocked"];
+  [dictionary setObject:v19 forKey:@"previousScreenIsLocked"];
 
   v14 = self->_has;
   if ((v14 & 0x1000) == 0)
@@ -1014,7 +1014,7 @@ LABEL_27:
 
 LABEL_36:
     v21 = [MEMORY[0x277CCABB0] numberWithBool:self->_newScreenIsLocked];
-    [v3 setObject:v21 forKey:@"newScreenIsLocked"];
+    [dictionary setObject:v21 forKey:@"newScreenIsLocked"];
 
     if ((*&self->_has & 0x800) == 0)
     {
@@ -1084,7 +1084,7 @@ LABEL_37:
         case 256:
           v23 = @"BackgroundTransfer";
 LABEL_82:
-          [v3 setObject:v23 forKey:@"previousAdviceInitialCause"];
+          [dictionary setObject:v23 forKey:@"previousAdviceInitialCause"];
 
           goto LABEL_83;
       }
@@ -1096,7 +1096,7 @@ LABEL_82:
 
 LABEL_35:
   v20 = [MEMORY[0x277CCABB0] numberWithBool:self->_newScreenIsDark];
-  [v3 setObject:v20 forKey:@"newScreenIsDark"];
+  [dictionary setObject:v20 forKey:@"newScreenIsDark"];
 
   v14 = self->_has;
   if ((v14 & 0x2000) != 0)
@@ -1113,13 +1113,13 @@ LABEL_28:
 LABEL_83:
   v26 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -1398,14 +1398,14 @@ LABEL_33:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    v4[5] = self->_timestamp;
-    *(v4 + 52) |= 0x10u;
+    toCopy[5] = self->_timestamp;
+    *(toCopy + 52) |= 0x10u;
     has = self->_has;
     if ((has & 0x200) == 0)
     {
@@ -1424,8 +1424,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 22) = self->_previousAdvice;
-  *(v4 + 52) |= 0x200u;
+  *(toCopy + 22) = self->_previousAdvice;
+  *(toCopy + 52) |= 0x200u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -1439,8 +1439,8 @@ LABEL_4:
   }
 
 LABEL_32:
-  *(v4 + 23) = self->_previousAdviceCause;
-  *(v4 + 52) |= 0x400u;
+  *(toCopy + 23) = self->_previousAdviceCause;
+  *(toCopy + 52) |= 0x400u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -1454,8 +1454,8 @@ LABEL_5:
   }
 
 LABEL_33:
-  v4[4] = self->_previousAdviceDuration;
-  *(v4 + 52) |= 8u;
+  toCopy[4] = self->_previousAdviceDuration;
+  *(toCopy + 52) |= 8u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -1469,8 +1469,8 @@ LABEL_6:
   }
 
 LABEL_34:
-  v4[1] = self->_dlPriorThroughputBytesPerSec;
-  *(v4 + 52) |= 1u;
+  toCopy[1] = self->_dlPriorThroughputBytesPerSec;
+  *(toCopy + 52) |= 1u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -1484,8 +1484,8 @@ LABEL_7:
   }
 
 LABEL_35:
-  v4[6] = self->_ulPriorThroughputBytesPerSec;
-  *(v4 + 52) |= 0x20u;
+  toCopy[6] = self->_ulPriorThroughputBytesPerSec;
+  *(toCopy + 52) |= 0x20u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -1499,8 +1499,8 @@ LABEL_8:
   }
 
 LABEL_36:
-  *(v4 + 18) = self->_newAdvice;
-  *(v4 + 52) |= 0x80u;
+  *(toCopy + 18) = self->_newAdvice;
+  *(toCopy + 52) |= 0x80u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -1514,8 +1514,8 @@ LABEL_9:
   }
 
 LABEL_37:
-  *(v4 + 19) = self->_newAdviceCause;
-  *(v4 + 52) |= 0x100u;
+  *(toCopy + 19) = self->_newAdviceCause;
+  *(toCopy + 52) |= 0x100u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -1526,8 +1526,8 @@ LABEL_10:
     }
 
 LABEL_39:
-    v4[2] = self->_dlSubsequentThroughputBytesPerSec;
-    *(v4 + 52) |= 2u;
+    toCopy[2] = self->_dlSubsequentThroughputBytesPerSec;
+    *(toCopy + 52) |= 2u;
     if ((*&self->_has & 0x40) == 0)
     {
       goto LABEL_13;
@@ -1537,8 +1537,8 @@ LABEL_39:
   }
 
 LABEL_38:
-  v4[3] = self->_newAdviceAdditionalFlags;
-  *(v4 + 52) |= 4u;
+  toCopy[3] = self->_newAdviceAdditionalFlags;
+  *(toCopy + 52) |= 4u;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -1549,19 +1549,19 @@ LABEL_11:
   if ((has & 0x40) != 0)
   {
 LABEL_12:
-    v4[7] = self->_ulSubsequentThroughputBytesPerSec;
-    *(v4 + 52) |= 0x40u;
+    toCopy[7] = self->_ulSubsequentThroughputBytesPerSec;
+    *(toCopy + 52) |= 0x40u;
   }
 
 LABEL_13:
-  v15 = v4;
+  v15 = toCopy;
   if ([(AWDSymptomsCellularSDMAdviceChange *)self adviceInitiatingNamesCount])
   {
     [v15 clearAdviceInitiatingNames];
-    v6 = [(AWDSymptomsCellularSDMAdviceChange *)self adviceInitiatingNamesCount];
-    if (v6)
+    adviceInitiatingNamesCount = [(AWDSymptomsCellularSDMAdviceChange *)self adviceInitiatingNamesCount];
+    if (adviceInitiatingNamesCount)
     {
-      v7 = v6;
+      v7 = adviceInitiatingNamesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(AWDSymptomsCellularSDMAdviceChange *)self adviceInitiatingNamesAtIndex:i];
@@ -1573,10 +1573,10 @@ LABEL_13:
   if ([(AWDSymptomsCellularSDMAdviceChange *)self oldAdvicePartipantsCount])
   {
     [v15 clearOldAdvicePartipants];
-    v10 = [(AWDSymptomsCellularSDMAdviceChange *)self oldAdvicePartipantsCount];
-    if (v10)
+    oldAdvicePartipantsCount = [(AWDSymptomsCellularSDMAdviceChange *)self oldAdvicePartipantsCount];
+    if (oldAdvicePartipantsCount)
     {
-      v11 = v10;
+      v11 = oldAdvicePartipantsCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(AWDSymptomsCellularSDMAdviceChange *)self oldAdvicePartipantsAtIndex:j];
@@ -1650,10 +1650,10 @@ LABEL_26:
 LABEL_27:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -1827,7 +1827,7 @@ LABEL_13:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v27 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v27 + 1) + 8 * i) copyWithZone:zone];
         [v6 addAdviceInitiatingNames:v13];
       }
 
@@ -1856,7 +1856,7 @@ LABEL_13:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v23 + 1) + 8 * j) copyWithZone:{a3, v23}];
+        v19 = [*(*(&v23 + 1) + 8 * j) copyWithZone:{zone, v23}];
         [v6 addOldAdvicePartipants:v19];
       }
 
@@ -1933,19 +1933,19 @@ LABEL_33:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_97;
   }
 
   has = self->_has;
-  v6 = *(v4 + 52);
+  v6 = *(equalCopy + 52);
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_timestamp != *(v4 + 5))
+    if ((v6 & 0x10) == 0 || self->_timestamp != *(equalCopy + 5))
     {
       goto LABEL_97;
     }
@@ -1958,33 +1958,33 @@ LABEL_33:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 52) & 0x200) == 0 || self->_previousAdvice != *(v4 + 22))
+    if ((*(equalCopy + 52) & 0x200) == 0 || self->_previousAdvice != *(equalCopy + 22))
     {
       goto LABEL_97;
     }
   }
 
-  else if ((*(v4 + 52) & 0x200) != 0)
+  else if ((*(equalCopy + 52) & 0x200) != 0)
   {
     goto LABEL_97;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 52) & 0x400) == 0 || self->_previousAdviceCause != *(v4 + 23))
+    if ((*(equalCopy + 52) & 0x400) == 0 || self->_previousAdviceCause != *(equalCopy + 23))
     {
       goto LABEL_97;
     }
   }
 
-  else if ((*(v4 + 52) & 0x400) != 0)
+  else if ((*(equalCopy + 52) & 0x400) != 0)
   {
     goto LABEL_97;
   }
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_previousAdviceDuration != *(v4 + 4))
+    if ((v6 & 8) == 0 || self->_previousAdviceDuration != *(equalCopy + 4))
     {
       goto LABEL_97;
     }
@@ -1997,7 +1997,7 @@ LABEL_33:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_dlPriorThroughputBytesPerSec != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_dlPriorThroughputBytesPerSec != *(equalCopy + 1))
     {
       goto LABEL_97;
     }
@@ -2010,7 +2010,7 @@ LABEL_33:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_ulPriorThroughputBytesPerSec != *(v4 + 6))
+    if ((v6 & 0x20) == 0 || self->_ulPriorThroughputBytesPerSec != *(equalCopy + 6))
     {
       goto LABEL_97;
     }
@@ -2023,7 +2023,7 @@ LABEL_33:
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_newAdvice != *(v4 + 18))
+    if ((v6 & 0x80) == 0 || self->_newAdvice != *(equalCopy + 18))
     {
       goto LABEL_97;
     }
@@ -2036,20 +2036,20 @@ LABEL_33:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 52) & 0x100) == 0 || self->_newAdviceCause != *(v4 + 19))
+    if ((*(equalCopy + 52) & 0x100) == 0 || self->_newAdviceCause != *(equalCopy + 19))
     {
       goto LABEL_97;
     }
   }
 
-  else if ((*(v4 + 52) & 0x100) != 0)
+  else if ((*(equalCopy + 52) & 0x100) != 0)
   {
     goto LABEL_97;
   }
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_newAdviceAdditionalFlags != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_newAdviceAdditionalFlags != *(equalCopy + 3))
     {
       goto LABEL_97;
     }
@@ -2062,7 +2062,7 @@ LABEL_33:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_dlSubsequentThroughputBytesPerSec != *(v4 + 2))
+    if ((v6 & 2) == 0 || self->_dlSubsequentThroughputBytesPerSec != *(equalCopy + 2))
     {
       goto LABEL_97;
     }
@@ -2075,7 +2075,7 @@ LABEL_33:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_ulSubsequentThroughputBytesPerSec != *(v4 + 7))
+    if ((v6 & 0x40) == 0 || self->_ulSubsequentThroughputBytesPerSec != *(equalCopy + 7))
     {
       goto LABEL_97;
     }
@@ -2087,13 +2087,13 @@ LABEL_33:
   }
 
   adviceInitiatingNames = self->_adviceInitiatingNames;
-  if (adviceInitiatingNames | *(v4 + 8) && ![(NSMutableArray *)adviceInitiatingNames isEqual:?])
+  if (adviceInitiatingNames | *(equalCopy + 8) && ![(NSMutableArray *)adviceInitiatingNames isEqual:?])
   {
     goto LABEL_97;
   }
 
   oldAdvicePartipants = self->_oldAdvicePartipants;
-  if (oldAdvicePartipants | *(v4 + 10))
+  if (oldAdvicePartipants | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)oldAdvicePartipants isEqual:?])
     {
@@ -2103,88 +2103,88 @@ LABEL_33:
 
   if ((*&self->_has & 0x4000) != 0)
   {
-    if ((*(v4 + 52) & 0x4000) == 0)
+    if ((*(equalCopy + 52) & 0x4000) == 0)
     {
       goto LABEL_97;
     }
 
-    v10 = *(v4 + 102);
+    v10 = *(equalCopy + 102);
     if (self->_previousScreenIsDark)
     {
-      if ((*(v4 + 102) & 1) == 0)
+      if ((*(equalCopy + 102) & 1) == 0)
       {
         goto LABEL_97;
       }
     }
 
-    else if (*(v4 + 102))
+    else if (*(equalCopy + 102))
     {
       goto LABEL_97;
     }
   }
 
-  else if ((*(v4 + 52) & 0x4000) != 0)
+  else if ((*(equalCopy + 52) & 0x4000) != 0)
   {
     goto LABEL_97;
   }
 
   if ((*&self->_has & 0x8000) != 0)
   {
-    if ((*(v4 + 52) & 0x8000) == 0)
+    if ((*(equalCopy + 52) & 0x8000) == 0)
     {
       goto LABEL_97;
     }
 
-    v11 = *(v4 + 103);
+    v11 = *(equalCopy + 103);
     if (self->_previousScreenIsLocked)
     {
-      if ((*(v4 + 103) & 1) == 0)
+      if ((*(equalCopy + 103) & 1) == 0)
       {
         goto LABEL_97;
       }
     }
 
-    else if (*(v4 + 103))
+    else if (*(equalCopy + 103))
     {
       goto LABEL_97;
     }
   }
 
-  else if ((*(v4 + 52) & 0x8000) != 0)
+  else if ((*(equalCopy + 52) & 0x8000) != 0)
   {
     goto LABEL_97;
   }
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(v4 + 52) & 0x1000) == 0)
+    if ((*(equalCopy + 52) & 0x1000) == 0)
     {
       goto LABEL_97;
     }
 
-    v12 = *(v4 + 100);
+    v12 = *(equalCopy + 100);
     if (self->_newScreenIsDark)
     {
-      if ((*(v4 + 100) & 1) == 0)
+      if ((*(equalCopy + 100) & 1) == 0)
       {
         goto LABEL_97;
       }
     }
 
-    else if (*(v4 + 100))
+    else if (*(equalCopy + 100))
     {
       goto LABEL_97;
     }
   }
 
-  else if ((*(v4 + 52) & 0x1000) != 0)
+  else if ((*(equalCopy + 52) & 0x1000) != 0)
   {
     goto LABEL_97;
   }
 
   if ((*&self->_has & 0x2000) == 0)
   {
-    if ((*(v4 + 52) & 0x2000) == 0)
+    if ((*(equalCopy + 52) & 0x2000) == 0)
     {
       goto LABEL_69;
     }
@@ -2194,21 +2194,21 @@ LABEL_97:
     goto LABEL_98;
   }
 
-  if ((*(v4 + 52) & 0x2000) == 0)
+  if ((*(equalCopy + 52) & 0x2000) == 0)
   {
     goto LABEL_97;
   }
 
-  v13 = *(v4 + 101);
+  v13 = *(equalCopy + 101);
   if (self->_newScreenIsLocked)
   {
-    if ((*(v4 + 101) & 1) == 0)
+    if ((*(equalCopy + 101) & 1) == 0)
     {
       goto LABEL_97;
     }
   }
 
-  else if (*(v4 + 101))
+  else if (*(equalCopy + 101))
   {
     goto LABEL_97;
   }
@@ -2216,7 +2216,7 @@ LABEL_97:
 LABEL_69:
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 52) & 0x800) == 0 || self->_previousAdviceInitialCause != *(v4 + 24))
+    if ((*(equalCopy + 52) & 0x800) == 0 || self->_previousAdviceInitialCause != *(equalCopy + 24))
     {
       goto LABEL_97;
     }
@@ -2226,7 +2226,7 @@ LABEL_69:
 
   else
   {
-    v9 = (*(v4 + 52) & 0x800) == 0;
+    v9 = (*(equalCopy + 52) & 0x800) == 0;
   }
 
 LABEL_98:
@@ -2453,17 +2453,17 @@ LABEL_29:
   return v21 ^ v22 ^ v20 ^ v19 ^ v18 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 52);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 52);
   if ((v6 & 0x10) != 0)
   {
-    self->_timestamp = *(v4 + 5);
+    self->_timestamp = *(fromCopy + 5);
     *&self->_has |= 0x10u;
-    v6 = *(v4 + 52);
+    v6 = *(fromCopy + 52);
     if ((v6 & 0x200) == 0)
     {
 LABEL_3:
@@ -2476,14 +2476,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 52) & 0x200) == 0)
+  else if ((*(fromCopy + 52) & 0x200) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_previousAdvice = *(v4 + 22);
+  self->_previousAdvice = *(fromCopy + 22);
   *&self->_has |= 0x200u;
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if ((v6 & 0x400) == 0)
   {
 LABEL_4:
@@ -2496,9 +2496,9 @@ LABEL_4:
   }
 
 LABEL_36:
-  self->_previousAdviceCause = *(v4 + 23);
+  self->_previousAdviceCause = *(fromCopy + 23);
   *&self->_has |= 0x400u;
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if ((v6 & 8) == 0)
   {
 LABEL_5:
@@ -2511,9 +2511,9 @@ LABEL_5:
   }
 
 LABEL_37:
-  self->_previousAdviceDuration = *(v4 + 4);
+  self->_previousAdviceDuration = *(fromCopy + 4);
   *&self->_has |= 8u;
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if ((v6 & 1) == 0)
   {
 LABEL_6:
@@ -2526,9 +2526,9 @@ LABEL_6:
   }
 
 LABEL_38:
-  self->_dlPriorThroughputBytesPerSec = *(v4 + 1);
+  self->_dlPriorThroughputBytesPerSec = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if ((v6 & 0x20) == 0)
   {
 LABEL_7:
@@ -2541,9 +2541,9 @@ LABEL_7:
   }
 
 LABEL_39:
-  self->_ulPriorThroughputBytesPerSec = *(v4 + 6);
+  self->_ulPriorThroughputBytesPerSec = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if ((v6 & 0x80) == 0)
   {
 LABEL_8:
@@ -2556,9 +2556,9 @@ LABEL_8:
   }
 
 LABEL_40:
-  self->_newAdvice = *(v4 + 18);
+  self->_newAdvice = *(fromCopy + 18);
   *&self->_has |= 0x80u;
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if ((v6 & 0x100) == 0)
   {
 LABEL_9:
@@ -2571,9 +2571,9 @@ LABEL_9:
   }
 
 LABEL_41:
-  self->_newAdviceCause = *(v4 + 19);
+  self->_newAdviceCause = *(fromCopy + 19);
   *&self->_has |= 0x100u;
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if ((v6 & 4) == 0)
   {
 LABEL_10:
@@ -2586,9 +2586,9 @@ LABEL_10:
   }
 
 LABEL_42:
-  self->_newAdviceAdditionalFlags = *(v4 + 3);
+  self->_newAdviceAdditionalFlags = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v6 = *(v4 + 52);
+  v6 = *(fromCopy + 52);
   if ((v6 & 2) == 0)
   {
 LABEL_11:
@@ -2601,12 +2601,12 @@ LABEL_11:
   }
 
 LABEL_43:
-  self->_dlSubsequentThroughputBytesPerSec = *(v4 + 2);
+  self->_dlSubsequentThroughputBytesPerSec = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if ((*(v4 + 52) & 0x40) != 0)
+  if ((*(fromCopy + 52) & 0x40) != 0)
   {
 LABEL_12:
-    self->_ulSubsequentThroughputBytesPerSec = *(v4 + 7);
+    self->_ulSubsequentThroughputBytesPerSec = *(fromCopy + 7);
     *&self->_has |= 0x40u;
   }
 
@@ -2615,7 +2615,7 @@ LABEL_13:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = *(v4 + 8);
+  v7 = *(fromCopy + 8);
   v8 = [v7 countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v8)
   {

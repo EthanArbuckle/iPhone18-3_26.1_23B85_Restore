@@ -16,9 +16,9 @@
 
 + (uint64_t)safari_isWebSheetApplicationBundle
 {
-  v0 = [MEMORY[0x1E696AAE8] mainBundle];
-  v1 = [v0 bundleIdentifier];
-  v2 = [v1 isEqualToString:@"com.apple.WebSheet"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v2 = [bundleIdentifier isEqualToString:@"com.apple.WebSheet"];
 
   return v2;
 }

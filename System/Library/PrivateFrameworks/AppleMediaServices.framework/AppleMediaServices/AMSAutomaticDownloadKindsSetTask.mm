@@ -3,30 +3,30 @@
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
 + (id)createBagForSubProfile;
-- (AMSAutomaticDownloadKindsSetTask)initWithEnabledMediaKinds:(id)a3 account:(id)a4 bag:(id)a5;
-- (AMSAutomaticDownloadKindsSetTask)initWithEnabledMediaKinds:(id)a3 account:(id)a4 bag:(id)a5 presentationDelegate:(id)a6;
+- (AMSAutomaticDownloadKindsSetTask)initWithEnabledMediaKinds:(id)kinds account:(id)account bag:(id)bag;
+- (AMSAutomaticDownloadKindsSetTask)initWithEnabledMediaKinds:(id)kinds account:(id)account bag:(id)bag presentationDelegate:(id)delegate;
 - (AMSRequestPresentationDelegate)presentationDelegate;
 - (id)perform;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6;
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6;
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AMSAutomaticDownloadKindsSetTask
 
-- (AMSAutomaticDownloadKindsSetTask)initWithEnabledMediaKinds:(id)a3 account:(id)a4 bag:(id)a5 presentationDelegate:(id)a6
+- (AMSAutomaticDownloadKindsSetTask)initWithEnabledMediaKinds:(id)kinds account:(id)account bag:(id)bag presentationDelegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  kindsCopy = kinds;
+  accountCopy = account;
+  bagCopy = bag;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = AMSAutomaticDownloadKindsSetTask;
   v14 = [(AMSTask *)&v22 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_account, a4);
-    v16 = [v10 copy];
+    objc_storeStrong(&v14->_account, account);
+    v16 = [kindsCopy copy];
     v17 = v16;
     if (v16)
     {
@@ -40,30 +40,30 @@
 
     objc_storeStrong(&v15->_enabledMediaKinds, v18);
 
-    objc_storeStrong(&v15->_bag, a5);
+    objc_storeStrong(&v15->_bag, bag);
     v19 = +[AMSProcessInfo currentProcess];
     clientInfo = v15->_clientInfo;
     v15->_clientInfo = v19;
 
-    objc_storeWeak(&v15->_presentationDelegate, v13);
+    objc_storeWeak(&v15->_presentationDelegate, delegateCopy);
   }
 
   return v15;
 }
 
-- (AMSAutomaticDownloadKindsSetTask)initWithEnabledMediaKinds:(id)a3 account:(id)a4 bag:(id)a5
+- (AMSAutomaticDownloadKindsSetTask)initWithEnabledMediaKinds:(id)kinds account:(id)account bag:(id)bag
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  kindsCopy = kinds;
+  accountCopy = account;
+  bagCopy = bag;
   v19.receiver = self;
   v19.super_class = AMSAutomaticDownloadKindsSetTask;
   v11 = [(AMSTask *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_account, a4);
-    v13 = [v8 copy];
+    objc_storeStrong(&v11->_account, account);
+    v13 = [kindsCopy copy];
     v14 = v13;
     if (v13)
     {
@@ -77,7 +77,7 @@
 
     objc_storeStrong(&v12->_enabledMediaKinds, v15);
 
-    objc_storeStrong(&v12->_bag, a5);
+    objc_storeStrong(&v12->_bag, bag);
     v16 = +[AMSProcessInfo currentProcess];
     clientInfo = v12->_clientInfo;
     v12->_clientInfo = v16;
@@ -89,19 +89,19 @@
 - (id)perform
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSAutomaticDownloadKindsSetTask *)self account];
+  account = [(AMSAutomaticDownloadKindsSetTask *)self account];
 
-  if (!v3)
+  if (!account)
   {
     v6 = AMSError(2, @"Invalid Parameter", @"An account is required.", 0);
     v7 = [AMSPromise promiseWithError:v6];
     goto LABEL_5;
   }
 
-  v4 = [(AMSAutomaticDownloadKindsSetTask *)self account];
-  v5 = [v4 ams_isLocalAccount];
+  account2 = [(AMSAutomaticDownloadKindsSetTask *)self account];
+  ams_isLocalAccount = [account2 ams_isLocalAccount];
 
-  if (v5)
+  if (ams_isLocalAccount)
   {
     v6 = AMSError(2, @"Invalid Parameter", @"We cannot sync the local account's automatic download kinds.", 0);
     v7 = [AMSPromise promiseWithError:v6];
@@ -111,8 +111,8 @@ LABEL_5:
     goto LABEL_21;
   }
 
-  v9 = [(AMSAutomaticDownloadKindsSetTask *)self account];
-  v10 = [v9 objectForKeyedSubscript:0x1F071B4D8];
+  account3 = [(AMSAutomaticDownloadKindsSetTask *)self account];
+  v10 = [account3 objectForKeyedSubscript:0x1F071B4D8];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -126,15 +126,15 @@ LABEL_15:
       v21 = +[AMSLogConfig sharedConfig];
     }
 
-    v22 = [v21 OSLogObject];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v21 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v23 = objc_opt_class();
       v24 = AMSLogKey();
-      v25 = [(AMSAutomaticDownloadKindsSetTask *)self account];
-      v26 = AMSHashIfNeeded(v25);
-      v27 = [(AMSAutomaticDownloadKindsSetTask *)self enabledMediaKinds];
-      v28 = AMSHashIfNeeded(v27);
+      account4 = [(AMSAutomaticDownloadKindsSetTask *)self account];
+      v26 = AMSHashIfNeeded(account4);
+      enabledMediaKinds = [(AMSAutomaticDownloadKindsSetTask *)self enabledMediaKinds];
+      v28 = AMSHashIfNeeded(enabledMediaKinds);
       *buf = 138544130;
       *&buf[4] = v23;
       *&buf[12] = 2114;
@@ -143,26 +143,26 @@ LABEL_15:
       v48 = v26;
       LOWORD(v49) = 2114;
       *(&v49 + 2) = v28;
-      _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Syncing automatic download kinds. account = %{public}@ | enabled media kinds = %{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Syncing automatic download kinds. account = %{public}@ | enabled media kinds = %{public}@", buf, 0x2Au);
     }
 
     v29 = [AMSURLRequestEncoder alloc];
     v30 = [(AMSAutomaticDownloadKindsSetTask *)self bag];
     v20 = [(AMSURLRequestEncoder *)v29 initWithBag:v30];
 
-    v31 = [(AMSAutomaticDownloadKindsSetTask *)self account];
-    [(AMSURLRequestEncoder *)v20 setAccount:v31];
+    account5 = [(AMSAutomaticDownloadKindsSetTask *)self account];
+    [(AMSURLRequestEncoder *)v20 setAccount:account5];
 
     [(AMSURLRequestEncoder *)v20 setRequestEncoding:2];
     v32 = AMSLogKey();
     [(AMSURLRequestEncoder *)v20 setLogUUID:v32];
 
-    v33 = [(AMSAutomaticDownloadKindsSetTask *)self clientInfo];
-    [(AMSURLRequestEncoder *)v20 setClientInfo:v33];
+    clientInfo = [(AMSAutomaticDownloadKindsSetTask *)self clientInfo];
+    [(AMSURLRequestEncoder *)v20 setClientInfo:clientInfo];
 
     v34 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v35 = [(AMSAutomaticDownloadKindsSetTask *)self enabledMediaKinds];
-    [v34 setObject:v35 forKeyedSubscript:@"media-types"];
+    enabledMediaKinds2 = [(AMSAutomaticDownloadKindsSetTask *)self enabledMediaKinds];
+    [v34 setObject:enabledMediaKinds2 forKeyedSubscript:@"media-types"];
 
     v36 = +[AMSDevice deviceGUID];
     [v34 ams_setNullableObject:v36 forKey:@"guid"];
@@ -211,8 +211,8 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v12 = [(AMSAutomaticDownloadKindsSetTask *)self enabledMediaKinds];
-  v13 = [v11 isEqualToArray:v12];
+  enabledMediaKinds3 = [(AMSAutomaticDownloadKindsSetTask *)self enabledMediaKinds];
+  v13 = [v11 isEqualToArray:enabledMediaKinds3];
 
   if (!v13)
   {
@@ -225,8 +225,8 @@ LABEL_15:
     v14 = +[AMSLogConfig sharedConfig];
   }
 
-  v15 = [v14 OSLogObject];
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+  oSLogObject2 = [v14 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
   {
     v16 = objc_opt_class();
     v17 = AMSLogKey();
@@ -234,12 +234,12 @@ LABEL_15:
     *&buf[4] = v16;
     *&buf[12] = 2114;
     *&buf[14] = v17;
-    _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Enabled media kinds are the same as our currently set values, skipping network request.", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Enabled media kinds are the same as our currently set values, skipping network request.", buf, 0x16u);
   }
 
   v18 = [AMSAutomaticDownloadKindsResult alloc];
-  v19 = [(AMSAutomaticDownloadKindsSetTask *)self account];
-  v20 = [(AMSAutomaticDownloadKindsResult *)v18 initWithAccount:v19 andEnabledMediaKinds:v11];
+  account6 = [(AMSAutomaticDownloadKindsSetTask *)self account];
+  v20 = [(AMSAutomaticDownloadKindsResult *)v18 initWithAccount:account6 andEnabledMediaKinds:v11];
 
   v8 = [AMSPromise promiseWithResult:v20];
 LABEL_20:
@@ -394,53 +394,53 @@ void __43__AMSAutomaticDownloadKindsSetTask_perform__block_invoke_33(uint64_t a1
   *(v7 + 40) = 0;
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleAuthenticateRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v11 = a5;
-  v8 = a6;
-  v9 = [(AMSAutomaticDownloadKindsSetTask *)self presentationDelegate];
+  requestCopy = request;
+  completionCopy = completion;
+  presentationDelegate = [(AMSAutomaticDownloadKindsSetTask *)self presentationDelegate];
 
-  if (v9)
+  if (presentationDelegate)
   {
-    v10 = [(AMSAutomaticDownloadKindsSetTask *)self presentationDelegate];
-    [v10 handleAuthenticateRequest:v11 completion:v8];
+    presentationDelegate2 = [(AMSAutomaticDownloadKindsSetTask *)self presentationDelegate];
+    [presentationDelegate2 handleAuthenticateRequest:requestCopy completion:completionCopy];
   }
 
   else
   {
-    if (!v8)
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
 
-    v10 = AMSError(12, @"AMSAutomaticDownloadKindsSetTask failed", @"No presentation delegate to handle authentication request.", 0);
-    v8[2](v8, 0, v10);
+    presentationDelegate2 = AMSError(12, @"AMSAutomaticDownloadKindsSetTask failed", @"No presentation delegate to handle authentication request.", 0);
+    completionCopy[2](completionCopy, 0, presentationDelegate2);
   }
 
 LABEL_6:
 }
 
-- (void)AMSURLSession:(id)a3 task:(id)a4 handleDialogRequest:(id)a5 completion:(id)a6
+- (void)AMSURLSession:(id)session task:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
-  v11 = a5;
-  v8 = a6;
-  v9 = [(AMSAutomaticDownloadKindsSetTask *)self presentationDelegate];
+  requestCopy = request;
+  completionCopy = completion;
+  presentationDelegate = [(AMSAutomaticDownloadKindsSetTask *)self presentationDelegate];
 
-  if (v9)
+  if (presentationDelegate)
   {
-    v10 = [(AMSAutomaticDownloadKindsSetTask *)self presentationDelegate];
-    [v10 handleDialogRequest:v11 completion:v8];
+    presentationDelegate2 = [(AMSAutomaticDownloadKindsSetTask *)self presentationDelegate];
+    [presentationDelegate2 handleDialogRequest:requestCopy completion:completionCopy];
   }
 
   else
   {
-    if (!v8)
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
 
-    v10 = AMSError(12, @"AMSAutomaticDownloadKindsSetTask failed", @"No presentation delegate to handle dialog request.", 0);
-    v8[2](v8, 0, v10);
+    presentationDelegate2 = AMSError(12, @"AMSAutomaticDownloadKindsSetTask failed", @"No presentation delegate to handle dialog request.", 0);
+    completionCopy[2](completionCopy, 0, presentationDelegate2);
   }
 
 LABEL_6:
@@ -484,9 +484,9 @@ void __56__AMSAutomaticDownloadKindsSetTask_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }

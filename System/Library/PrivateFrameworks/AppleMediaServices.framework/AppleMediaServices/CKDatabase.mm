@@ -1,54 +1,54 @@
 @interface CKDatabase
-+ (id)_changeTokenKeyForDatabaseScope:(int64_t)a3 recordZoneName:(id)a4;
-+ (id)_fetchChangeTokenWithDatabaseScope:(int64_t)a3;
-+ (id)_fetchChangeTokenWithDatabaseScope:(int64_t)a3 recordZoneName:(id)a4;
-+ (id)_stringForDatabaseScope:(int64_t)a3;
-+ (id)_stringForQualityOfService:(int64_t)a3;
-- (id)_fetchChangedRecordZonesWithServerChangeToken:(id)a3;
-- (id)_fetchChangedRecordsInRecordZonesWithWithRecordZoneIDs:(id)a3 changeTokens:(id)a4;
-- (id)_subscribeWithIdentifier:(id)a3 attempt:(unint64_t)a4;
-- (id)createRecordWithRecordName:(id)a3 recordType:(id)a4 recordZone:(id)a5;
-- (id)createRecordZoneWithRecordZoneName:(id)a3;
-- (id)deleteRecordZonesWithRecordZoneIdentifiers:(id)a3;
++ (id)_changeTokenKeyForDatabaseScope:(int64_t)scope recordZoneName:(id)name;
++ (id)_fetchChangeTokenWithDatabaseScope:(int64_t)scope;
++ (id)_fetchChangeTokenWithDatabaseScope:(int64_t)scope recordZoneName:(id)name;
++ (id)_stringForDatabaseScope:(int64_t)scope;
++ (id)_stringForQualityOfService:(int64_t)service;
+- (id)_fetchChangedRecordZonesWithServerChangeToken:(id)token;
+- (id)_fetchChangedRecordsInRecordZonesWithWithRecordZoneIDs:(id)ds changeTokens:(id)tokens;
+- (id)_subscribeWithIdentifier:(id)identifier attempt:(unint64_t)attempt;
+- (id)createRecordWithRecordName:(id)name recordType:(id)type recordZone:(id)zone;
+- (id)createRecordZoneWithRecordZoneName:(id)name;
+- (id)deleteRecordZonesWithRecordZoneIdentifiers:(id)identifiers;
 - (id)fetchChangedRecordZones;
-- (id)fetchChangedRecordsInRecordZonesWithRecordZoneIdentifiers:(id)a3;
-- (id)fetchRecordWithName:(id)a3 zoneIdentifier:(id)a4 qualityOfService:(int64_t)a5;
-- (id)fetchRecordWithRecordIdentifier:(id)a3 qualityOfService:(int64_t)a4;
-- (id)fetchRecordZonesWithQualityOfService:(int64_t)a3;
-- (id)saveRecord:(id)a3;
-- (id)saveRecordZone:(id)a3;
-- (id)shareForRecordZoneIdentifier:(id)a3;
+- (id)fetchChangedRecordsInRecordZonesWithRecordZoneIdentifiers:(id)identifiers;
+- (id)fetchRecordWithName:(id)name zoneIdentifier:(id)identifier qualityOfService:(int64_t)service;
+- (id)fetchRecordWithRecordIdentifier:(id)identifier qualityOfService:(int64_t)service;
+- (id)fetchRecordZonesWithQualityOfService:(int64_t)service;
+- (id)saveRecord:(id)record;
+- (id)saveRecordZone:(id)zone;
+- (id)shareForRecordZoneIdentifier:(id)identifier;
 - (unint64_t)type;
-- (void)_logFaultIfExcessiveChangeTokens:(id)a3;
-- (void)persistChangedRecordZonesChangeToken:(id)a3;
-- (void)persistChangedRecordsChangeToken:(id)a3 forRecordZoneIdentifier:(id)a4;
+- (void)_logFaultIfExcessiveChangeTokens:(id)tokens;
+- (void)persistChangedRecordZonesChangeToken:(id)token;
+- (void)persistChangedRecordsChangeToken:(id)token forRecordZoneIdentifier:(id)identifier;
 @end
 
 @implementation CKDatabase
 
 - (unint64_t)type
 {
-  v2 = [(CKDatabase *)self databaseScope];
-  if (v2 == CKDatabaseScopeShared)
+  databaseScope = [(CKDatabase *)self databaseScope];
+  if (databaseScope == CKDatabaseScopeShared)
   {
     return 2;
   }
 
   else
   {
-    return v2 == CKDatabaseScopePublic;
+    return databaseScope == CKDatabaseScopePublic;
   }
 }
 
-- (id)createRecordWithRecordName:(id)a3 recordType:(id)a4 recordZone:(id)a5
+- (id)createRecordWithRecordName:(id)name recordType:(id)type recordZone:(id)zone
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  zoneCopy = zone;
+  typeCopy = type;
+  nameCopy = name;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v7;
+    v10 = zoneCopy;
   }
 
   else
@@ -57,29 +57,29 @@
   }
 
   v11 = [CKRecordID alloc];
-  v12 = [v10 zoneID];
-  v13 = [v11 initWithRecordName:v9 zoneID:v12];
+  zoneID = [v10 zoneID];
+  v13 = [v11 initWithRecordName:nameCopy zoneID:zoneID];
 
-  v14 = [[CKRecord alloc] initWithRecordType:v8 recordID:v13];
+  v14 = [[CKRecord alloc] initWithRecordType:typeCopy recordID:v13];
 
   return v14;
 }
 
-- (id)createRecordZoneWithRecordZoneName:(id)a3
+- (id)createRecordZoneWithRecordZoneName:(id)name
 {
-  v3 = a3;
-  v4 = [[CKRecordZone alloc] initWithZoneName:v3];
+  nameCopy = name;
+  v4 = [[CKRecordZone alloc] initWithZoneName:nameCopy];
 
   return v4;
 }
 
-- (id)deleteRecordZonesWithRecordZoneIdentifiers:(id)a3
+- (id)deleteRecordZonesWithRecordZoneIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = identifiersCopy;
   }
 
   else
@@ -103,9 +103,9 @@
   return v9;
 }
 
-- (id)fetchChangedRecordsInRecordZonesWithRecordZoneIdentifiers:(id)a3
+- (id)fetchChangedRecordsInRecordZonesWithRecordZoneIdentifiers:(id)identifiers
 {
-  v4 = [a3 ams_mapWithTransformIgnoresNil:&stru_1002B29E8];
+  v4 = [identifiers ams_mapWithTransformIgnoresNil:&stru_1002B29E8];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000959F0;
@@ -133,14 +133,14 @@
   return v6;
 }
 
-- (id)fetchRecordWithName:(id)a3 zoneIdentifier:(id)a4 qualityOfService:(int64_t)a5
+- (id)fetchRecordWithName:(id)name zoneIdentifier:(id)identifier qualityOfService:(int64_t)service
 {
-  v8 = a4;
-  v9 = a3;
+  identifierCopy = identifier;
+  nameCopy = name;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v8;
+    v10 = identifierCopy;
   }
 
   else
@@ -148,19 +148,19 @@
     v10 = 0;
   }
 
-  v11 = [[CKRecordID alloc] initWithRecordName:v9 zoneID:v10];
-  v12 = [(CKDatabase *)self fetchRecordWithRecordIdentifier:v11 qualityOfService:a5];
+  v11 = [[CKRecordID alloc] initWithRecordName:nameCopy zoneID:v10];
+  v12 = [(CKDatabase *)self fetchRecordWithRecordIdentifier:v11 qualityOfService:service];
 
   return v12;
 }
 
-- (id)fetchRecordWithRecordIdentifier:(id)a3 qualityOfService:(int64_t)a4
+- (id)fetchRecordWithRecordIdentifier:(id)identifier qualityOfService:(int64_t)service
 {
-  v7 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = identifierCopy;
   }
 
   else
@@ -174,13 +174,13 @@
     v9 = +[AMSLogConfig sharedConfig];
   }
 
-  v10 = [v9 OSLogObject];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v9 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v11 = objc_opt_class();
     AMSLogKey();
-    v25 = v7;
-    v13 = v12 = a4;
+    v25 = identifierCopy;
+    v13 = v12 = service;
     v14 = NSStringFromSelector(a2);
     v15 = AMSHashIfNeeded();
     v16 = [objc_opt_class() _stringForQualityOfService:v12];
@@ -194,10 +194,10 @@
     v37 = v15;
     v38 = 2114;
     v39 = v16;
-    _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing operation: %{public}@  | database: %{public}@ | Quality of Service: %{public}@", buf, 0x34u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing operation: %{public}@  | database: %{public}@ | Quality of Service: %{public}@", buf, 0x34u);
 
-    a4 = v12;
-    v7 = v25;
+    service = v12;
+    identifierCopy = v25;
   }
 
   v17 = objc_alloc_init(AMSMutablePromise);
@@ -206,7 +206,7 @@
   v19 = [NSArray arrayWithObjects:&v29 count:1];
   v20 = [v18 initWithRecordIDs:v19];
 
-  [v20 setQualityOfService:a4];
+  [v20 setQualityOfService:service];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_100096028;
@@ -222,7 +222,7 @@
   return v23;
 }
 
-- (id)fetchRecordZonesWithQualityOfService:(int64_t)a3
+- (id)fetchRecordZonesWithQualityOfService:(int64_t)service
 {
   v6 = +[AMSLogConfig sharedAccountsDaemonConfig];
   if (!v6)
@@ -230,14 +230,14 @@
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
     v9 = AMSLogKey();
     v10 = NSStringFromSelector(a2);
     v11 = AMSHashIfNeeded();
-    v12 = [objc_opt_class() _stringForQualityOfService:a3];
+    v12 = [objc_opt_class() _stringForQualityOfService:service];
     *buf = 138544386;
     v22 = v8;
     v23 = 2114;
@@ -248,12 +248,12 @@
     v28 = v11;
     v29 = 2114;
     v30 = v12;
-    _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing operation: %{public}@  | database: %{public}@ | Quality of Service: %{public}@", buf, 0x34u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing operation: %{public}@  | database: %{public}@ | Quality of Service: %{public}@", buf, 0x34u);
   }
 
   v13 = objc_alloc_init(AMSMutablePromise);
   v14 = +[CKFetchRecordZonesOperation fetchAllRecordZonesOperation];
-  [v14 setQualityOfService:a3];
+  [v14 setQualityOfService:service];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1000964A8;
@@ -273,9 +273,9 @@
   return v15;
 }
 
-- (void)persistChangedRecordZonesChangeToken:(id)a3
+- (void)persistChangedRecordZonesChangeToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = &_s18AppleMediaServices16RemoteSignInTaskC7performSDySSSbGyYaKFTjTu_ptr;
   v6 = [AMSStorage _valueForKey:@"AMSDCloudKitDatabaseChangeTokens"];
   objc_opt_class();
@@ -298,10 +298,10 @@
   v9 = v8;
 
   v10 = [v9 mutableCopy];
-  if (v4)
+  if (tokenCopy)
   {
     v22 = 0;
-    v11 = [NSKeyedArchiver archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v22];
+    v11 = [NSKeyedArchiver archivedDataWithRootObject:tokenCopy requiringSecureCoding:1 error:&v22];
     v12 = v22;
     if (!v11)
     {
@@ -311,8 +311,8 @@
         v13 = +[AMSLogConfig sharedConfig];
       }
 
-      v14 = [v13 OSLogObject];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v13 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v20 = objc_opt_class();
         v21 = AMSLogKey();
@@ -328,7 +328,7 @@
         v29 = 2114;
         v30 = v16;
         v18 = v16;
-        _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to archive a database change token. database = %{public}@ | error = %{public}@", buf, 0x2Au);
+        _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to archive a database change token. database = %{public}@ | error = %{public}@", buf, 0x2Au);
 
         v5 = &_s18AppleMediaServices16RemoteSignInTaskC7performSDySSSbGyYaKFTjTu_ptr;
       }
@@ -349,18 +349,18 @@
   }
 }
 
-- (void)persistChangedRecordsChangeToken:(id)a3 forRecordZoneIdentifier:(id)a4
+- (void)persistChangedRecordsChangeToken:(id)token forRecordZoneIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  identifierCopy = identifier;
   v8 = +[AMSLogConfig sharedAccountsDaemonConfig];
   if (!v8)
   {
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
     v11 = AMSLogKey();
@@ -370,10 +370,10 @@
     v36 = 2114;
     v37 = v11;
     v38 = 2112;
-    v39 = v6;
+    v39 = tokenCopy;
     v40 = 2114;
     v41 = v12;
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Setting a change token. changeToken = %@ | zoneIdentifier = %{public}@", buf, 0x2Au);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Setting a change token. changeToken = %@ | zoneIdentifier = %{public}@", buf, 0x2Au);
   }
 
   v13 = &_s18AppleMediaServices16RemoteSignInTaskC7performSDySSSbGyYaKFTjTu_ptr;
@@ -399,14 +399,14 @@
 
   v18 = [v17 mutableCopy];
   v19 = objc_opt_class();
-  v20 = [(CKDatabase *)self scope];
-  v21 = [v7 name];
-  v22 = [v19 _changeTokenKeyForDatabaseScope:v20 recordZoneName:v21];
+  scope = [(CKDatabase *)self scope];
+  name = [identifierCopy name];
+  v22 = [v19 _changeTokenKeyForDatabaseScope:scope recordZoneName:name];
 
-  if (v6)
+  if (tokenCopy)
   {
     v33 = 0;
-    v23 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v33];
+    v23 = [NSKeyedArchiver archivedDataWithRootObject:tokenCopy requiringSecureCoding:1 error:&v33];
     v24 = v33;
     if (!v23)
     {
@@ -416,12 +416,12 @@
         v25 = +[AMSLogConfig sharedConfig];
       }
 
-      v26 = [v25 OSLogObject];
-      if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v25 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v30 = objc_opt_class();
         v32 = AMSLogKey();
-        v29 = [(CKDatabase *)self scope];
+        scope2 = [(CKDatabase *)self scope];
         v31 = AMSHashIfNeeded();
         v28 = AMSHashIfNeeded();
         *buf = 138544386;
@@ -429,12 +429,12 @@
         v36 = 2114;
         v37 = v32;
         v38 = 2048;
-        v39 = v29;
+        v39 = scope2;
         v40 = 2114;
         v41 = v31;
         v42 = 2114;
         v43 = v28;
-        _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to archive a record zone change token. databaseScope = %ld | zoneName = %{public}@ | error = %{public}@", buf, 0x34u);
+        _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to archive a record zone change token. databaseScope = %ld | zoneName = %{public}@ | error = %{public}@", buf, 0x34u);
       }
 
       v13 = &_s18AppleMediaServices16RemoteSignInTaskC7performSDySSSbGyYaKFTjTu_ptr;
@@ -456,10 +456,10 @@
   }
 }
 
-- (void)_logFaultIfExcessiveChangeTokens:(id)a3
+- (void)_logFaultIfExcessiveChangeTokens:(id)tokens
 {
-  v3 = [a3 allValues];
-  v4 = [v3 count];
+  allValues = [tokens allValues];
+  v4 = [allValues count];
 
   if (v4 >= 0xC9)
   {
@@ -473,17 +473,17 @@
         v7 = +[AMSLogConfig sharedConfig];
       }
 
-      v8 = [v7 OSLogObject];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v7 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v10 = 138543362;
         v11 = objc_opt_class();
-        _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%{public}@: AMSStorage database grown too big when inserting record zone change tokens.", &v10, 0xCu);
+        _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: AMSStorage database grown too big when inserting record zone change tokens.", &v10, 0xCu);
       }
 
       v7 = +[NSNotificationCenter defaultCenter];
-      v9 = +[AMSLogConfig sharedConfig];
-      [v7 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v9 userInfo:0];
+      oSLogObject2 = +[AMSLogConfig sharedConfig];
+      [v7 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
     }
 
     else
@@ -493,24 +493,24 @@
         v7 = +[AMSLogConfig sharedConfig];
       }
 
-      v9 = [v7 OSLogObject];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+      oSLogObject2 = [v7 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
       {
         v10 = 138543362;
         v11 = objc_opt_class();
-        _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_FAULT, "%{public}@: AMSStorage database grown too big when inserting record zone change tokens.", &v10, 0xCu);
+        _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_FAULT, "%{public}@: AMSStorage database grown too big when inserting record zone change tokens.", &v10, 0xCu);
       }
     }
   }
 }
 
-- (id)saveRecord:(id)a3
+- (id)saveRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = recordCopy;
   }
 
   else
@@ -538,13 +538,13 @@
   return v11;
 }
 
-- (id)saveRecordZone:(id)a3
+- (id)saveRecordZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = zoneCopy;
   }
 
   else
@@ -572,13 +572,13 @@
   return v11;
 }
 
-- (id)shareForRecordZoneIdentifier:(id)a3
+- (id)shareForRecordZoneIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = identifierCopy;
   }
 
   else
@@ -591,17 +591,17 @@
   return v5;
 }
 
-- (id)_subscribeWithIdentifier:(id)a3 attempt:(unint64_t)a4
+- (id)_subscribeWithIdentifier:(id)identifier attempt:(unint64_t)attempt
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = +[AMSLogConfig sharedAccountsDaemonConfig];
   if (!v7)
   {
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
     v10 = AMSLogKey();
@@ -612,12 +612,12 @@
     v31 = v10;
     v32 = 2114;
     v33 = v11;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Setting up a database subscription. database = %{public}@", buf, 0x20u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Setting up a database subscription. database = %{public}@", buf, 0x20u);
   }
 
   v12 = objc_alloc_init(CKNotificationInfo);
   [v12 setShouldSendContentAvailable:1];
-  v13 = [[CKDatabaseSubscription alloc] initWithSubscriptionID:v6];
+  v13 = [[CKDatabaseSubscription alloc] initWithSubscriptionID:identifierCopy];
   [v13 setNotificationInfo:v12];
   v14 = objc_alloc_init(AMSMutablePromise);
   v15 = [CKModifySubscriptionsOperation alloc];
@@ -637,28 +637,28 @@
   v22[1] = 3221225472;
   v22[2] = sub_1000978D8;
   v22[3] = &unk_1002B02C0;
-  v23 = v6;
-  v24 = a4;
+  v23 = identifierCopy;
+  attemptCopy = attempt;
   v22[4] = self;
-  v19 = v6;
+  v19 = identifierCopy;
   v20 = [v18 continueWithBlock:v22];
 
   return v20;
 }
 
-+ (id)_changeTokenKeyForDatabaseScope:(int64_t)a3 recordZoneName:(id)a4
++ (id)_changeTokenKeyForDatabaseScope:(int64_t)scope recordZoneName:(id)name
 {
-  v6 = a4;
-  v7 = [a1 _stringForDatabaseScope:a3];
-  v8 = [NSString stringWithFormat:@"%@:%@", v7, v6];
+  nameCopy = name;
+  v7 = [self _stringForDatabaseScope:scope];
+  nameCopy = [NSString stringWithFormat:@"%@:%@", v7, nameCopy];
 
-  return v8;
+  return nameCopy;
 }
 
-- (id)_fetchChangedRecordZonesWithServerChangeToken:(id)a3
+- (id)_fetchChangedRecordZonesWithServerChangeToken:(id)token
 {
-  v4 = a3;
-  v5 = [[CKFetchDatabaseChangesOperation alloc] initWithPreviousServerChangeToken:v4];
+  tokenCopy = token;
+  v5 = [[CKFetchDatabaseChangesOperation alloc] initWithPreviousServerChangeToken:tokenCopy];
 
   [v5 setQualityOfService:17];
   v6 = objc_alloc_init(NSMutableArray);
@@ -695,17 +695,17 @@
   return v10;
 }
 
-- (id)_fetchChangedRecordsInRecordZonesWithWithRecordZoneIDs:(id)a3 changeTokens:(id)a4
+- (id)_fetchChangedRecordsInRecordZonesWithWithRecordZoneIDs:(id)ds changeTokens:(id)tokens
 {
-  v6 = a3;
+  dsCopy = ds;
   v48[0] = _NSConcreteStackBlock;
   v48[1] = 3221225472;
   v48[2] = sub_1000984FC;
   v48[3] = &unk_1002B2A10;
-  v29 = a4;
-  v49 = v29;
-  v28 = [v6 ams_invertedDictionaryUsingTransform:v48];
-  v7 = [[CKFetchRecordZoneChangesOperation alloc] initWithRecordZoneIDs:v6 configurationsByRecordZoneID:v28];
+  tokensCopy = tokens;
+  v49 = tokensCopy;
+  v28 = [dsCopy ams_invertedDictionaryUsingTransform:v48];
+  v7 = [[CKFetchRecordZoneChangesOperation alloc] initWithRecordZoneIDs:dsCopy configurationsByRecordZoneID:v28];
   [v7 setQualityOfService:17];
   v8 = objc_alloc_init(NSMutableDictionary);
   v9 = objc_alloc_init(NSMutableDictionary);
@@ -769,7 +769,7 @@
   return v26;
 }
 
-+ (id)_fetchChangeTokenWithDatabaseScope:(int64_t)a3
++ (id)_fetchChangeTokenWithDatabaseScope:(int64_t)scope
 {
   v5 = [AMSStorage _valueForKey:@"AMSDCloudKitDatabaseChangeTokens"];
   objc_opt_class();
@@ -783,7 +783,7 @@
     v6 = 0;
   }
 
-  v7 = [a1 _stringForDatabaseScope:a3];
+  v7 = [self _stringForDatabaseScope:scope];
   v8 = [v6 objectForKeyedSubscript:v7];
 
   if (v8)
@@ -799,8 +799,8 @@
         v11 = +[AMSLogConfig sharedConfig];
       }
 
-      v12 = [v11 OSLogObject];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v11 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v13 = objc_opt_class();
         v14 = AMSLogKey();
@@ -810,10 +810,10 @@
         v20 = 2114;
         v21 = v14;
         v22 = 2048;
-        v23 = a3;
+        scopeCopy = scope;
         v24 = 2114;
         v25 = v15;
-        _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to unarchive a database change token. databaseScope = %ld | error = %{public}@", buf, 0x2Au);
+        _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to unarchive a database change token. databaseScope = %ld | error = %{public}@", buf, 0x2Au);
       }
     }
   }
@@ -826,9 +826,9 @@
   return v9;
 }
 
-+ (id)_fetchChangeTokenWithDatabaseScope:(int64_t)a3 recordZoneName:(id)a4
++ (id)_fetchChangeTokenWithDatabaseScope:(int64_t)scope recordZoneName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v7 = [AMSStorage _valueForKey:@"AMSDCloudKitRecordZoneChangeTokens"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -841,7 +841,7 @@
     v8 = 0;
   }
 
-  v9 = [a1 _changeTokenKeyForDatabaseScope:a3 recordZoneName:v6];
+  v9 = [self _changeTokenKeyForDatabaseScope:scope recordZoneName:nameCopy];
   v10 = [v8 objectForKeyedSubscript:v9];
 
   if (v10)
@@ -857,8 +857,8 @@
         v13 = +[AMSLogConfig sharedConfig];
       }
 
-      v14 = [v13 OSLogObject];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v13 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v19 = objc_opt_class();
         v15 = AMSLogKey();
@@ -869,12 +869,12 @@
         v23 = 2114;
         v24 = v15;
         v25 = 2048;
-        v26 = a3;
+        scopeCopy = scope;
         v27 = 2114;
         v28 = v18;
         v29 = 2114;
         v30 = v16;
-        _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to unarchive a record zone change token. databaseScope = %ld | zoneName = %{public}@ | error = %{public}@", buf, 0x34u);
+        _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to unarchive a record zone change token. databaseScope = %ld | zoneName = %{public}@ | error = %{public}@", buf, 0x34u);
       }
     }
   }
@@ -887,15 +887,15 @@
   return v11;
 }
 
-+ (id)_stringForDatabaseScope:(int64_t)a3
++ (id)_stringForDatabaseScope:(int64_t)scope
 {
   v3 = @"private";
-  if (a3 == 1)
+  if (scope == 1)
   {
     v3 = @"public";
   }
 
-  if (a3 == 3)
+  if (scope == 3)
   {
     return @"shared";
   }
@@ -906,16 +906,16 @@
   }
 }
 
-+ (id)_stringForQualityOfService:(int64_t)a3
++ (id)_stringForQualityOfService:(int64_t)service
 {
-  if (a3 <= 16)
+  if (service <= 16)
   {
-    if (a3 == -1)
+    if (service == -1)
     {
       return @"Default";
     }
 
-    if (a3 == 9)
+    if (service == 9)
     {
       return @"Background";
     }
@@ -923,7 +923,7 @@
 
   else
   {
-    switch(a3)
+    switch(service)
     {
       case 17:
         return @"Utility";

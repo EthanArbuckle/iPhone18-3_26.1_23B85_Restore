@@ -2,15 +2,15 @@
 + (id)defaults;
 + (id)supportedDimensions;
 - (ADMonocularStillsPipeline)init;
-- (ADMonocularStillsPipeline)initWithParameters:(id)a3;
+- (ADMonocularStillsPipeline)initWithParameters:(id)parameters;
 @end
 
 @implementation ADMonocularStillsPipeline
 
-- (ADMonocularStillsPipeline)initWithParameters:(id)a3
+- (ADMonocularStillsPipeline)initWithParameters:(id)parameters
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  parametersCopy = parameters;
   v28 = 335686660;
   v29 = 0u;
   v30 = 0u;
@@ -20,30 +20,30 @@
   v5 = [(ADMonocularStillsPipeline *)&v27 init];
   if (v5)
   {
-    if (!v4)
+    if (!parametersCopy)
     {
-      v4 = objc_opt_new();
+      parametersCopy = objc_opt_new();
     }
 
-    objc_storeStrong(&v5->_pipelineParameters, v4);
-    v6 = [(ADPipelineParameters *)v5->_pipelineParameters requestedDimensions];
-    if (!v6)
+    objc_storeStrong(&v5->_pipelineParameters, parametersCopy);
+    requestedDimensions = [(ADPipelineParameters *)v5->_pipelineParameters requestedDimensions];
+    if (!requestedDimensions)
     {
       v7 = +[ADMonocularStillsPipeline supportedDimensions];
-      v6 = [v7 objectAtIndexedSubscript:0];
+      requestedDimensions = [v7 objectAtIndexedSubscript:0];
     }
 
     v8 = +[ADMonocularStillsPipeline supportedDimensions];
-    v9 = [v8 containsObject:v6];
+    v9 = [v8 containsObject:requestedDimensions];
 
     if (v9)
     {
-      v10 = [objc_opt_class() supportedDimensions];
-      v11 = [v10 count] > 1;
+      supportedDimensions = [objc_opt_class() supportedDimensions];
+      v11 = [supportedDimensions count] > 1;
 
       if (v11)
       {
-        v12 = [ADNetworkProvider createRequestedLayoutsForDimensions:v6];
+        v12 = [ADNetworkProvider createRequestedLayoutsForDimensions:requestedDimensions];
       }
 
       else
@@ -61,8 +61,8 @@
         inferenceDesc = v5->_inferenceDesc;
         v5->_inferenceDesc = v15;
 
-        v17 = [objc_opt_class() defaults];
-        [v17 floatForKey:kADDeviceConfigurationKeyMonocularStillsNominalEFL];
+        defaults = [objc_opt_class() defaults];
+        [defaults floatForKey:kADDeviceConfigurationKeyMonocularStillsNominalEFL];
         v5->_networkNominalEFL = v18;
 
         *&v19 = v5->_networkNominalEFL;
@@ -71,16 +71,16 @@
           v5->_networkNominalEFL = 900.34;
         }
 
-        v20 = [v6 width];
-        v21 = [v6 height];
-        if (v20 <= v21)
+        width = [requestedDimensions width];
+        height = [requestedDimensions height];
+        if (width <= height)
         {
-          v22 = v21;
+          v22 = height;
         }
 
         else
         {
-          v22 = v20;
+          v22 = width;
         }
 
         v5->_networkNominalEFL = (v22 / 768.0) * v5->_networkNominalEFL;
@@ -93,12 +93,12 @@
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
-        v25 = [v6 width];
-        v26 = [v6 height];
+        width2 = [requestedDimensions width];
+        height2 = [requestedDimensions height];
         *buf = 134218240;
-        v32 = v25;
+        v32 = width2;
         v33 = 2048;
-        v34 = v26;
+        v34 = height2;
         _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Provided dimension %zux%zu is not supported by network", buf, 0x16u);
       }
     }

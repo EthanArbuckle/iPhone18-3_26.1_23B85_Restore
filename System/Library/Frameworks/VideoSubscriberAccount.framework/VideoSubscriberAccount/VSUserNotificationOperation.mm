@@ -37,34 +37,34 @@
     v18 = 0;
     v4 = *MEMORY[0x277CBECE8];
     Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 4, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
-    v6 = [(VSUserNotificationOperation *)self iconURL];
-    if (v6)
+    iconURL = [(VSUserNotificationOperation *)self iconURL];
+    if (iconURL)
     {
-      CFDictionarySetValue(Mutable, *MEMORY[0x277CBF1F0], v6);
+      CFDictionarySetValue(Mutable, *MEMORY[0x277CBF1F0], iconURL);
     }
 
-    v7 = [(VSUserNotificationOperation *)self title];
-    if (v7)
+    title = [(VSUserNotificationOperation *)self title];
+    if (title)
     {
-      CFDictionarySetValue(Mutable, *MEMORY[0x277CBF188], v7);
+      CFDictionarySetValue(Mutable, *MEMORY[0x277CBF188], title);
     }
 
-    v8 = [(VSUserNotificationOperation *)self message];
-    if (v8)
+    message = [(VSUserNotificationOperation *)self message];
+    if (message)
     {
-      CFDictionarySetValue(Mutable, *MEMORY[0x277CBF198], v8);
+      CFDictionarySetValue(Mutable, *MEMORY[0x277CBF198], message);
     }
 
-    v9 = [(VSUserNotificationOperation *)self defaultButtonTitle];
-    if (v9)
+    defaultButtonTitle = [(VSUserNotificationOperation *)self defaultButtonTitle];
+    if (defaultButtonTitle)
     {
-      CFDictionarySetValue(Mutable, *MEMORY[0x277CBF1E8], v9);
+      CFDictionarySetValue(Mutable, *MEMORY[0x277CBF1E8], defaultButtonTitle);
     }
 
-    v10 = [(VSUserNotificationOperation *)self alternateButtonTitle];
-    if (v10)
+    alternateButtonTitle = [(VSUserNotificationOperation *)self alternateButtonTitle];
+    if (alternateButtonTitle)
     {
-      CFDictionarySetValue(Mutable, *MEMORY[0x277CBF1C0], v10);
+      CFDictionarySetValue(Mutable, *MEMORY[0x277CBF1C0], alternateButtonTitle);
     }
 
     v11 = VSDefaultLogObject();

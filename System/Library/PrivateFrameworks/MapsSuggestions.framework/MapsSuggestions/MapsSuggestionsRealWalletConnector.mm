@@ -1,11 +1,11 @@
 @interface MapsSuggestionsRealWalletConnector
-- (BOOL)expressSupportedByPass:(id)a3;
+- (BOOL)expressSupportedByPass:(id)pass;
 - (MapsSuggestionsRealWalletConnector)init;
 - (MapsSuggestionsWalletConnectorDelegate)delegate;
 - (NSString)uniqueName;
 - (id)defaultPass;
-- (id)supportedTransitIdsForPass:(id)a3;
-- (int64_t)paymentNetworkIdentiferForPass:(id)a3;
+- (id)supportedTransitIdsForPass:(id)pass;
+- (int64_t)paymentNetworkIdentiferForPass:(id)pass;
 - (void)startListeningForChanges;
 - (void)stopListeningForChanges;
 @end
@@ -17,15 +17,15 @@
   v2 = [(PKPassLibrary *)self->_passLibrary defaultPaymentPassesWithRemotePasses:0];
   if ([v2 count])
   {
-    v3 = [v2 firstObject];
+    firstObject = [v2 firstObject];
   }
 
   else
   {
-    v3 = 0;
+    firstObject = 0;
   }
 
-  return v3;
+  return firstObject;
 }
 
 - (MapsSuggestionsRealWalletConnector)init
@@ -54,7 +54,7 @@
 - (void)startListeningForChanges
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = *MEMORY[0x1E69BBBD8];
   passLibrary = self->_passLibrary;
   v7[0] = MEMORY[0x1E69E9820];
@@ -63,7 +63,7 @@
   v7[3] = &unk_1E8203C58;
   objc_copyWeak(&v8, &location);
   v7[4] = self;
-  v6 = [v3 addObserverForName:v4 object:passLibrary queue:0 usingBlock:v7];
+  v6 = [defaultCenter addObserverForName:v4 object:passLibrary queue:0 usingBlock:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -118,20 +118,20 @@ LABEL_11:
 
 - (void)stopListeningForChanges
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69BBBD8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69BBBD8] object:0];
 }
 
-- (BOOL)expressSupportedByPass:(id)a3
+- (BOOL)expressSupportedByPass:(id)pass
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  passCopy = pass;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 devicePaymentApplications];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+  devicePaymentApplications = [passCopy devicePaymentApplications];
+  v5 = [devicePaymentApplications countByEnumeratingWithState:&v12 objects:v18 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -141,7 +141,7 @@ LABEL_11:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(devicePaymentApplications);
         }
 
         if ([*(*(&v12 + 1) + 8 * i) supportsExpress])
@@ -149,9 +149,9 @@ LABEL_11:
           v9 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
           {
-            v10 = [v3 organizationName];
+            organizationName = [passCopy organizationName];
             *buf = 138412290;
-            v17 = v10;
+            v17 = organizationName;
             _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_DEBUG, "%@ card supports express transit", buf, 0xCu);
           }
 
@@ -160,7 +160,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+      v5 = [devicePaymentApplications countByEnumeratingWithState:&v12 objects:v18 count:16];
       if (v5)
       {
         continue;
@@ -170,11 +170,11 @@ LABEL_11:
     }
   }
 
-  v4 = GEOFindOrCreateLog();
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
+  devicePaymentApplications = GEOFindOrCreateLog();
+  if (os_log_type_enabled(devicePaymentApplications, OS_LOG_TYPE_DEBUG))
   {
     *buf = 0;
-    _os_log_impl(&dword_1C5126000, v4, OS_LOG_TYPE_DEBUG, "Found no paymentApplication on the pass that supports express transit", buf, 2u);
+    _os_log_impl(&dword_1C5126000, devicePaymentApplications, OS_LOG_TYPE_DEBUG, "Found no paymentApplication on the pass that supports express transit", buf, 2u);
   }
 
   v8 = 0;
@@ -183,21 +183,21 @@ LABEL_15:
   return v8;
 }
 
-- (id)supportedTransitIdsForPass:(id)a3
+- (id)supportedTransitIdsForPass:(id)pass
 {
-  v3 = [a3 devicePrimaryPaymentApplication];
-  v4 = [v3 supportedTransitNetworkIdentifiers];
-  v5 = [v4 copy];
+  devicePrimaryPaymentApplication = [pass devicePrimaryPaymentApplication];
+  supportedTransitNetworkIdentifiers = [devicePrimaryPaymentApplication supportedTransitNetworkIdentifiers];
+  v5 = [supportedTransitNetworkIdentifiers copy];
 
   return v5;
 }
 
-- (int64_t)paymentNetworkIdentiferForPass:(id)a3
+- (int64_t)paymentNetworkIdentiferForPass:(id)pass
 {
-  v3 = [a3 devicePrimaryPaymentApplication];
-  v4 = [v3 paymentNetworkIdentifier];
+  devicePrimaryPaymentApplication = [pass devicePrimaryPaymentApplication];
+  paymentNetworkIdentifier = [devicePrimaryPaymentApplication paymentNetworkIdentifier];
 
-  return v4;
+  return paymentNetworkIdentifier;
 }
 
 - (NSString)uniqueName

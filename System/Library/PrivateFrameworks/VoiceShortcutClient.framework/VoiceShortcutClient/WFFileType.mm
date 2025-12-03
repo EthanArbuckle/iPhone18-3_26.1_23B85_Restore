@@ -1,37 +1,37 @@
 @interface WFFileType
 + (id)fileTypeCache;
-+ (id)typeForTagClass:(id)a3 tag:(id)a4;
-+ (id)typeFromFileExtension:(id)a3;
-+ (id)typeFromFilename:(id)a3;
-+ (id)typeFromPasteboardType:(id)a3;
-+ (id)typeWithString:(id)a3;
-+ (id)typeWithUTType:(id)a3;
-+ (id)typeWithUTType:(id)a3 string:(id)a4;
-+ (id)typesForTagClass:(id)a3 tag:(id)a4 conformingToType:(id)a5;
-+ (id)typesFromUTTypes:(id)a3 excludingType:(id)a4;
-- (BOOL)conformsToString:(id)a3;
-- (BOOL)conformsToType:(id)a3;
-- (BOOL)conformsToUTType:(id)a3;
-- (BOOL)conformsToUTTypes:(id)a3;
++ (id)typeForTagClass:(id)class tag:(id)tag;
++ (id)typeFromFileExtension:(id)extension;
++ (id)typeFromFilename:(id)filename;
++ (id)typeFromPasteboardType:(id)type;
++ (id)typeWithString:(id)string;
++ (id)typeWithUTType:(id)type;
++ (id)typeWithUTType:(id)type string:(id)string;
++ (id)typesForTagClass:(id)class tag:(id)tag conformingToType:(id)type;
++ (id)typesFromUTTypes:(id)types excludingType:(id)type;
+- (BOOL)conformsToString:(id)string;
+- (BOOL)conformsToType:(id)type;
+- (BOOL)conformsToUTType:(id)type;
+- (BOOL)conformsToUTTypes:(id)types;
 - (BOOL)isCoreType;
 - (BOOL)isDeclared;
 - (BOOL)isDynamic;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToString:(id)a3;
-- (BOOL)isEqualToType:(id)a3;
-- (BOOL)isEqualToUTType:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToString:(id)string;
+- (BOOL)isEqualToType:(id)type;
+- (BOOL)isEqualToUTType:(id)type;
 - (NSArray)typesConformedTo;
 - (NSString)MIMEType;
 - (NSString)fileExtension;
 - (NSString)string;
 - (NSString)typeDescription;
 - (UTType)utType;
-- (WFFileType)initWithCoder:(id)a3;
-- (WFFileType)initWithUTType:(id)a3 string:(id)a4;
+- (WFFileType)initWithCoder:(id)coder;
+- (WFFileType)initWithUTType:(id)type string:(id)string;
 - (WFImage)documentIcon;
-- (id)conformingTypesWithTagClass:(id)a3 tag:(id)a4;
+- (id)conformingTypesWithTagClass:(id)class tag:(id)tag;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFFileType
@@ -61,10 +61,10 @@ uint64_t __27__WFFileType_fileTypeCache__block_invoke()
 
 - (BOOL)isDeclared
 {
-  v2 = [(WFFileType *)self utType];
-  v3 = [v2 isDeclared];
+  utType = [(WFFileType *)self utType];
+  isDeclared = [utType isDeclared];
 
-  return v3;
+  return isDeclared;
 }
 
 - (UTType)utType
@@ -97,45 +97,45 @@ uint64_t __27__WFFileType_fileTypeCache__block_invoke()
   return utType;
 }
 
-- (id)conformingTypesWithTagClass:(id)a3 tag:(id)a4
+- (id)conformingTypesWithTagClass:(id)class tag:(id)tag
 {
-  v6 = a4;
-  v7 = a3;
+  tagCopy = tag;
+  classCopy = class;
   v8 = objc_opt_class();
-  v9 = [(WFFileType *)self utType];
-  v10 = [v8 typesForTagClass:v7 tag:v6 conformingToType:v9];
+  utType = [(WFFileType *)self utType];
+  v10 = [v8 typesForTagClass:classCopy tag:tagCopy conformingToType:utType];
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   string = self->_string;
   if (string)
   {
     v5 = NSStringFromSelector(sel_string);
-    [v8 encodeObject:string forKey:v5];
+    [coderCopy encodeObject:string forKey:v5];
   }
 
   utType = self->_utType;
   if (utType)
   {
     v7 = NSStringFromSelector(sel_utType);
-    [v8 encodeObject:utType forKey:v7];
+    [coderCopy encodeObject:utType forKey:v7];
   }
 }
 
-- (WFFileType)initWithCoder:(id)a3
+- (WFFileType)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_string);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_utType);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = [(WFFileType *)self initWithUTType:v10 string:v7];
   return v11;
@@ -143,37 +143,37 @@ uint64_t __27__WFFileType_fileTypeCache__block_invoke()
 
 - (NSString)MIMEType
 {
-  v2 = [(WFFileType *)self utType];
-  v3 = [v2 preferredMIMEType];
+  utType = [(WFFileType *)self utType];
+  preferredMIMEType = [utType preferredMIMEType];
 
-  return v3;
+  return preferredMIMEType;
 }
 
 - (NSString)fileExtension
 {
   if ([(WFFileType *)self isEqualToUTType:*MEMORY[0x1E6983060]])
   {
-    v3 = @"txt";
+    preferredFilenameExtension = @"txt";
   }
 
   else
   {
-    v4 = [(WFFileType *)self utType];
-    v3 = [v4 preferredFilenameExtension];
+    utType = [(WFFileType *)self utType];
+    preferredFilenameExtension = [utType preferredFilenameExtension];
   }
 
-  return v3;
+  return preferredFilenameExtension;
 }
 
 - (NSArray)typesConformedTo
 {
-  v2 = [(WFFileType *)self utType];
-  v3 = [v2 supertypes];
-  v4 = [v3 allObjects];
+  utType = [(WFFileType *)self utType];
+  supertypes = [utType supertypes];
+  allObjects = [supertypes allObjects];
 
-  if ([v4 count])
+  if ([allObjects count])
   {
-    v5 = [objc_opt_class() typesFromUTTypes:v4];
+    v5 = [objc_opt_class() typesFromUTTypes:allObjects];
   }
 
   else
@@ -186,37 +186,37 @@ uint64_t __27__WFFileType_fileTypeCache__block_invoke()
 
 - (NSString)typeDescription
 {
-  v2 = [(WFFileType *)self utType];
-  v3 = [v2 localizedDescription];
+  utType = [(WFFileType *)self utType];
+  localizedDescription = [utType localizedDescription];
 
-  return v3;
+  return localizedDescription;
 }
 
 - (BOOL)isCoreType
 {
-  v2 = [(WFFileType *)self utType];
-  v3 = [v2 _isCoreType];
+  utType = [(WFFileType *)self utType];
+  _isCoreType = [utType _isCoreType];
 
-  return v3;
+  return _isCoreType;
 }
 
 - (BOOL)isDynamic
 {
-  v2 = [(WFFileType *)self utType];
-  v3 = [v2 isDynamic];
+  utType = [(WFFileType *)self utType];
+  isDynamic = [utType isDynamic];
 
-  return v3;
+  return isDynamic;
 }
 
-- (BOOL)conformsToUTTypes:(id)a3
+- (BOOL)conformsToUTTypes:(id)types
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  typesCopy = types;
+  v5 = [typesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -227,7 +227,7 @@ uint64_t __27__WFFileType_fileTypeCache__block_invoke()
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(typesCopy);
         }
 
         if ([(WFFileType *)self conformsToUTType:*(*(&v12 + 1) + 8 * i), v12])
@@ -237,7 +237,7 @@ uint64_t __27__WFFileType_fileTypeCache__block_invoke()
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [typesCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -254,25 +254,25 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)conformsToUTType:(id)a3
+- (BOOL)conformsToUTType:(id)type
 {
-  v4 = a3;
-  v5 = [(WFFileType *)self utType];
-  v6 = [v5 conformsToType:v4];
+  typeCopy = type;
+  utType = [(WFFileType *)self utType];
+  v6 = [utType conformsToType:typeCopy];
 
   return v6;
 }
 
-- (BOOL)conformsToString:(id)a3
+- (BOOL)conformsToString:(id)string
 {
-  v4 = a3;
-  v5 = [objc_opt_class() typeWithString:v4];
+  stringCopy = string;
+  v5 = [objc_opt_class() typeWithString:stringCopy];
 
-  v6 = [v5 utType];
+  utType = [v5 utType];
 
-  if (v6)
+  if (utType)
   {
-    v7 = [(WFFileType *)self conformsToUTType:v6];
+    v7 = [(WFFileType *)self conformsToUTType:utType];
   }
 
   else
@@ -283,16 +283,16 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)conformsToType:(id)a3
+- (BOOL)conformsToType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 utType];
-    if (v5)
+    utType = [typeCopy utType];
+    if (utType)
     {
-      v6 = [(WFFileType *)self conformsToUTType:v5];
+      v6 = [(WFFileType *)self conformsToUTType:utType];
     }
 
     else
@@ -309,37 +309,37 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isEqualToUTType:(id)a3
+- (BOOL)isEqualToUTType:(id)type
 {
-  if (!a3)
+  if (!type)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(WFFileType *)self utType];
-  v6 = [v5 isEqual:v4];
+  typeCopy = type;
+  utType = [(WFFileType *)self utType];
+  v6 = [utType isEqual:typeCopy];
 
   return v6;
 }
 
-- (BOOL)isEqualToString:(id)a3
+- (BOOL)isEqualToString:(id)string
 {
-  v4 = a3;
-  v5 = [(WFFileType *)self string];
-  v6 = [v5 isEqualToString:v4];
+  stringCopy = string;
+  string = [(WFFileType *)self string];
+  v6 = [string isEqualToString:stringCopy];
 
   return v6;
 }
 
-- (BOOL)isEqualToType:(id)a3
+- (BOOL)isEqualToType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 utType];
-    v6 = [(WFFileType *)self isEqualToUTType:v5];
+    utType = [typeCopy utType];
+    v6 = [(WFFileType *)self isEqualToUTType:utType];
   }
 
   else
@@ -352,18 +352,18 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v3 = [(WFFileType *)self utType];
-  v4 = [v3 hash];
-  v5 = [(WFFileType *)self string];
-  v6 = [v5 hash];
+  utType = [(WFFileType *)self utType];
+  v4 = [utType hash];
+  string = [(WFFileType *)self string];
+  v6 = [string hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -373,8 +373,8 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFFileType *)v4 utType];
-      v6 = [(WFFileType *)self isEqualToUTType:v5];
+      utType = [(WFFileType *)equalCopy utType];
+      v6 = [(WFFileType *)self isEqualToUTType:utType];
     }
 
     else
@@ -391,58 +391,58 @@ LABEL_11:
   string = self->_string;
   if (string)
   {
-    v3 = string;
+    identifier = string;
   }
 
   else
   {
-    v3 = [(UTType *)self->_utType identifier];
+    identifier = [(UTType *)self->_utType identifier];
   }
 
-  return v3;
+  return identifier;
 }
 
-- (WFFileType)initWithUTType:(id)a3 string:(id)a4
+- (WFFileType)initWithUTType:(id)type string:(id)string
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7 | v8 && (v14.receiver = self, v14.super_class = WFFileType, v9 = [(WFFileType *)&v14 init], (self = v9) != 0))
+  typeCopy = type;
+  stringCopy = string;
+  if (typeCopy | stringCopy && (v14.receiver = self, v14.super_class = WFFileType, v9 = [(WFFileType *)&v14 init], (self = v9) != 0))
   {
-    objc_storeStrong(&v9->_utType, a3);
-    v10 = [v8 copy];
+    objc_storeStrong(&v9->_utType, type);
+    v10 = [stringCopy copy];
     string = self->_string;
     self->_string = v10;
 
     self = self;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-+ (id)typesForTagClass:(id)a3 tag:(id)a4 conformingToType:(id)a5
++ (id)typesForTagClass:(id)class tag:(id)tag conformingToType:(id)type
 {
   v8 = MEMORY[0x1E6982C40];
-  v9 = a5;
-  v10 = [v8 typesWithTag:a4 tagClass:a3 conformingToType:v9];
-  v11 = [a1 typesFromUTTypes:v10 excludingType:v9];
+  typeCopy = type;
+  v10 = [v8 typesWithTag:tag tagClass:class conformingToType:typeCopy];
+  v11 = [self typesFromUTTypes:v10 excludingType:typeCopy];
 
   return v11;
 }
 
-+ (id)typeForTagClass:(id)a3 tag:(id)a4
++ (id)typeForTagClass:(id)class tag:(id)tag
 {
-  if (a4)
+  if (tag)
   {
-    v5 = [MEMORY[0x1E6982C40] typeWithTag:a4 tagClass:a3 conformingToType:0];
+    v5 = [MEMORY[0x1E6982C40] typeWithTag:tag tagClass:class conformingToType:0];
     if (v5)
     {
-      v6 = [a1 typeWithUTType:v5];
+      v6 = [self typeWithUTType:v5];
     }
 
     else
@@ -459,22 +459,22 @@ LABEL_11:
   return v6;
 }
 
-+ (id)typesFromUTTypes:(id)a3 excludingType:(id)a4
++ (id)typesFromUTTypes:(id)types excludingType:(id)type
 {
-  v6 = a4;
+  typeCopy = type;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __45__WFFileType_typesFromUTTypes_excludingType___block_invoke;
   v10[3] = &unk_1E7B02238;
-  if (!a3)
+  if (!types)
   {
-    a3 = MEMORY[0x1E695E0F0];
+    types = MEMORY[0x1E695E0F0];
   }
 
-  v11 = v6;
-  v12 = a1;
-  v7 = v6;
-  v8 = [a3 if_compactMap:v10];
+  v11 = typeCopy;
+  selfCopy = self;
+  v7 = typeCopy;
+  v8 = [types if_compactMap:v10];
 
   return v8;
 }
@@ -495,18 +495,18 @@ id __45__WFFileType_typesFromUTTypes_excludingType___block_invoke(uint64_t a1, v
   return v4;
 }
 
-+ (id)typeFromPasteboardType:(id)a3
++ (id)typeFromPasteboardType:(id)type
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"Apple Web Archive pasteboard type"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Apple Web Archive pasteboard type"])
   {
-    v5 = [a1 alloc];
+    v5 = [self alloc];
     v6 = [v5 initWithUTType:*MEMORY[0x1E6983098] string:@"Apple Web Archive pasteboard type"];
   }
 
   else
   {
-    v6 = [a1 typeWithString:v4];
+    v6 = [self typeWithString:typeCopy];
   }
 
   v7 = v6;
@@ -514,12 +514,12 @@ id __45__WFFileType_typesFromUTTypes_excludingType___block_invoke(uint64_t a1, v
   return v7;
 }
 
-+ (id)typeFromFileExtension:(id)a3
++ (id)typeFromFileExtension:(id)extension
 {
-  v4 = a3;
-  if ([v4 length])
+  extensionCopy = extension;
+  if ([extensionCopy length])
   {
-    v5 = [a1 typeForTagClass:*MEMORY[0x1E6982C48] tag:v4];
+    v5 = [self typeForTagClass:*MEMORY[0x1E6982C48] tag:extensionCopy];
   }
 
   else
@@ -530,10 +530,10 @@ id __45__WFFileType_typesFromUTTypes_excludingType___block_invoke(uint64_t a1, v
   return v5;
 }
 
-+ (id)typeFromFilename:(id)a3
++ (id)typeFromFilename:(id)filename
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  filenameCopy = filename;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -554,11 +554,11 @@ id __45__WFFileType_typesFromUTTypes_excludingType___block_invoke(uint64_t a1, v
 
         v8 = *(*(&v16 + 1) + 8 * i);
         v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@".%@.zip", v8];
-        v10 = [v3 hasSuffix:v9];
+        v10 = [filenameCopy hasSuffix:v9];
 
         if (v10)
         {
-          v12 = [a1 typeFromFileExtension:v8];
+          v12 = [self typeFromFileExtension:v8];
           goto LABEL_11;
         }
       }
@@ -573,8 +573,8 @@ id __45__WFFileType_typesFromUTTypes_excludingType___block_invoke(uint64_t a1, v
     }
   }
 
-  v11 = [v3 pathExtension];
-  v12 = [a1 typeFromFileExtension:v11];
+  pathExtension = [filenameCopy pathExtension];
+  v12 = [self typeFromFileExtension:pathExtension];
 
 LABEL_11:
   v13 = *MEMORY[0x1E69E9840];
@@ -582,33 +582,33 @@ LABEL_11:
   return v12;
 }
 
-+ (id)typeWithUTType:(id)a3 string:(id)a4
++ (id)typeWithUTType:(id)type string:(id)string
 {
-  v7 = a3;
-  v8 = a4;
-  if (!(v7 | v8))
+  typeCopy = type;
+  stringCopy = string;
+  if (!(typeCopy | stringCopy))
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"WFFileType.m" lineNumber:64 description:@"Either a UTType or a string must be provided"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFFileType.m" lineNumber:64 description:@"Either a UTType or a string must be provided"];
 
     goto LABEL_7;
   }
 
-  if (!v7)
+  if (!typeCopy)
   {
 LABEL_7:
-    v9 = [a1 typeWithString:v8];
+    v9 = [self typeWithString:stringCopy];
     goto LABEL_8;
   }
 
-  if (v8)
+  if (stringCopy)
   {
-    v9 = [[a1 alloc] initWithUTType:v7 string:v8];
+    v9 = [[self alloc] initWithUTType:typeCopy string:stringCopy];
   }
 
   else
   {
-    v9 = [a1 typeWithUTType:v7];
+    v9 = [self typeWithUTType:typeCopy];
   }
 
 LABEL_8:
@@ -617,20 +617,20 @@ LABEL_8:
   return v11;
 }
 
-+ (id)typeWithUTType:(id)a3
++ (id)typeWithUTType:(id)type
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [a1 fileTypeCache];
-  v7 = [v6 objectForKey:v5];
+  typeCopy = type;
+  identifier = [typeCopy identifier];
+  fileTypeCache = [self fileTypeCache];
+  v7 = [fileTypeCache objectForKey:identifier];
 
   if (!v7)
   {
-    v7 = [[a1 alloc] initWithUTType:v4];
+    v7 = [[self alloc] initWithUTType:typeCopy];
     if ([v7 isDeclared])
     {
-      v8 = [a1 fileTypeCache];
-      [v8 setObject:v7 forKey:v5];
+      fileTypeCache2 = [self fileTypeCache];
+      [fileTypeCache2 setObject:v7 forKey:identifier];
     }
   }
 
@@ -639,19 +639,19 @@ LABEL_8:
   return v9;
 }
 
-+ (id)typeWithString:(id)a3
++ (id)typeWithString:(id)string
 {
-  v4 = a3;
-  v5 = [a1 fileTypeCache];
-  v6 = [v5 objectForKey:v4];
+  stringCopy = string;
+  fileTypeCache = [self fileTypeCache];
+  v6 = [fileTypeCache objectForKey:stringCopy];
 
   if (!v6)
   {
-    v6 = [[a1 alloc] initWithString:v4];
+    v6 = [[self alloc] initWithString:stringCopy];
     if ([v6 isDeclared])
     {
-      v7 = [a1 fileTypeCache];
-      [v7 setObject:v6 forKey:v4];
+      fileTypeCache2 = [self fileTypeCache];
+      [fileTypeCache2 setObject:v6 forKey:stringCopy];
     }
   }
 

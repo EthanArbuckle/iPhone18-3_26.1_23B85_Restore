@@ -1,18 +1,18 @@
 @interface ADArgumentParser
 - (BOOL)parse;
-- (BOOL)parseArguments:(id)a3;
-- (BOOL)parseStringCommand:(id)a3;
+- (BOOL)parseArguments:(id)arguments;
+- (BOOL)parseStringCommand:(id)command;
 @end
 
 @implementation ADArgumentParser
 
-- (BOOL)parseArguments:(id)a3
+- (BOOL)parseArguments:(id)arguments
 {
-  v4 = a3;
+  argumentsCopy = arguments;
   [(ADArgumentParserCommand *)self setDescriptionString:self->_programDescription];
-  v5 = [v4 objectAtIndexedSubscript:0];
-  v6 = [v5 lastPathComponent];
-  [(ADArgumentParserCommand *)self setName:v6];
+  v5 = [argumentsCopy objectAtIndexedSubscript:0];
+  lastPathComponent = [v5 lastPathComponent];
+  [(ADArgumentParserCommand *)self setName:lastPathComponent];
 
   if (![(ADArgumentParserCommand *)self verifyCommandStructure])
   {
@@ -20,14 +20,14 @@
     __assert_rtn("[ADArgumentParser parseArguments:]", "ADArgumentParser.mm", 51, "false");
   }
 
-  v7 = [(ADArgumentParserCommand *)self commandParse:v4 commandIndex:0];
+  v7 = [(ADArgumentParserCommand *)self commandParse:argumentsCopy commandIndex:0];
 
   return v7;
 }
 
-- (BOOL)parseStringCommand:(id)a3
+- (BOOL)parseStringCommand:(id)command
 {
-  v4 = [a3 componentsSeparatedByString:@" "];
+  v4 = [command componentsSeparatedByString:@" "];
   LOBYTE(self) = [(ADArgumentParser *)self parseArguments:v4];
 
   return self;
@@ -35,9 +35,9 @@
 
 - (BOOL)parse
 {
-  v3 = [MEMORY[0x277CCAC38] processInfo];
-  v4 = [v3 arguments];
-  LOBYTE(self) = [(ADArgumentParser *)self parseArguments:v4];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  arguments = [processInfo arguments];
+  LOBYTE(self) = [(ADArgumentParser *)self parseArguments:arguments];
 
   return self;
 }

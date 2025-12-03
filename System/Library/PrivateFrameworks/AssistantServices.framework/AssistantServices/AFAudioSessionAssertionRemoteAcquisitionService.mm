@@ -1,14 +1,14 @@
 @interface AFAudioSessionAssertionRemoteAcquisitionService
-- (AFAudioSessionAssertionRemoteAcquisitionService)initWithInstanceContext:(id)a3;
-- (id)acquireAudioSessionAssertionWithContext:(id)a3 relinquishmentHandler:(id)a4;
+- (AFAudioSessionAssertionRemoteAcquisitionService)initWithInstanceContext:(id)context;
+- (id)acquireAudioSessionAssertionWithContext:(id)context relinquishmentHandler:(id)handler;
 @end
 
 @implementation AFAudioSessionAssertionRemoteAcquisitionService
 
-- (id)acquireAudioSessionAssertionWithContext:(id)a3 relinquishmentHandler:(id)a4
+- (id)acquireAudioSessionAssertionWithContext:(id)context relinquishmentHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   if (v4 && (memset(&v32, 0, sizeof(v32)), dladdr(v4, &v32)))
   {
     if (v32.dli_fname && *v32.dli_fname)
@@ -55,12 +55,12 @@
   v24 = 3221225472;
   v25 = __113__AFAudioSessionAssertionRemoteAcquisitionService_acquireAudioSessionAssertionWithContext_relinquishmentHandler___block_invoke_2;
   v26 = &unk_1E7341B68;
-  v27 = v7;
+  v27 = contextCopy;
   v28 = v11;
   v18 = v11;
-  v19 = v7;
+  v19 = contextCopy;
   v20 = [v19 mutatedCopyWithMutator:&v23];
-  v21 = [(AFAudioSessionAssertionConnection *)v16 initWithInstanceContext:instanceContext acquisitionContext:v20 relinquishmentHandler:v8, v23, v24, v25, v26];
+  v21 = [(AFAudioSessionAssertionConnection *)v16 initWithInstanceContext:instanceContext acquisitionContext:v20 relinquishmentHandler:handlerCopy, v23, v24, v25, v26];
 
   return v21;
 }
@@ -135,17 +135,17 @@ void __113__AFAudioSessionAssertionRemoteAcquisitionService_acquireAudioSessionA
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (AFAudioSessionAssertionRemoteAcquisitionService)initWithInstanceContext:(id)a3
+- (AFAudioSessionAssertionRemoteAcquisitionService)initWithInstanceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = AFAudioSessionAssertionRemoteAcquisitionService;
   v5 = [(AFAudioSessionAssertionRemoteAcquisitionService *)&v9 init];
   if (v5)
   {
-    if (v4)
+    if (contextCopy)
     {
-      v6 = v4;
+      v6 = contextCopy;
     }
 
     else

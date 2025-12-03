@@ -1,16 +1,16 @@
 @interface _MPMediaRemoteEntityPropertyTranslator
-+ (id)translatorWithBlock:(id)a3;
-+ (id)translatorWithKeyPath:(id)a3;
-- (id)valueFromSource:(id)a3 context:(id)a4;
++ (id)translatorWithBlock:(id)block;
++ (id)translatorWithKeyPath:(id)path;
+- (id)valueFromSource:(id)source context:(id)context;
 @end
 
 @implementation _MPMediaRemoteEntityPropertyTranslator
 
-+ (id)translatorWithBlock:(id)a3
++ (id)translatorWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = _Block_copy(v4);
+  blockCopy = block;
+  v5 = objc_alloc_init(self);
+  v6 = _Block_copy(blockCopy);
 
   v7 = v5[2];
   v5[2] = v6;
@@ -18,22 +18,22 @@
   return v5;
 }
 
-+ (id)translatorWithKeyPath:(id)a3
++ (id)translatorWithKeyPath:(id)path
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  pathCopy = path;
+  v5 = objc_alloc_init(self);
   v6 = v5[1];
-  v5[1] = v4;
+  v5[1] = pathCopy;
 
   return v5;
 }
 
-- (id)valueFromSource:(id)a3 context:(id)a4
+- (id)valueFromSource:(id)source context:(id)context
 {
   keyPath = self->_keyPath;
   if (keyPath)
   {
-    [a3 valueForKeyPath:{keyPath, a4}];
+    [source valueForKeyPath:{keyPath, context}];
   }
 
   else

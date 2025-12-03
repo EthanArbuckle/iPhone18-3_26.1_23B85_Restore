@@ -1,49 +1,49 @@
 @interface LNSpeakableString
-- (BOOL)isEqual:(id)a3;
-- (LNSpeakableString)initWithCoder:(id)a3;
-- (LNSpeakableString)initWithSpoken:(id)a3 printed:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNSpeakableString)initWithCoder:(id)coder;
+- (LNSpeakableString)initWithSpoken:(id)spoken printed:(id)printed;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNSpeakableString
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNSpeakableString *)self spoken];
-  [v4 encodeObject:v5 forKey:@"spoken"];
+  coderCopy = coder;
+  spoken = [(LNSpeakableString *)self spoken];
+  [coderCopy encodeObject:spoken forKey:@"spoken"];
 
-  v6 = [(LNSpeakableString *)self printed];
-  [v4 encodeObject:v6 forKey:@"printed"];
+  printed = [(LNSpeakableString *)self printed];
+  [coderCopy encodeObject:printed forKey:@"printed"];
 }
 
-- (LNSpeakableString)initWithCoder:(id)a3
+- (LNSpeakableString)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"spoken"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"spoken"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"printed"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"printed"];
     if (v6)
     {
       self = [(LNSpeakableString *)self initWithSpoken:v5 printed:v6];
-      v7 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v7 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)description
@@ -51,44 +51,44 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNSpeakableString *)self spoken];
-  v7 = [(LNSpeakableString *)self printed];
-  v8 = [v3 stringWithFormat:@"<%@: %p, spoken: %@, printed: %@>", v5, self, v6, v7];
+  spoken = [(LNSpeakableString *)self spoken];
+  printed = [(LNSpeakableString *)self printed];
+  v8 = [v3 stringWithFormat:@"<%@: %p, spoken: %@, printed: %@>", v5, self, spoken, printed];
 
   return v8;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(LNSpeakableString *)self spoken];
-  v4 = [v3 hash];
-  v5 = [(LNSpeakableString *)self printed];
-  v6 = [v5 hash];
+  spoken = [(LNSpeakableString *)self spoken];
+  v4 = [spoken hash];
+  printed = [(LNSpeakableString *)self printed];
+  v6 = [printed hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(LNSpeakableString *)self spoken];
-      v8 = [(LNSpeakableString *)v6 spoken];
-      if ([v7 isEqual:v8])
+      spoken = [(LNSpeakableString *)self spoken];
+      spoken2 = [(LNSpeakableString *)v6 spoken];
+      if ([spoken isEqual:spoken2])
       {
-        v9 = [(LNSpeakableString *)self printed];
-        v10 = [(LNSpeakableString *)v6 printed];
-        v11 = [v9 isEqual:v10];
+        printed = [(LNSpeakableString *)self printed];
+        printed2 = [(LNSpeakableString *)v6 printed];
+        v11 = [printed isEqual:printed2];
       }
 
       else
@@ -106,14 +106,14 @@
   return v11;
 }
 
-- (LNSpeakableString)initWithSpoken:(id)a3 printed:(id)a4
+- (LNSpeakableString)initWithSpoken:(id)spoken printed:(id)printed
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  spokenCopy = spoken;
+  printedCopy = printed;
+  v9 = printedCopy;
+  if (spokenCopy)
   {
-    if (v8)
+    if (printedCopy)
     {
       goto LABEL_3;
     }
@@ -121,8 +121,8 @@
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"LNSpeakableString.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"spoken"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNSpeakableString.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"spoken"}];
 
     if (v9)
     {
@@ -130,8 +130,8 @@
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"LNSpeakableString.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"printed"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNSpeakableString.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"printed"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -139,7 +139,7 @@ LABEL_3:
   v10 = [(LNSpeakableString *)&v19 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [spokenCopy copy];
     spoken = v10->_spoken;
     v10->_spoken = v11;
 

@@ -6,10 +6,10 @@
 
 - (id)_webDocumentView
 {
-  v2 = [(UIViewPrintFormatter *)self view];
-  v3 = [v2 _documentView];
+  view = [(UIViewPrintFormatter *)self view];
+  _documentView = [view _documentView];
 
-  return v3;
+  return _documentView;
 }
 
 @end

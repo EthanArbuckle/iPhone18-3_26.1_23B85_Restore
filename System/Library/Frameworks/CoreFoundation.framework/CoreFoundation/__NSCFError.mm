@@ -1,7 +1,7 @@
 @interface __NSCFError
-- (BOOL)isEqual:(id)a3;
-- (__NSCFError)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (__NSCFError)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)userInfo;
 @end
 
@@ -14,36 +14,36 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  return _CFNonObjCEqual(self, a3) != 0;
+  return _CFNonObjCEqual(self, equal) != 0;
 }
 
-- (__NSCFError)initWithCoder:(id)a3
+- (__NSCFError)initWithCoder:(id)coder
 {
   v4 = objc_alloc(objc_lookUpClass("NSError"));
 
-  return [v4 initWithCoder:a3];
+  return [v4 initWithCoder:coder];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(objc_class *)objc_lookUpClass("NSError") allocWithZone:a3];
-  v5 = [(__NSCFError *)self domain];
-  v6 = [(__NSCFError *)self code];
-  v7 = [(__NSCFError *)self userInfo];
+  v4 = [(objc_class *)objc_lookUpClass("NSError") allocWithZone:zone];
+  domain = [(__NSCFError *)self domain];
+  code = [(__NSCFError *)self code];
+  userInfo = [(__NSCFError *)self userInfo];
 
-  return [(objc_class *)v4 initWithDomain:v5 code:v6 userInfo:v7];
+  return [(objc_class *)v4 initWithDomain:domain code:code userInfo:userInfo];
 }
 
 @end

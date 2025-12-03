@@ -1,28 +1,28 @@
 @interface PXSurveyQuestionsGadgetContentView
-+ (CGSize)sizeThatFits:(CGSize)a3;
++ (CGSize)sizeThatFits:(CGSize)fits;
 - (BOOL)isMultipleSelectionAnswerPresentation;
 - (BOOL)isSelectionResponse;
-- (CGRect)_contentFrameInBounds:(CGRect)a3;
-- (CGRect)contentBoundsInCoordinateSpace:(id)a3;
+- (CGRect)_contentFrameInBounds:(CGRect)bounds;
+- (CGRect)contentBoundsInCoordinateSpace:(id)space;
 - (CGRect)contentRect;
-- (CGSize)_calculateLayoutWithInputSize:(CGSize)a3 apply:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PXSurveyQuestionsGadgetContentView)initWithFrame:(CGRect)a3;
+- (CGSize)_calculateLayoutWithInputSize:(CGSize)size apply:(BOOL)apply;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PXSurveyQuestionsGadgetContentView)initWithFrame:(CGRect)frame;
 - (PXSurveyQuestionsGadgetContentViewDelegate)delegate;
 - (UIButton)noButton;
 - (UIButton)skipButton;
 - (UIButton)yesButton;
 - (UILabel)titleLabel;
-- (id)_actionButtonWithTitle:(id)a3 action:(SEL)a4 buttonColor:(id)a5 titleColor:(id)a6;
+- (id)_actionButtonWithTitle:(id)title action:(SEL)action buttonColor:(id)color titleColor:(id)titleColor;
 - (id)focusEffect;
 - (id)keyCommands;
-- (void)_askForAdditionalReasonForAnswer:(unint64_t)a3 completionBlock:(id)a4;
-- (void)_didAnswer:(unint64_t)a3;
+- (void)_askForAdditionalReasonForAnswer:(unint64_t)answer completionBlock:(id)block;
+- (void)_didAnswer:(unint64_t)answer;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setConfiguration:(id)a3;
-- (void)setContentHidden:(BOOL)a3;
-- (void)updateButtonsWithAnswerState:(unint64_t)a3 reason:(id)a4;
+- (void)setConfiguration:(id)configuration;
+- (void)setContentHidden:(BOOL)hidden;
+- (void)updateButtonsWithAnswerState:(unint64_t)state reason:(id)reason;
 @end
 
 @implementation PXSurveyQuestionsGadgetContentView
@@ -47,17 +47,17 @@
   return WeakRetained;
 }
 
-- (void)_askForAdditionalReasonForAnswer:(unint64_t)a3 completionBlock:(id)a4
+- (void)_askForAdditionalReasonForAnswer:(unint64_t)answer completionBlock:(id)block
 {
   v58 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(PXSurveyQuestionsGadgetContentView *)self delegate];
+  blockCopy = block;
+  delegate = [(PXSurveyQuestionsGadgetContentView *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(PXSurveyQuestionsGadgetContentView *)self delegate];
-    v10 = [v9 gadgetContentView:self additionalReasonsForAnswer:a3];
+    delegate2 = [(PXSurveyQuestionsGadgetContentView *)self delegate];
+    v10 = [delegate2 gadgetContentView:self additionalReasonsForAnswer:answer];
   }
 
   else
@@ -67,13 +67,13 @@
 
   if ([v10 count])
   {
-    v11 = [(PXSurveyQuestionsGadgetContentView *)self delegate];
+    delegate3 = [(PXSurveyQuestionsGadgetContentView *)self delegate];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
-      v13 = [(PXSurveyQuestionsGadgetContentView *)self delegate];
-      v14 = [v13 gadgetContentView:self additionalReasonTitleForAnswer:a3];
+      delegate4 = [(PXSurveyQuestionsGadgetContentView *)self delegate];
+      v14 = [delegate4 gadgetContentView:self additionalReasonTitleForAnswer:answer];
     }
 
     else
@@ -81,13 +81,13 @@
       v14 = PXLocalizedStringFromTable(@"PXInternalPhotosChallengeAdditionalReasonTitle", @"PhotosUICore");
     }
 
-    v15 = [(PXSurveyQuestionsGadgetContentView *)self delegate];
+    delegate5 = [(PXSurveyQuestionsGadgetContentView *)self delegate];
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
-      v17 = [(PXSurveyQuestionsGadgetContentView *)self delegate];
-      v18 = [v17 gadgetContentView:self additionalReasonMessageForAnswer:a3];
+      delegate6 = [(PXSurveyQuestionsGadgetContentView *)self delegate];
+      v18 = [delegate6 gadgetContentView:self additionalReasonMessageForAnswer:answer];
     }
 
     else
@@ -97,7 +97,7 @@
 
     if ([(PXSurveyQuestionsGadgetContentView *)self isMultipleSelectionAnswerPresentation])
     {
-      v19 = [[PXSurveyQuestionsMultipleAnswerSelectionController alloc] initWithTitle:v14 message:v18 reasons:v10 currentlySelectedReasons:self->_currentReason completion:v6];
+      v19 = [[PXSurveyQuestionsMultipleAnswerSelectionController alloc] initWithTitle:v14 message:v18 reasons:v10 currentlySelectedReasons:self->_currentReason completion:blockCopy];
     }
 
     else
@@ -133,7 +133,7 @@
             v49[3] = &unk_1E774A2A0;
             v27 = v20;
             v50 = v27;
-            v28 = v6;
+            v28 = blockCopy;
             v51 = v25;
             v52 = v28;
             v29 = [v26 actionWithTitle:v25 style:0 handler:v49];
@@ -154,7 +154,7 @@
       v46[3] = &unk_1E7741C90;
       v32 = v20;
       v47 = v32;
-      v48 = v6;
+      v48 = blockCopy;
       v33 = [v30 actionWithTitle:v31 style:1 handler:v46];
 
       [v32 addAction:v33];
@@ -165,16 +165,16 @@
       v14 = v42;
     }
 
-    v34 = [(PXSurveyQuestionsGadgetContentView *)self configuration];
-    v35 = [v34 handlers];
-    v36 = [v35 presentViewControllerHandler];
+    configuration = [(PXSurveyQuestionsGadgetContentView *)self configuration];
+    handlers = [configuration handlers];
+    presentViewControllerHandler = [handlers presentViewControllerHandler];
 
-    if (v36)
+    if (presentViewControllerHandler)
     {
-      v37 = [(PXSurveyQuestionsGadgetContentView *)self configuration];
-      v38 = [v37 handlers];
-      v39 = [v38 presentViewControllerHandler];
-      (v39)[2](v39, v19);
+      configuration2 = [(PXSurveyQuestionsGadgetContentView *)self configuration];
+      handlers2 = [configuration2 handlers];
+      presentViewControllerHandler2 = [handlers2 presentViewControllerHandler];
+      (presentViewControllerHandler2)[2](presentViewControllerHandler2, v19);
     }
 
     else
@@ -190,7 +190,7 @@
 
   else
   {
-    (*(v6 + 2))(v6, 0, 1);
+    (*(blockCopy + 2))(blockCopy, 0, 1);
   }
 }
 
@@ -241,19 +241,19 @@ void __87__PXSurveyQuestionsGadgetContentView__askForAdditionalReasonForAnswer_c
   [PXFeedbackTapToRadarUtilities fileRadarWithTitle:@"Photos Challenge Multi Select Menu Presentation Error" description:v5 classification:@"Other Bug" componentID:@"1064134" componentName:@"Photos Personalization" componentVersion:@"all" keyword:0 screenshotURLs:0 attachmentURLs:0 includeSysDiagnose:v4 includeInternalRelease:0 additionalExtensionIdentifiers:0 completionHandler:?];
 }
 
-- (void)_didAnswer:(unint64_t)a3
+- (void)_didAnswer:(unint64_t)answer
 {
-  [(PXSurveyQuestionsGadgetContentView *)self updateButtonsWithAnswerState:a3 reason:self->_currentReason];
-  v5 = [(PXSurveyQuestionsGadgetContentView *)self selectionFeedbackGenerator];
-  [v5 selectionChanged];
+  [(PXSurveyQuestionsGadgetContentView *)self updateButtonsWithAnswerState:answer reason:self->_currentReason];
+  selectionFeedbackGenerator = [(PXSurveyQuestionsGadgetContentView *)self selectionFeedbackGenerator];
+  [selectionFeedbackGenerator selectionChanged];
 
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __49__PXSurveyQuestionsGadgetContentView__didAnswer___block_invoke;
   v6[3] = &unk_1E7741C68;
   v6[4] = self;
-  v6[5] = a3;
-  [(PXSurveyQuestionsGadgetContentView *)self _askForAdditionalReasonForAnswer:a3 completionBlock:v6];
+  v6[5] = answer;
+  [(PXSurveyQuestionsGadgetContentView *)self _askForAdditionalReasonForAnswer:answer completionBlock:v6];
 }
 
 void __49__PXSurveyQuestionsGadgetContentView__didAnswer___block_invoke(uint64_t a1, void *a2, char a3)
@@ -276,24 +276,24 @@ void __49__PXSurveyQuestionsGadgetContentView__didAnswer___block_invoke(uint64_t
   }
 }
 
-- (id)_actionButtonWithTitle:(id)a3 action:(SEL)a4 buttonColor:(id)a5 titleColor:(id)a6
+- (id)_actionButtonWithTitle:(id)title action:(SEL)action buttonColor:(id)color titleColor:(id)titleColor
 {
   v10 = MEMORY[0x1E69DC740];
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [v10 filledButtonConfiguration];
-  [v14 setButtonSize:1];
-  [v14 setCornerStyle:4];
-  [v14 setBaseForegroundColor:v11];
+  titleColorCopy = titleColor;
+  colorCopy = color;
+  titleCopy = title;
+  filledButtonConfiguration = [v10 filledButtonConfiguration];
+  [filledButtonConfiguration setButtonSize:1];
+  [filledButtonConfiguration setCornerStyle:4];
+  [filledButtonConfiguration setBaseForegroundColor:titleColorCopy];
 
-  [v14 setBaseBackgroundColor:v12];
-  [v14 setTitle:v13];
+  [filledButtonConfiguration setBaseBackgroundColor:colorCopy];
+  [filledButtonConfiguration setTitle:titleCopy];
 
-  [v14 setTitleTextAttributesTransformer:&__block_literal_global_227];
-  v15 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v14 primaryAction:0];
+  [filledButtonConfiguration setTitleTextAttributesTransformer:&__block_literal_global_227];
+  v15 = [MEMORY[0x1E69DC738] buttonWithConfiguration:filledButtonConfiguration primaryAction:0];
   [v15 setMaximumContentSizeCategory:*MEMORY[0x1E69DDC70]];
-  [v15 addTarget:self action:a4 forControlEvents:8193];
+  [v15 addTarget:self action:action forControlEvents:8193];
 
   return v15;
 }
@@ -315,24 +315,24 @@ id __91__PXSurveyQuestionsGadgetContentView__actionButtonWithTitle_action_button
   return v4;
 }
 
-- (void)setContentHidden:(BOOL)a3
+- (void)setContentHidden:(BOOL)hidden
 {
-  if (self->_contentHidden != a3)
+  if (self->_contentHidden != hidden)
   {
-    v4 = a3;
-    self->_contentHidden = a3;
-    v6 = [(PXSurveyQuestionsGadgetContentView *)self configuration];
-    v5 = [v6 contentView];
-    [v5 setHidden:v4];
+    hiddenCopy = hidden;
+    self->_contentHidden = hidden;
+    configuration = [(PXSurveyQuestionsGadgetContentView *)self configuration];
+    contentView = [configuration contentView];
+    [contentView setHidden:hiddenCopy];
   }
 }
 
-- (CGRect)contentBoundsInCoordinateSpace:(id)a3
+- (CGRect)contentBoundsInCoordinateSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   [(PXSurveyQuestionsGadgetContentView *)self bounds];
   [(PXSurveyQuestionsGadgetContentView *)self _contentFrameInBounds:?];
-  [(PXSurveyQuestionsGadgetContentView *)self convertRect:v4 toCoordinateSpace:?];
+  [(PXSurveyQuestionsGadgetContentView *)self convertRect:spaceCopy toCoordinateSpace:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -360,14 +360,14 @@ id __91__PXSurveyQuestionsGadgetContentView__actionButtonWithTitle_action_button
   [(PXSurveyQuestionsGadgetContentView *)self updateButtonsWithAnswerState:0 reason:0];
 }
 
-- (CGRect)_contentFrameInBounds:(CGRect)a3
+- (CGRect)_contentFrameInBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = round(a3.size.width * 0.666666667);
-  MinX = CGRectGetMinX(a3);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v7 = round(bounds.size.width * 0.666666667);
+  MinX = CGRectGetMinX(bounds);
   v13.origin.x = x;
   v13.origin.y = y;
   v13.size.width = width;
@@ -383,14 +383,14 @@ id __91__PXSurveyQuestionsGadgetContentView__actionButtonWithTitle_action_button
   return result;
 }
 
-- (CGSize)_calculateLayoutWithInputSize:(CGSize)a3 apply:(BOOL)a4
+- (CGSize)_calculateLayoutWithInputSize:(CGSize)size apply:(BOOL)apply
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = *MEMORY[0x1E695EFF8];
   v7 = *(MEMORY[0x1E695EFF8] + 8);
-  v9 = [(PXSurveyQuestionsGadgetContentView *)self traitCollection];
-  [v9 displayScale];
+  traitCollection = [(PXSurveyQuestionsGadgetContentView *)self traitCollection];
+  [traitCollection displayScale];
 
   [(PXSurveyQuestionsGadgetContentView *)self _contentFrameInBounds:v8, v7, width, height];
   CGRectGetMaxY(v11);
@@ -411,9 +411,9 @@ id __91__PXSurveyQuestionsGadgetContentView__actionButtonWithTitle_action_button
   [(PXSurveyQuestionsGadgetContentView *)self _calculateLayoutWithInputSize:1 apply:v3, v4];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PXSurveyQuestionsGadgetContentView *)self _calculateLayoutWithInputSize:0 apply:a3.width, a3.height];
+  [(PXSurveyQuestionsGadgetContentView *)self _calculateLayoutWithInputSize:0 apply:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -423,10 +423,10 @@ id __91__PXSurveyQuestionsGadgetContentView__actionButtonWithTitle_action_button
 {
   v26 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DEC8];
-  v4 = [(PXSurveyQuestionsGadgetContentView *)self yesButton];
-  v5 = [(PXSurveyQuestionsGadgetContentView *)self noButton];
-  v6 = [(PXSurveyQuestionsGadgetContentView *)self skipButton];
-  v7 = [v3 arrayWithObjects:{v4, v5, v6, 0}];
+  yesButton = [(PXSurveyQuestionsGadgetContentView *)self yesButton];
+  noButton = [(PXSurveyQuestionsGadgetContentView *)self noButton];
+  skipButton = [(PXSurveyQuestionsGadgetContentView *)self skipButton];
+  v7 = [v3 arrayWithObjects:{yesButton, noButton, skipButton, 0}];
 
   v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v7, "count")}];
   v21 = 0u;
@@ -483,40 +483,40 @@ void __49__PXSurveyQuestionsGadgetContentView_keyCommands__block_invoke(uint64_t
   }
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   configuration = self->_configuration;
-  if (configuration != v5)
+  if (configuration != configurationCopy)
   {
-    v19 = v5;
-    v7 = [(PXSurveyQuestionConfiguration *)configuration contentView];
-    [v7 removeFromSuperview];
+    v19 = configurationCopy;
+    contentView = [(PXSurveyQuestionConfiguration *)configuration contentView];
+    [contentView removeFromSuperview];
 
-    objc_storeStrong(&self->_configuration, a3);
-    v8 = [(PXSurveyQuestionConfiguration *)self->_configuration title];
-    v9 = [(PXSurveyQuestionsGadgetContentView *)self titleLabel];
-    [v9 setText:v8];
+    objc_storeStrong(&self->_configuration, configuration);
+    title = [(PXSurveyQuestionConfiguration *)self->_configuration title];
+    titleLabel = [(PXSurveyQuestionsGadgetContentView *)self titleLabel];
+    [titleLabel setText:title];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v10 = v19;
-      v11 = [(PXSurveyQuestionsGadgetContentView *)self traitCollection];
-      [v11 displayScale];
-      v12 = [(PXSurveyQuestionConfiguration *)v10 contentViewForDisplayScale:?];
+      traitCollection = [(PXSurveyQuestionsGadgetContentView *)self traitCollection];
+      [traitCollection displayScale];
+      contentView2 = [(PXSurveyQuestionConfiguration *)v10 contentViewForDisplayScale:?];
     }
 
     else
     {
-      v12 = [(PXSurveyQuestionConfiguration *)self->_configuration contentView];
+      contentView2 = [(PXSurveyQuestionConfiguration *)self->_configuration contentView];
     }
 
-    v13 = [v12 layer];
-    [v13 setCornerRadius:4.0];
+    layer = [contentView2 layer];
+    [layer setCornerRadius:4.0];
 
-    [v12 setClipsToBounds:1];
-    [(PXSurveyQuestionsGadgetContentView *)self addSubview:v12];
+    [contentView2 setClipsToBounds:1];
+    [(PXSurveyQuestionsGadgetContentView *)self addSubview:contentView2];
     if ([(PXSurveyQuestionsGadgetContentView *)self isSelectionResponse])
     {
       [(UIButton *)self->_noButton removeFromSuperview];
@@ -524,13 +524,13 @@ void __49__PXSurveyQuestionsGadgetContentView_keyCommands__block_invoke(uint64_t
 
     else
     {
-      v14 = [(PXSurveyQuestionsGadgetContentView *)self noButton];
-      v15 = [v14 superview];
+      noButton = [(PXSurveyQuestionsGadgetContentView *)self noButton];
+      superview = [noButton superview];
 
-      if (!v15)
+      if (!superview)
       {
-        v16 = [(PXSurveyQuestionsGadgetContentView *)self noButton];
-        [(PXSurveyQuestionsGadgetContentView *)self addSubview:v16];
+        noButton2 = [(PXSurveyQuestionsGadgetContentView *)self noButton];
+        [(PXSurveyQuestionsGadgetContentView *)self addSubview:noButton2];
       }
     }
 
@@ -547,7 +547,7 @@ void __49__PXSurveyQuestionsGadgetContentView_keyCommands__block_invoke(uint64_t
     v18 = PXLocalizedStringFromTable(v17, @"PhotosUICore");
     [(UIButton *)self->_yesButton setTitle:v18 forState:0];
 
-    v5 = v19;
+    configurationCopy = v19;
   }
 }
 
@@ -557,9 +557,9 @@ void __49__PXSurveyQuestionsGadgetContentView_keyCommands__block_invoke(uint64_t
   if (!yesButton)
   {
     v4 = PXLocalizedStringFromTable(@"PXInternalPhotosChallengeYes", @"PhotosUICore");
-    v5 = [MEMORY[0x1E69DC888] whiteColor];
-    v6 = [(PXSurveyQuestionsGadgetContentView *)self tintColor];
-    v7 = [(PXSurveyQuestionsGadgetContentView *)self _actionButtonWithTitle:v4 action:sel__didAnswerYes buttonColor:v5 titleColor:v6];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    tintColor = [(PXSurveyQuestionsGadgetContentView *)self tintColor];
+    v7 = [(PXSurveyQuestionsGadgetContentView *)self _actionButtonWithTitle:v4 action:sel__didAnswerYes buttonColor:whiteColor titleColor:tintColor];
     v8 = self->_yesButton;
     self->_yesButton = v7;
 
@@ -575,9 +575,9 @@ void __49__PXSurveyQuestionsGadgetContentView_keyCommands__block_invoke(uint64_t
   if (!skipButton)
   {
     v4 = PXLocalizedStringFromTable(@"PXInternalPhotosChallengeSkip", @"PhotosUICore");
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    v6 = [(PXSurveyQuestionsGadgetContentView *)self tintColor];
-    v7 = [(PXSurveyQuestionsGadgetContentView *)self _actionButtonWithTitle:v4 action:sel__didAnswerSkip buttonColor:v5 titleColor:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    tintColor = [(PXSurveyQuestionsGadgetContentView *)self tintColor];
+    v7 = [(PXSurveyQuestionsGadgetContentView *)self _actionButtonWithTitle:v4 action:sel__didAnswerSkip buttonColor:clearColor titleColor:tintColor];
     v8 = self->_skipButton;
     self->_skipButton = v7;
 
@@ -593,9 +593,9 @@ void __49__PXSurveyQuestionsGadgetContentView_keyCommands__block_invoke(uint64_t
   if (!noButton)
   {
     v4 = PXLocalizedStringFromTable(@"PXInternalPhotosChallengeNo", @"PhotosUICore");
-    v5 = [MEMORY[0x1E69DC888] whiteColor];
-    v6 = [(PXSurveyQuestionsGadgetContentView *)self tintColor];
-    v7 = [(PXSurveyQuestionsGadgetContentView *)self _actionButtonWithTitle:v4 action:sel__didAnswerNo buttonColor:v5 titleColor:v6];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    tintColor = [(PXSurveyQuestionsGadgetContentView *)self tintColor];
+    v7 = [(PXSurveyQuestionsGadgetContentView *)self _actionButtonWithTitle:v4 action:sel__didAnswerNo buttonColor:whiteColor titleColor:tintColor];
     v8 = self->_noButton;
     self->_noButton = v7;
 
@@ -616,13 +616,13 @@ void __49__PXSurveyQuestionsGadgetContentView_keyCommands__block_invoke(uint64_t
     self->_titleLabel = v5;
 
     [(UILabel *)self->_titleLabel setTextAlignment:1];
-    v7 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)self->_titleLabel setTextColor:v7];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)self->_titleLabel setTextColor:labelColor];
 
     [(UILabel *)self->_titleLabel setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)self->_titleLabel setNumberOfLines:2];
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)self->_titleLabel setBackgroundColor:v8];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)self->_titleLabel setBackgroundColor:clearColor];
 
     v9 = [MEMORY[0x1E69DB878] px_preferredFontForTextStyle:*MEMORY[0x1E69DDCF8] withSymbolicTraits:2 options:1];
     [(UILabel *)self->_titleLabel setFont:v9];
@@ -633,14 +633,14 @@ void __49__PXSurveyQuestionsGadgetContentView_keyCommands__block_invoke(uint64_t
   return titleLabel;
 }
 
-- (void)updateButtonsWithAnswerState:(unint64_t)a3 reason:(id)a4
+- (void)updateButtonsWithAnswerState:(unint64_t)state reason:(id)reason
 {
-  v15 = a4;
-  objc_storeStrong(&self->_currentReason, a4);
+  reasonCopy = reason;
+  objc_storeStrong(&self->_currentReason, reason);
   v7 = &OBJC_IVAR___PXSurveyQuestionsGadgetContentView__skipButton;
-  if (a3 <= 1)
+  if (state <= 1)
   {
-    if (!a3)
+    if (!state)
     {
       v9 = 0;
       v8 = &OBJC_IVAR___PXSurveyQuestionsGadgetContentView__noButton;
@@ -648,7 +648,7 @@ void __49__PXSurveyQuestionsGadgetContentView_keyCommands__block_invoke(uint64_t
       goto LABEL_13;
     }
 
-    if (a3 == 1)
+    if (state == 1)
     {
       [(UIButton *)self->_yesButton setSelected:1];
       [(UIButton *)self->_noButton setSelected:0];
@@ -665,7 +665,7 @@ void __49__PXSurveyQuestionsGadgetContentView_keyCommands__block_invoke(uint64_t
 
   else
   {
-    switch(a3)
+    switch(state)
     {
       case 4uLL:
         v12 = 1;
@@ -706,53 +706,53 @@ LABEL_18:
 
 - (BOOL)isMultipleSelectionAnswerPresentation
 {
-  v2 = [(PXSurveyQuestionsGadgetContentView *)self delegate];
-  v3 = [v2 questionType] == 25;
+  delegate = [(PXSurveyQuestionsGadgetContentView *)self delegate];
+  v3 = [delegate questionType] == 25;
 
   return v3;
 }
 
 - (BOOL)isSelectionResponse
 {
-  v2 = [(PXSurveyQuestionsGadgetContentView *)self delegate];
-  v3 = [v2 questionType];
+  delegate = [(PXSurveyQuestionsGadgetContentView *)self delegate];
+  questionType = [delegate questionType];
 
-  return (v3 < 0x1F) & (0x2000100u >> v3);
+  return (questionType < 0x1F) & (0x2000100u >> questionType);
 }
 
-- (PXSurveyQuestionsGadgetContentView)initWithFrame:(CGRect)a3
+- (PXSurveyQuestionsGadgetContentView)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = PXSurveyQuestionsGadgetContentView;
-  v3 = [(PXSurveyQuestionsGadgetContentView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXSurveyQuestionsGadgetContentView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(PXSurveyQuestionDefaultConfiguration);
     configuration = v3->_configuration;
     v3->_configuration = v4;
 
-    v6 = [(PXSurveyQuestionsGadgetContentView *)v3 contentView];
-    v7 = [(PXSurveyQuestionsGadgetContentView *)v3 titleLabel];
-    [v6 addSubview:v7];
+    contentView = [(PXSurveyQuestionsGadgetContentView *)v3 contentView];
+    titleLabel = [(PXSurveyQuestionsGadgetContentView *)v3 titleLabel];
+    [contentView addSubview:titleLabel];
 
-    v8 = [(PXSurveyQuestionsGadgetContentView *)v3 contentView];
-    v9 = [(PXSurveyQuestionsGadgetContentView *)v3 yesButton];
-    [v8 addSubview:v9];
+    contentView2 = [(PXSurveyQuestionsGadgetContentView *)v3 contentView];
+    yesButton = [(PXSurveyQuestionsGadgetContentView *)v3 yesButton];
+    [contentView2 addSubview:yesButton];
 
-    v10 = [(PXSurveyQuestionsGadgetContentView *)v3 contentView];
-    v11 = [(PXSurveyQuestionsGadgetContentView *)v3 skipButton];
-    [v10 addSubview:v11];
+    contentView3 = [(PXSurveyQuestionsGadgetContentView *)v3 contentView];
+    skipButton = [(PXSurveyQuestionsGadgetContentView *)v3 skipButton];
+    [contentView3 addSubview:skipButton];
 
-    v12 = [(PXSurveyQuestionsGadgetContentView *)v3 contentView];
-    v13 = [(PXSurveyQuestionsGadgetContentView *)v3 noButton];
-    [v12 addSubview:v13];
+    contentView4 = [(PXSurveyQuestionsGadgetContentView *)v3 contentView];
+    noButton = [(PXSurveyQuestionsGadgetContentView *)v3 noButton];
+    [contentView4 addSubview:noButton];
 
-    v14 = [(PXSurveyQuestionsGadgetContentView *)v3 layer];
-    [v14 setCornerRadius:4.0];
+    layer = [(PXSurveyQuestionsGadgetContentView *)v3 layer];
+    [layer setCornerRadius:4.0];
 
     [(PXSurveyQuestionsGadgetContentView *)v3 setClipsToBounds:1];
-    v15 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
-    [(PXSurveyQuestionsGadgetContentView *)v3 setBackgroundColor:v15];
+    tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+    [(PXSurveyQuestionsGadgetContentView *)v3 setBackgroundColor:tertiarySystemFillColor];
 
     v16 = objc_alloc_init(MEMORY[0x1E69DCF40]);
     selectionFeedbackGenerator = v3->_selectionFeedbackGenerator;
@@ -762,10 +762,10 @@ LABEL_18:
   return v3;
 }
 
-+ (CGSize)sizeThatFits:(CGSize)a3
++ (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if (sizeThatFits__onceToken != -1)
   {
     dispatch_once(&sizeThatFits__onceToken, &__block_literal_global_191322);

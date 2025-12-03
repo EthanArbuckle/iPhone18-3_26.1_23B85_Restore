@@ -1,41 +1,41 @@
 @interface ATXEnterLOIUpdateSource
 - (ATXEnterLOIUpdateSource)init;
-- (ATXEnterLOIUpdateSource)initWithLocationManager:(id)a3 userDefaults:(id)a4;
+- (ATXEnterLOIUpdateSource)initWithLocationManager:(id)manager userDefaults:(id)defaults;
 - (ATXUpdatePredictionsDelegate)delegate;
 - (NSDate)now;
-- (id)_regionIdentifierForLocationOfInterestType:(int64_t)a3;
+- (id)_regionIdentifierForLocationOfInterestType:(int64_t)type;
 - (void)_registerNotificationListeners;
 - (void)_start;
 - (void)dealloc;
-- (void)locationManagerDidEnterRegion:(id)a3;
-- (void)locationManagerDidExitRegion:(id)a3;
-- (void)updateMonitoredRegionsIfNecessaryWithReply:(id)a3;
+- (void)locationManagerDidEnterRegion:(id)region;
+- (void)locationManagerDidExitRegion:(id)region;
+- (void)updateMonitoredRegionsIfNecessaryWithReply:(id)reply;
 @end
 
 @implementation ATXEnterLOIUpdateSource
 
 - (ATXEnterLOIUpdateSource)init
 {
-  v3 = [MEMORY[0x277D41BF8] sharedInstance];
+  mEMORY[0x277D41BF8] = [MEMORY[0x277D41BF8] sharedInstance];
   v4 = objc_alloc(MEMORY[0x277CBEBD0]);
   v5 = [v4 initWithSuiteName:*MEMORY[0x277CEBD00]];
-  v6 = [(ATXEnterLOIUpdateSource *)self initWithLocationManager:v3 userDefaults:v5];
+  v6 = [(ATXEnterLOIUpdateSource *)self initWithLocationManager:mEMORY[0x277D41BF8] userDefaults:v5];
 
   return v6;
 }
 
-- (ATXEnterLOIUpdateSource)initWithLocationManager:(id)a3 userDefaults:(id)a4
+- (ATXEnterLOIUpdateSource)initWithLocationManager:(id)manager userDefaults:(id)defaults
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  defaultsCopy = defaults;
   v12.receiver = self;
   v12.super_class = ATXEnterLOIUpdateSource;
   v9 = [(ATXEnterLOIUpdateSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_locationManager, a3);
-    objc_storeStrong(&v10->_userDefaults, a4);
+    objc_storeStrong(&v9->_locationManager, manager);
+    objc_storeStrong(&v10->_userDefaults, defaults);
   }
 
   [(ATXEnterLOIUpdateSource *)v10 _start];
@@ -52,31 +52,31 @@
 
 - (void)_registerNotificationListeners
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_locationManagerDidEnterRegion_ name:*MEMORY[0x277D41CA0] object:0];
-  [v3 addObserver:self selector:sel_locationManagerDidExitRegion_ name:*MEMORY[0x277D41CA8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_locationManagerDidEnterRegion_ name:*MEMORY[0x277D41CA0] object:0];
+  [defaultCenter addObserver:self selector:sel_locationManagerDidExitRegion_ name:*MEMORY[0x277D41CA8] object:0];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D41CA0] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x277D41CA8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D41CA0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D41CA8] object:0];
 
   v4.receiver = self;
   v4.super_class = ATXEnterLOIUpdateSource;
   [(ATXEnterLOIUpdateSource *)&v4 dealloc];
 }
 
-- (void)updateMonitoredRegionsIfNecessaryWithReply:(id)a3
+- (void)updateMonitoredRegionsIfNecessaryWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = [(NSUserDefaults *)self->_userDefaults objectForKey:@"ATXEnterLOIUpdateSourceLastRefreshDate"];
   if (v5 && (-[ATXEnterLOIUpdateSource now](self, "now"), v6 = objc_claimAutoreleasedReturnValue(), [v5 timeIntervalSinceDate:v6], v8 = v7, v6, v8 <= 86400.0))
   {
-    if (v4)
+    if (replyCopy)
     {
-      v4[2](v4);
+      replyCopy[2](replyCopy);
     }
   }
 
@@ -88,7 +88,7 @@
     v10[2] = __70__ATXEnterLOIUpdateSource_updateMonitoredRegionsIfNecessaryWithReply___block_invoke;
     v10[3] = &unk_27859E900;
     v10[4] = self;
-    v11 = v4;
+    v11 = replyCopy;
     [(ATXLocationManagerProtocol *)locationManager fetchAllLocationsOfInterest:v10];
   }
 }
@@ -150,11 +150,11 @@ void __70__ATXEnterLOIUpdateSource_updateMonitoredRegionsIfNecessaryWithReply___
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)locationManagerDidEnterRegion:(id)a3
+- (void)locationManagerDidEnterRegion:(id)region
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 valueForKey:*MEMORY[0x277D41CB0]];
+  userInfo = [region userInfo];
+  v5 = [userInfo valueForKey:*MEMORY[0x277D41CB0]];
 
   v6 = __atxlog_handle_default();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -176,11 +176,11 @@ void __70__ATXEnterLOIUpdateSource_updateMonitoredRegionsIfNecessaryWithReply___
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)locationManagerDidExitRegion:(id)a3
+- (void)locationManagerDidExitRegion:(id)region
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 valueForKey:*MEMORY[0x277D41CB0]];
+  userInfo = [region userInfo];
+  v5 = [userInfo valueForKey:*MEMORY[0x277D41CB0]];
 
   v6 = __atxlog_handle_default();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -202,9 +202,9 @@ void __70__ATXEnterLOIUpdateSource_updateMonitoredRegionsIfNecessaryWithReply___
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_regionIdentifierForLocationOfInterestType:(int64_t)a3
+- (id)_regionIdentifierForLocationOfInterestType:(int64_t)type
 {
-  v3 = [MEMORY[0x277D41BF8] stringForLOIType:a3];
+  v3 = [MEMORY[0x277D41BF8] stringForLOIType:type];
   v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"com.apple.duetexpertd.%@", v3];
 
   return v4;

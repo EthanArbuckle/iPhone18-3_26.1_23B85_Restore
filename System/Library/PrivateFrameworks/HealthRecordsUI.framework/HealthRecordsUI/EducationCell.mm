@@ -1,16 +1,16 @@
 @interface EducationCell
-- (_TtC15HealthRecordsUI13EducationCell)initWithFrame:(CGRect)a3;
+- (_TtC15HealthRecordsUI13EducationCell)initWithFrame:(CGRect)frame;
 - (void)awakeFromNib;
 @end
 
 @implementation EducationCell
 
-- (_TtC15HealthRecordsUI13EducationCell)initWithFrame:(CGRect)a3
+- (_TtC15HealthRecordsUI13EducationCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC15HealthRecordsUI13EducationCell_arrangedView;
   *(&self->super.super.super.super.super.super.super.isa + v8) = [objc_allocWithZone(MEMORY[0x1E69DD250]) init];
   v9 = OBJC_IVAR____TtC15HealthRecordsUI13EducationCell_educationLabel;
@@ -24,10 +24,10 @@
   *(v11 + 4) = 0;
   v15.receiver = self;
   v15.super_class = v12;
-  v13 = [(EducationCell *)&v15 initWithFrame:x, y, width, height];
+  height = [(EducationCell *)&v15 initWithFrame:x, y, width, height];
   sub_1D130D844();
 
-  return v13;
+  return height;
 }
 
 - (void)awakeFromNib

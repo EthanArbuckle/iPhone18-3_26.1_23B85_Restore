@@ -1,7 +1,7 @@
 @interface WFListContentItem
 + (id)ownedTypes;
-- (BOOL)getListSubtitle:(id)a3;
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4;
+- (BOOL)getListSubtitle:(id)subtitle;
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size;
 - (WFListItem)listItem;
 - (id)richListTitle;
 @end
@@ -24,18 +24,18 @@
   return [(WFContentItem *)self objectForClass:v3];
 }
 
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(WFListContentItem *)self listItem];
-  v7 = [v6 image];
+  thumbnailCopy = thumbnail;
+  listItem = [(WFListContentItem *)self listItem];
+  image = [listItem image];
 
-  if (v5)
+  if (thumbnailCopy)
   {
     v13 = *MEMORY[0x277D7A398];
     v8 = MEMORY[0x277CCABB0];
-    if ([v7 displayStyle] == 1)
+    if ([image displayStyle] == 1)
     {
       v9 = 3;
     }
@@ -49,34 +49,34 @@
     v14[0] = v10;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
 
-    v5[2](v5, v7, v11);
+    thumbnailCopy[2](thumbnailCopy, image, v11);
   }
 
-  return v7 != 0;
+  return image != 0;
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(WFListContentItem *)self listItem];
-  v6 = [v5 subtitle];
+  subtitleCopy = subtitle;
+  listItem = [(WFListContentItem *)self listItem];
+  subtitle = [listItem subtitle];
 
-  if (v4)
+  if (subtitleCopy)
   {
-    v7 = [(WFListContentItem *)self listItem];
-    v8 = [v7 subtitle];
-    v4[2](v4, v8);
+    listItem2 = [(WFListContentItem *)self listItem];
+    subtitle2 = [listItem2 subtitle];
+    subtitleCopy[2](subtitleCopy, subtitle2);
   }
 
-  return v6 != 0;
+  return subtitle != 0;
 }
 
 - (id)richListTitle
 {
-  v2 = [(WFListContentItem *)self listItem];
-  v3 = [v2 title];
+  listItem = [(WFListContentItem *)self listItem];
+  title = [listItem title];
 
-  return v3;
+  return title;
 }
 
 @end

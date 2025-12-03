@@ -1,5 +1,5 @@
 @interface SCDAPreferences
-- (SCDAPreferences)initWithDeviceInstanceContext:(id)a3 preferences:(id)a4;
+- (SCDAPreferences)initWithDeviceInstanceContext:(id)context preferences:(id)preferences;
 - (unsigned)deviceGroup;
 @end
 
@@ -7,26 +7,26 @@
 
 - (unsigned)deviceGroup
 {
-  v2 = [(SCDAAssistantPreferences *)self->_pref myriadDeviceGroup];
-  v3 = [v2 intValue];
+  myriadDeviceGroup = [(SCDAAssistantPreferences *)self->_pref myriadDeviceGroup];
+  intValue = [myriadDeviceGroup intValue];
 
-  return v3;
+  return intValue;
 }
 
-- (SCDAPreferences)initWithDeviceInstanceContext:(id)a3 preferences:(id)a4
+- (SCDAPreferences)initWithDeviceInstanceContext:(id)context preferences:(id)preferences
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  preferencesCopy = preferences;
   v14.receiver = self;
   v14.super_class = SCDAPreferences;
   v9 = [(SCDAPreferences *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_instanceContext, a3);
-    if (v8)
+    objc_storeStrong(&v9->_instanceContext, context);
+    if (preferencesCopy)
     {
-      v11 = v8;
+      v11 = preferencesCopy;
     }
 
     else

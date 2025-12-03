@@ -13,11 +13,11 @@
   if (entry)
   {
     [v3 appendFormat:@"; type=%d", -[UIIndexBarEntry type](entry, "type")];
-    v5 = [(UIIndexBarEntry *)self->_entry title];
-    [v3 appendFormat:@"; title='%@'", v5];
+    title = [(UIIndexBarEntry *)self->_entry title];
+    [v3 appendFormat:@"; title='%@'", title];
 
-    v6 = [(UIIndexBarEntry *)self->_entry shortTitle];
-    [v3 appendFormat:@"; shortTitle='%@'", v6];
+    shortTitle = [(UIIndexBarEntry *)self->_entry shortTitle];
+    [v3 appendFormat:@"; shortTitle='%@'", shortTitle];
   }
 
   [v3 appendString:@">"];

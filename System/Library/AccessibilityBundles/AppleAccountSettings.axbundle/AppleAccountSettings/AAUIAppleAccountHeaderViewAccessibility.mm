@@ -1,16 +1,16 @@
 @interface AAUIAppleAccountHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (AAUIAppleAccountHeaderViewAccessibility)initWithLabelInsets:(UIEdgeInsets)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (AAUIAppleAccountHeaderViewAccessibility)initWithLabelInsets:(UIEdgeInsets)insets;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation AAUIAppleAccountHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AAUIAppleAccountHeaderView" hasInstanceMethod:@"initWithLabelInsets:" withFullSignature:{"@", "{UIEdgeInsets=dddd}", 0}];
-  [v3 validateClass:@"AAUIAppleAccountHeaderView" hasInstanceMethod:@"imageControl" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AAUIAppleAccountHeaderView" hasInstanceMethod:@"initWithLabelInsets:" withFullSignature:{"@", "{UIEdgeInsets=dddd}", 0}];
+  [validationsCopy validateClass:@"AAUIAppleAccountHeaderView" hasInstanceMethod:@"imageControl" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -27,17 +27,17 @@
   v5 = [v3 safeValueForKey:@"_label"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v6 text];
-  [v3 setAccessibilityValue:v7];
+  text = [v6 text];
+  [v3 setAccessibilityValue:text];
 
   [v3 setAccessibilityRespondsToUserInteraction:1];
 }
 
-- (AAUIAppleAccountHeaderViewAccessibility)initWithLabelInsets:(UIEdgeInsets)a3
+- (AAUIAppleAccountHeaderViewAccessibility)initWithLabelInsets:(UIEdgeInsets)insets
 {
   v6.receiver = self;
   v6.super_class = AAUIAppleAccountHeaderViewAccessibility;
-  v3 = [(AAUIAppleAccountHeaderViewAccessibility *)&v6 initWithLabelInsets:a3.top, a3.left, a3.bottom, a3.right];
+  v3 = [(AAUIAppleAccountHeaderViewAccessibility *)&v6 initWithLabelInsets:insets.top, insets.left, insets.bottom, insets.right];
   v4 = v3;
   if (v3)
   {

@@ -18,7 +18,7 @@
   v5 = a3;
   v6 = [v4 dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
-  v7 = [a1 crk_EDUProfileErrorWithCode:2 errorDictionary:v6];
+  v7 = [self crk_EDUProfileErrorWithCode:2 errorDictionary:v6];
 
   return v7;
 }
@@ -32,7 +32,7 @@
   v5 = a3;
   v6 = [v4 dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
-  v7 = [a1 crk_EDUProfileErrorWithCode:1 errorDictionary:v6];
+  v7 = [self crk_EDUProfileErrorWithCode:1 errorDictionary:v6];
 
   return v7;
 }
@@ -49,7 +49,7 @@
   v8 = a3;
   v9 = [v6 dictionaryWithObjects:v13 forKeys:v12 count:2];
 
-  v10 = [a1 crk_EDUProfileErrorWithCode:5 errorDictionary:v9];
+  v10 = [self crk_EDUProfileErrorWithCode:5 errorDictionary:v9];
 
   return v10;
 }
@@ -63,7 +63,7 @@
   v5 = a3;
   v6 = [v4 dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
-  v7 = [a1 crk_EDUProfileErrorWithCode:7 errorDictionary:v6];
+  v7 = [self crk_EDUProfileErrorWithCode:7 errorDictionary:v6];
 
   return v7;
 }
@@ -77,7 +77,7 @@
   v5 = a3;
   v6 = [v4 dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
-  v7 = [a1 crk_EDUProfileErrorWithCode:6 errorDictionary:v6];
+  v7 = [self crk_EDUProfileErrorWithCode:6 errorDictionary:v6];
 
   return v7;
 }
@@ -94,7 +94,7 @@
   v10 = a4;
   v11 = [v8 dictionaryWithObjects:v15 forKeys:v14 count:2];
 
-  v12 = [a1 crk_EDUProfileErrorWithCode:a3 errorDictionary:v11];
+  v12 = [self crk_EDUProfileErrorWithCode:a3 errorDictionary:v11];
 
   return v12;
 }

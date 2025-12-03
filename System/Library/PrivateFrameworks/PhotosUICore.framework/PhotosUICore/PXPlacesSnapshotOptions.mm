@@ -3,12 +3,12 @@
 - (PXPlacesSnapshotOptions)init;
 - (UIEdgeInsets)additionalInsets;
 - (id)description;
-- (void)setRegion:(id *)a3;
+- (void)setRegion:(id *)region;
 @end
 
 @implementation PXPlacesSnapshotOptions
 
-- (void)setRegion:(id *)a3
+- (void)setRegion:(id *)region
 {
   self->_region.center.latitude = v3;
   self->_region.center.longitude = v4;
@@ -46,23 +46,23 @@
   v4 = [v3 mutableCopy];
 
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(PXPlacesSnapshotOptions *)self extendedTraitCollection];
-  v7 = [v5 stringWithFormat:@"\nExtended Trait Collection: %@", v6];
+  extendedTraitCollection = [(PXPlacesSnapshotOptions *)self extendedTraitCollection];
+  v7 = [v5 stringWithFormat:@"\nExtended Trait Collection: %@", extendedTraitCollection];
   [v4 appendString:v7];
 
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(PXPlacesSnapshotOptions *)self geotaggableInformationDelegate];
-  v10 = [v8 stringWithFormat:@"\nGeotaggable Info Delegate: %@", v9];
+  geotaggableInformationDelegate = [(PXPlacesSnapshotOptions *)self geotaggableInformationDelegate];
+  v10 = [v8 stringWithFormat:@"\nGeotaggable Info Delegate: %@", geotaggableInformationDelegate];
   [v4 appendString:v10];
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [(PXPlacesSnapshotOptions *)self queue];
-  v13 = [v11 stringWithFormat:@"\nQueue: %@", v12];
+  queue = [(PXPlacesSnapshotOptions *)self queue];
+  v13 = [v11 stringWithFormat:@"\nQueue: %@", queue];
   [v4 appendString:v13];
 
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [(PXPlacesSnapshotOptions *)self cacheDirectoryPath];
-  v16 = [v14 stringWithFormat:@"\nCache Directory Path: %@", v15];
+  cacheDirectoryPath = [(PXPlacesSnapshotOptions *)self cacheDirectoryPath];
+  v16 = [v14 stringWithFormat:@"\nCache Directory Path: %@", cacheDirectoryPath];
   [v4 appendString:v16];
 
   v17 = MEMORY[0x1E696AEC0];

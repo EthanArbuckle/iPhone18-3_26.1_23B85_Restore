@@ -12,25 +12,25 @@
 + (SKFieldNode)velocityFieldWithVector:(vector_float3)direction;
 + (SKFieldNode)vortexField;
 - (BOOL)isEnabled;
-- (BOOL)isEqualToNode:(id)a3;
+- (BOOL)isEqualToNode:(id)node;
 - (BOOL)isExclusive;
 - (SKFieldNode)init;
-- (SKFieldNode)initWithCoder:(id)a3;
-- (SKFieldNode)initWithCoder:(id)a3 field:(id)a4;
+- (SKFieldNode)initWithCoder:(id)coder;
+- (SKFieldNode)initWithCoder:(id)coder field:(id)field;
 - (float)animationSpeed;
 - (float)falloff;
 - (float)minimumRadius;
 - (float)smoothness;
 - (float)strength;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (vector_float3)direction;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAnimationSpeed:(float)animationSpeed;
 - (void)setEnabled:(BOOL)enabled;
 - (void)setExclusive:(BOOL)exclusive;
 - (void)setFalloff:(float)falloff;
 - (void)setMinimumRadius:(float)minimumRadius;
-- (void)setPhysicsField:(id)a3;
+- (void)setPhysicsField:(id)field;
 - (void)setRegion:(SKRegion *)region;
 - (void)setSmoothness:(float)smoothness;
 - (void)setStrength:(float)strength;
@@ -39,25 +39,25 @@
 
 @implementation SKFieldNode
 
-- (void)setPhysicsField:(id)a3
+- (void)setPhysicsField:(id)field
 {
-  v5 = a3;
-  v6 = [(SKNode *)self scene];
+  fieldCopy = field;
+  scene = [(SKNode *)self scene];
   field = self->_field;
   if (field)
   {
     [(PKPhysicsField *)field setRepresentedObject:0];
-    if (v6)
+    if (scene)
     {
-      v8 = [v6 physicsWorld];
-      [v8 removeField:self->_field];
+      physicsWorld = [scene physicsWorld];
+      [physicsWorld removeField:self->_field];
     }
   }
 
-  objc_storeStrong(&self->_field, a3);
-  if (v5)
+  objc_storeStrong(&self->_field, field);
+  if (fieldCopy)
   {
-    [v5 setRepresentedObject:self];
+    [fieldCopy setRepresentedObject:self];
     v12 = 0u;
     v13 = 0u;
     v11 = 0u;
@@ -66,19 +66,19 @@
     LODWORD(v9) = DWORD2(v12);
     [(PKPhysicsField *)self->_field setRotation:v9];
     [(PKPhysicsField *)self->_field setScale:*&v11];
-    if (v6)
+    if (scene)
     {
-      v10 = [v6 physicsWorld];
-      [v10 addField:v5];
+      physicsWorld2 = [scene physicsWorld];
+      [physicsWorld2 addField:fieldCopy];
     }
   }
 }
 
 - (vector_float3)direction
 {
-  v2 = [(PKPhysicsField *)self->_field direction];
+  direction = [(PKPhysicsField *)self->_field direction];
   result.i64[1] = v3;
-  result.i64[0] = v2;
+  result.i64[0] = direction;
   return result;
 }
 
@@ -174,34 +174,34 @@
   return v4;
 }
 
-- (SKFieldNode)initWithCoder:(id)a3
+- (SKFieldNode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SKFieldNode;
-  v5 = [(SKNode *)&v13 initWithCoder:v4];
+  v5 = [(SKNode *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_region"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_region"];
     [(SKFieldNode *)v5 setRegion:v6];
 
-    [v4 decodeFloatForKey:@"_strength"];
+    [coderCopy decodeFloatForKey:@"_strength"];
     [(SKFieldNode *)v5 setStrength:?];
-    [v4 decodeFloatForKey:@"_falloff"];
+    [coderCopy decodeFloatForKey:@"_falloff"];
     [(SKFieldNode *)v5 setFalloff:?];
-    [v4 decodeFloatForKey:@"_minimumRadius"];
+    [coderCopy decodeFloatForKey:@"_minimumRadius"];
     [(SKFieldNode *)v5 setMinimumRadius:?];
-    -[SKFieldNode setEnabled:](v5, "setEnabled:", [v4 decodeBoolForKey:@"_active"]);
-    -[SKFieldNode setExclusive:](v5, "setExclusive:", [v4 decodeBoolForKey:@"_exclusive"]);
-    -[SKFieldNode setCategoryBitMask:](v5, "setCategoryBitMask:", [v4 decodeInt32ForKey:@"_categoryBitMask"]);
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_direction"];
+    -[SKFieldNode setEnabled:](v5, "setEnabled:", [coderCopy decodeBoolForKey:@"_active"]);
+    -[SKFieldNode setExclusive:](v5, "setExclusive:", [coderCopy decodeBoolForKey:@"_exclusive"]);
+    -[SKFieldNode setCategoryBitMask:](v5, "setCategoryBitMask:", [coderCopy decodeInt32ForKey:@"_categoryBitMask"]);
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_direction"];
     [(SKFieldNode *)v5 setDirection:createV3fFromData(v7).n128_f64[0]];
 
-    [v4 decodeFloatForKey:@"_smoothness"];
+    [coderCopy decodeFloatForKey:@"_smoothness"];
     [(SKFieldNode *)v5 setSmoothness:?];
-    [v4 decodeFloatForKey:@"_animationSpeed"];
+    [coderCopy decodeFloatForKey:@"_animationSpeed"];
     [(SKFieldNode *)v5 setAnimationSpeed:?];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_texture"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_texture"];
     if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v9 = v5->_field;
@@ -214,38 +214,38 @@
   return v5;
 }
 
-- (SKFieldNode)initWithCoder:(id)a3 field:(id)a4
+- (SKFieldNode)initWithCoder:(id)coder field:(id)field
 {
-  v6 = a3;
-  v7 = a4;
+  coderCopy = coder;
+  fieldCopy = field;
   v17.receiver = self;
   v17.super_class = SKFieldNode;
-  v8 = [(SKNode *)&v17 initWithCoder:v6];
+  v8 = [(SKNode *)&v17 initWithCoder:coderCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_field, a4);
+    objc_storeStrong(&v8->_field, field);
     [(SKFieldNode *)v9 setPhysicsField:v9->_field];
-    v10 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_region"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_region"];
     [(SKFieldNode *)v9 setRegion:v10];
 
-    [v6 decodeFloatForKey:@"_strength"];
+    [coderCopy decodeFloatForKey:@"_strength"];
     [(SKFieldNode *)v9 setStrength:?];
-    [v6 decodeFloatForKey:@"_falloff"];
+    [coderCopy decodeFloatForKey:@"_falloff"];
     [(SKFieldNode *)v9 setFalloff:?];
-    [v6 decodeFloatForKey:@"_minimumRadius"];
+    [coderCopy decodeFloatForKey:@"_minimumRadius"];
     [(SKFieldNode *)v9 setMinimumRadius:?];
-    -[SKFieldNode setEnabled:](v9, "setEnabled:", [v6 decodeBoolForKey:@"_active"]);
-    -[SKFieldNode setExclusive:](v9, "setExclusive:", [v6 decodeBoolForKey:@"_exclusive"]);
-    -[SKFieldNode setCategoryBitMask:](v9, "setCategoryBitMask:", [v6 decodeInt32ForKey:@"_categoryBitMask"]);
-    v11 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_direction"];
+    -[SKFieldNode setEnabled:](v9, "setEnabled:", [coderCopy decodeBoolForKey:@"_active"]);
+    -[SKFieldNode setExclusive:](v9, "setExclusive:", [coderCopy decodeBoolForKey:@"_exclusive"]);
+    -[SKFieldNode setCategoryBitMask:](v9, "setCategoryBitMask:", [coderCopy decodeInt32ForKey:@"_categoryBitMask"]);
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_direction"];
     [(SKFieldNode *)v9 setDirection:createV3fFromData(v11).n128_f64[0]];
 
-    [v6 decodeFloatForKey:@"_smoothness"];
+    [coderCopy decodeFloatForKey:@"_smoothness"];
     [(SKFieldNode *)v9 setSmoothness:?];
-    [v6 decodeFloatForKey:@"_animationSpeed"];
+    [coderCopy decodeFloatForKey:@"_animationSpeed"];
     [(SKFieldNode *)v9 setAnimationSpeed:?];
-    v12 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_texture"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_texture"];
     if (v12 && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v13 = v9->_field;
@@ -258,29 +258,29 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = SKFieldNode;
-  [(SKNode *)&v14 encodeWithCoder:v4];
-  v5 = [(SKFieldNode *)self region];
+  [(SKNode *)&v14 encodeWithCoder:coderCopy];
+  region = [(SKFieldNode *)self region];
 
-  if (v5)
+  if (region)
   {
-    v6 = [(SKFieldNode *)self region];
-    [v4 encodeObject:v6 forKey:@"_region"];
+    region2 = [(SKFieldNode *)self region];
+    [coderCopy encodeObject:region2 forKey:@"_region"];
   }
 
   [(SKFieldNode *)self strength];
-  [v4 encodeFloat:@"_strength" forKey:?];
+  [coderCopy encodeFloat:@"_strength" forKey:?];
   [(SKFieldNode *)self falloff];
-  [v4 encodeFloat:@"_falloff" forKey:?];
+  [coderCopy encodeFloat:@"_falloff" forKey:?];
   [(SKFieldNode *)self minimumRadius];
-  [v4 encodeFloat:@"_minimumRadius" forKey:?];
-  [v4 encodeBool:-[SKFieldNode isEnabled](self forKey:{"isEnabled"), @"_active"}];
-  [v4 encodeBool:-[SKFieldNode isExclusive](self forKey:{"isExclusive"), @"_exclusive"}];
-  [v4 encodeInt32:-[SKFieldNode categoryBitMask](self forKey:{"categoryBitMask"), @"_categoryBitMask"}];
+  [coderCopy encodeFloat:@"_minimumRadius" forKey:?];
+  [coderCopy encodeBool:-[SKFieldNode isEnabled](self forKey:{"isEnabled"), @"_active"}];
+  [coderCopy encodeBool:-[SKFieldNode isExclusive](self forKey:{"isExclusive"), @"_exclusive"}];
+  [coderCopy encodeInt32:-[SKFieldNode categoryBitMask](self forKey:{"categoryBitMask"), @"_categoryBitMask"}];
   [(SKFieldNode *)self direction];
   v12 = v7;
   v8 = [objc_alloc(MEMORY[0x277CBEB28]) initWithCapacity:12];
@@ -291,28 +291,28 @@
     [v8 appendBytes:&v15 length:{4, v12, v12}];
   }
 
-  [v4 encodeObject:v8 forKey:@"_direction"];
+  [coderCopy encodeObject:v8 forKey:@"_direction"];
 
   [(SKFieldNode *)self smoothness];
-  [v4 encodeFloat:@"_smoothness" forKey:?];
+  [coderCopy encodeFloat:@"_smoothness" forKey:?];
   [(SKFieldNode *)self animationSpeed];
-  [v4 encodeFloat:@"_animationSpeed" forKey:?];
-  v10 = [(SKFieldNode *)self texture];
+  [coderCopy encodeFloat:@"_animationSpeed" forKey:?];
+  texture = [(SKFieldNode *)self texture];
 
-  if (v10)
+  if (texture)
   {
-    v11 = [(SKFieldNode *)self texture];
-    [v4 encodeObject:v11 forKey:@"_texture"];
+    texture2 = [(SKFieldNode *)self texture];
+    [coderCopy encodeObject:texture2 forKey:@"_texture"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = SKFieldNode;
-  v4 = [(SKNode *)&v7 copyWithZone:a3];
-  v5 = [(SKFieldNode *)self region];
-  [v4 setRegion:v5];
+  v4 = [(SKNode *)&v7 copyWithZone:zone];
+  region = [(SKFieldNode *)self region];
+  [v4 setRegion:region];
 
   [(SKFieldNode *)self strength];
   [v4 setStrength:?];
@@ -442,10 +442,10 @@
   [(PKPhysicsField *)self->_field setRegion:?];
 }
 
-- (BOOL)isEqualToNode:(id)a3
+- (BOOL)isEqualToNode:(id)node
 {
-  v8 = a3;
-  if (self == v8)
+  nodeCopy = node;
+  if (self == nodeCopy)
   {
     v17 = 1;
     goto LABEL_11;
@@ -458,7 +458,7 @@
     goto LABEL_11;
   }
 
-  v9 = v8;
+  v9 = nodeCopy;
   v32.receiver = self;
   v32.super_class = SKFieldNode;
   if ([(SKNode *)&v32 isEqualToNode:v9])
@@ -476,33 +476,33 @@
         [(SKFieldNode *)v9 smoothness];
         if ((COERCE_UNSIGNED_INT(v15 - v16) & 0x60000000) == 0)
         {
-          v19 = [(SKFieldNode *)self texture];
-          v20 = [v19 imageNameOrPath];
-          if (v20 || (-[SKFieldNode texture](v9, "texture"), v29 = objc_claimAutoreleasedReturnValue(), [v29 imageNameOrPath], (v30 = objc_claimAutoreleasedReturnValue()) != 0))
+          texture = [(SKFieldNode *)self texture];
+          imageNameOrPath = [texture imageNameOrPath];
+          if (imageNameOrPath || (-[SKFieldNode texture](v9, "texture"), v29 = objc_claimAutoreleasedReturnValue(), [v29 imageNameOrPath], (v30 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v4 = [(SKFieldNode *)self texture];
-            v5 = [v4 imageNameOrPath];
-            v6 = [(SKFieldNode *)v9 texture];
-            v3 = [v6 imageNameOrPath];
-            if (![v5 isEqualToString:v3])
+            texture2 = [(SKFieldNode *)self texture];
+            imageNameOrPath2 = [texture2 imageNameOrPath];
+            texture3 = [(SKFieldNode *)v9 texture];
+            imageNameOrPath3 = [texture3 imageNameOrPath];
+            if (![imageNameOrPath2 isEqualToString:imageNameOrPath3])
             {
               v17 = 0;
               goto LABEL_22;
             }
 
-            v31 = v19;
+            v31 = texture;
             v21 = 1;
           }
 
           else
           {
             v30 = 0;
-            v31 = v19;
+            v31 = texture;
             v21 = 0;
           }
 
-          v22 = [(SKFieldNode *)self categoryBitMask];
-          if (v22 == [(SKFieldNode *)v9 categoryBitMask]&& (v23 = [(SKFieldNode *)self isEnabled], v23 == [(SKFieldNode *)v9 isEnabled]))
+          categoryBitMask = [(SKFieldNode *)self categoryBitMask];
+          if (categoryBitMask == [(SKFieldNode *)v9 categoryBitMask]&& (v23 = [(SKFieldNode *)self isEnabled], v23 == [(SKFieldNode *)v9 isEnabled]))
           {
             [(SKFieldNode *)self direction];
             v28 = v24;
@@ -522,10 +522,10 @@
             if (v21)
             {
 LABEL_21:
-              v19 = v31;
+              texture = v31;
 LABEL_22:
 
-              if (v20)
+              if (imageNameOrPath)
               {
 LABEL_24:
 
@@ -538,8 +538,8 @@ LABEL_23:
             }
           }
 
-          v19 = v31;
-          if (v20)
+          texture = v31;
+          if (imageNameOrPath)
           {
             goto LABEL_24;
           }

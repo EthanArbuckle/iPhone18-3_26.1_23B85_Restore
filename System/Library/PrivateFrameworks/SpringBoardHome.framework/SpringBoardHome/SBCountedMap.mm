@@ -1,10 +1,10 @@
 @interface SBCountedMap
-- (BOOL)checkinValue:(id)a3;
-- (BOOL)containsValue:(id)a3;
+- (BOOL)checkinValue:(id)value;
+- (BOOL)containsValue:(id)value;
 - (SBCountedMap)init;
-- (id)checkoutValueForKey:(id)a3 creationBlock:(id)a4;
+- (id)checkoutValueForKey:(id)key creationBlock:(id)block;
 - (id)description;
-- (void)checkinValues:(id)a3;
+- (void)checkinValues:(id)values;
 @end
 
 @implementation SBCountedMap
@@ -39,13 +39,13 @@
   v13 = __27__SBCountedMap_description__block_invoke;
   v14 = &unk_1E808B228;
   v15 = v5;
-  v16 = self;
+  selfCopy = self;
   v7 = v5;
   [(NSCountedSet *)countedKeys enumerateObjectsUsingBlock:&v11];
   v8 = [v3 appendObject:v7 withName:{@"countedKeys w/ count", v11, v12, v13, v14}];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 void __27__SBCountedMap_description__block_invoke(uint64_t a1, void *a2)
@@ -57,35 +57,35 @@ void __27__SBCountedMap_description__block_invoke(uint64_t a1, void *a2)
   [*(a1 + 32) setObject:v6 forKeyedSubscript:v5];
 }
 
-- (id)checkoutValueForKey:(id)a3 creationBlock:(id)a4
+- (id)checkoutValueForKey:(id)key creationBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  keyCopy = key;
+  blockCopy = block;
+  if (!keyCopy)
   {
     goto LABEL_8;
   }
 
-  v8 = [(NSMutableDictionary *)self->_map objectForKey:v6];
+  v8 = [(NSMutableDictionary *)self->_map objectForKey:keyCopy];
   if (v8)
   {
     v9 = v8;
-    v10 = [v8 sbh_countedMapKey];
-    [(NSCountedSet *)self->_countedKeys addObject:v10];
+    sbh_countedMapKey = [v8 sbh_countedMapKey];
+    [(NSCountedSet *)self->_countedKeys addObject:sbh_countedMapKey];
 LABEL_4:
 
     goto LABEL_9;
   }
 
-  if (v7)
+  if (blockCopy)
   {
-    v11 = v7[2](v7, v6);
+    v11 = blockCopy[2](blockCopy, keyCopy);
     v9 = v11;
     if (v11)
     {
-      v10 = [v11 sbh_countedMapKey];
-      [(NSCountedSet *)self->_countedKeys addObject:v10];
-      [(NSMutableDictionary *)self->_map setObject:v9 forKey:v10];
+      sbh_countedMapKey = [v11 sbh_countedMapKey];
+      [(NSCountedSet *)self->_countedKeys addObject:sbh_countedMapKey];
+      [(NSMutableDictionary *)self->_map setObject:v9 forKey:sbh_countedMapKey];
       goto LABEL_4;
     }
   }
@@ -101,16 +101,16 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)checkinValue:(id)a3
+- (BOOL)checkinValue:(id)value
 {
-  v4 = a3;
-  v5 = [v4 sbh_countedMapKey];
-  if (v5)
+  valueCopy = value;
+  sbh_countedMapKey = [valueCopy sbh_countedMapKey];
+  if (sbh_countedMapKey)
   {
-    v6 = [(NSMutableDictionary *)self->_map objectForKey:v5];
-    if (v6 == v4 && ([(NSCountedSet *)self->_countedKeys removeObject:v5], ([(NSCountedSet *)self->_countedKeys containsObject:v5]& 1) == 0))
+    v6 = [(NSMutableDictionary *)self->_map objectForKey:sbh_countedMapKey];
+    if (v6 == valueCopy && ([(NSCountedSet *)self->_countedKeys removeObject:sbh_countedMapKey], ([(NSCountedSet *)self->_countedKeys containsObject:sbh_countedMapKey]& 1) == 0))
     {
-      [(NSMutableDictionary *)self->_map removeObjectForKey:v5];
+      [(NSMutableDictionary *)self->_map removeObjectForKey:sbh_countedMapKey];
       v7 = 1;
     }
 
@@ -128,15 +128,15 @@ LABEL_9:
   return v7;
 }
 
-- (void)checkinValues:(id)a3
+- (void)checkinValues:(id)values
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  valuesCopy = values;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [valuesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -148,26 +148,26 @@ LABEL_9:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(valuesCopy);
         }
 
         [(SBCountedMap *)self checkinValue:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [valuesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (BOOL)containsValue:(id)a3
+- (BOOL)containsValue:(id)value
 {
-  v4 = [a3 sbh_countedMapKey];
-  if (v4)
+  sbh_countedMapKey = [value sbh_countedMapKey];
+  if (sbh_countedMapKey)
   {
-    v5 = [(NSCountedSet *)self->_countedKeys containsObject:v4];
+    v5 = [(NSCountedSet *)self->_countedKeys containsObject:sbh_countedMapKey];
   }
 
   else

@@ -1,14 +1,14 @@
 @interface RTMapItemProviderPOIHistoryParameters
-- (RTMapItemProviderPOIHistoryParameters)initWithDefaultsManager:(id)a3;
-- (RTMapItemProviderPOIHistoryParameters)initWithDistanceThreshold:(double)a3;
+- (RTMapItemProviderPOIHistoryParameters)initWithDefaultsManager:(id)manager;
+- (RTMapItemProviderPOIHistoryParameters)initWithDistanceThreshold:(double)threshold;
 @end
 
 @implementation RTMapItemProviderPOIHistoryParameters
 
-- (RTMapItemProviderPOIHistoryParameters)initWithDistanceThreshold:(double)a3
+- (RTMapItemProviderPOIHistoryParameters)initWithDistanceThreshold:(double)threshold
 {
-  v3 = self;
-  if (a3 <= 0.0)
+  selfCopy = self;
+  if (threshold <= 0.0)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -27,21 +27,21 @@
     v5 = [(RTMapItemProviderPOIHistoryParameters *)&v9 init];
     if (v5)
     {
-      v5->_distanceThreshold = a3;
+      v5->_distanceThreshold = threshold;
     }
 
-    v3 = v5;
-    v6 = v3;
+    selfCopy = v5;
+    v6 = selfCopy;
   }
 
   return v6;
 }
 
-- (RTMapItemProviderPOIHistoryParameters)initWithDefaultsManager:(id)a3
+- (RTMapItemProviderPOIHistoryParameters)initWithDefaultsManager:(id)manager
 {
-  if (a3)
+  if (manager)
   {
-    v4 = [a3 objectForKey:@"RTDefaultsMapItemProviderPOIHistoryDistanceThreshold"];
+    v4 = [manager objectForKey:@"RTDefaultsMapItemProviderPOIHistoryDistanceThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -55,7 +55,7 @@
 
     self = [(RTMapItemProviderPOIHistoryParameters *)self initWithDistanceThreshold:v5];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -67,10 +67,10 @@
       _os_log_error_impl(&dword_2304B3000, v6, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: defaultsManager", v9, 2u);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface UIPrintPagesPerSheetOption
-- (UIPrintPagesPerSheetOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4;
+- (UIPrintPagesPerSheetOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller;
 - (id)createPrintOptionTableViewCell;
-- (id)itemNameForNumber:(int64_t)a3;
+- (id)itemNameForNumber:(int64_t)number;
 - (id)summaryString;
-- (void)actionSelectedForNumRows:(int64_t)a3 numColumns:(int64_t)a4 booklet:(BOOL)a5;
+- (void)actionSelectedForNumRows:(int64_t)rows numColumns:(int64_t)columns booklet:(BOOL)booklet;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)updateFromPrintInfo;
 @end
 
@@ -13,28 +13,28 @@
 
 - (void)dealloc
 {
-  v3 = [(UIPrintOption *)self printInfo];
-  [v3 removeObserver:self forKeyPath:0x2871AF290];
+  printInfo = [(UIPrintOption *)self printInfo];
+  [printInfo removeObserver:self forKeyPath:0x2871AF290];
 
-  v4 = [(UIPrintOption *)self printInfo];
-  [v4 removeObserver:self forKeyPath:0x2871AF330];
+  printInfo2 = [(UIPrintOption *)self printInfo];
+  [printInfo2 removeObserver:self forKeyPath:0x2871AF330];
 
-  v5 = [(UIPrintOption *)self printInfo];
-  [v5 removeObserver:self forKeyPath:0x2871AF150];
+  printInfo3 = [(UIPrintOption *)self printInfo];
+  [printInfo3 removeObserver:self forKeyPath:0x2871AF150];
 
   v6.receiver = self;
   v6.super_class = UIPrintPagesPerSheetOption;
   [(UIPrintPagesPerSheetOption *)&v6 dealloc];
 }
 
-- (UIPrintPagesPerSheetOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4
+- (UIPrintPagesPerSheetOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller
 {
   v59[6] = *MEMORY[0x277D85DE8];
   v58.receiver = self;
   v58.super_class = UIPrintPagesPerSheetOption;
-  v41 = a3;
-  v42 = a4;
-  v5 = [(UIPrintOption *)&v58 initWithPrintInfo:v41 printPanelViewController:?];
+  infoCopy = info;
+  controllerCopy = controller;
+  v5 = [(UIPrintOption *)&v58 initWithPrintInfo:infoCopy printPanelViewController:?];
   if (v5)
   {
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -113,29 +113,29 @@
     v29 = [v26 actionWithTitle:v28 image:0 identifier:0 handler:v43];
     [(UIPrintPagesPerSheetOption *)v5 setBookletAction:v29];
 
-    v30 = [(UIPrintPagesPerSheetOption *)v5 oneUpAction];
-    v59[0] = v30;
-    v31 = [(UIPrintPagesPerSheetOption *)v5 twoUpAction];
-    v59[1] = v31;
-    v32 = [(UIPrintPagesPerSheetOption *)v5 fourUpAction];
-    v59[2] = v32;
-    v33 = [(UIPrintPagesPerSheetOption *)v5 sixUpAction];
-    v59[3] = v33;
-    v34 = [(UIPrintPagesPerSheetOption *)v5 nineUpAction];
-    v59[4] = v34;
-    v35 = [(UIPrintPagesPerSheetOption *)v5 sixteenUpAction];
-    v59[5] = v35;
+    oneUpAction = [(UIPrintPagesPerSheetOption *)v5 oneUpAction];
+    v59[0] = oneUpAction;
+    twoUpAction = [(UIPrintPagesPerSheetOption *)v5 twoUpAction];
+    v59[1] = twoUpAction;
+    fourUpAction = [(UIPrintPagesPerSheetOption *)v5 fourUpAction];
+    v59[2] = fourUpAction;
+    sixUpAction = [(UIPrintPagesPerSheetOption *)v5 sixUpAction];
+    v59[3] = sixUpAction;
+    nineUpAction = [(UIPrintPagesPerSheetOption *)v5 nineUpAction];
+    v59[4] = nineUpAction;
+    sixteenUpAction = [(UIPrintPagesPerSheetOption *)v5 sixteenUpAction];
+    v59[5] = sixteenUpAction;
     v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:6];
     [(UIPrintPagesPerSheetOption *)v5 setNUpActions:v36];
 
-    v37 = [(UIPrintOption *)v5 printInfo];
-    [v37 addObserver:v5 forKeyPath:0x2871AF290 options:0 context:0];
+    printInfo = [(UIPrintOption *)v5 printInfo];
+    [printInfo addObserver:v5 forKeyPath:0x2871AF290 options:0 context:0];
 
-    v38 = [(UIPrintOption *)v5 printInfo];
-    [v38 addObserver:v5 forKeyPath:0x2871AF330 options:0 context:0];
+    printInfo2 = [(UIPrintOption *)v5 printInfo];
+    [printInfo2 addObserver:v5 forKeyPath:0x2871AF330 options:0 context:0];
 
-    v39 = [(UIPrintOption *)v5 printInfo];
-    [v39 addObserver:v5 forKeyPath:0x2871AF150 options:0 context:0];
+    printInfo3 = [(UIPrintOption *)v5 printInfo];
+    [printInfo3 addObserver:v5 forKeyPath:0x2871AF150 options:0 context:0];
 
     objc_destroyWeak(&v44);
     objc_destroyWeak(&v46);
@@ -192,16 +192,16 @@ void __73__UIPrintPagesPerSheetOption_initWithPrintInfo_printPanelViewController
   [WeakRetained actionSelectedForNumRows:2 numColumns:1 booklet:1];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
+  pathCopy = path;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __77__UIPrintPagesPerSheetOption_observeValueForKeyPath_ofObject_change_context___block_invoke;
   v9[3] = &unk_279A9BF78;
-  v10 = v7;
-  v11 = self;
-  v8 = v7;
+  v10 = pathCopy;
+  selfCopy = self;
+  v8 = pathCopy;
   dispatch_async(MEMORY[0x277D85CD0], v9);
 }
 
@@ -245,34 +245,34 @@ LABEL_5:
 - (void)updateFromPrintInfo
 {
   v39[2] = *MEMORY[0x277D85DE8];
-  v3 = [(UIPrintPagesPerSheetOption *)self summaryString];
-  [(UIPrintOption *)self setSummary:v3];
+  summaryString = [(UIPrintPagesPerSheetOption *)self summaryString];
+  [(UIPrintOption *)self setSummary:summaryString];
 
-  v4 = [(UIPrintOption *)self printInfo];
-  v5 = [v4 bookletStyle];
+  printInfo = [(UIPrintOption *)self printInfo];
+  bookletStyle = [printInfo bookletStyle];
 
-  if (v5)
+  if (bookletStyle)
   {
-    v6 = [(UIPrintPagesPerSheetOption *)self bookletAction];
+    bookletAction = [(UIPrintPagesPerSheetOption *)self bookletAction];
     goto LABEL_3;
   }
 
-  v31 = [(UIPrintOption *)self printInfo];
-  v32 = [v31 numNUpRows];
-  v33 = [(UIPrintOption *)self printInfo];
-  v34 = [v33 numNUpColumns] * v32;
+  printInfo2 = [(UIPrintOption *)self printInfo];
+  numNUpRows = [printInfo2 numNUpRows];
+  printInfo3 = [(UIPrintOption *)self printInfo];
+  v34 = [printInfo3 numNUpColumns] * numNUpRows;
 
   if (v34 <= 5)
   {
     if (v34 == 2)
     {
-      v6 = [(UIPrintPagesPerSheetOption *)self twoUpAction];
+      bookletAction = [(UIPrintPagesPerSheetOption *)self twoUpAction];
       goto LABEL_3;
     }
 
     if (v34 == 4)
     {
-      v6 = [(UIPrintPagesPerSheetOption *)self fourUpAction];
+      bookletAction = [(UIPrintPagesPerSheetOption *)self fourUpAction];
       goto LABEL_3;
     }
   }
@@ -282,66 +282,66 @@ LABEL_5:
     switch(v34)
     {
       case 6:
-        v6 = [(UIPrintPagesPerSheetOption *)self sixUpAction];
+        bookletAction = [(UIPrintPagesPerSheetOption *)self sixUpAction];
         goto LABEL_3;
       case 9:
-        v6 = [(UIPrintPagesPerSheetOption *)self nineUpAction];
+        bookletAction = [(UIPrintPagesPerSheetOption *)self nineUpAction];
         goto LABEL_3;
       case 16:
-        v6 = [(UIPrintPagesPerSheetOption *)self sixteenUpAction];
+        bookletAction = [(UIPrintPagesPerSheetOption *)self sixteenUpAction];
         goto LABEL_3;
     }
   }
 
-  v6 = [(UIPrintPagesPerSheetOption *)self oneUpAction];
+  bookletAction = [(UIPrintPagesPerSheetOption *)self oneUpAction];
 LABEL_3:
-  v7 = v6;
-  v8 = [(UIPrintPagesPerSheetOption *)self oneUpAction];
-  v9 = [(UIPrintPagesPerSheetOption *)self oneUpAction];
-  [v9 setState:v7 == v8];
+  v7 = bookletAction;
+  oneUpAction = [(UIPrintPagesPerSheetOption *)self oneUpAction];
+  oneUpAction2 = [(UIPrintPagesPerSheetOption *)self oneUpAction];
+  [oneUpAction2 setState:v7 == oneUpAction];
 
-  v10 = [(UIPrintPagesPerSheetOption *)self twoUpAction];
-  v11 = [(UIPrintPagesPerSheetOption *)self twoUpAction];
-  [v11 setState:v7 == v10];
+  twoUpAction = [(UIPrintPagesPerSheetOption *)self twoUpAction];
+  twoUpAction2 = [(UIPrintPagesPerSheetOption *)self twoUpAction];
+  [twoUpAction2 setState:v7 == twoUpAction];
 
-  v12 = [(UIPrintPagesPerSheetOption *)self fourUpAction];
-  v13 = [(UIPrintPagesPerSheetOption *)self fourUpAction];
-  [v13 setState:v7 == v12];
+  fourUpAction = [(UIPrintPagesPerSheetOption *)self fourUpAction];
+  fourUpAction2 = [(UIPrintPagesPerSheetOption *)self fourUpAction];
+  [fourUpAction2 setState:v7 == fourUpAction];
 
-  v14 = [(UIPrintPagesPerSheetOption *)self sixUpAction];
-  v15 = [(UIPrintPagesPerSheetOption *)self sixUpAction];
-  [v15 setState:v7 == v14];
+  sixUpAction = [(UIPrintPagesPerSheetOption *)self sixUpAction];
+  sixUpAction2 = [(UIPrintPagesPerSheetOption *)self sixUpAction];
+  [sixUpAction2 setState:v7 == sixUpAction];
 
-  v16 = [(UIPrintPagesPerSheetOption *)self nineUpAction];
-  v17 = [(UIPrintPagesPerSheetOption *)self nineUpAction];
-  [v17 setState:v7 == v16];
+  nineUpAction = [(UIPrintPagesPerSheetOption *)self nineUpAction];
+  nineUpAction2 = [(UIPrintPagesPerSheetOption *)self nineUpAction];
+  [nineUpAction2 setState:v7 == nineUpAction];
 
-  v18 = [(UIPrintPagesPerSheetOption *)self sixteenUpAction];
-  v19 = [(UIPrintPagesPerSheetOption *)self sixteenUpAction];
-  [v19 setState:v7 == v18];
+  sixteenUpAction = [(UIPrintPagesPerSheetOption *)self sixteenUpAction];
+  sixteenUpAction2 = [(UIPrintPagesPerSheetOption *)self sixteenUpAction];
+  [sixteenUpAction2 setState:v7 == sixteenUpAction];
 
-  v20 = [(UIPrintPagesPerSheetOption *)self bookletAction];
-  v21 = [(UIPrintPagesPerSheetOption *)self bookletAction];
-  [v21 setState:v7 == v20];
+  bookletAction2 = [(UIPrintPagesPerSheetOption *)self bookletAction];
+  bookletAction3 = [(UIPrintPagesPerSheetOption *)self bookletAction];
+  [bookletAction3 setState:v7 == bookletAction2];
 
-  v22 = [(UIPrintOption *)self tableViewCell];
-  if (v22)
+  tableViewCell = [(UIPrintOption *)self tableViewCell];
+  if (tableViewCell)
   {
-    v23 = [(UIPrintOption *)self printInfo];
-    v24 = [v23 currentPrinter];
-    if (v24)
+    printInfo4 = [(UIPrintOption *)self printInfo];
+    currentPrinter = [printInfo4 currentPrinter];
+    if (currentPrinter)
     {
-      v25 = v24;
-      v26 = [(UIPrintOption *)self printInfo];
-      v27 = [v26 currentPrinter];
-      v28 = [v27 supportsDuplex];
+      v25 = currentPrinter;
+      printInfo5 = [(UIPrintOption *)self printInfo];
+      currentPrinter2 = [printInfo5 currentPrinter];
+      supportsDuplex = [currentPrinter2 supportsDuplex];
 
-      if (!v28)
+      if (!supportsDuplex)
       {
-        v29 = [(UIPrintPagesPerSheetOption *)self nUpActions];
-        v37 = v29;
-        v30 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
-        [v22 setPopupActions:v30];
+        nUpActions = [(UIPrintPagesPerSheetOption *)self nUpActions];
+        v37 = nUpActions;
+        bookletAction4 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
+        [tableViewCell setPopupActions:bookletAction4];
 LABEL_14:
 
         goto LABEL_15;
@@ -352,14 +352,14 @@ LABEL_14:
     {
     }
 
-    v29 = [(UIPrintPagesPerSheetOption *)self nUpActions];
-    v39[0] = v29;
-    v30 = [(UIPrintPagesPerSheetOption *)self bookletAction];
-    v38 = v30;
+    nUpActions = [(UIPrintPagesPerSheetOption *)self nUpActions];
+    v39[0] = nUpActions;
+    bookletAction4 = [(UIPrintPagesPerSheetOption *)self bookletAction];
+    v38 = bookletAction4;
     v35 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
     v39[1] = v35;
     v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:2];
-    [v22 setPopupActions:v36];
+    [tableViewCell setPopupActions:v36];
 
     goto LABEL_14;
   }
@@ -367,38 +367,38 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)actionSelectedForNumRows:(int64_t)a3 numColumns:(int64_t)a4 booklet:(BOOL)a5
+- (void)actionSelectedForNumRows:(int64_t)rows numColumns:(int64_t)columns booklet:(BOOL)booklet
 {
-  v5 = a5;
+  bookletCopy = booklet;
   v16[2] = *MEMORY[0x277D85DE8];
-  v9 = [(UIPrintOption *)self printInfo];
-  v10 = [v9 bookletStyle];
+  printInfo = [(UIPrintOption *)self printInfo];
+  bookletStyle = [printInfo bookletStyle];
 
-  if (v10 != v5)
+  if (bookletStyle != bookletCopy)
   {
-    v11 = [(UIPrintOption *)self printInfo];
-    [v11 setBookletStyle:v5];
+    printInfo2 = [(UIPrintOption *)self printInfo];
+    [printInfo2 setBookletStyle:bookletCopy];
   }
 
-  v12 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v12 = [MEMORY[0x277CCABB0] numberWithInteger:rows];
   v16[0] = v12;
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:columns];
   v16[1] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
-  v15 = [(UIPrintOption *)self printInfo];
-  [v15 setNUpRowsColumns:v14];
+  printInfo3 = [(UIPrintOption *)self printInfo];
+  [printInfo3 setNUpRowsColumns:v14];
 }
 
 - (id)createPrintOptionTableViewCell
 {
-  v3 = [(UIPrintOption *)self printPanelViewController];
-  v4 = [v3 printOptionsTableView];
-  v5 = [v4 dequeueReusableCellWithIdentifier:@"UIPrintOptionPopupCell"];
+  printPanelViewController = [(UIPrintOption *)self printPanelViewController];
+  printOptionsTableView = [printPanelViewController printOptionsTableView];
+  v5 = [printOptionsTableView dequeueReusableCellWithIdentifier:@"UIPrintOptionPopupCell"];
 
   [(UIPrintOption *)self setTableViewCell:v5];
-  v6 = [(UIPrintOption *)self title];
-  v7 = [v5 textLabel];
-  [v7 setText:v6];
+  title = [(UIPrintOption *)self title];
+  textLabel = [v5 textLabel];
+  [textLabel setText:title];
 
   [v5 setSelectionStyle:0];
   [(UIPrintPagesPerSheetOption *)self updateFromPrintInfo];
@@ -406,10 +406,10 @@ LABEL_15:
   return v5;
 }
 
-- (id)itemNameForNumber:(int64_t)a3
+- (id)itemNameForNumber:(int64_t)number
 {
   v3 = MEMORY[0x277CCABB8];
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:number];
   v5 = [v3 localizedStringFromNumber:v4 numberStyle:1];
 
   return v5;
@@ -417,27 +417,27 @@ LABEL_15:
 
 - (id)summaryString
 {
-  v3 = [(UIPrintOption *)self printInfo];
-  v4 = [v3 bookletStyle];
+  printInfo = [(UIPrintOption *)self printInfo];
+  bookletStyle = [printInfo bookletStyle];
 
-  if (v4 == 1)
+  if (bookletStyle == 1)
   {
-    v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v6 = [v5 localizedStringForKey:@"Print as Booklet" value:@"Print as Booklet" table:@"Localizable"];
+    mainBundle = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    v6 = [mainBundle localizedStringForKey:@"Print as Booklet" value:@"Print as Booklet" table:@"Localizable"];
   }
 
   else
   {
-    v7 = [(UIPrintOption *)self printInfo];
-    v8 = [v7 numNUpRows];
-    v9 = [(UIPrintOption *)self printInfo];
-    v10 = [v9 numNUpColumns] * v8;
+    printInfo2 = [(UIPrintOption *)self printInfo];
+    numNUpRows = [printInfo2 numNUpRows];
+    printInfo3 = [(UIPrintOption *)self printInfo];
+    v10 = [printInfo3 numNUpColumns] * numNUpRows;
 
     v11 = MEMORY[0x277CCACA8];
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
     v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v13 = [v12 localizedStringForKey:@"NUP_PAGES" value:@"NUP_PAGES" table:@"Localizable"];
-    v14 = [v5 localizedStringForKey:v13 value:&stru_2871AE610 table:0];
+    v14 = [mainBundle localizedStringForKey:v13 value:&stru_2871AE610 table:0];
     v6 = [v11 localizedStringWithFormat:v14, v10];
   }
 

@@ -1,13 +1,13 @@
 @interface FPProcess
-+ (FPProcess)processWithBsdInfo:(proc_bsdinfo *)a3;
-+ (FPProcess)processWithPid:(int)a3;
-+ (id)_nameForBsdInfo:(proc_bsdinfo *)a3;
-+ (id)allProcessesExcludingPids:(id)a3;
-+ (id)childPidsForPids:(id)a3;
-+ (id)pidsForStringDescriptions:(id)a3 errors:(id *)a4;
-+ (id)removeIdleExitCleanProcessesFrom:(id)a3;
++ (FPProcess)processWithBsdInfo:(proc_bsdinfo *)info;
++ (FPProcess)processWithPid:(int)pid;
++ (id)_nameForBsdInfo:(proc_bsdinfo *)info;
++ (id)allProcessesExcludingPids:(id)pids;
++ (id)childPidsForPids:(id)pids;
++ (id)pidsForStringDescriptions:(id)descriptions errors:(id *)errors;
++ (id)removeIdleExitCleanProcessesFrom:(id)from;
 - (FPProcess)init;
-- (FPProcess)initWithBsdInfo:(proc_bsdinfo *)a3;
+- (FPProcess)initWithBsdInfo:(proc_bsdinfo *)info;
 - (id)description;
 @end
 
@@ -41,25 +41,25 @@
   return v3;
 }
 
-- (FPProcess)initWithBsdInfo:(proc_bsdinfo *)a3
+- (FPProcess)initWithBsdInfo:(proc_bsdinfo *)info
 {
   v4 = [(FPProcess *)self init];
   v5 = v4;
   if (v4)
   {
-    [(FPProcess *)v4 setPid:a3->pbi_pid];
-    v5->_is64bit = (a3->pbi_flags & 0x10) != 0;
+    [(FPProcess *)v4 setPid:info->pbi_pid];
+    v5->_is64bit = (info->pbi_flags & 0x10) != 0;
     if (![(FPProcess *)v5 _populateTask])
     {
       v10 = 0;
       goto LABEL_6;
     }
 
-    v6 = [FPProcess _nameForBsdInfo:a3];
+    v6 = [FPProcess _nameForBsdInfo:info];
     [(FPProcess *)v5 setName:v6];
 
-    v7 = [(FPProcess *)v5 name];
-    v8 = [NSString stringWithFormat:@"%@ [%d]", v7, [(FPProcess *)v5 pid]];
+    name = [(FPProcess *)v5 name];
+    v8 = [NSString stringWithFormat:@"%@ [%d]", name, [(FPProcess *)v5 pid]];
     displayString = v5->_displayString;
     v5->_displayString = v8;
 
@@ -72,20 +72,20 @@ LABEL_6:
   return v10;
 }
 
-+ (FPProcess)processWithBsdInfo:(proc_bsdinfo *)a3
++ (FPProcess)processWithBsdInfo:(proc_bsdinfo *)info
 {
   v3 = &off_100028640;
-  if (a3->pbi_flags)
+  if (info->pbi_flags)
   {
     v3 = off_100028638;
   }
 
-  v4 = [objc_alloc(*v3) initWithBsdInfo:a3];
+  v4 = [objc_alloc(*v3) initWithBsdInfo:info];
 
   return v4;
 }
 
-+ (FPProcess)processWithPid:(int)a3
++ (FPProcess)processWithPid:(int)pid
 {
   v15 = 0;
   v13 = 0u;
@@ -96,9 +96,9 @@ LABEL_6:
   v10 = 0u;
   v7 = 0u;
   v8 = 0u;
-  if (proc_pidinfo(a3, 3, 0, &v7, 136) != 136)
+  if (proc_pidinfo(pid, 3, 0, &v7, 136) != 136)
   {
-    if (a3)
+    if (pid)
     {
       v5 = 0;
       goto LABEL_6;
@@ -115,13 +115,13 @@ LABEL_6:
     v10 = unk_100023EB8;
   }
 
-  v5 = [a1 processWithBsdInfo:&v7];
+  v5 = [self processWithBsdInfo:&v7];
 LABEL_6:
 
   return v5;
 }
 
-+ (id)_nameForBsdInfo:(proc_bsdinfo *)a3
++ (id)_nameForBsdInfo:(proc_bsdinfo *)info
 {
   *v18 = 0x800000001;
   size = 0;
@@ -129,7 +129,7 @@ LABEL_6:
   if (!sysctl(v18, 2u, &size, &v17, 0, 0))
   {
     *v18 = 0x3100000001;
-    pbi_pid = a3->pbi_pid;
+    pbi_pid = info->pbi_pid;
     v4 = malloc_type_malloc(size, 0x100004077774924uLL);
     if (v4)
     {
@@ -173,7 +173,7 @@ LABEL_6:
           if (size > v10)
           {
             v13 = [[NSString alloc] initWithUTF8String:&v5[v6 - 2]];
-            v14 = [v13 lastPathComponent];
+            lastPathComponent = [v13 lastPathComponent];
 
             free(v5);
             goto LABEL_18;
@@ -185,15 +185,15 @@ LABEL_6:
     }
   }
 
-  v14 = sub_100004410(FPProcess, a3);
+  lastPathComponent = sub_100004410(FPProcess, info);
 LABEL_18:
 
-  return v14;
+  return lastPathComponent;
 }
 
-+ (id)allProcessesExcludingPids:(id)a3
++ (id)allProcessesExcludingPids:(id)pids
 {
-  v3 = a3;
+  pidsCopy = pids;
   v19 = 0;
   v4 = sub_1000047A4(&v19);
   if (v4)
@@ -210,7 +210,7 @@ LABEL_18:
         v9 = &v5[136 * v7];
         v10 = *(v9 + 3);
         v11 = [NSNumber numberWithInt:v10, v18];
-        v12 = [v3 containsObject:v11];
+        v12 = [pidsCopy containsObject:v11];
 
         if ((v12 & 1) == 0)
         {
@@ -240,15 +240,15 @@ LABEL_18:
   return v16;
 }
 
-+ (id)pidsForStringDescriptions:(id)a3 errors:(id *)a4
++ (id)pidsForStringDescriptions:(id)descriptions errors:(id *)errors
 {
-  v6 = a3;
+  descriptionsCopy = descriptions;
   v55 = 0;
   v38 = sub_1000047A4(&v55);
   if (v38)
   {
     v7 = +[NSMutableDictionary dictionary];
-    if (a4)
+    if (errors)
     {
       v35 = objc_opt_new();
     }
@@ -262,15 +262,15 @@ LABEL_18:
     v54 = 0u;
     v51 = 0u;
     v52 = 0u;
-    v34 = v6;
-    obj = v6;
+    v34 = descriptionsCopy;
+    obj = descriptionsCopy;
     v41 = [obj countByEnumeratingWithState:&v51 objects:v57 count:16];
     if (v41)
     {
       v8 = v55;
       v39 = v55;
       v40 = *v52;
-      v37 = a4;
+      errorsCopy = errors;
       do
       {
         v9 = 0;
@@ -298,7 +298,7 @@ LABEL_18:
             while (1)
             {
               v17 = v15[3];
-              v18 = [a1 _nameForBsdInfo:v15];
+              v18 = [self _nameForBsdInfo:v15];
               if ([v10 isEqualToString:v18])
               {
                 v13 = 1;
@@ -325,7 +325,7 @@ LABEL_18:
                     v32 = [NSNumber numberWithInt:v17];
                     [v7 setObject:v31 forKeyedSubscript:v32];
 
-                    a4 = v37;
+                    errors = errorsCopy;
                     goto LABEL_41;
                   }
 
@@ -344,8 +344,8 @@ LABEL_23:
               v15 += 34;
               if (!--v16)
               {
-                a4 = v37;
-                if (!((v37 == 0) | v14 & 1))
+                errors = errorsCopy;
+                if (!((errorsCopy == 0) | v14 & 1))
                 {
                   v22 = [[NSString alloc] initWithFormat:@"Unable to find pid for process matching '%@'", v10];
                   [v35 addObject:v22];
@@ -361,7 +361,7 @@ LABEL_23:
             }
           }
 
-          if (a4)
+          if (errors)
           {
             v23 = [[NSString alloc] initWithFormat:@"Unable to find pid for process matching '%@'", v10];
             [v35 addObject:v23];
@@ -419,37 +419,37 @@ LABEL_42:
       while (v41);
     }
 
-    if (a4 && [v35 count])
+    if (errors && [v35 count])
     {
-      *a4 = [v35 copy];
+      *errors = [v35 copy];
     }
 
     free(v38);
 
-    v6 = v34;
+    descriptionsCopy = v34;
   }
 
   else
   {
     v7 = 0;
-    if (a4)
+    if (errors)
     {
-      *a4 = &off_10002C410;
+      *errors = &off_10002C410;
     }
   }
 
   return v7;
 }
 
-+ (id)childPidsForPids:(id)a3
++ (id)childPidsForPids:(id)pids
 {
-  v3 = a3;
+  pidsCopy = pids;
   v24 = 0;
   v4 = sub_1000047A4(&v24);
   if (v4)
   {
     v19 = +[NSMutableArray array];
-    v5 = [v3 mutableCopy];
+    v5 = [pidsCopy mutableCopy];
     v18 = objc_alloc_init(NSMutableArray);
     if (v5)
     {
@@ -490,7 +490,7 @@ LABEL_42:
                   if (v9 == [*(*(&v20 + 1) + 8 * j) longValue])
                   {
                     v16 = [NSNumber numberWithLong:v10];
-                    if (([v3 containsObject:v16] & 1) == 0 && (objc_msgSend(v19, "containsObject:", v16) & 1) == 0)
+                    if (([pidsCopy containsObject:v16] & 1) == 0 && (objc_msgSend(v19, "containsObject:", v16) & 1) == 0)
                     {
                       [v18 addObject:v16];
                     }
@@ -539,16 +539,16 @@ LABEL_22:
   return v4;
 }
 
-+ (id)removeIdleExitCleanProcessesFrom:(id)a3
++ (id)removeIdleExitCleanProcessesFrom:(id)from
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
+  fromCopy = from;
+  v4 = [fromCopy mutableCopy];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v3 objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  objectEnumerator = [fromCopy objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -559,7 +559,7 @@ LABEL_22:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -570,7 +570,7 @@ LABEL_22:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -582,8 +582,8 @@ LABEL_22:
 - (id)description
 {
   v3 = [(FPProcess *)self pid];
-  v4 = [(FPProcess *)self name];
-  v5 = [NSString stringWithFormat:@"FPProcess[%d] %@", v3, v4];
+  name = [(FPProcess *)self name];
+  v5 = [NSString stringWithFormat:@"FPProcess[%d] %@", v3, name];
 
   return v5;
 }

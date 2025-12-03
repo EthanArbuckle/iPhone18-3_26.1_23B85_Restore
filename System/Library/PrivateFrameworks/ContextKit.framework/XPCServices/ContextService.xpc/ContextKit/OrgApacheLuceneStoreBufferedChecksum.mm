@@ -1,30 +1,30 @@
 @interface OrgApacheLuceneStoreBufferedChecksum
-- (OrgApacheLuceneStoreBufferedChecksum)initWithJavaUtilZipChecksum:(id)a3;
-- (OrgApacheLuceneStoreBufferedChecksum)initWithJavaUtilZipChecksum:(id)a3 withInt:(int)a4;
+- (OrgApacheLuceneStoreBufferedChecksum)initWithJavaUtilZipChecksum:(id)checksum;
+- (OrgApacheLuceneStoreBufferedChecksum)initWithJavaUtilZipChecksum:(id)checksum withInt:(int)int;
 - (int64_t)getValue;
 - (void)dealloc;
 - (void)flush;
 - (void)reset;
-- (void)updateWithInt:(int)a3;
+- (void)updateWithInt:(int)int;
 @end
 
 @implementation OrgApacheLuceneStoreBufferedChecksum
 
-- (OrgApacheLuceneStoreBufferedChecksum)initWithJavaUtilZipChecksum:(id)a3
+- (OrgApacheLuceneStoreBufferedChecksum)initWithJavaUtilZipChecksum:(id)checksum
 {
-  JreStrongAssign(&self->in_, a3);
+  JreStrongAssign(&self->in_, checksum);
   JreStrongAssignAndConsume(&self->buffer_, [IOSByteArray newArrayWithLength:256]);
   return self;
 }
 
-- (OrgApacheLuceneStoreBufferedChecksum)initWithJavaUtilZipChecksum:(id)a3 withInt:(int)a4
+- (OrgApacheLuceneStoreBufferedChecksum)initWithJavaUtilZipChecksum:(id)checksum withInt:(int)int
 {
-  JreStrongAssign(&self->in_, a3);
-  JreStrongAssignAndConsume(&self->buffer_, [IOSByteArray newArrayWithLength:a4]);
+  JreStrongAssign(&self->in_, checksum);
+  JreStrongAssignAndConsume(&self->buffer_, [IOSByteArray newArrayWithLength:int]);
   return self;
 }
 
-- (void)updateWithInt:(int)a3
+- (void)updateWithInt:(int)int
 {
   buffer = self->buffer_;
   if (!buffer)
@@ -32,7 +32,7 @@
     goto LABEL_10;
   }
 
-  v4 = a3;
+  intCopy = int;
   upto = self->upto_;
   if (upto == buffer->super.size_)
   {
@@ -63,7 +63,7 @@ LABEL_7:
     IOSArray_throwOutOfBoundsWithMsg(size, upto);
   }
 
-  *(&buffer->super.size_ + upto + 4) = v4;
+  *(&buffer->super.size_ + upto + 4) = intCopy;
 }
 
 - (int64_t)getValue

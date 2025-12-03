@@ -1,19 +1,19 @@
 @interface APCListenerEngine
-+ (id)listenerWithCodecConfig:(id)a3 queue:(id)a4 dataReceivedHandler:(id)a5 error:(id *)a6;
-+ (id)listenerWithCodecConfig:(id)a3 queue:(id)a4 dataReceivedHandler:(id)a5 resultData:(id)a6 error:(id *)a7;
-- (APCListenerEngine)initWithCodecConfig:(id)a3 queue:(id)a4 dataReceivedHandler:(id)a5 resultData:(id)a6 error:(id *)a7;
-- (BOOL)validateInputNodeWithFormat:(id)a3;
-- (id)createAU:(AudioComponentDescription *)a3;
++ (id)listenerWithCodecConfig:(id)config queue:(id)queue dataReceivedHandler:(id)handler error:(id *)error;
++ (id)listenerWithCodecConfig:(id)config queue:(id)queue dataReceivedHandler:(id)handler resultData:(id)data error:(id *)error;
+- (APCListenerEngine)initWithCodecConfig:(id)config queue:(id)queue dataReceivedHandler:(id)handler resultData:(id)data error:(id *)error;
+- (BOOL)validateInputNodeWithFormat:(id)format;
+- (id)createAU:(AudioComponentDescription *)u;
 - (void)createEngineAndAttachNodes;
-- (void)makeEngineConnectionsWithError:(id *)a3;
+- (void)makeEngineConnectionsWithError:(id *)error;
 - (void)setupAudioSession;
-- (void)startEngineWithError:(id *)a3;
+- (void)startEngineWithError:(id *)error;
 - (void)stopEngine;
 @end
 
 @implementation APCListenerEngine
 
-- (id)createAU:(AudioComponentDescription *)a3
+- (id)createAU:(AudioComponentDescription *)u
 {
   v33 = *MEMORY[0x277D85DE8];
   v26 = 0;
@@ -34,7 +34,7 @@
   v17 = __Block_byref_object_copy__0;
   v18 = __Block_byref_object_dispose__0;
   v19 = 0;
-  buf = *a3;
+  buf = *u;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __30__APCListenerEngine_createAU___block_invoke;
@@ -54,16 +54,16 @@
       v9 = v27[5];
       if (v9)
       {
-        v10 = [v27[5] localizedDescription];
+        localizedDescription = [v27[5] localizedDescription];
       }
 
       else
       {
-        v10 = @"AVAudioUnit instantiateWithComponentDescription timed out";
+        localizedDescription = @"AVAudioUnit instantiateWithComponentDescription timed out";
       }
 
       buf.componentType = 138412290;
-      *&buf.componentSubType = v10;
+      *&buf.componentSubType = localizedDescription;
       _os_log_impl(&dword_24158E000, v8, OS_LOG_TYPE_ERROR, "AU instatiation failed with %@", &buf, 0xCu);
       if (v9)
       {
@@ -105,43 +105,43 @@ void __30__APCListenerEngine_createAU___block_invoke(void *a1, void *a2, void *a
   dispatch_semaphore_signal(*(*(a1[6] + 8) + 40));
 }
 
-+ (id)listenerWithCodecConfig:(id)a3 queue:(id)a4 dataReceivedHandler:(id)a5 error:(id *)a6
++ (id)listenerWithCodecConfig:(id)config queue:(id)queue dataReceivedHandler:(id)handler error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [[APCListenerEngine alloc] initWithCodecConfig:v9 queue:v10 dataReceivedHandler:v11 resultData:0 error:a6];
+  configCopy = config;
+  queueCopy = queue;
+  handlerCopy = handler;
+  v12 = [[APCListenerEngine alloc] initWithCodecConfig:configCopy queue:queueCopy dataReceivedHandler:handlerCopy resultData:0 error:error];
 
   return v12;
 }
 
-+ (id)listenerWithCodecConfig:(id)a3 queue:(id)a4 dataReceivedHandler:(id)a5 resultData:(id)a6 error:(id *)a7
++ (id)listenerWithCodecConfig:(id)config queue:(id)queue dataReceivedHandler:(id)handler resultData:(id)data error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [[APCListenerEngine alloc] initWithCodecConfig:v11 queue:v12 dataReceivedHandler:v13 resultData:v14 error:a7];
+  configCopy = config;
+  queueCopy = queue;
+  handlerCopy = handler;
+  dataCopy = data;
+  v15 = [[APCListenerEngine alloc] initWithCodecConfig:configCopy queue:queueCopy dataReceivedHandler:handlerCopy resultData:dataCopy error:error];
 
   return v15;
 }
 
-- (APCListenerEngine)initWithCodecConfig:(id)a3 queue:(id)a4 dataReceivedHandler:(id)a5 resultData:(id)a6 error:(id *)a7
+- (APCListenerEngine)initWithCodecConfig:(id)config queue:(id)queue dataReceivedHandler:(id)handler resultData:(id)data error:(id *)error
 {
   v41 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  configCopy = config;
+  queueCopy = queue;
+  handlerCopy = handler;
+  dataCopy = data;
   v38.receiver = self;
   v38.super_class = APCListenerEngine;
   v17 = [(APCListenerEngine *)&v38 init];
   p_isa = &v17->super.isa;
   if (v17)
   {
-    if (v13)
+    if (configCopy)
     {
-      objc_storeStrong(&v17->_codecConfig, a3);
+      objc_storeStrong(&v17->_codecConfig, config);
       +[AUPasscodeDecoder registerAU];
       +[AUPasscodeDecoder getAUDesc];
       v19 = [p_isa createAU:buf];
@@ -151,35 +151,35 @@ void __30__APCListenerEngine_createAU___block_invoke(void *a1, void *a2, void *a
       v21 = p_isa[3];
       if (v21)
       {
-        v22 = [v21 AUAudioUnit];
+        aUAudioUnit = [v21 AUAudioUnit];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v23 = [p_isa[3] AUAudioUnit];
+          aUAudioUnit2 = [p_isa[3] AUAudioUnit];
           v24 = p_isa[4];
-          p_isa[4] = v23;
+          p_isa[4] = aUAudioUnit2;
 
-          [p_isa[4] setCodecConfig:v13];
-          v25 = v14;
-          if (!v14)
+          [p_isa[4] setCodecConfig:configCopy];
+          v25 = queueCopy;
+          if (!queueCopy)
           {
             v25 = dispatch_get_global_queue(0, 0);
           }
 
           [p_isa[4] setDispatchQueue:v25];
-          if (!v14)
+          if (!queueCopy)
           {
           }
 
-          [p_isa[4] setDataHandler:v15];
-          [p_isa[4] setResultData:v16];
-          v26 = [p_isa[4] resultData];
-          v27 = v26 == 0;
+          [p_isa[4] setDataHandler:handlerCopy];
+          [p_isa[4] setResultData:dataCopy];
+          resultData = [p_isa[4] resultData];
+          v27 = resultData == 0;
 
           if (!v27)
           {
-            v28 = [p_isa[4] resultData];
-            [v28 reset];
+            resultData2 = [p_isa[4] resultData];
+            [resultData2 reset];
           }
 
           [p_isa setupAudioSession];
@@ -198,9 +198,9 @@ void __30__APCListenerEngine_createAU___block_invoke(void *a1, void *a2, void *a
           _os_log_impl(&dword_24158E000, v33, OS_LOG_TYPE_ERROR, "Encoder AU is not the expected class, it's a %@", buf, 0xCu);
         }
 
-        if (a7)
+        if (error)
         {
-          *a7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"AudioPasscodeDomain" code:0 userInfo:0];
+          *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"AudioPasscodeDomain" code:0 userInfo:0];
         }
 
 LABEL_27:
@@ -215,7 +215,7 @@ LABEL_27:
         _os_log_impl(&dword_24158E000, v32, OS_LOG_TYPE_ERROR, "Failed to create the decoder AU", buf, 2u);
       }
 
-      if (!a7)
+      if (!error)
       {
         goto LABEL_27;
       }
@@ -232,7 +232,7 @@ LABEL_27:
         _os_log_impl(&dword_24158E000, v30, OS_LOG_TYPE_ERROR, "Bad arguments to APCListenerEngine", buf, 2u);
       }
 
-      if (!a7)
+      if (!error)
       {
         goto LABEL_27;
       }
@@ -241,7 +241,7 @@ LABEL_27:
     }
 
     v29 = 0;
-    *a7 = v31;
+    *error = v31;
     goto LABEL_28;
   }
 
@@ -256,9 +256,9 @@ LABEL_28:
 - (void)setupAudioSession
 {
   v102 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CB83F8] auxiliarySession];
+  auxiliarySession = [MEMORY[0x277CB83F8] auxiliarySession];
   session = self->_session;
-  self->_session = v2;
+  self->_session = auxiliarySession;
 
   [(AVAudioSession *)self->_session setEligibleForBTSmartRoutingConsideration:0 error:0];
   v4 = self->_session;
@@ -313,8 +313,8 @@ LABEL_28:
         }
 
         v72 = *(*(&v89 + 1) + 8 * i);
-        v15 = [v72 portType];
-        v16 = [v15 isEqualToString:v13];
+        portType = [v72 portType];
+        v16 = [portType isEqualToString:v13];
 
         if (v16)
         {
@@ -360,17 +360,17 @@ LABEL_28:
                   v25 = APCLogObject();
                   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
                   {
-                    v26 = [v24 location];
-                    v27 = [v24 orientation];
+                    location = [v24 location];
+                    orientation = [v24 orientation];
                     *buf = 138412546;
-                    v97 = v26;
+                    v97 = location;
                     v98 = 2112;
-                    v99 = v27;
+                    v99 = orientation;
                     _os_log_impl(&dword_24158E000, v25, OS_LOG_TYPE_INFO, "Mic location/orientation is %@ %@", buf, 0x16u);
                   }
 
-                  v28 = [v24 orientation];
-                  v29 = [v28 isEqualToString:v22];
+                  orientation2 = [v24 orientation];
+                  v29 = [orientation2 isEqualToString:v22];
 
                   if (v29)
                   {
@@ -406,20 +406,20 @@ LABEL_28:
                     }
 
                     v35 = *(*(&v80 + 1) + 8 * k);
-                    v36 = [v35 location];
-                    v37 = [v36 isEqualToString:v33];
+                    location2 = [v35 location];
+                    v37 = [location2 isEqualToString:v33];
 
                     if (v37)
                     {
                       v44 = APCLogObject();
                       if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
                       {
-                        v45 = [v35 location];
-                        v46 = [v35 orientation];
+                        location3 = [v35 location];
+                        orientation3 = [v35 orientation];
                         *buf = 138412546;
-                        v97 = v45;
+                        v97 = location3;
                         v98 = 2112;
-                        v99 = v46;
+                        v99 = orientation3;
                         _os_log_impl(&dword_24158E000, v44, OS_LOG_TYPE_INFO, "Setting preferred microphone as '%@ %@'", buf, 0x16u);
                       }
 
@@ -455,13 +455,13 @@ LABEL_28:
               if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
               {
                 v39 = [v30 objectAtIndexedSubscript:0];
-                v40 = [v39 location];
+                location4 = [v39 location];
                 v41 = [v30 objectAtIndexedSubscript:0];
-                v42 = [v41 orientation];
+                orientation4 = [v41 orientation];
                 *buf = 138412546;
-                v97 = v40;
+                v97 = location4;
                 v98 = 2112;
-                v99 = v42;
+                v99 = orientation4;
                 _os_log_impl(&dword_24158E000, v38, OS_LOG_TYPE_INFO, "Choosing first available back microphone: '%@ %@'", buf, 0x16u);
               }
 
@@ -510,9 +510,9 @@ LABEL_52:
 LABEL_56:
 
   v48 = self->_session;
-  v49 = [(AUPasscodeDecoder *)self->_decoderAU codecConfig];
+  codecConfig = [(AUPasscodeDecoder *)self->_decoderAU codecConfig];
   v77 = 0;
-  -[AVAudioSession setPreferredSampleRate:error:](v48, "setPreferredSampleRate:error:", &v77, [v49 sampleRate]);
+  -[AVAudioSession setPreferredSampleRate:error:](v48, "setPreferredSampleRate:error:", &v77, [codecConfig sampleRate]);
   v50 = v77;
 
   if (v50)
@@ -520,21 +520,21 @@ LABEL_56:
     v51 = APCLogObject();
     if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
     {
-      v52 = [(AUPasscodeDecoder *)self->_decoderAU codecConfig];
-      v53 = [v52 sampleRate];
+      codecConfig2 = [(AUPasscodeDecoder *)self->_decoderAU codecConfig];
+      sampleRate = [codecConfig2 sampleRate];
       *buf = 134218242;
-      v97 = llround(v53);
+      v97 = llround(sampleRate);
       v98 = 2112;
       v99 = v50;
       _os_log_impl(&dword_24158E000, v51, OS_LOG_TYPE_ERROR, "Error setting preferred sample rate to %ld: %@", buf, 0x16u);
     }
   }
 
-  v54 = [(AVAudioSession *)self->_session inputNumberOfChannels];
-  v55 = [(AUPasscodeDecoder *)self->_decoderAU codecConfig];
-  LOBYTE(v54) = v54 == [v55 numChannels];
+  inputNumberOfChannels = [(AVAudioSession *)self->_session inputNumberOfChannels];
+  codecConfig3 = [(AUPasscodeDecoder *)self->_decoderAU codecConfig];
+  LOBYTE(inputNumberOfChannels) = inputNumberOfChannels == [codecConfig3 numChannels];
 
-  if (v54)
+  if (inputNumberOfChannels)
   {
     v56 = v50;
   }
@@ -542,9 +542,9 @@ LABEL_56:
   else
   {
     v57 = self->_session;
-    v58 = [(AUPasscodeDecoder *)self->_decoderAU codecConfig];
+    codecConfig4 = [(AUPasscodeDecoder *)self->_decoderAU codecConfig];
     v76 = v50;
-    -[AVAudioSession setPreferredInputNumberOfChannels:error:](v57, "setPreferredInputNumberOfChannels:error:", [v58 numChannels], &v76);
+    -[AVAudioSession setPreferredInputNumberOfChannels:error:](v57, "setPreferredInputNumberOfChannels:error:", [codecConfig4 numChannels], &v76);
     v56 = v76;
 
     if (v56)
@@ -552,10 +552,10 @@ LABEL_56:
       v59 = APCLogObject();
       if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
       {
-        v60 = [(AUPasscodeDecoder *)self->_decoderAU codecConfig];
-        v61 = [v60 numChannels];
+        codecConfig5 = [(AUPasscodeDecoder *)self->_decoderAU codecConfig];
+        numChannels = [codecConfig5 numChannels];
         *buf = 134218242;
-        v97 = v61;
+        v97 = numChannels;
         v98 = 2112;
         v99 = v56;
         _os_log_impl(&dword_24158E000, v59, OS_LOG_TYPE_ERROR, "Couldn't set preferred number of input channels to %ld (AU will handle the mapping): %@", buf, 0x16u);
@@ -575,11 +575,11 @@ LABEL_56:
     v67 = APCLogObject();
     if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
     {
-      v68 = [v66 localizedDescription];
+      localizedDescription = [v66 localizedDescription];
       *buf = 134218242;
       v97 = *&v64;
       v98 = 2112;
-      v99 = v68;
+      v99 = localizedDescription;
       _os_log_impl(&dword_24158E000, v67, OS_LOG_TYPE_ERROR, "Error setting preferred io buffer duration to %0.3f seconds: %@", buf, 0x16u);
     }
   }
@@ -596,10 +596,10 @@ LABEL_56:
 
   [(AVAudioEngine *)self->_engine attachNode:self->_decoderAUNode];
   inData = [(AVAudioSession *)self->_session opaqueSessionID];
-  v5 = [(AVAudioEngine *)self->_engine inputNode];
-  v6 = [v5 audioUnit];
+  inputNode = [(AVAudioEngine *)self->_engine inputNode];
+  audioUnit = [inputNode audioUnit];
 
-  v7 = AudioUnitSetProperty(v6, 0x7E7u, 0, 0, &inData, 4u);
+  v7 = AudioUnitSetProperty(audioUnit, 0x7E7u, 0, 0, &inData, 4u);
   if (v7)
   {
     v8 = APCLogObject();
@@ -614,26 +614,26 @@ LABEL_56:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)validateInputNodeWithFormat:(id)a3
+- (BOOL)validateInputNodeWithFormat:(id)format
 {
-  v3 = a3;
-  v4 = v3;
-  v6 = v3 && ([v3 sampleRate], v5 > 0.0) && objc_msgSend(v4, "channelCount") != 0;
+  formatCopy = format;
+  v4 = formatCopy;
+  v6 = formatCopy && ([formatCopy sampleRate], v5 > 0.0) && objc_msgSend(v4, "channelCount") != 0;
 
   return v6;
 }
 
-- (void)makeEngineConnectionsWithError:(id *)a3
+- (void)makeEngineConnectionsWithError:(id *)error
 {
   [(AVAudioUnit *)self->_decoderAUNode removeTapOnBus:0];
-  v5 = [(AVAudioEngine *)self->_engine inputNode];
-  v9 = [v5 inputFormatForBus:0];
+  inputNode = [(AVAudioEngine *)self->_engine inputNode];
+  v9 = [inputNode inputFormatForBus:0];
 
   if ([(APCListenerEngine *)self validateInputNodeWithFormat:v9])
   {
     engine = self->_engine;
-    v7 = [(AVAudioEngine *)engine inputNode];
-    [(AVAudioEngine *)engine connect:v7 to:self->_decoderAUNode format:v9];
+    inputNode2 = [(AVAudioEngine *)engine inputNode];
+    [(AVAudioEngine *)engine connect:inputNode2 to:self->_decoderAUNode format:v9];
 
     [(AVAudioUnit *)self->_decoderAUNode installTapOnBus:0 bufferSize:0x2000 format:v9 block:&__block_literal_global_0];
     v8 = 0;
@@ -644,10 +644,10 @@ LABEL_56:
     v8 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-10868 userInfo:0];
   }
 
-  *a3 = v8;
+  *error = v8;
 }
 
-- (void)startEngineWithError:(id *)a3
+- (void)startEngineWithError:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
   if (![(AVAudioEngine *)self->_engine isRunning])
@@ -711,10 +711,10 @@ LABEL_12:
       }
     }
 
-    if (a3)
+    if (error)
     {
       v12 = v9;
-      *a3 = v9;
+      *error = v9;
     }
 
     goto LABEL_12;

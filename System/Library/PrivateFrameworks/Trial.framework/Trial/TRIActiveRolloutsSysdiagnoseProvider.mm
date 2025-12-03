@@ -1,22 +1,22 @@
 @interface TRIActiveRolloutsSysdiagnoseProvider
-+ (BOOL)_isFactorRecordFileType:(id)a3;
++ (BOOL)_isFactorRecordFileType:(id)type;
 - (TRIActiveRolloutsSysdiagnoseProvider)init;
-- (TRIActiveRolloutsSysdiagnoseProvider)initWithNamespaceManagementClient:(id)a3;
-- (id)sysdiagnoseLinesWithError:(id *)a3;
+- (TRIActiveRolloutsSysdiagnoseProvider)initWithNamespaceManagementClient:(id)client;
+- (id)sysdiagnoseLinesWithError:(id *)error;
 @end
 
 @implementation TRIActiveRolloutsSysdiagnoseProvider
 
-- (TRIActiveRolloutsSysdiagnoseProvider)initWithNamespaceManagementClient:(id)a3
+- (TRIActiveRolloutsSysdiagnoseProvider)initWithNamespaceManagementClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v9.receiver = self;
   v9.super_class = TRIActiveRolloutsSysdiagnoseProvider;
   v6 = [(TRIActiveRolloutsSysdiagnoseProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_namespaceClient, a3);
+    objc_storeStrong(&v6->_namespaceClient, client);
   }
 
   return v7;
@@ -30,10 +30,10 @@
   return v4;
 }
 
-+ (BOOL)_isFactorRecordFileType:(id)a3
++ (BOOL)_isFactorRecordFileType:(id)type
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"assetReference"];
+  typeCopy = type;
+  v4 = [typeCopy objectForKey:@"assetReference"];
   if (v4)
   {
     v5 = 1;
@@ -41,7 +41,7 @@
 
   else
   {
-    v6 = [v3 objectForKey:@"path"];
+    v6 = [typeCopy objectForKey:@"path"];
     if (v6)
     {
       v5 = 1;
@@ -49,7 +49,7 @@
 
     else
     {
-      v7 = [v3 objectForKey:@"type"];
+      v7 = [typeCopy objectForKey:@"type"];
       v5 = [@"file" isEqual:v7];
     }
   }
@@ -57,17 +57,17 @@
   return v5;
 }
 
-- (id)sysdiagnoseLinesWithError:(id *)a3
+- (id)sysdiagnoseLinesWithError:(id *)error
 {
   v103 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [(TRINamespaceManagementProtocol *)self->_namespaceClient activeRolloutInformation:a3];
+  array = [MEMORY[0x277CBEB18] array];
+  v6 = [(TRINamespaceManagementProtocol *)self->_namespaceClient activeRolloutInformation:error];
   v7 = v6;
   if (v6)
   {
     if ([v6 count])
     {
-      [v5 addObject:@"rollouts:"];
+      [array addObject:@"rollouts:"];
       v98 = 0u;
       v99 = 0u;
       v96 = 0u;
@@ -99,10 +99,10 @@
           v13 = objc_alloc(*(v9 + 3240));
           v14 = [v11 objectForKey:@"rolloutId"];
           v74 = v12;
-          v15 = [v12 intValue];
-          if (v15)
+          intValue = [v12 intValue];
+          if (intValue)
           {
-            v16 = v15;
+            v16 = intValue;
           }
 
           else
@@ -111,24 +111,24 @@
           }
 
           v17 = [v13 initWithFormat:@"    - rollout: %@.%d", v14, v16];
-          [v5 addObject:v17];
+          [array addObject:v17];
 
           v18 = objc_alloc(*(v9 + 3240));
           v19 = [v11 objectForKey:@"rampId"];
           v20 = [v18 initWithFormat:@"      rampId: %@", v19];
-          [v5 addObject:v20];
+          [array addObject:v20];
 
           v21 = objc_alloc(*(v9 + 3240));
           v22 = [v11 objectForKey:@"status"];
           v23 = [v21 initWithFormat:@"      status: %@", v22];
-          [v5 addObject:v23];
+          [array addObject:v23];
 
           v24 = objc_alloc(*(v9 + 3240));
           v25 = [v11 objectForKey:@"activeFactorPackSetId"];
           v26 = [v24 initWithFormat:@"      activeFactorPackSetid: %@", v25];
-          [v5 addObject:v26];
+          [array addObject:v26];
 
-          [v5 addObject:@"      namespaces:"];
+          [array addObject:@"      namespaces:"];
           v27 = [v11 objectForKey:@"namespaces"];
           v92 = 0u;
           v93 = 0u;
@@ -158,21 +158,21 @@
 
                 v79 = v30;
                 v32 = [objc_alloc(*(v9 + 3240)) initWithFormat:@"       - namespace: %@", v30];
-                [v5 addObject:v32];
+                [array addObject:v32];
 
                 v33 = objc_alloc(*(v9 + 3240));
                 v34 = [v29 objectForKey:@"ncvs"];
                 v35 = [v34 componentsJoinedByString:{@", "}];
                 v36 = [v33 initWithFormat:@"         NCVs: [%@]", v35];
-                [v5 addObject:v36];
+                [array addObject:v36];
 
                 v9 = 0x277CCA000uLL;
                 v37 = objc_alloc(MEMORY[0x277CCACA8]);
                 v38 = [v29 objectForKey:@"factorPackId"];
                 v39 = [v37 initWithFormat:@"         factorPackId: %@", v38];
-                [v5 addObject:v39];
+                [array addObject:v39];
 
-                [v5 addObject:@"         factors:"];
+                [array addObject:@"         factors:"];
                 v40 = [v29 objectForKey:@"factors"];
                 v88 = 0u;
                 v89 = 0u;
@@ -197,11 +197,11 @@
                       v43 = objc_autoreleasePoolPush();
                       v44 = [v42 objectForKey:v8];
                       v45 = [objc_alloc(*(v9 + 3240)) initWithFormat:@"          - factor: %@", v44];
-                      [v5 addObject:v45];
+                      [array addObject:v45];
 
                       v46 = objc_alloc(*(v9 + 3240));
                       [v42 objectForKey:@"type"];
-                      v47 = v5;
+                      v47 = array;
                       v49 = v48 = v9;
                       v50 = [v46 initWithFormat:@"            type: %@", v49];
                       [v47 addObject:v50];
@@ -210,10 +210,10 @@
                       if (v51)
                       {
                         v52 = objc_alloc(*(v48 + 3240));
-                        v53 = [v51 object];
-                        v54 = [v52 initWithFormat:@"            overrideLevel: %@", v53];
+                        object = [v51 object];
+                        v54 = [v52 initWithFormat:@"            overrideLevel: %@", object];
                         [v47 addObject:v54];
-                        v5 = v47;
+                        array = v47;
 LABEL_28:
 
                         goto LABEL_29;
@@ -225,9 +225,9 @@ LABEL_28:
                       v58 = objc_alloc(*(v48 + 3240));
                       if (!v57)
                       {
-                        v53 = [v42 objectForKey:@"levelValue"];
-                        v54 = [v58 initWithFormat:@"            levelValue: %@", v53];
-                        v5 = v55;
+                        object = [v42 objectForKey:@"levelValue"];
+                        v54 = [v58 initWithFormat:@"            levelValue: %@", object];
+                        array = v55;
                         [v55 addObject:v54];
                         goto LABEL_27;
                       }
@@ -237,22 +237,22 @@ LABEL_28:
                       [v55 addObject:v60];
 
                       v61 = *(v48 + 3240);
-                      v5 = v55;
+                      array = v55;
                       v62 = [v61 alloc];
                       v63 = [v42 objectForKey:@"path"];
                       v64 = [v62 initWithFormat:@"            path: %@", v63];
                       [v55 addObject:v64];
 
                       [v55 addObject:@"            metadata:"];
-                      v53 = [v42 objectForKey:@"metadata"];
-                      if (v53)
+                      object = [v42 objectForKey:@"metadata"];
+                      if (object)
                       {
                         v86[0] = MEMORY[0x277D85DD0];
                         v86[1] = 3221225472;
                         v86[2] = __66__TRIActiveRolloutsSysdiagnoseProvider_sysdiagnoseLinesWithError___block_invoke;
                         v86[3] = &unk_27885EA88;
                         v87 = v55;
-                        [v53 enumerateKeysAndObjectsUsingBlock:v86];
+                        [object enumerateKeysAndObjectsUsingBlock:v86];
                         v54 = v87;
 LABEL_27:
                         v8 = v56;
@@ -295,7 +295,7 @@ LABEL_29:
         {
 LABEL_37:
 
-          v66 = v5;
+          v66 = array;
           v7 = v70;
           goto LABEL_41;
         }

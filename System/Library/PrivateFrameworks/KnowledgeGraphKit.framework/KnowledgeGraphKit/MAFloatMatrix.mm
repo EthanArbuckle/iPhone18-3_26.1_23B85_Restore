@@ -1,31 +1,31 @@
 @interface MAFloatMatrix
-+ (id)onesWithRows:(int64_t)a3 columns:(int64_t)a4;
-+ (id)zerosWithRows:(int64_t)a3 columns:(int64_t)a4;
-- (BOOL)isApproximatelyEqualTo:(id)a3;
-- (BOOL)isApproximatelyEqualTo:(id)a3 epsilon:(float)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)onesWithRows:(int64_t)rows columns:(int64_t)columns;
++ (id)zerosWithRows:(int64_t)rows columns:(int64_t)columns;
+- (BOOL)isApproximatelyEqualTo:(id)to;
+- (BOOL)isApproximatelyEqualTo:(id)to epsilon:(float)epsilon;
+- (BOOL)isEqual:(id)equal;
 - (MAFloatMatrix)init;
-- (MAFloatMatrix)initWithArray:(id)a3;
-- (MAFloatMatrix)initWithData:(id)a3 rows:(int64_t)a4 columns:(int64_t)a5;
-- (MAFloatMatrix)initWithFloats:(const float *)a3 rows:(int64_t)a4 columns:(int64_t)a5;
-- (MAFloatMatrix)initWithWrapper:(id)a3;
-- (float)floatAtRow:(int64_t)a3 column:(int64_t)a4;
+- (MAFloatMatrix)initWithArray:(id)array;
+- (MAFloatMatrix)initWithData:(id)data rows:(int64_t)rows columns:(int64_t)columns;
+- (MAFloatMatrix)initWithFloats:(const float *)floats rows:(int64_t)rows columns:(int64_t)columns;
+- (MAFloatMatrix)initWithWrapper:(id)wrapper;
+- (float)floatAtRow:(int64_t)row column:(int64_t)column;
 - (float)mean;
 - (float)sum;
 - (float)sumOfSquares;
 - (id)array;
 - (id)data;
 - (id)description;
-- (id)matrixByAddingScalar:(float)a3;
-- (id)matrixByAppendingColumn:(id)a3;
-- (id)matrixByAppendingColumnsOfMatrix:(id)a3;
-- (id)matrixByAppendingRow:(id)a3;
-- (id)matrixBySubtractingMatrix:(id)a3;
-- (id)matrixBySubtractingScalar:(float)a3;
-- (id)meanAlongAxis:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)row:(int64_t)a3;
-- (id)sumAlongAxis:(unint64_t)a3;
+- (id)matrixByAddingScalar:(float)scalar;
+- (id)matrixByAppendingColumn:(id)column;
+- (id)matrixByAppendingColumnsOfMatrix:(id)matrix;
+- (id)matrixByAppendingRow:(id)row;
+- (id)matrixBySubtractingMatrix:(id)matrix;
+- (id)matrixBySubtractingScalar:(float)scalar;
+- (id)meanAlongAxis:(unint64_t)axis;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)row:(int64_t)row;
+- (id)sumAlongAxis:(unint64_t)axis;
 - (int64_t)columns;
 - (int64_t)count;
 - (int64_t)rows;
@@ -36,23 +36,23 @@
 
 - (id)description
 {
-  v2 = [(MAFloatMatrix *)self wrapper];
-  v3 = [v2 description];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  v3 = [wrapper description];
 
   return v3;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [MAMutableFloatMatrix allocWithZone:a3];
-  v5 = [(MAFloatMatrix *)self wrapper];
-  v6 = [v5 mutableCopy];
+  v4 = [MAMutableFloatMatrix allocWithZone:zone];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  v6 = [wrapper mutableCopy];
   v7 = [(MAFloatMatrix *)v4 initWithWrapper:v6];
 
   return v7;
 }
 
-+ (id)onesWithRows:(int64_t)a3 columns:(int64_t)a4
++ (id)onesWithRows:(int64_t)rows columns:(int64_t)columns
 {
   v4 = [objc_msgSend(objc_opt_class() "wrapperClass")];
   v5 = [objc_alloc(objc_opt_class()) initWithWrapper:v4];
@@ -60,7 +60,7 @@
   return v5;
 }
 
-+ (id)zerosWithRows:(int64_t)a3 columns:(int64_t)a4
++ (id)zerosWithRows:(int64_t)rows columns:(int64_t)columns
 {
   v4 = [objc_msgSend(objc_opt_class() "wrapperClass")];
   v5 = [objc_alloc(objc_opt_class()) initWithWrapper:v4];
@@ -70,16 +70,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MAFloatMatrix *)self wrapper];
-  v3 = [v2 hash];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  v3 = [wrapper hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -89,11 +89,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MAFloatMatrix *)self wrapper];
-      v7 = [(MAFloatMatrix *)v5 wrapper];
+      v5 = equalCopy;
+      wrapper = [(MAFloatMatrix *)self wrapper];
+      wrapper2 = [(MAFloatMatrix *)v5 wrapper];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [wrapper isEqual:wrapper2];
     }
 
     else
@@ -105,10 +105,10 @@
   return v8;
 }
 
-- (BOOL)isApproximatelyEqualTo:(id)a3 epsilon:(float)a4
+- (BOOL)isApproximatelyEqualTo:(id)to epsilon:(float)epsilon
 {
-  v6 = a3;
-  if (v6 == self)
+  toCopy = to;
+  if (toCopy == self)
   {
     v11 = 1;
   }
@@ -118,12 +118,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [(MAFloatMatrix *)self wrapper];
-      v9 = [(MAFloatMatrix *)v7 wrapper];
+      v7 = toCopy;
+      wrapper = [(MAFloatMatrix *)self wrapper];
+      wrapper2 = [(MAFloatMatrix *)v7 wrapper];
 
-      *&v10 = a4;
-      v11 = [v8 isApproximatelyEqualTo:v9 epsilon:v10];
+      *&v10 = epsilon;
+      v11 = [wrapper isApproximatelyEqualTo:wrapper2 epsilon:v10];
     }
 
     else
@@ -135,10 +135,10 @@
   return v11;
 }
 
-- (BOOL)isApproximatelyEqualTo:(id)a3
+- (BOOL)isApproximatelyEqualTo:(id)to
 {
-  v4 = a3;
-  if (v4 == self)
+  toCopy = to;
+  if (toCopy == self)
   {
     v8 = 1;
   }
@@ -148,11 +148,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MAFloatMatrix *)self wrapper];
-      v7 = [(MAFloatMatrix *)v5 wrapper];
+      v5 = toCopy;
+      wrapper = [(MAFloatMatrix *)self wrapper];
+      wrapper2 = [(MAFloatMatrix *)v5 wrapper];
 
-      v8 = [v6 isApproximatelyEqualTo:v7];
+      v8 = [wrapper isApproximatelyEqualTo:wrapper2];
     }
 
     else
@@ -164,96 +164,96 @@
   return v8;
 }
 
-- (id)meanAlongAxis:(unint64_t)a3
+- (id)meanAlongAxis:(unint64_t)axis
 {
   v5 = [MAFloatVector alloc];
-  v6 = [(MAFloatMatrix *)self wrapper];
-  v7 = [v6 meanAlongAxis:a3];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  v7 = [wrapper meanAlongAxis:axis];
   v8 = [(MAFloatVector *)v5 initWithWrapper:v7];
 
   return v8;
 }
 
-- (id)sumAlongAxis:(unint64_t)a3
+- (id)sumAlongAxis:(unint64_t)axis
 {
   v5 = [MAFloatVector alloc];
-  v6 = [(MAFloatMatrix *)self wrapper];
-  v7 = [v6 sumAlongAxis:a3];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  v7 = [wrapper sumAlongAxis:axis];
   v8 = [(MAFloatVector *)v5 initWithWrapper:v7];
 
   return v8;
 }
 
-- (id)matrixByAppendingColumnsOfMatrix:(id)a3
+- (id)matrixByAppendingColumnsOfMatrix:(id)matrix
 {
-  v4 = a3;
+  matrixCopy = matrix;
   v5 = [MAFloatMatrix alloc];
-  v6 = [(MAFloatMatrix *)self wrapper];
-  v7 = [v4 wrapper];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  wrapper2 = [matrixCopy wrapper];
 
-  v8 = [v6 matrixByAppendingColumnsOfMatrix:v7];
+  v8 = [wrapper matrixByAppendingColumnsOfMatrix:wrapper2];
   v9 = [(MAFloatMatrix *)v5 initWithWrapper:v8];
 
   return v9;
 }
 
-- (id)matrixByAppendingColumn:(id)a3
+- (id)matrixByAppendingColumn:(id)column
 {
-  v4 = a3;
+  columnCopy = column;
   v5 = [MAFloatMatrix alloc];
-  v6 = [(MAFloatMatrix *)self wrapper];
-  v7 = [v4 wrapper];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  wrapper2 = [columnCopy wrapper];
 
-  v8 = [v6 matrixByAppendingColumnVector:v7];
+  v8 = [wrapper matrixByAppendingColumnVector:wrapper2];
   v9 = [(MAFloatMatrix *)v5 initWithWrapper:v8];
 
   return v9;
 }
 
-- (id)matrixByAppendingRow:(id)a3
+- (id)matrixByAppendingRow:(id)row
 {
-  v4 = a3;
-  v5 = [(MAFloatMatrix *)self wrapper];
-  v6 = [v5 mutableCopy];
+  rowCopy = row;
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  v6 = [wrapper mutableCopy];
 
-  v7 = [v4 wrapper];
+  wrapper2 = [rowCopy wrapper];
 
-  [v6 appendRow:v7];
+  [v6 appendRow:wrapper2];
   v8 = [[MAFloatMatrix alloc] initWithWrapper:v6];
 
   return v8;
 }
 
-- (id)matrixByAddingScalar:(float)a3
+- (id)matrixByAddingScalar:(float)scalar
 {
   v5 = [MAFloatMatrix alloc];
-  v6 = [(MAFloatMatrix *)self wrapper];
-  *&v7 = a3;
-  v8 = [v6 matrixByAddingScalar:v7];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  *&v7 = scalar;
+  v8 = [wrapper matrixByAddingScalar:v7];
   v9 = [(MAFloatMatrix *)v5 initWithWrapper:v8];
 
   return v9;
 }
 
-- (id)matrixBySubtractingScalar:(float)a3
+- (id)matrixBySubtractingScalar:(float)scalar
 {
   v5 = [MAFloatMatrix alloc];
-  v6 = [(MAFloatMatrix *)self wrapper];
-  *&v7 = a3;
-  v8 = [v6 matrixBySubtractingScalar:v7];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  *&v7 = scalar;
+  v8 = [wrapper matrixBySubtractingScalar:v7];
   v9 = [(MAFloatMatrix *)v5 initWithWrapper:v8];
 
   return v9;
 }
 
-- (id)matrixBySubtractingMatrix:(id)a3
+- (id)matrixBySubtractingMatrix:(id)matrix
 {
-  v4 = a3;
+  matrixCopy = matrix;
   v5 = [MAFloatMatrix alloc];
-  v6 = [(MAFloatMatrix *)self wrapper];
-  v7 = [v4 wrapper];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  wrapper2 = [matrixCopy wrapper];
 
-  v8 = [v6 matrixBySubtractingMatrix:v7];
+  v8 = [wrapper matrixBySubtractingMatrix:wrapper2];
   v9 = [(MAFloatMatrix *)v5 initWithWrapper:v8];
 
   return v9;
@@ -261,34 +261,34 @@
 
 - (id)data
 {
-  v2 = [(MAFloatMatrix *)self wrapper];
-  v3 = [v2 data];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  data = [wrapper data];
 
-  return v3;
+  return data;
 }
 
 - (id)array
 {
-  v2 = [(MAFloatMatrix *)self wrapper];
-  v3 = [v2 array];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  array = [wrapper array];
 
-  return v3;
+  return array;
 }
 
-- (id)row:(int64_t)a3
+- (id)row:(int64_t)row
 {
   v5 = [MAFloatVector alloc];
-  v6 = [(MAFloatMatrix *)self wrapper];
-  v7 = [v6 row:a3];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  v7 = [wrapper row:row];
   v8 = [(MAFloatVector *)v5 initWithWrapper:v7];
 
   return v8;
 }
 
-- (float)floatAtRow:(int64_t)a3 column:(int64_t)a4
+- (float)floatAtRow:(int64_t)row column:(int64_t)column
 {
-  v6 = [(MAFloatMatrix *)self wrapper];
-  [v6 floatAtRow:a3 column:a4];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  [wrapper floatAtRow:row column:column];
   v8 = v7;
 
   return v8;
@@ -296,8 +296,8 @@
 
 - (float)mean
 {
-  v2 = [(MAFloatMatrix *)self wrapper];
-  [v2 mean];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  [wrapper mean];
   v4 = v3;
 
   return v4;
@@ -305,8 +305,8 @@
 
 - (float)sumOfSquares
 {
-  v2 = [(MAFloatMatrix *)self wrapper];
-  [v2 sumOfSquares];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  [wrapper sumOfSquares];
   v4 = v3;
 
   return v4;
@@ -314,8 +314,8 @@
 
 - (float)sum
 {
-  v2 = [(MAFloatMatrix *)self wrapper];
-  [v2 sum];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  [wrapper sum];
   v4 = v3;
 
   return v4;
@@ -323,40 +323,40 @@
 
 - (int64_t)count
 {
-  v2 = [(MAFloatMatrix *)self wrapper];
-  v3 = [v2 count];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  v3 = [wrapper count];
 
   return v3;
 }
 
 - (int64_t)columns
 {
-  v2 = [(MAFloatMatrix *)self wrapper];
-  v3 = [v2 columns];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  columns = [wrapper columns];
 
-  return v3;
+  return columns;
 }
 
 - (int64_t)rows
 {
-  v2 = [(MAFloatMatrix *)self wrapper];
-  v3 = [v2 rows];
+  wrapper = [(MAFloatMatrix *)self wrapper];
+  rows = [wrapper rows];
 
-  return v3;
+  return rows;
 }
 
-- (MAFloatMatrix)initWithData:(id)a3 rows:(int64_t)a4 columns:(int64_t)a5
+- (MAFloatMatrix)initWithData:(id)data rows:(int64_t)rows columns:(int64_t)columns
 {
-  v8 = a3;
+  dataCopy = data;
   v9 = [objc_msgSend(objc_opt_class() "wrapperClass")];
 
   v10 = [(MAFloatMatrix *)self initWithWrapper:v9];
   return v10;
 }
 
-- (MAFloatMatrix)initWithArray:(id)a3
+- (MAFloatMatrix)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = MAFloatMatrix;
   v5 = [(MAFloatMatrix *)&v9 init];
@@ -370,7 +370,7 @@
   return v5;
 }
 
-- (MAFloatMatrix)initWithFloats:(const float *)a3 rows:(int64_t)a4 columns:(int64_t)a5
+- (MAFloatMatrix)initWithFloats:(const float *)floats rows:(int64_t)rows columns:(int64_t)columns
 {
   v12.receiver = self;
   v12.super_class = MAFloatMatrix;
@@ -385,16 +385,16 @@
   return v8;
 }
 
-- (MAFloatMatrix)initWithWrapper:(id)a3
+- (MAFloatMatrix)initWithWrapper:(id)wrapper
 {
-  v5 = a3;
+  wrapperCopy = wrapper;
   v9.receiver = self;
   v9.super_class = MAFloatMatrix;
   v6 = [(MAFloatMatrix *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wrapper, a3);
+    objc_storeStrong(&v6->_wrapper, wrapper);
   }
 
   return v7;

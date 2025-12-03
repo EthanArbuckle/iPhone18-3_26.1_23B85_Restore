@@ -1,16 +1,16 @@
 @interface PowerUIDrainMonitor
 + (id)sharedInstance;
-- (BOOL)hasVariationForMedianLevels:(id)a3;
+- (BOOL)hasVariationForMedianLevels:(id)levels;
 - (BOOL)isAtKnownChargingLocation;
 - (PowerUIDrainMonitor)init;
-- (id)isTrendingLowerWithBatteryLevel:(int64_t)a3 atDate:(id)a4;
-- (unint64_t)slotForDate:(id)a3 withTimeSlotWidth:(unint64_t)a4;
+- (id)isTrendingLowerWithBatteryLevel:(int64_t)level atDate:(id)date;
+- (unint64_t)slotForDate:(id)date withTimeSlotWidth:(unint64_t)width;
 - (void)disableLPM;
 - (void)disableMitigations;
 - (void)enableLPM;
 - (void)enableMitigations;
 - (void)evaluateNudgeForLPM;
-- (void)postLPMNudgeNotificationWithInfo:(id)a3;
+- (void)postLPMNudgeNotificationWithInfo:(id)info;
 - (void)start;
 @end
 
@@ -62,9 +62,9 @@ uint64_t __37__PowerUIDrainMonitor_sharedInstance__block_invoke()
       _os_log_impl(&dword_21B766000, v10, OS_LOG_TYPE_DEFAULT, "PowerUIDrainMonitor initiating...", buf, 2u);
     }
 
-    v11 = [MEMORY[0x277CFE318] userContext];
+    userContext = [MEMORY[0x277CFE318] userContext];
     context = v2->_context;
-    v2->_context = v11;
+    v2->_context = userContext;
 
     v13 = [(NSUserDefaults *)v2->_defaults objectForKey:@"didEnableLPM"];
     v14 = v13;
@@ -100,8 +100,8 @@ void __27__PowerUIDrainMonitor_init__block_invoke(uint64_t a1)
 - (void)start
 {
   v3 = MEMORY[0x277CFE360];
-  v4 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
-  v5 = [v3 predicateForChangeAtKeyPath:v4];
+  keyPathForBatteryLevel = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
+  v5 = [v3 predicateForChangeAtKeyPath:keyPathForBatteryLevel];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -219,8 +219,8 @@ void __28__PowerUIDrainMonitor_start__block_invoke_3(uint64_t a1)
     _os_log_impl(&dword_21B766000, v3, OS_LOG_TYPE_DEFAULT, "SMDEBUG: Enabling LPM", v5, 2u);
   }
 
-  v4 = [MEMORY[0x277D244D8] sharedInstance];
-  [v4 setPowerMode:1 fromSource:@"com.apple.powerui.ambrosia"];
+  mEMORY[0x277D244D8] = [MEMORY[0x277D244D8] sharedInstance];
+  [mEMORY[0x277D244D8] setPowerMode:1 fromSource:@"com.apple.powerui.ambrosia"];
 
   self->_didEnableLPM = 1;
   [(NSUserDefaults *)self->_defaults setBool:1 forKey:@"didEnableLPM"];
@@ -235,8 +235,8 @@ void __28__PowerUIDrainMonitor_start__block_invoke_3(uint64_t a1)
     _os_log_impl(&dword_21B766000, v3, OS_LOG_TYPE_DEFAULT, "SMDEBUG: Disabling LPM", v5, 2u);
   }
 
-  v4 = [MEMORY[0x277D244D8] sharedInstance];
-  [v4 setPowerMode:0 fromSource:@"com.apple.powerui.ambrosia"];
+  mEMORY[0x277D244D8] = [MEMORY[0x277D244D8] sharedInstance];
+  [mEMORY[0x277D244D8] setPowerMode:0 fromSource:@"com.apple.powerui.ambrosia"];
 
   self->_didEnableLPM = 0;
   [(NSUserDefaults *)self->_defaults setBool:0 forKey:@"didEnableLPM"];
@@ -256,38 +256,38 @@ void __28__PowerUIDrainMonitor_start__block_invoke_3(uint64_t a1)
   [v3 resetMitigation];
 
   notify_set_state(self->_notifyToken, 0);
-  v4 = [@"com.apple.powerui.nudge.LPM" UTF8String];
+  uTF8String = [@"com.apple.powerui.nudge.LPM" UTF8String];
 
-  notify_post(v4);
+  notify_post(uTF8String);
 }
 
 - (void)evaluateNudgeForLPM
 {
   v16 = *MEMORY[0x277D85DE8];
   context = self->_context;
-  v4 = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
-  v5 = [(_CDLocalContext *)context objectForContextualKeyPath:v4];
-  v6 = [v5 integerValue];
+  keyPathForBatteryLevel = [MEMORY[0x277CFE338] keyPathForBatteryLevel];
+  v5 = [(_CDLocalContext *)context objectForContextualKeyPath:keyPathForBatteryLevel];
+  integerValue = [v5 integerValue];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 134217984;
-    v15 = v6;
+    v15 = integerValue;
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Current battery level %lu", &v14, 0xCu);
   }
 
-  v8 = [MEMORY[0x277CBEAA8] date];
-  v9 = [(PowerUIDrainMonitor *)self isTrendingLowerWithBatteryLevel:v6 atDate:v8];
+  date = [MEMORY[0x277CBEAA8] date];
+  v9 = [(PowerUIDrainMonitor *)self isTrendingLowerWithBatteryLevel:integerValue atDate:date];
 
   v10 = [v9 objectForKeyedSubscript:@"shouldEngage"];
 
   if (v10)
   {
     v11 = [v9 objectForKeyedSubscript:@"shouldEngage"];
-    v12 = [v11 BOOLValue];
+    bOOLValue = [v11 BOOLValue];
 
-    if (v12)
+    if (bOOLValue)
     {
       [(PowerUIDrainMonitor *)self postLPMNudgeNotificationWithInfo:v9];
       [(PowerUIDrainMonitor *)self enableMitigations];
@@ -297,24 +297,24 @@ void __28__PowerUIDrainMonitor_start__block_invoke_3(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postLPMNudgeNotificationWithInfo:(id)a3
+- (void)postLPMNudgeNotificationWithInfo:(id)info
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   if (+[PowerUISmartChargeUtilities isInternalBuild])
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v29 = v4;
+      v29 = infoCopy;
       _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Posting LPM notification %@", buf, 0xCu);
     }
 
     v27 = +[PowerUINotificationManager sharedInstance];
-    v6 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v7 = [(NSUserDefaults *)self->_defaults objectForKey:@"kLastALPMNotificationDate"];
-    v8 = [v4 objectForKeyedSubscript:@"ignoreLastNudge"];
+    v8 = [infoCopy objectForKeyedSubscript:@"ignoreLastNudge"];
     if (([v8 BOOLValue] & 1) != 0 || !v7)
     {
     }
@@ -339,20 +339,20 @@ LABEL_16:
       }
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"currentLevel"];
-    v13 = [v12 integerValue];
+    v12 = [infoCopy objectForKeyedSubscript:@"currentLevel"];
+    integerValue = [v12 integerValue];
 
     v14 = MEMORY[0x277CCACA8];
-    v15 = [v4 objectForKeyedSubscript:@"referenceLevel"];
-    v16 = [v14 stringWithFormat:@"Your battery level is trending lower than typical!(Current:%ld Typical:%ld)", v13, objc_msgSend(v15, "integerValue")];
+    v15 = [infoCopy objectForKeyedSubscript:@"referenceLevel"];
+    v16 = [v14 stringWithFormat:@"Your battery level is trending lower than typical!(Current:%ld Typical:%ld)", integerValue, objc_msgSend(v15, "integerValue")];
 
     v17 = @"Enabled Ambrosia!";
-    if (v13 <= 9)
+    if (integerValue <= 9)
     {
-      v18 = [v4 objectForKeyedSubscript:@"knownChargingLocation"];
-      v19 = [v18 BOOLValue];
+      v18 = [infoCopy objectForKeyedSubscript:@"knownChargingLocation"];
+      bOOLValue = [v18 BOOLValue];
 
-      if (v19)
+      if (bOOLValue)
       {
         v17 = @"Charge Device!";
       }
@@ -360,10 +360,10 @@ LABEL_16:
 
     v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@!!", v16, v17];
     v21 = [MEMORY[0x277CE1FB0] iconForSystemImageNamed:@"battery.25percent"];
-    v22 = [v6 dateByAddingTimeInterval:1800.0];
+    v22 = [date dateByAddingTimeInterval:1800.0];
     v23 = [MEMORY[0x277CBEBC0] URLWithString:@"E-T-Insights://"];
-    v24 = [MEMORY[0x277CBEAA8] date];
-    [v27 postInternalNotificationAtDate:v24 withTitle:@"[Internal] IBLM" withTextContent:v20 icon:v21 url:v23 expirationDate:v22];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [v27 postInternalNotificationAtDate:date2 withTitle:@"[Internal] IBLM" withTextContent:v20 icon:v21 url:v23 expirationDate:v22];
 
     v25 = self->_log;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -372,7 +372,7 @@ LABEL_16:
       _os_log_impl(&dword_21B766000, v25, OS_LOG_TYPE_DEFAULT, "Posted LPM notification ", buf, 2u);
     }
 
-    [(NSUserDefaults *)self->_defaults setObject:v6 forKey:@"kLastALPMNotificationDate"];
+    [(NSUserDefaults *)self->_defaults setObject:date forKey:@"kLastALPMNotificationDate"];
 
     goto LABEL_16;
   }
@@ -382,56 +382,56 @@ LABEL_17:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)slotForDate:(id)a3 withTimeSlotWidth:(unint64_t)a4
+- (unint64_t)slotForDate:(id)date withTimeSlotWidth:(unint64_t)width
 {
   v5 = MEMORY[0x277CBEA80];
-  v6 = a3;
-  v7 = [v5 currentCalendar];
-  v8 = [v7 components:540 fromDate:v6];
-  v9 = [v7 dateFromComponents:v8];
-  [v6 timeIntervalSinceDate:v9];
+  dateCopy = date;
+  currentCalendar = [v5 currentCalendar];
+  v8 = [currentCalendar components:540 fromDate:dateCopy];
+  v9 = [currentCalendar dateFromComponents:v8];
+  [dateCopy timeIntervalSinceDate:v9];
   v11 = v10;
 
-  return (v11 / (60 * a4));
+  return (v11 / (60 * width));
 }
 
-- (BOOL)hasVariationForMedianLevels:(id)a3
+- (BOOL)hasVariationForMedianLevels:(id)levels
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  levelsCopy = levels;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  v5 = [levelsCopy countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
+    integerValue2 = 0;
     v8 = *v21;
-    v9 = 101;
+    integerValue = 101;
     do
     {
       for (i = 0; i != v6; ++i)
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(levelsCopy);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        if ([v11 integerValue] < v9)
+        if ([v11 integerValue] < integerValue)
         {
-          v9 = [v11 integerValue];
+          integerValue = [v11 integerValue];
         }
 
-        if ([v11 integerValue] > v7)
+        if ([v11 integerValue] > integerValue2)
         {
-          v7 = [v11 integerValue];
+          integerValue2 = [v11 integerValue];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v6 = [levelsCopy countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v6);
@@ -439,20 +439,20 @@ LABEL_17:
 
   else
   {
-    v7 = 0;
-    v9 = 101;
+    integerValue2 = 0;
+    integerValue = 101;
   }
 
-  v12 = v7 - v9;
-  if (v7 - v9 <= 45)
+  v12 = integerValue2 - integerValue;
+  if (integerValue2 - integerValue <= 45)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
     {
       v14 = MEMORY[0x277CCABB0];
       v15 = log;
-      v16 = [v14 numberWithInteger:v9];
-      v17 = [MEMORY[0x277CCABB0] numberWithInteger:v7];
+      v16 = [v14 numberWithInteger:integerValue];
+      v17 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue2];
       *buf = 138412546;
       v25 = v16;
       v26 = 2112;
@@ -467,21 +467,21 @@ LABEL_17:
 
 - (BOOL)isAtKnownChargingLocation
 {
-  v2 = [(PowerUILocationSignalMonitor *)self->_locationSignalMonitor requiredFullChargeDate];
-  [v2 timeIntervalSinceNow];
+  requiredFullChargeDate = [(PowerUILocationSignalMonitor *)self->_locationSignalMonitor requiredFullChargeDate];
+  [requiredFullChargeDate timeIntervalSinceNow];
   v4 = v3 > 0.0;
 
   return v4;
 }
 
-- (id)isTrendingLowerWithBatteryLevel:(int64_t)a3 atDate:(id)a4
+- (id)isTrendingLowerWithBatteryLevel:(int64_t)level atDate:(id)date
 {
   v29 = *MEMORY[0x277D85DE8];
   v6 = objc_opt_new();
   [v6 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"shouldEngage"];
   v7 = +[PowerUIBatteryData sharedInstance];
-  v8 = [MEMORY[0x277CBEAA8] date];
-  if ([PowerUISmartChargeUtilities isWeekend:v8])
+  date = [MEMORY[0x277CBEAA8] date];
+  if ([PowerUISmartChargeUtilities isWeekend:date])
   {
     v9 = 2;
   }
@@ -492,34 +492,34 @@ LABEL_17:
   }
 
   v10 = [v7 medianBatteryLevelByTimeSlot:15 dayType:v9];
-  v11 = [v10 objectAtIndexedSubscript:{-[PowerUIDrainMonitor slotForDate:withTimeSlotWidth:](self, "slotForDate:withTimeSlotWidth:", v8, 15)}];
-  v12 = [v11 integerValue];
+  v11 = [v10 objectAtIndexedSubscript:{-[PowerUIDrainMonitor slotForDate:withTimeSlotWidth:](self, "slotForDate:withTimeSlotWidth:", date, 15)}];
+  integerValue = [v11 integerValue];
 
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:level];
   [v6 setObject:v13 forKeyedSubscript:@"currentLevel"];
 
-  v14 = [MEMORY[0x277CCABB0] numberWithInteger:v12];
+  v14 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
   [v6 setObject:v14 forKeyedSubscript:@"referenceLevel"];
 
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 134218240;
-    v26 = a3;
+    levelCopy = level;
     v27 = 2048;
-    v28 = v12;
+    v28 = integerValue;
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Current battery level %lu, Reference level %lu", &v25, 0x16u);
   }
 
   if ([(PowerUIDrainMonitor *)self hasVariationForMedianLevels:v10])
   {
     v16 = 10.0;
-    if (a3 < 50)
+    if (level < 50)
     {
       v16 = 5.0;
     }
 
-    if ((a3 - 50) >= 0x1E)
+    if ((level - 50) >= 0x1E)
     {
       v17 = v16;
     }
@@ -529,7 +529,7 @@ LABEL_17:
       v17 = 7.0;
     }
 
-    v18 = (v12 - a3);
+    v18 = (integerValue - level);
     if (v17 < v18)
     {
       [v6 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:{@"shouldEngage", v16}];
@@ -552,8 +552,8 @@ LABEL_17:
       [v6 setObject:v20 forKeyedSubscript:@"mitigationEffort"];
     }
 
-    v21 = [(PowerUIDrainMonitor *)self isAtKnownChargingLocation];
-    v22 = [MEMORY[0x277CCABB0] numberWithBool:v21];
+    isAtKnownChargingLocation = [(PowerUIDrainMonitor *)self isAtKnownChargingLocation];
+    v22 = [MEMORY[0x277CCABB0] numberWithBool:isAtKnownChargingLocation];
     [v6 setObject:v22 forKeyedSubscript:@"knownChargingLocation"];
   }
 

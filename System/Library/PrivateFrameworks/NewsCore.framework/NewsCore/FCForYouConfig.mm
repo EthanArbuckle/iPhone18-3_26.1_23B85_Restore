@@ -1,5 +1,5 @@
 @interface FCForYouConfig
-- (FCForYouConfig)initWithRecord:(id)a3 interestToken:(id)a4;
+- (FCForYouConfig)initWithRecord:(id)record interestToken:(id)token;
 - (NSArray)editorialArticleListIDs;
 - (NSArray)editorialSectionTagIDs;
 - (NSArray)todayFeedTopStoriesArticleIDs;
@@ -10,21 +10,21 @@
 
 @implementation FCForYouConfig
 
-- (FCForYouConfig)initWithRecord:(id)a3 interestToken:(id)a4
+- (FCForYouConfig)initWithRecord:(id)record interestToken:(id)token
 {
-  v7 = a3;
-  v8 = a4;
+  recordCopy = record;
+  tokenCopy = token;
   v32.receiver = self;
   v32.super_class = FCForYouConfig;
   v9 = [(FCForYouConfig *)&v32 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_forYouConfigRecord, a3);
-    objc_storeStrong(&v10->_interestToken, a4);
+    objc_storeStrong(&v9->_forYouConfigRecord, record);
+    objc_storeStrong(&v10->_interestToken, token);
     v11 = MEMORY[0x1E695DF20];
-    v12 = [v7 configuration];
-    v13 = [v11 fc_dictionaryFromJSON:v12];
+    configuration = [recordCopy configuration];
+    v13 = [v11 fc_dictionaryFromJSON:configuration];
 
     v14 = [FCTopStoriesGroupConfig alloc];
     v15 = [v13 objectForKeyedSubscript:@"top_stories"];
@@ -87,51 +87,51 @@ FCGroupConfig *__47__FCForYouConfig_initWithRecord_interestToken___block_invoke(
 
 - (NSArray)todayFeedTopStoriesArticleIDs
 {
-  v2 = [(FCForYouConfig *)self forYouConfigRecord];
-  v3 = [v2 todayFeedTopStoriesArticleIDs];
+  forYouConfigRecord = [(FCForYouConfig *)self forYouConfigRecord];
+  todayFeedTopStoriesArticleIDs = [forYouConfigRecord todayFeedTopStoriesArticleIDs];
 
-  return v3;
+  return todayFeedTopStoriesArticleIDs;
 }
 
 - (NSString)trendingArticleListID
 {
-  v2 = [(FCForYouConfig *)self forYouConfigRecord];
-  v3 = [v2 trendingArticleListID];
+  forYouConfigRecord = [(FCForYouConfig *)self forYouConfigRecord];
+  trendingArticleListID = [forYouConfigRecord trendingArticleListID];
 
-  return v3;
+  return trendingArticleListID;
 }
 
 - (NSArray)editorialArticleListIDs
 {
-  v2 = [(FCForYouConfig *)self forYouConfigRecord];
-  v3 = [v2 editorialArticleListIDs];
+  forYouConfigRecord = [(FCForYouConfig *)self forYouConfigRecord];
+  editorialArticleListIDs = [forYouConfigRecord editorialArticleListIDs];
 
-  return v3;
+  return editorialArticleListIDs;
 }
 
 - (NSArray)editorialSectionTagIDs
 {
-  v2 = [(FCForYouConfig *)self forYouConfigRecord];
-  v3 = [v2 editorialSectionTagIDs];
+  forYouConfigRecord = [(FCForYouConfig *)self forYouConfigRecord];
+  editorialSectionTagIDs = [forYouConfigRecord editorialSectionTagIDs];
 
-  return v3;
+  return editorialSectionTagIDs;
 }
 
 - (NSString)spotlightArticleID
 {
-  v2 = [(FCForYouConfig *)self forYouConfigRecord];
-  v3 = [v2 spotlightArticleID];
+  forYouConfigRecord = [(FCForYouConfig *)self forYouConfigRecord];
+  spotlightArticleID = [forYouConfigRecord spotlightArticleID];
 
-  return v3;
+  return spotlightArticleID;
 }
 
 - (NSDate)fetchedDate
 {
   v2 = MEMORY[0x1E695DF00];
-  v3 = [(FCForYouConfig *)self forYouConfigRecord];
-  v4 = [v3 base];
-  v5 = [v4 fetchDate];
-  v6 = [v2 dateWithPBDate:v5];
+  forYouConfigRecord = [(FCForYouConfig *)self forYouConfigRecord];
+  base = [forYouConfigRecord base];
+  fetchDate = [base fetchDate];
+  v6 = [v2 dateWithPBDate:fetchDate];
 
   return v6;
 }

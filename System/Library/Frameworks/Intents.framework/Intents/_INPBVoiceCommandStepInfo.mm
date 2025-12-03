@@ -1,54 +1,54 @@
 @interface _INPBVoiceCommandStepInfo
-- (BOOL)isEqual:(id)a3;
-- (_INPBVoiceCommandStepInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBVoiceCommandStepInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsCategory:(id)a3;
+- (int)StringAsCategory:(id)category;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setApplicationIdentifier:(id)a3;
-- (void)setCategory:(int)a3;
-- (void)setName:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setApplicationIdentifier:(id)identifier;
+- (void)setCategory:(int)category;
+- (void)setName:(id)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBVoiceCommandStepInfo
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_applicationIdentifier)
   {
-    v4 = [(_INPBVoiceCommandStepInfo *)self applicationIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"applicationIdentifier"];
+    applicationIdentifier = [(_INPBVoiceCommandStepInfo *)self applicationIdentifier];
+    v5 = [applicationIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"applicationIdentifier"];
   }
 
   if ([(_INPBVoiceCommandStepInfo *)self hasCategory])
   {
-    v6 = [(_INPBVoiceCommandStepInfo *)self category];
-    v7 = v6 - 1;
-    if (v6 - 1) < 0x15 && ((0x1FFDFFu >> v7))
+    category = [(_INPBVoiceCommandStepInfo *)self category];
+    v7 = category - 1;
+    if (category - 1) < 0x15 && ((0x1FFDFFu >> v7))
     {
       v8 = off_1E72868E0[v7];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", category];
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"category"];
+    [dictionary setObject:v8 forKeyedSubscript:@"category"];
   }
 
   if (self->_name)
   {
-    v9 = [(_INPBVoiceCommandStepInfo *)self name];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"name"];
+    name = [(_INPBVoiceCommandStepInfo *)self name];
+    v10 = [name copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"name"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -67,28 +67,28 @@
   return v4 ^ v3 ^ [(NSString *)self->_name hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(_INPBVoiceCommandStepInfo *)self applicationIdentifier];
-  v6 = [v4 applicationIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  applicationIdentifier = [(_INPBVoiceCommandStepInfo *)self applicationIdentifier];
+  applicationIdentifier2 = [equalCopy applicationIdentifier];
+  if ((applicationIdentifier != 0) == (applicationIdentifier2 == 0))
   {
     goto LABEL_15;
   }
 
-  v7 = [(_INPBVoiceCommandStepInfo *)self applicationIdentifier];
-  if (v7)
+  applicationIdentifier3 = [(_INPBVoiceCommandStepInfo *)self applicationIdentifier];
+  if (applicationIdentifier3)
   {
-    v8 = v7;
-    v9 = [(_INPBVoiceCommandStepInfo *)self applicationIdentifier];
-    v10 = [v4 applicationIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = applicationIdentifier3;
+    applicationIdentifier4 = [(_INPBVoiceCommandStepInfo *)self applicationIdentifier];
+    applicationIdentifier5 = [equalCopy applicationIdentifier];
+    v11 = [applicationIdentifier4 isEqual:applicationIdentifier5];
 
     if (!v11)
     {
@@ -100,30 +100,30 @@
   {
   }
 
-  v12 = [(_INPBVoiceCommandStepInfo *)self hasCategory];
-  if (v12 != [v4 hasCategory])
+  hasCategory = [(_INPBVoiceCommandStepInfo *)self hasCategory];
+  if (hasCategory != [equalCopy hasCategory])
   {
     goto LABEL_16;
   }
 
   if ([(_INPBVoiceCommandStepInfo *)self hasCategory])
   {
-    if ([v4 hasCategory])
+    if ([equalCopy hasCategory])
     {
       category = self->_category;
-      if (category != [v4 category])
+      if (category != [equalCopy category])
       {
         goto LABEL_16;
       }
     }
   }
 
-  v5 = [(_INPBVoiceCommandStepInfo *)self name];
-  v6 = [v4 name];
-  if ((v5 != 0) != (v6 == 0))
+  applicationIdentifier = [(_INPBVoiceCommandStepInfo *)self name];
+  applicationIdentifier2 = [equalCopy name];
+  if ((applicationIdentifier != 0) != (applicationIdentifier2 == 0))
   {
-    v14 = [(_INPBVoiceCommandStepInfo *)self name];
-    if (!v14)
+    name = [(_INPBVoiceCommandStepInfo *)self name];
+    if (!name)
     {
 
 LABEL_19:
@@ -131,10 +131,10 @@ LABEL_19:
       goto LABEL_17;
     }
 
-    v15 = v14;
-    v16 = [(_INPBVoiceCommandStepInfo *)self name];
-    v17 = [v4 name];
-    v18 = [v16 isEqual:v17];
+    v15 = name;
+    name2 = [(_INPBVoiceCommandStepInfo *)self name];
+    name3 = [equalCopy name];
+    v18 = [name2 isEqual:name3];
 
     if (v18)
     {
@@ -154,10 +154,10 @@ LABEL_17:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBVoiceCommandStepInfo allocWithZone:](_INPBVoiceCommandStepInfo init];
-  v6 = [(NSString *)self->_applicationIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_applicationIdentifier copyWithZone:zone];
   [(_INPBVoiceCommandStepInfo *)v5 setApplicationIdentifier:v6];
 
   if ([(_INPBVoiceCommandStepInfo *)self hasCategory])
@@ -165,42 +165,42 @@ LABEL_17:
     [(_INPBVoiceCommandStepInfo *)v5 setCategory:[(_INPBVoiceCommandStepInfo *)self category]];
   }
 
-  v7 = [(NSString *)self->_name copyWithZone:a3];
+  v7 = [(NSString *)self->_name copyWithZone:zone];
   [(_INPBVoiceCommandStepInfo *)v5 setName:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBVoiceCommandStepInfo *)self data];
+  coderCopy = coder;
+  data = [(_INPBVoiceCommandStepInfo *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBVoiceCommandStepInfo)initWithCoder:(id)a3
+- (_INPBVoiceCommandStepInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBVoiceCommandStepInfo *)self initWithData:v6];
+    self = [(_INPBVoiceCommandStepInfo *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
-  v4 = [(_INPBVoiceCommandStepInfo *)self applicationIdentifier];
+  toCopy = to;
+  applicationIdentifier = [(_INPBVoiceCommandStepInfo *)self applicationIdentifier];
 
-  if (v4)
+  if (applicationIdentifier)
   {
     applicationIdentifier = self->_applicationIdentifier;
     PBDataWriterWriteStringField();
@@ -212,125 +212,125 @@ LABEL_17:
     PBDataWriterWriteInt32Field();
   }
 
-  v7 = [(_INPBVoiceCommandStepInfo *)self name];
+  name = [(_INPBVoiceCommandStepInfo *)self name];
 
-  v8 = v10;
-  if (v7)
+  v8 = toCopy;
+  if (name)
   {
     name = self->_name;
     PBDataWriterWriteStringField();
-    v8 = v10;
+    v8 = toCopy;
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   name = self->_name;
   self->_name = v4;
 
   MEMORY[0x1EEE66BB8](v4, name);
 }
 
-- (int)StringAsCategory:(id)a3
+- (int)StringAsCategory:(id)category
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CATEGORY_INFORMATION"])
+  categoryCopy = category;
+  if ([categoryCopy isEqualToString:@"CATEGORY_INFORMATION"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_PLAY_AUDIO"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_PLAY_AUDIO"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_PLAY_VIDEO"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_PLAY_VIDEO"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_ORDER"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_ORDER"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_NAVIGATION"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_NAVIGATION"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_START"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_START"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_SHARE"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_SHARE"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_CREATE"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_CREATE"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_SEARCH"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_SEARCH"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_TOGGLE"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_TOGGLE"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_DOWNLOAD"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_DOWNLOAD"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_LOG"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_LOG"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_CHECK_IN"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_CHECK_IN"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_WORKFLOW"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_WORKFLOW"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_REQUEST"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_REQUEST"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_SET"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_SET"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_CALL_AUDIO"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_CALL_AUDIO"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_CALL_VIDEO"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_CALL_VIDEO"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_PLAY_SOUND"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_PLAY_SOUND"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_USER_ACTIVITY"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_USER_ACTIVITY"])
   {
     v4 = 21;
   }
@@ -343,10 +343,10 @@ LABEL_17:
   return v4;
 }
 
-- (void)setCategory:(int)a3
+- (void)setCategory:(int)category
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (category == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -354,13 +354,13 @@ LABEL_17:
   else
   {
     *&self->_has = has | 1;
-    self->_category = a3;
+    self->_category = category;
   }
 }
 
-- (void)setApplicationIdentifier:(id)a3
+- (void)setApplicationIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   applicationIdentifier = self->_applicationIdentifier;
   self->_applicationIdentifier = v4;
 

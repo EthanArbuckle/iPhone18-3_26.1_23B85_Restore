@@ -20,9 +20,9 @@
 - (id)hf_affectedAccessoryRepresentables
 {
   v1 = MEMORY[0x277CBEB98];
-  v2 = [a1 characteristic];
-  v3 = [v2 service];
-  v4 = [v1 na_setWithSafeObject:v3];
+  characteristic = [self characteristic];
+  service = [characteristic service];
+  v4 = [v1 na_setWithSafeObject:service];
 
   return v4;
 }

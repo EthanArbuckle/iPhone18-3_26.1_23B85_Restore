@@ -4,7 +4,7 @@
 + (id)forgetDeviceAlertConfirm;
 + (id)forgetDeviceAlertTitle;
 + (id)forgetDeviceButtonTitle;
-+ (id)infoViewControllerFromDevice:(id)a3;
++ (id)infoViewControllerFromDevice:(id)device;
 + (id)resetWiFiAlertBody;
 + (id)resetWiFiAlertCancel;
 + (id)resetWiFiAlertConfirm;
@@ -12,42 +12,42 @@
 + (id)resetWiFiButtonTitle;
 + (id)resetWiFiControllerButtonTitle;
 + (id)resetWiFiControllerCancel;
-+ (id)resetWiFiControllerCellSubtitleAccessory:(id)a3;
-+ (id)resetWiFiControllerCellSubtitlePairedDevice:(id)a3;
++ (id)resetWiFiControllerCellSubtitleAccessory:(id)accessory;
++ (id)resetWiFiControllerCellSubtitlePairedDevice:(id)device;
 + (id)resetWiFiControllerDetailText;
 + (id)resetWiFiControllerTitle;
-+ (id)resetWiFiViewControllerFromDevices:(id)a3;
++ (id)resetWiFiViewControllerFromDevices:(id)devices;
 + (id)unpairDeviceAlertBody;
 + (id)unpairDeviceAlertCancel;
 + (id)unpairDeviceAlertConfirm;
-+ (id)unpairDeviceAlertTitle:(id)a3;
++ (id)unpairDeviceAlertTitle:(id)title;
 + (id)unpairDeviceButtonTitle;
 @end
 
 @implementation ASAccessoryInfoViewFactory
 
-+ (id)infoViewControllerFromDevice:(id)a3
++ (id)infoViewControllerFromDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   if (gLogCategory_ASAccessoryInfoView <= 15 && (gLogCategory_ASAccessoryInfoView != -1 || _LogCategory_Initialize()))
   {
     +[ASAccessoryInfoViewFactory infoViewControllerFromDevice:];
   }
 
-  v4 = [[ASAccessoryInfoViewController alloc] initWithDevice:v3];
+  v4 = [[ASAccessoryInfoViewController alloc] initWithDevice:deviceCopy];
 
   return v4;
 }
 
-+ (id)resetWiFiViewControllerFromDevices:(id)a3
++ (id)resetWiFiViewControllerFromDevices:(id)devices
 {
-  v3 = a3;
+  devicesCopy = devices;
   if (gLogCategory_ASAccessoryInfoView <= 15 && (gLogCategory_ASAccessoryInfoView != -1 || _LogCategory_Initialize()))
   {
     +[ASAccessoryInfoViewFactory resetWiFiViewControllerFromDevices:];
   }
 
-  v4 = [[ASAccessoryResetWiFiViewController alloc] initWithDevices:v3];
+  v4 = [[ASAccessoryResetWiFiViewController alloc] initWithDevices:devicesCopy];
 
   return v4;
 }
@@ -60,16 +60,16 @@
   return v3;
 }
 
-+ (id)unpairDeviceAlertTitle:(id)a3
++ (id)unpairDeviceAlertTitle:(id)title
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
+  titleCopy = title;
   v6 = [v4 bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"Unpair Device Alert Title %@" value:&stru_28499D698 table:0];
-  v8 = [v3 stringWithFormat:v7, v5];
+  titleCopy = [v3 stringWithFormat:v7, titleCopy];
 
-  return v8;
+  return titleCopy;
 }
 
 + (id)unpairDeviceAlertBody
@@ -276,28 +276,28 @@
   return v6;
 }
 
-+ (id)resetWiFiControllerCellSubtitlePairedDevice:(id)a3
++ (id)resetWiFiControllerCellSubtitlePairedDevice:(id)device
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
+  deviceCopy = device;
   v6 = [v4 bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"Paired using “%@”" value:&stru_28499D698 table:0];
-  v8 = [v3 stringWithFormat:v7, v5];
+  deviceCopy = [v3 stringWithFormat:v7, deviceCopy];
 
-  return v8;
+  return deviceCopy;
 }
 
-+ (id)resetWiFiControllerCellSubtitleAccessory:(id)a3
++ (id)resetWiFiControllerCellSubtitleAccessory:(id)accessory
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
+  accessoryCopy = accessory;
   v6 = [v4 bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"Managed by “%@”" value:&stru_28499D698 table:0];
-  v8 = [v3 stringWithFormat:v7, v5];
+  accessoryCopy = [v3 stringWithFormat:v7, accessoryCopy];
 
-  return v8;
+  return accessoryCopy;
 }
 
 + (id)resetWiFiControllerButtonTitle

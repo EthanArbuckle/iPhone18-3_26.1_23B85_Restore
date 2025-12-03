@@ -1,33 +1,33 @@
 @interface IDSGroupContextDataSource
-- (IDSGroupContextDataSource)initWithQueue:(id)a3;
+- (IDSGroupContextDataSource)initWithQueue:(id)queue;
 - (id)_groupContextCacheMiddleware;
 - (id)_groupContextDataSource;
-- (void)deleteAllKnownGroupsForGroupContext:(id)a3 completion:(id)a4;
-- (void)deleteCachedValueForForGroupContext:(id)a3 withGroupID:(id)a4 completion:(id)a5;
-- (void)groupContext:(id)a3 fetchAllKnownGroups:(id)a4;
-- (void)groupContext:(id)a3 fetchGroupWithID:(id)a4 completion:(id)a5;
-- (void)groupContext:(id)a3 latestCachedGroupWithStableID:(id)a4 completion:(id)a5;
-- (void)groupContext:(id)a3 upsertGroupWithInfo:(id)a4 previousGroup:(id)a5 completion:(id)a6;
-- (void)groupFromPublicDataRepresentation:(id)a3 inContext:(id)a4 completion:(id)a5;
-- (void)participantsForCypher:(id)a3 completion:(id)a4;
-- (void)publicDataRepresentationForGroup:(id)a3 inContext:(id)a4 completion:(id)a5;
-- (void)validateCachedGroup:(id)a3 isParentOfGroup:(id)a4 completion:(id)a5;
+- (void)deleteAllKnownGroupsForGroupContext:(id)context completion:(id)completion;
+- (void)deleteCachedValueForForGroupContext:(id)context withGroupID:(id)d completion:(id)completion;
+- (void)groupContext:(id)context fetchAllKnownGroups:(id)groups;
+- (void)groupContext:(id)context fetchGroupWithID:(id)d completion:(id)completion;
+- (void)groupContext:(id)context latestCachedGroupWithStableID:(id)d completion:(id)completion;
+- (void)groupContext:(id)context upsertGroupWithInfo:(id)info previousGroup:(id)group completion:(id)completion;
+- (void)groupFromPublicDataRepresentation:(id)representation inContext:(id)context completion:(id)completion;
+- (void)participantsForCypher:(id)cypher completion:(id)completion;
+- (void)publicDataRepresentationForGroup:(id)group inContext:(id)context completion:(id)completion;
+- (void)validateCachedGroup:(id)group isParentOfGroup:(id)ofGroup completion:(id)completion;
 @end
 
 @implementation IDSGroupContextDataSource
 
-- (IDSGroupContextDataSource)initWithQueue:(id)a3
+- (IDSGroupContextDataSource)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   if (_IDSRunningInDaemon())
   {
-    v5 = [MEMORY[0x1E699BB90] groupContext];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    groupContext = [MEMORY[0x1E699BB90] groupContext];
+    if (os_log_type_enabled(groupContext, OS_LOG_TYPE_ERROR))
     {
-      sub_195B268D8(self, v5);
+      sub_195B268D8(self, groupContext);
     }
 
-    v6 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -37,187 +37,187 @@
     v7 = [(IDSGroupContextDataSource *)&v11 init];
     if (v7)
     {
-      v8 = [MEMORY[0x1E699BB90] groupContext];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+      groupContext2 = [MEMORY[0x1E699BB90] groupContext];
+      if (os_log_type_enabled(groupContext2, OS_LOG_TYPE_INFO))
       {
         *v10 = 0;
-        _os_log_impl(&dword_1959FF000, v8, OS_LOG_TYPE_INFO, "Daemon Interfaced Group context controller starting up", v10, 2u);
+        _os_log_impl(&dword_1959FF000, groupContext2, OS_LOG_TYPE_INFO, "Daemon Interfaced Group context controller starting up", v10, 2u);
       }
 
-      [(IDSGroupContextDataSource *)v7 setQueue:v4];
+      [(IDSGroupContextDataSource *)v7 setQueue:queueCopy];
     }
 
     self = v7;
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)groupContext:(id)a3 upsertGroupWithInfo:(id)a4 previousGroup:(id)a5 completion:(id)a6
+- (void)groupContext:(id)context upsertGroupWithInfo:(id)info previousGroup:(id)group completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(IDSGroupContextDataSource *)self _groupContextDataSource];
+  completionCopy = completion;
+  groupCopy = group;
+  infoCopy = info;
+  _groupContextDataSource = [(IDSGroupContextDataSource *)self _groupContextDataSource];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = sub_195B1E0EC;
   v14[3] = &unk_1E74434E0;
   v14[4] = self;
-  v15 = v9;
-  v13 = v9;
-  [v12 upsertGroupWithInfo:v11 previousGroup:v10 completion:v14];
+  v15 = completionCopy;
+  v13 = completionCopy;
+  [_groupContextDataSource upsertGroupWithInfo:infoCopy previousGroup:groupCopy completion:v14];
 }
 
-- (void)groupContext:(id)a3 fetchGroupWithID:(id)a4 completion:(id)a5
+- (void)groupContext:(id)context fetchGroupWithID:(id)d completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(IDSGroupContextDataSource *)self _groupContextDataSource];
+  completionCopy = completion;
+  dCopy = d;
+  _groupContextDataSource = [(IDSGroupContextDataSource *)self _groupContextDataSource];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195B1E2B4;
   v11[3] = &unk_1E74434E0;
   v11[4] = self;
-  v12 = v7;
-  v10 = v7;
-  [v9 fetchGroupWithID:v8 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [_groupContextDataSource fetchGroupWithID:dCopy completion:v11];
 }
 
-- (void)publicDataRepresentationForGroup:(id)a3 inContext:(id)a4 completion:(id)a5
+- (void)publicDataRepresentationForGroup:(id)group inContext:(id)context completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(IDSGroupContextDataSource *)self _groupContextDataSource];
+  completionCopy = completion;
+  groupCopy = group;
+  _groupContextDataSource = [(IDSGroupContextDataSource *)self _groupContextDataSource];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195B1E47C;
   v11[3] = &unk_1E7443508;
   v11[4] = self;
-  v12 = v7;
-  v10 = v7;
-  [v9 publicDataRepresentationForGroup:v8 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [_groupContextDataSource publicDataRepresentationForGroup:groupCopy completion:v11];
 }
 
-- (void)groupFromPublicDataRepresentation:(id)a3 inContext:(id)a4 completion:(id)a5
+- (void)groupFromPublicDataRepresentation:(id)representation inContext:(id)context completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(IDSGroupContextDataSource *)self _groupContextDataSource];
+  completionCopy = completion;
+  representationCopy = representation;
+  _groupContextDataSource = [(IDSGroupContextDataSource *)self _groupContextDataSource];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195B1E644;
   v11[3] = &unk_1E74434E0;
   v11[4] = self;
-  v12 = v7;
-  v10 = v7;
-  [v9 groupFromPublicDataRepresentation:v8 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [_groupContextDataSource groupFromPublicDataRepresentation:representationCopy completion:v11];
 }
 
-- (void)participantsForCypher:(id)a3 completion:(id)a4
+- (void)participantsForCypher:(id)cypher completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IDSGroupContextDataSource *)self _groupContextDataSource];
+  completionCopy = completion;
+  cypherCopy = cypher;
+  _groupContextDataSource = [(IDSGroupContextDataSource *)self _groupContextDataSource];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = sub_195B1E80C;
   v10[3] = &unk_1E7443530;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v8 participantsForCypher:v7 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [_groupContextDataSource participantsForCypher:cypherCopy completion:v10];
 }
 
-- (void)validateCachedGroup:(id)a3 isParentOfGroup:(id)a4 completion:(id)a5
+- (void)validateCachedGroup:(id)group isParentOfGroup:(id)ofGroup completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(IDSGroupContextDataSource *)self _groupContextDataSource];
+  completionCopy = completion;
+  ofGroupCopy = ofGroup;
+  groupCopy = group;
+  _groupContextDataSource = [(IDSGroupContextDataSource *)self _groupContextDataSource];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_195B1E9D4;
   v13[3] = &unk_1E7443558;
   v13[4] = self;
-  v14 = v8;
-  v12 = v8;
-  [v11 validateCachedGroup:v10 isParentOfGroup:v9 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [_groupContextDataSource validateCachedGroup:groupCopy isParentOfGroup:ofGroupCopy completion:v13];
 }
 
-- (void)groupContext:(id)a3 latestCachedGroupWithStableID:(id)a4 completion:(id)a5
+- (void)groupContext:(id)context latestCachedGroupWithStableID:(id)d completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(IDSGroupContextDataSource *)self _groupContextCacheMiddleware];
+  completionCopy = completion;
+  dCopy = d;
+  _groupContextCacheMiddleware = [(IDSGroupContextDataSource *)self _groupContextCacheMiddleware];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195B1EBAC;
   v11[3] = &unk_1E7443580;
   v11[4] = self;
-  v12 = v7;
-  v10 = v7;
-  [v9 latestCachedGroupWithStableID:v8 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [_groupContextCacheMiddleware latestCachedGroupWithStableID:dCopy completion:v11];
 }
 
-- (void)groupContext:(id)a3 fetchAllKnownGroups:(id)a4
+- (void)groupContext:(id)context fetchAllKnownGroups:(id)groups
 {
-  v5 = a4;
-  v6 = [(IDSGroupContextDataSource *)self _groupContextCacheMiddleware];
+  groupsCopy = groups;
+  _groupContextCacheMiddleware = [(IDSGroupContextDataSource *)self _groupContextCacheMiddleware];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_195B1ED38;
   v8[3] = &unk_1E7440CD0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  [v6 fetchAllKnownGroups:v8];
+  v9 = groupsCopy;
+  v7 = groupsCopy;
+  [_groupContextCacheMiddleware fetchAllKnownGroups:v8];
 }
 
-- (void)deleteAllKnownGroupsForGroupContext:(id)a3 completion:(id)a4
+- (void)deleteAllKnownGroupsForGroupContext:(id)context completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(IDSGroupContextDataSource *)self _groupContextCacheMiddleware];
+  completionCopy = completion;
+  _groupContextCacheMiddleware = [(IDSGroupContextDataSource *)self _groupContextCacheMiddleware];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_195B1EEC4;
   v8[3] = &unk_1E743EAA8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  [v6 deleteAllKnownGroupsWithCompletion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [_groupContextCacheMiddleware deleteAllKnownGroupsWithCompletion:v8];
 }
 
-- (void)deleteCachedValueForForGroupContext:(id)a3 withGroupID:(id)a4 completion:(id)a5
+- (void)deleteCachedValueForForGroupContext:(id)context withGroupID:(id)d completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [(IDSGroupContextDataSource *)self _groupContextCacheMiddleware];
+  completionCopy = completion;
+  dCopy = d;
+  _groupContextCacheMiddleware = [(IDSGroupContextDataSource *)self _groupContextCacheMiddleware];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_195B1F03C;
   v11[3] = &unk_1E743EAA8;
   v11[4] = self;
-  v12 = v7;
-  v10 = v7;
-  [v9 deleteAllCachedValuesForGroupWithID:v8 WithCompletion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [_groupContextCacheMiddleware deleteAllCachedValuesForGroupWithID:dCopy WithCompletion:v11];
 }
 
 - (id)_groupContextDataSource
 {
   v2 = +[IDSDaemonProtocolController sharedInstance];
-  v3 = [v2 groupContextDataSource];
+  groupContextDataSource = [v2 groupContextDataSource];
 
-  return v3;
+  return groupContextDataSource;
 }
 
 - (id)_groupContextCacheMiddleware
 {
   v2 = +[IDSDaemonProtocolController sharedInstance];
-  v3 = [v2 groupContextCacheMiddleware];
+  groupContextCacheMiddleware = [v2 groupContextCacheMiddleware];
 
-  return v3;
+  return groupContextCacheMiddleware;
 }
 
 @end

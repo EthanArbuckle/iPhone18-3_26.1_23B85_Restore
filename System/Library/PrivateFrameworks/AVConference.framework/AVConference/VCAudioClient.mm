@@ -1,26 +1,26 @@
 @interface VCAudioClient
 - (BOOL)isMuted;
 - (BOOL)setupAudioIO;
-- (BOOL)startAudioSessionWithError:(id *)a3;
-- (BOOL)startWithError:(id *)a3;
-- (BOOL)stopAudioSessionWithError:(id *)a3;
-- (BOOL)stopWithError:(id *)a3;
-- (VCAudioClient)initWithProcessId:(int)a3;
+- (BOOL)startAudioSessionWithError:(id *)error;
+- (BOOL)startWithError:(id *)error;
+- (BOOL)stopAudioSessionWithError:(id *)error;
+- (BOOL)stopWithError:(id *)error;
+- (VCAudioClient)initWithProcessId:(int)id;
 - (uint64_t)setupAudioIO;
 - (void)cleanupAudioIO;
 - (void)cleanupSpatialAudio;
 - (void)dealloc;
 - (void)serverDidDie;
-- (void)setAudioSessionProperties:(id)a3;
-- (void)setIsMuted:(BOOL)a3;
+- (void)setAudioSessionProperties:(id)properties;
+- (void)setIsMuted:(BOOL)muted;
 - (void)setupSpatialAudio;
-- (void)startAudioIOWithCompletionHandler:(id)a3;
-- (void)stopAudioIOWithCompletionHandler:(id)a3;
+- (void)startAudioIOWithCompletionHandler:(id)handler;
+- (void)stopAudioIOWithCompletionHandler:(id)handler;
 @end
 
 @implementation VCAudioClient
 
-- (VCAudioClient)initWithProcessId:(int)a3
+- (VCAudioClient)initWithProcessId:(int)id
 {
   v18 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -29,7 +29,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_processId = a3;
+    v4->_processId = id;
     v4->_state = 0;
     v4->_audioSession = +[VCAudioSession sharedVoiceChatInstance];
     v5->_audioManager = +[VCAudioManager sharedVoiceChatInstance];
@@ -79,9 +79,9 @@
   return [(VCAudioSession *)audioSession microphoneMuted];
 }
 
-- (void)setIsMuted:(BOOL)a3
+- (void)setIsMuted:(BOOL)muted
 {
-  self->_muted = a3;
+  self->_muted = muted;
   if (VCFeatureFlagManager_SessionBasedMutingEnabled())
   {
     [(VCAudioSession *)self->_audioSession setMicrophoneMuted:self->_muted];
@@ -93,22 +93,22 @@
   [(VCAudioManager *)audioManager setMicrophoneMuted:muted];
 }
 
-- (void)setAudioSessionProperties:(id)a3
+- (void)setAudioSessionProperties:(id)properties
 {
-  self->_requestedSettings.isValid = [VCAudioSession convertAudioSessionProperties:a3 operatingMode:&self->_requestedSettings.operatingMode deviceRole:&self->_requestedSettings.deviceRole enableAudioPreWarming:&self->_requestedSettings.enableAudioPreWarming audioClockDeviceEnabled:&self->_requestedSettings.audioClockDeviceEnabled networkUplinkClockUsesBaseband:&self->_requestedSettings.networkUplinkClockUsesBaseband];
-  [(VCAudioSession *)self->_audioSession setAudioSessionProperties:a3];
-  v5 = [a3 objectForKeyedSubscript:@"kAUVoiceIOProperty_MediaPlaybackOnExternalDevice"];
+  self->_requestedSettings.isValid = [VCAudioSession convertAudioSessionProperties:properties operatingMode:&self->_requestedSettings.operatingMode deviceRole:&self->_requestedSettings.deviceRole enableAudioPreWarming:&self->_requestedSettings.enableAudioPreWarming audioClockDeviceEnabled:&self->_requestedSettings.audioClockDeviceEnabled networkUplinkClockUsesBaseband:&self->_requestedSettings.networkUplinkClockUsesBaseband];
+  [(VCAudioSession *)self->_audioSession setAudioSessionProperties:properties];
+  v5 = [properties objectForKeyedSubscript:@"kAUVoiceIOProperty_MediaPlaybackOnExternalDevice"];
   if (v5)
   {
     v6 = v5;
     v7 = +[VCAudioManager sharedVoiceChatInstance];
-    v8 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
 
-    [v7 setMediaPlaybackOnExternalDevice:v8];
+    [v7 setMediaPlaybackOnExternalDevice:bOOLValue];
   }
 }
 
-- (BOOL)startWithError:(id *)a3
+- (BOOL)startWithError:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
   v23 = 0;
@@ -178,9 +178,9 @@
               v33 = 2112;
               v34 = v8;
               v35 = 2048;
-              v36 = self;
+              selfCopy = self;
               _os_log_error_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Timeout occurred while waiting for audio IO start!", buf, 0x30u);
-              if (!a3)
+              if (!error)
               {
                 goto LABEL_28;
               }
@@ -190,7 +190,7 @@
           }
         }
 
-        if (a3)
+        if (error)
         {
 LABEL_26:
           v10 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32005 detailCode:0 description:@"Timeout while starting the client"];
@@ -198,11 +198,11 @@ LABEL_26:
         }
       }
 
-      else if (a3)
+      else if (error)
       {
         v10 = v18[5];
 LABEL_27:
-        *a3 = v10;
+        *error = v10;
       }
 
 LABEL_28:
@@ -212,7 +212,7 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    v9 = [(VCAudioClient *)self startAudioSessionWithError:a3];
+    v9 = [(VCAudioClient *)self startAudioSessionWithError:error];
     *(v24 + 24) = v9;
   }
 
@@ -236,9 +236,9 @@ LABEL_28:
     }
 
     v9 = 0;
-    if (a3)
+    if (error)
     {
-      *a3 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32006 detailCode:0 description:@"Session parameters have not been set"];
+      *error = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32006 detailCode:0 description:@"Session parameters have not been set"];
     }
   }
 
@@ -257,7 +257,7 @@ intptr_t __32__VCAudioClient_startWithError___block_invoke(void *a1, char a2, vo
   return dispatch_semaphore_signal(v4);
 }
 
-- (BOOL)stopWithError:(id *)a3
+- (BOOL)stopWithError:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
   v22 = 0;
@@ -278,7 +278,7 @@ intptr_t __32__VCAudioClient_startWithError___block_invoke(void *a1, char a2, vo
     v15[2] = __31__VCAudioClient_stopWithError___block_invoke;
     v15[3] = &unk_1E85F6D60;
     v15[7] = &v16;
-    v15[8] = a3;
+    v15[8] = error;
     v15[5] = v5;
     v15[6] = &v22;
     v15[4] = self;
@@ -325,9 +325,9 @@ intptr_t __32__VCAudioClient_startWithError___block_invoke(void *a1, char a2, vo
             v32 = 2112;
             v33 = v7;
             v34 = 2048;
-            v35 = self;
+            selfCopy = self;
             _os_log_error_impl(&dword_1DB56E000, v12, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Timeout occurred while waiting for audio IO stop!", buf, 0x30u);
-            if (!a3)
+            if (!error)
             {
               goto LABEL_18;
             }
@@ -337,7 +337,7 @@ intptr_t __32__VCAudioClient_startWithError___block_invoke(void *a1, char a2, vo
         }
       }
 
-      if (a3)
+      if (error)
       {
 LABEL_16:
         v9 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32005 detailCode:0 description:@"Timeout while stopping the client"];
@@ -345,11 +345,11 @@ LABEL_16:
       }
     }
 
-    else if (a3)
+    else if (error)
     {
       v9 = v17[5];
 LABEL_17:
-      *a3 = v9;
+      *error = v9;
     }
 
 LABEL_18:
@@ -359,7 +359,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v8 = [(VCAudioClient *)self stopAudioSessionWithError:a3];
+  v8 = [(VCAudioClient *)self stopAudioSessionWithError:error];
   *(v23 + 24) = v8;
 LABEL_19:
   _Block_object_dispose(&v16, 8);
@@ -398,7 +398,7 @@ intptr_t __31__VCAudioClient_stopWithError___block_invoke(uint64_t a1, char a2, 
   return dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (BOOL)startAudioSessionWithError:(id *)a3
+- (BOOL)startAudioSessionWithError:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
   v15 = -1431655766;
@@ -435,9 +435,9 @@ intptr_t __31__VCAudioClient_stopWithError___block_invoke(uint64_t a1, char a2, 
     }
 
     LOBYTE(v10) = 0;
-    if (a3)
+    if (error)
     {
-      *a3 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32025 detailCode:0 description:@"Audio client was already started"];
+      *error = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32025 detailCode:0 description:@"Audio client was already started"];
     }
   }
 
@@ -472,7 +472,7 @@ intptr_t __31__VCAudioClient_stopWithError___block_invoke(uint64_t a1, char a2, 
   return v10;
 }
 
-- (BOOL)stopAudioSessionWithError:(id *)a3
+- (BOOL)stopAudioSessionWithError:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
   [(VCAudioClient *)self lock];
@@ -617,7 +617,7 @@ intptr_t __31__VCAudioClient_stopWithError___block_invoke(uint64_t a1, char a2, 
   self->_audioSessionId = 0;
 }
 
-- (void)startAudioIOWithCompletionHandler:(id)a3
+- (void)startAudioIOWithCompletionHandler:(id)handler
 {
   v37 = *MEMORY[0x1E69E9840];
   [(VCAudioClient *)self lock:MEMORY[0x1E69E9820]];
@@ -637,7 +637,7 @@ intptr_t __31__VCAudioClient_stopWithError___block_invoke(uint64_t a1, char a2, 
         if (v7 == 3)
         {
           [(VCAudioClient *)self unlock];
-          if (!a3)
+          if (!handler)
           {
             return;
           }
@@ -672,13 +672,13 @@ intptr_t __31__VCAudioClient_stopWithError___block_invoke(uint64_t a1, char a2, 
         }
 
         [(VCAudioClient *)self unlock];
-        if (a3)
+        if (handler)
         {
           v8 = MEMORY[0x1E696ABC0];
           v9 = @"Audio client was already started";
           v10 = 32025;
 LABEL_32:
-          (*(a3 + 2))(a3, 0, [v8 AVConferenceServiceError:v10 detailCode:0 description:v9]);
+          (*(handler + 2))(handler, 0, [v8 AVConferenceServiceError:v10 detailCode:0 description:v9]);
           return;
         }
 
@@ -763,7 +763,7 @@ LABEL_32:
   }
 
   [(VCAudioClient *)self unlock];
-  if (a3)
+  if (handler)
   {
     v8 = MEMORY[0x1E696ABC0];
     v9 = @"Audio IO is nil";
@@ -839,7 +839,7 @@ uint64_t __51__VCAudioClient_startAudioIOWithCompletionHandler___block_invoke(ui
   return result;
 }
 
-- (void)stopAudioIOWithCompletionHandler:(id)a3
+- (void)stopAudioIOWithCompletionHandler:(id)handler
 {
   v5[6] = *MEMORY[0x1E69E9840];
   v5[0] = MEMORY[0x1E69E9820];
@@ -847,7 +847,7 @@ uint64_t __51__VCAudioClient_startAudioIOWithCompletionHandler___block_invoke(ui
   v5[2] = __50__VCAudioClient_stopAudioIOWithCompletionHandler___block_invoke;
   v5[3] = &unk_1E85F5518;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = handler;
   [(VCAudioClient *)self lock];
   if (self->_state - 1 <= 1)
   {
@@ -861,18 +861,18 @@ uint64_t __51__VCAudioClient_startAudioIOWithCompletionHandler___block_invoke(ui
   if (VRTraceGetErrorLogLevelForModule() >= 3 && (VRTraceErrorLogLevelToCSTR(), os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR)))
   {
     [VCAudioClient stopAudioIOWithCompletionHandler:];
-    if (!a3)
+    if (!handler)
     {
       return;
     }
   }
 
-  else if (!a3)
+  else if (!handler)
   {
     return;
   }
 
-  (*(a3 + 2))(a3, 0, [MEMORY[0x1E696ABC0] AVConferenceServiceError:32012 detailCode:0 description:@"Audio client is not running"]);
+  (*(handler + 2))(handler, 0, [MEMORY[0x1E696ABC0] AVConferenceServiceError:32012 detailCode:0 description:@"Audio client is not running"]);
 }
 
 uint64_t __50__VCAudioClient_stopAudioIOWithCompletionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -984,7 +984,7 @@ uint64_t __50__VCAudioClient_stopAudioIOWithCompletionHandler___block_invoke(uin
     }
   }
 
-  return [a1 cleanupAudioIO];
+  return [self cleanupAudioIO];
 }
 
 - (void)stopAudioIOWithCompletionHandler:.cold.1()

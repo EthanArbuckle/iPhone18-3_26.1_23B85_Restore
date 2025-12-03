@@ -14,14 +14,14 @@
 - (double)opacity;
 - (id)resourceInstance;
 - (id)resourceOptions;
-- (void)setContinuousCorners:(BOOL)a3;
-- (void)setCornerRadius:(double)a3;
-- (void)setCrossfadesContents:(BOOL)a3;
-- (void)setHflipForRTL:(BOOL)a3;
-- (void)setIntrinsicHeight:(id *)a3;
-- (void)setIntrinsicWidth:(id *)a3;
-- (void)setOpacity:(double)a3;
-- (void)setShouldRasterize:(BOOL)a3;
+- (void)setContinuousCorners:(BOOL)corners;
+- (void)setCornerRadius:(double)radius;
+- (void)setCrossfadesContents:(BOOL)contents;
+- (void)setHflipForRTL:(BOOL)l;
+- (void)setIntrinsicHeight:(id *)height;
+- (void)setIntrinsicWidth:(id *)width;
+- (void)setOpacity:(double)opacity;
+- (void)setShouldRasterize:(BOOL)rasterize;
 @end
 
 @implementation TUIImageBox
@@ -39,9 +39,9 @@
   return result;
 }
 
-- (void)setHflipForRTL:(BOOL)a3
+- (void)setHflipForRTL:(BOOL)l
 {
-  if (a3)
+  if (l)
   {
     v3 = 0x4000000;
   }
@@ -54,9 +54,9 @@
   *&self->super._flags = *&self->super._flags & 0xFBFFFFFF | v3;
 }
 
-- (void)setCrossfadesContents:(BOOL)a3
+- (void)setCrossfadesContents:(BOOL)contents
 {
-  if (a3)
+  if (contents)
   {
     v3 = 0x8000000;
   }
@@ -69,9 +69,9 @@
   *&self->super._flags = *&self->super._flags & 0xF7FFFFFF | v3;
 }
 
-- (void)setContinuousCorners:(BOOL)a3
+- (void)setContinuousCorners:(BOOL)corners
 {
-  if (a3)
+  if (corners)
   {
     v3 = 0x10000000;
   }
@@ -84,9 +84,9 @@
   *&self->super._flags = *&self->super._flags & 0xEFFFFFFF | v3;
 }
 
-- (void)setShouldRasterize:(BOOL)a3
+- (void)setShouldRasterize:(BOOL)rasterize
 {
-  if (a3)
+  if (rasterize)
   {
     v3 = 0x20000000;
   }
@@ -99,7 +99,7 @@
   *&self->super._flags = *&self->super._flags & 0xDFFFFFFF | v3;
 }
 
-- (void)setIntrinsicWidth:(id *)a3
+- (void)setIntrinsicWidth:(id *)width
 {
   v4 = v3;
   if ((v3 & 0x7000000000000) == 0x2000000000000)
@@ -123,7 +123,7 @@
     }
   }
 
-  *DataForKey = a3;
+  *DataForKey = width;
   DataForKey[1] = v4;
 }
 
@@ -139,7 +139,7 @@
   return *v4;
 }
 
-- (void)setIntrinsicHeight:(id *)a3
+- (void)setIntrinsicHeight:(id *)height
 {
   v4 = v3;
   if ((v3 & 0x7000000000000) == 0x2000000000000)
@@ -163,7 +163,7 @@
     }
   }
 
-  *DataForKey = a3;
+  *DataForKey = height;
   DataForKey[1] = v4;
 }
 
@@ -249,10 +249,10 @@
   return ObjectForKey;
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  v4 = a3;
-  if (v4 == 0.0)
+  radiusCopy = radius;
+  if (radiusCopy == 0.0)
   {
     v5 = TUI::Util::PartialStruct::Storage::dataForKey(&self->super._storage, 0x14u);
     if (!v5)
@@ -273,7 +273,7 @@
     }
   }
 
-  *DataForKey = v4;
+  *DataForKey = radiusCopy;
 }
 
 - (double)cornerRadius
@@ -290,10 +290,10 @@
   }
 }
 
-- (void)setOpacity:(double)a3
+- (void)setOpacity:(double)opacity
 {
-  v4 = a3;
-  if (v4 == 1.0)
+  opacityCopy = opacity;
+  if (opacityCopy == 1.0)
   {
     v5 = TUI::Util::PartialStruct::Storage::dataForKey(&self->super._storage, 0x2Du);
     if (!v5)
@@ -314,7 +314,7 @@
     }
   }
 
-  *DataForKey = v4;
+  *DataForKey = opacityCopy;
 }
 
 - (double)opacity

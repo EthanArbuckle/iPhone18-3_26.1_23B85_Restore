@@ -1,9 +1,9 @@
 @interface MBInfo
 + (id)info;
-+ (id)infoWithDrive:(id)a3 path:(id)a4 error:(id *)a5;
++ (id)infoWithDrive:(id)drive path:(id)path error:(id *)error;
 - (MBInfo)init;
-- (MBInfo)initWithDrive:(id)a3 path:(id)a4 error:(id *)a5;
-- (MBInfo)initWithPropertyList:(id)a3;
+- (MBInfo)initWithDrive:(id)drive path:(id)path error:(id *)error;
+- (MBInfo)initWithPropertyList:(id)list;
 - (NSDate)lastBackupDate;
 - (NSString)displayName;
 @end
@@ -17,11 +17,11 @@
   return v2;
 }
 
-+ (id)infoWithDrive:(id)a3 path:(id)a4 error:(id *)a5
++ (id)infoWithDrive:(id)drive path:(id)path error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[MBInfo alloc] initWithDrive:v8 path:v7 error:a5];
+  pathCopy = path;
+  driveCopy = drive;
+  v9 = [[MBInfo alloc] initWithDrive:driveCopy path:pathCopy error:error];
 
   return v9;
 }
@@ -41,15 +41,15 @@
   return v2;
 }
 
-- (MBInfo)initWithPropertyList:(id)a3
+- (MBInfo)initWithPropertyList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v9.receiver = self;
   v9.super_class = MBInfo;
   v5 = [(MBInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [listCopy mutableCopy];
     plist = v5->_plist;
     v5->_plist = v6;
   }
@@ -57,9 +57,9 @@
   return v5;
 }
 
-- (MBInfo)initWithDrive:(id)a3 path:(id)a4 error:(id *)a5
+- (MBInfo)initWithDrive:(id)drive path:(id)path error:(id *)error
 {
-  v6 = [a3 propertyListAtPath:a4 options:0 error:a5];
+  v6 = [drive propertyListAtPath:path options:0 error:error];
   if (v6)
   {
     v12.receiver = self;
@@ -73,15 +73,15 @@
     }
 
     self = v7;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (NSString)displayName
@@ -95,11 +95,11 @@
 
   else
   {
-    v6 = [(MBInfo *)self deviceName];
-    v7 = v6;
-    if (v6)
+    deviceName = [(MBInfo *)self deviceName];
+    v7 = deviceName;
+    if (deviceName)
     {
-      v8 = v6;
+      v8 = deviceName;
     }
 
     else

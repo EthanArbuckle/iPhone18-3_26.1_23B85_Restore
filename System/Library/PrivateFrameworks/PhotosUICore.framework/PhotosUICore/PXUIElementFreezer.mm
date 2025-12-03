@@ -1,10 +1,10 @@
 @interface PXUIElementFreezer
 + (PXUIElementFreezer)defaultFreezer;
 - (PXUIElementFreezer)init;
-- (id)freezeContentOfViewController:(id)a3 timeout:(double)a4;
-- (id)freezeMainWindowWithTimeout:(double)a3;
-- (id)freezeView:(id)a3 timeout:(double)a4;
-- (id)freezeWindowContainingViewController:(id)a3 timeout:(double)a4;
+- (id)freezeContentOfViewController:(id)controller timeout:(double)timeout;
+- (id)freezeMainWindowWithTimeout:(double)timeout;
+- (id)freezeView:(id)view timeout:(double)timeout;
+- (id)freezeWindowContainingViewController:(id)controller timeout:(double)timeout;
 @end
 
 @implementation PXUIElementFreezer
@@ -16,42 +16,42 @@
   return v2;
 }
 
-- (id)freezeView:(id)a3 timeout:(double)a4
+- (id)freezeView:(id)view timeout:(double)timeout
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1A45FEE18(a3);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_1A45FEE18(view);
 
   return v8;
 }
 
-- (id)freezeContentOfViewController:(id)a3 timeout:(double)a4
+- (id)freezeContentOfViewController:(id)controller timeout:(double)timeout
 {
-  v6 = a3;
-  v7 = self;
-  v8 = [v6 viewIfLoaded];
-  v9 = [(PXUIElementFreezer *)v7 freezeView:v8 timeout:a4];
+  controllerCopy = controller;
+  selfCopy = self;
+  viewIfLoaded = [controllerCopy viewIfLoaded];
+  v9 = [(PXUIElementFreezer *)selfCopy freezeView:viewIfLoaded timeout:timeout];
 
   return v9;
 }
 
-- (id)freezeWindowContainingViewController:(id)a3 timeout:(double)a4
+- (id)freezeWindowContainingViewController:(id)controller timeout:(double)timeout
 {
   v7 = objc_opt_self();
-  v8 = a3;
-  v9 = self;
-  v10 = [v7 px:v8 windowContainingViewController:?];
-  v11 = [(PXUIElementFreezer *)v9 freezeView:v10 timeout:a4];
+  controllerCopy = controller;
+  selfCopy = self;
+  v10 = [v7 px:controllerCopy windowContainingViewController:?];
+  v11 = [(PXUIElementFreezer *)selfCopy freezeView:v10 timeout:timeout];
 
   return v11;
 }
 
-- (id)freezeMainWindowWithTimeout:(double)a3
+- (id)freezeMainWindowWithTimeout:(double)timeout
 {
   v5 = objc_opt_self();
-  v6 = self;
+  selfCopy = self;
   v7 = [v5 px:0 windowContainingViewController:?];
-  v8 = [(PXUIElementFreezer *)v6 freezeView:v7 timeout:a3];
+  v8 = [(PXUIElementFreezer *)selfCopy freezeView:v7 timeout:timeout];
 
   return v8;
 }

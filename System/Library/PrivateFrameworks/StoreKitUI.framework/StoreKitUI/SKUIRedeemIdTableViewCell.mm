@@ -1,23 +1,23 @@
 @interface SKUIRedeemIdTableViewCell
 - (BOOL)becomeFirstResponder;
 - (BOOL)resignFirstResponder;
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (SKUIRedeemIdTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (SKUIRedeemIdTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (SKUIRedeemIdTableViewCellDelegate)delegate;
 - (void)_initializeTextField;
 - (void)layoutSubviews;
-- (void)setAutoCapitalizationType:(int64_t)a3;
-- (void)setKeyboardType:(int64_t)a3;
-- (void)setPlaceholderText:(id)a3;
-- (void)setReturnKeyType:(int64_t)a3;
-- (void)textFieldDidChange:(id)a3;
+- (void)setAutoCapitalizationType:(int64_t)type;
+- (void)setKeyboardType:(int64_t)type;
+- (void)setPlaceholderText:(id)text;
+- (void)setReturnKeyType:(int64_t)type;
+- (void)textFieldDidChange:(id)change;
 @end
 
 @implementation SKUIRedeemIdTableViewCell
 
-- (SKUIRedeemIdTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (SKUIRedeemIdTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIRedeemIdTableViewCell initWithStyle:reuseIdentifier:];
@@ -25,7 +25,7 @@
 
   v10.receiver = self;
   v10.super_class = SKUIRedeemIdTableViewCell;
-  v7 = [(SKUIRedeemIdTableViewCell *)&v10 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(SKUIRedeemIdTableViewCell *)&v10 initWithStyle:style reuseIdentifier:identifierCopy];
   v8 = v7;
   if (v7)
   {
@@ -38,8 +38,8 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(SKUIRedeemIdTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(SKUIRedeemIdTableViewCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -56,8 +56,8 @@
   width = v21.size.width;
   height = v21.size.height;
 
-  v18 = [(SKUIRedeemIdTableViewCell *)self textField];
-  [v18 setFrame:{x, y, width, height}];
+  textField = [(SKUIRedeemIdTableViewCell *)self textField];
+  [textField setFrame:{x, y, width, height}];
 
   v19.receiver = self;
   v19.super_class = SKUIRedeemIdTableViewCell;
@@ -66,68 +66,68 @@
 
 - (BOOL)becomeFirstResponder
 {
-  v3 = [(SKUIRedeemIdTableViewCell *)self textField];
-  [v3 setUserInteractionEnabled:1];
+  textField = [(SKUIRedeemIdTableViewCell *)self textField];
+  [textField setUserInteractionEnabled:1];
 
-  v4 = [(SKUIRedeemIdTableViewCell *)self textField];
-  [v4 becomeFirstResponder];
+  textField2 = [(SKUIRedeemIdTableViewCell *)self textField];
+  [textField2 becomeFirstResponder];
 
   return 1;
 }
 
 - (BOOL)resignFirstResponder
 {
-  v3 = [(SKUIRedeemIdTableViewCell *)self textField];
-  [v3 setUserInteractionEnabled:0];
+  textField = [(SKUIRedeemIdTableViewCell *)self textField];
+  [textField setUserInteractionEnabled:0];
 
-  v4 = [(SKUIRedeemIdTableViewCell *)self textField];
-  [v4 resignFirstResponder];
+  textField2 = [(SKUIRedeemIdTableViewCell *)self textField];
+  [textField2 resignFirstResponder];
 
   return 1;
 }
 
-- (void)setPlaceholderText:(id)a3
+- (void)setPlaceholderText:(id)text
 {
-  v4 = a3;
-  v5 = [(SKUIRedeemIdTableViewCell *)self textField];
-  [v5 setPlaceholder:v4];
+  textCopy = text;
+  textField = [(SKUIRedeemIdTableViewCell *)self textField];
+  [textField setPlaceholder:textCopy];
 }
 
-- (void)setKeyboardType:(int64_t)a3
+- (void)setKeyboardType:(int64_t)type
 {
-  v4 = [(SKUIRedeemIdTableViewCell *)self textField];
-  [v4 setKeyboardType:a3];
+  textField = [(SKUIRedeemIdTableViewCell *)self textField];
+  [textField setKeyboardType:type];
 }
 
-- (void)setReturnKeyType:(int64_t)a3
+- (void)setReturnKeyType:(int64_t)type
 {
-  v4 = [(SKUIRedeemIdTableViewCell *)self textField];
-  [v4 setReturnKeyType:a3];
+  textField = [(SKUIRedeemIdTableViewCell *)self textField];
+  [textField setReturnKeyType:type];
 }
 
-- (void)setAutoCapitalizationType:(int64_t)a3
+- (void)setAutoCapitalizationType:(int64_t)type
 {
-  v4 = [(SKUIRedeemIdTableViewCell *)self textField];
-  [v4 setAutocapitalizationType:a3];
+  textField = [(SKUIRedeemIdTableViewCell *)self textField];
+  [textField setAutocapitalizationType:type];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = [(SKUIRedeemIdTableViewCell *)self delegate];
-  v6 = [v4 text];
+  returnCopy = return;
+  delegate = [(SKUIRedeemIdTableViewCell *)self delegate];
+  text = [returnCopy text];
 
-  [v5 redeemIdCell:self didReturnWithText:v6];
+  [delegate redeemIdCell:self didReturnWithText:text];
   return 1;
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  v4 = a3;
-  v6 = [(SKUIRedeemIdTableViewCell *)self delegate];
-  v5 = [v4 text];
+  changeCopy = change;
+  delegate = [(SKUIRedeemIdTableViewCell *)self delegate];
+  text = [changeCopy text];
 
-  [v6 redeemIdCell:self didChangeToText:v5];
+  [delegate redeemIdCell:self didChangeToText:text];
 }
 
 - (void)_initializeTextField
@@ -136,25 +136,25 @@
   v4 = [v3 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(SKUIRedeemIdTableViewCell *)self setTextField:v4];
 
-  v5 = [(SKUIRedeemIdTableViewCell *)self textField];
-  [v5 setDelegate:self];
+  textField = [(SKUIRedeemIdTableViewCell *)self textField];
+  [textField setDelegate:self];
 
-  v6 = [(SKUIRedeemIdTableViewCell *)self textField];
-  [v6 setUserInteractionEnabled:0];
+  textField2 = [(SKUIRedeemIdTableViewCell *)self textField];
+  [textField2 setUserInteractionEnabled:0];
 
-  v7 = [(SKUIRedeemIdTableViewCell *)self textField];
-  [v7 setClearButtonMode:1];
+  textField3 = [(SKUIRedeemIdTableViewCell *)self textField];
+  [textField3 setClearButtonMode:1];
 
-  v8 = [(SKUIRedeemIdTableViewCell *)self textField];
-  v9 = [MEMORY[0x277D75348] clearColor];
-  [v8 setBackgroundColor:v9];
+  textField4 = [(SKUIRedeemIdTableViewCell *)self textField];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [textField4 setBackgroundColor:clearColor];
 
-  v10 = [(SKUIRedeemIdTableViewCell *)self textField];
-  [v10 addTarget:self action:sel_textFieldDidChange_ forControlEvents:0x20000];
+  textField5 = [(SKUIRedeemIdTableViewCell *)self textField];
+  [textField5 addTarget:self action:sel_textFieldDidChange_ forControlEvents:0x20000];
 
-  v12 = [(SKUIRedeemIdTableViewCell *)self contentView];
-  v11 = [(SKUIRedeemIdTableViewCell *)self textField];
-  [v12 addSubview:v11];
+  contentView = [(SKUIRedeemIdTableViewCell *)self contentView];
+  textField6 = [(SKUIRedeemIdTableViewCell *)self textField];
+  [contentView addSubview:textField6];
 }
 
 - (SKUIRedeemIdTableViewCellDelegate)delegate

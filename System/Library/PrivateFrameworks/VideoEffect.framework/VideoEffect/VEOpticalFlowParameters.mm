@@ -1,14 +1,14 @@
 @interface VEOpticalFlowParameters
-- (VEOpticalFlowParameters)initWithSourceFrame:(id)a3 nextFrame:(id)a4 submissionMode:(int64_t)a5 opticalFlow:(id)a6;
+- (VEOpticalFlowParameters)initWithSourceFrame:(id)frame nextFrame:(id)nextFrame submissionMode:(int64_t)mode opticalFlow:(id)flow;
 @end
 
 @implementation VEOpticalFlowParameters
 
-- (VEOpticalFlowParameters)initWithSourceFrame:(id)a3 nextFrame:(id)a4 submissionMode:(int64_t)a5 opticalFlow:(id)a6
+- (VEOpticalFlowParameters)initWithSourceFrame:(id)frame nextFrame:(id)nextFrame submissionMode:(int64_t)mode opticalFlow:(id)flow
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  frameCopy = frame;
+  nextFrameCopy = nextFrame;
+  flowCopy = flow;
   v17.receiver = self;
   v17.super_class = VEOpticalFlowParameters;
   v14 = [(VEOpticalFlowParameters *)&v17 init];
@@ -17,7 +17,7 @@
     goto LABEL_10;
   }
 
-  if (!v11 || !v12 || !v13)
+  if (!frameCopy || !nextFrameCopy || !flowCopy)
   {
     NSLog(&cfstr_FailToToInitia.isa);
 LABEL_10:
@@ -25,16 +25,16 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  if (!isSameFormat([v11 buffer], objc_msgSend(v12, "buffer")))
+  if (!isSameFormat([frameCopy buffer], objc_msgSend(nextFrameCopy, "buffer")))
   {
     NSLog(&cfstr_FailToToInitia_0.isa);
     goto LABEL_10;
   }
 
-  objc_storeStrong(&v14->_sourceFrame, a3);
-  objc_storeStrong(&v14->_nextFrame, a4);
-  v14->_submissionMode = a5;
-  objc_storeStrong(&v14->_opticalFlow, a6);
+  objc_storeStrong(&v14->_sourceFrame, frame);
+  objc_storeStrong(&v14->_nextFrame, nextFrame);
+  v14->_submissionMode = mode;
+  objc_storeStrong(&v14->_opticalFlow, flow);
   v15 = v14;
 LABEL_7:
 

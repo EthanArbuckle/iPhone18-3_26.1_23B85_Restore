@@ -1,11 +1,11 @@
 @interface PrivacyFooterCollectionViewCell
-- (_TtC22SubscribePageExtension31PrivacyFooterCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC22SubscribePageExtension31PrivacyFooterCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation PrivacyFooterCollectionViewCell
 
-- (_TtC22SubscribePageExtension31PrivacyFooterCollectionViewCell)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension31PrivacyFooterCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC22SubscribePageExtension31PrivacyFooterCollectionViewCell_itemLayoutContext;
   v5 = sub_1007469A4();
@@ -20,7 +20,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10014C600();
 }
 

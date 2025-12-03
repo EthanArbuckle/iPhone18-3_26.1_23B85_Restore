@@ -13,18 +13,18 @@
   v9.receiver = self;
   v9.super_class = COSPasscodeInputViewController;
   [(COSPasscodeInputViewController *)&v9 viewDidLoad];
-  v3 = [(COSPasscodeInputViewController *)self headerView];
-  v4 = [(COSPasscodeInputViewController *)self titleText];
-  [v3 setTitle:v4];
+  headerView = [(COSPasscodeInputViewController *)self headerView];
+  titleText = [(COSPasscodeInputViewController *)self titleText];
+  [headerView setTitle:titleText];
 
-  v5 = [(COSPasscodeInputViewController *)self headerView];
-  v6 = [(COSPasscodeInputViewController *)self detailText];
-  [v5 setDetailText:v6];
+  headerView2 = [(COSPasscodeInputViewController *)self headerView];
+  detailText = [(COSPasscodeInputViewController *)self detailText];
+  [headerView2 setDetailText:detailText];
 
-  v7 = [(COSPasscodeInputViewController *)self navigationItem];
-  [v7 setTitle:&stru_10026E598];
+  navigationItem = [(COSPasscodeInputViewController *)self navigationItem];
+  [navigationItem setTitle:&stru_10026E598];
   v8 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:101 target:self action:"back:"];
-  [v7 setBackBarButtonItem:v8];
+  [navigationItem setBackBarButtonItem:v8];
 }
 
 - (BOOL)controllerAllowsNavigatingBackTo

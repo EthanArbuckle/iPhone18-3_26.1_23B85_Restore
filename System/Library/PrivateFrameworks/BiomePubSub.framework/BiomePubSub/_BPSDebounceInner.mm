@@ -1,33 +1,33 @@
 @interface _BPSDebounceInner
-- (_BPSDebounceInner)initWithDownstream:(id)a3 for:(double)a4 getTimestamp:(id)a5;
-- (int64_t)receiveInput:(id)a3;
+- (_BPSDebounceInner)initWithDownstream:(id)downstream for:(double)for getTimestamp:(id)timestamp;
+- (int64_t)receiveInput:(id)input;
 - (void)cancel;
-- (void)receiveCompletion:(id)a3;
-- (void)receiveSubscription:(id)a3;
+- (void)receiveCompletion:(id)completion;
+- (void)receiveSubscription:(id)subscription;
 @end
 
 @implementation _BPSDebounceInner
 
-- (_BPSDebounceInner)initWithDownstream:(id)a3 for:(double)a4 getTimestamp:(id)a5
+- (_BPSDebounceInner)initWithDownstream:(id)downstream for:(double)for getTimestamp:(id)timestamp
 {
-  v9 = a3;
-  v10 = a5;
+  downstreamCopy = downstream;
+  timestampCopy = timestamp;
   v19.receiver = self;
   v19.super_class = _BPSDebounceInner;
   v11 = [(_BPSDebounceInner *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_downstream, a3);
-    v12->_dueTime = a4;
+    objc_storeStrong(&v11->_downstream, downstream);
+    v12->_dueTime = for;
     lastEvent = v12->_lastEvent;
     v12->_lastEvent = 0;
 
-    v14 = [MEMORY[0x1E695DF00] distantFuture];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
     lastArrivalTimestamp = v12->_lastArrivalTimestamp;
-    v12->_lastArrivalTimestamp = v14;
+    v12->_lastArrivalTimestamp = distantFuture;
 
-    v16 = [v10 copy];
+    v16 = [timestampCopy copy];
     getTimestamp = v12->_getTimestamp;
     v12->_getTimestamp = v16;
 
@@ -49,36 +49,36 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)receiveCompletion:(id)a3
+- (void)receiveCompletion:(id)completion
 {
-  v4 = self;
-  v5 = a3;
+  selfCopy = self;
+  completionCopy = completion;
   v6 = __biome_log_for_category();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [_BPSDebounceInner receiveCompletion:];
   }
 
-  v7 = [(_BPSDebounceInner *)v4 downstream];
-  [v7 receiveCompletion:v5];
+  downstream = [(_BPSDebounceInner *)selfCopy downstream];
+  [downstream receiveCompletion:completionCopy];
 }
 
-- (int64_t)receiveInput:(id)a3
+- (int64_t)receiveInput:(id)input
 {
-  v5 = a3;
-  v6 = self;
-  os_unfair_lock_lock(&v6->_lock);
-  v7 = (*(v6->_getTimestamp + 2))();
+  inputCopy = input;
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  v7 = (*(selfCopy->_getTimestamp + 2))();
   v8 = __biome_log_for_category();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [(_BPSDebounceInner *)v5 receiveInput:v7];
+    [(_BPSDebounceInner *)inputCopy receiveInput:v7];
   }
 
-  [v7 timeIntervalSinceDate:v6->_lastArrivalTimestamp];
-  if (v9 >= v6->_dueTime)
+  [v7 timeIntervalSinceDate:selfCopy->_lastArrivalTimestamp];
+  if (v9 >= selfCopy->_dueTime)
   {
-    v10 = v6->_lastEvent;
+    v10 = selfCopy->_lastEvent;
   }
 
   else
@@ -86,9 +86,9 @@
     v10 = 0;
   }
 
-  objc_storeStrong(&v6->_lastArrivalTimestamp, v7);
-  objc_storeStrong(&v6->_lastEvent, a3);
-  os_unfair_lock_unlock(&v6->_lock);
+  objc_storeStrong(&selfCopy->_lastArrivalTimestamp, v7);
+  objc_storeStrong(&selfCopy->_lastEvent, input);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   if (v10)
   {
     v11 = __biome_log_for_category();
@@ -97,8 +97,8 @@
       [_BPSDebounceInner receiveInput:];
     }
 
-    v12 = [(_BPSDebounceInner *)v6 downstream];
-    v13 = [v12 receiveInput:v10];
+    downstream = [(_BPSDebounceInner *)selfCopy downstream];
+    v13 = [downstream receiveInput:v10];
   }
 
   else
@@ -109,11 +109,11 @@
   return v13;
 }
 
-- (void)receiveSubscription:(id)a3
+- (void)receiveSubscription:(id)subscription
 {
-  v4 = a3;
-  v5 = [(_BPSDebounceInner *)self downstream];
-  [v5 receiveSubscription:v4];
+  subscriptionCopy = subscription;
+  downstream = [(_BPSDebounceInner *)self downstream];
+  [downstream receiveSubscription:subscriptionCopy];
 }
 
 - (void)receiveCompletion:.cold.1()

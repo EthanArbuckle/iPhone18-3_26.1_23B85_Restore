@@ -1,12 +1,12 @@
 @interface NANDTelemetry_PerAppDiskSpaceDaily
 - (BOOL)_isAfterNotificationCoolDown;
-- (id)_entityFailsCatSystemCheck:(id)a3;
-- (id)_entityHasNegativeSize:(id)a3;
-- (id)_getRawDictErrorStr:(id)a3;
+- (id)_entityFailsCatSystemCheck:(id)check;
+- (id)_entityHasNegativeSize:(id)size;
+- (id)_getRawDictErrorStr:(id)str;
 - (id)_populatePerAppDiskSpaceDict;
-- (void)_checkRawDictConsistency:(id)a3;
-- (void)_sendToCoreAnalytics:(id)a3;
-- (void)_tryNotifyUserRawDictErrorString:(id)a3;
+- (void)_checkRawDictConsistency:(id)consistency;
+- (void)_sendToCoreAnalytics:(id)analytics;
+- (void)_tryNotifyUserRawDictErrorString:(id)string;
 - (void)_updateLastUserNotificationDate;
 - (void)runActivity;
 @end
@@ -74,13 +74,13 @@ LABEL_17:
       goto LABEL_24;
     }
 
-    v7 = [(NANDTelemetry_Base *)self activityMgr];
-    v8 = [v7 shouldDeferXpcActivity];
+    activityMgr = [(NANDTelemetry_Base *)self activityMgr];
+    shouldDeferXpcActivity = [activityMgr shouldDeferXpcActivity];
 
     v5 = (v6 + 1000);
   }
 
-  while (!v8);
+  while (!shouldDeferXpcActivity);
   if (++dword_1000D82A4 >= 4)
   {
     v9 = oslog;
@@ -96,8 +96,8 @@ LABEL_24:
     goto LABEL_28;
   }
 
-  v18 = [(NANDTelemetry_Base *)self activityMgr];
-  [v18 forceDeferXpcActivity];
+  activityMgr2 = [(NANDTelemetry_Base *)self activityMgr];
+  [activityMgr2 forceDeferXpcActivity];
 
   v19 = oslog;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -161,19 +161,19 @@ LABEL_18:
   return v14;
 }
 
-- (id)_entityHasNegativeSize:(id)a3
+- (id)_entityHasNegativeSize:(id)size
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"total"];
-  v5 = [v3 objectForKeyedSubscript:@"sizes"];
+  sizeCopy = size;
+  v4 = [sizeCopy objectForKeyedSubscript:@"total"];
+  v5 = [sizeCopy objectForKeyedSubscript:@"sizes"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 longLongValue] & 0x8000000000000000) != 0)
   {
-    v15 = [NSString stringWithFormat:@"Negative size in app space entity dictionary %@", v3];
+    sizeCopy = [NSString stringWithFormat:@"Negative size in app space entity dictionary %@", sizeCopy];
     v18 = oslog;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      sub_10004A174(v15, v18);
+      sub_10004A174(sizeCopy, v18);
     }
   }
 
@@ -215,14 +215,14 @@ LABEL_18:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) != 0 && ([v10 longLongValue] & 0x8000000000000000) != 0)
             {
-              v16 = [NSString stringWithFormat:@"Negative size in app space entity dictionary %@", v3];
+              sizeCopy2 = [NSString stringWithFormat:@"Negative size in app space entity dictionary %@", sizeCopy];
               v17 = oslog;
               if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
               {
-                sub_10004A174(v16, v17);
+                sub_10004A174(sizeCopy2, v17);
               }
 
-              v15 = v16;
+              sizeCopy = sizeCopy2;
 
               v5 = v20;
               v4 = v21;
@@ -249,20 +249,20 @@ LABEL_18:
       }
     }
 
-    v15 = 0;
+    sizeCopy = 0;
   }
 
 LABEL_21:
 
-  return v15;
+  return sizeCopy;
 }
 
-- (id)_entityFailsCatSystemCheck:(id)a3
+- (id)_entityFailsCatSystemCheck:(id)check
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"total"];
-  v5 = [v3 objectForKeyedSubscript:@"sizes"];
-  v6 = [v3 objectForKeyedSubscript:@"name"];
+  checkCopy = check;
+  v4 = [checkCopy objectForKeyedSubscript:@"total"];
+  v5 = [checkCopy objectForKeyedSubscript:@"sizes"];
+  v6 = [checkCopy objectForKeyedSubscript:@"name"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || ![v6 isEqualToString:@"iOS"])
   {
@@ -272,7 +272,7 @@ LABEL_21:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v4 longLongValue];
+    longLongValue = [v4 longLongValue];
   }
 
   else
@@ -293,38 +293,38 @@ LABEL_21:
     }
 
     v12 = [v5 objectForKeyedSubscript:@"total"];
-    v7 = [v12 longLongValue];
+    longLongValue = [v12 longLongValue];
   }
 
-  if ((v7 - 0x640000001) > 0xFFFFFFFAFFFFFFFELL)
+  if ((longLongValue - 0x640000001) > 0xFFFFFFFAFFFFFFFELL)
   {
 LABEL_6:
-    v8 = 0;
+    checkCopy = 0;
     goto LABEL_7;
   }
 
 LABEL_13:
-  v8 = [NSString stringWithFormat:@"Unexpected system category size! Category info: %@", v3];
+  checkCopy = [NSString stringWithFormat:@"Unexpected system category size! Category info: %@", checkCopy];
   v13 = oslog;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
   {
-    sub_10004A174(v8, v13);
+    sub_10004A174(checkCopy, v13);
   }
 
 LABEL_7:
 
-  return v8;
+  return checkCopy;
 }
 
-- (id)_getRawDictErrorStr:(id)a3
+- (id)_getRawDictErrorStr:(id)str
 {
-  v4 = a3;
+  strCopy = str;
   v5 = objc_alloc_init(NSMutableArray);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v6 = v4;
+  v6 = strCopy;
   v29 = [v6 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v29)
   {
@@ -453,16 +453,16 @@ LABEL_7:
 
 - (void)_updateLastUserNotificationDate
 {
-  v4 = [(NANDTelemetry_Base *)self stateMgr];
+  stateMgr = [(NANDTelemetry_Base *)self stateMgr];
   v2 = +[NSDate now];
   v3 = DateTimeToStr(v2);
-  [v4 saveValue:v3 forKey:@"lastUserNotificationDate" doPersist:1];
+  [stateMgr saveValue:v3 forKey:@"lastUserNotificationDate" doPersist:1];
 }
 
 - (BOOL)_isAfterNotificationCoolDown
 {
-  v3 = [(NANDTelemetry_Base *)self stateMgr];
-  v4 = [v3 getValueForKey:@"lastUserNotificationDate"];
+  stateMgr = [(NANDTelemetry_Base *)self stateMgr];
+  v4 = [stateMgr getValueForKey:@"lastUserNotificationDate"];
   v5 = StringToDateTime(v4);
 
   if (v5)
@@ -493,18 +493,18 @@ LABEL_7:
     if (v5)
     {
       v2 = DateTimeToStr(v5);
-      v10 = [v2 UTF8String];
+      uTF8String = [v2 UTF8String];
     }
 
     else
     {
-      v10 = "none";
+      uTF8String = "none";
     }
 
     v12 = 136315394;
     v13 = v9;
     v14 = 2080;
-    v15 = v10;
+    v15 = uTF8String;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s notify user for raw dict error. Previous notification time %s", &v12, 0x16u);
     if (v5)
     {
@@ -514,15 +514,15 @@ LABEL_7:
   return v7;
 }
 
-- (void)_tryNotifyUserRawDictErrorString:(id)a3
+- (void)_tryNotifyUserRawDictErrorString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   if (os_variant_has_internal_ui() && objc_opt_class() && [(NANDTelemetry_PerAppDiskSpaceDaily *)self _isAfterNotificationCoolDown])
   {
     v5 = objc_alloc_init(RadarDraft);
     [v5 setTitle:@"SpaceForce Telemetry Inconsistent Disk Space Result"];
-    v6 = [NSString stringWithFormat:@"Inconsistent result is detect on your device during disk space usage telemetry collection. Inconsistencies:\n\n%@", v4];
-    [v5 setProblemDescription:v6];
+    stringCopy = [NSString stringWithFormat:@"Inconsistent result is detect on your device during disk space usage telemetry collection. Inconsistencies:\n\n%@", stringCopy];
+    [v5 setProblemDescription:stringCopy];
 
     v7 = [[RadarComponent alloc] initWithName:@"Storage Management" version:@"iOS" identifier:819298];
     [v5 setComponent:v7];
@@ -560,15 +560,15 @@ LABEL_7:
   }
 }
 
-- (void)_checkRawDictConsistency:(id)a3
+- (void)_checkRawDictConsistency:(id)consistency
 {
-  v8 = a3;
-  v4 = [v8 objectForKeyedSubscript:@"finished"];
-  v5 = [v4 unsignedIntValue];
+  consistencyCopy = consistency;
+  v4 = [consistencyCopy objectForKeyedSubscript:@"finished"];
+  unsignedIntValue = [v4 unsignedIntValue];
 
-  if (v5)
+  if (unsignedIntValue)
   {
-    v6 = [(NANDTelemetry_PerAppDiskSpaceDaily *)self _getRawDictErrorStr:v8];
+    v6 = [(NANDTelemetry_PerAppDiskSpaceDaily *)self _getRawDictErrorStr:consistencyCopy];
     if (v6)
     {
       v7 = &off_1000C0008;
@@ -579,35 +579,35 @@ LABEL_7:
       v7 = &off_1000BFFF0;
     }
 
-    [v8 setObject:v7 forKeyedSubscript:@"inconsistent"];
+    [consistencyCopy setObject:v7 forKeyedSubscript:@"inconsistent"];
   }
 }
 
-- (void)_sendToCoreAnalytics:(id)a3
+- (void)_sendToCoreAnalytics:(id)analytics
 {
-  v4 = a3;
+  analyticsCopy = analytics;
   v3 = objc_autoreleasePoolPush();
-  LogStorageUIDatatoCA(v4, 0);
+  LogStorageUIDatatoCA(analyticsCopy, 0);
   objc_autoreleasePoolPop(v3);
 }
 
 - (void)runActivity
 {
-  v3 = [(NANDTelemetry_PerAppDiskSpaceDaily *)self _populatePerAppDiskSpaceDict];
-  if (v3)
+  _populatePerAppDiskSpaceDict = [(NANDTelemetry_PerAppDiskSpaceDaily *)self _populatePerAppDiskSpaceDict];
+  if (_populatePerAppDiskSpaceDict)
   {
-    [(NANDTelemetry_PerAppDiskSpaceDaily *)self _checkRawDictConsistency:v3];
+    [(NANDTelemetry_PerAppDiskSpaceDaily *)self _checkRawDictConsistency:_populatePerAppDiskSpaceDict];
     v4 = oslog;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       v5 = v4;
-      v6 = [v3 objectForKeyedSubscript:@"execMilliseconds"];
+      v6 = [_populatePerAppDiskSpaceDict objectForKeyedSubscript:@"execMilliseconds"];
       v7[0] = 67109120;
       v7[1] = [v6 intValue] / 1000;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Sending app space info to CA. Extraction time %ds", v7, 8u);
     }
 
-    [(NANDTelemetry_PerAppDiskSpaceDaily *)self _sendToCoreAnalytics:v3];
+    [(NANDTelemetry_PerAppDiskSpaceDaily *)self _sendToCoreAnalytics:_populatePerAppDiskSpaceDict];
   }
 }
 

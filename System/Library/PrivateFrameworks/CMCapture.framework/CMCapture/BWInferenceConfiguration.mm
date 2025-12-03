@@ -1,12 +1,12 @@
 @interface BWInferenceConfiguration
-- (BWInferenceConfiguration)initWithInferenceType:(int)a3;
+- (BWInferenceConfiguration)initWithInferenceType:(int)type;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation BWInferenceConfiguration
 
-- (BWInferenceConfiguration)initWithInferenceType:(int)a3
+- (BWInferenceConfiguration)initWithInferenceType:(int)type
 {
   v7.receiver = self;
   v7.super_class = BWInferenceConfiguration;
@@ -14,7 +14,7 @@
   v5 = v4;
   if (v4)
   {
-    *(v4 + 2) = a3;
+    *(v4 + 2) = type;
     *(v4 + 12) = 0;
     *(v4 + 3) = objc_alloc_init(MEMORY[0x1E695DF20]);
   }

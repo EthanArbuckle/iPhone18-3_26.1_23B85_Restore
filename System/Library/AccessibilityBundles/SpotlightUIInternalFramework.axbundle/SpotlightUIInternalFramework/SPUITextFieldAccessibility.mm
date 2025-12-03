@@ -1,5 +1,5 @@
 @interface SPUITextFieldAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (id)automationElements;
@@ -8,38 +8,38 @@
 
 @implementation SPUITextFieldAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SPUICompletionStringView"];
-  [v3 validateClass:@"SPUICompletionStringView" hasInstanceMethod:@"labelsStackView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SPUICompletionStringView" hasInstanceMethod:@"completionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SPUICompletionStringView" hasInstanceMethod:@"bridgeLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SPUICompletionStringView" hasInstanceMethod:@"extensionLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SPUICompletionStringView"];
+  [validationsCopy validateClass:@"SPUICompletionStringView" hasInstanceMethod:@"labelsStackView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SPUICompletionStringView" hasInstanceMethod:@"completionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SPUICompletionStringView" hasInstanceMethod:@"bridgeLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SPUICompletionStringView" hasInstanceMethod:@"extensionLabel" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(SPUITextFieldAccessibility *)self axCompletionStrings];
-  if ([v3 count])
+  axCompletionStrings = [(SPUITextFieldAccessibility *)self axCompletionStrings];
+  if ([axCompletionStrings count])
   {
-    v4 = [v3 objectAtIndexedSubscript:0];
+    v4 = [axCompletionStrings objectAtIndexedSubscript:0];
     v5 = [v4 safeValueForKey:@"labelsStackView"];
 
     v6 = [v5 safeValueForKey:@"completionLabel"];
     v7 = [v6 safeStringForKey:@"text"];
 
-    v8 = accessibilityLocalizedString(v7);
+    accessibilityLabel = accessibilityLocalizedString(v7);
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SPUITextFieldAccessibility;
-    v8 = [(SPUITextFieldAccessibility *)&v10 accessibilityLabel];
+    accessibilityLabel = [(SPUITextFieldAccessibility *)&v10 accessibilityLabel];
   }
 
-  return v8;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
@@ -49,15 +49,15 @@
   {
     v25.receiver = self;
     v25.super_class = SPUITextFieldAccessibility;
-    v4 = [(SPUITextFieldAccessibility *)&v25 accessibilityValue];
+    accessibilityValue = [(SPUITextFieldAccessibility *)&v25 accessibilityValue];
   }
 
   else
   {
-    v5 = [(SPUITextFieldAccessibility *)self axCompletionStrings];
-    if ([v5 count])
+    axCompletionStrings = [(SPUITextFieldAccessibility *)self axCompletionStrings];
+    if ([axCompletionStrings count])
     {
-      v6 = [v5 objectAtIndexedSubscript:0];
+      v6 = [axCompletionStrings objectAtIndexedSubscript:0];
       v7 = [v6 safeValueForKey:@"labelsStackView"];
 
       v8 = [v7 safeValueForKey:@"completionLabel"];
@@ -71,7 +71,7 @@
 
       v23.receiver = self;
       v23.super_class = SPUITextFieldAccessibility;
-      v4 = [(SPUITextFieldAccessibility *)&v23 accessibilityValue];
+      accessibilityValue = [(SPUITextFieldAccessibility *)&v23 accessibilityValue];
       if ([v7 _accessibilityViewIsVisible] && objc_msgSend(v9, "length") && objc_msgSend(v11, "length") && objc_msgSend(v13, "length"))
       {
         v14 = __UIAXStringForVariables();
@@ -91,7 +91,7 @@
 
         v21 = __UIAXStringForVariables();
 
-        v4 = v21;
+        accessibilityValue = v21;
       }
     }
 
@@ -99,38 +99,38 @@
     {
       v24.receiver = self;
       v24.super_class = SPUITextFieldAccessibility;
-      v4 = [(SPUITextFieldAccessibility *)&v24 accessibilityValue];
+      accessibilityValue = [(SPUITextFieldAccessibility *)&v24 accessibilityValue];
     }
   }
 
-  return v4;
+  return accessibilityValue;
 }
 
 - (id)automationElements
 {
   v8.receiver = self;
   v8.super_class = SPUITextFieldAccessibility;
-  v3 = [(SPUITextFieldAccessibility *)&v8 automationElements];
-  v4 = [v3 mutableCopy];
+  automationElements = [(SPUITextFieldAccessibility *)&v8 automationElements];
+  v4 = [automationElements mutableCopy];
   if (v4)
   {
-    v5 = v4;
+    array = v4;
   }
 
   else
   {
-    v5 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
 
-    if (!v5)
+    if (!array)
     {
-      v5 = [MEMORY[0x29EDB8DE8] array];
+      array = [MEMORY[0x29EDB8DE8] array];
     }
   }
 
-  v6 = [(SPUITextFieldAccessibility *)self axCompletionStrings];
-  [v5 axSafelyAddObjectsFromArray:v6];
+  axCompletionStrings = [(SPUITextFieldAccessibility *)self axCompletionStrings];
+  [array axSafelyAddObjectsFromArray:axCompletionStrings];
 
-  return v5;
+  return array;
 }
 
 - (id)axCompletionStrings

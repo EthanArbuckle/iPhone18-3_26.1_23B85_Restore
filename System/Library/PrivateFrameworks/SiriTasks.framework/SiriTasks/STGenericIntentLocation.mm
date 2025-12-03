@@ -1,56 +1,56 @@
 @interface STGenericIntentLocation
-- (STGenericIntentLocation)initWithCoder:(id)a3;
-- (STGenericIntentLocation)initWithName:(id)a3 latitude:(double)a4 longitude:(double)a5;
-- (void)encodeWithCoder:(id)a3;
+- (STGenericIntentLocation)initWithCoder:(id)coder;
+- (STGenericIntentLocation)initWithName:(id)name latitude:(double)latitude longitude:(double)longitude;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STGenericIntentLocation
 
-- (STGenericIntentLocation)initWithCoder:(id)a3
+- (STGenericIntentLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = STGenericIntentLocation;
   v5 = [(STGenericIntentLocation *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
     name = v5->_name;
     v5->_name = v6;
 
-    [v4 decodeDoubleForKey:@"_latitude"];
+    [coderCopy decodeDoubleForKey:@"_latitude"];
     v5->_latitude = v8;
-    [v4 decodeDoubleForKey:@"_longitude"];
+    [coderCopy decodeDoubleForKey:@"_longitude"];
     v5->_longitude = v9;
-    v5->_isLatLong = [v4 decodeBoolForKey:@"_isLatLong"];
+    v5->_isLatLong = [coderCopy decodeBoolForKey:@"_isLatLong"];
     v10 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"_name"];
-  [v5 encodeDouble:@"_latitude" forKey:self->_latitude];
-  [v5 encodeDouble:@"_longitude" forKey:self->_longitude];
-  [v5 encodeBool:self->_isLatLong forKey:@"_isLatLong"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"_name"];
+  [coderCopy encodeDouble:@"_latitude" forKey:self->_latitude];
+  [coderCopy encodeDouble:@"_longitude" forKey:self->_longitude];
+  [coderCopy encodeBool:self->_isLatLong forKey:@"_isLatLong"];
 }
 
-- (STGenericIntentLocation)initWithName:(id)a3 latitude:(double)a4 longitude:(double)a5
+- (STGenericIntentLocation)initWithName:(id)name latitude:(double)latitude longitude:(double)longitude
 {
-  v9 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = STGenericIntentLocation;
   v10 = [(STGenericIntentLocation *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_name, a3);
-    v11->_latitude = a4;
-    v11->_longitude = a5;
+    objc_storeStrong(&v10->_name, name);
+    v11->_latitude = latitude;
+    v11->_longitude = longitude;
   }
 
   return v11;

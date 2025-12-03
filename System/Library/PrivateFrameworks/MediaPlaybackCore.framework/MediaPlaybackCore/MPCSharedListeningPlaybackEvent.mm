@@ -1,5 +1,5 @@
 @interface MPCSharedListeningPlaybackEvent
-- (MPCSharedListeningPlaybackEvent)initWithKind:(int64_t)a3 item:(id)a4;
+- (MPCSharedListeningPlaybackEvent)initWithKind:(int64_t)kind item:(id)item;
 - (id)description;
 @end
 
@@ -24,17 +24,17 @@
   return v6;
 }
 
-- (MPCSharedListeningPlaybackEvent)initWithKind:(int64_t)a3 item:(id)a4
+- (MPCSharedListeningPlaybackEvent)initWithKind:(int64_t)kind item:(id)item
 {
-  v7 = a4;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = MPCSharedListeningPlaybackEvent;
   v8 = [(MPCSharedListeningPlaybackEvent *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_kind = a3;
-    objc_storeStrong(&v8->_item, a4);
+    v8->_kind = kind;
+    objc_storeStrong(&v8->_item, item);
   }
 
   return v9;

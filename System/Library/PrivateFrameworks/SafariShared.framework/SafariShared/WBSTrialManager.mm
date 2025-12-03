@@ -1,6 +1,6 @@
 @interface WBSTrialManager
 + (id)shared;
-- (BOOL)getBoolFactor:(id)a3 forCF:(BOOL)a4 forDefault:(BOOL)a5;
+- (BOOL)getBoolFactor:(id)factor forCF:(BOOL)f forDefault:(BOOL)default;
 - (BOOL)inExperiment;
 - (BOOL)isAllowFavoritesInFrequentlyVisitedEnabled;
 - (BOOL)isAllowLogOnURLsInFrequentlyVisitedEnabled;
@@ -9,20 +9,20 @@
 - (BOOL)runCFFlow;
 - (WBSTrialIdentifiers)identifiers;
 - (WBSTrialManager)init;
-- (double)CFSearchTimeoutForDefault:(double)a3;
-- (double)getFloatFactor:(id)a3 forCF:(BOOL)a4 forDefault:(double)a5;
-- (id)factorWithName:(id)a3;
-- (id)getFactorValueAsString:(id)a3;
-- (id)getNumberFactorWithName:(id)a3;
-- (id)getRetrievalFactorName:(id)a3 forCF:(BOOL)a4;
-- (id)prepareLogDictionary:(BOOL)a3 withExperimentId:(id)a4 withTreatmentId:(id)a5 isCounterFactualSearch:(BOOL)a6 withFactorData:(id)a7;
-- (id)stringFactorWithName:(id)a3;
-- (int64_t)getIntFactor:(id)a3 forCF:(BOOL)a4 forDefault:(int64_t)a5;
+- (double)CFSearchTimeoutForDefault:(double)default;
+- (double)getFloatFactor:(id)factor forCF:(BOOL)f forDefault:(double)default;
+- (id)factorWithName:(id)name;
+- (id)getFactorValueAsString:(id)string;
+- (id)getNumberFactorWithName:(id)name;
+- (id)getRetrievalFactorName:(id)name forCF:(BOOL)f;
+- (id)prepareLogDictionary:(BOOL)dictionary withExperimentId:(id)id withTreatmentId:(id)treatmentId isCounterFactualSearch:(BOOL)search withFactorData:(id)data;
+- (id)stringFactorWithName:(id)name;
+- (int64_t)getIntFactor:(id)factor forCF:(BOOL)f forDefault:(int64_t)default;
 - (unint64_t)_weightedRandomIdentifier;
 - (unint64_t)trialABGroupIdentifier;
-- (void)fetchFactorsInNamespace:(id)a3;
-- (void)registerDiagnosticInfo:(id)a3;
-- (void)setFactorWithName:(id)a3 value:(id)a4;
+- (void)fetchFactorsInNamespace:(id)namespace;
+- (void)registerDiagnosticInfo:(id)info;
+- (void)setFactorWithName:(id)name value:(id)value;
 @end
 
 @implementation WBSTrialManager
@@ -33,7 +33,7 @@
   block[1] = 3221225472;
   block[2] = __25__WBSTrialManager_shared__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (shared_onceToken != -1)
   {
     dispatch_once(&shared_onceToken, block);
@@ -53,12 +53,12 @@ void __25__WBSTrialManager_shared__block_invoke()
 
 - (WBSTrialManager)init
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 BOOLForKey:@"WBSDisableTrial"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults BOOLForKey:@"WBSDisableTrial"];
 
   if ((v4 & 1) != 0 || (v13.receiver = self, v13.super_class = WBSTrialManager, (self = [(WBSTrialManager *)&v13 init]) == 0))
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -79,10 +79,10 @@ void __25__WBSTrialManager_shared__block_invoke()
     self = self;
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 void __23__WBSTrialManager_init__block_invoke(uint64_t a1)
@@ -115,30 +115,30 @@ void __23__WBSTrialManager_init__block_invoke(uint64_t a1)
 
 - (BOOL)isAllowFavoritesInFrequentlyVisitedEnabled
 {
-  v3 = [MEMORY[0x1E69C8880] isAllowFavoritesInFrequentlyVisitedEnabled];
+  isAllowFavoritesInFrequentlyVisitedEnabled = [MEMORY[0x1E69C8880] isAllowFavoritesInFrequentlyVisitedEnabled];
 
-  return [(WBSTrialManager *)self getBoolFactor:@"enableAllowFavoritesInFrequentlyVisited" forCF:0 forDefault:v3];
+  return [(WBSTrialManager *)self getBoolFactor:@"enableAllowFavoritesInFrequentlyVisited" forCF:0 forDefault:isAllowFavoritesInFrequentlyVisitedEnabled];
 }
 
 - (unint64_t)trialABGroupIdentifier
 {
   v3 = [(WBSTrialManager *)self getNumberFactorWithName:@"enablePostFixSearchEngineSuggestions"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   v5 = [(WBSTrialManager *)self getNumberFactorWithName:@"checkServerCompletionForPrefixNavigationalIntent"];
-  v6 = [v5 BOOLValue];
+  bOOLValue2 = [v5 BOOLValue];
 
   v7 = [(WBSTrialManager *)self getNumberFactorWithName:@"enablePrefixNavigationalIntent"];
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
 
-  if (!v6)
+  if (!bOOLValue2)
   {
     return 36;
   }
 
-  if (v8)
+  if (integerValue)
   {
-    v9 = v4;
+    v9 = bOOLValue;
   }
 
   else
@@ -151,12 +151,12 @@ void __23__WBSTrialManager_init__block_invoke(uint64_t a1)
     return 35;
   }
 
-  if (v4 && !v8)
+  if (bOOLValue && !integerValue)
   {
     return 31;
   }
 
-  switch(v8)
+  switch(integerValue)
   {
     case 20:
       return 32;
@@ -213,42 +213,42 @@ void __23__WBSTrialManager_init__block_invoke_2(uint64_t a1, void *a2)
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)runCFFlow
 {
-  v2 = self;
+  selfCopy = self;
   v29 = *MEMORY[0x1E69E9840];
   if (![(WBSTrialManager *)self isCFEnabled])
   {
     return 0;
   }
 
-  v3 = [(WBSTrialManager *)v2 factors];
-  v4 = [v3 allKeys];
+  factors = [(WBSTrialManager *)selfCopy factors];
+  allKeys = [factors allKeys];
 
-  customFactorsDictionary = v2->_customFactorsDictionary;
+  customFactorsDictionary = selfCopy->_customFactorsDictionary;
   if (customFactorsDictionary)
   {
-    v6 = [(NSMutableDictionary *)customFactorsDictionary allKeys];
+    allKeys2 = [(NSMutableDictionary *)customFactorsDictionary allKeys];
 
-    v4 = v6;
+    allKeys = allKeys2;
   }
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v4;
+  v7 = allKeys;
   v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
@@ -269,16 +269,16 @@ LABEL_6:
       v14 = *(*(&v24 + 1) + 8 * v13);
       if (([v14 isEqualToString:v11] & 1) == 0 && (objc_msgSend(v14, "isEqualToString:", @"CF_enabled") & 1) == 0 && (objc_msgSend(v14, "hasSuffix:", v12) & 1) == 0)
       {
-        v15 = [(WBSTrialManager *)v2 getNumberFactorWithName:v14];
+        v15 = [(WBSTrialManager *)selfCopy getNumberFactorWithName:v14];
         v16 = 1;
-        v17 = [(WBSTrialManager *)v2 getRetrievalFactorName:v14 forCF:1];
-        [(WBSTrialManager *)v2 getNumberFactorWithName:v17];
+        v17 = [(WBSTrialManager *)selfCopy getRetrievalFactorName:v14 forCF:1];
+        [(WBSTrialManager *)selfCopy getNumberFactorWithName:v17];
         v18 = v12;
         v19 = v11;
-        v21 = v20 = v2;
+        v21 = v20 = selfCopy;
 
         LODWORD(v17) = [v15 isEqualToNumber:v21];
-        v2 = v20;
+        selfCopy = v20;
         v11 = v19;
         v12 = v18;
 
@@ -313,35 +313,35 @@ LABEL_15:
 
 - (BOOL)isDropOutliersInFrequentlyVisitedEnabled
 {
-  v3 = [(WBSTrialManager *)self inExperiment];
-  if (v3)
+  inExperiment = [(WBSTrialManager *)self inExperiment];
+  if (inExperiment)
   {
-    v4 = [MEMORY[0x1E69C8880] isDropOutliersInFrequentlyVisitedEnabled];
+    isDropOutliersInFrequentlyVisitedEnabled = [MEMORY[0x1E69C8880] isDropOutliersInFrequentlyVisitedEnabled];
 
-    LOBYTE(v3) = [(WBSTrialManager *)self getBoolFactor:@"enableDropOutliersInFrequentlyVisited" forCF:0 forDefault:v4];
+    LOBYTE(inExperiment) = [(WBSTrialManager *)self getBoolFactor:@"enableDropOutliersInFrequentlyVisited" forCF:0 forDefault:isDropOutliersInFrequentlyVisitedEnabled];
   }
 
-  return v3;
+  return inExperiment;
 }
 
 - (BOOL)isAllowLogOnURLsInFrequentlyVisitedEnabled
 {
-  v3 = [MEMORY[0x1E69C8880] isAllowLogOnURLsInFrequentlyVisitedEnabled];
+  isAllowLogOnURLsInFrequentlyVisitedEnabled = [MEMORY[0x1E69C8880] isAllowLogOnURLsInFrequentlyVisitedEnabled];
 
-  return [(WBSTrialManager *)self getBoolFactor:@"enableAllowLogOnURLSInFrequentlyVisited" forCF:0 forDefault:v3];
+  return [(WBSTrialManager *)self getBoolFactor:@"enableAllowLogOnURLSInFrequentlyVisited" forCF:0 forDefault:isAllowLogOnURLsInFrequentlyVisitedEnabled];
 }
 
-- (double)CFSearchTimeoutForDefault:(double)a3
+- (double)CFSearchTimeoutForDefault:(double)default
 {
   v4 = [(WBSTrialManager *)self getNumberFactorWithName:@"CFSearchTimeout"];
   v5 = v4;
   if (v4)
   {
     [v4 floatValue];
-    a3 = v6;
+    default = v6;
   }
 
-  return a3;
+  return default;
 }
 
 - (BOOL)inExperiment
@@ -351,26 +351,26 @@ LABEL_15:
     return 0;
   }
 
-  v3 = [(WBSTrialManager *)self treatmentId];
-  v4 = v3 != 0;
+  treatmentId = [(WBSTrialManager *)self treatmentId];
+  v4 = treatmentId != 0;
 
   return v4;
 }
 
-- (void)fetchFactorsInNamespace:(id)a3
+- (void)fetchFactorsInNamespace:(id)namespace
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = [(WBSTrialManager *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(WBSTrialManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v29 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v6 = [(WBSTrialManager *)self trialClient];
-  v7 = [v6 factorLevelsWithNamespaceName:@"SAFARI_SEARCH_RANKING"];
+  trialClient = [(WBSTrialManager *)self trialClient];
+  v7 = [trialClient factorLevelsWithNamespaceName:@"SAFARI_SEARCH_RANKING"];
 
   v8 = [v7 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v8)
@@ -389,19 +389,19 @@ LABEL_15:
         v12 = *(*(&v31 + 1) + 8 * i);
         if ([v12 hasFactor] && objc_msgSend(v12, "hasLevel"))
         {
-          v13 = [v12 level];
-          v14 = [v12 factor];
-          v15 = [v14 name];
-          [v5 setObject:v13 forKeyedSubscript:v15];
+          level = [v12 level];
+          factor = [v12 factor];
+          name = [factor name];
+          [v5 setObject:level forKeyedSubscript:name];
 
-          v16 = [v12 level];
-          v17 = [(WBSTrialManager *)self getFactorValueAsString:v16];
+          level2 = [v12 level];
+          v17 = [(WBSTrialManager *)self getFactorValueAsString:level2];
 
           if (v17)
           {
-            v18 = [v12 factor];
-            v19 = [v18 name];
-            [v29 setObject:v17 forKeyedSubscript:v19];
+            factor2 = [v12 factor];
+            name2 = [factor2 name];
+            [dictionary setObject:v17 forKeyedSubscript:name2];
           }
         }
       }
@@ -412,18 +412,18 @@ LABEL_15:
     while (v9);
   }
 
-  v20 = [(WBSTrialManager *)self trialClient];
-  v21 = [v20 experimentIdentifiersWithNamespaceName:@"SAFARI_SEARCH_RANKING"];
+  trialClient2 = [(WBSTrialManager *)self trialClient];
+  v21 = [trialClient2 experimentIdentifiersWithNamespaceName:@"SAFARI_SEARCH_RANKING"];
 
   if (v21)
   {
     os_unfair_lock_lock(&self->_lock);
     [(WBSTrialManager *)self setFactors:v5];
-    v22 = [v21 experimentId];
-    [(WBSTrialManager *)self setExperimentId:v22];
+    experimentId = [v21 experimentId];
+    [(WBSTrialManager *)self setExperimentId:experimentId];
 
-    v23 = [v21 treatmentId];
-    [(WBSTrialManager *)self setTreatmentId:v23];
+    treatmentId = [v21 treatmentId];
+    [(WBSTrialManager *)self setTreatmentId:treatmentId];
 
     [(WBSTrialManager *)self setReady:1];
     os_unfair_lock_unlock(&self->_lock);
@@ -433,10 +433,10 @@ LABEL_15:
     block[3] = &unk_1E7FB6D90;
     block[4] = self;
     dispatch_async(MEMORY[0x1E69E96A0], block);
-    v24 = [(WBSTrialManager *)self experimentId];
-    v25 = [(WBSTrialManager *)self treatmentId];
-    v26 = v29;
-    v27 = [(WBSTrialManager *)self prepareLogDictionary:1 withExperimentId:v24 withTreatmentId:v25 isCounterFactualSearch:[(WBSTrialManager *)self isCFEnabled] withFactorData:v29];
+    experimentId2 = [(WBSTrialManager *)self experimentId];
+    treatmentId2 = [(WBSTrialManager *)self treatmentId];
+    v26 = dictionary;
+    v27 = [(WBSTrialManager *)self prepareLogDictionary:1 withExperimentId:experimentId2 withTreatmentId:treatmentId2 isCounterFactualSearch:[(WBSTrialManager *)self isCFEnabled] withFactorData:dictionary];
     [(WBSTrialManager *)self registerDiagnosticInfo:v27];
   }
 
@@ -445,7 +445,7 @@ LABEL_15:
     v28 = [(WBSTrialManager *)self prepareLogDictionary:0 withExperimentId:0 withTreatmentId:0 isCounterFactualSearch:0 withFactorData:0];
     [(WBSTrialManager *)self registerDiagnosticInfo:v28];
 
-    v26 = v29;
+    v26 = dictionary;
   }
 }
 
@@ -455,12 +455,12 @@ void __43__WBSTrialManager_fetchFactorsInNamespace___block_invoke(uint64_t a1)
   [v2 postNotificationName:*MEMORY[0x1E69C8D88] object:*(a1 + 32)];
 }
 
-- (id)factorWithName:(id)a3
+- (id)factorWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(WBSTrialManager *)self factors];
-  v6 = [v5 objectForKey:v4];
+  factors = [(WBSTrialManager *)self factors];
+  v6 = [factors objectForKey:nameCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -494,38 +494,38 @@ void __43__WBSTrialManager_fetchFactorsInNamespace___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setFactorWithName:(id)a3 value:(id)a4
+- (void)setFactorWithName:(id)name value:(id)value
 {
-  v10 = a3;
-  v6 = a4;
+  nameCopy = name;
+  valueCopy = value;
   customFactorsDictionary = self->_customFactorsDictionary;
   if (!customFactorsDictionary)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v9 = self->_customFactorsDictionary;
-    self->_customFactorsDictionary = v8;
+    self->_customFactorsDictionary = dictionary;
 
     customFactorsDictionary = self->_customFactorsDictionary;
   }
 
-  [(NSMutableDictionary *)customFactorsDictionary setObject:v6 forKeyedSubscript:v10];
+  [(NSMutableDictionary *)customFactorsDictionary setObject:valueCopy forKeyedSubscript:nameCopy];
 }
 
-- (id)getNumberFactorWithName:(id)a3
+- (id)getNumberFactorWithName:(id)name
 {
   customFactorsDictionary = self->_customFactorsDictionary;
   if (customFactorsDictionary)
   {
-    v5 = [(NSMutableDictionary *)customFactorsDictionary objectForKeyedSubscript:a3];
+    v5 = [(NSMutableDictionary *)customFactorsDictionary objectForKeyedSubscript:name];
     goto LABEL_13;
   }
 
-  v6 = [(WBSTrialManager *)self factorWithName:a3];
+  v6 = [(WBSTrialManager *)self factorWithName:name];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 levelOneOfCase];
-    switch(v8)
+    levelOneOfCase = [v6 levelOneOfCase];
+    switch(levelOneOfCase)
     {
       case 15:
         v10 = MEMORY[0x1E696AD98];
@@ -551,36 +551,36 @@ LABEL_13:
   return v5;
 }
 
-- (id)stringFactorWithName:(id)a3
+- (id)stringFactorWithName:(id)name
 {
-  v3 = [(WBSTrialManager *)self factorWithName:a3];
+  v3 = [(WBSTrialManager *)self factorWithName:name];
   v4 = v3;
   if (v3 && [v3 levelOneOfCase] == 11)
   {
-    v5 = [v4 stringValue];
+    stringValue = [v4 stringValue];
   }
 
   else
   {
-    v5 = 0;
+    stringValue = 0;
   }
 
-  return v5;
+  return stringValue;
 }
 
-- (id)getRetrievalFactorName:(id)a3 forCF:(BOOL)a4
+- (id)getRetrievalFactorName:(id)name forCF:(BOOL)f
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v4)
+  fCopy = f;
+  nameCopy = name;
+  v6 = nameCopy;
+  if (fCopy)
   {
-    v7 = [v5 stringByAppendingString:@"_cf"];
+    v7 = [nameCopy stringByAppendingString:@"_cf"];
   }
 
   else
   {
-    v7 = v5;
+    v7 = nameCopy;
   }
 
   v8 = v7;
@@ -588,60 +588,60 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)getBoolFactor:(id)a3 forCF:(BOOL)a4 forDefault:(BOOL)a5
+- (BOOL)getBoolFactor:(id)factor forCF:(BOOL)f forDefault:(BOOL)default
 {
-  v7 = [(WBSTrialManager *)self getRetrievalFactorName:a3 forCF:a4];
+  v7 = [(WBSTrialManager *)self getRetrievalFactorName:factor forCF:f];
   v8 = [(WBSTrialManager *)self getNumberFactorWithName:v7];
 
   if (v8)
   {
-    a5 = [v8 BOOLValue];
+    default = [v8 BOOLValue];
   }
 
-  return a5;
+  return default;
 }
 
-- (int64_t)getIntFactor:(id)a3 forCF:(BOOL)a4 forDefault:(int64_t)a5
+- (int64_t)getIntFactor:(id)factor forCF:(BOOL)f forDefault:(int64_t)default
 {
-  v7 = [(WBSTrialManager *)self getRetrievalFactorName:a3 forCF:a4];
+  v7 = [(WBSTrialManager *)self getRetrievalFactorName:factor forCF:f];
   v8 = [(WBSTrialManager *)self getNumberFactorWithName:v7];
 
   if (v8)
   {
-    a5 = [v8 integerValue];
+    default = [v8 integerValue];
   }
 
-  return a5;
+  return default;
 }
 
-- (double)getFloatFactor:(id)a3 forCF:(BOOL)a4 forDefault:(double)a5
+- (double)getFloatFactor:(id)factor forCF:(BOOL)f forDefault:(double)default
 {
-  v7 = [(WBSTrialManager *)self getRetrievalFactorName:a3 forCF:a4];
+  v7 = [(WBSTrialManager *)self getRetrievalFactorName:factor forCF:f];
   v8 = [(WBSTrialManager *)self getNumberFactorWithName:v7];
 
   if (v8)
   {
     [v8 floatValue];
-    a5 = v9;
+    default = v9;
   }
 
-  return a5;
+  return default;
 }
 
-- (id)prepareLogDictionary:(BOOL)a3 withExperimentId:(id)a4 withTreatmentId:(id)a5 isCounterFactualSearch:(BOOL)a6 withFactorData:(id)a7
+- (id)prepareLogDictionary:(BOOL)dictionary withExperimentId:(id)id withTreatmentId:(id)treatmentId isCounterFactualSearch:(BOOL)search withFactorData:(id)data
 {
-  v8 = a6;
-  v10 = a3;
+  searchCopy = search;
+  dictionaryCopy = dictionary;
   v23[4] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a7;
-  v14 = v13;
-  if (v10)
+  idCopy = id;
+  treatmentIdCopy = treatmentId;
+  dataCopy = data;
+  v14 = dataCopy;
+  if (dictionaryCopy)
   {
-    if (v13)
+    if (dataCopy)
     {
-      v15 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v13 options:0 error:0];
+      v15 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dataCopy options:0 error:0];
       v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v15 encoding:4];
     }
 
@@ -651,23 +651,23 @@ LABEL_13:
     }
 
     v18 = @"Unknown Experiment ID";
-    if (v11)
+    if (idCopy)
     {
-      v18 = v11;
+      v18 = idCopy;
     }
 
     v22[0] = @"Experiment ID";
     v22[1] = @"Treatment ID";
     v19 = @"Unknown Treatment ID";
-    if (v12)
+    if (treatmentIdCopy)
     {
-      v19 = v12;
+      v19 = treatmentIdCopy;
     }
 
     v23[0] = v18;
     v23[1] = v19;
     v20 = @"NO";
-    if (v8)
+    if (searchCopy)
     {
       v20 = @"YES";
     }
@@ -687,63 +687,63 @@ LABEL_13:
   return v17;
 }
 
-- (id)getFactorValueAsString:(id)a3
+- (id)getFactorValueAsString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 levelOneOfCase];
-  v5 = @"Unsupported value parsing";
-  if (v4 > 12)
+  stringCopy = string;
+  levelOneOfCase = [stringCopy levelOneOfCase];
+  stringValue = @"Unsupported value parsing";
+  if (levelOneOfCase > 12)
   {
-    if (v4 == 13)
+    if (levelOneOfCase == 13)
     {
-      v7 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(v3, "longValue")}];
+      v7 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(stringCopy, "longValue")}];
     }
 
     else
     {
-      if (v4 != 15)
+      if (levelOneOfCase != 15)
       {
         goto LABEL_11;
       }
 
       v6 = MEMORY[0x1E696AD98];
-      [v3 doubleValue];
+      [stringCopy doubleValue];
       v7 = [v6 numberWithDouble:?];
     }
 
     goto LABEL_10;
   }
 
-  if (v4 == 10)
+  if (levelOneOfCase == 10)
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v3, "BOOLeanValue")}];
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(stringCopy, "BOOLeanValue")}];
 LABEL_10:
     v8 = v7;
-    v5 = [v7 stringValue];
+    stringValue = [v7 stringValue];
 
     goto LABEL_11;
   }
 
-  if (v4 == 11)
+  if (levelOneOfCase == 11)
   {
-    v5 = [v3 stringValue];
+    stringValue = [stringCopy stringValue];
   }
 
 LABEL_11:
 
-  return v5;
+  return stringValue;
 }
 
-- (void)registerDiagnosticInfo:(id)a3
+- (void)registerDiagnosticInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = MEMORY[0x1E69C8868];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __42__WBSTrialManager_registerDiagnosticInfo___block_invoke;
   v9[3] = &unk_1E7FB68F8;
-  v10 = v4;
-  v6 = v4;
+  v10 = infoCopy;
+  v6 = infoCopy;
   v7 = [v5 registeredStateCollectorWithLogLabel:@"Trial experiment state" payloadProvider:v9];
   stateCollector = self->_stateCollector;
   self->_stateCollector = v7;

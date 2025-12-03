@@ -1,5 +1,5 @@
 @interface PowerSourceCC
-- (PowerSourceCC)initWithParams:(__CFDictionary *)a3;
+- (PowerSourceCC)initWithParams:(__CFDictionary *)params;
 - (int)numberOfFields;
 - (void)dealloc;
 - (void)defaultAction;
@@ -9,7 +9,7 @@
 
 @implementation PowerSourceCC
 
-- (PowerSourceCC)initWithParams:(__CFDictionary *)a3
+- (PowerSourceCC)initWithParams:(__CFDictionary *)params
 {
   v13.receiver = self;
   v13.super_class = PowerSourceCC;
@@ -28,20 +28,20 @@
     if (!v6 && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
     {
       sub_10005A7BC();
-      if (!a3)
+      if (!params)
       {
         goto LABEL_11;
       }
     }
 
-    else if (!a3)
+    else if (!params)
     {
       goto LABEL_11;
     }
 
-    if (CFDictionaryContainsKey(a3, @"ChargeLimitTable"))
+    if (CFDictionaryContainsKey(params, @"ChargeLimitTable"))
     {
-      Value = CFDictionaryGetValue(a3, @"ChargeLimitTable");
+      Value = CFDictionaryGetValue(params, @"ChargeLimitTable");
       if (Value)
       {
         v8 = Value;

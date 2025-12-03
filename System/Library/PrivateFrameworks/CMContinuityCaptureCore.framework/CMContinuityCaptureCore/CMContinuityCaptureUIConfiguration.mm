@@ -1,72 +1,72 @@
 @interface CMContinuityCaptureUIConfiguration
-- (BOOL)isEqual:(id)a3;
-- (CMContinuityCaptureUIConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CMContinuityCaptureUIConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMContinuityCaptureUIConfiguration
 
-- (CMContinuityCaptureUIConfiguration)initWithCoder:(id)a3
+- (CMContinuityCaptureUIConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = CMContinuityCaptureUIConfiguration;
   v5 = [(CMContinuityCaptureUIConfiguration *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationIdentifier"];
     applicationIdentifier = v5->_applicationIdentifier;
     v5->_applicationIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientName"];
     clientName = v5->_clientName;
     v5->_clientName = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remoteDisplayIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteDisplayIdentifier"];
     remoteDisplayIdentifier = v5->_remoteDisplayIdentifier;
     v5->_remoteDisplayIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"participantInfo"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"participantInfo"];
     participantInfo = v5->_participantInfo;
     v5->_participantInfo = v12;
 
-    v5->_clientDeviceModel = [v4 decodeIntegerForKey:@"clientDeviceModel"];
-    v5->_compositeState = [v4 decodeIntegerForKey:@"compositeState"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"placementStepSkipped"];
+    v5->_clientDeviceModel = [coderCopy decodeIntegerForKey:@"clientDeviceModel"];
+    v5->_compositeState = [coderCopy decodeIntegerForKey:@"compositeState"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placementStepSkipped"];
     placementStepSkipped = v5->_placementStepSkipped;
     v5->_placementStepSkipped = v14;
 
-    v5->_isDedicated = [v4 decodeBoolForKey:@"isDedicated"];
-    v5->_micOnly = [v4 decodeBoolForKey:@"micOnly"];
+    v5->_isDedicated = [coderCopy decodeBoolForKey:@"isDedicated"];
+    v5->_micOnly = [coderCopy decodeBoolForKey:@"micOnly"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  v4 = [(CMContinuityCaptureUIConfiguration *)self applicationIdentifier];
-  [v9 encodeObject:v4 forKey:@"applicationIdentifier"];
+  coderCopy = coder;
+  applicationIdentifier = [(CMContinuityCaptureUIConfiguration *)self applicationIdentifier];
+  [coderCopy encodeObject:applicationIdentifier forKey:@"applicationIdentifier"];
 
-  v5 = [(CMContinuityCaptureUIConfiguration *)self clientName];
-  [v9 encodeObject:v5 forKey:@"clientName"];
+  clientName = [(CMContinuityCaptureUIConfiguration *)self clientName];
+  [coderCopy encodeObject:clientName forKey:@"clientName"];
 
-  v6 = [(CMContinuityCaptureUIConfiguration *)self remoteDisplayIdentifier];
-  [v9 encodeObject:v6 forKey:@"remoteDisplayIdentifier"];
+  remoteDisplayIdentifier = [(CMContinuityCaptureUIConfiguration *)self remoteDisplayIdentifier];
+  [coderCopy encodeObject:remoteDisplayIdentifier forKey:@"remoteDisplayIdentifier"];
 
-  v7 = [(CMContinuityCaptureUIConfiguration *)self participantInfo];
-  [v9 encodeObject:v7 forKey:@"participantInfo"];
+  participantInfo = [(CMContinuityCaptureUIConfiguration *)self participantInfo];
+  [coderCopy encodeObject:participantInfo forKey:@"participantInfo"];
 
-  [v9 encodeInteger:-[CMContinuityCaptureUIConfiguration clientDeviceModel](self forKey:{"clientDeviceModel"), @"clientDeviceModel"}];
-  [v9 encodeInteger:-[CMContinuityCaptureUIConfiguration compositeState](self forKey:{"compositeState"), @"compositeState"}];
-  v8 = [(CMContinuityCaptureUIConfiguration *)self placementStepSkipped];
-  [v9 encodeObject:v8 forKey:@"placementStepSkipped"];
+  [coderCopy encodeInteger:-[CMContinuityCaptureUIConfiguration clientDeviceModel](self forKey:{"clientDeviceModel"), @"clientDeviceModel"}];
+  [coderCopy encodeInteger:-[CMContinuityCaptureUIConfiguration compositeState](self forKey:{"compositeState"), @"compositeState"}];
+  placementStepSkipped = [(CMContinuityCaptureUIConfiguration *)self placementStepSkipped];
+  [coderCopy encodeObject:placementStepSkipped forKey:@"placementStepSkipped"];
 
-  [v9 encodeBool:-[CMContinuityCaptureUIConfiguration isDedicated](self forKey:{"isDedicated"), @"isDedicated"}];
-  [v9 encodeBool:-[CMContinuityCaptureUIConfiguration micOnly](self forKey:{"micOnly"), @"micOnly"}];
+  [coderCopy encodeBool:-[CMContinuityCaptureUIConfiguration isDedicated](self forKey:{"isDedicated"), @"isDedicated"}];
+  [coderCopy encodeBool:-[CMContinuityCaptureUIConfiguration micOnly](self forKey:{"micOnly"), @"micOnly"}];
 }
 
 - (id)description
@@ -76,22 +76,22 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p", v5, self];
 
-  v7 = [(CMContinuityCaptureUIConfiguration *)self applicationIdentifier];
-  [v6 appendFormat:@", applicationIdentifier=%@", v7];
+  applicationIdentifier = [(CMContinuityCaptureUIConfiguration *)self applicationIdentifier];
+  [v6 appendFormat:@", applicationIdentifier=%@", applicationIdentifier];
 
-  v8 = [(CMContinuityCaptureUIConfiguration *)self clientName];
-  [v6 appendFormat:@", clientName=%@", v8];
+  clientName = [(CMContinuityCaptureUIConfiguration *)self clientName];
+  [v6 appendFormat:@", clientName=%@", clientName];
 
-  v9 = [(CMContinuityCaptureUIConfiguration *)self remoteDisplayIdentifier];
-  [v6 appendFormat:@", remoteDisplayIdentifier=%@", v9];
+  remoteDisplayIdentifier = [(CMContinuityCaptureUIConfiguration *)self remoteDisplayIdentifier];
+  [v6 appendFormat:@", remoteDisplayIdentifier=%@", remoteDisplayIdentifier];
 
-  v10 = [(CMContinuityCaptureUIConfiguration *)self participantInfo];
-  [v6 appendFormat:@", participantInfo=%@", v10];
+  participantInfo = [(CMContinuityCaptureUIConfiguration *)self participantInfo];
+  [v6 appendFormat:@", participantInfo=%@", participantInfo];
 
   [v6 appendFormat:@", clientDeviceModel=%ld", -[CMContinuityCaptureUIConfiguration clientDeviceModel](self, "clientDeviceModel")];
   [v6 appendFormat:@", compositeState=%ld", -[CMContinuityCaptureUIConfiguration compositeState](self, "compositeState")];
-  v11 = [(CMContinuityCaptureUIConfiguration *)self placementStepSkipped];
-  [v6 appendFormat:@", placementSkipped=%@", v11];
+  placementStepSkipped = [(CMContinuityCaptureUIConfiguration *)self placementStepSkipped];
+  [v6 appendFormat:@", placementSkipped=%@", placementStepSkipped];
 
   [v6 appendFormat:@", isDedicated=%d", -[CMContinuityCaptureUIConfiguration isDedicated](self, "isDedicated")];
   [v6 appendFormat:@", micOnly=%d", -[CMContinuityCaptureUIConfiguration micOnly](self, "micOnly")];
@@ -101,80 +101,80 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(CMContinuityCaptureUIConfiguration *)self applicationIdentifier];
-  [v4 setApplicationIdentifier:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  applicationIdentifier = [(CMContinuityCaptureUIConfiguration *)self applicationIdentifier];
+  [v4 setApplicationIdentifier:applicationIdentifier];
 
-  v6 = [(CMContinuityCaptureUIConfiguration *)self clientName];
-  [v4 setClientName:v6];
+  clientName = [(CMContinuityCaptureUIConfiguration *)self clientName];
+  [v4 setClientName:clientName];
 
-  v7 = [(CMContinuityCaptureUIConfiguration *)self remoteDisplayIdentifier];
-  [v4 setRemoteDisplayIdentifier:v7];
+  remoteDisplayIdentifier = [(CMContinuityCaptureUIConfiguration *)self remoteDisplayIdentifier];
+  [v4 setRemoteDisplayIdentifier:remoteDisplayIdentifier];
 
-  v8 = [(CMContinuityCaptureUIConfiguration *)self participantInfo];
-  v9 = [v8 copy];
+  participantInfo = [(CMContinuityCaptureUIConfiguration *)self participantInfo];
+  v9 = [participantInfo copy];
   [v4 setParticipantInfo:v9];
 
   [v4 setClientDeviceModel:{-[CMContinuityCaptureUIConfiguration clientDeviceModel](self, "clientDeviceModel")}];
   [v4 setCompositeState:{-[CMContinuityCaptureUIConfiguration compositeState](self, "compositeState")}];
-  v10 = [(CMContinuityCaptureUIConfiguration *)self placementStepSkipped];
-  [v4 setPlacementStepSkipped:v10];
+  placementStepSkipped = [(CMContinuityCaptureUIConfiguration *)self placementStepSkipped];
+  [v4 setPlacementStepSkipped:placementStepSkipped];
 
   [v4 setIsDedicated:{-[CMContinuityCaptureUIConfiguration isDedicated](self, "isDedicated")}];
   [v4 setMicOnly:{-[CMContinuityCaptureUIConfiguration micOnly](self, "micOnly")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v19) = 1;
   }
 
   else
   {
-    if ([(CMContinuityCaptureUIConfiguration *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(CMContinuityCaptureUIConfiguration *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
-      v6 = [(CMContinuityCaptureUIConfiguration *)v5 applicationIdentifier];
-      v7 = [(CMContinuityCaptureUIConfiguration *)self applicationIdentifier];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      applicationIdentifier = [(CMContinuityCaptureUIConfiguration *)v5 applicationIdentifier];
+      applicationIdentifier2 = [(CMContinuityCaptureUIConfiguration *)self applicationIdentifier];
+      v8 = [applicationIdentifier isEqual:applicationIdentifier2];
 
       if (!v8)
       {
         goto LABEL_18;
       }
 
-      v9 = [(CMContinuityCaptureUIConfiguration *)v5 clientName];
-      v10 = [(CMContinuityCaptureUIConfiguration *)self clientName];
-      v11 = [v9 isEqual:v10];
+      clientName = [(CMContinuityCaptureUIConfiguration *)v5 clientName];
+      clientName2 = [(CMContinuityCaptureUIConfiguration *)self clientName];
+      v11 = [clientName isEqual:clientName2];
 
       if (!v11)
       {
         goto LABEL_18;
       }
 
-      v12 = [(CMContinuityCaptureUIConfiguration *)v5 remoteDisplayIdentifier];
-      v13 = [(CMContinuityCaptureUIConfiguration *)self remoteDisplayIdentifier];
-      v14 = [v12 isEqualToString:v13];
+      remoteDisplayIdentifier = [(CMContinuityCaptureUIConfiguration *)v5 remoteDisplayIdentifier];
+      remoteDisplayIdentifier2 = [(CMContinuityCaptureUIConfiguration *)self remoteDisplayIdentifier];
+      v14 = [remoteDisplayIdentifier isEqualToString:remoteDisplayIdentifier2];
 
       if (!v14)
       {
         goto LABEL_18;
       }
 
-      v15 = [(CMContinuityCaptureUIConfiguration *)v5 participantInfo];
-      if (v15 || ([(CMContinuityCaptureUIConfiguration *)self participantInfo], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+      participantInfo = [(CMContinuityCaptureUIConfiguration *)v5 participantInfo];
+      if (participantInfo || ([(CMContinuityCaptureUIConfiguration *)self participantInfo], (remoteDisplayIdentifier2 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v16 = [(CMContinuityCaptureUIConfiguration *)v5 participantInfo];
-        v17 = [(CMContinuityCaptureUIConfiguration *)self participantInfo];
-        v18 = [v16 isEqual:v17];
+        participantInfo2 = [(CMContinuityCaptureUIConfiguration *)v5 participantInfo];
+        participantInfo3 = [(CMContinuityCaptureUIConfiguration *)self participantInfo];
+        v18 = [participantInfo2 isEqual:participantInfo3];
 
-        if (v15)
+        if (participantInfo)
         {
 
           if (!v18)
@@ -193,22 +193,22 @@
         }
       }
 
-      v20 = [(CMContinuityCaptureUIConfiguration *)v5 clientDeviceModel];
-      if (v20 == [(CMContinuityCaptureUIConfiguration *)self clientDeviceModel])
+      clientDeviceModel = [(CMContinuityCaptureUIConfiguration *)v5 clientDeviceModel];
+      if (clientDeviceModel == [(CMContinuityCaptureUIConfiguration *)self clientDeviceModel])
       {
-        v21 = [(CMContinuityCaptureUIConfiguration *)v5 compositeState];
-        if (v21 == [(CMContinuityCaptureUIConfiguration *)self compositeState])
+        compositeState = [(CMContinuityCaptureUIConfiguration *)v5 compositeState];
+        if (compositeState == [(CMContinuityCaptureUIConfiguration *)self compositeState])
         {
-          v22 = [(CMContinuityCaptureUIConfiguration *)v5 placementStepSkipped];
-          v23 = [(CMContinuityCaptureUIConfiguration *)self placementStepSkipped];
+          placementStepSkipped = [(CMContinuityCaptureUIConfiguration *)v5 placementStepSkipped];
+          placementStepSkipped2 = [(CMContinuityCaptureUIConfiguration *)self placementStepSkipped];
 
-          if (v22 == v23)
+          if (placementStepSkipped == placementStepSkipped2)
           {
-            v24 = [(CMContinuityCaptureUIConfiguration *)v5 isDedicated];
-            if (v24 == [(CMContinuityCaptureUIConfiguration *)self isDedicated])
+            isDedicated = [(CMContinuityCaptureUIConfiguration *)v5 isDedicated];
+            if (isDedicated == [(CMContinuityCaptureUIConfiguration *)self isDedicated])
             {
-              v26 = [(CMContinuityCaptureUIConfiguration *)v5 micOnly];
-              v19 = v26 ^ [(CMContinuityCaptureUIConfiguration *)self micOnly]^ 1;
+              micOnly = [(CMContinuityCaptureUIConfiguration *)v5 micOnly];
+              v19 = micOnly ^ [(CMContinuityCaptureUIConfiguration *)self micOnly]^ 1;
               goto LABEL_19;
             }
           }

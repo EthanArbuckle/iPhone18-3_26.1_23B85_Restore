@@ -1,11 +1,11 @@
 @interface APItunesAppMetaData
-+ (id)loadWithBundleId:(id)a3 error:(id *)a4;
++ (id)loadWithBundleId:(id)id error:(id *)error;
 - (APItunesAppMetaData)init;
 @end
 
 @implementation APItunesAppMetaData
 
-+ (id)loadWithBundleId:(id)a3 error:(id *)a4
++ (id)loadWithBundleId:(id)id error:(id *)error
 {
   v4 = sub_100398F58();
   v6 = sub_100264B8C(v4, v5);

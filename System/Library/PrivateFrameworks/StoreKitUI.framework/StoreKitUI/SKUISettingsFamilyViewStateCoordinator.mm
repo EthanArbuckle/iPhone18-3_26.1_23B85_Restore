@@ -1,48 +1,48 @@
 @interface SKUISettingsFamilyViewStateCoordinator
-- (void)_checkSubscriptionStatus:(id)a3 isFinal:(BOOL)a4 error:(id)a5;
+- (void)_checkSubscriptionStatus:(id)status isFinal:(BOOL)final error:(id)error;
 - (void)_getSubscriptionStatus;
-- (void)checkSettingsFamilyViewStateWithBlock:(id)a3;
+- (void)checkSettingsFamilyViewStateWithBlock:(id)block;
 @end
 
 @implementation SKUISettingsFamilyViewStateCoordinator
 
-- (void)checkSettingsFamilyViewStateWithBlock:(id)a3
+- (void)checkSettingsFamilyViewStateWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISettingsFamilyViewStateCoordinator checkSettingsFamilyViewStateWithBlock:];
   }
 
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
   completionBlock = self->_completionBlock;
   self->_completionBlock = v5;
 
   [(SKUISettingsFamilyViewStateCoordinator *)self _getSubscriptionStatus];
 }
 
-- (void)_checkSubscriptionStatus:(id)a3 isFinal:(BOOL)a4 error:(id)a5
+- (void)_checkSubscriptionStatus:(id)status isFinal:(BOOL)final error:(id)error
 {
-  v7 = a3;
-  if ([v7 accountStatus] != 3 || !objc_msgSend(v7, "isFamilySubscription"))
+  statusCopy = status;
+  if ([statusCopy accountStatus] != 3 || !objc_msgSend(statusCopy, "isFamilySubscription"))
   {
     goto LABEL_8;
   }
 
-  if (![v7 hasFamily])
+  if (![statusCopy hasFamily])
   {
     v6 = 1;
     goto LABEL_9;
   }
 
-  if (![v7 isFamilyOrganizer])
+  if (![statusCopy isFamilyOrganizer])
   {
 LABEL_8:
     v6 = 0;
     goto LABEL_9;
   }
 
-  if ([v7 hasFamilyMembers])
+  if ([statusCopy hasFamilyMembers])
   {
     v6 = 3;
   }
@@ -58,13 +58,13 @@ LABEL_9:
 
 - (void)_getSubscriptionStatus
 {
-  v3 = [MEMORY[0x277D69D18] sharedCoordinator];
+  mEMORY[0x277D69D18] = [MEMORY[0x277D69D18] sharedCoordinator];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __64__SKUISettingsFamilyViewStateCoordinator__getSubscriptionStatus__block_invoke;
   v4[3] = &unk_278200AE0;
   v4[4] = self;
-  [v3 getStatusWithOptions:0 statusBlock:v4];
+  [mEMORY[0x277D69D18] getStatusWithOptions:0 statusBlock:v4];
 }
 
 void __64__SKUISettingsFamilyViewStateCoordinator__getSubscriptionStatus__block_invoke(uint64_t a1, void *a2, char a3, void *a4)

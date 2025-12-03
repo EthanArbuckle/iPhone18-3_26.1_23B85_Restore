@@ -12,17 +12,17 @@
   v8 = a5;
   if ([v12 isAnimated])
   {
-    v9 = [v12 isRetargeted];
+    isRetargeted = [v12 isRetargeted];
     v10 = MEMORY[0x1E69DD250];
-    if (v9)
+    if (isRetargeted)
     {
       [MEMORY[0x1E69DD250] _animateByRetargetingAnimations:v7 completion:v8];
     }
 
     else
     {
-      v11 = [v12 fluidBehaviorSettings];
-      [v10 _animateUsingSpringBehavior:v11 tracking:objc_msgSend(v12 animations:"tracking") completion:{v7, v8}];
+      fluidBehaviorSettings = [v12 fluidBehaviorSettings];
+      [v10 _animateUsingSpringBehavior:fluidBehaviorSettings tracking:objc_msgSend(v12 animations:"tracking") completion:{v7, v8}];
     }
   }
 

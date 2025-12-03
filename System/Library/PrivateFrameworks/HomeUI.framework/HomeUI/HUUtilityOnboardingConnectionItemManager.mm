@@ -1,22 +1,22 @@
 @interface HUUtilityOnboardingConnectionItemManager
-- (HUUtilityOnboardingConnectionItemManager)initWithDelegate:(id)a3 data:(id)a4;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUUtilityOnboardingConnectionItemManager)initWithDelegate:(id)delegate data:(id)data;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 @end
 
 @implementation HUUtilityOnboardingConnectionItemManager
 
-- (HUUtilityOnboardingConnectionItemManager)initWithDelegate:(id)a3 data:(id)a4
+- (HUUtilityOnboardingConnectionItemManager)initWithDelegate:(id)delegate data:(id)data
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = HUUtilityOnboardingConnectionItemManager;
-  v7 = [(HFItemManager *)&v11 initWithDelegate:a3 sourceItem:0];
+  v7 = [(HFItemManager *)&v11 initWithDelegate:delegate sourceItem:0];
   v8 = v7;
   if (v7)
   {
-    [(HUUtilityOnboardingConnectionItemManager *)v7 setData:v6];
+    [(HUUtilityOnboardingConnectionItemManager *)v7 setData:dataCopy];
     v9 = HFLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -31,24 +31,24 @@
   return v8;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v25 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(HUUtilityOnboardingConnectionItemManager *)self data];
+    data = [(HUUtilityOnboardingConnectionItemManager *)self data];
     *buf = 138412802;
-    v20 = self;
+    selfCopy = self;
     v21 = 2080;
     v22 = "[HUUtilityOnboardingConnectionItemManager _buildItemProvidersForHome:]";
     v23 = 2112;
-    v24 = v6;
+    v24 = data;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "%@:%s  data %@", buf, 0x20u);
   }
 
   v7 = objc_opt_new();
-  if (a3)
+  if (home)
   {
     v8 = [(NSDictionary *)self->_data objectForKeyedSubscript:@"homeName"];
     [v7 na_safeSetObject:v8 forKey:*MEMORY[0x277D13F60]];
@@ -73,13 +73,13 @@
   return v16;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v4 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"subscriptionIdentifier"];
-  v5 = [(HFItemManager *)self allItems];
-  v6 = [v5 allObjects];
-  [v4 setItems:v6];
+  allItems = [(HFItemManager *)self allItems];
+  allObjects = [allItems allObjects];
+  [v4 setItems:allObjects];
 
   v9[0] = v4;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];

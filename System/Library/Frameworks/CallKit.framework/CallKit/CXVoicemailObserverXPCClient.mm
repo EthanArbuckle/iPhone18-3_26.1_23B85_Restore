@@ -6,18 +6,18 @@
 - (NSDictionary)voicemailUUIDToVoicemailMap;
 - (NSXPCConnection)connection;
 - (id)_init;
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3 isSynchronous:(BOOL)a4;
-- (void)_addOrUpdateVoicemails:(id)a3;
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler isSynchronous:(BOOL)synchronous;
+- (void)_addOrUpdateVoicemails:(id)voicemails;
 - (void)_invalidate;
-- (void)_removeVoicemails:(id)a3;
+- (void)_removeVoicemails:(id)voicemails;
 - (void)_requestVoicemails;
-- (void)addDelegate:(id)a3;
-- (void)addOrUpdateVoicemails:(id)a3;
+- (void)addDelegate:(id)delegate;
+- (void)addOrUpdateVoicemails:(id)voicemails;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeDelegate:(id)a3;
-- (void)removeVoicemails:(id)a3;
-- (void)requestTransaction:(id)a3 completion:(id)a4;
+- (void)removeDelegate:(id)delegate;
+- (void)removeVoicemails:(id)voicemails;
+- (void)requestTransaction:(id)transaction completion:(id)completion;
 @end
 
 @implementation CXVoicemailObserverXPCClient
@@ -43,19 +43,19 @@ uint64_t __56__CXVoicemailObserverXPCClient_sharedXPCClientSemaphore__block_invo
 
 + (id)sharedXPCClient
 {
-  v3 = [a1 sharedXPCClientSemaphore];
-  dispatch_semaphore_wait(v3, 0xFFFFFFFFFFFFFFFFLL);
+  sharedXPCClientSemaphore = [self sharedXPCClientSemaphore];
+  dispatch_semaphore_wait(sharedXPCClientSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 
   if (!sharedXPCClient)
   {
-    v4 = [[a1 alloc] _init];
+    _init = [[self alloc] _init];
     v5 = sharedXPCClient;
-    sharedXPCClient = v4;
+    sharedXPCClient = _init;
   }
 
   ++sharedXPCClientRetainCount;
-  v6 = [a1 sharedXPCClientSemaphore];
-  dispatch_semaphore_signal(v6);
+  sharedXPCClientSemaphore2 = [self sharedXPCClientSemaphore];
+  dispatch_semaphore_signal(sharedXPCClientSemaphore2);
 
   v7 = sharedXPCClient;
 
@@ -64,8 +64,8 @@ uint64_t __56__CXVoicemailObserverXPCClient_sharedXPCClientSemaphore__block_invo
 
 + (void)releaseSharedXPCClient
 {
-  v3 = [a1 sharedXPCClientSemaphore];
-  dispatch_semaphore_wait(v3, 0xFFFFFFFFFFFFFFFFLL);
+  sharedXPCClientSemaphore = [self sharedXPCClientSemaphore];
+  dispatch_semaphore_wait(sharedXPCClientSemaphore, 0xFFFFFFFFFFFFFFFFLL);
 
   if (!--sharedXPCClientRetainCount)
   {
@@ -74,15 +74,15 @@ uint64_t __56__CXVoicemailObserverXPCClient_sharedXPCClientSemaphore__block_invo
     sharedXPCClient = 0;
   }
 
-  v5 = [a1 sharedXPCClientSemaphore];
-  dispatch_semaphore_signal(v5);
+  sharedXPCClientSemaphore2 = [self sharedXPCClientSemaphore];
+  dispatch_semaphore_signal(sharedXPCClientSemaphore2);
 }
 
 - (CXVoicemailObserverXPCClient)init
 {
-  v3 = [objc_opt_class() sharedXPCClient];
+  sharedXPCClient = [objc_opt_class() sharedXPCClient];
 
-  return v3;
+  return sharedXPCClient;
 }
 
 - (id)_init
@@ -177,47 +177,47 @@ uint64_t __37__CXVoicemailObserverXPCClient__init__block_invoke_3(uint64_t a1)
 
 - (NSDictionary)voicemailUUIDToVoicemailMap
 {
-  v3 = [(CXVoicemailObserverXPCClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CXVoicemailObserverXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CXVoicemailObserverXPCClient *)self mutableVoicemailUUIDToVoicemailMap];
-  v5 = [v4 copy];
+  mutableVoicemailUUIDToVoicemailMap = [(CXVoicemailObserverXPCClient *)self mutableVoicemailUUIDToVoicemailMap];
+  v5 = [mutableVoicemailUUIDToVoicemailMap copy];
 
   return v5;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CXVoicemailObserverXPCClient *)self queue];
-  dispatch_assert_queue_V2(v5);
+  delegateCopy = delegate;
+  queue = [(CXVoicemailObserverXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CXVoicemailObserverXPCClient *)self delegates];
-  [v6 addObject:v4];
+  delegates = [(CXVoicemailObserverXPCClient *)self delegates];
+  [delegates addObject:delegateCopy];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CXVoicemailObserverXPCClient *)self queue];
-  dispatch_assert_queue_V2(v5);
+  delegateCopy = delegate;
+  queue = [(CXVoicemailObserverXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CXVoicemailObserverXPCClient *)self delegates];
-  [v6 removeObject:v4];
+  delegates = [(CXVoicemailObserverXPCClient *)self delegates];
+  [delegates removeObject:delegateCopy];
 }
 
-- (void)requestTransaction:(id)a3 completion:(id)a4
+- (void)requestTransaction:(id)transaction completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CXVoicemailObserverXPCClient *)self queue];
-  dispatch_assert_queue_V2(v8);
+  completionCopy = completion;
+  transactionCopy = transaction;
+  queue = [(CXVoicemailObserverXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __62__CXVoicemailObserverXPCClient_requestTransaction_completion___block_invoke;
   v14[3] = &unk_1E7C07230;
-  v9 = v6;
+  v9 = completionCopy;
   v15 = v9;
   v10 = [(CXVoicemailObserverXPCClient *)self _remoteObjectProxyWithErrorHandler:v14 isSynchronous:0];
   v12[0] = MEMORY[0x1E69E9820];
@@ -226,7 +226,7 @@ uint64_t __37__CXVoicemailObserverXPCClient__init__block_invoke_3(uint64_t a1)
   v12[3] = &unk_1E7C07230;
   v13 = v9;
   v11 = v9;
-  [v10 requestTransaction:v7 reply:v12];
+  [v10 requestTransaction:transactionCopy reply:v12];
 }
 
 void __62__CXVoicemailObserverXPCClient_requestTransaction_completion___block_invoke(uint64_t a1, void *a2)
@@ -259,26 +259,26 @@ void __62__CXVoicemailObserverXPCClient_requestTransaction_completion___block_in
 
 - (void)invalidate
 {
-  v2 = [(CXVoicemailObserverXPCClient *)self queue];
-  dispatch_assert_queue_V2(v2);
+  queue = [(CXVoicemailObserverXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v3 = objc_opt_class();
 
   [v3 releaseSharedXPCClient];
 }
 
-- (void)_addOrUpdateVoicemails:(id)a3
+- (void)_addOrUpdateVoicemails:(id)voicemails
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CXVoicemailObserverXPCClient *)self queue];
-  dispatch_assert_queue_V2(v5);
+  voicemailsCopy = voicemails;
+  queue = [(CXVoicemailObserverXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = v4;
+  v6 = voicemailsCopy;
   v7 = [v6 countByEnumeratingWithState:&v30 objects:v37 count:16];
   if (v7)
   {
@@ -297,9 +297,9 @@ void __62__CXVoicemailObserverXPCClient_requestTransaction_completion___block_in
         }
 
         v12 = *(*(&v30 + 1) + 8 * v11);
-        v13 = [(CXVoicemailObserverXPCClient *)self voicemailUUIDToVoicemailMap];
-        v14 = [v12 UUID];
-        v15 = [v13 objectForKeyedSubscript:v14];
+        voicemailUUIDToVoicemailMap = [(CXVoicemailObserverXPCClient *)self voicemailUUIDToVoicemailMap];
+        uUID = [v12 UUID];
+        v15 = [voicemailUUIDToVoicemailMap objectForKeyedSubscript:uUID];
 
         if (([v15 isEqualToVoicemail:v12] & 1) == 0)
         {
@@ -311,9 +311,9 @@ void __62__CXVoicemailObserverXPCClient_requestTransaction_completion___block_in
             _os_log_impl(&dword_1B47F3000, v16, OS_LOG_TYPE_DEFAULT, "adding voicemail: %@", buf, 0xCu);
           }
 
-          v17 = [(CXVoicemailObserverXPCClient *)self mutableVoicemailUUIDToVoicemailMap];
-          v18 = [v12 UUID];
-          [v17 setObject:v12 forKeyedSubscript:v18];
+          mutableVoicemailUUIDToVoicemailMap = [(CXVoicemailObserverXPCClient *)self mutableVoicemailUUIDToVoicemailMap];
+          uUID2 = [v12 UUID];
+          [mutableVoicemailUUIDToVoicemailMap setObject:v12 forKeyedSubscript:uUID2];
         }
 
         ++v11;
@@ -330,8 +330,8 @@ void __62__CXVoicemailObserverXPCClient_requestTransaction_completion___block_in
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v19 = [(CXVoicemailObserverXPCClient *)self delegates];
-  v20 = [v19 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  delegates = [(CXVoicemailObserverXPCClient *)self delegates];
+  v20 = [delegates countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v20)
   {
     v21 = v20;
@@ -343,14 +343,14 @@ void __62__CXVoicemailObserverXPCClient_requestTransaction_completion___block_in
       {
         if (*v27 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(delegates);
         }
 
         [*(*(&v26 + 1) + 8 * v23++) dataSourceVoicemailsChanged:self];
       }
 
       while (v21 != v23);
-      v21 = [v19 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v21 = [delegates countByEnumeratingWithState:&v26 objects:v34 count:16];
     }
 
     while (v21);
@@ -359,18 +359,18 @@ void __62__CXVoicemailObserverXPCClient_requestTransaction_completion___block_in
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_removeVoicemails:(id)a3
+- (void)_removeVoicemails:(id)voicemails
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CXVoicemailObserverXPCClient *)self queue];
-  dispatch_assert_queue_V2(v5);
+  voicemailsCopy = voicemails;
+  queue = [(CXVoicemailObserverXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = v4;
+  v6 = voicemailsCopy;
   v7 = [v6 countByEnumeratingWithState:&v30 objects:v37 count:16];
   if (v7)
   {
@@ -389,9 +389,9 @@ void __62__CXVoicemailObserverXPCClient_requestTransaction_completion___block_in
         }
 
         v12 = *(*(&v30 + 1) + 8 * v11);
-        v13 = [(CXVoicemailObserverXPCClient *)self voicemailUUIDToVoicemailMap];
-        v14 = [v12 UUID];
-        v15 = [v13 objectForKeyedSubscript:v14];
+        voicemailUUIDToVoicemailMap = [(CXVoicemailObserverXPCClient *)self voicemailUUIDToVoicemailMap];
+        uUID = [v12 UUID];
+        v15 = [voicemailUUIDToVoicemailMap objectForKeyedSubscript:uUID];
 
         if (v15)
         {
@@ -403,9 +403,9 @@ void __62__CXVoicemailObserverXPCClient_requestTransaction_completion___block_in
             _os_log_impl(&dword_1B47F3000, v16, OS_LOG_TYPE_DEFAULT, "removing voicemail: %@", buf, 0xCu);
           }
 
-          v17 = [(CXVoicemailObserverXPCClient *)self mutableVoicemailUUIDToVoicemailMap];
-          v18 = [v12 UUID];
-          [v17 removeObjectForKey:v18];
+          mutableVoicemailUUIDToVoicemailMap = [(CXVoicemailObserverXPCClient *)self mutableVoicemailUUIDToVoicemailMap];
+          uUID2 = [v12 UUID];
+          [mutableVoicemailUUIDToVoicemailMap removeObjectForKey:uUID2];
         }
 
         ++v11;
@@ -422,8 +422,8 @@ void __62__CXVoicemailObserverXPCClient_requestTransaction_completion___block_in
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v19 = [(CXVoicemailObserverXPCClient *)self delegates];
-  v20 = [v19 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  delegates = [(CXVoicemailObserverXPCClient *)self delegates];
+  v20 = [delegates countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v20)
   {
     v21 = v20;
@@ -435,14 +435,14 @@ void __62__CXVoicemailObserverXPCClient_requestTransaction_completion___block_in
       {
         if (*v27 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(delegates);
         }
 
         [*(*(&v26 + 1) + 8 * v23++) dataSourceVoicemailsChanged:self];
       }
 
       while (v21 != v23);
-      v21 = [v19 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v21 = [delegates countByEnumeratingWithState:&v26 objects:v34 count:16];
     }
 
     while (v21);
@@ -453,8 +453,8 @@ void __62__CXVoicemailObserverXPCClient_requestTransaction_completion___block_in
 
 - (void)_requestVoicemails
 {
-  v3 = [(CXVoicemailObserverXPCClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CXVoicemailObserverXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = CXDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -500,8 +500,8 @@ void __50__CXVoicemailObserverXPCClient__requestVoicemails__block_invoke_10(uint
 
 - (void)_invalidate
 {
-  v3 = [(CXVoicemailObserverXPCClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CXVoicemailObserverXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   connection = self->_connection;
 
@@ -510,8 +510,8 @@ void __50__CXVoicemailObserverXPCClient__requestVoicemails__block_invoke_10(uint
 
 - (NSXPCConnection)connection
 {
-  v3 = [(CXVoicemailObserverXPCClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CXVoicemailObserverXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   connection = self->_connection;
   if (!connection)
@@ -521,11 +521,11 @@ void __50__CXVoicemailObserverXPCClient__requestVoicemails__block_invoke_10(uint
     self->_connection = v5;
 
     [(NSXPCConnection *)self->_connection setExportedObject:self];
-    v7 = [MEMORY[0x1E696B0D0] cx_voicemailControllerVendorInterface];
-    [(NSXPCConnection *)self->_connection setExportedInterface:v7];
+    cx_voicemailControllerVendorInterface = [MEMORY[0x1E696B0D0] cx_voicemailControllerVendorInterface];
+    [(NSXPCConnection *)self->_connection setExportedInterface:cx_voicemailControllerVendorInterface];
 
-    v8 = [MEMORY[0x1E696B0D0] cx_voicemailControllerHostInterface];
-    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:v8];
+    cx_voicemailControllerHostInterface = [MEMORY[0x1E696B0D0] cx_voicemailControllerHostInterface];
+    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:cx_voicemailControllerHostInterface];
 
     objc_initWeak(&location, self);
     v10 = MEMORY[0x1E69E9820];
@@ -569,62 +569,62 @@ void __42__CXVoicemailObserverXPCClient_connection__block_invoke(uint64_t a1)
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3 isSynchronous:(BOOL)a4
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler isSynchronous:(BOOL)synchronous
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CXVoicemailObserverXPCClient *)self connection];
-  v8 = v7;
-  if (v6)
+  synchronousCopy = synchronous;
+  handlerCopy = handler;
+  connection = [(CXVoicemailObserverXPCClient *)self connection];
+  v8 = connection;
+  if (handlerCopy)
   {
-    if (v4)
+    if (synchronousCopy)
     {
-      [v7 synchronousRemoteObjectProxyWithErrorHandler:v6];
+      [connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
     }
 
     else
     {
-      [v7 remoteObjectProxyWithErrorHandler:v6];
+      [connection remoteObjectProxyWithErrorHandler:handlerCopy];
     }
-    v9 = ;
+    remoteObjectProxy = ;
   }
 
   else
   {
-    v9 = [v7 remoteObjectProxy];
+    remoteObjectProxy = [connection remoteObjectProxy];
   }
 
-  v10 = v9;
+  v10 = remoteObjectProxy;
 
   return v10;
 }
 
-- (void)addOrUpdateVoicemails:(id)a3
+- (void)addOrUpdateVoicemails:(id)voicemails
 {
-  v4 = a3;
-  v5 = [(CXVoicemailObserverXPCClient *)self queue];
+  voicemailsCopy = voicemails;
+  queue = [(CXVoicemailObserverXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __54__CXVoicemailObserverXPCClient_addOrUpdateVoicemails___block_invoke;
   v7[3] = &unk_1E7C06BE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = voicemailsCopy;
+  v6 = voicemailsCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)removeVoicemails:(id)a3
+- (void)removeVoicemails:(id)voicemails
 {
-  v4 = a3;
-  v5 = [(CXVoicemailObserverXPCClient *)self queue];
+  voicemailsCopy = voicemails;
+  queue = [(CXVoicemailObserverXPCClient *)self queue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__CXVoicemailObserverXPCClient_removeVoicemails___block_invoke;
   v7[3] = &unk_1E7C06BE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = voicemailsCopy;
+  v6 = voicemailsCopy;
+  dispatch_async(queue, v7);
 }
 
 void __62__CXVoicemailObserverXPCClient_requestTransaction_completion___block_invoke_cold_1(uint64_t a1, NSObject *a2)

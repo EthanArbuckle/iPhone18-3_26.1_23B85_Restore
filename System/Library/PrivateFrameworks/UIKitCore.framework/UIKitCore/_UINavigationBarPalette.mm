@@ -3,22 +3,22 @@
 - (UINavigationItem)owningNavigationItem;
 - (_BYTE)_paletteForSearch;
 - (_UINavigationBarPalette)init;
-- (_UINavigationBarPalette)initWithContentView:(id)a3;
+- (_UINavigationBarPalette)initWithContentView:(id)view;
 - (_UIPointerInteractionAssistant)assistant;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)_clearAssistants;
 - (void)_setAssistants;
-- (void)addSubview:(id)a3;
+- (void)addSubview:(id)subview;
 - (void)layoutSubviews;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5;
-- (void)setAssistant:(id)a3;
-- (void)setAssistantIdentifier:(id)a3;
-- (void)setMinimumHeight:(double)a3;
-- (void)setPreferredHeight:(double)a3;
-- (void)setTransitioning:(BOOL)a3;
-- (void)updateLayoutData:(id)a3 layoutWidth:(double)a4;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator;
+- (void)setAssistant:(id)assistant;
+- (void)setAssistantIdentifier:(id)identifier;
+- (void)setMinimumHeight:(double)height;
+- (void)setPreferredHeight:(double)height;
+- (void)setTransitioning:(BOOL)transitioning;
+- (void)updateLayoutData:(id)data layoutWidth:(double)width;
 - (void)updateProperties;
 @end
 
@@ -68,23 +68,23 @@
 
 - (_BYTE)_paletteForSearch
 {
-  if (a1)
+  if (self)
   {
-    if (a1[418])
+    if (self[418])
     {
-      v2 = a1;
+      selfCopy = self;
     }
 
     else
     {
-      v2 = 0;
+      selfCopy = 0;
     }
 
-    a1 = v2;
+    self = selfCopy;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (_UINavigationBarPalette)init
@@ -95,18 +95,18 @@
   return v4;
 }
 
-- (_UINavigationBarPalette)initWithContentView:(id)a3
+- (_UINavigationBarPalette)initWithContentView:(id)view
 {
-  v5 = a3;
-  [v5 frame];
+  viewCopy = view;
+  [viewCopy frame];
   v9.receiver = self;
   v9.super_class = _UINavigationBarPalette;
   v6 = [(UIView *)&v9 initWithFrame:?];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentView, a3);
-    [v5 frame];
+    objc_storeStrong(&v6->_contentView, view);
+    [viewCopy frame];
     v7->_preferredHeight = CGRectGetHeight(v10);
     v7->_minimumHeight = -1.0;
     [(_UINavigationBarPalette *)v7 addSubview:v7->_contentView];
@@ -117,33 +117,33 @@
   return v7;
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
-  v4 = a3;
+  subviewCopy = subview;
   contentView = self->_contentView;
-  if (contentView == v4)
+  if (contentView == subviewCopy)
   {
     v6.receiver = self;
     v6.super_class = _UINavigationBarPalette;
-    [(UIView *)&v6 addSubview:v4];
+    [(UIView *)&v6 addSubview:subviewCopy];
   }
 
   else
   {
-    [(UIView *)contentView addSubview:v4];
+    [(UIView *)contentView addSubview:subviewCopy];
     if (self->_preferredHeight == 0.0)
     {
-      [(UIView *)v4 frame];
+      [(UIView *)subviewCopy frame];
       self->_preferredHeight = CGRectGetHeight(v7);
     }
   }
 }
 
-- (void)setTransitioning:(BOOL)a3
+- (void)setTransitioning:(BOOL)transitioning
 {
-  if (self->_transitioning != a3)
+  if (self->_transitioning != transitioning)
   {
-    self->_transitioning = a3;
+    self->_transitioning = transitioning;
     [(UIView *)self setNeedsLayout];
   }
 }
@@ -153,11 +153,11 @@
   v9.receiver = self;
   v9.super_class = _UINavigationBarPalette;
   [(UIView *)&v9 updateProperties];
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 _hasScrollPocketContainerModel];
+  traitCollection = [(UIView *)self traitCollection];
+  _hasScrollPocketContainerModel = [traitCollection _hasScrollPocketContainerModel];
 
   scrollPocketInteraction = self->_scrollPocketInteraction;
-  if (v4)
+  if (_hasScrollPocketContainerModel)
   {
     if (!scrollPocketInteraction)
     {
@@ -180,26 +180,26 @@
   [(_UIScrollPocketInteraction *)self->_scrollPocketInteraction _setInsets:?];
 }
 
-- (void)setPreferredHeight:(double)a3
+- (void)setPreferredHeight:(double)height
 {
-  if (self->_preferredHeight != a3)
+  if (self->_preferredHeight != height)
   {
-    self->_preferredHeight = a3;
+    self->_preferredHeight = height;
     WeakRetained = objc_loadWeakRetained(&self->_owningNavigationItem);
     [WeakRetained _updatePalette:self];
   }
 }
 
-- (void)setMinimumHeight:(double)a3
+- (void)setMinimumHeight:(double)height
 {
-  if (a3 < 0.0)
+  if (height < 0.0)
   {
-    a3 = -1.0;
+    height = -1.0;
   }
 
-  if (self->_minimumHeight != a3)
+  if (self->_minimumHeight != height)
   {
-    self->_minimumHeight = a3;
+    self->_minimumHeight = height;
     WeakRetained = objc_loadWeakRetained(&self->_owningNavigationItem);
     [WeakRetained _updatePalette:self];
   }
@@ -268,11 +268,11 @@ LABEL_16:
   return v4;
 }
 
-- (void)setAssistantIdentifier:(id)a3
+- (void)setAssistantIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->_assistantIdentifier;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -302,9 +302,9 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setAssistant:(id)a3
+- (void)setAssistant:(id)assistant
 {
-  obj = a3;
+  obj = assistant;
   WeakRetained = objc_loadWeakRetained(&self->_assistant);
 
   if (WeakRetained != obj)
@@ -315,20 +315,20 @@ LABEL_9:
   }
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v7 = a3;
-  v8 = a4;
+  interactionCopy = interaction;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 request:v8 locationInView:self];
+    [interactionCopy request:requestCopy locationInView:self];
     v9 = [(UIView *)self hitTest:0 withEvent:?];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 isEnabled])
     {
       [v9 bounds];
-      v14 = [v7 createRegionFromRect:v9 targetView:@"com.apple.UIKit.UINavigationBar.Palette.UIButton" identifier:objc_msgSend(v9 selected:{"isSelected"), v10, v11, v12, v13}];
+      v14 = [interactionCopy createRegionFromRect:v9 targetView:@"com.apple.UIKit.UINavigationBar.Palette.UIButton" identifier:objc_msgSend(v9 selected:{"isSelected"), v10, v11, v12, v13}];
     }
 
     else
@@ -345,17 +345,17 @@ LABEL_9:
   return v14;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = a3;
-  v6 = a4;
+  interactionCopy = interaction;
+  regionCopy = region;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 targetViewAsButton];
-    if (v7)
+    targetViewAsButton = [regionCopy targetViewAsButton];
+    if (targetViewAsButton)
     {
-      v8 = [v5 createStyleForButton:v7 shapeProvider:0];
+      v8 = [interactionCopy createStyleForButton:targetViewAsButton shapeProvider:0];
     }
 
     else
@@ -372,37 +372,37 @@ LABEL_9:
   return v8;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
-  v6 = a5;
-  v8 = [a4 targetViewAsButton];
-  v7 = [v8 _visualProvider];
-  [v7 pointerWillEnter:v6];
+  animatorCopy = animator;
+  targetViewAsButton = [region targetViewAsButton];
+  _visualProvider = [targetViewAsButton _visualProvider];
+  [_visualProvider pointerWillEnter:animatorCopy];
 }
 
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator
 {
-  v6 = a5;
-  v8 = [a4 targetViewAsButton];
-  v7 = [v8 _visualProvider];
-  [v7 pointerWillExit:v6];
+  animatorCopy = animator;
+  targetViewAsButton = [region targetViewAsButton];
+  _visualProvider = [targetViewAsButton _visualProvider];
+  [_visualProvider pointerWillExit:animatorCopy];
 }
 
-- (void)updateLayoutData:(id)a3 layoutWidth:(double)a4
+- (void)updateLayoutData:(id)data layoutWidth:(double)width
 {
-  v10 = a3;
+  dataCopy = data;
   UICeilToViewScale(self);
   v6 = v5;
   if (self->_minimumHeight == -1.0)
   {
-    [v10 setFixedHeight:v5];
+    [dataCopy setFixedHeight:v5];
   }
 
   else
   {
     UICeilToViewScale(self);
     v8 = v7;
-    [v10 setMinimumHeight:?];
+    [dataCopy setMinimumHeight:?];
     if (v8 >= v6)
     {
       v9 = v8;
@@ -413,7 +413,7 @@ LABEL_9:
       v9 = v6;
     }
 
-    [v10 setPreferredHeight:v9];
+    [dataCopy setPreferredHeight:v9];
   }
 }
 

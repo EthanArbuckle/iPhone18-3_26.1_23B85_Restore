@@ -1,7 +1,7 @@
 @interface AVAppStoreBehavior
 + (AVAppStoreBehavior)behaviorWithFirstGenerationEmbeddedPlayer;
 - (AVAppStoreBehaviorContext)behaviorContext;
-- (void)willMoveToContext:(id)a3;
+- (void)willMoveToContext:(id)context;
 @end
 
 @implementation AVAppStoreBehavior
@@ -13,13 +13,13 @@
   return WeakRetained;
 }
 
-- (void)willMoveToContext:(id)a3
+- (void)willMoveToContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if ([(AVAppStoreBehavior *)self prefersFirstGenerationControlsWhenEmbeddedInline])
   {
-    v4 = [v5 playerViewController];
-    [v4 setControlsGeneration:0];
+    playerViewController = [contextCopy playerViewController];
+    [playerViewController setControlsGeneration:0];
   }
 }
 

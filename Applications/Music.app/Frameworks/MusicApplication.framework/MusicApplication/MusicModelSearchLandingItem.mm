@@ -1,8 +1,8 @@
 @interface MusicModelSearchLandingItem
 + (id)requiredStoreLibraryPersonalizationProperties;
 - (id)backgroundArtworkCatalog;
-- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)a3;
-- (id)personalizationScopedPropertiesForProperties:(id)a3;
+- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)object;
+- (id)personalizationScopedPropertiesForProperties:(id)properties;
 - (id)relativeModelObjectForStoreLibraryPersonalization;
 @end
 
@@ -10,11 +10,11 @@
 
 - (id)backgroundArtworkCatalog
 {
-  v3 = [(MusicModelSearchLandingItem *)self backgroundArtworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  backgroundArtworkCatalogBlock = [(MusicModelSearchLandingItem *)self backgroundArtworkCatalogBlock];
+  v4 = backgroundArtworkCatalogBlock;
+  if (backgroundArtworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(backgroundArtworkCatalogBlock + 16))(backgroundArtworkCatalogBlock, self);
   }
 
   else
@@ -45,20 +45,20 @@
   return v5;
 }
 
-- (id)personalizationScopedPropertiesForProperties:(id)a3
+- (id)personalizationScopedPropertiesForProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(MusicModelSearchLandingItem *)self contentItem];
-  v6 = [v4 relationships];
+  propertiesCopy = properties;
+  contentItem = [(MusicModelSearchLandingItem *)self contentItem];
+  relationships = [propertiesCopy relationships];
 
-  v7 = [v6 objectForKey:@"MusicModelRelationshipSearchLandingItemContentItem"];
+  v7 = [relationships objectForKey:@"MusicModelRelationshipSearchLandingItemContentItem"];
   v8 = v7;
   if (!v7)
   {
     v8 = +[MPPropertySet emptyPropertySet];
   }
 
-  v9 = [v5 personalizationScopedPropertiesForProperties:v8];
+  v9 = [contentItem personalizationScopedPropertiesForProperties:v8];
   v10 = v9;
   if (v9)
   {
@@ -81,24 +81,24 @@
 
 - (id)relativeModelObjectForStoreLibraryPersonalization
 {
-  v2 = [(MusicModelSearchLandingItem *)self contentItem];
-  v3 = [v2 relativeModelObjectForStoreLibraryPersonalization];
+  contentItem = [(MusicModelSearchLandingItem *)self contentItem];
+  relativeModelObjectForStoreLibraryPersonalization = [contentItem relativeModelObjectForStoreLibraryPersonalization];
 
-  return v3;
+  return relativeModelObjectForStoreLibraryPersonalization;
 }
 
-- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)a3
+- (id)objectWithStoreLibraryPersonalizationRelativeModelObject:(id)object
 {
-  v4 = a3;
-  v5 = [(MusicModelSearchLandingItem *)self identifiers];
+  objectCopy = object;
+  identifiers = [(MusicModelSearchLandingItem *)self identifiers];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __88__MusicModelSearchLandingItem_objectWithStoreLibraryPersonalizationRelativeModelObject___block_invoke;
   v9[3] = &unk_CEF018;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [(MusicModelSearchLandingItem *)self copyWithIdentifiers:v5 block:v9];
+  v10 = objectCopy;
+  v6 = objectCopy;
+  v7 = [(MusicModelSearchLandingItem *)self copyWithIdentifiers:identifiers block:v9];
 
   return v7;
 }

@@ -1,28 +1,28 @@
 @interface PFXStreamWriter
-+ (BOOL)writeAnchorTargetToStream:(_xmlTextWriter *)a3 name:(id)a4;
-+ (BOOL)writeDtdToStream:(_xmlTextWriter *)a3 name:(id)a4 pubid:(id)a5 sysid:(id)a6 subset:(id)a7;
-+ (BOOL)writeNamespaceToStream:(_xmlTextWriter *)a3 prefix:(id)a4 uri:(const char *)a5;
-+ (_xmlTextWriter)createXmlTextWriterAtEntry:(id)a3 inOutputStream:(id)a4 isCompressed:(BOOL)a5;
-+ (_xmlTextWriter)createXmlTextWriterWithContext:(id)a3;
++ (BOOL)writeAnchorTargetToStream:(_xmlTextWriter *)stream name:(id)name;
++ (BOOL)writeDtdToStream:(_xmlTextWriter *)stream name:(id)name pubid:(id)pubid sysid:(id)sysid subset:(id)subset;
++ (BOOL)writeNamespaceToStream:(_xmlTextWriter *)stream prefix:(id)prefix uri:(const char *)uri;
++ (_xmlTextWriter)createXmlTextWriterAtEntry:(id)entry inOutputStream:(id)stream isCompressed:(BOOL)compressed;
++ (_xmlTextWriter)createXmlTextWriterWithContext:(id)context;
 - (BOOL)endElement;
 - (BOOL)endElementsToBase;
-- (BOOL)startElement:(id)a3 prefix:(id)a4 ns:(const char *)a5;
-- (BOOL)writeAttribute:(id)a3 content:(id)a4 prefix:(id)a5 ns:(const char *)a6;
-- (BOOL)writeString:(id)a3;
-- (PFXStreamWriter)initWithTextWriter:(_xmlTextWriter *)a3;
+- (BOOL)startElement:(id)element prefix:(id)prefix ns:(const char *)ns;
+- (BOOL)writeAttribute:(id)attribute content:(id)content prefix:(id)prefix ns:(const char *)ns;
+- (BOOL)writeString:(id)string;
+- (PFXStreamWriter)initWithTextWriter:(_xmlTextWriter *)writer;
 - (void)dealloc;
 @end
 
 @implementation PFXStreamWriter
 
-- (PFXStreamWriter)initWithTextWriter:(_xmlTextWriter *)a3
+- (PFXStreamWriter)initWithTextWriter:(_xmlTextWriter *)writer
 {
   v5.receiver = self;
   v5.super_class = PFXStreamWriter;
   result = [(PFXStreamWriter *)&v5 init];
   if (result)
   {
-    result->mStreamAPI = a3;
+    result->mStreamAPI = writer;
     result->mCurrentDepth = 0;
     result->mContentAdded = 0;
   }
@@ -37,9 +37,9 @@
   [(PFXStreamWriter *)&v2 dealloc];
 }
 
-- (BOOL)startElement:(id)a3 prefix:(id)a4 ns:(const char *)a5
+- (BOOL)startElement:(id)element prefix:(id)prefix ns:(const char *)ns
 {
-  v6 = [PFXStreamWriter startElementInStream:self->mStreamAPI name:a3 prefix:a4 ns:a5];
+  v6 = [PFXStreamWriter startElementInStream:self->mStreamAPI name:element prefix:prefix ns:ns];
   if (v6)
   {
     self->mContentAdded = 1;
@@ -69,16 +69,16 @@
   return v3;
 }
 
-- (BOOL)writeString:(id)a3
+- (BOOL)writeString:(id)string
 {
   if (self->mContentAdded)
   {
     v5 = 1;
   }
 
-  else if (a3)
+  else if (string)
   {
-    v5 = [a3 length] != 0;
+    v5 = [string length] != 0;
   }
 
   else
@@ -89,7 +89,7 @@
   self->mContentAdded = v5;
   mStreamAPI = self->mStreamAPI;
 
-  return [PFXStreamWriter writeStringToStream:mStreamAPI text:a3];
+  return [PFXStreamWriter writeStringToStream:mStreamAPI text:string];
 }
 
 - (BOOL)endElementsToBase
@@ -103,11 +103,11 @@
   return mCurrentDepth == 0;
 }
 
-- (BOOL)writeAttribute:(id)a3 content:(id)a4 prefix:(id)a5 ns:(const char *)a6
+- (BOOL)writeAttribute:(id)attribute content:(id)content prefix:(id)prefix ns:(const char *)ns
 {
   if (self->mCurrentDepth)
   {
-    return [PFXStreamWriter writeAttributeToStream:self->mStreamAPI name:a3 content:a4 prefix:a5 ns:a6];
+    return [PFXStreamWriter writeAttributeToStream:self->mStreamAPI name:attribute content:content prefix:prefix ns:ns];
   }
 
   else
@@ -116,56 +116,56 @@
   }
 }
 
-+ (BOOL)writeNamespaceToStream:(_xmlTextWriter *)a3 prefix:(id)a4 uri:(const char *)a5
++ (BOOL)writeNamespaceToStream:(_xmlTextWriter *)stream prefix:(id)prefix uri:(const char *)uri
 {
-  if (a4)
+  if (prefix)
   {
-    v7 = [[NSString alloc] initWithFormat:@"xmlns:%@", a4];
+    prefix = [[NSString alloc] initWithFormat:@"xmlns:%@", prefix];
   }
 
   else
   {
-    v7 = @"xmlns";
+    prefix = @"xmlns";
   }
 
-  v8 = xmlTextWriterWriteAttribute(a3, [(__CFString *)v7 UTF8String], a5);
+  v8 = xmlTextWriterWriteAttribute(stream, [(__CFString *)prefix UTF8String], uri);
 
   return v8 >= 0;
 }
 
-+ (BOOL)writeDtdToStream:(_xmlTextWriter *)a3 name:(id)a4 pubid:(id)a5 sysid:(id)a6 subset:(id)a7
++ (BOOL)writeDtdToStream:(_xmlTextWriter *)stream name:(id)name pubid:(id)pubid sysid:(id)sysid subset:(id)subset
 {
-  xmlTextWriterSetIndent(a3, 1);
-  v12 = xmlTextWriterWriteDTD(a3, [a4 UTF8String], objc_msgSend(a5, "UTF8String"), objc_msgSend(a6, "UTF8String"), objc_msgSend(a7, "UTF8String"));
+  xmlTextWriterSetIndent(stream, 1);
+  v12 = xmlTextWriterWriteDTD(stream, [name UTF8String], objc_msgSend(pubid, "UTF8String"), objc_msgSend(sysid, "UTF8String"), objc_msgSend(subset, "UTF8String"));
   if ((v12 & 0x80000000) == 0)
   {
-    xmlTextWriterSetIndent(a3, 0);
+    xmlTextWriterSetIndent(stream, 0);
   }
 
   return v12 >= 0;
 }
 
-+ (BOOL)writeAnchorTargetToStream:(_xmlTextWriter *)a3 name:(id)a4
++ (BOOL)writeAnchorTargetToStream:(_xmlTextWriter *)stream name:(id)name
 {
-  if (![PFXStreamWriter startElementInStream:a3 name:@"span"]|| ![PFXStreamWriter writeAttributeToStream:a3 name:@"id" content:a4])
+  if (![PFXStreamWriter startElementInStream:stream name:@"span"]|| ![PFXStreamWriter writeAttributeToStream:stream name:@"id" content:name])
   {
     return 0;
   }
 
-  return [PFXStreamWriter endElementInStream:a3];
+  return [PFXStreamWriter endElementInStream:stream];
 }
 
-+ (_xmlTextWriter)createXmlTextWriterWithContext:(id)a3
++ (_xmlTextWriter)createXmlTextWriterWithContext:(id)context
 {
-  IO = xmlOutputBufferCreateIO(sfaxmlNSMutableDataWriteCallback, 0, a3, 0);
+  IO = xmlOutputBufferCreateIO(sfaxmlNSMutableDataWriteCallback, 0, context, 0);
 
   return [PFXStreamWriter createXmlTextWriterWithBuffer:IO];
 }
 
-+ (_xmlTextWriter)createXmlTextWriterAtEntry:(id)a3 inOutputStream:(id)a4 isCompressed:(BOOL)a5
++ (_xmlTextWriter)createXmlTextWriterAtEntry:(id)entry inOutputStream:(id)stream isCompressed:(BOOL)compressed
 {
-  [a4 beginUnknownSizeEntryWithName:a3 isCompressed:a5];
-  IO = xmlOutputBufferCreateIO(&SFUSimpleXmlOutputWriteCallback, &SFUSimpleXmlOutputCloseCallback, a4, 0);
+  [stream beginUnknownSizeEntryWithName:entry isCompressed:compressed];
+  IO = xmlOutputBufferCreateIO(&SFUSimpleXmlOutputWriteCallback, &SFUSimpleXmlOutputCloseCallback, stream, 0);
 
   return [PFXStreamWriter createXmlTextWriterWithBuffer:IO];
 }

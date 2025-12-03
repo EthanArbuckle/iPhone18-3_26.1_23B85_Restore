@@ -1,28 +1,28 @@
 @interface W5PeerStatusResponsePayload
-+ (id)payloadFromDictionary:(id)a3;
-- (W5PeerStatusResponsePayload)initWithRequest:(id)a3;
++ (id)payloadFromDictionary:(id)dictionary;
+- (W5PeerStatusResponsePayload)initWithRequest:(id)request;
 - (id)encode;
 @end
 
 @implementation W5PeerStatusResponsePayload
 
-+ (id)payloadFromDictionary:(id)a3
++ (id)payloadFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithRequest:v3];
+  dictionaryCopy = dictionary;
+  v4 = [objc_alloc(objc_opt_class()) initWithRequest:dictionaryCopy];
 
   return v4;
 }
 
-- (W5PeerStatusResponsePayload)initWithRequest:(id)a3
+- (W5PeerStatusResponsePayload)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v27.receiver = self;
   v27.super_class = W5PeerStatusResponsePayload;
   v5 = [(W5PeerStatusResponsePayload *)&v27 init];
-  if (v5 && (v6 = [v4 objectForKey:@"version"], (v5->_version = v6) != 0))
+  if (v5 && (v6 = [requestCopy objectForKey:@"version"], (v5->_version = v6) != 0))
   {
-    v7 = [v4 objectForKey:@"status"];
+    v7 = [requestCopy objectForKey:@"status"];
     v8 = v7;
     if (v7)
     {
@@ -30,7 +30,7 @@
     }
 
     v24 = v8;
-    v9 = [v4 objectForKey:@"peerStatus"];
+    v9 = [requestCopy objectForKey:@"peerStatus"];
     v10 = [NSSet setWithObjects:objc_opt_class(), 0];
     v26 = 0;
     v11 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v10 fromData:v9 error:&v26];
@@ -49,11 +49,11 @@
     v14 = 0;
   }
 
-  v15 = [v4 objectForKey:&off_1000EFAD0];
+  v15 = [requestCopy objectForKey:&off_1000EFAD0];
 
   if (v15)
   {
-    v16 = [v4 objectForKey:&off_1000EFAD0];
+    v16 = [requestCopy objectForKey:&off_1000EFAD0];
 
     v17 = [NSSet setWithObjects:objc_opt_class(), 0];
     v25 = v12;
@@ -110,9 +110,9 @@ LABEL_14:
   v4 = sub_100098A04();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(W5PeerStatusResponsePayload *)self version];
-    v6 = [(W5PeerStatusResponsePayload *)self status];
-    v7 = [(W5PeerStatusResponsePayload *)self peerStatus];
+    version = [(W5PeerStatusResponsePayload *)self version];
+    status = [(W5PeerStatusResponsePayload *)self status];
+    peerStatus = [(W5PeerStatusResponsePayload *)self peerStatus];
     v21 = 136316418;
     v22 = "[W5PeerStatusResponsePayload encode]";
     v23 = 2080;
@@ -120,50 +120,50 @@ LABEL_14:
     v25 = 1024;
     v26 = 77;
     v27 = 2114;
-    v28 = v5;
+    v28 = version;
     v29 = 2048;
-    v30 = v6;
+    v30 = status;
     v31 = 2114;
-    v32 = v7;
+    v32 = peerStatus;
     LODWORD(v19) = 58;
     v18 = &v21;
     _os_log_send_and_compose_impl();
   }
 
-  v8 = [(W5PeerStatusResponsePayload *)self version];
+  version2 = [(W5PeerStatusResponsePayload *)self version];
 
-  if (!v8)
+  if (!version2)
   {
     goto LABEL_17;
   }
 
-  v9 = [(W5PeerStatusResponsePayload *)self version];
-  [v3 setObject:v9 forKey:@"version"];
+  version3 = [(W5PeerStatusResponsePayload *)self version];
+  [v3 setObject:version3 forKey:@"version"];
 
   if (![(W5PeerStatusResponsePayload *)self status])
   {
-    v8 = 0;
+    version2 = 0;
     goto LABEL_17;
   }
 
   v10 = [NSNumber numberWithInteger:[(W5PeerStatusResponsePayload *)self status]];
   [v3 setObject:v10 forKey:@"status"];
 
-  v8 = [(W5PeerStatusResponsePayload *)self peerStatus];
+  version2 = [(W5PeerStatusResponsePayload *)self peerStatus];
 
-  if (!v8)
+  if (!version2)
   {
 LABEL_17:
     v12 = 0;
     goto LABEL_12;
   }
 
-  v11 = [(W5PeerStatusResponsePayload *)self peerStatus];
+  peerStatus2 = [(W5PeerStatusResponsePayload *)self peerStatus];
   v20 = 0;
-  v8 = [NSKeyedArchiver archivedDataWithRootObject:v11 requiringSecureCoding:1 error:&v20];
+  version2 = [NSKeyedArchiver archivedDataWithRootObject:peerStatus2 requiringSecureCoding:1 error:&v20];
   v12 = v20;
 
-  if (!v8 || v12)
+  if (!version2 || v12)
   {
     v13 = sub_100098A04();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -184,8 +184,8 @@ LABEL_17:
 
   else
   {
-    [v3 setObject:v8 forKey:@"peerStatus"];
-    [v3 setObject:v8 forKey:self->_version];
+    [v3 setObject:version2 forKey:@"peerStatus"];
+    [v3 setObject:version2 forKey:self->_version];
   }
 
 LABEL_12:

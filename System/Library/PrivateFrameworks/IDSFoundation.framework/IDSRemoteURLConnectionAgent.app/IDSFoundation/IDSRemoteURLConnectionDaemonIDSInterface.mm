@@ -1,15 +1,15 @@
 @interface IDSRemoteURLConnectionDaemonIDSInterface
 + (id)sharedInstance;
 - (BOOL)isNearby;
-- (BOOL)sendIDSMessage:(id)a3 forLoaderWithUniqueID:(id)a4;
+- (BOOL)sendIDSMessage:(id)message forLoaderWithUniqueID:(id)d;
 - (IDSRemoteURLConnectionDaemonIDSInterface)init;
-- (void)_handleCancelMessage:(id)a3;
-- (void)_handleLoadRequestMessage:(id)a3;
-- (void)_handleLoadRequestResponseMessage:(id)a3;
+- (void)_handleCancelMessage:(id)message;
+- (void)_handleLoadRequestMessage:(id)message;
+- (void)_handleLoadRequestResponseMessage:(id)message;
 - (void)dealloc;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block;
 @end
 
 @implementation IDSRemoteURLConnectionDaemonIDSInterface
@@ -57,8 +57,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(IDSService *)self->_idsService devices];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  devices = [(IDSService *)self->_idsService devices];
+  v3 = [devices countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -68,7 +68,7 @@
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(devices);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -79,7 +79,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [devices countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -94,12 +94,12 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)sendIDSMessage:(id)a3 forLoaderWithUniqueID:(id)a4
+- (BOOL)sendIDSMessage:(id)message forLoaderWithUniqueID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  dCopy = d;
   v8 = JWEncodeDictionary();
-  v9 = [v8 _CUTCopyGzippedData];
+  _CUTCopyGzippedData = [v8 _CUTCopyGzippedData];
   v10 = objc_alloc_init(NSMutableDictionary);
   CFDictionarySetValue(v10, IDSSendMessageOptionLocalDeliveryKey, &__kCFBooleanTrue);
   CFDictionarySetValue(v10, IDSSendMessageOptionEnforceRemoteTimeoutsKey, &__kCFBooleanFalse);
@@ -107,7 +107,7 @@ LABEL_11:
   v12 = [NSSet setWithObject:IDSDefaultPairedDevice];
   v22 = 0;
   v23 = 0;
-  v13 = [(IDSService *)idsService sendData:v9 toDestinations:v12 priority:300 options:v10 identifier:&v23 error:&v22];
+  v13 = [(IDSService *)idsService sendData:_CUTCopyGzippedData toDestinations:v12 priority:300 options:v10 identifier:&v23 error:&v22];
   v14 = v23;
   v15 = v22;
 
@@ -121,7 +121,7 @@ LABEL_11:
     }
 
     *buf = 138412546;
-    v25 = v6;
+    v25 = messageCopy;
     v26 = 2112;
     v27 = v17;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "Sending message to local account (messageDict %@) success: %@", buf, 0x16u);
@@ -133,7 +133,7 @@ LABEL_11:
   }
 
   v18 = v13 ^ 1;
-  if (!v7)
+  if (!dCopy)
   {
     v18 = 1;
   }
@@ -147,55 +147,55 @@ LABEL_11:
       self->_messageIDToLoaderUniqueIDMap = Mutable;
     }
 
-    CFDictionarySetValue(self->_messageIDToLoaderUniqueIDMap, v14, v7);
+    CFDictionarySetValue(self->_messageIDToLoaderUniqueIDMap, v14, dCopy);
   }
 
   return v13;
 }
 
-- (void)_handleLoadRequestMessage:(id)a3
+- (void)_handleLoadRequestMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v41 = v4;
+    v41 = messageCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received load request message: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v31 = v4;
+    v31 = messageCopy;
     _IDSLogV();
   }
 
-  v33 = [v4 objectForKey:{IDSRemoteURLConnectionKeyRequest, v31}];
-  v6 = [v4 objectForKey:IDSRemoteURLConnectionKeyTryForceCellular];
+  v33 = [messageCopy objectForKey:{IDSRemoteURLConnectionKeyRequest, v31}];
+  v6 = [messageCopy objectForKey:IDSRemoteURLConnectionKeyTryForceCellular];
   [v6 BOOLValue];
 
-  v7 = [v4 objectForKey:IDSRemoteURLConnectionKeyRequireIDSHost];
+  v7 = [messageCopy objectForKey:IDSRemoteURLConnectionKeyRequireIDSHost];
   [v7 BOOLValue];
 
-  v8 = [v4 objectForKey:IDSRemoteURLConnectionKeyVersion];
-  v9 = [v8 intValue];
+  v8 = [messageCopy objectForKey:IDSRemoteURLConnectionKeyVersion];
+  intValue = [v8 intValue];
 
-  v10 = [v4 objectForKey:IDSRemoteURLConnectionShouldUsePipelining];
+  v10 = [messageCopy objectForKey:IDSRemoteURLConnectionShouldUsePipelining];
   [v10 BOOLValue];
 
-  v11 = [v4 objectForKey:IDSRemoteURLConnectionConcurrentConnections];
+  v11 = [messageCopy objectForKey:IDSRemoteURLConnectionConcurrentConnections];
   [v11 intValue];
 
-  v12 = [v4 objectForKey:IDSRemoteURLConnectionDisableKeepAlive];
+  v12 = [messageCopy objectForKey:IDSRemoteURLConnectionDisableKeepAlive];
   [v12 BOOLValue];
 
-  v13 = [v4 objectForKey:IDSRemoteURLConnectionKeepAliveWifi];
+  v13 = [messageCopy objectForKey:IDSRemoteURLConnectionKeepAliveWifi];
   [v13 intValue];
 
-  v14 = [v4 objectForKey:IDSRemoteURLConnectionKeepAliveCell];
+  v14 = [messageCopy objectForKey:IDSRemoteURLConnectionKeepAliveCell];
   [v14 intValue];
 
-  if (v9 <= 0)
+  if (intValue <= 0)
   {
     v15 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -214,8 +214,8 @@ LABEL_11:
   v16 = JWDecodeKeyedCodableObjectWithSecureCoding();
   if (v16)
   {
-    v17 = [v4 objectForKey:IDSRemoteURLConnectionKeyDataUsageBundleIdentifier];
-    v18 = [v4 objectForKey:IDSRemoteURLConnectionKeyUniqueID];
+    v17 = [messageCopy objectForKey:IDSRemoteURLConnectionKeyDataUsageBundleIdentifier];
+    v18 = [messageCopy objectForKey:IDSRemoteURLConnectionKeyUniqueID];
     pendingResponseUniqueIDs = self->_pendingResponseUniqueIDs;
     if (!pendingResponseUniqueIDs)
     {
@@ -269,7 +269,7 @@ LABEL_11:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v41 = v4;
+      v41 = messageCopy;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Unable to decode request -- ignoring! {message: %@}", buf, 0xCu);
     }
 
@@ -280,50 +280,50 @@ LABEL_11:
   }
 }
 
-- (void)_handleLoadRequestResponseMessage:(id)a3
+- (void)_handleLoadRequestResponseMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = v3;
+    v25 = messageCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Received load request response message: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v18 = v3;
+    v18 = messageCopy;
     _IDSLogV();
   }
 
-  v23 = [v3 objectForKey:{IDSRemoteURLConnectionKeyHeaders, v18}];
-  v22 = [v3 objectForKey:IDSRemoteURLConnectionKeyURL];
-  v21 = [v3 objectForKey:IDSRemoteURLConnectionKeyHTTPVersion];
-  v5 = [v3 objectForKey:IDSRemoteURLConnectionKeyResponseStatusCode];
-  v6 = [v5 integerValue];
+  v23 = [messageCopy objectForKey:{IDSRemoteURLConnectionKeyHeaders, v18}];
+  v22 = [messageCopy objectForKey:IDSRemoteURLConnectionKeyURL];
+  v21 = [messageCopy objectForKey:IDSRemoteURLConnectionKeyHTTPVersion];
+  v5 = [messageCopy objectForKey:IDSRemoteURLConnectionKeyResponseStatusCode];
+  integerValue = [v5 integerValue];
 
-  v20 = [v3 objectForKey:IDSRemoteURLConnectionKeyResultData];
-  v7 = [v3 objectForKey:IDSRemoteURLConnectionKeyResponseError];
+  v20 = [messageCopy objectForKey:IDSRemoteURLConnectionKeyResultData];
+  v7 = [messageCopy objectForKey:IDSRemoteURLConnectionKeyResponseError];
   objc_opt_class();
   v19 = JWDecodeKeyedCodableObjectWithSecureCoding();
   objc_opt_class();
   v8 = JWDecodeKeyedCodableObjectWithSecureCoding();
   objc_opt_class();
   v9 = JWDecodeKeyedCodableObjectWithSecureCoding();
-  v10 = [v3 objectForKey:IDSRemoteURLConnectionKeyUniqueID];
+  v10 = [messageCopy objectForKey:IDSRemoteURLConnectionKeyUniqueID];
   v11 = +[IDSRemoteURLConnectionDaemon sharedInstance];
   v12 = [v11 urlLoaderForUniqueID:v10];
 
   if (v12)
   {
-    v13 = [v12 block];
-    v14 = [v13 copy];
+    block = [v12 block];
+    v14 = [block copy];
 
     if (v14)
     {
-      v15 = [[NSHTTPURLResponse alloc] initWithURL:v8 statusCode:v6 HTTPVersion:v21 headerFields:v19];
-      v14[2](v14, v15, v6, v20, v9, 0);
+      v15 = [[NSHTTPURLResponse alloc] initWithURL:v8 statusCode:integerValue HTTPVersion:v21 headerFields:v19];
+      v14[2](v14, v15, integerValue, v20, v9, 0);
     }
 
     v16 = +[IDSRemoteURLConnectionDaemon sharedInstance];
@@ -347,24 +347,24 @@ LABEL_11:
   }
 }
 
-- (void)_handleCancelMessage:(id)a3
+- (void)_handleCancelMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = messageCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received cancel message: %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v11 = v4;
+    v11 = messageCopy;
     _IDSLogV();
   }
 
-  v6 = [v4 objectForKey:{IDSRemoteURLConnectionKeyUniqueID, v11}];
+  v6 = [messageCopy objectForKey:{IDSRemoteURLConnectionKeyUniqueID, v11}];
   v7 = +[IDSRemoteURLConnectionDaemon sharedInstance];
   v8 = [v7 urlLoaderForUniqueID:v6];
 
@@ -396,45 +396,45 @@ LABEL_11:
   [(NSMutableSet *)self->_pendingResponseUniqueIDs removeObject:v6];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  dataCopy = data;
+  dCopy = d;
+  contextCopy = context;
   v17 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413314;
-    v29 = v12;
+    v29 = serviceCopy;
     v30 = 2112;
-    v31 = v13;
+    v31 = accountCopy;
     v32 = 2112;
-    v33 = v14;
+    v33 = dataCopy;
     v34 = 2112;
-    v35 = v15;
+    v35 = dCopy;
     v36 = 2112;
-    v37 = v16;
+    v37 = contextCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "incomingData on service %@, account %@ data %@ fromID %@ context %@", buf, 0x34u);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v26 = v15;
-    v27 = v16;
-    v24 = v13;
-    v25 = v14;
-    v23 = v12;
+    v26 = dCopy;
+    v27 = contextCopy;
+    v24 = accountCopy;
+    v25 = dataCopy;
+    v23 = serviceCopy;
     _IDSLogV();
   }
 
-  v18 = [v14 _CUTOptionallyDecompressData];
+  _CUTOptionallyDecompressData = [dataCopy _CUTOptionallyDecompressData];
   v19 = JWDecodeDictionary();
   v20 = [v19 objectForKey:IDSRemoteURLConnectionKeyCommand];
-  v21 = [v20 unsignedIntValue];
+  unsignedIntValue = [v20 unsignedIntValue];
 
-  switch(v21)
+  switch(unsignedIntValue)
   {
     case 3u:
       [(IDSRemoteURLConnectionDaemonIDSInterface *)self _handleCancelMessage:v19];
@@ -450,7 +450,7 @@ LABEL_11:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        LODWORD(v29) = v21;
+        LODWORD(v29) = unsignedIntValue;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Unknown command %d, ignoring...", buf, 8u);
       }
 
@@ -463,24 +463,24 @@ LABEL_11:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  successCopy = success;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
   v16 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = @"NO";
-    if (v8)
+    if (successCopy)
     {
       v17 = @"YES";
     }
 
     *buf = 138412546;
-    v33 = v14;
+    v33 = identifierCopy;
     v34 = 2112;
     v35 = v17;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "didSendWithSuccess %@ success %@", buf, 0x16u);
@@ -489,24 +489,24 @@ LABEL_11:
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
     v18 = @"NO";
-    if (v8)
+    if (successCopy)
     {
       v18 = @"YES";
     }
 
-    v28 = v14;
+    v28 = identifierCopy;
     v29 = v18;
     _IDSLogV();
   }
 
-  v19 = [(NSMutableDictionary *)self->_messageIDToLoaderUniqueIDMap objectForKey:v14, v28, v29];
-  [(NSMutableDictionary *)self->_messageIDToLoaderUniqueIDMap removeObjectForKey:v14];
+  v19 = [(NSMutableDictionary *)self->_messageIDToLoaderUniqueIDMap objectForKey:identifierCopy, v28, v29];
+  [(NSMutableDictionary *)self->_messageIDToLoaderUniqueIDMap removeObjectForKey:identifierCopy];
   if ([(__CFString *)v19 length])
   {
-    if (v8)
+    if (successCopy)
     {
       v30 = v19;
-      v31 = v14;
+      v31 = identifierCopy;
       im_dispatch_after_primary_queue();
     }
 
@@ -517,8 +517,8 @@ LABEL_11:
 
       if (v22)
       {
-        v23 = [v22 block];
-        v24 = [v23 copy];
+        block = [v22 block];
+        v24 = [block copy];
 
         if (v24)
         {
@@ -538,7 +538,7 @@ LABEL_11:
           *buf = 138412546;
           v33 = v19;
           v34 = 2112;
-          v35 = v14;
+          v35 = identifierCopy;
           _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "No URLLoader for uniqueID %@ message ID %@", buf, 0x16u);
         }
 
@@ -556,7 +556,7 @@ LABEL_11:
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v33 = v14;
+      v33 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Did not find loader ID for identifier %@", buf, 0xCu);
     }
 
@@ -567,22 +567,22 @@ LABEL_11:
   }
 }
 
-- (void)service:(id)a3 didSwitchActivePairedDevice:(id)a4 acknowledgementBlock:(id)a5
+- (void)service:(id)service didSwitchActivePairedDevice:(id)device acknowledgementBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  deviceCopy = device;
+  blockCopy = block;
   v11 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v9;
+    v18 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "didSwitchActivePairedDevice %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v15 = v9;
+    v15 = deviceCopy;
     _IDSLogV();
   }
 
@@ -609,7 +609,7 @@ LABEL_11:
     [(NSMutableSet *)self->_pendingResponseUniqueIDs removeAllObjects];
   }
 
-  v10[2](v10);
+  blockCopy[2](blockCopy);
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface IMAssistantMessageReadAttributeSanitizer
-- (unint64_t)sanitize:(unint64_t)a3;
+- (unint64_t)sanitize:(unint64_t)sanitize;
 @end
 
 @implementation IMAssistantMessageReadAttributeSanitizer
 
-- (unint64_t)sanitize:(unint64_t)a3
+- (unint64_t)sanitize:(unint64_t)sanitize
 {
-  if ((a3 & 3) != 0)
+  if ((sanitize & 3) != 0)
   {
-    return a3 & 3;
+    return sanitize & 3;
   }
 
   else

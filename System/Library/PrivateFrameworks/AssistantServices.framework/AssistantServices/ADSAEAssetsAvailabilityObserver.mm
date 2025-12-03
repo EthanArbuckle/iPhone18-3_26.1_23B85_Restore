@@ -1,25 +1,25 @@
 @interface ADSAEAssetsAvailabilityObserver
 - (ADSAEAssetsAvailabilityObserver)init;
-- (ADSAEAssetsAvailabilityObserver)initWithGMAvailabilityWrapperClass:(Class)a3;
-- (void)refreshAssetsAvailabilityWithAssetManager:(id)a3;
+- (ADSAEAssetsAvailabilityObserver)initWithGMAvailabilityWrapperClass:(Class)class;
+- (void)refreshAssetsAvailabilityWithAssetManager:(id)manager;
 @end
 
 @implementation ADSAEAssetsAvailabilityObserver
 
-- (void)refreshAssetsAvailabilityWithAssetManager:(id)a3
+- (void)refreshAssetsAvailabilityWithAssetManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = +[ADPreferences sharedPreferences];
-  v6 = [v5 languageCode];
+  languageCode = [v5 languageCode];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001A3288;
   v8[3] = &unk_10051DB90;
-  v9 = v6;
-  v10 = self;
-  v7 = v6;
-  [v4 fetchAssetsAvailabilityForLanguage:v7 completion:v8];
+  v9 = languageCode;
+  selfCopy = self;
+  v7 = languageCode;
+  [managerCopy fetchAssetsAvailabilityForLanguage:v7 completion:v8];
 }
 
 - (ADSAEAssetsAvailabilityObserver)init
@@ -45,14 +45,14 @@
   return [(ADSAEAssetsAvailabilityObserver *)self initWithGMAvailabilityWrapperClass:v3];
 }
 
-- (ADSAEAssetsAvailabilityObserver)initWithGMAvailabilityWrapperClass:(Class)a3
+- (ADSAEAssetsAvailabilityObserver)initWithGMAvailabilityWrapperClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = ADSAEAssetsAvailabilityObserver;
   result = [(ADSAEAssetsAvailabilityObserver *)&v5 init];
   if (result)
   {
-    result->_gmAvailabilityWrapperClass = a3;
+    result->_gmAvailabilityWrapperClass = class;
   }
 
   return result;

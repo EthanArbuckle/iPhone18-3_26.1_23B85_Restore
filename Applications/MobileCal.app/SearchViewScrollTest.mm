@@ -1,5 +1,5 @@
 @interface SearchViewScrollTest
-- (SearchViewScrollTest)initWithApplication:(id)a3 model:(id)a4 options:(id)a5;
+- (SearchViewScrollTest)initWithApplication:(id)application model:(id)model options:(id)options;
 - (void)_searchViewDidAppear;
 - (void)dealloc;
 - (void)runTest;
@@ -7,18 +7,18 @@
 
 @implementation SearchViewScrollTest
 
-- (SearchViewScrollTest)initWithApplication:(id)a3 model:(id)a4 options:(id)a5
+- (SearchViewScrollTest)initWithApplication:(id)application model:(id)model options:(id)options
 {
-  v8 = a3;
-  v9 = a5;
+  applicationCopy = application;
+  optionsCopy = options;
   v16.receiver = self;
   v16.super_class = SearchViewScrollTest;
-  v10 = [(ApplicationTest *)&v16 initWithApplication:v8 model:a4 options:v9];
+  v10 = [(ApplicationTest *)&v16 initWithApplication:applicationCopy model:model options:optionsCopy];
   if (v10)
   {
     v11 = [TestScroller alloc];
-    v12 = [objc_opt_class() testName];
-    v13 = [(TestScroller *)v11 initWithOptions:v9 testName:v12 application:v8];
+    testName = [objc_opt_class() testName];
+    v13 = [(TestScroller *)v11 initWithOptions:optionsCopy testName:testName application:applicationCopy];
     scroller = v10->_scroller;
     v10->_scroller = v13;
   }
@@ -38,38 +38,38 @@
 
 - (void)runTest
 {
-  v3 = [(ApplicationTest *)self application];
-  v4 = [objc_opt_class() testName];
+  application = [(ApplicationTest *)self application];
+  testName = [objc_opt_class() testName];
   if ([(TestScroller *)self->_scroller inputInvalid])
   {
-    [v3 startedTest:v4];
-    [v3 failedTest:v4 withFailure:@"input invalid was marked as true when trying to run test"];
+    [application startedTest:testName];
+    [application failedTest:testName withFailure:@"input invalid was marked as true when trying to run test"];
   }
 
   else
   {
-    v5 = [(ApplicationTest *)self application];
-    v6 = [v5 rootNavigationController];
+    application2 = [(ApplicationTest *)self application];
+    rootNavigationController = [application2 rootNavigationController];
 
-    v7 = [(ApplicationTest *)self extractInitialDateOption];
-    v8 = [(ApplicationTest *)self model];
-    [v8 setSelectedDate:v7];
+    extractInitialDateOption = [(ApplicationTest *)self extractInitialDateOption];
+    model = [(ApplicationTest *)self model];
+    [model setSelectedDate:extractInitialDateOption];
 
-    v9 = [v6 resetToYearView];
-    v10 = [(ApplicationTest *)self model];
-    [v10 setShowDayAsList:1];
+    resetToYearView = [rootNavigationController resetToYearView];
+    model2 = [(ApplicationTest *)self model];
+    [model2 setShowDayAsList:1];
 
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10006ED18;
     v18[3] = &unk_10020EC68;
     v18[4] = self;
-    v11 = v6;
+    v11 = rootNavigationController;
     v19 = v11;
     v12 = objc_retainBlock(v18);
-    v13 = [v11 presentedViewController];
+    presentedViewController = [v11 presentedViewController];
 
-    if (v13)
+    if (presentedViewController)
     {
       v14 = dispatch_time(0, 1000000000);
       v15[0] = _NSConcreteStackBlock;

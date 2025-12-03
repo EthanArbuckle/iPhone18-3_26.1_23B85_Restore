@@ -1,24 +1,24 @@
 @interface RestorePodcastItemsOperation
 - (NSArray)responses;
-- (RestorePodcastItemsOperation)initWithDownloadItems:(id)a3;
-- (id)_addResponseForItem:(id)a3 operation:(id)a4;
-- (id)_newResponseWithItems:(id)a3 error:(id)a4;
-- (id)_newURLOperationForItem:(id)a3 error:(id *)a4;
-- (void)_addResponse:(id)a3;
+- (RestorePodcastItemsOperation)initWithDownloadItems:(id)items;
+- (id)_addResponseForItem:(id)item operation:(id)operation;
+- (id)_newResponseWithItems:(id)items error:(id)error;
+- (id)_newURLOperationForItem:(id)item error:(id *)error;
+- (void)_addResponse:(id)response;
 - (void)run;
 @end
 
 @implementation RestorePodcastItemsOperation
 
-- (RestorePodcastItemsOperation)initWithDownloadItems:(id)a3
+- (RestorePodcastItemsOperation)initWithDownloadItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = RestorePodcastItemsOperation;
   v5 = [(RestorePodcastItemsOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [itemsCopy copy];
     downloadItems = v5->_downloadItems;
     v5->_downloadItems = v6;
   }
@@ -43,19 +43,19 @@
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v5 &= 2u;
   }
@@ -78,9 +78,9 @@
       goto LABEL_12;
     }
 
-    v6 = [NSString stringWithCString:v10 encoding:4, &v59, v45];
+    oSLogObject = [NSString stringWithCString:v10 encoding:4, &v59, v45];
     free(v10);
-    v44 = v6;
+    v44 = oSLogObject;
     SSFileLog();
   }
 
@@ -127,7 +127,7 @@ LABEL_12:
             v52 = 0;
             v25 = [(RestorePodcastItemsOperation *)self _newURLOperationForItem:v23 error:&v52];
             v26 = v52;
-            v27 = v26;
+            responseError = v26;
             if (v25)
             {
               v50 = v24;
@@ -140,23 +140,23 @@ LABEL_12:
               if (v30)
               {
                 v32 = [(RestorePodcastItemsOperation *)self _addResponseForItem:v23 operation:v25];
-                v27 = [v32 responseError];
+                responseError = [v32 responseError];
 
-                v33 = v27 == 0;
+                v33 = responseError == 0;
                 v21 = v29;
                 v19 = v28;
                 v24 = v50;
                 goto LABEL_24;
               }
 
-              v27 = v31;
+              responseError = v31;
               v21 = v29;
               v19 = v28;
               v24 = v50;
             }
 
             v34 = [NSArray arrayWithObject:v23, v44];
-            v32 = [(RestorePodcastItemsOperation *)self _newResponseWithItems:v34 error:v27];
+            v32 = [(RestorePodcastItemsOperation *)self _newResponseWithItems:v34 error:responseError];
 
             [(RestorePodcastItemsOperation *)self _addResponse:v32];
             v33 = 0;
@@ -164,7 +164,7 @@ LABEL_24:
 
             if (!v21)
             {
-              v21 = v27;
+              v21 = responseError;
             }
 
             v20 &= v33;
@@ -194,19 +194,19 @@ LABEL_42:
       v36 = +[SSLogConfig sharedConfig];
     }
 
-    v37 = [v36 shouldLog];
+    shouldLog2 = [v36 shouldLog];
     if ([v36 shouldLogToDisk])
     {
-      v38 = v37 | 2;
+      v38 = shouldLog2 | 2;
     }
 
     else
     {
-      v38 = v37;
+      v38 = shouldLog2;
     }
 
-    v39 = [v36 OSLogObject];
-    if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v36 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v40 = v38;
     }
@@ -242,7 +242,7 @@ LABEL_46:
         goto LABEL_47;
       }
 
-      v39 = [NSString stringWithCString:v43 encoding:4, &v59, v45];
+      oSLogObject2 = [NSString stringWithCString:v43 encoding:4, &v59, v45];
       free(v43);
       SSFileLog();
     }
@@ -265,9 +265,9 @@ LABEL_47:
   [(RestorePodcastItemsOperation *)self setSuccess:v20 & 1];
 }
 
-- (void)_addResponse:(id)a3
+- (void)_addResponse:(id)response
 {
-  v8 = a3;
+  responseCopy = response;
   [(RestorePodcastItemsOperation *)self lock];
   v4 = OBJC_IVAR___ISOperation__delegate;
   WeakRetained = objc_loadWeakRetained(&self->ISOperation_opaque[OBJC_IVAR___ISOperation__delegate]);
@@ -283,34 +283,34 @@ LABEL_47:
     v7 = 0;
   }
 
-  [(NSMutableArray *)self->_responses addObject:v8];
+  [(NSMutableArray *)self->_responses addObject:responseCopy];
   [(RestorePodcastItemsOperation *)self unlock];
   if (v7)
   {
-    [v7 restorePodcastItemsOperation:self didReceiveResponse:v8];
+    [v7 restorePodcastItemsOperation:self didReceiveResponse:responseCopy];
   }
 }
 
-- (id)_addResponseForItem:(id)a3 operation:(id)a4
+- (id)_addResponseForItem:(id)item operation:(id)operation
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  operationCopy = operation;
   v8 = objc_alloc_init(RestorePodcastItemsResponse);
-  v9 = [NSArray arrayWithObjects:v6, 0];
+  v9 = [NSArray arrayWithObjects:itemCopy, 0];
   [(RestorePodcastItemsResponse *)v8 setRequestItems:v9];
 
-  v10 = [v7 dataProvider];
+  dataProvider = [operationCopy dataProvider];
 
-  v11 = [v10 output];
+  output = [dataProvider output];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [[SSItem alloc] initWithItemDictionary:v11];
+    v12 = [[SSItem alloc] initWithItemDictionary:output];
     v13 = [[StoreDownload alloc] initWithItem:v12];
-    v14 = [(StoreDownload *)v13 primaryAssetURL];
+    primaryAssetURL = [(StoreDownload *)v13 primaryAssetURL];
 
-    if (v14)
+    if (primaryAssetURL)
     {
       v15 = [[NSArray alloc] initWithObjects:{v13, 0}];
       [(RestorePodcastItemsResponse *)v8 setResponseDownloads:v15];
@@ -318,15 +318,15 @@ LABEL_47:
 
     else
     {
-      v15 = [v11 objectForKey:@"failureType"];
+      v15 = [output objectForKey:@"failureType"];
       if (objc_opt_respondsToSelector())
       {
         [v15 integerValue];
       }
 
       v16 = SSError();
-      v17 = [v6 storeItemID];
-      [(RestorePodcastItemsResponse *)v8 setError:v16 forItemIdentifier:v17];
+      storeItemID = [itemCopy storeItemID];
+      [(RestorePodcastItemsResponse *)v8 setError:v16 forItemIdentifier:storeItemID];
     }
   }
 
@@ -341,28 +341,28 @@ LABEL_47:
   return v8;
 }
 
-- (id)_newResponseWithItems:(id)a3 error:(id)a4
+- (id)_newResponseWithItems:(id)items error:(id)error
 {
-  v5 = a4;
-  v6 = a3;
+  errorCopy = error;
+  itemsCopy = items;
   v7 = objc_alloc_init(RestorePodcastItemsResponse);
-  [(RestorePodcastItemsResponse *)v7 setRequestItems:v6];
+  [(RestorePodcastItemsResponse *)v7 setRequestItems:itemsCopy];
 
-  [(RestorePodcastItemsResponse *)v7 setResponseError:v5];
+  [(RestorePodcastItemsResponse *)v7 setResponseError:errorCopy];
   return v7;
 }
 
-- (id)_newURLOperationForItem:(id)a3 error:(id *)a4
+- (id)_newURLOperationForItem:(id)item error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 podcastEpisodeGUID];
-  v7 = [v5 storeItemID];
+  itemCopy = item;
+  podcastEpisodeGUID = [itemCopy podcastEpisodeGUID];
+  storeItemID = [itemCopy storeItemID];
 
-  if (!(v7 | v6))
+  if (!(storeItemID | podcastEpisodeGUID))
   {
     v8 = SSError();
     v9 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -375,28 +375,28 @@ LABEL_47:
   [v9 setDataProvider:v10];
 
   v11 = objc_alloc_init(SSMutableURLRequestProperties);
-  if (v7 && [v7 longLongValue] >= 1)
+  if (storeItemID && [storeItemID longLongValue] >= 1)
   {
-    v12 = [v7 stringValue];
-    [v11 setValue:v12 forRequestParameter:@"id"];
+    stringValue = [storeItemID stringValue];
+    [v11 setValue:stringValue forRequestParameter:@"id"];
   }
 
-  else if (v6)
+  else if (podcastEpisodeGUID)
   {
-    [v11 setValue:v6 forRequestParameter:@"epguid"];
+    [v11 setValue:podcastEpisodeGUID forRequestParameter:@"epguid"];
   }
 
   [v11 setURLBagKey:@"p2-podcast-restore"];
   [v9 setRequestProperties:v11];
 
   v8 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_10:
     if (!v9)
     {
       v13 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 

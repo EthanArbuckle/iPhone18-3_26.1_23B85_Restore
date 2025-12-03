@@ -6,11 +6,11 @@
 - (NSString)merchantNameOverride;
 - (NSURL)merchantPrivacyPolicyOverride;
 - (id)description;
-- (void)setDescriptor:(id)a3;
-- (void)setMerchantIdentifier:(id)a3;
-- (void)setMerchantNameOverride:(id)a3;
-- (void)setMerchantPrivacyPolicyOverride:(id)a3;
-- (void)setNonce:(id)a3;
+- (void)setDescriptor:(id)descriptor;
+- (void)setMerchantIdentifier:(id)identifier;
+- (void)setMerchantNameOverride:(id)override;
+- (void)setMerchantPrivacyPolicyOverride:(id)override;
+- (void)setNonce:(id)nonce;
 @end
 
 @implementation DIIdentityRequest
@@ -37,13 +37,13 @@
   return v3;
 }
 
-- (void)setMerchantNameOverride:(id)a3
+- (void)setMerchantNameOverride:(id)override
 {
-  v6 = a3;
+  overrideCopy = override;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_merchantNameOverride != v6)
+  if (self->_merchantNameOverride != overrideCopy)
   {
-    v4 = [(NSString *)v6 copyWithZone:0];
+    v4 = [(NSString *)overrideCopy copyWithZone:0];
     merchantNameOverride = self->_merchantNameOverride;
     self->_merchantNameOverride = v4;
   }
@@ -60,12 +60,12 @@
   return v3;
 }
 
-- (void)setDescriptor:(id)a3
+- (void)setDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   os_unfair_lock_lock(&self->_lock);
   descriptor = self->_descriptor;
-  self->_descriptor = v4;
+  self->_descriptor = descriptorCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -79,13 +79,13 @@
   return v3;
 }
 
-- (void)setMerchantIdentifier:(id)a3
+- (void)setMerchantIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_merchantIdentifier != v6)
+  if (self->_merchantIdentifier != identifierCopy)
   {
-    v4 = [(NSString *)v6 copyWithZone:0];
+    v4 = [(NSString *)identifierCopy copyWithZone:0];
     merchantIdentifier = self->_merchantIdentifier;
     self->_merchantIdentifier = v4;
   }
@@ -102,13 +102,13 @@
   return v3;
 }
 
-- (void)setNonce:(id)a3
+- (void)setNonce:(id)nonce
 {
-  v6 = a3;
+  nonceCopy = nonce;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_nonce != v6)
+  if (self->_nonce != nonceCopy)
   {
-    v4 = [(NSData *)v6 copyWithZone:0];
+    v4 = [(NSData *)nonceCopy copyWithZone:0];
     nonce = self->_nonce;
     self->_nonce = v4;
   }
@@ -125,13 +125,13 @@
   return v3;
 }
 
-- (void)setMerchantPrivacyPolicyOverride:(id)a3
+- (void)setMerchantPrivacyPolicyOverride:(id)override
 {
-  v6 = a3;
+  overrideCopy = override;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_merchantPrivacyPolicyOverride != v6)
+  if (self->_merchantPrivacyPolicyOverride != overrideCopy)
   {
-    v4 = [(NSURL *)v6 copyWithZone:0];
+    v4 = [(NSURL *)overrideCopy copyWithZone:0];
     merchantPrivacyPolicyOverride = self->_merchantPrivacyPolicyOverride;
     self->_merchantPrivacyPolicyOverride = v4;
   }
@@ -147,8 +147,8 @@
   [v3 appendFormat:@"nonce: %@, ", self->_nonce];
   [v3 appendFormat:@"merchantIdentifier: %@, ", self->_merchantIdentifier];
   [v3 appendFormat:@"merchantNameOverride: %@, ", self->_merchantNameOverride];
-  v4 = [(NSURL *)self->_merchantPrivacyPolicyOverride absoluteString];
-  [v3 appendFormat:@"merchantPrivacyPolicyOverride: %@, ", v4];
+  absoluteString = [(NSURL *)self->_merchantPrivacyPolicyOverride absoluteString];
+  [v3 appendFormat:@"merchantPrivacyPolicyOverride: %@, ", absoluteString];
 
   os_unfair_lock_unlock(&self->_lock);
   [v3 appendFormat:@">"];

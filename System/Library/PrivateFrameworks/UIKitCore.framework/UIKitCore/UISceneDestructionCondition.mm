@@ -1,25 +1,25 @@
 @interface UISceneDestructionCondition
 + (id)systemDisconnection;
 + (id)userInitiatedDismissal;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (UISceneDestructionCondition)initWithBSXPCCoder:(id)a3;
-- (UISceneDestructionCondition)initWithCoder:(id)a3;
-- (id)_initWithKind:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (UISceneDestructionCondition)initWithBSXPCCoder:(id)coder;
+- (UISceneDestructionCondition)initWithCoder:(id)coder;
+- (id)_initWithKind:(int64_t)kind;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation UISceneDestructionCondition
 
-- (id)_initWithKind:(int64_t)a3
+- (id)_initWithKind:(int64_t)kind
 {
   v5.receiver = self;
   v5.super_class = UISceneDestructionCondition;
   result = [(UISceneDestructionCondition *)&v5 init];
   if (result)
   {
-    *(result + 1) = a3;
+    *(result + 1) = kind;
   }
 
   return result;
@@ -27,28 +27,28 @@
 
 + (id)userInitiatedDismissal
 {
-  v2 = [[a1 alloc] _initWithKind:0];
+  v2 = [[self alloc] _initWithKind:0];
 
   return v2;
 }
 
 + (id)systemDisconnection
 {
-  v2 = [[a1 alloc] _initWithKind:1];
+  v2 = [[self alloc] _initWithKind:1];
 
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v6 = 1;
     goto LABEL_7;
@@ -73,9 +73,9 @@ LABEL_7:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendInteger:self->_kind];
-  v5 = [v3 hash];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendInteger:self->_kind];
+  v5 = [builder hash];
 
   return v5;
 }
@@ -109,23 +109,23 @@ LABEL_6:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 1) = self->_kind;
   return result;
 }
 
-- (UISceneDestructionCondition)initWithCoder:(id)a3
+- (UISceneDestructionCondition)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"UISceneDestructionConditionKind"];
+  v4 = [coder decodeIntegerForKey:@"UISceneDestructionConditionKind"];
 
   return [(UISceneDestructionCondition *)self _initWithKind:v4];
 }
 
-- (UISceneDestructionCondition)initWithBSXPCCoder:(id)a3
+- (UISceneDestructionCondition)initWithBSXPCCoder:(id)coder
 {
-  v4 = [a3 decodeInt64ForKey:@"UISceneDestructionConditionKind"];
+  v4 = [coder decodeInt64ForKey:@"UISceneDestructionConditionKind"];
 
   return [(UISceneDestructionCondition *)self _initWithKind:v4];
 }

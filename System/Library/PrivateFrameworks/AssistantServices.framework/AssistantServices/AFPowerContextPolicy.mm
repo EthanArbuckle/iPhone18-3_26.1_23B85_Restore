@@ -1,17 +1,17 @@
 @interface AFPowerContextPolicy
-- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)a3 asrDictationPolicy:(AFPowerContext *)a4 ttsPolicy:(AFPowerContext *)a5;
-- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)a3 asrDictationPolicy:(AFPowerContext *)a4 ttsPolicy:(AFPowerContext *)a5 platformContext:(unint64_t)a6;
-- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)a3 asrDictationPolicy:(AFPowerContext *)a4 ttsPolicy:(AFPowerContext *)a5 siriUIPolicy:(AFPowerContext *)a6;
-- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)a3 asrDictationPolicy:(AFPowerContext *)a4 ttsPolicy:(AFPowerContext *)a5 siriUIPolicy:(AFPowerContext *)a6 thermalMitigationLevel:(unint64_t)a7;
-- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)a3 asrDictationPolicy:(AFPowerContext *)a4 ttsPolicy:(AFPowerContext *)a5 siriUIPolicy:(AFPowerContext *)a6 thermalMitigationLevel:(unint64_t)a7 platformContext:(unint64_t)a8;
-- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)a3 asrDictationPolicy:(AFPowerContext *)a4 ttsPolicy:(AFPowerContext *)a5 thermalMitigationLevel:(unint64_t)a6;
-- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)a3 asrDictationPolicy:(AFPowerContext *)a4 ttsPolicy:(AFPowerContext *)a5 thermalMitigationLevel:(unint64_t)a6 platformContext:(unint64_t)a7;
-- (AFPowerContextPolicy)initWithCoder:(id)a3;
-- (AFPowerContextPolicy)initWithEncodedPolicy:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)policy asrDictationPolicy:(AFPowerContext *)dictationPolicy ttsPolicy:(AFPowerContext *)ttsPolicy;
+- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)policy asrDictationPolicy:(AFPowerContext *)dictationPolicy ttsPolicy:(AFPowerContext *)ttsPolicy platformContext:(unint64_t)context;
+- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)policy asrDictationPolicy:(AFPowerContext *)dictationPolicy ttsPolicy:(AFPowerContext *)ttsPolicy siriUIPolicy:(AFPowerContext *)iPolicy;
+- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)policy asrDictationPolicy:(AFPowerContext *)dictationPolicy ttsPolicy:(AFPowerContext *)ttsPolicy siriUIPolicy:(AFPowerContext *)iPolicy thermalMitigationLevel:(unint64_t)level;
+- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)policy asrDictationPolicy:(AFPowerContext *)dictationPolicy ttsPolicy:(AFPowerContext *)ttsPolicy siriUIPolicy:(AFPowerContext *)iPolicy thermalMitigationLevel:(unint64_t)level platformContext:(unint64_t)context;
+- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)policy asrDictationPolicy:(AFPowerContext *)dictationPolicy ttsPolicy:(AFPowerContext *)ttsPolicy thermalMitigationLevel:(unint64_t)level;
+- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)policy asrDictationPolicy:(AFPowerContext *)dictationPolicy ttsPolicy:(AFPowerContext *)ttsPolicy thermalMitigationLevel:(unint64_t)level platformContext:(unint64_t)context;
+- (AFPowerContextPolicy)initWithCoder:(id)coder;
+- (AFPowerContextPolicy)initWithEncodedPolicy:(unint64_t)policy;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFPowerContextPolicy
@@ -34,22 +34,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[AFPowerContextPolicy encodePolicy](self forKey:{"encodePolicy"), @"AFPowerContextPolicy::encodedPolicy"}];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[AFPowerContextPolicy encodePolicy](self forKey:{"encodePolicy"), @"AFPowerContextPolicy::encodedPolicy"}];
 }
 
-- (AFPowerContextPolicy)initWithCoder:(id)a3
+- (AFPowerContextPolicy)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeInt64ForKey:@"AFPowerContextPolicy::encodedPolicy"];
+  v4 = [coder decodeInt64ForKey:@"AFPowerContextPolicy::encodedPolicy"];
 
   return [(AFPowerContextPolicy *)self initWithEncodedPolicy:v4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [AFPowerContextPolicy allocWithZone:a3];
+  v4 = [AFPowerContextPolicy allocWithZone:zone];
   thermalMitigationLevel = self->_thermalMitigationLevel;
   platformContext = self->_platformContext;
   asrAssistantPolicy = self->_asrAssistantPolicy;
@@ -59,14 +59,14 @@
   return [(AFPowerContextPolicy *)v4 initWithAsrAssistantPolicy:&asrAssistantPolicy asrDictationPolicy:&asrDictationPolicy ttsPolicy:&ttsPolicy siriUIPolicy:&siriUIPolicy thermalMitigationLevel:thermalMitigationLevel platformContext:platformContext];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
+  equalCopy = equal;
+  v5 = equalCopy;
   cpuContext = self->_asrAssistantPolicy.cpuContext;
-  if (v4)
+  if (equalCopy)
   {
-    [v4 asrAssistantPolicy];
+    [equalCopy asrAssistantPolicy];
     if (cpuContext != v34)
     {
       goto LABEL_28;
@@ -222,110 +222,110 @@ LABEL_29:
   return v21;
 }
 
-- (AFPowerContextPolicy)initWithEncodedPolicy:(unint64_t)a3
+- (AFPowerContextPolicy)initWithEncodedPolicy:(unint64_t)policy
 {
-  v3 = a3;
-  if (a3)
+  selfCopy = policy;
+  if (policy)
   {
     v8.receiver = self;
     v8.super_class = AFPowerContextPolicy;
     v4 = [(AFPowerContextPolicy *)&v8 init];
     if (v4)
     {
-      v5 = vdupq_n_s64(v3);
-      *(v4 + 3) = v3 & 3;
+      v5 = vdupq_n_s64(selfCopy);
+      *(v4 + 3) = selfCopy & 3;
       v6 = vdupq_n_s64(3uLL);
       *(v4 + 2) = vandq_s8(vshlq_u64(v5, xmmword_1914CFC80), v6);
       *(v4 + 3) = vandq_s8(vshlq_u64(v5, xmmword_1914CFC90), v6);
       *(v4 + 4) = vandq_s8(vshlq_u64(v5, xmmword_1914CFCA0), v6);
       *(v4 + 5) = vandq_s8(vshlq_u64(v5, xmmword_1914CFCB0), v6);
       *(v4 + 6) = vandq_s8(vshlq_u64(v5, xmmword_1914CFCC0), v6);
-      *(v4 + 14) = (v3 >> 22) & 3;
+      *(v4 + 14) = (selfCopy >> 22) & 3;
       *(v4 + 8) = vandq_s8(vshlq_u64(v5, xmmword_1914CFCD0), xmmword_1914CFCE0);
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)a3 asrDictationPolicy:(AFPowerContext *)a4 ttsPolicy:(AFPowerContext *)a5 platformContext:(unint64_t)a6
+- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)policy asrDictationPolicy:(AFPowerContext *)dictationPolicy ttsPolicy:(AFPowerContext *)ttsPolicy platformContext:(unint64_t)context
 {
-  v10 = *a3;
-  v9 = *a4;
-  v8 = *a5;
+  v10 = *policy;
+  v9 = *dictationPolicy;
+  v8 = *ttsPolicy;
   memset(v7, 0, sizeof(v7));
-  return [(AFPowerContextPolicy *)self initWithAsrAssistantPolicy:&v10 asrDictationPolicy:&v9 ttsPolicy:&v8 siriUIPolicy:v7 thermalMitigationLevel:0 platformContext:a6];
+  return [(AFPowerContextPolicy *)self initWithAsrAssistantPolicy:&v10 asrDictationPolicy:&v9 ttsPolicy:&v8 siriUIPolicy:v7 thermalMitigationLevel:0 platformContext:context];
 }
 
-- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)a3 asrDictationPolicy:(AFPowerContext *)a4 ttsPolicy:(AFPowerContext *)a5
+- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)policy asrDictationPolicy:(AFPowerContext *)dictationPolicy ttsPolicy:(AFPowerContext *)ttsPolicy
 {
-  v9 = *a3;
-  v8 = *a4;
-  v7 = *a5;
+  v9 = *policy;
+  v8 = *dictationPolicy;
+  v7 = *ttsPolicy;
   memset(v6, 0, sizeof(v6));
   return [(AFPowerContextPolicy *)self initWithAsrAssistantPolicy:&v9 asrDictationPolicy:&v8 ttsPolicy:&v7 siriUIPolicy:v6 thermalMitigationLevel:0 platformContext:0];
 }
 
-- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)a3 asrDictationPolicy:(AFPowerContext *)a4 ttsPolicy:(AFPowerContext *)a5 thermalMitigationLevel:(unint64_t)a6 platformContext:(unint64_t)a7
+- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)policy asrDictationPolicy:(AFPowerContext *)dictationPolicy ttsPolicy:(AFPowerContext *)ttsPolicy thermalMitigationLevel:(unint64_t)level platformContext:(unint64_t)context
 {
-  v11 = *a3;
-  v10 = *a4;
-  v9 = *a5;
+  v11 = *policy;
+  v10 = *dictationPolicy;
+  v9 = *ttsPolicy;
   memset(v8, 0, sizeof(v8));
-  return [(AFPowerContextPolicy *)self initWithAsrAssistantPolicy:&v11 asrDictationPolicy:&v10 ttsPolicy:&v9 siriUIPolicy:v8 thermalMitigationLevel:a6 platformContext:a7];
+  return [(AFPowerContextPolicy *)self initWithAsrAssistantPolicy:&v11 asrDictationPolicy:&v10 ttsPolicy:&v9 siriUIPolicy:v8 thermalMitigationLevel:level platformContext:context];
 }
 
-- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)a3 asrDictationPolicy:(AFPowerContext *)a4 ttsPolicy:(AFPowerContext *)a5 thermalMitigationLevel:(unint64_t)a6
+- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)policy asrDictationPolicy:(AFPowerContext *)dictationPolicy ttsPolicy:(AFPowerContext *)ttsPolicy thermalMitigationLevel:(unint64_t)level
 {
-  v10 = *a3;
-  v9 = *a4;
-  v8 = *a5;
+  v10 = *policy;
+  v9 = *dictationPolicy;
+  v8 = *ttsPolicy;
   memset(v7, 0, sizeof(v7));
-  return [(AFPowerContextPolicy *)self initWithAsrAssistantPolicy:&v10 asrDictationPolicy:&v9 ttsPolicy:&v8 siriUIPolicy:v7 thermalMitigationLevel:a6 platformContext:0];
+  return [(AFPowerContextPolicy *)self initWithAsrAssistantPolicy:&v10 asrDictationPolicy:&v9 ttsPolicy:&v8 siriUIPolicy:v7 thermalMitigationLevel:level platformContext:0];
 }
 
-- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)a3 asrDictationPolicy:(AFPowerContext *)a4 ttsPolicy:(AFPowerContext *)a5 siriUIPolicy:(AFPowerContext *)a6
+- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)policy asrDictationPolicy:(AFPowerContext *)dictationPolicy ttsPolicy:(AFPowerContext *)ttsPolicy siriUIPolicy:(AFPowerContext *)iPolicy
 {
-  v10 = *a3;
-  v9 = *a4;
-  v8 = *a5;
-  v7 = *a6;
+  v10 = *policy;
+  v9 = *dictationPolicy;
+  v8 = *ttsPolicy;
+  v7 = *iPolicy;
   return [(AFPowerContextPolicy *)self initWithAsrAssistantPolicy:&v10 asrDictationPolicy:&v9 ttsPolicy:&v8 siriUIPolicy:&v7 thermalMitigationLevel:0 platformContext:0];
 }
 
-- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)a3 asrDictationPolicy:(AFPowerContext *)a4 ttsPolicy:(AFPowerContext *)a5 siriUIPolicy:(AFPowerContext *)a6 thermalMitigationLevel:(unint64_t)a7
+- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)policy asrDictationPolicy:(AFPowerContext *)dictationPolicy ttsPolicy:(AFPowerContext *)ttsPolicy siriUIPolicy:(AFPowerContext *)iPolicy thermalMitigationLevel:(unint64_t)level
 {
-  v11 = *a3;
-  v10 = *a4;
-  v9 = *a5;
-  v8 = *a6;
-  return [(AFPowerContextPolicy *)self initWithAsrAssistantPolicy:&v11 asrDictationPolicy:&v10 ttsPolicy:&v9 siriUIPolicy:&v8 thermalMitigationLevel:a7 platformContext:0];
+  v11 = *policy;
+  v10 = *dictationPolicy;
+  v9 = *ttsPolicy;
+  v8 = *iPolicy;
+  return [(AFPowerContextPolicy *)self initWithAsrAssistantPolicy:&v11 asrDictationPolicy:&v10 ttsPolicy:&v9 siriUIPolicy:&v8 thermalMitigationLevel:level platformContext:0];
 }
 
-- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)a3 asrDictationPolicy:(AFPowerContext *)a4 ttsPolicy:(AFPowerContext *)a5 siriUIPolicy:(AFPowerContext *)a6 thermalMitigationLevel:(unint64_t)a7 platformContext:(unint64_t)a8
+- (AFPowerContextPolicy)initWithAsrAssistantPolicy:(AFPowerContext *)policy asrDictationPolicy:(AFPowerContext *)dictationPolicy ttsPolicy:(AFPowerContext *)ttsPolicy siriUIPolicy:(AFPowerContext *)iPolicy thermalMitigationLevel:(unint64_t)level platformContext:(unint64_t)context
 {
   v19.receiver = self;
   v19.super_class = AFPowerContextPolicy;
   result = [(AFPowerContextPolicy *)&v19 init];
   if (result)
   {
-    v15 = *&a3->cpuContext;
-    result->_asrAssistantPolicy.gpuContext = a3->gpuContext;
+    v15 = *&policy->cpuContext;
+    result->_asrAssistantPolicy.gpuContext = policy->gpuContext;
     *&result->_asrAssistantPolicy.cpuContext = v15;
-    v16 = *&a4->cpuContext;
-    result->_asrDictationPolicy.gpuContext = a4->gpuContext;
+    v16 = *&dictationPolicy->cpuContext;
+    result->_asrDictationPolicy.gpuContext = dictationPolicy->gpuContext;
     *&result->_asrDictationPolicy.cpuContext = v16;
-    v17 = *&a5->cpuContext;
-    result->_ttsPolicy.gpuContext = a5->gpuContext;
+    v17 = *&ttsPolicy->cpuContext;
+    result->_ttsPolicy.gpuContext = ttsPolicy->gpuContext;
     *&result->_ttsPolicy.cpuContext = v17;
-    v18 = *&a6->cpuContext;
-    result->_siriUIPolicy.gpuContext = a6->gpuContext;
+    v18 = *&iPolicy->cpuContext;
+    result->_siriUIPolicy.gpuContext = iPolicy->gpuContext;
     *&result->_siriUIPolicy.cpuContext = v18;
-    result->_thermalMitigationLevel = a7;
-    result->_platformContext = a8;
+    result->_thermalMitigationLevel = level;
+    result->_platformContext = context;
   }
 
   return result;

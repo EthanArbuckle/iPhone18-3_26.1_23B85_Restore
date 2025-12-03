@@ -1,20 +1,20 @@
 @interface MTCategory
-+ (id)predicateForLibraryCategoriesMatching:(id)a3;
++ (id)predicateForLibraryCategoriesMatching:(id)matching;
 + (id)sortDescriptorsForCategoriesInLibrary;
 + (id)sortDescriptorsForCategoriesInSearch;
-- (MTCategory)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (MTCategory)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation MTCategory
 
-- (MTCategory)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (MTCategory)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for MTCategory();
-  return [(MTCategory *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(MTCategory *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
-+ (id)predicateForLibraryCategoriesMatching:(id)a3
++ (id)predicateForLibraryCategoriesMatching:(id)matching
 {
   v3 = sub_1D917820C();
   v5 = _s18PodcastsFoundation10MTCategoryC37predicateForLibraryCategoriesMatchingySo11NSPredicateCSSFZ_0(v3, v4);

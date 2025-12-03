@@ -1,14 +1,14 @@
 @interface MUSupportsApplePayViewModel
 - (NSString)displayTitle;
-- (id)symbolImageForFont:(id)a3;
+- (id)symbolImageForFont:(id)font;
 @end
 
 @implementation MUSupportsApplePayViewModel
 
-- (id)symbolImageForFont:(id)a3
+- (id)symbolImageForFont:(id)font
 {
   v3 = MEMORY[0x1E69DCAB8];
-  v4 = [MEMORY[0x1E69DCAD8] configurationWithFont:a3];
+  v4 = [MEMORY[0x1E69DCAD8] configurationWithFont:font];
   v5 = [v3 _mapsui_customSymbolImageNamed:@"applePay" withConfiguration:v4];
 
   return v5;

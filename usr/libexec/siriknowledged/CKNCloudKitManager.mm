@@ -4,55 +4,55 @@
 - (BOOL)_shouldSync;
 - (CKNCloudKitManager)init;
 - (id)_createCloudKitContainer;
-- (id)_createDictionaryFromRecords:(id)a3;
-- (id)_createKeysForRecordsIDs:(id)a3;
-- (id)_createRecordsIDsForKeys:(id)a3;
-- (id)_createRecordsWithDictionary:(id)a3;
-- (id)_underlyingErrorForError:(id)a3 zoneID:(id)a4;
+- (id)_createDictionaryFromRecords:(id)records;
+- (id)_createKeysForRecordsIDs:(id)ds;
+- (id)_createRecordsIDsForKeys:(id)keys;
+- (id)_createRecordsWithDictionary:(id)dictionary;
+- (id)_underlyingErrorForError:(id)error zoneID:(id)d;
 - (void)_cancelRecordZoneSetupTimer;
 - (void)_cancelSubscriptionSetupTimer;
 - (void)_cleanUpRecordZoneSubscriptionsTimers;
 - (void)_cleanUpRecordZonesAndSubscriptions;
-- (void)_cloudKitAccountStatusChanged:(id)a3;
+- (void)_cloudKitAccountStatusChanged:(id)changed;
 - (void)_cloudSyncPreferenceDidChange;
-- (void)_createRecordZoneWithID:(id)a3 completion:(id)a4;
-- (void)_deleteRecordZoneWithID:(id)a3 qualityOfService:(int64_t)a4 completion:(id)a5;
+- (void)_createRecordZoneWithID:(id)d completion:(id)completion;
+- (void)_deleteRecordZoneWithID:(id)d qualityOfService:(int64_t)service completion:(id)completion;
 - (void)_disablePush;
-- (void)_disableSyncAndDeleteCloudDataWithCompletionHandler:(id)a3;
+- (void)_disableSyncAndDeleteCloudDataWithCompletionHandler:(id)handler;
 - (void)_enablePush;
 - (void)_fetchChanges;
-- (void)_fetchChangesFrom:(id)a3 completion:(id)a4;
-- (void)_fetchChangesWithRetryCount:(unint64_t)a3;
-- (void)_handleAccountStatusChange:(id)a3;
-- (void)_handleCloudKitNotification:(id)a3;
+- (void)_fetchChangesFrom:(id)from completion:(id)completion;
+- (void)_fetchChangesWithRetryCount:(unint64_t)count;
+- (void)_handleAccountStatusChange:(id)change;
+- (void)_handleCloudKitNotification:(id)notification;
 - (void)_initializeZone;
 - (void)_resetZone;
-- (void)_saveRecords:(id)a3 recordIDsToDelete:(id)a4 savePolicy:(int64_t)a5 completion:(id)a6;
+- (void)_saveRecords:(id)records recordIDsToDelete:(id)delete savePolicy:(int64_t)policy completion:(id)completion;
 - (void)_setupAccount;
 - (void)_setupAccountState;
 - (void)_setupRecordZone;
 - (void)_setupRecordZoneSubscription;
-- (void)_setupRecordZoneSubscriptionWithRetryInterval:(double)a3;
-- (void)_setupRecordZoneWithRetryInterval:(double)a3;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
+- (void)_setupRecordZoneSubscriptionWithRetryInterval:(double)interval;
+- (void)_setupRecordZoneWithRetryInterval:(double)interval;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
 - (void)dealloc;
 - (void)disablePushNotifications;
-- (void)disableSyncAndDeleteCloudDataWithCompletionHandler:(id)a3;
+- (void)disableSyncAndDeleteCloudDataWithCompletionHandler:(id)handler;
 - (void)enablePushNotifications;
-- (void)fetchAllChangesWithCompletion:(id)a3;
-- (void)fetchChangesWithCompletion:(id)a3;
-- (void)removeValuesForKeys:(id)a3 completion:(id)a4;
-- (void)saveRecords:(id)a3 deleteRecordIDs:(id)a4 completion:(id)a5;
-- (void)saveRecordsWithDictionary:(id)a3 completion:(id)a4;
+- (void)fetchAllChangesWithCompletion:(id)completion;
+- (void)fetchChangesWithCompletion:(id)completion;
+- (void)removeValuesForKeys:(id)keys completion:(id)completion;
+- (void)saveRecords:(id)records deleteRecordIDs:(id)ds completion:(id)completion;
+- (void)saveRecordsWithDictionary:(id)dictionary completion:(id)completion;
 @end
 
 @implementation CKNCloudKitManager
 
-- (void)_disableSyncAndDeleteCloudDataWithCompletionHandler:(id)a3
+- (void)_disableSyncAndDeleteCloudDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_serialQueue);
   if (self->_cloudSyncEnabled)
   {
@@ -66,22 +66,22 @@
   v7[1] = 3221225472;
   v7[2] = sub_100002DE0;
   v7[3] = &unk_100018A28;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(CKNCloudKitManager *)self _deleteRecordZoneWithID:v5 qualityOfService:33 completion:v7];
 }
 
-- (void)disableSyncAndDeleteCloudDataWithCompletionHandler:(id)a3
+- (void)disableSyncAndDeleteCloudDataWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100002E90;
   v7[3] = &unk_100018898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -97,19 +97,19 @@
   }
 }
 
-- (void)_setupRecordZoneSubscriptionWithRetryInterval:(double)a3
+- (void)_setupRecordZoneSubscriptionWithRetryInterval:(double)interval
 {
   dispatch_assert_queue_V2(self->_serialQueue);
   if ([(CKNCloudKitManager *)self _shouldSync])
   {
-    v5 = [(CKRecordZone *)self->_recordZone zoneID];
+    zoneID = [(CKRecordZone *)self->_recordZone zoneID];
 
-    if (v5)
+    if (zoneID)
     {
       v6 = [NSString stringWithFormat:@"%@-%@", @"com.apple.siri.knowledge.subscription", self->_supportedRecordType];
       v7 = [CKRecordZoneSubscription alloc];
-      v8 = [(CKRecordZone *)self->_recordZone zoneID];
-      v9 = [v7 initWithZoneID:v8 subscriptionID:v6];
+      zoneID2 = [(CKRecordZone *)self->_recordZone zoneID];
+      v9 = [v7 initWithZoneID:zoneID2 subscriptionID:v6];
 
       [v9 setRecordType:self->_supportedRecordType];
       v10 = objc_alloc_init(CKNotificationInfo);
@@ -126,12 +126,12 @@
       v18[3] = &unk_100018A00;
       v18[4] = self;
       v19 = v9;
-      v20 = a3;
+      intervalCopy = interval;
       v14 = v9;
       [v13 setModifySubscriptionsCompletionBlock:v18];
       [v13 setQualityOfService:17];
-      v15 = [(CKContainer *)self->_container privateCloudDatabase];
-      [v15 addOperation:v13];
+      privateCloudDatabase = [(CKContainer *)self->_container privateCloudDatabase];
+      [privateCloudDatabase addOperation:v13];
 
       return;
     }
@@ -166,88 +166,88 @@
   [(CKNCloudKitManager *)self _setupRecordZoneSubscriptionWithRetryInterval:120.0];
 }
 
-- (void)removeValuesForKeys:(id)a3 completion:(id)a4
+- (void)removeValuesForKeys:(id)keys completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000038F0;
   block[3] = &unk_100018B18;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = keysCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = keysCopy;
   dispatch_async(serialQueue, block);
 }
 
-- (void)saveRecordsWithDictionary:(id)a3 completion:(id)a4
+- (void)saveRecordsWithDictionary:(id)dictionary completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100003B88;
   block[3] = &unk_100018B18;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dictionaryCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = dictionaryCopy;
   dispatch_async(serialQueue, block);
 }
 
-- (void)saveRecords:(id)a3 deleteRecordIDs:(id)a4 completion:(id)a5
+- (void)saveRecords:(id)records deleteRecordIDs:(id)ds completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  recordsCopy = records;
+  dsCopy = ds;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100003E40;
   v15[3] = &unk_100018B40;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = recordsCopy;
+  v17 = dsCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = dsCopy;
+  v14 = recordsCopy;
   dispatch_async(serialQueue, v15);
 }
 
-- (void)_saveRecords:(id)a3 recordIDsToDelete:(id)a4 savePolicy:(int64_t)a5 completion:(id)a6
+- (void)_saveRecords:(id)records recordIDsToDelete:(id)delete savePolicy:(int64_t)policy completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  recordsCopy = records;
+  deleteCopy = delete;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_serialQueue);
   if ([(CKNCloudKitManager *)self _shouldSync])
   {
-    if ([v10 count] || objc_msgSend(v11, "count"))
+    if ([recordsCopy count] || objc_msgSend(deleteCopy, "count"))
     {
-      v13 = [[CKModifyRecordsOperation alloc] initWithRecordsToSave:v10 recordIDsToDelete:v11];
+      v13 = [[CKModifyRecordsOperation alloc] initWithRecordsToSave:recordsCopy recordIDsToDelete:deleteCopy];
       [v13 setAtomic:1];
-      [v13 setSavePolicy:a5];
+      [v13 setSavePolicy:policy];
       v20 = _NSConcreteStackBlock;
       v21 = 3221225472;
       v22 = sub_1000040D4;
       v23 = &unk_1000189B0;
-      v24 = self;
-      v25 = v12;
+      selfCopy = self;
+      v25 = completionCopy;
       [v13 setModifyRecordsCompletionBlock:&v20];
-      [v13 setQualityOfService:{17, v20, v21, v22, v23, v24}];
-      v14 = [(CKContainer *)self->_container privateCloudDatabase];
-      [v14 addOperation:v13];
+      [v13 setQualityOfService:{17, v20, v21, v22, v23, selfCopy}];
+      privateCloudDatabase = [(CKContainer *)self->_container privateCloudDatabase];
+      [privateCloudDatabase addOperation:v13];
     }
 
-    else if (v12)
+    else if (completionCopy)
     {
-      (*(v12 + 2))(v12, 0, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0, 0);
     }
   }
 
@@ -271,25 +271,25 @@
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "%s iCloud sync is disabled. Unable to modify records. On HomePod: %s", buf, 0x16u);
     }
 
-    if (v12)
+    if (completionCopy)
     {
       v19 = [NSError errorWithDomain:CKErrorDomain code:6 userInfo:0];
-      (*(v12 + 2))(v12, v19, 0, 0);
+      (*(completionCopy + 2))(completionCopy, v19, 0, 0);
     }
   }
 }
 
-- (id)_createKeysForRecordsIDs:(id)a3
+- (id)_createKeysForRecordsIDs:(id)ds
 {
-  v3 = a3;
-  if ([v3 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v3, "count")}];
+    v4 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(dsCopy, "count")}];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v3;
+    v5 = dsCopy;
     v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
@@ -304,8 +304,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) recordName];
-          [v4 addObject:v10];
+          recordName = [*(*(&v12 + 1) + 8 * i) recordName];
+          [v4 addObject:recordName];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -323,23 +323,23 @@
   return v4;
 }
 
-- (id)_createRecordsIDsForKeys:(id)a3
+- (id)_createRecordsIDsForKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   dispatch_assert_queue_V2(self->_serialQueue);
-  if ([v4 count])
+  if ([keysCopy count])
   {
-    v5 = [(CKRecordZone *)self->_recordZone zoneID];
+    zoneID = [(CKRecordZone *)self->_recordZone zoneID];
 
-    if (v5)
+    if (zoneID)
     {
-      v5 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+      zoneID = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(keysCopy, "count")}];
       v17 = 0u;
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v16 = v4;
-      v6 = v4;
+      v16 = keysCopy;
+      v6 = keysCopy;
       v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v7)
       {
@@ -356,10 +356,10 @@
 
             v11 = *(*(&v17 + 1) + 8 * i);
             v12 = [CKRecordID alloc];
-            v13 = [(CKRecordZone *)self->_recordZone zoneID];
-            v14 = [v12 initWithRecordName:v11 zoneID:v13];
+            zoneID2 = [(CKRecordZone *)self->_recordZone zoneID];
+            v14 = [v12 initWithRecordName:v11 zoneID:zoneID2];
 
-            [v5 addObject:v14];
+            [zoneID addObject:v14];
           }
 
           v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -368,30 +368,30 @@
         while (v8);
       }
 
-      v4 = v16;
+      keysCopy = v16;
     }
   }
 
   else
   {
-    v5 = 0;
+    zoneID = 0;
   }
 
-  return v5;
+  return zoneID;
 }
 
-- (id)_createDictionaryFromRecords:(id)a3
+- (id)_createDictionaryFromRecords:(id)records
 {
-  v4 = a3;
-  if ([v4 count])
+  recordsCopy = records;
+  if ([recordsCopy count])
   {
     v5 = objc_opt_new();
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v17 = v4;
-    v6 = v4;
+    v17 = recordsCopy;
+    v6 = recordsCopy;
     v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
@@ -407,19 +407,19 @@
           }
 
           v11 = *(*(&v18 + 1) + 8 * i);
-          v12 = [v11 data];
-          v13 = v12;
-          if (!v12)
+          data = [v11 data];
+          v13 = data;
+          if (!data)
           {
             v3 = +[NSNull null];
             v13 = v3;
           }
 
-          v14 = [v11 recordID];
-          v15 = [v14 recordName];
-          [v5 setObject:v13 forKey:v15];
+          recordID = [v11 recordID];
+          recordName = [recordID recordName];
+          [v5 setObject:v13 forKey:recordName];
 
-          if (!v12)
+          if (!data)
           {
           }
         }
@@ -430,7 +430,7 @@
       while (v8);
     }
 
-    v4 = v17;
+    recordsCopy = v17;
   }
 
   else
@@ -441,19 +441,19 @@
   return v5;
 }
 
-- (id)_createRecordsWithDictionary:(id)a3
+- (id)_createRecordsWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   dispatch_assert_queue_V2(self->_serialQueue);
-  if ([v4 count] && (-[CKRecordZone zoneID](self->_recordZone, "zoneID"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
+  if ([dictionaryCopy count] && (-[CKRecordZone zoneID](self->_recordZone, "zoneID"), v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v24 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+    v24 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v22 = v4;
-    v6 = v4;
+    v22 = dictionaryCopy;
+    v6 = dictionaryCopy;
     v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v7)
     {
@@ -470,8 +470,8 @@
 
           v10 = *(*(&v25 + 1) + 8 * i);
           v11 = [CKRecordID alloc];
-          v12 = [(CKRecordZone *)self->_recordZone zoneID];
-          v13 = [v11 initWithRecordName:v10 zoneID:v12];
+          zoneID = [(CKRecordZone *)self->_recordZone zoneID];
+          v13 = [v11 initWithRecordName:v10 zoneID:zoneID];
 
           v14 = [[CKRecord alloc] initWithRecordType:self->_supportedRecordType recordID:v13];
           v15 = [v6 objectForKey:v10];
@@ -484,12 +484,12 @@
             v15 = 0;
           }
 
-          v18 = [v14 encryptedValuesByKey];
+          encryptedValuesByKey = [v14 encryptedValuesByKey];
           v19 = [NSNumber numberWithUnsignedInteger:1];
-          [v18 setObject:v19 forKey:@"version"];
+          [encryptedValuesByKey setObject:v19 forKey:@"version"];
 
-          v20 = [v14 encryptedValuesByKey];
-          [v20 setObject:v10 forKey:@"key"];
+          encryptedValuesByKey2 = [v14 encryptedValuesByKey];
+          [encryptedValuesByKey2 setObject:v10 forKey:@"key"];
 
           [v14 setData:v15];
           [v24 addObject:v14];
@@ -501,7 +501,7 @@
       while (v8);
     }
 
-    v4 = v22;
+    dictionaryCopy = v22;
   }
 
   else
@@ -531,27 +531,27 @@
   [(CKNCloudKitManager *)self _cancelSubscriptionSetupTimer];
 }
 
-- (void)_deleteRecordZoneWithID:(id)a3 qualityOfService:(int64_t)a4 completion:(id)a5
+- (void)_deleteRecordZoneWithID:(id)d qualityOfService:(int64_t)service completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_serialQueue);
   v10 = CKLogContextDaemon;
   if (os_log_type_enabled(CKLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v11 = v10;
-    v12 = [v8 zoneName];
+    zoneName = [dCopy zoneName];
     *buf = 136315394;
     v22 = "[CKNCloudKitManager _deleteRecordZoneWithID:qualityOfService:completion:]";
     v23 = 2112;
-    v24 = v12;
+    v24 = zoneName;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s Deleting zone: (%@)", buf, 0x16u);
   }
 
   if (self->_container)
   {
     v13 = [CKModifyRecordZonesOperation alloc];
-    v20 = v8;
+    v20 = dCopy;
     v14 = [NSArray arrayWithObjects:&v20 count:1];
     v15 = [v13 initWithRecordZonesToSave:0 recordZoneIDsToDelete:v14];
 
@@ -559,53 +559,53 @@
     v17[1] = 3221225472;
     v17[2] = sub_10000506C;
     v17[3] = &unk_1000189B0;
-    v18 = v8;
-    v19 = v9;
+    v18 = dCopy;
+    v19 = completionCopy;
     [v15 setModifyRecordZonesCompletionBlock:v17];
-    [v15 setQualityOfService:a4];
-    v16 = [(CKContainer *)self->_container privateCloudDatabase];
-    [v16 addOperation:v15];
+    [v15 setQualityOfService:service];
+    privateCloudDatabase = [(CKContainer *)self->_container privateCloudDatabase];
+    [privateCloudDatabase addOperation:v15];
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  if (v9)
+  if (completionCopy)
   {
     v15 = [NSError errorWithDomain:CKErrorDomain code:5 userInfo:0];
-    (*(v9 + 2))(v9, v15);
+    (*(completionCopy + 2))(completionCopy, v15);
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (void)_createRecordZoneWithID:(id)a3 completion:(id)a4
+- (void)_createRecordZoneWithID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_serialQueue);
-  v8 = [(CKNCloudKitManager *)self _shouldSync];
+  _shouldSync = [(CKNCloudKitManager *)self _shouldSync];
   v9 = CKLogContextDaemon;
-  if ((v8 & 1) == 0)
+  if ((_shouldSync & 1) == 0)
   {
     if (os_log_type_enabled(CKLogContextDaemon, OS_LOG_TYPE_ERROR))
     {
       v19 = v9;
-      v20 = [v6 zoneName];
+      zoneName = [dCopy zoneName];
       *buf = 136315394;
       v26 = "[CKNCloudKitManager _createRecordZoneWithID:completion:]";
       v27 = 2112;
-      v28 = v20;
+      v28 = zoneName;
       _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%s iCloud sync is disabled. Unable to create zone: (%@)", buf, 0x16u);
 
-      if (!v7)
+      if (!completionCopy)
       {
         goto LABEL_13;
       }
     }
 
-    else if (!v7)
+    else if (!completionCopy)
     {
       goto LABEL_13;
     }
@@ -614,24 +614,24 @@ LABEL_8:
     v18 = 6;
 LABEL_11:
     v12 = [NSError errorWithDomain:v17 code:v18 userInfo:0];
-    v7[2](v7, v12, 0);
+    completionCopy[2](completionCopy, v12, 0);
     goto LABEL_12;
   }
 
   if (os_log_type_enabled(CKLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v10 = v9;
-    v11 = [v6 zoneName];
+    zoneName2 = [dCopy zoneName];
     *buf = 136315394;
     v26 = "[CKNCloudKitManager _createRecordZoneWithID:completion:]";
     v27 = 2112;
-    v28 = v11;
+    v28 = zoneName2;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s Creating zone: (%@)", buf, 0x16u);
   }
 
   if (self->_container)
   {
-    v12 = [[CKRecordZone alloc] initWithZoneID:v6];
+    v12 = [[CKRecordZone alloc] initWithZoneID:dCopy];
     [v12 setCapabilities:3];
     v13 = [CKModifyRecordZonesOperation alloc];
     v24 = v12;
@@ -642,18 +642,18 @@ LABEL_11:
     v21[1] = 3221225472;
     v21[2] = sub_1000054BC;
     v21[3] = &unk_1000189B0;
-    v22 = v6;
-    v23 = v7;
+    v22 = dCopy;
+    v23 = completionCopy;
     [v15 setModifyRecordZonesCompletionBlock:v21];
     [v15 setQualityOfService:17];
-    v16 = [(CKContainer *)self->_container privateCloudDatabase];
-    [v16 addOperation:v15];
+    privateCloudDatabase = [(CKContainer *)self->_container privateCloudDatabase];
+    [privateCloudDatabase addOperation:v15];
 
 LABEL_12:
     goto LABEL_13;
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v17 = CKErrorDomain;
     v18 = 5;
@@ -677,7 +677,7 @@ LABEL_13:
   }
 }
 
-- (void)_setupRecordZoneWithRetryInterval:(double)a3
+- (void)_setupRecordZoneWithRetryInterval:(double)interval
 {
   dispatch_assert_queue_V2(self->_serialQueue);
   v6[0] = _NSConcreteStackBlock;
@@ -686,7 +686,7 @@ LABEL_13:
   v6[3] = &unk_100018988;
   v6[4] = self;
   v7 = [[CKRecordZoneID alloc] initWithZoneName:@"com.apple.siri.knowledge" ownerName:CKCurrentUserDefaultName];
-  v8 = a3;
+  intervalCopy = interval;
   v5 = v7;
   [(CKNCloudKitManager *)self _createRecordZoneWithID:v5 completion:v6];
 }
@@ -749,8 +749,8 @@ LABEL_13:
   {
     v5 = [NSString stringWithFormat:@"%@-%@", @"com.apple.siri.knowledge.subscription", self->_supportedRecordType];
     v6 = [CKRecordZoneSubscription alloc];
-    v7 = [(CKRecordZone *)self->_recordZone zoneID];
-    v8 = [v6 initWithZoneID:v7 subscriptionID:v5];
+    zoneID = [(CKRecordZone *)self->_recordZone zoneID];
+    v8 = [v6 initWithZoneID:zoneID subscriptionID:v5];
 
     [(CKRecordZoneSubscription *)v8 setRecordType:self->_supportedRecordType];
     subscription = self->_subscription;
@@ -770,44 +770,44 @@ LABEL_13:
   v3 = objc_opt_new();
   [v3 setUseZoneWidePCS:1];
   v4 = [CKContainer alloc];
-  v5 = [v2 containerID];
-  v6 = [v4 initWithContainerID:v5 options:v3];
+  containerID = [v2 containerID];
+  v6 = [v4 initWithContainerID:containerID options:v3];
 
   return v6;
 }
 
-- (void)fetchAllChangesWithCompletion:(id)a3
+- (void)fetchAllChangesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100006504;
   v7[3] = &unk_100018898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(serialQueue, v7);
 }
 
-- (void)fetchChangesWithCompletion:(id)a3
+- (void)fetchChangesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100006758;
   v7[3] = &unk_100018898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(serialQueue, v7);
 }
 
-- (void)_fetchChangesWithRetryCount:(unint64_t)a3
+- (void)_fetchChangesWithRetryCount:(unint64_t)count
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  if (a3 < 2)
+  if (count < 2)
   {
     serverChangeToken = self->_serverChangeToken;
     v7[0] = _NSConcreteStackBlock;
@@ -815,7 +815,7 @@ LABEL_13:
     v7[2] = sub_100006B24;
     v7[3] = &unk_100018848;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = count;
     [(CKNCloudKitManager *)self _fetchChangesFrom:serverChangeToken completion:v7];
   }
 
@@ -838,48 +838,48 @@ LABEL_13:
   [(CKNCloudKitManager *)self _fetchChangesWithRetryCount:0];
 }
 
-- (void)_fetchChangesFrom:(id)a3 completion:(id)a4
+- (void)_fetchChangesFrom:(id)from completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_serialQueue);
   if ([(CKNCloudKitManager *)self _shouldSync])
   {
-    v8 = [(CKContainer *)self->_container privateCloudDatabase];
-    if (v8)
+    privateCloudDatabase = [(CKContainer *)self->_container privateCloudDatabase];
+    if (privateCloudDatabase)
     {
-      v9 = [(CKRecordZone *)self->_recordZone zoneID];
+      zoneID = [(CKRecordZone *)self->_recordZone zoneID];
 
-      if (v9)
+      if (zoneID)
       {
         v10 = CKLogContextDaemon;
         if (os_log_type_enabled(CKLogContextDaemon, OS_LOG_TYPE_INFO))
         {
           recordZone = self->_recordZone;
           v12 = v10;
-          v13 = [(CKRecordZone *)recordZone zoneID];
-          v14 = [v13 zoneName];
-          [v8 databaseScope];
+          zoneID2 = [(CKRecordZone *)recordZone zoneID];
+          zoneName = [zoneID2 zoneName];
+          [privateCloudDatabase databaseScope];
           v15 = CKDatabaseScopeString();
           *buf = 136315650;
           *&buf[4] = "[CKNCloudKitManager _fetchChangesFrom:completion:]";
           *&buf[12] = 2112;
-          *&buf[14] = v14;
+          *&buf[14] = zoneName;
           *&buf[22] = 2112;
           v47 = v15;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s Fetching changes in record zone (%@) in database (%@)", buf, 0x20u);
         }
 
-        v16 = [(CKRecordZone *)self->_recordZone zoneID];
-        v52 = v16;
+        zoneID3 = [(CKRecordZone *)self->_recordZone zoneID];
+        v52 = zoneID3;
         v31 = [NSArray arrayWithObjects:&v52 count:1];
 
         v17 = +[NSMutableArray array];
         v18 = +[NSMutableArray array];
         v19 = objc_alloc_init(CKFetchRecordZoneChangesConfiguration);
-        [v19 setPreviousServerChangeToken:v6];
-        v20 = [(CKRecordZone *)self->_recordZone zoneID];
-        v50 = v20;
+        [v19 setPreviousServerChangeToken:fromCopy];
+        zoneID4 = [(CKRecordZone *)self->_recordZone zoneID];
+        v50 = zoneID4;
         v51 = v19;
         v30 = [NSDictionary dictionaryWithObjects:&v51 forKeys:&v50 count:1];
 
@@ -921,14 +921,14 @@ LABEL_13:
         v32[1] = 3221225472;
         v32[2] = sub_100007AE4;
         v32[3] = &unk_1000187D0;
-        v24 = v8;
+        v24 = privateCloudDatabase;
         v33 = v24;
         v25 = v22;
         v34 = v25;
-        v35 = self;
-        v37 = v7;
+        selfCopy = self;
+        v37 = completionCopy;
         v26 = v23;
-        v39 = v6 == 0;
+        v39 = fromCopy == 0;
         v36 = v26;
         v38 = buf;
         [v21 setFetchRecordZoneChangesCompletionBlock:v32];
@@ -939,19 +939,19 @@ LABEL_13:
         goto LABEL_13;
       }
 
-      if (v7)
+      if (completionCopy)
       {
         v28 = [NSError errorWithDomain:CKErrorDomain code:26 userInfo:0];
         goto LABEL_12;
       }
     }
 
-    else if (v7)
+    else if (completionCopy)
     {
       v28 = [NSError errorWithDomain:CKErrorDomain code:24 userInfo:0];
 LABEL_12:
       v29 = v28;
-      (*(v7 + 2))(v7, v28, 0, 0, 0, 0);
+      (*(completionCopy + 2))(completionCopy, v28, 0, 0, 0, 0);
     }
 
 LABEL_13:
@@ -960,25 +960,25 @@ LABEL_13:
   }
 
   v27 = [NSError errorWithDomain:CKErrorDomain code:6 userInfo:0];
-  (*(v7 + 2))(v7, v27, 0, 0, 0, 0);
+  (*(completionCopy + 2))(completionCopy, v27, 0, 0, 0, 0);
 
 LABEL_14:
 }
 
-- (id)_underlyingErrorForError:(id)a3 zoneID:(id)a4
+- (id)_underlyingErrorForError:(id)error zoneID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 code] == 2)
+  errorCopy = error;
+  dCopy = d;
+  if ([errorCopy code] == 2)
   {
-    if (v6)
+    if (dCopy)
     {
-      v7 = [v5 userInfo];
-      v8 = [v7 objectForKey:CKPartialErrorsByItemIDKey];
+      userInfo = [errorCopy userInfo];
+      v8 = [userInfo objectForKey:CKPartialErrorsByItemIDKey];
 
-      v9 = [v8 objectForKey:v6];
-      v10 = [v9 userInfo];
-      v11 = [v10 objectForKey:NSUnderlyingErrorKey];
+      v9 = [v8 objectForKey:dCopy];
+      userInfo2 = [v9 userInfo];
+      v11 = [userInfo2 objectForKey:NSUnderlyingErrorKey];
     }
 
     else
@@ -989,12 +989,12 @@ LABEL_14:
 
   else
   {
-    v12 = [v5 userInfo];
-    v11 = [v12 objectForKey:NSUnderlyingErrorKey];
+    userInfo3 = [errorCopy userInfo];
+    v11 = [userInfo3 objectForKey:NSUnderlyingErrorKey];
 
     if (!v11)
     {
-      v11 = v5;
+      v11 = errorCopy;
     }
   }
 
@@ -1039,11 +1039,11 @@ LABEL_14:
   }
 }
 
-- (void)_handleAccountStatusChange:(id)a3
+- (void)_handleAccountStatusChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   dispatch_assert_queue_V2(self->_serialQueue);
-  v6 = [(CKAccountInfo *)self->_accountInfo isEqual:v5];
+  v6 = [(CKAccountInfo *)self->_accountInfo isEqual:changeCopy];
   v7 = CKLogContextDaemon;
   v8 = os_log_type_enabled(CKLogContextDaemon, OS_LOG_TYPE_INFO);
   if (v6)
@@ -1061,15 +1061,15 @@ LABEL_14:
     if (v8)
     {
       v9 = v7;
-      [v5 accountStatus];
+      [changeCopy accountStatus];
       v10 = CKStringFromAccountStatus();
-      v11 = [v5 supportsDeviceToDeviceEncryption];
+      supportsDeviceToDeviceEncryption = [changeCopy supportsDeviceToDeviceEncryption];
       v12 = @"Disabled";
       v14 = "[CKNCloudKitManager _handleAccountStatusChange:]";
       v13 = 136315650;
       v15 = 2112;
       v16 = v10;
-      if (v11)
+      if (supportsDeviceToDeviceEncryption)
       {
         v12 = @"Enabled";
       }
@@ -1079,7 +1079,7 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s CloudKit account status: (%@) encryption is: %@", &v13, 0x20u);
     }
 
-    objc_storeStrong(&self->_accountInfo, a3);
+    objc_storeStrong(&self->_accountInfo, change);
     [(CKNCloudKitManager *)self _setupAccountState];
   }
 }
@@ -1090,9 +1090,9 @@ LABEL_14:
   container = self->_container;
   if (!container)
   {
-    v4 = [(CKNCloudKitManager *)self _createCloudKitContainer];
+    _createCloudKitContainer = [(CKNCloudKitManager *)self _createCloudKitContainer];
     v5 = self->_container;
-    self->_container = v4;
+    self->_container = _createCloudKitContainer;
 
     container = self->_container;
   }
@@ -1124,7 +1124,7 @@ LABEL_14:
   dispatch_async(serialQueue, block);
 }
 
-- (void)_cloudKitAccountStatusChanged:(id)a3
+- (void)_cloudKitAccountStatusChanged:(id)changed
 {
   v4 = CKLogContextDaemon;
   if (os_log_type_enabled(CKLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -1143,16 +1143,16 @@ LABEL_14:
   dispatch_async(serialQueue, block);
 }
 
-- (void)_handleCloudKitNotification:(id)a3
+- (void)_handleCloudKitNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   dispatch_assert_queue_V2(self->_serialQueue);
   if ([(CKNCloudKitManager *)self _shouldSync])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = notificationCopy;
       v6 = CKLogContextDaemon;
       if (os_log_type_enabled(CKLogContextDaemon, OS_LOG_TYPE_INFO))
       {
@@ -1165,12 +1165,12 @@ LABEL_14:
 
       if ([v5 databaseScope] == 2)
       {
-        v7 = [v5 recordZoneID];
-        v8 = [v7 zoneName];
-        if (v8)
+        recordZoneID = [v5 recordZoneID];
+        zoneName = [recordZoneID zoneName];
+        if (zoneName)
         {
-          v9 = v8;
-          if ([v8 isEqualToString:@"com.apple.siri.knowledge"])
+          v9 = zoneName;
+          if ([zoneName isEqualToString:@"com.apple.siri.knowledge"])
           {
             [(CKNCloudKitManager *)self _fetchChanges];
           }
@@ -1183,7 +1183,7 @@ LABEL_14:
               v13 = 136315394;
               v14 = "[CKNCloudKitManager _handleCloudKitNotification:]";
               v15 = 2112;
-              v16 = v7;
+              v16 = recordZoneID;
               _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s Unrecognized record zone notification zone name: (%@)", &v13, 0x16u);
             }
           }
@@ -1215,26 +1215,26 @@ LABEL_14:
   }
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 userInfo];
+  connectionCopy = connection;
+  messageCopy = message;
+  userInfo = [messageCopy userInfo];
   v9 = CKLogContextDaemon;
   if (os_log_type_enabled(CKLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v10 = v9;
-    v11 = [v7 topic];
+    topic = [messageCopy topic];
     v17 = 136315650;
     v18 = "[CKNCloudKitManager connection:didReceiveIncomingMessage:]";
     v19 = 2112;
-    v20 = v11;
+    v20 = topic;
     v21 = 2112;
-    v22 = v6;
+    v22 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s APS message received for topic (%@) on connection (%@)", &v17, 0x20u);
   }
 
-  v12 = [v7 topic];
+  topic2 = [messageCopy topic];
   if (self)
   {
     applicationIdentifier = self->_applicationIdentifier;
@@ -1246,51 +1246,51 @@ LABEL_14:
   }
 
   v14 = [@"com.apple.icloud-container." stringByAppendingString:applicationIdentifier];
-  v15 = [v12 isEqualToString:v14];
+  v15 = [topic2 isEqualToString:v14];
 
   if (v15)
   {
-    v16 = [CKNotification notificationFromRemoteNotificationDictionary:v8];
+    v16 = [CKNotification notificationFromRemoteNotificationDictionary:userInfo];
     [(CKNCloudKitManager *)self _handleCloudKitNotification:v16];
   }
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  connectionCopy = connection;
+  tokenCopy = token;
+  topicCopy = topic;
+  identifierCopy = identifier;
   v13 = CKLogContextDaemon;
   if (os_log_type_enabled(CKLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v14 = 136316162;
     v15 = "[CKNCloudKitManager connection:didReceiveToken:forTopic:identifier:]";
     v16 = 2112;
-    v17 = v10;
+    v17 = tokenCopy;
     v18 = 2112;
-    v19 = v11;
+    v19 = topicCopy;
     v20 = 2112;
-    v21 = v12;
+    v21 = identifierCopy;
     v22 = 2112;
-    v23 = v9;
+    v23 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s Received per-topic push token (%@) for topic (%@) identifier (%@) on connection (%@)", &v14, 0x34u);
   }
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v5 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  tokenCopy = token;
   v7 = CKLogContextDaemon;
   if (os_log_type_enabled(CKLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v8 = 136315650;
     v9 = "[CKNCloudKitManager connection:didReceivePublicToken:]";
     v10 = 2112;
-    v11 = v6;
+    v11 = tokenCopy;
     v12 = 2112;
-    v13 = v5;
+    v13 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s Received public token (%@) on connection %@", &v8, 0x20u);
   }
 }
@@ -1426,9 +1426,9 @@ LABEL_14:
     [(CKAccountInfo *)v2->_accountInfo setAccountStatus:0];
     [(CKAccountInfo *)v2->_accountInfo setSupportsDeviceToDeviceEncryption:0];
     [(CKAccountInfo *)v2->_accountInfo setAccountPartition:1];
-    v14 = [objc_opt_class() getApplicationIdentifierFromEntitlements];
+    getApplicationIdentifierFromEntitlements = [objc_opt_class() getApplicationIdentifierFromEntitlements];
     applicationIdentifier = v2->_applicationIdentifier;
-    v2->_applicationIdentifier = v14;
+    v2->_applicationIdentifier = getApplicationIdentifierFromEntitlements;
 
     objc_storeStrong(&v2->_supportedRecordType, @"SiriKnowledgeKeyValueRecord");
     v16 = +[AFPreferences sharedPreferences];
@@ -1454,9 +1454,9 @@ LABEL_14:
     serialQueue = v2->_serialQueue;
     v2->_serialQueue = v19;
 
-    v21 = [(CKNCloudKitManager *)v2 _createCloudKitContainer];
+    _createCloudKitContainer = [(CKNCloudKitManager *)v2 _createCloudKitContainer];
     container = v2->_container;
-    v2->_container = v21;
+    v2->_container = _createCloudKitContainer;
 
     v23 = v2->_serialQueue;
     v28 = _NSConcreteStackBlock;
@@ -1500,7 +1500,7 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = sub_10000991C;
   block[3] = &unk_100018668;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10001D950 != -1)
   {
     dispatch_once(&qword_10001D950, block);

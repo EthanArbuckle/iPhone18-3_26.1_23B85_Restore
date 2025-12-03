@@ -1,21 +1,21 @@
 @interface SDAirDropHandlerProfiles
 - (BOOL)canHandleTransfer;
 - (BOOL)importData;
-- (SDAirDropHandlerProfiles)initWithTransfer:(id)a3;
+- (SDAirDropHandlerProfiles)initWithTransfer:(id)transfer;
 - (id)suitableContentsDescription;
 - (int64_t)transferTypes;
-- (void)performViewActionWithImportedURLs:(id)a3 completion:(id)a4;
+- (void)performViewActionWithImportedURLs:(id)ls completion:(id)completion;
 - (void)triggerImport;
 - (void)updatePossibleActions;
 @end
 
 @implementation SDAirDropHandlerProfiles
 
-- (SDAirDropHandlerProfiles)initWithTransfer:(id)a3
+- (SDAirDropHandlerProfiles)initWithTransfer:(id)transfer
 {
   v4.receiver = self;
   v4.super_class = SDAirDropHandlerProfiles;
-  return [(SDAirDropHandler *)&v4 initWithTransfer:a3 bundleIdentifier:@"com.apple.Preferences"];
+  return [(SDAirDropHandler *)&v4 initWithTransfer:transfer bundleIdentifier:@"com.apple.Preferences"];
 }
 
 - (BOOL)canHandleTransfer
@@ -29,11 +29,11 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(SDAirDropHandler *)self transfer];
-  v4 = [v3 metaData];
-  v5 = [v4 rawFiles];
+  transfer = [(SDAirDropHandler *)self transfer];
+  metaData = [transfer metaData];
+  rawFiles = [metaData rawFiles];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [rawFiles countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -45,11 +45,11 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(rawFiles);
         }
 
         v11 = [*(*(&v15 + 1) + 8 * i) objectForKeyedSubscript:v9];
-        v12 = [v11 pathExtension];
+        pathExtension = [v11 pathExtension];
 
         LODWORD(v11) = SFIsManagedConfigurationType();
         if (!v11)
@@ -59,7 +59,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [rawFiles countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -84,10 +84,10 @@ LABEL_13:
 
 - (id)suitableContentsDescription
 {
-  v3 = [(SDAirDropHandler *)self senderName];
-  v4 = [(SDAirDropHandler *)self totalSharedItemsCount];
+  senderName = [(SDAirDropHandler *)self senderName];
+  totalSharedItemsCount = [(SDAirDropHandler *)self totalSharedItemsCount];
   v13 = @"PROFILE";
-  v5 = [NSNumber numberWithUnsignedInteger:v4];
+  v5 = [NSNumber numberWithUnsignedInteger:totalSharedItemsCount];
   v14 = v5;
   v6 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
   v15 = v6;
@@ -98,12 +98,12 @@ LABEL_13:
   v9 = SFLocalizedStringForKey();
   if (v6)
   {
-    [NSString localizedStringWithFormat:v9, v4, v12];
+    [NSString localizedStringWithFormat:v9, totalSharedItemsCount, v12];
   }
 
   else
   {
-    [NSString localizedStringWithFormat:v9, v3, v4];
+    [NSString localizedStringWithFormat:v9, senderName, totalSharedItemsCount];
   }
   v10 = ;
 
@@ -115,8 +115,8 @@ LABEL_13:
   v13.receiver = self;
   v13.super_class = SDAirDropHandlerProfiles;
   [(SDAirDropHandler *)&v13 updatePossibleActions];
-  v3 = [(SDAirDropHandler *)self bundleProxy];
-  v4 = [(SDAirDropHandler *)self defaultActionForBundleProxy:v3];
+  bundleProxy = [(SDAirDropHandler *)self bundleProxy];
+  v4 = [(SDAirDropHandler *)self defaultActionForBundleProxy:bundleProxy];
 
   objc_initWeak(&location, self);
   v7 = _NSConcreteStackBlock;
@@ -127,8 +127,8 @@ LABEL_13:
   [v4 setActionHandler:&v7];
   v14 = v4;
   v5 = [NSArray arrayWithObjects:&v14 count:1, v7, v8, v9, v10];
-  v6 = [(SDAirDropHandler *)self transfer];
-  [v6 setPossibleActions:v5];
+  transfer = [(SDAirDropHandler *)self transfer];
+  [transfer setPossibleActions:v5];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -136,9 +136,9 @@ LABEL_13:
 
 - (void)triggerImport
 {
-  v3 = [(SDAirDropHandlerProfiles *)self importData];
-  v4 = [(SDAirDropHandler *)self completionHandler];
-  v4[2](v4, v3, 0, 1);
+  importData = [(SDAirDropHandlerProfiles *)self importData];
+  completionHandler = [(SDAirDropHandler *)self completionHandler];
+  completionHandler[2](completionHandler, importData, 0, 1);
 }
 
 - (BOOL)importData
@@ -147,11 +147,11 @@ LABEL_13:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v2 = [(SDAirDropHandler *)self transfer];
-  v3 = [v2 completedURLs];
+  transfer = [(SDAirDropHandler *)self transfer];
+  completedURLs = [transfer completedURLs];
 
-  obj = v3;
-  v4 = [v3 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  obj = completedURLs;
+  v4 = [completedURLs countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v4)
   {
     v6 = v4;
@@ -169,9 +169,9 @@ LABEL_13:
         }
 
         v9 = *(*(&v25 + 1) + 8 * i);
-        v10 = [v9 path];
+        path = [v9 path];
         v24 = 0;
-        v11 = [NSData dataWithContentsOfFile:v10 options:0 error:&v24];
+        v11 = [NSData dataWithContentsOfFile:path options:0 error:&v24];
         v12 = v24;
 
         if (v11)
@@ -187,10 +187,10 @@ LABEL_13:
         if (v13)
         {
           v15 = +[MCProfileConnection sharedConnection];
-          v16 = [v9 path];
-          v17 = [v16 lastPathComponent];
+          path2 = [v9 path];
+          lastPathComponent = [path2 lastPathComponent];
           v23 = 0;
-          v18 = [v15 queueFileDataForAcceptance:v11 originalFileName:v17 outError:&v23];
+          v18 = [v15 queueFileDataForAcceptance:v11 originalFileName:lastPathComponent outError:&v23];
           v12 = v23;
 
           if (!v12)
@@ -241,10 +241,10 @@ LABEL_21:
   return v21 & 1;
 }
 
-- (void)performViewActionWithImportedURLs:(id)a3 completion:(id)a4
+- (void)performViewActionWithImportedURLs:(id)ls completion:(id)completion
 {
-  v5 = a4;
-  v5[2](v5, [(SDAirDropHandlerProfiles *)self importData], 0);
+  completionCopy = completion;
+  completionCopy[2](completionCopy, [(SDAirDropHandlerProfiles *)self importData], 0);
 }
 
 @end

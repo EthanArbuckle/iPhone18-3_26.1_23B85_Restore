@@ -1,13 +1,13 @@
 @interface EngagementExtensionProvider
-+ (void)performRequestWithObject:(id)a3 completion:(id)a4;
++ (void)performRequestWithObject:(id)object completion:(id)completion;
 - (_TtC26SeymourEngagementExtension27EngagementExtensionProvider)init;
 @end
 
 @implementation EngagementExtensionProvider
 
-+ (void)performRequestWithObject:(id)a3 completion:(id)a4
++ (void)performRequestWithObject:(id)object completion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   swift_unknownObjectRetain();
   sub_1000051F8();
   swift_unknownObjectRelease();

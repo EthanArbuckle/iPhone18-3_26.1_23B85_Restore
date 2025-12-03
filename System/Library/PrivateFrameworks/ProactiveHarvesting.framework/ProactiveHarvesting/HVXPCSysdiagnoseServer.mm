@@ -1,12 +1,12 @@
 @interface HVXPCSysdiagnoseServer
-- (void)sysdiagnoseStringWithCompletion:(id)a3;
+- (void)sysdiagnoseStringWithCompletion:(id)completion;
 @end
 
 @implementation HVXPCSysdiagnoseServer
 
-- (void)sysdiagnoseStringWithCompletion:(id)a3
+- (void)sysdiagnoseStringWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = hv_default_log_handle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -46,18 +46,18 @@
     if (v9)
     {
       v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v9 encoding:4];
-      v3[2](v3, v10, 0);
+      completionCopy[2](completionCopy, v10, 0);
     }
 
     else
     {
-      v3[2](v3, 0, *(v20 + 5));
+      completionCopy[2](completionCopy, 0, *(v20 + 5));
     }
   }
 
   else
   {
-    v3[2](v3, 0, *(v20 + 5));
+    completionCopy[2](completionCopy, 0, *(v20 + 5));
   }
 
   _Block_object_dispose(&v13, 8);

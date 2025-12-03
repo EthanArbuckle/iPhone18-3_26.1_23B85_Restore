@@ -3,47 +3,47 @@
 - (PXPhotosPreferredAssetCropDelegate)preferredAssetCropDelegate;
 - (PXPhotosPreferredColumnCountsDelegate)preferredColumnCountsDelegate;
 - (PXPhotosViewConfiguration)init;
-- (PXPhotosViewConfiguration)initWithDataSourceManager:(id)a3 mediaProvider:(id)a4 selectionManager:(id)a5 assetActionManager:(id)a6 assetCollectionActionManager:(id)a7;
+- (PXPhotosViewConfiguration)initWithDataSourceManager:(id)manager mediaProvider:(id)provider selectionManager:(id)selectionManager assetActionManager:(id)actionManager assetCollectionActionManager:(id)collectionActionManager;
 - (PXPhotosViewDelegate)delegate;
-- (id)_appSpecificConfigurationLoadIfNeeded:(BOOL)a3;
-- (id)adjustedExtendedTraitCollection:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_appSpecificConfigurationLoadIfNeeded:(BOOL)needed;
+- (id)adjustedExtendedTraitCollection:(id)collection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)preferredBackgroundStyle;
-- (void)copySwiftPropertiesFromConfiguration:(id)a3;
-- (void)setAllowsDragAndDrop:(BOOL)a3;
-- (void)setBackgroundStyle:(int64_t)a3;
-- (void)setPreferredBackgroundStyle:(int64_t)a3;
+- (void)copySwiftPropertiesFromConfiguration:(id)configuration;
+- (void)setAllowsDragAndDrop:(BOOL)drop;
+- (void)setBackgroundStyle:(int64_t)style;
+- (void)setPreferredBackgroundStyle:(int64_t)style;
 @end
 
 @implementation PXPhotosViewConfiguration
 
-- (void)copySwiftPropertiesFromConfiguration:(id)a3
+- (void)copySwiftPropertiesFromConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
+  configurationCopy = configuration;
+  selfCopy = self;
   sub_21AC023A0();
 }
 
-- (id)adjustedExtendedTraitCollection:(id)a3
+- (id)adjustedExtendedTraitCollection:(id)collection
 {
-  v4 = a3;
-  v5 = self;
-  sub_21AC02614(v4);
+  collectionCopy = collection;
+  selfCopy = self;
+  sub_21AC02614(collectionCopy);
 
-  return v4;
+  return collectionCopy;
 }
 
 - (int64_t)preferredBackgroundStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21AC0271C();
 
   return v3;
 }
 
-- (void)setPreferredBackgroundStyle:(int64_t)a3
+- (void)setPreferredBackgroundStyle:(int64_t)style
 {
-  v3 = self;
+  selfCopy = self;
   sub_21AC02850();
 }
 
@@ -68,7 +68,7 @@
   return WeakRetained;
 }
 
-- (id)_appSpecificConfigurationLoadIfNeeded:(BOOL)a3
+- (id)_appSpecificConfigurationLoadIfNeeded:(BOOL)needed
 {
   if (self->_appSpecificConfiguration)
   {
@@ -77,14 +77,14 @@
 
   else
   {
-    v4 = !a3;
+    v4 = !needed;
   }
 
   if (!v4 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v5 = [(PXPhotosViewConfiguration *)self gridZero_createAppSpecificConfiguration];
+    gridZero_createAppSpecificConfiguration = [(PXPhotosViewConfiguration *)self gridZero_createAppSpecificConfiguration];
     appSpecificConfiguration = self->_appSpecificConfiguration;
-    self->_appSpecificConfiguration = v5;
+    self->_appSpecificConfiguration = gridZero_createAppSpecificConfiguration;
 
     if (!self->_appSpecificConfiguration)
     {
@@ -102,48 +102,48 @@
   return v8;
 }
 
-- (void)setAllowsDragAndDrop:(BOOL)a3
+- (void)setAllowsDragAndDrop:(BOOL)drop
 {
-  v3 = a3;
+  dropCopy = drop;
   [(PXPhotosViewConfiguration *)self setAllowsDragIn:?];
 
-  [(PXPhotosViewConfiguration *)self setAllowsDragOut:v3];
+  [(PXPhotosViewConfiguration *)self setAllowsDragOut:dropCopy];
 }
 
 - (BOOL)allowsDragAndDrop
 {
-  v3 = [(PXPhotosViewConfiguration *)self allowsDragIn];
-  if (v3)
+  allowsDragIn = [(PXPhotosViewConfiguration *)self allowsDragIn];
+  if (allowsDragIn)
   {
 
-    LOBYTE(v3) = [(PXPhotosViewConfiguration *)self allowsDragOut];
+    LOBYTE(allowsDragIn) = [(PXPhotosViewConfiguration *)self allowsDragOut];
   }
 
-  return v3;
+  return allowsDragIn;
 }
 
-- (void)setBackgroundStyle:(int64_t)a3
+- (void)setBackgroundStyle:(int64_t)style
 {
-  self->_backgroundStyle = a3;
-  self->_lightModeBackgroundStyle = a3;
-  self->_darkModeBackgroundStyle = a3;
+  self->_backgroundStyle = style;
+  self->_lightModeBackgroundStyle = style;
+  self->_darkModeBackgroundStyle = style;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [PXPhotosViewConfiguration alloc];
-  v6 = [(PXPhotosViewConfiguration *)self dataSourceManager];
-  v7 = [(PXPhotosViewConfiguration *)self mediaProvider];
-  v8 = [(PXPhotosViewConfiguration *)self selectionManager];
-  v9 = [(PXPhotosViewConfiguration *)self assetActionManager];
-  v10 = [(PXPhotosViewConfiguration *)self assetCollectionActionManager];
-  v11 = [(PXPhotosViewConfiguration *)v5 initWithDataSourceManager:v6 mediaProvider:v7 selectionManager:v8 assetActionManager:v9 assetCollectionActionManager:v10];
+  dataSourceManager = [(PXPhotosViewConfiguration *)self dataSourceManager];
+  mediaProvider = [(PXPhotosViewConfiguration *)self mediaProvider];
+  selectionManager = [(PXPhotosViewConfiguration *)self selectionManager];
+  assetActionManager = [(PXPhotosViewConfiguration *)self assetActionManager];
+  assetCollectionActionManager = [(PXPhotosViewConfiguration *)self assetCollectionActionManager];
+  v11 = [(PXPhotosViewConfiguration *)v5 initWithDataSourceManager:dataSourceManager mediaProvider:mediaProvider selectionManager:selectionManager assetActionManager:assetActionManager assetCollectionActionManager:assetCollectionActionManager];
 
-  v12 = [(PXPhotosViewConfiguration *)self title];
-  [(PXPhotosViewConfiguration *)v11 setTitle:v12];
+  title = [(PXPhotosViewConfiguration *)self title];
+  [(PXPhotosViewConfiguration *)v11 setTitle:title];
 
-  v13 = [(PXPhotosViewConfiguration *)self containerTitle];
-  [(PXPhotosViewConfiguration *)v11 setContainerTitle:v13];
+  containerTitle = [(PXPhotosViewConfiguration *)self containerTitle];
+  [(PXPhotosViewConfiguration *)v11 setContainerTitle:containerTitle];
 
   [(PXPhotosViewConfiguration *)v11 setWantsDynamicTitles:[(PXPhotosViewConfiguration *)self wantsDynamicTitles]];
   [(PXPhotosViewConfiguration *)v11 setToolbarStyle:[(PXPhotosViewConfiguration *)self toolbarStyle]];
@@ -152,14 +152,14 @@
   [(PXPhotosViewConfiguration *)v11 setPrefersActionsInToolbar:[(PXPhotosViewConfiguration *)self prefersActionsInToolbar]];
   [(PXPhotosViewConfiguration *)v11 setWantsContentFilterVisible:[(PXPhotosViewConfiguration *)self wantsContentFilterVisible]];
   [(PXPhotosViewConfiguration *)v11 setFooterVisibilityStyle:[(PXPhotosViewConfiguration *)self footerVisibilityStyle]];
-  v14 = [(PXPhotosViewConfiguration *)self footerSubtitle];
-  [(PXPhotosViewConfiguration *)v11 setFooterSubtitle:v14];
+  footerSubtitle = [(PXPhotosViewConfiguration *)self footerSubtitle];
+  [(PXPhotosViewConfiguration *)v11 setFooterSubtitle:footerSubtitle];
 
-  v15 = [(PXPhotosViewConfiguration *)self footerLearnMoreURL];
-  [(PXPhotosViewConfiguration *)v11 setFooterLearnMoreURL:v15];
+  footerLearnMoreURL = [(PXPhotosViewConfiguration *)self footerLearnMoreURL];
+  [(PXPhotosViewConfiguration *)v11 setFooterLearnMoreURL:footerLearnMoreURL];
 
-  v16 = [(PXPhotosViewConfiguration *)self footerViewModel];
-  [(PXPhotosViewConfiguration *)v11 setFooterViewModel:v16];
+  footerViewModel = [(PXPhotosViewConfiguration *)self footerViewModel];
+  [(PXPhotosViewConfiguration *)v11 setFooterViewModel:footerViewModel];
 
   [(PXPhotosViewConfiguration *)v11 setWantsFooterMask:[(PXPhotosViewConfiguration *)self wantsFooterMask]];
   [(PXPhotosViewConfiguration *)v11 setHidesAssetCountInFooter:[(PXPhotosViewConfiguration *)self hidesAssetCountInFooter]];
@@ -171,21 +171,21 @@
   [(PXPhotosViewConfiguration *)v11 setWantsModernNavBarButtons:[(PXPhotosViewConfiguration *)self wantsModernNavBarButtons]];
   [(PXPhotosViewConfiguration *)v11 setWantsAdaptiveSelectModeBarButton:[(PXPhotosViewConfiguration *)self wantsAdaptiveSelectModeBarButton]];
   [(PXPhotosViewConfiguration *)v11 setSectionHeaderStyle:[(PXPhotosViewConfiguration *)self sectionHeaderStyle]];
-  v17 = [(PXPhotosViewConfiguration *)self sectionHeaderLayoutProvider];
-  [(PXPhotosViewConfiguration *)v11 setSectionHeaderLayoutProvider:v17];
+  sectionHeaderLayoutProvider = [(PXPhotosViewConfiguration *)self sectionHeaderLayoutProvider];
+  [(PXPhotosViewConfiguration *)v11 setSectionHeaderLayoutProvider:sectionHeaderLayoutProvider];
 
   [(PXPhotosViewConfiguration *)v11 setSectionBodyStyle:[(PXPhotosViewConfiguration *)self sectionBodyStyle]];
-  v18 = [(PXPhotosViewConfiguration *)self sectionBodyLayoutProvider];
-  [(PXPhotosViewConfiguration *)v11 setSectionBodyLayoutProvider:v18];
+  sectionBodyLayoutProvider = [(PXPhotosViewConfiguration *)self sectionBodyLayoutProvider];
+  [(PXPhotosViewConfiguration *)v11 setSectionBodyLayoutProvider:sectionBodyLayoutProvider];
 
-  v19 = [(PXPhotosViewConfiguration *)self globalHeaderLayoutProvider];
-  [(PXPhotosViewConfiguration *)v11 setGlobalHeaderLayoutProvider:v19];
+  globalHeaderLayoutProvider = [(PXPhotosViewConfiguration *)self globalHeaderLayoutProvider];
+  [(PXPhotosViewConfiguration *)v11 setGlobalHeaderLayoutProvider:globalHeaderLayoutProvider];
 
-  v20 = [(PXPhotosViewConfiguration *)self bannerProvider];
-  [(PXPhotosViewConfiguration *)v11 setBannerProvider:v20];
+  bannerProvider = [(PXPhotosViewConfiguration *)self bannerProvider];
+  [(PXPhotosViewConfiguration *)v11 setBannerProvider:bannerProvider];
 
-  v21 = [(PXPhotosViewConfiguration *)self bannerControllerProvider];
-  [(PXPhotosViewConfiguration *)v11 setBannerControllerProvider:v21];
+  bannerControllerProvider = [(PXPhotosViewConfiguration *)self bannerControllerProvider];
+  [(PXPhotosViewConfiguration *)v11 setBannerControllerProvider:bannerControllerProvider];
 
   [(PXPhotosViewConfiguration *)v11 setGridStyle:[(PXPhotosViewConfiguration *)self gridStyle]];
   [(PXPhotosViewConfiguration *)v11 setGridPresentationType:[(PXPhotosViewConfiguration *)self gridPresentationType]];
@@ -193,11 +193,11 @@
   [(PXPhotosViewConfiguration *)self itemAspectRatio];
   [(PXPhotosViewConfiguration *)v11 setItemAspectRatio:?];
   [(PXPhotosViewConfiguration *)v11 setShowLoadingPlaceholderWhenEmpty:[(PXPhotosViewConfiguration *)self showLoadingPlaceholderWhenEmpty]];
-  v22 = [(PXPhotosViewConfiguration *)self preferredAssetCropDelegate];
-  [(PXPhotosViewConfiguration *)v11 setPreferredAssetCropDelegate:v22];
+  preferredAssetCropDelegate = [(PXPhotosViewConfiguration *)self preferredAssetCropDelegate];
+  [(PXPhotosViewConfiguration *)v11 setPreferredAssetCropDelegate:preferredAssetCropDelegate];
 
-  v23 = [(PXPhotosViewConfiguration *)self preferredColumnCountsDelegate];
-  [(PXPhotosViewConfiguration *)v11 setPreferredColumnCountsDelegate:v23];
+  preferredColumnCountsDelegate = [(PXPhotosViewConfiguration *)self preferredColumnCountsDelegate];
+  [(PXPhotosViewConfiguration *)v11 setPreferredColumnCountsDelegate:preferredColumnCountsDelegate];
 
   [(PXPhotosViewConfiguration *)v11 setIgnoreFilterStateWhenNotFiltering:[(PXPhotosViewConfiguration *)self ignoreFilterStateWhenNotFiltering]];
   [(PXPhotosViewConfiguration *)v11 setIgnoreFilterPredicateAssert:[(PXPhotosViewConfiguration *)self ignoreFilterPredicateAssert]];
@@ -221,23 +221,23 @@
   [(PXPhotosViewConfiguration *)v11 setPreventShowInAllPhotosAction:[(PXPhotosViewConfiguration *)self preventShowInAllPhotosAction]];
   [(PXPhotosViewConfiguration *)v11 setWantsOneUpShowInLibraryButton:[(PXPhotosViewConfiguration *)self wantsOneUpShowInLibraryButton]];
   [(PXPhotosViewConfiguration *)v11 setAllowsMergeDuplicatesAction:[(PXPhotosViewConfiguration *)self allowsMergeDuplicatesAction]];
-  v24 = [(PXPhotosViewConfiguration *)self infoActionHandler];
-  [(PXPhotosViewConfiguration *)v11 setInfoActionHandler:v24];
+  infoActionHandler = [(PXPhotosViewConfiguration *)self infoActionHandler];
+  [(PXPhotosViewConfiguration *)v11 setInfoActionHandler:infoActionHandler];
 
-  v25 = [(PXPhotosViewConfiguration *)self centerAccessoryActionType];
-  [(PXPhotosViewConfiguration *)v11 setCenterAccessoryActionType:v25];
+  centerAccessoryActionType = [(PXPhotosViewConfiguration *)self centerAccessoryActionType];
+  [(PXPhotosViewConfiguration *)v11 setCenterAccessoryActionType:centerAccessoryActionType];
 
-  v26 = [(PXPhotosViewConfiguration *)self trailingAccessoryActionType];
-  [(PXPhotosViewConfiguration *)v11 setTrailingAccessoryActionType:v26];
+  trailingAccessoryActionType = [(PXPhotosViewConfiguration *)self trailingAccessoryActionType];
+  [(PXPhotosViewConfiguration *)v11 setTrailingAccessoryActionType:trailingAccessoryActionType];
 
-  v27 = [(PXPhotosViewConfiguration *)self loadingStatusManager];
-  [(PXPhotosViewConfiguration *)v11 setLoadingStatusManager:v27];
+  loadingStatusManager = [(PXPhotosViewConfiguration *)self loadingStatusManager];
+  [(PXPhotosViewConfiguration *)v11 setLoadingStatusManager:loadingStatusManager];
 
-  v28 = [(PXPhotosViewConfiguration *)self assetImportStatusManager];
-  [(PXPhotosViewConfiguration *)v11 setAssetImportStatusManager:v28];
+  assetImportStatusManager = [(PXPhotosViewConfiguration *)self assetImportStatusManager];
+  [(PXPhotosViewConfiguration *)v11 setAssetImportStatusManager:assetImportStatusManager];
 
-  v29 = [(PXPhotosViewConfiguration *)self delegate];
-  [(PXPhotosViewConfiguration *)v11 setDelegate:v29];
+  delegate = [(PXPhotosViewConfiguration *)self delegate];
+  [(PXPhotosViewConfiguration *)v11 setDelegate:delegate];
 
   [(PXPhotosViewConfiguration *)v11 setStartsInSelectMode:[(PXPhotosViewConfiguration *)self startsInSelectMode]];
   [(PXPhotosViewConfiguration *)v11 setWantsSelectModeCaptionInContextMenu:[(PXPhotosViewConfiguration *)self wantsSelectModeCaptionInContextMenu]];
@@ -249,51 +249,51 @@
   [(PXPhotosViewConfiguration *)v11 setBackgroundStyle:[(PXPhotosViewConfiguration *)self backgroundStyle]];
   [(PXPhotosViewConfiguration *)v11 setLightModeBackgroundStyle:[(PXPhotosViewConfiguration *)self lightModeBackgroundStyle]];
   [(PXPhotosViewConfiguration *)v11 setDarkModeBackgroundStyle:[(PXPhotosViewConfiguration *)self darkModeBackgroundStyle]];
-  v30 = [(PXPhotosViewConfiguration *)self tapbackStatusManager];
-  [(PXPhotosViewConfiguration *)v11 setTapbackStatusManager:v30];
+  tapbackStatusManager = [(PXPhotosViewConfiguration *)self tapbackStatusManager];
+  [(PXPhotosViewConfiguration *)v11 setTapbackStatusManager:tapbackStatusManager];
 
-  v31 = [(PXPhotosViewConfiguration *)self decorationDataSource];
-  [(PXPhotosViewConfiguration *)v11 setDecorationDataSource:v31];
+  decorationDataSource = [(PXPhotosViewConfiguration *)self decorationDataSource];
+  [(PXPhotosViewConfiguration *)v11 setDecorationDataSource:decorationDataSource];
 
   [(PXPhotosViewConfiguration *)v11 setIsEmbedded:[(PXPhotosViewConfiguration *)self isEmbedded]];
   [(PXPhotosViewConfiguration *)v11 setAllowsUserDefaults:[(PXPhotosViewConfiguration *)self allowsUserDefaults]];
   [(PXPhotosViewConfiguration *)v11 setAllowsLinkInteractions:[(PXPhotosViewConfiguration *)self allowsLinkInteractions]];
   [(PXPhotosViewConfiguration *)v11 setAllowsMultiSelectMenu:[(PXPhotosViewConfiguration *)self allowsMultiSelectMenu]];
-  v32 = [(PXPhotosViewConfiguration *)self emptyPlaceholderStatusViewModel];
-  [(PXPhotosViewConfiguration *)v11 setEmptyPlaceholderStatusViewModel:v32];
+  emptyPlaceholderStatusViewModel = [(PXPhotosViewConfiguration *)self emptyPlaceholderStatusViewModel];
+  [(PXPhotosViewConfiguration *)v11 setEmptyPlaceholderStatusViewModel:emptyPlaceholderStatusViewModel];
 
-  v33 = [(PXPhotosViewConfiguration *)self badgesModifier];
-  [(PXPhotosViewConfiguration *)v11 setBadgesModifier:v33];
+  badgesModifier = [(PXPhotosViewConfiguration *)self badgesModifier];
+  [(PXPhotosViewConfiguration *)v11 setBadgesModifier:badgesModifier];
 
   [(PXPhotosViewConfiguration *)v11 setWantsFooterVisibleImmediately:[(PXPhotosViewConfiguration *)self wantsFooterVisibleImmediately]];
   [(PXPhotosViewConfiguration *)v11 setWantsFooterVisibleWhenEmpty:[(PXPhotosViewConfiguration *)self wantsFooterVisibleWhenEmpty]];
   [(PXPhotosViewConfiguration *)v11 setWantsSingleRowScrollingLayout:[(PXPhotosViewConfiguration *)self wantsSingleRowScrollingLayout]];
   [(PXPhotosViewConfiguration *)v11 setDismissAffordance:[(PXPhotosViewConfiguration *)self dismissAffordance]];
   [(PXPhotosViewConfiguration *)v11 setAllowedInteractiveDismissBehaviors:[(PXPhotosViewConfiguration *)self allowedInteractiveDismissBehaviors]];
-  v34 = [(PXPhotosViewConfiguration *)self initialNavigationObjectReference];
-  [(PXPhotosViewConfiguration *)v11 setInitialNavigationObjectReference:v34];
+  initialNavigationObjectReference = [(PXPhotosViewConfiguration *)self initialNavigationObjectReference];
+  [(PXPhotosViewConfiguration *)v11 setInitialNavigationObjectReference:initialNavigationObjectReference];
 
   [(PXPhotosViewConfiguration *)v11 setInitialNavigationScrollPosition:[(PXPhotosViewConfiguration *)self initialNavigationScrollPosition]];
   [(PXPhotosViewConfiguration *)v11 setScrollingBehavior:[(PXPhotosViewConfiguration *)self scrollingBehavior]];
   [(PXPhotosViewConfiguration *)v11 setWantsShareGridButtonVisible:[(PXPhotosViewConfiguration *)self wantsShareGridButtonVisible]];
   [(PXPhotosViewConfiguration *)v11 setOverrideDefaultNumberOfColumns:[(PXPhotosViewConfiguration *)self overrideDefaultNumberOfColumns]];
   [(PXPhotosViewConfiguration *)v11 setContentShiftStrategy:[(PXPhotosViewConfiguration *)self contentShiftStrategy]];
-  v35 = [(PXPhotosViewConfiguration *)self pickerClientBundleIdentifier];
-  [(PXPhotosViewConfiguration *)v11 setPickerClientBundleIdentifier:v35];
+  pickerClientBundleIdentifier = [(PXPhotosViewConfiguration *)self pickerClientBundleIdentifier];
+  [(PXPhotosViewConfiguration *)v11 setPickerClientBundleIdentifier:pickerClientBundleIdentifier];
 
   [(PXPhotosViewConfiguration *)v11 setUseLowMemoryDecode:[(PXPhotosViewConfiguration *)self useLowMemoryDecode]];
   [(PXPhotosViewConfiguration *)v11 setEnableSupportForTungstenUnderlay:[(PXPhotosViewConfiguration *)self enableSupportForTungstenUnderlay]];
-  v36 = [(PXPhotosViewConfiguration *)self overlayController];
-  [(PXPhotosViewConfiguration *)v11 setOverlayController:v36];
+  overlayController = [(PXPhotosViewConfiguration *)self overlayController];
+  [(PXPhotosViewConfiguration *)v11 setOverlayController:overlayController];
 
-  v37 = [(PXPhotosViewConfiguration *)self fullscreenOverlayControllers];
-  [(PXPhotosViewConfiguration *)v11 setFullscreenOverlayControllers:v37];
+  fullscreenOverlayControllers = [(PXPhotosViewConfiguration *)self fullscreenOverlayControllers];
+  [(PXPhotosViewConfiguration *)v11 setFullscreenOverlayControllers:fullscreenOverlayControllers];
 
-  v38 = [(PXPhotosViewConfiguration *)self customAssetSelectionHandler];
-  [(PXPhotosViewConfiguration *)v11 setCustomAssetSelectionHandler:v38];
+  customAssetSelectionHandler = [(PXPhotosViewConfiguration *)self customAssetSelectionHandler];
+  [(PXPhotosViewConfiguration *)v11 setCustomAssetSelectionHandler:customAssetSelectionHandler];
 
-  v39 = [(PXPhotosViewConfiguration *)self customDismissHandler];
-  [(PXPhotosViewConfiguration *)v11 setCustomDismissHandler:v39];
+  customDismissHandler = [(PXPhotosViewConfiguration *)self customDismissHandler];
+  [(PXPhotosViewConfiguration *)v11 setCustomDismissHandler:customDismissHandler];
 
   [(PXPhotosViewConfiguration *)v11 setOneUpAssetsViewMode:[(PXPhotosViewConfiguration *)self oneUpAssetsViewMode]];
   [(PXPhotosViewConfiguration *)v11 setAllowsTabBarVisible:[(PXPhotosViewConfiguration *)self allowsTabBarVisible]];
@@ -301,19 +301,19 @@
   [(PXPhotosViewConfiguration *)v11 setWantsToolbarHidden:[(PXPhotosViewConfiguration *)self wantsToolbarHidden]];
   [(PXPhotosViewConfiguration *)v11 setTitleMode:[(PXPhotosViewConfiguration *)self titleMode]];
   [(PXPhotosViewConfiguration *)v11 setScrollDetentsProviderClass:[(PXPhotosViewConfiguration *)self scrollDetentsProviderClass]];
-  v40 = [(PXPhotosViewConfiguration *)self initialScrollPositionDetentIdentifier];
-  [(PXPhotosViewConfiguration *)v11 setInitialScrollPositionDetentIdentifier:v40];
+  initialScrollPositionDetentIdentifier = [(PXPhotosViewConfiguration *)self initialScrollPositionDetentIdentifier];
+  [(PXPhotosViewConfiguration *)v11 setInitialScrollPositionDetentIdentifier:initialScrollPositionDetentIdentifier];
 
   [(PXPhotosViewConfiguration *)v11 setEnableFilterButton:[(PXPhotosViewConfiguration *)self enableFilterButton]];
   [(PXPhotosViewConfiguration *)v11 setDisableAutoPlaybackInOneUp:[(PXPhotosViewConfiguration *)self disableAutoPlaybackInOneUp]];
   [(PXPhotosViewConfiguration *)v11 copySwiftPropertiesFromConfiguration:self];
-  v41 = [(PXPhotosViewAppSpecificConfiguration *)self->_appSpecificConfiguration copyWithZone:a3];
+  v41 = [(PXPhotosViewAppSpecificConfiguration *)self->_appSpecificConfiguration copyWithZone:zone];
   appSpecificConfiguration = v11->_appSpecificConfiguration;
   v11->_appSpecificConfiguration = v41;
 
   [(PXPhotosViewConfiguration *)v11 setWantsDecorationSpritesHostedInDecoratedSprite:[(PXPhotosViewConfiguration *)self wantsDecorationSpritesHostedInDecoratedSprite]];
-  v43 = [(PXPhotosViewConfiguration *)self scrollViewAccessibilityIdentifier];
-  [(PXPhotosViewConfiguration *)v11 setScrollViewAccessibilityIdentifier:v43];
+  scrollViewAccessibilityIdentifier = [(PXPhotosViewConfiguration *)self scrollViewAccessibilityIdentifier];
+  [(PXPhotosViewConfiguration *)v11 setScrollViewAccessibilityIdentifier:scrollViewAccessibilityIdentifier];
 
   [(PXPhotosViewConfiguration *)v11 setCustomAssetImageViewClass:[(PXPhotosViewConfiguration *)self customAssetImageViewClass]];
   return v11;
@@ -321,75 +321,75 @@
 
 - (PXPhotosViewConfiguration)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotosViewConfiguration.m" lineNumber:61 description:{@"%s is not available as initializer", "-[PXPhotosViewConfiguration init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosViewConfiguration.m" lineNumber:61 description:{@"%s is not available as initializer", "-[PXPhotosViewConfiguration init]"}];
 
   abort();
 }
 
-- (PXPhotosViewConfiguration)initWithDataSourceManager:(id)a3 mediaProvider:(id)a4 selectionManager:(id)a5 assetActionManager:(id)a6 assetCollectionActionManager:(id)a7
+- (PXPhotosViewConfiguration)initWithDataSourceManager:(id)manager mediaProvider:(id)provider selectionManager:(id)selectionManager assetActionManager:(id)actionManager assetCollectionActionManager:(id)collectionActionManager
 {
-  v11 = a3;
-  v14 = a3;
-  v45 = a4;
-  v15 = a5;
-  v16 = a6;
-  obj = a7;
-  v44 = a7;
-  if (v15)
+  managerCopy = manager;
+  managerCopy2 = manager;
+  providerCopy = provider;
+  selectionManagerCopy = selectionManager;
+  actionManagerCopy = actionManager;
+  obj = collectionActionManager;
+  collectionActionManagerCopy = collectionActionManager;
+  if (selectionManagerCopy)
   {
-    v17 = [v15 dataSourceManager];
+    dataSourceManager = [selectionManagerCopy dataSourceManager];
 
-    if (v17 != v14)
+    if (dataSourceManager != managerCopy2)
     {
-      v18 = [MEMORY[0x277CCA890] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"PXPhotosViewConfiguration.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"selectionManager == nil || selectionManager.dataSourceManager == dataSourceManager"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosViewConfiguration.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"selectionManager == nil || selectionManager.dataSourceManager == dataSourceManager"}];
     }
   }
 
-  v19 = [v16 selectionManager];
-  if (v19)
+  selectionManager = [actionManagerCopy selectionManager];
+  if (selectionManager)
   {
-    v20 = v19;
-    [v16 selectionManager];
-    v42 = v16;
-    v21 = v15;
-    v22 = self;
-    v23 = v11;
-    v24 = a4;
-    v25 = a5;
+    v20 = selectionManager;
+    [actionManagerCopy selectionManager];
+    v42 = actionManagerCopy;
+    v21 = selectionManagerCopy;
+    selfCopy = self;
+    v23 = managerCopy;
+    providerCopy2 = provider;
+    selectionManagerCopy2 = selectionManager;
     v26 = a2;
-    v28 = v27 = v14;
-    v29 = [v28 dataSourceManager];
+    v28 = v27 = managerCopy2;
+    dataSourceManager2 = [v28 dataSourceManager];
 
-    v14 = v27;
+    managerCopy2 = v27;
     a2 = v26;
-    a5 = v25;
-    a4 = v24;
-    v11 = v23;
-    self = v22;
-    v15 = v21;
-    v16 = v42;
+    selectionManager = selectionManagerCopy2;
+    provider = providerCopy2;
+    managerCopy = v23;
+    self = selfCopy;
+    selectionManagerCopy = v21;
+    actionManagerCopy = v42;
 
-    if (v29 != v14)
+    if (dataSourceManager2 != managerCopy2)
     {
-      v30 = [MEMORY[0x277CCA890] currentHandler];
-      [v30 handleFailureInMethod:a2 object:self file:@"PXPhotosViewConfiguration.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"assetActionManager.selectionManager == nil || assetActionManager.selectionManager.dataSourceManager == dataSourceManager"}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotosViewConfiguration.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"assetActionManager.selectionManager == nil || assetActionManager.selectionManager.dataSourceManager == dataSourceManager"}];
     }
   }
 
-  if (v15)
+  if (selectionManagerCopy)
   {
-    v31 = [v16 selectionManager];
-    if (v31)
+    selectionManager2 = [actionManagerCopy selectionManager];
+    if (selectionManager2)
     {
-      v32 = v31;
-      v33 = [v16 selectionManager];
+      v32 = selectionManager2;
+      selectionManager3 = [actionManagerCopy selectionManager];
 
-      if (v33 != v15)
+      if (selectionManager3 != selectionManagerCopy)
       {
-        v34 = [MEMORY[0x277CCA890] currentHandler];
-        [v34 handleFailureInMethod:a2 object:self file:@"PXPhotosViewConfiguration.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"selectionManager == nil || assetActionManager.selectionManager == nil || assetActionManager.selectionManager == selectionManager"}];
+        currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXPhotosViewConfiguration.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"selectionManager == nil || assetActionManager.selectionManager == nil || assetActionManager.selectionManager == selectionManager"}];
       }
     }
   }
@@ -400,12 +400,12 @@
   v36 = v35;
   if (v35)
   {
-    objc_storeStrong(&v35->_dataSourceManager, v11);
-    objc_storeStrong(&v36->_mediaProvider, a4);
-    objc_storeStrong(&v36->_selectionManager, a5);
-    if (v16)
+    objc_storeStrong(&v35->_dataSourceManager, managerCopy);
+    objc_storeStrong(&v36->_mediaProvider, provider);
+    objc_storeStrong(&v36->_selectionManager, selectionManager);
+    if (actionManagerCopy)
     {
-      v37 = v16;
+      v37 = actionManagerCopy;
     }
 
     else
@@ -434,9 +434,9 @@
     v36->_enableFilterButton = 1;
     v36->_disableAutoPlaybackInOneUp = 0;
     v36->_allowsTabBarVisible = 0;
-    v39 = [objc_opt_class() defaultScrollViewAccessibilityIdentifier];
+    defaultScrollViewAccessibilityIdentifier = [objc_opt_class() defaultScrollViewAccessibilityIdentifier];
     scrollViewAccessibilityIdentifier = v36->_scrollViewAccessibilityIdentifier;
-    v36->_scrollViewAccessibilityIdentifier = v39;
+    v36->_scrollViewAccessibilityIdentifier = defaultScrollViewAccessibilityIdentifier;
   }
 
   return v36;

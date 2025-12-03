@@ -1,6 +1,6 @@
 @interface GQDWPParagraph
 - (BOOL)isBlank;
-- (int)readAttributesFromReader:(_xmlTextReader *)a3 processor:(id)a4;
+- (int)readAttributesFromReader:(_xmlTextReader *)reader processor:(id)processor;
 - (void)dealloc;
 @end
 
@@ -56,23 +56,23 @@
   return v5;
 }
 
-- (int)readAttributesFromReader:(_xmlTextReader *)a3 processor:(id)a4
+- (int)readAttributesFromReader:(_xmlTextReader *)reader processor:(id)processor
 {
-  self->mListLevel = sub_42468(a3, qword_A35E8, "list-level", 0);
-  self->mRestartList = sub_42340(a3, qword_A35E8, "restart-list", 0);
-  self->mContinue = sub_42340(a3, qword_A35E8, "cont", 0);
-  self->mIsHidden = sub_42340(a3, qword_A35E8, "outline-hidden", 0);
-  AttributeNs = xmlTextReaderGetAttributeNs(a3, "style", *(qword_A35E8 + 16));
+  self->mListLevel = sub_42468(reader, qword_A35E8, "list-level", 0);
+  self->mRestartList = sub_42340(reader, qword_A35E8, "restart-list", 0);
+  self->mContinue = sub_42340(reader, qword_A35E8, "cont", 0);
+  self->mIsHidden = sub_42340(reader, qword_A35E8, "outline-hidden", 0);
+  AttributeNs = xmlTextReaderGetAttributeNs(reader, "style", *(qword_A35E8 + 16));
   if (!AttributeNs)
   {
     return 1;
   }
 
   v8 = AttributeNs;
-  v9 = [objc_msgSend(objc_msgSend(a4 "documentState")];
+  v9 = [objc_msgSend(objc_msgSend(processor "documentState")];
   if (!v9)
   {
-    v9 = [objc_msgSend(a4 "documentState")];
+    v9 = [objc_msgSend(processor "documentState")];
   }
 
   v10 = [v9 styleWithIdentifier:v8];

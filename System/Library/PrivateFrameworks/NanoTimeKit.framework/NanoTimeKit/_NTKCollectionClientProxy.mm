@@ -1,41 +1,41 @@
 @interface _NTKCollectionClientProxy
-- (_NTKCollectionClientProxy)initWithWeakProxy:(id)a3;
-- (void)addFaceInstanceDescriptor:(id)a3 forUUID:(id)a4 seqId:(id)a5;
-- (void)flushCompleteForIdentifier:(id)a3;
-- (void)loadFullCollectionWithOrderedUUIDs:(id)a3 selectedUUID:(id)a4 facesDescriptorsByUUID:(id)a5 seqId:(id)a6 completion:(id)a7;
-- (void)removeFaceForUUID:(id)a3 seqId:(id)a4 completion:(id)a5;
-- (void)resetClientCollectionWithCompletion:(id)a3;
-- (void)updateFaceForUUID:(id)a3 withConfigurationJSONRepresentation:(id)a4 seqId:(id)a5;
-- (void)updateFaceForUUID:(id)a3 withResourceDirectory:(id)a4 seqId:(id)a5 completion:(id)a6;
-- (void)updateOrderedFaceUUIDs:(id)a3 seqId:(id)a4;
-- (void)updateSelectedFaceUUID:(id)a3 seqId:(id)a4;
-- (void)upgradeFaceInstanceDescriptor:(id)a3 forUUID:(id)a4 seqID:(id)a5;
+- (_NTKCollectionClientProxy)initWithWeakProxy:(id)proxy;
+- (void)addFaceInstanceDescriptor:(id)descriptor forUUID:(id)d seqId:(id)id;
+- (void)flushCompleteForIdentifier:(id)identifier;
+- (void)loadFullCollectionWithOrderedUUIDs:(id)ds selectedUUID:(id)d facesDescriptorsByUUID:(id)iD seqId:(id)id completion:(id)completion;
+- (void)removeFaceForUUID:(id)d seqId:(id)id completion:(id)completion;
+- (void)resetClientCollectionWithCompletion:(id)completion;
+- (void)updateFaceForUUID:(id)d withConfigurationJSONRepresentation:(id)representation seqId:(id)id;
+- (void)updateFaceForUUID:(id)d withResourceDirectory:(id)directory seqId:(id)id completion:(id)completion;
+- (void)updateOrderedFaceUUIDs:(id)ds seqId:(id)id;
+- (void)updateSelectedFaceUUID:(id)d seqId:(id)id;
+- (void)upgradeFaceInstanceDescriptor:(id)descriptor forUUID:(id)d seqID:(id)iD;
 @end
 
 @implementation _NTKCollectionClientProxy
 
-- (_NTKCollectionClientProxy)initWithWeakProxy:(id)a3
+- (_NTKCollectionClientProxy)initWithWeakProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   v8.receiver = self;
   v8.super_class = _NTKCollectionClientProxy;
   v5 = [(_NTKCollectionClientProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_proxy, v4);
+    objc_storeWeak(&v5->_proxy, proxyCopy);
   }
 
   return v6;
 }
 
-- (void)loadFullCollectionWithOrderedUUIDs:(id)a3 selectedUUID:(id)a4 facesDescriptorsByUUID:(id)a5 seqId:(id)a6 completion:(id)a7
+- (void)loadFullCollectionWithOrderedUUIDs:(id)ds selectedUUID:(id)d facesDescriptorsByUUID:(id)iD seqId:(id)id completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dsCopy = ds;
+  dCopy = d;
+  iDCopy = iD;
+  idCopy = id;
+  completionCopy = completion;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -49,9 +49,9 @@
     v19[1] = 3221225472;
     v19[2] = __117___NTKCollectionClientProxy_loadFullCollectionWithOrderedUUIDs_selectedUUID_facesDescriptorsByUUID_seqId_completion___block_invoke;
     v19[3] = &unk_278780F80;
-    v20 = v16;
+    v20 = completionCopy;
     v21 = &v22;
-    [v17 loadFullCollectionWithOrderedUUIDs:v12 selectedUUID:v13 facesDescriptorsByUUID:v14 seqId:v15 completion:v19];
+    [v17 loadFullCollectionWithOrderedUUIDs:dsCopy selectedUUID:dCopy facesDescriptorsByUUID:iDCopy seqId:idCopy completion:v19];
   }
 
   else
@@ -62,46 +62,46 @@
       [_NTKCollectionClientProxy loadFullCollectionWithOrderedUUIDs:selectedUUID:facesDescriptorsByUUID:seqId:completion:];
     }
 
-    if (v16)
+    if (completionCopy)
     {
-      v16[2](v16);
+      completionCopy[2](completionCopy);
     }
   }
 
   _Block_object_dispose(&v22, 8);
 }
 
-- (void)updateSelectedFaceUUID:(id)a3 seqId:(id)a4
+- (void)updateSelectedFaceUUID:(id)d seqId:(id)id
 {
-  v6 = a4;
-  v7 = a3;
+  idCopy = id;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_proxy);
-  [WeakRetained updateSelectedFaceUUID:v7 seqId:v6];
+  [WeakRetained updateSelectedFaceUUID:dCopy seqId:idCopy];
 }
 
-- (void)updateOrderedFaceUUIDs:(id)a3 seqId:(id)a4
+- (void)updateOrderedFaceUUIDs:(id)ds seqId:(id)id
 {
-  v6 = a4;
-  v7 = a3;
+  idCopy = id;
+  dsCopy = ds;
   WeakRetained = objc_loadWeakRetained(&self->_proxy);
-  [WeakRetained updateOrderedFaceUUIDs:v7 seqId:v6];
+  [WeakRetained updateOrderedFaceUUIDs:dsCopy seqId:idCopy];
 }
 
-- (void)updateFaceForUUID:(id)a3 withConfigurationJSONRepresentation:(id)a4 seqId:(id)a5
+- (void)updateFaceForUUID:(id)d withConfigurationJSONRepresentation:(id)representation seqId:(id)id
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  idCopy = id;
+  representationCopy = representation;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_proxy);
-  [WeakRetained updateFaceForUUID:v10 withConfigurationJSONRepresentation:v9 seqId:v8];
+  [WeakRetained updateFaceForUUID:dCopy withConfigurationJSONRepresentation:representationCopy seqId:idCopy];
 }
 
-- (void)updateFaceForUUID:(id)a3 withResourceDirectory:(id)a4 seqId:(id)a5 completion:(id)a6
+- (void)updateFaceForUUID:(id)d withResourceDirectory:(id)directory seqId:(id)id completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  directoryCopy = directory;
+  idCopy = id;
+  completionCopy = completion;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -115,9 +115,9 @@
     v16[1] = 3221225472;
     v16[2] = __86___NTKCollectionClientProxy_updateFaceForUUID_withResourceDirectory_seqId_completion___block_invoke;
     v16[3] = &unk_278780F80;
-    v17 = v13;
+    v17 = completionCopy;
     v18 = &v19;
-    [v14 updateFaceForUUID:v10 withResourceDirectory:v11 seqId:v12 completion:v16];
+    [v14 updateFaceForUUID:dCopy withResourceDirectory:directoryCopy seqId:idCopy completion:v16];
   }
 
   else
@@ -128,20 +128,20 @@
       [_NTKCollectionClientProxy updateFaceForUUID:withResourceDirectory:seqId:completion:];
     }
 
-    if (v13)
+    if (completionCopy)
     {
-      v13[2](v13);
+      completionCopy[2](completionCopy);
     }
   }
 
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)removeFaceForUUID:(id)a3 seqId:(id)a4 completion:(id)a5
+- (void)removeFaceForUUID:(id)d seqId:(id)id completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  idCopy = id;
+  completionCopy = completion;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -155,9 +155,9 @@
     v13[1] = 3221225472;
     v13[2] = __64___NTKCollectionClientProxy_removeFaceForUUID_seqId_completion___block_invoke;
     v13[3] = &unk_278780F80;
-    v14 = v10;
+    v14 = completionCopy;
     v15 = &v16;
-    [v11 removeFaceForUUID:v8 seqId:v9 completion:v13];
+    [v11 removeFaceForUUID:dCopy seqId:idCopy completion:v13];
   }
 
   else
@@ -168,18 +168,18 @@
       [_NTKCollectionClientProxy removeFaceForUUID:seqId:completion:];
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10);
+      completionCopy[2](completionCopy);
     }
   }
 
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)resetClientCollectionWithCompletion:(id)a3
+- (void)resetClientCollectionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -193,7 +193,7 @@
     v7[1] = 3221225472;
     v7[2] = __65___NTKCollectionClientProxy_resetClientCollectionWithCompletion___block_invoke;
     v7[3] = &unk_278780F80;
-    v8 = v4;
+    v8 = completionCopy;
     v9 = &v10;
     [v5 resetClientCollectionWithCompletion:v7];
   }
@@ -206,38 +206,38 @@
       [_NTKCollectionClientProxy resetClientCollectionWithCompletion:];
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 
   _Block_object_dispose(&v10, 8);
 }
 
-- (void)flushCompleteForIdentifier:(id)a3
+- (void)flushCompleteForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_proxy);
-  [WeakRetained flushCompleteForIdentifier:v4];
+  [WeakRetained flushCompleteForIdentifier:identifierCopy];
 }
 
-- (void)addFaceInstanceDescriptor:(id)a3 forUUID:(id)a4 seqId:(id)a5
+- (void)addFaceInstanceDescriptor:(id)descriptor forUUID:(id)d seqId:(id)id
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  idCopy = id;
+  dCopy = d;
+  descriptorCopy = descriptor;
   WeakRetained = objc_loadWeakRetained(&self->_proxy);
-  [WeakRetained addFaceInstanceDescriptor:v10 forUUID:v9 seqId:v8];
+  [WeakRetained addFaceInstanceDescriptor:descriptorCopy forUUID:dCopy seqId:idCopy];
 }
 
-- (void)upgradeFaceInstanceDescriptor:(id)a3 forUUID:(id)a4 seqID:(id)a5
+- (void)upgradeFaceInstanceDescriptor:(id)descriptor forUUID:(id)d seqID:(id)iD
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  iDCopy = iD;
+  dCopy = d;
+  descriptorCopy = descriptor;
   WeakRetained = objc_loadWeakRetained(&self->_proxy);
-  [WeakRetained upgradeFaceInstanceDescriptor:v10 forUUID:v9 seqID:v8];
+  [WeakRetained upgradeFaceInstanceDescriptor:descriptorCopy forUUID:dCopy seqID:iDCopy];
 }
 
 @end

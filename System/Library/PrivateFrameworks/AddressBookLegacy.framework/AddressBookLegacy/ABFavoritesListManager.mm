@@ -1,73 +1,73 @@
 @interface ABFavoritesListManager
-+ (id)sharedInstanceWithAddressBook:(void *)a3;
-- (ABFavoritesListManager)initWithAddressBook:(void *)a3;
-- (BOOL)_isValueForEntry:(id)a3 equalToValue:(id)a4;
-- (BOOL)addEntryForPerson:(void *)a3 property:(int)a4 withIdentifier:(int)a5;
-- (BOOL)entryIsDuplicateAndThusRemoved:(id)a3 oldUid:(int)a4;
++ (id)sharedInstanceWithAddressBook:(void *)book;
+- (ABFavoritesListManager)initWithAddressBook:(void *)book;
+- (BOOL)_isValueForEntry:(id)entry equalToValue:(id)value;
+- (BOOL)addEntryForPerson:(void *)person property:(int)property withIdentifier:(int)identifier;
+- (BOOL)entryIsDuplicateAndThusRemoved:(id)removed oldUid:(int)uid;
 - (BOOL)isFull;
-- (BOOL)shouldNotReportFavoritesError:(id)a3;
+- (BOOL)shouldNotReportFavoritesError:(id)error;
 - (id)entries;
-- (id)entriesForPeople:(id)a3;
-- (id)entriesForPerson:(void *)a3;
-- (id)entryFromEntries:(id)a3 type:(int)a4 property:(int)a5 identifier:(int)a6 value:(id)a7 label:(id)a8;
-- (id)entryWithType:(int)a3 forPerson:(void *)a4 property:(int)a5 identifier:(int)a6;
-- (void)_addEntryToMap:(id)a3;
-- (void)_entryIdentityChanged:(id)a3;
+- (id)entriesForPeople:(id)people;
+- (id)entriesForPerson:(void *)person;
+- (id)entryFromEntries:(id)entries type:(int)type property:(int)property identifier:(int)identifier value:(id)value label:(id)label;
+- (id)entryWithType:(int)type forPerson:(void *)person property:(int)property identifier:(int)identifier;
+- (void)_addEntryToMap:(id)map;
+- (void)_entryIdentityChanged:(id)changed;
 - (void)_listChangedExternally;
-- (void)_loadListWithAddressBook:(void *)a3;
+- (void)_loadListWithAddressBook:(void *)book;
 - (void)_postChangeNotification;
-- (void)_removeEntryFromMap:(id)a3 withUid:(int)a4;
+- (void)_removeEntryFromMap:(id)map withUid:(int)uid;
 - (void)_scheduleSave;
-- (void)addEntry:(id)a3;
+- (void)addEntry:(id)entry;
 - (void)dealloc;
-- (void)moveEntryAtIndex:(int64_t)a3 toIndex:(int64_t)a4;
+- (void)moveEntryAtIndex:(int64_t)index toIndex:(int64_t)toIndex;
 - (void)removeAllEntries;
-- (void)removeEntryAtIndex:(int64_t)a3;
-- (void)reportFavoritesIssue:(id)a3;
+- (void)removeEntryAtIndex:(int64_t)index;
+- (void)reportFavoritesIssue:(id)issue;
 - (void)save;
 - (void)saveImmediately;
 @end
 
 @implementation ABFavoritesListManager
 
-+ (id)sharedInstanceWithAddressBook:(void *)a3
++ (id)sharedInstanceWithAddressBook:(void *)book
 {
   result = sharedInstanceWithAddressBook____SpeedDialListManager;
   if (!sharedInstanceWithAddressBook____SpeedDialListManager)
   {
-    result = [[ABFavoritesListManager alloc] initWithAddressBook:a3];
+    result = [[ABFavoritesListManager alloc] initWithAddressBook:book];
     sharedInstanceWithAddressBook____SpeedDialListManager = result;
   }
 
   return result;
 }
 
-- (void)reportFavoritesIssue:(id)a3
+- (void)reportFavoritesIssue:(id)issue
 {
   ABDiagnosticsEnabled();
-  _ABLog2(3, "[ABFavoritesListManager reportFavoritesIssue:]", 68, 0, @"%@", v4, v5, v6, a3);
-  ABLogSimulateCrashReport(a3);
+  _ABLog2(3, "[ABFavoritesListManager reportFavoritesIssue:]", 68, 0, @"%@", v4, v5, v6, issue);
+  ABLogSimulateCrashReport(issue);
 
-  ABLogDisplayInternalAlert(a3);
+  ABLogDisplayInternalAlert(issue);
 }
 
-- (BOOL)shouldNotReportFavoritesError:(id)a3
+- (BOOL)shouldNotReportFavoritesError:(id)error
 {
-  if (a3)
+  if (error)
   {
-    v4 = [a3 domain];
+    domain = [error domain];
     v5 = *MEMORY[0x1E696A250];
-    if ([v4 isEqualToString:*MEMORY[0x1E696A250]] && objc_msgSend(a3, "code") == 260)
+    if ([domain isEqualToString:*MEMORY[0x1E696A250]] && objc_msgSend(error, "code") == 260)
     {
       LOBYTE(v6) = 1;
     }
 
     else
     {
-      v6 = [objc_msgSend(a3 "domain")];
+      v6 = [objc_msgSend(error "domain")];
       if (v6)
       {
-        LOBYTE(v6) = [a3 code] == 257;
+        LOBYTE(v6) = [error code] == 257;
       }
     }
   }
@@ -80,20 +80,20 @@
   return v6;
 }
 
-- (void)_loadListWithAddressBook:(void *)a3
+- (void)_loadListWithAddressBook:(void *)book
 {
   if ([objc_msgSend(MEMORY[0x1E69966B8] "sharedInstance")])
   {
-    if (a3)
+    if (book)
     {
-      v5 = 0;
+      bookCopy = 0;
     }
 
     else
     {
-      a3 = ABAddressBookCreateWithOptions(0, 0);
-      v5 = a3;
-      if (!a3)
+      book = ABAddressBookCreateWithOptions(0, 0);
+      bookCopy = book;
+      if (!book)
       {
         return;
       }
@@ -105,13 +105,13 @@
       v9 = [CPSharedResourcesDirectory() stringByAppendingPathComponent:@"Library/Preferences"];
       if ((_SpeedDialPath__checkedForDir & 1) == 0)
       {
-        v10 = [MEMORY[0x1E696AC08] defaultManager];
-        if (([v10 fileExistsAtPath:v9] & 1) == 0)
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        if (([defaultManager fileExistsAtPath:v9] & 1) == 0)
         {
-          v11 = [v9 stringByDeletingLastPathComponent];
-          if (([v10 fileExistsAtPath:v11] & 1) == 0)
+          stringByDeletingLastPathComponent = [v9 stringByDeletingLastPathComponent];
+          if (([defaultManager fileExistsAtPath:stringByDeletingLastPathComponent] & 1) == 0)
           {
-            mkdir([v11 fileSystemRepresentation], 0x1C0u);
+            mkdir([stringByDeletingLastPathComponent fileSystemRepresentation], 0x1C0u);
           }
 
           mkdir([v9 fileSystemRepresentation], 0x1C0u);
@@ -136,7 +136,7 @@
           self->_list = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:50];
           do
           {
-            v21 = -[ABFavoritesEntry initWithDictionaryRepresentation:addressBook:]([ABFavoritesEntry alloc], "initWithDictionaryRepresentation:addressBook:", [v14 objectAtIndex:v20], a3);
+            v21 = -[ABFavoritesEntry initWithDictionaryRepresentation:addressBook:]([ABFavoritesEntry alloc], "initWithDictionaryRepresentation:addressBook:", [v14 objectAtIndex:v20], book);
             if (v21)
             {
               v22 = v21;
@@ -172,9 +172,9 @@
       }
     }
 
-    if (v5)
+    if (bookCopy)
     {
-      CFRelease(v5);
+      CFRelease(bookCopy);
     }
   }
 
@@ -188,13 +188,13 @@
     }
 
     objc_initWeak(&location, self);
-    v8 = [MEMORY[0x1E69966B8] sharedInstance];
+    mEMORY[0x1E69966B8] = [MEMORY[0x1E69966B8] sharedInstance];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __51__ABFavoritesListManager__loadListWithAddressBook___block_invoke;
     v27[3] = &unk_1E7CCD180;
     objc_copyWeak(&v28, &location);
-    [v8 addUnlockHandlerWithIdentifier:@"ABFavoriteListManager" block:v27];
+    [mEMORY[0x1E69966B8] addUnlockHandlerWithIdentifier:@"ABFavoriteListManager" block:v27];
     objc_destroyWeak(&v28);
     objc_destroyWeak(&location);
   }
@@ -207,19 +207,19 @@ uint64_t __51__ABFavoritesListManager__loadListWithAddressBook___block_invoke(ui
   return [Weak _postChangeNotification];
 }
 
-- (ABFavoritesListManager)initWithAddressBook:(void *)a3
+- (ABFavoritesListManager)initWithAddressBook:(void *)book
 {
   v7.receiver = self;
   v7.super_class = ABFavoritesListManager;
   v4 = [(ABFavoritesListManager *)&v7 init];
   if (v4)
   {
-    if (a3)
+    if (book)
     {
-      v4->_addressBook = CFRetain(a3);
+      v4->_addressBook = CFRetain(book);
     }
 
-    [(ABFavoritesListManager *)v4 _loadListWithAddressBook:a3];
+    [(ABFavoritesListManager *)v4 _loadListWithAddressBook:book];
     [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v4, _SpeedDialListChangedExternally, @"CNFavoritesChangedExternallyNotification", 0, CFNotificationSuspensionBehaviorDrop);
@@ -285,7 +285,7 @@ uint64_t __51__ABFavoritesListManager__loadListWithAddressBook___block_invoke(ui
   return list;
 }
 
-- (id)entriesForPeople:(id)a3
+- (id)entriesForPeople:(id)people
 {
   v20 = *MEMORY[0x1E69E9840];
   if ((*&self->_flags & 4) != 0)
@@ -302,7 +302,7 @@ uint64_t __51__ABFavoritesListManager__loadListWithAddressBook___block_invoke(ui
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [people countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (!v5)
   {
     return 0;
@@ -317,7 +317,7 @@ uint64_t __51__ABFavoritesListManager__loadListWithAddressBook___block_invoke(ui
     {
       if (*v16 != v8)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(people);
       }
 
       uidToEntry = self->_uidToEntry;
@@ -344,16 +344,16 @@ uint64_t __51__ABFavoritesListManager__loadListWithAddressBook___block_invoke(ui
       }
     }
 
-    v6 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v6 = [people countByEnumeratingWithState:&v15 objects:v19 count:16];
   }
 
   while (v6);
   return v7;
 }
 
-- (id)entriesForPerson:(void *)a3
+- (id)entriesForPerson:(void *)person
 {
-  if (!a3)
+  if (!person)
   {
     return 0;
   }
@@ -363,27 +363,27 @@ uint64_t __51__ABFavoritesListManager__loadListWithAddressBook___block_invoke(ui
   return [(ABFavoritesListManager *)self entriesForPeople:v4];
 }
 
-- (BOOL)_isValueForEntry:(id)a3 equalToValue:(id)a4
+- (BOOL)_isValueForEntry:(id)entry equalToValue:(id)value
 {
-  if ([a4 isEqualToString:{objc_msgSend(a3, "value")}])
+  if ([value isEqualToString:{objc_msgSend(entry, "value")}])
   {
     return 1;
   }
 
-  if ([a3 property] != kABPersonPhoneProperty)
+  if ([entry property] != kABPersonPhoneProperty)
   {
     return 0;
   }
 
-  v7 = +[ABPhoneFormatting abNormalizedPhoneNumberFromString:](ABPhoneFormatting, "abNormalizedPhoneNumberFromString:", [a3 value]);
-  v8 = [ABPhoneFormatting abNormalizedPhoneNumberFromString:a4];
+  v7 = +[ABPhoneFormatting abNormalizedPhoneNumberFromString:](ABPhoneFormatting, "abNormalizedPhoneNumberFromString:", [entry value]);
+  v8 = [ABPhoneFormatting abNormalizedPhoneNumberFromString:value];
 
   return [v7 isEqualToString:v8];
 }
 
-- (id)entryFromEntries:(id)a3 type:(int)a4 property:(int)a5 identifier:(int)a6 value:(id)a7 label:(id)a8
+- (id)entryFromEntries:(id)entries type:(int)type property:(int)property identifier:(int)identifier value:(id)value label:(id)label
 {
-  v15 = [a3 count];
+  v15 = [entries count];
   if (!v15)
   {
     return 0;
@@ -393,9 +393,9 @@ uint64_t __51__ABFavoritesListManager__loadListWithAddressBook___block_invoke(ui
   v17 = 1;
   do
   {
-    v18 = [a3 objectAtIndex:v17 - 1];
+    v18 = [entries objectAtIndex:v17 - 1];
     v19 = v18;
-    if (a6 != -1 && [v18 identifier] != a6 || a4 != 3 && objc_msgSend(v19, "type") != a4 || a5 != -1 && objc_msgSend(v19, "property") != a5 || a7 && (!-[ABFavoritesListManager _isValueForEntry:equalToValue:](self, "_isValueForEntry:equalToValue:", v19, a7) || a8 && !objc_msgSend(a8, "isEqualToString:", objc_msgSend(v19, "nonLocalizedLabel"))))
+    if (identifier != -1 && [v18 identifier] != identifier || type != 3 && objc_msgSend(v19, "type") != type || property != -1 && objc_msgSend(v19, "property") != property || value && (!-[ABFavoritesListManager _isValueForEntry:equalToValue:](self, "_isValueForEntry:equalToValue:", v19, value) || label && !objc_msgSend(label, "isEqualToString:", objc_msgSend(v19, "nonLocalizedLabel"))))
     {
       v19 = 0;
     }
@@ -412,20 +412,20 @@ uint64_t __51__ABFavoritesListManager__loadListWithAddressBook___block_invoke(ui
   return v19;
 }
 
-- (id)entryWithType:(int)a3 forPerson:(void *)a4 property:(int)a5 identifier:(int)a6
+- (id)entryWithType:(int)type forPerson:(void *)person property:(int)property identifier:(int)identifier
 {
-  v6 = *&a6;
-  v7 = *&a5;
-  v8 = *&a3;
-  v10 = [(ABFavoritesListManager *)self entriesForPerson:a4];
+  v6 = *&identifier;
+  v7 = *&property;
+  v8 = *&type;
+  v10 = [(ABFavoritesListManager *)self entriesForPerson:person];
 
   return [(ABFavoritesListManager *)self entryFromEntries:v10 type:v8 property:v7 identifier:v6 value:0 label:0];
 }
 
-- (BOOL)addEntryForPerson:(void *)a3 property:(int)a4 withIdentifier:(int)a5
+- (BOOL)addEntryForPerson:(void *)person property:(int)property withIdentifier:(int)identifier
 {
-  v5 = *&a5;
-  v6 = *&a4;
+  v5 = *&identifier;
+  v6 = *&property;
   if ([(ABFavoritesListManager *)self isFull])
   {
     LOBYTE(v9) = 0;
@@ -433,7 +433,7 @@ uint64_t __51__ABFavoritesListManager__loadListWithAddressBook___block_invoke(ui
 
   else
   {
-    v9 = [[ABFavoritesEntry alloc] initWithPerson:a3 property:v6 identifier:v5];
+    v9 = [[ABFavoritesEntry alloc] initWithPerson:person property:v6 identifier:v5];
     if (v9)
     {
       v10 = v9;
@@ -446,15 +446,15 @@ uint64_t __51__ABFavoritesListManager__loadListWithAddressBook___block_invoke(ui
   return v9;
 }
 
-- (void)_addEntryToMap:(id)a3
+- (void)_addEntryToMap:(id)map
 {
-  v5 = [a3 _abUid];
-  if ((v5 & 0x80000000) != 0)
+  _abUid = [map _abUid];
+  if ((_abUid & 0x80000000) != 0)
   {
     return;
   }
 
-  v6 = v5;
+  v6 = _abUid;
   uidToEntry = self->_uidToEntry;
   if (uidToEntry)
   {
@@ -466,7 +466,7 @@ uint64_t __51__ABFavoritesListManager__loadListWithAddressBook___block_invoke(ui
       if (objc_opt_isKindOfClass())
       {
         v15 = [v9 mutableCopy];
-        [v15 addObject:a3];
+        [v15 addObject:map];
         v10 = self->_uidToEntry;
         v11 = v6;
         v12 = v15;
@@ -474,7 +474,7 @@ uint64_t __51__ABFavoritesListManager__loadListWithAddressBook___block_invoke(ui
 
       else
       {
-        v12 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v9, a3, 0}];
+        v12 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v9, map, 0}];
         v15 = v12;
         v10 = self->_uidToEntry;
         v11 = v6;
@@ -496,12 +496,12 @@ uint64_t __51__ABFavoritesListManager__loadListWithAddressBook___block_invoke(ui
     v14 = v6;
   }
 
-  CFDictionarySetValue(Mutable, v14, a3);
+  CFDictionarySetValue(Mutable, v14, map);
 }
 
-- (void)_removeEntryFromMap:(id)a3 withUid:(int)a4
+- (void)_removeEntryFromMap:(id)map withUid:(int)uid
 {
-  if (a4 < 0)
+  if (uid < 0)
   {
     return;
   }
@@ -512,8 +512,8 @@ uint64_t __51__ABFavoritesListManager__loadListWithAddressBook___block_invoke(ui
     return;
   }
 
-  v7 = a4;
-  v8 = CFDictionaryGetValue(uidToEntry, a4);
+  uidCopy = uid;
+  v8 = CFDictionaryGetValue(uidToEntry, uid);
   if (!v8)
   {
     return;
@@ -534,7 +534,7 @@ uint64_t __51__ABFavoritesListManager__loadListWithAddressBook___block_invoke(ui
 
   v11 = v10;
   v12 = 0;
-  while ([v9 objectAtIndex:v12] != a3)
+  while ([v9 objectAtIndex:v12] != map)
   {
     if (v11 == ++v12)
     {
@@ -547,7 +547,7 @@ uint64_t __51__ABFavoritesListManager__loadListWithAddressBook___block_invoke(ui
     v14 = self->_uidToEntry;
     v15 = [v9 objectAtIndex:v12 == 0];
 
-    CFDictionarySetValue(v14, v7, v15);
+    CFDictionarySetValue(v14, uidCopy, v15);
   }
 
   else
@@ -557,13 +557,13 @@ uint64_t __51__ABFavoritesListManager__loadListWithAddressBook___block_invoke(ui
 LABEL_12:
       v13 = self->_uidToEntry;
 
-      CFDictionaryRemoveValue(v13, v7);
+      CFDictionaryRemoveValue(v13, uidCopy);
       return;
     }
 
     value = [v9 mutableCopy];
     [value removeObjectAtIndex:v12];
-    CFDictionarySetValue(self->_uidToEntry, v7, value);
+    CFDictionarySetValue(self->_uidToEntry, uidCopy, value);
   }
 }
 
@@ -574,13 +574,13 @@ LABEL_12:
   _ABLog2(4, "[ABFavoritesListManager saveImmediately]", 345, 0, @"must save changes with CNFavorites", v2, v3, v4, v6);
 }
 
-- (void)_entryIdentityChanged:(id)a3
+- (void)_entryIdentityChanged:(id)changed
 {
-  v5 = [a3 object];
-  v6 = [objc_msgSend(a3 "userInfo")];
+  object = [changed object];
+  v6 = [objc_msgSend(changed "userInfo")];
   if (v6)
   {
-    v7 = v5 == 0;
+    v7 = object == 0;
   }
 
   else
@@ -590,13 +590,13 @@ LABEL_12:
 
   if (!v7)
   {
-    v8 = [v6 intValue];
-    if ((v8 & 0x80000000) == 0)
+    intValue = [v6 intValue];
+    if ((intValue & 0x80000000) == 0)
     {
-      [(ABFavoritesListManager *)self _removeEntryFromMap:v5 withUid:v8];
+      [(ABFavoritesListManager *)self _removeEntryFromMap:object withUid:intValue];
     }
 
-    [(ABFavoritesListManager *)self _addEntryToMap:v5];
+    [(ABFavoritesListManager *)self _addEntryToMap:object];
   }
 
   [(ABFavoritesListManager *)self _scheduleSave];
@@ -604,9 +604,9 @@ LABEL_12:
 
 - (void)_postChangeNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v3 postNotificationName:@"CNFavoritesChangedNotification" object:self];
+  [defaultCenter postNotificationName:@"CNFavoritesChangedNotification" object:self];
 }
 
 - (void)_listChangedExternally
@@ -634,7 +634,7 @@ LABEL_12:
   }
 }
 
-- (void)addEntry:(id)a3
+- (void)addEntry:(id)entry
 {
   if ((*&self->_flags & 4) != 0)
   {
@@ -649,59 +649,59 @@ LABEL_12:
   }
 
   v6 = [(NSMutableArray *)list count];
-  if (a3 && v6 <= 0x31)
+  if (entry && v6 <= 0x31)
   {
-    [(NSMutableArray *)self->_list addObject:a3];
-    [(ABFavoritesListManager *)self _addEntryToMap:a3];
+    [(NSMutableArray *)self->_list addObject:entry];
+    [(ABFavoritesListManager *)self _addEntryToMap:entry];
     [(ABFavoritesListManager *)self _postChangeNotification];
 
     [(ABFavoritesListManager *)self _scheduleSave];
   }
 }
 
-- (void)removeEntryAtIndex:(int64_t)a3
+- (void)removeEntryAtIndex:(int64_t)index
 {
   if ((*&self->_flags & 4) != 0)
   {
     [(ABFavoritesListManager *)self _loadList];
   }
 
-  v5 = [(NSMutableArray *)self->_list objectAtIndex:a3];
+  v5 = [(NSMutableArray *)self->_list objectAtIndex:index];
   -[ABFavoritesListManager _removeEntryFromMap:withUid:](self, "_removeEntryFromMap:withUid:", v5, [v5 _abUid]);
-  [(NSMutableArray *)self->_list removeObjectAtIndex:a3];
+  [(NSMutableArray *)self->_list removeObjectAtIndex:index];
   [(ABFavoritesListManager *)self _postChangeNotification];
 
   [(ABFavoritesListManager *)self _scheduleSave];
 }
 
-- (void)moveEntryAtIndex:(int64_t)a3 toIndex:(int64_t)a4
+- (void)moveEntryAtIndex:(int64_t)index toIndex:(int64_t)toIndex
 {
-  if (a3 != a4)
+  if (index != toIndex)
   {
     list = self->_list;
     v9 = [(NSMutableArray *)list objectAtIndex:?];
-    if (a4 <= a3)
+    if (toIndex <= index)
     {
-      v10 = a4;
+      toIndexCopy = toIndex;
     }
 
     else
     {
-      v10 = a4 + 1;
+      toIndexCopy = toIndex + 1;
     }
 
-    [(NSMutableArray *)list insertObject:v9 atIndex:v10];
-    if (a3 <= a4)
+    [(NSMutableArray *)list insertObject:v9 atIndex:toIndexCopy];
+    if (index <= toIndex)
     {
-      v11 = a3;
+      indexCopy = index;
     }
 
     else
     {
-      v11 = a3 + 1;
+      indexCopy = index + 1;
     }
 
-    [(NSMutableArray *)self->_list removeObjectAtIndex:v11];
+    [(NSMutableArray *)self->_list removeObjectAtIndex:indexCopy];
     [(ABFavoritesListManager *)self _postChangeNotification];
 
     [(ABFavoritesListManager *)self _scheduleSave];
@@ -715,15 +715,15 @@ LABEL_12:
   *&self->_flags &= ~1u;
 }
 
-- (BOOL)entryIsDuplicateAndThusRemoved:(id)a3 oldUid:(int)a4
+- (BOOL)entryIsDuplicateAndThusRemoved:(id)removed oldUid:(int)uid
 {
-  v4 = *&a4;
+  v4 = *&uid;
   v7 = [(NSMutableArray *)self->_list count];
   if (v7)
   {
     v8 = v7;
     v9 = 0;
-    while ([(NSMutableArray *)self->_list objectAtIndex:v9]!= a3)
+    while ([(NSMutableArray *)self->_list objectAtIndex:v9]!= removed)
     {
       if (v8 == ++v9)
       {
@@ -739,7 +739,7 @@ LABEL_12:
       while (1)
       {
         v17 = [(NSMutableArray *)self->_list objectAtIndex:v16];
-        if (v17 != a3 && ([v17 isEqual:a3] & 1) != 0)
+        if (v17 != removed && ([v17 isEqual:removed] & 1) != 0)
         {
           break;
         }
@@ -751,7 +751,7 @@ LABEL_12:
       }
 
       [(NSMutableArray *)self->_list removeObjectAtIndex:v9];
-      [(ABFavoritesListManager *)self _removeEntryFromMap:a3 withUid:v4];
+      [(ABFavoritesListManager *)self _removeEntryFromMap:removed withUid:v4];
       [(ABFavoritesListManager *)self _scheduleSave];
       [(ABFavoritesListManager *)self _postChangeNotification];
       LOBYTE(v14) = 1;
@@ -762,8 +762,8 @@ LABEL_12:
   {
 LABEL_5:
     ABDiagnosticsEnabled();
-    v10 = [a3 dictionaryRepresentation];
-    _ABLog2(4, "[ABFavoritesListManager entryIsDuplicateAndThusRemoved:oldUid:]", 445, 0, @"Checking for duplicate favorites entry, but entry we were told to compare is not list! Entry: %@\nList: %@", v11, v12, v13, v10);
+    dictionaryRepresentation = [removed dictionaryRepresentation];
+    _ABLog2(4, "[ABFavoritesListManager entryIsDuplicateAndThusRemoved:oldUid:]", 445, 0, @"Checking for duplicate favorites entry, but entry we were told to compare is not list! Entry: %@\nList: %@", v11, v12, v13, dictionaryRepresentation);
 LABEL_6:
     LOBYTE(v14) = 0;
   }

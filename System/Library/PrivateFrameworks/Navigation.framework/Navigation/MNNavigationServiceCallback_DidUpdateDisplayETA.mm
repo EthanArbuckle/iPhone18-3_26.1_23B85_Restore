@@ -1,27 +1,27 @@
 @interface MNNavigationServiceCallback_DidUpdateDisplayETA
-- (MNNavigationServiceCallback_DidUpdateDisplayETA)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MNNavigationServiceCallback_DidUpdateDisplayETA)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MNNavigationServiceCallback_DidUpdateDisplayETA
 
-- (MNNavigationServiceCallback_DidUpdateDisplayETA)initWithCoder:(id)a3
+- (MNNavigationServiceCallback_DidUpdateDisplayETA)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = MNNavigationServiceCallback_DidUpdateDisplayETA;
-  v5 = [(MNNavigationServiceCallbackParameters *)&v14 initWithCoder:v4];
+  v5 = [(MNNavigationServiceCallbackParameters *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_batteryChargeInfo"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_batteryChargeInfo"];
     batteryChargeInfo = v5->_batteryChargeInfo;
     v5->_batteryChargeInfo = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_displayETAInfo"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_displayETAInfo"];
     displayETAInfo = v5->_displayETAInfo;
     v5->_displayETAInfo = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_routeDistanceInfo"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_routeDistanceInfo"];
     routeDistanceInfo = v5->_routeDistanceInfo;
     v5->_routeDistanceInfo = v10;
 
@@ -31,15 +31,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MNNavigationServiceCallback_DidUpdateDisplayETA;
-  v4 = a3;
-  [(MNNavigationServiceCallbackParameters *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_batteryChargeInfo forKey:{@"_batteryChargeInfo", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_displayETAInfo forKey:@"_displayETAInfo"];
-  [v4 encodeObject:self->_routeDistanceInfo forKey:@"_routeDistanceInfo"];
+  coderCopy = coder;
+  [(MNNavigationServiceCallbackParameters *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_batteryChargeInfo forKey:{@"_batteryChargeInfo", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_displayETAInfo forKey:@"_displayETAInfo"];
+  [coderCopy encodeObject:self->_routeDistanceInfo forKey:@"_routeDistanceInfo"];
 }
 
 @end

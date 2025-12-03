@@ -1,35 +1,35 @@
 @interface COSSetupControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)blockGoingBackFromCurrentController;
-- (void)buddyControllerHold:(id)a3 beforePresentingBuddyController:(id)a4;
+- (void)buddyControllerHold:(id)hold beforePresentingBuddyController:(id)controller;
 @end
 
 @implementation COSSetupControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"COSSetupController" hasInstanceMethod:@"buddyControllerHold: beforePresentingBuddyController:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"COSSetupController" hasInstanceMethod:@"blockGoingBackFromCurrentController" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"COSSetupController" hasInstanceMethod:@"buddyControllerHold: beforePresentingBuddyController:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"COSSetupController" hasInstanceMethod:@"blockGoingBackFromCurrentController" withFullSignature:{"v", 0}];
 }
 
-- (void)buddyControllerHold:(id)a3 beforePresentingBuddyController:(id)a4
+- (void)buddyControllerHold:(id)hold beforePresentingBuddyController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  holdCopy = hold;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = COSSetupControllerAccessibility;
-  [(COSSetupControllerAccessibility *)&v13 buddyControllerHold:v6 beforePresentingBuddyController:v7];
+  [(COSSetupControllerAccessibility *)&v13 buddyControllerHold:holdCopy beforePresentingBuddyController:controllerCopy];
   objc_opt_class();
   v8 = [(COSSetupControllerAccessibility *)self safeValueForKey:@"_navigationController"];
   v9 = __UIAccessibilityCastAsClass();
 
-  v10 = [v9 navigationBar];
-  v11 = [v10 topItem];
+  navigationBar = [v9 navigationBar];
+  topItem = [navigationBar topItem];
 
-  LODWORD(v10) = *MEMORY[0x29EDC7F10];
-  v12 = [v11 rightBarButtonItem];
-  UIAccessibilityPostNotification(v10, v12);
+  LODWORD(navigationBar) = *MEMORY[0x29EDC7F10];
+  rightBarButtonItem = [topItem rightBarButtonItem];
+  UIAccessibilityPostNotification(navigationBar, rightBarButtonItem);
 }
 
 - (void)blockGoingBackFromCurrentController
@@ -41,14 +41,14 @@
   v3 = [(COSSetupControllerAccessibility *)self safeValueForKey:@"_navigationController"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 viewControllers];
-  if ([v5 count] >= 2)
+  viewControllers = [v4 viewControllers];
+  if ([viewControllers count] >= 2)
   {
-    v6 = [v5 lastObject];
-    v7 = [v6 navigationItem];
-    v8 = [v7 leftBarButtonItem];
-    [v8 setIsAccessibilityElement:1];
-    [v8 setAccessibilityTraits:*MEMORY[0x29EDC7500] | *MEMORY[0x29EDC7F70]];
+    lastObject = [viewControllers lastObject];
+    navigationItem = [lastObject navigationItem];
+    leftBarButtonItem = [navigationItem leftBarButtonItem];
+    [leftBarButtonItem setIsAccessibilityElement:1];
+    [leftBarButtonItem setAccessibilityTraits:*MEMORY[0x29EDC7500] | *MEMORY[0x29EDC7F70]];
   }
 }
 

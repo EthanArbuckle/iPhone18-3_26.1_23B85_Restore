@@ -1,11 +1,11 @@
 @interface TemperatureTimelineEntryModel
 - (_TtC32DepthComplicationBundleCompanion29TemperatureTimelineEntryModel)init;
-- (_TtC32DepthComplicationBundleCompanion29TemperatureTimelineEntryModel)initWithCoder:(id)a3;
+- (_TtC32DepthComplicationBundleCompanion29TemperatureTimelineEntryModel)initWithCoder:(id)coder;
 @end
 
 @implementation TemperatureTimelineEntryModel
 
-- (_TtC32DepthComplicationBundleCompanion29TemperatureTimelineEntryModel)initWithCoder:(id)a3
+- (_TtC32DepthComplicationBundleCompanion29TemperatureTimelineEntryModel)initWithCoder:(id)coder
 {
   result = sub_35758();
   __break(1u);

@@ -1,21 +1,21 @@
 @interface VNFaceExpressionDetector
 + (id)configurationOptionKeysForDetectorKey;
-+ (id)createExpressionAndConfidencesDictionaryFromScores:(id)a3;
-+ (id)createExpressionDetectionDictionaryFromScores:(id)a3;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-+ (int)expressionTypeFromString:(id)a3;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
++ (id)createExpressionAndConfidencesDictionaryFromScores:(id)scores;
++ (id)createExpressionDetectionDictionaryFromScores:(id)scores;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
++ (int)expressionTypeFromString:(id)string;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
 - (id).cxx_construct;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation VNFaceExpressionDetector
 
-+ (id)createExpressionDetectionDictionaryFromScores:(id)a3
++ (id)createExpressionDetectionDictionaryFromScores:(id)scores
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  scoresCopy = scores;
   v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:6];
   v30[0] = 0;
   v30[1] = 0;
@@ -24,7 +24,7 @@
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = v4;
+  v6 = scoresCopy;
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v7)
   {
@@ -42,7 +42,7 @@
         v11 = [v6 objectForKey:v10];
         [v11 floatValue];
         v13 = v12;
-        LODWORD(v32) = [a1 expressionTypeFromString:v10];
+        LODWORD(v32) = [self expressionTypeFromString:v10];
         v23 = &v32;
         *(std::__tree<std::__value_type<vision::mod::_blinkType,float>,std::__map_value_compare<vision::mod::_blinkType,std::__value_type<vision::mod::_blinkType,float>,std::less<vision::mod::_blinkType>,true>,std::allocator<std::__value_type<vision::mod::_blinkType,float>>>::__emplace_unique_key_args<vision::mod::_blinkType,std::piecewise_construct_t const&,std::tuple<vision::mod::_blinkType&&>,std::tuple<>>(&v29, v32) + 8) = v13;
       }
@@ -125,10 +125,10 @@
   return v5;
 }
 
-+ (id)createExpressionAndConfidencesDictionaryFromScores:(id)a3
++ (id)createExpressionAndConfidencesDictionaryFromScores:(id)scores
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  scoresCopy = scores;
   v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:6];
   v36[0] = 0;
   v36[1] = 0;
@@ -137,7 +137,7 @@
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v6 = v4;
+  v6 = scoresCopy;
   v7 = [v6 countByEnumeratingWithState:&v31 objects:v40 count:16];
   if (v7)
   {
@@ -155,7 +155,7 @@
         v11 = [v6 objectForKey:v10];
         [v11 floatValue];
         v13 = v12;
-        LODWORD(v39) = [a1 expressionTypeFromString:v10];
+        LODWORD(v39) = [self expressionTypeFromString:v10];
         v29 = &v39;
         *(std::__tree<std::__value_type<vision::mod::_blinkType,float>,std::__map_value_compare<vision::mod::_blinkType,std::__value_type<vision::mod::_blinkType,float>,std::less<vision::mod::_blinkType>,true>,std::allocator<std::__value_type<vision::mod::_blinkType,float>>>::__emplace_unique_key_args<vision::mod::_blinkType,std::piecewise_construct_t const&,std::tuple<vision::mod::_blinkType&&>,std::tuple<>>(&v35, v39) + 8) = v13;
       }
@@ -249,35 +249,35 @@
   return v5;
 }
 
-+ (int)expressionTypeFromString:(id)a3
++ (int)expressionTypeFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Smile"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"Smile"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Disgust"])
+  else if ([stringCopy isEqualToString:@"Disgust"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Neutral"])
+  else if ([stringCopy isEqualToString:@"Neutral"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Surprise"])
+  else if ([stringCopy isEqualToString:@"Surprise"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Scream"])
+  else if ([stringCopy isEqualToString:@"Scream"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Suspicious"])
+  else if ([stringCopy isEqualToString:@"Suspicious"])
   {
     v4 = 5;
   }
@@ -296,7 +296,7 @@
   block[1] = 3221225472;
   block[2] = __65__VNFaceExpressionDetector_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNFaceExpressionDetector configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNFaceExpressionDetector configurationOptionKeysForDetectorKey]::onceToken, block);
@@ -320,11 +320,11 @@ void __65__VNFaceExpressionDetector_configurationOptionKeysForDetectorKey__block
   +[VNFaceExpressionDetector configurationOptionKeysForDetectorKey]::configurationOptionKeys = v3;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allCPUComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allCPUComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 
@@ -338,18 +338,18 @@ void __65__VNFaceExpressionDetector_configurationOptionKeysForDetectorKey__block
   return self;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
   v62[1] = *MEMORY[0x1E69E9840];
-  v11 = a5;
-  v12 = [(VNDetector *)self validatedImageBufferFromOptions:v11 error:a8];
+  optionsCopy = options;
+  v12 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   if (!v12)
   {
     v16 = 0;
     goto LABEL_30;
   }
 
-  v13 = [VNValidationUtilities requiredFaceObservationInOptions:v11 error:a8];
+  v13 = [VNValidationUtilities requiredFaceObservationInOptions:optionsCopy error:error];
   v14 = v13;
   if (!v13)
   {
@@ -357,18 +357,18 @@ void __65__VNFaceExpressionDetector_configurationOptionKeysForDetectorKey__block
     goto LABEL_29;
   }
 
-  v15 = [v13 expressionsAndScores];
+  expressionsAndScores = [v13 expressionsAndScores];
 
-  if (!v15)
+  if (!expressionsAndScores)
   {
-    v17 = [v14 vn_cloneObject];
-    v18 = v17;
-    if (!v17)
+    vn_cloneObject = [v14 vn_cloneObject];
+    v18 = vn_cloneObject;
+    if (!vn_cloneObject)
     {
-      if (a8)
+      if (error)
       {
         +[VNError errorForMemoryAllocationFailure];
-        *a8 = v16 = 0;
+        *error = v16 = 0;
       }
 
       else
@@ -379,33 +379,33 @@ void __65__VNFaceExpressionDetector_configurationOptionKeysForDetectorKey__block
       goto LABEL_28;
     }
 
-    v19 = [v17 landmarkPoints65];
-    v20 = v19;
-    if (v19)
+    landmarkPoints65 = [vn_cloneObject landmarkPoints65];
+    v20 = landmarkPoints65;
+    if (landmarkPoints65)
     {
-      v21 = [v19 bytes];
+      bytes = [landmarkPoints65 bytes];
       if ([v20 length] > 0x1F7)
       {
         v58 = 0;
         v59 = 0;
         v60 = 0;
-        std::vector<_Geometry2D_point2D_>::__init_with_size[abi:ne200100]<_Geometry2D_point2D_*,_Geometry2D_point2D_*>(&v58, v21, v21 + 504, 0x3FuLL);
+        std::vector<_Geometry2D_point2D_>::__init_with_size[abi:ne200100]<_Geometry2D_point2D_*,_Geometry2D_point2D_*>(&v58, bytes, bytes + 504, 0x3FuLL);
         [v18 alignedBoundingBox];
         v24 = v23;
         v26 = v25;
         v28 = v27;
         v30 = v29;
-        v31 = [v12 width];
-        v32 = [v12 height];
-        v33 = [v12 width];
-        v34 = [v12 height];
+        width = [v12 width];
+        height = [v12 height];
+        width2 = [v12 width];
+        height2 = [v12 height];
         v35 = 0;
-        v36 = v24 * v31;
+        v36 = v24 * width;
         v37 = v58;
         do
         {
-          v38.f32[1] = v28 * v34;
-          v38.f32[0] = v30 * v33;
+          v38.f32[1] = v28 * height2;
+          v38.f32[0] = v30 * width2;
           *&v37[v35] = vmul_f32(v38, *&v37[v35]);
           v35 += 8;
         }
@@ -426,21 +426,21 @@ void __65__VNFaceExpressionDetector_configurationOptionKeysForDetectorKey__block
         v45 = &unk_1F19724F0;
         v48 = v56;
         __p = 0;
-        v46 = self;
+        selfCopy = self;
         v52 = v36;
-        v53 = v26 * v32;
-        v54 = v28 * v34;
-        v55 = v30 * v33;
+        v53 = v26 * height;
+        v54 = v28 * height2;
+        v55 = v30 * width2;
         v50 = 0;
         v51 = 0;
         std::vector<_Geometry2D_point2D_>::__init_with_size[abi:ne200100]<_Geometry2D_point2D_*,_Geometry2D_point2D_*>(&__p, v37, v59, (v59 - v37) >> 3);
         v39 = v18;
         v47 = v39;
         v40 = _Block_copy(&v42);
-        if (VNExecuteBlock(v40, a8))
+        if (VNExecuteBlock(v40, error))
         {
           v61 = v39;
-          v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v61 count:{1, v42, v43, v44, v45, v46}];
+          v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v61 count:{1, v42, v43, v44, v45, selfCopy}];
         }
 
         else
@@ -460,12 +460,12 @@ void __65__VNFaceExpressionDetector_configurationOptionKeysForDetectorKey__block
         goto LABEL_27;
       }
 
-      if (a8)
+      if (error)
       {
         v22 = [VNError errorForInternalErrorWithLocalizedDescription:@"Corrupt face mark data"];
 LABEL_16:
         v16 = 0;
-        *a8 = v22;
+        *error = v22;
 LABEL_27:
 
 LABEL_28:
@@ -473,7 +473,7 @@ LABEL_28:
       }
     }
 
-    else if (a8)
+    else if (error)
     {
       v22 = [VNError errorForInternalErrorWithLocalizedDescription:@"VNFaceExpressionDetector face does not have landmark points"];
       goto LABEL_16;
@@ -613,11 +613,11 @@ uint64_t __126__VNFaceExpressionDetector_processRegionOfInterest_croppedPixelBuf
   [(VNDetector *)&v5 dealloc];
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
   v13.receiver = self;
   v13.super_class = VNFaceExpressionDetector;
-  if (![(VNDetector *)&v13 completeInitializationForSession:a3 error:?])
+  if (![(VNDetector *)&v13 completeInitializationForSession:session error:?])
   {
     return 0;
   }
@@ -632,7 +632,7 @@ uint64_t __126__VNFaceExpressionDetector_processRegionOfInterest_croppedPixelBuf
   v12 = v6;
   v7 = v6;
   v8 = _Block_copy(v11);
-  v9 = VNExecuteBlock(v8, a4);
+  v9 = VNExecuteBlock(v8, error);
 
   return v9;
 }

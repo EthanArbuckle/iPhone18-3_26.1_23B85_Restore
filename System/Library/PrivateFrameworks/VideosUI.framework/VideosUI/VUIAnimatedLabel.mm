@@ -1,38 +1,38 @@
 @interface VUIAnimatedLabel
 - (BOOL)_isRTL;
 - (BOOL)_shouldCycle;
-- (VUIAnimatedLabel)initWithFrame:(CGRect)a3;
+- (VUIAnimatedLabel)initWithFrame:(CGRect)frame;
 - (_VUIAnimatedImageView)currentMarqueeView;
 - (_VUIAnimatedImageView)nextMarqueeView;
 - (double)animationDuration;
-- (id)_rasterizedTextWithMarquee:(BOOL)a3;
+- (id)_rasterizedTextWithMarquee:(BOOL)marquee;
 - (void)_clearAnimations;
 - (void)_clearAttributedStrings;
-- (void)_prepareNextMarqueeWithDelay:(double)a3;
+- (void)_prepareNextMarqueeWithDelay:(double)delay;
 - (void)_startMarqueeIfNeeded;
 - (void)_stopMarqueeingIfNeeded;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)drawTextInRect:(CGRect)a3;
-- (void)setAnimating:(BOOL)a3;
-- (void)setAttributedStrings:(id)a3;
-- (void)setAttributedText:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)drawTextInRect:(CGRect)rect;
+- (void)setAnimating:(BOOL)animating;
+- (void)setAttributedStrings:(id)strings;
+- (void)setAttributedText:(id)text;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)setNeedsDisplay;
-- (void)setPaused:(BOOL)a3;
-- (void)setText:(id)a3;
-- (void)stopAndResetScrollWithDuration:(double)a3;
-- (void)stopAnimatingWithoutResetWithDuration:(double)a3;
-- (void)vui_setSelected:(BOOL)a3 animated:(BOOL)a4 withAnimationCoordinator:(id)a5;
+- (void)setPaused:(BOOL)paused;
+- (void)setText:(id)text;
+- (void)stopAndResetScrollWithDuration:(double)duration;
+- (void)stopAnimatingWithoutResetWithDuration:(double)duration;
+- (void)vui_setSelected:(BOOL)selected animated:(BOOL)animated withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation VUIAnimatedLabel
 
-- (VUIAnimatedLabel)initWithFrame:(CGRect)a3
+- (VUIAnimatedLabel)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = VUIAnimatedLabel;
-  v3 = [(VUILabel *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUILabel *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -62,33 +62,33 @@
   return v4;
 }
 
-- (void)vui_setSelected:(BOOL)a3 animated:(BOOL)a4 withAnimationCoordinator:(id)a5
+- (void)vui_setSelected:(BOOL)selected animated:(BOOL)animated withAnimationCoordinator:(id)coordinator
 {
-  v5 = a3;
+  selectedCopy = selected;
   v7.receiver = self;
   v7.super_class = VUIAnimatedLabel;
-  [(VUILabel *)&v7 vui_setSelected:a3 animated:a4 withAnimationCoordinator:a5];
-  [(VUIAnimatedLabel *)self setAnimating:v5];
+  [(VUILabel *)&v7 vui_setSelected:selected animated:animated withAnimationCoordinator:coordinator];
+  [(VUIAnimatedLabel *)self setAnimating:selectedCopy];
 }
 
 - (void)dealloc
 {
   [(VUIAnimatedLabel *)self _clearAnimations];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUIAnimatedLabel;
   [(VUILabel *)&v4 dealloc];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = MEMORY[0x1E696AAB0];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithString:v5];
+    textCopy = text;
+    v6 = [[v4 alloc] initWithString:textCopy];
   }
 
   else
@@ -99,15 +99,15 @@
   [(VUIAnimatedLabel *)self setAttributedText:v6];
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (text)
   {
-    v7 = a3;
+    textCopy = text;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v7 count:1];
+    textCopy2 = text;
+    v6 = [v4 arrayWithObjects:&textCopy count:1];
   }
 
   else
@@ -115,7 +115,7 @@
     v6 = 0;
   }
 
-  [(VUIAnimatedLabel *)self setAttributedStrings:v6, v7, v8];
+  [(VUIAnimatedLabel *)self setAttributedStrings:v6, textCopy, v8];
 }
 
 - (void)_clearAttributedStrings
@@ -130,13 +130,13 @@
   [(VUIAnimatedLabel *)self setNeedsDisplay];
 }
 
-- (void)setAttributedStrings:(id)a3
+- (void)setAttributedStrings:(id)strings
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([(NSArray *)self->_attributedStrings isEqual:v4]& 1) == 0)
+  stringsCopy = strings;
+  if (([(NSArray *)self->_attributedStrings isEqual:stringsCopy]& 1) == 0)
   {
-    v5 = [v4 copy];
+    v5 = [stringsCopy copy];
     attributedStrings = self->_attributedStrings;
     self->_attributedStrings = v5;
 
@@ -180,15 +180,15 @@
     }
 
     [(VUIAnimatedLabel *)self _clearAnimations];
-    v13 = [(VUIAnimatedLabel *)self currentMarqueeView];
-    [v13 setHidden:1];
+    currentMarqueeView = [(VUIAnimatedLabel *)self currentMarqueeView];
+    [currentMarqueeView setHidden:1];
 
-    v14 = [(VUIAnimatedLabel *)self nextMarqueeView];
-    [v14 setHidden:1];
+    nextMarqueeView = [(VUIAnimatedLabel *)self nextMarqueeView];
+    [nextMarqueeView setHidden:1];
 
     self->_currentAttributedStringIndex = 0;
-    v15 = [(NSArray *)self->_attributedStrings firstObject];
-    v16 = [v15 copy];
+    firstObject = [(NSArray *)self->_attributedStrings firstObject];
+    v16 = [firstObject copy];
     v18.receiver = self;
     v18.super_class = VUIAnimatedLabel;
     [(VUILabel *)&v18 setAttributedText:v16];
@@ -222,17 +222,17 @@ void __41__VUIAnimatedLabel_setAttributedStrings___block_invoke_2(uint64_t a1)
   [WeakRetained setNeedsDisplay];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v6.receiver = self;
   v6.super_class = VUIAnimatedLabel;
-  [(VUILabel *)&v6 setHighlighted:a3];
+  [(VUILabel *)&v6 setHighlighted:highlighted];
   [(VUIAnimatedLabel *)self setNeedsDisplay];
   if (self->_animating && self->_marqueeing)
   {
-    v4 = [(VUIAnimatedLabel *)self currentMarqueeView];
+    currentMarqueeView = [(VUIAnimatedLabel *)self currentMarqueeView];
     v5 = [(VUIAnimatedLabel *)self _rasterizedTextWithMarquee:self->_marqueeNeeded];
-    [v4 setImage:v5];
+    [currentMarqueeView setImage:v5];
   }
 }
 
@@ -248,28 +248,28 @@ void __41__VUIAnimatedLabel_setAttributedStrings___block_invoke_2(uint64_t a1)
 
 - (void)_clearAnimations
 {
-  v3 = [(VUIAnimatedLabel *)self currentMarqueeView];
-  v4 = [v3 layer];
-  [v4 removeAllAnimations];
+  currentMarqueeView = [(VUIAnimatedLabel *)self currentMarqueeView];
+  layer = [currentMarqueeView layer];
+  [layer removeAllAnimations];
 
-  v5 = [(VUIAnimatedLabel *)self nextMarqueeView];
-  v6 = [v5 layer];
-  [v6 removeAllAnimations];
+  nextMarqueeView = [(VUIAnimatedLabel *)self nextMarqueeView];
+  layer2 = [nextMarqueeView layer];
+  [layer2 removeAllAnimations];
 
   [(CALayer *)self->_maskLayer removeAllAnimations];
-  v7 = [(VUIAnimatedLabel *)self layer];
-  [v7 setMask:0];
+  layer3 = [(VUIAnimatedLabel *)self layer];
+  [layer3 setMask:0];
 
   self->_marqueeing = 0;
   self->_crossfading = 0;
 }
 
-- (void)setAnimating:(BOOL)a3
+- (void)setAnimating:(BOOL)animating
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (self->_animating == a3)
+  if (self->_animating == animating)
   {
-    if (a3 && self->_stopping)
+    if (animating && self->_stopping)
     {
       self->_stopping = 0;
     }
@@ -277,17 +277,17 @@ void __41__VUIAnimatedLabel_setAttributedStrings___block_invoke_2(uint64_t a1)
     return;
   }
 
-  self->_animating = a3;
+  self->_animating = animating;
   if (!self->_marqueeNeeded)
   {
     return;
   }
 
-  v4 = [(VUIAnimatedLabel *)self currentMarqueeView];
-  [v4 setHidden:1];
+  currentMarqueeView = [(VUIAnimatedLabel *)self currentMarqueeView];
+  [currentMarqueeView setHidden:1];
 
-  v5 = [(VUIAnimatedLabel *)self nextMarqueeView];
-  [v5 setHidden:1];
+  nextMarqueeView = [(VUIAnimatedLabel *)self nextMarqueeView];
+  [nextMarqueeView setHidden:1];
 
   if (self->_stopping && self->_animating)
   {
@@ -309,15 +309,15 @@ void __41__VUIAnimatedLabel_setAttributedStrings___block_invoke_2(uint64_t a1)
   if (self->_animating)
   {
 LABEL_13:
-    v6 = [(VUIAnimatedLabel *)self layer];
-    [v6 setOpaque:0];
+    layer = [(VUIAnimatedLabel *)self layer];
+    [layer setOpaque:0];
 
     v7 = VUIDefaultLogObject();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [(VUIAnimatedLabel *)self text];
+      text = [(VUIAnimatedLabel *)self text];
       *buf = 138412290;
-      v15 = v8;
+      v15 = text;
       _os_log_impl(&dword_1E323F000, v7, OS_LOG_TYPE_INFO, "AL(%@): starting timeout begin", buf, 0xCu);
     }
 
@@ -340,8 +340,8 @@ LABEL_13:
   self->_stopping = 0;
   self->_starting = 0;
   self->_currentAttributedStringIndex = 0;
-  v10 = [(NSArray *)self->_attributedStrings firstObject];
-  v11 = [v10 copy];
+  firstObject = [(NSArray *)self->_attributedStrings firstObject];
+  v11 = [firstObject copy];
   [(VUIAnimatedLabel *)self setAttributedText:v11];
 
   [(VUIAnimatedLabel *)self setNeedsDisplay];
@@ -367,19 +367,19 @@ void __33__VUIAnimatedLabel_setAnimating___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (self->_paused != a3)
+  if (self->_paused != paused)
   {
-    self->_paused = a3;
-    if (!a3)
+    self->_paused = paused;
+    if (!paused)
     {
       [(VUIAnimatedLabel *)self _startMarqueeIfNeeded];
     }
   }
 }
 
-- (void)stopAnimatingWithoutResetWithDuration:(double)a3
+- (void)stopAnimatingWithoutResetWithDuration:(double)duration
 {
   v12 = *MEMORY[0x1E69E9840];
   if ([(VUIAnimatedLabel *)self isAnimating])
@@ -389,15 +389,15 @@ void __33__VUIAnimatedLabel_setAnimating___block_invoke(uint64_t a1)
       v5 = VUIDefaultLogObject();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
-        v6 = [(VUIAnimatedLabel *)self text];
+        text = [(VUIAnimatedLabel *)self text];
         *buf = 138412290;
-        v11 = v6;
+        v11 = text;
         _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_INFO, "AL(%@): stopping timeout begin", buf, 0xCu);
       }
 
       self->_stopping = 1;
       objc_initWeak(buf, self);
-      v7 = dispatch_time(0, (a3 * 1000000000.0));
+      v7 = dispatch_time(0, (duration * 1000000000.0));
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __58__VUIAnimatedLabel_stopAnimatingWithoutResetWithDuration___block_invoke;
@@ -438,10 +438,10 @@ void __58__VUIAnimatedLabel_stopAnimatingWithoutResetWithDuration___block_invoke
   }
 }
 
-- (void)stopAndResetScrollWithDuration:(double)a3
+- (void)stopAndResetScrollWithDuration:(double)duration
 {
   v64 = *MEMORY[0x1E69E9840];
-  if (a3 > 0.0 && self->_marqueeNeeded)
+  if (duration > 0.0 && self->_marqueeNeeded)
   {
     [(VUIAnimatedLabel *)self bounds];
     v52 = v6;
@@ -455,33 +455,33 @@ void __58__VUIAnimatedLabel_stopAnimatingWithoutResetWithDuration___block_invoke
     v12 = v10 + v8;
     [(VUIAnimatedLabel *)self replicationPadding];
     v47 = v13 + v12;
-    v14 = [(VUIAnimatedLabel *)self currentMarqueeView];
-    v15 = [v14 layer];
-    v16 = [v15 presentationLayer];
-    [v16 contentsRect];
+    currentMarqueeView = [(VUIAnimatedLabel *)self currentMarqueeView];
+    layer = [currentMarqueeView layer];
+    presentationLayer = [layer presentationLayer];
+    [presentationLayer contentsRect];
     v18 = v17;
     v45 = v20;
     v46 = v19;
     v44 = v21;
 
-    v22 = [(CALayer *)self->_maskLayer presentationLayer];
-    [v22 bounds];
+    presentationLayer2 = [(CALayer *)self->_maskLayer presentationLayer];
+    [presentationLayer2 bounds];
     v24 = v23;
     v26 = v25;
     v28 = v27;
     v30 = v29;
 
-    v31 = [(CALayer *)self->_maskLayer presentationLayer];
-    [v31 position];
+    presentationLayer3 = [(CALayer *)self->_maskLayer presentationLayer];
+    [presentationLayer3 position];
     v33 = v32;
     v35 = v34;
 
-    v36 = [v14 layer];
-    [v36 removeAllAnimations];
+    layer2 = [currentMarqueeView layer];
+    [layer2 removeAllAnimations];
 
     [(CALayer *)self->_maskLayer removeAllAnimations];
-    v37 = [v14 layer];
-    [v37 setContentsRect:{v18, v46, v45, v44}];
+    layer3 = [currentMarqueeView layer];
+    [layer3 setContentsRect:{v18, v46, v45, v44}];
 
     [(CALayer *)self->_maskLayer setBounds:v24, v26, v28, v30];
     [(CALayer *)self->_maskLayer setPosition:v33, v35];
@@ -493,26 +493,26 @@ void __58__VUIAnimatedLabel_stopAnimatingWithoutResetWithDuration___block_invoke
     v59 = v48;
     v60 = v49;
     v61 = v47;
-    v57 = v14;
-    v58 = self;
+    v57 = currentMarqueeView;
+    selfCopy = self;
     v55[0] = MEMORY[0x1E69E9820];
     v55[1] = 3221225472;
     v55[2] = __51__VUIAnimatedLabel_stopAndResetScrollWithDuration___block_invoke_2;
     v55[3] = &unk_1E872F758;
     v55[4] = self;
-    v39 = v14;
-    [v38 animateWithDuration:327686 delay:v56 options:v55 animations:a3 completion:0.0];
+    v39 = currentMarqueeView;
+    [v38 animateWithDuration:327686 delay:v56 options:v55 animations:duration completion:0.0];
     v40 = VUIDefaultLogObject();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
     {
-      v41 = [(VUIAnimatedLabel *)self text];
+      text = [(VUIAnimatedLabel *)self text];
       *buf = 138412290;
-      v63 = v41;
+      v63 = text;
       _os_log_impl(&dword_1E323F000, v40, OS_LOG_TYPE_INFO, "AL(%@): stop-and-reset timeout begin", buf, 0xCu);
     }
 
-    v42 = a3 + -0.2;
-    if (a3 + -0.2 < 0.1)
+    v42 = duration + -0.2;
+    if (duration + -0.2 < 0.1)
     {
       v42 = 0.1;
     }
@@ -588,9 +588,9 @@ uint64_t __51__VUIAnimatedLabel_stopAndResetScrollWithDuration___block_invoke_37
   v4.receiver = self;
   v4.super_class = VUIAnimatedLabel;
   [(VUIAnimatedLabel *)&v4 didMoveToWindow];
-  v3 = [(VUIAnimatedLabel *)self window];
+  window = [(VUIAnimatedLabel *)self window];
 
-  if (!v3)
+  if (!window)
   {
     [(VUIAnimatedLabel *)self stopAnimating];
   }
@@ -598,23 +598,23 @@ uint64_t __51__VUIAnimatedLabel_stopAndResetScrollWithDuration___block_invoke_37
 
 - (BOOL)_isRTL
 {
-  v2 = [(VUIAnimatedLabel *)self text];
-  v3 = [v2 _isNaturallyRTL];
+  text = [(VUIAnimatedLabel *)self text];
+  _isNaturallyRTL = [text _isNaturallyRTL];
 
-  return v3;
+  return _isNaturallyRTL;
 }
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
   if (!self->_crossfading)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
     [(VUIAnimatedLabel *)self textSizeForWidth:3.40282347e38];
     self->_marqueeNeeded = v8 > width + self->_underPosterOutset * -2.0;
-    v9 = [(VUIAnimatedLabel *)self _isRTL];
+    _isRTL = [(VUIAnimatedLabel *)self _isRTL];
     CurrentContext = UIGraphicsGetCurrentContext();
     CGContextSaveGState(CurrentContext);
     v17.origin.x = x;
@@ -651,21 +651,21 @@ uint64_t __51__VUIAnimatedLabel_stopAndResetScrollWithDuration___block_invoke_37
         [VUIAnimatedLabel drawTextInRect:];
       }
 
-      if (v9)
+      if (_isRTL)
       {
-        v11 = [drawTextInRect____maskImage imageWithHorizontallyFlippedOrientation];
+        imageWithHorizontallyFlippedOrientation = [drawTextInRect____maskImage imageWithHorizontallyFlippedOrientation];
       }
 
       else
       {
-        v11 = drawTextInRect____maskImage;
+        imageWithHorizontallyFlippedOrientation = drawTextInRect____maskImage;
       }
 
-      v15 = v11;
-      [v11 size];
+      v15 = imageWithHorizontallyFlippedOrientation;
+      [imageWithHorizontallyFlippedOrientation size];
       v13 = v12;
       v14 = x + width - v12;
-      if (v9)
+      if (_isRTL)
       {
         v14 = 0.0;
       }
@@ -684,9 +684,9 @@ void __35__VUIAnimatedLabel_drawTextInRect___block_invoke()
   drawTextInRect____maskImage = v1;
 }
 
-- (id)_rasterizedTextWithMarquee:(BOOL)a3
+- (id)_rasterizedTextWithMarquee:(BOOL)marquee
 {
-  v3 = a3;
+  marqueeCopy = marquee;
   [(VUIAnimatedLabel *)self bounds];
   v6 = v5;
   v8 = v7;
@@ -695,27 +695,27 @@ void __35__VUIAnimatedLabel_drawTextInRect___block_invoke()
   [(VUIAnimatedLabel *)self textSizeForWidth:3.40282347e38];
   v14 = v13;
   v15 = 0.0;
-  if (v3)
+  if (marqueeCopy)
   {
     [(VUIAnimatedLabel *)self replicationPadding];
     v15 = v14 + v16;
   }
 
-  v17 = [(VUIAnimatedLabel *)self backgroundColor];
-  v18 = [(VUIAnimatedLabel *)self _isRTL];
+  backgroundColor = [(VUIAnimatedLabel *)self backgroundColor];
+  _isRTL = [(VUIAnimatedLabel *)self _isRTL];
   v19 = 0;
   if (v12 > 0.0)
   {
     v20 = v10 + v15;
     if (v20 > 0.0)
     {
-      v21 = v18;
+      v21 = _isRTL;
       v35.width = v20;
       v35.height = v12;
       UIGraphicsBeginImageContextWithOptions(v35, 0, 0.0);
-      if (v17)
+      if (backgroundColor)
       {
-        [v17 set];
+        [backgroundColor set];
         v36.origin.x = 0.0;
         v36.origin.y = 0.0;
         v36.size.width = v20;
@@ -723,7 +723,7 @@ void __35__VUIAnimatedLabel_drawTextInRect___block_invoke()
         UIRectFill(v36);
       }
 
-      if (v3)
+      if (marqueeCopy)
       {
         if (v21)
         {
@@ -773,17 +773,17 @@ void __35__VUIAnimatedLabel_drawTextInRect___block_invoke()
   return v19;
 }
 
-- (void)_prepareNextMarqueeWithDelay:(double)a3
+- (void)_prepareNextMarqueeWithDelay:(double)delay
 {
-  v5 = [(VUIAnimatedLabel *)self currentMarqueeView];
-  v6 = [(VUIAnimatedLabel *)self nextMarqueeView];
+  currentMarqueeView = [(VUIAnimatedLabel *)self currentMarqueeView];
+  nextMarqueeView = [(VUIAnimatedLabel *)self nextMarqueeView];
   v7 = [(VUIAnimatedLabel *)self currentAttributedStringIndex]+ 1;
-  v8 = [(VUIAnimatedLabel *)self attributedStrings];
-  v9 = v7 % [v8 count];
+  attributedStrings = [(VUIAnimatedLabel *)self attributedStrings];
+  v9 = v7 % [attributedStrings count];
 
   self->_currentAttributedStringIndex = v9;
-  v10 = [(VUIAnimatedLabel *)self attributedStrings];
-  v11 = [v10 objectAtIndex:self->_currentAttributedStringIndex];
+  attributedStrings2 = [(VUIAnimatedLabel *)self attributedStrings];
+  v11 = [attributedStrings2 objectAtIndex:self->_currentAttributedStringIndex];
   v12 = [v11 copy];
 
   self->_animating = 0;
@@ -793,16 +793,16 @@ void __35__VUIAnimatedLabel_drawTextInRect___block_invoke()
   [(VUILabel *)self setLineBreakMode:2];
   self->_animating = 1;
   v13 = [(VUIAnimatedLabel *)self _rasterizedTextWithMarquee:0];
-  [v6 setImage:v13];
+  [nextMarqueeView setImage:v13];
 
-  v14 = [v6 layer];
-  [v14 setContentsRect:{0.0, 0.0, 1.0, 1.0}];
+  layer = [nextMarqueeView layer];
+  [layer setContentsRect:{0.0, 0.0, 1.0, 1.0}];
 
-  [v6 sizeToFit];
+  [nextMarqueeView sizeToFit];
   [(VUIAnimatedLabel *)self bounds];
-  [v6 setFrame:?];
-  [v6 setHidden:0];
-  [v6 setAlpha:0.0];
+  [nextMarqueeView setFrame:?];
+  [nextMarqueeView setHidden:0];
+  [nextMarqueeView setAlpha:0.0];
   self->_crossfading = 1;
   objc_initWeak(&location, self);
   v15 = MEMORY[0x1E69DD250];
@@ -812,9 +812,9 @@ void __35__VUIAnimatedLabel_drawTextInRect___block_invoke()
   v27[1] = 3221225472;
   v27[2] = __49__VUIAnimatedLabel__prepareNextMarqueeWithDelay___block_invoke;
   v27[3] = &unk_1E872D990;
-  v18 = v5;
+  v18 = currentMarqueeView;
   v28 = v18;
-  v19 = v6;
+  v19 = nextMarqueeView;
   v29 = v19;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
@@ -825,8 +825,8 @@ void __35__VUIAnimatedLabel_drawTextInRect___block_invoke()
   v23 = v20;
   v21 = v18;
   v24 = v21;
-  v25 = self;
-  [v15 animateWithDuration:0 delay:v27 options:v22 animations:v17 completion:a3];
+  selfCopy = self;
+  [v15 animateWithDuration:0 delay:v27 options:v22 animations:v17 completion:delay];
 
   objc_destroyWeak(&v26);
   objc_destroyWeak(&location);
@@ -870,8 +870,8 @@ void __49__VUIAnimatedLabel__prepareNextMarqueeWithDelay___block_invoke_2(id *a1
 
 - (BOOL)_shouldCycle
 {
-  v2 = [(VUIAnimatedLabel *)self attributedStrings];
-  v3 = [v2 count] > 1;
+  attributedStrings = [(VUIAnimatedLabel *)self attributedStrings];
+  v3 = [attributedStrings count] > 1;
 
   return v3;
 }
@@ -899,7 +899,7 @@ void __49__VUIAnimatedLabel__prepareNextMarqueeWithDelay___block_invoke_2(id *a1
   v100[5] = *MEMORY[0x1E69E9840];
   if (!self->_marqueeing && (self->_marqueeNeeded || [(VUIAnimatedLabel *)self _shouldCycle]))
   {
-    v94 = [(VUIAnimatedLabel *)self _isRTL];
+    _isRTL = [(VUIAnimatedLabel *)self _isRTL];
     self->_marqueeing = 1;
     [(VUIAnimatedLabel *)self bounds];
     v95 = v3;
@@ -929,26 +929,26 @@ void __49__VUIAnimatedLabel__prepareNextMarqueeWithDelay___block_invoke_2(id *a1
     *&aBlock[5] = v18;
     *&aBlock[6] = v17;
     v20 = _Block_copy(aBlock);
-    v21 = [(VUIAnimatedLabel *)self currentMarqueeView];
-    v22 = [(VUIAnimatedLabel *)self marqueeContentImage];
+    currentMarqueeView = [(VUIAnimatedLabel *)self currentMarqueeView];
+    marqueeContentImage = [(VUIAnimatedLabel *)self marqueeContentImage];
 
-    if (!v22)
+    if (!marqueeContentImage)
     {
       v23 = [(VUIAnimatedLabel *)self _rasterizedTextWithMarquee:self->_marqueeNeeded];
       [(VUIAnimatedLabel *)self setMarqueeContentImage:v23];
     }
 
-    v24 = [(VUIAnimatedLabel *)self marqueeContentImage];
-    [v21 setImage:v24];
+    marqueeContentImage2 = [(VUIAnimatedLabel *)self marqueeContentImage];
+    [currentMarqueeView setImage:marqueeContentImage2];
 
-    [v21 setFrame:{v95, v5, v7, v9}];
-    v25 = [v21 layer];
+    [currentMarqueeView setFrame:{v95, v5, v7, v9}];
+    layer = [currentMarqueeView layer];
     v26 = v7 / v12;
-    [v25 setContentsRect:{0.0, 0.0, v7 / v12, 1.0}];
+    [layer setContentsRect:{0.0, 0.0, v7 / v12, 1.0}];
 
-    [v21 setHidden:0];
-    v27 = [v21 layer];
-    [v27 removeAllAnimations];
+    [currentMarqueeView setHidden:0];
+    layer2 = [currentMarqueeView layer];
+    [layer2 removeAllAnimations];
 
     [(CALayer *)self->_maskLayer removeAllAnimations];
     if (self->_marqueeNeeded)
@@ -963,9 +963,9 @@ void __49__VUIAnimatedLabel__prepareNextMarqueeWithDelay___block_invoke_2(id *a1
 
       [_startMarqueeIfNeeded___maskImage size];
       v29 = 1.0 / v28;
-      v30 = [MEMORY[0x1E6979398] layer];
+      layer3 = [MEMORY[0x1E6979398] layer];
       maskLayer = self->_maskLayer;
-      self->_maskLayer = v30;
+      self->_maskLayer = layer3;
 
       -[CALayer setContents:](self->_maskLayer, "setContents:", [_startMarqueeIfNeeded___maskImage CGImage]);
       v32 = 0.0;
@@ -974,8 +974,8 @@ void __49__VUIAnimatedLabel__prepareNextMarqueeWithDelay___block_invoke_2(id *a1
       [(CALayer *)self->_maskLayer setContentsScale:?];
       [(CALayer *)self->_maskLayer setFrame:v95, v5, v7, v9];
       v33 = self->_maskLayer;
-      v34 = [(VUIAnimatedLabel *)self layer];
-      [v34 setMask:v33];
+      layer4 = [(VUIAnimatedLabel *)self layer];
+      [layer4 setMask:v33];
 
       [MEMORY[0x1E6979518] begin];
       [MEMORY[0x1E6979518] setCompletionBlock:v20];
@@ -986,7 +986,7 @@ void __49__VUIAnimatedLabel__prepareNextMarqueeWithDelay___block_invoke_2(id *a1
       [v35 setBeginTime:v19 + CACurrentMediaTime()];
       [v35 setDuration:v17];
       v37 = 1.0 - v26;
-      if (!v94)
+      if (!_isRTL)
       {
         v37 = 0.0;
       }
@@ -995,7 +995,7 @@ void __49__VUIAnimatedLabel__prepareNextMarqueeWithDelay___block_invoke_2(id *a1
       [v35 setFromValue:v38];
 
       v39 = MEMORY[0x1E696AD98];
-      if (!v94)
+      if (!_isRTL)
       {
         [(VUIAnimatedLabel *)self replicationPadding];
         v32 = (v90 + v40) / v88;
@@ -1004,8 +1004,8 @@ void __49__VUIAnimatedLabel__prepareNextMarqueeWithDelay___block_invoke_2(id *a1
       v41 = [v39 numberWithDouble:v32];
       [v35 setToValue:v41];
 
-      v42 = [v21 layer];
-      [v42 addAnimation:v35 forKey:@"VUIAnimatedLabelMarqueeLayerContentOriginXAnimationKey"];
+      layer5 = [currentMarqueeView layer];
+      [layer5 addAnimation:v35 forKey:@"VUIAnimatedLabelMarqueeLayerContentOriginXAnimationKey"];
 
       if (self->_underPosterOutset == 0.0)
       {
@@ -1068,7 +1068,7 @@ void __49__VUIAnimatedLabel__prepareNextMarqueeWithDelay___block_invoke_2(id *a1
         [v71 setDuration:v93];
         [v71 setFillMode:v92];
         [v71 setRemovedOnCompletion:0];
-        if (v94)
+        if (_isRTL)
         {
           v72 = 20.0;
         }
@@ -1111,8 +1111,8 @@ void __49__VUIAnimatedLabel__prepareNextMarqueeWithDelay___block_invoke_2(id *a1
 
     else
     {
-      v86 = [(VUIAnimatedLabel *)self layer];
-      [v86 setMask:0];
+      layer6 = [(VUIAnimatedLabel *)self layer];
+      [layer6 setMask:0];
 
       v20[2](v20);
     }
@@ -1168,11 +1168,11 @@ void __41__VUIAnimatedLabel__startMarqueeIfNeeded__block_invoke_2()
 {
   if (self->_marqueeing)
   {
-    v4 = [(VUIAnimatedLabel *)self currentMarqueeView];
-    [v4 setHidden:1];
+    currentMarqueeView = [(VUIAnimatedLabel *)self currentMarqueeView];
+    [currentMarqueeView setHidden:1];
 
-    v5 = [(VUIAnimatedLabel *)self nextMarqueeView];
-    [v5 setHidden:1];
+    nextMarqueeView = [(VUIAnimatedLabel *)self nextMarqueeView];
+    [nextMarqueeView setHidden:1];
 
     [(VUIAnimatedLabel *)self _clearAnimations];
 

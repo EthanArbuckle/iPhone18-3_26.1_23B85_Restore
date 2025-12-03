@@ -1,47 +1,47 @@
 @interface EXSheetContext
-- (BOOL)loadDelayedNode:(id)a3;
-- (EXSheetContext)initWithSheetLocation:(id)a3 sheetXmlType:(id)a4 state:(id)a5;
+- (BOOL)loadDelayedNode:(id)node;
+- (EXSheetContext)initWithSheetLocation:(id)location sheetXmlType:(id)type state:(id)state;
 @end
 
 @implementation EXSheetContext
 
-- (EXSheetContext)initWithSheetLocation:(id)a3 sheetXmlType:(id)a4 state:(id)a5
+- (EXSheetContext)initWithSheetLocation:(id)location sheetXmlType:(id)type state:(id)state
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  locationCopy = location;
+  typeCopy = type;
+  stateCopy = state;
   v20.receiver = self;
   v20.super_class = EXSheetContext;
   v12 = [(EXSheetContext *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->mSheetState, a5);
-    objc_storeStrong(&v13->mPackageLocation, a3);
-    objc_storeStrong(&v13->mType, a4);
-    v14 = [MEMORY[0x277CCACC8] currentThread];
-    v15 = [v14 threadDictionary];
+    objc_storeStrong(&v12->mSheetState, state);
+    objc_storeStrong(&v13->mPackageLocation, location);
+    objc_storeStrong(&v13->mType, type);
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    threadDictionary = [currentThread threadDictionary];
 
-    v16 = [v15 objectForKey:@"kSheetCountInEntireDocument"];
-    v17 = [v16 intValue];
+    v16 = [threadDictionary objectForKey:@"kSheetCountInEntireDocument"];
+    intValue = [v16 intValue];
 
-    v18 = [MEMORY[0x277CCABB0] numberWithInt:(v17 + 1)];
-    [v15 setObject:v18 forKey:@"kSheetCountInEntireDocument"];
+    v18 = [MEMORY[0x277CCABB0] numberWithInt:(intValue + 1)];
+    [threadDictionary setObject:v18 forKey:@"kSheetCountInEntireDocument"];
   }
 
   return v13;
 }
 
-- (BOOL)loadDelayedNode:(id)a3
+- (BOOL)loadDelayedNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && self->mPackageLocation && self->mSheetState)
   {
     [TCProgressContext createStageWithSteps:1.0 takingSteps:1.0];
     [TCProgressContext createStageWithSteps:@"Delayed reading of sheet" takingSteps:1.0 name:0.9];
     v5 = objc_autoreleasePoolPush();
-    [(EXReadState *)self->mSheetState setCurrentSheet:v4];
+    [(EXReadState *)self->mSheetState setCurrentSheet:nodeCopy];
     [EXSheet readDelayedSheeWithLocation:self->mPackageLocation sheetXmlType:self->mType state:self->mSheetState];
     [(EXReadState *)self->mSheetState setCurrentSheet:0];
     [(EXReadState *)self->mSheetState resetForNewSheet];
@@ -50,10 +50,10 @@
 
     objc_autoreleasePoolPop(v5);
     +[TCProgressContext endStage];
-    [v4 setLoaded:1];
+    [nodeCopy setLoaded:1];
     [TCProgressContext createStageWithSteps:@"Applying processors for delayed sheet" takingSteps:1.0 name:0.1];
     v7 = objc_autoreleasePoolPush();
-    [v4 applyProcessors];
+    [nodeCopy applyProcessors];
     objc_autoreleasePoolPop(v7);
     +[TCProgressContext endStage];
     +[TCProgressContext endStage];

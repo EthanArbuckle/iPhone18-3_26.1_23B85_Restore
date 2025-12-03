@@ -1,37 +1,37 @@
 @interface MechanismPushButton
-- (BOOL)_attemptToAddCredentialWithError:(id *)a3;
+- (BOOL)_attemptToAddCredentialWithError:(id *)error;
 - (BOOL)_checkDoublePressRequirementEnabled;
-- (BOOL)_pollingAddCredentialWithError:(id *)a3;
+- (BOOL)_pollingAddCredentialWithError:(id *)error;
 - (BOOL)checkCredentialValid;
-- (BOOL)isAvailableForPurpose:(int64_t)a3 error:(id *)a4;
-- (MechanismPushButton)initWithACMContextRecord:(id)a3 secondary:(BOOL)a4 axMode:(BOOL)a5 request:(id)a6;
-- (MechanismPushButton)initWithParams:(id)a3 request:(id)a4;
+- (BOOL)isAvailableForPurpose:(int64_t)purpose error:(id *)error;
+- (MechanismPushButton)initWithACMContextRecord:(id)record secondary:(BOOL)secondary axMode:(BOOL)mode request:(id)request;
+- (MechanismPushButton)initWithParams:(id)params request:(id)request;
 - (const)_acmPolicyToVerifyCredentialValidity;
 - (double)expirationTimeout;
 - (id)descriptionFlags;
-- (void)_intentWaiting:(BOOL)a3;
-- (void)runWithHints:(id)a3 eventsDelegate:(id)a4 reply:(id)a5;
+- (void)_intentWaiting:(BOOL)waiting;
+- (void)runWithHints:(id)hints eventsDelegate:(id)delegate reply:(id)reply;
 - (void)willFinish;
 @end
 
 @implementation MechanismPushButton
 
-- (MechanismPushButton)initWithParams:(id)a3 request:(id)a4
+- (MechanismPushButton)initWithParams:(id)params request:(id)request
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:@"AcmContextRecord"];
-  v9 = [v7 objectForKeyedSubscript:@"Secondary"];
-  v10 = [v9 BOOLValue];
-  v11 = [v7 objectForKeyedSubscript:@"AXMode"];
+  requestCopy = request;
+  paramsCopy = params;
+  v8 = [paramsCopy objectForKeyedSubscript:@"AcmContextRecord"];
+  v9 = [paramsCopy objectForKeyedSubscript:@"Secondary"];
+  bOOLValue = [v9 BOOLValue];
+  v11 = [paramsCopy objectForKeyedSubscript:@"AXMode"];
 
-  v12 = -[MechanismPushButton initWithACMContextRecord:secondary:axMode:request:](self, "initWithACMContextRecord:secondary:axMode:request:", v8, v10, [v11 BOOLValue], v6);
+  v12 = -[MechanismPushButton initWithACMContextRecord:secondary:axMode:request:](self, "initWithACMContextRecord:secondary:axMode:request:", v8, bOOLValue, [v11 BOOLValue], requestCopy);
   return v12;
 }
 
-- (MechanismPushButton)initWithACMContextRecord:(id)a3 secondary:(BOOL)a4 axMode:(BOOL)a5 request:(id)a6
+- (MechanismPushButton)initWithACMContextRecord:(id)record secondary:(BOOL)secondary axMode:(BOOL)mode request:(id)request
 {
-  if (a4)
+  if (secondary)
   {
     v9 = 9;
   }
@@ -43,64 +43,64 @@
 
   v14.receiver = self;
   v14.super_class = MechanismPushButton;
-  v10 = [(MechanismPushButton *)&v14 initWithEventIdentifier:v9 remoteViewController:0 acmContextRecord:a3 request:a6];
+  v10 = [(MechanismPushButton *)&v14 initWithEventIdentifier:v9 remoteViewController:0 acmContextRecord:record request:request];
   if (v10)
   {
     v11 = +[PushButtonMonitor sharedInstance];
     pushButtonMonitor = v10->_pushButtonMonitor;
     v10->_pushButtonMonitor = v11;
 
-    v10->_secondary = a4;
-    v10->_axMode = a5;
+    v10->_secondary = secondary;
+    v10->_axMode = mode;
   }
 
   return v10;
 }
 
-- (BOOL)isAvailableForPurpose:(int64_t)a3 error:(id *)a4
+- (BOOL)isAvailableForPurpose:(int64_t)purpose error:(id *)error
 {
   v5.receiver = self;
   v5.super_class = MechanismPushButton;
-  return [(MechanismPushButton *)&v5 isAvailableForPurpose:a3 error:a4];
+  return [(MechanismPushButton *)&v5 isAvailableForPurpose:purpose error:error];
 }
 
 - (id)descriptionFlags
 {
   v7.receiver = self;
   v7.super_class = MechanismPushButton;
-  v3 = [(MechanismPushButton *)&v7 descriptionFlags];
+  descriptionFlags = [(MechanismPushButton *)&v7 descriptionFlags];
   if ([(MechanismPushButton *)self secondary])
   {
-    v4 = [v3 arrayByAddingObject:@"sec"];
+    v4 = [descriptionFlags arrayByAddingObject:@"sec"];
 
-    v3 = v4;
+    descriptionFlags = v4;
   }
 
   if ([(MechanismPushButton *)self axMode])
   {
-    v5 = [v3 arrayByAddingObject:@"ax"];
+    v5 = [descriptionFlags arrayByAddingObject:@"ax"];
 
-    v3 = v5;
+    descriptionFlags = v5;
   }
 
-  return v3;
+  return descriptionFlags;
 }
 
-- (void)runWithHints:(id)a3 eventsDelegate:(id)a4 reply:(id)a5
+- (void)runWithHints:(id)hints eventsDelegate:(id)delegate reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(MechanismPushButton *)self fenceReplyWithTouchIdAssertions:a5];
+  hintsCopy = hints;
+  delegateCopy = delegate;
+  v10 = [(MechanismPushButton *)self fenceReplyWithTouchIdAssertions:reply];
   v35.receiver = self;
   v35.super_class = MechanismPushButton;
-  [(MechanismPushButton *)&v35 runWithHints:v8 eventsDelegate:v9 reply:v10];
+  [(MechanismPushButton *)&v35 runWithHints:hintsCopy eventsDelegate:delegateCopy reply:v10];
 
   v11 = [[LACACMHelper alloc] initWithACMContext:{-[MechanismPushButton acmContext](self, "acmContext")}];
   acmHelper = self->_acmHelper;
   self->_acmHelper = v11;
 
-  v13 = [(MechanismPushButton *)self request];
-  if ([v13 isPurposeInAppPayment] && +[DaemonUtils deviceSupportsSecureDoubleClick](DaemonUtils, "deviceSupportsSecureDoubleClick"))
+  request = [(MechanismPushButton *)self request];
+  if ([request isPurposeInAppPayment] && +[DaemonUtils deviceSupportsSecureDoubleClick](DaemonUtils, "deviceSupportsSecureDoubleClick"))
   {
     v14 = +[DaemonUtils deviceHasPearl];
 
@@ -112,14 +112,14 @@
     v15 = self->_acmHelper;
     v34 = 0;
     v16 = [(LACACMHelper *)v15 verifyRequirementOfType:21 policy:[LACACMHelper error:"acmPolicyForPolicy:" acmPolicyForPolicy:?], &v34];
-    v13 = v34;
+    request = v34;
     if (v16)
     {
       v17 = sub_14EC();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v39 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ will not be required because biometry match was attempted, simulating credential present", buf, 0xCu);
       }
 
@@ -128,8 +128,8 @@
       v18 = [NSDictionary dictionaryWithObjects:&v43 forKeys:&v42 count:1];
       [(MechanismPushButton *)self noResponseEventWithParams:v18];
 
-      v19 = [(MechanismPushButton *)self parent];
-      [v19 companionStateChanged:self newState:1];
+      parent = [(MechanismPushButton *)self parent];
+      [parent companionStateChanged:self newState:1];
       goto LABEL_30;
     }
   }
@@ -137,39 +137,39 @@
 LABEL_9:
   if (![(MechanismPushButton *)self secondary])
   {
-    v20 = [(PushButtonMonitor *)self->_pushButtonMonitor delegate];
+    delegate = [(PushButtonMonitor *)self->_pushButtonMonitor delegate];
     otherDelegate = self->_otherDelegate;
-    self->_otherDelegate = v20;
+    self->_otherDelegate = delegate;
   }
 
   [(PushButtonMonitor *)self->_pushButtonMonitor setDelegate:self];
-  v22 = [v8 objectForKeyedSubscript:@"MechanismIndex"];
-  v13 = v22;
+  v22 = [hintsCopy objectForKeyedSubscript:@"MechanismIndex"];
+  request = v22;
   if (v22)
   {
-    v23 = [v22 intValue];
+    intValue = [v22 intValue];
   }
 
   else
   {
-    v23 = 1;
+    intValue = 1;
   }
 
-  v24 = v23 + [(MechanismPushButton *)self secondary];
+  v24 = intValue + [(MechanismPushButton *)self secondary];
   v25 = sub_14EC();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v39 = self;
+    selfCopy2 = self;
     v40 = 1024;
     v41 = v24;
     _os_log_impl(&dword_0, v25, OS_LOG_TYPE_DEFAULT, "%{public}@ running as index:%d", buf, 0x12u);
   }
 
-  v26 = [(MechanismPushButton *)self request];
-  v27 = [v26 isPurposeInAppPayment];
+  request2 = [(MechanismPushButton *)self request];
+  isPurposeInAppPayment = [request2 isPurposeInAppPayment];
 
-  if (v27 && v24 == 1)
+  if (isPurposeInAppPayment && v24 == 1)
   {
     v28 = @"it can't be reused for in-app payment";
 LABEL_21:
@@ -186,14 +186,14 @@ LABEL_21:
 LABEL_22:
   if (+[DaemonUtils deviceHasTouchIDAndSecureDoublePress]&& [(MechanismPushButton *)self policy]!= &stru_3D8.vmaddr + 7)
   {
-    v31 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v29 = [(MechanismPushButton *)self policyOptions];
-    v30 = [v29 objectForKeyedSubscript:&off_4368];
-    v31 = [v30 BOOLValue];
+    policyOptions = [(MechanismPushButton *)self policyOptions];
+    v30 = [policyOptions objectForKeyedSubscript:&off_4368];
+    bOOLValue = [v30 BOOLValue];
   }
 
   pushButtonMonitor = self->_pushButtonMonitor;
@@ -219,7 +219,7 @@ LABEL_32:
     goto LABEL_35;
   }
 
-  if (([(PushButtonMonitor *)pushButtonMonitor doubleTapDetected]| v31))
+  if (([(PushButtonMonitor *)pushButtonMonitor doubleTapDetected]| bOOLValue))
   {
     goto LABEL_32;
   }
@@ -230,8 +230,8 @@ LABEL_28:
     [(MechanismPushButton *)self _intentWaiting:1];
     v36 = &off_4350;
     v37 = &__kCFBooleanFalse;
-    v19 = [NSDictionary dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-    [(MechanismPushButton *)self noResponseEventWithParams:v19];
+    parent = [NSDictionary dictionaryWithObjects:&v37 forKeys:&v36 count:1];
+    [(MechanismPushButton *)self noResponseEventWithParams:parent];
 LABEL_30:
   }
 
@@ -240,26 +240,26 @@ LABEL_35:
 
 - (BOOL)_checkDoublePressRequirementEnabled
 {
-  v3 = [(MechanismPushButton *)self policyOptions];
-  v4 = [v3 objectForKeyedSubscript:&off_4368];
-  v5 = [v4 BOOLValue];
+  policyOptions = [(MechanismPushButton *)self policyOptions];
+  v4 = [policyOptions objectForKeyedSubscript:&off_4368];
+  bOOLValue = [v4 BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     v6 = [LAErrorHelper errorWithCode:-1023 message:@"Double press is required."];
     [(MechanismPushButton *)self failAuthenticationWithError:v6];
   }
 
-  return v5 ^ 1;
+  return bOOLValue ^ 1;
 }
 
 - (void)willFinish
 {
   [(MechanismPushButton *)self _intentWaiting:0];
   [(PushButtonMonitor *)self->_pushButtonMonitor stop];
-  v3 = [(PushButtonMonitor *)self->_pushButtonMonitor delegate];
+  delegate = [(PushButtonMonitor *)self->_pushButtonMonitor delegate];
 
-  if (v3 == self)
+  if (delegate == self)
   {
     [(PushButtonMonitor *)self->_pushButtonMonitor setDelegate:0];
   }
@@ -268,7 +268,7 @@ LABEL_35:
   self->_prearmAssertion = 0;
 }
 
-- (BOOL)_pollingAddCredentialWithError:(id *)a3
+- (BOOL)_pollingAddCredentialWithError:(id *)error
 {
   v20 = 0;
   v5 = [(MechanismPushButton *)self _attemptToAddCredentialWithError:&v20];
@@ -283,11 +283,11 @@ LABEL_12:
       v15 = sub_14EC();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(MechanismPushButton *)self secondary];
+        secondary = [(MechanismPushButton *)self secondary];
         v17 = "primary";
         *buf = 138543874;
-        v22 = self;
-        if (v16)
+        selfCopy2 = self;
+        if (secondary)
         {
           v17 = "secondary";
         }
@@ -309,15 +309,15 @@ LABEL_12:
       v10 = sub_14EC();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v13 = [(MechanismPushButton *)self secondary];
+        secondary2 = [(MechanismPushButton *)self secondary];
         *buf = 138544386;
         v14 = "primary";
-        if (v13)
+        if (secondary2)
         {
           v14 = "secondary";
         }
 
-        v22 = self;
+        selfCopy2 = self;
         v23 = 2080;
         v24 = v14;
         v25 = 1024;
@@ -353,16 +353,16 @@ LABEL_12:
     v7 = 0;
   }
 
-  if (a3)
+  if (error)
   {
     v18 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
   return v7;
 }
 
-- (BOOL)_attemptToAddCredentialWithError:(id *)a3
+- (BOOL)_attemptToAddCredentialWithError:(id *)error
 {
   acmHelper = self->_acmHelper;
   if ([(MechanismPushButton *)self secondary])
@@ -381,7 +381,7 @@ LABEL_12:
   if (!v7)
   {
     v13 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -389,11 +389,11 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v9 = [(MechanismPushButton *)self _acmPolicyToVerifyCredentialValidity];
-  if (!v9)
+  _acmPolicyToVerifyCredentialValidity = [(MechanismPushButton *)self _acmPolicyToVerifyCredentialValidity];
+  if (!_acmPolicyToVerifyCredentialValidity)
   {
     v13 = 1;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -401,7 +401,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v10 = v9;
+  v10 = _acmPolicyToVerifyCredentialValidity;
   v11 = self->_acmHelper;
   if ([(MechanismPushButton *)self secondary])
   {
@@ -418,11 +418,11 @@ LABEL_12:
   v14 = v17;
 
   v8 = v14;
-  if (a3)
+  if (error)
   {
 LABEL_12:
     v15 = v8;
-    *a3 = v8;
+    *error = v8;
   }
 
 LABEL_13:
@@ -435,21 +435,21 @@ LABEL_13:
   if (![(MechanismPushButton *)self policy])
   {
     v5 = [LACAccessControlOperation alloc];
-    v6 = [(MechanismPushButton *)self request];
-    v7 = [v6 aclOperation];
-    v8 = [v5 initWithTypeErasedOperation:v7];
+    request = [(MechanismPushButton *)self request];
+    aclOperation = [request aclOperation];
+    v8 = [v5 initWithTypeErasedOperation:aclOperation];
 
-    v9 = [(MechanismPushButton *)self request];
-    v10 = [v9 acl];
-    LODWORD(v6) = [LACAccessControl checkACL:v10 hasConstraint:@"pbtna" forOperation:v8];
+    request2 = [(MechanismPushButton *)self request];
+    v10 = [request2 acl];
+    LODWORD(request) = [LACAccessControl checkACL:v10 hasConstraint:@"pbtna" forOperation:v8];
 
-    if (v6)
+    if (request)
     {
       v11 = sub_14EC();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 138543618;
-        v22 = self;
+        selfCopy2 = self;
         v23 = 2082;
         v24 = "pbtna";
         v12 = "%{public}@ will honor '%{public}s' value in ACL";
@@ -462,13 +462,13 @@ LABEL_11:
 
     else
     {
-      v15 = [(MechanismPushButton *)self request];
-      v16 = [v15 options];
+      request3 = [(MechanismPushButton *)self request];
+      options = [request3 options];
       v17 = [NSNumber numberWithInteger:LACPolicyOptionPushButtonUseMaxPreArmAge];
-      v18 = [v16 objectForKey:v17];
-      v19 = [v18 BOOLValue];
+      v18 = [options objectForKey:v17];
+      bOOLValue = [v18 BOOLValue];
 
-      if (!v19)
+      if (!bOOLValue)
       {
         v20 = "Oslo";
         goto LABEL_14;
@@ -478,7 +478,7 @@ LABEL_11:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 138543362;
-        v22 = self;
+        selfCopy2 = self;
         v12 = "%{public}@ will honor LAOptionPushButtonUseMaxPreArmAge request";
         v13 = v11;
         v14 = 12;
@@ -492,21 +492,21 @@ LABEL_14:
     return v20;
   }
 
-  v3 = [(MechanismPushButton *)self policy];
+  policy = [(MechanismPushButton *)self policy];
 
-  return [LACACMHelper acmPolicyForPolicy:v3];
+  return [LACACMHelper acmPolicyForPolicy:policy];
 }
 
-- (void)_intentWaiting:(BOOL)a3
+- (void)_intentWaiting:(BOOL)waiting
 {
-  if (self->_intentWaiting != a3)
+  if (self->_intentWaiting != waiting)
   {
-    v3 = a3;
+    waitingCopy = waiting;
     if ([(MechanismPushButton *)self isRunning])
     {
-      self->_intentWaiting = v3;
+      self->_intentWaiting = waitingCopy;
       v5 = @"com.apple.LocalAuthentication.intent.not-waiting";
-      if (v3)
+      if (waitingCopy)
       {
         v5 = @"com.apple.LocalAuthentication.intent.waiting";
       }
@@ -516,7 +516,7 @@ LABEL_14:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138543618;
-        v12 = self;
+        selfCopy = self;
         v13 = 2114;
         v14 = v6;
         _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ is posting %{public}@", &v11, 0x16u);
@@ -524,12 +524,12 @@ LABEL_14:
 
       DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
       CFNotificationCenterPostNotification(DarwinNotifyCenter, v6, 0, 0, 1u);
-      if (v3 && ![(MechanismPushButton *)self axMode])
+      if (waitingCopy && ![(MechanismPushButton *)self axMode])
       {
         [(PushButtonMonitor *)self->_pushButtonMonitor start];
-        v9 = [(PushButtonMonitor *)self->_pushButtonMonitor prearmAssertion];
+        prearmAssertion = [(PushButtonMonitor *)self->_pushButtonMonitor prearmAssertion];
         prearmAssertion = self->_prearmAssertion;
-        self->_prearmAssertion = v9;
+        self->_prearmAssertion = prearmAssertion;
       }
     }
   }
@@ -537,15 +537,15 @@ LABEL_14:
 
 - (double)expirationTimeout
 {
-  v3 = [(MechanismPushButton *)self request];
-  v4 = [v3 isPurposeApplePay];
+  request = [(MechanismPushButton *)self request];
+  isPurposeApplePay = [request isPurposeApplePay];
 
   result = 30.0;
-  if ((v4 & 1) == 0)
+  if ((isPurposeApplePay & 1) == 0)
   {
-    v6 = [(MechanismPushButton *)self policy];
+    policy = [(MechanismPushButton *)self policy];
     result = 60.0;
-    if (v6 == &stru_3D8.vmaddr + 7)
+    if (policy == &stru_3D8.vmaddr + 7)
     {
       return 120.0;
     }
@@ -575,9 +575,9 @@ LABEL_14:
       [(PushButtonMonitor *)self->_pushButtonMonitor adviseDoubleTap];
     }
 
-    v7 = [(MechanismPushButton *)self isCredentialValid];
+    isCredentialValid = [(MechanismPushButton *)self isCredentialValid];
 
-    return v7;
+    return isCredentialValid;
   }
 }
 

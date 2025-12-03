@@ -12,7 +12,7 @@
   v3 = sharedCreditCardDataController_sharedInstance;
   if (!sharedCreditCardDataController_sharedInstance)
   {
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     v5 = sharedCreditCardDataController_sharedInstance;
     sharedCreditCardDataController_sharedInstance = v4;
 
@@ -37,16 +37,16 @@
 
 - (BOOL)hasUsedNonVirtualCard
 {
-  v2 = [MEMORY[0x277CBEBD0] webui_defaults];
-  v3 = [v2 BOOLForKey:*off_279EB0F68];
+  webui_defaults = [MEMORY[0x277CBEBD0] webui_defaults];
+  v3 = [webui_defaults BOOLForKey:*off_279EB0F68];
 
   return v3;
 }
 
 - (void)setHasUsedNonVirtualCard
 {
-  v2 = [MEMORY[0x277CBEBD0] webui_defaults];
-  [v2 setBool:1 forKey:*off_279EB0F68];
+  webui_defaults = [MEMORY[0x277CBEBD0] webui_defaults];
+  [webui_defaults setBool:1 forKey:*off_279EB0F68];
 }
 
 @end

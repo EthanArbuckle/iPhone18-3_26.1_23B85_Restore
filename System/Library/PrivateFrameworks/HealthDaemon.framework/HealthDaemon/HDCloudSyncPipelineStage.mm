@@ -1,15 +1,15 @@
 @interface HDCloudSyncPipelineStage
-- (HDCloudSyncPipelineStage)initWithConfiguration:(id)a3 cloudState:(id)a4;
+- (HDCloudSyncPipelineStage)initWithConfiguration:(id)configuration cloudState:(id)state;
 - (id)pipelineStageIgnoringErrors;
 @end
 
 @implementation HDCloudSyncPipelineStage
 
-- (HDCloudSyncPipelineStage)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncPipelineStage)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5.receiver = self;
   v5.super_class = HDCloudSyncPipelineStage;
-  result = [(HDCloudSyncOperation *)&v5 initWithConfiguration:a3 cloudState:a4];
+  result = [(HDCloudSyncOperation *)&v5 initWithConfiguration:configuration cloudState:state];
   if (result)
   {
     result->_criticalFailureOnError = 1;
@@ -23,9 +23,9 @@
 - (id)pipelineStageIgnoringErrors
 {
   v3 = [HDCloudSyncIgnoredErrorsPipelineStage alloc];
-  v4 = [(HDCloudSyncOperation *)self configuration];
-  v5 = [(HDCloudSyncOperation *)self cloudState];
-  v6 = [(HDCloudSyncIgnoredErrorsPipelineStage *)v3 initWithConfiguration:v4 cloudState:v5 stage:self];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  cloudState = [(HDCloudSyncOperation *)self cloudState];
+  v6 = [(HDCloudSyncIgnoredErrorsPipelineStage *)v3 initWithConfiguration:configuration cloudState:cloudState stage:self];
 
   return v6;
 }

@@ -1,10 +1,10 @@
 @interface _REMCDObjectEffectiveVersionManualValidationDelegateImpl
-- (void)processBatchOfTreeNodes:(id)a3;
+- (void)processBatchOfTreeNodes:(id)nodes;
 @end
 
 @implementation _REMCDObjectEffectiveVersionManualValidationDelegateImpl
 
-- (void)processBatchOfTreeNodes:(id)a3
+- (void)processBatchOfTreeNodes:(id)nodes
 {
   v3 = +[REMLogStore write];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))

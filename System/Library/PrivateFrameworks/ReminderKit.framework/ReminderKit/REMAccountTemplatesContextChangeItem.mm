@@ -1,53 +1,53 @@
 @interface REMAccountTemplatesContextChangeItem
-- (REMAccountTemplatesContextChangeItem)initWithAccountChangeItem:(id)a3;
+- (REMAccountTemplatesContextChangeItem)initWithAccountChangeItem:(id)item;
 - (REMManualOrdering)unsavedManualOrdering;
-- (id)addTemplateWithName:(id)a3 configuration:(id)a4;
-- (void)updateManualOrdering:(id)a3;
+- (id)addTemplateWithName:(id)name configuration:(id)configuration;
+- (void)updateManualOrdering:(id)ordering;
 @end
 
 @implementation REMAccountTemplatesContextChangeItem
 
-- (REMAccountTemplatesContextChangeItem)initWithAccountChangeItem:(id)a3
+- (REMAccountTemplatesContextChangeItem)initWithAccountChangeItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = REMAccountTemplatesContextChangeItem;
   v6 = [(REMAccountTemplatesContextChangeItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountChangeItem, a3);
+    objc_storeStrong(&v6->_accountChangeItem, item);
   }
 
   return v7;
 }
 
-- (id)addTemplateWithName:(id)a3 configuration:(id)a4
+- (id)addTemplateWithName:(id)name configuration:(id)configuration
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(REMAccountTemplatesContextChangeItem *)self accountChangeItem];
-  v9 = [v8 saveRequest];
+  configurationCopy = configuration;
+  nameCopy = name;
+  accountChangeItem = [(REMAccountTemplatesContextChangeItem *)self accountChangeItem];
+  saveRequest = [accountChangeItem saveRequest];
 
-  v10 = [(REMAccountTemplatesContextChangeItem *)self accountChangeItem];
-  v11 = [v9 addTemplateWithName:v7 configuration:v6 toAccountChangeItem:v10];
+  accountChangeItem2 = [(REMAccountTemplatesContextChangeItem *)self accountChangeItem];
+  v11 = [saveRequest addTemplateWithName:nameCopy configuration:configurationCopy toAccountChangeItem:accountChangeItem2];
 
   return v11;
 }
 
 - (REMManualOrdering)unsavedManualOrdering
 {
-  v2 = [(REMAccountTemplatesContextChangeItem *)self accountChangeItem];
-  v3 = [v2 templatesManualOrdering];
+  accountChangeItem = [(REMAccountTemplatesContextChangeItem *)self accountChangeItem];
+  templatesManualOrdering = [accountChangeItem templatesManualOrdering];
 
-  return v3;
+  return templatesManualOrdering;
 }
 
-- (void)updateManualOrdering:(id)a3
+- (void)updateManualOrdering:(id)ordering
 {
-  v4 = a3;
-  v5 = [(REMAccountTemplatesContextChangeItem *)self accountChangeItem];
-  [v5 setTemplatesManualOrdering:v4];
+  orderingCopy = ordering;
+  accountChangeItem = [(REMAccountTemplatesContextChangeItem *)self accountChangeItem];
+  [accountChangeItem setTemplatesManualOrdering:orderingCopy];
 }
 
 @end

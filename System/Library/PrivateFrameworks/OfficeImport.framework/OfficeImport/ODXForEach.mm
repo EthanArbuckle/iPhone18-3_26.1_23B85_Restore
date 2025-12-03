@@ -1,17 +1,17 @@
 @interface ODXForEach
-+ (void)readNode:(_xmlNode *)a3 toForEach:(id)a4 state:(id)a5;
++ (void)readNode:(_xmlNode *)node toForEach:(id)each state:(id)state;
 @end
 
 @implementation ODXForEach
 
-+ (void)readNode:(_xmlNode *)a3 toForEach:(id)a4 state:(id)a5
++ (void)readNode:(_xmlNode *)node toForEach:(id)each state:(id)state
 {
-  v9 = a4;
-  v7 = a5;
-  v8 = [v9 iteratorSpecification];
-  [ODXIteratorSpecification readFromNode:a3 toSpecification:v8 state:v7];
+  eachCopy = each;
+  stateCopy = state;
+  iteratorSpecification = [eachCopy iteratorSpecification];
+  [ODXIteratorSpecification readFromNode:node toSpecification:iteratorSpecification state:stateCopy];
 
-  [ODXLayoutObjectList readNode:a3 toList:v9 state:v7];
+  [ODXLayoutObjectList readNode:node toList:eachCopy state:stateCopy];
 }
 
 @end

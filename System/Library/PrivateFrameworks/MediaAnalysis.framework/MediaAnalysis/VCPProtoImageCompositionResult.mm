@@ -1,14 +1,14 @@
 @interface VCPProtoImageCompositionResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoImageCompositionResult
@@ -19,75 +19,75 @@
   v8.receiver = self;
   v8.super_class = VCPProtoImageCompositionResult;
   v4 = [(VCPProtoImageCompositionResult *)&v8 description];
-  v5 = [(VCPProtoImageCompositionResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoImageCompositionResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   *&v4 = self->_confidence;
   v5 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v5 forKey:@"confidence"];
+  [dictionary setObject:v5 forKey:@"confidence"];
 
   vanishingPoint = self->_vanishingPoint;
   if (vanishingPoint)
   {
-    v7 = [(VCPProtoPoint *)vanishingPoint dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"vanishingPoint"];
+    dictionaryRepresentation = [(VCPProtoPoint *)vanishingPoint dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"vanishingPoint"];
   }
 
   dominantLine = self->_dominantLine;
   if (dominantLine)
   {
-    v9 = [(VCPProtoLine *)dominantLine dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"dominantLine"];
+    dictionaryRepresentation2 = [(VCPProtoLine *)dominantLine dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"dominantLine"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteFloatField();
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteSubmessage();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 2) = LODWORD(self->_confidence);
+  *(to + 2) = LODWORD(self->_confidence);
   vanishingPoint = self->_vanishingPoint;
-  v5 = a3;
-  [v5 setVanishingPoint:vanishingPoint];
-  [v5 setDominantLine:self->_dominantLine];
+  toCopy = to;
+  [toCopy setVanishingPoint:vanishingPoint];
+  [toCopy setDominantLine:self->_dominantLine];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 8) = self->_confidence;
-  v6 = [(VCPProtoPoint *)self->_vanishingPoint copyWithZone:a3];
+  v6 = [(VCPProtoPoint *)self->_vanishingPoint copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(VCPProtoLine *)self->_dominantLine copyWithZone:a3];
+  v8 = [(VCPProtoLine *)self->_dominantLine copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_confidence == *(v4 + 2) && ((vanishingPoint = self->_vanishingPoint, !(vanishingPoint | v4[3])) || -[VCPProtoPoint isEqual:](vanishingPoint, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_confidence == *(equalCopy + 2) && ((vanishingPoint = self->_vanishingPoint, !(vanishingPoint | equalCopy[3])) || -[VCPProtoPoint isEqual:](vanishingPoint, "isEqual:")))
   {
     dominantLine = self->_dominantLine;
-    if (dominantLine | v4[2])
+    if (dominantLine | equalCopy[2])
     {
       v7 = [(VCPProtoLine *)dominantLine isEqual:?];
     }
@@ -142,13 +142,13 @@
   return v12 ^ [(VCPProtoLine *)self->_dominantLine hash]^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_confidence = v4[2];
+  fromCopy = from;
+  self->_confidence = fromCopy[2];
   vanishingPoint = self->_vanishingPoint;
-  v6 = *(v4 + 3);
-  v9 = v4;
+  v6 = *(fromCopy + 3);
+  v9 = fromCopy;
   if (vanishingPoint)
   {
     if (!v6)
@@ -169,10 +169,10 @@
     [(VCPProtoImageCompositionResult *)self setVanishingPoint:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   dominantLine = self->_dominantLine;
-  v8 = *(v4 + 2);
+  v8 = *(fromCopy + 2);
   if (dominantLine)
   {
     if (!v8)
@@ -193,13 +193,13 @@ LABEL_7:
     [(VCPProtoImageCompositionResult *)self setDominantLine:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
 }
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"attributes"];
+  v3 = [dictionary objectForKeyedSubscript:@"attributes"];
   v4 = [v3 objectForKeyedSubscript:@"vanishingPointConfidence"];
   v5 = [v3 objectForKeyedSubscript:@"vanishingPoint"];
   v6 = [v3 objectForKeyedSubscript:@"dominantLine"];
@@ -249,17 +249,17 @@ LABEL_13:
   v4 = [v3 numberWithFloat:?];
   v17[0] = v4;
   v16[1] = @"vanishingPoint";
-  v5 = [(VCPProtoImageCompositionResult *)self vanishingPoint];
-  [v5 pointValue];
+  vanishingPoint = [(VCPProtoImageCompositionResult *)self vanishingPoint];
+  [vanishingPoint pointValue];
   v6 = NSStringFromPoint(v21);
   v17[1] = v6;
   v16[2] = @"dominantLine";
-  v7 = [(VCPProtoImageCompositionResult *)self dominantLine];
-  [v7 startPointValue];
+  dominantLine = [(VCPProtoImageCompositionResult *)self dominantLine];
+  [dominantLine startPointValue];
   v8 = NSStringFromPoint(v22);
   v15[0] = v8;
-  v9 = [(VCPProtoImageCompositionResult *)self dominantLine];
-  [v9 endPointValue];
+  dominantLine2 = [(VCPProtoImageCompositionResult *)self dominantLine];
+  [dominantLine2 endPointValue];
   v10 = NSStringFromPoint(v23);
   v15[1] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];

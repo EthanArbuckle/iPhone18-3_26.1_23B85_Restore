@@ -1,6 +1,6 @@
 @interface CertUIItemSummaryCell
 + (double)titleOriginX;
-- (CertUIItemSummaryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CertUIItemSummaryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (double)cellHeight;
 - (id)_profileImageAppropriateForDevice;
 - (void)_setupCell;
@@ -9,11 +9,11 @@
 
 @implementation CertUIItemSummaryCell
 
-- (CertUIItemSummaryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CertUIItemSummaryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = CertUIItemSummaryCell;
-  v4 = [(CertUIItemSummaryCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CertUIItemSummaryCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -26,14 +26,14 @@
 
 - (void)_setupCell
 {
-  v21 = [(CertUIItemSummaryCell *)self _profileImageAppropriateForDevice];
-  v3 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v21];
+  _profileImageAppropriateForDevice = [(CertUIItemSummaryCell *)self _profileImageAppropriateForDevice];
+  v3 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:_profileImageAppropriateForDevice];
   itemImageView = self->_itemImageView;
   self->_itemImageView = v3;
 
   [(UIImageView *)self->_itemImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(CertUIItemSummaryCell *)self contentView];
-  [v5 addSubview:self->_itemImageView];
+  contentView = [(CertUIItemSummaryCell *)self contentView];
+  [contentView addSubview:self->_itemImageView];
 
   v6 = objc_alloc(MEMORY[0x277D756B8]);
   v7 = *MEMORY[0x277CBF3A0];
@@ -60,8 +60,8 @@
   v16 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
   [(UILabel *)self->_itemSubtitleLabel setFont:v16];
 
-  v17 = [MEMORY[0x277D75348] systemGrayColor];
-  [(UILabel *)self->_itemSubtitleLabel setTextColor:v17];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [(UILabel *)self->_itemSubtitleLabel setTextColor:systemGrayColor];
 
   v18 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v7, v8, v9, v10}];
   itemTitleView = self->_itemTitleView;
@@ -70,16 +70,16 @@
   [(UIView *)self->_itemTitleView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_itemTitleView addSubview:self->_itemTitleLabel];
   [(UIView *)self->_itemTitleView addSubview:self->_itemSubtitleLabel];
-  v20 = [(CertUIItemSummaryCell *)self contentView];
-  [v20 addSubview:self->_itemTitleView];
+  contentView2 = [(CertUIItemSummaryCell *)self contentView];
+  [contentView2 addSubview:self->_itemTitleView];
 
   [(CertUIItemSummaryCell *)self _setupConstraints];
 }
 
 - (id)_profileImageAppropriateForDevice
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v4 = v3;
 
   v5 = MEMORY[0x277D755B8];
@@ -92,141 +92,141 @@
 
 - (void)_setupConstraints
 {
-  v3 = [(CertUIItemSummaryCell *)self contentView];
+  contentView = [(CertUIItemSummaryCell *)self contentView];
   v4 = MEMORY[0x277CCAAD0];
-  v5 = [(CertUIItemSummaryCell *)self itemImageView];
-  v6 = [(CertUIItemSummaryCell *)self itemImageView];
-  v7 = [(CertUIItemSummaryCell *)self itemImageView];
-  v8 = [v7 image];
-  [v8 size];
-  v10 = [v4 constraintWithItem:v5 attribute:7 relatedBy:0 toItem:v6 attribute:7 multiplier:0.0 constant:v9];
-  [v3 addConstraint:v10];
+  itemImageView = [(CertUIItemSummaryCell *)self itemImageView];
+  itemImageView2 = [(CertUIItemSummaryCell *)self itemImageView];
+  itemImageView3 = [(CertUIItemSummaryCell *)self itemImageView];
+  image = [itemImageView3 image];
+  [image size];
+  v10 = [v4 constraintWithItem:itemImageView attribute:7 relatedBy:0 toItem:itemImageView2 attribute:7 multiplier:0.0 constant:v9];
+  [contentView addConstraint:v10];
 
-  v11 = [(CertUIItemSummaryCell *)self contentView];
+  contentView2 = [(CertUIItemSummaryCell *)self contentView];
   v12 = MEMORY[0x277CCAAD0];
-  v13 = [(CertUIItemSummaryCell *)self itemImageView];
-  v14 = [(CertUIItemSummaryCell *)self itemImageView];
-  v15 = [(CertUIItemSummaryCell *)self itemImageView];
-  v16 = [v15 image];
-  [v16 size];
-  v17 = [v12 constraintWithItem:v13 attribute:8 relatedBy:0 toItem:v14 attribute:8 multiplier:0.0 constant:?];
-  [v11 addConstraint:v17];
+  itemImageView4 = [(CertUIItemSummaryCell *)self itemImageView];
+  itemImageView5 = [(CertUIItemSummaryCell *)self itemImageView];
+  itemImageView6 = [(CertUIItemSummaryCell *)self itemImageView];
+  image2 = [itemImageView6 image];
+  [image2 size];
+  v17 = [v12 constraintWithItem:itemImageView4 attribute:8 relatedBy:0 toItem:itemImageView5 attribute:8 multiplier:0.0 constant:?];
+  [contentView2 addConstraint:v17];
 
-  v18 = [(CertUIItemSummaryCell *)self contentView];
+  contentView3 = [(CertUIItemSummaryCell *)self contentView];
   v19 = MEMORY[0x277CCAAD0];
-  v20 = [(CertUIItemSummaryCell *)self itemImageView];
-  v21 = [(CertUIItemSummaryCell *)self contentView];
-  v22 = [v19 constraintWithItem:v20 attribute:1 relatedBy:0 toItem:v21 attribute:1 multiplier:1.0 constant:15.0];
-  [v18 addConstraint:v22];
+  itemImageView7 = [(CertUIItemSummaryCell *)self itemImageView];
+  contentView4 = [(CertUIItemSummaryCell *)self contentView];
+  v22 = [v19 constraintWithItem:itemImageView7 attribute:1 relatedBy:0 toItem:contentView4 attribute:1 multiplier:1.0 constant:15.0];
+  [contentView3 addConstraint:v22];
 
-  v23 = [(CertUIItemSummaryCell *)self contentView];
+  contentView5 = [(CertUIItemSummaryCell *)self contentView];
   v24 = MEMORY[0x277CCAAD0];
-  v25 = [(CertUIItemSummaryCell *)self itemImageView];
-  v26 = [(CertUIItemSummaryCell *)self contentView];
-  v27 = [v24 constraintWithItem:v25 attribute:10 relatedBy:0 toItem:v26 attribute:10 multiplier:1.0 constant:0.0];
-  [v23 addConstraint:v27];
+  itemImageView8 = [(CertUIItemSummaryCell *)self itemImageView];
+  contentView6 = [(CertUIItemSummaryCell *)self contentView];
+  v27 = [v24 constraintWithItem:itemImageView8 attribute:10 relatedBy:0 toItem:contentView6 attribute:10 multiplier:1.0 constant:0.0];
+  [contentView5 addConstraint:v27];
 
   v28 = MEMORY[0x277CCAAD0];
-  v29 = [(CertUIItemSummaryCell *)self contentView];
-  v30 = [(CertUIItemSummaryCell *)self itemImageView];
-  v88 = [v28 constraintWithItem:v29 attribute:8 relatedBy:1 toItem:v30 attribute:8 multiplier:1.0 constant:16.0];
+  contentView7 = [(CertUIItemSummaryCell *)self contentView];
+  itemImageView9 = [(CertUIItemSummaryCell *)self itemImageView];
+  v88 = [v28 constraintWithItem:contentView7 attribute:8 relatedBy:1 toItem:itemImageView9 attribute:8 multiplier:1.0 constant:16.0];
 
   LODWORD(v31) = 1148829696;
   [v88 setPriority:v31];
-  v32 = [(CertUIItemSummaryCell *)self contentView];
-  [v32 addConstraint:v88];
+  contentView8 = [(CertUIItemSummaryCell *)self contentView];
+  [contentView8 addConstraint:v88];
 
-  v33 = [(CertUIItemSummaryCell *)self itemTitleView];
+  itemTitleView = [(CertUIItemSummaryCell *)self itemTitleView];
   v34 = MEMORY[0x277CCAAD0];
-  v35 = [(CertUIItemSummaryCell *)self itemTitleLabel];
-  v36 = [(CertUIItemSummaryCell *)self itemTitleView];
-  v37 = [v34 constraintWithItem:v35 attribute:3 relatedBy:0 toItem:v36 attribute:3 multiplier:1.0 constant:0.0];
-  [v33 addConstraint:v37];
+  itemTitleLabel = [(CertUIItemSummaryCell *)self itemTitleLabel];
+  itemTitleView2 = [(CertUIItemSummaryCell *)self itemTitleView];
+  v37 = [v34 constraintWithItem:itemTitleLabel attribute:3 relatedBy:0 toItem:itemTitleView2 attribute:3 multiplier:1.0 constant:0.0];
+  [itemTitleView addConstraint:v37];
 
-  v38 = [(CertUIItemSummaryCell *)self itemTitleView];
+  itemTitleView3 = [(CertUIItemSummaryCell *)self itemTitleView];
   v39 = MEMORY[0x277CCAAD0];
-  v40 = [(CertUIItemSummaryCell *)self itemTitleLabel];
-  v41 = [(CertUIItemSummaryCell *)self itemTitleView];
-  v42 = [v39 constraintWithItem:v40 attribute:1 relatedBy:0 toItem:v41 attribute:1 multiplier:1.0 constant:0.0];
-  [v38 addConstraint:v42];
+  itemTitleLabel2 = [(CertUIItemSummaryCell *)self itemTitleLabel];
+  itemTitleView4 = [(CertUIItemSummaryCell *)self itemTitleView];
+  v42 = [v39 constraintWithItem:itemTitleLabel2 attribute:1 relatedBy:0 toItem:itemTitleView4 attribute:1 multiplier:1.0 constant:0.0];
+  [itemTitleView3 addConstraint:v42];
 
-  v43 = [(CertUIItemSummaryCell *)self itemTitleView];
+  itemTitleView5 = [(CertUIItemSummaryCell *)self itemTitleView];
   v44 = MEMORY[0x277CCAAD0];
-  v45 = [(CertUIItemSummaryCell *)self itemTitleView];
-  v46 = [(CertUIItemSummaryCell *)self itemTitleLabel];
-  v47 = [v44 constraintWithItem:v45 attribute:2 relatedBy:1 toItem:v46 attribute:2 multiplier:1.0 constant:0.0];
-  [v43 addConstraint:v47];
+  itemTitleView6 = [(CertUIItemSummaryCell *)self itemTitleView];
+  itemTitleLabel3 = [(CertUIItemSummaryCell *)self itemTitleLabel];
+  v47 = [v44 constraintWithItem:itemTitleView6 attribute:2 relatedBy:1 toItem:itemTitleLabel3 attribute:2 multiplier:1.0 constant:0.0];
+  [itemTitleView5 addConstraint:v47];
 
-  v48 = [(CertUIItemSummaryCell *)self itemTitleView];
+  itemTitleView7 = [(CertUIItemSummaryCell *)self itemTitleView];
   v49 = MEMORY[0x277CCAAD0];
-  v50 = [(CertUIItemSummaryCell *)self itemSubtitleLabel];
-  v51 = [(CertUIItemSummaryCell *)self itemTitleLabel];
-  v52 = [v49 constraintWithItem:v50 attribute:3 relatedBy:0 toItem:v51 attribute:4 multiplier:1.0 constant:0.0];
-  [v48 addConstraint:v52];
+  itemSubtitleLabel = [(CertUIItemSummaryCell *)self itemSubtitleLabel];
+  itemTitleLabel4 = [(CertUIItemSummaryCell *)self itemTitleLabel];
+  v52 = [v49 constraintWithItem:itemSubtitleLabel attribute:3 relatedBy:0 toItem:itemTitleLabel4 attribute:4 multiplier:1.0 constant:0.0];
+  [itemTitleView7 addConstraint:v52];
 
-  v53 = [(CertUIItemSummaryCell *)self itemTitleView];
+  itemTitleView8 = [(CertUIItemSummaryCell *)self itemTitleView];
   v54 = MEMORY[0x277CCAAD0];
-  v55 = [(CertUIItemSummaryCell *)self itemSubtitleLabel];
-  v56 = [(CertUIItemSummaryCell *)self itemTitleView];
-  v57 = [v54 constraintWithItem:v55 attribute:1 relatedBy:0 toItem:v56 attribute:1 multiplier:1.0 constant:0.0];
-  [v53 addConstraint:v57];
+  itemSubtitleLabel2 = [(CertUIItemSummaryCell *)self itemSubtitleLabel];
+  itemTitleView9 = [(CertUIItemSummaryCell *)self itemTitleView];
+  v57 = [v54 constraintWithItem:itemSubtitleLabel2 attribute:1 relatedBy:0 toItem:itemTitleView9 attribute:1 multiplier:1.0 constant:0.0];
+  [itemTitleView8 addConstraint:v57];
 
-  v58 = [(CertUIItemSummaryCell *)self itemTitleView];
+  itemTitleView10 = [(CertUIItemSummaryCell *)self itemTitleView];
   v59 = MEMORY[0x277CCAAD0];
-  v60 = [(CertUIItemSummaryCell *)self itemTitleView];
-  v61 = [(CertUIItemSummaryCell *)self itemSubtitleLabel];
-  v62 = [v59 constraintWithItem:v60 attribute:2 relatedBy:1 toItem:v61 attribute:2 multiplier:1.0 constant:0.0];
-  [v58 addConstraint:v62];
+  itemTitleView11 = [(CertUIItemSummaryCell *)self itemTitleView];
+  itemSubtitleLabel3 = [(CertUIItemSummaryCell *)self itemSubtitleLabel];
+  v62 = [v59 constraintWithItem:itemTitleView11 attribute:2 relatedBy:1 toItem:itemSubtitleLabel3 attribute:2 multiplier:1.0 constant:0.0];
+  [itemTitleView10 addConstraint:v62];
 
-  v63 = [(CertUIItemSummaryCell *)self itemTitleView];
+  itemTitleView12 = [(CertUIItemSummaryCell *)self itemTitleView];
   v64 = MEMORY[0x277CCAAD0];
-  v65 = [(CertUIItemSummaryCell *)self itemTitleView];
-  v66 = [(CertUIItemSummaryCell *)self itemSubtitleLabel];
-  v67 = [v64 constraintWithItem:v65 attribute:4 relatedBy:0 toItem:v66 attribute:4 multiplier:1.0 constant:0.0];
-  [v63 addConstraint:v67];
+  itemTitleView13 = [(CertUIItemSummaryCell *)self itemTitleView];
+  itemSubtitleLabel4 = [(CertUIItemSummaryCell *)self itemSubtitleLabel];
+  v67 = [v64 constraintWithItem:itemTitleView13 attribute:4 relatedBy:0 toItem:itemSubtitleLabel4 attribute:4 multiplier:1.0 constant:0.0];
+  [itemTitleView12 addConstraint:v67];
 
-  v68 = [(CertUIItemSummaryCell *)self contentView];
+  contentView9 = [(CertUIItemSummaryCell *)self contentView];
   v69 = MEMORY[0x277CCAAD0];
-  v70 = [(CertUIItemSummaryCell *)self itemTitleView];
-  v71 = [(CertUIItemSummaryCell *)self itemImageView];
-  v72 = [v69 constraintWithItem:v70 attribute:10 relatedBy:0 toItem:v71 attribute:10 multiplier:1.0 constant:0.0];
-  [v68 addConstraint:v72];
+  itemTitleView14 = [(CertUIItemSummaryCell *)self itemTitleView];
+  itemImageView10 = [(CertUIItemSummaryCell *)self itemImageView];
+  v72 = [v69 constraintWithItem:itemTitleView14 attribute:10 relatedBy:0 toItem:itemImageView10 attribute:10 multiplier:1.0 constant:0.0];
+  [contentView9 addConstraint:v72];
 
-  v73 = [(CertUIItemSummaryCell *)self contentView];
+  contentView10 = [(CertUIItemSummaryCell *)self contentView];
   v74 = MEMORY[0x277CCAAD0];
-  v75 = [(CertUIItemSummaryCell *)self itemTitleView];
-  v76 = [(CertUIItemSummaryCell *)self itemImageView];
-  v77 = [v74 constraintWithItem:v75 attribute:1 relatedBy:0 toItem:v76 attribute:2 multiplier:1.0 constant:12.0];
-  [v73 addConstraint:v77];
+  itemTitleView15 = [(CertUIItemSummaryCell *)self itemTitleView];
+  itemImageView11 = [(CertUIItemSummaryCell *)self itemImageView];
+  v77 = [v74 constraintWithItem:itemTitleView15 attribute:1 relatedBy:0 toItem:itemImageView11 attribute:2 multiplier:1.0 constant:12.0];
+  [contentView10 addConstraint:v77];
 
-  v78 = [(CertUIItemSummaryCell *)self contentView];
+  contentView11 = [(CertUIItemSummaryCell *)self contentView];
   v79 = MEMORY[0x277CCAAD0];
-  v80 = [(CertUIItemSummaryCell *)self itemTitleView];
-  v81 = [(CertUIItemSummaryCell *)self contentView];
-  v82 = [v79 constraintWithItem:v80 attribute:2 relatedBy:0 toItem:v81 attribute:2 multiplier:1.0 constant:-12.0];
-  [v78 addConstraint:v82];
+  itemTitleView16 = [(CertUIItemSummaryCell *)self itemTitleView];
+  contentView12 = [(CertUIItemSummaryCell *)self contentView];
+  v82 = [v79 constraintWithItem:itemTitleView16 attribute:2 relatedBy:0 toItem:contentView12 attribute:2 multiplier:1.0 constant:-12.0];
+  [contentView11 addConstraint:v82];
 
-  v83 = [(CertUIItemSummaryCell *)self contentView];
+  contentView13 = [(CertUIItemSummaryCell *)self contentView];
   v84 = MEMORY[0x277CCAAD0];
-  v85 = [(CertUIItemSummaryCell *)self contentView];
-  v86 = [(CertUIItemSummaryCell *)self itemTitleView];
-  v87 = [v84 constraintWithItem:v85 attribute:8 relatedBy:1 toItem:v86 attribute:8 multiplier:1.0 constant:0.0];
-  [v83 addConstraint:v87];
+  contentView14 = [(CertUIItemSummaryCell *)self contentView];
+  itemTitleView17 = [(CertUIItemSummaryCell *)self itemTitleView];
+  v87 = [v84 constraintWithItem:contentView14 attribute:8 relatedBy:1 toItem:itemTitleView17 attribute:8 multiplier:1.0 constant:0.0];
+  [contentView13 addConstraint:v87];
 }
 
 - (double)cellHeight
 {
-  v2 = [(CertUIItemSummaryCell *)self itemImageView];
-  v3 = [v2 image];
-  [v3 size];
+  itemImageView = [(CertUIItemSummaryCell *)self itemImageView];
+  image = [itemImageView image];
+  [image size];
   v5 = v4;
 
   if (v5 <= 0.0)
   {
-    v6 = [MEMORY[0x277D75418] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v7 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v5 = 72.0;
     }
@@ -242,8 +242,8 @@
 
 + (double)titleOriginX
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 1;
 
   return dbl_2433CA2C0[v3];
 }

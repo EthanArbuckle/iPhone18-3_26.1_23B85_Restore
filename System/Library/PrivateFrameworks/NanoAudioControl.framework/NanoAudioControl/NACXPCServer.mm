@@ -1,73 +1,73 @@
 @interface NACXPCServer
 + (id)server;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NACXPCServer)init;
 - (float)_cachedHapticIntensity;
-- (id)_audioRoutesRecordForCategory:(id)a3;
+- (id)_audioRoutesRecordForCategory:(id)category;
 - (id)_cachedVolumeRecords;
-- (id)_listeningModesRecordForTarget:(id)a3;
-- (id)_routeObservationCategoriesForConnection:(id)a3;
-- (id)_volumeRecordForTarget:(id)a3;
-- (int64_t)_aggregatedCountOfObserversForTarget:(id)a3 inRecords:(id)a4;
+- (id)_listeningModesRecordForTarget:(id)target;
+- (id)_routeObservationCategoriesForConnection:(id)connection;
+- (id)_volumeRecordForTarget:(id)target;
+- (int64_t)_aggregatedCountOfObserversForTarget:(id)target inRecords:(id)records;
 - (int64_t)_cachedHapticState;
-- (void)EULimitForTarget:(id)a3 result:(id)a4;
-- (void)_beginObservingListeningModesForTarget:(id)a3 connection:(id)a4;
-- (void)_beginObservingVolumeForTarget:(id)a3 connection:(id)a4;
+- (void)EULimitForTarget:(id)target result:(id)result;
+- (void)_beginObservingListeningModesForTarget:(id)target connection:(id)connection;
+- (void)_beginObservingVolumeForTarget:(id)target connection:(id)connection;
 - (void)_cachedVolumeRecords;
 - (void)_cancelDeferredAudioRoutesUpdate;
-- (void)_cleanupConnection:(id)a3;
-- (void)_endObservingAudioRoutesForCategory:(id)a3 connection:(id)a4;
-- (void)_endObservingListeningModesForTarget:(id)a3 connection:(id)a4;
-- (void)_endObservingVolumeForTarget:(id)a3 connection:(id)a4;
+- (void)_cleanupConnection:(id)connection;
+- (void)_endObservingAudioRoutesForCategory:(id)category connection:(id)connection;
+- (void)_endObservingListeningModesForTarget:(id)target connection:(id)connection;
+- (void)_endObservingVolumeForTarget:(id)target connection:(id)connection;
 - (void)_persistHapticIntensity;
 - (void)_persistHapticState;
 - (void)_persistProminentHapticState;
 - (void)_persistSystemMutedState;
 - (void)_persistVolumeRecords;
-- (void)_scheduleDeferredAudioRoutesUpdate:(id)a3 category:(id)a4;
-- (void)_updateAudioRoutes:(id)a3 category:(id)a4;
-- (void)audioRoutesForCategory:(id)a3 result:(id)a4;
-- (void)availableListeningModesForTarget:(id)a3 result:(id)a4;
-- (void)beginObservingAudioRoutesForCategory:(id)a3;
-- (void)beginObservingListeningModesForTarget:(id)a3;
-- (void)beginObservingVolumeForTarget:(id)a3;
-- (void)client:(id)a3 EULimit:(float)a4 didChangeForTarget:(id)a5;
-- (void)client:(id)a3 audioRoutes:(id)a4 didChangeForCategory:(id)a5;
-- (void)client:(id)a3 availableListeningModes:(id)a4 didChangeForTarget:(id)a5;
-- (void)client:(id)a3 currentListeningMode:(id)a4 didChangeForTarget:(id)a5;
-- (void)client:(id)a3 didFailToSetCurrentListeningModeForTarget:(id)a4 error:(id)a5;
-- (void)client:(id)a3 hapticIntensityDidChange:(float)a4;
-- (void)client:(id)a3 hapticStateDidChange:(int64_t)a4;
-- (void)client:(id)a3 mutedState:(BOOL)a4 didChangeForTarget:(id)a5;
-- (void)client:(id)a3 prominentHapticStateDidChange:(BOOL)a4;
-- (void)client:(id)a3 routeObservationCancelledForCategory:(id)a4;
-- (void)client:(id)a3 systemMutedStateDidChange:(BOOL)a4;
-- (void)client:(id)a3 volumeControlAvailable:(BOOL)a4 didChangeForTarget:(id)a5;
-- (void)client:(id)a3 volumeObservationCancelledForTarget:(id)a4;
-- (void)client:(id)a3 volumeValue:(float)a4 didChangeForTarget:(id)a5;
-- (void)client:(id)a3 volumeWarningEnabled:(BOOL)a4 volumeWarningState:(int64_t)a5 didChangeForTarget:(id)a6;
-- (void)currentListeningModeForTarget:(id)a3 result:(id)a4;
-- (void)endObservingAudioRoutesForCategory:(id)a3;
-- (void)endObservingListeningModesForTarget:(id)a3;
-- (void)endObservingVolumeForTarget:(id)a3;
-- (void)hapticIntensity:(id)a3;
-- (void)hapticState:(id)a3;
-- (void)mutedStateForTarget:(id)a3 result:(id)a4;
-- (void)pickAudioRouteWithIdentifier:(id)a3 category:(id)a4;
-- (void)playToneWithConfiguration:(id)a3;
-- (void)prominentHapticEnabled:(id)a3;
-- (void)setCurrentListeningMode:(id)a3 forTarget:(id)a4;
-- (void)setHapticIntensity:(float)a3;
-- (void)setHapticState:(int64_t)a3;
-- (void)setMuted:(BOOL)a3 forTarget:(id)a4;
-- (void)setProminentHapticEnabled:(BOOL)a3;
-- (void)setSystemMuted:(BOOL)a3;
-- (void)setVolumeValue:(float)a3 forTarget:(id)a4;
-- (void)stopToneWithOptions:(id)a3;
-- (void)systemMutedState:(id)a3;
-- (void)volumeControlAvailabilityForTarget:(id)a3 result:(id)a4;
-- (void)volumeValueForTarget:(id)a3 result:(id)a4;
-- (void)volumeWarningForTarget:(id)a3 result:(id)a4;
+- (void)_scheduleDeferredAudioRoutesUpdate:(id)update category:(id)category;
+- (void)_updateAudioRoutes:(id)routes category:(id)category;
+- (void)audioRoutesForCategory:(id)category result:(id)result;
+- (void)availableListeningModesForTarget:(id)target result:(id)result;
+- (void)beginObservingAudioRoutesForCategory:(id)category;
+- (void)beginObservingListeningModesForTarget:(id)target;
+- (void)beginObservingVolumeForTarget:(id)target;
+- (void)client:(id)client EULimit:(float)limit didChangeForTarget:(id)target;
+- (void)client:(id)client audioRoutes:(id)routes didChangeForCategory:(id)category;
+- (void)client:(id)client availableListeningModes:(id)modes didChangeForTarget:(id)target;
+- (void)client:(id)client currentListeningMode:(id)mode didChangeForTarget:(id)target;
+- (void)client:(id)client didFailToSetCurrentListeningModeForTarget:(id)target error:(id)error;
+- (void)client:(id)client hapticIntensityDidChange:(float)change;
+- (void)client:(id)client hapticStateDidChange:(int64_t)change;
+- (void)client:(id)client mutedState:(BOOL)state didChangeForTarget:(id)target;
+- (void)client:(id)client prominentHapticStateDidChange:(BOOL)change;
+- (void)client:(id)client routeObservationCancelledForCategory:(id)category;
+- (void)client:(id)client systemMutedStateDidChange:(BOOL)change;
+- (void)client:(id)client volumeControlAvailable:(BOOL)available didChangeForTarget:(id)target;
+- (void)client:(id)client volumeObservationCancelledForTarget:(id)target;
+- (void)client:(id)client volumeValue:(float)value didChangeForTarget:(id)target;
+- (void)client:(id)client volumeWarningEnabled:(BOOL)enabled volumeWarningState:(int64_t)state didChangeForTarget:(id)target;
+- (void)currentListeningModeForTarget:(id)target result:(id)result;
+- (void)endObservingAudioRoutesForCategory:(id)category;
+- (void)endObservingListeningModesForTarget:(id)target;
+- (void)endObservingVolumeForTarget:(id)target;
+- (void)hapticIntensity:(id)intensity;
+- (void)hapticState:(id)state;
+- (void)mutedStateForTarget:(id)target result:(id)result;
+- (void)pickAudioRouteWithIdentifier:(id)identifier category:(id)category;
+- (void)playToneWithConfiguration:(id)configuration;
+- (void)prominentHapticEnabled:(id)enabled;
+- (void)setCurrentListeningMode:(id)mode forTarget:(id)target;
+- (void)setHapticIntensity:(float)intensity;
+- (void)setHapticState:(int64_t)state;
+- (void)setMuted:(BOOL)muted forTarget:(id)target;
+- (void)setProminentHapticEnabled:(BOOL)enabled;
+- (void)setSystemMuted:(BOOL)muted;
+- (void)setVolumeValue:(float)value forTarget:(id)target;
+- (void)stopToneWithOptions:(id)options;
+- (void)systemMutedState:(id)state;
+- (void)volumeControlAvailabilityForTarget:(id)target result:(id)result;
+- (void)volumeValueForTarget:(id)target result:(id)result;
+- (void)volumeWarningForTarget:(id)target result:(id)result;
 @end
 
 @implementation NACXPCServer
@@ -159,34 +159,34 @@ uint64_t __20__NACXPCServer_init__block_invoke(uint64_t a1)
   return [v19 resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = MEMORY[0x277CBEB98];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
   v11 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_286C49AC8];
   [v11 setClasses:v10 forSelector:sel_audioRoutesForCategory_result_ argumentIndex:0 ofReply:1];
-  [v7 setExportedInterface:v11];
-  [v7 setExportedObject:self];
+  [connectionCopy setExportedInterface:v11];
+  [connectionCopy setExportedObject:self];
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v7);
+  objc_initWeak(&from, connectionCopy);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __51__NACXPCServer_listener_shouldAcceptNewConnection___block_invoke;
   v18[3] = &unk_27992B9A8;
   objc_copyWeak(&v19, &location);
   objc_copyWeak(&v20, &from);
-  [v7 setInvalidationHandler:v18];
+  [connectionCopy setInvalidationHandler:v18];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __51__NACXPCServer_listener_shouldAcceptNewConnection___block_invoke_2;
   v15[3] = &unk_27992B9A8;
   objc_copyWeak(&v16, &location);
   objc_copyWeak(&v17, &from);
-  [v7 setInterruptionHandler:v15];
-  [v7 resume];
+  [connectionCopy setInterruptionHandler:v15];
+  [connectionCopy resume];
   v12 = NMLogForCategory(4);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -254,84 +254,84 @@ void __51__NACXPCServer_listener_shouldAcceptNewConnection___block_invoke_2(uint
   }
 }
 
-- (void)beginObservingVolumeForTarget:(id)a3
+- (void)beginObservingVolumeForTarget:(id)target
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  targetCopy = target;
   v5 = NMLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = targetCopy;
     _os_log_impl(&dword_25AEBF000, v5, OS_LOG_TYPE_DEFAULT, "[NACXPC] Received request to begin observing volume for %@", buf, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CCAE80] currentConnection];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__NACXPCServer_beginObservingVolumeForTarget___block_invoke;
   block[3] = &unk_27992B650;
   block[4] = self;
-  v12 = v4;
-  v13 = v6;
-  v8 = v6;
-  v9 = v4;
+  v12 = targetCopy;
+  v13 = currentConnection;
+  v8 = currentConnection;
+  v9 = targetCopy;
   dispatch_async(internalQueue, block);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_beginObservingVolumeForTarget:(id)a3 connection:(id)a4
+- (void)_beginObservingVolumeForTarget:(id)target connection:(id)connection
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NACXPCServer *)self _volumeRecordForTarget:v6];
-  v9 = [v8 observers];
-  if (([v9 containsObject:v7] & 1) == 0)
+  targetCopy = target;
+  connectionCopy = connection;
+  v8 = [(NACXPCServer *)self _volumeRecordForTarget:targetCopy];
+  observers = [v8 observers];
+  if (([observers containsObject:connectionCopy] & 1) == 0)
   {
-    [v9 addObject:v7];
-    if ([(NACXPCServer *)self _aggregatedCountOfObserversForTarget:v6 inRecords:self->_volumeRecords]== 1)
+    [observers addObject:connectionCopy];
+    if ([(NACXPCServer *)self _aggregatedCountOfObserversForTarget:targetCopy inRecords:self->_volumeRecords]== 1)
     {
       v10 = NMLogForCategory(4);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138412290;
-        v13 = v6;
+        v13 = targetCopy;
         _os_log_impl(&dword_25AEBF000, v10, OS_LOG_TYPE_DEFAULT, "[NACXPC] Sending IDS beginObservingVolume request for %@ because first observer is added", &v12, 0xCu);
       }
 
-      [(NACIDSClient *)self->_idsClient beginObservingVolumeForTarget:v6];
+      [(NACIDSClient *)self->_idsClient beginObservingVolumeForTarget:targetCopy];
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)_aggregatedCountOfObserversForTarget:(id)a3 inRecords:(id)a4
+- (int64_t)_aggregatedCountOfObserversForTarget:(id)target inRecords:(id)records
 {
-  v5 = a3;
-  v6 = a4;
+  targetCopy = target;
+  recordsCopy = records;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  if ([v5 isPairedDevice])
+  if ([targetCopy isPairedDevice])
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __63__NACXPCServer__aggregatedCountOfObserversForTarget_inRecords___block_invoke;
     v12[3] = &unk_27992B9D0;
     v12[4] = &v13;
-    [v6 enumerateKeysAndObjectsUsingBlock:v12];
+    [recordsCopy enumerateKeysAndObjectsUsingBlock:v12];
   }
 
   else
   {
-    v7 = [v6 objectForKeyedSubscript:v5];
-    v8 = [v7 observers];
-    v9 = [v8 count];
+    v7 = [recordsCopy objectForKeyedSubscript:targetCopy];
+    observers = [v7 observers];
+    v9 = [observers count];
     v14[3] = v9;
   }
 
@@ -351,75 +351,75 @@ void __63__NACXPCServer__aggregatedCountOfObserversForTarget_inRecords___block_i
   }
 }
 
-- (void)endObservingVolumeForTarget:(id)a3
+- (void)endObservingVolumeForTarget:(id)target
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  targetCopy = target;
   v5 = NMLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = targetCopy;
     _os_log_impl(&dword_25AEBF000, v5, OS_LOG_TYPE_DEFAULT, "[NACXPC] Received request to end observing volume for %@", buf, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CCAE80] currentConnection];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__NACXPCServer_endObservingVolumeForTarget___block_invoke;
   block[3] = &unk_27992B650;
   block[4] = self;
-  v12 = v4;
-  v13 = v6;
-  v8 = v6;
-  v9 = v4;
+  v12 = targetCopy;
+  v13 = currentConnection;
+  v8 = currentConnection;
+  v9 = targetCopy;
   dispatch_async(internalQueue, block);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_endObservingVolumeForTarget:(id)a3 connection:(id)a4
+- (void)_endObservingVolumeForTarget:(id)target connection:(id)connection
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NACXPCServer *)self _volumeRecordForTarget:v6];
-  v9 = [v8 observers];
-  if ([v9 containsObject:v7])
+  targetCopy = target;
+  connectionCopy = connection;
+  v8 = [(NACXPCServer *)self _volumeRecordForTarget:targetCopy];
+  observers = [v8 observers];
+  if ([observers containsObject:connectionCopy])
   {
-    [v9 removeObject:v7];
-    if (![(NACXPCServer *)self _aggregatedCountOfObserversForTarget:v6 inRecords:self->_volumeRecords])
+    [observers removeObject:connectionCopy];
+    if (![(NACXPCServer *)self _aggregatedCountOfObserversForTarget:targetCopy inRecords:self->_volumeRecords])
     {
       v10 = NMLogForCategory(4);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138412290;
-        v13 = v6;
+        v13 = targetCopy;
         _os_log_impl(&dword_25AEBF000, v10, OS_LOG_TYPE_DEFAULT, "[NACXPC] Sending IDS endObservingVolume request for %@ because last observer is removed", &v12, 0xCu);
       }
 
-      [(NACIDSClient *)self->_idsClient endObservingVolumeForTarget:v6];
+      [(NACIDSClient *)self->_idsClient endObservingVolumeForTarget:targetCopy];
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)volumeValueForTarget:(id)a3 result:(id)a4
+- (void)volumeValueForTarget:(id)target result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  targetCopy = target;
+  resultCopy = result;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__NACXPCServer_volumeValueForTarget_result___block_invoke;
   block[3] = &unk_27992B9F8;
-  v12 = v6;
-  v13 = v7;
+  v12 = targetCopy;
+  v13 = resultCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = targetCopy;
+  v10 = resultCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -434,20 +434,20 @@ void __44__NACXPCServer_volumeValueForTarget_result___block_invoke(uint64_t a1)
   }
 }
 
-- (void)volumeControlAvailabilityForTarget:(id)a3 result:(id)a4
+- (void)volumeControlAvailabilityForTarget:(id)target result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  targetCopy = target;
+  resultCopy = result;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__NACXPCServer_volumeControlAvailabilityForTarget_result___block_invoke;
   block[3] = &unk_27992B9F8;
-  v12 = v6;
-  v13 = v7;
+  v12 = targetCopy;
+  v13 = resultCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = targetCopy;
+  v10 = resultCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -460,20 +460,20 @@ void __58__NACXPCServer_volumeControlAvailabilityForTarget_result___block_invoke
   }
 }
 
-- (void)mutedStateForTarget:(id)a3 result:(id)a4
+- (void)mutedStateForTarget:(id)target result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  targetCopy = target;
+  resultCopy = result;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__NACXPCServer_mutedStateForTarget_result___block_invoke;
   block[3] = &unk_27992B9F8;
-  v12 = v6;
-  v13 = v7;
+  v12 = targetCopy;
+  v13 = resultCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = targetCopy;
+  v10 = resultCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -486,20 +486,20 @@ void __43__NACXPCServer_mutedStateForTarget_result___block_invoke(uint64_t a1)
   }
 }
 
-- (void)EULimitForTarget:(id)a3 result:(id)a4
+- (void)EULimitForTarget:(id)target result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  targetCopy = target;
+  resultCopy = result;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__NACXPCServer_EULimitForTarget_result___block_invoke;
   block[3] = &unk_27992B9F8;
-  v12 = v6;
-  v13 = v7;
+  v12 = targetCopy;
+  v13 = resultCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = targetCopy;
+  v10 = resultCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -514,20 +514,20 @@ void __40__NACXPCServer_EULimitForTarget_result___block_invoke(uint64_t a1)
   }
 }
 
-- (void)volumeWarningForTarget:(id)a3 result:(id)a4
+- (void)volumeWarningForTarget:(id)target result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  targetCopy = target;
+  resultCopy = result;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__NACXPCServer_volumeWarningForTarget_result___block_invoke;
   block[3] = &unk_27992B9F8;
-  v12 = v6;
-  v13 = v7;
+  v12 = targetCopy;
+  v13 = resultCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = targetCopy;
+  v10 = resultCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -540,37 +540,37 @@ void __46__NACXPCServer_volumeWarningForTarget_result___block_invoke(uint64_t a1
   }
 }
 
-- (void)setVolumeValue:(float)a3 forTarget:(id)a4
+- (void)setVolumeValue:(float)value forTarget:(id)target
 {
-  v6 = a4;
+  targetCopy = target;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__NACXPCServer_setVolumeValue_forTarget___block_invoke;
   block[3] = &unk_27992B588;
-  v11 = a3;
+  valueCopy = value;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = targetCopy;
+  v8 = targetCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)setMuted:(BOOL)a3 forTarget:(id)a4
+- (void)setMuted:(BOOL)muted forTarget:(id)target
 {
-  v6 = a4;
+  targetCopy = target;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__NACXPCServer_setMuted_forTarget___block_invoke;
   block[3] = &unk_27992B5B0;
-  v11 = a3;
+  mutedCopy = muted;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = targetCopy;
+  v8 = targetCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)setSystemMuted:(BOOL)a3
+- (void)setSystemMuted:(BOOL)muted
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -578,137 +578,137 @@ void __46__NACXPCServer_volumeWarningForTarget_result___block_invoke(uint64_t a1
   v4[2] = __31__NACXPCServer_setSystemMuted___block_invoke;
   v4[3] = &unk_27992B600;
   v4[4] = self;
-  v5 = a3;
+  mutedCopy = muted;
   dispatch_async(internalQueue, v4);
 }
 
-- (void)beginObservingListeningModesForTarget:(id)a3
+- (void)beginObservingListeningModesForTarget:(id)target
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  targetCopy = target;
   v5 = NMLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = targetCopy;
     _os_log_impl(&dword_25AEBF000, v5, OS_LOG_TYPE_DEFAULT, "[NACXPC] Received request to begin observing listening modes for %@", buf, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CCAE80] currentConnection];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__NACXPCServer_beginObservingListeningModesForTarget___block_invoke;
   block[3] = &unk_27992B650;
   block[4] = self;
-  v12 = v4;
-  v13 = v6;
-  v8 = v6;
-  v9 = v4;
+  v12 = targetCopy;
+  v13 = currentConnection;
+  v8 = currentConnection;
+  v9 = targetCopy;
   dispatch_async(internalQueue, block);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)endObservingListeningModesForTarget:(id)a3
+- (void)endObservingListeningModesForTarget:(id)target
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  targetCopy = target;
   v5 = NMLogForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = targetCopy;
     _os_log_impl(&dword_25AEBF000, v5, OS_LOG_TYPE_DEFAULT, "[NACXPC] Received request to end observing listening modes for %@", buf, 0xCu);
   }
 
-  v6 = [MEMORY[0x277CCAE80] currentConnection];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__NACXPCServer_endObservingListeningModesForTarget___block_invoke;
   block[3] = &unk_27992B650;
   block[4] = self;
-  v12 = v4;
-  v13 = v6;
-  v8 = v6;
-  v9 = v4;
+  v12 = targetCopy;
+  v13 = currentConnection;
+  v8 = currentConnection;
+  v9 = targetCopy;
   dispatch_async(internalQueue, block);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_beginObservingListeningModesForTarget:(id)a3 connection:(id)a4
+- (void)_beginObservingListeningModesForTarget:(id)target connection:(id)connection
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NACXPCServer *)self _listeningModesRecordForTarget:v6];
-  v9 = [v8 observers];
-  v10 = [v9 containsObject:v7];
+  targetCopy = target;
+  connectionCopy = connection;
+  v8 = [(NACXPCServer *)self _listeningModesRecordForTarget:targetCopy];
+  observers = [v8 observers];
+  v10 = [observers containsObject:connectionCopy];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [v8 observers];
+    observers2 = [v8 observers];
 
-    if (!v11)
+    if (!observers2)
     {
       v12 = [MEMORY[0x277CBEB58] set];
       [v8 setObservers:v12];
     }
 
-    v13 = [v8 observers];
-    [v13 addObject:v7];
+    observers3 = [v8 observers];
+    [observers3 addObject:connectionCopy];
 
-    if ([(NACXPCServer *)self _aggregatedCountOfObserversForTarget:v6 inRecords:self->_listeningModesRecords]== 1)
+    if ([(NACXPCServer *)self _aggregatedCountOfObserversForTarget:targetCopy inRecords:self->_listeningModesRecords]== 1)
     {
       v14 = NMLogForCategory(4);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 138412290;
-        v17 = v6;
+        v17 = targetCopy;
         _os_log_impl(&dword_25AEBF000, v14, OS_LOG_TYPE_DEFAULT, "[NACXPC] Sending IDS beginObservingListeningModes request for %@ because first observer is added", &v16, 0xCu);
       }
 
-      [(NACIDSClient *)self->_idsClient beginObservingListeningModesForTarget:v6];
+      [(NACIDSClient *)self->_idsClient beginObservingListeningModesForTarget:targetCopy];
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_endObservingListeningModesForTarget:(id)a3 connection:(id)a4
+- (void)_endObservingListeningModesForTarget:(id)target connection:(id)connection
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NACXPCServer *)self _listeningModesRecordForTarget:v6];
-  v9 = [v8 observers];
-  if ([v9 containsObject:v7])
+  targetCopy = target;
+  connectionCopy = connection;
+  v8 = [(NACXPCServer *)self _listeningModesRecordForTarget:targetCopy];
+  observers = [v8 observers];
+  if ([observers containsObject:connectionCopy])
   {
-    [v9 removeObject:v7];
-    if (![(NACXPCServer *)self _aggregatedCountOfObserversForTarget:v6 inRecords:self->_listeningModesRecords])
+    [observers removeObject:connectionCopy];
+    if (![(NACXPCServer *)self _aggregatedCountOfObserversForTarget:targetCopy inRecords:self->_listeningModesRecords])
     {
       v10 = NMLogForCategory(4);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138412290;
-        v13 = v6;
+        v13 = targetCopy;
         _os_log_impl(&dword_25AEBF000, v10, OS_LOG_TYPE_DEFAULT, "[NACXPC] Sending IDS endObservingListeningModes request for %@ because last observer is removed", &v12, 0xCu);
       }
 
-      [(NACIDSClient *)self->_idsClient endObservingListeningModesForTarget:v6];
+      [(NACIDSClient *)self->_idsClient endObservingListeningModesForTarget:targetCopy];
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)availableListeningModesForTarget:(id)a3 result:(id)a4
+- (void)availableListeningModesForTarget:(id)target result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  targetCopy = target;
+  resultCopy = result;
+  if (resultCopy)
   {
     internalQueue = self->_internalQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -716,8 +716,8 @@ void __46__NACXPCServer_volumeWarningForTarget_result___block_invoke(uint64_t a1
     block[2] = __56__NACXPCServer_availableListeningModesForTarget_result___block_invoke;
     block[3] = &unk_27992B538;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = targetCopy;
+    v11 = resultCopy;
     dispatch_async(internalQueue, block);
   }
 }
@@ -730,11 +730,11 @@ void __56__NACXPCServer_availableListeningModesForTarget_result___block_invoke(u
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)currentListeningModeForTarget:(id)a3 result:(id)a4
+- (void)currentListeningModeForTarget:(id)target result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  targetCopy = target;
+  resultCopy = result;
+  if (resultCopy)
   {
     internalQueue = self->_internalQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -742,8 +742,8 @@ void __56__NACXPCServer_availableListeningModesForTarget_result___block_invoke(u
     block[2] = __53__NACXPCServer_currentListeningModeForTarget_result___block_invoke;
     block[3] = &unk_27992B538;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = targetCopy;
+    v11 = resultCopy;
     dispatch_async(internalQueue, block);
   }
 }
@@ -756,34 +756,34 @@ void __53__NACXPCServer_currentListeningModeForTarget_result___block_invoke(uint
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)setCurrentListeningMode:(id)a3 forTarget:(id)a4
+- (void)setCurrentListeningMode:(id)mode forTarget:(id)target
 {
-  v6 = a3;
-  v7 = a4;
+  modeCopy = mode;
+  targetCopy = target;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__NACXPCServer_setCurrentListeningMode_forTarget___block_invoke;
   block[3] = &unk_27992B650;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = modeCopy;
+  v13 = targetCopy;
+  v9 = targetCopy;
+  v10 = modeCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)hapticIntensity:(id)a3
+- (void)hapticIntensity:(id)intensity
 {
-  v4 = a3;
+  intensityCopy = intensity;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__NACXPCServer_hapticIntensity___block_invoke;
   v7[3] = &unk_27992BA20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = intensityCopy;
+  v6 = intensityCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -798,17 +798,17 @@ uint64_t __32__NACXPCServer_hapticIntensity___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)prominentHapticEnabled:(id)a3
+- (void)prominentHapticEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__NACXPCServer_prominentHapticEnabled___block_invoke;
   v7[3] = &unk_27992BA20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = enabledCopy;
+  v6 = enabledCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -823,17 +823,17 @@ uint64_t __39__NACXPCServer_prominentHapticEnabled___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)hapticState:(id)a3
+- (void)hapticState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __28__NACXPCServer_hapticState___block_invoke;
   v7[3] = &unk_27992BA20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stateCopy;
+  v6 = stateCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -848,17 +848,17 @@ uint64_t __28__NACXPCServer_hapticState___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)systemMutedState:(id)a3
+- (void)systemMutedState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__NACXPCServer_systemMutedState___block_invoke;
   v7[3] = &unk_27992BA20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = stateCopy;
+  v6 = stateCopy;
   dispatch_async(internalQueue, v7);
 }
 
@@ -873,7 +873,7 @@ uint64_t __33__NACXPCServer_systemMutedState___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setHapticIntensity:(float)a3
+- (void)setHapticIntensity:(float)intensity
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -881,11 +881,11 @@ uint64_t __33__NACXPCServer_systemMutedState___block_invoke(uint64_t a1)
   v4[2] = __35__NACXPCServer_setHapticIntensity___block_invoke;
   v4[3] = &unk_27992B5D8;
   v4[4] = self;
-  v5 = a3;
+  intensityCopy = intensity;
   dispatch_async(internalQueue, v4);
 }
 
-- (void)setProminentHapticEnabled:(BOOL)a3
+- (void)setProminentHapticEnabled:(BOOL)enabled
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -893,11 +893,11 @@ uint64_t __33__NACXPCServer_systemMutedState___block_invoke(uint64_t a1)
   v4[2] = __42__NACXPCServer_setProminentHapticEnabled___block_invoke;
   v4[3] = &unk_27992B600;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(internalQueue, v4);
 }
 
-- (void)setHapticState:(int64_t)a3
+- (void)setHapticState:(int64_t)state
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -905,7 +905,7 @@ uint64_t __33__NACXPCServer_systemMutedState___block_invoke(uint64_t a1)
   v4[2] = __31__NACXPCServer_setHapticState___block_invoke;
   v4[3] = &unk_27992B628;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = state;
   dispatch_async(internalQueue, v4);
 }
 
@@ -954,20 +954,20 @@ void __42__NACXPCServer_playProminentHapticPreview__block_invoke()
   AudioServicesPlaySystemSoundWithCompletion(0x5DAu, 0);
 }
 
-- (void)audioRoutesForCategory:(id)a3 result:(id)a4
+- (void)audioRoutesForCategory:(id)category result:(id)result
 {
-  v6 = a3;
-  v7 = a4;
+  categoryCopy = category;
+  resultCopy = result;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __46__NACXPCServer_audioRoutesForCategory_result___block_invoke;
   block[3] = &unk_27992B538;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = categoryCopy;
+  v13 = resultCopy;
+  v9 = resultCopy;
+  v10 = categoryCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -1004,20 +1004,20 @@ void __46__NACXPCServer_audioRoutesForCategory_result___block_invoke(uint64_t a1
   }
 }
 
-- (void)beginObservingAudioRoutesForCategory:(id)a3
+- (void)beginObservingAudioRoutesForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAE80] currentConnection];
+  categoryCopy = category;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__NACXPCServer_beginObservingAudioRoutesForCategory___block_invoke;
   block[3] = &unk_27992B650;
   block[4] = self;
-  v10 = v4;
-  v11 = v5;
-  v7 = v5;
-  v8 = v4;
+  v10 = categoryCopy;
+  v11 = currentConnection;
+  v7 = currentConnection;
+  v8 = categoryCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -1035,37 +1035,37 @@ void __53__NACXPCServer_beginObservingAudioRoutesForCategory___block_invoke(uint
   }
 }
 
-- (void)endObservingAudioRoutesForCategory:(id)a3
+- (void)endObservingAudioRoutesForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAE80] currentConnection];
+  categoryCopy = category;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__NACXPCServer_endObservingAudioRoutesForCategory___block_invoke;
   block[3] = &unk_27992B650;
   block[4] = self;
-  v10 = v4;
-  v11 = v5;
-  v7 = v5;
-  v8 = v4;
+  v10 = categoryCopy;
+  v11 = currentConnection;
+  v7 = currentConnection;
+  v8 = categoryCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)_endObservingAudioRoutesForCategory:(id)a3 connection:(id)a4
+- (void)_endObservingAudioRoutesForCategory:(id)category connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  categoryCopy = category;
+  connectionCopy = connection;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__NACXPCServer__endObservingAudioRoutesForCategory_connection___block_invoke;
   block[3] = &unk_27992B650;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = categoryCopy;
+  v13 = connectionCopy;
+  v9 = connectionCopy;
+  v10 = categoryCopy;
   dispatch_async(internalQueue, block);
 }
 
@@ -1083,63 +1083,63 @@ void __63__NACXPCServer__endObservingAudioRoutesForCategory_connection___block_i
   }
 }
 
-- (void)pickAudioRouteWithIdentifier:(id)a3 category:(id)a4
+- (void)pickAudioRouteWithIdentifier:(id)identifier category:(id)category
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  categoryCopy = category;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__NACXPCServer_pickAudioRouteWithIdentifier_category___block_invoke;
   block[3] = &unk_27992B650;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = categoryCopy;
+  v9 = categoryCopy;
+  v10 = identifierCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)playToneWithConfiguration:(id)a3
+- (void)playToneWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__NACXPCServer_playToneWithConfiguration___block_invoke;
   v7[3] = &unk_27992B510;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   dispatch_async(internalQueue, v7);
 }
 
-- (void)stopToneWithOptions:(id)a3
+- (void)stopToneWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__NACXPCServer_stopToneWithOptions___block_invoke;
   v7[3] = &unk_27992B510;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = optionsCopy;
+  v6 = optionsCopy;
   dispatch_async(internalQueue, v7);
 }
 
-- (void)client:(id)a3 volumeValue:(float)a4 didChangeForTarget:(id)a5
+- (void)client:(id)client volumeValue:(float)value didChangeForTarget:(id)target
 {
-  v7 = a5;
+  targetCopy = target;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__NACXPCServer_client_volumeValue_didChangeForTarget___block_invoke;
   block[3] = &unk_27992B588;
   block[4] = self;
-  v11 = v7;
-  v12 = a4;
-  v9 = v7;
+  v11 = targetCopy;
+  valueCopy = value;
+  v9 = targetCopy;
   dispatch_sync(internalQueue, block);
 }
 
@@ -1153,18 +1153,18 @@ void __54__NACXPCServer_client_volumeValue_didChangeForTarget___block_invoke(uin
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"NACVolumeValueDidChangeNotification", 0, 0, 1u);
 }
 
-- (void)client:(id)a3 volumeControlAvailable:(BOOL)a4 didChangeForTarget:(id)a5
+- (void)client:(id)client volumeControlAvailable:(BOOL)available didChangeForTarget:(id)target
 {
-  v7 = a5;
+  targetCopy = target;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__NACXPCServer_client_volumeControlAvailable_didChangeForTarget___block_invoke;
   block[3] = &unk_27992B5B0;
   block[4] = self;
-  v11 = v7;
-  v12 = a4;
-  v9 = v7;
+  v11 = targetCopy;
+  availableCopy = available;
+  v9 = targetCopy;
   dispatch_sync(internalQueue, block);
 }
 
@@ -1177,18 +1177,18 @@ void __65__NACXPCServer_client_volumeControlAvailable_didChangeForTarget___block
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"NACVolumeControlAvailabilityDidChangeNotification", 0, 0, 1u);
 }
 
-- (void)client:(id)a3 mutedState:(BOOL)a4 didChangeForTarget:(id)a5
+- (void)client:(id)client mutedState:(BOOL)state didChangeForTarget:(id)target
 {
-  v7 = a5;
+  targetCopy = target;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__NACXPCServer_client_mutedState_didChangeForTarget___block_invoke;
   block[3] = &unk_27992B5B0;
   block[4] = self;
-  v11 = v7;
-  v12 = a4;
-  v9 = v7;
+  v11 = targetCopy;
+  stateCopy = state;
+  v9 = targetCopy;
   dispatch_sync(internalQueue, block);
 }
 
@@ -1201,7 +1201,7 @@ void __53__NACXPCServer_client_mutedState_didChangeForTarget___block_invoke(uint
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"NACMutedStateDidChangeNotificaton", 0, 0, 1u);
 }
 
-- (void)client:(id)a3 hapticIntensityDidChange:(float)a4
+- (void)client:(id)client hapticIntensityDidChange:(float)change
 {
   internalQueue = self->_internalQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -1209,7 +1209,7 @@ void __53__NACXPCServer_client_mutedState_didChangeForTarget___block_invoke(uint
   v5[2] = __48__NACXPCServer_client_hapticIntensityDidChange___block_invoke;
   v5[3] = &unk_27992B5D8;
   v5[4] = self;
-  v6 = a4;
+  changeCopy = change;
   dispatch_sync(internalQueue, v5);
 }
 
@@ -1222,7 +1222,7 @@ void __48__NACXPCServer_client_hapticIntensityDidChange___block_invoke(uint64_t 
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"NACHapticIntensityDidChangeNotification", 0, 0, 1u);
 }
 
-- (void)client:(id)a3 prominentHapticStateDidChange:(BOOL)a4
+- (void)client:(id)client prominentHapticStateDidChange:(BOOL)change
 {
   internalQueue = self->_internalQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -1230,7 +1230,7 @@ void __48__NACXPCServer_client_hapticIntensityDidChange___block_invoke(uint64_t 
   v5[2] = __53__NACXPCServer_client_prominentHapticStateDidChange___block_invoke;
   v5[3] = &unk_27992B600;
   v5[4] = self;
-  v6 = a4;
+  changeCopy = change;
   dispatch_sync(internalQueue, v5);
 }
 
@@ -1243,7 +1243,7 @@ void __53__NACXPCServer_client_prominentHapticStateDidChange___block_invoke(uint
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"NACProminentHapticStateDidChangeNotification", 0, 0, 1u);
 }
 
-- (void)client:(id)a3 hapticStateDidChange:(int64_t)a4
+- (void)client:(id)client hapticStateDidChange:(int64_t)change
 {
   internalQueue = self->_internalQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -1251,7 +1251,7 @@ void __53__NACXPCServer_client_prominentHapticStateDidChange___block_invoke(uint
   v5[2] = __44__NACXPCServer_client_hapticStateDidChange___block_invoke;
   v5[3] = &unk_27992B628;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = change;
   dispatch_sync(internalQueue, v5);
 }
 
@@ -1264,7 +1264,7 @@ void __44__NACXPCServer_client_hapticStateDidChange___block_invoke(uint64_t a1)
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"NACHapticStateDidChangeNotification", 0, 0, 1u);
 }
 
-- (void)client:(id)a3 systemMutedStateDidChange:(BOOL)a4
+- (void)client:(id)client systemMutedStateDidChange:(BOOL)change
 {
   internalQueue = self->_internalQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -1272,7 +1272,7 @@ void __44__NACXPCServer_client_hapticStateDidChange___block_invoke(uint64_t a1)
   v5[2] = __49__NACXPCServer_client_systemMutedStateDidChange___block_invoke;
   v5[3] = &unk_27992B600;
   v5[4] = self;
-  v6 = a4;
+  changeCopy = change;
   dispatch_sync(internalQueue, v5);
 }
 
@@ -1285,18 +1285,18 @@ void __49__NACXPCServer_client_systemMutedStateDidChange___block_invoke(uint64_t
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"NACSystemMutedStateDidChangeNotification", 0, 0, 1u);
 }
 
-- (void)client:(id)a3 EULimit:(float)a4 didChangeForTarget:(id)a5
+- (void)client:(id)client EULimit:(float)limit didChangeForTarget:(id)target
 {
-  v7 = a5;
+  targetCopy = target;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__NACXPCServer_client_EULimit_didChangeForTarget___block_invoke;
   block[3] = &unk_27992B588;
   block[4] = self;
-  v11 = v7;
-  v12 = a4;
-  v9 = v7;
+  v11 = targetCopy;
+  limitCopy = limit;
+  v9 = targetCopy;
   dispatch_sync(internalQueue, block);
 }
 
@@ -1310,19 +1310,19 @@ void __50__NACXPCServer_client_EULimit_didChangeForTarget___block_invoke(uint64_
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"NACEULimitDidChangeNotification", 0, 0, 1u);
 }
 
-- (void)client:(id)a3 volumeWarningEnabled:(BOOL)a4 volumeWarningState:(int64_t)a5 didChangeForTarget:(id)a6
+- (void)client:(id)client volumeWarningEnabled:(BOOL)enabled volumeWarningState:(int64_t)state didChangeForTarget:(id)target
 {
-  v9 = a6;
+  targetCopy = target;
   internalQueue = self->_internalQueue;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __82__NACXPCServer_client_volumeWarningEnabled_volumeWarningState_didChangeForTarget___block_invoke;
   v12[3] = &unk_27992BA68;
   v12[4] = self;
-  v13 = v9;
-  v15 = a4;
-  v14 = a5;
-  v11 = v9;
+  v13 = targetCopy;
+  enabledCopy = enabled;
+  stateCopy = state;
+  v11 = targetCopy;
   dispatch_sync(internalQueue, v12);
 }
 
@@ -1336,20 +1336,20 @@ void __82__NACXPCServer_client_volumeWarningEnabled_volumeWarningState_didChange
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"NACVolumeWarningDidChangeNotification", 0, 0, 1u);
 }
 
-- (void)client:(id)a3 availableListeningModes:(id)a4 didChangeForTarget:(id)a5
+- (void)client:(id)client availableListeningModes:(id)modes didChangeForTarget:(id)target
 {
-  v7 = a4;
-  v8 = a5;
+  modesCopy = modes;
+  targetCopy = target;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__NACXPCServer_client_availableListeningModes_didChangeForTarget___block_invoke;
   block[3] = &unk_27992B650;
   block[4] = self;
-  v13 = v8;
-  v14 = v7;
-  v10 = v7;
-  v11 = v8;
+  v13 = targetCopy;
+  v14 = modesCopy;
+  v10 = modesCopy;
+  v11 = targetCopy;
   dispatch_sync(internalQueue, block);
 }
 
@@ -1362,20 +1362,20 @@ void __66__NACXPCServer_client_availableListeningModes_didChangeForTarget___bloc
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"NACAvailableListeningModesDidChangeNotification", 0, 0, 1u);
 }
 
-- (void)client:(id)a3 currentListeningMode:(id)a4 didChangeForTarget:(id)a5
+- (void)client:(id)client currentListeningMode:(id)mode didChangeForTarget:(id)target
 {
-  v7 = a4;
-  v8 = a5;
+  modeCopy = mode;
+  targetCopy = target;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__NACXPCServer_client_currentListeningMode_didChangeForTarget___block_invoke;
   block[3] = &unk_27992B650;
   block[4] = self;
-  v13 = v8;
-  v14 = v7;
-  v10 = v7;
-  v11 = v8;
+  v13 = targetCopy;
+  v14 = modeCopy;
+  v10 = modeCopy;
+  v11 = targetCopy;
   dispatch_sync(internalQueue, block);
 }
 
@@ -1388,16 +1388,16 @@ void __63__NACXPCServer_client_currentListeningMode_didChangeForTarget___block_i
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"NACCurrentListeningModeDidChangeNotification", 0, 0, 1u);
 }
 
-- (void)client:(id)a3 didFailToSetCurrentListeningModeForTarget:(id)a4 error:(id)a5
+- (void)client:(id)client didFailToSetCurrentListeningModeForTarget:(id)target error:(id)error
 {
-  v6 = a5;
+  errorCopy = error;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__NACXPCServer_client_didFailToSetCurrentListeningModeForTarget_error___block_invoke;
   block[3] = &unk_27992B4E8;
-  v10 = v6;
-  v8 = v6;
+  v10 = errorCopy;
+  v8 = errorCopy;
   dispatch_sync(internalQueue, block);
 }
 
@@ -1417,20 +1417,20 @@ void __71__NACXPCServer_client_didFailToSetCurrentListeningModeForTarget_error__
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)client:(id)a3 audioRoutes:(id)a4 didChangeForCategory:(id)a5
+- (void)client:(id)client audioRoutes:(id)routes didChangeForCategory:(id)category
 {
-  v7 = a4;
-  v8 = a5;
+  routesCopy = routes;
+  categoryCopy = category;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__NACXPCServer_client_audioRoutes_didChangeForCategory___block_invoke;
   block[3] = &unk_27992B650;
   block[4] = self;
-  v13 = v8;
-  v14 = v7;
-  v10 = v7;
-  v11 = v8;
+  v13 = categoryCopy;
+  v14 = routesCopy;
+  v10 = routesCopy;
+  v11 = categoryCopy;
   dispatch_sync(internalQueue, block);
 }
 
@@ -1457,12 +1457,12 @@ void __56__NACXPCServer_client_audioRoutes_didChangeForCategory___block_invoke(u
   }
 }
 
-- (void)_scheduleDeferredAudioRoutesUpdate:(id)a3 category:(id)a4
+- (void)_scheduleDeferredAudioRoutesUpdate:(id)update category:(id)category
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NACXPCServer *)self _audioRoutesRecordForCategory:v6];
-  [v8 setDeferredAudioRoutes:v7];
+  categoryCopy = category;
+  updateCopy = update;
+  v8 = [(NACXPCServer *)self _audioRoutesRecordForCategory:categoryCopy];
+  [v8 setDeferredAudioRoutes:updateCopy];
 
   if (!self->_audioRouteDeferTimer)
   {
@@ -1481,7 +1481,7 @@ void __56__NACXPCServer_client_audioRoutes_didChangeForCategory___block_invoke(u
     v14[3] = &unk_27992B7C8;
     objc_copyWeak(&v17, &location);
     v15 = v8;
-    v16 = v6;
+    v16 = categoryCopy;
     dispatch_source_set_event_handler(v13, v14);
     dispatch_resume(self->_audioRouteDeferTimer);
 
@@ -1497,14 +1497,14 @@ void __60__NACXPCServer__scheduleDeferredAudioRoutesUpdate_category___block_invo
   [WeakRetained _updateAudioRoutes:v2 category:*(a1 + 40)];
 }
 
-- (void)_updateAudioRoutes:(id)a3 category:(id)a4
+- (void)_updateAudioRoutes:(id)routes category:(id)category
 {
-  v6 = a4;
-  v7 = a3;
+  categoryCopy = category;
+  routesCopy = routes;
   [(NACXPCServer *)self _cancelDeferredAudioRoutesUpdate];
-  v9 = [(NACXPCServer *)self _audioRoutesRecordForCategory:v6];
+  v9 = [(NACXPCServer *)self _audioRoutesRecordForCategory:categoryCopy];
 
-  [v9 setAudioRoutes:v7];
+  [v9 setAudioRoutes:routesCopy];
   [v9 setDeferredAudioRoutes:0];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   [v9 setTimestamp:?];
@@ -1523,15 +1523,15 @@ void __60__NACXPCServer__scheduleDeferredAudioRoutesUpdate_category___block_invo
   }
 }
 
-- (void)client:(id)a3 volumeObservationCancelledForTarget:(id)a4
+- (void)client:(id)client volumeObservationCancelledForTarget:(id)target
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  targetCopy = target;
   v6 = NMLogForCategory(4);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v5;
+    v13 = targetCopy;
     _os_log_impl(&dword_25AEBF000, v6, OS_LOG_TYPE_DEFAULT, "[NACXPC] Got IDS volume observation cancelled message for %@", buf, 0xCu);
   }
 
@@ -1541,8 +1541,8 @@ void __60__NACXPCServer__scheduleDeferredAudioRoutesUpdate_category___block_invo
   v10[2] = __59__NACXPCServer_client_volumeObservationCancelledForTarget___block_invoke;
   v10[3] = &unk_27992B510;
   v10[4] = self;
-  v11 = v5;
-  v8 = v5;
+  v11 = targetCopy;
+  v8 = targetCopy;
   dispatch_sync(internalQueue, v10);
 
   v9 = *MEMORY[0x277D85DE8];
@@ -1573,17 +1573,17 @@ uint64_t __59__NACXPCServer_client_volumeObservationCancelledForTarget___block_i
   return result;
 }
 
-- (void)client:(id)a3 routeObservationCancelledForCategory:(id)a4
+- (void)client:(id)client routeObservationCancelledForCategory:(id)category
 {
-  v5 = a4;
+  categoryCopy = category;
   internalQueue = self->_internalQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __60__NACXPCServer_client_routeObservationCancelledForCategory___block_invoke;
   v8[3] = &unk_27992B510;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = categoryCopy;
+  v7 = categoryCopy;
   dispatch_sync(internalQueue, v8);
 }
 
@@ -1600,7 +1600,7 @@ void __60__NACXPCServer_client_routeObservationCancelledForCategory___block_invo
 - (id)_cachedVolumeRecords
 {
   v2 = [(NPSDomainAccessor *)self->_domainAccessor objectForKey:@"VolumeRecords"];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (v2)
   {
     v4 = MEMORY[0x277CBEB98];
@@ -1625,11 +1625,11 @@ void __60__NACXPCServer_client_routeObservationCancelledForCategory___block_invo
     v14[1] = 3221225472;
     v14[2] = __36__NACXPCServer__cachedVolumeRecords__block_invoke;
     v14[3] = &unk_27992BA90;
-    v15 = v3;
+    v15 = dictionary;
     [v10 enumerateKeysAndObjectsUsingBlock:v14];
   }
 
-  return v3;
+  return dictionary;
 }
 
 void __36__NACXPCServer__cachedVolumeRecords__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1657,7 +1657,7 @@ void __36__NACXPCServer__cachedVolumeRecords__block_invoke(uint64_t a1, void *a2
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_25AEBF000, a2, OS_LOG_TYPE_ERROR, "[NACXPC] Failed to archive volumeRecords due to %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -1678,7 +1678,7 @@ void __36__NACXPCServer__cachedVolumeRecords__block_invoke(uint64_t a1, void *a2
   v5 = [MEMORY[0x277CCABB0] numberWithFloat:v2];
   [(NPSDomainAccessor *)domainAccessor setObject:v5 forKey:@"HapticIntensity"];
 
-  v6 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
 }
 
 - (void)_persistSystemMutedState
@@ -1687,7 +1687,7 @@ void __36__NACXPCServer__cachedVolumeRecords__block_invoke(uint64_t a1, void *a2
   v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_systemMutedState];
   [(NPSDomainAccessor *)domainAccessor setObject:v4 forKey:@"SystemMutedState"];
 
-  v5 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
 }
 
 - (void)_persistProminentHapticState
@@ -1696,7 +1696,7 @@ void __36__NACXPCServer__cachedVolumeRecords__block_invoke(uint64_t a1, void *a2
   v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_prominentHapticEnabled];
   [(NPSDomainAccessor *)domainAccessor setObject:v4 forKey:@"ProminentHapticState"];
 
-  v5 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
 }
 
 - (int64_t)_cachedHapticState
@@ -1705,16 +1705,16 @@ void __36__NACXPCServer__cachedVolumeRecords__block_invoke(uint64_t a1, void *a2
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 unsignedIntegerValue];
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
   }
 
   else
   {
     [(NACXPCServer *)self _cachedHapticIntensity];
-    v5 = NACStateFromIntensityAndProminentEnabled([(NACXPCServer *)self _cachedProminentHapticState], v6);
+    unsignedIntegerValue = NACStateFromIntensityAndProminentEnabled([(NACXPCServer *)self _cachedProminentHapticState], v6);
   }
 
-  v7 = v5;
+  v7 = unsignedIntegerValue;
 
   return v7;
 }
@@ -1725,19 +1725,19 @@ void __36__NACXPCServer__cachedVolumeRecords__block_invoke(uint64_t a1, void *a2
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:self->_hapticState];
   [(NPSDomainAccessor *)domainAccessor setObject:v4 forKey:@"HapticState"];
 
-  v5 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
 }
 
-- (void)_cleanupConnection:(id)a3
+- (void)_cleanupConnection:(id)connection
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(NSMutableDictionary *)self->_volumeRecords allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  allKeys = [(NSMutableDictionary *)self->_volumeRecords allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1748,21 +1748,21 @@ void __36__NACXPCServer__cachedVolumeRecords__block_invoke(uint64_t a1, void *a2
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        [(NACXPCServer *)self _endObservingVolumeForTarget:v10 connection:v4];
-        [(NACXPCServer *)self _endObservingListeningModesForTarget:v10 connection:v4];
+        [(NACXPCServer *)self _endObservingVolumeForTarget:v10 connection:connectionCopy];
+        [(NACXPCServer *)self _endObservingListeningModesForTarget:v10 connection:connectionCopy];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(NACXPCServer *)self _routeObservationCategoriesForConnection:v4];
+  v11 = [(NACXPCServer *)self _routeObservationCategoriesForConnection:connectionCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -1781,7 +1781,7 @@ void __36__NACXPCServer__cachedVolumeRecords__block_invoke(uint64_t a1, void *a2
           objc_enumerationMutation(v11);
         }
 
-        [(NACXPCServer *)self _endObservingAudioRoutesForCategory:*(*(&v17 + 1) + 8 * j) connection:v4];
+        [(NACXPCServer *)self _endObservingAudioRoutesForCategory:*(*(&v17 + 1) + 8 * j) connection:connectionCopy];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v17 objects:v25 count:16];
@@ -1793,45 +1793,45 @@ void __36__NACXPCServer__cachedVolumeRecords__block_invoke(uint64_t a1, void *a2
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_volumeRecordForTarget:(id)a3
+- (id)_volumeRecordForTarget:(id)target
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_volumeRecords objectForKeyedSubscript:v4];
+  targetCopy = target;
+  v5 = [(NSMutableDictionary *)self->_volumeRecords objectForKeyedSubscript:targetCopy];
   if (!v5)
   {
     v5 = objc_opt_new();
-    [(NSMutableDictionary *)self->_volumeRecords setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_volumeRecords setObject:v5 forKeyedSubscript:targetCopy];
   }
 
   return v5;
 }
 
-- (id)_listeningModesRecordForTarget:(id)a3
+- (id)_listeningModesRecordForTarget:(id)target
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_listeningModesRecords objectForKeyedSubscript:v4];
+  targetCopy = target;
+  v5 = [(NSMutableDictionary *)self->_listeningModesRecords objectForKeyedSubscript:targetCopy];
   if (!v5)
   {
     v5 = objc_alloc_init(_NACListeningModesRecord);
     listeningModesRecords = self->_listeningModesRecords;
     if (!listeningModesRecords)
     {
-      v7 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v8 = self->_listeningModesRecords;
-      self->_listeningModesRecords = v7;
+      self->_listeningModesRecords = dictionary;
 
       listeningModesRecords = self->_listeningModesRecords;
     }
 
-    [(NSMutableDictionary *)listeningModesRecords setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)listeningModesRecords setObject:v5 forKeyedSubscript:targetCopy];
   }
 
   return v5;
 }
 
-- (id)_audioRoutesRecordForCategory:(id)a3
+- (id)_audioRoutesRecordForCategory:(id)category
 {
-  v4 = NACCategoryStringWithRouteCategory(a3);
+  v4 = NACCategoryStringWithRouteCategory(category);
   v5 = [(NSMutableDictionary *)self->_audioRoutesRecords objectForKeyedSubscript:v4];
   if (!v5)
   {
@@ -1845,19 +1845,19 @@ void __36__NACXPCServer__cachedVolumeRecords__block_invoke(uint64_t a1, void *a2
   return v5;
 }
 
-- (id)_routeObservationCategoriesForConnection:(id)a3
+- (id)_routeObservationCategoriesForConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = objc_opt_new();
   audioRoutesRecords = self->_audioRoutesRecords;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __57__NACXPCServer__routeObservationCategoriesForConnection___block_invoke;
   v12[3] = &unk_27992BAB8;
-  v13 = v4;
+  v13 = connectionCopy;
   v7 = v5;
   v14 = v7;
-  v8 = v4;
+  v8 = connectionCopy;
   [(NSMutableDictionary *)audioRoutesRecords enumerateKeysAndObjectsUsingBlock:v12];
   v9 = v14;
   v10 = v7;
@@ -1879,7 +1879,7 @@ void __57__NACXPCServer__routeObservationCategoriesForConnection___block_invoke(
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_25AEBF000, a2, OS_LOG_TYPE_ERROR, "[NACXPC] Failed to unarchive cached volume records due to %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

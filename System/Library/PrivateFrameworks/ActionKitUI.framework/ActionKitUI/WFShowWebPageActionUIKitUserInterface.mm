@@ -1,33 +1,33 @@
 @interface WFShowWebPageActionUIKitUserInterface
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)finishWithError:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)safariViewControllerDidFinish:(id)a3;
-- (void)safariViewControllerWillOpenInBrowser:(id)a3;
-- (void)showRichText:(id)a3 completion:(id)a4;
-- (void)showURL:(id)a3 readerView:(BOOL)a4 completion:(id)a5;
-- (void)webViewControllerDidFinish:(id)a3;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)finishWithError:(id)error;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)safariViewControllerDidFinish:(id)finish;
+- (void)safariViewControllerWillOpenInBrowser:(id)browser;
+- (void)showRichText:(id)text completion:(id)completion;
+- (void)showURL:(id)l readerView:(BOOL)view completion:(id)completion;
+- (void)webViewControllerDidFinish:(id)finish;
 @end
 
 @implementation WFShowWebPageActionUIKitUserInterface
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [MEMORY[0x277CCA9B8] userCancelledError];
-  [(WFShowWebPageActionUIKitUserInterface *)self finishWithError:v4];
+  userCancelledError = [MEMORY[0x277CCA9B8] userCancelledError];
+  [(WFShowWebPageActionUIKitUserInterface *)self finishWithError:userCancelledError];
 }
 
-- (void)webViewControllerDidFinish:(id)a3
+- (void)webViewControllerDidFinish:(id)finish
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __68__WFShowWebPageActionUIKitUserInterface_webViewControllerDidFinish___block_invoke;
   v3[3] = &unk_278C37538;
   v3[4] = self;
-  [a3 dismissViewControllerAnimated:1 completion:v3];
+  [finish dismissViewControllerAnimated:1 completion:v3];
 }
 
-- (void)safariViewControllerWillOpenInBrowser:(id)a3
+- (void)safariViewControllerWillOpenInBrowser:(id)browser
 {
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   lastDismissed = v4;
@@ -35,7 +35,7 @@
   [(WFShowWebPageActionUIKitUserInterface *)self finishWithError:0];
 }
 
-- (void)safariViewControllerDidFinish:(id)a3
+- (void)safariViewControllerDidFinish:(id)finish
 {
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   lastDismissed = v4;
@@ -43,33 +43,33 @@
   [(WFShowWebPageActionUIKitUserInterface *)self finishWithError:0];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(WFShowWebPageActionUIKitUserInterface *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(WFShowWebPageActionUIKitUserInterface *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(WFShowWebPageActionUIKitUserInterface *)self completionHandler];
-    (v5)[2](v5, v6);
+    completionHandler2 = [(WFShowWebPageActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, errorCopy);
   }
 
   [(WFShowWebPageActionUIKitUserInterface *)self setCompletionHandler:0];
   [(WFShowWebPageActionUIKitUserInterface *)self setRichTextFile:0];
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __81__WFShowWebPageActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFShowWebPageActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFEmbeddableActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -84,15 +84,15 @@ uint64_t __81__WFShowWebPageActionUIKitUserInterface_cancelPresentationWithCompl
   return v4();
 }
 
-- (void)showRichText:(id)a3 completion:(id)a4
+- (void)showRichText:(id)text completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  textCopy = text;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (!textCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFShowWebPageActionUIKitUserInterface.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"file"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFShowWebPageActionUIKitUserInterface.m" lineNumber:71 description:{@"Invalid parameter not satisfying: %@", @"file"}];
 
     if (v9)
     {
@@ -100,27 +100,27 @@ uint64_t __81__WFShowWebPageActionUIKitUserInterface_cancelPresentationWithCompl
     }
 
 LABEL_5:
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFShowWebPageActionUIKitUserInterface.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFShowWebPageActionUIKitUserInterface.m" lineNumber:72 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  [(WFShowWebPageActionUIKitUserInterface *)self setRichTextFile:v7];
+  [(WFShowWebPageActionUIKitUserInterface *)self setRichTextFile:textCopy];
   [(WFShowWebPageActionUIKitUserInterface *)self setCompletionHandler:v9];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__WFShowWebPageActionUIKitUserInterface_showRichText_completion___block_invoke;
   block[3] = &unk_278C375A0;
-  v14 = v7;
-  v15 = self;
-  v10 = v7;
+  v14 = textCopy;
+  selfCopy = self;
+  v10 = textCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -178,15 +178,15 @@ void __65__WFShowWebPageActionUIKitUserInterface_showRichText_completion___block
   [*(a1 + 40) presentContent:v12];
 }
 
-- (void)showURL:(id)a3 readerView:(BOOL)a4 completion:(id)a5
+- (void)showURL:(id)l readerView:(BOOL)view completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (!v9)
+  lCopy = l;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (!lCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFShowWebPageActionUIKitUserInterface.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"URL"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFShowWebPageActionUIKitUserInterface.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"URL"}];
 
     if (v11)
     {
@@ -194,13 +194,13 @@ void __65__WFShowWebPageActionUIKitUserInterface_showRichText_completion___block
     }
 
 LABEL_5:
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"WFShowWebPageActionUIKitUserInterface.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFShowWebPageActionUIKitUserInterface.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!completionCopy)
   {
     goto LABEL_5;
   }
@@ -211,10 +211,10 @@ LABEL_3:
   block[1] = 3221225472;
   block[2] = __71__WFShowWebPageActionUIKitUserInterface_showURL_readerView_completion___block_invoke;
   block[3] = &unk_278C37408;
-  v18 = a4;
-  v16 = v9;
-  v17 = self;
-  v12 = v9;
+  viewCopy = view;
+  v16 = lCopy;
+  selfCopy = self;
+  v12 = lCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

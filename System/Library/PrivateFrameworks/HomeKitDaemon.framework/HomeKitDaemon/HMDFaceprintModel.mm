@@ -1,6 +1,6 @@
 @interface HMDFaceprintModel
 + (id)hmbProperties;
-- (HMDFaceprintModel)initWithFaceprint:(id)a3;
+- (HMDFaceprintModel)initWithFaceprint:(id)faceprint;
 - (id)createFaceprint;
 @end
 
@@ -9,26 +9,26 @@
 - (id)createFaceprint
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDFaceprintModel *)self data];
-  v4 = [(HMDFaceprintModel *)self modelUUID];
-  v5 = v4;
-  if (v3 && v4)
+  data = [(HMDFaceprintModel *)self data];
+  modelUUID = [(HMDFaceprintModel *)self modelUUID];
+  v5 = modelUUID;
+  if (data && modelUUID)
   {
     v6 = objc_alloc(MEMORY[0x277CD1A38]);
-    v7 = [(HMBModel *)self hmbModelID];
-    v8 = [(HMBModel *)self hmbParentModelID];
-    v9 = [v6 initWithUUID:v7 data:v3 modelUUID:v5 faceCropUUID:v8];
+    hmbModelID = [(HMBModel *)self hmbModelID];
+    hmbParentModelID = [(HMBModel *)self hmbParentModelID];
+    v9 = [v6 initWithUUID:hmbModelID data:data modelUUID:v5 faceCropUUID:hmbParentModelID];
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [(HMBModel *)v11 debugDescription];
+      v14 = [(HMBModel *)selfCopy debugDescription];
       v17 = 138543618;
       v18 = v13;
       v19 = 2112;
@@ -45,24 +45,24 @@
   return v9;
 }
 
-- (HMDFaceprintModel)initWithFaceprint:(id)a3
+- (HMDFaceprintModel)initWithFaceprint:(id)faceprint
 {
-  v4 = a3;
+  faceprintCopy = faceprint;
   v5 = [HMDFaceprintModel alloc];
-  v6 = [v4 UUID];
-  v7 = [v4 faceCropUUID];
-  v8 = [(HMBModel *)v5 initWithModelID:v6 parentModelID:v7];
+  uUID = [faceprintCopy UUID];
+  faceCropUUID = [faceprintCopy faceCropUUID];
+  v8 = [(HMBModel *)v5 initWithModelID:uUID parentModelID:faceCropUUID];
 
-  v9 = [v4 data];
-  [(HMDFaceprintModel *)v8 setData:v9];
+  data = [faceprintCopy data];
+  [(HMDFaceprintModel *)v8 setData:data];
 
-  v10 = [v4 modelUUID];
-  [(HMDFaceprintModel *)v8 setModelUUID:v10];
+  modelUUID = [faceprintCopy modelUUID];
+  [(HMDFaceprintModel *)v8 setModelUUID:modelUUID];
 
   v11 = objc_alloc(MEMORY[0x277D170D8]);
-  v12 = [v4 faceCropUUID];
+  faceCropUUID2 = [faceprintCopy faceCropUUID];
 
-  v13 = [v11 initWithModelID:v12];
+  v13 = [v11 initWithModelID:faceCropUUID2];
   [(HMDFaceprintModel *)v8 setFaceCrop:v13];
 
   return v8;

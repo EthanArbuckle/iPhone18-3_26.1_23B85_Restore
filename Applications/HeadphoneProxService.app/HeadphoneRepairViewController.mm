@@ -1,9 +1,9 @@
 @interface HeadphoneRepairViewController
-- (_TtC20HeadphoneProxService29HeadphoneRepairViewController)initWithContentView:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC20HeadphoneProxService29HeadphoneRepairViewController)initWithContentView:(id)view;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HeadphoneRepairViewController
@@ -17,28 +17,28 @@
   [v2 setDismissalType:{1, v3.receiver, v3.super_class}];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1000A81EC(a3);
+  selfCopy = self;
+  sub_1000A81EC(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1000A8604(a3);
+  selfCopy = self;
+  sub_1000A8604(disappear);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000A98E8();
 }
 
-- (_TtC20HeadphoneProxService29HeadphoneRepairViewController)initWithContentView:(id)a3
+- (_TtC20HeadphoneProxService29HeadphoneRepairViewController)initWithContentView:(id)view
 {
-  v4 = a3;
-  v5 = sub_1000A9C54(a3);
+  viewCopy = view;
+  v5 = sub_1000A9C54(view);
 
   return v5;
 }

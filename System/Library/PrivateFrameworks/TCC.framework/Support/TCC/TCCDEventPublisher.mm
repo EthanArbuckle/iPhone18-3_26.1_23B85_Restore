@@ -1,15 +1,15 @@
 @interface TCCDEventPublisher
 + (id)sharedPublisher;
 - (TCCDEventPublisher)init;
-- (void)_addPendingEvent:(id)a3;
-- (void)_addSubscriber:(unint64_t)a3 withFilterCriteria:(id)a4;
-- (void)_handleError:(int)a3;
-- (void)_handleEventWithAction:(unsigned int)a3 token:(unint64_t)a4 descriptor:(id)a5;
+- (void)_addPendingEvent:(id)event;
+- (void)_addSubscriber:(unint64_t)subscriber withFilterCriteria:(id)criteria;
+- (void)_handleError:(int)error;
+- (void)_handleEventWithAction:(unsigned int)action token:(unint64_t)token descriptor:(id)descriptor;
 - (void)_publishPendingEvents;
-- (void)_removeSubscriber:(unint64_t)a3;
-- (void)checkEntitlementForSubscriber:(id)a3 completionHandler:(id)a4;
-- (void)publish:(id)a3;
-- (void)sendEvent:(id)a3 toSubscriber:(id)a4;
+- (void)_removeSubscriber:(unint64_t)subscriber;
+- (void)checkEntitlementForSubscriber:(id)subscriber completionHandler:(id)handler;
+- (void)publish:(id)publish;
+- (void)sendEvent:(id)event toSubscriber:(id)subscriber;
 @end
 
 @implementation TCCDEventPublisher
@@ -68,9 +68,9 @@
   return v2;
 }
 
-- (void)_handleError:(int)a3
+- (void)_handleError:(int)error
 {
-  v3 = *&a3;
+  v3 = *&error;
   v4 = tcc_events_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
@@ -78,31 +78,31 @@
   }
 }
 
-- (void)_handleEventWithAction:(unsigned int)a3 token:(unint64_t)a4 descriptor:(id)a5
+- (void)_handleEventWithAction:(unsigned int)action token:(unint64_t)token descriptor:(id)descriptor
 {
-  v8 = a5;
-  v9 = v8;
-  if (v8)
+  descriptorCopy = descriptor;
+  v9 = descriptorCopy;
+  if (descriptorCopy)
   {
-    v10 = xpc_copy_description(v8);
+    v10 = xpc_copy_description(descriptorCopy);
     v11 = tcc_events_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       v13 = "Add";
-      if (a3 == 1)
+      if (action == 1)
       {
         v13 = "Remove";
       }
 
       v14 = 136446722;
-      if (a3 == 2)
+      if (action == 2)
       {
         v13 = "Initial Barrier";
       }
 
       v15 = v13;
       v16 = 2048;
-      v17 = a4;
+      tokenCopy = token;
       v18 = 2082;
       v19 = v10;
       _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Received event: action=%{public}s, token=%llu, descriptor=%{public}s", &v14, 0x20u);
@@ -116,52 +116,52 @@
     v12 = tcc_events_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000589F8(a3, a4, v12);
+      sub_1000589F8(action, token, v12);
     }
   }
 
-  switch(a3)
+  switch(action)
   {
     case 2u:
       self->_receivedInitialBarrier = 1;
       [(TCCDEventPublisher *)self _publishPendingEvents];
       break;
     case 1u:
-      [(TCCDEventPublisher *)self _removeSubscriber:a4];
+      [(TCCDEventPublisher *)self _removeSubscriber:token];
       break;
     case 0u:
-      [(TCCDEventPublisher *)self _addSubscriber:a4 withFilterCriteria:v9];
+      [(TCCDEventPublisher *)self _addSubscriber:token withFilterCriteria:v9];
       break;
   }
 }
 
-- (void)_addSubscriber:(unint64_t)a3 withFilterCriteria:(id)a4
+- (void)_addSubscriber:(unint64_t)subscriber withFilterCriteria:(id)criteria
 {
-  v6 = a4;
+  criteriaCopy = criteria;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100057DA4;
   block[3] = &unk_1000A5658;
-  v11 = self;
-  v12 = a3;
-  v10 = v6;
-  v8 = v6;
+  selfCopy = self;
+  subscriberCopy = subscriber;
+  v10 = criteriaCopy;
+  v8 = criteriaCopy;
   dispatch_async(queue, block);
 }
 
-- (void)checkEntitlementForSubscriber:(id)a3 completionHandler:(id)a4
+- (void)checkEntitlementForSubscriber:(id)subscriber completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 token];
-  v9 = v6;
-  v7 = v6;
-  v8 = v5;
+  subscriberCopy = subscriber;
+  handlerCopy = handler;
+  [subscriberCopy token];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  v8 = subscriberCopy;
   xpc_event_publisher_fire_with_reply();
 }
 
-- (void)_removeSubscriber:(unint64_t)a3
+- (void)_removeSubscriber:(unint64_t)subscriber
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -169,19 +169,19 @@
   v4[2] = sub_10005827C;
   v4[3] = &unk_1000A6C08;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = subscriber;
   dispatch_async(queue, v4);
 }
 
-- (void)_addPendingEvent:(id)a3
+- (void)_addPendingEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_queue);
-  [(NSMutableArray *)self->_pendingEvents addObject:v4];
+  [(NSMutableArray *)self->_pendingEvents addObject:eventCopy];
   v5 = tcc_events_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    sub_100058B34(v4, v5);
+    sub_100058B34(eventCopy, v5);
   }
 
   if ([(NSMutableArray *)self->_pendingEvents count]>= 0x21)
@@ -232,12 +232,12 @@
   [(NSMutableArray *)self->_pendingEvents removeAllObjects];
 }
 
-- (void)sendEvent:(id)a3 toSubscriber:(id)a4
+- (void)sendEvent:(id)event toSubscriber:(id)subscriber
 {
-  v5 = a3;
-  v6 = a4;
-  [v6 token];
-  v7 = [v5 xpcObject];
+  eventCopy = event;
+  subscriberCopy = subscriber;
+  [subscriberCopy token];
+  xpcObject = [eventCopy xpcObject];
   v8 = xpc_event_publisher_fire();
 
   if (v8)
@@ -246,9 +246,9 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v10 = 138543874;
-      v11 = v5;
+      v11 = eventCopy;
       v12 = 2114;
-      v13 = v6;
+      v13 = subscriberCopy;
       v14 = 2082;
       v15 = xpc_strerror();
       _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Sending %{public}@ to %{public}@ failed with error: %{public}s", &v10, 0x20u);
@@ -256,17 +256,17 @@
   }
 }
 
-- (void)publish:(id)a3
+- (void)publish:(id)publish
 {
-  v4 = a3;
+  publishCopy = publish;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005870C;
   v7[3] = &unk_1000A50C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = publishCopy;
+  v6 = publishCopy;
   dispatch_async(queue, v7);
 }
 

@@ -1,63 +1,63 @@
 @interface CNAutocompleteSuggestionsProbe
-+ (id)contactIdentifierForAutocompleteResult:(id)a3;
-+ (id)suggestionIdentifierForAutocompleteResult:(id)a3;
-+ (int)suggestionSourcesForAutocompleteResult:(id)a3;
++ (id)contactIdentifierForAutocompleteResult:(id)result;
++ (id)suggestionIdentifierForAutocompleteResult:(id)result;
++ (int)suggestionSourcesForAutocompleteResult:(id)result;
 - (CNAutocompleteSuggestionsProbe)init;
-- (CNAutocompleteSuggestionsProbe)initWithSuggestionsService:(id)a3 schedulerProvider:(id)a4 bundleIdentifier:(id)a5;
-- (void)recordSGServiceMessage:(id)a3;
-- (void)recordUserSelectedAutocompleteResult:(id)a3;
+- (CNAutocompleteSuggestionsProbe)initWithSuggestionsService:(id)service schedulerProvider:(id)provider bundleIdentifier:(id)identifier;
+- (void)recordSGServiceMessage:(id)message;
+- (void)recordUserSelectedAutocompleteResult:(id)result;
 - (void)sendData;
 @end
 
 @implementation CNAutocompleteSuggestionsProbe
 
-+ (id)suggestionIdentifierForAutocompleteResult:(id)a3
++ (id)suggestionIdentifierForAutocompleteResult:(id)result
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (([v3 sourceType] & 4) != 0)
+  resultCopy = result;
+  if (([resultCopy sourceType] & 4) != 0)
   {
     v9[0] = *MEMORY[0x277CBD018];
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-    v6 = [v3 contactWithKeysToFetch:v5 error:0];
+    v6 = [resultCopy contactWithKeysToFetch:v5 error:0];
 
-    v4 = 0;
+    suggestionRecordId = 0;
     if ([v6 isSuggested])
     {
-      v4 = [v6 suggestionRecordId];
+      suggestionRecordId = [v6 suggestionRecordId];
     }
   }
 
   else
   {
-    v4 = 0;
+    suggestionRecordId = 0;
   }
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return suggestionRecordId;
 }
 
-+ (id)contactIdentifierForAutocompleteResult:(id)a3
++ (id)contactIdentifierForAutocompleteResult:(id)result
 {
-  v3 = a3;
-  if (([v3 sourceType] & 2) != 0)
+  resultCopy = result;
+  if (([resultCopy sourceType] & 2) != 0)
   {
-    v4 = [v3 identifier];
+    identifier = [resultCopy identifier];
   }
 
   else
   {
-    v4 = 0;
+    identifier = 0;
   }
 
-  return v4;
+  return identifier;
 }
 
-+ (int)suggestionSourcesForAutocompleteResult:(id)a3
++ (int)suggestionSourcesForAutocompleteResult:(id)result
 {
   v17[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  resultCopy = result;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -75,7 +75,7 @@
   v9[1] = 3221225472;
   v9[2] = __73__CNAutocompleteSuggestionsProbe_suggestionSourcesForAutocompleteResult___block_invoke;
   v9[3] = &unk_2781C3EF0;
-  v5 = v3;
+  v5 = resultCopy;
   v10 = v5;
   v11 = &v12;
   [v4 enumerateKeysAndObjectsUsingBlock:v9];
@@ -102,39 +102,39 @@ void __73__CNAutocompleteSuggestionsProbe_suggestionSourcesForAutocompleteResult
 
 - (CNAutocompleteSuggestionsProbe)init
 {
-  v3 = [(objc_class *)getSGSuggestionsServiceClass() serviceForContacts];
-  [v3 setSyncTimeout:0.2];
-  v4 = [MEMORY[0x277CFBEB0] defaultProvider];
-  v5 = [MEMORY[0x277CCA8D8] mainBundle];
-  v6 = [v5 bundleIdentifier];
-  v7 = [(CNAutocompleteSuggestionsProbe *)self initWithSuggestionsService:v3 schedulerProvider:v4 bundleIdentifier:v6];
+  serviceForContacts = [(objc_class *)getSGSuggestionsServiceClass() serviceForContacts];
+  [serviceForContacts setSyncTimeout:0.2];
+  defaultProvider = [MEMORY[0x277CFBEB0] defaultProvider];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v7 = [(CNAutocompleteSuggestionsProbe *)self initWithSuggestionsService:serviceForContacts schedulerProvider:defaultProvider bundleIdentifier:bundleIdentifier];
 
   return v7;
 }
 
-- (CNAutocompleteSuggestionsProbe)initWithSuggestionsService:(id)a3 schedulerProvider:(id)a4 bundleIdentifier:(id)a5
+- (CNAutocompleteSuggestionsProbe)initWithSuggestionsService:(id)service schedulerProvider:(id)provider bundleIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  serviceCopy = service;
+  providerCopy = provider;
+  identifierCopy = identifier;
   v22.receiver = self;
   v22.super_class = CNAutocompleteSuggestionsProbe;
   v12 = [(CNAutocompleteSuggestionsProbe *)&v22 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_sgService, a3);
-    v14 = [v10 newSerialSchedulerWithName:@"com.apple.contacts.ContactsAutocomplete.CNAutocompleteSuggestionsProbe"];
+    objc_storeStrong(&v12->_sgService, service);
+    v14 = [providerCopy newSerialSchedulerWithName:@"com.apple.contacts.ContactsAutocomplete.CNAutocompleteSuggestionsProbe"];
     workScheduler = v13->_workScheduler;
     v13->_workScheduler = v14;
 
-    v16 = [v11 copy];
+    v16 = [identifierCopy copy];
     bundleID = v13->_bundleID;
     v13->_bundleID = v16;
 
-    v18 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     pendingBlocks = v13->_pendingBlocks;
-    v13->_pendingBlocks = v18;
+    v13->_pendingBlocks = array;
 
     v20 = v13;
   }
@@ -142,12 +142,12 @@ void __73__CNAutocompleteSuggestionsProbe_suggestionSourcesForAutocompleteResult
   return v13;
 }
 
-- (void)recordUserSelectedAutocompleteResult:(id)a3
+- (void)recordUserSelectedAutocompleteResult:(id)result
 {
-  v4 = a3;
-  v5 = [objc_opt_class() suggestionSourcesForAutocompleteResult:v4];
-  v6 = [objc_opt_class() suggestionIdentifierForAutocompleteResult:v4];
-  v7 = [objc_opt_class() contactIdentifierForAutocompleteResult:v4];
+  resultCopy = result;
+  v5 = [objc_opt_class() suggestionSourcesForAutocompleteResult:resultCopy];
+  v6 = [objc_opt_class() suggestionIdentifierForAutocompleteResult:resultCopy];
+  v7 = [objc_opt_class() contactIdentifierForAutocompleteResult:resultCopy];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -161,26 +161,26 @@ void __73__CNAutocompleteSuggestionsProbe_suggestionSourcesForAutocompleteResult
   [(CNAutocompleteSuggestionsProbe *)self recordSGServiceMessage:v10];
 }
 
-- (void)recordSGServiceMessage:(id)a3
+- (void)recordSGServiceMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(CNAutocompleteSuggestionsProbe *)self pendingBlocks];
-  v6 = [(CNAutocompleteSuggestionsProbe *)self sgService];
-  v7 = [(CNAutocompleteSuggestionsProbe *)self bundleID];
-  v8 = [(CNAutocompleteSuggestionsProbe *)self workScheduler];
+  messageCopy = message;
+  pendingBlocks = [(CNAutocompleteSuggestionsProbe *)self pendingBlocks];
+  sgService = [(CNAutocompleteSuggestionsProbe *)self sgService];
+  bundleID = [(CNAutocompleteSuggestionsProbe *)self bundleID];
+  workScheduler = [(CNAutocompleteSuggestionsProbe *)self workScheduler];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __57__CNAutocompleteSuggestionsProbe_recordSGServiceMessage___block_invoke;
   v13[3] = &unk_2781C3F88;
-  v14 = v5;
-  v15 = v6;
-  v16 = v7;
-  v17 = v4;
-  v9 = v7;
-  v10 = v6;
-  v11 = v4;
-  v12 = v5;
-  [v8 performBlock:v13];
+  v14 = pendingBlocks;
+  v15 = sgService;
+  v16 = bundleID;
+  v17 = messageCopy;
+  v9 = bundleID;
+  v10 = sgService;
+  v11 = messageCopy;
+  v12 = pendingBlocks;
+  [workScheduler performBlock:v13];
 }
 
 void __57__CNAutocompleteSuggestionsProbe_recordSGServiceMessage___block_invoke(uint64_t a1)
@@ -200,15 +200,15 @@ void __57__CNAutocompleteSuggestionsProbe_recordSGServiceMessage___block_invoke(
 
 - (void)sendData
 {
-  v3 = [(CNAutocompleteSuggestionsProbe *)self pendingBlocks];
-  v4 = [(CNAutocompleteSuggestionsProbe *)self workScheduler];
+  pendingBlocks = [(CNAutocompleteSuggestionsProbe *)self pendingBlocks];
+  workScheduler = [(CNAutocompleteSuggestionsProbe *)self workScheduler];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__CNAutocompleteSuggestionsProbe_sendData__block_invoke;
   v6[3] = &unk_2781C3FB0;
-  v7 = v3;
-  v5 = v3;
-  [v4 performBlock:v6];
+  v7 = pendingBlocks;
+  v5 = pendingBlocks;
+  [workScheduler performBlock:v6];
 }
 
 uint64_t __42__CNAutocompleteSuggestionsProbe_sendData__block_invoke(uint64_t a1)

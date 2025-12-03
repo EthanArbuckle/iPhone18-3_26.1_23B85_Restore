@@ -1,29 +1,29 @@
 @interface PKDynamicLayerConfiguration
-- (PKDynamicLayerConfiguration)initWithCoder:(id)a3;
-- (PKDynamicLayerConfiguration)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKDynamicLayerConfiguration)initWithCoder:(id)coder;
+- (PKDynamicLayerConfiguration)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKDynamicLayerConfiguration
 
-- (PKDynamicLayerConfiguration)initWithDictionary:(id)a3
+- (PKDynamicLayerConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v38.receiver = self;
     v38.super_class = PKDynamicLayerConfiguration;
     v5 = [(PKDynamicLayerConfiguration *)&v38 init];
     if (v5)
     {
-      v6 = [v4 PKNumberForKey:@"version"];
+      v6 = [dictionaryCopy PKNumberForKey:@"version"];
       v7 = v6;
       if (v6)
       {
         v5->_version = [v6 unsignedIntegerValue];
-        v5->_parallaxEnabled = [v4 PKBoolForKey:@"parallaxEnabled"];
-        v8 = [v4 PKDictionaryForKey:@"backgroundParallaxEmitter"];
+        v5->_parallaxEnabled = [dictionaryCopy PKBoolForKey:@"parallaxEnabled"];
+        v8 = [dictionaryCopy PKDictionaryForKey:@"backgroundParallaxEmitter"];
         if (v8)
         {
           v9 = [[PKDynamicLayerEmitterConfiguration alloc] initWithDictionary:v8];
@@ -31,7 +31,7 @@
           v5->_backgroundParallaxEmitter = v9;
         }
 
-        v11 = [v4 PKDictionaryForKey:@"neutralEmitter"];
+        v11 = [dictionaryCopy PKDictionaryForKey:@"neutralEmitter"];
         v12 = v11;
         if (v8)
         {
@@ -50,7 +50,7 @@
           v5->_neutralEmitter = v14;
         }
 
-        v16 = [v4 PKDictionaryForKey:@"foregroundParallaxEmitter"];
+        v16 = [dictionaryCopy PKDictionaryForKey:@"foregroundParallaxEmitter"];
         v17 = v16;
         if (v8 | v12)
         {
@@ -69,7 +69,7 @@
           v5->_foregroundParallaxEmitter = v19;
         }
 
-        v21 = [v4 PKDictionaryForKey:@"staticOverlayEmitter"];
+        v21 = [dictionaryCopy PKDictionaryForKey:@"staticOverlayEmitter"];
         v22 = v21;
         if (v17)
         {
@@ -89,13 +89,13 @@
         }
 
         v26 = [PKDynamicLayerTransactionEffectConfiguration alloc];
-        v27 = [v4 PKDictionaryForKey:@"transactionEffect"];
+        v27 = [dictionaryCopy PKDictionaryForKey:@"transactionEffect"];
         v28 = [(PKDynamicLayerTransactionEffectConfiguration *)v26 initWithDictionary:v27];
         transactionEffect = v5->_transactionEffect;
         v5->_transactionEffect = v28;
 
         v30 = [PKDynamicLayerCrossDissolveConfiguration alloc];
-        v31 = [v4 PKDictionaryForKey:@"crossDissolve"];
+        v31 = [dictionaryCopy PKDictionaryForKey:@"crossDissolve"];
         v32 = [(PKDynamicLayerCrossDissolveConfiguration *)v30 initWithDictionary:v31];
         crossDissolve = v5->_crossDissolve;
         v5->_crossDissolve = v32;
@@ -115,89 +115,89 @@
     }
 
     self = v5;
-    v34 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v34 = 0;
+    selfCopy = 0;
   }
 
-  return v34;
+  return selfCopy;
 }
 
-- (PKDynamicLayerConfiguration)initWithCoder:(id)a3
+- (PKDynamicLayerConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKDynamicLayerConfiguration;
   v5 = [(PKDynamicLayerConfiguration *)&v13 init];
   if (v5)
   {
-    -[PKDynamicLayerConfiguration setVersion:](v5, "setVersion:", [v4 decodeIntegerForKey:@"version"]);
-    -[PKDynamicLayerConfiguration setParallaxEnabled:](v5, "setParallaxEnabled:", [v4 decodeBoolForKey:@"parallaxEnabled"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundParallaxEmitter"];
+    -[PKDynamicLayerConfiguration setVersion:](v5, "setVersion:", [coderCopy decodeIntegerForKey:@"version"]);
+    -[PKDynamicLayerConfiguration setParallaxEnabled:](v5, "setParallaxEnabled:", [coderCopy decodeBoolForKey:@"parallaxEnabled"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundParallaxEmitter"];
     [(PKDynamicLayerConfiguration *)v5 setBackgroundParallaxEmitter:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"neutralEmitter"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"neutralEmitter"];
     [(PKDynamicLayerConfiguration *)v5 setNeutralEmitter:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"foregroundParallaxEmitter"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"foregroundParallaxEmitter"];
     [(PKDynamicLayerConfiguration *)v5 setForegroundParallaxEmitter:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"staticOverlayEmitter"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"staticOverlayEmitter"];
     [(PKDynamicLayerConfiguration *)v5 setStaticOverlayEmitter:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionEffect"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionEffect"];
     [(PKDynamicLayerConfiguration *)v5 setTransactionEffect:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"crossDissolve"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"crossDissolve"];
     [(PKDynamicLayerConfiguration *)v5 setCrossDissolve:v11];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   version = self->_version;
-  v5 = a3;
-  [v5 encodeInteger:version forKey:@"version"];
-  [v5 encodeBool:self->_parallaxEnabled forKey:@"parallaxEnabled"];
-  [v5 encodeObject:self->_backgroundParallaxEmitter forKey:@"backgroundParallaxEmitter"];
-  [v5 encodeObject:self->_neutralEmitter forKey:@"neutralEmitter"];
-  [v5 encodeObject:self->_foregroundParallaxEmitter forKey:@"foregroundParallaxEmitter"];
-  [v5 encodeObject:self->_staticOverlayEmitter forKey:@"staticOverlayEmitter"];
-  [v5 encodeObject:self->_transactionEffect forKey:@"transactionEffect"];
-  [v5 encodeObject:self->_crossDissolve forKey:@"crossDissolve"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:version forKey:@"version"];
+  [coderCopy encodeBool:self->_parallaxEnabled forKey:@"parallaxEnabled"];
+  [coderCopy encodeObject:self->_backgroundParallaxEmitter forKey:@"backgroundParallaxEmitter"];
+  [coderCopy encodeObject:self->_neutralEmitter forKey:@"neutralEmitter"];
+  [coderCopy encodeObject:self->_foregroundParallaxEmitter forKey:@"foregroundParallaxEmitter"];
+  [coderCopy encodeObject:self->_staticOverlayEmitter forKey:@"staticOverlayEmitter"];
+  [coderCopy encodeObject:self->_transactionEffect forKey:@"transactionEffect"];
+  [coderCopy encodeObject:self->_crossDissolve forKey:@"crossDissolve"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKDynamicLayerConfiguration allocWithZone:](PKDynamicLayerConfiguration init];
   v5->_version = self->_version;
   v5->_parallaxEnabled = self->_parallaxEnabled;
-  v6 = [(PKDynamicLayerEmitterConfiguration *)self->_backgroundParallaxEmitter copyWithZone:a3];
+  v6 = [(PKDynamicLayerEmitterConfiguration *)self->_backgroundParallaxEmitter copyWithZone:zone];
   backgroundParallaxEmitter = v5->_backgroundParallaxEmitter;
   v5->_backgroundParallaxEmitter = v6;
 
-  v8 = [(PKDynamicLayerEmitterConfiguration *)self->_neutralEmitter copyWithZone:a3];
+  v8 = [(PKDynamicLayerEmitterConfiguration *)self->_neutralEmitter copyWithZone:zone];
   neutralEmitter = v5->_neutralEmitter;
   v5->_neutralEmitter = v8;
 
-  v10 = [(PKDynamicLayerEmitterConfiguration *)self->_foregroundParallaxEmitter copyWithZone:a3];
+  v10 = [(PKDynamicLayerEmitterConfiguration *)self->_foregroundParallaxEmitter copyWithZone:zone];
   foregroundParallaxEmitter = v5->_foregroundParallaxEmitter;
   v5->_foregroundParallaxEmitter = v10;
 
-  v12 = [(PKDynamicLayerEmitterConfiguration *)self->_staticOverlayEmitter copyWithZone:a3];
+  v12 = [(PKDynamicLayerEmitterConfiguration *)self->_staticOverlayEmitter copyWithZone:zone];
   staticOverlayEmitter = v5->_staticOverlayEmitter;
   v5->_staticOverlayEmitter = v12;
 
-  v14 = [(PKDynamicLayerTransactionEffectConfiguration *)self->_transactionEffect copyWithZone:a3];
+  v14 = [(PKDynamicLayerTransactionEffectConfiguration *)self->_transactionEffect copyWithZone:zone];
   transactionEffect = v5->_transactionEffect;
   v5->_transactionEffect = v14;
 
-  v16 = [(PKDynamicLayerCrossDissolveConfiguration *)self->_crossDissolve copyWithZone:a3];
+  v16 = [(PKDynamicLayerCrossDissolveConfiguration *)self->_crossDissolve copyWithZone:zone];
   crossDissolve = v5->_crossDissolve;
   v5->_crossDissolve = v16;
 

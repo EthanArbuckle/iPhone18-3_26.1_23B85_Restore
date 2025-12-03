@@ -2,15 +2,15 @@
 - (BOOL)isViewAnimating;
 - (CGRect)referenceRect;
 - (UIAutocorrectBubbleContainer)init;
-- (id)createTypedTextViewWithTypedText:(id)a3;
+- (id)createTypedTextViewWithTypedText:(id)text;
 - (void)animateAutocorrectionAccepted;
 - (void)dismissAutocorrectBubble;
 - (void)performReset;
 - (void)reset;
-- (void)updateBubbleWithAutocorrectionText:(id)a3 referenceRect:(CGRect)a4;
-- (void)updateFakeTextSelectionHighlightForRect:(CGRect)a3;
-- (void)updateSelfWithRect:(CGRect)a3;
-- (void)updateWithAutocorrectionText:(id)a3 typedText:(id)a4 referenceTextView:(id)a5 referenceRect:(CGRect)a6;
+- (void)updateBubbleWithAutocorrectionText:(id)text referenceRect:(CGRect)rect;
+- (void)updateFakeTextSelectionHighlightForRect:(CGRect)rect;
+- (void)updateSelfWithRect:(CGRect)rect;
+- (void)updateWithAutocorrectionText:(id)text typedText:(id)typedText referenceTextView:(id)view referenceRect:(CGRect)rect;
 @end
 
 @implementation UIAutocorrectBubbleContainer
@@ -30,159 +30,159 @@
   return v3;
 }
 
-- (void)updateWithAutocorrectionText:(id)a3 typedText:(id)a4 referenceTextView:(id)a5 referenceRect:(CGRect)a6
+- (void)updateWithAutocorrectionText:(id)text typedText:(id)typedText referenceTextView:(id)view referenceRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v12 = a3;
-  [(UIAutocorrectBubbleContainer *)self setTypedText:a4];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  textCopy = text;
+  [(UIAutocorrectBubbleContainer *)self setTypedText:typedText];
   [(UIAutocorrectBubbleContainer *)self updateFakeTextSelectionHighlightForRect:x, y, width, height];
-  [(UIAutocorrectBubbleContainer *)self updateBubbleWithAutocorrectionText:v12 referenceRect:x, y, width, height];
+  [(UIAutocorrectBubbleContainer *)self updateBubbleWithAutocorrectionText:textCopy referenceRect:x, y, width, height];
 
   [(UIAutocorrectBubbleContainer *)self updateSelfWithRect:x, y, width, height];
 
   [(UIView *)self layoutIfNeeded];
 }
 
-- (void)updateFakeTextSelectionHighlightForRect:(CGRect)a3
+- (void)updateFakeTextSelectionHighlightForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = rect.size.height;
+  width = rect.size.width;
   v41[4] = *MEMORY[0x1E69E9840];
-  v6 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight:a3.origin.x];
+  v6 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight:rect.origin.x];
 
   if (!v6)
   {
     v7 = objc_alloc_init(UIView);
     [(UIAutocorrectBubbleContainer *)self setFakeTextSelectionHighlight:v7];
 
-    v8 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+    fakeTextSelectionHighlight = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
+    [fakeTextSelectionHighlight setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v9 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
-    v10 = [v9 layer];
-    [v10 setCornerRadius:2.0];
+    fakeTextSelectionHighlight2 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
+    layer = [fakeTextSelectionHighlight2 layer];
+    [layer setCornerRadius:2.0];
 
-    v11 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
-    v12 = [v11 layer];
-    [v12 setMaskedCorners:3];
+    fakeTextSelectionHighlight3 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
+    layer2 = [fakeTextSelectionHighlight3 layer];
+    [layer2 setMaskedCorners:3];
 
     v13 = +[UIColor systemBlueColor];
     v14 = [v13 colorWithAlphaComponent:0.349999994];
-    v15 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
-    [v15 setBackgroundColor:v14];
+    fakeTextSelectionHighlight4 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
+    [fakeTextSelectionHighlight4 setBackgroundColor:v14];
   }
 
-  v16 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
-  v17 = [v16 superview];
+  fakeTextSelectionHighlight5 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
+  superview = [fakeTextSelectionHighlight5 superview];
 
-  if (v17 != self)
+  if (superview != self)
   {
-    v18 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
-    [(UIView *)self addSubview:v18];
+    fakeTextSelectionHighlight6 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
+    [(UIView *)self addSubview:fakeTextSelectionHighlight6];
 
-    v19 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
-    v20 = [v19 widthAnchor];
-    v21 = [v20 constraintEqualToConstant:0.0];
+    fakeTextSelectionHighlight7 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
+    widthAnchor = [fakeTextSelectionHighlight7 widthAnchor];
+    v21 = [widthAnchor constraintEqualToConstant:0.0];
     [(UIAutocorrectBubbleContainer *)self setHighlightWidthConstraint:v21];
 
     v36 = MEMORY[0x1E69977A0];
-    v40 = [(UIAutocorrectBubbleContainer *)self highlightWidthConstraint];
-    v41[0] = v40;
-    v39 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
-    v38 = [v39 leadingAnchor];
-    v37 = [(UIView *)self leadingAnchor];
-    v22 = [v38 constraintEqualToAnchor:v37];
+    highlightWidthConstraint = [(UIAutocorrectBubbleContainer *)self highlightWidthConstraint];
+    v41[0] = highlightWidthConstraint;
+    fakeTextSelectionHighlight8 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
+    leadingAnchor = [fakeTextSelectionHighlight8 leadingAnchor];
+    leadingAnchor2 = [(UIView *)self leadingAnchor];
+    v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v41[1] = v22;
-    v23 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
-    v24 = [v23 topAnchor];
-    v25 = [(UIView *)self topAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    fakeTextSelectionHighlight9 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
+    topAnchor = [fakeTextSelectionHighlight9 topAnchor];
+    topAnchor2 = [(UIView *)self topAnchor];
+    v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v41[2] = v26;
-    v27 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
-    v28 = [v27 heightAnchor];
-    v29 = [v28 constraintEqualToConstant:height];
+    fakeTextSelectionHighlight10 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
+    heightAnchor = [fakeTextSelectionHighlight10 heightAnchor];
+    v29 = [heightAnchor constraintEqualToConstant:height];
     v41[3] = v29;
     v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:4];
     [v36 activateConstraints:v30];
 
-    v31 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
-    [(UIView *)self bringSubviewToFront:v31];
+    fakeTextSelectionHighlight11 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
+    [(UIView *)self bringSubviewToFront:fakeTextSelectionHighlight11];
   }
 
-  v32 = [(UIAutocorrectBubbleContainer *)self highlightWidthConstraint];
-  [v32 constant];
+  highlightWidthConstraint2 = [(UIAutocorrectBubbleContainer *)self highlightWidthConstraint];
+  [highlightWidthConstraint2 constant];
   v34 = v33;
 
   if (v34 != width)
   {
-    v35 = [(UIAutocorrectBubbleContainer *)self highlightWidthConstraint];
-    [v35 setConstant:width];
+    highlightWidthConstraint3 = [(UIAutocorrectBubbleContainer *)self highlightWidthConstraint];
+    [highlightWidthConstraint3 setConstant:width];
   }
 }
 
-- (void)updateBubbleWithAutocorrectionText:(id)a3 referenceRect:(CGRect)a4
+- (void)updateBubbleWithAutocorrectionText:(id)text referenceRect:(CGRect)rect
 {
-  height = a4.size.height;
+  height = rect.size.height;
   v29[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(UIAutocorrectBubbleContainer *)self bubble];
+  textCopy = text;
+  bubble = [(UIAutocorrectBubbleContainer *)self bubble];
 
-  if (!v7)
+  if (!bubble)
   {
     v8 = objc_alloc_init(UIAutocorrectBubble);
     [(UIAutocorrectBubbleContainer *)self setBubble:v8];
 
     v9 = [[UITapGestureRecognizer alloc] initWithTarget:self action:sel_didTapAutocorrectionBubble];
-    v10 = [(UIAutocorrectBubbleContainer *)self bubble];
-    [v10 addGestureRecognizer:v9];
+    bubble2 = [(UIAutocorrectBubbleContainer *)self bubble];
+    [bubble2 addGestureRecognizer:v9];
   }
 
-  v11 = [(UIView *)self subviews];
-  v12 = [(UIAutocorrectBubbleContainer *)self bubble];
-  v13 = [v11 containsObject:v12];
+  subviews = [(UIView *)self subviews];
+  bubble3 = [(UIAutocorrectBubbleContainer *)self bubble];
+  v13 = [subviews containsObject:bubble3];
 
   if ((v13 & 1) == 0)
   {
-    v14 = [(UIAutocorrectBubbleContainer *)self bubble];
-    [(UIView *)self addSubview:v14];
+    bubble4 = [(UIAutocorrectBubbleContainer *)self bubble];
+    [(UIView *)self addSubview:bubble4];
 
-    v15 = [(UIAutocorrectBubbleContainer *)self bubble];
-    [(UIView *)self bringSubviewToFront:v15];
+    bubble5 = [(UIAutocorrectBubbleContainer *)self bubble];
+    [(UIView *)self bringSubviewToFront:bubble5];
 
-    v16 = [(UIAutocorrectBubbleContainer *)self bubble];
-    [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+    bubble6 = [(UIAutocorrectBubbleContainer *)self bubble];
+    [bubble6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v17 = [(UIAutocorrectBubbleContainer *)self bubble];
-    v18 = [v17 topAnchor];
-    v19 = [(UIView *)self topAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19 constant:height];
+    bubble7 = [(UIAutocorrectBubbleContainer *)self bubble];
+    topAnchor = [bubble7 topAnchor];
+    topAnchor2 = [(UIView *)self topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:height];
     [(UIAutocorrectBubbleContainer *)self setBubbleTopConstraint:v20];
 
     v21 = MEMORY[0x1E69977A0];
-    v22 = [(UIAutocorrectBubbleContainer *)self bubbleTopConstraint];
-    v29[0] = v22;
-    v23 = [(UIAutocorrectBubbleContainer *)self bubble];
-    v24 = [v23 leadingAnchor];
-    v25 = [(UIView *)self leadingAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25 constant:0.0];
+    bubbleTopConstraint = [(UIAutocorrectBubbleContainer *)self bubbleTopConstraint];
+    v29[0] = bubbleTopConstraint;
+    bubble8 = [(UIAutocorrectBubbleContainer *)self bubble];
+    leadingAnchor = [bubble8 leadingAnchor];
+    leadingAnchor2 = [(UIView *)self leadingAnchor];
+    v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
     v29[1] = v26;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
     [v21 activateConstraints:v27];
   }
 
-  v28 = [(UIAutocorrectBubbleContainer *)self bubble];
-  [v28 updateWithAutocorrectionText:v6];
+  bubble9 = [(UIAutocorrectBubbleContainer *)self bubble];
+  [bubble9 updateWithAutocorrectionText:textCopy];
 }
 
-- (void)updateSelfWithRect:(CGRect)a3
+- (void)updateSelfWithRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v39[4] = *MEMORY[0x1E69E9840];
   [(UIAutocorrectBubbleContainer *)self referenceRect];
   v41.origin.x = x;
@@ -191,85 +191,85 @@
   v41.size.height = height;
   if (!CGRectEqualToRect(v40, v41))
   {
-    v8 = [(UIAutocorrectBubbleContainer *)self xConstraint];
-    if (!v8)
+    xConstraint = [(UIAutocorrectBubbleContainer *)self xConstraint];
+    if (!xConstraint)
     {
       goto LABEL_9;
     }
 
-    v9 = v8;
-    v10 = [(UIAutocorrectBubbleContainer *)self yConstraint];
-    if (v10)
+    v9 = xConstraint;
+    yConstraint = [(UIAutocorrectBubbleContainer *)self yConstraint];
+    if (yConstraint)
     {
-      v11 = v10;
-      v12 = [(UIAutocorrectBubbleContainer *)self widthConstraint];
-      if (v12)
+      v11 = yConstraint;
+      widthConstraint = [(UIAutocorrectBubbleContainer *)self widthConstraint];
+      if (widthConstraint)
       {
-        v13 = v12;
-        v14 = [(UIAutocorrectBubbleContainer *)self heightConstraint];
+        v13 = widthConstraint;
+        heightConstraint = [(UIAutocorrectBubbleContainer *)self heightConstraint];
 
-        if (v14)
+        if (heightConstraint)
         {
 LABEL_13:
-          v37 = [(UIAutocorrectBubbleContainer *)self xConstraint];
-          [v37 setConstant:x];
+          xConstraint2 = [(UIAutocorrectBubbleContainer *)self xConstraint];
+          [xConstraint2 setConstant:x];
 
-          v38 = [(UIAutocorrectBubbleContainer *)self yConstraint];
-          [v38 setConstant:y];
+          yConstraint2 = [(UIAutocorrectBubbleContainer *)self yConstraint];
+          [yConstraint2 setConstant:y];
 
           [(UIAutocorrectBubbleContainer *)self setReferenceRect:x, y, width, height];
           return;
         }
 
 LABEL_9:
-        v15 = [(UIView *)self widthAnchor];
-        v16 = [(UIAutocorrectBubbleContainer *)self bubble];
-        v17 = [v16 widthAnchor];
-        v18 = [v15 constraintEqualToAnchor:v17];
+        widthAnchor = [(UIView *)self widthAnchor];
+        bubble = [(UIAutocorrectBubbleContainer *)self bubble];
+        widthAnchor2 = [bubble widthAnchor];
+        v18 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
         [(UIAutocorrectBubbleContainer *)self setWidthConstraint:v18];
 
-        v19 = [(UIView *)self heightAnchor];
-        v20 = [v19 constraintEqualToConstant:height + 19.0];
+        heightAnchor = [(UIView *)self heightAnchor];
+        v20 = [heightAnchor constraintEqualToConstant:height + 19.0];
         [(UIAutocorrectBubbleContainer *)self setHeightConstraint:v20];
 
-        v21 = [(UIView *)self leftAnchor];
-        v22 = [(UIView *)self superview];
-        v23 = [v22 leftAnchor];
-        v24 = [v21 constraintEqualToAnchor:v23 constant:x];
+        leftAnchor = [(UIView *)self leftAnchor];
+        superview = [(UIView *)self superview];
+        leftAnchor2 = [superview leftAnchor];
+        v24 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:x];
         [(UIAutocorrectBubbleContainer *)self setXConstraint:v24];
 
-        v25 = [(UIView *)self superview];
+        superview2 = [(UIView *)self superview];
         objc_opt_class();
-        LOBYTE(v22) = objc_opt_isKindOfClass();
+        LOBYTE(superview) = objc_opt_isKindOfClass();
 
-        if (v22)
+        if (superview)
         {
-          v26 = [(UIView *)self superview];
-          v27 = [(UIView *)self topAnchor];
-          v28 = [v26 contentLayoutGuide];
-          v29 = [v28 topAnchor];
-          v30 = [v27 constraintEqualToAnchor:v29 constant:y];
+          superview3 = [(UIView *)self superview];
+          topAnchor = [(UIView *)self topAnchor];
+          contentLayoutGuide = [superview3 contentLayoutGuide];
+          topAnchor2 = [contentLayoutGuide topAnchor];
+          v30 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:y];
           [(UIAutocorrectBubbleContainer *)self setYConstraint:v30];
         }
 
         else
         {
-          v26 = [(UIView *)self topAnchor];
-          v27 = [(UIView *)self superview];
-          v28 = [v27 topAnchor];
-          v29 = [v26 constraintEqualToAnchor:v28 constant:y];
-          [(UIAutocorrectBubbleContainer *)self setYConstraint:v29];
+          superview3 = [(UIView *)self topAnchor];
+          topAnchor = [(UIView *)self superview];
+          contentLayoutGuide = [topAnchor topAnchor];
+          topAnchor2 = [superview3 constraintEqualToAnchor:contentLayoutGuide constant:y];
+          [(UIAutocorrectBubbleContainer *)self setYConstraint:topAnchor2];
         }
 
         v31 = MEMORY[0x1E69977A0];
-        v32 = [(UIAutocorrectBubbleContainer *)self widthConstraint];
-        v39[0] = v32;
-        v33 = [(UIAutocorrectBubbleContainer *)self heightConstraint];
-        v39[1] = v33;
-        v34 = [(UIAutocorrectBubbleContainer *)self xConstraint];
-        v39[2] = v34;
-        v35 = [(UIAutocorrectBubbleContainer *)self yConstraint];
-        v39[3] = v35;
+        widthConstraint2 = [(UIAutocorrectBubbleContainer *)self widthConstraint];
+        v39[0] = widthConstraint2;
+        heightConstraint2 = [(UIAutocorrectBubbleContainer *)self heightConstraint];
+        v39[1] = heightConstraint2;
+        xConstraint3 = [(UIAutocorrectBubbleContainer *)self xConstraint];
+        v39[2] = xConstraint3;
+        yConstraint3 = [(UIAutocorrectBubbleContainer *)self yConstraint];
+        v39[3] = yConstraint3;
         v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:4];
         [v31 activateConstraints:v36];
 
@@ -281,12 +281,12 @@ LABEL_9:
   }
 }
 
-- (id)createTypedTextViewWithTypedText:(id)a3
+- (id)createTypedTextViewWithTypedText:(id)text
 {
   v26[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  textCopy = text;
   v5 = objc_alloc_init(UITextView);
-  [(UITextView *)v5 setText:v4];
+  [(UITextView *)v5 setText:textCopy];
 
   v6 = +[UIColor whiteColor];
   [(UITextView *)v5 setTextColor:v6];
@@ -295,8 +295,8 @@ LABEL_9:
   [(UIScrollView *)v5 setBackgroundColor:v7];
 
   [(UITextView *)v5 setTextContainerInset:0.0, 0.0, 0.0, 0.0];
-  v8 = [(UITextView *)v5 textContainer];
-  [v8 setLineFragmentPadding:0.0];
+  textContainer = [(UITextView *)v5 textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
   v9 = [off_1E70ECC18 systemFontOfSize:16.0 weight:*off_1E70ECD28];
   [(UITextView *)v5 setFont:v9];
@@ -304,31 +304,31 @@ LABEL_9:
   [(UIView *)v5 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)v5 setAlpha:1.0];
   [(UIView *)self addSubview:v5];
-  v10 = [(UIAutocorrectBubbleContainer *)self bubble];
-  [(UIView *)self insertSubview:v5 belowSubview:v10];
+  bubble = [(UIAutocorrectBubbleContainer *)self bubble];
+  [(UIView *)self insertSubview:v5 belowSubview:bubble];
 
   v23 = MEMORY[0x1E69977A0];
-  v24 = [(UIView *)v5 widthAnchor];
-  v25 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
-  [v25 frame];
-  v12 = [v24 constraintEqualToConstant:v11];
+  widthAnchor = [(UIView *)v5 widthAnchor];
+  fakeTextSelectionHighlight = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
+  [fakeTextSelectionHighlight frame];
+  v12 = [widthAnchor constraintEqualToConstant:v11];
   v26[0] = v12;
-  v13 = [(UIView *)v5 heightAnchor];
-  v14 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
-  [v14 frame];
-  v16 = [v13 constraintLessThanOrEqualToConstant:v15];
+  heightAnchor = [(UIView *)v5 heightAnchor];
+  fakeTextSelectionHighlight2 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
+  [fakeTextSelectionHighlight2 frame];
+  v16 = [heightAnchor constraintLessThanOrEqualToConstant:v15];
   v26[1] = v16;
-  v17 = [(UIView *)v5 leadingAnchor];
-  v18 = [(UIView *)self leadingAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  leadingAnchor = [(UIView *)v5 leadingAnchor];
+  leadingAnchor2 = [(UIView *)self leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v26[2] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:3];
   [v23 activateConstraints:v20];
 
   [(UIAutocorrectBubbleContainer *)self setTypedTextAnimationPlaceholder:v5];
-  v21 = [(UIAutocorrectBubbleContainer *)self typedTextAnimationPlaceholder];
+  typedTextAnimationPlaceholder = [(UIAutocorrectBubbleContainer *)self typedTextAnimationPlaceholder];
 
-  return v21;
+  return typedTextAnimationPlaceholder;
 }
 
 - (void)dismissAutocorrectBubble
@@ -341,8 +341,8 @@ LABEL_9:
 
 - (void)animateAutocorrectionAccepted
 {
-  v3 = [(UIAutocorrectBubbleContainer *)self typedText];
-  v4 = [(UIAutocorrectBubbleContainer *)self createTypedTextViewWithTypedText:v3];
+  typedText = [(UIAutocorrectBubbleContainer *)self typedText];
+  v4 = [(UIAutocorrectBubbleContainer *)self createTypedTextViewWithTypedText:typedText];
 
   [(UIView *)self layoutIfNeeded];
   v5[4] = self;
@@ -416,10 +416,10 @@ void __61__UIAutocorrectBubbleContainer_animateAutocorrectionAccepted__block_inv
 
 - (BOOL)isViewAnimating
 {
-  v2 = [(UIAutocorrectBubbleContainer *)self bubble];
-  v3 = [v2 layer];
-  v4 = [v3 animationKeys];
-  v5 = [v4 count] != 0;
+  bubble = [(UIAutocorrectBubbleContainer *)self bubble];
+  layer = [bubble layer];
+  animationKeys = [layer animationKeys];
+  v5 = [animationKeys count] != 0;
 
   return v5;
 }
@@ -433,16 +433,16 @@ void __61__UIAutocorrectBubbleContainer_animateAutocorrectionAccepted__block_inv
   [(UIAutocorrectBubbleContainer *)self setXConstraint:0];
   [(UIAutocorrectBubbleContainer *)self setYConstraint:0];
   [(UIAutocorrectBubbleContainer *)self setReferenceRect:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
-  v3 = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
-  [v3 removeFromSuperview];
+  fakeTextSelectionHighlight = [(UIAutocorrectBubbleContainer *)self fakeTextSelectionHighlight];
+  [fakeTextSelectionHighlight removeFromSuperview];
 
-  v4 = [(UIAutocorrectBubbleContainer *)self bubble];
-  [v4 removeFromSuperview];
+  bubble = [(UIAutocorrectBubbleContainer *)self bubble];
+  [bubble removeFromSuperview];
 
   [(UIAutocorrectBubbleContainer *)self setFakeTextSelectionHighlight:0];
   [(UIAutocorrectBubbleContainer *)self setBubble:0];
-  v5 = [(UIAutocorrectBubbleContainer *)self typedTextAnimationPlaceholder];
-  [v5 removeFromSuperview];
+  typedTextAnimationPlaceholder = [(UIAutocorrectBubbleContainer *)self typedTextAnimationPlaceholder];
+  [typedTextAnimationPlaceholder removeFromSuperview];
 
   [(UIAutocorrectBubbleContainer *)self setTypedTextAnimationPlaceholder:0];
 

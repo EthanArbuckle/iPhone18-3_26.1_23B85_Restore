@@ -1,10 +1,10 @@
 @interface HMFNetManager
 + (HMFNetManager)sharedManager;
 - (HMFNetManager)init;
-- (HMFNetManager)initWithWiFiManager:(id)a3;
+- (HMFNetManager)initWithWiFiManager:(id)manager;
 - (_HMFNetManagerWoWAssertion)wowAssertion;
-- (void)deregisterWoWAssertionForObject:(id)a3;
-- (void)registerWoWAssertionForObject:(id)a3;
+- (void)deregisterWoWAssertionForObject:(id)object;
+- (void)registerWoWAssertionForObject:(id)object;
 @end
 
 @implementation HMFNetManager
@@ -28,9 +28,9 @@ uint64_t __30__HMFNetManager_sharedManager__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (HMFNetManager)initWithWiFiManager:(id)a3
+- (HMFNetManager)initWithWiFiManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = HMFNetManager;
   v6 = [(HMFNetManager *)&v12 init];
@@ -42,7 +42,7 @@ uint64_t __30__HMFNetManager_sharedManager__block_invoke()
     clientQueue = v7->_clientQueue;
     v7->_clientQueue = v9;
 
-    objc_storeStrong(&v7->_wifiManager, a3);
+    objc_storeStrong(&v7->_wifiManager, manager);
   }
 
   return v7;
@@ -56,19 +56,19 @@ uint64_t __30__HMFNetManager_sharedManager__block_invoke()
   return v4;
 }
 
-- (void)registerWoWAssertionForObject:(id)a3
+- (void)registerWoWAssertionForObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
-    v5 = [(HMFNetManager *)self clientQueue];
+    clientQueue = [(HMFNetManager *)self clientQueue];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __47__HMFNetManager_registerWoWAssertionForObject___block_invoke;
     v6[3] = &unk_2786E6D18;
     v6[4] = self;
-    v7 = v4;
-    dispatch_async(v5, v6);
+    v7 = objectCopy;
+    dispatch_async(clientQueue, v6);
   }
 }
 
@@ -90,11 +90,11 @@ void __47__HMFNetManager_registerWoWAssertionForObject___block_invoke(uint64_t a
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)deregisterWoWAssertionForObject:(id)a3
+- (void)deregisterWoWAssertionForObject:(id)object
 {
-  if (a3)
+  if (object)
   {
-    objc_setAssociatedObject(a3, "HMF.wowAssertionKey", 0, 1);
+    objc_setAssociatedObject(object, "HMF.wowAssertionKey", 0, 1);
   }
 }
 

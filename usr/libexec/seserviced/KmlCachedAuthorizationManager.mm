@@ -2,8 +2,8 @@
 + (id)sharedManager;
 - (BOOL)isCacheDirty;
 - (KmlCachedAuthorizationManager)init;
-- (id)getCachedAuthorizationsWithError:(id *)a3;
-- (id)rebuildAuthorizationCacheWithError:(id *)a3;
+- (id)getCachedAuthorizationsWithError:(id *)error;
+- (id)rebuildAuthorizationCacheWithError:(id *)error;
 - (void)markCacheDirty;
 @end
 
@@ -34,12 +34,12 @@
   return result;
 }
 
-- (id)getCachedAuthorizationsWithError:(id *)a3
+- (id)getCachedAuthorizationsWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_cacheLock);
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   if ([SESBootUUID isFirstLaunchAfterBootForKey:@"com.apple.sesd.kml.refreshCachedAuths"])
@@ -61,7 +61,7 @@
     v8 = v7;
     if (v7)
     {
-      if (!a3)
+      if (!error)
       {
         goto LABEL_39;
       }
@@ -89,11 +89,11 @@
     v6 = [(KmlCachedAuthorizationManager *)self rebuildAuthorizationCacheWithError:&v38];
     v11 = v38;
     v8 = v11;
-    if (a3)
+    if (error)
     {
       v12 = v11;
 LABEL_14:
-      *a3 = v8;
+      *error = v8;
     }
   }
 
@@ -165,10 +165,10 @@ LABEL_14:
             v6 = [(KmlCachedAuthorizationManager *)self rebuildAuthorizationCacheWithError:&v32];
             v8 = v32;
 
-            if (a3)
+            if (error)
             {
               v29 = v8;
-              *a3 = v8;
+              *error = v8;
             }
 
             goto LABEL_38;
@@ -224,22 +224,22 @@ LABEL_39:
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (id)rebuildAuthorizationCacheWithError:(id *)a3
+- (id)rebuildAuthorizationCacheWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
   if (![(KmlCachedAuthorizationManager *)self isCacheDirty])
@@ -275,11 +275,11 @@ LABEL_39:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s : %i : Error in getting saved authorizations : %@", buf, 0x1Cu);
     }
 
-    if (a3)
+    if (error)
     {
       v10 = v7;
       v11 = 0;
-      *a3 = v7;
+      *error = v7;
     }
 
     else
@@ -290,8 +290,8 @@ LABEL_39:
 
   else
   {
-    v28 = self;
-    v29 = a3;
+    selfCopy = self;
+    errorCopy = error;
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
@@ -353,10 +353,10 @@ LABEL_39:
             }
 
             v6 = v30;
-            if (v29)
+            if (errorCopy)
             {
               v26 = v7;
-              *v29 = v7;
+              *errorCopy = v7;
             }
 
             v11 = 0;
@@ -379,7 +379,7 @@ LABEL_39:
 
     v14 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.seserviced"];
     [v14 setObject:v13 forKey:@"kmlCachedAuthorizationCache"];
-    [(KmlCachedAuthorizationManager *)v28 setIsCacheDirty:0];
+    [(KmlCachedAuthorizationManager *)selfCopy setIsCacheDirty:0];
     v23 = KmlLogger();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {

@@ -1,8 +1,8 @@
 @interface SAURLSizer
 - (SAURLSizer)init;
-- (void)callHandlerWithError:(id)a3;
+- (void)callHandlerWithError:(id)error;
 - (void)invalidateConnection;
-- (void)startObservingURLs:(id)a3 updateHandler:(id)a4;
+- (void)startObservingURLs:(id)ls updateHandler:(id)handler;
 - (void)stopObserving;
 @end
 
@@ -28,14 +28,14 @@
   self->_xpcOut = 0;
 }
 
-- (void)callHandlerWithError:(id)a3
+- (void)callHandlerWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   sarc = self->_sarc;
   if (sarc && !self->_alreadyReportedXPCError)
   {
     self->_alreadyReportedXPCError = 1;
-    [(SAReplyController *)sarc callURLSizerHandlerWithError:v4];
+    [(SAReplyController *)sarc callURLSizerHandlerWithError:errorCopy];
     v6 = self->_sarc;
     self->_sarc = 0;
 
@@ -45,16 +45,16 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)startObservingURLs:(id)a3 updateHandler:(id)a4
+- (void)startObservingURLs:(id)ls updateHandler:(id)handler
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  lsCopy = ls;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    if (v8->_alreadyObservingURLs)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (selfCopy->_alreadyObservingURLs)
     {
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s can't be called more than once per URLSizer instance", "-[SAURLSizer startObservingURLs:updateHandler:]"];
       v10 = SALog();
@@ -69,7 +69,7 @@
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v39 forKeys:&v38 count:1];
       v13 = [v11 errorWithDomain:*MEMORY[0x277CCA5B8] code:17 userInfo:v12];
 
-      v7[2](v7, 0, v13);
+      handlerCopy[2](handlerCopy, 0, v13);
     }
 
     else
@@ -78,54 +78,54 @@
       v37[1] = 3221225472;
       v37[2] = __47__SAURLSizer_startObservingURLs_updateHandler___block_invoke;
       v37[3] = &unk_279CD6CF8;
-      v37[4] = v8;
+      v37[4] = selfCopy;
       v21 = [SADaemonXPC newWithInvalidationHandler:v37];
-      xpcOut = v8->_xpcOut;
-      v8->_xpcOut = v21;
+      xpcOut = selfCopy->_xpcOut;
+      selfCopy->_xpcOut = v21;
 
       v23 = objc_opt_new();
-      sarc = v8->_sarc;
-      v8->_sarc = v23;
+      sarc = selfCopy->_sarc;
+      selfCopy->_sarc = v23;
 
-      [(SAReplyController *)v8->_sarc setUrlSizerUpdateHandler:v7];
-      v8->_alreadyReportedXPCError = 0;
-      v25 = v8->_xpcOut;
+      [(SAReplyController *)selfCopy->_sarc setUrlSizerUpdateHandler:handlerCopy];
+      selfCopy->_alreadyReportedXPCError = 0;
+      v25 = selfCopy->_xpcOut;
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = __47__SAURLSizer_startObservingURLs_updateHandler___block_invoke_2;
       v35[3] = &unk_279CD6D20;
-      v35[4] = v8;
+      v35[4] = selfCopy;
       v36 = 0;
       v26 = [(SADaemonXPC *)v25 synchronousRemoteObjectProxyWithErrorHandler:v35];
-      v27 = v8->_sarc;
+      v27 = selfCopy->_sarc;
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __47__SAURLSizer_startObservingURLs_updateHandler___block_invoke_3;
       v34[3] = &unk_279CD6D48;
-      v34[4] = v8;
-      [v26 addURLSizerHandler:v27 withURLs:v6 reply:v34];
+      v34[4] = selfCopy;
+      [v26 addURLSizerHandler:v27 withURLs:lsCopy reply:v34];
 
-      v8->_alreadyObservingURLs = 1;
-      v28 = v8->_xpcOut;
+      selfCopy->_alreadyObservingURLs = 1;
+      v28 = selfCopy->_xpcOut;
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __47__SAURLSizer_startObservingURLs_updateHandler___block_invoke_4;
       v33[3] = &unk_279CD6CF8;
-      v33[4] = v8;
+      v33[4] = selfCopy;
       v29 = [(SADaemonXPC *)v28 remoteObjectProxyWithErrorHandler:v33];
-      sizerID = v8->_sizerID;
+      sizerID = selfCopy->_sizerID;
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __47__SAURLSizer_startObservingURLs_updateHandler___block_invoke_5;
       v32[3] = &unk_279CD6CF8;
-      v32[4] = v8;
+      v32[4] = selfCopy;
       [v29 runURLSizerWithID:sizerID reply:v32];
 
       v9 = 0;
       v13 = 0;
     }
 
-    objc_sync_exit(v8);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -167,7 +167,7 @@ void __47__SAURLSizer_startObservingURLs_updateHandler___block_invoke_5(uint64_t
 - (void)stopObserving
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_1(&dword_26B26B000, a1, a3, "%s handler is not registered", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_1(&dword_26B26B000, self, a3, "%s handler is not registered", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 

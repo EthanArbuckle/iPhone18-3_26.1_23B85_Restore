@@ -1,23 +1,23 @@
 @interface EKRecents
-+ (BOOL)recentDirectoryLocation:(id)a3 matchesSource:(id)a4;
-+ (BOOL)recentIsDirectoryLocation:(id)a3;
-+ (BOOL)recentMissingStyleAttributes:(id)a3;
-+ (BOOL)recordRecentForContactWithName:(id)a3 emailAddress:(id)a4 phoneNumber:(id)a5;
++ (BOOL)recentDirectoryLocation:(id)location matchesSource:(id)source;
++ (BOOL)recentIsDirectoryLocation:(id)location;
++ (BOOL)recentMissingStyleAttributes:(id)attributes;
++ (BOOL)recordRecentForContactWithName:(id)name emailAddress:(id)address phoneNumber:(id)number;
 + (Class)crRecentContactsLibraryClass;
-+ (id)_archivedInstance:(id)a3;
++ (id)_archivedInstance:(id)instance;
 + (id)crAddressKindEmailString;
 + (id)crAddressKindPhoneNumberString;
 + (id)crRecentsDomainCalendarString;
-+ (id)directoryLocationForRecent:(id)a3 onSource:(id)a4;
-+ (id)locationForRecent:(id)a3;
++ (id)directoryLocationForRecent:(id)recent onSource:(id)source;
++ (id)locationForRecent:(id)recent;
 + (id)logHandle;
-+ (id)mapKitHandleForRecent:(id)a3;
-+ (id)mapKitStyleAttributesForRecent:(id)a3;
-+ (id)recentEventWithRecentContact:(id)a3 styleAttributes:(id)a4;
-+ (id)recentForContactWithAddress:(id)a3 name:(id)a4 kind:(id)a5;
-+ (id)recentForDirectoryLocation:(id)a3 onSource:(id)a4;
-+ (id)recentForLocation:(id)a3 withAddressString:(id)a4 andTitle:(id)a5 mapItem:(id)a6;
-+ (void)recordRecentWithAddress:(id)a3 name:(id)a4 kind:(id)a5;
++ (id)mapKitHandleForRecent:(id)recent;
++ (id)mapKitStyleAttributesForRecent:(id)recent;
++ (id)recentEventWithRecentContact:(id)contact styleAttributes:(id)attributes;
++ (id)recentForContactWithAddress:(id)address name:(id)name kind:(id)kind;
++ (id)recentForDirectoryLocation:(id)location onSource:(id)source;
++ (id)recentForLocation:(id)location withAddressString:(id)string andTitle:(id)title mapItem:(id)item;
++ (void)recordRecentWithAddress:(id)address name:(id)name kind:(id)kind;
 @end
 
 @implementation EKRecents
@@ -98,56 +98,56 @@ uint64_t __42__EKRecents_crRecentsDomainCalendarString__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)recentForContactWithAddress:(id)a3 name:(id)a4 kind:(id)a5
++ (id)recentForContactWithAddress:(id)address name:(id)name kind:(id)kind
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 crRecentContactsLibraryClass];
-  v12 = [MEMORY[0x1E695DF00] date];
-  v13 = [v11 recentEventForAddress:v10 displayName:v9 kind:v8 date:v12 weight:0 metadata:0 options:1];
+  kindCopy = kind;
+  nameCopy = name;
+  addressCopy = address;
+  crRecentContactsLibraryClass = [self crRecentContactsLibraryClass];
+  date = [MEMORY[0x1E695DF00] date];
+  v13 = [crRecentContactsLibraryClass recentEventForAddress:addressCopy displayName:nameCopy kind:kindCopy date:date weight:0 metadata:0 options:1];
 
   return v13;
 }
 
-+ (void)recordRecentWithAddress:(id)a3 name:(id)a4 kind:(id)a5
++ (void)recordRecentWithAddress:(id)address name:(id)name kind:(id)kind
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  addressCopy = address;
+  nameCopy = name;
+  if (!nameCopy)
   {
-    v9 = v8;
+    nameCopy = addressCopy;
   }
 
-  v10 = [a1 recentForContactWithAddress:v8 name:v9 kind:a5];
-  v11 = [objc_msgSend(a1 "crRecentContactsLibraryClass")];
+  v10 = [self recentForContactWithAddress:addressCopy name:nameCopy kind:kind];
+  v11 = [objc_msgSend(self "crRecentContactsLibraryClass")];
   v15[0] = v10;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v13 = [a1 crRecentsDomainCalendarString];
-  [v11 recordContactEvents:v12 recentsDomain:v13 sendingAddress:0 completion:0];
+  crRecentsDomainCalendarString = [self crRecentsDomainCalendarString];
+  [v11 recordContactEvents:v12 recentsDomain:crRecentsDomainCalendarString sendingAddress:0 completion:0];
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)recordRecentForContactWithName:(id)a3 emailAddress:(id)a4 phoneNumber:(id)a5
++ (BOOL)recordRecentForContactWithName:(id)name emailAddress:(id)address phoneNumber:(id)number
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  nameCopy = name;
+  addressCopy = address;
+  numberCopy = number;
+  if (addressCopy)
   {
-    v11 = [a1 crAddressKindEmailString];
-    [a1 recordRecentWithAddress:v9 name:v8 kind:v11];
+    crAddressKindEmailString = [self crAddressKindEmailString];
+    [self recordRecentWithAddress:addressCopy name:nameCopy kind:crAddressKindEmailString];
   }
 
-  if (v10)
+  if (numberCopy)
   {
-    v12 = [a1 crAddressKindPhoneNumberString];
-    [a1 recordRecentWithAddress:v10 name:v8 kind:v12];
+    crAddressKindPhoneNumberString = [self crAddressKindPhoneNumberString];
+    [self recordRecentWithAddress:numberCopy name:nameCopy kind:crAddressKindPhoneNumberString];
   }
 
-  return (v9 | v10) != 0;
+  return (addressCopy | numberCopy) != 0;
 }
 
 + (id)logHandle
@@ -169,19 +169,19 @@ uint64_t __22__EKRecents_logHandle__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)mapKitHandleForRecent:(id)a3
++ (id)mapKitHandleForRecent:(id)recent
 {
-  v3 = [a3 metadata];
-  v4 = [v3 objectForKey:@"mapKitHandle"];
+  metadata = [recent metadata];
+  v4 = [metadata objectForKey:@"mapKitHandle"];
 
   return v4;
 }
 
-+ (id)mapKitStyleAttributesForRecent:(id)a3
++ (id)mapKitStyleAttributesForRecent:(id)recent
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v4 = [a3 metadata];
-  v5 = [v4 objectForKey:@"mapItemStyleAttributes"];
+  metadata = [recent metadata];
+  v5 = [metadata objectForKey:@"mapItemStyleAttributes"];
 
   if (!v5)
   {
@@ -209,10 +209,10 @@ uint64_t __22__EKRecents_logHandle__block_invoke()
 
   else
   {
-    v11 = [a1 logHandle];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    logHandle = [self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
-      [(EKRecents *)v10 mapKitStyleAttributesForRecent:v11];
+      [(EKRecents *)v10 mapKitStyleAttributesForRecent:logHandle];
     }
   }
 
@@ -225,24 +225,24 @@ LABEL_11:
   return v9;
 }
 
-+ (BOOL)recentMissingStyleAttributes:(id)a3
++ (BOOL)recentMissingStyleAttributes:(id)attributes
 {
-  v3 = [a3 metadata];
-  v4 = [v3 objectForKey:@"mapItemStyleAttributes"];
+  metadata = [attributes metadata];
+  v4 = [metadata objectForKey:@"mapItemStyleAttributes"];
 
   return v4 == 0;
 }
 
-+ (id)recentEventWithRecentContact:(id)a3 styleAttributes:(id)a4
++ (id)recentEventWithRecentContact:(id)contact styleAttributes:(id)attributes
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 metadata];
-  v9 = [v8 mutableCopy];
+  attributesCopy = attributes;
+  contactCopy = contact;
+  metadata = [contactCopy metadata];
+  v9 = [metadata mutableCopy];
 
-  if (v6)
+  if (attributesCopy)
   {
-    v10 = [a1 _archivedInstance:v6];
+    v10 = [self _archivedInstance:attributesCopy];
     if (!v10)
     {
       goto LABEL_4;
@@ -251,8 +251,8 @@ LABEL_11:
     goto LABEL_3;
   }
 
-  v19 = [MEMORY[0x1E695DFB0] null];
-  v10 = [a1 _archivedInstance:v19];
+  null = [MEMORY[0x1E695DFB0] null];
+  v10 = [self _archivedInstance:null];
 
   if (v10)
   {
@@ -262,21 +262,21 @@ LABEL_3:
 
 LABEL_4:
   v11 = EKWeakLinkClass();
-  v12 = [v7 address];
-  v13 = [v7 displayName];
-  v14 = [v7 kind];
-  v15 = [v7 mostRecentDate];
-  v16 = [v7 weight];
+  address = [contactCopy address];
+  displayName = [contactCopy displayName];
+  kind = [contactCopy kind];
+  mostRecentDate = [contactCopy mostRecentDate];
+  weight = [contactCopy weight];
 
-  v17 = [v11 recentEventForAddress:v12 displayName:v13 kind:v14 date:v15 weight:v16 metadata:v9 options:0];
+  v17 = [v11 recentEventForAddress:address displayName:displayName kind:kind date:mostRecentDate weight:weight metadata:v9 options:0];
 
   return v17;
 }
 
-+ (id)_archivedInstance:(id)a3
++ (id)_archivedInstance:(id)instance
 {
   v9 = 0;
-  v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:&v9];
+  v4 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:instance requiringSecureCoding:1 error:&v9];
   v5 = v9;
   if (v4)
   {
@@ -285,21 +285,21 @@ LABEL_4:
 
   else
   {
-    v7 = [a1 logHandle];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    logHandle = [self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
-      [(EKRecents *)v5 _archivedInstance:v7];
+      [(EKRecents *)v5 _archivedInstance:logHandle];
     }
   }
 
   return v4;
 }
 
-+ (id)locationForRecent:(id)a3
++ (id)locationForRecent:(id)recent
 {
-  v3 = a3;
-  v4 = [v3 metadata];
-  v5 = [v4 objectForKey:@"locationType"];
+  recentCopy = recent;
+  metadata = [recentCopy metadata];
+  v5 = [metadata objectForKey:@"locationType"];
   v6 = v5;
   if (v5 && [v5 unsignedIntegerValue] == 1)
   {
@@ -310,44 +310,44 @@ LABEL_4:
   {
     v8 = EKWeakLinkSymbol();
     v9 = EKWeakLinkClass();
-    v10 = [v4 objectForKey:@"latitude"];
+    v10 = [metadata objectForKey:@"latitude"];
     [v10 doubleValue];
     v12 = v11;
-    v13 = [v4 objectForKey:@"longitude"];
-    v14 = [v13 doubleValue];
-    v16 = v8(v14, v12, v15);
+    v13 = [metadata objectForKey:@"longitude"];
+    doubleValue = [v13 doubleValue];
+    v16 = v8(doubleValue, v12, v15);
     v18 = v17;
 
     v19 = [v9 alloc];
-    v20 = [v4 objectForKey:@"hAccuracy"];
+    v20 = [metadata objectForKey:@"hAccuracy"];
     [v20 doubleValue];
     v22 = v21;
-    v23 = [v4 objectForKey:@"vAccuracy"];
+    v23 = [metadata objectForKey:@"vAccuracy"];
     [v23 doubleValue];
     v25 = v24;
-    v26 = [MEMORY[0x1E695DF00] date];
-    v27 = [v4 objectForKey:@"referenceFrame"];
-    v28 = [v19 initWithCoordinate:v26 altitude:objc_msgSend(v27 horizontalAccuracy:"integerValue") verticalAccuracy:v16 timestamp:v18 referenceFrame:{0.0, v22, v25}];
+    date = [MEMORY[0x1E695DF00] date];
+    v27 = [metadata objectForKey:@"referenceFrame"];
+    v28 = [v19 initWithCoordinate:date altitude:objc_msgSend(v27 horizontalAccuracy:"integerValue") verticalAccuracy:v16 timestamp:v18 referenceFrame:{0.0, v22, v25}];
 
-    v29 = [v4 objectForKey:@"radius"];
+    v29 = [metadata objectForKey:@"radius"];
     [v29 doubleValue];
     v31 = v30;
 
-    v32 = [v3 displayName];
-    v7 = [EKStructuredLocation locationWithTitle:v32];
+    displayName = [recentCopy displayName];
+    v7 = [EKStructuredLocation locationWithTitle:displayName];
 
     [v7 setGeoLocation:v28];
-    v33 = [v3 address];
-    [v7 setAddress:v33];
+    address = [recentCopy address];
+    [v7 setAddress:address];
 
     [v7 setRadius:v31];
-    v34 = [v4 objectForKey:@"mapKitHandle"];
+    v34 = [metadata objectForKey:@"mapKitHandle"];
     if (v34)
     {
       [v7 setMapKitHandle:v34];
     }
 
-    v35 = [v4 objectForKey:@"addressBookID"];
+    v35 = [metadata objectForKey:@"addressBookID"];
     if (v35)
     {
       [v7 setContactLabel:v35];
@@ -357,32 +357,32 @@ LABEL_4:
   return v7;
 }
 
-+ (id)recentForLocation:(id)a3 withAddressString:(id)a4 andTitle:(id)a5 mapItem:(id)a6
++ (id)recentForLocation:(id)location withAddressString:(id)string andTitle:(id)title mapItem:(id)item
 {
   v47[7] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v45 = a6;
-  v44 = a5;
-  v43 = a4;
-  v10 = [v9 geoLocation];
+  locationCopy = location;
+  itemCopy = item;
+  titleCopy = title;
+  stringCopy = string;
+  geoLocation = [locationCopy geoLocation];
   v46[0] = @"latitude";
   v11 = MEMORY[0x1E696AD98];
-  [v10 coordinate];
+  [geoLocation coordinate];
   v12 = [v11 numberWithDouble:?];
   v47[0] = v12;
   v46[1] = @"longitude";
   v13 = MEMORY[0x1E696AD98];
-  [v10 coordinate];
+  [geoLocation coordinate];
   v15 = [v13 numberWithDouble:v14];
   v47[1] = v15;
   v46[2] = @"hAccuracy";
   v16 = MEMORY[0x1E696AD98];
-  [v10 horizontalAccuracy];
+  [geoLocation horizontalAccuracy];
   v17 = [v16 numberWithDouble:?];
   v47[2] = v17;
   v46[3] = @"vAccuracy";
   v18 = MEMORY[0x1E696AD98];
-  [v10 verticalAccuracy];
+  [geoLocation verticalAccuracy];
   v19 = [v18 numberWithDouble:?];
   v47[3] = v19;
   v46[4] = @"locationType";
@@ -390,46 +390,46 @@ LABEL_4:
   v47[4] = v20;
   v46[5] = @"radius";
   v21 = MEMORY[0x1E696AD98];
-  [v9 radius];
+  [locationCopy radius];
   v22 = [v21 numberWithDouble:?];
   v47[5] = v22;
   v46[6] = @"referenceFrame";
-  v23 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v10, "referenceFrame")}];
+  v23 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(geoLocation, "referenceFrame")}];
   v47[6] = v23;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:v46 count:7];
 
-  v25 = [v9 mapKitHandle];
-  if (v25)
+  mapKitHandle = [locationCopy mapKitHandle];
+  if (mapKitHandle)
   {
   }
 
   else
   {
-    v26 = [v9 contactLabel];
+    contactLabel = [locationCopy contactLabel];
 
-    if (!v26)
+    if (!contactLabel)
     {
       v27 = v24;
-      v29 = v45;
+      v29 = itemCopy;
       goto LABEL_14;
     }
   }
 
   v27 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v24];
 
-  v28 = [v9 mapKitHandle];
+  mapKitHandle2 = [locationCopy mapKitHandle];
 
-  v29 = v45;
-  if (v28)
+  v29 = itemCopy;
+  if (mapKitHandle2)
   {
-    v30 = [v9 mapKitHandle];
-    [v27 setObject:v30 forKey:@"mapKitHandle"];
+    mapKitHandle3 = [locationCopy mapKitHandle];
+    [v27 setObject:mapKitHandle3 forKey:@"mapKitHandle"];
 
-    v31 = [v45 _styleAttributes];
+    _styleAttributes = [itemCopy _styleAttributes];
 
-    if (v31)
+    if (_styleAttributes)
     {
-      [v45 _styleAttributes];
+      [itemCopy _styleAttributes];
     }
 
     else
@@ -437,7 +437,7 @@ LABEL_4:
       [MEMORY[0x1E695DFB0] null];
     }
     v32 = ;
-    v33 = [a1 _archivedInstance:v32];
+    v33 = [self _archivedInstance:v32];
 
     if (v33)
     {
@@ -445,36 +445,36 @@ LABEL_4:
     }
   }
 
-  v34 = [v9 contactLabel];
+  contactLabel2 = [locationCopy contactLabel];
 
-  if (v34)
+  if (contactLabel2)
   {
-    v35 = [v9 contactLabel];
-    [v27 setObject:v35 forKey:@"addressBookID"];
+    contactLabel3 = [locationCopy contactLabel];
+    [v27 setObject:contactLabel3 forKey:@"addressBookID"];
   }
 
 LABEL_14:
   v36 = EKWeakLinkClass();
   v37 = EKWeakLinkStringConstant();
-  v38 = [MEMORY[0x1E695DF00] date];
-  v39 = [v36 recentEventForAddress:v43 displayName:v44 kind:v37 date:v38 weight:0 metadata:v27 options:1];
+  date = [MEMORY[0x1E695DF00] date];
+  v39 = [v36 recentEventForAddress:stringCopy displayName:titleCopy kind:v37 date:date weight:0 metadata:v27 options:1];
 
   v40 = *MEMORY[0x1E69E9840];
 
   return v39;
 }
 
-+ (id)directoryLocationForRecent:(id)a3 onSource:(id)a4
++ (id)directoryLocationForRecent:(id)recent onSource:(id)source
 {
-  v6 = a3;
-  if ([a1 recentDirectoryLocation:v6 matchesSource:a4])
+  recentCopy = recent;
+  if ([self recentDirectoryLocation:recentCopy matchesSource:source])
   {
     v7 = objc_alloc_init(EKDirectoryLocation);
-    v8 = [v6 displayName];
-    [(EKDirectoryRecord *)v7 setDisplayName:v8];
+    displayName = [recentCopy displayName];
+    [(EKDirectoryRecord *)v7 setDisplayName:displayName];
 
-    v9 = [v6 address];
-    [(EKDirectoryRecord *)v7 setPreferredAddress:v9];
+    address = [recentCopy address];
+    [(EKDirectoryRecord *)v7 setPreferredAddress:address];
   }
 
   else
@@ -485,25 +485,25 @@ LABEL_14:
   return v7;
 }
 
-+ (id)recentForDirectoryLocation:(id)a3 onSource:(id)a4
++ (id)recentForDirectoryLocation:(id)location onSource:(id)source
 {
   v21[2] = *MEMORY[0x1E69E9840];
   v20[0] = @"sourceExternalID";
-  v5 = a3;
-  v6 = [a4 externalID];
+  locationCopy = location;
+  externalID = [source externalID];
   v20[1] = @"locationType";
-  v21[0] = v6;
+  v21[0] = externalID;
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:1];
   v21[1] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
 
   v9 = EKWeakLinkClass();
   v10 = EKWeakLinkStringConstant();
-  v11 = [v5 preferredAddress];
-  v12 = v11;
-  if (v11)
+  preferredAddress = [locationCopy preferredAddress];
+  v12 = preferredAddress;
+  if (preferredAddress)
   {
-    v13 = v11;
+    v13 = preferredAddress;
   }
 
   else
@@ -511,11 +511,11 @@ LABEL_14:
     v13 = &stru_1F1B49D68;
   }
 
-  v14 = [v5 displayName];
+  displayName = [locationCopy displayName];
 
-  if (v14)
+  if (displayName)
   {
-    v15 = v14;
+    v15 = displayName;
   }
 
   else
@@ -523,18 +523,18 @@ LABEL_14:
     v15 = &stru_1F1B49D68;
   }
 
-  v16 = [MEMORY[0x1E695DF00] date];
-  v17 = [v9 recentEventForAddress:v13 displayName:v15 kind:v10 date:v16 weight:0 metadata:v8 options:{1, v20[0]}];
+  date = [MEMORY[0x1E695DF00] date];
+  v17 = [v9 recentEventForAddress:v13 displayName:v15 kind:v10 date:date weight:0 metadata:v8 options:{1, v20[0]}];
 
   v18 = *MEMORY[0x1E69E9840];
 
   return v17;
 }
 
-+ (BOOL)recentIsDirectoryLocation:(id)a3
++ (BOOL)recentIsDirectoryLocation:(id)location
 {
-  v3 = [a3 metadata];
-  v4 = [v3 objectForKey:@"locationType"];
+  metadata = [location metadata];
+  v4 = [metadata objectForKey:@"locationType"];
   v5 = v4;
   if (v4)
   {
@@ -549,12 +549,12 @@ LABEL_14:
   return v6;
 }
 
-+ (BOOL)recentDirectoryLocation:(id)a3 matchesSource:(id)a4
++ (BOOL)recentDirectoryLocation:(id)location matchesSource:(id)source
 {
-  v5 = a4;
-  v6 = [a3 metadata];
-  v7 = [v6 objectForKey:@"locationType"];
-  v8 = [v6 objectForKey:@"sourceExternalID"];
+  sourceCopy = source;
+  metadata = [location metadata];
+  v7 = [metadata objectForKey:@"locationType"];
+  v8 = [metadata objectForKey:@"sourceExternalID"];
   v11 = 0;
   if (v7)
   {
@@ -562,8 +562,8 @@ LABEL_14:
     {
       if (v8)
       {
-        v9 = [v5 externalID];
-        v10 = [v8 isEqualToString:v9];
+        externalID = [sourceCopy externalID];
+        v10 = [v8 isEqualToString:externalID];
 
         if (v10)
         {

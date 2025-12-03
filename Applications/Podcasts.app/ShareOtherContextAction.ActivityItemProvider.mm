@@ -1,14 +1,14 @@
 @interface ShareOtherContextAction.ActivityItemProvider
 - (_TtCC8Podcasts23ShareOtherContextActionP33_EEA9E3C8BAC5199A99988C7A83F9625320ActivityItemProvider)init;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4;
-- (id)activityViewControllerLinkMetadata:(id)a3;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 @end
 
 @implementation ShareOtherContextAction.ActivityItemProvider
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
 
   v3 = _bridgeAnythingNonVerbatimToObjectiveC<A>(_:)();
@@ -16,7 +16,7 @@
   return v3;
 }
 
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type
 {
 
   v4 = String._bridgeToObjectiveC()();
@@ -24,7 +24,7 @@
   return v4;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
   v5 = type metadata accessor for URL();
   v6 = __chkstk_darwin();
@@ -34,10 +34,10 @@
   return v9;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
   v4 = objc_allocWithZone(LPLinkMetadata);
-  v5 = self;
+  selfCopy = self;
   v6 = [v4 init];
   URL._bridgeToObjectiveC()(OBJC_IVAR____TtCC8Podcasts23ShareOtherContextActionP33_EEA9E3C8BAC5199A99988C7A83F9625320ActivityItemProvider_link);
   v8 = v7;

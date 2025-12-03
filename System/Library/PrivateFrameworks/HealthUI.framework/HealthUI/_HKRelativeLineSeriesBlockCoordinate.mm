@@ -2,22 +2,22 @@
 - (CGPoint)end;
 - (CGPoint)midpoint;
 - (CGPoint)start;
-- (_HKRelativeLineSeriesBlockCoordinate)initWithStart:(CGPoint)a3 end:(CGPoint)a4 userInfo:(id)a5;
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4;
+- (_HKRelativeLineSeriesBlockCoordinate)initWithStart:(CGPoint)start end:(CGPoint)end userInfo:(id)info;
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale;
 - (id)description;
 @end
 
 @implementation _HKRelativeLineSeriesBlockCoordinate
 
-- (_HKRelativeLineSeriesBlockCoordinate)initWithStart:(CGPoint)a3 end:(CGPoint)a4 userInfo:(id)a5
+- (_HKRelativeLineSeriesBlockCoordinate)initWithStart:(CGPoint)start end:(CGPoint)end userInfo:(id)info
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3.y;
-  v8 = a3.x;
+  y = end.y;
+  x = end.x;
+  v7 = start.y;
+  v8 = start.x;
   v10.receiver = self;
   v10.super_class = _HKRelativeLineSeriesBlockCoordinate;
-  result = [(_HKLineSeriesBlockCoordinate *)&v10 initWithCoordinate:a5 userInfo:?];
+  result = [(_HKLineSeriesBlockCoordinate *)&v10 initWithCoordinate:info userInfo:?];
   if (result)
   {
     result->_start.x = v8;
@@ -37,22 +37,22 @@
   return result;
 }
 
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale
 {
   x = self->_start.x;
   y = self->_start.y;
-  b = a3->b;
-  c = a3->c;
-  d = a3->d;
-  tx = a3->tx;
-  ty = a3->ty;
-  v12 = tx + y * c + a3->a * x;
+  b = transform->b;
+  c = transform->c;
+  d = transform->d;
+  tx = transform->tx;
+  ty = transform->ty;
+  v12 = tx + y * c + transform->a * x;
   v13 = ty + y * d + b * x;
   v14 = self->_end.x;
   v15 = self->_end.y;
-  v16 = tx + c * v15 + a3->a * v14;
+  v16 = tx + c * v15 + transform->a * v14;
   v17 = ty + d * v15 + b * v14;
-  if (a4)
+  if (scale)
   {
     v12 = HKUIFloorCGPointToScreenScale(v12, v13);
     v13 = v18;
@@ -61,8 +61,8 @@
   }
 
   v20 = objc_alloc(objc_opt_class());
-  v21 = [(_HKLineSeriesBlockCoordinate *)self userInfo];
-  v22 = [v20 initWithStart:v21 end:v12 userInfo:{v13, v16, v17}];
+  userInfo = [(_HKLineSeriesBlockCoordinate *)self userInfo];
+  v22 = [v20 initWithStart:userInfo end:v12 userInfo:{v13, v16, v17}];
 
   return v22;
 }

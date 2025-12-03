@@ -1,14 +1,14 @@
 @interface UIColor
-+ (id)DKNamedColor:(id)a3;
++ (id)DKNamedColor:(id)color;
 @end
 
 @implementation UIColor
 
-+ (id)DKNamedColor:(id)a3
++ (id)DKNamedColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = +[NSBundle hw_handwritingPluginBundle];
-  v5 = [UIColor colorNamed:v3 inBundle:v4 compatibleWithTraitCollection:0];
+  v5 = [UIColor colorNamed:colorCopy inBundle:v4 compatibleWithTraitCollection:0];
 
   return v5;
 }

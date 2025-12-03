@@ -1,34 +1,34 @@
 @interface MFTheme
-+ (Class)visualEffectClassAllowingBlur:(BOOL)a3;
-+ (id)visualEffectViewAllowingBlur:(BOOL)a3;
-+ (id)visualEffectViewAllowingBlur:(BOOL)a3 withBlurEffect:(id)a4;
++ (Class)visualEffectClassAllowingBlur:(BOOL)blur;
++ (id)visualEffectViewAllowingBlur:(BOOL)blur;
++ (id)visualEffectViewAllowingBlur:(BOOL)blur withBlurEffect:(id)effect;
 @end
 
 @implementation MFTheme
 
-+ (Class)visualEffectClassAllowingBlur:(BOOL)a3
++ (Class)visualEffectClassAllowingBlur:(BOOL)blur
 {
   v3 = objc_opt_class();
 
   return v3;
 }
 
-+ (id)visualEffectViewAllowingBlur:(BOOL)a3
++ (id)visualEffectViewAllowingBlur:(BOOL)blur
 {
-  v4 = objc_alloc([a1 visualEffectClassAllowingBlur:a3]);
-  v5 = [a1 defaultBlurEffect];
-  v6 = [v4 initWithEffect:v5];
+  v4 = objc_alloc([self visualEffectClassAllowingBlur:blur]);
+  defaultBlurEffect = [self defaultBlurEffect];
+  v6 = [v4 initWithEffect:defaultBlurEffect];
 
   [v6 _setGroupName:@"default-background-group"];
 
   return v6;
 }
 
-+ (id)visualEffectViewAllowingBlur:(BOOL)a3 withBlurEffect:(id)a4
++ (id)visualEffectViewAllowingBlur:(BOOL)blur withBlurEffect:(id)effect
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(objc_msgSend(a1 visualEffectClassAllowingBlur:{v4)), "initWithEffect:", v6}];
+  blurCopy = blur;
+  effectCopy = effect;
+  v7 = [objc_alloc(objc_msgSend(self visualEffectClassAllowingBlur:{blurCopy)), "initWithEffect:", effectCopy}];
 
   [v7 _setGroupName:@"default-background-group"];
 

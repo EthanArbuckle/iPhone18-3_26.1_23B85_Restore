@@ -1,18 +1,18 @@
 @interface PSSystemGraphMessageDeserializer
-+ (void)deserializeProducedStridesWillChangeMessage:(id)a3 completion:(id)a4;
-+ (void)deserializeProducibleStridesHaveChangedToMessage:(id)a3 completion:(id)a4;
++ (void)deserializeProducedStridesWillChangeMessage:(id)message completion:(id)completion;
++ (void)deserializeProducibleStridesHaveChangedToMessage:(id)message completion:(id)completion;
 @end
 
 @implementation PSSystemGraphMessageDeserializer
 
-+ (void)deserializeProducibleStridesHaveChangedToMessage:(id)a3 completion:(id)a4
++ (void)deserializeProducibleStridesHaveChangedToMessage:(id)message completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCAAC8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  messageCopy = message;
   [v5 setClass:objc_opt_class() forClassName:@"PSExecutionSessionResourceWithStridesImpl"];
-  v8 = xpc_dictionary_get_value(v7, "producible_strides");
+  v8 = xpc_dictionary_get_value(messageCopy, "producible_strides");
 
   if (v8 && MEMORY[0x25F8C9F10](v8) == MEMORY[0x277D86458])
   {
@@ -34,8 +34,8 @@
       v20 = __PSSGLogSharedInstance();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        v21 = [v19 localizedDescription];
-        v22 = [v21 cStringUsingEncoding:134217984];
+        localizedDescription = [v19 localizedDescription];
+        v22 = [localizedDescription cStringUsingEncoding:134217984];
         *buf = 136315138;
         v26 = v22;
         _os_log_impl(&dword_25EA3A000, v20, OS_LOG_TYPE_ERROR, "Error decoding producible strides: %s", buf, 0xCu);
@@ -57,18 +57,18 @@
     v10 = 0;
   }
 
-  v6[2](v6, v10);
+  completionCopy[2](completionCopy, v10);
   v23 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)deserializeProducedStridesWillChangeMessage:(id)a3 completion:(id)a4
++ (void)deserializeProducedStridesWillChangeMessage:(id)message completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  messageCopy = message;
   v6 = MEMORY[0x277CCAAC8];
-  v7 = a4;
+  completionCopy = completion;
   [v6 setClass:objc_opt_class() forClassName:@"PSExecutionSessionResourceWithStrideImpl"];
-  v8 = xpc_dictionary_get_value(v5, "produced_strides");
+  v8 = xpc_dictionary_get_value(messageCopy, "produced_strides");
   v9 = v8;
   if (v8 && MEMORY[0x25F8C9F10](v8) == MEMORY[0x277D86458])
   {
@@ -90,8 +90,8 @@
       v21 = __PSSGLogSharedInstance();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v22 = [v20 localizedDescription];
-        v23 = [v22 cStringUsingEncoding:134217984];
+        localizedDescription = [v20 localizedDescription];
+        v23 = [localizedDescription cStringUsingEncoding:134217984];
         *buf = 136315138;
         v31 = v23;
         _os_log_impl(&dword_25EA3A000, v21, OS_LOG_TYPE_ERROR, "Error decoding produced strides: %s", buf, 0xCu);
@@ -113,7 +113,7 @@
     v11 = 0;
   }
 
-  uint64 = xpc_dictionary_get_uint64(v5, "produced_strides_frameid");
+  uint64 = xpc_dictionary_get_uint64(messageCopy, "produced_strides_frameid");
   if (!uint64)
   {
     v25 = __PSSGLogSharedInstance();
@@ -124,9 +124,9 @@
     }
   }
 
-  v26 = xpc_dictionary_get_BOOL(v5, "produced_strides_is_physical_frameid");
-  v27 = xpc_dictionary_get_uint64(v5, "produced_strides_MSG_sync_id");
-  v7[2](v7, v11, uint64, v26, v27);
+  v26 = xpc_dictionary_get_BOOL(messageCopy, "produced_strides_is_physical_frameid");
+  v27 = xpc_dictionary_get_uint64(messageCopy, "produced_strides_MSG_sync_id");
+  completionCopy[2](completionCopy, v11, uint64, v26, v27);
 
   v28 = *MEMORY[0x277D85DE8];
 }

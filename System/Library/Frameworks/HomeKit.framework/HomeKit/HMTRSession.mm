@@ -1,7 +1,7 @@
 @interface HMTRSession
-- (HMTRSession)initWithSession:(id)a3;
+- (HMTRSession)initWithSession:(id)session;
 - (TRSession)session;
-- (void)sendRequestData:(id)a3 qualityOfService:(int64_t)a4 responseHandler:(id)a5;
+- (void)sendRequestData:(id)data qualityOfService:(int64_t)service responseHandler:(id)handler;
 @end
 
 @implementation HMTRSession
@@ -13,14 +13,14 @@
   return WeakRetained;
 }
 
-- (void)sendRequestData:(id)a3 qualityOfService:(int64_t)a4 responseHandler:(id)a5
+- (void)sendRequestData:(id)data qualityOfService:(int64_t)service responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [[HMDeviceSetupRequestMessage alloc] initWithPayload:v8];
-  [(HMDeviceSetupRequestMessage *)v10 setQualityOfService:a4];
+  dataCopy = data;
+  handlerCopy = handler;
+  v10 = [[HMDeviceSetupRequestMessage alloc] initWithPayload:dataCopy];
+  [(HMDeviceSetupRequestMessage *)v10 setQualityOfService:service];
   objc_initWeak(&location, self);
-  v11 = [(HMTRSession *)self session];
+  session = [(HMTRSession *)self session];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __64__HMTRSession_sendRequestData_qualityOfService_responseHandler___block_invoke;
@@ -28,9 +28,9 @@
   objc_copyWeak(&v17, &location);
   v12 = v10;
   v15 = v12;
-  v13 = v9;
+  v13 = handlerCopy;
   v16 = v13;
-  [v11 sendRequest:v12 withResponseHandler:v14];
+  [session sendRequest:v12 withResponseHandler:v14];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -87,16 +87,16 @@ void __64__HMTRSession_sendRequestData_qualityOfService_responseHandler___block_
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (HMTRSession)initWithSession:(id)a3
+- (HMTRSession)initWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v8.receiver = self;
   v8.super_class = HMTRSession;
   v5 = [(HMTRSession *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_session, v4);
+    objc_storeWeak(&v5->_session, sessionCopy);
   }
 
   return v6;

@@ -1,123 +1,123 @@
 @interface WFHandoffRunnerClient
-- (WFHandoffRunnerClient)initWithRunningContext:(id)a3 runRequest:(id)a4;
-- (WFHandoffRunnerClient)initWithWorkflowControllerState:(id)a3 runSource:(id)a4 remoteDialogPresenterEndpoint:(id)a5 error:(id *)a6;
-- (id)runWorkflowWithRequest:(id)a3 descriptor:(id)a4 completion:(id)a5;
-- (void)handleWorkflowDidStart:(id)a3;
-- (void)handleWorkflowRunResult:(id)a3 completion:(id)a4;
-- (void)notifyStartHandlerWithProgress:(id)a3;
-- (void)startWithHandler:(id)a3;
+- (WFHandoffRunnerClient)initWithRunningContext:(id)context runRequest:(id)request;
+- (WFHandoffRunnerClient)initWithWorkflowControllerState:(id)state runSource:(id)source remoteDialogPresenterEndpoint:(id)endpoint error:(id *)error;
+- (id)runWorkflowWithRequest:(id)request descriptor:(id)descriptor completion:(id)completion;
+- (void)handleWorkflowDidStart:(id)start;
+- (void)handleWorkflowRunResult:(id)result completion:(id)completion;
+- (void)notifyStartHandlerWithProgress:(id)progress;
+- (void)startWithHandler:(id)handler;
 @end
 
 @implementation WFHandoffRunnerClient
 
-- (void)notifyStartHandlerWithProgress:(id)a3
+- (void)notifyStartHandlerWithProgress:(id)progress
 {
-  v6 = a3;
-  v4 = [(WFHandoffRunnerClient *)self runningDidStartHandler];
+  progressCopy = progress;
+  runningDidStartHandler = [(WFHandoffRunnerClient *)self runningDidStartHandler];
 
-  if (v4)
+  if (runningDidStartHandler)
   {
-    v5 = [(WFHandoffRunnerClient *)self runningDidStartHandler];
-    (v5)[2](v5, v6);
+    runningDidStartHandler2 = [(WFHandoffRunnerClient *)self runningDidStartHandler];
+    (runningDidStartHandler2)[2](runningDidStartHandler2, progressCopy);
 
     [(WFHandoffRunnerClient *)self setRunningDidStartHandler:0];
   }
 }
 
-- (void)handleWorkflowRunResult:(id)a3 completion:(id)a4
+- (void)handleWorkflowRunResult:(id)result completion:(id)completion
 {
   v6 = MEMORY[0x1E696AE38];
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  resultCopy = result;
   v9 = [v6 progressWithTotalUnitCount:1];
   [v9 setCompletedUnitCount:1];
   [(WFHandoffRunnerClient *)self notifyStartHandlerWithProgress:v9];
   v10.receiver = self;
   v10.super_class = WFHandoffRunnerClient;
-  [(WFWorkflowRunnerClient *)&v10 handleWorkflowRunResult:v8 completion:v7];
+  [(WFWorkflowRunnerClient *)&v10 handleWorkflowRunResult:resultCopy completion:completionCopy];
 }
 
-- (void)handleWorkflowDidStart:(id)a3
+- (void)handleWorkflowDidStart:(id)start
 {
-  v4 = a3;
-  [(WFHandoffRunnerClient *)self notifyStartHandlerWithProgress:v4];
+  startCopy = start;
+  [(WFHandoffRunnerClient *)self notifyStartHandlerWithProgress:startCopy];
   v5.receiver = self;
   v5.super_class = WFHandoffRunnerClient;
-  [(WFWorkflowRunnerClient *)&v5 handleWorkflowDidStart:v4];
+  [(WFWorkflowRunnerClient *)&v5 handleWorkflowDidStart:startCopy];
 }
 
-- (void)startWithHandler:(id)a3
+- (void)startWithHandler:(id)handler
 {
-  [(WFHandoffRunnerClient *)self setRunningDidStartHandler:a3];
+  [(WFHandoffRunnerClient *)self setRunningDidStartHandler:handler];
 
   [(WFWorkflowRunnerClient *)self start];
 }
 
-- (id)runWorkflowWithRequest:(id)a3 descriptor:(id)a4 completion:(id)a5
+- (id)runWorkflowWithRequest:(id)request descriptor:(id)descriptor completion:(id)completion
 {
-  v6 = [(WFHandoffRunnerClient *)self runningContext:a3];
+  v6 = [(WFHandoffRunnerClient *)self runningContext:request];
   v7 = [(WFWorkflowRunnerClient *)self createWorkflowControllerWithContext:v6];
 
-  v8 = [(WFWorkflowRunnerClient *)self runRequest];
-  [v7 resumeRunningWithRequest:v8 error:0];
+  runRequest = [(WFWorkflowRunnerClient *)self runRequest];
+  [v7 resumeRunningWithRequest:runRequest error:0];
 
-  v9 = [(WFHandoffRunnerClient *)self runningContext];
+  runningContext = [(WFHandoffRunnerClient *)self runningContext];
 
-  return v9;
+  return runningContext;
 }
 
-- (WFHandoffRunnerClient)initWithWorkflowControllerState:(id)a3 runSource:(id)a4 remoteDialogPresenterEndpoint:(id)a5 error:(id *)a6
+- (WFHandoffRunnerClient)initWithWorkflowControllerState:(id)state runSource:(id)source remoteDialogPresenterEndpoint:(id)endpoint error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v43 = a5;
-  v42 = a4;
-  v8 = a3;
-  v9 = [v8 runningContext];
-  v46 = [v9 copyWithNewIdentity];
+  endpointCopy = endpoint;
+  sourceCopy = source;
+  stateCopy = state;
+  runningContext = [stateCopy runningContext];
+  copyWithNewIdentity = [runningContext copyWithNewIdentity];
 
   v36 = [WFWorkflowControllerState alloc];
-  v41 = [v8 workflow];
-  v40 = [v8 variables];
-  v39 = [v8 currentActionIndex];
-  v38 = [v8 currentInput];
-  v37 = [v8 currentProcessedParameters];
-  v35 = [v8 startDate];
-  v34 = [v8 currentRunSource];
-  v10 = [v8 numberOfDialogsPresented];
-  v11 = [v8 outputBehavior];
-  v33 = [v8 currentActionContentAttributionTracker];
-  v12 = [v8 contentItemCache];
-  v13 = [v8 flowTracker];
-  v14 = [v8 allowedOnceSmartPromptStates];
-  v15 = [v8 extensionResourceClasses];
-  LOBYTE(v32) = [v8 shouldDisablePrivacyPrompts];
-  v16 = [(WFWorkflowControllerState *)v36 initWithWorkflow:v41 variables:v40 currentActionIndex:v39 runningContext:v46 currentInput:v38 currentProcessedParameters:v37 startDate:v35 currentRunSource:v34 numberOfDialogsPresented:v10 outputBehavior:v11 contentAttributionTracker:v33 contentItemCache:v12 flowTracker:v13 allowedOnceSmartPromptStates:v14 extensionResourceClasses:v15 shouldDisablePrivacyPrompts:v32];
+  workflow = [stateCopy workflow];
+  variables = [stateCopy variables];
+  currentActionIndex = [stateCopy currentActionIndex];
+  currentInput = [stateCopy currentInput];
+  currentProcessedParameters = [stateCopy currentProcessedParameters];
+  startDate = [stateCopy startDate];
+  currentRunSource = [stateCopy currentRunSource];
+  numberOfDialogsPresented = [stateCopy numberOfDialogsPresented];
+  outputBehavior = [stateCopy outputBehavior];
+  currentActionContentAttributionTracker = [stateCopy currentActionContentAttributionTracker];
+  contentItemCache = [stateCopy contentItemCache];
+  flowTracker = [stateCopy flowTracker];
+  allowedOnceSmartPromptStates = [stateCopy allowedOnceSmartPromptStates];
+  extensionResourceClasses = [stateCopy extensionResourceClasses];
+  LOBYTE(v32) = [stateCopy shouldDisablePrivacyPrompts];
+  v16 = [(WFWorkflowControllerState *)v36 initWithWorkflow:workflow variables:variables currentActionIndex:currentActionIndex runningContext:copyWithNewIdentity currentInput:currentInput currentProcessedParameters:currentProcessedParameters startDate:startDate currentRunSource:currentRunSource numberOfDialogsPresented:numberOfDialogsPresented outputBehavior:outputBehavior contentAttributionTracker:currentActionContentAttributionTracker contentItemCache:contentItemCache flowTracker:flowTracker allowedOnceSmartPromptStates:allowedOnceSmartPromptStates extensionResourceClasses:extensionResourceClasses shouldDisablePrivacyPrompts:v32];
 
   v17 = v16;
   v18 = [objc_alloc(MEMORY[0x1E69E0E20]) initWithInput:0 presentationMode:1];
-  [v18 setRunSource:v42];
+  [v18 setRunSource:sourceCopy];
 
   [v18 setOutputBehavior:0];
-  [v18 setRemoteDialogPresenterEndpoint:v43];
+  [v18 setRemoteDialogPresenterEndpoint:endpointCopy];
 
-  v19 = [v8 extensionResourceClasses];
+  extensionResourceClasses2 = [stateCopy extensionResourceClasses];
 
-  [v18 setExtensionResourceClasses:v19];
-  v20 = [v17 runningContext];
-  v21 = v20;
-  if (v20)
+  [v18 setExtensionResourceClasses:extensionResourceClasses2];
+  runningContext2 = [v17 runningContext];
+  v21 = runningContext2;
+  if (runningContext2)
   {
-    v22 = WFWFWorkflowControllerStateDefaultSerializedURLFromContext(v20);
+    v22 = WFWFWorkflowControllerStateDefaultSerializedURLFromContext(runningContext2);
     if (v22)
     {
       v47 = 0;
       v23 = [v17 writeToURL:v22 error:&v47];
       v24 = v47;
-      v25 = self;
+      selfCopy3 = self;
       if (v23)
       {
-        v25 = [(WFHandoffRunnerClient *)self initWithRunningContext:v21 runRequest:v18];
-        v26 = v25;
+        selfCopy3 = [(WFHandoffRunnerClient *)self initWithRunningContext:v21 runRequest:v18];
+        v26 = selfCopy3;
       }
 
       else
@@ -134,11 +134,11 @@
           _os_log_impl(&dword_1CA256000, v28, OS_LOG_TYPE_FAULT, "%s Unable to save state to (%@): %@", buf, 0x20u);
         }
 
-        if (a6)
+        if (error)
         {
           v29 = v24;
           v26 = 0;
-          *a6 = v24;
+          *error = v24;
         }
 
         else
@@ -150,11 +150,11 @@
 
     else
     {
-      v25 = self;
-      if (a6)
+      selfCopy3 = self;
+      if (error)
       {
         [MEMORY[0x1E696ABC0] userCancelledError];
-        *a6 = v26 = 0;
+        *error = v26 = 0;
       }
 
       else
@@ -174,11 +174,11 @@
       _os_log_impl(&dword_1CA256000, v27, OS_LOG_TYPE_FAULT, "%s Unable to resume workflow execution when contextToResume is nil.", buf, 0xCu);
     }
 
-    v25 = self;
-    if (a6)
+    selfCopy3 = self;
+    if (error)
     {
       [MEMORY[0x1E696ABC0] userCancelledError];
-      *a6 = v26 = 0;
+      *error = v26 = 0;
     }
 
     else
@@ -191,18 +191,18 @@
   return v26;
 }
 
-- (WFHandoffRunnerClient)initWithRunningContext:(id)a3 runRequest:(id)a4
+- (WFHandoffRunnerClient)initWithRunningContext:(id)context runRequest:(id)request
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [[WFHandoffRunDescriptor alloc] initWithContext:v7];
+  contextCopy = context;
+  requestCopy = request;
+  v9 = [[WFHandoffRunDescriptor alloc] initWithContext:contextCopy];
   v13.receiver = self;
   v13.super_class = WFHandoffRunnerClient;
-  v10 = [(WFWorkflowRunnerClient *)&v13 initWithDescriptor:v9 runRequest:v8];
+  v10 = [(WFWorkflowRunnerClient *)&v13 initWithDescriptor:v9 runRequest:requestCopy];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_runningContext, a3);
+    objc_storeStrong(&v10->_runningContext, context);
     v11 = v10;
   }
 

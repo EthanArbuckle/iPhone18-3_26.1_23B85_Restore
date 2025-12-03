@@ -1,11 +1,11 @@
 @interface FSEventStreamMultiplexer
-- (BOOL)unregisterClient:(int)a3;
-- (FSEventStreamMultiplexer)initWithLogHandle:(id)a3;
+- (BOOL)unregisterClient:(int)client;
+- (FSEventStreamMultiplexer)initWithLogHandle:(id)handle;
 - (NSArray)pathsWatched;
 - (id)_copyResolvedPathToClientsMap;
 - (id)summary;
-- (int)registerClient:(id)a3 ofPaths:(id)a4 withCallback:(id)a5;
-- (void)_handleStream:(__FSEventStream *)a3 numEvents:(unint64_t)a4 eventPaths:(const char *)a5 eventFlags:(const unsigned int *)a6 eventIds:(const unint64_t *)a7;
+- (int)registerClient:(id)client ofPaths:(id)paths withCallback:(id)callback;
+- (void)_handleStream:(__FSEventStream *)stream numEvents:(unint64_t)events eventPaths:(const char *)paths eventFlags:(const unsigned int *)flags eventIds:(const unint64_t *)ids;
 - (void)_refreshStream;
 - (void)dealloc;
 @end
@@ -17,8 +17,8 @@
   v3 = objc_alloc_init(NSMutableDictionary);
   if (!v3)
   {
-    v21 = [(FSEventStreamMultiplexer *)self logHandle];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    logHandle = [(FSEventStreamMultiplexer *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_38E0();
     }
@@ -29,8 +29,8 @@
   v4 = FSEventStreamCopyPathsBeingWatchedWrapper([(FSEventStreamMultiplexer *)self eventStream]);
   if (!v4)
   {
-    v21 = [(FSEventStreamMultiplexer *)self logHandle];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    logHandle = [(FSEventStreamMultiplexer *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_38AC();
     }
@@ -45,13 +45,13 @@ LABEL_16:
 
   v5 = v4;
   v6 = [(__CFArray *)v4 count];
-  v7 = [(FSEventStreamMultiplexer *)self pathsWatched];
-  v8 = [v7 count];
+  pathsWatched = [(FSEventStreamMultiplexer *)self pathsWatched];
+  v8 = [pathsWatched count];
 
   if (v6 != v8)
   {
-    v22 = [(FSEventStreamMultiplexer *)self logHandle];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    logHandle2 = [(FSEventStreamMultiplexer *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
     {
       sub_3878();
     }
@@ -59,8 +59,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v9 = [(FSEventStreamMultiplexer *)self pathsWatched];
-  v10 = [v9 count];
+  pathsWatched2 = [(FSEventStreamMultiplexer *)self pathsWatched];
+  v10 = [pathsWatched2 count];
 
   if (v10)
   {
@@ -68,18 +68,18 @@ LABEL_16:
     do
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = [(FSEventStreamMultiplexer *)self pathsWatched];
-      v14 = [v13 objectAtIndexedSubscript:v11];
+      pathsWatched3 = [(FSEventStreamMultiplexer *)self pathsWatched];
+      v14 = [pathsWatched3 objectAtIndexedSubscript:v11];
 
       v15 = [(__CFArray *)v5 objectAtIndexedSubscript:v11];
-      v16 = [(FSEventStreamMultiplexer *)self pathToClientsMap];
-      v17 = [v16 objectForKeyedSubscript:v14];
+      pathToClientsMap = [(FSEventStreamMultiplexer *)self pathToClientsMap];
+      v17 = [pathToClientsMap objectForKeyedSubscript:v14];
       [v3 setObject:v17 forKeyedSubscript:v15];
 
       objc_autoreleasePoolPop(v12);
       ++v11;
-      v18 = [(FSEventStreamMultiplexer *)self pathsWatched];
-      v19 = [v18 count];
+      pathsWatched4 = [(FSEventStreamMultiplexer *)self pathsWatched];
+      v19 = [pathsWatched4 count];
     }
 
     while (v11 < v19);
@@ -93,15 +93,15 @@ LABEL_17:
 
 - (NSArray)pathsWatched
 {
-  v2 = [(FSEventStreamMultiplexer *)self pathToClientsMap];
-  v3 = [v2 allKeys];
+  pathToClientsMap = [(FSEventStreamMultiplexer *)self pathToClientsMap];
+  allKeys = [pathToClientsMap allKeys];
 
-  return v3;
+  return allKeys;
 }
 
-- (FSEventStreamMultiplexer)initWithLogHandle:(id)a3
+- (FSEventStreamMultiplexer)initWithLogHandle:(id)handle
 {
-  v5 = a3;
+  handleCopy = handle;
   v16.receiver = self;
   v16.super_class = FSEventStreamMultiplexer;
   v6 = [(FSEventStreamMultiplexer *)&v16 init];
@@ -124,86 +124,86 @@ LABEL_17:
 
     v7->_eventStreamCreateFlags = 0;
     v7->_eventStream = 0;
-    objc_storeStrong(&v7->_logHandle, a3);
+    objc_storeStrong(&v7->_logHandle, handle);
     v7->_streamState = @"not created";
   }
 
   return v7;
 }
 
-- (int)registerClient:(id)a3 ofPaths:(id)a4 withCallback:(id)a5
+- (int)registerClient:(id)client ofPaths:(id)paths withCallback:(id)callback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  clientCopy = client;
+  pathsCopy = paths;
+  callbackCopy = callback;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = -1;
-  v11 = [(FSEventStreamMultiplexer *)self queue];
+  queue = [(FSEventStreamMultiplexer *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_272C;
   block[3] = &unk_87F8;
   block[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
+  v17 = clientCopy;
+  v18 = pathsCopy;
+  v19 = callbackCopy;
   v20 = &v21;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
-  dispatch_sync(v11, block);
+  v12 = pathsCopy;
+  v13 = callbackCopy;
+  v14 = clientCopy;
+  dispatch_sync(queue, block);
 
-  LODWORD(v10) = *(v22 + 6);
+  LODWORD(callbackCopy) = *(v22 + 6);
   _Block_object_dispose(&v21, 8);
-  return v10;
+  return callbackCopy;
 }
 
-- (BOOL)unregisterClient:(int)a3
+- (BOOL)unregisterClient:(int)client
 {
-  v4 = self;
+  selfCopy = self;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(FSEventStreamMultiplexer *)self queue];
+  queue = [(FSEventStreamMultiplexer *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_2B18;
   block[3] = &unk_8820;
-  v8 = a3;
-  block[4] = v4;
+  clientCopy = client;
+  block[4] = selfCopy;
   block[5] = &v9;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
-  LOBYTE(v4) = *(v10 + 24);
+  LOBYTE(selfCopy) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
-  return v4;
+  return selfCopy;
 }
 
 - (id)summary
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(FSEventStreamMultiplexer *)self streamState];
-  [v3 setObject:v4 forKeyedSubscript:@"state"];
+  streamState = [(FSEventStreamMultiplexer *)self streamState];
+  [v3 setObject:streamState forKeyedSubscript:@"state"];
 
   v5 = [NSNumber numberWithUnsignedInt:[(FSEventStreamMultiplexer *)self eventStreamCreateFlags]];
   [v3 setObject:v5 forKeyedSubscript:@"flags"];
 
-  v6 = [(FSEventStreamMultiplexer *)self streamState];
+  streamState2 = [(FSEventStreamMultiplexer *)self streamState];
 
-  if (v6 != @"not created")
+  if (streamState2 != @"not created")
   {
     v7 = objc_alloc_init(NSMutableArray);
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = [(FSEventStreamMultiplexer *)self clients];
-    v9 = [v8 allValues];
+    clients = [(FSEventStreamMultiplexer *)self clients];
+    allValues = [clients allValues];
 
-    v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v10 = [allValues countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v10)
     {
       v11 = v10;
@@ -214,14 +214,14 @@ LABEL_17:
         {
           if (*v21 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allValues);
           }
 
-          v14 = [*(*(&v20 + 1) + 8 * i) name];
-          [v7 addObject:v14];
+          name = [*(*(&v20 + 1) + 8 * i) name];
+          [v7 addObject:name];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v11 = [allValues countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v11);
@@ -230,8 +230,8 @@ LABEL_17:
     v15 = [v7 sortedArrayUsingSelector:"compare:"];
     [v3 setObject:v15 forKeyedSubscript:@"clients"];
 
-    v16 = [(FSEventStreamMultiplexer *)self pathsWatched];
-    v17 = [v16 sortedArrayUsingSelector:"compare:"];
+    pathsWatched = [(FSEventStreamMultiplexer *)self pathsWatched];
+    v17 = [pathsWatched sortedArrayUsingSelector:"compare:"];
     [v3 setObject:v17 forKeyedSubscript:@"paths"];
   }
 
@@ -240,38 +240,38 @@ LABEL_17:
   return v18;
 }
 
-- (void)_handleStream:(__FSEventStream *)a3 numEvents:(unint64_t)a4 eventPaths:(const char *)a5 eventFlags:(const unsigned int *)a6 eventIds:(const unint64_t *)a7
+- (void)_handleStream:(__FSEventStream *)stream numEvents:(unint64_t)events eventPaths:(const char *)paths eventFlags:(const unsigned int *)flags eventIds:(const unint64_t *)ids
 {
-  v8 = a5;
-  v9 = a4;
-  v11 = [(FSEventStreamMultiplexer *)self queue:a3];
+  pathsCopy = paths;
+  eventsCopy = events;
+  v11 = [(FSEventStreamMultiplexer *)self queue:stream];
   dispatch_assert_queue_V2(v11);
 
-  if ((*a6 & 0x10) == 0)
+  if ((*flags & 0x10) == 0)
   {
     v12 = objc_alloc_init(NSMutableSet);
-    v13 = [(FSEventStreamMultiplexer *)self _copyResolvedPathToClientsMap];
-    if (v9)
+    _copyResolvedPathToClientsMap = [(FSEventStreamMultiplexer *)self _copyResolvedPathToClientsMap];
+    if (eventsCopy)
     {
       v15 = 0;
       *&v14 = 138543362;
       v40 = v14;
-      v41 = v9;
-      v42 = v8;
+      v41 = eventsCopy;
+      v42 = pathsCopy;
       do
       {
         v16 = objc_autoreleasePoolPush();
         v17 = v16;
-        if (v8 && v8[v15])
+        if (pathsCopy && pathsCopy[v15])
         {
           v44 = v16;
-          v18 = [[NSString alloc] initWithCString:v8[v15] encoding:4];
-          v19 = [(FSEventStreamMultiplexer *)self logHandle];
-          if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+          v18 = [[NSString alloc] initWithCString:pathsCopy[v15] encoding:4];
+          logHandle = [(FSEventStreamMultiplexer *)self logHandle];
+          if (os_log_type_enabled(logHandle, OS_LOG_TYPE_INFO))
           {
             *buf = v40;
             v58 = v18;
-            _os_log_impl(&dword_0, v19, OS_LOG_TYPE_INFO, "Received FSEvent about %{public}@", buf, 0xCu);
+            _os_log_impl(&dword_0, logHandle, OS_LOG_TYPE_INFO, "Received FSEvent about %{public}@", buf, 0xCu);
           }
 
           v51 = 0u;
@@ -279,8 +279,8 @@ LABEL_17:
           v49 = 0u;
           v50 = 0u;
           v43 = v18;
-          v20 = [v18 pathComponents];
-          v21 = [v20 countByEnumeratingWithState:&v49 objects:v56 count:16];
+          pathComponents = [v18 pathComponents];
+          v21 = [pathComponents countByEnumeratingWithState:&v49 objects:v56 count:16];
           if (v21)
           {
             v22 = v21;
@@ -294,16 +294,16 @@ LABEL_17:
               {
                 if (*v50 != v23)
                 {
-                  objc_enumerationMutation(v20);
+                  objc_enumerationMutation(pathComponents);
                 }
 
                 v24 = [(__CFString *)v26 stringByAppendingPathComponent:*(*(&v49 + 1) + 8 * v25), v40];
 
-                v27 = [v13 objectForKeyedSubscript:v24];
+                v27 = [_copyResolvedPathToClientsMap objectForKeyedSubscript:v24];
 
                 if (v27)
                 {
-                  v28 = [v13 objectForKeyedSubscript:v24];
+                  v28 = [_copyResolvedPathToClientsMap objectForKeyedSubscript:v24];
                   [v12 unionSet:v28];
                 }
 
@@ -312,7 +312,7 @@ LABEL_17:
               }
 
               while (v22 != v25);
-              v22 = [v20 countByEnumeratingWithState:&v49 objects:v56 count:16];
+              v22 = [pathComponents countByEnumeratingWithState:&v49 objects:v56 count:16];
             }
 
             while (v22);
@@ -323,18 +323,18 @@ LABEL_17:
             v24 = &stru_89C0;
           }
 
-          v9 = v41;
-          v8 = v42;
-          v29 = v43;
+          eventsCopy = v41;
+          pathsCopy = v42;
+          logHandle2 = v43;
           v17 = v44;
         }
 
         else
         {
-          v29 = [(FSEventStreamMultiplexer *)self logHandle];
-          if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+          logHandle2 = [(FSEventStreamMultiplexer *)self logHandle];
+          if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
           {
-            sub_3914(&v53, v54, v29);
+            sub_3914(&v53, v54, logHandle2);
           }
         }
 
@@ -342,7 +342,7 @@ LABEL_17:
         ++v15;
       }
 
-      while (v15 != v9);
+      while (v15 != eventsCopy);
     }
 
     v47 = 0u;
@@ -365,21 +365,21 @@ LABEL_17:
           }
 
           v35 = *(*(&v45 + 1) + 8 * i);
-          v36 = [v35 callback];
+          callback = [v35 callback];
 
-          if (v36)
+          if (callback)
           {
-            v37 = [(FSEventStreamMultiplexer *)self logHandle];
-            if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
+            logHandle3 = [(FSEventStreamMultiplexer *)self logHandle];
+            if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_INFO))
             {
-              v38 = [v35 name];
+              name = [v35 name];
               *buf = 138543362;
-              v58 = v38;
-              _os_log_impl(&dword_0, v37, OS_LOG_TYPE_INFO, "Notifying client '%{public}@'", buf, 0xCu);
+              v58 = name;
+              _os_log_impl(&dword_0, logHandle3, OS_LOG_TYPE_INFO, "Notifying client '%{public}@'", buf, 0xCu);
             }
 
-            v39 = [v35 callback];
-            v39[2]();
+            callback2 = [v35 callback];
+            callback2[2]();
           }
         }
 
@@ -394,8 +394,8 @@ LABEL_17:
 - (void)_refreshStream
 {
   CurrentEventIdWrapper = FSEventsGetCurrentEventIdWrapper();
-  v4 = [(FSEventStreamMultiplexer *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(FSEventStreamMultiplexer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v13.version = 0;
   memset(&v13.retain, 0, 24);
@@ -416,15 +416,15 @@ LABEL_17:
 
   if (v7)
   {
-    v8 = [(FSEventStreamMultiplexer *)self pathsWatched];
-    self->_eventStream = FSEventStreamCreateWrapper(kCFAllocatorDefault, sub_D38, &v13, v8, CurrentEventIdWrapper, 0.1, [(FSEventStreamMultiplexer *)self eventStreamCreateFlags]);
+    pathsWatched = [(FSEventStreamMultiplexer *)self pathsWatched];
+    self->_eventStream = FSEventStreamCreateWrapper(kCFAllocatorDefault, sub_D38, &v13, pathsWatched, CurrentEventIdWrapper, 0.1, [(FSEventStreamMultiplexer *)self eventStreamCreateFlags]);
 
     if (self->_eventStream)
     {
       [(FSEventStreamMultiplexer *)self setStreamState:@"created"];
       v9 = self->_eventStream;
-      v10 = [(FSEventStreamMultiplexer *)self queue];
-      FSEventStreamSetDispatchQueueWrapper(v9, v10);
+      queue2 = [(FSEventStreamMultiplexer *)self queue];
+      FSEventStreamSetDispatchQueueWrapper(v9, queue2);
 
       if (FSEventStreamStartWrapper(self->_eventStream))
       {
@@ -434,8 +434,8 @@ LABEL_17:
       else
       {
         [(FSEventStreamMultiplexer *)self setStreamState:@"FAILED TO START"];
-        v12 = [(FSEventStreamMultiplexer *)self logHandle];
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
+        logHandle = [(FSEventStreamMultiplexer *)self logHandle];
+        if (os_log_type_enabled(logHandle, OS_LOG_TYPE_FAULT))
         {
           sub_3954(self);
         }
@@ -448,8 +448,8 @@ LABEL_17:
     else
     {
       [(FSEventStreamMultiplexer *)self setStreamState:@"FAILED TO CREATE"];
-      v11 = [(FSEventStreamMultiplexer *)self logHandle];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+      logHandle2 = [(FSEventStreamMultiplexer *)self logHandle];
+      if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_FAULT))
       {
         sub_39D0(self);
       }

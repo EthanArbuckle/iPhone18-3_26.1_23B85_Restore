@@ -9,21 +9,21 @@
 
 - (uint64_t)iterations
 {
-  v1 = [a1 objectForKey:@"iterations"];
+  v1 = [self objectForKey:@"iterations"];
 
   return [v1 intValue];
 }
 
 - (uint64_t)offset
 {
-  v1 = [a1 objectForKey:@"offset"];
+  v1 = [self objectForKey:@"offset"];
 
   return [v1 floatValue];
 }
 
 - (NSString)setupSelector
 {
-  result = [a1 objectForKey:@"setupSelector"];
+  result = [self objectForKey:@"setupSelector"];
   if (result)
   {
 
@@ -35,7 +35,7 @@
 
 - (NSString)testSelector
 {
-  result = [a1 objectForKey:@"testSelector"];
+  result = [self objectForKey:@"testSelector"];
   if (result)
   {
 

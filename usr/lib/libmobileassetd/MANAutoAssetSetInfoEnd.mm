@@ -1,53 +1,53 @@
 @interface MANAutoAssetSetInfoEnd
-- (MANAutoAssetSetInfoEnd)initWithCoder:(id)a3;
-- (MANAutoAssetSetInfoEnd)initWithLockReason:(id)a3 endingLockCount:(int64_t)a4;
+- (MANAutoAssetSetInfoEnd)initWithCoder:(id)coder;
+- (MANAutoAssetSetInfoEnd)initWithLockReason:(id)reason endingLockCount:(int64_t)count;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MANAutoAssetSetInfoEnd
 
-- (MANAutoAssetSetInfoEnd)initWithLockReason:(id)a3 endingLockCount:(int64_t)a4
+- (MANAutoAssetSetInfoEnd)initWithLockReason:(id)reason endingLockCount:(int64_t)count
 {
-  v7 = a3;
+  reasonCopy = reason;
   v11.receiver = self;
   v11.super_class = MANAutoAssetSetInfoEnd;
   v8 = [(MANAutoAssetSetInfoEnd *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_endLockReason, a3);
-    v9->_endLockCount = a4;
+    objc_storeStrong(&v8->_endLockReason, reason);
+    v9->_endLockCount = count;
   }
 
   return v9;
 }
 
-- (MANAutoAssetSetInfoEnd)initWithCoder:(id)a3
+- (MANAutoAssetSetInfoEnd)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MANAutoAssetSetInfoEnd;
   v5 = [(MANAutoAssetSetInfoEnd *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endLockReason"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endLockReason"];
     endLockReason = v5->_endLockReason;
     v5->_endLockReason = v6;
 
-    v5->_endLockCount = [v4 decodeIntegerForKey:@"endLockCount"];
+    v5->_endLockCount = [coderCopy decodeIntegerForKey:@"endLockCount"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(MANAutoAssetSetInfoEnd *)self endLockReason];
-  [v5 encodeObject:v4 forKey:@"endLockReason"];
+  coderCopy = coder;
+  endLockReason = [(MANAutoAssetSetInfoEnd *)self endLockReason];
+  [coderCopy encodeObject:endLockReason forKey:@"endLockReason"];
 
-  [v5 encodeInteger:-[MANAutoAssetSetInfoEnd endLockCount](self forKey:{"endLockCount"), @"endLockCount"}];
+  [coderCopy encodeInteger:-[MANAutoAssetSetInfoEnd endLockCount](self forKey:{"endLockCount"), @"endLockCount"}];
 }
 
 - (id)summary
@@ -59,8 +59,8 @@
     v3 = @"ALL";
   }
 
-  v4 = [(MANAutoAssetSetInfoEnd *)self endLockReason];
-  v5 = [NSString stringWithFormat:@"endLockReason:%@|endLockCount:%@", v4, v3];
+  endLockReason = [(MANAutoAssetSetInfoEnd *)self endLockReason];
+  v5 = [NSString stringWithFormat:@"endLockReason:%@|endLockCount:%@", endLockReason, v3];
 
   return v5;
 }

@@ -1,42 +1,42 @@
 @interface PSLivenessMissedExecutionNotification
-- (id)initFrequencyNotificationWithExpectedExecutionCount:(int64_t)a3 withActualExecutionCount:(int64_t)a4 withLastFrameId:(unint64_t)a5 withStartMCT:(unint64_t)a6 withEndMCT:(unint64_t)a7;
+- (id)initFrequencyNotificationWithExpectedExecutionCount:(int64_t)count withActualExecutionCount:(int64_t)executionCount withLastFrameId:(unint64_t)id withStartMCT:(unint64_t)t withEndMCT:(unint64_t)cT;
 @end
 
 @implementation PSLivenessMissedExecutionNotification
 
-- (id)initFrequencyNotificationWithExpectedExecutionCount:(int64_t)a3 withActualExecutionCount:(int64_t)a4 withLastFrameId:(unint64_t)a5 withStartMCT:(unint64_t)a6 withEndMCT:(unint64_t)a7
+- (id)initFrequencyNotificationWithExpectedExecutionCount:(int64_t)count withActualExecutionCount:(int64_t)executionCount withLastFrameId:(unint64_t)id withStartMCT:(unint64_t)t withEndMCT:(unint64_t)cT
 {
-  if (a7 >= a6)
+  if (cT >= t)
   {
     v19.receiver = self;
     v19.super_class = PSLivenessMissedExecutionNotification;
     self = [(PSLivenessMissedExecutionNotification *)&v19 init];
-    v7 = self;
+    selfCopy2 = self;
     if (self)
     {
-      self->_expectedExecutionCount = a3;
-      self->_actualExecutionCount = a4;
-      self->_lastExecutedFrameId = a5;
-      self->_startMCT = a6;
-      self->_endMCT = a7;
+      self->_expectedExecutionCount = count;
+      self->_actualExecutionCount = executionCount;
+      self->_lastExecutedFrameId = id;
+      self->_startMCT = t;
+      self->_endMCT = cT;
       v13 = objc_alloc(MEMORY[0x277CCA970]);
-      v14 = ps_util_mct_to_nsdate(a6);
-      v15 = ps_util_mct_to_nsdate(a7);
+      v14 = ps_util_mct_to_nsdate(t);
+      v15 = ps_util_mct_to_nsdate(cT);
       v16 = [v13 initWithStartDate:v14 endDate:v15];
-      dateInterval = v7->_dateInterval;
-      v7->_dateInterval = v16;
+      dateInterval = selfCopy2->_dateInterval;
+      selfCopy2->_dateInterval = v16;
 
-      self = v7;
-      v7 = self;
+      self = selfCopy2;
+      selfCopy2 = self;
     }
   }
 
   else
   {
-    v7 = 0;
+    selfCopy2 = 0;
   }
 
-  return v7;
+  return selfCopy2;
 }
 
 @end

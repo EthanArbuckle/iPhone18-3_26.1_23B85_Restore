@@ -1,9 +1,9 @@
 @interface CNAvatarCardController
-+ (BOOL)avatarCardEnabledForTraitCollection:(id)a3;
-+ (id)descriptorForRequiredKeysIncludingAvatarViewDescriptors:(BOOL)a3;
-+ (id)previewHeaderViewControllerForContacts:(id)a3;
++ (BOOL)avatarCardEnabledForTraitCollection:(id)collection;
++ (id)descriptorForRequiredKeysIncludingAvatarViewDescriptors:(BOOL)descriptors;
++ (id)previewHeaderViewControllerForContacts:(id)contacts;
 - (BOOL)hasActions;
-- (BOOL)readyForContactsMatching:(id)a3;
+- (BOOL)readyForContactsMatching:(id)matching;
 - (CGRect)sourceRect;
 - (CNAvatarCardControllerDelegate)delegate;
 - (CNAvatarView)avatarView;
@@ -12,51 +12,51 @@
 - (NSString)message;
 - (NSString)name;
 - (UIViewController)presentingViewController;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
 - (id)contextMenuInteractionTargetedPreview;
 - (id)headerViewController;
-- (id)presentingViewControllerForActionsController:(id)a3;
-- (id)refetchContactsMatching:(id)a3 storeProvider:(id)a4;
+- (id)presentingViewControllerForActionsController:(id)controller;
+- (id)refetchContactsMatching:(id)matching storeProvider:(id)provider;
 - (void)cleanupAfterDisplay;
 - (void)configurePreviewInteraction;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)dismissAnimated:(BOOL)a3 completionHandler:(id)a4;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)dismissAnimated:(BOOL)animated completionHandler:(id)handler;
 - (void)prepareForDisplay;
-- (void)prepareWithContacts:(id)a3 store:(id)a4;
-- (void)prepareWithContacts:(id)a3 storeProvider:(id)a4;
+- (void)prepareWithContacts:(id)contacts store:(id)store;
+- (void)prepareWithContacts:(id)contacts storeProvider:(id)provider;
 - (void)retrieveActions;
-- (void)setContact:(id)a3;
-- (void)setContacts:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setName:(id)a3;
-- (void)setSourceView:(id)a3;
-- (void)setupActionsControllerForContacts:(id)a3;
-- (void)setupActionsForContacts:(id)a3;
+- (void)setContact:(id)contact;
+- (void)setContacts:(id)contacts;
+- (void)setMessage:(id)message;
+- (void)setName:(id)name;
+- (void)setSourceView:(id)view;
+- (void)setupActionsControllerForContacts:(id)contacts;
+- (void)setupActionsForContacts:(id)contacts;
 - (void)showContact;
-- (void)updateWithMenuItems:(id)a3;
+- (void)updateWithMenuItems:(id)items;
 @end
 
 @implementation CNAvatarCardController
 
 - (void)configurePreviewInteraction
 {
-  v3 = [(CNAvatarCardController *)self contextMenuInteraction];
+  contextMenuInteraction = [(CNAvatarCardController *)self contextMenuInteraction];
 
-  if (!v3)
+  if (!contextMenuInteraction)
   {
     v4 = [objc_alloc(MEMORY[0x1E69DC8E0]) initWithDelegate:self];
     [(CNAvatarCardController *)self setContextMenuInteraction:v4];
   }
 
   [(CNAvatarCardController *)self setPresentationResult:1];
-  v5 = [(CNAvatarCardController *)self sourceView];
-  v6 = [(CNAvatarCardController *)self contextMenuInteraction];
-  [v5 addInteraction:v6];
+  sourceView = [(CNAvatarCardController *)self sourceView];
+  contextMenuInteraction2 = [(CNAvatarCardController *)self contextMenuInteraction];
+  [sourceView addInteraction:contextMenuInteraction2];
 
-  v7 = [(CNAvatarCardController *)self actionMenuHelper];
+  actionMenuHelper = [(CNAvatarCardController *)self actionMenuHelper];
 
-  if (!v7)
+  if (!actionMenuHelper)
   {
     v8 = objc_alloc_init(CNActionMenuHelper);
     [(CNAvatarCardController *)self setActionMenuHelper:v8];
@@ -90,15 +90,15 @@
   return WeakRetained;
 }
 
-- (id)presentingViewControllerForActionsController:(id)a3
+- (id)presentingViewControllerForActionsController:(id)controller
 {
-  v4 = [(CNAvatarCardController *)self delegate];
+  delegate = [(CNAvatarCardController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CNAvatarCardController *)self delegate];
-    v7 = [v6 presentingViewControllerForAvatarCardController:self];
+    delegate2 = [(CNAvatarCardController *)self delegate];
+    v7 = [delegate2 presentingViewControllerForAvatarCardController:self];
   }
 
   else
@@ -109,88 +109,88 @@
   return v7;
 }
 
-- (void)setupActionsControllerForContacts:(id)a3
+- (void)setupActionsControllerForContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v5 = [CNContactOrbActionsController alloc];
-  v6 = [(CNAvatarCardController *)self actionCategories];
-  v7 = [(CNContactOrbActionsController *)v5 initWithContacts:v4 actionCategories:v6 bypassActionValidation:[(CNAvatarCardController *)self bypassActionValidation]];
+  actionCategories = [(CNAvatarCardController *)self actionCategories];
+  v7 = [(CNContactOrbActionsController *)v5 initWithContacts:contactsCopy actionCategories:actionCategories bypassActionValidation:[(CNAvatarCardController *)self bypassActionValidation]];
 
   [(CNAvatarCardController *)self setOrbActionsController:v7];
-  v8 = [(CNAvatarCardController *)self orbActionsController];
+  orbActionsController = [(CNAvatarCardController *)self orbActionsController];
 
-  if (v8)
+  if (orbActionsController)
   {
-    v9 = [(CNAvatarCardController *)self orbActionsController];
-    [v9 setDelegate:self];
+    orbActionsController2 = [(CNAvatarCardController *)self orbActionsController];
+    [orbActionsController2 setDelegate:self];
   }
 }
 
 - (void)retrieveActions
 {
   v3 = *MEMORY[0x1E6996530];
-  v7 = [(CNAvatarCardController *)self contacts];
+  contacts = [(CNAvatarCardController *)self contacts];
   if (((*(v3 + 16))(v3) & 1) == 0)
   {
-    v4 = [(CNAvatarCardController *)self orbActionsController];
+    orbActionsController = [(CNAvatarCardController *)self orbActionsController];
 
-    if (!v4)
+    if (!orbActionsController)
     {
       return;
     }
 
-    v5 = [(CNAvatarCardController *)self orbActionsController];
-    [v5 reloadMenuItems];
+    orbActionsController2 = [(CNAvatarCardController *)self orbActionsController];
+    [orbActionsController2 reloadMenuItems];
 
-    v7 = [(CNAvatarCardController *)self orbActionsController];
-    v6 = [v7 currentAvailableMenuItems];
-    [(CNAvatarCardController *)self updateWithMenuItems:v6];
+    contacts = [(CNAvatarCardController *)self orbActionsController];
+    currentAvailableMenuItems = [contacts currentAvailableMenuItems];
+    [(CNAvatarCardController *)self updateWithMenuItems:currentAvailableMenuItems];
   }
 }
 
-- (void)setupActionsForContacts:(id)a3
+- (void)setupActionsForContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   if (((*(*MEMORY[0x1E6996530] + 16))() & 1) == 0)
   {
-    [(CNAvatarCardController *)self setupActionsControllerForContacts:v4];
+    [(CNAvatarCardController *)self setupActionsControllerForContacts:contactsCopy];
   }
 }
 
-- (void)updateWithMenuItems:(id)a3
+- (void)updateWithMenuItems:(id)items
 {
-  v4 = a3;
-  v6 = [(CNAvatarCardController *)self actionMenuHelper];
-  v5 = [(CNAvatarCardController *)self contextMenuInteraction];
-  [v6 updateWithMenuItems:v4 contextMenuInteraction:v5];
+  itemsCopy = items;
+  actionMenuHelper = [(CNAvatarCardController *)self actionMenuHelper];
+  contextMenuInteraction = [(CNAvatarCardController *)self contextMenuInteraction];
+  [actionMenuHelper updateWithMenuItems:itemsCopy contextMenuInteraction:contextMenuInteraction];
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v5 = [(CNAvatarCardController *)self actionMenuHelper:a3];
+  v5 = [(CNAvatarCardController *)self actionMenuHelper:interaction];
   [v5 willDismissMenu];
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v6 = a3;
-  v7 = [(CNAvatarCardController *)self actionMenuHelper];
-  [v7 willDisplayMenuWithContextMenuInteraction:v6];
+  interactionCopy = interaction;
+  actionMenuHelper = [(CNAvatarCardController *)self actionMenuHelper];
+  [actionMenuHelper willDisplayMenuWithContextMenuInteraction:interactionCopy];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
+  y = location.y;
+  x = location.x;
   [(CNAvatarCardController *)self setPresentationResult:1];
-  v7 = [(CNAvatarCardController *)self delegate];
+  delegate = [(CNAvatarCardController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
-  v9 = [(CNAvatarCardController *)self delegate];
-  v10 = v9;
+  delegate2 = [(CNAvatarCardController *)self delegate];
+  v10 = delegate2;
   if (v8)
   {
-    -[CNAvatarCardController setPresentationResult:](self, "setPresentationResult:", [v9 avatarCardController:self presentationResultForLocation:{x, y}]);
+    -[CNAvatarCardController setPresentationResult:](self, "setPresentationResult:", [delegate2 avatarCardController:self presentationResultForLocation:{x, y}]);
 
     if (([(CNAvatarCardController *)self presentationResult]- 1) < 2)
     {
@@ -204,8 +204,8 @@
 
     if (v11)
     {
-      v12 = [(CNAvatarCardController *)self delegate];
-      v13 = [v12 avatarCardController:self shouldPresentForLocation:{x, y}];
+      delegate3 = [(CNAvatarCardController *)self delegate];
+      v13 = [delegate3 avatarCardController:self shouldPresentForLocation:{x, y}];
 
       if (!v13)
       {
@@ -219,17 +219,17 @@ LABEL_10:
   }
 
   [(CNAvatarCardController *)self retrieveActions];
-  v14 = [(CNAvatarCardController *)self delegate];
+  delegate4 = [(CNAvatarCardController *)self delegate];
   v15 = objc_opt_respondsToSelector();
 
   if (v15)
   {
-    v16 = [(CNAvatarCardController *)self delegate];
-    [v16 avatarCardControllerWillBeginPreviewInteraction:self];
+    delegate5 = [(CNAvatarCardController *)self delegate];
+    [delegate5 avatarCardControllerWillBeginPreviewInteraction:self];
   }
 
-  v17 = [(CNAvatarCardController *)self actionMenuHelper];
-  v18 = [v17 configurationActionProviderWithActionBlock:&__block_literal_global_49_56536];
+  actionMenuHelper = [(CNAvatarCardController *)self actionMenuHelper];
+  v18 = [actionMenuHelper configurationActionProviderWithActionBlock:&__block_literal_global_49_56536];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -245,42 +245,42 @@ LABEL_11:
 
 - (id)contextMenuInteractionTargetedPreview
 {
-  v3 = [(CNAvatarCardController *)self highlightView];
-  if (v3)
+  highlightView = [(CNAvatarCardController *)self highlightView];
+  if (highlightView)
   {
-    v4 = v3;
+    sourceView = highlightView;
   }
 
   else
   {
-    v4 = [(CNAvatarCardController *)self sourceView];
-    if (!v4)
+    sourceView = [(CNAvatarCardController *)self sourceView];
+    if (!sourceView)
     {
 LABEL_7:
-      _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNAvatarCardController.m", 445, 3, @"Tried to initialize UITargetedPreview with a view that is not in a window: %@", v5, v6, v7, v8, v4);
+      _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNAvatarCardController.m", 445, 3, @"Tried to initialize UITargetedPreview with a view that is not in a window: %@", v5, v6, v7, v8, sourceView);
       v11 = 0;
       goto LABEL_8;
     }
   }
 
-  v9 = [v4 window];
+  window = [sourceView window];
 
-  if (!v9)
+  if (!window)
   {
     goto LABEL_7;
   }
 
-  v10 = [(CNAvatarCardController *)self actionMenuHelper];
-  v11 = [v10 targetedPreviewForSourceView:v4];
+  actionMenuHelper = [(CNAvatarCardController *)self actionMenuHelper];
+  v11 = [actionMenuHelper targetedPreviewForSourceView:sourceView];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v12 = MEMORY[0x1E69DC728];
-    [v4 bounds];
+    [sourceView bounds];
     v13 = [v12 bezierPathWithOvalInRect:?];
-    v14 = [v11 parameters];
-    [v14 setVisiblePath:v13];
+    parameters = [v11 parameters];
+    [parameters setVisiblePath:v13];
   }
 
 LABEL_8:
@@ -288,26 +288,26 @@ LABEL_8:
   return v11;
 }
 
-- (void)dismissAnimated:(BOOL)a3 completionHandler:(id)a4
+- (void)dismissAnimated:(BOOL)animated completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(CNAvatarCardController *)self delegate];
+  animatedCopy = animated;
+  handlerCopy = handler;
+  delegate = [(CNAvatarCardController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(CNAvatarCardController *)self delegate];
-    [v9 avatarCardControllerWillDismiss:self];
+    delegate2 = [(CNAvatarCardController *)self delegate];
+    [delegate2 avatarCardControllerWillDismiss:self];
   }
 
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __60__CNAvatarCardController_dismissAnimated_completionHandler___block_invoke;
   v17 = &unk_1E74E6DD0;
-  v18 = self;
-  v19 = v6;
-  v10 = v6;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v10 = handlerCopy;
   v11 = _Block_copy(&v14);
   v12 = [(CNAvatarCardController *)self contextMenuInteraction:v14];
 
@@ -318,8 +318,8 @@ LABEL_8:
 
   else
   {
-    v13 = [(CNAvatarCardController *)self presentingViewController];
-    [v13 dismissViewControllerAnimated:v4 completion:v11];
+    presentingViewController = [(CNAvatarCardController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:animatedCopy completion:v11];
   }
 }
 
@@ -343,36 +343,36 @@ void __60__CNAvatarCardController_dismissAnimated_completionHandler___block_invo
 
 - (UIViewController)presentingViewController
 {
-  v3 = [(CNAvatarCardController *)self delegate];
-  v4 = [v3 presentingViewControllerForAvatarCardController:self];
+  delegate = [(CNAvatarCardController *)self delegate];
+  v4 = [delegate presentingViewControllerForAvatarCardController:self];
 
   return v4;
 }
 
 - (void)showContact
 {
-  v3 = [(CNAvatarCardController *)self contacts];
-  v4 = [v3 firstObject];
+  contacts = [(CNAvatarCardController *)self contacts];
+  firstObject = [contacts firstObject];
 
-  if (v4)
+  if (firstObject)
   {
-    v5 = [(CNAvatarCardController *)self delegate];
+    delegate = [(CNAvatarCardController *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
-    if ((v6 & 1) != 0 && (-[CNAvatarCardController delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 avatarCardController:self shouldShowContact:v4], v7, (v8 & 1) == 0))
+    if ((v6 & 1) != 0 && (-[CNAvatarCardController delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 avatarCardController:self shouldShowContact:firstObject], v7, (v8 & 1) == 0))
     {
 
-      v4 = 0;
+      firstObject = 0;
     }
 
-    else if ([v4 hasBeenPersisted])
+    else if ([firstObject hasBeenPersisted])
     {
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __37__CNAvatarCardController_showContact__block_invoke;
       v9[3] = &unk_1E74E6A88;
-      v4 = v4;
-      v10 = v4;
+      firstObject = firstObject;
+      v10 = firstObject;
       [(CNAvatarCardController *)self dismissAnimated:1 completionHandler:v9];
     }
   }
@@ -411,57 +411,57 @@ void __37__CNAvatarCardController_showContact__block_invoke(uint64_t a1)
 
 - (NSString)message
 {
-  v2 = [(CNAvatarCardController *)self headerView];
-  v3 = [v2 message];
+  headerView = [(CNAvatarCardController *)self headerView];
+  message = [headerView message];
 
-  return v3;
+  return message;
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(CNAvatarCardController *)self headerView];
-  [v5 setMessage:v4];
+  messageCopy = message;
+  headerView = [(CNAvatarCardController *)self headerView];
+  [headerView setMessage:messageCopy];
 
-  v6 = [(CNAvatarCardController *)self headerView];
-  [v6 reloadData];
+  headerView2 = [(CNAvatarCardController *)self headerView];
+  [headerView2 reloadData];
 }
 
 - (NSString)name
 {
-  v2 = [(CNAvatarCardController *)self headerView];
-  v3 = [v2 alternateName];
+  headerView = [(CNAvatarCardController *)self headerView];
+  alternateName = [headerView alternateName];
 
-  return v3;
+  return alternateName;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  v5 = [(CNAvatarCardController *)self headerView];
-  [v5 setAlternateName:v4];
+  nameCopy = name;
+  headerView = [(CNAvatarCardController *)self headerView];
+  [headerView setAlternateName:nameCopy];
 
-  v6 = [(CNAvatarCardController *)self headerView];
-  [v6 reloadData];
+  headerView2 = [(CNAvatarCardController *)self headerView];
+  [headerView2 reloadData];
 }
 
-- (void)setSourceView:(id)a3
+- (void)setSourceView:(id)view
 {
-  v5 = a3;
-  if (self->_sourceView != v5)
+  viewCopy = view;
+  if (self->_sourceView != viewCopy)
   {
-    v11 = v5;
-    v6 = [(CNAvatarCardController *)self sourceView];
-    v7 = [(CNAvatarCardController *)self contextMenuInteraction];
-    [v6 removeInteraction:v7];
+    v11 = viewCopy;
+    sourceView = [(CNAvatarCardController *)self sourceView];
+    contextMenuInteraction = [(CNAvatarCardController *)self contextMenuInteraction];
+    [sourceView removeInteraction:contextMenuInteraction];
 
-    objc_storeStrong(&self->_sourceView, a3);
-    v8 = [(UIView *)v11 traitCollection];
-    v9 = [CNAvatarCardController avatarCardEnabledForTraitCollection:v8];
+    objc_storeStrong(&self->_sourceView, view);
+    traitCollection = [(UIView *)v11 traitCollection];
+    v9 = [CNAvatarCardController avatarCardEnabledForTraitCollection:traitCollection];
 
-    v10 = [(CNAvatarCardController *)self sourceView];
+    sourceView2 = [(CNAvatarCardController *)self sourceView];
 
-    if (v10 && v9)
+    if (sourceView2 && v9)
     {
       [(CNAvatarCardController *)self configurePreviewInteraction];
     }
@@ -471,7 +471,7 @@ void __37__CNAvatarCardController_showContact__block_invoke(uint64_t a1)
       [(CNAvatarCardController *)self setContextMenuInteraction:0];
     }
 
-    v5 = v11;
+    viewCopy = v11;
   }
 }
 
@@ -485,75 +485,75 @@ void __37__CNAvatarCardController_showContact__block_invoke(uint64_t a1)
 - (void)prepareForDisplay
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CNAvatarCardController *)self overrideImageData];
+  overrideImageData = [(CNAvatarCardController *)self overrideImageData];
 
-  if (v3)
+  if (overrideImageData)
   {
-    v4 = [MEMORY[0x1E695CF18] contactWithDisplayName:0 emailOrPhoneNumber:0];
-    v5 = [(CNAvatarCardController *)self overrideImageData];
-    [v4 setImageData:v5];
+    headerView3 = [MEMORY[0x1E695CF18] contactWithDisplayName:0 emailOrPhoneNumber:0];
+    overrideImageData2 = [(CNAvatarCardController *)self overrideImageData];
+    [headerView3 setImageData:overrideImageData2];
 
-    v6 = [(CNAvatarCardController *)self headerView];
-    v12[0] = v4;
+    headerView = [(CNAvatarCardController *)self headerView];
+    v12[0] = headerView3;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-    [v6 updateWithContacts:v7];
+    [headerView updateWithContacts:v7];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = [(CNAvatarCardController *)self contacts];
-  v9 = [(CNAvatarCardController *)self headerView];
-  v10 = [v9 contacts];
+  contacts = [(CNAvatarCardController *)self contacts];
+  headerView2 = [(CNAvatarCardController *)self headerView];
+  contacts2 = [headerView2 contacts];
 
-  if (v8 != v10)
+  if (contacts != contacts2)
   {
-    v4 = [(CNAvatarCardController *)self headerView];
-    v6 = [(CNAvatarCardController *)self contacts];
-    [v4 updateWithContacts:v6];
+    headerView3 = [(CNAvatarCardController *)self headerView];
+    headerView = [(CNAvatarCardController *)self contacts];
+    [headerView3 updateWithContacts:headerView];
     goto LABEL_5;
   }
 
 LABEL_6:
-  v11 = [(CNAvatarCardController *)self contacts];
-  [(CNAvatarCardController *)self setupActionsForContacts:v11];
+  contacts3 = [(CNAvatarCardController *)self contacts];
+  [(CNAvatarCardController *)self setupActionsForContacts:contacts3];
 }
 
 - (BOOL)hasActions
 {
-  v3 = [(CNAvatarCardController *)self contacts];
-  v4 = [v3 firstObject];
+  contacts = [(CNAvatarCardController *)self contacts];
+  firstObject = [contacts firstObject];
 
-  if (!v4)
+  if (!firstObject)
   {
     return 0;
   }
 
-  v5 = [(CNAvatarCardController *)self contacts];
-  v6 = [v5 firstObject];
-  v7 = [CNQuickActionsManager hasActionsForContact:v6];
+  contacts2 = [(CNAvatarCardController *)self contacts];
+  firstObject2 = [contacts2 firstObject];
+  v7 = [CNQuickActionsManager hasActionsForContact:firstObject2];
 
   return v7;
 }
 
-- (id)refetchContactsMatching:(id)a3 storeProvider:(id)a4
+- (id)refetchContactsMatching:(id)matching storeProvider:(id)provider
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  matchingCopy = matching;
+  providerCopy = provider;
+  if ([matchingCopy count])
   {
-    v7 = v6[2](v6);
-    v8 = [objc_opt_class() descriptorForRequiredKeys];
-    v39[0] = v8;
+    v7 = providerCopy[2](providerCopy);
+    descriptorForRequiredKeys = [objc_opt_class() descriptorForRequiredKeys];
+    v39[0] = descriptorForRequiredKeys;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:1];
 
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v11 = v5;
+    v11 = matchingCopy;
     v12 = [v11 countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v12)
     {
@@ -571,8 +571,8 @@ LABEL_6:
           v16 = *(*(&v34 + 1) + 8 * i);
           if (([v16 areKeysAvailable:v9] & 1) == 0)
           {
-            v17 = [v16 identifier];
-            [v10 addObject:v17];
+            identifier = [v16 identifier];
+            [array addObject:identifier];
           }
         }
 
@@ -582,7 +582,7 @@ LABEL_6:
       while (v13);
     }
 
-    v18 = [MEMORY[0x1E695CD58] predicateForContactsWithIdentifiers:v10];
+    v18 = [MEMORY[0x1E695CD58] predicateForContactsWithIdentifiers:array];
     v33 = 0;
     v19 = [v7 unifiedContactsMatchingPredicate:v18 keysToFetch:v9 error:&v33];
     v20 = v33;
@@ -606,7 +606,7 @@ LABEL_6:
 
   else
   {
-    v28 = v5;
+    v28 = matchingCopy;
   }
 
   return v28;
@@ -655,13 +655,13 @@ uint64_t __64__CNAvatarCardController_refetchContactsMatching_storeProvider___bl
   return v5;
 }
 
-- (BOOL)readyForContactsMatching:(id)a3
+- (BOOL)readyForContactsMatching:(id)matching
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 count];
-  v6 = [(CNAvatarCardController *)self contacts];
-  v7 = [v6 count];
+  matchingCopy = matching;
+  v5 = [matchingCopy count];
+  contacts = [(CNAvatarCardController *)self contacts];
+  v7 = [contacts count];
 
   if (v5 == v7)
   {
@@ -670,8 +670,8 @@ uint64_t __64__CNAvatarCardController_refetchContactsMatching_storeProvider___bl
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = [(CNAvatarCardController *)self contacts];
-    v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    contacts2 = [(CNAvatarCardController *)self contacts];
+    v10 = [contacts2 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v10)
     {
       v11 = v10;
@@ -682,14 +682,14 @@ uint64_t __64__CNAvatarCardController_refetchContactsMatching_storeProvider___bl
         {
           if (*v21 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(contacts2);
           }
 
-          v14 = [*(*(&v20 + 1) + 8 * i) allLinkedIdentifiers];
-          [v8 addObjectsFromArray:v14];
+          allLinkedIdentifiers = [*(*(&v20 + 1) + 8 * i) allLinkedIdentifiers];
+          [v8 addObjectsFromArray:allLinkedIdentifiers];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v11 = [contacts2 countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v11);
@@ -701,7 +701,7 @@ uint64_t __64__CNAvatarCardController_refetchContactsMatching_storeProvider___bl
     v18[3] = &unk_1E74E7880;
     v19 = v8;
     v15 = v8;
-    v16 = [v4 _cn_all:v18];
+    v16 = [matchingCopy _cn_all:v18];
   }
 
   else
@@ -721,14 +721,14 @@ uint64_t __51__CNAvatarCardController_readyForContactsMatching___block_invoke(ui
   return v4;
 }
 
-- (void)prepareWithContacts:(id)a3 storeProvider:(id)a4
+- (void)prepareWithContacts:(id)contacts storeProvider:(id)provider
 {
-  v9 = a3;
-  v6 = a4;
+  contactsCopy = contacts;
+  providerCopy = provider;
   [(CNAvatarCardController *)self prepareWithOverrideImageData:0];
-  if (![(CNAvatarCardController *)self readyForContactsMatching:v9])
+  if (![(CNAvatarCardController *)self readyForContactsMatching:contactsCopy])
   {
-    v7 = [(CNAvatarCardController *)self refetchContactsMatching:v9 storeProvider:v6];
+    v7 = [(CNAvatarCardController *)self refetchContactsMatching:contactsCopy storeProvider:providerCopy];
     contacts = self->_contacts;
     self->_contacts = v7;
 
@@ -736,21 +736,21 @@ uint64_t __51__CNAvatarCardController_readyForContactsMatching___block_invoke(ui
   }
 }
 
-- (void)prepareWithContacts:(id)a3 store:(id)a4
+- (void)prepareWithContacts:(id)contacts store:(id)store
 {
-  v6 = a4;
+  storeCopy = store;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__CNAvatarCardController_prepareWithContacts_store___block_invoke;
   v8[3] = &unk_1E74E6080;
-  v9 = v6;
-  v7 = v6;
-  [(CNAvatarCardController *)self prepareWithContacts:a3 storeProvider:v8];
+  v9 = storeCopy;
+  v7 = storeCopy;
+  [(CNAvatarCardController *)self prepareWithContacts:contacts storeProvider:v8];
 }
 
-- (void)setContacts:(id)a3
+- (void)setContacts:(id)contacts
 {
-  [(CNAvatarCardController *)self prepareWithContacts:a3 storeProvider:&__block_literal_global_56580];
+  [(CNAvatarCardController *)self prepareWithContacts:contacts storeProvider:&__block_literal_global_56580];
 
   [(CNAvatarCardController *)self prepareForDisplay];
 }
@@ -765,21 +765,21 @@ id __38__CNAvatarCardController_setContacts___block_invoke()
 
 - (CNContact)contact
 {
-  v2 = [(CNAvatarCardController *)self contacts];
-  v3 = [v2 firstObject];
+  contacts = [(CNAvatarCardController *)self contacts];
+  firstObject = [contacts firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  contactCopy = contact;
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v7 count:1];
+  contactCopy2 = contact;
+  v6 = [v4 arrayWithObjects:&contactCopy count:1];
 
-  [(CNAvatarCardController *)self setContacts:v6, v7, v8];
+  [(CNAvatarCardController *)self setContacts:v6, contactCopy, v8];
 }
 
 - (CNContactOrbHeaderView)headerView
@@ -788,13 +788,13 @@ id __38__CNAvatarCardController_setContacts___block_invoke()
   if (!headerView)
   {
     v4 = [CNContactOrbHeaderViewController alloc];
-    v5 = [(CNAvatarCardController *)self contacts];
-    v6 = [(CNContactOrbHeaderViewController *)v4 initWithContacts:v5];
+    contacts = [(CNAvatarCardController *)self contacts];
+    v6 = [(CNContactOrbHeaderViewController *)v4 initWithContacts:contacts];
     [(CNAvatarCardController *)self setOrbHeaderViewController:v6];
 
-    v7 = [(CNAvatarCardController *)self orbHeaderViewController];
-    v8 = [v7 headerView];
-    [(CNAvatarCardController *)self setHeaderView:v8];
+    orbHeaderViewController = [(CNAvatarCardController *)self orbHeaderViewController];
+    headerView = [orbHeaderViewController headerView];
+    [(CNAvatarCardController *)self setHeaderView:headerView];
 
     headerView = self->_headerView;
   }
@@ -808,13 +808,13 @@ id __38__CNAvatarCardController_setContacts___block_invoke()
   if (!orbHeaderViewController)
   {
     v4 = [CNContactOrbHeaderViewController alloc];
-    v5 = [(CNAvatarCardController *)self contacts];
-    v6 = [(CNContactOrbHeaderViewController *)v4 initWithContacts:v5];
+    contacts = [(CNAvatarCardController *)self contacts];
+    v6 = [(CNContactOrbHeaderViewController *)v4 initWithContacts:contacts];
     [(CNAvatarCardController *)self setOrbHeaderViewController:v6];
 
-    v7 = [(CNAvatarCardController *)self orbHeaderViewController];
-    v8 = [v7 headerView];
-    [(CNAvatarCardController *)self setHeaderView:v8];
+    orbHeaderViewController = [(CNAvatarCardController *)self orbHeaderViewController];
+    headerView = [orbHeaderViewController headerView];
+    [(CNAvatarCardController *)self setHeaderView:headerView];
 
     orbHeaderViewController = self->_orbHeaderViewController;
   }
@@ -822,21 +822,21 @@ id __38__CNAvatarCardController_setContacts___block_invoke()
   return orbHeaderViewController;
 }
 
-+ (id)previewHeaderViewControllerForContacts:(id)a3
++ (id)previewHeaderViewControllerForContacts:(id)contacts
 {
-  v3 = a3;
-  v4 = [[CNContactOrbHeaderViewController alloc] initWithContacts:v3];
+  contactsCopy = contacts;
+  v4 = [[CNContactOrbHeaderViewController alloc] initWithContacts:contactsCopy];
 
   return v4;
 }
 
-+ (id)descriptorForRequiredKeysIncludingAvatarViewDescriptors:(BOOL)a3
++ (id)descriptorForRequiredKeysIncludingAvatarViewDescriptors:(BOOL)descriptors
 {
-  v3 = a3;
+  descriptorsCopy = descriptors;
   v12[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695CD58];
-  v5 = [MEMORY[0x1E695CD80] sharedFullNameFormatterWithFallBacks];
-  v6 = [CNContactOrbHeaderView descriptorForRequiredKeysForContactFormatter:v5 includingAvatarViewDescriptors:v3];
+  mEMORY[0x1E695CD80] = [MEMORY[0x1E695CD80] sharedFullNameFormatterWithFallBacks];
+  v6 = [CNContactOrbHeaderView descriptorForRequiredKeysForContactFormatter:mEMORY[0x1E695CD80] includingAvatarViewDescriptors:descriptorsCopy];
   v12[0] = v6;
   v7 = +[CNContactOrbActionsController descriptorForRequiredKeys];
   v12[1] = v7;
@@ -847,10 +847,10 @@ id __38__CNAvatarCardController_setContacts___block_invoke()
   return v10;
 }
 
-+ (BOOL)avatarCardEnabledForTraitCollection:(id)a3
++ (BOOL)avatarCardEnabledForTraitCollection:(id)collection
 {
-  v3 = a3;
-  v4 = [v3 userInterfaceIdiom] != 3 && objc_msgSend(v3, "userInterfaceIdiom") != 5;
+  collectionCopy = collection;
+  v4 = [collectionCopy userInterfaceIdiom] != 3 && objc_msgSend(collectionCopy, "userInterfaceIdiom") != 5;
 
   return v4;
 }

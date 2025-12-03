@@ -1,30 +1,30 @@
 @interface NTKMediaComplicationController
-- (NTKMediaComplicationController)initWithLabel:(id)a3;
+- (NTKMediaComplicationController)initWithLabel:(id)label;
 - (NTKMediaComplicationControllerDelegate)delegate;
 - (id)_refreshPlayerNotificationName;
-- (id)launchURLWithScheme:(id)a3;
+- (id)launchURLWithScheme:(id)scheme;
 - (void)_refreshPlayerRequest;
-- (void)_resolveIntentionalRoutingPlayerPathWithQueue:(id)a3 completion:(id)a4;
-- (void)_resolveLegacyPlayerPathWithQueue:(id)a3 completion:(id)a4;
-- (void)_resolvePlayerPathWithQueue:(id)a3 completion:(id)a4;
-- (void)controller:(id)a3 defersResponseReplacement:(id)a4;
+- (void)_resolveIntentionalRoutingPlayerPathWithQueue:(id)queue completion:(id)completion;
+- (void)_resolveLegacyPlayerPathWithQueue:(id)queue completion:(id)completion;
+- (void)_resolvePlayerPathWithQueue:(id)queue completion:(id)completion;
+- (void)controller:(id)controller defersResponseReplacement:(id)replacement;
 - (void)pause;
 - (void)resume;
 @end
 
 @implementation NTKMediaComplicationController
 
-- (NTKMediaComplicationController)initWithLabel:(id)a3
+- (NTKMediaComplicationController)initWithLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v9.receiver = self;
   v9.super_class = NTKMediaComplicationController;
   v5 = [(NTKMediaComplicationController *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"NTKMediaController (%@):", v4];
+    labelCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"NTKMediaController (%@):", labelCopy];
     loggingPrefix = v5->_loggingPrefix;
-    v5->_loggingPrefix = v6;
+    v5->_loggingPrefix = labelCopy;
   }
 
   return v5;
@@ -44,54 +44,54 @@
   }
 
   [(MPRequestResponseController *)requestResponseController beginAutomaticResponseLoading];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  v7 = [(NTKMediaComplicationController *)self _refreshPlayerNotificationName];
-  [v6 addObserver:self selector:sel__handlePlayerDidChange_ name:v7 object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  _refreshPlayerNotificationName = [(NTKMediaComplicationController *)self _refreshPlayerNotificationName];
+  [defaultCenter addObserver:self selector:sel__handlePlayerDidChange_ name:_refreshPlayerNotificationName object:0];
 
   [(NTKMediaComplicationController *)self _refreshPlayerRequest];
 }
 
 - (void)pause
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = [(NTKMediaComplicationController *)self _refreshPlayerNotificationName];
-  [v3 removeObserver:self name:v4 object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  _refreshPlayerNotificationName = [(NTKMediaComplicationController *)self _refreshPlayerNotificationName];
+  [defaultCenter removeObserver:self name:_refreshPlayerNotificationName object:0];
 
   requestResponseController = self->_requestResponseController;
 
   [(MPRequestResponseController *)requestResponseController endAutomaticResponseLoading];
 }
 
-- (id)launchURLWithScheme:(id)a3
+- (id)launchURLWithScheme:(id)scheme
 {
   v36[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  schemeCopy = scheme;
   v5 = objc_alloc_init(MEMORY[0x277CCACE0]);
-  [v5 setScheme:v4];
-  v6 = [(MPRequestResponseController *)self->_requestResponseController response];
-  v7 = [v6 tracklist];
-  v8 = [v7 playingItem];
+  [v5 setScheme:schemeCopy];
+  response = [(MPRequestResponseController *)self->_requestResponseController response];
+  tracklist = [response tracklist];
+  playingItem = [tracklist playingItem];
 
-  if (v8)
+  if (playingItem)
   {
-    v31 = v4;
+    v31 = schemeCopy;
     [v5 setHost:@"now-playing"];
-    v9 = [(MPRequestResponseController *)self->_requestResponseController response];
-    v10 = [v9 request];
-    v11 = [v10 playerPath];
+    response2 = [(MPRequestResponseController *)self->_requestResponseController response];
+    request = [response2 request];
+    playerPath = [request playerPath];
 
     v12 = MEMORY[0x277CCAD18];
-    v13 = [v11 route];
-    v14 = [v13 designatedGroupLeaderRouteUID];
-    v15 = [v12 queryItemWithName:@"routeUID" value:v14];
+    route = [playerPath route];
+    designatedGroupLeaderRouteUID = [route designatedGroupLeaderRouteUID];
+    v15 = [v12 queryItemWithName:@"routeUID" value:designatedGroupLeaderRouteUID];
     v36[0] = v15;
     v16 = MEMORY[0x277CCAD18];
-    v17 = [v11 bundleID];
-    v18 = [v16 queryItemWithName:@"bundleID" value:v17];
+    bundleID = [playerPath bundleID];
+    v18 = [v16 queryItemWithName:@"bundleID" value:bundleID];
     v36[1] = v18;
     v19 = MEMORY[0x277CCAD18];
-    v20 = [v11 playerID];
-    v21 = [v19 queryItemWithName:@"playerID" value:v20];
+    playerID = [playerPath playerID];
+    v21 = [v19 queryItemWithName:@"playerID" value:playerID];
     v36[2] = v21;
     [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:3];
     v22 = v30 = self;
@@ -102,28 +102,28 @@
     {
       loggingPrefix = v30->_loggingPrefix;
       v25 = [v5 URL];
-      v26 = [v25 absoluteString];
+      absoluteString = [v25 absoluteString];
       *buf = 138412546;
       v33 = loggingPrefix;
       v34 = 2112;
-      v35 = v26;
+      v35 = absoluteString;
       _os_log_impl(&dword_22D9C5000, v23, OS_LOG_TYPE_DEFAULT, "%@ launchURL (currently playing item) url=%@", buf, 0x16u);
     }
 
-    v4 = v31;
+    schemeCopy = v31;
   }
 
   else
   {
-    v11 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    playerPath = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
+    if (os_log_type_enabled(playerPath, OS_LOG_TYPE_DEFAULT))
     {
       v27 = self->_loggingPrefix;
       *buf = 138412546;
       v33 = v27;
       v34 = 2112;
-      v35 = v4;
-      _os_log_impl(&dword_22D9C5000, v11, OS_LOG_TYPE_DEFAULT, "%@ launchURL (no currently playing items) scheme=%@", buf, 0x16u);
+      v35 = schemeCopy;
+      _os_log_impl(&dword_22D9C5000, playerPath, OS_LOG_TYPE_DEFAULT, "%@ launchURL (no currently playing items) scheme=%@", buf, 0x16u);
     }
   }
 
@@ -132,16 +132,16 @@
   return v28;
 }
 
-- (void)controller:(id)a3 defersResponseReplacement:(id)a4
+- (void)controller:(id)controller defersResponseReplacement:(id)replacement
 {
-  v5 = a4;
+  replacementCopy = replacement;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__NTKMediaComplicationController_controller_defersResponseReplacement___block_invoke;
   v7[3] = &unk_27877E570;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = replacementCopy;
+  v6 = replacementCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -244,27 +244,27 @@ void __55__NTKMediaComplicationController__refreshPlayerRequest__block_invoke(ui
   return v4;
 }
 
-- (void)_resolvePlayerPathWithQueue:(id)a3 completion:(id)a4
+- (void)_resolvePlayerPathWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
   if (_os_feature_enabled_impl())
   {
-    [(NTKMediaComplicationController *)self _resolveIntentionalRoutingPlayerPathWithQueue:v7 completion:v6];
+    [(NTKMediaComplicationController *)self _resolveIntentionalRoutingPlayerPathWithQueue:queueCopy completion:completionCopy];
   }
 
   else
   {
-    [(NTKMediaComplicationController *)self _resolveLegacyPlayerPathWithQueue:v7 completion:v6];
+    [(NTKMediaComplicationController *)self _resolveLegacyPlayerPathWithQueue:queueCopy completion:completionCopy];
   }
 }
 
-- (void)_resolveIntentionalRoutingPlayerPathWithQueue:(id)a3 completion:(id)a4
+- (void)_resolveIntentionalRoutingPlayerPathWithQueue:(id)queue completion:(id)completion
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v5;
-  v7 = v8;
+  queueCopy = queue;
+  completionCopy = completion;
+  v6 = queueCopy;
+  v7 = completionCopy;
   MRMediaRemoteGetProactiveRecommendedPlayer();
 }
 
@@ -350,17 +350,17 @@ void __91__NTKMediaComplicationController__resolveIntentionalRoutingPlayerPathWi
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)_resolveLegacyPlayerPathWithQueue:(id)a3 completion:(id)a4
+- (void)_resolveLegacyPlayerPathWithQueue:(id)queue completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = MEMORY[0x277CD5D48];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __79__NTKMediaComplicationController__resolveLegacyPlayerPathWithQueue_completion___block_invoke;
   v8[3] = &unk_278784048;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [v6 getProactiveRouteWithCompletion:v8];
 }
 

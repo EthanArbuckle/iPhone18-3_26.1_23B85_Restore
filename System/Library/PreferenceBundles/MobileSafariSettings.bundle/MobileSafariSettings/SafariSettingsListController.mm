@@ -1,30 +1,30 @@
 @interface SafariSettingsListController
-- (BOOL)_evaluateBoolSelectorWithPropertyKey:(id)a3 specifier:(id)a4 defaultValue:(BOOL)a5;
-- (BOOL)prepareHandlingURLForSpecifierID:(id)a3 resourceDictionary:(id)a4 animatePush:(BOOL *)a5;
-- (BOOL)userInterfaceIdiomIsPhone:(id)a3;
-- (id)loadSpecifiersFromPlistName:(id)a3 target:(id)a4 bundle:(id)a5;
-- (id)safariDefaultsValueForKey:(id)a3;
-- (id)safariSharedDefaultsValueForKey:(id)a3;
-- (void)postDistributedNotificationNamed:(__CFString *)a3;
-- (void)setSafariDefaultsValue:(id)a3 forKey:(id)a4;
-- (void)setSafariSharedDefaultsValue:(id)a3 forKey:(id)a4;
+- (BOOL)_evaluateBoolSelectorWithPropertyKey:(id)key specifier:(id)specifier defaultValue:(BOOL)value;
+- (BOOL)prepareHandlingURLForSpecifierID:(id)d resourceDictionary:(id)dictionary animatePush:(BOOL *)push;
+- (BOOL)userInterfaceIdiomIsPhone:(id)phone;
+- (id)loadSpecifiersFromPlistName:(id)name target:(id)target bundle:(id)bundle;
+- (id)safariDefaultsValueForKey:(id)key;
+- (id)safariSharedDefaultsValueForKey:(id)key;
+- (void)postDistributedNotificationNamed:(__CFString *)named;
+- (void)setSafariDefaultsValue:(id)value forKey:(id)key;
+- (void)setSafariSharedDefaultsValue:(id)value forKey:(id)key;
 - (void)synchronizeSafariDefaults;
 - (void)synchronizeSafariSharedDefaults;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateRestrictionsForSpecifiers:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateRestrictionsForSpecifiers:(id)specifiers;
 @end
 
 @implementation SafariSettingsListController
 
-- (BOOL)prepareHandlingURLForSpecifierID:(id)a3 resourceDictionary:(id)a4 animatePush:(BOOL *)a5
+- (BOOL)prepareHandlingURLForSpecifierID:(id)d resourceDictionary:(id)dictionary animatePush:(BOOL *)push
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SafariSettingsListController *)self specifierForID:v8];
+  dCopy = d;
+  dictionaryCopy = dictionary;
+  v10 = [(SafariSettingsListController *)self specifierForID:dCopy];
   if ([objc_msgSend(v10 "detailControllerClass")])
   {
     v11 = [(SafariSettingsListController *)self controllerForSpecifier:v10];
-    [_SFSettingsAuthentication pushSettingsAfterAuthentication:v11 onBehalfOfViewController:self resourceDictionary:v9 completionHandler:&__block_literal_global_19];
+    [_SFSettingsAuthentication pushSettingsAfterAuthentication:v11 onBehalfOfViewController:self resourceDictionary:dictionaryCopy completionHandler:&__block_literal_global_19];
 
     v12 = 1;
   }
@@ -33,32 +33,32 @@
   {
     v14.receiver = self;
     v14.super_class = SafariSettingsListController;
-    v12 = [(SafariSettingsListController *)&v14 prepareHandlingURLForSpecifierID:v8 resourceDictionary:v9 animatePush:a5];
+    v12 = [(SafariSettingsListController *)&v14 prepareHandlingURLForSpecifierID:dCopy resourceDictionary:dictionaryCopy animatePush:push];
   }
 
   return v12;
 }
 
-- (void)postDistributedNotificationNamed:(__CFString *)a3
+- (void)postDistributedNotificationNamed:(__CFString *)named
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
-  CFNotificationCenterPostNotification(DarwinNotifyCenter, a3, 0, 0, 0);
+  CFNotificationCenterPostNotification(DarwinNotifyCenter, named, 0, 0, 0);
 }
 
-- (void)setSafariDefaultsValue:(id)a3 forKey:(id)a4
+- (void)setSafariDefaultsValue:(id)value forKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  valueCopy = value;
   v7 = +[NSUserDefaults safari_browserDefaults];
-  [v7 setObject:v6 forKey:v5];
+  [v7 setObject:valueCopy forKey:keyCopy];
 }
 
-- (id)safariDefaultsValueForKey:(id)a3
+- (id)safariDefaultsValueForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[NSUserDefaults safari_browserDefaults];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:keyCopy];
 
   return v5;
 }
@@ -69,19 +69,19 @@
   [v2 synchronize];
 }
 
-- (void)setSafariSharedDefaultsValue:(id)a3 forKey:(id)a4
+- (void)setSafariSharedDefaultsValue:(id)value forKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  valueCopy = value;
   v7 = +[NSUserDefaults safari_browserSharedDefaults];
-  [v7 setObject:v6 forKey:v5];
+  [v7 setObject:valueCopy forKey:keyCopy];
 }
 
-- (id)safariSharedDefaultsValueForKey:(id)a3
+- (id)safariSharedDefaultsValueForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[NSUserDefaults safari_browserSharedDefaults];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:keyCopy];
 
   return v5;
 }
@@ -92,11 +92,11 @@
   [v2 synchronize];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:{-[SafariSettingsListController indexForIndexPath:](self, "indexForIndexPath:", v7)}];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:{-[SafariSettingsListController indexForIndexPath:](self, "indexForIndexPath:", pathCopy)}];
   if (![objc_msgSend(v8 "detailControllerClass")])
   {
     goto LABEL_6;
@@ -109,7 +109,7 @@
 LABEL_6:
     v12.receiver = self;
     v12.super_class = SafariSettingsListController;
-    [(SafariSettingsListController *)&v12 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(SafariSettingsListController *)&v12 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
     goto LABEL_7;
   }
 
@@ -117,13 +117,13 @@ LABEL_6:
   v13[1] = 3221225472;
   v13[2] = __66__SafariSettingsListController_tableView_didSelectRowAtIndexPath___block_invoke;
   v13[3] = &unk_8A650;
-  v14 = v6;
-  v15 = v7;
-  v16 = self;
+  v14 = viewCopy;
+  v15 = pathCopy;
+  selfCopy = self;
   [_SFSettingsAuthentication authenticateForSettings:v9 allowAuthenticationReuse:1 completionHandler:v13];
   v10 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__table];
-  v11 = [v10 indexPathForSelectedRow];
-  [v10 deselectRowAtIndexPath:v11 animated:1];
+  indexPathForSelectedRow = [v10 indexPathForSelectedRow];
+  [v10 deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 
 LABEL_7:
 }
@@ -142,11 +142,11 @@ id __66__SafariSettingsListController_tableView_didSelectRowAtIndexPath___block_
   return result;
 }
 
-- (BOOL)_evaluateBoolSelectorWithPropertyKey:(id)a3 specifier:(id)a4 defaultValue:(BOOL)a5
+- (BOOL)_evaluateBoolSelectorWithPropertyKey:(id)key specifier:(id)specifier defaultValue:(BOOL)value
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 propertyForKey:v8];
+  keyCopy = key;
+  specifierCopy = specifier;
+  v10 = [specifierCopy propertyForKey:keyCopy];
   if (v10)
   {
     objc_opt_class();
@@ -156,16 +156,16 @@ id __66__SafariSettingsListController_tableView_didSelectRowAtIndexPath___block_
       v12 = NSSelectorFromString(v11);
       if (objc_opt_respondsToSelector())
       {
-        a5 = [self v12];
+        value = [self v12];
       }
 
       else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
       {
-        v14 = [v9 identifier];
+        identifier = [specifierCopy identifier];
         v15 = 138413058;
-        v16 = v8;
+        v16 = keyCopy;
         v17 = 2112;
-        v18 = v14;
+        v18 = identifier;
         v19 = 2112;
         v20 = v11;
         v21 = 2112;
@@ -176,21 +176,21 @@ id __66__SafariSettingsListController_tableView_didSelectRowAtIndexPath___block_
 
     else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
-      [SafariSettingsListController _evaluateBoolSelectorWithPropertyKey:v8 specifier:v9 defaultValue:?];
+      [SafariSettingsListController _evaluateBoolSelectorWithPropertyKey:keyCopy specifier:specifierCopy defaultValue:?];
     }
   }
 
-  return a5;
+  return value;
 }
 
-- (void)updateRestrictionsForSpecifiers:(id)a3
+- (void)updateRestrictionsForSpecifiers:(id)specifiers
 {
-  v4 = a3;
+  specifiersCopy = specifiers;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [specifiersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -202,7 +202,7 @@ id __66__SafariSettingsListController_tableView_didSelectRowAtIndexPath___block_
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(specifiersCopy);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -210,14 +210,14 @@ id __66__SafariSettingsListController_tableView_didSelectRowAtIndexPath___block_
         [v10 setProperty:v11 forKey:v8];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [specifiersCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 }
 
-- (BOOL)userInterfaceIdiomIsPhone:(id)a3
+- (BOOL)userInterfaceIdiomIsPhone:(id)phone
 {
   v3 = +[UIDevice currentDevice];
   v4 = [v3 userInterfaceIdiom] == 0;
@@ -225,11 +225,11 @@ id __66__SafariSettingsListController_tableView_didSelectRowAtIndexPath___block_
   return v4;
 }
 
-- (id)loadSpecifiersFromPlistName:(id)a3 target:(id)a4 bundle:(id)a5
+- (id)loadSpecifiersFromPlistName:(id)name target:(id)target bundle:(id)bundle
 {
   v11.receiver = self;
   v11.super_class = SafariSettingsListController;
-  v6 = [(SafariSettingsListController *)&v11 loadSpecifiersFromPlistName:a3 target:a4 bundle:a5];
+  v6 = [(SafariSettingsListController *)&v11 loadSpecifiersFromPlistName:name target:target bundle:bundle];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __74__SafariSettingsListController_loadSpecifiersFromPlistName_target_bundle___block_invoke;

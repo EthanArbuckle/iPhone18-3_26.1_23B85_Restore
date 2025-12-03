@@ -1,67 +1,67 @@
 @interface HMDCharacteristicMetadata
-+ (HMDCharacteristicMetadata)characteristicMetadataWithDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (HMDCharacteristicMetadata)characteristicMetadataWithDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (HMDCharacteristicMetadata)init;
-- (HMDCharacteristicMetadata)initWithCoder:(id)a3;
-- (HMDCharacteristicMetadata)initWithMinimumValue:(id)a3 maximumValue:(id)a4 stepValue:(id)a5 maxLength:(id)a6 validValues:(id)a7 format:(id)a8 units:(id)a9 manufacturerDescription:(id)a10;
+- (HMDCharacteristicMetadata)initWithCoder:(id)coder;
+- (HMDCharacteristicMetadata)initWithMinimumValue:(id)value maximumValue:(id)maximumValue stepValue:(id)stepValue maxLength:(id)length validValues:(id)values format:(id)format units:(id)units manufacturerDescription:(id)self0;
 - (NSString)description;
 - (id)_descriptionDetails;
 - (id)dictionaryRepresentation;
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3;
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDCharacteristicMetadata
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDCharacteristicMetadata *)self minimumValue];
-  [v4 encodeObject:v5 forKey:@"metadataMinimumValue"];
+  coderCopy = coder;
+  minimumValue = [(HMDCharacteristicMetadata *)self minimumValue];
+  [coderCopy encodeObject:minimumValue forKey:@"metadataMinimumValue"];
 
-  v6 = [(HMDCharacteristicMetadata *)self maximumValue];
-  [v4 encodeObject:v6 forKey:@"metadataMaximumValue"];
+  maximumValue = [(HMDCharacteristicMetadata *)self maximumValue];
+  [coderCopy encodeObject:maximumValue forKey:@"metadataMaximumValue"];
 
-  v7 = [(HMDCharacteristicMetadata *)self stepValue];
-  [v4 encodeObject:v7 forKey:@"metadataStepValue"];
+  stepValue = [(HMDCharacteristicMetadata *)self stepValue];
+  [coderCopy encodeObject:stepValue forKey:@"metadataStepValue"];
 
-  v8 = [(HMDCharacteristicMetadata *)self maxLength];
-  [v4 encodeObject:v8 forKey:@"metadataMaxLength"];
+  maxLength = [(HMDCharacteristicMetadata *)self maxLength];
+  [coderCopy encodeObject:maxLength forKey:@"metadataMaxLength"];
 
-  v9 = [(HMDCharacteristicMetadata *)self format];
-  [v4 encodeObject:v9 forKey:@"metadataFormat"];
+  format = [(HMDCharacteristicMetadata *)self format];
+  [coderCopy encodeObject:format forKey:@"metadataFormat"];
 
-  v10 = [(HMDCharacteristicMetadata *)self units];
-  [v4 encodeObject:v10 forKey:@"metadataUnits"];
+  units = [(HMDCharacteristicMetadata *)self units];
+  [coderCopy encodeObject:units forKey:@"metadataUnits"];
 
-  v11 = [(HMDCharacteristicMetadata *)self manufacturerDescription];
-  [v4 encodeObject:v11 forKey:@"metadataUserDescription"];
+  manufacturerDescription = [(HMDCharacteristicMetadata *)self manufacturerDescription];
+  [coderCopy encodeObject:manufacturerDescription forKey:@"metadataUserDescription"];
 
-  v12 = [(HMDCharacteristicMetadata *)self validValues];
-  [v4 encodeObject:v12 forKey:@"metadataValidValues"];
+  validValues = [(HMDCharacteristicMetadata *)self validValues];
+  [coderCopy encodeObject:validValues forKey:@"metadataValidValues"];
 }
 
-- (HMDCharacteristicMetadata)initWithCoder:(id)a3
+- (HMDCharacteristicMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadataMinimumValue"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadataMaximumValue"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadataStepValue"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadataMaxLength"];
-  v9 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"metadataValidValues"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadataFormat"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadataUnits"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadataUserDescription"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadataMinimumValue"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadataMaximumValue"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadataStepValue"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadataMaxLength"];
+  v9 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"metadataValidValues"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadataFormat"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadataUnits"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadataUserDescription"];
 
   v13 = [(HMDCharacteristicMetadata *)self initWithMinimumValue:v5 maximumValue:v6 stepValue:v7 maxLength:v8 validValues:v9 format:v10 units:v11 manufacturerDescription:v12];
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v24 = 1;
   }
@@ -71,7 +71,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -87,7 +87,7 @@
     }
 
     minimumValue = self->_minimumValue;
-    v9 = [(HMDCharacteristicMetadata *)v6 minimumValue];
+    minimumValue = [(HMDCharacteristicMetadata *)v6 minimumValue];
     LODWORD(minimumValue) = HMFEqualObjects();
 
     if (!minimumValue)
@@ -96,7 +96,7 @@
     }
 
     maximumValue = self->_maximumValue;
-    v11 = [(HMDCharacteristicMetadata *)v7 maximumValue];
+    maximumValue = [(HMDCharacteristicMetadata *)v7 maximumValue];
     LODWORD(maximumValue) = HMFEqualObjects();
 
     if (!maximumValue)
@@ -105,7 +105,7 @@
     }
 
     stepValue = self->_stepValue;
-    v13 = [(HMDCharacteristicMetadata *)v7 stepValue];
+    stepValue = [(HMDCharacteristicMetadata *)v7 stepValue];
     LODWORD(stepValue) = HMFEqualObjects();
 
     if (!stepValue)
@@ -114,7 +114,7 @@
     }
 
     maxLength = self->_maxLength;
-    v15 = [(HMDCharacteristicMetadata *)v7 maxLength];
+    maxLength = [(HMDCharacteristicMetadata *)v7 maxLength];
     LODWORD(maxLength) = HMFEqualObjects();
 
     if (!maxLength)
@@ -123,7 +123,7 @@
     }
 
     format = self->_format;
-    v17 = [(HMDCharacteristicMetadata *)v7 format];
+    format = [(HMDCharacteristicMetadata *)v7 format];
     LODWORD(format) = HMFEqualObjects();
 
     if (!format)
@@ -132,7 +132,7 @@
     }
 
     units = self->_units;
-    v19 = [(HMDCharacteristicMetadata *)v7 units];
+    units = [(HMDCharacteristicMetadata *)v7 units];
     LODWORD(units) = HMFEqualObjects();
 
     if (!units)
@@ -141,13 +141,13 @@
     }
 
     manufacturerDescription = self->_manufacturerDescription;
-    v21 = [(HMDCharacteristicMetadata *)v7 manufacturerDescription];
+    manufacturerDescription = [(HMDCharacteristicMetadata *)v7 manufacturerDescription];
     LODWORD(manufacturerDescription) = HMFEqualObjects();
 
     if (manufacturerDescription)
     {
       validValues = self->_validValues;
-      v23 = [(HMDCharacteristicMetadata *)v7 validValues];
+      validValues = [(HMDCharacteristicMetadata *)v7 validValues];
       v24 = HMFEqualObjects();
     }
 
@@ -163,29 +163,29 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v3 = [(HMDCharacteristicMetadata *)self minimumValue];
-  v4 = [v3 hash];
+  minimumValue = [(HMDCharacteristicMetadata *)self minimumValue];
+  v4 = [minimumValue hash];
 
-  v5 = [(HMDCharacteristicMetadata *)self maximumValue];
-  v6 = [v5 hash] ^ v4;
+  maximumValue = [(HMDCharacteristicMetadata *)self maximumValue];
+  v6 = [maximumValue hash] ^ v4;
 
-  v7 = [(HMDCharacteristicMetadata *)self stepValue];
-  v8 = [v7 hash];
+  stepValue = [(HMDCharacteristicMetadata *)self stepValue];
+  v8 = [stepValue hash];
 
-  v9 = [(HMDCharacteristicMetadata *)self maxLength];
-  v10 = v6 ^ v8 ^ [v9 hash];
+  maxLength = [(HMDCharacteristicMetadata *)self maxLength];
+  v10 = v6 ^ v8 ^ [maxLength hash];
 
-  v11 = [(HMDCharacteristicMetadata *)self format];
-  v12 = [v11 hash];
+  format = [(HMDCharacteristicMetadata *)self format];
+  v12 = [format hash];
 
-  v13 = [(HMDCharacteristicMetadata *)self units];
-  v14 = v12 ^ [v13 hash];
+  units = [(HMDCharacteristicMetadata *)self units];
+  v14 = v12 ^ [units hash];
 
-  v15 = [(HMDCharacteristicMetadata *)self manufacturerDescription];
-  v16 = v10 ^ v14 ^ [v15 hash];
+  manufacturerDescription = [(HMDCharacteristicMetadata *)self manufacturerDescription];
+  v16 = v10 ^ v14 ^ [manufacturerDescription hash];
 
-  v17 = [(HMDCharacteristicMetadata *)self validValues];
-  v18 = [v17 hash];
+  validValues = [(HMDCharacteristicMetadata *)self validValues];
+  v18 = [validValues hash];
 
   return v16 ^ v18;
 }
@@ -209,78 +209,78 @@ LABEL_14:
 {
   v49 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:6];
-  v4 = [(HMDCharacteristicMetadata *)self format];
+  format = [(HMDCharacteristicMetadata *)self format];
 
-  if (v4)
+  if (format)
   {
     v5 = MEMORY[0x277CCACA8];
-    v6 = [(HMDCharacteristicMetadata *)self format];
-    v7 = [v5 stringWithFormat:@"Format: %@", v6];
+    format2 = [(HMDCharacteristicMetadata *)self format];
+    v7 = [v5 stringWithFormat:@"Format: %@", format2];
     [v3 addObject:v7];
   }
 
-  v8 = [(HMDCharacteristicMetadata *)self units];
+  units = [(HMDCharacteristicMetadata *)self units];
 
-  if (v8)
+  if (units)
   {
     v9 = MEMORY[0x277CCACA8];
-    v10 = [(HMDCharacteristicMetadata *)self units];
-    v11 = [v9 stringWithFormat:@"Units: %@", v10];
+    units2 = [(HMDCharacteristicMetadata *)self units];
+    v11 = [v9 stringWithFormat:@"Units: %@", units2];
     [v3 addObject:v11];
   }
 
-  v12 = [(HMDCharacteristicMetadata *)self minimumValue];
+  minimumValue = [(HMDCharacteristicMetadata *)self minimumValue];
 
-  if (v12)
+  if (minimumValue)
   {
     v13 = MEMORY[0x277CCACA8];
-    v14 = [(HMDCharacteristicMetadata *)self minimumValue];
-    v15 = [v13 stringWithFormat:@"MinValue: %@", v14];
+    minimumValue2 = [(HMDCharacteristicMetadata *)self minimumValue];
+    v15 = [v13 stringWithFormat:@"MinValue: %@", minimumValue2];
     [v3 addObject:v15];
   }
 
-  v16 = [(HMDCharacteristicMetadata *)self maximumValue];
+  maximumValue = [(HMDCharacteristicMetadata *)self maximumValue];
 
-  if (v16)
+  if (maximumValue)
   {
     v17 = MEMORY[0x277CCACA8];
-    v18 = [(HMDCharacteristicMetadata *)self maximumValue];
-    v19 = [v17 stringWithFormat:@"MaxValue: %@", v18];
+    maximumValue2 = [(HMDCharacteristicMetadata *)self maximumValue];
+    v19 = [v17 stringWithFormat:@"MaxValue: %@", maximumValue2];
     [v3 addObject:v19];
   }
 
-  v20 = [(HMDCharacteristicMetadata *)self stepValue];
+  stepValue = [(HMDCharacteristicMetadata *)self stepValue];
 
-  if (v20)
+  if (stepValue)
   {
     v21 = MEMORY[0x277CCACA8];
-    v22 = [(HMDCharacteristicMetadata *)self stepValue];
-    v23 = [v21 stringWithFormat:@"StepValue: %@", v22];
+    stepValue2 = [(HMDCharacteristicMetadata *)self stepValue];
+    v23 = [v21 stringWithFormat:@"StepValue: %@", stepValue2];
     [v3 addObject:v23];
   }
 
-  v24 = [(HMDCharacteristicMetadata *)self maxLength];
+  maxLength = [(HMDCharacteristicMetadata *)self maxLength];
 
-  if (v24)
+  if (maxLength)
   {
     v25 = MEMORY[0x277CCACA8];
-    v26 = [(HMDCharacteristicMetadata *)self maxLength];
-    v27 = [v25 stringWithFormat:@"Max length: %@", v26];
+    maxLength2 = [(HMDCharacteristicMetadata *)self maxLength];
+    v27 = [v25 stringWithFormat:@"Max length: %@", maxLength2];
     [v3 addObject:v27];
   }
 
-  v28 = [(HMDCharacteristicMetadata *)self manufacturerDescription];
+  manufacturerDescription = [(HMDCharacteristicMetadata *)self manufacturerDescription];
 
-  if (v28)
+  if (manufacturerDescription)
   {
     v29 = MEMORY[0x277CCACA8];
-    v30 = [(HMDCharacteristicMetadata *)self manufacturerDescription];
-    v31 = [v29 stringWithFormat:@"Manufacturer Description: %@", v30];
+    manufacturerDescription2 = [(HMDCharacteristicMetadata *)self manufacturerDescription];
+    v31 = [v29 stringWithFormat:@"Manufacturer Description: %@", manufacturerDescription2];
     [v3 addObject:v31];
   }
 
-  v32 = [(HMDCharacteristicMetadata *)self validValues];
-  v33 = [v32 count];
+  validValues = [(HMDCharacteristicMetadata *)self validValues];
+  v33 = [validValues count];
 
   if (v33)
   {
@@ -291,8 +291,8 @@ LABEL_14:
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v35 = [(HMDCharacteristicMetadata *)self validValues];
-    v36 = [v35 countByEnumeratingWithState:&v44 objects:v48 count:16];
+    validValues2 = [(HMDCharacteristicMetadata *)self validValues];
+    v36 = [validValues2 countByEnumeratingWithState:&v44 objects:v48 count:16];
     if (v36)
     {
       v37 = v36;
@@ -303,14 +303,14 @@ LABEL_14:
         {
           if (*v45 != v38)
           {
-            objc_enumerationMutation(v35);
+            objc_enumerationMutation(validValues2);
           }
 
           v40 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@, ", *(*(&v44 + 1) + 8 * i)];
           [v3 addObject:v40];
         }
 
-        v37 = [v35 countByEnumeratingWithState:&v44 objects:v48 count:16];
+        v37 = [validValues2 countByEnumeratingWithState:&v44 objects:v48 count:16];
       }
 
       while (v37);
@@ -324,11 +324,11 @@ LABEL_14:
   return v41;
 }
 
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level
 {
   v3 = MEMORY[0x277CBEAC0];
-  v4 = [(HMDCharacteristicMetadata *)self _descriptionDetails];
-  v5 = [v3 dictionaryWithObject:v4 forKey:*MEMORY[0x277D0F170]];
+  _descriptionDetails = [(HMDCharacteristicMetadata *)self _descriptionDetails];
+  v5 = [v3 dictionaryWithObject:_descriptionDetails forKey:*MEMORY[0x277D0F170]];
 
   return v5;
 }
@@ -336,44 +336,44 @@ LABEL_14:
 - (NSString)description
 {
   v3 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:@"[%@"];
-  v4 = [(HMDCharacteristicMetadata *)self _descriptionDetails];
-  [v3 appendString:v4];
+  _descriptionDetails = [(HMDCharacteristicMetadata *)self _descriptionDetails];
+  [v3 appendString:_descriptionDetails];
 
   [v3 appendString:@" ]"];
 
   return v3;
 }
 
-- (HMDCharacteristicMetadata)initWithMinimumValue:(id)a3 maximumValue:(id)a4 stepValue:(id)a5 maxLength:(id)a6 validValues:(id)a7 format:(id)a8 units:(id)a9 manufacturerDescription:(id)a10
+- (HMDCharacteristicMetadata)initWithMinimumValue:(id)value maximumValue:(id)maximumValue stepValue:(id)stepValue maxLength:(id)length validValues:(id)values format:(id)format units:(id)units manufacturerDescription:(id)self0
 {
-  v33 = a3;
-  v32 = a4;
-  v31 = a5;
-  v30 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
+  valueCopy = value;
+  maximumValueCopy = maximumValue;
+  stepValueCopy = stepValue;
+  lengthCopy = length;
+  valuesCopy = values;
+  formatCopy = format;
+  unitsCopy = units;
+  descriptionCopy = description;
   v34.receiver = self;
   v34.super_class = HMDCharacteristicMetadata;
   v21 = [(HMDCharacteristicMetadata *)&v34 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_minimumValue, a3);
-    objc_storeStrong(&v22->_maximumValue, a4);
-    objc_storeStrong(&v22->_stepValue, a5);
-    objc_storeStrong(&v22->_maxLength, a6);
-    objc_storeStrong(&v22->_validValues, a7);
-    v23 = [MEMORY[0x277D0F888] hmf_cachedInstanceForString:{v18, v30, v31, v32, v33}];
+    objc_storeStrong(&v21->_minimumValue, value);
+    objc_storeStrong(&v22->_maximumValue, maximumValue);
+    objc_storeStrong(&v22->_stepValue, stepValue);
+    objc_storeStrong(&v22->_maxLength, length);
+    objc_storeStrong(&v22->_validValues, values);
+    v23 = [MEMORY[0x277D0F888] hmf_cachedInstanceForString:{formatCopy, lengthCopy, stepValueCopy, maximumValueCopy, valueCopy}];
     format = v22->_format;
     v22->_format = v23;
 
-    v25 = [MEMORY[0x277D0F888] hmf_cachedInstanceForString:v19];
+    v25 = [MEMORY[0x277D0F888] hmf_cachedInstanceForString:unitsCopy];
     units = v22->_units;
     v22->_units = v25;
 
-    v27 = [MEMORY[0x277D0F888] hmf_cachedInstanceForString:v20];
+    v27 = [MEMORY[0x277D0F888] hmf_cachedInstanceForString:descriptionCopy];
     manufacturerDescription = v22->_manufacturerDescription;
     v22->_manufacturerDescription = v27;
   }
@@ -394,21 +394,21 @@ LABEL_14:
   objc_exception_throw(v7);
 }
 
-+ (HMDCharacteristicMetadata)characteristicMetadataWithDictionary:(id)a3
++ (HMDCharacteristicMetadata)characteristicMetadataWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 hmf_numberForKey:@"metadataMinimumValue"];
-  v6 = [v4 hmf_numberForKey:@"metadataMaximumValue"];
-  v7 = [v4 hmf_numberForKey:@"metadataStepValue"];
-  v8 = [v4 hmf_numberForKey:@"metadataMaxLength"];
-  v9 = [v4 hmf_arrayForKey:@"metadataValidValues"];
-  v10 = [v4 hmf_stringForKey:@"metadataUserDescription"];
-  v11 = [v4 hmf_stringForKey:@"metadataFormat"];
-  v12 = [v4 hmf_stringForKey:@"metadataUnits"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy hmf_numberForKey:@"metadataMinimumValue"];
+  v6 = [dictionaryCopy hmf_numberForKey:@"metadataMaximumValue"];
+  v7 = [dictionaryCopy hmf_numberForKey:@"metadataStepValue"];
+  v8 = [dictionaryCopy hmf_numberForKey:@"metadataMaxLength"];
+  v9 = [dictionaryCopy hmf_arrayForKey:@"metadataValidValues"];
+  v10 = [dictionaryCopy hmf_stringForKey:@"metadataUserDescription"];
+  v11 = [dictionaryCopy hmf_stringForKey:@"metadataFormat"];
+  v12 = [dictionaryCopy hmf_stringForKey:@"metadataUnits"];
 
   if (v10 || v11 || v12 || ([v5 doubleValue], v14 = v13, objc_msgSend(v6, "doubleValue"), v14 < v15))
   {
-    v16 = [[a1 alloc] initWithMinimumValue:v5 maximumValue:v6 stepValue:v7 maxLength:v8 validValues:v9 format:v11 units:v12 manufacturerDescription:v10];
+    v16 = [[self alloc] initWithMinimumValue:v5 maximumValue:v6 stepValue:v7 maxLength:v8 validValues:v9 format:v11 units:v12 manufacturerDescription:v10];
   }
 
   else

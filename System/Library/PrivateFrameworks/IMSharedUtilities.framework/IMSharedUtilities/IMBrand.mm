@@ -1,8 +1,8 @@
 @interface IMBrand
-+ (id)brandWithBSBrand:(id)a3;
-+ (id)placeholderNameForBrandURI:(id)a3;
++ (id)brandWithBSBrand:(id)brand;
++ (id)placeholderNameForBrandURI:(id)i;
 - (id)_init;
-- (void)_setBrand:(id)a3;
+- (void)_setBrand:(id)brand;
 - (void)dealloc;
 @end
 
@@ -22,11 +22,11 @@
   return [(IMBrand *)&v3 init];
 }
 
-+ (id)placeholderNameForBrandURI:(id)a3
++ (id)placeholderNameForBrandURI:(id)i
 {
-  if (!MEMORY[0x1AC570A30](a3, a2))
+  if (!MEMORY[0x1AC570A30](i, a2))
   {
-    return a3;
+    return i;
   }
 
   if (qword_1EB30B6E8 != -1)
@@ -39,25 +39,25 @@
   return MEMORY[0x1EEE66B58](v4, sel_placeholderName);
 }
 
-+ (id)brandWithBSBrand:(id)a3
++ (id)brandWithBSBrand:(id)brand
 {
   if (qword_1EB30B6E8 != -1)
   {
     sub_1A88C5A9C();
   }
 
-  v4 = [[_IMBSBrand alloc] _initWithBSBrand:a3];
+  v4 = [[_IMBSBrand alloc] _initWithBSBrand:brand];
 
   return v4;
 }
 
-- (void)_setBrand:(id)a3
+- (void)_setBrand:(id)brand
 {
   brand = self->_brand;
-  if (brand != a3)
+  if (brand != brand)
   {
 
-    self->_brand = a3;
+    self->_brand = brand;
   }
 }
 

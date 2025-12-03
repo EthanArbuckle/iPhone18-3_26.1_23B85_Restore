@@ -1,5 +1,5 @@
 @interface MFExchangeConnection
-- (BOOL)_isFetchResponseValid:(id)a3;
+- (BOOL)_isFetchResponseValid:(id)valid;
 - (id)_fetchArgumentForMessageSkeletonsWithAllHeaders;
 @end
 
@@ -9,11 +9,11 @@
 {
   v9.receiver = self;
   v9.super_class = MFExchangeConnection;
-  v2 = [(MFIMAPConnection *)&v9 _fetchArgumentForMessageSkeletonsWithAllHeaders];
-  v3 = v2;
-  if (v2)
+  _fetchArgumentForMessageSkeletonsWithAllHeaders = [(MFIMAPConnection *)&v9 _fetchArgumentForMessageSkeletonsWithAllHeaders];
+  v3 = _fetchArgumentForMessageSkeletonsWithAllHeaders;
+  if (_fetchArgumentForMessageSkeletonsWithAllHeaders)
   {
-    v4 = [v2 length];
+    v4 = [_fetchArgumentForMessageSkeletonsWithAllHeaders length];
     v5 = v4 - 3;
     if (v4 >= 3)
     {
@@ -31,17 +31,17 @@
   return v3;
 }
 
-- (BOOL)_isFetchResponseValid:(id)a3
+- (BOOL)_isFetchResponseValid:(id)valid
 {
-  v3 = [a3 fetchResultWithType:4];
-  v4 = [v3 fetchData];
+  v3 = [valid fetchResultWithType:4];
+  fetchData = [v3 fetchData];
 
-  if (!v4)
+  if (!fetchData)
   {
     return 0;
   }
 
-  v5 = [objc_alloc(MEMORY[0x1E69AD730]) initWithData:v4];
+  v5 = [objc_alloc(MEMORY[0x1E69AD730]) initWithData:fetchData];
   [v5 mf_convertNetworkLineEndingsToUnix];
   v6 = v5;
 

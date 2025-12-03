@@ -5,8 +5,8 @@
 + (NSString)pickupUsageItemIdentifier;
 + (NSString)screenTimeUsageItemIdentifier;
 + (NSString)webUsageItemIdentifier;
-+ (id)detailsForUserWithAltDSID:(id)a3 deviceActivityIdentifier:(id)a4 dateInterval:(id)a5 referenceDate:(id)a6 usageContext:(int64_t)a7 error:(id *)a8;
-+ (id)earliestUsageDateForUserWithAltDSID:(id)a3 deviceActivityIdentifier:(id)a4 error:(id *)a5;
++ (id)detailsForUserWithAltDSID:(id)d deviceActivityIdentifier:(id)identifier dateInterval:(id)interval referenceDate:(id)date usageContext:(int64_t)context error:(id *)error;
++ (id)earliestUsageDateForUserWithAltDSID:(id)d deviceActivityIdentifier:(id)identifier error:(id *)error;
 - (NSArray)usageItems;
 - (NSDate)lastUpdatedDate;
 - (NSDictionary)firstPickupByWeekdayByWeek;
@@ -95,17 +95,17 @@
   return v2;
 }
 
-+ (id)earliestUsageDateForUserWithAltDSID:(id)a3 deviceActivityIdentifier:(id)a4 error:(id *)a5
++ (id)earliestUsageDateForUserWithAltDSID:(id)d deviceActivityIdentifier:(id)identifier error:(id *)error
 {
   v7 = sub_264CC2FCC();
   v8 = *(v7 - 8);
   MEMORY[0x28223BE20](v7);
   v10 = &v17[-1] - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (d)
   {
-    a3 = sub_264CC45DC();
+    d = sub_264CC45DC();
     v12 = v11;
-    if (a4)
+    if (identifier)
     {
 LABEL_3:
       v13 = sub_264CC45DC();
@@ -116,7 +116,7 @@ LABEL_3:
   else
   {
     v12 = 0;
-    if (a4)
+    if (identifier)
     {
       goto LABEL_3;
     }
@@ -128,7 +128,7 @@ LABEL_6:
   v17[4] = sub_264C6A9DC(&qword_27FFA92A8, MEMORY[0x277CC57C0]);
   __swift_allocate_boxed_opaque_existential_1(v17);
   sub_264CC32CC();
-  sub_264C6510C(a3, v12, v13, v17, v10);
+  sub_264C6510C(d, v12, v13, v17, v10);
 
   __swift_destroy_boxed_opaque_existential_1Tm(v17);
   v14 = sub_264CC2F7C();
@@ -137,27 +137,27 @@ LABEL_6:
   return v14;
 }
 
-+ (id)detailsForUserWithAltDSID:(id)a3 deviceActivityIdentifier:(id)a4 dateInterval:(id)a5 referenceDate:(id)a6 usageContext:(int64_t)a7 error:(id *)a8
++ (id)detailsForUserWithAltDSID:(id)d deviceActivityIdentifier:(id)identifier dateInterval:(id)interval referenceDate:(id)date usageContext:(int64_t)context error:(id *)error
 {
-  v23 = a8;
-  v24 = a7;
+  errorCopy = error;
+  contextCopy = context;
   v26 = sub_264CC2FCC();
   v10 = *(v26 - 8);
   MEMORY[0x28223BE20](v26);
-  v12 = &v23 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v12 = &errorCopy - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   v25 = sub_264CC2E7C();
   v13 = *(v25 - 8);
   MEMORY[0x28223BE20](v25);
-  v15 = &v23 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  v15 = &errorCopy - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
+  if (d)
   {
     v16 = sub_264CC45DC();
     v18 = v17;
-    if (a4)
+    if (identifier)
     {
 LABEL_3:
       v19 = sub_264CC45DC();
-      a4 = v20;
+      identifier = v20;
       goto LABEL_6;
     }
   }
@@ -166,7 +166,7 @@ LABEL_3:
   {
     v16 = 0;
     v18 = 0;
-    if (a4)
+    if (identifier)
     {
       goto LABEL_3;
     }
@@ -180,7 +180,7 @@ LABEL_6:
   v27[4] = sub_264C6A9DC(&qword_27FFA92A8, MEMORY[0x277CC57C0]);
   __swift_allocate_boxed_opaque_existential_1(v27);
   sub_264CC32CC();
-  v21 = sub_264C68A70(v16, v18, v19, a4, v15, v12, v24, v27);
+  v21 = sub_264C68A70(v16, v18, v19, identifier, v15, v12, contextCopy, v27);
 
   (*(v10 + 8))(v12, v26);
   (*(v13 + 8))(v15, v25);

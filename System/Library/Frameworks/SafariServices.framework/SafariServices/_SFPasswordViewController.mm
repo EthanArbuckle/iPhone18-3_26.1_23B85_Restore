@@ -5,7 +5,7 @@
 - (void)_addRemoteViewAsChild;
 - (void)_connectToService;
 - (void)_dismissPasswordViewController;
-- (void)serviceProxyWillQueueInvocation:(id)a3;
+- (void)serviceProxyWillQueueInvocation:(id)invocation;
 @end
 
 @implementation _SFPasswordViewController
@@ -29,37 +29,37 @@
 - (void)_addRemoteViewAsChild
 {
   [(_SFPasswordViewController *)self _addRemoteView];
-  v3 = [(_SFPasswordViewController *)self _remoteViewController];
-  [(_SFPasswordViewController *)self addChildViewController:v3];
+  _remoteViewController = [(_SFPasswordViewController *)self _remoteViewController];
+  [(_SFPasswordViewController *)self addChildViewController:_remoteViewController];
 }
 
 - (void)_addRemoteView
 {
-  v3 = [(_SFPasswordViewController *)self _remoteViewController];
-  if (v3)
+  _remoteViewController = [(_SFPasswordViewController *)self _remoteViewController];
+  if (_remoteViewController)
   {
-    v8 = v3;
-    v4 = [(_SFPasswordViewController *)self isViewLoaded];
-    v3 = v8;
-    if (v4)
+    v8 = _remoteViewController;
+    isViewLoaded = [(_SFPasswordViewController *)self isViewLoaded];
+    _remoteViewController = v8;
+    if (isViewLoaded)
     {
-      v5 = [v8 view];
-      v6 = [(_SFPasswordViewController *)self view];
-      [v6 addSubview:v5];
+      view = [v8 view];
+      view2 = [(_SFPasswordViewController *)self view];
+      [view2 addSubview:view];
 
-      v7 = [(_SFPasswordViewController *)self view];
-      [v7 bounds];
-      [v5 setFrame:?];
+      view3 = [(_SFPasswordViewController *)self view];
+      [view3 bounds];
+      [view setFrame:?];
 
-      [v5 setAutoresizingMask:18];
-      v3 = v8;
+      [view setAutoresizingMask:18];
+      _remoteViewController = v8;
     }
   }
 }
 
 - (void)_connectToService
 {
-  v3 = [(_UIAsyncInvocation *)self->_cancelViewServiceRequest invoke];
+  invoke = [(_UIAsyncInvocation *)self->_cancelViewServiceRequest invoke];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46___SFPasswordViewController__connectToService__block_invoke;
@@ -81,7 +81,7 @@
   [(_SFPasswordViewController *)self dismissViewControllerAnimated:1 completion:v3];
 }
 
-- (void)serviceProxyWillQueueInvocation:(id)a3
+- (void)serviceProxyWillQueueInvocation:(id)invocation
 {
   if (!self->_cancelViewServiceRequest)
   {

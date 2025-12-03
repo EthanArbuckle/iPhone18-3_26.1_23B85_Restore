@@ -1,5 +1,5 @@
 @interface NCNotificationListCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsAwayAlertElement;
 - (BOOL)_axIsCollapsedGroup;
 - (BOOL)_axIsInCollapsedStack;
@@ -18,57 +18,57 @@
 - (id)accessibilityIdentifier;
 - (id)accessibilityLabel;
 - (id)automationElements;
-- (id)axCustomActionsForActions:(id)a3;
+- (id)axCustomActionsForActions:(id)actions;
 - (void)_axLookView;
 @end
 
 @implementation NCNotificationListCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NCNotificationViewController"];
-  [v3 validateClass:@"NCNotificationShortLookView"];
-  [v3 validateClass:@"NCNotificationRichShortLookView"];
-  [v3 validateClass:@"NCNotificationShortLookViewController"];
-  [v3 validateClass:@"NCNotificationListView"];
-  [v3 validateProtocol:@"NCAuxiliaryOptionsSupporting" hasRequiredInstanceMethod:@"auxiliaryOptionButtons"];
-  [v3 validateClass:@"NCAuxiliaryOptionsView" conformsToProtocol:@"NCAuxiliaryOptionsSupporting"];
-  [v3 validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationListCell" hasInstanceMethod:@"contentViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationListCell" hasInstanceMethod:@"actionProvider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationShortLookViewController" hasInstanceMethod:@"clickPresentationInteractionManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationGroupList" hasInstanceMethod:@"sectionIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PLPlatterHeaderContentView" hasInstanceVariable:@"_dateLabel" withType:"UILabel<BSUIDateLabel>"];
-  [v3 validateClass:@"NCNotificationViewController" hasInstanceMethod:@"_lookView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationShortLookView" hasInstanceVariable:@"_auxiliaryOptionsView" withType:"NCAuxiliaryOptionsView"];
-  [v3 validateClass:@"NCAuxiliaryOptionsView" hasInstanceVariable:@"_optionsSummaryLabel" withType:"UILabel"];
-  [v3 validateClass:@"NCNotificationCombinedSectionList" isKindOfClass:@"NCNotificationStructuredSectionList"];
-  [v3 validateProtocol:@"NCNotificationStaticContentAccepting" hasOptionalInstanceMethod:@"title"];
-  [v3 validateProtocol:@"NCNotificationStaticContentAccepting" hasRequiredInstanceMethod:@"date"];
-  [v3 validateProtocol:@"NCNotificationStaticContentAccepting" hasRequiredInstanceMethod:@"primaryText"];
-  [v3 validateProtocol:@"NCNotificationStaticContentAccepting" hasRequiredInstanceMethod:@"primarySubtitleText"];
-  [v3 validateProtocol:@"NCNotificationStaticContentAccepting" hasRequiredInstanceMethod:@"secondaryText"];
-  [v3 validateClass:@"PLClickPresentationInteractionManager" hasInstanceMethod:@"clickPresentationInteractionShouldBegin:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"BSUIDefaultDateLabel"];
-  [v3 validateClass:@"BSUIRelativeDateLabel"];
-  [v3 validateProtocol:@"NCNotificationListCellActionProviding" hasRequiredInstanceMethod:@"supplementaryActionsForNotificationListCell:"];
-  [v3 validateProtocol:@"NCNotificationListCellActionProviding" hasRequiredInstanceMethod:@"defaultActionForNotificationListCell:"];
-  [v3 validateClass:@"UIAction" hasInstanceMethod:@"identifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationListCell" hasInstanceVariable:@"_swipeInteraction" withType:"PLSwipeInteraction"];
-  [v3 validateClass:@"PLSwipeInteraction" hasInstanceVariable:@"_actionButtonsPresentingView" withType:"PLActionButtonsPresentingView"];
-  [v3 validateClass:@"PLActionButtonsPresentingView" hasInstanceMethod:@"actionButtonsView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PLPlatterActionButtonsView" hasInstanceMethod:@"buttonsStackView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationViewController" hasInstanceMethod:@"notificationRequest" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationListCell" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationListView" hasInstanceMethod:@"isGrouped" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NCNotificationListView" hasInstanceMethod:@"count" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"NCNotificationListView" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationGroupList"];
-  [v3 validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"isNotificationGroupListInCollapsedStack:" withFullSignature:{"B", "@", 0}];
-  [v3 validateClass:@"NCNotificationListView" conformsToProtocol:@"NCNotificationListViewProtocol"];
-  [v3 validateProtocol:@"NCNotificationListViewProtocol" hasRequiredInstanceMethod:@"visibleViewAtIndex:"];
-  [v3 validateClass:@"NCNotificationListView" hasInstanceMethod:@"model" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NCNotificationViewController"];
+  [validationsCopy validateClass:@"NCNotificationShortLookView"];
+  [validationsCopy validateClass:@"NCNotificationRichShortLookView"];
+  [validationsCopy validateClass:@"NCNotificationShortLookViewController"];
+  [validationsCopy validateClass:@"NCNotificationListView"];
+  [validationsCopy validateProtocol:@"NCAuxiliaryOptionsSupporting" hasRequiredInstanceMethod:@"auxiliaryOptionButtons"];
+  [validationsCopy validateClass:@"NCAuxiliaryOptionsView" conformsToProtocol:@"NCAuxiliaryOptionsSupporting"];
+  [validationsCopy validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationListCell" hasInstanceMethod:@"contentViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationListCell" hasInstanceMethod:@"actionProvider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationShortLookViewController" hasInstanceMethod:@"clickPresentationInteractionManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationGroupList" hasInstanceMethod:@"sectionIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PLPlatterHeaderContentView" hasInstanceVariable:@"_dateLabel" withType:"UILabel<BSUIDateLabel>"];
+  [validationsCopy validateClass:@"NCNotificationViewController" hasInstanceMethod:@"_lookView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationShortLookView" hasInstanceVariable:@"_auxiliaryOptionsView" withType:"NCAuxiliaryOptionsView"];
+  [validationsCopy validateClass:@"NCAuxiliaryOptionsView" hasInstanceVariable:@"_optionsSummaryLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"NCNotificationCombinedSectionList" isKindOfClass:@"NCNotificationStructuredSectionList"];
+  [validationsCopy validateProtocol:@"NCNotificationStaticContentAccepting" hasOptionalInstanceMethod:@"title"];
+  [validationsCopy validateProtocol:@"NCNotificationStaticContentAccepting" hasRequiredInstanceMethod:@"date"];
+  [validationsCopy validateProtocol:@"NCNotificationStaticContentAccepting" hasRequiredInstanceMethod:@"primaryText"];
+  [validationsCopy validateProtocol:@"NCNotificationStaticContentAccepting" hasRequiredInstanceMethod:@"primarySubtitleText"];
+  [validationsCopy validateProtocol:@"NCNotificationStaticContentAccepting" hasRequiredInstanceMethod:@"secondaryText"];
+  [validationsCopy validateClass:@"PLClickPresentationInteractionManager" hasInstanceMethod:@"clickPresentationInteractionShouldBegin:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"BSUIDefaultDateLabel"];
+  [validationsCopy validateClass:@"BSUIRelativeDateLabel"];
+  [validationsCopy validateProtocol:@"NCNotificationListCellActionProviding" hasRequiredInstanceMethod:@"supplementaryActionsForNotificationListCell:"];
+  [validationsCopy validateProtocol:@"NCNotificationListCellActionProviding" hasRequiredInstanceMethod:@"defaultActionForNotificationListCell:"];
+  [validationsCopy validateClass:@"UIAction" hasInstanceMethod:@"identifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationListCell" hasInstanceVariable:@"_swipeInteraction" withType:"PLSwipeInteraction"];
+  [validationsCopy validateClass:@"PLSwipeInteraction" hasInstanceVariable:@"_actionButtonsPresentingView" withType:"PLActionButtonsPresentingView"];
+  [validationsCopy validateClass:@"PLActionButtonsPresentingView" hasInstanceMethod:@"actionButtonsView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PLPlatterActionButtonsView" hasInstanceMethod:@"buttonsStackView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationViewController" hasInstanceMethod:@"notificationRequest" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationListCell" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationListView" hasInstanceMethod:@"isGrouped" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NCNotificationListView" hasInstanceMethod:@"count" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"NCNotificationListView" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationGroupList"];
+  [validationsCopy validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"isNotificationGroupListInCollapsedStack:" withFullSignature:{"B", "@", 0}];
+  [validationsCopy validateClass:@"NCNotificationListView" conformsToProtocol:@"NCNotificationListViewProtocol"];
+  [validationsCopy validateProtocol:@"NCNotificationListViewProtocol" hasRequiredInstanceMethod:@"visibleViewAtIndex:"];
+  [validationsCopy validateClass:@"NCNotificationListView" hasInstanceMethod:@"model" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)accessibilityActivate
@@ -83,11 +83,11 @@
 
   else
   {
-    v4 = [(NCNotificationListCellAccessibility *)self _accessibilityOpenAction];
-    v5 = v4;
-    if (v4)
+    _accessibilityOpenAction = [(NCNotificationListCellAccessibility *)self _accessibilityOpenAction];
+    v5 = _accessibilityOpenAction;
+    if (_accessibilityOpenAction)
     {
-      v6 = v4;
+      v6 = _accessibilityOpenAction;
       AXPerformSafeBlock();
     }
 
@@ -106,26 +106,26 @@ void __60__NCNotificationListCellAccessibility_accessibilityActivate__block_invo
 {
   v20[1] = *MEMORY[0x29EDCA608];
   v3 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
-  v4 = [(NCNotificationListCellAccessibility *)self _accessibilityCellActions];
-  v5 = v4;
-  if (v4 && (v6 = [v4 indexOfObjectPassingTest:&__block_literal_global_478], v6 != 0x7FFFFFFFFFFFFFFFLL))
+  _accessibilityCellActions = [(NCNotificationListCellAccessibility *)self _accessibilityCellActions];
+  v5 = _accessibilityCellActions;
+  if (_accessibilityCellActions && (v6 = [_accessibilityCellActions indexOfObjectPassingTest:&__block_literal_global_478], v6 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v8 = v6;
-    v7 = [v5 objectAtIndex:v6];
+    firstObject = [v5 objectAtIndex:v6];
 
-    if (v7)
+    if (firstObject)
     {
       v9 = [v5 objectAtIndex:v8];
       v20[0] = v9;
       v10 = [MEMORY[0x29EDB8D80] arrayWithObjects:v20 count:1];
       v11 = [(NCNotificationListCellAccessibility *)self axCustomActionsForActions:v10];
-      v7 = [v11 firstObject];
+      firstObject = [v11 firstObject];
     }
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
     v8 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
@@ -138,13 +138,13 @@ void __60__NCNotificationListCellAccessibility_accessibilityActivate__block_invo
   v13 = [(NCNotificationListCellAccessibility *)self axCustomActionsForActions:v12];
   [v3 axSafelyAddObjectsFromArray:v13];
 
-  v14 = [(NCNotificationListCellAccessibility *)self _axLookView];
-  v15 = [v14 accessibilityCustomActions];
+  _axLookView = [(NCNotificationListCellAccessibility *)self _axLookView];
+  accessibilityCustomActions = [_axLookView accessibilityCustomActions];
 
-  v16 = [v15 ax_filteredArrayUsingBlock:&__block_literal_global_483];
+  v16 = [accessibilityCustomActions ax_filteredArrayUsingBlock:&__block_literal_global_483];
 
   [v3 axSafelyAddObjectsFromArray:v16];
-  [v3 axSafelyAddObject:v7];
+  [v3 axSafelyAddObject:firstObject];
 
   v17 = *MEMORY[0x29EDCA608];
 
@@ -179,20 +179,20 @@ uint64_t __65__NCNotificationListCellAccessibility_accessibilityCustomActions__b
 
 - (BOOL)_accessibilityIsAwayAlertElement
 {
-  v2 = [(NCNotificationListCellAccessibility *)self _axNCNotificationViewController];
+  _axNCNotificationViewController = [(NCNotificationListCellAccessibility *)self _axNCNotificationViewController];
   NSClassFromString(&cfstr_Ncnotification_38.isa);
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 safeValueForKey:@"notificationRequest"];
-    v4 = [v3 sectionIdentifier];
+    v3 = [_axNCNotificationViewController safeValueForKey:@"notificationRequest"];
+    sectionIdentifier = [v3 sectionIdentifier];
   }
 
   else
   {
-    v4 = 0;
+    sectionIdentifier = 0;
   }
 
-  v5 = [v4 isEqualToString:@"com.apple.donotdisturb"];
+  v5 = [sectionIdentifier isEqualToString:@"com.apple.donotdisturb"];
 
   return v5 ^ 1;
 }
@@ -207,8 +207,8 @@ uint64_t __65__NCNotificationListCellAccessibility_accessibilityCustomActions__b
 
   else
   {
-    v4 = [(NCNotificationListCellAccessibility *)self _axLookView];
-    v5 = v4 != 0;
+    _axLookView = [(NCNotificationListCellAccessibility *)self _axLookView];
+    v5 = _axLookView != 0;
 
     return v5;
   }
@@ -216,39 +216,39 @@ uint64_t __65__NCNotificationListCellAccessibility_accessibilityCustomActions__b
 
 - (BOOL)accessibilityElementsHidden
 {
-  v3 = [(NCNotificationListCellAccessibility *)self _axIsInCollapsedStack];
-  if (v3)
+  _axIsInCollapsedStack = [(NCNotificationListCellAccessibility *)self _axIsInCollapsedStack];
+  if (_axIsInCollapsedStack)
   {
     if (AXDoesRequestingClientDeserveAutomation())
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(_axIsInCollapsedStack) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = ![(NCNotificationListCellAccessibility *)self _axIsLeadingView];
+      LOBYTE(_axIsInCollapsedStack) = ![(NCNotificationListCellAccessibility *)self _axIsLeadingView];
     }
   }
 
-  return v3;
+  return _axIsInCollapsedStack;
 }
 
 - (id)accessibilityHint
 {
   if ([(NCNotificationListCellAccessibility *)self _axIsInCollapsedStack])
   {
-    v3 = [(NCNotificationListCellAccessibility *)self _accessibilityFindViewAncestor:&__block_literal_global_492 startWithSelf:1];
-    if ([v3 count] > 1)
+    _axLookView = [(NCNotificationListCellAccessibility *)self _accessibilityFindViewAncestor:&__block_literal_global_492 startWithSelf:1];
+    if ([_axLookView count] > 1)
     {
-      v4 = accessibilityLocalizedString(@"notification.cell.collapsed.hint");
+      accessibilityHint = accessibilityLocalizedString(@"notification.cell.collapsed.hint");
       goto LABEL_6;
     }
   }
 
-  v3 = [(NCNotificationListCellAccessibility *)self _axLookView];
-  v4 = [v3 accessibilityHint];
+  _axLookView = [(NCNotificationListCellAccessibility *)self _axLookView];
+  accessibilityHint = [_axLookView accessibilityHint];
 LABEL_6:
-  v5 = v4;
+  v5 = accessibilityHint;
 
   return v5;
 }
@@ -273,7 +273,7 @@ uint64_t __56__NCNotificationListCellAccessibility_accessibilityHint__block_invo
 
 - (id)_axLookView
 {
-  v2 = [(NCNotificationListCellAccessibility *)self _axNCNotificationViewController];
+  _axNCNotificationViewController = [(NCNotificationListCellAccessibility *)self _axNCNotificationViewController];
   NSClassFromString(&cfstr_Ncnotification_38.isa);
   if (objc_opt_isKindOfClass())
   {
@@ -283,7 +283,7 @@ uint64_t __56__NCNotificationListCellAccessibility_accessibilityHint__block_invo
     v10 = __Block_byref_object_copy_;
     v11 = __Block_byref_object_dispose_;
     v12 = 0;
-    v6 = v2;
+    v6 = _axNCNotificationViewController;
     AXPerformSafeBlock();
     v3 = v8[5];
 
@@ -295,7 +295,7 @@ uint64_t __56__NCNotificationListCellAccessibility_accessibilityHint__block_invo
     v4 = AXLogUI();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      [(NCNotificationListCellAccessibility *)v2 _axLookView];
+      [(NCNotificationListCellAccessibility *)_axNCNotificationViewController _axLookView];
     }
 
     v3 = 0;
@@ -318,11 +318,11 @@ uint64_t __50__NCNotificationListCellAccessibility__axLookView__block_invoke(uin
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 superview];
+  superview = [v2 superview];
 
-  if ([v3 safeBoolForKey:@"isGrouped"])
+  if ([superview safeBoolForKey:@"isGrouped"])
   {
-    v4 = [v3 safeUnsignedIntegerForKey:@"count"] > 1;
+    v4 = [superview safeUnsignedIntegerForKey:@"count"] > 1;
   }
 
   else
@@ -337,12 +337,12 @@ uint64_t __50__NCNotificationListCellAccessibility__axLookView__block_invoke(uin
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 superview];
+  superview = [v2 superview];
 
   NSClassFromString(&cfstr_Ncnotification_46.isa);
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = superview;
   }
 
   else
@@ -357,35 +357,35 @@ uint64_t __50__NCNotificationListCellAccessibility__axLookView__block_invoke(uin
 
 - (id)accessibilityLabel
 {
-  v3 = [(NCNotificationListCellAccessibility *)self _axLookView];
+  _axLookView = [(NCNotificationListCellAccessibility *)self _axLookView];
   NSClassFromString(&cfstr_Ncnotification_44.isa);
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 accessibilityLabel];
-    v5 = [v3 safeStringForKey:@"primaryText"];
-    v6 = [v3 safeStringForKey:@"primarySubtitleText"];
-    v7 = [v3 safeStringForKey:@"secondaryText"];
+    accessibilityLabel = [_axLookView accessibilityLabel];
+    v5 = [_axLookView safeStringForKey:@"primaryText"];
+    v6 = [_axLookView safeStringForKey:@"primarySubtitleText"];
+    v7 = [_axLookView safeStringForKey:@"secondaryText"];
     v8 = [(NCNotificationListCellAccessibility *)self _accessibilityDescendantOfType:NSClassFromString(&cfstr_Bsuirelativeda.isa)];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 accessibilityLabel];
-      v11 = __UIAXStringForVariables();
+      accessibilityLabel2 = [v8 accessibilityLabel];
+      accessibilityLabel4 = __UIAXStringForVariables();
     }
 
     else
     {
       v18 = [(NCNotificationListCellAccessibility *)self _accessibilityDescendantOfType:NSClassFromString(&cfstr_Bsuidefaultdat.isa)];
-      v10 = v18;
+      accessibilityLabel2 = v18;
       if (v18)
       {
-        v20 = [v18 accessibilityLabel];
-        v11 = __UIAXStringForVariables();
+        accessibilityLabel3 = [v18 accessibilityLabel];
+        accessibilityLabel4 = __UIAXStringForVariables();
       }
 
       else
       {
-        v11 = 0;
+        accessibilityLabel4 = 0;
       }
     }
   }
@@ -395,49 +395,49 @@ uint64_t __50__NCNotificationListCellAccessibility__axLookView__block_invoke(uin
     NSClassFromString(&cfstr_Ncnotification_43.isa);
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v3 accessibilityLabel];
+      accessibilityLabel4 = [_axLookView accessibilityLabel];
       goto LABEL_12;
     }
 
     objc_opt_class();
-    v12 = [v3 safeValueForKey:@"title"];
-    v4 = __UIAccessibilityCastAsClass();
+    v12 = [_axLookView safeValueForKey:@"title"];
+    accessibilityLabel = __UIAccessibilityCastAsClass();
 
     objc_opt_class();
-    v13 = [v3 safeValueForKey:@"date"];
+    v13 = [_axLookView safeValueForKey:@"date"];
     v14 = __UIAccessibilityCastAsClass();
 
     v5 = AXDateStringForFormat();
 
     objc_opt_class();
-    v15 = [v3 safeValueForKey:@"primaryText"];
+    v15 = [_axLookView safeValueForKey:@"primaryText"];
     v6 = __UIAccessibilityCastAsClass();
 
     objc_opt_class();
-    v16 = [v3 safeValueForKeyPath:@"primarySubtitleText"];
+    v16 = [_axLookView safeValueForKeyPath:@"primarySubtitleText"];
     v7 = __UIAccessibilityCastAsClass();
 
     objc_opt_class();
-    v17 = [v3 safeValueForKey:@"secondaryText"];
+    v17 = [_axLookView safeValueForKey:@"secondaryText"];
     v9 = __UIAccessibilityCastAsClass();
 
-    v11 = __UIAXStringForVariables();
+    accessibilityLabel4 = __UIAXStringForVariables();
   }
 
 LABEL_12:
 
-  return v11;
+  return accessibilityLabel4;
 }
 
 - (id)accessibilityIdentifier
 {
   v6.receiver = self;
   v6.super_class = NCNotificationListCellAccessibility;
-  v2 = [(NCNotificationListCellAccessibility *)&v6 accessibilityIdentifier];
-  v3 = v2;
-  if (v2)
+  accessibilityIdentifier = [(NCNotificationListCellAccessibility *)&v6 accessibilityIdentifier];
+  v3 = accessibilityIdentifier;
+  if (accessibilityIdentifier)
   {
-    v4 = v2;
+    v4 = accessibilityIdentifier;
   }
 
   else
@@ -514,19 +514,19 @@ uint64_t __64__NCNotificationListCellAccessibility__accessibilityCellActions__bl
 - (id)_accessibilityCellButtons
 {
   v2 = [(NCNotificationListCellAccessibility *)self safeValueForKeyPath:@"_swipeInteraction._actionButtonsPresentingView.actionButtonsView.buttonsStackView"];
-  v3 = [v2 _accessibilitySubviews];
+  _accessibilitySubviews = [v2 _accessibilitySubviews];
 
-  return v3;
+  return _accessibilitySubviews;
 }
 
 - (id)automationElements
 {
   v3 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
-  v4 = [(NCNotificationListCellAccessibility *)self _accessibilityCellButtons];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  _accessibilityCellButtons = [(NCNotificationListCellAccessibility *)self _accessibilityCellButtons];
+  [v3 axSafelyAddObjectsFromArray:_accessibilityCellButtons];
 
-  v5 = [(NCNotificationListCellAccessibility *)self _axLookView];
-  v6 = [v5 safeValueForKey:@"_auxiliaryOptionsView"];
+  _axLookView = [(NCNotificationListCellAccessibility *)self _axLookView];
+  v6 = [_axLookView safeValueForKey:@"_auxiliaryOptionsView"];
   [v3 axSafelyAddObject:v6];
 
   v7 = [(NCNotificationListCellAccessibility *)self safeUIViewForKey:@"contentView"];
@@ -535,16 +535,16 @@ uint64_t __64__NCNotificationListCellAccessibility__accessibilityCellActions__bl
   return v3;
 }
 
-- (id)axCustomActionsForActions:(id)a3
+- (id)axCustomActionsForActions:(id)actions
 {
   v23 = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  v4 = [MEMORY[0x29EDB8DE8] array];
+  actionsCopy = actions;
+  array = [MEMORY[0x29EDB8DE8] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = actionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -560,14 +560,14 @@ uint64_t __64__NCNotificationListCellAccessibility__accessibilityCellActions__bl
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 title];
-        if (!v11)
+        title = [v10 title];
+        if (!title)
         {
-          v12 = [v10 image];
-          v11 = [v12 accessibilityLabel];
+          image = [v10 image];
+          title = [image accessibilityLabel];
         }
 
-        if ([v11 length])
+        if ([title length])
         {
           v13 = objc_alloc(MEMORY[0x29EDC78E0]);
           v17[0] = MEMORY[0x29EDCA5F8];
@@ -575,8 +575,8 @@ uint64_t __64__NCNotificationListCellAccessibility__accessibilityCellActions__bl
           v17[2] = __65__NCNotificationListCellAccessibility_axCustomActionsForActions___block_invoke;
           v17[3] = &unk_29F3170E0;
           v17[4] = v10;
-          v14 = [v13 initWithName:v11 actionHandler:v17];
-          [v4 axSafelyAddObject:v14];
+          v14 = [v13 initWithName:title actionHandler:v17];
+          [array axSafelyAddObject:v14];
         }
       }
 
@@ -588,7 +588,7 @@ uint64_t __64__NCNotificationListCellAccessibility__accessibilityCellActions__bl
 
   v15 = *MEMORY[0x29EDCA608];
 
-  return v4;
+  return array;
 }
 
 uint64_t __65__NCNotificationListCellAccessibility_axCustomActionsForActions___block_invoke(uint64_t a1)
@@ -610,8 +610,8 @@ void __65__NCNotificationListCellAccessibility_axCustomActionsForActions___block
 {
   v20 = *MEMORY[0x29EDCA608];
   v3 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
-  v4 = [(NCNotificationListCellAccessibility *)self _axLookView];
-  v5 = [v4 safeValueForKey:@"_auxiliaryOptionsView"];
+  _axLookView = [(NCNotificationListCellAccessibility *)self _axLookView];
+  v5 = [_axLookView safeValueForKey:@"_auxiliaryOptionsView"];
 
   v6 = [v5 safeValueForKey:@"_optionsSummaryLabel"];
   [v3 axSafelyAddObject:v6];
@@ -653,10 +653,10 @@ void __65__NCNotificationListCellAccessibility_axCustomActionsForActions___block
 
 - (BOOL)_axIsInCollapsedStack
 {
-  v2 = [(NCNotificationListCellAccessibility *)self accessibilityContainer];
-  v3 = [v2 safeValueForKey:@"dataSource"];
-  v4 = [v2 accessibilityContainer];
-  v5 = [v4 safeValueForKey:@"dataSource"];
+  accessibilityContainer = [(NCNotificationListCellAccessibility *)self accessibilityContainer];
+  v3 = [accessibilityContainer safeValueForKey:@"dataSource"];
+  v2AccessibilityContainer = [accessibilityContainer accessibilityContainer];
+  v5 = [v2AccessibilityContainer safeValueForKey:@"dataSource"];
 
   NSClassFromString(&cfstr_Ncnotification_47.isa);
   if (objc_opt_isKindOfClass())
@@ -690,8 +690,8 @@ uint64_t __60__NCNotificationListCellAccessibility__axIsInCollapsedStack__block_
 
 - (BOOL)_axIsLeadingView
 {
-  v2 = [(NCNotificationListCellAccessibility *)self accessibilityContainer];
-  v3 = [v2 accessibilityContainer];
+  accessibilityContainer = [(NCNotificationListCellAccessibility *)self accessibilityContainer];
+  v2AccessibilityContainer = [accessibilityContainer accessibilityContainer];
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -699,12 +699,12 @@ uint64_t __60__NCNotificationListCellAccessibility__axIsInCollapsedStack__block_
   v13 = __Block_byref_object_dispose_;
   v14 = 0;
   v7 = MEMORY[0x29EDCA5F8];
-  v8 = v3;
+  v8 = v2AccessibilityContainer;
   AXPerformSafeBlock();
   v4 = v10[5];
 
   _Block_object_dispose(&v9, 8);
-  v5 = [v4 isEqual:{v2, v7, 3221225472, __55__NCNotificationListCellAccessibility__axIsLeadingView__block_invoke, &unk_29F317090}];
+  v5 = [v4 isEqual:{accessibilityContainer, v7, 3221225472, __55__NCNotificationListCellAccessibility__axIsLeadingView__block_invoke, &unk_29F317090}];
 
   return v5;
 }
@@ -723,7 +723,7 @@ uint64_t __55__NCNotificationListCellAccessibility__axIsLeadingView__block_invok
 {
   v5 = *MEMORY[0x29EDCA608];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_29C6DA000, a2, OS_LOG_TYPE_DEBUG, "Found unrecognized selector for VC: %@", &v3, 0xCu);
   v2 = *MEMORY[0x29EDCA608];
 }

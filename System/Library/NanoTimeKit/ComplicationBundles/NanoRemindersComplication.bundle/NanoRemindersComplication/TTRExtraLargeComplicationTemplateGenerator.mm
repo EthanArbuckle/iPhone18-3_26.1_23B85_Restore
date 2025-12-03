@@ -1,10 +1,10 @@
 @interface TTRExtraLargeComplicationTemplateGenerator
-- (id)templateForTimelineModelEntry:(id)a3;
+- (id)templateForTimelineModelEntry:(id)entry;
 @end
 
 @implementation TTRExtraLargeComplicationTemplateGenerator
 
-- (id)templateForTimelineModelEntry:(id)a3
+- (id)templateForTimelineModelEntry:(id)entry
 {
   v3 = [TTRComplicationAsset imageForFamily:1];
   if (!v3)

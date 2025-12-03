@@ -2,8 +2,8 @@
 + (NSString)entitlement;
 + (_TtC9appstored23BackgroundAssetsService)defaultService;
 - (_TtC9appstored23BackgroundAssetsService)init;
-- (void)didReachAssetPackTerminalPhaseForStoreItemIdentifier:(NSNumber *)a3 bundleIdentifier:(NSString *)a4 assetPackIdentifier:(NSString *)a5 assetPackVersion:(NSNumber *)a6 internalBeta:(BOOL)a7 terminalPhase:(int64_t)a8 error:(NSError *)a9 replyHandler:(id)a10;
-- (void)getTestFlightDownloadManifestRequestForStoreItemIdentifier:(NSNumber *)a3 bundleIdentifier:(NSString *)a4 replyHandler:(id)a5;
+- (void)didReachAssetPackTerminalPhaseForStoreItemIdentifier:(NSNumber *)identifier bundleIdentifier:(NSString *)bundleIdentifier assetPackIdentifier:(NSString *)packIdentifier assetPackVersion:(NSNumber *)version internalBeta:(BOOL)beta terminalPhase:(int64_t)phase error:(NSError *)error replyHandler:(id)self0;
+- (void)getTestFlightDownloadManifestRequestForStoreItemIdentifier:(NSNumber *)identifier bundleIdentifier:(NSString *)bundleIdentifier replyHandler:(id)handler;
 @end
 
 @implementation BackgroundAssetsService
@@ -34,15 +34,15 @@
   return [(BackgroundAssetsService *)&v3 init];
 }
 
-- (void)getTestFlightDownloadManifestRequestForStoreItemIdentifier:(NSNumber *)a3 bundleIdentifier:(NSString *)a4 replyHandler:(id)a5
+- (void)getTestFlightDownloadManifestRequestForStoreItemIdentifier:(NSNumber *)identifier bundleIdentifier:(NSString *)bundleIdentifier replyHandler:(id)handler
 {
   v9 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v9 - 8);
   v11 = &v20 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = identifier;
+  v13[3] = bundleIdentifier;
   v13[4] = v12;
   v13[5] = self;
   v14 = type metadata accessor for TaskPriority();
@@ -57,28 +57,28 @@
   v16[3] = 0;
   v16[4] = &unk_100435650;
   v16[5] = v15;
-  v17 = a3;
-  v18 = a4;
-  v19 = self;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v11, &unk_100439270, v16);
 }
 
-- (void)didReachAssetPackTerminalPhaseForStoreItemIdentifier:(NSNumber *)a3 bundleIdentifier:(NSString *)a4 assetPackIdentifier:(NSString *)a5 assetPackVersion:(NSNumber *)a6 internalBeta:(BOOL)a7 terminalPhase:(int64_t)a8 error:(NSError *)a9 replyHandler:(id)a10
+- (void)didReachAssetPackTerminalPhaseForStoreItemIdentifier:(NSNumber *)identifier bundleIdentifier:(NSString *)bundleIdentifier assetPackIdentifier:(NSString *)packIdentifier assetPackVersion:(NSNumber *)version internalBeta:(BOOL)beta terminalPhase:(int64_t)phase error:(NSError *)error replyHandler:(id)self0
 {
-  v30 = a8;
-  v31 = a3;
+  phaseCopy = phase;
+  identifierCopy = identifier;
   v16 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v16 - 8);
-  v18 = &v30 - v17;
-  v19 = _Block_copy(a10);
+  v18 = &phaseCopy - v17;
+  v19 = _Block_copy(handler);
   v20 = swift_allocObject();
-  *(v20 + 16) = a3;
-  *(v20 + 24) = a4;
-  *(v20 + 32) = a5;
-  *(v20 + 40) = a6;
-  *(v20 + 48) = a7;
-  *(v20 + 56) = v30;
-  *(v20 + 64) = a9;
+  *(v20 + 16) = identifier;
+  *(v20 + 24) = bundleIdentifier;
+  *(v20 + 32) = packIdentifier;
+  *(v20 + 40) = version;
+  *(v20 + 48) = beta;
+  *(v20 + 56) = phaseCopy;
+  *(v20 + 64) = error;
   *(v20 + 72) = v19;
   *(v20 + 80) = self;
   v21 = type metadata accessor for TaskPriority();
@@ -93,12 +93,12 @@
   v23[3] = 0;
   v23[4] = &unk_1004366D0;
   v23[5] = v22;
-  v24 = v31;
-  v25 = a4;
-  v26 = a5;
-  v27 = a6;
-  v28 = a9;
-  v29 = self;
+  v24 = identifierCopy;
+  bundleIdentifierCopy = bundleIdentifier;
+  packIdentifierCopy = packIdentifier;
+  versionCopy = version;
+  errorCopy = error;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v18, &unk_1004344E0, v23);
 }
 

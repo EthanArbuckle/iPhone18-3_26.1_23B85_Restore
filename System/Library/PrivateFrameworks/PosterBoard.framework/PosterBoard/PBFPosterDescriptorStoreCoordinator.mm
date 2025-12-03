@@ -1,43 +1,43 @@
 @interface PBFPosterDescriptorStoreCoordinator
-- (id)_accessQueue_buildIdentityForVersion:(unint64_t)a3 supplement:(unint64_t)a4;
+- (id)_accessQueue_buildIdentityForVersion:(unint64_t)version supplement:(unint64_t)supplement;
 @end
 
 @implementation PBFPosterDescriptorStoreCoordinator
 
-- (id)_accessQueue_buildIdentityForVersion:(unint64_t)a3 supplement:(unint64_t)a4
+- (id)_accessQueue_buildIdentityForVersion:(unint64_t)version supplement:(unint64_t)supplement
 {
-  v8 = [(PBFPosterModelStoreCoordinator *)self extensionIdentifier];
-  v9 = [(PBFPosterModelStoreCoordinator *)self descriptorIdentifier];
-  v10 = [(PBFPosterModelStoreCoordinator *)self posterUUID];
-  v11 = [(PBFPosterModelStoreCoordinator *)self role];
-  v12 = v11;
-  if (a4)
+  extensionIdentifier = [(PBFPosterModelStoreCoordinator *)self extensionIdentifier];
+  descriptorIdentifier = [(PBFPosterModelStoreCoordinator *)self descriptorIdentifier];
+  posterUUID = [(PBFPosterModelStoreCoordinator *)self posterUUID];
+  role = [(PBFPosterModelStoreCoordinator *)self role];
+  v12 = role;
+  if (supplement)
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"descriptors don't support multiple supplements : provider=%@ descriptor=%@ role=%@ posterUUID=%@ version=%llu supplement=%llu", v8, v9, v11, v10, a3, a4];
+    supplement = [MEMORY[0x277CCACA8] stringWithFormat:@"descriptors don't support multiple supplements : provider=%@ descriptor=%@ role=%@ posterUUID=%@ version=%llu supplement=%llu", extensionIdentifier, descriptorIdentifier, role, posterUUID, version, supplement];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      [(PBFPosterDescriptorStoreCoordinator *)a2 _accessQueue_buildIdentityForVersion:v15 supplement:?];
+      [(PBFPosterDescriptorStoreCoordinator *)a2 _accessQueue_buildIdentityForVersion:supplement supplement:?];
     }
 
 LABEL_14:
-    [v15 UTF8String];
+    [supplement UTF8String];
     _bs_set_crash_log_message();
     __break(0);
     JUMPOUT(0x21B5D9A44);
   }
 
-  if (!v8 || !v9 || !v10 || !v11)
+  if (!extensionIdentifier || !descriptorIdentifier || !posterUUID || !role)
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"descriptors missing component : provider=%@ descriptor=%@ role=%@ posterUUID=%@ version=%llu supplement=%llu", v8, v9, v11, v10, a3, 0];
+    supplement = [MEMORY[0x277CCACA8] stringWithFormat:@"descriptors missing component : provider=%@ descriptor=%@ role=%@ posterUUID=%@ version=%llu supplement=%llu", extensionIdentifier, descriptorIdentifier, role, posterUUID, version, 0];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      [(PBFPosterDescriptorStoreCoordinator *)a2 _accessQueue_buildIdentityForVersion:v15 supplement:?];
+      [(PBFPosterDescriptorStoreCoordinator *)a2 _accessQueue_buildIdentityForVersion:supplement supplement:?];
     }
 
     goto LABEL_14;
   }
 
-  v13 = [MEMORY[0x277D3EB98] descriptorIdentityWithProvider:v8 identifier:v9 role:v11 posterUUID:v10 version:a3];
+  v13 = [MEMORY[0x277D3EB98] descriptorIdentityWithProvider:extensionIdentifier identifier:descriptorIdentifier role:role posterUUID:posterUUID version:version];
 
   return v13;
 }

@@ -13,10 +13,10 @@
 - (id)description;
 - (id)inverseInfo;
 - (id)rotationUserInfo;
-- (void)addKeyboardNotificationDebuggingInfo:(id)a3;
-- (void)populateEndInfoWithFrame:(CGRect)a3;
-- (void)populateStartInfoWithFrame:(CGRect)a3;
-- (void)populateWithAnimationStyle:(id)a3;
+- (void)addKeyboardNotificationDebuggingInfo:(id)info;
+- (void)populateEndInfoWithFrame:(CGRect)frame;
+- (void)populateStartInfoWithFrame:(CGRect)frame;
+- (void)populateWithAnimationStyle:(id)style;
 @end
 
 @implementation UIInputViewSetNotificationInfo
@@ -31,8 +31,8 @@
     if (+[UIKeyboard usesInputSystemUI])
     {
       v3 = +[_UIKeyboardArbiterClient automaticSharedArbiterClient];
-      v4 = [v3 currentUIState];
-      -[UIInputViewSetNotificationInfo setWasCausedRemotely:](v2, "setWasCausedRemotely:", [v4 isLocal] ^ 1);
+      currentUIState = [v3 currentUIState];
+      -[UIInputViewSetNotificationInfo setWasCausedRemotely:](v2, "setWasCausedRemotely:", [currentUIState isLocal] ^ 1);
     }
 
     else
@@ -122,8 +122,8 @@
   v15 = [v14 numberWithDouble:?];
   [v3 setObject:v15 forKey:@"UIKeyboardAnimationDurationUserInfoKey"];
 
-  v16 = [(UIInputViewSetNotificationInfo *)self options];
-  v17 = [MEMORY[0x1E696AD98] numberWithInteger:(v16 >> 16) & 0xF];
+  options = [(UIInputViewSetNotificationInfo *)self options];
+  v17 = [MEMORY[0x1E696AD98] numberWithInteger:(options >> 16) & 0xF];
   [v3 setObject:v17 forKey:@"UIKeyboardAnimationCurveUserInfoKey"];
 
   if (+[_UIRemoteKeyboards enabled])
@@ -134,13 +134,13 @@
 
   if (+[UIInputWindowController useMetronomeTracking])
   {
-    v19 = [(UIInputViewSetNotificationInfo *)self debugInfo];
-    v20 = [v19 length];
+    debugInfo = [(UIInputViewSetNotificationInfo *)self debugInfo];
+    v20 = [debugInfo length];
 
     if (v20)
     {
-      v21 = [(UIInputViewSetNotificationInfo *)self debugInfo];
-      [v3 setObject:v21 forKey:@"DebugString"];
+      debugInfo2 = [(UIInputViewSetNotificationInfo *)self debugInfo];
+      [v3 setObject:debugInfo2 forKey:@"DebugString"];
     }
   }
 
@@ -193,37 +193,37 @@
 
 - (id)inverseInfo
 {
-  v3 = [objc_opt_class() info];
-  *(v3 + 24) = self->_duration;
-  *(v3 + 32) = self->_options;
+  info = [objc_opt_class() info];
+  *(info + 24) = self->_duration;
+  *(info + 32) = self->_options;
   [(UIInputViewSetNotificationInfo *)self endFrame];
-  [v3 populateStartInfoWithFrame:?];
+  [info populateStartInfoWithFrame:?];
   [(UIInputViewSetNotificationInfo *)self beginFrame];
-  [v3 populateEndInfoWithFrame:?];
+  [info populateEndInfoWithFrame:?];
 
-  return v3;
+  return info;
 }
 
 - (id)rotationUserInfo
 {
-  v2 = [(UIInputViewSetNotificationInfo *)self userInfo];
-  [v2 removeObjectForKey:@"UIKeyboardAnimationCurveUserInfoKey"];
-  [v2 removeObjectForKey:@"UIKeyboardBoundsUserInfoKey"];
+  userInfo = [(UIInputViewSetNotificationInfo *)self userInfo];
+  [userInfo removeObjectForKey:@"UIKeyboardAnimationCurveUserInfoKey"];
+  [userInfo removeObjectForKey:@"UIKeyboardBoundsUserInfoKey"];
 
-  return v2;
+  return userInfo;
 }
 
 - (NSDictionary)privateUserInfo
 {
-  v3 = [(UIInputViewSetNotificationInfo *)self userInfo];
+  userInfo = [(UIInputViewSetNotificationInfo *)self userInfo];
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[UIInputViewSetNotificationInfo changedAccessoryOnly](self, "changedAccessoryOnly")}];
-  [v3 setObject:v4 forKey:@"UIKeyboardChangedAccessoryOnly"];
+  [userInfo setObject:v4 forKey:@"UIKeyboardChangedAccessoryOnly"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[UIInputViewSetNotificationInfo assistantOnScreenOnly](self, "assistantOnScreenOnly")}];
-  [v3 setObject:v5 forKey:@"UIKeyboardAssistantOnScreenOnlyUserInfoKey"];
+  [userInfo setObject:v5 forKey:@"UIKeyboardAssistantOnScreenOnlyUserInfoKey"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[UIInputViewSetNotificationInfo assistantPosition](self, "assistantPosition")}];
-  [v3 setObject:v6 forKey:@"UIKeyboardAssistantPositionUserInfoKey"];
+  [userInfo setObject:v6 forKey:@"UIKeyboardAssistantPositionUserInfoKey"];
 
   v7 = MEMORY[0x1E696B098];
   [(UIInputViewSetNotificationInfo *)self assistantFrame];
@@ -232,10 +232,10 @@
   v29[2] = v10;
   v29[3] = v11;
   v12 = [v7 valueWithBytes:v29 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-  [v3 setObject:v12 forKey:@"UIKeyboardFloatingRectUserInfoKey"];
+  [userInfo setObject:v12 forKey:@"UIKeyboardFloatingRectUserInfoKey"];
 
   v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[UIInputViewSetNotificationInfo dueToRotation](self, "dueToRotation")}];
-  [v3 setObject:v13 forKey:@"UIKeyboardOriginatedFromRotationUserInfoKey"];
+  [userInfo setObject:v13 forKey:@"UIKeyboardOriginatedFromRotationUserInfoKey"];
 
   v14 = +[_UIRemoteKeyboards sharedRemoteKeyboards];
   [v14 keyboardFrameIncludingRemoteIAV];
@@ -262,27 +262,27 @@
   v32.size.width = v20;
   v32.size.height = v22;
   v27 = [MEMORY[0x1E696AD98] numberWithDouble:CGRectGetHeight(v32)];
-  [v3 setObject:v27 forKey:@"UIKeyboardEndIntersectionHeightIncludingAccessory"];
+  [userInfo setObject:v27 forKey:@"UIKeyboardEndIntersectionHeightIncludingAccessory"];
 
-  return v3;
+  return userInfo;
 }
 
-- (void)populateWithAnimationStyle:(id)a3
+- (void)populateWithAnimationStyle:(id)style
 {
-  v4 = a3;
-  [v4 duration];
+  styleCopy = style;
+  [styleCopy duration];
   [(UIInputViewSetNotificationInfo *)self setDuration:?];
-  v5 = [v4 extraOptions];
+  extraOptions = [styleCopy extraOptions];
 
-  [(UIInputViewSetNotificationInfo *)self setOptions:v5 | 0x70000];
+  [(UIInputViewSetNotificationInfo *)self setOptions:extraOptions | 0x70000];
 }
 
-- (void)populateStartInfoWithFrame:(CGRect)a3
+- (void)populateStartInfoWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIInputViewSetNotificationInfo *)self setBeginFrame:?];
   v11.origin.x = x;
   v11.origin.y = y;
@@ -298,12 +298,12 @@
   [(UIInputViewSetNotificationInfo *)self setBeginCenter:MidX, MidY];
 }
 
-- (void)populateEndInfoWithFrame:(CGRect)a3
+- (void)populateEndInfoWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIInputViewSetNotificationInfo *)self setEndFrame:?];
   v12.origin.x = x;
   v12.origin.y = y;
@@ -321,25 +321,25 @@
   [(UIInputViewSetNotificationInfo *)self setBounds:v9, v10, width, height];
 }
 
-- (void)addKeyboardNotificationDebuggingInfo:(id)a3
+- (void)addKeyboardNotificationDebuggingInfo:(id)info
 {
-  v9 = a3;
+  infoCopy = info;
   if (os_variant_has_internal_diagnostics())
   {
-    v4 = [(UIInputViewSetNotificationInfo *)self debugInfo];
-    v5 = [v4 length];
+    debugInfo = [(UIInputViewSetNotificationInfo *)self debugInfo];
+    v5 = [debugInfo length];
 
     if (v5)
     {
       v6 = MEMORY[0x1E696AEC0];
-      v7 = [(UIInputViewSetNotificationInfo *)self debugInfo];
-      v8 = [v6 stringWithFormat:@"%@ > %@", v7, v9];
-      [(UIInputViewSetNotificationInfo *)self setDebugInfo:v8];
+      debugInfo2 = [(UIInputViewSetNotificationInfo *)self debugInfo];
+      infoCopy = [v6 stringWithFormat:@"%@ > %@", debugInfo2, infoCopy];
+      [(UIInputViewSetNotificationInfo *)self setDebugInfo:infoCopy];
     }
 
     else
     {
-      [(UIInputViewSetNotificationInfo *)self setDebugInfo:v9];
+      [(UIInputViewSetNotificationInfo *)self setDebugInfo:infoCopy];
     }
   }
 }
@@ -348,16 +348,16 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AD60]);
   v4 = objc_opt_class();
-  v5 = [(UIInputViewSetNotificationInfo *)self userInfo];
-  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, v5];
+  userInfo = [(UIInputViewSetNotificationInfo *)self userInfo];
+  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, userInfo];
 
-  v7 = [(UIInputViewSetNotificationInfo *)self debugInfo];
-  v8 = [v7 length];
+  debugInfo = [(UIInputViewSetNotificationInfo *)self debugInfo];
+  v8 = [debugInfo length];
 
   if (v8)
   {
-    v9 = [(UIInputViewSetNotificationInfo *)self debugInfo];
-    [v6 appendFormat:@" Notifications debug: %@", v9];
+    debugInfo2 = [(UIInputViewSetNotificationInfo *)self debugInfo];
+    [v6 appendFormat:@" Notifications debug: %@", debugInfo2];
   }
 
   return v6;

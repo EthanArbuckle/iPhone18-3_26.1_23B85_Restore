@@ -1,15 +1,15 @@
 @interface MediaControlsStyleCoordinator
-- (void)animateAlongsideTransition:(id)a3 completion:(id)a4;
+- (void)animateAlongsideTransition:(id)transition completion:(id)completion;
 - (void)performAnimations;
 - (void)performCompletions;
 @end
 
 @implementation MediaControlsStyleCoordinator
 
-- (void)animateAlongsideTransition:(id)a3 completion:(id)a4
+- (void)animateAlongsideTransition:(id)transition completion:(id)completion
 {
-  aBlock = a3;
-  v6 = a4;
+  aBlock = transition;
+  completionCopy = completion;
   if (aBlock)
   {
     animations = self->_animations;
@@ -29,19 +29,19 @@
     }
   }
 
-  if (v6)
+  if (completionCopy)
   {
     completions = self->_completions;
     if (completions)
     {
-      v13 = _Block_copy(v6);
+      v13 = _Block_copy(completionCopy);
       [(NSMutableArray *)completions addObject:v13];
     }
 
     else
     {
       v14 = MEMORY[0x1E695DF70];
-      v13 = _Block_copy(v6);
+      v13 = _Block_copy(completionCopy);
       v15 = [v14 arrayWithObject:v13];
       v16 = self->_completions;
       self->_completions = v15;

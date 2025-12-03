@@ -1,47 +1,47 @@
 @interface REMCalDAVNotification
 + (id)newObjectID;
-+ (id)objectIDWithUUID:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)objectIDWithUUID:(id)d;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (NSString)externalIdentifierForMarkedForDeletionObject;
-- (REMCalDAVNotification)initWithCoder:(id)a3;
-- (id)initCalDAVNotificationWithObjectID:(id)a3 accountID:(id)a4 listID:(id)a5 uuidString:(id)a6 hostURL:(id)a7 externalIdentifier:(id)a8 externalModificationTag:(id)a9;
+- (REMCalDAVNotification)initWithCoder:(id)coder;
+- (id)initCalDAVNotificationWithObjectID:(id)d accountID:(id)iD listID:(id)listID uuidString:(id)string hostURL:(id)l externalIdentifier:(id)identifier externalModificationTag:(id)tag;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMCalDAVNotification
 
-- (id)initCalDAVNotificationWithObjectID:(id)a3 accountID:(id)a4 listID:(id)a5 uuidString:(id)a6 hostURL:(id)a7 externalIdentifier:(id)a8 externalModificationTag:(id)a9
+- (id)initCalDAVNotificationWithObjectID:(id)d accountID:(id)iD listID:(id)listID uuidString:(id)string hostURL:(id)l externalIdentifier:(id)identifier externalModificationTag:(id)tag
 {
-  v31 = a3;
-  v30 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  dCopy = d;
+  iDCopy = iD;
+  listIDCopy = listID;
+  stringCopy = string;
+  lCopy = l;
+  identifierCopy = identifier;
+  tagCopy = tag;
   v32.receiver = self;
   v32.super_class = REMCalDAVNotification;
   v21 = [(REMCalDAVNotification *)&v32 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_objectID, a3);
-    objc_storeStrong(&v22->_accountID, a4);
-    objc_storeStrong(&v22->_listID, a5);
-    v23 = [v17 copy];
+    objc_storeStrong(&v21->_objectID, d);
+    objc_storeStrong(&v22->_accountID, iD);
+    objc_storeStrong(&v22->_listID, listID);
+    v23 = [stringCopy copy];
     uuidString = v22->_uuidString;
     v22->_uuidString = v23;
 
-    v25 = [v18 copy];
+    v25 = [lCopy copy];
     hostURL = v22->_hostURL;
     v22->_hostURL = v25;
 
-    v27 = [v19 copy];
+    v27 = [identifierCopy copy];
     [(REMCalDAVNotification *)v22 setExternalIdentifier:v27];
 
-    v28 = [v20 copy];
+    v28 = [tagCopy copy];
     [(REMCalDAVNotification *)v22 setExternalModificationTag:v28];
 
     [(REMCalDAVNotification *)v22 setDaPushKey:&stru_1F0D67F00];
@@ -51,103 +51,103 @@
   return v22;
 }
 
-- (REMCalDAVNotification)initWithCoder:(id)a3
+- (REMCalDAVNotification)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = REMCalDAVNotification;
   v5 = [(REMCalDAVNotification *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
     objectID = v5->_objectID;
     v5->_objectID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
     accountID = v5->_accountID;
     v5->_accountID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"listID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"listID"];
     listID = v5->_listID;
     v5->_listID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuidString"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuidString"];
     uuidString = v5->_uuidString;
     v5->_uuidString = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hostURL"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hostURL"];
     hostURL = v5->_hostURL;
     v5->_hostURL = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalIdentifier"];
     [(REMCalDAVNotification *)v5 setExternalIdentifier:v16];
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalModificationTag"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalModificationTag"];
     [(REMCalDAVNotification *)v5 setExternalModificationTag:v17];
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"daSyncToken"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"daSyncToken"];
     [(REMCalDAVNotification *)v5 setDaSyncToken:v18];
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"daPushKey"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"daPushKey"];
     [(REMCalDAVNotification *)v5 setDaPushKey:v19];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMCalDAVNotification *)self objectID];
-  [v4 encodeObject:v5 forKey:@"objectID"];
+  coderCopy = coder;
+  objectID = [(REMCalDAVNotification *)self objectID];
+  [coderCopy encodeObject:objectID forKey:@"objectID"];
 
-  v6 = [(REMCalDAVNotification *)self accountID];
-  [v4 encodeObject:v6 forKey:@"accountID"];
+  accountID = [(REMCalDAVNotification *)self accountID];
+  [coderCopy encodeObject:accountID forKey:@"accountID"];
 
-  v7 = [(REMCalDAVNotification *)self listID];
-  [v4 encodeObject:v7 forKey:@"listID"];
+  listID = [(REMCalDAVNotification *)self listID];
+  [coderCopy encodeObject:listID forKey:@"listID"];
 
-  v8 = [(REMCalDAVNotification *)self uuidString];
-  [v4 encodeObject:v8 forKey:@"uuidString"];
+  uuidString = [(REMCalDAVNotification *)self uuidString];
+  [coderCopy encodeObject:uuidString forKey:@"uuidString"];
 
-  v9 = [(REMCalDAVNotification *)self hostURL];
-  [v4 encodeObject:v9 forKey:@"hostURL"];
+  hostURL = [(REMCalDAVNotification *)self hostURL];
+  [coderCopy encodeObject:hostURL forKey:@"hostURL"];
 
-  v10 = [(REMCalDAVNotification *)self externalIdentifier];
-  [v4 encodeObject:v10 forKey:@"externalIdentifier"];
+  externalIdentifier = [(REMCalDAVNotification *)self externalIdentifier];
+  [coderCopy encodeObject:externalIdentifier forKey:@"externalIdentifier"];
 
-  v11 = [(REMCalDAVNotification *)self externalModificationTag];
-  [v4 encodeObject:v11 forKey:@"externalModificationTag"];
+  externalModificationTag = [(REMCalDAVNotification *)self externalModificationTag];
+  [coderCopy encodeObject:externalModificationTag forKey:@"externalModificationTag"];
 
-  v12 = [(REMCalDAVNotification *)self daSyncToken];
-  [v4 encodeObject:v12 forKey:@"daSyncToken"];
+  daSyncToken = [(REMCalDAVNotification *)self daSyncToken];
+  [coderCopy encodeObject:daSyncToken forKey:@"daSyncToken"];
 
-  v13 = [(REMCalDAVNotification *)self daPushKey];
-  [v4 encodeObject:v13 forKey:@"daPushKey"];
+  daPushKey = [(REMCalDAVNotification *)self daPushKey];
+  [coderCopy encodeObject:daPushKey forKey:@"daPushKey"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy != self)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMCalDAVNotification *)self objectID];
-      v8 = [(REMCalDAVNotification *)v6 objectID];
-      v9 = v8;
-      if (v7 == v8)
+      objectID = [(REMCalDAVNotification *)self objectID];
+      objectID2 = [(REMCalDAVNotification *)v6 objectID];
+      v9 = objectID2;
+      if (objectID == objectID2)
       {
       }
 
       else
       {
-        v10 = [(REMCalDAVNotification *)self objectID];
-        v11 = [(REMCalDAVNotification *)v6 objectID];
-        v12 = [v10 isEqual:v11];
+        objectID3 = [(REMCalDAVNotification *)self objectID];
+        objectID4 = [(REMCalDAVNotification *)v6 objectID];
+        v12 = [objectID3 isEqual:objectID4];
 
         if (!v12)
         {
@@ -155,18 +155,18 @@
         }
       }
 
-      v14 = [(REMCalDAVNotification *)self accountID];
-      v15 = [(REMCalDAVNotification *)v6 accountID];
-      v16 = v15;
-      if (v14 == v15)
+      accountID = [(REMCalDAVNotification *)self accountID];
+      accountID2 = [(REMCalDAVNotification *)v6 accountID];
+      v16 = accountID2;
+      if (accountID == accountID2)
       {
       }
 
       else
       {
-        v17 = [(REMCalDAVNotification *)self accountID];
-        v18 = [(REMCalDAVNotification *)v6 accountID];
-        v19 = [v17 isEqual:v18];
+        accountID3 = [(REMCalDAVNotification *)self accountID];
+        accountID4 = [(REMCalDAVNotification *)v6 accountID];
+        v19 = [accountID3 isEqual:accountID4];
 
         if (!v19)
         {
@@ -174,18 +174,18 @@
         }
       }
 
-      v20 = [(REMCalDAVNotification *)self listID];
-      v21 = [(REMCalDAVNotification *)v6 listID];
-      v22 = v21;
-      if (v20 == v21)
+      listID = [(REMCalDAVNotification *)self listID];
+      listID2 = [(REMCalDAVNotification *)v6 listID];
+      v22 = listID2;
+      if (listID == listID2)
       {
       }
 
       else
       {
-        v23 = [(REMCalDAVNotification *)self listID];
-        v24 = [(REMCalDAVNotification *)v6 listID];
-        v25 = [v23 isEqual:v24];
+        listID3 = [(REMCalDAVNotification *)self listID];
+        listID4 = [(REMCalDAVNotification *)v6 listID];
+        v25 = [listID3 isEqual:listID4];
 
         if (!v25)
         {
@@ -193,18 +193,18 @@
         }
       }
 
-      v26 = [(REMCalDAVNotification *)self uuidString];
-      v27 = [(REMCalDAVNotification *)v6 uuidString];
-      v28 = v27;
-      if (v26 == v27)
+      uuidString = [(REMCalDAVNotification *)self uuidString];
+      uuidString2 = [(REMCalDAVNotification *)v6 uuidString];
+      v28 = uuidString2;
+      if (uuidString == uuidString2)
       {
       }
 
       else
       {
-        v29 = [(REMCalDAVNotification *)self uuidString];
-        v30 = [(REMCalDAVNotification *)v6 uuidString];
-        v31 = [v29 isEqual:v30];
+        uuidString3 = [(REMCalDAVNotification *)self uuidString];
+        uuidString4 = [(REMCalDAVNotification *)v6 uuidString];
+        v31 = [uuidString3 isEqual:uuidString4];
 
         if (!v31)
         {
@@ -212,18 +212,18 @@
         }
       }
 
-      v32 = [(REMCalDAVNotification *)self hostURL];
-      v33 = [(REMCalDAVNotification *)v6 hostURL];
-      v34 = v33;
-      if (v32 == v33)
+      hostURL = [(REMCalDAVNotification *)self hostURL];
+      hostURL2 = [(REMCalDAVNotification *)v6 hostURL];
+      v34 = hostURL2;
+      if (hostURL == hostURL2)
       {
       }
 
       else
       {
-        v35 = [(REMCalDAVNotification *)self hostURL];
-        v36 = [(REMCalDAVNotification *)v6 hostURL];
-        v37 = [v35 isEqual:v36];
+        hostURL3 = [(REMCalDAVNotification *)self hostURL];
+        hostURL4 = [(REMCalDAVNotification *)v6 hostURL];
+        v37 = [hostURL3 isEqual:hostURL4];
 
         if (!v37)
         {
@@ -231,18 +231,18 @@
         }
       }
 
-      v38 = [(REMCalDAVNotification *)self externalIdentifier];
-      v39 = [(REMCalDAVNotification *)v6 externalIdentifier];
-      v40 = v39;
-      if (v38 == v39)
+      externalIdentifier = [(REMCalDAVNotification *)self externalIdentifier];
+      externalIdentifier2 = [(REMCalDAVNotification *)v6 externalIdentifier];
+      v40 = externalIdentifier2;
+      if (externalIdentifier == externalIdentifier2)
       {
       }
 
       else
       {
-        v41 = [(REMCalDAVNotification *)self externalIdentifier];
-        v42 = [(REMCalDAVNotification *)v6 externalIdentifier];
-        v43 = [v41 isEqual:v42];
+        externalIdentifier3 = [(REMCalDAVNotification *)self externalIdentifier];
+        externalIdentifier4 = [(REMCalDAVNotification *)v6 externalIdentifier];
+        v43 = [externalIdentifier3 isEqual:externalIdentifier4];
 
         if (!v43)
         {
@@ -250,18 +250,18 @@
         }
       }
 
-      v44 = [(REMCalDAVNotification *)self externalModificationTag];
-      v45 = [(REMCalDAVNotification *)v6 externalModificationTag];
-      v46 = v45;
-      if (v44 == v45)
+      externalModificationTag = [(REMCalDAVNotification *)self externalModificationTag];
+      externalModificationTag2 = [(REMCalDAVNotification *)v6 externalModificationTag];
+      v46 = externalModificationTag2;
+      if (externalModificationTag == externalModificationTag2)
       {
       }
 
       else
       {
-        v47 = [(REMCalDAVNotification *)self externalModificationTag];
-        v48 = [(REMCalDAVNotification *)v6 externalModificationTag];
-        v49 = [v47 isEqual:v48];
+        externalModificationTag3 = [(REMCalDAVNotification *)self externalModificationTag];
+        externalModificationTag4 = [(REMCalDAVNotification *)v6 externalModificationTag];
+        v49 = [externalModificationTag3 isEqual:externalModificationTag4];
 
         if (!v49)
         {
@@ -269,18 +269,18 @@
         }
       }
 
-      v50 = [(REMCalDAVNotification *)self daSyncToken];
-      v51 = [(REMCalDAVNotification *)v6 daSyncToken];
-      v52 = v51;
-      if (v50 == v51)
+      daSyncToken = [(REMCalDAVNotification *)self daSyncToken];
+      daSyncToken2 = [(REMCalDAVNotification *)v6 daSyncToken];
+      v52 = daSyncToken2;
+      if (daSyncToken == daSyncToken2)
       {
       }
 
       else
       {
-        v53 = [(REMCalDAVNotification *)self daSyncToken];
-        v54 = [(REMCalDAVNotification *)v6 daSyncToken];
-        v55 = [v53 isEqual:v54];
+        daSyncToken3 = [(REMCalDAVNotification *)self daSyncToken];
+        daSyncToken4 = [(REMCalDAVNotification *)v6 daSyncToken];
+        v55 = [daSyncToken3 isEqual:daSyncToken4];
 
         if (!v55)
         {
@@ -288,18 +288,18 @@
         }
       }
 
-      v57 = [(REMCalDAVNotification *)self daPushKey];
-      v58 = [(REMCalDAVNotification *)v6 daPushKey];
-      if (v57 == v58)
+      daPushKey = [(REMCalDAVNotification *)self daPushKey];
+      daPushKey2 = [(REMCalDAVNotification *)v6 daPushKey];
+      if (daPushKey == daPushKey2)
       {
         v13 = 1;
       }
 
       else
       {
-        v59 = [(REMCalDAVNotification *)self daPushKey];
-        v60 = [(REMCalDAVNotification *)v6 daPushKey];
-        v13 = [v59 isEqual:v60];
+        daPushKey3 = [(REMCalDAVNotification *)self daPushKey];
+        daPushKey4 = [(REMCalDAVNotification *)v6 daPushKey];
+        v13 = [daPushKey3 isEqual:daPushKey4];
       }
 
       goto LABEL_35;
@@ -320,8 +320,8 @@ LABEL_36:
 
 - (unint64_t)hash
 {
-  v2 = [(REMCalDAVNotification *)self objectID];
-  v3 = [v2 hash];
+  objectID = [(REMCalDAVNotification *)self objectID];
+  v3 = [objectID hash];
 
   return v3;
 }
@@ -330,29 +330,29 @@ LABEL_36:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMCalDAVNotification *)self objectID];
-  v6 = [(REMCalDAVNotification *)self listID];
-  v7 = [(REMCalDAVNotification *)self uuidString];
-  v8 = [(REMCalDAVNotification *)self hostURL];
-  v9 = [(REMCalDAVNotification *)self externalIdentifier];
-  v10 = [v3 stringWithFormat:@"<%@: %p objectID: %@, owner: %@, uuid: %@, hostURL: %@, extID: %@>", v4, self, v5, v6, v7, v8, v9];
+  objectID = [(REMCalDAVNotification *)self objectID];
+  listID = [(REMCalDAVNotification *)self listID];
+  uuidString = [(REMCalDAVNotification *)self uuidString];
+  hostURL = [(REMCalDAVNotification *)self hostURL];
+  externalIdentifier = [(REMCalDAVNotification *)self externalIdentifier];
+  v10 = [v3 stringWithFormat:@"<%@: %p objectID: %@, owner: %@, uuid: %@, hostURL: %@, extID: %@>", v4, self, objectID, listID, uuidString, hostURL, externalIdentifier];
 
   return v10;
 }
 
 + (id)newObjectID
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [a1 objectIDWithUUID:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v4 = [self objectIDWithUUID:uUID];
 
   return v4;
 }
 
-+ (id)objectIDWithUUID:(id)a3
++ (id)objectIDWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 cdEntityName];
-  v6 = [REMObjectID objectIDWithUUID:v4 entityName:v5];
+  dCopy = d;
+  cdEntityName = [self cdEntityName];
+  v6 = [REMObjectID objectIDWithUUID:dCopy entityName:cdEntityName];
 
   return v6;
 }
@@ -365,8 +365,8 @@ LABEL_36:
     [(REMCalDAVNotification *)v3 externalIdentifierForMarkedForDeletionObject];
   }
 
-  v4 = [(REMCalDAVNotification *)self externalIdentifier];
-  v5 = [REMExternalSyncMetadataUtils decodeExternalIdentifierForMarkedForDeletionObject:v4];
+  externalIdentifier = [(REMCalDAVNotification *)self externalIdentifier];
+  v5 = [REMExternalSyncMetadataUtils decodeExternalIdentifierForMarkedForDeletionObject:externalIdentifier];
 
   return v5;
 }

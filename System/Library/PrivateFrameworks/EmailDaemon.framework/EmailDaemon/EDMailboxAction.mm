@@ -1,55 +1,55 @@
 @interface EDMailboxAction
-+ (id)actionWithID:(int64_t)a3 toCreateMailbox:(int64_t)a4 mailboxName:(id)a5;
-+ (id)actionWithID:(int64_t)a3 toDeleteMailbox:(int64_t)a4 mailboxName:(id)a5;
-+ (id)actionWithID:(int64_t)a3 toRenameMailbox:(int64_t)a4 mailboxName:(id)a5 toName:(id)a6;
-- (EDMailboxAction)initWithID:(int64_t)a3 actionType:(int64_t)a4 mailboxID:(int64_t)a5 mailboxName:(id)a6 renamedMailboxName:(id)a7;
++ (id)actionWithID:(int64_t)d toCreateMailbox:(int64_t)mailbox mailboxName:(id)name;
++ (id)actionWithID:(int64_t)d toDeleteMailbox:(int64_t)mailbox mailboxName:(id)name;
++ (id)actionWithID:(int64_t)d toRenameMailbox:(int64_t)mailbox mailboxName:(id)name toName:(id)toName;
+- (EDMailboxAction)initWithID:(int64_t)d actionType:(int64_t)type mailboxID:(int64_t)iD mailboxName:(id)name renamedMailboxName:(id)mailboxName;
 @end
 
 @implementation EDMailboxAction
 
-+ (id)actionWithID:(int64_t)a3 toCreateMailbox:(int64_t)a4 mailboxName:(id)a5
++ (id)actionWithID:(int64_t)d toCreateMailbox:(int64_t)mailbox mailboxName:(id)name
 {
-  v8 = a5;
-  v9 = [[a1 alloc] initWithID:a3 actionType:1 mailboxID:a4 mailboxName:v8 renamedMailboxName:0];
+  nameCopy = name;
+  v9 = [[self alloc] initWithID:d actionType:1 mailboxID:mailbox mailboxName:nameCopy renamedMailboxName:0];
 
   return v9;
 }
 
-+ (id)actionWithID:(int64_t)a3 toDeleteMailbox:(int64_t)a4 mailboxName:(id)a5
++ (id)actionWithID:(int64_t)d toDeleteMailbox:(int64_t)mailbox mailboxName:(id)name
 {
-  v8 = a5;
-  v9 = [[a1 alloc] initWithID:a3 actionType:2 mailboxID:a4 mailboxName:v8 renamedMailboxName:0];
+  nameCopy = name;
+  v9 = [[self alloc] initWithID:d actionType:2 mailboxID:mailbox mailboxName:nameCopy renamedMailboxName:0];
 
   return v9;
 }
 
-+ (id)actionWithID:(int64_t)a3 toRenameMailbox:(int64_t)a4 mailboxName:(id)a5 toName:(id)a6
++ (id)actionWithID:(int64_t)d toRenameMailbox:(int64_t)mailbox mailboxName:(id)name toName:(id)toName
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [[a1 alloc] initWithID:a3 actionType:3 mailboxID:a4 mailboxName:v10 renamedMailboxName:v11];
+  nameCopy = name;
+  toNameCopy = toName;
+  v12 = [[self alloc] initWithID:d actionType:3 mailboxID:mailbox mailboxName:nameCopy renamedMailboxName:toNameCopy];
 
   return v12;
 }
 
-- (EDMailboxAction)initWithID:(int64_t)a3 actionType:(int64_t)a4 mailboxID:(int64_t)a5 mailboxName:(id)a6 renamedMailboxName:(id)a7
+- (EDMailboxAction)initWithID:(int64_t)d actionType:(int64_t)type mailboxID:(int64_t)iD mailboxName:(id)name renamedMailboxName:(id)mailboxName
 {
-  v12 = a6;
-  v13 = a7;
+  nameCopy = name;
+  mailboxNameCopy = mailboxName;
   v21.receiver = self;
   v21.super_class = EDMailboxAction;
   v14 = [(EDMailboxAction *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    v14->_actionID = a3;
-    v14->_actionType = a4;
-    v14->_mailboxID = a5;
-    v16 = [v12 copy];
+    v14->_actionID = d;
+    v14->_actionType = type;
+    v14->_mailboxID = iD;
+    v16 = [nameCopy copy];
     mailboxName = v15->_mailboxName;
     v15->_mailboxName = v16;
 
-    v18 = [v13 copy];
+    v18 = [mailboxNameCopy copy];
     renamedMailboxName = v15->_renamedMailboxName;
     v15->_renamedMailboxName = v18;
   }

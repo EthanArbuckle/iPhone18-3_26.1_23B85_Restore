@@ -1,9 +1,9 @@
 @interface IMChatScrutinyController
 + (id)sharedController;
-- (id)transcriptRenderingMetadataForChatIdentifier:(id)a3;
-- (void)markMessageAsCorrupt:(id)a3;
-- (void)markMessageAsNotCorrupt:(id)a3;
-- (void)setTranscriptRenderingMetadata:(id)a3 forChatIdentifier:(id)a4;
+- (id)transcriptRenderingMetadataForChatIdentifier:(id)identifier;
+- (void)markMessageAsCorrupt:(id)corrupt;
+- (void)markMessageAsNotCorrupt:(id)corrupt;
+- (void)setTranscriptRenderingMetadata:(id)metadata forChatIdentifier:(id)identifier;
 @end
 
 @implementation IMChatScrutinyController
@@ -20,26 +20,26 @@
   return v3;
 }
 
-- (void)markMessageAsCorrupt:(id)a3
+- (void)markMessageAsCorrupt:(id)corrupt
 {
-  v3 = a3;
+  corruptCopy = corrupt;
   v10 = objc_msgSend_sharedController(IMDaemonController, v4, v5);
   v8 = objc_msgSend_remoteDaemon(v10, v6, v7);
-  objc_msgSend_markMessageAsCorrupt_setCorrupt_(v8, v9, v3, 1);
+  objc_msgSend_markMessageAsCorrupt_setCorrupt_(v8, v9, corruptCopy, 1);
 }
 
-- (void)markMessageAsNotCorrupt:(id)a3
+- (void)markMessageAsNotCorrupt:(id)corrupt
 {
-  v3 = a3;
+  corruptCopy = corrupt;
   v10 = objc_msgSend_sharedController(IMDaemonController, v4, v5);
   v8 = objc_msgSend_remoteDaemon(v10, v6, v7);
-  objc_msgSend_markMessageAsCorrupt_setCorrupt_(v8, v9, v3, 0);
+  objc_msgSend_markMessageAsCorrupt_setCorrupt_(v8, v9, corruptCopy, 0);
 }
 
-- (id)transcriptRenderingMetadataForChatIdentifier:(id)a3
+- (id)transcriptRenderingMetadataForChatIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (!objc_msgSend_length(v4, v5, v6))
+  identifierCopy = identifier;
+  if (!objc_msgSend_length(identifierCopy, v5, v6))
   {
     v28 = 0;
     goto LABEL_11;
@@ -47,7 +47,7 @@
 
   v9 = objc_msgSend_scrutinyInfo(self, v7, v8);
   v11 = objc_msgSend_objectForKeyedSubscript_(v9, v10, @"cid");
-  isEqualToString = objc_msgSend_isEqualToString_(v11, v12, v4);
+  isEqualToString = objc_msgSend_isEqualToString_(v11, v12, identifierCopy);
 
   if (!isEqualToString)
   {
@@ -65,7 +65,7 @@
     objc_msgSend__maxDurationForScrutinyMode(self, v22, v23);
     if (v25 < v19 || v25 - v19 > v27)
     {
-      objc_msgSend_setTranscriptRenderingMetadata_forChatIdentifier_(self, v26, 0, v4);
+      objc_msgSend_setTranscriptRenderingMetadata_forChatIdentifier_(self, v26, 0, identifierCopy);
 LABEL_9:
       v28 = 0;
       goto LABEL_10;
@@ -80,14 +80,14 @@ LABEL_11:
   return v28;
 }
 
-- (void)setTranscriptRenderingMetadata:(id)a3 forChatIdentifier:(id)a4
+- (void)setTranscriptRenderingMetadata:(id)metadata forChatIdentifier:(id)identifier
 {
-  v23 = a3;
-  v7 = a4;
-  if (v7 && (objc_msgSend_allKeys(v23, v5, v6), v8 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend_count(v8, v9, v10), v8, v11))
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  if (identifierCopy && (objc_msgSend_allKeys(metadataCopy, v5, v6), v8 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend_count(v8, v9, v10), v8, v11))
   {
-    v14 = objc_msgSend_mutableCopy(v23, v12, v13);
-    objc_msgSend_setObject_forKeyedSubscript_(v14, v15, v7, @"cid");
+    v14 = objc_msgSend_mutableCopy(metadataCopy, v12, v13);
+    objc_msgSend_setObject_forKeyedSubscript_(v14, v15, identifierCopy, @"cid");
     v16 = MEMORY[0x1E696AD98];
     objc_msgSend_timeIntervalSinceReferenceDate(MEMORY[0x1E695DF00], v17, v18);
     v21 = objc_msgSend_numberWithDouble_(v16, v19, v20);

@@ -1,11 +1,11 @@
 @interface MAAIRBUtilities
-+ (id)createMAAIRBAssetSets:(id)a3;
++ (id)createMAAIRBAssetSets:(id)sets;
 - (MAAIRBUtilities)init;
 @end
 
 @implementation MAAIRBUtilities
 
-+ (id)createMAAIRBAssetSets:(id)a3
++ (id)createMAAIRBAssetSets:(id)sets
 {
   v3 = sub_303AC8();
   sub_256324(v3, v4, v5, v6, v7);

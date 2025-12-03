@@ -3,18 +3,18 @@
 + (CNProcessSharedLock)fileLock;
 + (OS_os_log)log;
 + (id)initializeFileLock;
-+ (id)requestSharedLockDirectoryURLWithFileServices:(id)a3;
-+ (id)sharedLockDirectoryURLWithFileServices:(id)a3;
++ (id)requestSharedLockDirectoryURLWithFileServices:(id)services;
++ (id)sharedLockDirectoryURLWithFileServices:(id)services;
 + (void)initializeFileLock;
-- (BOOL)isFileAtUrlOnARemoteFileSystem:(id)a3;
+- (BOOL)isFileAtUrlOnARemoteFileSystem:(id)system;
 - (CNFileUtilities)init;
-- (CNFileUtilities)initWithFileServices:(id)a3;
+- (CNFileUtilities)initWithFileServices:(id)services;
 - (NSURL)addressBookFolderURL;
 - (NSURL)cachesFolderURL;
 - (NSURL)libraryFolderURL;
 - (NSURL)sharedLockDirectoryUrl;
-- (id)proxyLockUrlForFileAtUrl:(id)a3;
-- (id)sharedLockUrlWithName:(id)a3;
+- (id)proxyLockUrlForFileAtUrl:(id)url;
+- (id)sharedLockUrlWithName:(id)name;
 @end
 
 @implementation CNFileUtilities
@@ -65,16 +65,16 @@ uint64_t __33__CNFileUtilities_sharedInstance__block_invoke()
   return v4;
 }
 
-- (CNFileUtilities)initWithFileServices:(id)a3
+- (CNFileUtilities)initWithFileServices:(id)services
 {
-  v5 = a3;
+  servicesCopy = services;
   v10.receiver = self;
   v10.super_class = CNFileUtilities;
   v6 = [(CNFileUtilities *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_services, a3);
+    objc_storeStrong(&v6->_services, services);
     v8 = v7;
   }
 
@@ -84,25 +84,25 @@ uint64_t __33__CNFileUtilities_sharedInstance__block_invoke()
 - (NSURL)addressBookFolderURL
 {
   v2 = objc_alloc_init(_CNFolderLocator);
-  v3 = [(_CNFolderLocator *)v2 addressBookFolder];
+  addressBookFolder = [(_CNFolderLocator *)v2 addressBookFolder];
 
-  return v3;
+  return addressBookFolder;
 }
 
 - (NSURL)libraryFolderURL
 {
   v2 = objc_alloc_init(_CNFolderLocator);
-  v3 = [(_CNFolderLocator *)v2 libraryFolder];
+  libraryFolder = [(_CNFolderLocator *)v2 libraryFolder];
 
-  return v3;
+  return libraryFolder;
 }
 
 - (NSURL)cachesFolderURL
 {
   v2 = objc_alloc_init(_CNFolderLocator);
-  v3 = [(_CNFolderLocator *)v2 cachesFolder];
+  cachesFolder = [(_CNFolderLocator *)v2 cachesFolder];
 
-  return v3;
+  return cachesFolder;
 }
 
 + (CNProcessSharedLock)fileLock
@@ -116,7 +116,7 @@ uint64_t __33__CNFileUtilities_sharedInstance__block_invoke()
     block[1] = 3221225472;
     block[2] = __27__CNFileUtilities_fileLock__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (fileLock_cn_once_token_3 != -1)
     {
       dispatch_once(&fileLock_cn_once_token_3, block);
@@ -159,8 +159,8 @@ uint64_t __27__CNFileUtilities_fileLock__block_invoke_2()
   v2 = +[CNFileUtilities sharedInstance];
   v3 = [v2 sharedLockUrlWithName:@"database.lock"];
 
-  v4 = [v3 path];
-  v5 = [CNProcessSharedLock recursiveSharedLockWithLockFilePath:v4];
+  path = [v3 path];
+  v5 = [CNProcessSharedLock recursiveSharedLockWithLockFilePath:path];
   v10 = 0;
   v6 = [v5 open:&v10];
   v7 = v10;
@@ -178,20 +178,20 @@ uint64_t __27__CNFileUtilities_fileLock__block_invoke_2()
   return v5;
 }
 
-- (BOOL)isFileAtUrlOnARemoteFileSystem:(id)a3
+- (BOOL)isFileAtUrlOnARemoteFileSystem:(id)system
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = [a3 path];
-  v5 = [v4 fileSystemRepresentation];
+  path = [system path];
+  fileSystemRepresentation = [path fileSystemRepresentation];
 
   bzero(v10, 0x878uLL);
   p_services = &self->_services;
-  if ([(CNFileServices *)self->_services statfs:v5]< 0)
+  if ([(CNFileServices *)self->_services statfs:fileSystemRepresentation]< 0)
   {
     v8 = [objc_opt_class() log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(CNFileUtilities *)v5 isFileAtUrlOnARemoteFileSystem:v8];
+      [(CNFileUtilities *)fileSystemRepresentation isFileAtUrlOnARemoteFileSystem:v8];
     }
 
     result = 0;
@@ -214,17 +214,17 @@ uint64_t __27__CNFileUtilities_fileLock__block_invoke_2()
   return [v3 sharedLockDirectoryURLWithFileServices:services];
 }
 
-+ (id)sharedLockDirectoryURLWithFileServices:(id)a3
++ (id)sharedLockDirectoryURLWithFileServices:(id)services
 {
-  v4 = a3;
+  servicesCopy = services;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __58__CNFileUtilities_sharedLockDirectoryURLWithFileServices___block_invoke;
   v10[3] = &unk_1E6ED5E88;
-  v11 = v4;
-  v12 = a1;
+  v11 = servicesCopy;
+  selfCopy = self;
   v5 = sharedLockDirectoryURLWithFileServices__cn_once_token_7;
-  v6 = v4;
+  v6 = servicesCopy;
   if (v5 != -1)
   {
     dispatch_once(&sharedLockDirectoryURLWithFileServices__cn_once_token_7, v10);
@@ -244,7 +244,7 @@ void __58__CNFileUtilities_sharedLockDirectoryURLWithFileServices___block_invoke
   sharedLockDirectoryURLWithFileServices__cn_once_object_7 = v1;
 }
 
-+ (id)requestSharedLockDirectoryURLWithFileServices:(id)a3
++ (id)requestSharedLockDirectoryURLWithFileServices:(id)services
 {
   v3 = dlopen("/System/Library/PrivateFrameworks/AppSandbox.framework/AppSandbox", 5);
   v4 = dlsym(v3, "AppSandboxUtilAddressBookLockPathURL");
@@ -256,22 +256,22 @@ void __58__CNFileUtilities_sharedLockDirectoryURLWithFileServices___block_invoke
   return v6;
 }
 
-- (id)sharedLockUrlWithName:(id)a3
+- (id)sharedLockUrlWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(CNFileUtilities *)self sharedLockDirectoryUrl];
-  v6 = [v5 URLByAppendingPathComponent:v4 isDirectory:0];
+  nameCopy = name;
+  sharedLockDirectoryUrl = [(CNFileUtilities *)self sharedLockDirectoryUrl];
+  v6 = [sharedLockDirectoryUrl URLByAppendingPathComponent:nameCopy isDirectory:0];
 
   return v6;
 }
 
-- (id)proxyLockUrlForFileAtUrl:(id)a3
+- (id)proxyLockUrlForFileAtUrl:(id)url
 {
-  v4 = [a3 path];
-  v5 = [v4 stringByResolvingSymlinksInPath];
-  v6 = [v5 stringByStandardizingPath];
+  path = [url path];
+  stringByResolvingSymlinksInPath = [path stringByResolvingSymlinksInPath];
+  stringByStandardizingPath = [stringByResolvingSymlinksInPath stringByStandardizingPath];
 
-  v7 = [v6 stringByAppendingString:@"_lock"];
+  v7 = [stringByStandardizingPath stringByAppendingString:@"_lock"];
 
   v8 = [v7 stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
 
@@ -284,7 +284,7 @@ void __58__CNFileUtilities_sharedLockDirectoryURLWithFileServices___block_invoke
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2114;
   v7 = a2;
   _os_log_fault_impl(&dword_1859F0000, log, OS_LOG_TYPE_FAULT, "Unable to open file lock: %@ %{public}@", &v4, 0x16u);

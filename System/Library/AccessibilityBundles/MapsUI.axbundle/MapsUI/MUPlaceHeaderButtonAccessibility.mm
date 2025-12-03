@@ -9,41 +9,41 @@
   v19 = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 configuration];
-  v5 = v4;
-  if (!v4)
+  configuration = [v3 configuration];
+  v5 = configuration;
+  if (!configuration)
   {
     v18.receiver = self;
     v18.super_class = MUPlaceHeaderButtonAccessibility;
-    v10 = [(MUPlaceHeaderButtonAccessibility *)&v18 accessibilityLabel];
+    accessibilityLabel = [(MUPlaceHeaderButtonAccessibility *)&v18 accessibilityLabel];
 LABEL_10:
-    v12 = v10;
+    v12 = accessibilityLabel;
     goto LABEL_25;
   }
 
-  v6 = [v4 image];
-  if (v6)
+  image = [configuration image];
+  if (image)
   {
 
     goto LABEL_4;
   }
 
-  v11 = [v5 title];
+  title = [v5 title];
 
-  if (v11)
+  if (title)
   {
-    v10 = [v5 title];
+    accessibilityLabel = [v5 title];
     goto LABEL_10;
   }
 
 LABEL_4:
-  v7 = [v5 image];
-  v8 = [v7 description];
+  image2 = [v5 image];
+  v8 = [image2 description];
 
   if ([v8 containsString:@"menu"])
   {
 LABEL_21:
-    v13 = [v5 title];
+    title2 = [v5 title];
     goto LABEL_22;
   }
 
@@ -79,8 +79,8 @@ LABEL_20:
     {
       v14 = MEMORY[0x29EDBA0F8];
       v15 = accessibilityLocalizedString(v9);
-      v16 = [v5 title];
-      v12 = [v14 localizedStringWithFormat:v15, v16];
+      title3 = [v5 title];
+      v12 = [v14 localizedStringWithFormat:v15, title3];
 
       goto LABEL_24;
     }
@@ -88,9 +88,9 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v13 = accessibilityLocalizedString(@"MORE");
+  title2 = accessibilityLocalizedString(@"MORE");
 LABEL_22:
-  v12 = v13;
+  v12 = title2;
 LABEL_24:
 
 LABEL_25:

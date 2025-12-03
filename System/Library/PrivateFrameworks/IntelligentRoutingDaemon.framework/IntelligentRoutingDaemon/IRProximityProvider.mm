@@ -1,31 +1,31 @@
 @interface IRProximityProvider
-+ (BOOL)didContainer:(id)a3 changeWithUpdatetContainer:(id)a4 andRangeThreshold:(double)a5;
-+ (BOOL)isUWBProximityType:(id)a3;
++ (BOOL)didContainer:(id)container changeWithUpdatetContainer:(id)updatetContainer andRangeThreshold:(double)threshold;
++ (BOOL)isUWBProximityType:(id)type;
 - (BOOL)_isPdedestrianFenceAvailable;
 - (IRProximityProvider)init;
-- (void)_filterDevicesWithNearbyDevice:(id)a3;
-- (void)_incrementRetryCount:(id)a3;
-- (void)_inspectNearbyDevicesAndSetPedestrianFenceSessionState:(id)a3;
+- (void)_filterDevicesWithNearbyDevice:(id)device;
+- (void)_incrementRetryCount:(id)count;
+- (void)_inspectNearbyDevicesAndSetPedestrianFenceSessionState:(id)state;
 - (void)_invalidateAndNullifyAllBridges;
-- (void)_invalidateBridge:(id)a3;
-- (void)_removeAllDevicesForProximityType:(id)a3;
+- (void)_invalidateBridge:(id)bridge;
+- (void)_removeAllDevicesForProximityType:(id)type;
 - (void)_removeAllUwbDevicesAndClearFence;
-- (void)_resetRetryCount:(id)a3;
+- (void)_resetRetryCount:(id)count;
 - (void)_setupAndRunAllBridges;
-- (void)_setupAndRunBridge:(id)a3;
+- (void)_setupAndRunBridge:(id)bridge;
 - (void)_setupNIDevicePresenceBridgeIfNeeded;
 - (void)_setupNIHomeDeviceObserverBridgeIfNeeded;
 - (void)_setupProxControlSessionIfNeeded;
-- (void)_updateObservers:(id)a3 withDevices:(id)a4 andProvider:(id)a5;
-- (void)addObserver:(id)a3;
-- (void)didBridgeFail:(id)a3;
-- (void)didBridgeRunSuccesfully:(id)a3;
-- (void)didBridgeSuspendEndedWithName:(id)a3;
-- (void)didBridgeSuspendStartedWithName:(id)a3;
-- (void)didInvalidateAllDevices:(id)a3;
-- (void)didRemoveDevice:(id)a3 withName:(id)a4;
-- (void)didUpdateNearbyDevice:(id)a3 withName:(id)a4;
-- (void)removeObserver:(id)a3;
+- (void)_updateObservers:(id)observers withDevices:(id)devices andProvider:(id)provider;
+- (void)addObserver:(id)observer;
+- (void)didBridgeFail:(id)fail;
+- (void)didBridgeRunSuccesfully:(id)succesfully;
+- (void)didBridgeSuspendEndedWithName:(id)name;
+- (void)didBridgeSuspendStartedWithName:(id)name;
+- (void)didInvalidateAllDevices:(id)devices;
+- (void)didRemoveDevice:(id)device withName:(id)name;
+- (void)didUpdateNearbyDevice:(id)device withName:(id)name;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation IRProximityProvider
@@ -37,8 +37,8 @@
   v2 = [(IRProximityProvider *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [(IRProximityProvider *)v2 setObservers:v3];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [(IRProximityProvider *)v2 setObservers:weakObjectsHashTable];
 
     v4 = objc_opt_new();
     [(IRProximityProvider *)v2 setCachedNearbyDevices:v4];
@@ -50,14 +50,14 @@
     v7 = objc_opt_new();
     [(IRProximityProvider *)v2 setRetryCountPerProximityType:v7];
 
-    v8 = [(IRProximityProvider *)v2 retryCountPerProximityType];
-    [v8 setObject:&unk_286768FE0 forKeyedSubscript:@"NIHomeDevice"];
+    retryCountPerProximityType = [(IRProximityProvider *)v2 retryCountPerProximityType];
+    [retryCountPerProximityType setObject:&unk_286768FE0 forKeyedSubscript:@"NIHomeDevice"];
 
-    v9 = [(IRProximityProvider *)v2 retryCountPerProximityType];
-    [v9 setObject:&unk_286768FE0 forKeyedSubscript:@"NIDevicePresence"];
+    retryCountPerProximityType2 = [(IRProximityProvider *)v2 retryCountPerProximityType];
+    [retryCountPerProximityType2 setObject:&unk_286768FE0 forKeyedSubscript:@"NIDevicePresence"];
 
-    v10 = [(IRProximityProvider *)v2 retryCountPerProximityType];
-    [v10 setObject:&unk_286768FE0 forKeyedSubscript:@"ProxControl"];
+    retryCountPerProximityType3 = [(IRProximityProvider *)v2 retryCountPerProximityType];
+    [retryCountPerProximityType3 setObject:&unk_286768FE0 forKeyedSubscript:@"ProxControl"];
 
     v11 = objc_opt_new();
     [(IRProximityProvider *)v2 setProximityBridges:v11];
@@ -69,66 +69,66 @@
   return v2;
 }
 
-- (void)_filterDevicesWithNearbyDevice:(id)a3
+- (void)_filterDevicesWithNearbyDevice:(id)device
 {
-  v13 = a3;
-  v4 = [(IRProximityProvider *)self queue];
-  dispatch_assert_queue_V2(v4);
+  deviceCopy = device;
+  queue = [(IRProximityProvider *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v5 = MEMORY[0x277CCAC30];
-  v6 = [v13 idsIdentifier];
-  if (v6)
+  idsIdentifier = [deviceCopy idsIdentifier];
+  if (idsIdentifier)
   {
-    v7 = [v13 idsIdentifier];
+    idsIdentifier2 = [deviceCopy idsIdentifier];
   }
 
   else
   {
-    v7 = @"invalid-no-match";
+    idsIdentifier2 = @"invalid-no-match";
   }
 
-  v8 = [v13 mediaRemoteIdentifier];
-  if (v8)
+  mediaRemoteIdentifier = [deviceCopy mediaRemoteIdentifier];
+  if (mediaRemoteIdentifier)
   {
-    v9 = [v13 mediaRemoteIdentifier];
+    mediaRemoteIdentifier2 = [deviceCopy mediaRemoteIdentifier];
   }
 
   else
   {
-    v9 = @"invalid-no-match";
+    mediaRemoteIdentifier2 = @"invalid-no-match";
   }
 
-  v10 = [v13 proximityType];
-  v11 = [v5 predicateWithFormat:@"NOT ((%K = %@ OR %K = %@)AND %K = %@)", @"idsIdentifier", v7, @"mediaRemoteIdentifier", v9, @"proximityType", v10];
+  proximityType = [deviceCopy proximityType];
+  v11 = [v5 predicateWithFormat:@"NOT ((%K = %@ OR %K = %@)AND %K = %@)", @"idsIdentifier", idsIdentifier2, @"mediaRemoteIdentifier", mediaRemoteIdentifier2, @"proximityType", proximityType];
 
-  if (v8)
+  if (mediaRemoteIdentifier)
   {
   }
 
-  if (v6)
+  if (idsIdentifier)
   {
   }
 
-  v12 = [(IRProximityProvider *)self cachedNearbyDevices];
-  [v12 filterUsingPredicate:v11];
+  cachedNearbyDevices = [(IRProximityProvider *)self cachedNearbyDevices];
+  [cachedNearbyDevices filterUsingPredicate:v11];
 }
 
 - (void)_setupNIDevicePresenceBridgeIfNeeded
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a1;
+  selfCopy = self;
   v4 = [a2 debugDescription];
   v6 = 138412290;
   v7 = v4;
-  _os_log_error_impl(&dword_25543D000, v3, OS_LOG_TYPE_ERROR, "#proximity-provider, [ErrorId - NI presence config error] NIConfiguration error while setting up NI presence: %@", &v6, 0xCu);
+  _os_log_error_impl(&dword_25543D000, selfCopy, OS_LOG_TYPE_ERROR, "#proximity-provider, [ErrorId - NI presence config error] NIConfiguration error while setting up NI presence: %@", &v6, 0xCu);
 
   v5 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_setupNIHomeDeviceObserverBridgeIfNeeded
 {
-  v3 = [(IRProximityProvider *)self proximityBridges];
-  v4 = [v3 objectForKeyedSubscript:@"NIHomeDevice"];
+  proximityBridges = [(IRProximityProvider *)self proximityBridges];
+  v4 = [proximityBridges objectForKeyedSubscript:@"NIHomeDevice"];
 
   if (!v4)
   {
@@ -151,8 +151,8 @@
     v11 = [(IRNearbyInteractionBridge *)v9 initWithDelegate:v10 NIConfiguration:v8 observer:1 name:@"NIHomeDevice"];
 
     [(IRNearbyInteractionBridge *)v11 setTrackUpdates:1];
-    v12 = [(IRProximityProvider *)self proximityBridges];
-    [v12 setObject:v11 forKeyedSubscript:@"NIHomeDevice"];
+    proximityBridges2 = [(IRProximityProvider *)self proximityBridges];
+    [proximityBridges2 setObject:v11 forKeyedSubscript:@"NIHomeDevice"];
 
     objc_destroyWeak(&location);
   }
@@ -160,8 +160,8 @@
 
 - (void)_setupProxControlSessionIfNeeded
 {
-  v3 = [(IRProximityProvider *)self proximityBridges];
-  v4 = [v3 objectForKeyedSubscript:@"ProxControl"];
+  proximityBridges = [(IRProximityProvider *)self proximityBridges];
+  v4 = [proximityBridges objectForKeyedSubscript:@"ProxControl"];
 
   if (!v4)
   {
@@ -176,42 +176,42 @@
     v6 = [IRProxcontrolBridge alloc];
     v7 = objc_loadWeakRetained(&location);
     v8 = [(IRProxcontrolBridge *)v6 initWithDelegate:v7 name:@"ProxControl"];
-    v9 = [(IRProximityProvider *)self proximityBridges];
-    [v9 setObject:v8 forKeyedSubscript:@"ProxControl"];
+    proximityBridges2 = [(IRProximityProvider *)self proximityBridges];
+    [proximityBridges2 setObject:v8 forKeyedSubscript:@"ProxControl"];
 
     objc_destroyWeak(&location);
   }
 }
 
-- (void)_invalidateBridge:(id)a3
+- (void)_invalidateBridge:(id)bridge
 {
-  v4 = a3;
-  v6 = [(IRProximityProvider *)self proximityBridges];
-  v5 = [v6 objectForKeyedSubscript:v4];
+  bridgeCopy = bridge;
+  proximityBridges = [(IRProximityProvider *)self proximityBridges];
+  v5 = [proximityBridges objectForKeyedSubscript:bridgeCopy];
 
   [v5 invalidate];
 }
 
-- (void)_setupAndRunBridge:(id)a3
+- (void)_setupAndRunBridge:(id)bridge
 {
-  v6 = a3;
-  if ([v6 isEqualToString:@"NIDevicePresence"])
+  bridgeCopy = bridge;
+  if ([bridgeCopy isEqualToString:@"NIDevicePresence"])
   {
     [(IRProximityProvider *)self _setupNIDevicePresenceBridgeIfNeeded];
   }
 
-  else if ([v6 isEqualToString:@"NIHomeDevice"])
+  else if ([bridgeCopy isEqualToString:@"NIHomeDevice"])
   {
     [(IRProximityProvider *)self _setupNIHomeDeviceObserverBridgeIfNeeded];
   }
 
-  else if ([v6 isEqualToString:@"ProxControl"])
+  else if ([bridgeCopy isEqualToString:@"ProxControl"])
   {
     [(IRProximityProvider *)self _setupProxControlSessionIfNeeded];
   }
 
-  v4 = [(IRProximityProvider *)self proximityBridges];
-  v5 = [v4 objectForKeyedSubscript:v6];
+  proximityBridges = [(IRProximityProvider *)self proximityBridges];
+  v5 = [proximityBridges objectForKeyedSubscript:bridgeCopy];
   [v5 run];
 }
 
@@ -222,8 +222,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMutableDictionary *)self->_proximityBridges allValues];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)self->_proximityBridges allValues];
+  v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -235,21 +235,21 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v10 + 1) + 8 * v7++) invalidate];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(IRProximityProvider *)self proximityBridges];
-  [v8 removeAllObjects];
+  proximityBridges = [(IRProximityProvider *)self proximityBridges];
+  [proximityBridges removeAllObjects];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -262,44 +262,44 @@
   [(IRProximityProvider *)self _setupAndRunBridge:@"ProxControl"];
 }
 
-- (void)_resetRetryCount:(id)a3
+- (void)_resetRetryCount:(id)count
 {
-  v4 = a3;
-  v5 = [(IRProximityProvider *)self retryCountPerProximityType];
-  [v5 setObject:&unk_286768FE0 forKeyedSubscript:v4];
+  countCopy = count;
+  retryCountPerProximityType = [(IRProximityProvider *)self retryCountPerProximityType];
+  [retryCountPerProximityType setObject:&unk_286768FE0 forKeyedSubscript:countCopy];
 }
 
-- (void)_incrementRetryCount:(id)a3
+- (void)_incrementRetryCount:(id)count
 {
   v4 = MEMORY[0x277CCABB0];
   retryCountPerProximityType = self->_retryCountPerProximityType;
-  v6 = a3;
-  v9 = [(NSMutableDictionary *)retryCountPerProximityType objectForKeyedSubscript:v6];
+  countCopy = count;
+  v9 = [(NSMutableDictionary *)retryCountPerProximityType objectForKeyedSubscript:countCopy];
   v7 = [v4 numberWithInteger:{objc_msgSend(v9, "integerValue") + 1}];
-  v8 = [(IRProximityProvider *)self retryCountPerProximityType];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  retryCountPerProximityType = [(IRProximityProvider *)self retryCountPerProximityType];
+  [retryCountPerProximityType setObject:v7 forKeyedSubscript:countCopy];
 }
 
-- (void)_removeAllDevicesForProximityType:(id)a3
+- (void)_removeAllDevicesForProximityType:(id)type
 {
-  v4 = a3;
-  v5 = [(IRProximityProvider *)self queue];
-  dispatch_assert_queue_V2(v5);
+  typeCopy = type;
+  queue = [(IRProximityProvider *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K = %@)", @"proximityType", v4];
+  typeCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K = %@)", @"proximityType", typeCopy];
 
-  v6 = [(IRProximityProvider *)self cachedNearbyDevices];
-  [v6 filterUsingPredicate:v9];
+  cachedNearbyDevices = [(IRProximityProvider *)self cachedNearbyDevices];
+  [cachedNearbyDevices filterUsingPredicate:typeCopy];
 
-  v7 = [(IRProximityProvider *)self observers];
-  v8 = [(IRProximityProvider *)self cachedNearbyDevices];
-  [(IRProximityProvider *)self _updateObservers:v7 withDevices:v8 andProvider:self];
+  observers = [(IRProximityProvider *)self observers];
+  cachedNearbyDevices2 = [(IRProximityProvider *)self cachedNearbyDevices];
+  [(IRProximityProvider *)self _updateObservers:observers withDevices:cachedNearbyDevices2 andProvider:self];
 }
 
 - (void)_removeAllUwbDevicesAndClearFence
 {
-  v3 = [(IRProximityProvider *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(IRProximityProvider *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(IRProximityProvider *)self setFreezeDateNIHomeDevice:0];
   [(IRProximityProvider *)self _removeAllDevicesForProximityType:@"NIHomeDevice"];
@@ -311,16 +311,16 @@
     _os_log_impl(&dword_25543D000, v4, OS_LOG_TYPE_DEFAULT, "#proximity-provider, Removing All Uwb Devices", v6, 2u);
   }
 
-  v5 = [(IRProximityProvider *)self uwbFenceBridge];
-  [v5 clearFence];
+  uwbFenceBridge = [(IRProximityProvider *)self uwbFenceBridge];
+  [uwbFenceBridge clearFence];
 }
 
-- (void)_inspectNearbyDevicesAndSetPedestrianFenceSessionState:(id)a3
+- (void)_inspectNearbyDevicesAndSetPedestrianFenceSessionState:(id)state
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IRProximityProvider *)self queue];
-  dispatch_assert_queue_V2(v5);
+  stateCopy = state;
+  queue = [(IRProximityProvider *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(IRProximityProvider *)self _isPdedestrianFenceAvailable])
   {
@@ -328,7 +328,7 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v6 = v4;
+    v6 = stateCopy;
     v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v7)
     {
@@ -344,8 +344,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v21 + 1) + 8 * v10) proximityType];
-          v12 = [IRProximityProvider isUWBProximityType:v11];
+          proximityType = [*(*(&v21 + 1) + 8 * v10) proximityType];
+          v12 = [IRProximityProvider isUWBProximityType:proximityType];
 
           if (v12)
           {
@@ -370,13 +370,13 @@
     v13 = 1;
 LABEL_12:
 
-    v14 = [(IRProximityProvider *)self isUwbFenceSessionStarted];
+    isUwbFenceSessionStarted = [(IRProximityProvider *)self isUwbFenceSessionStarted];
     if (v13)
     {
-      if (v14)
+      if (isUwbFenceSessionStarted)
       {
-        v15 = [(IRProximityProvider *)self uwbFenceBridge];
-        [v15 endSession];
+        uwbFenceBridge = [(IRProximityProvider *)self uwbFenceBridge];
+        [uwbFenceBridge endSession];
 
         [(IRProximityProvider *)self setIsUwbFenceSessionStarted:0];
         v16 = *MEMORY[0x277D21260];
@@ -390,8 +390,8 @@ LABEL_12:
 
     if (((v13 | [(IRProximityProvider *)self isUwbFenceSessionStarted]) & 1) == 0)
     {
-      v17 = [(IRProximityProvider *)self uwbFenceBridge];
-      [v17 startSession];
+      uwbFenceBridge2 = [(IRProximityProvider *)self uwbFenceBridge];
+      [uwbFenceBridge2 startSession];
 
       [(IRProximityProvider *)self setIsUwbFenceSessionStarted:1];
       v18 = *MEMORY[0x277D21260];
@@ -409,8 +409,8 @@ LABEL_12:
 - (BOOL)_isPdedestrianFenceAvailable
 {
   v2 = +[IRPreferences shared];
-  v3 = [v2 uwbSuspendPedestrianFenceEnable];
-  if ([v3 BOOLValue])
+  uwbSuspendPedestrianFenceEnable = [v2 uwbSuspendPedestrianFenceEnable];
+  if ([uwbSuspendPedestrianFenceEnable BOOLValue])
   {
     v4 = +[IRCMPDRFenceBridge isAvailable];
   }
@@ -423,9 +423,9 @@ LABEL_12:
   return v4;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -433,9 +433,9 @@ LABEL_12:
   v7[2] = __35__IRProximityProvider_addObserver___block_invoke;
   v7[3] = &unk_2797E10C8;
   objc_copyWeak(&v10, &location);
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 
   objc_destroyWeak(&v10);
@@ -477,9 +477,9 @@ void __35__IRProximityProvider_addObserver___block_invoke(id *a1)
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
@@ -487,9 +487,9 @@ void __35__IRProximityProvider_addObserver___block_invoke(id *a1)
   v7[2] = __38__IRProximityProvider_removeObserver___block_invoke;
   v7[3] = &unk_2797E10C8;
   objc_copyWeak(&v10, &location);
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = observerCopy;
+  selfCopy = self;
+  v6 = observerCopy;
   dispatch_async(queue, v7);
 
   objc_destroyWeak(&v10);
@@ -523,24 +523,24 @@ void __38__IRProximityProvider_removeObserver___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_updateObservers:(id)a3 withDevices:(id)a4 andProvider:(id)a5
+- (void)_updateObservers:(id)observers withDevices:(id)devices andProvider:(id)provider
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(IRProximityProvider *)self _inspectNearbyDevicesAndSetPedestrianFenceSessionState:v9];
+  observersCopy = observers;
+  devicesCopy = devices;
+  providerCopy = provider;
+  [(IRProximityProvider *)self _inspectNearbyDevicesAndSetPedestrianFenceSessionState:devicesCopy];
   v11 = [IRNearbyDeviceContainerDO alloc];
-  v12 = [(IRProximityProvider *)self freezeDateNIHomeDevice];
-  v13 = [v12 copy];
-  v14 = [v9 copy];
+  freezeDateNIHomeDevice = [(IRProximityProvider *)self freezeDateNIHomeDevice];
+  v13 = [freezeDateNIHomeDevice copy];
+  v14 = [devicesCopy copy];
   v15 = [(IRNearbyDeviceContainerDO *)v11 initWithFreezeDateNIHomeDevice:v13 nearbyDevices:v14];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v16 = v8;
+  v16 = observersCopy;
   v17 = [v16 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v17)
   {
@@ -556,7 +556,7 @@ void __38__IRProximityProvider_removeObserver___block_invoke(uint64_t a1)
           objc_enumerationMutation(v16);
         }
 
-        [*(*(&v22 + 1) + 8 * v20++) provider:v10 didUpdateNearbyDevices:{v15, v22}];
+        [*(*(&v22 + 1) + 8 * v20++) provider:providerCopy didUpdateNearbyDevices:{v15, v22}];
       }
 
       while (v18 != v20);
@@ -569,12 +569,12 @@ void __38__IRProximityProvider_removeObserver___block_invoke(uint64_t a1)
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didUpdateNearbyDevice:(id)a3 withName:(id)a4
+- (void)didUpdateNearbyDevice:(id)device withName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 mediaRemoteIdentifier];
-  if (v8)
+  deviceCopy = device;
+  nameCopy = name;
+  mediaRemoteIdentifier = [deviceCopy mediaRemoteIdentifier];
+  if (mediaRemoteIdentifier)
   {
 
 LABEL_4:
@@ -585,9 +585,9 @@ LABEL_4:
     block[2] = __54__IRProximityProvider_didUpdateNearbyDevice_withName___block_invoke;
     block[3] = &unk_2797E10F0;
     objc_copyWeak(&v15, &location);
-    v12 = v7;
-    v13 = v6;
-    v14 = self;
+    v12 = nameCopy;
+    v13 = deviceCopy;
+    selfCopy = self;
     dispatch_async(queue, block);
 
     objc_destroyWeak(&v15);
@@ -595,9 +595,9 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v9 = [v6 idsIdentifier];
+  idsIdentifier = [deviceCopy idsIdentifier];
 
-  if (v9)
+  if (idsIdentifier)
   {
     goto LABEL_4;
   }
@@ -629,16 +629,16 @@ void __54__IRProximityProvider_didUpdateNearbyDevice_withName___block_invoke(uin
   }
 }
 
-- (void)didBridgeRunSuccesfully:(id)a3
+- (void)didBridgeRunSuccesfully:(id)succesfully
 {
-  v4 = a3;
+  succesfullyCopy = succesfully;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__IRProximityProvider_didBridgeRunSuccesfully___block_invoke;
   block[3] = &unk_2797E0BA8;
-  v8 = v4;
-  v6 = v4;
+  v8 = succesfullyCopy;
+  v6 = succesfullyCopy;
   dispatch_async(queue, block);
 }
 
@@ -657,9 +657,9 @@ void __47__IRProximityProvider_didBridgeRunSuccesfully___block_invoke(uint64_t a
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didBridgeFail:(id)a3
+- (void)didBridgeFail:(id)fail
 {
-  v4 = a3;
+  failCopy = fail;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -667,8 +667,8 @@ void __47__IRProximityProvider_didBridgeRunSuccesfully___block_invoke(uint64_t a
   block[2] = __37__IRProximityProvider_didBridgeFail___block_invoke;
   block[3] = &unk_2797E1118;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = failCopy;
+  v6 = failCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -707,43 +707,43 @@ void __37__IRProximityProvider_didBridgeFail___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didInvalidateAllDevices:(id)a3
+- (void)didInvalidateAllDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [(IRProximityProvider *)self queue];
+  devicesCopy = devices;
+  queue = [(IRProximityProvider *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__IRProximityProvider_didInvalidateAllDevices___block_invoke;
   v7[3] = &unk_2797E1140;
-  v8 = v4;
-  v6 = v4;
-  IRDispatchAsyncWithStrongSelf(v5, self, v7);
+  v8 = devicesCopy;
+  v6 = devicesCopy;
+  IRDispatchAsyncWithStrongSelf(queue, self, v7);
 }
 
-- (void)didRemoveDevice:(id)a3 withName:(id)a4
+- (void)didRemoveDevice:(id)device withName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 idsIdentifier];
-  if (v8)
+  deviceCopy = device;
+  nameCopy = name;
+  idsIdentifier = [deviceCopy idsIdentifier];
+  if (idsIdentifier)
   {
 
 LABEL_4:
-    v10 = [(IRProximityProvider *)self queue];
+    queue = [(IRProximityProvider *)self queue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __48__IRProximityProvider_didRemoveDevice_withName___block_invoke;
     v11[3] = &unk_2797E1168;
-    v12 = v7;
-    v13 = v6;
-    IRDispatchAsyncWithStrongSelf(v10, self, v11);
+    v12 = nameCopy;
+    v13 = deviceCopy;
+    IRDispatchAsyncWithStrongSelf(queue, self, v11);
 
     goto LABEL_5;
   }
 
-  v9 = [v6 mediaRemoteIdentifier];
+  mediaRemoteIdentifier = [deviceCopy mediaRemoteIdentifier];
 
-  if (v9)
+  if (mediaRemoteIdentifier)
   {
     goto LABEL_4;
   }
@@ -788,18 +788,18 @@ void __48__IRProximityProvider_didRemoveDevice_withName___block_invoke(uint64_t 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didBridgeSuspendStartedWithName:(id)a3
+- (void)didBridgeSuspendStartedWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(IRProximityProvider *)self queue];
+  nameCopy = name;
+  queue = [(IRProximityProvider *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__IRProximityProvider_didBridgeSuspendStartedWithName___block_invoke;
   v7[3] = &unk_2797E1168;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  IRDispatchAsyncWithStrongSelf(v5, self, v7);
+  v8 = nameCopy;
+  selfCopy = self;
+  v6 = nameCopy;
+  IRDispatchAsyncWithStrongSelf(queue, self, v7);
 }
 
 void __55__IRProximityProvider_didBridgeSuspendStartedWithName___block_invoke(uint64_t a1, void *a2)
@@ -895,18 +895,18 @@ void __55__IRProximityProvider_didBridgeSuspendStartedWithName___block_invoke_71
   }
 }
 
-- (void)didBridgeSuspendEndedWithName:(id)a3
+- (void)didBridgeSuspendEndedWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(IRProximityProvider *)self queue];
+  nameCopy = name;
+  queue = [(IRProximityProvider *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__IRProximityProvider_didBridgeSuspendEndedWithName___block_invoke;
   v7[3] = &unk_2797E1168;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  IRDispatchAsyncWithStrongSelf(v5, self, v7);
+  v8 = nameCopy;
+  selfCopy = self;
+  v6 = nameCopy;
+  IRDispatchAsyncWithStrongSelf(queue, self, v7);
 }
 
 void __53__IRProximityProvider_didBridgeSuspendEndedWithName___block_invoke(uint64_t a1, void *a2)
@@ -937,54 +937,54 @@ void __53__IRProximityProvider_didBridgeSuspendEndedWithName___block_invoke(uint
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)isUWBProximityType:(id)a3
++ (BOOL)isUWBProximityType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqual:@"ProxControl"])
+  typeCopy = type;
+  if ([typeCopy isEqual:@"ProxControl"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqual:@"NIHomeDevice"];
+    v4 = [typeCopy isEqual:@"NIHomeDevice"];
   }
 
   return v4;
 }
 
-+ (BOOL)didContainer:(id)a3 changeWithUpdatetContainer:(id)a4 andRangeThreshold:(double)a5
++ (BOOL)didContainer:(id)container changeWithUpdatetContainer:(id)updatetContainer andRangeThreshold:(double)threshold
 {
-  v7 = a4;
-  v8 = a3;
+  updatetContainerCopy = updatetContainer;
+  containerCopy = container;
   v9 = objc_opt_new();
   v10 = objc_opt_new();
   v11 = [MEMORY[0x277CBEAA8] now];
-  v12 = [v7 nearbyDevices];
+  nearbyDevices = [updatetContainerCopy nearbyDevices];
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __81__IRProximityProvider_didContainer_changeWithUpdatetContainer_andRangeThreshold___block_invoke;
   v26[3] = &unk_2797E11B0;
   v27 = v9;
-  v29 = a5;
+  thresholdCopy = threshold;
   v13 = v11;
   v28 = v13;
   v14 = v9;
-  [v12 enumerateObjectsUsingBlock:v26];
+  [nearbyDevices enumerateObjectsUsingBlock:v26];
 
-  v15 = [v8 nearbyDevices];
+  nearbyDevices2 = [containerCopy nearbyDevices];
 
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __81__IRProximityProvider_didContainer_changeWithUpdatetContainer_andRangeThreshold___block_invoke_2;
   v22 = &unk_2797E11B0;
-  v25 = a5;
+  thresholdCopy2 = threshold;
   v23 = v10;
   v24 = v13;
   v16 = v13;
   v17 = v10;
-  [v15 enumerateObjectsUsingBlock:&v19];
+  [nearbyDevices2 enumerateObjectsUsingBlock:&v19];
 
   LOBYTE(v13) = [v14 isEqualToSet:{v17, v19, v20, v21, v22}];
   return v13 ^ 1;

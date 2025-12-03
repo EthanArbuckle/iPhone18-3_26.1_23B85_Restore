@@ -1,30 +1,30 @@
 @interface ATXGenericFileBasedCache
-- (ATXGenericFileBasedCache)initWithCacheFilePath:(id)a3 loggingHandle:(id)a4 debugName:(id)a5;
-- (BOOL)storeData:(id)a3 error:(id *)a4;
-- (BOOL)storeSecureCodedObject:(id)a3 error:(id *)a4;
-- (id)readSecureCodedObjectWithMaxValidAge:(double)a3 allowableClasses:(id)a4 error:(id *)a5;
-- (id)readWithMaxValidAge:(double)a3 error:(id *)a4;
+- (ATXGenericFileBasedCache)initWithCacheFilePath:(id)path loggingHandle:(id)handle debugName:(id)name;
+- (BOOL)storeData:(id)data error:(id *)error;
+- (BOOL)storeSecureCodedObject:(id)object error:(id *)error;
+- (id)readSecureCodedObjectWithMaxValidAge:(double)age allowableClasses:(id)classes error:(id *)error;
+- (id)readWithMaxValidAge:(double)age error:(id *)error;
 - (void)evict;
 @end
 
 @implementation ATXGenericFileBasedCache
 
-- (ATXGenericFileBasedCache)initWithCacheFilePath:(id)a3 loggingHandle:(id)a4 debugName:(id)a5
+- (ATXGenericFileBasedCache)initWithCacheFilePath:(id)path loggingHandle:(id)handle debugName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  handleCopy = handle;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = ATXGenericFileBasedCache;
   v11 = [(ATXGenericFileBasedCache *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [pathCopy copy];
     cacheFilePath = v11->_cacheFilePath;
     v11->_cacheFilePath = v12;
 
-    objc_storeStrong(&v11->_loggingHandle, a4);
-    v14 = [v10 copy];
+    objc_storeStrong(&v11->_loggingHandle, handle);
+    v14 = [nameCopy copy];
     debugName = v11->_debugName;
     v11->_debugName = v14;
   }
@@ -32,10 +32,10 @@
   return v11;
 }
 
-- (BOOL)storeData:(id)a3 error:(id *)a4
+- (BOOL)storeData:(id)data error:(id *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dataCopy = data;
   v7 = open([(NSString *)self->_cacheFilePath UTF8String], 514, 384);
   if (v7 == -1)
   {
@@ -53,13 +53,13 @@
       v36 = 2080;
       v37 = v12;
       _os_log_error_impl(&dword_226368000, loggingHandle, OS_LOG_TYPE_ERROR, "Couldn't create %@ cache file: [%i] %s", buf, 0x1Cu);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_16;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
       goto LABEL_16;
     }
@@ -72,10 +72,10 @@
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:v12];
       v31 = v16;
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-      *a4 = [v14 errorWithDomain:v15 code:v10 userInfo:v17];
+      *error = [v14 errorWithDomain:v15 code:v10 userInfo:v17];
 
 LABEL_15:
-      LOBYTE(a4) = 0;
+      LOBYTE(error) = 0;
       goto LABEL_16;
     }
 
@@ -86,12 +86,12 @@ LABEL_15:
     v21 = v15;
     v22 = 22;
 LABEL_14:
-    *a4 = [v20 errorWithDomain:v21 code:v22 userInfo:v16];
+    *error = [v20 errorWithDomain:v21 code:v22 userInfo:v16];
     goto LABEL_15;
   }
 
   v8 = v7;
-  v9 = ATXCacheFileWrite(v7, v6);
+  v9 = ATXCacheFileWrite(v7, dataCopy);
   if ((v8 & 0x80000000) == 0)
   {
     close(v8);
@@ -102,13 +102,13 @@ LABEL_14:
     if (os_log_type_enabled(self->_loggingHandle, OS_LOG_TYPE_ERROR))
     {
       [ATXGenericFileBasedCache storeData:? error:?];
-      if (!a4)
+      if (!error)
       {
         goto LABEL_16;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
       goto LABEL_16;
     }
@@ -124,19 +124,19 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  LOBYTE(a4) = 1;
+  LOBYTE(error) = 1;
 LABEL_16:
 
   v23 = *MEMORY[0x277D85DE8];
-  return a4;
+  return error;
 }
 
-- (BOOL)storeSecureCodedObject:(id)a3 error:(id *)a4
+- (BOOL)storeSecureCodedObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = objc_autoreleasePoolPush();
   v13 = 0;
-  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v13];
+  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:objectCopy requiringSecureCoding:1 error:&v13];
   v9 = v13;
   objc_autoreleasePoolPop(v7);
   if (!v8)
@@ -144,18 +144,18 @@ LABEL_16:
     if (os_log_type_enabled(self->_loggingHandle, OS_LOG_TYPE_ERROR))
     {
       [ATXGenericFileBasedCache storeSecureCodedObject:? error:?];
-      if (a4)
+      if (error)
       {
         goto LABEL_5;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_5:
       v11 = v9;
       v10 = 0;
-      *a4 = v9;
+      *error = v9;
       goto LABEL_8;
     }
 
@@ -163,7 +163,7 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  v10 = [(ATXGenericFileBasedCache *)self storeData:v8 error:a4];
+  v10 = [(ATXGenericFileBasedCache *)self storeData:v8 error:error];
 LABEL_8:
 
   return v10;
@@ -172,7 +172,7 @@ LABEL_8:
 - (void)evict
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = *(a1 + 16);
+  v2 = *(self + 16);
   v3 = a2;
   v4 = *__error();
   v5 = __error();
@@ -188,7 +188,7 @@ LABEL_8:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)readWithMaxValidAge:(double)a3 error:(id *)a4
+- (id)readWithMaxValidAge:(double)age error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
   v7 = open([(NSString *)self->_cacheFilePath UTF8String], 0);
@@ -198,7 +198,7 @@ LABEL_8:
     *buf = 0;
     v27 = 0.0;
     v9 = objc_autoreleasePoolPush();
-    ATXCacheFileRead(v8, buf, &v27, a3);
+    ATXCacheFileRead(v8, buf, &v27, age);
     objc_autoreleasePoolPop(v9);
     if (v27 < 0.0)
     {
@@ -227,13 +227,13 @@ LABEL_17:
     if (os_log_type_enabled(self->_loggingHandle, OS_LOG_TYPE_ERROR))
     {
       [ATXGenericFileBasedCache readWithMaxValidAge:? error:?];
-      if (!a4)
+      if (!error)
       {
         goto LABEL_17;
       }
     }
 
-    else if (!a4)
+    else if (!error)
     {
       goto LABEL_17;
     }
@@ -243,7 +243,7 @@ LABEL_17:
     v28 = *MEMORY[0x277CCA068];
     v29 = @"Unable to read data";
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-    *a4 = [v17 errorWithDomain:v18 code:5 userInfo:v19];
+    *error = [v17 errorWithDomain:v18 code:5 userInfo:v19];
 
     goto LABEL_17;
   }
@@ -260,7 +260,7 @@ LABEL_17:
       *buf = 138412290;
       *&buf[4] = debugName;
       _os_log_impl(&dword_226368000, loggingHandle, OS_LOG_TYPE_DEFAULT, "Couldn't open %@ cache file because it is missing", buf, 0xCu);
-      if (!a4)
+      if (!error)
       {
         goto LABEL_24;
       }
@@ -274,7 +274,7 @@ LABEL_20:
         v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:v14];
         v33 = v22;
         v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-        *a4 = [v20 errorWithDomain:v21 code:v12 userInfo:v23];
+        *error = [v20 errorWithDomain:v21 code:v12 userInfo:v23];
       }
 
       else
@@ -282,7 +282,7 @@ LABEL_20:
         v30 = *MEMORY[0x277CCA068];
         v31 = @"Unknown error";
         v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-        *a4 = [v20 errorWithDomain:v21 code:22 userInfo:v22];
+        *error = [v20 errorWithDomain:v21 code:22 userInfo:v22];
       }
 
       goto LABEL_24;
@@ -299,7 +299,7 @@ LABEL_20:
     v37 = 2080;
     v38 = v14;
     _os_log_error_impl(&dword_226368000, loggingHandle, OS_LOG_TYPE_ERROR, "Couldn't open %@ cache file: [%i] %s", buf, 0x1Cu);
-    if (!a4)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -307,7 +307,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  if (a4)
+  if (error)
   {
     goto LABEL_20;
   }
@@ -320,17 +320,17 @@ LABEL_25:
   return v10;
 }
 
-- (id)readSecureCodedObjectWithMaxValidAge:(double)a3 allowableClasses:(id)a4 error:(id *)a5
+- (id)readSecureCodedObjectWithMaxValidAge:(double)age allowableClasses:(id)classes error:(id *)error
 {
-  v8 = a4;
+  classesCopy = classes;
   v9 = objc_autoreleasePoolPush();
   v17 = 0;
-  v10 = [(ATXGenericFileBasedCache *)self readWithMaxValidAge:&v17 error:a3];
+  v10 = [(ATXGenericFileBasedCache *)self readWithMaxValidAge:&v17 error:age];
   v11 = v17;
   if (v10)
   {
     v16 = v11;
-    v12 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v8 fromData:v10 error:&v16];
+    v12 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:classesCopy fromData:v10 error:&v16];
     v13 = v16;
 
     if (!v12)
@@ -352,10 +352,10 @@ LABEL_25:
   }
 
   objc_autoreleasePoolPop(v9);
-  if (a5)
+  if (error)
   {
     v14 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
   return v12;

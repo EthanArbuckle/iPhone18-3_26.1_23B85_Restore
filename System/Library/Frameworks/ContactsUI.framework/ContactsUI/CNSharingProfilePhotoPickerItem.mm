@@ -1,30 +1,30 @@
 @interface CNSharingProfilePhotoPickerItem
-- (id)compositeImageWithSize:(CGSize)a3;
-- (id)originalImageWithSize:(CGSize)a3;
+- (id)compositeImageWithSize:(CGSize)size;
+- (id)originalImageWithSize:(CGSize)size;
 @end
 
 @implementation CNSharingProfilePhotoPickerItem
 
-- (id)compositeImageWithSize:(CGSize)a3
+- (id)compositeImageWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(CNSharingProfileAvatarItem *)self->_avatarItem imageProvider];
-  v6 = v5[2](width, height);
+  height = size.height;
+  width = size.width;
+  imageProvider = [(CNSharingProfileAvatarItem *)self->_avatarItem imageProvider];
+  v6 = imageProvider[2](width, height);
 
   return v6;
 }
 
-- (id)originalImageWithSize:(CGSize)a3
+- (id)originalImageWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CNSharingProfileAvatarItem *)self->_avatarItem originalImageProvider];
+  height = size.height;
+  width = size.width;
+  originalImageProvider = [(CNSharingProfileAvatarItem *)self->_avatarItem originalImageProvider];
 
-  if (v6)
+  if (originalImageProvider)
   {
-    v7 = [(CNSharingProfileAvatarItem *)self->_avatarItem originalImageProvider];
-    v8 = v7[2](width, height);
+    originalImageProvider2 = [(CNSharingProfileAvatarItem *)self->_avatarItem originalImageProvider];
+    v8 = originalImageProvider2[2](width, height);
   }
 
   else

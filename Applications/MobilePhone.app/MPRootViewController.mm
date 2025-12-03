@@ -13,12 +13,12 @@
     if ([v4 phoneLargeFormatUIEnabled])
     {
       v5 = +[UIDevice currentDevice];
-      v6 = [v5 userInterfaceIdiom];
+      userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-      if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         v7 = objc_alloc_init(_TtC11MobilePhone26PhoneRecentsViewController);
-        v8 = self->_baseViewController;
+        phoneRecentsController = self->_baseViewController;
         self->_baseViewController = v7;
 LABEL_7:
 
@@ -33,8 +33,8 @@ LABEL_7:
     }
 
     v9 = [PhoneTabBarController alloc];
-    v8 = [(MPRootViewController *)self phoneRecentsController];
-    v10 = [(PhoneTabBarController *)v9 initWithRecentsController:v8];
+    phoneRecentsController = [(MPRootViewController *)self phoneRecentsController];
+    v10 = [(PhoneTabBarController *)v9 initWithRecentsController:phoneRecentsController];
     v11 = self->_baseViewController;
     self->_baseViewController = v10;
 

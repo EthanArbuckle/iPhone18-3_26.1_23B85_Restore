@@ -1,53 +1,53 @@
 @interface PKPaymentSelectPassesViewController
-- (PKPaymentSelectPassesViewController)initWithSecureElementPasses:(id)a3 context:(int64_t)a4 delegate:(id)a5 peerPaymentAccount:(id)a6 reporter:(id)a7;
+- (PKPaymentSelectPassesViewController)initWithSecureElementPasses:(id)passes context:(int64_t)context delegate:(id)delegate peerPaymentAccount:(id)account reporter:(id)reporter;
 - (id)headerView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_cancelPressed;
 - (void)_continuousButtonPressed;
 - (void)_setContinuousButtonEnabledState;
-- (void)_setNavigationBarEnabled:(BOOL)a3;
-- (void)_setViewEnabledState:(BOOL)a3;
-- (void)setButtonText:(id)a3;
-- (void)setHeaderSubtitle:(id)a3;
-- (void)setHeaderTitle:(id)a3;
-- (void)setHeaderViewTitle:(id)a3 subtitle:(id)a4;
-- (void)setShowCancelButton:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)_setNavigationBarEnabled:(BOOL)enabled;
+- (void)_setViewEnabledState:(BOOL)state;
+- (void)setButtonText:(id)text;
+- (void)setHeaderSubtitle:(id)subtitle;
+- (void)setHeaderTitle:(id)title;
+- (void)setHeaderViewTitle:(id)title subtitle:(id)subtitle;
+- (void)setShowCancelButton:(BOOL)button;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation PKPaymentSelectPassesViewController
 
-- (PKPaymentSelectPassesViewController)initWithSecureElementPasses:(id)a3 context:(int64_t)a4 delegate:(id)a5 peerPaymentAccount:(id)a6 reporter:(id)a7
+- (PKPaymentSelectPassesViewController)initWithSecureElementPasses:(id)passes context:(int64_t)context delegate:(id)delegate peerPaymentAccount:(id)account reporter:(id)reporter
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  passesCopy = passes;
+  delegateCopy = delegate;
+  accountCopy = account;
+  reporterCopy = reporter;
   v25.receiver = self;
   v25.super_class = PKPaymentSelectPassesViewController;
-  v17 = [(PKPaymentSetupTableViewController *)&v25 initWithContext:a4];
+  v17 = [(PKPaymentSetupTableViewController *)&v25 initWithContext:context];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_passes, a3);
-    objc_storeWeak(&v18->_delegate, v14);
-    v19 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v17->_passes, passes);
+    objc_storeWeak(&v18->_delegate, delegateCopy);
+    array = [MEMORY[0x1E695DF70] array];
     selectedIndexPaths = v18->_selectedIndexPaths;
-    v18->_selectedIndexPaths = v19;
+    v18->_selectedIndexPaths = array;
 
     v18->_minimumSelectionCount = 1;
-    objc_storeStrong(&v18->_peerPaymentAccount, a6);
-    objc_storeStrong(&v18->_reporter, a7);
+    objc_storeStrong(&v18->_peerPaymentAccount, account);
+    objc_storeStrong(&v18->_reporter, reporter);
     v21 = PKLocalizedPaymentString(&cfstr_Continue.isa);
     [(PKPaymentSelectPassesViewController *)v18 setButtonText:v21];
 
-    v22 = [(PKPaymentSetupTableViewController *)v18 dockView];
-    v23 = [v22 primaryButton];
-    [v23 addTarget:v18 action:sel__continuousButtonPressed forControlEvents:64];
+    dockView = [(PKPaymentSetupTableViewController *)v18 dockView];
+    primaryButton = [dockView primaryButton];
+    [primaryButton addTarget:v18 action:sel__continuousButtonPressed forControlEvents:64];
 
     [(PKPaymentSelectPassesViewController *)v18 _setContinuousButtonEnabledState];
   }
@@ -55,12 +55,12 @@
   return v18;
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = PKPaymentSelectPassesViewController;
   [(PKPaymentSelectPassesViewController *)&v6 willMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained selectPassesViewControllerDidTapBackButton:self];
@@ -72,19 +72,19 @@
   v6.receiver = self;
   v6.super_class = PKPaymentSelectPassesViewController;
   [(PKPaymentSelectPassesViewController *)&v6 viewDidLoad];
-  v3 = [(PKPaymentSetupTableViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"PKPaymentSelectPassesViewControllerCellIdentifier"];
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"PKPaymentSelectPassesViewControllerCellIdentifier"];
 
-  v4 = [(PKPaymentSelectPassesViewController *)self headerView];
-  v5 = [(PKPaymentSetupTableViewController *)self tableView];
-  [v5 setTableHeaderView:v4];
+  headerView = [(PKPaymentSelectPassesViewController *)self headerView];
+  tableView2 = [(PKPaymentSetupTableViewController *)self tableView];
+  [tableView2 setTableHeaderView:headerView];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentSelectPassesViewController;
-  [(PKPaymentSetupTableViewController *)&v4 viewDidAppear:a3];
+  [(PKPaymentSetupTableViewController *)&v4 viewDidAppear:appear];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
 }
 
@@ -93,26 +93,26 @@
   v6.receiver = self;
   v6.super_class = PKPaymentSelectPassesViewController;
   [(PKPaymentSelectPassesViewController *)&v6 viewDidLayoutSubviews];
-  v3 = [(PKPaymentSelectPassesViewController *)self headerView];
-  [v3 sizeToFit];
+  headerView = [(PKPaymentSelectPassesViewController *)self headerView];
+  [headerView sizeToFit];
 
-  v4 = [(PKPaymentSetupTableViewController *)self tableView];
-  v5 = [(PKPaymentSelectPassesViewController *)self headerView];
-  [v5 bounds];
-  [v4 _tableHeaderHeightDidChangeToHeight:CGRectGetHeight(v7)];
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
+  headerView2 = [(PKPaymentSelectPassesViewController *)self headerView];
+  [headerView2 bounds];
+  [tableView _tableHeaderHeightDidChangeToHeight:CGRectGetHeight(v7)];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"PKPaymentSelectPassesViewControllerCellIdentifier" forIndexPath:v6];
-  v8 = -[NSArray objectAtIndex:](self->_passes, "objectAtIndex:", [v6 row]);
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PKPaymentSelectPassesViewControllerCellIdentifier" forIndexPath:pathCopy];
+  v8 = -[NSArray objectAtIndex:](self->_passes, "objectAtIndex:", [pathCopy row]);
   [v7 setPass:v8];
   [v7 setPeerPaymentAccount:self->_peerPaymentAccount];
-  v9 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-  [v7 setBackgroundColor:v9];
+  secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+  [v7 setBackgroundColor:secondarySystemBackgroundColor];
 
-  LODWORD(self) = [(NSMutableArray *)self->_selectedIndexPaths containsObject:v6];
+  LODWORD(self) = [(NSMutableArray *)self->_selectedIndexPaths containsObject:pathCopy];
   if (self)
   {
     v10 = 3;
@@ -128,16 +128,16 @@
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v22.receiver = self;
   v22.super_class = PKPaymentSelectPassesViewController;
-  [(PKPaymentSetupTableViewController *)&v22 tableView:v6 didSelectRowAtIndexPath:v7];
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  v8 = [v6 cellForRowAtIndexPath:v7];
+  [(PKPaymentSetupTableViewController *)&v22 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
   if (self->_minimumSelectionCount == 1)
   {
     v20 = 0u;
@@ -160,7 +160,7 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [v6 cellForRowAtIndexPath:{*(*(&v18 + 1) + 8 * v13), v18}];
+          v14 = [viewCopy cellForRowAtIndexPath:{*(*(&v18 + 1) + 8 * v13), v18}];
           [v14 setAccessoryType:0];
 
           ++v13;
@@ -178,39 +178,39 @@
     goto LABEL_12;
   }
 
-  v16 = [(NSMutableArray *)self->_selectedIndexPaths containsObject:v7];
+  v16 = [(NSMutableArray *)self->_selectedIndexPaths containsObject:pathCopy];
   selectedIndexPaths = self->_selectedIndexPaths;
   if (!v16)
   {
 LABEL_12:
-    [(NSMutableArray *)selectedIndexPaths addObject:v7, v18];
+    [(NSMutableArray *)selectedIndexPaths addObject:pathCopy, v18];
     v17 = 3;
     goto LABEL_13;
   }
 
-  [(NSMutableArray *)selectedIndexPaths removeObject:v7];
+  [(NSMutableArray *)selectedIndexPaths removeObject:pathCopy];
   v17 = 0;
 LABEL_13:
   [v8 setAccessoryType:v17];
   [(PKPaymentSelectPassesViewController *)self _setContinuousButtonEnabledState];
 }
 
-- (void)setHeaderTitle:(id)a3
+- (void)setHeaderTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_headerTitle isEqualToString:?])
   {
-    objc_storeStrong(&self->_headerTitle, a3);
+    objc_storeStrong(&self->_headerTitle, title);
     [(PKPaymentSelectPassesViewController *)self setHeaderViewTitle:self->_headerTitle subtitle:self->_headerSubtitle];
   }
 }
 
-- (void)setHeaderSubtitle:(id)a3
+- (void)setHeaderSubtitle:(id)subtitle
 {
-  v5 = a3;
+  subtitleCopy = subtitle;
   if (![(NSString *)self->_headerSubtitle isEqualToString:?])
   {
-    objc_storeStrong(&self->_headerSubtitle, a3);
+    objc_storeStrong(&self->_headerSubtitle, subtitle);
     [(PKPaymentSelectPassesViewController *)self setHeaderViewTitle:self->_headerTitle subtitle:self->_headerSubtitle];
   }
 }
@@ -225,11 +225,11 @@ LABEL_13:
     v6 = self->_headerView;
     self->_headerView = v5;
 
-    v7 = [(PKPaymentSelectPassesViewController *)self traitCollection];
-    v8 = [v7 userInterfaceIdiom];
+    traitCollection = [(PKPaymentSelectPassesViewController *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
     v9 = self->_headerView;
-    if ((v8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       [(PKPaymentSetupTableViewController *)self context];
       IsSetupAssistant = PKPaymentSetupContextIsSetupAssistant();
@@ -241,15 +241,15 @@ LABEL_13:
     }
 
     [(PKTableHeaderView *)v9 setStyle:IsSetupAssistant];
-    v11 = [(PKTableHeaderView *)self->_headerView titleLabel];
-    [v11 setText:self->_headerTitle];
+    titleLabel = [(PKTableHeaderView *)self->_headerView titleLabel];
+    [titleLabel setText:self->_headerTitle];
 
-    v12 = [(PKTableHeaderView *)self->_headerView subtitleLabel];
-    [v12 setText:self->_headerSubtitle];
+    subtitleLabel = [(PKTableHeaderView *)self->_headerView subtitleLabel];
+    [subtitleLabel setText:self->_headerSubtitle];
 
     v13 = self->_headerView;
-    v14 = [(PKPaymentSetupTableViewController *)self tableView];
-    [v14 bounds];
+    tableView = [(PKPaymentSetupTableViewController *)self tableView];
+    [tableView bounds];
     [(PKTableHeaderView *)v13 sizeThatFits:CGRectGetWidth(v21), 3.40282347e38];
     v16 = v15;
     v18 = v17;
@@ -261,68 +261,68 @@ LABEL_13:
   return headerView;
 }
 
-- (void)setHeaderViewTitle:(id)a3 subtitle:(id)a4
+- (void)setHeaderViewTitle:(id)title subtitle:(id)subtitle
 {
-  v18 = a4;
-  v6 = a3;
-  v7 = [(PKPaymentSelectPassesViewController *)self headerView];
-  headerTitle = v6;
-  if (!v6)
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  headerView = [(PKPaymentSelectPassesViewController *)self headerView];
+  headerTitle = titleCopy;
+  if (!titleCopy)
   {
     headerTitle = self->_headerTitle;
   }
 
   v9 = headerTitle;
 
-  v10 = [v7 titleLabel];
-  [v10 setText:v9];
+  titleLabel = [headerView titleLabel];
+  [titleLabel setText:v9];
 
-  if (v18)
+  if (subtitleCopy)
   {
-    v11 = [v7 subtitleLabel];
-    [v11 setText:v18];
+    subtitleLabel = [headerView subtitleLabel];
+    [subtitleLabel setText:subtitleCopy];
   }
 
-  v12 = [(PKPaymentSetupTableViewController *)self tableView];
-  [v7 frame];
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
+  [headerView frame];
   v14 = v13;
-  [v12 bounds];
-  [v7 sizeThatFits:{v15, 1.79769313e308}];
+  [tableView bounds];
+  [headerView sizeThatFits:{v15, 1.79769313e308}];
   if (v16 > v14)
   {
     v17 = v16;
-    [v12 _rectForTableHeaderView];
-    [v7 setFrame:?];
-    [v12 _tableHeaderHeightDidChangeToHeight:v17];
+    [tableView _rectForTableHeaderView];
+    [headerView setFrame:?];
+    [tableView _tableHeaderHeightDidChangeToHeight:v17];
   }
 
-  [v7 setNeedsLayout];
+  [headerView setNeedsLayout];
 }
 
-- (void)setButtonText:(id)a3
+- (void)setButtonText:(id)text
 {
-  v7 = a3;
+  textCopy = text;
   if (![(NSString *)self->_buttonText isEqualToString:?])
   {
-    objc_storeStrong(&self->_buttonText, a3);
-    v5 = [(PKPaymentSetupTableViewController *)self dockView];
-    v6 = [v5 primaryButton];
-    [v6 setTitle:self->_buttonText forState:0];
+    objc_storeStrong(&self->_buttonText, text);
+    dockView = [(PKPaymentSetupTableViewController *)self dockView];
+    primaryButton = [dockView primaryButton];
+    [primaryButton setTitle:self->_buttonText forState:0];
   }
 }
 
 - (void)_setContinuousButtonEnabledState
 {
-  v4 = [(PKPaymentSetupTableViewController *)self dockView];
-  v3 = [v4 primaryButton];
-  [v3 setEnabled:{-[NSMutableArray count](self->_selectedIndexPaths, "count") >= self->_minimumSelectionCount}];
+  dockView = [(PKPaymentSetupTableViewController *)self dockView];
+  primaryButton = [dockView primaryButton];
+  [primaryButton setEnabled:{-[NSMutableArray count](self->_selectedIndexPaths, "count") >= self->_minimumSelectionCount}];
 }
 
 - (void)_continuousButtonPressed
 {
   v40 = *MEMORY[0x1E69E9840];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportButtonPressed:0];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -344,7 +344,7 @@ LABEL_13:
         }
 
         v9 = -[NSArray objectAtIndex:](self->_passes, "objectAtIndex:", [*(*(&v35 + 1) + 8 * v8) row]);
-        [v3 addObject:v9];
+        [array addObject:v9];
 
         ++v8;
       }
@@ -361,13 +361,13 @@ LABEL_13:
   aBlock[2] = __63__PKPaymentSelectPassesViewController__continuousButtonPressed__block_invoke;
   aBlock[3] = &unk_1E8010A10;
   aBlock[4] = self;
-  v10 = v3;
+  v10 = array;
   v34 = v10;
   v11 = _Block_copy(aBlock);
   v12 = v11;
   if (self->_confirmIntentToDelete)
   {
-    v13 = [(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts];
+    pkui_userInterfaceIdiomSupportsLargeLayouts = [(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts];
     v14 = [v10 count];
     if (v14 > 1)
     {
@@ -386,14 +386,14 @@ LABEL_13:
     v18 = PKDeviceSpecificLocalizedStringKeyForKey(v16, IsBridge);
     v19 = PKLocalizedShareableCredentialString(v18);
 
-    v20 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v15 message:v19 preferredStyle:v13];
+    v20 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v15 message:v19 preferredStyle:pkui_userInterfaceIdiomSupportsLargeLayouts];
     v21 = v20;
-    if ((v13 & 1) == 0)
+    if ((pkui_userInterfaceIdiomSupportsLargeLayouts & 1) == 0)
     {
-      v22 = [v20 popoverPresentationController];
-      v23 = [(PKPaymentSetupTableViewController *)self dockView];
-      v24 = [v23 primaryButton];
-      [v22 setSourceView:v24];
+      popoverPresentationController = [v20 popoverPresentationController];
+      dockView = [(PKPaymentSetupTableViewController *)self dockView];
+      primaryButton = [dockView primaryButton];
+      [popoverPresentationController setSourceView:primaryButton];
     }
 
     v25 = MEMORY[0x1E69DC648];
@@ -444,70 +444,70 @@ void __63__PKPaymentSelectPassesViewController__continuousButtonPressed__block_i
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_setViewEnabledState:(BOOL)a3
+- (void)_setViewEnabledState:(BOOL)state
 {
-  v3 = a3;
-  v10 = [(PKPaymentSelectPassesViewController *)self view];
-  [v10 setUserInteractionEnabled:v3];
-  v5 = [(PKPaymentSetupTableViewController *)self dockView];
-  v6 = [v5 primaryButton];
-  [v6 setEnabled:v3];
+  stateCopy = state;
+  view = [(PKPaymentSelectPassesViewController *)self view];
+  [view setUserInteractionEnabled:stateCopy];
+  dockView = [(PKPaymentSetupTableViewController *)self dockView];
+  primaryButton = [dockView primaryButton];
+  [primaryButton setEnabled:stateCopy];
 
-  [(PKPaymentSelectPassesViewController *)self _setNavigationBarEnabled:v3];
-  if (v3)
+  [(PKPaymentSelectPassesViewController *)self _setNavigationBarEnabled:stateCopy];
+  if (stateCopy)
   {
-    v7 = [(PKPaymentSelectPassesViewController *)self navigationItem];
-    [v7 setRightBarButtonItem:0];
+    navigationItem = [(PKPaymentSelectPassesViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:0];
   }
 
   else
   {
-    v7 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
-    [v7 startAnimating];
-    v8 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v7];
-    v9 = [(PKPaymentSelectPassesViewController *)self navigationItem];
-    [v9 setRightBarButtonItem:v8];
+    navigationItem = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
+    [navigationItem startAnimating];
+    v8 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:navigationItem];
+    navigationItem2 = [(PKPaymentSelectPassesViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:v8];
   }
 
-  [v10 setNeedsLayout];
+  [view setNeedsLayout];
 }
 
-- (void)_setNavigationBarEnabled:(BOOL)a3
+- (void)_setNavigationBarEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v10 = [(PKPaymentSelectPassesViewController *)self navigationController];
-  v5 = [v10 navigationBar];
-  [v5 setUserInteractionEnabled:v3];
+  enabledCopy = enabled;
+  navigationController = [(PKPaymentSelectPassesViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setUserInteractionEnabled:enabledCopy];
 
-  v6 = [v10 interactivePopGestureRecognizer];
-  [v6 setEnabled:v3];
+  interactivePopGestureRecognizer = [navigationController interactivePopGestureRecognizer];
+  [interactivePopGestureRecognizer setEnabled:enabledCopy];
 
-  v7 = [(PKPaymentSelectPassesViewController *)self navigationItem];
-  [v7 setHidesBackButton:v3 ^ 1];
-  v8 = [v7 leftBarButtonItem];
-  [v8 setEnabled:v3];
+  navigationItem = [(PKPaymentSelectPassesViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:enabledCopy ^ 1];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  [leftBarButtonItem setEnabled:enabledCopy];
 
-  v9 = [v7 rightBarButtonItem];
-  [v9 setEnabled:v3];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:enabledCopy];
 }
 
-- (void)setShowCancelButton:(BOOL)a3
+- (void)setShowCancelButton:(BOOL)button
 {
-  if (self->_showCancelButton == !a3)
+  if (self->_showCancelButton == !button)
   {
-    self->_showCancelButton = a3;
-    v4 = [(PKPaymentSelectPassesViewController *)self navigationItem];
-    v7 = v4;
+    self->_showCancelButton = button;
+    navigationItem = [(PKPaymentSelectPassesViewController *)self navigationItem];
+    v7 = navigationItem;
     if (self->_showCancelButton)
     {
-      v5 = [(PKPaymentSelectPassesViewController *)self navigationItem];
+      navigationItem2 = [(PKPaymentSelectPassesViewController *)self navigationItem];
       v6 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel__cancelPressed];
-      [v5 setLeftBarButtonItem:v6];
+      [navigationItem2 setLeftBarButtonItem:v6];
     }
 
     else
     {
-      [v4 setLeftBarButtonItem:0];
+      [navigationItem setLeftBarButtonItem:0];
     }
   }
 }

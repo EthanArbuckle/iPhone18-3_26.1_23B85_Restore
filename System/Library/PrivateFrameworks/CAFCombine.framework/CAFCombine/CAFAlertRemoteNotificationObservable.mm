@@ -1,19 +1,19 @@
 @interface CAFAlertRemoteNotificationObservable
 - (NSString)description;
-- (void)alertRemoteNotificationService:(id)a3 didUpdateNotificationUserActions:(id)a4;
-- (void)alertRemoteNotificationService:(id)a3 didUpdateShowsPrimaryActionHighlight:(BOOL)a4;
-- (void)alertRemoteNotificationService:(id)a3 didUpdateSymbolNameAndColor:(id)a4;
-- (void)alertRemoteNotificationService:(id)a3 didUpdateUserAction:(unsigned __int8)a4;
-- (void)serviceDidFinishGroupUpdate:(id)a3;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
+- (void)alertRemoteNotificationService:(id)service didUpdateNotificationUserActions:(id)actions;
+- (void)alertRemoteNotificationService:(id)service didUpdateShowsPrimaryActionHighlight:(BOOL)highlight;
+- (void)alertRemoteNotificationService:(id)service didUpdateSymbolNameAndColor:(id)color;
+- (void)alertRemoteNotificationService:(id)service didUpdateUserAction:(unsigned __int8)action;
+- (void)serviceDidFinishGroupUpdate:(id)update;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values;
 @end
 
 @implementation CAFAlertRemoteNotificationObservable
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAFAlertRemoteNotificationObservable.description.getter();
   v5 = v4;
 
@@ -22,55 +22,55 @@
   return v6;
 }
 
-- (void)alertRemoteNotificationService:(id)a3 didUpdateSymbolNameAndColor:(id)a4
+- (void)alertRemoteNotificationService:(id)service didUpdateSymbolNameAndColor:(id)color
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CAFAlertRemoteNotificationObservable.alertRemoteNotificationService(_:didUpdateSymbolNameAndColor:)(v8, v7);
+  serviceCopy = service;
+  colorCopy = color;
+  selfCopy = self;
+  CAFAlertRemoteNotificationObservable.alertRemoteNotificationService(_:didUpdateSymbolNameAndColor:)(selfCopy, colorCopy);
 }
 
-- (void)alertRemoteNotificationService:(id)a3 didUpdateNotificationUserActions:(id)a4
+- (void)alertRemoteNotificationService:(id)service didUpdateNotificationUserActions:(id)actions
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CAFAlertRemoteNotificationObservable.alertRemoteNotificationService(_:didUpdateNotificationUserActions:)(v8, v7);
+  serviceCopy = service;
+  actionsCopy = actions;
+  selfCopy = self;
+  CAFAlertRemoteNotificationObservable.alertRemoteNotificationService(_:didUpdateNotificationUserActions:)(selfCopy, actionsCopy);
 }
 
-- (void)alertRemoteNotificationService:(id)a3 didUpdateUserAction:(unsigned __int8)a4
+- (void)alertRemoteNotificationService:(id)service didUpdateUserAction:(unsigned __int8)action
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFAlertRemoteNotificationObservable.alertRemoteNotificationService(_:didUpdateUserAction:)();
 }
 
-- (void)alertRemoteNotificationService:(id)a3 didUpdateShowsPrimaryActionHighlight:(BOOL)a4
+- (void)alertRemoteNotificationService:(id)service didUpdateShowsPrimaryActionHighlight:(BOOL)highlight
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFAlertRemoteNotificationObservable.alertRemoteNotificationService(_:didUpdateShowsPrimaryActionHighlight:)();
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
-  CAFAlertRemoteNotificationObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(v11, v10, a5);
+  updateCopy = update;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  CAFAlertRemoteNotificationObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(selfCopy, v10, groupUpdate);
 }
 
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  CAFAlertRemoteNotificationObservable.serviceDidUpdate(_:receivedAllValues:)(v7, a4);
+  updateCopy = update;
+  selfCopy = self;
+  CAFAlertRemoteNotificationObservable.serviceDidUpdate(_:receivedAllValues:)(selfCopy, values);
 }
 
-- (void)serviceDidFinishGroupUpdate:(id)a3
+- (void)serviceDidFinishGroupUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   CAFAlertRemoteNotificationObservable.serviceDidFinishGroupUpdate(_:)();
 }
 

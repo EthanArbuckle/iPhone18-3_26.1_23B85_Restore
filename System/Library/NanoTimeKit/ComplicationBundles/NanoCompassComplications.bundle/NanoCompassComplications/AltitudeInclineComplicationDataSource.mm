@@ -1,7 +1,7 @@
 @interface AltitudeInclineComplicationDataSource
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4;
-- (AltitudeInclineComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
-- (id)_templateNoData:(BOOL)a3 altitude:(id)a4 privacyEnabled:(BOOL)a5;
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device;
+- (AltitudeInclineComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
+- (id)_templateNoData:(BOOL)data altitude:(id)altitude privacyEnabled:(BOOL)enabled;
 - (id)alwaysOnTemplate;
 - (id)newTemplate;
 - (id)randomizedTemplate;
@@ -11,14 +11,14 @@
 
 @implementation AltitudeInclineComplicationDataSource
 
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device
 {
-  v5 = a4;
-  if (objc_msgSend_supportsUrsa(v5, v6, v7, v8))
+  deviceCopy = device;
+  if (objc_msgSend_supportsUrsa(deviceCopy, v6, v7, v8))
   {
-    if (objc_msgSend_supportsPolaris(v5, v9, v10, v11))
+    if (objc_msgSend_supportsPolaris(deviceCopy, v9, v10, v11))
     {
-      v12 = (a3 & 0xFFFFFFFFFFFFFFFELL) == 8;
+      v12 = (family & 0xFFFFFFFFFFFFFFFELL) == 8;
     }
 
     else
@@ -35,11 +35,11 @@
   return v12;
 }
 
-- (AltitudeInclineComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (AltitudeInclineComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v6.receiver = self;
   v6.super_class = AltitudeInclineComplicationDataSource;
-  return [(NanoCompassBaseComplicationDataSource *)&v6 initWithComplication:a3 family:a4 forDevice:a5 mode:8];
+  return [(NanoCompassBaseComplicationDataSource *)&v6 initWithComplication:complication family:family forDevice:device mode:8];
 }
 
 - (id)sampleTemplate
@@ -76,12 +76,12 @@
   return v7;
 }
 
-- (id)_templateNoData:(BOOL)a3 altitude:(id)a4 privacyEnabled:(BOOL)a5
+- (id)_templateNoData:(BOOL)data altitude:(id)altitude privacyEnabled:(BOOL)enabled
 {
-  v5 = a5;
-  v6 = a3;
+  enabledCopy = enabled;
+  dataCopy = data;
   v74[2] = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  altitudeCopy = altitude;
   v12 = objc_msgSend_family(self, v9, v10, v11);
   if (v12 == 9)
   {
@@ -90,7 +90,7 @@
     v24 = objc_opt_class();
     v30 = objc_msgSend_fullColorImageProviderWithImageViewClass_(v23, v25, v24, v26);
     v31 = MEMORY[0x277CBEC38];
-    if (v5)
+    if (enabledCopy)
     {
       v73[0] = @"altitude";
       v32 = objc_msgSend_null(MEMORY[0x277CBEB68], v27, v28, v29);
@@ -104,20 +104,20 @@
     else
     {
       v71[0] = @"altitude";
-      v32 = v8;
-      if (!v8)
+      v32 = altitudeCopy;
+      if (!altitudeCopy)
       {
         v32 = objc_msgSend_null(MEMORY[0x277CBEB68], v27, v28, v29);
       }
 
       v72[0] = v32;
       v71[1] = @"nodata";
-      v41 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v27, v8 == 0, v29);
+      v41 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v27, altitudeCopy == 0, v29);
       v72[1] = v41;
       v43 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v42, v72, v71, 2);
       objc_msgSend_setMetadata_(v30, v44, v43, v45);
 
-      if (v8)
+      if (altitudeCopy)
       {
         goto LABEL_14;
       }
@@ -142,9 +142,9 @@ LABEL_14:
     goto LABEL_21;
   }
 
-  if (!v5)
+  if (!enabledCopy)
   {
-    if (v6)
+    if (dataCopy)
     {
       v37 = MEMORY[0x277CBBB88];
       v38 = NanoCompassFormattedUncalibrated();
@@ -153,10 +153,10 @@ LABEL_14:
 
     else
     {
-      v16 = NanoCompassComplicationAltitudeSmallCapsTextProvider(v8, 0, 0);
-      if (v8 && (objc_msgSend_hasAcceptibleAccuracy(v8, v57, v58, v59) & 1) != 0)
+      v16 = NanoCompassComplicationAltitudeSmallCapsTextProvider(altitudeCopy, 0, 0);
+      if (altitudeCopy && (objc_msgSend_hasAcceptibleAccuracy(altitudeCopy, v57, v58, v59) & 1) != 0)
       {
-        v18 = NanoCompassComplicationAltitudeAccuracySmallCapsTextProvider(v8, 0);
+        v18 = NanoCompassComplicationAltitudeAccuracySmallCapsTextProvider(altitudeCopy, 0);
         v60 = NanoCompassAppTintColor();
         objc_msgSend_setTintColor_(v18, v61, v60, v62);
 LABEL_19:

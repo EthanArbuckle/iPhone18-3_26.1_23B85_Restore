@@ -1,18 +1,18 @@
 @interface TDCursorFacetDefinition
 - (id)copyDataFromAttributes;
-- (void)copyAttributesInto:(id)a3;
-- (void)setAttributesFromCopyData:(id)a3;
+- (void)copyAttributesInto:(id)into;
+- (void)setAttributesFromCopyData:(id)data;
 @end
 
 @implementation TDCursorFacetDefinition
 
-- (void)copyAttributesInto:(id)a3
+- (void)copyAttributesInto:(id)into
 {
   v5.receiver = self;
   v5.super_class = TDCursorFacetDefinition;
   [(TDFacetDefinition *)&v5 copyAttributesInto:?];
-  [a3 setValue:-[TDCursorFacetDefinition valueForKey:](self forKey:{"valueForKey:", @"hotSpotX", @"hotSpotX"}];
-  [a3 setValue:-[TDCursorFacetDefinition valueForKey:](self forKey:{"valueForKey:", @"hotSpotY", @"hotSpotY"}];
+  [into setValue:-[TDCursorFacetDefinition valueForKey:](self forKey:{"valueForKey:", @"hotSpotX", @"hotSpotX"}];
+  [into setValue:-[TDCursorFacetDefinition valueForKey:](self forKey:{"valueForKey:", @"hotSpotY", @"hotSpotY"}];
 }
 
 - (id)copyDataFromAttributes
@@ -36,10 +36,10 @@
     [v3 setObject:v6 forKey:@"facetName"];
   }
 
-  v7 = [(TDFacetDefinition *)self keySpec];
-  if (v7)
+  keySpec = [(TDFacetDefinition *)self keySpec];
+  if (keySpec)
   {
-    [v3 setObject:objc_msgSend(v7 forKey:{"copyDataFromAttributes"), @"keySpec"}];
+    [v3 setObject:objc_msgSend(keySpec forKey:{"copyDataFromAttributes"), @"keySpec"}];
   }
 
   v8 = [MEMORY[0x277CCAC58] dataWithPropertyList:v3 format:200 options:0 error:0];
@@ -47,9 +47,9 @@
   return [v8 copy];
 }
 
-- (void)setAttributesFromCopyData:(id)a3
+- (void)setAttributesFromCopyData:(id)data
 {
-  v4 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:0];
+  v4 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:0];
   v5 = [v4 objectForKey:@"hotSpotX"];
   if (v5)
   {

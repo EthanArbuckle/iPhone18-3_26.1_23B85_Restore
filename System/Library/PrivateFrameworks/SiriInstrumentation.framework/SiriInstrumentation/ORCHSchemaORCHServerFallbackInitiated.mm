@@ -1,35 +1,35 @@
 @interface ORCHSchemaORCHServerFallbackInitiated
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ORCHSchemaORCHServerFallbackInitiated)initWithDictionary:(id)a3;
-- (ORCHSchemaORCHServerFallbackInitiated)initWithJSON:(id)a3;
+- (ORCHSchemaORCHServerFallbackInitiated)initWithDictionary:(id)dictionary;
+- (ORCHSchemaORCHServerFallbackInitiated)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)missingAssetAtIndex:(unint64_t)a3;
+- (int)missingAssetAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addMissingAsset:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)addMissingAsset:(int)asset;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ORCHSchemaORCHServerFallbackInitiated
 
-- (ORCHSchemaORCHServerFallbackInitiated)initWithDictionary:(id)a3
+- (ORCHSchemaORCHServerFallbackInitiated)initWithDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = ORCHSchemaORCHServerFallbackInitiated;
   v5 = [(ORCHSchemaORCHServerFallbackInitiated *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"fallbackReason"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"fallbackReason"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHServerFallbackInitiated setFallbackReason:](v5, "setFallbackReason:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"missingAsset"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"missingAsset"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,30 +77,30 @@
   return v5;
 }
 
-- (ORCHSchemaORCHServerFallbackInitiated)initWithJSON:(id)a3
+- (ORCHSchemaORCHServerFallbackInitiated)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ORCHSchemaORCHServerFallbackInitiated *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ORCHSchemaORCHServerFallbackInitiated *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ORCHSchemaORCHServerFallbackInitiated *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -113,7 +113,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [(ORCHSchemaORCHServerFallbackInitiated *)self fallbackReason]- 1;
@@ -127,19 +127,19 @@
       v5 = off_1E78DEEF8[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"fallbackReason"];
+    [dictionary setObject:v5 forKeyedSubscript:@"fallbackReason"];
   }
 
   if ([(NSArray *)self->_missingAssets count])
   {
-    v6 = [(ORCHSchemaORCHServerFallbackInitiated *)self missingAssets];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"missingAsset"];
+    missingAssets = [(ORCHSchemaORCHServerFallbackInitiated *)self missingAssets];
+    v7 = [missingAssets copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"missingAsset"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -157,22 +157,22 @@
   return [(NSArray *)self->_missingAssets hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (fallbackReason = self->_fallbackReason, fallbackReason == [v4 fallbackReason]))
+      if ((*&self->_has & 1) == 0 || (fallbackReason = self->_fallbackReason, fallbackReason == [equalCopy fallbackReason]))
       {
-        v6 = [(ORCHSchemaORCHServerFallbackInitiated *)self missingAssets];
-        v7 = [v4 missingAssets];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        missingAssets = [(ORCHSchemaORCHServerFallbackInitiated *)self missingAssets];
+        missingAssets2 = [equalCopy missingAssets];
+        v8 = missingAssets2;
+        if ((missingAssets != 0) != (missingAssets2 == 0))
         {
-          v9 = [(ORCHSchemaORCHServerFallbackInitiated *)self missingAssets];
-          if (!v9)
+          missingAssets3 = [(ORCHSchemaORCHServerFallbackInitiated *)self missingAssets];
+          if (!missingAssets3)
           {
 
 LABEL_13:
@@ -180,10 +180,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(ORCHSchemaORCHServerFallbackInitiated *)self missingAssets];
-          v12 = [v4 missingAssets];
-          v13 = [v11 isEqual:v12];
+          v10 = missingAssets3;
+          missingAssets4 = [(ORCHSchemaORCHServerFallbackInitiated *)self missingAssets];
+          missingAssets5 = [equalCopy missingAssets];
+          v13 = [missingAssets4 isEqual:missingAssets5];
 
           if (v13)
           {
@@ -204,10 +204,10 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
@@ -246,23 +246,23 @@ LABEL_11:
   }
 }
 
-- (int)missingAssetAtIndex:(unint64_t)a3
+- (int)missingAssetAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_missingAssets objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_missingAssets objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addMissingAsset:(int)a3
+- (void)addMissingAsset:(int)asset
 {
-  v3 = *&a3;
+  v3 = *&asset;
   missingAssets = self->_missingAssets;
   if (!missingAssets)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_missingAssets;
-    self->_missingAssets = v6;
+    self->_missingAssets = array;
 
     missingAssets = self->_missingAssets;
   }

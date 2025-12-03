@@ -1,24 +1,24 @@
 @interface TSWPHyperlinkActionsViewController
-- (TSWPHyperlinkActionsViewController)initWithHyperlink:(id)a3 readOnly:(BOOL)a4;
+- (TSWPHyperlinkActionsViewController)initWithHyperlink:(id)hyperlink readOnly:(BOOL)only;
 - (id)hyperlinkSettingsViewController;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)dealloc;
 - (void)loadView;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TSWPHyperlinkActionsViewController
 
-- (TSWPHyperlinkActionsViewController)initWithHyperlink:(id)a3 readOnly:(BOOL)a4
+- (TSWPHyperlinkActionsViewController)initWithHyperlink:(id)hyperlink readOnly:(BOOL)only
 {
   v6 = [(TSWPHyperlinkActionsViewController *)self initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    v6->_readOnly = a4;
-    [(TSWPHyperlinkActionsViewController *)v6 setHyperlink:a3];
+    v6->_readOnly = only;
+    [(TSWPHyperlinkActionsViewController *)v6 setHyperlink:hyperlink];
   }
 
   return v7;
@@ -43,9 +43,9 @@
   [(TSWPHyperlinkActionsViewController *)self setPreferredContentSize:?];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v18.receiver = self;
   v18.super_class = TSWPHyperlinkActionsViewController;
   [(TSWPHyperlinkActionsViewController *)&v18 viewWillAppear:?];
@@ -81,10 +81,10 @@
   [+[TSWPHyperlinkUIController sharedHyperlinkUIController](TSWPHyperlinkUIController "sharedHyperlinkUIController")];
   v17.receiver = self;
   v17.super_class = TSWPHyperlinkActionsViewController;
-  [(TSWPHyperlinkActionsViewController *)&v17 viewWillAppear:v3];
+  [(TSWPHyperlinkActionsViewController *)&v17 viewWillAppear:appearCopy];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (self->_readOnly)
   {
@@ -97,9 +97,9 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 1;
   }
@@ -110,13 +110,13 @@
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v5 = [(NSString *)[(NSURL *)[(TSWPHyperlinkField *)[(TSWPHyperlinkActionsViewController *)self hyperlink] url] scheme] isEqualToString:@"mailto"];
-  v6 = [a4 section];
-  v7 = [a4 row];
+  section = [path section];
+  v7 = [path row];
   v8 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:0];
-  if (!(v6 | v7))
+  if (!(section | v7))
   {
     v9 = TSWPBundle();
     if (v5)
@@ -132,7 +132,7 @@
     goto LABEL_8;
   }
 
-  if (!v6 && v7 == 1)
+  if (!section && v7 == 1)
   {
     v9 = TSWPBundle();
     v10 = @"Copy";
@@ -142,7 +142,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (v6 == 1)
+  if (section == 1)
   {
     [objc_msgSend(v8 "textLabel")];
     [v8 setAccessoryType:1];

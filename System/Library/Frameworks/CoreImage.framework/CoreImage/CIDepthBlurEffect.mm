@@ -1,18 +1,18 @@
 @interface CIDepthBlurEffect
-+ (CGImageMetadata)augmentMetadataWithRenderingPropertiesForImage:(id)a3;
-+ (CGImageMetadata)metadataFromDictionary:(id)a3 metadata:(CGImageMetadata *)a4;
++ (CGImageMetadata)augmentMetadataWithRenderingPropertiesForImage:(id)image;
++ (CGImageMetadata)metadataFromDictionary:(id)dictionary metadata:(CGImageMetadata *)metadata;
 + (id)customAttributes;
-- (id)_getFocusRect:(id)a3 focusRect:(id)a4;
+- (id)_getFocusRect:(id)rect focusRect:(id)focusRect;
 - (id)outputImage;
-- (void)prewarm:(id)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)prewarm:(id)prewarm;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation CIDepthBlurEffect
 
-- (void)prewarm:(id)a3
+- (void)prewarm:(id)prewarm
 {
-  (MEMORY[0x1EEE9AC00])(self, a2, a3);
+  (MEMORY[0x1EEE9AC00])(self, a2, prewarm);
   v4 = v3;
   v51[3] = *MEMORY[0x1E69E9840];
   if ((CI_SKIP_PREWARMING_SDOF_RENDERING() & 1) == 0)
@@ -222,64 +222,64 @@
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:14];
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  if ([a4 isEqualToString:@"inputShiftmapImage"])
+  if ([key isEqualToString:@"inputShiftmapImage"])
   {
     v7 = @"inputDisparityImage";
 LABEL_13:
 
-    [(CIDepthBlurEffect *)self setValue:a3 forKey:v7];
+    [(CIDepthBlurEffect *)self setValue:value forKey:v7];
     return;
   }
 
-  if ([a4 isEqualToString:@"inputLeftEyePosition"])
+  if ([key isEqualToString:@"inputLeftEyePosition"])
   {
     v7 = @"inputLeftEyePositions";
     goto LABEL_13;
   }
 
-  if ([a4 isEqualToString:@"inputRightEyePosition"])
+  if ([key isEqualToString:@"inputRightEyePosition"])
   {
     v7 = @"inputRightEyePositions";
     goto LABEL_13;
   }
 
-  if ([a4 isEqualToString:@"inputChinPosition"])
+  if ([key isEqualToString:@"inputChinPosition"])
   {
     v7 = @"inputChinPositions";
     goto LABEL_13;
   }
 
-  if ([a4 isEqualToString:@"inputFaceMidPoint"])
+  if ([key isEqualToString:@"inputFaceMidPoint"])
   {
     v7 = @"inputNosePositions";
     goto LABEL_13;
   }
 
-  if ([a4 isEqualToString:@"inputScale"])
+  if ([key isEqualToString:@"inputScale"])
   {
     v7 = @"inputScaleFactor";
     goto LABEL_13;
   }
 
-  if (([a4 isEqualToString:@"inputShiftMin"] & 1) == 0 && (objc_msgSend(a4, "isEqualToString:", @"inputShiftMax") & 1) == 0 && (objc_msgSend(a4, "isEqualToString:", @"inputUseMipmaps") & 1) == 0 && (objc_msgSend(a4, "isEqualToString:", @"inputUseNativeImage") & 1) == 0 && (objc_msgSend(a4, "isEqualToString:", @"inputUseNormalizedDisparity") & 1) == 0 && (objc_msgSend(a4, "isEqualToString:", @"inputOriginalSize") & 1) == 0)
+  if (([key isEqualToString:@"inputShiftMin"] & 1) == 0 && (objc_msgSend(key, "isEqualToString:", @"inputShiftMax") & 1) == 0 && (objc_msgSend(key, "isEqualToString:", @"inputUseMipmaps") & 1) == 0 && (objc_msgSend(key, "isEqualToString:", @"inputUseNativeImage") & 1) == 0 && (objc_msgSend(key, "isEqualToString:", @"inputUseNormalizedDisparity") & 1) == 0 && (objc_msgSend(key, "isEqualToString:", @"inputOriginalSize") & 1) == 0)
   {
     v8.receiver = self;
     v8.super_class = CIDepthBlurEffect;
-    [(CIFilter *)&v8 setValue:a3 forUndefinedKey:a4];
+    [(CIFilter *)&v8 setValue:value forUndefinedKey:key];
   }
 }
 
-- (id)_getFocusRect:(id)a3 focusRect:(id)a4
+- (id)_getFocusRect:(id)rect focusRect:(id)focusRect
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (!a4 || (v5 = a4, [a4 CGRectValue], CGRectEqualToRect(v27, *MEMORY[0x1E695F040])))
+  if (!focusRect || (v5 = focusRect, [focusRect CGRectValue], CGRectEqualToRect(v27, *MEMORY[0x1E695F040])))
   {
-    v6 = [a3 properties];
-    if (v6)
+    properties = [rect properties];
+    if (properties)
     {
-      v7 = [v6 objectForKey:*MEMORY[0x1E696D8B0]];
+      v7 = [properties objectForKey:*MEMORY[0x1E696D8B0]];
       if (v7)
       {
         v8 = [v7 objectForKey:@"Regions"];
@@ -364,11 +364,11 @@ LABEL_13:
   [(NSNumber *)inputLumaNoiseScale floatValue];
   if (v10 == 0.0)
   {
-    v11 = [(CIImage *)self->inputImage properties];
-    if (v11)
+    properties = [(CIImage *)self->inputImage properties];
+    if (properties)
     {
       LODWORD(valuePtr[0]) = 2143289344;
-      Value = CFDictionaryGetValue(v11, *MEMORY[0x1E696DE30]);
+      Value = CFDictionaryGetValue(properties, *MEMORY[0x1E696DE30]);
       v4 = 0.0;
       if (Value)
       {
@@ -400,8 +400,8 @@ LABEL_12:
   {
     if ([(CIImage *)self->inputDisparityImage properties])
     {
-      v16 = [(CGImageMetadata *)inputDisparityImage properties];
-      inputDisparityImage = [v16 objectForKeyedSubscript:*MEMORY[0x1E696D228]];
+      properties2 = [(CGImageMetadata *)inputDisparityImage properties];
+      inputDisparityImage = [properties2 objectForKeyedSubscript:*MEMORY[0x1E696D228]];
       if (inputDisparityImage)
       {
         goto LABEL_12;
@@ -1048,14 +1048,14 @@ LABEL_61:
     }
   }
 
-  v232 = [(CIFilter *)v26 outputImage];
-  if (!v232)
+  outputImage = [(CIFilter *)v26 outputImage];
+  if (!outputImage)
   {
     return self->inputImage;
   }
 
   v248[0] = self->inputImage;
-  v248[1] = v232;
+  v248[1] = outputImage;
   LODWORD(v233) = v19;
   v248[2] = [MEMORY[0x1E696AD98] numberWithFloat:{v233, @"inputImage", @"inputBlurMap", @"inputAperture"}];
   v247[3] = @"inputLumaNoiseScale";
@@ -1116,12 +1116,12 @@ LABEL_61:
   return [(CIFilter *)v240 outputImage];
 }
 
-+ (CGImageMetadata)metadataFromDictionary:(id)a3 metadata:(CGImageMetadata *)a4
++ (CGImageMetadata)metadataFromDictionary:(id)dictionary metadata:(CGImageMetadata *)metadata
 {
-  v4 = a4;
-  if (a4)
+  metadataCopy = metadata;
+  if (metadata)
   {
-    MutableCopy = CGImageMetadataCreateMutableCopy(a4);
+    MutableCopy = CGImageMetadataCreateMutableCopy(metadata);
   }
 
   else
@@ -1135,7 +1135,7 @@ LABEL_61:
     return 0;
   }
 
-  if (!CGImageMetadataRegisterNamespaceForPrefix(MutableCopy, @"depthBlurEffect", @"UnpackedRenderingParameters", 0) || (v8 = CGImageMetadataTagCreate(@"http://ns.apple.com/depthBlurEffect/1.0/", @"depthBlurEffect", @"UnpackedRenderingParameters", kCGImageMetadataTypeStructure, a3)) == 0)
+  if (!CGImageMetadataRegisterNamespaceForPrefix(MutableCopy, @"depthBlurEffect", @"UnpackedRenderingParameters", 0) || (v8 = CGImageMetadataTagCreate(@"http://ns.apple.com/depthBlurEffect/1.0/", @"depthBlurEffect", @"UnpackedRenderingParameters", kCGImageMetadataTypeStructure, dictionary)) == 0)
   {
     CFRelease(v7);
     return 0;
@@ -1147,28 +1147,28 @@ LABEL_61:
   if (!v10)
   {
     CFRelease(v7);
-    return v4;
+    return metadataCopy;
   }
 
   return CFAutorelease(v7);
 }
 
-+ (CGImageMetadata)augmentMetadataWithRenderingPropertiesForImage:(id)a3
++ (CGImageMetadata)augmentMetadataWithRenderingPropertiesForImage:(id)image
 {
-  if (!a3 || ![a3 properties])
+  if (!image || ![image properties])
   {
     return 0;
   }
 
-  v5 = [a3 properties];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E696D228]];
+  properties = [image properties];
+  v6 = [properties objectForKeyedSubscript:*MEMORY[0x1E696D228]];
   v7 = [CIDepthBlurEffect tuningParametersFromMetadata:v6];
   if (v7)
   {
     v8 = v7;
     if ([objc_msgSend(v7 "allKeys")])
     {
-      v6 = [a1 metadataFromDictionary:v8 metadata:v6];
+      v6 = [self metadataFromDictionary:v8 metadata:v6];
     }
   }
 

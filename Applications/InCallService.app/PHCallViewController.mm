@@ -1,35 +1,35 @@
 @interface PHCallViewController
-+ (double)_bottomBarBottomMarginForView:(id)a3;
++ (double)_bottomBarBottomMarginForView:(id)view;
 + (double)_yOffsetForLoweredButtons;
-+ (double)homeButtonOffsetForView:(id)a3;
++ (double)homeButtonOffsetForView:(id)view;
 - (BOOL)isPresentingCustomMessageController;
 - (BOOL)shouldShowActionTypeSendToVoicemail;
 - (CGRect)sourceRectForDeclineWithMessagePopover;
 - (CGRect)sourceRectForDeclineWithReminderPopover;
 - (PHAlertController)failureAlertController;
-- (PHCallViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PHCallViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (PHInCallRootViewControllerProtocol)inCallRootViewController;
 - (TUSenderIdentityClient)senderIdentityClient;
 - (UIImage)frontmostCallProviderIcon;
 - (id)gameControllerResponder;
-- (id)imageForItemInBar:(id)a3 withActionType:(int64_t)a4;
-- (void)activateProviderInBackgroundForCall:(id)a3;
-- (void)activateProviderInBackgroundWithBundleID:(id)a3;
-- (void)callDisplayStyleDidChangeFromStyle:(int64_t)a3 toStyle:(int64_t)a4;
-- (void)configureDeclineWithMoreButton:(id)a3 forIncomingCall:(id)a4;
-- (void)configureDeclineWithReminderButton:(id)a3 declineWithMessageButton:(id)a4 forIncomingCall:(id)a5;
+- (id)imageForItemInBar:(id)bar withActionType:(int64_t)type;
+- (void)activateProviderInBackgroundForCall:(id)call;
+- (void)activateProviderInBackgroundWithBundleID:(id)d;
+- (void)callDisplayStyleDidChangeFromStyle:(int64_t)style toStyle:(int64_t)toStyle;
+- (void)configureDeclineWithMoreButton:(id)button forIncomingCall:(id)call;
+- (void)configureDeclineWithReminderButton:(id)button declineWithMessageButton:(id)messageButton forIncomingCall:(id)call;
 - (void)handleDismissedCallDisplayStyle;
 - (void)obtainDismissalAssertionIfNeeded;
-- (void)providersChangedForProviderManager:(id)a3;
+- (void)providersChangedForProviderManager:(id)manager;
 - (void)punchOutToVoIPApplicationForCurrentCall;
 - (void)releaseDismissalAssertion;
 - (void)releaseDismissalAssertionIfNeeded;
-- (void)setCurrentState:(unsigned __int16)a3;
-- (void)setStatusBarHidden:(BOOL)a3 withDuration:(double)a4;
-- (void)showErrorAlertWithTitle:(id)a3 message:(id)a4;
-- (void)showErrorAlertWithTitle:(id)a3 message:(id)a4 alternateButton:(id)a5 alternateButtonURL:(id)a6 otherButton:(id)a7 otherButtonURL:(id)a8;
+- (void)setCurrentState:(unsigned __int16)state;
+- (void)setStatusBarHidden:(BOOL)hidden withDuration:(double)duration;
+- (void)showErrorAlertWithTitle:(id)title message:(id)message;
+- (void)showErrorAlertWithTitle:(id)title message:(id)message alternateButton:(id)button alternateButtonURL:(id)l otherButton:(id)otherButton otherButtonURL:(id)rL;
 - (void)transitionToIdleAfterDelay;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation PHCallViewController
@@ -38,21 +38,21 @@
 {
   if ([(PHCallViewController *)self needsDismissalAssertion])
   {
-    v2 = [objc_opt_class() dismissalAssertionReason];
+    dismissalAssertionReason = [objc_opt_class() dismissalAssertionReason];
 
-    if (v2)
+    if (dismissalAssertionReason)
     {
-      v3 = [objc_opt_class() dismissalAssertionReason];
-      [PHInCallRootViewController obtainDismissalAssertionForReason:v3];
+      dismissalAssertionReason2 = [objc_opt_class() dismissalAssertionReason];
+      [PHInCallRootViewController obtainDismissalAssertionForReason:dismissalAssertionReason2];
     }
   }
 }
 
-- (PHCallViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PHCallViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v11.receiver = self;
   v11.super_class = PHCallViewController;
-  v4 = [(PHCallViewController *)&v11 initWithNibName:a3 bundle:a4];
+  v4 = [(PHCallViewController *)&v11 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -73,55 +73,55 @@
 
 - (BOOL)isPresentingCustomMessageController
 {
-  v2 = [(PHCallViewController *)self presentedViewController];
+  presentedViewController = [(PHCallViewController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)setCurrentState:(unsigned __int16)a3
+- (void)setCurrentState:(unsigned __int16)state
 {
-  self->_currentState = a3;
+  self->_currentState = state;
   if ([(PHCallViewController *)self currentState]!= 1)
   {
     return;
   }
 
   v3 = +[TUCallCenter sharedInstance];
-  v4 = [v3 incomingCall];
-  if (v4)
+  incomingCall = [v3 incomingCall];
+  if (incomingCall)
   {
-    v17 = v4;
+    incomingVideoCall = incomingCall;
   }
 
   else
   {
     v5 = +[TUCallCenter sharedInstance];
-    v17 = [v5 incomingVideoCall];
+    incomingVideoCall = [v5 incomingVideoCall];
 
-    if (!v17)
+    if (!incomingVideoCall)
     {
-      v17 = 0;
+      incomingVideoCall = 0;
       goto LABEL_7;
     }
   }
 
   v6 = +[TUMetadataClientController sharedInstance];
-  [v6 updateMetadataForCall:v17];
+  [v6 updateMetadataForCall:incomingVideoCall];
 
 LABEL_7:
   v7 = +[UIApplication sharedApplication];
-  v8 = [v7 delegate];
-  v9 = [v8 currentInCallScene];
-  v10 = [v9 delegate];
-  v11 = [v10 callAnalyticsLogger];
+  delegate = [v7 delegate];
+  currentInCallScene = [delegate currentInCallScene];
+  delegate2 = [currentInCallScene delegate];
+  callAnalyticsLogger = [delegate2 callAnalyticsLogger];
   v12 = +[UIApplication sharedApplication];
-  v13 = [v12 delegate];
-  v14 = [v13 currentInCallScene];
-  v15 = [v14 presentationMode];
+  delegate3 = [v12 delegate];
+  currentInCallScene2 = [delegate3 currentInCallScene];
+  presentationMode = [currentInCallScene2 presentationMode];
   v16 = +[ICSPreferences sharedPreferences];
-  [v11 createAnalyticsViewForCall:v17 initialPresentationMode:v15 bannersEnabled:{objc_msgSend(v16, "hasBannersEnabled")}];
+  [callAnalyticsLogger createAnalyticsViewForCall:incomingVideoCall initialPresentationMode:presentationMode bannersEnabled:{objc_msgSend(v16, "hasBannersEnabled")}];
 }
 
 - (void)transitionToIdleAfterDelay
@@ -145,31 +145,31 @@ LABEL_7:
   dispatch_after(v4, &_dispatch_main_q, block);
 }
 
-- (void)configureDeclineWithMoreButton:(id)a3 forIncomingCall:(id)a4
+- (void)configureDeclineWithMoreButton:(id)button forIncomingCall:(id)call
 {
-  v6 = a3;
-  v7 = a4;
+  buttonCopy = button;
+  callCopy = call;
   if ([(PHCallViewController *)self isPresentingCustomMessageController])
   {
-    v8 = [(PHCallViewController *)self declineWithMessageController];
+    declineWithMessageController = [(PHCallViewController *)self declineWithMessageController];
 
-    if (!v6 || v8)
+    if (!buttonCopy || declineWithMessageController)
     {
       goto LABEL_11;
     }
   }
 
-  else if (!v6)
+  else if (!buttonCopy)
   {
     goto LABEL_11;
   }
 
-  v9 = [v6 menu];
-  if (v9)
+  menu = [buttonCopy menu];
+  if (menu)
   {
-    v10 = [v6 menu];
-    v11 = [v10 children];
-    v12 = [v11 count];
+    menu2 = [buttonCopy menu];
+    children = [menu2 children];
+    v12 = [children count];
 
     if (v12 <= 1)
     {
@@ -177,13 +177,13 @@ LABEL_7:
       v14 = +[TUCallCenter sharedInstance];
       v38 = [v13 makeWithCallCenter:v14];
 
-      v15 = [[PHDeclineWithMessageController alloc] initWithIncomingCall:v7 customMessagePresentingViewController:self declineCallService:v38];
+      v15 = [[PHDeclineWithMessageController alloc] initWithIncomingCall:callCopy customMessagePresentingViewController:self declineCallService:v38];
       [(PHCallViewController *)self setDeclineWithMessageController:v15];
 
-      v16 = [(PHCallViewController *)self declineWithMessageController];
-      v39 = [v16 declineMessageMenu];
+      declineWithMessageController2 = [(PHCallViewController *)self declineWithMessageController];
+      declineMessageMenu = [declineWithMessageController2 declineMessageMenu];
 
-      if (v39)
+      if (declineMessageMenu)
       {
         v17 = +[UIColor whiteColor];
         v43[0] = v17;
@@ -194,33 +194,33 @@ LABEL_7:
 
         v20 = [NSBundle bundleForClass:objc_opt_class()];
         v21 = [v20 localizedStringForKey:@"SEND_MESSAGE" value:&stru_100361FD0 table:@"BottomBar"];
-        v22 = [v39 identifier];
-        v23 = [v39 children];
-        v35 = [UIMenu menuWithTitle:v21 image:v36 identifier:v22 options:32 children:v23];
+        identifier = [declineMessageMenu identifier];
+        children2 = [declineMessageMenu children];
+        v35 = [UIMenu menuWithTitle:v21 image:v36 identifier:identifier options:32 children:children2];
 
-        v24 = [v6 menu];
-        v25 = [v24 children];
-        v37 = [v25 mutableCopy];
+        menu3 = [buttonCopy menu];
+        children3 = [menu3 children];
+        v37 = [children3 mutableCopy];
 
         [v37 insertObject:v35 atIndex:0];
-        v26 = [v6 menu];
-        v27 = [v26 title];
-        v28 = [v6 menu];
-        v29 = [v28 image];
-        v30 = [v6 menu];
-        v31 = [v30 identifier];
-        v32 = [v6 menu];
-        v33 = +[UIMenu menuWithTitle:image:identifier:options:children:](UIMenu, "menuWithTitle:image:identifier:options:children:", v27, v29, v31, [v32 options], v37);
+        menu4 = [buttonCopy menu];
+        title = [menu4 title];
+        menu5 = [buttonCopy menu];
+        image = [menu5 image];
+        menu6 = [buttonCopy menu];
+        identifier2 = [menu6 identifier];
+        menu7 = [buttonCopy menu];
+        v33 = +[UIMenu menuWithTitle:image:identifier:options:children:](UIMenu, "menuWithTitle:image:identifier:options:children:", title, image, identifier2, [menu7 options], v37);
 
-        [v6 setMenu:v33];
-        objc_initWeak(&location, v7);
+        [buttonCopy setMenu:v33];
+        objc_initWeak(&location, callCopy);
         v40[0] = _NSConcreteStackBlock;
         v40[1] = 3221225472;
         v40[2] = sub_100055BA4;
         v40[3] = &unk_100357018;
         objc_copyWeak(&v41, &location);
         v34 = [UIAction actionWithHandler:v40];
-        [v6 addAction:v34 forControlEvents:0x4000];
+        [buttonCopy addAction:v34 forControlEvents:0x4000];
 
         objc_destroyWeak(&v41);
         objc_destroyWeak(&location);
@@ -231,37 +231,37 @@ LABEL_7:
 LABEL_11:
 }
 
-- (void)configureDeclineWithReminderButton:(id)a3 declineWithMessageButton:(id)a4 forIncomingCall:(id)a5
+- (void)configureDeclineWithReminderButton:(id)button declineWithMessageButton:(id)messageButton forIncomingCall:(id)call
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
+  buttonCopy = button;
+  messageButtonCopy = messageButton;
+  callCopy = call;
   if (!TUCallScreeningEnabledM3() || ![(PHCallViewController *)self isPresentingCustomMessageController]|| ([(PHCallViewController *)self declineWithMessageController], v10 = objc_claimAutoreleasedReturnValue(), v10, !v10))
   {
-    if (v16)
+    if (buttonCopy)
     {
-      [PHDeclineWithReminderController configureButton:v16 forIncomingCall:v9 presenter:self];
+      [PHDeclineWithReminderController configureButton:buttonCopy forIncomingCall:callCopy presenter:self];
     }
 
-    if (v8)
+    if (messageButtonCopy)
     {
       v11 = objc_opt_new();
       v12 = +[TUCallCenter sharedInstance];
       v13 = [v11 makeWithCallCenter:v12];
 
-      v14 = [[PHDeclineWithMessageController alloc] initWithIncomingCall:v9 customMessagePresentingViewController:self declineCallService:v13];
+      v14 = [[PHDeclineWithMessageController alloc] initWithIncomingCall:callCopy customMessagePresentingViewController:self declineCallService:v13];
       [(PHCallViewController *)self setDeclineWithMessageController:v14];
 
-      v15 = [(PHCallViewController *)self declineWithMessageController];
-      [v15 configureDeclineMessageForButton:v8];
+      declineWithMessageController = [(PHCallViewController *)self declineWithMessageController];
+      [declineWithMessageController configureDeclineMessageForButton:messageButtonCopy];
     }
   }
 }
 
 - (CGRect)sourceRectForDeclineWithMessagePopover
 {
-  v3 = [(PHCallViewController *)self bottomBar];
-  [v3 frameForControlWithActionType:9];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar frameForControlWithActionType:9];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -280,8 +280,8 @@ LABEL_11:
   v32.size.height = height;
   if (CGRectEqualToRect(v29, v32))
   {
-    v15 = [(PHCallViewController *)self bottomBar];
-    [v15 frameForControlWithActionType:12];
+    bottomBar2 = [(PHCallViewController *)self bottomBar];
+    [bottomBar2 frameForControlWithActionType:12];
     v5 = v16;
     v7 = v17;
     v9 = v18;
@@ -298,8 +298,8 @@ LABEL_11:
   v33.size.height = height;
   if (CGRectEqualToRect(v30, v33))
   {
-    v20 = [(PHCallViewController *)self bottomBar];
-    [v20 frameForControlWithActionType:30];
+    bottomBar3 = [(PHCallViewController *)self bottomBar];
+    [bottomBar3 frameForControlWithActionType:30];
     v5 = v21;
     v7 = v22;
     v9 = v23;
@@ -319,8 +319,8 @@ LABEL_11:
 
 - (CGRect)sourceRectForDeclineWithReminderPopover
 {
-  v2 = [(PHCallViewController *)self bottomBar];
-  [v2 frameForControlWithActionType:13];
+  bottomBar = [(PHCallViewController *)self bottomBar];
+  [bottomBar frameForControlWithActionType:13];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -337,11 +337,11 @@ LABEL_11:
   return result;
 }
 
-- (void)setStatusBarHidden:(BOOL)a3 withDuration:(double)a4
+- (void)setStatusBarHidden:(BOOL)hidden withDuration:(double)duration
 {
-  v5 = a3;
-  v6 = [(PHCallViewController *)self inCallRootViewController];
-  [v6 setStatusBarHidden:v5 withDuration:a4];
+  hiddenCopy = hidden;
+  inCallRootViewController = [(PHCallViewController *)self inCallRootViewController];
+  [inCallRootViewController setStatusBarHidden:hiddenCopy withDuration:duration];
 }
 
 - (TUSenderIdentityClient)senderIdentityClient
@@ -359,26 +359,26 @@ LABEL_11:
   return senderIdentityClient;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PHCallViewController;
-  [(PHCallViewController *)&v4 viewDidDisappear:a3];
+  [(PHCallViewController *)&v4 viewDidDisappear:disappear];
   [(PHCallViewController *)self handleDismissedCallDisplayStyle];
 }
 
 - (void)handleDismissedCallDisplayStyle
 {
-  v3 = [(PHCallViewController *)self presentedViewController];
-  v4 = [v3 presentingViewController];
+  presentedViewController = [(PHCallViewController *)self presentedViewController];
+  presentingViewController = [presentedViewController presentingViewController];
 
-  if (v4 == self)
+  if (presentingViewController == self)
   {
-    v5 = [(PHCallViewController *)self presentedViewController];
-    [v5 dismissViewControllerAnimated:0 completion:0];
+    presentedViewController2 = [(PHCallViewController *)self presentedViewController];
+    [presentedViewController2 dismissViewControllerAnimated:0 completion:0];
   }
 
-  v6 = [(PHCallViewController *)self presentedViewController];
+  presentedViewController3 = [(PHCallViewController *)self presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -390,39 +390,39 @@ LABEL_11:
   [(PHCallViewController *)self releaseDismissalAssertionIfNeeded];
 }
 
-- (void)showErrorAlertWithTitle:(id)a3 message:(id)a4
+- (void)showErrorAlertWithTitle:(id)title message:(id)message
 {
-  v5 = a4;
-  v6 = a3;
+  messageCopy = message;
+  titleCopy = title;
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"OK" value:&stru_100361FD0 table:@"InCallService"];
-  v10 = [IMUserNotification userNotificationWithIdentifier:@"InCallService" title:v6 message:v5 defaultButton:v8 alternateButton:0 otherButton:0];
+  v10 = [IMUserNotification userNotificationWithIdentifier:@"InCallService" title:titleCopy message:messageCopy defaultButton:v8 alternateButton:0 otherButton:0];
 
   [v10 setShowInLockScreen:1];
   v9 = +[IMUserNotificationCenter sharedInstance];
   [v9 addUserNotification:v10 listener:0];
 }
 
-- (void)showErrorAlertWithTitle:(id)a3 message:(id)a4 alternateButton:(id)a5 alternateButtonURL:(id)a6 otherButton:(id)a7 otherButtonURL:(id)a8
+- (void)showErrorAlertWithTitle:(id)title message:(id)message alternateButton:(id)button alternateButtonURL:(id)l otherButton:(id)otherButton otherButtonURL:(id)rL
 {
-  v13 = a6;
-  v14 = a8;
-  v15 = a7;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  lCopy = l;
+  rLCopy = rL;
+  otherButtonCopy = otherButton;
+  buttonCopy = button;
+  messageCopy = message;
+  titleCopy = title;
   v19 = +[NSBundle mainBundle];
   v20 = [v19 localizedStringForKey:@"OK" value:&stru_100361FD0 table:@"InCallService"];
-  v21 = [IMUserNotification userNotificationWithIdentifier:@"InCallService" title:v18 message:v17 defaultButton:v20 alternateButton:v16 otherButton:v15];
+  v21 = [IMUserNotification userNotificationWithIdentifier:@"InCallService" title:titleCopy message:messageCopy defaultButton:v20 alternateButton:buttonCopy otherButton:otherButtonCopy];
 
   v26 = _NSConcreteStackBlock;
   v27 = 3221225472;
   v28 = sub_100056380;
   v29 = &unk_100357040;
-  v30 = v13;
-  v31 = v14;
-  v22 = v14;
-  v23 = v13;
+  v30 = lCopy;
+  v31 = rLCopy;
+  v22 = rLCopy;
+  v23 = lCopy;
   v24 = objc_retainBlock(&v26);
   [v21 setShowInLockScreen:{1, v26, v27, v28, v29}];
   v25 = +[IMUserNotificationCenter sharedInstance];
@@ -433,16 +433,16 @@ LABEL_11:
 {
   v2 = +[ICSApplicationServices sharedInstance];
   v3 = +[TUCallCenter sharedInstance];
-  v4 = [v3 incomingCall];
+  incomingCall = [v3 incomingCall];
 
-  v5 = [v2 accountManager];
-  v6 = [v5 accounts];
-  if ([v6 count])
+  accountManager = [v2 accountManager];
+  accounts = [accountManager accounts];
+  if ([accounts count])
   {
-    v7 = [v4 model];
-    if ([v7 supportsSendingToVoicemail] && (objc_msgSend(v4, "isRTT") & 1) == 0)
+    model = [incomingCall model];
+    if ([model supportsSendingToVoicemail] && (objc_msgSend(incomingCall, "isRTT") & 1) == 0)
     {
-      v8 = [v4 isTTY] ^ 1;
+      v8 = [incomingCall isTTY] ^ 1;
     }
 
     else
@@ -459,14 +459,14 @@ LABEL_11:
   return v8;
 }
 
-+ (double)homeButtonOffsetForView:(id)a3
++ (double)homeButtonOffsetForView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   v4 = 0.0;
   if (+[PHUIConfiguration pipStatusBarPadding]== 5)
   {
-    v5 = [v3 safeAreaLayoutGuide];
-    [v5 layoutFrame];
+    safeAreaLayoutGuide = [viewCopy safeAreaLayoutGuide];
+    [safeAreaLayoutGuide layoutFrame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -487,16 +487,16 @@ LABEL_11:
   return v4;
 }
 
-+ (double)_bottomBarBottomMarginForView:(id)a3
++ (double)_bottomBarBottomMarginForView:(id)view
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100056690;
   v8[3] = &unk_100357068;
-  v9 = a3;
-  v10 = a1;
+  viewCopy = view;
+  selfCopy = self;
   v4 = qword_1003B0C60;
-  v5 = v9;
+  v5 = viewCopy;
   if (v4 != -1)
   {
     dispatch_once(&qword_1003B0C60, v8);
@@ -528,44 +528,44 @@ LABEL_11:
 
 - (void)releaseDismissalAssertion
 {
-  v2 = [objc_opt_class() dismissalAssertionReason];
+  dismissalAssertionReason = [objc_opt_class() dismissalAssertionReason];
 
-  if (v2)
+  if (dismissalAssertionReason)
   {
-    v3 = [objc_opt_class() dismissalAssertionReason];
-    [PHInCallRootViewController releaseDismissalAssertionForReason:v3];
+    dismissalAssertionReason2 = [objc_opt_class() dismissalAssertionReason];
+    [PHInCallRootViewController releaseDismissalAssertionForReason:dismissalAssertionReason2];
   }
 }
 
 - (UIImage)frontmostCallProviderIcon
 {
   v3 = +[TUCallCenter sharedInstance];
-  v4 = [v3 frontmostAudioOrVideoCall];
+  frontmostAudioOrVideoCall = [v3 frontmostAudioOrVideoCall];
 
-  if (!v4)
+  if (!frontmostAudioOrVideoCall)
   {
     v9 = 0;
     goto LABEL_20;
   }
 
-  v5 = [v4 provider];
-  v6 = [(PHCallViewController *)self punchoutImageCache];
-  v7 = [v5 identifier];
-  v8 = [v6 objectForKey:v7];
+  provider = [frontmostAudioOrVideoCall provider];
+  punchoutImageCache = [(PHCallViewController *)self punchoutImageCache];
+  identifier = [provider identifier];
+  v8 = [punchoutImageCache objectForKey:identifier];
 
   if (!v8)
   {
-    v10 = [v5 iconTemplateImageData];
+    iconTemplateImageData = [provider iconTemplateImageData];
 
-    if (!v10)
+    if (!iconTemplateImageData)
     {
       v9 = 0;
       goto LABEL_19;
     }
 
     v11 = [UIImage alloc];
-    v12 = [v5 iconTemplateImageData];
-    v13 = [v11 initWithData:v12];
+    iconTemplateImageData2 = [provider iconTemplateImageData];
+    v13 = [v11 initWithData:iconTemplateImageData2];
 
     if (v13)
     {
@@ -575,23 +575,23 @@ LABEL_11:
       [v13 drawInRect:{0.0, 0.0, 40.0, 40.0}];
       v9 = UIGraphicsGetImageFromCurrentImageContext();
       UIGraphicsEndImageContext();
-      v14 = sub_100004F84();
-      v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
+      punchoutImageCache2 = sub_100004F84();
+      v15 = os_log_type_enabled(punchoutImageCache2, OS_LOG_TYPE_DEFAULT);
       if (v9)
       {
         if (v15)
         {
-          v16 = [v5 identifier];
+          identifier2 = [provider identifier];
           v20 = 138412546;
           v21 = v9;
           v22 = 2112;
-          v23 = v16;
-          _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Adding punchout image (%@) to cache for key: %@", &v20, 0x16u);
+          v23 = identifier2;
+          _os_log_impl(&_mh_execute_header, punchoutImageCache2, OS_LOG_TYPE_DEFAULT, "Adding punchout image (%@) to cache for key: %@", &v20, 0x16u);
         }
 
-        v14 = [(PHCallViewController *)self punchoutImageCache];
-        v17 = [v5 identifier];
-        [v14 setObject:v9 forKey:v17];
+        punchoutImageCache2 = [(PHCallViewController *)self punchoutImageCache];
+        identifier3 = [provider identifier];
+        [punchoutImageCache2 setObject:v9 forKey:identifier3];
 
         goto LABEL_18;
       }
@@ -606,13 +606,13 @@ LABEL_11:
 
     else
     {
-      v14 = sub_100004F84();
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      punchoutImageCache2 = sub_100004F84();
+      if (os_log_type_enabled(punchoutImageCache2, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v20) = 0;
         v18 = "[WARN] Could not generate image from iconTemplateImageData from provider";
 LABEL_16:
-        _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, v18, &v20, 2u);
+        _os_log_impl(&_mh_execute_header, punchoutImageCache2, OS_LOG_TYPE_DEFAULT, v18, &v20, 2u);
       }
     }
 
@@ -637,9 +637,9 @@ LABEL_20:
   dispatch_after(v2, &_dispatch_main_q, &stru_1003570A8);
 }
 
-- (void)activateProviderInBackgroundForCall:(id)a3
+- (void)activateProviderInBackgroundForCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v5 = sub_100004F84();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -652,20 +652,20 @@ LABEL_20:
   v8[1] = 3221225472;
   v8[2] = sub_100056FB4;
   v8[3] = &unk_100357110;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = callCopy;
+  selfCopy = self;
+  v7 = callCopy;
   dispatch_after(v6, &_dispatch_main_q, v8);
 }
 
-- (void)activateProviderInBackgroundWithBundleID:(id)a3
+- (void)activateProviderInBackgroundWithBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = sub_100004F84();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v3;
+    v11 = dCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Punching out to app with bundle identifier %@", buf, 0xCu);
   }
 
@@ -676,14 +676,14 @@ LABEL_20:
   [v5 setFrontBoardOptions:v6];
 
   v7 = +[LSApplicationWorkspace defaultWorkspace];
-  [v7 openApplicationWithBundleIdentifier:v3 configuration:v5 completionHandler:&stru_100357150];
+  [v7 openApplicationWithBundleIdentifier:dCopy configuration:v5 completionHandler:&stru_100357150];
 }
 
-- (id)imageForItemInBar:(id)a3 withActionType:(int64_t)a4
+- (id)imageForItemInBar:(id)bar withActionType:(int64_t)type
 {
-  if (a4 == 31)
+  if (type == 31)
   {
-    v6 = [(PHCallViewController *)self frontmostCallProviderIcon:a3];
+    v6 = [(PHCallViewController *)self frontmostCallProviderIcon:bar];
   }
 
   else
@@ -698,33 +698,33 @@ LABEL_20:
 {
   if ([(PHCallViewController *)self conformsToProtocol:&OBJC_PROTOCOL___CNKGameControllerResponder])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = [(PHCallViewController *)self inCallRootViewController];
-    v5 = [v4 conformsToProtocol:&OBJC_PROTOCOL___CNKGameControllerResponder];
+    inCallRootViewController = [(PHCallViewController *)self inCallRootViewController];
+    v5 = [inCallRootViewController conformsToProtocol:&OBJC_PROTOCOL___CNKGameControllerResponder];
 
     if (v5)
     {
-      v3 = [(PHCallViewController *)self inCallRootViewController];
+      selfCopy = [(PHCallViewController *)self inCallRootViewController];
     }
 
     else
     {
-      v3 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)providersChangedForProviderManager:(id)a3
+- (void)providersChangedForProviderManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(PHCallViewController *)self providerManager];
-  v6 = [v4 isEqual:v5];
+  managerCopy = manager;
+  providerManager = [(PHCallViewController *)self providerManager];
+  v6 = [managerCopy isEqual:providerManager];
 
   if (v6)
   {
@@ -739,10 +739,10 @@ LABEL_20:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [(PHCallViewController *)self providerManager];
-    v9 = [v8 providers];
+    providerManager2 = [(PHCallViewController *)self providerManager];
+    providers = [providerManager2 providers];
 
-    v10 = [v9 countByEnumeratingWithState:&v17 objects:v22 count:16];
+    v10 = [providers countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v10)
     {
       v11 = v10;
@@ -754,19 +754,19 @@ LABEL_20:
         {
           if (*v18 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(providers);
           }
 
           v14 = *(*(&v17 + 1) + 8 * v13);
-          v15 = [(PHCallViewController *)self punchoutImageCache];
-          v16 = [v14 identifier];
-          [v15 removeObjectForKey:v16];
+          punchoutImageCache = [(PHCallViewController *)self punchoutImageCache];
+          identifier = [v14 identifier];
+          [punchoutImageCache removeObjectForKey:identifier];
 
           v13 = v13 + 1;
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v17 objects:v22 count:16];
+        v11 = [providers countByEnumeratingWithState:&v17 objects:v22 count:16];
       }
 
       while (v11);
@@ -774,9 +774,9 @@ LABEL_20:
   }
 }
 
-- (void)callDisplayStyleDidChangeFromStyle:(int64_t)a3 toStyle:(int64_t)a4
+- (void)callDisplayStyleDidChangeFromStyle:(int64_t)style toStyle:(int64_t)toStyle
 {
-  if (a4 == 4)
+  if (toStyle == 4)
   {
     [(PHCallViewController *)self handleDismissedCallDisplayStyle];
   }

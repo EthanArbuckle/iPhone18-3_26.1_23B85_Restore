@@ -1,9 +1,9 @@
 @interface THWAudioRep
-- (BOOL)canHandleGesture:(id)a3;
-- (BOOL)containsPoint:(CGPoint)a3;
-- (BOOL)handleGesture:(id)a3;
+- (BOOL)canHandleGesture:(id)gesture;
+- (BOOL)containsPoint:(CGPoint)point;
+- (BOOL)handleGesture:(id)gesture;
 - (CALayer)pressableAnimationLayer;
-- (THWAudioRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (THWAudioRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (THWAutoplayConfig)autoplayConfig;
 - (THWMovieLayout)movieLayout;
 - (THWPressableRepGestureTargetHandler)pressableHandler;
@@ -13,24 +13,24 @@
 - (void)autoplayPause;
 - (void)autoplayStart;
 - (void)autoplayStop;
-- (void)changeCurrentTimeTo:(double)a3;
-- (void)control:(id)a3 repWasAdded:(id)a4;
-- (void)control:(id)a3 repWillBeRemoved:(id)a4;
+- (void)changeCurrentTimeTo:(double)to;
+- (void)control:(id)control repWasAdded:(id)added;
+- (void)control:(id)control repWillBeRemoved:(id)removed;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)drawInContext:(CGContext *)context;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)p_cleanupPlayerAndController;
 - (void)p_play;
-- (void)p_playPause:(id)a3;
-- (void)p_playerDidPlayToEnd:(id)a3;
-- (void)p_setPlaying:(BOOL)a3;
+- (void)p_playPause:(id)pause;
+- (void)p_playerDidPlayToEnd:(id)end;
+- (void)p_setPlaying:(BOOL)playing;
 - (void)p_stop;
 - (void)pause;
 - (void)play;
-- (void)pressableRepWasPressed:(id)a3 atPoint:(CGPoint)a4;
-- (void)setChildReps:(id)a3;
+- (void)pressableRepWasPressed:(id)pressed atPoint:(CGPoint)point;
+- (void)setChildReps:(id)reps;
 - (void)stop;
-- (void)timeChanged:(double)a3;
+- (void)timeChanged:(double)changed;
 - (void)timerDidTriggerTimeChangedUpdate;
 - (void)updateChildrenFromLayout;
 - (void)viewScrollWillChange;
@@ -39,11 +39,11 @@
 
 @implementation THWAudioRep
 
-- (THWAudioRep)initWithLayout:(id)a3 canvas:(id)a4
+- (THWAudioRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v11.receiver = self;
   v11.super_class = THWAudioRep;
-  v4 = [(THWAudioRep *)&v11 initWithLayout:a3 canvas:a4];
+  v4 = [(THWAudioRep *)&v11 initWithLayout:layout canvas:canvas];
   v5 = v4;
   if (v4)
   {
@@ -51,11 +51,11 @@
     {
       [(THWAudioRep *)v5 setPVolumeLevel:1.0];
       [(THWAudioRep *)v5 setPMuted:0];
-      v6 = [(THWMovieLayout *)[(THWAudioRep *)v5 movieLayout] mediaListener];
+      mediaListener = [(THWMovieLayout *)[(THWAudioRep *)v5 movieLayout] mediaListener];
       [-[THWAudioRep movieInfo](v5 "movieInfo")];
       v8 = v7;
       [-[THWAudioRep movieInfo](v5 "movieInfo")];
-      [(THWAVMediaListener *)v6 durationChanged:v8 - v9];
+      [(THWAVMediaListener *)mediaListener durationChanged:v8 - v9];
     }
 
     else
@@ -143,10 +143,10 @@
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([-[THWAudioRep movieInfo](self "movieInfo")])
   {
     [(THWAudioRep *)self naturalBounds];
@@ -176,15 +176,15 @@
   }
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
   [(THWAudioRep *)self naturalBounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(THWAudioRep *)self movieInfo];
-  if (![v13 posterImageData] && objc_msgSend(v13, "controlStyle") != 1)
+  movieInfo = [(THWAudioRep *)self movieInfo];
+  if (![movieInfo posterImageData] && objc_msgSend(movieInfo, "controlStyle") != 1)
   {
     if ([(THWAudioRep *)self isPlaying])
     {
@@ -201,21 +201,21 @@
 
     else
     {
-      v15 = [(THWAudioRep *)self isPaused];
-      v16 = [(THWPressableRepGestureTargetHandler *)[(THWAudioRep *)self pressableHandler] isPressableAtPoint];
+      isPaused = [(THWAudioRep *)self isPaused];
+      isPressableAtPoint = [(THWPressableRepGestureTargetHandler *)[(THWAudioRep *)self pressableHandler] isPressableAtPoint];
       v17 = @"ib_media_btn_audio-N";
-      if (v16)
+      if (isPressableAtPoint)
       {
         v17 = @"ib_media_btn_audio-P";
       }
 
       v18 = @"ib_media_btn_play_bg_well-P";
-      if (!v16)
+      if (!isPressableAtPoint)
       {
         v18 = @"ib_media_btn_play_bg_well";
       }
 
-      if (v15)
+      if (isPaused)
       {
         v14 = v18;
       }
@@ -238,16 +238,16 @@
     v42.origin.y = v23;
     v42.size.width = v25;
     v42.size.height = v27;
-    CGContextDrawImage(a3, v42, v28);
+    CGContextDrawImage(context, v42, v28);
     if ([(THWAudioRep *)self isPlaying]|| [(THWAudioRep *)self isPaused])
     {
-      [v13 endTime];
+      [movieInfo endTime];
       v30 = v29;
-      [v13 startTime];
+      [movieInfo startTime];
       v32 = v30 - v31;
       [(THWAudioRep *)self currentTime];
       v34 = v33;
-      [v13 startTime];
+      [movieInfo startTime];
       v36 = fmax((v34 - v35) / v32, 0.01);
       if (v36 >= 0.00999999978)
       {
@@ -271,13 +271,13 @@
           v39 = 1.0;
         }
 
-        CGContextSetStrokeColorWithColor(a3, [[TSUColor colorWithRed:? green:? blue:? alpha:?];
-        CGContextSetLineWidth(a3, 7.0);
+        CGContextSetStrokeColorWithColor(context, [[TSUColor colorWithRed:? green:? blue:? alpha:?];
+        CGContextSetLineWidth(context, 7.0);
         Mutable = CGPathCreateMutable();
         CGPathMoveToPoint(Mutable, 0, MidX, MidY + -17.82);
         CGPathAddArc(Mutable, 0, MidX, MidY, 17.82, -1.57079633, v36 * 3.14159265 * 2.0 + -1.57079633, 0);
-        CGContextAddPath(a3, Mutable);
-        CGContextStrokePath(a3);
+        CGContextAddPath(context, Mutable);
+        CGContextStrokePath(context);
 
         CFRelease(Mutable);
       }
@@ -297,7 +297,7 @@
   return v3;
 }
 
-- (void)p_playPause:(id)a3
+- (void)p_playPause:(id)pause
 {
   if ([(THWAudioRep *)self isPlaying])
   {
@@ -312,11 +312,11 @@
   }
 }
 
-- (void)p_setPlaying:(BOOL)a3
+- (void)p_setPlaying:(BOOL)playing
 {
-  if (self->mIsPlaying != a3)
+  if (self->mIsPlaying != playing)
   {
-    self->mIsPlaying = a3;
+    self->mIsPlaying = playing;
     v4 = +[NSNotificationCenter defaultCenter];
     v5 = v4;
     if (self->mIsPlaying)
@@ -359,10 +359,10 @@
     }
 
     [(THWAudioRep *)self setNeedsDisplay];
-    v8 = [(THWMovieLayout *)[(THWAudioRep *)self movieLayout] mediaListener];
+    mediaListener = [(THWMovieLayout *)[(THWAudioRep *)self movieLayout] mediaListener];
     [(THWAudioRep *)self playbackRate];
 
-    [(THWAVMediaListener *)v8 rateChanged:?];
+    [(THWAVMediaListener *)mediaListener rateChanged:?];
   }
 }
 
@@ -412,11 +412,11 @@ LABEL_11:
   }
 }
 
-- (void)timeChanged:(double)a3
+- (void)timeChanged:(double)changed
 {
-  [(THWAVMediaListener *)[(THWMovieLayout *)[(THWAudioRep *)self movieLayout] mediaListener] timeChanged:a3];
-  v4 = [(THWAudioRep *)self movieInfo];
-  if (-[THWAudioRep isPlaying](self, "isPlaying") && ![v4 posterImageData] && objc_msgSend(v4, "controlStyle") != 1)
+  [(THWAVMediaListener *)[(THWMovieLayout *)[(THWAudioRep *)self movieLayout] mediaListener] timeChanged:changed];
+  movieInfo = [(THWAudioRep *)self movieInfo];
+  if (-[THWAudioRep isPlaying](self, "isPlaying") && ![movieInfo posterImageData] && objc_msgSend(movieInfo, "controlStyle") != 1)
   {
 
     [(THWAudioRep *)self setNeedsDisplay];
@@ -426,9 +426,9 @@ LABEL_11:
 - (void)p_play
 {
   [(THWAudioRep *)self setIsPaused:0];
-  v3 = [(THWAudioRep *)self movieInfo];
+  movieInfo = [(THWAudioRep *)self movieInfo];
   [(THWAudioRep *)self stop];
-  v4 = +[AVPlayerItem playerItemWithAsset:](AVPlayerItem, "playerItemWithAsset:", [v3 makeAVAsset]);
+  v4 = +[AVPlayerItem playerItemWithAsset:](AVPlayerItem, "playerItemWithAsset:", [movieInfo makeAVAsset]);
   v5 = [-[THWAudioRep movieInfo](self "movieInfo")];
   if (v5 && ([v5 authorizeAVPlayerItemForPlayback:v4] & 1) == 0)
   {
@@ -437,15 +437,15 @@ LABEL_11:
 
   [(THWAudioRep *)self p_cleanupPlayerAndController];
   memset(&v15, 0, sizeof(v15));
-  [v3 startTime];
+  [movieInfo startTime];
   CMTimeMakeWithSeconds(&v15, v6, 100);
   v14 = v15;
   [(AVPlayerItem *)v4 setReversePlaybackEndTime:&v14];
-  [v3 endTime];
+  [movieInfo endTime];
   if (v7 != 0.0)
   {
     memset(&v14, 0, sizeof(v14));
-    [v3 endTime];
+    [movieInfo endTime];
     CMTimeMakeWithSeconds(&v14, v8, 100);
     lhs = v14;
     [(AVPlayerItem *)v4 setForwardPlaybackEndTime:&lhs];
@@ -480,7 +480,7 @@ LABEL_11:
   if (!self->mPlayerController)
   {
     self->mPlayerController = [[TSKAVPlayerController alloc] initWithPlayer:self->mPlayer delegate:self];
-    [v3 loopOption];
+    [movieInfo loopOption];
     [(TSKAVPlayerController *)self->mPlayerController setRepeatMode:TSKPlayerRepeatModeForMovieLoopOption()];
   }
 
@@ -535,7 +535,7 @@ LABEL_11:
   v3[1] = 3221225472;
   v4 = sub_15D6A8;
   v5 = &unk_45AE00;
-  v6 = self;
+  selfCopy = self;
   if (+[NSThread isMainThread])
   {
     v4(v3);
@@ -552,7 +552,7 @@ LABEL_11:
   }
 }
 
-- (void)changeCurrentTimeTo:(double)a3
+- (void)changeCurrentTimeTo:(double)to
 {
   if (self->mPlayer)
   {
@@ -564,7 +564,7 @@ LABEL_11:
   {
     [(THWAudioRep *)self setSeeking:1];
     mPlayer = self->mPlayer;
-    CMTimeMakeWithSeconds(&v12, a3, 100);
+    CMTimeMakeWithSeconds(&v12, to, 100);
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_15D850;
@@ -579,7 +579,7 @@ LABEL_11:
 
   if (!self->mPlayer)
   {
-    [(THWAudioRep *)self setTimeToBeginPlaybackAt:a3];
+    [(THWAudioRep *)self setTimeToBeginPlaybackAt:to];
   }
 }
 
@@ -596,7 +596,7 @@ LABEL_11:
   return result;
 }
 
-- (void)p_playerDidPlayToEnd:(id)a3
+- (void)p_playerDidPlayToEnd:(id)end
 {
   if ([(THWAudioRep *)self isPlaying])
   {
@@ -607,17 +607,17 @@ LABEL_11:
 
     [-[THWAudioRep movieInfo](self "movieInfo")];
     [(THWAudioRep *)self setTimeToBeginPlaybackAt:?];
-    v4 = [(THWMovieLayout *)[(THWAudioRep *)self movieLayout] mediaListener];
+    mediaListener = [(THWMovieLayout *)[(THWAudioRep *)self movieLayout] mediaListener];
 
-    [(THWAVMediaListener *)v4 mediaDidPlayToEnd];
+    [(THWAVMediaListener *)mediaListener mediaDidPlayToEnd];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_563660 == a6)
+  if (off_563660 == context)
   {
-    if ([(THWAudioRep *)self isPlaying:a3])
+    if ([(THWAudioRep *)self isPlaying:path])
     {
       [(AVPlayer *)self->mPlayer rate];
       if (v7 == 0.0)
@@ -638,11 +638,11 @@ LABEL_11:
   {
     v9.receiver = self;
     v9.super_class = THWAudioRep;
-    [(THWAudioRep *)&v9 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(THWAudioRep *)&v9 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)pressableRepWasPressed:(id)a3 atPoint:(CGPoint)a4
+- (void)pressableRepWasPressed:(id)pressed atPoint:(CGPoint)point
 {
   if ([-[THWAudioRep movieInfo](self movieInfo])
   {
@@ -663,52 +663,52 @@ LABEL_11:
     else
     {
       [(THWAudioRep *)self changeCurrentTimeTo:v6];
-      v8 = [(THWMovieLayout *)[(THWAudioRep *)self movieLayout] mediaListener];
+      mediaListener = [(THWMovieLayout *)[(THWAudioRep *)self movieLayout] mediaListener];
 
-      [(THWAVMediaListener *)v8 playMovie];
+      [(THWAVMediaListener *)mediaListener playMovie];
     }
   }
 
   else
   {
-    v7 = [(THWMovieLayout *)[(THWAudioRep *)self movieLayout] mediaListener];
+    mediaListener2 = [(THWMovieLayout *)[(THWAudioRep *)self movieLayout] mediaListener];
 
-    [(THWAVMediaListener *)v7 mediaWasPressed];
+    [(THWAVMediaListener *)mediaListener2 mediaWasPressed];
   }
 }
 
 - (CALayer)pressableAnimationLayer
 {
-  v3 = [(THWAudioRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWAudioRep *)self interactiveCanvasController];
 
-  return [v3 layerForRep:self];
+  return [interactiveCanvasController layerForRep:self];
 }
 
-- (BOOL)canHandleGesture:(id)a3
+- (BOOL)canHandleGesture:(id)gesture
 {
-  v4 = [(THWAudioRep *)self pressableHandler];
+  pressableHandler = [(THWAudioRep *)self pressableHandler];
 
-  return [(THWPressableRepGestureTargetHandler *)v4 canHandleGesture:a3];
+  return [(THWPressableRepGestureTargetHandler *)pressableHandler canHandleGesture:gesture];
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  v4 = [(THWPressableRepGestureTargetHandler *)[(THWAudioRep *)self pressableHandler] handleGesture:a3];
+  v4 = [(THWPressableRepGestureTargetHandler *)[(THWAudioRep *)self pressableHandler] handleGesture:gesture];
   [(THWAudioRep *)self setNeedsDisplay];
   return v4;
 }
 
-- (void)setChildReps:(id)a3
+- (void)setChildReps:(id)reps
 {
   childReps = self->_childReps;
-  if (childReps != a3)
+  if (childReps != reps)
   {
     [(NSArray *)childReps makeObjectsPerformSelector:"setParentRep:" withObject:0];
 
-    v6 = a3;
-    self->_childReps = v6;
+    repsCopy = reps;
+    self->_childReps = repsCopy;
 
-    [(NSArray *)v6 makeObjectsPerformSelector:"setParentRep:" withObject:self];
+    [(NSArray *)repsCopy makeObjectsPerformSelector:"setParentRep:" withObject:self];
   }
 }
 
@@ -719,25 +719,25 @@ LABEL_11:
   [(THWAudioRep *)self setChildReps:v3];
 }
 
-- (void)control:(id)a3 repWasAdded:(id)a4
+- (void)control:(id)control repWasAdded:(id)added
 {
-  v6 = [(THWAudioRep *)self layout];
-  if (v6)
+  layout = [(THWAudioRep *)self layout];
+  if (layout)
   {
-    v7 = [v6 mediaListener];
+    mediaListener = [layout mediaListener];
 
-    [v7 control:a3 repWasAdded:a4];
+    [mediaListener control:control repWasAdded:added];
   }
 }
 
-- (void)control:(id)a3 repWillBeRemoved:(id)a4
+- (void)control:(id)control repWillBeRemoved:(id)removed
 {
-  v6 = [(THWAudioRep *)self layout];
-  if (v6)
+  layout = [(THWAudioRep *)self layout];
+  if (layout)
   {
-    v7 = [v6 mediaListener];
+    mediaListener = [layout mediaListener];
 
-    [v7 control:a3 repWillBeRemoved:a4];
+    [mediaListener control:control repWillBeRemoved:removed];
   }
 }
 
@@ -775,7 +775,7 @@ LABEL_11:
   v3[1] = 3221225472;
   v4 = sub_15DFE0;
   v5 = &unk_45AE00;
-  v6 = self;
+  selfCopy = self;
   if (+[NSThread isMainThread])
   {
     v4(v3);

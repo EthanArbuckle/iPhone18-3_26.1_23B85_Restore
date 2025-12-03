@@ -2,7 +2,7 @@
 - (id)allControlViews;
 - (void)_updateSliderConstraints;
 - (void)prepareForReuse;
-- (void)setSliderView:(id)a3;
+- (void)setSliderView:(id)view;
 @end
 
 @implementation HUSliderControlCell
@@ -10,27 +10,27 @@
 - (id)allControlViews
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(HUSliderControlCell *)self sliderView];
-  v4 = [v2 na_setWithSafeObject:v3];
+  sliderView = [(HUSliderControlCell *)self sliderView];
+  v4 = [v2 na_setWithSafeObject:sliderView];
 
   return v4;
 }
 
-- (void)setSliderView:(id)a3
+- (void)setSliderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   sliderView = self->_sliderView;
-  if (sliderView != v5)
+  if (sliderView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(HUSimpleSliderControlView *)sliderView removeFromSuperview];
-    objc_storeStrong(&self->_sliderView, a3);
+    objc_storeStrong(&self->_sliderView, view);
     [(HUSimpleSliderControlView *)self->_sliderView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [(HUSliderControlCell *)self contentView];
-    [v7 addSubview:self->_sliderView];
+    contentView = [(HUSliderControlCell *)self contentView];
+    [contentView addSubview:self->_sliderView];
 
     [(HUSliderControlCell *)self _updateSliderConstraints];
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 
@@ -38,46 +38,46 @@
 {
   v31[4] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAAD0];
-  v4 = [(HUSliderControlCell *)self sliderConstraints];
-  [v3 deactivateConstraints:v4];
+  sliderConstraints = [(HUSliderControlCell *)self sliderConstraints];
+  [v3 deactivateConstraints:sliderConstraints];
 
   [(HUSliderControlCell *)self setSliderConstraints:0];
-  v5 = [(HUSliderControlCell *)self sliderView];
+  sliderView = [(HUSliderControlCell *)self sliderView];
 
-  if (v5)
+  if (sliderView)
   {
-    v30 = [(HUSliderControlCell *)self sliderView];
-    v28 = [v30 topAnchor];
-    v29 = [(HUSliderControlCell *)self contentView];
-    v27 = [v29 topAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    sliderView2 = [(HUSliderControlCell *)self sliderView];
+    topAnchor = [sliderView2 topAnchor];
+    contentView = [(HUSliderControlCell *)self contentView];
+    topAnchor2 = [contentView topAnchor];
+    v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v31[0] = v26;
-    v25 = [(HUSliderControlCell *)self sliderView];
-    v23 = [v25 bottomAnchor];
-    v24 = [(HUSliderControlCell *)self contentView];
-    v22 = [v24 bottomAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22];
+    sliderView3 = [(HUSliderControlCell *)self sliderView];
+    bottomAnchor = [sliderView3 bottomAnchor];
+    contentView2 = [(HUSliderControlCell *)self contentView];
+    bottomAnchor2 = [contentView2 bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v31[1] = v21;
-    v20 = [(HUSliderControlCell *)self sliderView];
-    v18 = [v20 leadingAnchor];
-    v19 = [(HUSliderControlCell *)self contentView];
-    v17 = [v19 layoutMarginsGuide];
-    v6 = [v17 leadingAnchor];
-    v7 = [v18 constraintEqualToAnchor:v6];
+    sliderView4 = [(HUSliderControlCell *)self sliderView];
+    leadingAnchor = [sliderView4 leadingAnchor];
+    contentView3 = [(HUSliderControlCell *)self contentView];
+    layoutMarginsGuide = [contentView3 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v31[2] = v7;
-    v8 = [(HUSliderControlCell *)self sliderView];
-    v9 = [v8 trailingAnchor];
-    v10 = [(HUSliderControlCell *)self contentView];
-    v11 = [v10 layoutMarginsGuide];
-    v12 = [v11 trailingAnchor];
-    v13 = [v9 constraintEqualToAnchor:v12];
+    sliderView5 = [(HUSliderControlCell *)self sliderView];
+    trailingAnchor = [sliderView5 trailingAnchor];
+    contentView4 = [(HUSliderControlCell *)self contentView];
+    layoutMarginsGuide2 = [contentView4 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v31[3] = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:4];
     [(HUSliderControlCell *)self setSliderConstraints:v14];
 
     v15 = MEMORY[0x277CCAAD0];
-    v16 = [(HUSliderControlCell *)self sliderConstraints];
-    [v15 activateConstraints:v16];
+    sliderConstraints2 = [(HUSliderControlCell *)self sliderConstraints];
+    [v15 activateConstraints:sliderConstraints2];
   }
 }
 

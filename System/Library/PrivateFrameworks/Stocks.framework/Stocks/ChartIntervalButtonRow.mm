@@ -1,25 +1,25 @@
 @interface ChartIntervalButtonRow
 - (ChartIntervalButton)selectedButton;
-- (ChartIntervalButtonRow)initWithMaxChartInterval:(int64_t)a3 chartIntervalButtonRowDelegate:(id)a4;
+- (ChartIntervalButtonRow)initWithMaxChartInterval:(int64_t)interval chartIntervalButtonRowDelegate:(id)delegate;
 - (ChartIntervalButtonRowDelegate)delegate;
-- (int64_t)intervalForTouchLocation:(CGPoint)a3;
-- (void)intervalButtonsTapped:(id)a3;
+- (int64_t)intervalForTouchLocation:(CGPoint)location;
+- (void)intervalButtonsTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)selectChartIntervalButtonForInterval:(int64_t)a3;
+- (void)selectChartIntervalButtonForInterval:(int64_t)interval;
 - (void)sizeToBoldLabels;
 @end
 
 @implementation ChartIntervalButtonRow
 
-- (ChartIntervalButtonRow)initWithMaxChartInterval:(int64_t)a3 chartIntervalButtonRowDelegate:(id)a4
+- (ChartIntervalButtonRow)initWithMaxChartInterval:(int64_t)interval chartIntervalButtonRowDelegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v7 = [(ChartIntervalButtonRow *)self init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
-    v8->_maxChartInterval = a3;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
+    v8->_maxChartInterval = interval;
     v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:9];
     v10 = 0;
     v11 = *MEMORY[0x277CBF3A0];
@@ -137,7 +137,7 @@
     v16 = 0.0;
   }
 
-  v17 = [(ChartIntervalButtonRow *)self maxChartInterval];
+  maxChartInterval = [(ChartIntervalButtonRow *)self maxChartInterval];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
@@ -147,7 +147,7 @@
   if (v19)
   {
     v20 = v19;
-    v21 = (v4 - v16 + -32.0) / v17;
+    v21 = (v4 - v16 + -32.0) / maxChartInterval;
     v22 = *v40;
     v23 = v6 + -5.0;
     v24 = 16.0;
@@ -162,13 +162,13 @@
 
         v26 = *(*(&v39 + 1) + 8 * j);
         v27 = [v26 tag];
-        v28 = [(ChartIntervalButtonRow *)self maxChartInterval];
+        maxChartInterval2 = [(ChartIntervalButtonRow *)self maxChartInterval];
         v29 = 0.0;
-        if (v27 <= v28)
+        if (v27 <= maxChartInterval2)
         {
-          v30 = [v26 isSelected];
+          isSelected = [v26 isSelected];
           v29 = 1.0;
-          if (!v30)
+          if (!isSelected)
           {
             v29 = 0.8;
           }
@@ -179,8 +179,8 @@
         v32 = v31;
         v34 = v33;
         v35 = RoundToPixel(v24);
-        v36 = [v26 font];
-        [v36 ascender];
+        font = [v26 font];
+        [font ascender];
         v38 = v23 - RoundToPixel(v37);
 
         [v26 setFrame:{v35, v38, v32, v34}];
@@ -194,10 +194,10 @@
   }
 }
 
-- (int64_t)intervalForTouchLocation:(CGPoint)a3
+- (int64_t)intervalForTouchLocation:(CGPoint)location
 {
-  x = a3.x;
-  v5 = [(ChartIntervalButtonRow *)self maxChartInterval:a3.x];
+  x = location.x;
+  v5 = [(ChartIntervalButtonRow *)self maxChartInterval:location.x];
   [(ChartIntervalButtonRow *)self bounds];
   v7 = x / v6 * (v5 + 1);
   v8 = floorf(v7);
@@ -209,36 +209,36 @@
   return fmaxf(v8, 0.0);
 }
 
-- (void)intervalButtonsTapped:(id)a3
+- (void)intervalButtonsTapped:(id)tapped
 {
-  v9 = a3;
-  if ([v9 state] == 3)
+  tappedCopy = tapped;
+  if ([tappedCopy state] == 3)
   {
-    [v9 locationInView:self];
+    [tappedCopy locationInView:self];
     v4 = [(ChartIntervalButtonRow *)self intervalForTouchLocation:?];
-    v5 = [(ChartIntervalButtonRow *)self intervalButtons];
-    v6 = [(ChartIntervalButtonRow *)self selectedButton];
-    v7 = [v5 indexOfObject:v6];
+    intervalButtons = [(ChartIntervalButtonRow *)self intervalButtons];
+    selectedButton = [(ChartIntervalButtonRow *)self selectedButton];
+    v7 = [intervalButtons indexOfObject:selectedButton];
 
     if (v4 != v7)
     {
-      v8 = [(ChartIntervalButtonRow *)self delegate];
-      [v8 chartIntervalButtonRow:self didSelectChartInterval:v4];
+      delegate = [(ChartIntervalButtonRow *)self delegate];
+      [delegate chartIntervalButtonRow:self didSelectChartInterval:v4];
 
       [(ChartIntervalButtonRow *)self selectChartIntervalButtonForInterval:v4];
     }
   }
 }
 
-- (void)selectChartIntervalButtonForInterval:(int64_t)a3
+- (void)selectChartIntervalButtonForInterval:(int64_t)interval
 {
-  if (a3 != -1)
+  if (interval != -1)
   {
-    v6 = [(ChartIntervalButtonRow *)self selectedButton];
-    [v6 setSelected:0];
+    selectedButton = [(ChartIntervalButtonRow *)self selectedButton];
+    [selectedButton setSelected:0];
 
-    v7 = [(ChartIntervalButtonRow *)self intervalButtons];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    intervalButtons = [(ChartIntervalButtonRow *)self intervalButtons];
+    v8 = [intervalButtons objectAtIndexedSubscript:interval];
 
     [v8 setSelected:1];
     [(ChartIntervalButtonRow *)self setSelectedButton:v8];

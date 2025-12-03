@@ -1,55 +1,55 @@
 @interface CSReceiverConnection
-- (BOOL)addClientConnectionIfAllowedForConnection:(id)a3;
+- (BOOL)addClientConnectionIfAllowedForConnection:(id)connection;
 - (BOOL)enableDebuggability;
-- (BOOL)handleCommand:(const char *)a3 info:(id)a4 connection:(id)a5;
-- (CSReceiverConnection)initWithReceiver:(id)a3 forServiceName:(id)a4;
-- (CSReceiverConnection)initWithScheduledReceiver:(id)a3 forServiceName:(id)a4;
-- (id)fetchableIdentifiersFromDonation:(id)a3 additionalAttributes:(id)a4 config:(id)a5;
-- (id)indexForBundleID:(id)a3 protectionClass:(id)a4;
-- (int)addInteraction:(id)a3 bundleID:(id)a4 protectionClass:(id)a5;
-- (int)addUserActions:(id)a3 bundleID:(id)a4 protectionClass:(id)a5;
-- (int)deleteFromBundle:(id)a3 sinceDate:(id)a4 domains:(id)a5 deletes:(id)a6;
-- (int)handleSetup:(id)a3;
-- (int)indexFromBundle:(id)a3 protectionClass:(id)a4 items:(id)a5 itemsContent:(id)a6;
-- (void)addConfiguration:(id)a3;
-- (void)deleteWithFd:(int)a3 offset:(unint64_t)a4 size:(unint64_t)a5 donation:(id)a6 completionHandler:(id)a7;
-- (void)indexWithFd:(int)a3 offset:(unint64_t)a4 size:(unint64_t)a5 donation:(id)a6 additionalAttributes:(id)a7 config:(id)a8 completionHandler:(id)a9;
+- (BOOL)handleCommand:(const char *)command info:(id)info connection:(id)connection;
+- (CSReceiverConnection)initWithReceiver:(id)receiver forServiceName:(id)name;
+- (CSReceiverConnection)initWithScheduledReceiver:(id)receiver forServiceName:(id)name;
+- (id)fetchableIdentifiersFromDonation:(id)donation additionalAttributes:(id)attributes config:(id)config;
+- (id)indexForBundleID:(id)d protectionClass:(id)class;
+- (int)addInteraction:(id)interaction bundleID:(id)d protectionClass:(id)class;
+- (int)addUserActions:(id)actions bundleID:(id)d protectionClass:(id)class;
+- (int)deleteFromBundle:(id)bundle sinceDate:(id)date domains:(id)domains deletes:(id)deletes;
+- (int)handleSetup:(id)setup;
+- (int)indexFromBundle:(id)bundle protectionClass:(id)class items:(id)items itemsContent:(id)content;
+- (void)addConfiguration:(id)configuration;
+- (void)deleteWithFd:(int)fd offset:(unint64_t)offset size:(unint64_t)size donation:(id)donation completionHandler:(id)handler;
+- (void)indexWithFd:(int)fd offset:(unint64_t)offset size:(unint64_t)size donation:(id)donation additionalAttributes:(id)attributes config:(id)config completionHandler:(id)handler;
 @end
 
 @implementation CSReceiverConnection
 
-- (CSReceiverConnection)initWithReceiver:(id)a3 forServiceName:(id)a4
+- (CSReceiverConnection)initWithReceiver:(id)receiver forServiceName:(id)name
 {
-  v7 = a3;
+  receiverCopy = receiver;
   v33.receiver = self;
   v33.super_class = CSReceiverConnection;
-  v8 = [(CSXPCConnection *)&v33 initMachServiceListenerWithName:a4];
+  v8 = [(CSXPCConnection *)&v33 initMachServiceListenerWithName:name];
   v9 = v8;
   if (!v8)
   {
     goto LABEL_41;
   }
 
-  objc_storeStrong(v8 + 10, a3);
+  objc_storeStrong(v8 + 10, receiver);
   receiver = v9->_receiver;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(SpotlightReceiver *)v9->_receiver supportedBundleIDs];
-    [(CSReceiverConnection *)v9 setBundleIDs:v11];
+    supportedBundleIDs = [(SpotlightReceiver *)v9->_receiver supportedBundleIDs];
+    [(CSReceiverConnection *)v9 setBundleIDs:supportedBundleIDs];
   }
 
   v12 = v9->_receiver;
   if (objc_opt_respondsToSelector())
   {
-    v13 = [(SpotlightReceiver *)v9->_receiver supportedContentTypes];
-    [(CSReceiverConnection *)v9 setContentTypes:v13];
+    supportedContentTypes = [(SpotlightReceiver *)v9->_receiver supportedContentTypes];
+    [(CSReceiverConnection *)v9 setContentTypes:supportedContentTypes];
   }
 
   v14 = v9->_receiver;
   if (objc_opt_respondsToSelector())
   {
-    v15 = [(SpotlightReceiver *)v9->_receiver supportedINIntentClassNames];
-    [(CSReceiverConnection *)v9 setINIntentClassNames:v15];
+    supportedINIntentClassNames = [(SpotlightReceiver *)v9->_receiver supportedINIntentClassNames];
+    [(CSReceiverConnection *)v9 setINIntentClassNames:supportedINIntentClassNames];
   }
 
   v16 = v9->_receiver;
@@ -159,18 +159,18 @@ LABEL_41:
   return v9;
 }
 
-- (CSReceiverConnection)initWithScheduledReceiver:(id)a3 forServiceName:(id)a4
+- (CSReceiverConnection)initWithScheduledReceiver:(id)receiver forServiceName:(id)name
 {
   v43 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  receiverCopy = receiver;
+  nameCopy = name;
   v41.receiver = self;
   v41.super_class = CSReceiverConnection;
-  v9 = [(CSXPCConnection *)&v41 initMachServiceListenerWithName:v8];
+  v9 = [(CSXPCConnection *)&v41 initMachServiceListenerWithName:nameCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(v9 + 11, a3);
+    objc_storeStrong(v9 + 11, receiver);
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     indexes = v10->_indexes;
     v10->_indexes = v11;
@@ -195,7 +195,7 @@ LABEL_41:
     }
 
     v16 = getScheduledReceiverConfigPathForService_onceToken;
-    v17 = v8;
+    v17 = nameCopy;
     if (v16 != -1)
     {
       [CSReceiverConnection initWithScheduledReceiver:forServiceName:];
@@ -280,13 +280,13 @@ LABEL_41:
   return v10;
 }
 
-- (void)addConfiguration:(id)a3
+- (void)addConfiguration:(id)configuration
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  configurationCopy = configuration;
+  v5 = configurationCopy;
   configs = self->_configs;
-  if (!configs || ([v4 name], v7 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKeyedSubscript:](configs, "objectForKeyedSubscript:", v7), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
+  if (!configs || ([configurationCopy name], v7 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKeyedSubscript:](configs, "objectForKeyedSubscript:", v7), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, !v8))
   {
     v9 = logForCSLogCategoryDefault();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -306,14 +306,14 @@ LABEL_41:
       v10 = self->_configs;
     }
 
-    v13 = [v5 identifier];
-    v14 = [(NSMutableDictionary *)v10 objectForKeyedSubscript:v13];
+    identifier = [v5 identifier];
+    v14 = [(NSMutableDictionary *)v10 objectForKeyedSubscript:identifier];
 
     if (!v14)
     {
       v15 = self->_configs;
-      v16 = [v5 identifier];
-      [(NSMutableDictionary *)v15 setObject:v5 forKey:v16];
+      identifier2 = [v5 identifier];
+      [(NSMutableDictionary *)v15 setObject:v5 forKey:identifier2];
     }
 
     scheduledReceiver = self->_scheduledReceiver;
@@ -336,11 +336,11 @@ LABEL_41:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addClientConnectionIfAllowedForConnection:(id)a3
+- (BOOL)addClientConnectionIfAllowedForConnection:(id)connection
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  pid = xpc_connection_get_pid(v3);
+  connectionCopy = connection;
+  pid = xpc_connection_get_pid(connectionCopy);
   xpc_connection_get_audit_token();
 
   v5 = *MEMORY[0x277CBECE8];
@@ -350,10 +350,10 @@ LABEL_41:
   {
     v7 = v6;
     v8 = SecTaskCopyValueForEntitlement(v6, SpotlightSenderEntitlement, 0);
-    v9 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
     v10 = logForCSLogCategoryDefault();
     v11 = v10;
-    if (v9)
+    if (bOOLValue)
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
@@ -373,47 +373,47 @@ LABEL_41:
 
   else
   {
-    LOBYTE(v9) = 0;
+    LOBYTE(bOOLValue) = 0;
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v9;
+  return bOOLValue;
 }
 
-- (BOOL)handleCommand:(const char *)a3 info:(id)a4 connection:(id)a5
+- (BOOL)handleCommand:(const char *)command info:(id)info connection:(id)connection
 {
   v146 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  reply = xpc_dictionary_create_reply(v8);
-  euid = xpc_connection_get_euid(v9);
+  infoCopy = info;
+  connectionCopy = connection;
+  reply = xpc_dictionary_create_reply(infoCopy);
+  euid = xpc_connection_get_euid(connectionCopy);
   if (euid)
   {
-    v12 = [(CSXPCConnection *)self queue];
-    dispatch_queue_set_specific(v12, SpotlightReceiverConnectionUIDKey, euid, 0);
+    queue = [(CSXPCConnection *)self queue];
+    dispatch_queue_set_specific(queue, SpotlightReceiverConnectionUIDKey, euid, 0);
 
     v13 = logForCSLogCategoryDefault();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       *buf = 136315650;
-      v141 = a3;
+      commandCopy = command;
       v142 = 1024;
       v143 = euid;
       v144 = 2048;
-      v145 = v8;
+      v145 = infoCopy;
       _os_log_debug_impl(&dword_232D5E000, v13, OS_LOG_TYPE_DEBUG, "receiver command %s cuid: %d info:%p", buf, 0x1Cu);
     }
   }
 
-  v14 = *a3;
+  v14 = *command;
   if (v14 == 106)
   {
-    if (a3[1])
+    if (command[1])
     {
       goto LABEL_11;
     }
 
-    uint64 = xpc_dictionary_get_uint64(v8, "jt");
+    uint64 = xpc_dictionary_get_uint64(infoCopy, "jt");
     if ((uint64 & self->_supportedJobs) == 0)
     {
       v29 = logForCSLogCategoryDefault();
@@ -422,12 +422,12 @@ LABEL_41:
         [CSReceiverConnection handleCommand:&self->_supportedJobs info:v29 connection:?];
       }
 
-      v30 = [(CSReceiverConnection *)self scheduledReceiver];
+      scheduledReceiver = [(CSReceiverConnection *)self scheduledReceiver];
 
-      v16 = 0;
+      queue3 = 0;
       v17 = 0;
       v18 = 0;
-      if (v30)
+      if (scheduledReceiver)
       {
         v15 = 2;
       }
@@ -440,11 +440,11 @@ LABEL_41:
       goto LABEL_60;
     }
 
-    v16 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:v8];
-    if (!v16)
+    queue3 = [MEMORY[0x277CC3510] copyNSStringForKey:"b" fromXPCDictionary:infoCopy];
+    if (!queue3)
     {
-      v20 = [(CSReceiverConnection *)self scheduledReceiver];
-      v21 = v20 == 0;
+      scheduledReceiver2 = [(CSReceiverConnection *)self scheduledReceiver];
+      v21 = scheduledReceiver2 == 0;
 
       if (v21)
       {
@@ -458,7 +458,7 @@ LABEL_41:
       }
     }
 
-    v17 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:v8];
+    v17 = [MEMORY[0x277CC3510] copyNSStringForKey:"pc" fromXPCDictionary:infoCopy];
     if (uint64 <= 1023)
     {
       if (uint64 <= 127)
@@ -473,9 +473,9 @@ LABEL_97:
 
           if (uint64 == 1)
           {
-            v54 = [MEMORY[0x277CC3510] dataWrapperForKey:"i" sizeKey:"i-size" fromXPCDictionary:v8];
-            v55 = [MEMORY[0x277CC3510] dataWrapperForKey:"c" sizeKey:"c-size" fromXPCDictionary:v8];
-            v15 = [(CSReceiverConnection *)self indexFromBundle:v16 protectionClass:v17 items:v54 itemsContent:v55];
+            v54 = [MEMORY[0x277CC3510] dataWrapperForKey:"i" sizeKey:"i-size" fromXPCDictionary:infoCopy];
+            v55 = [MEMORY[0x277CC3510] dataWrapperForKey:"c" sizeKey:"c-size" fromXPCDictionary:infoCopy];
+            v15 = [(CSReceiverConnection *)self indexFromBundle:queue3 protectionClass:v17 items:v54 itemsContent:v55];
             v56 = objc_opt_self();
             v57 = objc_opt_self();
 
@@ -487,10 +487,10 @@ LABEL_97:
 
         if (((1 << (uint64 - 2)) & 0x4045) != 0)
         {
-          v126 = [MEMORY[0x277CC3510] dataWrapperForKey:"ids" sizeKey:"ids-size" fromXPCDictionary:v8];
+          v126 = [MEMORY[0x277CC3510] dataWrapperForKey:"ids" sizeKey:"ids-size" fromXPCDictionary:infoCopy];
           if (uint64 == 16)
           {
-            date = xpc_dictionary_get_date(v8, "d");
+            date = xpc_dictionary_get_date(infoCopy, "d");
             if (date)
             {
               v92 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:date];
@@ -501,7 +501,7 @@ LABEL_146:
               v123 = v93;
               v94 = v28;
               v95 = v27;
-              v15 = [CSReceiverConnection deleteFromBundle:"deleteFromBundle:sinceDate:domains:deletes:" sinceDate:v16 domains:? deletes:?];
+              v15 = [CSReceiverConnection deleteFromBundle:"deleteFromBundle:sinceDate:domains:deletes:" sinceDate:queue3 domains:? deletes:?];
 
               v96 = v123;
 LABEL_168:
@@ -527,8 +527,8 @@ LABEL_168:
               if (v126)
               {
                 v22 = objc_alloc(MEMORY[0x277CC33C8]);
-                v23 = [v126 data];
-                v24 = [v22 initWithData:v23];
+                data = [v126 data];
+                v24 = [v22 initWithData:data];
 
                 if (v24 && ([v24 obj], _MDPlistGetPlistObjectType() == 240) && (objc_msgSend(v24, "obj"), _MDPlistArrayGetCount()))
                 {
@@ -571,8 +571,8 @@ LABEL_144:
           if (v126)
           {
             v86 = objc_alloc(MEMORY[0x277CC33C8]);
-            v87 = [v126 data];
-            v88 = [v86 initWithData:v87];
+            data2 = [v126 data];
+            v88 = [v86 initWithData:data2];
 
             if (v88 && ([v88 obj], _MDPlistGetPlistObjectType() == 240) && (objc_msgSend(v88, "obj"), _MDPlistArrayGetCount()))
             {
@@ -612,10 +612,10 @@ LABEL_167:
         {
           if (uint64 == 64)
           {
-            v45 = [MEMORY[0x277CC3510] dataWrapperForKey:"a" sizeKey:"a-size" fromXPCDictionary:v8];
+            v45 = [MEMORY[0x277CC3510] dataWrapperForKey:"a" sizeKey:"a-size" fromXPCDictionary:infoCopy];
             if (v45)
             {
-              v15 = [(CSReceiverConnection *)self addUserActions:v45 bundleID:v16 protectionClass:v17];
+              v15 = [(CSReceiverConnection *)self addUserActions:v45 bundleID:queue3 protectionClass:v17];
               v53 = objc_opt_self();
               goto LABEL_175;
             }
@@ -632,12 +632,12 @@ LABEL_167:
           goto LABEL_97;
         }
 
-        v61 = [MEMORY[0x277CC3510] dataWrapperForKey:"ids" sizeKey:"ids-size" fromXPCDictionary:v8];
+        v61 = [MEMORY[0x277CC3510] dataWrapperForKey:"ids" sizeKey:"ids-size" fromXPCDictionary:infoCopy];
         if (v61)
         {
           v76 = objc_alloc(MEMORY[0x277CC33C8]);
-          v77 = [v61 data];
-          v78 = [v76 initWithData:v77];
+          data3 = [v61 data];
+          v78 = [v76 initWithData:data3];
 
           if (v78 && ([v78 obj], _MDPlistGetPlistObjectType() == 240) && (objc_msgSend(v78, "obj"), _MDPlistArrayGetCount()))
           {
@@ -647,7 +647,7 @@ LABEL_167:
 
             if (v66)
             {
-              v15 = [(CSReceiverConnection *)self purgeFromBundle:v16 identifiers:v66];
+              v15 = [(CSReceiverConnection *)self purgeFromBundle:queue3 identifiers:v66];
               goto LABEL_189;
             }
           }
@@ -672,12 +672,12 @@ LABEL_167:
         if (uint64 == 256)
         {
           v83 = MEMORY[0x277CC3510];
-          v84 = xpc_dictionary_get_value(v8, "ids");
+          v84 = xpc_dictionary_get_value(infoCopy, "ids");
           v45 = [v83 copyNSStringArrayFromXPCArray:v84];
 
           if (v45)
           {
-            v15 = [(CSReceiverConnection *)self deleteInteractionsWithIdentifiers:v45 bundleID:v16 protectionClass:v17];
+            v15 = [(CSReceiverConnection *)self deleteInteractionsWithIdentifiers:v45 bundleID:queue3 protectionClass:v17];
             goto LABEL_175;
           }
 
@@ -693,12 +693,12 @@ LABEL_167:
         if (uint64 == 512)
         {
           v43 = MEMORY[0x277CC3510];
-          v44 = xpc_dictionary_get_value(v8, "ids");
+          v44 = xpc_dictionary_get_value(infoCopy, "ids");
           v45 = [v43 copyNSStringArrayFromXPCArray:v44];
 
           if (v45)
           {
-            v15 = [(CSReceiverConnection *)self deleteInteractionsWithGroupIdentifiers:v45 bundleID:v16 protectionClass:v17];
+            v15 = [(CSReceiverConnection *)self deleteInteractionsWithGroupIdentifiers:v45 bundleID:queue3 protectionClass:v17];
 LABEL_175:
 
             goto LABEL_9;
@@ -726,22 +726,22 @@ LABEL_132:
         goto LABEL_58;
       }
 
-      v61 = [MEMORY[0x277CC3510] dataWrapperForKey:"ins" sizeKey:"ins-size" fromXPCDictionary:v8];
+      v61 = [MEMORY[0x277CC3510] dataWrapperForKey:"ins" sizeKey:"ins-size" fromXPCDictionary:infoCopy];
       if (!v61)
       {
         goto LABEL_186;
       }
 
       v80 = objc_alloc(MEMORY[0x277CCAAC8]);
-      v81 = [v61 data];
-      v131 = [v80 initForReadingFromData:v81 error:0];
+      data4 = [v61 data];
+      v131 = [v80 initForReadingFromData:data4 error:0];
 
       v82 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
       v66 = [v131 decodeObjectOfClasses:v82 forKey:*MEMORY[0x277CCA308]];
 
       if (v66)
       {
-        v15 = [(CSReceiverConnection *)self addInteraction:v66 bundleID:v16 protectionClass:v17];
+        v15 = [(CSReceiverConnection *)self addInteraction:v66 bundleID:queue3 protectionClass:v17];
       }
 
       else
@@ -771,9 +771,9 @@ LABEL_189:
             v59 = logForCSLogCategoryDefault();
             if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
             {
-              v60 = [(CSXPCConnection *)self serviceName];
+              serviceName = [(CSXPCConnection *)self serviceName];
               *buf = 138412290;
-              v141 = v60;
+              commandCopy = serviceName;
               _os_log_impl(&dword_232D5E000, v59, OS_LOG_TYPE_DEFAULT, "### SCHEDULED RECEIVER suspend %@", buf, 0xCu);
             }
 
@@ -783,9 +783,9 @@ LABEL_189:
             v67 = logForCSLogCategoryDefault();
             if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
             {
-              v68 = [(CSXPCConnection *)self serviceName];
+              serviceName2 = [(CSXPCConnection *)self serviceName];
               *buf = 138412290;
-              v141 = v68;
+              commandCopy = serviceName2;
               _os_log_impl(&dword_232D5E000, v67, OS_LOG_TYPE_DEFAULT, "### SCHEDULED RECEIVER resume %@", buf, 0xCu);
             }
 
@@ -795,9 +795,9 @@ LABEL_189:
             v34 = logForCSLogCategoryDefault();
             if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
             {
-              v35 = [(CSXPCConnection *)self serviceName];
+              serviceName3 = [(CSXPCConnection *)self serviceName];
               *buf = 138412290;
-              v141 = v35;
+              commandCopy = serviceName3;
               _os_log_impl(&dword_232D5E000, v34, OS_LOG_TYPE_DEFAULT, "### SCHEDULED RECEIVER reset %@", buf, 0xCu);
             }
 
@@ -810,35 +810,35 @@ LABEL_189:
 
       if (uint64 == 0x8000)
       {
-        v118 = xpc_dictionary_get_value(v8, "fd");
-        v110 = xpc_dictionary_get_uint64(v8, "f-off");
-        v109 = xpc_dictionary_get_uint64(v8, "f-size");
-        v111 = xpc_dictionary_get_uint64(v8, "itype");
+        v118 = xpc_dictionary_get_value(infoCopy, "fd");
+        v110 = xpc_dictionary_get_uint64(infoCopy, "f-off");
+        v109 = xpc_dictionary_get_uint64(infoCopy, "f-size");
+        v111 = xpc_dictionary_get_uint64(infoCopy, "itype");
         xfda = xpc_fd_dup(v118);
         if ((xfda & 0x80000000) == 0)
         {
-          v116 = xpc_dictionary_get_array(v8, "aatrs");
+          v116 = xpc_dictionary_get_array(infoCopy, "aatrs");
           v114 = [MEMORY[0x277CC3510] copyNSStringOrDictArrayFromXPCArray:v116];
-          v112 = [v114 firstObject];
-          v113 = [MEMORY[0x277CC3510] copyNSStringForKey:"cnm" fromXPCDictionary:v8];
+          firstObject = [v114 firstObject];
+          v113 = [MEMORY[0x277CC3510] copyNSStringForKey:"cnm" fromXPCDictionary:infoCopy];
           v122 = [(CSReceiverConnection *)self configForIdentifier:v113];
           v129 = [SpotlightReceiverDonation alloc];
-          v69 = [v122 versionName];
-          v70 = [v122 versionValue];
-          v130 = [(SpotlightReceiverDonation *)v129 initWithVersionName:v69 versionValue:v70];
+          versionName = [v122 versionName];
+          versionValue = [v122 versionValue];
+          v130 = [(SpotlightReceiverDonation *)v129 initWithVersionName:versionName versionValue:versionValue];
 
           [(SpotlightReceiverDonation *)v130 setDonationType:1];
           [(SpotlightReceiverDonation *)v130 setIndexType:indexTypeForValue(v111)];
-          [(SpotlightReceiverDonation *)v130 setBundleIdentifier:v16];
+          [(SpotlightReceiverDonation *)v130 setBundleIdentifier:queue3];
           [(SpotlightReceiverDonation *)v130 setProtectionClass:v17];
-          [(SpotlightReceiverDonation *)v130 setSerialNumber:xpc_dictionary_get_uint64(v8, "s-num")];
-          v71 = [MEMORY[0x277CC3510] copyNSStringForKey:"j-cook" fromXPCDictionary:v8];
+          [(SpotlightReceiverDonation *)v130 setSerialNumber:xpc_dictionary_get_uint64(infoCopy, "s-num")];
+          v71 = [MEMORY[0x277CC3510] copyNSStringForKey:"j-cook" fromXPCDictionary:infoCopy];
           [(SpotlightReceiverDonation *)v130 setJournalCookie:v71];
 
-          v72 = [v122 name];
-          [(SpotlightReceiverDonation *)v130 setConfigName:v72];
+          name = [v122 name];
+          [(SpotlightReceiverDonation *)v130 setConfigName:name];
 
-          v73 = xpc_dictionary_get_remote_connection(v8);
+          v73 = xpc_dictionary_get_remote_connection(infoCopy);
           v74 = logForCSLogCategoryDefault();
           if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
           {
@@ -854,7 +854,7 @@ LABEL_189:
           v137 = reply;
           v138 = v73;
           v75 = v73;
-          [(CSReceiverConnection *)self indexWithFd:xfda offset:v110 size:v109 donation:v130 additionalAttributes:v112 config:v122 completionHandler:v136];
+          [(CSReceiverConnection *)self indexWithFd:xfda offset:v110 size:v109 donation:v130 additionalAttributes:firstObject config:v122 completionHandler:v136];
         }
 
         v52 = xfda;
@@ -867,23 +867,23 @@ LABEL_189:
           goto LABEL_132;
         }
 
-        xfd = xpc_dictionary_get_value(v8, "fd");
-        v117 = xpc_dictionary_get_uint64(v8, "f-off");
-        v115 = xpc_dictionary_get_uint64(v8, "f-size");
-        v47 = xpc_dictionary_get_uint64(v8, "itype");
+        xfd = xpc_dictionary_get_value(infoCopy, "fd");
+        v117 = xpc_dictionary_get_uint64(infoCopy, "f-off");
+        v115 = xpc_dictionary_get_uint64(infoCopy, "f-size");
+        v47 = xpc_dictionary_get_uint64(infoCopy, "itype");
         v121 = xpc_fd_dup(xfd);
         if ((v121 & 0x80000000) == 0)
         {
           v128 = objc_alloc_init(SpotlightReceiverDonation);
           [(SpotlightReceiverDonation *)v128 setDonationType:3];
           [(SpotlightReceiverDonation *)v128 setIndexType:indexTypeForValue(v47)];
-          [(SpotlightReceiverDonation *)v128 setBundleIdentifier:v16];
+          [(SpotlightReceiverDonation *)v128 setBundleIdentifier:queue3];
           [(SpotlightReceiverDonation *)v128 setProtectionClass:v17];
-          [(SpotlightReceiverDonation *)v128 setSerialNumber:xpc_dictionary_get_uint64(v8, "s-num")];
-          v48 = [MEMORY[0x277CC3510] copyNSStringForKey:"j-cook" fromXPCDictionary:v8];
+          [(SpotlightReceiverDonation *)v128 setSerialNumber:xpc_dictionary_get_uint64(infoCopy, "s-num")];
+          v48 = [MEMORY[0x277CC3510] copyNSStringForKey:"j-cook" fromXPCDictionary:infoCopy];
           [(SpotlightReceiverDonation *)v128 setJournalCookie:v48];
 
-          v49 = xpc_dictionary_get_remote_connection(v8);
+          v49 = xpc_dictionary_get_remote_connection(infoCopy);
           v50 = logForCSLogCategoryDefault();
           if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
           {
@@ -918,7 +918,7 @@ LABEL_189:
           goto LABEL_132;
         }
 
-        v46 = xpc_dictionary_get_value(v8, "ra");
+        v46 = xpc_dictionary_get_value(infoCopy, "ra");
         v32 = v46;
         if (v46 && MEMORY[0x238394C70](v46) == MEMORY[0x277D86458] && (length = xpc_data_get_length(v32)) != 0 && (bytes_ptr = xpc_data_get_bytes_ptr(v32)) != 0 && ([MEMORY[0x277CBEA90] dataWithBytesNoCopy:bytes_ptr length:length freeWhenDone:0], (v127 = objc_claimAutoreleasedReturnValue()) != 0))
         {
@@ -930,7 +930,7 @@ LABEL_189:
 
           if (v33)
           {
-            v15 = [(CSReceiverConnection *)self donateRelevantShortcuts:v33 bundleID:v16];
+            v15 = [(CSReceiverConnection *)self donateRelevantShortcuts:v33 bundleID:queue3];
             goto LABEL_46;
           }
         }
@@ -950,7 +950,7 @@ LABEL_189:
         goto LABEL_46;
       }
 
-      v58 = [(CSReceiverConnection *)self deleteAllInteractionsWithBundleID:v16 protectionClass:v17];
+      v58 = [(CSReceiverConnection *)self deleteAllInteractionsWithBundleID:queue3 protectionClass:v17];
     }
 
     else
@@ -959,12 +959,12 @@ LABEL_189:
       {
         if (uint64 == 0x2000)
         {
-          v61 = [MEMORY[0x277CC3510] dataWrapperForKey:"ids" sizeKey:"ids-size" fromXPCDictionary:v8];
+          v61 = [MEMORY[0x277CC3510] dataWrapperForKey:"ids" sizeKey:"ids-size" fromXPCDictionary:infoCopy];
           if (v61)
           {
             v62 = objc_alloc(MEMORY[0x277CC33C8]);
-            v63 = [v61 data];
-            v64 = [v62 initWithData:v63];
+            data5 = [v61 data];
+            v64 = [v62 initWithData:data5];
 
             if (v64 && ([v64 obj], _MDPlistGetPlistObjectType() == 240) && (objc_msgSend(v64, "obj"), _MDPlistArrayGetCount()))
             {
@@ -974,7 +974,7 @@ LABEL_189:
 
               if (v66)
               {
-                v15 = [(CSReceiverConnection *)self deleteUserActivitiesWithPersistentIdentifiers:v66 bundleID:v16];
+                v15 = [(CSReceiverConnection *)self deleteUserActivitiesWithPersistentIdentifiers:v66 bundleID:queue3];
                 goto LABEL_189;
               }
             }
@@ -999,7 +999,7 @@ LABEL_189:
           goto LABEL_132;
         }
 
-        v31 = xpc_dictionary_get_value(v8, "ra");
+        v31 = xpc_dictionary_get_value(infoCopy, "ra");
         v32 = v31;
         if (v31 && MEMORY[0x238394C70](v31) == MEMORY[0x277D86458] && (v99 = xpc_data_get_length(v32)) != 0 && (v100 = xpc_data_get_bytes_ptr(v32)) != 0 && ([MEMORY[0x277CBEA90] dataWithBytesNoCopy:v100 length:v99 freeWhenDone:0], (v127 = objc_claimAutoreleasedReturnValue()) != 0))
         {
@@ -1011,7 +1011,7 @@ LABEL_189:
 
           if (v33)
           {
-            v15 = [(CSReceiverConnection *)self donateRelevantActions:v33 bundleID:v16];
+            v15 = [(CSReceiverConnection *)self donateRelevantActions:v33 bundleID:queue3];
 LABEL_46:
 
             goto LABEL_9;
@@ -1033,28 +1033,28 @@ LABEL_46:
         goto LABEL_46;
       }
 
-      v58 = [(CSReceiverConnection *)self deleteAllUserActivities:v16];
+      v58 = [(CSReceiverConnection *)self deleteAllUserActivities:queue3];
     }
 
     v15 = v58;
     goto LABEL_9;
   }
 
-  if (v14 == 115 && !a3[1])
+  if (v14 == 115 && !command[1])
   {
     v15 = [(CSReceiverConnection *)self handleSetup:reply];
-    v16 = 0;
+    queue3 = 0;
     v17 = 0;
 LABEL_9:
     v18 = 0;
 LABEL_60:
     if (euid)
     {
-      v37 = [(CSXPCConnection *)self queue];
-      dispatch_queue_set_specific(v37, SpotlightReceiverConnectionUIDKey, 0, 0);
+      queue2 = [(CSXPCConnection *)self queue];
+      dispatch_queue_set_specific(queue2, SpotlightReceiverConnectionUIDKey, 0, 0);
     }
 
-    v38 = xpc_dictionary_get_remote_connection(v8);
+    v38 = xpc_dictionary_get_remote_connection(infoCopy);
     if (v38)
     {
       v39 = reply == 0;
@@ -1076,10 +1076,10 @@ LABEL_60:
   }
 
 LABEL_11:
-  if (!_SpotlightDaemonClientHandleCommand(a3, v8, self->_receiver))
+  if (!_SpotlightDaemonClientHandleCommand(command, infoCopy, self->_receiver))
   {
 LABEL_57:
-    v16 = 0;
+    queue3 = 0;
     v17 = 0;
 LABEL_58:
     v18 = 0;
@@ -1090,8 +1090,8 @@ LABEL_59:
 
   if (euid)
   {
-    v16 = [(CSXPCConnection *)self queue];
-    dispatch_queue_set_specific(v16, SpotlightReceiverConnectionUIDKey, 0, 0);
+    queue3 = [(CSXPCConnection *)self queue];
+    dispatch_queue_set_specific(queue3, SpotlightReceiverConnectionUIDKey, 0, 0);
 LABEL_71:
   }
 
@@ -1120,19 +1120,19 @@ void __54__CSReceiverConnection_handleCommand_info_connection___block_invoke_387
   xpc_connection_send_message(v4, v5);
 }
 
-- (int)handleSetup:(id)a3
+- (int)handleSetup:(id)setup
 {
   v83 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  xpc_dictionary_set_uint64(v4, "jt", self->_supportedJobs);
+  setupCopy = setup;
+  xpc_dictionary_set_uint64(setupCopy, "jt", self->_supportedJobs);
   if ([(NSMutableDictionary *)self->_configs count])
   {
-    v75 = v4;
+    v75 = setupCopy;
     v77 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v73 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v74 = self;
+    selfCopy = self;
     v78 = 0u;
     v79 = 0u;
     v80 = 0u;
@@ -1157,8 +1157,8 @@ void __54__CSReceiverConnection_handleCommand_info_connection___block_invoke_387
 
         v11 = *(*(&v78 + 1) + 8 * i);
         v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-        v13 = [v11 name];
-        [v12 setObject:v13 forKey:SpotlightScheduledReceiverConfigName];
+        name = [v11 name];
+        [v12 setObject:name forKey:SpotlightScheduledReceiverConfigName];
 
         v14 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v11, "needsText")}];
         [v12 setObject:v14 forKey:@"requiresText"];
@@ -1178,118 +1178,118 @@ void __54__CSReceiverConnection_handleCommand_info_connection___block_invoke_387
         v19 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v11, "needsLanguage")}];
         [v12 setObject:v19 forKey:@"includeLanguage"];
 
-        v20 = [v11 priority];
+        priority = [v11 priority];
 
-        if (v20)
+        if (priority)
         {
-          v21 = [v11 priority];
-          [v12 setObject:v21 forKey:SpotlightScheduledReceiverConfigPriority];
+          priority2 = [v11 priority];
+          [v12 setObject:priority2 forKey:SpotlightScheduledReceiverConfigPriority];
         }
 
-        v22 = [v11 processes];
+        processes = [v11 processes];
 
-        if (v22)
+        if (processes)
         {
-          v23 = [v11 processes];
-          [v12 setObject:v23 forKey:SpotlightScheduledReceiverConfigProcesses];
+          processes2 = [v11 processes];
+          [v12 setObject:processes2 forKey:SpotlightScheduledReceiverConfigProcesses];
         }
 
-        v24 = [v11 supportedQuery];
+        supportedQuery = [v11 supportedQuery];
 
-        if (v24)
+        if (supportedQuery)
         {
-          v25 = [v11 supportedQuery];
-          [v12 setObject:v25 forKey:SpotlightScheduledReceiverConfigSupportedQuery];
+          supportedQuery2 = [v11 supportedQuery];
+          [v12 setObject:supportedQuery2 forKey:SpotlightScheduledReceiverConfigSupportedQuery];
         }
 
-        v26 = [v11 supportedBundles];
-        v27 = [v26 count];
+        supportedBundles = [v11 supportedBundles];
+        v27 = [supportedBundles count];
 
         if (v27)
         {
-          v28 = [v11 supportedBundles];
-          [v12 setObject:v28 forKey:SpotlightScheduledReceiverConfigSupportedBundles];
+          supportedBundles2 = [v11 supportedBundles];
+          [v12 setObject:supportedBundles2 forKey:SpotlightScheduledReceiverConfigSupportedBundles];
         }
 
-        v29 = [v11 unsupportedBundles];
-        v30 = [v29 count];
+        unsupportedBundles = [v11 unsupportedBundles];
+        v30 = [unsupportedBundles count];
 
         if (v30)
         {
-          v31 = [v11 unsupportedBundles];
-          [v12 setObject:v31 forKey:SpotlightScheduledReceiverConfigUnsupportedBundles];
+          unsupportedBundles2 = [v11 unsupportedBundles];
+          [v12 setObject:unsupportedBundles2 forKey:SpotlightScheduledReceiverConfigUnsupportedBundles];
         }
 
-        v32 = [v11 supportedDomainIdentifiers];
-        v33 = [v32 count];
+        supportedDomainIdentifiers = [v11 supportedDomainIdentifiers];
+        v33 = [supportedDomainIdentifiers count];
 
         if (v33)
         {
-          v34 = [v11 supportedDomainIdentifiers];
-          [v12 setObject:v34 forKey:SpotlightScheduledReceiverConfigSupportedDomains];
+          supportedDomainIdentifiers2 = [v11 supportedDomainIdentifiers];
+          [v12 setObject:supportedDomainIdentifiers2 forKey:SpotlightScheduledReceiverConfigSupportedDomains];
         }
 
-        v35 = [v11 unsupportedDomainIdentifiers];
-        v36 = [v35 count];
+        unsupportedDomainIdentifiers = [v11 unsupportedDomainIdentifiers];
+        v36 = [unsupportedDomainIdentifiers count];
 
         if (v36)
         {
-          v37 = [v11 unsupportedDomainIdentifiers];
-          [v12 setObject:v37 forKey:SpotlightScheduledReceiverConfigUnsupportedDomains];
+          unsupportedDomainIdentifiers2 = [v11 unsupportedDomainIdentifiers];
+          [v12 setObject:unsupportedDomainIdentifiers2 forKey:SpotlightScheduledReceiverConfigUnsupportedDomains];
         }
 
-        v38 = [v11 supportedContentTypes];
-        v39 = [v38 count];
+        supportedContentTypes = [v11 supportedContentTypes];
+        v39 = [supportedContentTypes count];
 
         if (v39)
         {
-          v40 = [v11 supportedContentTypes];
-          [v12 setObject:v40 forKey:SpotlightScheduledReceiverConfigSupportedContentTypes];
+          supportedContentTypes2 = [v11 supportedContentTypes];
+          [v12 setObject:supportedContentTypes2 forKey:SpotlightScheduledReceiverConfigSupportedContentTypes];
         }
 
-        v41 = [v11 unsupportedContentTypes];
-        v42 = [v41 count];
+        unsupportedContentTypes = [v11 unsupportedContentTypes];
+        v42 = [unsupportedContentTypes count];
 
         if (v42)
         {
-          v43 = [v11 unsupportedContentTypes];
-          [v12 setObject:v43 forKey:SpotlightScheduledReceiverConfigUnsupportedContentTypes];
+          unsupportedContentTypes2 = [v11 unsupportedContentTypes];
+          [v12 setObject:unsupportedContentTypes2 forKey:SpotlightScheduledReceiverConfigUnsupportedContentTypes];
         }
 
-        v44 = [v11 donationAttributes];
-        v45 = [v44 count];
+        donationAttributes = [v11 donationAttributes];
+        v45 = [donationAttributes count];
 
         if (v45)
         {
-          v46 = [v11 donationAttributes];
-          [v12 setObject:v46 forKey:SpotlightScheduledReceiverConfigDonationAttributes];
+          donationAttributes2 = [v11 donationAttributes];
+          [v12 setObject:donationAttributes2 forKey:SpotlightScheduledReceiverConfigDonationAttributes];
         }
 
-        v47 = [v11 requiredAttributes];
-        v48 = [v47 count];
+        requiredAttributes = [v11 requiredAttributes];
+        v48 = [requiredAttributes count];
 
         if (v48)
         {
-          v49 = [v11 requiredAttributes];
-          [v12 setObject:v49 forKey:SpotlightScheduledReceiverConfigRequiredAttributes];
+          requiredAttributes2 = [v11 requiredAttributes];
+          [v12 setObject:requiredAttributes2 forKey:SpotlightScheduledReceiverConfigRequiredAttributes];
         }
 
-        v50 = [v11 optionalAttributes];
-        v51 = [v50 count];
+        optionalAttributes = [v11 optionalAttributes];
+        v51 = [optionalAttributes count];
 
         if (v51)
         {
-          v52 = [v11 optionalAttributes];
-          [v12 setObject:v52 forKey:SpotlightScheduledReceiverConfigOptionalAttributes];
+          optionalAttributes2 = [v11 optionalAttributes];
+          [v12 setObject:optionalAttributes2 forKey:SpotlightScheduledReceiverConfigOptionalAttributes];
         }
 
-        v53 = [v11 excludeAttributes];
-        v54 = [v53 count];
+        excludeAttributes = [v11 excludeAttributes];
+        v54 = [excludeAttributes count];
 
         if (v54)
         {
-          v55 = [v11 excludeAttributes];
-          [v12 setObject:v55 forKey:SpotlightScheduledReceiverConfigExcludeAttributes];
+          excludeAttributes2 = [v11 excludeAttributes];
+          [v12 setObject:excludeAttributes2 forKey:SpotlightScheduledReceiverConfigExcludeAttributes];
         }
 
         [v77 addObject:v12];
@@ -1301,36 +1301,36 @@ void __54__CSReceiverConnection_handleCommand_info_connection___block_invoke_387
           }
 
 LABEL_40:
-          v59 = [v11 supportedContentTypes];
-          v60 = [v59 count];
+          supportedContentTypes3 = [v11 supportedContentTypes];
+          v60 = [supportedContentTypes3 count];
 
           if (v60)
           {
-            v61 = [v11 supportedContentTypes];
-            [v6 addObjectsFromArray:v61];
+            supportedContentTypes4 = [v11 supportedContentTypes];
+            [v6 addObjectsFromArray:supportedContentTypes4];
           }
 
           else
           {
-            v61 = v6;
+            supportedContentTypes4 = v6;
             v6 = 0;
           }
 
           goto LABEL_44;
         }
 
-        v56 = [v11 supportedBundles];
-        v57 = [v56 count];
+        supportedBundles3 = [v11 supportedBundles];
+        v57 = [supportedBundles3 count];
 
         if (v57)
         {
-          v58 = [v11 supportedBundles];
-          [v5 addObjectsFromArray:v58];
+          supportedBundles4 = [v11 supportedBundles];
+          [v5 addObjectsFromArray:supportedBundles4];
         }
 
         else
         {
-          v58 = v5;
+          supportedBundles4 = v5;
           v5 = 0;
         }
 
@@ -1347,20 +1347,20 @@ LABEL_44:
       {
 LABEL_46:
 
-        v62 = [v5 allObjects];
-        self = v74;
-        bundleIDs = v74->_bundleIDs;
-        v74->_bundleIDs = v62;
+        allObjects = [v5 allObjects];
+        self = selfCopy;
+        bundleIDs = selfCopy->_bundleIDs;
+        selfCopy->_bundleIDs = allObjects;
 
-        v64 = [v6 allObjects];
-        contentTypes = v74->_contentTypes;
-        v74->_contentTypes = v64;
+        allObjects2 = [v6 allObjects];
+        contentTypes = selfCopy->_contentTypes;
+        selfCopy->_contentTypes = allObjects2;
 
-        v66 = [v73 allObjects];
-        INIntentClassNames = v74->_INIntentClassNames;
-        v74->_INIntentClassNames = v66;
+        allObjects3 = [v73 allObjects];
+        INIntentClassNames = selfCopy->_INIntentClassNames;
+        selfCopy->_INIntentClassNames = allObjects3;
 
-        v4 = v75;
+        setupCopy = v75;
         [MEMORY[0x277CC3510] dictionary:v75 setStringOrDictionaryArray:v77 forKey:"jps"];
 
         break;
@@ -1371,46 +1371,46 @@ LABEL_46:
   v68 = self->_bundleIDs;
   if (v68)
   {
-    [MEMORY[0x277CC3510] dictionary:v4 setStringArray:v68 forKey:"bids"];
+    [MEMORY[0x277CC3510] dictionary:setupCopy setStringArray:v68 forKey:"bids"];
   }
 
   v69 = self->_contentTypes;
   if (v69)
   {
-    [MEMORY[0x277CC3510] dictionary:v4 setStringArray:v69 forKey:"cts"];
+    [MEMORY[0x277CC3510] dictionary:setupCopy setStringArray:v69 forKey:"cts"];
   }
 
   v70 = self->_INIntentClassNames;
   if (v70)
   {
-    [MEMORY[0x277CC3510] dictionary:v4 setStringArray:v70 forKey:"icls"];
+    [MEMORY[0x277CC3510] dictionary:setupCopy setStringArray:v70 forKey:"icls"];
   }
 
   v71 = *MEMORY[0x277D85DE8];
   return 0;
 }
 
-- (int)indexFromBundle:(id)a3 protectionClass:(id)a4 items:(id)a5 itemsContent:(id)a6
+- (int)indexFromBundle:(id)bundle protectionClass:(id)class items:(id)items itemsContent:(id)content
 {
-  v10 = a6;
-  if (a5)
+  contentCopy = content;
+  if (items)
   {
     v11 = MEMORY[0x277CC33C8];
-    v12 = a5;
-    v13 = a4;
-    v14 = a3;
+    itemsCopy = items;
+    classCopy = class;
+    bundleCopy = bundle;
     v15 = [v11 alloc];
-    v16 = [v12 data];
-    v17 = [v15 initWithData:v16];
+    data = [itemsCopy data];
+    v17 = [v15 initWithData:data];
 
-    [v17 setBackingStore:v12];
-    if (v10)
+    [v17 setBackingStore:itemsCopy];
+    if (contentCopy)
     {
       v18 = objc_alloc(MEMORY[0x277CC33C8]);
-      v19 = [v10 data];
-      v20 = [v18 initWithData:v19];
+      data2 = [contentCopy data];
+      v20 = [v18 initWithData:data2];
 
-      [v20 setBackingStore:v10];
+      [v20 setBackingStore:contentCopy];
     }
 
     else
@@ -1419,10 +1419,10 @@ LABEL_46:
     }
 
     v21 = [objc_alloc(MEMORY[0x277CC34C0]) initWithItems:v17 itemsContent:v20];
-    [v21 setBundleID:v14];
-    [v21 setProtectionClass:v13];
+    [v21 setBundleID:bundleCopy];
+    [v21 setProtectionClass:classCopy];
 
-    [(SpotlightReceiver *)self->_receiver addOrUpdateSearchableItems:v21 bundleID:v14];
+    [(SpotlightReceiver *)self->_receiver addOrUpdateSearchableItems:v21 bundleID:bundleCopy];
   }
 
   return 0;
@@ -1445,57 +1445,57 @@ uint64_t __43__CSReceiverConnection_enableDebuggability__block_invoke()
   return result;
 }
 
-- (id)indexForBundleID:(id)a3 protectionClass:(id)a4
+- (id)indexForBundleID:(id)d protectionClass:(id)class
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  classCopy = class;
   os_unfair_lock_lock(&self->_lock);
   if ([(NSMutableDictionary *)self->_indexes count]>= 0xA)
   {
     [(NSMutableDictionary *)self->_indexes removeAllObjects];
   }
 
-  v8 = [(NSMutableDictionary *)self->_indexes objectForKeyedSubscript:v6];
+  v8 = [(NSMutableDictionary *)self->_indexes objectForKeyedSubscript:dCopy];
 
   if (!v8)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [(NSMutableDictionary *)self->_indexes setObject:v9 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_indexes setObject:v9 forKeyedSubscript:dCopy];
   }
 
-  v10 = [(NSMutableDictionary *)self->_indexes objectForKeyedSubscript:v6];
-  v11 = [v10 objectForKeyedSubscript:v7];
+  v10 = [(NSMutableDictionary *)self->_indexes objectForKeyedSubscript:dCopy];
+  v11 = [v10 objectForKeyedSubscript:classCopy];
 
   if (!v11)
   {
-    v12 = [objc_alloc(MEMORY[0x277CC34A8]) _initWithName:@"SpotlightResources" protectionClass:v7 bundleIdentifier:v6 options:32];
-    v13 = [(NSMutableDictionary *)self->_indexes objectForKeyedSubscript:v6];
-    [v13 setObject:v12 forKeyedSubscript:v7];
+    v12 = [objc_alloc(MEMORY[0x277CC34A8]) _initWithName:@"SpotlightResources" protectionClass:classCopy bundleIdentifier:dCopy options:32];
+    v13 = [(NSMutableDictionary *)self->_indexes objectForKeyedSubscript:dCopy];
+    [v13 setObject:v12 forKeyedSubscript:classCopy];
   }
 
-  v14 = [(NSMutableDictionary *)self->_indexes objectForKeyedSubscript:v6];
-  v15 = [v14 objectForKeyedSubscript:v7];
+  v14 = [(NSMutableDictionary *)self->_indexes objectForKeyedSubscript:dCopy];
+  v15 = [v14 objectForKeyedSubscript:classCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v15;
 }
 
-- (id)fetchableIdentifiersFromDonation:(id)a3 additionalAttributes:(id)a4 config:(id)a5
+- (id)fetchableIdentifiersFromDonation:(id)donation additionalAttributes:(id)attributes config:(id)config
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 count])
+  donationCopy = donation;
+  attributesCopy = attributes;
+  configCopy = config;
+  if ([attributesCopy count])
   {
-    v23 = [v7 bundleIdentifier];
-    v10 = [v7 protectionClass];
-    v11 = [v8 allKeys];
-    v12 = v11;
-    if (v23 && v10)
+    bundleIdentifier = [donationCopy bundleIdentifier];
+    protectionClass = [donationCopy protectionClass];
+    allKeys = [attributesCopy allKeys];
+    v12 = allKeys;
+    if (bundleIdentifier && protectionClass)
     {
-      v22 = [objc_alloc(MEMORY[0x277CC34A8]) initWithName:@"SKG" protectionClass:v10 bundleIdentifier:v23];
+      v22 = [objc_alloc(MEMORY[0x277CC34A8]) initWithName:@"SKG" protectionClass:protectionClass bundleIdentifier:bundleIdentifier];
       v30 = 0;
       v31 = &v30;
       v32 = 0x3032000000;
@@ -1504,20 +1504,20 @@ uint64_t __43__CSReceiverConnection_enableDebuggability__block_invoke()
       v35 = [v12 mutableCopy];
       v13 = dispatch_group_create();
       dispatch_group_enter(v13);
-      v14 = [v9 versionName];
-      v36[0] = v14;
+      versionName = [configCopy versionName];
+      v36[0] = versionName;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __85__CSReceiverConnection_fetchableIdentifiersFromDonation_additionalAttributes_config___block_invoke;
       v24[3] = &unk_2789AE000;
-      v25 = v9;
+      v25 = configCopy;
       v26 = v12;
       v29 = &v30;
-      v27 = v23;
+      v27 = bundleIdentifier;
       v16 = v13;
       v28 = v16;
-      [v22 slowFetchAttributes:v15 protectionClass:v10 bundleID:v27 identifiers:v26 completionHandler:v24];
+      [v22 slowFetchAttributes:v15 protectionClass:protectionClass bundleID:v27 identifiers:v26 completionHandler:v24];
 
       v17 = dispatch_time(0, 1200000000000);
       if (dispatch_group_wait(v16, v17))
@@ -1536,7 +1536,7 @@ uint64_t __43__CSReceiverConnection_enableDebuggability__block_invoke()
 
     else
     {
-      v19 = v11;
+      v19 = allKeys;
     }
   }
 
@@ -1606,52 +1606,52 @@ void __85__CSReceiverConnection_fetchableIdentifiersFromDonation_additionalAttri
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)indexWithFd:(int)a3 offset:(unint64_t)a4 size:(unint64_t)a5 donation:(id)a6 additionalAttributes:(id)a7 config:(id)a8 completionHandler:(id)a9
+- (void)indexWithFd:(int)fd offset:(unint64_t)offset size:(unint64_t)size donation:(id)donation additionalAttributes:(id)attributes config:(id)config completionHandler:(id)handler
 {
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  if (a5)
+  donationCopy = donation;
+  attributesCopy = attributes;
+  configCopy = config;
+  handlerCopy = handler;
+  if (size)
   {
-    v50 = [(CSReceiverConnection *)self fetchableIdentifiersFromDonation:v15 additionalAttributes:v16 config:v17];
+    v50 = [(CSReceiverConnection *)self fetchableIdentifiersFromDonation:donationCopy additionalAttributes:attributesCopy config:configCopy];
     if ([v50 count])
     {
-      v49 = v16;
+      v49 = attributesCopy;
       v19 = MEMORY[0x277CCACA8];
-      v20 = [(CSXPCConnection *)self serviceName];
-      v21 = [v17 name];
-      v22 = [v19 stringWithFormat:@"%@.%@.adds", v20, v21];
+      serviceName = [(CSXPCConnection *)self serviceName];
+      name = [configCopy name];
+      v22 = [v19 stringWithFormat:@"%@.%@.adds", serviceName, name];
 
       v48 = v22;
-      v23 = [v22 UTF8String];
+      uTF8String = [v22 UTF8String];
       v24 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v25 = dispatch_queue_attr_make_with_qos_class(v24, QOS_CLASS_DEFAULT, 0);
-      v26 = dispatch_queue_create(v23, v25);
+      v26 = dispatch_queue_create(uTF8String, v25);
 
       v27 = dispatch_group_create();
       v28 = -*MEMORY[0x277D85FA0];
-      v29 = v28 & a4;
-      v45 = ((a4 + a5 + *MEMORY[0x277D85FA0] - 1) & v28) + (v28 & a4);
-      v30 = mmap(0, v45, 1, 1, a3, v28 & a4);
+      v29 = v28 & offset;
+      v45 = ((offset + size + *MEMORY[0x277D85FA0] - 1) & v28) + (v28 & offset);
+      v30 = mmap(0, v45, 1, 1, fd, v28 & offset);
       if (v30 == -1)
       {
-        v18[2](v18, 1, 0);
+        handlerCopy[2](handlerCopy, 1, 0);
         v36 = v50;
       }
 
       else
       {
         v31 = v30;
-        v43 = [v17 fetchAttributes];
-        [v15 protectionClass];
+        fetchAttributes = [configCopy fetchAttributes];
+        [donationCopy protectionClass];
         v46 = v27;
         v32 = queue = v26;
         scheduledReceiver = self->_scheduledReceiver;
         v42 = objc_opt_respondsToSelector() & 1;
         v34 = self->_scheduledReceiver;
         v44 = objc_opt_respondsToSelector() & 1;
-        v35 = [(CSReceiverConnection *)self enableDebuggability];
+        enableDebuggability = [(CSReceiverConnection *)self enableDebuggability];
         v76[0] = 0;
         v76[1] = v76;
         v76[2] = 0x2020000000;
@@ -1665,26 +1665,26 @@ void __85__CSReceiverConnection_fetchableIdentifiersFromDonation_additionalAttri
         block[2] = __103__CSReceiverConnection_indexWithFd_offset_size_donation_additionalAttributes_config_completionHandler___block_invoke;
         block[3] = &unk_2789AE138;
         v68 = v31;
-        v69 = a4;
+        offsetCopy = offset;
         v70 = v29;
-        v71 = a5;
+        sizeCopy = size;
         v36 = v50;
         v58 = v50;
-        v59 = v43;
+        v59 = fetchAttributes;
         v60 = v49;
-        v72 = v35;
-        v61 = v17;
+        v72 = enableDebuggability;
+        v61 = configCopy;
         v62 = v32;
-        v63 = self;
+        selfCopy = self;
         v73 = v42;
-        v64 = v15;
+        v64 = donationCopy;
         v37 = v46;
         v65 = v37;
         v66 = v76;
         v67 = v75;
         v74 = v44;
         v38 = v32;
-        v39 = v43;
+        v39 = fetchAttributes;
         dispatch_group_async(v37, queue, block);
         v51[0] = MEMORY[0x277D85DD0];
         v51[1] = 3221225472;
@@ -1692,7 +1692,7 @@ void __85__CSReceiverConnection_fetchableIdentifiersFromDonation_additionalAttri
         v51[3] = &unk_2789AE160;
         v55 = v31;
         v56 = v45;
-        v52 = v18;
+        v52 = handlerCopy;
         v53 = v76;
         v54 = v75;
         v40 = v37;
@@ -1704,12 +1704,12 @@ void __85__CSReceiverConnection_fetchableIdentifiersFromDonation_additionalAttri
         v27 = v46;
       }
 
-      v16 = v49;
+      attributesCopy = v49;
     }
 
     else
     {
-      v18[2](v18, 0, 2);
+      handlerCopy[2](handlerCopy, 0, 2);
       v36 = v50;
     }
   }
@@ -1719,10 +1719,10 @@ void __85__CSReceiverConnection_fetchableIdentifiersFromDonation_additionalAttri
     v41 = logForCSLogCategoryDefault();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
-      [CSReceiverConnection indexWithFd:v15 offset:v41 size:? donation:? additionalAttributes:? config:? completionHandler:?];
+      [CSReceiverConnection indexWithFd:donationCopy offset:v41 size:? donation:? additionalAttributes:? config:? completionHandler:?];
     }
 
-    v18[2](v18, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 }
 
@@ -2354,34 +2354,34 @@ uint64_t __103__CSReceiverConnection_indexWithFd_offset_size_donation_additional
   return v4();
 }
 
-- (void)deleteWithFd:(int)a3 offset:(unint64_t)a4 size:(unint64_t)a5 donation:(id)a6 completionHandler:(id)a7
+- (void)deleteWithFd:(int)fd offset:(unint64_t)offset size:(unint64_t)size donation:(id)donation completionHandler:(id)handler
 {
-  v12 = a6;
-  v13 = a7;
-  if (a5)
+  donationCopy = donation;
+  handlerCopy = handler;
+  if (size)
   {
-    v29 = v12;
+    v29 = donationCopy;
     v14 = -*MEMORY[0x277D85FA0];
-    v15 = v14 & a4;
-    v16 = ((a4 + a5 + *MEMORY[0x277D85FA0] - 1) & v14) + (v14 & a4);
-    v17 = mmap(0, v16, 1, 1, a3, v14 & a4);
+    v15 = v14 & offset;
+    v16 = ((offset + size + *MEMORY[0x277D85FA0] - 1) & v14) + (v14 & offset);
+    v17 = mmap(0, v16, 1, 1, fd, v14 & offset);
     if (v17 == -1)
     {
-      v13[2](v13, 1);
-      v12 = v29;
+      handlerCopy[2](handlerCopy, 1);
+      donationCopy = v29;
     }
 
     else
     {
       v18 = v17;
       v19 = MEMORY[0x277CCACA8];
-      v20 = [(CSXPCConnection *)self serviceName];
-      v28 = [v19 stringWithFormat:@"%@.deletes", v20];
+      serviceName = [(CSXPCConnection *)self serviceName];
+      v28 = [v19 stringWithFormat:@"%@.deletes", serviceName];
 
-      v21 = [v28 UTF8String];
+      uTF8String = [v28 UTF8String];
       v22 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v23 = dispatch_queue_attr_make_with_qos_class(v22, QOS_CLASS_DEFAULT, 0);
-      v24 = dispatch_queue_create(v21, v23);
+      v24 = dispatch_queue_create(uTF8String, v23);
 
       v25 = dispatch_group_create();
       v44[0] = 0;
@@ -2393,13 +2393,13 @@ uint64_t __103__CSReceiverConnection_indexWithFd_offset_size_donation_additional
       block[2] = __76__CSReceiverConnection_deleteWithFd_offset_size_donation_completionHandler___block_invoke;
       block[3] = &unk_2789AE200;
       v40 = v18;
-      v41 = a4;
+      offsetCopy = offset;
       v42 = v15;
-      v43 = a5;
-      v12 = v29;
+      sizeCopy = size;
+      donationCopy = v29;
       v36 = v29;
       v37 = v25;
-      v38 = self;
+      selfCopy = self;
       v39 = v44;
       v26 = v25;
       dispatch_group_async(v26, v24, block);
@@ -2409,7 +2409,7 @@ uint64_t __103__CSReceiverConnection_indexWithFd_offset_size_donation_additional
       v30[3] = &unk_2789AE228;
       v33 = v18;
       v34 = v16;
-      v31 = v13;
+      v31 = handlerCopy;
       v32 = v44;
       dispatch_group_notify(v26, v24, v30);
 
@@ -2425,7 +2425,7 @@ uint64_t __103__CSReceiverConnection_indexWithFd_offset_size_donation_additional
       [CSReceiverConnection deleteWithFd:offset:size:donation:completionHandler:];
     }
 
-    v13[2](v13, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 }
 
@@ -2557,50 +2557,50 @@ uint64_t __76__CSReceiverConnection_deleteWithFd_offset_size_donation_completion
   return v3();
 }
 
-- (int)deleteFromBundle:(id)a3 sinceDate:(id)a4 domains:(id)a5 deletes:(id)a6
+- (int)deleteFromBundle:(id)bundle sinceDate:(id)date domains:(id)domains deletes:(id)deletes
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  bundleCopy = bundle;
+  dateCopy = date;
+  domainsCopy = domains;
+  deletesCopy = deletes;
+  if (deletesCopy)
   {
-    [(SpotlightReceiver *)self->_receiver deleteSearchableItemsWithIdentifiers:v13 bundleID:v10];
+    [(SpotlightReceiver *)self->_receiver deleteSearchableItemsWithIdentifiers:deletesCopy bundleID:bundleCopy];
   }
 
-  else if (v12)
+  else if (domainsCopy)
   {
-    [(SpotlightReceiver *)self->_receiver deleteSearchableItemsWithDomainIdentifiers:v12 bundleID:v10];
+    [(SpotlightReceiver *)self->_receiver deleteSearchableItemsWithDomainIdentifiers:domainsCopy bundleID:bundleCopy];
   }
 
   else
   {
     receiver = self->_receiver;
-    if (v11)
+    if (dateCopy)
     {
-      [(SpotlightReceiver *)receiver deleteSearchableItemsSinceDate:v11 bundleID:v10];
+      [(SpotlightReceiver *)receiver deleteSearchableItemsSinceDate:dateCopy bundleID:bundleCopy];
     }
 
     else
     {
-      [(SpotlightReceiver *)receiver deleteAllSearchableItemsWithBundleID:v10];
+      [(SpotlightReceiver *)receiver deleteAllSearchableItemsWithBundleID:bundleCopy];
     }
   }
 
   return 0;
 }
 
-- (int)addUserActions:(id)a3 bundleID:(id)a4 protectionClass:(id)a5
+- (int)addUserActions:(id)actions bundleID:(id)d protectionClass:(id)class
 {
-  v7 = a4;
-  v8 = a5;
+  dCopy = d;
+  classCopy = class;
   v9 = MEMORY[0x277CC33C8];
-  v10 = a3;
+  actionsCopy = actions;
   v11 = [v9 alloc];
-  v12 = [v10 data];
-  v13 = [v11 initWithData:v12];
+  data = [actionsCopy data];
+  v13 = [v11 initWithData:data];
 
-  [v13 setBackingStore:v10];
+  [v13 setBackingStore:actionsCopy];
   if (v13)
   {
     [v13 obj];
@@ -2611,8 +2611,8 @@ uint64_t __76__CSReceiverConnection_deleteWithFd_offset_size_donation_completion
       {
         [v13 obj];
         v15 = v13;
-        v16 = v7;
-        v17 = v8;
+        v16 = dCopy;
+        v17 = classCopy;
         _MDPlistArrayIterate();
       }
     }
@@ -2656,17 +2656,17 @@ void __64__CSReceiverConnection_addUserActions_bundleID_protectionClass___block_
   }
 }
 
-- (int)addInteraction:(id)a3 bundleID:(id)a4 protectionClass:(id)a5
+- (int)addInteraction:(id)interaction bundleID:(id)d protectionClass:(id)class
 {
   v16 = *MEMORY[0x277D85DE8];
   receiver = self->_receiver;
-  v15 = a3;
+  interactionCopy = interaction;
   v8 = MEMORY[0x277CBEA60];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 arrayWithObjects:&v15 count:1];
-  [(SpotlightReceiver *)receiver addInteractions:v12 bundleID:v10 protectionClass:v9, v15, v16];
+  classCopy = class;
+  dCopy = d;
+  interactionCopy2 = interaction;
+  v12 = [v8 arrayWithObjects:&interactionCopy count:1];
+  [(SpotlightReceiver *)receiver addInteractions:v12 bundleID:dCopy protectionClass:classCopy, interactionCopy, v16];
 
   v13 = *MEMORY[0x277D85DE8];
   return 0;

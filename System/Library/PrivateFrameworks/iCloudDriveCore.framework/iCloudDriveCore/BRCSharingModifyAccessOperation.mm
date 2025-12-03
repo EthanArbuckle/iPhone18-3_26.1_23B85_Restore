@@ -1,32 +1,32 @@
 @interface BRCSharingModifyAccessOperation
-- (BRCSharingModifyAccessOperation)initWithItem:(id)a3 allowAccess:(BOOL)a4 sessionContext:(id)a5;
+- (BRCSharingModifyAccessOperation)initWithItem:(id)item allowAccess:(BOOL)access sessionContext:(id)context;
 - (id)createActivity;
 - (void)main;
 @end
 
 @implementation BRCSharingModifyAccessOperation
 
-- (BRCSharingModifyAccessOperation)initWithItem:(id)a3 allowAccess:(BOOL)a4 sessionContext:(id)a5
+- (BRCSharingModifyAccessOperation)initWithItem:(id)item allowAccess:(BOOL)access sessionContext:(id)context
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [v9 itemID];
-  v12 = [v11 debugItemIDString];
-  v13 = [@"sharing/modifyAccess" stringByAppendingPathComponent:v12];
+  itemCopy = item;
+  contextCopy = context;
+  itemID = [itemCopy itemID];
+  debugItemIDString = [itemID debugItemIDString];
+  v13 = [@"sharing/modifyAccess" stringByAppendingPathComponent:debugItemIDString];
 
-  v14 = [v9 serverZone];
-  v15 = [v14 metadataSyncContext];
+  serverZone = [itemCopy serverZone];
+  metadataSyncContext = [serverZone metadataSyncContext];
   v19.receiver = self;
   v19.super_class = BRCSharingModifyAccessOperation;
-  v16 = [(_BRCOperation *)&v19 initWithName:v13 syncContext:v15 sessionContext:v10];
+  v16 = [(_BRCOperation *)&v19 initWithName:v13 syncContext:metadataSyncContext sessionContext:contextCopy];
 
   if (v16)
   {
     [(_BRCOperation *)v16 setNonDiscretionary:1];
-    objc_storeStrong(&v16->_document, a3);
-    v16->_allowAccess = a4;
-    v17 = [MEMORY[0x277CBC4F8] br_sharingMisc];
-    [(_BRCOperation *)v16 setGroup:v17];
+    objc_storeStrong(&v16->_document, item);
+    v16->_allowAccess = access;
+    br_sharingMisc = [MEMORY[0x277CBC4F8] br_sharingMisc];
+    [(_BRCOperation *)v16 setGroup:br_sharingMisc];
   }
 
   return v16;
@@ -42,10 +42,10 @@
 - (void)main
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v3 = [(BRCLocalItem *)self->_document itemID];
-  v4 = [(BRCLocalItem *)self->_document serverZone];
-  v5 = [v4 zoneID];
-  v6 = [v3 contentsRecordIDInZoneID:v5];
+  itemID = [(BRCLocalItem *)self->_document itemID];
+  serverZone = [(BRCLocalItem *)self->_document serverZone];
+  zoneID = [serverZone zoneID];
+  v6 = [itemID contentsRecordIDInZoneID:zoneID];
 
   v7 = objc_alloc(MEMORY[0x277CBC488]);
   allowAccess = self->_allowAccess;
@@ -90,13 +90,13 @@ LABEL_7:
   v17 = 3221225472;
   v18 = __39__BRCSharingModifyAccessOperation_main__block_invoke_2;
   v19 = &unk_278506938;
-  v20 = self;
+  selfCopy = self;
   v21 = v6;
   v12 = v6;
   [v10 setRecordAccessCompletionBlock:&v16];
-  v13 = [v10 callbackQueue];
-  v14 = [(_BRCOperation *)self callbackQueue];
-  dispatch_set_target_queue(v13, v14);
+  callbackQueue = [v10 callbackQueue];
+  callbackQueue2 = [(_BRCOperation *)self callbackQueue];
+  dispatch_set_target_queue(callbackQueue, callbackQueue2);
 
   [(_BRCOperation *)self addSubOperation:v10];
   v15 = *MEMORY[0x277D85DE8];

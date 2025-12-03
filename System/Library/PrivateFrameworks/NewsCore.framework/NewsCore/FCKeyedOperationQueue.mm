@@ -1,12 +1,12 @@
 @interface FCKeyedOperationQueue
 - (FCKeyedOperationQueue)init;
-- (FCKeyedOperationQueue)initWithDelegate:(id)a3 maxConcurrentOperationCount:(int64_t)a4;
+- (FCKeyedOperationQueue)initWithDelegate:(id)delegate maxConcurrentOperationCount:(int64_t)count;
 - (FCKeyedOperationQueueDelegate)delegate;
 - (NSOrderedSet)keyQueue;
 - (void)_enqueueOperationIfNeeded;
-- (void)notifyWhenAllOperationsAreFinishedUsingBlock:(id)a3;
-- (void)setKeyQueue:(id)a3;
-- (void)setSuspended:(BOOL)a3;
+- (void)notifyWhenAllOperationsAreFinishedUsingBlock:(id)block;
+- (void)setKeyQueue:(id)queue;
+- (void)setSuspended:(BOOL)suspended;
 @end
 
 @implementation FCKeyedOperationQueue
@@ -14,22 +14,22 @@
 - (void)_enqueueOperationIfNeeded
 {
   v45 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_43;
   }
 
   [MEMORY[0x1E696AF00] isMainThread];
-  if (![a1 isSuspended])
+  if (![self isSuspended])
   {
-    v3 = *(a1 + 48);
-    v4 = *(a1 + 40);
-    v5 = *(a1 + 56);
-    v6 = [a1 log];
+    v3 = *(self + 48);
+    v4 = *(self + 40);
+    v5 = *(self + 56);
+    v6 = [self log];
 
     if (v6)
     {
-      v7 = [a1 log];
+      v7 = [self log];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
@@ -51,7 +51,7 @@
 
     if (v8 >= v9)
     {
-      v16 = [a1 log];
+      v16 = [self log];
 
       if (!v16)
       {
@@ -61,7 +61,7 @@ LABEL_42:
         goto LABEL_43;
       }
 
-      v17 = [a1 log];
+      v17 = [self log];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
@@ -83,22 +83,22 @@ LABEL_40:
     v11 = [v4 indexOfObjectPassingTest:v41];
     if (v11 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 16));
+      WeakRetained = objc_loadWeakRetained((self + 16));
       v13 = 0;
     }
 
     else
     {
       v13 = [v4 objectAtIndexedSubscript:v11];
-      v18 = objc_loadWeakRetained((a1 + 16));
+      v18 = objc_loadWeakRetained((self + 16));
       WeakRetained = v18;
       if (v13 && v18)
       {
         [v10 addObject:v13];
-        v19 = *(a1 + 64);
-        dispatch_group_enter(*(a1 + 72));
+        v19 = *(self + 64);
+        dispatch_group_enter(*(self + 72));
         v20 = objc_alloc_init(FCKeyedOperation);
-        v21 = [a1 log];
+        v21 = [self log];
         if (v20)
         {
           objc_storeStrong(&v20->_log, v21);
@@ -109,7 +109,7 @@ LABEL_40:
         v32 = __50__FCKeyedOperationQueue__enqueueOperationIfNeeded__block_invoke_2;
         v33 = &unk_1E7C37E08;
         v34 = v20;
-        v35 = a1;
+        selfCopy = self;
         WeakRetained = WeakRetained;
         v36 = WeakRetained;
         v13 = v13;
@@ -120,15 +120,15 @@ LABEL_40:
         v40 = v15;
         v22 = v20;
         v23 = _Block_copy(&v30);
-        v24 = [a1 executionQueue];
+        executionQueue = [self executionQueue];
 
-        v25 = [a1 log];
+        v25 = [self log];
 
-        if (v24)
+        if (executionQueue)
         {
           if (v25)
           {
-            v26 = [a1 log];
+            v26 = [self log];
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
@@ -137,15 +137,15 @@ LABEL_40:
             }
           }
 
-          v27 = [a1 executionQueue];
-          dispatch_async(v27, v23);
+          executionQueue2 = [self executionQueue];
+          dispatch_async(executionQueue2, v23);
         }
 
         else
         {
           if (v25)
           {
-            v28 = [a1 log];
+            v28 = [self log];
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
@@ -158,13 +158,13 @@ LABEL_40:
         }
 
         [v15 setObject:v22 forKeyedSubscript:v13];
-        [(FCKeyedOperationQueue *)a1 _enqueueOperationIfNeeded];
+        [(FCKeyedOperationQueue *)self _enqueueOperationIfNeeded];
 
         goto LABEL_38;
       }
     }
 
-    v14 = [a1 log];
+    v14 = [self log];
 
     if (!v14)
     {
@@ -174,7 +174,7 @@ LABEL_39:
       goto LABEL_40;
     }
 
-    v15 = [a1 log];
+    v15 = [self log];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
@@ -186,11 +186,11 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  v2 = [a1 log];
+  v2 = [self log];
 
   if (v2)
   {
-    v3 = [a1 log];
+    v3 = [self log];
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
@@ -230,11 +230,11 @@ LABEL_43:
   objc_exception_throw(v6);
 }
 
-- (FCKeyedOperationQueue)initWithDelegate:(id)a3 maxConcurrentOperationCount:(int64_t)a4
+- (FCKeyedOperationQueue)initWithDelegate:(id)delegate maxConcurrentOperationCount:(int64_t)count
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  delegateCopy = delegate;
+  if (!delegateCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "delegate"];
     *buf = 136315906;
@@ -254,12 +254,12 @@ LABEL_43:
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     v9 = objc_opt_new();
     keysForExecutingOperations = v8->_keysForExecutingOperations;
     v8->_keysForExecutingOperations = v9;
 
-    v8->_maxConcurrentOperationCount = a4;
+    v8->_maxConcurrentOperationCount = count;
     v11 = objc_opt_new();
     mutableKeyQueue = v8->_mutableKeyQueue;
     v8->_mutableKeyQueue = v11;
@@ -277,19 +277,19 @@ LABEL_43:
   return v8;
 }
 
-- (void)setKeyQueue:(id)a3
+- (void)setKeyQueue:(id)queue
 {
   v25 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  queueCopy = queue;
   [v4 isMainThread];
   if (self)
   {
     v6 = self->_mutableKeyQueue;
     [(NSMutableOrderedSet *)v6 removeAllObjects];
-    v7 = [v5 array];
+    array = [queueCopy array];
 
-    [(NSMutableOrderedSet *)v6 addObjectsFromArray:v7];
+    [(NSMutableOrderedSet *)v6 addObjectsFromArray:array];
     [MEMORY[0x1E696AF00] isMainThread];
     v8 = self->_mutableKeyQueue;
     v9 = self->_cancelHandlersByKey;
@@ -334,9 +334,9 @@ LABEL_43:
   else
   {
     [0 removeAllObjects];
-    v19 = [v5 array];
+    array2 = [queueCopy array];
 
-    [0 addObjectsFromArray:v19];
+    [0 addObjectsFromArray:array2];
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -361,20 +361,20 @@ LABEL_43:
   return [v3 orderedSetWithOrderedSet:mutableKeyQueue];
 }
 
-- (void)notifyWhenAllOperationsAreFinishedUsingBlock:(id)a3
+- (void)notifyWhenAllOperationsAreFinishedUsingBlock:(id)block
 {
   if (self)
   {
     self = self->_operationExecutionGroup;
   }
 
-  dispatch_group_notify(&self->super, MEMORY[0x1E69E96A0], a3);
+  dispatch_group_notify(&self->super, MEMORY[0x1E69E96A0], block);
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
   [MEMORY[0x1E696AF00] isMainThread];
-  self->_suspended = a3;
+  self->_suspended = suspended;
 
   [(FCKeyedOperationQueue *)self _enqueueOperationIfNeeded];
 }

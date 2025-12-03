@@ -1,27 +1,27 @@
 @interface AWDWiFiAwdlSidecarCoalesced
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPencilOffCount:(BOOL)a3;
-- (void)setHasPencilOnCount:(BOOL)a3;
-- (void)setHasRemoteBgEntryCount:(BOOL)a3;
-- (void)setHasRemoteFgDuration:(BOOL)a3;
-- (void)setHasRemotePeerRssi24G:(BOOL)a3;
-- (void)setHasRemotePeerRssi5G:(BOOL)a3;
-- (void)setHasRemotefIsSDB:(BOOL)a3;
-- (void)setHasSelfBgDuration:(BOOL)a3;
-- (void)setHasSelfBgEntryCount:(BOOL)a3;
-- (void)setHasSelfFgDuration:(BOOL)a3;
-- (void)setHasSelfIsSDB:(BOOL)a3;
-- (void)setHasSelfPeerRssi24G:(BOOL)a3;
-- (void)setHasSelfPeerRssi5G:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasPencilOffCount:(BOOL)count;
+- (void)setHasPencilOnCount:(BOOL)count;
+- (void)setHasRemoteBgEntryCount:(BOOL)count;
+- (void)setHasRemoteFgDuration:(BOOL)duration;
+- (void)setHasRemotePeerRssi24G:(BOOL)g;
+- (void)setHasRemotePeerRssi5G:(BOOL)g;
+- (void)setHasRemotefIsSDB:(BOOL)b;
+- (void)setHasSelfBgDuration:(BOOL)duration;
+- (void)setHasSelfBgEntryCount:(BOOL)count;
+- (void)setHasSelfFgDuration:(BOOL)duration;
+- (void)setHasSelfIsSDB:(BOOL)b;
+- (void)setHasSelfPeerRssi24G:(BOOL)g;
+- (void)setHasSelfPeerRssi5G:(BOOL)g;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiAwdlSidecarCoalesced
@@ -38,9 +38,9 @@
   [(AWDWiFiAwdlSidecarCoalesced *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 16;
   }
@@ -53,9 +53,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasSelfFgDuration:(BOOL)a3
+- (void)setHasSelfFgDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 8;
   }
@@ -68,9 +68,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasSelfBgDuration:(BOOL)a3
+- (void)setHasSelfBgDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 4;
   }
@@ -83,9 +83,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasSelfBgEntryCount:(BOOL)a3
+- (void)setHasSelfBgEntryCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 1024;
   }
@@ -98,9 +98,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasSelfPeerRssi24G:(BOOL)a3
+- (void)setHasSelfPeerRssi24G:(BOOL)g
 {
-  if (a3)
+  if (g)
   {
     v3 = 2048;
   }
@@ -113,9 +113,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasSelfPeerRssi5G:(BOOL)a3
+- (void)setHasSelfPeerRssi5G:(BOOL)g
 {
-  if (a3)
+  if (g)
   {
     v3 = 4096;
   }
@@ -128,9 +128,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasSelfIsSDB:(BOOL)a3
+- (void)setHasSelfIsSDB:(BOOL)b
 {
-  if (a3)
+  if (b)
   {
     v3 = 0x4000;
   }
@@ -143,9 +143,9 @@
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasRemoteFgDuration:(BOOL)a3
+- (void)setHasRemoteFgDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -158,9 +158,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasRemoteBgEntryCount:(BOOL)a3
+- (void)setHasRemoteBgEntryCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 128;
   }
@@ -173,9 +173,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasRemotePeerRssi24G:(BOOL)a3
+- (void)setHasRemotePeerRssi24G:(BOOL)g
 {
-  if (a3)
+  if (g)
   {
     v3 = 256;
   }
@@ -188,9 +188,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasRemotePeerRssi5G:(BOOL)a3
+- (void)setHasRemotePeerRssi5G:(BOOL)g
 {
-  if (a3)
+  if (g)
   {
     v3 = 512;
   }
@@ -203,9 +203,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasRemotefIsSDB:(BOOL)a3
+- (void)setHasRemotefIsSDB:(BOOL)b
 {
-  if (a3)
+  if (b)
   {
     v3 = 0x2000;
   }
@@ -218,9 +218,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasPencilOnCount:(BOOL)a3
+- (void)setHasPencilOnCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 64;
   }
@@ -233,9 +233,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasPencilOffCount:(BOOL)a3
+- (void)setHasPencilOffCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -257,11 +257,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -280,7 +280,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_selfFgDuration), @"selfFgDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_selfFgDuration), @"selfFgDuration"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -294,7 +294,7 @@ LABEL_4:
   }
 
 LABEL_32:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_selfBgDuration), @"selfBgDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_selfBgDuration), @"selfBgDuration"}];
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -308,7 +308,7 @@ LABEL_5:
   }
 
 LABEL_33:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_selfBgEntryCount), @"selfBgEntryCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_selfBgEntryCount), @"selfBgEntryCount"}];
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -322,7 +322,7 @@ LABEL_6:
   }
 
 LABEL_34:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_selfPeerRssi24G), @"selfPeerRssi24G"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_selfPeerRssi24G), @"selfPeerRssi24G"}];
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -336,7 +336,7 @@ LABEL_7:
   }
 
 LABEL_35:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_selfPeerRssi5G), @"selfPeerRssi5G"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_selfPeerRssi5G), @"selfPeerRssi5G"}];
   has = self->_has;
   if ((has & 0x4000) == 0)
   {
@@ -350,7 +350,7 @@ LABEL_8:
   }
 
 LABEL_36:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_selfIsSDB), @"selfIsSDB"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_selfIsSDB), @"selfIsSDB"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -364,7 +364,7 @@ LABEL_9:
   }
 
 LABEL_37:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_remoteFgDuration), @"remoteFgDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_remoteFgDuration), @"remoteFgDuration"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -378,7 +378,7 @@ LABEL_10:
   }
 
 LABEL_38:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_remoteBgDuration), @"remoteBgDuration"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_remoteBgDuration), @"remoteBgDuration"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -392,7 +392,7 @@ LABEL_11:
   }
 
 LABEL_39:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_remoteBgEntryCount), @"remoteBgEntryCount"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_remoteBgEntryCount), @"remoteBgEntryCount"}];
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -406,7 +406,7 @@ LABEL_12:
   }
 
 LABEL_40:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_remotePeerRssi24G), @"remotePeerRssi24G"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_remotePeerRssi24G), @"remotePeerRssi24G"}];
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -420,60 +420,60 @@ LABEL_13:
   }
 
 LABEL_41:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_remotePeerRssi5G), @"remotePeerRssi5G"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_remotePeerRssi5G), @"remotePeerRssi5G"}];
   if ((*&self->_has & 0x2000) != 0)
   {
 LABEL_14:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_remotefIsSDB), @"remotefIsSDB"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_remotefIsSDB), @"remotefIsSDB"}];
   }
 
 LABEL_15:
   selfSidecarBssSteering = self->_selfSidecarBssSteering;
   if (selfSidecarBssSteering)
   {
-    [v3 setObject:-[AWDSidecarBssSteering dictionaryRepresentation](selfSidecarBssSteering forKey:{"dictionaryRepresentation"), @"selfSidecarBssSteering"}];
+    [dictionary setObject:-[AWDSidecarBssSteering dictionaryRepresentation](selfSidecarBssSteering forKey:{"dictionaryRepresentation"), @"selfSidecarBssSteering"}];
   }
 
   remoteSidecarBssSteering = self->_remoteSidecarBssSteering;
   if (remoteSidecarBssSteering)
   {
-    [v3 setObject:-[AWDSidecarBssSteering dictionaryRepresentation](remoteSidecarBssSteering forKey:{"dictionaryRepresentation"), @"remoteSidecarBssSteering"}];
+    [dictionary setObject:-[AWDSidecarBssSteering dictionaryRepresentation](remoteSidecarBssSteering forKey:{"dictionaryRepresentation"), @"remoteSidecarBssSteering"}];
   }
 
   selfSidecarPeerTraffic = self->_selfSidecarPeerTraffic;
   if (selfSidecarPeerTraffic)
   {
-    [v3 setObject:-[AWDSidecarPeerTraffic dictionaryRepresentation](selfSidecarPeerTraffic forKey:{"dictionaryRepresentation"), @"selfSidecarPeerTraffic"}];
+    [dictionary setObject:-[AWDSidecarPeerTraffic dictionaryRepresentation](selfSidecarPeerTraffic forKey:{"dictionaryRepresentation"), @"selfSidecarPeerTraffic"}];
   }
 
   remoteSidecarPeerTraffic = self->_remoteSidecarPeerTraffic;
   if (remoteSidecarPeerTraffic)
   {
-    [v3 setObject:-[AWDSidecarPeerTraffic dictionaryRepresentation](remoteSidecarPeerTraffic forKey:{"dictionaryRepresentation"), @"remoteSidecarPeerTraffic"}];
+    [dictionary setObject:-[AWDSidecarPeerTraffic dictionaryRepresentation](remoteSidecarPeerTraffic forKey:{"dictionaryRepresentation"), @"remoteSidecarPeerTraffic"}];
   }
 
   v9 = self->_has;
   if ((v9 & 0x40) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_pencilOnCount), @"pencilOnCount"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_pencilOnCount), @"pencilOnCount"}];
     v9 = self->_has;
   }
 
   if ((v9 & 0x20) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_pencilOffCount), @"pencilOffCount"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_pencilOffCount), @"pencilOffCount"}];
   }
 
   sessionUUID = self->_sessionUUID;
   if (sessionUUID)
   {
-    [v3 setObject:sessionUUID forKey:@"sessionUUID"];
+    [dictionary setObject:sessionUUID forKey:@"sessionUUID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -699,13 +699,13 @@ LABEL_15:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    *(a3 + 5) = self->_timestamp;
-    *(a3 + 66) |= 0x10u;
+    *(to + 5) = self->_timestamp;
+    *(to + 66) |= 0x10u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -724,8 +724,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 4) = self->_selfFgDuration;
-  *(a3 + 66) |= 8u;
+  *(to + 4) = self->_selfFgDuration;
+  *(to + 66) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -739,8 +739,8 @@ LABEL_4:
   }
 
 LABEL_33:
-  *(a3 + 3) = self->_selfBgDuration;
-  *(a3 + 66) |= 4u;
+  *(to + 3) = self->_selfBgDuration;
+  *(to + 66) |= 4u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -754,8 +754,8 @@ LABEL_5:
   }
 
 LABEL_34:
-  *(a3 + 22) = self->_selfBgEntryCount;
-  *(a3 + 66) |= 0x400u;
+  *(to + 22) = self->_selfBgEntryCount;
+  *(to + 66) |= 0x400u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -769,8 +769,8 @@ LABEL_6:
   }
 
 LABEL_35:
-  *(a3 + 23) = self->_selfPeerRssi24G;
-  *(a3 + 66) |= 0x800u;
+  *(to + 23) = self->_selfPeerRssi24G;
+  *(to + 66) |= 0x800u;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -784,8 +784,8 @@ LABEL_7:
   }
 
 LABEL_36:
-  *(a3 + 24) = self->_selfPeerRssi5G;
-  *(a3 + 66) |= 0x1000u;
+  *(to + 24) = self->_selfPeerRssi5G;
+  *(to + 66) |= 0x1000u;
   has = self->_has;
   if ((has & 0x4000) == 0)
   {
@@ -799,8 +799,8 @@ LABEL_8:
   }
 
 LABEL_37:
-  *(a3 + 129) = self->_selfIsSDB;
-  *(a3 + 66) |= 0x4000u;
+  *(to + 129) = self->_selfIsSDB;
+  *(to + 66) |= 0x4000u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -814,8 +814,8 @@ LABEL_9:
   }
 
 LABEL_38:
-  *(a3 + 2) = self->_remoteFgDuration;
-  *(a3 + 66) |= 2u;
+  *(to + 2) = self->_remoteFgDuration;
+  *(to + 66) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -829,8 +829,8 @@ LABEL_10:
   }
 
 LABEL_39:
-  *(a3 + 1) = self->_remoteBgDuration;
-  *(a3 + 66) |= 1u;
+  *(to + 1) = self->_remoteBgDuration;
+  *(to + 66) |= 1u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -844,8 +844,8 @@ LABEL_11:
   }
 
 LABEL_40:
-  *(a3 + 14) = self->_remoteBgEntryCount;
-  *(a3 + 66) |= 0x80u;
+  *(to + 14) = self->_remoteBgEntryCount;
+  *(to + 66) |= 0x80u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -859,8 +859,8 @@ LABEL_12:
   }
 
 LABEL_41:
-  *(a3 + 15) = self->_remotePeerRssi24G;
-  *(a3 + 66) |= 0x100u;
+  *(to + 15) = self->_remotePeerRssi24G;
+  *(to + 66) |= 0x100u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -874,60 +874,60 @@ LABEL_13:
   }
 
 LABEL_42:
-  *(a3 + 16) = self->_remotePeerRssi5G;
-  *(a3 + 66) |= 0x200u;
+  *(to + 16) = self->_remotePeerRssi5G;
+  *(to + 66) |= 0x200u;
   if ((*&self->_has & 0x2000) != 0)
   {
 LABEL_14:
-    *(a3 + 128) = self->_remotefIsSDB;
-    *(a3 + 66) |= 0x2000u;
+    *(to + 128) = self->_remotefIsSDB;
+    *(to + 66) |= 0x2000u;
   }
 
 LABEL_15:
   if (self->_selfSidecarBssSteering)
   {
-    [a3 setSelfSidecarBssSteering:?];
+    [to setSelfSidecarBssSteering:?];
   }
 
   if (self->_remoteSidecarBssSteering)
   {
-    [a3 setRemoteSidecarBssSteering:?];
+    [to setRemoteSidecarBssSteering:?];
   }
 
   if (self->_selfSidecarPeerTraffic)
   {
-    [a3 setSelfSidecarPeerTraffic:?];
+    [to setSelfSidecarPeerTraffic:?];
   }
 
   if (self->_remoteSidecarPeerTraffic)
   {
-    [a3 setRemoteSidecarPeerTraffic:?];
+    [to setRemoteSidecarPeerTraffic:?];
   }
 
   v6 = self->_has;
   if ((v6 & 0x40) != 0)
   {
-    *(a3 + 13) = self->_pencilOnCount;
-    *(a3 + 66) |= 0x40u;
+    *(to + 13) = self->_pencilOnCount;
+    *(to + 66) |= 0x40u;
     v6 = self->_has;
   }
 
   if ((v6 & 0x20) != 0)
   {
-    *(a3 + 12) = self->_pencilOffCount;
-    *(a3 + 66) |= 0x20u;
+    *(to + 12) = self->_pencilOffCount;
+    *(to + 66) |= 0x20u;
   }
 
   if (self->_sessionUUID)
   {
 
-    [a3 setSessionUUID:?];
+    [to setSessionUUID:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -1113,11 +1113,11 @@ LABEL_14:
 
 LABEL_15:
 
-  *(v6 + 104) = [(AWDSidecarBssSteering *)self->_selfSidecarBssSteering copyWithZone:a3];
-  *(v6 + 72) = [(AWDSidecarBssSteering *)self->_remoteSidecarBssSteering copyWithZone:a3];
+  *(v6 + 104) = [(AWDSidecarBssSteering *)self->_selfSidecarBssSteering copyWithZone:zone];
+  *(v6 + 72) = [(AWDSidecarBssSteering *)self->_remoteSidecarBssSteering copyWithZone:zone];
 
-  *(v6 + 112) = [(AWDSidecarPeerTraffic *)self->_selfSidecarPeerTraffic copyWithZone:a3];
-  *(v6 + 80) = [(AWDSidecarPeerTraffic *)self->_remoteSidecarPeerTraffic copyWithZone:a3];
+  *(v6 + 112) = [(AWDSidecarPeerTraffic *)self->_selfSidecarPeerTraffic copyWithZone:zone];
+  *(v6 + 80) = [(AWDSidecarPeerTraffic *)self->_remoteSidecarPeerTraffic copyWithZone:zone];
   v8 = self->_has;
   if ((v8 & 0x40) != 0)
   {
@@ -1132,23 +1132,23 @@ LABEL_15:
     *(v6 + 132) |= 0x20u;
   }
 
-  *(v6 + 120) = [(NSString *)self->_sessionUUID copyWithZone:a3];
+  *(v6 + 120) = [(NSString *)self->_sessionUUID copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   has = self->_has;
-  v7 = *(a3 + 66);
+  v7 = *(equal + 66);
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_timestamp != *(a3 + 5))
+    if ((v7 & 0x10) == 0 || self->_timestamp != *(equal + 5))
     {
       goto LABEL_79;
     }
@@ -1161,7 +1161,7 @@ LABEL_15:
 
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_selfFgDuration != *(a3 + 4))
+    if ((v7 & 8) == 0 || self->_selfFgDuration != *(equal + 4))
     {
       goto LABEL_79;
     }
@@ -1174,7 +1174,7 @@ LABEL_15:
 
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_selfBgDuration != *(a3 + 3))
+    if ((v7 & 4) == 0 || self->_selfBgDuration != *(equal + 3))
     {
       goto LABEL_79;
     }
@@ -1187,73 +1187,73 @@ LABEL_15:
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(a3 + 66) & 0x400) == 0 || self->_selfBgEntryCount != *(a3 + 22))
+    if ((*(equal + 66) & 0x400) == 0 || self->_selfBgEntryCount != *(equal + 22))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(a3 + 66) & 0x400) != 0)
+  else if ((*(equal + 66) & 0x400) != 0)
   {
     goto LABEL_79;
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(a3 + 66) & 0x800) == 0 || self->_selfPeerRssi24G != *(a3 + 23))
+    if ((*(equal + 66) & 0x800) == 0 || self->_selfPeerRssi24G != *(equal + 23))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(a3 + 66) & 0x800) != 0)
+  else if ((*(equal + 66) & 0x800) != 0)
   {
     goto LABEL_79;
   }
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(a3 + 66) & 0x1000) == 0 || self->_selfPeerRssi5G != *(a3 + 24))
+    if ((*(equal + 66) & 0x1000) == 0 || self->_selfPeerRssi5G != *(equal + 24))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(a3 + 66) & 0x1000) != 0)
+  else if ((*(equal + 66) & 0x1000) != 0)
   {
     goto LABEL_79;
   }
 
   if ((*&self->_has & 0x4000) != 0)
   {
-    if ((*(a3 + 66) & 0x4000) == 0)
+    if ((*(equal + 66) & 0x4000) == 0)
     {
       goto LABEL_79;
     }
 
-    v8 = *(a3 + 129);
+    v8 = *(equal + 129);
     if (self->_selfIsSDB)
     {
-      if ((*(a3 + 129) & 1) == 0)
+      if ((*(equal + 129) & 1) == 0)
       {
         goto LABEL_79;
       }
     }
 
-    else if (*(a3 + 129))
+    else if (*(equal + 129))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(a3 + 66) & 0x4000) != 0)
+  else if ((*(equal + 66) & 0x4000) != 0)
   {
     goto LABEL_79;
   }
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_remoteFgDuration != *(a3 + 2))
+    if ((v7 & 2) == 0 || self->_remoteFgDuration != *(equal + 2))
     {
       goto LABEL_79;
     }
@@ -1266,7 +1266,7 @@ LABEL_15:
 
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_remoteBgDuration != *(a3 + 1))
+    if ((v7 & 1) == 0 || self->_remoteBgDuration != *(equal + 1))
     {
       goto LABEL_79;
     }
@@ -1279,7 +1279,7 @@ LABEL_15:
 
   if ((has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_remoteBgEntryCount != *(a3 + 14))
+    if ((v7 & 0x80) == 0 || self->_remoteBgEntryCount != *(equal + 14))
     {
       goto LABEL_79;
     }
@@ -1292,59 +1292,59 @@ LABEL_15:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(a3 + 66) & 0x100) == 0 || self->_remotePeerRssi24G != *(a3 + 15))
+    if ((*(equal + 66) & 0x100) == 0 || self->_remotePeerRssi24G != *(equal + 15))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(a3 + 66) & 0x100) != 0)
+  else if ((*(equal + 66) & 0x100) != 0)
   {
     goto LABEL_79;
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(a3 + 66) & 0x200) == 0 || self->_remotePeerRssi5G != *(a3 + 16))
+    if ((*(equal + 66) & 0x200) == 0 || self->_remotePeerRssi5G != *(equal + 16))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(a3 + 66) & 0x200) != 0)
+  else if ((*(equal + 66) & 0x200) != 0)
   {
     goto LABEL_79;
   }
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(a3 + 66) & 0x2000) == 0)
+    if ((*(equal + 66) & 0x2000) == 0)
     {
       goto LABEL_79;
     }
 
-    v15 = *(a3 + 128);
+    v15 = *(equal + 128);
     if (self->_remotefIsSDB)
     {
-      if ((*(a3 + 128) & 1) == 0)
+      if ((*(equal + 128) & 1) == 0)
       {
         goto LABEL_79;
       }
     }
 
-    else if (*(a3 + 128))
+    else if (*(equal + 128))
     {
       goto LABEL_79;
     }
   }
 
-  else if ((*(a3 + 66) & 0x2000) != 0)
+  else if ((*(equal + 66) & 0x2000) != 0)
   {
     goto LABEL_79;
   }
 
   selfSidecarBssSteering = self->_selfSidecarBssSteering;
-  if (selfSidecarBssSteering | *(a3 + 13))
+  if (selfSidecarBssSteering | *(equal + 13))
   {
     v5 = [(AWDSidecarBssSteering *)selfSidecarBssSteering isEqual:?];
     if (!v5)
@@ -1354,7 +1354,7 @@ LABEL_15:
   }
 
   remoteSidecarBssSteering = self->_remoteSidecarBssSteering;
-  if (remoteSidecarBssSteering | *(a3 + 9))
+  if (remoteSidecarBssSteering | *(equal + 9))
   {
     v5 = [(AWDSidecarBssSteering *)remoteSidecarBssSteering isEqual:?];
     if (!v5)
@@ -1364,7 +1364,7 @@ LABEL_15:
   }
 
   selfSidecarPeerTraffic = self->_selfSidecarPeerTraffic;
-  if (selfSidecarPeerTraffic | *(a3 + 14))
+  if (selfSidecarPeerTraffic | *(equal + 14))
   {
     v5 = [(AWDSidecarPeerTraffic *)selfSidecarPeerTraffic isEqual:?];
     if (!v5)
@@ -1374,7 +1374,7 @@ LABEL_15:
   }
 
   remoteSidecarPeerTraffic = self->_remoteSidecarPeerTraffic;
-  if (remoteSidecarPeerTraffic | *(a3 + 10))
+  if (remoteSidecarPeerTraffic | *(equal + 10))
   {
     v5 = [(AWDSidecarPeerTraffic *)remoteSidecarPeerTraffic isEqual:?];
     if (!v5)
@@ -1384,10 +1384,10 @@ LABEL_15:
   }
 
   v13 = self->_has;
-  v14 = *(a3 + 66);
+  v14 = *(equal + 66);
   if ((v13 & 0x40) != 0)
   {
-    if ((v14 & 0x40) == 0 || self->_pencilOnCount != *(a3 + 13))
+    if ((v14 & 0x40) == 0 || self->_pencilOnCount != *(equal + 13))
     {
       goto LABEL_79;
     }
@@ -1400,7 +1400,7 @@ LABEL_15:
 
   if ((v13 & 0x20) != 0)
   {
-    if ((v14 & 0x20) == 0 || self->_pencilOffCount != *(a3 + 12))
+    if ((v14 & 0x20) == 0 || self->_pencilOffCount != *(equal + 12))
     {
       goto LABEL_79;
     }
@@ -1417,7 +1417,7 @@ LABEL_79:
 
 LABEL_93:
   sessionUUID = self->_sessionUUID;
-  if (sessionUUID | *(a3 + 15))
+  if (sessionUUID | *(equal + 15))
   {
 
     LOBYTE(v5) = [(NSString *)sessionUUID isEqual:?];
@@ -1639,14 +1639,14 @@ LABEL_30:
   return v23 ^ v24 ^ v22 ^ v21 ^ v20 ^ v19 ^ v18 ^ v17 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v14 ^ v15 ^ [(NSString *)self->_sessionUUID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 66);
+  v5 = *(from + 66);
   if ((v5 & 0x10) != 0)
   {
-    self->_timestamp = *(a3 + 5);
+    self->_timestamp = *(from + 5);
     *&self->_has |= 0x10u;
-    v5 = *(a3 + 66);
+    v5 = *(from + 66);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -1664,9 +1664,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_selfFgDuration = *(a3 + 4);
+  self->_selfFgDuration = *(from + 4);
   *&self->_has |= 8u;
-  v5 = *(a3 + 66);
+  v5 = *(from + 66);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -1679,9 +1679,9 @@ LABEL_4:
   }
 
 LABEL_20:
-  self->_selfBgDuration = *(a3 + 3);
+  self->_selfBgDuration = *(from + 3);
   *&self->_has |= 4u;
-  v5 = *(a3 + 66);
+  v5 = *(from + 66);
   if ((v5 & 0x400) == 0)
   {
 LABEL_5:
@@ -1694,9 +1694,9 @@ LABEL_5:
   }
 
 LABEL_21:
-  self->_selfBgEntryCount = *(a3 + 22);
+  self->_selfBgEntryCount = *(from + 22);
   *&self->_has |= 0x400u;
-  v5 = *(a3 + 66);
+  v5 = *(from + 66);
   if ((v5 & 0x800) == 0)
   {
 LABEL_6:
@@ -1709,9 +1709,9 @@ LABEL_6:
   }
 
 LABEL_22:
-  self->_selfPeerRssi24G = *(a3 + 23);
+  self->_selfPeerRssi24G = *(from + 23);
   *&self->_has |= 0x800u;
-  v5 = *(a3 + 66);
+  v5 = *(from + 66);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_7:
@@ -1724,9 +1724,9 @@ LABEL_7:
   }
 
 LABEL_23:
-  self->_selfPeerRssi5G = *(a3 + 24);
+  self->_selfPeerRssi5G = *(from + 24);
   *&self->_has |= 0x1000u;
-  v5 = *(a3 + 66);
+  v5 = *(from + 66);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_8:
@@ -1739,9 +1739,9 @@ LABEL_8:
   }
 
 LABEL_24:
-  self->_selfIsSDB = *(a3 + 129);
+  self->_selfIsSDB = *(from + 129);
   *&self->_has |= 0x4000u;
-  v5 = *(a3 + 66);
+  v5 = *(from + 66);
   if ((v5 & 2) == 0)
   {
 LABEL_9:
@@ -1754,9 +1754,9 @@ LABEL_9:
   }
 
 LABEL_25:
-  self->_remoteFgDuration = *(a3 + 2);
+  self->_remoteFgDuration = *(from + 2);
   *&self->_has |= 2u;
-  v5 = *(a3 + 66);
+  v5 = *(from + 66);
   if ((v5 & 1) == 0)
   {
 LABEL_10:
@@ -1769,9 +1769,9 @@ LABEL_10:
   }
 
 LABEL_26:
-  self->_remoteBgDuration = *(a3 + 1);
+  self->_remoteBgDuration = *(from + 1);
   *&self->_has |= 1u;
-  v5 = *(a3 + 66);
+  v5 = *(from + 66);
   if ((v5 & 0x80) == 0)
   {
 LABEL_11:
@@ -1784,9 +1784,9 @@ LABEL_11:
   }
 
 LABEL_27:
-  self->_remoteBgEntryCount = *(a3 + 14);
+  self->_remoteBgEntryCount = *(from + 14);
   *&self->_has |= 0x80u;
-  v5 = *(a3 + 66);
+  v5 = *(from + 66);
   if ((v5 & 0x100) == 0)
   {
 LABEL_12:
@@ -1799,9 +1799,9 @@ LABEL_12:
   }
 
 LABEL_28:
-  self->_remotePeerRssi24G = *(a3 + 15);
+  self->_remotePeerRssi24G = *(from + 15);
   *&self->_has |= 0x100u;
-  v5 = *(a3 + 66);
+  v5 = *(from + 66);
   if ((v5 & 0x200) == 0)
   {
 LABEL_13:
@@ -1814,18 +1814,18 @@ LABEL_13:
   }
 
 LABEL_29:
-  self->_remotePeerRssi5G = *(a3 + 16);
+  self->_remotePeerRssi5G = *(from + 16);
   *&self->_has |= 0x200u;
-  if ((*(a3 + 66) & 0x2000) != 0)
+  if ((*(from + 66) & 0x2000) != 0)
   {
 LABEL_14:
-    self->_remotefIsSDB = *(a3 + 128);
+    self->_remotefIsSDB = *(from + 128);
     *&self->_has |= 0x2000u;
   }
 
 LABEL_15:
   selfSidecarBssSteering = self->_selfSidecarBssSteering;
-  v7 = *(a3 + 13);
+  v7 = *(from + 13);
   if (selfSidecarBssSteering)
   {
     if (v7)
@@ -1840,7 +1840,7 @@ LABEL_15:
   }
 
   remoteSidecarBssSteering = self->_remoteSidecarBssSteering;
-  v9 = *(a3 + 9);
+  v9 = *(from + 9);
   if (remoteSidecarBssSteering)
   {
     if (v9)
@@ -1855,7 +1855,7 @@ LABEL_15:
   }
 
   selfSidecarPeerTraffic = self->_selfSidecarPeerTraffic;
-  v11 = *(a3 + 14);
+  v11 = *(from + 14);
   if (selfSidecarPeerTraffic)
   {
     if (v11)
@@ -1870,7 +1870,7 @@ LABEL_15:
   }
 
   remoteSidecarPeerTraffic = self->_remoteSidecarPeerTraffic;
-  v13 = *(a3 + 10);
+  v13 = *(from + 10);
   if (remoteSidecarPeerTraffic)
   {
     if (v13)
@@ -1884,21 +1884,21 @@ LABEL_15:
     [(AWDWiFiAwdlSidecarCoalesced *)self setRemoteSidecarPeerTraffic:?];
   }
 
-  v14 = *(a3 + 66);
+  v14 = *(from + 66);
   if ((v14 & 0x40) != 0)
   {
-    self->_pencilOnCount = *(a3 + 13);
+    self->_pencilOnCount = *(from + 13);
     *&self->_has |= 0x40u;
-    v14 = *(a3 + 66);
+    v14 = *(from + 66);
   }
 
   if ((v14 & 0x20) != 0)
   {
-    self->_pencilOffCount = *(a3 + 12);
+    self->_pencilOffCount = *(from + 12);
     *&self->_has |= 0x20u;
   }
 
-  if (*(a3 + 15))
+  if (*(from + 15))
   {
 
     [(AWDWiFiAwdlSidecarCoalesced *)self setSessionUUID:?];

@@ -38,30 +38,30 @@
 
 - (id)currentStatsString
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  bytesFormatter = v2->_bytesFormatter;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  bytesFormatter = selfCopy->_bytesFormatter;
   if (!bytesFormatter)
   {
     v4 = objc_alloc_init(NSByteCountFormatter);
-    v5 = v2->_bytesFormatter;
-    v2->_bytesFormatter = v4;
+    v5 = selfCopy->_bytesFormatter;
+    selfCopy->_bytesFormatter = v4;
 
-    bytesFormatter = v2->_bytesFormatter;
+    bytesFormatter = selfCopy->_bytesFormatter;
   }
 
-  v6 = sub_10031FE48(v2);
+  v6 = sub_10031FE48(selfCopy);
   v7 = -[NSByteCountFormatter stringFromByteCount:](bytesFormatter, "stringFromByteCount:", [v6 integerValue]);
-  v8 = v2->_bytesFormatter;
-  v9 = sub_10031FEC8(v2);
+  v8 = selfCopy->_bytesFormatter;
+  v9 = sub_10031FEC8(selfCopy);
   v10 = -[NSByteCountFormatter stringFromByteCount:](v8, "stringFromByteCount:", [v9 integerValue]);
-  v11 = v2->_bytesFormatter;
-  v12 = sub_10031FDC8(v2);
+  v11 = selfCopy->_bytesFormatter;
+  v12 = sub_10031FDC8(selfCopy);
   [v12 floatValue];
   v14 = [(NSByteCountFormatter *)v11 stringFromByteCount:v13];
   v15 = [NSString stringWithFormat:@"Min:%@, Max:%@, Avg:%@", v7, v10, v14];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v15;
 }

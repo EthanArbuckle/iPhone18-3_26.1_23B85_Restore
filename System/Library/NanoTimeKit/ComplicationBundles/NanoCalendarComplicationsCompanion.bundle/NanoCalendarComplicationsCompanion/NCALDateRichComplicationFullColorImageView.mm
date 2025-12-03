@@ -1,43 +1,43 @@
 @interface NCALDateRichComplicationFullColorImageView
 - (CLKMonochromeFilterProvider)filterProvider;
-- (id)_newLabelSubviewWithFont:(id)a3;
-- (id)bodyTextProviderWithDate:(id)a3;
-- (id)headerTextProviderWithDate:(id)a3;
-- (id)initFullColorImageViewWithDevice:(id)a3 family:(int64_t)a4;
+- (id)_newLabelSubviewWithFont:(id)font;
+- (id)bodyTextProviderWithDate:(id)date;
+- (id)headerTextProviderWithDate:(id)date;
+- (id)initFullColorImageViewWithDevice:(id)device family:(int64_t)family;
 - (void)_commonInit;
-- (void)_timeChanged:(id)a3;
+- (void)_timeChanged:(id)changed;
 - (void)_updateDate;
-- (void)_updateFiltersShouldUseFraction:(BOOL)a3 fraction:(double)a4;
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4;
+- (void)_updateFiltersShouldUseFraction:(BOOL)fraction fraction:(double)a4;
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setOverrideDate:(id)a3;
-- (void)updateMonochromeFiltersWithAccentFilters:(id)a3 noAccentFilters:(id)a4;
+- (void)setOverrideDate:(id)date;
+- (void)updateMonochromeFiltersWithAccentFilters:(id)filters noAccentFilters:(id)accentFilters;
 @end
 
 @implementation NCALDateRichComplicationFullColorImageView
 
-- (id)initFullColorImageViewWithDevice:(id)a3 family:(int64_t)a4
+- (id)initFullColorImageViewWithDevice:(id)device family:(int64_t)family
 {
-  v7 = a3;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = NCALDateRichComplicationFullColorImageView;
   v8 = [(NCALDateRichComplicationFullColorImageView *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_device, a3);
-    v9->_family = a4;
+    objc_storeStrong(&v8->_device, device);
+    v9->_family = family;
     [(NCALDateRichComplicationFullColorImageView *)v9 _commonInit];
   }
 
   return v9;
 }
 
-- (void)configureWithImageProvider:(id)a3 reason:(int64_t)a4
+- (void)configureWithImageProvider:(id)provider reason:(int64_t)reason
 {
-  v5 = [a3 metadata];
-  v8 = [v5 objectForKeyedSubscript:NCALDateComplicationOverrideMetadataKey];
+  metadata = [provider metadata];
+  v8 = [metadata objectForKeyedSubscript:NCALDateComplicationOverrideMetadataKey];
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -109,9 +109,9 @@ LABEL_5:
   [(NCALDateRichComplicationFullColorImageView *)&v6 dealloc];
 }
 
-- (id)_newLabelSubviewWithFont:(id)a3
+- (id)_newLabelSubviewWithFont:(id)font
 {
-  v4 = a3;
+  fontCopy = font;
   v5 = objc_alloc_init(CLKUIColoringLabel);
   objc_initWeak(&location, self);
   v10[0] = _NSConcreteStackBlock;
@@ -126,7 +126,7 @@ LABEL_5:
   v8[3] = &unk_20B18;
   objc_copyWeak(&v9, &location);
   [v5 setNeedsResizeHandler:v8];
-  [v5 setFont:v4];
+  [v5 setFont:fontCopy];
   sub_6CE4(self->_device, self->_family, v7);
   [v5 setMaxWidth:v7[6]];
   [(NCALDateRichComplicationFullColorImageView *)self addSubview:v5];
@@ -186,21 +186,21 @@ LABEL_5:
   }
 
   v31 = Height * 0.5;
-  v32 = [(NCALDateRichComplicationFullColorImageView *)self layer];
-  [v32 setCornerRadius:v31];
+  layer = [(NCALDateRichComplicationFullColorImageView *)self layer];
+  [layer setCornerRadius:v31];
 }
 
-- (void)_timeChanged:(id)a3
+- (void)_timeChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = ncs_log_complication();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 name];
+    name = [changedCopy name];
     *buf = 136315394;
     v9 = "[NCALDateRichComplicationFullColorImageView _timeChanged:]";
     v10 = 2112;
-    v11 = v6;
+    v11 = name;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "%s - Received %@", buf, 0x16u);
   }
 
@@ -214,11 +214,11 @@ LABEL_5:
 
 - (void)_updateDate
 {
-  v3 = [(NCALDateRichComplicationFullColorImageView *)self overrideDate];
-  v4 = v3;
-  if (v3)
+  overrideDate = [(NCALDateRichComplicationFullColorImageView *)self overrideDate];
+  v4 = overrideDate;
+  if (overrideDate)
   {
-    v5 = v3;
+    v5 = overrideDate;
   }
 
   else
@@ -237,9 +237,9 @@ LABEL_5:
   [(NCALDateRichComplicationFullColorImageView *)self setNeedsLayout];
 }
 
-- (id)headerTextProviderWithDate:(id)a3
+- (id)headerTextProviderWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if ([(NCALDateRichComplicationFullColorImageView *)self displayLunarDate])
   {
     v5 = 8;
@@ -250,7 +250,7 @@ LABEL_5:
     v5 = 512;
   }
 
-  v6 = [CLKDateTextProvider textProviderWithDate:v4 units:v5];
+  v6 = [CLKDateTextProvider textProviderWithDate:dateCopy units:v5];
 
   if ([(NCALDateRichComplicationFullColorImageView *)self displayLunarDate])
   {
@@ -268,9 +268,9 @@ LABEL_5:
   return v6;
 }
 
-- (id)bodyTextProviderWithDate:(id)a3
+- (id)bodyTextProviderWithDate:(id)date
 {
-  v4 = [CLKDateTextProvider textProviderWithDate:a3 units:16];
+  v4 = [CLKDateTextProvider textProviderWithDate:date units:16];
   [v4 setShortUnits:1];
   [v4 setAllowsNarrowUnits:{-[NCALDateRichComplicationFullColorImageView displayLunarDate](self, "displayLunarDate") ^ 1}];
   if ([(NCALDateRichComplicationFullColorImageView *)self displayLunarDate])
@@ -287,24 +287,24 @@ LABEL_5:
   return v4;
 }
 
-- (void)setOverrideDate:(id)a3
+- (void)setOverrideDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   overrideDate = self->_overrideDate;
-  v7 = v5;
+  v7 = dateCopy;
   if ((NTKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_overrideDate, a3);
+    objc_storeStrong(&self->_overrideDate, date);
     [(NCALDateRichComplicationFullColorImageView *)self _updateDate];
   }
 }
 
-- (void)_updateFiltersShouldUseFraction:(BOOL)a3 fraction:(double)a4
+- (void)_updateFiltersShouldUseFraction:(BOOL)fraction fraction:(double)a4
 {
-  v5 = a3;
+  fractionCopy = fraction;
   WeakRetained = objc_loadWeakRetained(&self->_filterProvider);
   v8 = WeakRetained;
-  if (v5)
+  if (fractionCopy)
   {
     v10 = [WeakRetained filtersForView:self style:2 fraction:a4];
     [v8 filtersForView:self style:0 fraction:a4];
@@ -319,20 +319,20 @@ LABEL_5:
   [(NCALDateRichComplicationFullColorImageView *)self updateMonochromeFiltersWithAccentFilters:v10 noAccentFilters:v9];
 }
 
-- (void)updateMonochromeFiltersWithAccentFilters:(id)a3 noAccentFilters:(id)a4
+- (void)updateMonochromeFiltersWithAccentFilters:(id)filters noAccentFilters:(id)accentFilters
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9)
+  filtersCopy = filters;
+  accentFiltersCopy = accentFilters;
+  if (filtersCopy)
   {
-    v7 = [(CLKUIColoringLabel *)self->_weekdayLabel layer];
-    [v7 setFilters:v9];
+    layer = [(CLKUIColoringLabel *)self->_weekdayLabel layer];
+    [layer setFilters:filtersCopy];
   }
 
-  if (v6)
+  if (accentFiltersCopy)
   {
-    v8 = [(CLKUIColoringLabel *)self->_dayLabel layer];
-    [v8 setFilters:v6];
+    layer2 = [(CLKUIColoringLabel *)self->_dayLabel layer];
+    [layer2 setFilters:accentFiltersCopy];
   }
 }
 

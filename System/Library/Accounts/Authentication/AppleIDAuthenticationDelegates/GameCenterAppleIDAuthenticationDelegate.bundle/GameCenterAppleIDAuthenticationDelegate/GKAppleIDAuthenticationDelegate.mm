@@ -1,32 +1,32 @@
 @interface GKAppleIDAuthenticationDelegate
-- (void)didReceiveAuthenticationResponseParameters:(id)a3 accountStore:(id)a4 account:(id)a5 completion:(id)a6;
+- (void)didReceiveAuthenticationResponseParameters:(id)parameters accountStore:(id)store account:(id)account completion:(id)completion;
 @end
 
 @implementation GKAppleIDAuthenticationDelegate
 
-- (void)didReceiveAuthenticationResponseParameters:(id)a3 accountStore:(id)a4 account:(id)a5 completion:(id)a6
+- (void)didReceiveAuthenticationResponseParameters:(id)parameters accountStore:(id)store account:(id)account completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v12)
+  parametersCopy = parameters;
+  storeCopy = store;
+  accountCopy = account;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v13 = [NSString stringWithFormat:@"Assertion failed"];
     v14 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterFoundation/GameCenterAppleIDAuthenticationDelegate/GKAppleIDAuthenticationDelegate.m"];
-    v15 = [v14 lastPathComponent];
-    v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (completion != ((void*)0))\n[%s (%s:%d)]", v13, "-[GKAppleIDAuthenticationDelegate didReceiveAuthenticationResponseParameters:accountStore:account:completion:]", [v15 UTF8String], 75);
+    lastPathComponent = [v14 lastPathComponent];
+    v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (completion != ((void*)0))\n[%s (%s:%d)]", v13, "-[GKAppleIDAuthenticationDelegate didReceiveAuthenticationResponseParameters:accountStore:account:completion:]", [lastPathComponent UTF8String], 75);
 
-    v12 = 0;
+    completionCopy = 0;
     [NSException raise:@"GameKit Exception" format:@"%@", v16];
   }
 
   v17 = [NSUserDefaults alloc];
   v207 = [v17 initWithSuiteName:GKDaemonIdentifier];
   v18 = [v207 objectForKey:GKOptedOutOfGameCenter];
-  v19 = [v18 BOOLValue];
+  bOOLValue = [v18 BOOLValue];
 
-  if (v19)
+  if (bOOLValue)
   {
     v20 = os_log_GKGeneral;
     if (!os_log_GKGeneral)
@@ -42,22 +42,22 @@
     }
 
 LABEL_17:
-    v12[2](v12);
+    completionCopy[2](completionCopy);
 LABEL_18:
     v36 = v207;
     goto LABEL_19;
   }
 
-  v22 = [v9 objectForKeyedSubscript:@"com.apple.gamecenter"];
+  v22 = [parametersCopy objectForKeyedSubscript:@"com.apple.gamecenter"];
 
   if (v22)
   {
-    v23 = [v9 objectForKeyedSubscript:@"com.apple.gamecenter"];
+    v23 = [parametersCopy objectForKeyedSubscript:@"com.apple.gamecenter"];
 
-    v9 = v23;
+    parametersCopy = v23;
   }
 
-  block = v12;
+  block = completionCopy;
   v24 = +[GKPreferences shared];
   if ([v24 isAccountModificationRestricted])
   {
@@ -69,7 +69,7 @@ LABEL_13:
     }
 
     v28 = os_log_GKAccount;
-    v12 = block;
+    completionCopy = block;
     if (os_log_type_enabled(os_log_GKAccount, OS_LOG_TYPE_DEBUG))
     {
       sub_2768(v28, v29, v30, v31, v32, v33, v34, v35);
@@ -79,26 +79,26 @@ LABEL_13:
   }
 
   v25 = +[GKPreferences shared];
-  v26 = [v25 isGameCenterRestricted];
+  isGameCenterRestricted = [v25 isGameCenterRestricted];
 
-  if (v26)
+  if (isGameCenterRestricted)
   {
     goto LABEL_13;
   }
 
-  v37 = [v9 objectForKeyedSubscript:@"status"];
-  v38 = [v37 intValue];
+  v37 = [parametersCopy objectForKeyedSubscript:@"status"];
+  intValue = [v37 intValue];
 
-  if (v38)
+  if (intValue)
   {
-    v39 = [v9 objectForKeyedSubscript:@"status-message"];
+    v39 = [parametersCopy objectForKeyedSubscript:@"status-message"];
     if (!os_log_GKGeneral)
     {
       v40 = GKOSLoggers();
     }
 
     v41 = os_log_GKAccount;
-    v12 = block;
+    completionCopy = block;
     if (os_log_type_enabled(os_log_GKAccount, OS_LOG_TYPE_ERROR))
     {
       sub_2680(v39, v41);
@@ -109,10 +109,10 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  v42 = [v11 accountType];
-  v43 = [v42 identifier];
+  accountType = [accountCopy accountType];
+  identifier = [accountType identifier];
   v191 = ACAccountTypeIdentifierAppleAccount;
-  v44 = [v43 isEqualToString:?];
+  v44 = [identifier isEqualToString:?];
 
   v45 = os_log_GKGeneral;
   if ((v44 & 1) == 0)
@@ -123,7 +123,7 @@ LABEL_13:
     }
 
     v71 = os_log_GKAccount;
-    v12 = block;
+    completionCopy = block;
     if (os_log_type_enabled(os_log_GKAccount, OS_LOG_TYPE_DEBUG))
     {
       sub_26F8(v71, v72, v73, v74, v75, v76, v77, v78);
@@ -142,7 +142,7 @@ LABEL_13:
   if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v231 = v11;
+    v231 = accountCopy;
     _os_log_impl(&dword_0, v47, OS_LOG_TYPE_INFO, "GKAppleIDAuthenticationDelegate inAccount:%@", buf, 0xCu);
   }
 
@@ -154,29 +154,29 @@ LABEL_13:
   }
 
   v50 = v48;
-  v12 = block;
+  completionCopy = block;
   if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v231 = v9;
+    v231 = parametersCopy;
     _os_log_impl(&dword_0, v50, OS_LOG_TYPE_INFO, "GKAppleIDAuthenticationDelegate parameters:%@", buf, 0xCu);
   }
 
-  v194 = [v9 objectForKeyedSubscript:@"alias"];
-  v193 = [v9 objectForKeyedSubscript:@"firstName"];
-  v192 = [v9 objectForKeyedSubscript:@"lastName"];
-  v51 = [v9 objectForKeyedSubscript:GKAppleIDKey];
-  v198 = [v9 objectForKeyedSubscript:@"dsid"];
-  v52 = [v9 objectForKeyedSubscript:@"altDSID"];
-  v195 = [v9 objectForKeyedSubscript:GKPlayerIDKey];
-  v196 = [v9 objectForKeyedSubscript:@"auth-token"];
+  v194 = [parametersCopy objectForKeyedSubscript:@"alias"];
+  v193 = [parametersCopy objectForKeyedSubscript:@"firstName"];
+  v192 = [parametersCopy objectForKeyedSubscript:@"lastName"];
+  v51 = [parametersCopy objectForKeyedSubscript:GKAppleIDKey];
+  v198 = [parametersCopy objectForKeyedSubscript:@"dsid"];
+  v52 = [parametersCopy objectForKeyedSubscript:@"altDSID"];
+  v195 = [parametersCopy objectForKeyedSubscript:GKPlayerIDKey];
+  v196 = [parametersCopy objectForKeyedSubscript:@"auth-token"];
   v53 = v52;
-  v54 = [v9 objectForKeyedSubscript:GKEnvironmentKey];
+  v54 = [parametersCopy objectForKeyedSubscript:GKEnvironmentKey];
   v204 = [GKPreferences environmentForString:v54];
 
   if (!v53)
   {
-    v53 = [v9 objectForKeyedSubscript:@"alternate-dsid"];
+    v53 = [parametersCopy objectForKeyedSubscript:@"alternate-dsid"];
   }
 
   v55 = v51;
@@ -201,15 +201,15 @@ LABEL_13:
     v200 = v51;
 
     v187 = ACAccountTypeIdentifierGameCenter;
-    [v10 accountsWithAccountTypeIdentifier:?];
+    [storeCopy accountsWithAccountTypeIdentifier:?];
     v223 = 0u;
     v224 = 0u;
     v225 = 0u;
     v59 = v226 = 0u;
     v60 = [v59 countByEnumeratingWithState:&v223 objects:v229 count:16];
-    v189 = v9;
-    v190 = v10;
-    v188 = v11;
+    v189 = parametersCopy;
+    v190 = storeCopy;
+    v188 = accountCopy;
     if (v60)
     {
       v61 = v60;
@@ -224,8 +224,8 @@ LABEL_13:
           }
 
           v199 = *(*(&v223 + 1) + 8 * i);
-          v64 = [v199 username];
-          v65 = [v64 isEqualToString:v51];
+          username = [v199 username];
+          v65 = [username isEqualToString:v51];
 
           if (v65)
           {
@@ -243,9 +243,9 @@ LABEL_13:
               goto LABEL_82;
             }
 
-            v85 = [v81 username];
+            username2 = [v81 username];
             *buf = 138412290;
-            v231 = v85;
+            v231 = username2;
             v86 = "GKAppleIDAuthenticationDelegate: will populate existing account '%@' with production token";
             v87 = v84;
             v88 = 12;
@@ -273,9 +273,9 @@ LABEL_81:
               v84 = v90;
               if (os_log_type_enabled(v84, OS_LOG_TYPE_INFO))
               {
-                v85 = [v89 username];
+                username2 = [v89 username];
                 *buf = 138412546;
-                v231 = v85;
+                v231 = username2;
                 v232 = 2112;
                 v233 = v51;
                 v86 = "GKAppleIDAuthenticationDelegate: found a gamecenter ACAccount (%@) with same altDSID than incoming account:%@";
@@ -310,9 +310,9 @@ LABEL_82:
                 goto LABEL_82;
               }
 
-              v85 = [v92 username];
+              username2 = [v92 username];
               *buf = 138412546;
-              v231 = v85;
+              v231 = username2;
               v232 = 2112;
               v233 = v51;
               v86 = "GKAppleIDAuthenticationDelegate: found a gamecenter ACAccount (%@) with same dsid than incoming account:%@";
@@ -369,26 +369,26 @@ LABEL_83:
           }
 
           v101 = *(*(&v219 + 1) + 8 * v100);
-          v102 = [v101 credential];
-          v103 = [v102 token];
+          credential = [v101 credential];
+          token = [credential token];
 
-          if (v103)
+          if (token)
           {
-            if (([v103 isEqualToString:v99] & 1) == 0)
+            if (([token isEqualToString:v99] & 1) == 0)
             {
               [v96[57] numberWithInteger:v204];
               v104 = v98;
               v105 = v99;
               v107 = v106 = v96;
-              v108 = [NSString stringWithFormat:@"GKCredentialScope-%@", v107];
-              v109 = [v101 accountPropertyForKey:v108];
-              v110 = [v109 unsignedIntegerValue];
+              v107 = [NSString stringWithFormat:@"GKCredentialScope-%@", v107];
+              v109 = [v101 accountPropertyForKey:v107];
+              unsignedIntegerValue = [v109 unsignedIntegerValue];
 
               v96 = v106;
               v99 = v105;
               v98 = v104;
               v97 = v205;
-              if ((v110 & 4) != 0)
+              if ((unsignedIntegerValue & 4) != 0)
               {
                 v111 = os_log_GKGeneral;
                 if (!os_log_GKGeneral)
@@ -400,9 +400,9 @@ LABEL_83:
                 v113 = v111;
                 if (os_log_type_enabled(v113, OS_LOG_TYPE_INFO))
                 {
-                  v114 = [v101 username];
+                  username3 = [v101 username];
                   *buf = 138412290;
-                  v231 = v114;
+                  v231 = username3;
                   _os_log_impl(&dword_0, v113, OS_LOG_TYPE_INFO, "GKAppleIDAuthenticationDelegate: Existing primary production account '%@'", buf, 0xCu);
                 }
 
@@ -435,9 +435,9 @@ LABEL_83:
     }
 
     v117 = v115;
-    v10 = v190;
-    v11 = v188;
-    v12 = block;
+    storeCopy = v190;
+    accountCopy = v188;
+    completionCopy = block;
     if (os_log_type_enabled(v117, OS_LOG_TYPE_INFO))
     {
       v118 = @"NO";
@@ -463,7 +463,7 @@ LABEL_83:
       _os_log_impl(&dword_0, v117, OS_LOG_TYPE_INFO, "GKAppleIDAuthenticationDelegate: looked at the existing account. We want to create a new GC account (%@), and existingPrimaryAccount is %@", buf, 0x16u);
     }
 
-    v9 = v189;
+    parametersCopy = v189;
     if ((v202 & 1) != 0 && ([v188 accountType], v120 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v120, "identifier"), v121 = objc_claimAutoreleasedReturnValue(), v122 = objc_msgSend(v121, "isEqualToString:", v191), v121, v120, v122))
     {
       v123 = os_log_GKGeneral;
@@ -505,15 +505,15 @@ LABEL_83:
       v130 = v128;
       if (os_log_type_enabled(v130, OS_LOG_TYPE_INFO))
       {
-        v131 = [v199 shortDebugName];
+        shortDebugName = [v199 shortDebugName];
         *buf = 138412290;
-        v231 = v131;
+        v231 = shortDebugName;
         _os_log_impl(&dword_0, v130, OS_LOG_TYPE_INFO, "GKAppleIDAuthenticationDelegate: Updating token for account %@", buf, 0xCu);
       }
 
-      v132 = [v199 credential];
+      credential2 = [v199 credential];
 
-      if (!v132)
+      if (!credential2)
       {
         v133 = objc_alloc_init(ACAccountCredential);
         [v199 setCredential:v133];
@@ -522,8 +522,8 @@ LABEL_83:
       [v199 setAuthenticated:1];
       if (v204 == &dword_4 + 1)
       {
-        v134 = [v199 credential];
-        [v134 setToken:v196];
+        credential3 = [v199 credential];
+        [credential3 setToken:v196];
       }
 
       else
@@ -542,22 +542,22 @@ LABEL_83:
           _os_log_impl(&dword_0, v146, OS_LOG_TYPE_INFO, "GKAppleIDAuthenticationDelegate: non production environment, set account property", buf, 2u);
         }
 
-        v134 = [v96[57] numberWithInteger:v204];
-        v147 = [NSString stringWithFormat:@"GKEnvToken-%@", v134];
-        [v199 setAccountProperty:v196 forKey:v147];
+        credential3 = [v96[57] numberWithInteger:v204];
+        v134 = [NSString stringWithFormat:@"GKEnvToken-%@", credential3];
+        [v199 setAccountProperty:v196 forKey:v134];
       }
 
       v148 = [v96[57] numberWithInteger:v204];
-      v149 = [NSString stringWithFormat:@"GKCredentialScope-%@", v148];
+      v148 = [NSString stringWithFormat:@"GKCredentialScope-%@", v148];
       if (v201)
       {
-        v150 = [v199 accountPropertyForKey:v149];
+        v150 = [v199 accountPropertyForKey:v148];
         v151 = v96;
-        v152 = [v150 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v150 unsignedIntegerValue];
 
         v148 = [v151[57] numberWithInteger:v204];
-        v149 = [NSString stringWithFormat:@"GKCredentialScope-%@", v148];
-        if ((v152 & 4) != 0)
+        v148 = [NSString stringWithFormat:@"GKCredentialScope-%@", v148];
+        if ((unsignedIntegerValue2 & 4) != 0)
         {
           v153 = &off_8560;
         }
@@ -567,30 +567,30 @@ LABEL_83:
           v153 = &off_8578;
         }
 
-        [v199 setAccountProperty:v153 forKey:v149];
+        [v199 setAccountProperty:v153 forKey:v148];
         v96 = v151;
       }
 
       else
       {
-        [v199 setAccountProperty:&off_8560 forKey:v149];
+        [v199 setAccountProperty:&off_8560 forKey:v148];
       }
 
       v154 = +[NSDate date];
       v155 = [v96[57] numberWithInteger:v204];
-      v156 = [NSString stringWithFormat:@"GKCredentialScope-%@-mod-date", v155];
-      [v199 setAccountProperty:v154 forKey:v156];
+      v155 = [NSString stringWithFormat:@"GKCredentialScope-%@-mod-date", v155];
+      [v199 setAccountProperty:v154 forKey:v155];
 
       v157 = [v96[57] numberWithInteger:v204];
-      v158 = [NSString stringWithFormat:@"altDSID-%@", v157];
-      [v199 setAccountProperty:v197 forKey:v158];
+      v157 = [NSString stringWithFormat:@"altDSID-%@", v157];
+      [v199 setAccountProperty:v197 forKey:v157];
 
       [v199 setAccountProperty:v197 forKey:@"altDSID"];
       v159 = +[NSDate date];
       v160 = v96;
       v161 = [v96[57] numberWithInteger:v204];
-      v162 = [NSString stringWithFormat:@"altDSID-%@-mod-date", v161];
-      [v199 setAccountProperty:v159 forKey:v162];
+      v161 = [NSString stringWithFormat:@"altDSID-%@-mod-date", v161];
+      [v199 setAccountProperty:v159 forKey:v161];
 
       [v199 setAccountProperty:v198 forKey:@"dsid"];
       [v199 setAccountProperty:v195 forKey:@"playerID"];
@@ -604,24 +604,24 @@ LABEL_83:
       v165 = v163;
       if (os_log_type_enabled(v165, OS_LOG_TYPE_INFO))
       {
-        v166 = [v199 accountProperties];
+        accountProperties = [v199 accountProperties];
         *buf = 138412290;
-        v231 = v166;
+        v231 = accountProperties;
         _os_log_impl(&dword_0, v165, OS_LOG_TYPE_INFO, "GKAppleIDAuthenticationDelegate: all account properties: %@", buf, 0xCu);
       }
 
       [v199 setUsername:v200];
       [v199 setAccountDescription:v200];
-      v167 = [v199 _gkPlayerInternal];
-      [GKContactsIntegrationUserSettings applySettingsToObject:v167 fromResults:v189];
-      [v167 setAlias:v194];
-      [v167 setFirstName:v193];
-      [v167 setLastName:v192];
+      _gkPlayerInternal = [v199 _gkPlayerInternal];
+      [GKContactsIntegrationUserSettings applySettingsToObject:_gkPlayerInternal fromResults:v189];
+      [_gkPlayerInternal setAlias:v194];
+      [_gkPlayerInternal setFirstName:v193];
+      [_gkPlayerInternal setLastName:v192];
       v168 = [GKPlayerInternal compositeNameForFirstName:v193 lastName:v192];
-      [v167 setCompositeName:v168];
+      [_gkPlayerInternal setCompositeName:v168];
 
-      [v167 setAccountName:v200];
-      [v199 _gkSetPlayerInternal:v167];
+      [_gkPlayerInternal setAccountName:v200];
+      [v199 _gkSetPlayerInternal:_gkPlayerInternal];
       v169 = objc_alloc_init(AKAppleIDAuthenticationController);
       if (v197)
       {
@@ -692,8 +692,8 @@ LABEL_83:
             }
 
             v183 = *(*(&v212 + 1) + 8 * j);
-            v184 = [v183 username];
-            v185 = [v184 isEqualToString:v200];
+            username4 = [v183 username];
+            v185 = [username4 isEqualToString:v200];
 
             if ((v185 & 1) == 0)
             {
@@ -724,12 +724,12 @@ LABEL_83:
 LABEL_168:
 
       v186 = dispatch_get_global_queue(0, 0);
-      v12 = block;
+      completionCopy = block;
       dispatch_group_notify(v177, v186, block);
 
-      v9 = v189;
-      v10 = v190;
-      v11 = v188;
+      parametersCopy = v189;
+      storeCopy = v190;
+      accountCopy = v188;
       v55 = v200;
     }
 

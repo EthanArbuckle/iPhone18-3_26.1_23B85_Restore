@@ -1,21 +1,21 @@
 @interface SCRO2DBrailleImageContent
-- (SCRO2DBrailleImageContent)initWithBrailleData:(id)a3 canvas:(id)a4;
-- (void)drawOnCanvas:(id)a3;
+- (SCRO2DBrailleImageContent)initWithBrailleData:(id)data canvas:(id)canvas;
+- (void)drawOnCanvas:(id)canvas;
 @end
 
 @implementation SCRO2DBrailleImageContent
 
-- (SCRO2DBrailleImageContent)initWithBrailleData:(id)a3 canvas:(id)a4
+- (SCRO2DBrailleImageContent)initWithBrailleData:(id)data canvas:(id)canvas
 {
-  v5 = a3;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = SCRO2DBrailleImageContent;
   v6 = [(SCRO2DBrailleImageContent *)&v11 init];
   if (v6)
   {
-    v7 = [v5 imageData];
+    imageData = [dataCopy imageData];
     imageData = v6->_imageData;
-    v6->_imageData = v7;
+    v6->_imageData = imageData;
 
     v9 = v6;
   }
@@ -23,12 +23,12 @@
   return v6;
 }
 
-- (void)drawOnCanvas:(id)a3
+- (void)drawOnCanvas:(id)canvas
 {
   imageData = self->_imageData;
   if (imageData)
   {
-    [a3 setImageData:imageData];
+    [canvas setImageData:imageData];
   }
 }
 

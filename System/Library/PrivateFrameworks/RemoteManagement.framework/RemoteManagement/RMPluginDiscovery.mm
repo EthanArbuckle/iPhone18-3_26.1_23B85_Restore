@@ -1,23 +1,23 @@
 @interface RMPluginDiscovery
-+ (id)_discoverJSONFilesInDirectory:(id)a3;
++ (id)_discoverJSONFilesInDirectory:(id)directory;
 + (id)_searchPaths;
-+ (id)discoverPluginsWithType:(id)a3 checkValidURL:(id)a4;
++ (id)discoverPluginsWithType:(id)type checkValidURL:(id)l;
 + (void)loadDynamicSchemasInPlugins;
 @end
 
 @implementation RMPluginDiscovery
 
-+ (id)discoverPluginsWithType:(id)a3 checkValidURL:(id)a4
++ (id)discoverPluginsWithType:(id)type checkValidURL:(id)l
 {
-  v39 = a3;
-  v41 = a4;
+  typeCopy = type;
+  lCopy = l;
   v40 = objc_opt_new();
   v6 = objc_opt_new();
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = [a1 _searchPaths];
+  obj = [self _searchPaths];
   v37 = [obj countByEnumeratingWithState:&v48 objects:v57 count:16];
   if (v37)
   {
@@ -37,8 +37,8 @@
         v38 = v9;
         v10 = *(*(&v48 + 1) + 8 * v9);
         v11 = +[NSFileManager defaultManager];
-        v12 = [v10 path];
-        v13 = [v11 contentsOfDirectoryAtPath:v12 error:0];
+        path = [v10 path];
+        v13 = [v11 contentsOfDirectoryAtPath:path error:0];
 
         v46 = 0u;
         v47 = 0u;
@@ -61,14 +61,14 @@
               }
 
               v18 = *(*(&v44 + 1) + 8 * i);
-              v19 = [v18 pathExtension];
-              v20 = [v19 isEqualToString:v7];
+              pathExtension = [v18 pathExtension];
+              v20 = [pathExtension isEqualToString:v7];
 
               if (v20)
               {
                 v21 = v8[230];
-                v22 = [v18 stringByDeletingPathExtension];
-                LODWORD(v21) = [v21 isAllowedXPCServiceName:v22];
+                stringByDeletingPathExtension = [v18 stringByDeletingPathExtension];
+                LODWORD(v21) = [v21 isAllowedXPCServiceName:stringByDeletingPathExtension];
 
                 if (v21)
                 {
@@ -78,11 +78,11 @@
                     v24 = +[RMLog pluginDiscovery];
                     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
                     {
-                      v31 = [v23 path];
+                      path2 = [v23 path];
                       *buf = 138543618;
-                      v53 = v39;
+                      v53 = typeCopy;
                       v54 = 2114;
-                      v55 = v31;
+                      v55 = path2;
                       _os_log_debug_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "Ignoring duplicate XPC service (%{public}@) plugin: %{public}@", buf, 0x16u);
                     }
                   }
@@ -92,18 +92,18 @@
                     v25 = v7;
                     v26 = v8;
                     v27 = v6;
-                    v28 = v41[2](v41, v23);
+                    v28 = lCopy[2](lCopy, v23);
                     v29 = +[RMLog pluginDiscovery];
                     v30 = os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG);
                     if (v28)
                     {
                       if (v30)
                       {
-                        v32 = [v23 path];
+                        path3 = [v23 path];
                         *buf = 138543618;
-                        v53 = v39;
+                        v53 = typeCopy;
                         v54 = 2114;
-                        v55 = v32;
+                        v55 = path3;
                         _os_log_debug_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "Found XPC service (%{public}@) plugin: %{public}@", buf, 0x16u);
                       }
 
@@ -116,11 +116,11 @@
                     {
                       if (v30)
                       {
-                        v33 = [v23 path];
+                        path4 = [v23 path];
                         *buf = 138543618;
-                        v53 = v39;
+                        v53 = typeCopy;
                         v54 = 2114;
-                        v55 = v33;
+                        v55 = path4;
                         _os_log_debug_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "Ignoring XPC service (%{public}@) plugin: %{public}@", buf, 0x16u);
                       }
 
@@ -176,10 +176,10 @@
   v8[3] = &unk_1000D27A0;
   v5 = v3;
   v9 = v5;
-  v11 = a1;
+  selfCopy = self;
   v6 = v4;
   v10 = v6;
-  v7 = [a1 discoverPluginsWithType:@"Schema" checkValidURL:v8];
+  v7 = [self discoverPluginsWithType:@"Schema" checkValidURL:v8];
   if ([v5 count])
   {
     [RMModelConfigurationSchema loadDynamicSchemaFromFiles:v5];
@@ -191,13 +191,13 @@
   }
 }
 
-+ (id)_discoverJSONFilesInDirectory:(id)a3
++ (id)_discoverJSONFilesInDirectory:(id)directory
 {
-  v3 = a3;
+  directoryCopy = directory;
   v4 = objc_opt_new();
   v5 = +[NSFileManager defaultManager];
-  v6 = [v3 path];
-  v7 = [v5 contentsOfDirectoryAtPath:v6 error:0];
+  path = [directoryCopy path];
+  v7 = [v5 contentsOfDirectoryAtPath:path error:0];
 
   v21 = 0u;
   v22 = 0u;
@@ -219,12 +219,12 @@
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [v13 pathExtension];
-        v15 = [v14 isEqualToString:@"json"];
+        pathExtension = [v13 pathExtension];
+        v15 = [pathExtension isEqualToString:@"json"];
 
         if (v15)
         {
-          v16 = [v3 URLByAppendingPathComponent:v13];
+          v16 = [directoryCopy URLByAppendingPathComponent:v13];
           [v4 addObject:v16];
           v17 = +[RMLog pluginDiscovery];
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))

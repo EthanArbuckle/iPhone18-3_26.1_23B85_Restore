@@ -12,18 +12,18 @@
 - (BOOL)trackExpiredPIDs;
 - (BOOL)trackPIDToExecNameMapping;
 - (DTActivityTraceTapConfig)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int)targetPID;
 - (mach_timebase_info)machTimebase;
 - (unint64_t)machContinuousStart;
 - (unint64_t)mode;
-- (void)setMachContinuousStart:(unint64_t)a3;
-- (void)setMachTimebase:(mach_timebase_info)a3;
-- (void)setMemoHandler:(id)a3;
-- (void)setMode:(unint64_t)a3;
-- (void)setOnlySignposts:(BOOL)a3;
-- (void)setPredicateString:(id)a3;
-- (void)setSignpostsAndLogs:(BOOL)a3;
+- (void)setMachContinuousStart:(unint64_t)start;
+- (void)setMachTimebase:(mach_timebase_info)timebase;
+- (void)setMemoHandler:(id)handler;
+- (void)setMode:(unint64_t)mode;
+- (void)setOnlySignposts:(BOOL)signposts;
+- (void)setPredicateString:(id)string;
+- (void)setSignpostsAndLogs:(BOOL)logs;
 @end
 
 @implementation DTActivityTraceTapConfig
@@ -42,11 +42,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = DTActivityTraceTapConfig;
-  v4 = [(DTTapConfig *)&v10 copyWithZone:a3];
+  v4 = [(DTTapConfig *)&v10 copyWithZone:zone];
   v5 = _Block_copy(self->_memoHandler);
   v6 = *(v4 + 13);
   *(v4 + 13) = v5;
@@ -61,35 +61,35 @@
   return v4;
 }
 
-- (void)setPredicateString:(id)a3
+- (void)setPredicateString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    [(DTTapConfig *)self _setSerializableObject:a3 forKey:@"predicate"];
+    [(DTTapConfig *)self _setSerializableObject:string forKey:@"predicate"];
   }
 }
 
-- (void)setMode:(unint64_t)a3
+- (void)setMode:(unint64_t)mode
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:mode];
   [(DTTapConfig *)self _setSerializableObject:v4 forKey:@"mode"];
 }
 
 - (unint64_t)mode
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"mode"];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
-- (void)setOnlySignposts:(BOOL)a3
+- (void)setOnlySignposts:(BOOL)signposts
 {
-  v3 = a3;
+  signpostsCopy = signposts;
   v5 = [MEMORY[0x277CCABB0] numberWithBool:?];
   [(DTTapConfig *)self _setSerializableObject:v5 forKey:@"onlySignposts"];
 
-  if (v3)
+  if (signpostsCopy)
   {
     v6 = MEMORY[0x277CBEC28];
 
@@ -100,18 +100,18 @@
 - (BOOL)onlySignposts
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"onlySignposts"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setSignpostsAndLogs:(BOOL)a3
+- (void)setSignpostsAndLogs:(BOOL)logs
 {
-  v3 = a3;
+  logsCopy = logs;
   v5 = [MEMORY[0x277CCABB0] numberWithBool:?];
   [(DTTapConfig *)self _setSerializableObject:v5 forKey:@"signpostsAndLogs"];
 
-  if (v3)
+  if (logsCopy)
   {
     v6 = MEMORY[0x277CBEC28];
 
@@ -122,102 +122,102 @@
 - (BOOL)signpostsAndLogs
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"signpostsAndLogs"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)trackExpiredPIDs
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"trackExpiredPIDs"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)excludeInfo
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"excludeInfo"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)excludeDebug
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"excludeDebug"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)includeSenderInfo
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"includeSenderInfo"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)includeEmitLocation
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"includeEmitLocation"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)includeWallTime
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"includeWallTime"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)enableHTTPArchiveLogging
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"enableHTTPArchiveLogging"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)enableBacktraceReplacement
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"enableBacktraceReplacement"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)enablePowerLog
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"enablePowerlogLogging"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int)targetPID
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"targetPID"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)trackPIDToExecNameMapping
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"trackPidToExecNameMapping"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)setMachTimebase:(mach_timebase_info)a3
+- (void)setMachTimebase:(mach_timebase_info)timebase
 {
-  denom = a3.denom;
+  denom = timebase.denom;
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:?];
   [(DTTapConfig *)self _setSerializableObject:v5 forKey:@"machTimebaseNumer"];
 
@@ -228,31 +228,31 @@
 - (mach_timebase_info)machTimebase
 {
   v3 = [(DTTapConfig *)self _getSerializableObjectForKey:@"machTimebaseNumer"];
-  v4 = [v3 unsignedIntValue];
+  unsignedIntValue = [v3 unsignedIntValue];
 
   v5 = [(DTTapConfig *)self _getSerializableObjectForKey:@"machTimebaseDenom"];
-  v6 = [v5 unsignedIntValue];
+  unsignedIntValue2 = [v5 unsignedIntValue];
 
-  return (v4 | (v6 << 32));
+  return (unsignedIntValue | (unsignedIntValue2 << 32));
 }
 
-- (void)setMachContinuousStart:(unint64_t)a3
+- (void)setMachContinuousStart:(unint64_t)start
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:start];
   [(DTTapConfig *)self _setSerializableObject:v4 forKey:@"machContinuousStart"];
 }
 
 - (unint64_t)machContinuousStart
 {
   v2 = [(DTTapConfig *)self _getSerializableObjectForKey:@"machContinuousStart"];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
-- (void)setMemoHandler:(id)a3
+- (void)setMemoHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   memoHandler = self->_memoHandler;
   self->_memoHandler = v4;
 }

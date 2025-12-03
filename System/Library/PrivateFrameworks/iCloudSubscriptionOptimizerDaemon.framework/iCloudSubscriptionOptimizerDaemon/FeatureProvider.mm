@@ -1,7 +1,7 @@
 @interface FeatureProvider
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
-- (void)setFeatureNames:(id)a3;
+- (id)featureValueForName:(id)name;
+- (void)setFeatureNames:(id)names;
 @end
 
 @implementation FeatureProvider
@@ -16,7 +16,7 @@
   return v4;
 }
 
-- (void)setFeatureNames:(id)a3
+- (void)setFeatureNames:(id)names
 {
   v4 = sub_275B7AF2C();
   swift_beginAccess();
@@ -24,7 +24,7 @@
   *(self + 13) = v4;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   sub_275B7AD0C();
 

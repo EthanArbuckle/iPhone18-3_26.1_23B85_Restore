@@ -1,8 +1,8 @@
 @interface SBAppPlatterDragPreviewDelayCleanupAssertion
 - (SBAppPlatterDragPreview)dragPreview;
-- (SBAppPlatterDragPreviewDelayCleanupAssertion)initWithDragPreview:(id)a3 reason:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBAppPlatterDragPreviewDelayCleanupAssertion)initWithDragPreview:(id)preview reason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)dealloc;
 - (void)invalidate;
@@ -10,18 +10,18 @@
 
 @implementation SBAppPlatterDragPreviewDelayCleanupAssertion
 
-- (SBAppPlatterDragPreviewDelayCleanupAssertion)initWithDragPreview:(id)a3 reason:(id)a4
+- (SBAppPlatterDragPreviewDelayCleanupAssertion)initWithDragPreview:(id)preview reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  previewCopy = preview;
+  reasonCopy = reason;
   v13.receiver = self;
   v13.super_class = SBAppPlatterDragPreviewDelayCleanupAssertion;
   v8 = [(SBAppPlatterDragPreviewDelayCleanupAssertion *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_dragPreview, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_dragPreview, previewCopy);
+    v10 = [reasonCopy copy];
     reason = v9->_reason;
     v9->_reason = v10;
   }
@@ -42,33 +42,33 @@
   if (![(SBAppPlatterDragPreviewDelayCleanupAssertion *)self isInvalidated])
   {
     [(SBAppPlatterDragPreviewDelayCleanupAssertion *)self setInvalidated:1];
-    v3 = [(SBAppPlatterDragPreviewDelayCleanupAssertion *)self dragPreview];
-    [v3 _removeDelayCleanupAssertion:self];
+    dragPreview = [(SBAppPlatterDragPreviewDelayCleanupAssertion *)self dragPreview];
+    [dragPreview _removeDelayCleanupAssertion:self];
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBAppPlatterDragPreviewDelayCleanupAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBAppPlatterDragPreviewDelayCleanupAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBAppPlatterDragPreviewDelayCleanupAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBAppPlatterDragPreviewDelayCleanupAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBAppPlatterDragPreviewDelayCleanupAssertion *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_reason withName:@"reason"];
+  succinctDescriptionBuilder = [(SBAppPlatterDragPreviewDelayCleanupAssertion *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_reason withName:@"reason"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (SBAppPlatterDragPreview)dragPreview

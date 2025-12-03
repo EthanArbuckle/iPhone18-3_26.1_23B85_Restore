@@ -1,14 +1,14 @@
 @interface STSPeerPaymentResponse
-- (id)initFromNFPeerPaymentResponse:(id)a3;
+- (id)initFromNFPeerPaymentResponse:(id)response;
 @end
 
 @implementation STSPeerPaymentResponse
 
-- (id)initFromNFPeerPaymentResponse:(id)a3
+- (id)initFromNFPeerPaymentResponse:(id)response
 {
   v4.receiver = self;
   v4.super_class = STSPeerPaymentResponse;
-  return [(STSPaymentResponseBase *)&v4 initFromNFPeerPaymentResponse:a3];
+  return [(STSPaymentResponseBase *)&v4 initFromNFPeerPaymentResponse:response];
 }
 
 @end

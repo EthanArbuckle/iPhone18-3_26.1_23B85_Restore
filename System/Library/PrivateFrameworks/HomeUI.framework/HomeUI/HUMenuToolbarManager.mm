@@ -1,17 +1,17 @@
 @interface HUMenuToolbarManager
-+ (BOOL)isValidMenuSelector:(SEL)a3 forDashboardContext:(id)a4;
-+ (BOOL)shouldEnableEditRoomForDashboardContext:(id)a3;
-- (BOOL)_shouldEnableIdentifier:(id)a3;
++ (BOOL)isValidMenuSelector:(SEL)selector forDashboardContext:(id)context;
++ (BOOL)shouldEnableEditRoomForDashboardContext:(id)context;
+- (BOOL)_shouldEnableIdentifier:(id)identifier;
 - (HOAppNavigator)appNavigator;
-- (HUMenuToolbarManager)initWithAppNavigator:(id)a3;
-- (id)_buildActionForIdentifier:(id)a3;
+- (HUMenuToolbarManager)initWithAppNavigator:(id)navigator;
+- (id)_buildActionForIdentifier:(id)identifier;
 - (id)_buildHomeMenu;
-- (id)_buildKeyCommandForIdentifier:(id)a3;
-- (id)_buildMenuForIdentifier:(id)a3;
+- (id)_buildKeyCommandForIdentifier:(id)identifier;
+- (id)_buildMenuForIdentifier:(id)identifier;
 - (id)_editMenuIdentifiers;
 - (id)_fileMenuIdentifiers;
 - (id)_helpMenuIdentifiers;
-- (id)_imageForActionWithIdentifier:(id)a3;
+- (id)_imageForActionWithIdentifier:(id)identifier;
 - (id)_subViewMenuIdentifiers;
 - (id)_viewMenuIdentifiers;
 - (void)_automationMenuSelected;
@@ -20,85 +20,85 @@
 - (void)_editRoomMenuSelected;
 - (void)_homeMenuSelected;
 - (void)buildMenu;
-- (void)home:(id)a3 didAddAccessory:(id)a4;
-- (void)home:(id)a3 didAddRoom:(id)a4;
-- (void)home:(id)a3 didRemoveAccessory:(id)a4;
-- (void)home:(id)a3 didRemoveRoom:(id)a4;
-- (void)home:(id)a3 didUpdateAccessControlForUser:(id)a4;
-- (void)homeManager:(id)a3 didAddHome:(id)a4;
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4;
+- (void)home:(id)home didAddAccessory:(id)accessory;
+- (void)home:(id)home didAddRoom:(id)room;
+- (void)home:(id)home didRemoveAccessory:(id)accessory;
+- (void)home:(id)home didRemoveRoom:(id)room;
+- (void)home:(id)home didUpdateAccessControlForUser:(id)user;
+- (void)homeManager:(id)manager didAddHome:(id)home;
+- (void)homeManager:(id)manager didRemoveHome:(id)home;
 - (void)refreshEditMenu;
 - (void)refreshFileMenu;
 - (void)refreshHelpMenu;
 - (void)refreshViewMenu;
 - (void)refreshViewMenuChildren;
 - (void)removeFormatMenu;
-- (void)setAppNavigator:(id)a3;
-- (void)setHome:(id)a3;
-- (void)setMenuBuilder:(id)a3;
-- (void)setRoom:(id)a3;
+- (void)setAppNavigator:(id)navigator;
+- (void)setHome:(id)home;
+- (void)setMenuBuilder:(id)builder;
+- (void)setRoom:(id)room;
 @end
 
 @implementation HUMenuToolbarManager
 
-- (HUMenuToolbarManager)initWithAppNavigator:(id)a3
+- (HUMenuToolbarManager)initWithAppNavigator:(id)navigator
 {
-  v4 = a3;
+  navigatorCopy = navigator;
   v12.receiver = self;
   v12.super_class = HUMenuToolbarManager;
   v5 = [(HUMenuToolbarManager *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_appNavigator, v4);
-    v7 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v8 = [v7 home];
-    [(HUMenuToolbarManager *)v6 setHome:v8];
+    objc_storeWeak(&v5->_appNavigator, navigatorCopy);
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    home = [mEMORY[0x277D146E8] home];
+    [(HUMenuToolbarManager *)v6 setHome:home];
 
-    v9 = [MEMORY[0x277D146E8] sharedDispatcher];
-    [v9 addHomeObserver:v6];
+    mEMORY[0x277D146E8]2 = [MEMORY[0x277D146E8] sharedDispatcher];
+    [mEMORY[0x277D146E8]2 addHomeObserver:v6];
 
-    v10 = [MEMORY[0x277D146E8] sharedDispatcher];
-    [v10 addHomeManagerObserver:v6];
+    mEMORY[0x277D146E8]3 = [MEMORY[0x277D146E8] sharedDispatcher];
+    [mEMORY[0x277D146E8]3 addHomeManagerObserver:v6];
   }
 
   return v6;
 }
 
-- (void)setHome:(id)a3
+- (void)setHome:(id)home
 {
-  v7 = a3;
+  homeCopy = home;
   if (([(HMHome *)self->_home isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_home, a3);
-    v5 = [v7 hf_selectedRoom];
+    objc_storeStrong(&self->_home, home);
+    hf_selectedRoom = [homeCopy hf_selectedRoom];
     room = self->_room;
-    self->_room = v5;
+    self->_room = hf_selectedRoom;
 
     [(HUMenuToolbarManager *)self buildMenu];
   }
 }
 
-- (void)setRoom:(id)a3
+- (void)setRoom:(id)room
 {
-  v5 = a3;
+  roomCopy = room;
   if (([(HMRoom *)self->_room isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_room, a3);
+    objc_storeStrong(&self->_room, room);
     [(HUMenuToolbarManager *)self refreshViewMenuChildren];
   }
 }
 
-- (void)setMenuBuilder:(id)a3
+- (void)setMenuBuilder:(id)builder
 {
-  objc_storeStrong(&self->_menuBuilder, a3);
+  objc_storeStrong(&self->_menuBuilder, builder);
 
   [(HUMenuToolbarManager *)self buildMenu];
 }
 
-- (void)setAppNavigator:(id)a3
+- (void)setAppNavigator:(id)navigator
 {
-  obj = a3;
+  obj = navigator;
   WeakRetained = objc_loadWeakRetained(&self->_appNavigator);
   v5 = [WeakRetained isEqual:obj];
 
@@ -111,9 +111,9 @@
 
 - (void)buildMenu
 {
-  v3 = [(HUMenuToolbarManager *)self menuBuilder];
+  menuBuilder = [(HUMenuToolbarManager *)self menuBuilder];
 
-  if (v3)
+  if (menuBuilder)
   {
     [(HUMenuToolbarManager *)self refreshFileMenu];
     [(HUMenuToolbarManager *)self refreshEditMenu];
@@ -127,22 +127,22 @@
 
 - (void)refreshHelpMenu
 {
-  v3 = [(HUMenuToolbarManager *)self menuBuilder];
-  v4 = [v3 menuForIdentifier:@"HUMenuToolbarIdentifierHelp"];
+  menuBuilder = [(HUMenuToolbarManager *)self menuBuilder];
+  v4 = [menuBuilder menuForIdentifier:@"HUMenuToolbarIdentifierHelp"];
 
   if (!v4)
   {
-    v5 = [(HUMenuToolbarManager *)self _helpMenuIdentifiers];
+    _helpMenuIdentifiers = [(HUMenuToolbarManager *)self _helpMenuIdentifiers];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __39__HUMenuToolbarManager_refreshHelpMenu__block_invoke;
     v9[3] = &unk_277DBAC58;
     v9[4] = self;
-    v6 = [v5 na_map:v9];
+    v6 = [_helpMenuIdentifiers na_map:v9];
 
     v7 = [MEMORY[0x277D75710] menuWithTitle:&stru_2823E0EE8 image:0 identifier:@"HUMenuToolbarIdentifierHelp" options:1 children:v6];
-    v8 = [(HUMenuToolbarManager *)self menuBuilder];
-    [v8 insertChildMenu:v7 atEndOfMenuForIdentifier:*MEMORY[0x277D76CF8]];
+    menuBuilder2 = [(HUMenuToolbarManager *)self menuBuilder];
+    [menuBuilder2 insertChildMenu:v7 atEndOfMenuForIdentifier:*MEMORY[0x277D76CF8]];
   }
 }
 
@@ -152,20 +152,20 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(HUMenuToolbarManager *)self _subViewMenuIdentifiers];
+  _subViewMenuIdentifiers = [(HUMenuToolbarManager *)self _subViewMenuIdentifiers];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__HUMenuToolbarManager_refreshViewMenuChildren__block_invoke;
   v6[3] = &unk_277DBAC80;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 na_each:v6];
+  [_subViewMenuIdentifiers na_each:v6];
 
   if (*(v8 + 24) == 1)
   {
-    v4 = [(HUMenuToolbarManager *)self menuBuilder];
-    v5 = [v4 system];
-    [v5 setNeedsRebuild];
+    menuBuilder = [(HUMenuToolbarManager *)self menuBuilder];
+    system = [menuBuilder system];
+    [system setNeedsRebuild];
   }
 
   _Block_object_dispose(&v7, 8);
@@ -197,91 +197,91 @@ void __47__HUMenuToolbarManager_refreshViewMenuChildren__block_invoke(uint64_t a
 
 - (void)refreshViewMenu
 {
-  v3 = [(HUMenuToolbarManager *)self _viewMenuIdentifiers];
+  _viewMenuIdentifiers = [(HUMenuToolbarManager *)self _viewMenuIdentifiers];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __39__HUMenuToolbarManager_refreshViewMenu__block_invoke;
   v11[3] = &unk_277DBAC58;
   v11[4] = self;
-  v4 = [v3 na_map:v11];
+  v4 = [_viewMenuIdentifiers na_map:v11];
 
   v5 = [MEMORY[0x277D75710] menuWithTitle:&stru_2823E0EE8 image:0 identifier:@"HUMenuToolbarIdentifierView" options:1 children:v4];
-  v6 = [(HUMenuToolbarManager *)self menuBuilder];
-  v7 = [v6 menuForIdentifier:@"HUMenuToolbarIdentifierView"];
+  menuBuilder = [(HUMenuToolbarManager *)self menuBuilder];
+  v7 = [menuBuilder menuForIdentifier:@"HUMenuToolbarIdentifierView"];
 
-  v8 = [(HUMenuToolbarManager *)self menuBuilder];
-  v9 = v8;
+  menuBuilder2 = [(HUMenuToolbarManager *)self menuBuilder];
+  menuBuilder3 = menuBuilder2;
   if (v7)
   {
-    [v8 replaceMenuForIdentifier:@"HUMenuToolbarIdentifierView" withMenu:v5];
+    [menuBuilder2 replaceMenuForIdentifier:@"HUMenuToolbarIdentifierView" withMenu:v5];
 
-    v9 = [(HUMenuToolbarManager *)self menuBuilder];
-    v10 = [v9 system];
-    [v10 setNeedsRebuild];
+    menuBuilder3 = [(HUMenuToolbarManager *)self menuBuilder];
+    system = [menuBuilder3 system];
+    [system setNeedsRebuild];
   }
 
   else
   {
-    [v8 insertChildMenu:v5 atStartOfMenuForIdentifier:*MEMORY[0x277D76D90]];
+    [menuBuilder2 insertChildMenu:v5 atStartOfMenuForIdentifier:*MEMORY[0x277D76D90]];
   }
 }
 
 - (void)refreshFileMenu
 {
-  v3 = [(HUMenuToolbarManager *)self home];
-  v4 = [(HUMenuToolbarManager *)self appNavigator];
-  v11 = [HUNavigationMenuFactory addMenuForHome:v3 room:0 delegate:v4 includeDisabledElements:1];
+  home = [(HUMenuToolbarManager *)self home];
+  appNavigator = [(HUMenuToolbarManager *)self appNavigator];
+  v11 = [HUNavigationMenuFactory addMenuForHome:home room:0 delegate:appNavigator includeDisabledElements:1];
 
   v5 = [MEMORY[0x277D75710] menuWithTitle:&stru_2823E0EE8 image:0 identifier:@"HUMenuToolbarIdentifierFile" options:1 children:v11];
-  v6 = [(HUMenuToolbarManager *)self menuBuilder];
-  v7 = [v6 menuForIdentifier:@"HUMenuToolbarIdentifierFile"];
+  menuBuilder = [(HUMenuToolbarManager *)self menuBuilder];
+  v7 = [menuBuilder menuForIdentifier:@"HUMenuToolbarIdentifierFile"];
 
-  v8 = [(HUMenuToolbarManager *)self menuBuilder];
-  v9 = v8;
+  menuBuilder2 = [(HUMenuToolbarManager *)self menuBuilder];
+  menuBuilder3 = menuBuilder2;
   if (v7)
   {
-    [v8 replaceMenuForIdentifier:@"HUMenuToolbarIdentifierFile" withMenu:v5];
+    [menuBuilder2 replaceMenuForIdentifier:@"HUMenuToolbarIdentifierFile" withMenu:v5];
 
-    v9 = [(HUMenuToolbarManager *)self menuBuilder];
-    v10 = [v9 system];
-    [v10 setNeedsRebuild];
+    menuBuilder3 = [(HUMenuToolbarManager *)self menuBuilder];
+    system = [menuBuilder3 system];
+    [system setNeedsRebuild];
   }
 
   else
   {
-    [v8 insertChildMenu:v5 atStartOfMenuForIdentifier:*MEMORY[0x277D76CD8]];
+    [menuBuilder2 insertChildMenu:v5 atStartOfMenuForIdentifier:*MEMORY[0x277D76CD8]];
   }
 }
 
 - (void)refreshEditMenu
 {
   v26[5] = *MEMORY[0x277D85DE8];
-  v3 = [(HUMenuToolbarManager *)self _editMenuIdentifiers];
+  _editMenuIdentifiers = [(HUMenuToolbarManager *)self _editMenuIdentifiers];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __39__HUMenuToolbarManager_refreshEditMenu__block_invoke;
   v24[3] = &unk_277DBAC58;
   v24[4] = self;
-  v4 = [v3 na_map:v24];
+  v4 = [_editMenuIdentifiers na_map:v24];
 
   v5 = [MEMORY[0x277D75710] menuWithTitle:&stru_2823E0EE8 image:0 identifier:@"HUMenuToolbarIdentifierEdit" options:1 children:v4];
-  v6 = [(HUMenuToolbarManager *)self menuBuilder];
-  v7 = [v6 menuForIdentifier:@"HUMenuToolbarIdentifierEdit"];
+  menuBuilder = [(HUMenuToolbarManager *)self menuBuilder];
+  v7 = [menuBuilder menuForIdentifier:@"HUMenuToolbarIdentifierEdit"];
 
-  v8 = [(HUMenuToolbarManager *)self menuBuilder];
-  v9 = v8;
+  menuBuilder2 = [(HUMenuToolbarManager *)self menuBuilder];
+  menuBuilder3 = menuBuilder2;
   if (v7)
   {
-    [v8 replaceMenuForIdentifier:@"HUMenuToolbarIdentifierEdit" withMenu:v5];
+    [menuBuilder2 replaceMenuForIdentifier:@"HUMenuToolbarIdentifierEdit" withMenu:v5];
 
-    v9 = [(HUMenuToolbarManager *)self menuBuilder];
-    v10 = [v9 system];
-    [v10 setNeedsRebuild];
+    menuBuilder3 = [(HUMenuToolbarManager *)self menuBuilder];
+    system = [menuBuilder3 system];
+    [system setNeedsRebuild];
   }
 
   else
   {
-    [v8 insertSiblingMenu:v5 afterMenuForIdentifier:*MEMORY[0x277D76D60]];
+    [menuBuilder2 insertSiblingMenu:v5 afterMenuForIdentifier:*MEMORY[0x277D76D60]];
   }
 
   v11 = *MEMORY[0x277D76CE0];
@@ -312,8 +312,8 @@ void __47__HUMenuToolbarManager_refreshViewMenuChildren__block_invoke(uint64_t a
         }
 
         v18 = *(*(&v20 + 1) + 8 * v17);
-        v19 = [(HUMenuToolbarManager *)self menuBuilder];
-        [v19 removeMenuForIdentifier:v18];
+        menuBuilder4 = [(HUMenuToolbarManager *)self menuBuilder];
+        [menuBuilder4 removeMenuForIdentifier:v18];
 
         ++v17;
       }
@@ -328,8 +328,8 @@ void __47__HUMenuToolbarManager_refreshViewMenuChildren__block_invoke(uint64_t a
 
 - (void)removeFormatMenu
 {
-  v2 = [(HUMenuToolbarManager *)self menuBuilder];
-  [v2 removeMenuForIdentifier:*MEMORY[0x277D76CE8]];
+  menuBuilder = [(HUMenuToolbarManager *)self menuBuilder];
+  [menuBuilder removeMenuForIdentifier:*MEMORY[0x277D76CE8]];
 }
 
 - (id)_fileMenuIdentifiers
@@ -383,18 +383,18 @@ void __47__HUMenuToolbarManager_refreshViewMenuChildren__block_invoke(uint64_t a
   return v2;
 }
 
-- (BOOL)_shouldEnableIdentifier:(id)a3
+- (BOOL)_shouldEnableIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (![v4 isEqualToString:@"HUMenuToolbarIdentifierAddAutomation"])
+  identifierCopy = identifier;
+  if (![identifierCopy isEqualToString:@"HUMenuToolbarIdentifierAddAutomation"])
   {
-    if ([v4 isEqualToString:@"HUMenuToolbarIdentifierAddScene"])
+    if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierAddScene"])
     {
-      v5 = [(HUMenuToolbarManager *)self home];
-      if ([v5 hf_currentUserIsAdministrator])
+      home = [(HUMenuToolbarManager *)self home];
+      if ([home hf_currentUserIsAdministrator])
       {
-        v6 = [(HUMenuToolbarManager *)self home];
-        v7 = [v6 hf_containsActionableAccessories];
+        home2 = [(HUMenuToolbarManager *)self home];
+        hf_containsActionableAccessories = [home2 hf_containsActionableAccessories];
         goto LABEL_7;
       }
 
@@ -403,66 +403,66 @@ LABEL_25:
       goto LABEL_26;
     }
 
-    if (([v4 isEqualToString:@"HUMenuToolbarIdentifierEditHome"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"HUMenuToolbarIdentifierHome"))
+    if (([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierEditHome"] & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"HUMenuToolbarIdentifierHome"))
     {
-      v5 = [(HUMenuToolbarManager *)self home];
-      LOBYTE(self) = v5 != 0;
+      home = [(HUMenuToolbarManager *)self home];
+      LOBYTE(self) = home != 0;
       goto LABEL_26;
     }
 
-    if (([v4 isEqualToString:@"HUMenuToolbarIdentifierEditRoom"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"HUMenuToolbarIdentifierRoomList"))
+    if (([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierEditRoom"] & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"HUMenuToolbarIdentifierRoomList"))
     {
-      v5 = [(HUMenuToolbarManager *)self home];
-      if (!v5)
+      home = [(HUMenuToolbarManager *)self home];
+      if (!home)
       {
         goto LABEL_25;
       }
 
-      v6 = [(HUMenuToolbarManager *)self home];
-      v8 = [v6 accessories];
-      if ([v8 count])
+      home2 = [(HUMenuToolbarManager *)self home];
+      accessories = [home2 accessories];
+      if ([accessories count])
       {
         LOBYTE(self) = 1;
       }
 
       else
       {
-        v9 = [(HUMenuToolbarManager *)self room];
-        v10 = [(HUMenuToolbarManager *)self home];
-        v11 = [v10 roomForEntireHome];
-        LODWORD(self) = [v9 isEqual:v11] ^ 1;
+        room = [(HUMenuToolbarManager *)self room];
+        home3 = [(HUMenuToolbarManager *)self home];
+        roomForEntireHome = [home3 roomForEntireHome];
+        LODWORD(self) = [room isEqual:roomForEntireHome] ^ 1;
       }
     }
 
     else
     {
-      if ([v4 isEqualToString:@"HUMenuToolbarIdentifierAutomation"])
+      if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierAutomation"])
       {
-        v5 = [(HUMenuToolbarManager *)self home];
-        if ([v5 hf_hasAnyVisibleTriggers])
+        home = [(HUMenuToolbarManager *)self home];
+        if ([home hf_hasAnyVisibleTriggers])
         {
           LOBYTE(self) = 1;
           goto LABEL_26;
         }
 
-        v6 = [(HUMenuToolbarManager *)self home];
-        if ([v6 hf_userIsAllowedToCreateTrigger])
+        home2 = [(HUMenuToolbarManager *)self home];
+        if ([home2 hf_userIsAllowedToCreateTrigger])
         {
           LOBYTE(self) = 1;
           goto LABEL_8;
         }
 
-        v7 = HFForceAllowAutomationCreation();
+        hf_containsActionableAccessories = HFForceAllowAutomationCreation();
         goto LABEL_7;
       }
 
-      if ([v4 isEqualToString:@"HUMenuToolbarIdentifierDiscover"])
+      if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierDiscover"])
       {
-        v5 = [(HUMenuToolbarManager *)self home];
-        if (v5)
+        home = [(HUMenuToolbarManager *)self home];
+        if (home)
         {
-          v12 = [MEMORY[0x277D14B68] getAvailabilityDictionary];
-          LOBYTE(self) = v12 != 0;
+          getAvailabilityDictionary = [MEMORY[0x277D14B68] getAvailabilityDictionary];
+          LOBYTE(self) = getAvailabilityDictionary != 0;
 
           goto LABEL_26;
         }
@@ -470,49 +470,49 @@ LABEL_25:
         goto LABEL_25;
       }
 
-      if ([v4 isEqualToString:@"HUMenuToolbarIdentifierAboutHomeKit"])
+      if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierAboutHomeKit"])
       {
         LOBYTE(self) = 1;
         goto LABEL_27;
       }
 
-      if ([v4 isEqualToString:@"HUMenuToolbarIdentifierInvitation"])
+      if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierInvitation"])
       {
-        v5 = [MEMORY[0x277D146E8] sharedDispatcher];
-        v6 = [v5 homeManager];
-        v14 = [v6 incomingHomeInvitations];
+        home = [MEMORY[0x277D146E8] sharedDispatcher];
+        home2 = [home homeManager];
+        incomingHomeInvitations = [home2 incomingHomeInvitations];
       }
 
       else
       {
-        if (![v4 isEqualToString:@"HUMenuToolbarIdentifierHomeList"])
+        if (![identifierCopy isEqualToString:@"HUMenuToolbarIdentifierHomeList"])
         {
           LOBYTE(self) = 0;
           goto LABEL_27;
         }
 
-        v5 = [MEMORY[0x277D146E8] sharedDispatcher];
-        v6 = [v5 homeManager];
-        v14 = [v6 homes];
+        home = [MEMORY[0x277D146E8] sharedDispatcher];
+        home2 = [home homeManager];
+        incomingHomeInvitations = [home2 homes];
       }
 
-      v8 = v14;
-      LOBYTE(self) = [v14 count] != 0;
+      accessories = incomingHomeInvitations;
+      LOBYTE(self) = [incomingHomeInvitations count] != 0;
     }
 
     goto LABEL_8;
   }
 
-  v5 = [(HUMenuToolbarManager *)self home];
-  if (![v5 hf_currentUserIsAdministrator])
+  home = [(HUMenuToolbarManager *)self home];
+  if (![home hf_currentUserIsAdministrator])
   {
     goto LABEL_25;
   }
 
-  v6 = [(HUMenuToolbarManager *)self home];
-  v7 = [v6 hf_userCanCreateTrigger];
+  home2 = [(HUMenuToolbarManager *)self home];
+  hf_containsActionableAccessories = [home2 hf_userCanCreateTrigger];
 LABEL_7:
-  LOBYTE(self) = v7;
+  LOBYTE(self) = hf_containsActionableAccessories;
 LABEL_8:
 
 LABEL_26:
@@ -521,21 +521,21 @@ LABEL_27:
   return self;
 }
 
-- (id)_buildMenuForIdentifier:(id)a3
+- (id)_buildMenuForIdentifier:(id)identifier
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqualToString:@"HUMenuToolbarIdentifierHomeList"] && -[HUMenuToolbarManager _shouldEnableIdentifier:](self, "_shouldEnableIdentifier:", v4))
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierHomeList"] && -[HUMenuToolbarManager _shouldEnableIdentifier:](self, "_shouldEnableIdentifier:", identifierCopy))
   {
-    v5 = [(HUMenuToolbarManager *)self _buildHomeMenu];
+    _buildHomeMenu = [(HUMenuToolbarManager *)self _buildHomeMenu];
   }
 
-  else if ([v4 isEqualToString:@"HUMenuToolbarIdentifierInvitation"] && -[HUMenuToolbarManager _shouldEnableIdentifier:](self, "_shouldEnableIdentifier:", v4))
+  else if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierInvitation"] && -[HUMenuToolbarManager _shouldEnableIdentifier:](self, "_shouldEnableIdentifier:", identifierCopy))
   {
-    v6 = [MEMORY[0x277D146E8] sharedDispatcher];
-    v7 = [v6 homeManager];
-    v8 = [v7 incomingHomeInvitations];
-    v9 = [v8 count];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    homeManager = [mEMORY[0x277D146E8] homeManager];
+    incomingHomeInvitations = [homeManager incomingHomeInvitations];
+    v9 = [incomingHomeInvitations count];
     v16 = HULocalizedStringWithFormat(@"HULocationInvitationCount", @"%lu", v10, v11, v12, v13, v14, v15, v9);
 
     v21[0] = MEMORY[0x277D85DD0];
@@ -547,15 +547,15 @@ LABEL_27:
     v18 = MEMORY[0x277D75710];
     v22[0] = v17;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
-    v5 = [v18 menuWithTitle:v16 image:0 identifier:v4 options:1 children:v19];
+    _buildHomeMenu = [v18 menuWithTitle:v16 image:0 identifier:identifierCopy options:1 children:v19];
   }
 
   else
   {
-    v5 = 0;
+    _buildHomeMenu = 0;
   }
 
-  return v5;
+  return _buildHomeMenu;
 }
 
 void __48__HUMenuToolbarManager__buildMenuForIdentifier___block_invoke(uint64_t a1)
@@ -564,11 +564,11 @@ void __48__HUMenuToolbarManager__buildMenuForIdentifier___block_invoke(uint64_t 
   v1 = [v2 showHomeSettingsForHome:0];
 }
 
-- (id)_buildActionForIdentifier:(id)a3
+- (id)_buildActionForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HUMenuToolbarManager *)self _imageForActionWithIdentifier:v4];
-  if ([v4 isEqualToString:@"HUMenuToolbarIdentifierAddAutomation"])
+  identifierCopy = identifier;
+  v5 = [(HUMenuToolbarManager *)self _imageForActionWithIdentifier:identifierCopy];
+  if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierAddAutomation"])
   {
     v6 = MEMORY[0x277D750C8];
     v7 = _HULocalizedStringWithDefaultValue(@"HUMenuToolbarManagerAddAutomation", @"HUMenuToolbarManagerAddAutomation", 1);
@@ -576,15 +576,15 @@ void __48__HUMenuToolbarManager__buildMenuForIdentifier___block_invoke(uint64_t 
     v17 = 3221225472;
     v18 = __50__HUMenuToolbarManager__buildActionForIdentifier___block_invoke;
     v19 = &unk_277DB8C50;
-    v20 = self;
+    selfCopy = self;
     v8 = &v16;
 LABEL_7:
-    v9 = [v6 actionWithTitle:v7 image:v5 identifier:0 handler:{v8, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20}];
+    v9 = [v6 actionWithTitle:v7 image:v5 identifier:0 handler:{v8, v11, v12, v13, v14, selfCopy2, v16, v17, v18, v19, selfCopy}];
 
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"HUMenuToolbarIdentifierAddScene"])
+  if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierAddScene"])
   {
     v6 = MEMORY[0x277D750C8];
     v7 = _HULocalizedStringWithDefaultValue(@"HUMenuToolbarManagerAddScene", @"HUMenuToolbarManagerAddScene", 1);
@@ -592,12 +592,12 @@ LABEL_7:
     v12 = 3221225472;
     v13 = __50__HUMenuToolbarManager__buildActionForIdentifier___block_invoke_2;
     v14 = &unk_277DB8C50;
-    v15 = self;
+    selfCopy2 = self;
     v8 = &v11;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"HUMenuToolbarIdentifierAboutHomeKit"])
+  if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierAboutHomeKit"])
   {
     v6 = MEMORY[0x277D750C8];
     v7 = _HULocalizedStringWithDefaultValue(@"HUMenuToolbarManagerAboutHomeKit", @"HUMenuToolbarManagerAboutHomeKit", 1);
@@ -607,7 +607,7 @@ LABEL_7:
 
   v9 = 0;
 LABEL_8:
-  if (![(HUMenuToolbarManager *)self _shouldEnableIdentifier:v4])
+  if (![(HUMenuToolbarManager *)self _shouldEnableIdentifier:identifierCopy])
   {
     [v9 setAttributes:1];
   }
@@ -634,11 +634,11 @@ void __50__HUMenuToolbarManager__buildActionForIdentifier___block_invoke_3()
   v1 = [v2 openURL:v0];
 }
 
-- (id)_buildKeyCommandForIdentifier:(id)a3
+- (id)_buildKeyCommandForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HUMenuToolbarManager *)self _imageForActionWithIdentifier:v4];
-  if ([v4 isEqualToString:@"HUMenuToolbarIdentifierEditHome"])
+  identifierCopy = identifier;
+  v5 = [(HUMenuToolbarManager *)self _imageForActionWithIdentifier:identifierCopy];
+  if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierEditHome"])
   {
     v6 = MEMORY[0x277D75650];
     v7 = _HULocalizedStringWithDefaultValue(@"HUMenuToolbarManagerEditHome", @"HUMenuToolbarManagerEditHome", 1);
@@ -655,7 +655,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v4 isEqualToString:@"HUMenuToolbarIdentifierEditRoom"])
+  if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierEditRoom"])
   {
     v6 = MEMORY[0x277D75650];
     v7 = _HULocalizedStringWithDefaultValue(@"HUMenuToolbarManagerEditRoom", @"HUMenuToolbarManagerEditRoom", 1);
@@ -664,7 +664,7 @@ LABEL_13:
     goto LABEL_5;
   }
 
-  if ([v4 isEqualToString:@"HUMenuToolbarIdentifierHome"])
+  if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierHome"])
   {
     v14 = MEMORY[0x277D75650];
     v7 = _HULocalizedStringWithDefaultValue(@"HUMenuToolbarManagerHome", @"HUMenuToolbarManagerHome", 1);
@@ -678,7 +678,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"HUMenuToolbarIdentifierAutomation"])
+  if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierAutomation"])
   {
     v14 = MEMORY[0x277D75650];
     v7 = _HULocalizedStringWithDefaultValue(@"HUMenuToolbarManagerAutomation", @"HUMenuToolbarManagerAutomation", 1);
@@ -687,7 +687,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"HUMenuToolbarIdentifierDiscover"])
+  if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierDiscover"])
   {
     v14 = MEMORY[0x277D75650];
     v7 = _HULocalizedStringWithDefaultValue(@"HUMenuToolbarManagerDiscover", @"HUMenuToolbarManagerDiscover", 1);
@@ -698,7 +698,7 @@ LABEL_12:
 
   v15 = 0;
 LABEL_14:
-  if (![(HUMenuToolbarManager *)self _shouldEnableIdentifier:v4])
+  if (![(HUMenuToolbarManager *)self _shouldEnableIdentifier:identifierCopy])
   {
     [v15 setAttributes:1];
   }
@@ -706,10 +706,10 @@ LABEL_14:
   return v15;
 }
 
-- (id)_imageForActionWithIdentifier:(id)a3
+- (id)_imageForActionWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"HUMenuToolbarIdentifierAddAutomation"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierAddAutomation"])
   {
     v4 = 1;
 LABEL_15:
@@ -717,37 +717,37 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ([v3 isEqualToString:@"HUMenuToolbarIdentifierAddScene"])
+  if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierAddScene"])
   {
     v4 = 2;
     goto LABEL_15;
   }
 
-  if ([v3 isEqualToString:@"HUMenuToolbarIdentifierEditHome"])
+  if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierEditHome"])
   {
     v4 = 7;
     goto LABEL_15;
   }
 
-  if ([v3 isEqualToString:@"HUMenuToolbarIdentifierEditRoom"])
+  if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierEditRoom"])
   {
     v4 = 6;
     goto LABEL_15;
   }
 
-  if ([v3 isEqualToString:@"HUMenuToolbarIdentifierHome"])
+  if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierHome"])
   {
     v4 = 10;
     goto LABEL_15;
   }
 
-  if ([v3 isEqualToString:@"HUMenuToolbarIdentifierAutomation"])
+  if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierAutomation"])
   {
     v4 = 12;
     goto LABEL_15;
   }
 
-  if ([v3 isEqualToString:@"HUMenuToolbarIdentifierDiscover"])
+  if ([identifierCopy isEqualToString:@"HUMenuToolbarIdentifierDiscover"])
   {
     v4 = 11;
     goto LABEL_15;
@@ -762,25 +762,25 @@ LABEL_16:
 - (id)_buildHomeMenu
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = MEMORY[0x277D750C8];
   v5 = _HULocalizedStringWithDefaultValue(@"HUMenuToolbarManagerHomes", @"HUMenuToolbarManagerHomes", 1);
   v6 = [v4 actionWithTitle:v5 image:0 identifier:0 handler:&__block_literal_global_195];
 
   [v6 setAttributes:1];
-  v26 = v3;
+  v26 = array;
   v24 = v6;
-  [v3 addObject:v6];
+  [array addObject:v6];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = [MEMORY[0x277D146E8] sharedDispatcher];
-  v8 = [v7 homeManager];
-  v9 = [v8 homes];
+  mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+  homeManager = [mEMORY[0x277D146E8] homeManager];
+  homes = [homeManager homes];
 
-  obj = v9;
-  v10 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  obj = homes;
+  v10 = [homes countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v10)
   {
     v11 = v10;
@@ -796,19 +796,19 @@ LABEL_16:
 
         v14 = *(*(&v28 + 1) + 8 * i);
         v15 = MEMORY[0x277D750C8];
-        v16 = [v14 name];
+        name = [v14 name];
         v27[0] = MEMORY[0x277D85DD0];
         v27[1] = 3221225472;
         v27[2] = __38__HUMenuToolbarManager__buildHomeMenu__block_invoke_2;
         v27[3] = &unk_277DBACC8;
         v27[4] = self;
         v27[5] = v14;
-        v17 = [v15 actionWithTitle:v16 image:0 identifier:0 handler:v27];
+        v17 = [v15 actionWithTitle:name image:0 identifier:0 handler:v27];
 
-        v18 = [(HUMenuToolbarManager *)self home];
-        v19 = [v18 uniqueIdentifier];
-        v20 = [v14 uniqueIdentifier];
-        v21 = [v19 isEqual:v20];
+        home = [(HUMenuToolbarManager *)self home];
+        uniqueIdentifier = [home uniqueIdentifier];
+        uniqueIdentifier2 = [v14 uniqueIdentifier];
+        v21 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
         [v17 setState:v21];
         [v26 addObject:v17];
@@ -833,105 +833,105 @@ void __38__HUMenuToolbarManager__buildHomeMenu__block_invoke_2(uint64_t a1)
 
 - (void)_editHomeMenuSelected
 {
-  v3 = [(HUMenuToolbarManager *)self appNavigator];
-  v2 = [v3 showHomeEditor];
+  appNavigator = [(HUMenuToolbarManager *)self appNavigator];
+  showHomeEditor = [appNavigator showHomeEditor];
 }
 
 - (void)_editRoomMenuSelected
 {
-  v3 = [(HUMenuToolbarManager *)self appNavigator];
-  v2 = [v3 showRoomEditor];
+  appNavigator = [(HUMenuToolbarManager *)self appNavigator];
+  showRoomEditor = [appNavigator showRoomEditor];
 }
 
 - (void)_homeMenuSelected
 {
-  v3 = [(HUMenuToolbarManager *)self appNavigator];
-  v2 = [v3 showHomeTab];
+  appNavigator = [(HUMenuToolbarManager *)self appNavigator];
+  showHomeTab = [appNavigator showHomeTab];
 }
 
 - (void)_automationMenuSelected
 {
-  v3 = [(HUMenuToolbarManager *)self appNavigator];
-  v2 = [v3 showAutomationTab];
+  appNavigator = [(HUMenuToolbarManager *)self appNavigator];
+  showAutomationTab = [appNavigator showAutomationTab];
 }
 
 - (void)_discoverMenuSelected
 {
-  v3 = [(HUMenuToolbarManager *)self appNavigator];
-  v2 = [v3 showDiscoverTab];
+  appNavigator = [(HUMenuToolbarManager *)self appNavigator];
+  showDiscoverTab = [appNavigator showDiscoverTab];
 }
 
-+ (BOOL)isValidMenuSelector:(SEL)a3 forDashboardContext:(id)a4
++ (BOOL)isValidMenuSelector:(SEL)selector forDashboardContext:(id)context
 {
-  v5 = a4;
-  v6 = [HUMenuToolbarManager isValidMenuSelector:a3];
-  if (v6 && sel__editRoomMenuSelected == a3)
+  contextCopy = context;
+  v6 = [HUMenuToolbarManager isValidMenuSelector:selector];
+  if (v6 && sel__editRoomMenuSelected == selector)
   {
-    LOBYTE(v6) = [HUMenuToolbarManager shouldEnableEditRoomForDashboardContext:v5];
+    LOBYTE(v6) = [HUMenuToolbarManager shouldEnableEditRoomForDashboardContext:contextCopy];
   }
 
   return v6;
 }
 
-+ (BOOL)shouldEnableEditRoomForDashboardContext:(id)a3
++ (BOOL)shouldEnableEditRoomForDashboardContext:(id)context
 {
-  v3 = [a3 room];
-  v4 = v3 != 0;
+  room = [context room];
+  v4 = room != 0;
 
   return v4;
 }
 
-- (void)home:(id)a3 didAddAccessory:(id)a4
+- (void)home:(id)home didAddAccessory:(id)accessory
 {
-  [(HUMenuToolbarManager *)self refreshFileMenu:a3];
+  [(HUMenuToolbarManager *)self refreshFileMenu:home];
   [(HUMenuToolbarManager *)self refreshEditMenu];
 
   [(HUMenuToolbarManager *)self refreshViewMenu];
 }
 
-- (void)home:(id)a3 didRemoveAccessory:(id)a4
+- (void)home:(id)home didRemoveAccessory:(id)accessory
 {
-  [(HUMenuToolbarManager *)self refreshFileMenu:a3];
+  [(HUMenuToolbarManager *)self refreshFileMenu:home];
   [(HUMenuToolbarManager *)self refreshEditMenu];
 
   [(HUMenuToolbarManager *)self refreshViewMenu];
 }
 
-- (void)home:(id)a3 didAddRoom:(id)a4
+- (void)home:(id)home didAddRoom:(id)room
 {
-  [(HUMenuToolbarManager *)self refreshEditMenu:a3];
+  [(HUMenuToolbarManager *)self refreshEditMenu:home];
   [(HUMenuToolbarManager *)self refreshViewMenu];
 
   [(HUMenuToolbarManager *)self refreshViewMenuChildren];
 }
 
-- (void)home:(id)a3 didRemoveRoom:(id)a4
+- (void)home:(id)home didRemoveRoom:(id)room
 {
-  [(HUMenuToolbarManager *)self refreshEditMenu:a3];
+  [(HUMenuToolbarManager *)self refreshEditMenu:home];
   [(HUMenuToolbarManager *)self refreshViewMenu];
 
   [(HUMenuToolbarManager *)self refreshViewMenuChildren];
 }
 
-- (void)home:(id)a3 didUpdateAccessControlForUser:(id)a4
+- (void)home:(id)home didUpdateAccessControlForUser:(id)user
 {
-  [(HUMenuToolbarManager *)self refreshEditMenu:a3];
+  [(HUMenuToolbarManager *)self refreshEditMenu:home];
   [(HUMenuToolbarManager *)self refreshViewMenu];
 
   [(HUMenuToolbarManager *)self refreshViewMenuChildren];
 }
 
-- (void)homeManager:(id)a3 didAddHome:(id)a4
+- (void)homeManager:(id)manager didAddHome:(id)home
 {
-  [(HUMenuToolbarManager *)self refreshEditMenu:a3];
+  [(HUMenuToolbarManager *)self refreshEditMenu:manager];
   [(HUMenuToolbarManager *)self refreshViewMenu];
 
   [(HUMenuToolbarManager *)self refreshViewMenuChildren];
 }
 
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4
+- (void)homeManager:(id)manager didRemoveHome:(id)home
 {
-  [(HUMenuToolbarManager *)self refreshEditMenu:a3];
+  [(HUMenuToolbarManager *)self refreshEditMenu:manager];
   [(HUMenuToolbarManager *)self refreshViewMenu];
 
   [(HUMenuToolbarManager *)self refreshViewMenuChildren];

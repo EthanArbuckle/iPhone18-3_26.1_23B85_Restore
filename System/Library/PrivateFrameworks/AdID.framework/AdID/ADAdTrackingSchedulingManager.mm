@@ -8,11 +8,11 @@
 - (BOOL)isSearchAdsEnabled;
 - (BOOL)isSearchOrSegmentEnabled;
 - (id)currentBundleID;
-- (id)retrieveNewsRecord:(id *)a3;
+- (id)retrieveNewsRecord:(id *)record;
 - (int64_t)latestPersonalizedConsentVersion;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
 - (void)dealloc;
 - (void)forceExpiration;
 - (void)handleAccountChange;
@@ -21,7 +21,7 @@
 - (void)migratePersonalizedAdsOnboarding;
 - (void)pushDisable;
 - (void)pushEnable;
-- (void)refreshConfiguration:(id)a3;
+- (void)refreshConfiguration:(id)configuration;
 - (void)registerForLockStateNotification;
 - (void)setSessionManagementDefaults;
 - (void)setStateForProtoAccount;
@@ -66,7 +66,7 @@ uint64_t __47__ADAdTrackingSchedulingManager_sharedInstance__block_invoke()
     v6 = +[ADAppTrackingService sharedInstance];
     v7 = +[ADIDManagerService sharedInstance];
     [(ADAdTrackingSchedulingManager *)v3 registerForLockStateNotification];
-    v8 = [MEMORY[0x277CE9600] sharedInstance];
+    mEMORY[0x277CE9600] = [MEMORY[0x277CE9600] sharedInstance];
     v9 = dispatch_queue_create("com.apple.queue.adplatforms.adTracking", 0);
     v10 = _adTrackingQueue;
     _adTrackingQueue = v9;
@@ -88,24 +88,24 @@ uint64_t __47__ADAdTrackingSchedulingManager_sharedInstance__block_invoke()
     [(ADAdTrackingSchedulingManager *)v12 setSessionManagementDefaults];
     [(ADAdTrackingSchedulingManager *)v12 handleConfiguration];
     [(ADAdTrackingSchedulingManager *)v12 pushEnable];
-    v15 = [MEMORY[0x277CCA9A0] defaultCenter];
-    v16 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v26 = MEMORY[0x277D85DD0];
     v27 = 3221225472;
     v28 = __37__ADAdTrackingSchedulingManager_init__block_invoke_3;
     v29 = &unk_278C57E38;
     v17 = v12;
     v30 = v17;
-    v18 = [v15 addObserverForName:@"com.apple.ap.adprivacyd.iTunesActiveAccountDidChangeNotification" object:0 queue:v16 usingBlock:&v26];
+    v18 = [defaultCenter addObserverForName:@"com.apple.ap.adprivacyd.iTunesActiveAccountDidChangeNotification" object:0 queue:mainQueue usingBlock:&v26];
     accountChangedNotifyToken = v17->_accountChangedNotifyToken;
     v17->_accountChangedNotifyToken = v18;
 
-    v20 = [MEMORY[0x277CE9638] sharedInstance];
-    [v20 reloadStorefront:0];
+    mEMORY[0x277CE9638] = [MEMORY[0x277CE9638] sharedInstance];
+    [mEMORY[0x277CE9638] reloadStorefront:0];
 
-    v21 = [MEMORY[0x277CCA9A0] defaultCenter];
-    v22 = [MEMORY[0x277CCABD8] mainQueue];
-    v23 = [v21 addObserverForName:@"com.apple.ap.adprivacyd.iTunesActiveStorefrontDidChangeNotification" object:0 queue:v22 usingBlock:&__block_literal_global_86];
+    defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+    mainQueue2 = [MEMORY[0x277CCABD8] mainQueue];
+    v23 = [defaultCenter2 addObserverForName:@"com.apple.ap.adprivacyd.iTunesActiveStorefrontDidChangeNotification" object:0 queue:mainQueue2 usingBlock:&__block_literal_global_86];
     storeFrontNotifyToken = v17->_storeFrontNotifyToken;
     v17->_storeFrontNotifyToken = v23;
   }
@@ -246,11 +246,11 @@ void __37__ADAdTrackingSchedulingManager_init__block_invoke_4()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v3 removeObserver:self->_storeFrontNotifyToken];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter removeObserver:self->_storeFrontNotifyToken];
 
-  v4 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v4 removeObserver:self->_accountChangedNotifyToken];
+  defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter2 removeObserver:self->_accountChangedNotifyToken];
 
   v5.receiver = self;
   v5.super_class = ADAdTrackingSchedulingManager;
@@ -288,16 +288,16 @@ void __37__ADAdTrackingSchedulingManager_init__block_invoke_4()
 - (void)migratePersonalizedAdsFromLAT
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [MEMORY[0x277CE9630] sharedInstance];
-  v4 = [v3 BOOLForKey:@"personalizedAdsMigrated"];
+  mEMORY[0x277CE9630] = [MEMORY[0x277CE9630] sharedInstance];
+  v4 = [mEMORY[0x277CE9630] BOOLForKey:@"personalizedAdsMigrated"];
 
   if ((v4 & 1) == 0)
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: Personalized Ads has not been migrated. Deriving the value from LAT", objc_opt_class()];
     _ADLog();
 
-    v6 = [MEMORY[0x277D262A0] sharedConnection];
-    v7 = [v6 effectiveBoolValueForSetting:*MEMORY[0x277D25F40]];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v7 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25F40]];
 
     if (v7 != 1)
     {
@@ -306,11 +306,11 @@ void __37__ADAdTrackingSchedulingManager_init__block_invoke_4()
       [v9 setBool:1 forKey:@"personalizedAdsDefaulted"];
     }
 
-    v10 = [MEMORY[0x277D262A0] sharedConnection];
-    [v10 setBoolValue:0 forSetting:*MEMORY[0x277D25D28]];
+    mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0]2 setBoolValue:0 forSetting:*MEMORY[0x277D25D28]];
 
-    v11 = [MEMORY[0x277CE9630] sharedInstance];
-    [v11 setBool:1 forKey:@"personalizedAdsMigrated"];
+    mEMORY[0x277CE9630]2 = [MEMORY[0x277CE9630] sharedInstance];
+    [mEMORY[0x277CE9630]2 setBool:1 forKey:@"personalizedAdsMigrated"];
 
     v12 = ADWriteDataToKeychain();
     if (v12)
@@ -331,42 +331,42 @@ void __37__ADAdTrackingSchedulingManager_init__block_invoke_4()
 
   if (!v3)
   {
-    v4 = [MEMORY[0x277CCAD78] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: Setting UUID - %@ for session management state.", objc_opt_class(), v5];
+    v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: Setting UUID - %@ for session management state.", objc_opt_class(), uUIDString];
     _ADLog();
 
-    [v11 setObject:v5 forKey:@"PersonalizedAdsStateUUID"];
+    [v11 setObject:uUIDString forKey:@"PersonalizedAdsStateUUID"];
   }
 
   v7 = [v11 objectForKey:@"AccountStateUUID"];
 
   if (!v7)
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
+    uUID2 = [MEMORY[0x277CCAD78] UUID];
+    uUIDString2 = [uUID2 UUIDString];
 
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: Setting UUID - %@ for account DSID state.", objc_opt_class(), v9];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: Setting UUID - %@ for account DSID state.", objc_opt_class(), uUIDString2];
     _ADLog();
 
-    [v11 setObject:v9 forKey:@"AccountStateUUID"];
+    [v11 setObject:uUIDString2 forKey:@"AccountStateUUID"];
   }
 }
 
 - (void)setStateForProtoAccount
 {
-  v2 = [MEMORY[0x277CF0130] sharedInstance];
-  v3 = [v2 protoAccount];
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+  protoAccount = [mEMORY[0x277CF0130] protoAccount];
   v4 = NSSelectorFromString(&cfstr_AaIsteenprotoa.isa);
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v3 methodSignatureForSelector:v4];
+    v5 = [protoAccount methodSignatureForSelector:v4];
     if (v5)
     {
       v6 = [MEMORY[0x277CBEAE8] invocationWithMethodSignature:v5];
       [v6 setSelector:v4];
-      [v6 setTarget:v3];
+      [v6 setTarget:protoAccount];
       [v6 invoke];
       v8 = 0;
       [v6 getReturnValue:&v8];
@@ -392,15 +392,15 @@ void __37__ADAdTrackingSchedulingManager_init__block_invoke_4()
   else
   {
     v7 = +[ADAMSBagManager sharedInstance];
-    v8 = [v7 retrieveLatestPersonalizedAdsConsentVersionFromAMSBag];
+    retrieveLatestPersonalizedAdsConsentVersionFromAMSBag = [v7 retrieveLatestPersonalizedAdsConsentVersionFromAMSBag];
 
     v9 = objc_alloc(MEMORY[0x277CBEBD0]);
     v5 = [v9 initWithSuiteName:*MEMORY[0x277CE95C8]];
-    [v5 setInteger:v8 forKey:@"LatestPAVersion"];
-    LOBYTE(v8) = [(ADAdTrackingSchedulingManager *)self isSearchOrSegmentEnabled];
-    v10 = [(ADAdTrackingSchedulingManager *)self isNewsOrStocksEnabledLocality];
-    [v5 setBool:-[ADAdTrackingSchedulingManager isSearchAdsEnabled](self forKey:{"isSearchAdsEnabled") || v10, @"AdPlatformsPAAvailable"}];
-    v6 = v8 | v10;
+    [v5 setInteger:retrieveLatestPersonalizedAdsConsentVersionFromAMSBag forKey:@"LatestPAVersion"];
+    LOBYTE(retrieveLatestPersonalizedAdsConsentVersionFromAMSBag) = [(ADAdTrackingSchedulingManager *)self isSearchOrSegmentEnabled];
+    isNewsOrStocksEnabledLocality = [(ADAdTrackingSchedulingManager *)self isNewsOrStocksEnabledLocality];
+    [v5 setBool:-[ADAdTrackingSchedulingManager isSearchAdsEnabled](self forKey:{"isSearchAdsEnabled") || isNewsOrStocksEnabledLocality, @"AdPlatformsPAAvailable"}];
+    v6 = retrieveLatestPersonalizedAdsConsentVersionFromAMSBag | isNewsOrStocksEnabledLocality;
   }
 
   return v6 & 1;
@@ -409,21 +409,21 @@ void __37__ADAdTrackingSchedulingManager_init__block_invoke_4()
 - (BOOL)isSearchOrSegmentEnabled
 {
   v2 = +[ADAMSBagManager sharedInstance];
-  v3 = [v2 retrieveIsSponsoredAdsEnabledValueFromAMSBag];
+  retrieveIsSponsoredAdsEnabledValueFromAMSBag = [v2 retrieveIsSponsoredAdsEnabledValueFromAMSBag];
 
-  if (v3)
+  if (retrieveIsSponsoredAdsEnabledValueFromAMSBag)
   {
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"This country is Toro enabled"];
-    LOBYTE(v5) = 1;
+    LOBYTE(retrieveIsSponsoredAdsEnabledValueForAdTrackingdFromAMSBag) = 1;
   }
 
   else
   {
     v6 = +[ADAMSBagManager sharedInstance];
-    v5 = [v6 retrieveIsSponsoredAdsEnabledValueForAdTrackingdFromAMSBag];
+    retrieveIsSponsoredAdsEnabledValueForAdTrackingdFromAMSBag = [v6 retrieveIsSponsoredAdsEnabledValueForAdTrackingdFromAMSBag];
 
     v7 = @"not Toro enabled";
-    if (v5)
+    if (retrieveIsSponsoredAdsEnabledValueForAdTrackingdFromAMSBag)
     {
       v7 = @"being onboarded for Toro";
     }
@@ -433,20 +433,20 @@ void __37__ADAdTrackingSchedulingManager_init__block_invoke_4()
 
   _ADLog();
 
-  return v5;
+  return retrieveIsSponsoredAdsEnabledValueForAdTrackingdFromAMSBag;
 }
 
 - (BOOL)isSearchAdsEnabled
 {
   v2 = +[ADAMSBagManager sharedInstance];
-  v3 = [v2 retrieveIsSponsoredAdsEnabledValueFromAMSBag];
+  retrieveIsSponsoredAdsEnabledValueFromAMSBag = [v2 retrieveIsSponsoredAdsEnabledValueFromAMSBag];
 
-  return v3;
+  return retrieveIsSponsoredAdsEnabledValueFromAMSBag;
 }
 
-- (id)retrieveNewsRecord:(id *)a3
+- (id)retrieveNewsRecord:(id *)record
 {
-  v3 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:@"com.apple.news" allowPlaceholder:0 error:a3];
+  v3 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:@"com.apple.news" allowPlaceholder:0 error:record];
 
   return v3;
 }
@@ -486,8 +486,8 @@ LABEL_16:
   }
 
   v12 = [v10 objectForKeyedSubscript:@"MCWhitelistedLocales"];
-  v13 = [MEMORY[0x277CBEAF8] currentLocale];
-  v14 = [v13 objectForKey:*MEMORY[0x277CBE690]];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v14 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
 
   v37 = 0u;
   v38 = 0u;
@@ -537,8 +537,8 @@ LABEL_21:
   v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"This country %@ News enabled", v7];
   _ADLog();
 
-  v20 = [MEMORY[0x277CE9630] sharedInstance];
-  v21 = [v20 BOOLForKey:@"StocksEnabled"];
+  mEMORY[0x277CE9630] = [MEMORY[0x277CE9630] sharedInstance];
+  v21 = [mEMORY[0x277CE9630] BOOLForKey:@"StocksEnabled"];
 
   v34 = 0;
   v22 = [MEMORY[0x277CC1E70] bundleRecordWithBundleIdentifier:@"com.apple.stocks" allowPlaceholder:0 error:&v34];
@@ -554,8 +554,8 @@ LABEL_26:
 
   if (!v22 || v23)
   {
-    v27 = [MEMORY[0x277CE9630] sharedInstance];
-    [v27 setBool:0 forKey:@"StocksEnabled"];
+    mEMORY[0x277CE9630]2 = [MEMORY[0x277CE9630] sharedInstance];
+    [mEMORY[0x277CE9630]2 setBool:0 forKey:@"StocksEnabled"];
 
     v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Stocks was set to enabled but cannot be found due to %@. Disabling...", v24];
     _ADLog();
@@ -576,9 +576,9 @@ LABEL_27:
 - (int64_t)latestPersonalizedConsentVersion
 {
   v2 = +[ADAMSBagManager sharedInstance];
-  v3 = [v2 retrieveLatestPersonalizedAdsConsentVersionFromAMSBag];
+  retrieveLatestPersonalizedAdsConsentVersionFromAMSBag = [v2 retrieveLatestPersonalizedAdsConsentVersionFromAMSBag];
 
-  return v3;
+  return retrieveLatestPersonalizedAdsConsentVersionFromAMSBag;
 }
 
 - (BOOL)_shouldSaveConfig
@@ -595,23 +595,23 @@ LABEL_27:
 
 - (void)handleConfiguration
 {
-  v3 = [MEMORY[0x277CE9630] sharedInstance];
-  v4 = [v3 BOOLForKey:@"ForceExpireConfiguration"];
+  mEMORY[0x277CE9630] = [MEMORY[0x277CE9630] sharedInstance];
+  v4 = [mEMORY[0x277CE9630] BOOLForKey:@"ForceExpireConfiguration"];
 
   if (v4)
   {
     [(ADAdTrackingSchedulingManager *)self forceExpiration];
   }
 
-  v5 = [MEMORY[0x277CCA9A0] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
   v6 = *MEMORY[0x277CE95A8];
-  v7 = [MEMORY[0x277CCABD8] mainQueue];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __52__ADAdTrackingSchedulingManager_handleConfiguration__block_invoke;
   v9[3] = &unk_278C57E38;
   v9[4] = self;
-  v8 = [v5 addObserverForName:@"ForceExpireConfiguration" object:v6 queue:v7 usingBlock:v9];
+  v8 = [defaultCenter addObserverForName:@"ForceExpireConfiguration" object:v6 queue:mainQueue usingBlock:v9];
 }
 
 uint64_t __52__ADAdTrackingSchedulingManager_handleConfiguration__block_invoke(uint64_t a1)
@@ -625,46 +625,46 @@ uint64_t __52__ADAdTrackingSchedulingManager_handleConfiguration__block_invoke(u
   return [v3 refreshConfiguration:0];
 }
 
-- (void)refreshConfiguration:(id)a3
+- (void)refreshConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   if ([(ADAdTrackingSchedulingManager *)self isAdEnabledLocality])
   {
-    v5 = [MEMORY[0x277CE96B8] sharedInstance];
-    v6 = [MEMORY[0x277CBEAA8] date];
-    v7 = [v6 AD_toServerTime];
+    mEMORY[0x277CE96B8] = [MEMORY[0x277CE96B8] sharedInstance];
+    date = [MEMORY[0x277CBEAA8] date];
+    aD_toServerTime = [date AD_toServerTime];
 
-    v8 = [v5 configurations];
-    if (v8 && (v9 = v8, v10 = [v5 configurationExpirationTime], v9, v10 > v7))
+    configurations = [mEMORY[0x277CE96B8] configurations];
+    if (configurations && (v9 = configurations, v10 = [mEMORY[0x277CE96B8] configurationExpirationTime], v9, v10 > aD_toServerTime))
     {
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Checking if config data has been saved to promotedcontentd key"];
       _ADLog();
 
       if ([(ADAdTrackingSchedulingManager *)self _shouldSaveConfig])
       {
-        [v5 saveConfig];
+        [mEMORY[0x277CE96B8] saveConfig];
       }
 
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Configuration Data has not yet expired. (%d > %d)", objc_msgSend(v5, "configurationExpirationTime"), v7];
+      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Configuration Data has not yet expired. (%d > %d)", objc_msgSend(mEMORY[0x277CE96B8], "configurationExpirationTime"), aD_toServerTime];
       _ADLog();
 
-      if (v4)
+      if (configurationCopy)
       {
-        v4[2](v4, 0);
+        configurationCopy[2](configurationCopy, 0);
       }
     }
 
     else
     {
-      v14 = [MEMORY[0x277CE96B8] workQueue];
+      workQueue = [MEMORY[0x277CE96B8] workQueue];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __54__ADAdTrackingSchedulingManager_refreshConfiguration___block_invoke;
       v15[3] = &unk_278C585A0;
       v15[4] = self;
-      v17 = v4;
-      v16 = v5;
-      [v14 addOperationWithBlock:v15];
+      v17 = configurationCopy;
+      v16 = mEMORY[0x277CE96B8];
+      [workQueue addOperationWithBlock:v15];
     }
   }
 
@@ -673,9 +673,9 @@ uint64_t __52__ADAdTrackingSchedulingManager_handleConfiguration__block_invoke(u
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@]: Not refreshing configuration because this is not an Ad-enabled locality", objc_opt_class()];
     _ADLog();
 
-    if (v4)
+    if (configurationCopy)
     {
-      v4[2](v4, 0);
+      configurationCopy[2](configurationCopy, 0);
     }
   }
 }
@@ -756,28 +756,28 @@ void __54__ADAdTrackingSchedulingManager_refreshConfiguration___block_invoke_2(u
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expiring and Refreshing the configuration message now."];
   _ADLog();
 
-  v3 = [MEMORY[0x277CE9630] sharedInstance];
-  [v3 setBool:0 forKey:@"ForceExpireConfiguration"];
+  mEMORY[0x277CE9630] = [MEMORY[0x277CE9630] sharedInstance];
+  [mEMORY[0x277CE9630] setBool:0 forKey:@"ForceExpireConfiguration"];
 
-  v4 = [MEMORY[0x277CE96B8] sharedInstance];
-  [v4 setConfigurationExpirationTime:0];
+  mEMORY[0x277CE96B8] = [MEMORY[0x277CE96B8] sharedInstance];
+  [mEMORY[0x277CE96B8] setConfigurationExpirationTime:0];
 }
 
 - (id)currentBundleID
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (![v3 length])
+  if (![bundleIdentifier length])
   {
-    v4 = [MEMORY[0x277CCA8D8] mainBundle];
-    v5 = [v4 executablePath];
-    v6 = [v5 lastPathComponent];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    executablePath = [mainBundle2 executablePath];
+    lastPathComponent = [executablePath lastPathComponent];
 
-    v3 = v6;
+    bundleIdentifier = lastPathComponent;
   }
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (APSConnection)pushConnection
@@ -806,26 +806,26 @@ void __54__ADAdTrackingSchedulingManager_refreshConfiguration___block_invoke_2(u
   return pushConnection;
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"DPID Received public token %@ on connection %@", a4, a3];
+  connection = [MEMORY[0x277CCACA8] stringWithFormat:@"DPID Received public token %@ on connection %@", token, connection];
   _ADLog();
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"DPID Received per-topic push token %@ for topic %@ identifier %@ on connection %@", a4, a5, a6, a3];
+  connection = [MEMORY[0x277CCACA8] stringWithFormat:@"DPID Received per-topic push token %@ for topic %@ identifier %@ on connection %@", token, topic, identifier, connection];
   _ADLog();
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v4 = a4;
-  v5 = [v4 userInfo];
+  messageCopy = message;
+  userInfo = [messageCopy userInfo];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [v4 topic];
+  topic = [messageCopy topic];
 
-  v8 = [v6 stringWithFormat:@"DPID APS Push received: %@ %@", v7, v5];
+  v8 = [v6 stringWithFormat:@"DPID APS Push received: %@ %@", topic, userInfo];
   _ADLog();
 
   v9 = +[ADClientDPIDManager sharedInstance];
@@ -833,8 +833,8 @@ void __54__ADAdTrackingSchedulingManager_refreshConfiguration___block_invoke_2(u
   v11[1] = 3221225472;
   v11[2] = __70__ADAdTrackingSchedulingManager_connection_didReceiveIncomingMessage___block_invoke;
   v11[3] = &unk_278C585C8;
-  v12 = v5;
-  v10 = v5;
+  v12 = userInfo;
+  v10 = userInfo;
   [v9 handlePushNotification:v10 completionHandler:v11];
 }
 
@@ -860,16 +860,16 @@ void __70__ADAdTrackingSchedulingManager_connection_didReceiveIncomingMessage___
   v3 = [@"com.apple.icloud-container." stringByAppendingString:*MEMORY[0x277CE95D8]];
   v7[0] = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
-  v5 = [(ADAdTrackingSchedulingManager *)self pushConnection];
-  [v5 setEnabledTopics:v4];
+  pushConnection = [(ADAdTrackingSchedulingManager *)self pushConnection];
+  [pushConnection setEnabledTopics:v4];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
 - (void)pushDisable
 {
-  v2 = [(ADAdTrackingSchedulingManager *)self pushConnection];
-  [v2 setEnabledTopics:0];
+  pushConnection = [(ADAdTrackingSchedulingManager *)self pushConnection];
+  [pushConnection setEnabledTopics:0];
 }
 
 - (void)handleAccountChange

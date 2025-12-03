@@ -2,39 +2,39 @@
 - (BOOL)_isPinyin;
 - (BOOL)_isWubihua;
 - (BOOL)isHandwriting;
-- (BOOL)isSwitchedToDefaultPlane:(id)a3;
+- (BOOL)isSwitchedToDefaultPlane:(id)plane;
 - (BOOL)isTenKey;
-- (BOOL)keyWillCommitCandidate:(id)a3;
+- (BOOL)keyWillCommitCandidate:(id)candidate;
 - (CGRect)_determineHandwritingBound;
-- (TypistKeyboardChinese)initWithCoder:(id)a3;
+- (TypistKeyboardChinese)initWithCoder:(id)coder;
 - (id)_flickGestureDirection;
-- (id)changeKeyNameToGenericCharacter:(id)a3;
-- (id)generateKeyplaneSwitchTable:(id)a3;
-- (id)generateKeystrokeStream:(id)a3;
-- (id)getExpectedPlaneNameForKey:(id)a3 currentPlane:(id)a4;
-- (id)getPostfixKey:(id)a3;
-- (id)init:(id)a3 options:(id)a4;
-- (id)setupKeyboardInfo:(id)a3 options:(id)a4;
+- (id)changeKeyNameToGenericCharacter:(id)character;
+- (id)generateKeyplaneSwitchTable:(id)table;
+- (id)generateKeystrokeStream:(id)stream;
+- (id)getExpectedPlaneNameForKey:(id)key currentPlane:(id)plane;
+- (id)getPostfixKey:(id)key;
+- (id)init:(id)init options:(id)options;
+- (id)setupKeyboardInfo:(id)info options:(id)options;
 - (id)willDirectlyCommitNumbersAndPunctuationSet;
 - (id)willSwitchToDefaultPlaneCharacterSet;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setupSentenceBoundryStrings;
-- (void)setupTenKey:(id)a3 forKey:(id)a4 keyName:(id)a5 planeName:(id)a6;
+- (void)setupTenKey:(id)key forKey:(id)forKey keyName:(id)name planeName:(id)planeName;
 @end
 
 @implementation TypistKeyboardChinese
 
-- (id)init:(id)a3 options:(id)a4
+- (id)init:(id)init options:(id)options
 {
   v5.receiver = self;
   v5.super_class = TypistKeyboardChinese;
-  return [(TypistKeyboard *)&v5 init:a3 options:a4 locale:@"zh_Han"];
+  return [(TypistKeyboard *)&v5 init:init options:options locale:@"zh_Han"];
 }
 
-- (id)setupKeyboardInfo:(id)a3 options:(id)a4
+- (id)setupKeyboardInfo:(id)info options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  infoCopy = info;
   v8 = [(TypistKeyboard *)self keysDataForInputMode:@"zh" andFileName:@"Keyboard-zh.plist"];
   [(TypistKeyboardChinese *)self setFlickTable:v8];
 
@@ -46,7 +46,7 @@
   [(TypistKeyboardChinese *)self setPinyinMap:&unk_28802A578];
   v25.receiver = self;
   v25.super_class = TypistKeyboardChinese;
-  v11 = [(TypistKeyboard *)&v25 setupKeyboardInfo:v7 options:v6];
+  v11 = [(TypistKeyboard *)&v25 setupKeyboardInfo:infoCopy options:optionsCopy];
 
   if (!v11)
   {
@@ -54,20 +54,20 @@
     v12 = [TypistCandidateBar initWithTypistKeyboard:self];
     [(TypistKeyboard *)self setCandidatebar:v12];
 
-    v13 = [(TypistKeyboard *)self keyboardID];
-    v14 = [v13 lowercaseString];
-    v15 = [v14 hasPrefix:@"zh_hant-zhuyin"];
+    keyboardID = [(TypistKeyboard *)self keyboardID];
+    lowercaseString = [keyboardID lowercaseString];
+    v15 = [lowercaseString hasPrefix:@"zh_hant-zhuyin"];
 
     if (v15)
     {
-      v16 = [(TypistKeyboard *)self keyPlanes];
-      v17 = [(TypistKeyboard *)self defaultPlaneName];
-      v18 = [v16 objectForKeyedSubscript:v17];
+      keyPlanes = [(TypistKeyboard *)self keyPlanes];
+      defaultPlaneName = [(TypistKeyboard *)self defaultPlaneName];
+      v18 = [keyPlanes objectForKeyedSubscript:defaultPlaneName];
       v19 = [v18 objectForKeyedSubscript:@" "];
       v20 = [v19 mutableCopy];
-      v21 = [(TypistKeyboard *)self keyPlanes];
-      v22 = [(TypistKeyboard *)self defaultPlaneName];
-      v23 = [v21 objectForKeyedSubscript:v22];
+      keyPlanes2 = [(TypistKeyboard *)self keyPlanes];
+      defaultPlaneName2 = [(TypistKeyboard *)self defaultPlaneName];
+      v23 = [keyPlanes2 objectForKeyedSubscript:defaultPlaneName2];
       [v23 setObject:v20 forKeyedSubscript:@"ˉ"];
     }
   }
@@ -77,46 +77,46 @@
 
 - (BOOL)_isPinyin
 {
-  v2 = [(TypistKeyboard *)self keyboardID];
-  v3 = [v2 lowercaseString];
-  v4 = [v3 containsString:@"pinyin"];
+  keyboardID = [(TypistKeyboard *)self keyboardID];
+  lowercaseString = [keyboardID lowercaseString];
+  v4 = [lowercaseString containsString:@"pinyin"];
 
   return v4;
 }
 
 - (BOOL)_isWubihua
 {
-  v2 = [(TypistKeyboard *)self keyboardID];
-  v3 = [v2 lowercaseString];
-  v4 = [v3 containsString:@"wubihua"];
+  keyboardID = [(TypistKeyboard *)self keyboardID];
+  lowercaseString = [keyboardID lowercaseString];
+  v4 = [lowercaseString containsString:@"wubihua"];
 
   return v4;
 }
 
-- (id)changeKeyNameToGenericCharacter:(id)a3
+- (id)changeKeyNameToGenericCharacter:(id)character
 {
-  v4 = a3;
-  if ([v4 containsString:@"TenKey-Chinese-Wubihua-Alphabet-Keyplane-Switch-Key"])
+  characterCopy = character;
+  if ([characterCopy containsString:@"TenKey-Chinese-Wubihua-Alphabet-Keyplane-Switch-Key"])
   {
     v5 = @"alphabet-plane";
   }
 
-  else if ([v4 containsString:@"TenKey-Number-To-Number-Alternative-Keyplane-Switch-Key"])
+  else if ([characterCopy containsString:@"TenKey-Number-To-Number-Alternative-Keyplane-Switch-Key"])
   {
     v5 = @"number-alternative-plane";
   }
 
-  else if ([v4 containsString:@"TenKey-Pinyin-Keyplane-Switch-Key"])
+  else if ([characterCopy containsString:@"TenKey-Pinyin-Keyplane-Switch-Key"])
   {
     v5 = @"pinyin-plane";
   }
 
-  else if ([v4 containsString:@"TenKey-Chinese-Number-Keyplane-Switch-Key"])
+  else if ([characterCopy containsString:@"TenKey-Chinese-Number-Keyplane-Switch-Key"])
   {
     v5 = @"number-plane";
   }
 
-  else if ([v4 containsString:@"TenKey-Wubihua-Keyplane-Switch-Key"])
+  else if ([characterCopy containsString:@"TenKey-Wubihua-Keyplane-Switch-Key"])
   {
     v5 = @"wubihua-plane";
   }
@@ -125,7 +125,7 @@
   {
     v7.receiver = self;
     v7.super_class = TypistKeyboardChinese;
-    v5 = [(TypistKeyboard *)&v7 changeKeyNameToGenericCharacter:v4];
+    v5 = [(TypistKeyboard *)&v7 changeKeyNameToGenericCharacter:characterCopy];
   }
 
   return v5;
@@ -149,17 +149,17 @@ void __47__TypistKeyboardChinese__flickGestureDirection__block_invoke()
   _flickGestureDirection_flickGestureDirection = &unk_28802A2B8;
 }
 
-- (id)getPostfixKey:(id)a3
+- (id)getPostfixKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (![(TypistKeyboardChinese *)self isTenKey]|| ![(TypistKeyboardChinese *)self _isPinyin])
   {
     goto LABEL_7;
   }
 
-  v5 = [(TypistKeyboardChinese *)self pinyinMap];
-  v6 = [v4 lowercaseString];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  pinyinMap = [(TypistKeyboardChinese *)self pinyinMap];
+  lowercaseString = [keyCopy lowercaseString];
+  v7 = [pinyinMap objectForKeyedSubscript:lowercaseString];
   if (!v7)
   {
 
@@ -167,81 +167,81 @@ void __47__TypistKeyboardChinese__flickGestureDirection__block_invoke()
   }
 
   v8 = v7;
-  v9 = [(TypistKeyboard *)self flickTyping];
+  flickTyping = [(TypistKeyboard *)self flickTyping];
 
-  if (v9)
+  if (flickTyping)
   {
 LABEL_7:
-    if (-[TypistKeyboardChinese isTenKey](self, "isTenKey") && -[TypistKeyboardChinese _isWubihua](self, "_isWubihua") && ([v4 isEqualToString:@"*"] & 1) != 0)
+    if (-[TypistKeyboardChinese isTenKey](self, "isTenKey") && -[TypistKeyboardChinese _isWubihua](self, "_isWubihua") && ([keyCopy isEqualToString:@"*"] & 1) != 0)
     {
       v12 = @"問";
     }
 
     else
     {
-      v12 = v4;
+      v12 = keyCopy;
     }
 
     goto LABEL_12;
   }
 
-  v10 = [(TypistKeyboardChinese *)self pinyinMap];
-  v11 = [v4 lowercaseString];
-  v12 = [v10 objectForKeyedSubscript:v11];
+  pinyinMap2 = [(TypistKeyboardChinese *)self pinyinMap];
+  lowercaseString2 = [keyCopy lowercaseString];
+  v12 = [pinyinMap2 objectForKeyedSubscript:lowercaseString2];
 
 LABEL_12:
 
   return v12;
 }
 
-- (void)setupTenKey:(id)a3 forKey:(id)a4 keyName:(id)a5 planeName:(id)a6
+- (void)setupTenKey:(id)key forKey:(id)forKey keyName:(id)name planeName:(id)planeName
 {
   v84[9] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  if (!-[TypistKeyboardChinese isTenKey](self, "isTenKey") || ([v10 modifiesKeyplane] & 1) != 0)
+  keyCopy = key;
+  forKeyCopy = forKey;
+  planeNameCopy = planeName;
+  if (!-[TypistKeyboardChinese isTenKey](self, "isTenKey") || ([forKeyCopy modifiesKeyplane] & 1) != 0)
   {
     goto LABEL_22;
   }
 
-  v79 = v11;
-  v78 = self;
-  if ([v11 containsString:@"pinyin"])
+  v79 = planeNameCopy;
+  selfCopy = self;
+  if ([planeNameCopy containsString:@"pinyin"])
   {
-    v12 = [(TypistKeyboardChinese *)self flickTable];
+    flickTable = [(TypistKeyboardChinese *)self flickTable];
     v13 = MEMORY[0x277CCACA8];
-    v14 = [v10 displayString];
-    v15 = [v13 stringWithFormat:@"Roman-Accent-%@-Pinyin-Plane", v14];
-    v16 = [v12 objectForKey:v15];
+    displayString = [forKeyCopy displayString];
+    v15 = [v13 stringWithFormat:@"Roman-Accent-%@-Pinyin-Plane", displayString];
+    v16 = [flickTable objectForKey:v15];
     v17 = [v16 objectForKeyedSubscript:@"Strings"];
-    v18 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v19 = [v17 stringByTrimmingCharactersInSet:v18];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v19 = [v17 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-    self = v78;
+    self = selfCopy;
     if (v19)
     {
-      v76 = v9;
-      v11 = v79;
+      v76 = keyCopy;
+      planeNameCopy = v79;
 LABEL_9:
-      v28 = [(TypistKeyboardChinese *)self whiteSpaceRegex];
-      v29 = [v28 stringByReplacingMatchesInString:v19 options:0 range:0 withTemplate:{objc_msgSend(v19, "length"), @" "}];
+      whiteSpaceRegex = [(TypistKeyboardChinese *)self whiteSpaceRegex];
+      v29 = [whiteSpaceRegex stringByReplacingMatchesInString:v19 options:0 range:0 withTemplate:{objc_msgSend(v19, "length"), @" "}];
 
-      v30 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+      whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
       v75 = v29;
-      v31 = [v29 componentsSeparatedByCharactersInSet:v30];
+      v31 = [v29 componentsSeparatedByCharactersInSet:whitespaceCharacterSet2];
       v32 = [v31 mutableCopy];
 
-      v33 = [v32 lastObject];
+      lastObject = [v32 lastObject];
       [v32 removeLastObject];
-      v74 = v33;
-      [v32 insertObject:v33 atIndex:1];
+      v74 = lastObject;
+      [v32 insertObject:lastObject atIndex:1];
       v34 = [v32 objectAtIndexedSubscript:0];
       v35 = [v32 objectAtIndexedSubscript:1];
       v36 = [v34 isEqualToString:v35];
 
-      v77 = v10;
-      [v10 frame];
+      v77 = forKeyCopy;
+      [forKeyCopy frame];
       UIRectGetCenter();
       v37 = *MEMORY[0x277CBF348];
       v38 = *(MEMORY[0x277CBF348] + 8);
@@ -265,9 +265,9 @@ LABEL_9:
         while (v44)
         {
           v45 = [v81 objectAtIndexedSubscript:v43];
-          v46 = [(TypistKeyboardChinese *)v78 _flickGestureDirection];
-          v47 = [v46 objectAtIndexedSubscript:v43 - 1];
-          v82.receiver = v78;
+          _flickGestureDirection = [(TypistKeyboardChinese *)selfCopy _flickGestureDirection];
+          v47 = [_flickGestureDirection objectAtIndexedSubscript:v43 - 1];
+          v82.receiver = selfCopy;
           v82.super_class = TypistKeyboardChinese;
           LODWORD(v48) = 1118175232;
           [(TypistKeyboard *)&v82 calculateCoordinatesForFlickGesture:v47 direction:v40 offset:v42, v48];
@@ -288,13 +288,13 @@ LABEL_9:
           v83[4] = @"y";
           v55 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.2f", v52];
           v84[4] = v55;
-          v84[5] = v11;
+          v84[5] = planeNameCopy;
           v83[5] = @"plane";
           v83[6] = @"type";
           v84[6] = @"gesture";
           v83[7] = @"more-after";
-          v56 = [v77 cache];
-          v57 = [v56 objectForKey:@"more-after"];
+          cache = [v77 cache];
+          v57 = [cache objectForKey:@"more-after"];
           v58 = v57;
           v59 = &unk_2880299B8;
           if (v57)
@@ -304,13 +304,13 @@ LABEL_9:
 
           v84[7] = v59;
           v83[8] = @"direction";
-          v60 = [(TypistKeyboardChinese *)v78 _flickGestureDirection];
-          v61 = [v60 objectAtIndexedSubscript:v43 - 1];
+          _flickGestureDirection2 = [(TypistKeyboardChinese *)selfCopy _flickGestureDirection];
+          v61 = [_flickGestureDirection2 objectAtIndexedSubscript:v43 - 1];
           v84[8] = v61;
           v62 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v84 forKeys:v83 count:9];
           [v76 setObject:v62 forKey:v53];
 
-          v11 = v79;
+          planeNameCopy = v79;
           ++v43;
           ++v44;
           if (v43 >= [v81 count])
@@ -321,23 +321,23 @@ LABEL_9:
 
         v63 = objc_opt_class();
         v64 = NSStringFromClass(v63);
-        v73 = [v77 representedString];
+        representedString = [v77 representedString];
         TYLog(@"%@ - setupTenKey: WARNING! More than 4 flicks found for %@ - %@", v65, v66, v67, v68, v69, v70, v71, v64);
       }
 
 LABEL_21:
 
-      v9 = v76;
-      v10 = v77;
+      keyCopy = v76;
+      forKeyCopy = v77;
       goto LABEL_22;
     }
   }
 
-  v20 = [(TypistKeyboardChinese *)self flickTable];
+  flickTable2 = [(TypistKeyboardChinese *)self flickTable];
   v21 = MEMORY[0x277CCACA8];
-  v22 = [v10 displayString];
-  v23 = [v21 stringWithFormat:@"Roman-Accent-%@", v22];
-  v24 = [v20 objectForKey:v23];
+  displayString2 = [forKeyCopy displayString];
+  v23 = [v21 stringWithFormat:@"Roman-Accent-%@", displayString2];
+  v24 = [flickTable2 objectForKey:v23];
 
   v25 = [v24 objectForKey:@"Direction"];
   LOBYTE(v23) = [v25 isEqualToString:@"flick"];
@@ -345,18 +345,18 @@ LABEL_21:
   if ((v23 & 1) == 0)
   {
 
-    v11 = v79;
+    planeNameCopy = v79;
     goto LABEL_22;
   }
 
   v26 = [v24 objectForKeyedSubscript:@"Strings"];
-  v27 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v19 = [v26 stringByTrimmingCharactersInSet:v27];
+  whitespaceCharacterSet3 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v19 = [v26 stringByTrimmingCharactersInSet:whitespaceCharacterSet3];
 
-  v11 = v79;
+  planeNameCopy = v79;
   if (v19)
   {
-    v76 = v9;
+    v76 = keyCopy;
     goto LABEL_9;
   }
 
@@ -375,25 +375,25 @@ LABEL_22:
 
 - (BOOL)isTenKey
 {
-  v4 = [(TypistKeyboard *)self keyboardID];
-  if (([v4 containsString:@"sw=Pinyin10"] & 1) == 0)
+  keyboardID = [(TypistKeyboard *)self keyboardID];
+  if (([keyboardID containsString:@"sw=Pinyin10"] & 1) == 0)
   {
-    v6 = [(TypistKeyboard *)self keyboardID];
-    v7 = [v6 containsString:@"sw=Wubihua"];
+    keyboardID2 = [(TypistKeyboard *)self keyboardID];
+    v7 = [keyboardID2 containsString:@"sw=Wubihua"];
     if (v7 && ([MEMORY[0x277D75418] currentDevice], v2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "userInterfaceIdiom") != 1))
     {
-      v5 = 1;
+      isFloating = 1;
     }
 
     else
     {
-      v8 = [(TypistKeyboard *)self keyboardID];
-      if ([v8 containsString:@"sw=Wubihua"])
+      keyboardID3 = [(TypistKeyboard *)self keyboardID];
+      if ([keyboardID3 containsString:@"sw=Wubihua"])
       {
-        v9 = [MEMORY[0x277D75418] currentDevice];
-        if ([v9 userInterfaceIdiom] == 1)
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
+        if ([currentDevice userInterfaceIdiom] == 1)
         {
-          v5 = [(TypistKeyboard *)self isFloating];
+          isFloating = [(TypistKeyboard *)self isFloating];
 
           if ((v7 & 1) == 0)
           {
@@ -404,7 +404,7 @@ LABEL_22:
         else
         {
 
-          v5 = 0;
+          isFloating = 0;
           if ((v7 & 1) == 0)
           {
 LABEL_14:
@@ -417,7 +417,7 @@ LABEL_14:
       else
       {
 
-        v5 = 0;
+        isFloating = 0;
         if (!v7)
         {
           goto LABEL_14;
@@ -428,57 +428,57 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v5 = 1;
+  isFloating = 1;
 LABEL_15:
 
-  return v5;
+  return isFloating;
 }
 
 - (BOOL)isHandwriting
 {
-  v3 = [(TypistKeyboard *)self keyboardID];
-  if ([v3 hasPrefix:@"zh_Hans-HWR@"])
+  keyboardID = [(TypistKeyboard *)self keyboardID];
+  if ([keyboardID hasPrefix:@"zh_Hans-HWR@"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(TypistKeyboard *)self keyboardID];
-    if ([v5 hasPrefix:@"zh_Hant-HWR@"])
+    keyboardID2 = [(TypistKeyboard *)self keyboardID];
+    if ([keyboardID2 hasPrefix:@"zh_Hant-HWR@"])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(TypistKeyboard *)self keyboardID];
-      v4 = [v6 hasPrefix:@"yue_Hant-HWR@"];
+      keyboardID3 = [(TypistKeyboard *)self keyboardID];
+      v4 = [keyboardID3 hasPrefix:@"yue_Hant-HWR@"];
     }
   }
 
   return v4;
 }
 
-- (id)generateKeyplaneSwitchTable:(id)a3
+- (id)generateKeyplaneSwitchTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   if ([(TypistKeyboardChinese *)self isTenKey])
   {
-    v10 = self;
+    selfCopy = self;
     v5 = &selRef_generateKeyplaneSwitchTableFor10Key_;
-    v6 = &v10;
+    v6 = &selfCopy;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v5 = &selRef_generateKeyplaneSwitchTable_;
-    v6 = &v9;
+    v6 = &selfCopy2;
   }
 
   v6[1] = TypistKeyboardChinese;
-  v7 = objc_msgSendSuper2(v6, *v5, v4, v9);
+  v7 = objc_msgSendSuper2(v6, *v5, tableCopy, selfCopy2);
 
   return v7;
 }
@@ -495,30 +495,24 @@ LABEL_15:
   return v3;
 }
 
-uint64_t __67__TypistKeyboardChinese_willDirectlyCommitNumbersAndPunctuationSet__block_invoke()
-  willDirectlyCommitNumbersAndPunctuationSet_directlyCommitNumbersAndPunctuationSet = {;
+- (BOOL)keyWillCommitCandidate:(id)candidate
+{
+  candidateCopy = candidate;
+  willDirectlyCommitNumbersAndPunctuationSet = [(TypistKeyboardChinese *)self willDirectlyCommitNumbersAndPunctuationSet];
+  v6 = [candidateCopy characterAtIndex:0];
 
-  return MEMORY[0x2821F96F8]();
+  LOBYTE(candidateCopy) = [willDirectlyCommitNumbersAndPunctuationSet characterIsMember:v6];
+  return candidateCopy;
 }
 
-- (BOOL)keyWillCommitCandidate:(id)a3
+- (BOOL)isSwitchedToDefaultPlane:(id)plane
 {
-  v4 = a3;
-  v5 = [(TypistKeyboardChinese *)self willDirectlyCommitNumbersAndPunctuationSet];
-  v6 = [v4 characterAtIndex:0];
+  planeCopy = plane;
+  willSwitchToDefaultPlaneCharacterSet = [(TypistKeyboardChinese *)self willSwitchToDefaultPlaneCharacterSet];
+  v6 = [planeCopy characterAtIndex:0];
 
-  LOBYTE(v4) = [v5 characterIsMember:v6];
-  return v4;
-}
-
-- (BOOL)isSwitchedToDefaultPlane:(id)a3
-{
-  v4 = a3;
-  v5 = [(TypistKeyboardChinese *)self willSwitchToDefaultPlaneCharacterSet];
-  v6 = [v4 characterAtIndex:0];
-
-  LOBYTE(v4) = [v5 characterIsMember:v6];
-  return v4;
+  LOBYTE(planeCopy) = [willSwitchToDefaultPlaneCharacterSet characterIsMember:v6];
+  return planeCopy;
 }
 
 - (id)willSwitchToDefaultPlaneCharacterSet
@@ -533,19 +527,13 @@ uint64_t __67__TypistKeyboardChinese_willDirectlyCommitNumbersAndPunctuationSet_
   return v3;
 }
 
-uint64_t __61__TypistKeyboardChinese_willSwitchToDefaultPlaneCharacterSet__block_invoke()
-  willSwitchToDefaultPlaneCharacterSet_willSwitchToDefaultPlaneCharacterSet = {;
-
-  return MEMORY[0x2821F96F8]();
-}
-
-- (id)getExpectedPlaneNameForKey:(id)a3 currentPlane:(id)a4
+- (id)getExpectedPlaneNameForKey:(id)key currentPlane:(id)plane
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TypistKeyboard *)self keyPlanes];
-  v9 = [v8 objectForKeyedSubscript:v7];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  keyCopy = key;
+  planeCopy = plane;
+  keyPlanes = [(TypistKeyboard *)self keyPlanes];
+  v9 = [keyPlanes objectForKeyedSubscript:planeCopy];
+  v10 = [v9 objectForKeyedSubscript:keyCopy];
   v11 = [v10 objectForKeyedSubscript:@"more-after"];
   if ([v11 BOOLValue])
   {
@@ -558,17 +546,17 @@ uint64_t __61__TypistKeyboardChinese_willSwitchToDefaultPlaneCharacterSet__block
 
   else
   {
-    v15 = [(TypistKeyboard *)self getAlternatePlanesForDefaultPlane];
-    if (![v15 containsObject:v7])
+    getAlternatePlanesForDefaultPlane = [(TypistKeyboard *)self getAlternatePlanesForDefaultPlane];
+    if (![getAlternatePlanesForDefaultPlane containsObject:planeCopy])
     {
 
 LABEL_2:
 LABEL_3:
-      v12 = [(TypistKeyboard *)self defaultPlaneName];
+      defaultPlaneName = [(TypistKeyboard *)self defaultPlaneName];
       goto LABEL_7;
     }
 
-    v16 = [(TypistKeyboardChinese *)self isSwitchedToDefaultPlane:v6];
+    v16 = [(TypistKeyboardChinese *)self isSwitchedToDefaultPlane:keyCopy];
 
     if (v16)
     {
@@ -576,27 +564,27 @@ LABEL_3:
     }
   }
 
-  v12 = v7;
+  defaultPlaneName = planeCopy;
 LABEL_7:
-  v13 = v12;
+  v13 = defaultPlaneName;
 
   return v13;
 }
 
-- (id)generateKeystrokeStream:(id)a3
+- (id)generateKeystrokeStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   if ([(TypistKeyboardChinese *)self isHandwriting])
   {
     [(TypistKeyboardChinese *)self _determineHandwritingBound];
-    v5 = [(TypistKeyboard *)self generateHandwritingStream:v4 inFrame:0 isPencil:?];
+    v5 = [(TypistKeyboard *)self generateHandwritingStream:streamCopy inFrame:0 isPencil:?];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = TypistKeyboardChinese;
-    v5 = [(TypistKeyboard *)&v8 generateKeystrokeStream:v4];
+    v5 = [(TypistKeyboard *)&v8 generateKeystrokeStream:streamCopy];
   }
 
   v6 = v5;
@@ -614,23 +602,23 @@ LABEL_7:
   return result;
 }
 
-- (TypistKeyboardChinese)initWithCoder:(id)a3
+- (TypistKeyboardChinese)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = TypistKeyboardChinese;
-  v5 = [(TypistKeyboard *)&v13 initWithCoder:v4];
+  v5 = [(TypistKeyboard *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"flickTable"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"flickTable"];
     flickTable = v5->_flickTable;
     v5->_flickTable = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pinyinMap"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pinyinMap"];
     pinyinMap = v5->_pinyinMap;
     v5->_pinyinMap = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"whiteSpaceRegex"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"whiteSpaceRegex"];
     whiteSpaceRegex = v5->_whiteSpaceRegex;
     v5->_whiteSpaceRegex = v10;
   }
@@ -638,28 +626,28 @@ LABEL_7:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = TypistKeyboardChinese;
-  [(TypistKeyboard *)&v8 encodeWithCoder:v4];
+  [(TypistKeyboard *)&v8 encodeWithCoder:coderCopy];
   flickTable = self->_flickTable;
   if (flickTable)
   {
-    [v4 encodeObject:flickTable forKey:@"flickTable"];
+    [coderCopy encodeObject:flickTable forKey:@"flickTable"];
   }
 
   pinyinMap = self->_pinyinMap;
   if (pinyinMap)
   {
-    [v4 encodeObject:pinyinMap forKey:@"pinyinMap"];
+    [coderCopy encodeObject:pinyinMap forKey:@"pinyinMap"];
   }
 
   whiteSpaceRegex = self->_whiteSpaceRegex;
   if (whiteSpaceRegex)
   {
-    [v4 encodeObject:whiteSpaceRegex forKey:@"whiteSpaceRegex"];
+    [coderCopy encodeObject:whiteSpaceRegex forKey:@"whiteSpaceRegex"];
   }
 }
 

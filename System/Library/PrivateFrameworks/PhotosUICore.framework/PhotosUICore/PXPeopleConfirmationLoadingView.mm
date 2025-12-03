@@ -1,65 +1,65 @@
 @interface PXPeopleConfirmationLoadingView
 - (PXPeopleConfirmationLoadingView)init;
-- (PXPeopleConfirmationLoadingView)initWithFrame:(CGRect)a3;
-- (PXPeopleConfirmationLoadingView)initWithFrame:(CGRect)a3 person:(id)a4;
+- (PXPeopleConfirmationLoadingView)initWithFrame:(CGRect)frame;
+- (PXPeopleConfirmationLoadingView)initWithFrame:(CGRect)frame person:(id)person;
 - (void)_updateViewVisibilityForLoadingStateInitial;
 - (void)_updateViewVisibilityForLoadingStateLoading;
 - (void)_updateViewVisibilityForLoadingStateNoneFound;
 - (void)layoutSubviews;
-- (void)setLoadingState:(int64_t)a3;
+- (void)setLoadingState:(int64_t)state;
 @end
 
 @implementation PXPeopleConfirmationLoadingView
 
 - (void)_updateViewVisibilityForLoadingStateInitial
 {
-  v3 = [(PXPeopleConfirmationLoadingView *)self noneFoundLabel];
-  [v3 setHidden:1];
+  noneFoundLabel = [(PXPeopleConfirmationLoadingView *)self noneFoundLabel];
+  [noneFoundLabel setHidden:1];
 
-  v4 = [(PXPeopleConfirmationLoadingView *)self contentLoadingView];
-  [v4 setHidden:0];
+  contentLoadingView = [(PXPeopleConfirmationLoadingView *)self contentLoadingView];
+  [contentLoadingView setHidden:0];
 
-  v5 = [(PXPeopleConfirmationLoadingView *)self avatarView];
-  [v5 setHidden:1];
+  avatarView = [(PXPeopleConfirmationLoadingView *)self avatarView];
+  [avatarView setHidden:1];
 }
 
 - (void)_updateViewVisibilityForLoadingStateNoneFound
 {
-  v3 = [(PXPeopleConfirmationLoadingView *)self avatarView];
-  [v3 setHidden:0];
+  avatarView = [(PXPeopleConfirmationLoadingView *)self avatarView];
+  [avatarView setHidden:0];
 
-  v4 = [(PXPeopleConfirmationLoadingView *)self noneFoundLabel];
-  [v4 setHidden:0];
+  noneFoundLabel = [(PXPeopleConfirmationLoadingView *)self noneFoundLabel];
+  [noneFoundLabel setHidden:0];
 
-  v5 = [(PXPeopleConfirmationLoadingView *)self contentLoadingView];
-  [v5 setHidden:1];
+  contentLoadingView = [(PXPeopleConfirmationLoadingView *)self contentLoadingView];
+  [contentLoadingView setHidden:1];
 }
 
 - (void)_updateViewVisibilityForLoadingStateLoading
 {
-  v3 = [(PXPeopleConfirmationLoadingView *)self noneFoundLabel];
-  [v3 setHidden:1];
+  noneFoundLabel = [(PXPeopleConfirmationLoadingView *)self noneFoundLabel];
+  [noneFoundLabel setHidden:1];
 
-  v4 = [(PXPeopleConfirmationLoadingView *)self contentLoadingView];
-  [v4 setHidden:0];
+  contentLoadingView = [(PXPeopleConfirmationLoadingView *)self contentLoadingView];
+  [contentLoadingView setHidden:0];
 
-  v5 = [(PXPeopleConfirmationLoadingView *)self avatarView];
-  [v5 setHidden:1];
+  avatarView = [(PXPeopleConfirmationLoadingView *)self avatarView];
+  [avatarView setHidden:1];
 }
 
-- (void)setLoadingState:(int64_t)a3
+- (void)setLoadingState:(int64_t)state
 {
-  if (self->_loadingState != a3)
+  if (self->_loadingState != state)
   {
-    self->_loadingState = a3;
-    if (a3)
+    self->_loadingState = state;
+    if (state)
     {
-      if (a3 == 2)
+      if (state == 2)
       {
         [(PXPeopleConfirmationLoadingView *)self _updateViewVisibilityForLoadingStateNoneFound];
       }
 
-      else if (a3 == 1)
+      else if (state == 1)
       {
         [(PXPeopleConfirmationLoadingView *)self _updateViewVisibilityForLoadingStateLoading];
       }
@@ -77,77 +77,77 @@
   v5.receiver = self;
   v5.super_class = PXPeopleConfirmationLoadingView;
   [(PXPeopleConfirmationLoadingView *)&v5 layoutSubviews];
-  v3 = [(PXPeopleConfirmationLoadingView *)self person];
-  v4 = [(PXPeopleConfirmationLoadingView *)self avatarView];
-  [v4 setPerson:v3];
+  person = [(PXPeopleConfirmationLoadingView *)self person];
+  avatarView = [(PXPeopleConfirmationLoadingView *)self avatarView];
+  [avatarView setPerson:person];
 }
 
-- (PXPeopleConfirmationLoadingView)initWithFrame:(CGRect)a3
+- (PXPeopleConfirmationLoadingView)initWithFrame:(CGRect)frame
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXPeopleConfirmationLoadingView.m" lineNumber:170 description:{@"%s is not available as initializer", "-[PXPeopleConfirmationLoadingView initWithFrame:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleConfirmationLoadingView.m" lineNumber:170 description:{@"%s is not available as initializer", "-[PXPeopleConfirmationLoadingView initWithFrame:]"}];
 
   abort();
 }
 
 - (PXPeopleConfirmationLoadingView)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPeopleConfirmationLoadingView.m" lineNumber:166 description:{@"%s is not available as initializer", "-[PXPeopleConfirmationLoadingView init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleConfirmationLoadingView.m" lineNumber:166 description:{@"%s is not available as initializer", "-[PXPeopleConfirmationLoadingView init]"}];
 
   abort();
 }
 
-- (PXPeopleConfirmationLoadingView)initWithFrame:(CGRect)a3 person:(id)a4
+- (PXPeopleConfirmationLoadingView)initWithFrame:(CGRect)frame person:(id)person
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v78[13] = *MEMORY[0x1E69E9840];
-  v11 = a4;
+  personCopy = person;
   v77.receiver = self;
   v77.super_class = PXPeopleConfirmationLoadingView;
-  v12 = [(PXPeopleConfirmationLoadingView *)&v77 initWithFrame:x, y, width, height];
-  if (!v12)
+  height = [(PXPeopleConfirmationLoadingView *)&v77 initWithFrame:x, y, width, height];
+  if (!height)
   {
     goto LABEL_7;
   }
 
-  v13 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(PXPeopleConfirmationLoadingView *)v12 setBackgroundColor:v13];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(PXPeopleConfirmationLoadingView *)height setBackgroundColor:systemBackgroundColor];
 
-  v14 = [MEMORY[0x1E69DC8C8] loadingConfiguration];
+  loadingConfiguration = [MEMORY[0x1E69DC8C8] loadingConfiguration];
   v15 = PXLocalizedStringFromTable(@"PXPeopleConfirmationLoadingMessageText", @"PhotosUICore");
-  [v14 setText:v15];
+  [loadingConfiguration setText:v15];
 
-  v75 = v14;
-  v16 = [objc_alloc(MEMORY[0x1E69DC8D0]) initWithConfiguration:v14];
+  v75 = loadingConfiguration;
+  v16 = [objc_alloc(MEMORY[0x1E69DC8D0]) initWithConfiguration:loadingConfiguration];
   [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v16 setHidden:1];
-  objc_storeStrong(&v12->_contentLoadingView, v16);
-  [(PXPeopleConfirmationLoadingView *)v12 addSubview:v16];
-  v12->_loadingState = 0;
-  objc_storeStrong(&v12->_person, a4);
+  objc_storeStrong(&height->_contentLoadingView, v16);
+  [(PXPeopleConfirmationLoadingView *)height addSubview:v16];
+  height->_loadingState = 0;
+  objc_storeStrong(&height->_person, person);
   v17 = [[PXPeopleScalableAvatarView alloc] initWithFrame:0.0, 0.0, 500.0, 500.0];
   [(PXPeopleScalableAvatarView *)v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(PXPeopleScalableAvatarView *)v17 setPerson:v11];
-  objc_storeStrong(&v12->_avatarView, v17);
-  [(PXPeopleConfirmationLoadingView *)v12 addSubview:v17];
+  [(PXPeopleScalableAvatarView *)v17 setPerson:personCopy];
+  objc_storeStrong(&height->_avatarView, v17);
+  [(PXPeopleConfirmationLoadingView *)height addSubview:v17];
   v18 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-  noneFoundLabel = v12->_noneFoundLabel;
-  v12->_noneFoundLabel = v18;
+  noneFoundLabel = height->_noneFoundLabel;
+  height->_noneFoundLabel = v18;
 
-  [(UILabel *)v12->_noneFoundLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(UILabel *)v12->_noneFoundLabel setNumberOfLines:0];
-  [(UILabel *)v12->_noneFoundLabel setTextAlignment:1];
-  v20 = v11;
+  [(UILabel *)height->_noneFoundLabel setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(UILabel *)height->_noneFoundLabel setNumberOfLines:0];
+  [(UILabel *)height->_noneFoundLabel setTextAlignment:1];
+  v20 = personCopy;
   if (!v20)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v34 = objc_opt_class();
     v35 = NSStringFromClass(v34);
-    [v33 handleFailureInMethod:a2 object:v12 file:@"PXPeopleConfirmationLoadingView.m" lineNumber:104 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"person", v35}];
+    [currentHandler handleFailureInMethod:a2 object:height file:@"PXPeopleConfirmationLoadingView.m" lineNumber:104 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"person", v35}];
 LABEL_10:
 
     goto LABEL_4;
@@ -156,18 +156,18 @@ LABEL_10:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v36 = objc_opt_class();
     v35 = NSStringFromClass(v36);
-    v37 = [v20 px_descriptionForAssertionMessage];
-    [v33 handleFailureInMethod:a2 object:v12 file:@"PXPeopleConfirmationLoadingView.m" lineNumber:104 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"person", v35, v37}];
+    px_descriptionForAssertionMessage = [v20 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:height file:@"PXPeopleConfirmationLoadingView.m" lineNumber:104 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"person", v35, px_descriptionForAssertionMessage}];
 
     goto LABEL_10;
   }
 
 LABEL_4:
   [v20 px_localizedName];
-  v73 = v76 = v11;
+  v73 = v76 = personCopy;
   v74 = v20;
   if ([v73 length])
   {
@@ -177,77 +177,77 @@ LABEL_4:
   }
 
   v50 = PXLocalizedStringForPersonOrPetAndVisibility(v20, 0, @"PXPeopleConfirmationNoneFoundUnnamedMessage");
-  [(UILabel *)v12->_noneFoundLabel setText:v50];
-  [(UILabel *)v12->_noneFoundLabel setHidden:1];
-  [(PXPeopleConfirmationLoadingView *)v12 addSubview:v12->_noneFoundLabel];
+  [(UILabel *)height->_noneFoundLabel setText:v50];
+  [(UILabel *)height->_noneFoundLabel setHidden:1];
+  [(PXPeopleConfirmationLoadingView *)height addSubview:height->_noneFoundLabel];
   v21 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  [(UILabel *)v12->_noneFoundLabel setFont:v21];
+  [(UILabel *)height->_noneFoundLabel setFont:v21];
 
-  [(UILabel *)v12->_noneFoundLabel setAdjustsFontForContentSizeCategory:1];
+  [(UILabel *)height->_noneFoundLabel setAdjustsFontForContentSizeCategory:1];
   v22 = objc_alloc_init(MEMORY[0x1E69DCC20]);
-  [(PXPeopleConfirmationLoadingView *)v12 addLayoutGuide:v22];
+  [(PXPeopleConfirmationLoadingView *)height addLayoutGuide:v22];
   v56 = MEMORY[0x1E696ACD8];
-  v72 = [v22 topAnchor];
-  v71 = [(PXPeopleConfirmationLoadingView *)v12 topAnchor];
-  [v72 constraintEqualToAnchor:v71];
+  topAnchor = [v22 topAnchor];
+  topAnchor2 = [(PXPeopleConfirmationLoadingView *)height topAnchor];
+  [topAnchor constraintEqualToAnchor:topAnchor2];
   v70 = v69 = v22;
   v78[0] = v70;
-  v68 = [v22 heightAnchor];
-  v67 = [(PXPeopleConfirmationLoadingView *)v12 heightAnchor];
-  v66 = [v68 constraintEqualToAnchor:v67 multiplier:0.27];
+  heightAnchor = [v22 heightAnchor];
+  heightAnchor2 = [(PXPeopleConfirmationLoadingView *)height heightAnchor];
+  v66 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.27];
   v78[1] = v66;
-  v65 = [(PXPeopleScalableAvatarView *)v17 topAnchor];
-  v64 = [v22 bottomAnchor];
-  v63 = [v65 constraintEqualToAnchor:v64];
+  topAnchor3 = [(PXPeopleScalableAvatarView *)v17 topAnchor];
+  bottomAnchor = [v22 bottomAnchor];
+  v63 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v78[2] = v63;
-  v62 = [(PXPeopleScalableAvatarView *)v17 heightAnchor];
-  v61 = [(PXPeopleConfirmationLoadingView *)v12 heightAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61 multiplier:0.25];
+  heightAnchor3 = [(PXPeopleScalableAvatarView *)v17 heightAnchor];
+  heightAnchor4 = [(PXPeopleConfirmationLoadingView *)height heightAnchor];
+  v60 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4 multiplier:0.25];
   v78[3] = v60;
-  v59 = [(PXPeopleScalableAvatarView *)v17 widthAnchor];
-  v58 = [(PXPeopleScalableAvatarView *)v17 heightAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58];
+  widthAnchor = [(PXPeopleScalableAvatarView *)v17 widthAnchor];
+  heightAnchor5 = [(PXPeopleScalableAvatarView *)v17 heightAnchor];
+  v57 = [widthAnchor constraintEqualToAnchor:heightAnchor5];
   v78[4] = v57;
-  v55 = [(PXPeopleScalableAvatarView *)v17 centerXAnchor];
-  v54 = [(PXPeopleConfirmationLoadingView *)v12 centerXAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  centerXAnchor = [(PXPeopleScalableAvatarView *)v17 centerXAnchor];
+  centerXAnchor2 = [(PXPeopleConfirmationLoadingView *)height centerXAnchor];
+  v53 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v78[5] = v53;
-  v51 = [(PXPeopleScalableAvatarView *)v17 bottomAnchor];
-  v49 = [(UILabel *)v12->_noneFoundLabel firstBaselineAnchor];
-  v47 = [v51 constraintEqualToAnchor:v49 constant:-28.0];
+  bottomAnchor2 = [(PXPeopleScalableAvatarView *)v17 bottomAnchor];
+  firstBaselineAnchor = [(UILabel *)height->_noneFoundLabel firstBaselineAnchor];
+  v47 = [bottomAnchor2 constraintEqualToAnchor:firstBaselineAnchor constant:-28.0];
   v78[6] = v47;
-  v46 = [(UILabel *)v12->_noneFoundLabel centerXAnchor];
-  v45 = [(PXPeopleConfirmationLoadingView *)v12 centerXAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  centerXAnchor3 = [(UILabel *)height->_noneFoundLabel centerXAnchor];
+  centerXAnchor4 = [(PXPeopleConfirmationLoadingView *)height centerXAnchor];
+  v44 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v78[7] = v44;
-  v43 = [(UILabel *)v12->_noneFoundLabel widthAnchor];
-  v42 = [v43 constraintEqualToConstant:325.0];
+  widthAnchor2 = [(UILabel *)height->_noneFoundLabel widthAnchor];
+  v42 = [widthAnchor2 constraintEqualToConstant:325.0];
   v78[8] = v42;
-  v41 = [v16 topAnchor];
-  v40 = [(PXPeopleConfirmationLoadingView *)v12 topAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  topAnchor4 = [v16 topAnchor];
+  topAnchor5 = [(PXPeopleConfirmationLoadingView *)height topAnchor];
+  v39 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   v78[9] = v39;
-  v38 = [v16 trailingAnchor];
-  v23 = [(PXPeopleConfirmationLoadingView *)v12 trailingAnchor];
-  v24 = [v38 constraintEqualToAnchor:v23];
+  trailingAnchor = [v16 trailingAnchor];
+  trailingAnchor2 = [(PXPeopleConfirmationLoadingView *)height trailingAnchor];
+  v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v78[10] = v24;
-  v25 = [v16 bottomAnchor];
-  v26 = [(PXPeopleConfirmationLoadingView *)v12 bottomAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  bottomAnchor3 = [v16 bottomAnchor];
+  bottomAnchor4 = [(PXPeopleConfirmationLoadingView *)height bottomAnchor];
+  v27 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v78[11] = v27;
   [v16 leadingAnchor];
   v28 = v52 = v16;
-  v29 = [(PXPeopleConfirmationLoadingView *)v12 leadingAnchor];
-  [v28 constraintEqualToAnchor:v29];
+  leadingAnchor = [(PXPeopleConfirmationLoadingView *)height leadingAnchor];
+  [v28 constraintEqualToAnchor:leadingAnchor];
   v30 = v48 = v17;
   v78[12] = v30;
   v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v78 count:13];
   [v56 activateConstraints:v31];
 
-  v11 = v76;
+  personCopy = v76;
 LABEL_7:
 
-  return v12;
+  return height;
 }
 
 @end

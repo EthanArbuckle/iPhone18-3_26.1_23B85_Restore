@@ -1,17 +1,17 @@
 @interface UNNotificationRequest
-+ (BOOL)mt_isUuidRequestIdentifier:(id)a3 matchForPodcastUuid:(id)a4;
-+ (id)mt_uniqueRequestIdentifierForPodcastUuid:(id)a3;
-+ (void)mt_accessSchedulingOptionsByRequestIdentifier:(id)a3;
++ (BOOL)mt_isUuidRequestIdentifier:(id)identifier matchForPodcastUuid:(id)uuid;
++ (id)mt_uniqueRequestIdentifierForPodcastUuid:(id)uuid;
++ (void)mt_accessSchedulingOptionsByRequestIdentifier:(id)identifier;
 - (unint64_t)mt_schedulingOptions;
-- (void)mt_setSchedulingOptions:(unint64_t)a3;
+- (void)mt_setSchedulingOptions:(unint64_t)options;
 @end
 
 @implementation UNNotificationRequest
 
-+ (id)mt_uniqueRequestIdentifierForPodcastUuid:(id)a3
++ (id)mt_uniqueRequestIdentifierForPodcastUuid:(id)uuid
 {
-  v3 = a3;
-  if (![(__CFString *)v3 length])
+  uuidCopy = uuid;
+  if (![(__CFString *)uuidCopy length])
   {
     v4 = _MTLogCategoryDefault();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -21,25 +21,25 @@
     }
   }
 
-  if (![(__CFString *)v3 length])
+  if (![(__CFString *)uuidCopy length])
   {
 
-    v3 = @"null";
+    uuidCopy = @"null";
   }
 
   v5 = +[NSUUID UUID];
-  v6 = [v5 UUIDString];
+  uUIDString = [v5 UUIDString];
 
-  v7 = [NSString stringWithFormat:@"podcastUuid-%@/%@", v3, v6];
+  v7 = [NSString stringWithFormat:@"podcastUuid-%@/%@", uuidCopy, uUIDString];
 
   return v7;
 }
 
-+ (BOOL)mt_isUuidRequestIdentifier:(id)a3 matchForPodcastUuid:(id)a4
++ (BOOL)mt_isUuidRequestIdentifier:(id)identifier matchForPodcastUuid:(id)uuid
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v6 length])
+  identifierCopy = identifier;
+  uuidCopy = uuid;
+  if (![uuidCopy length])
   {
     v7 = _MTLogCategoryDefault();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -49,10 +49,10 @@
     }
   }
 
-  if ([v6 length])
+  if ([uuidCopy length])
   {
-    v8 = [NSString stringWithFormat:@"podcastUuid-%@", v6];
-    v9 = [v5 hasPrefix:v8];
+    uuidCopy = [NSString stringWithFormat:@"podcastUuid-%@", uuidCopy];
+    v9 = [identifierCopy hasPrefix:uuidCopy];
   }
 
   else
@@ -63,10 +63,10 @@
   return v9;
 }
 
-+ (void)mt_accessSchedulingOptionsByRequestIdentifier:(id)a3
++ (void)mt_accessSchedulingOptionsByRequestIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = v3;
+  identifierCopy = identifier;
+  v4 = identifierCopy;
   if (qword_100583D28 != -1)
   {
     sub_1003B2CEC();
@@ -78,7 +78,7 @@
     goto LABEL_3;
   }
 
-  if (v3)
+  if (identifierCopy)
   {
 LABEL_3:
     v5 = qword_100583D30;
@@ -111,27 +111,27 @@ LABEL_4:
   v2 = v7[5];
   if (v2)
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
   _Block_object_dispose(&v6, 8);
 
-  return v3;
+  return integerValue;
 }
 
-- (void)mt_setSchedulingOptions:(unint64_t)a3
+- (void)mt_setSchedulingOptions:(unint64_t)options
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100127AE8;
   v3[3] = &unk_1004DD380;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = options;
   [objc_opt_class() mt_accessSchedulingOptionsByRequestIdentifier:v3];
 }
 

@@ -1,10 +1,10 @@
 @interface STManageContactsGroupSpecifierProvider
 - (STManageContactsGroupSpecifierProvider)init;
-- (void)_communicationLimitsDidChange:(id)a3;
-- (void)_showManageContactsRequestAlert:(id)a3;
-- (void)_updateContactManagementState:(int64_t)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCoordinator:(id)a3;
+- (void)_communicationLimitsDidChange:(id)change;
+- (void)_showManageContactsRequestAlert:(id)alert;
+- (void)_updateContactManagementState:(int64_t)state;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCoordinator:(id)coordinator;
 @end
 
 @implementation STManageContactsGroupSpecifierProvider
@@ -23,32 +23,32 @@
   return v2;
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits"];
   v6.receiver = self;
   v6.super_class = STManageContactsGroupSpecifierProvider;
-  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:v4];
-  [v4 addObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits" options:5 context:"KVOContextManageContactsGroupSpecifierProvider"];
+  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:coordinatorCopy];
+  [coordinatorCopy addObserver:self forKeyPath:@"contentPrivacyCoordinator.viewModel.communicationLimits" options:5 context:"KVOContextManageContactsGroupSpecifierProvider"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  if (a6 == "KVOContextManageContactsGroupSpecifierProvider")
+  changeCopy = change;
+  if (context == "KVOContextManageContactsGroupSpecifierProvider")
   {
-    v12 = a3;
+    pathCopy = path;
     [(STRootGroupSpecifierProvider *)self coordinator];
 
-    v13 = [v12 isEqualToString:@"contentPrivacyCoordinator.viewModel.communicationLimits"];
+    v13 = [pathCopy isEqualToString:@"contentPrivacyCoordinator.viewModel.communicationLimits"];
     if (v13)
     {
-      v14 = [v10 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-      v15 = [MEMORY[0x277CBEB68] null];
+      v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+      null = [MEMORY[0x277CBEB68] null];
 
-      if (v14 == v15)
+      if (v14 == null)
       {
 
         v14 = 0;
@@ -62,35 +62,35 @@
   {
     v16.receiver = self;
     v16.super_class = STManageContactsGroupSpecifierProvider;
-    v11 = a3;
-    [(STManageContactsGroupSpecifierProvider *)&v16 observeValueForKeyPath:v11 ofObject:a4 change:v10 context:a6];
+    pathCopy2 = path;
+    [(STManageContactsGroupSpecifierProvider *)&v16 observeValueForKeyPath:pathCopy2 ofObject:object change:changeCopy context:context];
   }
 }
 
-- (void)_communicationLimitsDidChange:(id)a3
+- (void)_communicationLimitsDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v6 = [v5 viewModel];
-  v18 = [v6 me];
+  changeCopy = change;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v18 = [viewModel me];
 
-  v7 = [v4 contactManagementState];
-  if (v7 == 1 && [v18 isChild])
+  contactManagementState = [changeCopy contactManagementState];
+  if (contactManagementState == 1 && [v18 isChild])
   {
-    v8 = [v18 isRemoteUser];
+    isRemoteUser = [v18 isRemoteUser];
   }
 
   else
   {
-    v8 = 1;
+    isRemoteUser = 1;
   }
 
-  [(STGroupSpecifierProvider *)self setIsHidden:v8];
-  v9 = [(STGroupSpecifierProvider *)self mutableSpecifiers];
+  [(STGroupSpecifierProvider *)self setIsHidden:isRemoteUser];
+  mutableSpecifiers = [(STGroupSpecifierProvider *)self mutableSpecifiers];
   if (![(STGroupSpecifierProvider *)self isHidden])
   {
-    v10 = [(STManageContactsGroupSpecifierProvider *)self manageContactsRequestSpecifier];
-    v11 = [v9 containsObject:v10];
+    manageContactsRequestSpecifier = [(STManageContactsGroupSpecifierProvider *)self manageContactsRequestSpecifier];
+    v11 = [mutableSpecifiers containsObject:manageContactsRequestSpecifier];
 
     if ((v11 & 1) == 0)
     {
@@ -109,19 +109,19 @@
       [v15 setObject:@"com.apple.graphic-icon.communication-limits" forKeyedSubscript:*MEMORY[0x277D3FFD8]];
       [v15 setControllerLoadAction:sel__showManageContactsRequestAlert_];
       [(STManageContactsGroupSpecifierProvider *)self setManageContactsRequestSpecifier:v15];
-      [v9 addObject:v15];
+      [mutableSpecifiers addObject:v15];
     }
   }
 }
 
-- (void)_showManageContactsRequestAlert:(id)a3
+- (void)_showManageContactsRequestAlert:(id)alert
 {
   v4 = +[STScreenTimeSettingsUIBundle bundle];
   v5 = [v4 localizedStringForKey:@"ManageContactsRequestAlertMessage" value:&stru_28766E5A8 table:0];
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 sf_isiPad];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isiPad = [currentDevice sf_isiPad];
 
-  v8 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:v5 preferredStyle:v7];
+  v8 = [MEMORY[0x277D75110] alertControllerWithTitle:0 message:v5 preferredStyle:sf_isiPad];
   v9 = [v4 localizedStringForKey:@"ManageContactsRequestApprove" value:&stru_28766E5A8 table:0];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -147,16 +147,16 @@
   [(STGroupSpecifierProvider *)self presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)_updateContactManagementState:(int64_t)a3
+- (void)_updateContactManagementState:(int64_t)state
 {
-  v4 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v7 = [v4 contentPrivacyCoordinator];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  contentPrivacyCoordinator = [coordinator contentPrivacyCoordinator];
 
-  v5 = [v7 viewModel];
-  v6 = [v5 communicationLimits];
+  viewModel = [contentPrivacyCoordinator viewModel];
+  communicationLimits = [viewModel communicationLimits];
 
-  [v6 setContactManagementState:a3];
-  [v7 saveCommunicationLimits:v6 completionHandler:0];
+  [communicationLimits setContactManagementState:state];
+  [contentPrivacyCoordinator saveCommunicationLimits:communicationLimits completionHandler:0];
 }
 
 @end

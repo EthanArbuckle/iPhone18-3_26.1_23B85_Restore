@@ -1,26 +1,26 @@
 @interface ICSearchQueryParser
-+ (id)_queryStringForSingleTokenString:(id)a3 queryFields:(id)a4 matchType:(unsigned __int8)a5 queryFlags:(id)a6;
-+ (id)prefixMatchingQueryStringForSearchString:(id)a3 enableSpellCheckSPI:(BOOL)a4 languageForSpellchecking:(id)a5 expandedTokens:(id *)a6;
-+ (id)queryStringForExpandedTokens:(id)a3 queryFields:(id)a4 matchType:(unsigned __int8)a5;
++ (id)_queryStringForSingleTokenString:(id)string queryFields:(id)fields matchType:(unsigned __int8)type queryFlags:(id)flags;
++ (id)prefixMatchingQueryStringForSearchString:(id)string enableSpellCheckSPI:(BOOL)i languageForSpellchecking:(id)spellchecking expandedTokens:(id *)tokens;
++ (id)queryStringForExpandedTokens:(id)tokens queryFields:(id)fields matchType:(unsigned __int8)type;
 @end
 
 @implementation ICSearchQueryParser
 
-+ (id)_queryStringForSingleTokenString:(id)a3 queryFields:(id)a4 matchType:(unsigned __int8)a5 queryFlags:(id)a6
++ (id)_queryStringForSingleTokenString:(id)string queryFields:(id)fields matchType:(unsigned __int8)type queryFlags:(id)flags
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [MEMORY[0x277D36268] stringByEscapingSearchString:v9];
+  stringCopy = string;
+  fieldsCopy = fields;
+  flagsCopy = flags;
+  v12 = [MEMORY[0x277D36268] stringByEscapingSearchString:stringCopy];
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
   v28 = __Block_byref_object_copy__15;
   v29 = __Block_byref_object_dispose__15;
   v30 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (!v10)
+  if (!fieldsCopy)
   {
-    v10 = [MEMORY[0x277D36268] queryFields];
+    fieldsCopy = [MEMORY[0x277D36268] queryFields];
   }
 
   v17 = MEMORY[0x277D85DD0];
@@ -29,11 +29,11 @@
   v20 = &unk_278196538;
   v13 = v12;
   v21 = v13;
-  v14 = v11;
-  v24 = a5;
+  v14 = flagsCopy;
+  typeCopy = type;
   v22 = v14;
   v23 = &v25;
-  [v10 enumerateObjectsUsingBlock:&v17];
+  [fieldsCopy enumerateObjectsUsingBlock:&v17];
   v15 = [v26[5] componentsJoinedByString:{@" || ", v17, v18, v19, v20}];
 
   _Block_object_dispose(&v25, 8);
@@ -119,18 +119,18 @@ LABEL_13:
 LABEL_14:
 }
 
-+ (id)queryStringForExpandedTokens:(id)a3 queryFields:(id)a4 matchType:(unsigned __int8)a5
++ (id)queryStringForExpandedTokens:(id)tokens queryFields:(id)fields matchType:(unsigned __int8)type
 {
-  v5 = a5;
+  typeCopy = type;
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  tokensCopy = tokens;
+  fieldsCopy = fields;
   v24 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v8;
+  obj = tokensCopy;
   v25 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v25)
   {
@@ -159,10 +159,10 @@ LABEL_14:
 
             else
             {
-              v15 = v5;
+              v15 = typeCopy;
             }
 
-            v16 = [a1 _queryStringForSingleTokenString:v14 queryFields:v9 matchType:v15 queryFlags:@"cwd"];
+            v16 = [self _queryStringForSingleTokenString:v14 queryFields:fieldsCopy matchType:v15 queryFlags:@"cwd"];
             [v12 addObject:v16];
 
             ++v13;
@@ -189,14 +189,14 @@ LABEL_14:
   return v20;
 }
 
-+ (id)prefixMatchingQueryStringForSearchString:(id)a3 enableSpellCheckSPI:(BOOL)a4 languageForSpellchecking:(id)a5 expandedTokens:(id *)a6
++ (id)prefixMatchingQueryStringForSearchString:(id)string enableSpellCheckSPI:(BOOL)i languageForSpellchecking:(id)spellchecking expandedTokens:(id *)tokens
 {
-  v8 = a4;
+  iCopy = i;
   v22[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v13 = [v12 BOOLForKey:*MEMORY[0x277D36328]];
+  stringCopy = string;
+  spellcheckingCopy = spellchecking;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v13 = [standardUserDefaults BOOLForKey:*MEMORY[0x277D36328]];
 
   if (v13)
   {
@@ -205,30 +205,30 @@ LABEL_14:
 
   else
   {
-    v14 = !v8;
+    v14 = !iCopy;
   }
 
   if (v14)
   {
-    v21 = v10;
+    v21 = stringCopy;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
     v22[0] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
 
-    v17 = [a1 queryStringForSearchString:v10 queryFields:0 matchType:1];
+    v17 = [self queryStringForSearchString:stringCopy queryFields:0 matchType:1];
   }
 
   else
   {
-    v16 = [ICSearchQueryTokenizer expandedTokensForSearchString:v10 language:v11];
-    v17 = [a1 queryStringForExpandedTokens:v16 queryFields:0 matchType:1];
+    v16 = [ICSearchQueryTokenizer expandedTokensForSearchString:stringCopy language:spellcheckingCopy];
+    v17 = [self queryStringForExpandedTokens:v16 queryFields:0 matchType:1];
   }
 
   v18 = v17;
-  if (a6)
+  if (tokens)
   {
     v19 = v16;
-    *a6 = v16;
+    *tokens = v16;
   }
 
   return v18;

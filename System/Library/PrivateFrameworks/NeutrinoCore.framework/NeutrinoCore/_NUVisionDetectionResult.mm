@@ -19,10 +19,10 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(_NUVisionDetectionResult *)self imageSize];
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{%ld, %ld}", v5, v6];
-  v8 = [(_NUVisionDetectionResult *)self observations];
-  v9 = [v3 stringWithFormat:@"<%@: %p imageSize = %@, observationCount = %lu>", v4, self, v7, objc_msgSend(v8, "count")];;
+  imageSize = [(_NUVisionDetectionResult *)self imageSize];
+  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{%ld, %ld}", imageSize, v6];
+  observations = [(_NUVisionDetectionResult *)self observations];
+  v9 = [v3 stringWithFormat:@"<%@: %p imageSize = %@, observationCount = %lu>", v4, self, v7, objc_msgSend(observations, "count")];;
 
   return v9;
 }

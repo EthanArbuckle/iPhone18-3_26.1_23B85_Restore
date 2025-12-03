@@ -1,7 +1,7 @@
 @interface _TVPlaybackFadeAnimator
 - (_TVPlaybackFadeAnimator)init;
-- (void)_beginFadeAnimationFromViewController:(id)a3 toViewController:(id)a4 containerView:(id)a5 completion:(id)a6;
-- (void)animateTransition:(id)a3;
+- (void)_beginFadeAnimationFromViewController:(id)controller toViewController:(id)viewController containerView:(id)view completion:(id)completion;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation _TVPlaybackFadeAnimator
@@ -20,40 +20,40 @@
   return result;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  v6 = [v4 viewControllerForKey:*MEMORY[0x277D77240]];
-  v7 = [v4 viewControllerForKey:*MEMORY[0x277D77230]];
+  transitionCopy = transition;
+  containerView = [transitionCopy containerView];
+  v6 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77240]];
+  v7 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77230]];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __45___TVPlaybackFadeAnimator_animateTransition___block_invoke;
   v9[3] = &unk_279D6E7F8;
-  v10 = v4;
-  v8 = v4;
-  [(_TVPlaybackFadeAnimator *)self _beginFadeAnimationFromViewController:v7 toViewController:v6 containerView:v5 completion:v9];
+  v10 = transitionCopy;
+  v8 = transitionCopy;
+  [(_TVPlaybackFadeAnimator *)self _beginFadeAnimationFromViewController:v7 toViewController:v6 containerView:containerView completion:v9];
 }
 
-- (void)_beginFadeAnimationFromViewController:(id)a3 toViewController:(id)a4 containerView:(id)a5 completion:(id)a6
+- (void)_beginFadeAnimationFromViewController:(id)controller toViewController:(id)viewController containerView:(id)view completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = [a4 view];
-  [v12 bounds];
-  [v13 setFrame:?];
-  [v13 setHidden:1];
-  [v12 addSubview:v13];
+  controllerCopy = controller;
+  completionCopy = completion;
+  viewCopy = view;
+  view = [viewController view];
+  [viewCopy bounds];
+  [view setFrame:?];
+  [view setHidden:1];
+  [viewCopy addSubview:view];
   v14 = objc_alloc(MEMORY[0x277D75D18]);
-  [v12 bounds];
+  [viewCopy bounds];
   v15 = [v14 initWithFrame:?];
   [v15 setAutoresizingMask:18];
-  v16 = [MEMORY[0x277D75348] blackColor];
-  [v15 setBackgroundColor:v16];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [v15 setBackgroundColor:blackColor];
 
   [v15 setAlpha:0.0];
-  [v12 addSubview:v15];
+  [viewCopy addSubview:v15];
 
   shouldAnimateHalfwayThenPopIn = self->_shouldAnimateHalfwayThenPopIn;
   if (shouldAnimateHalfwayThenPopIn)
@@ -87,17 +87,17 @@
   v26[1] = 3221225472;
   v26[2] = __107___TVPlaybackFadeAnimator__beginFadeAnimationFromViewController_toViewController_containerView_completion___block_invoke_2;
   v26[3] = &unk_279D6F6C0;
-  v27 = v10;
-  v28 = v13;
+  v27 = controllerCopy;
+  v28 = view;
   v32 = shouldAnimateHalfwayThenPopIn;
   v29 = v35;
-  v30 = v11;
+  v30 = completionCopy;
   v31 = transitionDuration;
   v33 = usesCustomEasing;
-  v22 = v11;
+  v22 = completionCopy;
   v23 = v35;
-  v24 = v13;
-  v25 = v10;
+  v24 = view;
+  v25 = controllerCopy;
   [v20 animateWithDuration:v21 delay:v34 options:v26 animations:transitionDuration completion:0.0];
 }
 

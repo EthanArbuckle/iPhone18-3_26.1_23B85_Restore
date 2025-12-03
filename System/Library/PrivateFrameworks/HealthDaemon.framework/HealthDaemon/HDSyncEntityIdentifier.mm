@@ -1,35 +1,35 @@
 @interface HDSyncEntityIdentifier
-+ (HDSyncEntityIdentifier)identifierWithSchema:(id)a3 entity:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (HDSyncEntityIdentifier)initWithCodableEntityIdentifier:(id)a3;
-- (HDSyncEntityIdentifier)initWithCoder:(id)a3;
-- (HDSyncEntityIdentifier)initWithEntityIdentifier:(int64_t)a3 schemaIdentifier:(id)a4;
++ (HDSyncEntityIdentifier)identifierWithSchema:(id)schema entity:(int64_t)entity;
+- (BOOL)isEqual:(id)equal;
+- (HDSyncEntityIdentifier)initWithCodableEntityIdentifier:(id)identifier;
+- (HDSyncEntityIdentifier)initWithCoder:(id)coder;
+- (HDSyncEntityIdentifier)initWithEntityIdentifier:(int64_t)identifier schemaIdentifier:(id)schemaIdentifier;
 - (id)codableEntityIdentifier;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDSyncEntityIdentifier
 
-+ (HDSyncEntityIdentifier)identifierWithSchema:(id)a3 entity:(int64_t)a4
++ (HDSyncEntityIdentifier)identifierWithSchema:(id)schema entity:(int64_t)entity
 {
-  v5 = a3;
-  v6 = [[HDSyncEntityIdentifier alloc] initWithEntityIdentifier:a4 schemaIdentifier:v5];
+  schemaCopy = schema;
+  v6 = [[HDSyncEntityIdentifier alloc] initWithEntityIdentifier:entity schemaIdentifier:schemaCopy];
 
   return v6;
 }
 
-- (HDSyncEntityIdentifier)initWithEntityIdentifier:(int64_t)a3 schemaIdentifier:(id)a4
+- (HDSyncEntityIdentifier)initWithEntityIdentifier:(int64_t)identifier schemaIdentifier:(id)schemaIdentifier
 {
-  v6 = a4;
+  schemaIdentifierCopy = schemaIdentifier;
   v12.receiver = self;
   v12.super_class = HDSyncEntityIdentifier;
   v7 = [(HDSyncEntityIdentifier *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_entityIdentifier = a3;
-    v9 = [v6 copy];
+    v7->_entityIdentifier = identifier;
+    v9 = [schemaIdentifierCopy copy];
     schemaIdentifier = v8->_schemaIdentifier;
     v8->_schemaIdentifier = v9;
   }
@@ -37,23 +37,23 @@
   return v8;
 }
 
-- (HDSyncEntityIdentifier)initWithCodableEntityIdentifier:(id)a3
+- (HDSyncEntityIdentifier)initWithCodableEntityIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 hasIdentifier])
+  identifierCopy = identifier;
+  if ([identifierCopy hasIdentifier])
   {
-    v5 = [v4 schema];
-    self = -[HDSyncEntityIdentifier initWithEntityIdentifier:schemaIdentifier:](self, "initWithEntityIdentifier:schemaIdentifier:", [v4 identifier], v5);
+    schema = [identifierCopy schema];
+    self = -[HDSyncEntityIdentifier initWithEntityIdentifier:schemaIdentifier:](self, "initWithEntityIdentifier:schemaIdentifier:", [identifierCopy identifier], schema);
 
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)codableEntityIdentifier
@@ -65,17 +65,17 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_entityIdentifier != v4[1])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_entityIdentifier != equalCopy[1])
   {
     goto LABEL_6;
   }
 
   schemaIdentifier = self->_schemaIdentifier;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (schemaIdentifier == v6)
   {
     v7 = 1;
@@ -140,22 +140,22 @@ LABEL_5:
   return v4;
 }
 
-- (HDSyncEntityIdentifier)initWithCoder:(id)a3
+- (HDSyncEntityIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"schema"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"schema"];
 
   v7 = [(HDSyncEntityIdentifier *)self initWithEntityIdentifier:v5 schemaIdentifier:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   entityIdentifier = self->_entityIdentifier;
-  v5 = a3;
-  [v5 encodeInteger:entityIdentifier forKey:@"identifier"];
-  [v5 encodeObject:self->_schemaIdentifier forKey:@"schema"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:entityIdentifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_schemaIdentifier forKey:@"schema"];
 }
 
 @end

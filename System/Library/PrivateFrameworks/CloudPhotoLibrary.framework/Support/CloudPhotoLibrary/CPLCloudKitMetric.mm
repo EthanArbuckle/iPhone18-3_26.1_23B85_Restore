@@ -1,23 +1,23 @@
 @interface CPLCloudKitMetric
 + (void)initialize;
-- (CPLCloudKitMetric)initWithName:(id)a3;
+- (CPLCloudKitMetric)initWithName:(id)name;
 - (NSString)resultDescription;
 - (id)description;
 - (id)redactedDescription;
 - (void)_submitIfNecessary;
-- (void)associateWithOperation:(id)a3;
-- (void)associatedOperationDidComplete:(id)a3;
+- (void)associateWithOperation:(id)operation;
+- (void)associatedOperationDidComplete:(id)complete;
 - (void)begin;
 - (void)drop;
 - (void)end;
-- (void)setError:(id)a3;
+- (void)setError:(id)error;
 @end
 
 @implementation CPLCloudKitMetric
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = +[NSUserDefaults standardUserDefaults];
     byte_1002C5640 = [v2 BOOLForKey:@"CPLCloudKitLogMetrics"];
@@ -51,56 +51,56 @@
   }
 }
 
-- (void)associateWithOperation:(id)a3
+- (void)associateWithOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   if (!self->_submitted)
   {
     if (byte_1002C5640 == 1)
     {
-      sub_1001AEB28(self, v4);
+      sub_1001AEB28(self, operationCopy);
     }
 
     outstandingOperations = self->_outstandingOperations;
     if (outstandingOperations)
     {
-      [(NSMutableSet *)outstandingOperations addObject:v4];
+      [(NSMutableSet *)outstandingOperations addObject:operationCopy];
     }
 
     else
     {
-      v6 = [[NSMutableSet alloc] initWithObjects:{v4, 0}];
+      v6 = [[NSMutableSet alloc] initWithObjects:{operationCopy, 0}];
       v7 = self->_outstandingOperations;
       self->_outstandingOperations = v6;
     }
   }
 }
 
-- (void)associatedOperationDidComplete:(id)a3
+- (void)associatedOperationDidComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   if (!self->_submitted)
   {
     if (byte_1002C5640 == 1)
     {
-      sub_1001AEBE8(self, v4);
+      sub_1001AEBE8(self, completeCopy);
     }
 
-    if (([(CKEventMetric *)self->_ckEventMetric associateWithCompletedOperation:v4]& 1) == 0 && (_CPLSilentLogging & 1) == 0)
+    if (([(CKEventMetric *)self->_ckEventMetric associateWithCompletedOperation:completeCopy]& 1) == 0 && (_CPLSilentLogging & 1) == 0)
     {
       v5 = sub_1000ABB78();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
-        v6 = [v4 cplOperationClassDescription];
+        cplOperationClassDescription = [completeCopy cplOperationClassDescription];
         v7 = 138412546;
-        v8 = self;
+        selfCopy = self;
         v9 = 2112;
-        v10 = v6;
+        v10 = cplOperationClassDescription;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%@: failed to associate with completed %@", &v7, 0x16u);
       }
     }
 
-    [(NSMutableSet *)self->_outstandingOperations removeObject:v4];
+    [(NSMutableSet *)self->_outstandingOperations removeObject:completeCopy];
     [(CPLCloudKitMetric *)self _submitIfNecessary];
   }
 }
@@ -128,13 +128,13 @@
   }
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v6 = v4;
-    if ([v4 isCPLOperationCancelledError])
+    v6 = errorCopy;
+    if ([errorCopy isCPLOperationCancelledError])
     {
       v5 = 2;
     }
@@ -150,7 +150,7 @@
     }
 
     self->_result = v5;
-    v4 = v6;
+    errorCopy = v6;
   }
 
   else
@@ -184,9 +184,9 @@
 - (id)description
 {
   v3 = [NSString alloc];
-  v4 = [(CPLCloudKitMetric *)self identifier];
-  v5 = [(CPLCloudKitMetric *)self resultDescription];
-  v6 = [v3 initWithFormat:@"<%@%@>", v4, v5];
+  identifier = [(CPLCloudKitMetric *)self identifier];
+  resultDescription = [(CPLCloudKitMetric *)self resultDescription];
+  v6 = [v3 initWithFormat:@"<%@%@>", identifier, resultDescription];
 
   return v6;
 }
@@ -194,28 +194,28 @@
 - (id)redactedDescription
 {
   v3 = [NSString alloc];
-  v4 = [(CPLCloudKitMetric *)self identifier];
-  v5 = [(CPLCloudKitMetric *)self resultDescription];
-  v6 = [v3 initWithFormat:@"<%@%@>", v4, v5];
+  identifier = [(CPLCloudKitMetric *)self identifier];
+  resultDescription = [(CPLCloudKitMetric *)self resultDescription];
+  v6 = [v3 initWithFormat:@"<%@%@>", identifier, resultDescription];
 
   return v6;
 }
 
-- (CPLCloudKitMetric)initWithName:(id)a3
+- (CPLCloudKitMetric)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = CPLCloudKitMetric;
   v5 = [(CPLCloudKitMetric *)&v16 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
 
     v8 = [CKEventMetric alloc];
     v9 = +[NSDate date];
-    v10 = [v8 initWithEventName:v4 atTime:v9];
+    v10 = [v8 initWithEventName:nameCopy atTime:v9];
     ckEventMetric = v5->_ckEventMetric;
     v5->_ckEventMetric = v10;
 
@@ -250,7 +250,7 @@
       {
         outstandingBeginCount = self->_outstandingBeginCount;
         v5 = 138412546;
-        v6 = self;
+        selfCopy = self;
         v7 = 2048;
         v8 = outstandingBeginCount;
         _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@: begin (%lu)", &v5, 0x16u);

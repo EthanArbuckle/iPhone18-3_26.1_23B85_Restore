@@ -1,31 +1,31 @@
 @interface HKHealthPrivacyHostRecalibrateEstimatesViewController
-+ (id)requestRemoteViewControllerWithConnectionHandler:(id)a3;
++ (id)requestRemoteViewControllerWithConnectionHandler:(id)handler;
 - (HKHealthPrivacyHostRecalibrateEstimatesControllerDelegate)delegate;
-- (void)didFinishWithError:(id)a3;
-- (void)setRequestRecord:(id)a3 completion:(id)a4;
+- (void)didFinishWithError:(id)error;
+- (void)setRequestRecord:(id)record completion:(id)completion;
 @end
 
 @implementation HKHealthPrivacyHostRecalibrateEstimatesViewController
 
-- (void)setRequestRecord:(id)a3 completion:(id)a4
+- (void)setRequestRecord:(id)record completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HKHealthPrivacyHostRecalibrateEstimatesViewController *)self _healthPrivacyServiceViewControllerProxy];
-  [v8 setRequestRecord:v7 completion:v6];
+  completionCopy = completion;
+  recordCopy = record;
+  _healthPrivacyServiceViewControllerProxy = [(HKHealthPrivacyHostRecalibrateEstimatesViewController *)self _healthPrivacyServiceViewControllerProxy];
+  [_healthPrivacyServiceViewControllerProxy setRequestRecord:recordCopy completion:completionCopy];
 }
 
-- (void)didFinishWithError:(id)a3
+- (void)didFinishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HKHealthPrivacyHostRecalibrateEstimatesViewController *)self delegate];
-  [v5 healthPrivacyHostRecalibrateEstimatesControllerDidFinishWithError:v4];
+  errorCopy = error;
+  delegate = [(HKHealthPrivacyHostRecalibrateEstimatesViewController *)self delegate];
+  [delegate healthPrivacyHostRecalibrateEstimatesControllerDidFinishWithError:errorCopy];
 }
 
-+ (id)requestRemoteViewControllerWithConnectionHandler:(id)a3
++ (id)requestRemoteViewControllerWithConnectionHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [objc_opt_class() requestViewController:@"HKHealthPrivacyServiceRecalibrateEstimatesViewController" fromServiceWithBundleIdentifier:*MEMORY[0x1E696C888] connectionHandler:v3];
+  handlerCopy = handler;
+  v4 = [objc_opt_class() requestViewController:@"HKHealthPrivacyServiceRecalibrateEstimatesViewController" fromServiceWithBundleIdentifier:*MEMORY[0x1E696C888] connectionHandler:handlerCopy];
 
   return v4;
 }

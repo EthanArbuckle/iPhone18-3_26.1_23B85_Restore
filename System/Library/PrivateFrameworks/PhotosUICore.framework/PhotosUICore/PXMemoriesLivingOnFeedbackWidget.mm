@@ -1,17 +1,17 @@
 @interface PXMemoriesLivingOnFeedbackWidget
 - (BOOL)hasContentForCurrentInput;
-- (CGSize)_layoutTokenViewsWithWidth:(double)a3;
+- (CGSize)_layoutTokenViewsWithWidth:(double)width;
 - (NSArray)featureViews;
 - (PXWidgetDelegate)widgetDelegate;
 - (UIView)contentView;
 - (id)_loadContentView;
-- (id)_tokenViewsWithSuperview:(id)a3;
+- (id)_tokenViewsWithSuperview:(id)superview;
 - (void)_loadContentData;
-- (void)_loadFeaturesFromPhotosGraphProperties:(id)a3;
+- (void)_loadFeaturesFromPhotosGraphProperties:(id)properties;
 - (void)_showReportFeedback;
 - (void)loadContentData;
-- (void)setContext:(id)a3;
-- (void)setWidgetDelegate:(id)a3;
+- (void)setContext:(id)context;
+- (void)setWidgetDelegate:(id)delegate;
 @end
 
 @implementation PXMemoriesLivingOnFeedbackWidget
@@ -26,15 +26,15 @@
 - (void)_showReportFeedback
 {
   v3 = [PXMemoryDiagnosticsViewController alloc];
-  v4 = [(PXMemoriesLivingOnFeedbackWidget *)self memory];
-  v6 = [(PXMemoryDiagnosticsViewController *)v3 initWithMemory:v4];
+  memory = [(PXMemoriesLivingOnFeedbackWidget *)self memory];
+  v6 = [(PXMemoryDiagnosticsViewController *)v3 initWithMemory:memory];
 
   [(PXCuratedAssetCollectionDiagnosticsViewController *)v6 setShouldPresentTapToRadar:1];
-  v5 = [(PXMemoriesLivingOnFeedbackWidget *)self widgetDelegate];
-  [v5 widget:self transitionToViewController:v6 withTransitionType:2];
+  widgetDelegate = [(PXMemoriesLivingOnFeedbackWidget *)self widgetDelegate];
+  [widgetDelegate widget:self transitionToViewController:v6 withTransitionType:2];
 }
 
-- (CGSize)_layoutTokenViewsWithWidth:(double)a3
+- (CGSize)_layoutTokenViewsWithWidth:(double)width
 {
   v29 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695F058];
@@ -44,15 +44,15 @@
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = [(PXMemoriesLivingOnFeedbackWidget *)self featureViews];
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  featureViews = [(PXMemoriesLivingOnFeedbackWidget *)self featureViews];
+  v7 = [featureViews countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
     v8 = v7;
     x = *v4;
     y = v4[1];
     v11 = *v25;
-    v22 = a3 + -20.0;
+    v22 = width + -20.0;
     v12 = 20.0;
     v13 = 20.0;
     do
@@ -61,7 +61,7 @@
       {
         if (*v25 != v11)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(featureViews);
         }
 
         v15 = *(*(&v24 + 1) + 8 * i);
@@ -99,7 +99,7 @@
         v13 = CGRectGetMaxX(v33) + 4.0;
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v8 = [featureViews countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v8);
@@ -117,8 +117,8 @@
   featureViews = self->_featureViews;
   if (!featureViews)
   {
-    v4 = [(PXMemoriesLivingOnFeedbackWidget *)self contentView];
-    v5 = [(PXMemoriesLivingOnFeedbackWidget *)self _tokenViewsWithSuperview:v4];
+    contentView = [(PXMemoriesLivingOnFeedbackWidget *)self contentView];
+    v5 = [(PXMemoriesLivingOnFeedbackWidget *)self _tokenViewsWithSuperview:contentView];
     v6 = self->_featureViews;
     self->_featureViews = v5;
 
@@ -128,12 +128,12 @@
   return featureViews;
 }
 
-- (id)_tokenViewsWithSuperview:(id)a3
+- (id)_tokenViewsWithSuperview:(id)superview
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = v4;
+  superviewCopy = superview;
+  array = [MEMORY[0x1E695DF70] array];
+  v6 = superviewCopy;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -161,7 +161,7 @@
         v15[3] = &unk_1E774BE00;
         v15[4] = v11;
         [(PXProtoFeatureView *)v12 performChanges:v15];
-        [v5 addObject:v12];
+        [array addObject:v12];
         [v6 addSubview:v12];
       }
 
@@ -171,21 +171,21 @@
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
-- (void)_loadFeaturesFromPhotosGraphProperties:(id)a3
+- (void)_loadFeaturesFromPhotosGraphProperties:(id)properties
 {
   v88 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"info"];
+  propertiesCopy = properties;
+  v4 = [propertiesCopy objectForKeyedSubscript:@"info"];
   v49 = [v4 objectForKeyedSubscript:@"meaningLabels"];
   v53 = [v4 objectForKeyedSubscript:@"moodKeywords"];
   v54 = [v4 objectForKeyedSubscript:@"suggestedMood"];
   v51 = v4;
   v55 = [v4 objectForKeyedSubscript:@"notificationQuality"];
-  v52 = v3;
-  v5 = [v3 objectForKeyedSubscript:@"backingMoments"];
+  v52 = propertiesCopy;
+  v5 = [propertiesCopy objectForKeyedSubscript:@"backingMoments"];
   v60 = [MEMORY[0x1E695DFA8] set];
   v77 = 0u;
   v78 = 0u;
@@ -407,9 +407,9 @@
   contentView = self->_contentView;
   if (!contentView)
   {
-    v4 = [(PXMemoriesLivingOnFeedbackWidget *)self _loadContentView];
+    _loadContentView = [(PXMemoriesLivingOnFeedbackWidget *)self _loadContentView];
     v5 = self->_contentView;
-    self->_contentView = v4;
+    self->_contentView = _loadContentView;
 
     contentView = self->_contentView;
   }
@@ -419,18 +419,18 @@
 
 - (void)_loadContentData
 {
-  v7 = [(PXMemoriesLivingOnFeedbackWidget *)self context];
-  v3 = [v7 assetCollections];
-  if ([v3 count] == 1)
+  context = [(PXMemoriesLivingOnFeedbackWidget *)self context];
+  assetCollections = [context assetCollections];
+  if ([assetCollections count] == 1)
   {
-    v4 = [v3 firstObject];
-    if ([v4 assetCollectionType] == 4)
+    firstObject = [assetCollections firstObject];
+    if ([firstObject assetCollectionType] == 4)
     {
-      v5 = v4;
+      v5 = firstObject;
       [(PXMemoriesLivingOnFeedbackWidget *)self setMemory:v5];
-      v6 = [v5 photosGraphProperties];
+      photosGraphProperties = [v5 photosGraphProperties];
 
-      [(PXMemoriesLivingOnFeedbackWidget *)self _loadFeaturesFromPhotosGraphProperties:v6];
+      [(PXMemoriesLivingOnFeedbackWidget *)self _loadFeaturesFromPhotosGraphProperties:photosGraphProperties];
     }
   }
 
@@ -448,15 +448,15 @@
 - (BOOL)hasContentForCurrentInput
 {
   [(PXMemoriesLivingOnFeedbackWidget *)self loadContentData];
-  v3 = [(PXMemoriesLivingOnFeedbackWidget *)self features];
-  v4 = [v3 count];
+  features = [(PXMemoriesLivingOnFeedbackWidget *)self features];
+  v4 = [features count];
 
   return v4 != 0;
 }
 
-- (void)setWidgetDelegate:(id)a3
+- (void)setWidgetDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_widgetDelegate);
 
   v5 = obj;
@@ -467,16 +467,16 @@
   }
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   context = self->_context;
   p_context = &self->_context;
-  if (context != v5)
+  if (context != contextCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_context, a3);
-    v5 = v8;
+    v8 = contextCopy;
+    objc_storeStrong(p_context, context);
+    contextCopy = v8;
   }
 }
 

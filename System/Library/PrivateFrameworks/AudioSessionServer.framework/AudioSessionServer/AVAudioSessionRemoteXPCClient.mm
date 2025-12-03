@@ -1,43 +1,43 @@
 @interface AVAudioSessionRemoteXPCClient
-- (AVAudioSessionRemoteXPCClient)initWithServer:(id)a3 process:(ProcessInfo *)a4 delegate:;
+- (AVAudioSessionRemoteXPCClient)initWithServer:(id)server process:(ProcessInfo *)process delegate:;
 - (id).cxx_construct;
-- (void)activateSession:(unsigned int)a3 options:(unint64_t)a4 requestID:(unint64_t)a5 reply:(id)a6;
-- (void)allowAppToInitiatePlaybackTemporarilyFromBackground:(id)a3 reply:(id)a4;
-- (void)createAudioApplicationForSpecification:(id)a3 reply:(id)a4;
-- (void)createProxySession:(unsigned int)a3 reply:(id)a4;
-- (void)createSession:(unint64_t)a3 sourceAuditToken:(id *)a4 sourceSessionID:(unsigned int)a5 nameOrDeviceUID:(id)a6 clientProcessName:(id)a7 clientProcessBundleID:(id)a8 useCaseIdentifier:(unsigned int)a9 reply:(id)a10;
-- (void)deactivateSession:(unsigned int)a3 options:(unint64_t)a4 priority:(id)a5 requestID:(unint64_t)a6 reply:(id)a7;
+- (void)activateSession:(unsigned int)session options:(unint64_t)options requestID:(unint64_t)d reply:(id)reply;
+- (void)allowAppToInitiatePlaybackTemporarilyFromBackground:(id)background reply:(id)reply;
+- (void)createAudioApplicationForSpecification:(id)specification reply:(id)reply;
+- (void)createProxySession:(unsigned int)session reply:(id)reply;
+- (void)createSession:(unint64_t)session sourceAuditToken:(id *)token sourceSessionID:(unsigned int)d nameOrDeviceUID:(id)iD clientProcessName:(id)name clientProcessBundleID:(id)bundleID useCaseIdentifier:(unsigned int)identifier reply:(id)self0;
+- (void)deactivateSession:(unsigned int)session options:(unint64_t)options priority:(id)priority requestID:(unint64_t)d reply:(id)reply;
 - (void)dealloc;
-- (void)destroySession:(unsigned int)a3 reply:(id)a4;
-- (void)getApplicationMessages:(id *)a3 clientID:(unsigned int)a4 reply:(id)a5;
-- (void)getApplicationProperty:(id *)a3 clientID:(unsigned int)a4 propertyID:(id)a5 isMXProperty:(BOOL)a6 reply:(id)a7;
-- (void)getDeferredMessages:(unsigned int)a3 reply:(id)a4;
-- (void)getEnhanceDialogueLevelWithReply:(id)a3;
-- (void)getIOControllerPeriod:(unsigned int)a3 decoupledInput:(BOOL)a4 reply:(id)a5;
-- (void)getMXPropertyGenericPipe:(unsigned int)a3 propertyName:(id)a4 reply:(id)a5;
-- (void)getProperties:(unsigned int)a3 properties:(id)a4 reply:(id)a5;
-- (void)getPropertiesForCache:(unsigned int)a3 reply:(id)a4;
-- (void)getPropertiesIONode:(unsigned int)a3 properties:(id)a4 reply:(id)a5;
-- (void)getProperty:(unsigned int)a3 propertyName:(id)a4 MXProperty:(BOOL)a5 reply:(id)a6;
+- (void)destroySession:(unsigned int)session reply:(id)reply;
+- (void)getApplicationMessages:(id *)messages clientID:(unsigned int)d reply:(id)reply;
+- (void)getApplicationProperty:(id *)property clientID:(unsigned int)d propertyID:(id)iD isMXProperty:(BOOL)xProperty reply:(id)reply;
+- (void)getDeferredMessages:(unsigned int)messages reply:(id)reply;
+- (void)getEnhanceDialogueLevelWithReply:(id)reply;
+- (void)getIOControllerPeriod:(unsigned int)period decoupledInput:(BOOL)input reply:(id)reply;
+- (void)getMXPropertyGenericPipe:(unsigned int)pipe propertyName:(id)name reply:(id)reply;
+- (void)getProperties:(unsigned int)properties properties:(id)a4 reply:(id)reply;
+- (void)getPropertiesForCache:(unsigned int)cache reply:(id)reply;
+- (void)getPropertiesIONode:(unsigned int)node properties:(id)properties reply:(id)reply;
+- (void)getProperty:(unsigned int)property propertyName:(id)name MXProperty:(BOOL)xProperty reply:(id)reply;
 - (void)initWithServer:process:delegate:;
 - (void)invalidate;
-- (void)invalidateIONode:(unsigned int)a3 reply:(id)a4;
-- (void)muteInputForRecordingProcesses:(id)a3;
-- (void)sessionIDs:(id *)a3 clientID:(unsigned int)a4 reply:(id)a5;
-- (void)setEnhanceDialogueLevel:(id)a3 reply:(id)a4;
-- (void)setEnhanceDialoguePreference:(id)a3 reply:(id)a4;
-- (void)setIONode:(unsigned int)a3 playState:(unsigned int)a4 modes:(unsigned int)a5 reply:(id)a6;
-- (void)setMXPropertyOnAllSessions:(id *)a3 clientID:(unsigned int)a4 MXProperty:(id)a5 values:(id)a6 reply:(id)a7;
-- (void)setProperties:(unsigned int)a3 values:(id)a4 MXProperties:(BOOL)a5 batchStrategy:(int)a6 genericMXPipe:(BOOL)a7 reply:(id)a8;
-- (void)setPropertiesIONode:(unsigned int)a3 values:(id)a4 reply:(id)a5;
-- (void)setSessionPlayState:(unsigned int)a3 playState:(unsigned int)a4 playerType:(unsigned int)a5 playerRef:(id)a6 modes:(unsigned int)a7 reply:(id)a8;
-- (void)silenceOutput:(unsigned int)a3 options:(unint64_t)a4 reply:(id)a5;
-- (void)simulatePrimarySessionCreationInsideServerWithReply:(id)a3;
-- (void)sleepWithReply:(unsigned int)a3 reply:(id)a4;
-- (void)toggleInputMuteForRecordingProcess:(id)a3;
-- (void)updateApplicationProperty:(id *)a3 clientID:(unsigned int)a4 propertyID:(id)a5 propertyValue:(id)a6 context:(id)a7 reply:(id)a8;
-- (void)updateMicrophonePermission:(int64_t)a3 clientToken:(id *)a4 reply:(id)a5;
-- (void)verifySessionExists:(unsigned int)a3 reply:(id)a4;
+- (void)invalidateIONode:(unsigned int)node reply:(id)reply;
+- (void)muteInputForRecordingProcesses:(id)processes;
+- (void)sessionIDs:(id *)ds clientID:(unsigned int)d reply:(id)reply;
+- (void)setEnhanceDialogueLevel:(id)level reply:(id)reply;
+- (void)setEnhanceDialoguePreference:(id)preference reply:(id)reply;
+- (void)setIONode:(unsigned int)node playState:(unsigned int)state modes:(unsigned int)modes reply:(id)reply;
+- (void)setMXPropertyOnAllSessions:(id *)sessions clientID:(unsigned int)d MXProperty:(id)property values:(id)values reply:(id)reply;
+- (void)setProperties:(unsigned int)properties values:(id)values MXProperties:(BOOL)xProperties batchStrategy:(int)strategy genericMXPipe:(BOOL)pipe reply:(id)reply;
+- (void)setPropertiesIONode:(unsigned int)node values:(id)values reply:(id)reply;
+- (void)setSessionPlayState:(unsigned int)state playState:(unsigned int)playState playerType:(unsigned int)type playerRef:(id)ref modes:(unsigned int)modes reply:(id)reply;
+- (void)silenceOutput:(unsigned int)output options:(unint64_t)options reply:(id)reply;
+- (void)simulatePrimarySessionCreationInsideServerWithReply:(id)reply;
+- (void)sleepWithReply:(unsigned int)reply reply:(id)a4;
+- (void)toggleInputMuteForRecordingProcess:(id)process;
+- (void)updateApplicationProperty:(id *)property clientID:(unsigned int)d propertyID:(id)iD propertyValue:(id)value context:(id)context reply:(id)reply;
+- (void)updateMicrophonePermission:(int64_t)permission clientToken:(id *)token reply:(id)reply;
+- (void)verifySessionExists:(unsigned int)exists reply:(id)reply;
 @end
 
 @implementation AVAudioSessionRemoteXPCClient
@@ -55,11 +55,11 @@
   return self;
 }
 
-- (AVAudioSessionRemoteXPCClient)initWithServer:(id)a3 process:(ProcessInfo *)a4 delegate:
+- (AVAudioSessionRemoteXPCClient)initWithServer:(id)server process:(ProcessInfo *)process delegate:
 {
   v5 = v4;
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  serverCopy = server;
   v9 = v5;
   v25.receiver = self;
   v25.super_class = AVAudioSessionRemoteXPCClient;
@@ -67,17 +67,17 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_server, v8);
-    v12 = [[AVAudioSessionXPCClientRelay alloc] initWithConnection:a4->xpcConnection token:a4->token.mValue];
+    objc_storeWeak(&v10->_server, serverCopy);
+    v12 = [[AVAudioSessionXPCClientRelay alloc] initWithConnection:process->xpcConnection token:process->token.mValue];
     v13 = *&v11->_clientProcess.var0;
     *&v11->_clientProcess.var0 = v12;
 
-    v11->_clientProcess.token.mValue = a4->token.mValue;
-    objc_storeStrong(&v11->_clientProcess.xpcConnection, a4->xpcConnection);
-    WeakRetained = objc_loadWeakRetained(&a4->mClientRelay);
+    v11->_clientProcess.token.mValue = process->token.mValue;
+    objc_storeStrong(&v11->_clientProcess.xpcConnection, process->xpcConnection);
+    WeakRetained = objc_loadWeakRetained(&process->mClientRelay);
     objc_storeWeak(&v11->_clientProcess.mClientRelay, WeakRetained);
 
-    std::string::operator=(&v11->_clientProcess.mProcessName, &a4->mProcessName);
+    std::string::operator=(&v11->_clientProcess.mProcessName, &process->mProcessName);
     objc_storeWeak(&v11->_clientProcess.mClientRelay, *&v11->_clientProcess.var0);
     if (!v11->_clientProcess.xpcConnection)
     {
@@ -141,7 +141,7 @@
     v8 = 1024;
     v9 = 613;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_241701000, v3, OS_LOG_TYPE_INFO, "%25s:%-5d Deallocated connection %p", buf, 0x1Cu);
   }
 
@@ -151,14 +151,14 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepWithReply:(unsigned int)a3 reply:(id)a4
+- (void)sleepWithReply:(unsigned int)reply reply:(id)a4
 {
   v6 = a4;
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient sleepWithReply:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
   v7 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},NSString * {__strong}>(&self->_replyWatchdogMinTimestamp, v6);
 
-  sleep(a3);
+  sleep(reply);
   v7[2](v7, 0, &stru_28535B610);
 }
 
@@ -185,7 +185,7 @@
     v15 = 2112;
     v16 = v3;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_241701000, v6, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Invalidated connection: %@ (%p)", &v11, 0x26u);
   }
 
@@ -203,19 +203,19 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createProxySession:(unsigned int)a3 reply:(id)a4
+- (void)createProxySession:(unsigned int)session reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v17[0] = 1;
   v18 = 3842;
-  v19 = a3;
+  sessionCopy = session;
   v20 = 0;
   v21 = 0;
   v22 = 0;
   kdebug_trace();
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient createProxySession:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v7 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, v6);
+  v7 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   v9 = avas::server::LegacySessionManager::Instance(v8);
   memset(v16, 0, sizeof(v16));
@@ -227,7 +227,7 @@
 
   v12 = 1;
   v13 = 1;
-  avas::server::LegacySessionManager::FindSessionAndVerifyOwnership(v9, a3, v16, &v12, &v14);
+  avas::server::LegacySessionManager::FindSessionAndVerifyOwnership(v9, session, v16, &v12, &v14);
   if (v14)
   {
     v7[2](v7, 0);
@@ -235,7 +235,7 @@
 
   else
   {
-    v11 = BuildInvalidSessionError("[AVAudioSessionRemoteXPCClient createProxySession:reply:]", a3, -50);
+    v11 = BuildInvalidSessionError("[AVAudioSessionRemoteXPCClient createProxySession:reply:]", session, -50);
     (v7)[2](v7, v11);
   }
 
@@ -247,20 +247,20 @@
   avas::ScopedTrace::~ScopedTrace(v17);
 }
 
-- (void)verifySessionExists:(unsigned int)a3 reply:(id)a4
+- (void)verifySessionExists:(unsigned int)exists reply:(id)reply
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  replyCopy = reply;
   v19[0] = 1;
   v20 = 3844;
-  v21 = a3;
+  existsCopy = exists;
   v22 = 0;
   v23 = 0;
   v24 = 0;
   kdebug_trace();
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient verifySessionExists:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v7 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},BOOL>(&self->_replyWatchdogMinTimestamp, v6);
+  v7 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},BOOL>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   v9 = avas::server::LegacySessionManager::Instance(v8);
   memset(v18, 0, sizeof(v18));
@@ -272,7 +272,7 @@
 
   *buf = 1;
   LOBYTE(v26) = 1;
-  avas::server::LegacySessionManager::FindSessionAndVerifyOwnership(v9, a3, v18, buf, &v16);
+  avas::server::LegacySessionManager::FindSessionAndVerifyOwnership(v9, exists, v18, buf, &v16);
   v11 = v16;
   v13 = *avas::server::gSessionServerLog(v12);
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -288,7 +288,7 @@
     }
 
     v29 = 1024;
-    v30 = a3;
+    existsCopy2 = exists;
     v31 = 2080;
     v32 = v14;
     _os_log_impl(&dword_241701000, v13, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Look up of session ID 0x%x %s", buf, 0x22u);
@@ -305,11 +305,11 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)simulatePrimarySessionCreationInsideServerWithReply:(id)a3
+- (void)simulatePrimarySessionCreationInsideServerWithReply:(id)reply
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = avas::server::LegacySessionManager::Instance(v4);
+  replyCopy = reply;
+  v5 = avas::server::LegacySessionManager::Instance(replyCopy);
   memset(&v15, 0, sizeof(v15));
   xpcConnection = self->_clientProcess.xpcConnection;
   if (xpcConnection)
@@ -325,7 +325,7 @@
   if (v13)
   {
     v7 = (*(*v13 + 16))(v13);
-    (*(v4 + 2))(v4, 0, v7);
+    (*(replyCopy + 2))(replyCopy, 0, v7);
   }
 
   else
@@ -346,7 +346,7 @@
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     v11 = [v9 errorWithDomain:*MEMORY[0x277CCA590] code:2003329396 userInfo:v10];
 
-    (*(v4 + 2))(v4, v11, 0);
+    (*(replyCopy + 2))(replyCopy, v11, 0);
   }
 
   if (v14)
@@ -357,14 +357,14 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)destroySession:(unsigned int)a3 reply:(id)a4
+- (void)destroySession:(unsigned int)session reply:(id)reply
 {
   v8 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  replyCopy = reply;
   kdebug_trace();
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient destroySession:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, v5);
+  caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, replyCopy);
   objc_claimAutoreleasedReturnValue();
 
   avas::server::LegacySessionManager::Instance(v6);
@@ -402,27 +402,27 @@ void __54__AVAudioSessionRemoteXPCClient_destroySession_reply___block_invoke(uin
   avas::ScopedTrace::~ScopedTrace(v5);
 }
 
-- (void)setProperties:(unsigned int)a3 values:(id)a4 MXProperties:(BOOL)a5 batchStrategy:(int)a6 genericMXPipe:(BOOL)a7 reply:(id)a8
+- (void)setProperties:(unsigned int)properties values:(id)values MXProperties:(BOOL)xProperties batchStrategy:(int)strategy genericMXPipe:(BOOL)pipe reply:(id)reply
 {
-  v14 = a4;
-  v15 = a8;
+  valuesCopy = values;
+  replyCopy = reply;
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient setProperties:values:MXProperties:batchStrategy:genericMXPipe:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v16 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},NSArray * {__strong}>(&self->_replyWatchdogMinTimestamp, v15);
+  v16 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},NSArray * {__strong}>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __101__AVAudioSessionRemoteXPCClient_setProperties_values_MXProperties_batchStrategy_genericMXPipe_reply___block_invoke;
   v23[3] = &unk_278CEAA48;
-  v26 = a3;
+  propertiesCopy = properties;
   v23[4] = self;
   v17 = v16;
   v25 = v17;
-  v28 = a7;
-  v18 = v14;
+  pipeCopy = pipe;
+  v18 = valuesCopy;
   v24 = v18;
-  v29 = a5;
-  v27 = a6;
+  xPropertiesCopy = xProperties;
+  strategyCopy = strategy;
   v19 = MEMORY[0x245CEF0E0](v23);
   xpcConnection = self->_clientProcess.xpcConnection;
   if (xpcConnection)
@@ -829,27 +829,27 @@ LABEL_75:
   v70 = *MEMORY[0x277D85DE8];
 }
 
-- (void)silenceOutput:(unsigned int)a3 options:(unint64_t)a4 reply:(id)a5
+- (void)silenceOutput:(unsigned int)output options:(unint64_t)options reply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   v17[0] = 1;
   v18 = 3854;
-  v19 = a3;
+  outputCopy = output;
   v20 = 0;
   v21 = 0;
   v22 = 0;
   kdebug_trace();
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient silenceOutput:options:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v9 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, v8);
+  v9 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   v11 = avas::server::GetAudioControlQueue(v10);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __61__AVAudioSessionRemoteXPCClient_silenceOutput_options_reply___block_invoke;
   v13[3] = &unk_278CEAA70;
-  v16 = a3;
-  v15 = a4;
+  outputCopy2 = output;
+  optionsCopy = options;
   v12 = v9;
   v14 = v12;
   avas::server::DispatchBlock(v11, v13, 1, "[AVAudioSessionRemoteXPCClient silenceOutput:options:reply:]", "AVAudioSessionXPCServer.mm", 931, 0, 0);
@@ -889,21 +889,21 @@ void __61__AVAudioSessionRemoteXPCClient_silenceOutput_options_reply___block_inv
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getIOControllerPeriod:(unsigned int)a3 decoupledInput:(BOOL)a4 reply:(id)a5
+- (void)getIOControllerPeriod:(unsigned int)period decoupledInput:(BOOL)input reply:(id)reply
 {
-  v5 = a4;
+  inputCopy = input;
   v27[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  replyCopy = reply;
   v20[0] = 1;
   v21 = 3855;
-  v22 = a3;
+  periodCopy = period;
   v23 = 0;
   v24 = 0;
   v25 = 0;
   kdebug_trace();
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient getIOControllerPeriod:decoupledInput:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v9 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},double,unsigned long>(&self->_replyWatchdogMinTimestamp, v8);
+  v9 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},double,unsigned long>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   v11 = avas::server::LegacySessionManager::Instance(v10);
   v12 = *(v11 + 37);
@@ -922,7 +922,7 @@ LABEL_6:
   }
 
   os_unfair_lock_lock(*(v11 + 37));
-  avas::server::DeviceTimeObserver::sessionDeviceIOPeriod(&v12[2], a3, v5, v18);
+  avas::server::DeviceTimeObserver::sessionDeviceIOPeriod(&v12[2], period, inputCopy, v18);
   os_unfair_lock_unlock(v12);
   if (v19 != 1)
   {
@@ -937,21 +937,21 @@ LABEL_7:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSessionPlayState:(unsigned int)a3 playState:(unsigned int)a4 playerType:(unsigned int)a5 playerRef:(id)a6 modes:(unsigned int)a7 reply:(id)a8
+- (void)setSessionPlayState:(unsigned int)state playState:(unsigned int)playState playerType:(unsigned int)type playerRef:(id)ref modes:(unsigned int)modes reply:(id)reply
 {
-  v13 = a6;
-  v14 = a8;
+  refCopy = ref;
+  replyCopy = reply;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __96__AVAudioSessionRemoteXPCClient_setSessionPlayState_playState_playerType_playerRef_modes_reply___block_invoke;
   v19[3] = &unk_278CEAA98;
-  v15 = v13;
+  v15 = refCopy;
   v20 = v15;
-  v22 = a3;
-  v23 = a5;
-  v24 = a7;
-  v25 = a4;
-  v16 = v14;
+  stateCopy = state;
+  typeCopy = type;
+  modesCopy = modes;
+  playStateCopy = playState;
+  v16 = replyCopy;
   v21 = v16;
   v17 = MEMORY[0x245CEF0E0](v19);
   v18 = avas::server::GetAudioControlQueue(v17);
@@ -988,16 +988,16 @@ void __96__AVAudioSessionRemoteXPCClient_setSessionPlayState_playState_playerTyp
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createSession:(unint64_t)a3 sourceAuditToken:(id *)a4 sourceSessionID:(unsigned int)a5 nameOrDeviceUID:(id)a6 clientProcessName:(id)a7 clientProcessBundleID:(id)a8 useCaseIdentifier:(unsigned int)a9 reply:(id)a10
+- (void)createSession:(unint64_t)session sourceAuditToken:(id *)token sourceSessionID:(unsigned int)d nameOrDeviceUID:(id)iD clientProcessName:(id)name clientProcessBundleID:(id)bundleID useCaseIdentifier:(unsigned int)identifier reply:(id)self0
 {
   v72[1] = *MEMORY[0x277D85DE8];
-  v48 = a6;
-  v49 = a7;
-  v16 = a8;
-  v17 = a10;
+  iDCopy = iD;
+  nameCopy = name;
+  bundleIDCopy = bundleID;
+  replyCopy = reply;
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient createSession:sourceAuditToken:sourceSessionID:nameOrDeviceUID:clientProcessName:clientProcessBundleID:useCaseIdentifier:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 30000000);
-  v18 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},unsigned int,NSObject  {objcproto13OS_xpc_object}* {__strong},unsigned int,unsigned int,NSString * {__strong}>(&self->_defaultReplyWatchdogFactory.mTimeoutHandler.__f_.__f_, v17);
+  v18 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},unsigned int,NSObject  {objcproto13OS_xpc_object}* {__strong},unsigned int,unsigned int,NSString * {__strong}>(&self->_defaultReplyWatchdogFactory.mTimeoutHandler.__f_.__f_, replyCopy);
 
   memset(&v60, 0, sizeof(v60));
   xpcConnection = self->_clientProcess.xpcConnection;
@@ -1014,18 +1014,18 @@ void __96__AVAudioSessionRemoteXPCClient_setSessionPlayState_playState_playerTyp
   v58 = 0;
   v59 = 0;
   v20 = kdebug_trace();
-  if (a3 > 1886550136)
+  if (session > 1886550136)
   {
-    if (a3 <= 1935897188)
+    if (session <= 1935897188)
     {
-      if (a3 == 1886550137)
+      if (session == 1886550137)
       {
         v22 = 1886550016;
         v21 = 121;
         goto LABEL_26;
       }
 
-      if (a3 == 1935830119)
+      if (session == 1935830119)
       {
         v22 = 1935830016;
         v21 = 103;
@@ -1035,7 +1035,7 @@ void __96__AVAudioSessionRemoteXPCClient_setSessionPlayState_playState_playerTyp
 
     else
     {
-      switch(a3)
+      switch(session)
       {
         case 0x73637265uLL:
           v22 = 1935897088;
@@ -1071,16 +1071,16 @@ LABEL_62:
     goto LABEL_56;
   }
 
-  if (a3 <= 1668314225)
+  if (session <= 1668314225)
   {
-    if (a3 == 1635088489)
+    if (session == 1635088489)
     {
       v22 = 1635088384;
       v21 = 105;
       goto LABEL_26;
     }
 
-    if (a3 == 1635148646)
+    if (session == 1635148646)
     {
       v22 = 1635148544;
       v21 = 102;
@@ -1090,21 +1090,21 @@ LABEL_62:
     goto LABEL_62;
   }
 
-  if (a3 == 1668314226)
+  if (session == 1668314226)
   {
     v22 = 1668314112;
     v21 = 114;
     goto LABEL_26;
   }
 
-  if (a3 == 1718183795)
+  if (session == 1718183795)
   {
     v22 = 1718183680;
     v21 = 115;
     goto LABEL_26;
   }
 
-  if (a3 != 1886546285)
+  if (session != 1886546285)
   {
     goto LABEL_62;
   }
@@ -1116,8 +1116,8 @@ LABEL_26:
   if (v23 == 1886550137)
   {
     v24 = *&v60.val[4];
-    *a4->var0 = *v60.val;
-    *&a4->var0[4] = v24;
+    *token->var0 = *v60.val;
+    *&token->var0[4] = v24;
   }
 
   v25 = avas::server::LegacySessionManager::Instance(v20);
@@ -1130,10 +1130,10 @@ LABEL_26:
     goto LABEL_35;
   }
 
-  if (a5 != -1 || (v26 = *&a4->var0[4], *atoken.val = *a4->var0, *&atoken.val[4] = v26, v27 = audit_token_to_pid(&atoken), v27 != -1))
+  if (d != -1 || (v26 = *&token->var0[4], *atoken.val = *token->var0, *&atoken.val[4] = v26, v27 = audit_token_to_pid(&atoken), v27 != -1))
   {
     WeakRetained = objc_loadWeakRetained(&self->_server);
-    avas::server::LegacySessionManager::FindSourceSessionForSibling(v25, a4, a5, WeakRetained[8], &atoken);
+    avas::server::LegacySessionManager::FindSourceSessionForSibling(v25, token, d, WeakRetained[8], &atoken);
     v30 = *atoken.val;
     v29 = *&atoken.val[2];
     *atoken.val = 0;
@@ -1149,7 +1149,7 @@ LABEL_26:
 LABEL_35:
     v50 = 0;
     v51 = 0;
-    avas::server::LegacySessionManager::BuildCreationDescription(&atoken, v25, &v60, v23, v49, v16, &v52, &v50, v48, a9);
+    avas::server::LegacySessionManager::BuildCreationDescription(&atoken, v25, &v60, v23, nameCopy, bundleIDCopy, &v52, &v50, iDCopy, identifier);
     if (v51)
     {
       std::__shared_weak_count::__release_shared[abi:ne200100](v51);
@@ -1272,20 +1272,20 @@ LABEL_56:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)activateSession:(unsigned int)a3 options:(unint64_t)a4 requestID:(unint64_t)a5 reply:(id)a6
+- (void)activateSession:(unsigned int)session options:(unint64_t)options requestID:(unint64_t)d reply:(id)reply
 {
   v56 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  replyCopy = reply;
   v42[0] = 1;
   v43 = 3840;
-  v44 = a3;
+  sessionCopy = session;
   v45 = 0;
   v46 = 0;
   v47 = 0;
   kdebug_trace();
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient activateSession:options:requestID:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v11 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, v10);
+  v11 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   memset(&v41, 0, sizeof(v41));
   xpcConnection = self->_clientProcess.xpcConnection;
@@ -1294,12 +1294,12 @@ LABEL_56:
     [(NSXPCConnection *)xpcConnection auditToken];
   }
 
-  avas::server::ConstAudioSessionInfoAccessor::ConstAudioSessionInfoAccessor(&v39, a3, &v41, 1);
+  avas::server::ConstAudioSessionInfoAccessor::ConstAudioSessionInfoAccessor(&v39, session, &v41, 1);
   if (v39)
   {
-    IsSessionActive = [MEMORY[0x277CCACA8] stringWithFormat:@"Activating [id:%llu]", a5];
+    IsSessionActive = [MEMORY[0x277CCACA8] stringWithFormat:@"Activating [id:%llu]", d];
     v14 = IsSessionActive;
-    if ((a4 & 0x20008000) != 0)
+    if ((options & 0x20008000) != 0)
     {
       goto LABEL_40;
     }
@@ -1327,7 +1327,7 @@ LABEL_56:
     if (!v17)
     {
 LABEL_40:
-      if (HIDWORD(a4))
+      if (HIDWORD(options))
       {
         v18 = *avas::server::gSessionServerLog(IsSessionActive);
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -1337,9 +1337,9 @@ LABEL_40:
           v50 = 1024;
           v51 = 1363;
           v52 = 2048;
-          v53 = a4;
+          optionsCopy = options;
           v54 = 1024;
-          v55 = a3;
+          sessionCopy2 = session;
           _os_log_impl(&dword_241701000, v18, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid AVAudioSessionSetActiveOptions value: %lu in activation for sessionID 0x%x", buf, 0x22u);
         }
       }
@@ -1387,10 +1387,10 @@ LABEL_40:
 
         if (objc_opt_respondsToSelector())
         {
-          v25 = [v24 waitForConclaveLaunch];
-          if ((v25 & 1) == 0)
+          waitForConclaveLaunch = [v24 waitForConclaveLaunch];
+          if ((waitForConclaveLaunch & 1) == 0)
           {
-            v26 = *avas::server::gSessionServerLog(v25);
+            v26 = *avas::server::gSessionServerLog(waitForConclaveLaunch);
             if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
             {
               *buf = 136315650;
@@ -1398,7 +1398,7 @@ LABEL_40:
               v50 = 1024;
               v51 = 1373;
               v52 = 1024;
-              LODWORD(v53) = a3;
+              LODWORD(optionsCopy) = session;
               _os_log_impl(&dword_241701000, v26, OS_LOG_TYPE_ERROR, "%25s:%-5d Waiting for conclave launch timed out, sessionID 0x%x", buf, 0x18u);
             }
           }
@@ -1410,9 +1410,9 @@ LABEL_40:
       v38 = v41;
       v34[2] = __73__AVAudioSessionRemoteXPCClient_activateSession_options_requestID_reply___block_invoke;
       v34[3] = &unk_278CEAAC0;
-      v37 = a3;
+      sessionCopy3 = session;
       v34[4] = self;
-      v36 = a4;
+      optionsCopy2 = options;
       v27 = v11;
       v35 = v27;
       v28 = MEMORY[0x245CEF0E0](v34);
@@ -1430,7 +1430,7 @@ LABEL_40:
 
   else
   {
-    v14 = BuildInvalidSessionError("[AVAudioSessionRemoteXPCClient activateSession:options:requestID:reply:]", a3, -50);
+    v14 = BuildInvalidSessionError("[AVAudioSessionRemoteXPCClient activateSession:options:requestID:reply:]", session, -50);
     (v11)[2](v11, v14);
   }
 
@@ -1475,21 +1475,21 @@ void __73__AVAudioSessionRemoteXPCClient_activateSession_options_requestID_reply
   avas::ScopedTrace::~ScopedTrace(v12);
 }
 
-- (void)deactivateSession:(unsigned int)a3 options:(unint64_t)a4 priority:(id)a5 requestID:(unint64_t)a6 reply:(id)a7
+- (void)deactivateSession:(unsigned int)session options:(unint64_t)options priority:(id)priority requestID:(unint64_t)d reply:(id)reply
 {
   v47 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a7;
+  priorityCopy = priority;
+  replyCopy = reply;
   v33[0] = 1;
   v34 = 3841;
-  v35 = a3;
+  sessionCopy = session;
   v36 = 0;
   v37 = 0;
   v38 = 0;
   kdebug_trace();
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient deactivateSession:options:priority:requestID:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v13 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, v12);
+  v13 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   memset(&v32, 0, sizeof(v32));
   xpcConnection = self->_clientProcess.xpcConnection;
@@ -1498,24 +1498,24 @@ void __73__AVAudioSessionRemoteXPCClient_activateSession_options_requestID_reply
     [(NSXPCConnection *)xpcConnection auditToken];
   }
 
-  avas::server::ConstAudioSessionInfoAccessor::ConstAudioSessionInfoAccessor(&v30, a3, &v32, 1);
+  avas::server::ConstAudioSessionInfoAccessor::ConstAudioSessionInfoAccessor(&v30, session, &v32, 1);
   v15 = v30;
   if (v30)
   {
-    if (a4 || v11)
+    if (options || priorityCopy)
     {
-      if (!HIDWORD(a4))
+      if (!HIDWORD(options))
       {
 LABEL_17:
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
         v23[2] = __84__AVAudioSessionRemoteXPCClient_deactivateSession_options_priority_requestID_reply___block_invoke;
         v23[3] = &unk_278CEAAE8;
-        v28 = a3;
-        v24 = v11;
-        v25 = self;
+        sessionCopy2 = session;
+        v24 = priorityCopy;
+        selfCopy = self;
         v29 = v32;
-        v27 = a4;
+        optionsCopy = options;
         v26 = v13;
         v20 = MEMORY[0x245CEF0E0](v23);
         v21 = avas::server::GetActivationQueue(v20);
@@ -1533,9 +1533,9 @@ LABEL_17:
         v41 = 1024;
         v42 = 1486;
         v43 = 2048;
-        v44 = a4;
+        optionsCopy2 = options;
         v45 = 1024;
-        v46 = a3;
+        sessionCopy3 = session;
         _os_log_impl(&dword_241701000, v19, OS_LOG_TYPE_ERROR, "%25s:%-5d Invalid AVAudioSessionSetActiveOptions value: %lu in deactivation for sessionID: 0x%x. Clearing options to 0.", buf, 0x22u);
       }
     }
@@ -1561,11 +1561,11 @@ LABEL_17:
       }
     }
 
-    a4 = 0;
+    options = 0;
     goto LABEL_17;
   }
 
-  v18 = BuildInvalidSessionError("[AVAudioSessionRemoteXPCClient deactivateSession:options:priority:requestID:reply:]", a3, -50);
+  v18 = BuildInvalidSessionError("[AVAudioSessionRemoteXPCClient deactivateSession:options:priority:requestID:reply:]", session, -50);
   (v13)[2](v13, v18);
 LABEL_18:
 
@@ -1630,24 +1630,24 @@ void __84__AVAudioSessionRemoteXPCClient_deactivateSession_options_priority_requ
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getProperty:(unsigned int)a3 propertyName:(id)a4 MXProperty:(BOOL)a5 reply:(id)a6
+- (void)getProperty:(unsigned int)property propertyName:(id)name MXProperty:(BOOL)xProperty reply:(id)reply
 {
-  v10 = a4;
-  v11 = a6;
+  nameCopy = name;
+  replyCopy = reply;
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient getProperty:propertyName:MXProperty:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v12 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},objc_object  {objcproto14NSSecureCoding}* {__strong},unsigned int>(&self->_replyWatchdogMinTimestamp, v11);
+  v12 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},objc_object  {objcproto14NSSecureCoding}* {__strong},unsigned int>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __75__AVAudioSessionRemoteXPCClient_getProperty_propertyName_MXProperty_reply___block_invoke;
   v19[3] = &unk_278CEAB10;
-  v22 = a3;
+  propertyCopy = property;
   v19[4] = self;
   v13 = v12;
   v21 = v13;
-  v23 = a5;
-  v14 = v10;
+  xPropertyCopy = xProperty;
+  v14 = nameCopy;
   v20 = v14;
   v15 = MEMORY[0x245CEF0E0](v19);
   xpcConnection = self->_clientProcess.xpcConnection;
@@ -1747,23 +1747,23 @@ void __75__AVAudioSessionRemoteXPCClient_getProperty_propertyName_MXProperty_rep
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getMXPropertyGenericPipe:(unsigned int)a3 propertyName:(id)a4 reply:(id)a5
+- (void)getMXPropertyGenericPipe:(unsigned int)pipe propertyName:(id)name reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  replyCopy = reply;
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient getMXPropertyGenericPipe:propertyName:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v10 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},objc_object  {objcproto14NSSecureCoding}* {__strong},unsigned int>(&self->_replyWatchdogMinTimestamp, v9);
+  v10 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},objc_object  {objcproto14NSSecureCoding}* {__strong},unsigned int>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __77__AVAudioSessionRemoteXPCClient_getMXPropertyGenericPipe_propertyName_reply___block_invoke;
   v17[3] = &unk_278CEAB38;
-  v20 = a3;
+  pipeCopy = pipe;
   v17[4] = self;
   v11 = v10;
   v19 = v11;
-  v12 = v8;
+  v12 = nameCopy;
   v18 = v12;
   v13 = MEMORY[0x245CEF0E0](v17);
   xpcConnection = self->_clientProcess.xpcConnection;
@@ -1828,19 +1828,19 @@ void __77__AVAudioSessionRemoteXPCClient_getMXPropertyGenericPipe_propertyName_r
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getProperties:(unsigned int)a3 properties:(id)a4 reply:(id)a5
+- (void)getProperties:(unsigned int)properties properties:(id)a4 reply:(id)reply
 {
   v8 = a4;
-  v9 = a5;
+  replyCopy = reply;
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient getProperties:properties:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v10 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},NSDictionary * {__strong},NSDictionary * {__strong}>(&self->_replyWatchdogMinTimestamp, v9);
+  v10 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},NSDictionary * {__strong},NSDictionary * {__strong}>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __64__AVAudioSessionRemoteXPCClient_getProperties_properties_reply___block_invoke;
   v17[3] = &unk_278CEAB38;
-  v20 = a3;
+  propertiesCopy = properties;
   v17[4] = self;
   v11 = v10;
   v19 = v11;
@@ -1906,12 +1906,12 @@ void __64__AVAudioSessionRemoteXPCClient_getProperties_properties_reply___block_
   avas::ScopedTrace::~ScopedTrace(v13);
 }
 
-- (void)getPropertiesForCache:(unsigned int)a3 reply:(id)a4
+- (void)getPropertiesForCache:(unsigned int)cache reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient getPropertiesForCache:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v7 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},NSDictionary * {__strong},NSDictionary * {__strong}>(&self->_replyWatchdogMinTimestamp, v6);
+  v7 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},NSDictionary * {__strong},NSDictionary * {__strong}>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   {
     [AVAudioSessionRemoteXPCClient getPropertiesForCache:reply:]::mxProperties = getAllCachedPropertyNames();
@@ -1921,7 +1921,7 @@ void __64__AVAudioSessionRemoteXPCClient_getProperties_properties_reply___block_
   v13[1] = 3221225472;
   v13[2] = __61__AVAudioSessionRemoteXPCClient_getPropertiesForCache_reply___block_invoke;
   v13[3] = &unk_278CEAB60;
-  v15 = a3;
+  cacheCopy = cache;
   v13[4] = self;
   v8 = v7;
   v14 = v8;
@@ -1984,18 +1984,18 @@ void __61__AVAudioSessionRemoteXPCClient_getPropertiesForCache_reply___block_inv
   avas::ScopedTrace::~ScopedTrace(v12);
 }
 
-- (void)getDeferredMessages:(unsigned int)a3 reply:(id)a4
+- (void)getDeferredMessages:(unsigned int)messages reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient getDeferredMessages:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v7 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},NSArray * {__strong}>(&self->_replyWatchdogMinTimestamp, v6);
+  v7 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},NSArray * {__strong}>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __59__AVAudioSessionRemoteXPCClient_getDeferredMessages_reply___block_invoke;
   v13[3] = &unk_278CEAB60;
-  v15 = a3;
+  messagesCopy = messages;
   v13[4] = self;
   v8 = v7;
   v14 = v8;
@@ -2109,14 +2109,14 @@ void __59__AVAudioSessionRemoteXPCClient_getDeferredMessages_reply___block_invok
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createAudioApplicationForSpecification:(id)a3 reply:(id)a4
+- (void)createAudioApplicationForSpecification:(id)specification reply:(id)reply
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  specificationCopy = specification;
+  replyCopy = reply;
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient createAudioApplicationForSpecification:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v8 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},unsigned int>(&self->_replyWatchdogMinTimestamp, v7);
+  v8 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},unsigned int>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   memset(&v26[1], 0, sizeof(audit_token_t));
   xpcConnection = self->_clientProcess.xpcConnection;
@@ -2126,9 +2126,9 @@ void __59__AVAudioSessionRemoteXPCClient_getDeferredMessages_reply___block_invok
   }
 
   v10 = avas::server::LegacySessionManager::Instance(xpcConnection);
-  if (v6)
+  if (specificationCopy)
   {
-    [v6 appAuditToken];
+    [specificationCopy appAuditToken];
   }
 
   else
@@ -2148,26 +2148,26 @@ void __59__AVAudioSessionRemoteXPCClient_getDeferredMessages_reply___block_invok
   LOBYTE(atoken.val[1]) = 1;
   if (avas::server::LegacySessionManager::VerifyAudioAppPermission(v10, v29, &v23, &atoken))
   {
-    *v29 = [v6 attributionBundleID];
-    v11 = [v6 processName];
-    if (v11)
+    *v29 = [specificationCopy attributionBundleID];
+    processName = [specificationCopy processName];
+    if (processName)
     {
-      v12 = [v6 processName];
+      processName2 = [specificationCopy processName];
     }
 
     else
     {
-      v12 = @"?";
+      processName2 = @"?";
     }
 
-    *&v29[8] = v12;
+    *&v29[8] = processName2;
     *&v29[16] = v26[1];
     v30 = 1;
     v23 = v26[1];
     v31 = audit_token_to_pid(&v23);
-    if (v6)
+    if (specificationCopy)
     {
-      [v6 appAuditToken];
+      [specificationCopy appAuditToken];
     }
 
     else
@@ -2179,9 +2179,9 @@ void __59__AVAudioSessionRemoteXPCClient_getDeferredMessages_reply___block_invok
     v33 = 1;
     v23 = atoken;
     v34 = audit_token_to_pid(&v23);
-    v35 = [v6 audioAppType];
+    audioAppType = [specificationCopy audioAppType];
     v36 = 0;
-    if (v11)
+    if (processName)
     {
     }
 
@@ -2215,9 +2215,9 @@ void __59__AVAudioSessionRemoteXPCClient_getDeferredMessages_reply___block_invok
 
   else
   {
-    if (v6)
+    if (specificationCopy)
     {
-      [v6 appAuditToken];
+      [specificationCopy appAuditToken];
     }
 
     else
@@ -2254,12 +2254,12 @@ void __59__AVAudioSessionRemoteXPCClient_getDeferredMessages_reply___block_invok
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sessionIDs:(id *)a3 clientID:(unsigned int)a4 reply:(id)a5
+- (void)sessionIDs:(id *)ds clientID:(unsigned int)d reply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient sessionIDs:clientID:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v9 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},NSArray * {__strong}>(&self->_replyWatchdogMinTimestamp, v8);
+  v9 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},NSArray * {__strong}>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   v11 = avas::server::LegacySessionManager::Instance(v10);
   memset(&v35, 0, sizeof(v35));
@@ -2269,12 +2269,12 @@ void __59__AVAudioSessionRemoteXPCClient_getDeferredMessages_reply___block_invok
     [(NSXPCConnection *)xpcConnection auditToken];
   }
 
-  v13 = *&a3->var0[4];
-  v27 = *a3->var0;
+  v13 = *&ds->var0[4];
+  v27 = *ds->var0;
   v28 = v13;
   v29 = 1;
-  v14 = *&a3->var0[4];
-  *v24.val = *a3->var0;
+  v14 = *&ds->var0[4];
+  *v24.val = *ds->var0;
   *&v24.val[4] = v14;
   v30 = audit_token_to_pid(&v24);
   v24 = v35;
@@ -2283,7 +2283,7 @@ void __59__AVAudioSessionRemoteXPCClient_getDeferredMessages_reply___block_invok
   v26 = audit_token_to_pid(&atoken);
   atoken.val[0] = 0;
   LOBYTE(atoken.val[1]) = 1;
-  avas::server::LegacySessionManager::FindAudioApplicationAndVerifyOwnership(v11, &v27, &v24, a4, &atoken, &v31);
+  avas::server::LegacySessionManager::FindAudioApplicationAndVerifyOwnership(v11, &v27, &v24, d, &atoken, &v31);
   if (v31 && v33)
   {
     avas::server::AudioApplicationInfo::GetSessions(v31, &v27);
@@ -2315,12 +2315,12 @@ void __59__AVAudioSessionRemoteXPCClient_getDeferredMessages_reply___block_invok
 
   else
   {
-    v21 = *&a3->var0[4];
-    v27 = *a3->var0;
+    v21 = *&ds->var0[4];
+    v27 = *ds->var0;
     v28 = v21;
     v29 = 1;
-    v22 = *&a3->var0[4];
-    *v24.val = *a3->var0;
+    v22 = *&ds->var0[4];
+    *v24.val = *ds->var0;
     *&v24.val[4] = v22;
     v30 = audit_token_to_pid(&v24);
     v23 = BuildInvalidAudioAppError("[AVAudioSessionRemoteXPCClient sessionIDs:clientID:reply:]", &v27);
@@ -2338,15 +2338,15 @@ void __59__AVAudioSessionRemoteXPCClient_getDeferredMessages_reply___block_invok
   }
 }
 
-- (void)getApplicationProperty:(id *)a3 clientID:(unsigned int)a4 propertyID:(id)a5 isMXProperty:(BOOL)a6 reply:(id)a7
+- (void)getApplicationProperty:(id *)property clientID:(unsigned int)d propertyID:(id)iD isMXProperty:(BOOL)xProperty reply:(id)reply
 {
-  v8 = a6;
+  xPropertyCopy = xProperty;
   v44 = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  v13 = a7;
+  iDCopy = iD;
+  replyCopy = reply;
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient getApplicationProperty:clientID:propertyID:isMXProperty:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v14 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},objc_object  {objcproto14NSSecureCoding}* {__strong},unsigned int>(&self->_replyWatchdogMinTimestamp, v13);
+  v14 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},objc_object  {objcproto14NSSecureCoding}* {__strong},unsigned int>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   v16 = avas::server::LegacySessionManager::Instance(v15);
   memset(&v38, 0, sizeof(v38));
@@ -2356,12 +2356,12 @@ void __59__AVAudioSessionRemoteXPCClient_getDeferredMessages_reply___block_invok
     [(NSXPCConnection *)xpcConnection auditToken];
   }
 
-  v18 = *&a3->var0[4];
-  *buf = *a3->var0;
+  v18 = *&property->var0[4];
+  *buf = *property->var0;
   *&buf[16] = v18;
   buf[32] = 1;
-  v19 = *&a3->var0[4];
-  *v31.val = *a3->var0;
+  v19 = *&property->var0[4];
+  *v31.val = *property->var0;
   *&v31.val[4] = v19;
   v43 = audit_token_to_pid(&v31);
   v31 = v38;
@@ -2370,10 +2370,10 @@ void __59__AVAudioSessionRemoteXPCClient_getDeferredMessages_reply___block_invok
   v33 = audit_token_to_pid(&atoken);
   atoken.val[0] = 0;
   LOBYTE(atoken.val[1]) = 1;
-  avas::server::LegacySessionManager::FindAudioApplicationAndVerifyOwnership(v16, buf, &v31, a4, &atoken, &v34);
+  avas::server::LegacySessionManager::FindAudioApplicationAndVerifyOwnership(v16, buf, &v31, d, &atoken, &v34);
   if (v34 && v36)
   {
-    if (v8)
+    if (xPropertyCopy)
     {
       v20 = 1836595770;
     }
@@ -2383,7 +2383,7 @@ void __59__AVAudioSessionRemoteXPCClient_getDeferredMessages_reply___block_invok
       v20 = 1634744890;
     }
 
-    avas::server::AudioApplicationInfo::GetProperty(v34, v12, v20, &v31);
+    avas::server::AudioApplicationInfo::GetProperty(v34, iDCopy, v20, &v31);
     v21 = v31.val[0];
     if (v31.val[0])
     {
@@ -2401,7 +2401,7 @@ void __59__AVAudioSessionRemoteXPCClient_getDeferredMessages_reply___block_invok
         *&buf[12] = 1024;
         *&buf[14] = 1895;
         *&buf[18] = 2112;
-        *&buf[20] = v12;
+        *&buf[20] = iDCopy;
         *&buf[28] = 1024;
         *&buf[30] = v31.val[0];
         _os_log_impl(&dword_241701000, v26, OS_LOG_TYPE_ERROR, "%25s:%-5d Failed to get property: %@, err: %d", buf, 0x22u);
@@ -2418,12 +2418,12 @@ void __59__AVAudioSessionRemoteXPCClient_getDeferredMessages_reply___block_invok
 
   else
   {
-    v27 = *&a3->var0[4];
-    *buf = *a3->var0;
+    v27 = *&property->var0[4];
+    *buf = *property->var0;
     *&buf[16] = v27;
     buf[32] = 1;
-    v28 = *&a3->var0[4];
-    *v31.val = *a3->var0;
+    v28 = *&property->var0[4];
+    *v31.val = *property->var0;
     *&v31.val[4] = v28;
     v43 = audit_token_to_pid(&v31);
     v29 = BuildInvalidAudioAppError("[AVAudioSessionRemoteXPCClient getApplicationProperty:clientID:propertyID:isMXProperty:reply:]", buf);
@@ -2443,16 +2443,16 @@ void __59__AVAudioSessionRemoteXPCClient_getDeferredMessages_reply___block_invok
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateApplicationProperty:(id *)a3 clientID:(unsigned int)a4 propertyID:(id)a5 propertyValue:(id)a6 context:(id)a7 reply:(id)a8
+- (void)updateApplicationProperty:(id *)property clientID:(unsigned int)d propertyID:(id)iD propertyValue:(id)value context:(id)context reply:(id)reply
 {
   v45 = *MEMORY[0x277D85DE8];
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  iDCopy = iD;
+  valueCopy = value;
+  contextCopy = context;
+  replyCopy = reply;
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient updateApplicationProperty:clientID:propertyID:propertyValue:context:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v18 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, v17);
+  v18 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   v20 = avas::server::LegacySessionManager::Instance(v19);
   memset(&v41, 0, sizeof(v41));
@@ -2462,12 +2462,12 @@ void __59__AVAudioSessionRemoteXPCClient_getDeferredMessages_reply___block_invok
     [(NSXPCConnection *)xpcConnection auditToken];
   }
 
-  v22 = *&a3->var0[4];
-  *buf = *a3->var0;
+  v22 = *&property->var0[4];
+  *buf = *property->var0;
   *&buf[16] = v22;
   buf[32] = 1;
-  v23 = *&a3->var0[4];
-  *v34.val = *a3->var0;
+  v23 = *&property->var0[4];
+  *v34.val = *property->var0;
   *&v34.val[4] = v23;
   *&buf[36] = audit_token_to_pid(&v34);
   v34 = v41;
@@ -2476,15 +2476,15 @@ void __59__AVAudioSessionRemoteXPCClient_getDeferredMessages_reply___block_invok
   v36 = audit_token_to_pid(&atoken);
   atoken.val[0] = 0;
   LOBYTE(atoken.val[1]) = 1;
-  avas::server::LegacySessionManager::FindAudioApplicationAndVerifyOwnership(v20, buf, &v34, a4, &atoken, &v37);
+  avas::server::LegacySessionManager::FindAudioApplicationAndVerifyOwnership(v20, buf, &v34, d, &atoken, &v37);
   if (!v37 || !v39)
   {
-    v31 = *&a3->var0[4];
-    *buf = *a3->var0;
+    v31 = *&property->var0[4];
+    *buf = *property->var0;
     *&buf[16] = v31;
     buf[32] = 1;
-    v32 = *&a3->var0[4];
-    *v34.val = *a3->var0;
+    v32 = *&property->var0[4];
+    *v34.val = *property->var0;
     *&v34.val[4] = v32;
     *&buf[36] = audit_token_to_pid(&v34);
     v30 = BuildInvalidAudioAppError("[AVAudioSessionRemoteXPCClient updateApplicationProperty:clientID:propertyID:propertyValue:context:reply:]", buf);
@@ -2508,15 +2508,15 @@ LABEL_14:
     *&buf[12] = 1024;
     *&buf[14] = 1958;
     *&buf[18] = 2112;
-    *&buf[20] = v14;
+    *&buf[20] = iDCopy;
     *&buf[28] = 2112;
-    *&buf[30] = v15;
+    *&buf[30] = valueCopy;
     *&buf[38] = 2080;
     v44 = v26;
     _os_log_impl(&dword_241701000, v25, OS_LOG_TYPE_DEFAULT, "%25s:%-5d Update audio app property: %@, value: %@ (client: %s)", buf, 0x30u);
   }
 
-  updated = avas::server::AudioApplicationInfo::UpdateProperty(v37, v14, v15, 1634744890, 0, v16);
+  updated = avas::server::AudioApplicationInfo::UpdateProperty(v37, iDCopy, valueCopy, 1634744890, 0, contextCopy);
   v28 = updated;
   if (updated)
   {
@@ -2528,7 +2528,7 @@ LABEL_14:
       *&buf[12] = 1024;
       *&buf[14] = 1962;
       *&buf[18] = 2112;
-      *&buf[20] = v14;
+      *&buf[20] = iDCopy;
       *&buf[28] = 1024;
       *&buf[30] = v28;
       _os_log_impl(&dword_241701000, v29, OS_LOG_TYPE_ERROR, "%25s:%-5d Failed to update property: %@, err: %d", buf, 0x22u);
@@ -2554,12 +2554,12 @@ LABEL_15:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getApplicationMessages:(id *)a3 clientID:(unsigned int)a4 reply:(id)a5
+- (void)getApplicationMessages:(id *)messages clientID:(unsigned int)d reply:(id)reply
 {
-  v8 = a5;
+  replyCopy = reply;
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient getApplicationMessages:clientID:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v9 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},NSArray * {__strong}>(&self->_replyWatchdogMinTimestamp, v8);
+  v9 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},NSArray * {__strong}>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   memset(&v28, 0, sizeof(v28));
   xpcConnection = self->_clientProcess.xpcConnection;
@@ -2569,12 +2569,12 @@ LABEL_15:
   }
 
   v11 = avas::server::LegacySessionManager::Instance(xpcConnection);
-  v12 = *&a3->var0[4];
-  v20 = *a3->var0;
+  v12 = *&messages->var0[4];
+  v20 = *messages->var0;
   v21 = v12;
   v22 = 1;
-  v13 = *&a3->var0[4];
-  *v17.val = *a3->var0;
+  v13 = *&messages->var0[4];
+  *v17.val = *messages->var0;
   *&v17.val[4] = v13;
   v23 = audit_token_to_pid(&v17);
   v17 = v28;
@@ -2583,7 +2583,7 @@ LABEL_15:
   v19 = audit_token_to_pid(&atoken);
   atoken.val[0] = 0;
   LOBYTE(atoken.val[1]) = 1;
-  avas::server::LegacySessionManager::FindAudioApplicationAndVerifyOwnership(v11, &v20, &v17, a4, &atoken, &v24);
+  avas::server::LegacySessionManager::FindAudioApplicationAndVerifyOwnership(v11, &v20, &v17, d, &atoken, &v24);
   if (v24 && v26)
   {
     v14 = avas::server::AudioAppRemoteClient::GetDeferredMessages(v26);
@@ -2592,12 +2592,12 @@ LABEL_15:
 
   else
   {
-    v15 = *&a3->var0[4];
-    v20 = *a3->var0;
+    v15 = *&messages->var0[4];
+    v20 = *messages->var0;
     v21 = v15;
     v22 = 1;
-    v16 = *&a3->var0[4];
-    *v17.val = *a3->var0;
+    v16 = *&messages->var0[4];
+    *v17.val = *messages->var0;
     *&v17.val[4] = v16;
     v23 = audit_token_to_pid(&v17);
     v14 = BuildInvalidAudioAppError("[AVAudioSessionRemoteXPCClient getApplicationMessages:clientID:reply:]", &v20);
@@ -2615,14 +2615,14 @@ LABEL_15:
   }
 }
 
-- (void)setMXPropertyOnAllSessions:(id *)a3 clientID:(unsigned int)a4 MXProperty:(id)a5 values:(id)a6 reply:(id)a7
+- (void)setMXPropertyOnAllSessions:(id *)sessions clientID:(unsigned int)d MXProperty:(id)property values:(id)values reply:(id)reply
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  propertyCopy = property;
+  valuesCopy = values;
+  replyCopy = reply;
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient setMXPropertyOnAllSessions:clientID:MXProperty:values:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v15 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, v14);
+  v15 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   v18 = 0u;
   v19 = 0u;
@@ -2632,17 +2632,17 @@ LABEL_15:
     [(NSXPCConnection *)xpcConnection auditToken:v18];
   }
 
-  v17 = avas::server::forbid_acq::SetPropertyMXOnAppSessions(a3, &v18, a4, v12, v13);
+  v17 = avas::server::forbid_acq::SetPropertyMXOnAppSessions(sessions, &v18, d, propertyCopy, valuesCopy);
   (v15)[2](v15, v17);
 }
 
-- (void)toggleInputMuteForRecordingProcess:(id)a3
+- (void)toggleInputMuteForRecordingProcess:(id)process
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  processCopy = process;
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient toggleInputMuteForRecordingProcess:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v5 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, v4);
+  v5 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, processCopy);
 
   memset(&v19, 0, sizeof(v19));
   xpcConnection = self->_clientProcess.xpcConnection;
@@ -2700,10 +2700,10 @@ LABEL_15:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)muteInputForRecordingProcesses:(id)a3
+- (void)muteInputForRecordingProcesses:(id)processes
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  processesCopy = processes;
   xpcConnection = self->_clientProcess.xpcConnection;
   if (xpcConnection)
   {
@@ -2742,7 +2742,7 @@ LABEL_15:
     }
 
     v10 = NSErrorWithString(&cfstr_NotAllowed.isa);
-    v4[2](v4, v10, 0);
+    processesCopy[2](processesCopy, v10, 0);
   }
 
   else
@@ -2760,17 +2760,17 @@ LABEL_15:
       avas::server::LegacySessionManager::MuteInputsForRecordingApplications(&v13);
       if ((v13.val[2] & 1) == 0)
       {
-        v4[2](v4, *v13.val, 0);
+        processesCopy[2](processesCopy, *v13.val, 0);
 
         goto LABEL_16;
       }
 
       v7 = caulk::expected<NSDictionary * {__strong},NSError * {__strong}>::value(&v13);
-      v4[2](v4, 0, *v7);
+      processesCopy[2](processesCopy, 0, *v7);
     }
 
     v8 = NSErrorWithString(&cfstr_Unsupported.isa);
-    v4[2](v4, v8, 0);
+    processesCopy[2](processesCopy, v8, 0);
   }
 
 LABEL_16:
@@ -2778,12 +2778,12 @@ LABEL_16:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setEnhanceDialoguePreference:(id)a3 reply:(id)a4
+- (void)setEnhanceDialoguePreference:(id)preference reply:(id)reply
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = *avas::server::gSessionServerLog(v6);
+  preferenceCopy = preference;
+  replyCopy = reply;
+  v7 = *avas::server::gSessionServerLog(replyCopy);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v10 = 136315650;
@@ -2791,13 +2791,13 @@ LABEL_16:
     v12 = 1024;
     v13 = 2056;
     v14 = 2112;
-    v15 = v5;
+    v15 = preferenceCopy;
     _os_log_impl(&dword_241701000, v7, OS_LOG_TYPE_INFO, "%25s:%-5d set enhance dialogue preference to %@", &v10, 0x1Cu);
   }
 
-  if (v5 && ([v5 integerValue] & 0x8000000000000000) == 0 && objc_msgSend(v5, "integerValue") < 3)
+  if (preferenceCopy && ([preferenceCopy integerValue] & 0x8000000000000000) == 0 && objc_msgSend(preferenceCopy, "integerValue") < 3)
   {
-    CFPreferencesSetAppValue(@"enhancedialogueoptin", v5, @"com.apple.preferences-sounds");
+    CFPreferencesSetAppValue(@"enhancedialogueoptin", preferenceCopy, @"com.apple.preferences-sounds");
     v8 = 0;
     notify_post("com.apple.preferences-sounds.enhancedialogueoptin");
   }
@@ -2807,17 +2807,17 @@ LABEL_16:
     v8 = NSErrorWithString(&cfstr_InvalidValue.isa);
   }
 
-  (*(v6 + 2))(v6, v8);
+  (*(replyCopy + 2))(replyCopy, v8);
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setEnhanceDialogueLevel:(id)a3 reply:(id)a4
+- (void)setEnhanceDialogueLevel:(id)level reply:(id)reply
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = *avas::server::gSessionServerLog(v6);
+  levelCopy = level;
+  replyCopy = reply;
+  v7 = *avas::server::gSessionServerLog(replyCopy);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v11 = 136315650;
@@ -2825,14 +2825,14 @@ LABEL_16:
     v13 = 1024;
     v14 = 2073;
     v15 = 2112;
-    v16 = v5;
+    v16 = levelCopy;
     _os_log_impl(&dword_241701000, v7, OS_LOG_TYPE_INFO, "%25s:%-5d set enhance dialogue level to %@", &v11, 0x1Cu);
   }
 
-  if (v5 && ([v5 integerValue] & 0x8000000000000000) == 0 && objc_msgSend(v5, "integerValue") < 4)
+  if (levelCopy && ([levelCopy integerValue] & 0x8000000000000000) == 0 && objc_msgSend(levelCopy, "integerValue") < 4)
   {
-    CFPreferencesSetAppValue(@"enhancedialoguelevel", v5, @"com.apple.preferences-sounds");
-    if ([v5 integerValue])
+    CFPreferencesSetAppValue(@"enhancedialoguelevel", levelCopy, @"com.apple.preferences-sounds");
+    if ([levelCopy integerValue])
     {
       v10 = &unk_28535D1D0;
     }
@@ -2853,15 +2853,15 @@ LABEL_16:
     v8 = NSErrorWithString(&cfstr_InvalidLevelVa.isa);
   }
 
-  (*(v6 + 2))(v6, v8);
+  (*(replyCopy + 2))(replyCopy, v8);
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getEnhanceDialogueLevelWithReply:(id)a3
+- (void)getEnhanceDialogueLevelWithReply:(id)reply
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  replyCopy = reply;
   *keyExistsAndHasValidFormat = 0;
   AppIntegerValue = CFPreferencesGetAppIntegerValue(@"enhancedialog", @"com.apple.preferences-sounds", &keyExistsAndHasValidFormat[1]);
   v5 = CFPreferencesGetAppIntegerValue(@"enhancedialoguelevel", @"com.apple.preferences-sounds", keyExistsAndHasValidFormat);
@@ -2936,16 +2936,16 @@ LABEL_16:
   }
 
   v14 = [MEMORY[0x277CCABB0] numberWithInteger:v13];
-  v3[2](v3, v7, v14, 0);
+  replyCopy[2](replyCopy, v7, v14, 0);
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)allowAppToInitiatePlaybackTemporarilyFromBackground:(id)a3 reply:(id)a4
+- (void)allowAppToInitiatePlaybackTemporarilyFromBackground:(id)background reply:(id)reply
 {
-  v5 = a4;
+  replyCopy = reply;
   v4 = NSErrorWithString(&cfstr_NotSupportedOn.isa);
-  v5[2](v5, v4);
+  replyCopy[2](replyCopy, v4);
 }
 
 void __102__AVAudioSessionRemoteXPCClient_reconfigureIONode_withSourceSession_sessionOwnerPID_playerType_reply___block_invoke(uint64_t a1)
@@ -2979,14 +2979,14 @@ void __102__AVAudioSessionRemoteXPCClient_reconfigureIONode_withSourceSession_se
   }
 }
 
-- (void)invalidateIONode:(unsigned int)a3 reply:(id)a4
+- (void)invalidateIONode:(unsigned int)node reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient invalidateIONode:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v7 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, v6);
+  v7 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
-  if (a3)
+  if (node)
   {
     v9 = avas::server::LegacySessionManager::Instance(v8);
     v10 = self->_clientProcess.xpcConnection;
@@ -3001,8 +3001,8 @@ void __102__AVAudioSessionRemoteXPCClient_reconfigureIONode_withSourceSession_se
     v14 = 1;
     atoken = v18;
     v15 = audit_token_to_pid(&atoken);
-    avas::server::LegacySessionManager::FindIONodeSession(v9, a3, &v13, &v16);
-    if (v16 && avas::server::LegacySessionManager::RemoveIONodeSession(v9, a3))
+    avas::server::LegacySessionManager::FindIONodeSession(v9, node, &v13, &v16);
+    if (v16 && avas::server::LegacySessionManager::RemoveIONodeSession(v9, node))
     {
       v7[2](v7, 0);
     }
@@ -3026,12 +3026,12 @@ void __102__AVAudioSessionRemoteXPCClient_reconfigureIONode_withSourceSession_se
   }
 }
 
-- (void)setIONode:(unsigned int)a3 playState:(unsigned int)a4 modes:(unsigned int)a5 reply:(id)a6
+- (void)setIONode:(unsigned int)node playState:(unsigned int)state modes:(unsigned int)modes reply:(id)reply
 {
-  v10 = a6;
+  replyCopy = reply;
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient setIONode:playState:modes:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v11 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, v10);
+  v11 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   v13 = avas::server::LegacySessionManager::Instance(v12);
   xpcConnection = self->_clientProcess.xpcConnection;
@@ -3049,7 +3049,7 @@ void __102__AVAudioSessionRemoteXPCClient_reconfigureIONode_withSourceSession_se
   v28 = 1;
   atoken = v26;
   v29 = audit_token_to_pid(&atoken);
-  avas::server::LegacySessionManager::FindIONodeSession(v13, a3, &v27, &v30);
+  avas::server::LegacySessionManager::FindIONodeSession(v13, node, &v27, &v30);
   if (v30)
   {
     *v27.val = 0;
@@ -3070,8 +3070,8 @@ void __102__AVAudioSessionRemoteXPCClient_reconfigureIONode_withSourceSession_se
       atomic_fetch_add_explicit(&v31->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    v24 = a4;
-    v25 = a5;
+    stateCopy = state;
+    modesCopy = modes;
     avas::server::DispatchBlock(v16, v22, 1, "[AVAudioSessionRemoteXPCClient setIONode:playState:modes:reply:]", "AVAudioSessionXPCServer.mm", 2452, 0, 0);
 
     v18 = *(*&v27.val[2] + 24);
@@ -3118,13 +3118,13 @@ uint64_t __65__AVAudioSessionRemoteXPCClient_setIONode_playState_modes_reply___b
   return result;
 }
 
-- (void)setPropertiesIONode:(unsigned int)a3 values:(id)a4 reply:(id)a5
+- (void)setPropertiesIONode:(unsigned int)node values:(id)values reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  valuesCopy = values;
+  replyCopy = reply;
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient setPropertiesIONode:values:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v10 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},NSArray * {__strong}>(&self->_replyWatchdogMinTimestamp, v9);
+  v10 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},NSArray * {__strong}>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   v12 = avas::server::LegacySessionManager::Instance(v11);
   xpcConnection = self->_clientProcess.xpcConnection;
@@ -3142,13 +3142,13 @@ uint64_t __65__AVAudioSessionRemoteXPCClient_setIONode_playState_modes_reply___b
   v21 = 1;
   atoken = v19;
   v22 = audit_token_to_pid(&atoken);
-  avas::server::LegacySessionManager::FindIONodeSession(v12, a3, &v20, &v23);
+  avas::server::LegacySessionManager::FindIONodeSession(v12, node, &v20, &v23);
   if (v23)
   {
-    v14 = [v8 allKeys];
-    v15 = [(AVAudioSessionRemoteXPCClient *)self containsPrivilegedIONodeProperties:v14];
+    allKeys = [valuesCopy allKeys];
+    v15 = [(AVAudioSessionRemoteXPCClient *)self containsPrivilegedIONodeProperties:allKeys];
 
-    avas::server::IONodeSessionInfo::SetProperties(v23, v8, v15, &v20);
+    avas::server::IONodeSessionInfo::SetProperties(v23, valuesCopy, v15, &v20);
     v16 = v20.val[0];
     if (v20.val[0])
     {
@@ -3178,13 +3178,13 @@ uint64_t __65__AVAudioSessionRemoteXPCClient_setIONode_playState_modes_reply___b
   }
 }
 
-- (void)getPropertiesIONode:(unsigned int)a3 properties:(id)a4 reply:(id)a5
+- (void)getPropertiesIONode:(unsigned int)node properties:(id)properties reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  propertiesCopy = properties;
+  replyCopy = reply;
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient getPropertiesIONode:properties:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v10 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},NSDictionary * {__strong},NSDictionary * {__strong}>(&self->_replyWatchdogMinTimestamp, v9);
+  v10 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong},NSDictionary * {__strong},NSDictionary * {__strong}>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   v12 = avas::server::LegacySessionManager::Instance(v11);
   xpcConnection = self->_clientProcess.xpcConnection;
@@ -3202,12 +3202,12 @@ uint64_t __65__AVAudioSessionRemoteXPCClient_setIONode_playState_modes_reply___b
   v20 = 1;
   atoken = *&v18[1];
   v21 = audit_token_to_pid(&atoken);
-  avas::server::LegacySessionManager::FindIONodeSession(v12, a3, &v19, &v22);
+  avas::server::LegacySessionManager::FindIONodeSession(v12, node, &v19, &v22);
   if (v22)
   {
-    v14 = [(AVAudioSessionRemoteXPCClient *)self containsPrivilegedIONodeProperties:v8];
+    v14 = [(AVAudioSessionRemoteXPCClient *)self containsPrivilegedIONodeProperties:propertiesCopy];
     v18[0] = 0;
-    avas::server::IONodeSessionInfo::GetProperties(v22, v8, v14, v18, &v19);
+    avas::server::IONodeSessionInfo::GetProperties(v22, propertiesCopy, v14, v18, &v19);
     v15 = v18[0];
     v16 = v19.val[0];
     if (v19.val[0])
@@ -3238,14 +3238,14 @@ uint64_t __65__AVAudioSessionRemoteXPCClient_setIONode_playState_modes_reply___b
   }
 }
 
-- (void)updateMicrophonePermission:(int64_t)a3 clientToken:(id *)a4 reply:(id)a5
+- (void)updateMicrophonePermission:(int64_t)permission clientToken:(id *)token reply:(id)reply
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  if (a4)
+  replyCopy = reply;
+  if (token)
   {
-    v9 = *a4->var0;
-    v10 = *&a4->var0[4];
+    v9 = *token->var0;
+    v10 = *&token->var0[4];
   }
 
   else
@@ -3279,7 +3279,7 @@ uint64_t __65__AVAudioSessionRemoteXPCClient_setIONode_playState_modes_reply___b
   kdebug_trace();
   *&self->_invalidated = "[AVAudioSessionRemoteXPCClient updateMicrophonePermission:clientToken:reply:]";
   self->_replyWatchdogFunctionName = (std::chrono::system_clock::now().__d_.__rep_ + 9000000);
-  v13 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, v8);
+  v13 = caulk::xpc::reply_watchdog_factory::reply_with_timeout<NSError * {__strong}>(&self->_replyWatchdogMinTimestamp, replyCopy);
 
   if (!self->_clientRelay)
   {
@@ -3305,7 +3305,7 @@ uint64_t __65__AVAudioSessionRemoteXPCClient_setIONode_playState_modes_reply___b
   v25 = v35;
   v21[2] = __78__AVAudioSessionRemoteXPCClient_updateMicrophonePermission_clientToken_reply___block_invoke;
   v21[3] = &unk_278CEAB88;
-  v23 = a3;
+  permissionCopy = permission;
   v21[4] = self;
   v16 = v13;
   v22 = v16;
@@ -3353,7 +3353,7 @@ void __78__AVAudioSessionRemoteXPCClient_updateMicrophonePermission_clientToken_
   v2 = getpid();
   if ((caulk::is_debugger_attached(v2) & 1) == 0)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
+    WeakRetained = objc_loadWeakRetained((self + 8));
     v4 = WeakRetained;
     if (WeakRetained && (WeakRetained[10] & 1) == 0)
     {

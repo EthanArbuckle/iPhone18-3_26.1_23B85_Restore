@@ -1,23 +1,23 @@
 @interface CSEventListener
-- (CSEventListener)initWithEventListenerDelegate:(id)a3;
+- (CSEventListener)initWithEventListenerDelegate:(id)delegate;
 @end
 
 @implementation CSEventListener
 
-- (CSEventListener)initWithEventListenerDelegate:(id)a3
+- (CSEventListener)initWithEventListenerDelegate:(id)delegate
 {
   v48 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  delegateCopy = delegate;
   v45.receiver = self;
   v45.super_class = CSEventListener;
   v6 = [(CSEventListener *)&v45 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
-    v7->_eventFlags = [v5 eventFlags];
-    v8 = [v5 includeBundleIDs];
-    v9 = [v8 count];
+    objc_storeStrong(&v6->_delegate, delegate);
+    v7->_eventFlags = [delegateCopy eventFlags];
+    includeBundleIDs = [delegateCopy includeBundleIDs];
+    v9 = [includeBundleIDs count];
     if (v9)
     {
       v10 = [MEMORY[0x277CBEB58] setWithCapacity:v9];
@@ -25,7 +25,7 @@
       v42 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v11 = v8;
+      v11 = includeBundleIDs;
       v12 = [v11 countByEnumeratingWithState:&v41 objects:v47 count:16];
       if (v12)
       {
@@ -41,9 +41,9 @@
               objc_enumerationMutation(v11);
             }
 
-            v16 = [*(*(&v41 + 1) + 8 * v15) UTF8String];
-            v17 = strlen(v16);
-            v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{bundleIdHash(v16, v17 + 1)}];
+            uTF8String = [*(*(&v41 + 1) + 8 * v15) UTF8String];
+            v17 = strlen(uTF8String);
+            v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{bundleIdHash(uTF8String, v17 + 1)}];
             [v10 addObject:v18];
 
             ++v15;
@@ -64,9 +64,9 @@
       }
     }
 
-    v21 = [v5 excludeBundleIDs];
+    excludeBundleIDs = [delegateCopy excludeBundleIDs];
 
-    v22 = [v21 count];
+    v22 = [excludeBundleIDs count];
     if (v22)
     {
       v23 = [MEMORY[0x277CBEB58] setWithCapacity:v22];
@@ -74,7 +74,7 @@
       v38 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v24 = v21;
+      v24 = excludeBundleIDs;
       v25 = [v24 countByEnumeratingWithState:&v37 objects:v46 count:16];
       if (v25)
       {
@@ -91,9 +91,9 @@
             }
 
             v29 = *(*(&v37 + 1) + 8 * v28);
-            v30 = [v29 UTF8String];
-            v31 = strlen(v30);
-            v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{bundleIdHash(v30, v31 + 1)}];
+            uTF8String2 = [v29 UTF8String];
+            v31 = strlen(uTF8String2);
+            v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{bundleIdHash(uTF8String2, v31 + 1)}];
             [v23 addObject:v32];
 
             ++v28;

@@ -1,29 +1,29 @@
 @interface OADAutoNumberBulletProperties
-- (BOOL)isEqual:(id)a3;
-- (OADAutoNumberBulletProperties)initWithAutoNumberSchemeType:(int)a3 startIndex:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (OADAutoNumberBulletProperties)initWithAutoNumberSchemeType:(int)type startIndex:(unint64_t)index;
 @end
 
 @implementation OADAutoNumberBulletProperties
 
-- (OADAutoNumberBulletProperties)initWithAutoNumberSchemeType:(int)a3 startIndex:(unint64_t)a4
+- (OADAutoNumberBulletProperties)initWithAutoNumberSchemeType:(int)type startIndex:(unint64_t)index
 {
   v7.receiver = self;
   v7.super_class = OADAutoNumberBulletProperties;
   result = [(OADAutoNumberBulletProperties *)&v7 init];
   if (result)
   {
-    result->mSchemeType = a3;
-    result->mStartIndex = a4;
+    result->mSchemeType = type;
+    result->mStartIndex = index;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->mSchemeType == v4[2] && self->mStartIndex == *(v4 + 2);
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->mSchemeType == equalCopy[2] && self->mStartIndex == *(equalCopy + 2);
 
   return v5;
 }

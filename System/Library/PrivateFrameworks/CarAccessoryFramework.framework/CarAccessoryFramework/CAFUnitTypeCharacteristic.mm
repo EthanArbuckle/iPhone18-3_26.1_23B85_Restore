@@ -3,37 +3,37 @@
 + (void)load;
 - (NSUnit)unitValue;
 - (id)formattedValue;
-- (void)setUnitValue:(id)a3;
+- (void)setUnitValue:(id)value;
 @end
 
 @implementation CAFUnitTypeCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFUnitTypeCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
 - (NSUnit)unitValue
 {
-  v2 = [(CAFUnitTypeCharacteristic *)self unitTypeValue];
+  unitTypeValue = [(CAFUnitTypeCharacteristic *)self unitTypeValue];
 
-  return NSUnitFromCAFUnitType(v2);
+  return NSUnitFromCAFUnitType(unitTypeValue);
 }
 
-- (void)setUnitValue:(id)a3
+- (void)setUnitValue:(id)value
 {
-  v4 = CAFUnitTypeFromNSUnit(a3);
+  v4 = CAFUnitTypeFromNSUnit(value);
 
   [(CAFUnitTypeCharacteristic *)self setUnitTypeValue:v4];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFUInt16Characteristic *)self uint16Value];
+  uint16Value = [(CAFUInt16Characteristic *)self uint16Value];
 
-  return NSStringFromUnitType(v2);
+  return NSStringFromUnitType(uint16Value);
 }
 
 + (id)secondaryCharacteristicFormats

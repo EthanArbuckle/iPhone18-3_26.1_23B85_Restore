@@ -2,7 +2,7 @@
 + (BOOL)isLittleEndian;
 + (id)nativeOrder;
 + (void)initialize;
-- (JavaNioByteOrder)initWithNSString:(id)a3 withBoolean:(BOOL)a4;
+- (JavaNioByteOrder)initWithNSString:(id)string withBoolean:(BOOL)boolean;
 - (void)dealloc;
 @end
 
@@ -18,10 +18,10 @@
   return 1;
 }
 
-- (JavaNioByteOrder)initWithNSString:(id)a3 withBoolean:(BOOL)a4
+- (JavaNioByteOrder)initWithNSString:(id)string withBoolean:(BOOL)boolean
 {
-  JreStrongAssign(&self->name_, a3);
-  self->needsSwap_ = a4;
+  JreStrongAssign(&self->name_, string);
+  self->needsSwap_ = boolean;
   return self;
 }
 
@@ -44,7 +44,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if ((atomic_load_explicit(JavaNioByteOrder__initialized, memory_order_acquire) & 1) == 0)
     {

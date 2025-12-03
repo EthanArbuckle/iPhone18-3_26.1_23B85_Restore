@@ -3,7 +3,7 @@
 - (void)_alertDidFinishProcessing;
 - (void)_displayAlert;
 - (void)cancelAlertIfNecessary;
-- (void)displayAlertIfNecessaryWithCompletionHandler:(id)a3;
+- (void)displayAlertIfNecessaryWithCompletionHandler:(id)handler;
 @end
 
 @implementation AppLaunchNavTraceAlert
@@ -61,9 +61,9 @@
   }
 
   v2 = +[GEOPlatform sharedPlatform];
-  v3 = [v2 isInternalInstall];
+  isInternalInstall = [v2 isInternalInstall];
 
-  if (!v3)
+  if (!isInternalInstall)
   {
     return 0;
   }
@@ -87,16 +87,16 @@
   }
 }
 
-- (void)displayAlertIfNecessaryWithCompletionHandler:(id)a3
+- (void)displayAlertIfNecessaryWithCompletionHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   completionBlock = self->_completionBlock;
   self->_completionBlock = v4;
 
-  v6 = [(AppLaunchNavTraceAlert *)self _shouldDisplayAlert];
+  _shouldDisplayAlert = [(AppLaunchNavTraceAlert *)self _shouldDisplayAlert];
   v7 = sub_100005610();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (v6)
+  if (_shouldDisplayAlert)
   {
     if (v8)
     {

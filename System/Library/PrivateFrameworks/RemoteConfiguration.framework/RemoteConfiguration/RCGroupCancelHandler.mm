@@ -1,28 +1,28 @@
 @interface RCGroupCancelHandler
-+ (id)groupCancelHandlerWithCancelHandlers:(id)a3;
-- (RCGroupCancelHandler)initWithCancelHandlers:(id)a3;
++ (id)groupCancelHandlerWithCancelHandlers:(id)handlers;
+- (RCGroupCancelHandler)initWithCancelHandlers:(id)handlers;
 - (void)cancel;
 @end
 
 @implementation RCGroupCancelHandler
 
-+ (id)groupCancelHandlerWithCancelHandlers:(id)a3
++ (id)groupCancelHandlerWithCancelHandlers:(id)handlers
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCancelHandlers:v4];
+  handlersCopy = handlers;
+  v5 = [[self alloc] initWithCancelHandlers:handlersCopy];
 
   return v5;
 }
 
-- (RCGroupCancelHandler)initWithCancelHandlers:(id)a3
+- (RCGroupCancelHandler)initWithCancelHandlers:(id)handlers
 {
-  v4 = a3;
+  handlersCopy = handlers;
   v9.receiver = self;
   v9.super_class = RCGroupCancelHandler;
   v5 = [(RCGroupCancelHandler *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [handlersCopy copy];
     cancelHandlers = v5->_cancelHandlers;
     v5->_cancelHandlers = v6;
   }
@@ -32,8 +32,8 @@
 
 - (void)cancel
 {
-  v2 = [(RCGroupCancelHandler *)self cancelHandlers];
-  [v2 makeObjectsPerformSelector:sel_cancel];
+  cancelHandlers = [(RCGroupCancelHandler *)self cancelHandlers];
+  [cancelHandlers makeObjectsPerformSelector:sel_cancel];
 }
 
 @end

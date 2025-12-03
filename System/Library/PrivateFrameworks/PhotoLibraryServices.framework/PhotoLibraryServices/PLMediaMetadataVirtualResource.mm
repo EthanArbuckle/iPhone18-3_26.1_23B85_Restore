@@ -1,20 +1,20 @@
 @interface PLMediaMetadataVirtualResource
-- (PLMediaMetadataVirtualResource)initWithAsset:(id)a3 resourceType:(unsigned int)a4 version:(unsigned int)a5 recipeID:(unsigned int)a6 dataLength:(unint64_t)a7;
+- (PLMediaMetadataVirtualResource)initWithAsset:(id)asset resourceType:(unsigned int)type version:(unsigned int)version recipeID:(unsigned int)d dataLength:(unint64_t)length;
 @end
 
 @implementation PLMediaMetadataVirtualResource
 
-- (PLMediaMetadataVirtualResource)initWithAsset:(id)a3 resourceType:(unsigned int)a4 version:(unsigned int)a5 recipeID:(unsigned int)a6 dataLength:(unint64_t)a7
+- (PLMediaMetadataVirtualResource)initWithAsset:(id)asset resourceType:(unsigned int)type version:(unsigned int)version recipeID:(unsigned int)d dataLength:(unint64_t)length
 {
   v11.receiver = self;
   v11.super_class = PLMediaMetadataVirtualResource;
-  v8 = [(PLVirtualResource *)&v11 initWithAsset:a3 resourceType:*&a4 version:*&a5 recipeID:*&a6];
+  v8 = [(PLVirtualResource *)&v11 initWithAsset:asset resourceType:*&type version:*&version recipeID:*&d];
   if (v8)
   {
     v9 = +[PLUniformTypeIdentifier plistUniformTypeIdentifier];
     [(PLVirtualResource *)v8 setUniformTypeIdentifier:v9];
 
-    v8->_dataLength = a7;
+    v8->_dataLength = length;
   }
 
   return v8;

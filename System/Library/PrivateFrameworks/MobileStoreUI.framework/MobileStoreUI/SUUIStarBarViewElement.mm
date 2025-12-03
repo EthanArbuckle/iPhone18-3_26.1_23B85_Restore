@@ -1,25 +1,25 @@
 @interface SUUIStarBarViewElement
-- (SUUIStarBarViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUIStarBarViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUIStarBarViewElement
 
-- (SUUIStarBarViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIStarBarViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v15.receiver = self;
   v15.super_class = SUUIStarBarViewElement;
-  v9 = [(SUUIViewElement *)&v15 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v15 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"count"];
+    v10 = [elementCopy getAttribute:@"count"];
     v9->_numberOfRatings = [v10 integerValue];
 
-    v11 = [v8 getAttribute:@"numStars"];
+    v11 = [elementCopy getAttribute:@"numStars"];
     v9->_numberOfStars = [v11 integerValue];
 
-    v12 = [v8 getAttribute:@"value"];
+    v12 = [elementCopy getAttribute:@"value"];
     [v12 floatValue];
     v9->_value = v13;
   }
@@ -27,18 +27,18 @@
   return v9;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SUUIStarBarViewElement;
-  v5 = [(SUUIViewElement *)&v9 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v9 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    self->_numberOfRatings = [(SUUIStarBarViewElement *)v4 numberOfRatings];
-    self->_numberOfStars = [(SUUIStarBarViewElement *)v4 numberOfStars];
-    [(SUUIStarBarViewElement *)v4 value];
+    self->_numberOfRatings = [(SUUIStarBarViewElement *)elementCopy numberOfRatings];
+    self->_numberOfStars = [(SUUIStarBarViewElement *)elementCopy numberOfStars];
+    [(SUUIStarBarViewElement *)elementCopy value];
     self->_value = v7;
   }
 

@@ -1,43 +1,43 @@
 @interface ACTKeyboardLayoutUtils
-- (ACTKeyboardLayoutUtils)initWithLocale:(id)a3;
-- (id)alternativeKeyForString:(id)a3 keyplane:(id)a4 preferBaseKeyVariants:(BOOL)a5 preferManualShift:(BOOL)a6 substituteUpperCaseForLowerCase:(BOOL)a7;
-- (id)anyKeyForString:(id)a3 keyplane:(id)a4 wantSecondaryString:(BOOL)a5 isRetyping:(BOOL)a6 preferBaseKeyVariants:(BOOL)a7 preferManualShift:(BOOL)a8 substituteUpperCaseForLowerCase:(BOOL)a9;
-- (id)baseKeyForString:(id)a3;
-- (id)createTTKPlane:(id)a3;
-- (id)exactKeyForString:(id)a3 keyplane:(id)a4 includeSecondaryStrings:(BOOL)a5;
-- (id)representedStringForKey:(id)a3 shifted:(BOOL)a4 includeSecondaryStrings:(BOOL)a5;
-- (id)substitutesForKey:(id)a3 preferBaseKeyVariants:(BOOL)a4 preferManualShift:(BOOL)a5 substituteUpperCaseForLowerCase:(BOOL)a6;
-- (void)setLayoutKeyOverride:(id)a3 forKey:(id)a4 uiKeyboardStringNothing:(id)a5;
+- (ACTKeyboardLayoutUtils)initWithLocale:(id)locale;
+- (id)alternativeKeyForString:(id)string keyplane:(id)keyplane preferBaseKeyVariants:(BOOL)variants preferManualShift:(BOOL)shift substituteUpperCaseForLowerCase:(BOOL)case;
+- (id)anyKeyForString:(id)string keyplane:(id)keyplane wantSecondaryString:(BOOL)secondaryString isRetyping:(BOOL)retyping preferBaseKeyVariants:(BOOL)variants preferManualShift:(BOOL)shift substituteUpperCaseForLowerCase:(BOOL)case;
+- (id)baseKeyForString:(id)string;
+- (id)createTTKPlane:(id)plane;
+- (id)exactKeyForString:(id)string keyplane:(id)keyplane includeSecondaryStrings:(BOOL)strings;
+- (id)representedStringForKey:(id)key shifted:(BOOL)shifted includeSecondaryStrings:(BOOL)strings;
+- (id)substitutesForKey:(id)key preferBaseKeyVariants:(BOOL)variants preferManualShift:(BOOL)shift substituteUpperCaseForLowerCase:(BOOL)case;
+- (void)setLayoutKeyOverride:(id)override forKey:(id)key uiKeyboardStringNothing:(id)nothing;
 @end
 
 @implementation ACTKeyboardLayoutUtils
 
-- (id)anyKeyForString:(id)a3 keyplane:(id)a4 wantSecondaryString:(BOOL)a5 isRetyping:(BOOL)a6 preferBaseKeyVariants:(BOOL)a7 preferManualShift:(BOOL)a8 substituteUpperCaseForLowerCase:(BOOL)a9
+- (id)anyKeyForString:(id)string keyplane:(id)keyplane wantSecondaryString:(BOOL)secondaryString isRetyping:(BOOL)retyping preferBaseKeyVariants:(BOOL)variants preferManualShift:(BOOL)shift substituteUpperCaseForLowerCase:(BOOL)case
 {
-  v9 = a8;
-  v10 = a7;
-  v12 = a5;
-  v15 = a3;
-  v16 = a4;
-  v17 = [(ACTKeyboardLayoutUtils *)self exactKeyForString:v15 keyplane:v16 includeSecondaryStrings:v12];
-  if (!v17 && !a6)
+  shiftCopy = shift;
+  variantsCopy = variants;
+  secondaryStringCopy = secondaryString;
+  stringCopy = string;
+  keyplaneCopy = keyplane;
+  v17 = [(ACTKeyboardLayoutUtils *)self exactKeyForString:stringCopy keyplane:keyplaneCopy includeSecondaryStrings:secondaryStringCopy];
+  if (!v17 && !retyping)
   {
-    v17 = [(ACTKeyboardLayoutUtils *)self alternativeKeyForString:v15 keyplane:v16 preferBaseKeyVariants:v10 preferManualShift:v9 substituteUpperCaseForLowerCase:a9];
+    v17 = [(ACTKeyboardLayoutUtils *)self alternativeKeyForString:stringCopy keyplane:keyplaneCopy preferBaseKeyVariants:variantsCopy preferManualShift:shiftCopy substituteUpperCaseForLowerCase:case];
   }
 
   return v17;
 }
 
-- (id)alternativeKeyForString:(id)a3 keyplane:(id)a4 preferBaseKeyVariants:(BOOL)a5 preferManualShift:(BOOL)a6 substituteUpperCaseForLowerCase:(BOOL)a7
+- (id)alternativeKeyForString:(id)string keyplane:(id)keyplane preferBaseKeyVariants:(BOOL)variants preferManualShift:(BOOL)shift substituteUpperCaseForLowerCase:(BOOL)case
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
+  caseCopy = case;
+  shiftCopy = shift;
+  variantsCopy = variants;
   v26 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  if (a3)
+  keyplaneCopy = keyplane;
+  if (string)
   {
-    [(ACTKeyboardLayoutUtils *)self substitutesForKey:a3 preferBaseKeyVariants:v9 preferManualShift:v8 substituteUpperCaseForLowerCase:v7];
+    [(ACTKeyboardLayoutUtils *)self substitutesForKey:string preferBaseKeyVariants:variantsCopy preferManualShift:shiftCopy substituteUpperCaseForLowerCase:caseCopy];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -56,7 +56,7 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [(ACTKeyboardLayoutUtils *)self exactKeyForString:*(*(&v21 + 1) + 8 * i) keyplane:v12, v21];
+          v18 = [(ACTKeyboardLayoutUtils *)self exactKeyForString:*(*(&v21 + 1) + 8 * i) keyplane:keyplaneCopy, v21];
           if (v18)
           {
             v19 = v18;
@@ -86,20 +86,20 @@ LABEL_12:
   return v19;
 }
 
-- (id)exactKeyForString:(id)a3 keyplane:(id)a4 includeSecondaryStrings:(BOOL)a5
+- (id)exactKeyForString:(id)string keyplane:(id)keyplane includeSecondaryStrings:(BOOL)strings
 {
-  v27 = a5;
+  stringsCopy = strings;
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  stringCopy = string;
+  keyplaneCopy = keyplane;
+  v9 = keyplaneCopy;
+  if (stringCopy)
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    obj = [v8 keys];
+    obj = [keyplaneCopy keys];
     v10 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v10)
     {
@@ -115,8 +115,8 @@ LABEL_12:
           }
 
           v14 = *(*(&v28 + 1) + 8 * i);
-          v15 = -[ACTKeyboardLayoutUtils representedStringForKey:shifted:includeSecondaryStrings:](self, "representedStringForKey:shifted:includeSecondaryStrings:", v14, [v9 isShiftKeyplane], v27);
-          if ([v7 isEqualToString:v15])
+          v15 = -[ACTKeyboardLayoutUtils representedStringForKey:shifted:includeSecondaryStrings:](self, "representedStringForKey:shifted:includeSecondaryStrings:", v14, [v9 isShiftKeyplane], stringsCopy);
+          if ([stringCopy isEqualToString:v15])
           {
 LABEL_16:
             v24 = v14;
@@ -124,13 +124,13 @@ LABEL_16:
             goto LABEL_19;
           }
 
-          v16 = [v14 name];
-          v17 = [v16 hasPrefix:@"TenKey-Chinese-Pinyin"];
+          name = [v14 name];
+          v17 = [name hasPrefix:@"TenKey-Chinese-Pinyin"];
 
           if (v17)
           {
-            v18 = [v14 displayString];
-            v19 = [v18 rangeOfString:v7 options:1];
+            displayString = [v14 displayString];
+            v19 = [displayString rangeOfString:stringCopy options:1];
 
             if (v19 != 0x7FFFFFFFFFFFFFFFLL)
             {
@@ -140,13 +140,13 @@ LABEL_16:
 
           else
           {
-            v20 = [v14 name];
-            v21 = [v20 hasPrefix:@"Thai-24-Key"];
+            name2 = [v14 name];
+            v21 = [name2 hasPrefix:@"Thai-24-Key"];
 
             if (v21)
             {
-              v22 = [v14 secondaryDisplayStrings];
-              v23 = [v22 containsObject:v7];
+              secondaryDisplayStrings = [v14 secondaryDisplayStrings];
+              v23 = [secondaryDisplayStrings containsObject:stringCopy];
 
               if (v23)
               {
@@ -183,46 +183,46 @@ LABEL_19:
   return v24;
 }
 
-- (id)representedStringForKey:(id)a3 shifted:(BOOL)a4 includeSecondaryStrings:(BOOL)a5
+- (id)representedStringForKey:(id)key shifted:(BOOL)shifted includeSecondaryStrings:(BOOL)strings
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [v8 representedString];
-  if ([v8 displayType] == 7 && objc_msgSend(v9, "length") >= 2)
+  stringsCopy = strings;
+  keyCopy = key;
+  representedString = [keyCopy representedString];
+  if ([keyCopy displayType] == 7 && objc_msgSend(representedString, "length") >= 2)
   {
-    if (a4)
+    if (shifted)
     {
-      [v9 substringFromIndex:1];
+      [representedString substringFromIndex:1];
     }
 
     else
     {
-      [v9 substringToIndex:1];
+      [representedString substringToIndex:1];
     }
 
-    v9 = v13 = v9;
+    representedString = secondaryRepresentedStrings2 = representedString;
     goto LABEL_19;
   }
 
-  v10 = [v8 name];
-  v11 = [v10 isEqualToString:@"Latin-Accents"];
+  name = [keyCopy name];
+  v11 = [name isEqualToString:@"Latin-Accents"];
 
   if (!v11)
   {
-    if (!v5)
+    if (!stringsCopy)
     {
       goto LABEL_20;
     }
 
-    if ([v8 displayType] != 7 || (objc_msgSend(v8, "secondaryRepresentedStrings"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "count"), v15, !v16))
+    if ([keyCopy displayType] != 7 || (objc_msgSend(keyCopy, "secondaryRepresentedStrings"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "count"), v15, !v16))
     {
-      if ([v8 displayType])
+      if ([keyCopy displayType])
       {
         goto LABEL_20;
       }
 
-      v17 = [v8 secondaryRepresentedStrings];
-      v18 = [v17 count];
+      secondaryRepresentedStrings = [keyCopy secondaryRepresentedStrings];
+      v18 = [secondaryRepresentedStrings count];
 
       if (!v18)
       {
@@ -230,104 +230,104 @@ LABEL_19:
       }
     }
 
-    v13 = [v8 secondaryRepresentedStrings];
-    v14 = [v13 firstObject];
+    secondaryRepresentedStrings2 = [keyCopy secondaryRepresentedStrings];
+    firstObject = [secondaryRepresentedStrings2 firstObject];
     goto LABEL_18;
   }
 
   v12 = [(NSMutableDictionary *)self->_keyOverrides objectForKeyedSubscript:*MEMORY[0x277D76BE0]];
-  v13 = v12;
+  secondaryRepresentedStrings2 = v12;
   if (v12)
   {
     if ([v12 length] == 2)
     {
-      v14 = [v13 substringToIndex:1];
+      firstObject = [secondaryRepresentedStrings2 substringToIndex:1];
     }
 
     else
     {
-      v14 = v13;
+      firstObject = secondaryRepresentedStrings2;
     }
 
 LABEL_18:
-    v19 = v14;
+    v19 = firstObject;
 
-    v9 = v19;
+    representedString = v19;
   }
 
 LABEL_19:
 
 LABEL_20:
 
-  return v9;
+  return representedString;
 }
 
-- (id)substitutesForKey:(id)a3 preferBaseKeyVariants:(BOOL)a4 preferManualShift:(BOOL)a5 substituteUpperCaseForLowerCase:(BOOL)a6
+- (id)substitutesForKey:(id)key preferBaseKeyVariants:(BOOL)variants preferManualShift:(BOOL)shift substituteUpperCaseForLowerCase:(BOOL)case
 {
-  v6 = a6;
-  v8 = a4;
-  v10 = a3;
-  v11 = [MEMORY[0x277CBEB18] array];
-  if ([v10 length] == 1)
+  caseCopy = case;
+  variantsCopy = variants;
+  keyCopy = key;
+  array = [MEMORY[0x277CBEB18] array];
+  if ([keyCopy length] == 1)
   {
-    if (v8)
+    if (variantsCopy)
     {
-      v12 = [(ACTKeyboardLayoutUtils *)self baseKeyForString:v10];
+      v12 = [(ACTKeyboardLayoutUtils *)self baseKeyForString:keyCopy];
       if (v12)
       {
-        [v11 addObject:v12];
+        [array addObject:v12];
       }
     }
 
-    v13 = [v10 characterAtIndex:0];
-    v14 = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
-    LODWORD(v13) = [v14 characterIsMember:v13];
+    v13 = [keyCopy characterAtIndex:0];
+    uppercaseLetterCharacterSet = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
+    LODWORD(v13) = [uppercaseLetterCharacterSet characterIsMember:v13];
 
-    if (v13 && !a5)
+    if (v13 && !shift)
     {
-      v15 = [v10 lowercaseStringWithLocale:self->_locale];
-      [v11 addObject:v15];
-      if (v8)
+      v15 = [keyCopy lowercaseStringWithLocale:self->_locale];
+      [array addObject:v15];
+      if (variantsCopy)
       {
         v16 = [(ACTKeyboardLayoutUtils *)self baseKeyForString:v15];
         if (v16)
         {
-          [v11 addObject:v16];
+          [array addObject:v16];
         }
       }
     }
 
-    if (v6)
+    if (caseCopy)
     {
-      v17 = [v10 characterAtIndex:0];
-      v18 = [MEMORY[0x277CCA900] lowercaseLetterCharacterSet];
-      LODWORD(v17) = [v18 characterIsMember:v17];
+      v17 = [keyCopy characterAtIndex:0];
+      lowercaseLetterCharacterSet = [MEMORY[0x277CCA900] lowercaseLetterCharacterSet];
+      LODWORD(v17) = [lowercaseLetterCharacterSet characterIsMember:v17];
 
       if (v17)
       {
-        v19 = [v10 uppercaseStringWithLocale:self->_locale];
-        [v11 addObject:v19];
-        if (v8)
+        v19 = [keyCopy uppercaseStringWithLocale:self->_locale];
+        [array addObject:v19];
+        if (variantsCopy)
         {
           v20 = [(ACTKeyboardLayoutUtils *)self baseKeyForString:v19];
           if (v20)
           {
-            [v11 addObject:v20];
+            [array addObject:v20];
           }
         }
       }
     }
 
-    if (v8)
+    if (variantsCopy)
     {
-      if ([v10 isEqualToString:@"ı"])
+      if ([keyCopy isEqualToString:@"ı"])
       {
         v21 = @"i";
       }
 
       else
       {
-        if (![v10 isEqualToString:@"İ"])
+        if (![keyCopy isEqualToString:@"İ"])
         {
           goto LABEL_26;
         }
@@ -335,63 +335,63 @@ LABEL_20:
         v21 = @"I";
       }
 
-      [v11 addObject:v21];
+      [array addObject:v21];
     }
   }
 
 LABEL_26:
 
-  return v11;
+  return array;
 }
 
-- (id)baseKeyForString:(id)a3
+- (id)baseKeyForString:(id)string
 {
-  v3 = [a3 decomposedStringWithCanonicalMapping];
-  if ([v3 length] < 2)
+  decomposedStringWithCanonicalMapping = [string decomposedStringWithCanonicalMapping];
+  if ([decomposedStringWithCanonicalMapping length] < 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 substringToIndex:1];
+    v4 = [decomposedStringWithCanonicalMapping substringToIndex:1];
   }
 
   return v4;
 }
 
-- (id)createTTKPlane:(id)a3
+- (id)createTTKPlane:(id)plane
 {
-  v4 = a3;
-  v5 = [[TTKKeyboardPlane alloc] initWithUIKBTree:v4 layoutUtils:self];
+  planeCopy = plane;
+  v5 = [[TTKKeyboardPlane alloc] initWithUIKBTree:planeCopy layoutUtils:self];
 
   return v5;
 }
 
-- (void)setLayoutKeyOverride:(id)a3 forKey:(id)a4 uiKeyboardStringNothing:(id)a5
+- (void)setLayoutKeyOverride:(id)override forKey:(id)key uiKeyboardStringNothing:(id)nothing
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v12)
+  overrideCopy = override;
+  keyCopy = key;
+  nothingCopy = nothing;
+  if (overrideCopy)
   {
-    v10 = [v12 isEqualToString:v9];
+    v10 = [overrideCopy isEqualToString:nothingCopy];
     keyOverrides = self->_keyOverrides;
     if (v10)
     {
-      [(NSMutableDictionary *)keyOverrides removeObjectForKey:v8];
+      [(NSMutableDictionary *)keyOverrides removeObjectForKey:keyCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)keyOverrides setObject:v12 forKey:v8];
+      [(NSMutableDictionary *)keyOverrides setObject:overrideCopy forKey:keyCopy];
     }
   }
 }
 
-- (ACTKeyboardLayoutUtils)initWithLocale:(id)a3
+- (ACTKeyboardLayoutUtils)initWithLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   v10.receiver = self;
   v10.super_class = ACTKeyboardLayoutUtils;
   v6 = [(ACTKeyboardLayoutUtils *)&v10 init];
@@ -401,7 +401,7 @@ LABEL_26:
     keyOverrides = v6->_keyOverrides;
     v6->_keyOverrides = v7;
 
-    objc_storeStrong(&v6->_locale, a3);
+    objc_storeStrong(&v6->_locale, locale);
   }
 
   return v6;

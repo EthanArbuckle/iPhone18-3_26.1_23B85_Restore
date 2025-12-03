@@ -1,21 +1,21 @@
 @interface TMASAssetPlugin
-- (TMASAssetPlugin)initWithClock:(id)a3 daemonCore:(id)a4;
+- (TMASAssetPlugin)initWithClock:(id)clock daemonCore:(id)core;
 - (void)dealloc;
 @end
 
 @implementation TMASAssetPlugin
 
-- (TMASAssetPlugin)initWithClock:(id)a3 daemonCore:(id)a4
+- (TMASAssetPlugin)initWithClock:(id)clock daemonCore:(id)core
 {
   v6 = [(TMASAssetPlugin *)self init];
   if (v6)
   {
     qword_89C0 = os_log_create("com.apple.timed", "assetManager");
-    v6->_daemonCore = a4;
-    v6->_clock = a3;
+    v6->_daemonCore = core;
+    v6->_clock = clock;
     v7 = objc_alloc_init(TMASAssetManager);
     v6->assetManager = v7;
-    [(TMASAssetManager *)v7 setDaemonCore:a4];
+    [(TMASAssetManager *)v7 setDaemonCore:core];
     v8 = [[TMASAsset alloc] initWithAssetType:@"com.apple.MobileAsset.timed" assetSpecifier:@"locationTZRules" fileName:@"TimeZoneRules.plist" destination:@"/var/db/timed/TimeZoneRules.plist"];
     v6->coreTZRules = v8;
     [(TMASAssetManager *)v6->assetManager addAsset:v8 withInterestReason:@"looking for new versions"];

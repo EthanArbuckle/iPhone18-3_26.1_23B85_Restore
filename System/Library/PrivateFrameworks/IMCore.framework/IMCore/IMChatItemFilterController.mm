@@ -1,37 +1,37 @@
 @interface IMChatItemFilterController
-- (BOOL)itemMatchesFilter:(id)a3;
+- (BOOL)itemMatchesFilter:(id)filter;
 - (IMChat)chat;
-- (IMChatItemFilterController)initWithChat:(id)a3;
+- (IMChatItemFilterController)initWithChat:(id)chat;
 - (IMMessage)firstMessage;
 - (IMMessage)lastMessage;
 - (NSArray)chatItems;
-- (id)_itemsMatchingFilter:(id)a3 guids:(id)a4;
-- (void)_itemsDidChange:(id)a3;
-- (void)_postIMChatItemsDidChangeNotificationWithInserted:(id)a3 removed:(id)a4 reload:(id)a5 regenerate:(id)a6 oldChatItems:(id)a7 newChatItems:(id)a8;
-- (void)_postNotification:(id)a3 userInfo:(id)a4;
+- (id)_itemsMatchingFilter:(id)filter guids:(id)guids;
+- (void)_itemsDidChange:(id)change;
+- (void)_postIMChatItemsDidChangeNotificationWithInserted:(id)inserted removed:(id)removed reload:(id)reload regenerate:(id)regenerate oldChatItems:(id)items newChatItems:(id)chatItems;
+- (void)_postNotification:(id)notification userInfo:(id)info;
 - (void)_replaceStaleChatItems;
 - (void)_setupChatItemRules;
-- (void)_updateChatItemsWithReason:(id)a3 block:(id)a4 shouldPost:(BOOL)a5;
+- (void)_updateChatItemsWithReason:(id)reason block:(id)block shouldPost:(BOOL)post;
 - (void)dealloc;
-- (void)insertHistoricalMessages:(id)a3 queryID:(id)a4 hasMessagesBefore:(BOOL)a5 hasMessagesAfter:(BOOL)a6 isReplacingItems:(BOOL)a7;
-- (void)insertItem:(id)a3;
-- (void)performActionDisallowingItemInsert:(id)a3;
-- (void)removeItem:(id)a3;
-- (void)replaceItems:(id)a3;
+- (void)insertHistoricalMessages:(id)messages queryID:(id)d hasMessagesBefore:(BOOL)before hasMessagesAfter:(BOOL)after isReplacingItems:(BOOL)items;
+- (void)insertItem:(id)item;
+- (void)performActionDisallowingItemInsert:(id)insert;
+- (void)removeItem:(id)item;
+- (void)replaceItems:(id)items;
 @end
 
 @implementation IMChatItemFilterController
 
-- (IMChatItemFilterController)initWithChat:(id)a3
+- (IMChatItemFilterController)initWithChat:(id)chat
 {
-  v4 = a3;
+  chatCopy = chat;
   v13.receiver = self;
   v13.super_class = IMChatItemFilterController;
   v5 = [(IMItemsController *)&v13 init];
   v7 = v5;
   if (v5)
   {
-    objc_msgSend_setChat_(v5, v6, v4);
+    objc_msgSend_setChat_(v5, v6, chatCopy);
     v8 = objc_alloc(MEMORY[0x1E69A6158]);
     v10 = objc_msgSend_initWithTarget_action_(v8, v9, v7, sel__updateChatItemsForChatItemUpdater);
     chatItemsUpdater = v7->_chatItemsUpdater;
@@ -80,16 +80,16 @@
   return v6;
 }
 
-- (void)insertHistoricalMessages:(id)a3 queryID:(id)a4 hasMessagesBefore:(BOOL)a5 hasMessagesAfter:(BOOL)a6 isReplacingItems:(BOOL)a7
+- (void)insertHistoricalMessages:(id)messages queryID:(id)d hasMessagesBefore:(BOOL)before hasMessagesAfter:(BOOL)after isReplacingItems:(BOOL)items
 {
   v40 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
+  messagesCopy = messages;
+  dCopy = d;
   v14 = IMLogHandleForCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v17 = MEMORY[0x1E696AD98];
-    v18 = objc_msgSend_count(v12, v15, v16);
+    v18 = objc_msgSend_count(messagesCopy, v15, v16);
     v20 = objc_msgSend_numberWithUnsignedInteger_(v17, v19, v18);
     *buf = 136315394;
     *&buf[4] = "[IMChatItemFilterController insertHistoricalMessages:queryID:hasMessagesBefore:hasMessagesAfter:isReplacingItems:]";
@@ -98,25 +98,25 @@
     _os_log_impl(&dword_1A823F000, v14, OS_LOG_TYPE_INFO, "%s archivedMessages: %@", buf, 0x16u);
   }
 
-  self->_hasEarlierMessagesToLoad = a5;
-  self->_hasRecentMessagesToLoad = a6;
+  self->_hasEarlierMessagesToLoad = before;
+  self->_hasRecentMessagesToLoad = after;
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
   v37 = sub_1A8259B90;
   v38 = sub_1A825AEF4;
-  v21 = v12;
+  v21 = messagesCopy;
   v39 = v21;
   v26 = MEMORY[0x1E69E9820];
   v27 = 3221225472;
   v28 = sub_1A82FE28C;
   v29 = &unk_1E7811F80;
-  v22 = v13;
-  v31 = self;
+  v22 = dCopy;
+  selfCopy = self;
   v32 = buf;
-  v33 = a5;
-  v34 = a6;
-  v35 = a7;
+  beforeCopy = before;
+  afterCopy = after;
+  itemsCopy = items;
   v30 = v22;
   v23 = _Block_copy(&v26);
   objc_msgSend__updateChatItemsWithReason_block_(self, v24, @"history query", v23, v26, v27, v28, v29);
@@ -125,24 +125,24 @@
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_itemsDidChange:(id)a3
+- (void)_itemsDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = IMChatItemFilterController;
-  [(IMItemsController *)&v6 _itemsDidChange:a3];
+  [(IMItemsController *)&v6 _itemsDidChange:change];
   objc_msgSend_setNeedsUpdate(self->_chatItemsUpdater, v4, v5);
 }
 
-- (void)insertItem:(id)a3
+- (void)insertItem:(id)item
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (objc_msgSend_itemMatchesFilter_(self, v5, v4))
+  itemCopy = item;
+  if (objc_msgSend_itemMatchesFilter_(self, v5, itemCopy))
   {
     v6 = IMLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v9 = objc_msgSend_guid(v4, v7, v8);
+      v9 = objc_msgSend_guid(itemCopy, v7, v8);
       v18 = 136315394;
       v19 = "[IMChatItemFilterController insertItem:]";
       v20 = 2112;
@@ -152,22 +152,22 @@
 
     v12 = objc_msgSend_chat(self, v10, v11);
     v15 = objc_msgSend_chatStyle(v12, v13, v14);
-    objc_msgSend__handleItem_forChatStyle_(self, v16, v4, v15);
+    objc_msgSend__handleItem_forChatStyle_(self, v16, itemCopy, v15);
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeItem:(id)a3
+- (void)removeItem:(id)item
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (objc_msgSend_itemMatchesFilter_(self, v5, v4))
+  itemCopy = item;
+  if (objc_msgSend_itemMatchesFilter_(self, v5, itemCopy))
   {
     v6 = IMLogHandleForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v9 = objc_msgSend_guid(v4, v7, v8);
+      v9 = objc_msgSend_guid(itemCopy, v7, v8);
       v12 = 136315394;
       v13 = "[IMChatItemFilterController removeItem:]";
       v14 = 2112;
@@ -175,19 +175,19 @@
       _os_log_impl(&dword_1A823F000, v6, OS_LOG_TYPE_INFO, "%s removing %@", &v12, 0x16u);
     }
 
-    objc_msgSend__removeItem_(self, v10, v4);
+    objc_msgSend__removeItem_(self, v10, itemCopy);
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)replaceItems:(id)a3
+- (void)replaceItems:(id)items
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  itemsCopy = items;
   v6 = objc_alloc_init(v4);
-  v8 = objc_msgSend__itemsMatchingFilter_guids_(self, v7, v5, v6);
+  v8 = objc_msgSend__itemsMatchingFilter_guids_(self, v7, itemsCopy, v6);
 
   if (objc_msgSend_count(v8, v9, v10))
   {
@@ -208,21 +208,21 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performActionDisallowingItemInsert:(id)a3
+- (void)performActionDisallowingItemInsert:(id)insert
 {
-  v4 = a3;
+  insertCopy = insert;
   objc_msgSend_setDisableItemInserts_(self, v5, 1);
-  v4[2](v4);
+  insertCopy[2](insertCopy);
 
   objc_msgSend_setDisableItemInserts_(self, v6, 0);
 }
 
-- (void)_updateChatItemsWithReason:(id)a3 block:(id)a4 shouldPost:(BOOL)a5
+- (void)_updateChatItemsWithReason:(id)reason block:(id)block shouldPost:(BOOL)post
 {
-  v5 = a5;
+  postCopy = post;
   v192 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  reasonCopy = reason;
+  blockCopy = block;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v10 = IMLogHandleForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -232,7 +232,7 @@
     *buf = 138412546;
     v189 = v16;
     v190 = 2112;
-    v191 = v8;
+    v191 = reasonCopy;
     _os_log_impl(&dword_1A823F000, v10, OS_LOG_TYPE_INFO, "Update chat items (chatGUID: %@), reason: %@", buf, 0x16u);
   }
 
@@ -246,17 +246,17 @@
       _os_log_impl(&dword_1A823F000, v18, OS_LOG_TYPE_INFO, "Update already in progress, executing update block", buf, 2u);
     }
 
-    v9[2](v9);
+    blockCopy[2](blockCopy);
     goto LABEL_73;
   }
 
   self->_isUpdatingChatItems = 1;
-  v9[2](v9);
+  blockCopy[2](blockCopy);
   objc_msgSend_setNeedsUpdate_(self->_chatItemsUpdater, v19, 0);
   self->_isUpdatingChatItems = 0;
   if (v17)
   {
-    v171 = v9;
+    v171 = blockCopy;
     v22 = objc_msgSend__items(self, v20, v21);
     v23 = IMLogHandleForCategory();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
@@ -279,9 +279,9 @@
       if (v32)
       {
 LABEL_12:
-        v172 = v8;
+        v172 = reasonCopy;
         v173 = v22;
-        v166 = v5;
+        v166 = postCopy;
         v170 = v17;
         objc_msgSend_differenceFromArray_(v32, v37, v178);
         v185 = 0;
@@ -314,7 +314,7 @@ LABEL_12:
         objc_msgSend_removeIndexes_(v61, v63, v39);
         Index = objc_msgSend_firstIndex(v55, v64, v65);
         v69 = objc_msgSend_firstIndex(v61, v67, v68);
-        v176 = self;
+        selfCopy = self;
         if (Index != 0x7FFFFFFFFFFFFFFFLL)
         {
           v71 = v69;
@@ -330,7 +330,7 @@ LABEL_12:
                 v78 = objc_msgSend__timeAdded(v72, v76, v77);
                 objc_msgSend__setTimeAdded_(v75, v79, v78);
 
-                self = v176;
+                self = selfCopy;
               }
 
               if (objc_msgSend__shouldReloadChatItem_oldChatItem_(self->_chatItemRules, v74, v75, v72))
@@ -394,8 +394,8 @@ LABEL_12:
             v100 = objc_msgSend__nextStaleTime(v170, v96, v97);
             isEqualToDate = objc_msgSend_isEqualToDate_(v88, v101, v100);
 
-            v8 = v172;
-            self = v176;
+            reasonCopy = v172;
+            self = selfCopy;
             if ((isEqualToDate & 1) == 0)
             {
               v103 = IMLogHandleForCategory();
@@ -419,15 +419,15 @@ LABEL_12:
                 v113 = v116 - v119;
               }
 
-              objc_msgSend_cancelPreviousPerformRequestsWithTarget_selector_object_(MEMORY[0x1E69E58C0], v111, v176, sel__replaceStaleChatItems, 0);
-              objc_msgSend_performSelector_withObject_afterDelay_(v176, v120, sel__replaceStaleChatItems, 0, v113);
+              objc_msgSend_cancelPreviousPerformRequestsWithTarget_selector_object_(MEMORY[0x1E69E58C0], v111, selfCopy, sel__replaceStaleChatItems, 0);
+              objc_msgSend_performSelector_withObject_afterDelay_(selfCopy, v120, sel__replaceStaleChatItems, 0, v113);
             }
           }
 
           else
           {
-            v8 = v172;
-            self = v176;
+            reasonCopy = v172;
+            self = selfCopy;
           }
         }
 
@@ -454,7 +454,7 @@ LABEL_12:
             v191 = v137;
             _os_log_impl(&dword_1A823F000, v128, OS_LOG_TYPE_INFO, "\tchat: %@, guid: %@", buf, 0x16u);
 
-            self = v176;
+            self = selfCopy;
             v98 = v173;
           }
 
@@ -536,7 +536,7 @@ LABEL_12:
           }
         }
 
-        v9 = v171;
+        blockCopy = v171;
         goto LABEL_73;
       }
     }
@@ -668,11 +668,11 @@ LABEL_73:
   v51 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_postNotification:(id)a3 userInfo:(id)a4
+- (void)_postNotification:(id)notification userInfo:(id)info
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  infoCopy = info;
   v10 = objc_msgSend_sharedRegistry(IMChatRegistry, v8, v9);
   isFirstLoad = objc_msgSend_isFirstLoad(v10, v11, v12);
 
@@ -682,29 +682,29 @@ LABEL_73:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v20 = 138412290;
-      v21 = v6;
+      v21 = notificationCopy;
       _os_log_impl(&dword_1A823F000, v14, OS_LOG_TYPE_INFO, "Notification posted: %@", &v20, 0xCu);
     }
 
     v17 = objc_msgSend_defaultCenter(MEMORY[0x1E696AD88], v15, v16);
-    objc_msgSend___mainThreadPostNotificationName_object_userInfo_(v17, v18, v6, self, v7);
+    objc_msgSend___mainThreadPostNotificationName_object_userInfo_(v17, v18, notificationCopy, self, infoCopy);
   }
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_postIMChatItemsDidChangeNotificationWithInserted:(id)a3 removed:(id)a4 reload:(id)a5 regenerate:(id)a6 oldChatItems:(id)a7 newChatItems:(id)a8
+- (void)_postIMChatItemsDidChangeNotificationWithInserted:(id)inserted removed:(id)removed reload:(id)reload regenerate:(id)regenerate oldChatItems:(id)items newChatItems:(id)chatItems
 {
   v42[6] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v20 = a8;
+  insertedCopy = inserted;
+  removedCopy = removed;
+  reloadCopy = reload;
+  regenerateCopy = regenerate;
+  itemsCopy = items;
+  chatItemsCopy = chatItems;
   v41[0] = @"__kIMChatItemsInserted";
-  v21 = v13;
-  if (!v13)
+  v21 = insertedCopy;
+  if (!insertedCopy)
   {
     v21 = objc_msgSend_indexSet(MEMORY[0x1E696AC90], v18, v19);
   }
@@ -712,8 +712,8 @@ LABEL_73:
   v38 = v21;
   v42[0] = v21;
   v41[1] = @"__kIMChatItemsRemoved";
-  v22 = v14;
-  if (!v14)
+  v22 = removedCopy;
+  if (!removedCopy)
   {
     v22 = objc_msgSend_indexSet(MEMORY[0x1E696AC90], v18, v19);
   }
@@ -721,43 +721,43 @@ LABEL_73:
   v37 = v22;
   v42[1] = v22;
   v41[2] = @"__kIMChatItemsReload";
-  v23 = v15;
-  if (!v15)
+  v23 = reloadCopy;
+  if (!reloadCopy)
   {
     v23 = objc_msgSend_indexSet(MEMORY[0x1E696AC90], v18, v19);
   }
 
-  v40 = v14;
+  v40 = removedCopy;
   v42[2] = v23;
   v41[3] = @"__kIMChatItemsRegenerate";
-  v24 = v16;
-  if (!v16)
+  v24 = regenerateCopy;
+  if (!regenerateCopy)
   {
     v24 = objc_msgSend_indexSet(MEMORY[0x1E696AC90], v18, v19);
   }
 
-  v25 = v13;
+  v25 = insertedCopy;
   v42[3] = v24;
   v41[4] = @"__kIMChatItemsOldItems";
-  v26 = v17;
-  if (!v17)
+  v26 = itemsCopy;
+  if (!itemsCopy)
   {
     v26 = objc_msgSend_array(MEMORY[0x1E695DEC8], v18, v19);
   }
 
   v42[4] = v26;
   v41[5] = @"__kIMChatItemsNewItems";
-  v27 = v20;
-  if (!v20)
+  v27 = chatItemsCopy;
+  if (!chatItemsCopy)
   {
     v27 = objc_msgSend_array(MEMORY[0x1E695DEC8], v18, v19);
   }
 
   v42[5] = v27;
   v30 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x1E695DF20], v18, v42, v41, 6);
-  if (v20)
+  if (chatItemsCopy)
   {
-    if (v17)
+    if (itemsCopy)
     {
       goto LABEL_15;
     }
@@ -766,18 +766,18 @@ LABEL_73:
   else
   {
 
-    if (v17)
+    if (itemsCopy)
     {
       goto LABEL_15;
     }
   }
 
 LABEL_15:
-  if (!v16)
+  if (!regenerateCopy)
   {
   }
 
-  if (v15)
+  if (reloadCopy)
   {
     if (v40)
     {
@@ -859,25 +859,25 @@ LABEL_20:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_itemsMatchingFilter:(id)a3 guids:(id)a4
+- (id)_itemsMatchingFilter:(id)filter guids:(id)guids
 {
-  v6 = a4;
+  guidsCopy = guids;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_1A82FFDAC;
   v11[3] = &unk_1E7811FD0;
   v11[4] = self;
-  v12 = v6;
-  v7 = v6;
-  v9 = objc_msgSend___imArrayByApplyingBlock_(a3, v8, v11);
+  v12 = guidsCopy;
+  v7 = guidsCopy;
+  v9 = objc_msgSend___imArrayByApplyingBlock_(filter, v8, v11);
 
   return v9;
 }
 
-- (BOOL)itemMatchesFilter:(id)a3
+- (BOOL)itemMatchesFilter:(id)filter
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = objc_msgSend_disableItemInserts(self, a2, a3);
+  v3 = objc_msgSend_disableItemInserts(self, a2, filter);
   if (v3)
   {
     v4 = IMLogHandleForCategory();

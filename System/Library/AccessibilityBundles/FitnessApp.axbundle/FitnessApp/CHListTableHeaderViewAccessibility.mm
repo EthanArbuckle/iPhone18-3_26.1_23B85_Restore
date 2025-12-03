@@ -1,24 +1,24 @@
 @interface CHListTableHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation CHListTableHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CHListTableHeaderView" hasInstanceVariable:@"_dateLabel" withType:"UILabel"];
-  [v3 validateClass:@"CHListTableHeaderView" hasInstanceVariable:@"_detailLabel" withType:"_UITableViewHeaderFooterViewLabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CHListTableHeaderView" hasInstanceVariable:@"_dateLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"CHListTableHeaderView" hasInstanceVariable:@"_detailLabel" withType:"_UITableViewHeaderFooterViewLabel"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(CHListTableHeaderViewAccessibility *)self safeValueForKey:@"_dateLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
   v5 = [(CHListTableHeaderViewAccessibility *)self safeValueForKey:@"_detailLabel"];
-  v8 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
   v6 = __UIAXStringForVariables();
 
   return v6;

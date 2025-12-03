@@ -2,23 +2,23 @@
 - (GKBasicCollectionViewDataSource)init;
 - (SEL)showAllAction;
 - (_NSRange)preloadedRange;
-- (id)_gkDescriptionWithChildren:(int64_t)a3;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)indexPathsForItem:(id)a3;
-- (id)itemAtIndexPath:(id)a3;
-- (id)itemsAtIndexes:(id)a3;
+- (id)_gkDescriptionWithChildren:(int64_t)children;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)indexPathsForItem:(id)item;
+- (id)itemAtIndexPath:(id)path;
+- (id)itemsAtIndexes:(id)indexes;
 - (id)sectionTitle;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)configureCollectionView:(id)a3;
-- (void)insertItems:(id)a3 atIndexes:(id)a4;
-- (void)preloadImagesForItems:(id)a3 startingAtIndex:(unint64_t)a4 loadBlock:(id)a5;
-- (void)removeItemAtIndexPath:(id)a3 completionHandler:(id)a4;
-- (void)removeItemsAtIndexes:(id)a3;
-- (void)replaceItemsAtIndexes:(id)a3 withItems:(id)a4;
-- (void)setItems:(id)a3;
-- (void)setItemsNoNotify:(id)a3;
-- (void)setShowAllAction:(SEL)a3;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)configureCollectionView:(id)view;
+- (void)insertItems:(id)items atIndexes:(id)indexes;
+- (void)preloadImagesForItems:(id)items startingAtIndex:(unint64_t)index loadBlock:(id)block;
+- (void)removeItemAtIndexPath:(id)path completionHandler:(id)handler;
+- (void)removeItemsAtIndexes:(id)indexes;
+- (void)replaceItemsAtIndexes:(id)indexes withItems:(id)items;
+- (void)setItems:(id)items;
+- (void)setItemsNoNotify:(id)notify;
+- (void)setShowAllAction:(SEL)action;
 @end
 
 @implementation GKBasicCollectionViewDataSource
@@ -36,7 +36,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setItemsNoNotify:self->_items];
@@ -46,32 +46,32 @@
   return v4;
 }
 
-- (id)_gkDescriptionWithChildren:(int64_t)a3
+- (id)_gkDescriptionWithChildren:(int64_t)children
 {
-  v5 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v6 = _gkTabStringForTabLevel();
   v13.receiver = self;
   v13.super_class = GKBasicCollectionViewDataSource;
-  v7 = [(GKCollectionViewDataSource *)&v13 _gkDescriptionWithChildren:a3];
-  v8 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v9 = [v7 stringByTrimmingCharactersInSet:v8];
+  v7 = [(GKCollectionViewDataSource *)&v13 _gkDescriptionWithChildren:children];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v9 = [v7 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-  [v5 appendFormat:@"%@%@", v6, v9];
+  [string appendFormat:@"%@%@", v6, v9];
   filterPredicate = self->_filterPredicate;
   if (filterPredicate)
   {
-    [v5 appendFormat:@"%@    predicate: %@\n", v6, filterPredicate];
-    [v5 appendFormat:@"%@}\n", v6];
+    [string appendFormat:@"%@    predicate: %@\n", v6, filterPredicate];
+    [string appendFormat:@"%@}\n", v6];
   }
 
   v11 = _gkUnicodifyDescription();
 
-  return v5;
+  return string;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 0;
   }
@@ -82,44 +82,44 @@
   }
 }
 
-- (void)removeItemAtIndexPath:(id)a3 completionHandler:(id)a4
+- (void)removeItemAtIndexPath:(id)path completionHandler:(id)handler
 {
-  v7 = a4;
-  v6 = [MEMORY[0x277CCAA78] indexSetWithIndex:{objc_msgSend(a3, "item")}];
+  handlerCopy = handler;
+  v6 = [MEMORY[0x277CCAA78] indexSetWithIndex:{objc_msgSend(path, "item")}];
   [(GKBasicCollectionViewDataSource *)self removeItemsAtIndexes:v6];
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 item];
-  if (v5 >= [(NSArray *)self->_items count])
+  pathCopy = path;
+  item = [pathCopy item];
+  if (item >= [(NSArray *)self->_items count])
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = -[NSArray objectAtIndexedSubscript:](self->_items, "objectAtIndexedSubscript:", [v4 item]);
+    v6 = -[NSArray objectAtIndexedSubscript:](self->_items, "objectAtIndexedSubscript:", [pathCopy item]);
   }
 
   return v6;
 }
 
-- (id)indexPathsForItem:(id)a3
+- (id)indexPathsForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   items = self->_items;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __53__GKBasicCollectionViewDataSource_indexPathsForItem___block_invoke;
   v9[3] = &unk_27966B160;
-  v10 = v4;
-  v6 = v4;
+  v10 = itemCopy;
+  v6 = itemCopy;
   v7 = [(NSArray *)items _gkFilterWithBlock:v9];
 
   return v7;
@@ -140,21 +140,21 @@ id __53__GKBasicCollectionViewDataSource_indexPathsForItem___block_invoke(uint64
   return v4;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
   v17.receiver = self;
   v17.super_class = GKBasicCollectionViewDataSource;
-  v11 = [(GKCollectionViewDataSource *)&v17 collectionView:v8 viewForSupplementaryElementOfKind:v9 atIndexPath:v10];
+  v11 = [(GKCollectionViewDataSource *)&v17 collectionView:viewCopy viewForSupplementaryElementOfKind:kindCopy atIndexPath:pathCopy];
   if (!v11)
   {
-    v11 = [v8 _gkDequeueSupplementaryViewForClass:objc_opt_class() ofKind:v9 forIndexPath:v10];
-    v12 = [(GKBasicCollectionViewDataSource *)self sectionTitle];
-    [v11 setLeftText:v12];
+    v11 = [viewCopy _gkDequeueSupplementaryViewForClass:objc_opt_class() ofKind:kindCopy forIndexPath:pathCopy];
+    sectionTitle = [(GKBasicCollectionViewDataSource *)self sectionTitle];
+    [v11 setLeftText:sectionTitle];
 
-    if (([v9 isEqualToString:@"SectionHeader"] & 1) == 0)
+    if (([kindCopy isEqualToString:@"SectionHeader"] & 1) == 0)
     {
       v13 = MEMORY[0x277D0C2A0];
       v14 = *MEMORY[0x277D0C2A0];
@@ -166,7 +166,7 @@ id __53__GKBasicCollectionViewDataSource_indexPathsForItem___block_invoke(uint64
 
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
-        [GKBasicCollectionViewDataSource collectionView:v9 viewForSupplementaryElementOfKind:v14 atIndexPath:?];
+        [GKBasicCollectionViewDataSource collectionView:kindCopy viewForSupplementaryElementOfKind:v14 atIndexPath:?];
       }
     }
   }
@@ -174,13 +174,13 @@ id __53__GKBasicCollectionViewDataSource_indexPathsForItem___block_invoke(uint64
   return v11;
 }
 
-- (void)configureCollectionView:(id)a3
+- (void)configureCollectionView:(id)view
 {
   v4.receiver = self;
   v4.super_class = GKBasicCollectionViewDataSource;
-  v3 = a3;
-  [(GKCollectionViewDataSource *)&v4 configureCollectionView:v3];
-  [v3 _gkRegisterClass:objc_opt_class() forSupplementaryViewOfKind:{@"SectionHeader", v4.receiver, v4.super_class}];
+  viewCopy = view;
+  [(GKCollectionViewDataSource *)&v4 configureCollectionView:viewCopy];
+  [viewCopy _gkRegisterClass:objc_opt_class() forSupplementaryViewOfKind:{@"SectionHeader", v4.receiver, v4.super_class}];
 }
 
 - (id)sectionTitle
@@ -188,27 +188,27 @@ id __53__GKBasicCollectionViewDataSource_indexPathsForItem___block_invoke(uint64
   v2 = MEMORY[0x277CCACA8];
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ needs to implement me!", objc_opt_class()];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKBasicCollectionViewDataSource.m"];
-  v5 = [v4 lastPathComponent];
-  v6 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "-[GKBasicCollectionViewDataSource sectionTitle]", objc_msgSend(v5, "UTF8String"), 136];
+  lastPathComponent = [v4 lastPathComponent];
+  v6 = [v2 stringWithFormat:@"%@ (NO)\n[%s (%s:%d)]", v3, "-[GKBasicCollectionViewDataSource sectionTitle]", objc_msgSend(lastPathComponent, "UTF8String"), 136];
 
   [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v6}];
   return 0;
 }
 
-- (void)setItemsNoNotify:(id)a3
+- (void)setItemsNoNotify:(id)notify
 {
-  v4 = a3;
-  if (self->_items != v4)
+  notifyCopy = notify;
+  if (self->_items != notifyCopy)
   {
-    v7 = v4;
+    v7 = notifyCopy;
     if (self->_filterPredicate)
     {
-      v5 = [(NSArray *)v4 filteredArrayUsingPredicate:?];
+      v5 = [(NSArray *)notifyCopy filteredArrayUsingPredicate:?];
     }
 
     else
     {
-      v5 = [(NSArray *)v4 copy];
+      v5 = [(NSArray *)notifyCopy copy];
     }
 
     items = self->_items;
@@ -216,20 +216,20 @@ id __53__GKBasicCollectionViewDataSource_indexPathsForItem___block_invoke(uint64
 
     self->_preloadedRange.location = 0;
     self->_preloadedRange.length = 0;
-    v4 = v7;
+    notifyCopy = v7;
   }
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
   v96 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v66 = self;
-  if (self->_items != v4)
+  itemsCopy = items;
+  selfCopy = self;
+  if (self->_items != itemsCopy)
   {
     v5 = [MEMORY[0x277CBEB58] setWithArray:?];
-    v6 = [MEMORY[0x277CBEB58] setWithArray:v4];
-    v7 = [(NSArray *)v4 count];
+    v6 = [MEMORY[0x277CBEB58] setWithArray:itemsCopy];
+    v7 = [(NSArray *)itemsCopy count];
     v8 = [v6 count];
     v9 = MEMORY[0x277D0C2A0];
     if (v7 != v8)
@@ -245,8 +245,8 @@ id __53__GKBasicCollectionViewDataSource_indexPathsForItem___block_invoke(uint64
       {
         v12 = MEMORY[0x277CCABB0];
         v13 = v10;
-        v14 = [v12 numberWithUnsignedInteger:{-[NSArray count](v4, "count") - objc_msgSend(v6, "count")}];
-        v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSArray count](v4, "count")}];
+        v14 = [v12 numberWithUnsignedInteger:{-[NSArray count](itemsCopy, "count") - objc_msgSend(v6, "count")}];
+        v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NSArray count](itemsCopy, "count")}];
         v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "count")}];
         *buf = 138412802;
         v80 = v14;
@@ -314,8 +314,8 @@ id __53__GKBasicCollectionViewDataSource_indexPathsForItem___block_invoke(uint64
           }
 
           v32 = *(*(&v75 + 1) + 8 * i);
-          v33 = [MEMORY[0x277CCAA70] indexPathForItem:-[NSArray indexOfObject:](v66->_items inSection:{"indexOfObject:", v32), 0}];
-          v34 = [MEMORY[0x277CCAA70] indexPathForItem:-[NSArray indexOfObject:](v4 inSection:{"indexOfObject:", v32), 0}];
+          v33 = [MEMORY[0x277CCAA70] indexPathForItem:-[NSArray indexOfObject:](selfCopy->_items inSection:{"indexOfObject:", v32), 0}];
+          v34 = [MEMORY[0x277CCAA70] indexPathForItem:-[NSArray indexOfObject:](itemsCopy inSection:{"indexOfObject:", v32), 0}];
           if (v33 == v34)
           {
             [v63 removeObject:v32];
@@ -334,7 +334,7 @@ id __53__GKBasicCollectionViewDataSource_indexPathsForItem___block_invoke(uint64
       while (v29);
     }
 
-    v35 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
@@ -354,8 +354,8 @@ id __53__GKBasicCollectionViewDataSource_indexPathsForItem___block_invoke(uint64
             objc_enumerationMutation(v36);
           }
 
-          v41 = [MEMORY[0x277CCAA70] indexPathForItem:-[NSArray indexOfObject:](v66->_items inSection:{"indexOfObject:", *(*(&v71 + 1) + 8 * j)), 0}];
-          [v35 addObject:v41];
+          v41 = [MEMORY[0x277CCAA70] indexPathForItem:-[NSArray indexOfObject:](selfCopy->_items inSection:{"indexOfObject:", *(*(&v71 + 1) + 8 * j)), 0}];
+          [array addObject:v41];
         }
 
         v38 = [v36 countByEnumeratingWithState:&v71 objects:v94 count:16];
@@ -366,13 +366,13 @@ id __53__GKBasicCollectionViewDataSource_indexPathsForItem___block_invoke(uint64
 
     v61 = v36;
 
-    v42 = [v35 sortedArrayUsingComparator:&__block_literal_global_18];
-    v43 = [v42 reverseObjectEnumerator];
-    v44 = [v43 allObjects];
-    v45 = [v44 mutableCopy];
+    v42 = [array sortedArrayUsingComparator:&__block_literal_global_18];
+    reverseObjectEnumerator = [v42 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    v45 = [allObjects mutableCopy];
 
-    v46 = [MEMORY[0x277CBEB18] array];
-    v47 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
@@ -392,13 +392,13 @@ id __53__GKBasicCollectionViewDataSource_indexPathsForItem___block_invoke(uint64
             objc_enumerationMutation(v48);
           }
 
-          v53 = [MEMORY[0x277CCAA70] indexPathForItem:-[NSArray indexOfObject:](v4 inSection:{"indexOfObject:", *(*(&v67 + 1) + 8 * k), v61), 0}];
+          v53 = [MEMORY[0x277CCAA70] indexPathForItem:-[NSArray indexOfObject:](itemsCopy inSection:{"indexOfObject:", *(*(&v67 + 1) + 8 * k), v61), 0}];
           v54 = [v45 containsObject:v53];
-          v55 = v46;
+          v55 = array2;
           if (v54)
           {
             [v45 removeObject:v53];
-            v55 = v47;
+            v55 = array3;
           }
 
           [v55 addObject:v53];
@@ -410,23 +410,23 @@ id __53__GKBasicCollectionViewDataSource_indexPathsForItem___block_invoke(uint64
       while (v50);
     }
 
-    [v46 sortUsingComparator:&__block_literal_global_65];
-    if (v66->_filterPredicate)
+    [array2 sortUsingComparator:&__block_literal_global_65];
+    if (selfCopy->_filterPredicate)
     {
-      v56 = [(NSArray *)v4 filteredArrayUsingPredicate:?];
+      v56 = [(NSArray *)itemsCopy filteredArrayUsingPredicate:?];
     }
 
     else
     {
-      v56 = [(NSArray *)v4 copy];
+      v56 = [(NSArray *)itemsCopy copy];
     }
 
     v57 = v61;
-    v58 = v66->_items;
-    v66->_items = v56;
+    v58 = selfCopy->_items;
+    selfCopy->_items = v56;
 
-    v66->_preloadedRange.location = 0;
-    v66->_preloadedRange.length = 0;
+    selfCopy->_preloadedRange.location = 0;
+    selfCopy->_preloadedRange.length = 0;
     if (!*MEMORY[0x277D0C2A0])
     {
       v59 = GKOSLoggers();
@@ -444,36 +444,36 @@ id __53__GKBasicCollectionViewDataSource_indexPathsForItem___block_invoke(uint64
       v85 = 2112;
       v86 = v61;
       v87 = 2112;
-      v88 = v46;
+      v88 = array2;
       v89 = 2112;
       v90 = v48;
       v91 = 2112;
-      v92 = v47;
+      v92 = array3;
       _os_log_debug_impl(&dword_24DE53000, v60, OS_LOG_TYPE_DEBUG, "GKBasicCollectionViewDataSource setting items. \noldItems: %@\nnewItems:%@ \ndeletedIndexPath: %@, deletedItems: %@\ninsertedIndexPaths: %@, insertedItems: %@\nrefreshedIndexPaths: %@", buf, 0x48u);
     }
 
     if ([v45 count])
     {
-      [(GKCollectionViewDataSource *)v66 notifyItemsRemovedAtIndexPaths:v45];
+      [(GKCollectionViewDataSource *)selfCopy notifyItemsRemovedAtIndexPaths:v45];
     }
 
-    if ([v46 count])
+    if ([array2 count])
     {
-      [(GKCollectionViewDataSource *)v66 notifyItemsInsertedAtIndexPaths:v46];
+      [(GKCollectionViewDataSource *)selfCopy notifyItemsInsertedAtIndexPaths:array2];
     }
 
-    if ([v47 count])
+    if ([array3 count])
     {
-      [(GKCollectionViewDataSource *)v66 notifyItemsRefreshedAtIndexPaths:v47];
+      [(GKCollectionViewDataSource *)selfCopy notifyItemsRefreshedAtIndexPaths:array3];
     }
   }
 }
 
-- (id)itemsAtIndexes:(id)a3
+- (id)itemsAtIndexes:(id)indexes
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  indexesCopy = indexes;
+  v6 = [v4 arrayWithCapacity:{objc_msgSend(indexesCopy, "count")}];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __50__GKBasicCollectionViewDataSource_itemsAtIndexes___block_invoke;
@@ -481,7 +481,7 @@ id __53__GKBasicCollectionViewDataSource_indexPathsForItem___block_invoke(uint64
   v11[4] = self;
   v7 = v6;
   v12 = v7;
-  [v5 enumerateIndexesUsingBlock:v11];
+  [indexesCopy enumerateIndexesUsingBlock:v11];
 
   v8 = v12;
   v9 = v7;
@@ -499,26 +499,26 @@ void __50__GKBasicCollectionViewDataSource_itemsAtIndexes___block_invoke(uint64_
   }
 }
 
-- (void)insertItems:(id)a3 atIndexes:(id)a4
+- (void)insertItems:(id)items atIndexes:(id)indexes
 {
   items = self->_items;
-  v7 = a4;
-  v8 = a3;
+  indexesCopy = indexes;
+  itemsCopy = items;
   v9 = [(NSArray *)items mutableCopy];
-  [(NSArray *)v9 insertObjects:v8 atIndexes:v7];
+  [(NSArray *)v9 insertObjects:itemsCopy atIndexes:indexesCopy];
 
   v10 = self->_items;
   self->_items = v9;
   v11 = v9;
 
-  v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(indexesCopy, "count")}];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __57__GKBasicCollectionViewDataSource_insertItems_atIndexes___block_invoke;
   v14[3] = &unk_27966B1A8;
   v15 = v12;
   v13 = v12;
-  [v7 enumerateIndexesUsingBlock:v14];
+  [indexesCopy enumerateIndexesUsingBlock:v14];
 
   [(GKCollectionViewDataSource *)self notifyItemsInsertedAtIndexPaths:v13];
 }
@@ -530,11 +530,11 @@ void __57__GKBasicCollectionViewDataSource_insertItems_atIndexes___block_invoke(
   [v2 addObject:v3];
 }
 
-- (void)removeItemsAtIndexes:(id)a3
+- (void)removeItemsAtIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   v5 = [(NSArray *)self->_items count];
-  v6 = v5 - [v4 count];
+  v6 = v5 - [indexesCopy count];
   if (v6 < 1)
   {
     v7 = 0;
@@ -561,9 +561,9 @@ void __57__GKBasicCollectionViewDataSource_insertItems_atIndexes___block_invoke(
   v14[2] = __56__GKBasicCollectionViewDataSource_removeItemsAtIndexes___block_invoke_2;
   v14[3] = &unk_27966B220;
   v18 = &v19;
-  v11 = v4;
+  v11 = indexesCopy;
   v15 = v11;
-  v16 = self;
+  selfCopy = self;
   v12 = v7;
   v17 = v12;
   [(NSArray *)items enumerateObjectsUsingBlock:v14];
@@ -642,26 +642,26 @@ void __56__GKBasicCollectionViewDataSource_removeItemsAtIndexes___block_invoke_4
   [v2 notifyItemMovedFromIndexPath:v4 toIndexPaths:v3];
 }
 
-- (void)replaceItemsAtIndexes:(id)a3 withItems:(id)a4
+- (void)replaceItemsAtIndexes:(id)indexes withItems:(id)items
 {
   items = self->_items;
-  v7 = a4;
-  v8 = a3;
+  itemsCopy = items;
+  indexesCopy = indexes;
   v9 = [(NSArray *)items mutableCopy];
-  [(NSArray *)v9 replaceObjectsAtIndexes:v8 withObjects:v7];
+  [(NSArray *)v9 replaceObjectsAtIndexes:indexesCopy withObjects:itemsCopy];
 
   v10 = self->_items;
   self->_items = v9;
   v11 = v9;
 
-  v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(indexesCopy, "count")}];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __67__GKBasicCollectionViewDataSource_replaceItemsAtIndexes_withItems___block_invoke;
   v14[3] = &unk_27966B1A8;
   v15 = v12;
   v13 = v12;
-  [v8 enumerateIndexesUsingBlock:v14];
+  [indexesCopy enumerateIndexesUsingBlock:v14];
 
   [(GKCollectionViewDataSource *)self notifyItemsRefreshedAtIndexPaths:v13];
 }
@@ -673,30 +673,30 @@ void __67__GKBasicCollectionViewDataSource_replaceItemsAtIndexes_withItems___blo
   [v2 addObject:v3];
 }
 
-- (void)preloadImagesForItems:(id)a3 startingAtIndex:(unint64_t)a4 loadBlock:(id)a5
+- (void)preloadImagesForItems:(id)items startingAtIndex:(unint64_t)index loadBlock:(id)block
 {
-  v17 = a3;
-  v8 = a5;
-  if (v8 && [v17 count])
+  itemsCopy = items;
+  blockCopy = block;
+  if (blockCopy && [itemsCopy count])
   {
     p_preloadedRange = &self->_preloadedRange;
     location = self->_preloadedRange.location;
     length = self->_preloadedRange.length;
-    if (a4 < location || a4 - location >= length)
+    if (index < location || index - location >= length)
     {
       v13 = length + location;
-      v14 = [(GKBasicCollectionViewDataSource *)self pageSize];
-      v15 = [v17 count];
-      if (v14 >= v15 - v13)
+      pageSize = [(GKBasicCollectionViewDataSource *)self pageSize];
+      v15 = [itemsCopy count];
+      if (pageSize >= v15 - v13)
       {
-        v14 = v15 - v13;
+        pageSize = v15 - v13;
       }
 
       v19.location = v13;
-      v19.length = v14;
+      v19.length = pageSize;
       *p_preloadedRange = NSUnionRange(*p_preloadedRange, v19);
-      v16 = [v17 subarrayWithRange:{v13, v14}];
-      v8[2](v8, v16);
+      v16 = [itemsCopy subarrayWithRange:{v13, pageSize}];
+      blockCopy[2](blockCopy, v16);
     }
   }
 }
@@ -714,19 +714,19 @@ void __67__GKBasicCollectionViewDataSource_replaceItemsAtIndexes_withItems___blo
   }
 }
 
-- (void)setShowAllAction:(SEL)a3
+- (void)setShowAllAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_showAllAction = v3;
+  self->_showAllAction = actionCopy;
 }
 
 - (_NSRange)preloadedRange

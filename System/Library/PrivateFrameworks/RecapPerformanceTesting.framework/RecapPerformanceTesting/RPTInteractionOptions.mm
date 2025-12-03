@@ -48,23 +48,23 @@ uint64_t __43__RPTInteractionOptions_defaultForPlatform__block_invoke()
 
 - (RCPEventSenderProperties)senderProperties
 {
-  v2 = [(RPTInteractionOptions *)self preferredIdiom];
-  if (v2 == 2)
+  preferredIdiom = [(RPTInteractionOptions *)self preferredIdiom];
+  if (preferredIdiom == 2)
   {
-    v2 = [getRCPEventSenderPropertiesClass() mouseSender];
+    preferredIdiom = [getRCPEventSenderPropertiesClass() mouseSender];
   }
 
-  else if (v2 == 1)
+  else if (preferredIdiom == 1)
   {
-    v2 = [getRCPEventSenderPropertiesClass() trackpadSender];
+    preferredIdiom = [getRCPEventSenderPropertiesClass() trackpadSender];
   }
 
-  else if (!v2)
+  else if (!preferredIdiom)
   {
-    v2 = [getRCPEventSenderPropertiesClass() touchScreenDigitizerSender];
+    preferredIdiom = [getRCPEventSenderPropertiesClass() touchScreenDigitizerSender];
   }
 
-  return v2;
+  return preferredIdiom;
 }
 
 - (id)description
@@ -72,9 +72,9 @@ uint64_t __43__RPTInteractionOptions_defaultForPlatform__block_invoke()
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(RPTInteractionOptions *)self preferredIdiom];
-  v7 = [(RPTInteractionOptions *)self senderProperties];
-  v8 = [v3 stringWithFormat:@"<%@:%p preferredIdiom: %lu senderProperties: %@>", v5, self, v6, v7];;
+  preferredIdiom = [(RPTInteractionOptions *)self preferredIdiom];
+  senderProperties = [(RPTInteractionOptions *)self senderProperties];
+  v8 = [v3 stringWithFormat:@"<%@:%p preferredIdiom: %lu senderProperties: %@>", v5, self, preferredIdiom, senderProperties];;
 
   return v8;
 }

@@ -6,20 +6,20 @@
 + (BOOL)isPaceAvailable;
 + (BOOL)isPedometerEventTrackingAvailable;
 + (BOOL)isStepCountingAvailable;
-- (BOOL)sendStrideCalibrationHistoryToFile:(id)a3;
+- (BOOL)sendStrideCalibrationHistoryToFile:(id)file;
 - (CMPedometer)init;
-- (id)_pedometerDataWithRecordID:(int64_t)a3;
+- (id)_pedometerDataWithRecordID:(int64_t)d;
 - (id)strideCalibrationDump;
-- (void)_queryPedometerDataSinceDataRecord:(id)a3 withHandler:(id)a4;
-- (void)_startPedometerUpdatesSinceDataRecord:(id)a3 withHandler:(id)a4;
+- (void)_queryPedometerDataSinceDataRecord:(id)record withHandler:(id)handler;
+- (void)_startPedometerUpdatesSinceDataRecord:(id)record withHandler:(id)handler;
 - (void)dealloc;
 - (void)queryPedometerDataFromDate:(NSDate *)start toDate:(NSDate *)end withHandler:(CMPedometerHandler)handler;
-- (void)queryPedometerDataSinceDataRecord:(id)a3 withHandler:(id)a4;
-- (void)queryPedometerDataSinceRecord:(int64_t)a3 withHandler:(id)a4;
-- (void)queryRawSpeedToKValueBinsWithHandler:(id)a3;
-- (void)queryRemoteRawSpeedToKValueBinsWithHandler:(id)a3;
-- (void)queryRemoteStepCadenceToStrideLengthBinsWithHandler:(id)a3;
-- (void)queryStepCadenceToStrideLengthBinsWithHandler:(id)a3;
+- (void)queryPedometerDataSinceDataRecord:(id)record withHandler:(id)handler;
+- (void)queryPedometerDataSinceRecord:(int64_t)record withHandler:(id)handler;
+- (void)queryRawSpeedToKValueBinsWithHandler:(id)handler;
+- (void)queryRemoteRawSpeedToKValueBinsWithHandler:(id)handler;
+- (void)queryRemoteStepCadenceToStrideLengthBinsWithHandler:(id)handler;
+- (void)queryStepCadenceToStrideLengthBinsWithHandler:(id)handler;
 - (void)startPedometerEventUpdatesWithHandler:(CMPedometerEventHandler)handler;
 - (void)startPedometerUpdatesFromDate:(NSDate *)start withHandler:(CMPedometerHandler)handler;
 - (void)stopPedometerEventUpdates;
@@ -244,20 +244,20 @@ LABEL_3:
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v2);
 }
 
-- (id)_pedometerDataWithRecordID:(int64_t)a3
+- (id)_pedometerDataWithRecordID:(int64_t)d
 {
   v4 = [CMPedometerData alloc];
   v8 = 0;
-  isOdometerPace_pushes_workoutType_elevationAscended_elevationDescended_distanceSource = objc_msgSend_initWithStartDate_endDate_steps_distance_floorsAscended_floorsDescended_recordID_currentPace_currentCadence_firstStepTime_activeTime_sourceId_isOdometerDistance_isOdometerPace_pushes_workoutType_elevationAscended_elevationDescended_distanceSource_(v4, v5, 0, 0, 0, a3, 0, 0, 0.0, 0.0, 0.0, 0.0, 0, 0, MEMORY[0x1E695E110], MEMORY[0x1E695E110], 0, 0, 0, v8);
+  isOdometerPace_pushes_workoutType_elevationAscended_elevationDescended_distanceSource = objc_msgSend_initWithStartDate_endDate_steps_distance_floorsAscended_floorsDescended_recordID_currentPace_currentCadence_firstStepTime_activeTime_sourceId_isOdometerDistance_isOdometerPace_pushes_workoutType_elevationAscended_elevationDescended_distanceSource_(v4, v5, 0, 0, 0, d, 0, 0, 0.0, 0.0, 0.0, 0.0, 0, 0, MEMORY[0x1E695E110], MEMORY[0x1E695E110], 0, 0, 0, v8);
 
   return isOdometerPace_pushes_workoutType_elevationAscended_elevationDescended_distanceSource;
 }
 
-- (void)_startPedometerUpdatesSinceDataRecord:(id)a3 withHandler:(id)a4
+- (void)_startPedometerUpdatesSinceDataRecord:(id)record withHandler:(id)handler
 {
-  if (!a4)
+  if (!handler)
   {
-    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, record);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, self, @"CMPedometer.mm", 715, @"Invalid parameter not satisfying: %@", @"handler");
   }
 
@@ -265,33 +265,33 @@ LABEL_3:
   v10[1] = 3221225472;
   v10[2] = sub_19B6C90C8;
   v10[3] = &unk_1E7532C08;
-  v10[4] = a3;
+  v10[4] = record;
   v10[5] = self;
-  v10[6] = a4;
+  v10[6] = handler;
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v10);
 }
 
-- (void)queryPedometerDataSinceRecord:(int64_t)a3 withHandler:(id)a4
+- (void)queryPedometerDataSinceRecord:(int64_t)record withHandler:(id)handler
 {
-  v5 = objc_msgSend__pedometerDataWithRecordID_(self, a2, a3);
+  v5 = objc_msgSend__pedometerDataWithRecordID_(self, a2, record);
 
   MEMORY[0x1EEE66B58](self, sel__queryPedometerDataSinceDataRecord_withHandler_, v5);
 }
 
-- (void)queryPedometerDataSinceDataRecord:(id)a3 withHandler:(id)a4
+- (void)queryPedometerDataSinceDataRecord:(id)record withHandler:(id)handler
 {
-  if (!a3)
+  if (!record)
   {
-    a3 = objc_msgSend__pedometerDataWithRecordID_(self, a2, 0);
+    record = objc_msgSend__pedometerDataWithRecordID_(self, a2, 0);
   }
 
-  MEMORY[0x1EEE66B58](self, sel__queryPedometerDataSinceDataRecord_withHandler_, a3);
+  MEMORY[0x1EEE66B58](self, sel__queryPedometerDataSinceDataRecord_withHandler_, record);
 }
 
-- (void)_queryPedometerDataSinceDataRecord:(id)a3 withHandler:(id)a4
+- (void)_queryPedometerDataSinceDataRecord:(id)record withHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!handler)
   {
     if (qword_1EAFE27F0 != -1)
     {
@@ -337,10 +337,10 @@ LABEL_19:
     return;
   }
 
-  v7 = objc_msgSend_pedometerProxy(self, a2, a3);
+  v7 = objc_msgSend_pedometerProxy(self, a2, record);
   v9 = *MEMORY[0x1E69E9840];
 
-  objc_msgSend__queryPedometerDataSinceDataRecord_withHandler_shouldStartUpdates_(v7, v8, a3, a4, 0);
+  objc_msgSend__queryPedometerDataSinceDataRecord_withHandler_shouldStartUpdates_(v7, v8, record, handler, 0);
 }
 
 - (void)startPedometerEventUpdatesWithHandler:(CMPedometerEventHandler)handler
@@ -370,10 +370,10 @@ LABEL_19:
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v2);
 }
 
-- (BOOL)sendStrideCalibrationHistoryToFile:(id)a3
+- (BOOL)sendStrideCalibrationHistoryToFile:(id)file
 {
   v212 = *MEMORY[0x1E69E9840];
-  if (!a3 || (objc_msgSend_isFileURL(a3, a2, a3) & 1) == 0)
+  if (!file || (objc_msgSend_isFileURL(file, a2, file) & 1) == 0)
   {
     if (qword_1EAFE27F0 != -1)
     {
@@ -404,7 +404,7 @@ LABEL_19:
   }
 
   v7 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v5, v6);
-  v10 = objc_msgSend_path(a3, v8, v9);
+  v10 = objc_msgSend_path(file, v8, v9);
   if (objc_msgSend_fileExistsAtPath_(v7, v11, v10))
   {
     if (qword_1EAFE27F0 != -1)
@@ -436,7 +436,7 @@ LABEL_19:
   }
 
   v21 = objc_msgSend_defaultManager(MEMORY[0x1E696AC08], v12, v13);
-  v24 = objc_msgSend_path(a3, v22, v23);
+  v24 = objc_msgSend_path(file, v22, v23);
   if ((objc_msgSend_createFileAtPath_contents_attributes_(v21, v25, v24, 0, 0) & 1) == 0)
   {
     if (qword_1EAFE27F0 != -1)
@@ -467,7 +467,7 @@ LABEL_19:
     goto LABEL_24;
   }
 
-  v179 = a3;
+  fileCopy = file;
   v28 = objc_msgSend_strideCalibrationDump(self, v26, v27);
   v31 = objc_msgSend_array(MEMORY[0x1E695DF70], v29, v30);
   v183 = objc_msgSend_array(MEMORY[0x1E695DF70], v32, v33);
@@ -714,7 +714,7 @@ LABEL_19:
     goto LABEL_24;
   }
 
-  if (objc_msgSend_writeToURL_atomically_(v169, v170, v179, 0))
+  if (objc_msgSend_writeToURL_atomically_(v169, v170, fileCopy, 0))
   {
     result = 1;
     goto LABEL_27;
@@ -765,47 +765,47 @@ LABEL_27:
   return MEMORY[0x1EEE66B58](v3, sel__strideCalibrationDump, v4);
 }
 
-- (void)queryRawSpeedToKValueBinsWithHandler:(id)a3
+- (void)queryRawSpeedToKValueBinsWithHandler:(id)handler
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_19B6CA2FC;
   v3[3] = &unk_1E7532B68;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = handler;
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v3);
 }
 
-- (void)queryRemoteRawSpeedToKValueBinsWithHandler:(id)a3
+- (void)queryRemoteRawSpeedToKValueBinsWithHandler:(id)handler
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_19B6CA3B8;
   v3[3] = &unk_1E7532B68;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = handler;
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v3);
 }
 
-- (void)queryStepCadenceToStrideLengthBinsWithHandler:(id)a3
+- (void)queryStepCadenceToStrideLengthBinsWithHandler:(id)handler
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_19B6CA474;
   v3[3] = &unk_1E7532B68;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = handler;
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v3);
 }
 
-- (void)queryRemoteStepCadenceToStrideLengthBinsWithHandler:(id)a3
+- (void)queryRemoteStepCadenceToStrideLengthBinsWithHandler:(id)handler
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = sub_19B6CA530;
   v3[3] = &unk_1E7532B68;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = handler;
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v3);
 }
 

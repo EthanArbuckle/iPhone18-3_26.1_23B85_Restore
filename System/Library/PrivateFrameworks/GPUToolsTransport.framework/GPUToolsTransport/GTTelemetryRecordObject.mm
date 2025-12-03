@@ -1,40 +1,40 @@
 @interface GTTelemetryRecordObject
-- (GTTelemetryRecordObject)initWithCoder:(id)a3;
+- (GTTelemetryRecordObject)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTTelemetryRecordObject
 
-- (GTTelemetryRecordObject)initWithCoder:(id)a3
+- (GTTelemetryRecordObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = GTTelemetryRecordObject;
   v5 = [(GTTelemetryRecordObject *)&v10 init];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"min"];
+    [coderCopy decodeFloatForKey:@"min"];
     v5->_min = v6;
-    [v4 decodeFloatForKey:@"max"];
+    [coderCopy decodeFloatForKey:@"max"];
     v5->_max = v7;
-    [v4 decodeFloatForKey:@"average"];
+    [coderCopy decodeFloatForKey:@"average"];
     v5->_average = v8;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   min = self->_min;
-  v8 = a3;
+  coderCopy = coder;
   *&v5 = min;
-  [v8 encodeFloat:@"min" forKey:v5];
+  [coderCopy encodeFloat:@"min" forKey:v5];
   *&v6 = self->_max;
-  [v8 encodeFloat:@"max" forKey:v6];
+  [coderCopy encodeFloat:@"max" forKey:v6];
   *&v7 = self->_average;
-  [v8 encodeFloat:@"average" forKey:v7];
+  [coderCopy encodeFloat:@"average" forKey:v7];
 }
 
 - (id)description

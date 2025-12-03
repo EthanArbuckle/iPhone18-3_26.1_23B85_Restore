@@ -1,7 +1,7 @@
 @interface CRKExpiredCourseAlertText
 + (id)new;
 - (CRKExpiredCourseAlertText)init;
-- (CRKExpiredCourseAlertText)initWithCourse:(id)a3;
+- (CRKExpiredCourseAlertText)initWithCourse:(id)course;
 - (NSString)acknowledgeOptionTitle;
 - (NSString)message;
 - (NSString)title;
@@ -9,10 +9,10 @@
 
 @implementation CRKExpiredCourseAlertText
 
-- (CRKExpiredCourseAlertText)initWithCourse:(id)a3
+- (CRKExpiredCourseAlertText)initWithCourse:(id)course
 {
-  v6 = a3;
-  if (!v6)
+  courseCopy = course;
+  if (!courseCopy)
   {
     [(CRKExpiredCourseAlertText *)a2 initWithCourse:?];
   }
@@ -23,7 +23,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_course, a3);
+    objc_storeStrong(&v7->_course, course);
   }
 
   return v8;
@@ -34,9 +34,9 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"“%@” has expired and will be removed" value:&stru_285643BE8 table:0];
-  v6 = [(CRKExpiredCourseAlertText *)self course];
-  v7 = [v6 courseName];
-  v8 = [v3 stringWithFormat:v5, v7];
+  course = [(CRKExpiredCourseAlertText *)self course];
+  courseName = [course courseName];
+  v8 = [v3 stringWithFormat:v5, courseName];
 
   return v8;
 }
@@ -59,18 +59,18 @@
 
 + (id)new
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:a1 file:@"CRKExpiredCourseAlertText.m" lineNumber:55 description:{@"%@ is unavailable for %@", v5, a1}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CRKExpiredCourseAlertText.m" lineNumber:55 description:{@"%@ is unavailable for %@", v5, self}];
 
   return 0;
 }
 
 - (CRKExpiredCourseAlertText)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"CRKExpiredCourseAlertText.m" lineNumber:60 description:{@"%@ is unavailable for %@", v5, self}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CRKExpiredCourseAlertText.m" lineNumber:60 description:{@"%@ is unavailable for %@", v5, self}];
 
   return 0;
 }

@@ -2,11 +2,11 @@
 - (BKMediaLibraryBookletAssetCache)init;
 - (id)allBookletAssetIDs;
 - (id)allBookletAssets;
-- (id)bookletAssetForAssetID:(id)a3;
-- (id)bookletAssetsForParentAssetID:(id)a3;
-- (id)popBookletAssetsForParentAssetID:(id)a3;
-- (id)popBookletAssetsWithAssetIDs:(id)a3 forParentAssetID:(id)a4;
-- (void)addBookletAsset:(id)a3;
+- (id)bookletAssetForAssetID:(id)d;
+- (id)bookletAssetsForParentAssetID:(id)d;
+- (id)popBookletAssetsForParentAssetID:(id)d;
+- (id)popBookletAssetsWithAssetIDs:(id)ds forParentAssetID:(id)d;
+- (void)addBookletAsset:(id)asset;
 @end
 
 @implementation BKMediaLibraryBookletAssetCache
@@ -32,35 +32,35 @@
 
 - (id)allBookletAssetIDs
 {
-  v2 = [(BKMediaLibraryBookletAssetCache *)self bookletAssetIdToBookletAssetMapping];
-  v3 = [v2 allKeys];
+  bookletAssetIdToBookletAssetMapping = [(BKMediaLibraryBookletAssetCache *)self bookletAssetIdToBookletAssetMapping];
+  allKeys = [bookletAssetIdToBookletAssetMapping allKeys];
 
-  return v3;
+  return allKeys;
 }
 
 - (id)allBookletAssets
 {
-  v2 = [(BKMediaLibraryBookletAssetCache *)self bookletAssetIdToBookletAssetMapping];
-  v3 = [v2 allValues];
+  bookletAssetIdToBookletAssetMapping = [(BKMediaLibraryBookletAssetCache *)self bookletAssetIdToBookletAssetMapping];
+  allValues = [bookletAssetIdToBookletAssetMapping allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (id)bookletAssetForAssetID:(id)a3
+- (id)bookletAssetForAssetID:(id)d
 {
-  v4 = a3;
-  v5 = [(BKMediaLibraryBookletAssetCache *)self bookletAssetIdToBookletAssetMapping];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  bookletAssetIdToBookletAssetMapping = [(BKMediaLibraryBookletAssetCache *)self bookletAssetIdToBookletAssetMapping];
+  v6 = [bookletAssetIdToBookletAssetMapping objectForKeyedSubscript:dCopy];
 
   return v6;
 }
 
-- (id)bookletAssetsForParentAssetID:(id)a3
+- (id)bookletAssetsForParentAssetID:(id)d
 {
-  v4 = a3;
-  v5 = [(BKMediaLibraryBookletAssetCache *)self parentAssetIdToBookletAssetIdMapping];
-  v19 = v4;
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  parentAssetIdToBookletAssetIdMapping = [(BKMediaLibraryBookletAssetCache *)self parentAssetIdToBookletAssetIdMapping];
+  v19 = dCopy;
+  v6 = [parentAssetIdToBookletAssetIdMapping objectForKeyedSubscript:dCopy];
 
   v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
   v20 = 0u;
@@ -84,8 +84,8 @@
         }
 
         v13 = *(*(&v20 + 1) + 8 * v12);
-        v14 = [(BKMediaLibraryBookletAssetCache *)self bookletAssetIdToBookletAssetMapping];
-        v15 = [v14 objectForKeyedSubscript:v13];
+        bookletAssetIdToBookletAssetMapping = [(BKMediaLibraryBookletAssetCache *)self bookletAssetIdToBookletAssetMapping];
+        v15 = [bookletAssetIdToBookletAssetMapping objectForKeyedSubscript:v13];
 
         if (v15)
         {
@@ -118,34 +118,34 @@
   return v17;
 }
 
-- (void)addBookletAsset:(id)a3
+- (void)addBookletAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(BKMediaLibraryBookletAssetCache *)self bookletAssetIdToBookletAssetMapping];
-  v6 = [v4 storeID];
-  [v5 setObject:v4 forKeyedSubscript:v6];
+  assetCopy = asset;
+  bookletAssetIdToBookletAssetMapping = [(BKMediaLibraryBookletAssetCache *)self bookletAssetIdToBookletAssetMapping];
+  storeID = [assetCopy storeID];
+  [bookletAssetIdToBookletAssetMapping setObject:assetCopy forKeyedSubscript:storeID];
 
-  v7 = [v4 parentAsset];
-  v8 = [v7 assetID];
+  parentAsset = [assetCopy parentAsset];
+  assetID = [parentAsset assetID];
 
-  if (v8)
+  if (assetID)
   {
-    v9 = [(BKMediaLibraryBookletAssetCache *)self parentAssetIdToBookletAssetIdMapping];
-    v10 = [v9 objectForKey:v8];
+    parentAssetIdToBookletAssetIdMapping = [(BKMediaLibraryBookletAssetCache *)self parentAssetIdToBookletAssetIdMapping];
+    v10 = [parentAssetIdToBookletAssetIdMapping objectForKey:assetID];
 
     if (v10)
     {
-      v11 = [v4 storeID];
-      [v10 addObject:v11];
+      storeID2 = [assetCopy storeID];
+      [v10 addObject:storeID2];
     }
 
     else
     {
       v13 = [NSMutableSet alloc];
-      v11 = [v4 storeID];
-      v14 = [v13 initWithObjects:{v11, 0}];
-      v15 = [(BKMediaLibraryBookletAssetCache *)self parentAssetIdToBookletAssetIdMapping];
-      [v15 setObject:v14 forKeyedSubscript:v8];
+      storeID2 = [assetCopy storeID];
+      v14 = [v13 initWithObjects:{storeID2, 0}];
+      parentAssetIdToBookletAssetIdMapping2 = [(BKMediaLibraryBookletAssetCache *)self parentAssetIdToBookletAssetIdMapping];
+      [parentAssetIdToBookletAssetIdMapping2 setObject:v14 forKeyedSubscript:assetID];
     }
   }
 
@@ -154,37 +154,37 @@
     v12 = BKLibraryDataSourceMediaLibraryLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_100789D94(v4, v12);
+      sub_100789D94(assetCopy, v12);
     }
   }
 }
 
-- (id)popBookletAssetsForParentAssetID:(id)a3
+- (id)popBookletAssetsForParentAssetID:(id)d
 {
-  v4 = a3;
-  v5 = [(BKMediaLibraryBookletAssetCache *)self parentAssetIdToBookletAssetIdMapping];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  parentAssetIdToBookletAssetIdMapping = [(BKMediaLibraryBookletAssetCache *)self parentAssetIdToBookletAssetIdMapping];
+  v6 = [parentAssetIdToBookletAssetIdMapping objectForKeyedSubscript:dCopy];
   v7 = [v6 copy];
 
-  v8 = [(BKMediaLibraryBookletAssetCache *)self popBookletAssetsWithAssetIDs:v7 forParentAssetID:v4];
+  v8 = [(BKMediaLibraryBookletAssetCache *)self popBookletAssetsWithAssetIDs:v7 forParentAssetID:dCopy];
 
   return v8;
 }
 
-- (id)popBookletAssetsWithAssetIDs:(id)a3 forParentAssetID:(id)a4
+- (id)popBookletAssetsWithAssetIDs:(id)ds forParentAssetID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKMediaLibraryBookletAssetCache *)self parentAssetIdToBookletAssetIdMapping];
-  v23 = v7;
-  v9 = [v8 objectForKeyedSubscript:v7];
+  dsCopy = ds;
+  dCopy = d;
+  parentAssetIdToBookletAssetIdMapping = [(BKMediaLibraryBookletAssetCache *)self parentAssetIdToBookletAssetIdMapping];
+  v23 = dCopy;
+  v9 = [parentAssetIdToBookletAssetIdMapping objectForKeyedSubscript:dCopy];
 
-  v10 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  v10 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v11 = v6;
+  v11 = dsCopy;
   v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v12)
   {
@@ -200,14 +200,14 @@
         }
 
         v16 = *(*(&v24 + 1) + 8 * i);
-        v17 = [(BKMediaLibraryBookletAssetCache *)self bookletAssetIdToBookletAssetMapping];
-        v18 = [v17 objectForKeyedSubscript:v16];
+        bookletAssetIdToBookletAssetMapping = [(BKMediaLibraryBookletAssetCache *)self bookletAssetIdToBookletAssetMapping];
+        v18 = [bookletAssetIdToBookletAssetMapping objectForKeyedSubscript:v16];
 
         if (v18)
         {
           [v10 addObject:v18];
-          v19 = [(BKMediaLibraryBookletAssetCache *)self bookletAssetIdToBookletAssetMapping];
-          [v19 removeObjectForKey:v16];
+          bookletAssetIdToBookletAssetMapping2 = [(BKMediaLibraryBookletAssetCache *)self bookletAssetIdToBookletAssetMapping];
+          [bookletAssetIdToBookletAssetMapping2 removeObjectForKey:v16];
 
           [v9 removeObject:v16];
         }
@@ -221,8 +221,8 @@
 
   if (![v9 count])
   {
-    v20 = [(BKMediaLibraryBookletAssetCache *)self parentAssetIdToBookletAssetIdMapping];
-    [v20 removeObjectForKey:v23];
+    parentAssetIdToBookletAssetIdMapping2 = [(BKMediaLibraryBookletAssetCache *)self parentAssetIdToBookletAssetIdMapping];
+    [parentAssetIdToBookletAssetIdMapping2 removeObjectForKey:v23];
   }
 
   v21 = [v10 copy];

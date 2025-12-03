@@ -1,5 +1,5 @@
 @interface NavAudioControlViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilitySetNavTypeToAlerts;
 - (BOOL)_accessibilitySetNavTypeToAll;
 - (BOOL)_accessibilitySetNavTypeToNone;
@@ -9,20 +9,20 @@
 
 @implementation NavAudioControlViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NavAudioControlView" hasInstanceMethod:@"currentAudioType" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"NavAudioControlView" hasInstanceMethod:@"availableAudioTypes" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NavAudioControlView" hasInstanceMethod:@"_selectAudioType:" withFullSignature:{"v", "Q", 0}];
-  [v3 validateClass:@"NavAudioControlView" hasInstanceMethod:@"_accessibilityTextForAudioType:" withFullSignature:{"@", "Q", 0}];
-  [v3 validateClass:@"NavAudioControlView" hasInstanceMethod:@"_animateContentUpdate" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NavAudioControlView" hasInstanceMethod:@"currentAudioType" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"NavAudioControlView" hasInstanceMethod:@"availableAudioTypes" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NavAudioControlView" hasInstanceMethod:@"_selectAudioType:" withFullSignature:{"v", "Q", 0}];
+  [validationsCopy validateClass:@"NavAudioControlView" hasInstanceMethod:@"_accessibilityTextForAudioType:" withFullSignature:{"@", "Q", 0}];
+  [validationsCopy validateClass:@"NavAudioControlView" hasInstanceMethod:@"_animateContentUpdate" withFullSignature:{"v", 0}];
 }
 
 - (id)accessibilityCustomActions
 {
   v21 = *MEMORY[0x29EDCA608];
-  v15 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -44,28 +44,28 @@
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v16 + 1) + 8 * v7) intValue];
-        v9 = [(NavAudioControlViewAccessibility *)self _accessibilityTextForAudioType:v8];
+        intValue = [*(*(&v16 + 1) + 8 * v7) intValue];
+        v9 = [(NavAudioControlViewAccessibility *)self _accessibilityTextForAudioType:intValue];
         if (v9)
         {
           v10 = sel__accessibilitySetNavTypeToAll;
-          if (!v8)
+          if (!intValue)
           {
             goto LABEL_12;
           }
 
-          if (v8 == 2)
+          if (intValue == 2)
           {
             v10 = v14;
 LABEL_12:
             v11 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:v9 target:self selector:v10];
-            [v15 addObject:v11];
+            [array addObject:v11];
 
             goto LABEL_13;
           }
 
           v10 = sel__accessibilitySetNavTypeToAlerts;
-          if (v8 == 1)
+          if (intValue == 1)
           {
             goto LABEL_12;
           }
@@ -85,7 +85,7 @@ LABEL_13:
 
   v12 = *MEMORY[0x29EDCA608];
 
-  return v15;
+  return array;
 }
 
 - (id)accessibilityValue

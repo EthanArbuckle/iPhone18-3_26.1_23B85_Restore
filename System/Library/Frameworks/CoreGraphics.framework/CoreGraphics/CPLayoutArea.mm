@@ -48,21 +48,21 @@
 
 - (CGRect)layoutAreaBounds
 {
-  v3 = [(CPChunk *)self shrinksWithChildren];
+  shrinksWithChildren = [(CPChunk *)self shrinksWithChildren];
   [(CPChunk *)self bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  if (v3)
+  if (shrinksWithChildren)
   {
     if ([(CPObject *)self count])
     {
-      v12 = [(CPObject *)self firstChild];
-      v13 = [(CPObject *)self lastChild];
-      [v12 leftPad];
+      firstChild = [(CPObject *)self firstChild];
+      lastChild = [(CPObject *)self lastChild];
+      [firstChild leftPad];
       v15 = v14;
-      [v13 rightPad];
+      [lastChild rightPad];
       if (v15 + v16 > 0.0)
       {
         if (v15 > 0.0)

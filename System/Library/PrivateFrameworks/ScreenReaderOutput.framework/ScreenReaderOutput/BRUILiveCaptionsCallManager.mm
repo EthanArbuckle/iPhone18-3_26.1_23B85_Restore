@@ -1,6 +1,6 @@
 @interface BRUILiveCaptionsCallManager
 + (_TtC18ScreenReaderOutput27BRUILiveCaptionsCallManager)shared;
-- (void)handleCallStatusChanged:(id)a3;
+- (void)handleCallStatusChanged:(id)changed;
 @end
 
 @implementation BRUILiveCaptionsCallManager
@@ -17,7 +17,7 @@
   return v3;
 }
 
-- (void)handleCallStatusChanged:(id)a3
+- (void)handleCallStatusChanged:(id)changed
 {
   v4 = sub_264982374();
   v5 = *(v4 - 8);
@@ -25,7 +25,7 @@
   MEMORY[0x28223BE20](v4, v7, v8);
   v10 = &v12 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_264982354();
-  v11 = self;
+  selfCopy = self;
   sub_26496CE7C(v10);
 
   (*(v5 + 8))(v10, v4);

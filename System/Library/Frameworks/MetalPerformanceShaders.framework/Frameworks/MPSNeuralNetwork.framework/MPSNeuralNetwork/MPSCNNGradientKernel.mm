@@ -1,16 +1,16 @@
 @interface MPSCNNGradientKernel
 - (MPSCNNGradientKernel)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSCNNGradientKernel)initWithDevice:(id)device;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4;
-- (id)encodeBatchToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceGradients:(id)a5 sourceImages:(id)a6 gradientStates:(id)a7;
-- (id)encodeToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceGradient:(id)a5 sourceImage:(id)a6 gradientState:(id)a7;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states;
+- (id)encodeBatchToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceGradients:(id)gradients sourceImages:(id)images gradientStates:(id)states;
+- (id)encodeToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceGradient:(id)gradient sourceImage:(id)image gradientState:(id)state;
 - (void)encodeBatchToCommandBuffer:(id)commandBuffer sourceGradients:(MPSImageBatch *)sourceGradients sourceImages:(MPSImageBatch *)sourceImages gradientStates:(MPSStateBatch *)gradientStates destinationGradients:(MPSImageBatch *)destinationGradients;
-- (void)encodeBatchToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceGradients:(id)a5 sourceImages:(id)a6 gradientStates:(id)a7 destinationGradients:(id)a8;
-- (void)encodeToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceGradient:(id)a5 sourceImage:(id)a6 gradientState:(id)a7 destinationGradient:(id)a8;
-- (void)encodeWithCoder:(id)a3;
-- (void)readBinaryGradientState:(id)a3 isSecondarySourceFilter:(BOOL)a4;
-- (void)readGradientState:(id)a3;
+- (void)encodeBatchToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceGradients:(id)gradients sourceImages:(id)images gradientStates:(id)states destinationGradients:(id)destinationGradients;
+- (void)encodeToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceGradient:(id)gradient sourceImage:(id)image gradientState:(id)state destinationGradient:(id)destinationGradient;
+- (void)encodeWithCoder:(id)coder;
+- (void)readBinaryGradientState:(id)state isSecondarySourceFilter:(BOOL)filter;
+- (void)readGradientState:(id)state;
 @end
 
 @implementation MPSCNNGradientKernel
@@ -30,13 +30,13 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v15.receiver = self;
   v15.super_class = MPSCNNGradientKernel;
   [(MPSCNNBinaryKernel *)&v15 encodeWithCoder:?];
-  objc_msgSend_encodeInteger_forKey_(a3, v5, self->_kernelOffsetX, @"MPSCNNGradientKernel.kernelOffsetX", v6, v7, v8, v9);
-  objc_msgSend_encodeInteger_forKey_(a3, v10, self->_kernelOffsetY, @"MPSCNNGradientKernel.kernelOffsetY", v11, v12, v13, v14);
+  objc_msgSend_encodeInteger_forKey_(coder, v5, self->_kernelOffsetX, @"MPSCNNGradientKernel.kernelOffsetX", v6, v7, v8, v9);
+  objc_msgSend_encodeInteger_forKey_(coder, v10, self->_kernelOffsetY, @"MPSCNNGradientKernel.kernelOffsetY", v11, v12, v13, v14);
 }
 
 - (MPSCNNGradientKernel)initWithCoder:(NSCoder *)aDecoder device:(id)device
@@ -53,11 +53,11 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSCNNGradientKernel;
-  result = [(MPSCNNBinaryKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSCNNBinaryKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 52) = self->_kernelOffsetX;
@@ -67,7 +67,7 @@
   return result;
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states
 {
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 1) == 0 && !self->super._padding && MTLReportFailureTypeEnabled())
   {
@@ -76,7 +76,7 @@
     MTLReportFailure();
   }
 
-  v11 = objc_msgSend_paddingMethod(self->super._padding, a2, a3, a4, v4, v5, v6, v7, v68);
+  v11 = objc_msgSend_paddingMethod(self->super._padding, a2, images, states, v4, v5, v6, v7, v68);
   v78 = 0uLL;
   v79 = 0;
   objc_msgSend_primaryOffset(self, v12, v13, v14, v15, v16, v17, v18);
@@ -87,7 +87,7 @@
   kernelOffsetX = self->_kernelOffsetX;
   v74 = kernelOffsetY;
   v75 = 0;
-  v28 = objc_msgSend_destinationImageDescriptorForSourceImages_sourceStates_paddingMethod_primaryOffset_secondaryOffset_kernelOffset_(self, v27, a3, a4, v11, &v78, &v76, &kernelOffsetX);
+  v28 = objc_msgSend_destinationImageDescriptorForSourceImages_sourceStates_paddingMethod_primaryOffset_secondaryOffset_kernelOffset_(self, v27, images, states, v11, &v78, &v76, &kernelOffsetX);
   v71 = v78;
   v72 = v79;
   objc_msgSend_setPrimaryOffset_(self, v29, &v71, v30, v31, v32, v33, v34);
@@ -97,16 +97,16 @@
   v48 = v74;
   self->_kernelOffsetX = kernelOffsetX;
   self->_kernelOffsetY = v48;
-  if (a4)
+  if (states)
   {
-    v49 = objc_msgSend_count(a4, v41, v42, v43, v44, v45, v46, v47);
+    v49 = objc_msgSend_count(states, v41, v42, v43, v44, v45, v46, v47);
     if (v49)
     {
       v56 = v49;
       for (i = 0; i != v56; ++i)
       {
-        v58 = objc_msgSend_objectAtIndexedSubscript_(a4, v50, i, v51, v52, v53, v54, v55);
-        v28 = objc_msgSend_destinationImageDescriptorForSourceImages_sourceStates_forKernel_suggestedDescriptor_(v58, v59, a3, a4, self, v28, v60, v61);
+        v58 = objc_msgSend_objectAtIndexedSubscript_(states, v50, i, v51, v52, v53, v54, v55);
+        v28 = objc_msgSend_destinationImageDescriptorForSourceImages_sourceStates_forKernel_suggestedDescriptor_(v58, v59, images, states, self, v28, v60, v61);
       }
     }
   }
@@ -122,22 +122,22 @@
       MTLReportFailure();
     }
 
-    return objc_msgSend_destinationImageDescriptorForSourceImages_sourceStates_forKernel_suggestedDescriptor_(self->super._padding, v62, a3, a4, self, v28, v63, v64, v69, padding);
+    return objc_msgSend_destinationImageDescriptorForSourceImages_sourceStates_forKernel_suggestedDescriptor_(self->super._padding, v62, images, states, self, v28, v63, v64, v69, padding);
   }
 
   return v28;
 }
 
-- (id)encodeToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceGradient:(id)a5 sourceImage:(id)a6 gradientState:(id)a7
+- (id)encodeToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceGradient:(id)gradient sourceImage:(id)image gradientState:(id)state
 {
   v38[2] = *MEMORY[0x277D85DE8];
-  v38[0] = a5;
-  v38[1] = a6;
-  v19 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], a2, v38, 2, a5, a6, a7, v7);
-  if (a7)
+  v38[0] = gradient;
+  v38[1] = image;
+  v19 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], a2, v38, 2, gradient, image, state, v7);
+  if (state)
   {
-    v37 = a7;
-    v20 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v14, &v37, 1, v15, v16, v17, v18);
+    stateCopy = state;
+    v20 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v14, &stateCopy, 1, v15, v16, v17, v18);
     v26 = objc_msgSend_destinationImageDescriptorForSourceImages_sourceStates_(self, v21, v19, v20, v22, v23, v24, v25);
   }
 
@@ -165,7 +165,7 @@
     return 0;
   }
 
-  v32 = objc_msgSend_imageForCommandBuffer_imageDescriptor_kernel_(self->super._destinationImageAllocator, v27, a4, v26, self, v28, v29, v30);
+  v32 = objc_msgSend_imageForCommandBuffer_imageDescriptor_kernel_(self->super._destinationImageAllocator, v27, buffer, v26, self, v28, v29, v30);
   v34 = v32;
   if (*(&self->super.super.super.isa + v31))
   {
@@ -175,7 +175,7 @@
     }
 
 LABEL_15:
-    objc_msgSend_encodeToCommandEncoder_commandBuffer_sourceGradient_sourceImage_gradientState_destinationGradient_(self, v33, a3, a4, a5, a6, a7, v32);
+    objc_msgSend_encodeToCommandEncoder_commandBuffer_sourceGradient_sourceImage_gradientState_destinationGradient_(self, v33, encoder, buffer, gradient, image, state, v32);
     return v34;
   }
 
@@ -195,7 +195,7 @@ LABEL_12:
   return 0;
 }
 
-- (void)encodeToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceGradient:(id)a5 sourceImage:(id)a6 gradientState:(id)a7 destinationGradient:(id)a8
+- (void)encodeToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceGradient:(id)gradient sourceImage:(id)image gradientState:(id)state destinationGradient:(id)destinationGradient
 {
   v15 = *MEMORY[0x277CD7378];
   if ((*(&self->super.super.super.isa + v15) & 1) == 0)
@@ -203,16 +203,16 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (!*(a7 + 9) && !*(a7 + 10))
+      if (!*(state + 9) && !*(state + 10))
       {
-        v23 = *(a7 + 12);
-        if (v23 >= objc_msgSend_width(a5, v16, v17, v18, v19, v20, v21, v22))
+        v23 = *(state + 12);
+        if (v23 >= objc_msgSend_width(gradient, v16, v17, v18, v19, v20, v21, v22))
         {
-          objc_msgSend_height(a5, v16, v17, v18, v19, v20, v21, v22);
+          objc_msgSend_height(gradient, v16, v17, v18, v19, v20, v21, v22);
         }
       }
 
-      if (*(a7 + 9) || *(a7 + 10) || (v24 = *(a7 + 12), v24 < objc_msgSend_width(a5, v16, v17, v18, v19, v20, v21, v22)) || (v32 = *(a7 + 13), v32 < objc_msgSend_height(a5, v25, v26, v27, v28, v29, v30, v31)))
+      if (*(state + 9) || *(state + 10) || (v24 = *(state + 12), v24 < objc_msgSend_width(gradient, v16, v17, v18, v19, v20, v21, v22)) || (v32 = *(state + 13), v32 < objc_msgSend_height(gradient, v25, v26, v27, v28, v29, v30, v31)))
       {
         if (MTLReportFailureTypeEnabled())
         {
@@ -229,16 +229,16 @@ LABEL_23:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (!*(a7 + 12) && !*(a7 + 13))
+        if (!*(state + 12) && !*(state + 13))
         {
-          v39 = *(a7 + 15);
-          if (v39 >= objc_msgSend_width(a5, a2, v33, v34, v35, v36, v37, v38))
+          v39 = *(state + 15);
+          if (v39 >= objc_msgSend_width(gradient, a2, v33, v34, v35, v36, v37, v38))
           {
-            objc_msgSend_height(a5, a2, v33, v34, v35, v36, v37, v38);
+            objc_msgSend_height(gradient, a2, v33, v34, v35, v36, v37, v38);
           }
         }
 
-        if (*(a7 + 12) || *(a7 + 13) || (v40 = *(a7 + 15), v40 < objc_msgSend_width(a5, a2, v33, v34, v35, v36, v37, v38)) || (v48 = *(a7 + 16), v48 < objc_msgSend_height(a5, v41, v42, v43, v44, v45, v46, v47)))
+        if (*(state + 12) || *(state + 13) || (v40 = *(state + 15), v40 < objc_msgSend_width(gradient, a2, v33, v34, v35, v36, v37, v38)) || (v48 = *(state + 16), v48 < objc_msgSend_height(gradient, v41, v42, v43, v44, v45, v46, v47)))
         {
           if (MTLReportFailureTypeEnabled())
           {
@@ -272,21 +272,21 @@ LABEL_23:
     }
   }
 
-  objc_msgSend_encodeToCommandEncoder_commandBuffer_primaryImage_secondaryImage_inState_destinationImage_(self, a2, a3, a4, a5, a6, a7, a8, v50);
+  objc_msgSend_encodeToCommandEncoder_commandBuffer_primaryImage_secondaryImage_inState_destinationImage_(self, a2, encoder, buffer, gradient, image, state, destinationGradient, v50);
 
-  MPSDecrementReadCount(a7);
+  MPSDecrementReadCount(state);
 }
 
-- (id)encodeBatchToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceGradients:(id)a5 sourceImages:(id)a6 gradientStates:(id)a7
+- (id)encodeBatchToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceGradients:(id)gradients sourceImages:(id)images gradientStates:(id)states
 {
   v86[2] = *MEMORY[0x277D85DE8];
-  v13 = objc_msgSend_count(a5, a2, a3, a4, a5, a6, a7, v7);
-  v86[0] = objc_msgSend_objectAtIndexedSubscript_(a5, v14, 0, v15, v16, v17, v18, v19);
-  v86[1] = objc_msgSend_objectAtIndexedSubscript_(a6, v20, 0, v21, v22, v23, v24, v25);
+  v13 = objc_msgSend_count(gradients, a2, encoder, buffer, gradients, images, states, v7);
+  v86[0] = objc_msgSend_objectAtIndexedSubscript_(gradients, v14, 0, v15, v16, v17, v18, v19);
+  v86[1] = objc_msgSend_objectAtIndexedSubscript_(images, v20, 0, v21, v22, v23, v24, v25);
   v37 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v26, v86, 2, v27, v28, v29, v30);
-  if (a7)
+  if (states)
   {
-    v85 = objc_msgSend_objectAtIndexedSubscript_(a7, v31, 0, v32, v33, v34, v35, v36);
+    v85 = objc_msgSend_objectAtIndexedSubscript_(states, v31, 0, v32, v33, v34, v35, v36);
     v43 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v38, &v85, 1, v39, v40, v41, v42);
     v49 = objc_msgSend_destinationImageDescriptorForSourceImages_sourceStates_(self, v44, v37, v43, v45, v46, v47, v48);
   }
@@ -306,11 +306,11 @@ LABEL_23:
     }
 
 LABEL_10:
-    v83 = a6;
+    imagesCopy = images;
     destinationImageAllocator = self->super._destinationImageAllocator;
     if (objc_opt_respondsToSelector())
     {
-      v53 = objc_msgSend_imageBatchForCommandBuffer_imageDescriptor_kernel_count_(destinationImageAllocator, v55, a4, v50, self, v13, v59, v60);
+      v53 = objc_msgSend_imageBatchForCommandBuffer_imageDescriptor_kernel_count_(destinationImageAllocator, v55, buffer, v50, self, v13, v59, v60);
     }
 
     else
@@ -324,13 +324,13 @@ LABEL_10:
       if (!v13)
       {
 LABEL_22:
-        objc_msgSend_encodeBatchToCommandEncoder_commandBuffer_sourceGradients_sourceImages_gradientStates_destinationGradients_(self, v61, a3, a4, a5, v83, a7, v53, v82);
+        objc_msgSend_encodeBatchToCommandEncoder_commandBuffer_sourceGradients_sourceImages_gradientStates_destinationGradients_(self, v61, encoder, buffer, gradients, imagesCopy, states, v53, v82);
         return v53;
       }
 
       for (i = 0; i != v13; ++i)
       {
-        v66 = objc_msgSend_imageForCommandBuffer_imageDescriptor_kernel_(destinationImageAllocator, v61, a4, v50, self, v62, v63, v64, v82);
+        v66 = objc_msgSend_imageForCommandBuffer_imageDescriptor_kernel_(destinationImageAllocator, v61, buffer, v50, self, v62, v63, v64, v82);
         objc_msgSend_setObject_atIndexedSubscript_(v53, v67, v66, i, v68, v69, v70, v71);
         if ((*(&self->super.super.super.isa + v51) & 1) == 0)
         {
@@ -378,35 +378,35 @@ LABEL_22:
   MPSDecrementReadCount();
 }
 
-- (void)encodeBatchToCommandEncoder:(id)a3 commandBuffer:(id)a4 sourceGradients:(id)a5 sourceImages:(id)a6 gradientStates:(id)a7 destinationGradients:(id)a8
+- (void)encodeBatchToCommandEncoder:(id)encoder commandBuffer:(id)buffer sourceGradients:(id)gradients sourceImages:(id)images gradientStates:(id)states destinationGradients:(id)destinationGradients
 {
-  objc_msgSend_encodeBatchToCommandEncoder_commandBuffer_primaryImages_secondaryImages_inStates_destinationImages_(self, a2, a3, a4, a5, a6, a7, a8);
+  objc_msgSend_encodeBatchToCommandEncoder_commandBuffer_primaryImages_secondaryImages_inStates_destinationImages_(self, a2, encoder, buffer, gradients, images, states, destinationGradients);
 
   MPSDecrementReadCount();
 }
 
-- (void)readGradientState:(id)a3
+- (void)readGradientState:(id)state
 {
-  v16 = *(a3 + 3);
-  v17 = *(a3 + 8);
+  v16 = *(state + 3);
+  v17 = *(state + 8);
   objc_msgSend_setSecondaryOffset_(self, a2, &v16, v3, v4, v5, v6, v7);
-  objc_msgSend_setSecondarySourceFeatureChannelOffset_(self, v10, *(a3 + 20), v11, v12, v13, v14, v15);
-  self->super._secondaryKernelWidth = *(a3 + 21);
-  self->super._secondaryKernelHeight = *(a3 + 22);
-  self->super._secondaryStrideInPixelsX = *(a3 + 23);
-  self->super._secondaryStrideInPixelsY = *(a3 + 24);
-  self->super._secondaryDilationRateX = *(a3 + 25);
-  self->super._secondaryDilationRateY = *(a3 + 26);
-  self->super._secondaryEdgeMode = *(a3 + 30);
+  objc_msgSend_setSecondarySourceFeatureChannelOffset_(self, v10, *(state + 20), v11, v12, v13, v14, v15);
+  self->super._secondaryKernelWidth = *(state + 21);
+  self->super._secondaryKernelHeight = *(state + 22);
+  self->super._secondaryStrideInPixelsX = *(state + 23);
+  self->super._secondaryStrideInPixelsY = *(state + 24);
+  self->super._secondaryDilationRateX = *(state + 25);
+  self->super._secondaryDilationRateY = *(state + 26);
+  self->super._secondaryEdgeMode = *(state + 30);
 }
 
-- (void)readBinaryGradientState:(id)a3 isSecondarySourceFilter:(BOOL)a4
+- (void)readBinaryGradientState:(id)state isSecondarySourceFilter:(BOOL)filter
 {
-  if (a4)
+  if (filter)
   {
-    v24 = *(a3 + 72);
-    v25 = *(a3 + 11);
-    objc_msgSend_setSecondaryOffset_(self, a2, &v24, a4, v4, v5, v6, v7);
+    v24 = *(state + 72);
+    v25 = *(state + 11);
+    objc_msgSend_setSecondaryOffset_(self, a2, &v24, filter, v4, v5, v6, v7);
     v16 = &OBJC_IVAR___MPSNNBinaryGradientState__secondaryEdgeMode;
     v17 = &OBJC_IVAR___MPSNNBinaryGradientState__secondaryDilationRateY;
     v18 = &OBJC_IVAR___MPSNNBinaryGradientState__secondaryDilationRateX;
@@ -419,9 +419,9 @@ LABEL_22:
 
   else
   {
-    v24 = *(a3 + 3);
-    v25 = *(a3 + 8);
-    objc_msgSend_setSecondaryOffset_(self, a2, &v24, a4, v4, v5, v6, v7);
+    v24 = *(state + 3);
+    v25 = *(state + 8);
+    objc_msgSend_setSecondaryOffset_(self, a2, &v24, filter, v4, v5, v6, v7);
     v16 = &OBJC_IVAR___MPSNNBinaryGradientState__primaryEdgeMode;
     v17 = &OBJC_IVAR___MPSNNBinaryGradientState__primaryDilationRateY;
     v18 = &OBJC_IVAR___MPSNNBinaryGradientState__primaryDilationRateX;
@@ -432,14 +432,14 @@ LABEL_22:
     v23 = &OBJC_IVAR___MPSNNBinaryGradientState__primarySourceFeatureChannelOffset;
   }
 
-  objc_msgSend_setSecondarySourceFeatureChannelOffset_(self, v10, *(a3 + *v23), v11, v12, v13, v14, v15);
-  self->super._secondaryKernelWidth = *(a3 + *v22);
-  self->super._secondaryKernelHeight = *(a3 + *v21);
-  self->super._secondaryStrideInPixelsX = *(a3 + *v20);
-  self->super._secondaryStrideInPixelsY = *(a3 + *v19);
-  self->super._secondaryDilationRateX = *(a3 + *v18);
-  self->super._secondaryDilationRateY = *(a3 + *v17);
-  self->super._secondaryEdgeMode = *(a3 + *v16);
+  objc_msgSend_setSecondarySourceFeatureChannelOffset_(self, v10, *(state + *v23), v11, v12, v13, v14, v15);
+  self->super._secondaryKernelWidth = *(state + *v22);
+  self->super._secondaryKernelHeight = *(state + *v21);
+  self->super._secondaryStrideInPixelsX = *(state + *v20);
+  self->super._secondaryStrideInPixelsY = *(state + *v19);
+  self->super._secondaryDilationRateX = *(state + *v18);
+  self->super._secondaryDilationRateY = *(state + *v17);
+  self->super._secondaryEdgeMode = *(state + *v16);
 }
 
 @end

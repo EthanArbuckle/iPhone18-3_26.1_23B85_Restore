@@ -1,6 +1,6 @@
 @interface OctaneStorage
 + (id)_containerURL;
-+ (id)_createDirectoryAtBaseURL:(id)a3 withPathComponent:(id)a4;
++ (id)_createDirectoryAtBaseURL:(id)l withPathComponent:(id)component;
 + (id)persistedDataPath;
 @end
 
@@ -8,19 +8,19 @@
 
 + (id)persistedDataPath
 {
-  v3 = [a1 _containerURL];
-  v4 = [a1 _createDirectoryAtBaseURL:v3 withPathComponent:@"Documents/Persistence"];
+  _containerURL = [self _containerURL];
+  v4 = [self _createDirectoryAtBaseURL:_containerURL withPathComponent:@"Documents/Persistence"];
 
-  v5 = [v4 path];
+  path = [v4 path];
 
-  return v5;
+  return path;
 }
 
-+ (id)_createDirectoryAtBaseURL:(id)a3 withPathComponent:(id)a4
++ (id)_createDirectoryAtBaseURL:(id)l withPathComponent:(id)component
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 URLByAppendingPathComponent:v6];
+  lCopy = l;
+  componentCopy = component;
+  v7 = [lCopy URLByAppendingPathComponent:componentCopy];
   if (v7)
   {
     v8 = v7;
@@ -43,8 +43,8 @@
 
       v18 = 0;
       v12 = +[NSFileManager defaultManager];
-      v13 = [v8 path];
-      v14 = [v12 fileExistsAtPath:v13 isDirectory:&v18];
+      path = [v8 path];
+      v14 = [v12 fileExistsAtPath:path isDirectory:&v18];
       v15 = v18;
 
       if (v14 && (v15 & 1) != 0)

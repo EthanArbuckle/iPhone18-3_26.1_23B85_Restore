@@ -4,8 +4,8 @@
 - (void)_rescheduleTimer;
 - (void)_updateBlocks;
 - (void)dealloc;
-- (void)scheduleEventWithIdentifier:(id)a3 updateFrequency:(double)a4 completion:(id)a5;
-- (void)unscheduleEventWithIdentifier:(id)a3;
+- (void)scheduleEventWithIdentifier:(id)identifier updateFrequency:(double)frequency completion:(id)completion;
+- (void)unscheduleEventWithIdentifier:(id)identifier;
 @end
 
 @implementation RERelevanceSignalUpdateScheduler
@@ -14,42 +14,42 @@
 {
   v10.receiver = self;
   v10.super_class = RERelevanceSignalUpdateScheduler;
-  v2 = [(RESingleton *)&v10 _init];
-  if (v2)
+  _init = [(RESingleton *)&v10 _init];
+  if (_init)
   {
     v3 = dispatch_queue_create("com.apple.RelevanceEngine.SignalUpdateScheduler", 0);
-    v4 = v2[2];
-    v2[2] = v3;
+    v4 = _init[2];
+    _init[2] = v3;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    v6 = v2[1];
-    v2[1] = v5;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v6 = _init[1];
+    _init[1] = dictionary;
 
-    *(v2 + 40) = 0;
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
+    *(_init + 40) = 0;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v8 = RESignificantTimeChangeNotification();
-    [v7 addObserver:v2 selector:sel__updateBlocks name:v8 object:0];
+    [defaultCenter addObserver:_init selector:sel__updateBlocks name:v8 object:0];
   }
 
-  return v2;
+  return _init;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = RERelevanceSignalUpdateScheduler;
   [(RERelevanceSignalUpdateScheduler *)&v4 dealloc];
 }
 
-- (void)scheduleEventWithIdentifier:(id)a3 updateFrequency:(double)a4 completion:(id)a5
+- (void)scheduleEventWithIdentifier:(id)identifier updateFrequency:(double)frequency completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8 && v9)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (identifierCopy && completionCopy)
   {
     queue = self->_queue;
     v12[0] = MEMORY[0x277D85DD0];
@@ -57,8 +57,8 @@
     v12[2] = __91__RERelevanceSignalUpdateScheduler_scheduleEventWithIdentifier_updateFrequency_completion___block_invoke;
     v12[3] = &unk_2785FB258;
     v12[4] = self;
-    v13 = v8;
-    v15 = a4;
+    v13 = identifierCopy;
+    frequencyCopy = frequency;
     v14 = v10;
     dispatch_async(queue, v12);
   }
@@ -92,17 +92,17 @@ void __91__RERelevanceSignalUpdateScheduler_scheduleEventWithIdentifier_updateFr
   [*(a1 + 32) _rescheduleTimer];
 }
 
-- (void)unscheduleEventWithIdentifier:(id)a3
+- (void)unscheduleEventWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__RERelevanceSignalUpdateScheduler_unscheduleEventWithIdentifier___block_invoke;
   v7[3] = &unk_2785F9AE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(queue, v7);
 }
 
@@ -245,8 +245,8 @@ void __52__RERelevanceSignalUpdateScheduler__rescheduleTimer__block_invoke_3(uin
 
 - (void)_queue_updateBlocks
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [(NSDate *)v3 timeIntervalSinceReferenceDate];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(NSDate *)date timeIntervalSinceReferenceDate];
   updateBlocks = self->_updateBlocks;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -255,7 +255,7 @@ void __52__RERelevanceSignalUpdateScheduler__rescheduleTimer__block_invoke_3(uin
   v7[4] = v5;
   [(NSMutableDictionary *)updateBlocks enumerateKeysAndObjectsUsingBlock:v7];
   lastFireDate = self->_lastFireDate;
-  self->_lastFireDate = v3;
+  self->_lastFireDate = date;
 
   [(RERelevanceSignalUpdateScheduler *)self _rescheduleTimer];
 }

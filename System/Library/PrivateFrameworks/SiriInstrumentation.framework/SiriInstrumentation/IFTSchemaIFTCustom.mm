@@ -1,25 +1,25 @@
 @interface IFTSchemaIFTCustom
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTCustom)initWithDictionary:(id)a3;
-- (IFTSchemaIFTCustom)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTCustom)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTCustom)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTCustom
 
-- (IFTSchemaIFTCustom)initWithDictionary:(id)a3
+- (IFTSchemaIFTCustom)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = IFTSchemaIFTCustom;
   v5 = [(IFTSchemaIFTCustom *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"bundleId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"bundleId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(IFTSchemaIFTCustom *)v5 setBundleId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"customTypeName"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"customTypeName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTCustom)initWithJSON:(id)a3
+- (IFTSchemaIFTCustom)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTCustom *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTCustom *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTCustom *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,48 +77,48 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_bundleId)
   {
-    v4 = [(IFTSchemaIFTCustom *)self bundleId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"bundleId"];
+    bundleId = [(IFTSchemaIFTCustom *)self bundleId];
+    v5 = [bundleId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"bundleId"];
   }
 
   if (self->_customTypeName)
   {
-    v6 = [(IFTSchemaIFTCustom *)self customTypeName];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"customTypeName"];
+    customTypeName = [(IFTSchemaIFTCustom *)self customTypeName];
+    v7 = [customTypeName copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"customTypeName"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(IFTSchemaIFTCustom *)self bundleId];
-  v6 = [v4 bundleId];
-  if ((v5 != 0) == (v6 == 0))
+  bundleId = [(IFTSchemaIFTCustom *)self bundleId];
+  bundleId2 = [equalCopy bundleId];
+  if ((bundleId != 0) == (bundleId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(IFTSchemaIFTCustom *)self bundleId];
-  if (v7)
+  bundleId3 = [(IFTSchemaIFTCustom *)self bundleId];
+  if (bundleId3)
   {
-    v8 = v7;
-    v9 = [(IFTSchemaIFTCustom *)self bundleId];
-    v10 = [v4 bundleId];
-    v11 = [v9 isEqual:v10];
+    v8 = bundleId3;
+    bundleId4 = [(IFTSchemaIFTCustom *)self bundleId];
+    bundleId5 = [equalCopy bundleId];
+    v11 = [bundleId4 isEqual:bundleId5];
 
     if (!v11)
     {
@@ -130,12 +130,12 @@
   {
   }
 
-  v5 = [(IFTSchemaIFTCustom *)self customTypeName];
-  v6 = [v4 customTypeName];
-  if ((v5 != 0) != (v6 == 0))
+  bundleId = [(IFTSchemaIFTCustom *)self customTypeName];
+  bundleId2 = [equalCopy customTypeName];
+  if ((bundleId != 0) != (bundleId2 == 0))
   {
-    v12 = [(IFTSchemaIFTCustom *)self customTypeName];
-    if (!v12)
+    customTypeName = [(IFTSchemaIFTCustom *)self customTypeName];
+    if (!customTypeName)
     {
 
 LABEL_15:
@@ -143,10 +143,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(IFTSchemaIFTCustom *)self customTypeName];
-    v15 = [v4 customTypeName];
-    v16 = [v14 isEqual:v15];
+    v13 = customTypeName;
+    customTypeName2 = [(IFTSchemaIFTCustom *)self customTypeName];
+    customTypeName3 = [equalCopy customTypeName];
+    v16 = [customTypeName2 isEqual:customTypeName3];
 
     if (v16)
     {
@@ -166,31 +166,31 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(IFTSchemaIFTCustom *)self bundleId];
+  toCopy = to;
+  bundleId = [(IFTSchemaIFTCustom *)self bundleId];
 
-  if (v4)
+  if (bundleId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(IFTSchemaIFTCustom *)self customTypeName];
+  customTypeName = [(IFTSchemaIFTCustom *)self customTypeName];
 
-  if (v5)
+  if (customTypeName)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v8.receiver = self;
   v8.super_class = IFTSchemaIFTCustom;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:v4];
-  v6 = [v4 isConditionSet:{4, v8.receiver, v8.super_class}];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:policyCopy];
+  v6 = [policyCopy isConditionSet:{4, v8.receiver, v8.super_class}];
 
   if (v6)
   {

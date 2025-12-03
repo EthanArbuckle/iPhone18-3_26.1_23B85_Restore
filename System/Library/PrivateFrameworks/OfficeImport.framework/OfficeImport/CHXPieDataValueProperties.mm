@@ -1,29 +1,29 @@
 @interface CHXPieDataValueProperties
-+ (id)chdDataValuePropertiesFromXmlElement:(_xmlNode *)a3 state:(id)a4;
++ (id)chdDataValuePropertiesFromXmlElement:(_xmlNode *)element state:(id)state;
 @end
 
 @implementation CHXPieDataValueProperties
 
-+ (id)chdDataValuePropertiesFromXmlElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdDataValuePropertiesFromXmlElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   v6 = objc_alloc_init(CHDPieDataValueProperties);
-  v7 = [v5 drawingState];
-  v8 = [v7 OAXChartNamespace];
-  v9 = OCXFindChild(a3, v8, "explosion");
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v9 = OCXFindChild(element, oAXChartNamespace, "explosion");
 
   if (v9)
   {
-    v10 = CXRequiredUnsignedLongAttribute(v9, CXNoNamespace, "val");
+    explosion = CXRequiredUnsignedLongAttribute(v9, CXNoNamespace, "val");
   }
 
   else
   {
-    v11 = [v5 currentSeries];
-    v10 = [v11 explosion];
+    currentSeries = [stateCopy currentSeries];
+    explosion = [currentSeries explosion];
   }
 
-  [(CHDPieDataValueProperties *)v6 setExplosion:v10];
+  [(CHDPieDataValueProperties *)v6 setExplosion:explosion];
 
   return v6;
 }

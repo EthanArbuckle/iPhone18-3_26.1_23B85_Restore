@@ -1,42 +1,42 @@
 @interface SUCellularFeeAlertItem
-- (SUCellularFeeAlertItem)initWithHandler:(id)a3 updateName:(id)a4 dueDate:(id)a5;
+- (SUCellularFeeAlertItem)initWithHandler:(id)handler updateName:(id)name dueDate:(id)date;
 - (id)_noButton;
 - (id)_yesButton;
 - (id)buttons;
 - (id)message;
 - (id)title;
-- (void)alertWasDismissed:(unint64_t)a3;
+- (void)alertWasDismissed:(unint64_t)dismissed;
 @end
 
 @implementation SUCellularFeeAlertItem
 
-- (SUCellularFeeAlertItem)initWithHandler:(id)a3 updateName:(id)a4 dueDate:(id)a5
+- (SUCellularFeeAlertItem)initWithHandler:(id)handler updateName:(id)name dueDate:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handlerCopy = handler;
+  nameCopy = name;
+  dateCopy = date;
   v15.receiver = self;
   v15.super_class = SUCellularFeeAlertItem;
   v11 = [(SUBaseAlertItem *)&v15 init];
   if (v11)
   {
-    v12 = MEMORY[0x26D668B30](v8);
+    v12 = MEMORY[0x26D668B30](handlerCopy);
     handler = v11->_handler;
     v11->_handler = v12;
 
-    objc_storeStrong(&v11->_updateName, a4);
-    objc_storeStrong(&v11->_dueDate, a5);
+    objc_storeStrong(&v11->_updateName, name);
+    objc_storeStrong(&v11->_dueDate, date);
   }
 
   return v11;
 }
 
-- (void)alertWasDismissed:(unint64_t)a3
+- (void)alertWasDismissed:(unint64_t)dismissed
 {
   v6.receiver = self;
   v6.super_class = SUCellularFeeAlertItem;
   [(SUBaseAlertItem *)&v6 alertWasDismissed:?];
-  if (a3 != 1)
+  if (dismissed != 1)
   {
     handler = self->_handler;
     if (handler)
@@ -70,14 +70,14 @@
 
 - (id)buttons
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(SUCellularFeeAlertItem *)self _yesButton];
-  [v3 addObject:v4];
+  array = [MEMORY[0x277CBEB18] array];
+  _yesButton = [(SUCellularFeeAlertItem *)self _yesButton];
+  [array addObject:_yesButton];
 
-  v5 = [(SUCellularFeeAlertItem *)self _noButton];
-  [v3 addObject:v5];
+  _noButton = [(SUCellularFeeAlertItem *)self _noButton];
+  [array addObject:_noButton];
 
-  v6 = [v3 copy];
+  v6 = [array copy];
 
   return v6;
 }

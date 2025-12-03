@@ -1,10 +1,10 @@
 @interface REAudioPlaybackHostingService
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (OS_xpc_object)endpoint;
 - (REAudioPlaybackHostingService)init;
-- (void)connectionIdentifier:(unint64_t)a3 streamToken:(unint64_t)a4 didChangeFromState:(unint64_t)a5 toState:(unint64_t)a6;
-- (void)connectionIdentifierLostMediaServices:(unint64_t)a3;
-- (void)connectionIdentifierResetMediaServices:(unint64_t)a3;
+- (void)connectionIdentifier:(unint64_t)identifier streamToken:(unint64_t)token didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)connectionIdentifierLostMediaServices:(unint64_t)services;
+- (void)connectionIdentifierResetMediaServices:(unint64_t)services;
 @end
 
 @implementation REAudioPlaybackHostingService
@@ -16,9 +16,9 @@
   v2 = [(REAudioPlaybackHostingService *)&v11 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696B0D8] anonymousListener];
+    anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
     listener = v2->_listener;
-    v2->_listener = v3;
+    v2->_listener = anonymousListener;
 
     [(NSXPCListener *)v2->_listener setDelegate:v2];
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -39,18 +39,18 @@
 
 - (OS_xpc_object)endpoint
 {
-  v2 = [(NSXPCListener *)self->_listener endpoint];
-  v3 = [v2 _endpoint];
+  endpoint = [(NSXPCListener *)self->_listener endpoint];
+  _endpoint = [endpoint _endpoint];
 
-  return v3;
+  return _endpoint;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 processIdentifier];
-  v7 = v6;
+  connectionCopy = connection;
+  processIdentifier = [connectionCopy processIdentifier];
+  v7 = processIdentifier;
   v8 = self->_connectionIdentifierCounter + 1;
   self->_connectionIdentifierCounter = v8;
   connectionIdentifierCounter = v8;
@@ -62,7 +62,7 @@ LABEL_5:
     self->_connectionIdentifierCounter = connectionIdentifierCounter;
     if (v10 == v8)
     {
-      v14 = *re::audioLogObjects(v6);
+      v14 = *re::audioLogObjects(processIdentifier);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
@@ -84,7 +84,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v16 = [v5 valueForEntitlement:@"application-identifier"];
+  v16 = [connectionCopy valueForEntitlement:@"application-identifier"];
   v17 = *re::audioLogObjects(v16);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -97,14 +97,14 @@ LABEL_5:
     _os_log_impl(&dword_1E1C61000, v17, OS_LOG_TYPE_DEFAULT, "Accepting new playback hosting connection from client pid %d, assigning connection identifier %llu, application identifier %@", buf, 0x1Cu);
   }
 
-  v18 = [[REAudioPlaybackHostingClientObject alloc] initWithConnection:v5 connectionIdentifier:v10];
-  v19 = [v5 valueForEntitlement:@"com.apple.re.should-redact-sensitive-info-from-logs"];
+  v18 = [[REAudioPlaybackHostingClientObject alloc] initWithConnection:connectionCopy connectionIdentifier:v10];
+  v19 = [connectionCopy valueForEntitlement:@"com.apple.re.should-redact-sensitive-info-from-logs"];
   [(REAudioPlaybackHostingClientObject *)v18 setShouldRedactSensitiveInfoFromLogs:v19 != 0];
 
-  v20 = [(REAudioPlaybackHostingClientObject *)v18 shouldRedactSensitiveInfoFromLogs];
-  if (v20)
+  shouldRedactSensitiveInfoFromLogs = [(REAudioPlaybackHostingClientObject *)v18 shouldRedactSensitiveInfoFromLogs];
+  if (shouldRedactSensitiveInfoFromLogs)
   {
-    v21 = *re::audioLogObjects(v20);
+    v21 = *re::audioLogObjects(shouldRedactSensitiveInfoFromLogs);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
@@ -113,23 +113,23 @@ LABEL_5:
     }
   }
 
-  v22 = [(REAudioPlaybackHostingService *)self didConnectBlock];
-  v23 = v22 == 0;
+  didConnectBlock = [(REAudioPlaybackHostingService *)self didConnectBlock];
+  v23 = didConnectBlock == 0;
 
   if (!v23)
   {
-    v24 = [(REAudioPlaybackHostingService *)self didConnectBlock];
-    (v24)[2](v24, v10, [(REAudioPlaybackHostingClientObject *)v18 shouldRedactSensitiveInfoFromLogs]);
+    didConnectBlock2 = [(REAudioPlaybackHostingService *)self didConnectBlock];
+    (didConnectBlock2)[2](didConnectBlock2, v10, [(REAudioPlaybackHostingClientObject *)v18 shouldRedactSensitiveInfoFromLogs]);
   }
 
-  [v5 setExportedObject:v18];
+  [connectionCopy setExportedObject:v18];
   v25 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F5D4BC70];
-  [v5 setExportedInterface:v25];
+  [connectionCopy setExportedInterface:v25];
 
   v26 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F5D4BF88];
-  [v5 setRemoteObjectInterface:v26];
+  [connectionCopy setRemoteObjectInterface:v26];
 
-  [v5 _setQueue:self->_serviceQueue];
+  [connectionCopy _setQueue:self->_serviceQueue];
   objc_initWeak(buf, self);
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
@@ -137,14 +137,14 @@ LABEL_5:
   v36[3] = &unk_1E871BC80;
   objc_copyWeak(v37, buf);
   v37[1] = v10;
-  [v5 setInterruptionHandler:v36];
+  [connectionCopy setInterruptionHandler:v36];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __68__REAudioPlaybackHostingService_listener_shouldAcceptNewConnection___block_invoke_84;
   v34[3] = &unk_1E871BC80;
   objc_copyWeak(v35, buf);
   v35[1] = v10;
-  [v5 setInvalidationHandler:v34];
+  [connectionCopy setInvalidationHandler:v34];
   serviceQueue = self->_serviceQueue;
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
@@ -153,7 +153,7 @@ LABEL_5:
   v30[4] = self;
   v31 = v18;
   v33 = v10;
-  v32 = v5;
+  v32 = connectionCopy;
   v28 = v18;
   dispatch_sync(serviceQueue, v30);
 
@@ -245,7 +245,7 @@ void __68__REAudioPlaybackHostingService_listener_shouldAcceptNewConnection___bl
   [v5 didReceiveConnectionIdentifier:*(a1 + 56)];
 }
 
-- (void)connectionIdentifier:(unint64_t)a3 streamToken:(unint64_t)a4 didChangeFromState:(unint64_t)a5 toState:(unint64_t)a6
+- (void)connectionIdentifier:(unint64_t)identifier streamToken:(unint64_t)token didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
   serviceQueue = self->_serviceQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -253,10 +253,10 @@ void __68__REAudioPlaybackHostingService_listener_shouldAcceptNewConnection___bl
   block[2] = __93__REAudioPlaybackHostingService_connectionIdentifier_streamToken_didChangeFromState_toState___block_invoke;
   block[3] = &unk_1E871B588;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
-  block[7] = a5;
-  block[8] = a6;
+  block[5] = identifier;
+  block[6] = token;
+  block[7] = state;
+  block[8] = toState;
   dispatch_sync(serviceQueue, block);
 }
 
@@ -298,7 +298,7 @@ void __93__REAudioPlaybackHostingService_connectionIdentifier_streamToken_didCha
   }
 }
 
-- (void)connectionIdentifierLostMediaServices:(unint64_t)a3
+- (void)connectionIdentifierLostMediaServices:(unint64_t)services
 {
   serviceQueue = self->_serviceQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -306,7 +306,7 @@ void __93__REAudioPlaybackHostingService_connectionIdentifier_streamToken_didCha
   v4[2] = __71__REAudioPlaybackHostingService_connectionIdentifierLostMediaServices___block_invoke;
   v4[3] = &unk_1E871B4D0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = services;
   dispatch_sync(serviceQueue, v4);
 }
 
@@ -363,7 +363,7 @@ void __71__REAudioPlaybackHostingService_connectionIdentifierLostMediaServices__
   }
 }
 
-- (void)connectionIdentifierResetMediaServices:(unint64_t)a3
+- (void)connectionIdentifierResetMediaServices:(unint64_t)services
 {
   serviceQueue = self->_serviceQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -371,7 +371,7 @@ void __71__REAudioPlaybackHostingService_connectionIdentifierLostMediaServices__
   v4[2] = __72__REAudioPlaybackHostingService_connectionIdentifierResetMediaServices___block_invoke;
   v4[3] = &unk_1E871B4D0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = services;
   dispatch_sync(serviceQueue, v4);
 }
 

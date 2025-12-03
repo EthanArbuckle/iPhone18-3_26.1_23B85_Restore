@@ -1,32 +1,32 @@
 @interface AFSiriUserNotificationSummary
-- (AFSiriUserNotificationSummary)initWithCoder:(id)a3;
-- (AFSiriUserNotificationSummary)initWithSummary:(id)a3 summaryType:(int64_t)a4 error:(id)a5;
+- (AFSiriUserNotificationSummary)initWithCoder:(id)coder;
+- (AFSiriUserNotificationSummary)initWithSummary:(id)summary summaryType:(int64_t)type error:(id)error;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFSiriUserNotificationSummary
 
-- (AFSiriUserNotificationSummary)initWithCoder:(id)a3
+- (AFSiriUserNotificationSummary)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"summary"];
-  v6 = [v4 decodeIntegerForKey:@"summaryType"];
-  v7 = [v4 decodeObjectForKey:@"error"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"summary"];
+  v6 = [coderCopy decodeIntegerForKey:@"summaryType"];
+  v7 = [coderCopy decodeObjectForKey:@"error"];
 
   v8 = [(AFSiriUserNotificationSummary *)self initWithSummary:v5 summaryType:v6 error:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AFSiriUserNotificationSummary *)self summary];
-  [v4 encodeObject:v5 forKey:@"summary"];
+  coderCopy = coder;
+  summary = [(AFSiriUserNotificationSummary *)self summary];
+  [coderCopy encodeObject:summary forKey:@"summary"];
 
-  [v4 encodeInteger:-[AFSiriUserNotificationSummary summaryType](self forKey:{"summaryType"), @"summaryType"}];
-  v6 = [(AFSiriUserNotificationSummary *)self error];
-  [v4 encodeObject:v6 forKey:@"error"];
+  [coderCopy encodeInteger:-[AFSiriUserNotificationSummary summaryType](self forKey:{"summaryType"), @"summaryType"}];
+  error = [(AFSiriUserNotificationSummary *)self error];
+  [coderCopy encodeObject:error forKey:@"error"];
 }
 
 - (id)description
@@ -50,19 +50,19 @@
   return v8;
 }
 
-- (AFSiriUserNotificationSummary)initWithSummary:(id)a3 summaryType:(int64_t)a4 error:(id)a5
+- (AFSiriUserNotificationSummary)initWithSummary:(id)summary summaryType:(int64_t)type error:(id)error
 {
-  v9 = a3;
-  v10 = a5;
+  summaryCopy = summary;
+  errorCopy = error;
   v14.receiver = self;
   v14.super_class = AFSiriUserNotificationSummary;
   v11 = [(AFSiriUserNotificationSummary *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_summary, a3);
-    v12->_summaryType = a4;
-    objc_storeStrong(&v12->_error, a5);
+    objc_storeStrong(&v11->_summary, summary);
+    v12->_summaryType = type;
+    objc_storeStrong(&v12->_error, error);
   }
 
   return v12;

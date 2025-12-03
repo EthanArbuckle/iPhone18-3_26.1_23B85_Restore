@@ -8,15 +8,15 @@
 - (id)hmd_canonicalStringRepresentation
 {
   v2 = HMDCKRecordIDSafeCharacters();
-  v3 = [a1 zoneID];
-  v4 = [v3 ownerName];
-  v5 = [v4 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  zoneID = [self zoneID];
+  ownerName = [zoneID ownerName];
+  v5 = [ownerName stringByAddingPercentEncodingWithAllowedCharacters:v2];
 
-  v6 = [v3 zoneName];
-  v7 = [v6 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  zoneName = [zoneID zoneName];
+  v7 = [zoneName stringByAddingPercentEncodingWithAllowedCharacters:v2];
 
-  v8 = [a1 recordName];
-  v9 = [v8 stringByAddingPercentEncodingWithAllowedCharacters:v2];
+  recordName = [self recordName];
+  v9 = [recordName stringByAddingPercentEncodingWithAllowedCharacters:v2];
 
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@/%@", v5, v7, v9];
 
@@ -43,9 +43,9 @@
     goto LABEL_19;
   }
 
-  v9 = [v7 stringByRemovingPercentEncoding];
+  stringByRemovingPercentEncoding = [v7 stringByRemovingPercentEncoding];
 
-  if (!v9)
+  if (!stringByRemovingPercentEncoding)
   {
     v8 = 0;
 LABEL_19:
@@ -55,7 +55,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (![v9 length] || !objc_msgSend(v5, "scanString:intoString:", @"/", 0))
+  if (![stringByRemovingPercentEncoding length] || !objc_msgSend(v5, "scanString:intoString:", @"/", 0))
   {
     goto LABEL_16;
   }
@@ -69,20 +69,20 @@ LABEL_19:
 LABEL_17:
     v16 = 0;
     v19 = 0;
-    v8 = v9;
+    v8 = stringByRemovingPercentEncoding;
     goto LABEL_20;
   }
 
-  v13 = [v11 stringByRemovingPercentEncoding];
+  stringByRemovingPercentEncoding2 = [v11 stringByRemovingPercentEncoding];
 
-  if (!v13)
+  if (!stringByRemovingPercentEncoding2)
   {
 LABEL_16:
     v12 = 0;
     goto LABEL_17;
   }
 
-  if (![v13 length] || !objc_msgSend(v5, "scanString:intoString:", @"/", 0))
+  if (![stringByRemovingPercentEncoding2 length] || !objc_msgSend(v5, "scanString:intoString:", @"/", 0))
   {
     goto LABEL_21;
   }
@@ -95,24 +95,24 @@ LABEL_16:
   {
 LABEL_22:
     v19 = 0;
-    v8 = v9;
-    v12 = v13;
+    v8 = stringByRemovingPercentEncoding;
+    v12 = stringByRemovingPercentEncoding2;
     goto LABEL_20;
   }
 
-  v17 = [v15 stringByRemovingPercentEncoding];
+  stringByRemovingPercentEncoding3 = [v15 stringByRemovingPercentEncoding];
 
-  if (!v17)
+  if (!stringByRemovingPercentEncoding3)
   {
 LABEL_21:
     v16 = 0;
     goto LABEL_22;
   }
 
-  if ([v17 length] && objc_msgSend(v5, "isAtEnd"))
+  if ([stringByRemovingPercentEncoding3 length] && objc_msgSend(v5, "isAtEnd"))
   {
-    v18 = [objc_alloc(MEMORY[0x277CBC5F8]) initWithZoneName:v13 ownerName:v9];
-    v19 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v17 zoneID:v18];
+    v18 = [objc_alloc(MEMORY[0x277CBC5F8]) initWithZoneName:stringByRemovingPercentEncoding2 ownerName:stringByRemovingPercentEncoding];
+    v19 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:stringByRemovingPercentEncoding3 zoneID:v18];
   }
 
   else
@@ -120,9 +120,9 @@ LABEL_21:
     v19 = 0;
   }
 
-  v8 = v9;
-  v12 = v13;
-  v16 = v17;
+  v8 = stringByRemovingPercentEncoding;
+  v12 = stringByRemovingPercentEncoding2;
+  v16 = stringByRemovingPercentEncoding3;
 LABEL_20:
 
   return v19;

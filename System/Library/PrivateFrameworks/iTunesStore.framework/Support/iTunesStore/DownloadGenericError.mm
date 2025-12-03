@@ -1,25 +1,25 @@
 @interface DownloadGenericError
-- (BOOL)_isInstallError:(id)a3;
-- (BOOL)canCoalesceWithError:(id)a3;
-- (DownloadGenericError)initWithError:(id)a3;
+- (BOOL)_isInstallError:(id)error;
+- (BOOL)canCoalesceWithError:(id)error;
+- (DownloadGenericError)initWithError:(id)error;
 - (id)_notificationBody;
 - (id)_notificationTitle;
 - (id)copyUserNotification;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)performActionForResponseFlags:(unint64_t)a3;
+- (void)performActionForResponseFlags:(unint64_t)flags;
 @end
 
 @implementation DownloadGenericError
 
-- (DownloadGenericError)initWithError:(id)a3
+- (DownloadGenericError)initWithError:(id)error
 {
   v6.receiver = self;
   v6.super_class = DownloadGenericError;
   v4 = [(DownloadGenericError *)&v6 init];
   if (v4)
   {
-    v4->_error = a3;
+    v4->_error = error;
   }
 
   return v4;
@@ -32,16 +32,16 @@
   [(DownloadError *)&v3 dealloc];
 }
 
-- (BOOL)canCoalesceWithError:(id)a3
+- (BOOL)canCoalesceWithError:(id)error
 {
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = [(DownloadError *)self downloadKind];
-    if (v7 == [a3 downloadKind] || (v6 = -[NSString isEqual:](-[DownloadError downloadKind](self, "downloadKind"), "isEqual:", objc_msgSend(a3, "downloadKind"))) != 0)
+    downloadKind = [(DownloadError *)self downloadKind];
+    if (downloadKind == [error downloadKind] || (v6 = -[NSString isEqual:](-[DownloadError downloadKind](self, "downloadKind"), "isEqual:", objc_msgSend(error, "downloadKind"))) != 0)
     {
       v8 = [(DownloadGenericError *)self _isInstallError:[(DownloadGenericError *)self error]];
-      LOBYTE(v6) = v8 ^ -[DownloadGenericError _isInstallError:](self, "_isInstallError:", [a3 error]) ^ 1;
+      LOBYTE(v6) = v8 ^ -[DownloadGenericError _isInstallError:](self, "_isInstallError:", [error error]) ^ 1;
     }
   }
 
@@ -56,16 +56,16 @@
 - (id)copyUserNotification
 {
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-  v4 = [(DownloadGenericError *)self _notificationTitle];
-  if ([v4 length])
+  _notificationTitle = [(DownloadGenericError *)self _notificationTitle];
+  if ([_notificationTitle length])
   {
-    CFDictionarySetValue(Mutable, kCFUserNotificationAlertHeaderKey, v4);
+    CFDictionarySetValue(Mutable, kCFUserNotificationAlertHeaderKey, _notificationTitle);
   }
 
-  v5 = [(DownloadGenericError *)self _notificationBody];
-  if ([v5 length])
+  _notificationBody = [(DownloadGenericError *)self _notificationBody];
+  if ([_notificationBody length])
   {
-    CFDictionarySetValue(Mutable, kCFUserNotificationAlertMessageKey, v5);
+    CFDictionarySetValue(Mutable, kCFUserNotificationAlertMessageKey, _notificationBody);
   }
 
   v6 = [[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"DOWNLOAD_FAILED_DONE", &stru_10033CC30, 0];
@@ -78,9 +78,9 @@
   return v8;
 }
 
-- (void)performActionForResponseFlags:(unint64_t)a3
+- (void)performActionForResponseFlags:(unint64_t)flags
 {
-  if (a3 == 1)
+  if (flags == 1)
   {
     if (MGGetSInt32Answer() != 4)
     {
@@ -93,15 +93,15 @@
       v12 = +[SSLogConfig sharedConfig];
     }
 
-    v13 = [v12 shouldLog];
+    shouldLog = [v12 shouldLog];
     if ([v12 shouldLogToDisk])
     {
-      v14 = v13 | 2;
+      v14 = shouldLog | 2;
     }
 
     else
     {
-      v14 = v13;
+      v14 = shouldLog;
     }
 
     if (!os_log_type_enabled([v12 OSLogObject], OS_LOG_TYPE_INFO))
@@ -137,7 +137,7 @@
 
   else
   {
-    if (a3)
+    if (flags)
     {
       return;
     }
@@ -148,15 +148,15 @@
       v4 = +[SSLogConfig sharedConfig];
     }
 
-    v5 = [v4 shouldLog];
+    shouldLog2 = [v4 shouldLog];
     if ([v4 shouldLogToDisk])
     {
-      v6 = v5 | 2;
+      v6 = shouldLog2 | 2;
     }
 
     else
     {
-      v6 = v5;
+      v6 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_INFO))
@@ -193,10 +193,10 @@
   [v10 modifyUsingTransactionBlock:v11];
 }
 
-- (BOOL)_isInstallError:(id)a3
+- (BOOL)_isInstallError:(id)error
 {
-  v3 = [a3 domain];
-  if ([v3 isEqualToString:MIInstallerErrorDomain])
+  domain = [error domain];
+  if ([domain isEqualToString:MIInstallerErrorDomain])
   {
     return 1;
   }
@@ -368,12 +368,12 @@ LABEL_8:
   return [(NSBundle *)v7 localizedStringForKey:v6 value:&stru_10033CC30 table:0];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = DownloadGenericError;
   v5 = [(DownloadError *)&v7 copyWithZone:?];
-  v5[5] = [(NSError *)self->_error copyWithZone:a3];
+  v5[5] = [(NSError *)self->_error copyWithZone:zone];
   return v5;
 }
 

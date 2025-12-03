@@ -12,7 +12,7 @@
 - (NSString)typ;
 - (NSString)x5t;
 - (POJWTHeader)init;
-- (POJWTHeader)initWithJWTData:(id)a3;
+- (POJWTHeader)initWithJWTData:(id)data;
 - (id)dataRepresentation;
 - (id)description;
 - (id)mutableCopy;
@@ -35,16 +35,16 @@
   return v2;
 }
 
-- (POJWTHeader)initWithJWTData:(id)a3
+- (POJWTHeader)initWithJWTData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v18.receiver = self;
   v18.super_class = POJWTHeader;
   v5 = [(POJWTHeader *)&v18 init];
   if (v5)
   {
     v17 = 0;
-    v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v4 options:16 error:&v17];
+    v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:16 error:&v17];
     v7 = v17;
     v8 = v7;
     if (!v6)
@@ -524,8 +524,8 @@ id __18__POJWTHeader_apv__block_invoke(uint64_t a1)
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(POJWTHeader *)self dataRepresentation];
-  v5 = [v3 initWithData:v4 encoding:4];
+  dataRepresentation = [(POJWTHeader *)self dataRepresentation];
+  v5 = [v3 initWithData:dataRepresentation encoding:4];
 
   return v5;
 }

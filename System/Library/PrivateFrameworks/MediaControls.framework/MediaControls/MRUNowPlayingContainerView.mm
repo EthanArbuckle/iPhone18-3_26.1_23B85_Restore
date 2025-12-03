@@ -1,21 +1,21 @@
 @interface MRUNowPlayingContainerView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MRUNowPlayingContainerView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MRUNowPlayingContainerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setContentView:(id)a3;
-- (void)setShowSeparator:(BOOL)a3;
-- (void)setStylingProvider:(id)a3;
+- (void)setContentView:(id)view;
+- (void)setShowSeparator:(BOOL)separator;
+- (void)setStylingProvider:(id)provider;
 - (void)updateVisualStyling;
 @end
 
 @implementation MRUNowPlayingContainerView
 
-- (MRUNowPlayingContainerView)initWithFrame:(CGRect)a3
+- (MRUNowPlayingContainerView)initWithFrame:(CGRect)frame
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = MRUNowPlayingContainerView;
-  v3 = [(MRUNowPlayingContainerView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUNowPlayingContainerView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -24,8 +24,8 @@
     backgroundView = v4->_backgroundView;
     v4->_backgroundView = v5;
 
-    v7 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)v4->_backgroundView setBackgroundColor:v7];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)v4->_backgroundView setBackgroundColor:blackColor];
 
     [(UIView *)v4->_backgroundView setAlpha:0.1];
     [(UIView *)v4->_backgroundView _setDrawsAsBackdropOverlayWithBlendMode:1];
@@ -34,8 +34,8 @@
     separatorView = v4->_separatorView;
     v4->_separatorView = v8;
 
-    v10 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)v4->_separatorView setBackgroundColor:v10];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)v4->_separatorView setBackgroundColor:whiteColor];
 
     [(MRUNowPlayingContainerView *)v4 addSubview:v4->_separatorView];
     v4->_showSeparator = 1;
@@ -61,8 +61,8 @@
   v10 = v9;
   if (self->_supportsHorizontalLayout && !MRULayoutShouldBeVertical())
   {
-    v17 = [(MRUNowPlayingContainerView *)self traitCollection];
-    [v17 displayScale];
+    traitCollection = [(MRUNowPlayingContainerView *)self traitCollection];
+    [traitCollection displayScale];
     v19 = 1.0 / v18;
 
     v28.origin.x = v4;
@@ -92,8 +92,8 @@
 
   else
   {
-    v11 = [(MRUNowPlayingContainerView *)self traitCollection];
-    [v11 displayScale];
+    traitCollection2 = [(MRUNowPlayingContainerView *)self traitCollection];
+    [traitCollection2 displayScale];
     v13 = 1.0 / v12;
 
     v24.origin.x = v4;
@@ -128,15 +128,15 @@
   [(UIView *)self->_contentView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = 0.0;
   if (self->_showSeparator && self->_supportsHorizontalLayout && !MRULayoutShouldBeVertical())
   {
-    v7 = [(MRUNowPlayingContainerView *)self traitCollection];
-    [v7 displayScale];
+    traitCollection = [(MRUNowPlayingContainerView *)self traitCollection];
+    [traitCollection displayScale];
     v9 = 1.0 / v8;
 
     height = height - v9;
@@ -151,14 +151,14 @@
   return result;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     [(MRUNowPlayingContainerView *)self addSubview:self->_contentView];
     [(MRUNowPlayingContainerView *)self setNeedsLayout];
     v7[0] = MEMORY[0x1E69E9820];
@@ -170,23 +170,23 @@
   }
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUNowPlayingContainerView *)self updateVisualStyling];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setShowSeparator:(BOOL)a3
+- (void)setShowSeparator:(BOOL)separator
 {
-  if (self->_showSeparator != a3)
+  if (self->_showSeparator != separator)
   {
-    self->_showSeparator = a3;
+    self->_showSeparator = separator;
     [(MRUNowPlayingContainerView *)self updateVisibility];
 
     [(MRUNowPlayingContainerView *)self setNeedsLayout];
@@ -197,8 +197,8 @@
 {
   stylingProvider = self->_stylingProvider;
   separatorView = self->_separatorView;
-  v4 = [(MRUNowPlayingContainerView *)self traitCollection];
-  [(MRUVisualStylingProvider *)stylingProvider applyStyle:4 toView:separatorView traitCollection:v4];
+  traitCollection = [(MRUNowPlayingContainerView *)self traitCollection];
+  [(MRUVisualStylingProvider *)stylingProvider applyStyle:4 toView:separatorView traitCollection:traitCollection];
 }
 
 @end

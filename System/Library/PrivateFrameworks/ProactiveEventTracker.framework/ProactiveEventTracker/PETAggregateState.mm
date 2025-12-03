@@ -1,18 +1,18 @@
 @interface PETAggregateState
-+ (unsigned)hashForString:(id)a3;
++ (unsigned)hashForString:(id)string;
 - (BOOL)checkIntegrity;
-- (PETAggregateState)initWithPath:(id)a3;
-- (PETAggregateState)initWithStorage:(id)a3;
+- (PETAggregateState)initWithPath:(id)path;
+- (PETAggregateState)initWithStorage:(id)storage;
 - (id)description;
 - (id)initInMemory;
-- (void)enumerateAndResetCounters:(id)a3 distributions:(id)a4;
-- (void)enumerateCounters:(id)a3 distributions:(id)a4;
-- (void)incrementCounterBy:(double)a3 forKey:(const void *)a4 keyLength:(unsigned __int16)a5;
-- (void)incrementCounterBy:(double)a3 forKey:(id)a4;
-- (void)updateCounterTo:(double)a3 forKey:(const void *)a4 keyLength:(unsigned __int16)a5;
-- (void)updateCounterTo:(double)a3 forKey:(id)a4;
-- (void)updateDistributionWithValue:(double)a3 forKey:(const void *)a4 keyLength:(unsigned __int16)a5 maxSampleSize:(unsigned __int16)a6;
-- (void)updateDistributionWithValue:(double)a3 forKey:(id)a4 maxSampleSize:(unsigned __int16)a5;
+- (void)enumerateAndResetCounters:(id)counters distributions:(id)distributions;
+- (void)enumerateCounters:(id)counters distributions:(id)distributions;
+- (void)incrementCounterBy:(double)by forKey:(const void *)key keyLength:(unsigned __int16)length;
+- (void)incrementCounterBy:(double)by forKey:(id)key;
+- (void)updateCounterTo:(double)to forKey:(const void *)key keyLength:(unsigned __int16)length;
+- (void)updateCounterTo:(double)to forKey:(id)key;
+- (void)updateDistributionWithValue:(double)value forKey:(const void *)key keyLength:(unsigned __int16)length maxSampleSize:(unsigned __int16)size;
+- (void)updateDistributionWithValue:(double)value forKey:(id)key maxSampleSize:(unsigned __int16)size;
 @end
 
 @implementation PETAggregateState
@@ -163,20 +163,20 @@ uint64_t __32__PETAggregateState_description__block_invoke_2(uint64_t a1, uint64
   return [v31 appendString:@"]\n"];
 }
 
-- (void)enumerateAndResetCounters:(id)a3 distributions:(id)a4
+- (void)enumerateAndResetCounters:(id)counters distributions:(id)distributions
 {
-  v6 = a3;
-  v7 = a4;
+  countersCopy = counters;
+  distributionsCopy = distributions;
   storage = self->_storage;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __61__PETAggregateState_enumerateAndResetCounters_distributions___block_invoke;
   v11[3] = &unk_1E86C2A08;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = countersCopy;
+  v13 = distributionsCopy;
+  v9 = distributionsCopy;
+  v10 = countersCopy;
   [(PETAggregateStateStorage *)storage expand:0 andRunWithLock:v11];
 }
 
@@ -192,20 +192,20 @@ uint64_t __61__PETAggregateState_enumerateAndResetCounters_distributions___block
   return 0;
 }
 
-- (void)enumerateCounters:(id)a3 distributions:(id)a4
+- (void)enumerateCounters:(id)counters distributions:(id)distributions
 {
-  v6 = a3;
-  v7 = a4;
+  countersCopy = counters;
+  distributionsCopy = distributions;
   storage = self->_storage;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __53__PETAggregateState_enumerateCounters_distributions___block_invoke;
   v11[3] = &unk_1E86C29E0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = countersCopy;
+  v13 = distributionsCopy;
+  v9 = distributionsCopy;
+  v10 = countersCopy;
   [(PETAggregateStateStorage *)storage runWithLock:v11];
 }
 
@@ -218,51 +218,51 @@ void __53__PETAggregateState_enumerateCounters_distributions___block_invoke(uint
   }
 }
 
-- (void)updateDistributionWithValue:(double)a3 forKey:(id)a4 maxSampleSize:(unsigned __int16)a5
+- (void)updateDistributionWithValue:(double)value forKey:(id)key maxSampleSize:(unsigned __int16)size
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __70__PETAggregateState_updateDistributionWithValue_forKey_maxSampleSize___block_invoke;
   v5[3] = &unk_1E86C29B8;
   v5[4] = self;
-  *&v5[5] = a3;
-  v6 = a5;
-  callWithHashableBytesOfString(a4, v5);
+  *&v5[5] = value;
+  sizeCopy = size;
+  callWithHashableBytesOfString(key, v5);
 }
 
-- (void)updateCounterTo:(double)a3 forKey:(id)a4
+- (void)updateCounterTo:(double)to forKey:(id)key
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __44__PETAggregateState_updateCounterTo_forKey___block_invoke;
   v4[3] = &unk_1E86C2990;
   v4[4] = self;
-  *&v4[5] = a3;
-  callWithHashableBytesOfString(a4, v4);
+  *&v4[5] = to;
+  callWithHashableBytesOfString(key, v4);
 }
 
-- (void)incrementCounterBy:(double)a3 forKey:(id)a4
+- (void)incrementCounterBy:(double)by forKey:(id)key
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __47__PETAggregateState_incrementCounterBy_forKey___block_invoke;
   v4[3] = &unk_1E86C2990;
   v4[4] = self;
-  *&v4[5] = a3;
-  callWithHashableBytesOfString(a4, v4);
+  *&v4[5] = by;
+  callWithHashableBytesOfString(key, v4);
 }
 
-- (void)updateDistributionWithValue:(double)a3 forKey:(const void *)a4 keyLength:(unsigned __int16)a5 maxSampleSize:(unsigned __int16)a6
+- (void)updateDistributionWithValue:(double)value forKey:(const void *)key keyLength:(unsigned __int16)length maxSampleSize:(unsigned __int16)size
 {
   storage = self->_storage;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __80__PETAggregateState_updateDistributionWithValue_forKey_keyLength_maxSampleSize___block_invoke;
   v8[3] = &unk_1E86C2940;
-  v9 = a6;
+  sizeCopy = size;
   v8[4] = self;
-  *&v8[5] = a3;
-  if (a5)
+  *&v8[5] = value;
+  if (length)
   {
     v7 = 2048;
   }
@@ -272,7 +272,7 @@ void __53__PETAggregateState_enumerateCounters_distributions___block_invoke(uint
     v7 = 48;
   }
 
-  lookupBlockCreatingIfNotExists(storage, a4, a5, 2, v7, v8);
+  lookupBlockCreatingIfNotExists(storage, key, length, 2, v7, v8);
 }
 
 uint64_t __80__PETAggregateState_updateDistributionWithValue_forKey_keyLength_maxSampleSize___block_invoke(uint64_t a1, char a2, unsigned __int16 *a3, void *a4, uint64_t a5, unint64_t a6)
@@ -455,26 +455,26 @@ LABEL_36:
   return result;
 }
 
-- (void)updateCounterTo:(double)a3 forKey:(const void *)a4 keyLength:(unsigned __int16)a5
+- (void)updateCounterTo:(double)to forKey:(const void *)key keyLength:(unsigned __int16)length
 {
   storage = self->_storage;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__PETAggregateState_updateCounterTo_forKey_keyLength___block_invoke;
   v6[3] = &__block_descriptor_40_e23_B44__0B8_v12_v20_v28Q36l;
-  *&v6[4] = a3;
-  lookupBlockCreatingIfNotExists(storage, a4, a5, 1, 8u, v6);
+  *&v6[4] = to;
+  lookupBlockCreatingIfNotExists(storage, key, length, 1, 8u, v6);
 }
 
-- (void)incrementCounterBy:(double)a3 forKey:(const void *)a4 keyLength:(unsigned __int16)a5
+- (void)incrementCounterBy:(double)by forKey:(const void *)key keyLength:(unsigned __int16)length
 {
   storage = self->_storage;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __57__PETAggregateState_incrementCounterBy_forKey_keyLength___block_invoke;
   v6[3] = &__block_descriptor_40_e23_B44__0B8_v12_v20_v28Q36l;
-  *&v6[4] = a3;
-  lookupBlockCreatingIfNotExists(storage, a4, a5, 1, 8u, v6);
+  *&v6[4] = by;
+  lookupBlockCreatingIfNotExists(storage, key, length, 1, 8u, v6);
 }
 
 uint64_t __57__PETAggregateState_incrementCounterBy_forKey_keyLength___block_invoke(uint64_t a1, char a2, double *a3)
@@ -489,21 +489,21 @@ uint64_t __57__PETAggregateState_incrementCounterBy_forKey_keyLength___block_inv
   return 0;
 }
 
-- (PETAggregateState)initWithPath:(id)a3
+- (PETAggregateState)initWithPath:(id)path
 {
-  v4 = [PETAggregateStateStorage storageOnDisk:a3];
+  v4 = [PETAggregateStateStorage storageOnDisk:path];
   if (v4)
   {
     self = [(PETAggregateState *)self initWithStorage:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   return v6;
 }
@@ -514,26 +514,26 @@ uint64_t __57__PETAggregateState_incrementCounterBy_forKey_keyLength___block_inv
   if (v3)
   {
     self = [(PETAggregateState *)self initWithStorage:v3];
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  v5 = v4;
+  v5 = selfCopy;
 
   return v5;
 }
 
-- (PETAggregateState)initWithStorage:(id)a3
+- (PETAggregateState)initWithStorage:(id)storage
 {
-  v6 = a3;
-  if (!v6)
+  storageCopy = storage;
+  if (!storageCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PETAggregateState.m" lineNumber:257 description:{@"Invalid parameter not satisfying: %@", @"storage"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PETAggregateState.m" lineNumber:257 description:{@"Invalid parameter not satisfying: %@", @"storage"}];
   }
 
   v11.receiver = self;
@@ -542,16 +542,16 @@ uint64_t __57__PETAggregateState_incrementCounterBy_forKey_keyLength___block_inv
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_storage, a3);
+    objc_storeStrong(&v7->_storage, storage);
     v8->_rng = xmmword_1DF7521D0;
   }
 
   return v8;
 }
 
-+ (unsigned)hashForString:(id)a3
++ (unsigned)hashForString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -561,7 +561,7 @@ uint64_t __57__PETAggregateState_incrementCounterBy_forKey_keyLength___block_inv
   v6[2] = __35__PETAggregateState_hashForString___block_invoke;
   v6[3] = &unk_1E86C2968;
   v6[4] = &v7;
-  callWithHashableBytesOfString(v3, v6);
+  callWithHashableBytesOfString(stringCopy, v6);
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 

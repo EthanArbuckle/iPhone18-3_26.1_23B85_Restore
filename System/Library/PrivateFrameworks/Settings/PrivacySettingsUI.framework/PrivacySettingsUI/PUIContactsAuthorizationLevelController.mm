@@ -5,21 +5,21 @@
 - (id)_limitedAccessSectionSpecifiers;
 - (id)_parentTCCSpecifiers;
 - (id)_pickerUsageSectionSpecifiers;
-- (id)footerStringForSpecifiers:(id)a3;
+- (id)footerStringForSpecifiers:(id)specifiers;
 - (id)specifiers;
 - (unint64_t)_currentTCCAuthorizationRight;
 - (void)_addLimitedAccessSection;
 - (void)_addPickerUsageSectionIfNeeded;
-- (void)_handleContactStoreDidChangeNotification:(id)a3;
-- (void)_handleUpgradePromptNotification:(id)a3;
+- (void)_handleContactStoreDidChangeNotification:(id)notification;
+- (void)_handleUpgradePromptNotification:(id)notification;
 - (void)_presentContactsPickerForModifyingSelection;
 - (void)_removeLimitedAccessSectionIfPresent;
 - (void)_removePickerUsageSectionIfPresent;
-- (void)contactPicker:(Class)a3 didSelectContacts:(id)a4;
+- (void)contactPicker:(Class)picker didSelectContacts:(id)contacts;
 - (void)dealloc;
-- (void)setSpecifier:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateContactsCountSubtitleForSpecifier:(id)a3 contactsTCCAccess:(int)a4;
+- (void)setSpecifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateContactsCountSubtitleForSpecifier:(id)specifier contactsTCCAccess:(int)access;
 - (void)viewDidLoad;
 @end
 
@@ -30,32 +30,32 @@
   v5.receiver = self;
   v5.super_class = PUIContactsAuthorizationLevelController;
   [(PSListItemsController *)&v5 viewDidLoad];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__handleContactStoreDidChangeNotification_ name:*MEMORY[0x277CBD140] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleContactStoreDidChangeNotification_ name:*MEMORY[0x277CBD140] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__handleUpgradePromptNotification_ name:@"PUIContactsPrivacyUpgradePromptCompletedNotification" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__handleUpgradePromptNotification_ name:@"PUIContactsPrivacyUpgradePromptCompletedNotification" object:0];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"PUIContactsPrivacyUpgradePromptCompletedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"PUIContactsPrivacyUpgradePromptCompletedNotification" object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277CBD140] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277CBD140] object:0];
 
   v5.receiver = self;
   v5.super_class = PUIContactsAuthorizationLevelController;
   [(PSListItemsController *)&v5 dealloc];
 }
 
-- (void)_handleUpgradePromptNotification:(id)a3
+- (void)_handleUpgradePromptNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"PUIContactsPrivacyUpgradePromptAppIdentifierKey"];
-  v6 = [(PUIContactsAuthorizationLevelController *)self serviceKey];
-  v7 = [v5 isEqualToString:v6];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"PUIContactsPrivacyUpgradePromptAppIdentifierKey"];
+  serviceKey = [(PUIContactsAuthorizationLevelController *)self serviceKey];
+  v7 = [v5 isEqualToString:serviceKey];
 
   if (v7)
   {
@@ -69,11 +69,11 @@
   }
 }
 
-- (void)_handleContactStoreDidChangeNotification:(id)a3
+- (void)_handleContactStoreDidChangeNotification:(id)notification
 {
-  v4 = [(PUIContactsAuthorizationLevelController *)self fullAccessSpecifier];
-  [(PUIContactsAuthorizationLevelController *)self updateContactsCountSubtitleForSpecifier:v4 contactsTCCAccess:2];
-  [(PUIContactsAuthorizationLevelController *)self reloadSpecifier:v4];
+  fullAccessSpecifier = [(PUIContactsAuthorizationLevelController *)self fullAccessSpecifier];
+  [(PUIContactsAuthorizationLevelController *)self updateContactsCountSubtitleForSpecifier:fullAccessSpecifier contactsTCCAccess:2];
+  [(PUIContactsAuthorizationLevelController *)self reloadSpecifier:fullAccessSpecifier];
 }
 
 - (unint64_t)_currentTCCAuthorizationRight
@@ -146,13 +146,13 @@ void __72__PUIContactsAuthorizationLevelController__currentTCCAuthorizationRight
   v42 = *MEMORY[0x277D85DE8];
   v39.receiver = self;
   v39.super_class = PUIContactsAuthorizationLevelController;
-  v2 = [(PSListItemsController *)&v39 specifiers];
-  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+  specifiers = [(PSListItemsController *)&v39 specifiers];
+  v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(specifiers, "count")}];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v4 = v2;
+  v4 = specifiers;
   v5 = [v4 countByEnumeratingWithState:&v35 objects:v41 count:16];
   v6 = MEMORY[0x277D3FC90];
   if (v5)
@@ -170,10 +170,10 @@ void __72__PUIContactsAuthorizationLevelController__currentTCCAuthorizationRight
         v9 = *(*(&v35 + 1) + 8 * i);
         if (*&v9[*v6] == 3)
         {
-          v10 = [v9 identifier];
-          v11 = [v10 intValue];
+          identifier = [v9 identifier];
+          intValue = [identifier intValue];
 
-          if (v11 == 4)
+          if (intValue == 4)
           {
             LOBYTE(v5) = 1;
             goto LABEL_12;
@@ -215,11 +215,11 @@ LABEL_12:
         }
 
         v18 = *(*(&v31 + 1) + 8 * j);
-        v19 = [v18 identifier];
-        v20 = [v19 intValue];
+        identifier2 = [v18 identifier];
+        intValue2 = [identifier2 intValue];
 
         v21 = *&v18[*v6];
-        if (v21 != 3 || v20 != 4)
+        if (v21 != 3 || intValue2 != 4)
         {
           if (v21 == 3)
           {
@@ -231,12 +231,12 @@ LABEL_12:
             v23 = 1;
           }
 
-          if ((v23 & 1) != 0 || v20)
+          if ((v23 & 1) != 0 || intValue2)
           {
-            if (v21 == 3 && (v20 - 1) <= 1)
+            if (v21 == 3 && (intValue2 - 1) <= 1)
             {
               [v18 setProperty:objc_opt_class() forKey:v29];
-              [(PUIContactsAuthorizationLevelController *)self updateContactsCountSubtitleForSpecifier:v18 contactsTCCAccess:v20];
+              [(PUIContactsAuthorizationLevelController *)self updateContactsCountSubtitleForSpecifier:v18 contactsTCCAccess:intValue2];
             }
           }
 
@@ -262,17 +262,17 @@ LABEL_12:
   return v26;
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v9.receiver = self;
   v9.super_class = PUIContactsAuthorizationLevelController;
-  v4 = a3;
-  [(PUIContactsAuthorizationLevelController *)&v9 setSpecifier:v4];
-  v5 = [v4 identifier];
+  specifierCopy = specifier;
+  [(PUIContactsAuthorizationLevelController *)&v9 setSpecifier:specifierCopy];
+  identifier = [specifierCopy identifier];
   serviceKey = self->_serviceKey;
-  self->_serviceKey = v5;
+  self->_serviceKey = identifier;
 
-  v7 = [v4 propertyForKey:@"appLocalizedDisplayName"];
+  v7 = [specifierCopy propertyForKey:@"appLocalizedDisplayName"];
 
   displayName = self->_displayName;
   self->_displayName = v7;
@@ -280,66 +280,66 @@ LABEL_12:
 
 - (id)specifiers
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = *MEMORY[0x277D3FC48];
-  if (!*(&v2->super.super.super.super.super.super.isa + v3))
+  if (!*(&selfCopy->super.super.super.super.super.super.isa + v3))
   {
-    v4 = [(PUIContactsAuthorizationLevelController *)v2 _currentTCCAuthorizationRight];
-    v5 = [(PUIContactsAuthorizationLevelController *)v2 specifier];
-    v6 = [v5 propertyForKey:@"hasPickerInfo"];
-    v7 = [v6 BOOLValue];
-    if (v4 == 2)
+    _currentTCCAuthorizationRight = [(PUIContactsAuthorizationLevelController *)selfCopy _currentTCCAuthorizationRight];
+    specifier = [(PUIContactsAuthorizationLevelController *)selfCopy specifier];
+    v6 = [specifier propertyForKey:@"hasPickerInfo"];
+    bOOLValue = [v6 BOOLValue];
+    if (_currentTCCAuthorizationRight == 2)
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = v7;
+      v8 = bOOLValue;
     }
 
-    v9 = [(PUIContactsAuthorizationLevelController *)v2 specifier];
-    v10 = [v9 propertyForKey:@"hasTCCOptions"];
-    v11 = [v10 BOOLValue];
+    specifier2 = [(PUIContactsAuthorizationLevelController *)selfCopy specifier];
+    v10 = [specifier2 propertyForKey:@"hasTCCOptions"];
+    bOOLValue2 = [v10 BOOLValue];
 
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    if (v11)
+    if (bOOLValue2)
     {
-      v13 = [(PUIContactsAuthorizationLevelController *)v2 _parentTCCSpecifiers];
-      [v12 addObjectsFromArray:v13];
-      v14 = [v13 firstObject];
-      v15 = [(PUIContactsAuthorizationLevelController *)v2 footerStringForSpecifiers:v12];
+      _parentTCCSpecifiers = [(PUIContactsAuthorizationLevelController *)selfCopy _parentTCCSpecifiers];
+      [v12 addObjectsFromArray:_parentTCCSpecifiers];
+      firstObject = [_parentTCCSpecifiers firstObject];
+      v15 = [(PUIContactsAuthorizationLevelController *)selfCopy footerStringForSpecifiers:v12];
       if (v15)
       {
-        [v14 setProperty:v15 forKey:*MEMORY[0x277D3FF88]];
+        [firstObject setProperty:v15 forKey:*MEMORY[0x277D3FF88]];
       }
 
-      v16 = [(PUIContactsAuthorizationLevelController *)v2 _limitedAccessSectionSpecifiers];
-      [v12 addObjectsFromArray:v16];
+      _limitedAccessSectionSpecifiers = [(PUIContactsAuthorizationLevelController *)selfCopy _limitedAccessSectionSpecifiers];
+      [v12 addObjectsFromArray:_limitedAccessSectionSpecifiers];
     }
 
-    v17 = [(PUIContactsAuthorizationLevelController *)v2 _pickerUsageSectionSpecifiers];
-    v18 = v17;
+    _pickerUsageSectionSpecifiers = [(PUIContactsAuthorizationLevelController *)selfCopy _pickerUsageSectionSpecifiers];
+    v18 = _pickerUsageSectionSpecifiers;
     if (v8)
     {
-      if ((v11 & 1) == 0)
+      if ((bOOLValue2 & 1) == 0)
       {
-        v19 = [v17 firstObject];
+        firstObject2 = [_pickerUsageSectionSpecifiers firstObject];
         v20 = PUI_LocalizedStringForPrivacy(@"CONTACTS_AUTH_HEADER");
-        [v19 setName:v20];
+        [firstObject2 setName:v20];
       }
 
       [v12 addObjectsFromArray:v18];
     }
 
-    v21 = *(&v2->super.super.super.super.super.super.isa + v3);
-    *(&v2->super.super.super.super.super.super.isa + v3) = v12;
+    v21 = *(&selfCopy->super.super.super.super.super.super.isa + v3);
+    *(&selfCopy->super.super.super.super.super.super.isa + v3) = v12;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v22 = *(&v2->super.super.super.super.super.super.isa + v3);
+  v22 = *(&selfCopy->super.super.super.super.super.super.isa + v3);
 
   return v22;
 }
@@ -389,9 +389,9 @@ LABEL_12:
   v14[2] = *MEMORY[0x277D85DE8];
   if (!self->_limitedAccessSectionSpecifiers)
   {
-    v3 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
     v4 = *MEMORY[0x277D3FFB8];
-    [v3 setProperty:@"CONTACTS_MANUAL_SELECTION_GROUP" forKey:*MEMORY[0x277D3FFB8]];
+    [emptyGroupSpecifier setProperty:@"CONTACTS_MANUAL_SELECTION_GROUP" forKey:*MEMORY[0x277D3FFB8]];
     v5 = MEMORY[0x277D3FAD8];
     v6 = PUI_LocalizedStringForPrivacy(@"CONTACTS_MANUAL_SELECTION_BUTTON");
     v7 = [v5 preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:0 cell:13 edit:0];
@@ -401,7 +401,7 @@ LABEL_12:
 
     [v7 setProperty:@"CONTACTS_MANUAL_SELECTION_BUTTON" forKey:v4];
     [v7 setButtonAction:sel__presentContactsPickerForModifyingSelection];
-    v14[0] = v3;
+    v14[0] = emptyGroupSpecifier;
     v14[1] = v7;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
     limitedAccessSectionSpecifiers = self->_limitedAccessSectionSpecifiers;
@@ -423,16 +423,16 @@ LABEL_12:
   return v11;
 }
 
-- (void)updateContactsCountSubtitleForSpecifier:(id)a3 contactsTCCAccess:(int)a4
+- (void)updateContactsCountSubtitleForSpecifier:(id)specifier contactsTCCAccess:(int)access
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(PUIContactsAuthorizationLevelController *)self serviceKey];
+  specifierCopy = specifier;
+  serviceKey = [(PUIContactsAuthorizationLevelController *)self serviceKey];
   v8 = objc_alloc_init(MEMORY[0x277CBDAB8]);
   v9 = v8;
-  if (a4 == 1)
+  if (access == 1)
   {
-    v15 = [v8 getLimitedAccessContactsCountForBundle:v7];
+    v15 = [v8 getLimitedAccessContactsCountForBundle:serviceKey];
     if (v15)
     {
       v10 = v15;
@@ -444,7 +444,7 @@ LABEL_12:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = v7;
+      v26 = serviceKey;
       _os_log_impl(&dword_2657FE000, v14, OS_LOG_TYPE_DEFAULT, "Error: unable to get contacts count from ContactStore for %@", buf, 0xCu);
     }
 
@@ -452,7 +452,7 @@ LABEL_12:
     goto LABEL_15;
   }
 
-  if (a4 != 2)
+  if (access != 2)
   {
     v12 = 0;
 LABEL_16:
@@ -492,12 +492,12 @@ LABEL_15:
 LABEL_17:
   v16 = v10;
 
-  if (a4 == 1)
+  if (access == 1)
   {
     if ([v16 longValue] < 1)
     {
       v21 = PUI_LocalizedStringForPrivacy(@"CONTACTS_LIMITEDACCESS_NOCONTACTS_COUNT_SECONDARY_LABEL");
-      [v6 setProperty:v21 forKey:*MEMORY[0x277D3FE18]];
+      [specifierCopy setProperty:v21 forKey:*MEMORY[0x277D3FE18]];
     }
 
     else
@@ -505,19 +505,19 @@ LABEL_17:
       v20 = MEMORY[0x277CCACA8];
       v21 = PUI_LocalizedStringForPrivacy(@"LIMITEDACCESS_CONTACTS_COUNT_SECONDARY_LABEL");
       v22 = [v20 localizedStringWithFormat:v21, objc_msgSend(v16, "longValue")];
-      [v6 setProperty:v22 forKey:*MEMORY[0x277D3FE18]];
+      [specifierCopy setProperty:v22 forKey:*MEMORY[0x277D3FE18]];
     }
 
     [(PUIContactsAuthorizationLevelController *)self setLimitedAccessCount:v16];
-    [(PUIContactsAuthorizationLevelController *)self setLimitedAccessSpecifier:v6];
+    [(PUIContactsAuthorizationLevelController *)self setLimitedAccessSpecifier:specifierCopy];
   }
 
-  else if (a4 == 2)
+  else if (access == 2)
   {
     if ([v16 longValue] < 1)
     {
       v18 = PUI_LocalizedStringForPrivacy(@"CONTACTS_FULLACCESS_NOCONTACTS_COUNT_SECONDARY_LABEL");
-      [v6 setProperty:v18 forKey:*MEMORY[0x277D3FE18]];
+      [specifierCopy setProperty:v18 forKey:*MEMORY[0x277D3FE18]];
     }
 
     else
@@ -525,13 +525,13 @@ LABEL_17:
       v17 = MEMORY[0x277CCACA8];
       v18 = PUI_LocalizedStringForPrivacy(@"FULLACCESS_CONTACTS_COUNT_SECONDARY_LABEL");
       v19 = [v17 localizedStringWithFormat:v18, objc_msgSend(v16, "longValue")];
-      [v6 setProperty:v19 forKey:*MEMORY[0x277D3FE18]];
+      [specifierCopy setProperty:v19 forKey:*MEMORY[0x277D3FE18]];
     }
 
-    [(PUIContactsAuthorizationLevelController *)self setFullAccessSpecifier:v6];
+    [(PUIContactsAuthorizationLevelController *)self setFullAccessSpecifier:specifierCopy];
   }
 
-  [(PUIContactsAuthorizationLevelController *)self reloadSpecifier:v6];
+  [(PUIContactsAuthorizationLevelController *)self reloadSpecifier:specifierCopy];
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -539,14 +539,14 @@ LABEL_17:
 - (BOOL)isAppLinkedWithContactsLimitedAccessSupportedSDK
 {
   v3 = objc_alloc(MEMORY[0x277CC1E70]);
-  v4 = [(PUIContactsAuthorizationLevelController *)self serviceKey];
+  serviceKey = [(PUIContactsAuthorizationLevelController *)self serviceKey];
   v11 = 0;
-  v5 = [v3 initWithBundleIdentifier:v4 allowPlaceholder:0 error:&v11];
+  v5 = [v3 initWithBundleIdentifier:serviceKey allowPlaceholder:0 error:&v11];
 
   if (v5 && ([v5 SDKVersion], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [v5 SDKVersion];
-    v8 = [v7 compare:@"18.0" options:64];
+    sDKVersion = [v5 SDKVersion];
+    v8 = [sDKVersion compare:@"18.0" options:64];
 
     v9 = v8 < 2;
   }
@@ -559,10 +559,10 @@ LABEL_17:
   return v9;
 }
 
-- (void)contactPicker:(Class)a3 didSelectContacts:(id)a4
+- (void)contactPicker:(Class)picker didSelectContacts:(id)contacts
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = [(PUIContactsAuthorizationLevelController *)self limitedAccessSpecifier:a3];
+  v5 = [(PUIContactsAuthorizationLevelController *)self limitedAccessSpecifier:picker];
   [(PUIContactsAuthorizationLevelController *)self updateContactsCountSubtitleForSpecifier:v5 contactsTCCAccess:1];
   [(PUIContactsAuthorizationLevelController *)self reloadSpecifier:v5];
   if (![(PUIContactsAuthorizationLevelController *)self isAppLinkedWithContactsLimitedAccessSupportedSDK])
@@ -570,12 +570,12 @@ LABEL_17:
     v6 = _PUILoggingFacility();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(PUIContactsAuthorizationLevelController *)self displayName];
-      v8 = [(PUIContactsAuthorizationLevelController *)self serviceKey];
+      displayName = [(PUIContactsAuthorizationLevelController *)self displayName];
+      serviceKey = [(PUIContactsAuthorizationLevelController *)self serviceKey];
       *buf = 138412546;
-      v29 = v7;
+      v29 = displayName;
       v30 = 2112;
-      v31 = v8;
+      v31 = serviceKey;
       _os_log_impl(&dword_2657FE000, v6, OS_LOG_TYPE_DEFAULT, "App %@(%@) is linked using SDK that doesn't support LimitedAccess for Contacts", buf, 0x16u);
     }
 
@@ -586,8 +586,8 @@ LABEL_17:
     }
 
     v10 = objc_alloc(MEMORY[0x277CC1E58]);
-    v11 = [(PUIContactsAuthorizationLevelController *)self serviceKey];
-    v12 = [v10 initWithBundleIdentifier:v11 URL:0 personaUniqueString:0 personaType:4];
+    serviceKey2 = [(PUIContactsAuthorizationLevelController *)self serviceKey];
+    v12 = [v10 initWithBundleIdentifier:serviceKey2 URL:0 personaUniqueString:0 personaType:4];
 
     v13 = [MEMORY[0x277D46F60] identityForLSApplicationIdentity:v12];
     if (!v13)
@@ -601,12 +601,12 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      v16 = [(PUIContactsAuthorizationLevelController *)self displayName];
-      v24 = [(PUIContactsAuthorizationLevelController *)self serviceKey];
+      displayName2 = [(PUIContactsAuthorizationLevelController *)self displayName];
+      serviceKey3 = [(PUIContactsAuthorizationLevelController *)self serviceKey];
       *buf = 138412546;
-      v29 = v16;
+      v29 = displayName2;
       v30 = 2112;
-      v31 = v24;
+      v31 = serviceKey3;
       _os_log_impl(&dword_2657FE000, v14, OS_LOG_TYPE_DEFAULT, "Unable to get process identity for %@(%@)", buf, 0x16u);
 
 LABEL_20:
@@ -615,7 +615,7 @@ LABEL_20:
 
     v14 = [MEMORY[0x277D46FA0] predicateMatchingIdentity:v13];
     v15 = [objc_alloc(MEMORY[0x277D47018]) initWithPredicate:v14 context:v9];
-    v16 = v15;
+    displayName2 = v15;
     if (v15)
     {
       v27 = 0;
@@ -624,18 +624,18 @@ LABEL_20:
       v19 = v18;
       if (v17)
       {
-        v20 = _PUILoggingFacility();
-        if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+        displayName4 = _PUILoggingFacility();
+        if (os_log_type_enabled(displayName4, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = [(PUIContactsAuthorizationLevelController *)self displayName];
-          v22 = [(PUIContactsAuthorizationLevelController *)self serviceKey];
+          displayName3 = [(PUIContactsAuthorizationLevelController *)self displayName];
+          serviceKey4 = [(PUIContactsAuthorizationLevelController *)self serviceKey];
           *buf = 138412546;
-          v29 = v21;
+          v29 = displayName3;
           v30 = 2112;
-          v31 = v22;
+          v31 = serviceKey4;
           v23 = "Successfully terminated %@(%@)";
 LABEL_17:
-          _os_log_impl(&dword_2657FE000, v20, OS_LOG_TYPE_DEFAULT, v23, buf, 0x16u);
+          _os_log_impl(&dword_2657FE000, displayName4, OS_LOG_TYPE_DEFAULT, v23, buf, 0x16u);
 
           goto LABEL_18;
         }
@@ -645,15 +645,15 @@ LABEL_17:
 
       if ([v18 code]!= 3)
       {
-        v20 = _PUILoggingFacility();
-        if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+        displayName4 = _PUILoggingFacility();
+        if (os_log_type_enabled(displayName4, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = [(PUIContactsAuthorizationLevelController *)self displayName];
-          v22 = [(PUIContactsAuthorizationLevelController *)self serviceKey];
+          displayName3 = [(PUIContactsAuthorizationLevelController *)self displayName];
+          serviceKey4 = [(PUIContactsAuthorizationLevelController *)self serviceKey];
           *buf = 138412546;
-          v29 = v21;
+          v29 = displayName3;
           v30 = 2112;
-          v31 = v22;
+          v31 = serviceKey4;
           v23 = "Failed to kill %@(%@)";
           goto LABEL_17;
         }
@@ -667,12 +667,12 @@ LABEL_18:
       v19 = _PUILoggingFacility();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [(PUIContactsAuthorizationLevelController *)self displayName];
-        v25 = [(PUIContactsAuthorizationLevelController *)self serviceKey];
+        displayName4 = [(PUIContactsAuthorizationLevelController *)self displayName];
+        serviceKey5 = [(PUIContactsAuthorizationLevelController *)self serviceKey];
         *buf = 138412546;
-        v29 = v20;
+        v29 = displayName4;
         v30 = 2112;
-        v31 = v25;
+        v31 = serviceKey5;
         _os_log_impl(&dword_2657FE000, v19, OS_LOG_TYPE_DEFAULT, "Unable to create terminate request for %@(%@)", buf, 0x16u);
 
         goto LABEL_18;
@@ -692,20 +692,20 @@ LABEL_23:
   getCNLimitedAccessContactPickerViewControllerClass();
   if (objc_opt_class())
   {
-    v3 = [(PUIContactsAuthorizationLevelController *)self limitedAccessCount];
-    v4 = [v3 longValue];
+    limitedAccessCount = [(PUIContactsAuthorizationLevelController *)self limitedAccessCount];
+    longValue = [limitedAccessCount longValue];
 
     v5 = objc_alloc(getCNLimitedAccessContactPickerViewControllerClass());
-    v6 = [(PUIContactsAuthorizationLevelController *)self displayName];
-    v7 = [(PUIContactsAuthorizationLevelController *)self serviceKey];
-    if (v4 <= 0)
+    displayName = [(PUIContactsAuthorizationLevelController *)self displayName];
+    serviceKey = [(PUIContactsAuthorizationLevelController *)self serviceKey];
+    if (longValue <= 0)
     {
-      v8 = [v5 initDeltaPickerForAppName:v6 bundleId:v7];
+      v8 = [v5 initDeltaPickerForAppName:displayName bundleId:serviceKey];
     }
 
     else
     {
-      v8 = [v5 initSettingsPickerForAppName:v6 bundleId:v7];
+      v8 = [v5 initSettingsPickerForAppName:displayName bundleId:serviceKey];
     }
 
     v9 = v8;
@@ -741,15 +741,15 @@ void __86__PUIContactsAuthorizationLevelController__presentContactsPickerForModi
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)footerStringForSpecifiers:(id)a3
+- (id)footerStringForSpecifiers:(id)specifiers
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  specifiersCopy = specifiers;
+  v4 = [specifiersCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -760,17 +760,17 @@ void __86__PUIContactsAuthorizationLevelController__presentContactsPickerForModi
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(specifiersCopy);
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
-        v9 = [v8 values];
-        v10 = [v9 firstObject];
-        v11 = [v10 isEqual:&unk_28772B2D0];
+        values = [v8 values];
+        firstObject = [values firstObject];
+        v11 = [firstObject isEqual:&unk_28772B2D0];
 
-        v12 = [v8 values];
-        v13 = [v12 firstObject];
-        v14 = [v13 isEqual:&unk_28772B2E8];
+        values2 = [v8 values];
+        firstObject2 = [values2 firstObject];
+        v14 = [firstObject2 isEqual:&unk_28772B2E8];
 
         if ((v11 & 1) != 0 || v14)
         {
@@ -780,7 +780,7 @@ void __86__PUIContactsAuthorizationLevelController__presentContactsPickerForModi
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [specifiersCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v5)
       {
         continue;
@@ -798,11 +798,11 @@ LABEL_12:
   return v15;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUIContactsAuthorizationLevelController *)self indexForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(PUIContactsAuthorizationLevelController *)self indexForIndexPath:pathCopy];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = [(PUIContactsAuthorizationLevelController *)self specifierAtIndex:v8];
@@ -815,28 +815,28 @@ LABEL_12:
       if (v12)
       {
         [v10 performButtonAction];
-        [v6 deselectRowAtIndexPath:v7 animated:1];
+        [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
       }
 
       else
       {
         v18.receiver = self;
         v18.super_class = PUIContactsAuthorizationLevelController;
-        [(PSListItemsController *)&v18 tableView:v6 didSelectRowAtIndexPath:v7];
-        v13 = [v10 values];
-        v14 = [v13 firstObject];
-        v15 = [v14 intValue];
+        [(PSListItemsController *)&v18 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+        values = [v10 values];
+        firstObject = [values firstObject];
+        intValue = [firstObject intValue];
 
-        if (v15 == 2)
+        if (intValue == 2)
         {
           [(PUIContactsAuthorizationLevelController *)self _removeLimitedAccessSectionIfPresent];
           [(PUIContactsAuthorizationLevelController *)self _removePickerUsageSectionIfPresent];
         }
 
-        else if (v15 == 1)
+        else if (intValue == 1)
         {
-          v16 = [(NSArray *)self->_limitedAccessSectionSpecifiers firstObject];
-          v17 = [(PUIContactsAuthorizationLevelController *)self containsSpecifier:v16];
+          firstObject2 = [(NSArray *)self->_limitedAccessSectionSpecifiers firstObject];
+          v17 = [(PUIContactsAuthorizationLevelController *)self containsSpecifier:firstObject2];
 
           if ((v17 & 1) == 0)
           {
@@ -860,8 +860,8 @@ LABEL_12:
 {
   if ([(NSArray *)self->_pickerUsageSectionSpecifiers count]&& ([(NSArray *)self->_pickerUsageSectionSpecifiers firstObject], v3 = objc_claimAutoreleasedReturnValue(), v4 = [(PUIContactsAuthorizationLevelController *)self containsSpecifier:v3], v3, v4))
   {
-    v5 = [(NSArray *)self->_pickerUsageSectionSpecifiers firstObject];
-    v6 = [(PUIContactsAuthorizationLevelController *)self indexOfSpecifier:v5];
+    firstObject = [(NSArray *)self->_pickerUsageSectionSpecifiers firstObject];
+    v6 = [(PUIContactsAuthorizationLevelController *)self indexOfSpecifier:firstObject];
 
     limitedAccessSectionSpecifiers = self->_limitedAccessSectionSpecifiers;
 
@@ -878,8 +878,8 @@ LABEL_12:
 
 - (void)_removeLimitedAccessSectionIfPresent
 {
-  v3 = [(NSArray *)self->_limitedAccessSectionSpecifiers firstObject];
-  v4 = [(PUIContactsAuthorizationLevelController *)self containsSpecifier:v3];
+  firstObject = [(NSArray *)self->_limitedAccessSectionSpecifiers firstObject];
+  v4 = [(PUIContactsAuthorizationLevelController *)self containsSpecifier:firstObject];
 
   if (v4)
   {
@@ -891,7 +891,7 @@ LABEL_12:
 
 - (void)_addPickerUsageSectionIfNeeded
 {
-  v6 = [(NSArray *)self->_pickerUsageSectionSpecifiers firstObject];
+  firstObject = [(NSArray *)self->_pickerUsageSectionSpecifiers firstObject];
   if ([(PUIContactsAuthorizationLevelController *)self containsSpecifier:?])
   {
   }
@@ -912,8 +912,8 @@ LABEL_12:
 
 - (void)_removePickerUsageSectionIfPresent
 {
-  v3 = [(NSArray *)self->_pickerUsageSectionSpecifiers firstObject];
-  v4 = [(PUIContactsAuthorizationLevelController *)self containsSpecifier:v3];
+  firstObject = [(NSArray *)self->_pickerUsageSectionSpecifiers firstObject];
+  v4 = [(PUIContactsAuthorizationLevelController *)self containsSpecifier:firstObject];
 
   if (v4)
   {

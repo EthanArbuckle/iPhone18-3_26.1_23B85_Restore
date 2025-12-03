@@ -1,17 +1,17 @@
 @interface RTTripLocationPropagator
-- (RTTripLocationPropagator)initWithDefaultsManager:(id)a3;
-- (id)getLocationArrayWithLocationManager:(id)a3;
-- (id)getLocationExtendedArrayWithLocationManager:(id)a3;
-- (id)getPropagatedLocationUsingLocations:(id)a3 atDistance:(double)a4;
-- (id)getPropagatedLocationWithLocationManager:(id)a3 atDistance:(double)a4;
+- (RTTripLocationPropagator)initWithDefaultsManager:(id)manager;
+- (id)getLocationArrayWithLocationManager:(id)manager;
+- (id)getLocationExtendedArrayWithLocationManager:(id)manager;
+- (id)getPropagatedLocationUsingLocations:(id)locations atDistance:(double)distance;
+- (id)getPropagatedLocationWithLocationManager:(id)manager atDistance:(double)distance;
 @end
 
 @implementation RTTripLocationPropagator
 
-- (RTTripLocationPropagator)initWithDefaultsManager:(id)a3
+- (RTTripLocationPropagator)initWithDefaultsManager:(id)manager
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = RTTripLocationPropagator;
   v5 = [(RTTripLocationPropagator *)&v15 init];
@@ -20,9 +20,9 @@
     v6 = +[RTPlatform currentPlatform];
     v5->_recordDebuggingDataInFile = [v6 internalInstall];
 
-    if (v4)
+    if (managerCopy)
     {
-      v7 = [v4 objectForKey:@"RTDefaultsTripSegmentRecordDebuggingDataInFile"];
+      v7 = [managerCopy objectForKey:@"RTDefaultsTripSegmentRecordDebuggingDataInFile"];
       v8 = v7;
       if (v7)
       {
@@ -57,10 +57,10 @@
   return v5;
 }
 
-- (id)getLocationArrayWithLocationManager:(id)a3
+- (id)getLocationArrayWithLocationManager:(id)manager
 {
   v54[1] = *MEMORY[0x277D85DE8];
-  v33 = a3;
+  managerCopy = manager;
   v3 = [MEMORY[0x277CBEAA8] now];
   v34 = [v3 dateByAddingTimeInterval:300.0];
   v32 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v34 endDate:v3];
@@ -86,7 +86,7 @@
   v38 = &v39;
   v6 = v5;
   v36 = v6;
-  [v33 fetchStoredLocationsWithOptions:v4 handler:v35];
+  [managerCopy fetchStoredLocationsWithOptions:v4 handler:v35];
   v7 = v6;
   v8 = [MEMORY[0x277CBEAA8] now];
   v9 = dispatch_time(0, 3600000000000);
@@ -97,11 +97,11 @@
     v12 = v11;
     v13 = objc_opt_new();
     v14 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_117];
-    v15 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v16 = [v15 filteredArrayUsingPredicate:v14];
-    v17 = [v16 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v16 = [callStackSymbols filteredArrayUsingPredicate:v14];
+    firstObject = [v16 firstObject];
 
-    [v13 submitToCoreAnalytics:v17 type:1 duration:v12];
+    [v13 submitToCoreAnalytics:firstObject type:1 duration:v12];
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_FAULT))
     {
@@ -187,10 +187,10 @@ void __64__RTTripLocationPropagator_getLocationArrayWithLocationManager___block_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)getLocationExtendedArrayWithLocationManager:(id)a3
+- (id)getLocationExtendedArrayWithLocationManager:(id)manager
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  managerCopy = manager;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
@@ -216,7 +216,7 @@ void __64__RTTripLocationPropagator_getLocationArrayWithLocationManager___block_
   v37 = &v38;
   v8 = v4;
   v35 = v8;
-  [v3 fetchLocationsFromCoreLocationWithOptions:v7 handler:v34];
+  [managerCopy fetchLocationsFromCoreLocationWithOptions:v7 handler:v34];
   v9 = v8;
   v10 = [MEMORY[0x277CBEAA8] now];
   v11 = dispatch_time(0, 3600000000000);
@@ -227,11 +227,11 @@ void __64__RTTripLocationPropagator_getLocationArrayWithLocationManager___block_
     v14 = v13;
     v15 = objc_opt_new();
     v16 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_117];
-    v17 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v18 = [v17 filteredArrayUsingPredicate:v16];
-    v19 = [v18 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v18 = [callStackSymbols filteredArrayUsingPredicate:v16];
+    firstObject = [v18 firstObject];
 
-    [v15 submitToCoreAnalytics:v19 type:1 duration:v14];
+    [v15 submitToCoreAnalytics:firstObject type:1 duration:v14];
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
     {
@@ -317,11 +317,11 @@ void __72__RTTripLocationPropagator_getLocationExtendedArrayWithLocationManager_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)getPropagatedLocationWithLocationManager:(id)a3 atDistance:(double)a4
+- (id)getPropagatedLocationWithLocationManager:(id)manager atDistance:(double)distance
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  managerCopy = manager;
+  if (!managerCopy)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -334,7 +334,7 @@ void __72__RTTripLocationPropagator_getLocationExtendedArrayWithLocationManager_
     }
   }
 
-  if (a4 <= 0.0)
+  if (distance <= 0.0)
   {
     v8 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -347,7 +347,7 @@ void __72__RTTripLocationPropagator_getLocationExtendedArrayWithLocationManager_
     }
   }
 
-  v9 = [(RTTripLocationPropagator *)self getLocationExtendedArrayWithLocationManager:v6];
+  v9 = [(RTTripLocationPropagator *)self getLocationExtendedArrayWithLocationManager:managerCopy];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
@@ -364,20 +364,20 @@ void __72__RTTripLocationPropagator_getLocationExtendedArrayWithLocationManager_
     }
   }
 
-  v14 = [(RTTripLocationPropagator *)self getPropagatedLocationUsingLocations:v9 atDistance:a4];
+  v14 = [(RTTripLocationPropagator *)self getPropagatedLocationUsingLocations:v9 atDistance:distance];
 
   return v14;
 }
 
-- (id)getPropagatedLocationUsingLocations:(id)a3 atDistance:(double)a4
+- (id)getPropagatedLocationUsingLocations:(id)locations atDistance:(double)distance
 {
   v111[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (v6 && [v6 count])
+  locationsCopy = locations;
+  v7 = locationsCopy;
+  if (locationsCopy && [locationsCopy count])
   {
     v78 = v7;
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v99 = 0u;
     v100 = 0u;
     v97 = 0u;
@@ -398,12 +398,12 @@ void __72__RTTripLocationPropagator_getLocationExtendedArrayWithLocationManager_
 
           v13 = *(*(&v97 + 1) + 8 * i);
           v14 = objc_alloc(MEMORY[0x277CBFC98]);
-          v15 = [v13 location];
-          v4 = [v14 initWithCLLocation:v15];
+          location = [v13 location];
+          firstObject = [v14 initWithCLLocation:location];
 
-          if ([v4 isGPSLocationType])
+          if ([firstObject isGPSLocationType])
           {
-            [v8 addObject:v4];
+            [array addObject:firstObject];
           }
         }
 
@@ -413,7 +413,7 @@ void __72__RTTripLocationPropagator_getLocationExtendedArrayWithLocationManager_
       while (v10);
     }
 
-    if ([v8 count])
+    if ([array count])
     {
       *&buf = 0;
       *(&buf + 1) = &buf;
@@ -450,7 +450,7 @@ void __72__RTTripLocationPropagator_getLocationExtendedArrayWithLocationManager_
       v74 = _Block_copy(v83);
       v73 = objc_alloc_init(MEMORY[0x277CBFCB0]);
       v76 = objc_alloc_init(MEMORY[0x277CBFCA8]);
-      [v76 propagateLocation:v8 route:0 distance:v73 withOptions:1 modeOfTransport:v75 outputHandler:v74 completionHandler:a4];
+      [v76 propagateLocation:array route:0 distance:v73 withOptions:1 modeOfTransport:v75 outputHandler:v74 completionHandler:distance];
       v16 = v86[5];
       v17 = [MEMORY[0x277CBEAA8] now];
       v18 = dispatch_time(0, 3600000000000);
@@ -461,11 +461,11 @@ void __72__RTTripLocationPropagator_getLocationExtendedArrayWithLocationManager_
         v21 = v20;
         v22 = objc_opt_new();
         v23 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_117];
-        v24 = [MEMORY[0x277CCACC8] callStackSymbols];
-        v25 = [v24 filteredArrayUsingPredicate:v23];
-        v4 = [v25 firstObject];
+        callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+        v25 = [callStackSymbols filteredArrayUsingPredicate:v23];
+        firstObject = [v25 firstObject];
 
-        [v22 submitToCoreAnalytics:v4 type:1 duration:v21];
+        [v22 submitToCoreAnalytics:firstObject type:1 duration:v21];
         v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
         {
@@ -500,11 +500,11 @@ void __72__RTTripLocationPropagator_getLocationExtendedArrayWithLocationManager_
         {
           v40 = objc_opt_class();
           v41 = NSStringFromClass(v40);
-          v42 = [v38 localizedDescription];
+          localizedDescription = [v38 localizedDescription];
           *v101 = 138412546;
           *&v101[4] = v41;
           v102 = 2112;
-          *v103 = v42;
+          *v103 = localizedDescription;
           _os_log_error_impl(&dword_2304B3000, v39, OS_LOG_TYPE_ERROR, "%@,propagateLocationForward,semaphore error when calling propagateLocation,error,%@", v101, 0x16u);
         }
       }
@@ -516,11 +516,11 @@ void __72__RTTripLocationPropagator_getLocationExtendedArrayWithLocationManager_
         {
           v69 = objc_opt_class();
           v70 = NSStringFromClass(v69);
-          v71 = [v92[5] localizedDescription];
+          localizedDescription2 = [v92[5] localizedDescription];
           *v101 = 138412546;
           *&v101[4] = v70;
           v102 = 2112;
-          *v103 = v71;
+          *v103 = localizedDescription2;
           _os_log_error_impl(&dword_2304B3000, v39, OS_LOG_TYPE_ERROR, "%@,propagateLocationForward,processing error when calling propagateLocation,error,%@", v101, 0x16u);
         }
       }
@@ -530,18 +530,18 @@ void __72__RTTripLocationPropagator_getLocationExtendedArrayWithLocationManager_
         v44 = *(*(&buf + 1) + 40);
         if (v44)
         {
-          v45 = [v44 tripLocations];
-          v46 = [v45 count] == 0;
+          tripLocations = [v44 tripLocations];
+          v46 = [tripLocations count] == 0;
 
           if (!v46)
           {
-            v33 = [MEMORY[0x277CBEB18] array];
+            array2 = [MEMORY[0x277CBEB18] array];
             v81 = 0u;
             v82 = 0u;
             v79 = 0u;
             v80 = 0u;
-            v47 = [*(*(&buf + 1) + 40) tripLocations];
-            v48 = [v47 countByEnumeratingWithState:&v79 objects:v104 count:16];
+            tripLocations2 = [*(*(&buf + 1) + 40) tripLocations];
+            v48 = [tripLocations2 countByEnumeratingWithState:&v79 objects:v104 count:16];
             if (v48)
             {
               v49 = *v80;
@@ -551,7 +551,7 @@ void __72__RTTripLocationPropagator_getLocationExtendedArrayWithLocationManager_
                 {
                   if (*v80 != v49)
                   {
-                    objc_enumerationMutation(v47);
+                    objc_enumerationMutation(tripLocations2);
                   }
 
                   v51 = *(*(&v79 + 1) + 8 * j);
@@ -562,13 +562,13 @@ void __72__RTTripLocationPropagator_getLocationExtendedArrayWithLocationManager_
                   v56 = v55;
                   [v51 horizontalAccuracy];
                   v58 = v57;
-                  v59 = [v51 timestamp];
-                  v4 = [v52 initWithLatitude:v59 longitude:objc_msgSend(v51 horizontalUncertainty:"referenceFrame") date:v54 referenceFrame:{v56, v58}];
+                  timestamp = [v51 timestamp];
+                  firstObject = [v52 initWithLatitude:timestamp longitude:objc_msgSend(v51 horizontalUncertainty:"referenceFrame") date:v54 referenceFrame:{v56, v58}];
 
-                  [v33 addObject:v4];
+                  [array2 addObject:firstObject];
                 }
 
-                v48 = [v47 countByEnumeratingWithState:&v79 objects:v104 count:16];
+                v48 = [tripLocations2 countByEnumeratingWithState:&v79 objects:v104 count:16];
               }
 
               while (v48);
@@ -584,17 +584,17 @@ void __72__RTTripLocationPropagator_getLocationExtendedArrayWithLocationManager_
             {
               v60 = objc_opt_class();
               v61 = NSStringFromClass(v60);
-              v62 = [v33 count];
-              v63 = [v33 count];
+              v62 = [array2 count];
+              v63 = [array2 count];
               if (v63)
               {
-                v4 = [v33 lastObject];
-                v64 = [v4 date];
+                firstObject = [array2 lastObject];
+                date = [firstObject date];
               }
 
               else
               {
-                v64 = @"NA";
+                date = @"NA";
               }
 
               *v101 = 138412802;
@@ -602,7 +602,7 @@ void __72__RTTripLocationPropagator_getLocationExtendedArrayWithLocationManager_
               v102 = 1024;
               *v103 = v62;
               *&v103[4] = 2112;
-              *&v103[6] = v64;
+              *&v103[6] = date;
               _os_log_impl(&dword_2304B3000, v39, OS_LOG_TYPE_INFO, "%@,propagateLocationForward returned propagated location,count,%d,time,%@", v101, 0x1Cu);
               if (v63)
               {
@@ -614,7 +614,7 @@ void __72__RTTripLocationPropagator_getLocationExtendedArrayWithLocationManager_
 
           if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
-            v33 = 0;
+            array2 = 0;
             goto LABEL_36;
           }
 
@@ -643,7 +643,7 @@ void __72__RTTripLocationPropagator_getLocationExtendedArrayWithLocationManager_
         }
       }
 
-      v33 = 0;
+      array2 = 0;
 LABEL_35:
 
 LABEL_36:
@@ -673,29 +673,29 @@ LABEL_36:
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
-      v33 = 0;
+      array2 = 0;
       goto LABEL_38;
     }
 
     v78 = v7;
-    v8 = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    array = _rt_log_facility_get_os_log(RTLogFacilityTripSegment);
+    if (os_log_type_enabled(array, OS_LOG_TYPE_INFO))
     {
       v31 = objc_opt_class();
       v32 = NSStringFromClass(v31);
       LODWORD(buf) = 138412290;
       *(&buf + 4) = v32;
-      _os_log_impl(&dword_2304B3000, v8, OS_LOG_TYPE_INFO, "%@,propagateLocationForward,getLocationArrayWithLocationManager,locations not available in recent history", &buf, 0xCu);
+      _os_log_impl(&dword_2304B3000, array, OS_LOG_TYPE_INFO, "%@,propagateLocationForward,getLocationArrayWithLocationManager,locations not available in recent history", &buf, 0xCu);
     }
   }
 
-  v33 = 0;
+  array2 = 0;
 LABEL_37:
 
   v7 = v78;
 LABEL_38:
 
-  return v33;
+  return array2;
 }
 
 void __75__RTTripLocationPropagator_getPropagatedLocationUsingLocations_atDistance___block_invoke(uint64_t a1, void *a2)

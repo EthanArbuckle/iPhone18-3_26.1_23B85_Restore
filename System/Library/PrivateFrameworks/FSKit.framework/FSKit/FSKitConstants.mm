@@ -7,7 +7,7 @@
 + (NSXPCInterface)FSAllClientXPCProtocols;
 + (NSXPCInterface)FSClientXPCProtocol;
 + (NSXPCInterface)FSModuleExtensionXPCProtocol;
-+ (void)setArgumentsForFSClientXPC:(id)a3;
++ (void)setArgumentsForFSClientXPC:(id)c;
 @end
 
 @implementation FSKitConstants
@@ -33,38 +33,38 @@
   return v2;
 }
 
-+ (void)setArgumentsForFSClientXPC:(id)a3
++ (void)setArgumentsForFSClientXPC:(id)c
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = a3;
+  cCopy = c;
   v5 = objc_opt_class();
   v6 = [v3 setWithObjects:{v5, objc_opt_class(), 0}];
-  [v4 setClasses:v6 forSelector:sel_installedExtensions_ argumentIndex:0 ofReply:1];
+  [cCopy setClasses:v6 forSelector:sel_installedExtensions_ argumentIndex:0 ofReply:1];
 
   v7 = MEMORY[0x277CBEB98];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  [v4 setClasses:v9 forSelector:sel_currentTasks_ argumentIndex:0 ofReply:1];
+  [cCopy setClasses:v9 forSelector:sel_currentTasks_ argumentIndex:0 ofReply:1];
 
   v10 = MEMORY[0x277CBEB98];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  [v4 setClasses:v12 forSelector:sel_currentResourceIDs_ argumentIndex:0 ofReply:1];
+  [cCopy setClasses:v12 forSelector:sel_currentResourceIDs_ argumentIndex:0 ofReply:1];
 
   v13 = MEMORY[0x277CBEB98];
   v14 = objc_opt_class();
   v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-  [v4 setClasses:v15 forSelector:sel_loadResource_usingBundle_options_replyHandler_ argumentIndex:0 ofReply:1];
+  [cCopy setClasses:v15 forSelector:sel_loadResource_usingBundle_options_replyHandler_ argumentIndex:0 ofReply:1];
 
   v16 = MEMORY[0x277CBEB98];
   v17 = objc_opt_class();
   v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-  [v4 setClasses:v18 forSelector:sel_loadResource_shortName_options_replyHandler_ argumentIndex:0 ofReply:1];
+  [cCopy setClasses:v18 forSelector:sel_loadResource_shortName_options_replyHandler_ argumentIndex:0 ofReply:1];
 
   v19 = MEMORY[0x277CBEB98];
   v20 = objc_opt_class();
   v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
-  [v4 setClasses:v21 forSelector:sel_loadResource_shortName_options_auditToken_replyHandler_ argumentIndex:0 ofReply:1];
+  [cCopy setClasses:v21 forSelector:sel_loadResource_shortName_options_auditToken_replyHandler_ argumentIndex:0 ofReply:1];
 
   v22 = MEMORY[0x277CBEB98];
   v23 = objc_opt_class();
@@ -74,7 +74,7 @@
   v27 = objc_opt_class();
   v28 = objc_opt_class();
   v29 = [v22 setWithObjects:{v23, v24, v25, v26, v27, v28, objc_opt_class(), 0}];
-  [v4 setClasses:v29 forSelector:sel_currentContainers_ argumentIndex:0 ofReply:1];
+  [cCopy setClasses:v29 forSelector:sel_currentContainers_ argumentIndex:0 ofReply:1];
 }
 
 + (NSXPCInterface)FSClientXPCProtocol
@@ -82,7 +82,7 @@
   v3 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_285E03850];
   if (v3)
   {
-    [a1 setArgumentsForFSClientXPC:v3];
+    [self setArgumentsForFSClientXPC:v3];
   }
 
   return v3;
@@ -93,7 +93,7 @@
   v3 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_285E05C48];
   if (v3)
   {
-    [a1 setArgumentsForFSClientXPC:v3];
+    [self setArgumentsForFSClientXPC:v3];
     v4 = MEMORY[0x277CBEB98];
     v5 = objc_opt_class();
     v6 = [v4 setWithObjects:{v5, objc_opt_class(), 0}];
@@ -219,7 +219,7 @@ void __37__FSKitConstants_project__plistTypes__block_invoke()
   block[1] = 3221225472;
   block[2] = __45__FSKitConstants_project__plistAndValueTypes__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (plistAndValueTypes_onceToken != -1)
   {
     dispatch_once(&plistAndValueTypes_onceToken, block);
@@ -244,7 +244,7 @@ void __45__FSKitConstants_project__plistAndValueTypes__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __45__FSKitConstants_project__extensionItemTypes__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (extensionItemTypes_onceToken != -1)
   {
     dispatch_once(&extensionItemTypes_onceToken, block);

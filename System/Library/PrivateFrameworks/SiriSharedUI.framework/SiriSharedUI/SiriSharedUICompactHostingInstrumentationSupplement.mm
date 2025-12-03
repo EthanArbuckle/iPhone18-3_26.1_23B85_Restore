@@ -1,41 +1,41 @@
 @interface SiriSharedUICompactHostingInstrumentationSupplement
-- (SiriSharedUICompactHostingInstrumentationSupplement)initWithInstrumentationManager:(id)a3;
-- (int)viewRegionForPresentedAceObject:(id)a3 resultTrasncriptItems:(id)a4 conversationTranscriptItems:(id)a5 serverUtterances:(id)a6;
-- (void)_logPunchOutEventForSiriViewController:(id)a3 aceCommand:(id)a4 URL:(id)a5 appID:(id)a6 sashItem:(id)a7 shouldCreateNewTurn:(BOOL)a8;
-- (void)configureSiriViewControllerWithCurrentTurn:(id)a3;
-- (void)logDrillInInteractionForSnippetViewControllerIfNecessary:(id)a3;
-- (void)logPunchOutEventForSiriViewController:(id)a3 aceCommands:(id)a4 sashItem:(id)a5;
+- (SiriSharedUICompactHostingInstrumentationSupplement)initWithInstrumentationManager:(id)manager;
+- (int)viewRegionForPresentedAceObject:(id)object resultTrasncriptItems:(id)items conversationTranscriptItems:(id)transcriptItems serverUtterances:(id)utterances;
+- (void)_logPunchOutEventForSiriViewController:(id)controller aceCommand:(id)command URL:(id)l appID:(id)d sashItem:(id)item shouldCreateNewTurn:(BOOL)turn;
+- (void)configureSiriViewControllerWithCurrentTurn:(id)turn;
+- (void)logDrillInInteractionForSnippetViewControllerIfNecessary:(id)necessary;
+- (void)logPunchOutEventForSiriViewController:(id)controller aceCommands:(id)commands sashItem:(id)item;
 @end
 
 @implementation SiriSharedUICompactHostingInstrumentationSupplement
 
-- (SiriSharedUICompactHostingInstrumentationSupplement)initWithInstrumentationManager:(id)a3
+- (SiriSharedUICompactHostingInstrumentationSupplement)initWithInstrumentationManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = SiriSharedUICompactHostingInstrumentationSupplement;
   v6 = [(SiriSharedUICompactHostingInstrumentationSupplement *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_instrumentationManager, a3);
+    objc_storeStrong(&v6->_instrumentationManager, manager);
   }
 
   return v7;
 }
 
-- (int)viewRegionForPresentedAceObject:(id)a3 resultTrasncriptItems:(id)a4 conversationTranscriptItems:(id)a5 serverUtterances:(id)a6
+- (int)viewRegionForPresentedAceObject:(id)object resultTrasncriptItems:(id)items conversationTranscriptItems:(id)transcriptItems serverUtterances:(id)utterances
 {
   v54 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  objectCopy = object;
+  itemsCopy = items;
+  transcriptItemsCopy = transcriptItems;
+  utterancesCopy = utterances;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v13 = v10;
+  v13 = itemsCopy;
   v14 = [v13 countByEnumeratingWithState:&v47 objects:v53 count:16];
   if (v14)
   {
@@ -50,11 +50,11 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v47 + 1) + 8 * i) aceObject];
-        v19 = [v18 aceId];
+        aceObject = [*(*(&v47 + 1) + 8 * i) aceObject];
+        aceId = [aceObject aceId];
 
-        v20 = [v9 aceId];
-        v21 = [v19 isEqualToString:v20];
+        aceId2 = [objectCopy aceId];
+        v21 = [aceId isEqualToString:aceId2];
 
         if (v21)
         {
@@ -74,13 +74,13 @@
     }
   }
 
-  v38 = v12;
+  v38 = utterancesCopy;
 
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v22 = v11;
+  v22 = transcriptItemsCopy;
   v23 = [v22 countByEnumeratingWithState:&v43 objects:v52 count:16];
   if (v23)
   {
@@ -95,11 +95,11 @@ LABEL_11:
         objc_enumerationMutation(v22);
       }
 
-      v27 = [*(*(&v43 + 1) + 8 * v26) aceObject];
-      v28 = [v27 aceId];
+      aceObject2 = [*(*(&v43 + 1) + 8 * v26) aceObject];
+      aceId3 = [aceObject2 aceId];
 
-      v29 = [v9 aceId];
-      v30 = [v28 isEqualToString:v29];
+      aceId4 = [objectCopy aceId];
+      v30 = [aceId3 isEqualToString:aceId4];
 
       if (v30)
       {
@@ -127,7 +127,7 @@ LABEL_17:
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v12 = v38;
+    utterancesCopy = v38;
     v22 = v38;
     v31 = [v22 countByEnumeratingWithState:&v39 objects:v51 count:16];
     if (!v31)
@@ -145,9 +145,9 @@ LABEL_19:
         objc_enumerationMutation(v22);
       }
 
-      v34 = [*(*(&v39 + 1) + 8 * v33) aceId];
-      v35 = [v9 aceId];
-      v36 = [v34 isEqualToString:v35];
+      aceId5 = [*(*(&v39 + 1) + 8 * v33) aceId];
+      aceId6 = [objectCopy aceId];
+      v36 = [aceId5 isEqualToString:aceId6];
 
       if (v36)
       {
@@ -169,40 +169,40 @@ LABEL_19:
 
   LODWORD(v31) = 1;
 LABEL_28:
-  v12 = v38;
+  utterancesCopy = v38;
 LABEL_29:
 
   return v31;
 }
 
-- (void)logDrillInInteractionForSnippetViewControllerIfNecessary:(id)a3
+- (void)logDrillInInteractionForSnippetViewControllerIfNecessary:(id)necessary
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  necessaryCopy = necessary;
   v5 = objc_alloc_init(MEMORY[0x277D5A928]);
   [v5 setInvocationSource:11];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v4 instrumentationTurnIdentifier];
+    instrumentationTurnIdentifier = [necessaryCopy instrumentationTurnIdentifier];
   }
 
   else
   {
-    v6 = 0;
+    instrumentationTurnIdentifier = 0;
   }
 
-  v7 = [MEMORY[0x277CEF168] newTurnBasedContextWithPreviousTurnID:v6];
+  v7 = [MEMORY[0x277CEF168] newTurnBasedContextWithPreviousTurnID:instrumentationTurnIdentifier];
   v8 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [v7 turnIdentifier];
+    turnIdentifier = [v7 turnIdentifier];
     v11 = 136315650;
     v12 = "[SiriSharedUICompactHostingInstrumentationSupplement logDrillInInteractionForSnippetViewControllerIfNecessary:]";
     v13 = 2112;
-    v14 = v10;
+    v14 = turnIdentifier;
     v15 = 2112;
-    v16 = v6;
+    v16 = instrumentationTurnIdentifier;
     _os_log_impl(&dword_21E3EB000, v9, OS_LOG_TYPE_DEFAULT, "%s #instrumentation New Turn %@ <-> Old Turn %@ ", &v11, 0x20u);
   }
 
@@ -210,29 +210,29 @@ LABEL_29:
   [(SRUIFInstrumentationManager *)self->_instrumentationManager emitInstrumentation:v5];
 }
 
-- (void)configureSiriViewControllerWithCurrentTurn:(id)a3
+- (void)configureSiriViewControllerWithCurrentTurn:(id)turn
 {
-  v6 = a3;
+  turnCopy = turn;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(SRUIFInstrumentationManager *)self->_instrumentationManager currentInstrumentationTurnContext];
-    v5 = [v4 turnIdentifier];
-    [v6 setInstrumentationTurnIdentifier:v5];
+    currentInstrumentationTurnContext = [(SRUIFInstrumentationManager *)self->_instrumentationManager currentInstrumentationTurnContext];
+    turnIdentifier = [currentInstrumentationTurnContext turnIdentifier];
+    [turnCopy setInstrumentationTurnIdentifier:turnIdentifier];
   }
 }
 
-- (void)logPunchOutEventForSiriViewController:(id)a3 aceCommands:(id)a4 sashItem:(id)a5
+- (void)logPunchOutEventForSiriViewController:(id)controller aceCommands:(id)commands sashItem:(id)item
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  commandsCopy = commands;
+  itemCopy = item;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v9;
-  v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  obj = commandsCopy;
+  v11 = [commandsCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
     v12 = v11;
@@ -252,9 +252,9 @@ LABEL_29:
         if (objc_opt_isKindOfClass())
         {
           v16 = v15;
-          v17 = [v16 punchOutUri];
-          v18 = [v16 bundleId];
-          [(SiriSharedUICompactHostingInstrumentationSupplement *)self _logPunchOutEventForSiriViewController:v8 aceCommand:v16 URL:v17 appID:v18 sashItem:v10 shouldCreateNewTurn:0];
+          punchOutUri = [v16 punchOutUri];
+          bundleId = [v16 bundleId];
+          [(SiriSharedUICompactHostingInstrumentationSupplement *)self _logPunchOutEventForSiriViewController:controllerCopy aceCommand:v16 URL:punchOutUri appID:bundleId sashItem:itemCopy shouldCreateNewTurn:0];
         }
 
         else
@@ -265,9 +265,9 @@ LABEL_29:
             goto LABEL_11;
           }
 
-          v18 = v15;
-          v17 = [v18 appId];
-          [(SiriSharedUICompactHostingInstrumentationSupplement *)self _logPunchOutEventForSiriViewController:v8 aceCommand:v18 URL:0 appID:v17 sashItem:v10 shouldCreateNewTurn:0];
+          bundleId = v15;
+          punchOutUri = [bundleId appId];
+          [(SiriSharedUICompactHostingInstrumentationSupplement *)self _logPunchOutEventForSiriViewController:controllerCopy aceCommand:bundleId URL:0 appID:punchOutUri sashItem:itemCopy shouldCreateNewTurn:0];
         }
 
 LABEL_11:
@@ -282,38 +282,38 @@ LABEL_11:
   }
 }
 
-- (void)_logPunchOutEventForSiriViewController:(id)a3 aceCommand:(id)a4 URL:(id)a5 appID:(id)a6 sashItem:(id)a7 shouldCreateNewTurn:(BOOL)a8
+- (void)_logPunchOutEventForSiriViewController:(id)controller aceCommand:(id)command URL:(id)l appID:(id)d sashItem:(id)item shouldCreateNewTurn:(BOOL)turn
 {
-  v8 = a8;
+  turnCopy = turn;
   v32 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v8)
+  controllerCopy = controller;
+  lCopy = l;
+  dCopy = d;
+  itemCopy = item;
+  if (turnCopy)
   {
     if (objc_opt_respondsToSelector())
     {
-      v17 = [v13 instrumentationTurnIdentifier];
+      instrumentationTurnIdentifier = [controllerCopy instrumentationTurnIdentifier];
     }
 
     else
     {
-      v17 = 0;
+      instrumentationTurnIdentifier = 0;
     }
 
-    v18 = [MEMORY[0x277CEF168] newTurnBasedContextWithPreviousTurnID:v17];
+    v18 = [MEMORY[0x277CEF168] newTurnBasedContextWithPreviousTurnID:instrumentationTurnIdentifier];
     v19 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
       v20 = v19;
-      v21 = [v18 turnIdentifier];
+      turnIdentifier = [v18 turnIdentifier];
       v26 = 136315650;
       v27 = "[SiriSharedUICompactHostingInstrumentationSupplement _logPunchOutEventForSiriViewController:aceCommand:URL:appID:sashItem:shouldCreateNewTurn:]";
       v28 = 2112;
-      v29 = v21;
+      v29 = turnIdentifier;
       v30 = 2112;
-      v31 = v17;
+      v31 = instrumentationTurnIdentifier;
       _os_log_impl(&dword_21E3EB000, v20, OS_LOG_TYPE_DEFAULT, "%s #instrumentation New Turn %@ <-> Old Turn %@ ", &v26, 0x20u);
     }
 
@@ -323,8 +323,8 @@ LABEL_11:
     [(SRUIFInstrumentationManager *)self->_instrumentationManager emitInstrumentation:v22];
   }
 
-  v23 = [v16 applicationBundleIdentifier];
-  v24 = [v23 isEqualToString:@"com.apple.MobileSMS"];
+  applicationBundleIdentifier = [itemCopy applicationBundleIdentifier];
+  v24 = [applicationBundleIdentifier isEqualToString:@"com.apple.MobileSMS"];
 
   if (v24)
   {
@@ -336,7 +336,7 @@ LABEL_11:
     v25 = 0;
   }
 
-  [(SRUIFInstrumentationManager *)self->_instrumentationManager emitPunchOutEventWithURL:v14 appID:v15 punchoutOrigin:v25];
+  [(SRUIFInstrumentationManager *)self->_instrumentationManager emitPunchOutEventWithURL:lCopy appID:dCopy punchoutOrigin:v25];
 }
 
 @end

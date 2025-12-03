@@ -9,7 +9,7 @@
 - (id)accessibilityLabel
 {
   v3 = accessibilityMusicLocalizedString(@"video.artwork");
-  v6 = [(VideoHeaderLockupViewAccessibility *)self _accessibilityVideoLabel];
+  _accessibilityVideoLabel = [(VideoHeaderLockupViewAccessibility *)self _accessibilityVideoLabel];
   v4 = __UIAXStringForVariables();
 
   return v4;
@@ -18,9 +18,9 @@
 - (id)accessibilityValue
 {
   v2 = [(VideoHeaderLockupViewAccessibility *)self safeValueForKey:@"accessibilityProgressView"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits

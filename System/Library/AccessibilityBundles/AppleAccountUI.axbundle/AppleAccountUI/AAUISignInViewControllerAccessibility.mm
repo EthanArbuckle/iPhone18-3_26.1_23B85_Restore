@@ -1,16 +1,16 @@
 @interface AAUISignInViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_passwordCell;
 - (id)_usernameCell;
 @end
 
 @implementation AAUISignInViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AAUISignInViewController" hasInstanceMethod:@"_usernameCell" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AAUISignInViewController" hasInstanceMethod:@"_passwordCell" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AAUISignInViewController" hasInstanceMethod:@"_usernameCell" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AAUISignInViewController" hasInstanceMethod:@"_passwordCell" withFullSignature:{"@", 0}];
 }
 
 - (id)_usernameCell
@@ -19,7 +19,7 @@
   objc_opt_class();
   v9.receiver = self;
   v9.super_class = AAUISignInViewControllerAccessibility;
-  v3 = [(AAUISignInViewControllerAccessibility *)&v9 _usernameCell];
+  _usernameCell = [(AAUISignInViewControllerAccessibility *)&v9 _usernameCell];
   v4 = __UIAccessibilityCastAsClass();
 
   if (v10 == 1)
@@ -28,10 +28,10 @@
   }
 
   [v4 setIsAccessibilityElement:0];
-  v5 = [v4 editableTextField];
-  v6 = [v4 textLabel];
-  v7 = [v6 accessibilityLabel];
-  [v5 setAccessibilityLabel:v7];
+  editableTextField = [v4 editableTextField];
+  textLabel = [v4 textLabel];
+  accessibilityLabel = [textLabel accessibilityLabel];
+  [editableTextField setAccessibilityLabel:accessibilityLabel];
 
   return v4;
 }
@@ -42,7 +42,7 @@
   objc_opt_class();
   v10.receiver = self;
   v10.super_class = AAUISignInViewControllerAccessibility;
-  v3 = [(AAUISignInViewControllerAccessibility *)&v10 _passwordCell];
+  _passwordCell = [(AAUISignInViewControllerAccessibility *)&v10 _passwordCell];
   v4 = __UIAccessibilityCastAsClass();
 
   if (v11 == 1)
@@ -50,13 +50,13 @@
     abort();
   }
 
-  v5 = [v4 textLabel];
-  [v5 setIsAccessibilityElement:0];
+  textLabel = [v4 textLabel];
+  [textLabel setIsAccessibilityElement:0];
 
-  v6 = [v4 editableTextField];
-  v7 = [v4 textLabel];
-  v8 = [v7 accessibilityLabel];
-  [v6 setAccessibilityLabel:v8];
+  editableTextField = [v4 editableTextField];
+  textLabel2 = [v4 textLabel];
+  accessibilityLabel = [textLabel2 accessibilityLabel];
+  [editableTextField setAccessibilityLabel:accessibilityLabel];
 
   return v4;
 }

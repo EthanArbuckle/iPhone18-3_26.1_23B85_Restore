@@ -1,19 +1,19 @@
 @interface QueryMetricsObserver
 - (_TtC13HomeKitEvents20QueryMetricsObserver)init;
-- (void)observeEvent:(id)a3;
+- (void)observeEvent:(id)event;
 @end
 
 @implementation QueryMetricsObserver
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
   type metadata accessor for CloudKitQueryLogEvent();
   v4 = swift_dynamicCastClass();
   if (v4)
   {
     v5 = v4;
-    v6 = a3;
-    v7 = self;
+    eventCopy = event;
+    selfCopy = self;
     sub_25414AFD8(v5);
   }
 
@@ -27,8 +27,8 @@
     }
 
     v9 = v8;
-    v10 = a3;
-    v11 = self;
+    eventCopy2 = event;
+    selfCopy2 = self;
     sub_25414B2E8(v9);
   }
 }

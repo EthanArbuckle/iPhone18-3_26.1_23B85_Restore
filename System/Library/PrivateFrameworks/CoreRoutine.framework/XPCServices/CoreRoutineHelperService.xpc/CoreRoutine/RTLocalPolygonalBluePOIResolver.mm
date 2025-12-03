@@ -1,6 +1,6 @@
 @interface RTLocalPolygonalBluePOIResolver
-- (double)computeOverlapForLocation:(id)a3 withGEOBluePOIAOIPolygon:(id)a4 distanceToAOIBoundary:(id *)a5;
-- (id)inferLocalPolygonalBluePOIsWithReferenceLocation:(id)a3 queryTime:(id)a4 distanceToNearestAOILowerBound:(id *)a5 error:(id *)a6;
+- (double)computeOverlapForLocation:(id)location withGEOBluePOIAOIPolygon:(id)polygon distanceToAOIBoundary:(id *)boundary;
+- (id)inferLocalPolygonalBluePOIsWithReferenceLocation:(id)location queryTime:(id)time distanceToNearestAOILowerBound:(id *)bound error:(id *)error;
 - (polygon<boost::geometry::model::point<double,)polygonFromGEOBluePOIAOIPolygon:()boost:()true :()true geometry:()std:()std:()std:(std:(RTLocalPolygonalBluePOIResolver *)self :(SEL)a3 allocator> *__return_ptr)retstr :(id)a4 allocator :vector :vector :cs::spherical_equatorial<boost::geometry::degree>>;
 @end
 
@@ -16,43 +16,43 @@
   *&retstr->var1.var1 = 0u;
   while ([v76 pointCount] > v6)
   {
-    v7 = [v76 points];
+    points = [v76 points];
     v8 = *([v76 points] + v5);
-    *&v77[0] = *&v7[v5 + 8];
+    *&v77[0] = *&points[v5 + 8];
     *(&v77[0] + 1) = v8;
     sub_100006C8C(retstr, v77);
     ++v6;
     v5 += 16;
   }
 
-  v9 = [v76 holes];
-  v10 = [v9 count];
+  holes = [v76 holes];
+  v10 = [holes count];
 
   if (v10)
   {
-    v11 = [v76 holes];
-    sub_10002BD3C(&retstr->var1, [v11 count]);
+    holes2 = [v76 holes];
+    sub_10002BD3C(&retstr->var1, [holes2 count]);
 
     for (i = 0; ; ++i)
     {
-      v13 = [v76 holes];
-      v14 = [v13 count];
+      holes3 = [v76 holes];
+      v14 = [holes3 count];
 
       if (v14 <= i)
       {
         break;
       }
 
-      v15 = [v76 holes];
-      v16 = [v15 objectAtIndexedSubscript:i];
+      holes4 = [v76 holes];
+      v16 = [holes4 objectAtIndexedSubscript:i];
 
       v17 = 0;
       for (j = 0; [v16 pointCount] > j; ++j)
       {
-        v19 = [v16 points];
+        points2 = [v16 points];
         v20 = *([v16 points] + v17);
         v21 = retstr->var1.var0 + 24 * i;
-        *&v77[0] = *&v19[v17 + 8];
+        *&v77[0] = *&points2[v17 + 8];
         *(&v77[0] + 1) = v20;
         sub_100006C8C(v21, v77);
         v17 += 16;
@@ -285,18 +285,18 @@ LABEL_58:
   return result;
 }
 
-- (double)computeOverlapForLocation:(id)a3 withGEOBluePOIAOIPolygon:(id)a4 distanceToAOIBoundary:(id *)a5
+- (double)computeOverlapForLocation:(id)location withGEOBluePOIAOIPolygon:(id)polygon distanceToAOIBoundary:(id *)boundary
 {
-  v8 = a3;
-  v9 = a4;
-  v66 = v9;
-  v67 = v8;
-  [v8 longitude];
+  locationCopy = location;
+  polygonCopy = polygon;
+  v66 = polygonCopy;
+  v67 = locationCopy;
+  [locationCopy longitude];
   v11 = v10;
-  [v8 latitude];
+  [locationCopy latitude];
   v78[0] = v11;
   v78[1] = v12;
-  [(RTLocalPolygonalBluePOIResolver *)self polygonFromGEOBluePOIAOIPolygon:v9];
+  [(RTLocalPolygonalBluePOIResolver *)self polygonFromGEOBluePOIAOIPolygon:polygonCopy];
   v72[0] = 0;
   v72[1] = 0;
   v73 = 0;
@@ -620,11 +620,11 @@ LABEL_82:
       _os_log_impl(&_mh_execute_header, v62, OS_LOG_TYPE_INFO, "Distance to AOI boundary: %.21f, isInsideAOI: %@", buf, 0x16u);
     }
 
-    v9 = v66;
-    v8 = v67;
-    if (a5)
+    polygonCopy = v66;
+    locationCopy = v67;
+    if (boundary)
     {
-      *a5 = [NSNumber numberWithDouble:v16];
+      *boundary = [NSNumber numberWithDouble:v16];
     }
 
     [v67 horizontalUncertainty];
@@ -679,23 +679,23 @@ LABEL_91:
   return v23;
 }
 
-- (id)inferLocalPolygonalBluePOIsWithReferenceLocation:(id)a3 queryTime:(id)a4 distanceToNearestAOILowerBound:(id *)a5 error:(id *)a6
+- (id)inferLocalPolygonalBluePOIsWithReferenceLocation:(id)location queryTime:(id)time distanceToNearestAOILowerBound:(id *)bound error:(id *)error
 {
-  v8 = a3;
+  locationCopy = location;
   v54 = objc_opt_new();
   v9 = [GEOLocation alloc];
-  [v8 latitude];
+  [locationCopy latitude];
   v11 = v10;
-  [v8 longitude];
+  [locationCopy longitude];
   v52 = [v9 initWithLatitude:v11 longitude:v12];
-  [v8 horizontalUncertainty];
+  [locationCopy horizontalUncertainty];
   v14 = 500.0;
   if (v13 < 500.0)
   {
     v13 = 500.0;
   }
 
-  [v52 setHorizontalAccuracy:{v13, a5}];
+  [v52 setHorizontalAccuracy:{v13, bound}];
   v15 = dispatch_semaphore_create(0);
   v81 = 0;
   v82 = &v81;
@@ -766,7 +766,7 @@ LABEL_8:
       _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "fetchAOIError, %@", buf, 0xCu);
     }
 
-    *a6 = v76[5];
+    *error = v76[5];
     goto LABEL_38;
   }
 
@@ -799,9 +799,9 @@ LABEL_8:
       }
 
       v29 = *(*(&v67 + 1) + 8 * i);
-      v30 = [v29 aoiData];
+      aoiData = [v29 aoiData];
       v66 = 0;
-      v60 = [(RTBluePOITileParser *)v57 loadProtobufPOIMetadata:v30 outError:&v66];
+      v60 = [(RTBluePOITileParser *)v57 loadProtobufPOIMetadata:aoiData outError:&v66];
       v59 = v66;
 
       v31 = sub_100001394();
@@ -819,8 +819,8 @@ LABEL_8:
         v65 = 0u;
         v62 = 0u;
         v63 = 0u;
-        v33 = [v29 polygons];
-        v34 = [v33 countByEnumeratingWithState:&v62 objects:v87 count:16];
+        polygons = [v29 polygons];
+        v34 = [polygons countByEnumeratingWithState:&v62 objects:v87 count:16];
         if (!v34)
         {
           goto LABEL_32;
@@ -834,13 +834,13 @@ LABEL_8:
           {
             if (*v63 != v35)
             {
-              objc_enumerationMutation(v33);
+              objc_enumerationMutation(polygons);
             }
 
             v38 = *(*(&v62 + 1) + 8 * j);
             v39 = [NSNumber numberWithDouble:500.0];
             v61 = v39;
-            [(RTLocalPolygonalBluePOIResolver *)self computeOverlapForLocation:v8 withGEOBluePOIAOIPolygon:v38 distanceToAOIBoundary:&v61];
+            [(RTLocalPolygonalBluePOIResolver *)self computeOverlapForLocation:locationCopy withGEOBluePOIAOIPolygon:v38 distanceToAOIBoundary:&v61];
             v41 = v40;
             v42 = v61;
 
@@ -853,16 +853,16 @@ LABEL_8:
             v36 = v36 + v41;
           }
 
-          v34 = [v33 countByEnumeratingWithState:&v62 objects:v87 count:16];
+          v34 = [polygons countByEnumeratingWithState:&v62 objects:v87 count:16];
         }
 
         while (v34);
 
         if (v36 >= 0.15)
         {
-          v33 = [NSNumber numberWithDouble:fmin(v36, 0.9999)];
+          polygons = [NSNumber numberWithDouble:fmin(v36, 0.9999)];
           v44 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v60 muid]);
-          [v54 setObject:v33 forKeyedSubscript:v44];
+          [v54 setObject:polygons forKeyedSubscript:v44];
 
 LABEL_32:
         }

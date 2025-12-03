@@ -13,7 +13,7 @@
 
   v2 = isMontaraEnabled_sMontaraEnabledLocales;
 
-  return [v2 containsObject:a1];
+  return [v2 containsObject:self];
 }
 
 @end

@@ -2,7 +2,7 @@
 - (NSString)description;
 - (UIScene)_scene;
 - (UITraitCollection)_traitOverrides;
-- (_UIRenderingEnvironmentSceneComponent)initWithScene:(id)a3;
+- (_UIRenderingEnvironmentSceneComponent)initWithScene:(id)scene;
 - (void)_invalidateTraitOverrides;
 @end
 
@@ -10,32 +10,32 @@
 
 - (void)_invalidateTraitOverrides
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  WeakRetained = objc_loadWeakRetained((a1 + 16));
-  v3 = [WeakRetained _FBSScene];
-  v4 = [v3 settings];
-  v8 = [v4 displayConfiguration];
+  WeakRetained = objc_loadWeakRetained((self + 16));
+  _FBSScene = [WeakRetained _FBSScene];
+  settings = [_FBSScene settings];
+  displayConfiguration = [settings displayConfiguration];
 
-  v5 = *(a1 + 24);
-  if (!v8)
+  v5 = *(self + 24);
+  if (!displayConfiguration)
   {
     v6 = 0;
     goto LABEL_7;
   }
 
-  if (!v5 || ([v5 refersToSameDisplayConfiguration:v8] & 1) == 0)
+  if (!v5 || ([v5 refersToSameDisplayConfiguration:displayConfiguration] & 1) == 0)
   {
-    v6 = [[_UIRenderingEnvironmentAttributes alloc] initWithDisplayConfiguration:v8];
-    v5 = *(a1 + 24);
+    v6 = [[_UIRenderingEnvironmentAttributes alloc] initWithDisplayConfiguration:displayConfiguration];
+    v5 = *(self + 24);
 LABEL_7:
-    *(a1 + 24) = v6;
+    *(self + 24) = v6;
 
-    v7 = *(a1 + 8);
-    *(a1 + 8) = 0;
+    v7 = *(self + 8);
+    *(self + 8) = 0;
   }
 }
 
@@ -65,16 +65,16 @@ LABEL_7:
   return v7;
 }
 
-- (_UIRenderingEnvironmentSceneComponent)initWithScene:(id)a3
+- (_UIRenderingEnvironmentSceneComponent)initWithScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v8.receiver = self;
   v8.super_class = _UIRenderingEnvironmentSceneComponent;
   v5 = [(_UIRenderingEnvironmentSceneComponent *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scene, v4);
+    objc_storeWeak(&v5->_scene, sceneCopy);
     [(_UIRenderingEnvironmentSceneComponent *)v6 _invalidateTraitOverrides];
   }
 

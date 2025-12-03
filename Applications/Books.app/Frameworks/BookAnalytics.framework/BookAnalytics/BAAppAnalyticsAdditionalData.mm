@@ -1,9 +1,9 @@
 @interface BAAppAnalyticsAdditionalData
 + (NSString)editionKindKey;
 + (NSString)supportsUnifiedProductPageKey;
-+ (id)dataWithDictionary:(id)a3;
++ (id)dataWithDictionary:(id)dictionary;
 - (BAAppAnalyticsAdditionalData)init;
-- (BAAppAnalyticsAdditionalData)initWithSupportsUnifiedProductPage:(BOOL)a3 editionKind:(id)a4;
+- (BAAppAnalyticsAdditionalData)initWithSupportsUnifiedProductPage:(BOOL)page editionKind:(id)kind;
 - (NSString)editionKind;
 - (id)dictionary;
 @end
@@ -42,9 +42,9 @@
   return v2;
 }
 
-- (BAAppAnalyticsAdditionalData)initWithSupportsUnifiedProductPage:(BOOL)a3 editionKind:(id)a4
+- (BAAppAnalyticsAdditionalData)initWithSupportsUnifiedProductPage:(BOOL)page editionKind:(id)kind
 {
-  if (a4)
+  if (kind)
   {
     v6 = sub_1E1780();
   }
@@ -55,7 +55,7 @@
     v7 = 0;
   }
 
-  *(self + OBJC_IVAR___BAAppAnalyticsAdditionalData_supportsUnifiedProductPage) = a3;
+  *(self + OBJC_IVAR___BAAppAnalyticsAdditionalData_supportsUnifiedProductPage) = page;
   v8 = (self + OBJC_IVAR___BAAppAnalyticsAdditionalData_editionKind);
   *v8 = v6;
   v8[1] = v7;
@@ -64,7 +64,7 @@
   return [(BAAppAnalyticsAdditionalData *)&v10 init];
 }
 
-+ (id)dataWithDictionary:(id)a3
++ (id)dataWithDictionary:(id)dictionary
 {
   v3 = sub_1E1730();
   v4 = _s13BookAnalytics03AppB14AdditionalDataC4data10dictionaryACSgSDySSypG_tFZ_0(v3);
@@ -74,7 +74,7 @@
 
 - (id)dictionary
 {
-  v2 = self;
+  selfCopy = self;
   sub_31F2C();
 
   v3.super.isa = sub_1E1720().super.isa;

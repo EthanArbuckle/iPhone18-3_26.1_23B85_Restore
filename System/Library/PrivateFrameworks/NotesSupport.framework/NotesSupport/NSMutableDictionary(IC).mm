@@ -11,20 +11,20 @@
 {
   if (a3)
   {
-    return [a1 removeObjectForKey:?];
+    return [self removeObjectForKey:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)ic_setNonNilObject:()IC forKey:
 {
   if (a3)
   {
-    return [a1 setObject:? forKeyedSubscript:?];
+    return [self setObject:? forKeyedSubscript:?];
   }
 
-  return a1;
+  return self;
 }
 
 - (void)ic_setNonNilObject:()IC forNonNilKey:
@@ -33,11 +33,11 @@
   {
     if (a4)
     {
-      return [a1 setObject:? forKeyedSubscript:?];
+      return [self setObject:? forKeyedSubscript:?];
     }
   }
 
-  return a1;
+  return self;
 }
 
 + (id)ic_dictionaryFromNonNilDictionary:()IC

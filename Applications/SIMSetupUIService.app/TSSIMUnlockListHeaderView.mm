@@ -1,20 +1,20 @@
 @interface TSSIMUnlockListHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (TSSIMUnlockListHeaderView)initWithFrame:(CGRect)a3;
-- (double)_descriptionLabelHeightForWidth:(double)a3;
-- (double)_titleLabelHeightForWidth:(double)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (TSSIMUnlockListHeaderView)initWithFrame:(CGRect)frame;
+- (double)_descriptionLabelHeightForWidth:(double)width;
+- (double)_titleLabelHeightForWidth:(double)width;
 - (void)_configureLabels;
 - (void)layoutSubviews;
-- (void)setNumberOfSIMsToUnlockAndanESIMExists:(id)a3;
+- (void)setNumberOfSIMsToUnlockAndanESIMExists:(id)exists;
 @end
 
 @implementation TSSIMUnlockListHeaderView
 
-- (TSSIMUnlockListHeaderView)initWithFrame:(CGRect)a3
+- (TSSIMUnlockListHeaderView)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = TSSIMUnlockListHeaderView;
-  v3 = [(TSSIMUnlockListHeaderView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TSSIMUnlockListHeaderView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UILabel alloc];
@@ -60,8 +60,8 @@
   y = CGRectZero.origin.y;
   v6 = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v8 = [(UILabel *)self->_titleLabel text];
-  v9 = [v8 length];
+  text = [(UILabel *)self->_titleLabel text];
+  v9 = [text length];
 
   if (v9)
   {
@@ -88,8 +88,8 @@
     v14 = CGRectZero.origin.x;
   }
 
-  v19 = [(UILabel *)self->_descriptionLabel text];
-  v20 = [v19 length];
+  text2 = [(UILabel *)self->_descriptionLabel text];
+  v20 = [text2 length];
 
   if (v20)
   {
@@ -106,10 +106,10 @@
   [(UILabel *)self->_descriptionLabel setFrame:x, y, v6, height];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(TSSIMUnlockListHeaderView *)self _titleLabelHeightForWidth:a3.width, a3.height];
+  width = fits.width;
+  [(TSSIMUnlockListHeaderView *)self _titleLabelHeightForWidth:fits.width, fits.height];
   v6 = v5;
   [(TSSIMUnlockListHeaderView *)self _descriptionLabelHeightForWidth:width];
   v8 = v6 + v7;
@@ -119,12 +119,12 @@
   return result;
 }
 
-- (void)setNumberOfSIMsToUnlockAndanESIMExists:(id)a3
+- (void)setNumberOfSIMsToUnlockAndanESIMExists:(id)exists
 {
-  v5 = a3;
+  existsCopy = exists;
   if (![(NSDictionary *)self->_numberOfSIMsToUnlockAndanESIMExists isEqualToDictionary:?])
   {
-    objc_storeStrong(&self->_numberOfSIMsToUnlockAndanESIMExists, a3);
+    objc_storeStrong(&self->_numberOfSIMsToUnlockAndanESIMExists, exists);
     [(TSSIMUnlockListHeaderView *)self _configureLabels];
   }
 }
@@ -132,38 +132,38 @@
 - (void)_configureLabels
 {
   v3 = [(NSDictionary *)self->_numberOfSIMsToUnlockAndanESIMExists objectForKeyedSubscript:@"NumOfSimsAvailKey"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
   v5 = [(NSDictionary *)self->_numberOfSIMsToUnlockAndanESIMExists objectForKeyedSubscript:@"kPhysicalSimExists"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
   v7 = +[NSBundle mainBundle];
   v8 = v7;
   v9 = @"SINGLE_ESIM_LOCKED";
-  if (v6)
+  if (bOOLValue)
   {
     v9 = @"SINGLE_SIM_LOCKED";
   }
 
   v10 = @"SINGLE_ESIM_LOCKED_DESCRIPTION";
-  if (v6)
+  if (bOOLValue)
   {
     v10 = @"SINGLE_SIM_LOCKED_DESCRIPTION";
   }
 
   v11 = @"MULTIPLE_SIMS_LOCKED";
-  if (!v6)
+  if (!bOOLValue)
   {
     v11 = @"MULTIPLE_ESIMS_LOCKED";
   }
 
   v12 = @"ESIM_LOCKED_DESCRIPTION";
-  if (v6)
+  if (bOOLValue)
   {
     v12 = @"SIM_LOCKED_DESCRIPTION";
   }
 
-  if (v4 == 1)
+  if (intValue == 1)
   {
     v13 = v9;
   }
@@ -173,7 +173,7 @@
     v13 = v11;
   }
 
-  if (v4 == 1)
+  if (intValue == 1)
   {
     v14 = v10;
   }
@@ -203,10 +203,10 @@
   [(TSSIMUnlockListHeaderView *)self setNeedsUpdateConstraints];
 }
 
-- (double)_titleLabelHeightForWidth:(double)a3
+- (double)_titleLabelHeightForWidth:(double)width
 {
-  v5 = [(UILabel *)self->_titleLabel text];
-  v6 = [v5 length];
+  text = [(UILabel *)self->_titleLabel text];
+  v6 = [text length];
 
   if (!v6)
   {
@@ -215,14 +215,14 @@
 
   v7 = sub_100001424();
   v9 = v8;
-  [(UILabel *)self->_titleLabel sizeThatFits:a3 - v10 - v11, 1.79769313e308];
+  [(UILabel *)self->_titleLabel sizeThatFits:width - v10 - v11, 1.79769313e308];
   return v9 + v7 + v12;
 }
 
-- (double)_descriptionLabelHeightForWidth:(double)a3
+- (double)_descriptionLabelHeightForWidth:(double)width
 {
-  v5 = [(UILabel *)self->_descriptionLabel text];
-  v6 = [v5 length];
+  text = [(UILabel *)self->_descriptionLabel text];
+  v6 = [text length];
 
   if (!v6)
   {
@@ -231,7 +231,7 @@
 
   v7 = sub_100001438();
   v9 = v8;
-  [(UILabel *)self->_descriptionLabel sizeThatFits:a3 - v10 - v11, 1.79769313e308];
+  [(UILabel *)self->_descriptionLabel sizeThatFits:width - v10 - v11, 1.79769313e308];
   return v9 + v7 + v12;
 }
 

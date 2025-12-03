@@ -1,21 +1,21 @@
 @interface PXPhotoKitPersonSuggestion
-+ (id)personSuggestionWithPerson:(id)a3;
-+ (id)personSuggestionWithPerson:(id)a3 keyFaceFetchResult:(id)a4;
-+ (id)personSuggestionWithPerson:(id)a3 keyFaceFetchResult:(id)a4 keyAssetFetchResult:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesRecipientInRecipients:(id)a3;
++ (id)personSuggestionWithPerson:(id)person;
++ (id)personSuggestionWithPerson:(id)person keyFaceFetchResult:(id)result;
++ (id)personSuggestionWithPerson:(id)person keyFaceFetchResult:(id)result keyAssetFetchResult:(id)fetchResult;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesRecipientInRecipients:(id)recipients;
 - (NSString)description;
 - (PXPhotoKitPersonSuggestion)init;
-- (PXPhotoKitPersonSuggestion)initWithPerson:(id)a3 keyFaceFetchResult:(id)a4 keyAssetFetchResult:(id)a5;
-- (id)_linkedContactForPerson:(id)a3;
-- (id)personSuggestionUpdatedKeyAssetFetchResult:(id)a3;
-- (id)personSuggestionUpdatedKeyFaceFetchResult:(id)a3;
-- (id)personSuggestionUpdatedPerson:(id)a3;
+- (PXPhotoKitPersonSuggestion)initWithPerson:(id)person keyFaceFetchResult:(id)result keyAssetFetchResult:(id)fetchResult;
+- (id)_linkedContactForPerson:(id)person;
+- (id)personSuggestionUpdatedKeyAssetFetchResult:(id)result;
+- (id)personSuggestionUpdatedKeyFaceFetchResult:(id)result;
+- (id)personSuggestionUpdatedPerson:(id)person;
 - (unint64_t)hash;
-- (void)_fetchQueue_fetchLinkedContactForPerson:(id)a3;
-- (void)_prefetchLinkedContactInBackgroundForPerson:(id)a3;
-- (void)fetchContactAndBestTransport:(id)a3;
-- (void)setPrefetchedContact:(id)a3;
+- (void)_fetchQueue_fetchLinkedContactForPerson:(id)person;
+- (void)_prefetchLinkedContactInBackgroundForPerson:(id)person;
+- (void)fetchContactAndBestTransport:(id)transport;
+- (void)setPrefetchedContact:(id)contact;
 @end
 
 @implementation PXPhotoKitPersonSuggestion
@@ -32,23 +32,23 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PXPhotoKitPersonSuggestion *)self person];
-  v3 = [v2 hash];
+  person = [(PXPhotoKitPersonSuggestion *)self person];
+  v3 = [person hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PXPhotoKitPersonSuggestion *)self person];
-    v7 = [v5 person];
+    v5 = equalCopy;
+    person = [(PXPhotoKitPersonSuggestion *)self person];
+    person2 = [v5 person];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [person isEqual:person2];
   }
 
   else
@@ -59,23 +59,23 @@
   return v8;
 }
 
-- (void)_prefetchLinkedContactInBackgroundForPerson:(id)a3
+- (void)_prefetchLinkedContactInBackgroundForPerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   v5 = _ContactFetchQueue();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__PXPhotoKitPersonSuggestion__prefetchLinkedContactInBackgroundForPerson___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = personCopy;
+  v6 = personCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)_fetchQueue_fetchLinkedContactForPerson:(id)a3
+- (void)_fetchQueue_fetchLinkedContactForPerson:(id)person
 {
-  v10 = a3;
+  personCopy = person;
   v4 = _ContactFetchQueue();
   dispatch_assert_queue_V2(v4);
 
@@ -99,7 +99,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v6 = [(PXPhotoKitPersonSuggestion *)self _linkedContactForPerson:v10];
+  v6 = [(PXPhotoKitPersonSuggestion *)self _linkedContactForPerson:personCopy];
 LABEL_7:
   fetchQueue_linkedContact = self->_fetchQueue_linkedContact;
   self->_fetchQueue_linkedContact = v6;
@@ -114,34 +114,34 @@ LABEL_7:
 LABEL_9:
 }
 
-- (id)_linkedContactForPerson:(id)a3
+- (id)_linkedContactForPerson:(id)person
 {
   v13 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E695C330];
   v10 = *MEMORY[0x1E695C208];
   v11 = v3;
   v4 = MEMORY[0x1E695D148];
-  v5 = a3;
-  v6 = [v4 descriptorForRequiredKeys];
-  v12 = v6;
+  personCopy = person;
+  descriptorForRequiredKeys = [v4 descriptorForRequiredKeys];
+  v12 = descriptorForRequiredKeys;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v10 count:3];
 
-  v8 = [v5 linkedContactWithKeysToFetch:v7];
+  v8 = [personCopy linkedContactWithKeysToFetch:v7];
 
   return v8;
 }
 
-- (BOOL)matchesRecipientInRecipients:(id)a3
+- (BOOL)matchesRecipientInRecipients:(id)recipients
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXPhotoKitPersonSuggestion *)self person];
-  v6 = [v5 px_localizedName];
+  recipientsCopy = recipients;
+  person = [(PXPhotoKitPersonSuggestion *)self person];
+  px_localizedName = [person px_localizedName];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v4;
+  v7 = recipientsCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -155,9 +155,9 @@ LABEL_9:
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) contact];
-        v12 = [MEMORY[0x1E6978980] px_localizedNameFromContact:v11];
-        v13 = [v6 isEqualToString:v12];
+        contact = [*(*(&v15 + 1) + 8 * i) contact];
+        v12 = [MEMORY[0x1E6978980] px_localizedNameFromContact:contact];
+        v13 = [px_localizedName isEqualToString:v12];
 
         if (v13)
         {
@@ -181,13 +181,13 @@ LABEL_11:
   return v8;
 }
 
-- (void)fetchContactAndBestTransport:(id)a3
+- (void)fetchContactAndBestTransport:(id)transport
 {
-  v5 = a3;
-  if (!v5)
+  transportCopy = transport;
+  if (!transportCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonSuggestion.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonSuggestion.m" lineNumber:101 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
   v20 = 0;
@@ -202,20 +202,20 @@ LABEL_11:
   v17 = __Block_byref_object_copy__98987;
   v18 = __Block_byref_object_dispose__98988;
   v19 = 0;
-  v6 = [(PXPhotoKitPersonSuggestion *)self person];
+  person = [(PXPhotoKitPersonSuggestion *)self person];
   v7 = _ContactFetchQueue();
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__PXPhotoKitPersonSuggestion_fetchContactAndBestTransport___block_invoke;
   block[3] = &unk_1E773AD98;
   block[4] = self;
-  v8 = v6;
+  v8 = person;
   v11 = v8;
   v12 = &v20;
   v13 = &v14;
   dispatch_sync(v7, block);
 
-  v5[2](v5, v21[5], v15[5]);
+  transportCopy[2](transportCopy, v21[5], v15[5]);
   _Block_object_dispose(&v14, 8);
 
   _Block_object_dispose(&v20, 8);
@@ -231,45 +231,45 @@ void __59__PXPhotoKitPersonSuggestion_fetchContactAndBestTransport___block_invok
   objc_storeStrong(v3, v2);
 }
 
-- (void)setPrefetchedContact:(id)a3
+- (void)setPrefetchedContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v5 = _ContactFetchQueue();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__PXPhotoKitPersonSuggestion_setPrefetchedContact___block_invoke;
   v7[3] = &unk_1E774C620;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = contactCopy;
+  v6 = contactCopy;
   dispatch_sync(v5, v7);
 }
 
-- (id)personSuggestionUpdatedPerson:(id)a3
+- (id)personSuggestionUpdatedPerson:(id)person
 {
-  v4 = a3;
-  v5 = [[PXPhotoKitPersonSuggestion alloc] initWithPerson:v4 keyFaceFetchResult:self->_keyFaceFetchResult keyAssetFetchResult:self->_keyAssetFetchResult];
+  personCopy = person;
+  v5 = [[PXPhotoKitPersonSuggestion alloc] initWithPerson:personCopy keyFaceFetchResult:self->_keyFaceFetchResult keyAssetFetchResult:self->_keyAssetFetchResult];
 
   return v5;
 }
 
-- (id)personSuggestionUpdatedKeyAssetFetchResult:(id)a3
+- (id)personSuggestionUpdatedKeyAssetFetchResult:(id)result
 {
-  v4 = a3;
-  v5 = [[PXPhotoKitPersonSuggestion alloc] initWithPerson:self->_person keyFaceFetchResult:self->_keyFaceFetchResult keyAssetFetchResult:v4];
+  resultCopy = result;
+  v5 = [[PXPhotoKitPersonSuggestion alloc] initWithPerson:self->_person keyFaceFetchResult:self->_keyFaceFetchResult keyAssetFetchResult:resultCopy];
 
   return v5;
 }
 
-- (id)personSuggestionUpdatedKeyFaceFetchResult:(id)a3
+- (id)personSuggestionUpdatedKeyFaceFetchResult:(id)result
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  resultCopy = result;
+  if ([resultCopy count])
   {
     v5 = MEMORY[0x1E6978630];
-    v6 = [v4 firstObject];
-    v11[0] = v6;
+    firstObject = [resultCopy firstObject];
+    v11[0] = firstObject;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
     v8 = [v5 fetchAssetsForFaces:v7 options:0];
   }
@@ -279,20 +279,20 @@ void __59__PXPhotoKitPersonSuggestion_fetchContactAndBestTransport___block_invok
     v8 = 0;
   }
 
-  v9 = [[PXPhotoKitPersonSuggestion alloc] initWithPerson:self->_person keyFaceFetchResult:v4 keyAssetFetchResult:v8];
+  v9 = [[PXPhotoKitPersonSuggestion alloc] initWithPerson:self->_person keyFaceFetchResult:resultCopy keyAssetFetchResult:v8];
 
   return v9;
 }
 
-- (PXPhotoKitPersonSuggestion)initWithPerson:(id)a3 keyFaceFetchResult:(id)a4 keyAssetFetchResult:(id)a5
+- (PXPhotoKitPersonSuggestion)initWithPerson:(id)person keyFaceFetchResult:(id)result keyAssetFetchResult:(id)fetchResult
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  personCopy = person;
+  resultCopy = result;
+  fetchResultCopy = fetchResult;
+  if (!personCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonSuggestion.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"person"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonSuggestion.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"person"}];
   }
 
   v20.receiver = self;
@@ -301,15 +301,15 @@ void __59__PXPhotoKitPersonSuggestion_fetchContactAndBestTransport___block_invok
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_person, a3);
-    v15 = [v10 px_localizedName];
-    v16 = [v15 copy];
+    objc_storeStrong(&v13->_person, person);
+    px_localizedName = [personCopy px_localizedName];
+    v16 = [px_localizedName copy];
     localizedName = v14->_localizedName;
     v14->_localizedName = v16;
 
-    objc_storeStrong(&v14->_keyFaceFetchResult, a4);
-    objc_storeStrong(&v14->_keyAssetFetchResult, a5);
-    [(PXPhotoKitPersonSuggestion *)v14 _prefetchLinkedContactInBackgroundForPerson:v10];
+    objc_storeStrong(&v14->_keyFaceFetchResult, result);
+    objc_storeStrong(&v14->_keyAssetFetchResult, fetchResult);
+    [(PXPhotoKitPersonSuggestion *)v14 _prefetchLinkedContactInBackgroundForPerson:personCopy];
   }
 
   return v14;
@@ -317,32 +317,32 @@ void __59__PXPhotoKitPersonSuggestion_fetchContactAndBestTransport___block_invok
 
 - (PXPhotoKitPersonSuggestion)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonSuggestion.m" lineNumber:45 description:{@"%s is not available as initializer", "-[PXPhotoKitPersonSuggestion init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitPersonSuggestion.m" lineNumber:45 description:{@"%s is not available as initializer", "-[PXPhotoKitPersonSuggestion init]"}];
 
   abort();
 }
 
-+ (id)personSuggestionWithPerson:(id)a3 keyFaceFetchResult:(id)a4 keyAssetFetchResult:(id)a5
++ (id)personSuggestionWithPerson:(id)person keyFaceFetchResult:(id)result keyAssetFetchResult:(id)fetchResult
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[PXPhotoKitPersonSuggestion alloc] initWithPerson:v9 keyFaceFetchResult:v8 keyAssetFetchResult:v7];
+  fetchResultCopy = fetchResult;
+  resultCopy = result;
+  personCopy = person;
+  v10 = [[PXPhotoKitPersonSuggestion alloc] initWithPerson:personCopy keyFaceFetchResult:resultCopy keyAssetFetchResult:fetchResultCopy];
 
   return v10;
 }
 
-+ (id)personSuggestionWithPerson:(id)a3 keyFaceFetchResult:(id)a4
++ (id)personSuggestionWithPerson:(id)person keyFaceFetchResult:(id)result
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  personCopy = person;
+  resultCopy = result;
+  if ([resultCopy count])
   {
     v7 = MEMORY[0x1E6978630];
-    v8 = [v6 firstObject];
-    v13[0] = v8;
+    firstObject = [resultCopy firstObject];
+    v13[0] = firstObject;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
     v10 = [v7 fetchAssetsForFaces:v9 options:0];
   }
@@ -352,17 +352,17 @@ void __59__PXPhotoKitPersonSuggestion_fetchContactAndBestTransport___block_invok
     v10 = 0;
   }
 
-  v11 = [PXPhotoKitPersonSuggestion personSuggestionWithPerson:v5 keyFaceFetchResult:v6 keyAssetFetchResult:v10];
+  v11 = [PXPhotoKitPersonSuggestion personSuggestionWithPerson:personCopy keyFaceFetchResult:resultCopy keyAssetFetchResult:v10];
 
   return v11;
 }
 
-+ (id)personSuggestionWithPerson:(id)a3
++ (id)personSuggestionWithPerson:(id)person
 {
   v3 = MEMORY[0x1E69787C8];
-  v4 = a3;
-  v5 = [v3 fetchKeyFaceForPerson:v4 options:0];
-  v6 = [PXPhotoKitPersonSuggestion personSuggestionWithPerson:v4 keyFaceFetchResult:v5];
+  personCopy = person;
+  v5 = [v3 fetchKeyFaceForPerson:personCopy options:0];
+  v6 = [PXPhotoKitPersonSuggestion personSuggestionWithPerson:personCopy keyFaceFetchResult:v5];
 
   return v6;
 }

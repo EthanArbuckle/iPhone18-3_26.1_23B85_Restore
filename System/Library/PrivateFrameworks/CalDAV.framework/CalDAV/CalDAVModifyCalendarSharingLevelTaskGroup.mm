@@ -1,38 +1,38 @@
 @interface CalDAVModifyCalendarSharingLevelTaskGroup
-- (CalDAVModifyCalendarSharingLevelTaskGroup)initWithAccountInfoProvider:(id)a3 taskManager:(id)a4;
+- (CalDAVModifyCalendarSharingLevelTaskGroup)initWithAccountInfoProvider:(id)provider taskManager:(id)manager;
 - (void)startTaskGroup;
-- (void)task:(id)a3 didFinishWithError:(id)a4;
+- (void)task:(id)task didFinishWithError:(id)error;
 @end
 
 @implementation CalDAVModifyCalendarSharingLevelTaskGroup
 
-- (CalDAVModifyCalendarSharingLevelTaskGroup)initWithAccountInfoProvider:(id)a3 taskManager:(id)a4
+- (CalDAVModifyCalendarSharingLevelTaskGroup)initWithAccountInfoProvider:(id)provider taskManager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
+  providerCopy = provider;
+  managerCopy = manager;
   v7 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"Initializing this class instance with an inherited initializer not allowed." userInfo:0];
   objc_exception_throw(v7);
 }
 
 - (void)startTaskGroup
 {
-  v3 = [(CalDAVModifyCalendarSharingLevelTaskGroup *)self action];
-  if (v3 > 1)
+  action = [(CalDAVModifyCalendarSharingLevelTaskGroup *)self action];
+  if (action > 1)
   {
-    if (v3 == 2)
+    if (action == 2)
     {
       v13 = objc_alloc(MEMORY[0x277CFDBE8]);
       v5 = [v13 initWithNameSpace:*MEMORY[0x277CFDEF8] name:*MEMORY[0x277CFDFE0] parseClass:objc_opt_class()];
       v14 = objc_alloc(MEMORY[0x277CFDC68]);
-      v9 = [MEMORY[0x277CBEB98] setWithObject:v5];
+      data = [MEMORY[0x277CBEB98] setWithObject:v5];
       v10 = [(CalDAVModifyCalendarSharingLevelTaskGroup *)self url];
       v11 = 2;
-      v17 = [v14 initWithPropertiesToFind:v9 atURL:v10 withDepth:2];
+      v17 = [v14 initWithPropertiesToFind:data atURL:v10 withDepth:2];
     }
 
     else
     {
-      if (v3 != 3)
+      if (action != 3)
       {
         return;
       }
@@ -40,18 +40,18 @@
       v7 = objc_alloc(MEMORY[0x277CFDBE8]);
       v5 = [v7 initWithNameSpace:*MEMORY[0x277CFDEF8] name:*MEMORY[0x277CFDFE0] parseClass:objc_opt_class()];
       v8 = objc_alloc(MEMORY[0x277CFDC68]);
-      v9 = [MEMORY[0x277CBEB98] setWithObject:v5];
+      data = [MEMORY[0x277CBEB98] setWithObject:v5];
       v10 = [(CalDAVModifyCalendarSharingLevelTaskGroup *)self url];
-      v17 = [v8 initWithPropertiesToFind:v9 atURL:v10 withDepth:2];
+      v17 = [v8 initWithPropertiesToFind:data atURL:v10 withDepth:2];
       v11 = 3;
     }
   }
 
   else
   {
-    if (v3)
+    if (action)
     {
-      if (v3 != 1)
+      if (action != 1)
       {
         return;
       }
@@ -70,50 +70,50 @@
 
     [v4 appendElement:*v6 inNamespace:*MEMORY[0x277CFDE90] withStringContent:0 withAttributeNamesAndValues:0];
     v12 = objc_alloc(MEMORY[0x277CFDC58]);
-    v9 = [v5 data];
+    data = [v5 data];
     v10 = [(CalDAVModifyCalendarSharingLevelTaskGroup *)self url];
-    v17 = [v12 initWithDataPayload:v9 dataContentType:@"text/xml" atURL:v10 previousETag:0];
+    v17 = [v12 initWithDataPayload:data dataContentType:@"text/xml" atURL:v10 previousETag:0];
     v11 = 1;
   }
 
   [(CalDAVModifyCalendarSharingLevelTaskGroup *)self setState:v11];
   if (v17)
   {
-    v15 = [(CoreDAVTaskGroup *)self accountInfoProvider];
-    [v17 setAccountInfoProvider:v15];
+    accountInfoProvider = [(CoreDAVTaskGroup *)self accountInfoProvider];
+    [v17 setAccountInfoProvider:accountInfoProvider];
 
     [v17 setDelegate:self];
-    v16 = [(CoreDAVTaskGroup *)self taskManager];
-    [v16 submitQueuedCoreDAVTask:v17];
+    taskManager = [(CoreDAVTaskGroup *)self taskManager];
+    [taskManager submitQueuedCoreDAVTask:v17];
   }
 }
 
-- (void)task:(id)a3 didFinishWithError:(id)a4
+- (void)task:(id)task didFinishWithError:(id)error
 {
-  v31 = a3;
-  v6 = a4;
-  if (v6)
+  taskCopy = task;
+  errorCopy = error;
+  if (errorCopy)
   {
     [(CalDAVModifyCalendarSharingLevelTaskGroup *)self setState:7];
-    v7 = self;
-    v8 = v6;
+    selfCopy2 = self;
+    v8 = errorCopy;
 LABEL_3:
-    [(CalDAVModifyCalendarSharingLevelTaskGroup *)v7 finishWithError:v8];
+    [(CalDAVModifyCalendarSharingLevelTaskGroup *)selfCopy2 finishWithError:v8];
     goto LABEL_22;
   }
 
-  v9 = [(CalDAVModifyCalendarSharingLevelTaskGroup *)self state];
-  if (v9 > 2)
+  state = [(CalDAVModifyCalendarSharingLevelTaskGroup *)self state];
+  if (state > 2)
   {
-    if (v9 == 3)
+    if (state == 3)
     {
-      v24 = [v31 successfulValueForNameSpace:*MEMORY[0x277CFDEF8] elementName:*MEMORY[0x277CFDFE0]];
+      v24 = [taskCopy successfulValueForNameSpace:*MEMORY[0x277CFDEF8] elementName:*MEMORY[0x277CFDFE0]];
       v11 = v24;
       if (v24)
       {
-        v25 = [v24 sharedOwner];
+        sharedOwner = [v24 sharedOwner];
 
-        if (v25)
+        if (sharedOwner)
         {
           [v11 setSharedOwner:0];
           goto LABEL_18;
@@ -126,32 +126,32 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    if (v9 == 6)
+    if (state == 6)
     {
-      v15 = [v31 successfulValueForNameSpace:*MEMORY[0x277CFDE90] elementName:*MEMORY[0x277CFDE50]];
-      v16 = [v15 href];
-      v17 = [v16 payloadAsFullURL];
-      [(CalDAVModifyCalendarSharingLevelTaskGroup *)self setPublishedURL:v17];
+      v15 = [taskCopy successfulValueForNameSpace:*MEMORY[0x277CFDE90] elementName:*MEMORY[0x277CFDE50]];
+      href = [v15 href];
+      payloadAsFullURL = [href payloadAsFullURL];
+      [(CalDAVModifyCalendarSharingLevelTaskGroup *)self setPublishedURL:payloadAsFullURL];
     }
 
 LABEL_13:
     [(CalDAVModifyCalendarSharingLevelTaskGroup *)self setState:7];
-    v7 = self;
+    selfCopy2 = self;
     v8 = 0;
     goto LABEL_3;
   }
 
-  if (v9 != 1)
+  if (state != 1)
   {
-    if (v9 == 2)
+    if (state == 2)
     {
-      v10 = [v31 successfulValueForNameSpace:*MEMORY[0x277CFDEF8] elementName:*MEMORY[0x277CFDFE0]];
+      v10 = [taskCopy successfulValueForNameSpace:*MEMORY[0x277CFDEF8] elementName:*MEMORY[0x277CFDFE0]];
       v11 = v10;
       if (v10)
       {
-        v12 = [v10 sharedOwner];
+        sharedOwner2 = [v10 sharedOwner];
 
-        if (!v12)
+        if (!sharedOwner2)
         {
           v13 = objc_alloc(MEMORY[0x277CFDC08]);
           v14 = [v13 initWithNameSpace:*MEMORY[0x277CFDE90] andName:@"shared-owner"];
@@ -164,8 +164,8 @@ LABEL_18:
           v22 = [v26 initWithPropertiesToSet:v27 andRemove:0 atURL:v28];
 
           [(CalDAVModifyCalendarSharingLevelTaskGroup *)self setState:4];
-          v29 = [(CoreDAVTaskGroup *)self accountInfoProvider];
-          [v22 setAccountInfoProvider:v29];
+          accountInfoProvider = [(CoreDAVTaskGroup *)self accountInfoProvider];
+          [v22 setAccountInfoProvider:accountInfoProvider];
 
           [v22 setDelegate:self];
           goto LABEL_19;
@@ -185,14 +185,14 @@ LABEL_18:
   v21 = [(CalDAVModifyCalendarSharingLevelTaskGroup *)self url];
   v22 = [v19 initWithPropertiesToFind:v20 atURL:v21 withDepth:2];
 
-  v23 = [(CoreDAVTaskGroup *)self accountInfoProvider];
-  [v22 setAccountInfoProvider:v23];
+  accountInfoProvider2 = [(CoreDAVTaskGroup *)self accountInfoProvider];
+  [v22 setAccountInfoProvider:accountInfoProvider2];
 
   [v22 setDelegate:self];
   [(CalDAVModifyCalendarSharingLevelTaskGroup *)self setState:6];
 LABEL_19:
-  v30 = [(CoreDAVTaskGroup *)self taskManager];
-  [v30 submitQueuedCoreDAVTask:v22];
+  taskManager = [(CoreDAVTaskGroup *)self taskManager];
+  [taskManager submitQueuedCoreDAVTask:v22];
 
 LABEL_21:
 LABEL_22:

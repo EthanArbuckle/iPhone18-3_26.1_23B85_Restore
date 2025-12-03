@@ -1,16 +1,16 @@
 @interface HFCharacteristicNotificationManager
 + (HFCharacteristicNotificationStateContaining)notificationsStateContainer;
 + (id)sharedManager;
-+ (void)setOverrideNotificationsStateContainer:(id)a3;
-- (BOOL)cacheUpToDateWithNotificationsEnabledForCharacteristic:(id)a3 inHome:(id)a4;
++ (void)setOverrideNotificationsStateContainer:(id)container;
+- (BOOL)cacheUpToDateWithNotificationsEnabledForCharacteristic:(id)characteristic inHome:(id)home;
 - (BOOL)notificationsEnabled;
-- (BOOL)notificationsEnabledForCharacteristic:(id)a3 inHome:(id)a4;
+- (BOOL)notificationsEnabledForCharacteristic:(id)characteristic inHome:(id)home;
 - (BOOL)notificationsReasonsExist;
 - (HFCharacteristicNotificationManager)init;
-- (id)lastNotificationsEnableRequestDateForCharacteristic:(id)a3 forHome:(id)a4;
-- (void)_updateNotificationsEnabledWithNumberOfAppleMediaAccessories:(unint64_t)a3;
-- (void)disableNotificationsForSelectedHomeWithReason:(id)a3;
-- (void)enableNotificationsForSelectedHomeWithReason:(id)a3 numberOfAppleMediaAccessories:(unint64_t)a4;
+- (id)lastNotificationsEnableRequestDateForCharacteristic:(id)characteristic forHome:(id)home;
+- (void)_updateNotificationsEnabledWithNumberOfAppleMediaAccessories:(unint64_t)accessories;
+- (void)disableNotificationsForSelectedHomeWithReason:(id)reason;
+- (void)enableNotificationsForSelectedHomeWithReason:(id)reason numberOfAppleMediaAccessories:(unint64_t)accessories;
 @end
 
 @implementation HFCharacteristicNotificationManager
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __52__HFCharacteristicNotificationManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280E03890 != -1)
   {
     dispatch_once(&qword_280E03890, block);
@@ -60,42 +60,42 @@ void __52__HFCharacteristicNotificationManager_sharedManager__block_invoke(uint6
   return v2;
 }
 
-- (void)enableNotificationsForSelectedHomeWithReason:(id)a3 numberOfAppleMediaAccessories:(unint64_t)a4
+- (void)enableNotificationsForSelectedHomeWithReason:(id)reason numberOfAppleMediaAccessories:(unint64_t)accessories
 {
-  v11 = a3;
-  if (!v11)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"HFCharacteristicNotificationManager.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"reason != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFCharacteristicNotificationManager.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"reason != nil"}];
   }
 
-  v7 = [(HFCharacteristicNotificationManager *)self notificationsEnabledReasons];
-  v8 = [v7 containsObject:v11];
+  notificationsEnabledReasons = [(HFCharacteristicNotificationManager *)self notificationsEnabledReasons];
+  v8 = [notificationsEnabledReasons containsObject:reasonCopy];
 
   if (v8)
   {
-    NSLog(&cfstr_AttemptToEnabl.isa, v11);
+    NSLog(&cfstr_AttemptToEnabl.isa, reasonCopy);
   }
 
-  v9 = [(HFCharacteristicNotificationManager *)self notificationsEnabledReasons];
-  [v9 addObject:v11];
+  notificationsEnabledReasons2 = [(HFCharacteristicNotificationManager *)self notificationsEnabledReasons];
+  [notificationsEnabledReasons2 addObject:reasonCopy];
 
-  [(HFCharacteristicNotificationManager *)self _updateNotificationsEnabledWithNumberOfAppleMediaAccessories:a4];
+  [(HFCharacteristicNotificationManager *)self _updateNotificationsEnabledWithNumberOfAppleMediaAccessories:accessories];
 }
 
-- (void)disableNotificationsForSelectedHomeWithReason:(id)a3
+- (void)disableNotificationsForSelectedHomeWithReason:(id)reason
 {
-  v5 = a3;
-  v14 = v5;
-  if (!v5)
+  reasonCopy = reason;
+  v14 = reasonCopy;
+  if (!reasonCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HFCharacteristicNotificationManager.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFCharacteristicNotificationManager.m" lineNumber:76 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
 
-    v5 = 0;
+    reasonCopy = 0;
   }
 
-  if ([(__CFString *)v5 isEqualToString:@"HCSNotificationsEnabledReasonBackground"])
+  if ([(__CFString *)reasonCopy isEqualToString:@"HCSNotificationsEnabledReasonBackground"])
   {
     v6 = HCSNotificationsEnabledReasonForeground;
 LABEL_7:
@@ -118,45 +118,45 @@ LABEL_7:
 
 LABEL_10:
   v9 = v7;
-  v10 = [(HFCharacteristicNotificationManager *)self notificationsEnabledReasons];
-  v11 = [v10 containsObject:v9];
+  notificationsEnabledReasons = [(HFCharacteristicNotificationManager *)self notificationsEnabledReasons];
+  v11 = [notificationsEnabledReasons containsObject:v9];
 
   if ((v11 & 1) == 0)
   {
     NSLog(&cfstr_AttemptToDisab.isa, v14);
   }
 
-  v12 = [(HFCharacteristicNotificationManager *)self notificationsEnabledReasons];
-  [v12 removeObject:v9];
+  notificationsEnabledReasons2 = [(HFCharacteristicNotificationManager *)self notificationsEnabledReasons];
+  [notificationsEnabledReasons2 removeObject:v9];
 
   [(HFCharacteristicNotificationManager *)self _updateNotificationsEnabled];
 }
 
 - (BOOL)notificationsEnabled
 {
-  v2 = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
-  v3 = v2 != 0;
+  notificationsEnabledHome = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
+  v3 = notificationsEnabledHome != 0;
 
   return v3;
 }
 
 - (BOOL)notificationsReasonsExist
 {
-  v2 = [(HFCharacteristicNotificationManager *)self notificationsEnabledReasons];
-  v3 = [v2 count] != 0;
+  notificationsEnabledReasons = [(HFCharacteristicNotificationManager *)self notificationsEnabledReasons];
+  v3 = [notificationsEnabledReasons count] != 0;
 
   return v3;
 }
 
-- (BOOL)notificationsEnabledForCharacteristic:(id)a3 inHome:(id)a4
+- (BOOL)notificationsEnabledForCharacteristic:(id)characteristic inHome:(id)home
 {
-  v5 = a4;
-  v6 = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
-  v7 = [v6 uniqueIdentifier];
-  v8 = [v5 uniqueIdentifier];
+  homeCopy = home;
+  notificationsEnabledHome = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
+  uniqueIdentifier = [notificationsEnabledHome uniqueIdentifier];
+  uniqueIdentifier2 = [homeCopy uniqueIdentifier];
 
-  LODWORD(v5) = [v7 isEqual:v8];
-  if (!v5)
+  LODWORD(homeCopy) = [uniqueIdentifier isEqual:uniqueIdentifier2];
+  if (!homeCopy)
   {
     return 0;
   }
@@ -164,42 +164,42 @@ LABEL_10:
   return [(HFCharacteristicNotificationManager *)self notificationsEnabled];
 }
 
-- (id)lastNotificationsEnableRequestDateForCharacteristic:(id)a3 forHome:(id)a4
+- (id)lastNotificationsEnableRequestDateForCharacteristic:(id)characteristic forHome:(id)home
 {
-  v5 = a4;
-  v6 = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
-  v7 = [v6 uniqueIdentifier];
-  v8 = [v5 uniqueIdentifier];
+  homeCopy = home;
+  notificationsEnabledHome = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
+  uniqueIdentifier = [notificationsEnabledHome uniqueIdentifier];
+  uniqueIdentifier2 = [homeCopy uniqueIdentifier];
 
-  LODWORD(v5) = [v7 isEqual:v8];
-  if (v5)
+  LODWORD(homeCopy) = [uniqueIdentifier isEqual:uniqueIdentifier2];
+  if (homeCopy)
   {
-    v9 = [(HFCharacteristicNotificationManager *)self lastNotificationsEnableRequestDate];
+    lastNotificationsEnableRequestDate = [(HFCharacteristicNotificationManager *)self lastNotificationsEnableRequestDate];
   }
 
   else
   {
-    v9 = 0;
+    lastNotificationsEnableRequestDate = 0;
   }
 
-  return v9;
+  return lastNotificationsEnableRequestDate;
 }
 
-- (BOOL)cacheUpToDateWithNotificationsEnabledForCharacteristic:(id)a3 inHome:(id)a4
+- (BOOL)cacheUpToDateWithNotificationsEnabledForCharacteristic:(id)characteristic inHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
-  v9 = [v8 uniqueIdentifier];
-  v10 = [v7 uniqueIdentifier];
+  characteristicCopy = characteristic;
+  homeCopy = home;
+  notificationsEnabledHome = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
+  uniqueIdentifier = [notificationsEnabledHome uniqueIdentifier];
+  uniqueIdentifier2 = [homeCopy uniqueIdentifier];
 
-  LODWORD(v7) = [v9 isEqual:v10];
-  if (v7)
+  LODWORD(homeCopy) = [uniqueIdentifier isEqual:uniqueIdentifier2];
+  if (homeCopy)
   {
-    v11 = [(HFCharacteristicNotificationManager *)self lastNotificationsEnableRequestDate];
-    v12 = [v6 valueUpdatedTime];
-    v13 = [v11 laterDate:v12];
-    v14 = v13 != v11;
+    lastNotificationsEnableRequestDate = [(HFCharacteristicNotificationManager *)self lastNotificationsEnableRequestDate];
+    valueUpdatedTime = [characteristicCopy valueUpdatedTime];
+    v13 = [lastNotificationsEnableRequestDate laterDate:valueUpdatedTime];
+    v14 = v13 != lastNotificationsEnableRequestDate;
   }
 
   else
@@ -210,104 +210,104 @@ LABEL_10:
   return v14;
 }
 
-+ (void)setOverrideNotificationsStateContainer:(id)a3
++ (void)setOverrideNotificationsStateContainer:(id)container
 {
-  v4 = a3;
-  obj = a1;
+  containerCopy = container;
+  obj = self;
   objc_sync_enter(obj);
   v5 = _notificationsStateContainer;
-  _notificationsStateContainer = v4;
+  _notificationsStateContainer = containerCopy;
 
   objc_sync_exit(obj);
 }
 
 + (HFCharacteristicNotificationStateContaining)notificationsStateContainer
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (_notificationsStateContainer)
   {
-    v3 = _notificationsStateContainer;
+    sharedManager = _notificationsStateContainer;
   }
 
   else
   {
-    v3 = [v2 sharedManager];
+    sharedManager = [selfCopy sharedManager];
   }
 
-  v4 = v3;
-  objc_sync_exit(v2);
+  v4 = sharedManager;
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (void)_updateNotificationsEnabledWithNumberOfAppleMediaAccessories:(unint64_t)a3
+- (void)_updateNotificationsEnabledWithNumberOfAppleMediaAccessories:(unint64_t)accessories
 {
   v46 = *MEMORY[0x277D85DE8];
   v5 = +[HFHomeKitDispatcher sharedDispatcher];
-  v6 = [v5 home];
+  home = [v5 home];
 
-  v7 = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
-  if (v7)
+  notificationsEnabledHome = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
+  if (notificationsEnabledHome)
   {
-    v8 = v7;
-    v9 = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
-    v10 = [v6 isEqual:v9];
+    v8 = notificationsEnabledHome;
+    notificationsEnabledHome2 = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
+    v10 = [home isEqual:notificationsEnabledHome2];
 
     if ((v10 & 1) == 0)
     {
       v11 = HFLogForCategory(0);
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
+        notificationsEnabledHome3 = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
         *buf = 138412546;
-        v39 = v12;
+        v39 = notificationsEnabledHome3;
         v40 = 2112;
-        v41 = v6;
+        v41 = home;
         _os_log_impl(&dword_20D9BF000, v11, OS_LOG_TYPE_DEFAULT, "Asking HomeKit to disable notifications for home <%@> because the selected home changed to <%@>", buf, 0x16u);
       }
 
-      v13 = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
-      [v13 enableNotifications:0 completionHandler:&__block_literal_global_176];
+      notificationsEnabledHome4 = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
+      [notificationsEnabledHome4 enableNotifications:0 completionHandler:&__block_literal_global_176];
 
       [(HFCharacteristicNotificationManager *)self setNotificationsEnabledHome:0];
       [(HFCharacteristicNotificationManager *)self setLastNotificationsEnableRequestDate:0];
     }
   }
 
-  v14 = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
-  if (v14)
+  notificationsEnabledHome5 = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
+  if (notificationsEnabledHome5)
   {
 
     goto LABEL_8;
   }
 
-  v22 = [(HFCharacteristicNotificationManager *)self notificationsEnabledReasons];
-  v23 = [v22 count];
+  notificationsEnabledReasons = [(HFCharacteristicNotificationManager *)self notificationsEnabledReasons];
+  v23 = [notificationsEnabledReasons count];
 
-  if (!v23 || !v6)
+  if (!v23 || !home)
   {
 LABEL_8:
-    v15 = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
-    if (v15)
+    notificationsEnabledHome6 = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
+    if (notificationsEnabledHome6)
     {
-      v16 = v15;
-      v17 = [(HFCharacteristicNotificationManager *)self notificationsEnabledReasons];
-      v18 = [v17 count];
+      v16 = notificationsEnabledHome6;
+      notificationsEnabledReasons2 = [(HFCharacteristicNotificationManager *)self notificationsEnabledReasons];
+      v18 = [notificationsEnabledReasons2 count];
 
       if (!v18)
       {
         v19 = HFLogForCategory(0);
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
+          notificationsEnabledHome7 = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
           *buf = 138412290;
-          v39 = v20;
+          v39 = notificationsEnabledHome7;
           _os_log_impl(&dword_20D9BF000, v19, OS_LOG_TYPE_DEFAULT, "Asking HomeKit to disable notifications for home <%@> because the last enabledReason was removed", buf, 0xCu);
         }
 
-        v21 = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
-        [v21 enableNotifications:0 includeAppleMediaAccessoryNotifications:1 completionHandler:&__block_literal_global_32_3];
+        notificationsEnabledHome8 = [(HFCharacteristicNotificationManager *)self notificationsEnabledHome];
+        [notificationsEnabledHome8 enableNotifications:0 includeAppleMediaAccessoryNotifications:1 completionHandler:&__block_literal_global_32_3];
 
         [(HFCharacteristicNotificationManager *)self setNotificationsEnabledHome:0];
         [(HFCharacteristicNotificationManager *)self setLastNotificationsEnableRequestDate:0];
@@ -317,10 +317,10 @@ LABEL_8:
     goto LABEL_21;
   }
 
-  v24 = [(HFCharacteristicNotificationManager *)self notificationsEnabledReasons];
-  v25 = [v24 containsObject:@"HUCCNotificationsEnabledReasonForeground"];
+  notificationsEnabledReasons3 = [(HFCharacteristicNotificationManager *)self notificationsEnabledReasons];
+  v25 = [notificationsEnabledReasons3 containsObject:@"HUCCNotificationsEnabledReasonForeground"];
 
-  if (a3)
+  if (accessories)
   {
     v26 = 1;
   }
@@ -333,12 +333,12 @@ LABEL_8:
   v27 = HFLogForCategory(0);
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
-    v28 = [(HFCharacteristicNotificationManager *)self notificationsEnabledReasons];
-    v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    notificationsEnabledReasons4 = [(HFCharacteristicNotificationManager *)self notificationsEnabledReasons];
+    v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:accessories];
     *buf = 138413058;
-    v39 = v6;
+    v39 = home;
     v40 = 2112;
-    v41 = v28;
+    v41 = notificationsEnabledReasons4;
     v42 = 1024;
     v43 = v26;
     v44 = 2112;
@@ -350,9 +350,9 @@ LABEL_8:
   v33 = 3221225472;
   v34 = __100__HFCharacteristicNotificationManager__updateNotificationsEnabledWithNumberOfAppleMediaAccessories___block_invoke_25;
   v35 = &unk_277DF2748;
-  v30 = v6;
+  v30 = home;
   v36 = v30;
-  v37 = self;
+  selfCopy = self;
   [v30 enableNotifications:1 includeAppleMediaAccessoryNotifications:v26 completionHandler:&v32];
   [(HFCharacteristicNotificationManager *)self setNotificationsEnabledHome:v30, v32, v33, v34, v35];
 

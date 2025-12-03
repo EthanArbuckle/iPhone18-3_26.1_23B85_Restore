@@ -1,11 +1,11 @@
 @interface SessionAudioPlaybackControls
-- (_TtC9SeymourUI28SessionAudioPlaybackControls)initWithCoder:(id)a3;
-- (void)playbackControlTapped:(id)a3;
+- (_TtC9SeymourUI28SessionAudioPlaybackControls)initWithCoder:(id)coder;
+- (void)playbackControlTapped:(id)tapped;
 @end
 
 @implementation SessionAudioPlaybackControls
 
-- (_TtC9SeymourUI28SessionAudioPlaybackControls)initWithCoder:(id)a3
+- (_TtC9SeymourUI28SessionAudioPlaybackControls)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI28SessionAudioPlaybackControls_onPlaybackControlTapped);
   *v4 = 0;
@@ -19,15 +19,15 @@
   return result;
 }
 
-- (void)playbackControlTapped:(id)a3
+- (void)playbackControlTapped:(id)tapped
 {
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI28SessionAudioPlaybackControls_onPlaybackControlTapped);
   if (v3)
   {
-    v5 = a3;
-    v6 = self;
+    tappedCopy = tapped;
+    selfCopy = self;
     sub_20B584050(v3);
-    v3(v5);
+    v3(tappedCopy);
 
     sub_20B5E0F50(v3);
   }

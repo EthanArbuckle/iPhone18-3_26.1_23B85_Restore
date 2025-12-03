@@ -1,7 +1,7 @@
 @interface IPAScaleOperator
-+ (id)operatorWithIdentifier:(id)a3 scaleX:(double)a4 Y:(double)a5;
++ (id)operatorWithIdentifier:(id)identifier scaleX:(double)x Y:(double)y;
 - (id)description;
-- (id)transformForGeometry:(id)a3;
+- (id)transformForGeometry:(id)geometry;
 @end
 
 @implementation IPAScaleOperator
@@ -16,16 +16,16 @@
   return v6;
 }
 
-- (id)transformForGeometry:(id)a3
+- (id)transformForGeometry:(id)geometry
 {
-  v4 = a3;
-  v5 = v4;
+  geometryCopy = geometry;
+  v5 = geometryCopy;
   xScale = self->_xScale;
   yScale = self->_yScale;
   v8 = yScale == 1.0 && xScale == 1.0;
   if (v8)
   {
-    v9 = v4;
+    v9 = geometryCopy;
     v29 = 0u;
     v30 = 0u;
     v32 = 0u;
@@ -40,7 +40,7 @@
 
   else
   {
-    [v4 extent];
+    [geometryCopy extent];
     v10 = self->_xScale;
     v11 = self->_yScale;
     v39.origin.x = v12 * v10;
@@ -68,10 +68,10 @@
   return v26;
 }
 
-+ (id)operatorWithIdentifier:(id)a3 scaleX:(double)a4 Y:(double)a5
++ (id)operatorWithIdentifier:(id)identifier scaleX:(double)x Y:(double)y
 {
-  v7 = a3;
-  if (a4 <= 0.0 || a5 <= 0.0)
+  identifierCopy = identifier;
+  if (x <= 0.0 || y <= 0.0)
   {
     result = _PFAssertFailHandler();
     __break(1u);
@@ -79,9 +79,9 @@
 
   else
   {
-    v8 = [(IPAGeometryOperator *)[IPAScaleOperator alloc] initWithIdentifier:v7];
-    v8->_xScale = a4;
-    v8->_yScale = a5;
+    v8 = [(IPAGeometryOperator *)[IPAScaleOperator alloc] initWithIdentifier:identifierCopy];
+    v8->_xScale = x;
+    v8->_yScale = y;
 
     return v8;
   }

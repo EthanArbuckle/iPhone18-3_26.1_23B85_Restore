@@ -1,31 +1,31 @@
 @interface MRAVRoutingDiscoverySessionOperation
-- (MRAVRoutingDiscoverySessionOperation)initWithOutputDeviceUIDs:(id)a3;
+- (MRAVRoutingDiscoverySessionOperation)initWithOutputDeviceUIDs:(id)ds;
 - (OS_dispatch_queue)dispatchQueue;
 - (id)endpointDiscoveredHandler;
 - (id)finishHandler;
 - (id)outputDeviceDiscoveredHandler;
-- (void)_finishWithError:(id)a3;
-- (void)_notifyDiscoveredEndpoint:(id)a3 outputDevice:(id)a4 forTargetOutputDevice:(id)a5;
+- (void)_finishWithError:(id)error;
+- (void)_notifyDiscoveredEndpoint:(id)endpoint outputDevice:(id)device forTargetOutputDevice:(id)outputDevice;
 - (void)cancel;
-- (void)cancelWithError:(id)a3;
-- (void)executeWithTimeout:(double)a3;
-- (void)setDispatchQueue:(id)a3;
-- (void)setEndpointDiscoveredHandler:(id)a3;
-- (void)setFinishHandler:(id)a3;
-- (void)setOutputDeviceDiscoveredHandler:(id)a3;
+- (void)cancelWithError:(id)error;
+- (void)executeWithTimeout:(double)timeout;
+- (void)setDispatchQueue:(id)queue;
+- (void)setEndpointDiscoveredHandler:(id)handler;
+- (void)setFinishHandler:(id)handler;
+- (void)setOutputDeviceDiscoveredHandler:(id)handler;
 @end
 
 @implementation MRAVRoutingDiscoverySessionOperation
 
-- (MRAVRoutingDiscoverySessionOperation)initWithOutputDeviceUIDs:(id)a3
+- (MRAVRoutingDiscoverySessionOperation)initWithOutputDeviceUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v9.receiver = self;
   v9.super_class = MRAVRoutingDiscoverySessionOperation;
   v5 = [(MRAVRoutingDiscoverySessionOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dsCopy copy];
     outputDeviceUIDs = v5->_outputDeviceUIDs;
     v5->_outputDeviceUIDs = v6;
   }
@@ -33,135 +33,135 @@
   return v5;
 }
 
-- (void)setEndpointDiscoveredHandler:(id)a3
+- (void)setEndpointDiscoveredHandler:(id)handler
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  endpointDiscoveredHandler = v4->_endpointDiscoveredHandler;
-  v4->_endpointDiscoveredHandler = v5;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [handlerCopy copy];
+  endpointDiscoveredHandler = selfCopy->_endpointDiscoveredHandler;
+  selfCopy->_endpointDiscoveredHandler = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)endpointDiscoveredHandler
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [v2->_endpointDiscoveredHandler copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [selfCopy->_endpointDiscoveredHandler copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setOutputDeviceDiscoveredHandler:(id)a3
+- (void)setOutputDeviceDiscoveredHandler:(id)handler
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  outputDeviceDiscoveredHandler = v4->_outputDeviceDiscoveredHandler;
-  v4->_outputDeviceDiscoveredHandler = v5;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [handlerCopy copy];
+  outputDeviceDiscoveredHandler = selfCopy->_outputDeviceDiscoveredHandler;
+  selfCopy->_outputDeviceDiscoveredHandler = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)outputDeviceDiscoveredHandler
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [v2->_outputDeviceDiscoveredHandler copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [selfCopy->_outputDeviceDiscoveredHandler copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setFinishHandler:(id)a3
+- (void)setFinishHandler:(id)handler
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  finishHandler = v4->_finishHandler;
-  v4->_finishHandler = v5;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [handlerCopy copy];
+  finishHandler = selfCopy->_finishHandler;
+  selfCopy->_finishHandler = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)finishHandler
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [v2->_finishHandler copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [selfCopy->_finishHandler copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (OS_dispatch_queue)dispatchQueue
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  dispatchQueue = v2->_dispatchQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dispatchQueue = selfCopy->_dispatchQueue;
   if (!dispatchQueue)
   {
     v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v5 = dispatch_queue_create("com.apple.mediaremote.discoverySessionOperation", v4);
-    v6 = v2->_dispatchQueue;
-    v2->_dispatchQueue = v5;
+    v6 = selfCopy->_dispatchQueue;
+    selfCopy->_dispatchQueue = v5;
 
-    dispatchQueue = v2->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
   }
 
   v7 = dispatchQueue;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   obj = self;
   objc_sync_enter(obj);
   dispatchQueue = obj->_dispatchQueue;
-  obj->_dispatchQueue = v4;
+  obj->_dispatchQueue = queueCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)executeWithTimeout:(double)a3
+- (void)executeWithTimeout:(double)timeout
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_session)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_session)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:v5 file:@"MRAVRoutingDiscoverySessionOperation.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"!_session"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"MRAVRoutingDiscoverySessionOperation.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"!_session"}];
   }
 
   v6 = [MEMORY[0x1E695DF00] now];
-  startDate = v5->_startDate;
-  v5->_startDate = v6;
+  startDate = selfCopy->_startDate;
+  selfCopy->_startDate = v6;
 
-  v8 = [MEMORY[0x1E696AFB0] UUID];
-  v9 = [v8 UUIDString];
-  requestID = v5->_requestID;
-  v5->_requestID = v9;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  requestID = selfCopy->_requestID;
+  selfCopy->_requestID = uUIDString;
 
   v11 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v12 = [(MRAVRoutingDiscoverySessionOperation *)v5 outputDeviceUIDs];
-  v13 = [v11 initWithArray:v12];
+  outputDeviceUIDs = [(MRAVRoutingDiscoverySessionOperation *)selfCopy outputDeviceUIDs];
+  v13 = [v11 initWithArray:outputDeviceUIDs];
 
-  v14 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", objc_opt_class(), v5->_requestID];
-  v15 = [(MRAVRoutingDiscoverySessionOperation *)v5 outputDeviceUIDs];
+  v14 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", objc_opt_class(), selfCopy->_requestID];
+  outputDeviceUIDs2 = [(MRAVRoutingDiscoverySessionOperation *)selfCopy outputDeviceUIDs];
 
-  if (v15)
+  if (outputDeviceUIDs2)
   {
-    v16 = [(MRAVRoutingDiscoverySessionOperation *)v5 outputDeviceUIDs];
-    [v14 appendFormat:@" for %@", v16];
+    outputDeviceUIDs3 = [(MRAVRoutingDiscoverySessionOperation *)selfCopy outputDeviceUIDs];
+    [v14 appendFormat:@" for %@", outputDeviceUIDs3];
   }
 
   v17 = _MRLogForCategory(0xAuLL);
@@ -174,26 +174,26 @@
 
   v18 = objc_alloc(MEMORY[0x1E696AEC0]);
   v19 = objc_opt_class();
-  v20 = [(MRAVRoutingDiscoverySessionOperation *)v5 outputDeviceUIDs];
-  v21 = [v18 initWithFormat:@"%@-%@", v19, v20];
+  outputDeviceUIDs4 = [(MRAVRoutingDiscoverySessionOperation *)selfCopy outputDeviceUIDs];
+  v21 = [v18 initWithFormat:@"%@-%@", v19, outputDeviceUIDs4];
 
   v22 = [MRBlockGuard alloc];
-  v23 = [(MRAVRoutingDiscoverySessionOperation *)v5 dispatchQueue];
+  dispatchQueue = [(MRAVRoutingDiscoverySessionOperation *)selfCopy dispatchQueue];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __59__MRAVRoutingDiscoverySessionOperation_executeWithTimeout___block_invoke;
   v36[3] = &unk_1E769AFC0;
-  v36[4] = v5;
-  v24 = [(MRBlockGuard *)v22 initWithTimeout:v21 reason:v23 queue:v36 handler:a3];
-  guard = v5->_guard;
-  v5->_guard = v24;
+  v36[4] = selfCopy;
+  v24 = [(MRBlockGuard *)v22 initWithTimeout:v21 reason:dispatchQueue queue:v36 handler:timeout];
+  guard = selfCopy->_guard;
+  selfCopy->_guard = v24;
 
   v26 = [MRAVRoutingDiscoverySession discoverySessionWithEndpointFeatures:8];
-  session = v5->_session;
-  v5->_session = v26;
+  session = selfCopy->_session;
+  selfCopy->_session = v26;
 
-  objc_initWeak(buf, v5);
-  v28 = v5->_session;
+  objc_initWeak(buf, selfCopy);
+  v28 = selfCopy->_session;
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __59__MRAVRoutingDiscoverySessionOperation_executeWithTimeout___block_invoke_2;
@@ -202,12 +202,12 @@
   v29 = v13;
   v34 = v29;
   v30 = [(MRAVRoutingDiscoverySession *)v28 addEndpointsAddedCallback:v33];
-  [(MRAVRoutingDiscoverySession *)v5->_session setDiscoveryMode:2];
+  [(MRAVRoutingDiscoverySession *)selfCopy->_session setDiscoveryMode:2];
 
   objc_destroyWeak(&v35);
   objc_destroyWeak(buf);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   v31 = *MEMORY[0x1E69E9840];
 }
 
@@ -286,78 +286,78 @@ void __59__MRAVRoutingDiscoverySessionOperation_executeWithTimeout___block_invok
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyDiscoveredEndpoint:(id)a3 outputDevice:(id)a4 forTargetOutputDevice:(id)a5
+- (void)_notifyDiscoveredEndpoint:(id)endpoint outputDevice:(id)device forTargetOutputDevice:(id)outputDevice
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  objc_sync_enter(v11);
-  discoveredTargetOutputDeviceUIDs = v11->_discoveredTargetOutputDeviceUIDs;
+  endpointCopy = endpoint;
+  deviceCopy = device;
+  outputDeviceCopy = outputDevice;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  discoveredTargetOutputDeviceUIDs = selfCopy->_discoveredTargetOutputDeviceUIDs;
   if (!discoveredTargetOutputDeviceUIDs)
   {
     v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v14 = v11->_discoveredTargetOutputDeviceUIDs;
-    v11->_discoveredTargetOutputDeviceUIDs = v13;
+    v14 = selfCopy->_discoveredTargetOutputDeviceUIDs;
+    selfCopy->_discoveredTargetOutputDeviceUIDs = v13;
 
-    discoveredTargetOutputDeviceUIDs = v11->_discoveredTargetOutputDeviceUIDs;
+    discoveredTargetOutputDeviceUIDs = selfCopy->_discoveredTargetOutputDeviceUIDs;
   }
 
-  [(NSMutableSet *)discoveredTargetOutputDeviceUIDs addObject:v10];
-  discoveredEndpoints = v11->_discoveredEndpoints;
+  [(NSMutableSet *)discoveredTargetOutputDeviceUIDs addObject:outputDeviceCopy];
+  discoveredEndpoints = selfCopy->_discoveredEndpoints;
   if (!discoveredEndpoints)
   {
-    v16 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{-[NSArray count](v11->_outputDeviceUIDs, "count")}];
-    v17 = v11->_discoveredEndpoints;
-    v11->_discoveredEndpoints = v16;
+    v16 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{-[NSArray count](selfCopy->_outputDeviceUIDs, "count")}];
+    v17 = selfCopy->_discoveredEndpoints;
+    selfCopy->_discoveredEndpoints = v16;
 
-    discoveredEndpoints = v11->_discoveredEndpoints;
+    discoveredEndpoints = selfCopy->_discoveredEndpoints;
   }
 
-  if (([(NSMutableSet *)discoveredEndpoints containsObject:v8]& 1) == 0)
+  if (([(NSMutableSet *)discoveredEndpoints containsObject:endpointCopy]& 1) == 0)
   {
-    [(NSMutableSet *)v11->_discoveredEndpoints addObject:v8];
-    v18 = [(MRAVRoutingDiscoverySessionOperation *)v11 dispatchQueue];
+    [(NSMutableSet *)selfCopy->_discoveredEndpoints addObject:endpointCopy];
+    dispatchQueue = [(MRAVRoutingDiscoverySessionOperation *)selfCopy dispatchQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __101__MRAVRoutingDiscoverySessionOperation__notifyDiscoveredEndpoint_outputDevice_forTargetOutputDevice___block_invoke;
     block[3] = &unk_1E769A4A0;
-    block[4] = v11;
-    v28 = v8;
-    dispatch_async(v18, block);
+    block[4] = selfCopy;
+    v28 = endpointCopy;
+    dispatch_async(dispatchQueue, block);
   }
 
-  discoveredOutputDevices = v11->_discoveredOutputDevices;
+  discoveredOutputDevices = selfCopy->_discoveredOutputDevices;
   if (!discoveredOutputDevices)
   {
-    v20 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{-[NSArray count](v11->_outputDeviceUIDs, "count")}];
-    v21 = v11->_discoveredOutputDevices;
-    v11->_discoveredOutputDevices = v20;
+    v20 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{-[NSArray count](selfCopy->_outputDeviceUIDs, "count")}];
+    v21 = selfCopy->_discoveredOutputDevices;
+    selfCopy->_discoveredOutputDevices = v20;
 
-    discoveredOutputDevices = v11->_discoveredOutputDevices;
+    discoveredOutputDevices = selfCopy->_discoveredOutputDevices;
   }
 
-  if (([(NSMutableSet *)discoveredOutputDevices containsObject:v9]& 1) == 0)
+  if (([(NSMutableSet *)discoveredOutputDevices containsObject:deviceCopy]& 1) == 0)
   {
-    [(NSMutableSet *)v11->_discoveredOutputDevices addObject:v9];
-    v22 = [(MRAVRoutingDiscoverySessionOperation *)v11 dispatchQueue];
+    [(NSMutableSet *)selfCopy->_discoveredOutputDevices addObject:deviceCopy];
+    dispatchQueue2 = [(MRAVRoutingDiscoverySessionOperation *)selfCopy dispatchQueue];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __101__MRAVRoutingDiscoverySessionOperation__notifyDiscoveredEndpoint_outputDevice_forTargetOutputDevice___block_invoke_2;
     v24[3] = &unk_1E769BA00;
-    v24[4] = v11;
-    v25 = v8;
-    v26 = v9;
-    dispatch_async(v22, v24);
+    v24[4] = selfCopy;
+    v25 = endpointCopy;
+    v26 = deviceCopy;
+    dispatch_async(dispatchQueue2, v24);
   }
 
-  v23 = [(NSMutableSet *)v11->_discoveredTargetOutputDeviceUIDs count];
-  if (v23 == [(NSArray *)v11->_outputDeviceUIDs count])
+  v23 = [(NSMutableSet *)selfCopy->_discoveredTargetOutputDeviceUIDs count];
+  if (v23 == [(NSArray *)selfCopy->_outputDeviceUIDs count])
   {
-    [(MRAVRoutingDiscoverySessionOperation *)v11 _finishWithError:0];
+    [(MRAVRoutingDiscoverySessionOperation *)selfCopy _finishWithError:0];
   }
 
-  objc_sync_exit(v11);
+  objc_sync_exit(selfCopy);
 }
 
 void __101__MRAVRoutingDiscoverySessionOperation__notifyDiscoveredEndpoint_outputDevice_forTargetOutputDevice___block_invoke(uint64_t a1)
@@ -382,50 +382,50 @@ void __101__MRAVRoutingDiscoverySessionOperation__notifyDiscoveredEndpoint_outpu
   }
 }
 
-- (void)_finishWithError:(id)a3
+- (void)_finishWithError:(id)error
 {
   v56 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   if ([(MRAVRoutingDiscoverySession *)self->_session discoveryMode])
   {
     [(MRAVRoutingDiscoverySession *)self->_session setDiscoveryMode:0];
     v5 = objc_alloc(MEMORY[0x1E695DFA8]);
-    v6 = [(MRAVRoutingDiscoverySessionOperation *)self outputDeviceUIDs];
-    v7 = [v5 initWithArray:v6];
+    outputDeviceUIDs = [(MRAVRoutingDiscoverySessionOperation *)self outputDeviceUIDs];
+    v7 = [v5 initWithArray:outputDeviceUIDs];
 
     [v7 minusSet:self->_discoveredTargetOutputDeviceUIDs];
     v8 = objc_alloc_init(MRAVRoutingDiscoverySessionOperationReport);
-    v9 = [(NSMutableSet *)self->_discoveredTargetOutputDeviceUIDs allObjects];
-    [(MRAVRoutingDiscoverySessionOperationReport *)v8 setDiscoveredOutputDeviceUIDs:v9];
+    allObjects = [(NSMutableSet *)self->_discoveredTargetOutputDeviceUIDs allObjects];
+    [(MRAVRoutingDiscoverySessionOperationReport *)v8 setDiscoveredOutputDeviceUIDs:allObjects];
 
-    v10 = [v7 allObjects];
-    [(MRAVRoutingDiscoverySessionOperationReport *)v8 setUndiscoveredOutputDeviceUIDs:v10];
+    allObjects2 = [v7 allObjects];
+    [(MRAVRoutingDiscoverySessionOperationReport *)v8 setUndiscoveredOutputDeviceUIDs:allObjects2];
 
     if ([(NSArray *)self->_outputDeviceUIDs count]&& ![(NSMutableSet *)self->_discoveredTargetOutputDeviceUIDs count])
     {
-      v11 = v4;
-      if (!v4)
+      v11 = errorCopy;
+      if (!errorCopy)
       {
         v33 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithMRError:39 format:@"Could not discover any of the provided devices"];
         [(MRAVRoutingDiscoverySessionOperationReport *)v8 setError:v33];
 
 LABEL_6:
-        v12 = [(MRAVRoutingDiscoverySessionOperationReport *)v8 error];
-        if (v12)
+        error = [(MRAVRoutingDiscoverySessionOperationReport *)v8 error];
+        if (error)
         {
         }
 
         else
         {
-          v18 = [(MRAVRoutingDiscoverySessionOperationReport *)v8 discoveredOutputDeviceUIDs];
+          discoveredOutputDeviceUIDs = [(MRAVRoutingDiscoverySessionOperationReport *)v8 discoveredOutputDeviceUIDs];
 
-          if (v18)
+          if (discoveredOutputDeviceUIDs)
           {
-            v19 = [(MRAVRoutingDiscoverySessionOperation *)self outputDeviceUIDs];
+            outputDeviceUIDs2 = [(MRAVRoutingDiscoverySessionOperation *)self outputDeviceUIDs];
 
             v16 = _MRLogForCategory(0xAuLL);
             v20 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-            if (v19)
+            if (outputDeviceUIDs2)
             {
               if (!v20)
               {
@@ -434,18 +434,18 @@ LABEL_6:
 
               v21 = objc_opt_class();
               requestID = self->_requestID;
-              v23 = [(MRAVRoutingDiscoverySessionOperationReport *)v8 discoveredOutputDeviceUIDs];
-              v24 = [(MRAVRoutingDiscoverySessionOperation *)self outputDeviceUIDs];
-              v25 = [MEMORY[0x1E695DF00] date];
-              [v25 timeIntervalSinceDate:self->_startDate];
+              discoveredOutputDeviceUIDs2 = [(MRAVRoutingDiscoverySessionOperationReport *)v8 discoveredOutputDeviceUIDs];
+              outputDeviceUIDs3 = [(MRAVRoutingDiscoverySessionOperation *)self outputDeviceUIDs];
+              date = [MEMORY[0x1E695DF00] date];
+              [date timeIntervalSinceDate:self->_startDate];
               *buf = 138544386;
               v47 = v21;
               v48 = 2114;
               v49 = requestID;
               v50 = 2112;
-              v51 = v23;
+              v51 = discoveredOutputDeviceUIDs2;
               v52 = 2114;
-              v53 = v24;
+              v53 = outputDeviceUIDs3;
               v54 = 2048;
               v55 = v26;
               _os_log_impl(&dword_1A2860000, v16, OS_LOG_TYPE_DEFAULT, "Response: %{public}@<%{public}@> returned <%@> for %{public}@ in %.4lf seconds", buf, 0x34u);
@@ -460,15 +460,15 @@ LABEL_6:
 
               v37 = objc_opt_class();
               v38 = self->_requestID;
-              v23 = [(MRAVRoutingDiscoverySessionOperationReport *)v8 discoveredOutputDeviceUIDs];
-              v39 = [MEMORY[0x1E695DF00] date];
-              [v39 timeIntervalSinceDate:self->_startDate];
+              discoveredOutputDeviceUIDs2 = [(MRAVRoutingDiscoverySessionOperationReport *)v8 discoveredOutputDeviceUIDs];
+              date2 = [MEMORY[0x1E695DF00] date];
+              [date2 timeIntervalSinceDate:self->_startDate];
               *buf = 138544130;
               v47 = v37;
               v48 = 2114;
               v49 = v38;
               v50 = 2112;
-              v51 = v23;
+              v51 = discoveredOutputDeviceUIDs2;
               v52 = 2048;
               v53 = v40;
               _os_log_impl(&dword_1A2860000, v16, OS_LOG_TYPE_DEFAULT, "Response: %{public}@<%{public}@> returned <%@> in %.4lf seconds", buf, 0x2Au);
@@ -478,16 +478,16 @@ LABEL_6:
           }
         }
 
-        v13 = [(MRAVRoutingDiscoverySessionOperationReport *)v8 error];
+        error2 = [(MRAVRoutingDiscoverySessionOperationReport *)v8 error];
 
-        v14 = [(MRAVRoutingDiscoverySessionOperation *)self outputDeviceUIDs];
+        outputDeviceUIDs4 = [(MRAVRoutingDiscoverySessionOperation *)self outputDeviceUIDs];
 
         v15 = _MRLogForCategory(0xAuLL);
         v16 = v15;
-        if (v13)
+        if (error2)
         {
           v17 = os_log_type_enabled(v15, OS_LOG_TYPE_ERROR);
-          if (v14)
+          if (outputDeviceUIDs4)
           {
             if (v17)
             {
@@ -504,21 +504,21 @@ LABEL_6:
         }
 
         v27 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
-        if (v14)
+        if (outputDeviceUIDs4)
         {
           if (v27)
           {
             v28 = objc_opt_class();
             v29 = self->_requestID;
-            v30 = [(MRAVRoutingDiscoverySessionOperation *)self outputDeviceUIDs];
-            v31 = [MEMORY[0x1E695DF00] date];
-            [v31 timeIntervalSinceDate:self->_startDate];
+            outputDeviceUIDs5 = [(MRAVRoutingDiscoverySessionOperation *)self outputDeviceUIDs];
+            date3 = [MEMORY[0x1E695DF00] date];
+            [date3 timeIntervalSinceDate:self->_startDate];
             *buf = 138544130;
             v47 = v28;
             v48 = 2114;
             v49 = v29;
             v50 = 2114;
-            v51 = v30;
+            v51 = outputDeviceUIDs5;
             v52 = 2048;
             v53 = v32;
             _os_log_impl(&dword_1A2860000, v16, OS_LOG_TYPE_DEFAULT, "Response: %{public}@<%{public}@> returned for %{public}@ in %.4lf seconds", buf, 0x2Au);
@@ -531,8 +531,8 @@ LABEL_25:
         {
           v34 = objc_opt_class();
           v35 = self->_requestID;
-          v30 = [MEMORY[0x1E695DF00] date];
-          [v30 timeIntervalSinceDate:self->_startDate];
+          outputDeviceUIDs5 = [MEMORY[0x1E695DF00] date];
+          [outputDeviceUIDs5 timeIntervalSinceDate:self->_startDate];
           *buf = 138543874;
           v47 = v34;
           v48 = 2114;
@@ -545,7 +545,7 @@ LABEL_25:
 
 LABEL_29:
 
-        v41 = [(MRAVRoutingDiscoverySessionOperation *)self dispatchQueue];
+        dispatchQueue = [(MRAVRoutingDiscoverySessionOperation *)self dispatchQueue];
         v44[0] = MEMORY[0x1E69E9820];
         v44[1] = 3221225472;
         v44[2] = __57__MRAVRoutingDiscoverySessionOperation__finishWithError___block_invoke;
@@ -553,7 +553,7 @@ LABEL_29:
         v44[4] = self;
         v45 = v8;
         v42 = v8;
-        dispatch_async(v41, v44);
+        dispatch_async(dispatchQueue, v44);
 
         goto LABEL_30;
       }
@@ -590,13 +590,13 @@ void __57__MRAVRoutingDiscoverySessionOperation__finishWithError___block_invoke(
   [(MRAVRoutingDiscoverySessionOperation *)self cancelWithError:v3];
 }
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(MRAVRoutingDiscoverySessionOperation *)v4 _finishWithError:v5];
-  objc_sync_exit(v4);
+  errorCopy = error;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MRAVRoutingDiscoverySessionOperation *)selfCopy _finishWithError:errorCopy];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_finishWithError:(NSObject *)a3 .cold.1(void *a1, void *a2, NSObject *a3)

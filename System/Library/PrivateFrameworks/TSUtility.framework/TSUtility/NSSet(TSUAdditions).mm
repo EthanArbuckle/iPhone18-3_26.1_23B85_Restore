@@ -46,7 +46,7 @@ LABEL_4:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  result = [a1 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  result = [self countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (result)
   {
     v6 = result;
@@ -58,7 +58,7 @@ LABEL_4:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(a1);
+          objc_enumerationMutation(self);
         }
 
         if (*(*(&v9 + 1) + 8 * v8) == a3)
@@ -70,7 +70,7 @@ LABEL_4:
       }
 
       while (v6 != v8);
-      result = [a1 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      result = [self countByEnumeratingWithState:&v9 objects:v13 count:16];
       v6 = result;
       if (result)
       {

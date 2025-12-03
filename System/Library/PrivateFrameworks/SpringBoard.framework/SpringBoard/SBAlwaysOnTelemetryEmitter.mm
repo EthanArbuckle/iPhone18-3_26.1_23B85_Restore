@@ -2,35 +2,35 @@
 + (id)new;
 - (SBAlwaysOnPolicyCoordinator)alwaysOnPolicyCoordinator;
 - (SBAlwaysOnTelemetryEmitter)init;
-- (SBAlwaysOnTelemetryEmitter)initWithBacklightEnvironmentSessionProvider:(id)a3;
-- (id)_analyticsPayloadForHistogram:(uint64_t)a1;
+- (SBAlwaysOnTelemetryEmitter)initWithBacklightEnvironmentSessionProvider:(id)provider;
+- (id)_analyticsPayloadForHistogram:(uint64_t)histogram;
 - (id)_mq_metrics;
-- (id)_payloadForAlwaysOnEnabled:(uint64_t)a1;
+- (id)_payloadForAlwaysOnEnabled:(uint64_t)enabled;
 - (uint64_t)_noteAlwaysOnEnabledReasonsMayHaveChanged;
 - (uint64_t)_resolveTelemetryBacklightState;
-- (uint64_t)_resolveTelemetryBacklightState:(uint64_t)a1;
-- (void)_emitAnalyticsEventForBacklightStateTransitionWithEvent:(uint64_t)a1;
-- (void)_emitBiomeEventsForAlwaysOnEnabled:(uint64_t)a1;
-- (void)_emitEventsForAlwaysOnEnabled:(uint64_t)a1;
-- (void)_emitEventsForAlwaysOnEnabled:(uint64_t)a1 ifPayloadChanged:(char)a2;
-- (void)_emitPowerLogEventForBacklightStateTransitionWithEvent:(uint64_t)a3 telemetryBacklightState:;
-- (void)_logAnalyticsEvent:(void *)a3 metrics:;
-- (void)_logPowerlogEvent:(uint64_t)a3 payload:;
-- (void)_logPowerlogEvent:(void *)a3 metrics:;
-- (void)_logTelemetryForBacklightStateUpdate:(uint64_t)a1 event:(uint64_t)a2;
-- (void)_logTelemetryForBacklightStateUpdateFromTelemetrySource:(void *)a3 event:;
+- (uint64_t)_resolveTelemetryBacklightState:(uint64_t)state;
+- (void)_emitAnalyticsEventForBacklightStateTransitionWithEvent:(uint64_t)event;
+- (void)_emitBiomeEventsForAlwaysOnEnabled:(uint64_t)enabled;
+- (void)_emitEventsForAlwaysOnEnabled:(uint64_t)enabled;
+- (void)_emitEventsForAlwaysOnEnabled:(uint64_t)enabled ifPayloadChanged:(char)changed;
+- (void)_emitPowerLogEventForBacklightStateTransitionWithEvent:(uint64_t)event telemetryBacklightState:;
+- (void)_logAnalyticsEvent:(void *)event metrics:;
+- (void)_logPowerlogEvent:(uint64_t)event payload:;
+- (void)_logPowerlogEvent:(void *)event metrics:;
+- (void)_logTelemetryForBacklightStateUpdate:(uint64_t)update event:(uint64_t)event;
+- (void)_logTelemetryForBacklightStateUpdateFromTelemetrySource:(void *)source event:;
 - (void)_mq_triggerDeferredLogging;
 - (void)_performDeferredLogging;
-- (void)_significantTimeChange:(id)a3;
-- (void)backlight:(id)a3 didChangeAlwaysOnEnabled:(BOOL)a4;
-- (void)backlightEnvironmentSessionsProvider:(id)a3 didUpdatePresentation:(id)a4 withBundleIdentifiers:(id)a5;
-- (void)backlightTelemetrySource:(id)a3 didCompleteUpdateToFlipbookState:(int64_t)a4 forEvent:(id)a5;
-- (void)backlightTelemetrySource:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5;
+- (void)_significantTimeChange:(id)change;
+- (void)backlight:(id)backlight didChangeAlwaysOnEnabled:(BOOL)enabled;
+- (void)backlightEnvironmentSessionsProvider:(id)provider didUpdatePresentation:(id)presentation withBundleIdentifiers:(id)identifiers;
+- (void)backlightTelemetrySource:(id)source didCompleteUpdateToFlipbookState:(int64_t)state forEvent:(id)event;
+- (void)backlightTelemetrySource:(id)source didCompleteUpdateToState:(int64_t)state forEvent:(id)event;
 - (void)completeIntializationAfterBLSStartup;
 - (void)dealloc;
-- (void)logTelemetryForInvalidation:(id)a3;
-- (void)logTelemetryForRenderSession:(id)a3;
-- (void)logTelemetryForRequestDates:(id)a3;
+- (void)logTelemetryForInvalidation:(id)invalidation;
+- (void)logTelemetryForRenderSession:(id)session;
+- (void)logTelemetryForRequestDates:(id)dates;
 @end
 
 @implementation SBAlwaysOnTelemetryEmitter
@@ -56,26 +56,26 @@ void __71__SBAlwaysOnTelemetryEmitter__noteAlwaysOnEnabledReasonsMayHaveChanged_
 
 - (id)_mq_metrics
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
+    selfCopy = self;
     BSDispatchQueueAssert();
-    [(SBAlwaysOnTelemetryEmitter *)v2 _mq_triggerDeferredLogging];
-    a1 = v2[6];
+    [(SBAlwaysOnTelemetryEmitter *)selfCopy _mq_triggerDeferredLogging];
+    self = selfCopy[6];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_mq_triggerDeferredLogging
 {
-  if (a1)
+  if (self)
   {
     BSDispatchQueueAssert();
-    if (!a1[7])
+    if (!self[7])
     {
-      objc_initWeak(&location, a1);
+      objc_initWeak(&location, self);
       v2 = MEMORY[0x277CBEBB8];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
@@ -83,10 +83,10 @@ void __71__SBAlwaysOnTelemetryEmitter__noteAlwaysOnEnabledReasonsMayHaveChanged_
       v9[3] = &unk_2783AA438;
       objc_copyWeak(&v10, &location);
       v3 = [v2 timerWithTimeInterval:0 repeats:v9 block:1200.0];
-      v4 = a1[7];
-      a1[7] = v3;
+      v4 = self[7];
+      self[7] = v3;
 
-      v5 = a1[7];
+      v5 = self[7];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __56__SBAlwaysOnTelemetryEmitter__mq_triggerDeferredLogging__block_invoke_2;
@@ -103,33 +103,33 @@ void __71__SBAlwaysOnTelemetryEmitter__noteAlwaysOnEnabledReasonsMayHaveChanged_
 
 + (id)new
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithBacklightEnvironmentSessionProvider_);
-  [v4 handleFailureInMethod:a2 object:a1 file:@"SBAlwaysOnTelemetryEmitter.m" lineNumber:69 description:{@"%s is unavailable; use %@ instead", "+[SBAlwaysOnTelemetryEmitter new]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBAlwaysOnTelemetryEmitter.m" lineNumber:69 description:{@"%s is unavailable; use %@ instead", "+[SBAlwaysOnTelemetryEmitter new]", v5}];
 
   return 0;
 }
 
 - (SBAlwaysOnTelemetryEmitter)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithBacklightEnvironmentSessionProvider_);
-  [v4 handleFailureInMethod:a2 object:self file:@"SBAlwaysOnTelemetryEmitter.m" lineNumber:73 description:{@"%s is unavailable; use %@ instead", "-[SBAlwaysOnTelemetryEmitter init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBAlwaysOnTelemetryEmitter.m" lineNumber:73 description:{@"%s is unavailable; use %@ instead", "-[SBAlwaysOnTelemetryEmitter init]", v5}];
 
   return 0;
 }
 
-- (SBAlwaysOnTelemetryEmitter)initWithBacklightEnvironmentSessionProvider:(id)a3
+- (SBAlwaysOnTelemetryEmitter)initWithBacklightEnvironmentSessionProvider:(id)provider
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  providerCopy = provider;
   v31.receiver = self;
   v31.super_class = SBAlwaysOnTelemetryEmitter;
   v6 = [(SBAlwaysOnTelemetryEmitter *)&v31 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backlightEnvironmentSessionProvider, a3);
+    objc_storeStrong(&v6->_backlightEnvironmentSessionProvider, provider);
     [(SBBacklightEnvironmentSessionProvider *)v7->_backlightEnvironmentSessionProvider addObserver:v7];
     v8 = objc_alloc_init(MEMORY[0x277D65D98]);
     alwaysOnDefaults = v7->_alwaysOnDefaults;
@@ -152,9 +152,9 @@ void __71__SBAlwaysOnTelemetryEmitter__noteAlwaysOnEnabledReasonsMayHaveChanged_
     alwaysOnDefaultsObserverToken = v7->_alwaysOnDefaultsObserverToken;
     v7->_alwaysOnDefaultsObserverToken = v15;
 
-    v17 = [MEMORY[0x277CF0880] sharedBacklight];
-    [v17 addObserver:v7];
-    objc_storeStrong(&v7->_backlight, v17);
+    mEMORY[0x277CF0880] = [MEMORY[0x277CF0880] sharedBacklight];
+    [mEMORY[0x277CF0880] addObserver:v7];
+    objc_storeStrong(&v7->_backlight, mEMORY[0x277CF0880]);
     SerialWithQoS = BSDispatchQueueCreateSerialWithQoS();
     metricsQueue = v7->_metricsQueue;
     v7->_metricsQueue = SerialWithQoS;
@@ -172,8 +172,8 @@ void __71__SBAlwaysOnTelemetryEmitter__noteAlwaysOnEnabledReasonsMayHaveChanged_
     v7->_mq_metrics = v24;
 
     [(SBAlwaysOnTelemetryMetrics *)v7->_mq_metrics setBacklightState:[(SBAlwaysOnTelemetryEmitter *)v7 _resolveTelemetryBacklightState:?]];
-    v26 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v26 addObserver:v7 selector:sel__significantTimeChange_ name:@"SBSignificantTimeChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__significantTimeChange_ name:@"SBSignificantTimeChangedNotification" object:0];
 
     objc_destroyWeak(&v29);
     objc_destroyWeak(&location);
@@ -191,15 +191,15 @@ void __74__SBAlwaysOnTelemetryEmitter_initWithBacklightEnvironmentSessionProvide
 - (void)dealloc
 {
   [(BSDefaultObserver *)self->_alwaysOnDefaultsObserverToken invalidate];
-  v3 = [MEMORY[0x277CF0880] sharedBacklight];
-  [v3 removeObserver:self];
+  mEMORY[0x277CF0880] = [MEMORY[0x277CF0880] sharedBacklight];
+  [mEMORY[0x277CF0880] removeObserver:self];
 
-  v4 = [SBApp blshService];
-  v5 = [v4 localAssertionService];
-  [v5 removeObserver:self];
+  blshService = [SBApp blshService];
+  localAssertionService = [blshService localAssertionService];
+  [localAssertionService removeObserver:self];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v7.receiver = self;
   v7.super_class = SBAlwaysOnTelemetryEmitter;
@@ -208,43 +208,43 @@ void __74__SBAlwaysOnTelemetryEmitter_initWithBacklightEnvironmentSessionProvide
 
 - (void)completeIntializationAfterBLSStartup
 {
-  v5 = [MEMORY[0x277CF0A10] sharedTelemetrySource];
-  [v5 setTelemetryDelegate:self];
-  v3 = [SBApp blshService];
-  v4 = [v3 localAssertionService];
+  mEMORY[0x277CF0A10] = [MEMORY[0x277CF0A10] sharedTelemetrySource];
+  [mEMORY[0x277CF0A10] setTelemetryDelegate:self];
+  blshService = [SBApp blshService];
+  localAssertionService = [blshService localAssertionService];
 
-  [v4 addObserver:self];
+  [localAssertionService addObserver:self];
 }
 
-- (void)backlightTelemetrySource:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvent:(id)a5
+- (void)backlightTelemetrySource:(id)source didCompleteUpdateToState:(int64_t)state forEvent:(id)event
 {
-  if (a4 != 1)
+  if (state != 1)
   {
-    [(SBAlwaysOnTelemetryEmitter *)self _logTelemetryForBacklightStateUpdateFromTelemetrySource:a3 event:a5];
+    [(SBAlwaysOnTelemetryEmitter *)self _logTelemetryForBacklightStateUpdateFromTelemetrySource:source event:event];
   }
 }
 
-- (void)backlightTelemetrySource:(id)a3 didCompleteUpdateToFlipbookState:(int64_t)a4 forEvent:(id)a5
+- (void)backlightTelemetrySource:(id)source didCompleteUpdateToFlipbookState:(int64_t)state forEvent:(id)event
 {
-  v9 = a3;
-  v8 = a5;
-  if (a4 && a4 != 3)
+  sourceCopy = source;
+  eventCopy = event;
+  if (state && state != 3)
   {
-    [(SBAlwaysOnTelemetryEmitter *)self _logTelemetryForBacklightStateUpdateFromTelemetrySource:v9 event:v8];
+    [(SBAlwaysOnTelemetryEmitter *)self _logTelemetryForBacklightStateUpdateFromTelemetrySource:sourceCopy event:eventCopy];
   }
 }
 
-- (void)logTelemetryForInvalidation:(id)a3
+- (void)logTelemetryForInvalidation:(id)invalidation
 {
-  v4 = a3;
+  invalidationCopy = invalidation;
   metricsQueue = self->_metricsQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__SBAlwaysOnTelemetryEmitter_logTelemetryForInvalidation___block_invoke;
   block[3] = &unk_2783A92D8;
-  v6 = v4;
+  v6 = invalidationCopy;
   v9 = v6;
-  v10 = self;
+  selfCopy = self;
   dispatch_async(metricsQueue, block);
   v7 = v6;
   AnalyticsSendEventLazy();
@@ -288,26 +288,26 @@ id __58__SBAlwaysOnTelemetryEmitter_logTelemetryForInvalidation___block_invoke_2
   return v5;
 }
 
-- (void)logTelemetryForRenderSession:(id)a3
+- (void)logTelemetryForRenderSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   metricsQueue = self->_metricsQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__SBAlwaysOnTelemetryEmitter_logTelemetryForRenderSession___block_invoke;
   block[3] = &unk_2783A92D8;
   block[4] = self;
-  v6 = v4;
+  v6 = sessionCopy;
   v9 = v6;
   dispatch_async(metricsQueue, block);
   v7 = v6;
   AnalyticsSendEventLazy();
 }
 
-- (void)logTelemetryForRequestDates:(id)a3
+- (void)logTelemetryForRequestDates:(id)dates
 {
-  v4 = a3;
-  v3 = v4;
+  datesCopy = dates;
+  v3 = datesCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -354,31 +354,31 @@ id __58__SBAlwaysOnTelemetryEmitter_logTelemetryForRequestDates___block_invoke(u
   return v16;
 }
 
-- (void)backlightEnvironmentSessionsProvider:(id)a3 didUpdatePresentation:(id)a4 withBundleIdentifiers:(id)a5
+- (void)backlightEnvironmentSessionsProvider:(id)provider didUpdatePresentation:(id)presentation withBundleIdentifiers:(id)identifiers
 {
-  v6 = a5;
+  identifiersCopy = identifiers;
   metricsQueue = self->_metricsQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __111__SBAlwaysOnTelemetryEmitter_backlightEnvironmentSessionsProvider_didUpdatePresentation_withBundleIdentifiers___block_invoke;
   v9[3] = &unk_2783A92D8;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = identifiersCopy;
+  v8 = identifiersCopy;
   dispatch_async(metricsQueue, v9);
 }
 
-- (void)_significantTimeChange:(id)a3
+- (void)_significantTimeChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"SBSignificantTimeChangeWasMidnight"];
-  v6 = [v5 BOOLValue];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:@"SBSignificantTimeChangeWasMidnight"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
-    v7 = [(BLSBacklight *)self->_backlight isAlwaysOnEnabled];
+    isAlwaysOnEnabled = [(BLSBacklight *)self->_backlight isAlwaysOnEnabled];
 
-    [SBAlwaysOnTelemetryEmitter _emitEventsForAlwaysOnEnabled:v7 ifPayloadChanged:?];
+    [SBAlwaysOnTelemetryEmitter _emitEventsForAlwaysOnEnabled:isAlwaysOnEnabled ifPayloadChanged:?];
   }
 }
 
@@ -580,36 +580,36 @@ void __65__SBAlwaysOnTelemetryEmitter__emitBiomeEventsForAlwaysOnEnabled___block
   return result;
 }
 
-- (void)_logTelemetryForBacklightStateUpdateFromTelemetrySource:(void *)a3 event:
-{
-  if (a1)
-  {
-    v6 = a3;
-    v5 = [(SBAlwaysOnTelemetryEmitter *)a1 _resolveTelemetryBacklightState:a2];
-    [SBAlwaysOnTelemetryEmitter _logTelemetryForBacklightStateUpdate:a1 event:v5];
-  }
-}
-
-- (void)backlight:(id)a3 didChangeAlwaysOnEnabled:(BOOL)a4
+- (void)_logTelemetryForBacklightStateUpdateFromTelemetrySource:(void *)source event:
 {
   if (self)
   {
-    OUTLINED_FUNCTION_2_18(self, a4);
+    sourceCopy = source;
+    v5 = [(SBAlwaysOnTelemetryEmitter *)self _resolveTelemetryBacklightState:a2];
+    [SBAlwaysOnTelemetryEmitter _logTelemetryForBacklightStateUpdate:self event:v5];
   }
 }
 
-- (void)_emitEventsForAlwaysOnEnabled:(uint64_t)a1
+- (void)backlight:(id)backlight didChangeAlwaysOnEnabled:(BOOL)enabled
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_2_18(a1, a2);
+    OUTLINED_FUNCTION_2_18(self, enabled);
   }
 }
 
-- (id)_analyticsPayloadForHistogram:(uint64_t)a1
+- (void)_emitEventsForAlwaysOnEnabled:(uint64_t)enabled
+{
+  if (enabled)
+  {
+    OUTLINED_FUNCTION_2_18(enabled, a2);
+  }
+}
+
+- (id)_analyticsPayloadForHistogram:(uint64_t)histogram
 {
   v21[10] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (histogram)
   {
     v20[0] = @"histogram_totalCount";
     v2 = MEMORY[0x277CCABB0];
@@ -720,67 +720,67 @@ void __111__SBAlwaysOnTelemetryEmitter_backlightEnvironmentSessionsProvider_didU
 
 - (void)_performDeferredLogging
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 40);
+    v1 = *(self + 40);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __53__SBAlwaysOnTelemetryEmitter__performDeferredLogging__block_invoke;
     block[3] = &unk_2783A8C18;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v1, block);
   }
 }
 
-- (uint64_t)_resolveTelemetryBacklightState:(uint64_t)a1
+- (uint64_t)_resolveTelemetryBacklightState:(uint64_t)state
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (state)
   {
-    v5 = [v3 backlightState];
-    v6 = [v4 flipbookState];
-    if (v5 == 1)
+    backlightState = [v3 backlightState];
+    flipbookState = [v4 flipbookState];
+    if (backlightState == 1)
     {
-      if ((v6 - 1) > 4)
+      if ((flipbookState - 1) > 4)
       {
-        a1 = 4;
+        state = 4;
       }
 
       else
       {
-        a1 = qword_21F8A6AC0[v6 - 1];
+        state = qword_21F8A6AC0[flipbookState - 1];
       }
     }
 
     else
     {
-      v7 = v6 == 3;
-      if (v5 == 3)
+      v7 = flipbookState == 3;
+      if (backlightState == 3)
       {
         v7 = 6;
       }
 
-      if (v5 == 2)
+      if (backlightState == 2)
       {
-        a1 = 5;
+        state = 5;
       }
 
       else
       {
-        a1 = v7;
+        state = v7;
       }
     }
   }
 
-  return a1;
+  return state;
 }
 
-- (void)_logTelemetryForBacklightStateUpdate:(uint64_t)a1 event:(uint64_t)a2
+- (void)_logTelemetryForBacklightStateUpdate:(uint64_t)update event:(uint64_t)event
 {
-  if (a1)
+  if (update)
   {
-    v4 = *(a1 + 40);
+    v4 = *(update + 40);
     OUTLINED_FUNCTION_0_29();
     OUTLINED_FUNCTION_4_8();
     v9[2] = __73__SBAlwaysOnTelemetryEmitter__logTelemetryForBacklightStateUpdate_event___block_invoke;
@@ -789,8 +789,8 @@ void __111__SBAlwaysOnTelemetryEmitter_backlightEnvironmentSessionsProvider_didU
     v9[5] = v6;
     v8 = v7;
     dispatch_async(v4, v9);
-    [(SBAlwaysOnTelemetryEmitter *)a1 _emitPowerLogEventForBacklightStateTransitionWithEvent:v8 telemetryBacklightState:a2];
-    [(SBAlwaysOnTelemetryEmitter *)a1 _emitAnalyticsEventForBacklightStateTransitionWithEvent:v8];
+    [(SBAlwaysOnTelemetryEmitter *)update _emitPowerLogEventForBacklightStateTransitionWithEvent:v8 telemetryBacklightState:event];
+    [(SBAlwaysOnTelemetryEmitter *)update _emitAnalyticsEventForBacklightStateTransitionWithEvent:v8];
   }
 }
 
@@ -800,29 +800,29 @@ void __73__SBAlwaysOnTelemetryEmitter__logTelemetryForBacklightStateUpdate_event
   [v2 setBacklightState:*(a1 + 40)];
 }
 
-- (void)_emitPowerLogEventForBacklightStateTransitionWithEvent:(uint64_t)a3 telemetryBacklightState:
+- (void)_emitPowerLogEventForBacklightStateTransitionWithEvent:(uint64_t)event telemetryBacklightState:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_0_29();
     OUTLINED_FUNCTION_4_8();
     v6[2] = __109__SBAlwaysOnTelemetryEmitter__emitPowerLogEventForBacklightStateTransitionWithEvent_telemetryBacklightState___block_invoke;
     v6[3] = &unk_2783B1160;
-    v8 = a3;
+    eventCopy = event;
     v7 = v5;
-    [(SBAlwaysOnTelemetryEmitter *)a1 _logPowerlogEvent:v6 payload:?];
+    [(SBAlwaysOnTelemetryEmitter *)self _logPowerlogEvent:v6 payload:?];
   }
 }
 
-- (void)_emitAnalyticsEventForBacklightStateTransitionWithEvent:(uint64_t)a1
+- (void)_emitAnalyticsEventForBacklightStateTransitionWithEvent:(uint64_t)event
 {
-  if (a1)
+  if (event)
   {
-    v2 = [a2 changeRequest];
-    v3 = [v2 sourceEventMetadata];
+    changeRequest = [a2 changeRequest];
+    sourceEventMetadata = [changeRequest sourceEventMetadata];
     v4 = objc_opt_class();
-    v5 = v3;
+    v5 = sourceEventMetadata;
     if (v4)
     {
       if (objc_opt_isKindOfClass())
@@ -852,13 +852,13 @@ void __73__SBAlwaysOnTelemetryEmitter__logTelemetryForBacklightStateUpdate_event
   }
 }
 
-- (void)_logPowerlogEvent:(uint64_t)a3 payload:
+- (void)_logPowerlogEvent:(uint64_t)event payload:
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v6 = (*(a3 + 16))(a3);
+    v6 = (*(event + 16))(event);
     v7 = SBLogBacklight();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -869,7 +869,7 @@ void __73__SBAlwaysOnTelemetryEmitter__logTelemetryForBacklightStateUpdate_event
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Reporting to powerlog. eventName: %{public}@; payload: %{public}@", buf, 0x16u);
     }
 
-    v8 = *(a1 + 64);
+    v8 = *(self + 64);
     OUTLINED_FUNCTION_0_29();
     OUTLINED_FUNCTION_4_8();
     v10[2] = __56__SBAlwaysOnTelemetryEmitter__logPowerlogEvent_payload___block_invoke;
@@ -881,31 +881,31 @@ void __73__SBAlwaysOnTelemetryEmitter__logTelemetryForBacklightStateUpdate_event
   }
 }
 
-- (void)_logPowerlogEvent:(void *)a3 metrics:
+- (void)_logPowerlogEvent:(void *)event metrics:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  eventCopy = event;
+  if (self)
   {
     OUTLINED_FUNCTION_0_29();
     OUTLINED_FUNCTION_4_8();
     v7[2] = __56__SBAlwaysOnTelemetryEmitter__logPowerlogEvent_metrics___block_invoke;
     v7[3] = &unk_2783B47B0;
-    v8 = v6;
+    v8 = eventCopy;
     v9 = v5;
-    [(SBAlwaysOnTelemetryEmitter *)a1 _logPowerlogEvent:v9 payload:v7];
+    [(SBAlwaysOnTelemetryEmitter *)self _logPowerlogEvent:v9 payload:v7];
   }
 }
 
-- (void)_logAnalyticsEvent:(void *)a3 metrics:
+- (void)_logAnalyticsEvent:(void *)event metrics:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  eventCopy = event;
+  if (self)
   {
     OUTLINED_FUNCTION_0_29();
     OUTLINED_FUNCTION_4_8();
-    v7 = v6;
+    v7 = eventCopy;
     v8 = v5;
     AnalyticsSendEventLazy();
   }
@@ -941,28 +941,28 @@ void __53__SBAlwaysOnTelemetryEmitter__performDeferredLogging__block_invoke(uint
   [(SBAlwaysOnTelemetryEmitter *)*(a1 + 32) _logAnalyticsEvent:v3 metrics:?];
 }
 
-- (id)_payloadForAlwaysOnEnabled:(uint64_t)a1
+- (id)_payloadForAlwaysOnEnabled:(uint64_t)enabled
 {
   v48[4] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (enabled)
   {
     v47[0] = @"alwaysOnResolvedEnabled";
     v3 = [MEMORY[0x277CCABB0] numberWithBool:a2];
     v48[0] = v3;
     v47[1] = @"alwaysOnEnabledSetting";
-    v4 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(*(a1 + 16), "enableAlwaysOn")}];
+    v4 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(*(enabled + 16), "enableAlwaysOn")}];
     v48[1] = v4;
     v47[2] = @"showWallpaperInAlwaysOnSetting";
-    v5 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(*(a1 + 16), "showWallpaperInAlwaysOn")}];
+    v5 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(*(enabled + 16), "showWallpaperInAlwaysOn")}];
     v48[2] = v5;
     v47[3] = @"showNotificationsInAlwaysOnSetting";
-    v6 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(*(a1 + 16), "showNotificationsInAlwaysOn")}];
+    v6 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(*(enabled + 16), "showNotificationsInAlwaysOn")}];
     v48[3] = v6;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v48 forKeys:v47 count:4];
     v8 = [v7 mutableCopy];
 
-    WeakRetained = objc_loadWeakRetained((a1 + 96));
-    v10 = [WeakRetained activePolicies];
+    WeakRetained = objc_loadWeakRetained((enabled + 96));
+    activePolicies = [WeakRetained activePolicies];
 
     v19 = OUTLINED_FUNCTION_6_2(v11, v12, v13, v14, v15, v16, v17, v18, 0, 0, 0, 0, 0, 0, 0, 0, v43, v45);
     if (v19)
@@ -975,13 +975,13 @@ void __53__SBAlwaysOnTelemetryEmitter__performDeferredLogging__block_invoke(uint
         {
           if (*v37 != v21)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(activePolicies);
           }
 
           v23 = *(v36 + 8 * i);
-          v24 = [v23 analyticsPolicyValue];
-          v25 = [v23 analyticsPolicyName];
-          [v8 setObject:v24 forKeyedSubscript:v25];
+          analyticsPolicyValue = [v23 analyticsPolicyValue];
+          analyticsPolicyName = [v23 analyticsPolicyName];
+          [v8 setObject:analyticsPolicyValue forKeyedSubscript:analyticsPolicyName];
         }
 
         v20 = OUTLINED_FUNCTION_6_2(v26, v27, v28, v29, v30, v31, v32, v33, v35, v36, v37, v38, v39, v40, v41, v42, v44, v46);
@@ -999,14 +999,14 @@ void __53__SBAlwaysOnTelemetryEmitter__performDeferredLogging__block_invoke(uint
   return v8;
 }
 
-- (void)_emitEventsForAlwaysOnEnabled:(uint64_t)a1 ifPayloadChanged:(char)a2
+- (void)_emitEventsForAlwaysOnEnabled:(uint64_t)enabled ifPayloadChanged:(char)changed
 {
-  if (a1)
+  if (enabled)
   {
     OUTLINED_FUNCTION_0_29();
     OUTLINED_FUNCTION_4_8();
     BSDispatchMain();
-    [(SBAlwaysOnTelemetryEmitter *)a1 _emitBiomeEventsForAlwaysOnEnabled:a2];
+    [(SBAlwaysOnTelemetryEmitter *)enabled _emitBiomeEventsForAlwaysOnEnabled:changed];
   }
 }
 
@@ -1046,16 +1046,16 @@ LABEL_6:
   }
 }
 
-- (void)_emitBiomeEventsForAlwaysOnEnabled:(uint64_t)a1
+- (void)_emitBiomeEventsForAlwaysOnEnabled:(uint64_t)enabled
 {
-  if (a1)
+  if (enabled)
   {
-    v2 = *(a1 + 72);
+    v2 = *(enabled + 72);
     v3[0] = MEMORY[0x277D85DD0];
     v3[1] = 3221225472;
     v3[2] = __65__SBAlwaysOnTelemetryEmitter__emitBiomeEventsForAlwaysOnEnabled___block_invoke;
     v3[3] = &unk_2783A9F58;
-    v3[4] = a1;
+    v3[4] = enabled;
     v4 = a2;
     dispatch_async(v2, v3);
   }

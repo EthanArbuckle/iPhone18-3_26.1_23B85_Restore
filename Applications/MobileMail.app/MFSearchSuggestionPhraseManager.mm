@@ -1,13 +1,13 @@
 @interface MFSearchSuggestionPhraseManager
 + (id)log;
-+ (id)phraseManagerWithPhrase:(id)a3 selectedSuggestions:(id)a4 vipManager:(id)a5 updatedSuggestion:(id)a6 filterQuery:(id)a7 implicitSuggestions:(id)a8 excludedMailboxes:(id)a9 inputLanguages:(id)a10 feedbackQueryID:(int64_t)a11 includeTopHitsAndInstantAnswers:(BOOL)a12;
-+ (id)phraseManagerWithPhrase:(id)a3 selectedSuggestions:(id)a4 vipManager:(id)a5 updatedSuggestion:(id)a6 scopeIdentifierForPeopleSuggestions:(id)a7 inputLanguages:(id)a8 implicitSuggestions:(id)a9 generateCannedSuggestions:(BOOL)a10 excludedMailboxes:(id)a11 feedbackQueryID:(int64_t)a12 includeTopHitsAndInstantAnswers:(BOOL)a13;
-- (BOOL)hasCategory:(id)a3 andScope:(id)a4;
++ (id)phraseManagerWithPhrase:(id)phrase selectedSuggestions:(id)suggestions vipManager:(id)manager updatedSuggestion:(id)suggestion filterQuery:(id)query implicitSuggestions:(id)implicitSuggestions excludedMailboxes:(id)mailboxes inputLanguages:(id)self0 feedbackQueryID:(int64_t)self1 includeTopHitsAndInstantAnswers:(BOOL)self2;
++ (id)phraseManagerWithPhrase:(id)phrase selectedSuggestions:(id)suggestions vipManager:(id)manager updatedSuggestion:(id)suggestion scopeIdentifierForPeopleSuggestions:(id)peopleSuggestions inputLanguages:(id)languages implicitSuggestions:(id)implicitSuggestions generateCannedSuggestions:(BOOL)self0 excludedMailboxes:(id)self1 feedbackQueryID:(int64_t)self2 includeTopHitsAndInstantAnswers:(BOOL)self3;
+- (BOOL)hasCategory:(id)category andScope:(id)scope;
 - (BOOL)hasMailboxSuggestion;
-- (BOOL)hasSuggestionWithPredicate:(id)a3;
+- (BOOL)hasSuggestionWithPredicate:(id)predicate;
 - (id)_spotlightQueryStringForVIP;
 - (id)implicitAndSelectedSuggestions;
-- (id)mailboxSpotlightQueryStringForPredicate:(id)a3 excluding:(BOOL)a4;
+- (id)mailboxSpotlightQueryStringForPredicate:(id)predicate excluding:(BOOL)excluding;
 - (id)mailboxURLs;
 - (id)spotlightQueryStrings;
 @end
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = sub_10020DED0;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD628 != -1)
   {
     dispatch_once(&qword_1006DD628, block);
@@ -31,35 +31,35 @@
   return v2;
 }
 
-+ (id)phraseManagerWithPhrase:(id)a3 selectedSuggestions:(id)a4 vipManager:(id)a5 updatedSuggestion:(id)a6 filterQuery:(id)a7 implicitSuggestions:(id)a8 excludedMailboxes:(id)a9 inputLanguages:(id)a10 feedbackQueryID:(int64_t)a11 includeTopHitsAndInstantAnswers:(BOOL)a12
++ (id)phraseManagerWithPhrase:(id)phrase selectedSuggestions:(id)suggestions vipManager:(id)manager updatedSuggestion:(id)suggestion filterQuery:(id)query implicitSuggestions:(id)implicitSuggestions excludedMailboxes:(id)mailboxes inputLanguages:(id)self0 feedbackQueryID:(int64_t)self1 includeTopHitsAndInstantAnswers:(BOOL)self2
 {
-  v28 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  LOBYTE(v27) = a12;
-  v25 = [[a1 alloc] initWithPhrase:v28 selectedSuggestions:v18 vipManager:v19 updatedSuggestion:v20 scopeIdentifierForPeopleSuggestions:0 inputLanguages:v24 implicitSuggestions:v22 filterQuery:v21 excludedMailboxes:v23 customFlags:0 feedbackQueryID:a11 includeTopHitsAndInstantAnswers:v27];
+  phraseCopy = phrase;
+  suggestionsCopy = suggestions;
+  managerCopy = manager;
+  suggestionCopy = suggestion;
+  queryCopy = query;
+  implicitSuggestionsCopy = implicitSuggestions;
+  mailboxesCopy = mailboxes;
+  languagesCopy = languages;
+  LOBYTE(v27) = answers;
+  v25 = [[self alloc] initWithPhrase:phraseCopy selectedSuggestions:suggestionsCopy vipManager:managerCopy updatedSuggestion:suggestionCopy scopeIdentifierForPeopleSuggestions:0 inputLanguages:languagesCopy implicitSuggestions:implicitSuggestionsCopy filterQuery:queryCopy excludedMailboxes:mailboxesCopy customFlags:0 feedbackQueryID:d includeTopHitsAndInstantAnswers:v27];
 
   return v25;
 }
 
-+ (id)phraseManagerWithPhrase:(id)a3 selectedSuggestions:(id)a4 vipManager:(id)a5 updatedSuggestion:(id)a6 scopeIdentifierForPeopleSuggestions:(id)a7 inputLanguages:(id)a8 implicitSuggestions:(id)a9 generateCannedSuggestions:(BOOL)a10 excludedMailboxes:(id)a11 feedbackQueryID:(int64_t)a12 includeTopHitsAndInstantAnswers:(BOOL)a13
++ (id)phraseManagerWithPhrase:(id)phrase selectedSuggestions:(id)suggestions vipManager:(id)manager updatedSuggestion:(id)suggestion scopeIdentifierForPeopleSuggestions:(id)peopleSuggestions inputLanguages:(id)languages implicitSuggestions:(id)implicitSuggestions generateCannedSuggestions:(BOOL)self0 excludedMailboxes:(id)self1 feedbackQueryID:(int64_t)self2 includeTopHitsAndInstantAnswers:(BOOL)self3
 {
-  HIDWORD(v27) = a10;
-  v30 = a3;
-  v29 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a11;
-  LOBYTE(v27) = a13;
-  v25 = [[a1 alloc] initWithPhrase:v30 selectedSuggestions:v29 vipManager:v19 updatedSuggestion:v20 scopeIdentifierForPeopleSuggestions:v21 inputLanguages:v22 implicitSuggestions:v23 filterQuery:0 excludedMailboxes:v24 customFlags:0 feedbackQueryID:a12 includeTopHitsAndInstantAnswers:v27];
+  HIDWORD(v27) = cannedSuggestions;
+  phraseCopy = phrase;
+  suggestionsCopy = suggestions;
+  managerCopy = manager;
+  suggestionCopy = suggestion;
+  peopleSuggestionsCopy = peopleSuggestions;
+  languagesCopy = languages;
+  implicitSuggestionsCopy = implicitSuggestions;
+  mailboxesCopy = mailboxes;
+  LOBYTE(v27) = answers;
+  v25 = [[self alloc] initWithPhrase:phraseCopy selectedSuggestions:suggestionsCopy vipManager:managerCopy updatedSuggestion:suggestionCopy scopeIdentifierForPeopleSuggestions:peopleSuggestionsCopy inputLanguages:languagesCopy implicitSuggestions:implicitSuggestionsCopy filterQuery:0 excludedMailboxes:mailboxesCopy customFlags:0 feedbackQueryID:d includeTopHitsAndInstantAnswers:v27];
   [v25 setGenerateCannedSuggestions:v28];
 
   return v25;
@@ -67,9 +67,9 @@
 
 - (id)implicitAndSelectedSuggestions
 {
-  v3 = [(MFSearchSuggestionPhraseManager *)self implicitSuggestions];
-  v4 = [(MFSearchSuggestionPhraseManager *)self selectedSuggestions];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  implicitSuggestions = [(MFSearchSuggestionPhraseManager *)self implicitSuggestions];
+  selectedSuggestions = [(MFSearchSuggestionPhraseManager *)self selectedSuggestions];
+  v5 = [implicitSuggestions arrayByAddingObjectsFromArray:selectedSuggestions];
 
   return v5;
 }
@@ -82,15 +82,15 @@
   return self;
 }
 
-- (BOOL)hasSuggestionWithPredicate:(id)a3
+- (BOOL)hasSuggestionWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(MFSearchSuggestionPhraseManager *)self selectedSuggestions];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  selectedSuggestions = [(MFSearchSuggestionPhraseManager *)self selectedSuggestions];
+  v6 = [selectedSuggestions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = *v13;
@@ -100,11 +100,11 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selectedSuggestions);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) predicate];
-        v10 = [v9 isEqual:v4];
+        predicate = [*(*(&v12 + 1) + 8 * i) predicate];
+        v10 = [predicate isEqual:predicateCopy];
 
         if (v10)
         {
@@ -113,7 +113,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [selectedSuggestions countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -128,10 +128,10 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)hasCategory:(id)a3 andScope:(id)a4
+- (BOOL)hasCategory:(id)category andScope:(id)scope
 {
-  v6 = a3;
-  v7 = a4;
+  categoryCopy = category;
+  scopeCopy = scope;
   [(MFSearchSuggestionPhraseManager *)self implicitAndSelectedSuggestions];
   v21 = 0u;
   v22 = 0u;
@@ -151,14 +151,14 @@ LABEL_11:
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 category];
-        v14 = [v13 isGroupedInCategory:v6];
+        category = [v12 category];
+        v14 = [category isGroupedInCategory:categoryCopy];
 
-        if (v7)
+        if (scopeCopy)
         {
-          v15 = [v12 selectedScope];
-          v16 = [v15 identifier];
-          v17 = [v16 isEqualToString:v7];
+          selectedScope = [v12 selectedScope];
+          identifier = [selectedScope identifier];
+          v17 = [identifier isEqualToString:scopeCopy];
         }
 
         else
@@ -190,10 +190,10 @@ LABEL_14:
 
 - (id)_spotlightQueryStringForVIP
 {
-  v2 = [(MFSearchSuggestionPhraseManager *)self vipManager];
-  v3 = [v2 allVIPEmailAddresses];
+  vipManager = [(MFSearchSuggestionPhraseManager *)self vipManager];
+  allVIPEmailAddresses = [vipManager allVIPEmailAddresses];
 
-  v4 = [v3 count];
+  v4 = [allVIPEmailAddresses count];
   if (v4)
   {
     v5 = [[NSMutableArray alloc] initWithCapacity:v4];
@@ -201,7 +201,7 @@ LABEL_14:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    obj = v3;
+    obj = allVIPEmailAddresses;
     v6 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
@@ -246,8 +246,8 @@ LABEL_14:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = [(MFSearchSuggestionPhraseManager *)self implicitAndSelectedSuggestions];
-  v4 = [v3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  implicitAndSelectedSuggestions = [(MFSearchSuggestionPhraseManager *)self implicitAndSelectedSuggestions];
+  v4 = [implicitAndSelectedSuggestions countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v4)
   {
     v5 = *v24;
@@ -257,24 +257,24 @@ LABEL_14:
       {
         if (*v24 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(implicitAndSelectedSuggestions);
         }
 
         v7 = *(*(&v23 + 1) + 8 * i);
-        v8 = [v7 predicate];
+        predicate = [v7 predicate];
         v9 = [EMMessageListItemPredicates predicateForIsVIP:1];
-        v10 = [v8 ef_containsSubpredicate:v9];
+        v10 = [predicate ef_containsSubpredicate:v9];
 
         if (v10)
         {
-          v11 = [(MFSearchSuggestionPhraseManager *)self _spotlightQueryStringForVIP];
+          _spotlightQueryStringForVIP = [(MFSearchSuggestionPhraseManager *)self _spotlightQueryStringForVIP];
         }
 
         else
         {
-          v12 = [v7 category];
+          category = [v7 category];
           v13 = +[MUISearchSuggestionCategory mailboxCategory];
-          v14 = v12 == v13;
+          v14 = category == v13;
 
           if (!v14)
           {
@@ -282,31 +282,31 @@ LABEL_14:
             goto LABEL_13;
           }
 
-          v11 = [(MFSearchSuggestionPhraseManager *)self mailboxSpotlightQueryStringForPredicate:v8 excluding:0];
+          _spotlightQueryStringForVIP = [(MFSearchSuggestionPhraseManager *)self mailboxSpotlightQueryStringForPredicate:predicate excluding:0];
         }
 
-        v15 = v11;
-        if (v11)
+        v15 = _spotlightQueryStringForVIP;
+        if (_spotlightQueryStringForVIP)
         {
-          [v22 addObject:v11];
+          [v22 addObject:_spotlightQueryStringForVIP];
         }
 
 LABEL_13:
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v4 = [implicitAndSelectedSuggestions countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v4);
   }
 
-  v16 = [(MFSearchSuggestionPhraseManager *)self excludedMailboxes];
-  v17 = [v16 count];
+  excludedMailboxes = [(MFSearchSuggestionPhraseManager *)self excludedMailboxes];
+  v17 = [excludedMailboxes count];
 
   if (v17)
   {
-    v18 = [(MFSearchSuggestionPhraseManager *)self excludedMailboxes];
-    v19 = [EMMessageListItemPredicates predicateForExcludingMessagesInMailboxes:v18];
+    excludedMailboxes2 = [(MFSearchSuggestionPhraseManager *)self excludedMailboxes];
+    v19 = [EMMessageListItemPredicates predicateForExcludingMessagesInMailboxes:excludedMailboxes2];
 
     v20 = [(MFSearchSuggestionPhraseManager *)self mailboxSpotlightQueryStringForPredicate:v19 excluding:1];
     [v22 addObject:v20];
@@ -315,17 +315,17 @@ LABEL_13:
   return v22;
 }
 
-- (id)mailboxSpotlightQueryStringForPredicate:(id)a3 excluding:(BOOL)a4
+- (id)mailboxSpotlightQueryStringForPredicate:(id)predicate excluding:(BOOL)excluding
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [EMMessageListItemPredicates mailboxURLsForPredicate:v5];
+  excludingCopy = excluding;
+  predicateCopy = predicate;
+  v6 = [EMMessageListItemPredicates mailboxURLsForPredicate:predicateCopy];
   if (![v6 count])
   {
     v7 = +[MFSearchSuggestionPhraseManager log];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
-      sub_10048BFC4(v5, v7);
+      sub_10048BFC4(predicateCopy, v7);
     }
   }
 
@@ -333,9 +333,9 @@ LABEL_13:
   v12[1] = 3221225472;
   v12[2] = sub_10020ED2C;
   v12[3] = &unk_100655728;
-  v13 = v4;
+  v13 = excludingCopy;
   v8 = [v6 ef_map:v12];
-  if (v4)
+  if (excludingCopy)
   {
     v9 = 1;
   }
@@ -357,8 +357,8 @@ LABEL_13:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = [(MFSearchSuggestionPhraseManager *)self implicitAndSelectedSuggestions];
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  implicitAndSelectedSuggestions = [(MFSearchSuggestionPhraseManager *)self implicitAndSelectedSuggestions];
+  v4 = [implicitAndSelectedSuggestions countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
     v5 = *v21;
@@ -369,31 +369,31 @@ LABEL_13:
       {
         if (*v21 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(implicitAndSelectedSuggestions);
         }
 
         v8 = *(*(&v20 + 1) + 8 * i);
-        v9 = [v8 suggestion];
-        v10 = [v9 category];
+        suggestion = [v8 suggestion];
+        category = [suggestion category];
         v11 = +[MUISearchSuggestionCategory mailboxCategory];
-        v12 = v10 == v11;
+        v12 = category == v11;
 
         if (v12)
         {
-          v13 = [v8 selectedScope];
-          v14 = [v13 identifier];
-          v15 = [v14 isEqualToString:v6];
+          selectedScope = [v8 selectedScope];
+          identifier = [selectedScope identifier];
+          v15 = [identifier isEqualToString:v6];
 
           if (v15)
           {
-            v16 = [v8 predicate];
-            v17 = [EMMessageListItemPredicates mailboxURLsForPredicate:v16];
+            predicate = [v8 predicate];
+            v17 = [EMMessageListItemPredicates mailboxURLsForPredicate:predicate];
             [v19 addObjectsFromArray:v17];
           }
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v4 = [implicitAndSelectedSuggestions countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v4);

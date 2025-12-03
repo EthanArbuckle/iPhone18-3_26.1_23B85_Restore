@@ -2,8 +2,8 @@
 - (BOOL)_shouldAllowBailoutForDetectingNetworkRelayWatches;
 - (COSWatchDiscoveryCoordinatorDelegate)delegate;
 - (id)_discoveredNetworkRelayWatch;
-- (void)_checkForDiscoveredUnpairedWatches:(id)a3;
-- (void)_nearbyAdvertisingWatchesFoundWithCompletion:(id)a3;
+- (void)_checkForDiscoveredUnpairedWatches:(id)watches;
+- (void)_nearbyAdvertisingWatchesFoundWithCompletion:(id)completion;
 - (void)_refreshWatchDiscoveryTimer;
 - (void)startDiscoveringWatchNearby;
 - (void)stopDiscoveringWatchNearby;
@@ -37,9 +37,9 @@
   [v5 addTimer:self->_unpairedWatchDiscoveryTimer forMode:NSRunLoopCommonModes];
 }
 
-- (void)_checkForDiscoveredUnpairedWatches:(id)a3
+- (void)_checkForDiscoveredUnpairedWatches:(id)watches
 {
-  v4 = a3;
+  watchesCopy = watches;
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -51,9 +51,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_nearbyAdvertisingWatchesFoundWithCompletion:(id)a3
+- (void)_nearbyAdvertisingWatchesFoundWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = dispatch_get_global_queue(25, 0);
   block[0] = _NSConcreteStackBlock;
@@ -61,8 +61,8 @@
   block[2] = sub_10003DB24;
   block[3] = &unk_100268FF0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, block);
 
   objc_destroyWeak(&v9);
@@ -74,10 +74,10 @@
   if (!_os_feature_enabled_impl())
   {
     v3 = +[NSDate date];
-    v5 = [(COSWatchDiscoveryCoordinator *)self _discoveredNetworkRelayWatch];
-    if (v5)
+    _discoveredNetworkRelayWatch = [(COSWatchDiscoveryCoordinator *)self _discoveredNetworkRelayWatch];
+    if (_discoveredNetworkRelayWatch)
     {
-      [v3 timeIntervalSinceDate:v5];
+      [v3 timeIntervalSinceDate:_discoveredNetworkRelayWatch];
       v7 = v6;
       v8 = pbb_bridge_log();
       v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -86,7 +86,7 @@
         if (v9)
         {
           v14 = 138412290;
-          v15 = v5;
+          v15 = _discoveredNetworkRelayWatch;
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Allowing NetworkRelay bailout, last discovered NetworkRelay Watch: %@", &v14, 0xCu);
         }
 
@@ -97,7 +97,7 @@
       if (v9)
       {
         v14 = 138412290;
-        v15 = v5;
+        v15 = _discoveredNetworkRelayWatch;
         v10 = "No need to bailout for NetworkRelay, discovered too long ago: %@.";
         v11 = v8;
         v12 = 12;

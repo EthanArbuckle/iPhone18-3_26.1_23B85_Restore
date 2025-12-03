@@ -1,27 +1,27 @@
 @interface SRSVoiceTrainingManager
 - (SRSTrainingManagerDelegate)delegate;
-- (SRSVoiceTrainingManager)initWithLanguageCode:(id)a3;
-- (SRSVoiceTrainingManager)initWithLanguageCode:(id)a3 withSharedUserId:(id)a4;
-- (int)convertToAudioTone:(int64_t)a3;
-- (int64_t)convertStatus:(int)a3;
-- (void)VTUITrainingManagerFeedLevel:(float)a3;
-- (void)getAudioSessionID:(id)a3;
-- (void)playSoundsEffect:(int64_t)a3;
-- (void)setRecordingStartHostTime:(unint64_t)a3;
+- (SRSVoiceTrainingManager)initWithLanguageCode:(id)code;
+- (SRSVoiceTrainingManager)initWithLanguageCode:(id)code withSharedUserId:(id)id;
+- (int)convertToAudioTone:(int64_t)tone;
+- (int64_t)convertStatus:(int)status;
+- (void)VTUITrainingManagerFeedLevel:(float)level;
+- (void)getAudioSessionID:(id)d;
+- (void)playSoundsEffect:(int64_t)effect;
+- (void)setRecordingStartHostTime:(unint64_t)time;
 @end
 
 @implementation SRSVoiceTrainingManager
 
-- (SRSVoiceTrainingManager)initWithLanguageCode:(id)a3 withSharedUserId:(id)a4
+- (SRSVoiceTrainingManager)initWithLanguageCode:(id)code withSharedUserId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  idCopy = id;
   v12.receiver = self;
   v12.super_class = SRSVoiceTrainingManager;
   v8 = [(SRSVoiceTrainingManager *)&v12 init];
   if (v8)
   {
-    v9 = [MEMORY[0x277D653E0] trainingManagerWithLocaleID:v6 withAppDomain:*MEMORY[0x277D65458] withSiriSharedUserId:v7];
+    v9 = [MEMORY[0x277D653E0] trainingManagerWithLocaleID:codeCopy withAppDomain:*MEMORY[0x277D65458] withSiriSharedUserId:idCopy];
     trainingManager = v8->_trainingManager;
     v8->_trainingManager = v9;
 
@@ -31,15 +31,15 @@
   return v8;
 }
 
-- (SRSVoiceTrainingManager)initWithLanguageCode:(id)a3
+- (SRSVoiceTrainingManager)initWithLanguageCode:(id)code
 {
-  v4 = a3;
+  codeCopy = code;
   v9.receiver = self;
   v9.super_class = SRSVoiceTrainingManager;
   v5 = [(SRSVoiceTrainingManager *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277D653E0] trainingManagerWithLocaleID:v4 withAppDomain:*MEMORY[0x277D65458]];
+    v6 = [MEMORY[0x277D653E0] trainingManagerWithLocaleID:codeCopy withAppDomain:*MEMORY[0x277D65458]];
     trainingManager = v5->_trainingManager;
     v5->_trainingManager = v6;
 
@@ -70,17 +70,17 @@ uint64_t __78__SRSVoiceTrainingManager_trainUtterance_shouldUseASR_loggingUUID_c
   return v10(v8, v9, v7, a3);
 }
 
-- (void)playSoundsEffect:(int64_t)a3
+- (void)playSoundsEffect:(int64_t)effect
 {
   trainingManager = self->_trainingManager;
-  v4 = [(SRSVoiceTrainingManager *)self convertToAudioTone:a3];
+  v4 = [(SRSVoiceTrainingManager *)self convertToAudioTone:effect];
 
   [(SSRVTUITrainingManager *)trainingManager playSoundEffectWithAudioTone:v4];
 }
 
-- (void)getAudioSessionID:(id)a3
+- (void)getAudioSessionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = SRSLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -93,8 +93,8 @@ uint64_t __78__SRSVoiceTrainingManager_trainUtterance_shouldUseASR_loggingUUID_c
   v8[1] = 3221225472;
   v8[2] = __45__SRSVoiceTrainingManager_getAudioSessionID___block_invoke;
   v8[3] = &unk_279C4A100;
-  v9 = v4;
-  v7 = v4;
+  v9 = dCopy;
+  v7 = dCopy;
   [(SSRVTUITrainingManager *)trainingManager getAudioSessionID:v8];
 }
 
@@ -114,14 +114,14 @@ uint64_t __45__SRSVoiceTrainingManager_getAudioSessionID___block_invoke(uint64_t
   return result;
 }
 
-- (void)setRecordingStartHostTime:(unint64_t)a3
+- (void)setRecordingStartHostTime:(unint64_t)time
 {
   trainingManager = self->_trainingManager;
   if (objc_opt_respondsToSelector())
   {
     v6 = self->_trainingManager;
 
-    [(SSRVTUITrainingManager *)v6 setRecordingStartHostTime:a3];
+    [(SSRVTUITrainingManager *)v6 setRecordingStartHostTime:time];
   }
 
   else
@@ -134,16 +134,16 @@ uint64_t __45__SRSVoiceTrainingManager_getAudioSessionID___block_invoke(uint64_t
   }
 }
 
-- (void)VTUITrainingManagerFeedLevel:(float)a3
+- (void)VTUITrainingManagerFeedLevel:(float)level
 {
-  v5 = [(SRSVoiceTrainingManager *)self delegate];
-  *&v4 = a3;
-  [v5 audioLevelDidChange:v4];
+  delegate = [(SRSVoiceTrainingManager *)self delegate];
+  *&v4 = level;
+  [delegate audioLevelDidChange:v4];
 }
 
-- (int64_t)convertStatus:(int)a3
+- (int64_t)convertStatus:(int)status
 {
-  v3 = (a3 - 1);
+  v3 = (status - 1);
   if (v3 < 7)
   {
     return v3 + 1;
@@ -155,16 +155,16 @@ uint64_t __45__SRSVoiceTrainingManager_getAudioSessionID___block_invoke(uint64_t
   }
 }
 
-- (int)convertToAudioTone:(int64_t)a3
+- (int)convertToAudioTone:(int64_t)tone
 {
-  if ((a3 + 1) > 6)
+  if ((tone + 1) > 6)
   {
     return 6;
   }
 
   else
   {
-    return dword_269059CF8[a3 + 1];
+    return dword_269059CF8[tone + 1];
   }
 }
 

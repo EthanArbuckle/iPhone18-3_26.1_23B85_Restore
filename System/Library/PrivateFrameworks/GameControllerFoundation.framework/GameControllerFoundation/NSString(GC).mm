@@ -7,12 +7,12 @@
 - (uint64_t)gc_countOfOccurrencesOfString:()GC options:
 {
   v6 = a3;
-  v7 = [a1 length];
+  v7 = [self length];
   v8 = 0;
   v9 = -1;
   while (v6)
   {
-    v10 = [a1 rangeOfString:v6 options:a4 range:{v8, v7 - v8}];
+    v10 = [self rangeOfString:v6 options:a4 range:{v8, v7 - v8}];
     v8 = v10 + v11;
     ++v9;
     if (v10 == 0x7FFFFFFFFFFFFFFFLL)

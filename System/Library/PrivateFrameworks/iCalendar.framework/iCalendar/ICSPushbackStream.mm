@@ -1,7 +1,7 @@
 @interface ICSPushbackStream
 - (BOOL)eos;
-- (BOOL)pushBack:(char)a3;
-- (ICSPushbackStream)initWithInputStream:(id)a3;
+- (BOOL)pushBack:(char)back;
+- (ICSPushbackStream)initWithInputStream:(id)stream;
 - (char)peek;
 - (char)read;
 - (void)dealloc;
@@ -10,22 +10,22 @@
 
 @implementation ICSPushbackStream
 
-- (ICSPushbackStream)initWithInputStream:(id)a3
+- (ICSPushbackStream)initWithInputStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v10.receiver = self;
   v10.super_class = ICSPushbackStream;
   v6 = [(ICSPushbackStream *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    if (!v5)
+    if (!streamCopy)
     {
       v8 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v6->_underStream, a3);
+    objc_storeStrong(&v6->_underStream, stream);
     v7->_pbData = malloc_type_calloc(0x10uLL, 1uLL, 0xC36314A4uLL);
     v7->_pbCursor = -1;
     v7->_readPastEOS = 0;
@@ -54,9 +54,9 @@ LABEL_6:
     return self->_pbData[pbCursor];
   }
 
-  v6 = [(ICSInputByteStream *)self->_underStream read];
-  v5 = v6;
-  if (v6 || ![(ICSInputByteStream *)self->_underStream eos])
+  read = [(ICSInputByteStream *)self->_underStream read];
+  v5 = read;
+  if (read || ![(ICSInputByteStream *)self->_underStream eos])
   {
     v7 = *p_pbCursor;
     v8 = *p_pbCursor + 1;
@@ -79,7 +79,7 @@ LABEL_6:
   return v5;
 }
 
-- (BOOL)pushBack:(char)a3
+- (BOOL)pushBack:(char)back
 {
   if (self->_readPastEOS)
   {
@@ -95,7 +95,7 @@ LABEL_6:
     v6 = v8;
   }
 
-  self->_pbData[v6] = a3;
+  self->_pbData[v6] = back;
   return 1;
 }
 
@@ -139,8 +139,8 @@ LABEL_6:
 - (void)peek
 {
   OUTLINED_FUNCTION_0_1();
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:v3 object:v2 file:@"ICSPushbackStream.m" lineNumber:56 description:@"Cannot push back that much data."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:v3 object:v2 file:@"ICSPushbackStream.m" lineNumber:56 description:@"Cannot push back that much data."];
 
   *v0 = *v1;
 }

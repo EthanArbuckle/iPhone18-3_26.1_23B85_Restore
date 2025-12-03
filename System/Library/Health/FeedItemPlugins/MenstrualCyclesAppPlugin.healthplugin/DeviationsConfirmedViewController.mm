@@ -6,7 +6,7 @@
 
 - (void)exportPDFTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_29DF37CAC();
 }
 

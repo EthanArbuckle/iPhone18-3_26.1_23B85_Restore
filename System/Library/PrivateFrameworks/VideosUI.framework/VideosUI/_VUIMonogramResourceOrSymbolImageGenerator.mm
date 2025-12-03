@@ -1,20 +1,20 @@
 @interface _VUIMonogramResourceOrSymbolImageGenerator
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 completionHandler:(id)a7;
-- (void)cancelLoad:(id)a3;
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction completionHandler:(id)handler;
+- (void)cancelLoad:(id)load;
 @end
 
 @implementation _VUIMonogramResourceOrSymbolImageGenerator
 
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 completionHandler:(id)a7
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v12 = a3;
-  v13 = a7;
+  height = size.height;
+  width = size.width;
+  objectCopy = object;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v12;
+    v14 = objectCopy;
   }
 
   else
@@ -30,11 +30,11 @@
     goto LABEL_13;
   }
 
-  v17 = [v15 imageURL];
-  if ([v17 vuicore_isResourceURL])
+  imageURL = [v15 imageURL];
+  if ([imageURL vuicore_isResourceURL])
   {
-    v18 = [v17 vuicore_resourceName];
-    v19 = a6 == 1;
+    vuicore_resourceName = [imageURL vuicore_resourceName];
+    v19 = direction == 1;
     v20 = objc_alloc_init(MEMORY[0x1E696AAE0]);
     objc_initWeak(&location, v20);
     v21 = v33;
@@ -43,27 +43,27 @@
     v33[2] = __120___VUIMonogramResourceOrSymbolImageGenerator_loadImageForObject_scaleToSize_cropToFit_imageDirection_completionHandler___block_invoke;
     v33[3] = &unk_1E87349A8;
     objc_copyWeak(v37, &location);
-    v22 = v18;
+    v22 = vuicore_resourceName;
     v34 = v22;
     v37[1] = v19;
     v35 = v16;
-    v36 = v13;
+    v36 = handlerCopy;
     [v20 addExecutionBlock:v33];
-    v23 = [(_VUIMonogramImageGenerator *)self imageGeneratorQueue];
-    [v23 addOperation:v20];
+    imageGeneratorQueue = [(_VUIMonogramImageGenerator *)self imageGeneratorQueue];
+    [imageGeneratorQueue addOperation:v20];
 
     v24 = v34;
   }
 
   else
   {
-    if (![v17 vuicore_isSymbolURL])
+    if (![imageURL vuicore_isSymbolURL])
     {
       v20 = 0;
       goto LABEL_12;
     }
 
-    v25 = [v17 vuicore_symbolName];
+    vuicore_symbolName = [imageURL vuicore_symbolName];
     v20 = objc_alloc_init(MEMORY[0x1E696AAE0]);
     objc_initWeak(&location, v20);
     v21 = v28;
@@ -75,12 +75,12 @@
     v32[1] = *&width;
     v32[2] = *&height;
     v29 = v16;
-    v22 = v25;
+    v22 = vuicore_symbolName;
     v30 = v22;
-    v31 = v13;
+    v31 = handlerCopy;
     [v20 addExecutionBlock:v28];
-    v26 = [(_VUIMonogramImageGenerator *)self imageGeneratorQueue];
-    [v26 addOperation:v20];
+    imageGeneratorQueue2 = [(_VUIMonogramImageGenerator *)self imageGeneratorQueue];
+    [imageGeneratorQueue2 addOperation:v20];
 
     v24 = v29;
   }
@@ -94,13 +94,13 @@ LABEL_13:
   return v20;
 }
 
-- (void)cancelLoad:(id)a3
+- (void)cancelLoad:(id)load
 {
-  v3 = a3;
+  loadCopy = load;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 cancel];
+    [loadCopy cancel];
   }
 }
 

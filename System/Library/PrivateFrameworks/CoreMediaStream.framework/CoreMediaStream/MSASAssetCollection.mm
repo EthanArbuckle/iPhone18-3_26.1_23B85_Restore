@@ -1,13 +1,13 @@
 @interface MSASAssetCollection
-+ (id)MSASPAssetCollectionFromProtocolDictionary:(id)a3;
-+ (id)assetCollectionWithAssetCollection:(id)a3;
++ (id)MSASPAssetCollectionFromProtocolDictionary:(id)dictionary;
++ (id)assetCollectionWithAssetCollection:(id)collection;
 - (BOOL)hasVideoAsset;
 - (BOOL)isAutoloopVideo;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPhotoIris;
 - (BOOL)isVideo;
-- (MSASAssetCollection)initWithCoder:(id)a3;
-- (MSASAssetCollection)initWithFileName:(id)a3 path:(id)a4;
+- (MSASAssetCollection)initWithCoder:(id)coder;
+- (MSASAssetCollection)initWithFileName:(id)name path:(id)path;
 - (NSString)email;
 - (NSString)firstName;
 - (NSString)fullName;
@@ -15,10 +15,10 @@
 - (id)MSASPProtocolDictionary;
 - (id)description;
 - (id)mediaAssetType;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAssets:(id)a3;
-- (void)setMetadata:(id)a3;
-- (void)setMetadataValue:(id)a3 forKey:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAssets:(id)assets;
+- (void)setMetadata:(id)metadata;
+- (void)setMetadataValue:(id)value forKey:(id)key;
 @end
 
 @implementation MSASAssetCollection
@@ -38,23 +38,23 @@
 
 - (BOOL)isAutoloopVideo
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSDictionary *)v2->_metadata objectForKey:@"playback-style-identifier"];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSDictionary *)selfCopy->_metadata objectForKey:@"playback-style-identifier"];
   v4 = [v3 isEqualToString:@"autoloop"];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 
 - (BOOL)isPhotoIris
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSDictionary *)v2->_metadata objectForKey:@"mediaGroupUUID"];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSDictionary *)selfCopy->_metadata objectForKey:@"mediaGroupUUID"];
   v4 = v3 != 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 
@@ -112,19 +112,19 @@ LABEL_11:
   return v3;
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  objc_storeStrong(&v6->_metadata, a3);
+  metadataCopy = metadata;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(&selfCopy->_metadata, metadata);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(MSASAssetCollection *)v6 assets];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  assets = [(MSASAssetCollection *)selfCopy assets];
+  v8 = [assets countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = *v16;
@@ -135,69 +135,69 @@ LABEL_11:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(assets);
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
-        v12 = [v5 objectForKey:@"batchDateCreated"];
+        v12 = [metadataCopy objectForKey:@"batchDateCreated"];
         [v11 setBatchCreationDate:v12];
 
-        v13 = [v5 objectForKey:@"dateCreated"];
+        v13 = [metadataCopy objectForKey:@"dateCreated"];
         [v11 setPhotoCreationDate:v13];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [assets countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMetadataValue:(id)a3 forKey:(id)a4
+- (void)setMetadataValue:(id)value forKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
+  valueCopy = value;
+  keyCopy = key;
   metadata = self->_metadata;
   if (metadata)
   {
-    v8 = [(NSDictionary *)metadata mutableCopy];
+    dictionary = [(NSDictionary *)metadata mutableCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v9 = v8;
-  if (v10)
+  v9 = dictionary;
+  if (valueCopy)
   {
-    [v8 setObject:v10 forKey:v6];
+    [dictionary setObject:valueCopy forKey:keyCopy];
   }
 
   else
   {
-    [v8 removeObjectForKey:v6];
+    [dictionary removeObjectForKey:keyCopy];
   }
 
   [(MSASAssetCollection *)self setMetadata:v9];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     GUID = self->_GUID;
-    v6 = [v4 GUID];
+    gUID = [equalCopy GUID];
 
-    v7 = [(NSString *)GUID isEqualToString:v6];
+    v7 = [(NSString *)GUID isEqualToString:gUID];
     return v7;
   }
 
@@ -205,195 +205,195 @@ LABEL_11:
   {
     v10.receiver = self;
     v10.super_class = MSASAssetCollection;
-    v9 = [(MSASAssetCollection *)&v10 isEqual:v4];
+    v9 = [(MSASAssetCollection *)&v10 isEqual:equalCopy];
 
     return v9;
   }
 }
 
-- (MSASAssetCollection)initWithCoder:(id)a3
+- (MSASAssetCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = MSASAssetCollection;
   v5 = [(MSASAssetCollection *)&v26 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"GUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"GUID"];
     [(MSASAssetCollection *)v5 setGUID:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ctag"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ctag"];
     [(MSASAssetCollection *)v5 setCtag:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"albumGUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"albumGUID"];
     [(MSASAssetCollection *)v5 setAlbumGUID:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileName"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileName"];
     [(MSASAssetCollection *)v5 setFileName:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"path"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"path"];
     [(MSASAssetCollection *)v5 setPath:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
     [(MSASAssetCollection *)v5 setTimestamp:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"personID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personID"];
     [(MSASAssetCollection *)v5 setPersonID:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fullName"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fullName"];
     [(MSASAssetCollection *)v5 setFullName:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
     [(MSASAssetCollection *)v5 setFirstName:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
     [(MSASAssetCollection *)v5 setLastName:v15];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"email"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"email"];
     [(MSASAssetCollection *)v5 setEmail:v16];
 
-    -[MSASAssetCollection setIsDeletable:](v5, "setIsDeletable:", [v4 decodeBoolForKey:@"isDeletable"]);
-    -[MSASAssetCollection setIsMine:](v5, "setIsMine:", [v4 decodeBoolForKey:@"isMine"]);
-    v17 = [v4 decodePropertyListForKey:@"userInfo"];
+    -[MSASAssetCollection setIsDeletable:](v5, "setIsDeletable:", [coderCopy decodeBoolForKey:@"isDeletable"]);
+    -[MSASAssetCollection setIsMine:](v5, "setIsMine:", [coderCopy decodeBoolForKey:@"isMine"]);
+    v17 = [coderCopy decodePropertyListForKey:@"userInfo"];
     [(MSASAssetCollection *)v5 setUserInfo:v17];
 
-    v18 = [v4 decodePropertyListForKey:@"metadata"];
+    v18 = [coderCopy decodePropertyListForKey:@"metadata"];
     [(MSASAssetCollection *)v5 setMetadata:v18];
 
-    -[MSASAssetCollection setPhotoNumber:](v5, "setPhotoNumber:", [v4 decodeInt64ForKey:@"photoNumber"]);
+    -[MSASAssetCollection setPhotoNumber:](v5, "setPhotoNumber:", [coderCopy decodeInt64ForKey:@"photoNumber"]);
     v19 = MEMORY[0x277CBEB98];
     v20 = objc_opt_class();
     v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"assets"];
-    v23 = [(MSASAssetCollection *)v5 GUID];
-    v24 = _copyAssetsIntoAssetCollection(v22, v5, v23);
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"assets"];
+    gUID = [(MSASAssetCollection *)v5 GUID];
+    v24 = _copyAssetsIntoAssetCollection(v22, v5, gUID);
     [(MSASAssetCollection *)v5 setAssets:v24];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v33 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(MSASAssetCollection *)v4 GUID];
+  coderCopy = coder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  gUID = [(MSASAssetCollection *)selfCopy GUID];
 
-  if (v5)
+  if (gUID)
   {
-    v6 = [(MSASAssetCollection *)v4 GUID];
-    [v33 encodeObject:v6 forKey:@"GUID"];
+    gUID2 = [(MSASAssetCollection *)selfCopy GUID];
+    [coderCopy encodeObject:gUID2 forKey:@"GUID"];
   }
 
-  v7 = [(MSASAssetCollection *)v4 ctag];
+  ctag = [(MSASAssetCollection *)selfCopy ctag];
 
-  if (v7)
+  if (ctag)
   {
-    v8 = [(MSASAssetCollection *)v4 ctag];
-    [v33 encodeObject:v8 forKey:@"ctag"];
+    ctag2 = [(MSASAssetCollection *)selfCopy ctag];
+    [coderCopy encodeObject:ctag2 forKey:@"ctag"];
   }
 
-  v9 = [(MSASAssetCollection *)v4 albumGUID];
+  albumGUID = [(MSASAssetCollection *)selfCopy albumGUID];
 
-  if (v9)
+  if (albumGUID)
   {
-    v10 = [(MSASAssetCollection *)v4 albumGUID];
-    [v33 encodeObject:v10 forKey:@"albumGUID"];
+    albumGUID2 = [(MSASAssetCollection *)selfCopy albumGUID];
+    [coderCopy encodeObject:albumGUID2 forKey:@"albumGUID"];
   }
 
-  v11 = [(MSASAssetCollection *)v4 assets];
+  assets = [(MSASAssetCollection *)selfCopy assets];
 
-  if (v11)
+  if (assets)
   {
-    v12 = [(MSASAssetCollection *)v4 assets];
-    [v33 encodeObject:v12 forKey:@"assets"];
+    assets2 = [(MSASAssetCollection *)selfCopy assets];
+    [coderCopy encodeObject:assets2 forKey:@"assets"];
   }
 
-  v13 = [(MSASAssetCollection *)v4 fileName];
+  fileName = [(MSASAssetCollection *)selfCopy fileName];
 
-  if (v13)
+  if (fileName)
   {
-    v14 = [(MSASAssetCollection *)v4 fileName];
-    [v33 encodeObject:v14 forKey:@"fileName"];
+    fileName2 = [(MSASAssetCollection *)selfCopy fileName];
+    [coderCopy encodeObject:fileName2 forKey:@"fileName"];
   }
 
-  v15 = [(MSASAssetCollection *)v4 path];
+  path = [(MSASAssetCollection *)selfCopy path];
 
-  if (v15)
+  if (path)
   {
-    v16 = [(MSASAssetCollection *)v4 path];
-    [v33 encodeObject:v16 forKey:@"path"];
+    path2 = [(MSASAssetCollection *)selfCopy path];
+    [coderCopy encodeObject:path2 forKey:@"path"];
   }
 
-  v17 = [(MSASAssetCollection *)v4 timestamp];
+  timestamp = [(MSASAssetCollection *)selfCopy timestamp];
 
-  if (v17)
+  if (timestamp)
   {
-    v18 = [(MSASAssetCollection *)v4 timestamp];
-    [v33 encodeObject:v18 forKey:@"timestamp"];
+    timestamp2 = [(MSASAssetCollection *)selfCopy timestamp];
+    [coderCopy encodeObject:timestamp2 forKey:@"timestamp"];
   }
 
-  v19 = [(MSASAssetCollection *)v4 personID];
+  personID = [(MSASAssetCollection *)selfCopy personID];
 
-  if (v19)
+  if (personID)
   {
-    v20 = [(MSASAssetCollection *)v4 personID];
-    [v33 encodeObject:v20 forKey:@"personID"];
+    personID2 = [(MSASAssetCollection *)selfCopy personID];
+    [coderCopy encodeObject:personID2 forKey:@"personID"];
   }
 
-  v21 = [(MSASAssetCollection *)v4 fullName];
+  fullName = [(MSASAssetCollection *)selfCopy fullName];
 
-  if (v21)
+  if (fullName)
   {
-    v22 = [(MSASAssetCollection *)v4 fullName];
-    [v33 encodeObject:v22 forKey:@"fullName"];
+    fullName2 = [(MSASAssetCollection *)selfCopy fullName];
+    [coderCopy encodeObject:fullName2 forKey:@"fullName"];
   }
 
-  v23 = [(MSASAssetCollection *)v4 firstName];
+  firstName = [(MSASAssetCollection *)selfCopy firstName];
 
-  if (v23)
+  if (firstName)
   {
-    v24 = [(MSASAssetCollection *)v4 firstName];
-    [v33 encodeObject:v24 forKey:@"firstName"];
+    firstName2 = [(MSASAssetCollection *)selfCopy firstName];
+    [coderCopy encodeObject:firstName2 forKey:@"firstName"];
   }
 
-  v25 = [(MSASAssetCollection *)v4 lastName];
+  lastName = [(MSASAssetCollection *)selfCopy lastName];
 
-  if (v25)
+  if (lastName)
   {
-    v26 = [(MSASAssetCollection *)v4 lastName];
-    [v33 encodeObject:v26 forKey:@"lastName"];
+    lastName2 = [(MSASAssetCollection *)selfCopy lastName];
+    [coderCopy encodeObject:lastName2 forKey:@"lastName"];
   }
 
-  v27 = [(MSASAssetCollection *)v4 email];
+  email = [(MSASAssetCollection *)selfCopy email];
 
-  if (v27)
+  if (email)
   {
-    v28 = [(MSASAssetCollection *)v4 email];
-    [v33 encodeObject:v28 forKey:@"email"];
+    email2 = [(MSASAssetCollection *)selfCopy email];
+    [coderCopy encodeObject:email2 forKey:@"email"];
   }
 
-  [v33 encodeBool:-[MSASAssetCollection isDeletable](v4 forKey:{"isDeletable"), @"isDeletable"}];
-  [v33 encodeBool:-[MSASAssetCollection isMine](v4 forKey:{"isMine"), @"isMine"}];
-  v29 = [(MSASAssetCollection *)v4 userInfo];
+  [coderCopy encodeBool:-[MSASAssetCollection isDeletable](selfCopy forKey:{"isDeletable"), @"isDeletable"}];
+  [coderCopy encodeBool:-[MSASAssetCollection isMine](selfCopy forKey:{"isMine"), @"isMine"}];
+  userInfo = [(MSASAssetCollection *)selfCopy userInfo];
 
-  if (v29)
+  if (userInfo)
   {
-    v30 = [(MSASAssetCollection *)v4 userInfo];
-    [v33 encodeObject:v30 forKey:@"userInfo"];
+    userInfo2 = [(MSASAssetCollection *)selfCopy userInfo];
+    [coderCopy encodeObject:userInfo2 forKey:@"userInfo"];
   }
 
-  v31 = [(MSASAssetCollection *)v4 metadata];
+  metadata = [(MSASAssetCollection *)selfCopy metadata];
 
-  if (v31)
+  if (metadata)
   {
-    v32 = [(MSASAssetCollection *)v4 metadata];
-    [v33 encodeObject:v32 forKey:@"metadata"];
+    metadata2 = [(MSASAssetCollection *)selfCopy metadata];
+    [coderCopy encodeObject:metadata2 forKey:@"metadata"];
   }
 
-  [v33 encodeInt64:-[MSASAssetCollection photoNumber](v4 forKey:{"photoNumber"), @"photoNumber"}];
-  objc_sync_exit(v4);
+  [coderCopy encodeInt64:-[MSASAssetCollection photoNumber](selfCopy forKey:{"photoNumber"), @"photoNumber"}];
+  objc_sync_exit(selfCopy);
 }
 
 - (id)description
@@ -511,28 +511,28 @@ LABEL_11:
   return v4;
 }
 
-- (void)setAssets:(id)a3
+- (void)setAssets:(id)assets
 {
-  v4 = a3;
-  v7 = [(MSASAssetCollection *)self GUID];
-  v5 = _copyAssetsIntoAssetCollection(v4, self, v7);
+  assetsCopy = assets;
+  gUID = [(MSASAssetCollection *)self GUID];
+  v5 = _copyAssetsIntoAssetCollection(assetsCopy, self, gUID);
 
   assets = self->_assets;
   self->_assets = v5;
 }
 
-- (MSASAssetCollection)initWithFileName:(id)a3 path:(id)a4
+- (MSASAssetCollection)initWithFileName:(id)name path:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = MSASAssetCollection;
   v9 = [(MSASAssetCollection *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_fileName, a3);
-    objc_storeStrong(&v10->_path, a4);
+    objc_storeStrong(&v9->_fileName, name);
+    objc_storeStrong(&v10->_path, path);
     v10->_photoNumber = -1;
   }
 
@@ -631,55 +631,55 @@ LABEL_11:
   return fullName;
 }
 
-+ (id)assetCollectionWithAssetCollection:(id)a3
++ (id)assetCollectionWithAssetCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   v4 = objc_alloc_init(MSASAssetCollection);
-  v5 = [v3 GUID];
-  [(MSASAssetCollection *)v4 setGUID:v5];
+  gUID = [collectionCopy GUID];
+  [(MSASAssetCollection *)v4 setGUID:gUID];
 
-  v6 = [v3 albumGUID];
-  [(MSASAssetCollection *)v4 setAlbumGUID:v6];
+  albumGUID = [collectionCopy albumGUID];
+  [(MSASAssetCollection *)v4 setAlbumGUID:albumGUID];
 
-  v7 = [v3 ctag];
-  [(MSASAssetCollection *)v4 setCtag:v7];
+  ctag = [collectionCopy ctag];
+  [(MSASAssetCollection *)v4 setCtag:ctag];
 
-  v8 = [v3 fileName];
-  [(MSASAssetCollection *)v4 setFileName:v8];
+  fileName = [collectionCopy fileName];
+  [(MSASAssetCollection *)v4 setFileName:fileName];
 
-  v9 = [v3 path];
-  [(MSASAssetCollection *)v4 setPath:v9];
+  path = [collectionCopy path];
+  [(MSASAssetCollection *)v4 setPath:path];
 
-  v10 = [v3 timestamp];
-  [(MSASAssetCollection *)v4 setTimestamp:v10];
+  timestamp = [collectionCopy timestamp];
+  [(MSASAssetCollection *)v4 setTimestamp:timestamp];
 
-  v11 = [v3 personID];
-  [(MSASAssetCollection *)v4 setPersonID:v11];
+  personID = [collectionCopy personID];
+  [(MSASAssetCollection *)v4 setPersonID:personID];
 
-  v12 = [v3 fullName];
-  [(MSASAssetCollection *)v4 setFullName:v12];
+  fullName = [collectionCopy fullName];
+  [(MSASAssetCollection *)v4 setFullName:fullName];
 
-  v13 = [v3 firstName];
-  [(MSASAssetCollection *)v4 setFirstName:v13];
+  firstName = [collectionCopy firstName];
+  [(MSASAssetCollection *)v4 setFirstName:firstName];
 
-  v14 = [v3 lastName];
-  [(MSASAssetCollection *)v4 setLastName:v14];
+  lastName = [collectionCopy lastName];
+  [(MSASAssetCollection *)v4 setLastName:lastName];
 
-  v15 = [v3 email];
-  [(MSASAssetCollection *)v4 setEmail:v15];
+  email = [collectionCopy email];
+  [(MSASAssetCollection *)v4 setEmail:email];
 
-  -[MSASAssetCollection setIsDeletable:](v4, "setIsDeletable:", [v3 isDeletable]);
-  -[MSASAssetCollection setIsMine:](v4, "setIsMine:", [v3 isMine]);
-  v16 = [v3 userInfo];
-  [(MSASAssetCollection *)v4 setUserInfo:v16];
+  -[MSASAssetCollection setIsDeletable:](v4, "setIsDeletable:", [collectionCopy isDeletable]);
+  -[MSASAssetCollection setIsMine:](v4, "setIsMine:", [collectionCopy isMine]);
+  userInfo = [collectionCopy userInfo];
+  [(MSASAssetCollection *)v4 setUserInfo:userInfo];
 
-  v17 = [v3 metadata];
-  [(MSASAssetCollection *)v4 setMetadata:v17];
+  metadata = [collectionCopy metadata];
+  [(MSASAssetCollection *)v4 setMetadata:metadata];
 
-  v18 = [v3 assets];
+  assets = [collectionCopy assets];
 
-  v19 = [(MSASAssetCollection *)v4 GUID];
-  v20 = _copyAssetsIntoAssetCollection(v18, v4, v19);
+  gUID2 = [(MSASAssetCollection *)v4 GUID];
+  v20 = _copyAssetsIntoAssetCollection(assets, v4, gUID2);
   [(MSASAssetCollection *)v4 setAssets:v20];
 
   return v4;
@@ -688,60 +688,60 @@ LABEL_11:
 - (id)MSASPProtocolDictionary
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(MSASAssetCollection *)self GUID];
-  if (v4)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  gUID = [(MSASAssetCollection *)self GUID];
+  if (gUID)
   {
-    [v3 setObject:v4 forKey:@"assetguid"];
+    [dictionary setObject:gUID forKey:@"assetguid"];
   }
 
-  v5 = [(MSASAssetCollection *)self fileName];
-  if (v5)
+  fileName = [(MSASAssetCollection *)self fileName];
+  if (fileName)
   {
-    v6 = v5;
+    v6 = fileName;
     if (![(MSASAssetCollection *)self isVideo])
     {
       goto LABEL_7;
     }
 
-    v7 = [v6 pathExtension];
-    v8 = [v7 isEqualToString:@"mp4"];
+    pathExtension = [v6 pathExtension];
+    v8 = [pathExtension isEqualToString:@"mp4"];
 
     if ((v8 & 1) != 0 || ([v6 stringByDeletingPathExtension], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "stringByAppendingPathExtension:", @"mp4"), v10 = objc_claimAutoreleasedReturnValue(), v6, v9, (v6 = v10) != 0))
     {
 LABEL_7:
-      [v3 setObject:v6 forKey:@"filename"];
+      [dictionary setObject:v6 forKey:@"filename"];
     }
   }
 
-  v11 = [(MSASAssetCollection *)self metadata];
-  if (v11)
+  metadata = [(MSASAssetCollection *)self metadata];
+  if (metadata)
   {
-    [v3 setObject:v11 forKey:@"collectionmetadata"];
+    [dictionary setObject:metadata forKey:@"collectionmetadata"];
   }
 
-  v12 = [(MSASAssetCollection *)self mediaAssetType];
-  v13 = [v12 isEqualToString:@"unknown"];
-  if (v12 && (v13 & 1) == 0)
+  mediaAssetType = [(MSASAssetCollection *)self mediaAssetType];
+  v13 = [mediaAssetType isEqualToString:@"unknown"];
+  if (mediaAssetType && (v13 & 1) == 0)
   {
-    [v3 setObject:v12 forKey:@"mediaAssetType"];
+    [dictionary setObject:mediaAssetType forKey:@"mediaAssetType"];
   }
 
-  v14 = [(MSASAssetCollection *)self assets];
-  v15 = [v14 count];
+  assets = [(MSASAssetCollection *)self assets];
+  v15 = [assets count];
 
   if (v15)
   {
     v16 = MEMORY[0x277CBEB18];
-    v17 = [(MSASAssetCollection *)self assets];
-    v18 = [v16 arrayWithCapacity:{objc_msgSend(v17, "count")}];
+    assets2 = [(MSASAssetCollection *)self assets];
+    v18 = [v16 arrayWithCapacity:{objc_msgSend(assets2, "count")}];
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v19 = [(MSASAssetCollection *)self assets];
-    v20 = [v19 countByEnumeratingWithState:&v27 objects:v31 count:16];
+    assets3 = [(MSASAssetCollection *)self assets];
+    v20 = [assets3 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v20)
     {
       v21 = v20;
@@ -752,14 +752,14 @@ LABEL_7:
         {
           if (*v28 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(assets3);
           }
 
-          v24 = [*(*(&v27 + 1) + 8 * i) MSASPProtocolDictionary];
-          [v18 addObject:v24];
+          mSASPProtocolDictionary = [*(*(&v27 + 1) + 8 * i) MSASPProtocolDictionary];
+          [v18 addObject:mSASPProtocolDictionary];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v21 = [assets3 countByEnumeratingWithState:&v27 objects:v31 count:16];
       }
 
       while (v21);
@@ -767,22 +767,22 @@ LABEL_7:
 
     if (v18)
     {
-      [v3 setObject:v18 forKey:@"files"];
+      [dictionary setObject:v18 forKey:@"files"];
     }
   }
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-+ (id)MSASPAssetCollectionFromProtocolDictionary:(id)a3
++ (id)MSASPAssetCollectionFromProtocolDictionary:(id)dictionary
 {
   v93 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 mutableCopy];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy mutableCopy];
   v5 = objc_alloc_init(MSASAssetCollection);
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v7 = [v4 objectForKey:@"derivatives"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -925,7 +925,7 @@ LABEL_7:
     v24 = 0;
   }
 
-  v25 = v3;
+  v25 = dictionaryCopy;
 
   [v4 removeObjectForKey:@"firstname"];
   if (v24)
@@ -1076,7 +1076,7 @@ LABEL_7:
     v45 = [MSAsset MSASPAssetFromProtocolDictionary:v4];
     if (v45)
     {
-      [v6 addObject:v45];
+      [array addObject:v45];
     }
 
     v81 = 0u;
@@ -1105,7 +1105,7 @@ LABEL_7:
             v61 = [MSAsset MSASPAssetFromProtocolDictionary:v60];
             if (v61)
             {
-              [v6 addObject:v61];
+              [array addObject:v61];
             }
           }
         }
@@ -1150,14 +1150,14 @@ LABEL_7:
           v52 = [MSAsset MSASPAssetFromProtocolDictionary:v51];
           if (v52)
           {
-            [v6 addObject:v52];
+            [array addObject:v52];
           }
 
           if (v12 != [v52 isVideo] && os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
           {
-            v53 = [v52 isVideo];
+            isVideo = [v52 isVideo];
             *buf = 67109376;
-            v89 = v53;
+            v89 = isVideo;
             v90 = 1024;
             v91 = v12;
             _os_log_error_impl(&dword_245B99000, v49, OS_LOG_TYPE_ERROR, "Found inconsistency of media asset type between asset (%d) and asset collection (%d)", buf, 0xEu);
@@ -1179,7 +1179,7 @@ LABEL_100:
   v4 = v67;
   v54 = v77;
 LABEL_102:
-  [(MSASAssetCollection *)v5 setAssets:v6, v64];
+  [(MSASAssetCollection *)v5 setAssets:array, v64];
 
   v62 = *MEMORY[0x277D85DE8];
 

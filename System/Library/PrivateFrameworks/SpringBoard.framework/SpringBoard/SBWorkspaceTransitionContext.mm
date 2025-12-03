@@ -5,18 +5,18 @@
 - (NSSet)previousEntities;
 - (SBWorkspaceTransitionContext)init;
 - (SBWorkspaceTransitionRequest)request;
-- (id)compactDescriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)entityForIdentifier:(id)a3;
-- (id)previousEntityForIdentifier:(id)a3;
+- (id)compactDescriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)entityForIdentifier:(id)identifier;
+- (id)previousEntityForIdentifier:(id)identifier;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)addFinalizeBlock:(id)a3;
-- (void)enumerateEntitiesUsingBlock:(id)a3;
+- (void)addFinalizeBlock:(id)block;
+- (void)enumerateEntitiesUsingBlock:(id)block;
 - (void)finalize;
-- (void)setEntity:(id)a3 forKey:(id)a4;
-- (void)setPreviousEntity:(id)a3 forKey:(id)a4;
+- (void)setEntity:(id)entity forKey:(id)key;
+- (void)setPreviousEntity:(id)entity forKey:(id)key;
 @end
 
 @implementation SBWorkspaceTransitionContext
@@ -24,8 +24,8 @@
 - (NSSet)entities
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(NSMutableDictionary *)self->_entities allValues];
-  v4 = [v2 setWithArray:v3];
+  allValues = [(NSMutableDictionary *)self->_entities allValues];
+  v4 = [v2 setWithArray:allValues];
 
   return v4;
 }
@@ -63,8 +63,8 @@
 - (NSSet)previousEntities
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(NSMutableDictionary *)self->_previousEntities allValues];
-  v4 = [v2 setWithArray:v3];
+  allValues = [(NSMutableDictionary *)self->_previousEntities allValues];
+  v4 = [v2 setWithArray:allValues];
 
   return v4;
 }
@@ -119,58 +119,58 @@
 
 + (id)context
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (void)enumerateEntitiesUsingBlock:(id)a3
+- (void)enumerateEntitiesUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     entities = self->_entities;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __60__SBWorkspaceTransitionContext_enumerateEntitiesUsingBlock___block_invoke;
     v7[3] = &unk_2783B68B0;
-    v8 = v4;
+    v8 = blockCopy;
     [(NSMutableDictionary *)entities enumerateKeysAndObjectsUsingBlock:v7];
   }
 }
 
-- (void)setEntity:(id)a3 forKey:(id)a4
+- (void)setEntity:(id)entity forKey:(id)key
 {
-  v9 = a3;
-  v7 = a4;
-  if (!v7)
+  entityCopy = entity;
+  keyCopy = key;
+  if (!keyCopy)
   {
     [SBWorkspaceTransitionContext setEntity:a2 forKey:self];
   }
 
   entities = self->_entities;
-  if (v9)
+  if (entityCopy)
   {
-    [(NSMutableDictionary *)entities setObject:v9 forKey:v7];
+    [(NSMutableDictionary *)entities setObject:entityCopy forKey:keyCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)entities removeObjectForKey:v7];
+    [(NSMutableDictionary *)entities removeObjectForKey:keyCopy];
   }
 }
 
-- (id)entityForIdentifier:(id)a3
+- (id)entityForIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSMutableDictionary *)self->_entities allValues];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [(NSMutableDictionary *)self->_entities allValues];
+  v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -180,12 +180,12 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 uniqueIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        uniqueIdentifier = [v9 uniqueIdentifier];
+        v11 = [uniqueIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -194,7 +194,7 @@
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -209,39 +209,39 @@ LABEL_11:
   return v6;
 }
 
-- (void)setPreviousEntity:(id)a3 forKey:(id)a4
+- (void)setPreviousEntity:(id)entity forKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  entityCopy = entity;
+  keyCopy = key;
+  if (!keyCopy)
   {
     [SBWorkspaceTransitionContext setPreviousEntity:a2 forKey:self];
   }
 
-  v9 = [v7 copy];
+  v9 = [entityCopy copy];
 
   if (v9)
   {
     [v9 clearActivationSettings];
-    [(NSMutableDictionary *)self->_previousEntities setObject:v9 forKey:v8];
+    [(NSMutableDictionary *)self->_previousEntities setObject:v9 forKey:keyCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)self->_previousEntities removeObjectForKey:v8];
+    [(NSMutableDictionary *)self->_previousEntities removeObjectForKey:keyCopy];
   }
 }
 
-- (id)previousEntityForIdentifier:(id)a3
+- (id)previousEntityForIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSMutableDictionary *)self->_previousEntities allValues];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allValues = [(NSMutableDictionary *)self->_previousEntities allValues];
+  v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -251,12 +251,12 @@ LABEL_11:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 uniqueIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        uniqueIdentifier = [v9 uniqueIdentifier];
+        v11 = [uniqueIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -265,7 +265,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -280,20 +280,20 @@ LABEL_11:
   return v6;
 }
 
-- (void)addFinalizeBlock:(id)a3
+- (void)addFinalizeBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
     finalizeBlocks = self->_finalizeBlocks;
-    v4 = MEMORY[0x223D6F7F0](a3, a2);
+    v4 = MEMORY[0x223D6F7F0](block, a2);
     [(NSMutableArray *)finalizeBlocks addObject:v4];
   }
 }
 
-- (id)compactDescriptionBuilderWithMultilinePrefix:(id)a3
+- (id)compactDescriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   entities = self->_entities;
   v9[0] = MEMORY[0x277D85DD0];
@@ -301,7 +301,7 @@ LABEL_11:
   v9[2] = __77__SBWorkspaceTransitionContext_compactDescriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783B5670;
   v9[4] = self;
-  [v6 appendDictionarySection:entities withName:@"entities" multilinePrefix:v5 skipIfEmpty:1 objectTransformer:v9];
+  [v6 appendDictionarySection:entities withName:@"entities" multilinePrefix:prefixCopy skipIfEmpty:1 objectTransformer:v9];
 
   return v6;
 }
@@ -316,10 +316,10 @@ id __77__SBWorkspaceTransitionContext_compactDescriptionBuilderWithMultilinePref
 
 - (id)succinctDescription
 {
-  v2 = [(SBWorkspaceTransitionContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBWorkspaceTransitionContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -330,26 +330,26 @@ id __77__SBWorkspaceTransitionContext_compactDescriptionBuilderWithMultilinePref
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBWorkspaceTransitionContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBWorkspaceTransitionContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBWorkspaceTransitionContext *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBWorkspaceTransitionContext *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __70__SBWorkspaceTransitionContext_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

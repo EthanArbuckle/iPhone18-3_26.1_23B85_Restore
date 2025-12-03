@@ -1,33 +1,33 @@
 @interface EKEventDetailLocationItem
-+ (BOOL)isValidLocation:(id)a3 event:(id)a4;
-- (EKEventDetailLocationItem)initWithLocationName:(id)a3 forEvent:(id)a4;
++ (BOOL)isValidLocation:(id)location event:(id)event;
+- (EKEventDetailLocationItem)initWithLocationName:(id)name forEvent:(id)event;
 - (id)locationView;
 - (void)_locationTapped;
-- (void)textViewDidChangeSelection:(id)a3;
+- (void)textViewDidChangeSelection:(id)selection;
 - (void)updateAttributedString;
-- (void)updateLocation:(id)a3 forEvent:(id)a4;
+- (void)updateLocation:(id)location forEvent:(id)event;
 @end
 
 @implementation EKEventDetailLocationItem
 
-- (EKEventDetailLocationItem)initWithLocationName:(id)a3 forEvent:(id)a4
+- (EKEventDetailLocationItem)initWithLocationName:(id)name forEvent:(id)event
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  eventCopy = event;
   v24.receiver = self;
   v24.super_class = EKEventDetailLocationItem;
   v8 = [(EKEventDetailLocationItem *)&v24 init];
   if (v8)
   {
-    if ([v7 hasAttendees])
+    if ([eventCopy hasAttendees])
     {
       v22 = 0u;
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v9 = [v7 attendees];
-      v10 = [v9 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      attendees = [eventCopy attendees];
+      v10 = [attendees countByEnumeratingWithState:&v20 objects:v25 count:16];
       if (v10)
       {
         v11 = v10;
@@ -38,29 +38,29 @@
           {
             if (*v21 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(attendees);
             }
 
             v14 = *(*(&v20 + 1) + 8 * i);
             if ([v14 participantType] == 2)
             {
-              v15 = [v14 name];
-              v16 = [v15 isEqualToString:v6];
+              name = [v14 name];
+              v16 = [name isEqualToString:nameCopy];
 
               if (v16)
               {
                 v8->_locationIsAttendee = 1;
                 v8->_locationStatus = [v14 participantStatus];
-                v17 = [v14 comment];
+                comment = [v14 comment];
                 locationComment = v8->_locationComment;
-                v8->_locationComment = v17;
+                v8->_locationComment = comment;
 
                 goto LABEL_14;
               }
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v20 objects:v25 count:16];
+          v11 = [attendees countByEnumeratingWithState:&v20 objects:v25 count:16];
           if (v11)
           {
             continue;
@@ -73,25 +73,25 @@
 LABEL_14:
     }
 
-    [(EKEventDetailLocationItem *)v8 updateLocation:v6 forEvent:v7];
+    [(EKEventDetailLocationItem *)v8 updateLocation:nameCopy forEvent:eventCopy];
   }
 
   return v8;
 }
 
-+ (BOOL)isValidLocation:(id)a3 event:(id)a4
++ (BOOL)isValidLocation:(id)location event:(id)event
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 hasAttendees])
+  locationCopy = location;
+  eventCopy = event;
+  if ([eventCopy hasAttendees])
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [v6 attendees];
-    v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    attendees = [eventCopy attendees];
+    v8 = [attendees countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v8)
     {
       v9 = v8;
@@ -102,27 +102,27 @@ LABEL_14:
         {
           if (*v22 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(attendees);
           }
 
           v12 = *(*(&v21 + 1) + 8 * i);
           if ([v12 participantType] == 2)
           {
-            v13 = [v12 name];
-            v14 = [v13 isEqualToString:v5];
+            name = [v12 name];
+            v14 = [name isEqualToString:locationCopy];
 
             if (v14)
             {
-              v15 = [v12 comment];
-              if ([v15 length])
+              comment = [v12 comment];
+              if ([comment length])
               {
               }
 
               else
               {
-                v16 = [v6 virtualConference];
-                v17 = [v16 serializationBlockTitle];
-                v18 = [v17 isEqualToString:v5];
+                virtualConference = [eventCopy virtualConference];
+                serializationBlockTitle = [virtualConference serializationBlockTitle];
+                v18 = [serializationBlockTitle isEqualToString:locationCopy];
 
                 if (v18)
                 {
@@ -134,7 +134,7 @@ LABEL_14:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v9 = [attendees countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v9)
         {
           continue;
@@ -162,27 +162,27 @@ LABEL_17:
   v3 = CalendarAppTintColor();
   if (self->_locationIsAttendee || !self->_locationURL)
   {
-    v4 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
 
-    v3 = v4;
+    v3 = labelColor;
   }
 
-  v5 = [objc_opt_class() _locationFont];
+  _locationFont = [objc_opt_class() _locationFont];
   v6 = objc_opt_new();
   [v6 setLineSpacing:-0.5];
   v7 = *MEMORY[0x1E69DB648];
   v23[0] = *MEMORY[0x1E69DB650];
   v23[1] = v7;
   v24[0] = v3;
-  v24[1] = v5;
+  v24[1] = _locationFont;
   v23[2] = *MEMORY[0x1E69DB688];
   v24[2] = v6;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:3];
   v9 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:self->_locationTitle attributes:v8];
   if (self->_locationIsAttendee)
   {
-    v10 = attributedStatusGlyph();
-    v11 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:v10];
+    locationView2 = attributedStatusGlyph();
+    v11 = [objc_alloc(MEMORY[0x1E696AD40]) initWithAttributedString:locationView2];
     v12 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@" "];
     [v11 appendAttributedString:v12];
     [v11 appendAttributedString:v9];
@@ -190,7 +190,7 @@ LABEL_17:
     {
       [MEMORY[0x1E6993478] sharedInstance];
       v13 = v22 = v12;
-      v19 = [v13 commentIconStringForFont:v5];
+      v19 = [v13 commentIconStringForFont:_locationFont];
 
       v20 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"\n"];
       [v11 appendAttributedString:v20];
@@ -198,41 +198,41 @@ LABEL_17:
       [v11 appendAttributedString:v22];
       v14 = EventKitUIBundle();
       [v14 localizedStringForKey:@"“%@”" value:&stru_1F4EF6790 table:0];
-      v15 = v21 = v5;
+      v15 = v21 = _locationFont;
 
       v16 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:v15, self->_locationComment];
       v17 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v16 attributes:v8];
       [v11 appendAttributedString:v17];
 
       v12 = v22;
-      v5 = v21;
+      _locationFont = v21;
     }
 
-    v18 = [(EKEventDetailLocationItem *)self locationView];
-    [v18 setAttributedText:v11];
+    locationView = [(EKEventDetailLocationItem *)self locationView];
+    [locationView setAttributedText:v11];
   }
 
   else
   {
-    v10 = [(EKEventDetailLocationItem *)self locationView];
-    [v10 setAttributedText:v9];
+    locationView2 = [(EKEventDetailLocationItem *)self locationView];
+    [locationView2 setAttributedText:v9];
   }
 }
 
-- (void)updateLocation:(id)a3 forEvent:(id)a4
+- (void)updateLocation:(id)location forEvent:(id)event
 {
-  v24 = a3;
-  v6 = a4;
+  locationCopy = location;
+  eventCopy = event;
   locationURL = self->_locationURL;
   self->_locationURL = 0;
 
-  v8 = [v6 preferredLocation];
-  v9 = [v8 isPrediction];
+  preferredLocation = [eventCopy preferredLocation];
+  isPrediction = [preferredLocation isPrediction];
 
-  if (v9)
+  if (isPrediction)
   {
-    v10 = [(EKEventDetailLocationItem *)self locationView];
-    v11 = v10;
+    locationView = [(EKEventDetailLocationItem *)self locationView];
+    v11 = locationView;
     v12 = 3;
   }
 
@@ -244,14 +244,14 @@ LABEL_17:
     }
 
     v13 = MEMORY[0x1E6966A50];
-    v14 = [v6 structuredLocation];
-    v15 = [v13 mapsURLForFallbackLocationTitle:v24 structuredLocation:v14 hasMapItemLaunchOptionFromTimeToLeaveNotification:{-[EKEventDetailLocationItem hasMapItemLaunchOptionFromTimeToLeaveNotification](self, "hasMapItemLaunchOptionFromTimeToLeaveNotification")}];
+    structuredLocation = [eventCopy structuredLocation];
+    v15 = [v13 mapsURLForFallbackLocationTitle:locationCopy structuredLocation:structuredLocation hasMapItemLaunchOptionFromTimeToLeaveNotification:{-[EKEventDetailLocationItem hasMapItemLaunchOptionFromTimeToLeaveNotification](self, "hasMapItemLaunchOptionFromTimeToLeaveNotification")}];
     v16 = self->_locationURL;
     self->_locationURL = v15;
 
     v17 = self->_locationURL;
-    v10 = [(EKEventDetailLocationItem *)self locationView];
-    v11 = v10;
+    locationView = [(EKEventDetailLocationItem *)self locationView];
+    v11 = locationView;
     if (v17)
     {
       v12 = 0;
@@ -263,7 +263,7 @@ LABEL_17:
     }
   }
 
-  [v10 setDataDetectorTypes:v12];
+  [locationView setDataDetectorTypes:v12];
 
 LABEL_8:
   locationTapRecognizer = self->_locationTapRecognizer;
@@ -276,8 +276,8 @@ LABEL_8:
       self->_locationTapRecognizer = v19;
     }
 
-    v21 = [(EKEventDetailLocationItem *)self locationView];
-    [v21 addGestureRecognizer:self->_locationTapRecognizer];
+    locationView2 = [(EKEventDetailLocationItem *)self locationView];
+    [locationView2 addGestureRecognizer:self->_locationTapRecognizer];
   }
 
   else
@@ -287,17 +287,17 @@ LABEL_8:
       goto LABEL_15;
     }
 
-    v21 = [(EKEventDetailLocationItem *)self locationView];
-    [v21 removeGestureRecognizer:self->_locationTapRecognizer];
+    locationView2 = [(EKEventDetailLocationItem *)self locationView];
+    [locationView2 removeGestureRecognizer:self->_locationTapRecognizer];
   }
 
 LABEL_15:
-  v22 = [(EKEventDetailLocationItem *)self locationTitle];
-  v23 = [v24 isEqualToString:v22];
+  locationTitle = [(EKEventDetailLocationItem *)self locationTitle];
+  v23 = [locationCopy isEqualToString:locationTitle];
 
   if ((v23 & 1) == 0)
   {
-    [(EKEventDetailLocationItem *)self setLocationTitle:v24];
+    [(EKEventDetailLocationItem *)self setLocationTitle:locationCopy];
     [(EKEventDetailLocationItem *)self updateAttributedString];
   }
 }
@@ -314,8 +314,8 @@ LABEL_15:
 
     [(EKTextViewWithLabelTextMetrics *)self->_locationView setLineBreakMode:2];
     v7 = self->_locationView;
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    [(EKTextViewWithLabelTextMetrics *)v7 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(EKTextViewWithLabelTextMetrics *)v7 setBackgroundColor:clearColor];
 
     [(EKTextViewWithLabelTextMetrics *)self->_locationView setOpaque:0];
     [(EKTextViewWithLabelTextMetrics *)self->_locationView setDelegate:self];
@@ -325,26 +325,26 @@ LABEL_15:
   return locationView;
 }
 
-- (void)textViewDidChangeSelection:(id)a3
+- (void)textViewDidChangeSelection:(id)selection
 {
-  v4 = a3;
-  if (self->_locationView == v4)
+  selectionCopy = selection;
+  if (self->_locationView == selectionCopy)
   {
-    v9 = v4;
-    v5 = [(EKTextViewWithLabelTextMetrics *)v4 selectedTextRange];
-    v4 = v9;
-    if (v5)
+    v9 = selectionCopy;
+    selectedTextRange = [(EKTextViewWithLabelTextMetrics *)selectionCopy selectedTextRange];
+    selectionCopy = v9;
+    if (selectedTextRange)
     {
-      v6 = [(EKTextViewWithLabelTextMetrics *)v9 selectedTextRange];
-      v7 = [v6 isEmpty];
+      selectedTextRange2 = [(EKTextViewWithLabelTextMetrics *)v9 selectedTextRange];
+      isEmpty = [selectedTextRange2 isEmpty];
 
-      v4 = v9;
-      if ((v7 & 1) == 0)
+      selectionCopy = v9;
+      if ((isEmpty & 1) == 0)
       {
-        v8 = [(EKTextViewWithLabelTextMetrics *)v9 text];
-        -[EKTextViewWithLabelTextMetrics setSelectedRange:](v9, "setSelectedRange:", 0, [v8 length]);
+        text = [(EKTextViewWithLabelTextMetrics *)v9 text];
+        -[EKTextViewWithLabelTextMetrics setSelectedRange:](v9, "setSelectedRange:", 0, [text length]);
 
-        v4 = v9;
+        selectionCopy = v9;
       }
     }
   }
@@ -352,8 +352,8 @@ LABEL_15:
 
 - (void)_locationTapped
 {
-  v3 = [(EKTextViewWithLabelTextMetrics *)self->_locationView selectedTextRange];
-  if (v3 && (v4 = v3, -[EKTextViewWithLabelTextMetrics selectedTextRange](self->_locationView, "selectedTextRange"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isEmpty], v5, v4, !v6))
+  selectedTextRange = [(EKTextViewWithLabelTextMetrics *)self->_locationView selectedTextRange];
+  if (selectedTextRange && (v4 = selectedTextRange, -[EKTextViewWithLabelTextMetrics selectedTextRange](self->_locationView, "selectedTextRange"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 isEmpty], v5, v4, !v6))
   {
     locationView = self->_locationView;
 
@@ -370,8 +370,8 @@ LABEL_15:
 
   else
   {
-    v10 = [MEMORY[0x1E6963608] defaultWorkspace];
-    [v10 openURL:self->_locationURL configuration:0 completionHandler:&__block_literal_global_38];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+    [defaultWorkspace openURL:self->_locationURL configuration:0 completionHandler:&__block_literal_global_38];
   }
 }
 

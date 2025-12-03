@@ -1,59 +1,59 @@
 @interface _CDMutableSizeMetric
-- (_CDMutableSizeMetric)initWithName:(id)a3 string:(id)a4 scale:(unint64_t)a5 family:(id)a6;
+- (_CDMutableSizeMetric)initWithName:(id)name string:(id)string scale:(unint64_t)scale family:(id)family;
 - (id)description;
-- (void)addBytes:(uint64_t)a1;
+- (void)addBytes:(uint64_t)bytes;
 @end
 
 @implementation _CDMutableSizeMetric
 
-- (_CDMutableSizeMetric)initWithName:(id)a3 string:(id)a4 scale:(unint64_t)a5 family:(id)a6
+- (_CDMutableSizeMetric)initWithName:(id)name string:(id)string scale:(unint64_t)scale family:(id)family
 {
   v7.receiver = self;
   v7.super_class = _CDMutableSizeMetric;
-  return [(_CDSizeMetric *)&v7 initWithName:a3 string:a4 scale:a5 family:a6];
+  return [(_CDSizeMetric *)&v7 initWithName:name string:string scale:scale family:family];
 }
 
-- (void)addBytes:(uint64_t)a1
+- (void)addBytes:(uint64_t)bytes
 {
-  if (!a1)
+  if (!bytes)
   {
     return;
   }
 
   obj = [MEMORY[0x1E695DF00] date];
-  os_unfair_lock_lock((a1 + 8));
-  v4 = *(a1 + 16);
-  v5 = *(a1 + 24);
-  *(a1 + 24) = v5 + 1;
+  os_unfair_lock_lock((bytes + 8));
+  v4 = *(bytes + 16);
+  v5 = *(bytes + 24);
+  *(bytes + 24) = v5 + 1;
   v6 = a2 / v4;
-  objc_storeStrong((a1 + 80), obj);
-  *(a1 + 40) = v6;
-  *(a1 + 64) += v6;
+  objc_storeStrong((bytes + 80), obj);
+  *(bytes + 40) = v6;
+  *(bytes + 64) += v6;
   if (!v5)
   {
-    objc_storeStrong((a1 + 72), obj);
-    *(a1 + 32) = v6;
-    *(a1 + 48) = v6;
-    v7 = (a1 + 56);
+    objc_storeStrong((bytes + 72), obj);
+    *(bytes + 32) = v6;
+    *(bytes + 48) = v6;
+    v7 = (bytes + 56);
 LABEL_7:
     *v7 = v6;
     goto LABEL_8;
   }
 
-  v7 = (a1 + 48);
-  if (v6 < *(a1 + 48))
+  v7 = (bytes + 48);
+  if (v6 < *(bytes + 48))
   {
     goto LABEL_7;
   }
 
-  v7 = (a1 + 56);
-  if (v6 > *(a1 + 56))
+  v7 = (bytes + 56);
+  if (v6 > *(bytes + 56))
   {
     goto LABEL_7;
   }
 
 LABEL_8:
-  os_unfair_lock_unlock((a1 + 8));
+  os_unfair_lock_unlock((bytes + 8));
 }
 
 - (id)description
@@ -76,17 +76,17 @@ LABEL_8:
   v17 = Property;
   [(_CDSizeMetric *)self count];
   v16 = [OUTLINED_FUNCTION_5_1() numberWithUnsignedInteger:?];
-  v8 = [(_CDSizeMetric *)self firstUpdate];
+  firstUpdate = [(_CDSizeMetric *)self firstUpdate];
   [(_CDSizeMetric *)self firstSize];
   v9 = [OUTLINED_FUNCTION_5_1() numberWithUnsignedInteger:?];
-  v10 = [(_CDSizeMetric *)self lastUpdate];
+  lastUpdate = [(_CDSizeMetric *)self lastUpdate];
   [(_CDSizeMetric *)self lastSize];
   v11 = [OUTLINED_FUNCTION_5_1() numberWithUnsignedInteger:?];
   [(_CDSizeMetric *)self minimumSize];
   v12 = [OUTLINED_FUNCTION_5_1() numberWithUnsignedInteger:?];
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:-[_CDSizeMetric maximumSize](self)];
   v14 = [MEMORY[0x1E696AD98] numberWithDouble:-[_CDSizeMetric averageSize](self)];
-  v19 = [v18 stringWithFormat:@"%@: { name=%@, text='%@', count=%@, firstUpdate=%@, firstSize=%@, lastUpdate=%@, lastSize=%@, minimumSize=%@, maximumSize=%@, averageSize=%@ }", v20, v5, v17, v16, v8, v9, v10, v11, v12, v13, v14];
+  v19 = [v18 stringWithFormat:@"%@: { name=%@, text='%@', count=%@, firstUpdate=%@, firstSize=%@, lastUpdate=%@, lastSize=%@, minimumSize=%@, maximumSize=%@, averageSize=%@ }", v20, v5, v17, v16, firstUpdate, v9, lastUpdate, v11, v12, v13, v14];
 
   return v19;
 }

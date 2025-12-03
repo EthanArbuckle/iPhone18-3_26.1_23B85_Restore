@@ -1,32 +1,32 @@
 @interface TSCH3DFramebufferOnepassBlurPipeline
-+ (id)pipelineWithProcessor:(id)a3 session:(id)a4 pixelSize:(void *)a5;
-- (TSCH3DFramebufferOnepassBlurPipeline)initWithProcessor:(id)a3 session:(id)a4 pixelSize:(void *)a5;
++ (id)pipelineWithProcessor:(id)processor session:(id)session pixelSize:(void *)size;
+- (TSCH3DFramebufferOnepassBlurPipeline)initWithProcessor:(id)processor session:(id)session pixelSize:(void *)size;
 - (void)updateShaderEffectsStates;
 @end
 
 @implementation TSCH3DFramebufferOnepassBlurPipeline
 
-+ (id)pipelineWithProcessor:(id)a3 session:(id)a4 pixelSize:(void *)a5
++ (id)pipelineWithProcessor:(id)processor session:(id)session pixelSize:(void *)size
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 alloc];
-  v15 = objc_msgSend_initWithProcessor_session_pixelSize_(v10, v11, v12, v13, v14, v8, v9, a5);
+  processorCopy = processor;
+  sessionCopy = session;
+  v10 = [self alloc];
+  v15 = objc_msgSend_initWithProcessor_session_pixelSize_(v10, v11, v12, v13, v14, processorCopy, sessionCopy, size);
 
   return v15;
 }
 
-- (TSCH3DFramebufferOnepassBlurPipeline)initWithProcessor:(id)a3 session:(id)a4 pixelSize:(void *)a5
+- (TSCH3DFramebufferOnepassBlurPipeline)initWithProcessor:(id)processor session:(id)session pixelSize:(void *)size
 {
   v29[2] = *MEMORY[0x277D85DE8];
   v28.receiver = self;
   v28.super_class = TSCH3DFramebufferOnepassBlurPipeline;
-  v6 = [(TSCH3DFramebufferCopyPipeline *)&v28 initWithProcessor:a3 session:a4];
+  v6 = [(TSCH3DFramebufferCopyPipeline *)&v28 initWithProcessor:processor session:session];
   v11 = v6;
   if (v6)
   {
-    v6->_pixelSize.var0.var0 = *a5;
-    LODWORD(v8) = *(a5 + 1);
+    v6->_pixelSize.var0.var0 = *size;
+    LODWORD(v8) = *(size + 1);
     v6->_pixelSize.var1.var0 = *&v8;
     v12 = objc_msgSend_effect(TSCH3DNoLightingVertexShaderEffect, v7, v8, v9, v10);
     v29[0] = v12;

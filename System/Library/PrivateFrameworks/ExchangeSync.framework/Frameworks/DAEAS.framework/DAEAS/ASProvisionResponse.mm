@@ -4,12 +4,12 @@
 + (BOOL)notifyOfUnknownTokens;
 + (BOOL)parsingLeafNode;
 + (BOOL)parsingWithSubItems;
-- (ASProvisionResponse)initWithPolicyType:(id)a3;
+- (ASProvisionResponse)initWithPolicyType:(id)type;
 - (id)asParseRules;
 - (id)description;
-- (void)_setPolicies:(id)a3;
-- (void)_setStatus:(id)a3;
-- (void)setPolicyType:(id)a3;
+- (void)_setPolicies:(id)policies;
+- (void)_setStatus:(id)status;
+- (void)setPolicyType:(id)type;
 @end
 
 @implementation ASProvisionResponse
@@ -23,7 +23,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_36 = v2;
     acceptsTopLevelLeaves___haveChecked_36 = 1;
   }
@@ -40,7 +40,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_36 = v2;
     parsingLeafNode___haveChecked_36 = 1;
   }
@@ -57,7 +57,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_36 = v2;
     parsingWithSubItems___haveChecked_36 = 1;
   }
@@ -74,7 +74,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_36 = v2;
     frontingBasicTypes___haveChecked_36 = 1;
   }
@@ -91,7 +91,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_36 = v2;
     notifyOfUnknownTokens___haveChecked_36 = 1;
   }
@@ -99,26 +99,26 @@
   return v2 & 1;
 }
 
-- (ASProvisionResponse)initWithPolicyType:(id)a3
+- (ASProvisionResponse)initWithPolicyType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v9.receiver = self;
   v9.super_class = ASProvisionResponse;
   v6 = [(ASItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_policyType, a3);
+    objc_storeStrong(&v6->_policyType, type);
   }
 
   return v7;
 }
 
-- (void)setPolicyType:(id)a3
+- (void)setPolicyType:(id)type
 {
-  if (self->_policyType != a3)
+  if (self->_policyType != type)
   {
-    v4 = [a3 copy];
+    v4 = [type copy];
     policyType = self->_policyType;
     self->_policyType = v4;
 
@@ -126,25 +126,25 @@
   }
 }
 
-- (void)_setPolicies:(id)a3
+- (void)_setPolicies:(id)policies
 {
-  v5 = a3;
-  if (self->_policies != v5)
+  policiesCopy = policies;
+  if (self->_policies != policiesCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_policies, a3);
-    v5 = v6;
+    v6 = policiesCopy;
+    objc_storeStrong(&self->_policies, policies);
+    policiesCopy = v6;
   }
 }
 
-- (void)_setStatus:(id)a3
+- (void)_setStatus:(id)status
 {
-  v5 = a3;
-  if (self->_status != v5)
+  statusCopy = status;
+  if (self->_status != statusCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_status, a3);
-    v5 = v6;
+    v6 = statusCopy;
+    objc_storeStrong(&self->_status, status);
+    statusCopy = v6;
   }
 }
 

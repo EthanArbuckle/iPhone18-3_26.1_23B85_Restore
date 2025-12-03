@@ -1,12 +1,12 @@
 @interface PKDisbursementRequest
 + (NSError)disbursementCardUnsupportedError;
 + (NSError)disbursementContactInvalidErrorWithContactField:(PKContactField)field localizedDescription:(NSString *)localizedDescription;
-- (BOOL)isEqualToDisbursementRequest:(id)a3;
-- (PKDisbursementRequest)initWithCoder:(id)a3;
+- (BOOL)isEqualToDisbursementRequest:(id)request;
+- (PKDisbursementRequest)initWithCoder:(id)coder;
 - (PKDisbursementRequest)initWithMerchantIdentifier:(NSString *)merchantIdentifier currencyCode:(NSString *)currencyCode regionCode:(NSString *)regionCode supportedNetworks:(NSArray *)supportedNetworks merchantCapabilities:(PKMerchantCapability)merchantCapabilities summaryItems:(NSArray *)summaryItems;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKDisbursementRequest
@@ -48,10 +48,10 @@
   return v19;
 }
 
-- (BOOL)isEqualToDisbursementRequest:(id)a3
+- (BOOL)isEqualToDisbursementRequest:(id)request
 {
-  v4 = a3;
-  if (!v4)
+  requestCopy = request;
+  if (!requestCopy)
   {
     goto LABEL_32;
   }
@@ -62,7 +62,7 @@
     goto LABEL_32;
   }
 
-  v5 = v4[1];
+  v5 = requestCopy[1];
   v6 = self->_merchantIdentifier;
   v7 = v5;
   v8 = v7;
@@ -85,7 +85,7 @@
     }
   }
 
-  v10 = v4[2];
+  v10 = requestCopy[2];
   v6 = self->_regionCode;
   v11 = v10;
   v8 = v11;
@@ -109,7 +109,7 @@
   }
 
   supportedNetworks = self->_supportedNetworks;
-  v14 = v4[3];
+  v14 = requestCopy[3];
   if (supportedNetworks && v14)
   {
     if (([(NSArray *)supportedNetworks isEqual:?]& 1) == 0)
@@ -123,13 +123,13 @@
     goto LABEL_32;
   }
 
-  if (self->_merchantCapabilities != v4[4])
+  if (self->_merchantCapabilities != requestCopy[4])
   {
     goto LABEL_32;
   }
 
   summaryItems = self->_summaryItems;
-  v16 = v4[5];
+  v16 = requestCopy[5];
   if (summaryItems && v16)
   {
     if (([(NSArray *)summaryItems isEqual:?]& 1) == 0)
@@ -143,7 +143,7 @@
     goto LABEL_32;
   }
 
-  v17 = v4[6];
+  v17 = requestCopy[6];
   v6 = self->_currencyCode;
   v18 = v17;
   v8 = v18;
@@ -169,7 +169,7 @@ LABEL_31:
 
 LABEL_35:
   requiredRecipientContactFields = self->_requiredRecipientContactFields;
-  v23 = v4[7];
+  v23 = requestCopy[7];
   if (requiredRecipientContactFields && v23)
   {
     if (([(NSArray *)requiredRecipientContactFields isEqual:?]& 1) == 0)
@@ -184,7 +184,7 @@ LABEL_35:
   }
 
   recipientContact = self->_recipientContact;
-  v25 = v4[8];
+  v25 = requestCopy[8];
   if (recipientContact && v25)
   {
     if (![(PKContact *)recipientContact isEqual:?])
@@ -199,7 +199,7 @@ LABEL_35:
   }
 
   supportedRegions = self->_supportedRegions;
-  v27 = v4[9];
+  v27 = requestCopy[9];
   if (supportedRegions && v27)
   {
     if (([(NSArray *)supportedRegions isEqual:?]& 1) != 0)
@@ -219,7 +219,7 @@ LABEL_32:
 
 LABEL_50:
   applicationData = self->_applicationData;
-  v29 = v4[10];
+  v29 = requestCopy[10];
   if (applicationData && v29)
   {
     v20 = [(NSData *)applicationData isEqual:?];
@@ -237,119 +237,119 @@ LABEL_33:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_merchantIdentifier];
-  [v3 safelyAddObject:self->_regionCode];
-  [v3 safelyAddObject:self->_supportedNetworks];
-  [v3 safelyAddObject:self->_summaryItems];
-  [v3 safelyAddObject:self->_currencyCode];
-  [v3 safelyAddObject:self->_requiredRecipientContactFields];
-  [v3 safelyAddObject:self->_recipientContact];
-  [v3 safelyAddObject:self->_supportedRegions];
-  [v3 safelyAddObject:self->_applicationData];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_merchantIdentifier];
+  [array safelyAddObject:self->_regionCode];
+  [array safelyAddObject:self->_supportedNetworks];
+  [array safelyAddObject:self->_summaryItems];
+  [array safelyAddObject:self->_currencyCode];
+  [array safelyAddObject:self->_requiredRecipientContactFields];
+  [array safelyAddObject:self->_recipientContact];
+  [array safelyAddObject:self->_supportedRegions];
+  [array safelyAddObject:self->_applicationData];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_merchantCapabilities - v4 + 32 * v4;
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKDisbursementRequest allocWithZone:](PKDisbursementRequest init];
-  v6 = [(NSString *)self->_merchantIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_merchantIdentifier copyWithZone:zone];
   merchantIdentifier = v5->_merchantIdentifier;
   v5->_merchantIdentifier = v6;
 
-  v8 = [(NSString *)self->_regionCode copyWithZone:a3];
+  v8 = [(NSString *)self->_regionCode copyWithZone:zone];
   regionCode = v5->_regionCode;
   v5->_regionCode = v8;
 
-  v10 = [(NSArray *)self->_supportedNetworks copyWithZone:a3];
+  v10 = [(NSArray *)self->_supportedNetworks copyWithZone:zone];
   supportedNetworks = v5->_supportedNetworks;
   v5->_supportedNetworks = v10;
 
   v5->_merchantCapabilities = self->_merchantCapabilities;
-  v12 = [(NSArray *)self->_summaryItems copyWithZone:a3];
+  v12 = [(NSArray *)self->_summaryItems copyWithZone:zone];
   summaryItems = v5->_summaryItems;
   v5->_summaryItems = v12;
 
-  v14 = [(NSString *)self->_currencyCode copyWithZone:a3];
+  v14 = [(NSString *)self->_currencyCode copyWithZone:zone];
   currencyCode = v5->_currencyCode;
   v5->_currencyCode = v14;
 
-  v16 = [(NSArray *)self->_requiredRecipientContactFields copyWithZone:a3];
+  v16 = [(NSArray *)self->_requiredRecipientContactFields copyWithZone:zone];
   requiredRecipientContactFields = v5->_requiredRecipientContactFields;
   v5->_requiredRecipientContactFields = v16;
 
-  v18 = [(PKContact *)self->_recipientContact copyWithZone:a3];
+  v18 = [(PKContact *)self->_recipientContact copyWithZone:zone];
   recipientContact = v5->_recipientContact;
   v5->_recipientContact = v18;
 
-  v20 = [(NSArray *)self->_supportedRegions copyWithZone:a3];
+  v20 = [(NSArray *)self->_supportedRegions copyWithZone:zone];
   supportedRegions = v5->_supportedRegions;
   v5->_supportedRegions = v20;
 
-  v22 = [(NSData *)self->_applicationData copyWithZone:a3];
+  v22 = [(NSData *)self->_applicationData copyWithZone:zone];
   applicationData = v5->_applicationData;
   v5->_applicationData = v22;
 
   return v5;
 }
 
-- (PKDisbursementRequest)initWithCoder:(id)a3
+- (PKDisbursementRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v37.receiver = self;
   v37.super_class = PKDisbursementRequest;
   v5 = [(PKDisbursementRequest *)&v37 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantIdentifier"];
     merchantIdentifier = v5->_merchantIdentifier;
     v5->_merchantIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"regionCode"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"regionCode"];
     regionCode = v5->_regionCode;
     v5->_regionCode = v8;
 
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"supportedNetworks"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"supportedNetworks"];
     supportedNetworks = v5->_supportedNetworks;
     v5->_supportedNetworks = v13;
 
-    v5->_merchantCapabilities = [v4 decodeIntegerForKey:@"merchantCapabilities"];
+    v5->_merchantCapabilities = [coderCopy decodeIntegerForKey:@"merchantCapabilities"];
     v15 = MEMORY[0x1E695DFD8];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"summaryItems"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"summaryItems"];
     summaryItems = v5->_summaryItems;
     v5->_summaryItems = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v20;
 
     v22 = MEMORY[0x1E695DFD8];
     v23 = objc_opt_class();
     v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"requiredRecipientContactFields"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"requiredRecipientContactFields"];
     requiredRecipientContactFields = v5->_requiredRecipientContactFields;
     v5->_requiredRecipientContactFields = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recipientContact"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recipientContact"];
     recipientContact = v5->_recipientContact;
     v5->_recipientContact = v27;
 
     v29 = MEMORY[0x1E695DFD8];
     v30 = objc_opt_class();
     v31 = [v29 setWithObjects:{v30, objc_opt_class(), 0}];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"supportedRegions"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"supportedRegions"];
     supportedRegions = v5->_supportedRegions;
     v5->_supportedRegions = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationData"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationData"];
     applicationData = v5->_applicationData;
     v5->_applicationData = v34;
   }
@@ -357,20 +357,20 @@ LABEL_33:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   merchantIdentifier = self->_merchantIdentifier;
-  v5 = a3;
-  [v5 encodeObject:merchantIdentifier forKey:@"merchantIdentifier"];
-  [v5 encodeObject:self->_regionCode forKey:@"regionCode"];
-  [v5 encodeObject:self->_supportedNetworks forKey:@"supportedNetworks"];
-  [v5 encodeInteger:self->_merchantCapabilities forKey:@"merchantCapabilities"];
-  [v5 encodeObject:self->_summaryItems forKey:@"summaryItems"];
-  [v5 encodeObject:self->_currencyCode forKey:@"currencyCode"];
-  [v5 encodeObject:self->_requiredRecipientContactFields forKey:@"requiredRecipientContactFields"];
-  [v5 encodeObject:self->_recipientContact forKey:@"recipientContact"];
-  [v5 encodeObject:self->_supportedRegions forKey:@"supportedRegions"];
-  [v5 encodeObject:self->_applicationData forKey:@"applicationData"];
+  coderCopy = coder;
+  [coderCopy encodeObject:merchantIdentifier forKey:@"merchantIdentifier"];
+  [coderCopy encodeObject:self->_regionCode forKey:@"regionCode"];
+  [coderCopy encodeObject:self->_supportedNetworks forKey:@"supportedNetworks"];
+  [coderCopy encodeInteger:self->_merchantCapabilities forKey:@"merchantCapabilities"];
+  [coderCopy encodeObject:self->_summaryItems forKey:@"summaryItems"];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  [coderCopy encodeObject:self->_requiredRecipientContactFields forKey:@"requiredRecipientContactFields"];
+  [coderCopy encodeObject:self->_recipientContact forKey:@"recipientContact"];
+  [coderCopy encodeObject:self->_supportedRegions forKey:@"supportedRegions"];
+  [coderCopy encodeObject:self->_applicationData forKey:@"applicationData"];
 }
 
 + (NSError)disbursementContactInvalidErrorWithContactField:(PKContactField)field localizedDescription:(NSString *)localizedDescription

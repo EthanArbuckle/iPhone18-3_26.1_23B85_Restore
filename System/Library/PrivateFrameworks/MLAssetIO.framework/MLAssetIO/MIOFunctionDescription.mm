@@ -1,6 +1,6 @@
 @interface MIOFunctionDescription
-- (BOOL)isEqual:(id)a3;
-- (MIOFunctionDescription)initWithSpecification:(const void *)a3 classLabels:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (MIOFunctionDescription)initWithSpecification:(const void *)specification classLabels:(id)labels;
 - (NSString)name;
 - (NSString)predictedFeatureName;
 - (NSString)predictedProbabilitiesName;
@@ -10,17 +10,17 @@
 
 @implementation MIOFunctionDescription
 
-- (MIOFunctionDescription)initWithSpecification:(const void *)a3 classLabels:(id)a4
+- (MIOFunctionDescription)initWithSpecification:(const void *)specification classLabels:(id)labels
 {
-  v6 = a4;
+  labelsCopy = labels;
   v12.receiver = self;
   v12.super_class = MIOFunctionDescription;
   v7 = [(MIOFunctionDescription *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    CoreML::Specification::FunctionDescription::CopyFrom(&v7->_functionDescriptionParams, a3);
-    v9 = [v6 copy];
+    CoreML::Specification::FunctionDescription::CopyFrom(&v7->_functionDescriptionParams, specification);
+    v9 = [labelsCopy copy];
     classLabels = v8->_classLabels;
     v8->_classLabels = v9;
   }
@@ -31,45 +31,45 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"MIOFunctionDescription (%p)\n", self];
-  v4 = [(MIOFunctionDescription *)self inputDescriptions];
-  v5 = [v4 componentsJoinedByString:@"\n    "];
+  inputDescriptions = [(MIOFunctionDescription *)self inputDescriptions];
+  v5 = [inputDescriptions componentsJoinedByString:@"\n    "];
   [v3 appendFormat:@"  inputDescriptions:\n    %@\n", v5];
 
-  v6 = [(MIOFunctionDescription *)self outputDescriptions];
-  v7 = [v6 componentsJoinedByString:@"\n    "];
+  outputDescriptions = [(MIOFunctionDescription *)self outputDescriptions];
+  v7 = [outputDescriptions componentsJoinedByString:@"\n    "];
   [v3 appendFormat:@"  outputDescriptions:\n    %@\n", v7];
 
-  v8 = [(MIOFunctionDescription *)self predictedFeatureName];
+  predictedFeatureName = [(MIOFunctionDescription *)self predictedFeatureName];
 
-  if (v8)
+  if (predictedFeatureName)
   {
-    v9 = [(MIOFunctionDescription *)self predictedFeatureName];
-    [v3 appendFormat:@"  predictedFeatureName: %@\n", v9];
+    predictedFeatureName2 = [(MIOFunctionDescription *)self predictedFeatureName];
+    [v3 appendFormat:@"  predictedFeatureName: %@\n", predictedFeatureName2];
   }
 
-  v10 = [(MIOFunctionDescription *)self predictedProbabilitiesName];
+  predictedProbabilitiesName = [(MIOFunctionDescription *)self predictedProbabilitiesName];
 
-  if (v10)
+  if (predictedProbabilitiesName)
   {
-    v11 = [(MIOFunctionDescription *)self predictedProbabilitiesName];
-    [v3 appendFormat:@"  predictedProbabilitiesName: %@\n", v11];
+    predictedProbabilitiesName2 = [(MIOFunctionDescription *)self predictedProbabilitiesName];
+    [v3 appendFormat:@"  predictedProbabilitiesName: %@\n", predictedProbabilitiesName2];
   }
 
-  v12 = [(MIOFunctionDescription *)self classLabels];
+  classLabels = [(MIOFunctionDescription *)self classLabels];
 
-  if (v12)
+  if (classLabels)
   {
-    v13 = [(MIOFunctionDescription *)self classLabels];
-    [v3 appendFormat:@"  classLabels: %@\n", v13];
+    classLabels2 = [(MIOFunctionDescription *)self classLabels];
+    [v3 appendFormat:@"  classLabels: %@\n", classLabels2];
   }
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v20 = 1;
   }
@@ -79,43 +79,43 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MIOFunctionDescription *)self name];
-      v7 = [(MIOFunctionDescription *)v5 name];
-      v8 = [v6 isEqual:v7];
+      v5 = equalCopy;
+      name = [(MIOFunctionDescription *)self name];
+      name2 = [(MIOFunctionDescription *)v5 name];
+      v8 = [name isEqual:name2];
 
       if ((v8 & 1) == 0)
       {
         goto LABEL_10;
       }
 
-      v9 = [(MIOFunctionDescription *)self inputDescriptions];
-      v10 = [(MIOFunctionDescription *)v5 inputDescriptions];
-      v11 = [v9 isEqual:v10];
+      inputDescriptions = [(MIOFunctionDescription *)self inputDescriptions];
+      inputDescriptions2 = [(MIOFunctionDescription *)v5 inputDescriptions];
+      v11 = [inputDescriptions isEqual:inputDescriptions2];
 
       if ((v11 & 1) == 0)
       {
         goto LABEL_10;
       }
 
-      v12 = [(MIOFunctionDescription *)self outputDescriptions];
-      v13 = [(MIOFunctionDescription *)v5 outputDescriptions];
-      v14 = [v12 isEqual:v13];
+      outputDescriptions = [(MIOFunctionDescription *)self outputDescriptions];
+      outputDescriptions2 = [(MIOFunctionDescription *)v5 outputDescriptions];
+      v14 = [outputDescriptions isEqual:outputDescriptions2];
 
       if ((v14 & 1) == 0)
       {
         goto LABEL_10;
       }
 
-      v15 = [(MIOFunctionDescription *)self predictedFeatureName];
-      v16 = [(MIOFunctionDescription *)v5 predictedFeatureName];
-      v17 = nullSafeEqual(v15, v16);
+      predictedFeatureName = [(MIOFunctionDescription *)self predictedFeatureName];
+      predictedFeatureName2 = [(MIOFunctionDescription *)v5 predictedFeatureName];
+      v17 = nullSafeEqual(predictedFeatureName, predictedFeatureName2);
 
       if (v17)
       {
-        v18 = [(MIOFunctionDescription *)self predictedProbabilitiesName];
-        v19 = [(MIOFunctionDescription *)v5 predictedProbabilitiesName];
-        v20 = nullSafeEqual(v18, v19);
+        predictedProbabilitiesName = [(MIOFunctionDescription *)self predictedProbabilitiesName];
+        predictedProbabilitiesName2 = [(MIOFunctionDescription *)v5 predictedProbabilitiesName];
+        v20 = nullSafeEqual(predictedProbabilitiesName, predictedProbabilitiesName2);
       }
 
       else
@@ -136,8 +136,8 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v2 = [(MIOFunctionDescription *)self name];
-  v3 = [v2 hash];
+  name = [(MIOFunctionDescription *)self name];
+  v3 = [name hash];
 
   return v3;
 }

@@ -1,42 +1,42 @@
 @interface PKPaymentPreferenceContactSectionController
-- (BOOL)_saveUpdatedContact:(id)a3 contactKey:(id)a4 preference:(id)a5 atIndex:(int64_t)a6;
-- (BOOL)editedTextFieldHasError:(id)a3;
+- (BOOL)_saveUpdatedContact:(id)contact contactKey:(id)key preference:(id)preference atIndex:(int64_t)index;
+- (BOOL)editedTextFieldHasError:(id)error;
 - (BOOL)hasSavedContact;
-- (PKPaymentPreferenceContactSectionController)initWithContactPreference:(id)a3 contactFormatValidator:(id)a4 style:(int64_t)a5 preferencesChangedHandler:(id)a6;
+- (PKPaymentPreferenceContactSectionController)initWithContactPreference:(id)preference contactFormatValidator:(id)validator style:(int64_t)style preferencesChangedHandler:(id)handler;
 - (PKPaymentPreferenceContactSectionControllerDelegate)contactDelegate;
 - (id)addPreferenceItems;
 - (id)appendNewSubPreference;
-- (id)newOptionItemForSubPreference:(id)a3 hasErrorHandler:(id)a4;
-- (void)deleteItem:(id)a3 forRow:(unint64_t)a4;
-- (void)didSelectItem:(id)a3;
-- (void)editItem:(id)a3 forRow:(unint64_t)a4;
-- (void)saveContact:(id)a3 forItem:(id)a4 withContactKey:(id)a5 completion:(id)a6;
+- (id)newOptionItemForSubPreference:(id)preference hasErrorHandler:(id)handler;
+- (void)deleteItem:(id)item forRow:(unint64_t)row;
+- (void)didSelectItem:(id)item;
+- (void)editItem:(id)item forRow:(unint64_t)row;
+- (void)saveContact:(id)contact forItem:(id)item withContactKey:(id)key completion:(id)completion;
 @end
 
 @implementation PKPaymentPreferenceContactSectionController
 
-- (PKPaymentPreferenceContactSectionController)initWithContactPreference:(id)a3 contactFormatValidator:(id)a4 style:(int64_t)a5 preferencesChangedHandler:(id)a6
+- (PKPaymentPreferenceContactSectionController)initWithContactPreference:(id)preference contactFormatValidator:(id)validator style:(int64_t)style preferencesChangedHandler:(id)handler
 {
-  v11 = a4;
+  validatorCopy = validator;
   v15.receiver = self;
   v15.super_class = PKPaymentPreferenceContactSectionController;
-  v12 = [(PKPaymentPreferenceSectionController *)&v15 initWithPreference:a3 style:a5 preferencesChangedHandler:a6];
+  v12 = [(PKPaymentPreferenceSectionController *)&v15 initWithPreference:preference style:style preferencesChangedHandler:handler];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_contactFormatValidator, a4);
+    objc_storeStrong(&v12->_contactFormatValidator, validator);
   }
 
   return v13;
 }
 
-- (id)newOptionItemForSubPreference:(id)a3 hasErrorHandler:(id)a4
+- (id)newOptionItemForSubPreference:(id)preference hasErrorHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  preferenceCopy = preference;
   v8 = [PKPaymentPreferenceContactOptionListItem alloc];
-  v9 = [(PKPaymentPreferenceContactSectionController *)self contactPreference];
-  v10 = [(PKPaymentPreferenceOptionListItem *)v8 initWithPreference:v7 inSectionPreference:v9 hasErrorHandler:v6];
+  contactPreference = [(PKPaymentPreferenceContactSectionController *)self contactPreference];
+  v10 = [(PKPaymentPreferenceOptionListItem *)v8 initWithPreference:preferenceCopy inSectionPreference:contactPreference hasErrorHandler:handlerCopy];
 
   return v10;
 }
@@ -97,22 +97,22 @@ uint64_t __62__PKPaymentPreferenceContactSectionController_hasSavedContact__bloc
   v26[1] = *MEMORY[0x1E69E9840];
   objc_initWeak(&location, self);
   v3 = [PKPaymentPreferenceAddListItem alloc];
-  v4 = [(PKPaymentPreferenceContactSectionController *)self contactPreference];
+  contactPreference = [(PKPaymentPreferenceContactSectionController *)self contactPreference];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __65__PKPaymentPreferenceContactSectionController_addPreferenceItems__block_invoke;
   v21[3] = &unk_1E8010998;
   objc_copyWeak(&v22, &location);
-  v5 = [(PKPaymentPreferenceAddListItem *)v3 initWithAddPreferenceType:0 forSectionPreference:v4 handler:v21];
+  v5 = [(PKPaymentPreferenceAddListItem *)v3 initWithAddPreferenceType:0 forSectionPreference:contactPreference handler:v21];
 
   v6 = [PKPaymentPreferenceAddListItem alloc];
-  v7 = [(PKPaymentPreferenceContactSectionController *)self contactPreference];
+  contactPreference2 = [(PKPaymentPreferenceContactSectionController *)self contactPreference];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __65__PKPaymentPreferenceContactSectionController_addPreferenceItems__block_invoke_2;
   v19[3] = &unk_1E8010998;
   objc_copyWeak(&v20, &location);
-  v8 = [(PKPaymentPreferenceAddListItem *)v6 initWithAddPreferenceType:1 forSectionPreference:v7 handler:v19];
+  v8 = [(PKPaymentPreferenceAddListItem *)v6 initWithAddPreferenceType:1 forSectionPreference:contactPreference2 handler:v19];
 
   if ([(PKPaymentPreferenceSectionController *)self style]== 2)
   {
@@ -121,27 +121,27 @@ uint64_t __62__PKPaymentPreferenceContactSectionController_hasSavedContact__bloc
     [(PKPaymentPreferenceAddListItem *)v8 setButtonTextColor:v9];
   }
 
-  v10 = [(PKPaymentPreferenceContactSectionController *)self hasSavedContact];
-  v11 = [(PKPaymentPreferenceContactSectionController *)self contactPreference];
-  v12 = [v11 contactKey];
+  hasSavedContact = [(PKPaymentPreferenceContactSectionController *)self hasSavedContact];
+  contactPreference3 = [(PKPaymentPreferenceContactSectionController *)self contactPreference];
+  contactKey = [contactPreference3 contactKey];
 
-  if ([v12 isEqualToString:*MEMORY[0x1E695C360]])
+  if ([contactKey isEqualToString:*MEMORY[0x1E695C360]])
   {
     v26[0] = v5;
     v13 = v26;
     goto LABEL_10;
   }
 
-  if (([v12 isEqualToString:*MEMORY[0x1E695C330]] & 1) != 0 || objc_msgSend(v12, "isEqualToString:", *MEMORY[0x1E695C208]))
+  if (([contactKey isEqualToString:*MEMORY[0x1E695C330]] & 1) != 0 || objc_msgSend(contactKey, "isEqualToString:", *MEMORY[0x1E695C208]))
   {
-    if (v10)
+    if (hasSavedContact)
     {
       v25[0] = v5;
       v25[1] = v8;
       v13 = v25;
       v14 = 2;
 LABEL_11:
-      v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:v14];
+      addPreferenceItems = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:v14];
       goto LABEL_12;
     }
 
@@ -154,9 +154,9 @@ LABEL_10:
 
   v18.receiver = self;
   v18.super_class = PKPaymentPreferenceContactSectionController;
-  v15 = [(PKPaymentPreferenceSectionController *)&v18 addPreferenceItems];
+  addPreferenceItems = [(PKPaymentPreferenceSectionController *)&v18 addPreferenceItems];
 LABEL_12:
-  v16 = v15;
+  v16 = addPreferenceItems;
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&v22);
@@ -222,83 +222,83 @@ void __65__PKPaymentPreferenceContactSectionController_addPreferenceItems__block
   [v6 showContactsPickerForPreference:v7 inSectionController:v8];
 }
 
-- (void)deleteItem:(id)a3 forRow:(unint64_t)a4
+- (void)deleteItem:(id)item forRow:(unint64_t)row
 {
-  v19 = a3;
-  if (![v19 isOptionItem])
+  itemCopy = item;
+  if (![itemCopy isOptionItem])
   {
     goto LABEL_14;
   }
 
-  v6 = [(PKPaymentPreferenceContactSectionController *)self contactPreference];
-  v7 = [(PKPaymentPreferenceSectionController *)self items];
-  [v7 removeObjectAtIndex:a4];
+  contactPreference = [(PKPaymentPreferenceContactSectionController *)self contactPreference];
+  items = [(PKPaymentPreferenceSectionController *)self items];
+  [items removeObjectAtIndex:row];
 
-  v8 = [v19 preference];
-  v9 = [MEMORY[0x1E69B8D00] defaultInstance];
-  v10 = [v8 recentContact];
-  [v9 deleteRecent:v10];
+  preference = [itemCopy preference];
+  defaultInstance = [MEMORY[0x1E69B8D00] defaultInstance];
+  recentContact = [preference recentContact];
+  [defaultInstance deleteRecent:recentContact];
 
-  v11 = [v6 contactKey];
-  if ([v11 isEqualToString:*MEMORY[0x1E695C360]] && !objc_msgSend(v6, "type"))
+  contactKey = [contactPreference contactKey];
+  if ([contactKey isEqualToString:*MEMORY[0x1E695C360]] && !objc_msgSend(contactPreference, "type"))
   {
-    v12 = [MEMORY[0x1E69B8CF8] defaults];
-    [v12 deleteDefaultBillingAddress:v8];
+    defaults = [MEMORY[0x1E69B8CF8] defaults];
+    [defaults deleteDefaultBillingAddress:preference];
     goto LABEL_7;
   }
 
-  if ([v8 contactSource] == 2)
+  if ([preference contactSource] == 2)
   {
-    v12 = [MEMORY[0x1E69B8CF8] defaults];
-    [v12 deleteDefaultForContactKey:v11];
+    defaults = [MEMORY[0x1E69B8CF8] defaults];
+    [defaults deleteDefaultForContactKey:contactKey];
 LABEL_7:
   }
 
-  v13 = [v6 preferences];
-  v14 = [v13 mutableCopy];
+  preferences = [contactPreference preferences];
+  v14 = [preferences mutableCopy];
 
-  v15 = [v6 selectedIndex];
-  if (v15 >= [v14 count])
+  selectedIndex = [contactPreference selectedIndex];
+  if (selectedIndex >= [v14 count])
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = [v14 objectAtIndex:{objc_msgSend(v6, "selectedIndex")}];
+    v16 = [v14 objectAtIndex:{objc_msgSend(contactPreference, "selectedIndex")}];
   }
 
-  [v14 removeObjectAtIndex:a4];
-  v17 = [(PKPaymentPreferenceContactSectionController *)self contactPreference];
-  [v17 setPreferences:v14];
+  [v14 removeObjectAtIndex:row];
+  contactPreference2 = [(PKPaymentPreferenceContactSectionController *)self contactPreference];
+  [contactPreference2 setPreferences:v14];
 
   if (v16)
   {
-    [v6 setSelectedIndex:{objc_msgSend(v14, "indexOfObject:", v16)}];
+    [contactPreference setSelectedIndex:{objc_msgSend(v14, "indexOfObject:", v16)}];
   }
 
-  v18 = [(PKPaymentPreferenceSectionController *)self handler];
-  (v18)[2](v18, self, v19);
+  handler = [(PKPaymentPreferenceSectionController *)self handler];
+  (handler)[2](handler, self, itemCopy);
 
 LABEL_14:
 }
 
-- (void)editItem:(id)a3 forRow:(unint64_t)a4
+- (void)editItem:(id)item forRow:(unint64_t)row
 {
-  v5 = a3;
-  v6 = [(PKPaymentPreferenceContactSectionController *)self contactPreference];
-  v7 = v5;
-  v8 = [v6 contactKey];
+  itemCopy = item;
+  contactPreference = [(PKPaymentPreferenceContactSectionController *)self contactPreference];
+  v7 = itemCopy;
+  contactKey = [contactPreference contactKey];
   v9 = *MEMORY[0x1E695C360];
-  v10 = [v8 isEqualToString:*MEMORY[0x1E695C360]];
+  v10 = [contactKey isEqualToString:*MEMORY[0x1E695C360]];
 
   if (v10)
   {
-    v11 = [v7 contactPreference];
-    v12 = [v11 contactSource];
-    v13 = [(PKPaymentPreferenceContactSectionController *)self contactDelegate];
-    v14 = v13;
-    if (v12 == 1)
+    contactPreference2 = [v7 contactPreference];
+    contactSource = [contactPreference2 contactSource];
+    contactDelegate = [(PKPaymentPreferenceContactSectionController *)self contactDelegate];
+    v14 = contactDelegate;
+    if (contactSource == 1)
     {
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
@@ -306,31 +306,31 @@ LABEL_14:
       v18[3] = &unk_1E8010A10;
       v18[4] = self;
       v19 = v7;
-      [v14 presentMeCardAlertControllerWithContact:v11 contactKey:v9 handler:v18];
+      [v14 presentMeCardAlertControllerWithContact:contactPreference2 contactKey:v9 handler:v18];
     }
 
     else
     {
-      [v13 showAddressEditorForContactItem:v7 inSectionController:self];
+      [contactDelegate showAddressEditorForContactItem:v7 inSectionController:self];
     }
 
     goto LABEL_9;
   }
 
-  v15 = [v6 contactKey];
-  if ([v15 isEqualToString:*MEMORY[0x1E695C208]])
+  contactKey2 = [contactPreference contactKey];
+  if ([contactKey2 isEqualToString:*MEMORY[0x1E695C208]])
   {
 
 LABEL_8:
-    v11 = [(PKPaymentPreferenceContactSectionController *)self contactDelegate];
-    [v11 startInlineEditingForContactItem:v7 inSectionController:self];
+    contactPreference2 = [(PKPaymentPreferenceContactSectionController *)self contactDelegate];
+    [contactPreference2 startInlineEditingForContactItem:v7 inSectionController:self];
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v16 = [v6 contactKey];
-  v17 = [v16 isEqualToString:*MEMORY[0x1E695C330]];
+  contactKey3 = [contactPreference contactKey];
+  v17 = [contactKey3 isEqualToString:*MEMORY[0x1E695C330]];
 
   if (v17)
   {
@@ -346,27 +346,27 @@ void __63__PKPaymentPreferenceContactSectionController_editItem_forRow___block_i
   [v2 showAddressEditorForContactItem:*(a1 + 40) inSectionController:*(a1 + 32)];
 }
 
-- (BOOL)editedTextFieldHasError:(id)a3
+- (BOOL)editedTextFieldHasError:(id)error
 {
-  v4 = [a3 text];
-  if ([v4 length])
+  text = [error text];
+  if ([text length])
   {
-    v5 = [(PKPaymentPreferenceContactSectionController *)self contactPreference];
-    v6 = [v5 contactKey];
+    contactPreference = [(PKPaymentPreferenceContactSectionController *)self contactPreference];
+    contactKey = [contactPreference contactKey];
 
-    if ([v6 isEqualToString:*MEMORY[0x1E695C330]])
+    if ([contactKey isEqualToString:*MEMORY[0x1E695C330]])
     {
-      v7 = [objc_alloc(MEMORY[0x1E695CF50]) initWithStringValue:v4];
+      v7 = [objc_alloc(MEMORY[0x1E695CF50]) initWithStringValue:text];
       v8 = objc_alloc(MEMORY[0x1E695CF50]);
-      v9 = [v7 digits];
-      v10 = [v8 initWithStringValue:v9];
+      digits = [v7 digits];
+      v10 = [v8 initWithStringValue:digits];
 
       v11 = [(PKContactFormatValidator *)self->_contactFormatValidator phoneNumberIsValid:v10 forCountryCode:0]^ 1;
     }
 
-    else if ([v6 isEqualToString:*MEMORY[0x1E695C208]])
+    else if ([contactKey isEqualToString:*MEMORY[0x1E695C208]])
     {
-      v11 = [(PKContactFormatValidator *)self->_contactFormatValidator emailAddressIsValid:v4]^ 1;
+      v11 = [(PKContactFormatValidator *)self->_contactFormatValidator emailAddressIsValid:text]^ 1;
     }
 
     else
@@ -383,61 +383,61 @@ void __63__PKPaymentPreferenceContactSectionController_editItem_forRow___block_i
   return v11;
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [(PKPaymentPreferenceSectionController *)self delegate];
-  if (![v5 collectionViewIsEditingForSectionController:self])
+  itemCopy = item;
+  delegate = [(PKPaymentPreferenceSectionController *)self delegate];
+  if (![delegate collectionViewIsEditingForSectionController:self])
   {
 
     goto LABEL_5;
   }
 
-  v6 = [v4 supportsSwipeActionType:1];
+  v6 = [itemCopy supportsSwipeActionType:1];
 
   if (!v6)
   {
 LABEL_5:
     v7.receiver = self;
     v7.super_class = PKPaymentPreferenceContactSectionController;
-    [(PKPaymentPreferenceSectionController *)&v7 didSelectItem:v4];
+    [(PKPaymentPreferenceSectionController *)&v7 didSelectItem:itemCopy];
     goto LABEL_6;
   }
 
-  [(PKPaymentPreferenceContactSectionController *)self editItem:v4 forRow:0x7FFFFFFFFFFFFFFFLL];
+  [(PKPaymentPreferenceContactSectionController *)self editItem:itemCopy forRow:0x7FFFFFFFFFFFFFFFLL];
 LABEL_6:
 }
 
 - (id)appendNewSubPreference
 {
-  v2 = [(PKPaymentPreferenceContactSectionController *)self contactPreference];
-  v3 = [v2 preferences];
-  v4 = [v3 mutableCopy];
+  contactPreference = [(PKPaymentPreferenceContactSectionController *)self contactPreference];
+  preferences = [contactPreference preferences];
+  v4 = [preferences mutableCopy];
 
   v5 = objc_alloc_init(MEMORY[0x1E695CD58]);
   [v5 setContactSource:3];
-  v6 = [v2 preferences];
-  v7 = [v6 lastObject];
-  v8 = [v7 isHideMyEmail];
+  preferences2 = [contactPreference preferences];
+  lastObject = [preferences2 lastObject];
+  isHideMyEmail = [lastObject isHideMyEmail];
 
-  v9 = [v2 preferences];
-  [v4 insertObject:v5 atIndex:{objc_msgSend(v9, "count") - v8}];
+  preferences3 = [contactPreference preferences];
+  [v4 insertObject:v5 atIndex:{objc_msgSend(preferences3, "count") - isHideMyEmail}];
 
-  [v2 setPreferences:v4];
+  [contactPreference setPreferences:v4];
 
   return v5;
 }
 
-- (void)saveContact:(id)a3 forItem:(id)a4 withContactKey:(id)a5 completion:(id)a6
+- (void)saveContact:(id)contact forItem:(id)item withContactKey:(id)key completion:(id)completion
 {
-  v22 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v10)
+  contactCopy = contact;
+  itemCopy = item;
+  keyCopy = key;
+  completionCopy = completion;
+  if (itemCopy)
   {
-    v13 = [(PKPaymentPreferenceContactSectionController *)self contactItems];
-    v14 = [v13 indexOfObject:v10];
+    contactItems = [(PKPaymentPreferenceContactSectionController *)self contactItems];
+    v14 = [contactItems indexOfObject:itemCopy];
   }
 
   else
@@ -445,33 +445,33 @@ LABEL_6:
     v14 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v15 = [(PKPaymentPreferenceContactSectionController *)self contactPreference];
-  if ([(PKPaymentPreferenceContactSectionController *)self _saveUpdatedContact:v22 contactKey:v11 preference:v15 atIndex:v14])
+  contactPreference = [(PKPaymentPreferenceContactSectionController *)self contactPreference];
+  if ([(PKPaymentPreferenceContactSectionController *)self _saveUpdatedContact:contactCopy contactKey:keyCopy preference:contactPreference atIndex:v14])
   {
-    v16 = [(PKPaymentPreferenceSectionController *)self newOptionItemForSubPreference:v22];
-    v17 = [(PKPaymentPreferenceSectionController *)self items];
-    v18 = v17;
-    if (v10)
+    v16 = [(PKPaymentPreferenceSectionController *)self newOptionItemForSubPreference:contactCopy];
+    items = [(PKPaymentPreferenceSectionController *)self items];
+    v18 = items;
+    if (itemCopy)
     {
-      [v17 replaceObjectAtIndex:v14 withObject:v16];
+      [items replaceObjectAtIndex:v14 withObject:v16];
     }
 
     else
     {
-      if ([v15 selectedIndex] != 0x7FFFFFFFFFFFFFFFLL)
+      if ([contactPreference selectedIndex] != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v19 = [(PKPaymentPreferenceContactSectionController *)self contactItems];
-        v20 = [v19 objectAtIndex:{objc_msgSend(v15, "selectedIndex")}];
+        contactItems2 = [(PKPaymentPreferenceContactSectionController *)self contactItems];
+        v20 = [contactItems2 objectAtIndex:{objc_msgSend(contactPreference, "selectedIndex")}];
         v21 = [v20 copy];
 
-        [v18 replaceObjectAtIndex:objc_msgSend(v15 withObject:{"selectedIndex"), v21}];
+        [v18 replaceObjectAtIndex:objc_msgSend(contactPreference withObject:{"selectedIndex"), v21}];
       }
 
       [v18 insertObject:v16 atIndex:0];
-      [v15 setSelectedIndex:0];
+      [contactPreference setSelectedIndex:0];
     }
 
-    if (v12)
+    if (completionCopy)
     {
       goto LABEL_13;
     }
@@ -480,35 +480,35 @@ LABEL_6:
   else
   {
     v16 = 0;
-    if (v12)
+    if (completionCopy)
     {
 LABEL_13:
-      v12[2](v12, v16);
+      completionCopy[2](completionCopy, v16);
     }
   }
 }
 
-- (BOOL)_saveUpdatedContact:(id)a3 contactKey:(id)a4 preference:(id)a5 atIndex:(int64_t)a6
+- (BOOL)_saveUpdatedContact:(id)contact contactKey:(id)key preference:(id)preference atIndex:(int64_t)index
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (a6 == 0x7FFFFFFFFFFFFFFFLL)
+  contactCopy = contact;
+  keyCopy = key;
+  preferenceCopy = preference;
+  v12 = preferenceCopy;
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v13 = 0;
   }
 
   else
   {
-    v14 = [v11 preferences];
-    v13 = [v14 objectAtIndex:a6];
+    preferences = [preferenceCopy preferences];
+    v13 = [preferences objectAtIndex:index];
 
-    [v9 setContactSource:{objc_msgSend(v13, "contactSource")}];
+    [contactCopy setContactSource:{objc_msgSend(v13, "contactSource")}];
   }
 
-  v15 = [v12 preferences];
-  v16 = [v15 mutableCopy];
+  preferences2 = [v12 preferences];
+  v16 = [preferences2 mutableCopy];
 
   if (!v13)
   {
@@ -519,25 +519,25 @@ LABEL_13:
   {
     if ([v13 contactSource] == 2)
     {
-      v17 = [v13 recentContact];
+      recentContact = [v13 recentContact];
 
-      if (v17)
+      if (recentContact)
       {
-        v18 = [MEMORY[0x1E69B8D00] defaultInstance];
-        v19 = [v13 recentContact];
-        [v18 deleteRecent:v19];
+        defaultInstance = [MEMORY[0x1E69B8D00] defaultInstance];
+        recentContact2 = [v13 recentContact];
+        [defaultInstance deleteRecent:recentContact2];
       }
 
-      if ([v10 isEqualToString:*MEMORY[0x1E695C208]])
+      if ([keyCopy isEqualToString:*MEMORY[0x1E695C208]])
       {
-        v20 = [MEMORY[0x1E69B8CF8] defaults];
-        [v20 setDefaultContactEmail:v9];
+        defaults = [MEMORY[0x1E69B8CF8] defaults];
+        [defaults setDefaultContactEmail:contactCopy];
       }
 
-      else if ([v10 isEqualToString:*MEMORY[0x1E695C330]])
+      else if ([keyCopy isEqualToString:*MEMORY[0x1E695C330]])
       {
-        v20 = [MEMORY[0x1E69B8CF8] defaults];
-        [v20 setDefaultContactPhone:v9];
+        defaults = [MEMORY[0x1E69B8CF8] defaults];
+        [defaults setDefaultContactPhone:contactCopy];
       }
 
       else
@@ -545,45 +545,45 @@ LABEL_13:
         if ([v12 type] != 1)
         {
 LABEL_27:
-          v29 = [MEMORY[0x1E69B8D00] defaultInstance];
-          v30 = [v29 saveContactToCoreRecents:v9 preference:v12];
+          defaultInstance2 = [MEMORY[0x1E69B8D00] defaultInstance];
+          v30 = [defaultInstance2 saveContactToCoreRecents:contactCopy preference:v12];
 
-          [v9 setRecentContact:v30];
-          [v16 replaceObjectAtIndex:a6 withObject:v9];
+          [contactCopy setRecentContact:v30];
+          [v16 replaceObjectAtIndex:index withObject:contactCopy];
 
           goto LABEL_28;
         }
 
-        v20 = [MEMORY[0x1E69B8CF8] defaults];
-        [v20 setDefaultShippingAddress:v9];
+        defaults = [MEMORY[0x1E69B8CF8] defaults];
+        [defaults setDefaultShippingAddress:contactCopy];
       }
 
       goto LABEL_27;
     }
 
 LABEL_13:
-    v21 = [v13 recentContact];
+    recentContact3 = [v13 recentContact];
 
-    if (v21)
+    if (recentContact3)
     {
-      v22 = [MEMORY[0x1E69B8D00] defaultInstance];
-      v23 = [v13 recentContact];
-      [v22 deleteRecent:v23];
+      defaultInstance3 = [MEMORY[0x1E69B8D00] defaultInstance];
+      recentContact4 = [v13 recentContact];
+      [defaultInstance3 deleteRecent:recentContact4];
     }
 
-    v24 = [MEMORY[0x1E69B8D00] defaultInstance];
-    v25 = [v24 saveContactToCoreRecents:v9 preference:v12];
+    defaultInstance4 = [MEMORY[0x1E69B8D00] defaultInstance];
+    v25 = [defaultInstance4 saveContactToCoreRecents:contactCopy preference:v12];
 
-    [v9 setContactSource:3];
-    [v9 setRecentContact:v25];
+    [contactCopy setContactSource:3];
+    [contactCopy setRecentContact:v25];
     if (v13)
     {
-      [v16 replaceObjectAtIndex:a6 withObject:v9];
+      [v16 replaceObjectAtIndex:index withObject:contactCopy];
     }
 
     else
     {
-      [v16 insertObject:v9 atIndex:0];
+      [v16 insertObject:contactCopy atIndex:0];
     }
 
     goto LABEL_28;
@@ -591,21 +591,21 @@ LABEL_13:
 
   if (PKUpdateMeContact())
   {
-    [v16 replaceObjectAtIndex:a6 withObject:v9];
+    [v16 replaceObjectAtIndex:index withObject:contactCopy];
 LABEL_28:
     v28 = 1;
     goto LABEL_29;
   }
 
-  v26 = [MEMORY[0x1E69B8D00] defaultInstance];
-  v27 = [v26 saveContactToCoreRecents:v9 preference:v12];
+  defaultInstance5 = [MEMORY[0x1E69B8D00] defaultInstance];
+  v27 = [defaultInstance5 saveContactToCoreRecents:contactCopy preference:v12];
 
-  [v9 setRecentContact:v27];
-  [v9 setContactSource:3];
-  [v16 addObject:v9];
-  if ([v12 selectedIndex] == a6)
+  [contactCopy setRecentContact:v27];
+  [contactCopy setContactSource:3];
+  [v16 addObject:contactCopy];
+  if ([v12 selectedIndex] == index)
   {
-    [v12 setSelectedIndex:{objc_msgSend(v16, "indexOfObject:", v9)}];
+    [v12 setSelectedIndex:{objc_msgSend(v16, "indexOfObject:", contactCopy)}];
   }
 
   v28 = 0;

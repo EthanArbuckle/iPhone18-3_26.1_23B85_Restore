@@ -1,22 +1,22 @@
 @interface WDMedicalRecordCategorySummary
 - (NSArray)displayItems;
 - (NSString)summarySortString;
-- (WDMedicalRecordCategorySummary)initWithProfile:(id)a3 categoryType:(int64_t)a4 showCategoryTitle:(BOOL)a5 delegate:(id)a6;
+- (WDMedicalRecordCategorySummary)initWithProfile:(id)profile categoryType:(int64_t)type showCategoryTitle:(BOOL)title delegate:(id)delegate;
 - (WDMedicalRecordSummaryDelegate)delegate;
-- (id)_appendixItemForCount:(int64_t)a3;
-- (id)_displayItemsForGenericRecord:(id)a3 previous:(id)a4 next:(id)a5 signedClinicalDataRecord:(id)a6;
+- (id)_appendixItemForCount:(int64_t)count;
+- (id)_displayItemsForGenericRecord:(id)record previous:(id)previous next:(id)next signedClinicalDataRecord:(id)dataRecord;
 - (int64_t)additionalDisplayItemCount;
 - (int64_t)additionalRecordCount;
 - (int64_t)categoryType;
-- (void)_displayItemsForGenericRecord:(id)a3 previous:(id)a4 next:(id)a5 completion:(id)a6;
-- (void)_displayItemsForObservation:(id)a3 previous:(id)a4 next:(id)a5 completion:(id)a6;
-- (void)_displayItemsForPanel:(id)a3 completion:(id)a4;
-- (void)_displayItemsForRecord:(id)a3 previous:(id)a4 next:(id)a5 completion:(id)a6;
-- (void)_displayItemsForUnknownRecord:(id)a3 completion:(id)a4;
+- (void)_displayItemsForGenericRecord:(id)record previous:(id)previous next:(id)next completion:(id)completion;
+- (void)_displayItemsForObservation:(id)observation previous:(id)previous next:(id)next completion:(id)completion;
+- (void)_displayItemsForPanel:(id)panel completion:(id)completion;
+- (void)_displayItemsForRecord:(id)record previous:(id)previous next:(id)next completion:(id)completion;
+- (void)_displayItemsForUnknownRecord:(id)record completion:(id)completion;
 - (void)_rqueue_determinStandaloneRecords;
 - (void)_rqueue_recomputeIfNeeded;
 - (void)_rqueue_setNeedsCompute;
-- (void)addMedicalRecord:(id)a3;
+- (void)addMedicalRecord:(id)record;
 - (void)recomputeIfNeeded;
 - (void)setNeedsRecompute;
 - (void)showTruncatedRecords;
@@ -24,19 +24,19 @@
 
 @implementation WDMedicalRecordCategorySummary
 
-- (WDMedicalRecordCategorySummary)initWithProfile:(id)a3 categoryType:(int64_t)a4 showCategoryTitle:(BOOL)a5 delegate:(id)a6
+- (WDMedicalRecordCategorySummary)initWithProfile:(id)profile categoryType:(int64_t)type showCategoryTitle:(BOOL)title delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a6;
+  profileCopy = profile;
+  delegateCopy = delegate;
   v30.receiver = self;
   v30.super_class = WDMedicalRecordCategorySummary;
   v13 = [(WDMedicalRecordCategorySummary *)&v30 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_profile, a3);
-    objc_storeWeak(&v14->_delegate, v12);
-    v14->_categoryType = a4;
+    objc_storeStrong(&v13->_profile, profile);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
+    v14->_categoryType = type;
     v15 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     allRecords = v14->_allRecords;
     v14->_allRecords = v15;
@@ -59,7 +59,7 @@
 
     v14->_truncationDisplayItemOffset = 0;
     v14->_truncatedMedicalRecordCount = 0;
-    v14->_showCategoryTitle = a5;
+    v14->_showCategoryTitle = title;
     *&v14->_displayingTruncatedRecords = 0;
     v25 = HKCreateSerialDispatchQueue();
     summaryQueue = v14->_summaryQueue;
@@ -73,18 +73,18 @@
   return v14;
 }
 
-- (void)addMedicalRecord:(id)a3
+- (void)addMedicalRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(WDMedicalRecordCategorySummary *)self resourceQueue];
+  recordCopy = record;
+  resourceQueue = [(WDMedicalRecordCategorySummary *)self resourceQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__WDMedicalRecordCategorySummary_addMedicalRecord___block_invoke;
   v7[3] = &unk_1E83DD1A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = recordCopy;
+  v6 = recordCopy;
+  dispatch_async(resourceQueue, v7);
 }
 
 uint64_t __51__WDMedicalRecordCategorySummary_addMedicalRecord___block_invoke(uint64_t a1)
@@ -111,13 +111,13 @@ uint64_t __51__WDMedicalRecordCategorySummary_addMedicalRecord___block_invoke(ui
 
 - (void)showTruncatedRecords
 {
-  v3 = [(WDMedicalRecordCategorySummary *)self resourceQueue];
+  resourceQueue = [(WDMedicalRecordCategorySummary *)self resourceQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__WDMedicalRecordCategorySummary_showTruncatedRecords__block_invoke;
   block[3] = &unk_1E83DCA20;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(resourceQueue, block);
 }
 
 uint64_t __54__WDMedicalRecordCategorySummary_showTruncatedRecords__block_invoke(uint64_t a1)
@@ -137,24 +137,24 @@ uint64_t __54__WDMedicalRecordCategorySummary_showTruncatedRecords__block_invoke
 
 - (void)recomputeIfNeeded
 {
-  v3 = [(WDMedicalRecordCategorySummary *)self resourceQueue];
+  resourceQueue = [(WDMedicalRecordCategorySummary *)self resourceQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__WDMedicalRecordCategorySummary_recomputeIfNeeded__block_invoke;
   block[3] = &unk_1E83DCA20;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(resourceQueue, block);
 }
 
 - (void)setNeedsRecompute
 {
-  v3 = [(WDMedicalRecordCategorySummary *)self resourceQueue];
+  resourceQueue = [(WDMedicalRecordCategorySummary *)self resourceQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__WDMedicalRecordCategorySummary_setNeedsRecompute__block_invoke;
   block[3] = &unk_1E83DCA20;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(resourceQueue, block);
 }
 
 - (int64_t)additionalDisplayItemCount
@@ -163,14 +163,14 @@ uint64_t __54__WDMedicalRecordCategorySummary_showTruncatedRecords__block_invoke
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(WDMedicalRecordCategorySummary *)self resourceQueue];
+  resourceQueue = [(WDMedicalRecordCategorySummary *)self resourceQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__WDMedicalRecordCategorySummary_additionalDisplayItemCount__block_invoke;
   v6[3] = &unk_1E83DD1D0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(resourceQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -202,14 +202,14 @@ uint64_t __60__WDMedicalRecordCategorySummary_additionalDisplayItemCount__block_
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(WDMedicalRecordCategorySummary *)self resourceQueue];
+  resourceQueue = [(WDMedicalRecordCategorySummary *)self resourceQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__WDMedicalRecordCategorySummary_additionalRecordCount__block_invoke;
   v6[3] = &unk_1E83DD1D0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(resourceQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -231,14 +231,14 @@ uint64_t __55__WDMedicalRecordCategorySummary_additionalRecordCount__block_invok
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
   v12 = 0;
-  v3 = [(WDMedicalRecordCategorySummary *)self resourceQueue];
+  resourceQueue = [(WDMedicalRecordCategorySummary *)self resourceQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__WDMedicalRecordCategorySummary_displayItems__block_invoke;
   v6[3] = &unk_1E83DD1D0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(resourceQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -268,14 +268,14 @@ void __46__WDMedicalRecordCategorySummary_displayItems__block_invoke(uint64_t a1
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(WDMedicalRecordCategorySummary *)self resourceQueue];
+  resourceQueue = [(WDMedicalRecordCategorySummary *)self resourceQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__WDMedicalRecordCategorySummary_categoryType__block_invoke;
   v6[3] = &unk_1E83DD4C8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(resourceQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -290,14 +290,14 @@ void __46__WDMedicalRecordCategorySummary_displayItems__block_invoke(uint64_t a1
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
   v12 = 0;
-  v3 = [(WDMedicalRecordCategorySummary *)self resourceQueue];
+  resourceQueue = [(WDMedicalRecordCategorySummary *)self resourceQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__WDMedicalRecordCategorySummary_summarySortString__block_invoke;
   v6[3] = &unk_1E83DD4C8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(resourceQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -318,45 +318,45 @@ void __51__WDMedicalRecordCategorySummary_summarySortString__block_invoke(uint64
 
 - (void)_rqueue_setNeedsCompute
 {
-  v3 = [(WDMedicalRecordCategorySummary *)self resourceQueue];
-  dispatch_assert_queue_V2(v3);
+  resourceQueue = [(WDMedicalRecordCategorySummary *)self resourceQueue];
+  dispatch_assert_queue_V2(resourceQueue);
 
   [(WDMedicalRecordCategorySummary *)self setDirty:1];
 }
 
 - (void)_rqueue_recomputeIfNeeded
 {
-  v3 = [(WDMedicalRecordCategorySummary *)self resourceQueue];
-  dispatch_assert_queue_V2(v3);
+  resourceQueue = [(WDMedicalRecordCategorySummary *)self resourceQueue];
+  dispatch_assert_queue_V2(resourceQueue);
 
   if ([(WDMedicalRecordCategorySummary *)self dirty])
   {
-    v4 = [(WDMedicalRecordCategorySummary *)self allRecords];
-    v5 = [v4 count];
+    allRecords = [(WDMedicalRecordCategorySummary *)self allRecords];
+    v5 = [allRecords count];
 
     if (v5)
     {
       [(WDMedicalRecordCategorySummary *)self setDirty:0];
       [(WDMedicalRecordCategorySummary *)self _rqueue_determinStandaloneRecords];
-      v6 = [(WDMedicalRecordCategorySummary *)self showCategoryTitle];
-      v7 = [(WDMedicalRecordCategorySummary *)self allStandaloneRecords];
-      v8 = [v7 copy];
+      showCategoryTitle = [(WDMedicalRecordCategorySummary *)self showCategoryTitle];
+      allStandaloneRecords = [(WDMedicalRecordCategorySummary *)self allStandaloneRecords];
+      v8 = [allStandaloneRecords copy];
 
-      v9 = [(WDMedicalRecordCategorySummary *)self panelsToRecords];
-      v10 = [v9 copy];
+      panelsToRecords = [(WDMedicalRecordCategorySummary *)self panelsToRecords];
+      v10 = [panelsToRecords copy];
 
-      v11 = [(WDMedicalRecordCategorySummary *)self summaryQueue];
+      summaryQueue = [(WDMedicalRecordCategorySummary *)self summaryQueue];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __59__WDMedicalRecordCategorySummary__rqueue_recomputeIfNeeded__block_invoke;
       v14[3] = &unk_1E83DD5E0;
       v15 = v8;
-      v16 = self;
+      selfCopy = self;
       v17 = v10;
-      v18 = v6;
+      v18 = showCategoryTitle;
       v12 = v10;
       v13 = v8;
-      dispatch_async(v11, v14);
+      dispatch_async(summaryQueue, v14);
     }
   }
 }
@@ -621,15 +621,15 @@ void __59__WDMedicalRecordCategorySummary__rqueue_recomputeIfNeeded__block_invok
 - (void)_rqueue_determinStandaloneRecords
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(WDMedicalRecordCategorySummary *)self resourceQueue];
-  dispatch_assert_queue_V2(v3);
+  resourceQueue = [(WDMedicalRecordCategorySummary *)self resourceQueue];
+  dispatch_assert_queue_V2(resourceQueue);
 
-  v4 = [(WDMedicalRecordCategorySummary *)self allRecords];
-  v5 = [v4 mutableCopy];
+  allRecords = [(WDMedicalRecordCategorySummary *)self allRecords];
+  v5 = [allRecords mutableCopy];
   [(WDMedicalRecordCategorySummary *)self setAllStandaloneRecords:v5];
 
-  v6 = [(WDMedicalRecordCategorySummary *)self panels];
-  v7 = [v6 count];
+  panels = [(WDMedicalRecordCategorySummary *)self panels];
+  v7 = [panels count];
 
   if (v7)
   {
@@ -654,17 +654,17 @@ void __59__WDMedicalRecordCategorySummary__rqueue_recomputeIfNeeded__block_invok
           }
 
           v12 = *(*(&v21 + 1) + 8 * v11);
-          v13 = [(WDMedicalRecordCategorySummary *)self allRecords];
+          allRecords2 = [(WDMedicalRecordCategorySummary *)self allRecords];
           v14 = MEMORY[0x1E696AE18];
-          v15 = [v12 results];
-          v16 = [v14 predicateWithFormat:@"FHIRIdentifier IN %@", v15];
-          v17 = [v13 filteredOrderedSetUsingPredicate:v16];
+          results = [v12 results];
+          v16 = [v14 predicateWithFormat:@"FHIRIdentifier IN %@", results];
+          v17 = [allRecords2 filteredOrderedSetUsingPredicate:v16];
 
-          v18 = [(WDMedicalRecordCategorySummary *)self panelsToRecords];
-          [v18 setObject:v17 forKeyedSubscript:v12];
+          panelsToRecords = [(WDMedicalRecordCategorySummary *)self panelsToRecords];
+          [panelsToRecords setObject:v17 forKeyedSubscript:v12];
 
-          v19 = [(WDMedicalRecordCategorySummary *)self allStandaloneRecords];
-          [v19 minusOrderedSet:v17];
+          allStandaloneRecords = [(WDMedicalRecordCategorySummary *)self allStandaloneRecords];
+          [allStandaloneRecords minusOrderedSet:v17];
 
           ++v11;
         }
@@ -678,27 +678,27 @@ void __59__WDMedicalRecordCategorySummary__rqueue_recomputeIfNeeded__block_invok
   }
 }
 
-- (void)_displayItemsForRecord:(id)a3 previous:(id)a4 next:(id)a5 completion:(id)a6
+- (void)_displayItemsForRecord:(id)record previous:(id)previous next:(id)next completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(WDMedicalRecordCategorySummary *)self summaryQueue];
+  recordCopy = record;
+  previousCopy = previous;
+  nextCopy = next;
+  completionCopy = completion;
+  summaryQueue = [(WDMedicalRecordCategorySummary *)self summaryQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__WDMedicalRecordCategorySummary__displayItemsForRecord_previous_next_completion___block_invoke;
   block[3] = &unk_1E83DCDB0;
-  v23 = v12;
-  v24 = v13;
-  v20 = v10;
-  v21 = self;
-  v22 = v11;
-  v15 = v12;
-  v16 = v11;
-  v17 = v13;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v23 = nextCopy;
+  v24 = completionCopy;
+  v20 = recordCopy;
+  selfCopy = self;
+  v22 = previousCopy;
+  v15 = nextCopy;
+  v16 = previousCopy;
+  v17 = completionCopy;
+  v18 = recordCopy;
+  dispatch_async(summaryQueue, block);
 }
 
 uint64_t __82__WDMedicalRecordCategorySummary__displayItemsForRecord_previous_next_completion___block_invoke(uint64_t a1)
@@ -753,27 +753,27 @@ uint64_t __82__WDMedicalRecordCategorySummary__displayItemsForRecord_previous_ne
   }
 }
 
-- (void)_displayItemsForGenericRecord:(id)a3 previous:(id)a4 next:(id)a5 completion:(id)a6
+- (void)_displayItemsForGenericRecord:(id)record previous:(id)previous next:(id)next completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HRProfile *)self->_profile healthRecordsStore];
+  recordCopy = record;
+  previousCopy = previous;
+  nextCopy = next;
+  completionCopy = completion;
+  healthRecordsStore = [(HRProfile *)self->_profile healthRecordsStore];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __89__WDMedicalRecordCategorySummary__displayItemsForGenericRecord_previous_next_completion___block_invoke;
   v19[3] = &unk_1E83DD608;
-  v22 = v12;
-  v23 = v13;
+  v22 = nextCopy;
+  v23 = completionCopy;
   v19[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
-  v18 = v13;
-  [v17 fetchCorrespondingSignedClinicalDataRecordWithHealthRecordsStore:v14 completion:v19];
+  v20 = recordCopy;
+  v21 = previousCopy;
+  v15 = nextCopy;
+  v16 = previousCopy;
+  v17 = recordCopy;
+  v18 = completionCopy;
+  [v17 fetchCorrespondingSignedClinicalDataRecordWithHealthRecordsStore:healthRecordsStore completion:v19];
 }
 
 void __89__WDMedicalRecordCategorySummary__displayItemsForGenericRecord_previous_next_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -783,36 +783,36 @@ void __89__WDMedicalRecordCategorySummary__displayItemsForGenericRecord_previous
   (*(v2 + 16))(v2, v3);
 }
 
-- (id)_displayItemsForGenericRecord:(id)a3 previous:(id)a4 next:(id)a5 signedClinicalDataRecord:(id)a6
+- (id)_displayItemsForGenericRecord:(id)record previous:(id)previous next:(id)next signedClinicalDataRecord:(id)dataRecord
 {
-  v27 = self;
-  v9 = a3;
-  v29 = a6;
+  selfCopy = self;
+  recordCopy = record;
+  dataRecordCopy = dataRecord;
   v10 = MEMORY[0x1E695DF70];
-  v11 = a5;
-  v12 = a4;
+  nextCopy = next;
+  previousCopy = previous;
   v13 = objc_alloc_init(v10);
-  v14 = _ConceptsOfRecordsAreDefinedAndEqual(v9, v12);
+  v14 = _ConceptsOfRecordsAreDefinedAndEqual(recordCopy, previousCopy);
 
-  v15 = _ConceptsOfRecordsAreDefinedAndEqual(v9, v11);
-  v16 = [v9 displayNameForGroupByConcept];
-  v17 = [v9 preferredDisplayName];
-  v18 = [v16 isEqualToString:v17];
-  v19 = [v9 meaningfulDateTitle];
-  v20 = (v18 & 1) == 0 && [v17 length] || objc_msgSend(v19, "length", v27) != 0;
+  v15 = _ConceptsOfRecordsAreDefinedAndEqual(recordCopy, nextCopy);
+  displayNameForGroupByConcept = [recordCopy displayNameForGroupByConcept];
+  preferredDisplayName = [recordCopy preferredDisplayName];
+  v18 = [displayNameForGroupByConcept isEqualToString:preferredDisplayName];
+  meaningfulDateTitle = [recordCopy meaningfulDateTitle];
+  v20 = (v18 & 1) == 0 && [preferredDisplayName length] || objc_msgSend(meaningfulDateTitle, "length", selfCopy) != 0;
   if (v18 & 1 | ((v14 & 1) == 0))
   {
-    v21 = +[WDMedicalRecordDisplayItem conceptHeaderItemWithCategoryType:title:](WDMedicalRecordDisplayItem, "conceptHeaderItemWithCategoryType:title:", [v9 recordCategoryType], v16);
+    v21 = +[WDMedicalRecordDisplayItem conceptHeaderItemWithCategoryType:title:](WDMedicalRecordDisplayItem, "conceptHeaderItemWithCategoryType:title:", [recordCopy recordCategoryType], displayNameForGroupByConcept);
     [v21 setSeparatorHidden:1];
-    [v21 setMedicalRecord:v9];
-    [v21 setCategorySummary:v27];
+    [v21 setMedicalRecord:recordCopy];
+    [v21 setCategorySummary:selfCopy];
     [v21 setExtraTopPadding:1];
     if (((v20 | v15) & 1) == 0)
     {
       [v21 setPlacement:2];
     }
 
-    [v13 addObject:{v21, v27}];
+    [v13 addObject:{v21, selfCopy}];
   }
 
   if (v20)
@@ -826,16 +826,16 @@ void __89__WDMedicalRecordCategorySummary__displayItemsForGenericRecord_previous
 
     else
     {
-      v24 = v17;
+      v24 = preferredDisplayName;
     }
 
-    [v22 setTitle:{v24, v27}];
-    [v23 setSubtitle:v19];
-    v25 = [v29 attributedMeaningfulDateStringWithDateTitle:v19];
+    [v22 setTitle:{v24, selfCopy}];
+    [v23 setSubtitle:meaningfulDateTitle];
+    v25 = [dataRecordCopy attributedMeaningfulDateStringWithDateTitle:meaningfulDateTitle];
     [v23 setAttributedSubtitle:v25];
 
-    [v23 setRecordCategoryType:{objc_msgSend(v9, "recordCategoryType")}];
-    [v23 setMedicalRecord:v9];
+    [v23 setRecordCategoryType:{objc_msgSend(recordCopy, "recordCategoryType")}];
+    [v23 setMedicalRecord:recordCopy];
     [v23 setCategorySummary:v28];
     if ((v15 ^ 1 | v18))
     {
@@ -855,31 +855,31 @@ void __89__WDMedicalRecordCategorySummary__displayItemsForGenericRecord_previous
   return v13;
 }
 
-- (void)_displayItemsForObservation:(id)a3 previous:(id)a4 next:(id)a5 completion:(id)a6
+- (void)_displayItemsForObservation:(id)observation previous:(id)previous next:(id)next completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  observationCopy = observation;
+  previousCopy = previous;
+  nextCopy = next;
+  completionCopy = completion;
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v15 = [(WDMedicalRecordCategorySummary *)self profile];
-  v16 = [v15 healthRecordsStore];
+  profile = [(WDMedicalRecordCategorySummary *)self profile];
+  healthRecordsStore = [profile healthRecordsStore];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __87__WDMedicalRecordCategorySummary__displayItemsForObservation_previous_next_completion___block_invoke;
   v22[3] = &unk_1E83DD658;
   v22[4] = self;
-  v23 = v10;
-  v24 = v11;
-  v25 = v12;
+  v23 = observationCopy;
+  v24 = previousCopy;
+  v25 = nextCopy;
   v26 = v14;
-  v27 = v13;
-  v17 = v13;
+  v27 = completionCopy;
+  v17 = completionCopy;
   v18 = v14;
-  v19 = v12;
-  v20 = v11;
-  v21 = v10;
-  [v21 fetchObservationDetailItemsWithHealthRecordsStore:v16 style:1 completion:v22];
+  v19 = nextCopy;
+  v20 = previousCopy;
+  v21 = observationCopy;
+  [v21 fetchObservationDetailItemsWithHealthRecordsStore:healthRecordsStore style:1 completion:v22];
 }
 
 void __87__WDMedicalRecordCategorySummary__displayItemsForObservation_previous_next_completion___block_invoke(id *a1, void *a2)
@@ -941,21 +941,21 @@ void __87__WDMedicalRecordCategorySummary__displayItemsForObservation_previous_n
   (*(*(a1 + 80) + 16))();
 }
 
-- (void)_displayItemsForPanel:(id)a3 completion:(id)a4
+- (void)_displayItemsForPanel:(id)panel completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WDMedicalRecordCategorySummary *)self summaryQueue];
+  panelCopy = panel;
+  completionCopy = completion;
+  summaryQueue = [(WDMedicalRecordCategorySummary *)self summaryQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__WDMedicalRecordCategorySummary__displayItemsForPanel_completion___block_invoke;
   block[3] = &unk_1E83DD720;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = panelCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = panelCopy;
+  dispatch_async(summaryQueue, block);
 }
 
 void __67__WDMedicalRecordCategorySummary__displayItemsForPanel_completion___block_invoke(id *a1)
@@ -1140,29 +1140,29 @@ void __67__WDMedicalRecordCategorySummary__displayItemsForPanel_completion___blo
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)_displayItemsForUnknownRecord:(id)a3 completion:(id)a4
+- (void)_displayItemsForUnknownRecord:(id)record completion:(id)completion
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  recordCopy = record;
   v7 = +[WDMedicalRecordDisplayItem standaloneItem];
   [v7 setPlacement:2];
   [v7 setExtraTopPadding:1];
-  v8 = [v6 preferredDisplayName];
-  [v7 setTitle:v8];
+  preferredDisplayName = [recordCopy preferredDisplayName];
+  [v7 setTitle:preferredDisplayName];
 
-  [v7 setMedicalRecord:v6];
+  [v7 setMedicalRecord:recordCopy];
   v10[0] = v7;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  v5[2](v5, v9);
+  completionCopy[2](completionCopy, v9);
 }
 
-- (id)_appendixItemForCount:(int64_t)a3
+- (id)_appendixItemForCount:(int64_t)count
 {
   v5 = +[WDMedicalRecordDisplayItem timelineSummaryAppendixItem];
   v6 = MEMORY[0x1E696AEC0];
   v7 = HRLocalizedString(@"SHOW %d MORE");
-  v8 = [v6 localizedStringWithFormat:v7, a3];
+  v8 = [v6 localizedStringWithFormat:v7, count];
   [v5 setTitle:v8];
 
   [v5 setPlacement:2];

@@ -1,19 +1,19 @@
 @interface MapsAddButton
 - (MapsAddButton)init;
-- (MapsAddButton)initWithTitle:(id)a3;
+- (MapsAddButton)initWithTitle:(id)title;
 @end
 
 @implementation MapsAddButton
 
-- (MapsAddButton)initWithTitle:(id)a3
+- (MapsAddButton)initWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v15.receiver = self;
   v15.super_class = MapsAddButton;
   v5 = [(MapsAddButton *)&v15 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   if (v5)
   {
-    if (v4)
+    if (titleCopy)
     {
       [UIButtonConfiguration _maps_pillButtonConfigurationWithImage:1 scalingImageForDynamicText:0 scalingTitleForDynamicText:0];
     }
@@ -27,13 +27,13 @@
     [v6 setImage:v7];
     [(MapsAddButton *)v5 setConfiguration:v6];
     [(MapsAddButton *)v5 setImage:v7 forState:0];
-    [(MapsAddButton *)v5 setTitle:v4 forState:0];
-    v8 = [(MapsAddButton *)v5 heightAnchor];
+    [(MapsAddButton *)v5 setTitle:titleCopy forState:0];
+    heightAnchor = [(MapsAddButton *)v5 heightAnchor];
     LODWORD(v9) = 1144766464;
-    v10 = [v8 constraintEqualToConstant:32.0 priority:v9];
+    v10 = [heightAnchor constraintEqualToConstant:32.0 priority:v9];
     v16[0] = v10;
-    v11 = [(MapsAddButton *)v5 heightAnchor];
-    v12 = [v11 constraintGreaterThanOrEqualToConstant:32.0];
+    heightAnchor2 = [(MapsAddButton *)v5 heightAnchor];
+    v12 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:32.0];
     v16[1] = v12;
     v13 = [NSArray arrayWithObjects:v16 count:2];
     [NSLayoutConstraint activateConstraints:v13];

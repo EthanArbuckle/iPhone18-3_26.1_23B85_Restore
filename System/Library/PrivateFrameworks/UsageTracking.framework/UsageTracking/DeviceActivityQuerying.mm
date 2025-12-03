@@ -4,30 +4,30 @@
 + (NSOrderedSet)currentWebDomains;
 + (id)currentVideoIdentifiers;
 - (_TtC18UsageTrackingAgent22DeviceActivityQuerying)init;
-- (id)query:(id)a3 error:(id *)a4;
-- (void)queryForUncategorizedLocalWebUsageDuringInterval:(NSDateInterval *)a3 completionHandler:(id)a4;
+- (id)query:(id)query error:(id *)error;
+- (void)queryForUncategorizedLocalWebUsageDuringInterval:(NSDateInterval *)interval completionHandler:(id)handler;
 @end
 
 @implementation DeviceActivityQuerying
 
-- (id)query:(id)a3 error:(id *)a4
+- (id)query:(id)query error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_10002E938(v5);
+  queryCopy = query;
+  selfCopy = self;
+  v7 = sub_10002E938(queryCopy);
 
   return v7;
 }
 
-- (void)queryForUncategorizedLocalWebUsageDuringInterval:(NSDateInterval *)a3 completionHandler:(id)a4
+- (void)queryForUncategorizedLocalWebUsageDuringInterval:(NSDateInterval *)interval completionHandler:(id)handler
 {
   v7 = sub_100020818(&qword_1000913B8, &qword_10006DC30);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8, v9);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  v13[2] = a3;
+  v13[2] = interval;
   v13[3] = v12;
   v13[4] = self;
   v14 = type metadata accessor for TaskPriority();
@@ -42,8 +42,8 @@
   v16[3] = 0;
   v16[4] = &unk_10006DC50;
   v16[5] = v15;
-  v17 = a3;
-  v18 = self;
+  intervalCopy = interval;
+  selfCopy = self;
   sub_100032B4C(0, 0, v11, &unk_10006DC60, v16);
 }
 

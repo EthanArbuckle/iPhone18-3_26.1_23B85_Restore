@@ -1,21 +1,21 @@
 @interface PAMediaConversionServiceResourceURLReference
-+ (BOOL)getPathHash:(unint64_t *)a3 lastPathComponent:(id *)a4 forDictionaryRepresentation:(id)a5;
-+ (id)referenceWithDictionaryRepresentation:(id)a3 error:(id *)a4;
-+ (id)referenceWithURL:(id)a3;
-- (BOOL)getFileSize:(unint64_t *)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)dictionaryRepresentationWithError:(id *)a3;
++ (BOOL)getPathHash:(unint64_t *)hash lastPathComponent:(id *)component forDictionaryRepresentation:(id)representation;
++ (id)referenceWithDictionaryRepresentation:(id)representation error:(id *)error;
++ (id)referenceWithURL:(id)l;
+- (BOOL)getFileSize:(unint64_t *)size error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (id)dictionaryRepresentationWithError:(id *)error;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)getPathHash:(unint64_t *)a3 lastPathComponent:(id *)a4;
+- (void)getPathHash:(unint64_t *)hash lastPathComponent:(id *)component;
 @end
 
 @implementation PAMediaConversionServiceResourceURLReference
 
-- (id)dictionaryRepresentationWithError:(id *)a3
+- (id)dictionaryRepresentationWithError:(id *)error
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = [(NSURL *)self->_url bookmarkDataWithOptions:0x20000000 includingResourceValuesForKeys:0 relativeToURL:0 error:a3];
+  v3 = [(NSURL *)self->_url bookmarkDataWithOptions:0x20000000 includingResourceValuesForKeys:0 relativeToURL:0 error:error];
   v4 = v3;
   if (v3)
   {
@@ -39,29 +39,29 @@
   v18 = *MEMORY[0x277D85DE8];
   if (self->_shouldDeleteOnDeallocation)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
-    v4 = [(NSURL *)self->_url path];
-    v5 = [v3 fileExistsAtPath:v4];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [(NSURL *)self->_url path];
+    v5 = [defaultManager fileExistsAtPath:path];
 
     if (v5)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
-        v6 = [(NSURL *)self->_url path];
+        path2 = [(NSURL *)self->_url path];
         *buf = 138412290;
-        v15 = v6;
+        v15 = path2;
         _os_log_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Deleting temporary file %@", buf, 0xCu);
       }
 
       url = self->_url;
       v13 = 0;
-      v8 = [v3 removeItemAtURL:url error:&v13];
+      v8 = [defaultManager removeItemAtURL:url error:&v13];
       v9 = v13;
       if ((v8 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
-        v11 = [(NSURL *)self->_url path];
+        path3 = [(NSURL *)self->_url path];
         *buf = 138412546;
-        v15 = v11;
+        v15 = path3;
         v16 = 2112;
         v17 = v9;
         _os_log_error_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unable to delete temporary file %@: %@", buf, 0x16u);
@@ -80,15 +80,15 @@
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)getFileSize:(unint64_t *)a3 error:(id *)a4
+- (BOOL)getFileSize:(unint64_t *)size error:(id *)error
 {
   url = self->_url;
   v9 = 0;
-  v6 = [(NSURL *)url getResourceValue:&v9 forKey:*MEMORY[0x277CBE838] error:a4];
+  v6 = [(NSURL *)url getResourceValue:&v9 forKey:*MEMORY[0x277CBE838] error:error];
   v7 = v6;
-  if (a3 && v6)
+  if (size && v6)
   {
-    *a3 = [v9 unsignedLongLongValue];
+    *size = [v9 unsignedLongLongValue];
   }
 
   return v7;
@@ -96,56 +96,56 @@
 
 - (unint64_t)hash
 {
-  v2 = [(NSURL *)self->_url path];
-  v3 = [v2 hash];
+  path = [(NSURL *)self->_url path];
+  v3 = [path hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = [a3 url];
-  v5 = [v4 path];
-  v6 = [(NSURL *)self->_url path];
-  v7 = [v5 isEqual:v6];
+  v4 = [equal url];
+  path = [v4 path];
+  path2 = [(NSURL *)self->_url path];
+  v7 = [path isEqual:path2];
 
   return v7;
 }
 
-- (void)getPathHash:(unint64_t *)a3 lastPathComponent:(id *)a4
+- (void)getPathHash:(unint64_t *)hash lastPathComponent:(id *)component
 {
   url = self->_url;
   if (!url)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PAMediaConversionServiceResourceURLCollection.m" lineNumber:82 description:@"Unexpected nil resource reference URL"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PAMediaConversionServiceResourceURLCollection.m" lineNumber:82 description:@"Unexpected nil resource reference URL"];
 
     url = self->_url;
   }
 
-  v8 = [(NSURL *)url path];
-  v11 = v8;
-  if (a3)
+  path = [(NSURL *)url path];
+  v11 = path;
+  if (hash)
   {
-    *a3 = [v8 hash];
-    v8 = v11;
+    *hash = [path hash];
+    path = v11;
   }
 
-  if (a4)
+  if (component)
   {
-    *a4 = [v11 lastPathComponent];
-    v8 = v11;
+    *component = [v11 lastPathComponent];
+    path = v11;
   }
 }
 
-+ (BOOL)getPathHash:(unint64_t *)a3 lastPathComponent:(id *)a4 forDictionaryRepresentation:(id)a5
++ (BOOL)getPathHash:(unint64_t *)hash lastPathComponent:(id *)component forDictionaryRepresentation:(id)representation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = [a5 objectForKeyedSubscript:@"bookmarkData"];
+  v9 = [representation objectForKeyedSubscript:@"bookmarkData"];
   if (!v9)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"PAMediaConversionServiceResourceURLCollection.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"bookmarkData"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PAMediaConversionServiceResourceURLCollection.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"bookmarkData"}];
   }
 
   v17 = 0;
@@ -153,16 +153,16 @@
   v11 = v17;
   if (v10)
   {
-    v12 = [v10 path];
-    v13 = v12;
-    if (a3)
+    path = [v10 path];
+    v13 = path;
+    if (hash)
     {
-      *a3 = [v12 hash];
+      *hash = [path hash];
     }
 
-    if (a4)
+    if (component)
     {
-      *a4 = [v13 lastPathComponent];
+      *component = [v13 lastPathComponent];
     }
   }
 
@@ -177,14 +177,14 @@
   return v10 != 0;
 }
 
-+ (id)referenceWithDictionaryRepresentation:(id)a3 error:(id *)a4
++ (id)referenceWithDictionaryRepresentation:(id)representation error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = [a3 objectForKeyedSubscript:@"bookmarkData"];
+  v7 = [representation objectForKeyedSubscript:@"bookmarkData"];
   if (!v7)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"PAMediaConversionServiceResourceURLCollection.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"bookmarkData"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PAMediaConversionServiceResourceURLCollection.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"bookmarkData"}];
   }
 
   v15 = 0;
@@ -192,7 +192,7 @@
   v9 = v15;
   if (v8)
   {
-    v10 = [a1 referenceWithURL:v8];
+    v10 = [self referenceWithURL:v8];
   }
 
   else
@@ -204,11 +204,11 @@
       _os_log_impl(&dword_2585D9000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Unable to decode URL reference bookmark data: %@", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v11 = v9;
       v10 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -222,17 +222,17 @@
   return v10;
 }
 
-+ (id)referenceWithURL:(id)a3
++ (id)referenceWithURL:(id)l
 {
-  v5 = a3;
-  if (!v5)
+  lCopy = l;
+  if (!lCopy)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"PAMediaConversionServiceResourceURLCollection.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"url"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PAMediaConversionServiceResourceURLCollection.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"url"}];
   }
 
   v6 = objc_opt_new();
-  [v6 setUrl:v5];
+  [v6 setUrl:lCopy];
 
   return v6;
 }

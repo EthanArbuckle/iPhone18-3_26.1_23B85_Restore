@@ -1,16 +1,16 @@
 @interface TSCH3DChartAreaSceneObject
-+ (id)createMeshForSeries:(id)a3;
++ (id)createMeshForSeries:(id)series;
 @end
 
 @implementation TSCH3DChartAreaSceneObject
 
-+ (id)createMeshForSeries:(id)a3
++ (id)createMeshForSeries:(id)series
 {
-  v3 = a3;
-  v8 = objc_msgSend_model(v3, v4, v5, v6, v7);
+  seriesCopy = series;
+  v8 = objc_msgSend_model(seriesCopy, v4, v5, v6, v7);
   v162 = objc_msgSend_chartInfo(v8, v9, v10, v11, v12);
   v17 = objc_msgSend_chartType(v162, v13, v14, v15, v16);
-  v22 = objc_msgSend_seriesType(v3, v18, v19, v20, v21);
+  v22 = objc_msgSend_seriesType(seriesCopy, v18, v19, v20, v21);
   v27 = objc_msgSend_enumeratorWithModel_chartType_seriesType_(TSCH3DChartModelEnumerator, v23, v24, v25, v26, v8, v17, v22);
 
   v32 = objc_msgSend_seriesEnumerator(v27, v28, v29, v30, v31);
@@ -26,12 +26,12 @@
 
   else
   {
-    v48 = objc_msgSend_seriesIndex(v3, v44, v45, v46, v47);
+    v48 = objc_msgSend_seriesIndex(seriesCopy, v44, v45, v46, v47);
     objc_msgSend_nextSeries_(v32, v49, v50, v51, v52, v48);
   }
   v53 = ;
-  v58 = objc_msgSend_model(v3, v54, v55, v56, v57);
-  v63 = objc_msgSend_seriesIndex(v3, v59, v60, v61, v62);
+  v58 = objc_msgSend_model(seriesCopy, v54, v55, v56, v57);
+  v63 = objc_msgSend_seriesIndex(seriesCopy, v59, v60, v61, v62);
   v68 = objc_msgSend_lineAreaModelCacheForSeries_(v58, v64, v65, v66, v67, v63);
 
   v163 = objc_msgSend_groupAxis(v68, v69, v70, v71, v72);
@@ -60,7 +60,7 @@
   __p = 0;
   v171 = 0;
   v172 = 0;
-  while (v48 < objc_msgSend_seriesIndex(v3, v105, v107, v108, v109))
+  while (v48 < objc_msgSend_seriesIndex(seriesCopy, v105, v107, v108, v109))
   {
     sub_276186F78(v53, &v173, &__p, v102);
     objc_msgSend_addRowWithXValues_yValues_(v106, v110, v111, v112, v113, &v173, &__p);

@@ -1,21 +1,21 @@
 @interface ASTButtonCell
-- (ASTButtonCell)initWithLocation:(id)a3 iconKey:(id)a4;
+- (ASTButtonCell)initWithLocation:(id)location iconKey:(id)key;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityValue;
-- (void)_activate:(id)a3;
-- (void)_traitCollectionDidChange:(id)a3;
+- (void)_activate:(id)_activate;
+- (void)_traitCollectionDidChange:(id)change;
 - (void)_updateBorderConstraints;
 - (void)_updateFont;
 - (void)_updateImage;
-- (void)setIconKey:(id)a3;
+- (void)setIconKey:(id)key;
 @end
 
 @implementation ASTButtonCell
 
-- (ASTButtonCell)initWithLocation:(id)a3 iconKey:(id)a4
+- (ASTButtonCell)initWithLocation:(id)location iconKey:(id)key
 {
-  v72 = a3;
-  v73 = a4;
+  locationCopy = location;
+  keyCopy = key;
   v77.receiver = self;
   v77.super_class = ASTButtonCell;
   v6 = [(ASTButtonCell *)&v77 init];
@@ -55,8 +55,8 @@
     [(UILabel *)v6->_label setTextAlignment:1];
     [(UILabel *)v6->_label setLineBreakMode:4];
     [(ASTButtonCell *)v6 _updateFont];
-    v19 = [(ASTButtonCell *)v6 _iconColor];
-    [(UILabel *)v6->_label setTextColor:v19];
+    _iconColor = [(ASTButtonCell *)v6 _iconColor];
+    [(UILabel *)v6->_label setTextColor:_iconColor];
 
     [(UILabel *)v6->_label setNumberOfLines:0];
     [(UILabel *)v6->_label setIsAccessibilityElement:0];
@@ -79,64 +79,64 @@
 
     [(UIImageView *)v6->_borderView setTintColor:v6->_borderColor];
     [(ASTButtonCell *)v6 addSubview:v6->_borderView];
-    [(ASTButtonCell *)v6 setLocation:v72];
-    [(ASTButtonCell *)v6 setIconKey:v73];
-    v27 = [(UIImageView *)v6->_borderView widthAnchor];
-    v28 = [v27 constraintEqualToConstant:0.0];
+    [(ASTButtonCell *)v6 setLocation:locationCopy];
+    [(ASTButtonCell *)v6 setIconKey:keyCopy];
+    widthAnchor = [(UIImageView *)v6->_borderView widthAnchor];
+    v28 = [widthAnchor constraintEqualToConstant:0.0];
     borderWidthConstraint = v6->_borderWidthConstraint;
     v6->_borderWidthConstraint = v28;
 
-    v30 = [(UIImageView *)v6->_borderView heightAnchor];
-    v31 = [v30 constraintEqualToConstant:0.0];
+    heightAnchor = [(UIImageView *)v6->_borderView heightAnchor];
+    v31 = [heightAnchor constraintEqualToConstant:0.0];
     borderHeightConstraint = v6->_borderHeightConstraint;
     v6->_borderHeightConstraint = v31;
 
     [(ASTButtonCell *)v6 _updateBorderConstraints];
-    v70 = [(UIImageView *)v6->_borderView topAnchor];
-    v69 = [(ASTButtonCell *)v6 topAnchor];
-    v68 = [v70 constraintEqualToAnchor:v69];
+    topAnchor = [(UIImageView *)v6->_borderView topAnchor];
+    topAnchor2 = [(ASTButtonCell *)v6 topAnchor];
+    v68 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v79[0] = v68;
     v79[1] = v6->_borderHeightConstraint;
-    v67 = [(AXDynamicTypeImageView *)v6->_imageView centerYAnchor];
-    v66 = [(UIImageView *)v6->_borderView centerYAnchor];
-    v65 = [v67 constraintEqualToAnchor:v66];
+    centerYAnchor = [(AXDynamicTypeImageView *)v6->_imageView centerYAnchor];
+    centerYAnchor2 = [(UIImageView *)v6->_borderView centerYAnchor];
+    v65 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v79[2] = v65;
-    v64 = [(UILabel *)v6->_label topAnchor];
-    v63 = [(UIImageView *)v6->_borderView bottomAnchor];
-    v62 = [v64 constraintEqualToAnchor:v63 constant:3.0];
+    topAnchor3 = [(UILabel *)v6->_label topAnchor];
+    bottomAnchor = [(UIImageView *)v6->_borderView bottomAnchor];
+    v62 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:3.0];
     v79[3] = v62;
-    v61 = [(UILabel *)v6->_label bottomAnchor];
-    v60 = [(ASTButtonCell *)v6 bottomAnchor];
-    v59 = [v61 constraintEqualToAnchor:v60];
+    bottomAnchor2 = [(UILabel *)v6->_label bottomAnchor];
+    bottomAnchor3 = [(ASTButtonCell *)v6 bottomAnchor];
+    v59 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v79[4] = v59;
-    v58 = [(UILabel *)v6->_label centerXAnchor];
-    v57 = [(AXDynamicTypeImageView *)v6->_imageView centerXAnchor];
-    v56 = [v58 constraintEqualToAnchor:v57];
+    centerXAnchor = [(UILabel *)v6->_label centerXAnchor];
+    centerXAnchor2 = [(AXDynamicTypeImageView *)v6->_imageView centerXAnchor];
+    v56 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v79[5] = v56;
-    v55 = [(AXDynamicTypeImageView *)v6->_imageView centerXAnchor];
-    v54 = [(UIImageView *)v6->_borderView centerXAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54];
+    centerXAnchor3 = [(AXDynamicTypeImageView *)v6->_imageView centerXAnchor];
+    centerXAnchor4 = [(UIImageView *)v6->_borderView centerXAnchor];
+    v53 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v79[6] = v53;
     v79[7] = v6->_borderWidthConstraint;
-    v52 = [(UIImageView *)v6->_borderView centerXAnchor];
-    v51 = [(ASTButtonCell *)v6 centerXAnchor];
-    v50 = [v52 constraintEqualToAnchor:v51];
+    centerXAnchor5 = [(UIImageView *)v6->_borderView centerXAnchor];
+    centerXAnchor6 = [(ASTButtonCell *)v6 centerXAnchor];
+    v50 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     v79[8] = v50;
-    v49 = [(UIImageView *)v6->_borderView leadingAnchor];
-    v48 = [(ASTButtonCell *)v6 leadingAnchor];
-    v47 = [v49 constraintGreaterThanOrEqualToAnchor:v48];
+    leadingAnchor = [(UIImageView *)v6->_borderView leadingAnchor];
+    leadingAnchor2 = [(ASTButtonCell *)v6 leadingAnchor];
+    v47 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
     v79[9] = v47;
-    v46 = [(UILabel *)v6->_label leadingAnchor];
-    v33 = [(ASTButtonCell *)v6 leadingAnchor];
-    v34 = [v46 constraintGreaterThanOrEqualToAnchor:v33];
+    leadingAnchor3 = [(UILabel *)v6->_label leadingAnchor];
+    leadingAnchor4 = [(ASTButtonCell *)v6 leadingAnchor];
+    v34 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4];
     v79[10] = v34;
-    v35 = [(UIImageView *)v6->_borderView trailingAnchor];
-    v36 = [(ASTButtonCell *)v6 trailingAnchor];
-    v37 = [v35 constraintLessThanOrEqualToAnchor:v36];
+    trailingAnchor = [(UIImageView *)v6->_borderView trailingAnchor];
+    trailingAnchor2 = [(ASTButtonCell *)v6 trailingAnchor];
+    v37 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
     v79[11] = v37;
-    v38 = [(UILabel *)v6->_label trailingAnchor];
-    v39 = [(ASTButtonCell *)v6 trailingAnchor];
-    v40 = [v38 constraintLessThanOrEqualToAnchor:v39];
+    trailingAnchor3 = [(UILabel *)v6->_label trailingAnchor];
+    trailingAnchor4 = [(ASTButtonCell *)v6 trailingAnchor];
+    v40 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4];
     v79[12] = v40;
     v41 = [NSArray arrayWithObjects:v79 count:13];
     [NSLayoutConstraint activateConstraints:v41];
@@ -167,15 +167,15 @@ void __42__ASTButtonCell_initWithLocation_iconKey___block_invoke(uint64_t a1, ui
   [WeakRetained _traitCollectionDidChange:v4];
 }
 
-- (void)setIconKey:(id)a3
+- (void)setIconKey:(id)key
 {
-  v5 = a3;
-  if (self->_iconKey != v5)
+  keyCopy = key;
+  if (self->_iconKey != keyCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_iconKey, a3);
+    v10 = keyCopy;
+    objc_storeStrong(&self->_iconKey, key);
     [(ASTButtonCell *)self _updateImage];
-    v6 = [(ASTButtonCell *)self iconKey];
+    iconKey = [(ASTButtonCell *)self iconKey];
     v7 = AXUIAssistiveTouchStringForName();
 
     if (v7)
@@ -197,7 +197,7 @@ void __42__ASTButtonCell_initWithLocation_iconKey___block_invoke(uint64_t a1, ui
 
     [(UILabel *)self->_label setText:v8];
 
-    v5 = v10;
+    keyCopy = v10;
   }
 }
 
@@ -213,8 +213,8 @@ void __42__ASTButtonCell_initWithLocation_iconKey___block_invoke(uint64_t a1, ui
 
 - (id)accessibilityValue
 {
-  v3 = [(ASTButtonCell *)self location];
-  v4 = [v3 isEqualToString:AXAssistiveTouchIconLocationTopLeft];
+  location = [(ASTButtonCell *)self location];
+  v4 = [location isEqualToString:AXAssistiveTouchIconLocationTopLeft];
 
   if (v4)
   {
@@ -224,8 +224,8 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v6 = [(ASTButtonCell *)self location];
-  v7 = [v6 isEqualToString:AXAssistiveTouchIconLocationTopMiddle];
+  location2 = [(ASTButtonCell *)self location];
+  v7 = [location2 isEqualToString:AXAssistiveTouchIconLocationTopMiddle];
 
   if (v7)
   {
@@ -233,8 +233,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v8 = [(ASTButtonCell *)self location];
-  v9 = [v8 isEqualToString:AXAssistiveTouchIconLocationTopRight];
+  location3 = [(ASTButtonCell *)self location];
+  v9 = [location3 isEqualToString:AXAssistiveTouchIconLocationTopRight];
 
   if (v9)
   {
@@ -242,8 +242,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v10 = [(ASTButtonCell *)self location];
-  v11 = [v10 isEqualToString:AXAssistiveTouchIconLocationMidLeft];
+  location4 = [(ASTButtonCell *)self location];
+  v11 = [location4 isEqualToString:AXAssistiveTouchIconLocationMidLeft];
 
   if (v11)
   {
@@ -251,8 +251,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v12 = [(ASTButtonCell *)self location];
-  v13 = [v12 isEqualToString:AXAssistiveTouchIconLocationMidMiddle];
+  location5 = [(ASTButtonCell *)self location];
+  v13 = [location5 isEqualToString:AXAssistiveTouchIconLocationMidMiddle];
 
   if (v13)
   {
@@ -260,8 +260,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v14 = [(ASTButtonCell *)self location];
-  v15 = [v14 isEqualToString:AXAssistiveTouchIconLocationMidRight];
+  location6 = [(ASTButtonCell *)self location];
+  v15 = [location6 isEqualToString:AXAssistiveTouchIconLocationMidRight];
 
   if (v15)
   {
@@ -269,8 +269,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v16 = [(ASTButtonCell *)self location];
-  v17 = [v16 isEqualToString:AXAssistiveTouchIconLocationBottomLeft];
+  location7 = [(ASTButtonCell *)self location];
+  v17 = [location7 isEqualToString:AXAssistiveTouchIconLocationBottomLeft];
 
   if (v17)
   {
@@ -278,8 +278,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v18 = [(ASTButtonCell *)self location];
-  v19 = [v18 isEqualToString:AXAssistiveTouchIconLocationBottomMiddle];
+  location8 = [(ASTButtonCell *)self location];
+  v19 = [location8 isEqualToString:AXAssistiveTouchIconLocationBottomMiddle];
 
   if (v19)
   {
@@ -287,8 +287,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v20 = [(ASTButtonCell *)self location];
-  v21 = [v20 isEqualToString:AXAssistiveTouchIconLocationBottomRight];
+  location9 = [(ASTButtonCell *)self location];
+  v21 = [location9 isEqualToString:AXAssistiveTouchIconLocationBottomRight];
 
   if (v21)
   {
@@ -302,13 +302,13 @@ LABEL_20:
   return v22;
 }
 
-- (void)_traitCollectionDidChange:(id)a3
+- (void)_traitCollectionDidChange:(id)change
 {
   [(ASTButtonCell *)self _updateFont];
   [(ASTButtonCell *)self _updateImage];
   [(ASTButtonCell *)self _updateBorderConstraints];
-  v4 = [(ASTButtonCell *)self _iconColor];
-  [(UILabel *)self->_label setTextColor:v4];
+  _iconColor = [(ASTButtonCell *)self _iconColor];
+  [(UILabel *)self->_label setTextColor:_iconColor];
 
   borderColor = self->_borderColor;
   borderView = self->_borderView;
@@ -316,10 +316,10 @@ LABEL_20:
   [(UIImageView *)borderView setTintColor:borderColor];
 }
 
-- (void)_activate:(id)a3
+- (void)_activate:(id)_activate
 {
-  v4 = [(ASTButtonCell *)self activateCellBlock];
-  v4[2](v4, self);
+  activateCellBlock = [(ASTButtonCell *)self activateCellBlock];
+  activateCellBlock[2](activateCellBlock, self);
 }
 
 - (void)_updateFont
@@ -330,20 +330,20 @@ LABEL_20:
 
 - (void)_updateImage
 {
-  v3 = [(ASTButtonCell *)self iconKey];
-  v4 = [v3 hasPrefix:@"__empty"];
+  iconKey = [(ASTButtonCell *)self iconKey];
+  v4 = [iconKey hasPrefix:@"__empty"];
 
   if (!v4 || (+[NSBundle bundleForClass:](NSBundle, "bundleForClass:", objc_opt_class()), v5 = objc_claimAutoreleasedReturnValue(), +[UIImage imageNamed:inBundle:](UIImage, "imageNamed:inBundle:", @"ASTCustomization_Add", v5), v6 = objc_claimAutoreleasedReturnValue(), -[ASTButtonCell _iconColor](self, "_iconColor"), v7 = objc_claimAutoreleasedReturnValue(), [v6 imageWithTintColor:v7 renderingMode:1], v17 = objc_claimAutoreleasedReturnValue(), v7, v6, v5, !v17))
   {
-    v8 = [(ASTButtonCell *)self iconKey];
-    v9 = [v8 length];
+    iconKey2 = [(ASTButtonCell *)self iconKey];
+    v9 = [iconKey2 length];
 
     if (v9)
     {
-      v10 = [(ASTButtonCell *)self iconKey];
+      iconKey3 = [(ASTButtonCell *)self iconKey];
       v11 = AXUIAssistiveTouchImageForName();
-      v12 = [(ASTButtonCell *)self _iconColor];
-      v17 = [v11 imageWithTintColor:v12 renderingMode:1];
+      _iconColor = [(ASTButtonCell *)self _iconColor];
+      v17 = [v11 imageWithTintColor:_iconColor renderingMode:1];
     }
 
     else
@@ -354,15 +354,15 @@ LABEL_20:
 
   if ([(ASTButtonCell *)self effectiveUserInterfaceLayoutDirection]== &dword_0 + 1)
   {
-    v13 = [(ASTButtonCell *)self iconKey];
+    iconKey4 = [(ASTButtonCell *)self iconKey];
     v14 = AXUIAssistiveTouchImageNameForName();
     v15 = AXUIAssistiveTouchIconRequiresRTLFlipping();
 
     if (v15)
     {
-      v16 = [v17 imageWithHorizontallyFlippedOrientation];
+      imageWithHorizontallyFlippedOrientation = [v17 imageWithHorizontallyFlippedOrientation];
 
-      v17 = v16;
+      v17 = imageWithHorizontallyFlippedOrientation;
     }
   }
 
@@ -376,11 +376,11 @@ LABEL_20:
   [v3 scaledValueForValue:v4 compatibleWithTraitCollection:65.0];
   v6 = v5;
 
-  v7 = [(ASTButtonCell *)self borderWidthConstraint];
-  [v7 setConstant:v6];
+  borderWidthConstraint = [(ASTButtonCell *)self borderWidthConstraint];
+  [borderWidthConstraint setConstant:v6];
 
-  v8 = [(ASTButtonCell *)self borderHeightConstraint];
-  [v8 setConstant:v6];
+  borderHeightConstraint = [(ASTButtonCell *)self borderHeightConstraint];
+  [borderHeightConstraint setConstant:v6];
 }
 
 @end

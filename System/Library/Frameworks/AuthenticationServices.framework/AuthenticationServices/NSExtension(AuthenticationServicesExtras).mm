@@ -16,28 +16,28 @@
     v6[2] = __96__NSExtension_AuthenticationServicesExtras___as_instantiateViewControllerWithConnectionHandler___block_invoke;
     v6[3] = &unk_1E7AF8078;
     v7 = v4;
-    [a1 instantiateViewControllerWithInputItems:MEMORY[0x1E695E0F0] connectionHandler:v6];
+    [self instantiateViewControllerWithInputItems:MEMORY[0x1E695E0F0] connectionHandler:v6];
   }
 }
 
 - (id)_as_auxiliaryRemoteObjectWithRequestID:()AuthenticationServicesExtras
 {
-  v2 = [a1 _extensionContextForUUID:?];
-  v3 = [v2 _auxiliaryConnection];
-  v4 = [v3 remoteObjectProxy];
+  v2 = [self _extensionContextForUUID:?];
+  _auxiliaryConnection = [v2 _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
 
-  if (!v4)
+  if (!remoteObjectProxy)
   {
     goto LABEL_10;
   }
 
-  v5 = [a1 extensionPointIdentifier];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E69C8E70]];
+  extensionPointIdentifier = [self extensionPointIdentifier];
+  v6 = [extensionPointIdentifier isEqualToString:*MEMORY[0x1E69C8E70]];
 
   if (!v6)
   {
-    v7 = [a1 extensionPointIdentifier];
-    v8 = [v7 isEqualToString:*MEMORY[0x1E69C8E30]];
+    extensionPointIdentifier2 = [self extensionPointIdentifier];
+    v8 = [extensionPointIdentifier2 isEqualToString:*MEMORY[0x1E69C8E30]];
 
     if (!v8)
     {
@@ -45,18 +45,18 @@
     }
 
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ![v4 conformsToProtocol:&unk_1F29047F0])
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ![remoteObjectProxy conformsToProtocol:&unk_1F29047F0])
     {
       goto LABEL_10;
     }
 
 LABEL_9:
-    v9 = v4;
+    v9 = remoteObjectProxy;
     goto LABEL_11;
   }
 
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && ([v4 conformsToProtocol:&unk_1F2911338])
+  if (objc_opt_isKindOfClass() & 1) != 0 && ([remoteObjectProxy conformsToProtocol:&unk_1F2911338])
   {
     goto LABEL_9;
   }

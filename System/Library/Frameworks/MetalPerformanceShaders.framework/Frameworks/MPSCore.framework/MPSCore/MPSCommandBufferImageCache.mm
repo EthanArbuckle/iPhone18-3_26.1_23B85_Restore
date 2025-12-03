@@ -1,10 +1,10 @@
 @interface MPSCommandBufferImageCache
-- (MPSCommandBufferImageCache)initWithCommandBuffer:(id)a3;
+- (MPSCommandBufferImageCache)initWithCommandBuffer:(id)buffer;
 - (id)debugDescription;
-- (id)newHeapBlock:(unint64_t)a3 protections:(unint64_t)a4;
-- (void)addHandlerToCommandBuffer:(id)a3;
+- (id)newHeapBlock:(unint64_t)block protections:(unint64_t)protections;
+- (void)addHandlerToCommandBuffer:(id)buffer;
 - (void)dealloc;
-- (void)releaseHeapBlock:(id)a3 heapProvider:(id)a4;
+- (void)releaseHeapBlock:(id)block heapProvider:(id)provider;
 @end
 
 @implementation MPSCommandBufferImageCache
@@ -154,19 +154,19 @@
   [(MPSCommandBufferImageCache *)&v41 dealloc];
 }
 
-- (void)addHandlerToCommandBuffer:(id)a3
+- (void)addHandlerToCommandBuffer:(id)buffer
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_22E35B37C;
   v5[3] = &unk_2787BE7E8;
   v5[4] = self;
-  objc_msgSend_addCompletedHandler_(a3, a2, v5, v3, v4);
+  objc_msgSend_addCompletedHandler_(buffer, a2, v5, v3, v4);
 }
 
-- (MPSCommandBufferImageCache)initWithCommandBuffer:(id)a3
+- (MPSCommandBufferImageCache)initWithCommandBuffer:(id)buffer
 {
-  if (!a3)
+  if (!buffer)
   {
     if (MTLReportFailureTypeEnabled())
     {
@@ -176,8 +176,8 @@
     goto LABEL_14;
   }
 
-  objc_msgSend_conformsToProtocol_(a3, a2, &unk_28422A888, v3, v4);
-  if ((objc_msgSend_conformsToProtocol_(a3, v7, &unk_28422A888, v8, v9) & 1) == 0)
+  objc_msgSend_conformsToProtocol_(buffer, a2, &unk_28422A888, v3, v4);
+  if ((objc_msgSend_conformsToProtocol_(buffer, v7, &unk_28422A888, v8, v9) & 1) == 0)
   {
     if (MTLReportFailureTypeEnabled())
     {
@@ -192,7 +192,7 @@ LABEL_14:
     return 0;
   }
 
-  v14 = objc_msgSend_device(a3, v10, v11, v12, v13);
+  v14 = objc_msgSend_device(buffer, v10, v11, v12, v13);
   MPSDevice = MPSDevice::GetMPSDevice(v14);
   if (!MPSDevice)
   {
@@ -208,8 +208,8 @@ LABEL_14:
   {
     v17->_heapProvider = 0;
     v17->_device = v16;
-    v17->_cmdBuffer = a3;
-    v17->_needsRetain = objc_msgSend_retainedReferences(a3, v18, v19, v20, v21) ^ 1;
+    v17->_cmdBuffer = buffer;
+    v17->_needsRetain = objc_msgSend_retainedReferences(buffer, v18, v19, v20, v21) ^ 1;
     *(v22 + 584) = 1;
     *(v22 + 608) = 5000000000;
     objc_opt_class();
@@ -222,7 +222,7 @@ LABEL_14:
 
     atomic_store(1uLL, (v22 + 616));
     bzero((v22 + 32), 0x218uLL);
-    v32 = objc_msgSend_userDictionary(a3, v28, v29, v30, v31);
+    v32 = objc_msgSend_userDictionary(buffer, v28, v29, v30, v31);
     objc_msgSend_objectForKey_(v32, v33, @"MPSCommandBufferImageCache", v34, v35);
     if (objc_msgSend_objectForKey_(v32, v36, @"MPSCommandBufferImageCache", v37, v38))
     {
@@ -233,36 +233,36 @@ LABEL_14:
     }
 
     objc_msgSend_setObject_forKey_(v32, v39, v22, @"MPSCommandBufferImageCache", v40);
-    objc_msgSend_addHandlerToCommandBuffer_(v22, v41, a3, v42, v43);
+    objc_msgSend_addHandlerToCommandBuffer_(v22, v41, buffer, v42, v43);
     operator new();
   }
 
   return 0;
 }
 
-- (id)newHeapBlock:(unint64_t)a3 protections:(unint64_t)a4
+- (id)newHeapBlock:(unint64_t)block protections:(unint64_t)protections
 {
   device = self->_device;
   if (device[3])
   {
-    return sub_22E2F0DA0(device[3], a3, a4);
+    return sub_22E2F0DA0(device[3], block, protections);
   }
 
   else
   {
-    return sub_22E2EF260(device, a3, a4);
+    return sub_22E2EF260(device, block, protections);
   }
 }
 
-- (void)releaseHeapBlock:(id)a3 heapProvider:(id)a4
+- (void)releaseHeapBlock:(id)block heapProvider:(id)provider
 {
-  if (a3)
+  if (block)
   {
-    if (a4)
+    if (provider)
     {
       if (objc_opt_respondsToSelector())
       {
-        objc_msgSend_retireHeap_cacheDelay_(a4, v9, a3, v10, v11, self->_cacheDelay);
+        objc_msgSend_retireHeap_cacheDelay_(provider, v9, block, v10, v11, self->_cacheDelay);
       }
     }
 
@@ -271,7 +271,7 @@ LABEL_14:
       cacheDelay = self->_cacheDelay;
       v13 = *(self->_device + 3);
 
-      sub_22E2EF3F8(v13, a3, cacheDelay, 0, v4);
+      sub_22E2EF3F8(v13, block, cacheDelay, 0, v4);
     }
 
     else

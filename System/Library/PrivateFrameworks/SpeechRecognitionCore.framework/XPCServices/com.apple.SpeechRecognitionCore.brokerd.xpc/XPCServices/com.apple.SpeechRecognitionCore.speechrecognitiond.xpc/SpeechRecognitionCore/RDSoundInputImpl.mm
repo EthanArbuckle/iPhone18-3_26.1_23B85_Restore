@@ -4,11 +4,11 @@
 + (BOOL)isCallActive;
 + (BOOL)isHearstConnected;
 - (BOOL)isRecording;
-- (RDSoundInputImpl)initWithExpectedFormat:(const AudioStreamBasicDescription *)a3 deliverSamples:(id)a4;
-- (void)_callStatusChanged:(id)a3;
-- (void)_handleSpeechDetectionVADPresentChange:(id)a3;
-- (void)_handleSpeechSomeClientActiveDidChange:(id)a3;
-- (void)_handleSystemControllerDied:(id)a3;
+- (RDSoundInputImpl)initWithExpectedFormat:(const AudioStreamBasicDescription *)format deliverSamples:(id)samples;
+- (void)_callStatusChanged:(id)changed;
+- (void)_handleSpeechDetectionVADPresentChange:(id)change;
+- (void)_handleSpeechSomeClientActiveDidChange:(id)change;
+- (void)_handleSystemControllerDied:(id)died;
 - (void)_startObservingSpeechClientsActive;
 - (void)_startObservingSpeechDetectionVADPresence;
 - (void)_startObservingSystemControllerLifecycle;
@@ -18,15 +18,15 @@
 
 @implementation RDSoundInputImpl
 
-- (RDSoundInputImpl)initWithExpectedFormat:(const AudioStreamBasicDescription *)a3 deliverSamples:(id)a4
+- (RDSoundInputImpl)initWithExpectedFormat:(const AudioStreamBasicDescription *)format deliverSamples:(id)samples
 {
-  v6 = a4;
+  samplesCopy = samples;
   v18.receiver = self;
   v18.super_class = RDSoundInputImpl;
   v7 = [(RDSoundInputImpl *)&v18 init];
   if (v7)
   {
-    v8 = [[AVAudioFormat alloc] initWithStreamDescription:a3];
+    v8 = [[AVAudioFormat alloc] initWithStreamDescription:format];
     if (qword_10010E478 != -1)
     {
       sub_1000C8FD4();
@@ -34,7 +34,7 @@
 
     if (RXIsUseIndependentVADEnabled() && byte_10010E471 == 1)
     {
-      v9 = [[AVIndependentSoundInput alloc] initWithExpectedFormat:v8 deliverSamples:v6];
+      v9 = [[AVIndependentSoundInput alloc] initWithExpectedFormat:v8 deliverSamples:samplesCopy];
       avIndependenRouteSoundInput = v7->_avIndependenRouteSoundInput;
       v7->_avIndependenRouteSoundInput = v9;
     }
@@ -58,11 +58,11 @@
     {
       v7->_hasIndependentRouteCapability = 0;
       CFPreferencesSetAppValue(@"RXUsingIndependentVAD", kCFBooleanFalse, @"com.apple.SpeechRecognitionCore.speechrecognitiond");
-      v12 = [[CSSoundInput alloc] initWithDeliverSamples:v6];
+      v12 = [[CSSoundInput alloc] initWithDeliverSamples:samplesCopy];
       csSoundInput = v7->_csSoundInput;
       v7->_csSoundInput = v12;
 
-      v14 = [[AVSoundInput alloc] initWithExpectedFormat:v8 deliverSamples:v6];
+      v14 = [[AVSoundInput alloc] initWithExpectedFormat:v8 deliverSamples:samplesCopy];
       avSoundInput = v7->_avSoundInput;
       v7->_avSoundInput = v14;
 
@@ -96,7 +96,7 @@
   [v9 addObserver:self selector:"_callStatusChanged:" name:TUCallCenterVideoCallStatusChangedNotification object:0];
 }
 
-- (void)_handleSystemControllerDied:(id)a3
+- (void)_handleSystemControllerDied:(id)died
 {
   v4 = RXOSLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -157,8 +157,8 @@
 
   if (RXIsUseIndependentVADEnabled() && self->_hasIndependentRouteCapability)
   {
-    v4 = [(RDSoundInputImpl *)self avIndependenRouteSoundInput];
-    [v4 stopRecording];
+    avIndependenRouteSoundInput = [(RDSoundInputImpl *)self avIndependenRouteSoundInput];
+    [avIndependenRouteSoundInput stopRecording];
   }
 
   else
@@ -172,8 +172,8 @@
     {
       [(RDSoundInputImpl *)self avSoundInput];
     }
-    v4 = ;
-    [v4 stopRecording];
+    avIndependenRouteSoundInput = ;
+    [avIndependenRouteSoundInput stopRecording];
   }
 
   v5 = RXOSLog();
@@ -190,29 +190,29 @@
 {
   if (+[RDSoundInputImpl isCSVADPresent])
   {
-    v3 = [(RDSoundInputImpl *)self csSoundInput];
-    v4 = [v3 isRecording] != 0;
+    csSoundInput = [(RDSoundInputImpl *)self csSoundInput];
+    isRecording = [csSoundInput isRecording] != 0;
   }
 
   else
   {
-    v3 = [(RDSoundInputImpl *)self avSoundInput];
-    v4 = [v3 isRecording];
+    csSoundInput = [(RDSoundInputImpl *)self avSoundInput];
+    isRecording = [csSoundInput isRecording];
   }
 
-  return v4;
+  return isRecording;
 }
 
-- (void)_handleSpeechDetectionVADPresentChange:(id)a3
+- (void)_handleSpeechDetectionVADPresentChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if (!+[RDSoundInputImpl_iOS_Shared isCarPlayActive]|| self->_hasIndependentRouteCapability)
   {
     v5 = RXOSLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v8 = v4;
+      v8 = changeCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Speech detection VAD status changed = %@", buf, 0xCu);
     }
 
@@ -228,35 +228,35 @@
   }
 }
 
-- (void)_handleSpeechSomeClientActiveDidChange:(id)a3
+- (void)_handleSpeechSomeClientActiveDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = gRDServerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000DEE4;
   v7[3] = &unk_1000FE300;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)_callStatusChanged:(id)a3
+- (void)_callStatusChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 object];
+  changedCopy = changed;
+  object = [changedCopy object];
   v6 = RXOSLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v15 = [v5 status];
+    status = [object status];
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "RDSoundInputImpl:_callStatusChanged:%d", buf, 8u);
   }
 
-  if (v5)
+  if (object)
   {
-    if ([v5 status] == 4 || objc_msgSend(v5, "status") == 3)
+    if ([object status] == 4 || objc_msgSend(object, "status") == 3)
     {
       v7 = gRDServerQueue;
       block[0] = _NSConcreteStackBlock;
@@ -264,14 +264,14 @@
       block[2] = sub_10000E1AC;
       block[3] = &unk_1000FE300;
       v8 = v13;
-      v13[0] = v5;
+      v13[0] = object;
       v13[1] = self;
       v9 = block;
     }
 
     else
     {
-      if ([v5 status] != 6)
+      if ([object status] != 6)
       {
         goto LABEL_8;
       }
@@ -282,7 +282,7 @@
       v10[2] = sub_10000E260;
       v10[3] = &unk_1000FE300;
       v8 = v11;
-      v11[0] = v5;
+      v11[0] = object;
       v11[1] = self;
       v9 = v10;
     }
@@ -302,9 +302,9 @@ LABEL_8:
 
   v3 = +[AVSystemController sharedAVSystemController];
   v4 = [v3 attributeForKey:AVSystemController_SpeechDetectionDevicePresentAttribute];
-  v2 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 + (BOOL)isCSVADHidden
@@ -319,9 +319,9 @@ LABEL_8:
 
   if ([v4 count] == 1)
   {
-    v5 = [v4 firstObject];
+    firstObject = [v4 firstObject];
     v6 = [NSNumber numberWithInt:getpid()];
-    v7 = [v5 isEqual:v6];
+    v7 = [firstObject isEqual:v6];
 
     v8 = v7 ^ 1;
   }
@@ -347,9 +347,9 @@ LABEL_8:
   [v5 count];
   v6 = +[AVSystemController sharedAVSystemController];
   v7 = [v6 attributeForKey:AVSystemController_CallIsActive];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
 + (BOOL)isHearstConnected
@@ -391,14 +391,14 @@ LABEL_12:
         }
 
         v11 = [v8 objectForKey:AVSystemController_RouteDescriptionKey_PreferredExternalRouteDetails_IsActive];
-        v12 = [v11 BOOLValue];
+        bOOLValue = [v11 BOOLValue];
 
-        if (v12)
+        if (bOOLValue)
         {
           v13 = [v8 objectForKey:AVSystemController_RouteDescriptionKey_BTDetails_SupportsDoAP];
-          v14 = [v13 BOOLValue];
+          bOOLValue2 = [v13 BOOLValue];
 
-          if (v14)
+          if (bOOLValue2)
           {
             LODWORD(v5) = 1;
             goto LABEL_15;

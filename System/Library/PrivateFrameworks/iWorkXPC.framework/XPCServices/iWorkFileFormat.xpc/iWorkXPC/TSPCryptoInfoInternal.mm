@@ -1,16 +1,16 @@
 @interface TSPCryptoInfoInternal
-- (TSPCryptoInfoInternal)initWithCryptoInfo:(id)a3;
-- (TSPCryptoInfoInternal)initWithCryptoKey:(id)a3 preferredBlockSize:(unint64_t)a4 blockInfos:(id)a5 decodedLength:(unint64_t)a6;
+- (TSPCryptoInfoInternal)initWithCryptoInfo:(id)info;
+- (TSPCryptoInfoInternal)initWithCryptoKey:(id)key preferredBlockSize:(unint64_t)size blockInfos:(id)infos decodedLength:(unint64_t)length;
 - (id)mutableCryptoInfoCopy;
 @end
 
 @implementation TSPCryptoInfoInternal
 
-- (TSPCryptoInfoInternal)initWithCryptoKey:(id)a3 preferredBlockSize:(unint64_t)a4 blockInfos:(id)a5 decodedLength:(unint64_t)a6
+- (TSPCryptoInfoInternal)initWithCryptoKey:(id)key preferredBlockSize:(unint64_t)size blockInfos:(id)infos decodedLength:(unint64_t)length
 {
-  v11 = a3;
-  v12 = a5;
-  if (v11)
+  keyCopy = key;
+  infosCopy = infos;
+  if (keyCopy)
   {
     v19.receiver = self;
     v19.super_class = TSPCryptoInfoInternal;
@@ -18,34 +18,34 @@
     v14 = v13;
     if (v13)
     {
-      objc_storeStrong(&v13->_cryptoKey, a3);
-      v14->_preferredBlockSize = a4;
-      v15 = [v12 copy];
+      objc_storeStrong(&v13->_cryptoKey, key);
+      v14->_preferredBlockSize = size;
+      v15 = [infosCopy copy];
       blockInfos = v14->_blockInfos;
       v14->_blockInfos = v15;
 
-      v14->_decodedLength = a6;
+      v14->_decodedLength = length;
     }
 
     self = v14;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (TSPCryptoInfoInternal)initWithCryptoInfo:(id)a3
+- (TSPCryptoInfoInternal)initWithCryptoInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 cryptoKey];
-  v6 = [v4 preferredBlockSize];
-  v7 = [v4 blockInfos];
-  v8 = -[TSPCryptoInfoInternal initWithCryptoKey:preferredBlockSize:blockInfos:decodedLength:](self, "initWithCryptoKey:preferredBlockSize:blockInfos:decodedLength:", v5, v6, v7, [v4 decodedLength]);
+  infoCopy = info;
+  cryptoKey = [infoCopy cryptoKey];
+  preferredBlockSize = [infoCopy preferredBlockSize];
+  blockInfos = [infoCopy blockInfos];
+  v8 = -[TSPCryptoInfoInternal initWithCryptoKey:preferredBlockSize:blockInfos:decodedLength:](self, "initWithCryptoKey:preferredBlockSize:blockInfos:decodedLength:", cryptoKey, preferredBlockSize, blockInfos, [infoCopy decodedLength]);
 
   return v8;
 }

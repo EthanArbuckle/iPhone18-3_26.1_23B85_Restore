@@ -1,10 +1,10 @@
 @interface FAInviteSuggestions
 - (FAInviteSuggestions)init;
-- (FAInviteSuggestions)initWithSuggesters:(id)a3;
-- (id)fetchFamilyMemberSuggestions:(int64_t *)a3 useSuggester:(id)a4;
+- (FAInviteSuggestions)initWithSuggesters:(id)suggesters;
+- (id)fetchFamilyMemberSuggestions:(int64_t *)suggestions useSuggester:(id)suggester;
 - (id)initForOneTapInvite;
-- (id)recommendedSuggester:(id)a3;
-- (int64_t)fetchSuggestedInviteTransportForContactId:(id)a3 contactHandles:(id)a4;
+- (id)recommendedSuggester:(id)suggester;
+- (int64_t)fetchSuggestedInviteTransportForContactId:(id)id contactHandles:(id)handles;
 @end
 
 @implementation FAInviteSuggestions
@@ -33,38 +33,38 @@
   return v7;
 }
 
-- (FAInviteSuggestions)initWithSuggesters:(id)a3
+- (FAInviteSuggestions)initWithSuggesters:(id)suggesters
 {
-  v5 = a3;
+  suggestersCopy = suggesters;
   v9.receiver = self;
   v9.super_class = FAInviteSuggestions;
   v6 = [(FAInviteSuggestions *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_suggesters, a3);
+    objc_storeStrong(&v6->_suggesters, suggesters);
   }
 
   return v7;
 }
 
-- (id)recommendedSuggester:(id)a3
+- (id)recommendedSuggester:(id)suggester
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  suggesterCopy = suggester;
+  if (suggesterCopy)
   {
     v5 = _FALogSystem();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = v4;
+      v26 = suggesterCopy;
       _os_log_impl(&dword_1B70B0000, v5, OS_LOG_TYPE_DEFAULT, "Attempting to use recommended suggester: %@", buf, 0xCu);
     }
 
-    v6 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v7 = [v4 stringByTrimmingCharactersInSet:v6];
-    v8 = [v7 lowercaseString];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v7 = [suggesterCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
+    lowercaseString = [v7 lowercaseString];
 
     v22 = 0u;
     v23 = 0u;
@@ -86,7 +86,7 @@
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          if ([v8 isEqual:{@"megadome", v20}] && objc_msgSend(v14, "proactiveModel") == 3)
+          if ([lowercaseString isEqual:{@"megadome", v20}] && objc_msgSend(v14, "proactiveModel") == 3)
           {
             v16 = _FALogSystem();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -102,7 +102,7 @@ LABEL_22:
             goto LABEL_23;
           }
 
-          if ([v8 isEqual:@"proactive"] && objc_msgSend(v14, "proactiveModel") == 2)
+          if ([lowercaseString isEqual:@"proactive"] && objc_msgSend(v14, "proactiveModel") == 2)
           {
             v16 = _FALogSystem();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -141,10 +141,10 @@ LABEL_23:
   return v15;
 }
 
-- (id)fetchFamilyMemberSuggestions:(int64_t *)a3 useSuggester:(id)a4
+- (id)fetchFamilyMemberSuggestions:(int64_t *)suggestions useSuggester:(id)suggester
 {
   v55 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  suggesterCopy = suggester;
   v7 = _FALogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -153,12 +153,12 @@ LABEL_23:
   }
 
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v9 = [(FAInviteSuggestions *)self recommendedSuggester:v6];
-  v10 = [(FAInviteSuggestions *)self suggesters];
-  v11 = v10;
+  v9 = [(FAInviteSuggestions *)self recommendedSuggester:suggesterCopy];
+  suggesters = [(FAInviteSuggestions *)self suggesters];
+  v11 = suggesters;
   if (v9)
   {
-    v12 = [v10 mutableCopy];
+    v12 = [suggesters mutableCopy];
 
     [v12 insertObject:v9 atIndex:0];
     v11 = [v12 copy];
@@ -173,11 +173,11 @@ LABEL_23:
   if (v14)
   {
     v15 = v14;
-    v37 = self;
+    selfCopy = self;
     v38 = v9;
     v39 = v8;
-    v40 = a3;
-    v41 = v6;
+    suggestionsCopy = suggestions;
+    v41 = suggesterCopy;
     v16 = *v45;
     while (2)
     {
@@ -236,8 +236,8 @@ LABEL_21:
             }
           }
 
-          [(FAInviteSuggestions *)v37 setFeedbackContext:v28];
-          v23 = [v18 proactiveModel];
+          [(FAInviteSuggestions *)selfCopy setFeedbackContext:v28];
+          proactiveModel = [v18 proactiveModel];
           v8 = v39;
           [v39 addObjectsFromArray:v27];
           v33 = _FALogSystem();
@@ -250,8 +250,8 @@ LABEL_21:
             _os_log_impl(&dword_1B70B0000, v33, OS_LOG_TYPE_DEFAULT, "Using family suggestions for suggester class %@: recommendations: %@", buf, 0x16u);
           }
 
-          a3 = v40;
-          v6 = v41;
+          suggestions = suggestionsCopy;
+          suggesterCopy = v41;
           v9 = v38;
           goto LABEL_32;
         }
@@ -289,18 +289,18 @@ LABEL_21:
       break;
     }
 
-    a3 = v40;
-    v6 = v41;
+    suggestions = suggestionsCopy;
+    suggesterCopy = v41;
     v9 = v38;
     v8 = v39;
   }
 
-  v23 = 1;
+  proactiveModel = 1;
 LABEL_32:
 
-  if (a3)
+  if (suggestions)
   {
-    *a3 = v23;
+    *suggestions = proactiveModel;
   }
 
   v34 = [v8 copy];
@@ -310,41 +310,41 @@ LABEL_32:
   return v34;
 }
 
-- (int64_t)fetchSuggestedInviteTransportForContactId:(id)a3 contactHandles:(id)a4
+- (int64_t)fetchSuggestedInviteTransportForContactId:(id)id contactHandles:(id)handles
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69978D8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 interactionAdvisor];
-  v9 = [MEMORY[0x1E69978E0] interactionAdvisorSettingsDefault];
-  [v9 setResultLimit:5];
-  v10 = [MEMORY[0x1E695DFD8] setWithObject:v7];
+  handlesCopy = handles;
+  idCopy = id;
+  interactionAdvisor = [v5 interactionAdvisor];
+  interactionAdvisorSettingsDefault = [MEMORY[0x1E69978E0] interactionAdvisorSettingsDefault];
+  [interactionAdvisorSettingsDefault setResultLimit:5];
+  v10 = [MEMORY[0x1E695DFD8] setWithObject:idCopy];
 
-  [v9 setConstrainPersonIds:v10];
-  v11 = [MEMORY[0x1E695DFD8] setWithArray:v6];
+  [interactionAdvisorSettingsDefault setConstrainPersonIds:v10];
+  v11 = [MEMORY[0x1E695DFD8] setWithArray:handlesCopy];
 
-  [v9 setConstrainIdentifiers:v11];
+  [interactionAdvisorSettingsDefault setConstrainIdentifiers:v11];
   v12 = [MEMORY[0x1E695DFD8] setWithObjects:{&unk_1F2F3BA30, &unk_1F2F3BA48, &unk_1F2F3BA60, &unk_1F2F3BA78, 0}];
-  [v9 setConstrainMechanisms:v12];
+  [interactionAdvisorSettingsDefault setConstrainMechanisms:v12];
 
-  v13 = [v8 adviseInteractionsUsingSettings:v9];
-  v14 = [v13 firstObject];
-  v15 = [v14 bundleId];
+  v13 = [interactionAdvisor adviseInteractionsUsingSettings:interactionAdvisorSettingsDefault];
+  firstObject = [v13 firstObject];
+  bundleId = [firstObject bundleId];
   v16 = _FALogSystem();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v15;
+    v21 = bundleId;
     _os_log_impl(&dword_1B70B0000, v16, OS_LOG_TYPE_DEFAULT, "Suggested transport type for contact is %@", buf, 0xCu);
   }
 
-  if ([v15 isEqualToString:@"com.apple.MobileSMS"])
+  if ([bundleId isEqualToString:@"com.apple.MobileSMS"])
   {
     v17 = 1;
   }
 
-  else if ([v15 isEqualToString:@"com.apple.mobilemail"])
+  else if ([bundleId isEqualToString:@"com.apple.mobilemail"])
   {
     v17 = 2;
   }

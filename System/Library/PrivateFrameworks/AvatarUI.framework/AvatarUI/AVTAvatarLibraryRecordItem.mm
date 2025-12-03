@@ -1,14 +1,14 @@
 @interface AVTAvatarLibraryRecordItem
-- (AVTAvatarLibraryRecordItem)initWithAvatarRecord:(id)a3 environment:(id)a4;
-- (void)configureCell:(id)a3 imageProvider:(id)a4;
+- (AVTAvatarLibraryRecordItem)initWithAvatarRecord:(id)record environment:(id)environment;
+- (void)configureCell:(id)cell imageProvider:(id)provider;
 @end
 
 @implementation AVTAvatarLibraryRecordItem
 
-- (AVTAvatarLibraryRecordItem)initWithAvatarRecord:(id)a3 environment:(id)a4
+- (AVTAvatarLibraryRecordItem)initWithAvatarRecord:(id)record environment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
+  recordCopy = record;
+  environmentCopy = environment;
   v11.receiver = self;
   v11.super_class = AVTAvatarLibraryRecordItem;
   v9 = [(AVTAvatarLibraryRecordItem *)&v11 init];
@@ -17,34 +17,34 @@
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", v7}];
+      [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", recordCopy}];
     }
 
-    objc_storeStrong(&v9->_avatarRecord, a3);
-    objc_storeStrong(&v9->_environment, a4);
+    objc_storeStrong(&v9->_avatarRecord, record);
+    objc_storeStrong(&v9->_environment, environment);
   }
 
   return v9;
 }
 
-- (void)configureCell:(id)a3 imageProvider:(id)a4
+- (void)configureCell:(id)cell imageProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  providerCopy = provider;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", v6}];
+    [MEMORY[0x1E695DF30] raise:@"AVTTypeMismatchException" format:{@"Unexpected object class for %@", cellCopy}];
   }
 
-  v8 = v6;
-  v9 = [(AVTAvatarLibraryRecordItem *)self environment];
-  [v9 mainScreenScale];
+  v8 = cellCopy;
+  environment = [(AVTAvatarLibraryRecordItem *)self environment];
+  [environment mainScreenScale];
   v11 = v10;
 
   v12 = [[AVTRenderingScope alloc] initWithRenderingType:101 scale:v11];
-  v13 = [(AVTAvatarLibraryRecordItem *)self avatarRecord];
-  v14 = [v7 providerForRecord:v13 scope:v12];
+  avatarRecord = [(AVTAvatarLibraryRecordItem *)self avatarRecord];
+  v14 = [providerCopy providerForRecord:avatarRecord scope:v12];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;

@@ -1,47 +1,47 @@
 @interface ASCompetitionList
-+ (id)competitionListFromCodableDatabaseCompetitionList:(id)a3 codableCompetitions:(id)a4 withType:(int64_t)a5;
-+ (id)competitionListWithCodableCompetitionList:(id)a3;
-+ (id)competitionListWithRecord:(id)a3;
++ (id)competitionListFromCodableDatabaseCompetitionList:(id)list codableCompetitions:(id)competitions withType:(int64_t)type;
++ (id)competitionListWithCodableCompetitionList:(id)list;
++ (id)competitionListWithRecord:(id)record;
 - (ASCodableCloudKitCompetitionList)codableCompetitionList;
 - (ASCompetition)currentCompetition;
 - (ASCompetitionList)init;
-- (ASCompetitionList)initWithFriendUUID:(id)a3 type:(int64_t)a4;
-- (id)codableDatabaseCompetitionListEntryForOwner:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)recordWithZoneID:(id)a3 recordEncryptionType:(int64_t)a4;
+- (ASCompetitionList)initWithFriendUUID:(id)d type:(int64_t)type;
+- (id)codableDatabaseCompetitionListEntryForOwner:(int64_t)owner;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)recordWithZoneID:(id)d recordEncryptionType:(int64_t)type;
 - (void)currentCompetition;
 @end
 
 @implementation ASCompetitionList
 
-- (id)recordWithZoneID:(id)a3 recordEncryptionType:(int64_t)a4
+- (id)recordWithZoneID:(id)d recordEncryptionType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(ASCompetitionList *)self systemFieldsOnlyRecord];
-  v8 = v7;
-  if (!v7 || ([v7 recordID], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "zoneID"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqual:", v6), v10, v9, (v11 & 1) == 0))
+  dCopy = d;
+  systemFieldsOnlyRecord = [(ASCompetitionList *)self systemFieldsOnlyRecord];
+  v8 = systemFieldsOnlyRecord;
+  if (!systemFieldsOnlyRecord || ([systemFieldsOnlyRecord recordID], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "zoneID"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "isEqual:", dCopy), v10, v9, (v11 & 1) == 0))
   {
-    v12 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"ActivitySharingCompetitionList" zoneID:v6];
+    v12 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"ActivitySharingCompetitionList" zoneID:dCopy];
 
     v8 = v12;
   }
 
-  _ASUpdateSchemaVersionOnRecord(1, v8, a4);
-  v13 = [(ASCompetitionList *)self codableCompetitionList];
-  v14 = [v13 data];
-  v15 = [v8 encryptedValues];
-  [v15 setObject:v14 forKeyedSubscript:@"EncryptedData"];
+  _ASUpdateSchemaVersionOnRecord(1, v8, type);
+  codableCompetitionList = [(ASCompetitionList *)self codableCompetitionList];
+  data = [codableCompetitionList data];
+  encryptedValues = [v8 encryptedValues];
+  [encryptedValues setObject:data forKeyedSubscript:@"EncryptedData"];
 
   return v8;
 }
 
-+ (id)competitionListWithRecord:(id)a3
++ (id)competitionListWithRecord:(id)record
 {
-  v3 = a3;
-  if (_ASCloudKitSchemaVersionForRecord(v3) == 1)
+  recordCopy = record;
+  if (_ASCloudKitSchemaVersionForRecord(recordCopy) == 1)
   {
-    v4 = [v3 encryptedValues];
-    v5 = [v4 objectForKeyedSubscript:@"EncryptedData"];
+    encryptedValues = [recordCopy encryptedValues];
+    v5 = [encryptedValues objectForKeyedSubscript:@"EncryptedData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,12 +58,12 @@
       v8 = [[ASCodableCloudKitCompetitionList alloc] initWithData:v6];
       v7 = [ASCompetitionList competitionListWithCodableCompetitionList:v8];
       v9 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
-      [v3 encodeSystemFieldsWithCoder:v9];
+      [recordCopy encodeSystemFieldsWithCoder:v9];
       [v9 finishEncoding];
       v10 = objc_alloc(MEMORY[0x277CCAAC8]);
-      v11 = [v9 encodedData];
+      encodedData = [v9 encodedData];
       v16 = 0;
-      v12 = [v10 initForReadingFromData:v11 error:&v16];
+      v12 = [v10 initForReadingFromData:encodedData error:&v16];
       v13 = v16;
 
       if (v13)
@@ -105,21 +105,21 @@
   return v7;
 }
 
-+ (id)competitionListWithCodableCompetitionList:(id)a3
++ (id)competitionListWithCodableCompetitionList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   v4 = objc_alloc_init(ASCompetitionList);
-  v5 = [v3 competitions];
-  v6 = [v5 hk_map:&__block_literal_global_484];
+  competitions = [listCopy competitions];
+  v6 = [competitions hk_map:&__block_literal_global_484];
   [(ASCompetitionList *)v4 setCompetitions:v6];
 
   v7 = MEMORY[0x277CCAD78];
-  v8 = [v3 friendUUID];
-  v9 = [v7 hk_UUIDWithData:v8];
+  friendUUID = [listCopy friendUUID];
+  v9 = [v7 hk_UUIDWithData:friendUUID];
   [(ASCompetitionList *)v4 setFriendUUID:v9];
 
-  v10 = [v3 type];
-  [(ASCompetitionList *)v4 setType:v10];
+  type = [listCopy type];
+  [(ASCompetitionList *)v4 setType:type];
 
   return v4;
 }
@@ -127,43 +127,43 @@
 - (ASCodableCloudKitCompetitionList)codableCompetitionList
 {
   v3 = objc_alloc_init(ASCodableCloudKitCompetitionList);
-  v4 = [(ASCompetitionList *)self competitions];
-  v5 = [v4 hk_map:&__block_literal_global_488];
+  competitions = [(ASCompetitionList *)self competitions];
+  v5 = [competitions hk_map:&__block_literal_global_488];
   v6 = [v5 mutableCopy];
   [(ASCodableCloudKitCompetitionList *)v3 setCompetitions:v6];
 
-  v7 = [(ASCompetitionList *)self friendUUID];
-  v8 = [v7 hk_dataForUUIDBytes];
-  [(ASCodableCloudKitCompetitionList *)v3 setFriendUUID:v8];
+  friendUUID = [(ASCompetitionList *)self friendUUID];
+  hk_dataForUUIDBytes = [friendUUID hk_dataForUUIDBytes];
+  [(ASCodableCloudKitCompetitionList *)v3 setFriendUUID:hk_dataForUUIDBytes];
 
   [(ASCodableCloudKitCompetitionList *)v3 setType:[(ASCompetitionList *)self type]];
 
   return v3;
 }
 
-+ (id)competitionListFromCodableDatabaseCompetitionList:(id)a3 codableCompetitions:(id)a4 withType:(int64_t)a5
++ (id)competitionListFromCodableDatabaseCompetitionList:(id)list codableCompetitions:(id)competitions withType:(int64_t)type
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  listCopy = list;
+  competitionsCopy = competitions;
   v9 = objc_alloc_init(ASCompetitionList);
   v10 = MEMORY[0x277CCAD78];
-  v11 = [v7 friendUUID];
-  v12 = [v10 hk_UUIDWithData:v11];
+  friendUUID = [listCopy friendUUID];
+  v12 = [v10 hk_UUIDWithData:friendUUID];
   [(ASCompetitionList *)v9 setFriendUUID:v12];
 
-  [(ASCompetitionList *)v9 setType:a5];
+  [(ASCompetitionList *)v9 setType:type];
   v13 = objc_opt_class();
-  v27 = v7;
-  v14 = [v7 systemFieldsOnlyRecord];
-  v15 = ASSecureUnarchiveClassWithData(v13, v14);
+  v27 = listCopy;
+  systemFieldsOnlyRecord = [listCopy systemFieldsOnlyRecord];
+  v15 = ASSecureUnarchiveClassWithData(v13, systemFieldsOnlyRecord);
   [(ASCompetitionList *)v9 setSystemFieldsOnlyRecord:v15];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v16 = v8;
+  v16 = competitionsCopy;
   v17 = [v16 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v17)
   {
@@ -181,8 +181,8 @@
           objc_enumerationMutation(v16);
         }
 
-        v23 = [*(*(&v28 + 1) + 8 * v21) competition];
-        v24 = [ASCompetition competitionWithCodableCompetition:v23];
+        competition = [*(*(&v28 + 1) + 8 * v21) competition];
+        v24 = [ASCompetition competitionWithCodableCompetition:competition];
 
         v20 = [v22 arrayByAddingObject:v24];
 
@@ -208,20 +208,20 @@
   return v9;
 }
 
-- (id)codableDatabaseCompetitionListEntryForOwner:(int64_t)a3
+- (id)codableDatabaseCompetitionListEntryForOwner:(int64_t)owner
 {
   v5 = objc_alloc_init(ASCodableDatabaseCompetitionListEntry);
-  v6 = [(ASCompetitionList *)self friendUUID];
-  v7 = [v6 hk_dataForUUIDBytes];
-  [(ASCodableDatabaseCompetitionListEntry *)v5 setFriendUUID:v7];
+  friendUUID = [(ASCompetitionList *)self friendUUID];
+  hk_dataForUUIDBytes = [friendUUID hk_dataForUUIDBytes];
+  [(ASCodableDatabaseCompetitionListEntry *)v5 setFriendUUID:hk_dataForUUIDBytes];
 
   [(ASCodableDatabaseCompetitionListEntry *)v5 setType:[(ASCompetitionList *)self type]];
   v8 = MEMORY[0x277CCAAB0];
-  v9 = [(ASCompetitionList *)self systemFieldsOnlyRecord];
-  v10 = [v8 archivedDataWithRootObject:v9 requiringSecureCoding:1 error:0];
+  systemFieldsOnlyRecord = [(ASCompetitionList *)self systemFieldsOnlyRecord];
+  v10 = [v8 archivedDataWithRootObject:systemFieldsOnlyRecord requiringSecureCoding:1 error:0];
   [(ASCodableDatabaseCompetitionListEntry *)v5 setSystemFieldsOnlyRecord:v10];
 
-  [(ASCodableDatabaseCompetitionListEntry *)v5 setOwner:a3];
+  [(ASCodableDatabaseCompetitionListEntry *)v5 setOwner:owner];
 
   return v5;
 }
@@ -241,15 +241,15 @@
   return v3;
 }
 
-- (ASCompetitionList)initWithFriendUUID:(id)a3 type:(int64_t)a4
+- (ASCompetitionList)initWithFriendUUID:(id)d type:(int64_t)type
 {
-  v7 = a3;
+  dCopy = d;
   v8 = [(ASCompetitionList *)self init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_friendUUID, a3);
-    v9->_type = a4;
+    objc_storeStrong(&v8->_friendUUID, d);
+    v9->_type = type;
   }
 
   return v9;
@@ -267,20 +267,20 @@
     }
   }
 
-  v4 = [(NSArray *)self->_competitions lastObject];
+  lastObject = [(NSArray *)self->_competitions lastObject];
 
-  return v4;
+  return lastObject;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setFriendUUID:self->_friendUUID];
   [v5 setType:self->_type];
-  v6 = [(NSArray *)self->_competitions copyWithZone:a3];
+  v6 = [(NSArray *)self->_competitions copyWithZone:zone];
   [v5 setCompetitions:v6];
 
-  v7 = [(CKRecord *)self->_systemFieldsOnlyRecord copyWithZone:a3];
+  v7 = [(CKRecord *)self->_systemFieldsOnlyRecord copyWithZone:zone];
   [v5 setSystemFieldsOnlyRecord:v7];
 
   return v5;
@@ -290,7 +290,7 @@
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_23E4FA000, a2, OS_LOG_TYPE_ERROR, "Competition list contained an unexpected number of competitions, list: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

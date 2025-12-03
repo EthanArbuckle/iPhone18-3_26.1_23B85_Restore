@@ -1,12 +1,12 @@
 @interface TNUIOBKViewController
-- (_TtC20ThreatNotificationUI21TNUIOBKViewController)initWithCoder:(id)a3;
-- (_TtC20ThreatNotificationUI21TNUIOBKViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC20ThreatNotificationUI21TNUIOBKViewController)initWithCoder:(id)coder;
+- (_TtC20ThreatNotificationUI21TNUIOBKViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation TNUIOBKViewController
 
-- (_TtC20ThreatNotificationUI21TNUIOBKViewController)initWithCoder:(id)a3
+- (_TtC20ThreatNotificationUI21TNUIOBKViewController)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -34,12 +34,12 @@
 
   v4.receiver = self;
   v4.super_class = type metadata accessor for TNUIOBKViewController();
-  v3 = self;
+  selfCopy = self;
   [(TNUIOBKViewController *)&v4 viewDidLoad];
   TNUIOBKViewController.setup()();
 }
 
-- (_TtC20ThreatNotificationUI21TNUIOBKViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20ThreatNotificationUI21TNUIOBKViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

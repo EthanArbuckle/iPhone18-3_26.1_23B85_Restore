@@ -1,6 +1,6 @@
 @interface ThirdPartyMediaShadowEffectView
 + (Class)layerClass;
-- (_TtC7Journal31ThirdPartyMediaShadowEffectView)initWithCoder:(id)a3;
+- (_TtC7Journal31ThirdPartyMediaShadowEffectView)initWithCoder:(id)coder;
 @end
 
 @implementation ThirdPartyMediaShadowEffectView
@@ -12,7 +12,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC7Journal31ThirdPartyMediaShadowEffectView)initWithCoder:(id)a3
+- (_TtC7Journal31ThirdPartyMediaShadowEffectView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7Journal31ThirdPartyMediaShadowEffectView_contentView;
   v5 = [objc_allocWithZone(UIView) init];

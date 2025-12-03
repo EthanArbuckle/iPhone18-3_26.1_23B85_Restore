@@ -1,10 +1,10 @@
 @interface FIUIUnitManager
 + (id)sharedManager;
 - (FIUIUnitManager)init;
-- (FIUIUnitManager)initWithHealthStore:(id)a3;
-- (FIUIUnitManager)initWithUnitManager:(id)a3;
+- (FIUIUnitManager)initWithHealthStore:(id)store;
+- (FIUIUnitManager)initWithUnitManager:(id)manager;
 - (id)userDistanceElevationHKUnit;
-- (id)userDistanceHKUnitForActivityType:(id)a3;
+- (id)userDistanceHKUnitForActivityType:(id)type;
 @end
 
 @implementation FIUIUnitManager
@@ -47,38 +47,38 @@ uint64_t __32__FIUIUnitManager_sharedManager__block_invoke()
   return v4;
 }
 
-- (FIUIUnitManager)initWithHealthStore:(id)a3
+- (FIUIUnitManager)initWithHealthStore:(id)store
 {
   v4 = MEMORY[0x1E699C9E8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithHealthStore:v5];
+  storeCopy = store;
+  v6 = [[v4 alloc] initWithHealthStore:storeCopy];
 
   v7 = [(FIUIUnitManager *)self initWithUnitManager:v6];
   return v7;
 }
 
-- (FIUIUnitManager)initWithUnitManager:(id)a3
+- (FIUIUnitManager)initWithUnitManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = FIUIUnitManager;
   v6 = [(FIUIUnitManager *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_unitManager, a3);
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v7 selector:sel__notifyUnitPreferencesChanged name:*MEMORY[0x1E699CA10] object:0];
+    objc_storeStrong(&v6->_unitManager, manager);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__notifyUnitPreferencesChanged name:*MEMORY[0x1E699CA10] object:0];
   }
 
   return v7;
 }
 
-- (id)userDistanceHKUnitForActivityType:(id)a3
+- (id)userDistanceHKUnitForActivityType:(id)type
 {
   unitManager = self->_unitManager;
-  v4 = [a3 workoutActivityType];
-  v5 = [(FIUnitManager *)unitManager userDistanceHKUnitForActivityType:v4];
+  workoutActivityType = [type workoutActivityType];
+  v5 = [(FIUnitManager *)unitManager userDistanceHKUnitForActivityType:workoutActivityType];
 
   return v5;
 }

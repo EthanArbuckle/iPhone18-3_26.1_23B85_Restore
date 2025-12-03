@@ -33,8 +33,8 @@
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v6 = [v5 emailAddresses];
-        v7 = [v6 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        emailAddresses = [v5 emailAddresses];
+        v7 = [emailAddresses countByEnumeratingWithState:&v16 objects:v24 count:16];
         if (v7)
         {
           v8 = *v17;
@@ -44,7 +44,7 @@
             {
               if (*v17 != v8)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(emailAddresses);
               }
 
               v10 = [MFMessageKeychainManager copyAllSigningIdentitiesForAddress:*(*(&v16 + 1) + 8 * j) error:0];
@@ -58,7 +58,7 @@
               }
             }
 
-            v7 = [v6 countByEnumeratingWithState:&v16 objects:v24 count:16];
+            v7 = [emailAddresses countByEnumeratingWithState:&v16 objects:v24 count:16];
             if (v7)
             {
               continue;
@@ -114,8 +114,8 @@ LABEL_19:
         v15 = 0u;
         v16 = 0u;
         v17 = 0u;
-        v8 = [v7 emailAddresses];
-        v9 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
+        emailAddresses = [v7 emailAddresses];
+        v9 = [emailAddresses countByEnumeratingWithState:&v14 objects:v22 count:16];
         if (v9)
         {
           v10 = *v15;
@@ -125,7 +125,7 @@ LABEL_19:
             {
               if (*v15 != v10)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(emailAddresses);
               }
 
               if ([v7 secureCompositionSigningPolicyForAddress:*(*(&v14 + 1) + 8 * j)] > 0)
@@ -135,7 +135,7 @@ LABEL_19:
               }
             }
 
-            v9 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
+            v9 = [emailAddresses countByEnumeratingWithState:&v14 objects:v22 count:16];
             if (v9)
             {
               continue;
@@ -186,8 +186,8 @@ LABEL_16:
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v6 = [v5 emailAddresses];
-        v7 = [v6 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        emailAddresses = [v5 emailAddresses];
+        v7 = [emailAddresses countByEnumeratingWithState:&v16 objects:v24 count:16];
         if (v7)
         {
           v8 = *v17;
@@ -197,7 +197,7 @@ LABEL_16:
             {
               if (*v17 != v8)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(emailAddresses);
               }
 
               v10 = [MFMessageKeychainManager copyAllEncryptionIdentitiesForAddress:*(*(&v16 + 1) + 8 * j) error:0];
@@ -211,7 +211,7 @@ LABEL_16:
               }
             }
 
-            v7 = [v6 countByEnumeratingWithState:&v16 objects:v24 count:16];
+            v7 = [emailAddresses countByEnumeratingWithState:&v16 objects:v24 count:16];
             if (v7)
             {
               continue;
@@ -267,8 +267,8 @@ LABEL_19:
         v15 = 0u;
         v16 = 0u;
         v17 = 0u;
-        v8 = [v7 emailAddresses];
-        v9 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
+        emailAddresses = [v7 emailAddresses];
+        v9 = [emailAddresses countByEnumeratingWithState:&v14 objects:v22 count:16];
         if (v9)
         {
           v10 = *v15;
@@ -278,7 +278,7 @@ LABEL_19:
             {
               if (*v15 != v10)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(emailAddresses);
               }
 
               if ([v7 secureCompositionEncryptionPolicyForAddress:*(*(&v14 + 1) + 8 * j)] > 0)
@@ -288,7 +288,7 @@ LABEL_19:
               }
             }
 
-            v9 = [v8 countByEnumeratingWithState:&v14 objects:v22 count:16];
+            v9 = [emailAddresses countByEnumeratingWithState:&v14 objects:v22 count:16];
             if (v9)
             {
               continue;

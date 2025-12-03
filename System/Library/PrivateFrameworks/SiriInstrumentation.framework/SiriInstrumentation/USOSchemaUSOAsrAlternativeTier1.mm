@@ -1,26 +1,26 @@
 @interface USOSchemaUSOAsrAlternativeTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (USOSchemaUSOAsrAlternativeTier1)initWithDictionary:(id)a3;
-- (USOSchemaUSOAsrAlternativeTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (USOSchemaUSOAsrAlternativeTier1)initWithDictionary:(id)dictionary;
+- (USOSchemaUSOAsrAlternativeTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation USOSchemaUSOAsrAlternativeTier1
 
-- (USOSchemaUSOAsrAlternativeTier1)initWithDictionary:(id)a3
+- (USOSchemaUSOAsrAlternativeTier1)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = USOSchemaUSOAsrAlternativeTier1;
   v5 = [(USOSchemaUSOAsrAlternativeTier1 *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"alternative"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"alternative"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(USOSchemaUSOAsrAlternativeTier1 *)v5 setAlternative:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"probability"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"probability"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -42,30 +42,30 @@
   return v5;
 }
 
-- (USOSchemaUSOAsrAlternativeTier1)initWithJSON:(id)a3
+- (USOSchemaUSOAsrAlternativeTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(USOSchemaUSOAsrAlternativeTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(USOSchemaUSOAsrAlternativeTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(USOSchemaUSOAsrAlternativeTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -78,12 +78,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_alternative)
   {
-    v4 = [(USOSchemaUSOAsrAlternativeTier1 *)self alternative];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"alternative"];
+    alternative = [(USOSchemaUSOAsrAlternativeTier1 *)self alternative];
+    v5 = [alternative copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"alternative"];
   }
 
   if (*&self->_has)
@@ -91,12 +91,12 @@
     v6 = MEMORY[0x1E696AD98];
     [(USOSchemaUSOAsrAlternativeTier1 *)self probability];
     v7 = [v6 numberWithFloat:?];
-    [v3 setObject:v7 forKeyedSubscript:@"probability"];
+    [dictionary setObject:v7 forKeyedSubscript:@"probability"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -143,26 +143,26 @@
   return v6 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = [(USOSchemaUSOAsrAlternativeTier1 *)self alternative];
-  v6 = [v4 alternative];
-  v7 = v6;
-  if ((v5 != 0) != (v6 == 0))
+  alternative = [(USOSchemaUSOAsrAlternativeTier1 *)self alternative];
+  alternative2 = [equalCopy alternative];
+  v7 = alternative2;
+  if ((alternative != 0) != (alternative2 == 0))
   {
-    v8 = [(USOSchemaUSOAsrAlternativeTier1 *)self alternative];
-    if (v8)
+    alternative3 = [(USOSchemaUSOAsrAlternativeTier1 *)self alternative];
+    if (alternative3)
     {
-      v9 = v8;
-      v10 = [(USOSchemaUSOAsrAlternativeTier1 *)self alternative];
-      v11 = [v4 alternative];
-      v12 = [v10 isEqual:v11];
+      v9 = alternative3;
+      alternative4 = [(USOSchemaUSOAsrAlternativeTier1 *)self alternative];
+      alternative5 = [equalCopy alternative];
+      v12 = [alternative4 isEqual:alternative5];
 
       if (!v12)
       {
@@ -174,9 +174,9 @@
     {
     }
 
-    if ((*&self->_has & 1) == (v4[20] & 1))
+    if ((*&self->_has & 1) == (equalCopy[20] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (probability = self->_probability, [v4 probability], probability == v14))
+      if ((*&self->_has & 1) == 0 || (probability = self->_probability, [equalCopy probability], probability == v14))
       {
         v15 = 1;
         goto LABEL_12;
@@ -195,12 +195,12 @@ LABEL_12:
   return v15;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(USOSchemaUSOAsrAlternativeTier1 *)self alternative];
+  toCopy = to;
+  alternative = [(USOSchemaUSOAsrAlternativeTier1 *)self alternative];
 
-  if (v4)
+  if (alternative)
   {
     PBDataWriterWriteStringField();
   }
@@ -211,33 +211,33 @@ LABEL_12:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v7.receiver = self;
   v7.super_class = USOSchemaUSOAsrAlternativeTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v7 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(USOSchemaUSOAsrAlternativeTier1 *)self deleteAlternative];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(USOSchemaUSOAsrAlternativeTier1 *)self deleteAlternative];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(USOSchemaUSOAsrAlternativeTier1 *)self deleteAlternative];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(USOSchemaUSOAsrAlternativeTier1 *)self deleteAlternative];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(USOSchemaUSOAsrAlternativeTier1 *)self deleteAlternative];
   }

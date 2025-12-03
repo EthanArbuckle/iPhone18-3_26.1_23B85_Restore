@@ -1,40 +1,40 @@
 @interface PEAdjustmentFilter
-- (BOOL)canApplyToCompositionController:(id)a3 valuesCalculator:(id)a4 asset:(id)a5 error:(id *)a6;
+- (BOOL)canApplyToCompositionController:(id)controller valuesCalculator:(id)calculator asset:(id)asset error:(id *)error;
 - (PEAdjustmentFilter)init;
-- (PEAdjustmentFilter)initWithFilterIdentifier:(id)a3 intensity:(double)a4;
-- (void)applyToCompositionController:(id)a3 valuesCalculator:(id)a4 asset:(id)a5 livePortraitBehaviorDelegate:(id)a6 completionHandler:(id)a7;
+- (PEAdjustmentFilter)initWithFilterIdentifier:(id)identifier intensity:(double)intensity;
+- (void)applyToCompositionController:(id)controller valuesCalculator:(id)calculator asset:(id)asset livePortraitBehaviorDelegate:(id)delegate completionHandler:(id)handler;
 @end
 
 @implementation PEAdjustmentFilter
 
-- (void)applyToCompositionController:(id)a3 valuesCalculator:(id)a4 asset:(id)a5 livePortraitBehaviorDelegate:(id)a6 completionHandler:(id)a7
+- (void)applyToCompositionController:(id)controller valuesCalculator:(id)calculator asset:(id)asset livePortraitBehaviorDelegate:(id)delegate completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a7;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v30 = 0;
-  LOBYTE(a4) = [(PEAdjustmentFilter *)self canApplyToCompositionController:v11 valuesCalculator:a4 asset:a5 error:&v30];
+  LOBYTE(calculator) = [(PEAdjustmentFilter *)self canApplyToCompositionController:controllerCopy valuesCalculator:calculator asset:asset error:&v30];
   v13 = v30;
-  if (a4)
+  if (calculator)
   {
-    v14 = [(PEAdjustmentFilter *)self filterIdentifier];
-    v15 = [MEMORY[0x277D3AD30] standardSupportedEffects];
+    filterIdentifier = [(PEAdjustmentFilter *)self filterIdentifier];
+    standardSupportedEffects = [MEMORY[0x277D3AD30] standardSupportedEffects];
     v25 = MEMORY[0x277D85DD0];
     v26 = 3221225472;
     v27 = __121__PEAdjustmentFilter_applyToCompositionController_valuesCalculator_asset_livePortraitBehaviorDelegate_completionHandler___block_invoke;
     v28 = &unk_279A306E0;
-    v16 = v14;
+    v16 = filterIdentifier;
     v29 = v16;
     v17 = PFFind();
     v18 = *MEMORY[0x277D3AA50];
-    [v11 removeAdjustmentWithKey:*MEMORY[0x277D3AA50]];
+    [controllerCopy removeAdjustmentWithKey:*MEMORY[0x277D3AA50]];
     v19 = *MEMORY[0x277D3AA48];
-    [v11 removeAdjustmentWithKey:*MEMORY[0x277D3AA48]];
-    [v11 removeAdjustmentWithKey:*MEMORY[0x277D3AA90]];
+    [controllerCopy removeAdjustmentWithKey:*MEMORY[0x277D3AA48]];
+    [controllerCopy removeAdjustmentWithKey:*MEMORY[0x277D3AA90]];
     if (v17)
     {
       v20 = MEMORY[0x277D3AD30];
-      v21 = [v17 filterIdentifier];
-      LOBYTE(v20) = [v20 isEffectNoneForIdentifier:v21];
+      filterIdentifier2 = [v17 filterIdentifier];
+      LOBYTE(v20) = [v20 isEffectNoneForIdentifier:filterIdentifier2];
 
       if ((v20 & 1) == 0)
       {
@@ -49,16 +49,16 @@
         v22[3] = &unk_279A30708;
         v23 = v16;
         v24 = v17;
-        [v11 modifyAdjustmentWithKey:v18 modificationBlock:v22];
+        [controllerCopy modifyAdjustmentWithKey:v18 modificationBlock:v22];
       }
     }
 
-    v12[2](v12, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 
   else
   {
-    (v12)[2](v12, 0, v13);
+    (handlerCopy)[2](handlerCopy, 0, v13);
   }
 }
 
@@ -80,19 +80,19 @@ void __121__PEAdjustmentFilter_applyToCompositionController_valuesCalculator_ass
   [v4 setEnabled:1];
 }
 
-- (BOOL)canApplyToCompositionController:(id)a3 valuesCalculator:(id)a4 asset:(id)a5 error:(id *)a6
+- (BOOL)canApplyToCompositionController:(id)controller valuesCalculator:(id)calculator asset:(id)asset error:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  controllerCopy = controller;
+  calculatorCopy = calculator;
+  assetCopy = asset;
+  if (!controllerCopy)
   {
     _PFAssertFailHandler();
     goto LABEL_11;
   }
 
-  if (!v10)
+  if (!calculatorCopy)
   {
 LABEL_11:
     _PFAssertFailHandler();
@@ -100,46 +100,46 @@ LABEL_12:
     _PFAssertFailHandler();
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = assetCopy;
+  if (!assetCopy)
   {
     goto LABEL_12;
   }
 
-  if (PISemanticStyleIsRenderSupported() && ([v10 semanticStyleStatistics], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, v14))
+  if (PISemanticStyleIsRenderSupported() && ([calculatorCopy semanticStyleStatistics], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "count"), v13, v14))
   {
-    if (a6)
+    if (error)
     {
       v15 = MEMORY[0x277CCA9B8];
       v19 = @"PEAdjustmentFilterMediaTypeErrorKey";
       v16 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v12, "mediaType")}];
       v20[0] = v16;
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-      *a6 = [v15 errorWithDomain:@"PEAdjustmentFilterErrorDomain" code:1 userInfo:v17];
+      *error = [v15 errorWithDomain:@"PEAdjustmentFilterErrorDomain" code:1 userInfo:v17];
 
-      LOBYTE(a6) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
   else
   {
-    LOBYTE(a6) = 1;
+    LOBYTE(error) = 1;
   }
 
-  return a6;
+  return error;
 }
 
-- (PEAdjustmentFilter)initWithFilterIdentifier:(id)a3 intensity:(double)a4
+- (PEAdjustmentFilter)initWithFilterIdentifier:(id)identifier intensity:(double)intensity
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = PEAdjustmentFilter;
   v8 = [(PEAdjustmentFilter *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_filterIdentifier, a3);
-    v9->_intensity = a4;
+    objc_storeStrong(&v8->_filterIdentifier, identifier);
+    v9->_intensity = intensity;
   }
 
   return v9;

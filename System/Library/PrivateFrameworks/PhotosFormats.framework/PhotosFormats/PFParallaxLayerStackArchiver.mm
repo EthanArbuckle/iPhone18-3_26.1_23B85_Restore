@@ -1,16 +1,16 @@
 @interface PFParallaxLayerStackArchiver
-+ (BOOL)saveCompoundLayerStack:(id)a3 toURL:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-+ (id)loadCompoundLayerStackFromURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
++ (BOOL)saveCompoundLayerStack:(id)stack toURL:(id)l options:(unint64_t)options error:(id *)error;
++ (id)loadCompoundLayerStackFromURL:(id)l options:(unint64_t)options error:(id *)error;
 + (void)initialize;
 @end
 
 @implementation PFParallaxLayerStackArchiver
 
-+ (id)loadCompoundLayerStackFromURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
++ (id)loadCompoundLayerStackFromURL:(id)l options:(unint64_t)options error:(id *)error
 {
   v231 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 URLByAppendingPathComponent:@"Contents.json"];
+  lCopy = l;
+  v7 = [lCopy URLByAppendingPathComponent:@"Contents.json"];
   rect.origin.x = 0.0;
   v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v7 options:0 error:&rect];
   v9 = *&rect.origin.x;
@@ -76,7 +76,7 @@ LABEL_9:
   v25 = v12;
   if (!v13)
   {
-    if (a5)
+    if (error)
     {
       v34 = MEMORY[0x1E696ABC0];
       v227 = *MEMORY[0x1E696A278];
@@ -84,7 +84,7 @@ LABEL_9:
       v228 = v26;
       v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v228 forKeys:&v227 count:1];
       [v34 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v28];
-      *a5 = v35 = 0;
+      *error = v35 = 0;
       goto LABEL_181;
     }
 
@@ -98,7 +98,7 @@ LABEL_9:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a5)
+      if (error)
       {
         v38 = MEMORY[0x1E696ABC0];
         v225 = *MEMORY[0x1E696A278];
@@ -115,10 +115,10 @@ LABEL_29:
     }
   }
 
-  v27 = [v26 unsignedIntegerValue];
-  if (v27 >= 0xC)
+  unsignedIntegerValue = [v26 unsignedIntegerValue];
+  if (unsignedIntegerValue >= 0xC)
   {
-    if (a5)
+    if (error)
     {
       v36 = MEMORY[0x1E696ABC0];
       v223 = *MEMORY[0x1E696A278];
@@ -128,7 +128,7 @@ LABEL_29:
       v37 = [v36 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v29];
 LABEL_28:
       v35 = 0;
-      *a5 = v37;
+      *error = v37;
       goto LABEL_180;
     }
 
@@ -139,7 +139,7 @@ LABEL_28:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
       v39 = MEMORY[0x1E696ABC0];
       v221 = *MEMORY[0x1E696A278];
@@ -147,7 +147,7 @@ LABEL_28:
       v222 = v29;
       v164 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v222 forKeys:&v221 count:1];
       [v39 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v164];
-      *a5 = v35 = 0;
+      *error = v35 = 0;
 
       goto LABEL_180;
     }
@@ -156,7 +156,7 @@ LABEL_28:
     goto LABEL_181;
   }
 
-  if (v27 < 6)
+  if (unsignedIntegerValue < 6)
   {
     v29 = [v28 objectForKeyedSubscript:@"layout"];
     objc_opt_class();
@@ -169,7 +169,7 @@ LABEL_28:
         goto LABEL_49;
       }
 
-      if (a5)
+      if (error)
       {
         v45 = MEMORY[0x1E696ABC0];
         v209 = *MEMORY[0x1E696A278];
@@ -183,7 +183,7 @@ LABEL_28:
       goto LABEL_46;
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_46;
     }
@@ -195,7 +195,7 @@ LABEL_28:
     v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v212 forKeys:&v211 count:1];
     v42 = [v43 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v41];
 LABEL_45:
-    *a5 = v42;
+    *error = v42;
 
     v35 = 0;
     goto LABEL_179;
@@ -205,7 +205,7 @@ LABEL_45:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_46;
     }
@@ -222,7 +222,7 @@ LABEL_45:
   v162 = [PFPosterOrientedLayout layoutWithDictionaryRepresentation:v29];
   if (!v162)
   {
-    if (a5)
+    if (error)
     {
       v44 = MEMORY[0x1E696ABC0];
       v217 = *MEMORY[0x1E696A278];
@@ -244,7 +244,7 @@ LABEL_46:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a5)
+      if (error)
       {
         v167 = MEMORY[0x1E696ABC0];
         v215 = *MEMORY[0x1E696A278];
@@ -265,7 +265,7 @@ LABEL_63:
     v163 = [PFPosterOrientedLayout layoutWithDictionaryRepresentation:v30];
     if (!v163)
     {
-      if (a5)
+      if (error)
       {
         v166 = MEMORY[0x1E696ABC0];
         v213 = *MEMORY[0x1E696A278];
@@ -274,7 +274,7 @@ LABEL_63:
         v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v214 forKeys:&v213 count:1];
         v33 = [v166 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v32];
 LABEL_62:
-        *a5 = v33;
+        *error = v33;
 
         goto LABEL_63;
       }
@@ -293,15 +293,15 @@ LABEL_49:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a5)
+    if (error)
     {
       v47 = MEMORY[0x1E696ABC0];
       v207 = *MEMORY[0x1E696A278];
-      v160 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid parallax flag: %@", v161];
-      v208 = v160;
+      v161 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid parallax flag: %@", v161];
+      v208 = v161;
       v157 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v208 forKeys:&v207 count:1];
       [v47 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v157];
-      *a5 = v35 = 0;
+      *error = v35 = 0;
 
       goto LABEL_176;
     }
@@ -310,29 +310,29 @@ LABEL_49:
     goto LABEL_177;
   }
 
-  v149 = [v161 BOOLValue];
+  bOOLValue = [v161 BOOLValue];
   v46 = -1.0;
-  v142 = v149 ^ 1;
-  if (v27 < 2)
+  bOOLValue6 = bOOLValue ^ 1;
+  if (unsignedIntegerValue < 2)
   {
-    v137 = 0;
-    v138 = v149 ^ 1;
+    bOOLValue3 = 0;
+    bOOLValue2 = bOOLValue ^ 1;
   }
 
   else
   {
-    v160 = [v28 objectForKeyedSubscript:@"depthEnabled"];
+    v161 = [v28 objectForKeyedSubscript:@"depthEnabled"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a5)
+      if (error)
       {
         v48 = MEMORY[0x1E696ABC0];
         v205 = *MEMORY[0x1E696A278];
-        v158 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid depth flag: %@", v160];
-        v206 = v158;
+        v160 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid depth flag: %@", v161];
+        v206 = v160;
         v49 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v206 forKeys:&v205 count:1];
-        *a5 = [v48 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v49];
+        *error = [v48 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v49];
 
         goto LABEL_154;
       }
@@ -340,25 +340,25 @@ LABEL_49:
       goto LABEL_189;
     }
 
-    v138 = [v160 BOOLValue];
+    bOOLValue2 = [v161 BOOLValue];
 
-    if (v27 == 2)
+    if (unsignedIntegerValue == 2)
     {
       goto LABEL_53;
     }
 
-    v160 = [v28 objectForKeyedSubscript:@"clockAreaLuminance"];
+    v161 = [v28 objectForKeyedSubscript:@"clockAreaLuminance"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a5)
+      if (error)
       {
         v115 = MEMORY[0x1E696ABC0];
         v203 = *MEMORY[0x1E696A278];
-        v158 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid clockLuminanceValue: %@", v160];
-        v204 = v158;
+        v160 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid clockLuminanceValue: %@", v161];
+        v204 = v160;
         v116 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v204 forKeys:&v203 count:1];
-        *a5 = [v115 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v116];
+        *error = [v115 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v116];
 
         goto LABEL_154;
       }
@@ -366,29 +366,29 @@ LABEL_49:
       goto LABEL_189;
     }
 
-    [v160 doubleValue];
+    [v161 doubleValue];
     v46 = v112;
 
-    if (v27 < 5)
+    if (unsignedIntegerValue < 5)
     {
 LABEL_53:
-      v137 = 0;
+      bOOLValue3 = 0;
     }
 
     else
     {
-      v160 = [v28 objectForKeyedSubscript:@"settlingEffectEnabled"];
+      v161 = [v28 objectForKeyedSubscript:@"settlingEffectEnabled"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a5)
+        if (error)
         {
           v130 = MEMORY[0x1E696ABC0];
           v201 = *MEMORY[0x1E696A278];
-          v158 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid settlingEffect flag: %@", v160];
-          v202 = v158;
+          v160 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid settlingEffect flag: %@", v161];
+          v202 = v160;
           v131 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v202 forKeys:&v201 count:1];
-          *a5 = [v130 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v131];
+          *error = [v130 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v131];
 
           goto LABEL_154;
         }
@@ -396,29 +396,29 @@ LABEL_53:
         goto LABEL_189;
       }
 
-      v137 = [v160 BOOLValue];
+      bOOLValue3 = [v161 BOOLValue];
     }
   }
 
-  v160 = [v28 objectForKeyedSubscript:@"spatialPhotoEnabled"];
-  if (v160)
+  v161 = [v28 objectForKeyedSubscript:@"spatialPhotoEnabled"];
+  if (v161)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v136 = [v160 BOOLValue];
+      bOOLValue4 = [v161 BOOLValue];
       goto LABEL_66;
     }
 
-    if (a5)
+    if (error)
     {
       v50 = MEMORY[0x1E696ABC0];
       v199 = *MEMORY[0x1E696A278];
-      v158 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid spatialPhotoFlag flag: %@", v160];
-      v200 = v158;
+      v160 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid spatialPhotoFlag flag: %@", v161];
+      v200 = v160;
       v147 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v200 forKeys:&v199 count:1];
       [v50 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v147];
-      *a5 = v35 = 0;
+      *error = v35 = 0;
 
       goto LABEL_175;
     }
@@ -428,27 +428,27 @@ LABEL_189:
     goto LABEL_176;
   }
 
-  v136 = 0;
+  bOOLValue4 = 0;
 LABEL_66:
-  v158 = [v28 objectForKeyedSubscript:@"userAdjustedVisibleFrame"];
-  if (v158)
+  v160 = [v28 objectForKeyedSubscript:@"userAdjustedVisibleFrame"];
+  if (v160)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v135 = [v158 BOOLValue];
+      bOOLValue5 = [v160 BOOLValue];
       goto LABEL_74;
     }
 
-    if (a5)
+    if (error)
     {
       v111 = MEMORY[0x1E696ABC0];
       v197 = *MEMORY[0x1E696A278];
-      v148 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid userAdjustedVisibleFrameFlag flag: %@", v158];
-      v198 = v148;
+      v158 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid userAdjustedVisibleFrameFlag flag: %@", v160];
+      v198 = v158;
       v140 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v198 forKeys:&v197 count:1];
       [v111 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v140];
-      *a5 = v35 = 0;
+      *error = v35 = 0;
 
       goto LABEL_174;
     }
@@ -458,22 +458,22 @@ LABEL_154:
     goto LABEL_175;
   }
 
-  v135 = 0;
+  bOOLValue5 = 0;
 LABEL_74:
-  if (v27 >= 6 && v163)
+  if (unsignedIntegerValue >= 6 && v163)
   {
-    v148 = [v28 objectForKeyedSubscript:@"depthEnabled-landscape"];
+    v158 = [v28 objectForKeyedSubscript:@"depthEnabled-landscape"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a5)
+      if (error)
       {
         v113 = MEMORY[0x1E696ABC0];
         v195 = *MEMORY[0x1E696A278];
-        v141 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid depth flag: %@", v148];
-        v196 = v141;
+        v148 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid depth flag: %@", v158];
+        v196 = v148;
         v114 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v196 forKeys:&v195 count:1];
-        *a5 = [v113 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v114];
+        *error = [v113 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v114];
 
         v35 = 0;
       }
@@ -486,10 +486,10 @@ LABEL_74:
       goto LABEL_174;
     }
 
-    v142 = [v148 BOOLValue];
+    bOOLValue6 = [v158 BOOLValue];
   }
 
-  v148 = objc_alloc_init(MEMORY[0x1E695DF70]);
+  v158 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v139 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v173 = 0u;
   v174 = 0u;
@@ -522,14 +522,14 @@ LABEL_74:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a5)
+        if (error)
         {
           v117 = MEMORY[0x1E696ABC0];
           v192 = v134;
-          v155 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid layer identifier: %@", v159];
-          v193 = v155;
+          v159 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid layer identifier: %@", v159];
+          v193 = v159;
           dicta = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v193 forKeys:&v192 count:1];
-          *a5 = [v117 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:dicta];
+          *error = [v117 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:dicta];
 
           goto LABEL_171;
         }
@@ -539,9 +539,9 @@ LABEL_172:
         goto LABEL_173;
       }
 
-      if (LayerIDMatchesOptions(v159, a4, 0))
+      if (LayerIDMatchesOptions(v159, options, 0))
       {
-        v155 = [v53 objectForKeyedSubscript:@"filename"];
+        v159 = [v53 objectForKeyedSubscript:@"filename"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -558,9 +558,9 @@ LABEL_172:
               rect.size = v54;
               if (CGRectMakeWithDictionaryRepresentation(dict, &rect))
               {
-                v156 = [v6 URLByAppendingPathComponent:v155];
-                v55 = [v156 pathExtension];
-                v56 = [v55 isEqualToString:@"HEIC"];
+                v156 = [lCopy URLByAppendingPathComponent:v159];
+                pathExtension = [v156 pathExtension];
+                v56 = [pathExtension isEqualToString:@"HEIC"];
 
                 if (v56)
                 {
@@ -575,7 +575,7 @@ LABEL_172:
                   }
 
                   v169 = v25;
-                  v60 = ReadImageFromURL(texture, v156, (a4 >> 16) & 1, &v169);
+                  v60 = ReadImageFromURL(texture, v156, (options >> 16) & 1, &v169);
                   v143 = v169;
 
                   v61 = s_log;
@@ -597,14 +597,14 @@ LABEL_172:
                     goto LABEL_116;
                   }
 
-                  if (a5)
+                  if (error)
                   {
                     v83 = MEMORY[0x1E696ABC0];
                     v182 = v134;
-                    v84 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Couldn't decode layer image: %@", v143];
-                    v183 = v84;
+                    v143 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Couldn't decode layer image: %@", v143];
+                    v183 = v143;
                     v85 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v183 forKeys:&v182 count:1];
-                    *a5 = [v83 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v85];
+                    *error = [v83 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v85];
                   }
 
                   v67 = 0;
@@ -614,8 +614,8 @@ LABEL_110:
 
                 else
                 {
-                  v68 = [v156 pathExtension];
-                  v69 = [v68 isEqualToString:@"MOV"];
+                  pathExtension2 = [v156 pathExtension];
+                  v69 = [pathExtension2 isEqualToString:@"MOV"];
 
                   if (v69)
                   {
@@ -627,9 +627,9 @@ LABEL_110:
 
                   else
                   {
-                    v73 = [v156 pathExtension];
+                    pathExtension3 = [v156 pathExtension];
                     v74 = +[PFParallaxSpatialPhotoLayer fileExtension];
-                    v75 = [v73 isEqualToString:v74];
+                    v75 = [pathExtension3 isEqualToString:v74];
 
                     if (v75)
                     {
@@ -661,9 +661,9 @@ LABEL_110:
 
                     else
                     {
-                      v87 = [v156 pathExtension];
+                      pathExtension4 = [v156 pathExtension];
                       v88 = +[PFParallaxSpatialPhotoOcclusionLayer fileExtension];
-                      v89 = [v87 isEqualToString:v88];
+                      v89 = [pathExtension4 isEqualToString:v88];
 
                       if (v89)
                       {
@@ -674,20 +674,20 @@ LABEL_110:
 
                       else
                       {
-                        v92 = [v156 pathExtension];
+                        pathExtension5 = [v156 pathExtension];
                         v93 = +[PFParallaxDataLayer fileExtension];
-                        v94 = [v92 isEqualToString:v93];
+                        v94 = [pathExtension5 isEqualToString:v93];
 
                         if (!v94)
                         {
-                          if (a5)
+                          if (error)
                           {
                             v105 = MEMORY[0x1E696ABC0];
                             v177 = v134;
-                            v106 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid content file extension: %@", v155];
-                            v178 = v106;
+                            v155 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid content file extension: %@", v159];
+                            v178 = v155;
                             v107 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v178 forKeys:&v177 count:1];
-                            *a5 = [v105 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v107];
+                            *error = [v105 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v107];
                           }
 
                           v67 = 0;
@@ -706,43 +706,43 @@ LABEL_110:
 
                   v143 = v25;
 LABEL_116:
-                  if (v27 < 6)
+                  if (unsignedIntegerValue < 6)
                   {
-                    [v148 addObject:v67];
+                    [v158 addObject:v67];
                   }
 
                   else
                   {
-                    v98 = [v156 lastPathComponent];
-                    v99 = [v98 hasPrefix:@"landscape-"];
+                    lastPathComponent = [v156 lastPathComponent];
+                    v99 = [lastPathComponent hasPrefix:@"landscape-"];
 
                     if (v99)
                     {
                       goto LABEL_137;
                     }
 
-                    v100 = [v156 lastPathComponent];
-                    v101 = [v100 hasPrefix:@"portrait-"];
+                    lastPathComponent2 = [v156 lastPathComponent];
+                    v101 = [lastPathComponent2 hasPrefix:@"portrait-"];
 
                     if (!v101)
                     {
-                      if (a5)
+                      if (error)
                       {
                         v102 = MEMORY[0x1E696ABC0];
                         v175 = v134;
-                        v103 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid content file prefix: %@", v155];
-                        v176 = v103;
+                        v1552 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid content file prefix: %@", v159];
+                        v176 = v1552;
                         v104 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v176 forKeys:&v175 count:1];
-                        *a5 = [v102 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v104];
+                        *error = [v102 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v104];
                       }
 
                       goto LABEL_110;
                     }
 
-                    [v148 addObject:v67];
-                    if (v27 != 6)
+                    [v158 addObject:v67];
+                    if (unsignedIntegerValue != 6)
                     {
-                      if ([(PFParallaxLayer *)v67 isBackfill]|| v27 >= 8 && ([(PFParallaxLayer *)v67 isSettlingEffect]|| ([(PFParallaxLayer *)v67 identifier], v108 = objc_claimAutoreleasedReturnValue(), v109 = PFParallaxLayerIDIsAnySpatialPhoto(v108), v108, v109)))
+                      if ([(PFParallaxLayer *)v67 isBackfill]|| unsignedIntegerValue >= 8 && ([(PFParallaxLayer *)v67 isSettlingEffect]|| ([(PFParallaxLayer *)v67 identifier], v108 = objc_claimAutoreleasedReturnValue(), v109 = PFParallaxLayerIDIsAnySpatialPhoto(v108), v108, v109)))
                       {
 LABEL_137:
                         [v139 addObject:v67];
@@ -766,47 +766,47 @@ LABEL_121:
                 goto LABEL_123;
               }
 
-              if (a5)
+              if (error)
               {
                 v126 = MEMORY[0x1E696ABC0];
                 v184 = v134;
-                v127 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid layer frame: %@", dict];
-                v185 = v127;
+                dict = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid layer frame: %@", dict];
+                v185 = dict;
                 v128 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v185 forKeys:&v184 count:1];
-                *a5 = [v126 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v128];
+                *error = [v126 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v128];
               }
             }
 
-            else if (a5)
+            else if (error)
             {
               v123 = MEMORY[0x1E696ABC0];
               v186 = v134;
-              v124 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid zPosition value: %@", v150];
-              v187 = v124;
+              v150 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid zPosition value: %@", v150];
+              v187 = v150;
               v125 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v187 forKeys:&v186 count:1];
-              *a5 = [v123 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v125];
+              *error = [v123 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v125];
             }
           }
 
-          else if (a5)
+          else if (error)
           {
             v120 = MEMORY[0x1E696ABC0];
             v188 = v134;
-            v121 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid frame info: %@", dict];
-            v189 = v121;
+            dict2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid frame info: %@", dict];
+            v189 = dict2;
             v122 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v189 forKeys:&v188 count:1];
-            *a5 = [v120 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v122];
+            *error = [v120 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v122];
           }
         }
 
-        else if (a5)
+        else if (error)
         {
           v118 = MEMORY[0x1E696ABC0];
           v190 = v134;
-          dictb = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid filename: %@", v155];
+          dictb = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid filename: %@", v159];
           v191 = dictb;
           v119 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v191 forKeys:&v190 count:1];
-          *a5 = [v118 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v119];
+          *error = [v118 errorWithDomain:@"com.apple.PhotosFormats" code:7 userInfo:v119];
         }
 
 LABEL_171:
@@ -827,18 +827,18 @@ LABEL_123:
   while (v110);
 LABEL_139:
 
-  LOBYTE(v132) = v135;
-  obj = [[PFParallaxLayerStack alloc] initWithLayers:v148 layout:v162 depthEnabled:v138 parallaxDisabled:v149 clockAreaLuminance:v137 settlingEffectEnabled:v136 spatialPhotoEnabled:v46 userAdjustedVisibleFrame:v132];
-  if (v27 != 9)
+  LOBYTE(v132) = bOOLValue5;
+  obj = [[PFParallaxLayerStack alloc] initWithLayers:v158 layout:v162 depthEnabled:bOOLValue2 parallaxDisabled:bOOLValue clockAreaLuminance:bOOLValue3 settlingEffectEnabled:bOOLValue4 spatialPhotoEnabled:v46 userAdjustedVisibleFrame:v132];
+  if (unsignedIntegerValue != 9)
   {
     [(PFParallaxLayerStack *)obj markMayContainBakedHeadroom];
   }
 
   if (v163)
   {
-    LOBYTE(v133) = v135;
-    v159 = [[PFParallaxLayerStack alloc] initWithLayers:v139 layout:v163 depthEnabled:v142 parallaxDisabled:v149 clockAreaLuminance:v137 settlingEffectEnabled:v136 spatialPhotoEnabled:v46 userAdjustedVisibleFrame:v133];
-    if (v27 != 9)
+    LOBYTE(v133) = bOOLValue5;
+    v159 = [[PFParallaxLayerStack alloc] initWithLayers:v139 layout:v163 depthEnabled:bOOLValue6 parallaxDisabled:bOOLValue clockAreaLuminance:bOOLValue3 settlingEffectEnabled:bOOLValue4 spatialPhotoEnabled:v46 userAdjustedVisibleFrame:v133];
+    if (unsignedIntegerValue != 9)
     {
       [(PFParallaxLayerStack *)v159 markMayContainBakedHeadroom];
     }
@@ -871,47 +871,47 @@ LABEL_183:
   return v35;
 }
 
-+ (BOOL)saveCompoundLayerStack:(id)a3 toURL:(id)a4 options:(unint64_t)a5 error:(id *)a6
++ (BOOL)saveCompoundLayerStack:(id)stack toURL:(id)l options:(unint64_t)options error:(id *)error
 {
   v130[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v84 = v8;
-  if (!v8)
+  stackCopy = stack;
+  lCopy = l;
+  v84 = stackCopy;
+  if (!stackCopy)
   {
     _PFAssertFailHandler();
 LABEL_59:
     _PFAssertFailHandler();
   }
 
-  if (!v9)
+  if (!lCopy)
   {
     goto LABEL_59;
   }
 
-  v88 = v9;
-  v83 = [MEMORY[0x1E696AC08] defaultManager];
+  v88 = lCopy;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v110 = 0;
-  v10 = [v83 createDirectoryAtURL:v88 withIntermediateDirectories:0 attributes:0 error:&v110];
+  v10 = [defaultManager createDirectoryAtURL:v88 withIntermediateDirectories:0 attributes:0 error:&v110];
   v11 = v110;
   if (v10)
   {
-    v12 = [v84 portraitLayerStack];
-    v13 = [v12 layers];
+    portraitLayerStack = [v84 portraitLayerStack];
+    layers = [portraitLayerStack layers];
     v105 = MEMORY[0x1E69E9820];
     v106 = 3221225472;
     v107 = __75__PFParallaxLayerStackArchiver_saveCompoundLayerStack_toURL_options_error___block_invoke;
     v108 = &__block_descriptor_40_e25_B16__0__PFParallaxLayer_8l;
-    v109 = a5;
+    optionsCopy = options;
     v14 = PFFilter();
 
-    v15 = [v84 landscapeLayerStack];
-    v16 = [v15 layers];
+    landscapeLayerStack = [v84 landscapeLayerStack];
+    layers2 = [landscapeLayerStack layers];
     v100 = MEMORY[0x1E69E9820];
     v101 = 3221225472;
     v102 = __75__PFParallaxLayerStackArchiver_saveCompoundLayerStack_toURL_options_error___block_invoke_2;
     v103 = &__block_descriptor_40_e25_B16__0__PFParallaxLayer_8l;
-    v104 = a5;
+    optionsCopy2 = options;
     v82 = PFFilter();
 
     v85 = [v14 arrayByAddingObjectsFromArray:v82];
@@ -945,14 +945,14 @@ LABEL_59:
 
           if ((v22 & 1) == 0)
           {
-            if (a6)
+            if (error)
             {
               v61 = MEMORY[0x1E696ABC0];
               v126 = *MEMORY[0x1E696A278];
               v79 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to write layer contents: %@", v11];
               v127 = v79;
               v62 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v127 forKeys:&v126 count:1];
-              *a6 = [v61 errorWithDomain:@"com.apple.PhotosFormats" code:8 userInfo:v62];
+              *error = [v61 errorWithDomain:@"com.apple.PhotosFormats" code:8 userInfo:v62];
 
               v59 = 0;
               v86 = obj;
@@ -1013,14 +1013,14 @@ LABEL_59:
 
           if ((v29 & 1) == 0)
           {
-            if (a6)
+            if (error)
             {
               v63 = MEMORY[0x1E696ABC0];
               v123 = *MEMORY[0x1E696A278];
               v80 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to write layer contents: %@", v11];
               v124 = v80;
               v64 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v124 forKeys:&v123 count:1];
-              *a6 = [v63 errorWithDomain:@"com.apple.PhotosFormats" code:8 userInfo:v64];
+              *error = [v63 errorWithDomain:@"com.apple.PhotosFormats" code:8 userInfo:v64];
 
               v59 = 0;
             }
@@ -1070,8 +1070,8 @@ LABEL_59:
         v35 = [v34 numberWithDouble:?];
         v122[2] = v35;
         v121[3] = @"identifier";
-        v36 = [v31 identifier];
-        v122[3] = v36;
+        identifier = [v31 identifier];
+        v122[3] = identifier;
         v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v122 forKeys:v121 count:4];
         [v86 addObject:v37];
 
@@ -1081,19 +1081,19 @@ LABEL_59:
       while (v30 < [v85 count]);
     }
 
-    v38 = [v84 portraitLayerStack];
-    v23 = v38;
-    if (v38)
+    portraitLayerStack2 = [v84 portraitLayerStack];
+    v23 = portraitLayerStack2;
+    if (portraitLayerStack2)
     {
-      v39 = [v38 layout];
-      v40 = v39 == 0;
+      layout = [portraitLayerStack2 layout];
+      v40 = layout == 0;
 
       if (!v40)
       {
         v24 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:7];
-        v41 = [v23 layout];
-        v42 = [v41 dictionaryRepresentation];
-        [v24 setObject:v42 forKeyedSubscript:@"portraitLayout"];
+        layout2 = [v23 layout];
+        dictionaryRepresentation = [layout2 dictionaryRepresentation];
+        [v24 setObject:dictionaryRepresentation forKeyedSubscript:@"portraitLayout"];
 
         v43 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v23, "depthEnabled")}];
         [v24 setObject:v43 forKeyedSubscript:@"depthEnabled"];
@@ -1115,19 +1115,19 @@ LABEL_59:
         v49 = [v48 numberWithDouble:?];
         [v24 setObject:v49 forKeyedSubscript:@"clockAreaLuminance"];
 
-        v50 = [v84 landscapeLayerStack];
-        LOBYTE(v49) = v50 == 0;
+        landscapeLayerStack2 = [v84 landscapeLayerStack];
+        LOBYTE(v49) = landscapeLayerStack2 == 0;
 
         if ((v49 & 1) == 0)
         {
-          v51 = [v84 landscapeLayerStack];
-          v52 = [v51 layout];
-          v53 = [v52 dictionaryRepresentation];
-          [v24 setObject:v53 forKeyedSubscript:@"landscapeLayout"];
+          landscapeLayerStack3 = [v84 landscapeLayerStack];
+          layout3 = [landscapeLayerStack3 layout];
+          dictionaryRepresentation2 = [layout3 dictionaryRepresentation];
+          [v24 setObject:dictionaryRepresentation2 forKeyedSubscript:@"landscapeLayout"];
 
           v54 = MEMORY[0x1E696AD98];
-          v55 = [v84 landscapeLayerStack];
-          v56 = [v54 numberWithBool:{objc_msgSend(v55, "depthEnabled")}];
+          landscapeLayerStack4 = [v84 landscapeLayerStack];
+          v56 = [v54 numberWithBool:{objc_msgSend(landscapeLayerStack4, "depthEnabled")}];
           [v24 setObject:v56 forKeyedSubscript:@"depthEnabled-landscape"];
         }
 
@@ -1157,29 +1157,29 @@ LABEL_54:
             goto LABEL_55;
           }
 
-          if (a6)
+          if (error)
           {
             v71 = MEMORY[0x1E696ABC0];
             v111 = *MEMORY[0x1E696A278];
             v72 = MEMORY[0x1E696AEC0];
-            v73 = [v77 path];
-            v74 = [v72 stringWithFormat:@"Failed to write layer stack contents to file: %@", v73];
+            path = [v77 path];
+            v74 = [v72 stringWithFormat:@"Failed to write layer stack contents to file: %@", path];
             v112 = v74;
             v75 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v112 forKeys:&v111 count:1];
-            *a6 = [v71 errorWithDomain:@"com.apple.PhotosFormats" code:8 userInfo:v75];
+            *error = [v71 errorWithDomain:@"com.apple.PhotosFormats" code:8 userInfo:v75];
           }
         }
 
         else
         {
-          if (a6)
+          if (error)
           {
             v68 = MEMORY[0x1E696ABC0];
             v113 = *MEMORY[0x1E696A278];
             v69 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to serialize layer stack contents: %@", v58];
             v114 = v69;
             v70 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v114 forKeys:&v113 count:1];
-            *a6 = [v68 errorWithDomain:@"com.apple.PhotosFormats" code:8 userInfo:v70];
+            *error = [v68 errorWithDomain:@"com.apple.PhotosFormats" code:8 userInfo:v70];
           }
 
           v57 = 0;
@@ -1189,7 +1189,7 @@ LABEL_54:
         goto LABEL_52;
       }
 
-      if (a6)
+      if (error)
       {
         v67 = MEMORY[0x1E696ABC0];
         v117 = *MEMORY[0x1E696A278];
@@ -1203,7 +1203,7 @@ LABEL_54:
 
     else
     {
-      if (a6)
+      if (error)
       {
         v65 = MEMORY[0x1E696ABC0];
         v119 = *MEMORY[0x1E696A278];
@@ -1214,7 +1214,7 @@ LABEL_54:
         v23 = 0;
 LABEL_43:
         v59 = 0;
-        *a6 = v66;
+        *error = v66;
         goto LABEL_53;
       }
 
@@ -1227,7 +1227,7 @@ LABEL_55:
     goto LABEL_56;
   }
 
-  if (a6)
+  if (error)
   {
     v60 = MEMORY[0x1E696ABC0];
     v129 = *MEMORY[0x1E696A278];
@@ -1235,7 +1235,7 @@ LABEL_55:
     v130[0] = obj;
     v82 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v130 forKeys:&v129 count:1];
     [v60 errorWithDomain:@"com.apple.PhotosFormats" code:8 userInfo:v82];
-    *a6 = v59 = 0;
+    *error = v59 = 0;
 LABEL_56:
 
     goto LABEL_57;
@@ -1270,7 +1270,7 @@ uint64_t __75__PFParallaxLayerStackArchiver_saveCompoundLayerStack_toURL_options
   block[1] = 3221225472;
   block[2] = __42__PFParallaxLayerStackArchiver_initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initialize_onceToken[0] != -1)
   {
     dispatch_once(initialize_onceToken, block);

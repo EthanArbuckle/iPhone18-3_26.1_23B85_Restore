@@ -1,19 +1,19 @@
 @interface UIDebuggingInformationOverlayWindowPickerViewController
-- (UIDebuggingInformationOverlayWindowPickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (UIDebuggingInformationOverlayWindowPickerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)loadData;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation UIDebuggingInformationOverlayWindowPickerViewController
 
-- (UIDebuggingInformationOverlayWindowPickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (UIDebuggingInformationOverlayWindowPickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = UIDebuggingInformationOverlayWindowPickerViewController;
-  v4 = [(UIViewController *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(UIViewController *)&v10 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -36,79 +36,79 @@
   v12.super_class = UIDebuggingInformationOverlayWindowPickerViewController;
   [(UIViewController *)&v12 viewDidLoad];
   v3 = +[UIColor whiteColor];
-  v4 = [(UIViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(UIViewController *)self view];
+  [view setBackgroundColor:v3];
 
-  v5 = [(UIViewController *)self view];
-  [v5 setAutoresizingMask:18];
+  view2 = [(UIViewController *)self view];
+  [view2 setAutoresizingMask:18];
 
-  v6 = [(UIDebuggingInformationOverlayWindowPickerViewController *)self tableView];
-  [v6 setAutoresizingMask:18];
+  tableView = [(UIDebuggingInformationOverlayWindowPickerViewController *)self tableView];
+  [tableView setAutoresizingMask:18];
 
-  v7 = [(UIDebuggingInformationOverlayWindowPickerViewController *)self tableView];
-  v8 = [(UIViewController *)self view];
-  [v8 bounds];
-  [v7 setFrame:?];
+  tableView2 = [(UIDebuggingInformationOverlayWindowPickerViewController *)self tableView];
+  view3 = [(UIViewController *)self view];
+  [view3 bounds];
+  [tableView2 setFrame:?];
 
-  v9 = [(UIViewController *)self view];
-  v10 = [(UIDebuggingInformationOverlayWindowPickerViewController *)self tableView];
-  [v9 addSubview:v10];
+  view4 = [(UIViewController *)self view];
+  tableView3 = [(UIDebuggingInformationOverlayWindowPickerViewController *)self tableView];
+  [view4 addSubview:tableView3];
 
   [(UIDebuggingInformationOverlayWindowPickerViewController *)self loadData];
-  v11 = [(UIDebuggingInformationOverlayWindowPickerViewController *)self tableView];
-  [v11 reloadData];
+  tableView4 = [(UIDebuggingInformationOverlayWindowPickerViewController *)self tableView];
+  [tableView4 reloadData];
 }
 
 - (void)loadData
 {
-  v3 = [(UIViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 screen];
-  v6 = [UIWindow allWindowsIncludingInternalWindows:1 onlyVisibleWindows:0 forScreen:v5];
+  view = [(UIViewController *)self view];
+  window = [view window];
+  screen = [window screen];
+  v6 = [UIWindow allWindowsIncludingInternalWindows:1 onlyVisibleWindows:0 forScreen:screen];
 
   [(UIDebuggingInformationOverlayWindowPickerViewController *)self setWindows:v6];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a4;
+  pathCopy = path;
   v5 = +[UIDebuggingInformationOverlay overlay];
-  v6 = [v5 inspectedWindow];
-  v7 = [(UIDebuggingInformationOverlayWindowPickerViewController *)self windows];
-  v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v13, "row")}];
+  inspectedWindow = [v5 inspectedWindow];
+  windows = [(UIDebuggingInformationOverlayWindowPickerViewController *)self windows];
+  v8 = [windows objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
-  if (v6 != v8)
+  if (inspectedWindow != v8)
   {
-    v9 = [(UIDebuggingInformationOverlayWindowPickerViewController *)self windows];
-    v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v13, "row")}];
+    windows2 = [(UIDebuggingInformationOverlayWindowPickerViewController *)self windows];
+    v10 = [windows2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
     v11 = +[UIDebuggingInformationOverlay overlay];
     [v11 setInspectedWindow:v10];
 
-    v12 = [(UIDebuggingInformationOverlayWindowPickerViewController *)self tableView];
-    [v12 reloadData];
+    tableView = [(UIDebuggingInformationOverlayWindowPickerViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(UIDebuggingInformationOverlayWindowPickerViewController *)self windows];
-  v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v5, "row")}];
+  pathCopy = path;
+  windows = [(UIDebuggingInformationOverlayWindowPickerViewController *)self windows];
+  v7 = [windows objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
 
   v10 = [[UITableViewCell alloc] initWithStyle:1 reuseIdentifier:@"kCellReuseIdentifierWindows"];
-  v11 = [(UITableViewCell *)v10 textLabel];
-  [v11 setText:v9];
+  textLabel = [(UITableViewCell *)v10 textLabel];
+  [textLabel setText:v9];
 
-  v12 = [(UIDebuggingInformationOverlayWindowPickerViewController *)self windows];
-  v13 = [v5 row];
+  windows2 = [(UIDebuggingInformationOverlayWindowPickerViewController *)self windows];
+  v13 = [pathCopy row];
 
-  v14 = [v12 objectAtIndexedSubscript:v13];
+  v14 = [windows2 objectAtIndexedSubscript:v13];
   v15 = +[UIDebuggingInformationOverlay overlay];
-  v16 = [v15 inspectedWindow];
+  inspectedWindow = [v15 inspectedWindow];
 
-  if (v14 == v16)
+  if (v14 == inspectedWindow)
   {
     v17 = 3;
   }
@@ -118,7 +118,7 @@
     v17 = 0;
   }
 
-  if (v14 == v16)
+  if (v14 == inspectedWindow)
   {
     v18 = 0;
   }
@@ -134,9 +134,9 @@
   return v10;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(UIDebuggingInformationOverlayWindowPickerViewController *)self windows:a3];
+  v4 = [(UIDebuggingInformationOverlayWindowPickerViewController *)self windows:view];
   v5 = [v4 count];
 
   return v5;

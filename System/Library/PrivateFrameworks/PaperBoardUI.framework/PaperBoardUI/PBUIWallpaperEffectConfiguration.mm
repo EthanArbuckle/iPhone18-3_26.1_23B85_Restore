@@ -2,19 +2,19 @@
 + (id)normal;
 - (BOOL)affectedByContentColorChanges;
 - (BOOL)affectedByUserInterfaceStyleChanges;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)requiresMaterialKitRendering;
 - (double)backdropParameters;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)initWithStyle:(void *)a3 contentColor:(uint64_t)a4 userInterfaceStyle:;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)initWithStyle:(void *)style contentColor:(uint64_t)color userInterfaceStyle:;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (uint64_t)includeTint;
 - (unint64_t)hash;
 - (void)configurationByRemovingTint;
-- (void)configurationWithUserInterfaceStyle:(void *)a1;
+- (void)configurationWithUserInterfaceStyle:(void *)style;
 - (void)uniqueIdentifier;
 @end
 
@@ -22,15 +22,15 @@
 
 - (void)uniqueIdentifier
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if (*(a1 + 11))
+    if (*(self + 11))
     {
       v2 = MEMORY[0x277CCACA8];
-      v3 = PBUIWallpaperStyleDescription(*(a1 + 2));
+      v3 = PBUIWallpaperStyleDescription(*(self + 2));
       v4 = v3;
-      v5 = v1[3];
+      v5 = selfCopy[3];
       v6 = @"Unspecified";
       if (v5 == 2)
       {
@@ -47,17 +47,17 @@
         v7 = v6;
       }
 
-      v1 = [v2 stringWithFormat:@"%@_%@", v3, v7];
+      selfCopy = [v2 stringWithFormat:@"%@_%@", v3, v7];
     }
 
     else
     {
-      LODWORD(v8) = *(a1 + 10);
-      LODWORD(v9) = *(a1 + 12);
-      v10 = a1[7];
-      v11 = a1[8];
-      v12 = a1[9];
-      v13 = a1[10];
+      LODWORD(v8) = *(self + 10);
+      LODWORD(v9) = *(self + 12);
+      v10 = self[7];
+      v11 = self[8];
+      v12 = self[9];
+      v13 = self[10];
       if (v10 == 1.79769313e308)
       {
         v10 = 0.0;
@@ -78,7 +78,7 @@
         v13 = 0.0;
       }
 
-      if (*(a1 + 8))
+      if (*(self + 8))
       {
         v8 = v8;
       }
@@ -88,7 +88,7 @@
         v8 = 0;
       }
 
-      if (*(a1 + 8))
+      if (*(self + 8))
       {
         v9 = v9;
       }
@@ -98,11 +98,11 @@
         v9 = 0;
       }
 
-      v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d:%d:%d:%1.1f:%d:%1.1f:%1.1f", *(a1 + 4), v8, v9, *&v11, v10, *&v12, *&v13];
+      v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d:%d:%d:%1.1f:%d:%1.1f:%1.1f", *(self + 4), v8, v9, *&v11, v10, *&v12, *&v13];
       v14 = MEMORY[0x277CCACA8];
-      v15 = PBUIWallpaperStyleDescription(v1[2]);
+      v15 = PBUIWallpaperStyleDescription(selfCopy[2]);
       v16 = v15;
-      if (*(v1 + 8))
+      if (*(selfCopy + 8))
       {
         v17 = @"tinted";
       }
@@ -112,24 +112,24 @@
         v17 = @"untinted";
       }
 
-      v1 = [v14 stringWithFormat:@"%@_%@_%@", v15, v17, v4];
+      selfCopy = [v14 stringWithFormat:@"%@_%@_%@", v15, v17, v4];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 + (id)normal
 {
   objc_opt_self();
   v0 = [PBUIWallpaperEffectConfiguration alloc];
-  v1 = [MEMORY[0x277D75348] whiteColor];
-  v2 = [(PBUIWallpaperEffectConfiguration *)v0 initWithStyle:v1 contentColor:0 userInterfaceStyle:?];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v2 = [(PBUIWallpaperEffectConfiguration *)v0 initWithStyle:whiteColor contentColor:0 userInterfaceStyle:?];
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PBUIWallpaperEffectConfiguration);
   v5 = v4;
@@ -151,10 +151,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -162,7 +162,7 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = v4;
+    v6 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -205,13 +205,13 @@
 
 - (double)backdropParameters
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[3];
-    *a2 = a1[2];
+    v2 = self[3];
+    *a2 = self[2];
     a2[1] = v2;
-    v3 = a1[4];
-    v4 = a1[5];
+    v3 = self[4];
+    v4 = self[5];
     a2[2] = v3;
     a2[3] = v4;
   }
@@ -230,25 +230,25 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendInteger:self->_style];
-  v5 = [v3 appendBool:self->_includeTint];
-  v6 = [v3 appendInteger:self->_backdropParameters.renderingHint];
-  v7 = [v3 appendInteger:self->_userInterfaceStyle];
-  v8 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendInteger:self->_style];
+  v5 = [builder appendBool:self->_includeTint];
+  v6 = [builder appendInteger:self->_backdropParameters.renderingHint];
+  v7 = [builder appendInteger:self->_userInterfaceStyle];
+  v8 = [builder hash];
 
   return v8;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PBUIWallpaperEffectConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PBUIWallpaperEffectConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v5 = PBUIWallpaperStyleDescription(self->_style);
@@ -304,10 +304,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(PBUIWallpaperEffectConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PBUIWallpaperEffectConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -319,7 +319,7 @@
   v7[3] = &unk_2783622E0;
   v4 = v3;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   [v4 appendProem:self block:v7];
   v5 = v4;
 
@@ -333,42 +333,42 @@ void __62__PBUIWallpaperEffectConfiguration_succinctDescriptionBuilder__block_in
   [v1 appendString:v2 withName:0];
 }
 
-- (id)initWithStyle:(void *)a3 contentColor:(uint64_t)a4 userInterfaceStyle:
+- (id)initWithStyle:(void *)style contentColor:(uint64_t)color userInterfaceStyle:
 {
-  v7 = a3;
-  if (a1)
+  styleCopy = style;
+  if (self)
   {
-    v15.receiver = a1;
+    v15.receiver = self;
     v15.super_class = PBUIWallpaperEffectConfiguration;
     v8 = objc_msgSendSuper2(&v15, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       v8[2] = a2;
-      _WallpaperBackdropParametersForStyleAndAverageColor(a2, v7, v14);
+      _WallpaperBackdropParametersForStyleAndAverageColor(a2, styleCopy, v14);
       v10 = v14[2];
       v9 = v14[3];
       v11 = v14[1];
-      *(a1 + 2) = v14[0];
-      *(a1 + 3) = v11;
-      *(a1 + 4) = v10;
-      *(a1 + 5) = v9;
-      *(a1 + 8) = _WallpaperStyleHasTint(a2);
+      *(self + 2) = v14[0];
+      *(self + 3) = v11;
+      *(self + 4) = v10;
+      *(self + 5) = v9;
+      *(self + 8) = _WallpaperStyleHasTint(a2);
       if (_WallpaperStyleUpdatesWithUserInterfaceStyle(a2))
       {
-        v12 = a4;
+        colorCopy = color;
       }
 
       else
       {
-        v12 = 0;
+        colorCopy = 0;
       }
 
-      *(a1 + 3) = v12;
+      *(self + 3) = colorCopy;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (BOOL)affectedByContentColorChanges
@@ -401,41 +401,41 @@ void __62__PBUIWallpaperEffectConfiguration_succinctDescriptionBuilder__block_in
   return result;
 }
 
-- (void)configurationWithUserInterfaceStyle:(void *)a1
+- (void)configurationWithUserInterfaceStyle:(void *)style
 {
-  if (a1)
+  if (style)
   {
-    v4 = a1;
-    a1 = [a1 copy];
-    if (v4[3])
+    styleCopy = style;
+    style = [style copy];
+    if (styleCopy[3])
     {
-      a1[3] = a2;
+      style[3] = a2;
     }
 
     v2 = vars8;
   }
 
-  return a1;
+  return style;
 }
 
 - (void)configurationByRemovingTint
 {
-  if (a1)
+  if (self)
   {
-    v2 = _WallpaperStyleByRemovingTintFromStyle(a1[2]);
-    if (v2 == a1[2])
+    v2 = _WallpaperStyleByRemovingTintFromStyle(self[2]);
+    if (v2 == self[2])
     {
-      v3 = [a1 copy];
+      v3 = [self copy];
     }
 
     else
     {
       v5 = v2;
       v6 = [PBUIWallpaperEffectConfiguration alloc];
-      v7 = [MEMORY[0x277D75348] blackColor];
-      v3 = [(PBUIWallpaperEffectConfiguration *)v6 initWithStyle:v5 contentColor:v7 userInterfaceStyle:a1[3]];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      v3 = [(PBUIWallpaperEffectConfiguration *)v6 initWithStyle:v5 contentColor:blackColor userInterfaceStyle:self[3]];
 
-      v3[6] = a1[6];
+      v3[6] = self[6];
     }
   }
 
@@ -449,9 +449,9 @@ void __62__PBUIWallpaperEffectConfiguration_succinctDescriptionBuilder__block_in
 
 - (uint64_t)includeTint
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 8);
+    v1 = *(self + 8);
   }
 
   else

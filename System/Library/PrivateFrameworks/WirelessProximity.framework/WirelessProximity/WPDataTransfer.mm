@@ -1,25 +1,25 @@
 @interface WPDataTransfer
-- (BOOL)addNewData:(id)a3;
-- (id)initDataTransferForPeer:(id)a3;
+- (BOOL)addNewData:(id)data;
+- (id)initDataTransferForPeer:(id)peer;
 - (void)resetTransfer;
 @end
 
 @implementation WPDataTransfer
 
-- (id)initDataTransferForPeer:(id)a3
+- (id)initDataTransferForPeer:(id)peer
 {
-  v5 = a3;
+  peerCopy = peer;
   v10.receiver = self;
   v10.super_class = WPDataTransfer;
   v6 = [(WPDataTransfer *)&v10 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CBEB28] data];
+    data = [MEMORY[0x277CBEB28] data];
     currentReceivedData = v6->_currentReceivedData;
-    v6->_currentReceivedData = v7;
+    v6->_currentReceivedData = data;
 
     v6->_receivedFirstPacket = 0;
-    objc_storeStrong(&v6->_peerUUID, a3);
+    objc_storeStrong(&v6->_peerUUID, peer);
   }
 
   return v6;
@@ -27,21 +27,21 @@
 
 - (void)resetTransfer
 {
-  v3 = [MEMORY[0x277CBEB28] data];
-  [(WPDataTransfer *)self setCurrentReceivedData:v3];
+  data = [MEMORY[0x277CBEB28] data];
+  [(WPDataTransfer *)self setCurrentReceivedData:data];
 
   [(WPDataTransfer *)self setReceivedFirstPacket:0];
 }
 
-- (BOOL)addNewData:(id)a3
+- (BOOL)addNewData:(id)data
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
-    v5 = [(WPDataTransfer *)self receivedFirstPacket];
-    v6 = [v4 length];
-    if (v5)
+    receivedFirstPacket = [(WPDataTransfer *)self receivedFirstPacket];
+    v6 = [dataCopy length];
+    if (receivedFirstPacket)
     {
       if (v6 > [(WPDataTransfer *)self currentDataSize])
       {
@@ -53,7 +53,7 @@
         v7 = WiProxLog;
         if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
         {
-          [(WPDataTransfer *)v7 addNewData:v4];
+          [(WPDataTransfer *)v7 addNewData:dataCopy];
         }
 
 LABEL_18:
@@ -61,7 +61,7 @@ LABEL_18:
         goto LABEL_35;
       }
 
-      v11 = v4;
+      v11 = dataCopy;
     }
 
     else
@@ -76,16 +76,16 @@ LABEL_18:
         v10 = WiProxLog;
         if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_ERROR))
         {
-          [(WPDataTransfer *)v10 addNewData:v4];
+          [(WPDataTransfer *)v10 addNewData:dataCopy];
         }
 
         goto LABEL_18;
       }
 
       v30 = 0;
-      [v4 getBytes:&v30 length:2];
+      [dataCopy getBytes:&v30 length:2];
       [(WPDataTransfer *)self setCurrentDataSize:v30];
-      v11 = [v4 subdataWithRange:{2, objc_msgSend(v4, "length") - 2}];
+      v11 = [dataCopy subdataWithRange:{2, objc_msgSend(dataCopy, "length") - 2}];
       [(WPDataTransfer *)self currentDataSize];
       kdebug_trace();
       if (WPLogInitOnce != -1)
@@ -99,13 +99,13 @@ LABEL_18:
         v13 = v30;
         v14 = v12;
         v15 = [v11 length];
-        v16 = [(WPDataTransfer *)self peerUUID];
+        peerUUID = [(WPDataTransfer *)self peerUUID];
         *buf = 67109634;
         *v32 = v13;
         *&v32[4] = 2048;
         *&v32[6] = v15;
         *&v32[14] = 2114;
-        *&v32[16] = v16;
+        *&v32[16] = peerUUID;
         _os_log_impl(&dword_274327000, v14, OS_LOG_TYPE_INFO, "BEGIN receiving data of total length %d, first packet length %ld from peer %{public}@", buf, 0x1Cu);
       }
 
@@ -129,12 +129,12 @@ LABEL_18:
       [(WPDataTransfer *)self setReceivedFirstPacket:1];
     }
 
-    v19 = [(WPDataTransfer *)self currentReceivedData];
-    [v19 appendData:v11];
+    currentReceivedData = [(WPDataTransfer *)self currentReceivedData];
+    [currentReceivedData appendData:v11];
 
     -[WPDataTransfer setCurrentDataSize:](self, "setCurrentDataSize:", (-[WPDataTransfer currentDataSize](self, "currentDataSize") - [v11 length]));
-    v20 = [(WPDataTransfer *)self currentReceivedData];
-    [v20 length];
+    currentReceivedData2 = [(WPDataTransfer *)self currentReceivedData];
+    [currentReceivedData2 length];
     [(WPDataTransfer *)self currentDataSize];
     kdebug_trace();
 
@@ -147,23 +147,23 @@ LABEL_18:
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_INFO))
     {
       v22 = v21;
-      v23 = [(WPDataTransfer *)self currentReceivedData];
-      v24 = [v23 length];
-      v25 = [(WPDataTransfer *)self peerUUID];
-      v26 = [(WPDataTransfer *)self currentDataSize];
+      currentReceivedData3 = [(WPDataTransfer *)self currentReceivedData];
+      v24 = [currentReceivedData3 length];
+      peerUUID2 = [(WPDataTransfer *)self peerUUID];
+      currentDataSize = [(WPDataTransfer *)self currentDataSize];
       *buf = 134218498;
       *v32 = v24;
       *&v32[8] = 2114;
-      *&v32[10] = v25;
+      *&v32[10] = peerUUID2;
       *&v32[18] = 1024;
-      *&v32[20] = v26;
+      *&v32[20] = currentDataSize;
       _os_log_impl(&dword_274327000, v22, OS_LOG_TYPE_INFO, "Length of data received %ld from peer %{public}@, length of data remaining to receive: %d", buf, 0x1Cu);
     }
 
     if (![(WPDataTransfer *)self currentDataSize])
     {
-      v29 = [(WPDataTransfer *)self currentReceivedData];
-      v9 = [v29 length] != 0;
+      currentReceivedData4 = [(WPDataTransfer *)self currentReceivedData];
+      v9 = [currentReceivedData4 length] != 0;
 
       goto LABEL_36;
     }

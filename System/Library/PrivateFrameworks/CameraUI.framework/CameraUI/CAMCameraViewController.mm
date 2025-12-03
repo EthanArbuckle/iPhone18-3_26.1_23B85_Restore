@@ -11,25 +11,25 @@
 - (BOOL)stopRecording;
 - (CAMCameraCaptureDelegate)captureDelegate;
 - (CAMCameraConfigurationDelegate)configurationDelegate;
-- (CAMCameraViewController)initWithCoder:(id)a3;
-- (CAMCameraViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (CAMCameraViewController)initWithOverrides:(id)a3 initialLayoutStyle:(int64_t)a4 privateOptions:(int64_t)a5;
-- (CAMCameraViewController)initWithOverrides:(id)a3 usingEmulationMode:(int64_t)a4;
+- (CAMCameraViewController)initWithCoder:(id)coder;
+- (CAMCameraViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (CAMCameraViewController)initWithOverrides:(id)overrides initialLayoutStyle:(int64_t)style privateOptions:(int64_t)options;
+- (CAMCameraViewController)initWithOverrides:(id)overrides usingEmulationMode:(int64_t)mode;
 - (CAMCameraViewControllerCameraSessionDelegate)cameraSessionDelegate;
 - (CAMCameraViewControllerPresentationDelegate)presentationDelegate;
 - (PAImageConversionServiceClient)_imageConversionClient;
 - (PAVideoConversionServiceClient)_videoConversionClient;
-- (id)_behaviorDefinedDestinationURLForRequest:(id)a3 withLocalDestinationURL:(id)a4 linkedDestinationURL:(id)a5;
-- (id)_clientPropertiesForLivePhotoVideoURL:(id)a3 duration:(id *)a4 stillDisplayTime:(id *)a5 error:(id)a6;
-- (id)_clientPropertiesForPhotoProperties:(id)a3 withFilteredImageURL:(id)a4 conversionOutputInfo:(id)a5 error:(id)a6;
-- (id)_clientPropertiesForStillImageWithURL:(id)a3 captureMode:(int64_t)a4 captureOrientation:(int64_t)a5 previewSurface:(void *)a6 previewOrientation:(int64_t)a7 uniqueIdentifier:(id)a8 savedToPhotoLibrary:(BOOL)a9 captureResult:(id)a10;
-- (id)_clientPropertiesForVideoURL:(id)a3 renderedURL:(id)a4 duration:(id *)a5 size:(CGSize)a6 creationDate:(id)a7 captureOrientation:(int64_t)a8 previewOrientation:(int64_t)a9 adjustments:(id)a10 uniqueIdentifier:(id)a11 savedToPhotoLibrary:(BOOL)a12;
-- (id)_exportPropertiesForClientProperties:(id)a3;
-- (id)_mediaConversionOptionsForAdjustments:(id)a3 mediaType:(int64_t)a4 description:(id)a5;
-- (id)_previewImageFromVideoURL:(id)a3;
-- (id)_resultQueueSafeImageFromSurface:(void *)a3 imageOrientation:(int64_t)a4;
-- (id)_resultQueue_getOrCreateStillImageResultCoordinatorForRequest:(id)a3 captureTimeExpectedResultSpecifiers:(id)a4 isExpectingPairedVideo:(BOOL)a5 isDisablingMultipleCaptures:(BOOL)a6 isGeneratingFilteredMedia:(BOOL)a7;
-- (id)_resultQueue_getStillImageResultCoordinatorForRequest:(id)a3;
+- (id)_behaviorDefinedDestinationURLForRequest:(id)request withLocalDestinationURL:(id)l linkedDestinationURL:(id)rL;
+- (id)_clientPropertiesForLivePhotoVideoURL:(id)l duration:(id *)duration stillDisplayTime:(id *)time error:(id)error;
+- (id)_clientPropertiesForPhotoProperties:(id)properties withFilteredImageURL:(id)l conversionOutputInfo:(id)info error:(id)error;
+- (id)_clientPropertiesForStillImageWithURL:(id)l captureMode:(int64_t)mode captureOrientation:(int64_t)orientation previewSurface:(void *)surface previewOrientation:(int64_t)previewOrientation uniqueIdentifier:(id)identifier savedToPhotoLibrary:(BOOL)library captureResult:(id)self0;
+- (id)_clientPropertiesForVideoURL:(id)l renderedURL:(id)rL duration:(id *)duration size:(CGSize)size creationDate:(id)date captureOrientation:(int64_t)orientation previewOrientation:(int64_t)previewOrientation adjustments:(id)self0 uniqueIdentifier:(id)self1 savedToPhotoLibrary:(BOOL)self2;
+- (id)_exportPropertiesForClientProperties:(id)properties;
+- (id)_mediaConversionOptionsForAdjustments:(id)adjustments mediaType:(int64_t)type description:(id)description;
+- (id)_previewImageFromVideoURL:(id)l;
+- (id)_resultQueueSafeImageFromSurface:(void *)surface imageOrientation:(int64_t)orientation;
+- (id)_resultQueue_getOrCreateStillImageResultCoordinatorForRequest:(id)request captureTimeExpectedResultSpecifiers:(id)specifiers isExpectingPairedVideo:(BOOL)video isDisablingMultipleCaptures:(BOOL)captures isGeneratingFilteredMedia:(BOOL)media;
+- (id)_resultQueue_getStillImageResultCoordinatorForRequest:(id)request;
 - (id)reviewButton;
 - (int64_t)captureDevice;
 - (int64_t)captureMode;
@@ -40,58 +40,58 @@
 - (int64_t)photoModeAspectRatioCrop;
 - (int64_t)timerDuration;
 - (int64_t)torchMode;
-- (unint64_t)_capturePersistenceBehaviorForViewfinderPersistenceBehavior:(unint64_t)a3;
-- (unint64_t)_viewfinderPersistenceBehaviorForCapturePersistenceBehavior:(unint64_t)a3;
+- (unint64_t)_capturePersistenceBehaviorForViewfinderPersistenceBehavior:(unint64_t)behavior;
+- (unint64_t)_viewfinderPersistenceBehaviorForCapturePersistenceBehavior:(unint64_t)behavior;
 - (unint64_t)persistenceBehavior;
-- (void)_commonCAMCameraViewControllerInitializationWithOverrides:(id)a3 usingEmulationMode:(int64_t)a4 initialLayoutStyle:(int64_t)a5 privateOptions:(int64_t)a6;
-- (void)_handleCTMVideoLocalPersistenceResult:(id)a3 forCaptureResult:(id)a4 fromRequest:(id)a5;
-- (void)_handleCTMVideoLocalPersistenceResult:(id)a3 forCaptureResult:(id)a4 fromRequest:(id)a5 size:(CGSize)a6 videoURL:(id)a7 renderedToURL:(id)a8 renderedAdjustments:(id)a9;
-- (void)_handleLivePhotoVideoLocalPersistenceResult:(id)a3 forCaptureResult:(id)a4 fromRequest:(id)a5;
-- (void)_handlePhotoProperties:(id)a3 videoProperties:(id)a4 unfilteredPhotoProperties:(id)a5 unfilteredVideoProperties:(id)a6 assetAdjustments:(id)a7 attemptPairingVideo:(BOOL)a8 error:(id)a9;
-- (void)_handleVideoLocalPersistenceResult:(id)a3 forCaptureResult:(id)a4 fromRequest:(id)a5;
-- (void)_notifyCaptureDelegateOfCompletedCaptureOfLivePhoto:(id)a3 withProperties:(id)a4 error:(id)a5;
-- (void)_notifyCaptureDelegateOfCompletedCaptureOfPhoto:(id)a3 withProperties:(id)a4 error:(id)a5;
-- (void)_notifyCaptureDelegateOfCompletedCaptureOfVideo:(id)a3 withProperties:(id)a4 error:(id)a5;
-- (void)_renderLivePhotoWithCoordinator:(id)a3 specifiers:(unint64_t)a4 photoProperties:(id)a5 videoProperties:(id)a6 adjustments:(id)a7;
-- (void)_resultQueue_forceCompletionIfPossibleForRequest:(id)a3;
-- (void)_resultQueue_removeStillImageResultCoordinatorForIdentifier:(id)a3;
-- (void)_startShutterButtonSpinning:(id)a3;
+- (void)_commonCAMCameraViewControllerInitializationWithOverrides:(id)overrides usingEmulationMode:(int64_t)mode initialLayoutStyle:(int64_t)style privateOptions:(int64_t)options;
+- (void)_handleCTMVideoLocalPersistenceResult:(id)result forCaptureResult:(id)captureResult fromRequest:(id)request;
+- (void)_handleCTMVideoLocalPersistenceResult:(id)result forCaptureResult:(id)captureResult fromRequest:(id)request size:(CGSize)size videoURL:(id)l renderedToURL:(id)rL renderedAdjustments:(id)adjustments;
+- (void)_handleLivePhotoVideoLocalPersistenceResult:(id)result forCaptureResult:(id)captureResult fromRequest:(id)request;
+- (void)_handlePhotoProperties:(id)properties videoProperties:(id)videoProperties unfilteredPhotoProperties:(id)photoProperties unfilteredVideoProperties:(id)unfilteredVideoProperties assetAdjustments:(id)adjustments attemptPairingVideo:(BOOL)video error:(id)error;
+- (void)_handleVideoLocalPersistenceResult:(id)result forCaptureResult:(id)captureResult fromRequest:(id)request;
+- (void)_notifyCaptureDelegateOfCompletedCaptureOfLivePhoto:(id)photo withProperties:(id)properties error:(id)error;
+- (void)_notifyCaptureDelegateOfCompletedCaptureOfPhoto:(id)photo withProperties:(id)properties error:(id)error;
+- (void)_notifyCaptureDelegateOfCompletedCaptureOfVideo:(id)video withProperties:(id)properties error:(id)error;
+- (void)_renderLivePhotoWithCoordinator:(id)coordinator specifiers:(unint64_t)specifiers photoProperties:(id)properties videoProperties:(id)videoProperties adjustments:(id)adjustments;
+- (void)_resultQueue_forceCompletionIfPossibleForRequest:(id)request;
+- (void)_resultQueue_removeStillImageResultCoordinatorForIdentifier:(id)identifier;
+- (void)_startShutterButtonSpinning:(id)spinning;
 - (void)_stopShutterButtonSpinning;
-- (void)captureController:(id)a3 didGenerateStillImageCaptureResult:(id)a4 fromRequest:(id)a5;
-- (void)configureForCaptureMode:(int64_t)a3 captureDevice:(int64_t)a4;
+- (void)captureController:(id)controller didGenerateStillImageCaptureResult:(id)result fromRequest:(id)request;
+- (void)configureForCaptureMode:(int64_t)mode captureDevice:(int64_t)device;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)handleReviewButtonReleased:(id)a3;
+- (void)handleReviewButtonReleased:(id)released;
 - (void)loadView;
-- (void)persistenceController:(id)a3 didCompleteAllLocalPersistenceForRequest:(id)a4;
-- (void)persistenceController:(id)a3 didGenerateStillImageLocalPersistenceResult:(id)a4 forCaptureResult:(id)a5 fromRequest:(id)a6;
-- (void)persistenceController:(id)a3 didGenerateVideoLocalPersistenceResult:(id)a4 forCaptureResult:(id)a5 fromRequest:(id)a6;
+- (void)persistenceController:(id)controller didCompleteAllLocalPersistenceForRequest:(id)request;
+- (void)persistenceController:(id)controller didGenerateStillImageLocalPersistenceResult:(id)result forCaptureResult:(id)captureResult fromRequest:(id)request;
+- (void)persistenceController:(id)controller didGenerateVideoLocalPersistenceResult:(id)result forCaptureResult:(id)captureResult fromRequest:(id)request;
 - (void)resumeCameraSession;
-- (void)setAutomaticallyAdjustsApplicationIdleTimer:(BOOL)a3;
-- (void)setConfigurationDelegate:(id)a3;
-- (void)setDisablingAdditionalCaptures:(BOOL)a3;
-- (void)setDisablingMultipleCaptureFeatures:(BOOL)a3;
-- (void)setFlashMode:(int64_t)a3;
-- (void)setHDRMode:(int64_t)a3;
-- (void)setLivePhotoMode:(int64_t)a3;
-- (void)setMessagesTransitionState:(int64_t)a3 animated:(BOOL)a4;
-- (void)setPersistenceBehavior:(unint64_t)a3;
-- (void)setPhotoModeAspectRatioCrop:(int64_t)a3;
-- (void)setTimerDuration:(int64_t)a3;
-- (void)setTorchMode:(int64_t)a3;
-- (void)stillImagePersistenceCoordinator:(id)a3 requestsDispatchForResultSpecifiers:(unint64_t)a4 photoProperties:(id)a5 videoProperties:(id)a6 unfilteredPhotoProperties:(id)a7 unfilteredVideoProperties:(id)a8 assetAdjustments:(id)a9 error:(id)a10;
+- (void)setAutomaticallyAdjustsApplicationIdleTimer:(BOOL)timer;
+- (void)setConfigurationDelegate:(id)delegate;
+- (void)setDisablingAdditionalCaptures:(BOOL)captures;
+- (void)setDisablingMultipleCaptureFeatures:(BOOL)features;
+- (void)setFlashMode:(int64_t)mode;
+- (void)setHDRMode:(int64_t)mode;
+- (void)setLivePhotoMode:(int64_t)mode;
+- (void)setMessagesTransitionState:(int64_t)state animated:(BOOL)animated;
+- (void)setPersistenceBehavior:(unint64_t)behavior;
+- (void)setPhotoModeAspectRatioCrop:(int64_t)crop;
+- (void)setTimerDuration:(int64_t)duration;
+- (void)setTorchMode:(int64_t)mode;
+- (void)stillImagePersistenceCoordinator:(id)coordinator requestsDispatchForResultSpecifiers:(unint64_t)specifiers photoProperties:(id)properties videoProperties:(id)videoProperties unfilteredPhotoProperties:(id)photoProperties unfilteredVideoProperties:(id)unfilteredVideoProperties assetAdjustments:(id)adjustments error:(id)self0;
 - (void)suspendCameraSession;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewfinderViewControllerDidCompleteStillImageCapture:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewfinderViewControllerDidCompleteStillImageCapture:(id)capture;
 @end
 
 @implementation CAMCameraViewController
 
-- (void)_commonCAMCameraViewControllerInitializationWithOverrides:(id)a3 usingEmulationMode:(int64_t)a4 initialLayoutStyle:(int64_t)a5 privateOptions:(int64_t)a6
+- (void)_commonCAMCameraViewControllerInitializationWithOverrides:(id)overrides usingEmulationMode:(int64_t)mode initialLayoutStyle:(int64_t)style privateOptions:(int64_t)options
 {
-  v9 = a3;
+  overridesCopy = overrides;
   v58 = +[CAMCaptureCapabilities capabilities];
   if ([v58 hasSystemTelephonyOfAnyKind])
   {
@@ -103,17 +103,17 @@
     v62 = 0;
   }
 
-  v45 = a4 - 1;
+  v45 = mode - 1;
   v10 = +[CAMUserPreferences preferences];
-  [v10 readPreferencesWithOverrides:v9 emulationMode:a4 callActive:-[CAMCallStatusMonitor isCallActive](v62 shouldResetCaptureConfiguration:{"isCallActive"), 0}];
+  [v10 readPreferencesWithOverrides:overridesCopy emulationMode:mode callActive:-[CAMCallStatusMonitor isCallActive](v62 shouldResetCaptureConfiguration:{"isCallActive"), 0}];
 
-  v11 = [v10 captureConfiguration];
-  v61 = [v10 conflictingControlConfiguration];
+  captureConfiguration = [v10 captureConfiguration];
+  conflictingControlConfiguration = [v10 conflictingControlConfiguration];
   v12 = objc_alloc_init(CAMMotionController);
   v13 = 0;
-  v47 = a6;
-  v52 = a4;
-  if (!(a6 & 1 | a4))
+  optionsCopy = options;
+  modeCopy = mode;
+  if (!(options & 1 | mode))
   {
     v13 = objc_alloc_init(CAMLocationController);
   }
@@ -125,12 +125,12 @@
   v16 = [[CAMBurstController alloc] initWithProtectionController:v15 powerController:v14 remoteShutterController:0];
   v17 = [[CAMPersistenceController alloc] initWithLocationController:v13 burstController:v16 protectionController:v15 powerController:v14 irisVideoController:0];
   [(CAMBurstController *)v16 setPersistenceController:v17];
-  v56 = [CAMCaptureConfiguration captureGraphConfigurationUsingConfiguration:v11 outputToExternalStorage:0 captureOrientation:[(CAMMotionController *)v12 captureOrientation]];
+  v56 = [CAMCaptureConfiguration captureGraphConfigurationUsingConfiguration:captureConfiguration outputToExternalStorage:0 captureOrientation:[(CAMMotionController *)v12 captureOrientation]];
   v57 = v10;
   [v10 defaultZoomFactorForGraphConfiguration:v56 captureOrientation:-[CAMMotionController captureOrientation](v12 outputToExternalStorage:{"captureOrientation"), 0}];
   v54 = v15;
-  v60 = v11;
-  v19 = [[CUCaptureController alloc] initWithCaptureConfiguration:v11 zoomFactor:0 outputToExternalStorage:1 engineOptions:v13 locationController:v12 motionController:v16 burstController:v18 protectionController:v15 powerController:v14 irisVideoController:0 remoteShutterController:0];
+  v60 = captureConfiguration;
+  v19 = [[CUCaptureController alloc] initWithCaptureConfiguration:captureConfiguration zoomFactor:0 outputToExternalStorage:1 engineOptions:v13 locationController:v12 motionController:v16 burstController:v18 protectionController:v15 powerController:v14 irisVideoController:0 remoteShutterController:0];
   v20 = objc_alloc_init(CAMStorageController);
   v21 = 0;
   if (v45 >= 2)
@@ -139,7 +139,7 @@
   }
 
   v55 = v20;
-  v22 = [[CAMViewfinderViewController alloc] initWithCaptureController:v19 captureConfiguration:v60 conflictingControlConfiguration:v61 locationController:v13 motionController:v12 timelapseController:v21 keepAliveController:0 remoteShutterController:0 powerController:v14 cameraRollController:0 librarySelectionController:0 callStatusMonitor:v62 storageController:v20 usingEmulationMode:v52 initialLayoutStyle:a5 options:(v47 >> 2) & 1];
+  v22 = [[CAMViewfinderViewController alloc] initWithCaptureController:v19 captureConfiguration:v60 conflictingControlConfiguration:conflictingControlConfiguration locationController:v13 motionController:v12 timelapseController:v21 keepAliveController:0 remoteShutterController:0 powerController:v14 cameraRollController:0 librarySelectionController:0 callStatusMonitor:v62 storageController:v20 usingEmulationMode:modeCopy initialLayoutStyle:style options:(optionsCopy >> 2) & 1];
   viewfinderViewController = self->_viewfinderViewController;
   self->_viewfinderViewController = v22;
   v24 = v22;
@@ -223,68 +223,68 @@ uint64_t __138__CAMCameraViewController__commonCAMCameraViewControllerInitializa
   return MEMORY[0x1EEE66BB8](v5, v7);
 }
 
-- (CAMCameraViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CAMCameraViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v9.receiver = self;
   v9.super_class = CAMCameraViewController;
-  v4 = [(CAMCameraViewController *)&v9 initWithNibName:a3 bundle:a4];
+  v4 = [(CAMCameraViewController *)&v9 initWithNibName:name bundle:bundle];
   if (v4)
   {
-    v5 = [MEMORY[0x1E69DC938] currentDevice];
-    v6 = [v5 cam_initialLayoutStyle];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-    [(CAMCameraViewController *)v4 _commonCAMCameraViewControllerInitializationWithOverrides:0 usingEmulationMode:0 initialLayoutStyle:v6 privateOptions:0];
+    [(CAMCameraViewController *)v4 _commonCAMCameraViewControllerInitializationWithOverrides:0 usingEmulationMode:0 initialLayoutStyle:cam_initialLayoutStyle privateOptions:0];
     v7 = v4;
   }
 
   return v4;
 }
 
-- (CAMCameraViewController)initWithCoder:(id)a3
+- (CAMCameraViewController)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = CAMCameraViewController;
-  v3 = [(CAMCameraViewController *)&v8 initWithCoder:a3];
+  v3 = [(CAMCameraViewController *)&v8 initWithCoder:coder];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC938] currentDevice];
-    v5 = [v4 cam_initialLayoutStyle];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-    [(CAMCameraViewController *)v3 _commonCAMCameraViewControllerInitializationWithOverrides:0 usingEmulationMode:0 initialLayoutStyle:v5 privateOptions:0];
+    [(CAMCameraViewController *)v3 _commonCAMCameraViewControllerInitializationWithOverrides:0 usingEmulationMode:0 initialLayoutStyle:cam_initialLayoutStyle privateOptions:0];
     v6 = v3;
   }
 
   return v3;
 }
 
-- (CAMCameraViewController)initWithOverrides:(id)a3 usingEmulationMode:(int64_t)a4
+- (CAMCameraViewController)initWithOverrides:(id)overrides usingEmulationMode:(int64_t)mode
 {
-  v6 = a3;
+  overridesCopy = overrides;
   v12.receiver = self;
   v12.super_class = CAMCameraViewController;
   v7 = [(CAMCameraViewController *)&v12 initWithNibName:0 bundle:0];
   if (v7)
   {
-    v8 = [MEMORY[0x1E69DC938] currentDevice];
-    v9 = [v8 cam_initialLayoutStyle];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-    [(CAMCameraViewController *)v7 _commonCAMCameraViewControllerInitializationWithOverrides:v6 usingEmulationMode:a4 initialLayoutStyle:v9 privateOptions:0];
+    [(CAMCameraViewController *)v7 _commonCAMCameraViewControllerInitializationWithOverrides:overridesCopy usingEmulationMode:mode initialLayoutStyle:cam_initialLayoutStyle privateOptions:0];
     v10 = v7;
   }
 
   return v7;
 }
 
-- (CAMCameraViewController)initWithOverrides:(id)a3 initialLayoutStyle:(int64_t)a4 privateOptions:(int64_t)a5
+- (CAMCameraViewController)initWithOverrides:(id)overrides initialLayoutStyle:(int64_t)style privateOptions:(int64_t)options
 {
-  v8 = a3;
+  overridesCopy = overrides;
   v13.receiver = self;
   v13.super_class = CAMCameraViewController;
   v9 = [(CAMCameraViewController *)&v13 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    [(CAMCameraViewController *)v9 _commonCAMCameraViewControllerInitializationWithOverrides:v8 usingEmulationMode:0 initialLayoutStyle:a4 privateOptions:a5];
+    [(CAMCameraViewController *)v9 _commonCAMCameraViewControllerInitializationWithOverrides:overridesCopy usingEmulationMode:0 initialLayoutStyle:style privateOptions:options];
     v11 = v10;
   }
 
@@ -293,8 +293,8 @@ uint64_t __138__CAMCameraViewController__commonCAMCameraViewControllerInitializa
 
 - (void)dealloc
 {
-  v3 = [(CAMCameraViewController *)self viewfinderViewController];
-  [v3 suspendCameraSessionWithCompletion:0];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  [viewfinderViewController suspendCameraSessionWithCompletion:0];
 
   v4.receiver = self;
   v4.super_class = CAMCameraViewController;
@@ -305,11 +305,11 @@ uint64_t __138__CAMCameraViewController__commonCAMCameraViewControllerInitializa
 {
   v3 = [CAMCameraViewControllerContainerView alloc];
   v6 = [(CAMCameraViewControllerContainerView *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  v4 = [(CAMCameraViewController *)self viewfinderViewController];
-  [(CAMCameraViewController *)self addChildViewController:v4];
-  v5 = [v4 view];
-  [(CAMCameraViewControllerContainerView *)v6 setViewfinderView:v5];
-  [v4 didMoveToParentViewController:self];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  [(CAMCameraViewController *)self addChildViewController:viewfinderViewController];
+  view = [viewfinderViewController view];
+  [(CAMCameraViewControllerContainerView *)v6 setViewfinderView:view];
+  [viewfinderViewController didMoveToParentViewController:self];
   [(CAMCameraViewController *)self setView:v6];
 }
 
@@ -320,13 +320,13 @@ uint64_t __138__CAMCameraViewController__commonCAMCameraViewControllerInitializa
   [(CAMCameraViewController *)&v2 viewDidLoad];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CAMCameraViewController;
-  [(CAMCameraViewController *)&v5 viewWillAppear:a3];
-  v4 = [(CAMCameraViewController *)self navigationController];
-  [v4 setNavigationBarHidden:1];
+  [(CAMCameraViewController *)&v5 viewWillAppear:appear];
+  navigationController = [(CAMCameraViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:1];
 
   if ([(CAMCameraViewController *)self automaticallyManagesCameraSession])
   {
@@ -334,11 +334,11 @@ uint64_t __138__CAMCameraViewController__commonCAMCameraViewControllerInitializa
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CAMCameraViewController;
-  [(CAMCameraViewController *)&v4 viewDidDisappear:a3];
+  [(CAMCameraViewController *)&v4 viewDidDisappear:disappear];
   if ([(CAMCameraViewController *)self automaticallyManagesCameraSession])
   {
     [(CAMCameraViewController *)self suspendCameraSession];
@@ -354,163 +354,163 @@ uint64_t __138__CAMCameraViewController__commonCAMCameraViewControllerInitializa
 
 - (int64_t)captureMode
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  v3 = [v2 currentCaptureMode];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  currentCaptureMode = [viewfinderViewController currentCaptureMode];
 
-  return v3;
+  return currentCaptureMode;
 }
 
 - (int64_t)captureDevice
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  v3 = [v2 currentCaptureDevice];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  currentCaptureDevice = [viewfinderViewController currentCaptureDevice];
 
-  return v3;
+  return currentCaptureDevice;
 }
 
-- (void)configureForCaptureMode:(int64_t)a3 captureDevice:(int64_t)a4
+- (void)configureForCaptureMode:(int64_t)mode captureDevice:(int64_t)device
 {
-  v6 = [(CAMCameraViewController *)self viewfinderViewController];
-  [v6 changeToMode:a3 device:a4 animated:1];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  [viewfinderViewController changeToMode:mode device:device animated:1];
 }
 
 - (int64_t)flashMode
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  v3 = [v2 flashMode];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  flashMode = [viewfinderViewController flashMode];
 
-  return v3;
+  return flashMode;
 }
 
-- (void)setFlashMode:(int64_t)a3
+- (void)setFlashMode:(int64_t)mode
 {
-  v4 = [(CAMCameraViewController *)self viewfinderViewController];
-  [v4 setFlashMode:a3];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  [viewfinderViewController setFlashMode:mode];
 }
 
 - (int64_t)torchMode
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  v3 = [v2 torchMode];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  torchMode = [viewfinderViewController torchMode];
 
-  return v3;
+  return torchMode;
 }
 
-- (void)setTorchMode:(int64_t)a3
+- (void)setTorchMode:(int64_t)mode
 {
-  v4 = [(CAMCameraViewController *)self viewfinderViewController];
-  [v4 setTorchMode:a3];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  [viewfinderViewController setTorchMode:mode];
 }
 
 - (int64_t)hdrMode
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  v3 = [v2 hdrMode];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  hdrMode = [viewfinderViewController hdrMode];
 
-  return v3;
+  return hdrMode;
 }
 
-- (void)setHDRMode:(int64_t)a3
+- (void)setHDRMode:(int64_t)mode
 {
-  v4 = [(CAMCameraViewController *)self viewfinderViewController];
-  [v4 setHDRMode:a3];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  [viewfinderViewController setHDRMode:mode];
 }
 
 - (int64_t)timerDuration
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  v3 = [v2 timerDuration];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  timerDuration = [viewfinderViewController timerDuration];
 
-  return v3;
+  return timerDuration;
 }
 
-- (void)setTimerDuration:(int64_t)a3
+- (void)setTimerDuration:(int64_t)duration
 {
-  v4 = [(CAMCameraViewController *)self viewfinderViewController];
-  [v4 setTimerDuration:a3];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  [viewfinderViewController setTimerDuration:duration];
 }
 
 - (int64_t)livePhotoMode
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  v3 = [v2 livePhotoMode];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  livePhotoMode = [viewfinderViewController livePhotoMode];
 
-  return v3;
+  return livePhotoMode;
 }
 
-- (void)setLivePhotoMode:(int64_t)a3
+- (void)setLivePhotoMode:(int64_t)mode
 {
-  v4 = [(CAMCameraViewController *)self viewfinderViewController];
-  [v4 setLivePhotoMode:a3];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  [viewfinderViewController setLivePhotoMode:mode];
 }
 
 - (int64_t)photoModeAspectRatioCrop
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  v3 = [v2 photoModeAspectRatioCrop];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  photoModeAspectRatioCrop = [viewfinderViewController photoModeAspectRatioCrop];
 
-  return v3;
+  return photoModeAspectRatioCrop;
 }
 
-- (void)setPhotoModeAspectRatioCrop:(int64_t)a3
+- (void)setPhotoModeAspectRatioCrop:(int64_t)crop
 {
-  v4 = [(CAMCameraViewController *)self viewfinderViewController];
-  [v4 setPhotoModeAspectRatioCrop:a3];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  [viewfinderViewController setPhotoModeAspectRatioCrop:crop];
 }
 
 - (BOOL)isCapturingPhoto
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  v3 = [v2 isCapturingPhoto];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  isCapturingPhoto = [viewfinderViewController isCapturingPhoto];
 
-  return v3;
+  return isCapturingPhoto;
 }
 
 - (BOOL)isCapturingLivePhoto
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  v3 = [v2 isCapturingLivePhoto];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  isCapturingLivePhoto = [viewfinderViewController isCapturingLivePhoto];
 
-  return v3;
+  return isCapturingLivePhoto;
 }
 
 - (BOOL)isRecording
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  v3 = [v2 isRecording];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  isRecording = [viewfinderViewController isRecording];
 
-  return v3;
+  return isRecording;
 }
 
 - (BOOL)capturePhoto
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  v3 = [v2 capturePhoto];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  capturePhoto = [viewfinderViewController capturePhoto];
 
-  return v3;
+  return capturePhoto;
 }
 
 - (BOOL)startRecording
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  v3 = [v2 startRecording];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  startRecording = [viewfinderViewController startRecording];
 
-  return v3;
+  return startRecording;
 }
 
 - (BOOL)stopRecording
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  v3 = [v2 stopRecording];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  stopRecording = [viewfinderViewController stopRecording];
 
-  return v3;
+  return stopRecording;
 }
 
 - (void)suspendCameraSession
 {
-  v3 = [(CAMCameraViewController *)self viewfinderViewController];
-  v4 = [(CAMCameraViewController *)self cameraSessionDelegate];
-  objc_initWeak(&location, v4);
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  cameraSessionDelegate = [(CAMCameraViewController *)self cameraSessionDelegate];
+  objc_initWeak(&location, cameraSessionDelegate);
 
   v5 = objc_loadWeakRetained(&location);
   v6 = objc_opt_respondsToSelector();
@@ -532,7 +532,7 @@ uint64_t __138__CAMCameraViewController__commonCAMCameraViewControllerInitializa
     v7 = 0;
   }
 
-  [v3 suspendCameraSessionWithCompletion:v7];
+  [viewfinderViewController suspendCameraSessionWithCompletion:v7];
   objc_destroyWeak(&location);
 }
 
@@ -553,9 +553,9 @@ void __47__CAMCameraViewController_suspendCameraSession__block_invoke_2(uint64_t
 
 - (void)resumeCameraSession
 {
-  v3 = [(CAMCameraViewController *)self viewfinderViewController];
-  v4 = [(CAMCameraViewController *)self cameraSessionDelegate];
-  objc_initWeak(&location, v4);
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  cameraSessionDelegate = [(CAMCameraViewController *)self cameraSessionDelegate];
+  objc_initWeak(&location, cameraSessionDelegate);
 
   v5 = objc_loadWeakRetained(&location);
   v6 = objc_opt_respondsToSelector();
@@ -577,7 +577,7 @@ void __47__CAMCameraViewController_suspendCameraSession__block_invoke_2(uint64_t
     v7 = 0;
   }
 
-  [v3 resumeCameraSessionWithCompletion:v7];
+  [viewfinderViewController resumeCameraSessionWithCompletion:v7];
   objc_destroyWeak(&location);
 }
 
@@ -598,109 +598,109 @@ void __46__CAMCameraViewController_resumeCameraSession__block_invoke_2(uint64_t 
 
 - (int64_t)messagesTransitionState
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  v3 = [v2 messagesTransitionState];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  messagesTransitionState = [viewfinderViewController messagesTransitionState];
 
-  return v3;
+  return messagesTransitionState;
 }
 
-- (void)setMessagesTransitionState:(int64_t)a3 animated:(BOOL)a4
+- (void)setMessagesTransitionState:(int64_t)state animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(CAMCameraViewController *)self viewfinderViewController];
-  [v6 setMessagesTransitionState:a3 animated:v4];
+  animatedCopy = animated;
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  [viewfinderViewController setMessagesTransitionState:state animated:animatedCopy];
 }
 
 - (BOOL)isDisablingMultipleCaptureFeatures
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  v3 = [v2 isDisablingMultipleCaptureFeatures];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  isDisablingMultipleCaptureFeatures = [viewfinderViewController isDisablingMultipleCaptureFeatures];
 
-  return v3;
+  return isDisablingMultipleCaptureFeatures;
 }
 
-- (void)setDisablingMultipleCaptureFeatures:(BOOL)a3
+- (void)setDisablingMultipleCaptureFeatures:(BOOL)features
 {
-  v3 = a3;
-  v4 = [(CAMCameraViewController *)self viewfinderViewController];
-  [v4 setDisablingMultipleCaptureFeatures:v3];
+  featuresCopy = features;
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  [viewfinderViewController setDisablingMultipleCaptureFeatures:featuresCopy];
 }
 
 - (BOOL)isDisablingAdditionalCaptures
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  v3 = [v2 isDisablingAdditionalCaptures];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  isDisablingAdditionalCaptures = [viewfinderViewController isDisablingAdditionalCaptures];
 
-  return v3;
+  return isDisablingAdditionalCaptures;
 }
 
-- (void)setDisablingAdditionalCaptures:(BOOL)a3
+- (void)setDisablingAdditionalCaptures:(BOOL)captures
 {
-  v3 = a3;
-  v4 = [(CAMCameraViewController *)self viewfinderViewController];
-  [v4 setDisablingAdditionalCaptures:v3];
+  capturesCopy = captures;
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  [viewfinderViewController setDisablingAdditionalCaptures:capturesCopy];
 }
 
 - (BOOL)isPreventingAdditionalCaptures
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  v3 = [v2 isPreventingAdditionalCaptures];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  isPreventingAdditionalCaptures = [viewfinderViewController isPreventingAdditionalCaptures];
 
-  return v3;
+  return isPreventingAdditionalCaptures;
 }
 
 - (unint64_t)persistenceBehavior
 {
-  v3 = [(CAMCameraViewController *)self viewfinderViewController];
-  v4 = -[CAMCameraViewController _capturePersistenceBehaviorForViewfinderPersistenceBehavior:](self, "_capturePersistenceBehaviorForViewfinderPersistenceBehavior:", [v3 persistenceBehavior]);
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  v4 = -[CAMCameraViewController _capturePersistenceBehaviorForViewfinderPersistenceBehavior:](self, "_capturePersistenceBehaviorForViewfinderPersistenceBehavior:", [viewfinderViewController persistenceBehavior]);
 
   return v4;
 }
 
-- (void)setPersistenceBehavior:(unint64_t)a3
+- (void)setPersistenceBehavior:(unint64_t)behavior
 {
-  v7 = [(CAMCameraViewController *)self viewfinderViewController];
-  [v7 setPersistenceBehavior:{-[CAMCameraViewController _viewfinderPersistenceBehaviorForCapturePersistenceBehavior:](self, "_viewfinderPersistenceBehaviorForCapturePersistenceBehavior:", a3)}];
-  v5 = [(CAMCameraViewController *)self keepAliveController];
-  v6 = v5;
-  if (a3 - 1 >= 2)
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  [viewfinderViewController setPersistenceBehavior:{-[CAMCameraViewController _viewfinderPersistenceBehaviorForCapturePersistenceBehavior:](self, "_viewfinderPersistenceBehaviorForCapturePersistenceBehavior:", behavior)}];
+  keepAliveController = [(CAMCameraViewController *)self keepAliveController];
+  v6 = keepAliveController;
+  if (behavior - 1 >= 2)
   {
-    if (!a3)
+    if (!behavior)
     {
-      [v5 startKeepAliveSession];
+      [keepAliveController startKeepAliveSession];
     }
   }
 
   else
   {
-    [v5 stopKeepAliveSession];
+    [keepAliveController stopKeepAliveSession];
   }
 }
 
 - (BOOL)automaticallyAdjustsApplicationIdleTimer
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  v3 = [v2 automaticallyAdjustsApplicationIdleTimer];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  automaticallyAdjustsApplicationIdleTimer = [viewfinderViewController automaticallyAdjustsApplicationIdleTimer];
 
-  return v3;
+  return automaticallyAdjustsApplicationIdleTimer;
 }
 
-- (void)setAutomaticallyAdjustsApplicationIdleTimer:(BOOL)a3
+- (void)setAutomaticallyAdjustsApplicationIdleTimer:(BOOL)timer
 {
-  v3 = a3;
-  v4 = [(CAMCameraViewController *)self viewfinderViewController];
-  [v4 setAutomaticallyAdjustsApplicationIdleTimer:v3];
+  timerCopy = timer;
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  [viewfinderViewController setAutomaticallyAdjustsApplicationIdleTimer:timerCopy];
 }
 
-- (unint64_t)_viewfinderPersistenceBehaviorForCapturePersistenceBehavior:(unint64_t)a3
+- (unint64_t)_viewfinderPersistenceBehaviorForCapturePersistenceBehavior:(unint64_t)behavior
 {
   v3 = 1;
-  if (a3 == 1)
+  if (behavior == 1)
   {
     v3 = 2;
   }
 
-  if (a3 == 2)
+  if (behavior == 2)
   {
     return 3;
   }
@@ -711,41 +711,41 @@ void __46__CAMCameraViewController_resumeCameraSession__block_invoke_2(uint64_t 
   }
 }
 
-- (unint64_t)_capturePersistenceBehaviorForViewfinderPersistenceBehavior:(unint64_t)a3
+- (unint64_t)_capturePersistenceBehaviorForViewfinderPersistenceBehavior:(unint64_t)behavior
 {
-  if (a3 == 3)
+  if (behavior == 3)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 2;
+    return behavior == 2;
   }
 }
 
 - (CAMCameraConfigurationDelegate)configurationDelegate
 {
-  v2 = [(CAMCameraViewController *)self viewfinderViewController];
-  v3 = [v2 configurationDelegate];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  configurationDelegate = [viewfinderViewController configurationDelegate];
 
-  return v3;
+  return configurationDelegate;
 }
 
-- (void)setConfigurationDelegate:(id)a3
+- (void)setConfigurationDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CAMCameraViewController *)self viewfinderViewController];
-  [v5 setConfigurationDelegate:v4];
+  delegateCopy = delegate;
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  [viewfinderViewController setConfigurationDelegate:delegateCopy];
 }
 
-- (id)_resultQueueSafeImageFromSurface:(void *)a3 imageOrientation:(int64_t)a4
+- (id)_resultQueueSafeImageFromSurface:(void *)surface imageOrientation:(int64_t)orientation
 {
-  if (a3)
+  if (surface)
   {
-    v6 = [(CAMCameraViewController *)self _resultQueueThumbnailGenerator];
-    v7 = [v6 newBGRAImageInOrientation:0 usingSurface:a3];
-    v8 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v7 scale:a4 orientation:1.0];
+    _resultQueueThumbnailGenerator = [(CAMCameraViewController *)self _resultQueueThumbnailGenerator];
+    v7 = [_resultQueueThumbnailGenerator newBGRAImageInOrientation:0 usingSurface:surface];
+    v8 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v7 scale:orientation orientation:1.0];
     CGImageRelease(v7);
   }
 
@@ -757,11 +757,11 @@ void __46__CAMCameraViewController_resumeCameraSession__block_invoke_2(uint64_t 
   return v8;
 }
 
-- (id)_previewImageFromVideoURL:(id)a3
+- (id)_previewImageFromVideoURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v3 = [a3 path];
+    path = [l path];
     PLPreviewImageAndDurationForVideoAtPath();
     v4 = 0;
   }
@@ -774,40 +774,40 @@ void __46__CAMCameraViewController_resumeCameraSession__block_invoke_2(uint64_t 
   return v4;
 }
 
-- (void)_notifyCaptureDelegateOfCompletedCaptureOfPhoto:(id)a3 withProperties:(id)a4 error:(id)a5
+- (void)_notifyCaptureDelegateOfCompletedCaptureOfPhoto:(id)photo withProperties:(id)properties error:(id)error
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(CAMCameraViewController *)self captureDelegate];
-  if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+  photoCopy = photo;
+  propertiesCopy = properties;
+  errorCopy = error;
+  captureDelegate = [(CAMCameraViewController *)self captureDelegate];
+  if (captureDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v10 cameraViewController:self didCapturePhoto:v11 withProperties:v8 error:v9];
+    [captureDelegate cameraViewController:self didCapturePhoto:photoCopy withProperties:propertiesCopy error:errorCopy];
   }
 
   [(CAMCameraViewController *)self _stopShutterButtonSpinning];
 }
 
-- (void)_notifyCaptureDelegateOfCompletedCaptureOfLivePhoto:(id)a3 withProperties:(id)a4 error:(id)a5
+- (void)_notifyCaptureDelegateOfCompletedCaptureOfLivePhoto:(id)photo withProperties:(id)properties error:(id)error
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(CAMCameraViewController *)self captureDelegate];
-  if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+  photoCopy = photo;
+  propertiesCopy = properties;
+  errorCopy = error;
+  captureDelegate = [(CAMCameraViewController *)self captureDelegate];
+  if (captureDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v10 cameraViewController:self didCaptureLivePhoto:v11 withProperties:v8 error:v9];
+    [captureDelegate cameraViewController:self didCaptureLivePhoto:photoCopy withProperties:propertiesCopy error:errorCopy];
   }
 
   [(CAMCameraViewController *)self _stopShutterButtonSpinning];
 }
 
-- (void)_notifyCaptureDelegateOfCompletedCaptureOfVideo:(id)a3 withProperties:(id)a4 error:(id)a5
+- (void)_notifyCaptureDelegateOfCompletedCaptureOfVideo:(id)video withProperties:(id)properties error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 objectForKeyedSubscript:@"CAMCameraViewControllerAdjustments"];
+  videoCopy = video;
+  propertiesCopy = properties;
+  errorCopy = error;
+  v11 = [propertiesCopy objectForKeyedSubscript:@"CAMCameraViewControllerAdjustments"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -821,14 +821,14 @@ void __46__CAMCameraViewController_resumeCameraSession__block_invoke_2(uint64_t 
 
   v13 = v12;
   objc_initWeak(&location, self);
-  v14 = [objc_alloc(MEMORY[0x1E69C08F8]) initWithVideoAsset:v8 videoAdjustments:v13];
+  v14 = [objc_alloc(MEMORY[0x1E69C08F8]) initWithVideoAsset:videoCopy videoAdjustments:v13];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __96__CAMCameraViewController__notifyCaptureDelegateOfCompletedCaptureOfVideo_withProperties_error___block_invoke;
   v16[3] = &unk_1E76FF018;
   objc_copyWeak(&v18, &location);
   v16[4] = self;
-  v15 = v9;
+  v15 = propertiesCopy;
   v17 = v15;
   [v14 requestAVAssetWithResultHandler:v16];
 
@@ -874,59 +874,59 @@ void __96__CAMCameraViewController__notifyCaptureDelegateOfCompletedCaptureOfVid
   [v3 _stopShutterButtonSpinning];
 }
 
-- (id)_exportPropertiesForClientProperties:(id)a3
+- (id)_exportPropertiesForClientProperties:(id)properties
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"CAMCameraViewControllerOrientation"];
-  v5 = [v3 objectForKeyedSubscript:@"CAMCameraViewControllerPixelWidth"];
-  v6 = [v3 objectForKeyedSubscript:@"CAMCameraViewControllerPixelHeight"];
+  propertiesCopy = properties;
+  v4 = [propertiesCopy objectForKeyedSubscript:@"CAMCameraViewControllerOrientation"];
+  v5 = [propertiesCopy objectForKeyedSubscript:@"CAMCameraViewControllerPixelWidth"];
+  v6 = [propertiesCopy objectForKeyedSubscript:@"CAMCameraViewControllerPixelHeight"];
 
-  v7 = [v4 shortValue];
-  v8 = [v5 unsignedIntegerValue];
-  v9 = [v6 unsignedIntegerValue];
-  v10 = [MEMORY[0x1E69BE640] exportPropertiesWithImageWidth:v8 imageHeight:v9 exifOrientation:v7 duration:0.0];
+  shortValue = [v4 shortValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v6 unsignedIntegerValue];
+  v10 = [MEMORY[0x1E69BE640] exportPropertiesWithImageWidth:unsignedIntegerValue imageHeight:unsignedIntegerValue2 exifOrientation:shortValue duration:0.0];
 
   return v10;
 }
 
-- (id)_clientPropertiesForStillImageWithURL:(id)a3 captureMode:(int64_t)a4 captureOrientation:(int64_t)a5 previewSurface:(void *)a6 previewOrientation:(int64_t)a7 uniqueIdentifier:(id)a8 savedToPhotoLibrary:(BOOL)a9 captureResult:(id)a10
+- (id)_clientPropertiesForStillImageWithURL:(id)l captureMode:(int64_t)mode captureOrientation:(int64_t)orientation previewSurface:(void *)surface previewOrientation:(int64_t)previewOrientation uniqueIdentifier:(id)identifier savedToPhotoLibrary:(BOOL)library captureResult:(id)self0
 {
-  v14 = a3;
-  v15 = a8;
-  v16 = a10;
+  lCopy = l;
+  identifierCopy = identifier;
+  resultCopy = result;
   v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v18 = [v16 metadata];
-  v43 = [v16 captureDate];
-  v19 = a4;
-  v20 = v15;
-  v21 = [MEMORY[0x1E696AD98] numberWithInteger:v19];
+  metadata = [resultCopy metadata];
+  captureDate = [resultCopy captureDate];
+  modeCopy = mode;
+  v20 = identifierCopy;
+  v21 = [MEMORY[0x1E696AD98] numberWithInteger:modeCopy];
   [v17 setObject:v21 forKeyedSubscript:@"CAMCameraViewControllerCaptureMode"];
 
-  v22 = [v16 error];
-  [v17 setObject:v22 forKeyedSubscript:@"CAMCameraViewControllerCaptureError"];
+  error = [resultCopy error];
+  [v17 setObject:error forKeyedSubscript:@"CAMCameraViewControllerCaptureError"];
 
   if (v20)
   {
     [v17 setObject:v20 forKey:@"CAMCameraViewControllerUniquePersistenceIdentifier"];
   }
 
-  [v17 setObject:v14 forKeyedSubscript:@"CAMCameraViewControllerPhotoURL"];
-  [v17 setObject:v18 forKeyedSubscript:@"CAMCameraViewControllerPhotoMetadata"];
-  if (a5)
+  [v17 setObject:lCopy forKeyedSubscript:@"CAMCameraViewControllerPhotoURL"];
+  [v17 setObject:metadata forKeyedSubscript:@"CAMCameraViewControllerPhotoMetadata"];
+  if (orientation)
   {
-    v23 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+    v23 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
     [v17 setObject:v23 forKey:@"CAMCameraViewControllerCaptureOrientation"];
   }
 
-  v40 = v14;
-  v24 = [v18 objectForKey:*MEMORY[0x1E696DE78]];
-  v25 = v43;
+  v40 = lCopy;
+  v24 = [metadata objectForKey:*MEMORY[0x1E696DE78]];
+  v25 = captureDate;
   if (v24)
   {
     [v17 setObject:v24 forKey:@"CAMCameraViewControllerOrientation"];
   }
 
-  v26 = [v18 objectForKey:*MEMORY[0x1E696D9B0]];
+  v26 = [metadata objectForKey:*MEMORY[0x1E696D9B0]];
   v27 = [v26 objectForKey:*MEMORY[0x1E696DAA8]];
   v28 = [v26 objectForKey:*MEMORY[0x1E696DAB0]];
   v29 = v28;
@@ -952,7 +952,7 @@ void __96__CAMCameraViewController__notifyCaptureDelegateOfCompletedCaptureOfVid
     [v17 setObject:v27 forKey:@"CAMCameraViewControllerPixelWidth"];
     [v17 setObject:v31 forKey:@"CAMCameraViewControllerPixelHeight"];
     v29 = v31;
-    v25 = v43;
+    v25 = captureDate;
   }
 
   if (v25)
@@ -960,12 +960,12 @@ void __96__CAMCameraViewController__notifyCaptureDelegateOfCompletedCaptureOfVid
     [v17 setObject:v25 forKey:@"CAMCameraViewControllerCaptureDate"];
   }
 
-  v32 = [MEMORY[0x1E696AD98] numberWithBool:a9];
+  v32 = [MEMORY[0x1E696AD98] numberWithBool:library];
   [v17 setObject:v32 forKey:@"CAMCameraViewControllerSavedToPhotoLibrary"];
 
-  if (a6)
+  if (surface)
   {
-    v33 = [(CAMCameraViewController *)self _resultQueueSafeImageFromSurface:a6 imageOrientation:a7];
+    v33 = [(CAMCameraViewController *)self _resultQueueSafeImageFromSurface:surface imageOrientation:previewOrientation];
     if (v33)
     {
       [v17 setObject:v33 forKey:@"CAMCameraViewControllerPreviewImage"];
@@ -974,13 +974,13 @@ void __96__CAMCameraViewController__notifyCaptureDelegateOfCompletedCaptureOfVid
 
   if ([objc_opt_class() isEmulatingImagePicker])
   {
-    v34 = [v16 capturePhoto];
-    v35 = [v34 fileDataRepresentation];
-    if (v35)
+    capturePhoto = [resultCopy capturePhoto];
+    fileDataRepresentation = [capturePhoto fileDataRepresentation];
+    if (fileDataRepresentation)
     {
       v42 = v20;
-      [v17 setObject:v35 forKey:@"CAMCameraViewControllerFullsizeImageData"];
-      v36 = [MEMORY[0x1E69DCAB8] imageWithData:v35];
+      [v17 setObject:fileDataRepresentation forKey:@"CAMCameraViewControllerFullsizeImageData"];
+      v36 = [MEMORY[0x1E69DCAB8] imageWithData:fileDataRepresentation];
       if (v36)
       {
         [v17 setObject:v36 forKey:@"CAMCameraViewControllerFullsizeImage"];
@@ -995,23 +995,23 @@ void __96__CAMCameraViewController__notifyCaptureDelegateOfCompletedCaptureOfVid
   return v37;
 }
 
-- (id)_clientPropertiesForPhotoProperties:(id)a3 withFilteredImageURL:(id)a4 conversionOutputInfo:(id)a5 error:(id)a6
+- (id)_clientPropertiesForPhotoProperties:(id)properties withFilteredImageURL:(id)l conversionOutputInfo:(id)info error:(id)error
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [a3 mutableCopy];
+  errorCopy = error;
+  infoCopy = info;
+  lCopy = l;
+  v12 = [properties mutableCopy];
   v13 = getPAMediaConversionServicePixelWidthKey();
-  v14 = [v10 objectForKeyedSubscript:v13];
+  v14 = [infoCopy objectForKeyedSubscript:v13];
   [v12 setObject:v14 forKeyedSubscript:@"CAMCameraViewControllerPixelWidth"];
 
   v15 = getPAMediaConversionServicePixelHeightKey();
-  v16 = [v10 objectForKeyedSubscript:v15];
+  v16 = [infoCopy objectForKeyedSubscript:v15];
 
   [v12 setObject:v16 forKeyedSubscript:@"CAMCameraViewControllerPixelHeight"];
-  [v12 setObject:v11 forKeyedSubscript:@"CAMCameraViewControllerPhotoURL"];
+  [v12 setObject:lCopy forKeyedSubscript:@"CAMCameraViewControllerPhotoURL"];
 
-  [v12 setObject:v9 forKeyedSubscript:@"CAMCameraViewControllerCaptureError"];
+  [v12 setObject:errorCopy forKeyedSubscript:@"CAMCameraViewControllerCaptureError"];
   [v12 setObject:&unk_1F16C88E8 forKeyedSubscript:@"CAMCameraViewControllerOrientation"];
   v17 = [v12 objectForKeyedSubscript:@"CAMCameraViewControllerPhotoMetadata"];
   v18 = [v17 mutableCopy];
@@ -1023,30 +1023,30 @@ void __96__CAMCameraViewController__notifyCaptureDelegateOfCompletedCaptureOfVid
   return v12;
 }
 
-- (id)_clientPropertiesForLivePhotoVideoURL:(id)a3 duration:(id *)a4 stillDisplayTime:(id *)a5 error:(id)a6
+- (id)_clientPropertiesForLivePhotoVideoURL:(id)l duration:(id *)duration stillDisplayTime:(id *)time error:(id)error
 {
-  v9 = a3;
-  if (v9)
+  lCopy = l;
+  if (lCopy)
   {
     v10 = MEMORY[0x1E695DF90];
-    v11 = a6;
+    errorCopy = error;
     v12 = objc_alloc_init(v10);
-    if (a4->var2)
+    if (duration->var2)
     {
-      v17 = *a4;
+      v17 = *duration;
       v13 = [MEMORY[0x1E696AD98] numberWithDouble:CMTimeGetSeconds(&v17)];
       [v12 setObject:v13 forKeyedSubscript:@"CAMCameraViewControllerVideoDuration"];
     }
 
-    if (a5->var2)
+    if (time->var2)
     {
-      v17 = *a5;
+      v17 = *time;
       v14 = [MEMORY[0x1E696B098] valueWithCMTime:&v17];
       [v12 setObject:v14 forKeyedSubscript:@"CAMCameraViewControllerLivePhotoStillDisplayTime"];
     }
 
-    [v12 setObject:v9 forKeyedSubscript:@"CAMCameraViewControllerVideoURL"];
-    [v12 setObject:v11 forKeyedSubscript:@"CAMCameraViewControllerCaptureError"];
+    [v12 setObject:lCopy forKeyedSubscript:@"CAMCameraViewControllerVideoURL"];
+    [v12 setObject:errorCopy forKeyedSubscript:@"CAMCameraViewControllerCaptureError"];
 
     v15 = [v12 copy];
   }
@@ -1059,18 +1059,18 @@ void __96__CAMCameraViewController__notifyCaptureDelegateOfCompletedCaptureOfVid
   return v15;
 }
 
-- (id)_clientPropertiesForVideoURL:(id)a3 renderedURL:(id)a4 duration:(id *)a5 size:(CGSize)a6 creationDate:(id)a7 captureOrientation:(int64_t)a8 previewOrientation:(int64_t)a9 adjustments:(id)a10 uniqueIdentifier:(id)a11 savedToPhotoLibrary:(BOOL)a12
+- (id)_clientPropertiesForVideoURL:(id)l renderedURL:(id)rL duration:(id *)duration size:(CGSize)size creationDate:(id)date captureOrientation:(int64_t)orientation previewOrientation:(int64_t)previewOrientation adjustments:(id)self0 uniqueIdentifier:(id)self1 savedToPhotoLibrary:(BOOL)self2
 {
-  height = a6.height;
-  width = a6.width;
+  height = size.height;
+  width = size.width;
   v19 = MEMORY[0x1E695DF90];
-  v20 = a11;
-  v21 = a10;
-  v22 = a7;
-  v23 = a4;
-  v24 = a3;
+  identifierCopy = identifier;
+  adjustmentsCopy = adjustments;
+  dateCopy = date;
+  rLCopy = rL;
+  lCopy = l;
   v25 = objc_alloc_init(v19);
-  [v25 setObject:v20 forKeyedSubscript:@"CAMCameraViewControllerUniquePersistenceIdentifier"];
+  [v25 setObject:identifierCopy forKeyedSubscript:@"CAMCameraViewControllerUniquePersistenceIdentifier"];
 
   v26 = [MEMORY[0x1E696AD98] numberWithDouble:width];
   [v25 setObject:v26 forKey:@"CAMCameraViewControllerPixelWidth"];
@@ -1078,38 +1078,38 @@ void __96__CAMCameraViewController__notifyCaptureDelegateOfCompletedCaptureOfVid
   v27 = [MEMORY[0x1E696AD98] numberWithDouble:height];
   [v25 setObject:v27 forKey:@"CAMCameraViewControllerPixelHeight"];
 
-  [v25 setObject:v22 forKeyedSubscript:@"CAMCameraViewControllerCaptureDate"];
-  [v25 setObject:v21 forKeyedSubscript:@"CAMCameraViewControllerAdjustments"];
+  [v25 setObject:dateCopy forKeyedSubscript:@"CAMCameraViewControllerCaptureDate"];
+  [v25 setObject:adjustmentsCopy forKeyedSubscript:@"CAMCameraViewControllerAdjustments"];
 
-  v28 = [MEMORY[0x1E696AD98] numberWithBool:a12];
+  v28 = [MEMORY[0x1E696AD98] numberWithBool:library];
   [v25 setObject:v28 forKey:@"CAMCameraViewControllerSavedToPhotoLibrary"];
 
-  if (a8)
+  if (orientation)
   {
-    v29 = [MEMORY[0x1E696AD98] numberWithInteger:a8];
+    v29 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
     [v25 setObject:v29 forKey:@"CAMCameraViewControllerCaptureOrientation"];
   }
 
-  if (a5->var2)
+  if (duration->var2)
   {
-    time = *a5;
+    time = *duration;
     v30 = [MEMORY[0x1E696AD98] numberWithDouble:CMTimeGetSeconds(&time)];
     [v25 setObject:v30 forKeyedSubscript:@"CAMCameraViewControllerVideoDuration"];
   }
 
-  if (v23)
+  if (rLCopy)
   {
-    v31 = v23;
+    v31 = rLCopy;
   }
 
   else
   {
-    v31 = v24;
+    v31 = lCopy;
   }
 
-  if (v23)
+  if (rLCopy)
   {
-    v32 = v24;
+    v32 = lCopy;
   }
 
   else
@@ -1130,30 +1130,30 @@ void __96__CAMCameraViewController__notifyCaptureDelegateOfCompletedCaptureOfVid
   return v36;
 }
 
-- (void)captureController:(id)a3 didGenerateStillImageCaptureResult:(id)a4 fromRequest:(id)a5
+- (void)captureController:(id)controller didGenerateStillImageCaptureResult:(id)result fromRequest:(id)request
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 captureOrientation];
-  v10 = +[CAMOrientationUtilities imageOrientationOfResult:withCaptureDevice:captureOrientation:](CAMOrientationUtilities, "imageOrientationOfResult:withCaptureDevice:captureOrientation:", v7, [v8 captureDevice], objc_msgSend(v8, "captureOrientation"));
-  v11 = [v8 persistenceUUID];
-  v12 = [v8 captureMode];
-  v13 = [v8 persistenceOptions];
+  resultCopy = result;
+  requestCopy = request;
+  captureOrientation = [requestCopy captureOrientation];
+  v10 = +[CAMOrientationUtilities imageOrientationOfResult:withCaptureDevice:captureOrientation:](CAMOrientationUtilities, "imageOrientationOfResult:withCaptureDevice:captureOrientation:", resultCopy, [requestCopy captureDevice], objc_msgSend(requestCopy, "captureOrientation"));
+  persistenceUUID = [requestCopy persistenceUUID];
+  captureMode = [requestCopy captureMode];
+  persistenceOptions = [requestCopy persistenceOptions];
 
-  if (!v13)
+  if (!persistenceOptions)
   {
-    v14 = [(CAMCameraViewController *)self _resultProcessingQueue];
+    _resultProcessingQueue = [(CAMCameraViewController *)self _resultProcessingQueue];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __92__CAMCameraViewController_captureController_didGenerateStillImageCaptureResult_fromRequest___block_invoke;
     v15[3] = &unk_1E76FF040;
-    v16 = v7;
-    v17 = self;
-    v19 = v12;
-    v20 = v9;
+    v16 = resultCopy;
+    selfCopy = self;
+    v19 = captureMode;
+    v20 = captureOrientation;
     v21 = v10;
-    v18 = v11;
-    dispatch_async(v14, v15);
+    v18 = persistenceUUID;
+    dispatch_async(_resultProcessingQueue, v15);
   }
 }
 
@@ -1189,27 +1189,27 @@ void __92__CAMCameraViewController_captureController_didGenerateStillImageCaptur
   [*(a1 + 40) _notifyCaptureDelegateOfCompletedCaptureOfPhoto:*(a1 + 48) withProperties:*(a1 + 56) error:v2];
 }
 
-- (id)_behaviorDefinedDestinationURLForRequest:(id)a3 withLocalDestinationURL:(id)a4 linkedDestinationURL:(id)a5
+- (id)_behaviorDefinedDestinationURLForRequest:(id)request withLocalDestinationURL:(id)l linkedDestinationURL:(id)rL
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 persistenceOptions];
-  v11 = [v9 temporaryPersistenceOptions];
+  lCopy = l;
+  rLCopy = rL;
+  requestCopy = request;
+  persistenceOptions = [requestCopy persistenceOptions];
+  temporaryPersistenceOptions = [requestCopy temporaryPersistenceOptions];
 
-  if ((v10 - 1) <= 1)
+  if ((persistenceOptions - 1) <= 1)
   {
-    v12 = v7;
-    if (v11 < 2)
+    v12 = lCopy;
+    if (temporaryPersistenceOptions < 2)
     {
 LABEL_5:
       v13 = v12;
       goto LABEL_7;
     }
 
-    if (v11 == 2)
+    if (temporaryPersistenceOptions == 2)
     {
-      v12 = v8;
+      v12 = rLCopy;
       goto LABEL_5;
     }
   }
@@ -1220,41 +1220,41 @@ LABEL_7:
   return v13;
 }
 
-- (void)persistenceController:(id)a3 didGenerateStillImageLocalPersistenceResult:(id)a4 forCaptureResult:(id)a5 fromRequest:(id)a6
+- (void)persistenceController:(id)controller didGenerateStillImageLocalPersistenceResult:(id)result forCaptureResult:(id)captureResult fromRequest:(id)request
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (![v11 conformsToProtocol:&unk_1F1759AD8] || (objc_msgSend(v11, "timelapseIdentifier"), v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
+  resultCopy = result;
+  captureResultCopy = captureResult;
+  requestCopy = request;
+  if (![requestCopy conformsToProtocol:&unk_1F1759AD8] || (objc_msgSend(requestCopy, "timelapseIdentifier"), v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
   {
-    v13 = [(CAMCameraViewController *)self isDisablingMultipleCaptureFeatures];
-    v14 = [(CAMCameraViewController *)self isRecording];
-    if (!v13 || !v14)
+    isDisablingMultipleCaptureFeatures = [(CAMCameraViewController *)self isDisablingMultipleCaptureFeatures];
+    isRecording = [(CAMCameraViewController *)self isRecording];
+    if (!isDisablingMultipleCaptureFeatures || !isRecording)
     {
-      if ([v11 type])
+      if ([requestCopy type])
       {
         v15 = 0;
       }
 
       else
       {
-        v15 = v11;
+        v15 = requestCopy;
       }
 
       v16 = v15;
-      v17 = [v9 localDestinationURL];
-      v18 = [v9 linkedDestinationURL];
-      v36 = [(CAMCameraViewController *)self _behaviorDefinedDestinationURLForRequest:v11 withLocalDestinationURL:v17 linkedDestinationURL:v18];
+      localDestinationURL = [resultCopy localDestinationURL];
+      linkedDestinationURL = [resultCopy linkedDestinationURL];
+      v36 = [(CAMCameraViewController *)self _behaviorDefinedDestinationURLForRequest:requestCopy withLocalDestinationURL:localDestinationURL linkedDestinationURL:linkedDestinationURL];
 
-      v32 = [v11 captureMode];
-      v31 = [v11 captureOrientation];
-      v19 = +[CAMOrientationUtilities imageOrientationOfResult:withCaptureDevice:captureOrientation:](CAMOrientationUtilities, "imageOrientationOfResult:withCaptureDevice:captureOrientation:", v10, [v11 captureDevice], objc_msgSend(v11, "captureOrientation"));
-      v35 = [v9 localPersistenceUUID];
-      HIDWORD(v28) = [v11 shouldPersistToIncomingDirectory];
+      captureMode = [requestCopy captureMode];
+      captureOrientation = [requestCopy captureOrientation];
+      v19 = +[CAMOrientationUtilities imageOrientationOfResult:withCaptureDevice:captureOrientation:](CAMOrientationUtilities, "imageOrientationOfResult:withCaptureDevice:captureOrientation:", captureResultCopy, [requestCopy captureDevice], objc_msgSend(requestCopy, "captureOrientation"));
+      localPersistenceUUID = [resultCopy localPersistenceUUID];
+      HIDWORD(v28) = [requestCopy shouldPersistToIncomingDirectory];
       if ([v16 hasAdjustments])
       {
-        v20 = [v16 adjustmentFilters];
-        LODWORD(v28) = [v20 count] == 0;
+        adjustmentFilters = [v16 adjustmentFilters];
+        LODWORD(v28) = [adjustmentFilters count] == 0;
       }
 
       else
@@ -1263,41 +1263,41 @@ LABEL_7:
       }
 
       v37 = v16;
-      v21 = [v10 stillImageFilteredPreviewSurface];
-      if (!v21)
+      stillImageFilteredPreviewSurface = [captureResultCopy stillImageFilteredPreviewSurface];
+      if (!stillImageFilteredPreviewSurface)
       {
-        v21 = [v10 stillImageUnfilteredPreviewSurface];
+        stillImageFilteredPreviewSurface = [captureResultCopy stillImageUnfilteredPreviewSurface];
       }
 
-      v34 = [v10 coordinationInfo];
-      v22 = [v34 resultSpecifiers];
-      v23 = [v34 allExpectedResultSpecifiers];
-      v24 = [(CAMCameraViewController *)self _resultProcessingQueue];
+      coordinationInfo = [captureResultCopy coordinationInfo];
+      resultSpecifiers = [coordinationInfo resultSpecifiers];
+      allExpectedResultSpecifiers = [coordinationInfo allExpectedResultSpecifiers];
+      _resultProcessingQueue = [(CAMCameraViewController *)self _resultProcessingQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __122__CAMCameraViewController_persistenceController_didGenerateStillImageLocalPersistenceResult_forCaptureResult_fromRequest___block_invoke;
       block[3] = &unk_1E76FF0B8;
       block[4] = self;
-      v47 = v31;
-      v48 = v21;
+      v47 = captureOrientation;
+      v48 = stillImageFilteredPreviewSurface;
       v49 = v19;
-      v46 = v32;
+      v46 = captureMode;
       v39 = v36;
-      v40 = v35;
+      v40 = localPersistenceUUID;
       v51 = v30;
-      v41 = v10;
+      v41 = captureResultCopy;
       v42 = v37;
-      v43 = v11;
+      v43 = requestCopy;
       v52 = v29;
-      v50 = v22;
-      v44 = v9;
-      v45 = v23;
-      v53 = v13;
-      v33 = v23;
+      v50 = resultSpecifiers;
+      v44 = resultCopy;
+      v45 = allExpectedResultSpecifiers;
+      v53 = isDisablingMultipleCaptureFeatures;
+      v33 = allExpectedResultSpecifiers;
       v25 = v37;
-      v26 = v35;
+      v26 = localPersistenceUUID;
       v27 = v36;
-      dispatch_async(v24, block);
+      dispatch_async(_resultProcessingQueue, block);
     }
   }
 }
@@ -1596,15 +1596,15 @@ LABEL_9:
   [*(a1 + 88) updatePhotoProperties:v6 assetAdjustments:v7 forResultSpecifiers:*(a1 + 120)];
 }
 
-- (void)persistenceController:(id)a3 didGenerateVideoLocalPersistenceResult:(id)a4 forCaptureResult:(id)a5 fromRequest:(id)a6
+- (void)persistenceController:(id)controller didGenerateVideoLocalPersistenceResult:(id)result forCaptureResult:(id)captureResult fromRequest:(id)request
 {
-  v13 = a4;
-  v9 = a5;
-  v10 = a6;
+  resultCopy = result;
+  captureResultCopy = captureResult;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = requestCopy;
   }
 
   else
@@ -1615,46 +1615,46 @@ LABEL_9:
   v12 = v11;
   if ([v12 isCTMVideo])
   {
-    [(CAMCameraViewController *)self _handleCTMVideoLocalPersistenceResult:v13 forCaptureResult:v9 fromRequest:v12];
+    [(CAMCameraViewController *)self _handleCTMVideoLocalPersistenceResult:resultCopy forCaptureResult:captureResultCopy fromRequest:v12];
   }
 
   else if (v12)
   {
-    [(CAMCameraViewController *)self _handleLivePhotoVideoLocalPersistenceResult:v13 forCaptureResult:v9 fromRequest:v12];
+    [(CAMCameraViewController *)self _handleLivePhotoVideoLocalPersistenceResult:resultCopy forCaptureResult:captureResultCopy fromRequest:v12];
   }
 
   else
   {
-    [(CAMCameraViewController *)self _handleVideoLocalPersistenceResult:v13 forCaptureResult:v9 fromRequest:v10];
+    [(CAMCameraViewController *)self _handleVideoLocalPersistenceResult:resultCopy forCaptureResult:captureResultCopy fromRequest:requestCopy];
   }
 }
 
-- (void)_handleLivePhotoVideoLocalPersistenceResult:(id)a3 forCaptureResult:(id)a4 fromRequest:(id)a5
+- (void)_handleLivePhotoVideoLocalPersistenceResult:(id)result forCaptureResult:(id)captureResult fromRequest:(id)request
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 coordinationInfo];
-  v12 = [v11 resultSpecifiers];
-  v13 = [v11 allExpectedResultSpecifiers];
-  v14 = [(CAMCameraViewController *)self isDisablingMultipleCaptureFeatures];
-  v15 = [(CAMCameraViewController *)self _resultProcessingQueue];
+  resultCopy = result;
+  captureResultCopy = captureResult;
+  requestCopy = request;
+  coordinationInfo = [captureResultCopy coordinationInfo];
+  resultSpecifiers = [coordinationInfo resultSpecifiers];
+  allExpectedResultSpecifiers = [coordinationInfo allExpectedResultSpecifiers];
+  isDisablingMultipleCaptureFeatures = [(CAMCameraViewController *)self isDisablingMultipleCaptureFeatures];
+  _resultProcessingQueue = [(CAMCameraViewController *)self _resultProcessingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __100__CAMCameraViewController__handleLivePhotoVideoLocalPersistenceResult_forCaptureResult_fromRequest___block_invoke;
   block[3] = &unk_1E76FF0E0;
   block[4] = self;
-  v21 = v10;
-  v26 = v14;
-  v22 = v13;
-  v23 = v8;
-  v24 = v9;
-  v25 = v12;
-  v16 = v9;
-  v17 = v8;
-  v18 = v13;
-  v19 = v10;
-  dispatch_async(v15, block);
+  v21 = requestCopy;
+  v26 = isDisablingMultipleCaptureFeatures;
+  v22 = allExpectedResultSpecifiers;
+  v23 = resultCopy;
+  v24 = captureResultCopy;
+  v25 = resultSpecifiers;
+  v16 = captureResultCopy;
+  v17 = resultCopy;
+  v18 = allExpectedResultSpecifiers;
+  v19 = requestCopy;
+  dispatch_async(_resultProcessingQueue, block);
 }
 
 void __100__CAMCameraViewController__handleLivePhotoVideoLocalPersistenceResult_forCaptureResult_fromRequest___block_invoke(uint64_t a1)
@@ -1694,19 +1694,19 @@ void __100__CAMCameraViewController__handleLivePhotoVideoLocalPersistenceResult_
   [v2 updateVideoProperties:v12 forResultSpecifiers:*(a1 + 72) wantsDepthRenderedForStill:v14];
 }
 
-- (void)_handleCTMVideoLocalPersistenceResult:(id)a3 forCaptureResult:(id)a4 fromRequest:(id)a5
+- (void)_handleCTMVideoLocalPersistenceResult:(id)result forCaptureResult:(id)captureResult fromRequest:(id)request
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 localDestinationURL];
-  v12 = [v8 linkedDestinationURL];
-  v13 = [(CAMCameraViewController *)self _behaviorDefinedDestinationURLForRequest:v10 withLocalDestinationURL:v11 linkedDestinationURL:v12];
+  resultCopy = result;
+  captureResultCopy = captureResult;
+  requestCopy = request;
+  localDestinationURL = [resultCopy localDestinationURL];
+  linkedDestinationURL = [resultCopy linkedDestinationURL];
+  v13 = [(CAMCameraViewController *)self _behaviorDefinedDestinationURLForRequest:requestCopy withLocalDestinationURL:localDestinationURL linkedDestinationURL:linkedDestinationURL];
 
-  if ([v10 hasAdjustments])
+  if ([requestCopy hasAdjustments])
   {
-    v14 = [v8 adjustmentsData];
-    v15 = v14 != 0;
+    adjustmentsData = [resultCopy adjustmentsData];
+    v15 = adjustmentsData != 0;
   }
 
   else
@@ -1714,22 +1714,22 @@ void __100__CAMCameraViewController__handleLivePhotoVideoLocalPersistenceResult_
     v15 = 0;
   }
 
-  v16 = [(CAMCameraViewController *)self _resultProcessingQueue];
+  _resultProcessingQueue = [(CAMCameraViewController *)self _resultProcessingQueue];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __94__CAMCameraViewController__handleCTMVideoLocalPersistenceResult_forCaptureResult_fromRequest___block_invoke;
   v21[3] = &unk_1E76FF130;
-  v22 = v10;
-  v23 = v9;
+  v22 = requestCopy;
+  v23 = captureResultCopy;
   v27 = v15;
-  v24 = v8;
+  v24 = resultCopy;
   v25 = v13;
-  v26 = self;
+  selfCopy = self;
   v17 = v13;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  dispatch_async(v16, v21);
+  v18 = resultCopy;
+  v19 = captureResultCopy;
+  v20 = requestCopy;
+  dispatch_async(_resultProcessingQueue, v21);
 }
 
 void __94__CAMCameraViewController__handleCTMVideoLocalPersistenceResult_forCaptureResult_fromRequest___block_invoke(uint64_t a1)
@@ -1862,19 +1862,19 @@ void __94__CAMCameraViewController__handleCTMVideoLocalPersistenceResult_forCapt
   }
 }
 
-- (void)_handleCTMVideoLocalPersistenceResult:(id)a3 forCaptureResult:(id)a4 fromRequest:(id)a5 size:(CGSize)a6 videoURL:(id)a7 renderedToURL:(id)a8 renderedAdjustments:(id)a9
+- (void)_handleCTMVideoLocalPersistenceResult:(id)result forCaptureResult:(id)captureResult fromRequest:(id)request size:(CGSize)size videoURL:(id)l renderedToURL:(id)rL renderedAdjustments:(id)adjustments
 {
-  height = a6.height;
-  width = a6.width;
-  v17 = a3;
-  v31 = a4;
-  v18 = a5;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  if (v17)
+  height = size.height;
+  width = size.width;
+  resultCopy = result;
+  captureResultCopy = captureResult;
+  requestCopy = request;
+  lCopy = l;
+  rLCopy = rL;
+  adjustmentsCopy = adjustments;
+  if (resultCopy)
   {
-    [v17 duration];
+    [resultCopy duration];
   }
 
   else
@@ -1882,69 +1882,69 @@ void __94__CAMCameraViewController__handleCTMVideoLocalPersistenceResult_forCapt
     memset(v32, 0, sizeof(v32));
   }
 
-  v22 = [v17 creationDate];
-  v23 = [v18 captureOrientation];
-  v24 = [CAMOrientationUtilities imageOrientationForVideoRequest:v18];
-  v25 = [v17 localPersistenceUUID];
-  LOBYTE(v30) = [v18 shouldPersistToIncomingDirectory];
-  v26 = [(CAMCameraViewController *)self _clientPropertiesForVideoURL:v19 renderedURL:v20 duration:v32 size:v22 creationDate:v23 captureOrientation:v24 previewOrientation:width adjustments:height uniqueIdentifier:v21 savedToPhotoLibrary:v25, v30];
+  creationDate = [resultCopy creationDate];
+  captureOrientation = [requestCopy captureOrientation];
+  v24 = [CAMOrientationUtilities imageOrientationForVideoRequest:requestCopy];
+  localPersistenceUUID = [resultCopy localPersistenceUUID];
+  LOBYTE(v30) = [requestCopy shouldPersistToIncomingDirectory];
+  v26 = [(CAMCameraViewController *)self _clientPropertiesForVideoURL:lCopy renderedURL:rLCopy duration:v32 size:creationDate creationDate:captureOrientation captureOrientation:v24 previewOrientation:width adjustments:height uniqueIdentifier:adjustmentsCopy savedToPhotoLibrary:localPersistenceUUID, v30];
 
-  if (v20)
+  if (rLCopy)
   {
-    v27 = v20;
+    v27 = rLCopy;
   }
 
   else
   {
-    v27 = v19;
+    v27 = lCopy;
   }
 
   v28 = [MEMORY[0x1E6988168] assetWithURL:v27];
-  v29 = [v31 error];
-  [(CAMCameraViewController *)self _notifyCaptureDelegateOfCompletedCaptureOfVideo:v28 withProperties:v26 error:v29];
+  error = [captureResultCopy error];
+  [(CAMCameraViewController *)self _notifyCaptureDelegateOfCompletedCaptureOfVideo:v28 withProperties:v26 error:error];
 }
 
-- (void)_handleVideoLocalPersistenceResult:(id)a3 forCaptureResult:(id)a4 fromRequest:(id)a5
+- (void)_handleVideoLocalPersistenceResult:(id)result forCaptureResult:(id)captureResult fromRequest:(id)request
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  resultCopy = result;
+  captureResultCopy = captureResult;
+  requestCopy = request;
+  if (resultCopy)
   {
-    v11 = [v8 localDestinationURL];
-    v12 = [v8 linkedDestinationURL];
-    v13 = [(CAMCameraViewController *)self _behaviorDefinedDestinationURLForRequest:v10 withLocalDestinationURL:v11 linkedDestinationURL:v12];
+    localDestinationURL = [resultCopy localDestinationURL];
+    linkedDestinationURL = [resultCopy linkedDestinationURL];
+    v13 = [(CAMCameraViewController *)self _behaviorDefinedDestinationURLForRequest:requestCopy withLocalDestinationURL:localDestinationURL linkedDestinationURL:linkedDestinationURL];
 
     memset(buf, 0, sizeof(buf));
     v38 = 0;
-    [v8 duration];
-    v14 = [v8 creationDate];
-    v24 = [v10 captureOrientation];
-    v15 = [v8 localPersistenceUUID];
-    v16 = [v10 shouldPersistToIncomingDirectory];
-    v17 = v9;
-    v18 = [v10 captureMode] == 2;
-    v19 = [(CAMCameraViewController *)self _resultProcessingQueue];
+    [resultCopy duration];
+    creationDate = [resultCopy creationDate];
+    captureOrientation = [requestCopy captureOrientation];
+    localPersistenceUUID = [resultCopy localPersistenceUUID];
+    shouldPersistToIncomingDirectory = [requestCopy shouldPersistToIncomingDirectory];
+    v17 = captureResultCopy;
+    v18 = [requestCopy captureMode] == 2;
+    _resultProcessingQueue = [(CAMCameraViewController *)self _resultProcessingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __91__CAMCameraViewController__handleVideoLocalPersistenceResult_forCaptureResult_fromRequest___block_invoke;
     block[3] = &unk_1E76FF158;
     v26 = v13;
     v35 = v18;
-    v9 = v17;
+    captureResultCopy = v17;
     v33 = *buf;
     v34 = v38;
-    v27 = v10;
-    v28 = self;
-    v32 = v24;
-    v29 = v14;
-    v30 = v15;
-    v36 = v16;
+    v27 = requestCopy;
+    selfCopy = self;
+    v32 = captureOrientation;
+    v29 = creationDate;
+    v30 = localPersistenceUUID;
+    v36 = shouldPersistToIncomingDirectory;
     v31 = v17;
-    v20 = v15;
-    v21 = v14;
+    v20 = localPersistenceUUID;
+    v21 = creationDate;
     v22 = v13;
-    dispatch_async(v19, block);
+    dispatch_async(_resultProcessingQueue, block);
   }
 
   else
@@ -2028,14 +2028,14 @@ void __91__CAMCameraViewController__handleVideoLocalPersistenceResult_forCapture
   [*(a1 + 48) _notifyCaptureDelegateOfCompletedCaptureOfVideo:v2 withProperties:v28 error:v29];
 }
 
-- (void)persistenceController:(id)a3 didCompleteAllLocalPersistenceForRequest:(id)a4
+- (void)persistenceController:(id)controller didCompleteAllLocalPersistenceForRequest:(id)request
 {
-  v5 = a4;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [(CAMCameraViewController *)self _resultProcessingQueue];
+    v6 = requestCopy;
+    _resultProcessingQueue = [(CAMCameraViewController *)self _resultProcessingQueue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __90__CAMCameraViewController_persistenceController_didCompleteAllLocalPersistenceForRequest___block_invoke;
@@ -2043,25 +2043,25 @@ void __91__CAMCameraViewController__handleVideoLocalPersistenceResult_forCapture
     v9[4] = self;
     v10 = v6;
     v8 = v6;
-    dispatch_async(v7, v9);
+    dispatch_async(_resultProcessingQueue, v9);
   }
 }
 
-- (void)_resultQueue_forceCompletionIfPossibleForRequest:(id)a3
+- (void)_resultQueue_forceCompletionIfPossibleForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(CAMCameraViewController *)self _resultProcessingQueue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  _resultProcessingQueue = [(CAMCameraViewController *)self _resultProcessingQueue];
+  dispatch_assert_queue_V2(_resultProcessingQueue);
 
-  if (([v4 isCTMVideo] & 1) == 0)
+  if (([requestCopy isCTMVideo] & 1) == 0)
   {
-    v6 = [(CAMCameraViewController *)self _resultQueue_getStillImageResultCoordinatorForRequest:v4];
+    v6 = [(CAMCameraViewController *)self _resultQueue_getStillImageResultCoordinatorForRequest:requestCopy];
     v7 = v6;
     if (v6)
     {
       [v6 forceRemainingDispatchesIfPossible];
-      v8 = [v7 identifier];
-      [(CAMCameraViewController *)self _resultQueue_removeStillImageResultCoordinatorForIdentifier:v8];
+      identifier = [v7 identifier];
+      [(CAMCameraViewController *)self _resultQueue_removeStillImageResultCoordinatorForIdentifier:identifier];
     }
 
     else
@@ -2086,29 +2086,29 @@ void __76__CAMCameraViewController__resultQueue_forceCompletionIfPossibleForRequ
   [*(a1 + 32) _notifyCaptureDelegateOfCompletedCaptureOfPhoto:0 withProperties:0 error:v3];
 }
 
-- (id)_resultQueue_getOrCreateStillImageResultCoordinatorForRequest:(id)a3 captureTimeExpectedResultSpecifiers:(id)a4 isExpectingPairedVideo:(BOOL)a5 isDisablingMultipleCaptures:(BOOL)a6 isGeneratingFilteredMedia:(BOOL)a7
+- (id)_resultQueue_getOrCreateStillImageResultCoordinatorForRequest:(id)request captureTimeExpectedResultSpecifiers:(id)specifiers isExpectingPairedVideo:(BOOL)video isDisablingMultipleCaptures:(BOOL)captures isGeneratingFilteredMedia:(BOOL)media
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
+  mediaCopy = media;
+  capturesCopy = captures;
+  videoCopy = video;
   v37 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = [(CAMCameraViewController *)self _resultProcessingQueue];
-  dispatch_assert_queue_V2(v14);
+  requestCopy = request;
+  specifiersCopy = specifiers;
+  _resultProcessingQueue = [(CAMCameraViewController *)self _resultProcessingQueue];
+  dispatch_assert_queue_V2(_resultProcessingQueue);
 
-  v15 = [v12 persistenceUUID];
-  v16 = [(CAMCameraViewController *)self _resultQueueStillImageResultCoordinators];
-  v17 = [v16 objectForKeyedSubscript:v15];
+  persistenceUUID = [requestCopy persistenceUUID];
+  _resultQueueStillImageResultCoordinators = [(CAMCameraViewController *)self _resultQueueStillImageResultCoordinators];
+  v17 = [_resultQueueStillImageResultCoordinators objectForKeyedSubscript:persistenceUUID];
   if (!v17)
   {
-    v18 = v13;
+    v18 = specifiersCopy;
     v19 = v18;
-    if (v7)
+    if (mediaCopy)
     {
-      v29 = v8;
-      v30 = v9;
-      v31 = v12;
+      v29 = capturesCopy;
+      v30 = videoCopy;
+      v31 = requestCopy;
       v20 = [v18 mutableCopy];
       v32 = 0u;
       v33 = 0u;
@@ -2129,8 +2129,8 @@ void __76__CAMCameraViewController__resultQueue_forceCompletionIfPossibleForRequ
               objc_enumerationMutation(v21);
             }
 
-            v26 = [*(*(&v32 + 1) + 8 * i) unsignedIntegerValue];
-            v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v26 | 2];
+            unsignedIntegerValue = [*(*(&v32 + 1) + 8 * i) unsignedIntegerValue];
+            v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue | 2];
             [v20 addObject:v27];
           }
 
@@ -2140,9 +2140,9 @@ void __76__CAMCameraViewController__resultQueue_forceCompletionIfPossibleForRequ
         while (v23);
       }
 
-      v12 = v31;
-      v8 = v29;
-      v9 = v30;
+      requestCopy = v31;
+      capturesCopy = v29;
+      videoCopy = v30;
     }
 
     else
@@ -2150,107 +2150,107 @@ void __76__CAMCameraViewController__resultQueue_forceCompletionIfPossibleForRequ
       v20 = v18;
     }
 
-    v17 = [[CAMCVCStillImageResultCoordinator alloc] initWithDelegate:self identifier:v15 allExpectedResultSpecifiers:v20 isExpectingPairedVideo:v9 allowMultipleCaptures:!v8 shouldReturnFilteredPhotosAsSingleAsset:1];
-    [v16 setObject:v17 forKeyedSubscript:v15];
+    v17 = [[CAMCVCStillImageResultCoordinator alloc] initWithDelegate:self identifier:persistenceUUID allExpectedResultSpecifiers:v20 isExpectingPairedVideo:videoCopy allowMultipleCaptures:!capturesCopy shouldReturnFilteredPhotosAsSingleAsset:1];
+    [_resultQueueStillImageResultCoordinators setObject:v17 forKeyedSubscript:persistenceUUID];
   }
 
   return v17;
 }
 
-- (id)_resultQueue_getStillImageResultCoordinatorForRequest:(id)a3
+- (id)_resultQueue_getStillImageResultCoordinatorForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(CAMCameraViewController *)self _resultProcessingQueue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  _resultProcessingQueue = [(CAMCameraViewController *)self _resultProcessingQueue];
+  dispatch_assert_queue_V2(_resultProcessingQueue);
 
-  v6 = [v4 persistenceUUID];
+  persistenceUUID = [requestCopy persistenceUUID];
 
-  v7 = [(CAMCameraViewController *)self _resultQueueStillImageResultCoordinators];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  _resultQueueStillImageResultCoordinators = [(CAMCameraViewController *)self _resultQueueStillImageResultCoordinators];
+  v8 = [_resultQueueStillImageResultCoordinators objectForKeyedSubscript:persistenceUUID];
 
   return v8;
 }
 
-- (void)_resultQueue_removeStillImageResultCoordinatorForIdentifier:(id)a3
+- (void)_resultQueue_removeStillImageResultCoordinatorForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CAMCameraViewController *)self _resultProcessingQueue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  _resultProcessingQueue = [(CAMCameraViewController *)self _resultProcessingQueue];
+  dispatch_assert_queue_V2(_resultProcessingQueue);
 
-  v6 = [(CAMCameraViewController *)self _resultQueueStillImageResultCoordinators];
-  [v6 setObject:0 forKeyedSubscript:v4];
+  _resultQueueStillImageResultCoordinators = [(CAMCameraViewController *)self _resultQueueStillImageResultCoordinators];
+  [_resultQueueStillImageResultCoordinators setObject:0 forKeyedSubscript:identifierCopy];
 }
 
-- (void)stillImagePersistenceCoordinator:(id)a3 requestsDispatchForResultSpecifiers:(unint64_t)a4 photoProperties:(id)a5 videoProperties:(id)a6 unfilteredPhotoProperties:(id)a7 unfilteredVideoProperties:(id)a8 assetAdjustments:(id)a9 error:(id)a10
+- (void)stillImagePersistenceCoordinator:(id)coordinator requestsDispatchForResultSpecifiers:(unint64_t)specifiers photoProperties:(id)properties videoProperties:(id)videoProperties unfilteredPhotoProperties:(id)photoProperties unfilteredVideoProperties:(id)unfilteredVideoProperties assetAdjustments:(id)adjustments error:(id)self0
 {
-  v26 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a10;
-  v21 = a9;
-  v22 = [(CAMCameraViewController *)self _resultProcessingQueue];
-  dispatch_assert_queue_V2(v22);
+  coordinatorCopy = coordinator;
+  propertiesCopy = properties;
+  videoPropertiesCopy = videoProperties;
+  photoPropertiesCopy = photoProperties;
+  unfilteredVideoPropertiesCopy = unfilteredVideoProperties;
+  errorCopy = error;
+  adjustmentsCopy = adjustments;
+  _resultProcessingQueue = [(CAMCameraViewController *)self _resultProcessingQueue];
+  dispatch_assert_queue_V2(_resultProcessingQueue);
 
-  v23 = [v26 isExpectingPairedVideo];
-  if (v21 && v23)
+  isExpectingPairedVideo = [coordinatorCopy isExpectingPairedVideo];
+  if (adjustmentsCopy && isExpectingPairedVideo)
   {
-    if (v18)
+    if (photoPropertiesCopy)
     {
-      v24 = v18;
+      v24 = photoPropertiesCopy;
     }
 
     else
     {
-      v24 = v16;
+      v24 = propertiesCopy;
     }
 
-    if (v19)
+    if (unfilteredVideoPropertiesCopy)
     {
-      v25 = v19;
+      v25 = unfilteredVideoPropertiesCopy;
     }
 
     else
     {
-      v25 = v17;
+      v25 = videoPropertiesCopy;
     }
 
-    [(CAMCameraViewController *)self _renderLivePhotoWithCoordinator:v26 specifiers:a4 photoProperties:v24 videoProperties:v25 adjustments:v21, v23];
+    [(CAMCameraViewController *)self _renderLivePhotoWithCoordinator:coordinatorCopy specifiers:specifiers photoProperties:v24 videoProperties:v25 adjustments:adjustmentsCopy, isExpectingPairedVideo];
   }
 
   else
   {
-    [(CAMCameraViewController *)self _handlePhotoProperties:v16 videoProperties:v17 unfilteredPhotoProperties:v18 unfilteredVideoProperties:v19 assetAdjustments:v21 attemptPairingVideo:v23 error:v20];
+    [(CAMCameraViewController *)self _handlePhotoProperties:propertiesCopy videoProperties:videoPropertiesCopy unfilteredPhotoProperties:photoPropertiesCopy unfilteredVideoProperties:unfilteredVideoPropertiesCopy assetAdjustments:adjustmentsCopy attemptPairingVideo:isExpectingPairedVideo error:errorCopy];
   }
 }
 
-- (void)_handlePhotoProperties:(id)a3 videoProperties:(id)a4 unfilteredPhotoProperties:(id)a5 unfilteredVideoProperties:(id)a6 assetAdjustments:(id)a7 attemptPairingVideo:(BOOL)a8 error:(id)a9
+- (void)_handlePhotoProperties:(id)properties videoProperties:(id)videoProperties unfilteredPhotoProperties:(id)photoProperties unfilteredVideoProperties:(id)unfilteredVideoProperties assetAdjustments:(id)adjustments attemptPairingVideo:(BOOL)video error:(id)error
 {
-  v9 = a8;
+  videoCopy = video;
   v55[2] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v40 = a6;
-  v17 = a9;
-  v18 = a7;
-  v19 = a5;
-  v20 = [(CAMCameraViewController *)self _resultProcessingQueue];
-  dispatch_assert_queue_V2(v20);
+  propertiesCopy = properties;
+  videoPropertiesCopy = videoProperties;
+  unfilteredVideoPropertiesCopy = unfilteredVideoProperties;
+  errorCopy = error;
+  adjustmentsCopy = adjustments;
+  photoPropertiesCopy = photoProperties;
+  _resultProcessingQueue = [(CAMCameraViewController *)self _resultProcessingQueue];
+  dispatch_assert_queue_V2(_resultProcessingQueue);
 
-  v21 = [v15 objectForKeyedSubscript:@"CAMCameraViewControllerPhotoURL"];
-  v41 = [v16 objectForKeyedSubscript:@"CAMCameraViewControllerVideoURL"];
-  v22 = [v15 mutableCopy];
-  v23 = [v19 objectForKeyedSubscript:@"CAMCameraViewControllerPhotoURL"];
+  v21 = [propertiesCopy objectForKeyedSubscript:@"CAMCameraViewControllerPhotoURL"];
+  v41 = [videoPropertiesCopy objectForKeyedSubscript:@"CAMCameraViewControllerVideoURL"];
+  v22 = [propertiesCopy mutableCopy];
+  v23 = [photoPropertiesCopy objectForKeyedSubscript:@"CAMCameraViewControllerPhotoURL"];
 
   [v22 setObject:v23 forKeyedSubscript:@"CAMCameraViewControllerUnadjustedPhotoURL"];
-  [v22 setObject:v18 forKeyedSubscript:@"CAMCameraViewControllerAdjustments"];
+  [v22 setObject:adjustmentsCopy forKeyedSubscript:@"CAMCameraViewControllerAdjustments"];
 
-  if (v9)
+  if (videoCopy)
   {
     if (v21 && v41)
     {
-      v24 = [v16 objectForKeyedSubscript:@"CAMCameraViewControllerLivePhotoStillDisplayTime"];
+      v24 = [videoPropertiesCopy objectForKeyedSubscript:@"CAMCameraViewControllerLivePhotoStillDisplayTime"];
       memset(buf, 0, sizeof(buf));
       v52 = 0;
       v25 = MEMORY[0x1E6960C70];
@@ -2301,8 +2301,8 @@ void __76__CAMCameraViewController__resultQueue_forceCompletionIfPossibleForRequ
 
       else
       {
-        [v22 addEntriesFromDictionary:v16];
-        v34 = [v40 objectForKeyedSubscript:@"CAMCameraViewControllerVideoURL"];
+        [v22 addEntriesFromDictionary:videoPropertiesCopy];
+        v34 = [unfilteredVideoPropertiesCopy objectForKeyedSubscript:@"CAMCameraViewControllerVideoURL"];
         [v22 setObject:v34 forKeyedSubscript:@"CAMCameraViewControllerUnadjustedVideoURL"];
       }
 
@@ -2338,12 +2338,12 @@ LABEL_22:
   block[2] = __161__CAMCameraViewController__handlePhotoProperties_videoProperties_unfilteredPhotoProperties_unfilteredVideoProperties_assetAdjustments_attemptPairingVideo_error___block_invoke;
   block[3] = &unk_1E76FD5E8;
   v43 = v26;
-  v44 = self;
+  selfCopy = self;
   v45 = v22;
-  v46 = v17;
-  v47 = v15;
-  v35 = v15;
-  v36 = v17;
+  v46 = errorCopy;
+  v47 = propertiesCopy;
+  v35 = propertiesCopy;
+  v36 = errorCopy;
   v37 = v22;
   v38 = v26;
   dispatch_async(MEMORY[0x1E69E96A0], block);
@@ -2431,11 +2431,11 @@ void __161__CAMCameraViewController__handlePhotoProperties_videoProperties_unfil
   return videoConversionClient;
 }
 
-- (id)_mediaConversionOptionsForAdjustments:(id)a3 mediaType:(int64_t)a4 description:(id)a5
+- (id)_mediaConversionOptionsForAdjustments:(id)adjustments mediaType:(int64_t)type description:(id)description
 {
   v48[3] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v33 = a5;
+  adjustmentsCopy = adjustments;
+  descriptionCopy = description;
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -2457,8 +2457,8 @@ void __161__CAMCameraViewController__handlePhotoProperties_videoProperties_unfil
 
   v10 = *v8;
   v46[0] = v10;
-  v11 = [v7 adjustmentData];
-  v48[0] = v11;
+  adjustmentData = [adjustmentsCopy adjustmentData];
+  v48[0] = adjustmentData;
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -2480,8 +2480,8 @@ void __161__CAMCameraViewController__handlePhotoProperties_videoProperties_unfil
 
   v14 = *v12;
   v46[1] = v14;
-  v15 = [v7 adjustmentFormatIdentifier];
-  v48[1] = v15;
+  adjustmentFormatIdentifier = [adjustmentsCopy adjustmentFormatIdentifier];
+  v48[1] = adjustmentFormatIdentifier;
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -2503,13 +2503,13 @@ void __161__CAMCameraViewController__handlePhotoProperties_videoProperties_unfil
 
   v47 = *v16;
   v18 = v47;
-  v19 = [v7 adjustmentFormatVersion];
-  v48[2] = v19;
+  adjustmentFormatVersion = [adjustmentsCopy adjustmentFormatVersion];
+  v48[2] = adjustmentFormatVersion;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:v46 count:3];
 
-  if (a4 == 1)
+  if (type == 1)
   {
-    v32 = [MEMORY[0x1E69C06C0] standardPolicy];
+    standardPolicy = [MEMORY[0x1E69C06C0] standardPolicy];
     v21 = getPAMediaConversionServiceOptionAdjustmentInformationKey();
     v38[0] = v21;
     v43[0] = v20;
@@ -2533,12 +2533,12 @@ void __161__CAMCameraViewController__handlePhotoProperties_videoProperties_unfil
     if (v27)
     {
       v39 = *v27;
-      v43[2] = v32;
-      v23 = v39;
+      v43[2] = standardPolicy;
+      descriptionCopy2 = v39;
       v24 = getPAMediaConversionServiceOptionRequestReasonKey();
       v40 = v24;
-      v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CAMCameraViewController: %@", v33];
-      v43[3] = v25;
+      descriptionCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"CAMCameraViewController: %@", descriptionCopy];
+      v43[3] = descriptionCopy;
       v29 = getPAMediaConversionServiceOptionJobPriorityKey();
       v41 = v29;
       v43[4] = &unk_1F16C8900;
@@ -2555,23 +2555,23 @@ LABEL_22:
     __break(1u);
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
-    v32 = getPAMediaConversionServiceOptionAdjustmentInformationKey();
-    v44[0] = v32;
+    standardPolicy = getPAMediaConversionServiceOptionAdjustmentInformationKey();
+    v44[0] = standardPolicy;
     v45[0] = v20;
     v21 = getPAMediaConversionServiceOptionApplyOrientationTransformKey();
     v44[1] = v21;
     v45[1] = MEMORY[0x1E695E118];
     v22 = getPAMediaConversionServiceOptionRequestReasonKey();
     v44[2] = v22;
-    v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CAMCameraViewController: %@", v33];
-    v45[2] = v23;
+    descriptionCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"CAMCameraViewController: %@", descriptionCopy];
+    v45[2] = descriptionCopy2;
     v24 = getPAMediaConversionServiceOptionJobPriorityKey();
     v44[3] = v24;
     v45[3] = &unk_1F16C8900;
-    v25 = getPAMediaConversionServiceOptionScaleFactorKey();
-    v44[4] = v25;
+    descriptionCopy = getPAMediaConversionServiceOptionScaleFactorKey();
+    v44[4] = descriptionCopy;
     v45[4] = &unk_1F16C88E8;
     v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v45 forKeys:v44 count:5];
 LABEL_17:
@@ -2585,32 +2585,32 @@ LABEL_19:
   return v26;
 }
 
-- (void)_renderLivePhotoWithCoordinator:(id)a3 specifiers:(unint64_t)a4 photoProperties:(id)a5 videoProperties:(id)a6 adjustments:(id)a7
+- (void)_renderLivePhotoWithCoordinator:(id)coordinator specifiers:(unint64_t)specifiers photoProperties:(id)properties videoProperties:(id)videoProperties adjustments:(id)adjustments
 {
   v72 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v54 = a7;
-  v15 = [(CAMCameraViewController *)self _resultProcessingQueue];
-  dispatch_assert_queue_V2(v15);
+  coordinatorCopy = coordinator;
+  propertiesCopy = properties;
+  videoPropertiesCopy = videoProperties;
+  adjustmentsCopy = adjustments;
+  _resultProcessingQueue = [(CAMCameraViewController *)self _resultProcessingQueue];
+  dispatch_assert_queue_V2(_resultProcessingQueue);
 
-  v48 = v13;
-  v16 = [v13 objectForKeyedSubscript:@"CAMCameraViewControllerPhotoURL"];
+  v48 = propertiesCopy;
+  v16 = [propertiesCopy objectForKeyedSubscript:@"CAMCameraViewControllerPhotoURL"];
   v17 = *MEMORY[0x1E69C00D0];
-  v18 = [v16 pathExtension];
-  v19 = [v17 stringByAppendingPathExtension:v18];
+  pathExtension = [v16 pathExtension];
+  v19 = [v17 stringByAppendingPathExtension:pathExtension];
 
-  v20 = [v16 URLByDeletingPathExtension];
+  uRLByDeletingPathExtension = [v16 URLByDeletingPathExtension];
   v51 = v19;
-  v21 = [v20 URLByAppendingPathExtension:v19];
+  v21 = [uRLByDeletingPathExtension URLByAppendingPathExtension:v19];
 
   v52 = v16;
   v22 = [getPAMediaConversionServiceResourceURLCollectionClass() collectionWithMainResourceURL:v16];
   v23 = [getPAMediaConversionServiceResourceURLCollectionClass() collectionWithMainResourceURL:v21];
-  v47 = v14;
-  v24 = [v14 objectForKeyedSubscript:@"CAMCameraViewControllerVideoURL"];
-  v53 = a4;
+  v47 = videoPropertiesCopy;
+  v24 = [videoPropertiesCopy objectForKeyedSubscript:@"CAMCameraViewControllerVideoURL"];
+  specifiersCopy = specifiers;
   v49 = v24;
   v50 = v22;
   if (v24)
@@ -2618,11 +2618,11 @@ LABEL_19:
     v25 = v24;
     v26 = MEMORY[0x1E695DFF8];
     v27 = MEMORY[0x1E69BF178];
-    a4 = [v24 path];
-    v28 = [v27 filteredVideoPathForRecordedLivePhotoVideoPath:a4];
+    specifiers = [v24 path];
+    v28 = [v27 filteredVideoPathForRecordedLivePhotoVideoPath:specifiers];
     v29 = [v26 fileURLWithPath:v28];
 
-    LOBYTE(a4) = v53;
+    LOBYTE(specifiers) = specifiersCopy;
     v30 = getPAMediaConversionResourceRoleVideoComplement();
     [v22 setResourceURL:v25 forRole:v30];
 
@@ -2640,11 +2640,11 @@ LABEL_19:
     v33 = @"photo (live photo fallback)";
   }
 
-  v34 = [v12 identifier];
-  if ((a4 & 2) != 0)
+  identifier = [coordinatorCopy identifier];
+  if ((specifiers & 2) != 0)
   {
     v35 = [&stru_1F1660A30 stringByAppendingString:@"Filtered"];
-    if ((a4 & 1) == 0)
+    if ((specifiers & 1) == 0)
     {
       goto LABEL_9;
     }
@@ -2653,7 +2653,7 @@ LABEL_19:
   }
 
   v35 = &stru_1F1660A30;
-  if (a4)
+  if (specifiers)
   {
 LABEL_8:
     v36 = [(__CFString *)v35 stringByAppendingString:@"HDR"];
@@ -2668,13 +2668,13 @@ LABEL_9:
     v35 = @"None";
   }
 
-  v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"coordinator %@ %@ %@", v34, v35, v33];;
-  v45 = [(CAMCameraViewController *)self _mediaConversionOptionsForAdjustments:v54 mediaType:1 description:?];
+  v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"coordinator %@ %@ %@", identifier, v35, v33];;
+  v45 = [(CAMCameraViewController *)self _mediaConversionOptionsForAdjustments:adjustmentsCopy mediaType:1 description:?];
   v37 = os_log_create("com.apple.camera", "Camera");
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v67 = v34;
+    v67 = identifier;
     v68 = 2114;
     v69 = v33;
     v70 = 2114;
@@ -2683,28 +2683,28 @@ LABEL_9:
   }
 
   Current = CFAbsoluteTimeGetCurrent();
-  v39 = [(CAMCameraViewController *)self _imageConversionClient];
+  _imageConversionClient = [(CAMCameraViewController *)self _imageConversionClient];
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
   v56[2] = __114__CAMCameraViewController__renderLivePhotoWithCoordinator_specifiers_photoProperties_videoProperties_adjustments___block_invoke;
   v56[3] = &unk_1E76FF108;
   v64 = Current;
   v56[4] = self;
-  v57 = v34;
+  v57 = identifier;
   v58 = v33;
   v59 = v48;
-  v65 = v53;
+  v65 = specifiersCopy;
   v60 = v47;
   v61 = v29;
   v62 = v21;
-  v63 = v54;
-  v55 = v54;
+  v63 = adjustmentsCopy;
+  v55 = adjustmentsCopy;
   v40 = v21;
   v41 = v29;
   v42 = v47;
   v43 = v48;
-  v44 = v34;
-  [v39 convertImageAtSourceURLCollection:v50 toDestinationURLCollection:v32 options:v45 completionHandler:v56];
+  v44 = identifier;
+  [_imageConversionClient convertImageAtSourceURLCollection:v50 toDestinationURLCollection:v32 options:v45 completionHandler:v56];
 }
 
 void __114__CAMCameraViewController__renderLivePhotoWithCoordinator_specifiers_photoProperties_videoProperties_adjustments___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -2840,18 +2840,18 @@ LABEL_20:
   [*(a1 + 56) _handlePhotoProperties:*(a1 + 64) videoProperties:*(a1 + 72) unfilteredPhotoProperties:0 unfilteredVideoProperties:0 assetAdjustments:0 attemptPairingVideo:1 error:0];
 }
 
-- (void)handleReviewButtonReleased:(id)a3
+- (void)handleReviewButtonReleased:(id)released
 {
-  v5 = [(CAMCameraViewController *)self presentationDelegate];
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  presentationDelegate = [(CAMCameraViewController *)self presentationDelegate];
+  if (presentationDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 cameraViewControllerRequestedDismissal:self];
+    [presentationDelegate cameraViewControllerRequestedDismissal:self];
   }
 
   else
   {
-    v4 = [(CAMCameraViewController *)self presentingViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(CAMCameraViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
@@ -2872,25 +2872,25 @@ LABEL_20:
   return reviewButton;
 }
 
-- (void)viewfinderViewControllerDidCompleteStillImageCapture:(id)a3
+- (void)viewfinderViewControllerDidCompleteStillImageCapture:(id)capture
 {
-  v6 = a3;
+  captureCopy = capture;
   v4 = +[CAMCaptureCapabilities capabilities];
-  v5 = [v4 hostProcess];
+  hostProcess = [v4 hostProcess];
 
-  if (v5 == 2)
+  if (hostProcess == 2)
   {
-    [(CAMCameraViewController *)self _startShutterButtonSpinning:v6];
+    [(CAMCameraViewController *)self _startShutterButtonSpinning:captureCopy];
   }
 }
 
-- (void)_startShutterButtonSpinning:(id)a3
+- (void)_startShutterButtonSpinning:(id)spinning
 {
-  v4 = a3;
+  spinningCopy = spinning;
   objc_initWeak(&location, self);
-  if ([v4 isShutterButtonSpinning])
+  if ([spinningCopy isShutterButtonSpinning])
   {
-    [v4 setShutterButtonSpinning:1];
+    [spinningCopy setShutterButtonSpinning:1];
   }
 
   else
@@ -2901,7 +2901,7 @@ LABEL_20:
     v7[2] = __55__CAMCameraViewController__startShutterButtonSpinning___block_invoke;
     v7[3] = &unk_1E76FF1A8;
     objc_copyWeak(&v9, &location);
-    v8 = v4;
+    v8 = spinningCopy;
     v6 = [v5 scheduledTimerWithTimeInterval:0 repeats:v7 block:1.0];
     [(CAMCameraViewController *)self set_spinnerTimer:v6];
 
@@ -2927,12 +2927,12 @@ void __55__CAMCameraViewController__startShutterButtonSpinning___block_invoke(ui
 
 - (void)_stopShutterButtonSpinning
 {
-  v3 = [(CAMCameraViewController *)self _spinnerTimer];
-  [v3 invalidate];
+  _spinnerTimer = [(CAMCameraViewController *)self _spinnerTimer];
+  [_spinnerTimer invalidate];
 
   [(CAMCameraViewController *)self set_spinnerTimer:0];
-  v4 = [(CAMCameraViewController *)self viewfinderViewController];
-  [v4 setShutterButtonSpinning:0];
+  viewfinderViewController = [(CAMCameraViewController *)self viewfinderViewController];
+  [viewfinderViewController setShutterButtonSpinning:0];
 }
 
 - (CAMCameraCaptureDelegate)captureDelegate

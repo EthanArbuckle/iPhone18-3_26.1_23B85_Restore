@@ -6,10 +6,10 @@
 
 - (id)passWithError:()PassKit
 {
-  v5 = [a1 metadataValueForKey:@"_MFAttachmentPassKey"];
+  v5 = [self metadataValueForKey:@"_MFAttachmentPassKey"];
   if (!v5)
   {
-    v6 = [a1 fetchDataSynchronously:0];
+    v6 = [self fetchDataSynchronously:0];
     v11 = 0;
     v12 = &v11;
     v13 = 0x2050000000;

@@ -1,15 +1,15 @@
 @interface SCLSettingsSyncErrorHandler
-- (id)behaviorForError:(id)a3 history:(id)a4;
-- (unint64_t)recoveryTypeForError:(id)a3;
+- (id)behaviorForError:(id)error history:(id)history;
+- (unint64_t)recoveryTypeForError:(id)error;
 @end
 
 @implementation SCLSettingsSyncErrorHandler
 
-- (id)behaviorForError:(id)a3 history:(id)a4
+- (id)behaviorForError:(id)error history:(id)history
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(SCLSettingsSyncErrorHandler *)self recoveryTypeForError:a3];
+  historyCopy = history;
+  v7 = [(SCLSettingsSyncErrorHandler *)self recoveryTypeForError:error];
   if (v7 == 2)
   {
     v8 = [SCLSettingsSyncErrorBehavior alloc];
@@ -24,7 +24,7 @@
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = v6;
+    v12 = historyCopy;
     v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v13)
     {
@@ -78,17 +78,17 @@
   return v20;
 }
 
-- (unint64_t)recoveryTypeForError:(id)a3
+- (unint64_t)recoveryTypeForError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqual:@"com.apple.schooltime"];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqual:@"com.apple.schooltime"];
 
   if (v5)
   {
-    v6 = [v3 code];
+    code = [errorCopy code];
 
-    if (((v6 - 2) & 0xFFFFFFFFFFFFFFFDLL) != 0)
+    if (((code - 2) & 0xFFFFFFFFFFFFFFFDLL) != 0)
     {
       return 1;
     }
@@ -101,9 +101,9 @@
 
   else
   {
-    v8 = [v3 domain];
+    domain2 = [errorCopy domain];
 
-    [v8 isEqual:*MEMORY[0x277D18538]];
+    [domain2 isEqual:*MEMORY[0x277D18538]];
     return 1;
   }
 }

@@ -1,22 +1,22 @@
 @interface MPSGraphGetCoordOp
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphGetCoordOp
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
-  v10 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphGetCoordOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphTensorShapeOps.mm", v27);
-  v11 = v10;
+  v11 = nameCopy;
   v33 = 260;
   v32[0] = v27;
-  StringAttr = mlir::Builder::getStringAttr(a3, v32);
+  StringAttr = mlir::Builder::getStringAttr(builder, v32);
   v14 = mlir::FileLineColLoc::get(StringAttr, 0x66Fu, 0);
   if (v11)
   {
-    v15 = [v11 UTF8String];
-    v16 = strlen(v15);
+    uTF8String = [v11 UTF8String];
+    v16 = strlen(uTF8String);
     if (v16 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -31,7 +31,7 @@
     v31[4] = v16;
     if (v16)
     {
-      memmove(__dst, v15, v16);
+      memmove(__dst, uTF8String, v16);
     }
 
     v18 = &__dst[v17];
@@ -45,7 +45,7 @@
   }
 
   *v18 = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, __dst, v13, &__p);
+  MPSSymbolTable::insertOpInSymbolTable(table, __dst, v13, &__p);
   p_p = __p.__r_.__value_.__r.__words[0];
   if ((__p.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -61,7 +61,7 @@
   }
 
   LOBYTE(v33) = v20;
-  v21 = mlir::Builder::getStringAttr(a3, v32);
+  v21 = mlir::Builder::getStringAttr(builder, v32);
   v22 = mlir::NameLoc::get(v21, v14);
   if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -77,8 +77,8 @@ LABEL_16:
 
 LABEL_21:
       operator delete(v27[0]);
-      v23 = *a5;
-      v24 = *(a5 + 1) - *a5;
+      v23 = *values;
+      v24 = *(values + 1) - *values;
       if (!v24)
       {
         goto LABEL_24;
@@ -101,8 +101,8 @@ LABEL_21:
   }
 
 LABEL_17:
-  v23 = *a5;
-  v24 = *(a5 + 1) - *a5;
+  v23 = *values;
+  v24 = *(values + 1) - *values;
   if (!v24)
   {
 LABEL_24:
@@ -115,7 +115,7 @@ LABEL_22:
     goto LABEL_24;
   }
 
-  v32[0] = mlir::OpBuilder::create<mlir::mps::GetCoordOp,mlir::Value &,mlir::Value &>(a3, v22, v23, v23 + 1) - 16;
+  v32[0] = mlir::OpBuilder::create<mlir::mps::GetCoordOp,mlir::Value &,mlir::Value &>(builder, v22, v23, v23 + 1) - 16;
   DefiningOp = mlir::Value::getDefiningOp(v32);
 
   return DefiningOp;

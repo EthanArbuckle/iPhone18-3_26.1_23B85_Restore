@@ -1,23 +1,23 @@
 @interface UIKeyboardEmojiSectionHeader
 - (BOOL)useVibrantBlend;
 - (UIEdgeInsets)insets;
-- (UIKeyboardEmojiSectionHeader)initWithFrame:(CGRect)a3;
+- (UIKeyboardEmojiSectionHeader)initWithFrame:(CGRect)frame;
 - (double)headerFontSize;
 - (void)layoutSubviews;
-- (void)setEffect:(id)a3;
-- (void)setHeaderFontSize:(double)a3;
-- (void)setHeaderName:(id)a3;
-- (void)setHeaderOpacity:(double)a3;
-- (void)setUseVibrantBlend:(BOOL)a3;
+- (void)setEffect:(id)effect;
+- (void)setHeaderFontSize:(double)size;
+- (void)setHeaderName:(id)name;
+- (void)setHeaderOpacity:(double)opacity;
+- (void)setUseVibrantBlend:(BOOL)blend;
 @end
 
 @implementation UIKeyboardEmojiSectionHeader
 
-- (UIKeyboardEmojiSectionHeader)initWithFrame:(CGRect)a3
+- (UIKeyboardEmojiSectionHeader)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = UIKeyboardEmojiSectionHeader;
-  v3 = [(UICollectionReusableView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionReusableView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UILabel alloc];
@@ -56,77 +56,77 @@
   [(UILabel *)self->_emojiSectionHeader setFrame:v5 + v15, v7 + v12, v9 - (v15 + v13), v11 - (v12 + v14)];
 }
 
-- (void)setHeaderName:(id)a3
+- (void)setHeaderName:(id)name
 {
   v4 = MEMORY[0x1E695DF58];
-  v5 = a3;
-  v6 = [v4 currentLocale];
-  v7 = [v5 uppercaseStringWithLocale:v6];
+  nameCopy = name;
+  currentLocale = [v4 currentLocale];
+  v7 = [nameCopy uppercaseStringWithLocale:currentLocale];
 
   [(UILabel *)self->_emojiSectionHeader setText:v7];
 }
 
-- (void)setHeaderFontSize:(double)a3
+- (void)setHeaderFontSize:(double)size
 {
   emojiSectionHeader = self->_emojiSectionHeader;
-  v4 = [off_1E70ECC18 boldSystemFontOfSize:a3];
+  v4 = [off_1E70ECC18 boldSystemFontOfSize:size];
   [(UILabel *)emojiSectionHeader setFont:v4];
 }
 
 - (double)headerFontSize
 {
-  v2 = [(UILabel *)self->_emojiSectionHeader font];
-  [v2 pointSize];
+  font = [(UILabel *)self->_emojiSectionHeader font];
+  [font pointSize];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setHeaderOpacity:(double)a3
+- (void)setHeaderOpacity:(double)opacity
 {
   [(UIView *)self->_emojiSectionHeader setOpaque:0];
   emojiSectionHeader = self->_emojiSectionHeader;
 
-  [(UIView *)emojiSectionHeader setAlpha:a3];
+  [(UIView *)emojiSectionHeader setAlpha:opacity];
 }
 
-- (void)setUseVibrantBlend:(BOOL)a3
+- (void)setUseVibrantBlend:(BOOL)blend
 {
-  v3 = a3;
-  if (a3)
+  blendCopy = blend;
+  if (blend)
   {
-    v5 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CF8]];
-    v6 = [(UIView *)self->_emojiSectionHeader layer];
-    [v6 setCompositingFilter:v5];
+    layer2 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CF8]];
+    layer = [(UIView *)self->_emojiSectionHeader layer];
+    [layer setCompositingFilter:layer2];
   }
 
   else
   {
-    v5 = [(UIView *)self->_emojiSectionHeader layer];
-    [v5 setCompositingFilter:0];
+    layer2 = [(UIView *)self->_emojiSectionHeader layer];
+    [layer2 setCompositingFilter:0];
   }
 
-  v7 = [(UIView *)self layer];
-  [v7 setAllowsGroupOpacity:!v3];
+  layer3 = [(UIView *)self layer];
+  [layer3 setAllowsGroupOpacity:!blendCopy];
 
-  v8 = [(UIView *)self layer];
-  [v8 setAllowsGroupBlending:!v3];
+  layer4 = [(UIView *)self layer];
+  [layer4 setAllowsGroupBlending:!blendCopy];
 }
 
 - (BOOL)useVibrantBlend
 {
-  v2 = [(UIView *)self->_emojiSectionHeader layer];
-  v3 = [v2 compositingFilter];
-  v4 = v3 != 0;
+  layer = [(UIView *)self->_emojiSectionHeader layer];
+  compositingFilter = [layer compositingFilter];
+  v4 = compositingFilter != 0;
 
   return v4;
 }
 
-- (void)setEffect:(id)a3
+- (void)setEffect:(id)effect
 {
-  v4 = a3;
-  v8 = v4;
-  if (v4 && !self->_backdropView)
+  effectCopy = effect;
+  v8 = effectCopy;
+  if (effectCopy && !self->_backdropView)
   {
     v5 = [UIVisualEffectView alloc];
     [(UIView *)self bounds];
@@ -135,10 +135,10 @@
     self->_backdropView = v6;
 
     [(UIView *)self insertSubview:self->_backdropView atIndex:0];
-    v4 = v8;
+    effectCopy = v8;
   }
 
-  [(UIVisualEffectView *)self->_backdropView setEffect:v4];
+  [(UIVisualEffectView *)self->_backdropView setEffect:effectCopy];
 }
 
 - (UIEdgeInsets)insets

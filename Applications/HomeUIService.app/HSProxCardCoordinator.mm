@@ -2,103 +2,103 @@
 - (BOOL)isConfiguringLastAccessoryOfSameCategory;
 - (BOOL)isInSetupContext;
 - (BOOL)requiresDismissalConfirmation;
-- (BOOL)requiresDismissalConfirmation:(id)a3;
+- (BOOL)requiresDismissalConfirmation:(id)confirmation;
 - (BOOL)requiresIdentifyButton;
-- (BOOL)requiresIdentifyButton:(id)a3;
-- (BOOL)shouldShowCustomCommissioningProxCardWithPayload:(id)a3;
+- (BOOL)requiresIdentifyButton:(id)button;
+- (BOOL)shouldShowCustomCommissioningProxCardWithPayload:(id)payload;
 - (BOOL)stateMachineConfigurationActiveTupleIsTopTuple;
-- (BOOL)stateMachineConfigurationIsLaunchedToSetupMultipleAccessories:(id)a3;
-- (BOOL)stateMachineConfigurationShouldJumpToDoneStep:(id)a3;
-- (BOOL)stateMachineConfigurationShouldSetupBridgedAccessories:(id)a3;
-- (BOOL)stateMachineConfigurationShouldSetupRouters:(id)a3;
-- (BOOL)stateMachineConfigurationShouldSkipAccessoryUpdateStep:(id)a3;
-- (BOOL)stateMachineConfigurationShouldSkipBridgeAddedStep:(id)a3;
-- (BOOL)stateMachineConfigurationShouldSkipDetectedStep:(id)a3;
-- (BOOL)stateMachineConfigurationShouldSkipDoneStep:(id)a3;
-- (BOOL)stateMachineConfigurationShouldSkipHomeHubStep:(id)a3;
-- (BOOL)stateMachineConfigurationShouldSkipResumeSelectAccessoryStep:(id)a3;
+- (BOOL)stateMachineConfigurationIsLaunchedToSetupMultipleAccessories:(id)accessories;
+- (BOOL)stateMachineConfigurationShouldJumpToDoneStep:(id)step;
+- (BOOL)stateMachineConfigurationShouldSetupBridgedAccessories:(id)accessories;
+- (BOOL)stateMachineConfigurationShouldSetupRouters:(id)routers;
+- (BOOL)stateMachineConfigurationShouldSkipAccessoryUpdateStep:(id)step;
+- (BOOL)stateMachineConfigurationShouldSkipBridgeAddedStep:(id)step;
+- (BOOL)stateMachineConfigurationShouldSkipDetectedStep:(id)step;
+- (BOOL)stateMachineConfigurationShouldSkipDoneStep:(id)step;
+- (BOOL)stateMachineConfigurationShouldSkipHomeHubStep:(id)step;
+- (BOOL)stateMachineConfigurationShouldSkipResumeSelectAccessoryStep:(id)step;
 - (HMHome)home;
 - (HSAccessoryTuple)nextUnconfiguredBridgedAccessory;
-- (HSProxCardCoordinator)initWithHome:(id)a3 accessories:(id)a4 delegate:(id)a5;
-- (HSProxCardCoordinator)initWithHome:(id)a3 accessoryDescription:(id)a4 matterDeviceSetupRequest:(id)a5 setupSpecificAccessory:(BOOL)a6 entitlementContext:(id)a7 discoveredAccessory:(id)a8 delegate:(id)a9;
+- (HSProxCardCoordinator)initWithHome:(id)home accessories:(id)accessories delegate:(id)delegate;
+- (HSProxCardCoordinator)initWithHome:(id)home accessoryDescription:(id)description matterDeviceSetupRequest:(id)request setupSpecificAccessory:(BOOL)accessory entitlementContext:(id)context discoveredAccessory:(id)discoveredAccessory delegate:(id)delegate;
 - (HSProxCardCoordinatorDelegate)delegate;
 - (NSArray)allAccessories;
 - (NSArray)allAccessoryTuples;
 - (NSString)description;
 - (id)_bridgedConfigurationOrdinalityString;
-- (id)_configurationForAccessory:(id)a3 stateMachine:(id)a4;
-- (id)_discoveredAccessoryOrSetupCodeDidUpdateWithPayload:(id)a3 fromViewController:(id)a4;
+- (id)_configurationForAccessory:(id)accessory stateMachine:(id)machine;
+- (id)_discoveredAccessoryOrSetupCodeDidUpdateWithPayload:(id)payload fromViewController:(id)controller;
 - (id)_generateNextStep;
-- (id)_generateNextStepWithActiveTuple:(id)a3;
-- (id)_tupleForAccessory:(id)a3;
-- (id)didReceiveDiscoveredAccessory:(id)a3 withPayload:(id)a4;
-- (id)didReceiveSetupCode:(id)a3 withPayload:(id)a4 fromViewController:(id)a5;
-- (id)nextViewControllerWithTarget:(id)a3;
-- (id)showCustomCommissioningFlowAlertIfNecessaryForPayload:(id)a3 onViewController:(id)a4;
+- (id)_generateNextStepWithActiveTuple:(id)tuple;
+- (id)_tupleForAccessory:(id)accessory;
+- (id)didReceiveDiscoveredAccessory:(id)accessory withPayload:(id)payload;
+- (id)didReceiveSetupCode:(id)code withPayload:(id)payload fromViewController:(id)controller;
+- (id)nextViewControllerWithTarget:(id)target;
+- (id)showCustomCommissioningFlowAlertIfNecessaryForPayload:(id)payload onViewController:(id)controller;
 - (int64_t)accessoryCommunicationProtocol;
 - (int64_t)launchReason;
 - (unint64_t)numberOfAccessoriesInSameCategory;
-- (void)didReceiveAccessories:(id)a3;
-- (void)dismissProxCardFlowAfterExecuting:(id)a3;
-- (void)home:(id)a3 didFailAccessorySetupWithError:(id)a4;
-- (void)notifyDelegateOfPairingFailureWithError:(id)a3;
+- (void)didReceiveAccessories:(id)accessories;
+- (void)dismissProxCardFlowAfterExecuting:(id)executing;
+- (void)home:(id)home didFailAccessorySetupWithError:(id)error;
+- (void)notifyDelegateOfPairingFailureWithError:(id)error;
 - (void)pairAccessory;
 - (void)pairAccessoryToAppleHome;
 - (void)pairAccessoryToPEA;
 - (void)resetForRetry;
-- (void)setSetupCode:(id)a3;
-- (void)setUpThermostatControllerFor:(id)a3 homeUUID:(id)a4;
-- (void)stateMachineConfiguration:(id)a3 didUpdateHome:(id)a4;
-- (void)stateMachineConfigurationIsReadyToPair:(id)a3;
-- (void)updateAccessoriesPendingConfiguration:(id)a3;
-- (void)updateSetupAccessoryDescriptionWithPayload:(id)a3;
+- (void)setSetupCode:(id)code;
+- (void)setUpThermostatControllerFor:(id)for homeUUID:(id)d;
+- (void)stateMachineConfiguration:(id)configuration didUpdateHome:(id)home;
+- (void)stateMachineConfigurationIsReadyToPair:(id)pair;
+- (void)updateAccessoriesPendingConfiguration:(id)configuration;
+- (void)updateSetupAccessoryDescriptionWithPayload:(id)payload;
 @end
 
 @implementation HSProxCardCoordinator
 
-- (HSProxCardCoordinator)initWithHome:(id)a3 accessoryDescription:(id)a4 matterDeviceSetupRequest:(id)a5 setupSpecificAccessory:(BOOL)a6 entitlementContext:(id)a7 discoveredAccessory:(id)a8 delegate:(id)a9
+- (HSProxCardCoordinator)initWithHome:(id)home accessoryDescription:(id)description matterDeviceSetupRequest:(id)request setupSpecificAccessory:(BOOL)accessory entitlementContext:(id)context discoveredAccessory:(id)discoveredAccessory delegate:(id)delegate
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v53 = a7;
-  v52 = a8;
-  v18 = a9;
+  homeCopy = home;
+  descriptionCopy = description;
+  requestCopy = request;
+  contextCopy = context;
+  discoveredAccessoryCopy = discoveredAccessory;
+  delegateCopy = delegate;
   v54.receiver = self;
   v54.super_class = HSProxCardCoordinator;
   v19 = [(HSProxCardCoordinator *)&v54 init];
   v20 = v19;
   if (v19)
   {
-    v51 = v18;
-    objc_storeWeak(&v19->_delegate, v18);
-    objc_storeStrong(&v20->_setupAccessoryDescription, a4);
-    objc_storeStrong(&v20->_matterDeviceSetupRequest, a5);
-    v21 = [v16 setupAccessoryPayload];
-    v22 = [v21 setupPayloadURL];
-    v23 = [v22 absoluteString];
+    v51 = delegateCopy;
+    objc_storeWeak(&v19->_delegate, delegateCopy);
+    objc_storeStrong(&v20->_setupAccessoryDescription, description);
+    objc_storeStrong(&v20->_matterDeviceSetupRequest, request);
+    setupAccessoryPayload = [descriptionCopy setupAccessoryPayload];
+    setupPayloadURL = [setupAccessoryPayload setupPayloadURL];
+    absoluteString = [setupPayloadURL absoluteString];
 
-    if ([v23 length])
+    if ([absoluteString length])
     {
-      v24 = [HMAccessorySetupCoordinator communicationProtocolForSetupPayloadURLString:v23];
-      v25 = [v24 integerValue];
+      v24 = [HMAccessorySetupCoordinator communicationProtocolForSetupPayloadURLString:absoluteString];
+      integerValue = [v24 integerValue];
 
-      v20->_accessoryCommunicationProtocol = v25;
+      v20->_accessoryCommunicationProtocol = integerValue;
     }
 
-    v20->_setupSpecificAccessory = a6;
+    v20->_setupSpecificAccessory = accessory;
     v26 = +[HSAccessoryPairingEventLogger sharedLogger];
-    v27 = [v16 setupAccessoryPayload];
-    [v26 logTransportFlagsFromPayload:v27];
+    setupAccessoryPayload2 = [descriptionCopy setupAccessoryPayload];
+    [v26 logTransportFlagsFromPayload:setupAccessoryPayload2];
 
-    objc_storeStrong(&v20->_entitlementContext, a7);
-    v28 = [v16 suggestedRoomUniqueIdentifier];
+    objc_storeStrong(&v20->_entitlementContext, context);
+    suggestedRoomUniqueIdentifier = [descriptionCopy suggestedRoomUniqueIdentifier];
     suggestedRoomUUID = v20->_suggestedRoomUUID;
-    v20->_suggestedRoomUUID = v28;
+    v20->_suggestedRoomUUID = suggestedRoomUniqueIdentifier;
 
     v20->_pairingState = 0;
-    objc_storeStrong(&v20->_discoveredAccessory, a8);
-    if (!a6)
+    objc_storeStrong(&v20->_discoveredAccessory, discoveredAccessory);
+    if (!accessory)
     {
       v30 = objc_alloc_init(HFAccessoryBrowsingManager);
       accessoryBrowser = v20->_accessoryBrowser;
@@ -107,9 +107,9 @@
       [(HFAccessoryBrowsingManager *)v20->_accessoryBrowser startSearchingForNewAccessories];
     }
 
-    v32 = [v16 isSetupInitiatedByOtherMatterEcosystem];
+    isSetupInitiatedByOtherMatterEcosystem = [descriptionCopy isSetupInitiatedByOtherMatterEcosystem];
     v33 = &off_1000C4960;
-    if (!v32)
+    if (!isSetupInitiatedByOtherMatterEcosystem)
     {
       v33 = off_1000C4958;
     }
@@ -130,7 +130,7 @@
     v20->_matterSetupPairingWindowReadyFuture = v39;
 
     v41 = +[HFHomeKitDispatcher sharedDispatcher];
-    [v41 setOverrideHome:v15];
+    [v41 setOverrideHome:homeCopy];
 
     v42 = +[HFHomeKitDispatcher sharedDispatcher];
     [v42 addHomeObserver:v20];
@@ -139,48 +139,48 @@
     v43 = HFLogForCategory();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
     {
-      v44 = [v15 hf_prettyDescription];
-      v45 = [v16 hf_prettyDescription];
-      [v52 hf_prettyDescription];
-      v50 = v15;
-      v46 = v23;
-      v48 = v47 = v17;
+      hf_prettyDescription = [homeCopy hf_prettyDescription];
+      hf_prettyDescription2 = [descriptionCopy hf_prettyDescription];
+      [discoveredAccessoryCopy hf_prettyDescription];
+      v50 = homeCopy;
+      v46 = absoluteString;
+      v48 = v47 = requestCopy;
       *buf = 138413058;
-      v56 = v44;
+      v56 = hf_prettyDescription;
       v57 = 2112;
-      v58 = v45;
+      v58 = hf_prettyDescription2;
       v59 = 2112;
-      v60 = v53;
+      v60 = contextCopy;
       v61 = 2112;
       v62 = v48;
       _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "Initialized HSProxCardCoordinator with Home [%@] accessoryDescription [%@] entitlementContext [%@] discoveredAccessory [%@]", buf, 0x2Au);
 
-      v17 = v47;
-      v23 = v46;
-      v15 = v50;
+      requestCopy = v47;
+      absoluteString = v46;
+      homeCopy = v50;
     }
 
-    v18 = v51;
+    delegateCopy = v51;
   }
 
   return v20;
 }
 
-- (HSProxCardCoordinator)initWithHome:(id)a3 accessories:(id)a4 delegate:(id)a5
+- (HSProxCardCoordinator)initWithHome:(id)home accessories:(id)accessories delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  homeCopy = home;
+  accessoriesCopy = accessories;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = HSProxCardCoordinator;
   v11 = [(HSProxCardCoordinator *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_delegate, v10);
-    if (v9)
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    if (accessoriesCopy)
     {
-      v13 = v9;
+      v13 = accessoriesCopy;
     }
 
     else
@@ -192,7 +192,7 @@
     [(HSProxCardCoordinator *)v12 didReceiveAccessories:v14];
 
     v15 = +[HFHomeKitDispatcher sharedDispatcher];
-    [v15 setOverrideHome:v8];
+    [v15 setOverrideHome:homeCopy];
 
     v16 = +[HFHomeKitDispatcher sharedDispatcher];
     [v16 addHomeObserver:v12];
@@ -205,17 +205,17 @@
 
 - (HMHome)home
 {
-  v2 = [(HSProxCardCoordinator *)self topAccessoryTuple];
-  v3 = [v2 configuration];
-  v4 = [v3 home];
+  topAccessoryTuple = [(HSProxCardCoordinator *)self topAccessoryTuple];
+  configuration = [topAccessoryTuple configuration];
+  home = [configuration home];
 
-  return v4;
+  return home;
 }
 
 - (int64_t)launchReason
 {
-  v3 = [(HSProxCardCoordinator *)self delegate];
-  v4 = [v3 coordinatorGetLaunchReason:self];
+  delegate = [(HSProxCardCoordinator *)self delegate];
+  v4 = [delegate coordinatorGetLaunchReason:self];
 
   return v4;
 }
@@ -224,19 +224,19 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
-  v6 = [(HSProxCardCoordinator *)self discoveredAccessory];
-  v7 = [(HSProxCardCoordinator *)self pairingState];
-  v8 = [(HSProxCardCoordinator *)self pairingFuture];
-  v9 = [(HSProxCardCoordinator *)self activeTuple];
-  v10 = [NSString stringWithFormat:@"<%@ setupAccessoryDescription: %@ discoveredAccessory: %@ pairingState: %lu pairingFuture: %@ activeTuple: %@>", v4, v5, v6, v7, v8, v9];
+  setupAccessoryDescription = [(HSProxCardCoordinator *)self setupAccessoryDescription];
+  discoveredAccessory = [(HSProxCardCoordinator *)self discoveredAccessory];
+  pairingState = [(HSProxCardCoordinator *)self pairingState];
+  pairingFuture = [(HSProxCardCoordinator *)self pairingFuture];
+  activeTuple = [(HSProxCardCoordinator *)self activeTuple];
+  v10 = [NSString stringWithFormat:@"<%@ setupAccessoryDescription: %@ discoveredAccessory: %@ pairingState: %lu pairingFuture: %@ activeTuple: %@>", v4, setupAccessoryDescription, discoveredAccessory, pairingState, pairingFuture, activeTuple];
 
   return v10;
 }
 
-- (void)updateAccessoriesPendingConfiguration:(id)a3
+- (void)updateAccessoriesPendingConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   if ([(HSProxCardCoordinator *)self launchReason]!= 1)
   {
     v5 = HFLogForCategory();
@@ -248,7 +248,7 @@
     goto LABEL_8;
   }
 
-  if (![v4 count])
+  if (![configurationCopy count])
   {
     v5 = HFLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -261,54 +261,54 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  [(HSProxCardCoordinator *)self didReceiveAccessories:v4];
+  [(HSProxCardCoordinator *)self didReceiveAccessories:configurationCopy];
   [(HSProxCardCoordinator *)self setUserDidSelectAccessories:1];
 LABEL_9:
 }
 
-- (void)didReceiveAccessories:(id)a3
+- (void)didReceiveAccessories:(id)accessories
 {
-  v4 = a3;
+  accessoriesCopy = accessories;
   [(HSProxCardCoordinator *)self setPairingState:2];
   if ([(HSProxCardCoordinator *)self launchReason])
   {
-    v5 = [v4 allObjects];
-    v6 = [v5 sortedArrayUsingComparator:&stru_1000C6FE0];
+    allObjects = [accessoriesCopy allObjects];
+    topAccessoryTuple2 = [allObjects sortedArrayUsingComparator:&stru_1000C6FE0];
 
     if (_os_feature_enabled_impl() && ([(HSProxCardCoordinator *)self launchReason]== 4 || [(HSProxCardCoordinator *)self launchReason]== 5))
     {
-      v7 = [HFUtilities sortedLockAccessoryArrayForSetup:v4];
+      v7 = [HFUtilities sortedLockAccessoryArrayForSetup:accessoriesCopy];
 
-      v6 = v7;
+      topAccessoryTuple2 = v7;
     }
 
-    v8 = [v6 firstObject];
-    v9 = [(HSProxCardCoordinator *)self _tupleForAccessory:v8];
+    firstObject = [topAccessoryTuple2 firstObject];
+    v9 = [(HSProxCardCoordinator *)self _tupleForAccessory:firstObject];
     [(HSProxCardCoordinator *)self setTopAccessoryTuple:v9];
-    v10 = [(HSProxCardCoordinator *)self topAccessoryTuple];
-    [(HSProxCardCoordinator *)self setActiveTuple:v10];
+    topAccessoryTuple = [(HSProxCardCoordinator *)self topAccessoryTuple];
+    [(HSProxCardCoordinator *)self setActiveTuple:topAccessoryTuple];
   }
 
   else
   {
-    v8 = [v4 na_firstObjectPassingTest:&stru_1000C7020];
-    v6 = [(HSProxCardCoordinator *)self topAccessoryTuple];
-    [v6 setAccessory:v8];
+    firstObject = [accessoriesCopy na_firstObjectPassingTest:&stru_1000C7020];
+    topAccessoryTuple2 = [(HSProxCardCoordinator *)self topAccessoryTuple];
+    [topAccessoryTuple2 setAccessory:firstObject];
   }
 
-  v11 = v4;
+  v11 = accessoriesCopy;
   v12 = v11;
-  if (([v8 hf_isNetworkRouter] & 1) == 0)
+  if (([firstObject hf_isNetworkRouter] & 1) == 0)
   {
-    v13 = [NSSet na_setWithSafeObject:v8];
+    v13 = [NSSet na_setWithSafeObject:firstObject];
     v12 = [v11 na_setByRemovingObjectsFromSet:v13];
   }
 
-  v14 = [(HSProxCardCoordinator *)self topAccessoryTuple];
-  v15 = [v14 accessory];
-  v16 = [v15 hf_isSprinkler];
+  topAccessoryTuple3 = [(HSProxCardCoordinator *)self topAccessoryTuple];
+  accessory = [topAccessoryTuple3 accessory];
+  hf_isSprinkler = [accessory hf_isSprinkler];
 
-  if (v16)
+  if (hf_isSprinkler)
   {
     v17 = [v12 na_filter:&stru_1000C7040];
     v18 = [v12 na_setByRemovingObjectsFromSet:v17];
@@ -316,8 +316,8 @@ LABEL_9:
     v12 = v18;
   }
 
-  v19 = [v12 allObjects];
-  v20 = [v19 sortedArrayUsingComparator:&stru_1000C6FE0];
+  allObjects2 = [v12 allObjects];
+  v20 = [allObjects2 sortedArrayUsingComparator:&stru_1000C6FE0];
 
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
@@ -327,47 +327,47 @@ LABEL_9:
   v21 = [v20 na_map:v39];
   [(HSProxCardCoordinator *)self setBridgedAccessories:v21];
 
-  v22 = [(HSProxCardCoordinator *)self bridgedAccessories];
-  v23 = [v22 na_dictionaryByBucketingObjectsUsingKeyGenerator:&stru_1000C70C8];
+  bridgedAccessories = [(HSProxCardCoordinator *)self bridgedAccessories];
+  v23 = [bridgedAccessories na_dictionaryByBucketingObjectsUsingKeyGenerator:&stru_1000C70C8];
   [(HSProxCardCoordinator *)self setBridgedAccessoryCategoryToArrayMap:v23];
 
-  v24 = [v8 services];
-  LODWORD(v23) = [v24 na_any:&stru_1000C70E8];
+  services = [firstObject services];
+  LODWORD(v23) = [services na_any:&stru_1000C70E8];
 
   if (v23)
   {
-    v25 = [(HSProxCardCoordinator *)self topAccessoryTuple];
-    v26 = [v25 configuration];
-    v27 = [v26 home];
-    v28 = [v27 uniqueIdentifier];
-    if (!v28)
+    topAccessoryTuple4 = [(HSProxCardCoordinator *)self topAccessoryTuple];
+    configuration = [topAccessoryTuple4 configuration];
+    home = [configuration home];
+    uniqueIdentifier = [home uniqueIdentifier];
+    if (!uniqueIdentifier)
     {
 LABEL_16:
 
       goto LABEL_17;
     }
 
-    v29 = v28;
+    v29 = uniqueIdentifier;
     [(HSProxCardCoordinator *)self topAccessoryTuple];
     v30 = v38 = v11;
-    v31 = [v30 configuration];
-    [v31 home];
-    v37 = v25;
-    v32 = v8;
+    configuration2 = [v30 configuration];
+    [configuration2 home];
+    v37 = topAccessoryTuple4;
+    v32 = firstObject;
     v34 = v33 = v20;
-    v36 = [v34 isAllowedToEnableAdaptiveTemperatureAutomations];
+    isAllowedToEnableAdaptiveTemperatureAutomations = [v34 isAllowedToEnableAdaptiveTemperatureAutomations];
 
     v20 = v33;
-    v8 = v32;
+    firstObject = v32;
 
     v11 = v38;
-    if (v36)
+    if (isAllowedToEnableAdaptiveTemperatureAutomations)
     {
-      v25 = [(HSProxCardCoordinator *)self topAccessoryTuple];
-      v26 = [v25 configuration];
-      v27 = [v26 home];
-      v35 = [v27 uniqueIdentifier];
-      [(HSProxCardCoordinator *)self setUpThermostatControllerFor:v8 homeUUID:v35];
+      topAccessoryTuple4 = [(HSProxCardCoordinator *)self topAccessoryTuple];
+      configuration = [topAccessoryTuple4 configuration];
+      home = [configuration home];
+      uniqueIdentifier2 = [home uniqueIdentifier];
+      [(HSProxCardCoordinator *)self setUpThermostatControllerFor:firstObject homeUUID:uniqueIdentifier2];
 
       goto LABEL_16;
     }
@@ -378,10 +378,10 @@ LABEL_17:
 
 - (void)pairAccessory
 {
-  v3 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
-  v4 = [v3 isSetupInitiatedByOtherMatterEcosystem];
+  setupAccessoryDescription = [(HSProxCardCoordinator *)self setupAccessoryDescription];
+  isSetupInitiatedByOtherMatterEcosystem = [setupAccessoryDescription isSetupInitiatedByOtherMatterEcosystem];
 
-  if (v4)
+  if (isSetupInitiatedByOtherMatterEcosystem)
   {
 
     [(HSProxCardCoordinator *)self pairAccessoryToPEA];
@@ -396,38 +396,38 @@ LABEL_17:
 
 - (void)pairAccessoryToAppleHome
 {
-  v4 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
+  setupAccessoryDescription = [(HSProxCardCoordinator *)self setupAccessoryDescription];
 
-  if (!v4)
+  if (!setupAccessoryDescription)
   {
     sub_100079AFC();
   }
 
   v5 = [HFSetupPairingContext alloc];
-  v6 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
-  v7 = [(HSProxCardCoordinator *)self entitlementContext];
-  v8 = [v5 initWithSetupAccessoryDescription:v6 isTrustedOrigin:{objc_msgSend(v7, "isEntitledForHomeKitSPI")}];
+  setupAccessoryDescription2 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
+  entitlementContext = [(HSProxCardCoordinator *)self entitlementContext];
+  v8 = [v5 initWithSetupAccessoryDescription:setupAccessoryDescription2 isTrustedOrigin:{objc_msgSend(entitlementContext, "isEntitledForHomeKitSPI")}];
 
-  v9 = [(HSProxCardCoordinator *)self discoveredAccessory];
-  v10 = [v9 accessory];
-  v11 = [v10 knownToSystemCommissioner];
+  discoveredAccessory = [(HSProxCardCoordinator *)self discoveredAccessory];
+  accessory = [discoveredAccessory accessory];
+  knownToSystemCommissioner = [accessory knownToSystemCommissioner];
 
-  if (v11)
+  if (knownToSystemCommissioner)
   {
-    v12 = 0;
+    discoveredAccessory2 = 0;
   }
 
   else
   {
-    v12 = [(HSProxCardCoordinator *)self discoveredAccessory];
+    discoveredAccessory2 = [(HSProxCardCoordinator *)self discoveredAccessory];
   }
 
-  v13 = [[HSAccessoryPairingFuture alloc] initWithPairingContext:v8 discoveredAccessory:v12];
+  v13 = [[HSAccessoryPairingFuture alloc] initWithPairingContext:v8 discoveredAccessory:discoveredAccessory2];
   [(HSProxCardCoordinator *)self setPairingFuture:v13];
 
-  v14 = [(HSProxCardCoordinator *)self pairingFuture];
-  v15 = [(HSProxCardCoordinator *)self delegate];
-  [v14 setPairingObserver:v15];
+  pairingFuture = [(HSProxCardCoordinator *)self pairingFuture];
+  delegate = [(HSProxCardCoordinator *)self delegate];
+  [pairingFuture setPairingObserver:delegate];
 
   v16 = +[HSAccessoryPairingEventLogger sharedLogger];
   [v16 logPairingBegin];
@@ -445,13 +445,13 @@ LABEL_17:
     v31 = 2112;
     v32 = v8;
     v33 = 2112;
-    v34 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%@:%@ pairing starting with context: %@ coordinator: %@", buf, 0x2Au);
   }
 
-  v20 = [(HSProxCardCoordinator *)self pairingFuture];
-  v21 = [(HSProxCardCoordinator *)self home];
-  v22 = [v20 startPairingWithHome:v21];
+  pairingFuture2 = [(HSProxCardCoordinator *)self pairingFuture];
+  home = [(HSProxCardCoordinator *)self home];
+  v22 = [pairingFuture2 startPairingWithHome:home];
 
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
@@ -466,26 +466,26 @@ LABEL_17:
 
 - (void)pairAccessoryToPEA
 {
-  v4 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
+  setupAccessoryDescription = [(HSProxCardCoordinator *)self setupAccessoryDescription];
 
-  if (!v4)
+  if (!setupAccessoryDescription)
   {
     sub_100079B6C();
   }
 
   v5 = [HFSetupPairingContext alloc];
-  v6 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
-  v7 = [(HSProxCardCoordinator *)self entitlementContext];
-  v8 = [v5 initWithSetupAccessoryDescription:v6 isTrustedOrigin:{objc_msgSend(v7, "isEntitledForHomeKitSPI")}];
+  setupAccessoryDescription2 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
+  entitlementContext = [(HSProxCardCoordinator *)self entitlementContext];
+  v8 = [v5 initWithSetupAccessoryDescription:setupAccessoryDescription2 isTrustedOrigin:{objc_msgSend(entitlementContext, "isEntitledForHomeKitSPI")}];
 
   objc_opt_class();
-  v9 = [(HSProxCardCoordinator *)self topAccessoryTuple];
-  v10 = [v9 configuration];
-  if (v10)
+  topAccessoryTuple = [(HSProxCardCoordinator *)self topAccessoryTuple];
+  configuration = [topAccessoryTuple configuration];
+  if (configuration)
   {
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = configuration;
     }
 
     else
@@ -506,11 +506,11 @@ LABEL_17:
   }
 
   [v12 setContext:v8];
-  v13 = [(HSProxCardCoordinator *)self delegate];
-  [v12 addPairingObserver:v13];
+  delegate = [(HSProxCardCoordinator *)self delegate];
+  [v12 addPairingObserver:delegate];
 
   objc_initWeak(&location, self);
-  v14 = [v12 stageCHIPAccessory];
+  stageCHIPAccessory = [v12 stageCHIPAccessory];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10003CB64;
@@ -518,7 +518,7 @@ LABEL_17:
   v15 = v12;
   v24 = v15;
   objc_copyWeak(&v25, &location);
-  v16 = [v14 recover:v23];
+  v16 = [stageCHIPAccessory recover:v23];
 
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
@@ -526,7 +526,7 @@ LABEL_17:
   v19[3] = &unk_1000C7188;
   v17 = v15;
   v20 = v17;
-  v21 = self;
+  selfCopy = self;
   v22 = a2;
   v18 = [v16 addSuccessBlock:v19];
 
@@ -534,18 +534,18 @@ LABEL_17:
   objc_destroyWeak(&location);
 }
 
-- (void)notifyDelegateOfPairingFailureWithError:(id)a3
+- (void)notifyDelegateOfPairingFailureWithError:(id)error
 {
-  v17 = a3;
+  errorCopy = error;
   [(HSProxCardCoordinator *)self setPairingState:3];
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [(HSProxCardCoordinator *)self pairingFuture];
-  v6 = [v5 pairingStatusTitle];
-  [v4 setObject:v6 forKeyedSubscript:HFErrorUserInfoOptionTitleKey];
+  pairingFuture = [(HSProxCardCoordinator *)self pairingFuture];
+  pairingStatusTitle = [pairingFuture pairingStatusTitle];
+  [v4 setObject:pairingStatusTitle forKeyedSubscript:HFErrorUserInfoOptionTitleKey];
 
-  v7 = [(HSProxCardCoordinator *)self pairingFuture];
-  v8 = [v7 pairingStatusDescription];
-  [v4 setObject:v8 forKeyedSubscript:HFErrorUserInfoOptionDescriptionKey];
+  pairingFuture2 = [(HSProxCardCoordinator *)self pairingFuture];
+  pairingStatusDescription = [pairingFuture2 pairingStatusDescription];
+  [v4 setObject:pairingStatusDescription forKeyedSubscript:HFErrorUserInfoOptionDescriptionKey];
 
   v9 = [v4 count];
   if (v9)
@@ -558,41 +558,41 @@ LABEL_17:
     v10 = 0;
   }
 
-  v11 = [v17 hf_errorWithOperationType:0 options:v10];
-  v12 = [(HSProxCardCoordinator *)self topAccessoryTuple];
-  v13 = [v12 configuration];
-  [v13 setPairingError:v11];
+  v11 = [errorCopy hf_errorWithOperationType:0 options:v10];
+  topAccessoryTuple = [(HSProxCardCoordinator *)self topAccessoryTuple];
+  configuration = [topAccessoryTuple configuration];
+  [configuration setPairingError:v11];
 
   if (v9)
   {
   }
 
-  v14 = [(HSProxCardCoordinator *)self delegate];
-  v15 = [(HSProxCardCoordinator *)self topAccessoryTuple];
-  v16 = [v15 configuration];
-  [v14 coordinator:self updatedConfiguration:v16];
+  delegate = [(HSProxCardCoordinator *)self delegate];
+  topAccessoryTuple2 = [(HSProxCardCoordinator *)self topAccessoryTuple];
+  configuration2 = [topAccessoryTuple2 configuration];
+  [delegate coordinator:self updatedConfiguration:configuration2];
 }
 
 - (id)_generateNextStep
 {
-  v3 = [(HSProxCardCoordinator *)self activeTuple];
-  v4 = [(HSProxCardCoordinator *)self _generateNextStepWithActiveTuple:v3];
+  activeTuple = [(HSProxCardCoordinator *)self activeTuple];
+  v4 = [(HSProxCardCoordinator *)self _generateNextStepWithActiveTuple:activeTuple];
 
   return v4;
 }
 
-- (id)_generateNextStepWithActiveTuple:(id)a3
+- (id)_generateNextStepWithActiveTuple:(id)tuple
 {
-  v4 = a3;
-  v5 = [v4 moveToNextStep];
+  tupleCopy = tuple;
+  moveToNextStep = [tupleCopy moveToNextStep];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10003D5FC;
   v13[3] = &unk_1000C71B0;
-  v6 = v4;
+  v6 = tupleCopy;
   v14 = v6;
-  v15 = self;
-  v7 = [v5 flatMap:v13];
+  selfCopy = self;
+  v7 = [moveToNextStep flatMap:v13];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10003D6EC;
@@ -605,27 +605,27 @@ LABEL_17:
   return v9;
 }
 
-- (id)nextViewControllerWithTarget:(id)a3
+- (id)nextViewControllerWithTarget:(id)target
 {
-  v4 = a3;
-  v5 = [(HSProxCardCoordinator *)self activeTuple];
-  v6 = [v5 currentStep];
+  targetCopy = target;
+  activeTuple = [(HSProxCardCoordinator *)self activeTuple];
+  currentStep = [activeTuple currentStep];
 
   objc_initWeak(&location, self);
-  v7 = [(HSProxCardCoordinator *)self _generateNextStep];
+  _generateNextStep = [(HSProxCardCoordinator *)self _generateNextStep];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10003DD08;
   v20[3] = &unk_1000C7228;
   objc_copyWeak(v21, &location);
-  v21[1] = v6;
-  v8 = [v7 flatMap:v20];
+  v21[1] = currentStep;
+  v8 = [_generateNextStep flatMap:v20];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10003E0F4;
   v18[3] = &unk_1000C7250;
   v18[4] = self;
-  v9 = v4;
+  v9 = targetCopy;
   v19 = v9;
   v10 = [v8 flatMap:v18];
   v16[0] = _NSConcreteStackBlock;
@@ -650,26 +650,26 @@ LABEL_17:
   return v12;
 }
 
-- (void)dismissProxCardFlowAfterExecuting:(id)a3
+- (void)dismissProxCardFlowAfterExecuting:(id)executing
 {
-  v40 = a3;
-  v4 = [(HSProxCardCoordinator *)self topAccessoryTuple];
-  v5 = [v4 configuration];
-  v41 = [v5 home];
+  executingCopy = executing;
+  topAccessoryTuple = [(HSProxCardCoordinator *)self topAccessoryTuple];
+  configuration = [topAccessoryTuple configuration];
+  home = [configuration home];
 
-  if ([v41 hf_currentUserIsOwner])
+  if ([home hf_currentUserIsOwner])
   {
     v6 = 1;
   }
 
-  else if ([v41 hf_currentUserIsAdministrator])
+  else if ([home hf_currentUserIsAdministrator])
   {
     v6 = 2;
   }
 
   else
   {
-    if (!v41)
+    if (!home)
     {
       goto LABEL_8;
     }
@@ -688,8 +688,8 @@ LABEL_8:
   }
 
   v9 = +[HSAccessoryPairingEventLogger sharedLogger];
-  v10 = [(HSProxCardCoordinator *)self delegate];
-  [v9 logCardCount:{objc_msgSend(v10, "coordinatorGetNumberOfProxCards:", self)}];
+  delegate = [(HSProxCardCoordinator *)self delegate];
+  [v9 logCardCount:{objc_msgSend(delegate, "coordinatorGetNumberOfProxCards:", self)}];
 
   v11 = +[HSAccessoryPairingEventLogger sharedLogger];
   [v11 logHUISDismiss];
@@ -702,13 +702,13 @@ LABEL_8:
 
   else
   {
-    v15 = [(HSProxCardCoordinator *)self allAccessoryTuples];
+    allAccessoryTuples = [(HSProxCardCoordinator *)self allAccessoryTuples];
     v45[0] = _NSConcreteStackBlock;
     v45[1] = 3221225472;
     v45[2] = sub_10003ECC8;
     v45[3] = &unk_1000C72A0;
-    v46 = v41;
-    v16 = [v15 na_map:v45];
+    v46 = home;
+    v16 = [allAccessoryTuples na_map:v45];
     v17 = [NAFuture chainFutures:v16];
     v18 = v17;
     if (v17)
@@ -724,9 +724,9 @@ LABEL_8:
     v20 = v19;
   }
 
-  if (v40)
+  if (executingCopy)
   {
-    v21 = v40;
+    v21 = executingCopy;
   }
 
   else
@@ -735,12 +735,12 @@ LABEL_8:
   }
 
   v22 = v21;
-  v23 = [(HSProxCardCoordinator *)self pairingFuture];
-  v24 = [v23 cancelPairing];
-  v25 = v24;
-  if (v24)
+  pairingFuture = [(HSProxCardCoordinator *)self pairingFuture];
+  cancelPairing = [pairingFuture cancelPairing];
+  v25 = cancelPairing;
+  if (cancelPairing)
   {
-    v26 = v24;
+    v26 = cancelPairing;
   }
 
   else
@@ -751,19 +751,19 @@ LABEL_8:
   v27 = v26;
 
   v28 = +[NAFuture futureWithNoResult];
-  v29 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
-  v30 = [v29 isSetupInitiatedByOtherMatterEcosystem];
+  setupAccessoryDescription = [(HSProxCardCoordinator *)self setupAccessoryDescription];
+  isSetupInitiatedByOtherMatterEcosystem = [setupAccessoryDescription isSetupInitiatedByOtherMatterEcosystem];
 
-  if (v30)
+  if (isSetupInitiatedByOtherMatterEcosystem)
   {
     objc_opt_class();
-    v31 = [(HSProxCardCoordinator *)self topAccessoryTuple];
-    v32 = [v31 configuration];
-    if (v32)
+    topAccessoryTuple2 = [(HSProxCardCoordinator *)self topAccessoryTuple];
+    configuration2 = [topAccessoryTuple2 configuration];
+    if (configuration2)
     {
       if (objc_opt_isKindOfClass())
       {
-        v33 = v32;
+        v33 = configuration2;
       }
 
       else
@@ -783,9 +783,9 @@ LABEL_8:
       v34 = 0;
     }
 
-    v35 = [v34 cancelStagingForCHIPPairing];
+    cancelStagingForCHIPPairing = [v34 cancelStagingForCHIPPairing];
 
-    v28 = v35;
+    v28 = cancelStagingForCHIPPairing;
   }
 
   objc_initWeak(&location, self);
@@ -810,10 +810,10 @@ LABEL_8:
 - (void)resetForRetry
 {
   [(HSProxCardCoordinator *)self setPairingState:0];
-  v3 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
-  v4 = [v3 isSetupInitiatedByOtherMatterEcosystem];
+  setupAccessoryDescription = [(HSProxCardCoordinator *)self setupAccessoryDescription];
+  isSetupInitiatedByOtherMatterEcosystem = [setupAccessoryDescription isSetupInitiatedByOtherMatterEcosystem];
   v5 = &off_1000C4960;
-  if (!v4)
+  if (!isSetupInitiatedByOtherMatterEcosystem)
   {
     v5 = off_1000C4958;
   }
@@ -821,31 +821,31 @@ LABEL_8:
   v6 = objc_alloc_init(*v5);
 
   v7 = objc_alloc([v6 configurationObjectClass]);
-  v8 = [(HSProxCardCoordinator *)self home];
-  v9 = [v7 initWithHome:v8];
+  home = [(HSProxCardCoordinator *)self home];
+  v9 = [v7 initWithHome:home];
 
   [v9 setDelegate:self];
   v10 = objc_alloc_init(HSAccessoryTuple);
   [(HSAccessoryTuple *)v10 setStateMachine:v6];
   [(HSAccessoryTuple *)v10 setConfiguration:v9];
   [(HSProxCardCoordinator *)self setTopAccessoryTuple:v10];
-  v11 = [(HSProxCardCoordinator *)self topAccessoryTuple];
-  [(HSProxCardCoordinator *)self setActiveTuple:v11];
+  topAccessoryTuple = [(HSProxCardCoordinator *)self topAccessoryTuple];
+  [(HSProxCardCoordinator *)self setActiveTuple:topAccessoryTuple];
 
-  v12 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
-  [v12 updateRetry:1];
+  setupAccessoryDescription2 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
+  [setupAccessoryDescription2 updateRetry:1];
 
-  v13 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
-  [v13 setCancellationReason:0];
+  setupAccessoryDescription3 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
+  [setupAccessoryDescription3 setCancellationReason:0];
 
-  v14 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
-  v15 = [v14 setupAccessoryPayload];
-  v16 = [v15 setupCode];
-  [(HSProxCardCoordinator *)self setSetupCode:v16];
+  setupAccessoryDescription4 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
+  setupAccessoryPayload = [setupAccessoryDescription4 setupAccessoryPayload];
+  setupCode = [setupAccessoryPayload setupCode];
+  [(HSProxCardCoordinator *)self setSetupCode:setupCode];
 
-  v17 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
-  v18 = [v17 setupAccessoryPayload];
-  -[HSProxCardCoordinator setAccessoryCommunicationProtocol:](self, "setAccessoryCommunicationProtocol:", [v18 communicationProtocol]);
+  setupAccessoryDescription5 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
+  setupAccessoryPayload2 = [setupAccessoryDescription5 setupAccessoryPayload];
+  -[HSProxCardCoordinator setAccessoryCommunicationProtocol:](self, "setAccessoryCommunicationProtocol:", [setupAccessoryPayload2 communicationProtocol]);
 
   if (![(HSProxCardCoordinator *)self setupSpecificAccessory])
   {
@@ -856,8 +856,8 @@ LABEL_8:
     [(HFAccessoryBrowsingManager *)self->_accessoryBrowser startSearchingForNewAccessories];
   }
 
-  v21 = [(HSProxCardCoordinator *)self discoveredAccessory];
-  [v21 updateStatus:1 error:0];
+  discoveredAccessory = [(HSProxCardCoordinator *)self discoveredAccessory];
+  [discoveredAccessory updateStatus:1 error:0];
 
   v22 = HFLogForCategory();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -866,29 +866,29 @@ LABEL_8:
   }
 }
 
-- (void)home:(id)a3 didFailAccessorySetupWithError:(id)a4
+- (void)home:(id)home didFailAccessorySetupWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  homeCopy = home;
+  errorCopy = error;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [v6 hf_prettyDescription];
+    hf_prettyDescription = [homeCopy hf_prettyDescription];
     v14 = 138412802;
     v15 = v12;
     v16 = 2112;
-    v17 = v13;
+    v17 = hf_prettyDescription;
     v18 = 2112;
-    v19 = v7;
+    v19 = errorCopy;
     _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "[%@ home:%@]", &v14, 0x20u);
   }
 
-  if ([v7 hf_isHMErrorWithCode:23])
+  if ([errorCopy hf_isHMErrorWithCode:23])
   {
-    v9 = HFLogForCategory();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    pairingFuture = HFLogForCategory();
+    if (os_log_type_enabled(pairingFuture, OS_LOG_TYPE_ERROR))
     {
       sub_100079FF0();
     }
@@ -896,42 +896,42 @@ LABEL_8:
 
   else
   {
-    v9 = [(HSProxCardCoordinator *)self pairingFuture];
-    v10 = [v9 cancelPairingWithError:v7];
+    pairingFuture = [(HSProxCardCoordinator *)self pairingFuture];
+    v10 = [pairingFuture cancelPairingWithError:errorCopy];
   }
 }
 
 - (HSAccessoryTuple)nextUnconfiguredBridgedAccessory
 {
-  v2 = [(HSProxCardCoordinator *)self bridgedAccessories];
-  v3 = [v2 na_firstObjectPassingTest:&stru_1000C72E0];
+  bridgedAccessories = [(HSProxCardCoordinator *)self bridgedAccessories];
+  v3 = [bridgedAccessories na_firstObjectPassingTest:&stru_1000C72E0];
 
   return v3;
 }
 
 - (id)_bridgedConfigurationOrdinalityString
 {
-  v3 = [(HSProxCardCoordinator *)self bridgedAccessories];
-  if ([v3 count])
+  bridgedAccessories = [(HSProxCardCoordinator *)self bridgedAccessories];
+  if ([bridgedAccessories count])
   {
-    v4 = [(HSProxCardCoordinator *)self activeTuple];
-    v5 = [(HSProxCardCoordinator *)self topAccessoryTuple];
+    activeTuple = [(HSProxCardCoordinator *)self activeTuple];
+    topAccessoryTuple = [(HSProxCardCoordinator *)self topAccessoryTuple];
 
-    if (v4 == v5)
+    if (activeTuple == topAccessoryTuple)
     {
       v14 = 0;
       goto LABEL_11;
     }
 
-    v6 = [(HSProxCardCoordinator *)self activeTuple];
-    v3 = [v6 accessoryCategoryOrPrimaryServiceType];
+    activeTuple2 = [(HSProxCardCoordinator *)self activeTuple];
+    bridgedAccessories = [activeTuple2 accessoryCategoryOrPrimaryServiceType];
 
-    v7 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
-    v8 = [v7 setupAccessoryPayload];
-    v9 = [v8 matterDeviceTypeID];
+    setupAccessoryDescription = [(HSProxCardCoordinator *)self setupAccessoryDescription];
+    setupAccessoryPayload = [setupAccessoryDescription setupAccessoryPayload];
+    matterDeviceTypeID = [setupAccessoryPayload matterDeviceTypeID];
 
-    v10 = [(HSProxCardCoordinator *)self bridgedAccessoryCategoryToArrayMap];
-    v11 = [v10 objectForKeyedSubscript:v3];
+    bridgedAccessoryCategoryToArrayMap = [(HSProxCardCoordinator *)self bridgedAccessoryCategoryToArrayMap];
+    v11 = [bridgedAccessoryCategoryToArrayMap objectForKeyedSubscript:bridgedAccessories];
 
     if ([v11 count] < 2 || (-[HSProxCardCoordinator activeTuple](self, "activeTuple"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "indexOfObject:", v12), v12, v13 == 0x7FFFFFFFFFFFFFFFLL))
     {
@@ -955,25 +955,25 @@ LABEL_11:
   return v14;
 }
 
-- (id)_configurationForAccessory:(id)a3 stateMachine:(id)a4
+- (id)_configurationForAccessory:(id)accessory stateMachine:(id)machine
 {
-  v6 = a3;
-  v7 = [objc_alloc(objc_msgSend(a4 "configurationObjectClass"))];
+  accessoryCopy = accessory;
+  v7 = [objc_alloc(objc_msgSend(machine "configurationObjectClass"))];
 
   [v7 setDelegate:self];
 
   return v7;
 }
 
-- (id)_tupleForAccessory:(id)a3
+- (id)_tupleForAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v5 = objc_alloc_init(HSAccessoryTuple);
   v6 = objc_alloc_init(HSSetupStateMachine);
   [(HSAccessoryTuple *)v5 setStateMachine:v6];
 
-  v7 = [(HSAccessoryTuple *)v5 stateMachine];
-  v8 = [(HSProxCardCoordinator *)self _configurationForAccessory:v4 stateMachine:v7];
+  stateMachine = [(HSAccessoryTuple *)v5 stateMachine];
+  v8 = [(HSProxCardCoordinator *)self _configurationForAccessory:accessoryCopy stateMachine:stateMachine];
 
   [(HSAccessoryTuple *)v5 setConfiguration:v8];
 
@@ -982,15 +982,15 @@ LABEL_11:
 
 - (NSArray)allAccessoryTuples
 {
-  v3 = [(HSProxCardCoordinator *)self topAccessoryTuple];
+  topAccessoryTuple = [(HSProxCardCoordinator *)self topAccessoryTuple];
 
-  if (v3)
+  if (topAccessoryTuple)
   {
-    v4 = [(HSProxCardCoordinator *)self topAccessoryTuple];
-    v9 = v4;
+    topAccessoryTuple2 = [(HSProxCardCoordinator *)self topAccessoryTuple];
+    v9 = topAccessoryTuple2;
     v5 = [NSArray arrayWithObjects:&v9 count:1];
-    v6 = [(HSProxCardCoordinator *)self bridgedAccessories];
-    v7 = [v5 arrayByAddingObjectsFromArray:v6];
+    bridgedAccessories = [(HSProxCardCoordinator *)self bridgedAccessories];
+    v7 = [v5 arrayByAddingObjectsFromArray:bridgedAccessories];
   }
 
   else
@@ -1003,88 +1003,88 @@ LABEL_11:
 
 - (NSArray)allAccessories
 {
-  v2 = [(HSProxCardCoordinator *)self allAccessoryTuples];
-  v3 = [v2 na_map:&stru_1000C7320];
+  allAccessoryTuples = [(HSProxCardCoordinator *)self allAccessoryTuples];
+  v3 = [allAccessoryTuples na_map:&stru_1000C7320];
 
   return v3;
 }
 
 - (BOOL)isConfiguringLastAccessoryOfSameCategory
 {
-  v3 = [(HSProxCardCoordinator *)self activeTuple];
-  v4 = [v3 accessoryCategoryOrPrimaryServiceType];
+  activeTuple = [(HSProxCardCoordinator *)self activeTuple];
+  accessoryCategoryOrPrimaryServiceType = [activeTuple accessoryCategoryOrPrimaryServiceType];
 
-  v5 = [(HSProxCardCoordinator *)self bridgedAccessoryCategoryToArrayMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  bridgedAccessoryCategoryToArrayMap = [(HSProxCardCoordinator *)self bridgedAccessoryCategoryToArrayMap];
+  v6 = [bridgedAccessoryCategoryToArrayMap objectForKeyedSubscript:accessoryCategoryOrPrimaryServiceType];
 
-  v7 = [(HSProxCardCoordinator *)self activeTuple];
-  v8 = [v7 accessory];
-  v9 = [v6 lastObject];
-  v10 = [v9 accessory];
-  v11 = v8 == v10;
+  activeTuple2 = [(HSProxCardCoordinator *)self activeTuple];
+  accessory = [activeTuple2 accessory];
+  lastObject = [v6 lastObject];
+  accessory2 = [lastObject accessory];
+  v11 = accessory == accessory2;
 
   return v11;
 }
 
 - (unint64_t)numberOfAccessoriesInSameCategory
 {
-  v3 = [(HSProxCardCoordinator *)self activeTuple];
-  v4 = [(HSProxCardCoordinator *)self topAccessoryTuple];
+  activeTuple = [(HSProxCardCoordinator *)self activeTuple];
+  topAccessoryTuple = [(HSProxCardCoordinator *)self topAccessoryTuple];
 
-  if (v3 == v4)
+  if (activeTuple == topAccessoryTuple)
   {
     return 1;
   }
 
-  v5 = [(HSProxCardCoordinator *)self activeTuple];
-  v6 = [v5 accessoryCategoryOrPrimaryServiceType];
+  activeTuple2 = [(HSProxCardCoordinator *)self activeTuple];
+  accessoryCategoryOrPrimaryServiceType = [activeTuple2 accessoryCategoryOrPrimaryServiceType];
 
-  v7 = [(HSProxCardCoordinator *)self bridgedAccessoryCategoryToArrayMap];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  bridgedAccessoryCategoryToArrayMap = [(HSProxCardCoordinator *)self bridgedAccessoryCategoryToArrayMap];
+  v8 = [bridgedAccessoryCategoryToArrayMap objectForKeyedSubscript:accessoryCategoryOrPrimaryServiceType];
   v9 = [v8 count];
 
   return v9;
 }
 
-- (void)stateMachineConfigurationIsReadyToPair:(id)a3
+- (void)stateMachineConfigurationIsReadyToPair:(id)pair
 {
-  v4 = a3;
+  pairCopy = pair;
   if (![(HSProxCardCoordinator *)self pairingState])
   {
     [(HSProxCardCoordinator *)self setPairingState:1];
     objc_initWeak(&location, self);
-    v5 = [(HSProxCardCoordinator *)self matterSetupPairingWindowReadyFuture];
+    matterSetupPairingWindowReadyFuture = [(HSProxCardCoordinator *)self matterSetupPairingWindowReadyFuture];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10003FC48;
     v7[3] = &unk_1000C7348;
     objc_copyWeak(&v8, &location);
-    v6 = [v5 addSuccessBlock:v7];
+    v6 = [matterSetupPairingWindowReadyFuture addSuccessBlock:v7];
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)stateMachineConfiguration:(id)a3 didUpdateHome:(id)a4
+- (void)stateMachineConfiguration:(id)configuration didUpdateHome:(id)home
 {
-  v4 = a4;
+  homeCopy = home;
   v5 = +[HFHomeKitDispatcher sharedDispatcher];
-  [v5 setOverrideHome:v4];
+  [v5 setOverrideHome:homeCopy];
 }
 
-- (BOOL)stateMachineConfigurationIsLaunchedToSetupMultipleAccessories:(id)a3
+- (BOOL)stateMachineConfigurationIsLaunchedToSetupMultipleAccessories:(id)accessories
 {
-  v4 = [(HSProxCardCoordinator *)self bridgedAccessories];
-  if ([v4 count])
+  bridgedAccessories = [(HSProxCardCoordinator *)self bridgedAccessories];
+  if ([bridgedAccessories count])
   {
-    v5 = [(HSProxCardCoordinator *)self bridgedAccessories];
-    if ([v5 count] == 1)
+    bridgedAccessories2 = [(HSProxCardCoordinator *)self bridgedAccessories];
+    if ([bridgedAccessories2 count] == 1)
     {
-      v6 = [(HSProxCardCoordinator *)self bridgedAccessories];
-      v7 = [v6 firstObject];
-      v8 = [v7 accessory];
-      v9 = [v8 hf_isNetworkRouter] ^ 1;
+      bridgedAccessories3 = [(HSProxCardCoordinator *)self bridgedAccessories];
+      firstObject = [bridgedAccessories3 firstObject];
+      accessory = [firstObject accessory];
+      v9 = [accessory hf_isNetworkRouter] ^ 1;
     }
 
     else
@@ -1103,31 +1103,31 @@ LABEL_11:
 
 - (BOOL)stateMachineConfigurationActiveTupleIsTopTuple
 {
-  v2 = self;
-  v3 = [(HSProxCardCoordinator *)self activeTuple];
-  v4 = [(HSProxCardCoordinator *)v2 topAccessoryTuple];
-  LOBYTE(v2) = v3 == v4;
+  selfCopy = self;
+  activeTuple = [(HSProxCardCoordinator *)self activeTuple];
+  topAccessoryTuple = [(HSProxCardCoordinator *)selfCopy topAccessoryTuple];
+  LOBYTE(selfCopy) = activeTuple == topAccessoryTuple;
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)stateMachineConfigurationShouldSkipDetectedStep:(id)a3
+- (BOOL)stateMachineConfigurationShouldSkipDetectedStep:(id)step
 {
-  v4 = [a3 addedAccessory];
+  addedAccessory = [step addedAccessory];
 
-  if (v4)
+  if (addedAccessory)
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v6 = [(HSProxCardCoordinator *)self discoveredAccessory];
-    if (v6)
+    discoveredAccessory = [(HSProxCardCoordinator *)self discoveredAccessory];
+    if (discoveredAccessory)
     {
-      v7 = [(HSProxCardCoordinator *)self discoveredAccessory];
-      v8 = [v7 accessory];
-      v5 = [v8 knownToSystemCommissioner] ^ 1;
+      discoveredAccessory2 = [(HSProxCardCoordinator *)self discoveredAccessory];
+      accessory = [discoveredAccessory2 accessory];
+      v5 = [accessory knownToSystemCommissioner] ^ 1;
     }
 
     else
@@ -1139,47 +1139,47 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)stateMachineConfigurationShouldSkipHomeHubStep:(id)a3
+- (BOOL)stateMachineConfigurationShouldSkipHomeHubStep:(id)step
 {
-  v4 = a3;
-  v5 = [v4 home];
+  stepCopy = step;
+  home = [stepCopy home];
 
-  if (!v5)
+  if (!home)
   {
-    v6 = [(HSProxCardCoordinator *)self activeTuple];
-    NSLog(@"No home for tuple %@", v6);
+    activeTuple = [(HSProxCardCoordinator *)self activeTuple];
+    NSLog(@"No home for tuple %@", activeTuple);
   }
 
   v7 = ![(HSProxCardCoordinator *)self isUsingCHIPCommunicationProtocol];
   if ((_os_feature_enabled_impl() & 1) != 0 || CFPreferencesGetAppBooleanValue(@"MatteriPhoneOnlyPairingEnabled", @"/Library/Managed Preferences/mobile/com.apple.homed.plist", 0))
   {
-    v8 = [v4 home];
-    if ([v8 hf_currentUserIsOwner])
+    home2 = [stepCopy home];
+    if ([home2 hf_currentUserIsOwner])
     {
       v9 = +[HFHomeKitDispatcher sharedDispatcher];
-      v10 = [v9 homeManager];
-      LOBYTE(v7) = [v10 hasOptedToHH2] | v7;
+      homeManager = [v9 homeManager];
+      LOBYTE(v7) = [homeManager hasOptedToHH2] | v7;
     }
   }
 
-  v11 = [v4 home];
-  if ([v11 hf_currentUserIsOwner])
+  home3 = [stepCopy home];
+  if ([home3 hf_currentUserIsOwner])
   {
-    v12 = 1;
+    hf_hasResidentDeviceCapableOfSupportingMatterSharedAdmin = 1;
   }
 
   else
   {
-    v13 = [v4 home];
-    if ([v13 hf_currentUserIsAdministrator])
+    home4 = [stepCopy home];
+    if ([home4 hf_currentUserIsAdministrator])
     {
-      v14 = [v4 home];
-      v12 = [v14 hf_hasResidentDeviceCapableOfSupportingMatterSharedAdmin];
+      home5 = [stepCopy home];
+      hf_hasResidentDeviceCapableOfSupportingMatterSharedAdmin = [home5 hf_hasResidentDeviceCapableOfSupportingMatterSharedAdmin];
     }
 
     else
     {
-      v12 = 0;
+      hf_hasResidentDeviceCapableOfSupportingMatterSharedAdmin = 0;
     }
   }
 
@@ -1190,25 +1190,25 @@ LABEL_11:
 
   else
   {
-    v16 = [v4 home];
-    v15 = [v16 hf_hasResidentDeviceCapableOfSupportingCHIP] & v12;
+    home6 = [stepCopy home];
+    v15 = [home6 hf_hasResidentDeviceCapableOfSupportingCHIP] & hf_hasResidentDeviceCapableOfSupportingMatterSharedAdmin;
   }
 
   return v15;
 }
 
-- (BOOL)stateMachineConfigurationShouldSkipAccessoryUpdateStep:(id)a3
+- (BOOL)stateMachineConfigurationShouldSkipAccessoryUpdateStep:(id)step
 {
-  v4 = a3;
+  stepCopy = step;
   if ((_os_feature_enabled_impl() & 1) != 0 || CFPreferencesGetAppBooleanValue(@"MatteriPhoneOnlyPairingEnabled", @"/Library/Managed Preferences/mobile/com.apple.homed.plist", 0))
   {
-    v5 = [(HSProxCardCoordinator *)self isUsingCHIPCommunicationProtocol];
-    v6 = [v4 addedAccessory];
-    v7 = [v6 hf_hasNewValidSoftwareOrFirmwareUpdate];
-    v8 = [v4 home];
-    v9 = [v8 hf_currentUserIsAdministrator];
+    isUsingCHIPCommunicationProtocol = [(HSProxCardCoordinator *)self isUsingCHIPCommunicationProtocol];
+    addedAccessory = [stepCopy addedAccessory];
+    hf_hasNewValidSoftwareOrFirmwareUpdate = [addedAccessory hf_hasNewValidSoftwareOrFirmwareUpdate];
+    home = [stepCopy home];
+    hf_currentUserIsAdministrator = [home hf_currentUserIsAdministrator];
 
-    v10 = v5 & v7 & v9;
+    v10 = isUsingCHIPCommunicationProtocol & hf_hasNewValidSoftwareOrFirmwareUpdate & hf_currentUserIsAdministrator;
     v11 = HFLogForCategory();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
     if (v10)
@@ -1227,21 +1227,21 @@ LABEL_11:
 
     else if (v12)
     {
-      v13 = v7 & 1;
-      v14 = v9 & 1;
-      v15 = [v4 home];
-      v16 = [v15 currentUser];
-      v17 = [v16 hf_prettyDescription];
+      v13 = hf_hasNewValidSoftwareOrFirmwareUpdate & 1;
+      v14 = hf_currentUserIsAdministrator & 1;
+      home2 = [stepCopy home];
+      currentUser = [home2 currentUser];
+      hf_prettyDescription = [currentUser hf_prettyDescription];
       v20 = 136316162;
       v21 = "[HSProxCardCoordinator stateMachineConfigurationShouldSkipAccessoryUpdateStep:]";
       v22 = 1024;
-      v23 = v5;
+      v23 = isUsingCHIPCommunicationProtocol;
       v24 = 1024;
       v25 = v13;
       v26 = 1024;
       v27 = v14;
       v28 = 2112;
-      v29 = v17;
+      v29 = hf_prettyDescription;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s Skipping HSProxCardSetupUIStepAccessoryUpdate - isMatter: [%{BOOL}d], hasValidUpdate: [%{BOOL}d], isCurrentUserAdmin: %{BOOL}d for %@", &v20, 0x28u);
     }
 
@@ -1250,12 +1250,12 @@ LABEL_11:
 
   else
   {
-    v6 = HFLogForCategory();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    addedAccessory = HFLogForCategory();
+    if (os_log_type_enabled(addedAccessory, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 136315138;
       v21 = "[HSProxCardCoordinator stateMachineConfigurationShouldSkipAccessoryUpdateStep:]";
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s Skipping HSProxCardSetupUIStepAccessoryUpdate due to runtime FF disabled: [HOME_ENABLE_MATTER_IPHONE_ONLY_PAIRING]", &v20, 0xCu);
+      _os_log_impl(&_mh_execute_header, addedAccessory, OS_LOG_TYPE_DEFAULT, "%s Skipping HSProxCardSetupUIStepAccessoryUpdate due to runtime FF disabled: [HOME_ENABLE_MATTER_IPHONE_ONLY_PAIRING]", &v20, 0xCu);
     }
 
     v18 = 1;
@@ -1264,9 +1264,9 @@ LABEL_11:
   return v18;
 }
 
-- (BOOL)stateMachineConfigurationShouldSkipResumeSelectAccessoryStep:(id)a3
+- (BOOL)stateMachineConfigurationShouldSkipResumeSelectAccessoryStep:(id)step
 {
-  v4 = a3;
+  stepCopy = step;
   if ([(HSProxCardCoordinator *)self userDidSelectAccessories])
   {
     LOBYTE(v5) = 1;
@@ -1274,23 +1274,23 @@ LABEL_11:
 
   else
   {
-    v5 = ![(HSProxCardCoordinator *)self stateMachineConfigurationIsLaunchedToSetupMultipleAccessories:v4];
+    v5 = ![(HSProxCardCoordinator *)self stateMachineConfigurationIsLaunchedToSetupMultipleAccessories:stepCopy];
   }
 
   return v5;
 }
 
-- (BOOL)stateMachineConfigurationShouldSkipBridgeAddedStep:(id)a3
+- (BOOL)stateMachineConfigurationShouldSkipBridgeAddedStep:(id)step
 {
-  v4 = a3;
+  stepCopy = step;
   if ([(HSProxCardCoordinator *)self launchReason]== 1)
   {
-    v5 = [(HSProxCardCoordinator *)self nextUnconfiguredBridgedAccessory];
-    if (v5)
+    nextUnconfiguredBridgedAccessory = [(HSProxCardCoordinator *)self nextUnconfiguredBridgedAccessory];
+    if (nextUnconfiguredBridgedAccessory)
     {
-      v6 = [(HSProxCardCoordinator *)self nextUnconfiguredBridgedAccessory];
-      v7 = [(HSProxCardCoordinator *)self activeTuple];
-      v8 = [v6 isEqual:v7];
+      nextUnconfiguredBridgedAccessory2 = [(HSProxCardCoordinator *)self nextUnconfiguredBridgedAccessory];
+      activeTuple = [(HSProxCardCoordinator *)self activeTuple];
+      v8 = [nextUnconfiguredBridgedAccessory2 isEqual:activeTuple];
     }
 
     else
@@ -1304,87 +1304,87 @@ LABEL_11:
     v8 = 1;
   }
 
-  v9 = [v4 addedAccessory];
-  if (([v9 isBridged] & 1) == 0 && (objc_msgSend(v9, "hf_isNetworkRouter") & 1) == 0)
+  addedAccessory = [stepCopy addedAccessory];
+  if (([addedAccessory isBridged] & 1) == 0 && (objc_msgSend(addedAccessory, "hf_isNetworkRouter") & 1) == 0)
   {
-    v10 = [v9 hf_bridgedAccessories];
-    if ([v9 hf_isSprinkler])
+    hf_bridgedAccessories = [addedAccessory hf_bridgedAccessories];
+    if ([addedAccessory hf_isSprinkler])
     {
-      v11 = [v10 na_filter:&stru_1000C7368];
+      v11 = [hf_bridgedAccessories na_filter:&stru_1000C7368];
 
-      v10 = v11;
+      hf_bridgedAccessories = v11;
     }
 
-    v8 &= [v10 count] == 0;
+    v8 &= [hf_bridgedAccessories count] == 0;
   }
 
   return v8;
 }
 
-- (BOOL)stateMachineConfigurationShouldSkipDoneStep:(id)a3
+- (BOOL)stateMachineConfigurationShouldSkipDoneStep:(id)step
 {
-  v4 = a3;
-  v5 = [(HSProxCardCoordinator *)self topAccessoryTuple];
-  v6 = [v5 configuration];
+  stepCopy = step;
+  topAccessoryTuple = [(HSProxCardCoordinator *)self topAccessoryTuple];
+  configuration = [topAccessoryTuple configuration];
 
-  if (v6 == v4)
+  if (configuration == stepCopy)
   {
-    v8 = [(HSProxCardCoordinator *)self bridgedAccessories];
-    v7 = v8 == 0;
+    bridgedAccessories = [(HSProxCardCoordinator *)self bridgedAccessories];
+    isConfiguringLastAccessoryOfSameCategory = bridgedAccessories == 0;
   }
 
   else
   {
-    v7 = [(HSProxCardCoordinator *)self isConfiguringLastAccessoryOfSameCategory];
+    isConfiguringLastAccessoryOfSameCategory = [(HSProxCardCoordinator *)self isConfiguringLastAccessoryOfSameCategory];
   }
 
-  return !v7;
+  return !isConfiguringLastAccessoryOfSameCategory;
 }
 
-- (BOOL)stateMachineConfigurationShouldSetupBridgedAccessories:(id)a3
+- (BOOL)stateMachineConfigurationShouldSetupBridgedAccessories:(id)accessories
 {
-  v4 = a3;
-  v5 = [(HSProxCardCoordinator *)self topAccessoryTuple];
-  v6 = [v5 configuration];
+  accessoriesCopy = accessories;
+  topAccessoryTuple = [(HSProxCardCoordinator *)self topAccessoryTuple];
+  configuration = [topAccessoryTuple configuration];
 
-  if (v6 != v4)
+  if (configuration != accessoriesCopy)
   {
     return 0;
   }
 
-  v8 = [(HSProxCardCoordinator *)self nextUnconfiguredBridgedAccessory];
-  v7 = v8 != 0;
+  nextUnconfiguredBridgedAccessory = [(HSProxCardCoordinator *)self nextUnconfiguredBridgedAccessory];
+  v7 = nextUnconfiguredBridgedAccessory != 0;
 
   return v7;
 }
 
-- (BOOL)stateMachineConfigurationShouldSetupRouters:(id)a3
+- (BOOL)stateMachineConfigurationShouldSetupRouters:(id)routers
 {
-  v4 = [a3 addedAccessory];
-  if ([v4 hf_isNetworkRouter])
+  addedAccessory = [routers addedAccessory];
+  if ([addedAccessory hf_isNetworkRouter])
   {
-    v5 = [(HSProxCardCoordinator *)self isConfiguringLastAccessoryOfSameCategory];
+    isConfiguringLastAccessoryOfSameCategory = [(HSProxCardCoordinator *)self isConfiguringLastAccessoryOfSameCategory];
   }
 
   else
   {
-    v5 = 0;
+    isConfiguringLastAccessoryOfSameCategory = 0;
   }
 
-  return v5;
+  return isConfiguringLastAccessoryOfSameCategory;
 }
 
-- (BOOL)stateMachineConfigurationShouldJumpToDoneStep:(id)a3
+- (BOOL)stateMachineConfigurationShouldJumpToDoneStep:(id)step
 {
-  v4 = a3;
+  stepCopy = step;
   if ([(HSProxCardCoordinator *)self launchReason]== 1)
   {
-    v5 = [v4 addedAccessory];
-    if (v5)
+    addedAccessory = [stepCopy addedAccessory];
+    if (addedAccessory)
     {
-      v6 = [v4 addedAccessory];
-      v7 = [v6 pendingConfigurationIdentifier];
-      v8 = [v7 length] == 0;
+      addedAccessory2 = [stepCopy addedAccessory];
+      pendingConfigurationIdentifier = [addedAccessory2 pendingConfigurationIdentifier];
+      v8 = [pendingConfigurationIdentifier length] == 0;
     }
 
     else
@@ -1403,19 +1403,19 @@ LABEL_11:
 
 - (BOOL)isInSetupContext
 {
-  v2 = [(HSProxCardCoordinator *)self launchReason];
+  launchReason = [(HSProxCardCoordinator *)self launchReason];
 
-  return [HUHomeUIServiceLaunchUserInfo isInSetupContext:v2];
+  return [HUHomeUIServiceLaunchUserInfo isInSetupContext:launchReason];
 }
 
-- (id)_discoveredAccessoryOrSetupCodeDidUpdateWithPayload:(id)a3 fromViewController:(id)a4
+- (id)_discoveredAccessoryOrSetupCodeDidUpdateWithPayload:(id)payload fromViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  controllerCopy = controller;
   v8 = +[NAFuture futureWithNoResult];
-  v9 = [(HSProxCardCoordinator *)self discoveredAccessory];
+  discoveredAccessory = [(HSProxCardCoordinator *)self discoveredAccessory];
 
-  if (!v9)
+  if (!discoveredAccessory)
   {
 LABEL_9:
     v18 = v8;
@@ -1425,11 +1425,11 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v10 = [(HSProxCardCoordinator *)self discoveredAccessory];
-  if ([v10 requiresSetupCode])
+  discoveredAccessory2 = [(HSProxCardCoordinator *)self discoveredAccessory];
+  if ([discoveredAccessory2 requiresSetupCode])
   {
-    v11 = [(HSProxCardCoordinator *)self setupCode];
-    v12 = [v11 length] == 0;
+    setupCode = [(HSProxCardCoordinator *)self setupCode];
+    v12 = [setupCode length] == 0;
   }
 
   else
@@ -1437,20 +1437,20 @@ LABEL_24:
     v12 = 0;
   }
 
-  v13 = [(HSProxCardCoordinator *)self topAccessoryTuple];
-  v14 = [v13 configuration];
-  v15 = [v14 isSetupInitiatedByOtherMatterEcosystem] & v12;
+  topAccessoryTuple = [(HSProxCardCoordinator *)self topAccessoryTuple];
+  configuration = [topAccessoryTuple configuration];
+  v15 = [configuration isSetupInitiatedByOtherMatterEcosystem] & v12;
 
   if (v15 == 1)
   {
     v16 = HFLogForCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(HSProxCardCoordinator *)self discoveredAccessory];
+      discoveredAccessory3 = [(HSProxCardCoordinator *)self discoveredAccessory];
       *buf = 136315394;
       v55 = "[HSProxCardCoordinator _discoveredAccessoryOrSetupCodeDidUpdateWithPayload:fromViewController:]";
       v56 = 2112;
-      v57 = v17;
+      v57 = discoveredAccessory3;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%s setup code required for third-party Matter pairing of discoveredAccessory %@", buf, 0x16u);
     }
 
@@ -1470,12 +1470,12 @@ LABEL_23:
   }
 
   v42 = +[NAFuture futureWithNoResult];
-  v19 = [(HSProxCardCoordinator *)self setupCode];
-  v20 = v19;
+  setupCode2 = [(HSProxCardCoordinator *)self setupCode];
+  v20 = setupCode2;
   v21 = &stru_1000C89F8;
-  if (v19)
+  if (setupCode2)
   {
-    v21 = v19;
+    v21 = setupCode2;
   }
 
   v22 = v21;
@@ -1503,22 +1503,22 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (!v6)
+  if (!payloadCopy)
   {
-    v33 = [(HSProxCardCoordinator *)self discoveredAccessory];
-    [v33 setRawSetupPayloadString:v22];
+    discoveredAccessory4 = [(HSProxCardCoordinator *)self discoveredAccessory];
+    [discoveredAccessory4 setRawSetupPayloadString:v22];
 
     objc_initWeak(&location, self);
     v34 = HFLogForCategory();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
-      v35 = [(HSProxCardCoordinator *)self discoveredAccessory];
+      discoveredAccessory5 = [(HSProxCardCoordinator *)self discoveredAccessory];
       *buf = 136315650;
       v55 = "[HSProxCardCoordinator _discoveredAccessoryOrSetupCodeDidUpdateWithPayload:fromViewController:]";
       v56 = 2112;
       v57 = v22;
       v58 = 2112;
-      v59 = v35;
+      v59 = discoveredAccessory5;
       _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "%s calling createSetupAccessoryPayloadWithCHIPDecimalStringRepresentation:%@ for discoveredAccessory %@]", buf, 0x20u);
     }
 
@@ -1535,7 +1535,7 @@ LABEL_22:
     v47[3] = &unk_1000C73D8;
     objc_copyWeak(&v50, &location);
     v48 = v36;
-    v49 = v7;
+    v49 = controllerCopy;
     v32 = [v37 flatMap:v47];
 
     objc_destroyWeak(&v50);
@@ -1546,31 +1546,31 @@ LABEL_22:
   v23 = HFLogForCategory();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
   {
-    v41 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
-    v24 = [(HSProxCardCoordinator *)self discoveredAccessory];
-    v25 = [(HSProxCardCoordinator *)self setupCode];
+    setupAccessoryDescription = [(HSProxCardCoordinator *)self setupAccessoryDescription];
+    discoveredAccessory6 = [(HSProxCardCoordinator *)self discoveredAccessory];
+    setupCode3 = [(HSProxCardCoordinator *)self setupCode];
     *buf = 136316162;
     v55 = "[HSProxCardCoordinator _discoveredAccessoryOrSetupCodeDidUpdateWithPayload:fromViewController:]";
     v56 = 2112;
-    v57 = v41;
+    v57 = setupAccessoryDescription;
     v58 = 2112;
-    v59 = v6;
+    v59 = payloadCopy;
     v60 = 2112;
-    v61 = v24;
+    v61 = discoveredAccessory6;
     v62 = 2112;
-    v63 = v25;
+    v63 = setupCode3;
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "%s Found existing payload for Matter Accessory - updating setupAccessoryDescription with payload - [ setupAccessoryDescription:%@, payload:%@, discoveredAccessory:%@, setupCode:%@ ]", buf, 0x34u);
   }
 
-  v26 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
-  [v26 updateWithSetupAccessoryPayload:v6];
+  setupAccessoryDescription2 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
+  [setupAccessoryDescription2 updateWithSetupAccessoryPayload:payloadCopy];
 
-  v27 = [(HSProxCardCoordinator *)self topAccessoryTuple];
-  v28 = [v27 configuration];
-  [v28 setIsReadyToPair:1];
+  topAccessoryTuple2 = [(HSProxCardCoordinator *)self topAccessoryTuple];
+  configuration2 = [topAccessoryTuple2 configuration];
+  [configuration2 setIsReadyToPair:1];
 
-  v29 = [(HSProxCardCoordinator *)self pairingFuture];
-  [v29 updateSetupPayload:v6];
+  pairingFuture = [(HSProxCardCoordinator *)self pairingFuture];
+  [pairingFuture updateSetupPayload:payloadCopy];
 
   v30 = +[NAFuture futureWithNoResult];
 
@@ -1579,11 +1579,11 @@ LABEL_25:
   return v30;
 }
 
-- (void)setSetupCode:(id)a3
+- (void)setSetupCode:(id)code
 {
-  v4 = [a3 hf_extractDecimalDigits];
+  hf_extractDecimalDigits = [code hf_extractDecimalDigits];
   v5 = 1;
-  if ([v4 length] == 8)
+  if ([hf_extractDecimalDigits length] == 8)
   {
     v6 = 1;
   }
@@ -1594,7 +1594,7 @@ LABEL_25:
   }
 
   [(HSProxCardCoordinator *)self setAccessoryCommunicationProtocol:v6];
-  v7 = [v4 length];
+  v7 = [hf_extractDecimalDigits length];
   v8 = 3;
   v9 = 2;
   if (v7 != 11)
@@ -1616,7 +1616,7 @@ LABEL_25:
   [v10 logCodeInputMethod:v5];
 
   setupCode = self->_setupCode;
-  self->_setupCode = v4;
+  self->_setupCode = hf_extractDecimalDigits;
 }
 
 - (int64_t)accessoryCommunicationProtocol
@@ -1624,9 +1624,9 @@ LABEL_25:
   result = self->_accessoryCommunicationProtocol;
   if (!result)
   {
-    v4 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
-    v5 = [v4 setupAccessoryPayload];
-    self->_accessoryCommunicationProtocol = [v5 communicationProtocol];
+    setupAccessoryDescription = [(HSProxCardCoordinator *)self setupAccessoryDescription];
+    setupAccessoryPayload = [setupAccessoryDescription setupAccessoryPayload];
+    self->_accessoryCommunicationProtocol = [setupAccessoryPayload communicationProtocol];
 
     return self->_accessoryCommunicationProtocol;
   }
@@ -1634,36 +1634,36 @@ LABEL_25:
   return result;
 }
 
-- (id)didReceiveDiscoveredAccessory:(id)a3 withPayload:(id)a4
+- (id)didReceiveDiscoveredAccessory:(id)accessory withPayload:(id)payload
 {
-  v8 = a3;
-  v9 = a4;
-  objc_storeStrong(&self->_discoveredAccessory, a3);
+  accessoryCopy = accessory;
+  payloadCopy = payload;
+  objc_storeStrong(&self->_discoveredAccessory, accessory);
   v10 = HFLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = NSStringFromSelector(a2);
-    v12 = [(HSProxCardCoordinator *)self setupCode];
-    v13 = [v8 accessory];
-    v14 = [v13 knownToSystemCommissioner];
+    setupCode = [(HSProxCardCoordinator *)self setupCode];
+    accessory = [accessoryCopy accessory];
+    knownToSystemCommissioner = [accessory knownToSystemCommissioner];
     [(HSProxCardCoordinator *)self setupAccessoryDescription];
     v15 = v44 = self;
     *buf = 138413314;
     v54 = v11;
     v55 = 2112;
-    v56 = v8;
+    v56 = accessoryCopy;
     v57 = 2112;
-    v58 = v12;
+    v58 = setupCode;
     v59 = 1024;
-    v60 = v14;
+    v60 = knownToSystemCommissioner;
     v61 = 1024;
-    v62 = [v15 isSetupInitiatedByOtherMatterEcosystem];
+    isSetupInitiatedByOtherMatterEcosystem = [v15 isSetupInitiatedByOtherMatterEcosystem];
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@ discoveredAccessory %@ setupCode %@ knownToSystemCommissioner %d isSetupInitiatedByOtherMatterEcosystem %d", buf, 0x2Cu);
 
     self = v44;
   }
 
-  if (!v8)
+  if (!accessoryCopy)
   {
     v34 = +[NAFuture futureWithNoResult];
 LABEL_16:
@@ -1671,28 +1671,28 @@ LABEL_16:
     goto LABEL_25;
   }
 
-  v16 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
-  v17 = [(HSProxCardCoordinator *)self discoveredAccessory];
-  v18 = [v17 category];
-  [v16 updateAccessoryCategory:v18];
+  setupAccessoryDescription = [(HSProxCardCoordinator *)self setupAccessoryDescription];
+  discoveredAccessory = [(HSProxCardCoordinator *)self discoveredAccessory];
+  category = [discoveredAccessory category];
+  [setupAccessoryDescription updateAccessoryCategory:category];
 
-  v19 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
-  v20 = [(HSProxCardCoordinator *)self discoveredAccessory];
-  v21 = [v20 name];
-  [v19 updateAccessoryName:v21];
+  setupAccessoryDescription2 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
+  discoveredAccessory2 = [(HSProxCardCoordinator *)self discoveredAccessory];
+  name = [discoveredAccessory2 name];
+  [setupAccessoryDescription2 updateAccessoryName:name];
 
-  v22 = [v8 accessory];
-  LOBYTE(v20) = [v22 knownToSystemCommissioner];
+  accessory2 = [accessoryCopy accessory];
+  LOBYTE(discoveredAccessory2) = [accessory2 knownToSystemCommissioner];
 
-  if ((v20 & 1) == 0)
+  if ((discoveredAccessory2 & 1) == 0)
   {
-    v34 = [(HSProxCardCoordinator *)self _discoveredAccessoryOrSetupCodeDidUpdateWithPayload:v9 fromViewController:0];
+    v34 = [(HSProxCardCoordinator *)self _discoveredAccessoryOrSetupCodeDidUpdateWithPayload:payloadCopy fromViewController:0];
     goto LABEL_16;
   }
 
-  v23 = [v8 accessory];
-  v24 = [v23 deviceIdentifier];
-  v45 = [v23 commissioningID];
+  accessory3 = [accessoryCopy accessory];
+  deviceIdentifier = [accessory3 deviceIdentifier];
+  commissioningID = [accessory3 commissioningID];
   v25 = HFLogForCategory();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
   {
@@ -1700,27 +1700,27 @@ LABEL_16:
     *buf = 138412802;
     v54 = v26;
     v55 = 2112;
-    v56 = v24;
+    v56 = deviceIdentifier;
     v57 = 2112;
-    v58 = v45;
+    v58 = commissioningID;
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%@ discovered Matter accessory is known to system commissioner with identifier %@ uuid %@", buf, 0x20u);
   }
 
   [(HSProxCardCoordinator *)self setAccessoryCommunicationProtocol:2];
-  v27 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
-  v28 = [v27 isSetupInitiatedByOtherMatterEcosystem];
+  setupAccessoryDescription3 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
+  isSetupInitiatedByOtherMatterEcosystem2 = [setupAccessoryDescription3 isSetupInitiatedByOtherMatterEcosystem];
 
-  if (v28)
+  if (isSetupInitiatedByOtherMatterEcosystem2)
   {
     objc_opt_class();
-    v29 = self;
-    v30 = [(HSProxCardCoordinator *)self activeTuple];
-    v31 = [v30 configuration];
-    if (v31)
+    selfCopy = self;
+    activeTuple = [(HSProxCardCoordinator *)self activeTuple];
+    configuration = [activeTuple configuration];
+    if (configuration)
     {
       if (objc_opt_isKindOfClass())
       {
-        v32 = v31;
+        v32 = configuration;
       }
 
       else
@@ -1740,7 +1740,7 @@ LABEL_16:
       v33 = 0;
     }
 
-    [v33 adoptExistingStagedCHIPPairingWithIdentifier:v24 uuid:v45];
+    [v33 adoptExistingStagedCHIPPairingWithIdentifier:deviceIdentifier uuid:commissioningID];
     v41 = HFLogForCategory();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
@@ -1750,7 +1750,7 @@ LABEL_16:
       _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "%@ set pairing identifier on setup configuration; will skip staging", buf, 0xCu);
     }
 
-    v35 = [(HSProxCardCoordinator *)v29 _discoveredAccessoryOrSetupCodeDidUpdateWithPayload:v9 fromViewController:0];
+    v35 = [(HSProxCardCoordinator *)selfCopy _discoveredAccessoryOrSetupCodeDidUpdateWithPayload:payloadCopy fromViewController:0];
   }
 
   else
@@ -1762,7 +1762,7 @@ LABEL_16:
       *buf = 138412546;
       v54 = v37;
       v55 = 2112;
-      v56 = v24;
+      v56 = deviceIdentifier;
       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "%@ calling createCHIPSetupPayloadStringForStagedPairingWithIdentifier:%@", buf, 0x16u);
     }
 
@@ -1770,15 +1770,15 @@ LABEL_16:
     v51[1] = 3221225472;
     v51[2] = sub_100041AC4;
     v51[3] = &unk_1000C73B0;
-    v52 = v24;
+    v52 = deviceIdentifier;
     v38 = [NAFuture futureWithCompletionHandlerAdapterBlock:v51];
     v47[0] = _NSConcreteStackBlock;
     v47[1] = 3221225472;
     v47[2] = sub_100041B58;
     v47[3] = &unk_1000C7450;
     v50 = a2;
-    v48 = v8;
-    v49 = self;
+    v48 = accessoryCopy;
+    selfCopy2 = self;
     v39 = [v38 flatMap:v47];
     v46[0] = _NSConcreteStackBlock;
     v46[1] = 3221225472;
@@ -1798,26 +1798,26 @@ LABEL_25:
   return v35;
 }
 
-- (id)didReceiveSetupCode:(id)a3 withPayload:(id)a4 fromViewController:(id)a5
+- (id)didReceiveSetupCode:(id)code withPayload:(id)payload fromViewController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  [(HSProxCardCoordinator *)self setSetupCode:v9];
-  v12 = [(HSProxCardCoordinator *)self setupCode];
-  v13 = [(HSProxCardCoordinator *)self discoveredAccessory];
+  codeCopy = code;
+  payloadCopy = payload;
+  controllerCopy = controller;
+  [(HSProxCardCoordinator *)self setSetupCode:codeCopy];
+  setupCode = [(HSProxCardCoordinator *)self setupCode];
+  discoveredAccessory = [(HSProxCardCoordinator *)self discoveredAccessory];
 
-  if (v13)
+  if (discoveredAccessory)
   {
-    v14 = [(HSProxCardCoordinator *)self discoveredAccessory];
-    v15 = [v14 rawSetupPayloadString];
+    discoveredAccessory2 = [(HSProxCardCoordinator *)self discoveredAccessory];
+    rawSetupPayloadString = [discoveredAccessory2 rawSetupPayloadString];
 
-    if ([v15 length])
+    if ([rawSetupPayloadString length])
     {
-      v16 = [HMAccessorySetupCoordinator communicationProtocolForSetupPayloadURLString:v15];
-      v17 = [v16 integerValue];
+      v16 = [HMAccessorySetupCoordinator communicationProtocolForSetupPayloadURLString:rawSetupPayloadString];
+      integerValue = [v16 integerValue];
 
-      [(HSProxCardCoordinator *)self setAccessoryCommunicationProtocol:v17];
+      [(HSProxCardCoordinator *)self setAccessoryCommunicationProtocol:integerValue];
     }
   }
 
@@ -1825,32 +1825,32 @@ LABEL_25:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     v19 = NSStringFromSelector(a2);
-    v20 = [(HSProxCardCoordinator *)self accessoryCommunicationProtocol];
-    v21 = [(HSProxCardCoordinator *)self discoveredAccessory];
+    accessoryCommunicationProtocol = [(HSProxCardCoordinator *)self accessoryCommunicationProtocol];
+    discoveredAccessory3 = [(HSProxCardCoordinator *)self discoveredAccessory];
     *buf = 138413314;
     v30 = v19;
     v31 = 2112;
-    v32 = v9;
+    v32 = codeCopy;
     v33 = 2112;
-    v34 = v12;
+    v34 = setupCode;
     v35 = 2048;
-    v36 = v20;
+    v36 = accessoryCommunicationProtocol;
     v37 = 2112;
-    v38 = v21;
+    v38 = discoveredAccessory3;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%@ receivedSetupCode %@ setupCode %@ accessoryCommunicationProtocol %ld discoveredAccessory %@", buf, 0x34u);
   }
 
-  if (v12)
+  if (setupCode)
   {
-    v22 = [(HSProxCardCoordinator *)self _discoveredAccessoryOrSetupCodeDidUpdateWithPayload:v10 fromViewController:v11];
+    v22 = [(HSProxCardCoordinator *)self _discoveredAccessoryOrSetupCodeDidUpdateWithPayload:payloadCopy fromViewController:controllerCopy];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_100042414;
     v25[3] = &unk_1000C74E8;
     v25[4] = self;
     v28 = a2;
-    v26 = v12;
-    v27 = v11;
+    v26 = setupCode;
+    v27 = controllerCopy;
     v23 = [v22 flatMap:v25];
   }
 
@@ -1862,28 +1862,28 @@ LABEL_25:
   return v23;
 }
 
-- (void)updateSetupAccessoryDescriptionWithPayload:(id)a3
+- (void)updateSetupAccessoryDescriptionWithPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(HSProxCardCoordinator *)self setupAccessoryDescription];
-  [v5 updateWithSetupAccessoryPayload:v4];
+  payloadCopy = payload;
+  setupAccessoryDescription = [(HSProxCardCoordinator *)self setupAccessoryDescription];
+  [setupAccessoryDescription updateWithSetupAccessoryPayload:payloadCopy];
 
-  v6 = [v4 setupPayloadURL];
+  setupPayloadURL = [payloadCopy setupPayloadURL];
 
-  v7 = [v6 absoluteString];
-  v8 = [HMAccessorySetupCoordinator communicationProtocolForSetupPayloadURLString:v7];
-  v9 = [v8 integerValue];
+  absoluteString = [setupPayloadURL absoluteString];
+  v8 = [HMAccessorySetupCoordinator communicationProtocolForSetupPayloadURLString:absoluteString];
+  integerValue = [v8 integerValue];
 
-  [(HSProxCardCoordinator *)self setAccessoryCommunicationProtocol:v9];
+  [(HSProxCardCoordinator *)self setAccessoryCommunicationProtocol:integerValue];
 }
 
-- (id)showCustomCommissioningFlowAlertIfNecessaryForPayload:(id)a3 onViewController:(id)a4
+- (id)showCustomCommissioningFlowAlertIfNecessaryForPayload:(id)payload onViewController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  if (-[HSProxCardCoordinator shouldShowCustomCommissioningProxCardWithPayload:](self, "shouldShowCustomCommissioningProxCardWithPayload:", v6) || -[HSProxCardCoordinator didShowCustomCommissioningFlowAlertIfNecessary](self, "didShowCustomCommissioningFlowAlertIfNecessary") || (-[HSProxCardCoordinator setDidShowCustomCommissioningFlowAlertIfNecessary:](self, "setDidShowCustomCommissioningFlowAlertIfNecessary:", 1), ([v6 requiresMatterCustomCommissioningFlow] & 1) == 0))
+  payloadCopy = payload;
+  controllerCopy = controller;
+  if (-[HSProxCardCoordinator shouldShowCustomCommissioningProxCardWithPayload:](self, "shouldShowCustomCommissioningProxCardWithPayload:", payloadCopy) || -[HSProxCardCoordinator didShowCustomCommissioningFlowAlertIfNecessary](self, "didShowCustomCommissioningFlowAlertIfNecessary") || (-[HSProxCardCoordinator setDidShowCustomCommissioningFlowAlertIfNecessary:](self, "setDidShowCustomCommissioningFlowAlertIfNecessary:", 1), ([payloadCopy requiresMatterCustomCommissioningFlow] & 1) == 0))
   {
-    v8 = [NAFuture futureWithResult:v6];
+    v8 = [NAFuture futureWithResult:payloadCopy];
   }
 
   else
@@ -1892,55 +1892,55 @@ LABEL_25:
     v10[1] = 3221225472;
     v10[2] = sub_100042E10;
     v10[3] = &unk_1000C5F38;
-    v11 = v6;
-    v12 = v7;
+    v11 = payloadCopy;
+    v12 = controllerCopy;
     v8 = [NAFuture futureWithBlock:v10];
   }
 
   return v8;
 }
 
-- (BOOL)shouldShowCustomCommissioningProxCardWithPayload:(id)a3
+- (BOOL)shouldShowCustomCommissioningProxCardWithPayload:(id)payload
 {
-  v5 = a3;
+  payloadCopy = payload;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
-    v8 = [(HSProxCardCoordinator *)self discoveredAccessory];
-    v9 = [v8 accessory];
-    v10 = [v9 matterDeviceTypeID];
-    v11 = [v5 matterDeviceTypeID];
-    v12 = [(HSProxCardCoordinator *)self discoveredAccessory];
-    v13 = [v12 accessory];
+    discoveredAccessory = [(HSProxCardCoordinator *)self discoveredAccessory];
+    accessory = [discoveredAccessory accessory];
+    matterDeviceTypeID = [accessory matterDeviceTypeID];
+    matterDeviceTypeID2 = [payloadCopy matterDeviceTypeID];
+    discoveredAccessory2 = [(HSProxCardCoordinator *)self discoveredAccessory];
+    accessory2 = [discoveredAccessory2 accessory];
     v20 = 138413314;
     v21 = v7;
     v22 = 2112;
-    v23 = v10;
+    v23 = matterDeviceTypeID;
     v24 = 2112;
-    v25 = v11;
+    v25 = matterDeviceTypeID2;
     v26 = 2112;
-    v27 = v13;
+    v27 = accessory2;
     v28 = 2112;
-    v29 = v5;
+    v29 = payloadCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@: accessory.matterDeviceTypeID: %@ payload.matterDeviceTypeID: %@ accessory: %@ payload: %@", &v20, 0x34u);
   }
 
-  v14 = [(HSProxCardCoordinator *)self discoveredAccessory];
-  v15 = [v14 accessory];
-  v16 = [v15 matterDeviceTypeID];
+  discoveredAccessory3 = [(HSProxCardCoordinator *)self discoveredAccessory];
+  accessory3 = [discoveredAccessory3 accessory];
+  matterDeviceTypeID3 = [accessory3 matterDeviceTypeID];
   v17 = [NSNumber numberWithInt:116];
-  if ([v16 isEqual:v17] && !-[HSProxCardCoordinator didShowCustomCommissioningFlowAlertIfNecessary](self, "didShowCustomCommissioningFlowAlertIfNecessary"))
+  if ([matterDeviceTypeID3 isEqual:v17] && !-[HSProxCardCoordinator didShowCustomCommissioningFlowAlertIfNecessary](self, "didShowCustomCommissioningFlowAlertIfNecessary"))
   {
-    v18 = [v5 requiresMatterCustomCommissioningFlow];
+    requiresMatterCustomCommissioningFlow = [payloadCopy requiresMatterCustomCommissioningFlow];
   }
 
   else
   {
-    v18 = 0;
+    requiresMatterCustomCommissioningFlow = 0;
   }
 
-  return v18;
+  return requiresMatterCustomCommissioningFlow;
 }
 
 - (HSProxCardCoordinatorDelegate)delegate
@@ -1952,43 +1952,43 @@ LABEL_25:
 
 - (BOOL)requiresDismissalConfirmation
 {
-  v2 = self;
-  v3 = [(HSProxCardCoordinator *)self activeTuple];
-  LOBYTE(v2) = [(HSProxCardCoordinator *)v2 requiresDismissalConfirmation:v3];
+  selfCopy = self;
+  activeTuple = [(HSProxCardCoordinator *)self activeTuple];
+  LOBYTE(selfCopy) = [(HSProxCardCoordinator *)selfCopy requiresDismissalConfirmation:activeTuple];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)requiresDismissalConfirmation:(id)a3
+- (BOOL)requiresDismissalConfirmation:(id)confirmation
 {
-  v4 = a3;
-  v5 = [v4 stateMachine];
-  v6 = [v4 currentStep];
-  v7 = [v4 configuration];
+  confirmationCopy = confirmation;
+  stateMachine = [confirmationCopy stateMachine];
+  currentStep = [confirmationCopy currentStep];
+  configuration = [confirmationCopy configuration];
 
-  LOBYTE(self) = [v5 stepRequiresDismissalConfirmation:v6 withCoordinator:self configuration:v7];
+  LOBYTE(self) = [stateMachine stepRequiresDismissalConfirmation:currentStep withCoordinator:self configuration:configuration];
   return self;
 }
 
 - (BOOL)requiresIdentifyButton
 {
-  v2 = self;
-  v3 = [(HSProxCardCoordinator *)self activeTuple];
-  LOBYTE(v2) = [(HSProxCardCoordinator *)v2 requiresIdentifyButton:v3];
+  selfCopy = self;
+  activeTuple = [(HSProxCardCoordinator *)self activeTuple];
+  LOBYTE(selfCopy) = [(HSProxCardCoordinator *)selfCopy requiresIdentifyButton:activeTuple];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)requiresIdentifyButton:(id)a3
+- (BOOL)requiresIdentifyButton:(id)button
 {
-  v4 = a3;
-  v5 = [v4 accessory];
-  if ([v5 hf_isIdentifiable])
+  buttonCopy = button;
+  accessory = [buttonCopy accessory];
+  if ([accessory hf_isIdentifiable])
   {
-    v6 = [v4 stateMachine];
-    v7 = [v4 currentStep];
-    v8 = [v4 configuration];
-    v9 = [v6 stepRequiresIdentifyButton:v7 withCoordinator:self configuration:v8];
+    stateMachine = [buttonCopy stateMachine];
+    currentStep = [buttonCopy currentStep];
+    configuration = [buttonCopy configuration];
+    v9 = [stateMachine stepRequiresIdentifyButton:currentStep withCoordinator:self configuration:configuration];
   }
 
   else
@@ -1999,7 +1999,7 @@ LABEL_25:
   return v9;
 }
 
-- (void)setUpThermostatControllerFor:(id)a3 homeUUID:(id)a4
+- (void)setUpThermostatControllerFor:(id)for homeUUID:(id)d
 {
   v6 = sub_1000694A0(&qword_1000E6578, &qword_1000930A8);
   v7 = *(*(v6 - 8) + 64);
@@ -2012,7 +2012,7 @@ LABEL_25:
   v14 = &v23 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   __chkstk_darwin(v13);
   v16 = &v23 - v15;
-  if (a4)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v17 = type metadata accessor for UUID();
@@ -2032,9 +2032,9 @@ LABEL_25:
   v21 = swift_allocObject();
   v21[2] = 0;
   v21[3] = 0;
-  v21[4] = a3;
+  v21[4] = for;
   sub_100075C50(v14, v21 + v20);
-  v22 = a3;
+  forCopy = for;
   sub_1000755A4(0, 0, v9, &unk_1000932A0, v21);
 
   sub_10007400C(v16, &qword_1000E6650, &qword_100093288);

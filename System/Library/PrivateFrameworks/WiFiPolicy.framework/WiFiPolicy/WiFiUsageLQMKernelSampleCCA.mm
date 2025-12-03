@@ -1,14 +1,14 @@
 @interface WiFiUsageLQMKernelSampleCCA
-+ (id)sampleWithStruct:(ccaStats *)a3 andTimestamp:(id)a4;
-- (WiFiUsageLQMKernelSampleCCA)initWithStruct:(ccaStats *)a3 andTimestamp:(id)a4;
++ (id)sampleWithStruct:(ccaStats *)struct andTimestamp:(id)timestamp;
+- (WiFiUsageLQMKernelSampleCCA)initWithStruct:(ccaStats *)struct andTimestamp:(id)timestamp;
 @end
 
 @implementation WiFiUsageLQMKernelSampleCCA
 
-+ (id)sampleWithStruct:(ccaStats *)a3 andTimestamp:(id)a4
++ (id)sampleWithStruct:(ccaStats *)struct andTimestamp:(id)timestamp
 {
-  v5 = a4;
-  var0 = a3->var0;
+  timestampCopy = timestamp;
+  var0 = struct->var0;
   if (var0)
   {
     NSLog(&cfstr_SUnknownVersio.isa, "+[WiFiUsageLQMKernelSampleCCA sampleWithStruct:andTimestamp:]", var0);
@@ -17,31 +17,31 @@
 
   else
   {
-    v7 = [[WiFiUsageLQMKernelSampleCCA alloc] initWithStruct:a3 andTimestamp:v5];
+    v7 = [[WiFiUsageLQMKernelSampleCCA alloc] initWithStruct:struct andTimestamp:timestampCopy];
   }
 
   return v7;
 }
 
-- (WiFiUsageLQMKernelSampleCCA)initWithStruct:(ccaStats *)a3 andTimestamp:(id)a4
+- (WiFiUsageLQMKernelSampleCCA)initWithStruct:(ccaStats *)struct andTimestamp:(id)timestamp
 {
-  v7 = a4;
+  timestampCopy = timestamp;
   v18 = 0;
   v19 = 0;
   v20 = 0;
-  [WiFiUsageLQMTransformations ccaStatsWithDuration:a3->var1 ccaSelf:a3->var2 ccaOther:a3->var3 interference:a3->var4];
+  [WiFiUsageLQMTransformations ccaStatsWithDuration:struct->var1 ccaSelf:struct->var2 ccaOther:struct->var3 interference:struct->var4];
   v15 = 0;
   v16 = 0;
   v17 = 0;
-  [WiFiUsageLQMTransformations ccaStatsWithDuration:a3->var5 ccaSelf:a3->var6 ccaOther:a3->var7 interference:a3->var8];
+  [WiFiUsageLQMTransformations ccaStatsWithDuration:struct->var5 ccaSelf:struct->var6 ccaOther:struct->var7 interference:struct->var8];
   v12 = 0;
   v13 = 0;
   v14 = 0;
-  [WiFiUsageLQMTransformations ccaStatsWithDuration:a3->var9 ccaSelf:a3->var10 ccaOther:a3->var11 interference:a3->var12];
+  [WiFiUsageLQMTransformations ccaStatsWithDuration:struct->var9 ccaSelf:struct->var10 ccaOther:struct->var11 interference:struct->var12];
   v11.receiver = self;
   v11.super_class = WiFiUsageLQMKernelSampleCCA;
   v8 = [(WiFiUsageLQMKernelSampleCCA *)&v11 init];
-  objc_storeStrong(&v8->_timestamp, a4);
+  objc_storeStrong(&v8->_timestamp, timestamp);
   v8->_selfCca = v18;
   v8->_otherCca = v19;
   v8->_interference = v20;

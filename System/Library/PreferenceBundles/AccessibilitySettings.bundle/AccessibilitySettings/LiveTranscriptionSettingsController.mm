@@ -1,13 +1,13 @@
 @interface LiveTranscriptionSettingsController
 - (LiveTranscriptionSettingsController)init;
-- (id)liveTranscriptionEnabled:(id)a3;
-- (id)liveTranscriptionInCallEnabled:(id)a3;
-- (id)selectedLocaleForSpecifier:(id)a3;
+- (id)liveTranscriptionEnabled:(id)enabled;
+- (id)liveTranscriptionInCallEnabled:(id)enabled;
+- (id)selectedLocaleForSpecifier:(id)specifier;
 - (id)specifiers;
 - (void)dealloc;
-- (void)presentAlertWithMessage:(id)a3 specifier:(id)a4 okBlock:(id)a5;
-- (void)setLiveTranscriptionEnabled:(id)a3 specifier:(id)a4;
-- (void)setLiveTranscriptionInCallEnabled:(id)a3 specifier:(id)a4;
+- (void)presentAlertWithMessage:(id)message specifier:(id)specifier okBlock:(id)block;
+- (void)setLiveTranscriptionEnabled:(id)enabled specifier:(id)specifier;
+- (void)setLiveTranscriptionInCallEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation LiveTranscriptionSettingsController
@@ -23,8 +23,8 @@
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, liveTranscriptionEnabledUpdated, kAXSLiveTranscriptionEnabledDidChangeNotification, 0, 1028);
     v4 = CFNotificationCenterGetDarwinNotifyCenter();
     v5 = +[AXSettings sharedInstance];
-    v6 = [v5 liveCaptionsSelectedLocaleChangedNotification];
-    CFNotificationCenterAddObserver(v4, v2, selectedLocaleUpdated, v6, 0, 1028);
+    liveCaptionsSelectedLocaleChangedNotification = [v5 liveCaptionsSelectedLocaleChangedNotification];
+    CFNotificationCenterAddObserver(v4, v2, selectedLocaleUpdated, liveCaptionsSelectedLocaleChangedNotification, 0, 1028);
 
     objc_initWeak(&location, v2);
     v8[0] = _NSConcreteStackBlock;
@@ -72,8 +72,8 @@ void __43__LiveTranscriptionSettingsController_init__block_invoke_2(uint64_t a1)
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, kAXSLiveTranscriptionEnabledDidChangeNotification, 0);
   v4 = CFNotificationCenterGetDarwinNotifyCenter();
   v5 = +[AXSettings sharedInstance];
-  v6 = [v5 liveCaptionsSelectedLocaleChangedNotification];
-  CFNotificationCenterRemoveObserver(v4, self, v6, 0);
+  liveCaptionsSelectedLocaleChangedNotification = [v5 liveCaptionsSelectedLocaleChangedNotification];
+  CFNotificationCenterRemoveObserver(v4, self, liveCaptionsSelectedLocaleChangedNotification, 0);
 
   v7.receiver = self;
   v7.super_class = LiveTranscriptionSettingsController;
@@ -170,12 +170,12 @@ void __43__LiveTranscriptionSettingsController_init__block_invoke_2(uint64_t a1)
 
             v28 = *(*(&v69 + 1) + 8 * i);
             v73[0] = @"headerLabel";
-            v29 = [v28 itemTitle];
-            v74[0] = v29;
+            itemTitle = [v28 itemTitle];
+            v74[0] = itemTitle;
             v73[1] = @"contentLabel";
-            v30 = [v28 itemDescription];
+            itemDescription = [v28 itemDescription];
             v73[2] = v19;
-            v74[1] = v30;
+            v74[1] = itemDescription;
             v74[2] = v7;
             [NSDictionary dictionaryWithObjects:v74 forKeys:v73 count:3];
             v31 = v7;
@@ -262,17 +262,17 @@ void __43__LiveTranscriptionSettingsController_init__block_invoke_2(uint64_t a1)
   return v3;
 }
 
-- (id)liveTranscriptionEnabled:(id)a3
+- (id)liveTranscriptionEnabled:(id)enabled
 {
   v3 = _AXSLiveTranscriptionEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setLiveTranscriptionEnabled:(id)a3 specifier:(id)a4
+- (void)setLiveTranscriptionEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
-  if (v4)
+  bOOLValue = [enabled BOOLValue];
+  if (bOOLValue)
   {
     v5 = +[AXSettings sharedInstance];
     [v5 clearLiveCaptionsPipState];
@@ -280,41 +280,41 @@ void __43__LiveTranscriptionSettingsController_init__block_invoke_2(uint64_t a1)
 
   _AXSLiveTranscriptionSetEnabled();
   v8 = AXLiveCaptionsAnalyticsEnabledKey;
-  v6 = [NSNumber numberWithBool:v4];
+  v6 = [NSNumber numberWithBool:bOOLValue];
   v9 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   AnalyticsSendEvent();
 }
 
-- (id)liveTranscriptionInCallEnabled:(id)a3
+- (id)liveTranscriptionInCallEnabled:(id)enabled
 {
   v3 = _AXSLiveTranscriptionInCallEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setLiveTranscriptionInCallEnabled:(id)a3 specifier:(id)a4
+- (void)setLiveTranscriptionInCallEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
 
-  __AXSLiveTranscriptionInCallSetEnabled(v4);
+  __AXSLiveTranscriptionInCallSetEnabled(bOOLValue);
 }
 
-- (void)presentAlertWithMessage:(id)a3 specifier:(id)a4 okBlock:(id)a5
+- (void)presentAlertWithMessage:(id)message specifier:(id)specifier okBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  specifierCopy = specifier;
+  blockCopy = block;
+  messageCopy = message;
   v11 = settingsLocString(@"WARNING", @"Accessibility");
-  v12 = [UIAlertController alertControllerWithTitle:v11 message:v10 preferredStyle:1];
+  v12 = [UIAlertController alertControllerWithTitle:v11 message:messageCopy preferredStyle:1];
 
   v13 = settingsLocString(@"OK", @"Accessibility");
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = __81__LiveTranscriptionSettingsController_presentAlertWithMessage_specifier_okBlock___block_invoke;
   v21[3] = &unk_2554C0;
-  v22 = v9;
-  v14 = v9;
+  v22 = blockCopy;
+  v14 = blockCopy;
   v15 = [UIAlertAction actionWithTitle:v13 style:0 handler:v21];
 
   v16 = settingsLocString(@"CANCEL", @"Accessibility");
@@ -323,8 +323,8 @@ void __43__LiveTranscriptionSettingsController_init__block_invoke_2(uint64_t a1)
   v19[2] = __81__LiveTranscriptionSettingsController_presentAlertWithMessage_specifier_okBlock___block_invoke_2;
   v19[3] = &unk_256AA0;
   v19[4] = self;
-  v20 = v8;
-  v17 = v8;
+  v20 = specifierCopy;
+  v17 = specifierCopy;
   v18 = [UIAlertAction actionWithTitle:v16 style:2 handler:v19];
 
   [v12 addAction:v15];
@@ -343,28 +343,28 @@ uint64_t __81__LiveTranscriptionSettingsController_presentAlertWithMessage_speci
   return result;
 }
 
-- (id)selectedLocaleForSpecifier:(id)a3
+- (id)selectedLocaleForSpecifier:(id)specifier
 {
   v4 = +[AXSettings sharedInstance];
-  v5 = [v4 liveCaptionsSelectedLocaleIdentifier];
+  liveCaptionsSelectedLocaleIdentifier = [v4 liveCaptionsSelectedLocaleIdentifier];
 
-  if (v5)
+  if (liveCaptionsSelectedLocaleIdentifier)
   {
     v6 = +[NSLocale currentLocale];
-    v7 = [v6 localizedStringForLocaleIdentifier:v5];
+    v7 = [v6 localizedStringForLocaleIdentifier:liveCaptionsSelectedLocaleIdentifier];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v8 = [(LiveTranscriptionSettingsController *)self defaultLocale];
+  defaultLocale = [(LiveTranscriptionSettingsController *)self defaultLocale];
 
-  if (v8)
+  if (defaultLocale)
   {
     v6 = +[NSLocale currentLocale];
-    v9 = [(LiveTranscriptionSettingsController *)self defaultLocale];
-    v10 = [v9 localeIdentifier];
-    v7 = [v6 localizedStringForLocaleIdentifier:v10];
+    defaultLocale2 = [(LiveTranscriptionSettingsController *)self defaultLocale];
+    localeIdentifier = [defaultLocale2 localeIdentifier];
+    v7 = [v6 localizedStringForLocaleIdentifier:localeIdentifier];
 
     goto LABEL_5;
   }

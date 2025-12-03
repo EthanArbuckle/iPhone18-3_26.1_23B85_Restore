@@ -1,10 +1,10 @@
 @interface CCPersistedKeyValueRecord
 + (id)genSQLCreateStatements;
-+ (id)recordFromDatabaseValueRow:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToMetadataRecord:(id)a3;
++ (id)recordFromDatabaseValueRow:(id)row;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToMetadataRecord:(id)record;
 - (CCPersistedKeyValueRecord)init;
-- (CCPersistedKeyValueRecord)initWithDatabaseValueRow:(id)a3;
+- (CCPersistedKeyValueRecord)initWithDatabaseValueRow:(id)row;
 - (NSString)description;
 - (unint64_t)hash;
 @end
@@ -17,10 +17,10 @@
   objc_exception_throw(v2);
 }
 
-+ (id)recordFromDatabaseValueRow:(id)a3
++ (id)recordFromDatabaseValueRow:(id)row
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithDatabaseValueRow:v3];
+  rowCopy = row;
+  v4 = [objc_alloc(objc_opt_class()) initWithDatabaseValueRow:rowCopy];
 
   return v4;
 }
@@ -37,27 +37,27 @@
   return v3;
 }
 
-- (CCPersistedKeyValueRecord)initWithDatabaseValueRow:(id)a3
+- (CCPersistedKeyValueRecord)initWithDatabaseValueRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v15.receiver = self;
   v15.super_class = CCPersistedKeyValueRecord;
   v5 = [(CCPersistedKeyValueRecord *)&v15 init];
   if (v5)
   {
-    v6 = [v4 stringValueAtColumnIndex:0];
+    v6 = [rowCopy stringValueAtColumnIndex:0];
     key = v5->_key;
     v5->_key = v6;
 
-    v8 = [v4 stringValueAtColumnIndex:1];
+    v8 = [rowCopy stringValueAtColumnIndex:1];
     stringValue = v5->_stringValue;
     v5->_stringValue = v8;
 
-    v10 = [v4 numberValueAtColumnIndex:2];
+    v10 = [rowCopy numberValueAtColumnIndex:2];
     integerValue = v5->_integerValue;
     v5->_integerValue = v10;
 
-    v12 = [v4 dataValueAtColumnIndex:3];
+    v12 = [rowCopy dataValueAtColumnIndex:3];
     dataValue = v5->_dataValue;
     v5->_dataValue = v12;
   }
@@ -75,28 +75,28 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCPersistedKeyValueRecord *)self isEqualToMetadataRecord:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCPersistedKeyValueRecord *)self isEqualToMetadataRecord:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToMetadataRecord:(id)a3
+- (BOOL)isEqualToMetadataRecord:(id)record
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  recordCopy = record;
+  v7 = recordCopy;
+  if (!recordCopy)
   {
     v12 = 0;
     goto LABEL_43;
@@ -106,7 +106,7 @@
   v9 = key;
   if (!key)
   {
-    v10 = [v6 key];
+    v10 = [recordCopy key];
     if (!v10)
     {
       v34 = 0;
@@ -132,20 +132,20 @@ LABEL_10:
   v14 = stringValue;
   if (!stringValue)
   {
-    v15 = [v7 stringValue];
-    if (!v15)
+    stringValue = [v7 stringValue];
+    if (!stringValue)
     {
       v32 = 0;
       v16 = 0;
       goto LABEL_17;
     }
 
-    v32 = v15;
+    v32 = stringValue;
     v14 = self->_stringValue;
   }
 
-  v4 = [v7 stringValue];
-  if (([(NSString *)v14 isEqual:v4]& 1) == 0)
+  stringValue2 = [v7 stringValue];
+  if (([(NSString *)v14 isEqual:stringValue2]& 1) == 0)
   {
 
     v12 = 0;
@@ -158,8 +158,8 @@ LABEL_17:
   v18 = integerValue;
   if (!integerValue)
   {
-    v19 = [v7 integerValue];
-    if (!v19)
+    integerValue = [v7 integerValue];
+    if (!integerValue)
     {
       v30 = 0;
       v31 = v11;
@@ -169,22 +169,22 @@ LABEL_24:
       v21 = dataValue;
       if (!dataValue)
       {
-        v22 = [v7 dataValue];
-        if (!v22)
+        dataValue = [v7 dataValue];
+        if (!dataValue)
         {
           v25 = 0;
           v12 = 1;
           goto LABEL_33;
         }
 
-        v27 = v22;
+        v27 = dataValue;
         v21 = self->_dataValue;
       }
 
-      v29 = v4;
+      v29 = stringValue2;
       v23 = v16;
-      v24 = [v7 dataValue];
-      v12 = [(NSData *)v21 isEqual:v24];
+      dataValue2 = [v7 dataValue];
+      v12 = [(NSData *)v21 isEqual:dataValue2];
 
       v16 = v23;
       if (dataValue)
@@ -192,16 +192,16 @@ LABEL_24:
         if (!v30)
         {
           v11 = v31;
-          v4 = v29;
+          stringValue2 = v29;
           goto LABEL_35;
         }
 
         v11 = v31;
-        v4 = v29;
+        stringValue2 = v29;
         goto LABEL_34;
       }
 
-      v4 = v29;
+      stringValue2 = v29;
       v25 = v27;
 LABEL_33:
 
@@ -214,11 +214,11 @@ LABEL_33:
       goto LABEL_34;
     }
 
-    v28 = v19;
+    v28 = integerValue;
     v18 = self->_integerValue;
   }
 
-  v33 = [v7 integerValue];
+  integerValue2 = [v7 integerValue];
   if ([(NSNumber *)v18 isEqual:?])
   {
     v30 = 1;

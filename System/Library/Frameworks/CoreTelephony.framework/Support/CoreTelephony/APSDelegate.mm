@@ -1,21 +1,21 @@
 @interface APSDelegate
-- (APSDelegate)initWithPushController:(weak_ptr<WebPushControllerImpl>)a3;
+- (APSDelegate)initWithPushController:(weak_ptr<WebPushControllerImpl>)controller;
 - (id).cxx_construct;
-- (void)connection:(id)a3 didChangeConnectedStatus:(BOOL)a4;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)connection:(id)a3 didReceiveURLToken:(id)a4 forInfo:(id)a5;
-- (void)connection:(id)a3 didReceiveURLTokenError:(id)a4 forInfo:(id)a5;
+- (void)connection:(id)connection didChangeConnectedStatus:(BOOL)status;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)connection:(id)connection didReceiveURLToken:(id)token forInfo:(id)info;
+- (void)connection:(id)connection didReceiveURLTokenError:(id)error forInfo:(id)info;
 @end
 
 @implementation APSDelegate
 
-- (APSDelegate)initWithPushController:(weak_ptr<WebPushControllerImpl>)a3
+- (APSDelegate)initWithPushController:(weak_ptr<WebPushControllerImpl>)controller
 {
-  ptr = a3.__ptr_;
+  ptr = controller.__ptr_;
   v10.receiver = self;
   v10.super_class = APSDelegate;
-  v4 = [(APSDelegate *)&v10 init:a3.__ptr_];
+  v4 = [(APSDelegate *)&v10 init:controller.__ptr_];
   v5 = v4;
   if (v4)
   {
@@ -38,10 +38,10 @@
   return v5;
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  messageCopy = message;
   cntrl = self->fController.__cntrl_;
   if (cntrl)
   {
@@ -55,14 +55,14 @@
         __p[0] = 0;
         __p[1] = 0;
         v20 = 0;
-        v12 = [v7 topic];
-        sub_10000501C(__p, [v12 UTF8String]);
+        topic = [messageCopy topic];
+        sub_10000501C(__p, [topic UTF8String]);
 
-        v13 = [v7 userInfo];
-        v14 = v13;
-        if (v13)
+        userInfo = [messageCopy userInfo];
+        v14 = userInfo;
+        if (userInfo)
         {
-          v17 = v13;
+          v17 = userInfo;
           sub_100138C38(&v18, &v17);
           (*(*ptr + 48))(ptr, __p, &v18);
           v15 = &v18;
@@ -88,9 +88,9 @@
   }
 }
 
-- (void)connection:(id)a3 didChangeConnectedStatus:(BOOL)a4
+- (void)connection:(id)connection didChangeConnectedStatus:(BOOL)status
 {
-  v9 = a3;
+  connectionCopy = connection;
   cntrl = self->fController.__cntrl_;
   if (cntrl)
   {
@@ -109,11 +109,11 @@
   }
 }
 
-- (void)connection:(id)a3 didReceiveURLToken:(id)a4 forInfo:(id)a5
+- (void)connection:(id)connection didReceiveURLToken:(id)token forInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  tokenCopy = token;
+  infoCopy = info;
   cntrl = self->fController.__cntrl_;
   if (cntrl)
   {
@@ -124,11 +124,11 @@
       if (ptr)
       {
         memset(v17, 0, sizeof(v17));
-        v14 = [v10 topic];
-        sub_10000501C(v17, [v14 UTF8String]);
+        topic = [infoCopy topic];
+        sub_10000501C(v17, [topic UTF8String]);
 
-        v15 = [v9 tokenURL];
-        sub_10000501C(&__p, [v15 UTF8String]);
+        tokenURL = [tokenCopy tokenURL];
+        sub_10000501C(&__p, [tokenURL UTF8String]);
 
         WebPushControllerImpl::handleURLTokenUpdate(ptr, v17, &__p);
       }
@@ -138,11 +138,11 @@
   }
 }
 
-- (void)connection:(id)a3 didReceiveURLTokenError:(id)a4 forInfo:(id)a5
+- (void)connection:(id)connection didReceiveURLTokenError:(id)error forInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  errorCopy = error;
+  infoCopy = info;
   cntrl = self->fController.__cntrl_;
   if (cntrl)
   {
@@ -153,13 +153,13 @@
       if (ptr)
       {
         memset(v17, 0, sizeof(v17));
-        v14 = [v10 topic];
-        sub_10000501C(v17, [v14 UTF8String]);
+        topic = [infoCopy topic];
+        sub_10000501C(v17, [topic UTF8String]);
 
-        v15 = [v9 localizedDescription];
-        sub_10000501C(&__p, [v15 UTF8String]);
+        localizedDescription = [errorCopy localizedDescription];
+        sub_10000501C(&__p, [localizedDescription UTF8String]);
 
-        WebPushControllerImpl::handleURLTokenError(ptr, v17, &__p, [v9 code]);
+        WebPushControllerImpl::handleURLTokenError(ptr, v17, &__p, [errorCopy code]);
       }
 
       sub_100004A34(v12);
@@ -167,10 +167,10 @@
   }
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  tokenCopy = token;
   cntrl = self->fController.__cntrl_;
   if (cntrl)
   {
@@ -180,11 +180,11 @@
       ptr = self->fController.__ptr_;
       if (ptr)
       {
-        v11 = [v7 bytes];
-        v12 = [v7 bytes];
-        v13 = [v7 length];
+        bytes = [tokenCopy bytes];
+        bytes2 = [tokenCopy bytes];
+        v13 = [tokenCopy length];
         memset(__p, 0, sizeof(__p));
-        sub_1000DCF88(__p, v11, &v13[v12], &v13[v12] - v11);
+        sub_1000DCF88(__p, bytes, &v13[bytes2], &v13[bytes2] - bytes);
         WebPushControllerImpl::handlePublicTokenUpdate(ptr);
       }
 

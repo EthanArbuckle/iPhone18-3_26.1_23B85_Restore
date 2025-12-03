@@ -1,29 +1,29 @@
 @interface WFFileSizeContentItem
 + (id)contentCategories;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 - (WFFileSize)fileSize;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
 @end
 
 @implementation WFFileSizeContentItem
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"File sizes", @"File sizes");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"File size", @"File size");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -56,29 +56,29 @@
   return v4;
 }
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v8 = [(WFFileSizeContentItem *)self fileSize];
-    v9 = [v8 formattedString];
+    fileSize = [(WFFileSizeContentItem *)self fileSize];
+    formattedString = [fileSize formattedString];
   }
 
   else
   {
-    if (objc_opt_class() != a3)
+    if (objc_opt_class() != class)
     {
       v7 = 0;
       goto LABEL_7;
     }
 
     v10 = MEMORY[0x277CCABB0];
-    v8 = [(WFFileSizeContentItem *)self fileSize];
-    v9 = [v10 numberWithLongLong:{objc_msgSend(v8, "byteCount")}];
+    fileSize = [(WFFileSizeContentItem *)self fileSize];
+    formattedString = [v10 numberWithLongLong:{objc_msgSend(fileSize, "byteCount")}];
   }
 
-  v11 = v9;
-  v7 = [WFObjectRepresentation object:v9];
+  v11 = formattedString;
+  v7 = [WFObjectRepresentation object:formattedString];
 
 LABEL_7:
 

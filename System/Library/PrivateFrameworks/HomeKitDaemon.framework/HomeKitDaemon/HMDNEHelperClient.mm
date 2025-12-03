@@ -1,10 +1,10 @@
 @interface HMDNEHelperClient
 + (id)logCategory;
 - (HMDNEHelperClient)init;
-- (id)_signingIdentifierWithProcessId:(id)a3;
-- (id)cacheCopyAppUUIDForSigningIdentifier:(id)a3 executablePath:(id)a4;
-- (id)cacheCopySigningIdentifierForProcessIdentifier:(id)a3;
-- (void)_addIdentifiers:(id)a3 signingId:(id)a4;
+- (id)_signingIdentifierWithProcessId:(id)id;
+- (id)cacheCopyAppUUIDForSigningIdentifier:(id)identifier executablePath:(id)path;
+- (id)cacheCopySigningIdentifierForProcessIdentifier:(id)identifier;
+- (void)_addIdentifiers:(id)identifiers signingId:(id)id;
 - (void)cacheClearUUIDs;
 @end
 
@@ -14,7 +14,7 @@
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -25,18 +25,18 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  cachedEntries = v4->_cachedEntries;
-  v4->_cachedEntries = MEMORY[0x277CBEBF8];
+  cachedEntries = selfCopy->_cachedEntries;
+  selfCopy->_cachedEntries = MEMORY[0x277CBEBF8];
 
   NEHelperCacheClearUUIDs();
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cacheCopySigningIdentifierForProcessIdentifier:(id)a3
+- (id)cacheCopySigningIdentifierForProcessIdentifier:(id)identifier
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNEHelperClient *)self _signingIdentifierWithProcessId:v4];
+  identifierCopy = identifier;
+  v5 = [(HMDNEHelperClient *)self _signingIdentifierWithProcessId:identifierCopy];
   v6 = v5;
   if (v5)
   {
@@ -47,7 +47,7 @@
   {
     v14[0] = 0;
     v14[1] = 0;
-    [v4 getUUIDBytes:v14];
+    [identifierCopy getUUIDBytes:v14];
     v8 = NEHelperCacheCopySigningIdentifierMapping();
     v9 = v8;
     if (v8 && MEMORY[0x22AAD53D0](v8) == MEMORY[0x277D864C0])
@@ -68,14 +68,14 @@
   return v7;
 }
 
-- (id)cacheCopyAppUUIDForSigningIdentifier:(id)a3 executablePath:(id)a4
+- (id)cacheCopyAppUUIDForSigningIdentifier:(id)identifier executablePath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 UTF8String];
-  if (v7)
+  identifierCopy = identifier;
+  pathCopy = path;
+  [identifierCopy UTF8String];
+  if (pathCopy)
   {
-    [v7 UTF8String];
+    [pathCopy UTF8String];
   }
 
   v8 = NEHelperCacheCopyAppUUIDMapping();
@@ -96,7 +96,7 @@
     xpc_array_apply(v9, applier);
     if ([v14[5] count])
     {
-      [(HMDNEHelperClient *)self _addIdentifiers:v14[5] signingId:v6];
+      [(HMDNEHelperClient *)self _addIdentifiers:v14[5] signingId:identifierCopy];
       v10 = v14[5];
     }
 
@@ -129,30 +129,30 @@ uint64_t __73__HMDNEHelperClient_cacheCopyAppUUIDForSigningIdentifier_executable
   return 1;
 }
 
-- (id)_signingIdentifierWithProcessId:(id)a3
+- (id)_signingIdentifierWithProcessId:(id)id
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   cachedEntries = self->_cachedEntries;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __53__HMDNEHelperClient__signingIdentifierWithProcessId___block_invoke;
   v16[3] = &unk_27866F5A0;
-  v6 = v4;
+  v6 = idCopy;
   v17 = v6;
   v7 = [(NSArray *)cachedEntries indexOfObjectPassingTest:v16];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = 0;
+    signingId = 0;
   }
 
   else
   {
     v9 = [(NSArray *)self->_cachedEntries objectAtIndexedSubscript:v7];
-    v8 = [v9 signingId];
+    signingId = [v9 signingId];
 
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -162,7 +162,7 @@ uint64_t __73__HMDNEHelperClient_cacheCopyAppUUIDForSigningIdentifier_executable
       v20 = 2112;
       v21 = v6;
       v22 = 2112;
-      v23 = v8;
+      v23 = signingId;
       _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@Local cache hit for %@: %@", buf, 0x20u);
     }
 
@@ -171,7 +171,7 @@ uint64_t __73__HMDNEHelperClient_cacheCopyAppUUIDForSigningIdentifier_executable
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return signingId;
 }
 
 uint64_t __53__HMDNEHelperClient__signingIdentifierWithProcessId___block_invoke(uint64_t a1, void *a2)
@@ -182,22 +182,22 @@ uint64_t __53__HMDNEHelperClient__signingIdentifierWithProcessId___block_invoke(
   return v4;
 }
 
-- (void)_addIdentifiers:(id)a3 signingId:(id)a4
+- (void)_addIdentifiers:(id)identifiers signingId:(id)id
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  idCopy = id;
   cachedEntries = self->_cachedEntries;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __47__HMDNEHelperClient__addIdentifiers_signingId___block_invoke;
   v18[3] = &unk_27866F5A0;
-  v9 = v7;
+  v9 = idCopy;
   v19 = v9;
   if ([(NSArray *)cachedEntries indexOfObjectPassingTest:v18]== 0x7FFFFFFFFFFFFFFFLL)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -207,12 +207,12 @@ uint64_t __53__HMDNEHelperClient__signingIdentifierWithProcessId___block_invoke(
       v22 = 2112;
       v23 = v9;
       v24 = 2112;
-      v25 = v6;
+      v25 = identifiersCopy;
       _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@Caching process identifiers for %@: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v10);
-    v14 = [[_HMDNEHelperClientCacheEntry alloc] initWithSigningId:v9 identifiers:v6];
+    v14 = [[_HMDNEHelperClientCacheEntry alloc] initWithSigningId:v9 identifiers:identifiersCopy];
     v15 = [(NSArray *)self->_cachedEntries arrayByAddingObject:v14];
     v16 = self->_cachedEntries;
     self->_cachedEntries = v15;

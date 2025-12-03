@@ -1,38 +1,38 @@
 @interface SFAuthenticateAccountsService
-- (BOOL)_shouldSignInAccountsInInfoRequest:(id)a3;
+- (BOOL)_shouldSignInAccountsInInfoRequest:(id)request;
 - (BOOL)_validateConfiguration;
 - (SFAuthenticateAccountsService)init;
 - (SFAuthenticateAccountsServiceConfiguration)configuration;
 - (SFAuthenticateAccountsServiceDelegate)delegate;
-- (id)_configurationExistingAccountWithType:(unsigned int)a3;
-- (int64_t)_nextServiceTypeForTRAccountServices:(id)a3;
-- (unint64_t)_nextTRServiceTypeForTRAccountServices:(id)a3;
-- (unsigned)_accountTypeForTRAccountService:(unint64_t)a3;
-- (void)__runAuthenticateiCloudWithAuthResults:(id)a3 completion:(id)a4;
+- (id)_configurationExistingAccountWithType:(unsigned int)type;
+- (int64_t)_nextServiceTypeForTRAccountServices:(id)services;
+- (unint64_t)_nextTRServiceTypeForTRAccountServices:(id)services;
+- (unsigned)_accountTypeForTRAccountService:(unint64_t)service;
+- (void)__runAuthenticateiCloudWithAuthResults:(id)results completion:(id)completion;
 - (void)_activate;
-- (void)_authenticateAccount:(id)a3 serviceType:(int64_t)a4 companionDevice:(id)a5 anisetteDataProvider:(id)a6 completion:(id)a7;
-- (void)_authenticateAccount:(id)a3 serviceType:(int64_t)a4 password:(id)a5 completion:(id)a6;
-- (void)_authenticateGameCenterWithAuthResults:(id)a3 completion:(id)a4;
-- (void)_authenticateWithServiceType:(unint64_t)a3 authResults:(id)a4 completion:(id)a5;
-- (void)_authenticateWithServiceTypes:(id)a3 authResults:(id)a4 completion:(id)a5;
-- (void)_authenticateiCloudWithAuthResults:(id)a3 completion:(id)a4;
-- (void)_authenticateiTunesWithAuthResults:(id)a3 completion:(id)a4;
+- (void)_authenticateAccount:(id)account serviceType:(int64_t)type companionDevice:(id)device anisetteDataProvider:(id)provider completion:(id)completion;
+- (void)_authenticateAccount:(id)account serviceType:(int64_t)type password:(id)password completion:(id)completion;
+- (void)_authenticateGameCenterWithAuthResults:(id)results completion:(id)completion;
+- (void)_authenticateWithServiceType:(unint64_t)type authResults:(id)results completion:(id)completion;
+- (void)_authenticateWithServiceTypes:(id)types authResults:(id)results completion:(id)completion;
+- (void)_authenticateiCloudWithAuthResults:(id)results completion:(id)completion;
+- (void)_authenticateiTunesWithAuthResults:(id)results completion:(id)completion;
 - (void)_cleanup;
-- (void)_finishSession:(id)a3;
-- (void)_handleInfoExchange:(id)a3 responseHandler:(id)a4;
-- (void)_handleSessionEnded:(id)a3;
-- (void)_handleSessionStarted:(id)a3;
-- (void)_handleTRCompanionAuthenticationRequest:(id)a3 responseHandler:(id)a4;
-- (void)_handleTRProxyAuthenticationRequest:(id)a3 responseHandler:(id)a4;
-- (void)_handleTRProxyDeviceRequest:(id)a3 responseHandler:(id)a4;
+- (void)_finishSession:(id)session;
+- (void)_handleInfoExchange:(id)exchange responseHandler:(id)handler;
+- (void)_handleSessionEnded:(id)ended;
+- (void)_handleSessionStarted:(id)started;
+- (void)_handleTRCompanionAuthenticationRequest:(id)request responseHandler:(id)handler;
+- (void)_handleTRProxyAuthenticationRequest:(id)request responseHandler:(id)handler;
+- (void)_handleTRProxyDeviceRequest:(id)request responseHandler:(id)handler;
 - (void)_invalidate;
-- (void)_saveAccount:(id)a3 completion:(id)a4;
-- (void)_saveRemoteVerifiedAccount:(id)a3 completion:(id)a4;
+- (void)_saveAccount:(id)account completion:(id)completion;
+- (void)_saveRemoteVerifiedAccount:(id)account completion:(id)completion;
 - (void)_sfServiceStart;
-- (void)_validateiCloudCredentialsWithRequest:(id)a3 unvalidatedResponse:(id)a4 completionHandler:(id)a5;
+- (void)_validateiCloudCredentialsWithRequest:(id)request unvalidatedResponse:(id)response completionHandler:(id)handler;
 - (void)activate;
 - (void)invalidate;
-- (void)setConfiguration:(id)a3;
+- (void)setConfiguration:(id)configuration;
 @end
 
 @implementation SFAuthenticateAccountsService
@@ -91,14 +91,14 @@
   return v2;
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
+  configurationCopy = configuration;
+  v5 = configurationCopy;
   if (!self->_activateCalled)
   {
-    v9 = v4;
-    v7 = [v4 copy];
+    v9 = configurationCopy;
+    v7 = [configurationCopy copy];
     configuration = self->_configuration;
     self->_configuration = v7;
 
@@ -107,7 +107,7 @@
 
   if (gLogCategory_SFAuthenticateAccountsService <= 115)
   {
-    v9 = v4;
+    v9 = configurationCopy;
     if (gLogCategory_SFAuthenticateAccountsService != -1 || (v6 = _LogCategory_Initialize(), v5 = v9, v6))
     {
       [SFAuthenticateAccountsService setConfiguration:];
@@ -136,9 +136,9 @@ LABEL_7:
   }
 
   self->_activateCalled = 1;
-  v3 = [(objc_class *)getACAccountStoreClass() defaultStore];
+  defaultStore = [(objc_class *)getACAccountStoreClass() defaultStore];
   accountStore = self->_accountStore;
-  self->_accountStore = v3;
+  self->_accountStore = defaultStore;
 
   if ([(SFAuthenticateAccountsService *)self _validateConfiguration])
   {
@@ -170,8 +170,8 @@ LABEL_7:
 
   if (([(SFAuthenticateAccountsServiceConfiguration *)self->_configuration serviceType]& 1) != 0 || ([(SFAuthenticateAccountsServiceConfiguration *)self->_configuration serviceType]& 2) != 0)
   {
-    v4 = [(SFAuthenticateAccountsServiceConfiguration *)self->_configuration existingAccountsIdentifiers];
-    v5 = [v4 count];
+    existingAccountsIdentifiers = [(SFAuthenticateAccountsServiceConfiguration *)self->_configuration existingAccountsIdentifiers];
+    v5 = [existingAccountsIdentifiers count];
 
     if (!v5)
     {
@@ -289,7 +289,7 @@ uint64_t __55__SFAuthenticateAccountsService__validateConfiguration__block_invok
     [SFAuthenticateAccountsService _sfServiceStart];
   }
 
-  v3 = [(SFAuthenticateAccountsServiceConfiguration *)self->_configuration serviceType];
+  serviceType = [(SFAuthenticateAccountsServiceConfiguration *)self->_configuration serviceType];
   [(SFService *)self->_sfService invalidate];
   v4 = objc_alloc_init(SFService);
   sfService = self->_sfService;
@@ -300,7 +300,7 @@ uint64_t __55__SFAuthenticateAccountsService__validateConfiguration__block_invok
   [(SFService *)self->_sfService setIdentifier:@"com.apple.sharing.AuthenticateAccounts"];
   [(SFService *)self->_sfService setLabel:@"AuthenticateAccounts"];
   [(SFService *)self->_sfService setNeedsSetup:1];
-  if (v3)
+  if (serviceType)
   {
     v6 = 43;
   }
@@ -395,15 +395,15 @@ void __48__SFAuthenticateAccountsService__sfServiceStart__block_invoke_4(uint64_
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleSessionStarted:(id)a3
+- (void)_handleSessionStarted:(id)started
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  startedCopy = started;
   if (self->_sfSession)
   {
     if (gLogCategory_SFAuthenticateAccountsService <= 60 && (gLogCategory_SFAuthenticateAccountsService != -1 || _LogCategory_Initialize()))
     {
-      [(SFAuthenticateAccountsService *)v5 _handleSessionStarted:?];
+      [(SFAuthenticateAccountsService *)startedCopy _handleSessionStarted:?];
     }
 
     goto LABEL_15;
@@ -411,22 +411,22 @@ void __48__SFAuthenticateAccountsService__sfServiceStart__block_invoke_4(uint64_
 
   if (gLogCategory_SFAuthenticateAccountsService <= 30 && (gLogCategory_SFAuthenticateAccountsService != -1 || _LogCategory_Initialize()))
   {
-    [SFAuthenticateAccountsService _handleSessionStarted:v5];
+    [SFAuthenticateAccountsService _handleSessionStarted:startedCopy];
   }
 
-  objc_storeStrong(&self->_sfSession, a3);
+  objc_storeStrong(&self->_sfSession, started);
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __55__SFAuthenticateAccountsService__handleSessionStarted___block_invoke;
   v22[3] = &unk_1E788B4F8;
   v22[4] = self;
-  [v5 registerRequestID:@"_info" options:0 handler:v22];
+  [startedCopy registerRequestID:@"_info" options:0 handler:v22];
   v6 = objc_alloc_init(SFDeviceOperationHandlerCDPSetup);
   cdpSetupHandler = self->_cdpSetupHandler;
   self->_cdpSetupHandler = v6;
 
   [(SFDeviceOperationHandlerCDPSetup *)self->_cdpSetupHandler setDispatchQueue:self->_dispatchQueue];
-  [(SFDeviceOperationHandlerCDPSetup *)self->_cdpSetupHandler setSfSession:v5];
+  [(SFDeviceOperationHandlerCDPSetup *)self->_cdpSetupHandler setSfSession:startedCopy];
   if (([(SFAuthenticateAccountsServiceConfiguration *)self->_configuration serviceType]& 2) == 0)
   {
     goto LABEL_12;
@@ -437,38 +437,38 @@ void __48__SFAuthenticateAccountsService__sfServiceStart__block_invoke_4(uint64_
   {
     v9 = v8;
     [(SFDeviceOperationHandlerCDPSetup *)self->_cdpSetupHandler setFailIfCDPNotEnabled:1];
-    v10 = [v9 aa_altDSID];
-    [(SFDeviceOperationHandlerCDPSetup *)self->_cdpSetupHandler setAltDSIDNeedingRepair:v10];
+    aa_altDSID = [v9 aa_altDSID];
+    [(SFDeviceOperationHandlerCDPSetup *)self->_cdpSetupHandler setAltDSIDNeedingRepair:aa_altDSID];
 
 LABEL_12:
     [(SFDeviceOperationHandlerCDPSetup *)self->_cdpSetupHandler activate];
-    v11 = [(SFSession *)self->_sfSession trSession];
+    trSession = [(SFSession *)self->_sfSession trSession];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __55__SFAuthenticateAccountsService__handleSessionStarted___block_invoke_2;
     v21[3] = &unk_1E788C5E8;
     v21[4] = self;
     getTRSetupCompanionAuthenticationRequestClass();
-    [v11 setRequestHandler:v21 forRequestClass:objc_opt_class()];
+    [trSession setRequestHandler:v21 forRequestClass:objc_opt_class()];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __55__SFAuthenticateAccountsService__handleSessionStarted___block_invoke_3;
     v20[3] = &unk_1E788C5E8;
     v20[4] = self;
     getTRSetupProxyDeviceRequestClass();
-    [v11 setRequestHandler:v20 forRequestClass:objc_opt_class()];
+    [trSession setRequestHandler:v20 forRequestClass:objc_opt_class()];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __55__SFAuthenticateAccountsService__handleSessionStarted___block_invoke_4;
     v19[3] = &unk_1E788C5E8;
     v19[4] = self;
     getTRSetupProxyAuthenticationRequestClass();
-    [v11 setRequestHandler:v19 forRequestClass:objc_opt_class()];
+    [trSession setRequestHandler:v19 forRequestClass:objc_opt_class()];
     v12 = objc_alloc_init(getHMDeviceSetupOperationHandlerClass());
     homeKitSetupHandler = self->_homeKitSetupHandler;
     self->_homeKitSetupHandler = v12;
 
-    [(HMDeviceSetupOperationHandler *)self->_homeKitSetupHandler registerMessageHandlersForSession:v11];
+    [(HMDeviceSetupOperationHandler *)self->_homeKitSetupHandler registerMessageHandlersForSession:trSession];
     progressHandler = self->_progressHandler;
     if (progressHandler)
     {
@@ -501,22 +501,22 @@ LABEL_15:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleSessionEnded:(id)a3
+- (void)_handleSessionEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   sfSession = self->_sfSession;
-  if (sfSession != v4)
+  if (sfSession != endedCopy)
   {
     goto LABEL_9;
   }
 
-  v11 = v4;
-  if (v4 && gLogCategory_SFAuthenticateAccountsService <= 30)
+  v11 = endedCopy;
+  if (endedCopy && gLogCategory_SFAuthenticateAccountsService <= 30)
   {
     if (gLogCategory_SFAuthenticateAccountsService != -1)
     {
 LABEL_5:
-      v10 = [(SFSession *)sfSession peer];
+      peer = [(SFSession *)sfSession peer];
       LogPrintF();
 
       goto LABEL_7;
@@ -542,48 +542,48 @@ LABEL_7:
   self->_sfSession = 0;
 
   [(SFService *)self->_sfService setNeedsSetup:1];
-  v4 = v11;
+  endedCopy = v11;
   progressHandler = self->_progressHandler;
   if (progressHandler)
   {
     progressHandler[2](progressHandler, 32, 0);
-    v4 = v11;
+    endedCopy = v11;
   }
 
 LABEL_9:
 }
 
-- (void)_handleInfoExchange:(id)a3 responseHandler:(id)a4
+- (void)_handleInfoExchange:(id)exchange responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  exchangeCopy = exchange;
+  handlerCopy = handler;
   if (gLogCategory_SFAuthenticateAccountsService <= 30 && (gLogCategory_SFAuthenticateAccountsService != -1 || _LogCategory_Initialize()))
   {
     [SFAuthenticateAccountsService _handleInfoExchange:responseHandler:];
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"lang"];
+  v8 = [exchangeCopy objectForKeyedSubscript:@"lang"];
   preferredLanguageCode = self->_preferredLanguageCode;
   self->_preferredLanguageCode = v8;
 
-  v10 = [v6 objectForKeyedSubscript:@"locale"];
+  v10 = [exchangeCopy objectForKeyedSubscript:@"locale"];
   localeIdentifier = self->_localeIdentifier;
   self->_localeIdentifier = v10;
 
-  v12 = [v6 objectForKeyedSubscript:@"langs"];
+  v12 = [exchangeCopy objectForKeyedSubscript:@"langs"];
   preferredLanguages = self->_preferredLanguages;
   self->_preferredLanguages = v12;
 
-  v14 = [v6 objectForKeyedSubscript:@"kbs"];
+  v14 = [exchangeCopy objectForKeyedSubscript:@"kbs"];
   keyboards = self->_keyboards;
   self->_keyboards = v14;
 
-  v16 = [(SFAuthenticateAccountsService *)self _shouldSignInAccountsInInfoRequest:v6];
-  v17 = [v6 objectForKeyedSubscript:@"hkcuis"];
+  v16 = [(SFAuthenticateAccountsService *)self _shouldSignInAccountsInInfoRequest:exchangeCopy];
+  v17 = [exchangeCopy objectForKeyedSubscript:@"hkcuis"];
   if ([v17 count])
   {
     v18 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v19 = [v6 objectForKeyedSubscript:@"hkhrmve"];
+    v19 = [exchangeCopy objectForKeyedSubscript:@"hkhrmve"];
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __69__SFAuthenticateAccountsService__handleInfoExchange_responseHandler___block_invoke;
@@ -598,7 +598,7 @@ LABEL_9:
     self->_knownHomeUserIdentifiers = v22;
   }
 
-  v24 = [v6 objectForKeyedSubscript:@"siriVP"];
+  v24 = [exchangeCopy objectForKeyedSubscript:@"siriVP"];
   self->_isVoiceProfileAvailable = [v24 BOOLValue];
 
   v25 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -607,15 +607,15 @@ LABEL_9:
 
   if (v16)
   {
-    v27 = [(SFAuthenticateAccountsServiceConfiguration *)self->_configuration targetedAccountTypes];
+    targetedAccountTypes = [(SFAuthenticateAccountsServiceConfiguration *)self->_configuration targetedAccountTypes];
   }
 
   else
   {
-    v27 = 0;
+    targetedAccountTypes = 0;
   }
 
-  v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v27];
+  v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:targetedAccountTypes];
   [v25 setObject:v28 forKeyedSubscript:@"aaTargetedTypes"];
 
   v29 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:16];
@@ -631,29 +631,29 @@ LABEL_9:
     v30 = 0;
   }
 
-  v31 = [(SFAuthenticateAccountsServiceConfiguration *)self->_configuration serviceType];
-  v32 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v30 | (v31 << 16) & 0x20000];
-  [v25 setObject:v32 forKeyedSubscript:@"dpf"];
+  serviceType = [(SFAuthenticateAccountsServiceConfiguration *)self->_configuration serviceType];
+  0x20000 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v30 | (serviceType << 16) & 0x20000];
+  [v25 setObject:0x20000 forKeyedSubscript:@"dpf"];
 
   v33 = [(SFAuthenticateAccountsService *)self _configurationExistingAccountWithType:1];
-  v34 = [v33 aa_altDSID];
+  aa_altDSID = [v33 aa_altDSID];
 
-  [v25 setObject:v34 forKeyedSubscript:@"aaiCloudAltDSID"];
+  [v25 setObject:aa_altDSID forKeyedSubscript:@"aaiCloudAltDSID"];
   v35 = [(SFAuthenticateAccountsService *)self _configurationExistingAccountWithType:2];
-  v36 = [v35 aa_altDSID];
+  aa_altDSID2 = [v35 aa_altDSID];
 
-  [v25 setObject:v36 forKeyedSubscript:@"aaiTunesAltDSID"];
+  [v25 setObject:aa_altDSID2 forKeyedSubscript:@"aaiTunesAltDSID"];
   v37 = [(SFAuthenticateAccountsService *)self _configurationExistingAccountWithType:3];
-  v38 = [v37 aa_altDSID];
+  aa_altDSID3 = [v37 aa_altDSID];
 
-  [v25 setObject:v38 forKeyedSubscript:@"aaGameCenterAltDSID"];
+  [v25 setObject:aa_altDSID3 forKeyedSubscript:@"aaGameCenterAltDSID"];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __69__SFAuthenticateAccountsService__handleInfoExchange_responseHandler___block_invoke_2;
   v40[3] = &unk_1E788C638;
-  v41 = v7;
-  v39 = v7;
-  [(SFAuthenticateAccountsService *)self _validateiCloudCredentialsWithRequest:v6 unvalidatedResponse:v25 completionHandler:v40];
+  v41 = handlerCopy;
+  v39 = handlerCopy;
+  [(SFAuthenticateAccountsService *)self _validateiCloudCredentialsWithRequest:exchangeCopy unvalidatedResponse:v25 completionHandler:v40];
 }
 
 void __69__SFAuthenticateAccountsService__handleInfoExchange_responseHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -702,30 +702,30 @@ void __69__SFAuthenticateAccountsService__handleInfoExchange_responseHandler___b
   (*(*(a1 + 32) + 16))();
 }
 
-- (BOOL)_shouldSignInAccountsInInfoRequest:(id)a3
+- (BOOL)_shouldSignInAccountsInInfoRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v8 = [v4 objectForKeyedSubscript:@"aaiCloudAltDSID"];
+    v8 = [requestCopy objectForKeyedSubscript:@"aaiCloudAltDSID"];
     if (v8)
     {
       v9 = [[SFAuthenticateAccountInfo alloc] initWithType:1 altDSID:v8];
       [v7 addObject:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"aaiTunesAltDSID"];
+    v10 = [requestCopy objectForKeyedSubscript:@"aaiTunesAltDSID"];
     if (v10)
     {
       v11 = [[SFAuthenticateAccountInfo alloc] initWithType:2 altDSID:v10];
       [v7 addObject:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"aaGameCenterAltDSID"];
+    v12 = [requestCopy objectForKeyedSubscript:@"aaGameCenterAltDSID"];
     if (v12)
     {
       v13 = [[SFAuthenticateAccountInfo alloc] initWithType:3 altDSID:v12];
@@ -750,17 +750,17 @@ void __69__SFAuthenticateAccountsService__handleInfoExchange_responseHandler___b
   return v16;
 }
 
-- (void)_validateiCloudCredentialsWithRequest:(id)a3 unvalidatedResponse:(id)a4 completionHandler:(id)a5
+- (void)_validateiCloudCredentialsWithRequest:(id)request unvalidatedResponse:(id)response completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  responseCopy = response;
+  handlerCopy = handler;
   if ([(SFAuthenticateAccountsServiceConfiguration *)self->_configuration serviceType])
   {
-    v11 = [v8 objectForKeyedSubscript:@"aaiCloudAltDSID"];
+    v11 = [requestCopy objectForKeyedSubscript:@"aaiCloudAltDSID"];
     v12 = [(SFAuthenticateAccountsService *)self _configurationExistingAccountWithType:1];
-    v13 = [v12 aa_altDSID];
-    if (v12 && self->_accountStore && [v11 isEqualToString:v13])
+    aa_altDSID = [v12 aa_altDSID];
+    if (v12 && self->_accountStore && [v11 isEqualToString:aa_altDSID])
     {
       v14 = self->_dispatchQueue;
       accountStore = self->_accountStore;
@@ -768,22 +768,22 @@ void __69__SFAuthenticateAccountsService__handleInfoExchange_responseHandler___b
       v17[1] = 3221225472;
       v17[2] = __109__SFAuthenticateAccountsService__validateiCloudCredentialsWithRequest_unvalidatedResponse_completionHandler___block_invoke;
       v17[3] = &unk_1E788C660;
-      v18 = v9;
+      v18 = responseCopy;
       v19 = v14;
-      v20 = v10;
+      v20 = handlerCopy;
       v16 = v14;
       [(ACAccountStore *)accountStore verifyCredentialsForAccount:v12 withHandler:v17];
     }
 
     else
     {
-      (*(v10 + 2))(v10, v9);
+      (*(handlerCopy + 2))(handlerCopy, responseCopy);
     }
   }
 
   else
   {
-    (*(v10 + 2))(v10, v9);
+    (*(handlerCopy + 2))(handlerCopy, responseCopy);
   }
 }
 
@@ -832,33 +832,33 @@ void __109__SFAuthenticateAccountsService__validateiCloudCredentialsWithRequest_
   }
 }
 
-- (void)_handleTRCompanionAuthenticationRequest:(id)a3 responseHandler:(id)a4
+- (void)_handleTRCompanionAuthenticationRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 account];
-  if (v8)
+  requestCopy = request;
+  handlerCopy = handler;
+  account = [requestCopy account];
+  if (account)
   {
-    v9 = [v6 targetedAccountServices];
-    if (v9)
+    targetedAccountServices = [requestCopy targetedAccountServices];
+    if (targetedAccountServices)
     {
-      v10 = [v6 companionDevice];
-      if (v10)
+      companionDevice = [requestCopy companionDevice];
+      if (companionDevice)
       {
         if (gLogCategory_SFAuthenticateAccountsService <= 30 && (gLogCategory_SFAuthenticateAccountsService != -1 || _LogCategory_Initialize()))
         {
-          [SFAuthenticateAccountsService _handleTRCompanionAuthenticationRequest:v8 responseHandler:?];
+          [SFAuthenticateAccountsService _handleTRCompanionAuthenticationRequest:account responseHandler:?];
         }
 
         v12[0] = MEMORY[0x1E69E9820];
         v12[1] = 3221225472;
         v12[2] = __89__SFAuthenticateAccountsService__handleTRCompanionAuthenticationRequest_responseHandler___block_invoke;
         v12[3] = &unk_1E788C6B0;
-        v16 = v7;
+        v16 = handlerCopy;
         v12[4] = self;
-        v13 = v9;
-        v14 = v8;
-        v15 = v10;
+        v13 = targetedAccountServices;
+        v14 = account;
+        v15 = companionDevice;
         [(SFAuthenticateAccountsService *)self _saveRemoteVerifiedAccount:v14 completion:v12];
       }
 
@@ -870,31 +870,31 @@ void __109__SFAuthenticateAccountsService__validateiCloudCredentialsWithRequest_
           [SFAuthenticateAccountsService _handleTRCompanionAuthenticationRequest:responseHandler:];
         }
 
-        (*(v7 + 2))(v7, v11, 0);
+        (*(handlerCopy + 2))(handlerCopy, v11, 0);
       }
     }
 
     else
     {
-      v10 = NSErrorWithOSStatusF();
+      companionDevice = NSErrorWithOSStatusF();
       if (gLogCategory_SFAuthenticateAccountsService <= 90 && (gLogCategory_SFAuthenticateAccountsService != -1 || _LogCategory_Initialize()))
       {
         [SFAuthenticateAccountsService _handleTRCompanionAuthenticationRequest:responseHandler:];
       }
 
-      (*(v7 + 2))(v7, v10, 0);
+      (*(handlerCopy + 2))(handlerCopy, companionDevice, 0);
     }
   }
 
   else
   {
-    v9 = NSErrorWithOSStatusF();
+    targetedAccountServices = NSErrorWithOSStatusF();
     if (gLogCategory_SFAuthenticateAccountsService <= 90 && (gLogCategory_SFAuthenticateAccountsService != -1 || _LogCategory_Initialize()))
     {
       [SFAuthenticateAccountsService _handleTRCompanionAuthenticationRequest:responseHandler:];
     }
 
-    (*(v7 + 2))(v7, v9, 0);
+    (*(handlerCopy + 2))(handlerCopy, targetedAccountServices, 0);
   }
 }
 
@@ -994,50 +994,50 @@ void __89__SFAuthenticateAccountsService__handleTRCompanionAuthenticationRequest
   }
 }
 
-- (void)_handleTRProxyDeviceRequest:(id)a3 responseHandler:(id)a4
+- (void)_handleTRProxyDeviceRequest:(id)request responseHandler:(id)handler
 {
-  v8 = a3;
-  v5 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (gLogCategory_SFAuthenticateAccountsService <= 30 && (gLogCategory_SFAuthenticateAccountsService != -1 || _LogCategory_Initialize()))
   {
     [SFAuthenticateAccountsService _handleTRProxyDeviceRequest:responseHandler:];
   }
 
-  v6 = [(objc_class *)getAKDeviceClass() currentDevice];
-  [v6 setLinkType:3];
+  currentDevice = [(objc_class *)getAKDeviceClass() currentDevice];
+  [currentDevice setLinkType:3];
   v7 = objc_alloc_init(getTRSetupProxyDeviceResponseClass());
-  [v7 setProxyDevice:v6];
-  v5[2](v5, 0, v7);
+  [v7 setProxyDevice:currentDevice];
+  handlerCopy[2](handlerCopy, 0, v7);
 }
 
-- (void)_handleTRProxyAuthenticationRequest:(id)a3 responseHandler:(id)a4
+- (void)_handleTRProxyAuthenticationRequest:(id)request responseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 account];
-  if (v8)
+  requestCopy = request;
+  handlerCopy = handler;
+  account = [requestCopy account];
+  if (account)
   {
-    v9 = [v6 rawPassword];
-    if (v9)
+    rawPassword = [requestCopy rawPassword];
+    if (rawPassword)
     {
-      v10 = [v6 targetedAccountServices];
-      if (v10)
+      targetedAccountServices = [requestCopy targetedAccountServices];
+      if (targetedAccountServices)
       {
         if (gLogCategory_SFAuthenticateAccountsService <= 30 && (gLogCategory_SFAuthenticateAccountsService != -1 || _LogCategory_Initialize()))
         {
-          [SFAuthenticateAccountsService _handleTRProxyAuthenticationRequest:v8 responseHandler:?];
+          [SFAuthenticateAccountsService _handleTRProxyAuthenticationRequest:account responseHandler:?];
         }
 
-        [v8 _aa_setRawPassword:v9];
+        [account _aa_setRawPassword:rawPassword];
         v12[0] = MEMORY[0x1E69E9820];
         v12[1] = 3221225472;
         v12[2] = __85__SFAuthenticateAccountsService__handleTRProxyAuthenticationRequest_responseHandler___block_invoke;
         v12[3] = &unk_1E788C6B0;
-        v16 = v7;
+        v16 = handlerCopy;
         v12[4] = self;
-        v13 = v10;
-        v14 = v8;
-        v15 = v9;
+        v13 = targetedAccountServices;
+        v14 = account;
+        v15 = rawPassword;
         [(SFAuthenticateAccountsService *)self _saveRemoteVerifiedAccount:v14 completion:v12];
       }
 
@@ -1049,31 +1049,31 @@ void __89__SFAuthenticateAccountsService__handleTRCompanionAuthenticationRequest
           [SFAuthenticateAccountsService _handleTRProxyAuthenticationRequest:responseHandler:];
         }
 
-        (*(v7 + 2))(v7, v11, 0);
+        (*(handlerCopy + 2))(handlerCopy, v11, 0);
       }
     }
 
     else
     {
-      v10 = NSErrorWithOSStatusF();
+      targetedAccountServices = NSErrorWithOSStatusF();
       if (gLogCategory_SFAuthenticateAccountsService <= 90 && (gLogCategory_SFAuthenticateAccountsService != -1 || _LogCategory_Initialize()))
       {
         [SFAuthenticateAccountsService _handleTRProxyAuthenticationRequest:responseHandler:];
       }
 
-      (*(v7 + 2))(v7, v10, 0);
+      (*(handlerCopy + 2))(handlerCopy, targetedAccountServices, 0);
     }
   }
 
   else
   {
-    v9 = NSErrorWithOSStatusF();
+    rawPassword = NSErrorWithOSStatusF();
     if (gLogCategory_SFAuthenticateAccountsService <= 90 && (gLogCategory_SFAuthenticateAccountsService != -1 || _LogCategory_Initialize()))
     {
       [SFAuthenticateAccountsService _handleTRProxyAuthenticationRequest:responseHandler:];
     }
 
-    (*(v7 + 2))(v7, v9, 0);
+    (*(handlerCopy + 2))(handlerCopy, rawPassword, 0);
   }
 }
 
@@ -1179,68 +1179,68 @@ void __85__SFAuthenticateAccountsService__handleTRProxyAuthenticationRequest_res
   }
 }
 
-- (void)_authenticateAccount:(id)a3 serviceType:(int64_t)a4 companionDevice:(id)a5 anisetteDataProvider:(id)a6 completion:(id)a7
+- (void)_authenticateAccount:(id)account serviceType:(int64_t)type companionDevice:(id)device anisetteDataProvider:(id)provider completion:(id)completion
 {
   v11 = getAKAppleIDAuthenticationContextClass;
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
+  completionCopy = completion;
+  providerCopy = provider;
+  deviceCopy = device;
+  accountCopy = account;
   v18 = objc_alloc_init(v11());
   [v18 _setProxyingForApp:1];
-  [v18 setAnisetteDataProvider:v13];
+  [v18 setAnisetteDataProvider:providerCopy];
 
   [v18 setAuthenticationType:1];
-  [v18 setCompanionDevice:v14];
+  [v18 setCompanionDevice:deviceCopy];
 
   [v18 setIsUsernameEditable:0];
-  [v18 setServiceType:a4];
+  [v18 setServiceType:type];
   [v18 setShouldAllowAppleIDCreation:0];
   [v18 setShouldUpdatePersistentServiceTokens:1];
-  v16 = [v15 username];
+  username = [accountCopy username];
 
-  [v18 setUsername:v16];
+  [v18 setUsername:username];
   v17 = objc_alloc_init(getAKAppleIDAuthenticationControllerClass());
-  [v17 authenticateWithContext:v18 completion:v12];
+  [v17 authenticateWithContext:v18 completion:completionCopy];
 }
 
-- (void)_authenticateAccount:(id)a3 serviceType:(int64_t)a4 password:(id)a5 completion:(id)a6
+- (void)_authenticateAccount:(id)account serviceType:(int64_t)type password:(id)password completion:(id)completion
 {
   v9 = getAKAppleIDAuthenticationContextClass;
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  completionCopy = completion;
+  passwordCopy = password;
+  accountCopy = account;
   v15 = objc_alloc_init(v9());
   [v15 _setProxyingForApp:1];
-  [v15 _setPassword:v11];
+  [v15 _setPassword:passwordCopy];
 
   [v15 setAuthenticationType:1];
   [v15 setIsUsernameEditable:0];
-  [v15 setServiceType:a4];
+  [v15 setServiceType:type];
   [v15 setShouldAllowAppleIDCreation:0];
   [v15 setShouldUpdatePersistentServiceTokens:1];
-  v13 = [v12 username];
+  username = [accountCopy username];
 
-  [v15 setUsername:v13];
+  [v15 setUsername:username];
   v14 = objc_alloc_init(getAKAppleIDAuthenticationControllerClass());
-  [v14 authenticateWithContext:v15 completion:v10];
+  [v14 authenticateWithContext:v15 completion:completionCopy];
 }
 
-- (void)__runAuthenticateiCloudWithAuthResults:(id)a3 completion:(id)a4
+- (void)__runAuthenticateiCloudWithAuthResults:(id)results completion:(id)completion
 {
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a4;
-  v8 = a3;
+  completionCopy = completion;
+  resultsCopy = results;
   v9 = [v6 setWithObject:&unk_1F1D7CCB8];
-  [(SFAuthenticateAccountsService *)self _authenticateWithServiceTypes:v9 authResults:v8 completion:v7];
+  [(SFAuthenticateAccountsService *)self _authenticateWithServiceTypes:v9 authResults:resultsCopy completion:completionCopy];
 }
 
-- (void)_authenticateWithServiceTypes:(id)a3 authResults:(id)a4 completion:(id)a5
+- (void)_authenticateWithServiceTypes:(id)types authResults:(id)results completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  typesCopy = types;
+  resultsCopy = results;
+  completionCopy = completion;
+  if ([typesCopy count])
   {
     progressHandler = self->_progressHandler;
     if (progressHandler)
@@ -1248,7 +1248,7 @@ void __85__SFAuthenticateAccountsService__handleTRProxyAuthenticationRequest_res
       progressHandler[2](progressHandler, 801, 0);
     }
 
-    v12 = [(SFAuthenticateAccountsService *)self _nextTRServiceTypeForTRAccountServices:v8];
+    v12 = [(SFAuthenticateAccountsService *)self _nextTRServiceTypeForTRAccountServices:typesCopy];
     v13 = [(SFAuthenticateAccountsService *)self _accountTypeForTRAccountService:v12];
     if (gLogCategory_SFAuthenticateAccountsService <= 30 && (gLogCategory_SFAuthenticateAccountsService != -1 || _LogCategory_Initialize()))
     {
@@ -1271,9 +1271,9 @@ void __85__SFAuthenticateAccountsService__handleTRProxyAuthenticationRequest_res
     v22 = v13;
     v17[4] = self;
     v21 = v12;
-    v20 = v10;
-    v18 = v9;
-    v19 = v8;
+    v20 = completionCopy;
+    v18 = resultsCopy;
+    v19 = typesCopy;
     [(SFAuthenticateAccountsService *)self _authenticateWithServiceType:v12 authResults:v18 completion:v17];
   }
 
@@ -1284,7 +1284,7 @@ void __85__SFAuthenticateAccountsService__handleTRProxyAuthenticationRequest_res
       [SFAuthenticateAccountsService _authenticateWithServiceTypes:authResults:completion:];
     }
 
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -1410,33 +1410,33 @@ void __86__SFAuthenticateAccountsService__authenticateWithServiceTypes_authResul
   }
 }
 
-- (void)_authenticateWithServiceType:(unint64_t)a3 authResults:(id)a4 completion:(id)a5
+- (void)_authenticateWithServiceType:(unint64_t)type authResults:(id)results completion:(id)completion
 {
-  v10 = a4;
-  v8 = a5;
-  switch(a3)
+  resultsCopy = results;
+  completionCopy = completion;
+  switch(type)
   {
     case 3uLL:
-      [(SFAuthenticateAccountsService *)self _authenticateGameCenterWithAuthResults:v10 completion:v8];
+      [(SFAuthenticateAccountsService *)self _authenticateGameCenterWithAuthResults:resultsCopy completion:completionCopy];
       break;
     case 2uLL:
-      [(SFAuthenticateAccountsService *)self _authenticateiTunesWithAuthResults:v10 completion:v8];
+      [(SFAuthenticateAccountsService *)self _authenticateiTunesWithAuthResults:resultsCopy completion:completionCopy];
       break;
     case 1uLL:
-      [(SFAuthenticateAccountsService *)self _authenticateiCloudWithAuthResults:v10 completion:v8];
+      [(SFAuthenticateAccountsService *)self _authenticateiCloudWithAuthResults:resultsCopy completion:completionCopy];
       break;
     default:
       v9 = NSErrorWithOSStatusF();
-      v8[2](v8, v9);
+      completionCopy[2](completionCopy, v9);
 
       break;
   }
 }
 
-- (void)_authenticateiCloudWithAuthResults:(id)a3 completion:(id)a4
+- (void)_authenticateiCloudWithAuthResults:(id)results completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  resultsCopy = results;
+  completionCopy = completion;
   getAKAuthenticationUsernameKey();
   CFStringGetTypeID();
   v8 = CFDictionaryGetTypedValue();
@@ -1449,7 +1449,7 @@ void __86__SFAuthenticateAccountsService__authenticateWithServiceTypes_authResul
   {
     v9 = [objc_alloc(MEMORY[0x1E698C268]) initWithAccountStore:self->_accountStore];
     v10 = objc_alloc_init(MEMORY[0x1E698C258]);
-    [v10 setAuthenticationResults:v6];
+    [v10 setAuthenticationResults:resultsCopy];
     [v10 setCdpUiProvider:self->_cdpUIProvider];
     v11 = *MEMORY[0x1E698C218];
     v13[0] = MEMORY[0x1E69E9820];
@@ -1457,8 +1457,8 @@ void __86__SFAuthenticateAccountsService__authenticateWithServiceTypes_authResul
     v13[2] = __79__SFAuthenticateAccountsService__authenticateiCloudWithAuthResults_completion___block_invoke;
     v13[3] = &unk_1E788C750;
     v14 = v8;
-    v15 = self;
-    v16 = v7;
+    selfCopy = self;
+    v16 = completionCopy;
     [v9 signInService:v11 withContext:v10 completion:v13];
   }
 
@@ -1470,7 +1470,7 @@ void __86__SFAuthenticateAccountsService__authenticateWithServiceTypes_authResul
     }
 
     v12 = NSErrorWithOSStatusF();
-    (*(v7 + 2))(v7, v12);
+    (*(completionCopy + 2))(completionCopy, v12);
   }
 }
 
@@ -1557,11 +1557,11 @@ void __79__SFAuthenticateAccountsService__authenticateiCloudWithAuthResults_comp
   }
 }
 
-- (void)_authenticateiTunesWithAuthResults:(id)a3 completion:(id)a4
+- (void)_authenticateiTunesWithAuthResults:(id)results completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = getAKAuthenticationUsernameKey;
-  v8 = a3;
+  resultsCopy = results;
   v7();
   CFStringGetTypeID();
   v9 = CFDictionaryGetTypedValue();
@@ -1578,25 +1578,25 @@ void __79__SFAuthenticateAccountsService__authenticateiCloudWithAuthResults_comp
     LogPrintF();
   }
 
-  v12 = [(objc_class *)getSSMutableAuthenticationContextClass() contextForSignIn];
-  [v12 setAccountName:v9];
-  [v12 setAllowsRetry:0];
-  [v12 setAltDSID:v10];
-  [v12 setCanSetActiveAccount:0];
-  [v12 setPasswordEquivalentToken:v11];
-  [v12 setPromptStyle:1];
-  [v12 setShouldSuppressDialogs:0];
-  v13 = [(objc_class *)getSSAccountStoreClass() defaultStore];
-  v14 = [objc_alloc(getSSAuthenticateRequestClass()) initWithAuthenticationContext:v12];
+  contextForSignIn = [(objc_class *)getSSMutableAuthenticationContextClass() contextForSignIn];
+  [contextForSignIn setAccountName:v9];
+  [contextForSignIn setAllowsRetry:0];
+  [contextForSignIn setAltDSID:v10];
+  [contextForSignIn setCanSetActiveAccount:0];
+  [contextForSignIn setPasswordEquivalentToken:v11];
+  [contextForSignIn setPromptStyle:1];
+  [contextForSignIn setShouldSuppressDialogs:0];
+  defaultStore = [(objc_class *)getSSAccountStoreClass() defaultStore];
+  v14 = [objc_alloc(getSSAuthenticateRequestClass()) initWithAuthenticationContext:contextForSignIn];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __79__SFAuthenticateAccountsService__authenticateiTunesWithAuthResults_completion___block_invoke;
   v18[3] = &unk_1E788C778;
-  v20 = v13;
-  v21 = v6;
+  v20 = defaultStore;
+  v21 = completionCopy;
   v19 = v9;
-  v15 = v13;
-  v16 = v6;
+  v15 = defaultStore;
+  v16 = completionCopy;
   v17 = v9;
   [v14 startWithAuthenticateResponseBlock:v18];
 }
@@ -1638,27 +1638,27 @@ void __79__SFAuthenticateAccountsService__authenticateiTunesWithAuthResults_comp
   }
 }
 
-- (void)_authenticateGameCenterWithAuthResults:(id)a3 completion:(id)a4
+- (void)_authenticateGameCenterWithAuthResults:(id)results completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = NSErrorWithOSStatusF();
-  (*(a4 + 2))(v5, v6);
+  (*(completion + 2))(completionCopy, v6);
 }
 
-- (int64_t)_nextServiceTypeForTRAccountServices:(id)a3
+- (int64_t)_nextServiceTypeForTRAccountServices:(id)services
 {
-  v3 = a3;
-  if ([v3 containsObject:&unk_1F1D7CCB8])
+  servicesCopy = services;
+  if ([servicesCopy containsObject:&unk_1F1D7CCB8])
   {
     v4 = 1;
   }
 
-  else if ([v3 containsObject:&unk_1F1D7CCD0])
+  else if ([servicesCopy containsObject:&unk_1F1D7CCD0])
   {
     v4 = 2;
   }
 
-  else if ([v3 containsObject:&unk_1F1D7CCE8])
+  else if ([servicesCopy containsObject:&unk_1F1D7CCE8])
   {
     v4 = 6;
   }
@@ -1671,20 +1671,20 @@ void __79__SFAuthenticateAccountsService__authenticateiTunesWithAuthResults_comp
   return v4;
 }
 
-- (unint64_t)_nextTRServiceTypeForTRAccountServices:(id)a3
+- (unint64_t)_nextTRServiceTypeForTRAccountServices:(id)services
 {
-  v3 = a3;
-  if ([v3 containsObject:&unk_1F1D7CCB8])
+  servicesCopy = services;
+  if ([servicesCopy containsObject:&unk_1F1D7CCB8])
   {
     v4 = 1;
   }
 
-  else if ([v3 containsObject:&unk_1F1D7CCD0])
+  else if ([servicesCopy containsObject:&unk_1F1D7CCD0])
   {
     v4 = 2;
   }
 
-  else if ([v3 containsObject:&unk_1F1D7CCE8])
+  else if ([servicesCopy containsObject:&unk_1F1D7CCE8])
   {
     v4 = 3;
   }
@@ -1697,11 +1697,11 @@ void __79__SFAuthenticateAccountsService__authenticateiTunesWithAuthResults_comp
   return v4;
 }
 
-- (unsigned)_accountTypeForTRAccountService:(unint64_t)a3
+- (unsigned)_accountTypeForTRAccountService:(unint64_t)service
 {
-  if (a3 - 1 < 3)
+  if (service - 1 < 3)
   {
-    return a3;
+    return service;
   }
 
   else
@@ -1710,19 +1710,19 @@ void __79__SFAuthenticateAccountsService__authenticateiTunesWithAuthResults_comp
   }
 }
 
-- (void)_saveAccount:(id)a3 completion:(id)a4
+- (void)_saveAccount:(id)account completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [v6 setAuthenticated:0];
+  accountCopy = account;
+  completionCopy = completion;
+  [accountCopy setAuthenticated:0];
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if ([v6 aa_isPrimaryEmailVerified])
+  if ([accountCopy aa_isPrimaryEmailVerified])
   {
-    v23 = self;
-    v24 = v7;
-    v25 = v6;
-    v9 = [(ACAccountStore *)self->_accountStore dataclassActionsForAccountSave:v6];
+    selfCopy = self;
+    v24 = completionCopy;
+    v25 = accountCopy;
+    v9 = [(ACAccountStore *)self->_accountStore dataclassActionsForAccountSave:accountCopy];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
@@ -1781,9 +1781,9 @@ void __79__SFAuthenticateAccountsService__authenticateiTunesWithAuthResults_comp
       while (v11);
     }
 
-    v7 = v24;
-    v6 = v25;
-    self = v23;
+    completionCopy = v24;
+    accountCopy = v25;
+    self = selfCopy;
   }
 
   accountStore = self->_accountStore;
@@ -1791,9 +1791,9 @@ void __79__SFAuthenticateAccountsService__authenticateiTunesWithAuthResults_comp
   v27[1] = 3221225472;
   v27[2] = __57__SFAuthenticateAccountsService__saveAccount_completion___block_invoke;
   v27[3] = &unk_1E788C7A0;
-  v28 = v7;
-  v21 = v7;
-  [(ACAccountStore *)accountStore saveAccount:v6 withDataclassActions:v8 completion:v27];
+  v28 = completionCopy;
+  v21 = completionCopy;
+  [(ACAccountStore *)accountStore saveAccount:accountCopy withDataclassActions:v8 completion:v27];
 
   v22 = *MEMORY[0x1E69E9840];
 }
@@ -1823,35 +1823,35 @@ void __57__SFAuthenticateAccountsService__saveAccount_completion___block_invoke(
   }
 }
 
-- (void)_saveRemoteVerifiedAccount:(id)a3 completion:(id)a4
+- (void)_saveRemoteVerifiedAccount:(id)account completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  completionCopy = completion;
   accountStore = self->_accountStore;
   if (!accountStore)
   {
-    v9 = [(objc_class *)getACAccountStoreClass() defaultStore];
+    defaultStore = [(objc_class *)getACAccountStoreClass() defaultStore];
     v10 = self->_accountStore;
-    self->_accountStore = v9;
+    self->_accountStore = defaultStore;
 
     accountStore = self->_accountStore;
   }
 
-  v11 = [v6 accountType];
-  v12 = [v11 identifier];
-  v13 = [(ACAccountStore *)accountStore accountTypeWithAccountTypeIdentifier:v12];
+  accountType = [accountCopy accountType];
+  identifier = [accountType identifier];
+  v13 = [(ACAccountStore *)accountStore accountTypeWithAccountTypeIdentifier:identifier];
 
-  [v6 setAccountType:v13];
-  [v6 _setObjectID:0];
-  [v6 markAllPropertiesDirty];
+  [accountCopy setAccountType:v13];
+  [accountCopy _setObjectID:0];
+  [accountCopy markAllPropertiesDirty];
   v14 = self->_accountStore;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __71__SFAuthenticateAccountsService__saveRemoteVerifiedAccount_completion___block_invoke;
   v16[3] = &unk_1E788C7A0;
-  v17 = v7;
-  v15 = v7;
-  [(ACAccountStore *)v14 saveVerifiedAccount:v6 withCompletionHandler:v16];
+  v17 = completionCopy;
+  v15 = completionCopy;
+  [(ACAccountStore *)v14 saveVerifiedAccount:accountCopy withCompletionHandler:v16];
 }
 
 void __71__SFAuthenticateAccountsService__saveRemoteVerifiedAccount_completion___block_invoke(uint64_t a1, char a2, void *a3)
@@ -1889,24 +1889,24 @@ LABEL_8:
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)_configurationExistingAccountWithType:(unsigned int)a3
+- (id)_configurationExistingAccountWithType:(unsigned int)type
 {
   v22 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (a3 - 1 > 2)
+  if (type - 1 > 2)
   {
     v11 = 0;
   }
 
   else
   {
-    v5 = **(&unk_1E788C808 + a3 - 1);
+    v5 = **(&unk_1E788C808 + type - 1);
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = [(SFAuthenticateAccountsServiceConfiguration *)self->_configuration existingAccountsIdentifiers];
-    v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    existingAccountsIdentifiers = [(SFAuthenticateAccountsServiceConfiguration *)self->_configuration existingAccountsIdentifiers];
+    v7 = [existingAccountsIdentifiers countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1917,13 +1917,13 @@ LABEL_4:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(existingAccountsIdentifiers);
         }
 
         v11 = [(ACAccountStore *)self->_accountStore accountWithIdentifier:*(*(&v17 + 1) + 8 * v10)];
-        v12 = [v11 accountType];
-        v13 = [v12 identifier];
-        v14 = [v13 isEqual:v5];
+        accountType = [v11 accountType];
+        identifier = [accountType identifier];
+        v14 = [identifier isEqual:v5];
 
         if (v14)
         {
@@ -1932,7 +1932,7 @@ LABEL_4:
 
         if (v8 == ++v10)
         {
-          v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v8 = [existingAccountsIdentifiers countByEnumeratingWithState:&v17 objects:v21 count:16];
           if (v8)
           {
             goto LABEL_4;
@@ -1955,9 +1955,9 @@ LABEL_10:
   return v11;
 }
 
-- (void)_finishSession:(id)a3
+- (void)_finishSession:(id)session
 {
-  object = a3;
+  object = session;
   v4 = objc_getAssociatedObject(object, "finished");
   if (([v4 BOOLValue] & 1) == 0)
   {

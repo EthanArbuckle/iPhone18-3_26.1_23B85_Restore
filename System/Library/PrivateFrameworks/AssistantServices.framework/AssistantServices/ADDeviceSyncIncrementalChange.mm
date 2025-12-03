@@ -1,52 +1,52 @@
 @interface ADDeviceSyncIncrementalChange
-+ (id)newWithBuilder:(id)a3;
-- (ADDeviceSyncIncrementalChange)initWithBuilder:(id)a3;
-- (ADDeviceSyncIncrementalChange)initWithCoder:(id)a3;
-- (ADDeviceSyncIncrementalChange)initWithGeneration:(unint64_t)a3 date:(id)a4 insertedOrUpdatedItems:(id)a5 deletedItemUUIDs:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (ADDeviceSyncIncrementalChange)initWithBuilder:(id)builder;
+- (ADDeviceSyncIncrementalChange)initWithCoder:(id)coder;
+- (ADDeviceSyncIncrementalChange)initWithGeneration:(unint64_t)generation date:(id)date insertedOrUpdatedItems:(id)items deletedItemUUIDs:(id)ds;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ADDeviceSyncIncrementalChange
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   generation = self->_generation;
-  v6 = a3;
+  coderCopy = coder;
   v5 = [NSNumber numberWithUnsignedLongLong:generation];
-  [v6 encodeObject:v5 forKey:@"ADDeviceSyncIncrementalChange::generation"];
+  [coderCopy encodeObject:v5 forKey:@"ADDeviceSyncIncrementalChange::generation"];
 
-  [v6 encodeObject:self->_date forKey:@"ADDeviceSyncIncrementalChange::date"];
-  [v6 encodeObject:self->_insertedOrUpdatedItems forKey:@"ADDeviceSyncIncrementalChange::insertedOrUpdatedItems"];
-  [v6 encodeObject:self->_deletedItemUUIDs forKey:@"ADDeviceSyncIncrementalChange::deletedItemUUIDs"];
+  [coderCopy encodeObject:self->_date forKey:@"ADDeviceSyncIncrementalChange::date"];
+  [coderCopy encodeObject:self->_insertedOrUpdatedItems forKey:@"ADDeviceSyncIncrementalChange::insertedOrUpdatedItems"];
+  [coderCopy encodeObject:self->_deletedItemUUIDs forKey:@"ADDeviceSyncIncrementalChange::deletedItemUUIDs"];
 }
 
-- (ADDeviceSyncIncrementalChange)initWithCoder:(id)a3
+- (ADDeviceSyncIncrementalChange)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceSyncIncrementalChange::generation"];
-  v6 = [v5 unsignedLongLongValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceSyncIncrementalChange::generation"];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceSyncIncrementalChange::date"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceSyncIncrementalChange::date"];
   v8 = objc_opt_class();
   v9 = [NSSet setWithObjects:v8, objc_opt_class(), 0];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"ADDeviceSyncIncrementalChange::insertedOrUpdatedItems"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"ADDeviceSyncIncrementalChange::insertedOrUpdatedItems"];
 
   v11 = objc_opt_class();
   v12 = [NSSet setWithObjects:v11, objc_opt_class(), 0];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"ADDeviceSyncIncrementalChange::deletedItemUUIDs"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"ADDeviceSyncIncrementalChange::deletedItemUUIDs"];
 
-  v14 = [(ADDeviceSyncIncrementalChange *)self initWithGeneration:v6 date:v7 insertedOrUpdatedItems:v10 deletedItemUUIDs:v13];
+  v14 = [(ADDeviceSyncIncrementalChange *)self initWithGeneration:unsignedLongLongValue date:v7 insertedOrUpdatedItems:v10 deletedItemUUIDs:v13];
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -56,21 +56,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       generation = self->_generation;
       if (generation == [(ADDeviceSyncIncrementalChange *)v5 generation])
       {
-        v7 = [(ADDeviceSyncIncrementalChange *)v5 date];
+        date = [(ADDeviceSyncIncrementalChange *)v5 date];
         date = self->_date;
-        if (date == v7 || [(NSDate *)date isEqual:v7])
+        if (date == date || [(NSDate *)date isEqual:date])
         {
-          v9 = [(ADDeviceSyncIncrementalChange *)v5 insertedOrUpdatedItems];
+          insertedOrUpdatedItems = [(ADDeviceSyncIncrementalChange *)v5 insertedOrUpdatedItems];
           insertedOrUpdatedItems = self->_insertedOrUpdatedItems;
-          if (insertedOrUpdatedItems == v9 || [(NSArray *)insertedOrUpdatedItems isEqual:v9])
+          if (insertedOrUpdatedItems == insertedOrUpdatedItems || [(NSArray *)insertedOrUpdatedItems isEqual:insertedOrUpdatedItems])
           {
-            v11 = [(ADDeviceSyncIncrementalChange *)v5 deletedItemUUIDs];
+            deletedItemUUIDs = [(ADDeviceSyncIncrementalChange *)v5 deletedItemUUIDs];
             deletedItemUUIDs = self->_deletedItemUUIDs;
-            v13 = deletedItemUUIDs == v11 || [(NSArray *)deletedItemUUIDs isEqual:v11];
+            v13 = deletedItemUUIDs == deletedItemUUIDs || [(NSArray *)deletedItemUUIDs isEqual:deletedItemUUIDs];
           }
 
           else
@@ -111,7 +111,7 @@
   return v7 ^ v4;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = [NSString alloc];
   v8.receiver = self;
@@ -122,50 +122,50 @@
   return v6;
 }
 
-- (ADDeviceSyncIncrementalChange)initWithGeneration:(unint64_t)a3 date:(id)a4 insertedOrUpdatedItems:(id)a5 deletedItemUUIDs:(id)a6
+- (ADDeviceSyncIncrementalChange)initWithGeneration:(unint64_t)generation date:(id)date insertedOrUpdatedItems:(id)items deletedItemUUIDs:(id)ds
 {
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10027C4A4;
   v15[3] = &unk_100518500;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a3;
-  v10 = v18;
-  v11 = v17;
-  v12 = v16;
+  dateCopy = date;
+  itemsCopy = items;
+  dsCopy = ds;
+  generationCopy = generation;
+  v10 = dsCopy;
+  v11 = itemsCopy;
+  v12 = dateCopy;
   v13 = [(ADDeviceSyncIncrementalChange *)self initWithBuilder:v15];
 
   return v13;
 }
 
-- (ADDeviceSyncIncrementalChange)initWithBuilder:(id)a3
+- (ADDeviceSyncIncrementalChange)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v18.receiver = self;
   v18.super_class = ADDeviceSyncIncrementalChange;
   v5 = [(ADDeviceSyncIncrementalChange *)&v18 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_ADDeviceSyncIncrementalChangeMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_ADDeviceSyncIncrementalChangeMutation *)v7 isDirty])
     {
       v6->_generation = [(_ADDeviceSyncIncrementalChangeMutation *)v7 getGeneration];
-      v8 = [(_ADDeviceSyncIncrementalChangeMutation *)v7 getDate];
-      v9 = [v8 copy];
+      getDate = [(_ADDeviceSyncIncrementalChangeMutation *)v7 getDate];
+      v9 = [getDate copy];
       date = v6->_date;
       v6->_date = v9;
 
-      v11 = [(_ADDeviceSyncIncrementalChangeMutation *)v7 getInsertedOrUpdatedItems];
-      v12 = [v11 copy];
+      getInsertedOrUpdatedItems = [(_ADDeviceSyncIncrementalChangeMutation *)v7 getInsertedOrUpdatedItems];
+      v12 = [getInsertedOrUpdatedItems copy];
       insertedOrUpdatedItems = v6->_insertedOrUpdatedItems;
       v6->_insertedOrUpdatedItems = v12;
 
-      v14 = [(_ADDeviceSyncIncrementalChangeMutation *)v7 getDeletedItemUUIDs];
-      v15 = [v14 copy];
+      getDeletedItemUUIDs = [(_ADDeviceSyncIncrementalChangeMutation *)v7 getDeletedItemUUIDs];
+      v15 = [getDeletedItemUUIDs copy];
       deletedItemUUIDs = v6->_deletedItemUUIDs;
       v6->_deletedItemUUIDs = v15;
     }
@@ -174,37 +174,37 @@
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_ADDeviceSyncIncrementalChangeMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_ADDeviceSyncIncrementalChangeMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(ADDeviceSyncIncrementalChange);
       v6->_generation = [(_ADDeviceSyncIncrementalChangeMutation *)v5 getGeneration];
-      v7 = [(_ADDeviceSyncIncrementalChangeMutation *)v5 getDate];
-      v8 = [v7 copy];
+      getDate = [(_ADDeviceSyncIncrementalChangeMutation *)v5 getDate];
+      v8 = [getDate copy];
       date = v6->_date;
       v6->_date = v8;
 
-      v10 = [(_ADDeviceSyncIncrementalChangeMutation *)v5 getInsertedOrUpdatedItems];
-      v11 = [v10 copy];
+      getInsertedOrUpdatedItems = [(_ADDeviceSyncIncrementalChangeMutation *)v5 getInsertedOrUpdatedItems];
+      v11 = [getInsertedOrUpdatedItems copy];
       insertedOrUpdatedItems = v6->_insertedOrUpdatedItems;
       v6->_insertedOrUpdatedItems = v11;
 
-      v13 = [(_ADDeviceSyncIncrementalChangeMutation *)v5 getDeletedItemUUIDs];
-      v14 = [v13 copy];
+      getDeletedItemUUIDs = [(_ADDeviceSyncIncrementalChangeMutation *)v5 getDeletedItemUUIDs];
+      v14 = [getDeletedItemUUIDs copy];
       deletedItemUUIDs = v6->_deletedItemUUIDs;
       v6->_deletedItemUUIDs = v14;
     }

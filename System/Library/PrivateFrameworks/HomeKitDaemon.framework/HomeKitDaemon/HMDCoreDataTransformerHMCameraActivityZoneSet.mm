@@ -1,17 +1,17 @@
 @interface HMDCoreDataTransformerHMCameraActivityZoneSet
-+ (id)OPACKFromValue:(id)a3 error:(id *)a4;
-+ (id)valueFromOPACK:(id)a3 error:(id *)a4;
++ (id)OPACKFromValue:(id)value error:(id *)error;
++ (id)valueFromOPACK:(id)k error:(id *)error;
 @end
 
 @implementation HMDCoreDataTransformerHMCameraActivityZoneSet
 
-+ (id)valueFromOPACK:(id)a3 error:(id *)a4
++ (id)valueFromOPACK:(id)k error:(id *)error
 {
-  v5 = a3;
+  kCopy = k;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = kCopy;
   }
 
   else
@@ -42,9 +42,9 @@
     if (v10)
     {
       v11 = 0;
-      if (a4)
+      if (error)
       {
-        *a4 = v10;
+        *error = v10;
       }
     }
 
@@ -58,11 +58,11 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
       v12 = MEMORY[0x277CCA9B8];
-      v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected NSArray value to create NSSet<HMCameraActivityZone>: %@", v5];
-      *a4 = [v12 hmfErrorWithCode:3 reason:v13];
+      kCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected NSArray value to create NSSet<HMCameraActivityZone>: %@", kCopy];
+      *error = [v12 hmfErrorWithCode:3 reason:kCopy];
     }
 
     v11 = 0;
@@ -99,16 +99,16 @@ void __70__HMDCoreDataTransformerHMCameraActivityZoneSet_valueFromOPACK_error___
   }
 }
 
-+ (id)OPACKFromValue:(id)a3 error:(id *)a4
++ (id)OPACKFromValue:(id)value error:(id *)error
 {
-  v5 = a3;
+  valueCopy = value;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__54800;
   v21 = __Block_byref_object_dispose__54801;
   v22 = 0;
-  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(valueCopy, "count")}];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __70__HMDCoreDataTransformerHMCameraActivityZoneSet_OPACKFromValue_error___block_invoke;
@@ -116,14 +116,14 @@ void __70__HMDCoreDataTransformerHMCameraActivityZoneSet_valueFromOPACK_error___
   v16 = &v17;
   v7 = v6;
   v15 = v7;
-  [v5 hmf_enumerateWithAutoreleasePoolUsingBlock:&v11];
+  [valueCopy hmf_enumerateWithAutoreleasePoolUsingBlock:&v11];
   v8 = v18[5];
   if (v8)
   {
     v9 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = v8;
+      *error = v8;
     }
   }
 

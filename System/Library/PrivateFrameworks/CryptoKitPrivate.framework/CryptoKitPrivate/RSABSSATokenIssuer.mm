@@ -1,11 +1,11 @@
 @interface RSABSSATokenIssuer
-- (RSABSSATokenIssuer)initWithKeyByteCount:(unint64_t)a3;
-- (id)blindSign:(id)a3 error:(id *)a4;
+- (RSABSSATokenIssuer)initWithKeyByteCount:(unint64_t)count;
+- (id)blindSign:(id)sign error:(id *)error;
 @end
 
 @implementation RSABSSATokenIssuer
 
-- (RSABSSATokenIssuer)initWithKeyByteCount:(unint64_t)a3
+- (RSABSSATokenIssuer)initWithKeyByteCount:(unint64_t)count
 {
   v14.receiver = self;
   v14.super_class = RSABSSATokenIssuer;
@@ -16,7 +16,7 @@
   }
 
   ccrng();
-  switch(a3)
+  switch(count)
   {
     case 0x100uLL:
       v5 = MEMORY[0x1E69E95B0];
@@ -33,7 +33,7 @@
   }
 
   v4->_ciphersuite = v5;
-  v4->_ciphersuiteModulusByteCount = a3;
+  v4->_ciphersuiteModulusByteCount = count;
   if (ccrsa_generate_key())
   {
 LABEL_12:
@@ -51,8 +51,8 @@ LABEL_12:
   publicKey = v4->_publicKey;
   v4->_publicKey = v7;
 
-  v9 = [(RSABSSATokenIssuer *)v4 publicKey];
-  v10 = [RSABSSATokenBlinder keyIDFromSPKI:v9];
+  publicKey = [(RSABSSATokenIssuer *)v4 publicKey];
+  v10 = [RSABSSATokenBlinder keyIDFromSPKI:publicKey];
   keyId = v4->_keyId;
   v4->_keyId = v10;
 
@@ -63,42 +63,42 @@ LABEL_13:
   return v12;
 }
 
-- (id)blindSign:(id)a3 error:(id *)a4
+- (id)blindSign:(id)sign error:(id *)error
 {
   v16[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  signCopy = sign;
   ccrng();
   v7 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:self->_ciphersuiteModulusByteCount];
   ciphersuite = self->_ciphersuite;
-  [v6 bytes];
-  [v6 length];
+  [signCopy bytes];
+  [signCopy length];
   [v7 mutableBytes];
   [v7 length];
   v9 = ccrsabssa_sign_blinded_message();
   if (v9)
   {
-    if (a4)
+    if (error)
     {
       v10 = MEMORY[0x1E696ABC0];
       v15 = @"corecrypto_error";
       v11 = [MEMORY[0x1E696AD98] numberWithInteger:v9];
       v16[0] = v11;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-      *a4 = [v10 errorWithDomain:@"com.apple.cryptokit.rsabssa" code:5 userInfo:v12];
+      *error = [v10 errorWithDomain:@"com.apple.cryptokit.rsabssa" code:5 userInfo:v12];
 
-      a4 = 0;
+      error = 0;
     }
   }
 
   else
   {
     v7 = v7;
-    a4 = v7;
+    error = v7;
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return a4;
+  return error;
 }
 
 @end

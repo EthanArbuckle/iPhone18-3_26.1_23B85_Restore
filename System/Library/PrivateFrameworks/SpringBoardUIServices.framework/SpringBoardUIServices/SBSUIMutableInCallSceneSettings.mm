@@ -2,56 +2,56 @@
 - (BOOL)isAttachedToWindowedAccessory;
 - (BOOL)systemControlsShouldPresentAsEmbedded;
 - (CGRect)windowedAccessoryCutoutFrameInScreen;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
-- (void)setAttachedToWindowedAccessory:(BOOL)a3;
-- (void)setBeingShownAboveCoverSheet:(BOOL)a3;
-- (void)setDeactivationReasons:(unint64_t)a3;
-- (void)setInCallPresentationMode:(int64_t)a3;
-- (void)setRequestedPresentationConfigurationIdentifier:(id)a3;
-- (void)setScreenSharingPresentation:(BOOL)a3;
-- (void)setSystemControlsShouldPresentAsEmbedded:(BOOL)a3;
-- (void)setWindowedAccessoryCutoutFrameInScreen:(CGRect)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
+- (void)setAttachedToWindowedAccessory:(BOOL)accessory;
+- (void)setBeingShownAboveCoverSheet:(BOOL)sheet;
+- (void)setDeactivationReasons:(unint64_t)reasons;
+- (void)setInCallPresentationMode:(int64_t)mode;
+- (void)setRequestedPresentationConfigurationIdentifier:(id)identifier;
+- (void)setScreenSharingPresentation:(BOOL)presentation;
+- (void)setSystemControlsShouldPresentAsEmbedded:(BOOL)embedded;
+- (void)setWindowedAccessoryCutoutFrameInScreen:(CGRect)screen;
 @end
 
 @implementation SBSUIMutableInCallSceneSettings
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SBSUIInCallSceneSettings alloc];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }
 
-- (void)setInCallPresentationMode:(int64_t)a3
+- (void)setInCallPresentationMode:(int64_t)mode
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:3001];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
+  [otherSettings setObject:v4 forSetting:3001];
 }
 
 - (BOOL)isAttachedToWindowedAccessory
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3002];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3002];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setAttachedToWindowedAccessory:(BOOL)a3
+- (void)setAttachedToWindowedAccessory:(BOOL)accessory
 {
-  v3 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setObject:v4 forSetting:3002];
+  accessoryCopy = accessory;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:accessoryCopy];
+  [otherSettings setObject:v4 forSetting:3002];
 }
 
 - (CGRect)windowedAccessoryCutoutFrameInScreen
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3003];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3003];
   [v3 CGRectValue];
   v5 = v4;
   v7 = v6;
@@ -69,50 +69,50 @@
   return result;
 }
 
-- (void)setWindowedAccessoryCutoutFrameInScreen:(CGRect)a3
+- (void)setWindowedAccessoryCutoutFrameInScreen:(CGRect)screen
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(FBSSettings *)self otherSettings];
+  height = screen.size.height;
+  width = screen.size.width;
+  y = screen.origin.y;
+  x = screen.origin.x;
+  otherSettings = [(FBSSettings *)self otherSettings];
   v7 = [MEMORY[0x1E696B098] valueWithCGRect:{x, y, width, height}];
-  [v8 setObject:v7 forSetting:3003];
+  [otherSettings setObject:v7 forSetting:3003];
 }
 
-- (void)setScreenSharingPresentation:(BOOL)a3
+- (void)setScreenSharingPresentation:(BOOL)presentation
 {
-  v3 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setObject:v4 forSetting:3004];
+  presentationCopy = presentation;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:presentationCopy];
+  [otherSettings setObject:v4 forSetting:3004];
 }
 
 - (BOOL)systemControlsShouldPresentAsEmbedded
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3005];
-  v4 = [v3 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3005];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setSystemControlsShouldPresentAsEmbedded:(BOOL)a3
+- (void)setSystemControlsShouldPresentAsEmbedded:(BOOL)embedded
 {
-  v3 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setObject:v4 forSetting:3005];
+  embeddedCopy = embedded;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:embeddedCopy];
+  [otherSettings setObject:v4 forSetting:3005];
 }
 
-- (void)setBeingShownAboveCoverSheet:(BOOL)a3
+- (void)setBeingShownAboveCoverSheet:(BOOL)sheet
 {
-  v3 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-  [v5 setObject:v6 forSetting:3006];
+  sheetCopy = sheet;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:sheetCopy];
+  [otherSettings setObject:v6 forSetting:3006];
 
-  if (v3)
+  if (sheetCopy)
   {
     v7.receiver = self;
     v7.super_class = SBSUIMutableInCallSceneSettings;
@@ -120,37 +120,37 @@
   }
 }
 
-- (void)setDeactivationReasons:(unint64_t)a3
+- (void)setDeactivationReasons:(unint64_t)reasons
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v6 = [v5 objectForSetting:3006];
-  v7 = [v6 BOOLValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v6 = [otherSettings objectForSetting:3006];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
-    v8 = a3 & 0xFFFFFFFFFFFFFFFDLL;
+    reasonsCopy = reasons & 0xFFFFFFFFFFFFFFFDLL;
   }
 
   else
   {
-    v8 = a3;
+    reasonsCopy = reasons;
   }
 
   v9.receiver = self;
   v9.super_class = SBSUIMutableInCallSceneSettings;
-  [(SBSUIMutableInCallSceneSettings *)&v9 setDeactivationReasons:v8];
+  [(SBSUIMutableInCallSceneSettings *)&v9 setDeactivationReasons:reasonsCopy];
 }
 
-- (void)setRequestedPresentationConfigurationIdentifier:(id)a3
+- (void)setRequestedPresentationConfigurationIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:3007];
+  identifierCopy = identifier;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:identifierCopy forSetting:3007];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 - 3001 > 6)
+  if (setting - 3001 > 6)
   {
     v5.receiver = self;
     v5.super_class = SBSUIMutableInCallSceneSettings;
@@ -159,24 +159,24 @@
 
   else
   {
-    v3 = SBSUIInCallSceneClientSettingKeyDescription_0(a3);
+    v3 = SBSUIInCallSceneClientSettingKeyDescription_0(setting);
   }
 
   return v3;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  if (a5 - 3001 > 6)
+  if (setting - 3001 > 6)
   {
     v7.receiver = self;
     v7.super_class = SBSUIMutableInCallSceneSettings;
-    v5 = [(FBSSettings *)&v7 valueDescriptionForFlag:a3 object:a4 ofSetting:?];
+    v5 = [(FBSSettings *)&v7 valueDescriptionForFlag:flag object:object ofSetting:?];
   }
 
   else
   {
-    v5 = SBSUIInCallSceneClientSettingValueDescription_0(a5, a4);
+    v5 = SBSUIInCallSceneClientSettingValueDescription_0(setting, object);
   }
 
   return v5;

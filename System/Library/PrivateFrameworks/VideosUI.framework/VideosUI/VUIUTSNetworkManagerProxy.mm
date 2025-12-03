@@ -1,22 +1,22 @@
 @interface VUIUTSNetworkManagerProxy
-+ (id)createURLRequestFromRequestProperties:(id)a3 urlRequest:(id)a4 completion:(id *)a5;
-+ (void)fetchConfiguration:(BOOL)a3 completion:(id)a4;
++ (id)createURLRequestFromRequestProperties:(id)properties urlRequest:(id)request completion:(id *)completion;
++ (void)fetchConfiguration:(BOOL)configuration completion:(id)completion;
 @end
 
 @implementation VUIUTSNetworkManagerProxy
 
-+ (void)fetchConfiguration:(BOOL)a3 completion:(id)a4
++ (void)fetchConfiguration:(BOOL)configuration completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
-  *(v7 + 16) = a3;
+  *(v7 + 16) = configuration;
   *(v7 + 24) = v6;
-  *(v7 + 32) = a1;
+  *(v7 + 32) = self;
 
   sub_1E38364EC(&unk_1E42DC498, v7);
 }
 
-+ (id)createURLRequestFromRequestProperties:(id)a3 urlRequest:(id)a4 completion:(id *)a5
++ (id)createURLRequestFromRequestProperties:(id)properties urlRequest:(id)request completion:(id *)completion
 {
   v6 = sub_1E41FDDF4();
   OUTLINED_FUNCTION_0_10();
@@ -27,8 +27,8 @@
   MEMORY[0x1EEE9AC00](v13);
   v15 = &v20 - v14;
   sub_1E41FDDA4();
-  v16 = a3;
-  static VUIUTSNetworkManagerProxy.createURLRequest(from:urlRequest:)(v16, v12, v15);
+  propertiesCopy = properties;
+  static VUIUTSNetworkManagerProxy.createURLRequest(from:urlRequest:)(propertiesCopy, v12, v15);
   v17 = *(v8 + 8);
   v17(v12, v6);
 

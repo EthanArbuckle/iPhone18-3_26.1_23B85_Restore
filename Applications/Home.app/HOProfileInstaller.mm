@@ -2,11 +2,11 @@
 - (BOOL)isInstallNavigationControllerPresented;
 - (HOProfileInstaller)init;
 - (void)dealloc;
-- (void)deviceProfileCompletedNotification:(id)a3;
-- (void)installProfileWithCompletionHandler:(id)a3;
+- (void)deviceProfileCompletedNotification:(id)notification;
+- (void)installProfileWithCompletionHandler:(id)handler;
 - (void)openSenderURL;
-- (void)showProfileInstallationAlertViewWithTitle:(id)a3 message:(id)a4 shouldGoBackToSenderURL:(BOOL)a5;
-- (void)showProfileInstallationFlowFromViewController:(id)a3 withSenderURLString:(id)a4;
+- (void)showProfileInstallationAlertViewWithTitle:(id)title message:(id)message shouldGoBackToSenderURL:(BOOL)l;
+- (void)showProfileInstallationFlowFromViewController:(id)controller withSenderURLString:(id)string;
 - (void)showRebootAlertAndReboot;
 @end
 
@@ -36,11 +36,11 @@
   [(HOProfileInstaller *)&v4 dealloc];
 }
 
-- (void)showProfileInstallationAlertViewWithTitle:(id)a3 message:(id)a4 shouldGoBackToSenderURL:(BOOL)a5
+- (void)showProfileInstallationAlertViewWithTitle:(id)title message:(id)message shouldGoBackToSenderURL:(BOOL)l
 {
-  v18 = a3;
-  v19 = a4;
-  v22 = [UIAlertController alertControllerWithTitle:"alertControllerWithTitle:message:preferredStyle:" message:v18 preferredStyle:?];
+  titleCopy = title;
+  messageCopy = message;
+  v22 = [UIAlertController alertControllerWithTitle:"alertControllerWithTitle:message:preferredStyle:" message:titleCopy preferredStyle:?];
   objc_initWeak(&location, self);
   v6 = +[NSBundle mainBundle];
   v7 = @"HOProfileInstallAlertOKButton";
@@ -115,12 +115,12 @@ LABEL_10:
   v23[2] = sub_10004273C;
   v23[3] = &unk_1000C41B8;
   objc_copyWeak(&v24, &location);
-  v25 = a5;
+  lCopy = l;
   v16 = [UIAlertAction actionWithTitle:v7 style:0 handler:v23];
 
   [v22 addAction:v16];
-  v17 = [(HOProfileInstaller *)self baseViewController];
-  [v17 presentViewController:v22 animated:1 completion:0];
+  baseViewController = [(HOProfileInstaller *)self baseViewController];
+  [baseViewController presentViewController:v22 animated:1 completion:0];
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&location);
@@ -128,24 +128,24 @@ LABEL_10:
 
 - (void)openSenderURL
 {
-  v3 = [(HOProfileInstaller *)self senderURLString];
-  v4 = [v3 length];
+  senderURLString = [(HOProfileInstaller *)self senderURLString];
+  v4 = [senderURLString length];
 
   if (v4)
   {
-    v5 = [(HOProfileInstaller *)self senderURLString];
-    v6 = [(HOProfileInstaller *)self senderURLString];
-    v7 = [v6 hasSuffix:@"://"];
+    senderURLString2 = [(HOProfileInstaller *)self senderURLString];
+    senderURLString3 = [(HOProfileInstaller *)self senderURLString];
+    v7 = [senderURLString3 hasSuffix:@"://"];
 
     if ((v7 & 1) == 0)
     {
-      v8 = [(HOProfileInstaller *)self senderURLString];
-      v9 = [NSString stringWithFormat:@"%@://", v8];
+      senderURLString4 = [(HOProfileInstaller *)self senderURLString];
+      v9 = [NSString stringWithFormat:@"%@://", senderURLString4];
 
-      v5 = v9;
+      senderURLString2 = v9;
     }
 
-    v10 = [NSURL URLWithString:v5];
+    v10 = [NSURL URLWithString:senderURLString2];
     v11 = +[UIApplication sharedApplication];
     v12 = [v11 canOpenURL:v10];
 
@@ -221,22 +221,22 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v5 = HFLogForCategory();
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+  senderURLString2 = HFLogForCategory();
+  if (os_log_type_enabled(senderURLString2, OS_LOG_TYPE_ERROR))
   {
-    sub_1000815CC(v5);
+    sub_1000815CC(senderURLString2);
   }
 
 LABEL_19:
 }
 
-- (void)showProfileInstallationFlowFromViewController:(id)a3 withSenderURLString:(id)a4
+- (void)showProfileInstallationFlowFromViewController:(id)controller withSenderURLString:(id)string
 {
-  v6 = [NSAssertionHandler currentHandler:a3];
+  v6 = [NSAssertionHandler currentHandler:controller];
   [v6 handleFailureInMethod:a2 object:self file:@"HOProfileInstaller.m" lineNumber:118 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HOProfileInstaller showProfileInstallationFlowFromViewController:withSenderURLString:]", objc_opt_class()}];
 }
 
-- (void)deviceProfileCompletedNotification:(id)a3
+- (void)deviceProfileCompletedNotification:(id)notification
 {
   v5 = +[NSAssertionHandler currentHandler];
   [v5 handleFailureInMethod:a2 object:self file:@"HOProfileInstaller.m" lineNumber:125 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HOProfileInstaller deviceProfileCompletedNotification:]", objc_opt_class()}];
@@ -248,7 +248,7 @@ LABEL_19:
   [v4 handleFailureInMethod:a2 object:self file:@"HOProfileInstaller.m" lineNumber:133 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HOProfileInstaller showRebootAlertAndReboot]", objc_opt_class()}];
 }
 
-- (void)installProfileWithCompletionHandler:(id)a3
+- (void)installProfileWithCompletionHandler:(id)handler
 {
   v5 = +[NSAssertionHandler currentHandler];
   [v5 handleFailureInMethod:a2 object:self file:@"HOProfileInstaller.m" lineNumber:139 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HOProfileInstaller installProfileWithCompletionHandler:]", objc_opt_class()}];
@@ -256,10 +256,10 @@ LABEL_19:
 
 - (BOOL)isInstallNavigationControllerPresented
 {
-  v2 = [(HOProfileInstaller *)self installProfileViewController];
-  v3 = [v2 navigationController];
-  v4 = [v3 presentingViewController];
-  v5 = v4 != 0;
+  installProfileViewController = [(HOProfileInstaller *)self installProfileViewController];
+  navigationController = [installProfileViewController navigationController];
+  presentingViewController = [navigationController presentingViewController];
+  v5 = presentingViewController != 0;
 
   return v5;
 }

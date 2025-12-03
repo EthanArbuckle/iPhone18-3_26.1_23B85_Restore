@@ -1,15 +1,15 @@
 @interface ULPromise
 + (id)promise;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (ULPromise)init;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 @end
 
 @implementation ULPromise
 
 + (id)promise
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -29,7 +29,7 @@
   return v2;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = ULPromise;
@@ -47,7 +47,7 @@
   return v4 & 1;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v10.receiver = self;
   v10.super_class = ULPromise;
@@ -60,7 +60,7 @@
 
   else
   {
-    v7 = [(ULFuture *)self->_future methodSignatureForSelector:a3];
+    v7 = [(ULFuture *)self->_future methodSignatureForSelector:selector];
   }
 
   v8 = v7;

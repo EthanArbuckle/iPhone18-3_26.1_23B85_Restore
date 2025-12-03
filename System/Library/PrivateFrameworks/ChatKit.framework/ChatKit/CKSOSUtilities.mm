@@ -2,17 +2,17 @@
 + (id)sharedUtilities;
 - (BOOL)isMMSEnabled;
 - (BOOL)isMobileKeyBagDisabledOrDeviceUnlockedSinceBoot;
-- (id)_chatForHandle:(id)a3;
-- (id)_compositionsForMessage:(id)a3 withReasons:(unint64_t)a4;
-- (id)_sendCompositions:(id)a3 toConversation:(id)a4 useStandalone:(BOOL)a5 shouldForceSMS:(BOOL)a6 isCritical:(BOOL)a7;
-- (id)_sendMessageAndReturnGUIDs:(id)a3;
-- (id)_uniqueFilePathForFilename:(id)a3;
-- (id)sendComposition:(id)a3 toConversation:(id)a4 useStandalone:(BOOL)a5 shouldForceSMS:(BOOL)a6 isCritical:(BOOL)a7;
-- (void)_refreshServicesForSending:(id)a3;
-- (void)_sendMessageAndObserveNotification:(id)a3;
-- (void)sendMessage:(id)a3;
-- (void)sendMessage:(id)a3 location:(id)a4 recipients:(id)a5;
-- (void)sendMessage:(id)a3 location:(id)a4 recipients:(id)a5 failureHandler:(id)a6;
+- (id)_chatForHandle:(id)handle;
+- (id)_compositionsForMessage:(id)message withReasons:(unint64_t)reasons;
+- (id)_sendCompositions:(id)compositions toConversation:(id)conversation useStandalone:(BOOL)standalone shouldForceSMS:(BOOL)s isCritical:(BOOL)critical;
+- (id)_sendMessageAndReturnGUIDs:(id)ds;
+- (id)_uniqueFilePathForFilename:(id)filename;
+- (id)sendComposition:(id)composition toConversation:(id)conversation useStandalone:(BOOL)standalone shouldForceSMS:(BOOL)s isCritical:(BOOL)critical;
+- (void)_refreshServicesForSending:(id)sending;
+- (void)_sendMessageAndObserveNotification:(id)notification;
+- (void)sendMessage:(id)message;
+- (void)sendMessage:(id)message location:(id)location recipients:(id)recipients;
+- (void)sendMessage:(id)message location:(id)location recipients:(id)recipients failureHandler:(id)handler;
 @end
 
 @implementation CKSOSUtilities
@@ -94,41 +94,41 @@ void *__65__CKSOSUtilities_isMobileKeyBagDisabledOrDeviceUnlockedSinceBoot__bloc
   return 0;
 }
 
-- (void)sendMessage:(id)a3 location:(id)a4 recipients:(id)a5
+- (void)sendMessage:(id)message location:(id)location recipients:(id)recipients
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[CKSOSMessage alloc] initWithMessage:v10 recipients:v8];
+  recipientsCopy = recipients;
+  locationCopy = location;
+  messageCopy = message;
+  v11 = [[CKSOSMessage alloc] initWithMessage:messageCopy recipients:recipientsCopy];
 
-  [(CKSOSMessage *)v11 setLocation:v9];
+  [(CKSOSMessage *)v11 setLocation:locationCopy];
   [(CKSOSUtilities *)self sendMessage:v11];
 }
 
-- (void)sendMessage:(id)a3 location:(id)a4 recipients:(id)a5 failureHandler:(id)a6
+- (void)sendMessage:(id)message location:(id)location recipients:(id)recipients failureHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[CKSOSMessage alloc] initWithMessage:v13 recipients:v11];
+  handlerCopy = handler;
+  recipientsCopy = recipients;
+  locationCopy = location;
+  messageCopy = message;
+  v14 = [[CKSOSMessage alloc] initWithMessage:messageCopy recipients:recipientsCopy];
 
-  [(CKSOSMessage *)v14 setLocation:v12];
-  [(CKSOSMessage *)v14 setFailureBlock:v10];
+  [(CKSOSMessage *)v14 setLocation:locationCopy];
+  [(CKSOSMessage *)v14 setFailureBlock:handlerCopy];
 
   [(CKSOSUtilities *)self sendMessage:v14];
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = *MEMORY[0x1E69A75B0];
   v6 = *MEMORY[0x1E69A75A8];
-  v7 = [MEMORY[0x1E69A8168] sharedInstance];
-  [v7 trackEvent:v5 withDictionary:&unk_1F04E9398];
+  mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
+  [mEMORY[0x1E69A8168] trackEvent:v5 withDictionary:&unk_1F04E9398];
 
-  v8 = [v4 failureBlock];
-  v9 = [v8 copy];
+  failureBlock = [messageCopy failureBlock];
+  v9 = [failureBlock copy];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
@@ -139,8 +139,8 @@ void *__65__CKSOSUtilities_isMobileKeyBagDisabledOrDeviceUnlockedSinceBoot__bloc
   v20 = &unk_1F04E9398;
   v11 = v9;
   v21 = v11;
-  [v4 setFailureBlock:v18];
-  [(CKSOSUtilities *)self _refreshServicesForSending:v4];
+  [messageCopy setFailureBlock:v18];
+  [(CKSOSUtilities *)self _refreshServicesForSending:messageCopy];
   if (IMOSLoggingEnabled())
   {
     v12 = OSLogHandleForIMFoundationCategory();
@@ -157,8 +157,8 @@ void *__65__CKSOSUtilities_isMobileKeyBagDisabledOrDeviceUnlockedSinceBoot__bloc
   v15[2] = __30__CKSOSUtilities_sendMessage___block_invoke_148;
   v15[3] = &unk_1E72EB8D0;
   v15[4] = self;
-  v16 = v4;
-  v14 = v4;
+  v16 = messageCopy;
+  v14 = messageCopy;
   dispatch_after(v13, MEMORY[0x1E69E96A0], v15);
 }
 
@@ -178,14 +178,14 @@ uint64_t __30__CKSOSUtilities_sendMessage___block_invoke(void *a1)
   return result;
 }
 
-- (void)_refreshServicesForSending:(id)a3
+- (void)_refreshServicesForSending:(id)sending
 {
   v27 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = [a3 recipients];
+  obj = [sending recipients];
   v3 = [obj countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v3)
   {
@@ -202,17 +202,17 @@ uint64_t __30__CKSOSUtilities_sendMessage___block_invoke(void *a1)
 
         v7 = *(*(&v18 + 1) + 8 * i);
         v8 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v7, 0}];
-        v9 = [MEMORY[0x1E69A5C90] smsService];
-        v10 = CKMakeHandlesFromRecipientsWithFallbackService(v8, v9);
+        smsService = [MEMORY[0x1E69A5C90] smsService];
+        v10 = CKMakeHandlesFromRecipientsWithFallbackService(v8, smsService);
 
         if ([v10 count])
         {
-          v11 = [v10 firstObject];
+          firstObject = [v10 firstObject];
 
-          if (v11)
+          if (firstObject)
           {
-            v12 = [v10 firstObject];
-            v13 = [(CKSOSUtilities *)self _chatForHandle:v12];
+            firstObject2 = [v10 firstObject];
+            v13 = [(CKSOSUtilities *)self _chatForHandle:firstObject2];
             v14 = IMLogHandleForCategory();
             v15 = os_log_type_enabled(v14, OS_LOG_TYPE_INFO);
             if (v13)
@@ -249,12 +249,12 @@ uint64_t __30__CKSOSUtilities_sendMessage___block_invoke(void *a1)
   }
 }
 
-- (void)_sendMessageAndObserveNotification:(id)a3
+- (void)_sendMessageAndObserveNotification:(id)notification
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 recipients];
-  v6 = [v4 failureBlock];
+  notificationCopy = notification;
+  recipients = [notificationCopy recipients];
+  failureBlock = [notificationCopy failureBlock];
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -267,26 +267,26 @@ uint64_t __30__CKSOSUtilities_sendMessage___block_invoke(void *a1)
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v28 = v5;
+      v28 = recipients;
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Trying to send SOS message with recipients:%@", buf, 0xCu);
     }
   }
 
-  v8 = [(CKSOSUtilities *)self _sendMessageAndReturnGUIDs:v4];
+  v8 = [(CKSOSUtilities *)self _sendMessageAndReturnGUIDs:notificationCopy];
   v9 = v8;
-  if (v6 && v8)
+  if (failureBlock && v8)
   {
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    v11 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     v12 = *MEMORY[0x1E69A5830];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __53__CKSOSUtilities__sendMessageAndObserveNotification___block_invoke;
     v17[3] = &unk_1E72F8900;
     v18 = v9;
-    v19 = v6;
+    v19 = failureBlock;
     v20 = &v21;
-    v13 = [v10 addObserverForName:v12 object:0 queue:v11 usingBlock:v17];
+    v13 = [defaultCenter addObserverForName:v12 object:0 queue:mainQueue usingBlock:v17];
     v14 = v22[5];
     v22[5] = v13;
   }
@@ -332,25 +332,25 @@ void __53__CKSOSUtilities__sendMessageAndObserveNotification___block_invoke_2(ui
   *(v3 + 40) = 0;
 }
 
-- (id)_compositionsForMessage:(id)a3 withReasons:(unint64_t)a4
+- (id)_compositionsForMessage:(id)message withReasons:(unint64_t)reasons
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = [CKComposition alloc];
   v7 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v8 = [v5 messageForReasons:a4];
+  v8 = [messageCopy messageForReasons:reasons];
   v9 = [v7 initWithString:v8];
   v10 = [(CKComposition *)v6 initWithText:v9 subject:0];
 
   v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v10, 0}];
-  v12 = [v5 locationURL];
-  v13 = [v12 length];
+  locationURL = [messageCopy locationURL];
+  v13 = [locationURL length];
 
   if (v13)
   {
     v14 = [CKComposition alloc];
     v15 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v16 = [v5 locationURL];
-    v17 = [v15 initWithString:v16];
+    locationURL2 = [messageCopy locationURL];
+    v17 = [v15 initWithString:locationURL2];
     v18 = [(CKComposition *)v14 initWithText:v17 subject:0];
 
     [v11 addObject:v18];
@@ -376,16 +376,16 @@ LABEL_4:
   return v11;
 }
 
-- (id)_sendMessageAndReturnGUIDs:(id)a3
+- (id)_sendMessageAndReturnGUIDs:(id)ds
 {
   v51 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v35 = [MEMORY[0x1E695DF70] array];
+  dsCopy = ds;
+  array = [MEMORY[0x1E695DF70] array];
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = [v3 recipients];
+  obj = [dsCopy recipients];
   v38 = [obj countByEnumeratingWithState:&v40 objects:v50 count:16];
   if (v38)
   {
@@ -401,40 +401,40 @@ LABEL_4:
 
         v5 = *(*(&v40 + 1) + 8 * i);
         v6 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{v5, 0}];
-        v7 = [MEMORY[0x1E69A5C90] smsService];
-        v8 = CKMakeHandlesFromRecipientsWithFallbackService(v6, v7);
+        smsService = [MEMORY[0x1E69A5C90] smsService];
+        v8 = CKMakeHandlesFromRecipientsWithFallbackService(v6, smsService);
 
         if ([v8 count])
         {
-          v9 = [v8 firstObject];
-          v10 = v9 == 0;
+          firstObject = [v8 firstObject];
+          v10 = firstObject == 0;
 
           if (!v10)
           {
-            v11 = [v8 firstObject];
-            v12 = [(CKSOSUtilities *)self _chatForHandle:v11];
+            firstObject2 = [v8 firstObject];
+            v12 = [(CKSOSUtilities *)self _chatForHandle:firstObject2];
             if (IMOSLoggingEnabled())
             {
               v13 = OSLogHandleForIMFoundationCategory();
               if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
               {
-                v14 = [v12 guid];
+                guid = [v12 guid];
                 *buf = 138412802;
-                v45 = v3;
+                v45 = dsCopy;
                 v46 = 2112;
-                v47 = v11;
+                v47 = firstObject2;
                 v48 = 2112;
-                v49 = v14;
+                v49 = guid;
                 _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "_sendMessageAndReturnGUIDs:%@, handle %@, chat guid %@.", buf, 0x20u);
               }
             }
 
             v15 = [[CKConversation alloc] initWithChat:v12];
-            v16 = [v3 recipientReasons];
-            v17 = [v16 objectForKeyedSubscript:v5];
-            v18 = [v17 integerValue];
+            recipientReasons = [dsCopy recipientReasons];
+            v17 = [recipientReasons objectForKeyedSubscript:v5];
+            integerValue = [v17 integerValue];
 
-            v19 = [v11 ID];
+            v19 = [firstObject2 ID];
             IsEmail = IMStringIsEmail();
 
             if (IsEmail)
@@ -445,7 +445,7 @@ LABEL_4:
                 if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138412290;
-                  v45 = v3;
+                  v45 = dsCopy;
                   _os_log_impl(&dword_19020E000, v21, OS_LOG_TYPE_INFO, "[Alerting] sending SOS messages over iMessage to Zelkova email handle. %@", buf, 0xCu);
                 }
 
@@ -455,12 +455,12 @@ LABEL_4:
               goto LABEL_34;
             }
 
-            v22 = [(CKConversation *)v15 lastAddressedHandle];
+            lastAddressedHandle = [(CKConversation *)v15 lastAddressedHandle];
             v23 = IMStringIsEmail();
 
             if (v23)
             {
-              if ((v18 & 2) != 0)
+              if ((integerValue & 2) != 0)
               {
                 if (IMOSLoggingEnabled())
                 {
@@ -468,17 +468,17 @@ LABEL_4:
                   if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
                   {
                     *buf = 138412290;
-                    v45 = v3;
+                    v45 = dsCopy;
                     _os_log_impl(&dword_19020E000, v24, OS_LOG_TYPE_INFO, "[Alerting] sending SOS messages over iMessage to Zelkova phone number handle from email handle. %@", buf, 0xCu);
                   }
                 }
 
-                v25 = [(CKSOSUtilities *)self _compositionsForMessage:v3 withReasons:2];
-                v26 = -[CKSOSUtilities _sendCompositions:toConversation:useStandalone:shouldForceSMS:isCritical:](self, "_sendCompositions:toConversation:useStandalone:shouldForceSMS:isCritical:", v25, v15, [v3 useStandalone], 0, objc_msgSend(v3, "isCritical"));
-                [v35 addObjectsFromArray:v26];
+                v25 = [(CKSOSUtilities *)self _compositionsForMessage:dsCopy withReasons:2];
+                v26 = -[CKSOSUtilities _sendCompositions:toConversation:useStandalone:shouldForceSMS:isCritical:](self, "_sendCompositions:toConversation:useStandalone:shouldForceSMS:isCritical:", v25, v15, [dsCopy useStandalone], 0, objc_msgSend(dsCopy, "isCritical"));
+                [array addObjectsFromArray:v26];
               }
 
-              if (v18)
+              if (integerValue)
               {
                 if (IMOSLoggingEnabled())
                 {
@@ -486,12 +486,12 @@ LABEL_4:
                   if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
                   {
                     *buf = 138412290;
-                    v45 = v3;
+                    v45 = dsCopy;
                     _os_log_impl(&dword_19020E000, v27, OS_LOG_TYPE_INFO, "[Alerting] sending SOS messages to EC over SMS. %@", buf, 0xCu);
                   }
                 }
 
-                v18 = 1;
+                integerValue = 1;
                 goto LABEL_34;
               }
             }
@@ -504,7 +504,7 @@ LABEL_4:
                 if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138412290;
-                  v45 = v3;
+                  v45 = dsCopy;
                   _os_log_impl(&dword_19020E000, v21, OS_LOG_TYPE_INFO, "[Alerting] sending SOS messages over SMS. %@", buf, 0xCu);
                 }
 
@@ -512,9 +512,9 @@ LABEL_33:
               }
 
 LABEL_34:
-              v28 = [(CKSOSUtilities *)self _compositionsForMessage:v3 withReasons:v18];
-              v29 = -[CKSOSUtilities _sendCompositions:toConversation:useStandalone:shouldForceSMS:isCritical:](self, "_sendCompositions:toConversation:useStandalone:shouldForceSMS:isCritical:", v28, v15, [v3 useStandalone], IsEmail ^ 1u, objc_msgSend(v3, "isCritical"));
-              [v35 addObjectsFromArray:v29];
+              v28 = [(CKSOSUtilities *)self _compositionsForMessage:dsCopy withReasons:integerValue];
+              v29 = -[CKSOSUtilities _sendCompositions:toConversation:useStandalone:shouldForceSMS:isCritical:](self, "_sendCompositions:toConversation:useStandalone:shouldForceSMS:isCritical:", v28, v15, [dsCopy useStandalone], IsEmail ^ 1u, objc_msgSend(dsCopy, "isCritical"));
+              [array addObjectsFromArray:v29];
             }
           }
         }
@@ -526,34 +526,34 @@ LABEL_34:
     while (v38);
   }
 
-  if (![v35 count])
+  if (![array count])
   {
-    v30 = [v3 failureBlock];
-    v31 = v30 == 0;
+    failureBlock = [dsCopy failureBlock];
+    v31 = failureBlock == 0;
 
     if (!v31)
     {
       v32 = IMLogHandleForCategory();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
-        [(CKSOSUtilities *)v3 _sendMessageAndReturnGUIDs:v32];
+        [(CKSOSUtilities *)dsCopy _sendMessageAndReturnGUIDs:v32];
       }
 
-      v33 = [v3 failureBlock];
-      v33[2]();
+      failureBlock2 = [dsCopy failureBlock];
+      failureBlock2[2]();
     }
   }
 
-  return v35;
+  return array;
 }
 
-- (id)_chatForHandle:(id)a3
+- (id)_chatForHandle:(id)handle
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E69A7F68] sharedInstance];
-  v5 = [v4 ctSubscriptionInfo];
-  v6 = [v5 preferredOrDefaultSubscriptionContext];
+  handleCopy = handle;
+  mEMORY[0x1E69A7F68] = [MEMORY[0x1E69A7F68] sharedInstance];
+  ctSubscriptionInfo = [mEMORY[0x1E69A7F68] ctSubscriptionInfo];
+  preferredOrDefaultSubscriptionContext = [ctSubscriptionInfo preferredOrDefaultSubscriptionContext];
 
   if (IMOSLoggingEnabled())
   {
@@ -561,58 +561,58 @@ LABEL_34:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v15 = 138412290;
-      v16 = v6;
+      v16 = preferredOrDefaultSubscriptionContext;
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "If no chat is found, new chat will be created with subscription %@", &v15, 0xCu);
     }
   }
 
-  v8 = [v6 phoneNumber];
-  v9 = [v6 labelID];
-  v10 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-  v11 = [v3 ID];
-  v12 = [v10 existingChatWithChatIdentifier:v11];
+  phoneNumber = [preferredOrDefaultSubscriptionContext phoneNumber];
+  labelID = [preferredOrDefaultSubscriptionContext labelID];
+  mEMORY[0x1E69A5AF8] = [MEMORY[0x1E69A5AF8] sharedRegistry];
+  v11 = [handleCopy ID];
+  v12 = [mEMORY[0x1E69A5AF8] existingChatWithChatIdentifier:v11];
 
   if (!v12)
   {
-    v13 = [MEMORY[0x1E69A5AF8] sharedRegistry];
-    v12 = [v13 chatWithHandle:v3 lastAddressedHandle:v8 lastAddressedSIMID:v9];
+    mEMORY[0x1E69A5AF8]2 = [MEMORY[0x1E69A5AF8] sharedRegistry];
+    v12 = [mEMORY[0x1E69A5AF8]2 chatWithHandle:handleCopy lastAddressedHandle:phoneNumber lastAddressedSIMID:labelID];
   }
 
   return v12;
 }
 
-- (id)_uniqueFilePathForFilename:(id)a3
+- (id)_uniqueFilePathForFilename:(id)filename
 {
   v3 = MEMORY[0x1E696AC08];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [MEMORY[0x1E696AEC0] stringGUID];
+  filenameCopy = filename;
+  defaultManager = [v3 defaultManager];
+  stringGUID = [MEMORY[0x1E696AEC0] stringGUID];
   v7 = NSTemporaryDirectory();
-  v8 = [v5 createUniqueDirectoryWithName:v6 atPath:v7 ofType:0];
+  v8 = [defaultManager createUniqueDirectoryWithName:stringGUID atPath:v7 ofType:0];
 
-  v9 = [MEMORY[0x1E696AC08] defaultManager];
-  v10 = [v4 lastPathComponent];
-  v11 = [v10 stringByDeletingPathExtension];
-  v12 = [v4 pathExtension];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+  lastPathComponent = [filenameCopy lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  pathExtension = [filenameCopy pathExtension];
 
-  v13 = [v9 uniqueFilename:v11 atPath:v8 ofType:v12];
+  v13 = [defaultManager2 uniqueFilename:stringByDeletingPathExtension atPath:v8 ofType:pathExtension];
 
   return v13;
 }
 
-- (id)_sendCompositions:(id)a3 toConversation:(id)a4 useStandalone:(BOOL)a5 shouldForceSMS:(BOOL)a6 isCritical:(BOOL)a7
+- (id)_sendCompositions:(id)compositions toConversation:(id)conversation useStandalone:(BOOL)standalone shouldForceSMS:(BOOL)s isCritical:(BOOL)critical
 {
-  v8 = a6;
-  v9 = a5;
+  sCopy = s;
+  standaloneCopy = standalone;
   v27 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
+  compositionsCopy = compositions;
+  conversationCopy = conversation;
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v15 = v12;
+  v15 = compositionsCopy;
   v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v16)
   {
@@ -627,14 +627,14 @@ LABEL_34:
           objc_enumerationMutation(v15);
         }
 
-        v20 = [(CKSOSUtilities *)self sendComposition:*(*(&v22 + 1) + 8 * i) toConversation:v13 useStandalone:v9 shouldForceSMS:v8 isCritical:a7, v22];
+        v20 = [(CKSOSUtilities *)self sendComposition:*(*(&v22 + 1) + 8 * i) toConversation:conversationCopy useStandalone:standaloneCopy shouldForceSMS:sCopy isCritical:critical, v22];
         [v14 addObjectsFromArray:v20];
 
-        a7 = 0;
+        critical = 0;
       }
 
       v17 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
-      a7 = 0;
+      critical = 0;
     }
 
     while (v17);
@@ -643,23 +643,23 @@ LABEL_34:
   return v14;
 }
 
-- (id)sendComposition:(id)a3 toConversation:(id)a4 useStandalone:(BOOL)a5 shouldForceSMS:(BOOL)a6 isCritical:(BOOL)a7
+- (id)sendComposition:(id)composition toConversation:(id)conversation useStandalone:(BOOL)standalone shouldForceSMS:(BOOL)s isCritical:(BOOL)critical
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
+  criticalCopy = critical;
+  sCopy = s;
+  standaloneCopy = standalone;
   v45 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
+  compositionCopy = composition;
+  conversationCopy = conversation;
   v39 = 0;
-  v34 = v11;
-  v13 = [v12 canSendComposition:v11 error:&v39];
+  v34 = compositionCopy;
+  v13 = [conversationCopy canSendComposition:compositionCopy error:&v39];
   v33 = v39;
   if (v13)
   {
-    [v12 resetCaches];
-    v14 = [v12 messagesFromComposition:v11];
-    [v12 setUnsentComposition:0];
+    [conversationCopy resetCaches];
+    v14 = [conversationCopy messagesFromComposition:compositionCopy];
+    [conversationCopy setUnsentComposition:0];
     v32 = [v14 __imArrayByApplyingBlock:&__block_literal_global_162_1];
     v37 = 0u;
     v38 = 0u;
@@ -680,25 +680,25 @@ LABEL_34:
           }
 
           v19 = *(*(&v35 + 1) + 8 * i);
-          [v19 setUseStandalone:v9];
-          v20 = [v19 __ck_sosMessage];
-          v21 = v20;
-          if (v7)
+          [v19 setUseStandalone:standaloneCopy];
+          __ck_sosMessage = [v19 __ck_sosMessage];
+          v21 = __ck_sosMessage;
+          if (criticalCopy)
           {
-            v22 = [v20 __ck_criticalMessage];
+            __ck_criticalMessage = [__ck_sosMessage __ck_criticalMessage];
 
-            v21 = v22;
+            v21 = __ck_criticalMessage;
           }
 
-          if (v8)
+          if (sCopy)
           {
-            v23 = [MEMORY[0x1E69A5C90] smsService];
-            [v12 sendMessage:v21 onService:v23 newComposition:0];
+            smsService = [MEMORY[0x1E69A5C90] smsService];
+            [conversationCopy sendMessage:v21 onService:smsService newComposition:0];
           }
 
           else
           {
-            [v12 sendMessage:v21 newComposition:0];
+            [conversationCopy sendMessage:v21 newComposition:0];
           }
         }
 
@@ -708,8 +708,8 @@ LABEL_34:
       while (v16);
     }
 
-    [v12 setIgnoringTypingUpdates:0];
-    [v12 setLocalUserIsTyping:0];
+    [conversationCopy setIgnoringTypingUpdates:0];
+    [conversationCopy setLocalUserIsTyping:0];
     v24 = +[CKConversationList sharedConversationList];
     [v24 unpendConversation];
   }
@@ -730,18 +730,18 @@ LABEL_34:
     v32 = 0;
   }
 
-  v26 = [MEMORY[0x1E69A8168] sharedInstance];
+  mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
   v40[0] = @"markedCritical";
-  v27 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v27 = [MEMORY[0x1E696AD98] numberWithBool:criticalCopy];
   v41[0] = v27;
   v40[1] = @"usingStandalone";
-  v28 = [MEMORY[0x1E696AD98] numberWithBool:v9];
+  v28 = [MEMORY[0x1E696AD98] numberWithBool:standaloneCopy];
   v41[1] = v28;
   v40[2] = @"forcedSMS";
-  v29 = [MEMORY[0x1E696AD98] numberWithBool:v8];
+  v29 = [MEMORY[0x1E696AD98] numberWithBool:sCopy];
   v41[2] = v29;
   v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:v40 count:3];
-  [v26 trackEvent:*MEMORY[0x1E69A75C0] withDictionary:v30];
+  [mEMORY[0x1E69A8168] trackEvent:*MEMORY[0x1E69A75C0] withDictionary:v30];
 
   return v32;
 }

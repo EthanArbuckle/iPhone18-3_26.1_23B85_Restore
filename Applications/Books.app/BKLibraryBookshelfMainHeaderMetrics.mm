@@ -1,172 +1,172 @@
 @interface BKLibraryBookshelfMainHeaderMetrics
 - (CGPoint)separatorLinePosition;
 - (NSString)description;
-- (void)configureWithSection:(id)a3;
+- (void)configureWithSection:(id)section;
 @end
 
 @implementation BKLibraryBookshelfMainHeaderMetrics
 
-- (void)configureWithSection:(id)a3
+- (void)configureWithSection:(id)section
 {
-  v4 = a3;
-  [v4 floatForKey:@"title-details-top-margin"];
+  sectionCopy = section;
+  [sectionCopy floatForKey:@"title-details-top-margin"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setTitleDetailsTopMargin:?];
-  [v4 floatForKey:@"title-details-bottom-margin"];
+  [sectionCopy floatForKey:@"title-details-bottom-margin"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setTitleDetailsBottomMargin:?];
-  [v4 floatForKey:@"title-details-lines"];
+  [sectionCopy floatForKey:@"title-details-lines"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setTitleDetailsMaxLines:?];
-  [v4 floatForKey:@"footer-margin"];
+  [sectionCopy floatForKey:@"footer-margin"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setFooterMargin:?];
-  [v4 sizeForKey:@"separator-position"];
+  [sectionCopy sizeForKey:@"separator-position"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setSeparatorLinePosition:?];
-  v5 = [v4 colorForKey:@"separator-color"];
+  v5 = [sectionCopy colorForKey:@"separator-color"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setSeparatorLineColor:v5];
 
-  [v4 floatForKey:@"reading-list-position"];
+  [sectionCopy floatForKey:@"reading-list-position"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setReadingListButtonPosition:?];
-  [v4 floatForKey:@"reading-list-padding"];
+  [sectionCopy floatForKey:@"reading-list-padding"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setReadingListPadding:?];
-  [v4 floatForKey:@"reading-list-height"];
+  [sectionCopy floatForKey:@"reading-list-height"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setReadingListHeight:?];
-  [v4 floatForKey:@"reading-list-image-spacing"];
+  [sectionCopy floatForKey:@"reading-list-image-spacing"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setReadingListImageSpacing:?];
-  v6 = [v4 colorForKey:@"reading-list-background-color"];
+  v6 = [sectionCopy colorForKey:@"reading-list-background-color"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setReadingBackgroundColor:v6];
 
-  v7 = [v4 colorForKey:@"header-background-color"];
+  v7 = [sectionCopy colorForKey:@"header-background-color"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setHeaderBackgroundColor:v7];
 
-  v8 = [v4 colorForKey:@"reading-list-highlight-color"];
+  v8 = [sectionCopy colorForKey:@"reading-list-highlight-color"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setReadingListHighlightColor:v8];
 
-  v9 = [v4 colorForKey:@"grid-button-tint-color-on"];
+  v9 = [sectionCopy colorForKey:@"grid-button-tint-color-on"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setGridButtonTintColorOn:v9];
 
-  v10 = [v4 colorForKey:@"grid-button-tint-color-off"];
+  v10 = [sectionCopy colorForKey:@"grid-button-tint-color-off"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setGridButtonTintColorOff:v10];
 
-  v11 = [v4 colorForKey:@"grid-button-background-color-on"];
+  v11 = [sectionCopy colorForKey:@"grid-button-background-color-on"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setGridButtonBackgroundColorOn:v11];
 
-  v12 = [v4 colorForKey:@"grid-button-background-color-off"];
+  v12 = [sectionCopy colorForKey:@"grid-button-background-color-off"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setGridButtonBackgroundColorOff:v12];
 
-  [v4 floatForKey:@"nobooks-top-margin"];
+  [sectionCopy floatForKey:@"nobooks-top-margin"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setNoBooksDescriptionTopMargin:?];
-  [v4 floatForKey:@"nobooks-spacing"];
+  [sectionCopy floatForKey:@"nobooks-spacing"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setNoBooksDescriptionSpacing:?];
-  [v4 floatForKey:@"nobooks-description-width"];
+  [sectionCopy floatForKey:@"nobooks-description-width"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setNoBooksDescriptionWidth:?];
-  [v4 floatForKey:@"sort-header-height"];
+  [sectionCopy floatForKey:@"sort-header-height"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setSortHeaderHeight:?];
-  [v4 floatForKey:@"info-header-vertical-margin"];
+  [sectionCopy floatForKey:@"info-header-vertical-margin"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setCollectionInfoHeaderVerticalMargin:?];
-  [v4 floatForKey:@"sort-button-arrow-margin"];
+  [sectionCopy floatForKey:@"sort-button-arrow-margin"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setSortButtonArrowMargin:?];
-  [v4 floatForKey:@"sort-button-spacing"];
+  [sectionCopy floatForKey:@"sort-button-spacing"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setSortButtonSpacing:?];
-  [v4 floatForKey:@"sort-title-spacing"];
+  [sectionCopy floatForKey:@"sort-title-spacing"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setSortTitleSpacing:?];
-  [v4 floatForKey:@"cloud-button-spacing"];
+  [sectionCopy floatForKey:@"cloud-button-spacing"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setCloudButtonSpacing:?];
-  -[BKLibraryBookshelfMainHeaderMetrics setSortHeaderStacked:](self, "setSortHeaderStacked:", [v4 BOOLForKey:@"sort-header-stacked"]);
-  v13 = [v4 stringForKey:@"reading-list-icon-name"];
+  -[BKLibraryBookshelfMainHeaderMetrics setSortHeaderStacked:](self, "setSortHeaderStacked:", [sectionCopy BOOLForKey:@"sort-header-stacked"]);
+  v13 = [sectionCopy stringForKey:@"reading-list-icon-name"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setIconName:v13];
 
-  v14 = [v4 fontSpecForKey:@"reading-list-icon-font-spec"];
-  v15 = [v14 attributesForAttributedString];
-  [(BKLibraryBookshelfMainHeaderMetrics *)self setIconFontAttributes:v15];
+  v14 = [sectionCopy fontSpecForKey:@"reading-list-icon-font-spec"];
+  attributesForAttributedString = [v14 attributesForAttributedString];
+  [(BKLibraryBookshelfMainHeaderMetrics *)self setIconFontAttributes:attributesForAttributedString];
 
-  v16 = [v4 stringForKey:@"reading-list-chevron-name"];
+  v16 = [sectionCopy stringForKey:@"reading-list-chevron-name"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setChevronName:v16];
 
-  v17 = [v4 fontSpecForKey:@"reading-list-chevron-font-spec"];
-  v18 = [v17 attributesForAttributedString];
-  [(BKLibraryBookshelfMainHeaderMetrics *)self setChevronFontAttributes:v18];
+  v17 = [sectionCopy fontSpecForKey:@"reading-list-chevron-font-spec"];
+  attributesForAttributedString2 = [v17 attributesForAttributedString];
+  [(BKLibraryBookshelfMainHeaderMetrics *)self setChevronFontAttributes:attributesForAttributedString2];
 
-  [v4 floatForKey:@"reading-list-chevron-spacing"];
+  [sectionCopy floatForKey:@"reading-list-chevron-spacing"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setChevronSpacing:?];
-  v19 = [v4 colorForKey:@"icloud-button-color"];
+  v19 = [sectionCopy colorForKey:@"icloud-button-color"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setICloudButtonColor:v19];
 
-  [v4 floatForKey:@"icloud-button-text-inset"];
+  [sectionCopy floatForKey:@"icloud-button-text-inset"];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setICloudButtonInset:?];
-  v20 = [v4 fontSpecForKey:@"infoLabel"];
+  v20 = [sectionCopy fontSpecForKey:@"infoLabel"];
   v21 = [v20 attributesForAttributedStringCentered:1 truncated:1];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setCollectionInfoLabelFontAttributes:v21];
 
-  v22 = [v4 fontSpecForKey:@"cloudButton"];
+  v22 = [sectionCopy fontSpecForKey:@"cloudButton"];
   v23 = [v22 attributesForAttributedStringCentered:1 truncated:1];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setCloudButtonFontAttributes:v23];
 
-  v24 = [v4 fontSpecForKey:@"title"];
-  v25 = [v24 attributesForAttributedString];
-  [(BKLibraryBookshelfMainHeaderMetrics *)self setTitleFontAttributes:v25];
+  v24 = [sectionCopy fontSpecForKey:@"title"];
+  attributesForAttributedString3 = [v24 attributesForAttributedString];
+  [(BKLibraryBookshelfMainHeaderMetrics *)self setTitleFontAttributes:attributesForAttributedString3];
 
-  v26 = [v4 fontSpecForKey:@"largeTitle"];
-  v27 = [v26 attributesForAttributedString];
-  [(BKLibraryBookshelfMainHeaderMetrics *)self setLargeTitleFontAttributes:v27];
+  v26 = [sectionCopy fontSpecForKey:@"largeTitle"];
+  attributesForAttributedString4 = [v26 attributesForAttributedString];
+  [(BKLibraryBookshelfMainHeaderMetrics *)self setLargeTitleFontAttributes:attributesForAttributedString4];
 
-  v28 = [v4 fontSpecForKey:@"titleDetails"];
-  v29 = [v28 attributesForAttributedString];
-  [(BKLibraryBookshelfMainHeaderMetrics *)self setTitleDetailsFontAttributes:v29];
+  v28 = [sectionCopy fontSpecForKey:@"titleDetails"];
+  attributesForAttributedString5 = [v28 attributesForAttributedString];
+  [(BKLibraryBookshelfMainHeaderMetrics *)self setTitleDetailsFontAttributes:attributesForAttributedString5];
 
-  v30 = [v4 fontSpecForKey:@"titleDetailsPlaceholder"];
-  v31 = [v30 attributesForAttributedString];
-  [(BKLibraryBookshelfMainHeaderMetrics *)self setTitleDetailsPlaceholderFontAttributes:v31];
+  v30 = [sectionCopy fontSpecForKey:@"titleDetailsPlaceholder"];
+  attributesForAttributedString6 = [v30 attributesForAttributedString];
+  [(BKLibraryBookshelfMainHeaderMetrics *)self setTitleDetailsPlaceholderFontAttributes:attributesForAttributedString6];
 
-  v32 = [v4 fontSpecForKey:@"alternateTitleDetails"];
-  v33 = [v32 attributesForAttributedString];
-  [(BKLibraryBookshelfMainHeaderMetrics *)self setAlternateTitleDetailsFontAttributes:v33];
+  v32 = [sectionCopy fontSpecForKey:@"alternateTitleDetails"];
+  attributesForAttributedString7 = [v32 attributesForAttributedString];
+  [(BKLibraryBookshelfMainHeaderMetrics *)self setAlternateTitleDetailsFontAttributes:attributesForAttributedString7];
 
-  v34 = [v4 fontSpecForKey:@"footer"];
-  v35 = [v34 attributesForAttributedString];
-  [(BKLibraryBookshelfMainHeaderMetrics *)self setFooterFontAttributes:v35];
+  v34 = [sectionCopy fontSpecForKey:@"footer"];
+  attributesForAttributedString8 = [v34 attributesForAttributedString];
+  [(BKLibraryBookshelfMainHeaderMetrics *)self setFooterFontAttributes:attributesForAttributedString8];
 
-  v36 = [v4 fontSpecForKey:@"readingList"];
-  v37 = [v36 attributesForAttributedString];
-  [(BKLibraryBookshelfMainHeaderMetrics *)self setReadingListButtonFontAttributes:v37];
+  v36 = [sectionCopy fontSpecForKey:@"readingList"];
+  attributesForAttributedString9 = [v36 attributesForAttributedString];
+  [(BKLibraryBookshelfMainHeaderMetrics *)self setReadingListButtonFontAttributes:attributesForAttributedString9];
 
-  v38 = [v4 fontSpecForKey:@"collectionsLabel"];
-  v39 = [v38 attributesForAttributedString];
-  [(BKLibraryBookshelfMainHeaderMetrics *)self setCollectionsLabelFontAttributes:v39];
+  v38 = [sectionCopy fontSpecForKey:@"collectionsLabel"];
+  attributesForAttributedString10 = [v38 attributesForAttributedString];
+  [(BKLibraryBookshelfMainHeaderMetrics *)self setCollectionsLabelFontAttributes:attributesForAttributedString10];
 
-  v40 = [v4 fontSpecForKey:@"editButton"];
-  v41 = [v40 attributesForAttributedString];
-  [(BKLibraryBookshelfMainHeaderMetrics *)self setEditButtonFontAttributes:v41];
+  v40 = [sectionCopy fontSpecForKey:@"editButton"];
+  attributesForAttributedString11 = [v40 attributesForAttributedString];
+  [(BKLibraryBookshelfMainHeaderMetrics *)self setEditButtonFontAttributes:attributesForAttributedString11];
 
-  v42 = [v4 fontSpecForKey:@"noBooksDescriptionHeader"];
+  v42 = [sectionCopy fontSpecForKey:@"noBooksDescriptionHeader"];
   v43 = [v42 attributesForAttributedStringCentered:1 truncated:1];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setNoBooksDescriptionHeaderFontAttributes:v43];
 
-  v44 = [v4 fontSpecForKey:@"noBooksDescription"];
+  v44 = [sectionCopy fontSpecForKey:@"noBooksDescription"];
   v45 = [v44 attributesForAttributedStringCentered:1 truncated:0];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setNoBooksDescriptionFontAttributes:v45];
 
-  v46 = [v4 fontSpecForKey:@"sortLabel"];
-  v47 = [v46 attributesForAttributedString];
-  [(BKLibraryBookshelfMainHeaderMetrics *)self setSortLabelFontAttributes:v47];
+  v46 = [sectionCopy fontSpecForKey:@"sortLabel"];
+  attributesForAttributedString12 = [v46 attributesForAttributedString];
+  [(BKLibraryBookshelfMainHeaderMetrics *)self setSortLabelFontAttributes:attributesForAttributedString12];
 
-  v48 = [v4 fontSpecForKey:@"sortPopup"];
+  v48 = [sectionCopy fontSpecForKey:@"sortPopup"];
   v49 = [v48 attributesForAttributedStringCentered:0 truncated:1];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setSortPopupFontAttributes:v49];
 
-  v50 = [v4 fontSpecForKey:@"iCloudButton"];
+  v50 = [sectionCopy fontSpecForKey:@"iCloudButton"];
   v51 = [v50 attributesForAttributedStringCentered:1 truncated:0];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setICloudButtonFontAttributes:v51];
 
-  v52 = [v4 fontSpecForKey:@"iCloudDescription"];
+  v52 = [sectionCopy fontSpecForKey:@"iCloudDescription"];
   v53 = [v52 attributesForAttributedStringCentered:1 truncated:0];
   [(BKLibraryBookshelfMainHeaderMetrics *)self setICloudDescriptionFontAttributes:v53];
 
-  v54 = [v4 fontSpecForKey:@"iCloudBookStatus"];
-  v55 = [v54 attributesForAttributedString];
-  [(BKLibraryBookshelfMainHeaderMetrics *)self setICloudBookStatusFontAttributes:v55];
+  v54 = [sectionCopy fontSpecForKey:@"iCloudBookStatus"];
+  attributesForAttributedString13 = [v54 attributesForAttributedString];
+  [(BKLibraryBookshelfMainHeaderMetrics *)self setICloudBookStatusFontAttributes:attributesForAttributedString13];
 
-  v57 = [v4 fontSpecForKey:@"iCloudBookTitle"];
+  v57 = [sectionCopy fontSpecForKey:@"iCloudBookTitle"];
 
-  v56 = [v57 attributesForAttributedString];
-  [(BKLibraryBookshelfMainHeaderMetrics *)self setICloudBookTitleFontAttributes:v56];
+  attributesForAttributedString14 = [v57 attributesForAttributedString];
+  [(BKLibraryBookshelfMainHeaderMetrics *)self setICloudBookTitleFontAttributes:attributesForAttributedString14];
 }
 
 - (NSString)description

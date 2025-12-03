@@ -1,28 +1,28 @@
 @interface QLURLHandler
-- (QLURLHandler)initWithCoder:(id)a3;
-- (QLURLHandler)initWithURL:(id)a3 sandboxType:(const char *)a4;
-- (id)_issueFileExtensionForURL:(id)a3;
+- (QLURLHandler)initWithCoder:(id)coder;
+- (QLURLHandler)initWithURL:(id)l sandboxType:(const char *)type;
+- (id)_issueFileExtensionForURL:(id)l;
 - (void)_consumeFileExtension;
-- (void)_issueExternalResourcesExtensionForURL:(id)a3;
+- (void)_issueExternalResourcesExtensionForURL:(id)l;
 - (void)_issueFileExtension;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation QLURLHandler
 
-- (QLURLHandler)initWithURL:(id)a3 sandboxType:(const char *)a4
+- (QLURLHandler)initWithURL:(id)l sandboxType:(const char *)type
 {
-  v6 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = QLURLHandler;
   v7 = [(QLURLHandler *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    [(QLURLHandler *)v7 setFileURL:v6];
-    v8->_sandboxType = a4;
-    v8->_isAccessingSecurityScope = [v6 startAccessingSecurityScopedResource];
+    [(QLURLHandler *)v7 setFileURL:lCopy];
+    v8->_sandboxType = type;
+    v8->_isAccessingSecurityScope = [lCopy startAccessingSecurityScopedResource];
     v9 = v8;
   }
 
@@ -38,8 +38,8 @@
 
   if (self->_isAccessingSecurityScope)
   {
-    v3 = [(QLURLHandler *)self fileURL];
-    [v3 stopAccessingSecurityScopedResource];
+    fileURL = [(QLURLHandler *)self fileURL];
+    [fileURL stopAccessingSecurityScopedResource];
   }
 
   if (self->_physicalFileExtensionHandle)
@@ -59,16 +59,16 @@
 
 - (void)_issueFileExtension
 {
-  v3 = [(QLURLHandler *)self fileURL];
+  fileURL = [(QLURLHandler *)self fileURL];
 
-  if (v3)
+  if (fileURL)
   {
-    v4 = [(QLURLHandler *)self fileURL];
-    v5 = [(QLURLHandler *)self _issueFileExtensionForURL:v4];
+    fileURL2 = [(QLURLHandler *)self fileURL];
+    v5 = [(QLURLHandler *)self _issueFileExtensionForURL:fileURL2];
     fileExtensionToken = self->_fileExtensionToken;
     self->_fileExtensionToken = v5;
 
-    v7 = [(QLURLHandler *)self fileURL];
+    fileURL3 = [(QLURLHandler *)self fileURL];
     v11 = _CFURLPromiseCopyPhysicalURL();
 
     if (v11)
@@ -80,21 +80,21 @@
 
     if ([(QLURLHandler *)self needsAccessToExternalResources])
     {
-      v10 = [(QLURLHandler *)self fileURL];
-      [(QLURLHandler *)self _issueExternalResourcesExtensionForURL:v10];
+      fileURL4 = [(QLURLHandler *)self fileURL];
+      [(QLURLHandler *)self _issueExternalResourcesExtensionForURL:fileURL4];
     }
   }
 }
 
-- (void)_issueExternalResourcesExtensionForURL:(id)a3
+- (void)_issueExternalResourcesExtensionForURL:(id)l
 {
-  v4 = a3;
-  if (-[QLURLHandler needsAccessToExternalResources](self, "needsAccessToExternalResources") && [v4 isFileURL])
+  lCopy = l;
+  if (-[QLURLHandler needsAccessToExternalResources](self, "needsAccessToExternalResources") && [lCopy isFileURL])
   {
     v12 = 0;
     v5 = *MEMORY[0x1E695DC38];
     v11 = 0;
-    [v4 getResourceValue:&v12 forKey:v5 error:&v11];
+    [lCopy getResourceValue:&v12 forKey:v5 error:&v11];
     v6 = v12;
     v7 = v11;
     if (v7)
@@ -102,7 +102,7 @@
       v8 = _log_0();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        [(QLURLHandler *)v4 _issueExternalResourcesExtensionForURL:v8];
+        [(QLURLHandler *)lCopy _issueExternalResourcesExtensionForURL:v8];
       }
 
       v9 = 0;
@@ -152,13 +152,13 @@
   }
 }
 
-- (id)_issueFileExtensionForURL:(id)a3
+- (id)_issueFileExtensionForURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  lCopy = l;
+  v5 = lCopy;
+  if (lCopy)
   {
-    v6 = -[QLURLHandler sandboxExtensionIssueFileWithClass:path:flags:](self, "sandboxExtensionIssueFileWithClass:path:flags:", self->_sandboxType, [v4 fileSystemRepresentation], 0);
+    v6 = -[QLURLHandler sandboxExtensionIssueFileWithClass:path:flags:](self, "sandboxExtensionIssueFileWithClass:path:flags:", self->_sandboxType, [lCopy fileSystemRepresentation], 0);
     if (v6)
     {
       v7 = v6;
@@ -189,70 +189,70 @@ LABEL_9:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
+  coderCopy = coder;
   [(QLURLHandler *)self _issueFileExtension];
-  v4 = [(QLURLHandler *)self fileURL];
-  [v11 encodeObject:v4 forKey:@"url"];
+  fileURL = [(QLURLHandler *)self fileURL];
+  [coderCopy encodeObject:fileURL forKey:@"url"];
 
-  v5 = [(QLURLHandler *)self fileURL];
+  fileURL2 = [(QLURLHandler *)self fileURL];
   v6 = _CFURLPromiseCopyPhysicalURL();
 
   if (v6)
   {
-    [v11 encodeObject:v6 forKey:@"promiseSetPhysicalURL"];
+    [coderCopy encodeObject:v6 forKey:@"promiseSetPhysicalURL"];
   }
 
   fileExtensionToken = self->_fileExtensionToken;
   if (fileExtensionToken)
   {
-    [v11 encodeObject:fileExtensionToken forKey:@"fileExtensionToken"];
+    [coderCopy encodeObject:fileExtensionToken forKey:@"fileExtensionToken"];
   }
 
   physicalFileExtensionToken = self->_physicalFileExtensionToken;
   if (physicalFileExtensionToken)
   {
-    [v11 encodeObject:physicalFileExtensionToken forKey:@"physicalFileExtensionToken"];
+    [coderCopy encodeObject:physicalFileExtensionToken forKey:@"physicalFileExtensionToken"];
   }
 
-  v9 = [(QLURLHandler *)self externalResourcesToken];
+  externalResourcesToken = [(QLURLHandler *)self externalResourcesToken];
 
-  if (v9)
+  if (externalResourcesToken)
   {
-    v10 = [(QLURLHandler *)self externalResourcesToken];
-    [v11 encodeObject:v10 forKey:@"externalResourcesToken"];
+    externalResourcesToken2 = [(QLURLHandler *)self externalResourcesToken];
+    [coderCopy encodeObject:externalResourcesToken2 forKey:@"externalResourcesToken"];
   }
 }
 
-- (QLURLHandler)initWithCoder:(id)a3
+- (QLURLHandler)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = QLURLHandler;
   v5 = [(QLURLHandler *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     fileURL = v5->_fileURL;
     v5->_fileURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"promiseSetPhysicalURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"promiseSetPhysicalURL"];
     if (v8)
     {
       v9 = v5->_fileURL;
       _CFURLPromiseSetPhysicalURL();
     }
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileExtensionToken"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileExtensionToken"];
     fileExtensionToken = v5->_fileExtensionToken;
     v5->_fileExtensionToken = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"physicalFileExtensionToken"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"physicalFileExtensionToken"];
     physicalFileExtensionToken = v5->_physicalFileExtensionToken;
     v5->_physicalFileExtensionToken = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalResourcesToken"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalResourcesToken"];
     externalResourcesToken = v5->_externalResourcesToken;
     v5->_externalResourcesToken = v14;
 

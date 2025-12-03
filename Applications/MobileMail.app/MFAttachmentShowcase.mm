@@ -1,24 +1,24 @@
 @interface MFAttachmentShowcase
-- (BOOL)isAddableToPassbook:(id)a3;
-- (BOOL)isProvisioningProfile:(id)a3;
-- (BOOL)unknownContactsController:(id)a3 shouldPerformDefaultActionForContactProperty:(id)a4;
+- (BOOL)isAddableToPassbook:(id)passbook;
+- (BOOL)isProvisioningProfile:(id)profile;
+- (BOOL)unknownContactsController:(id)controller shouldPerformDefaultActionForContactProperty:(id)property;
 - (MFAttachmentShowcaseDelegate)delegate;
 - (UIDocumentInteractionControllerDelegate)documentInteractionControllerDelegate;
 - (UIViewController)presentingViewController;
-- (id)_controllerForVCardData:(id)a3;
-- (id)_controllerForVCardRepresentation:(id)a3;
-- (id)_dataForContentRepresentation:(id)a3;
-- (id)_eventPreviewControllerForICSRepresentation:(id)a3 exchangeEventUID:(int)a4 managed:(BOOL)a5 error:(id *)a6;
-- (id)_passkitViewControllerForRepresentation:(id)a3 error:(id *)a4;
-- (id)documentInteractionControllerForContentRepresentation:(id)a3;
+- (id)_controllerForVCardData:(id)data;
+- (id)_controllerForVCardRepresentation:(id)representation;
+- (id)_dataForContentRepresentation:(id)representation;
+- (id)_eventPreviewControllerForICSRepresentation:(id)representation exchangeEventUID:(int)d managed:(BOOL)managed error:(id *)error;
+- (id)_passkitViewControllerForRepresentation:(id)representation error:(id *)error;
+- (id)documentInteractionControllerForContentRepresentation:(id)representation;
 - (void)_clearController;
-- (void)_doneButtonTapped:(id)a3;
-- (void)_presentContentRepresentation:(id)a3 exchangeEventUID:(int)a4 scene:(id)a5 showcaseInfo:(id)a6 delegate:(id)a7 completion:(id)a8;
+- (void)_doneButtonTapped:(id)tapped;
+- (void)_presentContentRepresentation:(id)representation exchangeEventUID:(int)d scene:(id)scene showcaseInfo:(id)info delegate:(id)delegate completion:(id)completion;
 - (void)dealloc;
 - (void)finishedPresenting;
-- (void)icsPreviewControllerWantsDismissal:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)unknownContactsControllerDidComplete:(id)a3;
+- (void)icsPreviewControllerWantsDismissal:(id)dismissal;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)unknownContactsControllerDidComplete:(id)complete;
 @end
 
 @implementation MFAttachmentShowcase
@@ -31,29 +31,29 @@
   [(MFAttachmentShowcase *)&v3 dealloc];
 }
 
-- (void)_presentContentRepresentation:(id)a3 exchangeEventUID:(int)a4 scene:(id)a5 showcaseInfo:(id)a6 delegate:(id)a7 completion:(id)a8
+- (void)_presentContentRepresentation:(id)representation exchangeEventUID:(int)d scene:(id)scene showcaseInfo:(id)info delegate:(id)delegate completion:(id)completion
 {
-  v12 = *&a4;
-  v85 = a3;
-  v82 = a5;
-  v14 = a6;
-  v15 = a7;
-  v84 = a8;
-  v81 = v15;
+  v12 = *&d;
+  representationCopy = representation;
+  sceneCopy = scene;
+  infoCopy = info;
+  delegateCopy = delegate;
+  completionCopy = completion;
+  v81 = delegateCopy;
   v83 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_doneButtonTapped:"];
   [(MFAttachmentShowcase *)self finishedPresenting];
-  [(MFAttachmentShowcase *)self setDelegate:v15];
-  v80 = [v85 contentItem];
-  v16 = [v80 type];
-  if ([v16 conformsToType:UTTypeVCard])
+  [(MFAttachmentShowcase *)self setDelegate:delegateCopy];
+  contentItem = [representationCopy contentItem];
+  type = [contentItem type];
+  if ([type conformsToType:UTTypeVCard])
   {
-    v17 = [(MFAttachmentShowcase *)self _controllerForVCardRepresentation:v85];
+    v17 = [(MFAttachmentShowcase *)self _controllerForVCardRepresentation:representationCopy];
     vcardController = self->_vcardController;
     self->_vcardController = v17;
 
     v19 = 0;
-    v20 = [(CNUnknownContactsController *)self->_vcardController viewController];
-    if (!v20)
+    viewController = [(CNUnknownContactsController *)self->_vcardController viewController];
+    if (!viewController)
     {
       goto LABEL_22;
     }
@@ -61,7 +61,7 @@
     goto LABEL_10;
   }
 
-  v21 = [v16 conformsToType:UTTypeCalendarEvent] ^ 1;
+  v21 = [type conformsToType:UTTypeCalendarEvent] ^ 1;
   if (v12)
   {
     LOBYTE(v21) = 0;
@@ -70,22 +70,22 @@
   if ((v21 & 1) == 0)
   {
     v102 = 0;
-    v22 = -[MFAttachmentShowcase _eventPreviewControllerForICSRepresentation:exchangeEventUID:managed:error:](self, "_eventPreviewControllerForICSRepresentation:exchangeEventUID:managed:error:", v85, v12, [v14 fromManagedAccount], &v102);
+    v22 = -[MFAttachmentShowcase _eventPreviewControllerForICSRepresentation:exchangeEventUID:managed:error:](self, "_eventPreviewControllerForICSRepresentation:exchangeEventUID:managed:error:", representationCopy, v12, [infoCopy fromManagedAccount], &v102);
     v19 = v102;
     if (!v19)
     {
       objc_storeStrong(&self->_icsPreviewController, v22);
       [(EKICSPreviewController *)self->_icsPreviewController setPreviewDelegate:self];
-      v23 = [(EKICSPreviewController *)self->_icsPreviewController viewController];
-      [v23 setHidesBottomBarWhenPushed:1];
+      viewController2 = [(EKICSPreviewController *)self->_icsPreviewController viewController];
+      [viewController2 setHidesBottomBarWhenPushed:1];
 
       v83 = 0;
       [(EKICSPreviewController *)self->_icsPreviewController setCancelButtonWithTarget:self action:"_doneButtonTapped:"];
     }
 
-    v20 = [v22 viewController];
+    viewController = [v22 viewController];
 
-    if (!v20)
+    if (!viewController)
     {
       goto LABEL_22;
     }
@@ -93,44 +93,44 @@
     goto LABEL_10;
   }
 
-  if ([(MFAttachmentShowcase *)self isProvisioningProfile:v16])
+  if ([(MFAttachmentShowcase *)self isProvisioningProfile:type])
   {
-    v29 = [(MFAttachmentShowcase *)self _dataForContentRepresentation:v85];
-    v30 = [v85 contentURL];
-    v31 = [v30 lastPathComponent];
+    v29 = [(MFAttachmentShowcase *)self _dataForContentRepresentation:representationCopy];
+    contentURL = [representationCopy contentURL];
+    lastPathComponent = [contentURL lastPathComponent];
 
     v32 = +[MCProfileConnection sharedConnection];
     v99[0] = _NSConcreteStackBlock;
     v99[1] = 3221225472;
     v99[2] = sub_1001A6CD4;
     v99[3] = &unk_100653328;
-    v33 = v31;
+    v33 = lastPathComponent;
     v100 = v33;
-    v101 = v84;
+    v101 = completionCopy;
     [v32 queueFileDataForAcceptance:v29 originalFileName:v33 forBundleID:0 completion:v99];
 
 LABEL_18:
-    v20 = 0;
+    viewController = 0;
     v19 = 0;
     goto LABEL_24;
   }
 
-  v35 = [v16 identifier];
-  if (([v35 ef_conformsToRFC822UTType] & 1) == 0)
+  identifier = [type identifier];
+  if (([identifier ef_conformsToRFC822UTType] & 1) == 0)
   {
 
 LABEL_30:
-    if ([(MFAttachmentShowcase *)self isAddableToPassbook:v16])
+    if ([(MFAttachmentShowcase *)self isAddableToPassbook:type])
     {
       v98 = 0;
-      v41 = [(MFAttachmentShowcase *)self _passkitViewControllerForRepresentation:v85 error:&v98];
+      v41 = [(MFAttachmentShowcase *)self _passkitViewControllerForRepresentation:representationCopy error:&v98];
       v19 = v98;
       if (v41)
       {
-        v20 = v41;
+        viewController = v41;
 LABEL_21:
-        v34 = [(MFAttachmentShowcase *)self presentingViewController];
-        [v34 presentViewController:v20 animated:objc_msgSend(v14 completion:{"shouldAnimate"), 0}];
+        presentingViewController = [(MFAttachmentShowcase *)self presentingViewController];
+        [presentingViewController presentViewController:viewController animated:objc_msgSend(infoCopy completion:{"shouldAnimate"), 0}];
 
         goto LABEL_22;
       }
@@ -138,51 +138,51 @@ LABEL_21:
 
     else
     {
-      v42 = [v16 identifier];
-      v43 = [v42 isEqualToString:@"com.apple.watchface"];
+      identifier2 = [type identifier];
+      v43 = [identifier2 isEqualToString:@"com.apple.watchface"];
 
       if (v43)
       {
         v44 = +[LSApplicationWorkspace defaultWorkspace];
-        v45 = [v85 contentURL];
-        v46 = [v44 operationToOpenResource:v45 usingApplication:@"com.apple.Bridge" uniqueDocumentIdentifier:0 userInfo:0];
+        contentURL2 = [representationCopy contentURL];
+        v46 = [v44 operationToOpenResource:contentURL2 usingApplication:@"com.apple.Bridge" uniqueDocumentIdentifier:0 userInfo:0];
 
         [v46 start];
       }
 
       else
       {
-        v47 = [v16 identifier];
-        v48 = [v47 isEqualToString:@"com.apple.workout"];
+        identifier3 = [type identifier];
+        v48 = [identifier3 isEqualToString:@"com.apple.workout"];
 
         if (v48)
         {
-          v29 = [(MFAttachmentShowcase *)self _dataForContentRepresentation:v85];
-          v49 = [sub_1001A6DE8() sharedInstance];
+          v29 = [(MFAttachmentShowcase *)self _dataForContentRepresentation:representationCopy];
+          sharedInstance = [sub_1001A6DE8() sharedInstance];
           v96[0] = _NSConcreteStackBlock;
           v96[1] = 3221225472;
           v96[2] = sub_1001A6EC8;
           v96[3] = &unk_100653350;
-          v97 = v84;
-          [v49 presentWorkoutConfigurationData:v29 completion:v96];
+          v97 = completionCopy;
+          [sharedInstance presentWorkoutConfigurationData:v29 completion:v96];
 
           v33 = v97;
           goto LABEL_18;
         }
 
-        if (+[UIDevice mf_isPadIdiom](UIDevice, "mf_isPadIdiom") && ![v16 conformsToType:UTTypeImage])
+        if (+[UIDevice mf_isPadIdiom](UIDevice, "mf_isPadIdiom") && ![type conformsToType:UTTypeImage])
         {
-          v66 = [v85 contentURL];
+          contentURL3 = [representationCopy contentURL];
           v90[0] = _NSConcreteStackBlock;
           v90[1] = 3221225472;
           v90[2] = sub_1001A6FB8;
           v90[3] = &unk_100651378;
-          v91 = v15;
-          v92 = self;
-          v67 = v14;
+          v91 = delegateCopy;
+          selfCopy = self;
+          v67 = infoCopy;
           v93 = v67;
-          v94 = v82;
-          v68 = v66;
+          v94 = sceneCopy;
+          v68 = contentURL3;
           v95 = v68;
           v69 = objc_retainBlock(v90);
           if (_os_feature_enabled_impl())
@@ -214,24 +214,24 @@ LABEL_21:
 
         else
         {
-          v50 = [(MFAttachmentShowcase *)self documentInteractionControllerForContentRepresentation:v85];
+          v50 = [(MFAttachmentShowcase *)self documentInteractionControllerForContentRepresentation:representationCopy];
           uidic = self->_uidic;
           self->_uidic = v50;
 
-          v52 = [(MFAttachmentShowcase *)self documentInteractionControllerDelegate];
-          [(UIDocumentInteractionController *)self->_uidic setDelegate:v52];
+          documentInteractionControllerDelegate = [(MFAttachmentShowcase *)self documentInteractionControllerDelegate];
+          [(UIDocumentInteractionController *)self->_uidic setDelegate:documentInteractionControllerDelegate];
 
-          -[UIDocumentInteractionController setIsContentManaged:](self->_uidic, "setIsContentManaged:", [v14 fromManagedAccount]);
-          if (!-[UIDocumentInteractionController presentPreviewAnimated:](self->_uidic, "presentPreviewAnimated:", [v14 shouldAnimate]))
+          -[UIDocumentInteractionController setIsContentManaged:](self->_uidic, "setIsContentManaged:", [infoCopy fromManagedAccount]);
+          if (!-[UIDocumentInteractionController presentPreviewAnimated:](self->_uidic, "presentPreviewAnimated:", [infoCopy shouldAnimate]))
           {
             v53 = self->_uidic;
-            [v14 originRect];
+            [infoCopy originRect];
             v55 = v54;
             v57 = v56;
             v59 = v58;
             v61 = v60;
-            v62 = [v14 originView];
-            LOBYTE(v53) = -[UIDocumentInteractionController presentOptionsMenuFromRect:inView:animated:](v53, "presentOptionsMenuFromRect:inView:animated:", v62, [v14 shouldAnimate], v55, v57, v59, v61);
+            originView = [infoCopy originView];
+            LOBYTE(v53) = -[UIDocumentInteractionController presentOptionsMenuFromRect:inView:animated:](v53, "presentOptionsMenuFromRect:inView:animated:", originView, [infoCopy shouldAnimate], v55, v57, v59, v61);
 
             if ((v53 & 1) == 0)
             {
@@ -253,77 +253,77 @@ LABEL_21:
     }
 
 LABEL_36:
-    v20 = 0;
+    viewController = 0;
     goto LABEL_22;
   }
 
-  v36 = [v85 contentMessage];
+  contentMessage = [representationCopy contentMessage];
 
-  if (!v36)
+  if (!contentMessage)
   {
     goto LABEL_30;
   }
 
   v37 = [EMLMessageViewController alloc];
-  v79 = [v85 contentMessage];
+  contentMessage2 = [representationCopy contentMessage];
   v78 = +[UIApplication sharedApplication];
-  v77 = [v78 contactStore];
+  contactStore = [v78 contactStore];
   v38 = +[UIApplication sharedApplication];
-  v39 = [v38 avatarGenerator];
-  v20 = [(EMLMessageViewController *)v37 initWithScene:v82 messageListItem:v79 contactStore:v77 avatarGenerator:v39];
+  avatarGenerator = [v38 avatarGenerator];
+  viewController = [(EMLMessageViewController *)v37 initWithScene:sceneCopy messageListItem:contentMessage2 contactStore:contactStore avatarGenerator:avatarGenerator];
 
   v40 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_doneButtonTapped:"];
-  [(ConversationViewControllerBase *)v20 setDoneButton:v40];
+  [(ConversationViewControllerBase *)viewController setDoneButton:v40];
 
   v19 = 0;
-  if (v20)
+  if (viewController)
   {
 LABEL_10:
     if (v83)
     {
-      v24 = [(EMLMessageViewController *)v20 navigationItem];
-      [v24 setRightBarButtonItem:v83];
+      navigationItem = [(EMLMessageViewController *)viewController navigationItem];
+      [navigationItem setRightBarButtonItem:v83];
     }
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v25 = [[UINavigationController alloc] initWithRootViewController:v20];
+      v25 = [[UINavigationController alloc] initWithRootViewController:viewController];
 
-      v20 = v25;
+      viewController = v25;
     }
 
-    [(EMLMessageViewController *)v20 setModalPresentationStyle:7];
-    v26 = [(EMLMessageViewController *)v20 popoverPresentationController];
-    v27 = [v14 originView];
-    [v26 setSourceView:v27];
+    [(EMLMessageViewController *)viewController setModalPresentationStyle:7];
+    popoverPresentationController = [(EMLMessageViewController *)viewController popoverPresentationController];
+    originView2 = [infoCopy originView];
+    [popoverPresentationController setSourceView:originView2];
 
-    [v26 setDelegate:self];
-    [v14 originRect];
+    [popoverPresentationController setDelegate:self];
+    [infoCopy originRect];
     v106.origin.x = CGRectZero.origin.x;
     v106.origin.y = CGRectZero.origin.y;
     v106.size.width = CGRectZero.size.width;
     v106.size.height = CGRectZero.size.height;
     if (CGRectEqualToRect(v105, v106))
     {
-      v28 = [v14 originView];
-      [v28 bounds];
-      [v26 setSourceRect:?];
+      originView3 = [infoCopy originView];
+      [originView3 bounds];
+      [popoverPresentationController setSourceRect:?];
     }
 
     else
     {
-      [v14 originRect];
-      [v26 setSourceRect:?];
+      [infoCopy originRect];
+      [popoverPresentationController setSourceRect:?];
     }
 
     goto LABEL_21;
   }
 
 LABEL_22:
-  if (v84)
+  if (completionCopy)
   {
-    v84[2]();
+    completionCopy[2]();
   }
 
 LABEL_24:
@@ -352,9 +352,9 @@ LABEL_24:
     [v7 handleFailureInMethod:a2 object:self file:@"MFAttachmentShowcase.m" lineNumber:266 description:@"Current thread must be main"];
   }
 
-  v4 = [(UIDocumentInteractionController *)self->_uidic delegate];
+  delegate = [(UIDocumentInteractionController *)self->_uidic delegate];
 
-  if (v4 == self)
+  if (delegate == self)
   {
     [(UIDocumentInteractionController *)self->_uidic setDelegate:0];
   }
@@ -370,35 +370,35 @@ LABEL_24:
   }
 }
 
-- (void)_doneButtonTapped:(id)a3
+- (void)_doneButtonTapped:(id)tapped
 {
-  v5 = [(MFAttachmentShowcase *)self delegate];
-  v4 = [v5 presentingViewControllerForAttachmentShowcase:self];
+  delegate = [(MFAttachmentShowcase *)self delegate];
+  v4 = [delegate presentingViewControllerForAttachmentShowcase:self];
   [v4 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (id)_controllerForVCardRepresentation:(id)a3
+- (id)_controllerForVCardRepresentation:(id)representation
 {
-  v4 = [(MFAttachmentShowcase *)self _dataForContentRepresentation:a3];
+  v4 = [(MFAttachmentShowcase *)self _dataForContentRepresentation:representation];
   v5 = [(MFAttachmentShowcase *)self _controllerForVCardData:v4];
 
   return v5;
 }
 
-- (id)_eventPreviewControllerForICSRepresentation:(id)a3 exchangeEventUID:(int)a4 managed:(BOOL)a5 error:(id *)a6
+- (id)_eventPreviewControllerForICSRepresentation:(id)representation exchangeEventUID:(int)d managed:(BOOL)managed error:(id *)error
 {
-  v7 = a5;
-  v8 = *&a4;
-  v9 = a3;
+  managedCopy = managed;
+  v8 = *&d;
+  representationCopy = representation;
   v10 = objc_alloc_init(EKEventStore);
-  if (v8 || ([v9 contentItem], v11 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v11, "exchangeEventUID"), v11, v8))
+  if (v8 || ([representationCopy contentItem], v11 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v11, "exchangeEventUID"), v11, v8))
   {
     v12 = [[EKICSPreviewController alloc] initWithEventUID:v8 eventStore:v10];
   }
 
   else
   {
-    if (v7)
+    if (managedCopy)
     {
       v17 = 2;
     }
@@ -410,31 +410,31 @@ LABEL_24:
 
     [v10 setSourceAccountManagement:v17];
     v18 = [EKICSPreviewController alloc];
-    v19 = [v9 contentURL];
-    v12 = [v18 initWithURL:v19 eventStore:v10];
+    contentURL = [representationCopy contentURL];
+    v12 = [v18 initWithURL:contentURL eventStore:v10];
 
     [v12 setAllowsImport:1];
     [v12 setAllowsEditing:1];
   }
 
-  if (a6 && !v12)
+  if (error && !v12)
   {
     v20 = NSLocalizedDescriptionKey;
     v13 = +[NSBundle mainBundle];
     v14 = [v13 localizedStringForKey:@"ATTACHMENT_INVALID_CALENDAR_EVENT" value:&stru_100662A88 table:@"Main"];
     v21 = v14;
     v15 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-    *a6 = [NSError errorWithDomain:@"AttachmentShowcase" code:1 userInfo:v15];
+    *error = [NSError errorWithDomain:@"AttachmentShowcase" code:1 userInfo:v15];
   }
 
   return v12;
 }
 
-- (id)_passkitViewControllerForRepresentation:(id)a3 error:(id *)a4
+- (id)_passkitViewControllerForRepresentation:(id)representation error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MFAttachmentShowcase *)self _dataForContentRepresentation:v6];
-  v8 = [[PKPass alloc] initWithData:v7 error:a4];
+  representationCopy = representation;
+  v7 = [(MFAttachmentShowcase *)self _dataForContentRepresentation:representationCopy];
+  v8 = [[PKPass alloc] initWithData:v7 error:error];
   v9 = v8;
   if (v8)
   {
@@ -452,12 +452,12 @@ LABEL_24:
   return v11;
 }
 
-- (id)_dataForContentRepresentation:(id)a3
+- (id)_dataForContentRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 contentURL];
+  representationCopy = representation;
+  contentURL = [representationCopy contentURL];
   v10 = 0;
-  v5 = [NSData dataWithContentsOfURL:v4 options:1 error:&v10];
+  v5 = [NSData dataWithContentsOfURL:contentURL options:1 error:&v10];
   v6 = v10;
 
   if (v6 || !v5)
@@ -465,7 +465,7 @@ LABEL_24:
     v8 = MFLogGeneral();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_10048ABCC(v3, v6, v8);
+      sub_10048ABCC(representationCopy, v6, v8);
     }
 
     v7 = 0;
@@ -479,60 +479,60 @@ LABEL_24:
   return v7;
 }
 
-- (id)documentInteractionControllerForContentRepresentation:(id)a3
+- (id)documentInteractionControllerForContentRepresentation:(id)representation
 {
-  v3 = a3;
-  v4 = [v3 contentURL];
-  v5 = [v3 contentItem];
-  v6 = [v5 displayName];
-  v7 = [v5 type];
-  v8 = [v7 identifier];
-  if ([v8 ef_conformsToIWorkUTType])
+  representationCopy = representation;
+  contentURL = [representationCopy contentURL];
+  contentItem = [representationCopy contentItem];
+  displayName = [contentItem displayName];
+  type = [contentItem type];
+  identifier = [type identifier];
+  if ([identifier ef_conformsToIWorkUTType])
   {
-    v9 = [v6 pathExtension];
-    v10 = [v9 caseInsensitiveCompare:@"zip"];
+    pathExtension = [displayName pathExtension];
+    v10 = [pathExtension caseInsensitiveCompare:@"zip"];
 
     if (!v10)
     {
       goto LABEL_5;
     }
 
-    [v6 stringByDeletingPathExtension];
-    v6 = v8 = v6;
+    [displayName stringByDeletingPathExtension];
+    displayName = identifier = displayName;
   }
 
 LABEL_5:
-  v11 = [MFDocumentInteractionController interactionControllerWithURL:v4];
-  [v11 setName:v6];
-  v12 = [v7 identifier];
-  v13 = [v12 ef_conformsToRFC822UTType];
-  v14 = v13;
-  if (v13)
+  v11 = [MFDocumentInteractionController interactionControllerWithURL:contentURL];
+  [v11 setName:displayName];
+  identifier2 = [type identifier];
+  ef_conformsToRFC822UTType = [identifier2 ef_conformsToRFC822UTType];
+  v14 = ef_conformsToRFC822UTType;
+  if (ef_conformsToRFC822UTType)
   {
-    v15 = EFEmailMessageUTType;
+    identifier3 = EFEmailMessageUTType;
   }
 
   else
   {
-    v15 = [v7 identifier];
+    identifier3 = [type identifier];
   }
 
-  [v11 setUTI:v15];
+  [v11 setUTI:identifier3];
   if ((v14 & 1) == 0)
   {
   }
 
   [v11 setShouldUnzipDocument:1];
-  v16 = [v5 uniformTypeIdentifier];
-  [v11 setPreviewsPresentWithMarkup:{objc_msgSend(v16, "ef_conformsToMarkupUTType")}];
+  uniformTypeIdentifier = [contentItem uniformTypeIdentifier];
+  [v11 setPreviewsPresentWithMarkup:{objc_msgSend(uniformTypeIdentifier, "ef_conformsToMarkupUTType")}];
 
   return v11;
 }
 
-- (id)_controllerForVCardData:(id)a3
+- (id)_controllerForVCardData:(id)data
 {
   v10 = 0;
-  v4 = [CNContactVCardSerialization contactsWithData:a3 error:&v10];
+  v4 = [CNContactVCardSerialization contactsWithData:data error:&v10];
   v5 = v10;
   if (!v4)
   {
@@ -547,17 +547,17 @@ LABEL_5:
 
   v7 = [[CNUnknownContactsController alloc] initWithContacts:v4 contactStore:0];
   [v7 setDelegate:self];
-  v8 = [v7 viewController];
-  [v8 setHidesBottomBarWhenPushed:1];
+  viewController = [v7 viewController];
+  [viewController setHidesBottomBarWhenPushed:1];
 
   return v7;
 }
 
-- (BOOL)isProvisioningProfile:(id)a3
+- (BOOL)isProvisioningProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   v4 = [UTType typeWithIdentifier:kMFUTTypeMobileConfig];
-  if ([v3 conformsToType:v4] & 1) != 0 || (objc_msgSend(v3, "conformsToType:", UTTypePKCS12) & 1) != 0 || (objc_msgSend(v3, "conformsToType:", UTTypeX509Certificate))
+  if ([profileCopy conformsToType:v4] & 1) != 0 || (objc_msgSend(profileCopy, "conformsToType:", UTTypePKCS12) & 1) != 0 || (objc_msgSend(profileCopy, "conformsToType:", UTTypeX509Certificate))
   {
     v5 = 1;
   }
@@ -565,16 +565,16 @@ LABEL_5:
   else
   {
     v7 = [UTType typeWithIdentifier:kMFUTTypeMobileProvision];
-    v5 = [v3 conformsToType:v7];
+    v5 = [profileCopy conformsToType:v7];
   }
 
   return v5;
 }
 
-- (BOOL)isAddableToPassbook:(id)a3
+- (BOOL)isAddableToPassbook:(id)passbook
 {
-  v3 = a3;
-  if (([v3 conformsToType:_UTTypePassData] & 1) != 0 || objc_msgSend(v3, "conformsToType:", _UTTypePassBundle))
+  passbookCopy = passbook;
+  if (([passbookCopy conformsToType:_UTTypePassData] & 1) != 0 || objc_msgSend(passbookCopy, "conformsToType:", _UTTypePassBundle))
   {
     v4 = +[PKAddPassesViewController canAddPasses];
   }
@@ -587,30 +587,30 @@ LABEL_5:
   return v4;
 }
 
-- (BOOL)unknownContactsController:(id)a3 shouldPerformDefaultActionForContactProperty:(id)a4
+- (BOOL)unknownContactsController:(id)controller shouldPerformDefaultActionForContactProperty:(id)property
 {
-  v5 = a4;
-  v6 = [v5 key];
+  propertyCopy = property;
+  v6 = [propertyCopy key];
   v7 = [v6 isEqualToString:CNContactEmailAddressesKey];
 
   if (v7)
   {
-    v8 = [(MFAttachmentShowcase *)self presentingViewController];
-    [v8 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(MFAttachmentShowcase *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 
   return 1;
 }
 
-- (void)unknownContactsControllerDidComplete:(id)a3
+- (void)unknownContactsControllerDidComplete:(id)complete
 {
-  v3 = [(MFAttachmentShowcase *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(MFAttachmentShowcase *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
+  dismissCopy = dismiss;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -618,10 +618,10 @@ LABEL_5:
   }
 }
 
-- (void)icsPreviewControllerWantsDismissal:(id)a3
+- (void)icsPreviewControllerWantsDismissal:(id)dismissal
 {
-  v5 = [(MFAttachmentShowcase *)self delegate];
-  v4 = [v5 presentingViewControllerForAttachmentShowcase:self];
+  delegate = [(MFAttachmentShowcase *)self delegate];
+  v4 = [delegate presentingViewControllerForAttachmentShowcase:self];
   [v4 dismissViewControllerAnimated:1 completion:0];
 }
 

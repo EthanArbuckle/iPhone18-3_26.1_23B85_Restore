@@ -1,20 +1,20 @@
 @interface SKUIDonationAmountView
-- (SKUIDonationAmountView)initWithCharity:(id)a3;
+- (SKUIDonationAmountView)initWithCharity:(id)charity;
 - (SKUIGiftAmount)selectedAmount;
-- (void)_amountButtonDown:(id)a3;
-- (void)_amountButtonUpInside:(id)a3;
-- (void)_amountButtonUpOutside:(id)a3;
+- (void)_amountButtonDown:(id)down;
+- (void)_amountButtonUpInside:(id)inside;
+- (void)_amountButtonUpOutside:(id)outside;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setLogoImage:(id)a3;
+- (void)setLogoImage:(id)image;
 @end
 
 @implementation SKUIDonationAmountView
 
-- (SKUIDonationAmountView)initWithCharity:(id)a3
+- (SKUIDonationAmountView)initWithCharity:(id)charity
 {
   v61 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  charityCopy = charity;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIDonationAmountView initWithCharity:];
@@ -26,109 +26,109 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_charity, a3);
+    objc_storeStrong(&v6->_charity, charity);
     v7->_selectedAmountIndex = 0x7FFFFFFFFFFFFFFFLL;
-    v8 = [MEMORY[0x277D75348] _systemBackgroundColor];
+    _systemBackgroundColor = [MEMORY[0x277D75348] _systemBackgroundColor];
     v9 = objc_alloc_init(MEMORY[0x277D759D8]);
     scrollView = v7->_scrollView;
     v7->_scrollView = v9;
 
     [(UIScrollView *)v7->_scrollView setAlwaysBounceVertical:0];
-    [(UIScrollView *)v7->_scrollView setBackgroundColor:v8];
+    [(UIScrollView *)v7->_scrollView setBackgroundColor:_systemBackgroundColor];
     [(SKUIDonationAmountView *)v7 addSubview:v7->_scrollView];
-    v11 = [(SKUIGiftCharity *)v7->_charity amountDisclaimer];
-    if (v11)
+    amountDisclaimer = [(SKUIGiftCharity *)v7->_charity amountDisclaimer];
+    if (amountDisclaimer)
     {
       v12 = objc_alloc_init(MEMORY[0x277D756B8]);
       amountDisclaimerLabel = v7->_amountDisclaimerLabel;
       v7->_amountDisclaimerLabel = v12;
 
-      [(UILabel *)v7->_amountDisclaimerLabel setBackgroundColor:v8];
+      [(UILabel *)v7->_amountDisclaimerLabel setBackgroundColor:_systemBackgroundColor];
       v14 = v7->_amountDisclaimerLabel;
       v15 = [MEMORY[0x277D74300] systemFontOfSize:13.0];
       [(UILabel *)v14 setFont:v15];
 
       [(UILabel *)v7->_amountDisclaimerLabel setNumberOfLines:0];
-      [(UILabel *)v7->_amountDisclaimerLabel setText:v11];
+      [(UILabel *)v7->_amountDisclaimerLabel setText:amountDisclaimer];
       [(UILabel *)v7->_amountDisclaimerLabel setTextAlignment:1];
       v16 = v7->_amountDisclaimerLabel;
-      v17 = [MEMORY[0x277D75348] _secondaryLabelColor];
-      [(UILabel *)v16 setTextColor:v17];
+      _secondaryLabelColor = [MEMORY[0x277D75348] _secondaryLabelColor];
+      [(UILabel *)v16 setTextColor:_secondaryLabelColor];
 
       [(UIScrollView *)v7->_scrollView addSubview:v7->_amountDisclaimerLabel];
     }
 
-    v18 = [(SKUIGiftCharity *)v7->_charity charityDescription];
+    charityDescription = [(SKUIGiftCharity *)v7->_charity charityDescription];
 
-    if (v18)
+    if (charityDescription)
     {
       v19 = objc_alloc_init(MEMORY[0x277D756B8]);
       descriptionLabel = v7->_descriptionLabel;
       v7->_descriptionLabel = v19;
 
-      [(UILabel *)v7->_descriptionLabel setBackgroundColor:v8];
+      [(UILabel *)v7->_descriptionLabel setBackgroundColor:_systemBackgroundColor];
       v21 = v7->_descriptionLabel;
       v22 = [MEMORY[0x277D74300] boldSystemFontOfSize:17.0];
       [(UILabel *)v21 setFont:v22];
 
       [(UILabel *)v7->_descriptionLabel setNumberOfLines:0];
-      [(UILabel *)v7->_descriptionLabel setText:v18];
+      [(UILabel *)v7->_descriptionLabel setText:charityDescription];
       [(UILabel *)v7->_descriptionLabel setTextAlignment:1];
       v23 = v7->_descriptionLabel;
-      v24 = [MEMORY[0x277D75348] _labelColor];
-      [(UILabel *)v23 setTextColor:v24];
+      _labelColor = [MEMORY[0x277D75348] _labelColor];
+      [(UILabel *)v23 setTextColor:_labelColor];
 
       [(UIScrollView *)v7->_scrollView addSubview:v7->_descriptionLabel];
     }
 
-    v25 = [(SKUIGiftCharity *)v7->_charity legalText];
+    legalText = [(SKUIGiftCharity *)v7->_charity legalText];
 
-    if (v25)
+    if (legalText)
     {
       v26 = objc_alloc_init(MEMORY[0x277D756B8]);
       legalTextLabel = v7->_legalTextLabel;
       v7->_legalTextLabel = v26;
 
-      [(UILabel *)v7->_legalTextLabel setBackgroundColor:v8];
+      [(UILabel *)v7->_legalTextLabel setBackgroundColor:_systemBackgroundColor];
       v28 = v7->_legalTextLabel;
       v29 = [MEMORY[0x277D74300] systemFontOfSize:13.0];
       [(UILabel *)v28 setFont:v29];
 
       [(UILabel *)v7->_legalTextLabel setNumberOfLines:0];
-      [(UILabel *)v7->_legalTextLabel setText:v25];
+      [(UILabel *)v7->_legalTextLabel setText:legalText];
       v30 = v7->_legalTextLabel;
-      v31 = [MEMORY[0x277D75348] _labelColor];
-      [(UILabel *)v30 setTextColor:v31];
+      _labelColor2 = [MEMORY[0x277D75348] _labelColor];
+      [(UILabel *)v30 setTextColor:_labelColor2];
 
       [(UIScrollView *)v7->_scrollView addSubview:v7->_legalTextLabel];
     }
 
-    v32 = [(SKUIGiftCharity *)v7->_charity legalText2];
+    legalText2 = [(SKUIGiftCharity *)v7->_charity legalText2];
 
-    if (v32)
+    if (legalText2)
     {
       v33 = objc_alloc_init(MEMORY[0x277D756B8]);
       legalText2Label = v7->_legalText2Label;
       v7->_legalText2Label = v33;
 
-      [(UILabel *)v7->_legalText2Label setBackgroundColor:v8];
+      [(UILabel *)v7->_legalText2Label setBackgroundColor:_systemBackgroundColor];
       v35 = v7->_legalText2Label;
       v36 = [MEMORY[0x277D74300] systemFontOfSize:11.0];
       [(UILabel *)v35 setFont:v36];
 
       [(UILabel *)v7->_legalText2Label setNumberOfLines:0];
-      [(UILabel *)v7->_legalText2Label setText:v32];
+      [(UILabel *)v7->_legalText2Label setText:legalText2];
       v37 = v7->_legalText2Label;
-      v38 = [MEMORY[0x277D75348] _secondaryLabelColor];
-      [(UILabel *)v37 setTextColor:v38];
+      _secondaryLabelColor2 = [MEMORY[0x277D75348] _secondaryLabelColor];
+      [(UILabel *)v37 setTextColor:_secondaryLabelColor2];
 
       [(UIScrollView *)v7->_scrollView addSubview:v7->_legalText2Label];
     }
 
-    v53 = v32;
-    v54 = v8;
-    v39 = [(SKUIGiftCharity *)v7->_charity donationAmounts];
-    v40 = SKUIGiftAmountButtonsWithAmounts(v39);
+    v53 = legalText2;
+    v54 = _systemBackgroundColor;
+    donationAmounts = [(SKUIGiftCharity *)v7->_charity donationAmounts];
+    v40 = SKUIGiftAmountButtonsWithAmounts(donationAmounts);
     amountButtons = v7->_amountButtons;
     v7->_amountButtons = v40;
 
@@ -169,8 +169,8 @@
     v7->_separatorView = v48;
 
     v50 = v7->_separatorView;
-    v51 = [MEMORY[0x277D75348] tableSeparatorColor];
-    [(UIView *)v50 setBackgroundColor:v51];
+    tableSeparatorColor = [MEMORY[0x277D75348] tableSeparatorColor];
+    [(UIView *)v50 setBackgroundColor:tableSeparatorColor];
 
     [(UIScrollView *)v7->_scrollView addSubview:v7->_separatorView];
   }
@@ -218,31 +218,31 @@
 
 - (SKUIGiftAmount)selectedAmount
 {
-  v3 = [(SKUIGiftCharity *)self->_charity donationAmounts];
+  donationAmounts = [(SKUIGiftCharity *)self->_charity donationAmounts];
   selectedAmountIndex = self->_selectedAmountIndex;
-  if (selectedAmountIndex >= [v3 count])
+  if (selectedAmountIndex >= [donationAmounts count])
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v3 objectAtIndex:self->_selectedAmountIndex];
+    v5 = [donationAmounts objectAtIndex:self->_selectedAmountIndex];
   }
 
   return v5;
 }
 
-- (void)setLogoImage:(id)a3
+- (void)setLogoImage:(id)image
 {
-  v15 = a3;
-  v4 = [(SKUIDonationAmountView *)self logoImage];
+  imageCopy = image;
+  logoImage = [(SKUIDonationAmountView *)self logoImage];
 
-  v6 = v15;
-  if (v4 != v15)
+  v6 = imageCopy;
+  if (logoImage != imageCopy)
   {
     logoImageView = self->_logoImageView;
-    if (v15)
+    if (imageCopy)
     {
       if (!logoImageView)
       {
@@ -251,20 +251,20 @@
         self->_logoImageView = v8;
 
         v10 = self->_logoImageView;
-        v11 = [(SKUIGiftCharity *)self->_charity name];
-        [(UIImageView *)v10 setAccessibilityLabel:v11];
+        name = [(SKUIGiftCharity *)self->_charity name];
+        [(UIImageView *)v10 setAccessibilityLabel:name];
 
         v12 = self->_logoImageView;
-        v13 = [(SKUIDonationAmountView *)self backgroundColor];
-        [(UIImageView *)v12 setBackgroundColor:v13];
+        backgroundColor = [(SKUIDonationAmountView *)self backgroundColor];
+        [(UIImageView *)v12 setBackgroundColor:backgroundColor];
 
         [(UIImageView *)self->_logoImageView setContentMode:1];
         [(UIScrollView *)self->_scrollView addSubview:self->_logoImageView];
         logoImageView = self->_logoImageView;
       }
 
-      [(UIImageView *)logoImageView setImage:v15];
-      v5 = [(SKUIDonationAmountView *)self setNeedsLayout];
+      [(UIImageView *)logoImageView setImage:imageCopy];
+      setNeedsLayout = [(SKUIDonationAmountView *)self setNeedsLayout];
     }
 
     else
@@ -274,10 +274,10 @@
       self->_logoImageView = 0;
     }
 
-    v6 = v15;
+    v6 = imageCopy;
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](setNeedsLayout, v6);
 }
 
 - (void)layoutSubviews
@@ -285,10 +285,10 @@
   [(SKUIDonationAmountView *)self bounds];
   v4 = v3;
   [(UIScrollView *)self->_scrollView setFrame:?];
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v7 = 30.0;
   }
@@ -298,10 +298,10 @@
     v7 = 15.0;
   }
 
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-  if ((v9 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v10 = 30.0;
   }
@@ -312,14 +312,14 @@
   }
 
   v11 = v4 - v10;
-  v12 = [(SKUIGiftCharity *)self->_charity logoArtwork];
-  v13 = v12;
-  if (v12)
+  logoArtwork = [(SKUIGiftCharity *)self->_charity logoArtwork];
+  v13 = logoArtwork;
+  if (logoArtwork)
   {
-    v14 = [v12 height];
-    v15 = [MEMORY[0x277D759A0] mainScreen];
-    [v15 scale];
-    *&v16 = v14 / v16;
+    height = [logoArtwork height];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
+    *&v16 = height / v16;
     v17 = floorf(*&v16);
 
     logoImageView = self->_logoImageView;
@@ -329,11 +329,11 @@
       [(UIImageView *)self->_logoImageView setFrame:v7, 20.0, v11 - v7, v17];
     }
 
-    v19 = [MEMORY[0x277D75418] currentDevice];
-    v20 = [v19 userInterfaceIdiom];
+    currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
     v21 = 5.0;
-    if ((v20 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v21 = 16.0;
     }
@@ -357,11 +357,11 @@
     v77.size.width = v11 - v7;
     v77.size.height = v25;
     MaxY = CGRectGetMaxY(v77);
-    v27 = [MEMORY[0x277D75418] currentDevice];
-    v28 = [v27 userInterfaceIdiom];
+    currentDevice4 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom4 = [currentDevice4 userInterfaceIdiom];
 
     v29 = 35.0;
-    if ((v28 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+    if ((userInterfaceIdiom4 & 0xFFFFFFFFFFFFFFFBLL) != 1)
     {
       v29 = 25.0;
     }
@@ -388,11 +388,11 @@
     v72[5] = 3;
     [(NSArray *)amountButtons enumerateObjectsUsingBlock:v72];
     v32 = v74[3];
-    v33 = [MEMORY[0x277D75418] currentDevice];
-    v34 = [v33 userInterfaceIdiom];
+    currentDevice5 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom5 = [currentDevice5 userInterfaceIdiom];
 
     v35 = 16.0;
-    if ((v34 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v35 = 26.0;
     }
@@ -412,11 +412,11 @@
     v78.size.width = v11 - v7;
     v78.size.height = v38;
     v39 = CGRectGetMaxY(v78);
-    v40 = [MEMORY[0x277D75418] currentDevice];
-    v41 = [v40 userInterfaceIdiom];
+    currentDevice6 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom6 = [currentDevice6 userInterfaceIdiom];
 
     v42 = 17.0;
-    if ((v41 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v42 = 21.0;
     }
@@ -425,10 +425,10 @@
   }
 
   [(UIView *)self->_separatorView frame];
-  v43 = [MEMORY[0x277D75418] currentDevice];
-  v44 = [v43 userInterfaceIdiom];
+  currentDevice7 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom7 = [currentDevice7 userInterfaceIdiom];
 
-  if ((v44 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v45 = 30.0;
   }
@@ -438,14 +438,14 @@
     v45 = 15.0;
   }
 
-  v46 = [MEMORY[0x277D759A0] mainScreen];
-  [v46 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   v48 = 1.0 / v47;
 
-  v49 = [MEMORY[0x277D75418] currentDevice];
-  v50 = [v49 userInterfaceIdiom];
+  currentDevice8 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom8 = [currentDevice8 userInterfaceIdiom];
 
-  if ((v50 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom8 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v51 = 30.0;
   }
@@ -462,11 +462,11 @@
   v79.size.width = v52;
   v79.size.height = v48;
   v53 = CGRectGetMaxY(v79);
-  v54 = [MEMORY[0x277D75418] currentDevice];
-  v55 = [v54 userInterfaceIdiom];
+  currentDevice9 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom9 = [currentDevice9 userInterfaceIdiom];
 
   v56 = 16.0;
-  if ((v55 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom9 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v56 = 20.0;
   }
@@ -484,11 +484,11 @@
     v80.size.width = v60;
     v80.size.height = v62;
     v63 = CGRectGetMaxY(v80);
-    v64 = [MEMORY[0x277D75418] currentDevice];
-    v65 = [v64 userInterfaceIdiom];
+    currentDevice10 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom10 = [currentDevice10 userInterfaceIdiom];
 
     v66 = 23.0;
-    if ((v65 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom10 & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v66 = 18.0;
     }
@@ -537,14 +537,14 @@ void __40__SKUIDonationAmountView_layoutSubviews__block_invoke(uint64_t a1, void
   *(v12 + 24) = MaxY;
 }
 
-- (void)_amountButtonDown:(id)a3
+- (void)_amountButtonDown:(id)down
 {
-  v8 = a3;
+  downCopy = down;
   v4 = [(NSArray *)self->_amountButtons indexOfObjectIdenticalTo:?];
   selectedAmountIndex = self->_selectedAmountIndex;
   if (selectedAmountIndex == v4)
   {
-    [v8 setSelected:0];
+    [downCopy setSelected:0];
   }
 
   else
@@ -560,26 +560,26 @@ void __40__SKUIDonationAmountView_layoutSubviews__block_invoke(uint64_t a1, void
   }
 }
 
-- (void)_amountButtonUpInside:(id)a3
+- (void)_amountButtonUpInside:(id)inside
 {
   amountButtons = self->_amountButtons;
-  v5 = a3;
-  self->_selectedAmountIndex = [(NSArray *)amountButtons indexOfObjectIdenticalTo:v5];
-  [v5 setSelected:1];
+  insideCopy = inside;
+  self->_selectedAmountIndex = [(NSArray *)amountButtons indexOfObjectIdenticalTo:insideCopy];
+  [insideCopy setSelected:1];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 postNotificationName:@"SKUIDonationAmountViewChangedNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SKUIDonationAmountViewChangedNotification" object:self];
 }
 
-- (void)_amountButtonUpOutside:(id)a3
+- (void)_amountButtonUpOutside:(id)outside
 {
-  v5 = a3;
+  outsideCopy = outside;
   if (self->_selectedAmountIndex == [(NSArray *)self->_amountButtons indexOfObjectIdenticalTo:?])
   {
     self->_selectedAmountIndex = 0x7FFFFFFFFFFFFFFFLL;
-    [v5 setSelected:0];
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 postNotificationName:@"SKUIDonationAmountViewChangedNotification" object:self];
+    [outsideCopy setSelected:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SKUIDonationAmountViewChangedNotification" object:self];
   }
 }
 

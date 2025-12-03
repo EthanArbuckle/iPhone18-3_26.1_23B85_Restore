@@ -1,18 +1,18 @@
 @interface CPZoneBorderIntersection
 - (CGRect)intersectionRect;
 - (id)initSuper;
-- (int64_t)comparePositionLengthwise:(id)a3;
+- (int64_t)comparePositionLengthwise:(id)lengthwise;
 @end
 
 @implementation CPZoneBorderIntersection
 
-- (int64_t)comparePositionLengthwise:(id)a3
+- (int64_t)comparePositionLengthwise:(id)lengthwise
 {
   x = self->intersectionRect.origin.x;
-  [a3 intersectionRect];
+  [lengthwise intersectionRect];
   v7 = v6;
   y = self->intersectionRect.origin.y;
-  [a3 intersectionRect];
+  [lengthwise intersectionRect];
   if (vabdd_f64(v7, x) < vabdd_f64(v9, y))
   {
     v10 = y == v9;

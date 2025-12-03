@@ -1,27 +1,27 @@
 @interface AWDProactiveModelFittingLinRegFeatureMatrix
 - (BOOL)hasFeatureMatrix;
-- (BOOL)isEqual:(id)a3;
-- (float)featureMatrixValueAtRow:(unint64_t)a3 column:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (float)featureMatrixValueAtRow:(unint64_t)row column:(unint64_t)column;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFeatureMatrixL2norm:(BOOL)a3;
-- (void)setHasFeatureMatrixScaleFactor:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFeatureMatrixL2norm:(BOOL)l2norm;
+- (void)setHasFeatureMatrixScaleFactor:(BOOL)factor;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDProactiveModelFittingLinRegFeatureMatrix
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[7])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[7])
   {
-    self->_timestamp = v4[1];
+    self->_timestamp = fromCopy[1];
     *&self->_has |= 1u;
   }
 
@@ -235,24 +235,24 @@ LABEL_27:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v10 ^ v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
-  v5 = *(v4 + 56);
+  v5 = *(equalCopy + 56);
   if (*&self->_has)
   {
-    if ((*(v4 + 56) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 56) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
 LABEL_24:
     v10 = 0;
@@ -260,13 +260,13 @@ LABEL_24:
   }
 
   modelInfo = self->_modelInfo;
-  if (modelInfo | *(v4 + 4) && ![(AWDProactiveModelFittingModelInfo *)modelInfo isEqual:?])
+  if (modelInfo | *(equalCopy + 4) && ![(AWDProactiveModelFittingModelInfo *)modelInfo isEqual:?])
   {
     goto LABEL_24;
   }
 
   sparseFloatFeatureMatrix = self->_sparseFloatFeatureMatrix;
-  if (sparseFloatFeatureMatrix | *(v4 + 5))
+  if (sparseFloatFeatureMatrix | *(equalCopy + 5))
   {
     if (![(AWDProactiveModelFittingSparseFloatMatrix *)sparseFloatFeatureMatrix isEqual:?])
     {
@@ -275,7 +275,7 @@ LABEL_24:
   }
 
   minibatchStats = self->_minibatchStats;
-  if (minibatchStats | *(v4 + 3))
+  if (minibatchStats | *(equalCopy + 3))
   {
     if (![(AWDProactiveModelFittingMinibatchStats *)minibatchStats isEqual:?])
     {
@@ -284,7 +284,7 @@ LABEL_24:
   }
 
   sparseQuantizedFeatureMatrix = self->_sparseQuantizedFeatureMatrix;
-  if (sparseQuantizedFeatureMatrix | *(v4 + 6))
+  if (sparseQuantizedFeatureMatrix | *(equalCopy + 6))
   {
     if (![(AWDProactiveModelFittingQuantizedSparseMatrix *)sparseQuantizedFeatureMatrix isEqual:?])
     {
@@ -294,21 +294,21 @@ LABEL_24:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 56) & 4) == 0 || self->_featureMatrixScaleFactor != *(v4 + 5))
+    if ((*(equalCopy + 56) & 4) == 0 || self->_featureMatrixScaleFactor != *(equalCopy + 5))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 56) & 4) != 0)
+  else if ((*(equalCopy + 56) & 4) != 0)
   {
     goto LABEL_24;
   }
 
-  v10 = (*(v4 + 56) & 2) == 0;
+  v10 = (*(equalCopy + 56) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 56) & 2) == 0 || self->_featureMatrixL2norm != *(v4 + 4))
+    if ((*(equalCopy + 56) & 2) == 0 || self->_featureMatrixL2norm != *(equalCopy + 4))
     {
       goto LABEL_24;
     }
@@ -321,9 +321,9 @@ LABEL_25:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -331,19 +331,19 @@ LABEL_25:
     *(v5 + 56) |= 1u;
   }
 
-  v7 = [(AWDProactiveModelFittingModelInfo *)self->_modelInfo copyWithZone:a3];
+  v7 = [(AWDProactiveModelFittingModelInfo *)self->_modelInfo copyWithZone:zone];
   v8 = *(v6 + 32);
   *(v6 + 32) = v7;
 
-  v9 = [(AWDProactiveModelFittingSparseFloatMatrix *)self->_sparseFloatFeatureMatrix copyWithZone:a3];
+  v9 = [(AWDProactiveModelFittingSparseFloatMatrix *)self->_sparseFloatFeatureMatrix copyWithZone:zone];
   v10 = *(v6 + 40);
   *(v6 + 40) = v9;
 
-  v11 = [(AWDProactiveModelFittingMinibatchStats *)self->_minibatchStats copyWithZone:a3];
+  v11 = [(AWDProactiveModelFittingMinibatchStats *)self->_minibatchStats copyWithZone:zone];
   v12 = *(v6 + 24);
   *(v6 + 24) = v11;
 
-  v13 = [(AWDProactiveModelFittingQuantizedSparseMatrix *)self->_sparseQuantizedFeatureMatrix copyWithZone:a3];
+  v13 = [(AWDProactiveModelFittingQuantizedSparseMatrix *)self->_sparseQuantizedFeatureMatrix copyWithZone:zone];
   v14 = *(v6 + 48);
   *(v6 + 48) = v13;
 
@@ -364,58 +364,58 @@ LABEL_25:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 56) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 56) |= 1u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_modelInfo)
   {
-    [v4 setModelInfo:?];
-    v4 = v6;
+    [toCopy setModelInfo:?];
+    toCopy = v6;
   }
 
   if (self->_sparseFloatFeatureMatrix)
   {
     [v6 setSparseFloatFeatureMatrix:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_minibatchStats)
   {
     [v6 setMinibatchStats:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sparseQuantizedFeatureMatrix)
   {
     [v6 setSparseQuantizedFeatureMatrix:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 5) = LODWORD(self->_featureMatrixScaleFactor);
-    *(v4 + 56) |= 4u;
+    *(toCopy + 5) = LODWORD(self->_featureMatrixScaleFactor);
+    *(toCopy + 56) |= 4u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 4) = LODWORD(self->_featureMatrixL2norm);
-    *(v4 + 56) |= 2u;
+    *(toCopy + 4) = LODWORD(self->_featureMatrixL2norm);
+    *(toCopy + 56) |= 2u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
@@ -459,39 +459,39 @@ LABEL_25:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v5 forKey:@"timestamp"];
+    [dictionary setObject:v5 forKey:@"timestamp"];
   }
 
   modelInfo = self->_modelInfo;
   if (modelInfo)
   {
-    v7 = [(AWDProactiveModelFittingModelInfo *)modelInfo dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"modelInfo"];
+    dictionaryRepresentation = [(AWDProactiveModelFittingModelInfo *)modelInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"modelInfo"];
   }
 
   sparseFloatFeatureMatrix = self->_sparseFloatFeatureMatrix;
   if (sparseFloatFeatureMatrix)
   {
-    v9 = [(AWDProactiveModelFittingSparseFloatMatrix *)sparseFloatFeatureMatrix dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"sparseFloatFeatureMatrix"];
+    dictionaryRepresentation2 = [(AWDProactiveModelFittingSparseFloatMatrix *)sparseFloatFeatureMatrix dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"sparseFloatFeatureMatrix"];
   }
 
   minibatchStats = self->_minibatchStats;
   if (minibatchStats)
   {
-    v11 = [(AWDProactiveModelFittingMinibatchStats *)minibatchStats dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"minibatchStats"];
+    dictionaryRepresentation3 = [(AWDProactiveModelFittingMinibatchStats *)minibatchStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"minibatchStats"];
   }
 
   sparseQuantizedFeatureMatrix = self->_sparseQuantizedFeatureMatrix;
   if (sparseQuantizedFeatureMatrix)
   {
-    v13 = [(AWDProactiveModelFittingQuantizedSparseMatrix *)sparseQuantizedFeatureMatrix dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"sparseQuantizedFeatureMatrix"];
+    dictionaryRepresentation4 = [(AWDProactiveModelFittingQuantizedSparseMatrix *)sparseQuantizedFeatureMatrix dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"sparseQuantizedFeatureMatrix"];
   }
 
   has = self->_has;
@@ -499,7 +499,7 @@ LABEL_25:
   {
     *&v4 = self->_featureMatrixScaleFactor;
     v15 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-    [v3 setObject:v15 forKey:@"featureMatrixScaleFactor"];
+    [dictionary setObject:v15 forKey:@"featureMatrixScaleFactor"];
 
     has = self->_has;
   }
@@ -508,10 +508,10 @@ LABEL_25:
   {
     *&v4 = self->_featureMatrixL2norm;
     v16 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-    [v3 setObject:v16 forKey:@"featureMatrixL2norm"];
+    [dictionary setObject:v16 forKey:@"featureMatrixL2norm"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -520,15 +520,15 @@ LABEL_25:
   v8.receiver = self;
   v8.super_class = AWDProactiveModelFittingLinRegFeatureMatrix;
   v4 = [(AWDProactiveModelFittingLinRegFeatureMatrix *)&v8 description];
-  v5 = [(AWDProactiveModelFittingLinRegFeatureMatrix *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDProactiveModelFittingLinRegFeatureMatrix *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasFeatureMatrixL2norm:(BOOL)a3
+- (void)setHasFeatureMatrixL2norm:(BOOL)l2norm
 {
-  if (a3)
+  if (l2norm)
   {
     v3 = 2;
   }
@@ -541,9 +541,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasFeatureMatrixScaleFactor:(BOOL)a3
+- (void)setHasFeatureMatrixScaleFactor:(BOOL)factor
 {
-  if (a3)
+  if (factor)
   {
     v3 = 4;
   }
@@ -556,12 +556,12 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (float)featureMatrixValueAtRow:(unint64_t)a3 column:(unint64_t)a4
+- (float)featureMatrixValueAtRow:(unint64_t)row column:(unint64_t)column
 {
   if ([(AWDProactiveModelFittingLinRegFeatureMatrix *)self hasSparseFloatFeatureMatrix])
   {
-    v7 = [(AWDProactiveModelFittingLinRegFeatureMatrix *)self sparseFloatFeatureMatrix];
-    [v7 valueAtRow:a3 column:a4];
+    sparseFloatFeatureMatrix = [(AWDProactiveModelFittingLinRegFeatureMatrix *)self sparseFloatFeatureMatrix];
+    [sparseFloatFeatureMatrix valueAtRow:row column:column];
 LABEL_5:
     v9 = v8;
 
@@ -571,8 +571,8 @@ LABEL_5:
   v9 = 0.0;
   if ([(AWDProactiveModelFittingLinRegFeatureMatrix *)self hasSparseQuantizedFeatureMatrix])
   {
-    v7 = [(AWDProactiveModelFittingLinRegFeatureMatrix *)self sparseQuantizedFeatureMatrix];
-    [v7 originalValueAtRow:a3 column:a4];
+    sparseFloatFeatureMatrix = [(AWDProactiveModelFittingLinRegFeatureMatrix *)self sparseQuantizedFeatureMatrix];
+    [sparseFloatFeatureMatrix originalValueAtRow:row column:column];
     goto LABEL_5;
   }
 

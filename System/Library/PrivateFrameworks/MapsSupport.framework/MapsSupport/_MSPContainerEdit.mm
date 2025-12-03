@@ -1,22 +1,22 @@
 @interface _MSPContainerEdit
-- (void)ifAddition:(id)a3 ifRemoval:(id)a4 ifReplacement:(id)a5 ifContentUpdate:(id)a6 ifReplacedEntirely:(id)a7;
-- (void)useImmutableObjectsFromMap:(id)a3 intermediateMutableObjectTransferBlock:(id)a4;
+- (void)ifAddition:(id)addition ifRemoval:(id)removal ifReplacement:(id)replacement ifContentUpdate:(id)update ifReplacedEntirely:(id)entirely;
+- (void)useImmutableObjectsFromMap:(id)map intermediateMutableObjectTransferBlock:(id)block;
 @end
 
 @implementation _MSPContainerEdit
 
-- (void)ifAddition:(id)a3 ifRemoval:(id)a4 ifReplacement:(id)a5 ifContentUpdate:(id)a6 ifReplacedEntirely:(id)a7
+- (void)ifAddition:(id)addition ifRemoval:(id)removal ifReplacement:(id)replacement ifContentUpdate:(id)update ifReplacedEntirely:(id)entirely
 {
-  v19 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  additionCopy = addition;
+  removalCopy = removal;
+  replacementCopy = replacement;
+  updateCopy = update;
+  entirelyCopy = entirely;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v19;
-    if (!v19)
+    v16 = additionCopy;
+    if (!additionCopy)
     {
       goto LABEL_16;
     }
@@ -29,8 +29,8 @@ LABEL_15:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v12;
-    if (v12)
+    v16 = removalCopy;
+    if (removalCopy)
     {
       goto LABEL_15;
     }
@@ -41,8 +41,8 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = v13;
-      if (v13)
+      v16 = replacementCopy;
+      if (replacementCopy)
       {
         goto LABEL_15;
       }
@@ -53,8 +53,8 @@ LABEL_15:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = v14;
-        if (v14)
+        v16 = updateCopy;
+        if (updateCopy)
         {
           goto LABEL_15;
         }
@@ -64,10 +64,10 @@ LABEL_15:
       {
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
-        if (v15)
+        if (entirelyCopy)
         {
           v18 = isKindOfClass;
-          v16 = v15;
+          v16 = entirelyCopy;
           if (v18)
           {
             goto LABEL_15;
@@ -80,9 +80,9 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)useImmutableObjectsFromMap:(id)a3 intermediateMutableObjectTransferBlock:(id)a4
+- (void)useImmutableObjectsFromMap:(id)map intermediateMutableObjectTransferBlock:(id)block
 {
-  [(_MSPContainerEdit *)self methodForSelector:a2, a4];
+  [(_MSPContainerEdit *)self methodForSelector:a2, block];
 
   [_MSPContainerEdit instanceMethodForSelector:a2];
 }

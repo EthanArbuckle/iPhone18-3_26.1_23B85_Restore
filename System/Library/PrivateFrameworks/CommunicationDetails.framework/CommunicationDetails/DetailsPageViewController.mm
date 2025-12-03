@@ -1,15 +1,15 @@
 @interface DetailsPageViewController
-- (_TtC20CommunicationDetails25DetailsPageViewController)initWithCoder:(id)a3;
-- (_TtC20CommunicationDetails25DetailsPageViewController)initWithTransitionStyle:(int64_t)a3 navigationOrientation:(int64_t)a4 options:(id)a5;
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6;
-- (void)pageViewController:(id)a3 willTransitionToViewControllers:(id)a4;
+- (_TtC20CommunicationDetails25DetailsPageViewController)initWithCoder:(id)coder;
+- (_TtC20CommunicationDetails25DetailsPageViewController)initWithTransitionStyle:(int64_t)style navigationOrientation:(int64_t)orientation options:(id)options;
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed;
+- (void)pageViewController:(id)controller willTransitionToViewControllers:(id)controllers;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DetailsPageViewController
 
-- (_TtC20CommunicationDetails25DetailsPageViewController)initWithCoder:(id)a3
+- (_TtC20CommunicationDetails25DetailsPageViewController)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -39,13 +39,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   DetailsPageViewController.viewDidLoad()();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -56,13 +56,13 @@
 
   v6.receiver = self;
   v6.super_class = type metadata accessor for DetailsPageViewController();
-  v5 = self;
-  [(DetailsPageViewController *)&v6 viewWillAppear:v3];
-  [(DetailsPageViewController *)v5 setDataSource:0, v6.receiver, v6.super_class];
-  [(DetailsPageViewController *)v5 setDataSource:v5];
+  selfCopy = self;
+  [(DetailsPageViewController *)&v6 viewWillAppear:appearCopy];
+  [(DetailsPageViewController *)selfCopy setDataSource:0, v6.receiver, v6.super_class];
+  [(DetailsPageViewController *)selfCopy setDataSource:selfCopy];
 }
 
-- (void)pageViewController:(id)a3 willTransitionToViewControllers:(id)a4
+- (void)pageViewController:(id)controller willTransitionToViewControllers:(id)controllers
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -74,12 +74,12 @@
 
   type metadata accessor for UIViewController(0, &lazy cache variable for type metadata for UIViewController);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   specialized DetailsPageViewController.pageViewController(_:willTransitionTo:)(v6);
 }
 
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -89,12 +89,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v10 = a3;
-  v11 = self;
-  specialized DetailsPageViewController.pageViewController(_:didFinishAnimating:previousViewControllers:transitionCompleted:)(v10, a4, a6);
+  controllerCopy = controller;
+  selfCopy = self;
+  specialized DetailsPageViewController.pageViewController(_:didFinishAnimating:previousViewControllers:transitionCompleted:)(controllerCopy, animating, completed);
 }
 
-- (_TtC20CommunicationDetails25DetailsPageViewController)initWithTransitionStyle:(int64_t)a3 navigationOrientation:(int64_t)a4 options:(id)a5
+- (_TtC20CommunicationDetails25DetailsPageViewController)initWithTransitionStyle:(int64_t)style navigationOrientation:(int64_t)orientation options:(id)options
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

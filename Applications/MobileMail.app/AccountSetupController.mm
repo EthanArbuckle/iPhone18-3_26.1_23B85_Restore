@@ -1,27 +1,27 @@
 @interface AccountSetupController
-- (AccountSetupController)initWithNibName:(id)a3 bundle:(id)a4;
+- (AccountSetupController)initWithNibName:(id)name bundle:(id)bundle;
 - (AccountSetupControllerDelegate)accountSetupDelegate;
 - (BOOL)accountSetupInProgress;
 - (BOOL)shouldSnapshot;
 - (MailMainScene)scene;
 - (id)customDefaultPNGName;
-- (void)_accountSetupDidChange:(BOOL)a3;
+- (void)_accountSetupDidChange:(BOOL)change;
 - (void)dealloc;
 - (void)didDismissFormSheetView;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AccountSetupController
 
-- (AccountSetupController)initWithNibName:(id)a3 bundle:(id)a4
+- (AccountSetupController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v11.receiver = self;
   v11.super_class = AccountSetupController;
-  v8 = [(AccountSetupController *)&v11 initWithNibName:v6 bundle:v7];
+  v8 = [(AccountSetupController *)&v11 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
     v9 = +[NSNotificationCenter defaultCenter];
@@ -53,32 +53,32 @@
   [(AccountSetupController *)self showController:self->_addTypeController];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = AccountSetupController;
-  [(AccountSetupController *)&v6 viewWillAppear:a3];
-  v4 = [(AccountSetupController *)self scene];
-  v5 = [v4 extendedLaunchTracker];
-  [v5 observeViewController:self scene:v4];
+  [(AccountSetupController *)&v6 viewWillAppear:appear];
+  scene = [(AccountSetupController *)self scene];
+  extendedLaunchTracker = [scene extendedLaunchTracker];
+  [extendedLaunchTracker observeViewController:self scene:scene];
 
   self->_setupWasInProgress = [(AccountSetupController *)self accountSetupInProgress];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = AccountSetupController;
-  [(AccountSetupController *)&v6 viewDidAppear:a3];
+  [(AccountSetupController *)&v6 viewDidAppear:appear];
   if (self->_setupWasInProgress)
   {
     self->_setupWasInProgress = 0;
     [(AccountSetupController *)self _accountSetupDidChange:0];
   }
 
-  v4 = [(AccountSetupController *)self scene];
-  v5 = [v4 extendedLaunchTracker];
-  [v5 didFinishLoadViewController:self scene:v4];
+  scene = [(AccountSetupController *)self scene];
+  extendedLaunchTracker = [scene extendedLaunchTracker];
+  [extendedLaunchTracker didFinishLoadViewController:self scene:scene];
 }
 
 - (void)didDismissFormSheetView
@@ -91,47 +91,47 @@
 
 - (BOOL)shouldSnapshot
 {
-  v2 = self;
-  v3 = [(AccountSetupController *)self visibleViewController];
-  LOBYTE(v2) = v3 == v2->_addTypeController;
+  selfCopy = self;
+  visibleViewController = [(AccountSetupController *)self visibleViewController];
+  LOBYTE(selfCopy) = visibleViewController == selfCopy->_addTypeController;
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)customDefaultPNGName
 {
   if ((+[UIDevice mf_isPadIdiom]& 1) != 0 || ![(AccountSetupController *)self shouldSnapshot])
   {
-    v3 = @"Default-AccountSetup";
+    customDefaultPNGName = @"Default-AccountSetup";
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = AccountSetupController;
-    v3 = [(AccountSetupController *)&v5 customDefaultPNGName];
+    customDefaultPNGName = [(AccountSetupController *)&v5 customDefaultPNGName];
   }
 
-  return v3;
+  return customDefaultPNGName;
 }
 
-- (void)_accountSetupDidChange:(BOOL)a3
+- (void)_accountSetupDidChange:(BOOL)change
 {
-  v3 = a3;
-  v5 = [(AccountSetupController *)self accountSetupDelegate];
+  changeCopy = change;
+  accountSetupDelegate = [(AccountSetupController *)self accountSetupDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 accountSetupControllerDidChange:self finished:v3];
+    [accountSetupDelegate accountSetupControllerDidChange:self finished:changeCopy];
   }
 }
 
 - (BOOL)accountSetupInProgress
 {
-  v2 = self;
-  v3 = [(AccountSetupController *)self visibleViewController];
-  LOBYTE(v2) = v3 != v2->_addTypeController;
+  selfCopy = self;
+  visibleViewController = [(AccountSetupController *)self visibleViewController];
+  LOBYTE(selfCopy) = visibleViewController != selfCopy->_addTypeController;
 
-  return v2;
+  return selfCopy;
 }
 
 - (AccountSetupControllerDelegate)accountSetupDelegate

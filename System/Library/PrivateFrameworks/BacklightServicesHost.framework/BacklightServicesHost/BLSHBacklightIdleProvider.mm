@@ -1,8 +1,8 @@
 @interface BLSHBacklightIdleProvider
-+ (id)createSharedProviderWithLocalAssertionService:(id)a3;
++ (id)createSharedProviderWithLocalAssertionService:(id)service;
 + (id)sharedProvider;
 + (void)sharedProvider;
-- (BLSHBacklightIdleProvider)initWithLocalAssertionService:(id)a3 idleProvider:(id)a4 backlightHost:(id)a5;
+- (BLSHBacklightIdleProvider)initWithLocalAssertionService:(id)service idleProvider:(id)provider backlightHost:(id)host;
 - (BLSHBacklightIdleProviderDelegate)delegate;
 - (BOOL)hasUserActivityOccured;
 - (BOOL)isActive;
@@ -10,43 +10,43 @@
 - (double)idleTimeout;
 - (double)nonInteractiveIdleTimeout;
 - (int64_t)targetIdleState;
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvents:(id)a5 abortedEvents:(id)a6;
-- (void)backlightHost:(id)a3 willTransitionToState:(int64_t)a4 forEvent:(id)a5;
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvents:(id)events abortedEvents:(id)abortedEvents;
+- (void)backlightHost:(id)host willTransitionToState:(int64_t)state forEvent:(id)event;
 - (void)dealloc;
-- (void)idleProviderDidIdle:(id)a3;
-- (void)idleProviderDidUnidle:(id)a3;
+- (void)idleProviderDidIdle:(id)idle;
+- (void)idleProviderDidUnidle:(id)unidle;
 - (void)invalidate;
 - (void)onMain_handleDidIdle;
 - (void)onMain_handleSuppressedChanged;
 - (void)onMain_handleSuspendedChanged;
-- (void)onMain_idleBacklightInactiveWithExplanation:(uint64_t)a1;
+- (void)onMain_idleBacklightInactiveWithExplanation:(uint64_t)explanation;
 - (void)reset;
-- (void)setActive:(BOOL)a3;
-- (void)setIdleTimeout:(double)a3;
-- (void)setNonInteractiveIdleTimeout:(double)a3;
-- (void)setSuppressed:(os_unfair_lock_s *)a1;
-- (void)setSuspended:(BOOL)a3;
-- (void)setTargetIdleState:(int64_t)a3;
+- (void)setActive:(BOOL)active;
+- (void)setIdleTimeout:(double)timeout;
+- (void)setNonInteractiveIdleTimeout:(double)timeout;
+- (void)setSuppressed:(os_unfair_lock_s *)suppressed;
+- (void)setSuspended:(BOOL)suspended;
+- (void)setTargetIdleState:(int64_t)state;
 - (void)signalUserActivityOccurred;
 - (void)start;
-- (void)updateForBacklightState:(os_unfair_lock_s *)a1;
+- (void)updateForBacklightState:(os_unfair_lock_s *)state;
 @end
 
 @implementation BLSHBacklightIdleProvider
 
-+ (id)createSharedProviderWithLocalAssertionService:(id)a3
++ (id)createSharedProviderWithLocalAssertionService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   os_unfair_lock_lock(&_classLock_0);
   if (_sharedProvider_0)
   {
     [BLSHBacklightIdleProvider createSharedProviderWithLocalAssertionService:a2];
   }
 
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v7 = objc_alloc_init(BLSHUserIdleProvider);
   v8 = +[BLSHBacklightHost sharedBacklightHost];
-  v9 = [v6 initWithLocalAssertionService:v5 idleProvider:v7 backlightHost:v8];
+  v9 = [v6 initWithLocalAssertionService:serviceCopy idleProvider:v7 backlightHost:v8];
 
   objc_storeStrong(&_sharedProvider_0, v9);
   os_unfair_lock_unlock(&_classLock_0);
@@ -67,11 +67,11 @@
   return v3;
 }
 
-- (BLSHBacklightIdleProvider)initWithLocalAssertionService:(id)a3 idleProvider:(id)a4 backlightHost:(id)a5
+- (BLSHBacklightIdleProvider)initWithLocalAssertionService:(id)service idleProvider:(id)provider backlightHost:(id)host
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  providerCopy = provider;
+  hostCopy = host;
   v15.receiver = self;
   v15.super_class = BLSHBacklightIdleProvider;
   v11 = [(BLSHBacklightIdleProvider *)&v15 init];
@@ -79,16 +79,16 @@
   if (v11)
   {
     v11->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v11->_lock_idleProvider, a4);
-    [v9 setDelegate:v12];
+    objc_storeStrong(&v11->_lock_idleProvider, provider);
+    [providerCopy setDelegate:v12];
     v12->_lock_active = 1;
     v12->_lock_targetIdleBacklightState = 0;
-    objc_storeStrong(&v12->_backlightHost, a5);
-    [v10 addObserver:v12];
-    -[BLSHBacklightIdleProvider updateForBacklightState:](v12, [v10 backlightState]);
-    if (v8)
+    objc_storeStrong(&v12->_backlightHost, host);
+    [hostCopy addObserver:v12];
+    -[BLSHBacklightIdleProvider updateForBacklightState:](v12, [hostCopy backlightState]);
+    if (serviceCopy)
     {
-      v14 = [BLSHPreventBacklightIdleAttributeHandler registerHandlerForService:v8 provider:v12];
+      v14 = [BLSHPreventBacklightIdleAttributeHandler registerHandlerForService:serviceCopy provider:v12];
     }
   }
 
@@ -100,7 +100,7 @@
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_4();
     v4 = NSStringFromClass(v3);
@@ -118,7 +118,7 @@
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"must set idleTimeout to non-zero before calling [BLSHBacklightIdleProvider start]"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_4();
     v4 = NSStringFromClass(v3);
@@ -172,16 +172,16 @@
   return lock_idleTimeout;
 }
 
-- (void)setIdleTimeout:(double)a3
+- (void)setIdleTimeout:(double)timeout
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_idleTimeout = a3;
+  self->_lock_idleTimeout = timeout;
   lock_userActivityOccured = self->_lock_userActivityOccured;
   v6 = self->_lock_idleProvider;
   os_unfair_lock_unlock(&self->_lock);
   if (lock_userActivityOccured)
   {
-    [(BLSHUserIdleProviding *)v6 setIdleTimeout:0 shouldReset:a3];
+    [(BLSHUserIdleProviding *)v6 setIdleTimeout:0 shouldReset:timeout];
   }
 }
 
@@ -193,16 +193,16 @@
   return lock_nonInteractiveIdleTimeout;
 }
 
-- (void)setNonInteractiveIdleTimeout:(double)a3
+- (void)setNonInteractiveIdleTimeout:(double)timeout
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_nonInteractiveIdleTimeout = a3;
+  self->_lock_nonInteractiveIdleTimeout = timeout;
   lock_userActivityOccured = self->_lock_userActivityOccured;
   v6 = self->_lock_idleProvider;
   os_unfair_lock_unlock(&self->_lock);
   if (!lock_userActivityOccured)
   {
-    [(BLSHUserIdleProviding *)v6 setIdleTimeout:0 shouldReset:a3];
+    [(BLSHUserIdleProviding *)v6 setIdleTimeout:0 shouldReset:timeout];
   }
 }
 
@@ -214,18 +214,18 @@
   return lock_active;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   os_unfair_lock_lock(&self->_lock);
   lock_active = self->_lock_active;
-  self->_lock_active = v3;
+  self->_lock_active = activeCopy;
   lock_started = self->_lock_started;
   v7 = self->_lock_idleProvider;
   os_unfair_lock_unlock(&self->_lock);
-  if (lock_active != v3 && lock_started)
+  if (lock_active != activeCopy && lock_started)
   {
-    if (v3)
+    if (activeCopy)
     {
       [(BLSHUserIdleProviding *)v7 resume];
     }
@@ -253,12 +253,12 @@
   return lock_userActivityOccured;
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
-  v3 = a3;
+  suspendedCopy = suspended;
   os_unfair_lock_lock(&self->_lock);
   lock_suspended = self->_lock_suspended;
-  self->_lock_suspended = v3;
+  self->_lock_suspended = suspendedCopy;
   lock_started = self->_lock_started;
   os_unfair_lock_unlock(&self->_lock);
   v7 = bls_backlight_log();
@@ -267,7 +267,7 @@
     [(BLSHBacklightIdleProvider *)lock_started setSuspended:v7];
   }
 
-  if (lock_suspended != v3 && lock_started)
+  if (lock_suspended != suspendedCopy && lock_started)
   {
     BSDispatchMain();
   }
@@ -281,32 +281,32 @@
   return lock_targetIdleBacklightState;
 }
 
-- (void)setTargetIdleState:(int64_t)a3
+- (void)setTargetIdleState:(int64_t)state
 {
   os_unfair_lock_lock(&self->_lock);
   lock_targetIdleBacklightState = self->_lock_targetIdleBacklightState;
-  self->_lock_targetIdleBacklightState = a3;
+  self->_lock_targetIdleBacklightState = state;
   os_unfair_lock_unlock(&self->_lock);
   v6 = bls_backlight_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(BLSHBacklightIdleProvider *)lock_targetIdleBacklightState setTargetIdleState:a3, v6];
+    [(BLSHBacklightIdleProvider *)lock_targetIdleBacklightState setTargetIdleState:state, v6];
   }
 }
 
-- (void)backlight:(id)a3 didCompleteUpdateToState:(int64_t)a4 forEvents:(id)a5 abortedEvents:(id)a6
+- (void)backlight:(id)backlight didCompleteUpdateToState:(int64_t)state forEvents:(id)events abortedEvents:(id)abortedEvents
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  eventsCopy = events;
   os_unfair_lock_lock(&self->_lock);
   lock_didStartTransitionToNewState = 0;
-  if (a4 == 2 && self->_lock_idle)
+  if (state == 2 && self->_lock_idle)
   {
     lock_didStartTransitionToNewState = self->_lock_didStartTransitionToNewState;
   }
 
   lock_previousBacklightState = self->_lock_previousBacklightState;
-  self->_lock_previousBacklightState = a4;
+  self->_lock_previousBacklightState = state;
   self->_lock_didStartTransitionToNewState = 0;
   v11 = bls_backlight_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -318,7 +318,7 @@
     v17 = 138413570;
     v18 = v13;
     v19 = 1024;
-    v20 = lock_previousBacklightState != a4;
+    v20 = lock_previousBacklightState != state;
     v21 = 1024;
     v22 = lock_didStartTransitionToNewState;
     v23 = 1024;
@@ -331,24 +331,24 @@
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (lock_previousBacklightState != a4 || lock_didStartTransitionToNewState)
+  if (lock_previousBacklightState != state || lock_didStartTransitionToNewState)
   {
-    [BLSHBacklightIdleProvider backlight:a4 didCompleteUpdateToState:a4 == 2 forEvents:v8 abortedEvents:?];
+    [BLSHBacklightIdleProvider backlight:state didCompleteUpdateToState:state == 2 forEvents:eventsCopy abortedEvents:?];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)backlightHost:(id)a3 willTransitionToState:(int64_t)a4 forEvent:(id)a5
+- (void)backlightHost:(id)host willTransitionToState:(int64_t)state forEvent:(id)event
 {
   v19 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
-  if (a4 == 2)
+  if (state == 2)
   {
     self->_lock_pendingIdleInactiveRequest = 0;
   }
 
-  if (self->_lock_previousBacklightState != a4)
+  if (self->_lock_previousBacklightState != state)
   {
     self->_lock_didStartTransitionToNewState = 1;
   }
@@ -373,27 +373,27 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)idleProviderDidIdle:(id)a3
+- (void)idleProviderDidIdle:(id)idle
 {
-  v4 = a3;
+  idleCopy = idle;
   os_unfair_lock_lock(&self->_lock);
   *&self->_lock_idle = 257;
   os_unfair_lock_unlock(&self->_lock);
-  [v4 setShouldNotifyOfUnidle:1];
+  [idleCopy setShouldNotifyOfUnidle:1];
 
   BSDispatchMain();
 }
 
-- (void)idleProviderDidUnidle:(id)a3
+- (void)idleProviderDidUnidle:(id)unidle
 {
-  v5 = a3;
+  unidleCopy = unidle;
   os_unfair_lock_lock(&self->_lock);
   self->_lock_userActivityOccured = 1;
   *&self->_lock_idle = 0;
   lock_idleTimeout = self->_lock_idleTimeout;
   os_unfair_lock_unlock(&self->_lock);
-  [v5 setShouldNotifyOfUnidle:0];
-  [v5 setIdleTimeout:0 shouldReset:lock_idleTimeout];
+  [unidleCopy setShouldNotifyOfUnidle:0];
+  [unidleCopy setIdleTimeout:0 shouldReset:lock_idleTimeout];
 }
 
 - (BLSHBacklightIdleProviderDelegate)delegate
@@ -403,11 +403,11 @@
   return WeakRetained;
 }
 
-- (void)updateForBacklightState:(os_unfair_lock_s *)a1
+- (void)updateForBacklightState:(os_unfair_lock_s *)state
 {
-  if (a1)
+  if (state)
   {
-    OUTLINED_FUNCTION_5_0(a1);
+    OUTLINED_FUNCTION_5_0(state);
     v4 = *(v2 + 64);
     if (v4 == 1)
     {
@@ -445,9 +445,9 @@
 
 - (void)onMain_handleSuspendedChanged
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_5_0(a1);
+    OUTLINED_FUNCTION_5_0(self);
     v2 = *(v1 + 66);
     v3 = *(v1 + 8);
     os_unfair_lock_unlock((v1 + 32));
@@ -460,12 +460,12 @@
   }
 }
 
-- (void)setSuppressed:(os_unfair_lock_s *)a1
+- (void)setSuppressed:(os_unfair_lock_s *)suppressed
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (suppressed)
   {
-    OUTLINED_FUNCTION_5_0(a1);
+    OUTLINED_FUNCTION_5_0(suppressed);
     v4 = *(v2 + 67);
     *(v2 + 67) = a2;
     v5 = *(v2 + 64);
@@ -492,9 +492,9 @@
 - (void)onMain_handleSuppressedChanged
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_5_0(a1);
+    OUTLINED_FUNCTION_5_0(self);
     v2 = *(v1 + 67);
     v3 = *(v1 + 68);
     os_unfair_lock_unlock((v1 + 32));
@@ -517,20 +517,20 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)onMain_idleBacklightInactiveWithExplanation:(uint64_t)a1
+- (void)onMain_idleBacklightInactiveWithExplanation:(uint64_t)explanation
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (explanation)
   {
-    os_unfair_lock_lock((a1 + 32));
-    v4 = *(a1 + 69);
-    v5 = *(a1 + 24);
-    *(a1 + 69) = 0;
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_lock((explanation + 32));
+    v4 = *(explanation + 69);
+    v5 = *(explanation + 24);
+    *(explanation + 69) = 0;
+    os_unfair_lock_unlock((explanation + 32));
     if (v4 == 1)
     {
-      v6 = *(a1 + 16);
+      v6 = *(explanation + 16);
       v7 = [objc_alloc(MEMORY[0x277CF0890]) initWithRequestedActivityState:v5 explanation:v3 timestamp:mach_continuous_time() sourceEvent:1 sourceEventMetadata:0];
       v8 = [v6 performChangeRequest:v7];
     }
@@ -541,7 +541,7 @@
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
         v10 = 134218242;
-        v11 = a1;
+        explanationCopy = explanation;
         v12 = 2114;
         v13 = v3;
         _os_log_debug_impl(&dword_21FD11000, v7, OS_LOG_TYPE_DEBUG, "%p will not inactivate (not pending) for explanation:%{public}@", &v10, 0x16u);
@@ -555,12 +555,12 @@
 - (void)onMain_handleDidIdle
 {
   v11 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_9;
   }
 
-  OUTLINED_FUNCTION_5_0(a1);
+  OUTLINED_FUNCTION_5_0(self);
   v2 = *(v1 + 68);
   v3 = *(v1 + 65);
   v4 = *(v1 + 67);
@@ -627,7 +627,7 @@ LABEL_14:
   v2 = [MEMORY[0x277CCACA8] stringWithFormat:@"[BLSHBacklightIdleProvider sharedProvider] should not be called before createSharedProviderWithLocalAssertionService:"];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_4();
     v4 = NSStringFromClass(v3);

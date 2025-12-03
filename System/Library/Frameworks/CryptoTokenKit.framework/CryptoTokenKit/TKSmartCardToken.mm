@@ -13,15 +13,15 @@
   v12 = [(TKToken *)&v20 initWithTokenDriver:tokenDriver instanceID:instanceID];
   if (v12)
   {
-    v13 = [(TKSmartCard *)v10 slot];
-    v14 = [v13 makeSmartCard];
+    slot = [(TKSmartCard *)v10 slot];
+    makeSmartCard = [slot makeSmartCard];
     v15 = v12->_smartCard;
-    v12->_smartCard = v14;
+    v12->_smartCard = makeSmartCard;
 
     objc_storeStrong(&v12->_AID, AID);
     v16 = [TKTokenKeychainContents alloc];
-    v17 = [(TKToken *)v12 configuration];
-    v18 = [(TKTokenKeychainContents *)v16 initWithConfiguration:v17];
+    configuration = [(TKToken *)v12 configuration];
+    v18 = [(TKTokenKeychainContents *)v16 initWithConfiguration:configuration];
     [(TKToken *)v12 setKeychainContents:v18];
 
     [(TKSmartCardToken *)v12 setProprietaryCardUsage:0];

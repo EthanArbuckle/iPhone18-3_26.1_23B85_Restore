@@ -1,23 +1,23 @@
 @interface SUUITomatoRatingViewElement
-- (SUUITomatoRatingViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUITomatoRatingViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUITomatoRatingViewElement
 
-- (SUUITomatoRatingViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUITomatoRatingViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v22.receiver = self;
   v22.super_class = SUUITomatoRatingViewElement;
-  v9 = [(SUUIViewElement *)&v22 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v22 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"value"];
+    v10 = [elementCopy getAttribute:@"value"];
     [v10 floatValue];
     v9->_tomatoRating = v11;
 
-    v12 = [v8 getAttribute:@"freshness"];
+    v12 = [elementCopy getAttribute:@"freshness"];
     if ([v12 length])
     {
       if (![v12 isEqualToString:@"certified"])
@@ -39,7 +39,7 @@ LABEL_13:
         v20[3] = &unk_2798F8528;
         v16 = v9;
         v21 = v16;
-        v17 = [(IKTextParser *)SUUIViewElementText textWithDOMElement:v8 usingParseBlock:v20];
+        v17 = [(IKTextParser *)SUUIViewElementText textWithDOMElement:elementCopy usingParseBlock:v20];
         ratingText = v16->_ratingText;
         v16->_ratingText = v17;
 
@@ -49,10 +49,10 @@ LABEL_13:
 
     else
     {
-      v13 = [v8 getAttribute:@"certified"];
-      v14 = [v13 BOOLValue];
+      v13 = [elementCopy getAttribute:@"certified"];
+      bOOLValue = [v13 BOOLValue];
 
-      if (!v14)
+      if (!bOOLValue)
       {
         if (v9->_tomatoRating >= 0.6)
         {
@@ -99,17 +99,17 @@ id __72__SUUITomatoRatingViewElement_initWithDOMElement_parent_elementFactory___
   return v11;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v9.receiver = self;
   v9.super_class = SUUITomatoRatingViewElement;
-  v5 = [(SUUIViewElement *)&v9 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v9 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    self->_freshness = [(SUUITomatoRatingViewElement *)v4 freshness];
-    [(SUUITomatoRatingViewElement *)v4 tomatoRating];
+    self->_freshness = [(SUUITomatoRatingViewElement *)elementCopy freshness];
+    [(SUUITomatoRatingViewElement *)elementCopy tomatoRating];
     self->_tomatoRating = v7;
   }
 

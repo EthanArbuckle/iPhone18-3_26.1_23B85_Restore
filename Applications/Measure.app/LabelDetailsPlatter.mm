@@ -6,7 +6,7 @@
 
 - (void)copyMeasurement
 {
-  v2 = self;
+  selfCopy = self;
   sub_100096F44();
 }
 

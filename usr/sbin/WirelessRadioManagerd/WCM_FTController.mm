@@ -2,9 +2,9 @@
 - (WCM_FTController)init;
 - (void)dealloc;
 - (void)getFaceTimeCallConfig;
-- (void)handleFaceTimeCallConfig:(id)a3;
-- (void)handleMessage:(id)a3;
-- (void)updateFTRate:(unint64_t)a3;
+- (void)handleFaceTimeCallConfig:(id)config;
+- (void)handleMessage:(id)message;
+- (void)updateFTRate:(unint64_t)rate;
 @end
 
 @implementation WCM_FTController
@@ -26,13 +26,13 @@
   [(WCM_Controller *)&v2 dealloc];
 }
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "kMessageId");
+  uint64 = xpc_dictionary_get_uint64(message, "kMessageId");
   if (uint64 == 200)
   {
 
-    [(WCM_FTController *)self handleFaceTimeCallConfig:a3];
+    [(WCM_FTController *)self handleFaceTimeCallConfig:message];
   }
 
   else
@@ -41,9 +41,9 @@
   }
 }
 
-- (void)handleFaceTimeCallConfig:(id)a3
+- (void)handleFaceTimeCallConfig:(id)config
 {
-  value = xpc_dictionary_get_value(a3, "kMessageArgs");
+  value = xpc_dictionary_get_value(config, "kMessageArgs");
   if (value)
   {
     [(WCM_FTController *)self setCurrentCallTargetBitRate:xpc_dictionary_get_uint64(value, "kWCMFTCallConfig_TargetBitRate")];
@@ -55,22 +55,22 @@
   [v5 updateControllerState:200];
 }
 
-- (void)updateFTRate:(unint64_t)a3
+- (void)updateFTRate:(unint64_t)rate
 {
-  if ([(WCM_FTController *)self currentBitRate]== a3)
+  if ([(WCM_FTController *)self currentBitRate]== rate)
   {
-    [WCM_Logging logLevel:4 message:@"Already at FT Rate :%lld", a3];
+    [WCM_Logging logLevel:4 message:@"Already at FT Rate :%lld", rate];
   }
 
   else
   {
-    [(WCM_FTController *)self setCurrentBitRate:a3];
-    [WCM_Logging logLevel:2 message:@"Modulating FT data rate to %lld", a3];
+    [(WCM_FTController *)self setCurrentBitRate:rate];
+    [WCM_Logging logLevel:2 message:@"Modulating FT data rate to %lld", rate];
     v5 = xpc_dictionary_create(0, 0, 0);
     if (v5)
     {
       v6 = v5;
-      xpc_dictionary_set_uint64(v5, "kWCMFTCallConfig_BitrateCapability", a3);
+      xpc_dictionary_set_uint64(v5, "kWCMFTCallConfig_BitrateCapability", rate);
       xpc_dictionary_set_uint64(v6, "kWCMFTCallConfig_InterferenceLevel", 0);
       [(WCM_Controller *)self sendMessage:1101 withArgs:v6];
 

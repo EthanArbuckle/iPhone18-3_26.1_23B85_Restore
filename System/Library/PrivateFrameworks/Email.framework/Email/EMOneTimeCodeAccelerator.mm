@@ -1,13 +1,13 @@
 @interface EMOneTimeCodeAccelerator
 + (id)log;
-- (EMOneTimeCodeAccelerator)initWithDaemonInterface:(id)a3 updateBlock:(id)a4;
-- (EMOneTimeCodeAccelerator)initWithUpdateBlock:(id)a3;
+- (EMOneTimeCodeAccelerator)initWithDaemonInterface:(id)interface updateBlock:(id)block;
+- (EMOneTimeCodeAccelerator)initWithUpdateBlock:(id)block;
 - (void)dealloc;
-- (void)deleteOneTimeCodeEmails:(int64_t)a3;
+- (void)deleteOneTimeCodeEmails:(int64_t)emails;
 - (void)didEnterOneTimeCodeField;
 - (void)didExitOneTimeCodeField;
-- (void)didFillOneTimeCode:(int64_t)a3;
-- (void)didReceiveOneTimeCode:(id)a3 timestamp:(id)a4 messageID:(int64_t)a5 subject:(id)a6 senders:(id)a7 observers:(unint64_t)a8;
+- (void)didFillOneTimeCode:(int64_t)code;
+- (void)didReceiveOneTimeCode:(id)code timestamp:(id)timestamp messageID:(int64_t)d subject:(id)subject senders:(id)senders observers:(unint64_t)observers;
 - (void)startObservingOneTimeCode;
 @end
 
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __31__EMOneTimeCodeAccelerator_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_28 != -1)
   {
     dispatch_once(&log_onceToken_28, block);
@@ -38,33 +38,33 @@ void __31__EMOneTimeCodeAccelerator_log__block_invoke(uint64_t a1)
   log_log_28 = v1;
 }
 
-- (EMOneTimeCodeAccelerator)initWithUpdateBlock:(id)a3
+- (EMOneTimeCodeAccelerator)initWithUpdateBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(EMDaemonInterface);
-  v6 = [(EMOneTimeCodeAccelerator *)self initWithDaemonInterface:v5 updateBlock:v4];
+  v6 = [(EMOneTimeCodeAccelerator *)self initWithDaemonInterface:v5 updateBlock:blockCopy];
 
   return v6;
 }
 
-- (EMOneTimeCodeAccelerator)initWithDaemonInterface:(id)a3 updateBlock:(id)a4
+- (EMOneTimeCodeAccelerator)initWithDaemonInterface:(id)interface updateBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  interfaceCopy = interface;
+  blockCopy = block;
   v18.receiver = self;
   v18.super_class = EMOneTimeCodeAccelerator;
   v9 = [(EMOneTimeCodeAccelerator *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_daemonInterface, a3);
+    objc_storeStrong(&v9->_daemonInterface, interface);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_attr_make_with_qos_class(v11, QOS_CLASS_USER_INITIATED, 0);
     v13 = dispatch_queue_create("com.apple.email.EMOneTimeCodeAccelerator.oneTimeCodeQueue", v12);
     oneTimeCodeQueue = v10->_oneTimeCodeQueue;
     v10->_oneTimeCodeQueue = v13;
 
-    v15 = _Block_copy(v8);
+    v15 = _Block_copy(blockCopy);
     updateBlock = v10->_updateBlock;
     v10->_updateBlock = v15;
 
@@ -76,35 +76,35 @@ void __31__EMOneTimeCodeAccelerator_log__block_invoke(uint64_t a1)
 
 - (void)startObservingOneTimeCode
 {
-  v5 = [(EMOneTimeCodeAccelerator *)self daemonInterface];
-  v3 = [v5 messageRepository];
-  v4 = [v3 startObservingOneTimeCodes:self];
+  daemonInterface = [(EMOneTimeCodeAccelerator *)self daemonInterface];
+  messageRepository = [daemonInterface messageRepository];
+  v4 = [messageRepository startObservingOneTimeCodes:self];
   [(EMOneTimeCodeAccelerator *)self setCancelable:v4];
 }
 
-- (void)didReceiveOneTimeCode:(id)a3 timestamp:(id)a4 messageID:(int64_t)a5 subject:(id)a6 senders:(id)a7 observers:(unint64_t)a8
+- (void)didReceiveOneTimeCode:(id)code timestamp:(id)timestamp messageID:(int64_t)d subject:(id)subject senders:(id)senders observers:(unint64_t)observers
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = [(EMOneTimeCodeAccelerator *)self oneTimeCodeQueue];
+  codeCopy = code;
+  timestampCopy = timestamp;
+  subjectCopy = subject;
+  sendersCopy = senders;
+  oneTimeCodeQueue = [(EMOneTimeCodeAccelerator *)self oneTimeCodeQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __96__EMOneTimeCodeAccelerator_didReceiveOneTimeCode_timestamp_messageID_subject_senders_observers___block_invoke;
   block[3] = &unk_1E826F038;
-  v24 = v16;
-  v25 = v17;
-  v26 = v14;
-  v27 = v15;
-  v29 = a5;
-  v30 = a8;
-  v28 = self;
-  v19 = v15;
-  v20 = v14;
-  v21 = v17;
-  v22 = v16;
-  dispatch_async(v18, block);
+  v24 = subjectCopy;
+  v25 = sendersCopy;
+  v26 = codeCopy;
+  v27 = timestampCopy;
+  dCopy = d;
+  observersCopy = observers;
+  selfCopy = self;
+  v19 = timestampCopy;
+  v20 = codeCopy;
+  v21 = sendersCopy;
+  v22 = subjectCopy;
+  dispatch_async(oneTimeCodeQueue, block);
 }
 
 void __96__EMOneTimeCodeAccelerator_didReceiveOneTimeCode_timestamp_messageID_subject_senders_observers___block_invoke(uint64_t a1)
@@ -149,9 +149,9 @@ void __96__EMOneTimeCodeAccelerator_didReceiveOneTimeCode_timestamp_messageID_su
     _os_log_impl(&dword_1C6655000, v3, OS_LOG_TYPE_DEFAULT, "One Time Code field has been entered.", buf, 2u);
   }
 
-  v4 = [(EMOneTimeCodeAccelerator *)self daemonInterface];
-  v5 = [v4 fetchController];
-  [v5 performFetchForOTC];
+  daemonInterface = [(EMOneTimeCodeAccelerator *)self daemonInterface];
+  fetchController = [daemonInterface fetchController];
+  [fetchController performFetchForOTC];
 
   v6 = +[EMOneTimeCodeAccelerator log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -171,37 +171,37 @@ void __96__EMOneTimeCodeAccelerator_didReceiveOneTimeCode_timestamp_messageID_su
   }
 }
 
-- (void)didFillOneTimeCode:(int64_t)a3
+- (void)didFillOneTimeCode:(int64_t)code
 {
   v9 = *MEMORY[0x1E69E9840];
   v5 = +[EMOneTimeCodeAccelerator log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = a3;
+    codeCopy = code;
     _os_log_impl(&dword_1C6655000, v5, OS_LOG_TYPE_DEFAULT, "One Time Code from message with GlobalMessageID: %lld was added to text field", &v7, 0xCu);
   }
 
-  [(EMOneTimeCodeAccelerator *)self deleteOneTimeCodeEmails:a3];
+  [(EMOneTimeCodeAccelerator *)self deleteOneTimeCodeEmails:code];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteOneTimeCodeEmails:(int64_t)a3
+- (void)deleteOneTimeCodeEmails:(int64_t)emails
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = [EMMessageObjectID alloc];
   v6 = +[EMMailboxScope allMailboxesScope];
-  v7 = [(EMMessageObjectID *)v5 initWithGlobalMessageID:a3 mailboxScope:v6];
+  v7 = [(EMMessageObjectID *)v5 initWithGlobalMessageID:emails mailboxScope:v6];
 
-  v8 = [(EMOneTimeCodeAccelerator *)self daemonInterface];
-  v9 = [v8 messageRepository];
-  [v9 performOneTimeCodeMessageDeletionWithObjectID:v7 afterDelay:0.0];
+  daemonInterface = [(EMOneTimeCodeAccelerator *)self daemonInterface];
+  messageRepository = [daemonInterface messageRepository];
+  [messageRepository performOneTimeCodeMessageDeletionWithObjectID:v7 afterDelay:0.0];
 
   v10 = +[EMOneTimeCodeAccelerator log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134217984;
-    v13 = a3;
+    emailsCopy = emails;
     _os_log_impl(&dword_1C6655000, v10, OS_LOG_TYPE_DEFAULT, "Used one-time code email with GlobalMessageID %lld is moved to the trash folder", &v12, 0xCu);
   }
 
@@ -210,8 +210,8 @@ void __96__EMOneTimeCodeAccelerator_didReceiveOneTimeCode_timestamp_messageID_su
 
 - (void)dealloc
 {
-  v3 = [(EMOneTimeCodeAccelerator *)self cancelable];
-  [v3 cancel];
+  cancelable = [(EMOneTimeCodeAccelerator *)self cancelable];
+  [cancelable cancel];
 
   v4.receiver = self;
   v4.super_class = EMOneTimeCodeAccelerator;

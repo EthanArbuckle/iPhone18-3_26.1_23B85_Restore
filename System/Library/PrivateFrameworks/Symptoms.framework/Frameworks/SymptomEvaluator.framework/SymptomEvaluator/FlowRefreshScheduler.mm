@@ -1,23 +1,23 @@
 @interface FlowRefreshScheduler
 + (void)dumpState;
-+ (void)refreshDataUsageMaxStale:(double)a3 maxDelay:(double)a4 logAs:(id)a5 callback:(id)a6;
++ (void)refreshDataUsageMaxStale:(double)stale maxDelay:(double)delay logAs:(id)as callback:(id)callback;
 - (FlowImmediateRefreshDelegate)delegate;
-- (FlowRefreshScheduler)initWithQueue:(id)a3;
+- (FlowRefreshScheduler)initWithQueue:(id)queue;
 - (NSString)description;
 - (id)getState;
-- (int64_t)periodicRefreshDataUsageWithInterval:(double)a3 maxStale:(double)a4 maxDelay:(double)a5 logAs:(id)a6;
-- (void)_generateInfoForId:(unint64_t)a3 context:(const char *)a4 uuid:(id)a5 completionBlock:(id)a6;
+- (int64_t)periodicRefreshDataUsageWithInterval:(double)interval maxStale:(double)stale maxDelay:(double)delay logAs:(id)as;
+- (void)_generateInfoForId:(unint64_t)id context:(const char *)context uuid:(id)uuid completionBlock:(id)block;
 - (void)_refreshTimer;
-- (void)addDelegate:(id)a3;
-- (void)cancelRefresh:(int64_t)a3;
+- (void)addDelegate:(id)delegate;
+- (void)cancelRefresh:(int64_t)refresh;
 - (void)cancelTimer;
-- (void)didPollFlowsAt:(double)a3;
+- (void)didPollFlowsAt:(double)at;
 - (void)dumpState;
-- (void)generateInfoForId:(unint64_t)a3 context:(const char *)a4 uuid:(id)a5 completionBlock:(id)a6;
+- (void)generateInfoForId:(unint64_t)id context:(const char *)context uuid:(id)uuid completionBlock:(id)block;
 - (void)recalculateTimer;
-- (void)refreshDataUsageMaxStale:(double)a3 maxDelay:(double)a4 logAs:(id)a5 callback:(id)a6;
-- (void)removeDelegate:(id)a3;
-- (void)setRepeatingTimer:(double)a3 initialDelay:(double)a4;
+- (void)refreshDataUsageMaxStale:(double)stale maxDelay:(double)delay logAs:(id)as callback:(id)callback;
+- (void)removeDelegate:(id)delegate;
+- (void)setRepeatingTimer:(double)timer initialDelay:(double)delay;
 @end
 
 @implementation FlowRefreshScheduler
@@ -224,8 +224,8 @@
     while (v23);
   }
 
-  v30 = [(NSMutableDictionary *)self->_delegates allKeys];
-  v31 = [v30 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [(NSMutableDictionary *)self->_delegates allKeys];
+  v31 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v51 = 0u;
   v52 = 0u;
@@ -252,17 +252,17 @@
         v39 = @"default ";
         if (v38)
         {
-          v40 = [v37 didPollFlowsCallbackOrder];
+          didPollFlowsCallbackOrder = [v37 didPollFlowsCallbackOrder];
           v39 = @"last    ";
-          if (v40 != 3)
+          if (didPollFlowsCallbackOrder != 3)
           {
-            v41 = [v37 didPollFlowsCallbackOrder];
+            didPollFlowsCallbackOrder2 = [v37 didPollFlowsCallbackOrder];
             v39 = @"first   ";
-            if (v41 != 1)
+            if (didPollFlowsCallbackOrder2 != 1)
             {
-              v42 = [v37 didPollFlowsCallbackOrder];
+              didPollFlowsCallbackOrder3 = [v37 didPollFlowsCallbackOrder];
               v39 = @"unknown ";
-              if (v42 == 2)
+              if (didPollFlowsCallbackOrder3 == 2)
               {
                 v39 = @"standard";
               }
@@ -291,12 +291,12 @@
 - (void)dumpState
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(FlowRefreshScheduler *)self getState];
+  getState = [(FlowRefreshScheduler *)self getState];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v16 count:16];
+  v3 = [getState countByEnumeratingWithState:&v10 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -307,7 +307,7 @@
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(getState);
         }
 
         v7 = otherLogHandle;
@@ -320,7 +320,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v16 count:16];
+      v4 = [getState countByEnumeratingWithState:&v10 objects:v16 count:16];
     }
 
     while (v4);
@@ -331,13 +331,13 @@
 
 + (void)dumpState
 {
-  v2 = [a1 sharedInstance];
-  [v2 dumpState];
+  sharedInstance = [self sharedInstance];
+  [sharedInstance dumpState];
 }
 
-- (FlowRefreshScheduler)initWithQueue:(id)a3
+- (FlowRefreshScheduler)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = FlowRefreshScheduler;
   v6 = [(FlowRefreshScheduler *)&v16 init];
@@ -355,7 +355,7 @@
     recentSingleShots = v6->_recentSingleShots;
     v6->_recentSingleShots = v11;
 
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     [ManagedEventTransport setInfoProvider:v6 forId:16];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -384,7 +384,7 @@
   }
 }
 
-- (void)setRepeatingTimer:(double)a3 initialDelay:(double)a4
+- (void)setRepeatingTimer:(double)timer initialDelay:(double)delay
 {
   if (self->_timer)
   {
@@ -403,10 +403,10 @@
   handler[4] = self;
   dispatch_source_set_event_handler(v9, handler);
   v10 = self->_timer;
-  v11 = dispatch_time(0, (a4 * 1000000000.0));
-  dispatch_source_set_timer(v10, v11, (a3 * 1000000000.0), 0x5F5E100uLL);
+  v11 = dispatch_time(0, (delay * 1000000000.0));
+  dispatch_source_set_timer(v10, v11, (timer * 1000000000.0), 0x5F5E100uLL);
   dispatch_resume(self->_timer);
-  self->_currentDutyCycle = a3;
+  self->_currentDutyCycle = timer;
 }
 
 void __55__FlowRefreshScheduler_setRepeatingTimer_initialDelay___block_invoke(uint64_t a1)
@@ -640,9 +640,9 @@ void __55__FlowRefreshScheduler_setRepeatingTimer_initialDelay___block_invoke(ui
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)periodicRefreshDataUsageWithInterval:(double)a3 maxStale:(double)a4 maxDelay:(double)a5 logAs:(id)a6
+- (int64_t)periodicRefreshDataUsageWithInterval:(double)interval maxStale:(double)stale maxDelay:(double)delay logAs:(id)as
 {
-  v10 = a6;
+  asCopy = as;
   ++self->_numPeriodicCalls;
   v11 = objc_alloc_init(FlowRefreshRequest);
   v12 = v11;
@@ -651,10 +651,10 @@ void __55__FlowRefreshScheduler_setRepeatingTimer_initialDelay___block_invoke(ui
     v13 = self->_seqno + 1;
     self->_seqno = v13;
     [(FlowRefreshRequest *)v11 setReference:v13];
-    [(FlowRefreshRequest *)v12 setInterval:a3];
-    [(FlowRefreshRequest *)v12 setMaxStale:a4];
-    [(FlowRefreshRequest *)v12 setMaxLate:a5];
-    [(FlowRefreshRequest *)v12 setLogAs:v10];
+    [(FlowRefreshRequest *)v12 setInterval:interval];
+    [(FlowRefreshRequest *)v12 setMaxStale:stale];
+    [(FlowRefreshRequest *)v12 setMaxLate:delay];
+    [(FlowRefreshRequest *)v12 setLogAs:asCopy];
     v14 = [MEMORY[0x277CCABB0] numberWithLongLong:v13];
     [(NSMutableDictionary *)self->_requests setObject:v12 forKeyedSubscript:v14];
     [(FlowRefreshScheduler *)self recalculateTimer];
@@ -668,21 +668,21 @@ void __55__FlowRefreshScheduler_setRepeatingTimer_initialDelay___block_invoke(ui
   return v13;
 }
 
-- (void)refreshDataUsageMaxStale:(double)a3 maxDelay:(double)a4 logAs:(id)a5 callback:(id)a6
+- (void)refreshDataUsageMaxStale:(double)stale maxDelay:(double)delay logAs:(id)as callback:(id)callback
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
+  asCopy = as;
+  callbackCopy = callback;
   ++self->_numSingleShotCalls;
   v12 = apparentTime();
   v13 = v12 - self->_lastRefresh;
-  if (v13 >= a3)
+  if (v13 >= stale)
   {
     v17 = objc_alloc_init(FlowRefreshRequest);
     v18 = v17;
     if (!v17)
     {
-      v16 = 0;
+      asCopy2 = 0;
       goto LABEL_21;
     }
 
@@ -691,26 +691,26 @@ void __55__FlowRefreshScheduler_setRepeatingTimer_initialDelay___block_invoke(ui
     [(FlowRefreshRequest *)v17 setReference:~seqno];
     [(FlowRefreshRequest *)v18 setReference:0];
     [(FlowRefreshRequest *)v18 setInterval:0.0];
-    [(FlowRefreshRequest *)v18 setMaxStale:a3];
-    [(FlowRefreshRequest *)v18 setMaxLate:a4];
-    [(FlowRefreshRequest *)v18 setLogAs:v10];
-    [(FlowRefreshRequest *)v18 setCallback:v11];
+    [(FlowRefreshRequest *)v18 setMaxStale:stale];
+    [(FlowRefreshRequest *)v18 setMaxLate:delay];
+    [(FlowRefreshRequest *)v18 setLogAs:asCopy];
+    [(FlowRefreshRequest *)v18 setCallback:callbackCopy];
     requests = self->_requests;
     v21 = [MEMORY[0x277CCABB0] numberWithLongLong:~seqno];
     [(NSMutableDictionary *)requests setObject:v18 forKeyedSubscript:v21];
 
-    if (a4 == 0.0)
+    if (delay == 0.0)
     {
       ++self->_numSingleShotNoDelay;
       v22 = objc_alloc(MEMORY[0x277CCACA8]);
       v23 = timeStringMillisecondsFromReferenceInterval(v12);
-      v24 = [v22 initWithFormat:@"  %@ immediate poll, zero delay reqd (stale %.3f, max %.3f) for %@", v23, *&v13, *&a3, v10];
+      asCopy = [v22 initWithFormat:@"  %@ immediate poll, zero delay reqd (stale %.3f, max %.3f) for %@", v23, *&v13, *&stale, asCopy];
     }
 
     else if (self->_timer && (currentDutyCycle = self->_currentDutyCycle, currentDutyCycle > 0.0))
     {
       v26 = currentDutyCycle + self->_lastRefresh - v12;
-      if (v26 < a4)
+      if (v26 < delay)
       {
         v27 = otherLogHandle;
         if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_DEBUG))
@@ -718,21 +718,21 @@ void __55__FlowRefreshScheduler_setRepeatingTimer_initialDelay___block_invoke(ui
           *buf = 134218240;
           v37 = v26;
           v38 = 2048;
-          v39 = a4;
+          delayCopy = delay;
           _os_log_impl(&dword_23255B000, v27, OS_LOG_TYPE_DEBUG, "RefreshScheduler, refreshDataUsageFor piggyback for delay %.3f max %.3f", buf, 0x16u);
         }
 
         ++self->_numSingleShotWaitExistingTimer;
         v28 = objc_alloc(MEMORY[0x277CCACA8]);
-        v29 = timeStringMillisecondsFromReferenceInterval(v12);
-        v16 = [v28 initWithFormat:@"  %@ wait for timer, (expected %.3f max delay %.3f), for %@", v29, *&v26, *&a4, v10];
+        delegate = timeStringMillisecondsFromReferenceInterval(v12);
+        asCopy2 = [v28 initWithFormat:@"  %@ wait for timer, (expected %.3f max delay %.3f), for %@", delegate, *&v26, *&delay, asCopy];
         goto LABEL_20;
       }
 
       ++self->_numSingleShotPossNewTimer;
       v33 = objc_alloc(MEMORY[0x277CCACA8]);
       v23 = timeStringMillisecondsFromReferenceInterval(v12);
-      v24 = [v33 initWithFormat:@"  %@ immediate poll, no wait for timer, (expected %.3f max delay %.3f), for %@", v23, *&v26, *&a4, v10];
+      asCopy = [v33 initWithFormat:@"  %@ immediate poll, no wait for timer, (expected %.3f max delay %.3f), for %@", v23, *&v26, *&delay, asCopy];
     }
 
     else
@@ -740,30 +740,30 @@ void __55__FlowRefreshScheduler_setRepeatingTimer_initialDelay___block_invoke(ui
       ++self->_numSingleShotNoExistingTimer;
       v30 = objc_alloc(MEMORY[0x277CCACA8]);
       v23 = timeStringMillisecondsFromReferenceInterval(v12);
-      v24 = [v30 initWithFormat:@"  %@ immediate poll, no running timer, for %@", v23, v10, v34, v35];
+      asCopy = [v30 initWithFormat:@"  %@ immediate poll, no running timer, for %@", v23, asCopy, v34, v35];
     }
 
-    v16 = v24;
+    asCopy2 = asCopy;
 
-    v29 = [(FlowRefreshScheduler *)self delegate];
+    delegate = [(FlowRefreshScheduler *)self delegate];
     v31 = otherLogHandle;
     if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134217984;
-      v37 = *&v29;
+      v37 = *&delegate;
       _os_log_impl(&dword_23255B000, v31, OS_LOG_TYPE_DEBUG, "RefreshScheduler, refreshDataUsageFor has delegate %p", buf, 0xCu);
     }
 
-    if (v29 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
       self->_inProgressSingleShotPoll = 1;
-      [v29 pollFlows];
+      [delegate pollFlows];
     }
 
 LABEL_20:
 
 LABEL_21:
-    if (!v16)
+    if (!asCopy2)
     {
       goto LABEL_24;
     }
@@ -774,16 +774,16 @@ LABEL_21:
   ++self->_numSingleShotImmediateCallbacks;
   v14 = objc_alloc(MEMORY[0x277CCACA8]);
   v15 = timeStringMillisecondsFromReferenceInterval(v12);
-  v16 = [v14 initWithFormat:@"  %@ amortized callback (stale %.3f, max %.3f) for %@", v15, *&v13, *&a3, v10];
+  asCopy2 = [v14 initWithFormat:@"  %@ amortized callback (stale %.3f, max %.3f) for %@", v15, *&v13, *&stale, asCopy];
 
-  v11[2](v11, 1);
-  if (!v16)
+  callbackCopy[2](callbackCopy, 1);
+  if (!asCopy2)
   {
     goto LABEL_24;
   }
 
 LABEL_22:
-  [(NSMutableArray *)self->_recentSingleShots addObject:v16];
+  [(NSMutableArray *)self->_recentSingleShots addObject:asCopy2];
   if ([(NSMutableArray *)self->_recentSingleShots count]>= 0xB)
   {
     [(NSMutableArray *)self->_recentSingleShots removeObjectAtIndex:0];
@@ -794,24 +794,24 @@ LABEL_24:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelRefresh:(int64_t)a3
+- (void)cancelRefresh:(int64_t)refresh
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a3 < 1)
+  if (refresh < 1)
   {
     ++self->_numInvalidCancels;
     v7 = otherLogHandle;
     if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_ERROR))
     {
       v10 = 134217984;
-      v11 = a3;
+      refreshCopy2 = refresh;
       _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_ERROR, "RefreshScheduler, cancelRefresh with invalid negative id %lld", &v10, 0xCu);
     }
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithLongLong:a3];
+    v5 = [MEMORY[0x277CCABB0] numberWithLongLong:refresh];
     v6 = [(NSMutableDictionary *)self->_requests objectForKeyedSubscript:v5];
 
     if (v6)
@@ -828,7 +828,7 @@ LABEL_24:
       if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_ERROR))
       {
         v10 = 134217984;
-        v11 = a3;
+        refreshCopy2 = refresh;
         _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_ERROR, "RefreshScheduler, cancelRefresh for non-existent id %lld", &v10, 0xCu);
       }
     }
@@ -837,50 +837,50 @@ LABEL_24:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)refreshDataUsageMaxStale:(double)a3 maxDelay:(double)a4 logAs:(id)a5 callback:(id)a6
++ (void)refreshDataUsageMaxStale:(double)stale maxDelay:(double)delay logAs:(id)as callback:(id)callback
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [a1 sharedInstance];
-  v13 = v12;
-  if (v12 && ([v12 queue], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
+  asCopy = as;
+  callbackCopy = callback;
+  sharedInstance = [self sharedInstance];
+  v13 = sharedInstance;
+  if (sharedInstance && ([sharedInstance queue], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
   {
-    v15 = [v13 queue];
+    queue = [v13 queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __73__FlowRefreshScheduler_refreshDataUsageMaxStale_maxDelay_logAs_callback___block_invoke;
     block[3] = &unk_27898AFB8;
     v17 = v13;
-    v20 = a3;
-    v21 = a4;
-    v18 = v10;
-    v19 = v11;
-    dispatch_async(v15, block);
+    staleCopy = stale;
+    delayCopy = delay;
+    v18 = asCopy;
+    v19 = callbackCopy;
+    dispatch_async(queue, block);
   }
 
-  else if (v11)
+  else if (callbackCopy)
   {
-    (*(v11 + 2))(v11, 0);
+    (*(callbackCopy + 2))(callbackCopy, 0);
   }
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = MEMORY[0x277CCABB0];
   ++self->_delegateSeqno;
   v6 = [v5 numberWithLongLong:?];
-  if (v4)
+  if (delegateCopy)
   {
-    [(NSMutableDictionary *)self->_delegates setObject:v4 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_delegates setObject:delegateCopy forKeyedSubscript:v6];
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
       v7 = otherLogHandle;
       if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_DEBUG))
       {
         v9 = 138412290;
-        v10 = v4;
+        v10 = delegateCopy;
         _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEBUG, "RefreshScheduler, addeded delegate does not support didPollFlowsAt:periodic:  %@", &v9, 0xCu);
       }
     }
@@ -889,10 +889,10 @@ LABEL_24:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -915,7 +915,7 @@ LABEL_24:
         v10 = *(*(&v13 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_delegates objectForKeyedSubscript:v10, v13];
 
-        if (v11 == v4)
+        if (v11 == delegateCopy)
         {
           [(NSMutableDictionary *)self->_delegates setObject:0 forKeyedSubscript:v10];
           goto LABEL_11;
@@ -937,17 +937,17 @@ LABEL_11:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didPollFlowsAt:(double)a3
+- (void)didPollFlowsAt:(double)at
 {
   v63 = *MEMORY[0x277D85DE8];
-  setApparentTime(a3);
+  setApparentTime(at);
   inProgressRepeatingPoll = self->_inProgressRepeatingPoll;
-  self->_lastRefresh = a3;
+  self->_lastRefresh = at;
   ++self->_numDidPollFlows;
   v39 = inProgressRepeatingPoll;
   if (inProgressRepeatingPoll)
   {
-    self->_lastScheduledExpiry = a3;
+    self->_lastScheduledExpiry = at;
     [(FlowRefreshScheduler *)self _refreshTimer];
     self->_inProgressRepeatingPoll = 0;
   }
@@ -982,19 +982,19 @@ LABEL_11:
           if (os_log_type_enabled(otherLogHandle, OS_LOG_TYPE_DEBUG))
           {
             v15 = v14;
-            v16 = [v12 reference];
+            reference = [v12 reference];
             *buf = v38;
-            v61 = v16;
+            v61 = reference;
             _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_DEBUG, "RefreshScheduler, didPollFlowsAt finds single shot with reference %lld", buf, 0xCu);
           }
 
           [(NSMutableDictionary *)self->_requests setObject:0 forKeyedSubscript:v11];
-          v17 = [v12 callback];
+          callback = [v12 callback];
 
-          if (v17)
+          if (callback)
           {
-            v18 = [v12 callback];
-            v18[2](v18, 1);
+            callback2 = [v12 callback];
+            callback2[2](callback2, 1);
           }
         }
       }
@@ -1006,12 +1006,12 @@ LABEL_11:
   }
 
   self->_inProgressSingleShotPoll = 0;
-  v19 = [(NSMutableDictionary *)self->_delegates allKeys];
+  allKeys = [(NSMutableDictionary *)self->_delegates allKeys];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v20 = [v19 countByEnumeratingWithState:&v49 objects:v59 count:16];
+  v20 = [allKeys countByEnumeratingWithState:&v49 objects:v59 count:16];
   if (v20)
   {
     v21 = v20;
@@ -1022,17 +1022,17 @@ LABEL_11:
       {
         if (*v50 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(allKeys);
         }
 
         v24 = [(NSMutableDictionary *)self->_delegates objectForKeyedSubscript:*(*(&v49 + 1) + 8 * j)];
         if (v24 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [v24 didPollFlowsCallbackOrder] == 1)
         {
-          [v24 didPollFlowsAt:v39 periodic:a3];
+          [v24 didPollFlowsAt:v39 periodic:at];
         }
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v49 objects:v59 count:16];
+      v21 = [allKeys countByEnumeratingWithState:&v49 objects:v59 count:16];
     }
 
     while (v21);
@@ -1042,7 +1042,7 @@ LABEL_11:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v25 = v19;
+  v25 = allKeys;
   v26 = [v25 countByEnumeratingWithState:&v45 objects:v58 count:16];
   if (v26)
   {
@@ -1060,7 +1060,7 @@ LABEL_11:
         v30 = [(NSMutableDictionary *)self->_delegates objectForKeyedSubscript:*(*(&v45 + 1) + 8 * k)];
         if (v30 && (objc_opt_respondsToSelector() & 1) != 0 && ((objc_opt_respondsToSelector() & 1) == 0 || [v30 didPollFlowsCallbackOrder] == 2))
         {
-          [v30 didPollFlowsAt:v39 periodic:a3];
+          [v30 didPollFlowsAt:v39 periodic:at];
         }
       }
 
@@ -1092,7 +1092,7 @@ LABEL_11:
         v36 = [(NSMutableDictionary *)self->_delegates objectForKeyedSubscript:*(*(&v41 + 1) + 8 * m)];
         if (v36 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [v36 didPollFlowsCallbackOrder] == 3)
         {
-          [v36 didPollFlowsAt:v39 periodic:a3];
+          [v36 didPollFlowsAt:v39 periodic:at];
         }
       }
 
@@ -1105,47 +1105,47 @@ LABEL_11:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_generateInfoForId:(unint64_t)a3 context:(const char *)a4 uuid:(id)a5 completionBlock:(id)a6
+- (void)_generateInfoForId:(unint64_t)id context:(const char *)context uuid:(id)uuid completionBlock:(id)block
 {
-  if (a3 == 16)
+  if (id == 16)
   {
     v8 = MEMORY[0x277CBEB38];
-    v9 = a6;
-    v14 = [v8 dictionary];
-    v10 = [(FlowRefreshScheduler *)self getState];
-    [v14 setObject:v10 forKeyedSubscript:@"FlowRefreshSchedulerDetails"];
+    blockCopy = block;
+    dictionary = [v8 dictionary];
+    getState = [(FlowRefreshScheduler *)self getState];
+    [dictionary setObject:getState forKeyedSubscript:@"FlowRefreshSchedulerDetails"];
 
-    v11 = [MEMORY[0x277CBEAA8] date];
-    (*(v9 + 2))(v9, 0, "FlowRefreshScheduler  details", v11, "collected on demand", 0, v14);
+    date = [MEMORY[0x277CBEAA8] date];
+    (*(blockCopy + 2))(blockCopy, 0, "FlowRefreshScheduler  details", date, "collected on demand", 0, dictionary);
   }
 
   else
   {
     v12 = MEMORY[0x277CBEAA8];
-    v13 = a6;
-    v14 = [v12 date];
-    v11 = [MEMORY[0x277CBEAC0] dictionary];
-    (*(a6 + 2))(v13, 0, "FlowRefreshScheduler unrecognised managed event request", v14, "collected on demand", 0, v11);
+    blockCopy2 = block;
+    dictionary = [v12 date];
+    date = [MEMORY[0x277CBEAC0] dictionary];
+    (*(block + 2))(blockCopy2, 0, "FlowRefreshScheduler unrecognised managed event request", dictionary, "collected on demand", 0, date);
   }
 }
 
-- (void)generateInfoForId:(unint64_t)a3 context:(const char *)a4 uuid:(id)a5 completionBlock:(id)a6
+- (void)generateInfoForId:(unint64_t)id context:(const char *)context uuid:(id)uuid completionBlock:(id)block
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [(FlowRefreshScheduler *)self queue];
+  uuidCopy = uuid;
+  blockCopy = block;
+  queue = [(FlowRefreshScheduler *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__FlowRefreshScheduler_generateInfoForId_context_uuid_completionBlock___block_invoke;
   block[3] = &unk_27898AFB8;
-  v18 = a3;
-  v19 = a4;
+  idCopy = id;
+  contextCopy = context;
   block[4] = self;
-  v16 = v10;
-  v17 = v11;
-  v13 = v11;
-  v14 = v10;
-  dispatch_async(v12, block);
+  v16 = uuidCopy;
+  v17 = blockCopy;
+  v13 = blockCopy;
+  v14 = uuidCopy;
+  dispatch_async(queue, block);
 }
 
 @end

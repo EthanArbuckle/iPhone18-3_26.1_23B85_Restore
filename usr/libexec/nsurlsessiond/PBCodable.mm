@@ -5,21 +5,21 @@
 - (int64_t)_nsurlsessionproxy_messagePriority;
 - (unint64_t)_nsurlsessionproxy_sequenceNumber;
 - (unint64_t)_nsurlsessionproxy_taskIdentifier;
-- (void)_nsurlsessionproxy_setLaunchUUID:(id)a3;
-- (void)_nsurlsessionproxy_setMessagePriority:(int64_t)a3;
-- (void)_nsurlsessionproxy_setSequenceNumber:(unint64_t)a3;
-- (void)_nsurlsessionproxy_setSessionUUID:(id)a3;
+- (void)_nsurlsessionproxy_setLaunchUUID:(id)d;
+- (void)_nsurlsessionproxy_setMessagePriority:(int64_t)priority;
+- (void)_nsurlsessionproxy_setSequenceNumber:(unint64_t)number;
+- (void)_nsurlsessionproxy_setSessionUUID:(id)d;
 @end
 
 @implementation PBCodable
 
-- (void)_nsurlsessionproxy_setMessagePriority:(int64_t)a3
+- (void)_nsurlsessionproxy_setMessagePriority:(int64_t)priority
 {
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(PBCodable *)self hasTask])
   {
-    v6 = [(PBCodable *)self task];
-    v5 = [v6 session];
-    [v5 setIdsPriority:a3];
+    task = [(PBCodable *)self task];
+    session = [task session];
+    [session setIdsPriority:priority];
   }
 
   else
@@ -29,8 +29,8 @@
       return;
     }
 
-    v6 = [(PBCodable *)self session];
-    [v6 setIdsPriority:a3];
+    task = [(PBCodable *)self session];
+    [task setIdsPriority:priority];
   }
 }
 
@@ -38,9 +38,9 @@
 {
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(PBCodable *)self hasTask])
   {
-    v3 = [(PBCodable *)self task];
-    v4 = [v3 session];
-    v5 = [v4 idsPriority];
+    task = [(PBCodable *)self task];
+    session = [task session];
+    idsPriority = [session idsPriority];
   }
 
   else
@@ -50,20 +50,20 @@
       return 0;
     }
 
-    v3 = [(PBCodable *)self session];
-    v5 = [v3 idsPriority];
+    task = [(PBCodable *)self session];
+    idsPriority = [task idsPriority];
   }
 
-  return v5;
+  return idsPriority;
 }
 
-- (void)_nsurlsessionproxy_setSequenceNumber:(unint64_t)a3
+- (void)_nsurlsessionproxy_setSequenceNumber:(unint64_t)number
 {
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(PBCodable *)self hasTask])
   {
-    v6 = [(PBCodable *)self task];
-    v5 = [v6 session];
-    [v5 setSequenceNumber:a3];
+    task = [(PBCodable *)self task];
+    session = [task session];
+    [session setSequenceNumber:number];
   }
 
   else
@@ -73,8 +73,8 @@
       return;
     }
 
-    v6 = [(PBCodable *)self session];
-    [v6 setSequenceNumber:a3];
+    task = [(PBCodable *)self session];
+    [task setSequenceNumber:number];
   }
 }
 
@@ -82,9 +82,9 @@
 {
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(PBCodable *)self hasTask])
   {
-    v3 = [(PBCodable *)self task];
-    v4 = [v3 session];
-    v5 = [v4 sequenceNumber];
+    task = [(PBCodable *)self task];
+    session = [task session];
+    sequenceNumber = [session sequenceNumber];
   }
 
   else
@@ -94,11 +94,11 @@
       return 0;
     }
 
-    v3 = [(PBCodable *)self session];
-    v5 = [v3 sequenceNumber];
+    task = [(PBCodable *)self session];
+    sequenceNumber = [task sequenceNumber];
   }
 
-  return v5;
+  return sequenceNumber;
 }
 
 - (unint64_t)_nsurlsessionproxy_taskIdentifier
@@ -108,19 +108,19 @@
     return 0;
   }
 
-  v3 = [(PBCodable *)self task];
-  v4 = [v3 taskIdentifier];
+  task = [(PBCodable *)self task];
+  taskIdentifier = [task taskIdentifier];
 
-  return v4;
+  return taskIdentifier;
 }
 
 - (id)_nsurlsessionproxy_sessionIdentifier
 {
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(PBCodable *)self hasTask])
   {
-    v3 = [(PBCodable *)self task];
-    v4 = [v3 session];
-    v5 = [v4 sessionIdentifier];
+    task = [(PBCodable *)self task];
+    session = [task session];
+    sessionIdentifier = [session sessionIdentifier];
 
 LABEL_7:
     goto LABEL_9;
@@ -128,25 +128,25 @@ LABEL_7:
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(PBCodable *)self hasSession])
   {
-    v3 = [(PBCodable *)self session];
-    v5 = [v3 sessionIdentifier];
+    task = [(PBCodable *)self session];
+    sessionIdentifier = [task sessionIdentifier];
     goto LABEL_7;
   }
 
-  v5 = 0;
+  sessionIdentifier = 0;
 LABEL_9:
 
-  return v5;
+  return sessionIdentifier;
 }
 
-- (void)_nsurlsessionproxy_setSessionUUID:(id)a3
+- (void)_nsurlsessionproxy_setSessionUUID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(PBCodable *)self hasTask])
   {
-    v4 = [(PBCodable *)self task];
-    v5 = [v4 session];
-    [v5 setUuidString:v6];
+    task = [(PBCodable *)self task];
+    session = [task session];
+    [session setUuidString:dCopy];
 
 LABEL_7:
     goto LABEL_8;
@@ -154,8 +154,8 @@ LABEL_7:
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(PBCodable *)self hasSession])
   {
-    v4 = [(PBCodable *)self session];
-    [v4 setUuidString:v6];
+    task = [(PBCodable *)self session];
+    [task setUuidString:dCopy];
     goto LABEL_7;
   }
 
@@ -166,9 +166,9 @@ LABEL_8:
 {
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(PBCodable *)self hasTask])
   {
-    v3 = [(PBCodable *)self task];
-    v4 = [v3 session];
-    v5 = [v4 uuidString];
+    task = [(PBCodable *)self task];
+    session = [task session];
+    uuidString = [session uuidString];
 
 LABEL_7:
     goto LABEL_9;
@@ -176,25 +176,25 @@ LABEL_7:
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(PBCodable *)self hasSession])
   {
-    v3 = [(PBCodable *)self session];
-    v5 = [v3 uuidString];
+    task = [(PBCodable *)self session];
+    uuidString = [task uuidString];
     goto LABEL_7;
   }
 
-  v5 = 0;
+  uuidString = 0;
 LABEL_9:
 
-  return v5;
+  return uuidString;
 }
 
-- (void)_nsurlsessionproxy_setLaunchUUID:(id)a3
+- (void)_nsurlsessionproxy_setLaunchUUID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(PBCodable *)self hasTask])
   {
-    v4 = [(PBCodable *)self task];
-    v5 = [v4 session];
-    [v5 setLaunchUUID:v6];
+    task = [(PBCodable *)self task];
+    session = [task session];
+    [session setLaunchUUID:dCopy];
 
 LABEL_7:
     goto LABEL_8;
@@ -202,8 +202,8 @@ LABEL_7:
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(PBCodable *)self hasSession])
   {
-    v4 = [(PBCodable *)self session];
-    [v4 setLaunchUUID:v6];
+    task = [(PBCodable *)self session];
+    [task setLaunchUUID:dCopy];
     goto LABEL_7;
   }
 
@@ -214,15 +214,15 @@ LABEL_8:
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(PBCodable *)self launchUUID];
+    launchUUID = [(PBCodable *)self launchUUID];
     goto LABEL_11;
   }
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(PBCodable *)self hasTask])
   {
-    v4 = [(PBCodable *)self task];
-    v5 = [v4 session];
-    v3 = [v5 launchUUID];
+    task = [(PBCodable *)self task];
+    session = [task session];
+    launchUUID = [session launchUUID];
 
 LABEL_9:
     goto LABEL_11;
@@ -230,15 +230,15 @@ LABEL_9:
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(PBCodable *)self hasSession])
   {
-    v4 = [(PBCodable *)self session];
-    v3 = [v4 launchUUID];
+    task = [(PBCodable *)self session];
+    launchUUID = [task launchUUID];
     goto LABEL_9;
   }
 
-  v3 = 0;
+  launchUUID = 0;
 LABEL_11:
 
-  return v3;
+  return launchUUID;
 }
 
 @end

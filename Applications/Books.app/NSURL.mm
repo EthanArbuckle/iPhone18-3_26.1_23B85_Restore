@@ -6,34 +6,34 @@
 
 - (id)httpURL
 {
-  v3 = [(NSURL *)self scheme];
-  if (![v3 caseInsensitiveCompare:@"http"])
+  scheme = [(NSURL *)self scheme];
+  if (![scheme caseInsensitiveCompare:@"http"])
   {
 
     goto LABEL_7;
   }
 
-  v4 = [(NSURL *)self scheme];
-  v5 = [v4 caseInsensitiveCompare:@"https"];
+  scheme2 = [(NSURL *)self scheme];
+  v5 = [scheme2 caseInsensitiveCompare:@"https"];
 
   if (!v5)
   {
 LABEL_7:
-    v10 = self;
+    selfCopy = self;
     goto LABEL_11;
   }
 
-  v6 = [(NSURL *)self scheme];
-  v7 = [v6 caseInsensitiveCompare:@"itms-books"];
+  scheme3 = [(NSURL *)self scheme];
+  v7 = [scheme3 caseInsensitiveCompare:@"itms-books"];
 
   if (v7)
   {
-    v8 = [(NSURL *)self scheme];
-    v9 = [v8 caseInsensitiveCompare:@"itms-bookss"];
+    scheme4 = [(NSURL *)self scheme];
+    v9 = [scheme4 caseInsensitiveCompare:@"itms-bookss"];
 
     if (v9)
     {
-      v10 = 0;
+      selfCopy = 0;
       goto LABEL_11;
     }
 
@@ -50,17 +50,17 @@ LABEL_7:
   }
 
   [v11 setScheme:v13];
-  v14 = [(NSURL *)self host];
-  [v12 setHost:v14];
+  host = [(NSURL *)self host];
+  [v12 setHost:host];
 
-  v15 = [(NSURL *)self path];
-  [v12 setPath:v15];
+  path = [(NSURL *)self path];
+  [v12 setPath:path];
 
-  v10 = [v12 URL];
+  selfCopy = [v12 URL];
 
 LABEL_11:
 
-  return v10;
+  return selfCopy;
 }
 
 @end

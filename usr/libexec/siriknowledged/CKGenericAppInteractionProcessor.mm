@@ -1,28 +1,28 @@
 @interface CKGenericAppInteractionProcessor
-- (BOOL)processInteraction:(id)a3 bundleId:(id)a4;
+- (BOOL)processInteraction:(id)interaction bundleId:(id)id;
 @end
 
 @implementation CKGenericAppInteractionProcessor
 
-- (BOOL)processInteraction:(id)a3 bundleId:(id)a4
+- (BOOL)processInteraction:(id)interaction bundleId:(id)id
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 intent];
+  idCopy = id;
+  interactionCopy = interaction;
+  intent = [interactionCopy intent];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
 
-  v10 = [NSString stringWithFormat:@"%@%@:%@", @"duet:app/intents:", v9, v5];
+  idCopy = [NSString stringWithFormat:@"%@%@:%@", @"duet:app/intents:", v9, idCopy];
 
-  v11 = [v6 dateInterval];
-  v12 = [v11 startDate];
+  dateInterval = [interactionCopy dateInterval];
+  startDate = [dateInterval startDate];
 
-  v13 = [v6 dateInterval];
+  dateInterval2 = [interactionCopy dateInterval];
 
-  v14 = [v13 endDate];
+  endDate = [dateInterval2 endDate];
 
   v15 = +[CKDaemon sharedDaemon];
-  [v15 recordEventWithIdentifier:v10 startDate:v12 endDate:v14 metadata:&__NSDictionary0__struct toStoreWithIdentifier:@"history" completionHandler:&stru_100018D38];
+  [v15 recordEventWithIdentifier:idCopy startDate:startDate endDate:endDate metadata:&__NSDictionary0__struct toStoreWithIdentifier:@"history" completionHandler:&stru_100018D38];
 
   return 1;
 }

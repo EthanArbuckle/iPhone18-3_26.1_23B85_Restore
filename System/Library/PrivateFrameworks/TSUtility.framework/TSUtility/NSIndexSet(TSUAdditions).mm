@@ -24,12 +24,12 @@
     [i addIndex:v8];
   }
 
-  return [a1 initWithIndexSet:i];
+  return [self initWithIndexSet:i];
 }
 
 - (id)tsu_indexSetByAddingIndexes:()TSUAdditions
 {
-  v4 = [a1 mutableCopy];
+  v4 = [self mutableCopy];
   [v4 addIndexes:a3];
   v5 = [v4 copy];
 
@@ -38,9 +38,9 @@
 
 - (BOOL)tsu_isSingleContiguousRange
 {
-  v2 = [a1 lastIndex];
-  v3 = v2 - [a1 firstIndex] + 1;
-  return v3 == [a1 count];
+  lastIndex = [self lastIndex];
+  v3 = lastIndex - [self firstIndex] + 1;
+  return v3 == [self count];
 }
 
 - (uint64_t)tsu_intersectsIndexesInIndexSet:()TSUAdditions
@@ -49,7 +49,7 @@
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  if ([a1 count] && objc_msgSend(a3, "count"))
+  if ([self count] && objc_msgSend(a3, "count"))
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
@@ -57,7 +57,7 @@
     v7[3] = &unk_279D660B0;
     v7[4] = a3;
     v7[5] = &v8;
-    [a1 enumerateRangesUsingBlock:v7];
+    [self enumerateRangesUsingBlock:v7];
   }
 
   v5 = *(v9 + 24);
@@ -69,7 +69,7 @@
 {
   if (a3 && a5)
   {
-    v8 = [a1 mutableCopy];
+    v8 = [self mutableCopy];
     [v8 shiftIndexesStartingAtIndex:a4 by:a5];
     v9 = [a3 mutableCopy];
     [v9 shiftIndexesStartingAtIndex:0 by:a4];
@@ -78,7 +78,7 @@
 
   else
   {
-    v8 = [a1 copy];
+    v8 = [self copy];
   }
 
   return v8;

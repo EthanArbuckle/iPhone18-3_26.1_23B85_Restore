@@ -10,7 +10,7 @@
   v4 = a3;
   if (v4)
   {
-    v5 = [a1 compare:v4] == 1;
+    v5 = [self compare:v4] == 1;
   }
 
   else
@@ -26,7 +26,7 @@
   v4 = a3;
   if (v4)
   {
-    v5 = [a1 compare:v4] == -1;
+    v5 = [self compare:v4] == -1;
   }
 
   else

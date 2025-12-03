@@ -1,52 +1,52 @@
 @interface PLCompositionHelper
-+ (BOOL)compositionController:(id)a3 isCropConstraintEqualToCompositionController:(id)a4;
-+ (BOOL)compositionController:(id)a3 isDepthIntensityEqualToCompositionController:(id)a4;
-+ (BOOL)compositionController:(id)a3 isEffectFilterEqualToCompositionController:(id)a4;
-+ (BOOL)compositionController:(id)a3 isEffectFilterIntensityEqualToCompositionController:(id)a4;
-+ (BOOL)compositionController:(id)a3 isGeometryEqualToCompositionController:(id)a4;
-+ (BOOL)compositionController:(id)a3 isPortraitEqualToCompositionController:(id)a4;
-+ (BOOL)compositionController:(id)a3 isPortraitIntensityEqualToCompositionController:(id)a4;
-+ (BOOL)compositionControllerHasAnyAutoEnhancement:(id)a3;
-+ (BOOL)isIdentityCompositionController:(id)a3;
-+ (BOOL)isIdentityCompositionController:(id)a3 forKeys:(id)a4;
-+ (BOOL)isKeyOnlyAdjustmentForCompositionController:(id)a3 key:(id)a4;
-+ (CGSize)synchronousInputSizeForCompositionController:(id)a3;
++ (BOOL)compositionController:(id)controller isCropConstraintEqualToCompositionController:(id)compositionController;
++ (BOOL)compositionController:(id)controller isDepthIntensityEqualToCompositionController:(id)compositionController;
++ (BOOL)compositionController:(id)controller isEffectFilterEqualToCompositionController:(id)compositionController;
++ (BOOL)compositionController:(id)controller isEffectFilterIntensityEqualToCompositionController:(id)compositionController;
++ (BOOL)compositionController:(id)controller isGeometryEqualToCompositionController:(id)compositionController;
++ (BOOL)compositionController:(id)controller isPortraitEqualToCompositionController:(id)compositionController;
++ (BOOL)compositionController:(id)controller isPortraitIntensityEqualToCompositionController:(id)compositionController;
++ (BOOL)compositionControllerHasAnyAutoEnhancement:(id)enhancement;
++ (BOOL)isIdentityCompositionController:(id)controller;
++ (BOOL)isIdentityCompositionController:(id)controller forKeys:(id)keys;
++ (BOOL)isKeyOnlyAdjustmentForCompositionController:(id)controller key:(id)key;
++ (CGSize)synchronousInputSizeForCompositionController:(id)controller;
 + (PIAdjustmentConstants)adjustmentConstants;
-+ (id)activeEffectAdjustmentForCompositionController:(id)a3;
-+ (id)defaultValueForAdjustmentKey:(id)a3 settingKey:(id)a4;
-+ (id)identityValueForAdjustmentKey:(id)a3 settingKey:(id)a4;
-+ (id)maxValueForAdjustmentKey:(id)a3 settingKey:(id)a4;
-+ (id)minMaxValueForAdjustmentKey:(id)a3 settingKey:(id)a4;
-+ (id)minValueForAdjustmentKey:(id)a3 settingKey:(id)a4;
++ (id)activeEffectAdjustmentForCompositionController:(id)controller;
++ (id)defaultValueForAdjustmentKey:(id)key settingKey:(id)settingKey;
++ (id)identityValueForAdjustmentKey:(id)key settingKey:(id)settingKey;
++ (id)maxValueForAdjustmentKey:(id)key settingKey:(id)settingKey;
++ (id)minMaxValueForAdjustmentKey:(id)key settingKey:(id)settingKey;
++ (id)minValueForAdjustmentKey:(id)key settingKey:(id)settingKey;
 + (id)newIdentityCompositionController;
 + (id)photosSchema;
-+ (id)validatedCompositionCopyFor:(id)a3 mediaType:(int64_t)a4;
-+ (id)valueForCompositionController:(id)a3 adjustmentKey:(id)a4 settingKey:(id)a5;
-+ (id)valueForType:(int64_t)a3 adjustmentKey:(id)a4 settingKey:(id)a5;
-+ (void)compositionController:(id)a3 applyAssetVariation:(unsigned __int16)a4 withRecipe:(id)a5;
-+ (void)compositionController:(id)a3 setEffectFilterName:(id)a4 version:(int64_t)a5;
-+ (void)compositionController:(id)a3 setInputOrientation:(int64_t)a4;
-+ (void)compositionController:(id)a3 updateSemanticEnhanceFromCameraMetadata:(id)a4 exportProperties:(id)a5;
++ (id)validatedCompositionCopyFor:(id)for mediaType:(int64_t)type;
++ (id)valueForCompositionController:(id)controller adjustmentKey:(id)key settingKey:(id)settingKey;
++ (id)valueForType:(int64_t)type adjustmentKey:(id)key settingKey:(id)settingKey;
++ (void)compositionController:(id)controller applyAssetVariation:(unsigned __int16)variation withRecipe:(id)recipe;
++ (void)compositionController:(id)controller setEffectFilterName:(id)name version:(int64_t)version;
++ (void)compositionController:(id)controller setInputOrientation:(int64_t)orientation;
++ (void)compositionController:(id)controller updateSemanticEnhanceFromCameraMetadata:(id)metadata exportProperties:(id)properties;
 @end
 
 @implementation PLCompositionHelper
 
-+ (void)compositionController:(id)a3 updateSemanticEnhanceFromCameraMetadata:(id)a4 exportProperties:(id)a5
++ (void)compositionController:(id)controller updateSemanticEnhanceFromCameraMetadata:(id)metadata exportProperties:(id)properties
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([a1 wantsSemanticEnhanceForCameraMetadata:v9])
+  controllerCopy = controller;
+  metadataCopy = metadata;
+  propertiesCopy = properties;
+  if ([self wantsSemanticEnhanceForCameraMetadata:metadataCopy])
   {
-    v11 = [v8 adjustmentConstants];
-    v12 = [v11 PISemanticEnhanceAdjustmentKey];
+    adjustmentConstants = [controllerCopy adjustmentConstants];
+    pISemanticEnhanceAdjustmentKey = [adjustmentConstants PISemanticEnhanceAdjustmentKey];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __102__PLCompositionHelper_compositionController_updateSemanticEnhanceFromCameraMetadata_exportProperties___block_invoke;
     v13[3] = &unk_1E7569B90;
-    v14 = v10;
-    v15 = v9;
-    [v8 modifyAdjustmentWithKey:v12 modificationBlock:v13];
+    v14 = propertiesCopy;
+    v15 = metadataCopy;
+    [controllerCopy modifyAdjustmentWithKey:pISemanticEnhanceAdjustmentKey modificationBlock:v13];
   }
 }
 
@@ -66,19 +66,19 @@ void __102__PLCompositionHelper_compositionController_updateSemanticEnhanceFromC
   [v4 setFaceBoundingBoxesFromObservations:v8 orientation:v5];
 }
 
-+ (BOOL)isKeyOnlyAdjustmentForCompositionController:(id)a3 key:(id)a4
++ (BOOL)isKeyOnlyAdjustmentForCompositionController:(id)controller key:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 adjustmentControllerForKey:v6];
+  controllerCopy = controller;
+  keyCopy = key;
+  v7 = [controllerCopy adjustmentControllerForKey:keyCopy];
 
   if (v7)
   {
-    v8 = [v5 adjustmentKeys];
-    if ([v8 count] == 1)
+    adjustmentKeys = [controllerCopy adjustmentKeys];
+    if ([adjustmentKeys count] == 1)
     {
-      v9 = [v8 objectAtIndexedSubscript:0];
-      v10 = [v9 isEqualToString:v6];
+      v9 = [adjustmentKeys objectAtIndexedSubscript:0];
+      v10 = [v9 isEqualToString:keyCopy];
     }
 
     else
@@ -95,34 +95,34 @@ void __102__PLCompositionHelper_compositionController_updateSemanticEnhanceFromC
   return v10;
 }
 
-+ (void)compositionController:(id)a3 applyAssetVariation:(unsigned __int16)a4 withRecipe:(id)a5
++ (void)compositionController:(id)controller applyAssetVariation:(unsigned __int16)variation withRecipe:(id)recipe
 {
-  v6 = a4;
+  variationCopy = variation;
   v42 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 copy];
-  if (v6)
+  controllerCopy = controller;
+  recipeCopy = recipe;
+  v10 = [controllerCopy copy];
+  if (variationCopy)
   {
-    v11 = [a1 adjustmentConstants];
-    v12 = [v11 PIAutoLoopAdjustmentKey];
+    adjustmentConstants = [self adjustmentConstants];
+    pIAutoLoopAdjustmentKey = [adjustmentConstants PIAutoLoopAdjustmentKey];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __76__PLCompositionHelper_compositionController_applyAssetVariation_withRecipe___block_invoke;
     v36[3] = &unk_1E7569B28;
-    v37 = v9;
-    v38 = v6;
-    [v8 modifyAdjustmentWithKey:v12 modificationBlock:v36];
+    v37 = recipeCopy;
+    v38 = variationCopy;
+    [controllerCopy modifyAdjustmentWithKey:pIAutoLoopAdjustmentKey modificationBlock:v36];
 
-    if (v6 <= 2)
+    if (variationCopy <= 2)
     {
-      v13 = [a1 adjustmentConstants];
-      v14 = [v13 PIMuteAdjustmentKey];
-      [v8 removeAdjustmentWithKey:v14];
+      adjustmentConstants2 = [self adjustmentConstants];
+      pIMuteAdjustmentKey = [adjustmentConstants2 PIMuteAdjustmentKey];
+      [controllerCopy removeAdjustmentWithKey:pIMuteAdjustmentKey];
     }
 
     v35 = 0;
-    [getPIPhotoEditHelperClass() updateCropAdjustmentControllerFor:v8 beforeCompositionController:v10 error:&v35];
+    [getPIPhotoEditHelperClass() updateCropAdjustmentControllerFor:controllerCopy beforeCompositionController:v10 error:&v35];
     v15 = v35;
     if (v15)
     {
@@ -135,30 +135,30 @@ void __102__PLCompositionHelper_compositionController_updateSemanticEnhanceFromC
       }
     }
 
-    v17 = [a1 adjustmentConstants];
-    v18 = [v17 PITrimAdjustmentKey];
-    [v8 removeAdjustmentWithKey:v18];
+    adjustmentConstants3 = [self adjustmentConstants];
+    pITrimAdjustmentKey = [adjustmentConstants3 PITrimAdjustmentKey];
+    [controllerCopy removeAdjustmentWithKey:pITrimAdjustmentKey];
 
-    v19 = [a1 adjustmentConstants];
-    v20 = [v19 PILivePhotoKeyFrameAdjustmentKey];
-    [v8 removeAdjustmentWithKey:v20];
+    adjustmentConstants4 = [self adjustmentConstants];
+    pILivePhotoKeyFrameAdjustmentKey = [adjustmentConstants4 PILivePhotoKeyFrameAdjustmentKey];
+    [controllerCopy removeAdjustmentWithKey:pILivePhotoKeyFrameAdjustmentKey];
 
-    v21 = [v8 depthAdjustmentController];
+    depthAdjustmentController = [controllerCopy depthAdjustmentController];
 
-    if (v21)
+    if (depthAdjustmentController)
     {
-      v22 = [a1 adjustmentConstants];
-      v23 = [v22 PIDepthAdjustmentKey];
-      [v8 modifyAdjustmentWithKey:v23 modificationBlock:&__block_literal_global_25];
+      adjustmentConstants5 = [self adjustmentConstants];
+      pIDepthAdjustmentKey = [adjustmentConstants5 PIDepthAdjustmentKey];
+      [controllerCopy modifyAdjustmentWithKey:pIDepthAdjustmentKey modificationBlock:&__block_literal_global_25];
     }
 
-    v24 = [v8 portraitAdjustmentController];
+    portraitAdjustmentController = [controllerCopy portraitAdjustmentController];
 
-    if (v24)
+    if (portraitAdjustmentController)
     {
-      v25 = [a1 adjustmentConstants];
-      v26 = [v25 PIPortraitAdjustmentKey];
-      [v8 modifyAdjustmentWithKey:v26 modificationBlock:&__block_literal_global_28_23691];
+      adjustmentConstants6 = [self adjustmentConstants];
+      pIPortraitAdjustmentKey = [adjustmentConstants6 PIPortraitAdjustmentKey];
+      [controllerCopy modifyAdjustmentWithKey:pIPortraitAdjustmentKey modificationBlock:&__block_literal_global_28_23691];
     }
 
     v27 = v37;
@@ -166,12 +166,12 @@ void __102__PLCompositionHelper_compositionController_updateSemanticEnhanceFromC
 
   else
   {
-    v32 = [a1 adjustmentConstants];
-    v33 = [v32 PIAutoLoopAdjustmentKey];
-    [v8 removeAdjustmentWithKey:v33];
+    adjustmentConstants7 = [self adjustmentConstants];
+    pIAutoLoopAdjustmentKey2 = [adjustmentConstants7 PIAutoLoopAdjustmentKey];
+    [controllerCopy removeAdjustmentWithKey:pIAutoLoopAdjustmentKey2];
 
     v39 = 0;
-    [getPIPhotoEditHelperClass() updateCropAdjustmentControllerFor:v8 beforeCompositionController:v10 error:&v39];
+    [getPIPhotoEditHelperClass() updateCropAdjustmentControllerFor:controllerCopy beforeCompositionController:v10 error:&v39];
     v34 = v39;
     if (!v34)
     {
@@ -189,13 +189,13 @@ void __102__PLCompositionHelper_compositionController_updateSemanticEnhanceFromC
   }
 
 LABEL_14:
-  v28 = [a1 adjustmentConstants];
-  v29 = [v28 PIInpaintAdjustmentKey];
-  [v8 removeAdjustmentWithKey:v29];
+  adjustmentConstants8 = [self adjustmentConstants];
+  pIInpaintAdjustmentKey = [adjustmentConstants8 PIInpaintAdjustmentKey];
+  [controllerCopy removeAdjustmentWithKey:pIInpaintAdjustmentKey];
 
-  v30 = [a1 adjustmentConstants];
-  v31 = [v30 PIRetouchAdjustmentKey];
-  [v8 removeAdjustmentWithKey:v31];
+  adjustmentConstants9 = [self adjustmentConstants];
+  pIRetouchAdjustmentKey = [adjustmentConstants9 PIRetouchAdjustmentKey];
+  [controllerCopy removeAdjustmentWithKey:pIRetouchAdjustmentKey];
 }
 
 void __76__PLCompositionHelper_compositionController_applyAssetVariation_withRecipe___block_invoke(uint64_t a1, void *a2)
@@ -208,24 +208,24 @@ void __76__PLCompositionHelper_compositionController_applyAssetVariation_withRec
   [v4 setFlavor:v5];
 }
 
-+ (void)compositionController:(id)a3 setInputOrientation:(int64_t)a4
++ (void)compositionController:(id)controller setInputOrientation:(int64_t)orientation
 {
-  v6 = a3;
-  [v6 setImageOrientation:a4];
-  v7 = [v6 userOrientation];
-  v8 = [v6 orientationAdjustmentController];
+  controllerCopy = controller;
+  [controllerCopy setImageOrientation:orientation];
+  userOrientation = [controllerCopy userOrientation];
+  orientationAdjustmentController = [controllerCopy orientationAdjustmentController];
 
-  if (a4 != 1 || v8)
+  if (orientation != 1 || orientationAdjustmentController)
   {
-    v9 = [a1 adjustmentConstants];
-    v10 = [v9 PIOrientationAdjustmentKey];
+    adjustmentConstants = [self adjustmentConstants];
+    pIOrientationAdjustmentKey = [adjustmentConstants PIOrientationAdjustmentKey];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __65__PLCompositionHelper_compositionController_setInputOrientation___block_invoke;
     v11[3] = &unk_1E7569B00;
-    v12 = v6;
-    v13 = v7;
-    [v12 modifyAdjustmentWithKey:v10 modificationBlock:v11];
+    v12 = controllerCopy;
+    v13 = userOrientation;
+    [v12 modifyAdjustmentWithKey:pIOrientationAdjustmentKey modificationBlock:v11];
   }
 }
 
@@ -263,35 +263,35 @@ void __65__PLCompositionHelper_compositionController_setInputOrientation___block
   }
 }
 
-+ (void)compositionController:(id)a3 setEffectFilterName:(id)a4 version:(int64_t)a5
++ (void)compositionController:(id)controller setEffectFilterName:(id)name version:(int64_t)version
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 adjustmentConstants];
-  v10 = [v7 copy];
-  v11 = [getPIPhotoEditHelperClass() is3DEffect:v8];
-  v12 = [v9 PIEffectAdjustmentKey];
-  v13 = [v9 PIEffect3DAdjustmentKey];
+  controllerCopy = controller;
+  nameCopy = name;
+  adjustmentConstants = [controllerCopy adjustmentConstants];
+  v10 = [controllerCopy copy];
+  v11 = [getPIPhotoEditHelperClass() is3DEffect:nameCopy];
+  pIEffectAdjustmentKey = [adjustmentConstants PIEffectAdjustmentKey];
+  pIEffect3DAdjustmentKey = [adjustmentConstants PIEffect3DAdjustmentKey];
   if (v11)
   {
-    v14 = [v9 PIEffect3DAdjustmentKey];
+    pIEffect3DAdjustmentKey2 = [adjustmentConstants PIEffect3DAdjustmentKey];
 
-    v15 = [v9 PIEffectAdjustmentKey];
+    pIEffectAdjustmentKey2 = [adjustmentConstants PIEffectAdjustmentKey];
 
-    v12 = v14;
-    v13 = v15;
+    pIEffectAdjustmentKey = pIEffect3DAdjustmentKey2;
+    pIEffect3DAdjustmentKey = pIEffectAdjustmentKey2;
   }
 
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __73__PLCompositionHelper_compositionController_setEffectFilterName_version___block_invoke;
   v20 = &unk_1E7569AD8;
-  v21 = v8;
-  v22 = a5;
-  v16 = v8;
-  [v10 modifyAdjustmentWithKey:v12 modificationBlock:&v17];
-  [v10 removeAdjustmentWithKey:{v13, v17, v18, v19, v20}];
-  [v7 applyChangesFromCompositionController:v10];
+  v21 = nameCopy;
+  versionCopy = version;
+  v16 = nameCopy;
+  [v10 modifyAdjustmentWithKey:pIEffectAdjustmentKey modificationBlock:&v17];
+  [v10 removeAdjustmentWithKey:{pIEffect3DAdjustmentKey, v17, v18, v19, v20}];
+  [controllerCopy applyChangesFromCompositionController:v10];
 }
 
 void __73__PLCompositionHelper_compositionController_setEffectFilterName_version___block_invoke(uint64_t a1, void *a2)
@@ -303,20 +303,20 @@ void __73__PLCompositionHelper_compositionController_setEffectFilterName_version
   [v3 setEnabled:1];
 }
 
-+ (CGSize)synchronousInputSizeForCompositionController:(id)a3
++ (CGSize)synchronousInputSizeForCompositionController:(id)controller
 {
-  v3 = [PLCompositionHelper validatedCompositionCopyFor:a3];
+  v3 = [PLCompositionHelper validatedCompositionCopyFor:controller];
   v4 = [getPIPhotoEditHelperClass() geometryRequestWithComposition:v3];
-  v5 = [getPIPhotoEditHelperClass() pipelineFiltersForOriginalGeometry];
-  [v4 setPipelineFilters:v5];
+  pipelineFiltersForOriginalGeometry = [getPIPhotoEditHelperClass() pipelineFiltersForOriginalGeometry];
+  [v4 setPipelineFilters:pipelineFiltersForOriginalGeometry];
 
   v16 = 0;
   v6 = [v4 submitSynchronous:&v16];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 geometry];
-    v9 = [v8 size];
+    geometry = [v6 geometry];
+    v9 = [geometry size];
     v11 = v10;
 
     v12 = v9;
@@ -337,69 +337,69 @@ void __73__PLCompositionHelper_compositionController_setEffectFilterName_version
   return result;
 }
 
-+ (BOOL)compositionController:(id)a3 isGeometryEqualToCompositionController:(id)a4
++ (BOOL)compositionController:(id)controller isGeometryEqualToCompositionController:(id)compositionController
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a4 composition];
-  v8 = [a1 adjustmentConstants];
-  v9 = [v8 PICropAdjustmentKey];
-  v12[0] = v9;
+  controllerCopy = controller;
+  composition = [compositionController composition];
+  adjustmentConstants = [self adjustmentConstants];
+  pICropAdjustmentKey = [adjustmentConstants PICropAdjustmentKey];
+  v12[0] = pICropAdjustmentKey;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  LOBYTE(a4) = [v6 isEqual:v7 forKeys:v10 visualChangesOnly:1];
+  LOBYTE(compositionController) = [controllerCopy isEqual:composition forKeys:v10 visualChangesOnly:1];
 
-  return a4;
+  return compositionController;
 }
 
-+ (BOOL)compositionController:(id)a3 isDepthIntensityEqualToCompositionController:(id)a4
++ (BOOL)compositionController:(id)controller isDepthIntensityEqualToCompositionController:(id)compositionController
 {
-  v5 = a4;
-  v6 = [a3 depthAdjustmentController];
-  v7 = [v5 depthAdjustmentController];
+  compositionControllerCopy = compositionController;
+  depthAdjustmentController = [controller depthAdjustmentController];
+  depthAdjustmentController2 = [compositionControllerCopy depthAdjustmentController];
 
-  [v6 aperture];
+  [depthAdjustmentController aperture];
   v9 = v8;
-  [v7 aperture];
-  LOBYTE(v5) = v9 == v10;
+  [depthAdjustmentController2 aperture];
+  LOBYTE(compositionControllerCopy) = v9 == v10;
 
-  return v5;
+  return compositionControllerCopy;
 }
 
-+ (BOOL)compositionController:(id)a3 isPortraitIntensityEqualToCompositionController:(id)a4
++ (BOOL)compositionController:(id)controller isPortraitIntensityEqualToCompositionController:(id)compositionController
 {
-  v5 = a4;
-  v6 = [a3 portraitAdjustmentController];
-  v7 = [v5 portraitAdjustmentController];
+  compositionControllerCopy = compositionController;
+  portraitAdjustmentController = [controller portraitAdjustmentController];
+  portraitAdjustmentController2 = [compositionControllerCopy portraitAdjustmentController];
 
   v8 = 0.5;
   v9 = 0.5;
-  if (v6)
+  if (portraitAdjustmentController)
   {
-    [v6 strength];
+    [portraitAdjustmentController strength];
     v9 = v10;
   }
 
-  if (v7)
+  if (portraitAdjustmentController2)
   {
-    [v7 strength];
+    [portraitAdjustmentController2 strength];
     v8 = v11;
   }
 
   return v9 == v8;
 }
 
-+ (BOOL)compositionController:(id)a3 isPortraitEqualToCompositionController:(id)a4
++ (BOOL)compositionController:(id)controller isPortraitEqualToCompositionController:(id)compositionController
 {
-  v5 = a4;
-  v6 = [a3 portraitAdjustmentController];
-  v7 = [v5 portraitAdjustmentController];
+  compositionControllerCopy = compositionController;
+  portraitAdjustmentController = [controller portraitAdjustmentController];
+  portraitAdjustmentController2 = [compositionControllerCopy portraitAdjustmentController];
 
-  v8 = [v6 kind];
-  v9 = [v7 kind];
-  if ([v8 isEqualToString:v9])
+  kind = [portraitAdjustmentController kind];
+  kind2 = [portraitAdjustmentController2 kind];
+  if ([kind isEqualToString:kind2])
   {
-    v10 = [v6 enabled];
-    v11 = v10 ^ [v7 enabled] ^ 1;
+    enabled = [portraitAdjustmentController enabled];
+    v11 = enabled ^ [portraitAdjustmentController2 enabled] ^ 1;
   }
 
   else
@@ -410,56 +410,56 @@ void __73__PLCompositionHelper_compositionController_setEffectFilterName_version
   return v11;
 }
 
-+ (BOOL)compositionController:(id)a3 isEffectFilterIntensityEqualToCompositionController:(id)a4
++ (BOOL)compositionController:(id)controller isEffectFilterIntensityEqualToCompositionController:(id)compositionController
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 effectAdjustmentController];
-  v8 = [v6 effect3DAdjustmentController];
+  compositionControllerCopy = compositionController;
+  controllerCopy = controller;
+  effectAdjustmentController = [controllerCopy effectAdjustmentController];
+  effect3DAdjustmentController = [controllerCopy effect3DAdjustmentController];
 
   v9 = 1.0;
-  if ([v7 enabled])
+  if ([effectAdjustmentController enabled])
   {
-    [v7 intensity];
+    [effectAdjustmentController intensity];
     v9 = v10;
   }
 
-  if ([v8 enabled])
+  if ([effect3DAdjustmentController enabled])
   {
-    [v8 intensity];
+    [effect3DAdjustmentController intensity];
     v9 = v11;
   }
 
-  v12 = [v5 effectAdjustmentController];
-  v13 = [v5 effect3DAdjustmentController];
+  effectAdjustmentController2 = [compositionControllerCopy effectAdjustmentController];
+  effect3DAdjustmentController2 = [compositionControllerCopy effect3DAdjustmentController];
 
   v14 = 1.0;
-  if ([v12 enabled])
+  if ([effectAdjustmentController2 enabled])
   {
-    [v12 intensity];
+    [effectAdjustmentController2 intensity];
     v14 = v15;
   }
 
-  if ([v13 enabled])
+  if ([effect3DAdjustmentController2 enabled])
   {
-    [v13 intensity];
+    [effect3DAdjustmentController2 intensity];
     v14 = v16;
   }
 
   return v9 == v14;
 }
 
-+ (BOOL)compositionController:(id)a3 isEffectFilterEqualToCompositionController:(id)a4
++ (BOOL)compositionController:(id)controller isEffectFilterEqualToCompositionController:(id)compositionController
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 effectAdjustmentController];
-  v8 = [v6 effectAdjustmentController];
-  if (v7 | v8)
+  controllerCopy = controller;
+  compositionControllerCopy = compositionController;
+  effectAdjustmentController = [controllerCopy effectAdjustmentController];
+  effectAdjustmentController2 = [compositionControllerCopy effectAdjustmentController];
+  if (effectAdjustmentController | effectAdjustmentController2)
   {
-    v9 = [v7 kind];
-    v10 = [v8 kind];
-    v11 = [v9 isEqualToString:v10];
+    kind = [effectAdjustmentController kind];
+    kind2 = [effectAdjustmentController2 kind];
+    v11 = [kind isEqualToString:kind2];
   }
 
   else
@@ -467,13 +467,13 @@ void __73__PLCompositionHelper_compositionController_setEffectFilterName_version
     v11 = 1;
   }
 
-  v12 = [v5 effect3DAdjustmentController];
-  v13 = [v6 effect3DAdjustmentController];
-  if (v12 | v13)
+  effect3DAdjustmentController = [controllerCopy effect3DAdjustmentController];
+  effect3DAdjustmentController2 = [compositionControllerCopy effect3DAdjustmentController];
+  if (effect3DAdjustmentController | effect3DAdjustmentController2)
   {
-    v14 = [v12 kind];
-    v15 = [v13 kind];
-    v16 = [v14 isEqualToString:v15];
+    kind3 = [effect3DAdjustmentController kind];
+    kind4 = [effect3DAdjustmentController2 kind];
+    v16 = [kind3 isEqualToString:kind4];
   }
 
   else
@@ -484,23 +484,23 @@ void __73__PLCompositionHelper_compositionController_setEffectFilterName_version
   return v11 & v16;
 }
 
-+ (BOOL)compositionController:(id)a3 isCropConstraintEqualToCompositionController:(id)a4
++ (BOOL)compositionController:(id)controller isCropConstraintEqualToCompositionController:(id)compositionController
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a4 composition];
-  v8 = [a1 adjustmentConstants];
-  v9 = [v8 PICropAdjustmentKey];
-  v13[0] = v9;
+  controllerCopy = controller;
+  composition = [compositionController composition];
+  adjustmentConstants = [self adjustmentConstants];
+  pICropAdjustmentKey = [adjustmentConstants PICropAdjustmentKey];
+  v13[0] = pICropAdjustmentKey;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __90__PLCompositionHelper_compositionController_isCropConstraintEqualToCompositionController___block_invoke;
   v12[3] = &__block_descriptor_40_e69_B32__0__NSString_8__PIAdjustmentController_16__NUGenericAdjustment_24l;
-  v12[4] = a1;
-  LOBYTE(a1) = [v6 isEqual:v7 forKeys:v10 comparisonBlock:v12];
+  v12[4] = self;
+  LOBYTE(self) = [controllerCopy isEqual:composition forKeys:v10 comparisonBlock:v12];
 
-  return a1;
+  return self;
 }
 
 uint64_t __90__PLCompositionHelper_compositionController_isCropConstraintEqualToCompositionController___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -526,87 +526,87 @@ uint64_t __90__PLCompositionHelper_compositionController_isCropConstraintEqualTo
   return v14;
 }
 
-+ (id)activeEffectAdjustmentForCompositionController:(id)a3
++ (id)activeEffectAdjustmentForCompositionController:(id)controller
 {
-  v3 = a3;
-  v4 = [v3 effect3DAdjustmentController];
-  v5 = v4;
-  if (v4)
+  controllerCopy = controller;
+  effect3DAdjustmentController = [controllerCopy effect3DAdjustmentController];
+  v5 = effect3DAdjustmentController;
+  if (effect3DAdjustmentController)
   {
-    v6 = v4;
+    effectAdjustmentController = effect3DAdjustmentController;
   }
 
   else
   {
-    v6 = [v3 effectAdjustmentController];
+    effectAdjustmentController = [controllerCopy effectAdjustmentController];
   }
 
-  v7 = v6;
+  v7 = effectAdjustmentController;
 
   return v7;
 }
 
-+ (BOOL)compositionControllerHasAnyAutoEnhancement:(id)a3
++ (BOOL)compositionControllerHasAnyAutoEnhancement:(id)enhancement
 {
-  v3 = a3;
-  v4 = [v3 smartToneAdjustmentController];
-  if ([v4 isAuto])
+  enhancementCopy = enhancement;
+  smartToneAdjustmentController = [enhancementCopy smartToneAdjustmentController];
+  if ([smartToneAdjustmentController isAuto])
   {
-    v5 = 1;
+    isAuto = 1;
   }
 
   else
   {
-    v6 = [v3 smartColorAdjustmentController];
-    if ([v6 isAuto])
+    smartColorAdjustmentController = [enhancementCopy smartColorAdjustmentController];
+    if ([smartColorAdjustmentController isAuto])
     {
-      v5 = 1;
+      isAuto = 1;
     }
 
     else
     {
-      v7 = [v3 rawNoiseReductionAdjustmentController];
-      if ([v7 isAuto])
+      rawNoiseReductionAdjustmentController = [enhancementCopy rawNoiseReductionAdjustmentController];
+      if ([rawNoiseReductionAdjustmentController isAuto])
       {
-        v5 = 1;
+        isAuto = 1;
       }
 
       else
       {
-        v8 = [v3 smartBWAdjustmentController];
-        if ([v8 isAuto])
+        smartBWAdjustmentController = [enhancementCopy smartBWAdjustmentController];
+        if ([smartBWAdjustmentController isAuto])
         {
-          v5 = 1;
+          isAuto = 1;
         }
 
         else
         {
-          v9 = [v3 sharpenAdjustmentController];
-          if ([v9 isAuto])
+          sharpenAdjustmentController = [enhancementCopy sharpenAdjustmentController];
+          if ([sharpenAdjustmentController isAuto])
           {
-            v5 = 1;
+            isAuto = 1;
           }
 
           else
           {
-            v10 = [v3 whiteBalanceAdjustmentController];
-            if ([v10 isAuto])
+            whiteBalanceAdjustmentController = [enhancementCopy whiteBalanceAdjustmentController];
+            if ([whiteBalanceAdjustmentController isAuto])
             {
-              v5 = 1;
+              isAuto = 1;
             }
 
             else
             {
-              v11 = [v3 noiseReductionAdjustmentController];
-              if ([v11 isAuto])
+              noiseReductionAdjustmentController = [enhancementCopy noiseReductionAdjustmentController];
+              if ([noiseReductionAdjustmentController isAuto])
               {
-                v5 = 1;
+                isAuto = 1;
               }
 
               else
               {
-                v12 = [v3 definitionAdjustmentController];
-                v5 = [v12 isAuto];
+                definitionAdjustmentController = [enhancementCopy definitionAdjustmentController];
+                isAuto = [definitionAdjustmentController isAuto];
               }
             }
           }
@@ -615,54 +615,54 @@ uint64_t __90__PLCompositionHelper_compositionController_isCropConstraintEqualTo
     }
   }
 
-  return v5;
+  return isAuto;
 }
 
-+ (id)valueForCompositionController:(id)a3 adjustmentKey:(id)a4 settingKey:(id)a5
++ (id)valueForCompositionController:(id)controller adjustmentKey:(id)key settingKey:(id)settingKey
 {
-  v7 = a5;
-  v8 = [a3 adjustmentControllerForKey:a4];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  settingKeyCopy = settingKey;
+  v8 = [controller adjustmentControllerForKey:key];
+  v9 = [v8 objectForKeyedSubscript:settingKeyCopy];
 
   return v9;
 }
 
-+ (id)valueForType:(int64_t)a3 adjustmentKey:(id)a4 settingKey:(id)a5
++ (id)valueForType:(int64_t)type adjustmentKey:(id)key settingKey:(id)settingKey
 {
-  v7 = a4;
-  v8 = a5;
+  keyCopy = key;
+  settingKeyCopy = settingKey;
   v9 = 0;
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
-      v10 = [objc_opt_class() minValueForAdjustmentKey:v7 settingKey:v8];
+      v10 = [objc_opt_class() minValueForAdjustmentKey:keyCopy settingKey:settingKeyCopy];
     }
 
     else
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         goto LABEL_11;
       }
 
-      v10 = [objc_opt_class() maxValueForAdjustmentKey:v7 settingKey:v8];
+      v10 = [objc_opt_class() maxValueForAdjustmentKey:keyCopy settingKey:settingKeyCopy];
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_11;
     }
 
-    v10 = [objc_opt_class() identityValueForAdjustmentKey:v7 settingKey:v8];
+    v10 = [objc_opt_class() identityValueForAdjustmentKey:keyCopy settingKey:settingKeyCopy];
   }
 
   else
   {
-    v10 = [objc_opt_class() defaultValueForAdjustmentKey:v7 settingKey:v8];
+    v10 = [objc_opt_class() defaultValueForAdjustmentKey:keyCopy settingKey:settingKeyCopy];
   }
 
   v9 = v10;
@@ -671,61 +671,61 @@ LABEL_11:
   return v9;
 }
 
-+ (id)maxValueForAdjustmentKey:(id)a3 settingKey:(id)a4
++ (id)maxValueForAdjustmentKey:(id)key settingKey:(id)settingKey
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() minMaxValueForAdjustmentKey:v6 settingKey:v5];
+  settingKeyCopy = settingKey;
+  keyCopy = key;
+  v7 = [objc_opt_class() minMaxValueForAdjustmentKey:keyCopy settingKey:settingKeyCopy];
 
   v8 = [v7 max];
 
   return v8;
 }
 
-+ (id)minValueForAdjustmentKey:(id)a3 settingKey:(id)a4
++ (id)minValueForAdjustmentKey:(id)key settingKey:(id)settingKey
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() minMaxValueForAdjustmentKey:v6 settingKey:v5];
+  settingKeyCopy = settingKey;
+  keyCopy = key;
+  v7 = [objc_opt_class() minMaxValueForAdjustmentKey:keyCopy settingKey:settingKeyCopy];
 
   v8 = [v7 min];
 
   return v8;
 }
 
-+ (id)minMaxValueForAdjustmentKey:(id)a3 settingKey:(id)a4
++ (id)minMaxValueForAdjustmentKey:(id)key settingKey:(id)settingKey
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [getPICompositionControllerClass() settingForAdjustmentKey:v6 settingKey:v5];
+  settingKeyCopy = settingKey;
+  keyCopy = key;
+  v7 = [getPICompositionControllerClass() settingForAdjustmentKey:keyCopy settingKey:settingKeyCopy];
 
   getNUNumberSettingClass();
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
     v9 = objc_alloc_init(PLMinMaxSettings);
-    v10 = [v8 ui_minimumValue];
-    if (v10)
+    ui_minimumValue = [v8 ui_minimumValue];
+    if (ui_minimumValue)
     {
-      [(PLMinMaxSettings *)v9 setMin:v10];
+      [(PLMinMaxSettings *)v9 setMin:ui_minimumValue];
     }
 
     else
     {
-      v11 = [v8 minimumValue];
-      [(PLMinMaxSettings *)v9 setMin:v11];
+      minimumValue = [v8 minimumValue];
+      [(PLMinMaxSettings *)v9 setMin:minimumValue];
     }
 
-    v12 = [v8 ui_maximumValue];
-    if (v12)
+    ui_maximumValue = [v8 ui_maximumValue];
+    if (ui_maximumValue)
     {
-      [(PLMinMaxSettings *)v9 setMax:v12];
+      [(PLMinMaxSettings *)v9 setMax:ui_maximumValue];
     }
 
     else
     {
-      v13 = [v8 maximumValue];
-      [(PLMinMaxSettings *)v9 setMax:v13];
+      maximumValue = [v8 maximumValue];
+      [(PLMinMaxSettings *)v9 setMax:maximumValue];
     }
   }
 
@@ -737,79 +737,79 @@ LABEL_11:
   return v9;
 }
 
-+ (id)identityValueForAdjustmentKey:(id)a3 settingKey:(id)a4
++ (id)identityValueForAdjustmentKey:(id)key settingKey:(id)settingKey
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [getPICompositionControllerClass() settingForAdjustmentKey:v6 settingKey:v5];
+  settingKeyCopy = settingKey;
+  keyCopy = key;
+  v7 = [getPICompositionControllerClass() settingForAdjustmentKey:keyCopy settingKey:settingKeyCopy];
 
   getNUBoolSettingClass();
   getNUEnumSettingClass();
   getNUNumberSettingClass();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_isKindOfClass())
   {
-    v8 = [v7 identityValue];
+    identityValue = [v7 identityValue];
   }
 
   else
   {
-    v8 = 0;
+    identityValue = 0;
   }
 
-  return v8;
+  return identityValue;
 }
 
-+ (id)defaultValueForAdjustmentKey:(id)a3 settingKey:(id)a4
++ (id)defaultValueForAdjustmentKey:(id)key settingKey:(id)settingKey
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [getPICompositionControllerClass() settingForAdjustmentKey:v6 settingKey:v5];
+  settingKeyCopy = settingKey;
+  keyCopy = key;
+  v7 = [getPICompositionControllerClass() settingForAdjustmentKey:keyCopy settingKey:settingKeyCopy];
 
   getNUBoolSettingClass();
   getNUEnumSettingClass();
   getNUNumberSettingClass();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_isKindOfClass())
   {
-    v8 = [v7 defaultValue];
+    defaultValue = [v7 defaultValue];
   }
 
   else
   {
-    v8 = 0;
+    defaultValue = 0;
   }
 
-  return v8;
+  return defaultValue;
 }
 
 + (id)newIdentityCompositionController
 {
   PIPhotoEditHelperClass = getPIPhotoEditHelperClass();
-  v3 = [getPIPhotoEditHelperClass() newComposition];
-  v4 = [PIPhotoEditHelperClass newCompositionControllerWithComposition:v3];
+  newComposition = [getPIPhotoEditHelperClass() newComposition];
+  v4 = [PIPhotoEditHelperClass newCompositionControllerWithComposition:newComposition];
 
   return v4;
 }
 
-+ (BOOL)isIdentityCompositionController:(id)a3 forKeys:(id)a4
++ (BOOL)isIdentityCompositionController:(id)controller forKeys:(id)keys
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  keysCopy = keys;
   PIPhotoEditHelperClass = getPIPhotoEditHelperClass();
-  v9 = [getPIPhotoEditHelperClass() newComposition];
-  v10 = [PIPhotoEditHelperClass newCompositionControllerWithComposition:v9];
+  newComposition = [getPIPhotoEditHelperClass() newComposition];
+  v10 = [PIPhotoEditHelperClass newCompositionControllerWithComposition:newComposition];
 
-  v11 = [a1 adjustmentConstants];
-  v12 = [v11 PIOrientationAdjustmentKey];
-  v13 = [v7 containsObject:v12];
+  adjustmentConstants = [self adjustmentConstants];
+  pIOrientationAdjustmentKey = [adjustmentConstants PIOrientationAdjustmentKey];
+  v13 = [keysCopy containsObject:pIOrientationAdjustmentKey];
 
   if (v13)
   {
-    v14 = [v6 orientationAdjustmentController];
-    v15 = v14;
-    if (v14)
+    orientationAdjustmentController = [controllerCopy orientationAdjustmentController];
+    v15 = orientationAdjustmentController;
+    if (orientationAdjustmentController)
     {
-      v16 = [v14 orientation];
-      if (v16 != [v6 imageOrientation])
+      orientation = [orientationAdjustmentController orientation];
+      if (orientation != [controllerCopy imageOrientation])
       {
 
         v35 = 0;
@@ -818,19 +818,19 @@ LABEL_11:
     }
   }
 
-  v17 = [v7 mutableCopy];
-  v18 = [a1 adjustmentConstants];
-  v19 = [v18 PIOrientationAdjustmentKey];
-  [v17 removeObject:v19];
+  v17 = [keysCopy mutableCopy];
+  adjustmentConstants2 = [self adjustmentConstants];
+  pIOrientationAdjustmentKey2 = [adjustmentConstants2 PIOrientationAdjustmentKey];
+  [v17 removeObject:pIOrientationAdjustmentKey2];
 
-  v20 = [a1 adjustmentConstants];
-  v21 = [v20 PISlomoAdjustmentKey];
-  [v17 removeObject:v21];
+  adjustmentConstants3 = [self adjustmentConstants];
+  pISlomoAdjustmentKey = [adjustmentConstants3 PISlomoAdjustmentKey];
+  [v17 removeObject:pISlomoAdjustmentKey];
 
-  v22 = [v6 semanticStyleAdjustmentController];
-  LODWORD(v21) = [v22 enabled];
+  semanticStyleAdjustmentController = [controllerCopy semanticStyleAdjustmentController];
+  LODWORD(pISlomoAdjustmentKey) = [semanticStyleAdjustmentController enabled];
 
-  if (v21)
+  if (pISlomoAdjustmentKey)
   {
     v42 = 0;
     v43 = &v42;
@@ -857,15 +857,15 @@ LABEL_11:
     v25 = v24;
     _Block_object_dispose(&v47, 8);
     v26 = [v24 alloc];
-    v27 = [v6 composition];
-    v28 = [v26 initWithComposition:v27];
+    composition = [controllerCopy composition];
+    v28 = [v26 initWithComposition:composition];
 
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __63__PLCompositionHelper_isIdentityCompositionController_forKeys___block_invoke;
     v37[3] = &unk_1E7569A90;
-    v41 = a1;
-    v29 = v6;
+    selfCopy = self;
+    v29 = controllerCopy;
     v38 = v29;
     v40 = &v42;
     v30 = v23;
@@ -875,23 +875,23 @@ LABEL_11:
     if (*(v43 + 24) == 1)
     {
       v31 = objc_alloc(getPICompositionControllerClass());
-      v32 = [v29 composition];
-      v6 = [v31 initWithComposition:v32];
+      composition2 = [v29 composition];
+      controllerCopy = [v31 initWithComposition:composition2];
 
       v33 = getPISemanticStyleAdjustmentKey();
-      [v6 removeAdjustmentWithKey:v33];
+      [controllerCopy removeAdjustmentWithKey:v33];
     }
 
     else
     {
-      v6 = v29;
+      controllerCopy = v29;
     }
 
     _Block_object_dispose(&v42, 8);
   }
 
-  v34 = [v10 composition];
-  v35 = [v6 isEqual:v34 forKeys:v17 visualChangesOnly:1];
+  composition3 = [v10 composition];
+  v35 = [controllerCopy isEqual:composition3 forKeys:v17 visualChangesOnly:1];
 
 LABEL_13:
   return v35;
@@ -954,13 +954,13 @@ LABEL_10:
   dispatch_group_leave(*(a1 + 40));
 }
 
-+ (BOOL)isIdentityCompositionController:(id)a3
++ (BOOL)isIdentityCompositionController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 availableKeys];
-  LOBYTE(a1) = [a1 isIdentityCompositionController:v4 forKeys:v5];
+  controllerCopy = controller;
+  availableKeys = [controllerCopy availableKeys];
+  LOBYTE(self) = [self isIdentityCompositionController:controllerCopy forKeys:availableKeys];
 
-  return a1;
+  return self;
 }
 
 + (PIAdjustmentConstants)adjustmentConstants
@@ -1001,13 +1001,13 @@ void __35__PLCompositionHelper_photosSchema__block_invoke()
   photosSchema_schema = v0;
 }
 
-+ (id)validatedCompositionCopyFor:(id)a3 mediaType:(int64_t)a4
++ (id)validatedCompositionCopyFor:(id)for mediaType:(int64_t)type
 {
-  v5 = a3;
+  forCopy = for;
   PIPhotoEditHelperClass = getPIPhotoEditHelperClass();
-  v7 = [v5 composition];
+  composition = [forCopy composition];
 
-  v8 = [PIPhotoEditHelperClass validatedCompositionCopyForComposition:v7 mediaType:a4];
+  v8 = [PIPhotoEditHelperClass validatedCompositionCopyForComposition:composition mediaType:type];
 
   return v8;
 }

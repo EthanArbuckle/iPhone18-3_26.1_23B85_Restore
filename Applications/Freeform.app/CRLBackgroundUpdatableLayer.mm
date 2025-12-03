@@ -2,7 +2,7 @@
 - (CRLBackgroundUpdatableLayer)init;
 - (void)dealloc;
 - (void)display;
-- (void)setContentsFromBackground:(void *)a3;
+- (void)setContentsFromBackground:(void *)background;
 @end
 
 @implementation CRLBackgroundUpdatableLayer
@@ -37,11 +37,11 @@
   [(CRLBackgroundUpdatableLayer *)&v4 dealloc];
 }
 
-- (void)setContentsFromBackground:(void *)a3
+- (void)setContentsFromBackground:(void *)background
 {
   os_unfair_lock_lock(&self->_backgroundUpdatableLayerLock);
   contentsToSetOnNextDisplay = self->_contentsToSetOnNextDisplay;
-  if (contentsToSetOnNextDisplay != a3)
+  if (contentsToSetOnNextDisplay != background)
   {
     if (contentsToSetOnNextDisplay)
     {
@@ -49,7 +49,7 @@
       self->_contentsToSetOnNextDisplay = 0;
     }
 
-    self->_contentsToSetOnNextDisplay = CFRetain(a3);
+    self->_contentsToSetOnNextDisplay = CFRetain(background);
     self->_wantsContentsUpdatedOnNextDisplay = 1;
   }
 

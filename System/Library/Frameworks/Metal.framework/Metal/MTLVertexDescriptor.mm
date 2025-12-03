@@ -1,5 +1,5 @@
 @interface MTLVertexDescriptor
-+ (MTLVertexDescriptor)allocWithZone:(_NSZone *)a3;
++ (MTLVertexDescriptor)allocWithZone:(_NSZone *)zone;
 + (MTLVertexDescriptor)vertexDescriptor;
 @end
 
@@ -12,19 +12,19 @@
   return v2;
 }
 
-+ (MTLVertexDescriptor)allocWithZone:(_NSZone *)a3
++ (MTLVertexDescriptor)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    return [MTLVertexDescriptorInternal allocWithZone:a3];
+    return [MTLVertexDescriptorInternal allocWithZone:zone];
   }
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___MTLVertexDescriptor;
-    return objc_msgSendSuper2(&v6, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v6, sel_allocWithZone_, zone);
   }
 }
 

@@ -1,8 +1,8 @@
 @interface OrgApacheLuceneCodecsLucene50AAPL50PostingsReader_EverythingEnum
-- (BOOL)canReuseWithOrgApacheLuceneStoreIndexInput:(id)a3 withOrgApacheLuceneIndexFieldInfo:(id)a4;
+- (BOOL)canReuseWithOrgApacheLuceneStoreIndexInput:(id)input withOrgApacheLuceneIndexFieldInfo:(id)info;
 - (id)getPayload;
-- (id)resetWithOrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly_IntBlockTermState:(id)a3 withInt:(int)a4;
-- (int)advanceWithInt:(int)a3;
+- (id)resetWithOrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly_IntBlockTermState:(id)state withInt:(int)int;
+- (int)advanceWithInt:(int)int;
 - (int)nextDoc;
 - (int)nextPosition;
 - (void)dealloc;
@@ -10,14 +10,14 @@
 
 @implementation OrgApacheLuceneCodecsLucene50AAPL50PostingsReader_EverythingEnum
 
-- (BOOL)canReuseWithOrgApacheLuceneStoreIndexInput:(id)a3 withOrgApacheLuceneIndexFieldInfo:(id)a4
+- (BOOL)canReuseWithOrgApacheLuceneStoreIndexInput:(id)input withOrgApacheLuceneIndexFieldInfo:(id)info
 {
-  if (self->startDocIn_ != a3)
+  if (self->startDocIn_ != input)
   {
     return 0;
   }
 
-  if (!a4 || (indexHasOffsets = self->indexHasOffsets_, (v7 = [a4 getIndexOptions]) == 0))
+  if (!info || (indexHasOffsets = self->indexHasOffsets_, (v7 = [info getIndexOptions]) == 0))
   {
     JreThrowNullPointerException();
   }
@@ -34,23 +34,23 @@
   }
 
   indexHasPayloads = self->indexHasPayloads_;
-  return indexHasPayloads == [a4 hasPayloads];
+  return indexHasPayloads == [info hasPayloads];
 }
 
-- (id)resetWithOrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly_IntBlockTermState:(id)a3 withInt:(int)a4
+- (id)resetWithOrgApacheLuceneCodecsLucene50AAPL50PostingsFormatReadOnly_IntBlockTermState:(id)state withInt:(int)int
 {
-  if (!a3)
+  if (!state)
   {
     goto LABEL_16;
   }
 
-  self->docFreq_ = *(a3 + 4);
-  self->docTermStartFP_ = *(a3 + 7);
-  self->posTermStartFP_ = *(a3 + 8);
-  self->payTermStartFP_ = *(a3 + 9);
-  self->skipOffset_ = *(a3 + 10);
-  self->totalTermFreq_ = *(a3 + 3);
-  self->singletonDocID_ = *(a3 + 24);
+  self->docFreq_ = *(state + 4);
+  self->docTermStartFP_ = *(state + 7);
+  self->posTermStartFP_ = *(state + 8);
+  self->payTermStartFP_ = *(state + 9);
+  self->skipOffset_ = *(state + 10);
+  self->totalTermFreq_ = *(state + 3);
+  self->singletonDocID_ = *(state + 24);
   if (self->docFreq_ < 2)
   {
     goto LABEL_7;
@@ -72,7 +72,7 @@ LABEL_7:
   self->posPendingFP_ = self->posTermStartFP_;
   self->payPendingFP_ = self->payTermStartFP_;
   self->posPendingCount_ = 0;
-  v9 = *(a3 + 3);
+  v9 = *(state + 3);
   if (v9 > 127)
   {
     if (v9 == 128)
@@ -82,7 +82,7 @@ LABEL_7:
 
     else
     {
-      posTermStartFP = *(a3 + 11) + self->posTermStartFP_;
+      posTermStartFP = *(state + 11) + self->posTermStartFP_;
     }
   }
 
@@ -92,8 +92,8 @@ LABEL_7:
   }
 
   self->lastPosBlockFP_ = posTermStartFP;
-  self->needsOffsets_ = OrgApacheLuceneIndexPostingsEnum_featureRequestedWithInt_withShort_(a4, 56);
-  self->needsPayloads_ = OrgApacheLuceneIndexPostingsEnum_featureRequestedWithInt_withShort_(a4, 88);
+  self->needsOffsets_ = OrgApacheLuceneIndexPostingsEnum_featureRequestedWithInt_withShort_(int, 56);
+  self->needsPayloads_ = OrgApacheLuceneIndexPostingsEnum_featureRequestedWithInt_withShort_(int, 88);
   self->doc_ = -1;
   self->accum_ = 0;
   self->docUpto_ = 0;
@@ -187,11 +187,11 @@ LABEL_15:
   return result;
 }
 
-- (int)advanceWithInt:(int)a3
+- (int)advanceWithInt:(int)int
 {
   self->remainingPostingsInDoc_ = 0;
   self->previousPosition_ = 2147483519;
-  if (self->nextSkipDoc_ < a3)
+  if (self->nextSkipDoc_ < int)
   {
     skipper = self->skipper_;
     if (!skipper)
@@ -202,11 +202,11 @@ LABEL_15:
         goto LABEL_34;
       }
 
-      v6 = a3;
+      intCopy = int;
       v7 = new_OrgApacheLuceneCodecsLucene50Lucene50SkipReader_initWithOrgApacheLuceneStoreIndexInput_withInt_withBoolean_withBoolean_withBoolean_([(OrgApacheLuceneStoreIndexInput *)docIn clone], 10, 1, self->indexHasOffsets_, self->indexHasPayloads_);
       JreStrongAssignAndConsume(&self->skipper_, v7);
       skipper = self->skipper_;
-      a3 = v6;
+      int = intCopy;
     }
 
     if (!self->skipped_)
@@ -216,22 +216,22 @@ LABEL_15:
         goto LABEL_34;
       }
 
-      v8 = a3;
+      intCopy2 = int;
       [(OrgApacheLuceneCodecsLucene50Lucene50SkipReader *)skipper init__WithLong:self->skipOffset_ + self->docTermStartFP_ withLong:self->docTermStartFP_ withLong:self->posTermStartFP_ withLong:self->payTermStartFP_ withInt:self->docFreq_];
-      a3 = v8;
+      int = intCopy2;
       self->skipped_ = 1;
       skipper = self->skipper_;
     }
 
     if (skipper)
     {
-      v9 = a3;
+      intCopy3 = int;
       v10 = [(OrgApacheLuceneCodecsMultiLevelSkipListReader *)skipper skipToWithInt:?]+ 1;
       if (v10 <= self->docUpto_)
       {
 LABEL_12:
         self->nextSkipDoc_ = [(OrgApacheLuceneCodecsLucene50Lucene50SkipReader *)self->skipper_ getNextSkipDoc];
-        a3 = v9;
+        int = intCopy3;
         goto LABEL_13;
       }
 
@@ -266,9 +266,9 @@ LABEL_14:
   {
     if (self->docBufferUpto_ == 128)
     {
-      v13 = a3;
+      intCopy4 = int;
       sub_10006DC58(self);
-      a3 = v13;
+      int = intCopy4;
     }
 
     while (1)
@@ -320,7 +320,7 @@ LABEL_14:
       ++self->docBufferUpto_;
       v24 = self->docUpto_ + 1;
       self->docUpto_ = v24;
-      if (self->accum_ >= a3)
+      if (self->accum_ >= int)
       {
         break;
       }

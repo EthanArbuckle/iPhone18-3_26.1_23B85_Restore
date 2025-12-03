@@ -19,8 +19,8 @@
   v3 = MEMORY[0x277D75348];
   v4 = MEMORY[0x277CCA8D8];
   v5 = a3;
-  v6 = [v4 mui_MailUIBundle];
-  v7 = [v3 colorNamed:v5 inBundle:v6 compatibleWithTraitCollection:0];
+  mui_MailUIBundle = [v4 mui_MailUIBundle];
+  v7 = [v3 colorNamed:v5 inBundle:mui_MailUIBundle compatibleWithTraitCollection:0];
 
   return v7;
 }
@@ -43,8 +43,8 @@
 
 + (id)mailConversationViewCollapsedCellHighlightedBackgroundColor
 {
-  v0 = [MEMORY[0x277D75348] mailConversationViewExpandedCellBackgroundColor];
-  v1 = [v0 colorWithAlphaComponent:0.75];
+  mailConversationViewExpandedCellBackgroundColor = [MEMORY[0x277D75348] mailConversationViewExpandedCellBackgroundColor];
+  v1 = [mailConversationViewExpandedCellBackgroundColor colorWithAlphaComponent:0.75];
 
   return v1;
 }
@@ -64,8 +64,8 @@
 + (id)mailDockViewShadowGradientColors
 {
   v5[3] = *MEMORY[0x277D85DE8];
-  v0 = [MEMORY[0x277D75348] blackColor];
-  v1 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:{0.5, v0}];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  v1 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:{0.5, blackColor}];
   v5[1] = v1;
   v2 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.0];
   v5[2] = v2;
@@ -76,8 +76,8 @@
 
 + (id)mailFocusBannerTitleColor
 {
-  v0 = [MEMORY[0x277D75348] systemIndigoColor];
-  v1 = [v0 colorWithAlphaComponent:0.8];
+  systemIndigoColor = [MEMORY[0x277D75348] systemIndigoColor];
+  v1 = [systemIndigoColor colorWithAlphaComponent:0.8];
 
   return v1;
 }
@@ -120,7 +120,7 @@
   v3 = -1;
   v4 = -1;
   v2 = NAN;
-  [a1 getRed:&v5 green:&v4 blue:&v3 alpha:&v2];
+  [self getRed:&v5 green:&v4 blue:&v3 alpha:&v2];
   return v2 != 1.0;
 }
 
@@ -168,32 +168,32 @@
     v11 = *&v16;
   }
 
-  v13 = [MEMORY[0x277D75348] colorWithRed:v22 + a1 * (v12 - v22) green:v20 + a1 * (v11 - v20) blue:v21 + a1 * (v10 - v21) alpha:{v19 + a1 * (v15 - v19), *&v15, v16, v17}];
+  v13 = [MEMORY[0x277D75348] colorWithRed:v22 + self * (v12 - v22) green:v20 + self * (v11 - v20) blue:v21 + self * (v10 - v21) alpha:{v19 + self * (v15 - v19), *&v15, v16, v17}];
 
   return v13;
 }
 
 + (id)mf_colorFromFlagColor:()MailUI
 {
-  v3 = 0;
+  mailFlaggedColorOrange = 0;
   if (a3 <= 2)
   {
     if (a3)
     {
       if (a3 == 1)
       {
-        v3 = [MEMORY[0x277D75348] mailFlaggedColorOrange];
+        mailFlaggedColorOrange = [MEMORY[0x277D75348] mailFlaggedColorOrange];
       }
 
       else if (a3 == 2)
       {
-        v3 = [MEMORY[0x277D75348] mailFlaggedColorYellow];
+        mailFlaggedColorOrange = [MEMORY[0x277D75348] mailFlaggedColorYellow];
       }
     }
 
     else
     {
-      v3 = [MEMORY[0x277D75348] mailFlaggedColorRed];
+      mailFlaggedColorOrange = [MEMORY[0x277D75348] mailFlaggedColorRed];
     }
   }
 
@@ -201,12 +201,12 @@
   {
     if (a3 == 5)
     {
-      v3 = [MEMORY[0x277D75348] mailFlaggedColorIndigo];
+      mailFlaggedColorOrange = [MEMORY[0x277D75348] mailFlaggedColorIndigo];
     }
 
     else if (a3 == 6)
     {
-      v3 = [MEMORY[0x277D75348] mailFlaggedColorGray];
+      mailFlaggedColorOrange = [MEMORY[0x277D75348] mailFlaggedColorGray];
     }
   }
 
@@ -221,10 +221,10 @@
     {
       [MEMORY[0x277D75348] mailFlaggedColorTeal];
     }
-    v3 = ;
+    mailFlaggedColorOrange = ;
   }
 
-  return v3;
+  return mailFlaggedColorOrange;
 }
 
 @end

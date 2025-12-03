@@ -21,9 +21,9 @@
     nrUUID = 0;
   }
 
-  v7 = [v3 initWithFormat:@"%u/%@/%@", version, v5, nrUUID];
+  nrUUID = [v3 initWithFormat:@"%u/%@/%@", version, v5, nrUUID];
 
-  return v7;
+  return nrUUID;
 }
 
 @end

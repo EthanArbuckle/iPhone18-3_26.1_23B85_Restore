@@ -2,19 +2,19 @@
 + (void)initialize;
 - (NSBundle)bundle;
 - (id)_secureHostApplicationBundleIdentifier;
-- (id)notificationNameForApplicationStateEvent:(int64_t)a3;
+- (id)notificationNameForApplicationStateEvent:(int64_t)event;
 - (id)remoteViewControllerProxy;
 - (void)_startAccessingAppBundle;
 - (void)_stopAccessingAppBundle;
-- (void)addToSiriViewController:(id)a3 didCreateShortcut:(id)a4;
-- (void)addToSiriViewController:(id)a3 didDeleteShortcut:(id)a4;
-- (void)addToSiriViewController:(id)a3 didSaveShortcut:(id)a4;
-- (void)addToSiriViewControllerDidCancel:(id)a3;
-- (void)beginRequestWithExtensionContext:(id)a3;
-- (void)buildForAddingShortcut:(id)a3;
-- (void)buildForEditingVoiceShortcut:(id)a3;
+- (void)addToSiriViewController:(id)controller didCreateShortcut:(id)shortcut;
+- (void)addToSiriViewController:(id)controller didDeleteShortcut:(id)shortcut;
+- (void)addToSiriViewController:(id)controller didSaveShortcut:(id)shortcut;
+- (void)addToSiriViewControllerDidCancel:(id)cancel;
+- (void)beginRequestWithExtensionContext:(id)context;
+- (void)buildForAddingShortcut:(id)shortcut;
+- (void)buildForEditingVoiceShortcut:(id)shortcut;
 - (void)loadView;
-- (void)setupWithShortcutViewController:(id)a3;
+- (void)setupWithShortcutViewController:(id)controller;
 @end
 
 @implementation WFShortcutServiceViewController
@@ -26,31 +26,31 @@
   return [NSBundle bundleForClass:v2];
 }
 
-- (id)notificationNameForApplicationStateEvent:(int64_t)a3
+- (id)notificationNameForApplicationStateEvent:(int64_t)event
 {
-  if (a3 <= 3)
+  if (event <= 3)
   {
-    self = **(&off_1000082A8 + a3);
+    self = **(&off_1000082A8 + event);
   }
 
   return self;
 }
 
-- (void)addToSiriViewController:(id)a3 didDeleteShortcut:(id)a4
+- (void)addToSiriViewController:(id)controller didDeleteShortcut:(id)shortcut
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFShortcutServiceViewController *)self childViewController];
+  controllerCopy = controller;
+  shortcutCopy = shortcut;
+  childViewController = [(WFShortcutServiceViewController *)self childViewController];
 
-  if (v8 == v6)
+  if (childViewController == controllerCopy)
   {
     v10 = [NSUUID alloc];
-    v11 = [v7 reference];
-    v12 = [v11 identifier];
-    v13 = [v10 initWithUUIDString:v12];
+    reference = [shortcutCopy reference];
+    identifier = [reference identifier];
+    v13 = [v10 initWithUUIDString:identifier];
 
-    v14 = [(WFShortcutServiceViewController *)self remoteViewControllerProxy];
-    [v14 remoteViewControllerDidDeleteVoiceShortcutWithIdentifier:v13];
+    remoteViewControllerProxy = [(WFShortcutServiceViewController *)self remoteViewControllerProxy];
+    [remoteViewControllerProxy remoteViewControllerDidDeleteVoiceShortcutWithIdentifier:v13];
   }
 
   else
@@ -61,26 +61,26 @@
       v15 = 136315394;
       v16 = "[WFShortcutServiceViewController addToSiriViewController:didDeleteShortcut:]";
       v17 = 2114;
-      v18 = v6;
+      v18 = controllerCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s Unexpected viewController=%{public}@", &v15, 0x16u);
     }
   }
 }
 
-- (void)addToSiriViewController:(id)a3 didSaveShortcut:(id)a4
+- (void)addToSiriViewController:(id)controller didSaveShortcut:(id)shortcut
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFShortcutServiceViewController *)self childViewController];
+  controllerCopy = controller;
+  shortcutCopy = shortcut;
+  childViewController = [(WFShortcutServiceViewController *)self childViewController];
 
-  if (v8 == v6)
+  if (childViewController == controllerCopy)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100001380;
     v10[3] = &unk_100008260;
     v10[4] = self;
-    sub_1000013E4(v7, v10);
+    sub_1000013E4(shortcutCopy, v10);
   }
 
   else
@@ -91,26 +91,26 @@
       *buf = 136315394;
       v12 = "[WFShortcutServiceViewController addToSiriViewController:didSaveShortcut:]";
       v13 = 2114;
-      v14 = v6;
+      v14 = controllerCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s Unexpected viewController=%{public}@", buf, 0x16u);
     }
   }
 }
 
-- (void)addToSiriViewController:(id)a3 didCreateShortcut:(id)a4
+- (void)addToSiriViewController:(id)controller didCreateShortcut:(id)shortcut
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFShortcutServiceViewController *)self childViewController];
+  controllerCopy = controller;
+  shortcutCopy = shortcut;
+  childViewController = [(WFShortcutServiceViewController *)self childViewController];
 
-  if (v8 == v6)
+  if (childViewController == controllerCopy)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100001708;
     v10[3] = &unk_100008260;
     v10[4] = self;
-    sub_1000013E4(v7, v10);
+    sub_1000013E4(shortcutCopy, v10);
   }
 
   else
@@ -121,21 +121,21 @@
       *buf = 136315394;
       v12 = "[WFShortcutServiceViewController addToSiriViewController:didCreateShortcut:]";
       v13 = 2114;
-      v14 = v6;
+      v14 = controllerCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s Unexpected viewController=%{public}@", buf, 0x16u);
     }
   }
 }
 
-- (void)addToSiriViewControllerDidCancel:(id)a3
+- (void)addToSiriViewControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = [(WFShortcutServiceViewController *)self childViewController];
+  cancelCopy = cancel;
+  childViewController = [(WFShortcutServiceViewController *)self childViewController];
 
-  if (v5 == v4)
+  if (childViewController == cancelCopy)
   {
-    v7 = [(WFShortcutServiceViewController *)self remoteViewControllerProxy];
-    [v7 remoteViewControllerDidCancel];
+    remoteViewControllerProxy = [(WFShortcutServiceViewController *)self remoteViewControllerProxy];
+    [remoteViewControllerProxy remoteViewControllerDidCancel];
   }
 
   else
@@ -146,51 +146,51 @@
       v8 = 136315394;
       v9 = "[WFShortcutServiceViewController addToSiriViewControllerDidCancel:]";
       v10 = 2114;
-      v11 = v4;
+      v11 = cancelCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s Unexpected viewController=%{public}@", &v8, 0x16u);
     }
   }
 }
 
-- (void)setupWithShortcutViewController:(id)a3
+- (void)setupWithShortcutViewController:(id)controller
 {
-  v9 = a3;
-  [v9 setDelegate:self];
-  [v9 willMoveToParentViewController:self];
-  [(WFShortcutServiceViewController *)self addChildViewController:v9];
-  v4 = [v9 view];
-  v5 = [(WFShortcutServiceViewController *)self view];
-  [v5 bounds];
-  [v4 setFrame:?];
+  controllerCopy = controller;
+  [controllerCopy setDelegate:self];
+  [controllerCopy willMoveToParentViewController:self];
+  [(WFShortcutServiceViewController *)self addChildViewController:controllerCopy];
+  view = [controllerCopy view];
+  view2 = [(WFShortcutServiceViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 
-  v6 = [v9 view];
-  [v6 setAutoresizingMask:18];
+  view3 = [controllerCopy view];
+  [view3 setAutoresizingMask:18];
 
-  v7 = [(WFShortcutServiceViewController *)self view];
-  v8 = [v9 view];
-  [v7 addSubview:v8];
+  view4 = [(WFShortcutServiceViewController *)self view];
+  view5 = [controllerCopy view];
+  [view4 addSubview:view5];
 
-  [v9 didMoveToParentViewController:self];
-  [(WFShortcutServiceViewController *)self setChildViewController:v9];
+  [controllerCopy didMoveToParentViewController:self];
+  [(WFShortcutServiceViewController *)self setChildViewController:controllerCopy];
 }
 
-- (void)buildForEditingVoiceShortcut:(id)a3
+- (void)buildForEditingVoiceShortcut:(id)shortcut
 {
-  v4 = a3;
+  shortcutCopy = shortcut;
   v5 = INSiriLogContextIntents;
   if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v25 = "[WFShortcutServiceViewController buildForEditingVoiceShortcut:]";
     v26 = 2114;
-    v27 = v4;
+    v27 = shortcutCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Build for editing voiceShortcut=%{public}@", buf, 0x16u);
   }
 
   v6 = +[WFDatabase defaultDatabase];
-  v7 = [v4 identifier];
-  v8 = [v7 UUIDString];
-  v9 = [v6 referenceForWorkflowID:v8];
+  identifier = [shortcutCopy identifier];
+  uUIDString = [identifier UUIDString];
+  v9 = [v6 referenceForWorkflowID:uUIDString];
 
   if (v9)
   {
@@ -234,36 +234,36 @@
   if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_ERROR))
   {
     v18 = v14;
-    v19 = [v4 identifier];
+    identifier2 = [shortcutCopy identifier];
     *buf = 136315394;
     v25 = "[WFShortcutServiceViewController buildForEditingVoiceShortcut:]";
     v26 = 2114;
-    v27 = v19;
+    v27 = identifier2;
     _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s Couldn't find shortcut with identfier=%{public}@", buf, 0x16u);
   }
 
-  v15 = [v4 identifier];
-  v16 = [NSString stringWithFormat:@"Couldn't find shortcut to edit with identifier=%@", v15];
+  identifier3 = [shortcutCopy identifier];
+  v16 = [NSString stringWithFormat:@"Couldn't find shortcut to edit with identifier=%@", identifier3];
   v13 = INIntentError();
 
-  v17 = [(WFShortcutServiceViewController *)self remoteViewControllerProxy];
-  [v17 remoteViewControllerDidUpdateVoiceShortcut:0 error:v13];
+  remoteViewControllerProxy = [(WFShortcutServiceViewController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy remoteViewControllerDidUpdateVoiceShortcut:0 error:v13];
 
 LABEL_12:
 }
 
-- (void)buildForAddingShortcut:(id)a3
+- (void)buildForAddingShortcut:(id)shortcut
 {
-  v4 = a3;
+  shortcutCopy = shortcut;
   v5 = INSiriLogContextIntents;
-  if (v4)
+  if (shortcutCopy)
   {
     if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
       v12 = "[WFShortcutServiceViewController buildForAddingShortcut:]";
       v13 = 2114;
-      v14 = v4;
+      v14 = shortcutCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s build for adding shortcut=%{public}@", buf, 0x16u);
     }
 
@@ -273,7 +273,7 @@ LABEL_12:
     v8[2] = sub_100001F64;
     v8[3] = &unk_100008238;
     objc_copyWeak(&v10, buf);
-    v9 = v4;
+    v9 = shortcutCopy;
     dispatch_async(&_dispatch_main_q, v8);
 
     objc_destroyWeak(&v10);
@@ -290,28 +290,28 @@ LABEL_12:
     }
 
     v6 = INIntentError();
-    v7 = [(WFShortcutServiceViewController *)self remoteViewControllerProxy];
-    [v7 remoteViewControllerDidCreateVoiceShortcut:0 error:v6];
+    remoteViewControllerProxy = [(WFShortcutServiceViewController *)self remoteViewControllerProxy];
+    [remoteViewControllerProxy remoteViewControllerDidCreateVoiceShortcut:0 error:v6];
   }
 }
 
 - (id)remoteViewControllerProxy
 {
-  v3 = [(WFShortcutServiceViewController *)self _remoteViewControllerProxy];
-  v4 = v3;
-  if (v3)
+  _remoteViewControllerProxy = [(WFShortcutServiceViewController *)self _remoteViewControllerProxy];
+  v4 = _remoteViewControllerProxy;
+  if (_remoteViewControllerProxy)
   {
-    v5 = v3;
+    remoteObjectProxy = _remoteViewControllerProxy;
   }
 
   else
   {
-    v6 = [(WFShortcutServiceViewController *)self extensionContext];
-    v7 = [v6 _auxiliaryConnection];
-    v5 = [v7 remoteObjectProxy];
+    extensionContext = [(WFShortcutServiceViewController *)self extensionContext];
+    _auxiliaryConnection = [extensionContext _auxiliaryConnection];
+    remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
   }
 
-  return v5;
+  return remoteObjectProxy;
 }
 
 - (void)_stopAccessingAppBundle
@@ -332,10 +332,10 @@ LABEL_12:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v3 = [(WFShortcutServiceViewController *)self extensionContext];
-  v4 = [v3 inputItems];
+  extensionContext = [(WFShortcutServiceViewController *)self extensionContext];
+  inputItems = [extensionContext inputItems];
 
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v5 = [inputItems countByEnumeratingWithState:&v20 objects:v24 count:16];
   v6 = &NSObject__properties;
   if (v5)
   {
@@ -349,15 +349,15 @@ LABEL_12:
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(inputItems);
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = [v12 userInfo];
-        v14 = [v13 objectForKey:v9];
+        userInfo = [v12 userInfo];
+        v14 = [userInfo objectForKey:v9];
 
-        v15 = [v12 userInfo];
-        v16 = [v15 objectForKey:v10];
+        userInfo2 = [v12 userInfo];
+        v16 = [userInfo2 objectForKey:v10];
 
         if (v14)
         {
@@ -380,7 +380,7 @@ LABEL_12:
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v7 = [inputItems countByEnumeratingWithState:&v20 objects:v24 count:16];
       v6 = &NSObject__properties;
     }
 
@@ -398,13 +398,13 @@ LABEL_13:
 
 - (id)_secureHostApplicationBundleIdentifier
 {
-  v3 = [(WFShortcutServiceViewController *)self extensionContext];
-  if (v3)
+  extensionContext = [(WFShortcutServiceViewController *)self extensionContext];
+  if (extensionContext)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = extensionContext;
     }
 
     else
@@ -424,11 +424,11 @@ LABEL_13:
   v13 = 0u;
   if (v5)
   {
-    v6 = [v5 _auxiliaryConnection];
-    v7 = v6;
-    if (v6)
+    _auxiliaryConnection = [v5 _auxiliaryConnection];
+    v7 = _auxiliaryConnection;
+    if (_auxiliaryConnection)
     {
-      [v6 auditToken];
+      [_auxiliaryConnection auditToken];
     }
 
     else
@@ -446,9 +446,9 @@ LABEL_13:
   v11[0] = v12;
   v11[1] = v13;
   v8 = [VCAccessSpecifier accessSpecifierForAuditToken:v11];
-  v9 = [v8 associatedAppBundleIdentifier];
+  associatedAppBundleIdentifier = [v8 associatedAppBundleIdentifier];
 
-  return v9;
+  return associatedAppBundleIdentifier;
 }
 
 - (void)loadView
@@ -460,18 +460,18 @@ LABEL_13:
   [(WFShortcutServiceViewController *)self setView:v4];
 }
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = WFShortcutServiceViewController;
-  [(WFShortcutServiceViewController *)&v9 beginRequestWithExtensionContext:v4];
-  [v4 setExtensionApplicationContextProviderDelegate:self];
+  [(WFShortcutServiceViewController *)&v9 beginRequestWithExtensionContext:contextCopy];
+  [contextCopy setExtensionApplicationContextProviderDelegate:self];
   v5 = +[WFApplicationContext sharedContext];
-  [v5 setProvider:v4];
+  [v5 setProvider:contextCopy];
 
   [WFInitialization initializeProcessWithDatabase:1];
-  v6 = v4;
+  v6 = contextCopy;
   if (v6)
   {
     objc_opt_class();
@@ -498,7 +498,7 @@ LABEL_13:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     _INLogInitIfNeeded();

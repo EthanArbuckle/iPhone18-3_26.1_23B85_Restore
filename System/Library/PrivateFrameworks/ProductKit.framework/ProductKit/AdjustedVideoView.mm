@@ -1,12 +1,12 @@
 @interface AdjustedVideoView
-- (_TtC10ProductKit17AdjustedVideoView)initWithCoder:(id)a3;
-- (_TtC10ProductKit17AdjustedVideoView)initWithFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC10ProductKit17AdjustedVideoView)initWithCoder:(id)coder;
+- (_TtC10ProductKit17AdjustedVideoView)initWithFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation AdjustedVideoView
 
-- (_TtC10ProductKit17AdjustedVideoView)initWithCoder:(id)a3
+- (_TtC10ProductKit17AdjustedVideoView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC10ProductKit17AdjustedVideoView_featureHandler);
   *v3 = 0;
@@ -22,14 +22,14 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_260E572BC(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_260E572BC(change);
 }
 
-- (_TtC10ProductKit17AdjustedVideoView)initWithFrame:(CGRect)a3
+- (_TtC10ProductKit17AdjustedVideoView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

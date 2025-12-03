@@ -1,55 +1,55 @@
 @interface SCATModernMenuContentViewContainer
 - (CGSize)intrinsicContentSize;
-- (SCATModernMenuContentViewContainer)initWithFrame:(CGRect)a3;
+- (SCATModernMenuContentViewContainer)initWithFrame:(CGRect)frame;
 - (id)collectionView;
-- (void)setContentView:(id)a3;
+- (void)setContentView:(id)view;
 @end
 
 @implementation SCATModernMenuContentViewContainer
 
-- (SCATModernMenuContentViewContainer)initWithFrame:(CGRect)a3
+- (SCATModernMenuContentViewContainer)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = SCATModernMenuContentViewContainer;
-  return [(SCATModernMenuContentViewContainer *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(SCATModernMenuContentViewContainer *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
-    [(SCATModernMenuContentViewContainer *)self addSubview:v5];
+    objc_storeStrong(&self->_contentView, view);
+    [(SCATModernMenuContentViewContainer *)self addSubview:viewCopy];
     [(SCATModernMenuContentViewContainer *)self contentViewConstraints];
-    v7 = v22 = v5;
+    v7 = v22 = viewCopy;
     [NSLayoutConstraint deactivateConstraints:v7];
 
     [(UIView *)self->_contentView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v21 = [(UIView *)self->_contentView topAnchor];
-    v20 = [(SCATModernMenuContentViewContainer *)self topAnchor];
-    v19 = [v21 constraintEqualToAnchor:v20];
+    topAnchor = [(UIView *)self->_contentView topAnchor];
+    topAnchor2 = [(SCATModernMenuContentViewContainer *)self topAnchor];
+    v19 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v23[0] = v19;
-    v18 = [(UIView *)self->_contentView bottomAnchor];
-    v8 = [(SCATModernMenuContentViewContainer *)self bottomAnchor];
-    v9 = [v18 constraintEqualToAnchor:v8];
+    bottomAnchor = [(UIView *)self->_contentView bottomAnchor];
+    bottomAnchor2 = [(SCATModernMenuContentViewContainer *)self bottomAnchor];
+    v9 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v23[1] = v9;
-    v10 = [(UIView *)self->_contentView leadingAnchor];
-    v11 = [(SCATModernMenuContentViewContainer *)self leadingAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    leadingAnchor = [(UIView *)self->_contentView leadingAnchor];
+    leadingAnchor2 = [(SCATModernMenuContentViewContainer *)self leadingAnchor];
+    v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v23[2] = v12;
-    v13 = [(UIView *)self->_contentView trailingAnchor];
-    v14 = [(SCATModernMenuContentViewContainer *)self trailingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    trailingAnchor = [(UIView *)self->_contentView trailingAnchor];
+    trailingAnchor2 = [(SCATModernMenuContentViewContainer *)self trailingAnchor];
+    v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v23[3] = v15;
     v16 = [NSArray arrayWithObjects:v23 count:4];
     [(SCATModernMenuContentViewContainer *)self setContentViewConstraints:v16];
 
-    v5 = v22;
-    v17 = [(SCATModernMenuContentViewContainer *)self contentViewConstraints];
-    [NSLayoutConstraint activateConstraints:v17];
+    viewCopy = v22;
+    contentViewConstraints = [(SCATModernMenuContentViewContainer *)self contentViewConstraints];
+    [NSLayoutConstraint activateConstraints:contentViewConstraints];
 
     [(SCATModernMenuContentViewContainer *)self invalidateIntrinsicContentSize];
   }
@@ -61,10 +61,10 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(SCATModernMenuContentViewContainer *)self contentView];
-  v3 = [v2 subviews];
+  contentView = [(SCATModernMenuContentViewContainer *)self contentView];
+  subviews = [contentView subviews];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -74,7 +74,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -86,7 +86,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -103,9 +103,9 @@ LABEL_11:
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(SCATModernMenuContentViewContainer *)self collectionView];
-  v3 = [v2 collectionViewLayout];
-  [v3 collectionViewContentSize];
+  collectionView = [(SCATModernMenuContentViewContainer *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout collectionViewContentSize];
   v5 = v4;
   v7 = v6;
 

@@ -1,37 +1,37 @@
 @interface CSPresentationViewController
 - (BOOL)canHostAnApp;
-- (BOOL)handleAppearanceUpdateFromController:(id)a3 animationSettings:(id *)a4;
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)handleAppearanceUpdateFromController:(id)controller animationSettings:(id *)settings;
+- (BOOL)handleEvent:(id)event;
 - (BOOL)handlesRotationIndependentOfCoverSheet;
 - (BOOL)hasContent;
 - (BOOL)isHostingAnApp;
 - (BOOL)isPresentingContent;
-- (BOOL)wouldHandleButtonEvent:(id)a3;
-- (CSPresentationViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)wouldHandleButtonEvent:(id)event;
+- (CSPresentationViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (CSPresentationViewControllerDelegate)presentationDelegate;
 - (NSArray)contentViewControllers;
 - (NSArray)presentedViewControllers;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)hostedAppSceneHandle;
 - (id)hostedAppSceneHandles;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (int64_t)participantState;
-- (void)_didTransitionViewController:(id)a3 toPresented:(BOOL)a4;
-- (void)_reflowPresentationWithAnimationSettings:(id)a3;
-- (void)_updateContentViewControllersAnimated:(BOOL)a3 completion:(id)a4;
-- (void)_updatePresentationForViewController:(id)a3 presentation:(id)a4 animated:(BOOL)a5 animationSettings:(id)a6;
-- (void)aggregateAppearance:(id)a3;
-- (void)aggregateBehavior:(id)a3;
-- (void)aggregatePresentation:(id)a3;
-- (void)dismissContentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)dismissContentViewControllers:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)dismissPresentationAnimated:(BOOL)a3 completion:(id)a4;
-- (void)presentContentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentContentViewControllers:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)rebuildEverythingForReason:(id)a3;
-- (void)updatePresentationAnimated:(BOOL)a3;
+- (void)_didTransitionViewController:(id)controller toPresented:(BOOL)presented;
+- (void)_reflowPresentationWithAnimationSettings:(id)settings;
+- (void)_updateContentViewControllersAnimated:(BOOL)animated completion:(id)completion;
+- (void)_updatePresentationForViewController:(id)controller presentation:(id)presentation animated:(BOOL)animated animationSettings:(id)settings;
+- (void)aggregateAppearance:(id)appearance;
+- (void)aggregateBehavior:(id)behavior;
+- (void)aggregatePresentation:(id)presentation;
+- (void)dismissContentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)dismissContentViewControllers:(id)controllers animated:(BOOL)animated completion:(id)completion;
+- (void)dismissPresentationAnimated:(BOOL)animated completion:(id)completion;
+- (void)presentContentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)presentContentViewControllers:(id)controllers animated:(BOOL)animated completion:(id)completion;
+- (void)rebuildEverythingForReason:(id)reason;
+- (void)updatePresentationAnimated:(BOOL)animated;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -76,8 +76,8 @@
 
           v10 = v9;
 
-          v11 = [v10 isHostingAnApp];
-          if (v11)
+          isHostingAnApp = [v10 isHostingAnApp];
+          if (isHostingAnApp)
           {
             LOBYTE(v3) = 1;
             goto LABEL_17;
@@ -109,8 +109,8 @@ LABEL_17:
 
 - (BOOL)isPresentingContent
 {
-  v2 = [(CSPresentationViewController *)self presentedViewControllers];
-  v3 = [v2 count] != 0;
+  presentedViewControllers = [(CSPresentationViewController *)self presentedViewControllers];
+  v3 = [presentedViewControllers count] != 0;
 
   return v3;
 }
@@ -139,13 +139,13 @@ LABEL_17:
 
 - (void)viewDidLoad
 {
-  v3 = [(CSPresentationViewController *)self view];
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
-  [v3 setFrame:?];
+  view = [(CSPresentationViewController *)self view];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
+  [view setFrame:?];
 
-  [v3 setAutoresizingMask:18];
-  [v3 setAutoresizesSubviews:1];
+  [view setAutoresizingMask:18];
+  [view setAutoresizesSubviews:1];
   v5.receiver = self;
   v5.super_class = CSPresentationViewController;
   [(CSCoverSheetViewControllerBase *)&v5 viewDidLoad];
@@ -157,8 +157,8 @@ LABEL_17:
   v19.receiver = self;
   v19.super_class = CSPresentationViewController;
   [(CSCoverSheetViewControllerBase *)&v19 viewWillLayoutSubviews];
-  v3 = [(CSPresentationViewController *)self view];
-  [v3 bounds];
+  view = [(CSPresentationViewController *)self view];
+  [view bounds];
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x3032000000;
@@ -175,7 +175,7 @@ LABEL_17:
   v15 = v7;
   v16 = v8;
   v12 = v17;
-  v9 = v3;
+  v9 = view;
   v11 = v9;
   [(NSArray *)activeContentViewControllers enumerateObjectsWithOptions:2 usingBlock:v10];
 
@@ -184,8 +184,8 @@ LABEL_17:
 
 - (BOOL)hasContent
 {
-  v2 = [(CSPresentationViewController *)self contentViewControllers];
-  v3 = [v2 count] != 0;
+  contentViewControllers = [(CSPresentationViewController *)self contentViewControllers];
+  v3 = [contentViewControllers count] != 0;
 
   return v3;
 }
@@ -205,65 +205,65 @@ void __54__CSPresentationViewController_viewWillLayoutSubviews__block_invoke(uin
   *(v4 + 40) = v3;
 }
 
-- (CSPresentationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CSPresentationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = CSPresentationViewController;
-  v4 = [(CSCoverSheetViewControllerBase *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(CSCoverSheetViewControllerBase *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     contentViewControllers = v4->_contentViewControllers;
-    v4->_contentViewControllers = v5;
+    v4->_contentViewControllers = array;
   }
 
   return v4;
 }
 
-- (void)presentContentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentContentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (controller)
   {
-    v5 = a4;
-    v12 = a3;
+    animatedCopy = animated;
+    controllerCopy = controller;
     v8 = MEMORY[0x277CBEA60];
-    v9 = a5;
-    v10 = a3;
-    v11 = [v8 arrayWithObjects:&v12 count:1];
+    completionCopy = completion;
+    controllerCopy2 = controller;
+    v11 = [v8 arrayWithObjects:&controllerCopy count:1];
 
-    [(CSPresentationViewController *)self presentContentViewControllers:v11 animated:v5 completion:v9, v12, v13];
+    [(CSPresentationViewController *)self presentContentViewControllers:v11 animated:animatedCopy completion:completionCopy, controllerCopy, v13];
   }
 }
 
-- (void)presentContentViewControllers:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentContentViewControllers:(id)controllers animated:(BOOL)animated completion:(id)completion
 {
-  v22 = a4;
+  animatedCopy = animated;
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  controllersCopy = controllers;
+  completionCopy = completion;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = [v7 countByEnumeratingWithState:&v24 objects:v34 count:16];
+  v9 = [controllersCopy countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (!v9)
   {
     goto LABEL_14;
   }
 
   v10 = v9;
-  v20 = v8;
+  v20 = completionCopy;
   v11 = 0;
   v12 = *v25;
-  v21 = v7;
+  v21 = controllersCopy;
   do
   {
     for (i = 0; i != v10; ++i)
     {
       if (*v25 != v12)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(controllersCopy);
       }
 
       v14 = *(*(&v24 + 1) + 8 * i);
@@ -285,7 +285,7 @@ void __54__CSPresentationViewController_viewWillLayoutSubviews__block_invoke(uin
           v19 = v18;
           _os_log_debug_impl(&dword_21EB05000, v15, OS_LOG_TYPE_DEBUG, "%{public}@: Adding content view controller %@ (animated: %{public}@)", buf, 0x20u);
 
-          v7 = v21;
+          controllersCopy = v21;
         }
 
         [(NSMutableArray *)self->_contentViewControllers insertObject:v14 atIndex:0];
@@ -294,23 +294,23 @@ void __54__CSPresentationViewController_viewWillLayoutSubviews__block_invoke(uin
       }
     }
 
-    v10 = [v7 countByEnumeratingWithState:&v24 objects:v34 count:16];
+    v10 = [controllersCopy countByEnumeratingWithState:&v24 objects:v34 count:16];
   }
 
   while (v10);
-  v8 = v20;
+  completionCopy = v20;
   if (v11)
   {
     [(NSMutableArray *)self->_contentViewControllers sortWithOptions:16 usingComparator:&__block_literal_global_17];
-    [(CSPresentationViewController *)self _updateContentViewControllersAnimated:v22 completion:v20];
+    [(CSPresentationViewController *)self _updateContentViewControllersAnimated:animatedCopy completion:v20];
   }
 
   else
   {
 LABEL_14:
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -335,50 +335,50 @@ uint64_t __82__CSPresentationViewController_presentContentViewControllers_animat
   return v8;
 }
 
-- (void)dismissContentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)dismissContentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (controller)
   {
-    v5 = a4;
-    v12 = a3;
+    animatedCopy = animated;
+    controllerCopy = controller;
     v8 = MEMORY[0x277CBEA60];
-    v9 = a5;
-    v10 = a3;
-    v11 = [v8 arrayWithObjects:&v12 count:1];
+    completionCopy = completion;
+    controllerCopy2 = controller;
+    v11 = [v8 arrayWithObjects:&controllerCopy count:1];
 
-    [(CSPresentationViewController *)self dismissContentViewControllers:v11 animated:v5 completion:v9, v12, v13];
+    [(CSPresentationViewController *)self dismissContentViewControllers:v11 animated:animatedCopy completion:completionCopy, controllerCopy, v13];
   }
 }
 
-- (void)dismissContentViewControllers:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)dismissContentViewControllers:(id)controllers animated:(BOOL)animated completion:(id)completion
 {
-  v22 = a4;
+  animatedCopy = animated;
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  controllersCopy = controllers;
+  completionCopy = completion;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = [v7 countByEnumeratingWithState:&v24 objects:v34 count:16];
+  v9 = [controllersCopy countByEnumeratingWithState:&v24 objects:v34 count:16];
   if (!v9)
   {
     goto LABEL_14;
   }
 
   v10 = v9;
-  v20 = v8;
+  v20 = completionCopy;
   v11 = 0;
   v12 = *v25;
-  v21 = v7;
+  v21 = controllersCopy;
   do
   {
     for (i = 0; i != v10; ++i)
     {
       if (*v25 != v12)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(controllersCopy);
       }
 
       v14 = *(*(&v24 + 1) + 8 * i);
@@ -400,7 +400,7 @@ uint64_t __82__CSPresentationViewController_presentContentViewControllers_animat
           v19 = v18;
           _os_log_debug_impl(&dword_21EB05000, v15, OS_LOG_TYPE_DEBUG, "%{public}@: Removing content view controller %@ (animated: %{public}@)", buf, 0x20u);
 
-          v7 = v21;
+          controllersCopy = v21;
         }
 
         [(NSMutableArray *)self->_contentViewControllers removeObject:v14];
@@ -408,30 +408,30 @@ uint64_t __82__CSPresentationViewController_presentContentViewControllers_animat
       }
     }
 
-    v10 = [v7 countByEnumeratingWithState:&v24 objects:v34 count:16];
+    v10 = [controllersCopy countByEnumeratingWithState:&v24 objects:v34 count:16];
   }
 
   while (v10);
-  v8 = v20;
+  completionCopy = v20;
   if (v11)
   {
-    [(CSPresentationViewController *)self _updateContentViewControllersAnimated:v22 completion:v20];
+    [(CSPresentationViewController *)self _updateContentViewControllersAnimated:animatedCopy completion:v20];
   }
 
   else
   {
 LABEL_14:
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8);
+      completionCopy[2](completionCopy);
     }
   }
 }
 
-- (void)dismissPresentationAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissPresentationAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   v7 = SBLogDashBoard();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -444,9 +444,9 @@ LABEL_14:
   v9[2] = __71__CSPresentationViewController_dismissPresentationAnimated_completion___block_invoke;
   v9[3] = &unk_27838BA98;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [(CSPresentationViewController *)self _updateContentViewControllersAnimated:v4 completion:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [(CSPresentationViewController *)self _updateContentViewControllersAnimated:animatedCopy completion:v9];
 }
 
 uint64_t __71__CSPresentationViewController_dismissPresentationAnimated_completion___block_invoke(uint64_t a1)
@@ -463,9 +463,9 @@ uint64_t __71__CSPresentationViewController_dismissPresentationAnimated_completi
   return result;
 }
 
-- (void)updatePresentationAnimated:(BOOL)a3
+- (void)updatePresentationAnimated:(BOOL)animated
 {
-  if (a3)
+  if (animated)
   {
     v4 = [MEMORY[0x277CF0B70] settingsWithDuration:0.35];
   }
@@ -479,13 +479,13 @@ uint64_t __71__CSPresentationViewController_dismissPresentationAnimated_completi
   [(CSPresentationViewController *)self _reflowPresentationWithAnimationSettings:v4];
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  appearanceCopy = appearance;
   v14.receiver = self;
   v14.super_class = CSPresentationViewController;
-  [(CSCoverSheetViewControllerBase *)&v14 aggregateAppearance:v4];
+  [(CSCoverSheetViewControllerBase *)&v14 aggregateAppearance:appearanceCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -506,7 +506,7 @@ uint64_t __71__CSPresentationViewController_dismissPresentationAnimated_completi
           objc_enumerationMutation(v5);
         }
 
-        [v4 unionAppearance:{*(*(&v10 + 1) + 8 * v9++), v10}];
+        [appearanceCopy unionAppearance:{*(*(&v10 + 1) + 8 * v9++), v10}];
       }
 
       while (v7 != v9);
@@ -517,13 +517,13 @@ uint64_t __71__CSPresentationViewController_dismissPresentationAnimated_completi
   }
 }
 
-- (void)aggregateBehavior:(id)a3
+- (void)aggregateBehavior:(id)behavior
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  behaviorCopy = behavior;
   v23.receiver = self;
   v23.super_class = CSPresentationViewController;
-  [(CSCoverSheetViewControllerBase *)&v23 aggregateBehavior:v4];
+  [(CSCoverSheetViewControllerBase *)&v23 aggregateBehavior:behaviorCopy];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -544,7 +544,7 @@ uint64_t __71__CSPresentationViewController_dismissPresentationAnimated_completi
           objc_enumerationMutation(v5);
         }
 
-        [v4 unionBehavior:*(*(&v19 + 1) + 8 * v9++)];
+        [behaviorCopy unionBehavior:*(*(&v19 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
@@ -574,7 +574,7 @@ uint64_t __71__CSPresentationViewController_dismissPresentationAnimated_completi
           objc_enumerationMutation(v10);
         }
 
-        [v4 addRestrictedCapabilities:{objc_msgSend(*(*(&v15 + 1) + 8 * v14++), "restrictedCapabilities", v15)}];
+        [behaviorCopy addRestrictedCapabilities:{objc_msgSend(*(*(&v15 + 1) + 8 * v14++), "restrictedCapabilities", v15)}];
       }
 
       while (v12 != v14);
@@ -586,17 +586,17 @@ uint64_t __71__CSPresentationViewController_dismissPresentationAnimated_completi
 
   if (![(NSMutableArray *)self->_contentViewControllers count])
   {
-    [v4 addRestrictedCapabilities:0x10000000];
+    [behaviorCopy addRestrictedCapabilities:0x10000000];
   }
 }
 
-- (void)aggregatePresentation:(id)a3
+- (void)aggregatePresentation:(id)presentation
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  presentationCopy = presentation;
   v14.receiver = self;
   v14.super_class = CSPresentationViewController;
-  [(CSCoverSheetViewControllerBase *)&v14 aggregatePresentation:v4];
+  [(CSCoverSheetViewControllerBase *)&v14 aggregatePresentation:presentationCopy];
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -617,7 +617,7 @@ uint64_t __71__CSPresentationViewController_dismissPresentationAnimated_completi
           objc_enumerationMutation(v5);
         }
 
-        [v4 unionPresentation:{*(*(&v10 + 1) + 8 * v9++), v10}];
+        [presentationCopy unionPresentation:{*(*(&v10 + 1) + 8 * v9++), v10}];
       }
 
       while (v7 != v9);
@@ -628,10 +628,10 @@ uint64_t __71__CSPresentationViewController_dismissPresentationAnimated_completi
   }
 }
 
-- (void)rebuildEverythingForReason:(id)a3
+- (void)rebuildEverythingForReason:(id)reason
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   ++self->_mutatingPresentation;
   v11 = 0u;
   v12 = 0u;
@@ -653,7 +653,7 @@ uint64_t __71__CSPresentationViewController_dismissPresentationAnimated_completi
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) rebuildEverythingForReason:v4];
+        [*(*(&v11 + 1) + 8 * v9++) rebuildEverythingForReason:reasonCopy];
       }
 
       while (v7 != v9);
@@ -666,13 +666,13 @@ uint64_t __71__CSPresentationViewController_dismissPresentationAnimated_completi
   --self->_mutatingPresentation;
   v10.receiver = self;
   v10.super_class = CSPresentationViewController;
-  [(CSCoverSheetViewControllerBase *)&v10 rebuildEverythingForReason:v4];
+  [(CSCoverSheetViewControllerBase *)&v10 rebuildEverythingForReason:reasonCopy];
 }
 
-- (BOOL)handleAppearanceUpdateFromController:(id)a3 animationSettings:(id *)a4
+- (BOOL)handleAppearanceUpdateFromController:(id)controller animationSettings:(id *)settings
 {
-  v6 = a3;
-  v7 = v6;
+  controllerCopy = controller;
+  v7 = controllerCopy;
   if (self->_mutatingPresentation)
   {
     v8 = 0;
@@ -680,7 +680,7 @@ uint64_t __71__CSPresentationViewController_dismissPresentationAnimated_completi
 
   else
   {
-    if (v6 != self)
+    if (controllerCopy != self)
     {
       v9 = SBLogDashBoard();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -688,22 +688,22 @@ uint64_t __71__CSPresentationViewController_dismissPresentationAnimated_completi
         [CSPresentationViewController handleAppearanceUpdateFromController:animationSettings:];
       }
 
-      v10 = [MEMORY[0x277D75D18] areAnimationsEnabled];
-      v11 = *a4;
-      if (v10)
+      areAnimationsEnabled = [MEMORY[0x277D75D18] areAnimationsEnabled];
+      v11 = *settings;
+      if (areAnimationsEnabled)
       {
         if (v11)
         {
           v12 = v11;
-          *a4 = v11;
+          *settings = v11;
         }
 
         else
         {
           v13 = [MEMORY[0x277CF0B70] settingsWithDuration:0.35];
-          *a4 = v13;
+          *settings = v13;
 
-          v11 = *a4;
+          v11 = *settings;
         }
       }
 
@@ -712,27 +712,27 @@ uint64_t __71__CSPresentationViewController_dismissPresentationAnimated_completi
 
     v15.receiver = self;
     v15.super_class = CSPresentationViewController;
-    v8 = [(CSCoverSheetViewControllerBase *)&v15 handleAppearanceUpdateFromController:v7 animationSettings:a4]|| [(NSArray *)self->_activeContentViewControllers containsObject:v7];
+    v8 = [(CSCoverSheetViewControllerBase *)&v15 handleAppearanceUpdateFromController:v7 animationSettings:settings]|| [(NSArray *)self->_activeContentViewControllers containsObject:v7];
   }
 
   return v8;
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v28.receiver = self;
   v28.super_class = CSPresentationViewController;
-  if (-[CSCoverSheetViewControllerBase handleEvent:](&v28, sel_handleEvent_, v4) && ([v4 isConsumable] & 1) != 0)
+  if (-[CSCoverSheetViewControllerBase handleEvent:](&v28, sel_handleEvent_, eventCopy) && ([eventCopy isConsumable] & 1) != 0)
   {
 LABEL_25:
-    v17 = [v4 isConsumable];
+    isConsumable = [eventCopy isConsumable];
   }
 
   else
   {
-    if ([v4 isConsumable])
+    if ([eventCopy isConsumable])
     {
       v26 = 0u;
       v27 = 0u;
@@ -753,7 +753,7 @@ LABEL_25:
               objc_enumerationMutation(v5);
             }
 
-            if ([*(*(&v24 + 1) + 8 * i) handleEvent:v4])
+            if ([*(*(&v24 + 1) + 8 * i) handleEvent:eventCopy])
             {
 
               goto LABEL_25;
@@ -774,8 +774,8 @@ LABEL_25:
     else
     {
       v10 = [MEMORY[0x277CBEB18] arrayWithArray:self->_contentViewControllers];
-      v11 = [(CSPresentationViewController *)self childViewControllers];
-      [v10 removeObjectsInArray:v11];
+      childViewControllers = [(CSPresentationViewController *)self childViewControllers];
+      [v10 removeObjectsInArray:childViewControllers];
 
       v12 = SBLogDashBoard();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -784,7 +784,7 @@ LABEL_25:
         *buf = 138543874;
         v31 = v19;
         v32 = 2114;
-        v33 = v4;
+        v33 = eventCopy;
         v34 = 2112;
         v35 = v10;
         _os_log_debug_impl(&dword_21EB05000, v12, OS_LOG_TYPE_DEBUG, "%{public}@ - Sending event %{public}@ to non-active content view controllers: %@", buf, 0x20u);
@@ -809,7 +809,7 @@ LABEL_25:
               objc_enumerationMutation(v5);
             }
 
-            [*(*(&v20 + 1) + 8 * j) handleEvent:{v4, v20}];
+            [*(*(&v20 + 1) + 8 * j) handleEvent:{eventCopy, v20}];
           }
 
           v14 = [(NSArray *)v5 countByEnumeratingWithState:&v20 objects:v29 count:16];
@@ -819,19 +819,19 @@ LABEL_25:
       }
     }
 
-    v17 = 0;
+    isConsumable = 0;
   }
 
-  return v17;
+  return isConsumable;
 }
 
-- (BOOL)wouldHandleButtonEvent:(id)a3
+- (BOOL)wouldHandleButtonEvent:(id)event
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v14.receiver = self;
   v14.super_class = CSPresentationViewController;
-  if ([(CSCoverSheetViewControllerBase *)&v14 wouldHandleButtonEvent:v4])
+  if ([(CSCoverSheetViewControllerBase *)&v14 wouldHandleButtonEvent:eventCopy])
   {
     LOBYTE(v5) = 1;
   }
@@ -856,7 +856,7 @@ LABEL_25:
             objc_enumerationMutation(v6);
           }
 
-          if ([*(*(&v10 + 1) + 8 * i) wouldHandleButtonEvent:{v4, v10}])
+          if ([*(*(&v10 + 1) + 8 * i) wouldHandleButtonEvent:{eventCopy, v10}])
           {
             LOBYTE(v5) = 1;
             goto LABEL_13;
@@ -917,8 +917,8 @@ LABEL_13:
 
           v10 = v9;
 
-          v11 = [v10 canHostAnApp];
-          if (v11)
+          canHostAnApp = [v10 canHostAnApp];
+          if (canHostAnApp)
           {
             LOBYTE(v3) = 1;
             goto LABEL_17;
@@ -980,9 +980,9 @@ LABEL_3:
 
         v11 = v10;
 
-        v12 = [v11 hostedAppSceneHandle];
+        hostedAppSceneHandle = [v11 hostedAppSceneHandle];
 
-        if (v12)
+        if (hostedAppSceneHandle)
         {
           break;
         }
@@ -1004,18 +1004,18 @@ LABEL_3:
   else
   {
 LABEL_15:
-    v12 = 0;
+    hostedAppSceneHandle = 0;
   }
 
-  return v12;
+  return hostedAppSceneHandle;
 }
 
 - (id)hostedAppSceneHandles
 {
   v2 = [(NSArray *)self->_activeContentViewControllers bs_compactMap:&__block_literal_global_36];
-  v3 = [v2 bs_flatten];
+  bs_flatten = [v2 bs_flatten];
 
-  return v3;
+  return bs_flatten;
 }
 
 id __53__CSPresentationViewController_hostedAppSceneHandles__block_invoke(uint64_t a1, void *a2)
@@ -1094,8 +1094,8 @@ id __53__CSPresentationViewController_hostedAppSceneHandles__block_invoke(uint64
 
           v10 = v9;
 
-          v11 = [v10 handlesRotationIndependentOfCoverSheet];
-          if (v11)
+          handlesRotationIndependentOfCoverSheet = [v10 handlesRotationIndependentOfCoverSheet];
+          if (handlesRotationIndependentOfCoverSheet)
           {
             LOBYTE(v3) = 1;
             goto LABEL_17;
@@ -1120,10 +1120,10 @@ LABEL_17:
 
 - (id)succinctDescription
 {
-  v2 = [(CSPresentationViewController *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CSPresentationViewController *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -1134,30 +1134,30 @@ LABEL_17:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CSPresentationViewController *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CSPresentationViewController *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(CSPresentationViewController *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(CSPresentationViewController *)self succinctDescriptionBuilder];
   if ([(CSPresentationViewController *)self isPresentingContent]|| ([(CSPresentationViewController *)self viewIfLoaded], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __70__CSPresentationViewController_descriptionBuilderWithMultilinePrefix___block_invoke;
     v8[3] = &unk_27838B838;
-    v9 = v5;
-    v10 = self;
-    [v9 appendBodySectionWithName:0 multilinePrefix:v4 block:v8];
+    v9 = succinctDescriptionBuilder;
+    selfCopy = self;
+    [v9 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v8];
   }
 
-  return v5;
+  return succinctDescriptionBuilder;
 }
 
 void __70__CSPresentationViewController_descriptionBuilderWithMultilinePrefix___block_invoke(uint64_t a1)
@@ -1198,12 +1198,12 @@ void __70__CSPresentationViewController_descriptionBuilderWithMultilinePrefix___
   v24 = [v23 appendObject:v25 withName:@"presentation"];
 }
 
-- (void)_updateContentViewControllersAnimated:(BOOL)a3 completion:(id)a4
+- (void)_updateContentViewControllersAnimated:(BOOL)animated completion:(id)completion
 {
-  v77 = a3;
+  animatedCopy = animated;
   v116 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [MEMORY[0x277CBEB18] array];
+  completionCopy = completion;
+  array = [MEMORY[0x277CBEB18] array];
   v105 = 0u;
   v106 = 0u;
   v107 = 0u;
@@ -1224,7 +1224,7 @@ LABEL_3:
       }
 
       v12 = *(*(&v105 + 1) + 8 * v11);
-      [v6 addObject:v12];
+      [array addObject:v12];
       if ([v12 presentationType] == 2)
       {
         break;
@@ -1244,16 +1244,16 @@ LABEL_3:
   }
 
   v13 = [MEMORY[0x277CBEB58] setWithArray:self->_activeContentViewControllers];
-  v14 = [MEMORY[0x277CBEB58] setWithArray:v6];
+  v14 = [MEMORY[0x277CBEB58] setWithArray:array];
   if (([v13 isEqual:v14] & 1) == 0 && -[CSPresentationViewController isViewLoaded](self, "isViewLoaded"))
   {
     ++self->_mutatingPresentation;
     ++self->_transitioning;
     [v14 minusSet:v13];
-    v15 = [MEMORY[0x277CBEB98] setWithArray:v6];
+    v15 = [MEMORY[0x277CBEB98] setWithArray:array];
     [v13 minusSet:v15];
 
-    v16 = [v6 copy];
+    v16 = [array copy];
     activeContentViewControllers = self->_activeContentViewControllers;
     self->_activeContentViewControllers = v16;
 
@@ -1264,17 +1264,17 @@ LABEL_3:
     v101[3] = &unk_27838D3D8;
     v79 = v18;
     v102 = v79;
-    v103 = self;
-    v104 = v5;
+    selfCopy = self;
+    v104 = completionCopy;
     v19 = MEMORY[0x223D698D0](v101);
     v72 = v14;
     v20 = [v14 count];
     v21 = [v13 count];
     v67 = v19;
     v78 = [MEMORY[0x277CF0BA0] sentinelWithQueue:MEMORY[0x277D85CD0] signalCount:v20 + v21 + 1 signalHandler:v19];
-    v69 = v6;
-    v70 = v5;
-    if (v77)
+    v69 = array;
+    v70 = completionCopy;
+    if (animatedCopy)
     {
       v22 = MEMORY[0x277CF0B70];
       v23 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7C0]];
@@ -1324,8 +1324,8 @@ LABEL_18:
               }
 
               v33 = MEMORY[0x277CCACA8];
-              v34 = [v31 appearanceIdentifier];
-              v35 = [v33 stringWithFormat:@"Dismissing: %@", v34];
+              appearanceIdentifier = [v31 appearanceIdentifier];
+              v35 = [v33 stringWithFormat:@"Dismissing: %@", appearanceIdentifier];
 
               [v79 addObject:v35];
               v36 = [v76 mutableCopy];
@@ -1341,7 +1341,7 @@ LABEL_18:
               v92[3] = &unk_27838D450;
               v92[4] = v31;
               v93 = v36;
-              v94 = self;
+              selfCopy2 = self;
               v38 = v78;
               v95 = v38;
               v39 = v35;
@@ -1359,8 +1359,8 @@ LABEL_18:
           while (v28);
         }
 
-        v44 = [(CSCoverSheetViewControllerBase *)self presentationCoordinateSpace];
-        v45 = [CSPresentation presentationWithCoordinateSpace:v44];
+        presentationCoordinateSpace = [(CSCoverSheetViewControllerBase *)self presentationCoordinateSpace];
+        v45 = [CSPresentation presentationWithCoordinateSpace:presentationCoordinateSpace];
 
         [v45 setIdentifier:@"PresentationAggregation"];
         v91.receiver = self;
@@ -1403,8 +1403,8 @@ LABEL_18:
                 }
 
                 v52 = MEMORY[0x277CCACA8];
-                v53 = [v50 appearanceIdentifier];
-                v54 = [v52 stringWithFormat:@"Presenting: %@", v53];
+                appearanceIdentifier2 = [v50 appearanceIdentifier];
+                v54 = [v52 stringWithFormat:@"Presenting: %@", appearanceIdentifier2];
 
                 [v79 addObject:v54];
                 v86[0] = MEMORY[0x277D85DD0];
@@ -1426,7 +1426,7 @@ LABEL_18:
                 v80[4] = v50;
                 v80[5] = self;
                 v57 = v45;
-                v85 = v77;
+                v85 = animatedCopy;
                 v81 = v57;
                 v82 = v55;
                 v58 = v78;
@@ -1444,7 +1444,7 @@ LABEL_18:
 
               else
               {
-                [(CSPresentationViewController *)self _updatePresentationForViewController:v50 presentation:v45 animated:v77 animationSettings:v73];
+                [(CSPresentationViewController *)self _updatePresentationForViewController:v50 presentation:v45 animated:animatedCopy animationSettings:v73];
               }
             }
 
@@ -1454,10 +1454,10 @@ LABEL_18:
           while (v47);
         }
 
-        [(CSPresentationViewController *)self _updatePresentationForViewController:self presentation:v45 animated:v77 animationSettings:v73];
+        [(CSPresentationViewController *)self _updatePresentationForViewController:self presentation:v45 animated:animatedCopy animationSettings:v73];
         --self->_mutatingPresentation;
         [(CSCoverSheetViewControllerBase *)self updateBehaviorForController:self];
-        if (v77)
+        if (animatedCopy)
         {
           v64 = MEMORY[0x277CF0B70];
           v65 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
@@ -1469,8 +1469,8 @@ LABEL_18:
           v66 = 0;
         }
 
-        v6 = v69;
-        v5 = v70;
+        array = v69;
+        completionCopy = v70;
         v13 = v68;
         [(CSCoverSheetViewControllerBase *)self updateAppearanceForController:self withAnimationSettings:v66 completion:0];
         [v78 signal];
@@ -1490,9 +1490,9 @@ LABEL_18:
   }
 
   [(CSCoverSheetViewControllerBase *)self updateBehaviorForController:self];
-  if (v5)
+  if (completionCopy)
   {
-    v5[2](v5);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_47:
@@ -1750,22 +1750,22 @@ uint64_t __81__CSPresentationViewController__updateContentViewControllersAnimate
   return [v2 signalWithContext:v3];
 }
 
-- (void)_didTransitionViewController:(id)a3 toPresented:(BOOL)a4
+- (void)_didTransitionViewController:(id)controller toPresented:(BOOL)presented
 {
-  v4 = a4;
-  v6 = a3;
-  [v6 didTransitionToPresented:v4];
+  presentedCopy = presented;
+  controllerCopy = controller;
+  [controllerCopy didTransitionToPresented:presentedCopy];
   WeakRetained = objc_loadWeakRetained(&self->_presentationDelegate);
-  [WeakRetained presentationViewController:self didTransitionViewController:v6 toPresented:v4];
+  [WeakRetained presentationViewController:self didTransitionViewController:controllerCopy toPresented:presentedCopy];
 }
 
-- (void)_reflowPresentationWithAnimationSettings:(id)a3
+- (void)_reflowPresentationWithAnimationSettings:(id)settings
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   ++self->_mutatingPresentation;
-  v5 = [(CSCoverSheetViewControllerBase *)self presentationCoordinateSpace];
-  v6 = [CSPresentation presentationWithCoordinateSpace:v5];
+  presentationCoordinateSpace = [(CSCoverSheetViewControllerBase *)self presentationCoordinateSpace];
+  v6 = [CSPresentation presentationWithCoordinateSpace:presentationCoordinateSpace];
 
   [v6 setIdentifier:@"PresentationAggregation"];
   v16.receiver = self;
@@ -1791,7 +1791,7 @@ uint64_t __81__CSPresentationViewController__updateContentViewControllersAnimate
           objc_enumerationMutation(v7);
         }
 
-        [(CSPresentationViewController *)self _updatePresentationForViewController:*(*(&v12 + 1) + 8 * v11++) presentation:v6 animationSettings:v4, v12];
+        [(CSPresentationViewController *)self _updatePresentationForViewController:*(*(&v12 + 1) + 8 * v11++) presentation:v6 animationSettings:settingsCopy, v12];
       }
 
       while (v9 != v11);
@@ -1801,20 +1801,20 @@ uint64_t __81__CSPresentationViewController__updateContentViewControllersAnimate
     while (v9);
   }
 
-  [(CSPresentationViewController *)self _updatePresentationForViewController:self presentation:v6 animationSettings:v4];
+  [(CSPresentationViewController *)self _updatePresentationForViewController:self presentation:v6 animationSettings:settingsCopy];
   --self->_mutatingPresentation;
 }
 
-- (void)_updatePresentationForViewController:(id)a3 presentation:(id)a4 animated:(BOOL)a5 animationSettings:(id)a6
+- (void)_updatePresentationForViewController:(id)controller presentation:(id)presentation animated:(BOOL)animated animationSettings:(id)settings
 {
-  v7 = a5;
+  animatedCopy = animated;
   v79 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (v12)
+  controllerCopy = controller;
+  presentationCopy = presentation;
+  settingsCopy = settings;
+  if (presentationCopy)
   {
-    if (v11)
+    if (controllerCopy)
     {
       goto LABEL_3;
     }
@@ -1823,7 +1823,7 @@ uint64_t __81__CSPresentationViewController__updateContentViewControllersAnimate
   else
   {
     [CSPresentationViewController _updatePresentationForViewController:a2 presentation:self animated:? animationSettings:?];
-    if (v11)
+    if (controllerCopy)
     {
       goto LABEL_3;
     }
@@ -1836,9 +1836,9 @@ LABEL_3:
 
   if (v15)
   {
-    v52 = v7;
-    v53 = self;
-    v56 = v13;
+    v52 = animatedCopy;
+    selfCopy = self;
+    v56 = settingsCopy;
     v16 = SBLogDashBoard();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
@@ -1847,7 +1847,7 @@ LABEL_3:
       v43 = objc_opt_class();
       v44 = MEMORY[0x277CF0C00];
       v45 = v43;
-      v46 = [v44 succinctDescriptionForObject:v12];
+      v46 = [v44 succinctDescriptionForObject:presentationCopy];
       *buf = 138412802;
       v74 = v41;
       v75 = 2112;
@@ -1857,18 +1857,18 @@ LABEL_3:
       _os_log_debug_impl(&dword_21EB05000, v16, OS_LOG_TYPE_DEBUG, "%@ updating %@ with %@", buf, 0x20u);
     }
 
-    v58 = v11;
+    v58 = controllerCopy;
 
     v17 = MEMORY[0x277CBEB58];
-    v18 = [v12 regions];
-    v54 = [v17 setWithArray:v18];
+    regions = [presentationCopy regions];
+    v54 = [v17 setWithArray:regions];
 
     v69 = 0u;
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v19 = [v12 regions];
-    v20 = [v19 countByEnumeratingWithState:&v67 objects:v72 count:16];
+    regions2 = [presentationCopy regions];
+    v20 = [regions2 countByEnumeratingWithState:&v67 objects:v72 count:16];
     if (v20)
     {
       v21 = v20;
@@ -1880,7 +1880,7 @@ LABEL_3:
         {
           if (*v68 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(regions2);
           }
 
           v24 = *(*(&v67 + 1) + 8 * v23);
@@ -1896,15 +1896,15 @@ LABEL_3:
         }
 
         while (v21 != v23);
-        v21 = [v19 countByEnumeratingWithState:&v67 objects:v72 count:16];
+        v21 = [regions2 countByEnumeratingWithState:&v67 objects:v72 count:16];
       }
 
       while (v21);
     }
 
-    v13 = v56;
-    v11 = v58;
-    self = v53;
+    settingsCopy = v56;
+    controllerCopy = v58;
+    self = selfCopy;
     v26 = v54;
     if (!v52)
     {
@@ -1917,35 +1917,35 @@ LABEL_18:
     v64[1] = 3221225472;
     v64[2] = __109__CSPresentationViewController__updatePresentationForViewController_presentation_animated_animationSettings___block_invoke;
     v64[3] = &unk_27838B838;
-    v65 = v11;
-    v66 = v12;
-    [v27 animateWithSettings:v13 actions:v64];
+    v65 = controllerCopy;
+    v66 = presentationCopy;
+    [v27 animateWithSettings:settingsCopy actions:v64];
 
     goto LABEL_19;
   }
 
   v26 = 0;
-  if (v7)
+  if (animatedCopy)
   {
     goto LABEL_18;
   }
 
 LABEL_16:
-  [(CSCoverSheetViewControllerBase *)v11 updateForPresentation:v12];
+  [(CSCoverSheetViewControllerBase *)controllerCopy updateForPresentation:presentationCopy];
 LABEL_19:
-  if (v11 != self)
+  if (controllerCopy != self)
   {
-    [v12 unionPresentation:v11];
+    [presentationCopy unionPresentation:controllerCopy];
     v28 = SBLogDashBoard();
     v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG);
 
     if (v29)
     {
-      v57 = v13;
-      v59 = v11;
+      v57 = settingsCopy;
+      v59 = controllerCopy;
       v30 = MEMORY[0x277CBEB58];
-      v31 = [v12 regions];
-      v32 = [v30 setWithArray:v31];
+      regions3 = [presentationCopy regions];
+      v32 = [v30 setWithArray:regions3];
 
       v55 = v26;
       [v32 minusSet:v26];
@@ -2005,8 +2005,8 @@ LABEL_19:
         while (v36);
       }
 
-      v13 = v57;
-      v11 = v59;
+      settingsCopy = v57;
+      controllerCopy = v59;
       v26 = v55;
     }
   }

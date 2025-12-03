@@ -1,40 +1,40 @@
 @interface HDHealthAppSharingReminderRestorableAlarm
 - (HDDaemon)daemon;
-- (HDHealthAppSharingReminderRestorableAlarm)initWithDaemon:(id)a3;
+- (HDHealthAppSharingReminderRestorableAlarm)initWithDaemon:(id)daemon;
 - (id)currentDate;
-- (id)nextSharingReminderDateFromDate:(id)a3;
+- (id)nextSharingReminderDateFromDate:(id)date;
 - (id)sharingReminderDate;
-- (id)sharingReminderFallbackNotificationDate:(id)a3;
+- (id)sharingReminderFallbackNotificationDate:(id)date;
 - (id)sharingReminderRefreshIntervalDateComponents;
-- (void)_handleCompletionWithAlarmEvent:(id)a3 success:(BOOL)a4 error:(id)a5 restorableAlarmManager:(id)a6 completion:(id)a7;
-- (void)handleAlarmEvent:(id)a3 restorableAlarmManager:(id)a4 completion:(id)a5;
-- (void)removeScheduledAlarmWithRestorableAlarmManager:(id)a3;
-- (void)scheduleAlarmWithFallbackDate:(id)a3 restorableAlarmManager:(id)a4;
-- (void)setUnitTest_userNotificationCenter:(id)a3;
+- (void)_handleCompletionWithAlarmEvent:(id)event success:(BOOL)success error:(id)error restorableAlarmManager:(id)manager completion:(id)completion;
+- (void)handleAlarmEvent:(id)event restorableAlarmManager:(id)manager completion:(id)completion;
+- (void)removeScheduledAlarmWithRestorableAlarmManager:(id)manager;
+- (void)scheduleAlarmWithFallbackDate:(id)date restorableAlarmManager:(id)manager;
+- (void)setUnitTest_userNotificationCenter:(id)center;
 - (void)sharingReminderDate;
 @end
 
 @implementation HDHealthAppSharingReminderRestorableAlarm
 
-- (HDHealthAppSharingReminderRestorableAlarm)initWithDaemon:(id)a3
+- (HDHealthAppSharingReminderRestorableAlarm)initWithDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v16.receiver = self;
   v16.super_class = HDHealthAppSharingReminderRestorableAlarm;
   v5 = [(HDHealthAppSharingReminderRestorableAlarm *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_daemon, v4);
+    objc_storeWeak(&v5->_daemon, daemonCopy);
     v7 = objc_alloc(MEMORY[0x277D10718]);
-    v8 = [v4 primaryProfile];
-    v9 = [v7 initWithCategory:1 domainName:@"HDHealthAppDaemonExtension" profile:v8];
+    primaryProfile = [daemonCopy primaryProfile];
+    v9 = [v7 initWithCategory:1 domainName:@"HDHealthAppDaemonExtension" profile:primaryProfile];
     sharingKeyValueDomain = v6->_sharingKeyValueDomain;
     v6->_sharingKeyValueDomain = v9;
 
     v11 = [_TtC21HealthAppHealthDaemon30HDHealthAppNotificationManager alloc];
-    v12 = [v4 primaryProfile];
-    v13 = [(HDHealthAppNotificationManager *)v11 initWithProfile:v12];
+    primaryProfile2 = [daemonCopy primaryProfile];
+    v13 = [(HDHealthAppNotificationManager *)v11 initWithProfile:primaryProfile2];
     notificationManager = v6->_notificationManager;
     v6->_notificationManager = v13;
   }
@@ -42,28 +42,28 @@
   return v6;
 }
 
-- (void)scheduleAlarmWithFallbackDate:(id)a3 restorableAlarmManager:(id)a4
+- (void)scheduleAlarmWithFallbackDate:(id)date restorableAlarmManager:(id)manager
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HDHealthAppSharingReminderRestorableAlarm *)self sharingReminderDate];
-  if (v8 || ([(HDHealthAppSharingReminderRestorableAlarm *)self sharingReminderFallbackNotificationDate:v6], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  dateCopy = date;
+  managerCopy = manager;
+  sharingReminderDate = [(HDHealthAppSharingReminderRestorableAlarm *)self sharingReminderDate];
+  if (sharingReminderDate || ([(HDHealthAppSharingReminderRestorableAlarm *)self sharingReminderFallbackNotificationDate:dateCopy], (sharingReminderDate = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v9 = v8;
-    v10 = [(HDHealthAppSharingReminderRestorableAlarm *)self nextSharingReminderDateFromDate:v8];
-    [v7 scheduleAlarmEventWithHandler:self dueDate:v10 eventOptions:1];
+    v9 = sharingReminderDate;
+    v10 = [(HDHealthAppSharingReminderRestorableAlarm *)self nextSharingReminderDateFromDate:sharingReminderDate];
+    [managerCopy scheduleAlarmEventWithHandler:self dueDate:v10 eventOptions:1];
     _HKInitializeLogging();
     v11 = HKLogWellnessDashboard();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = objc_opt_class();
       v13 = v12;
-      v14 = [(HDHealthAppSharingReminderRestorableAlarm *)self eventIdentifier];
+      eventIdentifier = [(HDHealthAppSharingReminderRestorableAlarm *)self eventIdentifier];
       v16 = 138543618;
       v17 = v12;
       v18 = 2114;
-      v19 = v14;
+      v19 = eventIdentifier;
       _os_log_impl(&dword_22939E000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Scheduled alarm event %{public}@", &v16, 0x16u);
     }
   }
@@ -81,15 +81,15 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeScheduledAlarmWithRestorableAlarmManager:(id)a3
+- (void)removeScheduledAlarmWithRestorableAlarmManager:(id)manager
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D0FD10];
-  v5 = a3;
-  v6 = [v4 sharingReminderNotificationIdentifier];
-  v7 = [(HDHealthAppSharingReminderRestorableAlarm *)self eventIdentifier];
+  managerCopy = manager;
+  sharingReminderNotificationIdentifier = [v4 sharingReminderNotificationIdentifier];
+  eventIdentifier = [(HDHealthAppSharingReminderRestorableAlarm *)self eventIdentifier];
   v15 = 0;
-  [v5 removeAlarmEventWithIdentifier:v7 error:&v15];
+  [managerCopy removeAlarmEventWithIdentifier:eventIdentifier error:&v15];
 
   v8 = v15;
   _HKInitializeLogging();
@@ -107,31 +107,31 @@
   {
     v11 = objc_opt_class();
     v12 = v11;
-    v13 = [(HDHealthAppSharingReminderRestorableAlarm *)self eventIdentifier];
+    eventIdentifier2 = [(HDHealthAppSharingReminderRestorableAlarm *)self eventIdentifier];
     *buf = 138543618;
     v17 = v11;
     v18 = 2114;
-    v19 = v13;
+    v19 = eventIdentifier2;
     _os_log_impl(&dword_22939E000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Removed alarm event %{public}@", buf, 0x16u);
   }
 
-  [(HDHealthAppNotificationManager *)self->_notificationManager removeNotificationWithIdentifier:v6];
+  [(HDHealthAppNotificationManager *)self->_notificationManager removeNotificationWithIdentifier:sharingReminderNotificationIdentifier];
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAlarmEvent:(id)a3 restorableAlarmManager:(id)a4 completion:(id)a5
+- (void)handleAlarmEvent:(id)event restorableAlarmManager:(id)manager completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  managerCopy = manager;
+  completionCopy = completion;
   _HKInitializeLogging();
   v11 = HKLogWellnessDashboard();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = objc_opt_class();
     v13 = v12;
-    v14 = [v8 description];
+    v14 = [eventCopy description];
     *buf = 138543618;
     v38 = v12;
     v39 = 2114;
@@ -140,9 +140,9 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_daemon);
-  v16 = [WeakRetained primaryProfile];
+  primaryProfile = [WeakRetained primaryProfile];
 
-  v17 = [[_TtC21HealthAppHealthDaemon30HDHealthAppNotificationManager alloc] initWithProfile:v16];
+  v17 = [[_TtC21HealthAppHealthDaemon30HDHealthAppNotificationManager alloc] initWithProfile:primaryProfile];
   _HKInitializeLogging();
   v18 = HKLogWellnessDashboard();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -160,69 +160,69 @@
   v23 = v22;
   if (!v21 || v22)
   {
-    [(HDHealthAppSharingReminderRestorableAlarm *)self _handleCompletionWithAlarmEvent:v8 success:0 error:v22 restorableAlarmManager:v9 completion:v10];
+    [(HDHealthAppSharingReminderRestorableAlarm *)self _handleCompletionWithAlarmEvent:eventCopy success:0 error:v22 restorableAlarmManager:managerCopy completion:completionCopy];
   }
 
   else
   {
     v24 = objc_loadWeakRetained(&self->_daemon);
     [v24 primaryProfile];
-    v25 = v16;
-    v26 = v8;
-    v27 = v10;
-    v29 = v28 = v9;
-    v31 = [v29 notificationManager];
+    v25 = primaryProfile;
+    v26 = eventCopy;
+    v27 = completionCopy;
+    v29 = v28 = managerCopy;
+    notificationManager = [v29 notificationManager];
 
-    v9 = v28;
-    v10 = v27;
-    v8 = v26;
-    v16 = v25;
+    managerCopy = v28;
+    completionCopy = v27;
+    eventCopy = v26;
+    primaryProfile = v25;
 
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __96__HDHealthAppSharingReminderRestorableAlarm_handleAlarmEvent_restorableAlarmManager_completion___block_invoke;
     v32[3] = &unk_278658168;
     v32[4] = self;
-    v33 = v8;
-    v34 = v9;
-    v35 = v10;
-    [v31 postNotificationWithRequest:v21 completion:v32];
+    v33 = eventCopy;
+    v34 = managerCopy;
+    v35 = completionCopy;
+    [notificationManager postNotificationWithRequest:v21 completion:v32];
   }
 
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCompletionWithAlarmEvent:(id)a3 success:(BOOL)a4 error:(id)a5 restorableAlarmManager:(id)a6 completion:(id)a7
+- (void)_handleCompletionWithAlarmEvent:(id)event success:(BOOL)success error:(id)error restorableAlarmManager:(id)manager completion:(id)completion
 {
-  v10 = a4;
+  successCopy = success;
   v38 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  eventCopy = event;
+  errorCopy = error;
+  managerCopy = manager;
+  completionCopy = completion;
   _HKInitializeLogging();
   v16 = HKLogWellnessDashboard();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = objc_opt_class();
     v18 = v17;
-    v19 = [v12 eventIdentifier];
+    eventIdentifier = [eventCopy eventIdentifier];
     *buf = 138544130;
     v31 = v17;
     v32 = 2114;
-    v33 = v19;
+    v33 = eventIdentifier;
     v34 = 1024;
-    v35 = v10;
+    v35 = successCopy;
     v36 = 2114;
-    v37 = v13;
+    v37 = errorCopy;
     _os_log_impl(&dword_22939E000, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@] Handling completion of alarm event %{public}@ success: %d error: %{public}@", buf, 0x26u);
   }
 
-  v20 = [(HDHealthAppSharingReminderRestorableAlarm *)self currentDate];
-  if (v10)
+  currentDate = [(HDHealthAppSharingReminderRestorableAlarm *)self currentDate];
+  if (successCopy)
   {
-    v29 = v13;
-    v21 = [(HDHealthAppSharingReminderRestorableAlarm *)self setSharingReminderDate:v20 error:&v29];
+    v29 = errorCopy;
+    v21 = [(HDHealthAppSharingReminderRestorableAlarm *)self setSharingReminderDate:currentDate error:&v29];
     v22 = v29;
 
     _HKInitializeLogging();
@@ -233,7 +233,7 @@
       *buf = 138543874;
       v31 = v24;
       v32 = 2112;
-      v33 = v20;
+      v33 = currentDate;
       v34 = 1026;
       v35 = v21;
       v25 = v24;
@@ -242,8 +242,8 @@
 
     if (v21)
     {
-      v26 = [(HDHealthAppSharingReminderRestorableAlarm *)self nextSharingReminderDateFromDate:v20];
-      [v14 rescheduleAlarmEvent:v12 dueDate:v26];
+      v26 = [(HDHealthAppSharingReminderRestorableAlarm *)self nextSharingReminderDateFromDate:currentDate];
+      [managerCopy rescheduleAlarmEvent:eventCopy dueDate:v26];
       v27 = 1;
       goto LABEL_12;
     }
@@ -251,7 +251,7 @@
 
   else
   {
-    v22 = v13;
+    v22 = errorCopy;
   }
 
   _HKInitializeLogging();
@@ -264,7 +264,7 @@
   v27 = 0;
 LABEL_12:
 
-  v15[2](v15, v27 & v10, v22);
+  completionCopy[2](completionCopy, v27 & successCopy, v22);
   v28 = *MEMORY[0x277D85DE8];
 }
 
@@ -294,14 +294,14 @@ LABEL_12:
   return v6;
 }
 
-- (id)sharingReminderFallbackNotificationDate:(id)a3
+- (id)sharingReminderFallbackNotificationDate:(id)date
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_alloc(MEMORY[0x277D10718]);
   WeakRetained = objc_loadWeakRetained(&self->_daemon);
-  v7 = [WeakRetained primaryProfile];
-  v8 = [v5 initWithCategory:100 domainName:@"com.apple.Health.SharingEntries" profile:v7];
+  primaryProfile = [WeakRetained primaryProfile];
+  v8 = [v5 initWithCategory:100 domainName:@"com.apple.Health.SharingEntries" profile:primaryProfile];
 
   v33 = 0;
   v9 = [v8 dateForKey:@"SharingReminderNotificationDate" error:&v33];
@@ -331,10 +331,10 @@ LABEL_12:
   {
     v12 = v15;
 LABEL_11:
-    v20 = v4;
-    if (!v20)
+    currentDate = dateCopy;
+    if (!currentDate)
     {
-      v20 = [(HDHealthAppSharingReminderRestorableAlarm *)self currentDate];
+      currentDate = [(HDHealthAppSharingReminderRestorableAlarm *)self currentDate];
       _HKInitializeLogging();
       v21 = HKLogWellnessDashboard();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -343,14 +343,14 @@ LABEL_11:
         *buf = 138543618;
         v35 = v22;
         v36 = 2112;
-        v37 = v20;
+        v37 = currentDate;
         v23 = v22;
         _os_log_impl(&dword_22939E000, v21, OS_LOG_TYPE_DEFAULT, "[%{public}@] No fallback date found, using current date as backup to the backup: %@", buf, 0x16u);
       }
     }
 
     v31 = v12;
-    v24 = [(HDHealthAppSharingReminderRestorableAlarm *)self setSharingReminderDate:v20 error:&v31];
+    v24 = [(HDHealthAppSharingReminderRestorableAlarm *)self setSharingReminderDate:currentDate error:&v31];
     v16 = v31;
 
     _HKInitializeLogging();
@@ -364,7 +364,7 @@ LABEL_11:
         *buf = 138543618;
         v35 = v27;
         v36 = 2114;
-        v37 = v20;
+        v37 = currentDate;
         v28 = v27;
         _os_log_impl(&dword_22939E000, v26, OS_LOG_TYPE_DEFAULT, "[%{public}@] Set sharing reminder date to fallback date: %{public}@", buf, 0x16u);
       }
@@ -391,20 +391,20 @@ LABEL_11:
     _os_log_impl(&dword_22939E000, v17, OS_LOG_TYPE_DEFAULT, "[%{public}@] Set sharing reminder date to existing date: %{public}@", buf, 0x16u);
   }
 
-  v20 = v9;
+  currentDate = v9;
 LABEL_21:
 
   v29 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return currentDate;
 }
 
-- (id)nextSharingReminderDateFromDate:(id)a3
+- (id)nextSharingReminderDateFromDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HDHealthAppSharingReminderRestorableAlarm *)self sharingReminderRefreshIntervalDateComponents];
-  v6 = [MEMORY[0x277CBEA80] currentCalendar];
-  v7 = [v6 dateByAddingComponents:v5 toDate:v4 options:0];
+  dateCopy = date;
+  sharingReminderRefreshIntervalDateComponents = [(HDHealthAppSharingReminderRestorableAlarm *)self sharingReminderRefreshIntervalDateComponents];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v7 = [currentCalendar dateByAddingComponents:sharingReminderRefreshIntervalDateComponents toDate:dateCopy options:0];
 
   return v7;
 }
@@ -422,31 +422,31 @@ LABEL_21:
   unitTest_currentDate = self->_unitTest_currentDate;
   if (unitTest_currentDate)
   {
-    v3 = unitTest_currentDate;
+    date = unitTest_currentDate;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  return v3;
+  return date;
 }
 
-- (void)setUnitTest_userNotificationCenter:(id)a3
+- (void)setUnitTest_userNotificationCenter:(id)center
 {
-  v9 = a3;
+  centerCopy = center;
   v4 = [_TtC21HealthAppHealthDaemon30HDHealthAppNotificationManager alloc];
   WeakRetained = objc_loadWeakRetained(&self->_daemon);
-  v6 = [WeakRetained primaryProfile];
-  if (v9)
+  primaryProfile = [WeakRetained primaryProfile];
+  if (centerCopy)
   {
-    v7 = [(HDHealthAppNotificationManager *)v4 initWithProfile:v6 userNotificationCenter:v9];
+    v7 = [(HDHealthAppNotificationManager *)v4 initWithProfile:primaryProfile userNotificationCenter:centerCopy];
   }
 
   else
   {
-    v7 = [(HDHealthAppNotificationManager *)v4 initWithProfile:v6];
+    v7 = [(HDHealthAppNotificationManager *)v4 initWithProfile:primaryProfile];
   }
 
   notificationManager = self->_notificationManager;

@@ -1,11 +1,11 @@
 @interface _GCDevicePhysicalInputCapacitiveDirectionPadElementParameters
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_GCDevicePhysicalInputCapacitiveDirectionPadElementParameters)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)touchedSources;
 - (uint64_t)eventTouchedValueField;
 - (uint64_t)setEventTouchedValueField:(uint64_t)result;
-- (void)setTouchedSources:(void *)a1;
+- (void)setTouchedSources:(void *)sources;
 @end
 
 @implementation _GCDevicePhysicalInputCapacitiveDirectionPadElementParameters
@@ -19,22 +19,22 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = _GCDevicePhysicalInputCapacitiveDirectionPadElementParameters;
-  v4 = [(_GCDevicePhysicalInputClickableDirectionPadElementParameters *)&v6 copyWithZone:a3];
+  v4 = [(_GCDevicePhysicalInputClickableDirectionPadElementParameters *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 19, self->_touchedSources);
   v4[20] = self->_eventTouchedValueField;
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = _GCDevicePhysicalInputCapacitiveDirectionPadElementParameters;
-  v6 = [(_GCDevicePhysicalInputClickableDirectionPadElementParameters *)&v8 isEqual:v4]&& ((touchedSources = self->_touchedSources, touchedSources == v4[19]) || [(NSSet *)touchedSources isEqual:?]) && self->_eventTouchedValueField == v4[20];
+  v6 = [(_GCDevicePhysicalInputClickableDirectionPadElementParameters *)&v8 isEqual:equalCopy]&& ((touchedSources = self->_touchedSources, touchedSources == equalCopy[19]) || [(NSSet *)touchedSources isEqual:?]) && self->_eventTouchedValueField == equalCopy[20];
 
   return v6;
 }
@@ -51,35 +51,35 @@
 
 - (id)touchedSources
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = a1[19];
+    v2 = self[19];
     if (v2)
     {
-      v1 = v2;
+      selfCopy = v2;
     }
 
     else
     {
       v3 = MEMORY[0x1E695DFD8];
       v4 = objc_alloc(MEMORY[0x1E69A06B8]);
-      v5 = [(_GCDevicePhysicalInputElementParameters *)v1 aliases];
-      v6 = [(_GCDevicePhysicalInputElementParameters *)v1 localizedName];
-      v7 = [(_GCDevicePhysicalInputElementParameters *)v1 symbol];
-      v8 = [v4 initWithElementAliases:v5 localizedName:v6 symbol:v7 direction:0];
-      v1 = [v3 setWithObject:v8];
+      aliases = [(_GCDevicePhysicalInputElementParameters *)selfCopy aliases];
+      localizedName = [(_GCDevicePhysicalInputElementParameters *)selfCopy localizedName];
+      symbol = [(_GCDevicePhysicalInputElementParameters *)selfCopy symbol];
+      v8 = [v4 initWithElementAliases:aliases localizedName:localizedName symbol:symbol direction:0];
+      selfCopy = [v3 setWithObject:v8];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)setTouchedSources:(void *)a1
+- (void)setTouchedSources:(void *)sources
 {
-  if (a1)
+  if (sources)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 152);
+    objc_setProperty_nonatomic_copy(sources, newValue, newValue, 152);
   }
 }
 

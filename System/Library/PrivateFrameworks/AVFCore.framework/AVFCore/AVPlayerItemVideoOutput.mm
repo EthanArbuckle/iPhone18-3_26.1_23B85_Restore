@@ -2,39 +2,39 @@
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)earliestAvailablePixelBufferItemTime;
 - (AVPlayerItemVideoOutput)initWithOutputSettings:(NSDictionary *)outputSettings;
 - (AVPlayerItemVideoOutput)initWithPixelBufferAttributes:(NSDictionary *)pixelBufferAttributes;
-- (BOOL)_attachToPlayerItem:(id)a3;
+- (BOOL)_attachToPlayerItem:(id)item;
 - (BOOL)hasNewPixelBufferForItemTime:(CMTime *)itemTime;
 - (BOOL)isDefunct;
-- (BOOL)setUpWithOutputSettings:(id)a3 outputSettingsArePixelBufferAttributes:(BOOL)a4 withExceptionReason:(id *)a5;
+- (BOOL)setUpWithOutputSettings:(id)settings outputSettingsArePixelBufferAttributes:(BOOL)attributes withExceptionReason:(id *)reason;
 - (BOOL)suppressesPlayerRendering;
-- (__CVBuffer)_copyPixelBufferForItemTimeWithOptions:(id *)a3 itemTimeForDisplay:(id *)a4 options:(unsigned int)a5;
-- (__CVBuffer)copyPixelBufferForItemTime:(id *)a3 remove:(BOOL)a4 itemTimeForDisplay:(id *)a5;
+- (__CVBuffer)_copyPixelBufferForItemTimeWithOptions:(id *)options itemTimeForDisplay:(id *)display options:(unsigned int)a5;
+- (__CVBuffer)copyPixelBufferForItemTime:(id *)time remove:(BOOL)remove itemTimeForDisplay:(id *)display;
 - (void)_detachFromPlayerItem;
 - (void)_dispatchOutputMediaDataWillChange;
 - (void)_dispatchOutputSequenceWasFlushed;
 - (void)_respondToPlayerItemFormatDescriptionsChange;
-- (void)_setTimebase:(OpaqueCMTimebase *)a3;
-- (void)_startObservingTimebaseNotificationsForTimebase:(OpaqueCMTimebase *)a3;
-- (void)_stopObservingTimebaseNotificationsForTimebase:(OpaqueCMTimebase *)a3;
+- (void)_setTimebase:(OpaqueCMTimebase *)timebase;
+- (void)_startObservingTimebaseNotificationsForTimebase:(OpaqueCMTimebase *)timebase;
+- (void)_stopObservingTimebaseNotificationsForTimebase:(OpaqueCMTimebase *)timebase;
 - (void)dealloc;
 - (void)requestNotificationOfMediaDataChangeAsSoonAsPossible;
 - (void)requestNotificationOfMediaDataChangeWithAdvanceInterval:(NSTimeInterval)interval;
 - (void)setDelegate:(id)delegate queue:(dispatch_queue_t)delegateQueue;
-- (void)setSuppressesPlayerRendering:(BOOL)a3;
+- (void)setSuppressesPlayerRendering:(BOOL)rendering;
 @end
 
 @implementation AVPlayerItemVideoOutput
 
-- (BOOL)setUpWithOutputSettings:(id)a3 outputSettingsArePixelBufferAttributes:(BOOL)a4 withExceptionReason:(id *)a5
+- (BOOL)setUpWithOutputSettings:(id)settings outputSettingsArePixelBufferAttributes:(BOOL)attributes withExceptionReason:(id *)reason
 {
   v10 = objc_alloc_init(AVPlayerItemVideoOutputInternal);
   self->_videoOutputInternal = v10;
   if (v10)
   {
     CFRetain(v10);
-    if (!a4)
+    if (!attributes)
     {
-      *&self->_videoOutputInternal->suppressesPlayerRendering = [AVVideoOutputSettings _videoOutputSettingsWithVideoSettingsDictionary:a3 exceptionReason:a5];
+      *&self->_videoOutputInternal->suppressesPlayerRendering = [AVVideoOutputSettings _videoOutputSettingsWithVideoSettingsDictionary:settings exceptionReason:reason];
       v10 = *&self->_videoOutputInternal->suppressesPlayerRendering;
       if (!v10)
       {
@@ -43,11 +43,11 @@
 
       if ([(AVPlayerItemVideoOutputInternal *)v10 willYieldCompressedSamples])
       {
-        if (a5)
+        if (reason)
         {
           v16 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"AVPlayerItemVideoOutput does not support compressed output", v11, v12, v13, v14, v15, v23);
           LOBYTE(v10) = 0;
-          *a5 = v16;
+          *reason = v16;
           return v10;
         }
 
@@ -65,7 +65,7 @@ LABEL_9:
       {
         v17 = [MEMORY[0x1E696AD98] numberWithDouble:0.015];
         [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v17, *MEMORY[0x1E6973EF8], 0}];
-        v18 = [(AVPlayerItemOutput *)self _weakReference];
+        _weakReference = [(AVPlayerItemOutput *)self _weakReference];
         if (!FigVisualContextCreateRemote())
         {
           vc = self->_videoOutputInternal->vc;
@@ -74,7 +74,7 @@ LABEL_9:
             v20 = *(*(CMBaseObjectGetVTable() + 16) + 16);
             if (v20)
             {
-              if (!v20(vc, AVPlayerItemVideoOutput_figVCSequentialAvailableCallback, v18))
+              if (!v20(vc, AVPlayerItemVideoOutput_figVCSequentialAvailableCallback, _weakReference))
               {
                 self->_videoOutputInternal->stateQueue = dispatch_queue_create("AVPlayerItemOutput queue", 0);
                 self->_videoOutputInternal->delegateStorage = objc_alloc_init(AVWeakReferencingDelegateStorage);
@@ -89,7 +89,7 @@ LABEL_9:
                 handler[2] = __110__AVPlayerItemVideoOutput_setUpWithOutputSettings_outputSettingsArePixelBufferAttributes_withExceptionReason___block_invoke;
                 handler[3] = &unk_1E7460DF0;
                 handler[4] = delegateWakeupSource;
-                handler[5] = v18;
+                handler[5] = _weakReference;
                 dispatch_source_set_event_handler(delegateWakeupSource, handler);
                 dispatch_resume(self->_videoOutputInternal->delegateWakeupSource);
                 LOBYTE(v10) = 1;
@@ -231,7 +231,7 @@ uint64_t __110__AVPlayerItemVideoOutput_setUpWithOutputSettings_outputSettingsAr
   [(AVPlayerItemOutput *)&v15 dealloc];
 }
 
-- (BOOL)_attachToPlayerItem:(id)a3
+- (BOOL)_attachToPlayerItem:(id)item
 {
   stateQueue = self->_videoOutputInternal->stateQueue;
   v6[0] = MEMORY[0x1E69E9820];
@@ -239,7 +239,7 @@ uint64_t __110__AVPlayerItemVideoOutput_setUpWithOutputSettings_outputSettingsAr
   v6[2] = __47__AVPlayerItemVideoOutput__attachToPlayerItem___block_invoke;
   v6[3] = &unk_1E7460DF0;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = item;
   dispatch_sync(stateQueue, v6);
   [(AVPlayerItemVideoOutput *)self _respondToPlayerItemFormatDescriptionsChange];
   return 1;
@@ -467,7 +467,7 @@ uint64_t __79__AVPlayerItemVideoOutput_requestNotificationOfMediaDataChangeAsSoo
   return result;
 }
 
-- (__CVBuffer)_copyPixelBufferForItemTimeWithOptions:(id *)a3 itemTimeForDisplay:(id *)a4 options:(unsigned int)a5
+- (__CVBuffer)_copyPixelBufferForItemTimeWithOptions:(id *)options itemTimeForDisplay:(id *)display options:(unsigned int)a5
 {
   v5 = *&a5;
   v16 = 0;
@@ -477,7 +477,7 @@ uint64_t __79__AVPlayerItemVideoOutput_requestNotificationOfMediaDataChangeAsSoo
   videoOutputInternal = self->_videoOutputInternal;
   v14 = v7;
   vc = videoOutputInternal->vc;
-  v13 = *a3;
+  v13 = *options;
   v10 = *(*(CMBaseObjectGetVTable() + 16) + 48);
   if (v10)
   {
@@ -485,15 +485,15 @@ uint64_t __79__AVPlayerItemVideoOutput_requestNotificationOfMediaDataChangeAsSoo
     v18 = v13;
     if (!v10(vc, v11, &v18, v5, &cf, 0, &v14))
     {
-      if (a4)
+      if (display)
       {
         if ((BYTE12(v14) & 0x1D) != 1)
         {
           goto LABEL_8;
         }
 
-        *&a4->var0 = v14;
-        a4->var3 = v15;
+        *&display->var0 = v14;
+        display->var3 = v15;
       }
 
       if (VTPixelBufferConformerCopyConformedPixelBuffer())
@@ -512,9 +512,9 @@ LABEL_8:
   return v16;
 }
 
-- (__CVBuffer)copyPixelBufferForItemTime:(id *)a3 remove:(BOOL)a4 itemTimeForDisplay:(id *)a5
+- (__CVBuffer)copyPixelBufferForItemTime:(id *)time remove:(BOOL)remove itemTimeForDisplay:(id *)display
 {
-  if (a4)
+  if (remove)
   {
     v6 = 3;
   }
@@ -524,11 +524,11 @@ LABEL_8:
     v6 = 1;
   }
 
-  v8 = *a3;
-  return [(AVPlayerItemVideoOutput *)self _copyPixelBufferForItemTimeWithOptions:&v8 itemTimeForDisplay:a5 options:v6];
+  v8 = *time;
+  return [(AVPlayerItemVideoOutput *)self _copyPixelBufferForItemTimeWithOptions:&v8 itemTimeForDisplay:display options:v6];
 }
 
-- (void)setSuppressesPlayerRendering:(BOOL)a3
+- (void)setSuppressesPlayerRendering:(BOOL)rendering
 {
   v7 = 0;
   v8 = &v7;
@@ -541,7 +541,7 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __56__AVPlayerItemVideoOutput_setSuppressesPlayerRendering___block_invoke;
   block[3] = &unk_1E7462948;
-  v6 = a3;
+  renderingCopy = rendering;
   block[4] = self;
   block[5] = &v7;
   dispatch_sync(stateQueue, block);
@@ -598,24 +598,24 @@ id __56__AVPlayerItemVideoOutput_setSuppressesPlayerRendering___block_invoke(uin
   v5 = v12[5];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v8 = 0;
     v9 = 0;
     v7 = 0;
     [*&self->_videoOutputInternal->suppressesPlayerRendering colorPropertiesConsideringFormatDescriptions:objc_msgSend(v12[5] colorPrimaries:"_enabledTrackFormatDescriptions") transferFunction:&v9 ycbcrMatrix:{&v8, &v7}];
     if (v9)
     {
-      [v6 setObject:v9 forKeyedSubscript:*MEMORY[0x1E6965D88]];
+      [dictionary setObject:v9 forKeyedSubscript:*MEMORY[0x1E6965D88]];
     }
 
     if (v8)
     {
-      [v6 setObject:v8 forKeyedSubscript:*MEMORY[0x1E6965F30]];
+      [dictionary setObject:v8 forKeyedSubscript:*MEMORY[0x1E6965F30]];
     }
 
     if (v7)
     {
-      [v6 setObject:v7 forKeyedSubscript:*MEMORY[0x1E6965F98]];
+      [dictionary setObject:v7 forKeyedSubscript:*MEMORY[0x1E6965F98]];
     }
 
     VTPixelBufferConformerSetColorProperties();
@@ -632,31 +632,31 @@ id __71__AVPlayerItemVideoOutput__respondToPlayerItemFormatDescriptionsChange__b
   return result;
 }
 
-- (void)_stopObservingTimebaseNotificationsForTimebase:(OpaqueCMTimebase *)a3
+- (void)_stopObservingTimebaseNotificationsForTimebase:(OpaqueCMTimebase *)timebase
 {
-  if (a3)
+  if (timebase)
   {
     v5 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-    v6 = [(AVPlayerItemOutput *)self _weakReference];
+    _weakReference = [(AVPlayerItemOutput *)self _weakReference];
     v7 = *MEMORY[0x1E6960CD0];
 
-    [v5 removeListenerWithWeakReference:v6 callback:AVPlayerItemVideoOutput_timebaseNotificationCallback name:v7 object:a3];
+    [v5 removeListenerWithWeakReference:_weakReference callback:AVPlayerItemVideoOutput_timebaseNotificationCallback name:v7 object:timebase];
   }
 }
 
-- (void)_startObservingTimebaseNotificationsForTimebase:(OpaqueCMTimebase *)a3
+- (void)_startObservingTimebaseNotificationsForTimebase:(OpaqueCMTimebase *)timebase
 {
-  if (a3)
+  if (timebase)
   {
     v5 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-    v6 = [(AVPlayerItemOutput *)self _weakReference];
+    _weakReference = [(AVPlayerItemOutput *)self _weakReference];
     v7 = *MEMORY[0x1E6960CD0];
 
-    [v5 addListenerWithWeakReference:v6 callback:AVPlayerItemVideoOutput_timebaseNotificationCallback name:v7 object:a3 flags:0];
+    [v5 addListenerWithWeakReference:_weakReference callback:AVPlayerItemVideoOutput_timebaseNotificationCallback name:v7 object:timebase flags:0];
   }
 }
 
-- (void)_setTimebase:(OpaqueCMTimebase *)a3
+- (void)_setTimebase:(OpaqueCMTimebase *)timebase
 {
   v7.receiver = self;
   v7.super_class = AVPlayerItemVideoOutput;
@@ -667,7 +667,7 @@ id __71__AVPlayerItemVideoOutput__respondToPlayerItemFormatDescriptionsChange__b
   v6[2] = __40__AVPlayerItemVideoOutput__setTimebase___block_invoke;
   v6[3] = &unk_1E7460FA8;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = timebase;
   dispatch_sync(stateQueue, v6);
 }
 

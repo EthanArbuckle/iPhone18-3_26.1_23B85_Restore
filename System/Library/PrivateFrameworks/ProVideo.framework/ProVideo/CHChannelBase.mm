@@ -1,35 +1,35 @@
 @interface CHChannelBase
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertGlobalToLocal:(SEL)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertLocalToGlobal:(SEL)a3;
-- (BOOL)getResetCallback:(void *)a3 context:(void *)a4;
-- (CHChannelBase)initWithOZChannel:(OZChannelBase *)a3 freeWhenDone:(BOOL)a4;
-- (CHChannelBase)initWithParent:(id)a3 name:(id)a4;
-- (CHChannelBase)initWithParent:(id)a3 name:(id)a4 channelID:(unsigned int)a5;
-- (CHChannelBase)initWithParent:(id)a3 name:(id)a4 channelID:(unsigned int)a5 flags:(unsigned int)a6;
-- (id)channelFromChannelRefPath:(id)a3;
-- (id)channelRefPath:(id)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertGlobalToLocal:(SEL)local;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertLocalToGlobal:(SEL)global;
+- (BOOL)getResetCallback:(void *)callback context:(void *)context;
+- (CHChannelBase)initWithOZChannel:(OZChannelBase *)channel freeWhenDone:(BOOL)done;
+- (CHChannelBase)initWithParent:(id)parent name:(id)name;
+- (CHChannelBase)initWithParent:(id)parent name:(id)name channelID:(unsigned int)d;
+- (CHChannelBase)initWithParent:(id)parent name:(id)name channelID:(unsigned int)d flags:(unsigned int)flags;
+- (id)channelFromChannelRefPath:(id)path;
+- (id)channelRefPath:(id)path;
 - (id)channelState;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)keyframes:(id *)a3;
+- (id)keyframes:(id *)keyframes;
 - (id)parent;
-- (id)reverseDNSName:(id)a3;
+- (id)reverseDNSName:(id)name;
 - (id)rootBase;
-- (void)_replaceChannel:(OZChannelBase *)a3 flagsOnly:(BOOL)a4;
+- (void)_replaceChannel:(OZChannelBase *)channel flagsOnly:(BOOL)only;
 - (void)dealloc;
-- (void)getMD5Value:(unsigned int *)a3;
+- (void)getMD5Value:(unsigned int *)value;
 - (void)release;
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 @end
 
 @implementation CHChannelBase
 
-- (CHChannelBase)initWithOZChannel:(OZChannelBase *)a3 freeWhenDone:(BOOL)a4
+- (CHChannelBase)initWithOZChannel:(OZChannelBase *)channel freeWhenDone:(BOOL)done
 {
-  if ([objc_opt_class() _isOZChannelClassOK:a3])
+  if ([objc_opt_class() _isOZChannelClassOK:channel])
   {
     objc_sync_enter(@"CHChannelWrapperLock");
-    WrapperForOZChannel = GetWrapperForOZChannel(a3);
+    WrapperForOZChannel = GetWrapperForOZChannel(channel);
     if (WrapperForOZChannel)
     {
       [(CHChannelBase *)self dealloc];
@@ -44,10 +44,10 @@
       v8 = v9;
       if (v9)
       {
-        v9->_pOZChannel = a3;
-        v9->_freeWhenDone = a4;
+        v9->_pOZChannel = channel;
+        v9->_freeWhenDone = done;
         objc_sync_enter(@"CHChannelWrapperLock");
-        a3->var9 = v8;
+        channel->var9 = v8;
         objc_sync_exit(@"CHChannelWrapperLock");
       }
     }
@@ -64,41 +64,41 @@
   return v8;
 }
 
-- (CHChannelBase)initWithParent:(id)a3 name:(id)a4 channelID:(unsigned int)a5 flags:(unsigned int)a6
+- (CHChannelBase)initWithParent:(id)parent name:(id)name channelID:(unsigned int)d flags:(unsigned int)flags
 {
-  v7 = -[CHChannelBase initWithOZChannel:freeWhenDone:](self, "initWithOZChannel:freeWhenDone:", [objc_opt_class() _newOZChannelWithName:a4 channelID:*&a5 flags:*&a6], 1);
+  v7 = -[CHChannelBase initWithOZChannel:freeWhenDone:](self, "initWithOZChannel:freeWhenDone:", [objc_opt_class() _newOZChannelWithName:name channelID:*&d flags:*&flags], 1);
   if (v7)
   {
-    [a3 addChild:v7];
+    [parent addChild:v7];
   }
 
   return v7;
 }
 
-- (CHChannelBase)initWithParent:(id)a3 name:(id)a4 channelID:(unsigned int)a5
+- (CHChannelBase)initWithParent:(id)parent name:(id)name channelID:(unsigned int)d
 {
-  v5 = *&a5;
-  v9 = [objc_opt_class() _defaultChannelFlags];
+  v5 = *&d;
+  _defaultChannelFlags = [objc_opt_class() _defaultChannelFlags];
 
-  return [(CHChannelBase *)self initWithParent:a3 name:a4 channelID:v5 flags:v9];
+  return [(CHChannelBase *)self initWithParent:parent name:name channelID:v5 flags:_defaultChannelFlags];
 }
 
-- (CHChannelBase)initWithParent:(id)a3 name:(id)a4
+- (CHChannelBase)initWithParent:(id)parent name:(id)name
 {
-  if (a3)
+  if (parent)
   {
-    v7 = [a3 _newChannelIdForChild];
+    _newChannelIdForChild = [parent _newChannelIdForChild];
   }
 
   else
   {
-    v7 = [objc_opt_class() _newChannelId];
+    _newChannelIdForChild = [objc_opt_class() _newChannelId];
   }
 
-  v8 = v7;
-  v9 = [objc_opt_class() _defaultChannelFlags];
+  v8 = _newChannelIdForChild;
+  _defaultChannelFlags = [objc_opt_class() _defaultChannelFlags];
 
-  return [(CHChannelBase *)self initWithParent:a3 name:a4 channelID:v8 flags:v9];
+  return [(CHChannelBase *)self initWithParent:parent name:name channelID:v8 flags:_defaultChannelFlags];
 }
 
 - (void)release
@@ -133,7 +133,7 @@
   [(CHChannelBase *)&v5 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = ChannelStateCopy(self->_pOZChannel, 0);
   v4 = objc_alloc(objc_opt_class());
@@ -171,10 +171,10 @@
   return result;
 }
 
-- (id)channelRefPath:(id)a3
+- (id)channelRefPath:(id)path
 {
-  v4 = [a3 ozChannel];
-  if (!v4)
+  ozChannel = [path ozChannel];
+  if (!ozChannel)
   {
     return 0;
   }
@@ -185,7 +185,7 @@
     return 0;
   }
 
-  OZChannelRef::OZChannelRef(v9, pOZChannel, v4);
+  OZChannelRef::OZChannelRef(v9, pOZChannel, ozChannel);
   if (v10 >= 0)
   {
     v6 = v9;
@@ -201,14 +201,14 @@
   return v7;
 }
 
-- (id)channelFromChannelRefPath:(id)a3
+- (id)channelFromChannelRefPath:(id)path
 {
   v3 = 0;
-  if (a3 && self->_pOZChannel)
+  if (path && self->_pOZChannel)
   {
-    if ([a3 length])
+    if ([path length])
     {
-      PCURL::PCURL(&v8, a3);
+      PCURL::PCURL(&v8, path);
       OZChannelRef::OZChannelRef(v9, &v8);
       PCString::~PCString(&v8);
       Channel = OZChannelRef::getChannel(v9, self->_pOZChannel);
@@ -225,16 +225,16 @@
   return v3;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   pOZChannel = self->_pOZChannel;
   v4.var0 = 0;
-  PCString::set(&v4, a3);
+  PCString::set(&v4, name);
   OZChannelBase::setName(pOZChannel, &v4, 0);
   PCString::~PCString(&v4);
 }
 
-- (BOOL)getResetCallback:(void *)a3 context:(void *)a4
+- (BOOL)getResetCallback:(void *)callback context:(void *)context
 {
   v11 = 0;
   v12 = 0;
@@ -242,7 +242,7 @@
   ResetCallback = OZChannelBase::getResetCallback(self->_pOZChannel, &v12, &v11, &v10);
   if (ResetCallback)
   {
-    if (a3)
+    if (callback)
     {
       if (v10)
       {
@@ -254,10 +254,10 @@
         v7 = 0;
       }
 
-      *a3 = v7;
+      *callback = v7;
     }
 
-    if (a4)
+    if (context)
     {
       if (v10)
       {
@@ -269,14 +269,14 @@
         v8 = 0;
       }
 
-      *a4 = v8;
+      *context = v8;
     }
   }
 
   return ResetCallback;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertGlobalToLocal:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertGlobalToLocal:(SEL)local
 {
   retstr->var0 = 0;
   *&retstr->var1 = 0;
@@ -284,7 +284,7 @@
   return (*(self->_pOZChannel->var0 + 41))(self->_pOZChannel, a4);
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertLocalToGlobal:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertLocalToGlobal:(SEL)global
 {
   retstr->var0 = 0;
   *&retstr->var1 = 0;
@@ -292,12 +292,12 @@
   return (*(self->_pOZChannel->var0 + 42))(self->_pOZChannel, a4);
 }
 
-- (void)getMD5Value:(unsigned int *)a3
+- (void)getMD5Value:(unsigned int *)value
 {
   OZChannelBase::getHash(self->_pOZChannel);
-  if (a3)
+  if (value)
   {
-    *a3 = v4;
+    *value = v4;
   }
 }
 
@@ -308,13 +308,13 @@
   return ChannelState;
 }
 
-- (id)keyframes:(id *)a3
+- (id)keyframes:(id *)keyframes
 {
   pOZChannel = self->_pOZChannel;
-  v4 = *&a3->var0.var3;
-  v15 = *&a3->var0.var0;
+  v4 = *&keyframes->var0.var3;
+  v15 = *&keyframes->var0.var0;
   v16 = v4;
-  v17 = *&a3->var1.var1;
+  v17 = *&keyframes->var1.var1;
   (*(pOZChannel->var0 + 65))(&v18);
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = v18;
@@ -348,29 +348,29 @@
   return v5;
 }
 
-- (void)_replaceChannel:(OZChannelBase *)a3 flagsOnly:(BOOL)a4
+- (void)_replaceChannel:(OZChannelBase *)channel flagsOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   pOZChannel = self->_pOZChannel;
   var6 = pOZChannel->var6;
   (*(pOZChannel->var0 + 44))(pOZChannel, a2);
-  if (v4)
+  if (onlyCopy)
   {
-    OZChannelBase::setFlags(pOZChannel, a3->var7);
+    OZChannelBase::setFlags(pOZChannel, channel->var7);
   }
 
   else
   {
-    (*(pOZChannel->var0 + 32))(pOZChannel, a3);
+    (*(pOZChannel->var0 + 32))(pOZChannel, channel);
   }
 
   (*(pOZChannel->var0 + 45))(pOZChannel);
   pOZChannel->var6 = var6;
 }
 
-- (id)reverseDNSName:(id)a3
+- (id)reverseDNSName:(id)name
 {
-  if (a3 == self)
+  if (name == self)
   {
     return 0;
   }

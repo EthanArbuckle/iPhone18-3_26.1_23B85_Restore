@@ -1,6 +1,6 @@
 @interface THWTransportControlLayout
 - (THWTransportControlLayout)init;
-- (id)layoutGeometryForLayout:(id)a3;
+- (id)layoutGeometryForLayout:(id)layout;
 - (void)dealloc;
 @end
 
@@ -29,7 +29,7 @@
   [(THWContainerLayout *)&v3 dealloc];
 }
 
-- (id)layoutGeometryForLayout:(id)a3
+- (id)layoutGeometryForLayout:(id)layout
 {
   [(THWTransportControlLayout *)self frame];
   TSDRectWithSize();
@@ -43,7 +43,7 @@
   v25.size.width = width;
   v25.size.height = height;
   v10 = CGRectGetHeight(v25);
-  if (self->_restartButtonLayout == a3)
+  if (self->_restartButtonLayout == layout)
   {
     v12 = [TSDLayoutGeometry alloc];
     v13 = 35.0;
@@ -54,7 +54,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (self->_previousButtonLayout == a3)
+  if (self->_previousButtonLayout == layout)
   {
     v15 = [TSDLayoutGeometry alloc];
     v26.origin.x = x;
@@ -70,7 +70,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (self->_nextButtonLayout == a3)
+  if (self->_nextButtonLayout == layout)
   {
     v15 = [TSDLayoutGeometry alloc];
     v27.origin.x = x;
@@ -82,7 +82,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (self->_labelLayout != a3)
+  if (self->_labelLayout != layout)
   {
     return 0;
   }

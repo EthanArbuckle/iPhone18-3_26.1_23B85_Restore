@@ -1,31 +1,31 @@
 @interface HDGymKitSettings
 - (BOOL)fitnessTrackingEnabled;
 - (BOOL)isLowPowerModeEnabled;
-- (HDGymKitSettings)initWithProfile:(id)a3;
+- (HDGymKitSettings)initWithProfile:(id)profile;
 - (HDGymKitSettingsDelegate)delegate;
 - (unint64_t)nfcPermission;
 - (void)_setNFCAlwaysOnPreferenceIfNecessary;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
 - (void)dealloc;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)unitTest_NFCPreferencesSetHandler:(id)a3;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
+- (void)setDelegate:(id)delegate;
+- (void)unitTest_NFCPreferencesSetHandler:(id)handler;
 - (void)unitTest_simulateNRDeviceUpdate;
 @end
 
 @implementation HDGymKitSettings
 
-- (HDGymKitSettings)initWithProfile:(id)a3
+- (HDGymKitSettings)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v9.receiver = self;
   v9.super_class = HDGymKitSettings;
   v5 = [(HDGymKitSettings *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v6->_nfcPermission = 0;
     v6->_lock._os_unfair_lock_opaque = 0;
     v6->_hasRunProtectedDataCheck = 0;
@@ -66,20 +66,20 @@
   [(HDGymKitSettings *)&v9 dealloc];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
-  v4 = [a3 database];
+  database = [ready database];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_8ABC;
   v5[3] = &unk_5C800;
   v5[4] = self;
-  [v4 performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:0 block:v5];
+  [database performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:0 block:v5];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   os_unfair_lock_lock(&self->_lock);
   objc_storeWeak(&self->_delegate, obj);
   nfcPermission = self->_nfcPermission;
@@ -104,42 +104,42 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v6 = 1;
+    bOOLValue = 1;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4 && !self->_hasRunProtectedDataCheck)
+  availableCopy = available;
+  databaseCopy = database;
+  if (availableCopy && !self->_hasRunProtectedDataCheck)
   {
     self->_hasRunProtectedDataCheck = 1;
-    v7 = v6;
+    v7 = databaseCopy;
     [(HDGymKitSettings *)self _setNFCAlwaysOnPreferenceIfNecessary];
     [v7 removeProtectedDataObserver:self];
-    v6 = v7;
+    databaseCopy = v7;
   }
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
-  v5 = a3;
+  addedCopy = added;
   if ((sub_2B788(&self->super.isa) & 1) == 0)
   {
-    v17 = self;
+    selfCopy = self;
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = v5;
+    v6 = addedCopy;
     v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
@@ -155,18 +155,18 @@
           }
 
           v11 = *(*(&v18 + 1) + 8 * i);
-          v12 = [v11 sampleType];
+          sampleType = [v11 sampleType];
           v13 = +[HKObjectType workoutType];
-          v14 = [v12 isEqual:v13];
+          v14 = [sampleType isEqual:v13];
 
           if (v14)
           {
-            v15 = [v11 _source];
-            v16 = [v15 _isAppleWatch];
+            _source = [v11 _source];
+            _isAppleWatch = [_source _isAppleWatch];
 
-            if (v16)
+            if (_isAppleWatch)
             {
-              sub_2BC9C(v6, v17);
+              sub_2BC9C(v6, selfCopy);
               goto LABEL_13;
             }
           }
@@ -191,17 +191,17 @@ LABEL_13:
   currentDevice = self->_currentDevice;
   v4 = NRDevicePropertyIsAltAccount;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v5 = [WeakRetained daemon];
-  v6 = [v5 behavior];
-  v7 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v6 tinkerModeEnabled] ^ 1);
+  daemon = [WeakRetained daemon];
+  behavior = [daemon behavior];
+  v7 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [behavior tinkerModeEnabled] ^ 1);
   [(HDGymKitSettings *)self device:currentDevice propertyDidChange:v4 fromValue:v7];
 }
 
-- (void)unitTest_NFCPreferencesSetHandler:(id)a3
+- (void)unitTest_NFCPreferencesSetHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [handlerCopy copy];
 
   unitTest_NFCPreferenceSetHandler = self->_unitTest_NFCPreferenceSetHandler;
   self->_unitTest_NFCPreferenceSetHandler = v5;
@@ -217,9 +217,9 @@ LABEL_13:
 - (BOOL)isLowPowerModeEnabled
 {
   v2 = +[NSProcessInfo processInfo];
-  v3 = [v2 isLowPowerModeEnabled];
+  isLowPowerModeEnabled = [v2 isLowPowerModeEnabled];
 
-  return v3;
+  return isLowPowerModeEnabled;
 }
 
 - (void)_setNFCAlwaysOnPreferenceIfNecessary

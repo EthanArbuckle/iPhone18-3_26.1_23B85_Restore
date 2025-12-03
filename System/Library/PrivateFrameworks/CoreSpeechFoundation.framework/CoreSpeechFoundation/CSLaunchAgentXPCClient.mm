@@ -1,66 +1,66 @@
 @interface CSLaunchAgentXPCClient
 + (id)sharedClient;
-- (BOOL)activateSecureSession:(BOOL)a3 error:(id *)a4;
+- (BOOL)activateSecureSession:(BOOL)session error:(id *)error;
 - (BOOL)configAOPVoiceTrigger;
 - (BOOL)fetchAndStoreAudioBuffer;
-- (BOOL)initAudioRecorderWithError:(id *)a3;
+- (BOOL)initAudioRecorderWithError:(id *)error;
 - (BOOL)initializeSecondPass;
 - (BOOL)prepare;
-- (BOOL)prepareAudioRecordWithStreamHandleId:(unint64_t)a3 settings:(id)a4 error:(id *)a5;
-- (BOOL)sendMessageAndReplySync:(id)a3 error:(id *)a4;
-- (BOOL)setAlertSoundFromURL:(id)a3 forType:(unint64_t)a4;
-- (BOOL)setRecordModeForStreamId:(unint64_t)a3 avvcRecordMode:(unint64_t)a4 error:(id *)a5;
-- (BOOL)setSpeakerProfile:(id)a3 numEmbeddings:(unint64_t)a4 dimension:(unint64_t)a5 speakerRecognizerType:(unint64_t)a6;
-- (BOOL)startAudioStreamWithOption:(id)a3 error:(id *)a4;
-- (BOOL)stopAudioStreamWithError:(id *)a3;
+- (BOOL)prepareAudioRecordWithStreamHandleId:(unint64_t)id settings:(id)settings error:(id *)error;
+- (BOOL)sendMessageAndReplySync:(id)sync error:(id *)error;
+- (BOOL)setAlertSoundFromURL:(id)l forType:(unint64_t)type;
+- (BOOL)setRecordModeForStreamId:(unint64_t)id avvcRecordMode:(unint64_t)mode error:(id *)error;
+- (BOOL)setSpeakerProfile:(id)profile numEmbeddings:(unint64_t)embeddings dimension:(unint64_t)dimension speakerRecognizerType:(unint64_t)type;
+- (BOOL)startAudioStreamWithOption:(id)option error:(id *)error;
+- (BOOL)stopAudioStreamWithError:(id *)error;
 - (CSExclaveAudioProvidingDelegate)delegate;
 - (CSLaunchAgentXPCClient)init;
 - (CSLaunchAgentXPCClientConnectionStatusDelegate)crashMonitorDelegate;
-- (id)_decodeError:(id)a3;
-- (id)recordDeviceInfoWithStreamHandleId:(unint64_t)a3;
+- (id)_decodeError:(id)error;
+- (id)recordDeviceInfoWithStreamHandleId:(unint64_t)id;
 - (unint64_t)currentSensorStatus;
 - (unint64_t)startSensor;
 - (unint64_t)stopSensor;
 - (void)_connectIfNeeded;
 - (void)_disconnect;
-- (void)_handleAudioCallbackDelegate:(id)a3;
-- (void)_handleAudioProvidingDelegateAudioBuffer:(id)a3;
-- (void)_handleAudioProvidingDelegateMessageBody:(id)a3;
-- (void)_handleDidFinishAlertPlaybackDelegate:(id)a3;
-- (void)_handleDidStartRecordingDelegate:(id)a3;
-- (void)_handleDidStopRecordingDelegate:(id)a3;
-- (void)_handleListenerDisconnectedError:(id)a3;
-- (void)_handleListenerError:(id)a3;
-- (void)_handleListenerEvent:(id)a3;
-- (void)_handleListenerMessage:(id)a3;
-- (void)adBlockerMatchingInProgress:(id)a3;
+- (void)_handleAudioCallbackDelegate:(id)delegate;
+- (void)_handleAudioProvidingDelegateAudioBuffer:(id)buffer;
+- (void)_handleAudioProvidingDelegateMessageBody:(id)body;
+- (void)_handleDidFinishAlertPlaybackDelegate:(id)delegate;
+- (void)_handleDidStartRecordingDelegate:(id)delegate;
+- (void)_handleDidStopRecordingDelegate:(id)delegate;
+- (void)_handleListenerDisconnectedError:(id)error;
+- (void)_handleListenerError:(id)error;
+- (void)_handleListenerEvent:(id)event;
+- (void)_handleListenerMessage:(id)message;
+- (void)adBlockerMatchingInProgress:(id)progress;
 - (void)adBlockerReset;
 - (void)deinitializeSecondPass;
-- (void)duckAudioDeviceWithDeviceID:(unsigned int)a3 duckedLevel:(float)a4 rampDuration:(float)a5;
-- (void)fetchAOPVoiceTriggerResult:(id)a3;
-- (void)pingpong:(id)a3;
-- (void)processBargeInVoiceTriggerWithResult:(id)a3;
-- (void)processSecondPassVoiceTriggerWithShouldFlushAudio:(BOOL)a3 result:(id)a4;
-- (void)requestHistoricalAudioBufferFor:(unint64_t)a3 startSample:(unint64_t)a4 numSamples:(unint64_t)a5 hostTime:(unint64_t)a6;
+- (void)duckAudioDeviceWithDeviceID:(unsigned int)d duckedLevel:(float)level rampDuration:(float)duration;
+- (void)fetchAOPVoiceTriggerResult:(id)result;
+- (void)pingpong:(id)pingpong;
+- (void)processBargeInVoiceTriggerWithResult:(id)result;
+- (void)processSecondPassVoiceTriggerWithShouldFlushAudio:(BOOL)audio result:(id)result;
+- (void)requestHistoricalAudioBufferFor:(unint64_t)for startSample:(unint64_t)sample numSamples:(unint64_t)samples hostTime:(unint64_t)time;
 - (void)resetAVVC;
 - (void)resetFirstPassVoiceTrigger;
-- (void)sendAssetsControlMessage:(id)a3 errorCodeIfFailed:(unint64_t)a4 completion:(id)a5;
-- (void)sendMessageAsync:(id)a3 completion:(id)a4;
-- (void)sendMessageSync:(id)a3;
-- (void)setAdBlockerAsset:(id)a3;
-- (void)setAssetForLocale:(id)a3 isOTA:(BOOL)a4 completion:(id)a5;
-- (void)setContext:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)sendAssetsControlMessage:(id)message errorCodeIfFailed:(unint64_t)failed completion:(id)completion;
+- (void)sendMessageAsync:(id)async completion:(id)completion;
+- (void)sendMessageSync:(id)sync;
+- (void)setAdBlockerAsset:(id)asset;
+- (void)setAssetForLocale:(id)locale isOTA:(BOOL)a completion:(id)completion;
+- (void)setContext:(id)context;
+- (void)setDelegate:(id)delegate;
 - (void)startAdBlockerMatching;
 - (void)startBargeInVoiceTrigger;
-- (void)startSecondPassVoiceTriggerWithFirstPassSource:(unint64_t)a3 enablePHS:(BOOL)a4 supportMultiPhrase:(BOOL)a5 activeChannel:(unsigned int)a6;
-- (void)startSecureAdBlockerMobileAssetLoaderService:(id)a3;
-- (void)startSecureMobileAssetLoaderService:(BOOL)a3 completion:(id)a4;
+- (void)startSecondPassVoiceTriggerWithFirstPassSource:(unint64_t)source enablePHS:(BOOL)s supportMultiPhrase:(BOOL)phrase activeChannel:(unsigned int)channel;
+- (void)startSecureAdBlockerMobileAssetLoaderService:(id)service;
+- (void)startSecureMobileAssetLoaderService:(BOOL)service completion:(id)completion;
 - (void)stopAdBlockerMatching;
 - (void)stopBargeInVoiceTrigger;
 - (void)stopSecondPassVoiceTrigger;
-- (void)stopSecureAdBlockerMobileAssetLoaderService:(id)a3;
-- (void)stopSecureMobileAssetLoaderService:(id)a3;
+- (void)stopSecureAdBlockerMobileAssetLoaderService:(id)service;
+- (void)stopSecureMobileAssetLoaderService:(id)service;
 @end
 
 @implementation CSLaunchAgentXPCClient
@@ -79,13 +79,13 @@
   return WeakRetained;
 }
 
-- (id)_decodeError:(id)a3
+- (id)_decodeError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    string = xpc_dictionary_get_string(v3, "resultErrorDomain");
+    string = xpc_dictionary_get_string(errorCopy, "resultErrorDomain");
     if (string)
     {
       int64 = xpc_dictionary_get_int64(v4, "resultErrorCode");
@@ -103,9 +103,9 @@
   return string;
 }
 
-- (BOOL)sendMessageAndReplySync:(id)a3 error:(id *)a4
+- (BOOL)sendMessageAndReplySync:(id)sync error:(id *)error
 {
-  v6 = a3;
+  syncCopy = sync;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -122,14 +122,14 @@
   v11[2] = __56__CSLaunchAgentXPCClient_sendMessageAndReplySync_error___block_invoke;
   v11[3] = &unk_1E865C808;
   v11[4] = self;
-  v8 = v6;
+  v8 = syncCopy;
   v12 = v8;
   v13 = &v21;
   v14 = &v15;
   dispatch_async_and_wait(xpcRequestQueue, v11);
-  if (a4)
+  if (error)
   {
-    *a4 = v16[5];
+    *error = v16[5];
   }
 
   v9 = *(v22 + 24);
@@ -177,17 +177,17 @@ uint64_t __56__CSLaunchAgentXPCClient_sendMessageAndReplySync_error___block_invo
   return MEMORY[0x1EEE66BB8](v6, v8);
 }
 
-- (void)sendMessageSync:(id)a3
+- (void)sendMessageSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   xpcRequestQueue = self->_xpcRequestQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__CSLaunchAgentXPCClient_sendMessageSync___block_invoke;
   v7[3] = &unk_1E865C970;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = syncCopy;
+  v6 = syncCopy;
   dispatch_async_and_wait(xpcRequestQueue, v7);
 }
 
@@ -206,20 +206,20 @@ void __42__CSLaunchAgentXPCClient_sendMessageSync___block_invoke(uint64_t a1)
   }
 }
 
-- (void)sendMessageAsync:(id)a3 completion:(id)a4
+- (void)sendMessageAsync:(id)async completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  asyncCopy = async;
+  completionCopy = completion;
   xpcRequestQueue = self->_xpcRequestQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__CSLaunchAgentXPCClient_sendMessageAsync_completion___block_invoke;
   block[3] = &unk_1E865C678;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = asyncCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = asyncCopy;
   dispatch_async(xpcRequestQueue, block);
 }
 
@@ -282,15 +282,15 @@ void __54__CSLaunchAgentXPCClient_sendMessageAsync_completion___block_invoke_2(u
 LABEL_7:
 }
 
-- (void)duckAudioDeviceWithDeviceID:(unsigned int)a3 duckedLevel:(float)a4 rampDuration:(float)a5
+- (void)duckAudioDeviceWithDeviceID:(unsigned int)d duckedLevel:(float)level rampDuration:(float)duration
 {
   v20 = *MEMORY[0x1E69E9840];
   *keys = xmmword_1E865C640;
   v19 = *&off_1E865C650;
   values[0] = xpc_int64_create(12);
-  values[1] = xpc_uint64_create(a3);
-  values[2] = xpc_double_create(a4);
-  values[3] = xpc_double_create(a5);
+  values[1] = xpc_uint64_create(d);
+  values[2] = xpc_double_create(level);
+  values[3] = xpc_double_create(duration);
   v9 = xpc_dictionary_create(keys, values, 4uLL);
   *v16 = xmmword_1E865C660;
   v15[0] = xpc_int64_create(2);
@@ -310,23 +310,23 @@ LABEL_7:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setAlertSoundFromURL:(id)a3 forType:(unint64_t)a4
+- (BOOL)setAlertSoundFromURL:(id)l forType:(unint64_t)type
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     *&buf[4] = "[CSLaunchAgentXPCClient setAlertSoundFromURL:forType:]";
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = lCopy;
     *&buf[22] = 1024;
-    v32 = a4;
+    typeCopy = type;
     _os_log_impl(&dword_1DDA4B000, v7, OS_LOG_TYPE_DEFAULT, "%s alertURL: %@, forType: %d", buf, 0x1Cu);
   }
 
-  if (!v6 || ([v6 path], v8 = objc_claimAutoreleasedReturnValue(), v9 = v8 == 0, v8, v9))
+  if (!lCopy || ([lCopy path], v8 = objc_claimAutoreleasedReturnValue(), v9 = v8 == 0, v8, v9))
   {
     v20 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -344,10 +344,10 @@ LABEL_7:
     *buf = xmmword_1E865C628;
     *&buf[16] = "alertType";
     values[0] = xpc_int64_create(13);
-    v10 = [v6 path];
-    v11 = v10;
-    values[1] = xpc_string_create([v10 UTF8String]);
-    values[2] = xpc_uint64_create(a4);
+    path = [lCopy path];
+    v11 = path;
+    values[1] = xpc_string_create([path UTF8String]);
+    values[2] = xpc_uint64_create(type);
 
     v12 = xpc_dictionary_create(buf, values, 3uLL);
     *keys = xmmword_1E865C660;
@@ -384,7 +384,7 @@ LABEL_7:
   return v15;
 }
 
-- (id)recordDeviceInfoWithStreamHandleId:(unint64_t)a3
+- (id)recordDeviceInfoWithStreamHandleId:(unint64_t)id
 {
   v31 = *MEMORY[0x1E69E9840];
   v5 = CSLogContextFacilityCoreSpeech;
@@ -395,11 +395,11 @@ LABEL_7:
     _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s ", &buf, 0xCu);
   }
 
-  if (a3)
+  if (id)
   {
     *keys = xmmword_1E865C618;
     values[0] = xpc_int64_create(8);
-    values[1] = xpc_uint64_create(a3);
+    values[1] = xpc_uint64_create(id);
     v6 = xpc_dictionary_create(keys, values, 2uLL);
     *v28 = xmmword_1E865C660;
     v27[0] = xpc_int64_create(2);
@@ -497,7 +497,7 @@ _xpc_connection_s *__61__CSLaunchAgentXPCClient_recordDeviceInfoWithStreamHandle
   return result;
 }
 
-- (BOOL)setRecordModeForStreamId:(unint64_t)a3 avvcRecordMode:(unint64_t)a4 error:(id *)a5
+- (BOOL)setRecordModeForStreamId:(unint64_t)id avvcRecordMode:(unint64_t)mode error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
   v9 = CSLogContextFacilityCoreSpeech;
@@ -508,7 +508,7 @@ _xpc_connection_s *__61__CSLaunchAgentXPCClient_recordDeviceInfoWithStreamHandle
     _os_log_impl(&dword_1DDA4B000, v9, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
   }
 
-  if (!a3)
+  if (!id)
   {
     v16 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -516,17 +516,17 @@ _xpc_connection_s *__61__CSLaunchAgentXPCClient_recordDeviceInfoWithStreamHandle
       *buf = 136315138;
       *&buf[4] = "[CSLaunchAgentXPCClient setRecordModeForStreamId:avvcRecordMode:error:]";
       _os_log_error_impl(&dword_1DDA4B000, v16, OS_LOG_TYPE_ERROR, "%s Invalid streamId!!", buf, 0xCu);
-      if (a5)
+      if (error)
       {
         goto LABEL_11;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
 LABEL_11:
       [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.corespeech" code:114 userInfo:0];
-      *a5 = v13 = 0;
+      *error = v13 = 0;
       goto LABEL_14;
     }
 
@@ -537,15 +537,15 @@ LABEL_11:
   *buf = xmmword_1E865C600;
   v23 = "avvcRecordMode";
   values[0] = xpc_int64_create(7);
-  values[1] = xpc_uint64_create(a3);
-  values[2] = xpc_uint64_create(a4);
+  values[1] = xpc_uint64_create(id);
+  values[2] = xpc_uint64_create(mode);
   v10 = xpc_dictionary_create(buf, values, 3uLL);
   *keys = xmmword_1E865C660;
   v19[0] = xpc_int64_create(2);
   v11 = v10;
   v19[1] = v11;
   v12 = xpc_dictionary_create(keys, v19, 2uLL);
-  v13 = [(CSLaunchAgentXPCClient *)self sendMessageAndReplySync:v12 error:a5, v19[0]];
+  v13 = [(CSLaunchAgentXPCClient *)self sendMessageAndReplySync:v12 error:error, v19[0]];
 
   for (i = 1; i != -1; --i)
   {
@@ -588,7 +588,7 @@ LABEL_14:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)stopAudioStreamWithError:(id *)a3
+- (BOOL)stopAudioStreamWithError:(id *)error
 {
   keys[1] = *MEMORY[0x1E69E9840];
   v5 = CSLogContextFacilityCoreSpeech;
@@ -607,7 +607,7 @@ LABEL_14:
   v7 = v6;
   v18[1] = v7;
   v8 = xpc_dictionary_create(v19, v18, 2uLL);
-  v9 = [(CSLaunchAgentXPCClient *)self sendMessageAndReplySync:v8 error:a3];
+  v9 = [(CSLaunchAgentXPCClient *)self sendMessageAndReplySync:v8 error:error];
   v10 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -626,10 +626,10 @@ LABEL_14:
   return v9;
 }
 
-- (BOOL)startAudioStreamWithOption:(id)a3 error:(id *)a4
+- (BOOL)startAudioStreamWithOption:(id)option error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  optionCopy = option;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -638,18 +638,18 @@ LABEL_14:
     _os_log_impl(&dword_1DDA4B000, v7, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
   }
 
-  if (v6)
+  if (optionCopy)
   {
     *buf = xmmword_1E865C5F0;
     values[0] = xpc_int64_create(9);
-    values[1] = [v6 xpcObject];
+    values[1] = [optionCopy xpcObject];
     v8 = xpc_dictionary_create(buf, values, 2uLL);
     *keys = xmmword_1E865C660;
     v16[0] = xpc_int64_create(2);
     v9 = v8;
     v16[1] = v9;
     v10 = xpc_dictionary_create(keys, v16, 2uLL);
-    v11 = [(CSLaunchAgentXPCClient *)self sendMessageAndReplySync:v10 error:a4, v16[0]];
+    v11 = [(CSLaunchAgentXPCClient *)self sendMessageAndReplySync:v10 error:error, v16[0]];
 
     for (i = 1; i != -1; --i)
     {
@@ -660,10 +660,10 @@ LABEL_14:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.corespeech" code:114 userInfo:0];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -675,10 +675,10 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)prepareAudioRecordWithStreamHandleId:(unint64_t)a3 settings:(id)a4 error:(id *)a5
+- (BOOL)prepareAudioRecordWithStreamHandleId:(unint64_t)id settings:(id)settings error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  settingsCopy = settings;
   v9 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -687,7 +687,7 @@ LABEL_14:
     _os_log_impl(&dword_1DDA4B000, v9, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
   }
 
-  if (!a3 || !v8)
+  if (!id || !settingsCopy)
   {
     v16 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -695,17 +695,17 @@ LABEL_14:
       *buf = 136315138;
       *&buf[4] = "[CSLaunchAgentXPCClient prepareAudioRecordWithStreamHandleId:settings:error:]";
       _os_log_error_impl(&dword_1DDA4B000, v16, OS_LOG_TYPE_ERROR, "%s Invalid streamId or settings!!", buf, 0xCu);
-      if (a5)
+      if (error)
       {
         goto LABEL_12;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
 LABEL_12:
       [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.corespeech" code:114 userInfo:0];
-      *a5 = v13 = 0;
+      *error = v13 = 0;
       goto LABEL_15;
     }
 
@@ -716,15 +716,15 @@ LABEL_12:
   *buf = xmmword_1E865C5D8;
   v23 = "prepareSettings";
   values[0] = xpc_int64_create(6);
-  values[1] = xpc_uint64_create(a3);
-  values[2] = [v8 _cs_xpcObject];
+  values[1] = xpc_uint64_create(id);
+  values[2] = [settingsCopy _cs_xpcObject];
   v10 = xpc_dictionary_create(buf, values, 3uLL);
   *keys = xmmword_1E865C660;
   v19[0] = xpc_int64_create(2);
   v11 = v10;
   v19[1] = v11;
   v12 = xpc_dictionary_create(keys, v19, 2uLL);
-  v13 = [(CSLaunchAgentXPCClient *)self sendMessageAndReplySync:v12 error:a5, v19[0]];
+  v13 = [(CSLaunchAgentXPCClient *)self sendMessageAndReplySync:v12 error:error, v19[0]];
 
   for (i = 1; i != -1; --i)
   {
@@ -740,10 +740,10 @@ LABEL_15:
   return v13;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -752,11 +752,11 @@ LABEL_15:
     _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
   }
 
-  if (v4)
+  if (contextCopy)
   {
     *buf = xmmword_1E865C5C8;
     values[0] = xpc_int64_create(5);
-    values[1] = [v4 xpcObject];
+    values[1] = [contextCopy xpcObject];
     v6 = xpc_dictionary_create(buf, values, 2uLL);
     *keys = xmmword_1E865C660;
     v13[0] = xpc_int64_create(2);
@@ -788,11 +788,11 @@ LABEL_15:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)activateSecureSession:(BOOL)a3 error:(id *)a4
+- (BOOL)activateSecureSession:(BOOL)session error:(id *)error
 {
-  v4 = a3;
+  sessionCopy = session;
   v32 = *MEMORY[0x1E69E9840];
-  v21 = a4;
+  errorCopy = error;
   v6 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -803,20 +803,20 @@ LABEL_15:
 
   *keys = xmmword_1E865C5B8;
   values[0] = xpc_int64_create(2);
-  values[1] = xpc_BOOL_create(v4);
+  values[1] = xpc_BOOL_create(sessionCopy);
   v7 = xpc_dictionary_create(keys, values, 2uLL);
   *v29 = xmmword_1E865C660;
   v28[0] = xpc_int64_create(2);
   v8 = v7;
   v28[1] = v8;
   v9 = xpc_dictionary_create(v29, v28, 2uLL);
-  v10 = [MEMORY[0x1E695DF00] date];
-  v11 = [(CSLaunchAgentXPCClient *)self sendMessageAndReplySync:v9 error:&v21];
-  v12 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
+  v11 = [(CSLaunchAgentXPCClient *)self sendMessageAndReplySync:v9 error:&errorCopy];
+  date2 = [MEMORY[0x1E695DF00] date];
   v13 = CSLogCategoryAudio;
   if (os_log_type_enabled(CSLogCategoryAudio, OS_LOG_TYPE_DEFAULT))
   {
-    if (v4)
+    if (sessionCopy)
     {
       v14 = @"activate";
     }
@@ -827,7 +827,7 @@ LABEL_15:
     }
 
     v15 = v13;
-    [v12 timeIntervalSinceDate:v10];
+    [date2 timeIntervalSinceDate:date];
     *buf = 136315650;
     v23 = "[CSLaunchAgentXPCClient activateSecureSession:error:]";
     v24 = 2112;
@@ -849,7 +849,7 @@ LABEL_15:
   return v11;
 }
 
-- (BOOL)initAudioRecorderWithError:(id *)a3
+- (BOOL)initAudioRecorderWithError:(id *)error
 {
   keys[1] = *MEMORY[0x1E69E9840];
   v5 = CSLogContextFacilityCoreSpeech;
@@ -868,7 +868,7 @@ LABEL_15:
   v7 = v6;
   v13[1] = v7;
   v8 = xpc_dictionary_create(buf, v13, 2uLL);
-  v9 = [(CSLaunchAgentXPCClient *)self sendMessageAndReplySync:v8 error:a3, v13[0]];
+  v9 = [(CSLaunchAgentXPCClient *)self sendMessageAndReplySync:v8 error:error, v13[0]];
 
   for (i = 1; i != -1; --i)
   {
@@ -878,7 +878,7 @@ LABEL_15:
   return v9;
 }
 
-- (void)_handleListenerDisconnectedError:(id)a3
+- (void)_handleListenerDisconnectedError:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_crashMonitorDelegate);
@@ -920,12 +920,12 @@ LABEL_15:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleListenerError:(id)a3
+- (void)_handleListenerError:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (!errorCopy)
   {
     v10 = CSLogContextFacilityCoreSpeech;
     if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -941,9 +941,9 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (v4 != MEMORY[0x1E69E9E20] && v4 != MEMORY[0x1E69E9E18])
+  if (errorCopy != MEMORY[0x1E69E9E20] && errorCopy != MEMORY[0x1E69E9E18])
   {
-    string = xpc_dictionary_get_string(v4, *MEMORY[0x1E69E9E28]);
+    string = xpc_dictionary_get_string(errorCopy, *MEMORY[0x1E69E9E28]);
     v10 = CSLogContextFacilityCoreSpeech;
     if (!os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
@@ -974,12 +974,12 @@ LABEL_13:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleAudioCallbackDelegate:(id)a3
+- (void)_handleAudioCallbackDelegate:(id)delegate
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  uint64 = xpc_dictionary_get_uint64(v4, "audioStreamHandleId");
-  v6 = xpc_dictionary_get_uint64(v4, "hostTime");
+  delegateCopy = delegate;
+  uint64 = xpc_dictionary_get_uint64(delegateCopy, "audioStreamHandleId");
+  v6 = xpc_dictionary_get_uint64(delegateCopy, "hostTime");
 
   v7 = _handleAudioCallbackDelegate__heartbeat;
   if (!(v7 % +[CSUtils loggingHeartbeatRate]))
@@ -1004,37 +1004,37 @@ LABEL_13:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleDidFinishAlertPlaybackDelegate:(id)a3
+- (void)_handleDidFinishAlertPlaybackDelegate:(id)delegate
 {
-  uint64 = xpc_dictionary_get_uint64(a3, "alertType");
+  uint64 = xpc_dictionary_get_uint64(delegate, "alertType");
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained CSSystemDaemonDidFinishAlertPlaybackOfType:uint64];
 }
 
-- (void)_handleDidStopRecordingDelegate:(id)a3
+- (void)_handleDidStopRecordingDelegate:(id)delegate
 {
-  v4 = a3;
-  uint64 = xpc_dictionary_get_uint64(v4, "audioStreamHandleId");
-  int64 = xpc_dictionary_get_int64(v4, "didStopReason");
+  delegateCopy = delegate;
+  uint64 = xpc_dictionary_get_uint64(delegateCopy, "audioStreamHandleId");
+  int64 = xpc_dictionary_get_int64(delegateCopy, "didStopReason");
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained CSSystemDaemonDidStopRecordingForStream:uint64 forReason:int64];
 }
 
-- (void)_handleDidStartRecordingDelegate:(id)a3
+- (void)_handleDidStartRecordingDelegate:(id)delegate
 {
-  v4 = a3;
-  uint64 = xpc_dictionary_get_uint64(v4, "audioStreamHandleId");
-  v6 = xpc_dictionary_get_BOOL(v4, "didStartResult");
+  delegateCopy = delegate;
+  uint64 = xpc_dictionary_get_uint64(delegateCopy, "audioStreamHandleId");
+  v6 = xpc_dictionary_get_BOOL(delegateCopy, "didStartResult");
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained CSSystemDaemonDidStartRecordingForStream:uint64 successfully:v6];
 }
 
-- (void)_handleAudioProvidingDelegateAudioBuffer:(id)a3
+- (void)_handleAudioProvidingDelegateAudioBuffer:(id)buffer
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bufferCopy = buffer;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -1043,9 +1043,9 @@ LABEL_13:
     _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s ", &v14, 0xCu);
   }
 
-  uint64 = xpc_dictionary_get_uint64(v4, "audioStreamHandleId");
-  v7 = xpc_dictionary_get_uint64(v4, "hostTime");
-  v8 = xpc_dictionary_get_value(v4, "audioBuffer");
+  uint64 = xpc_dictionary_get_uint64(bufferCopy, "audioStreamHandleId");
+  v7 = xpc_dictionary_get_uint64(bufferCopy, "hostTime");
+  v8 = xpc_dictionary_get_value(bufferCopy, "audioBuffer");
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x1E695DEF0]);
@@ -1069,23 +1069,23 @@ LABEL_13:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleAudioProvidingDelegateMessageBody:(id)a3
+- (void)_handleAudioProvidingDelegateMessageBody:(id)body
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  int64 = xpc_dictionary_get_int64(v4, "type");
+  bodyCopy = body;
+  int64 = xpc_dictionary_get_int64(bodyCopy, "type");
   v6 = int64;
   if (int64 <= 2)
   {
     if (int64 == 1)
     {
-      [(CSLaunchAgentXPCClient *)self _handleAudioProvidingDelegateAudioBuffer:v4];
+      [(CSLaunchAgentXPCClient *)self _handleAudioProvidingDelegateAudioBuffer:bodyCopy];
       goto LABEL_14;
     }
 
     if (int64 == 2)
     {
-      [(CSLaunchAgentXPCClient *)self _handleDidStartRecordingDelegate:v4];
+      [(CSLaunchAgentXPCClient *)self _handleDidStartRecordingDelegate:bodyCopy];
       goto LABEL_14;
     }
   }
@@ -1095,13 +1095,13 @@ LABEL_13:
     switch(int64)
     {
       case 3:
-        [(CSLaunchAgentXPCClient *)self _handleDidStopRecordingDelegate:v4];
+        [(CSLaunchAgentXPCClient *)self _handleDidStopRecordingDelegate:bodyCopy];
         goto LABEL_14;
       case 4:
-        [(CSLaunchAgentXPCClient *)self _handleDidFinishAlertPlaybackDelegate:v4];
+        [(CSLaunchAgentXPCClient *)self _handleDidFinishAlertPlaybackDelegate:bodyCopy];
         goto LABEL_14;
       case 5:
-        [(CSLaunchAgentXPCClient *)self _handleAudioCallbackDelegate:v4];
+        [(CSLaunchAgentXPCClient *)self _handleAudioCallbackDelegate:bodyCopy];
         goto LABEL_14;
     }
   }
@@ -1121,14 +1121,14 @@ LABEL_14:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleListenerMessage:(id)a3
+- (void)_handleListenerMessage:(id)message
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  messageCopy = message;
+  v5 = messageCopy;
+  if (messageCopy)
   {
-    int64 = xpc_dictionary_get_int64(v4, "type");
+    int64 = xpc_dictionary_get_int64(messageCopy, "type");
     v7 = xpc_dictionary_get_dictionary(v5, "body");
     if (int64 == 3)
     {
@@ -1163,14 +1163,14 @@ LABEL_14:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleListenerEvent:(id)a3
+- (void)_handleListenerEvent:(id)event
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy)
   {
-    v6 = MEMORY[0x1E12BAC70](v4);
+    v6 = MEMORY[0x1E12BAC70](eventCopy);
     if (v6 == MEMORY[0x1E69E9E80])
     {
       [(CSLaunchAgentXPCClient *)self _handleListenerMessage:v5];
@@ -1217,16 +1217,16 @@ LABEL_11:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)pingpong:(id)a3
+- (void)pingpong:(id)pingpong
 {
   keys[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pingpongCopy = pingpong;
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __35__CSLaunchAgentXPCClient_pingpong___block_invoke;
   v12 = &unk_1E865CAB8;
-  v13 = v4;
-  v5 = v4;
+  v13 = pingpongCopy;
+  v5 = pingpongCopy;
   v6 = MEMORY[0x1E12BA300](&v9);
   keys[0] = "type";
   values = xpc_int64_create(1);
@@ -1261,17 +1261,17 @@ uint64_t __35__CSLaunchAgentXPCClient_pingpong___block_invoke(uint64_t a1)
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stopSecureAdBlockerMobileAssetLoaderService:(id)a3
+- (void)stopSecureAdBlockerMobileAssetLoaderService:(id)service
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  serviceCopy = service;
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
   {
     v6 = 136315138;
     v7 = "[CSLaunchAgentXPCClient stopSecureAdBlockerMobileAssetLoaderService:]";
     _os_log_error_impl(&dword_1DDA4B000, v4, OS_LOG_TYPE_ERROR, "%s This call is unexpected in macOS", &v6, 0xCu);
-    if (!v3)
+    if (!serviceCopy)
     {
       goto LABEL_4;
     }
@@ -1279,10 +1279,10 @@ uint64_t __35__CSLaunchAgentXPCClient_pingpong___block_invoke(uint64_t a1)
     goto LABEL_3;
   }
 
-  if (v3)
+  if (serviceCopy)
   {
 LABEL_3:
-    v3[2](v3, 4);
+    serviceCopy[2](serviceCopy, 4);
   }
 
 LABEL_4:
@@ -1304,17 +1304,17 @@ LABEL_4:
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startSecureAdBlockerMobileAssetLoaderService:(id)a3
+- (void)startSecureAdBlockerMobileAssetLoaderService:(id)service
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  serviceCopy = service;
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
   {
     v6 = 136315138;
     v7 = "[CSLaunchAgentXPCClient startSecureAdBlockerMobileAssetLoaderService:]";
     _os_log_error_impl(&dword_1DDA4B000, v4, OS_LOG_TYPE_ERROR, "%s This call is unexpected in macOS", &v6, 0xCu);
-    if (!v3)
+    if (!serviceCopy)
     {
       goto LABEL_4;
     }
@@ -1322,10 +1322,10 @@ LABEL_4:
     goto LABEL_3;
   }
 
-  if (v3)
+  if (serviceCopy)
   {
 LABEL_3:
-    v3[2](v3, 4);
+    serviceCopy[2](serviceCopy, 4);
   }
 
 LABEL_4:
@@ -1347,17 +1347,17 @@ LABEL_4:
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAdBlockerAsset:(id)a3
+- (void)setAdBlockerAsset:(id)asset
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  assetCopy = asset;
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
   {
     v6 = 136315138;
     v7 = "[CSLaunchAgentXPCClient setAdBlockerAsset:]";
     _os_log_error_impl(&dword_1DDA4B000, v4, OS_LOG_TYPE_ERROR, "%s This call is unexpected in macOS", &v6, 0xCu);
-    if (!v3)
+    if (!assetCopy)
     {
       goto LABEL_4;
     }
@@ -1365,10 +1365,10 @@ LABEL_4:
     goto LABEL_3;
   }
 
-  if (v3)
+  if (assetCopy)
   {
 LABEL_3:
-    v3[2](v3, 4);
+    assetCopy[2](assetCopy, 4);
   }
 
 LABEL_4:
@@ -1376,17 +1376,17 @@ LABEL_4:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)adBlockerMatchingInProgress:(id)a3
+- (void)adBlockerMatchingInProgress:(id)progress
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  progressCopy = progress;
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
   {
     v6 = 136315138;
     v7 = "[CSLaunchAgentXPCClient adBlockerMatchingInProgress:]";
     _os_log_error_impl(&dword_1DDA4B000, v4, OS_LOG_TYPE_ERROR, "%s This call is unexpected in macOS", &v6, 0xCu);
-    if (!v3)
+    if (!progressCopy)
     {
       goto LABEL_4;
     }
@@ -1394,10 +1394,10 @@ LABEL_4:
     goto LABEL_3;
   }
 
-  if (v3)
+  if (progressCopy)
   {
 LABEL_3:
-    v3[2](v3, 0);
+    progressCopy[2](progressCopy, 0);
   }
 
 LABEL_4:
@@ -1405,11 +1405,11 @@ LABEL_4:
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendAssetsControlMessage:(id)a3 errorCodeIfFailed:(unint64_t)a4 completion:(id)a5
+- (void)sendAssetsControlMessage:(id)message errorCodeIfFailed:(unint64_t)failed completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  messageCopy = message;
+  completionCopy = completion;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1422,11 +1422,11 @@ LABEL_4:
   block[2] = __80__CSLaunchAgentXPCClient_sendAssetsControlMessage_errorCodeIfFailed_completion___block_invoke;
   block[3] = &unk_1E865CC08;
   block[4] = self;
-  v11 = v8;
+  v11 = messageCopy;
   v17 = v11;
   v18 = &v19;
   dispatch_async_and_wait(xpcRequestQueue, block);
-  if (!v9 || (v12 = v20[5]) == 0)
+  if (!completionCopy || (v12 = v20[5]) == 0)
   {
     v14 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -1434,23 +1434,23 @@ LABEL_4:
       *buf = 136315138;
       v26 = "[CSLaunchAgentXPCClient sendAssetsControlMessage:errorCodeIfFailed:completion:]";
       _os_log_error_impl(&dword_1DDA4B000, v14, OS_LOG_TYPE_ERROR, "%s XPC connection not existing, return result as failed", buf, 0xCu);
-      if (!v9)
+      if (!completionCopy)
       {
         goto LABEL_7;
       }
     }
 
-    else if (!v9)
+    else if (!completionCopy)
     {
       goto LABEL_7;
     }
 
-    v9[2](v9, a4);
+    completionCopy[2](completionCopy, failed);
     goto LABEL_7;
   }
 
   uint64 = xpc_dictionary_get_uint64(v12, "configErrorCode");
-  v9[2](v9, uint64);
+  completionCopy[2](completionCopy, uint64);
 LABEL_7:
 
   _Block_object_dispose(&v19, 8);
@@ -1478,10 +1478,10 @@ _xpc_connection_s *__80__CSLaunchAgentXPCClient_sendAssetsControlMessage_errorCo
   return result;
 }
 
-- (void)stopSecureMobileAssetLoaderService:(id)a3
+- (void)stopSecureMobileAssetLoaderService:(id)service
 {
   keys[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  serviceCopy = service;
   keys[0] = "type";
   values = xpc_int64_create(3);
   v5 = xpc_dictionary_create(keys, &values, 1uLL);
@@ -1490,7 +1490,7 @@ _xpc_connection_s *__80__CSLaunchAgentXPCClient_sendAssetsControlMessage_errorCo
   v6 = v5;
   v10[1] = v6;
   v7 = xpc_dictionary_create(v11, v10, 2uLL);
-  [(CSLaunchAgentXPCClient *)self sendAssetsControlMessage:v7 errorCodeIfFailed:3 completion:v4, v10[0]];
+  [(CSLaunchAgentXPCClient *)self sendAssetsControlMessage:v7 errorCodeIfFailed:3 completion:serviceCopy, v10[0]];
 
   for (i = 1; i != -1; --i)
   {
@@ -1499,20 +1499,20 @@ _xpc_connection_s *__80__CSLaunchAgentXPCClient_sendAssetsControlMessage_errorCo
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startSecureMobileAssetLoaderService:(BOOL)a3 completion:(id)a4
+- (void)startSecureMobileAssetLoaderService:(BOOL)service completion:(id)completion
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   *keys = xmmword_1E865C5A8;
   values[0] = xpc_int64_create(2);
-  values[1] = xpc_BOOL_create(a3);
+  values[1] = xpc_BOOL_create(service);
   v7 = xpc_dictionary_create(keys, values, 2uLL);
   *v14 = xmmword_1E865C660;
   v13[0] = xpc_int64_create(6);
   v8 = v7;
   v13[1] = v8;
   v9 = xpc_dictionary_create(v14, v13, 2uLL);
-  [(CSLaunchAgentXPCClient *)self sendAssetsControlMessage:v9 errorCodeIfFailed:2 completion:v6, v13[0]];
+  [(CSLaunchAgentXPCClient *)self sendAssetsControlMessage:v9 errorCodeIfFailed:2 completion:completionCopy, v13[0]];
 
   for (i = 1; i != -1; --i)
   {
@@ -1525,19 +1525,19 @@ _xpc_connection_s *__80__CSLaunchAgentXPCClient_sendAssetsControlMessage_errorCo
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAssetForLocale:(id)a3 isOTA:(BOOL)a4 completion:(id)a5
+- (void)setAssetForLocale:(id)locale isOTA:(BOOL)a completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  localeCopy = locale;
+  completionCopy = completion;
   *keys = xmmword_1E865C598;
   values[0] = xpc_int64_create(1);
-  values[1] = xpc_BOOL_create(a4);
+  values[1] = xpc_BOOL_create(a);
   v10 = xpc_dictionary_create(keys, values, 2uLL);
-  if (v8)
+  if (localeCopy)
   {
-    v11 = v8;
-    xpc_dictionary_set_string(v10, "locale", [v8 UTF8String]);
+    v11 = localeCopy;
+    xpc_dictionary_set_string(v10, "locale", [localeCopy UTF8String]);
   }
 
   *v18 = xmmword_1E865C660;
@@ -1545,7 +1545,7 @@ _xpc_connection_s *__80__CSLaunchAgentXPCClient_sendAssetsControlMessage_errorCo
   v12 = v10;
   v17[1] = v12;
   v13 = xpc_dictionary_create(v18, v17, 2uLL);
-  [(CSLaunchAgentXPCClient *)self sendAssetsControlMessage:v13 errorCodeIfFailed:1 completion:v9, v17[0]];
+  [(CSLaunchAgentXPCClient *)self sendAssetsControlMessage:v13 errorCodeIfFailed:1 completion:completionCopy, v17[0]];
 
   for (i = 1; i != -1; --i)
   {
@@ -1578,17 +1578,17 @@ _xpc_connection_s *__80__CSLaunchAgentXPCClient_sendAssetsControlMessage_errorCo
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startSecondPassVoiceTriggerWithFirstPassSource:(unint64_t)a3 enablePHS:(BOOL)a4 supportMultiPhrase:(BOOL)a5 activeChannel:(unsigned int)a6
+- (void)startSecondPassVoiceTriggerWithFirstPassSource:(unint64_t)source enablePHS:(BOOL)s supportMultiPhrase:(BOOL)phrase activeChannel:(unsigned int)channel
 {
   v23 = *MEMORY[0x1E69E9840];
   *keys = xmmword_1E865C570;
   v21 = *&off_1E865C580;
   v22 = "activeChannel";
   values[0] = xpc_int64_create(4);
-  values[1] = xpc_uint64_create(a3);
-  values[2] = xpc_BOOL_create(a4);
-  values[3] = xpc_BOOL_create(a5);
-  values[4] = xpc_uint64_create(a6);
+  values[1] = xpc_uint64_create(source);
+  values[2] = xpc_BOOL_create(s);
+  values[3] = xpc_BOOL_create(phrase);
+  values[4] = xpc_uint64_create(channel);
   v11 = xpc_dictionary_create(keys, values, 5uLL);
   *v18 = xmmword_1E865C660;
   v17[0] = xpc_int64_create(5);
@@ -1608,21 +1608,21 @@ _xpc_connection_s *__80__CSLaunchAgentXPCClient_sendAssetsControlMessage_errorCo
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setSpeakerProfile:(id)a3 numEmbeddings:(unint64_t)a4 dimension:(unint64_t)a5 speakerRecognizerType:(unint64_t)a6
+- (BOOL)setSpeakerProfile:(id)profile numEmbeddings:(unint64_t)embeddings dimension:(unint64_t)dimension speakerRecognizerType:(unint64_t)type
 {
   v34 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  profileCopy = profile;
   *keys = xmmword_1E865C550;
   v33 = *&off_1E865C560;
   values[0] = xpc_int64_create(3);
-  values[1] = xpc_uint64_create(a4);
-  values[2] = xpc_uint64_create(a5);
-  values[3] = xpc_uint64_create(a6);
+  values[1] = xpc_uint64_create(embeddings);
+  values[2] = xpc_uint64_create(dimension);
+  values[3] = xpc_uint64_create(type);
   v11 = xpc_dictionary_create(keys, values, 4uLL);
-  if (v10)
+  if (profileCopy)
   {
-    v12 = [v10 _cs_xpcObject];
-    xpc_dictionary_set_value(v11, "profileEmbedding", v12);
+    _cs_xpcObject = [profileCopy _cs_xpcObject];
+    xpc_dictionary_set_value(v11, "profileEmbedding", _cs_xpcObject);
   }
 
   *v30 = xmmword_1E865C660;
@@ -1639,11 +1639,11 @@ _xpc_connection_s *__80__CSLaunchAgentXPCClient_sendAssetsControlMessage_errorCo
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v18 = v17;
-      v19 = [v16 localizedDescription];
+      localizedDescription = [v16 localizedDescription];
       *buf = 136315394;
       v26 = "[CSLaunchAgentXPCClient setSpeakerProfile:numEmbeddings:dimension:speakerRecognizerType:]";
       v27 = 2114;
-      v28 = v19;
+      v28 = localizedDescription;
       _os_log_impl(&dword_1DDA4B000, v18, OS_LOG_TYPE_DEFAULT, "%s Failed with error %{public}@", buf, 0x16u);
     }
   }
@@ -1660,13 +1660,13 @@ _xpc_connection_s *__80__CSLaunchAgentXPCClient_sendAssetsControlMessage_errorCo
   return v15;
 }
 
-- (void)processSecondPassVoiceTriggerWithShouldFlushAudio:(BOOL)a3 result:(id)a4
+- (void)processSecondPassVoiceTriggerWithShouldFlushAudio:(BOOL)audio result:(id)result
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  resultCopy = result;
   *keys = xmmword_1E865C540;
   values[0] = xpc_int64_create(2);
-  values[1] = xpc_BOOL_create(a3);
+  values[1] = xpc_BOOL_create(audio);
   v7 = xpc_dictionary_create(keys, values, 2uLL);
   *v30 = xmmword_1E865C660;
   v29[0] = xpc_int64_create(5);
@@ -1688,24 +1688,24 @@ _xpc_connection_s *__80__CSLaunchAgentXPCClient_sendAssetsControlMessage_errorCo
       *buf = 136315138;
       v28 = "[CSLaunchAgentXPCClient processSecondPassVoiceTriggerWithShouldFlushAudio:result:]";
       _os_log_error_impl(&dword_1DDA4B000, v22, OS_LOG_TYPE_ERROR, "%s XPC connection not existing, return result as failed", buf, 0xCu);
-      if (!v6)
+      if (!resultCopy)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!v6)
+    else if (!resultCopy)
     {
       goto LABEL_9;
     }
 
-    (*(v6 + 2))(v6, 3, 0, 0, 0, 0, 0, 0, 0.0);
+    (*(resultCopy + 2))(resultCopy, 3, 0, 0, 0, 0, 0, 0, 0.0);
     goto LABEL_9;
   }
 
   v12 = xpc_connection_send_message_with_reply_sync(xpcConnection, v9);
   v13 = v12;
-  if (v6)
+  if (resultCopy)
   {
     uint64 = xpc_dictionary_get_uint64(v12, "secondPassResultType");
     v15 = xpc_dictionary_get_uint64(v13, "secondPassTriggerTimestamp");
@@ -1715,7 +1715,7 @@ _xpc_connection_s *__80__CSLaunchAgentXPCClient_sendAssetsControlMessage_errorCo
     v19 = xpc_dictionary_get_uint64(v13, "secondPassTriggerEndSampleCount");
     v20 = xpc_dictionary_get_uint64(v13, "keywordDetectResult");
     v21 = xpc_dictionary_get_uint64(v13, "speakerDetectResult");
-    (*(v6 + 2))(v6, uint64, v15, v17, v18, v19, v20, v21, v16);
+    (*(resultCopy + 2))(resultCopy, uint64, v15, v17, v18, v19, v20, v21, v16);
   }
 
 LABEL_9:
@@ -1770,11 +1770,11 @@ LABEL_9:
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [v7 localizedDescription];
+      localizedDescription = [v7 localizedDescription];
       *buf = 136315394;
       v16 = "[CSLaunchAgentXPCClient initializeSecondPass]";
       v17 = 2114;
-      v18 = v10;
+      v18 = localizedDescription;
       _os_log_impl(&dword_1DDA4B000, v9, OS_LOG_TYPE_DEFAULT, "%s Failed with error %{public}@", buf, 0x16u);
     }
   }
@@ -1847,10 +1847,10 @@ LABEL_9:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processBargeInVoiceTriggerWithResult:(id)a3
+- (void)processBargeInVoiceTriggerWithResult:(id)result
 {
   keys[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   keys[0] = "type";
   values = xpc_int64_create(3);
   v5 = xpc_dictionary_create(keys, &values, 1uLL);
@@ -1875,7 +1875,7 @@ LABEL_9:
   v18 = v9;
   v19 = &v20;
   dispatch_async_and_wait(xpcRequestQueue, block);
-  if (!v4 || (v10 = v21[5]) == 0)
+  if (!resultCopy || (v10 = v21[5]) == 0)
   {
     v14 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -1883,25 +1883,25 @@ LABEL_9:
       *buf = 136315138;
       v27 = "[CSLaunchAgentXPCClient processBargeInVoiceTriggerWithResult:]";
       _os_log_error_impl(&dword_1DDA4B000, v14, OS_LOG_TYPE_ERROR, "%s XPC connection not existing, return result as failed", buf, 0xCu);
-      if (!v4)
+      if (!resultCopy)
       {
         goto LABEL_7;
       }
     }
 
-    else if (!v4)
+    else if (!resultCopy)
     {
       goto LABEL_7;
     }
 
-    (*(v4 + 2))(v4, 1, 0, 0);
+    (*(resultCopy + 2))(resultCopy, 1, 0, 0);
     goto LABEL_7;
   }
 
   uint64 = xpc_dictionary_get_uint64(v10, "APResultType");
   v12 = xpc_dictionary_get_uint64(v21[5], "APResultTriggerTimestamp");
   v13 = xpc_dictionary_get_uint64(v21[5], "APResultTriggerBestChannel");
-  (*(v4 + 2))(v4, uint64, v12, v13);
+  (*(resultCopy + 2))(resultCopy, uint64, v12, v13);
 LABEL_7:
 
   _Block_object_dispose(&v20, 8);
@@ -1933,10 +1933,10 @@ _xpc_connection_s *__63__CSLaunchAgentXPCClient_processBargeInVoiceTriggerWithRe
   return result;
 }
 
-- (void)fetchAOPVoiceTriggerResult:(id)a3
+- (void)fetchAOPVoiceTriggerResult:(id)result
 {
   keys[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   keys[0] = "type";
   values = xpc_int64_create(2);
   v5 = xpc_dictionary_create(keys, &values, 1uLL);
@@ -1961,7 +1961,7 @@ _xpc_connection_s *__63__CSLaunchAgentXPCClient_processBargeInVoiceTriggerWithRe
   v17 = v9;
   v18 = &v19;
   dispatch_async_and_wait(xpcRequestQueue, block);
-  if (!v4 || (v10 = v20[5]) == 0)
+  if (!resultCopy || (v10 = v20[5]) == 0)
   {
     v13 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -1969,24 +1969,24 @@ _xpc_connection_s *__63__CSLaunchAgentXPCClient_processBargeInVoiceTriggerWithRe
       *buf = 136315138;
       v26 = "[CSLaunchAgentXPCClient fetchAOPVoiceTriggerResult:]";
       _os_log_error_impl(&dword_1DDA4B000, v13, OS_LOG_TYPE_ERROR, "%s XPC connection not existing, return trigger-length as 0", buf, 0xCu);
-      if (!v4)
+      if (!resultCopy)
       {
         goto LABEL_7;
       }
     }
 
-    else if (!v4)
+    else if (!resultCopy)
     {
       goto LABEL_7;
     }
 
-    (*(v4 + 2))(v4, 0, 0);
+    (*(resultCopy + 2))(resultCopy, 0, 0);
     goto LABEL_7;
   }
 
   uint64 = xpc_dictionary_get_uint64(v10, "AOPTriggerLength");
   v12 = xpc_dictionary_get_BOOL(v20[5], "AOPLateTrigger");
-  (*(v4 + 2))(v4, uint64, v12);
+  (*(resultCopy + 2))(resultCopy, uint64, v12);
 LABEL_7:
 
   _Block_object_dispose(&v19, 8);
@@ -2064,7 +2064,7 @@ _xpc_connection_s *__53__CSLaunchAgentXPCClient_fetchAOPVoiceTriggerResult___blo
   block[3] = &unk_1E865CC08;
   v7 = v5;
   v14 = v7;
-  v15 = self;
+  selfCopy = self;
   v16 = &v17;
   dispatch_async_and_wait(xpcRequestQueue, block);
   v8 = v18[5];
@@ -2132,7 +2132,7 @@ _xpc_connection_s *__36__CSLaunchAgentXPCClient_stopSensor__block_invoke(_xpc_co
   block[3] = &unk_1E865CC08;
   v7 = v5;
   v14 = v7;
-  v15 = self;
+  selfCopy = self;
   v16 = &v17;
   dispatch_async_and_wait(xpcRequestQueue, block);
   v8 = v18[5];
@@ -2200,7 +2200,7 @@ _xpc_connection_s *__37__CSLaunchAgentXPCClient_startSensor__block_invoke(_xpc_c
   block[3] = &unk_1E865CC08;
   v7 = v5;
   v14 = v7;
-  v15 = self;
+  selfCopy = self;
   v16 = &v17;
   dispatch_async_and_wait(xpcRequestQueue, block);
   v8 = v18[5];
@@ -2244,17 +2244,17 @@ _xpc_connection_s *__45__CSLaunchAgentXPCClient_currentSensorStatus__block_invok
   return result;
 }
 
-- (void)requestHistoricalAudioBufferFor:(unint64_t)a3 startSample:(unint64_t)a4 numSamples:(unint64_t)a5 hostTime:(unint64_t)a6
+- (void)requestHistoricalAudioBufferFor:(unint64_t)for startSample:(unint64_t)sample numSamples:(unint64_t)samples hostTime:(unint64_t)time
 {
   v23 = *MEMORY[0x1E69E9840];
   *keys = xmmword_1E865C518;
   v21 = *&off_1E865C528;
   v22 = "hostTime";
   values[0] = xpc_int64_create(4);
-  values[1] = xpc_uint64_create(a3);
-  values[2] = xpc_uint64_create(a4);
-  values[3] = xpc_uint64_create(a5);
-  values[4] = xpc_uint64_create(a6);
+  values[1] = xpc_uint64_create(for);
+  values[2] = xpc_uint64_create(sample);
+  values[3] = xpc_uint64_create(samples);
+  values[4] = xpc_uint64_create(time);
   v11 = xpc_dictionary_create(keys, values, 5uLL);
   *v18 = xmmword_1E865C660;
   v17[0] = xpc_int64_create(2);
@@ -2294,11 +2294,11 @@ _xpc_connection_s *__45__CSLaunchAgentXPCClient_currentSensorStatus__block_invok
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [v7 localizedDescription];
+      localizedDescription = [v7 localizedDescription];
       *buf = 136315394;
       v16 = "[CSLaunchAgentXPCClient fetchAndStoreAudioBuffer]";
       v17 = 2114;
-      v18 = v10;
+      v18 = localizedDescription;
       _os_log_impl(&dword_1DDA4B000, v9, OS_LOG_TYPE_DEFAULT, "%s Failed with error %{public}@", buf, 0x16u);
     }
   }
@@ -2326,10 +2326,10 @@ _xpc_connection_s *__45__CSLaunchAgentXPCClient_currentSensorStatus__block_invok
   return 1;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -2344,8 +2344,8 @@ _xpc_connection_s *__45__CSLaunchAgentXPCClient_currentSensorStatus__block_invok
   v9[2] = __38__CSLaunchAgentXPCClient_setDelegate___block_invoke;
   v9[3] = &unk_1E865C970;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = delegateCopy;
+  v7 = delegateCopy;
   dispatch_async(xpcRequestQueue, v9);
 
   v8 = *MEMORY[0x1E69E9840];
@@ -2401,11 +2401,11 @@ void __37__CSLaunchAgentXPCClient__disconnect__block_invoke(uint64_t a1)
   if (!self->_xpcConnection)
   {
     v3 = +[CSUserSessionActiveMonitor sharedInstance];
-    v4 = [v3 isUserActive];
+    isUserActive = [v3 isUserActive];
 
     v5 = CSLogContextFacilityCoreSpeech;
     v6 = os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (isUserActive)
     {
       if (v6)
       {

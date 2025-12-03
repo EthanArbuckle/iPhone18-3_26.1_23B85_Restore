@@ -1,27 +1,27 @@
 @interface NTKWidgetComplicationMigrationKey
-- (BOOL)isEqual:(id)a3;
-- (NTKWidgetComplicationMigrationKey)initWithComplicationType:(unint64_t)a3 family:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NTKWidgetComplicationMigrationKey)initWithComplicationType:(unint64_t)type family:(id)family;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation NTKWidgetComplicationMigrationKey
 
-- (NTKWidgetComplicationMigrationKey)initWithComplicationType:(unint64_t)a3 family:(id)a4
+- (NTKWidgetComplicationMigrationKey)initWithComplicationType:(unint64_t)type family:(id)family
 {
   v7.receiver = self;
   v7.super_class = NTKWidgetComplicationMigrationKey;
   result = [(NTKWidgetComplicationMigrationKey *)&v7 init];
   if (result)
   {
-    result->_complicationType = a3;
-    result->_family = a4;
+    result->_complicationType = type;
+    result->_family = family;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   complicationType = self->_complicationType;
@@ -32,17 +32,17 @@
 
 - (unint64_t)hash
 {
-  v3 = [(NTKWidgetComplicationMigrationKey *)self complicationType];
-  v4 = [(NTKWidgetComplicationMigrationKey *)self family];
-  v5 = [v4 hash];
+  complicationType = [(NTKWidgetComplicationMigrationKey *)self complicationType];
+  family = [(NTKWidgetComplicationMigrationKey *)self family];
+  v5 = [family hash];
 
-  return v5 ^ v3;
+  return v5 ^ complicationType;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -50,7 +50,7 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_complicationType == v4->_complicationType)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_complicationType == equalCopy->_complicationType)
     {
       v5 = CLKEqualObjects();
     }

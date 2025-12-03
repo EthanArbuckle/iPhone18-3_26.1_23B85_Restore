@@ -1,35 +1,35 @@
 @interface CBDisplayModuleHIDiOS
-- (BOOL)getNits:(float *)a3;
-- (BOOL)handleDisplayBrightnessProperty:(id)a3;
-- (BOOL)handleDisplayLinearBrightnessProperty:(id)a3;
-- (BOOL)handleDisplayProductIDProperty:(id)a3;
-- (BOOL)handleDisplayVendorIDProperty:(id)a3;
-- (BOOL)setNits:(float)a3 withPeriod:(float)a4;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
-- (BOOL)setSlider:(float)a3;
-- (CBDisplayModuleHIDiOS)initWithDevice:(unsigned int)a3 andQueue:(id)a4;
+- (BOOL)getNits:(float *)nits;
+- (BOOL)handleDisplayBrightnessProperty:(id)property;
+- (BOOL)handleDisplayLinearBrightnessProperty:(id)property;
+- (BOOL)handleDisplayProductIDProperty:(id)property;
+- (BOOL)handleDisplayVendorIDProperty:(id)property;
+- (BOOL)setNits:(float)nits withPeriod:(float)period;
+- (BOOL)setProperty:(id)property forKey:(id)key;
+- (BOOL)setSlider:(float)slider;
+- (CBDisplayModuleHIDiOS)initWithDevice:(unsigned int)device andQueue:(id)queue;
 - (float)getLinearBrightness;
-- (float)getNitsForUserBrightness:(float)a3;
-- (float)getUserBrightnessForNits:(float)a3;
+- (float)getNitsForUserBrightness:(float)brightness;
+- (float)getUserBrightnessForNits:(float)nits;
 - (id)copyIdentifiers;
-- (id)copyPropertyInternalForKey:(id)a3;
+- (id)copyPropertyInternalForKey:(id)key;
 - (id)newDisplayBrightnessData;
 - (void)dealloc;
-- (void)sendNotificationForKey:(id)a3 withValue:(id)a4;
+- (void)sendNotificationForKey:(id)key withValue:(id)value;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation CBDisplayModuleHIDiOS
 
-- (CBDisplayModuleHIDiOS)initWithDevice:(unsigned int)a3 andQueue:(id)a4
+- (CBDisplayModuleHIDiOS)initWithDevice:(unsigned int)device andQueue:(id)queue
 {
   v109 = *MEMORY[0x1E69E9840];
-  v102 = self;
+  selfCopy = self;
   v101 = a2;
-  v100 = a3;
-  v99 = a4;
-  if (!a3 || !v99)
+  deviceCopy = device;
+  queueCopy = queue;
+  if (!device || !queueCopy)
   {
     if (_COREBRIGHTNESS_LOG_DEFAULT)
     {
@@ -52,26 +52,26 @@
     }
 
 LABEL_141:
-    MEMORY[0x1E69E5920](v102);
-    v102 = 0;
+    MEMORY[0x1E69E5920](selfCopy);
+    selfCopy = 0;
     v103 = 0;
     goto LABEL_142;
   }
 
-  v95.receiver = v102;
+  v95.receiver = selfCopy;
   v95.super_class = CBDisplayModuleHIDiOS;
-  v102 = [(CBDisplayModuleHIDiOS *)&v95 init];
-  if (v102)
+  selfCopy = [(CBDisplayModuleHIDiOS *)&v95 init];
+  if (selfCopy)
   {
-    *(v102 + 5) = os_log_create("com.apple.CoreBrightness.HIDDisplay", "default");
-    *(v102 + 6) = v99;
-    dispatch_retain(*(v102 + 6));
-    *(v102 + 14) = dispatch_queue_create("CBDisplayModuleHID - Brightness", 0);
-    if (!*(v102 + 14))
+    *(selfCopy + 5) = os_log_create("com.apple.CoreBrightness.HIDDisplay", "default");
+    *(selfCopy + 6) = queueCopy;
+    dispatch_retain(*(selfCopy + 6));
+    *(selfCopy + 14) = dispatch_queue_create("CBDisplayModuleHID - Brightness", 0);
+    if (!*(selfCopy + 14))
     {
-      if (*(v102 + 5))
+      if (*(selfCopy + 5))
       {
-        v48 = *(v102 + 5);
+        v48 = *(selfCopy + 5);
       }
 
       else
@@ -106,10 +106,10 @@ LABEL_141:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v102[132] = [v91 BOOLValue];
-      if (*(v102 + 5))
+      selfCopy[132] = [v91 BOOLValue];
+      if (*(selfCopy + 5))
       {
-        v44 = *(v102 + 5);
+        v44 = *(selfCopy + 5);
       }
 
       else
@@ -122,24 +122,24 @@ LABEL_141:
       v89 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
       {
-        __os_log_helper_16_0_1_4_0(v108, v102[132] & 1);
+        __os_log_helper_16_0_1_4_0(v108, selfCopy[132] & 1);
         _os_log_impl(&dword_1DE8E5000, v90, v89, "loaded no-HID override from preferences (%d)", v108, 8u);
       }
     }
 
     MEMORY[0x1E69E5920](v91);
-    v88 = IORegistryEntrySearchCFProperty(v100, "IOService", @"ProductID", *MEMORY[0x1E695E480], 2u);
+    v88 = IORegistryEntrySearchCFProperty(deviceCopy, "IOService", @"ProductID", *MEMORY[0x1E695E480], 2u);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      *(v102 + 20) = [v88 unsignedIntegerValue];
+      *(selfCopy + 20) = [v88 unsignedIntegerValue];
     }
 
     else
     {
-      if (*(v102 + 5))
+      if (*(selfCopy + 5))
       {
-        v42 = *(v102 + 5);
+        v42 = *(selfCopy + 5);
       }
 
       else
@@ -169,18 +169,18 @@ LABEL_141:
     }
 
     MEMORY[0x1E69E5920](v88);
-    v84 = IORegistryEntrySearchCFProperty(v100, "IOService", @"VendorID", *MEMORY[0x1E695E480], 2u);
+    v84 = IORegistryEntrySearchCFProperty(deviceCopy, "IOService", @"VendorID", *MEMORY[0x1E695E480], 2u);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      *(v102 + 19) = [v84 unsignedIntegerValue];
+      *(selfCopy + 19) = [v84 unsignedIntegerValue];
     }
 
     else
     {
-      if (*(v102 + 5))
+      if (*(selfCopy + 5))
       {
-        v38 = *(v102 + 5);
+        v38 = *(selfCopy + 5);
       }
 
       else
@@ -210,9 +210,9 @@ LABEL_141:
     }
 
     MEMORY[0x1E69E5920](v84);
-    if (*(v102 + 5))
+    if (*(selfCopy + 5))
     {
-      v34 = *(v102 + 5);
+      v34 = *(selfCopy + 5);
     }
 
     else
@@ -234,16 +234,16 @@ LABEL_141:
     v79 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_2_8_0_8_0(v107, *(v102 + 19), *(v102 + 20));
+      __os_log_helper_16_0_2_8_0_8_0(v107, *(selfCopy + 19), *(selfCopy + 20));
       _os_log_impl(&dword_1DE8E5000, v80, v79, "VID = %lu | PID = %lu", v107, 0x16u);
     }
 
-    *(v102 + 4) = IOHIDDeviceCreate(*MEMORY[0x1E695E480], v100);
-    if (!*(v102 + 4))
+    *(selfCopy + 4) = IOHIDDeviceCreate(*MEMORY[0x1E695E480], deviceCopy);
+    if (!*(selfCopy + 4))
     {
-      if (*(v102 + 5))
+      if (*(selfCopy + 5))
       {
-        v32 = *(v102 + 5);
+        v32 = *(selfCopy + 5);
       }
 
       else
@@ -274,11 +274,11 @@ LABEL_141:
       goto LABEL_141;
     }
 
-    if (IOHIDDeviceOpen(*(v102 + 4), 0))
+    if (IOHIDDeviceOpen(*(selfCopy + 4), 0))
     {
-      if (*(v102 + 5))
+      if (*(selfCopy + 5))
       {
-        v28 = *(v102 + 5);
+        v28 = *(selfCopy + 5);
       }
 
       else
@@ -309,28 +309,28 @@ LABEL_141:
       goto LABEL_141;
     }
 
-    v72 = IORegistryEntrySearchCFProperty(v100, "IOService", @"kUSBContainerID", *MEMORY[0x1E695E480], 3u);
+    v72 = IORegistryEntrySearchCFProperty(deviceCopy, "IOService", @"kUSBContainerID", *MEMORY[0x1E695E480], 3u);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      *(v102 + 7) = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v72];
+      *(selfCopy + 7) = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v72];
     }
 
     MEMORY[0x1E69E5920](v72);
-    *(v102 + 10) = IOHIDDeviceCopyMatchingElements(*(v102 + 4), 0, 0);
-    v4 = *(v102 + 10);
+    *(selfCopy + 10) = IOHIDDeviceCopyMatchingElements(*(selfCopy + 4), 0, 0);
+    v4 = *(selfCopy + 10);
     v66 = MEMORY[0x1E69E9820];
     v67 = -1073741824;
     v68 = 0;
     v69 = __49__CBDisplayModuleHIDiOS_initWithDevice_andQueue___block_invoke;
     v70 = &unk_1E867B668;
-    v71 = v102;
+    v71 = selfCopy;
     [v4 enumerateObjectsUsingBlock:?];
-    if (!*(v102 + 9))
+    if (!*(selfCopy + 9))
     {
-      if (*(v102 + 5))
+      if (*(selfCopy + 5))
       {
-        v24 = *(v102 + 5);
+        v24 = *(selfCopy + 5);
       }
 
       else
@@ -350,11 +350,11 @@ LABEL_141:
       }
     }
 
-    if (!*(v102 + 8))
+    if (!*(selfCopy + 8))
     {
-      if (*(v102 + 5))
+      if (*(selfCopy + 5))
       {
-        v12 = *(v102 + 5);
+        v12 = *(selfCopy + 5);
       }
 
       else
@@ -385,27 +385,27 @@ LABEL_141:
       goto LABEL_141;
     }
 
-    UnitExponent = IOHIDElementGetUnitExponent(*(v102 + 8));
-    *(v102 + 23) = IOHIDElementGetPhysicalMax(*(v102 + 8));
-    *(v102 + 22) = IOHIDElementGetPhysicalMin(*(v102 + 8));
-    *(v102 + 25) = 1120403456;
-    if (*(v102 + 23) > 2000.0)
+    UnitExponent = IOHIDElementGetUnitExponent(*(selfCopy + 8));
+    *(selfCopy + 23) = IOHIDElementGetPhysicalMax(*(selfCopy + 8));
+    *(selfCopy + 22) = IOHIDElementGetPhysicalMin(*(selfCopy + 8));
+    *(selfCopy + 25) = 1120403456;
+    if (*(selfCopy + 23) > 2000.0)
     {
       if (UnitExponent)
       {
         v5 = scaleForExponent(UnitExponent);
-        *(v102 + 25) = v5;
-        if (*(v102 + 25) > 0.0)
+        *(selfCopy + 25) = v5;
+        if (*(selfCopy + 25) > 0.0)
         {
-          *(v102 + 23) = *(v102 + 23) / *(v102 + 25);
-          *(v102 + 22) = *(v102 + 22) / *(v102 + 25);
+          *(selfCopy + 23) = *(selfCopy + 23) / *(selfCopy + 25);
+          *(selfCopy + 22) = *(selfCopy + 22) / *(selfCopy + 25);
         }
       }
     }
 
-    if (*(v102 + 5))
+    if (*(selfCopy + 5))
     {
-      v20 = *(v102 + 5);
+      v20 = *(selfCopy + 5);
     }
 
     else
@@ -427,15 +427,15 @@ LABEL_141:
     v60 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      __os_log_helper_16_0_4_8_0_8_0_8_0_4_0(v106, COERCE__INT64(*(v102 + 23)), COERCE__INT64(*(v102 + 22)), COERCE__INT64(*(v102 + 25)), UnitExponent);
+      __os_log_helper_16_0_4_8_0_8_0_8_0_4_0(v106, COERCE__INT64(*(selfCopy + 23)), COERCE__INT64(*(selfCopy + 22)), COERCE__INT64(*(selfCopy + 25)), UnitExponent);
       _os_log_impl(&dword_1DE8E5000, v61, v60, "maxNits = %f, minNits = %f, nitsScaler = %f, exponent = %d", v106, 0x26u);
     }
 
-    if (*(v102 + 23) <= 0.0)
+    if (*(selfCopy + 23) <= 0.0)
     {
-      if (*(v102 + 5))
+      if (*(selfCopy + 5))
       {
-        v18 = *(v102 + 5);
+        v18 = *(selfCopy + 5);
       }
 
       else
@@ -457,23 +457,23 @@ LABEL_141:
       v58 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        __os_log_helper_16_0_1_8_0(v105, COERCE__INT64(*(v102 + 23)));
+        __os_log_helper_16_0_1_8_0(v105, COERCE__INT64(*(selfCopy + 23)));
         _os_log_error_impl(&dword_1DE8E5000, v59, v58, "error: max nits (%f) - defaulting", v105, 0xCu);
       }
 
-      *(v102 + 26) = 981668463;
+      *(selfCopy + 26) = 981668463;
     }
 
     else
     {
-      *(v102 + 26) = *(v102 + 22) / *(v102 + 23);
+      *(selfCopy + 26) = *(selfCopy + 22) / *(selfCopy + 23);
     }
 
-    if (([v102 getNits:v102 + 96] & 1) == 0)
+    if (([selfCopy getNits:selfCopy + 96] & 1) == 0)
     {
-      if (*(v102 + 5))
+      if (*(selfCopy + 5))
       {
-        v16 = *(v102 + 5);
+        v16 = *(selfCopy + 5);
       }
 
       else
@@ -501,12 +501,12 @@ LABEL_141:
         _os_log_error_impl(&dword_1DE8E5000, v13, v14, "error: failed to retrieve current nits - defaulting to 150 nits", v55, 2u);
       }
 
-      *(v102 + 24) = 1125515264;
+      *(selfCopy + 24) = 1125515264;
     }
 
-    if (*(v102 + 5))
+    if (*(selfCopy + 5))
     {
-      v8 = *(v102 + 5);
+      v8 = *(selfCopy + 5);
     }
 
     else
@@ -526,12 +526,12 @@ LABEL_141:
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      __os_log_helper_16_0_3_8_0_8_0_8_0(v104, COERCE__INT64(*(v102 + 24)), COERCE__INT64(*(v102 + 22)), COERCE__INT64(*(v102 + 23)));
+      __os_log_helper_16_0_3_8_0_8_0_8_0(v104, COERCE__INT64(*(selfCopy + 24)), COERCE__INT64(*(selfCopy + 22)), COERCE__INT64(*(selfCopy + 23)));
       _os_log_impl(&dword_1DE8E5000, v8, OS_LOG_TYPE_INFO, "brightness: current=%f min=%f max=%f", v104, 0x20u);
     }
   }
 
-  v103 = v102;
+  v103 = selfCopy;
 LABEL_142:
   *MEMORY[0x1E69E9840];
   return v103;
@@ -573,12 +573,12 @@ CFTypeID __49__CBDisplayModuleHIDiOS_initWithDevice_andQueue___block_invoke(uint
 - (void)dealloc
 {
   v16 = *MEMORY[0x1E69E9840];
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   if (self->_elements)
   {
     memset(__b, 0, sizeof(__b));
-    obj = v14->_elements;
+    obj = selfCopy->_elements;
     v9 = [(NSArray *)obj countByEnumeratingWithState:__b objects:v15 count:16];
     if (v9)
     {
@@ -614,36 +614,36 @@ CFTypeID __49__CBDisplayModuleHIDiOS_initWithDevice_andQueue___block_invoke(uint
       }
     }
 
-    MEMORY[0x1E69E5920](v14->_elements);
+    MEMORY[0x1E69E5920](selfCopy->_elements);
   }
 
-  if (v14->_queue)
+  if (selfCopy->_queue)
   {
-    dispatch_release(v14->_queue);
-    v14->_queue = 0;
+    dispatch_release(selfCopy->_queue);
+    selfCopy->_queue = 0;
   }
 
-  if (v14->_brightnessUpdateQueue)
+  if (selfCopy->_brightnessUpdateQueue)
   {
-    dispatch_release(v14->_brightnessUpdateQueue);
-    v14->_brightnessUpdateQueue = 0;
+    dispatch_release(selfCopy->_brightnessUpdateQueue);
+    selfCopy->_brightnessUpdateQueue = 0;
   }
 
-  if (v14->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    MEMORY[0x1E69E5920](v14->_logHandle);
-    v14->_logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
+    selfCopy->_logHandle = 0;
   }
 
-  if (v14->_hidDisplayDevice)
+  if (selfCopy->_hidDisplayDevice)
   {
-    IOHIDDeviceClose(v14->_hidDisplayDevice, 0);
-    CFRelease(v14->_hidDisplayDevice);
-    v14->_hidDisplayDevice = 0;
+    IOHIDDeviceClose(selfCopy->_hidDisplayDevice, 0);
+    CFRelease(selfCopy->_hidDisplayDevice);
+    selfCopy->_hidDisplayDevice = 0;
   }
 
-  *&v2 = MEMORY[0x1E69E5920](v14->_containerID).n128_u64[0];
-  v10.receiver = v14;
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->_containerID).n128_u64[0];
+  v10.receiver = selfCopy;
   v10.super_class = CBDisplayModuleHIDiOS;
   [(CBModule *)&v10 dealloc];
   *MEMORY[0x1E69E9840];
@@ -651,11 +651,11 @@ CFTypeID __49__CBDisplayModuleHIDiOS_initWithDevice_andQueue___block_invoke(uint
 
 - (void)start
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
   if (self->_logHandle)
   {
-    logHandle = v18->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -683,17 +683,17 @@ CFTypeID __49__CBDisplayModuleHIDiOS_initWithDevice_andQueue___block_invoke(uint
     _os_log_impl(&dword_1DE8E5000, log, type, &unk_1DEAD656F, v14, 2u);
   }
 
-  v13 = [(CBDisplayModuleHIDiOS *)v18 newDisplayBrightnessData];
-  if (v13)
+  newDisplayBrightnessData = [(CBDisplayModuleHIDiOS *)selfCopy newDisplayBrightnessData];
+  if (newDisplayBrightnessData)
   {
-    [(CBDisplayModuleHIDiOS *)v18 sendNotificationForKey:@"DisplayBrightness" withValue:v13];
+    [(CBDisplayModuleHIDiOS *)selfCopy sendNotificationForKey:@"DisplayBrightness" withValue:newDisplayBrightnessData];
   }
 
   else
   {
-    if (v18->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v5 = v18->_logHandle;
+      v5 = selfCopy->_logHandle;
     }
 
     else
@@ -722,16 +722,16 @@ CFTypeID __49__CBDisplayModuleHIDiOS_initWithDevice_andQueue___block_invoke(uint
     }
   }
 
-  MEMORY[0x1E69E5920](v13);
+  MEMORY[0x1E69E5920](newDisplayBrightnessData);
 }
 
 - (void)stop
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   if (self->_logHandle)
   {
-    logHandle = v10->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -762,20 +762,20 @@ CFTypeID __49__CBDisplayModuleHIDiOS_initWithDevice_andQueue___block_invoke(uint
 
 - (id)newDisplayBrightnessData
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
   v14 = 0;
   v8 = 0x1E696A000uLL;
   v2 = objc_alloc(MEMORY[0x1E696AD98]);
   v9 = &OBJC_IVAR___CBAODState__thresholdsAPDeltaPBrightenBuckets;
-  *&v3 = v16->_currentNits;
+  *&v3 = selfCopy->_currentNits;
   v13 = [v2 initWithFloat:v3];
   v4 = objc_alloc(MEMORY[0x1E696AD98]);
-  *&v5 = v16->_currentNits;
+  *&v5 = selfCopy->_currentNits;
   v12 = [v4 initWithFloat:v5];
   v10 = objc_alloc(MEMORY[0x1E696AD98]);
-  *&v6 = v16->_currentNits;
-  [(CBDisplayModuleHIDiOS *)v16 getUserBrightnessForNits:v6];
+  *&v6 = selfCopy->_currentNits;
+  [(CBDisplayModuleHIDiOS *)selfCopy getUserBrightnessForNits:v6];
   v11 = [v10 initWithFloat:?];
   if (v13 && v12 && v11)
   {
@@ -788,21 +788,21 @@ CFTypeID __49__CBDisplayModuleHIDiOS_initWithDevice_andQueue___block_invoke(uint
   return v14;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
   v15 = *MEMORY[0x1E69E9840];
   v9 = 0;
-  if ([a4 isEqualToString:@"DisplayBrightness2"])
+  if ([key isEqualToString:@"DisplayBrightness2"])
   {
-    v9 = [(CBDisplayModuleHIDiOS *)self handleDisplayBrightnessProperty:a3];
+    v9 = [(CBDisplayModuleHIDiOS *)self handleDisplayBrightnessProperty:property];
   }
 
-  else if ([a4 isEqualToString:@"DISABLE_HID_INTERFACE"])
+  else if ([key isEqualToString:@"DISABLE_HID_INTERFACE"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      self->_noHID = [a3 BOOLValue];
+      self->_noHID = [property BOOLValue];
       if (self->_logHandle)
       {
         logHandle = self->_logHandle;
@@ -829,23 +829,23 @@ CFTypeID __49__CBDisplayModuleHIDiOS_initWithDevice_andQueue___block_invoke(uint
         _os_log_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEFAULT, "setting no-HID override to %d", v14, 8u);
       }
 
-      v9 = [CBPreferencesHandler storePreferenceForAllUsersForKey:@"DISABLE_HID_INTERFACE" andValue:a3];
+      v9 = [CBPreferencesHandler storePreferenceForAllUsersForKey:@"DISABLE_HID_INTERFACE" andValue:property];
     }
   }
 
-  else if ([a4 isEqualToString:@"DisplayBrightnessLinear"])
+  else if ([key isEqualToString:@"DisplayBrightnessLinear"])
   {
-    v9 = [(CBDisplayModuleHIDiOS *)self handleDisplayLinearBrightnessProperty:a3];
+    v9 = [(CBDisplayModuleHIDiOS *)self handleDisplayLinearBrightnessProperty:property];
   }
 
-  else if ([a4 isEqualToString:@"CBDisplayVendorID"])
+  else if ([key isEqualToString:@"CBDisplayVendorID"])
   {
-    v9 = [(CBDisplayModuleHIDiOS *)self handleDisplayVendorIDProperty:a3];
+    v9 = [(CBDisplayModuleHIDiOS *)self handleDisplayVendorIDProperty:property];
   }
 
-  else if ([a4 isEqualToString:@"CBDisplayProductID"])
+  else if ([key isEqualToString:@"CBDisplayProductID"])
   {
-    v9 = [(CBDisplayModuleHIDiOS *)self handleDisplayProductIDProperty:a3];
+    v9 = [(CBDisplayModuleHIDiOS *)self handleDisplayProductIDProperty:property];
   }
 
   if (self->_logHandle)
@@ -870,7 +870,7 @@ CFTypeID __49__CBDisplayModuleHIDiOS_initWithDevice_andQueue___block_invoke(uint
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_3_8_64_8_64_4_0(v13, a4, a3, v9);
+    __os_log_helper_16_2_3_8_64_8_64_4_0(v13, key, property, v9);
     _os_log_debug_impl(&dword_1DE8E5000, v6, OS_LOG_TYPE_DEBUG, "key=%@ property=%@ result=%d", v13, 0x1Cu);
   }
 
@@ -878,36 +878,36 @@ CFTypeID __49__CBDisplayModuleHIDiOS_initWithDevice_andQueue___block_invoke(uint
   return v9;
 }
 
-- (BOOL)handleDisplayProductIDProperty:(id)a3
+- (BOOL)handleDisplayProductIDProperty:(id)property
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    self->_displayPID = [a3 unsignedIntegerValue];
+    self->_displayPID = [property unsignedIntegerValue];
   }
 
   return 0;
 }
 
-- (BOOL)handleDisplayVendorIDProperty:(id)a3
+- (BOOL)handleDisplayVendorIDProperty:(id)property
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    self->_displayVID = [a3 unsignedIntegerValue];
+    self->_displayVID = [property unsignedIntegerValue];
   }
 
   return 0;
 }
 
-- (BOOL)handleDisplayLinearBrightnessProperty:(id)a3
+- (BOOL)handleDisplayLinearBrightnessProperty:(id)property
 {
   v10 = *MEMORY[0x1E69E9840];
   v6 = 0;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a3 floatValue];
+    [property floatValue];
     v6 = [(CBDisplayModuleHIDiOS *)self setLinearBrightness:?];
   }
 
@@ -933,7 +933,7 @@ CFTypeID __49__CBDisplayModuleHIDiOS_initWithDevice_andQueue___block_invoke(uint
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_2_8_64_4_0(v9, a3, v6);
+    __os_log_helper_16_2_2_8_64_4_0(v9, property, v6);
     _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "data=%@ result=%d", v9, 0x12u);
   }
 
@@ -941,14 +941,14 @@ CFTypeID __49__CBDisplayModuleHIDiOS_initWithDevice_andQueue___block_invoke(uint
   return v6;
 }
 
-- (BOOL)handleDisplayBrightnessProperty:(id)a3
+- (BOOL)handleDisplayBrightnessProperty:(id)property
 {
   v12 = *MEMORY[0x1E69E9840];
   v8 = 0;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [a3 floatValue];
+    [property floatValue];
     v8 = [(CBDisplayModuleHIDiOS *)self setSlider:?];
   }
 
@@ -957,7 +957,7 @@ CFTypeID __49__CBDisplayModuleHIDiOS_initWithDevice_andQueue___block_invoke(uint
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [a3 objectForKey:@"Brightness"];
+      v6 = [property objectForKey:@"Brightness"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -967,7 +967,7 @@ CFTypeID __49__CBDisplayModuleHIDiOS_initWithDevice_andQueue___block_invoke(uint
 
       else
       {
-        v7 = [a3 objectForKey:@"Nits"];
+        v7 = [property objectForKey:@"Nits"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -1000,7 +1000,7 @@ CFTypeID __49__CBDisplayModuleHIDiOS_initWithDevice_andQueue___block_invoke(uint
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_2_8_64_4_0(v11, a3, v8);
+    __os_log_helper_16_2_2_8_64_4_0(v11, property, v8);
     _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "data=%@ result=%d", v11, 0x12u);
   }
 
@@ -1021,19 +1021,19 @@ CFTypeID __49__CBDisplayModuleHIDiOS_initWithDevice_andQueue___block_invoke(uint
   }
 }
 
-- (BOOL)setSlider:(float)a3
+- (BOOL)setSlider:(float)slider
 {
-  if (a3 >= 0.0)
+  if (slider >= 0.0)
   {
-    v7 = a3;
+    sliderCopy = slider;
   }
 
   else
   {
-    v7 = 0.0;
+    sliderCopy = 0.0;
   }
 
-  v3 = v7;
+  v3 = sliderCopy;
   if (v3 <= 1.0)
   {
     v6 = v3;
@@ -1050,28 +1050,28 @@ CFTypeID __49__CBDisplayModuleHIDiOS_initWithDevice_andQueue___block_invoke(uint
   return [(CBDisplayModuleHIDiOS *)self setNits:?];
 }
 
-- (BOOL)setNits:(float)a3 withPeriod:(float)a4
+- (BOOL)setNits:(float)nits withPeriod:(float)period
 {
-  v33 = self;
+  selfCopy = self;
   v32 = a2;
-  v31 = a3;
-  v30 = a4;
+  nitsCopy = nits;
+  periodCopy = period;
   v29 = 1;
   minNits = self->_minNits;
-  v27 = a3;
-  if (minNits >= a3)
+  nitsCopy2 = nits;
+  if (minNits >= nits)
   {
     v11 = minNits;
   }
 
   else
   {
-    v11 = v27;
+    v11 = nitsCopy2;
   }
 
   v26 = v11;
-  v31 = v11;
-  maxNits = v33->_maxNits;
+  nitsCopy = v11;
+  maxNits = selfCopy->_maxNits;
   v24 = v11;
   if (maxNits >= v11)
   {
@@ -1084,29 +1084,29 @@ CFTypeID __49__CBDisplayModuleHIDiOS_initWithDevice_andQueue___block_invoke(uint
   }
 
   v23 = v10;
-  v31 = v10;
-  ++v33->_brighntessUpdateCounter;
-  v33->_brightnessUpdateTarget = v31;
-  v33->_currentNits = v31;
-  if (v33->_brighntessUpdateCounter == 1)
+  nitsCopy = v10;
+  ++selfCopy->_brighntessUpdateCounter;
+  selfCopy->_brightnessUpdateTarget = nitsCopy;
+  selfCopy->_currentNits = nitsCopy;
+  if (selfCopy->_brighntessUpdateCounter == 1)
   {
-    brightnessUpdateQueue = v33->_brightnessUpdateQueue;
+    brightnessUpdateQueue = selfCopy->_brightnessUpdateQueue;
     block = MEMORY[0x1E69E9820];
     v16 = -1073741824;
     v17 = 0;
     v18 = __44__CBDisplayModuleHIDiOS_setNits_withPeriod___block_invoke;
     v19 = &unk_1E867B9D8;
-    v20 = v33;
-    v21 = v30;
-    v22 = v31;
+    v20 = selfCopy;
+    v21 = periodCopy;
+    v22 = nitsCopy;
     dispatch_async(brightnessUpdateQueue, &block);
   }
 
   else
   {
-    if (v33->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      logHandle = v33->_logHandle;
+      logHandle = selfCopy->_logHandle;
     }
 
     else
@@ -1409,17 +1409,17 @@ void __44__CBDisplayModuleHIDiOS_setNits_withPeriod___block_invoke_46(uint64_t a
   *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)getNits:(float *)a3
+- (BOOL)getNits:(float *)nits
 {
   v41 = *MEMORY[0x1E69E9840];
-  v37 = self;
+  selfCopy = self;
   v36 = a2;
-  v35 = a3;
+  nitsCopy = nits;
   v34 = 0;
   v33 = IOHIDTransactionCreate(*MEMORY[0x1E695E480], self->_hidDisplayDevice, kIOHIDTransactionDirectionTypeInput, 0);
   if (v33)
   {
-    IOHIDTransactionAddElement(v33, v37->_brightnessElement);
+    IOHIDTransactionAddElement(v33, selfCopy->_brightnessElement);
     v32 = -536870212;
     v31 = 0;
     do
@@ -1427,9 +1427,9 @@ void __44__CBDisplayModuleHIDiOS_setNits_withPeriod___block_invoke_46(uint64_t a
       v32 = IOHIDTransactionCommit(v33);
       if (v32)
       {
-        if (v37->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          logHandle = v37->_logHandle;
+          logHandle = selfCopy->_logHandle;
         }
 
         else
@@ -1481,16 +1481,16 @@ void __44__CBDisplayModuleHIDiOS_setNits_withPeriod___block_invoke_46(uint64_t a
     }
 
     while (v31 < 9);
-    Value = IOHIDTransactionGetValue(v33, v37->_brightnessElement, 0);
+    Value = IOHIDTransactionGetValue(v33, selfCopy->_brightnessElement, 0);
     if (Value)
     {
       ScaledValue = IOHIDValueGetScaledValue(Value, 2u);
       v25 = ScaledValue;
-      if (ScaledValue > v37->_maxNits || v25 < v37->_minNits)
+      if (ScaledValue > selfCopy->_maxNits || v25 < selfCopy->_minNits)
       {
-        if (v37->_logHandle)
+        if (selfCopy->_logHandle)
         {
-          v14 = v37->_logHandle;
+          v14 = selfCopy->_logHandle;
         }
 
         else
@@ -1512,7 +1512,7 @@ void __44__CBDisplayModuleHIDiOS_setNits_withPeriod___block_invoke_46(uint64_t a
         v23 = OS_LOG_TYPE_ERROR;
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          __os_log_helper_16_0_3_8_0_8_0_8_0(v38, COERCE__INT64(v25), COERCE__INT64(v37->_minNits), COERCE__INT64(v37->_maxNits));
+          __os_log_helper_16_0_3_8_0_8_0_8_0(v38, COERCE__INT64(v25), COERCE__INT64(selfCopy->_minNits), COERCE__INT64(selfCopy->_maxNits));
           _os_log_error_impl(&dword_1DE8E5000, v24, v23, "error: value (%f) out of bounds (%f-%f)", v38, 0x20u);
         }
       }
@@ -1520,15 +1520,15 @@ void __44__CBDisplayModuleHIDiOS_setNits_withPeriod___block_invoke_46(uint64_t a
       else
       {
         v34 = 1;
-        *v35 = v25;
+        *nitsCopy = v25;
       }
     }
 
     else
     {
-      if (v37->_logHandle)
+      if (selfCopy->_logHandle)
       {
-        v12 = v37->_logHandle;
+        v12 = selfCopy->_logHandle;
       }
 
       else
@@ -1562,9 +1562,9 @@ void __44__CBDisplayModuleHIDiOS_setNits_withPeriod___block_invoke_46(uint64_t a
 
   else
   {
-    if (v37->_logHandle)
+    if (selfCopy->_logHandle)
     {
-      v8 = v37->_logHandle;
+      v8 = selfCopy->_logHandle;
     }
 
     else
@@ -1597,19 +1597,19 @@ void __44__CBDisplayModuleHIDiOS_setNits_withPeriod___block_invoke_46(uint64_t a
   return v34 & 1;
 }
 
-- (id)copyPropertyInternalForKey:(id)a3
+- (id)copyPropertyInternalForKey:(id)key
 {
   v29 = *MEMORY[0x1E69E9840];
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
-  v25 = a3;
-  v24 = 0;
-  if ([a3 isEqualToString:@"StatusInfo"])
+  keyCopy = key;
+  newDisplayBrightnessData = 0;
+  if ([key isEqualToString:@"StatusInfo"])
   {
-    v23 = [CBStatusInfoHelper copyStatusInfoFor:v27];
+    v23 = [CBStatusInfoHelper copyStatusInfoFor:selfCopy];
     if (v23)
     {
-      v24 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v23, @"CBDisplayModuleHIDiOS", 0}];
+      newDisplayBrightnessData = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v23, @"CBDisplayModuleHIDiOS", 0}];
     }
 
     MEMORY[0x1E69E5920](v23);
@@ -1617,101 +1617,101 @@ void __44__CBDisplayModuleHIDiOS_setNits_withPeriod___block_invoke_46(uint64_t a
 
   else
   {
-    if ([v25 isEqualToString:@"DisplayBrightness2"])
+    if ([keyCopy isEqualToString:@"DisplayBrightness2"])
     {
       v20 = objc_alloc(MEMORY[0x1E696AD98]);
-      *&v3 = v27->_currentNits;
-      [(CBDisplayModuleHIDiOS *)v27 getUserBrightnessForNits:v3];
-      v24 = [v20 initWithFloat:?];
+      *&v3 = selfCopy->_currentNits;
+      [(CBDisplayModuleHIDiOS *)selfCopy getUserBrightnessForNits:v3];
+      newDisplayBrightnessData = [v20 initWithFloat:?];
       goto LABEL_31;
     }
 
-    if ([v25 isEqualToString:@"DisplayBrightnessLinear"])
+    if ([keyCopy isEqualToString:@"DisplayBrightnessLinear"])
     {
       v19 = objc_alloc(MEMORY[0x1E696AD98]);
-      [(CBDisplayModuleHIDiOS *)v27 getLinearBrightness];
-      v24 = [v19 initWithFloat:?];
+      [(CBDisplayModuleHIDiOS *)selfCopy getLinearBrightness];
+      newDisplayBrightnessData = [v19 initWithFloat:?];
       goto LABEL_31;
     }
 
-    if ([v25 isEqualToString:@"DisplayBrightnessLinearMin"])
+    if ([keyCopy isEqualToString:@"DisplayBrightnessLinearMin"])
     {
       v4 = objc_alloc(MEMORY[0x1E696AD98]);
-      *&v5 = v27->_minLinearBrightness;
-      v24 = [v4 initWithFloat:v5];
+      *&v5 = selfCopy->_minLinearBrightness;
+      newDisplayBrightnessData = [v4 initWithFloat:v5];
       goto LABEL_31;
     }
 
-    if ([v25 isEqualToString:@"DisplayNitsKey"] & 1) != 0 || (objc_msgSend(v25, "isEqualToString:", @"NitsPhysical"))
+    if ([keyCopy isEqualToString:@"DisplayNitsKey"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"NitsPhysical"))
     {
       v6 = objc_alloc(MEMORY[0x1E696AD98]);
-      *&v7 = v27->_currentNits;
-      v24 = [v6 initWithFloat:v7];
+      *&v7 = selfCopy->_currentNits;
+      newDisplayBrightnessData = [v6 initWithFloat:v7];
       goto LABEL_31;
     }
 
-    if ([v25 isEqualToString:@"DisplayBrightness"])
+    if ([keyCopy isEqualToString:@"DisplayBrightness"])
     {
-      v24 = [(CBDisplayModuleHIDiOS *)v27 newDisplayBrightnessData];
+      newDisplayBrightnessData = [(CBDisplayModuleHIDiOS *)selfCopy newDisplayBrightnessData];
       goto LABEL_31;
     }
 
-    if ([v25 isEqualToString:@"DisplayBrightness2Available"])
+    if ([keyCopy isEqualToString:@"DisplayBrightness2Available"])
     {
-      v24 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:1];
+      newDisplayBrightnessData = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:1];
       goto LABEL_31;
     }
 
-    if ([v25 isEqualToString:@"DisplayBrightnessMin"])
+    if ([keyCopy isEqualToString:@"DisplayBrightnessMin"])
     {
       v8 = objc_alloc(MEMORY[0x1E696AD98]);
-      *&v9 = v27->_minNits;
-      v24 = [v8 initWithFloat:v9];
+      *&v9 = selfCopy->_minNits;
+      newDisplayBrightnessData = [v8 initWithFloat:v9];
       goto LABEL_31;
     }
 
-    if ([v25 isEqualToString:@"DisplayBrightnessMax"])
+    if ([keyCopy isEqualToString:@"DisplayBrightnessMax"])
     {
       v10 = objc_alloc(MEMORY[0x1E696AD98]);
-      *&v11 = v27->_maxNits;
-      v24 = [v10 initWithFloat:v11];
+      *&v11 = selfCopy->_maxNits;
+      newDisplayBrightnessData = [v10 initWithFloat:v11];
       goto LABEL_31;
     }
 
-    if ([v25 isEqualToString:@"kUSBContainerID"])
+    if ([keyCopy isEqualToString:@"kUSBContainerID"])
     {
       goto LABEL_23;
     }
 
-    if ([v25 isEqualToString:@"CBDisplayVendorID"])
+    if ([keyCopy isEqualToString:@"CBDisplayVendorID"])
     {
-      v24 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:v27->_displayVID];
+      newDisplayBrightnessData = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:selfCopy->_displayVID];
       goto LABEL_31;
     }
 
-    if ([v25 isEqualToString:@"CBDisplayProductID"])
+    if ([keyCopy isEqualToString:@"CBDisplayProductID"])
     {
-      v24 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:v27->_displayPID];
+      newDisplayBrightnessData = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:selfCopy->_displayPID];
       goto LABEL_31;
     }
 
-    if ([v25 isEqualToString:@"DisplayUniqueID"])
+    if ([keyCopy isEqualToString:@"DisplayUniqueID"])
     {
 LABEL_23:
-      v24 = [(NSUUID *)v27->_containerID copy];
+      newDisplayBrightnessData = [(NSUUID *)selfCopy->_containerID copy];
       goto LABEL_31;
     }
 
-    if ([v25 isEqualToString:@"DISABLE_HID_INTERFACE"])
+    if ([keyCopy isEqualToString:@"DISABLE_HID_INTERFACE"])
     {
-      v24 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:v27->_noHID];
+      newDisplayBrightnessData = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:selfCopy->_noHID];
     }
   }
 
 LABEL_31:
-  if (v27->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    logHandle = v27->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -1736,23 +1736,23 @@ LABEL_31:
     log = v22;
     *type = v21;
     buf = v28;
-    __os_log_helper_16_2_2_8_64_8_64(v28, v25, v24);
+    __os_log_helper_16_2_2_8_64_8_64(v28, keyCopy, newDisplayBrightnessData);
     _os_log_impl(&dword_1DE8E5000, log, type[0], "key=%@ result=%@", buf, 0x16u);
   }
 
-  v13 = v24;
+  v13 = newDisplayBrightnessData;
   *MEMORY[0x1E69E9840];
-  return v24;
+  return newDisplayBrightnessData;
 }
 
 - (id)copyIdentifiers
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   return [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{@"DisplayBrightness2", @"DisplayBrightnessLinear", @"DisplayBrightnessLinearMin", @"DisplayNitsKey", @"NitsPhysical", @"DisplayBrightness", @"DisplayBrightness2Available", @"DisplayBrightnessMin", @"DisplayBrightnessMax", @"kUSBContainerID", 0}];
 }
 
-- (void)sendNotificationForKey:(id)a3 withValue:(id)a4
+- (void)sendNotificationForKey:(id)key withValue:(id)value
 {
   if (self->super.super._notificationBlock)
   {
@@ -1760,37 +1760,37 @@ LABEL_31:
   }
 }
 
-- (float)getNitsForUserBrightness:(float)a3
+- (float)getNitsForUserBrightness:(float)brightness
 {
-  if (a3 <= 1.0)
+  if (brightness <= 1.0)
   {
-    v6 = a3;
+    brightnessCopy = brightness;
   }
 
   else
   {
-    v6 = 1.0;
+    brightnessCopy = 1.0;
   }
 
-  if (v6 <= 0.0)
+  if (brightnessCopy <= 0.0)
   {
     v5 = 0.0;
   }
 
   else
   {
-    v5 = v6;
+    v5 = brightnessCopy;
   }
 
   maxNits = self->_maxNits;
   return maxNits * powf(maxNits / self->_minNits, v5 - 1.0);
 }
 
-- (float)getUserBrightnessForNits:(float)a3
+- (float)getUserBrightnessForNits:(float)nits
 {
-  if (self->_maxNits >= a3)
+  if (self->_maxNits >= nits)
   {
-    maxNits = a3;
+    maxNits = nits;
   }
 
   else

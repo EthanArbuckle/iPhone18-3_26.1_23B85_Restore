@@ -1,11 +1,11 @@
 @interface EditMenuBridge
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
 @end
 
 @implementation EditMenuBridge
 
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration
 {
   v4 = (self + OBJC_IVAR____TtC7SwiftUI14EditMenuBridge_presentedMenu);
   if (*&self->editMenuPresentationSeed[OBJC_IVAR____TtC7SwiftUI14EditMenuBridge_presentedMenu] == 1)
@@ -29,12 +29,12 @@
   return result;
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  v10 = specialized EditMenuBridge.editMenuInteraction(_:menuFor:suggestedActions:)(v8);
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  selfCopy = self;
+  v10 = specialized EditMenuBridge.editMenuInteraction(_:menuFor:suggestedActions:)(configurationCopy);
 
   return v10;
 }

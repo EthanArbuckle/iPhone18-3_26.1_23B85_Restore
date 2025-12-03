@@ -1,19 +1,19 @@
 @interface HSHomeSharingLibrary
-- (BOOL)isEqual:(id)a3;
-- (HSHomeSharingLibrary)initWithName:(id)a3 uniqueIdentifier:(id)a4 version:(unsigned int)a5 baseURL:(id)a6 homeSharingGroupID:(id)a7 connectionType:(int64_t)a8;
+- (BOOL)isEqual:(id)equal;
+- (HSHomeSharingLibrary)initWithName:(id)name uniqueIdentifier:(id)identifier version:(unsigned int)version baseURL:(id)l homeSharingGroupID:(id)d connectionType:(int64_t)type;
 - (NSString)deviceGUID;
-- (id)securityInfoForURL:(id)a3;
-- (id)signedRequestFromURLRequest:(id)a3;
-- (id)urlForRequest:(id)a3;
+- (id)securityInfoForURL:(id)l;
+- (id)signedRequestFromURLRequest:(id)request;
+- (id)urlForRequest:(id)request;
 - (int64_t)connectionState;
 - (unint64_t)hash;
 - (unsigned)basePlaylistContainerID;
 - (unsigned)databaseID;
 - (void)_onQueue_ensureConnection;
 - (void)_sendUpdateRequest;
-- (void)connectWithCompletionHandler:(id)a3;
+- (void)connectWithCompletionHandler:(id)handler;
 - (void)disconnect;
-- (void)sendRequest:(id)a3 withResponseHandler:(id)a4;
+- (void)sendRequest:(id)request withResponseHandler:(id)handler;
 @end
 
 @implementation HSHomeSharingLibrary
@@ -98,13 +98,13 @@ uint64_t __42__HSHomeSharingLibrary__sendUpdateRequest__block_invoke_2(uint64_t 
     if (!connection)
     {
       v6 = [HSConnection alloc];
-      v7 = [(HSHomeSharingLibrary *)self baseURL];
-      v8 = [(HSConnection *)v6 initWithBaseURL:v7 connectionType:[(HSHomeSharingLibrary *)self connectionType]];
+      baseURL = [(HSHomeSharingLibrary *)self baseURL];
+      v8 = [(HSConnection *)v6 initWithBaseURL:baseURL connectionType:[(HSHomeSharingLibrary *)self connectionType]];
       v9 = self->_connection;
       self->_connection = v8;
 
-      v10 = [(HSHomeSharingLibrary *)self homeSharingGroupID];
-      [(HSConnection *)self->_connection setHomeSharingGroupID:v10];
+      homeSharingGroupID = [(HSHomeSharingLibrary *)self homeSharingGroupID];
+      [(HSConnection *)self->_connection setHomeSharingGroupID:homeSharingGroupID];
 
       v11 = objc_alloc_init(HSFairPlayInfo);
       [(HSConnection *)self->_connection setFairPlayInfo:v11];
@@ -230,23 +230,23 @@ void __34__HSHomeSharingLibrary_databaseID__block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v2 = [(HSHomeSharingLibrary *)self uniqueIdentifier];
-  v3 = [v2 hash];
+  uniqueIdentifier = [(HSHomeSharingLibrary *)self uniqueIdentifier];
+  v3 = [uniqueIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(HSHomeSharingLibrary *)self uniqueIdentifier];
-    v7 = [v5 uniqueIdentifier];
+    v5 = equalCopy;
+    uniqueIdentifier = [(HSHomeSharingLibrary *)self uniqueIdentifier];
+    uniqueIdentifier2 = [v5 uniqueIdentifier];
 
-    v8 = [v6 isEqualToString:v7];
+    v8 = [uniqueIdentifier isEqualToString:uniqueIdentifier2];
   }
 
   else
@@ -277,9 +277,9 @@ uint64_t __34__HSHomeSharingLibrary_disconnect__block_invoke(uint64_t a1)
   return [v2 set_hasPendingUpdateRequest:0];
 }
 
-- (id)urlForRequest:(id)a3
+- (id)urlForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -292,9 +292,9 @@ uint64_t __34__HSHomeSharingLibrary_disconnect__block_invoke(uint64_t a1)
   block[2] = __38__HSHomeSharingLibrary_urlForRequest___block_invoke;
   block[3] = &unk_27977A328;
   block[4] = self;
-  v10 = v4;
+  v10 = requestCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = requestCopy;
   dispatch_sync(connectionAccessQueue, block);
   v7 = v13[5];
 
@@ -346,9 +346,9 @@ LABEL_5:
   *(v12 + 40) = v11;
 }
 
-- (id)signedRequestFromURLRequest:(id)a3
+- (id)signedRequestFromURLRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -360,10 +360,10 @@ LABEL_5:
   block[1] = 3221225472;
   block[2] = __52__HSHomeSharingLibrary_signedRequestFromURLRequest___block_invoke;
   block[3] = &unk_27977A328;
-  v10 = v4;
+  v10 = requestCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = requestCopy;
   dispatch_sync(connectionAccessQueue, block);
   v7 = v13[5];
 
@@ -381,9 +381,9 @@ void __52__HSHomeSharingLibrary_signedRequestFromURLRequest___block_invoke(uint6
   *(v3 + 40) = v2;
 }
 
-- (id)securityInfoForURL:(id)a3
+- (id)securityInfoForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -395,10 +395,10 @@ void __52__HSHomeSharingLibrary_signedRequestFromURLRequest___block_invoke(uint6
   block[1] = 3221225472;
   block[2] = __43__HSHomeSharingLibrary_securityInfoForURL___block_invoke;
   block[3] = &unk_27977A328;
-  v10 = v4;
+  v10 = lCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = lCopy;
   dispatch_sync(connectionAccessQueue, block);
   v7 = v13[5];
 
@@ -417,20 +417,20 @@ void __43__HSHomeSharingLibrary_securityInfoForURL___block_invoke(uint64_t a1)
   *(v4 + 40) = v3;
 }
 
-- (void)sendRequest:(id)a3 withResponseHandler:(id)a4
+- (void)sendRequest:(id)request withResponseHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   connectionAccessQueue = self->_connectionAccessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__HSHomeSharingLibrary_sendRequest_withResponseHandler___block_invoke;
   block[3] = &unk_27977A300;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = requestCopy;
   dispatch_async(connectionAccessQueue, block);
 }
 
@@ -451,17 +451,17 @@ void __56__HSHomeSharingLibrary_sendRequest_withResponseHandler___block_invoke(u
   }
 }
 
-- (void)connectWithCompletionHandler:(id)a3
+- (void)connectWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   connectionAccessQueue = self->_connectionAccessQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__HSHomeSharingLibrary_connectWithCompletionHandler___block_invoke;
   v7[3] = &unk_27977A2D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(connectionAccessQueue, v7);
 }
 
@@ -508,12 +508,12 @@ void __53__HSHomeSharingLibrary_connectWithCompletionHandler___block_invoke_2(ui
   (*(*(a1 + 40) + 16))();
 }
 
-- (HSHomeSharingLibrary)initWithName:(id)a3 uniqueIdentifier:(id)a4 version:(unsigned int)a5 baseURL:(id)a6 homeSharingGroupID:(id)a7 connectionType:(int64_t)a8
+- (HSHomeSharingLibrary)initWithName:(id)name uniqueIdentifier:(id)identifier version:(unsigned int)version baseURL:(id)l homeSharingGroupID:(id)d connectionType:(int64_t)type
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
+  nameCopy = name;
+  identifierCopy = identifier;
+  lCopy = l;
+  dCopy = d;
   v35.receiver = self;
   v35.super_class = HSHomeSharingLibrary;
   v18 = [(HSHomeSharingLibrary *)&v35 init];
@@ -525,51 +525,51 @@ void __53__HSHomeSharingLibrary_connectWithCompletionHandler___block_invoke_2(ui
     connectionAccessQueue = v19->_connectionAccessQueue;
     v19->_connectionAccessQueue = v20;
 
-    v22 = [[HSConnection alloc] initWithBaseURL:v16 connectionType:a8];
+    v22 = [[HSConnection alloc] initWithBaseURL:lCopy connectionType:type];
     connection = v19->_connection;
     v19->_connection = v22;
 
-    [(HSConnection *)v19->_connection setHomeSharingGroupID:v17];
+    [(HSConnection *)v19->_connection setHomeSharingGroupID:dCopy];
     v24 = objc_alloc_init(HSFairPlayInfo);
     [(HSConnection *)v19->_connection setFairPlayInfo:v24];
 
-    if ([v14 hasSuffix:@"_PW"])
+    if ([nameCopy hasSuffix:@"_PW"])
     {
-      v25 = [v14 substringWithRange:{0, objc_msgSend(v14, "length") - 3}];
+      v25 = [nameCopy substringWithRange:{0, objc_msgSend(nameCopy, "length") - 3}];
 
       v19->_requiresPassword = 1;
     }
 
     else
     {
-      if ([v14 rangeOfString:@"_"] == 0x7FFFFFFFFFFFFFFFLL)
+      if ([nameCopy rangeOfString:@"_"] == 0x7FFFFFFFFFFFFFFFLL)
       {
 LABEL_7:
-        v26 = [v14 copy];
+        v26 = [nameCopy copy];
         name = v19->_name;
         v19->_name = v26;
 
-        v28 = [v15 copy];
+        v28 = [identifierCopy copy];
         uniqueIdentifier = v19->_uniqueIdentifier;
         v19->_uniqueIdentifier = v28;
 
-        v19->_version = a5;
-        v30 = [v16 copy];
+        v19->_version = version;
+        v30 = [lCopy copy];
         baseURL = v19->_baseURL;
         v19->_baseURL = v30;
 
-        v32 = [v17 copy];
+        v32 = [dCopy copy];
         homeSharingGroupID = v19->_homeSharingGroupID;
         v19->_homeSharingGroupID = v32;
 
-        v19->_connectionType = a8;
+        v19->_connectionType = type;
         goto LABEL_8;
       }
 
-      v25 = [v14 substringToIndex:{objc_msgSend(v14, "rangeOfString:", @"_"}];
+      v25 = [nameCopy substringToIndex:{objc_msgSend(nameCopy, "rangeOfString:", @"_"}];
     }
 
-    v14 = v25;
+    nameCopy = v25;
     goto LABEL_7;
   }
 

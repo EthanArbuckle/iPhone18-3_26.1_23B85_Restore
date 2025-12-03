@@ -2,9 +2,9 @@
 - (PXGThumbnailRequestQueue)init;
 - (id)description;
 - (void)dealloc;
-- (void)enqueueRequestsWithItemRange:(_NSRange)a3 textureRequestIDs:(_NSRange)a4 displayAssetFetchResult:(id)a5 targetSize:(CGSize)a6 applyCleanApertureCrop:(BOOL)a7 mediaProvider:(id)a8;
+- (void)enqueueRequestsWithItemRange:(_NSRange)range textureRequestIDs:(_NSRange)ds displayAssetFetchResult:(id)result targetSize:(CGSize)size applyCleanApertureCrop:(BOOL)crop mediaProvider:(id)provider;
 - (void)removeAllRequests;
-- (void)setCount:(int64_t)a3;
+- (void)setCount:(int64_t)count;
 @end
 
 @implementation PXGThumbnailRequestQueue
@@ -39,16 +39,16 @@
   [(PXGThumbnailRequestQueue *)self setCount:0];
 }
 
-- (void)enqueueRequestsWithItemRange:(_NSRange)a3 textureRequestIDs:(_NSRange)a4 displayAssetFetchResult:(id)a5 targetSize:(CGSize)a6 applyCleanApertureCrop:(BOOL)a7 mediaProvider:(id)a8
+- (void)enqueueRequestsWithItemRange:(_NSRange)range textureRequestIDs:(_NSRange)ds displayAssetFetchResult:(id)result targetSize:(CGSize)size applyCleanApertureCrop:(BOOL)crop mediaProvider:(id)provider
 {
-  v8 = a7;
-  height = a6.height;
-  width = a6.width;
-  location = a4.location;
-  length = a3.length;
-  v13 = a3.location;
-  v25 = a5;
-  v15 = a8;
+  cropCopy = crop;
+  height = size.height;
+  width = size.width;
+  location = ds.location;
+  length = range.length;
+  v13 = range.location;
+  resultCopy = result;
+  providerCopy = provider;
   v16 = [(PXGThumbnailRequestQueue *)self count];
   [(PXGThumbnailRequestQueue *)self setCount:[(PXGThumbnailRequestQueue *)self count]+ length];
   if (length)
@@ -59,9 +59,9 @@
     do
     {
       v20 = 0.0;
-      if (v8)
+      if (cropCopy)
       {
-        v21 = [v25 objectAtIndexedSubscript:v13];
+        v21 = [resultCopy objectAtIndexedSubscript:v13];
         if ([v21 playbackStyle] == 3)
         {
           v20 = 0.9;
@@ -73,12 +73,12 @@
         }
       }
 
-      v22 = [v25 thumbnailAssetAtIndex:v13];
-      v23 = v15;
-      v24 = [v22 thumbnailIndex];
+      v22 = [resultCopy thumbnailAssetAtIndex:v13];
+      v23 = providerCopy;
+      thumbnailIndex = [v22 thumbnailIndex];
       v19->var0 = v22;
       v19->var1 = v23;
-      v19->var2 = v24;
+      v19->var2 = thumbnailIndex;
       v19->var3 = location;
       v19->var4 = v17;
       v19->var5 = v18;
@@ -94,13 +94,13 @@
   }
 }
 
-- (void)setCount:(int64_t)a3
+- (void)setCount:(int64_t)count
 {
-  if (self->_count != a3)
+  if (self->_count != count)
   {
-    self->_count = a3;
+    self->_count = count;
     capacity = self->_capacity;
-    if (capacity < a3)
+    if (capacity < count)
     {
       if (!capacity)
       {
@@ -108,14 +108,14 @@
         self->_capacity = 32;
       }
 
-      if (capacity < a3)
+      if (capacity < count)
       {
         do
         {
           capacity *= 2;
         }
 
-        while (capacity < a3);
+        while (capacity < count);
         self->_capacity = capacity;
       }
 

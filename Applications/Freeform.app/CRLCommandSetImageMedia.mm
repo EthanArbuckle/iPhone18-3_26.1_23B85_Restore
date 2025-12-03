@@ -1,8 +1,8 @@
 @interface CRLCommandSetImageMedia
 - (NSUUID)id;
 - (_TtC8Freeform23CRLCommandSetImageMedia)init;
-- (_TtC8Freeform23CRLCommandSetImageMedia)initWithId:(id)a3 imageData:(id)a4 thumbnailData:(id)a5;
-- (_TtC8Freeform23CRLCommandSetImageMedia)initWithImageItem:(id)a3 imageData:(id)a4 thumbnailData:(id)a5;
+- (_TtC8Freeform23CRLCommandSetImageMedia)initWithId:(id)id imageData:(id)data thumbnailData:(id)thumbnailData;
+- (_TtC8Freeform23CRLCommandSetImageMedia)initWithImageItem:(id)item imageData:(id)data thumbnailData:(id)thumbnailData;
 @end
 
 @implementation CRLCommandSetImageMedia
@@ -20,7 +20,7 @@
   return v8.super.isa;
 }
 
-- (_TtC8Freeform23CRLCommandSetImageMedia)initWithId:(id)a3 imageData:(id)a4 thumbnailData:(id)a5
+- (_TtC8Freeform23CRLCommandSetImageMedia)initWithId:(id)id imageData:(id)data thumbnailData:(id)thumbnailData
 {
   v8 = type metadata accessor for UUID();
   v9 = *(v8 - 8);
@@ -28,31 +28,31 @@
   v11 = &v17 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   (*(v9 + 16))(self + OBJC_IVAR____TtC8Freeform23CRLCommandSetImageMedia_id, v11, v8);
-  *(self + OBJC_IVAR____TtC8Freeform23CRLCommandSetImageMedia_imageData) = a4;
-  *(self + OBJC_IVAR____TtC8Freeform23CRLCommandSetImageMedia_thumbnailData) = a5;
+  *(self + OBJC_IVAR____TtC8Freeform23CRLCommandSetImageMedia_imageData) = data;
+  *(self + OBJC_IVAR____TtC8Freeform23CRLCommandSetImageMedia_thumbnailData) = thumbnailData;
   v12 = type metadata accessor for CRLCommandSetImageMedia();
   v17.receiver = self;
   v17.super_class = v12;
-  v13 = a4;
-  v14 = a5;
+  dataCopy = data;
+  thumbnailDataCopy = thumbnailData;
   v15 = [(CRLCommand *)&v17 init];
   (*(v9 + 8))(v11, v8);
   return v15;
 }
 
-- (_TtC8Freeform23CRLCommandSetImageMedia)initWithImageItem:(id)a3 imageData:(id)a4 thumbnailData:(id)a5
+- (_TtC8Freeform23CRLCommandSetImageMedia)initWithImageItem:(id)item imageData:(id)data thumbnailData:(id)thumbnailData
 {
   v9 = type metadata accessor for UUID();
   v10 = *(v9 - 8);
   v11 = __chkstk_darwin(v9);
   v13 = &v20 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
-  (*(**(a3 + OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData) + 264))(v11);
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  (*(**(item + OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData) + 264))(v11);
+  itemCopy = item;
+  dataCopy = data;
+  thumbnailDataCopy = thumbnailData;
   isa = UUID._bridgeToObjectiveC()().super.isa;
   (*(v10 + 8))(v13, v9);
-  v18 = [(CRLCommandSetImageMedia *)self initWithId:isa imageData:v15 thumbnailData:v16];
+  v18 = [(CRLCommandSetImageMedia *)self initWithId:isa imageData:dataCopy thumbnailData:thumbnailDataCopy];
 
   return v18;
 }

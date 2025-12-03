@@ -22,17 +22,17 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(CLFBaseSettings *)v2 preferenceKeysBySelectorName];
+    preferenceKeysBySelectorName = [(CLFBaseSettings *)v2 preferenceKeysBySelectorName];
     v5 = NSStringFromSelector(sel_incomingCommunicationLimit);
-    [v4 setObject:@"IncomingCommunicationLimit" forKeyedSubscript:v5];
+    [preferenceKeysBySelectorName setObject:@"IncomingCommunicationLimit" forKeyedSubscript:v5];
 
-    v6 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
+    preferenceKeysBySelectorName2 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
     v7 = NSStringFromSelector(sel_needsMigrationFor117558856);
-    [v6 setObject:@"NeedsMigrationFor117558856" forKeyedSubscript:v7];
+    [preferenceKeysBySelectorName2 setObject:@"NeedsMigrationFor117558856" forKeyedSubscript:v7];
 
-    v8 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
+    preferenceKeysBySelectorName3 = [(CLFBaseSettings *)v3 preferenceKeysBySelectorName];
     v9 = NSStringFromSelector(sel_outgoingCommunicationLimit);
-    [v8 setObject:@"OutgoingCommunicationLimit" forKeyedSubscript:v9];
+    [preferenceKeysBySelectorName3 setObject:@"OutgoingCommunicationLimit" forKeyedSubscript:v9];
   }
 
   return v3;
@@ -41,7 +41,7 @@
 + (id)allPreferenceSelectorsAsStrings
 {
   v11[3] = *MEMORY[0x1E69E9840];
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___CLFBaseCommunicationLimitSettings_GeneratedCode;
   v2 = objc_msgSendSuper2(&v10, sel_allPreferenceSelectorsAsStrings);
   v3 = NSStringFromSelector(sel_incomingCommunicationLimit);

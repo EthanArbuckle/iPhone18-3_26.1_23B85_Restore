@@ -1,18 +1,18 @@
 @interface CRKDictionaryRowTableEntries
-- (CRKDictionaryRowTableEntries)initWithDictionaryObjects:(id)a3 keys:(id)a4;
-- (id)entryAtRow:(unint64_t)a3 column:(unint64_t)a4;
+- (CRKDictionaryRowTableEntries)initWithDictionaryObjects:(id)objects keys:(id)keys;
+- (id)entryAtRow:(unint64_t)row column:(unint64_t)column;
 @end
 
 @implementation CRKDictionaryRowTableEntries
 
-- (CRKDictionaryRowTableEntries)initWithDictionaryObjects:(id)a3 keys:(id)a4
+- (CRKDictionaryRowTableEntries)initWithDictionaryObjects:(id)objects keys:(id)keys
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  objectsCopy = objects;
+  keysCopy = keys;
+  v9 = keysCopy;
+  if (objectsCopy)
   {
-    if (v8)
+    if (keysCopy)
     {
       goto LABEL_3;
     }
@@ -34,7 +34,7 @@ LABEL_3:
   v10 = [(CRKDictionaryRowTableEntries *)&v16 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [objectsCopy copy];
     mObjects = v10->mObjects;
     v10->mObjects = v11;
 
@@ -46,10 +46,10 @@ LABEL_3:
   return v10;
 }
 
-- (id)entryAtRow:(unint64_t)a3 column:(unint64_t)a4
+- (id)entryAtRow:(unint64_t)row column:(unint64_t)column
 {
-  v6 = [(NSArray *)self->mKeys objectAtIndexedSubscript:a4];
-  v7 = [(NSArray *)self->mObjects objectAtIndexedSubscript:a3];
+  v6 = [(NSArray *)self->mKeys objectAtIndexedSubscript:column];
+  v7 = [(NSArray *)self->mObjects objectAtIndexedSubscript:row];
   v8 = [CRKRightPaddingTableEntry alloc];
   v9 = [v7 valueForKeyPath:v6];
   v10 = v9;

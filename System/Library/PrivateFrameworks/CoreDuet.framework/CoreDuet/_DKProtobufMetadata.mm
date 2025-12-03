@@ -1,7 +1,7 @@
 @interface _DKProtobufMetadata
-+ (id)createFromData:(id)a3;
-+ (id)fromPBCodable:(id)a3;
-- (_DKProtobufMetadata)initWithDictionary:(id)a3;
++ (id)createFromData:(id)data;
++ (id)fromPBCodable:(id)codable;
+- (_DKProtobufMetadata)initWithDictionary:(id)dictionary;
 - (id)asData;
 - (id)toPBCodable;
 @end
@@ -11,8 +11,8 @@
 - (id)toPBCodable
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [(_DKProtobufMetadata *)self dictionary];
-  v4 = [v3 count];
+  dictionary = [(_DKProtobufMetadata *)self dictionary];
+  v4 = [dictionary count];
 
   if (v4)
   {
@@ -21,8 +21,8 @@
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v5 = [(_DKProtobufMetadata *)self dictionary];
-    v6 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
+    dictionary2 = [(_DKProtobufMetadata *)self dictionary];
+    v6 = [dictionary2 countByEnumeratingWithState:&v19 objects:v25 count:16];
     if (v6)
     {
       v7 = v6;
@@ -34,21 +34,21 @@
         {
           if (*v20 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(dictionary2);
           }
 
           v10 = *(*(&v19 + 1) + 8 * v9);
-          v11 = [(_DKProtobufMetadata *)self dictionary];
-          v12 = [v11 objectForKeyedSubscript:v10];
+          dictionary3 = [(_DKProtobufMetadata *)self dictionary];
+          v12 = [dictionary3 objectForKeyedSubscript:v10];
 
           v13 = objc_alloc_init(_DKPRMetadataEntry);
           [(_DKPRMetadataEntry *)v13 setKey:v10];
-          v14 = [v12 toPBCodable];
-          [(_DKPRMetadataEntry *)v13 setValue:v14];
+          toPBCodable = [v12 toPBCodable];
+          [(_DKPRMetadataEntry *)v13 setValue:toPBCodable];
 
-          v15 = [(_DKPRMetadataEntry *)v13 value];
+          value = [(_DKPRMetadataEntry *)v13 value];
 
-          if (v15)
+          if (value)
           {
             [(_DKPRMetadata *)v18 addEntry:v13];
           }
@@ -62,7 +62,7 @@
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
+        v7 = [dictionary2 countByEnumeratingWithState:&v19 objects:v25 count:16];
       }
 
       while (v7);
@@ -79,30 +79,30 @@
   return v18;
 }
 
-+ (id)fromPBCodable:(id)a3
++ (id)fromPBCodable:(id)codable
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  codableCopy = codable;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [(_DKPRMetadata *)v4 entrys];
-    v6 = [v5 count];
+    v4 = codableCopy;
+    entrys = [(_DKPRMetadata *)v4 entrys];
+    v6 = [entrys count];
 
     if (v6)
     {
       v7 = MEMORY[0x1E695DF90];
-      v8 = [(_DKPRMetadata *)v4 entrys];
-      v9 = [v7 dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
+      entrys2 = [(_DKPRMetadata *)v4 entrys];
+      v9 = [v7 dictionaryWithCapacity:{objc_msgSend(entrys2, "count")}];
 
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
       v22 = v4;
-      v10 = [(_DKPRMetadata *)v4 entrys];
-      v11 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      entrys3 = [(_DKPRMetadata *)v4 entrys];
+      v11 = [entrys3 countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v11)
       {
         v12 = v11;
@@ -113,18 +113,18 @@
           {
             if (*v24 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(entrys3);
             }
 
             v15 = *(*(&v23 + 1) + 8 * i);
             v16 = MEMORY[0x1E69E58C0];
-            v17 = [(_DKPRMetadataEntry *)v15 value];
-            v18 = [v16 fromPBCodable:v17];
+            value = [(_DKPRMetadataEntry *)v15 value];
+            v18 = [v16 fromPBCodable:value];
             v19 = [(_DKPRMetadataEntry *)v15 key];
             [v9 setObject:v18 forKeyedSubscript:v19];
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v23 objects:v27 count:16];
+          v12 = [entrys3 countByEnumeratingWithState:&v23 objects:v27 count:16];
         }
 
         while (v12);
@@ -145,25 +145,25 @@
   return v6;
 }
 
-- (_DKProtobufMetadata)initWithDictionary:(id)a3
+- (_DKProtobufMetadata)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = _DKProtobufMetadata;
   v6 = [(_DKProtobufMetadata *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dictionary, a3);
+    objc_storeStrong(&v6->_dictionary, dictionary);
   }
 
   return v7;
 }
 
-+ (id)createFromData:(id)a3
++ (id)createFromData:(id)data
 {
-  v3 = a3;
-  v4 = [[_DKPRMetadata alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[_DKPRMetadata alloc] initWithData:dataCopy];
 
   v5 = [_DKProtobufMetadata fromPBCodable:v4];
 
@@ -172,10 +172,10 @@
 
 - (id)asData
 {
-  v2 = [(_DKProtobufMetadata *)self toPBCodable];
-  v3 = [v2 data];
+  toPBCodable = [(_DKProtobufMetadata *)self toPBCodable];
+  data = [toPBCodable data];
 
-  return v3;
+  return data;
 }
 
 @end

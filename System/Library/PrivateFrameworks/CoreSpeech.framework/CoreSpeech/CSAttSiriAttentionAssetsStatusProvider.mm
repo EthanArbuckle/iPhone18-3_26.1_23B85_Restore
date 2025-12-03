@@ -1,9 +1,9 @@
 @interface CSAttSiriAttentionAssetsStatusProvider
 + (id)sharedInstance;
 - (CSAttSiriAttentionAssetsStatusProvider)init;
-- (CSAttSiriAttentionAssetsStatusProvider)initWithMitigationAssetHandler:(id)a3;
+- (CSAttSiriAttentionAssetsStatusProvider)initWithMitigationAssetHandler:(id)handler;
 - (CSAttSiriAttentionAssetsStatusProviderDelegate)delegate;
-- (void)_updateWithAsset:(id)a3;
+- (void)_updateWithAsset:(id)asset;
 @end
 
 @implementation CSAttSiriAttentionAssetsStatusProvider
@@ -15,7 +15,7 @@
   return WeakRetained;
 }
 
-- (void)_updateWithAsset:(id)a3
+- (void)_updateWithAsset:(id)asset
 {
   v21[1] = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -27,22 +27,22 @@
 
     if (v8)
     {
-      v9 = [MEMORY[0x277CEF368] sharedPreferences];
-      v10 = [v9 languageCode];
+      mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+      languageCode = [mEMORY[0x277CEF368] languageCode];
 
-      if (a3 && v10)
+      if (asset && languageCode)
       {
-        v20 = v10;
+        v20 = languageCode;
         v21[0] = MEMORY[0x277CBEC38];
-        v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
+        dictionary = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
       }
 
       else
       {
-        v11 = [MEMORY[0x277CBEAC0] dictionary];
+        dictionary = [MEMORY[0x277CBEAC0] dictionary];
       }
 
-      v12 = v11;
+      v12 = dictionary;
       v13 = objc_loadWeakRetained(&self->_delegate);
       [v13 attentionAssetStatus:v12];
 
@@ -69,24 +69,24 @@
   return v4;
 }
 
-- (CSAttSiriAttentionAssetsStatusProvider)initWithMitigationAssetHandler:(id)a3
+- (CSAttSiriAttentionAssetsStatusProvider)initWithMitigationAssetHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = CSAttSiriAttentionAssetsStatusProvider;
   v5 = [(CSAttSiriAttentionAssetsStatusProvider *)&v11 init];
   if (v5)
   {
-    if (v4)
+    if (handlerCopy)
     {
-      [v4 registerObserver:v5];
+      [handlerCopy registerObserver:v5];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __73__CSAttSiriAttentionAssetsStatusProvider_initWithMitigationAssetHandler___block_invoke;
       v9[3] = &unk_2784C6B78;
       v10 = v5;
-      [v4 getMitigationAssetWithEndpointId:0 completion:v9];
+      [handlerCopy getMitigationAssetWithEndpointId:0 completion:v9];
     }
 
     v6 = *MEMORY[0x277D015A8];

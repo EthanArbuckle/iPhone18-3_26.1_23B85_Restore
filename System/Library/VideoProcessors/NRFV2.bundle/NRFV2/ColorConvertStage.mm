@@ -1,23 +1,23 @@
 @interface ColorConvertStage
-+ (int)prewarmShaders:(id)a3;
-- (ColorConvertStage)initWithMetalContext:(id)a3;
-- (int)_convertColor:(const ColorSpaceConversionParameters *)a3 lumaPedestal:(float)a4 inputLuma:(id)a5 inputChroma:(id)a6 outputLuma:(id)a7 outputChroma:(id)a8;
-- (int)convertColor:(const ColorSpaceConversionParameters *)a3 inputYCbCr:(id)a4 outputLuma:(id)a5 outputChroma:(id)a6;
-- (uint64_t)extractLinearBufferWithLumaInput:(__n128)a3 chromaInput:(__n128)a4 inputIsLinear:(__n128)a5 removeChromaBias:(uint64_t)a6 lumaPedestal:(void *)a7 exposureParams:(void *)a8 ccm:(char)a9 output:(int)a10;
++ (int)prewarmShaders:(id)shaders;
+- (ColorConvertStage)initWithMetalContext:(id)context;
+- (int)_convertColor:(const ColorSpaceConversionParameters *)color lumaPedestal:(float)pedestal inputLuma:(id)luma inputChroma:(id)chroma outputLuma:(id)outputLuma outputChroma:(id)outputChroma;
+- (int)convertColor:(const ColorSpaceConversionParameters *)color inputYCbCr:(id)cr outputLuma:(id)luma outputChroma:(id)chroma;
+- (uint64_t)extractLinearBufferWithLumaInput:(__n128)input chromaInput:(__n128)chromaInput inputIsLinear:(__n128)linear removeChromaBias:(uint64_t)bias lumaPedestal:(void *)pedestal exposureParams:(void *)params ccm:(char)ccm output:(int)self0;
 @end
 
 @implementation ColorConvertStage
 
-- (ColorConvertStage)initWithMetalContext:(id)a3
+- (ColorConvertStage)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v19.receiver = self;
   v19.super_class = ColorConvertStage;
   v6 = [(ColorConvertStage *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metal, a3);
+    objc_storeStrong(&v6->_metal, context);
     v11 = objc_msgSend_sharedInstance(ColorConvertStageShared, v8, v9, v10);
     v14 = objc_msgSend_getShaders_(v11, v12, v7[1], v13);
     v15 = v7[2];
@@ -41,11 +41,11 @@
   return v17;
 }
 
-+ (int)prewarmShaders:(id)a3
++ (int)prewarmShaders:(id)shaders
 {
-  v3 = a3;
+  shadersCopy = shaders;
   v4 = [ColorConvertStageShaders alloc];
-  v7 = objc_msgSend_initWithMetal_(v4, v5, v3, v6);
+  v7 = objc_msgSend_initWithMetal_(v4, v5, shadersCopy, v6);
 
   if (v7)
   {
@@ -60,15 +60,15 @@
   return v8;
 }
 
-- (int)_convertColor:(const ColorSpaceConversionParameters *)a3 lumaPedestal:(float)a4 inputLuma:(id)a5 inputChroma:(id)a6 outputLuma:(id)a7 outputChroma:(id)a8
+- (int)_convertColor:(const ColorSpaceConversionParameters *)color lumaPedestal:(float)pedestal inputLuma:(id)luma inputChroma:(id)chroma outputLuma:(id)outputLuma outputChroma:(id)outputChroma
 {
-  v57 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
-  v20 = v16;
-  if (!a3)
+  pedestalCopy = pedestal;
+  lumaCopy = luma;
+  chromaCopy = chroma;
+  outputLumaCopy = outputLuma;
+  outputChromaCopy = outputChroma;
+  v20 = outputChromaCopy;
+  if (!color)
   {
     sub_29589C774(v56);
 LABEL_19:
@@ -76,25 +76,25 @@ LABEL_19:
     goto LABEL_10;
   }
 
-  if (!v13)
+  if (!lumaCopy)
   {
     sub_29589C6D8(v56);
     goto LABEL_19;
   }
 
-  if (!v14)
+  if (!chromaCopy)
   {
     sub_29589C63C(v56);
     goto LABEL_19;
   }
 
-  if (!v15)
+  if (!outputLumaCopy)
   {
     sub_29589C5A0(v56);
     goto LABEL_19;
   }
 
-  if (!v16)
+  if (!outputChromaCopy)
   {
     sub_29589C504(v56);
     goto LABEL_19;
@@ -123,15 +123,15 @@ LABEL_19:
   }
 
   v31 = v29;
-  objc_msgSend_setBytes_length_atIndex_(v29, v30, a3, 208, 0);
-  objc_msgSend_setBytes_length_atIndex_(v31, v32, &v57, 4, 1);
-  objc_msgSend_setTexture_atIndex_(v31, v33, v13, 0);
-  objc_msgSend_setTexture_atIndex_(v31, v34, v14, 1);
-  objc_msgSend_setTexture_atIndex_(v31, v35, v15, 2);
+  objc_msgSend_setBytes_length_atIndex_(v29, v30, color, 208, 0);
+  objc_msgSend_setBytes_length_atIndex_(v31, v32, &pedestalCopy, 4, 1);
+  objc_msgSend_setTexture_atIndex_(v31, v33, lumaCopy, 0);
+  objc_msgSend_setTexture_atIndex_(v31, v34, chromaCopy, 1);
+  objc_msgSend_setTexture_atIndex_(v31, v35, outputLumaCopy, 2);
   objc_msgSend_setTexture_atIndex_(v31, v36, v20, 3);
   objc_msgSend_setComputePipelineState_(v31, v37, self->_shaders->_convertColor, v38);
-  v56[0] = objc_msgSend_width(v14, v39, v40, v41);
-  v56[1] = objc_msgSend_height(v14, v42, v43, v44);
+  v56[0] = objc_msgSend_width(chromaCopy, v39, v40, v41);
+  v56[1] = objc_msgSend_height(chromaCopy, v42, v43, v44);
   v56[2] = 1;
   v54 = xmmword_2959D5ED0;
   v55 = 1;
@@ -145,13 +145,13 @@ LABEL_10:
   return v52;
 }
 
-- (int)convertColor:(const ColorSpaceConversionParameters *)a3 inputYCbCr:(id)a4 outputLuma:(id)a5 outputChroma:(id)a6
+- (int)convertColor:(const ColorSpaceConversionParameters *)color inputYCbCr:(id)cr outputLuma:(id)luma outputChroma:(id)chroma
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v16 = v12;
-  if (!a3)
+  crCopy = cr;
+  lumaCopy = luma;
+  chromaCopy = chroma;
+  v16 = chromaCopy;
+  if (!color)
   {
     sub_29589CBD0(v50);
 LABEL_17:
@@ -159,19 +159,19 @@ LABEL_17:
     goto LABEL_9;
   }
 
-  if (!v10)
+  if (!crCopy)
   {
     sub_29589CB34(v50);
     goto LABEL_17;
   }
 
-  if (!v11)
+  if (!lumaCopy)
   {
     sub_29589CA98(v50);
     goto LABEL_17;
   }
 
-  if (!v12)
+  if (!chromaCopy)
   {
     sub_29589C9FC(v50);
     goto LABEL_17;
@@ -200,13 +200,13 @@ LABEL_17:
   }
 
   v27 = v25;
-  objc_msgSend_setBytes_length_atIndex_(v25, v26, a3, 208, 0);
-  objc_msgSend_setTexture_atIndex_(v27, v28, v10, 0);
-  objc_msgSend_setTexture_atIndex_(v27, v29, v11, 1);
+  objc_msgSend_setBytes_length_atIndex_(v25, v26, color, 208, 0);
+  objc_msgSend_setTexture_atIndex_(v27, v28, crCopy, 0);
+  objc_msgSend_setTexture_atIndex_(v27, v29, lumaCopy, 1);
   objc_msgSend_setTexture_atIndex_(v27, v30, v16, 2);
   objc_msgSend_setComputePipelineState_(v27, v31, self->_shaders->_convertColorYCbCr, v32);
-  v50[0] = objc_msgSend_width(v10, v33, v34, v35) >> 1;
-  v50[1] = objc_msgSend_height(v10, v36, v37, v38) >> 1;
+  v50[0] = objc_msgSend_width(crCopy, v33, v34, v35) >> 1;
+  v50[1] = objc_msgSend_height(crCopy, v36, v37, v38) >> 1;
   v50[2] = 1;
   v48 = xmmword_2959D5ED0;
   v49 = 1;
@@ -220,14 +220,14 @@ LABEL_9:
   return v46;
 }
 
-- (uint64_t)extractLinearBufferWithLumaInput:(__n128)a3 chromaInput:(__n128)a4 inputIsLinear:(__n128)a5 removeChromaBias:(uint64_t)a6 lumaPedestal:(void *)a7 exposureParams:(void *)a8 ccm:(char)a9 output:(int)a10
+- (uint64_t)extractLinearBufferWithLumaInput:(__n128)input chromaInput:(__n128)chromaInput inputIsLinear:(__n128)linear removeChromaBias:(uint64_t)bias lumaPedestal:(void *)pedestal exposureParams:(void *)params ccm:(char)ccm output:(int)self0
 {
-  *&v37[16] = a4;
-  *&v37[32] = a5;
-  *v37 = a3;
-  v18 = a7;
-  v19 = a8;
-  v22 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_alignmentFactor_(a1[1], v20, a12, 25, 7, 0, 16);
+  *&v37[16] = chromaInput;
+  *&v37[32] = linear;
+  *v37 = input;
+  pedestalCopy = pedestal;
+  paramsCopy = params;
+  v22 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_alignmentFactor_(self[1], v20, a12, 25, 7, 0, 16);
   if (!v22)
   {
     sub_29589CD08(&v54);
@@ -236,7 +236,7 @@ LABEL_16:
     goto LABEL_13;
   }
 
-  v23 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_alignmentFactor_(a1[1], v21, a12, 65, 7, 1, 8);
+  v23 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_alignmentFactor_(self[1], v21, a12, 65, 7, 1, 8);
   if (!v23)
   {
     sub_29589CC6C(&v54);
@@ -291,7 +291,7 @@ LABEL_16:
   *(&v49 + 1) = 0x3F8000007F800000;
   LOBYTE(v50) = 0;
   BYTE3(v50) = 0;
-  if ((a9 & 1) == 0)
+  if ((ccm & 1) == 0)
   {
     v47 = xmmword_2958D59C0;
     v48 = xmmword_2959D5EE0;
@@ -308,7 +308,7 @@ LABEL_16:
   DWORD2(v46) = v33.columns[2].i32[2];
   *&v46 = v33.columns[2].i64[0];
   v33.columns[0].i32[0] = 0;
-  if (a10)
+  if (output)
   {
     v34 = -0.5;
   }
@@ -341,7 +341,7 @@ LABEL_16:
   v41 = v54;
   v42 = v55;
   v43 = v56;
-  v35 = objc_msgSend__convertColor_lumaPedestal_inputLuma_inputChroma_outputLuma_outputChroma_(a1, v31, &v38, v18, v19, v22, v24, COERCE_DOUBLE(__PAIR64__(v54.u32[1], LODWORD(a2))));
+  v35 = objc_msgSend__convertColor_lumaPedestal_inputLuma_inputChroma_outputLuma_outputChroma_(self, v31, &v38, pedestalCopy, paramsCopy, v22, v24, COERCE_DOUBLE(__PAIR64__(v54.u32[1], LODWORD(a2))));
 
 LABEL_13:
   return v35;

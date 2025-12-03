@@ -1,8 +1,8 @@
 @interface CMFoundationModelRequest
 - (_TtC15CoreMotionFDNML24CMFoundationModelRequest)init;
-- (void)addArrayWithName:(const char *)a3 type:(unsigned __int8)a4 shape:(const unsigned int *)a5 dimensions:(unsigned __int8)a6 byteArray:(const char *)a7 byteLength:(unint64_t)a8;
-- (void)setModelName:(const char *)a3;
-- (void)setTimestamp:(unint64_t)a3;
+- (void)addArrayWithName:(const char *)name type:(unsigned __int8)type shape:(const unsigned int *)shape dimensions:(unsigned __int8)dimensions byteArray:(const char *)array byteLength:(unint64_t)length;
+- (void)setModelName:(const char *)name;
+- (void)setTimestamp:(unint64_t)timestamp;
 @end
 
 @implementation CMFoundationModelRequest
@@ -21,25 +21,25 @@
   return [(CMFoundationModelRequest *)&v6 init];
 }
 
-- (void)addArrayWithName:(const char *)a3 type:(unsigned __int8)a4 shape:(const unsigned int *)a5 dimensions:(unsigned __int8)a6 byteArray:(const char *)a7 byteLength:(unint64_t)a8
+- (void)addArrayWithName:(const char *)name type:(unsigned __int8)type shape:(const unsigned int *)shape dimensions:(unsigned __int8)dimensions byteArray:(const char *)array byteLength:(unint64_t)length
 {
-  v14 = self;
-  sub_245F69400(a3, a4, a5, a6, a7, a8);
+  selfCopy = self;
+  sub_245F69400(name, type, shape, dimensions, array, length);
 }
 
-- (void)setTimestamp:(unint64_t)a3
+- (void)setTimestamp:(unint64_t)timestamp
 {
   v5 = OBJC_IVAR____TtC15CoreMotionFDNML24CMFoundationModelRequest_request;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = timestamp;
 }
 
-- (void)setModelName:(const char *)a3
+- (void)setModelName:(const char *)name
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_245F768B8();
   v6 = v5;
-  v7 = v3 + OBJC_IVAR____TtC15CoreMotionFDNML24CMFoundationModelRequest_request;
+  v7 = selfCopy + OBJC_IVAR____TtC15CoreMotionFDNML24CMFoundationModelRequest_request;
   swift_beginAccess();
   v8 = *(v7 + 2);
   *(v7 + 1) = v4;

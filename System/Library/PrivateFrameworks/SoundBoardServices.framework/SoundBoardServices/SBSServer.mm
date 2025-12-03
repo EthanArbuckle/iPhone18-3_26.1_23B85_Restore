@@ -1,10 +1,10 @@
 @interface SBSServer
 + (BOOL)_isInternalBuild;
 + (id)sharedInstance;
-- (BOOL)_hasEntitlement:(id)a3;
-- (BOOL)isMediaAlarm:(id)a3;
-- (BOOL)isMediaAlarmInternal:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_hasEntitlement:(id)entitlement;
+- (BOOL)isMediaAlarm:(id)alarm;
+- (BOOL)isMediaAlarmInternal:(id)internal;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SBSAirDropServiceImplementer)airdropServiceDelegate;
 - (SBSDebugInfoImplementer)debugInfoDelegate;
 - (SBSHomePodControlsImplementer)controlsDelegate;
@@ -16,419 +16,419 @@
 - (SBSSysdiagnoseImplementer)sysdiagnoseDelegate;
 - (SBSSystemImplementer)systemDelegate;
 - (SBSVolumeEventMonitorImplementer)volumeEventMonitorDelegate;
-- (id)_gatherXPCClientInfo:(id)a3;
-- (id)_processNameForPID:(int)a3;
-- (void)_findConnectionAndSetClientType:(unint64_t)a3;
-- (void)airDropSysdiagnose:(id)a3 airDropID:(id)a4 completionHandler:(id)a5;
-- (void)airDropSysdiagnoseInternal:(id)a3 airDropID:(id)a4 completionHandler:(id)a5;
-- (void)cancelCurrentSysdiagnose:(id)a3;
-- (void)cancelSysdiagnoseInternal:(id)a3;
+- (id)_gatherXPCClientInfo:(id)info;
+- (id)_processNameForPID:(int)d;
+- (void)_findConnectionAndSetClientType:(unint64_t)type;
+- (void)airDropSysdiagnose:(id)sysdiagnose airDropID:(id)d completionHandler:(id)handler;
+- (void)airDropSysdiagnoseInternal:(id)internal airDropID:(id)d completionHandler:(id)handler;
+- (void)cancelCurrentSysdiagnose:(id)sysdiagnose;
+- (void)cancelSysdiagnoseInternal:(id)internal;
 - (void)clearHomeSWUpdate;
 - (void)clearHomeSWUpdateInternal;
-- (void)createSysdiagnose:(id)a3;
-- (void)createSysdiagnoseInternal:(id)a3;
+- (void)createSysdiagnose:(id)sysdiagnose;
+- (void)createSysdiagnoseInternal:(id)internal;
 - (void)disassociateCurrentNetwork;
 - (void)disassociateCurrentNetworkInternal;
-- (void)disassociateNetworkWithName:(id)a3;
-- (void)disassociateNetworkWithNameInternal:(id)a3;
-- (void)fetchLatestEvents:(int64_t)a3 completionHandler:(id)a4;
-- (void)getAllDebugInfo:(id)a3;
-- (void)getAllDebugInfoInternal:(id)a3;
-- (void)getAllSyncedAlarmsAndTimers:(id)a3;
-- (void)getAllSyncedAlarmsAndTimersInternal:(id)a3;
-- (void)getFeatureFlags:(id)a3;
-- (void)getFeatureFlagsInternal:(id)a3;
-- (void)getInstalledProfilesInternal:(id)a3;
-- (void)getLEDInfo:(id)a3;
-- (void)getLEDInfoInternal:(id)a3;
-- (void)getPowerEstimateForInterval:(float)a3 reply:(id)a4;
-- (void)getPowerEstimateForIntervalInternal:(float)a3 reply:(id)a4;
-- (void)getSelectDebugInfo:(id)a3 reply:(id)a4;
-- (void)getSelectDebugInfoInternal:(id)a3 reply:(id)a4;
-- (void)getTuningInfo:(id)a3;
-- (void)getTuningInfoInternal:(id)a3;
-- (void)getUserDefaults:(id)a3;
-- (void)getUserDefaultsInternal:(id)a3;
-- (void)getVolume:(id)a3;
-- (void)getVolumeInternal:(id)a3;
-- (void)handleClientDisconnection:(id)a3;
-- (void)handoffCancelInternalWithHandoffType:(unint64_t)a3;
-- (void)handoffCompleteInternalWithHandoffType:(unint64_t)a3;
-- (void)handoffStartInternalWithHandoffType:(unint64_t)a3;
-- (void)handoffStartWithArtworkColors:(id)a3 handoffType:(unint64_t)a4;
-- (void)handoffStartWithArtworkColorsInternal:(id)a3 handoffType:(unint64_t)a4;
-- (void)handoffStartWithHandoffType:(unint64_t)a3;
-- (void)handoffUpdateIntensityInternal:(float)a3 handoffType:(unint64_t)a4;
-- (void)identifyWithOptions:(id)a3;
-- (void)identifyWithOptionsInternal:(id)a3;
-- (void)injectSWUpdateToHome:(id)a3;
-- (void)injectSWUpdateToHomeInternal:(id)a3;
-- (void)installProfileDataInternal:(id)a3 completion:(id)a4;
-- (void)intercomWithOptions:(id)a3;
-- (void)intercomWithOptionsInternal:(id)a3;
-- (void)isDeviceStereoFollower:(id)a3;
-- (void)isDeviceStereoFollowerInternal:(id)a3;
-- (void)obliterate:(id)a3;
-- (void)obliterateInternal:(id)a3;
+- (void)disassociateNetworkWithName:(id)name;
+- (void)disassociateNetworkWithNameInternal:(id)internal;
+- (void)fetchLatestEvents:(int64_t)events completionHandler:(id)handler;
+- (void)getAllDebugInfo:(id)info;
+- (void)getAllDebugInfoInternal:(id)internal;
+- (void)getAllSyncedAlarmsAndTimers:(id)timers;
+- (void)getAllSyncedAlarmsAndTimersInternal:(id)internal;
+- (void)getFeatureFlags:(id)flags;
+- (void)getFeatureFlagsInternal:(id)internal;
+- (void)getInstalledProfilesInternal:(id)internal;
+- (void)getLEDInfo:(id)info;
+- (void)getLEDInfoInternal:(id)internal;
+- (void)getPowerEstimateForInterval:(float)interval reply:(id)reply;
+- (void)getPowerEstimateForIntervalInternal:(float)internal reply:(id)reply;
+- (void)getSelectDebugInfo:(id)info reply:(id)reply;
+- (void)getSelectDebugInfoInternal:(id)internal reply:(id)reply;
+- (void)getTuningInfo:(id)info;
+- (void)getTuningInfoInternal:(id)internal;
+- (void)getUserDefaults:(id)defaults;
+- (void)getUserDefaultsInternal:(id)internal;
+- (void)getVolume:(id)volume;
+- (void)getVolumeInternal:(id)internal;
+- (void)handleClientDisconnection:(id)disconnection;
+- (void)handoffCancelInternalWithHandoffType:(unint64_t)type;
+- (void)handoffCompleteInternalWithHandoffType:(unint64_t)type;
+- (void)handoffStartInternalWithHandoffType:(unint64_t)type;
+- (void)handoffStartWithArtworkColors:(id)colors handoffType:(unint64_t)type;
+- (void)handoffStartWithArtworkColorsInternal:(id)internal handoffType:(unint64_t)type;
+- (void)handoffStartWithHandoffType:(unint64_t)type;
+- (void)handoffUpdateIntensityInternal:(float)internal handoffType:(unint64_t)type;
+- (void)identifyWithOptions:(id)options;
+- (void)identifyWithOptionsInternal:(id)internal;
+- (void)injectSWUpdateToHome:(id)home;
+- (void)injectSWUpdateToHomeInternal:(id)internal;
+- (void)installProfileDataInternal:(id)internal completion:(id)completion;
+- (void)intercomWithOptions:(id)options;
+- (void)intercomWithOptionsInternal:(id)internal;
+- (void)isDeviceStereoFollower:(id)follower;
+- (void)isDeviceStereoFollowerInternal:(id)internal;
+- (void)obliterate:(id)obliterate;
+- (void)obliterateInternal:(id)internal;
 - (void)proximityHandoffCancelled;
 - (void)proximityHandoffCompleted;
 - (void)proximityHandoffInactive;
 - (void)proximityHandoffStarted;
 - (void)proximityHandoffUpdating;
-- (void)reboot:(id)a3;
-- (void)rebootInternal:(id)a3;
-- (void)removeProfileByIdentifierInternal:(id)a3 completion:(id)a4;
-- (void)render:(id)a3;
-- (void)renderInternal:(id)a3;
+- (void)reboot:(id)reboot;
+- (void)rebootInternal:(id)internal;
+- (void)removeProfileByIdentifierInternal:(id)internal completion:(id)completion;
+- (void)render:(id)render;
+- (void)renderInternal:(id)internal;
 - (void)requestDeferredReboot;
 - (void)requestDeferredRebootInternal;
 - (void)resetAllUserDefaults;
 - (void)resetAllUserDefaultsInternal;
-- (void)resetUserDefault:(id)a3;
-- (void)resetUserDefaultInternal:(id)a3;
-- (void)sendButtonCommand:(id)a3;
-- (void)sendButtonCommandInternal:(id)a3;
-- (void)sendLEDCommand:(id)a3;
-- (void)sendLEDCommandInternal:(id)a3;
-- (void)setFeatureFlags:(id)a3;
-- (void)setFeatureFlagsInternal:(id)a3;
-- (void)setHomeUpdateState:(int64_t)a3;
-- (void)setHomeUpdateStateInternal:(int64_t)a3;
-- (void)setLEDContents:(id)a3;
-- (void)setLEDContentsInternal:(id)a3;
-- (void)setTuningInfoOnBox:(id)a3 at:(id)a4 withValue:(float)a5;
-- (void)setTuningInfoOnBoxInternal:(id)a3 at:(id)a4 withValue:(float)a5;
-- (void)setTurnOffBrightnessFactor:(BOOL)a3;
-- (void)setUserDefaults:(id)a3 withValue:(id)a4;
-- (void)setUserDefaultsInternal:(id)a3 withValue:(id)a4;
-- (void)setVolume:(float)a3;
-- (void)setVolumeInternal:(float)a3;
-- (void)siriSay:(id)a3;
-- (void)siriSayInternal:(id)a3;
+- (void)resetUserDefault:(id)default;
+- (void)resetUserDefaultInternal:(id)internal;
+- (void)sendButtonCommand:(id)command;
+- (void)sendButtonCommandInternal:(id)internal;
+- (void)sendLEDCommand:(id)command;
+- (void)sendLEDCommandInternal:(id)internal;
+- (void)setFeatureFlags:(id)flags;
+- (void)setFeatureFlagsInternal:(id)internal;
+- (void)setHomeUpdateState:(int64_t)state;
+- (void)setHomeUpdateStateInternal:(int64_t)internal;
+- (void)setLEDContents:(id)contents;
+- (void)setLEDContentsInternal:(id)internal;
+- (void)setTuningInfoOnBox:(id)box at:(id)at withValue:(float)value;
+- (void)setTuningInfoOnBoxInternal:(id)internal at:(id)at withValue:(float)value;
+- (void)setTurnOffBrightnessFactor:(BOOL)factor;
+- (void)setUserDefaults:(id)defaults withValue:(id)value;
+- (void)setUserDefaultsInternal:(id)internal withValue:(id)value;
+- (void)setVolume:(float)volume;
+- (void)setVolumeInternal:(float)internal;
+- (void)siriSay:(id)say;
+- (void)siriSayInternal:(id)internal;
 - (void)suScanForSoftwareUpdate;
 - (void)suScanForSoftwareUpdateInternal;
-- (void)triggerWiFiCoreCapture:(id)a3;
-- (void)triggerWiFiCoreCaptureInternal:(id)a3;
+- (void)triggerWiFiCoreCapture:(id)capture;
+- (void)triggerWiFiCoreCaptureInternal:(id)internal;
 @end
 
 @implementation SBSServer
 
-- (void)setVolumeInternal:(float)a3
+- (void)setVolumeInternal:(float)internal
 {
-  v5 = [(SBSServer *)self debugInfoDelegate];
-  *&v4 = a3;
-  [v5 setVolume:v4];
+  debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+  *&v4 = internal;
+  [debugInfoDelegate setVolume:v4];
 }
 
-- (void)getVolumeInternal:(id)a3
+- (void)getVolumeInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(SBSServer *)self debugInfoDelegate];
-  [v5 getVolume:v4];
+  internalCopy = internal;
+  debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+  [debugInfoDelegate getVolume:internalCopy];
 }
 
-- (void)installProfileDataInternal:(id)a3 completion:(id)a4
+- (void)installProfileDataInternal:(id)internal completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBSServer *)self profilesDelegate];
-  [v8 installProfileData:v7 completion:v6];
+  completionCopy = completion;
+  internalCopy = internal;
+  profilesDelegate = [(SBSServer *)self profilesDelegate];
+  [profilesDelegate installProfileData:internalCopy completion:completionCopy];
 }
 
-- (void)removeProfileByIdentifierInternal:(id)a3 completion:(id)a4
+- (void)removeProfileByIdentifierInternal:(id)internal completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBSServer *)self profilesDelegate];
-  [v8 removeProfileByIdentifier:v7 completion:v6];
+  completionCopy = completion;
+  internalCopy = internal;
+  profilesDelegate = [(SBSServer *)self profilesDelegate];
+  [profilesDelegate removeProfileByIdentifier:internalCopy completion:completionCopy];
 }
 
-- (void)getInstalledProfilesInternal:(id)a3
+- (void)getInstalledProfilesInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(SBSServer *)self profilesDelegate];
-  [v5 getInstalledProfiles:v4];
+  internalCopy = internal;
+  profilesDelegate = [(SBSServer *)self profilesDelegate];
+  [profilesDelegate getInstalledProfiles:internalCopy];
 }
 
-- (void)getPowerEstimateForIntervalInternal:(float)a3 reply:(id)a4
+- (void)getPowerEstimateForIntervalInternal:(float)internal reply:(id)reply
 {
-  v6 = a4;
-  v8 = [(SBSServer *)self powerMonitorDelegate];
-  *&v7 = a3;
-  [v8 getPowerEstimateForInterval:v6 reply:v7];
+  replyCopy = reply;
+  powerMonitorDelegate = [(SBSServer *)self powerMonitorDelegate];
+  *&v7 = internal;
+  [powerMonitorDelegate getPowerEstimateForInterval:replyCopy reply:v7];
 }
 
-- (void)handoffCompleteInternalWithHandoffType:(unint64_t)a3
+- (void)handoffCompleteInternalWithHandoffType:(unint64_t)type
 {
-  v4 = [(SBSServer *)self proximityHandoffUIDelegate];
-  [v4 handoffCompleteWithHandoffType:a3];
+  proximityHandoffUIDelegate = [(SBSServer *)self proximityHandoffUIDelegate];
+  [proximityHandoffUIDelegate handoffCompleteWithHandoffType:type];
 }
 
-- (void)handoffCancelInternalWithHandoffType:(unint64_t)a3
+- (void)handoffCancelInternalWithHandoffType:(unint64_t)type
 {
-  v4 = [(SBSServer *)self proximityHandoffUIDelegate];
-  [v4 handoffCancelWithHandoffType:a3];
+  proximityHandoffUIDelegate = [(SBSServer *)self proximityHandoffUIDelegate];
+  [proximityHandoffUIDelegate handoffCancelWithHandoffType:type];
 }
 
-- (void)handoffUpdateIntensityInternal:(float)a3 handoffType:(unint64_t)a4
+- (void)handoffUpdateIntensityInternal:(float)internal handoffType:(unint64_t)type
 {
-  v7 = [(SBSServer *)self proximityHandoffUIDelegate];
-  *&v6 = a3;
-  [v7 handoffUpdateIntensity:a4 handoffType:v6];
+  proximityHandoffUIDelegate = [(SBSServer *)self proximityHandoffUIDelegate];
+  *&v6 = internal;
+  [proximityHandoffUIDelegate handoffUpdateIntensity:type handoffType:v6];
 }
 
-- (void)handoffStartWithArtworkColorsInternal:(id)a3 handoffType:(unint64_t)a4
+- (void)handoffStartWithArtworkColorsInternal:(id)internal handoffType:(unint64_t)type
 {
-  v6 = a3;
-  v8 = [[SBSColorGroup alloc] initWithData:v6];
+  internalCopy = internal;
+  v8 = [[SBSColorGroup alloc] initWithData:internalCopy];
 
-  v7 = [(SBSServer *)self proximityHandoffUIDelegate];
-  [v7 handoffStartWithArtworkColors:v8 handoffType:a4];
+  proximityHandoffUIDelegate = [(SBSServer *)self proximityHandoffUIDelegate];
+  [proximityHandoffUIDelegate handoffStartWithArtworkColors:v8 handoffType:type];
 }
 
-- (void)handoffStartInternalWithHandoffType:(unint64_t)a3
+- (void)handoffStartInternalWithHandoffType:(unint64_t)type
 {
-  v4 = [(SBSServer *)self proximityHandoffUIDelegate];
-  [v4 handoffStartWithHandoffType:a3];
+  proximityHandoffUIDelegate = [(SBSServer *)self proximityHandoffUIDelegate];
+  [proximityHandoffUIDelegate handoffStartWithHandoffType:type];
 }
 
-- (void)intercomWithOptionsInternal:(id)a3
+- (void)intercomWithOptionsInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(SBSServer *)self systemDelegate];
-  [v5 intercomWithOptions:v4];
+  internalCopy = internal;
+  systemDelegate = [(SBSServer *)self systemDelegate];
+  [systemDelegate intercomWithOptions:internalCopy];
 }
 
-- (void)identifyWithOptionsInternal:(id)a3
+- (void)identifyWithOptionsInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(SBSServer *)self systemDelegate];
-  [v5 identifyWithOptions:v4];
+  internalCopy = internal;
+  systemDelegate = [(SBSServer *)self systemDelegate];
+  [systemDelegate identifyWithOptions:internalCopy];
 }
 
-- (void)obliterateInternal:(id)a3
+- (void)obliterateInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(SBSServer *)self systemDelegate];
-  [v5 obliterate:v4];
+  internalCopy = internal;
+  systemDelegate = [(SBSServer *)self systemDelegate];
+  [systemDelegate obliterate:internalCopy];
 }
 
 - (void)requestDeferredRebootInternal
 {
-  v2 = [(SBSServer *)self systemDelegate];
-  [v2 requestDeferredReboot];
+  systemDelegate = [(SBSServer *)self systemDelegate];
+  [systemDelegate requestDeferredReboot];
 }
 
-- (void)rebootInternal:(id)a3
+- (void)rebootInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(SBSServer *)self systemDelegate];
-  [v5 reboot:v4];
+  internalCopy = internal;
+  systemDelegate = [(SBSServer *)self systemDelegate];
+  [systemDelegate reboot:internalCopy];
 }
 
-- (void)cancelSysdiagnoseInternal:(id)a3
+- (void)cancelSysdiagnoseInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(SBSServer *)self sysdiagnoseDelegate];
+  internalCopy = internal;
+  sysdiagnoseDelegate = [(SBSServer *)self sysdiagnoseDelegate];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__SBSServer_Internal__cancelSysdiagnoseInternal___block_invoke;
   v7[3] = &unk_279CD55F8;
-  v8 = v4;
-  v6 = v4;
-  [v5 cancelCurrentSysdiagnose:v7];
+  v8 = internalCopy;
+  v6 = internalCopy;
+  [sysdiagnoseDelegate cancelCurrentSysdiagnose:v7];
 }
 
-- (void)airDropSysdiagnoseInternal:(id)a3 airDropID:(id)a4 completionHandler:(id)a5
+- (void)airDropSysdiagnoseInternal:(id)internal airDropID:(id)d completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(SBSServer *)self airdropServiceDelegate];
+  handlerCopy = handler;
+  dCopy = d;
+  internalCopy = internal;
+  airdropServiceDelegate = [(SBSServer *)self airdropServiceDelegate];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __78__SBSServer_Internal__airDropSysdiagnoseInternal_airDropID_completionHandler___block_invoke;
   v13[3] = &unk_279CD52E8;
-  v14 = v8;
-  v12 = v8;
-  [v11 airDropSysdiagnose:v10 airDropID:v9 completionHandler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [airdropServiceDelegate airDropSysdiagnose:internalCopy airDropID:dCopy completionHandler:v13];
 }
 
-- (void)createSysdiagnoseInternal:(id)a3
+- (void)createSysdiagnoseInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(SBSServer *)self sysdiagnoseDelegate];
+  internalCopy = internal;
+  sysdiagnoseDelegate = [(SBSServer *)self sysdiagnoseDelegate];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__SBSServer_Internal__createSysdiagnoseInternal___block_invoke;
   v7[3] = &unk_279CD52C0;
-  v8 = v4;
-  v6 = v4;
-  [v5 createSysdiagnose:v7];
+  v8 = internalCopy;
+  v6 = internalCopy;
+  [sysdiagnoseDelegate createSysdiagnose:v7];
 }
 
-- (void)isDeviceStereoFollowerInternal:(id)a3
+- (void)isDeviceStereoFollowerInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(SBSServer *)self stereoLeaderDelegate];
-  [v5 isDeviceStereoFollower:v4];
+  internalCopy = internal;
+  stereoLeaderDelegate = [(SBSServer *)self stereoLeaderDelegate];
+  [stereoLeaderDelegate isDeviceStereoFollower:internalCopy];
 }
 
 - (void)suScanForSoftwareUpdateInternal
 {
-  v2 = [(SBSServer *)self debugInfoDelegate];
-  [v2 suScanForSoftwareUpdate];
+  debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+  [debugInfoDelegate suScanForSoftwareUpdate];
 }
 
-- (void)siriSayInternal:(id)a3
+- (void)siriSayInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(SBSServer *)self debugInfoDelegate];
-  [v5 siriSay:v4];
+  internalCopy = internal;
+  debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+  [debugInfoDelegate siriSay:internalCopy];
 }
 
-- (void)renderInternal:(id)a3
+- (void)renderInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(SBSServer *)self debugInfoDelegate];
-  [v5 render:v4];
+  internalCopy = internal;
+  debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+  [debugInfoDelegate render:internalCopy];
 }
 
-- (void)setLEDContentsInternal:(id)a3
+- (void)setLEDContentsInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(SBSServer *)self debugInfoDelegate];
-  [v5 setLEDContents:v4];
+  internalCopy = internal;
+  debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+  [debugInfoDelegate setLEDContents:internalCopy];
 }
 
-- (void)setFeatureFlagsInternal:(id)a3
+- (void)setFeatureFlagsInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(SBSServer *)self debugInfoDelegate];
-  [v5 setFeatureFlags:v4];
+  internalCopy = internal;
+  debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+  [debugInfoDelegate setFeatureFlags:internalCopy];
 }
 
-- (void)getFeatureFlagsInternal:(id)a3
+- (void)getFeatureFlagsInternal:(id)internal
 {
-  if (a3)
+  if (internal)
   {
-    v4 = a3;
-    v5 = [(SBSServer *)self debugInfoDelegate];
-    [v5 getFeatureFlags:v4];
+    internalCopy = internal;
+    debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+    [debugInfoDelegate getFeatureFlags:internalCopy];
   }
 }
 
-- (void)disassociateNetworkWithNameInternal:(id)a3
+- (void)disassociateNetworkWithNameInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(SBSServer *)self debugInfoDelegate];
-  [v5 disassociateNetworkWithName:v4];
+  internalCopy = internal;
+  debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+  [debugInfoDelegate disassociateNetworkWithName:internalCopy];
 }
 
 - (void)disassociateCurrentNetworkInternal
 {
-  v2 = [(SBSServer *)self debugInfoDelegate];
-  [v2 disassociateCurrentNetwork];
+  debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+  [debugInfoDelegate disassociateCurrentNetwork];
 }
 
 - (void)clearHomeSWUpdateInternal
 {
-  v2 = [(SBSServer *)self debugInfoDelegate];
-  [v2 clearHomeSWUpdate];
+  debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+  [debugInfoDelegate clearHomeSWUpdate];
 }
 
-- (void)setHomeUpdateStateInternal:(int64_t)a3
+- (void)setHomeUpdateStateInternal:(int64_t)internal
 {
-  v4 = [(SBSServer *)self debugInfoDelegate];
-  [v4 setHomeUpdateState:a3];
+  debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+  [debugInfoDelegate setHomeUpdateState:internal];
 }
 
-- (void)injectSWUpdateToHomeInternal:(id)a3
+- (void)injectSWUpdateToHomeInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(SBSServer *)self debugInfoDelegate];
-  [v5 injectSWUpdateToHome:v4];
+  internalCopy = internal;
+  debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+  [debugInfoDelegate injectSWUpdateToHome:internalCopy];
 }
 
-- (void)sendButtonCommandInternal:(id)a3
+- (void)sendButtonCommandInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(SBSServer *)self debugInfoDelegate];
-  [v5 sendButtonCommand:v4];
+  internalCopy = internal;
+  debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+  [debugInfoDelegate sendButtonCommand:internalCopy];
 }
 
-- (void)triggerWiFiCoreCaptureInternal:(id)a3
+- (void)triggerWiFiCoreCaptureInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(SBSServer *)self debugInfoDelegate];
-  [v5 triggerWiFiCoreCapture:v4];
+  internalCopy = internal;
+  debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+  [debugInfoDelegate triggerWiFiCoreCapture:internalCopy];
 }
 
-- (void)sendLEDCommandInternal:(id)a3
+- (void)sendLEDCommandInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(SBSServer *)self debugInfoDelegate];
-  [v5 sendLEDCommand:v4];
+  internalCopy = internal;
+  debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+  [debugInfoDelegate sendLEDCommand:internalCopy];
 }
 
-- (void)resetUserDefaultInternal:(id)a3
+- (void)resetUserDefaultInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(SBSServer *)self debugInfoDelegate];
-  [v5 resetUserDefault:v4];
+  internalCopy = internal;
+  debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+  [debugInfoDelegate resetUserDefault:internalCopy];
 }
 
 - (void)resetAllUserDefaultsInternal
 {
-  v2 = [(SBSServer *)self debugInfoDelegate];
-  [v2 resetAllUserDefaults];
+  debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+  [debugInfoDelegate resetAllUserDefaults];
 }
 
-- (void)setUserDefaultsInternal:(id)a3 withValue:(id)a4
+- (void)setUserDefaultsInternal:(id)internal withValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBSServer *)self debugInfoDelegate];
-  [v8 setUserDefaults:v7 withValue:v6];
+  valueCopy = value;
+  internalCopy = internal;
+  debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+  [debugInfoDelegate setUserDefaults:internalCopy withValue:valueCopy];
 }
 
-- (void)getUserDefaultsInternal:(id)a3
+- (void)getUserDefaultsInternal:(id)internal
 {
-  if (a3)
+  if (internal)
   {
-    v4 = a3;
-    v5 = [(SBSServer *)self debugInfoDelegate];
-    [v5 getUserDefaults:v4];
+    internalCopy = internal;
+    debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+    [debugInfoDelegate getUserDefaults:internalCopy];
   }
 }
 
-- (void)setTuningInfoOnBoxInternal:(id)a3 at:(id)a4 withValue:(float)a5
+- (void)setTuningInfoOnBoxInternal:(id)internal at:(id)at withValue:(float)value
 {
-  v8 = a4;
-  v9 = a3;
-  v11 = [(SBSServer *)self debugInfoDelegate];
-  *&v10 = a5;
-  [v11 setTuningInfoOnBox:v9 at:v8 withValue:v10];
+  atCopy = at;
+  internalCopy = internal;
+  debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+  *&v10 = value;
+  [debugInfoDelegate setTuningInfoOnBox:internalCopy at:atCopy withValue:v10];
 }
 
-- (void)getTuningInfoInternal:(id)a3
+- (void)getTuningInfoInternal:(id)internal
 {
-  if (a3)
+  if (internal)
   {
-    v4 = a3;
-    v5 = [(SBSServer *)self debugInfoDelegate];
-    [v5 getTuningInfo:v4];
+    internalCopy = internal;
+    debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+    [debugInfoDelegate getTuningInfo:internalCopy];
   }
 }
 
-- (BOOL)isMediaAlarmInternal:(id)a3
+- (BOOL)isMediaAlarmInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(SBSServer *)self controlsDelegate];
-  if (v5 && (v6 = v5, [(SBSServer *)self controlsDelegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
+  internalCopy = internal;
+  controlsDelegate = [(SBSServer *)self controlsDelegate];
+  if (controlsDelegate && (v6 = controlsDelegate, [(SBSServer *)self controlsDelegate], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) != 0))
   {
-    v9 = [(SBSServer *)self controlsDelegate];
-    v10 = [v9 isMediaAlarm:v4];
+    controlsDelegate2 = [(SBSServer *)self controlsDelegate];
+    v10 = [controlsDelegate2 isMediaAlarm:internalCopy];
   }
 
   else
@@ -439,41 +439,41 @@
   return v10;
 }
 
-- (void)getAllSyncedAlarmsAndTimersInternal:(id)a3
+- (void)getAllSyncedAlarmsAndTimersInternal:(id)internal
 {
-  if (a3)
+  if (internal)
   {
-    v4 = a3;
-    v5 = [(SBSServer *)self controlsDelegate];
-    [v5 getAllSyncedAlarmsAndTimers:v4];
+    internalCopy = internal;
+    controlsDelegate = [(SBSServer *)self controlsDelegate];
+    [controlsDelegate getAllSyncedAlarmsAndTimers:internalCopy];
   }
 }
 
-- (void)getLEDInfoInternal:(id)a3
+- (void)getLEDInfoInternal:(id)internal
 {
-  if (a3)
+  if (internal)
   {
-    v4 = a3;
-    v5 = [(SBSServer *)self debugInfoDelegate];
-    [v5 getLEDInfo:v4];
+    internalCopy = internal;
+    debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+    [debugInfoDelegate getLEDInfo:internalCopy];
   }
 }
 
-- (void)getSelectDebugInfoInternal:(id)a3 reply:(id)a4
+- (void)getSelectDebugInfoInternal:(id)internal reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBSServer *)self debugInfoDelegate];
-  [v8 getSelectDebugInfo:v7 reply:v6];
+  replyCopy = reply;
+  internalCopy = internal;
+  debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+  [debugInfoDelegate getSelectDebugInfo:internalCopy reply:replyCopy];
 }
 
-- (void)getAllDebugInfoInternal:(id)a3
+- (void)getAllDebugInfoInternal:(id)internal
 {
-  if (a3)
+  if (internal)
   {
-    v4 = a3;
-    v5 = [(SBSServer *)self debugInfoDelegate];
-    [v5 getAllDebugInfo:v4];
+    internalCopy = internal;
+    debugInfoDelegate = [(SBSServer *)self debugInfoDelegate];
+    [debugInfoDelegate getAllDebugInfo:internalCopy];
   }
 }
 
@@ -547,15 +547,15 @@
   return WeakRetained;
 }
 
-- (id)_gatherXPCClientInfo:(id)a3
+- (id)_gatherXPCClientInfo:(id)info
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAE80] currentConnection];
-  v6 = [v5 processIdentifier];
-  v7 = [(SBSServer *)self _processNameForPID:v6];
-  if (v4)
+  infoCopy = info;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  processIdentifier = [currentConnection processIdentifier];
+  v7 = [(SBSServer *)self _processNameForPID:processIdentifier];
+  if (infoCopy)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v4];
+    v8 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:infoCopy];
   }
 
   else
@@ -564,7 +564,7 @@
   }
 
   v9 = v8;
-  v10 = [MEMORY[0x277CCABB0] numberWithInt:v6];
+  v10 = [MEMORY[0x277CCABB0] numberWithInt:processIdentifier];
   [v9 setObject:v10 forKey:@"pid"];
 
   [v9 setObject:v7 forKey:@"process-name"];
@@ -573,14 +573,14 @@
   return v11;
 }
 
-- (id)_processNameForPID:(int)a3
+- (id)_processNameForPID:(int)d
 {
   v11 = *MEMORY[0x277D85DE8];
   memset(v10, 0, 512);
   v6 = 648;
   *v7 = 0xE00000001;
   v8 = 1;
-  v9 = a3;
+  dCopy = d;
   if (sysctl(v7, 4u, v10, &v6, 0, 0) < 0)
   {
     v3 = 0;
@@ -596,21 +596,21 @@
   return v3;
 }
 
-- (BOOL)_hasEntitlement:(id)a3
+- (BOOL)_hasEntitlement:(id)entitlement
 {
   v3 = MEMORY[0x277CCAE80];
-  v4 = a3;
-  v5 = [v3 currentConnection];
-  v6 = [v5 valueForEntitlement:v4];
+  entitlementCopy = entitlement;
+  currentConnection = [v3 currentConnection];
+  v6 = [currentConnection valueForEntitlement:entitlementCopy];
 
-  LOBYTE(v4) = [MEMORY[0x277CBEC38] isEqual:v6];
-  return v4;
+  LOBYTE(entitlementCopy) = [MEMORY[0x277CBEC38] isEqual:v6];
+  return entitlementCopy;
 }
 
-- (void)_findConnectionAndSetClientType:(unint64_t)a3
+- (void)_findConnectionAndSetClientType:(unint64_t)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCAE80] currentConnection];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   v6 = self->_clients;
   objc_sync_enter(v6);
   v15 = 0u;
@@ -632,12 +632,12 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 connection];
-        v13 = v12 == v5;
+        connection = [v11 connection];
+        v13 = connection == currentConnection;
 
         if (v13)
         {
-          [v11 setClientType:a3];
+          [v11 setClientType:type];
         }
       }
 
@@ -651,13 +651,13 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getPowerEstimateForInterval:(float)a3 reply:(id)a4
+- (void)getPowerEstimateForInterval:(float)interval reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.soundboard.system"])
   {
-    *&v7 = a3;
-    [(SBSServer *)self getPowerEstimateForIntervalInternal:v6 reply:v7];
+    *&v7 = interval;
+    [(SBSServer *)self getPowerEstimateForIntervalInternal:replyCopy reply:v7];
   }
 
   else
@@ -697,9 +697,9 @@
         v8 = *(*(&v12 + 1) + 8 * i);
         if ([v8 clientType] == 5)
         {
-          v9 = [v8 connection];
-          v10 = [v9 remoteObjectProxy];
-          [v10 handoffUpdating];
+          connection = [v8 connection];
+          remoteObjectProxy = [connection remoteObjectProxy];
+          [remoteObjectProxy handoffUpdating];
 
           goto LABEL_11;
         }
@@ -747,9 +747,9 @@ LABEL_11:
         v8 = *(*(&v12 + 1) + 8 * i);
         if ([v8 clientType] == 5)
         {
-          v9 = [v8 connection];
-          v10 = [v9 remoteObjectProxy];
-          [v10 handoffStarted];
+          connection = [v8 connection];
+          remoteObjectProxy = [connection remoteObjectProxy];
+          [remoteObjectProxy handoffStarted];
 
           goto LABEL_11;
         }
@@ -797,9 +797,9 @@ LABEL_11:
         v8 = *(*(&v12 + 1) + 8 * i);
         if ([v8 clientType] == 5)
         {
-          v9 = [v8 connection];
-          v10 = [v9 remoteObjectProxy];
-          [v10 handoffInactive];
+          connection = [v8 connection];
+          remoteObjectProxy = [connection remoteObjectProxy];
+          [remoteObjectProxy handoffInactive];
 
           goto LABEL_11;
         }
@@ -847,9 +847,9 @@ LABEL_11:
         v8 = *(*(&v12 + 1) + 8 * i);
         if ([v8 clientType] == 5)
         {
-          v9 = [v8 connection];
-          v10 = [v9 remoteObjectProxy];
-          [v10 handoffCompleted];
+          connection = [v8 connection];
+          remoteObjectProxy = [connection remoteObjectProxy];
+          [remoteObjectProxy handoffCompleted];
 
           goto LABEL_11;
         }
@@ -897,9 +897,9 @@ LABEL_11:
         v8 = *(*(&v12 + 1) + 8 * i);
         if ([v8 clientType] == 5)
         {
-          v9 = [v8 connection];
-          v10 = [v9 remoteObjectProxy];
-          [v10 handoffCancelled];
+          connection = [v8 connection];
+          remoteObjectProxy = [connection remoteObjectProxy];
+          [remoteObjectProxy handoffCancelled];
 
           goto LABEL_11;
         }
@@ -921,30 +921,30 @@ LABEL_11:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handoffStartWithArtworkColors:(id)a3 handoffType:(unint64_t)a4
+- (void)handoffStartWithArtworkColors:(id)colors handoffType:(unint64_t)type
 {
-  v6 = a3;
+  colorsCopy = colors;
   [(SBSServer *)self _findConnectionAndSetClientType:5];
-  v7 = [v6 data];
+  data = [colorsCopy data];
 
-  [(SBSServer *)self handoffStartWithArtworkColorsInternal:v7 handoffType:a4];
+  [(SBSServer *)self handoffStartWithArtworkColorsInternal:data handoffType:type];
 }
 
-- (void)handoffStartWithHandoffType:(unint64_t)a3
+- (void)handoffStartWithHandoffType:(unint64_t)type
 {
   [(SBSServer *)self _findConnectionAndSetClientType:5];
 
-  [(SBSServer *)self handoffStartInternalWithHandoffType:a3];
+  [(SBSServer *)self handoffStartInternalWithHandoffType:type];
 }
 
-- (void)fetchLatestEvents:(int64_t)a3 completionHandler:(id)a4
+- (void)fetchLatestEvents:(int64_t)events completionHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
-    v7 = [(SBSServer *)self volumeEventMonitorDelegate];
-    [v7 fetchLatestEvents:a3 completionHandler:v6];
+    volumeEventMonitorDelegate = [(SBSServer *)self volumeEventMonitorDelegate];
+    [volumeEventMonitorDelegate fetchLatestEvents:events completionHandler:handlerCopy];
   }
 
   else
@@ -961,12 +961,12 @@ LABEL_11:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)render:(id)a3
+- (void)render:(id)render
 {
-  v4 = a3;
+  renderCopy = render;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
-    [(SBSServer *)self renderInternal:v4];
+    [(SBSServer *)self renderInternal:renderCopy];
   }
 
   else
@@ -980,7 +980,7 @@ LABEL_11:
   }
 }
 
-- (void)setTurnOffBrightnessFactor:(BOOL)a3
+- (void)setTurnOffBrightnessFactor:(BOOL)factor
 {
   v3 = _SBSLoggingFacility();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -990,12 +990,12 @@ LABEL_11:
   }
 }
 
-- (void)intercomWithOptions:(id)a3
+- (void)intercomWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.soundboard.system"])
   {
-    v5 = [(SBSServer *)self _gatherXPCClientInfo:v4];
+    v5 = [(SBSServer *)self _gatherXPCClientInfo:optionsCopy];
     [(SBSServer *)self intercomWithOptionsInternal:v5];
   }
 
@@ -1010,12 +1010,12 @@ LABEL_11:
   }
 }
 
-- (void)identifyWithOptions:(id)a3
+- (void)identifyWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.soundboard.system"])
   {
-    v5 = [(SBSServer *)self _gatherXPCClientInfo:v4];
+    v5 = [(SBSServer *)self _gatherXPCClientInfo:optionsCopy];
     [(SBSServer *)self identifyWithOptionsInternal:v5];
   }
 
@@ -1030,12 +1030,12 @@ LABEL_11:
   }
 }
 
-- (void)obliterate:(id)a3
+- (void)obliterate:(id)obliterate
 {
-  v4 = a3;
+  obliterateCopy = obliterate;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.soundboard.system"])
   {
-    v5 = [(SBSServer *)self _gatherXPCClientInfo:v4];
+    v5 = [(SBSServer *)self _gatherXPCClientInfo:obliterateCopy];
     [(SBSServer *)self obliterateInternal:v5];
   }
 
@@ -1083,12 +1083,12 @@ LABEL_11:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reboot:(id)a3
+- (void)reboot:(id)reboot
 {
-  v4 = a3;
+  rebootCopy = reboot;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.soundboard.system"])
   {
-    v5 = [(SBSServer *)self _gatherXPCClientInfo:v4];
+    v5 = [(SBSServer *)self _gatherXPCClientInfo:rebootCopy];
     [(SBSServer *)self rebootInternal:v5];
   }
 
@@ -1103,11 +1103,11 @@ LABEL_11:
   }
 }
 
-- (void)airDropSysdiagnose:(id)a3 airDropID:(id)a4 completionHandler:(id)a5
+- (void)airDropSysdiagnose:(id)sysdiagnose airDropID:(id)d completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sysdiagnoseCopy = sysdiagnose;
+  dCopy = d;
+  handlerCopy = handler;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.soundboard.sysdiagnose"])
   {
     [(SBSServer *)self _findConnectionAndSetClientType:2];
@@ -1115,8 +1115,8 @@ LABEL_11:
     v13[1] = 3221225472;
     v13[2] = __60__SBSServer_airDropSysdiagnose_airDropID_completionHandler___block_invoke;
     v13[3] = &unk_279CD52E8;
-    v14 = v10;
-    [(SBSServer *)self airDropSysdiagnoseInternal:v8 airDropID:v9 completionHandler:v13];
+    v14 = handlerCopy;
+    [(SBSServer *)self airDropSysdiagnoseInternal:sysdiagnoseCopy airDropID:dCopy completionHandler:v13];
     v11 = v14;
   }
 
@@ -1130,13 +1130,13 @@ LABEL_11:
     }
 
     v11 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"com.apple.soundboardservices" code:1001 userInfo:0];
-    (*(v10 + 2))(v10, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, v11);
   }
 }
 
-- (void)cancelCurrentSysdiagnose:(id)a3
+- (void)cancelCurrentSysdiagnose:(id)sysdiagnose
 {
-  v4 = a3;
+  sysdiagnoseCopy = sysdiagnose;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.soundboard.sysdiagnose"])
   {
     [(SBSServer *)self _findConnectionAndSetClientType:2];
@@ -1144,7 +1144,7 @@ LABEL_11:
     v7[1] = 3221225472;
     v7[2] = __38__SBSServer_cancelCurrentSysdiagnose___block_invoke;
     v7[3] = &unk_279CD55F8;
-    v8 = v4;
+    v8 = sysdiagnoseCopy;
     [(SBSServer *)self cancelSysdiagnoseInternal:v7];
     v5 = v8;
   }
@@ -1159,13 +1159,13 @@ LABEL_11:
     }
 
     v5 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"com.apple.soundboardservices" code:1001 userInfo:0];
-    (*(v4 + 2))(v4, v5);
+    (*(sysdiagnoseCopy + 2))(sysdiagnoseCopy, v5);
   }
 }
 
-- (void)createSysdiagnose:(id)a3
+- (void)createSysdiagnose:(id)sysdiagnose
 {
-  v4 = a3;
+  sysdiagnoseCopy = sysdiagnose;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.soundboard.sysdiagnose"])
   {
     [(SBSServer *)self _findConnectionAndSetClientType:2];
@@ -1173,7 +1173,7 @@ LABEL_11:
     v7[1] = 3221225472;
     v7[2] = __31__SBSServer_createSysdiagnose___block_invoke;
     v7[3] = &unk_279CD52C0;
-    v8 = v4;
+    v8 = sysdiagnoseCopy;
     [(SBSServer *)self createSysdiagnoseInternal:v7];
     v5 = v8;
   }
@@ -1188,17 +1188,17 @@ LABEL_11:
     }
 
     v5 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:@"com.apple.soundboardservices" code:1001 userInfo:0];
-    (*(v4 + 2))(v4, 0, v5);
+    (*(sysdiagnoseCopy + 2))(sysdiagnoseCopy, 0, v5);
   }
 }
 
-- (void)isDeviceStereoFollower:(id)a3
+- (void)isDeviceStereoFollower:(id)follower
 {
-  v4 = a3;
+  followerCopy = follower;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.stereoleader.soundboard"])
   {
     [(SBSServer *)self _findConnectionAndSetClientType:1];
-    [(SBSServer *)self isDeviceStereoFollowerInternal:v4];
+    [(SBSServer *)self isDeviceStereoFollowerInternal:followerCopy];
   }
 
   else
@@ -1212,11 +1212,11 @@ LABEL_11:
   }
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
-    *&v5 = a3;
+    *&v5 = volume;
 
     [(SBSServer *)self setVolumeInternal:v5];
   }
@@ -1232,12 +1232,12 @@ LABEL_11:
   }
 }
 
-- (void)getVolume:(id)a3
+- (void)getVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
-    [(SBSServer *)self getVolumeInternal:v4];
+    [(SBSServer *)self getVolumeInternal:volumeCopy];
   }
 
   else
@@ -1251,12 +1251,12 @@ LABEL_11:
   }
 }
 
-- (void)siriSay:(id)a3
+- (void)siriSay:(id)say
 {
-  v4 = a3;
+  sayCopy = say;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
-    [(SBSServer *)self siriSayInternal:v4];
+    [(SBSServer *)self siriSayInternal:sayCopy];
   }
 
   else
@@ -1270,12 +1270,12 @@ LABEL_11:
   }
 }
 
-- (void)setLEDContents:(id)a3
+- (void)setLEDContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
-    [(SBSServer *)self setLEDContentsInternal:v4];
+    [(SBSServer *)self setLEDContentsInternal:contentsCopy];
   }
 
   else
@@ -1289,12 +1289,12 @@ LABEL_11:
   }
 }
 
-- (void)setFeatureFlags:(id)a3
+- (void)setFeatureFlags:(id)flags
 {
-  v4 = a3;
+  flagsCopy = flags;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
-    [(SBSServer *)self setFeatureFlagsInternal:v4];
+    [(SBSServer *)self setFeatureFlagsInternal:flagsCopy];
   }
 
   else
@@ -1308,12 +1308,12 @@ LABEL_11:
   }
 }
 
-- (void)getFeatureFlags:(id)a3
+- (void)getFeatureFlags:(id)flags
 {
-  v4 = a3;
+  flagsCopy = flags;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
-    [(SBSServer *)self getFeatureFlagsInternal:v4];
+    [(SBSServer *)self getFeatureFlagsInternal:flagsCopy];
   }
 
   else
@@ -1327,12 +1327,12 @@ LABEL_11:
   }
 }
 
-- (void)disassociateNetworkWithName:(id)a3
+- (void)disassociateNetworkWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
-    [(SBSServer *)self disassociateNetworkWithNameInternal:v4];
+    [(SBSServer *)self disassociateNetworkWithNameInternal:nameCopy];
   }
 
   else
@@ -1384,12 +1384,12 @@ LABEL_11:
   }
 }
 
-- (void)setHomeUpdateState:(int64_t)a3
+- (void)setHomeUpdateState:(int64_t)state
 {
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
 
-    [(SBSServer *)self setHomeUpdateStateInternal:a3];
+    [(SBSServer *)self setHomeUpdateStateInternal:state];
   }
 
   else
@@ -1403,12 +1403,12 @@ LABEL_11:
   }
 }
 
-- (void)injectSWUpdateToHome:(id)a3
+- (void)injectSWUpdateToHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
-    [(SBSServer *)self injectSWUpdateToHomeInternal:v4];
+    [(SBSServer *)self injectSWUpdateToHomeInternal:homeCopy];
   }
 
   else
@@ -1441,12 +1441,12 @@ LABEL_11:
   }
 }
 
-- (void)sendButtonCommand:(id)a3
+- (void)sendButtonCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
-    [(SBSServer *)self sendButtonCommandInternal:v4];
+    [(SBSServer *)self sendButtonCommandInternal:commandCopy];
   }
 
   else
@@ -1460,12 +1460,12 @@ LABEL_11:
   }
 }
 
-- (void)triggerWiFiCoreCapture:(id)a3
+- (void)triggerWiFiCoreCapture:(id)capture
 {
-  v4 = a3;
+  captureCopy = capture;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
-    [(SBSServer *)self triggerWiFiCoreCaptureInternal:v4];
+    [(SBSServer *)self triggerWiFiCoreCaptureInternal:captureCopy];
   }
 
   else
@@ -1479,12 +1479,12 @@ LABEL_11:
   }
 }
 
-- (void)sendLEDCommand:(id)a3
+- (void)sendLEDCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
-    [(SBSServer *)self sendLEDCommandInternal:v4];
+    [(SBSServer *)self sendLEDCommandInternal:commandCopy];
   }
 
   else
@@ -1498,12 +1498,12 @@ LABEL_11:
   }
 }
 
-- (void)resetUserDefault:(id)a3
+- (void)resetUserDefault:(id)default
 {
-  v4 = a3;
+  defaultCopy = default;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
-    [(SBSServer *)self resetUserDefaultInternal:v4];
+    [(SBSServer *)self resetUserDefaultInternal:defaultCopy];
   }
 
   else
@@ -1536,13 +1536,13 @@ LABEL_11:
   }
 }
 
-- (void)setUserDefaults:(id)a3 withValue:(id)a4
+- (void)setUserDefaults:(id)defaults withValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  defaultsCopy = defaults;
+  valueCopy = value;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
-    [(SBSServer *)self setUserDefaultsInternal:v6 withValue:v7];
+    [(SBSServer *)self setUserDefaultsInternal:defaultsCopy withValue:valueCopy];
   }
 
   else
@@ -1556,12 +1556,12 @@ LABEL_11:
   }
 }
 
-- (void)getUserDefaults:(id)a3
+- (void)getUserDefaults:(id)defaults
 {
-  v4 = a3;
+  defaultsCopy = defaults;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
-    [(SBSServer *)self getUserDefaultsInternal:v4];
+    [(SBSServer *)self getUserDefaultsInternal:defaultsCopy];
   }
 
   else
@@ -1575,14 +1575,14 @@ LABEL_11:
   }
 }
 
-- (void)setTuningInfoOnBox:(id)a3 at:(id)a4 withValue:(float)a5
+- (void)setTuningInfoOnBox:(id)box at:(id)at withValue:(float)value
 {
-  v8 = a3;
-  v9 = a4;
+  boxCopy = box;
+  atCopy = at;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
-    *&v10 = a5;
-    [(SBSServer *)self setTuningInfoOnBoxInternal:v8 at:v9 withValue:v10];
+    *&v10 = value;
+    [(SBSServer *)self setTuningInfoOnBoxInternal:boxCopy at:atCopy withValue:v10];
   }
 
   else
@@ -1596,12 +1596,12 @@ LABEL_11:
   }
 }
 
-- (void)getTuningInfo:(id)a3
+- (void)getTuningInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
-    [(SBSServer *)self getTuningInfoInternal:v4];
+    [(SBSServer *)self getTuningInfoInternal:infoCopy];
   }
 
   else
@@ -1615,7 +1615,7 @@ LABEL_11:
   }
 }
 
-- (BOOL)isMediaAlarm:(id)a3
+- (BOOL)isMediaAlarm:(id)alarm
 {
   if (![(SBSServer *)self _hasEntitlement:@"com.apple.soundboard.homepodcontrols"])
   {
@@ -1630,12 +1630,12 @@ LABEL_11:
   return 0;
 }
 
-- (void)getAllSyncedAlarmsAndTimers:(id)a3
+- (void)getAllSyncedAlarmsAndTimers:(id)timers
 {
-  v4 = a3;
+  timersCopy = timers;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.soundboard.homepodcontrols"])
   {
-    [(SBSServer *)self getAllSyncedAlarmsAndTimersInternal:v4];
+    [(SBSServer *)self getAllSyncedAlarmsAndTimersInternal:timersCopy];
   }
 
   else
@@ -1649,12 +1649,12 @@ LABEL_11:
   }
 }
 
-- (void)getLEDInfo:(id)a3
+- (void)getLEDInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
-    [(SBSServer *)self getLEDInfoInternal:v4];
+    [(SBSServer *)self getLEDInfoInternal:infoCopy];
   }
 
   else
@@ -1668,13 +1668,13 @@ LABEL_11:
   }
 }
 
-- (void)getSelectDebugInfo:(id)a3 reply:(id)a4
+- (void)getSelectDebugInfo:(id)info reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  replyCopy = reply;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
-    [(SBSServer *)self getSelectDebugInfoInternal:v6 reply:v7];
+    [(SBSServer *)self getSelectDebugInfoInternal:infoCopy reply:replyCopy];
   }
 
   else
@@ -1686,16 +1686,16 @@ LABEL_11:
       _os_log_error_impl(&dword_26B246000, v8, OS_LOG_TYPE_ERROR, "Trying to call getSelectDebugInfo without entitlement", v9, 2u);
     }
 
-    v7[2](v7, MEMORY[0x277CBEC10]);
+    replyCopy[2](replyCopy, MEMORY[0x277CBEC10]);
   }
 }
 
-- (void)getAllDebugInfo:(id)a3
+- (void)getAllDebugInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if ([(SBSServer *)self _hasEntitlement:@"com.apple.debuginfo.soundboard"])
   {
-    [(SBSServer *)self getAllDebugInfoInternal:v4];
+    [(SBSServer *)self getAllDebugInfoInternal:infoCopy];
   }
 
   else
@@ -1709,15 +1709,15 @@ LABEL_11:
   }
 }
 
-- (void)handleClientDisconnection:(id)a3
+- (void)handleClientDisconnection:(id)disconnection
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  disconnectionCopy = disconnection;
   v5 = _SBSLoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v4;
+    v26 = disconnectionCopy;
     _os_log_impl(&dword_26B246000, v5, OS_LOG_TYPE_DEFAULT, "Client with connection %@ is disconnecting.", buf, 0xCu);
   }
 
@@ -1742,20 +1742,20 @@ LABEL_11:
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
-        v12 = [v11 connection];
-        v13 = v12 == v4;
+        connection = [v11 connection];
+        v13 = connection == disconnectionCopy;
 
         if (v13)
         {
           if ([v11 clientType] == 5)
           {
-            v15 = [(SBSServer *)self proximityHandoffUIDelegate];
-            v16 = v15 == 0;
+            proximityHandoffUIDelegate = [(SBSServer *)self proximityHandoffUIDelegate];
+            v16 = proximityHandoffUIDelegate == 0;
 
             if (!v16)
             {
-              v17 = [(SBSServer *)self proximityHandoffUIDelegate];
-              [v17 handoffCancelWithHandoffType:0];
+              proximityHandoffUIDelegate2 = [(SBSServer *)self proximityHandoffUIDelegate];
+              [proximityHandoffUIDelegate2 handoffCancelWithHandoffType:0];
             }
           }
 
@@ -1795,49 +1795,49 @@ LABEL_16:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = objc_alloc_init(SBSClient);
-  [(SBSClient *)v8 setConnection:v7];
+  [(SBSClient *)v8 setConnection:connectionCopy];
   [(SBSClient *)v8 setClientType:0];
   v9 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_287BCB3C8];
-  v10 = [(SBSClient *)v8 connection];
-  [v10 setExportedInterface:v9];
+  connection = [(SBSClient *)v8 connection];
+  [connection setExportedInterface:v9];
 
-  v11 = [(SBSClient *)v8 connection];
-  [v11 setExportedObject:self];
+  connection2 = [(SBSClient *)v8 connection];
+  [connection2 setExportedObject:self];
 
   v12 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_287BCD1E0];
-  v13 = [(SBSClient *)v8 connection];
-  [v13 setRemoteObjectInterface:v12];
+  connection3 = [(SBSClient *)v8 connection];
+  [connection3 setRemoteObjectInterface:v12];
 
-  v14 = [(SBSClient *)v8 connection];
-  v15 = [v14 exportedInterface];
-  v16 = [v15 classesForSelector:sel_getAllSyncedAlarmsAndTimers_ argumentIndex:0 ofReply:1];
+  connection4 = [(SBSClient *)v8 connection];
+  exportedInterface = [connection4 exportedInterface];
+  v16 = [exportedInterface classesForSelector:sel_getAllSyncedAlarmsAndTimers_ argumentIndex:0 ofReply:1];
 
   v17 = MEMORY[0x277CBEB98];
   v18 = objc_opt_class();
   v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
   v20 = [v16 setByAddingObjectsFromSet:v19];
 
-  v21 = [(SBSClient *)v8 connection];
-  v22 = [v21 exportedInterface];
-  [v22 setClasses:v20 forSelector:sel_getAllSyncedAlarmsAndTimers_ argumentIndex:0 ofReply:1];
+  connection5 = [(SBSClient *)v8 connection];
+  exportedInterface2 = [connection5 exportedInterface];
+  [exportedInterface2 setClasses:v20 forSelector:sel_getAllSyncedAlarmsAndTimers_ argumentIndex:0 ofReply:1];
 
   objc_initWeak(&location, self);
-  v23 = [(SBSClient *)v8 connection];
+  connection6 = [(SBSClient *)v8 connection];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __48__SBSServer_listener_shouldAcceptNewConnection___block_invoke;
   v33[3] = &unk_279CD5290;
   objc_copyWeak(&v35, &location);
-  v24 = v7;
+  v24 = connectionCopy;
   v34 = v24;
-  [v23 setInterruptionHandler:v33];
+  [connection6 setInterruptionHandler:v33];
 
-  v25 = [(SBSClient *)v8 connection];
+  connection7 = [(SBSClient *)v8 connection];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __48__SBSServer_listener_shouldAcceptNewConnection___block_invoke_2;
@@ -1845,15 +1845,15 @@ LABEL_16:
   objc_copyWeak(&v32, &location);
   v26 = v24;
   v31 = v26;
-  [v25 setInvalidationHandler:v30];
+  [connection7 setInvalidationHandler:v30];
 
   v27 = self->_clients;
   objc_sync_enter(v27);
   [(NSMutableArray *)self->_clients addObject:v8];
   objc_sync_exit(v27);
 
-  v28 = [(SBSClient *)v8 connection];
-  [v28 resume];
+  connection8 = [(SBSClient *)v8 connection];
+  [connection8 resume];
 
   objc_destroyWeak(&v32);
   objc_destroyWeak(&v35);
@@ -1929,7 +1929,7 @@ uint64_t __29__SBSServer__isInternalBuild__block_invoke()
   block[1] = 3221225472;
   block[2] = __27__SBSServer_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);

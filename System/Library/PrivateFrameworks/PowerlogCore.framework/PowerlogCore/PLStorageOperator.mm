@@ -17,19 +17,19 @@
 + (id)entryEventPointDefinitionPLLog;
 + (id)entryEventPointDefinitionTimeCorrection;
 + (id)entryEventPointDefinitions;
-+ (id)eventIntervalCacheSizeWithPayload:(id)a3 withEntryDate:(id)a4;
-+ (id)eventPointCacheFlushWithPayload:(id)a3;
-- (id)trimConditionsForEntryKey:(id)a3 forTrimDate:(id)a4;
-- (void)logEventForwardConfiguration:(id)a3;
-- (void)logEventForwardSchemaChange:(id)a3;
-- (void)logEventForwardTaskingMode:(id)a3;
-- (void)logEventForwardTimeOffset:(id)a3;
-- (void)logEventNoneAdditionalTablesTurnedOn:(id)a3;
-- (void)logEventPointArchive:(id)a3;
-- (void)logEventPointCacheFlush:(id)a3;
-- (void)logEventPointOTA:(id)a3;
-- (void)logEventPointPLLog:(id)a3;
-- (void)logEventPointTimeCorrection:(id)a3;
++ (id)eventIntervalCacheSizeWithPayload:(id)payload withEntryDate:(id)date;
++ (id)eventPointCacheFlushWithPayload:(id)payload;
+- (id)trimConditionsForEntryKey:(id)key forTrimDate:(id)date;
+- (void)logEventForwardConfiguration:(id)configuration;
+- (void)logEventForwardSchemaChange:(id)change;
+- (void)logEventForwardTaskingMode:(id)mode;
+- (void)logEventForwardTimeOffset:(id)offset;
+- (void)logEventNoneAdditionalTablesTurnedOn:(id)on;
+- (void)logEventPointArchive:(id)archive;
+- (void)logEventPointCacheFlush:(id)flush;
+- (void)logEventPointOTA:(id)a;
+- (void)logEventPointPLLog:(id)log;
+- (void)logEventPointTimeCorrection:(id)correction;
 @end
 
 @implementation PLStorageOperator
@@ -37,11 +37,11 @@
 + (id)entryEventIntervalDefinitions
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  if ([a1 isDebugEnabledForKey:@"LogCacheSize"])
+  if ([self isDebugEnabledForKey:@"LogCacheSize"])
   {
     v7 = @"CacheSize";
-    v3 = [a1 entryEventIntervalDefinitionCacheSize];
-    v8[0] = v3;
+    entryEventIntervalDefinitionCacheSize = [self entryEventIntervalDefinitionCacheSize];
+    v8[0] = entryEventIntervalDefinitionCacheSize;
     v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   }
 
@@ -68,32 +68,32 @@
   v25[1] = @"Keys";
   v21[0] = @"timestampEnd";
   v19 = +[PLEntryDefinition sharedInstance];
-  v18 = [v19 commonTypeDict_DateFormat];
-  v22[0] = v18;
+  commonTypeDict_DateFormat = [v19 commonTypeDict_DateFormat];
+  v22[0] = commonTypeDict_DateFormat;
   v21[1] = @"EntryKey";
   v17 = +[PLEntryDefinition sharedInstance];
-  v16 = [v17 commonTypeDict_StringFormat];
-  v22[1] = v16;
+  commonTypeDict_StringFormat = [v17 commonTypeDict_StringFormat];
+  v22[1] = commonTypeDict_StringFormat;
   v21[2] = @"InsertCount";
   v15 = +[PLEntryDefinition sharedInstance];
-  v14 = [v15 commonTypeDict_IntegerFormat];
-  v22[2] = v14;
+  commonTypeDict_IntegerFormat = [v15 commonTypeDict_IntegerFormat];
+  v22[2] = commonTypeDict_IntegerFormat;
   v21[3] = @"UpdateCount";
   v2 = +[PLEntryDefinition sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v22[3] = v3;
+  commonTypeDict_IntegerFormat2 = [v2 commonTypeDict_IntegerFormat];
+  v22[3] = commonTypeDict_IntegerFormat2;
   v21[4] = @"State";
   v4 = +[PLEntryDefinition sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v22[4] = v5;
+  commonTypeDict_IntegerFormat3 = [v4 commonTypeDict_IntegerFormat];
+  v22[4] = commonTypeDict_IntegerFormat3;
   v21[5] = @"WarningCount";
   v6 = +[PLEntryDefinition sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v22[5] = v7;
+  commonTypeDict_IntegerFormat4 = [v6 commonTypeDict_IntegerFormat];
+  v22[5] = commonTypeDict_IntegerFormat4;
   v21[6] = @"SafetyDropCount";
   v8 = +[PLEntryDefinition sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v22[6] = v9;
+  commonTypeDict_IntegerFormat5 = [v8 commonTypeDict_IntegerFormat];
+  v22[6] = commonTypeDict_IntegerFormat5;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:7];
   v26[1] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:2];
@@ -107,20 +107,20 @@
 {
   v12[5] = *MEMORY[0x1E69E9840];
   v11[0] = @"OTA";
-  v3 = [a1 entryEventPointDefinitionOTA];
-  v12[0] = v3;
+  entryEventPointDefinitionOTA = [self entryEventPointDefinitionOTA];
+  v12[0] = entryEventPointDefinitionOTA;
   v11[1] = @"TimeCorrection";
-  v4 = [a1 entryEventPointDefinitionTimeCorrection];
-  v12[1] = v4;
+  entryEventPointDefinitionTimeCorrection = [self entryEventPointDefinitionTimeCorrection];
+  v12[1] = entryEventPointDefinitionTimeCorrection;
   v11[2] = @"Archive";
-  v5 = [a1 entryEventPointDefinitionArchive];
-  v12[2] = v5;
+  entryEventPointDefinitionArchive = [self entryEventPointDefinitionArchive];
+  v12[2] = entryEventPointDefinitionArchive;
   v11[3] = @"PLLog";
-  v6 = [a1 entryEventPointDefinitionPLLog];
-  v12[3] = v6;
+  entryEventPointDefinitionPLLog = [self entryEventPointDefinitionPLLog];
+  v12[3] = entryEventPointDefinitionPLLog;
   v11[4] = @"CacheFlush";
-  v7 = [a1 entryEventPointDefinitionCacheFlush];
-  v12[4] = v7;
+  entryEventPointDefinitionCacheFlush = [self entryEventPointDefinitionCacheFlush];
+  v12[4] = entryEventPointDefinitionCacheFlush;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:5];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -145,26 +145,26 @@
     v25[1] = @"Keys";
     v21[0] = @"Reason";
     v15 = +[PLEntryDefinition sharedInstance];
-    v14 = [v15 commonTypeDict_StringFormat];
+    commonTypeDict_StringFormat = [v15 commonTypeDict_StringFormat];
     v21[1] = @"Size";
-    v22[0] = v14;
+    v22[0] = commonTypeDict_StringFormat;
     v2 = +[PLEntryDefinition sharedInstance];
-    v3 = [v2 commonTypeDict_IntegerFormat];
-    v22[1] = v3;
+    commonTypeDict_IntegerFormat = [v2 commonTypeDict_IntegerFormat];
+    v22[1] = commonTypeDict_IntegerFormat;
     v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:v21 count:2];
     v26[1] = v4;
     v25[2] = @"DynamicKeys";
     v19[0] = @"key";
     v17 = @"TableName";
     v5 = +[PLEntryDefinition sharedInstance];
-    v6 = [v5 commonTypeDict_StringFormat];
-    v18 = v6;
+    commonTypeDict_StringFormat2 = [v5 commonTypeDict_StringFormat];
+    v18 = commonTypeDict_StringFormat2;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     v19[1] = @"value";
     v20[0] = v7;
     v8 = +[PLEntryDefinition sharedInstance];
-    v9 = [v8 commonTypeDict_IntegerFormat];
-    v20[1] = v9;
+    commonTypeDict_IntegerFormat2 = [v8 commonTypeDict_IntegerFormat];
+    v20[1] = commonTypeDict_IntegerFormat2;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
     v26[2] = v10;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:3];
@@ -193,16 +193,16 @@
   v17[1] = @"Keys";
   v13[0] = @"Type";
   v3 = +[PLEntryDefinition sharedInstance];
-  v4 = [v3 commonTypeDict_StringFormat];
-  v14[0] = v4;
+  commonTypeDict_StringFormat = [v3 commonTypeDict_StringFormat];
+  v14[0] = commonTypeDict_StringFormat;
   v13[1] = @"Name";
   v5 = +[PLEntryDefinition sharedInstance];
-  v6 = [v5 commonTypeDict_StringFormat];
-  v14[1] = v6;
+  commonTypeDict_StringFormat2 = [v5 commonTypeDict_StringFormat];
+  v14[1] = commonTypeDict_StringFormat2;
   v13[2] = @"Success";
   v7 = +[PLEntryDefinition sharedInstance];
-  v8 = [v7 commonTypeDict_BoolFormat];
-  v14[2] = v8;
+  commonTypeDict_BoolFormat = [v7 commonTypeDict_BoolFormat];
+  v14[2] = commonTypeDict_BoolFormat;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
   v18[1] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -225,20 +225,20 @@
   v19[1] = @"Keys";
   v15[0] = @"TimeReferenceType";
   v2 = +[PLEntryDefinition sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v16[0] = v3;
+  commonTypeDict_IntegerFormat = [v2 commonTypeDict_IntegerFormat];
+  v16[0] = commonTypeDict_IntegerFormat;
   v15[1] = @"TimeInReference";
   v4 = +[PLEntryDefinition sharedInstance];
-  v5 = [v4 commonTypeDict_DateFormat];
-  v16[1] = v5;
+  commonTypeDict_DateFormat = [v4 commonTypeDict_DateFormat];
+  v16[1] = commonTypeDict_DateFormat;
   v15[2] = @"ProjectedTimeInMonotonic";
   v6 = +[PLEntryDefinition sharedInstance];
-  v7 = [v6 commonTypeDict_DateFormat];
-  v16[2] = v7;
+  commonTypeDict_DateFormat2 = [v6 commonTypeDict_DateFormat];
+  v16[2] = commonTypeDict_DateFormat2;
   v15[3] = @"CallStack";
   v8 = +[PLEntryDefinition sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v16[3] = v9;
+  commonTypeDict_StringFormat = [v8 commonTypeDict_StringFormat];
+  v16[3] = commonTypeDict_StringFormat;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:4];
   v20[1] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
@@ -265,48 +265,48 @@
   v33[1] = @"Keys";
   v29[0] = @"StartDate";
   v27 = +[PLEntryDefinition sharedInstance];
-  v26 = [v27 commonTypeDict_DateFormat];
-  v30[0] = v26;
+  commonTypeDict_DateFormat = [v27 commonTypeDict_DateFormat];
+  v30[0] = commonTypeDict_DateFormat;
   v29[1] = @"EndDate";
   v25 = +[PLEntryDefinition sharedInstance];
-  v24 = [v25 commonTypeDict_DateFormat];
-  v30[1] = v24;
+  commonTypeDict_DateFormat2 = [v25 commonTypeDict_DateFormat];
+  v30[1] = commonTypeDict_DateFormat2;
   v29[2] = @"SystemTimeOffset";
   v23 = +[PLEntryDefinition sharedInstance];
-  v22 = [v23 commonTypeDict_RealFormat];
-  v30[2] = v22;
+  commonTypeDict_RealFormat = [v23 commonTypeDict_RealFormat];
+  v30[2] = commonTypeDict_RealFormat;
   v29[3] = @"SystemTimeOffsetModified";
   v21 = +[PLEntryDefinition sharedInstance];
-  v20 = [v21 commonTypeDict_BoolFormat];
-  v30[3] = v20;
+  commonTypeDict_BoolFormat = [v21 commonTypeDict_BoolFormat];
+  v30[3] = commonTypeDict_BoolFormat;
   v29[4] = @"UUID";
   v19 = +[PLEntryDefinition sharedInstance];
-  v18 = [v19 commonTypeDict_StringFormat];
-  v30[4] = v18;
+  commonTypeDict_StringFormat = [v19 commonTypeDict_StringFormat];
+  v30[4] = commonTypeDict_StringFormat;
   v29[5] = @"FullMode";
   v17 = +[PLEntryDefinition sharedInstance];
-  v16 = [v17 commonTypeDict_BoolFormat];
-  v30[5] = v16;
+  commonTypeDict_BoolFormat2 = [v17 commonTypeDict_BoolFormat];
+  v30[5] = commonTypeDict_BoolFormat2;
   v29[6] = @"Stage";
   v15 = +[PLEntryDefinition sharedInstance];
-  v14 = [v15 commonTypeDict_IntegerFormat];
-  v30[6] = v14;
+  commonTypeDict_IntegerFormat = [v15 commonTypeDict_IntegerFormat];
+  v30[6] = commonTypeDict_IntegerFormat;
   v29[7] = @"NumAttempts";
   v2 = +[PLEntryDefinition sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v30[7] = v3;
+  commonTypeDict_IntegerFormat2 = [v2 commonTypeDict_IntegerFormat];
+  v30[7] = commonTypeDict_IntegerFormat2;
   v29[8] = @"SyncedOffDate";
   v4 = +[PLEntryDefinition sharedInstance];
-  v5 = [v4 commonTypeDict_DateFormat];
-  v30[8] = v5;
+  commonTypeDict_DateFormat3 = [v4 commonTypeDict_DateFormat];
+  v30[8] = commonTypeDict_DateFormat3;
   v29[9] = @"RemovedDate";
   v6 = +[PLEntryDefinition sharedInstance];
-  v7 = [v6 commonTypeDict_DateFormat];
-  v30[9] = v7;
+  commonTypeDict_DateFormat4 = [v6 commonTypeDict_DateFormat];
+  v30[9] = commonTypeDict_DateFormat4;
   v29[10] = @"MainDBSizeAtStart";
   v8 = +[PLEntryDefinition sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v30[10] = v9;
+  commonTypeDict_IntegerFormat3 = [v8 commonTypeDict_IntegerFormat];
+  v30[10] = commonTypeDict_IntegerFormat3;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:11];
   v34[1] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:2];
@@ -329,20 +329,20 @@
   v19[1] = @"Keys";
   v15[0] = @"file";
   v2 = +[PLEntryDefinition sharedInstance];
-  v3 = [v2 commonTypeDict_StringFormat];
-  v16[0] = v3;
+  commonTypeDict_StringFormat = [v2 commonTypeDict_StringFormat];
+  v16[0] = commonTypeDict_StringFormat;
   v15[1] = @"function";
   v4 = +[PLEntryDefinition sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat];
-  v16[1] = v5;
+  commonTypeDict_StringFormat2 = [v4 commonTypeDict_StringFormat];
+  v16[1] = commonTypeDict_StringFormat2;
   v15[2] = @"line";
   v6 = +[PLEntryDefinition sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v16[2] = v7;
+  commonTypeDict_IntegerFormat = [v6 commonTypeDict_IntegerFormat];
+  v16[2] = commonTypeDict_IntegerFormat;
   v15[3] = @"message";
   v8 = +[PLEntryDefinition sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v16[3] = v9;
+  commonTypeDict_StringFormat3 = [v8 commonTypeDict_StringFormat];
+  v16[3] = commonTypeDict_StringFormat3;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:4];
   v20[1] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
@@ -356,23 +356,23 @@
 {
   v13[6] = *MEMORY[0x1E69E9840];
   v12[0] = @"SchemaChange";
-  v3 = [a1 entryEventForwardDefinitionSchemaChange];
-  v13[0] = v3;
+  entryEventForwardDefinitionSchemaChange = [self entryEventForwardDefinitionSchemaChange];
+  v13[0] = entryEventForwardDefinitionSchemaChange;
   v12[1] = @"Configuration";
-  v4 = [a1 entryEventForwardDefinitionConfiguration];
-  v13[1] = v4;
+  entryEventForwardDefinitionConfiguration = [self entryEventForwardDefinitionConfiguration];
+  v13[1] = entryEventForwardDefinitionConfiguration;
   v12[2] = @"TimeOffset";
-  v5 = [a1 entryEventForwardDefinitionTimeOffset];
-  v13[2] = v5;
+  entryEventForwardDefinitionTimeOffset = [self entryEventForwardDefinitionTimeOffset];
+  v13[2] = entryEventForwardDefinitionTimeOffset;
   v12[3] = @"ActivityStates";
-  v6 = [a1 entryEventForwardDefinitionActivityStates];
-  v13[3] = v6;
+  entryEventForwardDefinitionActivityStates = [self entryEventForwardDefinitionActivityStates];
+  v13[3] = entryEventForwardDefinitionActivityStates;
   v12[4] = @"TaskingMode";
-  v7 = [a1 entryEventForwardDefinitionTaskingMode];
-  v13[4] = v7;
+  entryEventForwardDefinitionTaskingMode = [self entryEventForwardDefinitionTaskingMode];
+  v13[4] = entryEventForwardDefinitionTaskingMode;
   v12[5] = @"SubmissionTag";
-  v8 = [a1 entryEventForwardDefinitionSubmissionTag];
-  v13[5] = v8;
+  entryEventForwardDefinitionSubmissionTag = [self entryEventForwardDefinitionSubmissionTag];
+  v13[5] = entryEventForwardDefinitionSubmissionTag;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:6];
 
   v10 = *MEMORY[0x1E69E9840];
@@ -397,28 +397,28 @@
   v23[1] = @"Keys";
   v19[0] = @"Mode";
   v17 = +[PLEntryDefinition sharedInstance];
-  v16 = [v17 commonTypeDict_StringFormat];
-  v20[0] = v16;
+  commonTypeDict_StringFormat = [v17 commonTypeDict_StringFormat];
+  v20[0] = commonTypeDict_StringFormat;
   v19[1] = @"Version";
   v15 = +[PLEntryDefinition sharedInstance];
-  v14 = [v15 commonTypeDict_RealFormat];
-  v20[1] = v14;
+  commonTypeDict_RealFormat = [v15 commonTypeDict_RealFormat];
+  v20[1] = commonTypeDict_RealFormat;
   v19[2] = @"PID";
   v2 = +[PLEntryDefinition sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v20[2] = v3;
+  commonTypeDict_IntegerFormat = [v2 commonTypeDict_IntegerFormat];
+  v20[2] = commonTypeDict_IntegerFormat;
   v19[3] = @"ProcessName";
   v4 = +[PLEntryDefinition sharedInstance];
-  v5 = [v4 commonTypeDict_StringFormat];
-  v20[3] = v5;
+  commonTypeDict_StringFormat2 = [v4 commonTypeDict_StringFormat];
+  v20[3] = commonTypeDict_StringFormat2;
   v19[4] = @"ExitReason";
   v6 = +[PLEntryDefinition sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v20[4] = v7;
+  commonTypeDict_IntegerFormat2 = [v6 commonTypeDict_IntegerFormat];
+  v20[4] = commonTypeDict_IntegerFormat2;
   v19[5] = @"DefaultsEnabled";
   v8 = +[PLEntryDefinition sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v20[5] = v9;
+  commonTypeDict_StringFormat3 = [v8 commonTypeDict_StringFormat];
+  v20[5] = commonTypeDict_StringFormat3;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:6];
   v24[1] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:2];
@@ -441,16 +441,16 @@
   v17[1] = @"Keys";
   v13[0] = @"TableName";
   v3 = +[PLEntryDefinition sharedInstance];
-  v4 = [v3 commonTypeDict_StringFormat];
-  v14[0] = v4;
+  commonTypeDict_StringFormat = [v3 commonTypeDict_StringFormat];
+  v14[0] = commonTypeDict_StringFormat;
   v13[1] = @"PreviousVersion";
   v5 = +[PLEntryDefinition sharedInstance];
-  v6 = [v5 commonTypeDict_RealFormat];
-  v14[1] = v6;
+  commonTypeDict_RealFormat = [v5 commonTypeDict_RealFormat];
+  v14[1] = commonTypeDict_RealFormat;
   v13[2] = @"CurrentVersion";
   v7 = +[PLEntryDefinition sharedInstance];
-  v8 = [v7 commonTypeDict_RealFormat];
-  v14[2] = v8;
+  commonTypeDict_RealFormat2 = [v7 commonTypeDict_RealFormat];
+  v14[2] = commonTypeDict_RealFormat2;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
   v18[1] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -477,16 +477,16 @@
   v17[1] = @"Keys";
   v13[0] = @"kernel";
   v3 = +[PLEntryDefinition sharedInstance];
-  v4 = [v3 commonTypeDict_RealFormat];
-  v14[0] = v4;
+  commonTypeDict_RealFormat = [v3 commonTypeDict_RealFormat];
+  v14[0] = commonTypeDict_RealFormat;
   v13[1] = @"system";
   v5 = +[PLEntryDefinition sharedInstance];
-  v6 = [v5 commonTypeDict_RealFormat];
-  v14[1] = v6;
+  commonTypeDict_RealFormat2 = [v5 commonTypeDict_RealFormat];
+  v14[1] = commonTypeDict_RealFormat2;
   v13[2] = @"baseband";
   v7 = +[PLEntryDefinition sharedInstance];
-  v8 = [v7 commonTypeDict_RealFormat];
-  v14[2] = v8;
+  commonTypeDict_RealFormat3 = [v7 commonTypeDict_RealFormat];
+  v14[2] = commonTypeDict_RealFormat3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
   v18[1] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -513,12 +513,12 @@
   v15[1] = @"Keys";
   v11[0] = @"ActivityID";
   v3 = +[PLEntryDefinition sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
+  commonTypeDict_IntegerFormat = [v3 commonTypeDict_IntegerFormat];
   v11[1] = @"State";
-  v12[0] = v4;
+  v12[0] = commonTypeDict_IntegerFormat;
   v5 = +[PLEntryDefinition sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v12[1] = v6;
+  commonTypeDict_IntegerFormat2 = [v5 commonTypeDict_IntegerFormat];
+  v12[1] = commonTypeDict_IntegerFormat2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v16[1] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
@@ -541,16 +541,16 @@
   v17[1] = @"Keys";
   v13[0] = @"Action";
   v3 = +[PLEntryDefinition sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v14[0] = v4;
+  commonTypeDict_IntegerFormat = [v3 commonTypeDict_IntegerFormat];
+  v14[0] = commonTypeDict_IntegerFormat;
   v13[1] = @"ErrorType";
   v5 = +[PLEntryDefinition sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v14[1] = v6;
+  commonTypeDict_IntegerFormat2 = [v5 commonTypeDict_IntegerFormat];
+  v14[1] = commonTypeDict_IntegerFormat2;
   v13[2] = @"TaskingTablesPayload";
   v7 = +[PLEntryDefinition sharedInstance];
-  v8 = [v7 commonTypeDict_StringFormat];
-  v14[2] = v8;
+  commonTypeDict_StringFormat = [v7 commonTypeDict_StringFormat];
+  v14[2] = commonTypeDict_StringFormat;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
   v18[1] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -575,12 +575,12 @@
   v15[1] = @"Keys";
   v11[0] = @"UUIDTag";
   v3 = +[PLEntryDefinition sharedInstance];
-  v4 = [v3 commonTypeDict_StringFormat];
+  commonTypeDict_StringFormat = [v3 commonTypeDict_StringFormat];
   v11[1] = @"Reason";
-  v12[0] = v4;
+  v12[0] = commonTypeDict_StringFormat;
   v5 = +[PLEntryDefinition sharedInstance];
-  v6 = [v5 commonTypeDict_StringFormat];
-  v12[1] = v6;
+  commonTypeDict_StringFormat2 = [v5 commonTypeDict_StringFormat];
+  v12[1] = commonTypeDict_StringFormat2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v16[1] = v7;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
@@ -594,11 +594,11 @@
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v8[0] = @"Activity";
-  v3 = [a1 entryEventNoneDefinitionActivity];
+  entryEventNoneDefinitionActivity = [self entryEventNoneDefinitionActivity];
   v8[1] = @"AdditionalTablesTurnedOn";
-  v9[0] = v3;
-  v4 = [a1 entryEventNoneDefinitionAdditionalTablesTurnedOn];
-  v9[1] = v4;
+  v9[0] = entryEventNoneDefinitionActivity;
+  entryEventNoneDefinitionAdditionalTablesTurnedOn = [self entryEventNoneDefinitionAdditionalTablesTurnedOn];
+  v9[1] = entryEventNoneDefinitionAdditionalTablesTurnedOn;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
   v6 = *MEMORY[0x1E69E9840];
@@ -621,16 +621,16 @@
   v17[1] = @"Keys";
   v13[0] = @"Identifier";
   v3 = +[PLEntryDefinition sharedInstance];
-  v4 = [v3 commonTypeDict_StringFormat];
-  v14[0] = v4;
+  commonTypeDict_StringFormat = [v3 commonTypeDict_StringFormat];
+  v14[0] = commonTypeDict_StringFormat;
   v13[1] = @"Criteria";
   v5 = +[PLEntryDefinition sharedInstance];
-  v6 = [v5 commonTypeDict_StringFormat];
-  v14[1] = v6;
+  commonTypeDict_StringFormat2 = [v5 commonTypeDict_StringFormat];
+  v14[1] = commonTypeDict_StringFormat2;
   v13[2] = @"MustRunCriterion";
   v7 = +[PLEntryDefinition sharedInstance];
-  v8 = [v7 commonTypeDict_StringFormat];
-  v14[2] = v8;
+  commonTypeDict_StringFormat3 = [v7 commonTypeDict_StringFormat];
+  v14[2] = commonTypeDict_StringFormat3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
   v18[1] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
@@ -653,8 +653,8 @@
   v13[1] = @"Keys";
   v9 = @"TableName";
   v3 = +[PLEntryDefinition sharedInstance];
-  v4 = [v3 commonTypeDict_StringFormat];
-  v10 = v4;
+  commonTypeDict_StringFormat = [v3 commonTypeDict_StringFormat];
+  v10 = commonTypeDict_StringFormat;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v14[1] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -664,35 +664,35 @@
   return v6;
 }
 
-+ (id)eventIntervalCacheSizeWithPayload:(id)a3 withEntryDate:(id)a4
++ (id)eventIntervalCacheSizeWithPayload:(id)payload withEntryDate:(id)date
 {
-  v5 = a4;
-  v6 = a3;
+  dateCopy = date;
+  payloadCopy = payload;
   v7 = [objc_opt_class() entryKeyForType:@"EventInterval" andName:@"CacheSize"];
-  v8 = [[PLEntry alloc] initWithEntryKey:v7 withDate:v5];
+  v8 = [[PLEntry alloc] initWithEntryKey:v7 withDate:dateCopy];
 
-  [(PLEntry *)v8 setObjectsFromRawData:v6];
+  [(PLEntry *)v8 setObjectsFromRawData:payloadCopy];
 
   return v8;
 }
 
-+ (id)eventPointCacheFlushWithPayload:(id)a3
++ (id)eventPointCacheFlushWithPayload:(id)payload
 {
   v37 = *MEMORY[0x1E69E9840];
-  v27 = a3;
+  payloadCopy = payload;
   v26 = [objc_opt_class() entryKeyForType:@"EventPoint" andName:@"CacheFlush"];
   v3 = [[PLEntry alloc] initWithEntryKey:v26];
-  v4 = [v27 objectForKeyedSubscript:@"Reason"];
+  v4 = [payloadCopy objectForKeyedSubscript:@"Reason"];
   [(PLEntry *)v3 setObject:v4 forKeyedSubscript:@"Reason"];
 
-  v5 = [v27 objectForKeyedSubscript:@"Size"];
+  v5 = [payloadCopy objectForKeyedSubscript:@"Size"];
   [(PLEntry *)v3 setObject:v5 forKeyedSubscript:@"Size"];
 
   if (_os_feature_enabled_impl())
   {
     v6 = +[PLStorageCache sharedStorageCache];
-    v7 = [v6 cacheContent];
-    v8 = [v7 copy];
+    cacheContent = [v6 cacheContent];
+    v8 = [cacheContent copy];
 
     v9 = PLLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -762,8 +762,8 @@
     }
 
     v21 = +[PLStorageCache sharedStorageCache];
-    v22 = [v21 cacheContent];
-    [v22 removeAllObjects];
+    cacheContent2 = [v21 cacheContent];
+    [cacheContent2 removeAllObjects];
 
     objc_sync_exit(obj);
   }
@@ -773,18 +773,18 @@
   return v3;
 }
 
-- (void)logEventPointCacheFlush:(id)a3
+- (void)logEventPointCacheFlush:(id)flush
 {
-  v4 = a3;
-  v5 = [(PLOperator *)self workQueue];
+  flushCopy = flush;
+  workQueue = [(PLOperator *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__PLStorageOperator_logEventPointCacheFlush___block_invoke;
   v7[3] = &unk_1E8519100;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = flushCopy;
+  v6 = flushCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __45__PLStorageOperator_logEventPointCacheFlush___block_invoke(uint64_t a1)
@@ -794,18 +794,18 @@ void __45__PLStorageOperator_logEventPointCacheFlush___block_invoke(uint64_t a1)
   [*(a1 + 32) logEntry:v3];
 }
 
-- (void)logEventPointOTA:(id)a3
+- (void)logEventPointOTA:(id)a
 {
-  v4 = a3;
-  v5 = [(PLOperator *)self workQueue];
+  aCopy = a;
+  workQueue = [(PLOperator *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__PLStorageOperator_logEventPointOTA___block_invoke;
   v7[3] = &unk_1E8519100;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = aCopy;
+  v6 = aCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __38__PLStorageOperator_logEventPointOTA___block_invoke(uint64_t a1)
@@ -816,18 +816,18 @@ void __38__PLStorageOperator_logEventPointOTA___block_invoke(uint64_t a1)
   [*(a1 + 32) logEntry:v3];
 }
 
-- (void)logEventPointTimeCorrection:(id)a3
+- (void)logEventPointTimeCorrection:(id)correction
 {
-  v4 = a3;
-  v5 = [(PLOperator *)self workQueue];
+  correctionCopy = correction;
+  workQueue = [(PLOperator *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__PLStorageOperator_logEventPointTimeCorrection___block_invoke;
   v7[3] = &unk_1E8519100;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = correctionCopy;
+  v6 = correctionCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __49__PLStorageOperator_logEventPointTimeCorrection___block_invoke(uint64_t a1)
@@ -838,18 +838,18 @@ void __49__PLStorageOperator_logEventPointTimeCorrection___block_invoke(uint64_t
   [*(a1 + 32) logEntry:v3];
 }
 
-- (void)logEventPointArchive:(id)a3
+- (void)logEventPointArchive:(id)archive
 {
-  v4 = a3;
-  v5 = [(PLOperator *)self workQueue];
+  archiveCopy = archive;
+  workQueue = [(PLOperator *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __42__PLStorageOperator_logEventPointArchive___block_invoke;
   v7[3] = &unk_1E8519100;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = archiveCopy;
+  v6 = archiveCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __42__PLStorageOperator_logEventPointArchive___block_invoke(uint64_t a1)
@@ -860,18 +860,18 @@ void __42__PLStorageOperator_logEventPointArchive___block_invoke(uint64_t a1)
   [*(a1 + 32) logEntry:v3];
 }
 
-- (void)logEventPointPLLog:(id)a3
+- (void)logEventPointPLLog:(id)log
 {
-  v4 = a3;
-  v5 = [(PLOperator *)self workQueue];
+  logCopy = log;
+  workQueue = [(PLOperator *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__PLStorageOperator_logEventPointPLLog___block_invoke;
   v7[3] = &unk_1E8519100;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = logCopy;
+  v6 = logCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __40__PLStorageOperator_logEventPointPLLog___block_invoke(uint64_t a1)
@@ -882,18 +882,18 @@ void __40__PLStorageOperator_logEventPointPLLog___block_invoke(uint64_t a1)
   [*(a1 + 32) logEntry:v3];
 }
 
-- (void)logEventForwardConfiguration:(id)a3
+- (void)logEventForwardConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(PLOperator *)self workQueue];
+  configurationCopy = configuration;
+  workQueue = [(PLOperator *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__PLStorageOperator_logEventForwardConfiguration___block_invoke;
   v7[3] = &unk_1E8519100;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = configurationCopy;
+  v6 = configurationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __50__PLStorageOperator_logEventForwardConfiguration___block_invoke(uint64_t a1)
@@ -904,18 +904,18 @@ void __50__PLStorageOperator_logEventForwardConfiguration___block_invoke(uint64_
   [*(a1 + 32) logEntry:v3];
 }
 
-- (void)logEventForwardSchemaChange:(id)a3
+- (void)logEventForwardSchemaChange:(id)change
 {
-  v4 = a3;
-  v5 = [(PLOperator *)self workQueue];
+  changeCopy = change;
+  workQueue = [(PLOperator *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__PLStorageOperator_logEventForwardSchemaChange___block_invoke;
   v7[3] = &unk_1E8519100;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changeCopy;
+  v6 = changeCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __49__PLStorageOperator_logEventForwardSchemaChange___block_invoke(uint64_t a1)
@@ -926,18 +926,18 @@ void __49__PLStorageOperator_logEventForwardSchemaChange___block_invoke(uint64_t
   [*(a1 + 32) logEntry:v3];
 }
 
-- (void)logEventForwardTimeOffset:(id)a3
+- (void)logEventForwardTimeOffset:(id)offset
 {
-  v4 = a3;
-  v5 = [(PLOperator *)self workQueue];
+  offsetCopy = offset;
+  workQueue = [(PLOperator *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__PLStorageOperator_logEventForwardTimeOffset___block_invoke;
   v7[3] = &unk_1E8519100;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = offsetCopy;
+  v6 = offsetCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __47__PLStorageOperator_logEventForwardTimeOffset___block_invoke(uint64_t a1)
@@ -962,18 +962,18 @@ void __47__PLStorageOperator_logEventForwardTimeOffset___block_invoke(uint64_t a
   [v11 logForSubsystem:@"BackgroundProcessing" category:@"TimeOffset" data:v10 date:v12];
 }
 
-- (void)logEventForwardTaskingMode:(id)a3
+- (void)logEventForwardTaskingMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(PLOperator *)self workQueue];
+  modeCopy = mode;
+  workQueue = [(PLOperator *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__PLStorageOperator_logEventForwardTaskingMode___block_invoke;
   v7[3] = &unk_1E8519100;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = modeCopy;
+  v6 = modeCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __48__PLStorageOperator_logEventForwardTaskingMode___block_invoke(uint64_t a1)
@@ -984,18 +984,18 @@ void __48__PLStorageOperator_logEventForwardTaskingMode___block_invoke(uint64_t 
   [*(a1 + 32) logEntry:v3];
 }
 
-- (void)logEventNoneAdditionalTablesTurnedOn:(id)a3
+- (void)logEventNoneAdditionalTablesTurnedOn:(id)on
 {
-  v4 = a3;
-  v5 = [(PLOperator *)self workQueue];
+  onCopy = on;
+  workQueue = [(PLOperator *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__PLStorageOperator_logEventNoneAdditionalTablesTurnedOn___block_invoke;
   v7[3] = &unk_1E8519100;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = onCopy;
+  v6 = onCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __58__PLStorageOperator_logEventNoneAdditionalTablesTurnedOn___block_invoke(uint64_t a1)
@@ -1049,12 +1049,12 @@ void __58__PLStorageOperator_logEventNoneAdditionalTablesTurnedOn___block_invoke
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)trimConditionsForEntryKey:(id)a3 forTrimDate:(id)a4
+- (id)trimConditionsForEntryKey:(id)key forTrimDate:(id)date
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(PLOperator *)PLStorageOperator entryKeyForType:@"EventNone" andName:@"Activity"];
   v6 = [(PLOperator *)PLStorageOperator entryKeyForType:@"EventForward" andName:@"ActivityStates"];
-  v7 = [v4 isEqualToString:v5];
+  v7 = [keyCopy isEqualToString:v5];
 
   if (v7)
   {

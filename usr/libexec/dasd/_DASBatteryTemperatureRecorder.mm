@@ -12,17 +12,17 @@
 {
   v3 = os_transaction_create();
   v4 = objc_autoreleasePoolPush();
-  v5 = [(_DASBatteryTemperatureRecorder *)self getBatteryStatus];
-  v6 = v5;
-  if (v5)
+  getBatteryStatus = [(_DASBatteryTemperatureRecorder *)self getBatteryStatus];
+  v6 = getBatteryStatus;
+  if (getBatteryStatus)
   {
-    v7 = [v5 objectForKeyedSubscript:@"batteryTemperature"];
-    v8 = [v7 integerValue];
+    v7 = [getBatteryStatus objectForKeyedSubscript:@"batteryTemperature"];
+    integerValue = [v7 integerValue];
 
-    if (v8)
+    if (integerValue)
     {
-      self->_currentBatteryTemperature = v8;
-      v9 = [(_DASBatteryTemperatureRecorder *)self roundedTemperature:v8];
+      self->_currentBatteryTemperature = integerValue;
+      v9 = [(_DASBatteryTemperatureRecorder *)self roundedTemperature:integerValue];
       recentBatteryTemperature = self->_recentBatteryTemperature;
       log = self->_log;
       v12 = v9 - recentBatteryTemperature;
@@ -286,11 +286,11 @@ LABEL_26:
   else
   {
     v7 = BiomeLibrary();
-    v8 = [v7 Device];
-    v9 = [v8 Thermals];
-    v10 = [v9 BatteryTemperature];
+    device = [v7 Device];
+    thermals = [device Thermals];
+    batteryTemperature = [thermals BatteryTemperature];
     temperatureStream = self->_temperatureStream;
-    self->_temperatureStream = v10;
+    self->_temperatureStream = batteryTemperature;
 
     self->_recentBatteryTemperature = -1000;
   }

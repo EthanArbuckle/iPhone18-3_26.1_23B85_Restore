@@ -1,7 +1,7 @@
 @interface APCCodecInfo
-+ (BOOL)isSupportedCodecCapability:(id)a3;
-+ (BOOL)isSupportedCodecConfiguration:(id)a3;
-+ (Class)configurationClassForName:(id)a3;
++ (BOOL)isSupportedCodecCapability:(id)capability;
++ (BOOL)isSupportedCodecConfiguration:(id)configuration;
++ (Class)configurationClassForName:(id)name;
 + (id)supportedConfigurationClasses;
 + (id)supportedDecoders;
 + (id)supportedEncoders;
@@ -47,10 +47,10 @@
   return v2;
 }
 
-+ (Class)configurationClassForName:(id)a3
++ (Class)configurationClassForName:(id)name
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nameCopy = name;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -71,8 +71,8 @@
 
         v8 = *(*(&v15 + 1) + 8 * i);
         v9 = objc_alloc_init(v8);
-        v10 = [v9 algorithmName];
-        v11 = [v10 isEqualToString:v3];
+        algorithmName = [v9 algorithmName];
+        v11 = [algorithmName isEqualToString:nameCopy];
 
         if (v11)
         {
@@ -92,7 +92,7 @@
     }
   }
 
-  if ([v3 isEqualToString:@"default"])
+  if ([nameCopy isEqualToString:@"default"])
   {
     v12 = objc_opt_class();
   }
@@ -109,9 +109,9 @@ LABEL_13:
   return v12;
 }
 
-+ (BOOL)isSupportedCodecCapability:(id)a3
++ (BOOL)isSupportedCodecCapability:(id)capability
 {
-  v3 = a3;
+  capabilityCopy = capability;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -136,9 +136,9 @@ LABEL_13:
   return isKindOfClass & 1;
 }
 
-+ (BOOL)isSupportedCodecConfiguration:(id)a3
++ (BOOL)isSupportedCodecConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

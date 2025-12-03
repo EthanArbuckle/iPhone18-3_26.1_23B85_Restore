@@ -1,6 +1,6 @@
 @interface CVNLPTextDecodingContext
-- (CVNLPTextDecodingContext)initWithHistory:(id)a3;
-- (CVNLPTextDecodingContext)initWithHistory:(id)a3 activeRange:(_NSRange)a4;
+- (CVNLPTextDecodingContext)initWithHistory:(id)history;
+- (CVNLPTextDecodingContext)initWithHistory:(id)history activeRange:(_NSRange)range;
 - (_NSRange)activeRange;
 - (id)activeSubstring;
 - (id)inactiveSubstring;
@@ -8,18 +8,18 @@
 
 @implementation CVNLPTextDecodingContext
 
-- (CVNLPTextDecodingContext)initWithHistory:(id)a3 activeRange:(_NSRange)a4
+- (CVNLPTextDecodingContext)initWithHistory:(id)history activeRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
+  length = range.length;
+  location = range.location;
+  historyCopy = history;
   v12.receiver = self;
   v12.super_class = CVNLPTextDecodingContext;
   v9 = [(CVNLPTextDecodingContext *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_history, a3);
+    objc_storeStrong(&v9->_history, history);
     v10->_activeRange.location = location;
     v10->_activeRange.length = length;
   }
@@ -27,11 +27,11 @@
   return v10;
 }
 
-- (CVNLPTextDecodingContext)initWithHistory:(id)a3
+- (CVNLPTextDecodingContext)initWithHistory:(id)history
 {
-  v4 = a3;
-  v8 = objc_msgSend_length(v4, v5, v6, v7);
-  active = objc_msgSend_initWithHistory_activeRange_(self, v9, v4, v8 - 1, 0);
+  historyCopy = history;
+  v8 = objc_msgSend_length(historyCopy, v5, v6, v7);
+  active = objc_msgSend_initWithHistory_activeRange_(self, v9, historyCopy, v8 - 1, 0);
 
   return active;
 }

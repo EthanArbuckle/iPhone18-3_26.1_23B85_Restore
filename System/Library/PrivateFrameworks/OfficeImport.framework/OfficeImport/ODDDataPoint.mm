@@ -1,30 +1,30 @@
 @interface ODDDataPoint
-- (void)addAssociatedPresentation:(id)a3;
-- (void)addPresentation:(id)a3 order:(unint64_t)a4;
+- (void)addAssociatedPresentation:(id)presentation;
+- (void)addPresentation:(id)presentation order:(unint64_t)order;
 @end
 
 @implementation ODDDataPoint
 
-- (void)addPresentation:(id)a3 order:(unint64_t)a4
+- (void)addPresentation:(id)presentation order:(unint64_t)order
 {
-  v6 = a3;
+  presentationCopy = presentation;
   v7 = self->mPresentations;
   v10 = v7;
-  [objc_opt_class() addConnectionToPoint:v6 order:a4 array:&v10];
+  [objc_opt_class() addConnectionToPoint:presentationCopy order:order array:&v10];
   v8 = v10;
 
   mPresentations = self->mPresentations;
   self->mPresentations = v8;
 }
 
-- (void)addAssociatedPresentation:(id)a3
+- (void)addAssociatedPresentation:(id)presentation
 {
-  v4 = a3;
+  presentationCopy = presentation;
   mPresentations = self->mPresentations;
-  v8 = v4;
+  v8 = presentationCopy;
   if (mPresentations)
   {
-    if ([(NSMutableArray *)mPresentations indexOfObjectIdenticalTo:v4]== 0x7FFFFFFFFFFFFFFFLL)
+    if ([(NSMutableArray *)mPresentations indexOfObjectIdenticalTo:presentationCopy]== 0x7FFFFFFFFFFFFFFFLL)
     {
       [(NSMutableArray *)self->mPresentations addObject:v8];
     }
@@ -32,7 +32,7 @@
 
   else
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v4, 0}];
+    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{presentationCopy, 0}];
     v7 = self->mPresentations;
     self->mPresentations = v6;
   }

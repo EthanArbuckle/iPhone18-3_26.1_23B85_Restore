@@ -1,34 +1,34 @@
 @interface PKAccountUserPreferences
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAccountUserPreferences:(id)a3;
-- (PKAccountUserPreferences)initWithAccountUserPreferences:(id)a3;
-- (PKAccountUserPreferences)initWithCoder:(id)a3;
-- (PKAccountUserPreferences)initWithDictionary:(id)a3;
-- (id)jsonRepresentationForAccountUserAccessLevel:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAccountUserPreferences:(id)preferences;
+- (PKAccountUserPreferences)initWithAccountUserPreferences:(id)preferences;
+- (PKAccountUserPreferences)initWithCoder:(id)coder;
+- (PKAccountUserPreferences)initWithDictionary:(id)dictionary;
+- (id)jsonRepresentationForAccountUserAccessLevel:(unint64_t)level;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountUserPreferences
 
-- (PKAccountUserPreferences)initWithDictionary:(id)a3
+- (PKAccountUserPreferences)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = PKAccountUserPreferences;
   v5 = [(PKAccountUserPreferences *)&v11 init];
   if (v5)
   {
-    v5->_spendingEnabled = [v4 PKBoolForKey:@"spendingEnabled"];
-    v5->_showAvailableCredit = [v4 PKBoolForKey:@"showAvailableCredit"];
-    v5->_transactionSpendLimitEnabled = [v4 PKBoolForKey:@"transactionLimitEnabled"];
-    v6 = [v4 PKDecimalNumberFromStringForKey:@"transactionLimitAmount"];
+    v5->_spendingEnabled = [dictionaryCopy PKBoolForKey:@"spendingEnabled"];
+    v5->_showAvailableCredit = [dictionaryCopy PKBoolForKey:@"showAvailableCredit"];
+    v5->_transactionSpendLimitEnabled = [dictionaryCopy PKBoolForKey:@"transactionLimitEnabled"];
+    v6 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"transactionLimitAmount"];
     transactionSpendLimitAmount = v5->_transactionSpendLimitAmount;
     v5->_transactionSpendLimitAmount = v6;
 
-    v5->_monthlySpendLimitEnabled = [v4 PKBoolForKey:@"monthlySpendLimitEnabled"];
-    v8 = [v4 PKDecimalNumberFromStringForKey:@"monthlySpendLimitAmount"];
+    v5->_monthlySpendLimitEnabled = [dictionaryCopy PKBoolForKey:@"monthlySpendLimitEnabled"];
+    v8 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"monthlySpendLimitAmount"];
     monthlySpendLimitAmount = v5->_monthlySpendLimitAmount;
     v5->_monthlySpendLimitAmount = v8;
   }
@@ -36,34 +36,34 @@
   return v5;
 }
 
-- (PKAccountUserPreferences)initWithAccountUserPreferences:(id)a3
+- (PKAccountUserPreferences)initWithAccountUserPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v11.receiver = self;
   v11.super_class = PKAccountUserPreferences;
   v5 = [(PKAccountUserPreferences *)&v11 init];
   if (v5)
   {
-    v5->_spendingEnabled = [v4 spendingEnabled];
-    v5->_showAvailableCredit = [v4 showAvailableCredit];
-    v5->_transactionSpendLimitEnabled = [v4 transactionSpendLimitEnabled];
-    v6 = [v4 transactionSpendLimitAmount];
+    v5->_spendingEnabled = [preferencesCopy spendingEnabled];
+    v5->_showAvailableCredit = [preferencesCopy showAvailableCredit];
+    v5->_transactionSpendLimitEnabled = [preferencesCopy transactionSpendLimitEnabled];
+    transactionSpendLimitAmount = [preferencesCopy transactionSpendLimitAmount];
     transactionSpendLimitAmount = v5->_transactionSpendLimitAmount;
-    v5->_transactionSpendLimitAmount = v6;
+    v5->_transactionSpendLimitAmount = transactionSpendLimitAmount;
 
-    v5->_monthlySpendLimitEnabled = [v4 monthlySpendLimitEnabled];
-    v8 = [v4 monthlySpendLimitAmount];
+    v5->_monthlySpendLimitEnabled = [preferencesCopy monthlySpendLimitEnabled];
+    monthlySpendLimitAmount = [preferencesCopy monthlySpendLimitAmount];
     monthlySpendLimitAmount = v5->_monthlySpendLimitAmount;
-    v5->_monthlySpendLimitAmount = v8;
+    v5->_monthlySpendLimitAmount = monthlySpendLimitAmount;
   }
 
   return v5;
 }
 
-- (id)jsonRepresentationForAccountUserAccessLevel:(unint64_t)a3
+- (id)jsonRepresentationForAccountUserAccessLevel:(unint64_t)level
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (a3 == 2)
+  if (level == 2)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_spendingEnabled];
     [v5 setObject:v6 forKeyedSubscript:@"spendingEnabled"];
@@ -74,43 +74,43 @@
     v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_transactionSpendLimitEnabled];
     [v5 setObject:v8 forKeyedSubscript:@"transactionLimitEnabled"];
 
-    v9 = [(NSDecimalNumber *)self->_transactionSpendLimitAmount stringValue];
-    [v5 setObject:v9 forKeyedSubscript:@"transactionLimitAmount"];
+    stringValue = [(NSDecimalNumber *)self->_transactionSpendLimitAmount stringValue];
+    [v5 setObject:stringValue forKeyedSubscript:@"transactionLimitAmount"];
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:self->_monthlySpendLimitEnabled];
   [v5 setObject:v10 forKeyedSubscript:@"monthlySpendLimitEnabled"];
 
-  v11 = [(NSDecimalNumber *)self->_monthlySpendLimitAmount stringValue];
-  [v5 setObject:v11 forKeyedSubscript:@"monthlySpendLimitAmount"];
+  stringValue2 = [(NSDecimalNumber *)self->_monthlySpendLimitAmount stringValue];
+  [v5 setObject:stringValue2 forKeyedSubscript:@"monthlySpendLimitAmount"];
 
   v12 = [v5 copy];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountUserPreferences *)self isEqualToAccountUserPreferences:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAccountUserPreferences *)self isEqualToAccountUserPreferences:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToAccountUserPreferences:(id)a3
+- (BOOL)isEqualToAccountUserPreferences:(id)preferences
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || self->_spendingEnabled != v4[8] || self->_showAvailableCredit != v4[9] || self->_transactionSpendLimitEnabled != v4[10])
+  preferencesCopy = preferences;
+  v5 = preferencesCopy;
+  if (!preferencesCopy || self->_spendingEnabled != preferencesCopy[8] || self->_showAvailableCredit != preferencesCopy[9] || self->_transactionSpendLimitEnabled != preferencesCopy[10])
   {
     goto LABEL_14;
   }
@@ -168,30 +168,30 @@ LABEL_15:
   return v8;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [PKMutableAccountUserPreferences allocWithZone:a3];
+  v4 = [PKMutableAccountUserPreferences allocWithZone:zone];
 
   return [(PKAccountUserPreferences *)v4 initWithAccountUserPreferences:self];
 }
 
-- (PKAccountUserPreferences)initWithCoder:(id)a3
+- (PKAccountUserPreferences)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKAccountUserPreferences;
   v5 = [(PKAccountUserPreferences *)&v11 init];
   if (v5)
   {
-    v5->_spendingEnabled = [v4 decodeBoolForKey:@"spendingEnabled"];
-    v5->_showAvailableCredit = [v4 decodeBoolForKey:@"showAvailableCredit"];
-    v5->_transactionSpendLimitEnabled = [v4 decodeBoolForKey:@"transactionLimitEnabled"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionLimitAmount"];
+    v5->_spendingEnabled = [coderCopy decodeBoolForKey:@"spendingEnabled"];
+    v5->_showAvailableCredit = [coderCopy decodeBoolForKey:@"showAvailableCredit"];
+    v5->_transactionSpendLimitEnabled = [coderCopy decodeBoolForKey:@"transactionLimitEnabled"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionLimitAmount"];
     transactionSpendLimitAmount = v5->_transactionSpendLimitAmount;
     v5->_transactionSpendLimitAmount = v6;
 
-    v5->_monthlySpendLimitEnabled = [v4 decodeBoolForKey:@"monthlySpendLimitEnabled"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"monthlySpendLimitAmount"];
+    v5->_monthlySpendLimitEnabled = [coderCopy decodeBoolForKey:@"monthlySpendLimitEnabled"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"monthlySpendLimitAmount"];
     monthlySpendLimitAmount = v5->_monthlySpendLimitAmount;
     v5->_monthlySpendLimitAmount = v8;
   }
@@ -199,16 +199,16 @@ LABEL_15:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   spendingEnabled = self->_spendingEnabled;
-  v5 = a3;
-  [v5 encodeBool:spendingEnabled forKey:@"spendingEnabled"];
-  [v5 encodeBool:self->_showAvailableCredit forKey:@"showAvailableCredit"];
-  [v5 encodeBool:self->_transactionSpendLimitEnabled forKey:@"transactionLimitEnabled"];
-  [v5 encodeObject:self->_transactionSpendLimitAmount forKey:@"transactionLimitAmount"];
-  [v5 encodeBool:self->_monthlySpendLimitEnabled forKey:@"monthlySpendLimitEnabled"];
-  [v5 encodeObject:self->_monthlySpendLimitAmount forKey:@"monthlySpendLimitAmount"];
+  coderCopy = coder;
+  [coderCopy encodeBool:spendingEnabled forKey:@"spendingEnabled"];
+  [coderCopy encodeBool:self->_showAvailableCredit forKey:@"showAvailableCredit"];
+  [coderCopy encodeBool:self->_transactionSpendLimitEnabled forKey:@"transactionLimitEnabled"];
+  [coderCopy encodeObject:self->_transactionSpendLimitAmount forKey:@"transactionLimitAmount"];
+  [coderCopy encodeBool:self->_monthlySpendLimitEnabled forKey:@"monthlySpendLimitEnabled"];
+  [coderCopy encodeObject:self->_monthlySpendLimitAmount forKey:@"monthlySpendLimitAmount"];
 }
 
 @end

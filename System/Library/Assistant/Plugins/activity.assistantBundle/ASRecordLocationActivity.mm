@@ -1,37 +1,37 @@
 @interface ASRecordLocationActivity
-- (ASRecordLocationActivity)recordLocationActivityWithCompletion:(id)a3;
-- (id)_activityFromLocation:(id)a3 sourceType:(id)a4;
-- (id)_locationMetadataFromLocation:(id)a3;
-- (id)_recordActivityCommandFromLocation:(id)a3 sourceType:(id)a4;
+- (ASRecordLocationActivity)recordLocationActivityWithCompletion:(id)completion;
+- (id)_activityFromLocation:(id)location sourceType:(id)type;
+- (id)_locationMetadataFromLocation:(id)location;
+- (id)_recordActivityCommandFromLocation:(id)location sourceType:(id)type;
 @end
 
 @implementation ASRecordLocationActivity
 
-- (ASRecordLocationActivity)recordLocationActivityWithCompletion:(id)a3
+- (ASRecordLocationActivity)recordLocationActivityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextService;
   if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_DEBUG))
   {
     sub_7720(v5);
   }
 
-  v6 = [(ASRecordLocationActivity *)self location];
+  location = [(ASRecordLocationActivity *)self location];
 
-  if (!v6)
+  if (!location)
   {
     v11 = [NSString stringWithFormat:@"Invalid ace command %@", self];
     v12 = AFSiriLogContextService;
     if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_ERROR))
     {
       sub_77A4(v11, v12);
-      if (!v4)
+      if (!completionCopy)
       {
         goto LABEL_8;
       }
     }
 
-    else if (!v4)
+    else if (!completionCopy)
     {
 LABEL_8:
 
@@ -39,48 +39,48 @@ LABEL_8:
     }
 
     v13 = [[SACommandFailed alloc] initWithReason:v11];
-    v14 = [v13 dictionary];
-    v4[2](v4, v14);
+    dictionary = [v13 dictionary];
+    completionCopy[2](completionCopy, dictionary);
 
     goto LABEL_8;
   }
 
-  v7 = [(ASRecordLocationActivity *)self location];
-  v8 = [(ASRecordLocationActivity *)self sourceType];
-  v9 = [(ASRecordLocationActivity *)self _recordActivityCommandFromLocation:v7 sourceType:v8];
+  location2 = [(ASRecordLocationActivity *)self location];
+  sourceType = [(ASRecordLocationActivity *)self sourceType];
+  v9 = [(ASRecordLocationActivity *)self _recordActivityCommandFromLocation:location2 sourceType:sourceType];
   recordActivityCommand = self->_recordActivityCommand;
   self->_recordActivityCommand = v9;
 
-  [(ASRecordActivity *)self->_recordActivityCommand performWithCompletion:v4];
+  [(ASRecordActivity *)self->_recordActivityCommand performWithCompletion:completionCopy];
 LABEL_9:
 
   return result;
 }
 
-- (id)_recordActivityCommandFromLocation:(id)a3 sourceType:(id)a4
+- (id)_recordActivityCommandFromLocation:(id)location sourceType:(id)type
 {
-  v4 = [(ASRecordLocationActivity *)self _activityFromLocation:a3 sourceType:a4];
+  v4 = [(ASRecordLocationActivity *)self _activityFromLocation:location sourceType:type];
   v5 = objc_opt_new();
   v6 = +[NSUUID UUID];
-  v7 = [v6 UUIDString];
-  [v5 setAceId:v7];
+  uUIDString = [v6 UUIDString];
+  [v5 setAceId:uUIDString];
 
   [v5 setActivity:v4];
 
   return v5;
 }
 
-- (id)_activityFromLocation:(id)a3 sourceType:(id)a4
+- (id)_activityFromLocation:(id)location sourceType:(id)type
 {
-  v6 = a4;
-  v7 = [(ASRecordLocationActivity *)self _locationMetadataFromLocation:a3];
+  typeCopy = type;
+  v7 = [(ASRecordLocationActivity *)self _locationMetadataFromLocation:location];
   v8 = objc_opt_new();
   v9 = +[NSUUID UUID];
-  v10 = [v9 UUIDString];
-  [v8 setAceId:v10];
+  uUIDString = [v9 UUIDString];
+  [v8 setAceId:uUIDString];
 
   v11 = @"com.apple.siri";
-  if (([v6 isEqualToString:@"Default"] & 1) == 0 && objc_msgSend(v6, "isEqualToString:", @"HomePod"))
+  if (([typeCopy isEqualToString:@"Default"] & 1) == 0 && objc_msgSend(typeCopy, "isEqualToString:", @"HomePod"))
   {
     v11 = @"com.apple.siri.homepod";
   }
@@ -93,94 +93,94 @@ LABEL_9:
   return v8;
 }
 
-- (id)_locationMetadataFromLocation:(id)a3
+- (id)_locationMetadataFromLocation:(id)location
 {
-  v3 = a3;
+  locationCopy = location;
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [v3 city];
-  v6 = [v3 countryCode];
-  v7 = [v3 stateCode];
-  v8 = [v3 thoroughfare];
-  v33 = [v3 subThoroughfare];
-  v32 = [v3 postalCode];
-  v34 = [v3 latitude];
-  v9 = [v3 longitude];
-  v10 = [v3 label];
-  v11 = [v3 street];
+  city = [locationCopy city];
+  countryCode = [locationCopy countryCode];
+  stateCode = [locationCopy stateCode];
+  thoroughfare = [locationCopy thoroughfare];
+  subThoroughfare = [locationCopy subThoroughfare];
+  postalCode = [locationCopy postalCode];
+  latitude = [locationCopy latitude];
+  longitude = [locationCopy longitude];
+  label = [locationCopy label];
+  street = [locationCopy street];
 
-  v30 = v11;
-  if (![v10 length] && objc_msgSend(v11, "length", v11))
+  v30 = street;
+  if (![label length] && objc_msgSend(street, "length", street))
   {
-    v12 = v11;
+    v12 = street;
 
-    v10 = v12;
+    label = v12;
   }
 
-  if ([v10 length])
+  if ([label length])
   {
     v13 = +[_DKLocationApplicationActivityMetadataKey locationName];
-    [v4 setObject:v10 forKeyedSubscript:v13];
+    [v4 setObject:label forKeyedSubscript:v13];
   }
 
-  if ([v5 length])
+  if ([city length])
   {
     v14 = +[_DKLocationApplicationActivityMetadataKey city];
-    [v4 setObject:v5 forKeyedSubscript:v14];
+    [v4 setObject:city forKeyedSubscript:v14];
   }
 
-  if ([v6 length])
+  if ([countryCode length])
   {
     v15 = +[_DKLocationApplicationActivityMetadataKey country];
-    [v4 setObject:v6 forKeyedSubscript:v15];
+    [v4 setObject:countryCode forKeyedSubscript:v15];
   }
 
-  if ([v7 length])
+  if ([stateCode length])
   {
     v16 = +[_DKLocationApplicationActivityMetadataKey stateOrProvince];
-    [v4 setObject:v7 forKeyedSubscript:v16];
+    [v4 setObject:stateCode forKeyedSubscript:v16];
   }
 
-  if ([v8 length])
+  if ([thoroughfare length])
   {
     v17 = +[_DKLocationApplicationActivityMetadataKey thoroughfare];
-    [v4 setObject:v8 forKeyedSubscript:v17];
+    [v4 setObject:thoroughfare forKeyedSubscript:v17];
   }
 
-  if ([v33 length])
+  if ([subThoroughfare length])
   {
     v18 = +[_DKLocationApplicationActivityMetadataKey subThoroughfare];
-    [v4 setObject:v33 forKeyedSubscript:v18];
+    [v4 setObject:subThoroughfare forKeyedSubscript:v18];
   }
 
-  v19 = v7;
-  v20 = v32;
-  if ([v32 length])
+  v19 = stateCode;
+  v20 = postalCode;
+  if ([postalCode length])
   {
     v21 = +[_DKLocationApplicationActivityMetadataKey postalCode];
-    [v4 setObject:v32 forKeyedSubscript:v21];
+    [v4 setObject:postalCode forKeyedSubscript:v21];
   }
 
-  if (v34)
+  if (latitude)
   {
-    v22 = [v34 stringValue];
+    stringValue = [latitude stringValue];
     +[_DKLocationApplicationActivityMetadataKey latitude];
-    v23 = v6;
-    v25 = v24 = v5;
-    [v4 setObject:v22 forKeyedSubscript:v25];
+    v23 = countryCode;
+    v25 = v24 = city;
+    [v4 setObject:stringValue forKeyedSubscript:v25];
 
-    v5 = v24;
-    v6 = v23;
-    v20 = v32;
+    city = v24;
+    countryCode = v23;
+    v20 = postalCode;
   }
 
-  if (v9)
+  if (longitude)
   {
-    v26 = [v9 stringValue];
+    stringValue2 = [longitude stringValue];
     +[_DKLocationApplicationActivityMetadataKey longitude];
-    v28 = v27 = v5;
-    [v4 setObject:v26 forKeyedSubscript:v28];
+    v28 = v27 = city;
+    [v4 setObject:stringValue2 forKeyedSubscript:v28];
 
-    v5 = v27;
+    city = v27;
   }
 
   return v4;

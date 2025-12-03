@@ -1,5 +1,5 @@
 @interface SBIconAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axIconLabel;
 - (id)_axIconValue;
 - (id)_axIconView;
@@ -9,17 +9,17 @@
 
 @implementation SBIconAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBIcon" hasInstanceVariable:@"_observers" withType:"NSHashTable"];
-  [v3 validateClass:@"SBIcon" hasInstanceMethod:@"displayNameForLocation:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"SBIconView" hasInstanceVariable:@"_accessoryView" withType:"UIView<SBIconAccessoryView>"];
-  [v3 validateClass:@"SBIcon" hasInstanceMethod:@"badgeNumberOrString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIconView" hasInstanceMethod:@"behaviorDelegate" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"SBIconViewBehaviorDelegate" hasOptionalInstanceMethod:@"iconViewDisplaysBadges:"];
-  [v3 validateClass:@"SBHLibraryViewController" conformsToProtocol:@"SBIconViewBehaviorDelegate"];
-  [v3 validateProtocol:@"SBIconAccessoryView" hasRequiredInstanceMethod:@"displayingAccessory"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBIcon" hasInstanceVariable:@"_observers" withType:"NSHashTable"];
+  [validationsCopy validateClass:@"SBIcon" hasInstanceMethod:@"displayNameForLocation:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"SBIconView" hasInstanceVariable:@"_accessoryView" withType:"UIView<SBIconAccessoryView>"];
+  [validationsCopy validateClass:@"SBIcon" hasInstanceMethod:@"badgeNumberOrString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIconView" hasInstanceMethod:@"behaviorDelegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"SBIconViewBehaviorDelegate" hasOptionalInstanceMethod:@"iconViewDisplaysBadges:"];
+  [validationsCopy validateClass:@"SBHLibraryViewController" conformsToProtocol:@"SBIconViewBehaviorDelegate"];
+  [validationsCopy validateProtocol:@"SBIconAccessoryView" hasRequiredInstanceMethod:@"displayingAccessory"];
 }
 
 - (id)_axIconView
@@ -53,9 +53,9 @@
         v10 = *(*(&v16 + 1) + 8 * i);
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v10 window];
+          window = [v10 window];
 
-          if (v11)
+          if (window)
           {
             v12 = [v10 safeStringForKey:@"location"];
             if (!SBAXIsIconViewIgnoreLocation(v12))
@@ -66,7 +66,7 @@
                 *buf = 138412546;
                 v21 = v10;
                 v22 = 2112;
-                v23 = self;
+                selfCopy = self;
                 _os_log_impl(&dword_29C3E1000, v14, OS_LOG_TYPE_INFO, "return observer: %@ for this icon: %@", buf, 0x16u);
               }
 
@@ -147,10 +147,10 @@ void __46__SBIconAccessibility_accessibilityIdentifier__block_invoke(uint64_t a1
 {
   v24 = *MEMORY[0x29EDCA608];
   v3 = [(SBIconAccessibility *)self safeValueForKey:@"badgeNumberOrString"];
-  v4 = [(SBIconAccessibility *)self _axIconView];
+  _axIconView = [(SBIconAccessibility *)self _axIconView];
   buf[0] = 0;
   objc_opt_class();
-  v5 = [v4 safeValueForKey:@"_accessoryView"];
+  v5 = [_axIconView safeValueForKey:@"_accessoryView"];
   v6 = __UIAccessibilityCastAsClass();
 
   if (v6)
@@ -160,7 +160,7 @@ void __46__SBIconAccessibility_accessibilityIdentifier__block_invoke(uint64_t a1
 
   else
   {
-    v8 = [v4 safeValueForKey:@"behaviorDelegate"];
+    v8 = [_axIconView safeValueForKey:@"behaviorDelegate"];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
@@ -169,7 +169,7 @@ void __46__SBIconAccessibility_accessibilityIdentifier__block_invoke(uint64_t a1
       *v23 = buf;
       *&v23[8] = 0x2020000000;
       v23[16] = 0;
-      v21 = v4;
+      v21 = _axIconView;
       AXPerformSafeBlock();
       v7 = *(*v23 + 24);
 
@@ -194,14 +194,14 @@ void __46__SBIconAccessibility_accessibilityIdentifier__block_invoke(uint64_t a1
     _os_log_impl(&dword_29C3E1000, v10, OS_LOG_TYPE_INFO, "Showing badge: %d[%@] -> %@", buf, 0x1Cu);
   }
 
-  v11 = [(SBIconAccessibility *)self _accessibilityBundleIdentifier];
-  v12 = v11;
+  _accessibilityBundleIdentifier = [(SBIconAccessibility *)self _accessibilityBundleIdentifier];
+  v12 = _accessibilityBundleIdentifier;
   if (((v3 != 0) & v7) == 1)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [v3 intValue];
+      intValue = [v3 intValue];
     }
 
     else
@@ -212,16 +212,16 @@ void __46__SBIconAccessibility_accessibilityIdentifier__block_invoke(uint64_t a1
         goto LABEL_19;
       }
 
-      v15 = [v3 intValue];
-      if (v15 < 1)
+      intValue2 = [v3 intValue];
+      if (intValue2 < 1)
       {
         goto LABEL_19;
       }
 
-      v13 = v15;
+      intValue = intValue2;
     }
 
-    if (v13 >= 1)
+    if (intValue >= 1)
     {
       if ([v12 isEqualToString:*MEMORY[0x29EDBD648]])
       {
@@ -265,7 +265,7 @@ void __46__SBIconAccessibility_accessibilityIdentifier__block_invoke(uint64_t a1
 
       v18 = MEMORY[0x29EDBA0F8];
       v19 = accessibilityLocalizedString(v16);
-      v17 = [v18 localizedStringWithFormat:v19, v13];
+      v17 = [v18 localizedStringWithFormat:v19, intValue];
 
       goto LABEL_38;
     }
@@ -281,7 +281,7 @@ LABEL_19:
     goto LABEL_23;
   }
 
-  if ([v11 isEqualToString:*MEMORY[0x29EDBD648]])
+  if ([_accessibilityBundleIdentifier isEqualToString:*MEMORY[0x29EDBD648]])
   {
     v14 = accessibilityLocalizedString(@"mail.badge.none");
 LABEL_22:

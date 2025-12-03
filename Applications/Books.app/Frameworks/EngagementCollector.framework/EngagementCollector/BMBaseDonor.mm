@@ -1,27 +1,27 @@
 @interface BMBaseDonor
-- (BMBaseDonor)initWithType:(id)a3;
-- (BOOL)isObservedBy:(id)a3;
+- (BMBaseDonor)initWithType:(id)type;
+- (BOOL)isObservedBy:(id)by;
 - (NSArray)eventConfigurations;
 - (NSString)type;
-- (void)addDonorObserver:(id)a3;
-- (void)donateWithConfiguration:(id)a3 context:(id)a4 donationCompleteBlock:(id)a5;
-- (void)propertyDidChange:(id)a3 propertyConfiguration:(id)a4;
-- (void)removeDonorObserver:(id)a3;
-- (void)setEventConfigurations:(id)a3;
-- (void)setType:(id)a3;
+- (void)addDonorObserver:(id)observer;
+- (void)donateWithConfiguration:(id)configuration context:(id)context donationCompleteBlock:(id)block;
+- (void)propertyDidChange:(id)change propertyConfiguration:(id)configuration;
+- (void)removeDonorObserver:(id)observer;
+- (void)setEventConfigurations:(id)configurations;
+- (void)setType:(id)type;
 @end
 
 @implementation BMBaseDonor
 
-- (BMBaseDonor)initWithType:(id)a3
+- (BMBaseDonor)initWithType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v8.receiver = self;
   v8.super_class = BMBaseDonor;
   v5 = [(BMBaseDonor *)&v8 init];
   if (v5)
   {
-    v6 = [[_TtC19EngagementCollector9BaseDonor alloc] initWithType:v4];
+    v6 = [[_TtC19EngagementCollector9BaseDonor alloc] initWithType:typeCopy];
     [(BMBaseDonor *)v5 setDonor:v6];
   }
 
@@ -30,71 +30,71 @@
 
 - (NSString)type
 {
-  v2 = [(BMBaseDonor *)self donor];
-  v3 = [v2 type];
+  donor = [(BMBaseDonor *)self donor];
+  type = [donor type];
 
-  return v3;
+  return type;
 }
 
 - (NSArray)eventConfigurations
 {
-  v2 = [(BMBaseDonor *)self donor];
-  v3 = [v2 eventConfigurations];
+  donor = [(BMBaseDonor *)self donor];
+  eventConfigurations = [donor eventConfigurations];
 
-  return v3;
+  return eventConfigurations;
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
-  v4 = a3;
-  v5 = [(BMBaseDonor *)self donor];
-  [v5 setType:v4];
+  typeCopy = type;
+  donor = [(BMBaseDonor *)self donor];
+  [donor setType:typeCopy];
 }
 
-- (void)setEventConfigurations:(id)a3
+- (void)setEventConfigurations:(id)configurations
 {
-  v4 = a3;
-  v5 = [(BMBaseDonor *)self donor];
-  [v5 setEventConfigurations:v4];
+  configurationsCopy = configurations;
+  donor = [(BMBaseDonor *)self donor];
+  [donor setEventConfigurations:configurationsCopy];
 }
 
-- (void)donateWithConfiguration:(id)a3 context:(id)a4 donationCompleteBlock:(id)a5
+- (void)donateWithConfiguration:(id)configuration context:(id)context donationCompleteBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(BMBaseDonor *)self donor];
-  [v11 donateWithConfiguration:v10 context:v9 donationCompleteBlock:v8];
+  blockCopy = block;
+  contextCopy = context;
+  configurationCopy = configuration;
+  donor = [(BMBaseDonor *)self donor];
+  [donor donateWithConfiguration:configurationCopy context:contextCopy donationCompleteBlock:blockCopy];
 }
 
-- (void)addDonorObserver:(id)a3
+- (void)addDonorObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(BMBaseDonor *)self donor];
-  [v5 addDonorObserver:v4];
+  observerCopy = observer;
+  donor = [(BMBaseDonor *)self donor];
+  [donor addDonorObserver:observerCopy];
 }
 
-- (void)removeDonorObserver:(id)a3
+- (void)removeDonorObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(BMBaseDonor *)self donor];
-  [v5 removeDonorObserver:v4];
+  observerCopy = observer;
+  donor = [(BMBaseDonor *)self donor];
+  [donor removeDonorObserver:observerCopy];
 }
 
-- (BOOL)isObservedBy:(id)a3
+- (BOOL)isObservedBy:(id)by
 {
-  v4 = a3;
-  v5 = [(BMBaseDonor *)self donor];
-  v6 = [v5 isObservedBy:v4];
+  byCopy = by;
+  donor = [(BMBaseDonor *)self donor];
+  v6 = [donor isObservedBy:byCopy];
 
   return v6;
 }
 
-- (void)propertyDidChange:(id)a3 propertyConfiguration:(id)a4
+- (void)propertyDidChange:(id)change propertyConfiguration:(id)configuration
 {
-  v5 = a4;
-  v6 = [(BMBaseDonor *)self donor];
-  [v6 propertyDidChange:self propertyConfiguration:v5];
+  configurationCopy = configuration;
+  donor = [(BMBaseDonor *)self donor];
+  [donor propertyDidChange:self propertyConfiguration:configurationCopy];
 }
 
 @end

@@ -3,7 +3,7 @@
 - (id)accessibilityParent;
 - (id)accessibilityTitleUIElement;
 - (id)keyCommands;
-- (void)autoFillDidInsertWithExplicitInvocationMode:(BOOL)a3;
+- (void)autoFillDidInsertWithExplicitInvocationMode:(BOOL)mode;
 - (void)handleBackTab;
 - (void)handleTab;
 @end
@@ -24,78 +24,78 @@
 
 - (void)handleTab
 {
-  v2 = [(PDFTextWidgetTextView *)self delegate];
+  delegate = [(PDFTextWidgetTextView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v2 handleTab];
+    [delegate handleTab];
   }
 }
 
 - (void)handleBackTab
 {
-  v2 = [(PDFTextWidgetTextView *)self delegate];
+  delegate = [(PDFTextWidgetTextView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v2 handleBackTab];
+    [delegate handleBackTab];
   }
 }
 
-- (void)autoFillDidInsertWithExplicitInvocationMode:(BOOL)a3
+- (void)autoFillDidInsertWithExplicitInvocationMode:(BOOL)mode
 {
-  v3 = a3;
-  v4 = [(PDFTextWidgetTextView *)self delegate];
+  modeCopy = mode;
+  delegate = [(PDFTextWidgetTextView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 autoFillDidInsertWithExplicitInvocationMode:v3];
+    [delegate autoFillDidInsertWithExplicitInvocationMode:modeCopy];
   }
 }
 
 - (id)accessibilityParent
 {
-  v2 = [(PDFTextWidgetTextView *)self delegate];
+  delegate = [(PDFTextWidgetTextView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 accessibilityParent];
+    accessibilityParent = [delegate accessibilityParent];
   }
 
   else
   {
-    v3 = 0;
+    accessibilityParent = 0;
   }
 
-  return v3;
+  return accessibilityParent;
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(PDFTextWidgetTextView *)self delegate];
+  delegate = [(PDFTextWidgetTextView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 accessibilityLabel];
+    accessibilityLabel = [delegate accessibilityLabel];
   }
 
   else
   {
-    v3 = 0;
+    accessibilityLabel = 0;
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityTitleUIElement
 {
-  v2 = [(PDFTextWidgetTextView *)self delegate];
+  delegate = [(PDFTextWidgetTextView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 accessibilityTitleUIElement];
+    accessibilityTitleUIElement = [delegate accessibilityTitleUIElement];
   }
 
   else
   {
-    v3 = 0;
+    accessibilityTitleUIElement = 0;
   }
 
-  return v3;
+  return accessibilityTitleUIElement;
 }
 
 @end

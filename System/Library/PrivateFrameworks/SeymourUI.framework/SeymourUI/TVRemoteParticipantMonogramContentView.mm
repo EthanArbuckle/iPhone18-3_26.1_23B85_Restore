@@ -1,6 +1,6 @@
 @interface TVRemoteParticipantMonogramContentView
 - (CGSize)intrinsicContentSize;
-- (_TtC9SeymourUI38TVRemoteParticipantMonogramContentView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI38TVRemoteParticipantMonogramContentView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TVRemoteParticipantMonogramContentView
@@ -9,11 +9,11 @@
 {
   v3 = OBJC_IVAR____TtC9SeymourUI38TVRemoteParticipantMonogramContentView_titleLabel;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI38TVRemoteParticipantMonogramContentView_titleLabel);
-  v5 = self;
+  selfCopy = self;
   [v4 intrinsicContentSize];
   v7 = v6;
   v8 = OBJC_IVAR____TtC9SeymourUI38TVRemoteParticipantMonogramContentView_imageView;
-  [*(&v5->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI38TVRemoteParticipantMonogramContentView_imageView) intrinsicContentSize];
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI38TVRemoteParticipantMonogramContentView_imageView) intrinsicContentSize];
   if (v7 <= v9)
   {
     v7 = v9;
@@ -21,7 +21,7 @@
 
   [*(&self->super.super.super.isa + v3) intrinsicContentSize];
   v11 = v10;
-  [*(&v5->super.super.super.isa + v8) intrinsicContentSize];
+  [*(&selfCopy->super.super.super.isa + v8) intrinsicContentSize];
   v13 = v12;
 
   if (v11 > v13)
@@ -40,7 +40,7 @@
   return result;
 }
 
-- (_TtC9SeymourUI38TVRemoteParticipantMonogramContentView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI38TVRemoteParticipantMonogramContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

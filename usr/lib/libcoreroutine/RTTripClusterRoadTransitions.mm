@@ -1,156 +1,156 @@
 @interface RTTripClusterRoadTransitions
-+ (id)createWithManagedObject:(id)a3;
-+ (id)createWithTripClusterRoadTransitionsMO:(id)a3;
-+ (id)getRoadTransitionsDataFromRoadTransitions:(id)a3;
-+ (id)getRoadTransitionsFromRoadTransitionsData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRoadTransition:(id)a3;
-- (BOOL)isSameFromAndToStartandEndCoordinates:(id)a3;
++ (id)createWithManagedObject:(id)object;
++ (id)createWithTripClusterRoadTransitionsMO:(id)o;
++ (id)getRoadTransitionsDataFromRoadTransitions:(id)transitions;
++ (id)getRoadTransitionsFromRoadTransitionsData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRoadTransition:(id)transition;
+- (BOOL)isSameFromAndToStartandEndCoordinates:(id)coordinates;
 - (NSString)description;
-- (RTTripClusterRoadTransitions)initWithCoder:(id)a3;
-- (RTTripClusterRoadTransitions)initWithclusterID:(id)a3 clRoadIDFrom:(unint64_t)a4 clRoadIDTo:(unint64_t)a5 fromStartLatitude:(double)a6 fromStartLongitude:(double)a7 fromEndLatitude:(double)a8 fromEndLongitude:(double)a9 toStartLatitude:(double)a10 toStartLongitude:(double)a11 toEndLatitude:(double)a12 toEndLongitude:(double)a13 count:(unsigned int)a14 startDate:(id)a15 startRoadCount:(unsigned int)a16 endRoadCount:(unsigned int)a17 roadSequenceNumber:(unsigned int)a18 familiarityMetric:(double)a19;
-- (id)managedObjectWithContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)incrementCountBy:(unsigned int)a3;
+- (RTTripClusterRoadTransitions)initWithCoder:(id)coder;
+- (RTTripClusterRoadTransitions)initWithclusterID:(id)d clRoadIDFrom:(unint64_t)from clRoadIDTo:(unint64_t)to fromStartLatitude:(double)latitude fromStartLongitude:(double)longitude fromEndLatitude:(double)endLatitude fromEndLongitude:(double)endLongitude toStartLatitude:(double)self0 toStartLongitude:(double)self1 toEndLatitude:(double)self2 toEndLongitude:(double)self3 count:(unsigned int)self4 startDate:(id)self5 startRoadCount:(unsigned int)self6 endRoadCount:(unsigned int)self7 roadSequenceNumber:(unsigned int)self8 familiarityMetric:(double)self9;
+- (id)managedObjectWithContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
+- (void)incrementCountBy:(unsigned int)by;
 @end
 
 @implementation RTTripClusterRoadTransitions
 
-- (RTTripClusterRoadTransitions)initWithclusterID:(id)a3 clRoadIDFrom:(unint64_t)a4 clRoadIDTo:(unint64_t)a5 fromStartLatitude:(double)a6 fromStartLongitude:(double)a7 fromEndLatitude:(double)a8 fromEndLongitude:(double)a9 toStartLatitude:(double)a10 toStartLongitude:(double)a11 toEndLatitude:(double)a12 toEndLongitude:(double)a13 count:(unsigned int)a14 startDate:(id)a15 startRoadCount:(unsigned int)a16 endRoadCount:(unsigned int)a17 roadSequenceNumber:(unsigned int)a18 familiarityMetric:(double)a19
+- (RTTripClusterRoadTransitions)initWithclusterID:(id)d clRoadIDFrom:(unint64_t)from clRoadIDTo:(unint64_t)to fromStartLatitude:(double)latitude fromStartLongitude:(double)longitude fromEndLatitude:(double)endLatitude fromEndLongitude:(double)endLongitude toStartLatitude:(double)self0 toStartLongitude:(double)self1 toEndLatitude:(double)self2 toEndLongitude:(double)self3 count:(unsigned int)self4 startDate:(id)self5 startRoadCount:(unsigned int)self6 endRoadCount:(unsigned int)self7 roadSequenceNumber:(unsigned int)self8 familiarityMetric:(double)self9
 {
-  v34 = a3;
-  v35 = a15;
+  dCopy = d;
+  dateCopy = date;
   v39.receiver = self;
   v39.super_class = RTTripClusterRoadTransitions;
   v36 = [(RTTripClusterRoadTransitions *)&v39 init];
   v37 = v36;
   if (v36)
   {
-    objc_storeStrong(&v36->_clusterID, a3);
-    v37->_clRoadIDTo = a5;
-    v37->_clRoadIDFrom = a4;
-    v37->_fromStartLatitude = a6;
-    v37->_fromStartLongitude = a7;
-    v37->_fromEndLatitude = a8;
-    v37->_fromEndLongitude = a9;
-    v37->_toStartLatitude = a10;
-    v37->_toStartLongitude = a11;
-    v37->_toEndLatitude = a12;
-    v37->_toEndLongitude = a13;
-    v37->_count = a14;
-    objc_storeStrong(&v37->_startDate, a15);
-    v37->_startRoadCount = a16;
-    v37->_endRoadCount = a17;
-    v37->_roadSequenceNumber = a18;
-    v37->_familiarityMetric = a19;
+    objc_storeStrong(&v36->_clusterID, d);
+    v37->_clRoadIDTo = to;
+    v37->_clRoadIDFrom = from;
+    v37->_fromStartLatitude = latitude;
+    v37->_fromStartLongitude = longitude;
+    v37->_fromEndLatitude = endLatitude;
+    v37->_fromEndLongitude = endLongitude;
+    v37->_toStartLatitude = startLatitude;
+    v37->_toStartLongitude = startLongitude;
+    v37->_toEndLatitude = toEndLatitude;
+    v37->_toEndLongitude = toEndLongitude;
+    v37->_count = count;
+    objc_storeStrong(&v37->_startDate, date);
+    v37->_startRoadCount = roadCount;
+    v37->_endRoadCount = endRoadCount;
+    v37->_roadSequenceNumber = number;
+    v37->_familiarityMetric = metric;
   }
 
   return v37;
 }
 
-- (RTTripClusterRoadTransitions)initWithCoder:(id)a3
+- (RTTripClusterRoadTransitions)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"clusterID"];
-  [v3 decodeDoubleForKey:@"fromStartLatitude"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clusterID"];
+  [coderCopy decodeDoubleForKey:@"fromStartLatitude"];
   v34 = v5;
-  [v3 decodeDoubleForKey:@"fromStartLongitude"];
+  [coderCopy decodeDoubleForKey:@"fromStartLongitude"];
   v7 = v6;
-  [v3 decodeDoubleForKey:@"fromEndLatitude"];
+  [coderCopy decodeDoubleForKey:@"fromEndLatitude"];
   v9 = v8;
-  [v3 decodeDoubleForKey:@"fromEndLongitude"];
+  [coderCopy decodeDoubleForKey:@"fromEndLongitude"];
   v11 = v10;
-  [v3 decodeDoubleForKey:@"toStartLatitude"];
+  [coderCopy decodeDoubleForKey:@"toStartLatitude"];
   v13 = v12;
-  [v3 decodeDoubleForKey:@"toStartLongitude"];
+  [coderCopy decodeDoubleForKey:@"toStartLongitude"];
   v15 = v14;
-  [v3 decodeDoubleForKey:@"toEndLatitude"];
+  [coderCopy decodeDoubleForKey:@"toEndLatitude"];
   v17 = v16;
-  [v3 decodeDoubleForKey:@"toEndLongitude"];
+  [coderCopy decodeDoubleForKey:@"toEndLongitude"];
   v19 = v18;
-  v20 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"startdate"];
-  [v3 decodeDoubleForKey:@"familiaritymetric"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startdate"];
+  [coderCopy decodeDoubleForKey:@"familiaritymetric"];
   v22 = v21;
-  v23 = [v3 decodeObjectForKey:@"clRoadIDTo"];
-  v24 = [v23 unsignedLongLongValue];
-  v25 = [v3 decodeObjectForKey:@"clRoadIDFrom"];
+  v23 = [coderCopy decodeObjectForKey:@"clRoadIDTo"];
+  unsignedLongLongValue = [v23 unsignedLongLongValue];
+  v25 = [coderCopy decodeObjectForKey:@"clRoadIDFrom"];
 
-  v26 = [v25 unsignedLongLongValue];
-  v27 = [v3 decodeObjectForKey:@"startroadcount"];
+  unsignedLongLongValue2 = [v25 unsignedLongLongValue];
+  v27 = [coderCopy decodeObjectForKey:@"startroadcount"];
 
-  v28 = [v27 unsignedIntValue];
-  v29 = [v3 decodeObjectForKey:@"endroadcount"];
+  unsignedIntValue = [v27 unsignedIntValue];
+  v29 = [coderCopy decodeObjectForKey:@"endroadcount"];
 
   LODWORD(v27) = [v29 unsignedIntValue];
-  v30 = [v3 decodeObjectForKey:@"roadsequencenumber"];
+  v30 = [coderCopy decodeObjectForKey:@"roadsequencenumber"];
 
   LODWORD(v29) = [v30 unsignedIntValue];
-  v31 = [v3 decodeObjectForKey:@"count"];
+  v31 = [coderCopy decodeObjectForKey:@"count"];
 
-  v32 = -[RTTripClusterRoadTransitions initWithclusterID:clRoadIDFrom:clRoadIDTo:fromStartLatitude:fromStartLongitude:fromEndLatitude:fromEndLongitude:toStartLatitude:toStartLongitude:toEndLatitude:toEndLongitude:count:startDate:startRoadCount:endRoadCount:roadSequenceNumber:familiarityMetric:](self, "initWithclusterID:clRoadIDFrom:clRoadIDTo:fromStartLatitude:fromStartLongitude:fromEndLatitude:fromEndLongitude:toStartLatitude:toStartLongitude:toEndLatitude:toEndLongitude:count:startDate:startRoadCount:endRoadCount:roadSequenceNumber:familiarityMetric:", v4, v26, v24, [v31 unsignedIntValue], v20, v28, v34, v7, v9, v11, v13, v15, v17, v19, __PAIR64__(v29, v27), v22);
+  v32 = -[RTTripClusterRoadTransitions initWithclusterID:clRoadIDFrom:clRoadIDTo:fromStartLatitude:fromStartLongitude:fromEndLatitude:fromEndLongitude:toStartLatitude:toStartLongitude:toEndLatitude:toEndLongitude:count:startDate:startRoadCount:endRoadCount:roadSequenceNumber:familiarityMetric:](self, "initWithclusterID:clRoadIDFrom:clRoadIDTo:fromStartLatitude:fromStartLongitude:fromEndLatitude:fromEndLongitude:toStartLatitude:toStartLongitude:toEndLatitude:toEndLongitude:count:startDate:startRoadCount:endRoadCount:roadSequenceNumber:familiarityMetric:", v4, unsignedLongLongValue2, unsignedLongLongValue, [v31 unsignedIntValue], v20, unsignedIntValue, v34, v7, v9, v11, v13, v15, v17, v19, __PAIR64__(v29, v27), v22);
   return v32;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(RTTripClusterRoadTransitions *)self clusterID];
-  [v4 encodeObject:v5 forKey:@"clusterID"];
+  coderCopy = coder;
+  clusterID = [(RTTripClusterRoadTransitions *)self clusterID];
+  [coderCopy encodeObject:clusterID forKey:@"clusterID"];
 
   [(RTTripClusterRoadTransitions *)self fromStartLatitude];
-  [v4 encodeDouble:@"fromStartLatitude" forKey:?];
+  [coderCopy encodeDouble:@"fromStartLatitude" forKey:?];
   [(RTTripClusterRoadTransitions *)self fromStartLongitude];
-  [v4 encodeDouble:@"fromStartLongitude" forKey:?];
+  [coderCopy encodeDouble:@"fromStartLongitude" forKey:?];
   [(RTTripClusterRoadTransitions *)self fromEndLatitude];
-  [v4 encodeDouble:@"fromEndLatitude" forKey:?];
+  [coderCopy encodeDouble:@"fromEndLatitude" forKey:?];
   [(RTTripClusterRoadTransitions *)self fromEndLongitude];
-  [v4 encodeDouble:@"fromEndLongitude" forKey:?];
+  [coderCopy encodeDouble:@"fromEndLongitude" forKey:?];
   [(RTTripClusterRoadTransitions *)self toStartLatitude];
-  [v4 encodeDouble:@"toStartLatitude" forKey:?];
+  [coderCopy encodeDouble:@"toStartLatitude" forKey:?];
   [(RTTripClusterRoadTransitions *)self toStartLongitude];
-  [v4 encodeDouble:@"toStartLongitude" forKey:?];
+  [coderCopy encodeDouble:@"toStartLongitude" forKey:?];
   [(RTTripClusterRoadTransitions *)self toEndLatitude];
-  [v4 encodeDouble:@"toEndLatitude" forKey:?];
+  [coderCopy encodeDouble:@"toEndLatitude" forKey:?];
   [(RTTripClusterRoadTransitions *)self toEndLongitude];
-  [v4 encodeDouble:@"toEndLongitude" forKey:?];
-  v6 = [(RTTripClusterRoadTransitions *)self startDate];
-  [v4 encodeObject:v6 forKey:@"startdate"];
+  [coderCopy encodeDouble:@"toEndLongitude" forKey:?];
+  startDate = [(RTTripClusterRoadTransitions *)self startDate];
+  [coderCopy encodeObject:startDate forKey:@"startdate"];
 
   [(RTTripClusterRoadTransitions *)self familiarityMetric];
-  [v4 encodeDouble:@"familiaritymetric" forKey:?];
+  [coderCopy encodeDouble:@"familiaritymetric" forKey:?];
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[RTTripClusterRoadTransitions clRoadIDFrom](self, "clRoadIDFrom")}];
-  [v4 encodeObject:v7 forKey:@"clRoadIDFrom"];
+  [coderCopy encodeObject:v7 forKey:@"clRoadIDFrom"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[RTTripClusterRoadTransitions clRoadIDTo](self, "clRoadIDTo")}];
-  [v4 encodeObject:v8 forKey:@"clRoadIDTo"];
+  [coderCopy encodeObject:v8 forKey:@"clRoadIDTo"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[RTTripClusterRoadTransitions startRoadCount](self, "startRoadCount")}];
-  [v4 encodeObject:v9 forKey:@"startroadcount"];
+  [coderCopy encodeObject:v9 forKey:@"startroadcount"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[RTTripClusterRoadTransitions endRoadCount](self, "endRoadCount")}];
-  [v4 encodeObject:v10 forKey:@"endroadcount"];
+  [coderCopy encodeObject:v10 forKey:@"endroadcount"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[RTTripClusterRoadTransitions roadSequenceNumber](self, "roadSequenceNumber")}];
-  [v4 encodeObject:v11 forKey:@"roadsequencenumber"];
+  [coderCopy encodeObject:v11 forKey:@"roadsequencenumber"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[RTTripClusterRoadTransitions count](self, "count")}];
-  [v4 encodeObject:v12 forKey:@"count"];
+  [coderCopy encodeObject:v12 forKey:@"count"];
 }
 
-- (BOOL)isEqualToRoadTransition:(id)a3
+- (BOOL)isEqualToRoadTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [(RTTripClusterRoadTransitions *)self clusterID];
-  v6 = [v4 clusterID];
-  if ([v5 isEqual:v6] && (v7 = -[RTTripClusterRoadTransitions clRoadIDFrom](self, "clRoadIDFrom"), v7 == objc_msgSend(v4, "clRoadIDFrom")) && (v8 = -[RTTripClusterRoadTransitions clRoadIDTo](self, "clRoadIDTo"), v8 == objc_msgSend(v4, "clRoadIDTo")) && (-[RTTripClusterRoadTransitions fromStartLatitude](self, "fromStartLatitude"), v10 = v9, objc_msgSend(v4, "fromStartLatitude"), vabdd_f64(v10, v11) < 0.0000001) && (-[RTTripClusterRoadTransitions fromStartLongitude](self, "fromStartLongitude"), v13 = v12, objc_msgSend(v4, "fromStartLongitude"), vabdd_f64(v13, v14) < 0.0000001) && (-[RTTripClusterRoadTransitions fromEndLatitude](self, "fromEndLatitude"), v16 = v15, objc_msgSend(v4, "fromEndLatitude"), vabdd_f64(v16, v17) < 0.0000001) && (-[RTTripClusterRoadTransitions fromEndLongitude](self, "fromEndLongitude"), v19 = v18, objc_msgSend(v4, "fromEndLongitude"), vabdd_f64(v19, v20) < 0.0000001) && (-[RTTripClusterRoadTransitions toStartLatitude](self, "toStartLatitude"), v22 = v21, objc_msgSend(v4, "toStartLatitude"), vabdd_f64(v22, v23) < 0.0000001) && (-[RTTripClusterRoadTransitions toStartLongitude](self, "toStartLongitude"), v25 = v24, objc_msgSend(v4, "toStartLongitude"), vabdd_f64(v25, v26) < 0.0000001) && (-[RTTripClusterRoadTransitions toEndLatitude](self, "toEndLatitude"), v28 = v27, objc_msgSend(v4, "toEndLatitude"), vabdd_f64(v28, v29) < 0.0000001) && (-[RTTripClusterRoadTransitions toEndLongitude](self, "toEndLongitude"), v31 = v30, objc_msgSend(v4, "toEndLongitude"), vabdd_f64(v31, v32) < 0.0000001) && (v33 = -[RTTripClusterRoadTransitions count](self, "count"), v33 == objc_msgSend(v4, "count")))
+  transitionCopy = transition;
+  clusterID = [(RTTripClusterRoadTransitions *)self clusterID];
+  clusterID2 = [transitionCopy clusterID];
+  if ([clusterID isEqual:clusterID2] && (v7 = -[RTTripClusterRoadTransitions clRoadIDFrom](self, "clRoadIDFrom"), v7 == objc_msgSend(transitionCopy, "clRoadIDFrom")) && (v8 = -[RTTripClusterRoadTransitions clRoadIDTo](self, "clRoadIDTo"), v8 == objc_msgSend(transitionCopy, "clRoadIDTo")) && (-[RTTripClusterRoadTransitions fromStartLatitude](self, "fromStartLatitude"), v10 = v9, objc_msgSend(transitionCopy, "fromStartLatitude"), vabdd_f64(v10, v11) < 0.0000001) && (-[RTTripClusterRoadTransitions fromStartLongitude](self, "fromStartLongitude"), v13 = v12, objc_msgSend(transitionCopy, "fromStartLongitude"), vabdd_f64(v13, v14) < 0.0000001) && (-[RTTripClusterRoadTransitions fromEndLatitude](self, "fromEndLatitude"), v16 = v15, objc_msgSend(transitionCopy, "fromEndLatitude"), vabdd_f64(v16, v17) < 0.0000001) && (-[RTTripClusterRoadTransitions fromEndLongitude](self, "fromEndLongitude"), v19 = v18, objc_msgSend(transitionCopy, "fromEndLongitude"), vabdd_f64(v19, v20) < 0.0000001) && (-[RTTripClusterRoadTransitions toStartLatitude](self, "toStartLatitude"), v22 = v21, objc_msgSend(transitionCopy, "toStartLatitude"), vabdd_f64(v22, v23) < 0.0000001) && (-[RTTripClusterRoadTransitions toStartLongitude](self, "toStartLongitude"), v25 = v24, objc_msgSend(transitionCopy, "toStartLongitude"), vabdd_f64(v25, v26) < 0.0000001) && (-[RTTripClusterRoadTransitions toEndLatitude](self, "toEndLatitude"), v28 = v27, objc_msgSend(transitionCopy, "toEndLatitude"), vabdd_f64(v28, v29) < 0.0000001) && (-[RTTripClusterRoadTransitions toEndLongitude](self, "toEndLongitude"), v31 = v30, objc_msgSend(transitionCopy, "toEndLongitude"), vabdd_f64(v31, v32) < 0.0000001) && (v33 = -[RTTripClusterRoadTransitions count](self, "count"), v33 == objc_msgSend(transitionCopy, "count")))
   {
-    v34 = [(RTTripClusterRoadTransitions *)self startDate];
-    v35 = [v4 startDate];
-    if ([v34 isEqual:v35] && (v36 = -[RTTripClusterRoadTransitions startRoadCount](self, "startRoadCount"), v36 == objc_msgSend(v4, "startRoadCount")) && (v37 = -[RTTripClusterRoadTransitions endRoadCount](self, "endRoadCount"), v37 == objc_msgSend(v4, "endRoadCount")) && (v38 = -[RTTripClusterRoadTransitions roadSequenceNumber](self, "roadSequenceNumber"), v38 == objc_msgSend(v4, "roadSequenceNumber")))
+    startDate = [(RTTripClusterRoadTransitions *)self startDate];
+    startDate2 = [transitionCopy startDate];
+    if ([startDate isEqual:startDate2] && (v36 = -[RTTripClusterRoadTransitions startRoadCount](self, "startRoadCount"), v36 == objc_msgSend(transitionCopy, "startRoadCount")) && (v37 = -[RTTripClusterRoadTransitions endRoadCount](self, "endRoadCount"), v37 == objc_msgSend(transitionCopy, "endRoadCount")) && (v38 = -[RTTripClusterRoadTransitions roadSequenceNumber](self, "roadSequenceNumber"), v38 == objc_msgSend(transitionCopy, "roadSequenceNumber")))
     {
       [(RTTripClusterRoadTransitions *)self familiarityMetric];
       v40 = v39;
-      [v4 familiarityMetric];
+      [transitionCopy familiarityMetric];
       v42 = vabdd_f64(v40, v41) < 0.0000001;
     }
 
@@ -168,13 +168,13 @@
   return v42;
 }
 
-- (BOOL)isSameFromAndToStartandEndCoordinates:(id)a3
+- (BOOL)isSameFromAndToStartandEndCoordinates:(id)coordinates
 {
-  v4 = a3;
+  coordinatesCopy = coordinates;
   [(RTTripClusterRoadTransitions *)self fromStartLatitude];
   v6 = v5;
-  [v4 fromStartLatitude];
-  if (vabdd_f64(v6, v7) >= 0.0000001 || (-[RTTripClusterRoadTransitions fromStartLongitude](self, "fromStartLongitude"), v9 = v8, [v4 fromStartLongitude], vabdd_f64(v9, v10) >= 0.0000001) || (-[RTTripClusterRoadTransitions fromEndLatitude](self, "fromEndLatitude"), v12 = v11, objc_msgSend(v4, "fromEndLatitude"), vabdd_f64(v12, v13) >= 0.0000001) || (-[RTTripClusterRoadTransitions fromEndLongitude](self, "fromEndLongitude"), v15 = v14, objc_msgSend(v4, "fromEndLongitude"), vabdd_f64(v15, v16) >= 0.0000001) || (-[RTTripClusterRoadTransitions toStartLatitude](self, "toStartLatitude"), v18 = v17, objc_msgSend(v4, "toStartLatitude"), vabdd_f64(v18, v19) >= 0.0000001) || (-[RTTripClusterRoadTransitions toStartLongitude](self, "toStartLongitude"), v21 = v20, objc_msgSend(v4, "toStartLongitude"), vabdd_f64(v21, v22) >= 0.0000001) || (-[RTTripClusterRoadTransitions toEndLatitude](self, "toEndLatitude"), v24 = v23, objc_msgSend(v4, "toEndLatitude"), vabdd_f64(v24, v25) >= 0.0000001))
+  [coordinatesCopy fromStartLatitude];
+  if (vabdd_f64(v6, v7) >= 0.0000001 || (-[RTTripClusterRoadTransitions fromStartLongitude](self, "fromStartLongitude"), v9 = v8, [coordinatesCopy fromStartLongitude], vabdd_f64(v9, v10) >= 0.0000001) || (-[RTTripClusterRoadTransitions fromEndLatitude](self, "fromEndLatitude"), v12 = v11, objc_msgSend(coordinatesCopy, "fromEndLatitude"), vabdd_f64(v12, v13) >= 0.0000001) || (-[RTTripClusterRoadTransitions fromEndLongitude](self, "fromEndLongitude"), v15 = v14, objc_msgSend(coordinatesCopy, "fromEndLongitude"), vabdd_f64(v15, v16) >= 0.0000001) || (-[RTTripClusterRoadTransitions toStartLatitude](self, "toStartLatitude"), v18 = v17, objc_msgSend(coordinatesCopy, "toStartLatitude"), vabdd_f64(v18, v19) >= 0.0000001) || (-[RTTripClusterRoadTransitions toStartLongitude](self, "toStartLongitude"), v21 = v20, objc_msgSend(coordinatesCopy, "toStartLongitude"), vabdd_f64(v21, v22) >= 0.0000001) || (-[RTTripClusterRoadTransitions toEndLatitude](self, "toEndLatitude"), v24 = v23, objc_msgSend(coordinatesCopy, "toEndLatitude"), vabdd_f64(v24, v25) >= 0.0000001))
   {
     v29 = 0;
   }
@@ -183,25 +183,25 @@
   {
     [(RTTripClusterRoadTransitions *)self toEndLongitude];
     v27 = v26;
-    [v4 toEndLongitude];
+    [coordinatesCopy toEndLongitude];
     v29 = vabdd_f64(v27, v28) < 0.0000001;
   }
 
   return v29;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTTripClusterRoadTransitions *)self isEqualToRoadTransition:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTTripClusterRoadTransitions *)self isEqualToRoadTransition:v5];
   }
 
   return v6;
@@ -210,9 +210,9 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(RTTripClusterRoadTransitions *)self clusterID];
-  v5 = [(RTTripClusterRoadTransitions *)self clRoadIDFrom];
-  v6 = [(RTTripClusterRoadTransitions *)self clRoadIDTo];
+  clusterID = [(RTTripClusterRoadTransitions *)self clusterID];
+  clRoadIDFrom = [(RTTripClusterRoadTransitions *)self clRoadIDFrom];
+  clRoadIDTo = [(RTTripClusterRoadTransitions *)self clRoadIDTo];
   v7 = [(RTTripClusterRoadTransitions *)self count];
   [(RTTripClusterRoadTransitions *)self toEndLatitude];
   v9 = v8;
@@ -230,35 +230,35 @@
   v21 = v20;
   [(RTTripClusterRoadTransitions *)self fromStartLongitude];
   v23 = v22;
-  v24 = [(RTTripClusterRoadTransitions *)self startDate];
-  v25 = [(RTTripClusterRoadTransitions *)self startRoadCount];
-  v26 = [(RTTripClusterRoadTransitions *)self endRoadCount];
-  v27 = [(RTTripClusterRoadTransitions *)self roadSequenceNumber];
+  startDate = [(RTTripClusterRoadTransitions *)self startDate];
+  startRoadCount = [(RTTripClusterRoadTransitions *)self startRoadCount];
+  endRoadCount = [(RTTripClusterRoadTransitions *)self endRoadCount];
+  roadSequenceNumber = [(RTTripClusterRoadTransitions *)self roadSequenceNumber];
   [(RTTripClusterRoadTransitions *)self familiarityMetric];
-  v29 = [v3 stringWithFormat:@"clusterID, %@, clRoadIDFrom, %llu, clRoadIDTo, %llu, count, %u, toEndLat, %{sensitive}.6f, toEndLon, %{sensitive}.6f, fromEndLat, %{sensitive}.6f, fromEndLon, %{sensitive}.6f, toStartLat, %{sensitive}.6f, toStartLon, %{sensitive}.6f, fromStartLat, %{sensitive}.6f, fromStartLon, %{sensitive}.6f, startDate, %@, startRoadCnt, %u, endRoadCnt, %u, roadSeqNum, %u, familiarityMetric, %.6f", v4, v5, v6, v7, v9, v11, v13, v15, v17, v19, v21, v23, v24, v25, v26, v27, v28];
+  v29 = [v3 stringWithFormat:@"clusterID, %@, clRoadIDFrom, %llu, clRoadIDTo, %llu, count, %u, toEndLat, %{sensitive}.6f, toEndLon, %{sensitive}.6f, fromEndLat, %{sensitive}.6f, fromEndLon, %{sensitive}.6f, toStartLat, %{sensitive}.6f, toStartLon, %{sensitive}.6f, fromStartLat, %{sensitive}.6f, fromStartLon, %{sensitive}.6f, startDate, %@, startRoadCnt, %u, endRoadCnt, %u, roadSeqNum, %u, familiarityMetric, %.6f", clusterID, clRoadIDFrom, clRoadIDTo, v7, v9, v11, v13, v15, v17, v19, v21, v23, startDate, startRoadCount, endRoadCount, roadSequenceNumber, v28];
 
   return v29;
 }
 
-- (void)incrementCountBy:(unsigned int)a3
+- (void)incrementCountBy:(unsigned int)by
 {
-  v4 = [(RTTripClusterRoadTransitions *)self count]+ a3;
+  v4 = [(RTTripClusterRoadTransitions *)self count]+ by;
 
   [(RTTripClusterRoadTransitions *)self setCount:v4];
 }
 
-+ (id)getRoadTransitionsDataFromRoadTransitions:(id)a3
++ (id)getRoadTransitionsDataFromRoadTransitions:(id)transitions
 {
   aSelector = a2;
   v50 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  transitionsCopy = transitions;
   v34 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v5 = v3;
+  v5 = transitionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v40 objects:v49 count:16];
   if (v6)
   {
@@ -274,21 +274,21 @@
         }
 
         v10 = *(*(&v40 + 1) + 8 * i);
-        v11 = [v10 clusterID];
-        v12 = [v4 objectForKey:v11];
+        clusterID = [v10 clusterID];
+        v12 = [v4 objectForKey:clusterID];
 
         if (v12)
         {
-          v13 = [v10 clusterID];
-          v14 = [v4 objectForKey:v13];
-          [v14 addObject:v10];
+          clusterID2 = [v10 clusterID];
+          clusterID3 = [v4 objectForKey:clusterID2];
+          [clusterID3 addObject:v10];
         }
 
         else
         {
-          v13 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v10, 0, aSelector}];
-          v14 = [v10 clusterID];
-          [v4 setObject:v13 forKey:v14];
+          clusterID2 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v10, 0, aSelector}];
+          clusterID3 = [v10 clusterID];
+          [v4 setObject:clusterID2 forKey:clusterID3];
         }
       }
 
@@ -362,17 +362,17 @@
   return v16;
 }
 
-+ (id)getRoadTransitionsFromRoadTransitionsData:(id)a3
++ (id)getRoadTransitionsFromRoadTransitionsData:(id)data
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   v4 = MEMORY[0x277CBEB98];
   v5 = objc_opt_class();
   v6 = [v4 setWithObjects:{v5, +[RTTripClusterRoadTransitions classForCoder](RTTripClusterRoadTransitions, "classForCoder"), +[RTTripClusterRoadTransitionsData classForCoder](RTTripClusterRoadTransitionsData, "classForCoder"), objc_opt_class(), 0}];
   v7 = MEMORY[0x277CCAAC8];
-  v8 = [v3 roadTransitions];
+  roadTransitions = [dataCopy roadTransitions];
   v31 = 0;
-  v9 = [v7 unarchivedObjectOfClasses:v6 fromData:v8 error:&v31];
+  v9 = [v7 unarchivedObjectOfClasses:v6 fromData:roadTransitions error:&v31];
   v10 = v31;
 
   v29 = 0u;
@@ -447,16 +447,16 @@ LABEL_17:
   return v21;
 }
 
-+ (id)createWithManagedObject:(id)a3
++ (id)createWithManagedObject:(id)object
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = objectCopy;
       v6 = [objc_opt_class() createWithTripClusterRoadTransitionsMO:v5];
 
       goto LABEL_8;
@@ -470,7 +470,7 @@ LABEL_17:
       v11 = v9;
       v12 = 2112;
       v14 = 2080;
-      v13 = v4;
+      v13 = objectCopy;
       v15 = "+[RTTripClusterRoadTransitions(RTCoreDataTransformable) createWithManagedObject:]";
       v16 = 1024;
       v17 = 33;
@@ -484,72 +484,72 @@ LABEL_8:
   return v6;
 }
 
-+ (id)createWithTripClusterRoadTransitionsMO:(id)a3
++ (id)createWithTripClusterRoadTransitionsMO:(id)o
 {
-  v3 = a3;
-  if ([v3 clRoadIDTo])
+  oCopy = o;
+  if ([oCopy clRoadIDTo])
   {
-    v4 = [v3 clRoadIDTo];
+    clRoadIDTo = [oCopy clRoadIDTo];
   }
 
   else
   {
-    v4 = 0;
+    clRoadIDTo = 0;
   }
 
-  if ([v3 clRoadIDFrom])
+  if ([oCopy clRoadIDFrom])
   {
-    v5 = [v3 clRoadIDFrom];
+    clRoadIDFrom = [oCopy clRoadIDFrom];
   }
 
   else
   {
-    v5 = 0;
+    clRoadIDFrom = 0;
   }
 
-  v6 = [MEMORY[0x277CCAD78] UUID];
-  v7 = [v3 clusterID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  clusterID = [oCopy clusterID];
 
-  if (v7)
+  if (clusterID)
   {
-    v8 = [v3 clusterID];
+    clusterID2 = [oCopy clusterID];
 
-    v6 = v8;
+    uUID = clusterID2;
   }
 
   v9 = [RTTripClusterRoadTransitions alloc];
-  [v3 fromStartLatitude];
+  [oCopy fromStartLatitude];
   v11 = v10;
-  [v3 fromStartLongitude];
+  [oCopy fromStartLongitude];
   v13 = v12;
-  [v3 fromEndLatitude];
+  [oCopy fromEndLatitude];
   v15 = v14;
-  [v3 fromEndLongitude];
+  [oCopy fromEndLongitude];
   v17 = v16;
-  [v3 toStartLatitude];
+  [oCopy toStartLatitude];
   v19 = v18;
-  [v3 toStartLongitude];
+  [oCopy toStartLongitude];
   v21 = v20;
-  [v3 toEndLatitude];
+  [oCopy toEndLatitude];
   v23 = v22;
-  [v3 toEndLongitude];
+  [oCopy toEndLongitude];
   v25 = v24;
-  v26 = [v3 count];
-  v27 = [v3 startDate];
-  v28 = [v3 startRoadCount];
-  v29 = [v3 endRoadCount];
-  v30 = [v3 roadSequenceNumber];
-  [v3 familiarityMetric];
-  v32 = [(RTTripClusterRoadTransitions *)v9 initWithclusterID:v6 clRoadIDFrom:v5 clRoadIDTo:v4 fromStartLatitude:v26 fromStartLongitude:v27 fromEndLatitude:v28 fromEndLongitude:v11 toStartLatitude:v13 toStartLongitude:v15 toEndLatitude:v17 toEndLongitude:v19 count:v21 startDate:v23 startRoadCount:v25 endRoadCount:__PAIR64__(v30 roadSequenceNumber:v29) familiarityMetric:v31];
+  v26 = [oCopy count];
+  startDate = [oCopy startDate];
+  startRoadCount = [oCopy startRoadCount];
+  endRoadCount = [oCopy endRoadCount];
+  roadSequenceNumber = [oCopy roadSequenceNumber];
+  [oCopy familiarityMetric];
+  v32 = [(RTTripClusterRoadTransitions *)v9 initWithclusterID:uUID clRoadIDFrom:clRoadIDFrom clRoadIDTo:clRoadIDTo fromStartLatitude:v26 fromStartLongitude:startDate fromEndLatitude:startRoadCount fromEndLongitude:v11 toStartLatitude:v13 toStartLongitude:v15 toEndLatitude:v17 toEndLongitude:v19 count:v21 startDate:v23 startRoadCount:v25 endRoadCount:__PAIR64__(roadSequenceNumber roadSequenceNumber:endRoadCount) familiarityMetric:v31];
 
   return v32;
 }
 
-- (id)managedObjectWithContext:(id)a3
+- (id)managedObjectWithContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v3 = [RTTripClusterRoadTransitionsMO managedObjectWithTripClusterRoadTransitions:self inManagedObjectContext:a3];
+    v3 = [RTTripClusterRoadTransitionsMO managedObjectWithTripClusterRoadTransitions:self inManagedObjectContext:context];
   }
 
   else

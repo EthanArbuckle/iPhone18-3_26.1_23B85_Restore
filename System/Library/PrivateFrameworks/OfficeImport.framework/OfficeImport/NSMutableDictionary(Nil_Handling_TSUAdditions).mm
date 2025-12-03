@@ -11,7 +11,7 @@
   if (result)
   {
 
-    return [a1 setObject:result forKeyedSubscript:a3];
+    return [self setObject:result forKeyedSubscript:a3];
   }
 
   return result;
@@ -21,10 +21,10 @@
 {
   if (a3)
   {
-    return [a1 setObject:? forKeyedSubscript:?];
+    return [self setObject:? forKeyedSubscript:?];
   }
 
-  return a1;
+  return self;
 }
 
 @end

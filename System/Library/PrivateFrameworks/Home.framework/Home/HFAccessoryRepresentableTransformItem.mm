@@ -7,18 +7,18 @@
 
 - (HFAccessoryRepresentable)accessoryRepresentableObject
 {
-  v2 = [(HFTransformItem *)self sourceItem];
-  v3 = [v2 accessoryRepresentableObject];
+  sourceItem = [(HFTransformItem *)self sourceItem];
+  accessoryRepresentableObject = [sourceItem accessoryRepresentableObject];
 
-  return v3;
+  return accessoryRepresentableObject;
 }
 
 - (HFHomeKitObject)homeKitObject
 {
-  v2 = [(HFTransformItem *)self sourceItem];
-  v3 = [v2 homeKitObject];
+  sourceItem = [(HFTransformItem *)self sourceItem];
+  homeKitObject = [sourceItem homeKitObject];
 
-  return v3;
+  return homeKitObject;
 }
 
 @end

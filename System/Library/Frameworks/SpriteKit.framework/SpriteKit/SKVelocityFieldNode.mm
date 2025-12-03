@@ -1,9 +1,9 @@
 @interface SKVelocityFieldNode
 - (SKVelocityFieldNode)init;
-- (SKVelocityFieldNode)initWithCoder:(id)a3;
+- (SKVelocityFieldNode)initWithCoder:(id)coder;
 - (void)_initialize;
-- (void)encodeWithCoder:(id)a3;
-- (void)setVelocityTexture:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setVelocityTexture:(id)texture;
 @end
 
 @implementation SKVelocityFieldNode
@@ -36,20 +36,20 @@
   return v3;
 }
 
-- (SKVelocityFieldNode)initWithCoder:(id)a3
+- (SKVelocityFieldNode)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MEMORY[0x277D3D128] fieldWithGrid:0];
   v11.receiver = self;
   v11.super_class = SKVelocityFieldNode;
-  v6 = [(SKFieldNode *)&v11 initWithCoder:v4 field:v5];
+  v6 = [(SKFieldNode *)&v11 initWithCoder:coderCopy field:v5];
 
   if (v6)
   {
     [(SKVelocityFieldNode *)v6 _initialize];
-    if ([v4 containsValueForKey:@"_velocity"])
+    if ([coderCopy containsValueForKey:@"_velocity"])
     {
-      [v4 decodeCGPointForKey:@"_velocity"];
+      [coderCopy decodeCGPointForKey:@"_velocity"];
       *&v8 = v7;
       *&v9 = v9;
       [(SKFieldNode *)v6 setDirection:COERCE_DOUBLE(__PAIR64__(LODWORD(v9), v8))];
@@ -59,18 +59,18 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SKVelocityFieldNode;
-  [(SKFieldNode *)&v3 encodeWithCoder:a3];
+  [(SKFieldNode *)&v3 encodeWithCoder:coder];
 }
 
-- (void)setVelocityTexture:(id)a3
+- (void)setVelocityTexture:(id)texture
 {
-  v4 = a3;
+  textureCopy = texture;
   LODWORD(v5) = 1.0;
-  v9 = v4;
+  v9 = textureCopy;
   v6 = [SKPhysicsGrid vectorGridFromTexture:v5 accuracy:?];
   v7 = [MEMORY[0x277D3D128] fieldWithGrid:v6];
   field = self->super._field;

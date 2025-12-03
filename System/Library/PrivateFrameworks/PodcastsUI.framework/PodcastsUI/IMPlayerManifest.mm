@@ -1,32 +1,32 @@
 @interface IMPlayerManifest
 + (id)_activityType;
-+ (void)registerManifestForRestoration:(Class)a3;
-+ (void)restoreActivity:(id)a3 completion:(id)a4;
++ (void)registerManifestForRestoration:(Class)restoration;
++ (void)restoreActivity:(id)activity completion:(id)completion;
 - (IMPlayerManifest)init;
 - (NSUserActivity)activity;
 - (id)description;
-- (void)_load:(id)a3;
-- (void)load:(id)a3;
+- (void)_load:(id)_load;
+- (void)load:(id)load;
 - (void)next;
-- (void)nextManifest:(id)a3;
+- (void)nextManifest:(id)manifest;
 - (void)postLoadedAdditionalItemsNotification;
 - (void)postManifestDidChangeNotification;
 - (void)previous;
-- (void)setCurrentIndex:(unint64_t)a3;
-- (void)setCurrentItem:(id)a3;
+- (void)setCurrentIndex:(unint64_t)index;
+- (void)setCurrentItem:(id)item;
 @end
 
 @implementation IMPlayerManifest
 
 + (id)_activityType
 {
-  v2 = [a1 activityTypeSuffix];
-  if (v2)
+  activityTypeSuffix = [self activityTypeSuffix];
+  if (activityTypeSuffix)
   {
-    v3 = [MEMORY[0x277CCA8D8] mainBundle];
-    v4 = [v3 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.playback.%@", v4, v2];
+    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.playback.%@", bundleIdentifier, activityTypeSuffix];
   }
 
   else
@@ -55,59 +55,59 @@
     v2->_currentIndex = 0x7FFFFFFFFFFFFFFFLL;
     v2->_currentItem = 0;
 
-    v9 = [MEMORY[0x277CCAD78] UUID];
-    v10 = [v9 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v2->_identifier;
-    v2->_identifier = v10;
+    v2->_identifier = uUIDString;
   }
 
   return v2;
 }
 
-- (void)load:(id)a3
+- (void)load:(id)load
 {
-  v4 = a3;
+  loadCopy = load;
   if ([(IMPlayerManifest *)self isLoaded])
   {
-    if (v4)
+    if (loadCopy)
     {
-      v4[2](v4);
+      loadCopy[2](loadCopy);
     }
   }
 
   else
   {
-    v5 = self;
-    objc_sync_enter(v5);
-    if ([(IMPlayerManifest *)v5 isLoaded])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if ([(IMPlayerManifest *)selfCopy isLoaded])
     {
-      if (v4)
+      if (loadCopy)
       {
-        v4[2](v4);
+        loadCopy[2](loadCopy);
       }
     }
 
     else
     {
-      [(IMPlayerManifest *)v5 setIsLoaded:1];
+      [(IMPlayerManifest *)selfCopy setIsLoaded:1];
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = __25__IMPlayerManifest_load___block_invoke;
       v6[3] = &unk_2782BDFA0;
-      v6[4] = v5;
-      v7 = v4;
+      v6[4] = selfCopy;
+      v7 = loadCopy;
       [IMAVPlayer performOnMainQueue:v6];
     }
 
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 }
 
-- (void)_load:(id)a3
+- (void)_load:(id)_load
 {
-  if (a3)
+  if (_load)
   {
-    (*(a3 + 2))(a3);
+    (*(_load + 2))(_load);
   }
 }
 
@@ -141,36 +141,36 @@
   [(IMPlayerManifest *)self setCurrentIndex:v3];
 }
 
-- (void)setCurrentItem:(id)a3
+- (void)setCurrentItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   currentItem = self->_currentItem;
-  if (currentItem != v5)
+  if (currentItem != itemCopy)
   {
-    v9 = v5;
-    currentItem = [(IMPlayerItem *)currentItem isEqual:v5];
-    v5 = v9;
+    v9 = itemCopy;
+    currentItem = [(IMPlayerItem *)currentItem isEqual:itemCopy];
+    itemCopy = v9;
     if ((currentItem & 1) == 0)
     {
-      objc_storeStrong(&self->_currentItem, a3);
-      v7 = [(IMPlayerManifest *)self activity];
-      [(IMPlayerItem *)v9 updateActivity:v7];
+      objc_storeStrong(&self->_currentItem, item);
+      activity = [(IMPlayerManifest *)self activity];
+      [(IMPlayerItem *)v9 updateActivity:activity];
 
-      v8 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v8 postNotificationName:@"IMPlayerManifestCurrentItemDidChange" object:self];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"IMPlayerManifestCurrentItemDidChange" object:self];
 
-      v5 = v9;
+      itemCopy = v9;
     }
   }
 
-  MEMORY[0x2821F96F8](currentItem, v5);
+  MEMORY[0x2821F96F8](currentItem, itemCopy);
 }
 
-- (void)setCurrentIndex:(unint64_t)a3
+- (void)setCurrentIndex:(unint64_t)index
 {
   [(IMPlayerManifest *)self assertIndexInBounds:?];
-  self->_currentIndex = a3;
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  self->_currentIndex = index;
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
 
     [(IMPlayerManifest *)self setCurrentItem:0];
@@ -178,33 +178,33 @@
 
   else
   {
-    v5 = [(IMPlayerManifest *)self objectAtIndex:a3];
+    v5 = [(IMPlayerManifest *)self objectAtIndex:index];
     [(IMPlayerManifest *)self setCurrentItem:v5];
   }
 }
 
-- (void)nextManifest:(id)a3
+- (void)nextManifest:(id)manifest
 {
-  if (a3)
+  if (manifest)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(manifest + 2))(manifest, 0);
   }
 }
 
 - (NSUserActivity)activity
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() _activityType];
-  if (v3)
+  _activityType = [objc_opt_class() _activityType];
+  if (_activityType)
   {
     if (!self->_activity)
     {
-      v4 = [MEMORY[0x277D3DB60] isRunningOnTV];
+      isRunningOnTV = [MEMORY[0x277D3DB60] isRunningOnTV];
       v5 = objc_alloc(MEMORY[0x277CC1EF0]);
       v6 = v5;
-      if (v4)
+      if (isRunningOnTV)
       {
-        v7 = [v5 initWithActivityType:v3];
+        v7 = [v5 initWithActivityType:_activityType];
         activity = self->_activity;
         self->_activity = v7;
       }
@@ -214,7 +214,7 @@
         v19 = *MEMORY[0x277D77BB0];
         v20[0] = MEMORY[0x277CBEC28];
         v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-        v11 = [v6 _initWithTypeIdentifier:v3 suggestedActionType:1 options:v10];
+        v11 = [v6 _initWithTypeIdentifier:_activityType suggestedActionType:1 options:v10];
         v12 = self->_activity;
         self->_activity = v11;
       }
@@ -222,21 +222,21 @@
       [(NSUserActivity *)self->_activity setContentUserAction:*MEMORY[0x277CCA848]];
     }
 
-    v13 = [(IMPlayerManifest *)self title];
+    title = [(IMPlayerManifest *)self title];
 
-    if (v13)
+    if (title)
     {
       v14 = self->_activity;
-      v15 = [(IMPlayerManifest *)self title];
-      [(NSUserActivity *)v14 setValue:v15 forKey:@"IMPlayerManifestTitle"];
+      title2 = [(IMPlayerManifest *)self title];
+      [(NSUserActivity *)v14 setValue:title2 forKey:@"IMPlayerManifestTitle"];
     }
 
-    v16 = [(IMPlayerManifest *)self currentItem];
+    currentItem = [(IMPlayerManifest *)self currentItem];
 
-    if (v16)
+    if (currentItem)
     {
-      v17 = [(IMPlayerManifest *)self currentItem];
-      [v17 updateActivity:self->_activity];
+      currentItem2 = [(IMPlayerManifest *)self currentItem];
+      [currentItem2 updateActivity:self->_activity];
     }
 
     v9 = self->_activity;
@@ -250,13 +250,13 @@
   return v9;
 }
 
-+ (void)restoreActivity:(id)a3 completion:(id)a4
++ (void)restoreActivity:(id)activity completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  activityCopy = activity;
+  completionCopy = completion;
   v7 = _activityTypeToClassMap;
-  v8 = [v5 activityType];
-  v9 = [v7 objectForKey:v8];
+  activityType = [activityCopy activityType];
+  v9 = [v7 objectForKey:activityType];
 
   if (v9)
   {
@@ -264,14 +264,14 @@
     v10[1] = 3221225472;
     v10[2] = __47__IMPlayerManifest_restoreActivity_completion___block_invoke;
     v10[3] = &unk_2782BE2D0;
-    v11 = v5;
-    v12 = v6;
+    v11 = activityCopy;
+    v12 = completionCopy;
     [v9 createManifestForActivity:v11 completion:v10];
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -286,23 +286,23 @@ void __47__IMPlayerManifest_restoreActivity_completion___block_invoke(uint64_t a
   (*(*(a1 + 40) + 16))();
 }
 
-+ (void)registerManifestForRestoration:(Class)a3
++ (void)registerManifestForRestoration:(Class)restoration
 {
   if (registerManifestForRestoration__onceToken != -1)
   {
     +[IMPlayerManifest registerManifestForRestoration:];
   }
 
-  v4 = [(objc_class *)a3 _activityType];
-  v5 = v4;
-  if (v4)
+  _activityType = [(objc_class *)restoration _activityType];
+  v5 = _activityType;
+  if (_activityType)
   {
-    v6 = v4;
-    v4 = [_activityTypeToClassMap setObject:a3 forKey:v4];
+    v6 = _activityType;
+    _activityType = [_activityTypeToClassMap setObject:restoration forKey:_activityType];
     v5 = v6;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](_activityType, v5);
 }
 
 uint64_t __51__IMPlayerManifest_registerManifestForRestoration___block_invoke()
@@ -316,14 +316,14 @@ uint64_t __51__IMPlayerManifest_registerManifestForRestoration___block_invoke()
 
 - (void)postLoadedAdditionalItemsNotification
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"IMPlayerManifestDidLoadAdditionalItems" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"IMPlayerManifestDidLoadAdditionalItems" object:self];
 }
 
 - (void)postManifestDidChangeNotification
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"IMPlayerManifestDidChange" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"IMPlayerManifestDidChange" object:self];
 }
 
 - (id)description

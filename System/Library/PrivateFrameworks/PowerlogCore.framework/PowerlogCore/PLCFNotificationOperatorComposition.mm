@@ -1,16 +1,16 @@
 @interface PLCFNotificationOperatorComposition
-- (PLCFNotificationOperatorComposition)initWithWorkQueue:(id)a3 forNotification:(id)a4 requireState:(BOOL)a5 withBlock:(id)a6;
+- (PLCFNotificationOperatorComposition)initWithWorkQueue:(id)queue forNotification:(id)notification requireState:(BOOL)state withBlock:(id)block;
 - (PLOperator)operator;
 - (void)dealloc;
 @end
 
 @implementation PLCFNotificationOperatorComposition
 
-- (PLCFNotificationOperatorComposition)initWithWorkQueue:(id)a3 forNotification:(id)a4 requireState:(BOOL)a5 withBlock:(id)a6
+- (PLCFNotificationOperatorComposition)initWithWorkQueue:(id)queue forNotification:(id)notification requireState:(BOOL)state withBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  queueCopy = queue;
+  notificationCopy = notification;
+  blockCopy = block;
   v20.receiver = self;
   v20.super_class = PLCFNotificationOperatorComposition;
   v14 = [(PLCFNotificationOperatorComposition *)&v20 init];
@@ -20,13 +20,13 @@
     goto LABEL_3;
   }
 
-  objc_storeStrong(&v14->_workQueue, a3);
-  v16 = MEMORY[0x1DA71B0D0](v13);
+  objc_storeStrong(&v14->_workQueue, queue);
+  v16 = MEMORY[0x1DA71B0D0](blockCopy);
   operatorBlock = v15->_operatorBlock;
   v15->_operatorBlock = v16;
 
-  objc_storeStrong(&v15->_notificationName, a4);
-  v15->_isStateRequired = a5;
+  objc_storeStrong(&v15->_notificationName, notification);
+  v15->_isStateRequired = state;
   v15->_stateToken = 0;
   if (![(PLCFNotificationOperatorComposition *)v15 listenForNotifications:1])
   {

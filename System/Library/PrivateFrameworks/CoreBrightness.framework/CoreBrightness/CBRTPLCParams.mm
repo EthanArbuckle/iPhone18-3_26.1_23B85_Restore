@@ -1,25 +1,25 @@
 @interface CBRTPLCParams
-- (BOOL)loadParametersFromParser:(id)a3;
-- (CBRTPLCParams)initWithParser:(id)a3;
+- (BOOL)loadParametersFromParser:(id)parser;
+- (CBRTPLCParams)initWithParser:(id)parser;
 - (void)dealloc;
 @end
 
 @implementation CBRTPLCParams
 
-- (BOOL)loadParametersFromParser:(id)a3
+- (BOOL)loadParametersFromParser:(id)parser
 {
-  v29 = self;
+  selfCopy = self;
   v28 = a2;
-  v27 = a3;
-  if (a3)
+  parserCopy = parser;
+  if (parser)
   {
     v23 = 0;
-    v22 = [v27 loadInt:@"supports-rtplc" toDestination:&v23];
+    v22 = [parserCopy loadInt:@"supports-rtplc" toDestination:&v23];
     if ((v22 & 1) != 0 && v23)
     {
-      if (v29->_log)
+      if (selfCopy->_log)
       {
-        v7 = v29->_log;
+        v7 = selfCopy->_log;
       }
 
       else
@@ -52,9 +52,9 @@
 
     else
     {
-      if (v29->_log)
+      if (selfCopy->_log)
       {
-        v11 = v29->_log;
+        v11 = selfCopy->_log;
       }
 
       else
@@ -88,9 +88,9 @@
 
   else
   {
-    if (v29->_log)
+    if (selfCopy->_log)
     {
-      v15 = v29->_log;
+      v15 = selfCopy->_log;
     }
 
     else
@@ -122,54 +122,54 @@
   }
 }
 
-- (CBRTPLCParams)initWithParser:(id)a3
+- (CBRTPLCParams)initWithParser:(id)parser
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
+  parserCopy = parser;
   v7.receiver = self;
   v7.super_class = CBRTPLCParams;
-  v10 = [(CBRTPLCParams *)&v7 init];
-  if (!v10)
+  selfCopy = [(CBRTPLCParams *)&v7 init];
+  if (!selfCopy)
   {
-    return v10;
+    return selfCopy;
   }
 
-  if (!v8)
+  if (!parserCopy)
   {
-    return v10;
+    return selfCopy;
   }
 
   v3 = os_log_create("com.apple.CoreBrightness.BacklightNode", "RTPLC");
-  v10->_log = v3;
-  if ([(CBRTPLCParams *)v10 loadParametersFromParser:v8])
+  selfCopy->_log = v3;
+  if ([(CBRTPLCParams *)selfCopy loadParametersFromParser:parserCopy])
   {
     v4 = [CBRTPLCRecoveryCurveParams alloc];
-    v5 = [(CBRTPLCRecoveryCurveParams *)v4 initWithParser:v8];
-    v10->_recoveryCurve = v5;
-    if (v10->_recoveryCurve)
+    v5 = [(CBRTPLCRecoveryCurveParams *)v4 initWithParser:parserCopy];
+    selfCopy->_recoveryCurve = v5;
+    if (selfCopy->_recoveryCurve)
     {
-      return v10;
+      return selfCopy;
     }
   }
 
-  MEMORY[0x1E69E5920](v10);
-  v10 = 0;
+  MEMORY[0x1E69E5920](selfCopy);
+  selfCopy = 0;
   return 0;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v2 = MEMORY[0x1E69E5920](self->_recoveryCurve).n128_u64[0];
-  if (v5->_log)
+  if (selfCopy->_log)
   {
-    v2 = MEMORY[0x1E69E5920](v5->_log).n128_u64[0];
-    v5->_log = 0;
+    v2 = MEMORY[0x1E69E5920](selfCopy->_log).n128_u64[0];
+    selfCopy->_log = 0;
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = CBRTPLCParams;
   [(CBRTPLCParams *)&v3 dealloc];
 }

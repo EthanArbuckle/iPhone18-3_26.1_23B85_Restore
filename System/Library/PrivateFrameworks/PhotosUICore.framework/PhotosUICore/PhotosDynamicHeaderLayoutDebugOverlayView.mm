@@ -3,14 +3,14 @@
 - (NSCopying)userData;
 - (void)becomeReusable;
 - (void)layoutSubviews;
-- (void)setUserData:(id)a3;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PhotosDynamicHeaderLayoutDebugOverlayView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A41FD9B4();
 }
 
@@ -21,9 +21,9 @@
   return v2;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICoreP33_D2105462B28C8B244908FEC7DAEF9E2941PhotosDynamicHeaderLayoutDebugOverlayView_userData) = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC12PhotosUICoreP33_D2105462B28C8B244908FEC7DAEF9E2941PhotosDynamicHeaderLayoutDebugOverlayView_userData) = data;
   swift_unknownObjectRetain_n();
   self;
   swift_unknownObjectRelease();

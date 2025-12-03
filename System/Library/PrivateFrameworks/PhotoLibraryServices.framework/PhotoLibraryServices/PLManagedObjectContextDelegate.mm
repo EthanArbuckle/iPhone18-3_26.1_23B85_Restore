@@ -2,11 +2,11 @@
 - (NSSQLiteDatabaseTraceDelegate)fetchRecorder;
 - (NSSQLiteDatabaseTraceDelegate)photoKitFetchInstrumentation;
 - (NSSQLiteDatabaseTraceDelegate)photoKitStatsTracker;
-- (void)managedObjectContext:(id)a3 didExecuteFetchRequest:(id)a4 withSQLString:(id)a5 bindVariables:(id)a6 rowCount:(int64_t)a7;
-- (void)managedObjectContext:(id)a3 willExecuteFetchRequest:(id)a4;
-- (void)setFetchRecorder:(id)a3;
-- (void)setPhotoKitFetchInstrumentation:(id)a3;
-- (void)setPhotoKitStatsTracker:(id)a3;
+- (void)managedObjectContext:(id)context didExecuteFetchRequest:(id)request withSQLString:(id)string bindVariables:(id)variables rowCount:(int64_t)count;
+- (void)managedObjectContext:(id)context willExecuteFetchRequest:(id)request;
+- (void)setFetchRecorder:(id)recorder;
+- (void)setPhotoKitFetchInstrumentation:(id)instrumentation;
+- (void)setPhotoKitStatsTracker:(id)tracker;
 @end
 
 @implementation PLManagedObjectContextDelegate
@@ -53,54 +53,54 @@ id __62__PLManagedObjectContextDelegate_photoKitFetchInstrumentation__block_invo
   return WeakRetained;
 }
 
-- (void)managedObjectContext:(id)a3 didExecuteFetchRequest:(id)a4 withSQLString:(id)a5 bindVariables:(id)a6 rowCount:(int64_t)a7
+- (void)managedObjectContext:(id)context didExecuteFetchRequest:(id)request withSQLString:(id)string bindVariables:(id)variables rowCount:(int64_t)count
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(PLManagedObjectContextDelegate *)self fetchRecorder];
-  [v16 managedObjectContext:v15 didExecuteFetchRequest:v14 withSQLString:v13 bindVariables:v12 rowCount:a7];
+  variablesCopy = variables;
+  stringCopy = string;
+  requestCopy = request;
+  contextCopy = context;
+  fetchRecorder = [(PLManagedObjectContextDelegate *)self fetchRecorder];
+  [fetchRecorder managedObjectContext:contextCopy didExecuteFetchRequest:requestCopy withSQLString:stringCopy bindVariables:variablesCopy rowCount:count];
 
-  v17 = [(PLManagedObjectContextDelegate *)self photoKitFetchInstrumentation];
-  [v17 managedObjectContext:v15 didExecuteFetchRequest:v14 withSQLString:v13 bindVariables:v12 rowCount:a7];
+  photoKitFetchInstrumentation = [(PLManagedObjectContextDelegate *)self photoKitFetchInstrumentation];
+  [photoKitFetchInstrumentation managedObjectContext:contextCopy didExecuteFetchRequest:requestCopy withSQLString:stringCopy bindVariables:variablesCopy rowCount:count];
 
-  v18 = [(PLManagedObjectContextDelegate *)self photoKitStatsTracker];
-  [v18 managedObjectContext:v15 didExecuteFetchRequest:v14 withSQLString:v13 bindVariables:v12 rowCount:a7];
+  photoKitStatsTracker = [(PLManagedObjectContextDelegate *)self photoKitStatsTracker];
+  [photoKitStatsTracker managedObjectContext:contextCopy didExecuteFetchRequest:requestCopy withSQLString:stringCopy bindVariables:variablesCopy rowCount:count];
 }
 
-- (void)managedObjectContext:(id)a3 willExecuteFetchRequest:(id)a4
+- (void)managedObjectContext:(id)context willExecuteFetchRequest:(id)request
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLManagedObjectContextDelegate *)self fetchRecorder];
-  [v8 managedObjectContext:v7 willExecuteFetchRequest:v6];
+  requestCopy = request;
+  contextCopy = context;
+  fetchRecorder = [(PLManagedObjectContextDelegate *)self fetchRecorder];
+  [fetchRecorder managedObjectContext:contextCopy willExecuteFetchRequest:requestCopy];
 
-  v9 = [(PLManagedObjectContextDelegate *)self photoKitFetchInstrumentation];
-  [v9 managedObjectContext:v7 willExecuteFetchRequest:v6];
+  photoKitFetchInstrumentation = [(PLManagedObjectContextDelegate *)self photoKitFetchInstrumentation];
+  [photoKitFetchInstrumentation managedObjectContext:contextCopy willExecuteFetchRequest:requestCopy];
 
-  v10 = [(PLManagedObjectContextDelegate *)self photoKitStatsTracker];
-  [v10 managedObjectContext:v7 willExecuteFetchRequest:v6];
+  photoKitStatsTracker = [(PLManagedObjectContextDelegate *)self photoKitStatsTracker];
+  [photoKitStatsTracker managedObjectContext:contextCopy willExecuteFetchRequest:requestCopy];
 }
 
-- (void)setPhotoKitStatsTracker:(id)a3
+- (void)setPhotoKitStatsTracker:(id)tracker
 {
-  v4 = a3;
-  v3 = v4;
+  trackerCopy = tracker;
+  v3 = trackerCopy;
   PLRunWithUnfairLock();
 }
 
-- (void)setPhotoKitFetchInstrumentation:(id)a3
+- (void)setPhotoKitFetchInstrumentation:(id)instrumentation
 {
-  v4 = a3;
-  v3 = v4;
+  instrumentationCopy = instrumentation;
+  v3 = instrumentationCopy;
   PLRunWithUnfairLock();
 }
 
-- (void)setFetchRecorder:(id)a3
+- (void)setFetchRecorder:(id)recorder
 {
-  v4 = a3;
-  v3 = v4;
+  recorderCopy = recorder;
+  v3 = recorderCopy;
   PLRunWithUnfairLock();
 }
 

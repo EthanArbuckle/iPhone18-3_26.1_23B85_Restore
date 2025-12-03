@@ -1,6 +1,6 @@
 @interface TRIFBTrialManagedAsset
 - (BOOL)hasOnDemandFlag;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOnDemand;
 - (BOOL)verifyUTF8Fields;
 - (NSData)assetIdAsData;
@@ -11,13 +11,13 @@
 - (NSString)path;
 - (TRIFBCloudKitAssetRecordAsset)cloudKitMetadataAsAsset;
 - (TRIFBCloudKitTreatmentRecordAsset)cloudKitMetadataAsTreatment;
-- (TRIFBTrialManagedAsset)initWithBufRef:(id)a3 cppPointer:(const TrialManagedAsset *)a4;
+- (TRIFBTrialManagedAsset)initWithBufRef:(id)ref cppPointer:(const TrialManagedAsset *)pointer;
 - (const)assetIdAsCString;
 - (const)assetNameAsCString;
 - (const)pathAsCString;
-- (id)deepCopyUsingBufferBuilder:(id)a3;
-- (id)deepCopyUsingBufferBuilder:(id)a3 changes:(id)a4;
-- (id)initVerifiedRootObjectFromData:(id)a3 requireUTF8:(BOOL)a4 maxDepth:(unsigned int)a5 maxTables:(unsigned int)a6;
+- (id)deepCopyUsingBufferBuilder:(id)builder;
+- (id)deepCopyUsingBufferBuilder:(id)builder changes:(id)changes;
+- (id)initVerifiedRootObjectFromData:(id)data requireUTF8:(BOOL)f8 maxDepth:(unsigned int)depth maxTables:(unsigned int)tables;
 - (unint64_t)downloadSize;
 - (unint64_t)hash;
 - (unsigned)cloudKitMetadataType;
@@ -52,8 +52,8 @@
 {
   if ([(TRIFBTrialManagedAsset *)self cloudKitMetadataType]!= 1)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1142 description:{@"Accessed union field TRIFBTrialManagedAsset.cloudKitMetadataAsTreatment, but the value stored in the union does not match this type."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1142 description:{@"Accessed union field TRIFBTrialManagedAsset.cloudKitMetadataAsTreatment, but the value stored in the union does not match this type."}];
   }
 
   ptr = self->_ptr;
@@ -66,8 +66,8 @@
 
   else
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1144 description:{@"Invalid parameter not satisfying: %@", @"nested"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1144 description:{@"Invalid parameter not satisfying: %@", @"nested"}];
 
     v9 = 0;
   }
@@ -163,8 +163,8 @@
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1113 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1113 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
 
     v7 = 0;
   }
@@ -177,13 +177,13 @@
 
 - (BOOL)verifyUTF8Fields
 {
-  v3 = [(TRIFBTrialManagedAsset *)self cloudKitMetadataType];
-  if (v3 == 2)
+  cloudKitMetadataType = [(TRIFBTrialManagedAsset *)self cloudKitMetadataType];
+  if (cloudKitMetadataType == 2)
   {
-    v4 = [(TRIFBTrialManagedAsset *)self cloudKitMetadataAsAsset];
-    v5 = [v4 verifyUTF8Fields];
+    cloudKitMetadataAsAsset = [(TRIFBTrialManagedAsset *)self cloudKitMetadataAsAsset];
+    verifyUTF8Fields = [cloudKitMetadataAsAsset verifyUTF8Fields];
 LABEL_5:
-    v6 = v5;
+    v6 = verifyUTF8Fields;
 
     if ((v6 & 1) == 0)
     {
@@ -194,10 +194,10 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v3 == 1)
+  if (cloudKitMetadataType == 1)
   {
-    v4 = [(TRIFBTrialManagedAsset *)self cloudKitMetadataAsTreatment];
-    v5 = [v4 verifyUTF8Fields];
+    cloudKitMetadataAsAsset = [(TRIFBTrialManagedAsset *)self cloudKitMetadataAsTreatment];
+    verifyUTF8Fields = [cloudKitMetadataAsAsset verifyUTF8Fields];
     goto LABEL_5;
   }
 
@@ -270,8 +270,8 @@ LABEL_21:
 {
   if ([(TRIFBTrialManagedAsset *)self cloudKitMetadataType]!= 2)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1152 description:{@"Accessed union field TRIFBTrialManagedAsset.cloudKitMetadataAsAsset, but the value stored in the union does not match this type."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1152 description:{@"Accessed union field TRIFBTrialManagedAsset.cloudKitMetadataAsAsset, but the value stored in the union does not match this type."}];
   }
 
   ptr = self->_ptr;
@@ -284,8 +284,8 @@ LABEL_21:
 
   else
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1154 description:{@"Invalid parameter not satisfying: %@", @"nested"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1154 description:{@"Invalid parameter not satisfying: %@", @"nested"}];
 
     v9 = 0;
   }
@@ -319,12 +319,12 @@ LABEL_21:
     v6 = &ptr[v4];
     v7 = *ptr[v4].var0;
     v8 = objc_autoreleasePoolPush();
-    v9 = [(AFBBufRef *)self->_br data];
+    data = [(AFBBufRef *)self->_br data];
     var0 = v6[v7].var0;
-    v11 = var0 - [v9 bytes];
+    v11 = var0 - [data bytes];
 
-    v12 = [(AFBBufRef *)self->_br data];
-    v13 = [v12 subdataWithRange:{v11 + 4, *var0}];
+    data2 = [(AFBBufRef *)self->_br data];
+    v13 = [data2 subdataWithRange:{v11 + 4, *var0}];
 
     objc_autoreleasePoolPop(v8);
   }
@@ -348,8 +348,8 @@ LABEL_21:
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1119 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1119 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
 
     v7 = 0;
   }
@@ -368,18 +368,18 @@ LABEL_21:
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1125 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1125 description:{@"Invalid parameter not satisfying: %@", @"fbs"}];
 
     var0 = 0;
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = [(AFBBufRef *)self->_br data];
-  v11 = var0 - [v10 bytes];
+  data = [(AFBBufRef *)self->_br data];
+  v11 = var0 - [data bytes];
 
-  v12 = [(AFBBufRef *)self->_br data];
-  v13 = [v12 subdataWithRange:{v11 + 4, *var0}];
+  data2 = [(AFBBufRef *)self->_br data];
+  v13 = [data2 subdataWithRange:{v11 + 4, *var0}];
 
   objc_autoreleasePoolPop(v9);
 
@@ -410,12 +410,12 @@ LABEL_21:
     v6 = &ptr[v4];
     v7 = *ptr[v4].var0;
     v8 = objc_autoreleasePoolPush();
-    v9 = [(AFBBufRef *)self->_br data];
+    data = [(AFBBufRef *)self->_br data];
     var0 = v6[v7].var0;
-    v11 = var0 - [v9 bytes];
+    v11 = var0 - [data bytes];
 
-    v12 = [(AFBBufRef *)self->_br data];
-    v13 = [v12 subdataWithRange:{v11 + 4, *var0}];
+    data2 = [(AFBBufRef *)self->_br data];
+    v13 = [data2 subdataWithRange:{v11 + 4, *var0}];
 
     objc_autoreleasePoolPop(v8);
   }
@@ -428,36 +428,36 @@ LABEL_21:
   return v13;
 }
 
-- (id)deepCopyUsingBufferBuilder:(id)a3
+- (id)deepCopyUsingBufferBuilder:(id)builder
 {
-  v3 = [(TRIFBTrialManagedAsset *)self deepCopyUsingBufferBuilder:a3 changes:0];
+  v3 = [(TRIFBTrialManagedAsset *)self deepCopyUsingBufferBuilder:builder changes:0];
 
   return v3;
 }
 
-- (id)deepCopyUsingBufferBuilder:(id)a3 changes:(id)a4
+- (id)deepCopyUsingBufferBuilder:(id)builder changes:(id)changes
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  builderCopy = builder;
+  changesCopy = changes;
+  if (!builderCopy)
   {
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1214 description:{@"Invalid parameter not satisfying: %@", @"bufferBuilder"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:1214 description:{@"Invalid parameter not satisfying: %@", @"bufferBuilder"}];
   }
 
   v9 = objc_autoreleasePoolPush();
-  if (!v8)
+  if (!changesCopy)
   {
     goto LABEL_6;
   }
 
-  if (v8[8] == 1)
+  if (changesCopy[8] == 1)
   {
-    v12 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(v8 + 3)];
+    v12 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(changesCopy + 3)];
     goto LABEL_13;
   }
 
-  if (v8[8])
+  if (changesCopy[8])
   {
     v12 = 0;
   }
@@ -466,10 +466,10 @@ LABEL_21:
   {
 LABEL_6:
     v10 = objc_autoreleasePoolPush();
-    v11 = [(TRIFBTrialManagedAsset *)self pathAsCString];
-    if (v11)
+    pathAsCString = [(TRIFBTrialManagedAsset *)self pathAsCString];
+    if (pathAsCString)
     {
-      v12 = [v7 createStringWithCString:v11];
+      v12 = [builderCopy createStringWithCString:pathAsCString];
     }
 
     else
@@ -478,14 +478,14 @@ LABEL_6:
     }
 
     objc_autoreleasePoolPop(v10);
-    if (!v8)
+    if (!changesCopy)
     {
 LABEL_15:
       v13 = objc_autoreleasePoolPush();
-      v14 = [(TRIFBTrialManagedAsset *)self assetIdAsCString];
-      if (v14)
+      assetIdAsCString = [(TRIFBTrialManagedAsset *)self assetIdAsCString];
+      if (assetIdAsCString)
       {
-        v15 = [v7 createStringWithCString:v14];
+        v15 = [builderCopy createStringWithCString:assetIdAsCString];
       }
 
       else
@@ -494,7 +494,7 @@ LABEL_15:
       }
 
       objc_autoreleasePoolPop(v13);
-      if (!v8)
+      if (!changesCopy)
       {
         goto LABEL_23;
       }
@@ -504,14 +504,14 @@ LABEL_15:
   }
 
 LABEL_13:
-  if (v8[18] == 1)
+  if (changesCopy[18] == 1)
   {
-    v15 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(v8 + 5)];
+    v15 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(changesCopy + 5)];
   }
 
   else
   {
-    if (!v8[18])
+    if (!changesCopy[18])
     {
       goto LABEL_15;
     }
@@ -520,28 +520,28 @@ LABEL_13:
   }
 
 LABEL_21:
-  if (v8[25] == 1)
+  if (changesCopy[25] == 1)
   {
-    v19 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(v8 + 7)];
+    v19 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(changesCopy + 7)];
     goto LABEL_32;
   }
 
-  if (v8[25])
+  if (changesCopy[25])
   {
     v19 = 0;
     goto LABEL_32;
   }
 
 LABEL_23:
-  v16 = [(TRIFBTrialManagedAsset *)self cloudKitMetadataType];
-  if (v16 == 1)
+  cloudKitMetadataType = [(TRIFBTrialManagedAsset *)self cloudKitMetadataType];
+  if (cloudKitMetadataType == 1)
   {
-    v17 = [(TRIFBTrialManagedAsset *)self cloudKitMetadataAsTreatment];
-    v18 = [v17 deepCopyUsingBufferBuilder:v7];
+    cloudKitMetadataAsTreatment = [(TRIFBTrialManagedAsset *)self cloudKitMetadataAsTreatment];
+    v18 = [cloudKitMetadataAsTreatment deepCopyUsingBufferBuilder:builderCopy];
 LABEL_29:
     v19 = v18;
 
-    if (!v8)
+    if (!changesCopy)
     {
       goto LABEL_34;
     }
@@ -549,22 +549,22 @@ LABEL_29:
     goto LABEL_32;
   }
 
-  if (v16 == 2)
+  if (cloudKitMetadataType == 2)
   {
-    v17 = [(TRIFBTrialManagedAsset *)self cloudKitMetadataAsAsset];
-    v18 = [v17 deepCopyUsingBufferBuilder:v7];
+    cloudKitMetadataAsTreatment = [(TRIFBTrialManagedAsset *)self cloudKitMetadataAsAsset];
+    v18 = [cloudKitMetadataAsTreatment deepCopyUsingBufferBuilder:builderCopy];
     goto LABEL_29;
   }
 
   v19 = 0;
-  if (!v8)
+  if (!changesCopy)
   {
 LABEL_34:
     v20 = objc_autoreleasePoolPush();
-    v21 = [(TRIFBTrialManagedAsset *)self assetNameAsCString];
-    if (v21)
+    assetNameAsCString = [(TRIFBTrialManagedAsset *)self assetNameAsCString];
+    if (assetNameAsCString)
     {
-      v22 = [v7 createStringWithCString:v21];
+      v22 = [builderCopy createStringWithCString:assetNameAsCString];
     }
 
     else
@@ -577,14 +577,14 @@ LABEL_34:
   }
 
 LABEL_32:
-  if (v8[48] == 1)
+  if (changesCopy[48] == 1)
   {
-    v22 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(v8 + 13)];
+    v22 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(changesCopy + 13)];
   }
 
   else
   {
-    if (!v8[48])
+    if (!changesCopy[48])
     {
       goto LABEL_34;
     }
@@ -599,16 +599,16 @@ LABEL_40:
   v31[3] = &unk_27885E7B0;
   v23 = v12;
   v32 = v23;
-  v24 = v8;
+  v24 = changesCopy;
   v33 = v24;
-  v34 = self;
+  selfCopy = self;
   v25 = v15;
   v35 = v25;
   v26 = v19;
   v36 = v26;
   v37 = v22;
   v27 = v22;
-  v28 = [v7 trifbCreateTrialManagedAssetUsingBlock:v31];
+  v28 = [builderCopy trifbCreateTrialManagedAssetUsingBlock:v31];
 
   objc_autoreleasePoolPop(v9);
 
@@ -747,30 +747,30 @@ LABEL_39:
 LABEL_40:
 }
 
-- (TRIFBTrialManagedAsset)initWithBufRef:(id)a3 cppPointer:(const TrialManagedAsset *)a4
+- (TRIFBTrialManagedAsset)initWithBufRef:(id)ref cppPointer:(const TrialManagedAsset *)pointer
 {
-  v7 = a3;
+  refCopy = ref;
   v11.receiver = self;
   v11.super_class = TRIFBTrialManagedAsset;
   v8 = [(TRIFBTrialManagedAsset *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_br, a3);
-    v9->_ptr = a4;
+    objc_storeStrong(&v8->_br, ref);
+    v9->_ptr = pointer;
   }
 
   return v9;
 }
 
-- (id)initVerifiedRootObjectFromData:(id)a3 requireUTF8:(BOOL)a4 maxDepth:(unsigned int)a5 maxTables:(unsigned int)a6
+- (id)initVerifiedRootObjectFromData:(id)data requireUTF8:(BOOL)f8 maxDepth:(unsigned int)depth maxTables:(unsigned int)tables
 {
-  v10 = a3;
+  dataCopy = data;
   v11 = objc_autoreleasePoolPush();
-  v12 = [v10 bytes];
-  if (v12)
+  bytes = [dataCopy bytes];
+  if (bytes)
   {
-    v13 = v12;
+    v13 = bytes;
   }
 
   else
@@ -778,13 +778,13 @@ LABEL_40:
     v13 = &emptyCArrayStorage;
   }
 
-  v14 = [v10 length];
+  v14 = [dataCopy length];
   v23 = v13;
   v24 = v14;
   LODWORD(v25) = 0;
-  HIDWORD(v25) = a5;
+  HIDWORD(v25) = depth;
   LODWORD(v26) = 0;
-  HIDWORD(v26) = a6;
+  HIDWORD(v26) = tables;
   v27 = 0;
   LOBYTE(v28) = 1;
   if (v14 >= 0x7FFFFFFF)
@@ -796,24 +796,24 @@ LABEL_40:
   {
     v17 = *v13->var0;
     v18 = objc_alloc(MEMORY[0x277CED178]);
-    v19 = [v18 initWithData:{v10, v23, v24, v25, v26, v27, v28}];
+    v19 = [v18 initWithData:{dataCopy, v23, v24, v25, v26, v27, v28}];
     self = [(TRIFBTrialManagedAsset *)self initWithBufRef:v19 cppPointer:&v13[v17]];
 
-    v20 = self;
-    if (a4)
+    selfCopy2 = self;
+    if (f8)
     {
       if ([(TRIFBTrialManagedAsset *)self verifyUTF8Fields])
       {
-        v20 = self;
+        selfCopy2 = self;
       }
 
       else
       {
-        v20 = 0;
+        selfCopy2 = 0;
       }
     }
 
-    v21 = v20;
+    v21 = selfCopy2;
   }
 
   else
@@ -829,31 +829,31 @@ LABEL_40:
 - (unint64_t)hash
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(TRIFBTrialManagedAsset *)self path];
-  v5 = [v4 hash];
+  path = [(TRIFBTrialManagedAsset *)self path];
+  v5 = [path hash];
 
-  v6 = [(TRIFBTrialManagedAsset *)self fileType];
-  v7 = [(TRIFBTrialManagedAsset *)self assetId];
-  v8 = [v7 hash];
+  fileType = [(TRIFBTrialManagedAsset *)self fileType];
+  assetId = [(TRIFBTrialManagedAsset *)self assetId];
+  v8 = [assetId hash];
 
-  v9 = [(TRIFBTrialManagedAsset *)self cloudKitMetadataType];
-  v10 = [(TRIFBTrialManagedAsset *)self isOnDemand];
-  v11 = [(TRIFBTrialManagedAsset *)self downloadSize];
-  v12 = [(TRIFBTrialManagedAsset *)self assetName];
-  v13 = [v12 hash] + 37 * (v11 + 37 * (37 * (37 * (v8 + 37 * (37 * v5 + v6)) + v9) + v10));
+  cloudKitMetadataType = [(TRIFBTrialManagedAsset *)self cloudKitMetadataType];
+  isOnDemand = [(TRIFBTrialManagedAsset *)self isOnDemand];
+  downloadSize = [(TRIFBTrialManagedAsset *)self downloadSize];
+  assetName = [(TRIFBTrialManagedAsset *)self assetName];
+  v13 = [assetName hash] + 37 * (downloadSize + 37 * (37 * (37 * (v8 + 37 * (37 * v5 + fileType)) + cloudKitMetadataType) + isOnDemand));
 
   v14 = 37 * v13 + [(TRIFBTrialManagedAsset *)self hasOnDemandFlag];
   objc_autoreleasePoolPop(v3);
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -864,31 +864,31 @@ LABEL_24:
     }
 
     v7 = objc_autoreleasePoolPush();
-    v8 = [(TRIFBTrialManagedAsset *)self cloudKitMetadataType];
-    if (v8 != [v6 cloudKitMetadataType])
+    cloudKitMetadataType = [(TRIFBTrialManagedAsset *)self cloudKitMetadataType];
+    if (cloudKitMetadataType != [v6 cloudKitMetadataType])
     {
       goto LABEL_22;
     }
 
-    v9 = [(TRIFBTrialManagedAsset *)self cloudKitMetadataType];
-    if (v9 == 2)
+    cloudKitMetadataType2 = [(TRIFBTrialManagedAsset *)self cloudKitMetadataType];
+    if (cloudKitMetadataType2 == 2)
     {
-      v10 = [(TRIFBTrialManagedAsset *)self cloudKitMetadataAsAsset];
-      v11 = [v6 cloudKitMetadataAsAsset];
-      if (v10 | v11)
+      cloudKitMetadataAsAsset = [(TRIFBTrialManagedAsset *)self cloudKitMetadataAsAsset];
+      cloudKitMetadataAsAsset2 = [v6 cloudKitMetadataAsAsset];
+      if (cloudKitMetadataAsAsset | cloudKitMetadataAsAsset2)
       {
         goto LABEL_11;
       }
     }
 
-    else if (v9 == 1)
+    else if (cloudKitMetadataType2 == 1)
     {
-      v10 = [(TRIFBTrialManagedAsset *)self cloudKitMetadataAsTreatment];
-      v11 = [v6 cloudKitMetadataAsTreatment];
-      if (v10 | v11)
+      cloudKitMetadataAsAsset = [(TRIFBTrialManagedAsset *)self cloudKitMetadataAsTreatment];
+      cloudKitMetadataAsAsset2 = [v6 cloudKitMetadataAsTreatment];
+      if (cloudKitMetadataAsAsset | cloudKitMetadataAsAsset2)
       {
 LABEL_11:
-        v13 = [v10 isEqual:v11];
+        v13 = [cloudKitMetadataAsAsset isEqual:cloudKitMetadataAsAsset2];
 
         if ((v13 & 1) == 0)
         {
@@ -897,29 +897,29 @@ LABEL_11:
       }
     }
 
-    v14 = [(TRIFBTrialManagedAsset *)self path];
-    v15 = [v6 path];
-    if (!(v14 | v15) || (v16 = [v14 isEqual:v15], v15, v14, v16))
+    path = [(TRIFBTrialManagedAsset *)self path];
+    path2 = [v6 path];
+    if (!(path | path2) || (v16 = [path isEqual:path2], path2, path, v16))
     {
-      v17 = [(TRIFBTrialManagedAsset *)self fileType];
-      if (v17 == [v6 fileType])
+      fileType = [(TRIFBTrialManagedAsset *)self fileType];
+      if (fileType == [v6 fileType])
       {
-        v18 = [(TRIFBTrialManagedAsset *)self assetId];
-        v19 = [v6 assetId];
-        if (!(v18 | v19) || (v20 = [v18 isEqual:v19], v19, v18, v20))
+        assetId = [(TRIFBTrialManagedAsset *)self assetId];
+        assetId2 = [v6 assetId];
+        if (!(assetId | assetId2) || (v20 = [assetId isEqual:assetId2], assetId2, assetId, v20))
         {
-          v21 = [(TRIFBTrialManagedAsset *)self isOnDemand];
-          if (v21 == [v6 isOnDemand])
+          isOnDemand = [(TRIFBTrialManagedAsset *)self isOnDemand];
+          if (isOnDemand == [v6 isOnDemand])
           {
-            v22 = [(TRIFBTrialManagedAsset *)self downloadSize];
-            if (v22 == [v6 downloadSize])
+            downloadSize = [(TRIFBTrialManagedAsset *)self downloadSize];
+            if (downloadSize == [v6 downloadSize])
             {
-              v23 = [(TRIFBTrialManagedAsset *)self assetName];
-              v24 = [v6 assetName];
-              if (!(v23 | v24) || (v25 = [v23 isEqual:v24], v24, v23, v25))
+              assetName = [(TRIFBTrialManagedAsset *)self assetName];
+              assetName2 = [v6 assetName];
+              if (!(assetName | assetName2) || (v25 = [assetName isEqual:assetName2], assetName2, assetName, v25))
               {
-                v26 = [(TRIFBTrialManagedAsset *)self hasOnDemandFlag];
-                v12 = v26 ^ [v6 hasOnDemandFlag] ^ 1;
+                hasOnDemandFlag = [(TRIFBTrialManagedAsset *)self hasOnDemandFlag];
+                v12 = hasOnDemandFlag ^ [v6 hasOnDemandFlag] ^ 1;
 LABEL_23:
                 objc_autoreleasePoolPop(v7);
                 goto LABEL_24;

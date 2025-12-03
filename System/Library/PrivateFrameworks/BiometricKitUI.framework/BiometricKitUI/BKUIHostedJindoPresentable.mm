@@ -1,7 +1,7 @@
 @interface BKUIHostedJindoPresentable
 + (id)_bundleID;
 - (BKJindoPresentableObserving)observingDelegate;
-- (BKUIHostedJindoPresentable)initWithCustomLayout:(int64_t)a3 enrollView:(id)a4 destination:(int64_t)a5;
+- (BKUIHostedJindoPresentable)initWithCustomLayout:(int64_t)layout enrollView:(id)view destination:(int64_t)destination;
 - (BKUIPearlEnrollView)enrollView;
 - (BNPresentableContext)presentableContext;
 - (NSString)requestIdentifier;
@@ -9,33 +9,33 @@
 - (UIViewController)rootViewController;
 - (id)userInfoForPosting;
 - (void)collapse;
-- (void)presentableDidAppearAsBanner:(id)a3;
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)presentableWillAppearAsBanner:(id)a3;
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)presentableWillNotAppearAsBanner:(id)a3 withReason:(id)a4;
+- (void)presentableDidAppearAsBanner:(id)banner;
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)presentableWillAppearAsBanner:(id)banner;
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)presentableWillNotAppearAsBanner:(id)banner withReason:(id)reason;
 - (void)revoke;
-- (void)setActiveLayoutMode:(int64_t)a3;
-- (void)setCanRequestAlertingAssertion:(BOOL)a3;
+- (void)setActiveLayoutMode:(int64_t)mode;
+- (void)setCanRequestAlertingAssertion:(BOOL)assertion;
 - (void)viewDidLoad;
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3;
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BKUIHostedJindoPresentable
 
-- (BKUIHostedJindoPresentable)initWithCustomLayout:(int64_t)a3 enrollView:(id)a4 destination:(int64_t)a5
+- (BKUIHostedJindoPresentable)initWithCustomLayout:(int64_t)layout enrollView:(id)view destination:(int64_t)destination
 {
-  v9 = a4;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = BKUIHostedJindoPresentable;
   v10 = [(BKUIHostedJindoPresentable *)&v13 initWithNibName:0 bundle:0];
   v11 = v10;
   if (v10)
   {
-    v10->_destination = a5;
-    objc_storeStrong(&v10->_enrollView, a4);
+    v10->_destination = destination;
+    objc_storeStrong(&v10->_enrollView, view);
     v11->_preferredLayoutMode = 4;
-    v11->_preferredCustomLayout = a3;
+    v11->_preferredCustomLayout = layout;
   }
 
   return v11;
@@ -49,14 +49,14 @@
   return enrollView;
 }
 
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __78__BKUIHostedJindoPresentable_viewWillLayoutSubviewsWithTransitionCoordinator___block_invoke;
   v3[3] = &unk_278D0A028;
   v3[4] = self;
-  [a3 animateAlongsideTransition:v3 completion:0];
+  [coordinator animateAlongsideTransition:v3 completion:0];
 }
 
 void __78__BKUIHostedJindoPresentable_viewWillLayoutSubviewsWithTransitionCoordinator___block_invoke(uint64_t a1)
@@ -74,29 +74,29 @@ void __78__BKUIHostedJindoPresentable_viewWillLayoutSubviewsWithTransitionCoordi
   v20.receiver = self;
   v20.super_class = BKUIHostedJindoPresentable;
   [(BKUIHostedJindoPresentable *)&v20 viewDidLoad];
-  v3 = [(BKUIHostedJindoPresentable *)self view];
-  v4 = [(BKUIHostedJindoPresentable *)self enrollView];
-  [v3 addSubview:v4];
+  view = [(BKUIHostedJindoPresentable *)self view];
+  enrollView = [(BKUIHostedJindoPresentable *)self enrollView];
+  [view addSubview:enrollView];
 
   v17 = MEMORY[0x277CCAAD0];
-  v19 = [(BKUIHostedJindoPresentable *)self enrollView];
-  v18 = [v19 centerXAnchor];
-  v5 = [(BKUIHostedJindoPresentable *)self view];
-  v6 = [v5 centerXAnchor];
-  v7 = [v18 constraintEqualToAnchor:v6];
+  enrollView2 = [(BKUIHostedJindoPresentable *)self enrollView];
+  centerXAnchor = [enrollView2 centerXAnchor];
+  view2 = [(BKUIHostedJindoPresentable *)self view];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v21[0] = v7;
-  v8 = [(BKUIHostedJindoPresentable *)self enrollView];
-  v9 = [v8 centerYAnchor];
-  v10 = [(BKUIHostedJindoPresentable *)self view];
-  v11 = [v10 centerYAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  enrollView3 = [(BKUIHostedJindoPresentable *)self enrollView];
+  centerYAnchor = [enrollView3 centerYAnchor];
+  view3 = [(BKUIHostedJindoPresentable *)self view];
+  centerYAnchor2 = [view3 centerYAnchor];
+  v12 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v21[1] = v12;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:2];
   [v17 activateConstraints:v13];
 
-  v14 = [(BKUIHostedJindoPresentable *)self enrollView];
-  v15 = [(BKUIHostedJindoPresentable *)self view];
-  [v14 setupAnimationViewWithSuperView:v15];
+  enrollView4 = [(BKUIHostedJindoPresentable *)self enrollView];
+  view4 = [(BKUIHostedJindoPresentable *)self view];
+  [enrollView4 setupAnimationViewWithSuperView:view4];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -105,13 +105,13 @@ void __78__BKUIHostedJindoPresentable_viewWillLayoutSubviewsWithTransitionCoordi
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CF0A80];
-  v4 = [(BKUIHostedJindoPresentable *)self destination];
-  v5 = [(BKUIHostedJindoPresentable *)self requesterIdentifier];
-  v6 = [v3 bannerSourceForDestination:v4 forRequesterIdentifier:v5];
+  destination = [(BKUIHostedJindoPresentable *)self destination];
+  requesterIdentifier = [(BKUIHostedJindoPresentable *)self requesterIdentifier];
+  v6 = [v3 bannerSourceForDestination:destination forRequesterIdentifier:requesterIdentifier];
 
-  v7 = [(BKUIHostedJindoPresentable *)self requestIdentifier];
+  requestIdentifier = [(BKUIHostedJindoPresentable *)self requestIdentifier];
   v12 = 0;
-  v8 = [v6 revokePresentableWithRequestIdentifier:v7 reason:@"revoke" animated:1 userInfo:0 error:&v12];
+  v8 = [v6 revokePresentableWithRequestIdentifier:requestIdentifier reason:@"revoke" animated:1 userInfo:0 error:&v12];
   v9 = v12;
 
   if (v9)
@@ -131,8 +131,8 @@ void __78__BKUIHostedJindoPresentable_viewWillLayoutSubviewsWithTransitionCoordi
 - (void)collapse
 {
   [(BKUIHostedJindoPresentable *)self setPreferredCustomLayout:1];
-  v3 = [(BKUIHostedJindoPresentable *)self systemApertureElementContext];
-  [v3 setElementNeedsUpdate];
+  systemApertureElementContext = [(BKUIHostedJindoPresentable *)self systemApertureElementContext];
+  [systemApertureElementContext setElementNeedsUpdate];
 }
 
 - (id)userInfoForPosting
@@ -161,10 +161,10 @@ void __78__BKUIHostedJindoPresentable_viewWillLayoutSubviewsWithTransitionCoordi
   requestIdentifier = self->_requestIdentifier;
   if (!requestIdentifier)
   {
-    v4 = [MEMORY[0x277CCAD78] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     v6 = self->_requestIdentifier;
-    self->_requestIdentifier = v5;
+    self->_requestIdentifier = uUIDString;
 
     requestIdentifier = self->_requestIdentifier;
   }
@@ -178,7 +178,7 @@ void __78__BKUIHostedJindoPresentable_viewWillLayoutSubviewsWithTransitionCoordi
   block[1] = 3221225472;
   block[2] = __39__BKUIHostedJindoPresentable__bundleID__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_bundleID_onceToken != -1)
   {
     dispatch_once(&_bundleID_onceToken, block);
@@ -197,31 +197,31 @@ void __39__BKUIHostedJindoPresentable__bundleID__block_invoke(uint64_t a1)
   _bundleID___bundleID = v1;
 }
 
-- (void)setActiveLayoutMode:(int64_t)a3
+- (void)setActiveLayoutMode:(int64_t)mode
 {
-  if (self->_activeLayoutMode != a3)
+  if (self->_activeLayoutMode != mode)
   {
-    self->_activeLayoutMode = a3;
-    v5 = [(BKUIHostedJindoPresentable *)self observingDelegate];
-    [v5 didChangeActiveLayoutMode:self];
+    self->_activeLayoutMode = mode;
+    observingDelegate = [(BKUIHostedJindoPresentable *)self observingDelegate];
+    [observingDelegate didChangeActiveLayoutMode:self];
   }
 }
 
-- (void)setCanRequestAlertingAssertion:(BOOL)a3
+- (void)setCanRequestAlertingAssertion:(BOOL)assertion
 {
   v11 = *MEMORY[0x277D85DE8];
-  self->_canRequestAlertingAssertion = a3;
-  if (a3)
+  self->_canRequestAlertingAssertion = assertion;
+  if (assertion)
   {
-    v4 = [(BKUIHostedJindoPresentable *)self systemApertureElementContext];
-    v5 = [v4 requestAlertingAssertion];
-    [v5 setAutomaticallyInvalidatable:0];
+    systemApertureElementContext = [(BKUIHostedJindoPresentable *)self systemApertureElementContext];
+    requestAlertingAssertion = [systemApertureElementContext requestAlertingAssertion];
+    [requestAlertingAssertion setAutomaticallyInvalidatable:0];
 
     v6 = _BKUILoggingFacility();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134217984;
-      v10 = self;
+      selfCopy2 = self;
       v7 = "Jindo: Acquired alert assertion %p";
 LABEL_6:
       _os_log_impl(&dword_241B0A000, v6, OS_LOG_TYPE_DEFAULT, v7, &v9, 0xCu);
@@ -234,7 +234,7 @@ LABEL_6:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134217984;
-      v10 = self;
+      selfCopy2 = self;
       v7 = "Jindo: Could not get alert assertion, host set setCanRequestAlertingAssertion NO %p";
       goto LABEL_6;
     }
@@ -243,93 +243,93 @@ LABEL_6:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentableWillAppearAsBanner:(id)a3
+- (void)presentableWillAppearAsBanner:(id)banner
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  bannerCopy = banner;
   v5 = _BKUILoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134217984;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_241B0A000, v5, OS_LOG_TYPE_DEFAULT, "Jindo: Banner will appear %p", &v10, 0xCu);
   }
 
-  v6 = [(BKUIHostedJindoPresentable *)self observingDelegate];
+  observingDelegate = [(BKUIHostedJindoPresentable *)self observingDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(BKUIHostedJindoPresentable *)self observingDelegate];
-    [v8 presentableWillAppearAsBanner:v4];
+    observingDelegate2 = [(BKUIHostedJindoPresentable *)self observingDelegate];
+    [observingDelegate2 presentableWillAppearAsBanner:bannerCopy];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentableDidAppearAsBanner:(id)a3
+- (void)presentableDidAppearAsBanner:(id)banner
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  bannerCopy = banner;
   v5 = _BKUILoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134217984;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_241B0A000, v5, OS_LOG_TYPE_DEFAULT, "Jindo: Banner did appear %p", &v10, 0xCu);
   }
 
-  v6 = [(BKUIHostedJindoPresentable *)self observingDelegate];
+  observingDelegate = [(BKUIHostedJindoPresentable *)self observingDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(BKUIHostedJindoPresentable *)self observingDelegate];
-    [v8 presentableDidAppearAsBanner:v4];
+    observingDelegate2 = [(BKUIHostedJindoPresentable *)self observingDelegate];
+    [observingDelegate2 presentableDidAppearAsBanner:bannerCopy];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(BKUIHostedJindoPresentable *)self observingDelegate];
+  bannerCopy = banner;
+  reasonCopy = reason;
+  observingDelegate = [(BKUIHostedJindoPresentable *)self observingDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(BKUIHostedJindoPresentable *)self observingDelegate];
-    [v9 presentableWillDisappearAsBanner:v10 withReason:v6];
+    observingDelegate2 = [(BKUIHostedJindoPresentable *)self observingDelegate];
+    [observingDelegate2 presentableWillDisappearAsBanner:bannerCopy withReason:reasonCopy];
   }
 }
 
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(BKUIHostedJindoPresentable *)self observingDelegate];
+  bannerCopy = banner;
+  reasonCopy = reason;
+  observingDelegate = [(BKUIHostedJindoPresentable *)self observingDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(BKUIHostedJindoPresentable *)self observingDelegate];
-    [v9 presentableDidDisappearAsBanner:v10 withReason:v6];
+    observingDelegate2 = [(BKUIHostedJindoPresentable *)self observingDelegate];
+    [observingDelegate2 presentableDidDisappearAsBanner:bannerCopy withReason:reasonCopy];
   }
 }
 
-- (void)presentableWillNotAppearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillNotAppearAsBanner:(id)banner withReason:(id)reason
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(BKUIHostedJindoPresentable *)self observingDelegate];
+  bannerCopy = banner;
+  reasonCopy = reason;
+  observingDelegate = [(BKUIHostedJindoPresentable *)self observingDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(BKUIHostedJindoPresentable *)self observingDelegate];
-    [v9 presentableWillNotAppearAsBanner:v10 withReason:v6];
+    observingDelegate2 = [(BKUIHostedJindoPresentable *)self observingDelegate];
+    [observingDelegate2 presentableWillNotAppearAsBanner:bannerCopy withReason:reasonCopy];
   }
 }
 

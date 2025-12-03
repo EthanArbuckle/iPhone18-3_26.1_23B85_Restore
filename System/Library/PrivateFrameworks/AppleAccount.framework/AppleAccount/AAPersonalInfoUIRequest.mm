@@ -7,9 +7,9 @@
 - (id)urlString
 {
   v2 = +[AAURLConfiguration urlConfiguration];
-  v3 = [v2 personalInfoUIURL];
+  personalInfoUIURL = [v2 personalInfoUIURL];
 
-  return v3;
+  return personalInfoUIURL;
 }
 
 @end

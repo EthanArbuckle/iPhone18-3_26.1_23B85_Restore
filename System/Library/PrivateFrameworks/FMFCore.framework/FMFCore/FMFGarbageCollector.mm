@@ -1,14 +1,14 @@
 @interface FMFGarbageCollector
-- (void)scheduleAccountVerificationWithNotification:(id)a3;
+- (void)scheduleAccountVerificationWithNotification:(id)notification;
 @end
 
 @implementation FMFGarbageCollector
 
-- (void)scheduleAccountVerificationWithNotification:(id)a3
+- (void)scheduleAccountVerificationWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
 
-  sub_24A49BA0C(v3);
+  sub_24A49BA0C(notificationCopy);
 }
 
 @end

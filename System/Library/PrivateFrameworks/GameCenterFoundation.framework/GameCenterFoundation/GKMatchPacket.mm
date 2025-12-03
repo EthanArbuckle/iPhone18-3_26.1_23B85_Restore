@@ -1,6 +1,6 @@
 @interface GKMatchPacket
 - (GKMatchPacket)init;
-- (GKMatchPacket)initWithMessage:(id)a3;
+- (GKMatchPacket)initWithMessage:(id)message;
 - (id)message;
 @end
 
@@ -19,38 +19,38 @@
   return result;
 }
 
-- (GKMatchPacket)initWithMessage:(id)a3
+- (GKMatchPacket)initWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = [(GKMatchPacket *)self init];
   v6 = v5;
   if (v5)
   {
     [(GKMatchPacket *)v5 setValid:1];
-    v7 = [v4 bytes];
-    if ([v4 length] <= 0xB)
+    bytes = [messageCopy bytes];
+    if ([messageCopy length] <= 0xB)
     {
       [(GKMatchPacket *)v6 setValid:0];
     }
 
     if ([(GKMatchPacket *)v6 valid])
     {
-      [(GKMatchPacket *)v6 setVersion:*v7];
-      [(GKMatchPacket *)v6 setPacketType:v7[1]];
-      [(GKMatchPacket *)v6 setSequenceNumber:*(v7 + 2)];
-      [(GKMatchPacket *)v6 setTotalLength:*(v7 + 6)];
-      v8 = [(GKMatchPacket *)v6 totalLength];
-      if ([v4 length] != v8)
+      [(GKMatchPacket *)v6 setVersion:*bytes];
+      [(GKMatchPacket *)v6 setPacketType:bytes[1]];
+      [(GKMatchPacket *)v6 setSequenceNumber:*(bytes + 2)];
+      [(GKMatchPacket *)v6 setTotalLength:*(bytes + 6)];
+      totalLength = [(GKMatchPacket *)v6 totalLength];
+      if ([messageCopy length] != totalLength)
       {
         [(GKMatchPacket *)v6 setValid:0];
       }
 
-      v9 = [v4 bytes];
+      bytes2 = [messageCopy bytes];
       v10 = 0;
       v11 = 12;
       do
       {
-        v12 = *v9++;
+        v12 = *bytes2++;
         v10 += v12;
         v11 -= 2;
       }
@@ -71,18 +71,18 @@
         [(GKMatchPacket *)v6 setValid:0];
       }
 
-      v7 += 12;
+      bytes += 12;
     }
 
     if ([(GKMatchPacket *)v6 valid])
     {
-      v13 = [MEMORY[0x277CBEA90] dataWithBytes:v7 length:{-[GKMatchPacket totalLength](v6, "totalLength") - 12}];
+      v13 = [MEMORY[0x277CBEA90] dataWithBytes:bytes length:{-[GKMatchPacket totalLength](v6, "totalLength") - 12}];
       [(GKMatchPacket *)v6 setData:v13];
     }
 
     else
     {
-      [(GKMatchPacket *)v6 setData:v4];
+      [(GKMatchPacket *)v6 setData:messageCopy];
     }
   }
 
@@ -97,12 +97,12 @@
   [v3 appendBytes:&self->_packetType length:1];
   [v3 appendBytes:&self->_sequenceNumber length:4];
   [v3 appendBytes:&self->_totalLength length:4];
-  v4 = [v3 bytes];
+  bytes = [v3 bytes];
   v5 = 0;
   v6 = 10;
   do
   {
-    v7 = *v4++;
+    v7 = *bytes++;
     v5 += v7;
     v6 -= 2;
   }

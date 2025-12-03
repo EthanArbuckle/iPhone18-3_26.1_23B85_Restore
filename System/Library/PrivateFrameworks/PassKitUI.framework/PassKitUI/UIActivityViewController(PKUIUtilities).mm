@@ -16,15 +16,15 @@
     goto LABEL_11;
   }
 
-  v11 = [v7 sharingMethod];
-  v12 = [[PKActivityItemProvider alloc] initWithPass:v7 passView:v8 linkedApp:v9 sharingMethod:v11];
+  sharingMethod = [v7 sharingMethod];
+  v12 = [[PKActivityItemProvider alloc] initWithPass:v7 passView:v8 linkedApp:v9 sharingMethod:sharingMethod];
   if (v12)
   {
-    if (v11 == 1)
+    if (sharingMethod == 1)
     {
       v18 = MEMORY[0x1E695DF70];
-      v19 = [v7 sharingURL];
-      v17 = [v18 arrayWithObjects:{v12, v19, 0}];
+      sharingURL = [v7 sharingURL];
+      v17 = [v18 arrayWithObjects:{v12, sharingURL, 0}];
 
       v10 = [objc_alloc(MEMORY[0x1E69CD9F8]) initWithActivityItems:v17 applicationActivities:0];
       v20 = *MEMORY[0x1E69CDAE0];
@@ -37,7 +37,7 @@
       goto LABEL_9;
     }
 
-    if (!v11)
+    if (!sharingMethod)
     {
       v13 = objc_alloc(MEMORY[0x1E69CD9F8]);
       v25[0] = v12;

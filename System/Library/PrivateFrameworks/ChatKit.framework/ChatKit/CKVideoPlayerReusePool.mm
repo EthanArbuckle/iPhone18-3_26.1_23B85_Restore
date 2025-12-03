@@ -2,14 +2,14 @@
 + (CKVideoPlayerReusePool)sharedPool;
 - (CKVideoPlayerReusePool)init;
 - (NSArray)pool;
-- (id)dequeueAvailablePlayerAt:(int64_t)a3;
+- (id)dequeueAvailablePlayerAt:(int64_t)at;
 - (id)dequeueAvailableVideoPlayer;
-- (id)existingVideoPlayerForTransferGUID:(id)a3;
+- (id)existingVideoPlayerForTransferGUID:(id)d;
 - (void)dealloc;
-- (void)lowMemoryWarningReceivedWithNotification:(id)a3;
+- (void)lowMemoryWarningReceivedWithNotification:(id)notification;
 - (void)removeUnneededVideoPlayers;
-- (void)returnPlayerToPool:(id)a3;
-- (void)setPool:(id)a3;
+- (void)returnPlayerToPool:(id)pool;
+- (void)setPool:(id)pool;
 @end
 
 @implementation CKVideoPlayerReusePool
@@ -24,7 +24,7 @@
   return v2;
 }
 
-- (void)setPool:(id)a3
+- (void)setPool:(id)pool
 {
   sub_1909D9AE8();
   v4 = sub_190D57180();
@@ -53,8 +53,8 @@
   v2 = [(CKVideoPlayerReusePool *)&v7 init];
   v3 = objc_opt_self();
   v4 = v2;
-  v5 = [v3 defaultCenter];
-  [v5 addObserver:v4 selector:sel_lowMemoryWarningReceivedWithNotification_ name:*MEMORY[0x1E69DDAD8] object:0];
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter addObserver:v4 selector:sel_lowMemoryWarningReceivedWithNotification_ name:*MEMORY[0x1E69DDAD8] object:0];
 
   return v4;
 }
@@ -62,18 +62,18 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver_];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver_];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for VideoPlayerReusePool();
   [(CKVideoPlayerReusePool *)&v6 dealloc];
 }
 
 - (id)dequeueAvailableVideoPlayer
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1909D8FB4();
   if (v4)
   {
@@ -82,7 +82,7 @@
 
   else
   {
-    v5 = [(CKVideoPlayerReusePool *)v2 dequeueAvailablePlayerAt:v3];
+    v5 = [(CKVideoPlayerReusePool *)selfCopy dequeueAvailablePlayerAt:v3];
   }
 
   v6 = v5;
@@ -90,28 +90,28 @@
   return v6;
 }
 
-- (id)existingVideoPlayerForTransferGUID:(id)a3
+- (id)existingVideoPlayerForTransferGUID:(id)d
 {
   v4 = sub_190D56F10();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1909D9184(v4, v6);
 
   return v8;
 }
 
-- (void)returnPlayerToPool:(id)a3
+- (void)returnPlayerToPool:(id)pool
 {
-  v4 = a3;
-  v5 = self;
-  sub_1909D93A4(v4);
+  poolCopy = pool;
+  selfCopy = self;
+  sub_1909D93A4(poolCopy);
 }
 
-- (id)dequeueAvailablePlayerAt:(int64_t)a3
+- (id)dequeueAvailablePlayerAt:(int64_t)at
 {
   swift_beginAccess();
-  v5 = self;
-  v6 = sub_190A0DBB8(a3);
+  selfCopy = self;
+  v6 = sub_190A0DBB8(at);
   swift_endAccess();
 
   return v6;
@@ -119,11 +119,11 @@
 
 - (void)removeUnneededVideoPlayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_1909D9668();
 }
 
-- (void)lowMemoryWarningReceivedWithNotification:(id)a3
+- (void)lowMemoryWarningReceivedWithNotification:(id)notification
 {
   v4 = sub_190D50FB0();
   v5 = *(v4 - 8);

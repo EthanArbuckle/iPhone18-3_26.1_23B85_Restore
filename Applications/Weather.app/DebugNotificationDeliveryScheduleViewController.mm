@@ -1,7 +1,7 @@
 @interface DebugNotificationDeliveryScheduleViewController
-- (_TtC7Weather47DebugNotificationDeliveryScheduleViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
+- (_TtC7Weather47DebugNotificationDeliveryScheduleViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
 - (void)viewDidLoad;
 @end
 
@@ -9,13 +9,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007BA7BC();
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  sub_1007BA908(self, a4);
+  sub_1007BA908(self, section);
   if (v4)
   {
     v5 = String._bridgeToObjectiveC()();
@@ -29,15 +29,15 @@
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   v12 = sub_1007BA9D0();
 
   (*(v7 + 8))(v9, v6);
@@ -45,14 +45,14 @@
   return v12;
 }
 
-- (_TtC7Weather47DebugNotificationDeliveryScheduleViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Weather47DebugNotificationDeliveryScheduleViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1007BB8B0();
 }
 

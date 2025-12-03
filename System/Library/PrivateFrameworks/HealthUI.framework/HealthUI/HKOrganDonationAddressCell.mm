@@ -1,19 +1,19 @@
 @interface HKOrganDonationAddressCell
-- (HKOrganDonationAddressCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HKOrganDonationAddressCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (HKSimpleDataEntryCellDelegate)delegate;
 - (void)_setupFonts;
 - (void)_setupLayoutConstraints;
-- (void)textFieldDidChangeValue:(id)a3;
+- (void)textFieldDidChangeValue:(id)value;
 @end
 
 @implementation HKOrganDonationAddressCell
 
-- (HKOrganDonationAddressCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HKOrganDonationAddressCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v82[5] = *MEMORY[0x1E69E9840];
   v77.receiver = self;
   v77.super_class = HKOrganDonationAddressCell;
-  v4 = [(HKOrganDonationAddressCell *)&v77 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HKOrganDonationAddressCell *)&v77 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -65,9 +65,9 @@
     v26 = [v25 localizedStringForKey:@"OD_PLACEHOLDER_ZIP" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
     v82[4] = v26;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v82 count:5];
-    v28 = [v27 objectEnumerator];
+    objectEnumerator = [v27 objectEnumerator];
 
-    v29 = v28;
+    v29 = objectEnumerator;
     v81[0] = v4->_streetOneTextField;
     v81[1] = v4->_streetTwoTextField;
     v81[2] = v4->_stateTextField;
@@ -94,8 +94,8 @@
 
           v34 = *(*(&v73 + 1) + 8 * i);
           [v34 addTarget:v4 action:sel_textFieldDidChangeValue_ forControlEvents:0x20000];
-          v35 = [v29 nextObject];
-          [v34 setPlaceholder:v35];
+          nextObject = [v29 nextObject];
+          [v34 setPlaceholder:nextObject];
 
           [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
           [v34 setDelegate:v4];
@@ -167,14 +167,14 @@
           }
 
           v55 = *(*(&v69 + 1) + 8 * j);
-          v56 = [MEMORY[0x1E69DC888] systemMidGrayColor];
-          [(UIView *)v55 setBackgroundColor:v56];
+          systemMidGrayColor = [MEMORY[0x1E69DC888] systemMidGrayColor];
+          [(UIView *)v55 setBackgroundColor:systemMidGrayColor];
 
           [(UIView *)v55 setTranslatesAutoresizingMaskIntoConstraints:0];
           if (v55 == v4->_horizontalSeparator || v55 == v4->_verticalSeparator)
           {
-            v57 = [(HKOrganDonationAddressCell *)v4 contentView];
-            [v57 addSubview:v55];
+            contentView = [(HKOrganDonationAddressCell *)v4 contentView];
+            [contentView addSubview:v55];
           }
 
           else
@@ -191,17 +191,17 @@
 
     [(UILabel *)v4->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v4->_addressContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v58 = [(HKOrganDonationAddressCell *)v4 contentView];
-    [v58 addSubview:v4->_titleLabel];
+    contentView2 = [(HKOrganDonationAddressCell *)v4 contentView];
+    [contentView2 addSubview:v4->_titleLabel];
 
-    v59 = [(HKOrganDonationAddressCell *)v4 contentView];
-    [v59 addSubview:v4->_addressContainerView];
+    contentView3 = [(HKOrganDonationAddressCell *)v4 contentView];
+    [contentView3 addSubview:v4->_addressContainerView];
 
-    v60 = [(HKOrganDonationAddressCell *)v4 contentView];
-    [v60 addSubview:v4->_verticalSeparator];
+    contentView4 = [(HKOrganDonationAddressCell *)v4 contentView];
+    [contentView4 addSubview:v4->_verticalSeparator];
 
-    v61 = [(HKOrganDonationAddressCell *)v4 contentView];
-    [v61 addSubview:v4->_horizontalSeparator];
+    contentView5 = [(HKOrganDonationAddressCell *)v4 contentView];
+    [contentView5 addSubview:v4->_horizontalSeparator];
 
     [(HKOrganDonationAddressCell *)v4 _setupFonts];
     [(HKOrganDonationAddressCell *)v4 _setupLayoutConstraints];
@@ -242,27 +242,27 @@
   v38[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:&v37 count:1];
 
-  v6 = [(HKOrganDonationAddressCell *)self contentView];
+  contentView = [(HKOrganDonationAddressCell *)self contentView];
   v7 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|-(20)-[_titleLabel(>=20)]-[_verticalSeparator(onePixel)]-(0)-[_addressContainerView]-(0)-|" options:0 metrics:v5 views:v3];
-  [v6 addConstraints:v7];
+  [contentView addConstraints:v7];
 
-  v8 = [(HKOrganDonationAddressCell *)self contentView];
-  v9 = [v8 hk_addConstraintsWithFormat:@"H:|-(20)-[_horizontalSeparator]-(0)-|" options:0 views:v3];
+  contentView2 = [(HKOrganDonationAddressCell *)self contentView];
+  v9 = [contentView2 hk_addConstraintsWithFormat:@"H:|-(20)-[_horizontalSeparator]-(0)-|" options:0 views:v3];
 
-  v10 = [(HKOrganDonationAddressCell *)self contentView];
-  v11 = [v10 hk_addConstraintsWithFormat:@"V:|-(10)-[_verticalSeparator]-(0)-|" options:0 views:v3];
+  contentView3 = [(HKOrganDonationAddressCell *)self contentView];
+  v11 = [contentView3 hk_addConstraintsWithFormat:@"V:|-(10)-[_verticalSeparator]-(0)-|" options:0 views:v3];
 
-  v12 = [(HKOrganDonationAddressCell *)self contentView];
-  v13 = [v12 hk_addConstraintsWithFormat:@"V:|-(10)-[_addressContainerView]-(0)-|" options:0 views:v3];
+  contentView4 = [(HKOrganDonationAddressCell *)self contentView];
+  v13 = [contentView4 hk_addConstraintsWithFormat:@"V:|-(10)-[_addressContainerView]-(0)-|" options:0 views:v3];
 
-  v14 = [(HKOrganDonationAddressCell *)self contentView];
+  contentView5 = [(HKOrganDonationAddressCell *)self contentView];
   v15 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|-(>=10)-[_horizontalSeparator(onePixel)]-(0)-|" options:0 metrics:v5 views:v3];
-  [v14 addConstraints:v15];
+  [contentView5 addConstraints:v15];
 
-  v16 = [(HKOrganDonationAddressCell *)self contentView];
+  contentView6 = [(HKOrganDonationAddressCell *)self contentView];
   titleLabel = self->_titleLabel;
-  v18 = [(HKOrganDonationAddressCell *)self contentView];
-  v19 = [v16 hk_addEqualsConstraintWithItem:titleLabel attribute:10 relatedTo:v18 attribute:10 constant:0.0];
+  contentView7 = [(HKOrganDonationAddressCell *)self contentView];
+  v19 = [contentView6 hk_addEqualsConstraintWithItem:titleLabel attribute:10 relatedTo:contentView7 attribute:10 constant:0.0];
 
   addressContainerView = self->_addressContainerView;
   v21 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|-(10)-[_streetOneTextField]-(10)-[_addressSeparator(onePixel)]-(10)-[_streetTwoTextField(==_streetOneTextField)]-(10)-[_citySeparator(onePixel)]-(10)-[_cityTextField(==_streetOneTextField)]-(10)-[_stateSeparator(onePixel)]-(10)-[_stateTextField(==_streetOneTextField)]-(10)-|" options:0 metrics:v5 views:v3];
@@ -288,11 +288,11 @@
   [(UILabel *)self->_titleLabel setContentHuggingPriority:0 forAxis:v36];
 }
 
-- (void)textFieldDidChangeValue:(id)a3
+- (void)textFieldDidChangeValue:(id)value
 {
-  v4 = a3;
-  v5 = [(HKOrganDonationAddressCell *)self delegate];
-  [v5 textFieldDidChangeValue:v4 forCell:self];
+  valueCopy = value;
+  delegate = [(HKOrganDonationAddressCell *)self delegate];
+  [delegate textFieldDidChangeValue:valueCopy forCell:self];
 }
 
 - (HKSimpleDataEntryCellDelegate)delegate

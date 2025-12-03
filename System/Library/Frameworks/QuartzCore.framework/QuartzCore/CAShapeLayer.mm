@@ -1,7 +1,7 @@
 @interface CAShapeLayer
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3;
-+ (id)defaultValueForKey:(id)a3;
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3;
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers;
++ (id)defaultValueForKey:(id)key;
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property;
 - (CAShapeLayerFillRule)fillRule;
 - (CAShapeLayerLineCap)lineCap;
 - (CAShapeLayerLineJoin)lineJoin;
@@ -14,12 +14,12 @@
 - (CGFloat)strokeStart;
 - (CGPathRef)path;
 - (NSArray)lineDashPattern;
-- (id)implicitAnimationForKeyPath:(id)a3;
-- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)a3;
+- (id)implicitAnimationForKeyPath:(id)path;
+- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)flags;
 - (void)_colorSpaceDidChange;
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5;
-- (void)_renderForegroundInContext:(CGContext *)a3;
-- (void)didChangeValueForKey:(id)a3;
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags;
+- (void)_renderForegroundInContext:(CGContext *)context;
+- (void)didChangeValueForKey:(id)key;
 - (void)setFillColor:(CGColorRef)fillColor;
 - (void)setFillRule:(CAShapeLayerFillRule)fillRule;
 - (void)setLineCap:(CAShapeLayerLineCap)lineCap;
@@ -132,17 +132,17 @@
   return v3[0];
 }
 
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == observers)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CAShapeLayer;
-  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, a3);
+  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, observers);
 }
 
 - (void)setLineDashPhase:(CGFloat)lineDashPhase
@@ -257,11 +257,11 @@ LABEL_4:
   CGPathRelease(v8);
 }
 
-- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)a3
+- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)flags
 {
-  v3 = *&a3;
+  v3 = *&flags;
   v7 = *MEMORY[0x1E69E9840];
-  if (CAAtomIndexInArray(12, &defines_property::atoms, a3) != -1)
+  if (CAAtomIndexInArray(12, &defines_property::atoms, flags) != -1)
   {
     return 32;
   }
@@ -271,11 +271,11 @@ LABEL_4:
   return [(CALayer *)&v6 _renderLayerPropertyAnimationFlags:v3];
 }
 
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   v7 = *MEMORY[0x1E69E9840];
-  if (CAAtomIndexInArray(12, &defines_property::atoms, a3) != -1)
+  if (CAAtomIndexInArray(12, &defines_property::atoms, property) != -1)
   {
     return 1;
   }
@@ -290,23 +290,23 @@ LABEL_4:
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = CAShapeLayer;
-  v3 = [(CALayer *)&v5 _colorSpaceDidChange];
+  _colorSpaceDidChange = [(CALayer *)&v5 _colorSpaceDidChange];
   v4 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v4)
   {
-    v4 = CA::Transaction::create(v3);
+    v4 = CA::Transaction::create(_colorSpaceDidChange);
   }
 
   CA::Layer::set_commit_needed(self->super._attr.layer, v4, 0x10000);
 }
 
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags
 {
   v64 = *MEMORY[0x1E69E9840];
   v63.receiver = self;
   v63.super_class = CAShapeLayer;
-  v8 = [(CALayer *)&v63 _copyRenderLayer:a3 layerFlags:*&a4 commitFlags:?];
-  if (v8 && (*(a5 + 2) & 1) != 0)
+  v8 = [(CALayer *)&v63 _copyRenderLayer:layer layerFlags:*&flags commitFlags:?];
+  if (v8 && (*(commitFlags + 2) & 1) != 0)
   {
     if (x_malloc_get_zone::once != -1)
     {
@@ -344,10 +344,10 @@ LABEL_4:
       v9[18] = 0;
       v9[19] = 0;
       v9[20] = 0x3FF0000000000000;
-      v19 = [(CAShapeLayer *)self path];
-      if (v19)
+      path = [(CAShapeLayer *)self path];
+      if (path)
       {
-        v21 = CA::Render::Path::new_path(v19, v20);
+        v21 = CA::Render::Path::new_path(path, v20);
         if (v21)
         {
           v22 = v21;
@@ -377,14 +377,14 @@ LABEL_4:
         }
       }
 
-      v25 = CA::Context::current_colorspace(a3, v20);
-      v26 = [(CAShapeLayer *)self fillColor];
-      if (v26)
+      v25 = CA::Context::current_colorspace(layer, v20);
+      fillColor = [(CAShapeLayer *)self fillColor];
+      if (fillColor)
       {
         v61 = 0uLL;
         v62 = 0;
         v60 = 0;
-        CA::Render::convert_cgcolor(v26, v25, &v61, &v60, v27);
+        CA::Render::convert_cgcolor(fillColor, v25, &v61, &v60, v27);
         if (vmaxv_u16(vmovn_s32(vmvnq_s8(vcgtq_f32(vdupq_n_s32(0x3A800000u), vabsq_f32(v61))))))
         {
           *(v10 + 3) = v61;
@@ -420,19 +420,19 @@ LABEL_4:
         }
       }
 
-      v31 = [(CAShapeLayer *)self fillRule];
-      if (v31 && v31 != @"non-zero")
+      fillRule = [(CAShapeLayer *)self fillRule];
+      if (fillRule && fillRule != @"non-zero")
       {
-        *(v10 + 136) = [(__CFString *)v31 isEqualToString:@"even-odd"];
+        *(v10 + 136) = [(__CFString *)fillRule isEqualToString:@"even-odd"];
       }
 
-      v32 = [(CAShapeLayer *)self strokeColor];
-      if (v32)
+      strokeColor = [(CAShapeLayer *)self strokeColor];
+      if (strokeColor)
       {
         v61 = 0uLL;
         v62 = 0;
         v60 = 0;
-        CA::Render::convert_cgcolor(v32, v25, &v61, &v60, v33);
+        CA::Render::convert_cgcolor(strokeColor, v25, &v61, &v60, v33);
         if (vmaxv_u16(vmovn_s32(vmvnq_s8(vcgtq_f32(vdupq_n_s32(0x3A800000u), vabsq_f32(v61))))))
         {
           *(v10 + 7) = v61;
@@ -480,13 +480,13 @@ LABEL_4:
       [(CAShapeLayer *)self miterLimit];
       v10[14] = v40;
       CA::Render::ShapeLayer::invalidate_stroke_path(v10);
-      v41 = [(CAShapeLayer *)self lineJoin];
-      if (v41)
+      lineJoin = [(CAShapeLayer *)self lineJoin];
+      if (lineJoin)
       {
-        v42 = v41;
-        if (v41 != @"miter")
+        v42 = lineJoin;
+        if (lineJoin != @"miter")
         {
-          if (([(__CFString *)v41 isEqualToString:@"round"]& 1) != 0)
+          if (([(__CFString *)lineJoin isEqualToString:@"round"]& 1) != 0)
           {
             v43 = 256;
           }
@@ -506,13 +506,13 @@ LABEL_4:
         }
       }
 
-      v44 = [(CAShapeLayer *)self lineCap];
-      if (v44)
+      lineCap = [(CAShapeLayer *)self lineCap];
+      if (lineCap)
       {
-        v45 = v44;
-        if (v44 != @"butt")
+        v45 = lineCap;
+        if (lineCap != @"butt")
         {
-          if (([(__CFString *)v44 isEqualToString:@"round"]& 1) != 0)
+          if (([(__CFString *)lineCap isEqualToString:@"round"]& 1) != 0)
           {
             v46 = 0x10000;
           }
@@ -535,11 +535,11 @@ LABEL_4:
       [(CAShapeLayer *)self lineDashPhase];
       v10[15] = v47;
       CA::Render::ShapeLayer::invalidate_stroke_path(v10);
-      v48 = [(CAShapeLayer *)self lineDashPattern];
-      if (v48)
+      lineDashPattern = [(CAShapeLayer *)self lineDashPattern];
+      if (lineDashPattern)
       {
-        v49 = v48;
-        v50 = [(NSArray *)v48 count];
+        v49 = lineDashPattern;
+        v50 = [(NSArray *)lineDashPattern count];
         if (v50)
         {
           v51 = v50;
@@ -587,7 +587,7 @@ LABEL_4:
   return v8;
 }
 
-- (void)_renderForegroundInContext:(CGContext *)a3
+- (void)_renderForegroundInContext:(CGContext *)context
 {
   v41 = *MEMORY[0x1E69E9840];
   v40.receiver = self;
@@ -606,24 +606,24 @@ LABEL_4:
     os_unfair_lock_lock(&CA::Transaction::transaction_lock);
   }
 
-  v8 = [(CAShapeLayer *)self path];
-  if (v8)
+  path = [(CAShapeLayer *)self path];
+  if (path)
   {
-    v9 = [(CAShapeLayer *)self fillColor];
-    v10 = v9;
-    if (v9 && CGColorGetAlpha(v9) > 0.0)
+    fillColor = [(CAShapeLayer *)self fillColor];
+    v10 = fillColor;
+    if (fillColor && CGColorGetAlpha(fillColor) > 0.0)
     {
       v11 = [(NSString *)[(CAShapeLayer *)self fillRule] isEqualToString:@"even-odd"];
-      CGContextSetFillColorWithColor(a3, v10);
-      CGContextAddPath(a3, v8);
-      CGContextDrawPath(a3, v11);
+      CGContextSetFillColorWithColor(context, v10);
+      CGContextAddPath(context, path);
+      CGContextDrawPath(context, v11);
     }
 
-    v12 = [(CAShapeLayer *)self strokeColor];
-    v13 = v12;
-    if (v12)
+    strokeColor = [(CAShapeLayer *)self strokeColor];
+    v13 = strokeColor;
+    if (strokeColor)
     {
-      if (CGColorGetAlpha(v12) > 0.0)
+      if (CGColorGetAlpha(strokeColor) > 0.0)
       {
         if ([(NSString *)[(CAShapeLayer *)self lineCap] isEqualToString:@"round"])
         {
@@ -661,16 +661,16 @@ LABEL_4:
           v16 = *MEMORY[0x1E695F2F0];
         }
 
-        CGContextSetLineWidth(a3, v16);
-        CGContextSetLineCap(a3, v14);
-        CGContextSetLineJoin(a3, v15);
+        CGContextSetLineWidth(context, v16);
+        CGContextSetLineCap(context, v14);
+        CGContextSetLineJoin(context, v15);
         [(CAShapeLayer *)self miterLimit];
-        CGContextSetMiterLimit(a3, v17);
-        v18 = [(CAShapeLayer *)self lineDashPattern];
-        v19 = v18;
-        if (v18)
+        CGContextSetMiterLimit(context, v17);
+        lineDashPattern = [(CAShapeLayer *)self lineDashPattern];
+        v19 = lineDashPattern;
+        if (lineDashPattern)
         {
-          v20 = [(NSArray *)v18 count];
+          v20 = [(NSArray *)lineDashPattern count];
           MEMORY[0x1EEE9AC00](v20);
           v22 = &v39 - ((v21 + 15) & 0xFFFFFFFFFFFFFFF0);
           bzero(v22, v21);
@@ -684,10 +684,10 @@ LABEL_4:
           }
 
           [(CAShapeLayer *)self lineDashPhase];
-          CGContextSetLineDash(a3, v25, v22, v20);
+          CGContextSetLineDash(context, v25, v22, v20);
         }
 
-        CGContextSetStrokeColorWithColor(a3, v13);
+        CGContextSetStrokeColorWithColor(context, v13);
         [(CAShapeLayer *)self strokeStart];
         v27 = v26;
         [(CAShapeLayer *)self strokeEnd];
@@ -695,7 +695,7 @@ LABEL_4:
         v31 = fmin(v30, 1.0);
         if (v29 == 0.0 && v31 == 1.0)
         {
-          v32 = MEMORY[0x1865E8EB0](v8);
+          v32 = MEMORY[0x1865E8EB0](path);
         }
 
         else
@@ -705,7 +705,7 @@ LABEL_4:
             goto LABEL_39;
           }
 
-          v34 = CA::Render::Path::new_path(v8, v28);
+          v34 = CA::Render::Path::new_path(path, v28);
           if (!v34)
           {
             goto LABEL_39;
@@ -738,8 +738,8 @@ LABEL_4:
         if (v32)
         {
           CA::Transaction::unlock(v6);
-          CGContextAddPath(a3, v32);
-          CGContextDrawPath(a3, kCGPathStroke);
+          CGContextAddPath(context, v32);
+          CGContextDrawPath(context, kCGPathStroke);
           CGPathRelease(v32);
           v33 = *(v6 + 29);
           *(v6 + 29) = v33 + 1;
@@ -756,7 +756,7 @@ LABEL_39:
   CA::Transaction::unlock(v6);
 }
 
-- (id)implicitAnimationForKeyPath:(id)a3
+- (id)implicitAnimationForKeyPath:(id)path
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -764,10 +764,10 @@ LABEL_39:
   result = [(CALayer *)&v8 implicitAnimationForKeyPath:?];
   if (!result)
   {
-    [a3 rangeOfString:@"."];
-    if (!v6 && ((v7 = CAInternAtom(a3, 0), v7 - 481 <= 0x28) && ((1 << (v7 + 31)) & 0x10000000005) != 0 || v7 - 689 < 3 || v7 == 246))
+    [path rangeOfString:@"."];
+    if (!v6 && ((v7 = CAInternAtom(path, 0), v7 - 481 <= 0x28) && ((1 << (v7 + 31)) & 0x10000000005) != 0 || v7 - 689 < 3 || v7 == 246))
     {
-      return CALayerCreateImplicitAnimation(self, a3, v7);
+      return CALayerCreateImplicitAnimation(self, path, v7);
     }
 
     else
@@ -779,10 +779,10 @@ LABEL_39:
   return result;
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   v6 = CAAtomIndexInArray(12, &[CAShapeLayer didChangeValueForKey:]::atoms, v5);
   if (v6 != -1)
   {
@@ -792,13 +792,13 @@ LABEL_39:
 
   v8.receiver = self;
   v8.super_class = CAShapeLayer;
-  [(CAShapeLayer *)&v8 didChangeValueForKey:a3];
+  [(CAShapeLayer *)&v8 didChangeValueForKey:key];
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   if (v5 > 481)
   {
     if (v5 > 520)
@@ -813,9 +813,9 @@ LABEL_39:
       if (v5 != 690)
       {
 LABEL_15:
-        v10.receiver = a1;
+        v10.receiver = self;
         v10.super_class = &OBJC_METACLASS___CAShapeLayer;
-        return objc_msgSendSuper2(&v10, sel_defaultValueForKey_, a3);
+        return objc_msgSendSuper2(&v10, sel_defaultValueForKey_, key);
       }
     }
 

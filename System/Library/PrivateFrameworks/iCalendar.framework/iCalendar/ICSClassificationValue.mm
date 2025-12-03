@@ -1,15 +1,15 @@
 @interface ICSClassificationValue
-+ (id)classificationFromCode:(int)a3;
-+ (id)classificationValueFromICSString:(id)a3;
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
++ (id)classificationFromCode:(int)code;
++ (id)classificationValueFromICSString:(id)string;
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string;
 @end
 
 @implementation ICSClassificationValue
 
-+ (id)classificationValueFromICSString:(id)a3
++ (id)classificationValueFromICSString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PUBLIC"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"PUBLIC"])
   {
     v4 = 1;
 LABEL_7:
@@ -17,13 +17,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v3 isEqualToString:@"PRIVATE"])
+  if ([stringCopy isEqualToString:@"PRIVATE"])
   {
     v4 = 2;
     goto LABEL_7;
   }
 
-  if ([v3 isEqualToString:@"CONFIDENTIAL"])
+  if ([stringCopy isEqualToString:@"CONFIDENTIAL"])
   {
     v4 = 3;
     goto LABEL_7;
@@ -35,25 +35,25 @@ LABEL_8:
   return v5;
 }
 
-+ (id)classificationFromCode:(int)a3
++ (id)classificationFromCode:(int)code
 {
-  v3 = [(ICSPredefinedValue *)[ICSClassificationValue alloc] initWithLong:a3];
+  v3 = [(ICSPredefinedValue *)[ICSClassificationValue alloc] initWithLong:code];
 
   return v3;
 }
 
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
-  v4 = a3;
-  v9 = a4;
-  v6 = [(ICSPredefinedValue *)self longValue];
+  optionsCopy = options;
+  stringCopy = string;
+  longValue = [(ICSPredefinedValue *)self longValue];
   v7 = @"PUBLIC";
-  if (v6 == 2)
+  if (longValue == 2)
   {
     v7 = @"PRIVATE";
   }
 
-  if (v6 == 3)
+  if (longValue == 3)
   {
     v8 = @"CONFIDENTIAL";
   }
@@ -63,7 +63,7 @@ LABEL_8:
     v8 = v7;
   }
 
-  iCalendarAppendStringToStringWithOptions(v8, v9, v4);
+  iCalendarAppendStringToStringWithOptions(v8, stringCopy, optionsCopy);
 }
 
 @end

@@ -1,49 +1,49 @@
 @interface ASDaemonPolicyManager
 - (ASAccount)account;
-- (ASDaemonPolicyManager)initWithAccount:(id)a3;
-- (int)_preflightEDUModeMCFeatures:(id)a3;
-- (void)_populateCurrentPolicyWithError:(id)a3;
+- (ASDaemonPolicyManager)initWithAccount:(id)account;
+- (int)_preflightEDUModeMCFeatures:(id)features;
+- (void)_populateCurrentPolicyWithError:(id)error;
 - (void)_tearDownPreflighter;
 - (void)dealloc;
-- (void)preflighter:(id)a3 error:(id)a4;
-- (void)preflighter:(id)a3 needsComplianceWithMCFeatures:(id)a4 perAccountPolicies:(id)a5;
-- (void)preflighter:(id)a3 successWithMCFeatures:(id)a4 perAccountPolicies:(id)a5 policyKey:(id)a6;
-- (void)preflighterAccountOnlyRemoteWipeRequestResponseAcknowledged:(id)a3;
-- (void)preflighterRemoteWipeRequestResponseAcknowledged:(id)a3;
+- (void)preflighter:(id)preflighter error:(id)error;
+- (void)preflighter:(id)preflighter needsComplianceWithMCFeatures:(id)features perAccountPolicies:(id)policies;
+- (void)preflighter:(id)preflighter successWithMCFeatures:(id)features perAccountPolicies:(id)policies policyKey:(id)key;
+- (void)preflighterAccountOnlyRemoteWipeRequestResponseAcknowledged:(id)acknowledged;
+- (void)preflighterRemoteWipeRequestResponseAcknowledged:(id)acknowledged;
 - (void)requestPolicyUpdate;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation ASDaemonPolicyManager
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(ASDaemonPolicyManager *)self delegate];
+  delegateCopy = delegate;
+  delegate = [(ASDaemonPolicyManager *)self delegate];
 
   v6.receiver = self;
   v6.super_class = ASDaemonPolicyManager;
-  [(ASDaemonPolicyManager *)&v6 setDelegate:v4];
+  [(ASDaemonPolicyManager *)&v6 setDelegate:delegateCopy];
 
-  if (v4)
+  if (delegateCopy)
   {
-    if (!v5)
+    if (!delegate)
     {
       [(ASDaemonPolicyManager *)self _populateCurrentPolicyWithError:0];
     }
   }
 }
 
-- (ASDaemonPolicyManager)initWithAccount:(id)a3
+- (ASDaemonPolicyManager)initWithAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v8.receiver = self;
   v8.super_class = ASDaemonPolicyManager;
   v5 = [(ASDaemonPolicyManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ASDaemonPolicyManager *)v5 setAccount:v4];
+    [(ASDaemonPolicyManager *)v5 setAccount:accountCopy];
   }
 
   return v6;
@@ -79,9 +79,9 @@
     }
 
     v5 = [ASPolicyPreflighter alloc];
-    v6 = [(ASDaemonPolicyManager *)self account];
-    v7 = [(ASDaemonPolicyManager *)self currentPolicyKey];
-    v8 = [v5 initWithAccount:v6 policyKey:v7];
+    account = [(ASDaemonPolicyManager *)self account];
+    currentPolicyKey = [(ASDaemonPolicyManager *)self currentPolicyKey];
+    v8 = [v5 initWithAccount:account policyKey:currentPolicyKey];
     preflighter = self->_preflighter;
     self->_preflighter = v8;
 
@@ -90,16 +90,16 @@
   }
 }
 
-- (void)_populateCurrentPolicyWithError:(id)a3
+- (void)_populateCurrentPolicyWithError:(id)error
 {
-  if (a3)
+  if (error)
   {
     v17[0] = ASPolicyKey;
-    v5 = a3;
-    v6 = [(ASDaemonPolicyManager *)self currentPolicyKey];
+    errorCopy = error;
+    currentPolicyKey = [(ASDaemonPolicyManager *)self currentPolicyKey];
     v17[1] = ASPolicyErrorKey;
-    v18[0] = v6;
-    v18[1] = v5;
+    v18[0] = currentPolicyKey;
+    v18[1] = errorCopy;
     v7 = v18;
     v8 = v17;
     v9 = 2;
@@ -109,8 +109,8 @@
   {
     v19 = ASPolicyKey;
     v10 = 0;
-    v6 = [(ASDaemonPolicyManager *)self currentPolicyKey];
-    v20 = v6;
+    currentPolicyKey = [(ASDaemonPolicyManager *)self currentPolicyKey];
+    v20 = currentPolicyKey;
     v7 = &v20;
     v8 = &v19;
     v9 = 1;
@@ -121,47 +121,47 @@
   v12 = +[NSNotificationCenter defaultCenter];
 
   v13 = ASPolicyKeyChangedNotification;
-  v14 = [(ASDaemonPolicyManager *)self delegate];
-  v15 = [v14 accountID];
-  [v12 postNotificationName:v13 object:v15 userInfo:v11];
+  delegate = [(ASDaemonPolicyManager *)self delegate];
+  accountID = [delegate accountID];
+  [v12 postNotificationName:v13 object:accountID userInfo:v11];
 
-  v16 = [(ASDaemonPolicyManager *)self delegate];
-  [v16 policyManagerUpdatedPolicy:self];
+  delegate2 = [(ASDaemonPolicyManager *)self delegate];
+  [delegate2 policyManagerUpdatedPolicy:self];
 }
 
-- (int)_preflightEDUModeMCFeatures:(id)a3
+- (int)_preflightEDUModeMCFeatures:(id)features
 {
-  v3 = a3;
+  featuresCopy = features;
   v4 = DALoggingwithCategory();
   v5 = _CPLog_to_os_log_type[5];
   if (os_log_type_enabled(v4, v5))
   {
     *buf = 138412290;
-    v30 = v3;
+    v30 = featuresCopy;
     _os_log_impl(&dword_0, v4, v5, "EDU Mode : PreFlighting MCRestrictions %@", buf, 0xCu);
   }
 
-  v28 = [MCRestrictionManager restrictedBoolForFeature:MCFeaturePasscodeRequired withRestrictionsDictionary:v3];
-  v27 = [MCRestrictionManager restrictedBoolForFeature:MCFeatureAlphanumericPasscodeRequired withRestrictionsDictionary:v3];
-  v6 = [MCRestrictionManager restrictedBoolForFeature:MCFeatureMinimumPasscodeLength withRestrictionsDictionary:v3];
-  v7 = [MCRestrictionManager restrictedBoolForFeature:MCFeatureMaximumFailedPasscodeAttempts withRestrictionsDictionary:v3];
-  v8 = [MCRestrictionManager restrictedBoolForFeature:MCFeatureSimplePasscodeAllowed withRestrictionsDictionary:v3];
-  v9 = [MCRestrictionManager restrictedBoolForFeature:MCFeatureMaximumPasscodeAgeDays withRestrictionsDictionary:v3];
-  v10 = [MCRestrictionManager restrictedBoolForFeature:MCFeaturePasscodeHistoryCount withRestrictionsDictionary:v3];
-  v11 = [MCRestrictionManager restrictedBoolForFeature:MCFeatureCameraAllowed withRestrictionsDictionary:v3];
-  v12 = [MCRestrictionManager restrictedBoolForFeature:MCFeatureBlockLevelEncryptionRequired withRestrictionsDictionary:v3];
-  v13 = [MCRestrictionManager restrictedBoolForFeature:MCFeaturePasscodeMinimumComplexChars withRestrictionsDictionary:v3];
-  v14 = [MCRestrictionManager restrictedBoolForFeature:MCFeatureSafariAllowed withRestrictionsDictionary:v3];
+  v28 = [MCRestrictionManager restrictedBoolForFeature:MCFeaturePasscodeRequired withRestrictionsDictionary:featuresCopy];
+  v27 = [MCRestrictionManager restrictedBoolForFeature:MCFeatureAlphanumericPasscodeRequired withRestrictionsDictionary:featuresCopy];
+  v6 = [MCRestrictionManager restrictedBoolForFeature:MCFeatureMinimumPasscodeLength withRestrictionsDictionary:featuresCopy];
+  v7 = [MCRestrictionManager restrictedBoolForFeature:MCFeatureMaximumFailedPasscodeAttempts withRestrictionsDictionary:featuresCopy];
+  v8 = [MCRestrictionManager restrictedBoolForFeature:MCFeatureSimplePasscodeAllowed withRestrictionsDictionary:featuresCopy];
+  v9 = [MCRestrictionManager restrictedBoolForFeature:MCFeatureMaximumPasscodeAgeDays withRestrictionsDictionary:featuresCopy];
+  v10 = [MCRestrictionManager restrictedBoolForFeature:MCFeaturePasscodeHistoryCount withRestrictionsDictionary:featuresCopy];
+  v11 = [MCRestrictionManager restrictedBoolForFeature:MCFeatureCameraAllowed withRestrictionsDictionary:featuresCopy];
+  v12 = [MCRestrictionManager restrictedBoolForFeature:MCFeatureBlockLevelEncryptionRequired withRestrictionsDictionary:featuresCopy];
+  v13 = [MCRestrictionManager restrictedBoolForFeature:MCFeaturePasscodeMinimumComplexChars withRestrictionsDictionary:featuresCopy];
+  v14 = [MCRestrictionManager restrictedBoolForFeature:MCFeatureSafariAllowed withRestrictionsDictionary:featuresCopy];
   v25 = v28 == 1 || v27 == 1 || v6 == 1 || v7 == 1 || v8 == 1 || v9 == 1 || v10 == 1 || v11 == 2 || v12 == 1 || v13 == 1 || v14 == 2;
 
   return v25;
 }
 
-- (void)preflighter:(id)a3 needsComplianceWithMCFeatures:(id)a4 perAccountPolicies:(id)a5
+- (void)preflighter:(id)preflighter needsComplianceWithMCFeatures:(id)features perAccountPolicies:(id)policies
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  preflighterCopy = preflighter;
+  featuresCopy = features;
+  policiesCopy = policies;
   v11 = DALoggingwithCategory();
   v12 = _CPLog_to_os_log_type[5];
   if (os_log_type_enabled(v11, v12))
@@ -176,35 +176,35 @@
   v17[2] = sub_2C53C;
   v17[3] = &unk_6D1A0;
   v17[4] = self;
-  v18 = v9;
-  v19 = v8;
-  v20 = v10;
-  v14 = v10;
-  v15 = v8;
-  v16 = v9;
+  v18 = featuresCopy;
+  v19 = preflighterCopy;
+  v20 = policiesCopy;
+  v14 = policiesCopy;
+  v15 = preflighterCopy;
+  v16 = featuresCopy;
   dispatch_async(v13, v17);
 }
 
-- (void)preflighter:(id)a3 successWithMCFeatures:(id)a4 perAccountPolicies:(id)a5 policyKey:(id)a6
+- (void)preflighter:(id)preflighter successWithMCFeatures:(id)features perAccountPolicies:(id)policies policyKey:(id)key
 {
-  v8 = a6;
-  v9 = a5;
+  keyCopy = key;
+  policiesCopy = policies;
   v10 = [ASPerAccountPolicyData alloc];
-  v11 = [(ASDaemonPolicyManager *)self account];
-  v12 = [v11 persistentUUID];
-  v13 = [v10 initWithAccountPersistentUUID:v12];
+  account = [(ASDaemonPolicyManager *)self account];
+  persistentUUID = [account persistentUUID];
+  v13 = [v10 initWithAccountPersistentUUID:persistentUUID];
 
-  [v13 setPolicyKey:v8 policyValues:v9];
+  [v13 setPolicyKey:keyCopy policyValues:policiesCopy];
   [(ASDaemonPolicyManager *)self _tearDownPreflighter];
   [(ASDaemonPolicyManager *)self _populateCurrentPolicyWithError:0];
 }
 
-- (void)preflighterRemoteWipeRequestResponseAcknowledged:(id)a3
+- (void)preflighterRemoteWipeRequestResponseAcknowledged:(id)acknowledged
 {
   v4 = +[MCProfileConnection sharedConnection];
-  v5 = [v4 isEphemeralMultiUser];
+  isEphemeralMultiUser = [v4 isEphemeralMultiUser];
 
-  if (v5)
+  if (isEphemeralMultiUser)
   {
     v6 = DALoggingwithCategory();
     v7 = _CPLog_to_os_log_type[5];
@@ -250,31 +250,31 @@
   }
 }
 
-- (void)preflighterAccountOnlyRemoteWipeRequestResponseAcknowledged:(id)a3
+- (void)preflighterAccountOnlyRemoteWipeRequestResponseAcknowledged:(id)acknowledged
 {
   v6 = sharedDAAccountStore();
-  v4 = [(ASDaemonPolicyManager *)self account];
-  v5 = [v4 backingAccountInfo];
-  [v6 removeAccount:v5 withCompletionHandler:&stru_6D2A0];
+  account = [(ASDaemonPolicyManager *)self account];
+  backingAccountInfo = [account backingAccountInfo];
+  [v6 removeAccount:backingAccountInfo withCompletionHandler:&stru_6D2A0];
 }
 
-- (void)preflighter:(id)a3 error:(id)a4
+- (void)preflighter:(id)preflighter error:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = DALoggingwithCategory();
   v7 = _CPLog_to_os_log_type[3];
   if (os_log_type_enabled(v6, v7))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = errorCopy;
     _os_log_impl(&dword_0, v6, v7, "preflighter got error %@", &v9, 0xCu);
   }
 
   [(ASDaemonPolicyManager *)self _tearDownPreflighter];
-  v8 = [(ASDaemonPolicyManager *)self delegate];
-  [v8 policyManagerFailedToUpdatePolicy:self];
+  delegate = [(ASDaemonPolicyManager *)self delegate];
+  [delegate policyManagerFailedToUpdatePolicy:self];
 
-  [(ASDaemonPolicyManager *)self _populateCurrentPolicyWithError:v5];
+  [(ASDaemonPolicyManager *)self _populateCurrentPolicyWithError:errorCopy];
 }
 
 - (ASAccount)account

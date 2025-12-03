@@ -1,5 +1,5 @@
 @interface ICStoreDialogResponseButtonAction
-- (ICStoreDialogResponseButtonAction)initWithResponseButtonActionDictionary:(id)a3;
+- (ICStoreDialogResponseButtonAction)initWithResponseButtonActionDictionary:(id)dictionary;
 - (NSString)URLString;
 - (NSString)buyParams;
 - (NSString)itemName;
@@ -172,15 +172,15 @@
   return v3;
 }
 
-- (ICStoreDialogResponseButtonAction)initWithResponseButtonActionDictionary:(id)a3
+- (ICStoreDialogResponseButtonAction)initWithResponseButtonActionDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = ICStoreDialogResponseButtonAction;
   v5 = [(ICStoreDialogResponseButtonAction *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     actionDictionary = v5->_actionDictionary;
     v5->_actionDictionary = v6;
   }

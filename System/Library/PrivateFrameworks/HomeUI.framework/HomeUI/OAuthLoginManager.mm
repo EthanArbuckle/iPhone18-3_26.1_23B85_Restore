@@ -1,19 +1,19 @@
 @interface OAuthLoginManager
 - (_TtC6HomeUI17OAuthLoginManager)init;
-- (_TtC6HomeUI17OAuthLoginManager)initWithAuthURL:(id)a3 presentingContext:(id)a4;
-- (id)processRedirectURL:(id)a3;
-- (void)startAuthenticationWithPresentationContext:(id)a3 completion:(id)a4;
-- (void)startSessionWithAuthURL:(id)a3 context:(id)a4 completion:(id)a5;
+- (_TtC6HomeUI17OAuthLoginManager)initWithAuthURL:(id)l presentingContext:(id)context;
+- (id)processRedirectURL:(id)l;
+- (void)startAuthenticationWithPresentationContext:(id)context completion:(id)completion;
+- (void)startSessionWithAuthURL:(id)l context:(id)context completion:(id)completion;
 @end
 
 @implementation OAuthLoginManager
 
-- (_TtC6HomeUI17OAuthLoginManager)initWithAuthURL:(id)a3 presentingContext:(id)a4
+- (_TtC6HomeUI17OAuthLoginManager)initWithAuthURL:(id)l presentingContext:(id)context
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27C81CDF0);
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v13 - v8;
-  if (a3)
+  if (l)
   {
     sub_20D563698();
     v10 = sub_20D5636B8();
@@ -28,45 +28,45 @@
 
   swift_getObjectType();
   swift_unknownObjectRetain();
-  return sub_20CFD2A78(v9, a4, self);
+  return sub_20CFD2A78(v9, context, self);
 }
 
-- (void)startSessionWithAuthURL:(id)a3 context:(id)a4 completion:(id)a5
+- (void)startSessionWithAuthURL:(id)l context:(id)context completion:(id)completion
 {
   v8 = sub_20D5636B8();
   v9 = *(v8 - 8);
   MEMORY[0x28223BE20](v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(completion);
   sub_20D563698();
   v13 = swift_allocObject();
   *(v13 + 16) = v12;
   swift_unknownObjectRetain();
-  v14 = self;
-  sub_20CFD355C(v11, a4, sub_20CFD51B0, v13, v14);
+  selfCopy = self;
+  sub_20CFD355C(v11, context, sub_20CFD51B0, v13, selfCopy);
   swift_unknownObjectRelease();
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)startAuthenticationWithPresentationContext:(id)a3 completion:(id)a4
+- (void)startAuthenticationWithPresentationContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   swift_getObjectType();
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_20CFD2C3C(a3, sub_20CFD51A8, v7, v8);
+  selfCopy = self;
+  sub_20CFD2C3C(context, sub_20CFD51A8, v7, selfCopy);
   swift_unknownObjectRelease();
 }
 
-- (id)processRedirectURL:(id)a3
+- (id)processRedirectURL:(id)l
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27C81CDF0);
   MEMORY[0x28223BE20](v4 - 8);
   v6 = &v11 - v5;
-  if (a3)
+  if (l)
   {
     sub_20D563698();
     v7 = sub_20D5636B8();

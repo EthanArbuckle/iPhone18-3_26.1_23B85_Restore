@@ -1,30 +1,30 @@
 @interface PXStoryTransitionClip
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)playbackTimeRangeForClipDuration:(SEL)a3;
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)playbackTimeRangeForClipDuration:(SEL)duration;
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)videoTimeRange;
-- (BOOL)isEqualToClip:(id)a3;
-- (BOOL)isVisuallyEqualToClip:(id)a3;
+- (BOOL)isEqualToClip:(id)clip;
+- (BOOL)isVisuallyEqualToClip:(id)clip;
 - (PFStoryRecipeDisplayAssetNormalization)colorNormalization;
 - (PXStoryResource)resource;
-- (PXStoryTransitionClip)initWithClipInfo:(id *)a3 originalClip:(id)a4;
-- (id)copyWithInfo:(id *)a3;
+- (PXStoryTransitionClip)initWithClipInfo:(id *)info originalClip:(id)clip;
+- (id)copyWithInfo:(id *)info;
 @end
 
 @implementation PXStoryTransitionClip
 
-- (id)copyWithInfo:(id *)a3
+- (id)copyWithInfo:(id *)info
 {
   v5 = [PXStoryTransitionClip alloc];
-  v6 = [(PXStoryTransitionClip *)self originalClip];
-  memcpy(v9, a3, sizeof(v9));
-  v7 = [(PXStoryTransitionClip *)v5 initWithClipInfo:v9 originalClip:v6];
+  originalClip = [(PXStoryTransitionClip *)self originalClip];
+  memcpy(v9, info, sizeof(v9));
+  v7 = [(PXStoryTransitionClip *)v5 initWithClipInfo:v9 originalClip:originalClip];
 
   return v7;
 }
 
-- (BOOL)isVisuallyEqualToClip:(id)a3
+- (BOOL)isVisuallyEqualToClip:(id)clip
 {
-  v4 = a3;
-  if (v4 == self)
+  clipCopy = clip;
+  if (clipCopy == self)
   {
     v8 = 1;
   }
@@ -34,12 +34,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = clipCopy;
       if ([(PXStoryTransitionClip *)self isEqualToClip:v5])
       {
-        v6 = [(PXStoryTransitionClip *)self originalClip];
-        v7 = [(PXStoryTransitionClip *)v5 originalClip];
-        v8 = [v6 isVisuallyEqualToClip:v7];
+        originalClip = [(PXStoryTransitionClip *)self originalClip];
+        originalClip2 = [(PXStoryTransitionClip *)v5 originalClip];
+        v8 = [originalClip isVisuallyEqualToClip:originalClip2];
       }
 
       else
@@ -57,10 +57,10 @@
   return v8;
 }
 
-- (BOOL)isEqualToClip:(id)a3
+- (BOOL)isEqualToClip:(id)clip
 {
-  v4 = a3;
-  if (v4 == self)
+  clipCopy = clip;
+  if (clipCopy == self)
   {
     v8 = 1;
   }
@@ -70,11 +70,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXStoryTransitionClip *)self originalClip];
-      v7 = [(PXStoryTransitionClip *)v5 originalClip];
+      v5 = clipCopy;
+      originalClip = [(PXStoryTransitionClip *)self originalClip];
+      originalClip2 = [(PXStoryTransitionClip *)v5 originalClip];
 
-      v8 = [v6 isEqualToClip:v7];
+      v8 = [originalClip isEqualToClip:originalClip2];
     }
 
     else
@@ -86,14 +86,14 @@
   return v8;
 }
 
-- ($E59C7DEBCD57E98EE3F0104B12BEB13C)playbackTimeRangeForClipDuration:(SEL)a3
+- ($E59C7DEBCD57E98EE3F0104B12BEB13C)playbackTimeRangeForClipDuration:(SEL)duration
 {
-  v6 = [(PXStoryTransitionClip *)self originalClip];
-  if (v6)
+  originalClip = [(PXStoryTransitionClip *)self originalClip];
+  if (originalClip)
   {
-    v8 = v6;
-    [v6 playbackTimeRangeForClipDuration:a4];
-    v6 = v8;
+    v8 = originalClip;
+    [originalClip playbackTimeRangeForClipDuration:a4];
+    originalClip = v8;
   }
 
   else
@@ -108,20 +108,20 @@
 
 - (PFStoryRecipeDisplayAssetNormalization)colorNormalization
 {
-  v2 = [(PXStoryTransitionClip *)self originalClip];
-  v3 = [v2 colorNormalization];
+  originalClip = [(PXStoryTransitionClip *)self originalClip];
+  colorNormalization = [originalClip colorNormalization];
 
-  return v3;
+  return colorNormalization;
 }
 
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)videoTimeRange
 {
-  v4 = [(PXStoryTransitionClip *)self originalClip];
-  if (v4)
+  originalClip = [(PXStoryTransitionClip *)self originalClip];
+  if (originalClip)
   {
-    v6 = v4;
-    [v4 videoTimeRange];
-    v4 = v6;
+    v6 = originalClip;
+    [originalClip videoTimeRange];
+    originalClip = v6;
   }
 
   else
@@ -136,23 +136,23 @@
 
 - (PXStoryResource)resource
 {
-  v2 = [(PXStoryTransitionClip *)self originalClip];
-  v3 = [v2 resource];
+  originalClip = [(PXStoryTransitionClip *)self originalClip];
+  resource = [originalClip resource];
 
-  return v3;
+  return resource;
 }
 
-- (PXStoryTransitionClip)initWithClipInfo:(id *)a3 originalClip:(id)a4
+- (PXStoryTransitionClip)initWithClipInfo:(id *)info originalClip:(id)clip
 {
-  v7 = a4;
+  clipCopy = clip;
   v11.receiver = self;
   v11.super_class = PXStoryTransitionClip;
   v8 = [(PXStoryTransitionClip *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    memcpy(&v8->_clipInfo, a3, 0x300uLL);
-    objc_storeStrong(&v9->_originalClip, a4);
+    memcpy(&v8->_clipInfo, info, 0x300uLL);
+    objc_storeStrong(&v9->_originalClip, clip);
   }
 
   return v9;

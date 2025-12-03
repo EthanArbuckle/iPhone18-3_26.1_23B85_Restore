@@ -1,6 +1,6 @@
 @interface PuzzlePrewarmer
 - (_TtC7NewsUI215PuzzlePrewarmer)init;
-- (void)networkReachabilityDidChange:(id)a3;
+- (void)networkReachabilityDidChange:(id)change;
 @end
 
 @implementation PuzzlePrewarmer
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)networkReachabilityDidChange:(id)a3
+- (void)networkReachabilityDidChange:(id)change
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  if ([a3 isNetworkReachable])
+  selfCopy = self;
+  if ([change isNetworkReachable])
   {
     sub_2187D97B0();
   }

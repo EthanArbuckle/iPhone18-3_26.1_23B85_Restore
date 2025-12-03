@@ -1,40 +1,40 @@
 @interface HUServicePickerViewController
-- (BOOL)_isItemPreselected:(id)a3;
-- (BOOL)_preselectedServicesContainsService:(id)a3;
-- (BOOL)serviceGridItemManager:(id)a3 shouldHideItem:(id)a4;
-- (HUServicePickerViewController)initWithHome:(id)a3 selectedServices:(id)a4 isPresentedModally:(BOOL)a5 delegate:(id)a6;
-- (id)_servicesForItem:(id)a3;
-- (id)_servicesForItems:(id)a3;
-- (void)_cancel:(id)a3;
-- (void)_done:(id)a3;
+- (BOOL)_isItemPreselected:(id)preselected;
+- (BOOL)_preselectedServicesContainsService:(id)service;
+- (BOOL)serviceGridItemManager:(id)manager shouldHideItem:(id)item;
+- (HUServicePickerViewController)initWithHome:(id)home selectedServices:(id)services isPresentedModally:(BOOL)modally delegate:(id)delegate;
+- (id)_servicesForItem:(id)item;
+- (id)_servicesForItems:(id)items;
+- (void)_cancel:(id)_cancel;
+- (void)_done:(id)_done;
 - (void)_setUpNavButtons;
-- (void)itemManagerDidUpdate:(id)a3;
+- (void)itemManagerDidUpdate:(id)update;
 - (void)viewDidLoad;
 @end
 
 @implementation HUServicePickerViewController
 
-- (HUServicePickerViewController)initWithHome:(id)a3 selectedServices:(id)a4 isPresentedModally:(BOOL)a5 delegate:(id)a6
+- (HUServicePickerViewController)initWithHome:(id)home selectedServices:(id)services isPresentedModally:(BOOL)modally delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  homeCopy = home;
+  servicesCopy = services;
+  delegateCopy = delegate;
   v13 = [HUServiceGridItemManager alloc];
   v14 = [(HUSelectableServiceGridViewController *)HUServicePickerViewController defaultItemProviderCreatorWithOptions:11];
   v15 = [(HUServiceGridItemManager *)v13 initWithDelegate:self shouldGroupByRoom:1 itemProvidersCreator:v14];
 
-  [(HFItemManager *)v15 setHome:v10];
+  [(HFItemManager *)v15 setHome:homeCopy];
   v20.receiver = self;
   v20.super_class = HUServicePickerViewController;
   v16 = [(HUSelectableServiceGridViewController *)&v20 initWithServiceGridItemManager:v15];
   v17 = v16;
   if (v16)
   {
-    [(HUServiceGridViewController *)v16 setDelegate:v12];
-    v17->_isPresentedModally = a5;
-    objc_storeStrong(&v17->_preselectedServices, a4);
-    v18 = [MEMORY[0x277D146E8] sharedDispatcher];
-    [v18 setOverrideHome:v10];
+    [(HUServiceGridViewController *)v16 setDelegate:delegateCopy];
+    v17->_isPresentedModally = modally;
+    objc_storeStrong(&v17->_preselectedServices, services);
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    [mEMORY[0x277D146E8] setOverrideHome:homeCopy];
   }
 
   return v17;
@@ -45,74 +45,74 @@
   v8.receiver = self;
   v8.super_class = HUServicePickerViewController;
   [(HUServiceGridViewController *)&v8 viewDidLoad];
-  v3 = [(HUItemCollectionViewController *)self itemManager];
-  v4 = [v3 home];
-  v5 = [v4 hf_displayName];
-  [(HUServicePickerViewController *)self setTitle:v5];
+  itemManager = [(HUItemCollectionViewController *)self itemManager];
+  home = [itemManager home];
+  hf_displayName = [home hf_displayName];
+  [(HUServicePickerViewController *)self setTitle:hf_displayName];
 
   [(HUServicePickerViewController *)self _setUpNavButtons];
-  v6 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-  v7 = [(HUServicePickerViewController *)self collectionView];
-  [v7 setBackgroundColor:v6];
+  systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+  collectionView = [(HUServicePickerViewController *)self collectionView];
+  [collectionView setBackgroundColor:systemGroupedBackgroundColor];
 }
 
 - (void)_setUpNavButtons
 {
-  v3 = [(HUServicePickerViewController *)self isPresentedModally];
+  isPresentedModally = [(HUServicePickerViewController *)self isPresentedModally];
   v4 = objc_alloc(MEMORY[0x277D751E0]);
   v5 = v4;
-  if (v3)
+  if (isPresentedModally)
   {
     v6 = [v4 initWithBarButtonSystemItem:1 target:self action:sel__cancel_];
-    v7 = [(HUServicePickerViewController *)self navigationItem];
-    [v7 setLeftBarButtonItem:v6];
+    navigationItem = [(HUServicePickerViewController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v6];
 
     v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel__done_];
-    v8 = [(HUServicePickerViewController *)self navigationItem];
-    [v8 setRightBarButtonItem:v10];
+    navigationItem2 = [(HUServicePickerViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:v10];
   }
 
   else
   {
     v10 = _HULocalizedStringWithDefaultValue(@"HUNextTitle", @"HUNextTitle", 1);
-    v8 = [v5 initWithTitle:? style:? target:? action:?];
-    v9 = [(HUServicePickerViewController *)self navigationItem];
-    [v9 setRightBarButtonItem:v8];
+    navigationItem2 = [v5 initWithTitle:? style:? target:? action:?];
+    navigationItem3 = [(HUServicePickerViewController *)self navigationItem];
+    [navigationItem3 setRightBarButtonItem:navigationItem2];
   }
 }
 
-- (void)_cancel:(id)a3
+- (void)_cancel:(id)_cancel
 {
-  v4 = [(HUServiceGridViewController *)self delegate];
-  [v4 servicePickerDidCancel:self];
+  delegate = [(HUServiceGridViewController *)self delegate];
+  [delegate servicePickerDidCancel:self];
 }
 
-- (void)_done:(id)a3
+- (void)_done:(id)_done
 {
-  v4 = [(HUSelectableServiceGridViewController *)self selectedItems];
-  v5 = [v4 toSet];
-  v7 = [(HUServicePickerViewController *)self _servicesForItems:v5];
+  selectedItems = [(HUSelectableServiceGridViewController *)self selectedItems];
+  toSet = [selectedItems toSet];
+  v7 = [(HUServicePickerViewController *)self _servicesForItems:toSet];
 
-  v6 = [(HUServiceGridViewController *)self delegate];
-  [v6 servicePickerDidFinish:self selectedServices:v7];
+  delegate = [(HUServiceGridViewController *)self delegate];
+  [delegate servicePickerDidFinish:self selectedServices:v7];
 }
 
-- (id)_servicesForItems:(id)a3
+- (id)_servicesForItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   objc_initWeak(&location, self);
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __51__HUServicePickerViewController__servicesForItems___block_invoke;
   v11 = &unk_277DC2510;
   objc_copyWeak(&v12, &location);
-  v5 = [v4 na_map:&v8];
-  v6 = [v5 na_setByFlattening];
+  v5 = [itemsCopy na_map:&v8];
+  na_setByFlattening = [v5 na_setByFlattening];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 
-  return v6;
+  return na_setByFlattening;
 }
 
 id __51__HUServicePickerViewController__servicesForItems___block_invoke(uint64_t a1, void *a2)
@@ -124,41 +124,41 @@ id __51__HUServicePickerViewController__servicesForItems___block_invoke(uint64_t
   return v5;
 }
 
-- (id)_servicesForItem:(id)a3
+- (id)_servicesForItem:(id)item
 {
-  v3 = a3;
-  if ([v3 conformsToProtocol:&unk_28251AFC0])
+  itemCopy = item;
+  if ([itemCopy conformsToProtocol:&unk_28251AFC0])
   {
-    v4 = [v3 services];
+    services = [itemCopy services];
   }
 
   else
   {
-    v4 = 0;
+    services = 0;
   }
 
-  return v4;
+  return services;
 }
 
-- (void)itemManagerDidUpdate:(id)a3
+- (void)itemManagerDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v18.receiver = self;
   v18.super_class = HUServicePickerViewController;
-  [(HUSelectableServiceGridViewController *)&v18 itemManagerDidUpdate:v4];
-  v5 = [(HUServicePickerViewController *)self preselectedServices];
+  [(HUSelectableServiceGridViewController *)&v18 itemManagerDidUpdate:updateCopy];
+  preselectedServices = [(HUServicePickerViewController *)self preselectedServices];
 
-  if (v5)
+  if (preselectedServices)
   {
     objc_initWeak(&location, self);
-    v6 = [(HUItemCollectionViewController *)self itemManager];
-    v7 = [v6 allItems];
+    itemManager = [(HUItemCollectionViewController *)self itemManager];
+    allItems = [itemManager allItems];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __54__HUServicePickerViewController_itemManagerDidUpdate___block_invoke;
     v15 = &unk_277DC0890;
     objc_copyWeak(&v16, &location);
-    v8 = [v7 na_filter:&v12];
+    v8 = [allItems na_filter:&v12];
 
     v9 = objc_alloc(MEMORY[0x277D14868]);
     v10 = [v9 initWithFromSet:{v8, v12, v13, v14, v15}];
@@ -179,10 +179,10 @@ uint64_t __54__HUServicePickerViewController_itemManagerDidUpdate___block_invoke
   return v5;
 }
 
-- (BOOL)_isItemPreselected:(id)a3
+- (BOOL)_isItemPreselected:(id)preselected
 {
-  v4 = a3;
-  v5 = [(HUServicePickerViewController *)self _servicesForItem:v4];
+  preselectedCopy = preselected;
+  v5 = [(HUServicePickerViewController *)self _servicesForItem:preselectedCopy];
   if (v5)
   {
     objc_initWeak(&location, self);
@@ -213,20 +213,20 @@ uint64_t __52__HUServicePickerViewController__isItemPreselected___block_invoke(u
   return v5;
 }
 
-- (BOOL)_preselectedServicesContainsService:(id)a3
+- (BOOL)_preselectedServicesContainsService:(id)service
 {
-  v4 = a3;
-  v5 = [(HUServicePickerViewController *)self preselectedServices];
+  serviceCopy = service;
+  preselectedServices = [(HUServicePickerViewController *)self preselectedServices];
 
-  if (v5)
+  if (preselectedServices)
   {
-    v6 = [(HUServicePickerViewController *)self preselectedServices];
+    preselectedServices2 = [(HUServicePickerViewController *)self preselectedServices];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __69__HUServicePickerViewController__preselectedServicesContainsService___block_invoke;
     v9[3] = &unk_277DB9560;
-    v10 = v4;
-    v7 = [v6 na_any:v9];
+    v10 = serviceCopy;
+    v7 = [preselectedServices2 na_any:v9];
   }
 
   else
@@ -246,9 +246,9 @@ uint64_t __69__HUServicePickerViewController__preselectedServicesContainsService
   return v5;
 }
 
-- (BOOL)serviceGridItemManager:(id)a3 shouldHideItem:(id)a4
+- (BOOL)serviceGridItemManager:(id)manager shouldHideItem:(id)item
 {
-  v4 = [(HUServicePickerViewController *)self _servicesForItem:a4];
+  v4 = [(HUServicePickerViewController *)self _servicesForItem:item];
   v5 = v4 == 0;
 
   return v5;

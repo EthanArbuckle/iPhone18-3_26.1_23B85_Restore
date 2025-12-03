@@ -1,15 +1,15 @@
 @interface ComposeReviewDelegate
 - (_TtC23ShelfKitCollectionViews21ComposeReviewDelegate)init;
-- (void)reviewComposeViewController:(id)a3 didFinishSubmitting:(BOOL)a4;
+- (void)reviewComposeViewController:(id)controller didFinishSubmitting:(BOOL)submitting;
 @end
 
 @implementation ComposeReviewDelegate
 
-- (void)reviewComposeViewController:(id)a3 didFinishSubmitting:(BOOL)a4
+- (void)reviewComposeViewController:(id)controller didFinishSubmitting:(BOOL)submitting
 {
-  v7 = a3;
-  v8 = self;
-  sub_2183EC(a3, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_2183EC(controller, submitting);
 }
 
 - (_TtC23ShelfKitCollectionViews21ComposeReviewDelegate)init

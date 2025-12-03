@@ -1,34 +1,34 @@
 @interface RCActivityWaveformDataProvider
-- (RCActivityWaveformDataProvider)initWithWaveformProcessor:(id)a3;
+- (RCActivityWaveformDataProvider)initWithWaveformProcessor:(id)processor;
 - (RCActivityWaveformProcessor)processor;
-- (double)amplitudeForSliceWithTimeRange:(id)a3 fullTimeRangeSampled:(BOOL *)a4;
-- (float)_processAmplitude:(float)a3;
+- (double)amplitudeForSliceWithTimeRange:(id)range fullTimeRangeSampled:(BOOL *)sampled;
+- (float)_processAmplitude:(float)amplitude;
 @end
 
 @implementation RCActivityWaveformDataProvider
 
-- (RCActivityWaveformDataProvider)initWithWaveformProcessor:(id)a3
+- (RCActivityWaveformDataProvider)initWithWaveformProcessor:(id)processor
 {
-  v4 = a3;
+  processorCopy = processor;
   v8.receiver = self;
   v8.super_class = RCActivityWaveformDataProvider;
   v5 = [(RCActivityWaveformDataProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(RCActivityWaveformDataProvider *)v5 setProcessor:v4];
+    [(RCActivityWaveformDataProvider *)v5 setProcessor:processorCopy];
   }
 
   return v6;
 }
 
-- (float)_processAmplitude:(float)a3
+- (float)_processAmplitude:(float)amplitude
 {
-  v4 = [(RCActivityWaveformDataProvider *)self processor];
-  [v4 runningAverage];
+  processor = [(RCActivityWaveformDataProvider *)self processor];
+  [processor runningAverage];
   v6 = v5;
 
-  v7 = (1.0 - sub_100054D04(v6)) * 6.0 * a3;
+  v7 = (1.0 - sub_100054D04(v6)) * 6.0 * amplitude;
   if (v7 > 1.0)
   {
     return 1.0;
@@ -37,25 +37,25 @@
   return v7;
 }
 
-- (double)amplitudeForSliceWithTimeRange:(id)a3 fullTimeRangeSampled:(BOOL *)a4
+- (double)amplitudeForSliceWithTimeRange:(id)range fullTimeRangeSampled:(BOOL *)sampled
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v8 = [(RCActivityWaveformDataProvider *)self processor];
-  [v8 recordingStartTime];
+  var1 = range.var1;
+  var0 = range.var0;
+  processor = [(RCActivityWaveformDataProvider *)self processor];
+  [processor recordingStartTime];
   v10 = v9;
 
-  v11 = [(RCActivityWaveformDataProvider *)self processor];
-  [v11 punchInTime];
+  processor2 = [(RCActivityWaveformDataProvider *)self processor];
+  [processor2 punchInTime];
   v13 = v12;
 
   v20 = 0.0;
-  v14 = [(RCActivityWaveformDataProvider *)self processor];
-  v15 = [v14 getAmplitudes:&v20 count:1 startTime:v10 + var0 - v13 + -0.1 endTime:v10 + var1 - v13 + -0.1];
+  processor3 = [(RCActivityWaveformDataProvider *)self processor];
+  v15 = [processor3 getAmplitudes:&v20 count:1 startTime:v10 + var0 - v13 + -0.1 endTime:v10 + var1 - v13 + -0.1];
 
-  if (a4)
+  if (sampled)
   {
-    *a4 = v15;
+    *sampled = v15;
   }
 
   *&v16 = v20;

@@ -7,7 +7,7 @@
 - (id)cp_handConfigurationRoundedToScaleOfView:()DisplayScaleRounding
 {
   v4 = a3;
-  v5 = [a1 copy];
+  v5 = [self copy];
   [v5 handLength];
   UIRoundToViewScale();
   [v5 setHandLength:?];

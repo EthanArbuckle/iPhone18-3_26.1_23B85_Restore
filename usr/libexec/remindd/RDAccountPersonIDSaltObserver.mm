@@ -3,11 +3,11 @@
 - (NSString)propertyName;
 - (NSUUID)uuid;
 - (RDAccountPersonIDSaltObserver)init;
-- (RDAccountPersonIDSaltObserver)initWithAccountObjectID:(id)a3 accountType:(int64_t)a4 initialSaltValue:(id)a5 callbackQueue:(id)a6 successHandler:(id)a7 errorHandler:(id)a8;
+- (RDAccountPersonIDSaltObserver)initWithAccountObjectID:(id)d accountType:(int64_t)type initialSaltValue:(id)value callbackQueue:(id)queue successHandler:(id)handler errorHandler:(id)errorHandler;
 - (_TtP7remindd20ObservingAccountInfo_)account;
 - (void)dealloc;
-- (void)notify:(id)a3;
-- (void)setPropertyName:(id)a3;
+- (void)notify:(id)notify;
+- (void)setPropertyName:(id)name;
 @end
 
 @implementation RDAccountPersonIDSaltObserver
@@ -34,17 +34,17 @@
   return v3;
 }
 
-- (RDAccountPersonIDSaltObserver)initWithAccountObjectID:(id)a3 accountType:(int64_t)a4 initialSaltValue:(id)a5 callbackQueue:(id)a6 successHandler:(id)a7 errorHandler:(id)a8
+- (RDAccountPersonIDSaltObserver)initWithAccountObjectID:(id)d accountType:(int64_t)type initialSaltValue:(id)value callbackQueue:(id)queue successHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v13 = _Block_copy(a7);
-  v14 = _Block_copy(a8);
+  v13 = _Block_copy(handler);
+  v14 = _Block_copy(errorHandler);
   v15 = swift_allocObject();
   *(v15 + 16) = v13;
   v16 = swift_allocObject();
   *(v16 + 16) = v14;
-  v17 = a3;
-  v18 = a5;
-  return sub_10059CA8C(v17, a4, a5, a6, sub_1002A8A6C, v15, sub_10059EB0C, v16);
+  dCopy = d;
+  valueCopy = value;
+  return sub_10059CA8C(dCopy, type, value, queue, sub_1002A8A6C, v15, sub_10059EB0C, v16);
 }
 
 - (NSString)propertyName
@@ -57,7 +57,7 @@
   return v4;
 }
 
-- (void)setPropertyName:(id)a3
+- (void)setPropertyName:(id)name
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = (self + OBJC_IVAR___RDAccountPersonIDSaltObserver_propertyName);
@@ -66,11 +66,11 @@
   v5[1] = v7;
 }
 
-- (void)notify:(id)a3
+- (void)notify:(id)notify
 {
-  if (a3)
+  if (notify)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -79,7 +79,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_10059DBB4(v6);
@@ -89,7 +89,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_10059DEAC();
 
   v3 = String._bridgeToObjectiveC()();
@@ -102,11 +102,11 @@
   ObjectType = swift_getObjectType();
   v4 = *(self + OBJC_IVAR___RDAccountPersonIDSaltObserver_currentValueSubject);
   v7 = 1;
-  v5 = self;
+  selfCopy = self;
 
   CurrentValueSubject.send(completion:)();
 
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(RDAccountPersonIDSaltObserver *)&v6 dealloc];
 }

@@ -117,41 +117,41 @@
 
 - (id)rem_gregorianEquivalent
 {
-  v2 = [a1 calendar];
-  if (!v2)
+  calendar = [self calendar];
+  if (!calendar)
   {
     goto LABEL_3;
   }
 
-  v3 = v2;
-  v4 = [a1 calendar];
-  v5 = [v4 calendarIdentifier];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E695D850]];
+  v3 = calendar;
+  calendar2 = [self calendar];
+  calendarIdentifier = [calendar2 calendarIdentifier];
+  v6 = [calendarIdentifier isEqualToString:*MEMORY[0x1E695D850]];
 
   if ((v6 & 1) == 0)
   {
-    v8 = [a1 timeZone];
-    v9 = [a1 rem_isAllDayDateComponents];
-    v10 = [a1 date];
+    timeZone = [self timeZone];
+    rem_isAllDayDateComponents = [self rem_isAllDayDateComponents];
+    date = [self date];
     v11 = MEMORY[0x1E695DF10];
-    if (v8)
+    if (timeZone)
     {
-      v7 = [MEMORY[0x1E695DF10] rem_dateComponentsWithDate:v10 timeZone:v8 isAllDay:v9];
+      v7 = [MEMORY[0x1E695DF10] rem_dateComponentsWithDate:date timeZone:timeZone isAllDay:rem_isAllDayDateComponents];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-      v7 = [v11 rem_dateComponentsWithDate:v10 timeZone:v12 isAllDay:v9];
+      defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+      v7 = [v11 rem_dateComponentsWithDate:date timeZone:defaultTimeZone isAllDay:rem_isAllDayDateComponents];
     }
 
-    [v7 setTimeZone:v8];
+    [v7 setTimeZone:timeZone];
   }
 
   else
   {
 LABEL_3:
-    v7 = [a1 copy];
+    v7 = [self copy];
   }
 
   return v7;
@@ -159,22 +159,22 @@ LABEL_3:
 
 - (id)rem_dateComponentsByAddingTimeInterval:()ReminderKitAdditions
 {
-  v4 = [a1 timeZone];
-  v5 = v4;
-  if (v4)
+  timeZone = [self timeZone];
+  v5 = timeZone;
+  if (timeZone)
   {
-    v6 = v4;
+    defaultTimeZone = timeZone;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695DFE8] defaultTimeZone];
+    defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
   }
 
-  v7 = v6;
-  v8 = [MEMORY[0x1E695DF10] rem_dateWithDateComponents:a1 timeZone:v6];
+  v7 = defaultTimeZone;
+  v8 = [MEMORY[0x1E695DF10] rem_dateWithDateComponents:self timeZone:defaultTimeZone];
   v9 = [v8 dateByAddingTimeInterval:a2];
-  v10 = [MEMORY[0x1E695DF10] rem_dateComponentsWithDate:v9 timeZone:v7 isAllDay:{objc_msgSend(a1, "rem_isAllDayDateComponents")}];
+  v10 = [MEMORY[0x1E695DF10] rem_dateComponentsWithDate:v9 timeZone:v7 isAllDay:{objc_msgSend(self, "rem_isAllDayDateComponents")}];
   [v10 setTimeZone:v5];
 
   return v10;
@@ -182,7 +182,7 @@ LABEL_3:
 
 - (id)rem_strippingTimeZone
 {
-  v1 = [a1 copy];
+  v1 = [self copy];
   [v1 setTimeZone:0];
 
   return v1;
@@ -190,7 +190,7 @@ LABEL_3:
 
 - (id)rem_allDayDateComponents
 {
-  v1 = [a1 copy];
+  v1 = [self copy];
   [v1 setHour:0x7FFFFFFFFFFFFFFFLL];
   [v1 setMinute:0x7FFFFFFFFFFFFFFFLL];
   [v1 setSecond:0x7FFFFFFFFFFFFFFFLL];
@@ -201,9 +201,9 @@ LABEL_3:
 
 - (uint64_t)rem_isValidDateComponents
 {
-  v2 = [a1 calendar];
-  v3 = v2;
-  if (v2 && ([v2 calendarIdentifier], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E695D850]), v4, (v5 & 1) == 0))
+  calendar = [self calendar];
+  v3 = calendar;
+  if (calendar && ([calendar calendarIdentifier], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E695D850]), v4, (v5 & 1) == 0))
   {
     v6 = +[REMLog utility];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
@@ -214,7 +214,7 @@ LABEL_3:
 
   else
   {
-    if ([a1 year] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(a1, "month") != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(a1, "day") != 0x7FFFFFFFFFFFFFFFLL)
+    if ([self year] != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(self, "month") != 0x7FFFFFFFFFFFFFFFLL && objc_msgSend(self, "day") != 0x7FFFFFFFFFFFFFFFLL)
     {
       v7 = 1;
       goto LABEL_11;
@@ -235,13 +235,13 @@ LABEL_11:
 
 - (BOOL)rem_isWeekendDateComponents
 {
-  v2 = [a1 calendar];
-  v3 = v2;
-  if (v2)
+  calendar = [self calendar];
+  v3 = calendar;
+  if (calendar)
   {
-    v4 = [v2 calendarIdentifier];
+    calendarIdentifier = [calendar calendarIdentifier];
     v5 = *MEMORY[0x1E695D850];
-    v6 = [v4 isEqualToString:*MEMORY[0x1E695D850]];
+    v6 = [calendarIdentifier isEqualToString:*MEMORY[0x1E695D850]];
 
     if ((v6 & 1) == 0)
     {
@@ -258,16 +258,16 @@ LABEL_11:
   v8 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:v5];
 
   v9 = MEMORY[0x1E695DF10];
-  v10 = [a1 timeZone];
-  if (v10)
+  timeZone = [self timeZone];
+  if (timeZone)
   {
-    v11 = [v9 rem_dateWithDateComponents:a1 timeZone:v10];
+    v11 = [v9 rem_dateWithDateComponents:self timeZone:timeZone];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-    v11 = [v9 rem_dateWithDateComponents:a1 timeZone:v12];
+    defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+    v11 = [v9 rem_dateWithDateComponents:self timeZone:defaultTimeZone];
   }
 
   v13 = [v8 component:512 fromDate:v11];
@@ -279,21 +279,21 @@ LABEL_11:
 - (uint64_t)rem_compare:()ReminderKitAdditions
 {
   v4 = a3;
-  v5 = [a1 timeZone];
+  timeZone = [self timeZone];
 
-  v6 = [v4 timeZone];
-  v7 = v6;
-  if (v5)
+  timeZone2 = [v4 timeZone];
+  v7 = timeZone2;
+  if (timeZone)
   {
 
     if (v7)
     {
-      v8 = [a1 timeZone];
-      v9 = _REMSharedGregorianCalendarForTimeZone(v8);
-      v10 = [v9 dateFromComponents:a1];
+      timeZone3 = [self timeZone];
+      v9 = _REMSharedGregorianCalendarForTimeZone(timeZone3);
+      v10 = [v9 dateFromComponents:self];
 
-      v11 = [v4 timeZone];
-      v12 = _REMSharedGregorianCalendarForTimeZone(v11);
+      timeZone4 = [v4 timeZone];
+      v12 = _REMSharedGregorianCalendarForTimeZone(timeZone4);
       v13 = [v12 dateFromComponents:v4];
 
       if (v10 && v13)
@@ -327,7 +327,7 @@ LABEL_11:
 
     if (!v7)
     {
-      v10 = [a1 copy];
+      v10 = [self copy];
       v17 = [MEMORY[0x1E695DFE8] timeZoneWithName:@"UTC"];
       [v10 setTimeZone:v17];
 
@@ -357,9 +357,9 @@ LABEL_18:
 - (id)rem_stringRepresentation
 {
   v6 = MEMORY[0x1E696AEC0];
-  v2 = [a1 timeZone];
-  v3 = [v2 name];
-  v4 = [v6 stringWithFormat:@"%@_%ld_%ld_%ld_%ld_%ld_%ld_%ld_%ld", v3, objc_msgSend(a1, "era"), objc_msgSend(a1, "year"), objc_msgSend(a1, "month"), objc_msgSend(a1, "day"), objc_msgSend(a1, "hour"), objc_msgSend(a1, "minute"), objc_msgSend(a1, "second"), objc_msgSend(a1, "nanosecond")];
+  timeZone = [self timeZone];
+  name = [timeZone name];
+  v4 = [v6 stringWithFormat:@"%@_%ld_%ld_%ld_%ld_%ld_%ld_%ld_%ld", name, objc_msgSend(self, "era"), objc_msgSend(self, "year"), objc_msgSend(self, "month"), objc_msgSend(self, "day"), objc_msgSend(self, "hour"), objc_msgSend(self, "minute"), objc_msgSend(self, "second"), objc_msgSend(self, "nanosecond")];
 
   return v4;
 }

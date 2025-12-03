@@ -1,8 +1,8 @@
 @interface CKDKeyEnvelopeContext
-- (CKDKeyEnvelopeContext)envelopeContextWithIdentifier:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CKDKeyEnvelopeContext)envelopeContextWithIdentifier:(id)identifier error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setShareProtection:(_OpaquePCSShareProtection *)a3;
+- (void)setShareProtection:(_OpaquePCSShareProtection *)protection;
 @end
 
 @implementation CKDKeyEnvelopeContext
@@ -21,18 +21,18 @@
   [(CKDKeyEnvelopeContext *)&v4 dealloc];
 }
 
-- (void)setShareProtection:(_OpaquePCSShareProtection *)a3
+- (void)setShareProtection:(_OpaquePCSShareProtection *)protection
 {
   shareProtection = self->_shareProtection;
-  if (shareProtection != a3)
+  if (shareProtection != protection)
   {
-    if (a3)
+    if (protection)
     {
-      CFRetain(a3);
+      CFRetain(protection);
       shareProtection = self->_shareProtection;
     }
 
-    self->_shareProtection = a3;
+    self->_shareProtection = protection;
     if (shareProtection)
     {
 
@@ -41,10 +41,10 @@
   }
 }
 
-- (CKDKeyEnvelopeContext)envelopeContextWithIdentifier:(id)a3 error:(id *)a4
+- (CKDKeyEnvelopeContext)envelopeContextWithIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  if (v8)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v9 = objc_msgSend_mergeableValueID(self, v6, v7);
     v12 = objc_msgSend_recordID(v9, v10, v11);
@@ -57,21 +57,21 @@
       v23 = objc_msgSend_zoneName(v20, v21, v22);
       v26 = objc_msgSend_recordName(v12, v24, v25);
       v29 = objc_msgSend_name(v9, v27, v28);
-      v31 = objc_msgSend_stringWithFormat_(v19, v30, @"%@-%@-%@-%@-%@", v23, v26, v18, v29, v8);
+      v31 = objc_msgSend_stringWithFormat_(v19, v30, @"%@-%@-%@-%@-%@", v23, v26, v18, v29, identifierCopy);
 
       v32 = v31;
       v34 = objc_msgSend_dataUsingEncoding_(v31, v33, 4);
       v36 = v34;
-      if (a4 && !v34)
+      if (error && !v34)
       {
-        *a4 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v35, *MEMORY[0x277CBC120], 1000, @"Mergeable delta envelope context generation failed, invalid context encoding");
+        *error = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v35, *MEMORY[0x277CBC120], 1000, @"Mergeable delta envelope context generation failed, invalid context encoding");
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v16, *MEMORY[0x277CBC120], 1017, @"Mergeable delta envelope context generation failed, invalid mergeable value ID");
-      *a4 = v36 = 0;
+      *error = v36 = 0;
     }
 
     else
@@ -80,10 +80,10 @@
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v6, *MEMORY[0x277CBC120], 1017, @"Mergeable delta envelope context generation failed, missing delta identifier");
-    *a4 = v36 = 0;
+    *error = v36 = 0;
   }
 
   else
@@ -94,7 +94,7 @@
   return v36;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v7 = objc_msgSend_shareProtection(self, v5, v6);

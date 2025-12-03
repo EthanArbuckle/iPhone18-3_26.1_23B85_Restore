@@ -1,14 +1,14 @@
 @interface NMRPlaybackQueueResponse
-- (NMRPlaybackQueueResponse)initWithPlaybackQueue:(void *)a3 error:(__CFError *)a4;
-- (NMRPlaybackQueueResponse)initWithProtobufData:(id)a3;
+- (NMRPlaybackQueueResponse)initWithPlaybackQueue:(void *)queue error:(__CFError *)error;
+- (NMRPlaybackQueueResponse)initWithProtobufData:(id)data;
 - (__CFError)error;
-- (void)invokeCompletion:(id)a3;
+- (void)invokeCompletion:(id)completion;
 - (void)playbackQueue;
 @end
 
 @implementation NMRPlaybackQueueResponse
 
-- (NMRPlaybackQueueResponse)initWithPlaybackQueue:(void *)a3 error:(__CFError *)a4
+- (NMRPlaybackQueueResponse)initWithPlaybackQueue:(void *)queue error:(__CFError *)error
 {
   v15.receiver = self;
   v15.super_class = NMRPlaybackQueueResponse;
@@ -19,23 +19,23 @@
     protobuf = v6->_protobuf;
     v6->_protobuf = v7;
 
-    if (a3)
+    if (queue)
     {
       ExternalRepresentation = MRPlaybackQueueCreateExternalRepresentation();
       [(_NMRPlaybackQueueResponseProtobuf *)v6->_protobuf setPlaybackQueue:ExternalRepresentation];
     }
 
-    if (a4)
+    if (error)
     {
       v14 = 0;
-      v10 = [NSKeyedArchiver archivedDataWithRootObject:a4 requiringSecureCoding:1 error:&v14];
+      v10 = [NSKeyedArchiver archivedDataWithRootObject:error requiringSecureCoding:1 error:&v14];
       v11 = v14;
       if (v11)
       {
         v12 = sub_10002C180(2);
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
         {
-          sub_100031280(a4, v11, v12);
+          sub_100031280(error, v11, v12);
         }
       }
 
@@ -53,7 +53,7 @@
     return 0;
   }
 
-  v3 = [(_NMRPlaybackQueueResponseProtobuf *)self->_protobuf playbackQueue];
+  playbackQueue = [(_NMRPlaybackQueueResponseProtobuf *)self->_protobuf playbackQueue];
   v4 = MRPlaybackQueueCreateFromExternalRepresentation();
   v5 = CFAutorelease(v4);
 
@@ -68,9 +68,9 @@
   }
 
   v3 = +[NSSet setWithObject:](NSSet, "setWithObject:", +[NSError classForKeyedUnarchiver]);
-  v4 = [(_NMRPlaybackQueueResponseProtobuf *)self->_protobuf error];
+  error = [(_NMRPlaybackQueueResponseProtobuf *)self->_protobuf error];
   v10 = 0;
-  v5 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v3 fromData:v4 error:&v10];
+  v5 = [NSKeyedUnarchiver unarchivedObjectOfClasses:v3 fromData:error error:&v10];
   v6 = v10;
 
   if (v6)
@@ -95,24 +95,24 @@
   return v8;
 }
 
-- (void)invokeCompletion:(id)a3
+- (void)invokeCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    v5 = a3;
-    (*(a3 + 2))(v5, [(NMRPlaybackQueueResponse *)self playbackQueue], [(NMRPlaybackQueueResponse *)self error]);
+    completionCopy = completion;
+    (*(completion + 2))(completionCopy, [(NMRPlaybackQueueResponse *)self playbackQueue], [(NMRPlaybackQueueResponse *)self error]);
   }
 }
 
-- (NMRPlaybackQueueResponse)initWithProtobufData:(id)a3
+- (NMRPlaybackQueueResponse)initWithProtobufData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = NMRPlaybackQueueResponse;
   v5 = [(NMRPlaybackQueueResponse *)&v9 init];
   if (v5)
   {
-    v6 = [[_NMRPlaybackQueueResponseProtobuf alloc] initWithData:v4];
+    v6 = [[_NMRPlaybackQueueResponseProtobuf alloc] initWithData:dataCopy];
     protobuf = v5->_protobuf;
     v5->_protobuf = v6;
   }

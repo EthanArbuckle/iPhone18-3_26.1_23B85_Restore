@@ -1,19 +1,19 @@
 @interface OTTooManyPeersActualAdapter
 - (BOOL)shouldPopDialog;
-- (void)popDialogWithCount:(unint64_t)a3 limit:(unint64_t)a4;
+- (void)popDialogWithCount:(unint64_t)count limit:(unint64_t)limit;
 @end
 
 @implementation OTTooManyPeersActualAdapter
 
-- (void)popDialogWithCount:(unint64_t)a3 limit:(unint64_t)a4
+- (void)popDialogWithCount:(unint64_t)count limit:(unint64_t)limit
 {
   v6 = dispatch_get_global_queue(9, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001946EC;
   v7[3] = &unk_100346988;
-  v7[4] = a3;
-  v7[5] = a4;
+  v7[4] = count;
+  v7[5] = limit;
   dispatch_async(v6, v7);
 }
 

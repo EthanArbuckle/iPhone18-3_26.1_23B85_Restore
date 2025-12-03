@@ -1,24 +1,24 @@
 @interface AXMutableReplayableGesture
-- (id)_forcesByFingerIdentifierAtEventIndex:(unint64_t)a3;
-- (id)_pointsByFingerIdentifierAtEventIndex:(unint64_t)a3;
-- (void)_addPoint:(CGPoint)a3 force:(double)a4 forFingerIdentifier:(id)a5 atEventIndex:(unint64_t)a6;
-- (void)_addPoint:(CGPoint)a3 force:(double)a4 forFingerIdentifier:(id)a5 atTime:(double)a6;
-- (void)_removeFingersAtEventIndex:(unint64_t)a3;
-- (void)addPointsByFingerIdentifier:(id)a3 forces:(id)a4 atTime:(double)a5;
-- (void)addPointsFromReplayableGesture:(id)a3;
+- (id)_forcesByFingerIdentifierAtEventIndex:(unint64_t)index;
+- (id)_pointsByFingerIdentifierAtEventIndex:(unint64_t)index;
+- (void)_addPoint:(CGPoint)point force:(double)force forFingerIdentifier:(id)identifier atEventIndex:(unint64_t)index;
+- (void)_addPoint:(CGPoint)point force:(double)force forFingerIdentifier:(id)identifier atTime:(double)time;
+- (void)_removeFingersAtEventIndex:(unint64_t)index;
+- (void)addPointsByFingerIdentifier:(id)identifier forces:(id)forces atTime:(double)time;
+- (void)addPointsFromReplayableGesture:(id)gesture;
 @end
 
 @implementation AXMutableReplayableGesture
 
-- (void)addPointsByFingerIdentifier:(id)a3 forces:(id)a4 atTime:(double)a5
+- (void)addPointsByFingerIdentifier:(id)identifier forces:(id)forces atTime:(double)time
 {
   v19[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  identifierCopy = identifier;
+  forcesCopy = forces;
+  v10 = forcesCopy;
+  if (identifierCopy)
   {
-    v11 = v9 == 0;
+    v11 = forcesCopy == 0;
   }
 
   else
@@ -51,9 +51,9 @@
 LABEL_12:
     v13 = self->super._allEvents;
     v18[0] = @"Time";
-    v14 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+    v14 = [MEMORY[0x1E696AD98] numberWithDouble:time];
     v19[0] = v14;
-    v19[1] = v8;
+    v19[1] = identifierCopy;
     v18[1] = @"Fingers";
     v18[2] = @"Forces";
     v19[2] = v10;
@@ -64,17 +64,17 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)addPointsFromReplayableGesture:(id)a3
+- (void)addPointsFromReplayableGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  gestureCopy = gesture;
+  v5 = gestureCopy;
+  if (gestureCopy)
   {
     allEvents = self->super._allEvents;
     v9 = v5;
     if (allEvents)
     {
-      v4 = [(NSArray *)allEvents addObjectsFromArray:v5[1]];
+      gestureCopy = [(NSArray *)allEvents addObjectsFromArray:v5[1]];
     }
 
     else
@@ -87,15 +87,15 @@ LABEL_13:
     v5 = v9;
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](gestureCopy, v5);
 }
 
-- (void)_addPoint:(CGPoint)a3 force:(double)a4 forFingerIdentifier:(id)a5 atTime:(double)a6
+- (void)_addPoint:(CGPoint)point force:(double)force forFingerIdentifier:(id)identifier atTime:(double)time
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v26[3] = *MEMORY[0x1E69E9840];
-  v11 = a5;
+  identifierCopy = identifier;
   allEvents = self->super._allEvents;
   if (!allEvents)
   {
@@ -107,17 +107,17 @@ LABEL_13:
   }
 
   v25[0] = @"Time";
-  v15 = [MEMORY[0x1E696AD98] numberWithDouble:a6];
+  v15 = [MEMORY[0x1E696AD98] numberWithDouble:time];
   v26[0] = v15;
   v25[1] = @"Fingers";
-  v23 = v11;
+  v23 = identifierCopy;
   v16 = [MEMORY[0x1E696B098] axValueWithCGPoint:{x, y}];
   v24 = v16;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
   v26[1] = v17;
   v25[2] = @"Forces";
-  v21 = v11;
-  v18 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v21 = identifierCopy;
+  v18 = [MEMORY[0x1E696AD98] numberWithDouble:force];
   v22 = v18;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
   v26[2] = v19;
@@ -125,25 +125,25 @@ LABEL_13:
   [(NSArray *)allEvents addObject:v20];
 }
 
-- (void)_addPoint:(CGPoint)a3 force:(double)a4 forFingerIdentifier:(id)a5 atEventIndex:(unint64_t)a6
+- (void)_addPoint:(CGPoint)point force:(double)force forFingerIdentifier:(id)identifier atEventIndex:(unint64_t)index
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v23[3] = *MEMORY[0x1E69E9840];
   allEvents = self->super._allEvents;
-  v12 = a5;
-  v13 = [(NSArray *)allEvents objectAtIndexedSubscript:a6];
+  identifierCopy = identifier;
+  v13 = [(NSArray *)allEvents objectAtIndexedSubscript:index];
   v14 = [v13 objectForKeyedSubscript:@"Fingers"];
   v15 = [v14 mutableCopy];
 
   v16 = [MEMORY[0x1E696B098] axValueWithCGPoint:{x, y}];
-  [v15 setObject:v16 forKeyedSubscript:v12];
+  [v15 setObject:v16 forKeyedSubscript:identifierCopy];
 
   v17 = [v13 objectForKeyedSubscript:@"Forces"];
   v18 = [v17 mutableCopy];
 
-  v19 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
-  [v18 setObject:v19 forKeyedSubscript:v12];
+  v19 = [MEMORY[0x1E696AD98] numberWithDouble:force];
+  [v18 setObject:v19 forKeyedSubscript:identifierCopy];
 
   v22[0] = @"Fingers";
   v22[1] = @"Forces";
@@ -154,10 +154,10 @@ LABEL_13:
   v23[2] = v20;
   v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:3];
 
-  [(NSArray *)self->super._allEvents setObject:v21 atIndexedSubscript:a6];
+  [(NSArray *)self->super._allEvents setObject:v21 atIndexedSubscript:index];
 }
 
-- (void)_removeFingersAtEventIndex:(unint64_t)a3
+- (void)_removeFingersAtEventIndex:(unint64_t)index
 {
   v9[3] = *MEMORY[0x1E69E9840];
   v5 = [(NSArray *)self->super._allEvents objectAtIndexedSubscript:?];
@@ -170,20 +170,20 @@ LABEL_13:
   v9[2] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:3];
 
-  [(NSArray *)self->super._allEvents setObject:v7 atIndexedSubscript:a3];
+  [(NSArray *)self->super._allEvents setObject:v7 atIndexedSubscript:index];
 }
 
-- (id)_pointsByFingerIdentifierAtEventIndex:(unint64_t)a3
+- (id)_pointsByFingerIdentifierAtEventIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->super._allEvents objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->super._allEvents objectAtIndexedSubscript:index];
   v4 = [v3 objectForKeyedSubscript:@"Fingers"];
 
   return v4;
 }
 
-- (id)_forcesByFingerIdentifierAtEventIndex:(unint64_t)a3
+- (id)_forcesByFingerIdentifierAtEventIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->super._allEvents objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->super._allEvents objectAtIndexedSubscript:index];
   v4 = [v3 objectForKeyedSubscript:@"Forces"];
 
   return v4;

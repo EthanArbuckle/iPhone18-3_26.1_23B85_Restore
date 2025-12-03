@@ -1,50 +1,50 @@
 @interface ATXCandidateRelevanceModelPBEvaluationMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasProdShadowEvaluationNumberOfDaysWithSessions:(BOOL)a3;
-- (void)setHasProdShadowEvaluationNumberOfSessions:(BOOL)a3;
-- (void)setHasProdShadowEvaluationNumberOfSessionsWithPredictions:(BOOL)a3;
-- (void)setHasProdShadowEvaluationSuccessAt1:(BOOL)a3;
-- (void)setHasProdShadowEvaluationSuccessAt2:(BOOL)a3;
-- (void)setHasProdShadowEvaluationSuccessAt4:(BOOL)a3;
-- (void)setHasProdShadowEvaluationSuccessAt8:(BOOL)a3;
-- (void)setHasProdUIEvaluationMRR:(BOOL)a3;
-- (void)setHasProdUIEvaluationNumberOfDaysWithSessions:(BOOL)a3;
-- (void)setHasProdUIEvaluationNumberOfSessions:(BOOL)a3;
-- (void)setHasProdUIEvaluationNumberOfSessionsWithPredictions:(BOOL)a3;
-- (void)setHasProdUIEvaluationSuccessAt1:(BOOL)a3;
-- (void)setHasProdUIEvaluationSuccessAt2:(BOOL)a3;
-- (void)setHasProdUIEvaluationSuccessAt4:(BOOL)a3;
-- (void)setHasProdUIEvaluationSuccessAt8:(BOOL)a3;
-- (void)setHasShadowEvaluationMRR:(BOOL)a3;
-- (void)setHasShadowEvaluationNumberOfDaysWithSessions:(BOOL)a3;
-- (void)setHasShadowEvaluationNumberOfSessions:(BOOL)a3;
-- (void)setHasShadowEvaluationNumberOfSessionsWithPredictions:(BOOL)a3;
-- (void)setHasShadowEvaluationSuccessAt1:(BOOL)a3;
-- (void)setHasShadowEvaluationSuccessAt2:(BOOL)a3;
-- (void)setHasShadowEvaluationSuccessAt4:(BOOL)a3;
-- (void)setHasShadowEvaluationSuccessAt8:(BOOL)a3;
-- (void)setHasUiEvaluationMRR:(BOOL)a3;
-- (void)setHasUiEvaluationNumberOfDaysWithSessions:(BOOL)a3;
-- (void)setHasUiEvaluationNumberOfSessions:(BOOL)a3;
-- (void)setHasUiEvaluationNumberOfSessionsWithPredictions:(BOOL)a3;
-- (void)setHasUiEvaluationSuccessAt1:(BOOL)a3;
-- (void)setHasUiEvaluationSuccessAt2:(BOOL)a3;
-- (void)setHasUiEvaluationSuccessAt4:(BOOL)a3;
-- (void)setHasUiEvaluationSuccessAt8:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasProdShadowEvaluationNumberOfDaysWithSessions:(BOOL)sessions;
+- (void)setHasProdShadowEvaluationNumberOfSessions:(BOOL)sessions;
+- (void)setHasProdShadowEvaluationNumberOfSessionsWithPredictions:(BOOL)predictions;
+- (void)setHasProdShadowEvaluationSuccessAt1:(BOOL)at1;
+- (void)setHasProdShadowEvaluationSuccessAt2:(BOOL)at2;
+- (void)setHasProdShadowEvaluationSuccessAt4:(BOOL)at4;
+- (void)setHasProdShadowEvaluationSuccessAt8:(BOOL)at8;
+- (void)setHasProdUIEvaluationMRR:(BOOL)r;
+- (void)setHasProdUIEvaluationNumberOfDaysWithSessions:(BOOL)sessions;
+- (void)setHasProdUIEvaluationNumberOfSessions:(BOOL)sessions;
+- (void)setHasProdUIEvaluationNumberOfSessionsWithPredictions:(BOOL)predictions;
+- (void)setHasProdUIEvaluationSuccessAt1:(BOOL)at1;
+- (void)setHasProdUIEvaluationSuccessAt2:(BOOL)at2;
+- (void)setHasProdUIEvaluationSuccessAt4:(BOOL)at4;
+- (void)setHasProdUIEvaluationSuccessAt8:(BOOL)at8;
+- (void)setHasShadowEvaluationMRR:(BOOL)r;
+- (void)setHasShadowEvaluationNumberOfDaysWithSessions:(BOOL)sessions;
+- (void)setHasShadowEvaluationNumberOfSessions:(BOOL)sessions;
+- (void)setHasShadowEvaluationNumberOfSessionsWithPredictions:(BOOL)predictions;
+- (void)setHasShadowEvaluationSuccessAt1:(BOOL)at1;
+- (void)setHasShadowEvaluationSuccessAt2:(BOOL)at2;
+- (void)setHasShadowEvaluationSuccessAt4:(BOOL)at4;
+- (void)setHasShadowEvaluationSuccessAt8:(BOOL)at8;
+- (void)setHasUiEvaluationMRR:(BOOL)r;
+- (void)setHasUiEvaluationNumberOfDaysWithSessions:(BOOL)sessions;
+- (void)setHasUiEvaluationNumberOfSessions:(BOOL)sessions;
+- (void)setHasUiEvaluationNumberOfSessionsWithPredictions:(BOOL)predictions;
+- (void)setHasUiEvaluationSuccessAt1:(BOOL)at1;
+- (void)setHasUiEvaluationSuccessAt2:(BOOL)at2;
+- (void)setHasUiEvaluationSuccessAt4:(BOOL)at4;
+- (void)setHasUiEvaluationSuccessAt8:(BOOL)at8;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXCandidateRelevanceModelPBEvaluationMetrics
 
-- (void)setHasUiEvaluationSuccessAt1:(BOOL)a3
+- (void)setHasUiEvaluationSuccessAt1:(BOOL)at1
 {
-  if (a3)
+  if (at1)
   {
     v3 = 0x10000000;
   }
@@ -57,9 +57,9 @@
   self->_has = (*&self->_has & 0xEFFFFFFF | v3);
 }
 
-- (void)setHasUiEvaluationSuccessAt2:(BOOL)a3
+- (void)setHasUiEvaluationSuccessAt2:(BOOL)at2
 {
-  if (a3)
+  if (at2)
   {
     v3 = 0x20000000;
   }
@@ -72,9 +72,9 @@
   self->_has = (*&self->_has & 0xDFFFFFFF | v3);
 }
 
-- (void)setHasUiEvaluationSuccessAt4:(BOOL)a3
+- (void)setHasUiEvaluationSuccessAt4:(BOOL)at4
 {
-  if (a3)
+  if (at4)
   {
     v3 = 0x40000000;
   }
@@ -87,9 +87,9 @@
   self->_has = (*&self->_has & 0xBFFFFFFF | v3);
 }
 
-- (void)setHasUiEvaluationSuccessAt8:(BOOL)a3
+- (void)setHasUiEvaluationSuccessAt8:(BOOL)at8
 {
-  if (a3)
+  if (at8)
   {
     v3 = 0x80000000;
   }
@@ -102,9 +102,9 @@
   self->_has = (v3 & 0x80000000 | *&self->_has & 0x7FFFFFFF);
 }
 
-- (void)setHasUiEvaluationMRR:(BOOL)a3
+- (void)setHasUiEvaluationMRR:(BOOL)r
 {
-  if (a3)
+  if (r)
   {
     v3 = 0x1000000;
   }
@@ -117,9 +117,9 @@
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasUiEvaluationNumberOfSessionsWithPredictions:(BOOL)a3
+- (void)setHasUiEvaluationNumberOfSessionsWithPredictions:(BOOL)predictions
 {
-  if (a3)
+  if (predictions)
   {
     v3 = 0x8000000;
   }
@@ -132,9 +132,9 @@
   self->_has = (*&self->_has & 0xF7FFFFFF | v3);
 }
 
-- (void)setHasUiEvaluationNumberOfSessions:(BOOL)a3
+- (void)setHasUiEvaluationNumberOfSessions:(BOOL)sessions
 {
-  if (a3)
+  if (sessions)
   {
     v3 = 0x4000000;
   }
@@ -147,9 +147,9 @@
   self->_has = (*&self->_has & 0xFBFFFFFF | v3);
 }
 
-- (void)setHasUiEvaluationNumberOfDaysWithSessions:(BOOL)a3
+- (void)setHasUiEvaluationNumberOfDaysWithSessions:(BOOL)sessions
 {
-  if (a3)
+  if (sessions)
   {
     v3 = 0x2000000;
   }
@@ -162,9 +162,9 @@
   self->_has = (*&self->_has & 0xFDFFFFFF | v3);
 }
 
-- (void)setHasShadowEvaluationSuccessAt1:(BOOL)a3
+- (void)setHasShadowEvaluationSuccessAt1:(BOOL)at1
 {
-  if (a3)
+  if (at1)
   {
     v3 = 0x100000;
   }
@@ -177,9 +177,9 @@
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasShadowEvaluationSuccessAt2:(BOOL)a3
+- (void)setHasShadowEvaluationSuccessAt2:(BOOL)at2
 {
-  if (a3)
+  if (at2)
   {
     v3 = 0x200000;
   }
@@ -192,9 +192,9 @@
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasShadowEvaluationSuccessAt4:(BOOL)a3
+- (void)setHasShadowEvaluationSuccessAt4:(BOOL)at4
 {
-  if (a3)
+  if (at4)
   {
     v3 = 0x400000;
   }
@@ -207,9 +207,9 @@
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasShadowEvaluationSuccessAt8:(BOOL)a3
+- (void)setHasShadowEvaluationSuccessAt8:(BOOL)at8
 {
-  if (a3)
+  if (at8)
   {
     v3 = 0x800000;
   }
@@ -222,9 +222,9 @@
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasShadowEvaluationMRR:(BOOL)a3
+- (void)setHasShadowEvaluationMRR:(BOOL)r
 {
-  if (a3)
+  if (r)
   {
     v3 = 0x10000;
   }
@@ -237,9 +237,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasShadowEvaluationNumberOfSessionsWithPredictions:(BOOL)a3
+- (void)setHasShadowEvaluationNumberOfSessionsWithPredictions:(BOOL)predictions
 {
-  if (a3)
+  if (predictions)
   {
     v3 = 0x80000;
   }
@@ -252,9 +252,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasShadowEvaluationNumberOfSessions:(BOOL)a3
+- (void)setHasShadowEvaluationNumberOfSessions:(BOOL)sessions
 {
-  if (a3)
+  if (sessions)
   {
     v3 = 0x40000;
   }
@@ -267,9 +267,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasShadowEvaluationNumberOfDaysWithSessions:(BOOL)a3
+- (void)setHasShadowEvaluationNumberOfDaysWithSessions:(BOOL)sessions
 {
-  if (a3)
+  if (sessions)
   {
     v3 = 0x20000;
   }
@@ -282,9 +282,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasProdUIEvaluationSuccessAt1:(BOOL)a3
+- (void)setHasProdUIEvaluationSuccessAt1:(BOOL)at1
 {
-  if (a3)
+  if (at1)
   {
     v3 = 4096;
   }
@@ -297,9 +297,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasProdUIEvaluationSuccessAt2:(BOOL)a3
+- (void)setHasProdUIEvaluationSuccessAt2:(BOOL)at2
 {
-  if (a3)
+  if (at2)
   {
     v3 = 0x2000;
   }
@@ -312,9 +312,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasProdUIEvaluationSuccessAt4:(BOOL)a3
+- (void)setHasProdUIEvaluationSuccessAt4:(BOOL)at4
 {
-  if (a3)
+  if (at4)
   {
     v3 = 0x4000;
   }
@@ -327,9 +327,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasProdUIEvaluationSuccessAt8:(BOOL)a3
+- (void)setHasProdUIEvaluationSuccessAt8:(BOOL)at8
 {
-  if (a3)
+  if (at8)
   {
     v3 = 0x8000;
   }
@@ -342,9 +342,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasProdUIEvaluationMRR:(BOOL)a3
+- (void)setHasProdUIEvaluationMRR:(BOOL)r
 {
-  if (a3)
+  if (r)
   {
     v3 = 256;
   }
@@ -357,9 +357,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasProdUIEvaluationNumberOfSessionsWithPredictions:(BOOL)a3
+- (void)setHasProdUIEvaluationNumberOfSessionsWithPredictions:(BOOL)predictions
 {
-  if (a3)
+  if (predictions)
   {
     v3 = 2048;
   }
@@ -372,9 +372,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasProdUIEvaluationNumberOfSessions:(BOOL)a3
+- (void)setHasProdUIEvaluationNumberOfSessions:(BOOL)sessions
 {
-  if (a3)
+  if (sessions)
   {
     v3 = 1024;
   }
@@ -387,9 +387,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasProdUIEvaluationNumberOfDaysWithSessions:(BOOL)a3
+- (void)setHasProdUIEvaluationNumberOfDaysWithSessions:(BOOL)sessions
 {
-  if (a3)
+  if (sessions)
   {
     v3 = 512;
   }
@@ -402,9 +402,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasProdShadowEvaluationSuccessAt1:(BOOL)a3
+- (void)setHasProdShadowEvaluationSuccessAt1:(BOOL)at1
 {
-  if (a3)
+  if (at1)
   {
     v3 = 16;
   }
@@ -417,9 +417,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasProdShadowEvaluationSuccessAt2:(BOOL)a3
+- (void)setHasProdShadowEvaluationSuccessAt2:(BOOL)at2
 {
-  if (a3)
+  if (at2)
   {
     v3 = 32;
   }
@@ -432,9 +432,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasProdShadowEvaluationSuccessAt4:(BOOL)a3
+- (void)setHasProdShadowEvaluationSuccessAt4:(BOOL)at4
 {
-  if (a3)
+  if (at4)
   {
     v3 = 64;
   }
@@ -447,9 +447,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasProdShadowEvaluationSuccessAt8:(BOOL)a3
+- (void)setHasProdShadowEvaluationSuccessAt8:(BOOL)at8
 {
-  if (a3)
+  if (at8)
   {
     v3 = 128;
   }
@@ -462,9 +462,9 @@
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasProdShadowEvaluationNumberOfSessionsWithPredictions:(BOOL)a3
+- (void)setHasProdShadowEvaluationNumberOfSessionsWithPredictions:(BOOL)predictions
 {
-  if (a3)
+  if (predictions)
   {
     v3 = 8;
   }
@@ -477,9 +477,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasProdShadowEvaluationNumberOfSessions:(BOOL)a3
+- (void)setHasProdShadowEvaluationNumberOfSessions:(BOOL)sessions
 {
-  if (a3)
+  if (sessions)
   {
     v3 = 4;
   }
@@ -492,9 +492,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasProdShadowEvaluationNumberOfDaysWithSessions:(BOOL)a3
+- (void)setHasProdShadowEvaluationNumberOfDaysWithSessions:(BOOL)sessions
 {
-  if (a3)
+  if (sessions)
   {
     v3 = 2;
   }
@@ -513,21 +513,21 @@
   v8.receiver = self;
   v8.super_class = ATXCandidateRelevanceModelPBEvaluationMetrics;
   v4 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)&v8 description];
-  v5 = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXCandidateRelevanceModelPBEvaluationMetrics *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((*&has & 0x10000000) != 0)
   {
     *&v4 = self->_uiEvaluationSuccessAt1;
     v9 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-    [v3 setObject:v9 forKey:@"uiEvaluationSuccessAt1"];
+    [dictionary setObject:v9 forKey:@"uiEvaluationSuccessAt1"];
 
     has = self->_has;
     if ((*&has & 0x20000000) == 0)
@@ -549,7 +549,7 @@ LABEL_3:
 
   *&v4 = self->_uiEvaluationSuccessAt2;
   v10 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v10 forKey:@"uiEvaluationSuccessAt2"];
+  [dictionary setObject:v10 forKey:@"uiEvaluationSuccessAt2"];
 
   has = self->_has;
   if ((*&has & 0x40000000) == 0)
@@ -566,7 +566,7 @@ LABEL_4:
 LABEL_37:
   *&v4 = self->_uiEvaluationSuccessAt4;
   v11 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v11 forKey:@"uiEvaluationSuccessAt4"];
+  [dictionary setObject:v11 forKey:@"uiEvaluationSuccessAt4"];
 
   has = self->_has;
   if ((*&has & 0x80000000) == 0)
@@ -583,7 +583,7 @@ LABEL_5:
 LABEL_38:
   *&v4 = self->_uiEvaluationSuccessAt8;
   v12 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v12 forKey:@"uiEvaluationSuccessAt8"];
+  [dictionary setObject:v12 forKey:@"uiEvaluationSuccessAt8"];
 
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
@@ -600,7 +600,7 @@ LABEL_6:
 LABEL_39:
   *&v4 = self->_uiEvaluationMRR;
   v13 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v13 forKey:@"uiEvaluationMRR"];
+  [dictionary setObject:v13 forKey:@"uiEvaluationMRR"];
 
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
@@ -616,7 +616,7 @@ LABEL_7:
 
 LABEL_40:
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_uiEvaluationNumberOfSessionsWithPredictions];
-  [v3 setObject:v14 forKey:@"uiEvaluationNumberOfSessionsWithPredictions"];
+  [dictionary setObject:v14 forKey:@"uiEvaluationNumberOfSessionsWithPredictions"];
 
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
@@ -632,7 +632,7 @@ LABEL_8:
 
 LABEL_41:
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_uiEvaluationNumberOfSessions];
-  [v3 setObject:v15 forKey:@"uiEvaluationNumberOfSessions"];
+  [dictionary setObject:v15 forKey:@"uiEvaluationNumberOfSessions"];
 
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
@@ -648,7 +648,7 @@ LABEL_9:
 
 LABEL_42:
   v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_uiEvaluationNumberOfDaysWithSessions];
-  [v3 setObject:v16 forKey:@"uiEvaluationNumberOfDaysWithSessions"];
+  [dictionary setObject:v16 forKey:@"uiEvaluationNumberOfDaysWithSessions"];
 
   has = self->_has;
   if ((*&has & 0x100000) == 0)
@@ -665,7 +665,7 @@ LABEL_10:
 LABEL_43:
   *&v4 = self->_shadowEvaluationSuccessAt1;
   v17 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v17 forKey:@"shadowEvaluationSuccessAt1"];
+  [dictionary setObject:v17 forKey:@"shadowEvaluationSuccessAt1"];
 
   has = self->_has;
   if ((*&has & 0x200000) == 0)
@@ -682,7 +682,7 @@ LABEL_11:
 LABEL_44:
   *&v4 = self->_shadowEvaluationSuccessAt2;
   v18 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v18 forKey:@"shadowEvaluationSuccessAt2"];
+  [dictionary setObject:v18 forKey:@"shadowEvaluationSuccessAt2"];
 
   has = self->_has;
   if ((*&has & 0x400000) == 0)
@@ -699,7 +699,7 @@ LABEL_12:
 LABEL_45:
   *&v4 = self->_shadowEvaluationSuccessAt4;
   v19 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v19 forKey:@"shadowEvaluationSuccessAt4"];
+  [dictionary setObject:v19 forKey:@"shadowEvaluationSuccessAt4"];
 
   has = self->_has;
   if ((*&has & 0x800000) == 0)
@@ -716,7 +716,7 @@ LABEL_13:
 LABEL_46:
   *&v4 = self->_shadowEvaluationSuccessAt8;
   v20 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v20 forKey:@"shadowEvaluationSuccessAt8"];
+  [dictionary setObject:v20 forKey:@"shadowEvaluationSuccessAt8"];
 
   has = self->_has;
   if ((*&has & 0x10000) == 0)
@@ -733,7 +733,7 @@ LABEL_14:
 LABEL_47:
   *&v4 = self->_shadowEvaluationMRR;
   v21 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v21 forKey:@"shadowEvaluationMRR"];
+  [dictionary setObject:v21 forKey:@"shadowEvaluationMRR"];
 
   has = self->_has;
   if ((*&has & 0x80000) == 0)
@@ -749,7 +749,7 @@ LABEL_15:
 
 LABEL_48:
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_shadowEvaluationNumberOfSessionsWithPredictions];
-  [v3 setObject:v22 forKey:@"shadowEvaluationNumberOfSessionsWithPredictions"];
+  [dictionary setObject:v22 forKey:@"shadowEvaluationNumberOfSessionsWithPredictions"];
 
   has = self->_has;
   if ((*&has & 0x40000) == 0)
@@ -765,7 +765,7 @@ LABEL_16:
 
 LABEL_49:
   v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_shadowEvaluationNumberOfSessions];
-  [v3 setObject:v23 forKey:@"shadowEvaluationNumberOfSessions"];
+  [dictionary setObject:v23 forKey:@"shadowEvaluationNumberOfSessions"];
 
   has = self->_has;
   if ((*&has & 0x20000) == 0)
@@ -781,7 +781,7 @@ LABEL_17:
 
 LABEL_50:
   v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_shadowEvaluationNumberOfDaysWithSessions];
-  [v3 setObject:v24 forKey:@"shadowEvaluationNumberOfDaysWithSessions"];
+  [dictionary setObject:v24 forKey:@"shadowEvaluationNumberOfDaysWithSessions"];
 
   has = self->_has;
   if ((*&has & 0x1000) == 0)
@@ -798,7 +798,7 @@ LABEL_18:
 LABEL_51:
   *&v4 = self->_prodUIEvaluationSuccessAt1;
   v25 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v25 forKey:@"prodUIEvaluationSuccessAt1"];
+  [dictionary setObject:v25 forKey:@"prodUIEvaluationSuccessAt1"];
 
   has = self->_has;
   if ((*&has & 0x2000) == 0)
@@ -815,7 +815,7 @@ LABEL_19:
 LABEL_52:
   *&v4 = self->_prodUIEvaluationSuccessAt2;
   v26 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v26 forKey:@"prodUIEvaluationSuccessAt2"];
+  [dictionary setObject:v26 forKey:@"prodUIEvaluationSuccessAt2"];
 
   has = self->_has;
   if ((*&has & 0x4000) == 0)
@@ -832,7 +832,7 @@ LABEL_20:
 LABEL_53:
   *&v4 = self->_prodUIEvaluationSuccessAt4;
   v27 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v27 forKey:@"prodUIEvaluationSuccessAt4"];
+  [dictionary setObject:v27 forKey:@"prodUIEvaluationSuccessAt4"];
 
   has = self->_has;
   if ((*&has & 0x8000) == 0)
@@ -849,7 +849,7 @@ LABEL_21:
 LABEL_54:
   *&v4 = self->_prodUIEvaluationSuccessAt8;
   v28 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v28 forKey:@"prodUIEvaluationSuccessAt8"];
+  [dictionary setObject:v28 forKey:@"prodUIEvaluationSuccessAt8"];
 
   has = self->_has;
   if ((*&has & 0x100) == 0)
@@ -866,7 +866,7 @@ LABEL_22:
 LABEL_55:
   *&v4 = self->_prodUIEvaluationMRR;
   v29 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v29 forKey:@"prodUIEvaluationMRR"];
+  [dictionary setObject:v29 forKey:@"prodUIEvaluationMRR"];
 
   has = self->_has;
   if ((*&has & 0x800) == 0)
@@ -882,7 +882,7 @@ LABEL_23:
 
 LABEL_56:
   v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_prodUIEvaluationNumberOfSessionsWithPredictions];
-  [v3 setObject:v30 forKey:@"prodUIEvaluationNumberOfSessionsWithPredictions"];
+  [dictionary setObject:v30 forKey:@"prodUIEvaluationNumberOfSessionsWithPredictions"];
 
   has = self->_has;
   if ((*&has & 0x400) == 0)
@@ -898,7 +898,7 @@ LABEL_24:
 
 LABEL_57:
   v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_prodUIEvaluationNumberOfSessions];
-  [v3 setObject:v31 forKey:@"prodUIEvaluationNumberOfSessions"];
+  [dictionary setObject:v31 forKey:@"prodUIEvaluationNumberOfSessions"];
 
   has = self->_has;
   if ((*&has & 0x200) == 0)
@@ -914,7 +914,7 @@ LABEL_25:
 
 LABEL_58:
   v32 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_prodUIEvaluationNumberOfDaysWithSessions];
-  [v3 setObject:v32 forKey:@"prodUIEvaluationNumberOfDaysWithSessions"];
+  [dictionary setObject:v32 forKey:@"prodUIEvaluationNumberOfDaysWithSessions"];
 
   has = self->_has;
   if ((*&has & 0x10) == 0)
@@ -931,7 +931,7 @@ LABEL_26:
 LABEL_59:
   *&v4 = self->_prodShadowEvaluationSuccessAt1;
   v33 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v33 forKey:@"prodShadowEvaluationSuccessAt1"];
+  [dictionary setObject:v33 forKey:@"prodShadowEvaluationSuccessAt1"];
 
   has = self->_has;
   if ((*&has & 0x20) == 0)
@@ -948,7 +948,7 @@ LABEL_27:
 LABEL_60:
   *&v4 = self->_prodShadowEvaluationSuccessAt2;
   v34 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v34 forKey:@"prodShadowEvaluationSuccessAt2"];
+  [dictionary setObject:v34 forKey:@"prodShadowEvaluationSuccessAt2"];
 
   has = self->_has;
   if ((*&has & 0x40) == 0)
@@ -965,7 +965,7 @@ LABEL_28:
 LABEL_61:
   *&v4 = self->_prodShadowEvaluationSuccessAt4;
   v35 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v35 forKey:@"prodShadowEvaluationSuccessAt4"];
+  [dictionary setObject:v35 forKey:@"prodShadowEvaluationSuccessAt4"];
 
   has = self->_has;
   if ((*&has & 0x80) == 0)
@@ -982,7 +982,7 @@ LABEL_29:
 LABEL_62:
   *&v4 = self->_prodShadowEvaluationSuccessAt8;
   v36 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v36 forKey:@"prodShadowEvaluationSuccessAt8"];
+  [dictionary setObject:v36 forKey:@"prodShadowEvaluationSuccessAt8"];
 
   has = self->_has;
   if ((*&has & 1) == 0)
@@ -999,7 +999,7 @@ LABEL_30:
 LABEL_63:
   *&v4 = self->_prodShadowEvaluationMRR;
   v37 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v37 forKey:@"prodShadowEvaluationMRR"];
+  [dictionary setObject:v37 forKey:@"prodShadowEvaluationMRR"];
 
   has = self->_has;
   if ((*&has & 8) == 0)
@@ -1012,7 +1012,7 @@ LABEL_31:
 
 LABEL_65:
     v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_prodShadowEvaluationNumberOfSessions];
-    [v3 setObject:v39 forKey:@"prodShadowEvaluationNumberOfSessions"];
+    [dictionary setObject:v39 forKey:@"prodShadowEvaluationNumberOfSessions"];
 
     if ((*&self->_has & 2) == 0)
     {
@@ -1024,7 +1024,7 @@ LABEL_65:
 
 LABEL_64:
   v38 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_prodShadowEvaluationNumberOfSessionsWithPredictions];
-  [v3 setObject:v38 forKey:@"prodShadowEvaluationNumberOfSessionsWithPredictions"];
+  [dictionary setObject:v38 forKey:@"prodShadowEvaluationNumberOfSessionsWithPredictions"];
 
   has = self->_has;
   if ((*&has & 4) != 0)
@@ -1037,18 +1037,18 @@ LABEL_32:
   {
 LABEL_33:
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_prodShadowEvaluationNumberOfDaysWithSessions];
-    [v3 setObject:v6 forKey:@"prodShadowEvaluationNumberOfDaysWithSessions"];
+    [dictionary setObject:v6 forKey:@"prodShadowEvaluationNumberOfDaysWithSessions"];
   }
 
 LABEL_34:
-  v7 = v3;
+  v7 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v37 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x10000000) != 0)
   {
@@ -1519,14 +1519,14 @@ LABEL_33:
 LABEL_34:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((*&has & 0x10000000) != 0)
   {
-    v4[30] = LODWORD(self->_uiEvaluationSuccessAt1);
-    v4[34] |= 0x10000000u;
+    toCopy[30] = LODWORD(self->_uiEvaluationSuccessAt1);
+    toCopy[34] |= 0x10000000u;
     has = self->_has;
     if ((*&has & 0x20000000) == 0)
     {
@@ -1545,8 +1545,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[31] = LODWORD(self->_uiEvaluationSuccessAt2);
-  v4[34] |= 0x20000000u;
+  toCopy[31] = LODWORD(self->_uiEvaluationSuccessAt2);
+  toCopy[34] |= 0x20000000u;
   has = self->_has;
   if ((*&has & 0x40000000) == 0)
   {
@@ -1560,8 +1560,8 @@ LABEL_4:
   }
 
 LABEL_39:
-  v4[32] = LODWORD(self->_uiEvaluationSuccessAt4);
-  v4[34] |= 0x40000000u;
+  toCopy[32] = LODWORD(self->_uiEvaluationSuccessAt4);
+  toCopy[34] |= 0x40000000u;
   has = self->_has;
   if ((*&has & 0x80000000) == 0)
   {
@@ -1575,8 +1575,8 @@ LABEL_5:
   }
 
 LABEL_40:
-  v4[33] = LODWORD(self->_uiEvaluationSuccessAt8);
-  v4[34] |= 0x80000000;
+  toCopy[33] = LODWORD(self->_uiEvaluationSuccessAt8);
+  toCopy[34] |= 0x80000000;
   has = self->_has;
   if ((*&has & 0x1000000) == 0)
   {
@@ -1590,8 +1590,8 @@ LABEL_6:
   }
 
 LABEL_41:
-  v4[26] = LODWORD(self->_uiEvaluationMRR);
-  v4[34] |= 0x1000000u;
+  toCopy[26] = LODWORD(self->_uiEvaluationMRR);
+  toCopy[34] |= 0x1000000u;
   has = self->_has;
   if ((*&has & 0x8000000) == 0)
   {
@@ -1605,8 +1605,8 @@ LABEL_7:
   }
 
 LABEL_42:
-  v4[29] = self->_uiEvaluationNumberOfSessionsWithPredictions;
-  v4[34] |= 0x8000000u;
+  toCopy[29] = self->_uiEvaluationNumberOfSessionsWithPredictions;
+  toCopy[34] |= 0x8000000u;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -1620,8 +1620,8 @@ LABEL_8:
   }
 
 LABEL_43:
-  v4[28] = self->_uiEvaluationNumberOfSessions;
-  v4[34] |= 0x4000000u;
+  toCopy[28] = self->_uiEvaluationNumberOfSessions;
+  toCopy[34] |= 0x4000000u;
   has = self->_has;
   if ((*&has & 0x2000000) == 0)
   {
@@ -1635,8 +1635,8 @@ LABEL_9:
   }
 
 LABEL_44:
-  v4[27] = self->_uiEvaluationNumberOfDaysWithSessions;
-  v4[34] |= 0x2000000u;
+  toCopy[27] = self->_uiEvaluationNumberOfDaysWithSessions;
+  toCopy[34] |= 0x2000000u;
   has = self->_has;
   if ((*&has & 0x100000) == 0)
   {
@@ -1650,8 +1650,8 @@ LABEL_10:
   }
 
 LABEL_45:
-  v4[22] = LODWORD(self->_shadowEvaluationSuccessAt1);
-  v4[34] |= 0x100000u;
+  toCopy[22] = LODWORD(self->_shadowEvaluationSuccessAt1);
+  toCopy[34] |= 0x100000u;
   has = self->_has;
   if ((*&has & 0x200000) == 0)
   {
@@ -1665,8 +1665,8 @@ LABEL_11:
   }
 
 LABEL_46:
-  v4[23] = LODWORD(self->_shadowEvaluationSuccessAt2);
-  v4[34] |= 0x200000u;
+  toCopy[23] = LODWORD(self->_shadowEvaluationSuccessAt2);
+  toCopy[34] |= 0x200000u;
   has = self->_has;
   if ((*&has & 0x400000) == 0)
   {
@@ -1680,8 +1680,8 @@ LABEL_12:
   }
 
 LABEL_47:
-  v4[24] = LODWORD(self->_shadowEvaluationSuccessAt4);
-  v4[34] |= 0x400000u;
+  toCopy[24] = LODWORD(self->_shadowEvaluationSuccessAt4);
+  toCopy[34] |= 0x400000u;
   has = self->_has;
   if ((*&has & 0x800000) == 0)
   {
@@ -1695,8 +1695,8 @@ LABEL_13:
   }
 
 LABEL_48:
-  v4[25] = LODWORD(self->_shadowEvaluationSuccessAt8);
-  v4[34] |= 0x800000u;
+  toCopy[25] = LODWORD(self->_shadowEvaluationSuccessAt8);
+  toCopy[34] |= 0x800000u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1710,8 +1710,8 @@ LABEL_14:
   }
 
 LABEL_49:
-  v4[18] = LODWORD(self->_shadowEvaluationMRR);
-  v4[34] |= 0x10000u;
+  toCopy[18] = LODWORD(self->_shadowEvaluationMRR);
+  toCopy[34] |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x80000) == 0)
   {
@@ -1725,8 +1725,8 @@ LABEL_15:
   }
 
 LABEL_50:
-  v4[21] = self->_shadowEvaluationNumberOfSessionsWithPredictions;
-  v4[34] |= 0x80000u;
+  toCopy[21] = self->_shadowEvaluationNumberOfSessionsWithPredictions;
+  toCopy[34] |= 0x80000u;
   has = self->_has;
   if ((*&has & 0x40000) == 0)
   {
@@ -1740,8 +1740,8 @@ LABEL_16:
   }
 
 LABEL_51:
-  v4[20] = self->_shadowEvaluationNumberOfSessions;
-  v4[34] |= 0x40000u;
+  toCopy[20] = self->_shadowEvaluationNumberOfSessions;
+  toCopy[34] |= 0x40000u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1755,8 +1755,8 @@ LABEL_17:
   }
 
 LABEL_52:
-  v4[19] = self->_shadowEvaluationNumberOfDaysWithSessions;
-  v4[34] |= 0x20000u;
+  toCopy[19] = self->_shadowEvaluationNumberOfDaysWithSessions;
+  toCopy[34] |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1770,8 +1770,8 @@ LABEL_18:
   }
 
 LABEL_53:
-  v4[14] = LODWORD(self->_prodUIEvaluationSuccessAt1);
-  v4[34] |= 0x1000u;
+  toCopy[14] = LODWORD(self->_prodUIEvaluationSuccessAt1);
+  toCopy[34] |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1785,8 +1785,8 @@ LABEL_19:
   }
 
 LABEL_54:
-  v4[15] = LODWORD(self->_prodUIEvaluationSuccessAt2);
-  v4[34] |= 0x2000u;
+  toCopy[15] = LODWORD(self->_prodUIEvaluationSuccessAt2);
+  toCopy[34] |= 0x2000u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -1800,8 +1800,8 @@ LABEL_20:
   }
 
 LABEL_55:
-  v4[16] = LODWORD(self->_prodUIEvaluationSuccessAt4);
-  v4[34] |= 0x4000u;
+  toCopy[16] = LODWORD(self->_prodUIEvaluationSuccessAt4);
+  toCopy[34] |= 0x4000u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -1815,8 +1815,8 @@ LABEL_21:
   }
 
 LABEL_56:
-  v4[17] = LODWORD(self->_prodUIEvaluationSuccessAt8);
-  v4[34] |= 0x8000u;
+  toCopy[17] = LODWORD(self->_prodUIEvaluationSuccessAt8);
+  toCopy[34] |= 0x8000u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1830,8 +1830,8 @@ LABEL_22:
   }
 
 LABEL_57:
-  v4[10] = LODWORD(self->_prodUIEvaluationMRR);
-  v4[34] |= 0x100u;
+  toCopy[10] = LODWORD(self->_prodUIEvaluationMRR);
+  toCopy[34] |= 0x100u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1845,8 +1845,8 @@ LABEL_23:
   }
 
 LABEL_58:
-  v4[13] = self->_prodUIEvaluationNumberOfSessionsWithPredictions;
-  v4[34] |= 0x800u;
+  toCopy[13] = self->_prodUIEvaluationNumberOfSessionsWithPredictions;
+  toCopy[34] |= 0x800u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -1860,8 +1860,8 @@ LABEL_24:
   }
 
 LABEL_59:
-  v4[12] = self->_prodUIEvaluationNumberOfSessions;
-  v4[34] |= 0x400u;
+  toCopy[12] = self->_prodUIEvaluationNumberOfSessions;
+  toCopy[34] |= 0x400u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1875,8 +1875,8 @@ LABEL_25:
   }
 
 LABEL_60:
-  v4[11] = self->_prodUIEvaluationNumberOfDaysWithSessions;
-  v4[34] |= 0x200u;
+  toCopy[11] = self->_prodUIEvaluationNumberOfDaysWithSessions;
+  toCopy[34] |= 0x200u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1890,8 +1890,8 @@ LABEL_26:
   }
 
 LABEL_61:
-  v4[6] = LODWORD(self->_prodShadowEvaluationSuccessAt1);
-  v4[34] |= 0x10u;
+  toCopy[6] = LODWORD(self->_prodShadowEvaluationSuccessAt1);
+  toCopy[34] |= 0x10u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1905,8 +1905,8 @@ LABEL_27:
   }
 
 LABEL_62:
-  v4[7] = LODWORD(self->_prodShadowEvaluationSuccessAt2);
-  v4[34] |= 0x20u;
+  toCopy[7] = LODWORD(self->_prodShadowEvaluationSuccessAt2);
+  toCopy[34] |= 0x20u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1920,8 +1920,8 @@ LABEL_28:
   }
 
 LABEL_63:
-  v4[8] = LODWORD(self->_prodShadowEvaluationSuccessAt4);
-  v4[34] |= 0x40u;
+  toCopy[8] = LODWORD(self->_prodShadowEvaluationSuccessAt4);
+  toCopy[34] |= 0x40u;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -1935,8 +1935,8 @@ LABEL_29:
   }
 
 LABEL_64:
-  v4[9] = LODWORD(self->_prodShadowEvaluationSuccessAt8);
-  v4[34] |= 0x80u;
+  toCopy[9] = LODWORD(self->_prodShadowEvaluationSuccessAt8);
+  toCopy[34] |= 0x80u;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -1950,8 +1950,8 @@ LABEL_30:
   }
 
 LABEL_65:
-  v4[2] = LODWORD(self->_prodShadowEvaluationMRR);
-  v4[34] |= 1u;
+  toCopy[2] = LODWORD(self->_prodShadowEvaluationMRR);
+  toCopy[34] |= 1u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -1965,8 +1965,8 @@ LABEL_31:
   }
 
 LABEL_66:
-  v4[5] = self->_prodShadowEvaluationNumberOfSessionsWithPredictions;
-  v4[34] |= 8u;
+  toCopy[5] = self->_prodShadowEvaluationNumberOfSessionsWithPredictions;
+  toCopy[34] |= 8u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1980,21 +1980,21 @@ LABEL_32:
   }
 
 LABEL_67:
-  v4[4] = self->_prodShadowEvaluationNumberOfSessions;
-  v4[34] |= 4u;
+  toCopy[4] = self->_prodShadowEvaluationNumberOfSessions;
+  toCopy[34] |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_33:
-    v4[3] = self->_prodShadowEvaluationNumberOfDaysWithSessions;
-    v4[34] |= 2u;
+    toCopy[3] = self->_prodShadowEvaluationNumberOfDaysWithSessions;
+    toCopy[34] |= 2u;
   }
 
 LABEL_34:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((*&has & 0x10000000) != 0)
   {
@@ -2468,19 +2468,19 @@ LABEL_34:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_162;
   }
 
   has = self->_has;
-  v6 = *(v4 + 34);
+  v6 = *(equalCopy + 34);
   if ((*&has & 0x10000000) != 0)
   {
-    if ((v6 & 0x10000000) == 0 || self->_uiEvaluationSuccessAt1 != *(v4 + 30))
+    if ((v6 & 0x10000000) == 0 || self->_uiEvaluationSuccessAt1 != *(equalCopy + 30))
     {
       goto LABEL_162;
     }
@@ -2493,7 +2493,7 @@ LABEL_34:
 
   if ((*&has & 0x20000000) != 0)
   {
-    if ((v6 & 0x20000000) == 0 || self->_uiEvaluationSuccessAt2 != *(v4 + 31))
+    if ((v6 & 0x20000000) == 0 || self->_uiEvaluationSuccessAt2 != *(equalCopy + 31))
     {
       goto LABEL_162;
     }
@@ -2506,7 +2506,7 @@ LABEL_34:
 
   if ((*&has & 0x40000000) != 0)
   {
-    if ((v6 & 0x40000000) == 0 || self->_uiEvaluationSuccessAt4 != *(v4 + 32))
+    if ((v6 & 0x40000000) == 0 || self->_uiEvaluationSuccessAt4 != *(equalCopy + 32))
     {
       goto LABEL_162;
     }
@@ -2519,7 +2519,7 @@ LABEL_34:
 
   if ((*&has & 0x80000000) != 0)
   {
-    if ((v6 & 0x80000000) == 0 || self->_uiEvaluationSuccessAt8 != *(v4 + 33))
+    if ((v6 & 0x80000000) == 0 || self->_uiEvaluationSuccessAt8 != *(equalCopy + 33))
     {
       goto LABEL_162;
     }
@@ -2534,7 +2534,7 @@ LABEL_162:
 
   if ((*&has & 0x1000000) != 0)
   {
-    if ((v6 & 0x1000000) == 0 || self->_uiEvaluationMRR != *(v4 + 26))
+    if ((v6 & 0x1000000) == 0 || self->_uiEvaluationMRR != *(equalCopy + 26))
     {
       goto LABEL_162;
     }
@@ -2547,7 +2547,7 @@ LABEL_162:
 
   if ((*&has & 0x8000000) != 0)
   {
-    if ((v6 & 0x8000000) == 0 || self->_uiEvaluationNumberOfSessionsWithPredictions != *(v4 + 29))
+    if ((v6 & 0x8000000) == 0 || self->_uiEvaluationNumberOfSessionsWithPredictions != *(equalCopy + 29))
     {
       goto LABEL_162;
     }
@@ -2560,7 +2560,7 @@ LABEL_162:
 
   if ((*&has & 0x4000000) != 0)
   {
-    if ((v6 & 0x4000000) == 0 || self->_uiEvaluationNumberOfSessions != *(v4 + 28))
+    if ((v6 & 0x4000000) == 0 || self->_uiEvaluationNumberOfSessions != *(equalCopy + 28))
     {
       goto LABEL_162;
     }
@@ -2573,7 +2573,7 @@ LABEL_162:
 
   if ((*&has & 0x2000000) != 0)
   {
-    if ((v6 & 0x2000000) == 0 || self->_uiEvaluationNumberOfDaysWithSessions != *(v4 + 27))
+    if ((v6 & 0x2000000) == 0 || self->_uiEvaluationNumberOfDaysWithSessions != *(equalCopy + 27))
     {
       goto LABEL_162;
     }
@@ -2586,7 +2586,7 @@ LABEL_162:
 
   if ((*&has & 0x100000) != 0)
   {
-    if ((v6 & 0x100000) == 0 || self->_shadowEvaluationSuccessAt1 != *(v4 + 22))
+    if ((v6 & 0x100000) == 0 || self->_shadowEvaluationSuccessAt1 != *(equalCopy + 22))
     {
       goto LABEL_162;
     }
@@ -2599,7 +2599,7 @@ LABEL_162:
 
   if ((*&has & 0x200000) != 0)
   {
-    if ((v6 & 0x200000) == 0 || self->_shadowEvaluationSuccessAt2 != *(v4 + 23))
+    if ((v6 & 0x200000) == 0 || self->_shadowEvaluationSuccessAt2 != *(equalCopy + 23))
     {
       goto LABEL_162;
     }
@@ -2612,7 +2612,7 @@ LABEL_162:
 
   if ((*&has & 0x400000) != 0)
   {
-    if ((v6 & 0x400000) == 0 || self->_shadowEvaluationSuccessAt4 != *(v4 + 24))
+    if ((v6 & 0x400000) == 0 || self->_shadowEvaluationSuccessAt4 != *(equalCopy + 24))
     {
       goto LABEL_162;
     }
@@ -2625,7 +2625,7 @@ LABEL_162:
 
   if ((*&has & 0x800000) != 0)
   {
-    if ((v6 & 0x800000) == 0 || self->_shadowEvaluationSuccessAt8 != *(v4 + 25))
+    if ((v6 & 0x800000) == 0 || self->_shadowEvaluationSuccessAt8 != *(equalCopy + 25))
     {
       goto LABEL_162;
     }
@@ -2638,7 +2638,7 @@ LABEL_162:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v6 & 0x10000) == 0 || self->_shadowEvaluationMRR != *(v4 + 18))
+    if ((v6 & 0x10000) == 0 || self->_shadowEvaluationMRR != *(equalCopy + 18))
     {
       goto LABEL_162;
     }
@@ -2651,7 +2651,7 @@ LABEL_162:
 
   if ((*&has & 0x80000) != 0)
   {
-    if ((v6 & 0x80000) == 0 || self->_shadowEvaluationNumberOfSessionsWithPredictions != *(v4 + 21))
+    if ((v6 & 0x80000) == 0 || self->_shadowEvaluationNumberOfSessionsWithPredictions != *(equalCopy + 21))
     {
       goto LABEL_162;
     }
@@ -2664,7 +2664,7 @@ LABEL_162:
 
   if ((*&has & 0x40000) != 0)
   {
-    if ((v6 & 0x40000) == 0 || self->_shadowEvaluationNumberOfSessions != *(v4 + 20))
+    if ((v6 & 0x40000) == 0 || self->_shadowEvaluationNumberOfSessions != *(equalCopy + 20))
     {
       goto LABEL_162;
     }
@@ -2677,7 +2677,7 @@ LABEL_162:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v6 & 0x20000) == 0 || self->_shadowEvaluationNumberOfDaysWithSessions != *(v4 + 19))
+    if ((v6 & 0x20000) == 0 || self->_shadowEvaluationNumberOfDaysWithSessions != *(equalCopy + 19))
     {
       goto LABEL_162;
     }
@@ -2690,7 +2690,7 @@ LABEL_162:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v6 & 0x1000) == 0 || self->_prodUIEvaluationSuccessAt1 != *(v4 + 14))
+    if ((v6 & 0x1000) == 0 || self->_prodUIEvaluationSuccessAt1 != *(equalCopy + 14))
     {
       goto LABEL_162;
     }
@@ -2703,7 +2703,7 @@ LABEL_162:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v6 & 0x2000) == 0 || self->_prodUIEvaluationSuccessAt2 != *(v4 + 15))
+    if ((v6 & 0x2000) == 0 || self->_prodUIEvaluationSuccessAt2 != *(equalCopy + 15))
     {
       goto LABEL_162;
     }
@@ -2716,7 +2716,7 @@ LABEL_162:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v6 & 0x4000) == 0 || self->_prodUIEvaluationSuccessAt4 != *(v4 + 16))
+    if ((v6 & 0x4000) == 0 || self->_prodUIEvaluationSuccessAt4 != *(equalCopy + 16))
     {
       goto LABEL_162;
     }
@@ -2729,7 +2729,7 @@ LABEL_162:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v6 & 0x8000) == 0 || self->_prodUIEvaluationSuccessAt8 != *(v4 + 17))
+    if ((v6 & 0x8000) == 0 || self->_prodUIEvaluationSuccessAt8 != *(equalCopy + 17))
     {
       goto LABEL_162;
     }
@@ -2742,7 +2742,7 @@ LABEL_162:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v6 & 0x100) == 0 || self->_prodUIEvaluationMRR != *(v4 + 10))
+    if ((v6 & 0x100) == 0 || self->_prodUIEvaluationMRR != *(equalCopy + 10))
     {
       goto LABEL_162;
     }
@@ -2755,7 +2755,7 @@ LABEL_162:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v6 & 0x800) == 0 || self->_prodUIEvaluationNumberOfSessionsWithPredictions != *(v4 + 13))
+    if ((v6 & 0x800) == 0 || self->_prodUIEvaluationNumberOfSessionsWithPredictions != *(equalCopy + 13))
     {
       goto LABEL_162;
     }
@@ -2768,7 +2768,7 @@ LABEL_162:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v6 & 0x400) == 0 || self->_prodUIEvaluationNumberOfSessions != *(v4 + 12))
+    if ((v6 & 0x400) == 0 || self->_prodUIEvaluationNumberOfSessions != *(equalCopy + 12))
     {
       goto LABEL_162;
     }
@@ -2781,7 +2781,7 @@ LABEL_162:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v6 & 0x200) == 0 || self->_prodUIEvaluationNumberOfDaysWithSessions != *(v4 + 11))
+    if ((v6 & 0x200) == 0 || self->_prodUIEvaluationNumberOfDaysWithSessions != *(equalCopy + 11))
     {
       goto LABEL_162;
     }
@@ -2794,7 +2794,7 @@ LABEL_162:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_prodShadowEvaluationSuccessAt1 != *(v4 + 6))
+    if ((v6 & 0x10) == 0 || self->_prodShadowEvaluationSuccessAt1 != *(equalCopy + 6))
     {
       goto LABEL_162;
     }
@@ -2807,7 +2807,7 @@ LABEL_162:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_prodShadowEvaluationSuccessAt2 != *(v4 + 7))
+    if ((v6 & 0x20) == 0 || self->_prodShadowEvaluationSuccessAt2 != *(equalCopy + 7))
     {
       goto LABEL_162;
     }
@@ -2820,7 +2820,7 @@ LABEL_162:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_prodShadowEvaluationSuccessAt4 != *(v4 + 8))
+    if ((v6 & 0x40) == 0 || self->_prodShadowEvaluationSuccessAt4 != *(equalCopy + 8))
     {
       goto LABEL_162;
     }
@@ -2833,7 +2833,7 @@ LABEL_162:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_prodShadowEvaluationSuccessAt8 != *(v4 + 9))
+    if ((v6 & 0x80) == 0 || self->_prodShadowEvaluationSuccessAt8 != *(equalCopy + 9))
     {
       goto LABEL_162;
     }
@@ -2846,7 +2846,7 @@ LABEL_162:
 
   if (*&has)
   {
-    if ((v6 & 1) == 0 || self->_prodShadowEvaluationMRR != *(v4 + 2))
+    if ((v6 & 1) == 0 || self->_prodShadowEvaluationMRR != *(equalCopy + 2))
     {
       goto LABEL_162;
     }
@@ -2859,7 +2859,7 @@ LABEL_162:
 
   if ((*&has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_prodShadowEvaluationNumberOfSessionsWithPredictions != *(v4 + 5))
+    if ((v6 & 8) == 0 || self->_prodShadowEvaluationNumberOfSessionsWithPredictions != *(equalCopy + 5))
     {
       goto LABEL_162;
     }
@@ -2872,7 +2872,7 @@ LABEL_162:
 
   if ((*&has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_prodShadowEvaluationNumberOfSessions != *(v4 + 4))
+    if ((v6 & 4) == 0 || self->_prodShadowEvaluationNumberOfSessions != *(equalCopy + 4))
     {
       goto LABEL_162;
     }
@@ -2885,7 +2885,7 @@ LABEL_162:
 
   if ((*&has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_prodShadowEvaluationNumberOfDaysWithSessions != *(v4 + 3))
+    if ((v6 & 2) == 0 || self->_prodShadowEvaluationNumberOfDaysWithSessions != *(equalCopy + 3))
     {
       goto LABEL_162;
     }
@@ -2895,7 +2895,7 @@ LABEL_162:
 
   else
   {
-    v7 = (*(v4 + 34) & 2) == 0;
+    v7 = (*(equalCopy + 34) & 2) == 0;
   }
 
 LABEL_163:
@@ -3746,15 +3746,15 @@ LABEL_184:
   return v101 ^ v93 ^ v90 ^ v91 ^ v21 ^ v100 ^ v99 ^ v98 ^ v28 ^ v29 ^ v33 ^ v37 ^ v41 ^ v97 ^ v45 ^ v46 ^ v50 ^ v51 ^ v55 ^ v59 ^ v63 ^ v67 ^ v68 ^ v69 ^ v73 ^ v74 ^ v78 ^ v82 ^ v86 ^ v92 ^ v94 ^ v95;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 34);
+  fromCopy = from;
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x10000000) != 0)
   {
-    self->_uiEvaluationSuccessAt1 = *(v4 + 30);
+    self->_uiEvaluationSuccessAt1 = *(fromCopy + 30);
     *&self->_has |= 0x10000000u;
-    v5 = *(v4 + 34);
+    v5 = *(fromCopy + 34);
     if ((v5 & 0x20000000) == 0)
     {
 LABEL_3:
@@ -3772,9 +3772,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_uiEvaluationSuccessAt2 = *(v4 + 31);
+  self->_uiEvaluationSuccessAt2 = *(fromCopy + 31);
   *&self->_has |= 0x20000000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x40000000) == 0)
   {
 LABEL_4:
@@ -3787,9 +3787,9 @@ LABEL_4:
   }
 
 LABEL_39:
-  self->_uiEvaluationSuccessAt4 = *(v4 + 32);
+  self->_uiEvaluationSuccessAt4 = *(fromCopy + 32);
   *&self->_has |= 0x40000000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x80000000) == 0)
   {
 LABEL_5:
@@ -3802,9 +3802,9 @@ LABEL_5:
   }
 
 LABEL_40:
-  self->_uiEvaluationSuccessAt8 = *(v4 + 33);
+  self->_uiEvaluationSuccessAt8 = *(fromCopy + 33);
   *&self->_has |= 0x80000000;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x1000000) == 0)
   {
 LABEL_6:
@@ -3817,9 +3817,9 @@ LABEL_6:
   }
 
 LABEL_41:
-  self->_uiEvaluationMRR = *(v4 + 26);
+  self->_uiEvaluationMRR = *(fromCopy + 26);
   *&self->_has |= 0x1000000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x8000000) == 0)
   {
 LABEL_7:
@@ -3832,9 +3832,9 @@ LABEL_7:
   }
 
 LABEL_42:
-  self->_uiEvaluationNumberOfSessionsWithPredictions = *(v4 + 29);
+  self->_uiEvaluationNumberOfSessionsWithPredictions = *(fromCopy + 29);
   *&self->_has |= 0x8000000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x4000000) == 0)
   {
 LABEL_8:
@@ -3847,9 +3847,9 @@ LABEL_8:
   }
 
 LABEL_43:
-  self->_uiEvaluationNumberOfSessions = *(v4 + 28);
+  self->_uiEvaluationNumberOfSessions = *(fromCopy + 28);
   *&self->_has |= 0x4000000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x2000000) == 0)
   {
 LABEL_9:
@@ -3862,9 +3862,9 @@ LABEL_9:
   }
 
 LABEL_44:
-  self->_uiEvaluationNumberOfDaysWithSessions = *(v4 + 27);
+  self->_uiEvaluationNumberOfDaysWithSessions = *(fromCopy + 27);
   *&self->_has |= 0x2000000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x100000) == 0)
   {
 LABEL_10:
@@ -3877,9 +3877,9 @@ LABEL_10:
   }
 
 LABEL_45:
-  self->_shadowEvaluationSuccessAt1 = *(v4 + 22);
+  self->_shadowEvaluationSuccessAt1 = *(fromCopy + 22);
   *&self->_has |= 0x100000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x200000) == 0)
   {
 LABEL_11:
@@ -3892,9 +3892,9 @@ LABEL_11:
   }
 
 LABEL_46:
-  self->_shadowEvaluationSuccessAt2 = *(v4 + 23);
+  self->_shadowEvaluationSuccessAt2 = *(fromCopy + 23);
   *&self->_has |= 0x200000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x400000) == 0)
   {
 LABEL_12:
@@ -3907,9 +3907,9 @@ LABEL_12:
   }
 
 LABEL_47:
-  self->_shadowEvaluationSuccessAt4 = *(v4 + 24);
+  self->_shadowEvaluationSuccessAt4 = *(fromCopy + 24);
   *&self->_has |= 0x400000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x800000) == 0)
   {
 LABEL_13:
@@ -3922,9 +3922,9 @@ LABEL_13:
   }
 
 LABEL_48:
-  self->_shadowEvaluationSuccessAt8 = *(v4 + 25);
+  self->_shadowEvaluationSuccessAt8 = *(fromCopy + 25);
   *&self->_has |= 0x800000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x10000) == 0)
   {
 LABEL_14:
@@ -3937,9 +3937,9 @@ LABEL_14:
   }
 
 LABEL_49:
-  self->_shadowEvaluationMRR = *(v4 + 18);
+  self->_shadowEvaluationMRR = *(fromCopy + 18);
   *&self->_has |= 0x10000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x80000) == 0)
   {
 LABEL_15:
@@ -3952,9 +3952,9 @@ LABEL_15:
   }
 
 LABEL_50:
-  self->_shadowEvaluationNumberOfSessionsWithPredictions = *(v4 + 21);
+  self->_shadowEvaluationNumberOfSessionsWithPredictions = *(fromCopy + 21);
   *&self->_has |= 0x80000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x40000) == 0)
   {
 LABEL_16:
@@ -3967,9 +3967,9 @@ LABEL_16:
   }
 
 LABEL_51:
-  self->_shadowEvaluationNumberOfSessions = *(v4 + 20);
+  self->_shadowEvaluationNumberOfSessions = *(fromCopy + 20);
   *&self->_has |= 0x40000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x20000) == 0)
   {
 LABEL_17:
@@ -3982,9 +3982,9 @@ LABEL_17:
   }
 
 LABEL_52:
-  self->_shadowEvaluationNumberOfDaysWithSessions = *(v4 + 19);
+  self->_shadowEvaluationNumberOfDaysWithSessions = *(fromCopy + 19);
   *&self->_has |= 0x20000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_18:
@@ -3997,9 +3997,9 @@ LABEL_18:
   }
 
 LABEL_53:
-  self->_prodUIEvaluationSuccessAt1 = *(v4 + 14);
+  self->_prodUIEvaluationSuccessAt1 = *(fromCopy + 14);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_19:
@@ -4012,9 +4012,9 @@ LABEL_19:
   }
 
 LABEL_54:
-  self->_prodUIEvaluationSuccessAt2 = *(v4 + 15);
+  self->_prodUIEvaluationSuccessAt2 = *(fromCopy + 15);
   *&self->_has |= 0x2000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_20:
@@ -4027,9 +4027,9 @@ LABEL_20:
   }
 
 LABEL_55:
-  self->_prodUIEvaluationSuccessAt4 = *(v4 + 16);
+  self->_prodUIEvaluationSuccessAt4 = *(fromCopy + 16);
   *&self->_has |= 0x4000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x8000) == 0)
   {
 LABEL_21:
@@ -4042,9 +4042,9 @@ LABEL_21:
   }
 
 LABEL_56:
-  self->_prodUIEvaluationSuccessAt8 = *(v4 + 17);
+  self->_prodUIEvaluationSuccessAt8 = *(fromCopy + 17);
   *&self->_has |= 0x8000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x100) == 0)
   {
 LABEL_22:
@@ -4057,9 +4057,9 @@ LABEL_22:
   }
 
 LABEL_57:
-  self->_prodUIEvaluationMRR = *(v4 + 10);
+  self->_prodUIEvaluationMRR = *(fromCopy + 10);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x800) == 0)
   {
 LABEL_23:
@@ -4072,9 +4072,9 @@ LABEL_23:
   }
 
 LABEL_58:
-  self->_prodUIEvaluationNumberOfSessionsWithPredictions = *(v4 + 13);
+  self->_prodUIEvaluationNumberOfSessionsWithPredictions = *(fromCopy + 13);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x400) == 0)
   {
 LABEL_24:
@@ -4087,9 +4087,9 @@ LABEL_24:
   }
 
 LABEL_59:
-  self->_prodUIEvaluationNumberOfSessions = *(v4 + 12);
+  self->_prodUIEvaluationNumberOfSessions = *(fromCopy + 12);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x200) == 0)
   {
 LABEL_25:
@@ -4102,9 +4102,9 @@ LABEL_25:
   }
 
 LABEL_60:
-  self->_prodUIEvaluationNumberOfDaysWithSessions = *(v4 + 11);
+  self->_prodUIEvaluationNumberOfDaysWithSessions = *(fromCopy + 11);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x10) == 0)
   {
 LABEL_26:
@@ -4117,9 +4117,9 @@ LABEL_26:
   }
 
 LABEL_61:
-  self->_prodShadowEvaluationSuccessAt1 = *(v4 + 6);
+  self->_prodShadowEvaluationSuccessAt1 = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x20) == 0)
   {
 LABEL_27:
@@ -4132,9 +4132,9 @@ LABEL_27:
   }
 
 LABEL_62:
-  self->_prodShadowEvaluationSuccessAt2 = *(v4 + 7);
+  self->_prodShadowEvaluationSuccessAt2 = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x40) == 0)
   {
 LABEL_28:
@@ -4147,9 +4147,9 @@ LABEL_28:
   }
 
 LABEL_63:
-  self->_prodShadowEvaluationSuccessAt4 = *(v4 + 8);
+  self->_prodShadowEvaluationSuccessAt4 = *(fromCopy + 8);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x80) == 0)
   {
 LABEL_29:
@@ -4162,9 +4162,9 @@ LABEL_29:
   }
 
 LABEL_64:
-  self->_prodShadowEvaluationSuccessAt8 = *(v4 + 9);
+  self->_prodShadowEvaluationSuccessAt8 = *(fromCopy + 9);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 1) == 0)
   {
 LABEL_30:
@@ -4177,9 +4177,9 @@ LABEL_30:
   }
 
 LABEL_65:
-  self->_prodShadowEvaluationMRR = *(v4 + 2);
+  self->_prodShadowEvaluationMRR = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 8) == 0)
   {
 LABEL_31:
@@ -4192,9 +4192,9 @@ LABEL_31:
   }
 
 LABEL_66:
-  self->_prodShadowEvaluationNumberOfSessionsWithPredictions = *(v4 + 5);
+  self->_prodShadowEvaluationNumberOfSessionsWithPredictions = *(fromCopy + 5);
   *&self->_has |= 8u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 4) == 0)
   {
 LABEL_32:
@@ -4207,12 +4207,12 @@ LABEL_32:
   }
 
 LABEL_67:
-  self->_prodShadowEvaluationNumberOfSessions = *(v4 + 4);
+  self->_prodShadowEvaluationNumberOfSessions = *(fromCopy + 4);
   *&self->_has |= 4u;
-  if ((*(v4 + 34) & 2) != 0)
+  if ((*(fromCopy + 34) & 2) != 0)
   {
 LABEL_33:
-    self->_prodShadowEvaluationNumberOfDaysWithSessions = *(v4 + 3);
+    self->_prodShadowEvaluationNumberOfDaysWithSessions = *(fromCopy + 3);
     *&self->_has |= 2u;
   }
 

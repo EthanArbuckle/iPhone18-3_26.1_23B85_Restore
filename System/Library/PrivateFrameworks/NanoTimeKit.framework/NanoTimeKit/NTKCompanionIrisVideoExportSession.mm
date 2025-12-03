@@ -1,26 +1,26 @@
 @interface NTKCompanionIrisVideoExportSession
 - (CGRect)crop;
 - (CGSize)outputSize;
-- (NTKCompanionIrisVideoExportSession)initWithVideo:(id)a3 crop:(CGRect)a4 outputSize:(CGSize)a5 bitrate:(unint64_t)a6 outputURL:(id)a7;
+- (NTKCompanionIrisVideoExportSession)initWithVideo:(id)video crop:(CGRect)crop outputSize:(CGSize)size bitrate:(unint64_t)bitrate outputURL:(id)l;
 - (id)_makeReader;
 - (id)_makeWriter;
 - (void)_makeReader;
 - (void)_makeWriter;
-- (void)exportAsynchronouslyWithCompletion:(id)a3;
+- (void)exportAsynchronouslyWithCompletion:(id)completion;
 @end
 
 @implementation NTKCompanionIrisVideoExportSession
 
-- (NTKCompanionIrisVideoExportSession)initWithVideo:(id)a3 crop:(CGRect)a4 outputSize:(CGSize)a5 bitrate:(unint64_t)a6 outputURL:(id)a7
+- (NTKCompanionIrisVideoExportSession)initWithVideo:(id)video crop:(CGRect)crop outputSize:(CGSize)size bitrate:(unint64_t)bitrate outputURL:(id)l
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a4.size.height;
-  v12 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v17 = a3;
-  v18 = a7;
+  height = size.height;
+  width = size.width;
+  v11 = crop.size.height;
+  v12 = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  videoCopy = video;
+  lCopy = l;
   v39.receiver = self;
   v39.super_class = NTKCompanionIrisVideoExportSession;
   v19 = [(NTKCompanionIrisVideoExportSession *)&v39 init];
@@ -34,15 +34,15 @@
     encodeQueue = v19->_encodeQueue;
     v19->_encodeQueue = v22;
 
-    objc_storeStrong(&v19->_video, a3);
+    objc_storeStrong(&v19->_video, video);
     v19->_crop.origin.x = x;
     v19->_crop.origin.y = y;
     v19->_crop.size.width = v12;
     v19->_crop.size.height = v11;
     v19->_outputSize.width = width;
     v19->_outputSize.height = height;
-    v19->_bitrate = a6;
-    v24 = [v18 copy];
+    v19->_bitrate = bitrate;
+    v24 = [lCopy copy];
     outputURL = v19->_outputURL;
     v19->_outputURL = v24;
 
@@ -79,7 +79,7 @@
       v30 = v19->_crop.size.height;
     }
 
-    v19->_crop.origin.x = denormalizeIfNecessary(v17, v32, v33, v31, v30);
+    v19->_crop.origin.x = denormalizeIfNecessary(videoCopy, v32, v33, v31, v30);
     v19->_crop.origin.y = v34;
     v19->_crop.size.width = v35;
     v19->_crop.size.height = v36;
@@ -92,17 +92,17 @@
   return v19;
 }
 
-- (void)exportAsynchronouslyWithCompletion:(id)a3
+- (void)exportAsynchronouslyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   exportQueue = self->_exportQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__NTKCompanionIrisVideoExportSession_exportAsynchronouslyWithCompletion___block_invoke;
   v7[3] = &unk_27877FF60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(exportQueue, v7);
 }
 
@@ -274,8 +274,8 @@ intptr_t __73__NTKCompanionIrisVideoExportSession_exportAsynchronouslyWithComple
 - (id)_makeReader
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v3 = [(NTKCompanionIrisVideoExportSession *)self video];
-  v4 = compositionAssetForVideo(v3);
+  video = [(NTKCompanionIrisVideoExportSession *)self video];
+  v4 = compositionAssetForVideo(video);
 
   if (v4)
   {
@@ -297,8 +297,8 @@ intptr_t __73__NTKCompanionIrisVideoExportSession_exportAsynchronouslyWithComple
       [(NTKCompanionIrisVideoExportSession *)self outputSize];
       v18 = v17;
       v20 = v19;
-      v21 = [(NTKCompanionIrisVideoExportSession *)self video];
-      v22 = cropCompositionFor(v4, v21, v10, v12, v14, v16, v18, v20);
+      video2 = [(NTKCompanionIrisVideoExportSession *)self video];
+      v22 = cropCompositionFor(v4, video2, v10, v12, v14, v16, v18, v20);
       [v8 setVideoComposition:v22];
 
       v34 = 0;
@@ -419,10 +419,10 @@ intptr_t __73__NTKCompanionIrisVideoExportSession_exportAsynchronouslyWithComple
 
     v22 = [MEMORY[0x277CE6468] assetWriterInputWithMediaType:*MEMORY[0x277CE5EA8] outputSettings:v8];
     v23 = MEMORY[0x277CE6460];
-    v24 = [(NTKCompanionIrisVideoExportSession *)self outputURL];
+    outputURL = [(NTKCompanionIrisVideoExportSession *)self outputURL];
     v25 = *MEMORY[0x277CE5DA8];
     v29 = 0;
-    v26 = [v23 assetWriterWithURL:v24 fileType:v25 error:&v29];
+    v26 = [v23 assetWriterWithURL:outputURL fileType:v25 error:&v29];
     v27 = v29;
 
     if (v27)
@@ -480,7 +480,7 @@ void __73__NTKCompanionIrisVideoExportSession_exportAsynchronouslyWithCompletion
 
 - (void)_makeReader
 {
-  v1 = [a1 video];
+  video = [self video];
   OUTLINED_FUNCTION_0();
   OUTLINED_FUNCTION_3();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -488,8 +488,8 @@ void __73__NTKCompanionIrisVideoExportSession_exportAsynchronouslyWithCompletion
 
 - (void)_makeWriter
 {
-  [a1 outputSize];
-  [a1 outputSize];
+  [self outputSize];
+  [self outputSize];
   OUTLINED_FUNCTION_3();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0x16u);
 }

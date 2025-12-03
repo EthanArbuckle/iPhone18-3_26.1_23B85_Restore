@@ -1,15 +1,15 @@
 @interface TextHeaderComponentAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation TextHeaderComponentAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"StoreDynamicUIPlugin.TextHeaderComponent" hasSwiftField:@"titleLabel" withSwiftType:"DynamicLabel"];
-  [v3 validateClass:@"StoreDynamicUIPlugin.TextHeaderComponent" hasSwiftField:@"subtitleLabel" withSwiftType:"DynamicLabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"StoreDynamicUIPlugin.TextHeaderComponent" hasSwiftField:@"titleLabel" withSwiftType:"DynamicLabel"];
+  [validationsCopy validateClass:@"StoreDynamicUIPlugin.TextHeaderComponent" hasSwiftField:@"subtitleLabel" withSwiftType:"DynamicLabel"];
 }
 
 - (id)accessibilityLabel

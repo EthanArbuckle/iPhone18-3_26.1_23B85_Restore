@@ -1,7 +1,7 @@
 @interface _IDSSessionConnectionInfo
 - (_IDSSessionConnectionInfo)init;
 - (id)description;
-- (unsigned)_numberOfOutagesSinceInterval:(double)a3;
+- (unsigned)_numberOfOutagesSinceInterval:(double)interval;
 - (void)_addRemotePacketOutage;
 @end
 
@@ -21,8 +21,8 @@
       sub_100929C30();
     }
 
-    v4 = [qword_100CBF060 copyIdentity];
-    if (v4)
+    copyIdentity = [qword_100CBF060 copyIdentity];
+    if (copyIdentity)
     {
       cf = 0xAAAAAAAAAAAAAAAALL;
       if (qword_100CBF070 != -1)
@@ -31,7 +31,7 @@
       }
 
       v5 = 0;
-      if (!off_100CBF068(v4, &cf) && cf)
+      if (!off_100CBF068(copyIdentity, &cf) && cf)
       {
         if (qword_100CBF080 != -1)
         {
@@ -53,8 +53,8 @@
           _IDSLogV();
         }
 
-        v8 = [(NSString *)v6 firstObject];
-        v5 = [v8 copy];
+        firstObject = [(NSString *)v6 firstObject];
+        v5 = [firstObject copy];
 
         if (v6)
         {
@@ -64,7 +64,7 @@
         CFRelease(cf);
       }
 
-      CFRelease(v4);
+      CFRelease(copyIdentity);
     }
 
     else
@@ -119,7 +119,7 @@
   [(NSMutableArray *)remotePacketOutageTimes addObject:v6];
 }
 
-- (unsigned)_numberOfOutagesSinceInterval:(double)a3
+- (unsigned)_numberOfOutagesSinceInterval:(double)interval
 {
   if (!self->_remotePacketOutageTimes)
   {
@@ -152,7 +152,7 @@
 
         v15 = *(*(&v19 + 1) + 8 * i);
         [v15 doubleValue];
-        if (v8 - v16 > a3)
+        if (v8 - v16 > interval)
         {
           [v9 addObject:v15];
         }

@@ -1,13 +1,13 @@
 @interface NSInputStream
-+ (id)tsu_inputStreamWithReadChannel:(id)a3 length:(unint64_t)a4;
++ (id)tsu_inputStreamWithReadChannel:(id)channel length:(unint64_t)length;
 @end
 
 @implementation NSInputStream
 
-+ (id)tsu_inputStreamWithReadChannel:(id)a3 length:(unint64_t)a4
++ (id)tsu_inputStreamWithReadChannel:(id)channel length:(unint64_t)length
 {
-  v5 = a3;
-  v6 = [[TSUReadChannelInputStreamAdapter alloc] initWithReadChannel:v5 length:a4];
+  channelCopy = channel;
+  v6 = [[TSUReadChannelInputStreamAdapter alloc] initWithReadChannel:channelCopy length:length];
 
   v7 = [[SFUReadChannelNSInputStreamAdaptor alloc] initWithSFUInputStream:v6];
 

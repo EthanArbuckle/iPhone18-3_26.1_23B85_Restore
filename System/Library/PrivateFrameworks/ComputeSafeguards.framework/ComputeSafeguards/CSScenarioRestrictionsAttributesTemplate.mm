@@ -1,17 +1,17 @@
 @interface CSScenarioRestrictionsAttributesTemplate
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation CSScenarioRestrictionsAttributesTemplate
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(CSScenarioRestrictionsAttributesTemplate *)self restrictions];
-    v6 = [v4 restrictions];
-    v7 = [v5 isEqualToArray:v6];
+    restrictions = [(CSScenarioRestrictionsAttributesTemplate *)self restrictions];
+    restrictions2 = [equalCopy restrictions];
+    v7 = [restrictions isEqualToArray:restrictions2];
   }
 
   else

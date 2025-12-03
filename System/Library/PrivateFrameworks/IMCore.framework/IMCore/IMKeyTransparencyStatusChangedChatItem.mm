@@ -1,12 +1,12 @@
 @interface IMKeyTransparencyStatusChangedChatItem
-- (id)_initWithHandles:(id)a3 status:(unint64_t)a4 isGroupChat:(BOOL)a5;
+- (id)_initWithHandles:(id)handles status:(unint64_t)status isGroupChat:(BOOL)chat;
 @end
 
 @implementation IMKeyTransparencyStatusChangedChatItem
 
-- (id)_initWithHandles:(id)a3 status:(unint64_t)a4 isGroupChat:(BOOL)a5
+- (id)_initWithHandles:(id)handles status:(unint64_t)status isGroupChat:(BOOL)chat
 {
-  v9 = a3;
+  handlesCopy = handles;
   v14.receiver = self;
   v14.super_class = IMKeyTransparencyStatusChangedChatItem;
   v10 = [(IMChatItem *)&v14 _initWithItem:0];
@@ -14,9 +14,9 @@
   if (v10)
   {
     objc_msgSend__setGUID_(v10, v11, @"kte:");
-    objc_storeStrong(v12 + 8, a3);
-    v12[9] = a4;
-    *(v12 + 56) = a5;
+    objc_storeStrong(v12 + 8, handles);
+    v12[9] = status;
+    *(v12 + 56) = chat;
   }
 
   return v12;

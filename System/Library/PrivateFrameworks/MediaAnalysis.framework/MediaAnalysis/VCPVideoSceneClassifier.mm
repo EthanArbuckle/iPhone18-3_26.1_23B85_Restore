@@ -1,16 +1,16 @@
 @interface VCPVideoSceneClassifier
-- (BOOL)compareObjectsOfInterest:(id)a3 withScenes:(id)a4;
+- (BOOL)compareObjectsOfInterest:(id)interest withScenes:(id)scenes;
 - (NSDictionary)frameScenes;
 - (VCPVideoSceneClassifier)init;
-- (float)adjustedConfidence:(id)a3 confidence:(float)a4;
+- (float)adjustedConfidence:(id)confidence confidence:(float)a4;
 - (id)filteredKeyFrameResults;
 - (id)results;
-- (id)sortScenesWithMaxNumCap:(id)a3;
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6;
-- (int)finishAnalysisPass:(id *)a3;
-- (void)addAggregatedScenes:(id)a3 timerange:(id *)a4;
-- (void)addResult:(id)a3 start:(id *)a4 duration:(id *)a5 keyIsName:(BOOL)a6;
-- (void)findObjectsOfInterest:(id)a3;
+- (id)sortScenesWithMaxNumCap:(id)cap;
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags;
+- (int)finishAnalysisPass:(id *)pass;
+- (void)addAggregatedScenes:(id)scenes timerange:(id *)timerange;
+- (void)addResult:(id)result start:(id *)start duration:(id *)duration keyIsName:(BOOL)name;
+- (void)findObjectsOfInterest:(id)interest;
 @end
 
 @implementation VCPVideoSceneClassifier
@@ -26,16 +26,16 @@
     v4 = *(MEMORY[0x1E6960C80] + 16);
     *(v2 + 8) = *MEMORY[0x1E6960C80];
     *(v2 + 3) = v4;
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     existingScenes = v3->_existingScenes;
-    v3->_existingScenes = v5;
+    v3->_existingScenes = dictionary;
 
     v7 = *(MEMORY[0x1E6960C70] + 16);
     *&v3->_start.value = *MEMORY[0x1E6960C70];
     v3->_start.epoch = v7;
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     results = v3->_results;
-    v3->_results = v8;
+    v3->_results = array;
 
     sceneResults = v3->_sceneResults;
     v3->_sceneResults = 0;
@@ -46,9 +46,9 @@
     internalFrameScenes = v3->_internalFrameScenes;
     v3->_internalFrameScenes = 0;
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     thresholdBySceneID = v3->_thresholdBySceneID;
-    v3->_thresholdBySceneID = v13;
+    v3->_thresholdBySceneID = dictionary2;
 
     v15 = [MEMORY[0x1E695DF70] arrayWithArray:&unk_1F49BE920];
     objectsOfInterest = v3->_objectsOfInterest;
@@ -58,20 +58,20 @@
   return v3;
 }
 
-- (float)adjustedConfidence:(id)a3 confidence:(float)a4
+- (float)adjustedConfidence:(id)confidence confidence:(float)a4
 {
-  v6 = a3;
-  if (-[NSMutableDictionary count](self->_thresholdBySceneID, "count") && (-[NSMutableDictionary allKeys](self->_thresholdBySceneID, "allKeys"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 containsObject:v6], v7, v8))
+  confidenceCopy = confidence;
+  if (-[NSMutableDictionary count](self->_thresholdBySceneID, "count") && (-[NSMutableDictionary allKeys](self->_thresholdBySceneID, "allKeys"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 containsObject:confidenceCopy], v7, v8))
   {
-    v9 = [(NSMutableDictionary *)self->_thresholdBySceneID objectForKeyedSubscript:v6];
+    v9 = [(NSMutableDictionary *)self->_thresholdBySceneID objectForKeyedSubscript:confidenceCopy];
     [v9 floatValue];
     a4 = a4 - v10;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69C0858] vcp_sharedTaxonomy];
-    v9 = [v11 nodeForSceneClassId:{objc_msgSend(v6, "unsignedIntValue")}];
+    vcp_sharedTaxonomy = [MEMORY[0x1E69C0858] vcp_sharedTaxonomy];
+    v9 = [vcp_sharedTaxonomy nodeForSceneClassId:{objc_msgSend(confidenceCopy, "unsignedIntValue")}];
 
     if (v9)
     {
@@ -97,9 +97,9 @@
       }
 
       v19 = [v12 numberWithDouble:v17];
-      [(NSMutableDictionary *)self->_thresholdBySceneID setObject:v19 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_thresholdBySceneID setObject:v19 forKeyedSubscript:confidenceCopy];
 
-      v20 = [(NSMutableDictionary *)self->_thresholdBySceneID objectForKeyedSubscript:v6];
+      v20 = [(NSMutableDictionary *)self->_thresholdBySceneID objectForKeyedSubscript:confidenceCopy];
       [v20 floatValue];
       a4 = a4 - v21;
     }
@@ -108,11 +108,11 @@
   return a4;
 }
 
-- (BOOL)compareObjectsOfInterest:(id)a3 withScenes:(id)a4
+- (BOOL)compareObjectsOfInterest:(id)interest withScenes:(id)scenes
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  interestCopy = interest;
+  scenesCopy = scenes;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -132,10 +132,10 @@
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v6 allKeys];
-        v14 = [v13 containsObject:v12];
-        v15 = [v7 allKeys];
-        LODWORD(v12) = [v15 containsObject:v12];
+        allKeys = [interestCopy allKeys];
+        v14 = [allKeys containsObject:v12];
+        allKeys2 = [scenesCopy allKeys];
+        LODWORD(v12) = [allKeys2 containsObject:v12];
 
         if ((v14 ^ v12))
         {
@@ -159,20 +159,20 @@ LABEL_11:
   return v9;
 }
 
-- (void)addResult:(id)a3 start:(id *)a4 duration:(id *)a5 keyIsName:(BOOL)a6
+- (void)addResult:(id)result start:(id *)start duration:(id *)duration keyIsName:(BOOL)name
 {
-  v6 = a6;
+  nameCopy = name;
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (v6)
+  resultCopy = result;
+  if (nameCopy)
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = [v8 allKeys];
-    v11 = [v10 countByEnumeratingWithState:&v25 objects:v32 count:16];
+    allKeys = [resultCopy allKeys];
+    v11 = [allKeys countByEnumeratingWithState:&v25 objects:v32 count:16];
     if (v11)
     {
       v12 = *v26;
@@ -182,58 +182,58 @@ LABEL_11:
         {
           if (*v26 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allKeys);
           }
 
           v14 = *(*(&v25 + 1) + 8 * i);
-          v15 = [MEMORY[0x1E69C0858] vcp_sharedTaxonomy];
-          v16 = [v15 mad_extendedSceneIdFromSceneName:v14];
+          vcp_sharedTaxonomy = [MEMORY[0x1E69C0858] vcp_sharedTaxonomy];
+          v16 = [vcp_sharedTaxonomy mad_extendedSceneIdFromSceneName:v14];
 
           if (v16)
           {
-            v17 = [v8 objectForKeyedSubscript:v14];
-            v18 = [v16 stringValue];
-            [v9 setObject:v17 forKeyedSubscript:v18];
+            v17 = [resultCopy objectForKeyedSubscript:v14];
+            stringValue = [v16 stringValue];
+            [dictionary setObject:v17 forKeyedSubscript:stringValue];
           }
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v25 objects:v32 count:16];
+        v11 = [allKeys countByEnumeratingWithState:&v25 objects:v32 count:16];
       }
 
       while (v11);
     }
 
-    v8 = v9;
+    resultCopy = dictionary;
   }
 
-  if ([v8 count])
+  if ([resultCopy count])
   {
     results = self->_results;
     v30[0] = @"start";
-    time = *a4;
+    time = *start;
     v20 = CMTimeCopyAsDictionary(&time, 0);
     v31[0] = v20;
     v30[1] = @"duration";
-    time = *a5;
+    time = *duration;
     v21 = CMTimeCopyAsDictionary(&time, 0);
     v30[2] = @"attributes";
     v31[1] = v21;
-    v31[2] = v8;
+    v31[2] = resultCopy;
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:3];
     [(NSMutableArray *)results addObject:v22];
   }
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags
 {
   v157 = *MEMORY[0x1E69E9840];
   internalFrameScenes = self->_internalFrameScenes;
   self->_internalFrameScenes = 0;
 
-  v117 = self;
+  selfCopy = self;
   p_timeLastProcess = &self->_timeLastProcess;
-  lhs = *a4;
-  v111 = a4;
+  lhs = *timestamp;
+  timestampCopy = timestamp;
   rhs = *p_timeLastProcess;
   CMTimeSubtract(&time, &lhs, &rhs);
   if (CMTimeGetSeconds(&time) < 1.0)
@@ -241,17 +241,17 @@ LABEL_11:
     return 0;
   }
 
-  v12 = *&a4->var0;
-  p_timeLastProcess->epoch = a4->var3;
+  v12 = *&timestamp->var0;
+  p_timeLastProcess->epoch = timestamp->var3;
   *&p_timeLastProcess->value = v12;
-  v13 = [MEMORY[0x1E695DF90] dictionary];
-  v14 = v117->_internalFrameScenes;
-  v117->_internalFrameScenes = v13;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v14 = selfCopy->_internalFrameScenes;
+  selfCopy->_internalFrameScenes = dictionary;
 
-  v115 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v109 = objc_autoreleasePoolPush();
   v15 = objc_alloc(MEMORY[0x1E69845B8]);
-  v110 = [v15 initWithCVPixelBuffer:a3 options:MEMORY[0x1E695E0F8]];
+  v110 = [v15 initWithCVPixelBuffer:frame options:MEMORY[0x1E695E0F8]];
   if (v110)
   {
     v16 = objc_alloc_init(MEMORY[0x1E6984668]);
@@ -298,10 +298,10 @@ LABEL_73:
       if (v22)
       {
         v19 = v103;
-        v101 = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
         v23 = v110;
-        [v101 addObject:v106];
-        [v101 addObject:v102];
+        [array2 addObject:v106];
+        [array2 addObject:v102];
         if ([MEMORY[0x1E6984658] mad_includeEntityNet])
         {
           v24 = objc_alloc_init(MEMORY[0x1E6984438]);
@@ -317,7 +317,7 @@ LABEL_73:
             {
               [v25 setMaximumLeafObservations:15];
               [v25 setMaximumHierarchicalObservations:15];
-              [v101 addObject:v25];
+              [array2 addObject:v25];
 
               v23 = v110;
               goto LABEL_12;
@@ -338,7 +338,7 @@ LABEL_73:
 
 LABEL_12:
         v144 = v19;
-        v27 = [v23 performRequests:v101 error:&v144];
+        v27 = [v23 performRequests:array2 error:&v144];
         v104 = v144;
 
         if (v27)
@@ -347,7 +347,7 @@ LABEL_12:
           v143 = 0u;
           v140 = 0u;
           v141 = 0u;
-          obj = v101;
+          obj = array2;
           v28 = [obj countByEnumeratingWithState:&v140 objects:v155 count:16];
           if (v28)
           {
@@ -370,8 +370,8 @@ LABEL_12:
                 v139 = 0u;
                 v136 = 0u;
                 v137 = 0u;
-                v31 = [v30 results];
-                v32 = [v31 countByEnumeratingWithState:&v136 objects:v154 count:16];
+                results = [v30 results];
+                v32 = [results countByEnumeratingWithState:&v136 objects:v154 count:16];
                 if (v32)
                 {
                   v33 = *v137;
@@ -381,13 +381,13 @@ LABEL_12:
                     {
                       if (*v137 != v33)
                       {
-                        objc_enumerationMutation(v31);
+                        objc_enumerationMutation(results);
                       }
 
                       v35 = *(*(&v136 + 1) + 8 * i);
-                      v36 = [MEMORY[0x1E69C0858] vcp_sharedTaxonomy];
-                      v37 = [v35 identifier];
-                      v38 = [v36 nodeForName:v37];
+                      vcp_sharedTaxonomy = [MEMORY[0x1E69C0858] vcp_sharedTaxonomy];
+                      identifier = [v35 identifier];
+                      v38 = [vcp_sharedTaxonomy nodeForName:identifier];
 
                       if (v38)
                       {
@@ -423,29 +423,29 @@ LABEL_12:
 
                           if (v46 < v47)
                           {
-                            [v115 addObject:v35];
+                            [array addObject:v35];
                           }
                         }
 
                         else if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
                         {
-                          v49 = [v35 identifier];
+                          identifier2 = [v35 identifier];
                           LODWORD(lhs.value) = 138412290;
-                          *(&lhs.value + 4) = v49;
+                          *(&lhs.value + 4) = identifier2;
                           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[VideoSceneClassifier] Not-indexed scene label - %@", &lhs, 0xCu);
                         }
                       }
 
                       else if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
                       {
-                        v48 = [v35 identifier];
+                        identifier3 = [v35 identifier];
                         LODWORD(lhs.value) = 138412290;
-                        *(&lhs.value + 4) = v48;
+                        *(&lhs.value + 4) = identifier3;
                         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[VideoSceneClassifier] Unsupported scene label - %@", &lhs, 0xCu);
                       }
                     }
 
-                    v32 = [v31 countByEnumeratingWithState:&v136 objects:v154 count:16];
+                    v32 = [results countByEnumeratingWithState:&v136 objects:v154 count:16];
                   }
 
                   while (v32);
@@ -544,11 +544,11 @@ LABEL_74:
   objc_autoreleasePoolPop(v109);
   if (v50)
   {
-    if ([v115 count])
+    if ([array count])
     {
-      if ([v115 count] < 0x29)
+      if ([array count] < 0x29)
       {
-        v56 = v115;
+        v56 = array;
       }
 
       else
@@ -557,9 +557,9 @@ LABEL_74:
         v135[1] = 3221225472;
         v135[2] = __72__VCPVideoSceneClassifier_analyzeFrame_withTimestamp_andDuration_flags___block_invoke;
         v135[3] = &unk_1E834CF48;
-        v135[4] = v117;
-        [v115 sortUsingComparator:v135];
-        v55 = [v115 subarrayWithRange:{0, 40}];
+        v135[4] = selfCopy;
+        [array sortUsingComparator:v135];
+        v55 = [array subarrayWithRange:{0, 40}];
         v56 = [v55 mutableCopy];
       }
 
@@ -582,12 +582,12 @@ LABEL_74:
             }
 
             v64 = *(*(&v131 + 1) + 8 * j);
-            v65 = v117->_internalFrameScenes;
+            v65 = selfCopy->_internalFrameScenes;
             v66 = MEMORY[0x1E696AD98];
             [v64 confidence];
             v67 = [v66 numberWithFloat:?];
-            v68 = [v64 identifier];
-            [(NSMutableDictionary *)v65 setObject:v67 forKey:v68];
+            identifier4 = [v64 identifier];
+            [(NSMutableDictionary *)v65 setObject:v67 forKey:identifier4];
           }
 
           v61 = [v116 countByEnumeratingWithState:&v131 objects:v153 count:16];
@@ -597,7 +597,7 @@ LABEL_74:
       }
 
       v69 = [v116 count];
-      if (v69 == [(NSMutableDictionary *)v117->_existingScenes count])
+      if (v69 == [(NSMutableDictionary *)selfCopy->_existingScenes count])
       {
         v129 = 0u;
         v130 = 0u;
@@ -617,9 +617,9 @@ LABEL_74:
                 objc_enumerationMutation(v70);
               }
 
-              existingScenes = v117->_existingScenes;
-              v75 = [*(*(&v127 + 1) + 8 * k) identifier];
-              v76 = [(NSMutableDictionary *)existingScenes objectForKeyedSubscript:v75];
+              existingScenes = selfCopy->_existingScenes;
+              identifier5 = [*(*(&v127 + 1) + 8 * k) identifier];
+              v76 = [(NSMutableDictionary *)existingScenes objectForKeyedSubscript:identifier5];
               LOBYTE(existingScenes) = v76 == 0;
 
               if (existingScenes)
@@ -648,7 +648,7 @@ LABEL_100:
         v77 = 0;
       }
 
-      v114 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
       if (v77)
       {
         v126 = 0uLL;
@@ -670,9 +670,9 @@ LABEL_100:
               }
 
               v81 = *(*(&v123 + 1) + 8 * m);
-              v82 = v117->_existingScenes;
-              v83 = [v81 identifier];
-              v84 = [(NSMutableDictionary *)v82 objectForKeyedSubscript:v83];
+              v82 = selfCopy->_existingScenes;
+              identifier6 = [v81 identifier];
+              v84 = [(NSMutableDictionary *)v82 objectForKeyedSubscript:identifier6];
 
               if (v84)
               {
@@ -685,9 +685,9 @@ LABEL_100:
                 }
 
                 v88 = [MEMORY[0x1E696AD98] numberWithFloat:v87];
-                v89 = v117->_existingScenes;
-                v90 = [v81 identifier];
-                [(NSMutableDictionary *)v89 setObject:v88 forKeyedSubscript:v90];
+                v89 = selfCopy->_existingScenes;
+                identifier7 = [v81 identifier];
+                [(NSMutableDictionary *)v89 setObject:v88 forKeyedSubscript:identifier7];
               }
             }
 
@@ -722,8 +722,8 @@ LABEL_100:
               v95 = MEMORY[0x1E696AD98];
               [v94 confidence];
               v96 = [v95 numberWithFloat:?];
-              v97 = [v94 identifier];
-              [(NSMutableDictionary *)v114 setObject:v96 forKeyedSubscript:v97];
+              identifier8 = [v94 identifier];
+              [(NSMutableDictionary *)dictionary2 setObject:v96 forKeyedSubscript:identifier8];
             }
 
             v91 = [v57 countByEnumeratingWithState:&v119 objects:v150 count:16];
@@ -732,33 +732,33 @@ LABEL_100:
           while (v91);
         }
 
-        v98 = v117->_existingScenes;
-        time = v117->_start;
-        lhs = *v111;
-        rhs = v117->_start;
+        v98 = selfCopy->_existingScenes;
+        time = selfCopy->_start;
+        lhs = *timestampCopy;
+        rhs = selfCopy->_start;
         CMTimeSubtract(&v118, &lhs, &rhs);
-        [(VCPVideoSceneClassifier *)v117 addResult:v98 start:&time duration:&v118 keyIsName:1];
-        objc_storeStrong(&v117->_existingScenes, v114);
-        v99 = *&v111->value;
-        v117->_start.epoch = v111->epoch;
-        *&v117->_start.value = v99;
+        [(VCPVideoSceneClassifier *)selfCopy addResult:v98 start:&time duration:&v118 keyIsName:1];
+        objc_storeStrong(&selfCopy->_existingScenes, dictionary2);
+        v99 = *&timestampCopy->value;
+        selfCopy->_start.epoch = timestampCopy->epoch;
+        *&selfCopy->_start.value = v99;
       }
 
-      v60 = v114;
+      v60 = dictionary2;
     }
 
     else
     {
-      v58 = v117->_existingScenes;
-      time = v117->_start;
-      lhs = *v111;
-      rhs = v117->_start;
+      v58 = selfCopy->_existingScenes;
+      time = selfCopy->_start;
+      lhs = *timestampCopy;
+      rhs = selfCopy->_start;
       CMTimeSubtract(&v118, &lhs, &rhs);
-      [(VCPVideoSceneClassifier *)v117 addResult:v58 start:&time duration:&v118 keyIsName:1];
-      v59 = [MEMORY[0x1E695DF90] dictionary];
-      v57 = v115;
-      v60 = v117->_existingScenes;
-      v117->_existingScenes = v59;
+      [(VCPVideoSceneClassifier *)selfCopy addResult:v58 start:&time duration:&v118 keyIsName:1];
+      dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+      v57 = array;
+      v60 = selfCopy->_existingScenes;
+      selfCopy->_existingScenes = dictionary3;
     }
 
     v11 = 0;
@@ -766,7 +766,7 @@ LABEL_100:
 
   else
   {
-    v57 = v115;
+    v57 = array;
   }
 
   return v11;
@@ -811,10 +811,10 @@ uint64_t __72__VCPVideoSceneClassifier_analyzeFrame_withTimestamp_andDuration_fl
   return v23;
 }
 
-- (id)sortScenesWithMaxNumCap:(id)a3
+- (id)sortScenesWithMaxNumCap:(id)cap
 {
-  v3 = [a3 allValues];
-  v4 = [v3 mutableCopy];
+  allValues = [cap allValues];
+  v4 = [allValues mutableCopy];
 
   [v4 sortUsingComparator:&__block_literal_global_15];
   if ([v4 count] >= 0x29)
@@ -851,11 +851,11 @@ uint64_t __51__VCPVideoSceneClassifier_sortScenesWithMaxNumCap___block_invoke(ui
   return v9;
 }
 
-- (void)addAggregatedScenes:(id)a3 timerange:(id *)a4
+- (void)addAggregatedScenes:(id)scenes timerange:(id *)timerange
 {
   v33 = *MEMORY[0x1E69E9840];
-  v23 = [(VCPVideoSceneClassifier *)self sortScenesWithMaxNumCap:a3];
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  v23 = [(VCPVideoSceneClassifier *)self sortScenesWithMaxNumCap:scenes];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
@@ -889,8 +889,8 @@ uint64_t __51__VCPVideoSceneClassifier_sortScenesWithMaxNumCap___block_invoke(ui
             [v11 duration];
             *&v20 = v18 / v19;
             v21 = [v16 numberWithFloat:v20];
-            v22 = [v11 sceneId];
-            [v6 setObject:v21 forKeyedSubscript:v22];
+            sceneId = [v11 sceneId];
+            [dictionary setObject:v21 forKeyedSubscript:sceneId];
           }
         }
       }
@@ -901,11 +901,11 @@ uint64_t __51__VCPVideoSceneClassifier_sortScenesWithMaxNumCap___block_invoke(ui
     while (v8);
   }
 
-  v26 = *&a4->var0.var0;
-  var3 = a4->var0.var3;
-  v24 = *&a4->var1.var0;
-  v25 = a4->var1.var3;
-  [(VCPVideoSceneClassifier *)self addResult:v6 start:&v26 duration:&v24 keyIsName:0];
+  v26 = *&timerange->var0.var0;
+  var3 = timerange->var0.var3;
+  v24 = *&timerange->var1.var0;
+  v25 = timerange->var1.var3;
+  [(VCPVideoSceneClassifier *)self addResult:dictionary start:&v26 duration:&v24 keyIsName:0];
 }
 
 - (id)filteredKeyFrameResults
@@ -987,18 +987,18 @@ uint64_t __51__VCPVideoSceneClassifier_sortScenesWithMaxNumCap___block_invoke(ui
   return v3;
 }
 
-- (void)findObjectsOfInterest:(id)a3
+- (void)findObjectsOfInterest:(id)interest
 {
   v63 = *MEMORY[0x1E69E9840];
-  v49 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  for (i = 0; [v49 count] > i; ++i)
+  interestCopy = interest;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  for (i = 0; [interestCopy count] > i; ++i)
   {
     memset(&v60, 0, sizeof(v60));
-    v5 = [v49 objectAtIndexedSubscript:?];
+    v5 = [interestCopy objectAtIndexedSubscript:?];
     CMTimeRangeMakeFromDictionary(&v60, v5);
 
-    v6 = [v49 objectAtIndexedSubscript:i];
+    v6 = [interestCopy objectAtIndexedSubscript:i];
     v7 = [v6 objectForKeyedSubscript:@"attributes"];
 
     v58 = 0u;
@@ -1031,7 +1031,7 @@ uint64_t __51__VCPVideoSceneClassifier_sortScenesWithMaxNumCap___block_invoke(ui
           [(VCPVideoSceneClassifier *)self adjustedConfidence:v17 confidence:v18];
           v20 = v19;
 
-          v21 = [v4 objectForKeyedSubscript:v12];
+          v21 = [dictionary objectForKeyedSubscript:v12];
           v22 = v21;
           v23 = Seconds;
           v24 = v15 * v23;
@@ -1070,7 +1070,7 @@ uint64_t __51__VCPVideoSceneClassifier_sortScenesWithMaxNumCap___block_invoke(ui
             v37 = [(VCPClassification *)v33 initWithSceneId:v12 withDuration:v34 withConfidence:v35 withAdjustConfidence:v36];
             if (v37)
             {
-              [v4 setObject:v37 forKeyedSubscript:v12];
+              [dictionary setObject:v37 forKeyedSubscript:v12];
             }
           }
         }
@@ -1082,7 +1082,7 @@ uint64_t __51__VCPVideoSceneClassifier_sortScenesWithMaxNumCap___block_invoke(ui
     }
   }
 
-  [(VCPVideoSceneClassifier *)self sortScenesWithMaxNumCap:v4];
+  [(VCPVideoSceneClassifier *)self sortScenesWithMaxNumCap:dictionary];
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
@@ -1110,8 +1110,8 @@ uint64_t __51__VCPVideoSceneClassifier_sortScenesWithMaxNumCap___block_invoke(ui
           if ((v45 / v46) >= 0.0)
           {
             objectsOfInterest = self->_objectsOfInterest;
-            v48 = [v42 sceneId];
-            [(NSMutableArray *)objectsOfInterest addObject:v48];
+            sceneId = [v42 sceneId];
+            [(NSMutableArray *)objectsOfInterest addObject:sceneId];
           }
         }
       }
@@ -1123,7 +1123,7 @@ uint64_t __51__VCPVideoSceneClassifier_sortScenesWithMaxNumCap___block_invoke(ui
   }
 }
 
-- (int)finishAnalysisPass:(id *)a3
+- (int)finishAnalysisPass:(id *)pass
 {
   v80 = *MEMORY[0x1E69E9840];
   {
@@ -1131,10 +1131,10 @@ uint64_t __51__VCPVideoSceneClassifier_sortScenesWithMaxNumCap___block_invoke(ui
   }
 
   memset(&v75, 0, sizeof(v75));
-  v5 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  v5 = *&pass->var0.var3;
+  *&range.start.value = *&pass->var0.var0;
   *&range.start.epoch = v5;
-  *&range.duration.timescale = *&a3->var1.var1;
+  *&range.duration.timescale = *&pass->var1.var1;
   CMTimeRangeGetEnd(&v75, &range);
   p_start = &self->_start;
   if (self->_start.flags)
@@ -1151,8 +1151,8 @@ uint64_t __51__VCPVideoSceneClassifier_sortScenesWithMaxNumCap___block_invoke(ui
 
   if (self->_sceneResults)
   {
-    v58 = [(VCPVideoSceneClassifier *)self filteredKeyFrameResults];
-    [(VCPVideoSceneClassifier *)self findObjectsOfInterest:v58];
+    filteredKeyFrameResults = [(VCPVideoSceneClassifier *)self filteredKeyFrameResults];
+    [(VCPVideoSceneClassifier *)self findObjectsOfInterest:filteredKeyFrameResults];
     [(NSMutableArray *)self->_results removeAllObjects];
     v72 = 0u;
     v73 = 0u;
@@ -1181,7 +1181,7 @@ uint64_t __51__VCPVideoSceneClassifier_sortScenesWithMaxNumCap___block_invoke(ui
           time2.start.epoch = qword_1ED942A08;
           if ((CMTimeCompare(&rhs.start, &time2.start) & 0x80000000) == 0)
           {
-            v10 = [MEMORY[0x1E695DF90] dictionary];
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
             memset(&rhs, 0, sizeof(rhs));
             CMTimeRangeMakeFromDictionary(&rhs, v9);
             value = *MEMORY[0x1E6960C98];
@@ -1194,13 +1194,13 @@ uint64_t __51__VCPVideoSceneClassifier_sortScenesWithMaxNumCap___block_invoke(ui
             for (j = v8; ; j = v59 + 1)
             {
               v59 = j;
-              if ([v58 count] <= j)
+              if ([filteredKeyFrameResults count] <= j)
               {
                 break;
               }
 
               memset(&time2, 0, sizeof(time2));
-              v12 = [v58 objectAtIndexedSubscript:?];
+              v12 = [filteredKeyFrameResults objectAtIndexedSubscript:?];
               CMTimeRangeMakeFromDictionary(&time2, v12);
 
               v66 = rhs;
@@ -1209,12 +1209,12 @@ uint64_t __51__VCPVideoSceneClassifier_sortScenesWithMaxNumCap___block_invoke(ui
               CMTimeRangeGetIntersection(&v67, &v66, &otherRange);
               if ((v67.start.flags & 1) == 0 || (v67.duration.flags & 1) == 0 || v67.duration.epoch || v67.duration.value < 0 || (v66.start = v67.duration, *&otherRange.start.value = *MEMORY[0x1E6960CC0], otherRange.start.epoch = *(MEMORY[0x1E6960CC0] + 16), CMTimeCompare(&v66.start, &otherRange.start)))
               {
-                v13 = [v58 objectAtIndexedSubscript:v59];
+                v13 = [filteredKeyFrameResults objectAtIndexedSubscript:v59];
                 v57 = [v13 objectForKeyedSubscript:@"attributes"];
 
                 v14 = v55;
                 v15 = HIDWORD(v55);
-                if (-[VCPVideoSceneClassifier compareObjectsOfInterest:withScenes:](self, "compareObjectsOfInterest:withScenes:", v57, v10) && [v10 count] && (flags & 1) != 0 && (v55 & 0x100000000) != 0 && !v53 && (v54 & 0x8000000000000000) == 0)
+                if (-[VCPVideoSceneClassifier compareObjectsOfInterest:withScenes:](self, "compareObjectsOfInterest:withScenes:", v57, dictionary) && [dictionary count] && (flags & 1) != 0 && (v55 & 0x100000000) != 0 && !v53 && (v54 & 0x8000000000000000) == 0)
                 {
                   v66.start.value = value;
                   v66.start.timescale = timescale;
@@ -1223,8 +1223,8 @@ uint64_t __51__VCPVideoSceneClassifier_sortScenesWithMaxNumCap___block_invoke(ui
                   v66.duration.value = v54;
                   *&v66.duration.timescale = v55;
                   v66.duration.epoch = 0;
-                  [(VCPVideoSceneClassifier *)self addAggregatedScenes:v10 timerange:&v66];
-                  v16 = [MEMORY[0x1E695DF90] dictionary];
+                  [(VCPVideoSceneClassifier *)self addAggregatedScenes:dictionary timerange:&v66];
+                  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
 
                   value = *MEMORY[0x1E6960C98];
                   flags = *(MEMORY[0x1E6960C98] + 12);
@@ -1234,7 +1234,7 @@ uint64_t __51__VCPVideoSceneClassifier_sortScenesWithMaxNumCap___block_invoke(ui
                   v15 = *(MEMORY[0x1E6960C98] + 36);
                   epoch = *(MEMORY[0x1E6960C98] + 16);
                   v53 = *(MEMORY[0x1E6960C98] + 40);
-                  v10 = v16;
+                  dictionary = dictionary2;
                 }
 
                 if ((flags & 1) == 0 || (v15 & 1) == 0 || v53 || v54 < 0)
@@ -1293,7 +1293,7 @@ uint64_t __51__VCPVideoSceneClassifier_sortScenesWithMaxNumCap___block_invoke(ui
                       [(VCPVideoSceneClassifier *)self adjustedConfidence:v26 confidence:v27];
                       v29 = v28;
 
-                      v30 = [v10 objectForKeyedSubscript:v21];
+                      v30 = [dictionary objectForKeyedSubscript:v21];
                       v31 = v30;
                       v32 = Seconds;
                       v33 = v24 * v32;
@@ -1332,7 +1332,7 @@ uint64_t __51__VCPVideoSceneClassifier_sortScenesWithMaxNumCap___block_invoke(ui
                         v46 = [(VCPClassification *)v42 initWithSceneId:v21 withDuration:v43 withConfidence:v44 withAdjustConfidence:v45];
                         if (v46)
                         {
-                          [v10 setObject:v46 forKeyedSubscript:v21];
+                          [dictionary setObject:v46 forKeyedSubscript:v21];
                         }
                       }
                     }
@@ -1357,7 +1357,7 @@ uint64_t __51__VCPVideoSceneClassifier_sortScenesWithMaxNumCap___block_invoke(ui
               }
             }
 
-            if ([v10 count] && (flags & 1) != 0 && (v55 & 0x100000000) != 0 && !v53 && (v54 & 0x8000000000000000) == 0)
+            if ([dictionary count] && (flags & 1) != 0 && (v55 & 0x100000000) != 0 && !v53 && (v54 & 0x8000000000000000) == 0)
             {
               time2.start.value = value;
               time2.start.timescale = timescale;
@@ -1365,7 +1365,7 @@ uint64_t __51__VCPVideoSceneClassifier_sortScenesWithMaxNumCap___block_invoke(ui
               time2.start.epoch = epoch;
               time2.duration.value = v54;
               *&time2.duration.timescale = v55;
-              [(VCPVideoSceneClassifier *)self addAggregatedScenes:v10 timerange:&time2];
+              [(VCPVideoSceneClassifier *)self addAggregatedScenes:dictionary timerange:&time2];
             }
 
             v8 = v59;

@@ -8,7 +8,7 @@
 {
   v3 = *MEMORY[0x277D12EB8];
   v7 = 0;
-  v4 = [a1 setDate:a3 forKey:v3 error:&v7];
+  v4 = [self setDate:a3 forKey:v3 error:&v7];
   v5 = v7;
   if ((v4 & 1) == 0)
   {

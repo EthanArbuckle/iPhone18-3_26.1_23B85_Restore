@@ -1,20 +1,20 @@
 @interface UARPStats
-- (UARPStats)initWithStatistics:(UARPStatistics *)a3;
+- (UARPStats)initWithStatistics:(UARPStatistics *)statistics;
 @end
 
 @implementation UARPStats
 
-- (UARPStats)initWithStatistics:(UARPStatistics *)a3
+- (UARPStats)initWithStatistics:(UARPStatistics *)statistics
 {
   v5.receiver = self;
   v5.super_class = UARPStats;
   result = [(UARPStats *)&v5 init];
   if (result)
   {
-    result->_packetsNoVersionAgreement = a3->packetsNoVersionAgreement;
-    result->_packetsMissed = a3->packetsMissed;
-    result->_packetsDuplicate = a3->packetsDuplicate;
-    result->_packetsOutOfOrder = a3->packetsOutOfOrder;
+    result->_packetsNoVersionAgreement = statistics->packetsNoVersionAgreement;
+    result->_packetsMissed = statistics->packetsMissed;
+    result->_packetsDuplicate = statistics->packetsDuplicate;
+    result->_packetsOutOfOrder = statistics->packetsOutOfOrder;
   }
 
   return result;

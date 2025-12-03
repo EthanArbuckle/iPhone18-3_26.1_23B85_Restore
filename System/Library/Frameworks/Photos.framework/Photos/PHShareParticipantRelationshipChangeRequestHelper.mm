@@ -1,13 +1,13 @@
 @interface PHShareParticipantRelationshipChangeRequestHelper
-- (BOOL)applyMutationsToManagedObject:(id)a3 error:(id *)a4;
+- (BOOL)applyMutationsToManagedObject:(id)object error:(id *)error;
 - (PHObject)originalAsset;
 - (PHShare)originalShare;
 - (id)_mutableParticipantsObjectIDsAndUUIDs;
 - (void)_prepareParticipantsHelperIfNeeded;
-- (void)_prepareParticipantsWithFetchResult:(id)a3;
-- (void)addParticipants:(id)a3 toChangeRequest:(id)a4;
-- (void)removeParticipants:(id)a3 toChangeRequest:(id)a4;
-- (void)setParticipants:(id)a3 toChangeRequest:(id)a4;
+- (void)_prepareParticipantsWithFetchResult:(id)result;
+- (void)addParticipants:(id)participants toChangeRequest:(id)request;
+- (void)removeParticipants:(id)participants toChangeRequest:(id)request;
+- (void)setParticipants:(id)participants toChangeRequest:(id)request;
 @end
 
 @implementation PHShareParticipantRelationshipChangeRequestHelper
@@ -26,21 +26,21 @@
   return WeakRetained;
 }
 
-- (BOOL)applyMutationsToManagedObject:(id)a3 error:(id *)a4
+- (BOOL)applyMutationsToManagedObject:(id)object error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PHRelationshipChangeRequestHelper *)self mutableObjectIDsAndUUIDs];
+  objectCopy = object;
+  mutableObjectIDsAndUUIDs = [(PHRelationshipChangeRequestHelper *)self mutableObjectIDsAndUUIDs];
 
-  if (v7)
+  if (mutableObjectIDsAndUUIDs)
   {
     [(PHRelationshipChangeRequestHelper *)self setAllowsInsert:1];
     [(PHRelationshipChangeRequestHelper *)self setAllowsMove:0];
     [(PHRelationshipChangeRequestHelper *)self setAllowsRemove:1];
     [(PHRelationshipChangeRequestHelper *)self setDestinationEntityName:@"ShareParticipant"];
-    v8 = [(PHRelationshipChangeRequestHelper *)self relationshipName];
-    v9 = [v6 mutableSetValueForKey:v8];
+    relationshipName = [(PHRelationshipChangeRequestHelper *)self relationshipName];
+    v9 = [objectCopy mutableSetValueForKey:relationshipName];
 
-    v10 = [(PHRelationshipChangeRequestHelper *)self applyMutationsToManagedObject:v6 unorderedMutableChildren:v9 error:a4];
+    v10 = [(PHRelationshipChangeRequestHelper *)self applyMutationsToManagedObject:objectCopy unorderedMutableChildren:v9 error:error];
   }
 
   else
@@ -51,20 +51,20 @@
   return v10;
 }
 
-- (void)setParticipants:(id)a3 toChangeRequest:(id)a4
+- (void)setParticipants:(id)participants toChangeRequest:(id)request
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PHShareParticipantRelationshipChangeRequestHelper *)self _mutableParticipantsObjectIDsAndUUIDs];
-  [v8 removeAllObjects];
+  participantsCopy = participants;
+  requestCopy = request;
+  _mutableParticipantsObjectIDsAndUUIDs = [(PHShareParticipantRelationshipChangeRequestHelper *)self _mutableParticipantsObjectIDsAndUUIDs];
+  [_mutableParticipantsObjectIDsAndUUIDs removeAllObjects];
 
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v6;
+  v10 = participantsCopy;
   v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
@@ -81,7 +81,7 @@
         }
 
         v15 = PLObjectIDOrUUIDFromPHObject(*(*(&v17 + 1) + 8 * v14));
-        [v9 addObject:{v15, v17}];
+        [array addObject:{v15, v17}];
 
         ++v14;
       }
@@ -93,25 +93,25 @@
     while (v12);
   }
 
-  if ([v9 count])
+  if ([array count])
   {
-    [v7 didMutate];
-    v16 = [(PHShareParticipantRelationshipChangeRequestHelper *)self _mutableParticipantsObjectIDsAndUUIDs];
-    [v16 addObjectsFromArray:v9];
+    [requestCopy didMutate];
+    _mutableParticipantsObjectIDsAndUUIDs2 = [(PHShareParticipantRelationshipChangeRequestHelper *)self _mutableParticipantsObjectIDsAndUUIDs];
+    [_mutableParticipantsObjectIDsAndUUIDs2 addObjectsFromArray:array];
   }
 }
 
-- (void)removeParticipants:(id)a3 toChangeRequest:(id)a4
+- (void)removeParticipants:(id)participants toChangeRequest:(id)request
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  participantsCopy = participants;
+  requestCopy = request;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = participantsCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -128,7 +128,7 @@
         }
 
         v14 = PLObjectIDOrUUIDFromPHObject(*(*(&v16 + 1) + 8 * v13));
-        [v8 addObject:{v14, v16}];
+        [array addObject:{v14, v16}];
 
         ++v13;
       }
@@ -140,25 +140,25 @@
     while (v11);
   }
 
-  if ([v8 count])
+  if ([array count])
   {
-    [v7 didMutate];
-    v15 = [(PHShareParticipantRelationshipChangeRequestHelper *)self _mutableParticipantsObjectIDsAndUUIDs];
-    [v15 removeObjectsInArray:v8];
+    [requestCopy didMutate];
+    _mutableParticipantsObjectIDsAndUUIDs = [(PHShareParticipantRelationshipChangeRequestHelper *)self _mutableParticipantsObjectIDsAndUUIDs];
+    [_mutableParticipantsObjectIDsAndUUIDs removeObjectsInArray:array];
   }
 }
 
-- (void)addParticipants:(id)a3 toChangeRequest:(id)a4
+- (void)addParticipants:(id)participants toChangeRequest:(id)request
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  participantsCopy = participants;
+  requestCopy = request;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = participantsCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -175,7 +175,7 @@
         }
 
         v14 = PLObjectIDOrUUIDFromPHObject(*(*(&v16 + 1) + 8 * v13));
-        [v8 addObject:{v14, v16}];
+        [array addObject:{v14, v16}];
 
         ++v13;
       }
@@ -187,11 +187,11 @@
     while (v11);
   }
 
-  if ([v8 count])
+  if ([array count])
   {
-    [v7 didMutate];
-    v15 = [(PHShareParticipantRelationshipChangeRequestHelper *)self _mutableParticipantsObjectIDsAndUUIDs];
-    [v15 addObjectsFromArray:v8];
+    [requestCopy didMutate];
+    _mutableParticipantsObjectIDsAndUUIDs = [(PHShareParticipantRelationshipChangeRequestHelper *)self _mutableParticipantsObjectIDsAndUUIDs];
+    [_mutableParticipantsObjectIDsAndUUIDs addObjectsFromArray:array];
   }
 }
 
@@ -205,9 +205,9 @@
 - (void)_prepareParticipantsHelperIfNeeded
 {
   +[PHPhotoLibrary assertTransaction];
-  v3 = [(PHRelationshipChangeRequestHelper *)self originalObjectIDs];
+  originalObjectIDs = [(PHRelationshipChangeRequestHelper *)self originalObjectIDs];
 
-  if (v3)
+  if (originalObjectIDs)
   {
     goto LABEL_9;
   }
@@ -217,13 +217,13 @@
   if (WeakRetained)
   {
     v5 = +[PHPhotoLibrary photoLibraryForCurrentTransaction];
-    v6 = [v5 librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [v5 librarySpecificFetchOptions];
 
     v7 = objc_loadWeakRetained(&self->_originalShare);
-    v8 = [PHQuery queryForShareParticipantsInShare:v7 options:v6];
+    v8 = [PHQuery queryForShareParticipantsInShare:v7 options:librarySpecificFetchOptions];
 
-    v9 = [v8 executeQuery];
-    [(PHShareParticipantRelationshipChangeRequestHelper *)self _prepareParticipantsWithFetchResult:v9];
+    executeQuery = [v8 executeQuery];
+    [(PHShareParticipantRelationshipChangeRequestHelper *)self _prepareParticipantsWithFetchResult:executeQuery];
   }
 
   else
@@ -236,43 +236,43 @@
     }
 
     v11 = +[PHPhotoLibrary photoLibraryForCurrentTransaction];
-    v6 = [v11 librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [v11 librarySpecificFetchOptions];
 
     v12 = objc_loadWeakRetained(&self->_originalAsset);
-    v8 = [PHShareParticipant fetchContributorsForAsset:v12 options:v6];
+    v8 = [PHShareParticipant fetchContributorsForAsset:v12 options:librarySpecificFetchOptions];
 
     [(PHShareParticipantRelationshipChangeRequestHelper *)self _prepareParticipantsWithFetchResult:v8];
   }
 
 LABEL_7:
-  v13 = [(PHRelationshipChangeRequestHelper *)self originalObjectIDs];
+  originalObjectIDs2 = [(PHRelationshipChangeRequestHelper *)self originalObjectIDs];
 
-  if (!v13)
+  if (!originalObjectIDs2)
   {
     [(PHRelationshipChangeRequestHelper *)self setOriginalObjectIDs:MEMORY[0x1E695E0F0]];
   }
 
 LABEL_9:
-  v14 = [(PHRelationshipChangeRequestHelper *)self mutableObjectIDsAndUUIDs];
+  mutableObjectIDsAndUUIDs = [(PHRelationshipChangeRequestHelper *)self mutableObjectIDsAndUUIDs];
 
-  if (!v14)
+  if (!mutableObjectIDsAndUUIDs)
   {
-    v16 = [(PHRelationshipChangeRequestHelper *)self originalObjectIDs];
-    v15 = [v16 mutableCopy];
+    originalObjectIDs3 = [(PHRelationshipChangeRequestHelper *)self originalObjectIDs];
+    v15 = [originalObjectIDs3 mutableCopy];
     [(PHRelationshipChangeRequestHelper *)self setMutableObjectIDsAndUUIDs:v15];
   }
 }
 
-- (void)_prepareParticipantsWithFetchResult:(id)a3
+- (void)_prepareParticipantsWithFetchResult:(id)result
 {
-  v6 = a3;
+  resultCopy = result;
   +[PHPhotoLibrary assertTransaction];
-  v4 = [(PHRelationshipChangeRequestHelper *)self originalObjectIDs];
+  originalObjectIDs = [(PHRelationshipChangeRequestHelper *)self originalObjectIDs];
 
-  if (!v4)
+  if (!originalObjectIDs)
   {
-    v5 = [v6 fetchedObjectIDs];
-    [(PHRelationshipChangeRequestHelper *)self setOriginalObjectIDs:v5];
+    fetchedObjectIDs = [resultCopy fetchedObjectIDs];
+    [(PHRelationshipChangeRequestHelper *)self setOriginalObjectIDs:fetchedObjectIDs];
   }
 }
 

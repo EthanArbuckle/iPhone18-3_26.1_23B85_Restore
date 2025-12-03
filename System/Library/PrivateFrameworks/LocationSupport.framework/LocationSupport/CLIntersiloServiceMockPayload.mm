@@ -1,22 +1,22 @@
 @interface CLIntersiloServiceMockPayload
-- (CLIntersiloServiceMockPayload)initWithExpectation:(id)a3 inputDictionary:(id)a4;
-- (void)setInUse:(BOOL)a3;
+- (CLIntersiloServiceMockPayload)initWithExpectation:(id)expectation inputDictionary:(id)dictionary;
+- (void)setInUse:(BOOL)use;
 @end
 
 @implementation CLIntersiloServiceMockPayload
 
-- (CLIntersiloServiceMockPayload)initWithExpectation:(id)a3 inputDictionary:(id)a4
+- (CLIntersiloServiceMockPayload)initWithExpectation:(id)expectation inputDictionary:(id)dictionary
 {
-  v7 = a3;
-  v8 = a4;
+  expectationCopy = expectation;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = CLIntersiloServiceMockPayload;
   v9 = [(CLIntersiloServiceMockPayload *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_expectation, a3);
-    objc_storeStrong(&v10->_inputDictionary, a4);
+    objc_storeStrong(&v9->_expectation, expectation);
+    objc_storeStrong(&v10->_inputDictionary, dictionary);
     v11 = objc_opt_new();
     outputDictionary = v10->_outputDictionary;
     v10->_outputDictionary = v11;
@@ -25,7 +25,7 @@
   return v10;
 }
 
-- (void)setInUse:(BOOL)a3
+- (void)setInUse:(BOOL)use
 {
   v15 = *MEMORY[0x1E69E9840];
   if (self->_inUse)
@@ -75,7 +75,7 @@
     abort_report_np();
   }
 
-  self->_inUse = a3;
+  self->_inUse = use;
   v3 = *MEMORY[0x1E69E9840];
 }
 

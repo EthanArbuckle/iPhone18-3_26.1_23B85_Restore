@@ -1,13 +1,13 @@
 @interface PathObject
-+ (id)pathObjectWithPath:(const char *)a3 component:(const char *)a4;
-- (PathObject)initWithPath:(const char *)a3 component:(const char *)a4;
++ (id)pathObjectWithPath:(const char *)path component:(const char *)component;
+- (PathObject)initWithPath:(const char *)path component:(const char *)component;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation PathObject
 
-- (PathObject)initWithPath:(const char *)a3 component:(const char *)a4
+- (PathObject)initWithPath:(const char *)path component:(const char *)component
 {
   v19.receiver = self;
   v19.super_class = PathObject;
@@ -19,10 +19,10 @@
   }
 
   v8 = "/";
-  v9 = "";
-  if (a4)
+  componentCopy = "";
+  if (component)
   {
-    v9 = a4;
+    componentCopy = component;
   }
 
   else
@@ -30,7 +30,7 @@
     v8 = "";
   }
 
-  v10 = asprintf(&v6->_path, "%s%s%s", a3, v8, v9);
+  v10 = asprintf(&v6->_path, "%s%s%s", path, v8, componentCopy);
   v7->_len = v10;
   if (v10 == -1 || !v7->_path)
   {
@@ -53,9 +53,9 @@ LABEL_11:
   return v17;
 }
 
-+ (id)pathObjectWithPath:(const char *)a3 component:(const char *)a4
++ (id)pathObjectWithPath:(const char *)path component:(const char *)component
 {
-  v4 = [[PathObject alloc] initWithPath:a3 component:a4];
+  v4 = [[PathObject alloc] initWithPath:path component:component];
 
   return v4;
 }
@@ -76,9 +76,9 @@ LABEL_11:
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(PathObject *)self path];
+  path = [(PathObject *)self path];
 
-  return [v2 stringWithUTF8String:v3];
+  return [v2 stringWithUTF8String:path];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface SFUserAlert
 - (SFUserAlert)init;
-- (SFUserAlert)initWithCoder:(id)a3;
+- (SFUserAlert)initWithCoder:(id)coder;
 - (_DWORD)createNotification;
 - (__CFUserNotification)createNotification;
 - (id)_defaultDictionary;
@@ -8,22 +8,22 @@
 - (id)description;
 - (uint64_t)createNotification;
 - (void)_ensureXPCStarted;
-- (void)_handleResponseForNotification:(__CFUserNotification *)a3 flags:(unint64_t)a4;
+- (void)_handleResponseForNotification:(__CFUserNotification *)notification flags:(unint64_t)flags;
 - (void)_interrupted;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_postNotification:(__CFUserNotification *)a3;
+- (void)_postNotification:(__CFUserNotification *)notification;
 - (void)_present;
 - (void)_presentBanner;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
 - (void)present;
 - (void)updateNotification;
-- (void)userNotificationDictionaryResponse:(id)a3;
-- (void)userNotificationError:(id)a3;
-- (void)userNotificationResponse:(int)a3;
-- (void)userNotificationTextResponse:(id)a3;
+- (void)userNotificationDictionaryResponse:(id)response;
+- (void)userNotificationError:(id)error;
+- (void)userNotificationResponse:(int)response;
+- (void)userNotificationTextResponse:(id)response;
 @end
 
 @implementation SFUserAlert
@@ -57,7 +57,7 @@
 {
   NSAppendPrintF();
   v8 = 0;
-  v7 = [(SFUserAlert *)self _mergedDict];
+  _mergedDict = [(SFUserAlert *)self _mergedDict];
   NSAppendPrintF();
   v3 = v8;
 
@@ -115,12 +115,12 @@ void *__23__SFUserAlert__present__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_handleResponseForNotification:(__CFUserNotification *)a3 flags:(unint64_t)a4
+- (void)_handleResponseForNotification:(__CFUserNotification *)notification flags:(unint64_t)flags
 {
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x2020000000;
-  v17 = (a4 & 3) + 1;
+  v17 = (flags & 3) + 1;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -129,7 +129,7 @@ void *__23__SFUserAlert__present__block_invoke(uint64_t a1)
   block[4] = self;
   block[5] = v16;
   dispatch_async(dispatchQueue, block);
-  v7 = CFUserNotificationGetResponseDictionary(a3);
+  v7 = CFUserNotificationGetResponseDictionary(notification);
   if (v7)
   {
     v8 = self->_dispatchQueue;
@@ -144,7 +144,7 @@ void *__23__SFUserAlert__present__block_invoke(uint64_t a1)
 
   if (self->_textInput && self->_textInputTitle)
   {
-    ResponseValue = CFUserNotificationGetResponseValue(a3, *MEMORY[0x1E695EEA8], 0);
+    ResponseValue = CFUserNotificationGetResponseValue(notification, *MEMORY[0x1E695EEA8], 0);
     if (ResponseValue)
     {
       ResponseValue = [(__CFString *)ResponseValue copy];
@@ -197,7 +197,7 @@ uint64_t __52__SFUserAlert__handleResponseForNotification_flags___block_invoke_3
   return result;
 }
 
-- (void)_postNotification:(__CFUserNotification *)a3
+- (void)_postNotification:(__CFUserNotification *)notification
 {
   v19[1] = *MEMORY[0x1E69E9840];
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -205,7 +205,7 @@ uint64_t __52__SFUserAlert__handleResponseForNotification_flags___block_invoke_3
   aBlock[2] = __33__SFUserAlert__postNotification___block_invoke;
   aBlock[3] = &unk_1E788B260;
   aBlock[4] = self;
-  aBlock[5] = a3;
+  aBlock[5] = notification;
   v4 = _Block_copy(aBlock);
   v5 = v4;
   timeout = self->_timeout;
@@ -331,7 +331,7 @@ void __33__SFUserAlert__postNotification___block_invoke(uint64_t a1)
 - (__CFUserNotification)createNotification
 {
   error = 0;
-  v3 = [(SFUserAlert *)self _mergedDict];
+  _mergedDict = [(SFUserAlert *)self _mergedDict];
   if (!self->_title)
   {
     [(SFUserAlert *)&error createNotification];
@@ -367,7 +367,7 @@ LABEL_15:
     }
   }
 
-  v8 = CFUserNotificationCreate(0, timeout, v6, &error, v3);
+  v8 = CFUserNotificationCreate(0, timeout, v6, &error, _mergedDict);
   if (!error)
   {
     v9 = v8;
@@ -433,13 +433,13 @@ void __33__SFUserAlert_createNotification__block_invoke(uint64_t a1)
 
 - (id)_mergedDict
 {
-  v3 = [(SFUserAlert *)self _defaultDictionary];
+  _defaultDictionary = [(SFUserAlert *)self _defaultDictionary];
   v4 = [(NSDictionary *)self->_additionalInfo mutableCopy];
   v5 = v4;
-  v6 = v3;
+  v6 = _defaultDictionary;
   if (v4)
   {
-    [v4 addEntriesFromDictionary:v3];
+    [v4 addEntriesFromDictionary:_defaultDictionary];
     v6 = v5;
   }
 
@@ -463,18 +463,18 @@ void __33__SFUserAlert_createNotification__block_invoke(uint64_t a1)
       v4 = 35;
     }
 
-    v5 = [(SFUserAlert *)self _mergedDict];
-    dictionary = v5;
+    _mergedDict = [(SFUserAlert *)self _mergedDict];
+    dictionary = _mergedDict;
     if (gLogCategory_SFUserAlert <= 50)
     {
-      if (gLogCategory_SFUserAlert != -1 || (v6 = _LogCategory_Initialize(), v5 = dictionary, v6))
+      if (gLogCategory_SFUserAlert != -1 || (v6 = _LogCategory_Initialize(), _mergedDict = dictionary, v6))
       {
         LogPrintF();
-        v5 = dictionary;
+        _mergedDict = dictionary;
       }
     }
 
-    CFUserNotificationUpdate(cfNotif, self->_timeout, v4, v5);
+    CFUserNotificationUpdate(cfNotif, self->_timeout, v4, _mergedDict);
   }
 }
 
@@ -643,17 +643,17 @@ void __27__SFUserAlert__invalidated__block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)userNotificationError:(id)a3
+- (void)userNotificationError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__SFUserAlert_userNotificationError___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -668,7 +668,7 @@ uint64_t __37__SFUserAlert_userNotificationError___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)userNotificationResponse:(int)a3
+- (void)userNotificationResponse:(int)response
 {
   if (gLogCategory_SFUserAlert <= 30 && (gLogCategory_SFUserAlert != -1 || _LogCategory_Initialize()))
   {
@@ -681,7 +681,7 @@ uint64_t __37__SFUserAlert_userNotificationError___block_invoke(uint64_t a1)
   v6[2] = __40__SFUserAlert_userNotificationResponse___block_invoke;
   v6[3] = &unk_1E788D970;
   v6[4] = self;
-  v7 = a3;
+  responseCopy = response;
   dispatch_async(dispatchQueue, v6);
 }
 
@@ -696,17 +696,17 @@ uint64_t __40__SFUserAlert_userNotificationResponse___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)userNotificationTextResponse:(id)a3
+- (void)userNotificationTextResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__SFUserAlert_userNotificationTextResponse___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = responseCopy;
+  v6 = responseCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -721,9 +721,9 @@ uint64_t __44__SFUserAlert_userNotificationTextResponse___block_invoke(uint64_t 
   return result;
 }
 
-- (void)userNotificationDictionaryResponse:(id)a3
+- (void)userNotificationDictionaryResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   if (gLogCategory_SFUserAlert <= 30 && (gLogCategory_SFUserAlert != -1 || _LogCategory_Initialize()))
   {
     [SFUserAlert userNotificationDictionaryResponse:];
@@ -735,8 +735,8 @@ uint64_t __44__SFUserAlert_userNotificationTextResponse___block_invoke(uint64_t 
   v7[2] = __50__SFUserAlert_userNotificationDictionaryResponse___block_invoke;
   v7[3] = &unk_1E788A658;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = responseCopy;
+  v6 = responseCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -751,124 +751,124 @@ uint64_t __50__SFUserAlert_userNotificationDictionaryResponse___block_invoke(uin
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   additionalInfo = self->_additionalInfo;
-  v14 = v4;
+  v14 = coderCopy;
   if (additionalInfo)
   {
-    [v4 encodeObject:additionalInfo forKey:@"ai"];
-    v4 = v14;
+    [coderCopy encodeObject:additionalInfo forKey:@"ai"];
+    coderCopy = v14;
   }
 
   if (self->_asBanner)
   {
     [v14 encodeBool:1 forKey:@"ab"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   iconURL = self->_iconURL;
   if (iconURL)
   {
     [v14 encodeObject:iconURL forKey:@"iu"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   message = self->_message;
   if (message)
   {
     [v14 encodeObject:message forKey:@"me"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   soundURL = self->_soundURL;
   if (soundURL)
   {
     [v14 encodeObject:soundURL forKey:@"su"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   if (self->_textInput)
   {
     [v14 encodeBool:1 forKey:@"tin"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   textInputTitle = self->_textInputTitle;
   if (textInputTitle)
   {
     [v14 encodeObject:textInputTitle forKey:@"tint"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   if (self->_timeout != 0.0)
   {
     [v14 encodeDouble:@"to" forKey:?];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   title = self->_title;
   if (title)
   {
     [v14 encodeObject:title forKey:@"ti"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   if (self->_hasDefaultButton)
   {
     [v14 encodeBool:1 forKey:@"hdb"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   defaultButtonTitle = self->_defaultButtonTitle;
   if (defaultButtonTitle)
   {
     [v14 encodeObject:defaultButtonTitle forKey:@"dbt"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   alternateButtonTitle = self->_alternateButtonTitle;
   if (alternateButtonTitle)
   {
     [v14 encodeObject:alternateButtonTitle forKey:@"abt"];
-    v4 = v14;
+    coderCopy = v14;
   }
 
   otherButtonTitle = self->_otherButtonTitle;
   if (otherButtonTitle)
   {
     [v14 encodeObject:otherButtonTitle forKey:@"obt"];
-    v4 = v14;
+    coderCopy = v14;
   }
 }
 
-- (SFUserAlert)initWithCoder:(id)a3
+- (SFUserAlert)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = SFUserAlert;
   v5 = [(SFUserAlert *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ai"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ai"];
     additionalInfo = v5->_additionalInfo;
     v5->_additionalInfo = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iu"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iu"];
     iconURL = v5->_iconURL;
     v5->_iconURL = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"su"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"su"];
     soundURL = v5->_soundURL;
     v5->_soundURL = v10;
 
-    v5->_asBanner = [v4 decodeBoolForKey:@"ab"];
-    v5->_hasDefaultButton = [v4 decodeBoolForKey:@"hdb"];
-    v5->_textInput = [v4 decodeBoolForKey:@"tin"];
-    [v4 decodeDoubleForKey:@"to"];
+    v5->_asBanner = [coderCopy decodeBoolForKey:@"ab"];
+    v5->_hasDefaultButton = [coderCopy decodeBoolForKey:@"hdb"];
+    v5->_textInput = [coderCopy decodeBoolForKey:@"tin"];
+    [coderCopy decodeDoubleForKey:@"to"];
     v5->_timeout = v12;
-    v13 = v4;
+    v13 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 

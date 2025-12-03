@@ -1,8 +1,8 @@
 @interface AVAnnotationImageRepresentation
-- (AVAnnotationImageRepresentation)initWithImageData:(id)a3 fileType:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithPropertyList:(id)a3 binaryData:(id)a4;
-- (id)_propertyListAndBinaryData:(id *)a3;
+- (AVAnnotationImageRepresentation)initWithImageData:(id)data fileType:(id)type;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithPropertyList:(id)list binaryData:(id)data;
+- (id)_propertyListAndBinaryData:(id *)data;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -10,27 +10,27 @@
 
 @implementation AVAnnotationImageRepresentation
 
-- (AVAnnotationImageRepresentation)initWithImageData:(id)a3 fileType:(id)a4
+- (AVAnnotationImageRepresentation)initWithImageData:(id)data fileType:(id)type
 {
   v8.receiver = self;
   v8.super_class = AVAnnotationImageRepresentation;
   v6 = [(AVAnnotationRepresentation *)&v8 _initWithRepresentationType:@"AVAnnotationRepresentationTypeImage"];
   if (v6)
   {
-    v6->_imageData = [a3 copy];
-    v6->_fileType = [a4 copy];
+    v6->_imageData = [data copy];
+    v6->_fileType = [type copy];
   }
 
   return v6;
 }
 
-- (id)_initWithPropertyList:(id)a3 binaryData:(id)a4
+- (id)_initWithPropertyList:(id)list binaryData:(id)data
 {
   v10.receiver = self;
   v10.super_class = AVAnnotationImageRepresentation;
   v6 = [AVAnnotationRepresentation _initWithPropertyList:sel__initWithPropertyList_binaryData_ binaryData:?];
   v7 = v6;
-  if (a4 && v6 && (v6[4] = [a4 copy], v8 = objc_msgSend(a3, "objectForKey:", @"AVAnnotationRepresentationArchiveKeyFileType"), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (data && v6 && (v6[4] = [data copy], v8 = objc_msgSend(list, "objectForKey:", @"AVAnnotationRepresentationArchiveKeyFileType"), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v7[5] = [v8 copy];
   }
@@ -51,14 +51,14 @@
   [(AVAnnotationRepresentation *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v7.receiver = self;
   v7.super_class = AVAnnotationImageRepresentation;
   v5 = [(AVAnnotationRepresentation *)&v7 isEqual:?];
-  if (a3 != self)
+  if (equal != self)
   {
-    LOBYTE(v5) = a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & v5 & 1) != 0) && -[NSData isEqualToData:](-[AVAnnotationImageRepresentation imageData](self, "imageData"), "isEqualToData:", [a3 imageData]) && -[NSString isEqualToString:](-[AVAnnotationImageRepresentation fileType](self, "fileType"), "isEqualToString:", objc_msgSend(a3, "fileType"));
+    LOBYTE(v5) = equal && (objc_opt_class(), (objc_opt_isKindOfClass() & v5 & 1) != 0) && -[NSData isEqualToData:](-[AVAnnotationImageRepresentation imageData](self, "imageData"), "isEqualToData:", [equal imageData]) && -[NSString isEqualToString:](-[AVAnnotationImageRepresentation fileType](self, "fileType"), "isEqualToString:", objc_msgSend(equal, "fileType"));
   }
 
   return v5;
@@ -73,15 +73,15 @@
   return v4 ^ [(NSString *)[(AVAnnotationImageRepresentation *)self fileType] hash]^ v3;
 }
 
-- (id)_propertyListAndBinaryData:(id *)a3
+- (id)_propertyListAndBinaryData:(id *)data
 {
   v7.receiver = self;
   v7.super_class = AVAnnotationImageRepresentation;
   v5 = [(AVAnnotationRepresentation *)&v7 _propertyListAndBinaryData:?];
   [v5 setObject:-[AVAnnotationImageRepresentation fileType](self forKey:{"fileType"), @"AVAnnotationRepresentationArchiveKeyFileType"}];
-  if (a3)
+  if (data)
   {
-    *a3 = [(AVAnnotationImageRepresentation *)self imageData];
+    *data = [(AVAnnotationImageRepresentation *)self imageData];
   }
 
   return v5;

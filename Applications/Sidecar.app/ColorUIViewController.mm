@@ -6,7 +6,7 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000E7F4();
 }
 

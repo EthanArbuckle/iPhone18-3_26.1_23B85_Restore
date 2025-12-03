@@ -26,7 +26,7 @@
 - (BOOL)use2StageScoreInterpreterForTPScoring;
 - (BOOL)useCachedPortraitScores;
 - (BOOL)useRawNEExtractionScores;
-- (PPConfiguration)initWithTrialWrapper:(id)a3;
+- (PPConfiguration)initWithTrialWrapper:(id)wrapper;
 - (double)decayedFeedbackCountsHalfLifeDays;
 - (double)halfValuePosition;
 - (double)locationDecayHalfLifeSeconds;
@@ -58,16 +58,16 @@
 - (float)scoreThresholdForLocation;
 - (float)scoreThresholdForNamedEntity;
 - (float)scoreThresholdForTopic;
-- (float)topicsMultiplierForBundleId:(id)a3 algorithm:(unint64_t)a4;
-- (id)_algorithmsForNode:(id)a3 bundleId:(id)a4 customRules:(id)a5;
-- (id)_algorithmsToDelete:(id)a3 bundleId:(id)a4 customRules:(id)a5;
-- (id)_mapAlgorithmNamesToNumbers:(id)a3 domain:(unsigned __int8)a4;
+- (float)topicsMultiplierForBundleId:(id)id algorithm:(unint64_t)algorithm;
+- (id)_algorithmsForNode:(id)node bundleId:(id)id customRules:(id)rules;
+- (id)_algorithmsToDelete:(id)delete bundleId:(id)id customRules:(id)rules;
+- (id)_mapAlgorithmNamesToNumbers:(id)numbers domain:(unsigned __int8)domain;
 - (id)availablePortraitVariantNames;
 - (id)contactsLabelScoringMap;
 - (id)differentiallyPrivateEntityLogLevels;
 - (id)engagementKValues;
 - (id)feedbackSessionLogsSamplingRateOverrides;
-- (id)hyperparametersForMappingId:(id)a3;
+- (id)hyperparametersForMappingId:(id)id;
 - (id)naturalPortraitVariantName;
 - (id)portraitMusicDataCollectionAMPBundleIds;
 - (id)portraitVariantName;
@@ -99,21 +99,21 @@
 - (unsigned)socialHighlightTopKCount;
 - (void)_loadConfigParams;
 - (void)_loadContactsConfigParams;
-- (void)_loadContactsConfigParamsWithGuardedData:(id)a3;
+- (void)_loadContactsConfigParamsWithGuardedData:(id)data;
 - (void)_loadGlobalConfigParams;
-- (void)_loadGlobalConfigParamsWithGuardedData:(id)a3;
+- (void)_loadGlobalConfigParamsWithGuardedData:(id)data;
 - (void)_loadLocationsConfigParams;
-- (void)_loadLocationsConfigParamsWithGuardedData:(id)a3;
+- (void)_loadLocationsConfigParamsWithGuardedData:(id)data;
 - (void)_loadNamedEntitiesConfigParams;
-- (void)_loadNamedEntitiesConfigParamsWithGuardedData:(id)a3;
+- (void)_loadNamedEntitiesConfigParamsWithGuardedData:(id)data;
 - (void)_loadQuickTypeConfigParams;
-- (void)_loadQuickTypeConfigParamsWithGuardedData:(id)a3;
+- (void)_loadQuickTypeConfigParamsWithGuardedData:(id)data;
 - (void)_loadSocialHighlightConfigParams;
-- (void)_loadSocialHighlightConfigParamsWithGuardedData:(id)a3;
+- (void)_loadSocialHighlightConfigParamsWithGuardedData:(id)data;
 - (void)_loadTopicsConfigParams;
-- (void)_loadTopicsConfigParamsWithGuardedData:(id)a3;
+- (void)_loadTopicsConfigParamsWithGuardedData:(id)data;
 - (void)_loadUniversalSearchConfigParams;
-- (void)_loadUniversalSearchConfigParamsWithGuardedData:(id)a3;
+- (void)_loadUniversalSearchConfigParamsWithGuardedData:(id)data;
 @end
 
 @implementation PPConfiguration
@@ -243,8 +243,8 @@ double __54__PPConfiguration_socialHighlightCacheTimeoutInterval__block_invoke(u
 
 - (BOOL)isMultilingual
 {
-  v2 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v3 = [v2 count] > 1;
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  v3 = [preferredLanguages count] > 1;
 
   return v3;
 }
@@ -267,9 +267,9 @@ double __54__PPConfiguration_socialHighlightCacheTimeoutInterval__block_invoke(u
   return v3;
 }
 
-- (id)hyperparametersForMappingId:(id)a3
+- (id)hyperparametersForMappingId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -286,7 +286,7 @@ double __54__PPConfiguration_socialHighlightCacheTimeoutInterval__block_invoke(u
   v6 = v11[5];
   _Block_object_dispose(&v10, 8);
 
-  v7 = [v6 objectForKeyedSubscript:v4];
+  v7 = [v6 objectForKeyedSubscript:idCopy];
 
   return v7;
 }
@@ -1859,11 +1859,11 @@ double __48__PPConfiguration_portraitAnalyticsSamplingRate__block_invoke(uint64_
   return result;
 }
 
-- (id)_mapAlgorithmNamesToNumbers:(id)a3 domain:(unsigned __int8)a4
+- (id)_mapAlgorithmNamesToNumbers:(id)numbers domain:(unsigned __int8)domain
 {
-  v4 = a4;
+  domainCopy = domain;
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  numbersCopy = numbers;
   v6 = objc_autoreleasePoolPush();
   v7 = objc_opt_new();
   objc_autoreleasePoolPop(v6);
@@ -1871,7 +1871,7 @@ double __48__PPConfiguration_portraitAnalyticsSamplingRate__block_invoke(uint64_
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v5;
+  v8 = numbersCopy;
   v9 = [v8 countByEnumeratingWithState:&v21 objects:v29 count:16];
   if (v9)
   {
@@ -1887,19 +1887,19 @@ LABEL_3:
       }
 
       v13 = *(*(&v21 + 1) + 8 * v12);
-      if (v4 == 2)
+      if (domainCopy == 2)
       {
         v14 = MEMORY[0x277D3A3F0];
       }
 
-      else if (v4 == 1)
+      else if (domainCopy == 1)
       {
         v14 = MEMORY[0x277D3A438];
       }
 
       else
       {
-        if (v4)
+        if (domainCopy)
         {
           v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{0, v21}];
           goto LABEL_14;
@@ -1919,7 +1919,7 @@ LABEL_14:
           *buf = 138412546;
           v26 = v13;
           v27 = 1024;
-          v28 = v4;
+          v28 = domainCopy;
           _os_log_fault_impl(&dword_23224A000, v18, OS_LOG_TYPE_FAULT, "PPConfiguration: unknown algorithm %@ in domain %d", buf, 0x12u);
         }
 
@@ -1950,19 +1950,19 @@ LABEL_21:
   return v17;
 }
 
-- (id)_algorithmsToDelete:(id)a3 bundleId:(id)a4 customRules:(id)a5
+- (id)_algorithmsToDelete:(id)delete bundleId:(id)id customRules:(id)rules
 {
-  v6 = a4;
-  v7 = a5;
-  if (v7)
+  idCopy = id;
+  rulesCopy = rules;
+  if (rulesCopy)
   {
     v8 = objc_opt_new();
-    v9 = [v7 objectForKeyedSubscript:@"DEL"];
+    v9 = [rulesCopy objectForKeyedSubscript:@"DEL"];
     [v8 addObjectsFromArray:v9];
 
-    v10 = [v7 objectForKeyedSubscript:@"BUNDLES"];
-    v11 = [v6 lowercaseString];
-    v12 = [v10 objectForKeyedSubscript:v11];
+    v10 = [rulesCopy objectForKeyedSubscript:@"BUNDLES"];
+    lowercaseString = [idCopy lowercaseString];
+    v12 = [v10 objectForKeyedSubscript:lowercaseString];
 
     if (v12)
     {
@@ -1979,19 +1979,19 @@ LABEL_21:
   return v8;
 }
 
-- (id)_algorithmsForNode:(id)a3 bundleId:(id)a4 customRules:(id)a5
+- (id)_algorithmsForNode:(id)node bundleId:(id)id customRules:(id)rules
 {
-  v6 = a4;
-  v7 = a5;
-  if (v7)
+  idCopy = id;
+  rulesCopy = rules;
+  if (rulesCopy)
   {
     v8 = objc_opt_new();
-    v9 = [v7 objectForKeyedSubscript:@"ADD"];
+    v9 = [rulesCopy objectForKeyedSubscript:@"ADD"];
     [v8 addObjectsFromArray:v9];
 
-    v10 = [v7 objectForKeyedSubscript:@"BUNDLES"];
-    v11 = [v6 lowercaseString];
-    v12 = [v10 objectForKeyedSubscript:v11];
+    v10 = [rulesCopy objectForKeyedSubscript:@"BUNDLES"];
+    lowercaseString = [idCopy lowercaseString];
+    v12 = [v10 objectForKeyedSubscript:lowercaseString];
 
     if (v12)
     {
@@ -2029,9 +2029,9 @@ LABEL_21:
   return v3;
 }
 
-- (float)topicsMultiplierForBundleId:(id)a3 algorithm:(unint64_t)a4
+- (float)topicsMultiplierForBundleId:(id)id algorithm:(unint64_t)algorithm
 {
-  v6 = a3;
+  idCopy = id;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -2044,14 +2044,14 @@ LABEL_21:
   v31 = __Block_byref_object_copy__25295;
   v32 = __Block_byref_object_dispose__25296;
   v33 = 0;
-  v7 = [MEMORY[0x277D3A548] describeAlgorithm:a4];
+  v7 = [MEMORY[0x277D3A548] describeAlgorithm:algorithm];
   lock = self->_lock;
   v20 = MEMORY[0x277D85DD0];
   v21 = 3221225472;
   v22 = __57__PPConfiguration_topicsMultiplierForBundleId_algorithm___block_invoke;
   v23 = &unk_278979250;
   v26 = &v34;
-  v9 = v6;
+  v9 = idCopy;
   v24 = v9;
   v27 = &v28;
   v10 = v7;
@@ -2287,19 +2287,19 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [*(a1 + 32) _loadUniversalSearchConfigParamsWithGuardedData:v4];
 }
 
-- (void)_loadTopicsConfigParamsWithGuardedData:(id)a3
+- (void)_loadTopicsConfigParamsWithGuardedData:(id)data
 {
   v105 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_autoreleasePoolPush();
-  v7 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
-  v8 = [v7 filepathForFactor:@"topicCalibration.trie" namespaceName:@"PERSONALIZATION_PORTRAIT_TOPICS"];
+  trialWrapperReloadingIfNeeded = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+  v8 = [trialWrapperReloadingIfNeeded filepathForFactor:@"topicCalibration.trie" namespaceName:@"PERSONALIZATION_PORTRAIT_TOPICS"];
 
   if ([(__CFString *)v8 length])
   {
     v9 = [objc_alloc(MEMORY[0x277D42558]) initWithPath:v8];
-    objc_storeStrong(v4 + 21, v9);
+    objc_storeStrong(dataCopy + 21, v9);
   }
 
   else
@@ -2314,14 +2314,14 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
-  v11 = [v10 plistForFactorName:@"configuration_topics.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_TOPICS"];
+  trialWrapperReloadingIfNeeded2 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+  v11 = [trialWrapperReloadingIfNeeded2 plistForFactorName:@"configuration_topics.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_TOPICS"];
 
   if ([v11 count] <= 1)
   {
-    v12 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+    trialWrapperReloadingIfNeeded3 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
 
-    if (v12)
+    if (trialWrapperReloadingIfNeeded3)
     {
       v13 = pp_default_log_handle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -2331,8 +2331,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
       }
 
       v14 = objc_alloc(MEMORY[0x277CBEAC0]);
-      v15 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
-      v16 = [v15 defaultFilepathForFactor:@"configuration_topics.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_TOPICS"];
+      trialWrapperReloadingIfNeeded4 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+      v16 = [trialWrapperReloadingIfNeeded4 defaultFilepathForFactor:@"configuration_topics.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_TOPICS"];
       v17 = [v14 initWithContentsOfFile:v16];
 
       v11 = v17;
@@ -2357,7 +2357,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   v23 = v20;
 
   [v23 floatValue];
-  *(v4 + 2) = v24;
+  *(dataCopy + 2) = v24;
 
   v25 = [v11 objectForKeyedSubscript:@"TopicFeedbackUsesCoreML"];
   if (!v25 || (objc_opt_class(), v26 = objc_opt_isKindOfClass(), v27 = v25, (v26 & 1) == 0))
@@ -2376,7 +2376,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v30 = v27;
 
-  *(v4 + 266) = [v30 BOOLValue];
+  *(dataCopy + 266) = [v30 BOOLValue];
   v31 = [v11 objectForKeyedSubscript:@"TopicMappingUsesCoreML"];
   if (!v31 || (objc_opt_class(), v32 = objc_opt_isKindOfClass(), v33 = v31, (v32 & 1) == 0))
   {
@@ -2394,7 +2394,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v36 = v33;
 
-  *(v4 + 283) = [v36 BOOLValue];
+  *(dataCopy + 283) = [v36 BOOLValue];
   v37 = [v11 objectForKeyedSubscript:@"TopicMappingCoreMLThreshold"];
   if (!v37 || (objc_opt_class(), v38 = objc_opt_isKindOfClass(), v39 = v37, (v38 & 1) == 0))
   {
@@ -2413,7 +2413,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   v42 = v39;
 
   [v42 doubleValue];
-  v4[36] = v43;
+  dataCopy[36] = v43;
 
   v44 = [v11 objectForKeyedSubscript:@"LinearModelHyperparameters"];
   if (!v44 || (objc_opt_class(), v45 = objc_opt_isKindOfClass(), v46 = v44, (v45 & 1) == 0))
@@ -2432,8 +2432,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v49 = v46;
 
-  v50 = v4[41];
-  v4[41] = v49;
+  v50 = dataCopy[41];
+  dataCopy[41] = v49;
 
   v51 = [v11 objectForKeyedSubscript:@"Use2StageScoreInterpreterForTPScoring"];
   if (!v51 || (objc_opt_class(), v52 = objc_opt_isKindOfClass(), v53 = v51, (v52 & 1) == 0))
@@ -2452,7 +2452,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v56 = v53;
 
-  *(v4 + 281) = [v56 BOOLValue];
+  *(dataCopy + 281) = [v56 BOOLValue];
   v57 = [v11 objectForKeyedSubscript:@"FlattenTopicsForCoreML"];
   if (!v57 || (objc_opt_class(), v58 = objc_opt_isKindOfClass(), v59 = v57, (v58 & 1) == 0))
   {
@@ -2470,7 +2470,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v62 = v59;
 
-  *(v4 + 250) = [v62 BOOLValue];
+  *(dataCopy + 250) = [v62 BOOLValue];
   v63 = [v11 objectForKeyedSubscript:@"TopicScoringUsesCoreML"];
   if (!v63 || (objc_opt_class(), v64 = objc_opt_isKindOfClass(), v65 = v63, (v64 & 1) == 0))
   {
@@ -2488,7 +2488,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v68 = v65;
 
-  *(v4 + 248) = [v68 BOOLValue];
+  *(dataCopy + 248) = [v68 BOOLValue];
   v69 = [v11 objectForKeyedSubscript:@"TopicScoringUsesHybrid"];
   if (!v69 || (objc_opt_class(), v70 = objc_opt_isKindOfClass(), v71 = v69, (v70 & 1) == 0))
   {
@@ -2506,7 +2506,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v74 = v71;
 
-  *(v4 + 253) = [v74 BOOLValue];
+  *(dataCopy + 253) = [v74 BOOLValue];
   v75 = [v11 objectForKeyedSubscript:@"TopicDecayHalfLifeSeconds"];
   if (!v75 || (objc_opt_class(), v76 = objc_opt_isKindOfClass(), v77 = v75, (v76 & 1) == 0))
   {
@@ -2525,7 +2525,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   v80 = v77;
 
   [v80 doubleValue];
-  v4[28] = v81;
+  dataCopy[28] = v81;
 
   v82 = [v11 objectForKeyedSubscript:@"ScoreThresholdForTopic"];
   if (!v82 || (objc_opt_class(), v83 = objc_opt_isKindOfClass(), v84 = v82, (v83 & 1) == 0))
@@ -2546,7 +2546,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   [v87 doubleValue];
   *&v88 = v88;
-  *(v4 + 46) = LODWORD(v88);
+  *(dataCopy + 46) = LODWORD(v88);
 
   v89 = [v11 objectForKeyedSubscript:@"MaxNumberMappedTopics"];
   if (!v89 || (objc_opt_class(), v90 = objc_opt_isKindOfClass(), v91 = v89, (v90 & 1) == 0))
@@ -2565,7 +2565,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v94 = v91;
 
-  *(v4 + 84) = [v94 intValue];
+  *(dataCopy + 84) = [v94 intValue];
   v95 = [v11 objectForKeyedSubscript:@"ExtractionAlgorithmConfiguration"];
   if (!v95 || (objc_opt_class(), v96 = objc_opt_isKindOfClass(), v97 = v95, (v96 & 1) == 0))
   {
@@ -2583,8 +2583,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v100 = v97;
 
-  v101 = v4[19];
-  v4[19] = v100;
+  v101 = dataCopy[19];
+  dataCopy[19] = v100;
 
   objc_autoreleasePoolPop(v5);
   v102 = *MEMORY[0x277D85DE8];
@@ -2601,19 +2601,19 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [(_PASLock *)lock runWithLockAcquired:v3];
 }
 
-- (void)_loadNamedEntitiesConfigParamsWithGuardedData:(id)a3
+- (void)_loadNamedEntitiesConfigParamsWithGuardedData:(id)data
 {
   v106 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
-  v7 = [v6 plistForFactorName:@"configuration_named_entities.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_NAMED_ENTITIES"];
+  trialWrapperReloadingIfNeeded = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+  v7 = [trialWrapperReloadingIfNeeded plistForFactorName:@"configuration_named_entities.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_NAMED_ENTITIES"];
 
   if ([v7 count] <= 1)
   {
-    v8 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+    trialWrapperReloadingIfNeeded2 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
 
-    if (v8)
+    if (trialWrapperReloadingIfNeeded2)
     {
       v9 = pp_default_log_handle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2623,8 +2623,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
       }
 
       v10 = objc_alloc(MEMORY[0x277CBEAC0]);
-      v11 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
-      v12 = [v11 defaultFilepathForFactor:@"configuration_named_entities.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_NAMED_ENTITIES"];
+      trialWrapperReloadingIfNeeded3 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+      v12 = [trialWrapperReloadingIfNeeded3 defaultFilepathForFactor:@"configuration_named_entities.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_NAMED_ENTITIES"];
       v13 = [v10 initWithContentsOfFile:v12];
 
       v7 = v13;
@@ -2648,7 +2648,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v19 = v16;
 
-  v4[265] = [v19 BOOLValue];
+  dataCopy[265] = [v19 BOOLValue];
   v20 = [v7 objectForKeyedSubscript:@"MaxNumberNamedEntities"];
   if (!v20 || (objc_opt_class(), v21 = objc_opt_isKindOfClass(), v22 = v20, (v21 & 1) == 0))
   {
@@ -2666,7 +2666,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v25 = v22;
 
-  *(v4 + 85) = [v25 intValue];
+  *(dataCopy + 85) = [v25 intValue];
   v26 = [v7 objectForKeyedSubscript:@"Use2StageScoreInterpreterForNEScoring"];
   if (!v26 || (objc_opt_class(), v27 = objc_opt_isKindOfClass(), v28 = v26, (v27 & 1) == 0))
   {
@@ -2684,7 +2684,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v31 = v28;
 
-  v4[280] = [v31 BOOLValue];
+  dataCopy[280] = [v31 BOOLValue];
   v32 = [v7 objectForKeyedSubscript:@"NamedEntityScoringUsesCoreML"];
   if (!v32 || (objc_opt_class(), v33 = objc_opt_isKindOfClass(), v34 = v32, (v33 & 1) == 0))
   {
@@ -2702,7 +2702,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v37 = v34;
 
-  v4[249] = [v37 BOOLValue];
+  dataCopy[249] = [v37 BOOLValue];
   v38 = [v7 objectForKeyedSubscript:@"NamedEntityDecayHalfLifeSeconds"];
   if (!v38 || (objc_opt_class(), v39 = objc_opt_isKindOfClass(), v40 = v38, (v39 & 1) == 0))
   {
@@ -2721,7 +2721,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   v43 = v40;
 
   [v43 doubleValue];
-  *(v4 + 29) = v44;
+  *(dataCopy + 29) = v44;
 
   v45 = [v7 objectForKeyedSubscript:@"ScoreThresholdForNamedEntity"];
   if (!v45 || (objc_opt_class(), v46 = objc_opt_isKindOfClass(), v47 = v45, (v46 & 1) == 0))
@@ -2741,7 +2741,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   v50 = v47;
 
   [v50 floatValue];
-  *(v4 + 45) = v51;
+  *(dataCopy + 45) = v51;
 
   v52 = [v7 objectForKeyedSubscript:@"FlattenNamedEntitiesForCoreML"];
   if (!v52 || (objc_opt_class(), v53 = objc_opt_isKindOfClass(), v54 = v52, (v53 & 1) == 0))
@@ -2760,7 +2760,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v57 = v54;
 
-  v4[251] = [v57 BOOLValue];
+  dataCopy[251] = [v57 BOOLValue];
   v58 = [v7 objectForKeyedSubscript:@"NamedEntityScoringUsesHybrid"];
   if (!v58 || (objc_opt_class(), v59 = objc_opt_isKindOfClass(), v60 = v58, (v59 & 1) == 0))
   {
@@ -2778,7 +2778,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v63 = v60;
 
-  v4[252] = [v63 BOOLValue];
+  dataCopy[252] = [v63 BOOLValue];
   v64 = [v7 objectForKeyedSubscript:@"DifferentiallyPrivateLogLevels"];
   if (!v64 || (objc_opt_class(), v65 = objc_opt_isKindOfClass(), v66 = v64, (v65 & 1) == 0))
   {
@@ -2796,8 +2796,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v69 = v66;
 
-  v70 = *(v4 + 15);
-  *(v4 + 15) = v69;
+  v70 = *(dataCopy + 15);
+  *(dataCopy + 15) = v69;
 
   v71 = [v7 objectForKeyedSubscript:@"CustomTaggerMaxTokenCount"];
   if (!v71 || (objc_opt_class(), v72 = objc_opt_isKindOfClass(), v73 = v71, (v72 & 1) == 0))
@@ -2816,7 +2816,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v76 = v73;
 
-  v4[344] = [v76 unsignedShortValue];
+  dataCopy[344] = [v76 unsignedShortValue];
   v77 = [v7 objectForKeyedSubscript:@"NamedEntityLoadAndMonitorInitialLoadLimit"];
   if (!v77 || (objc_opt_class(), v78 = objc_opt_isKindOfClass(), v79 = v77, (v78 & 1) == 0))
   {
@@ -2834,7 +2834,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v82 = v79;
 
-  *(v4 + 90) = [v82 unsignedIntegerValue];
+  *(dataCopy + 90) = [v82 unsignedIntegerValue];
   v83 = [v7 objectForKeyedSubscript:@"MapsSearchQueryLimit"];
   if (!v83 || (objc_opt_class(), v84 = objc_opt_isKindOfClass(), v85 = v83, (v84 & 1) == 0))
   {
@@ -2852,7 +2852,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v88 = v85;
 
-  *(v4 + 87) = [v88 unsignedIntegerValue];
+  *(dataCopy + 87) = [v88 unsignedIntegerValue];
   v89 = [v7 objectForKeyedSubscript:@"MapsSearchQueryFromDateInterval"];
   if (!v89 || (objc_opt_class(), v90 = objc_opt_isKindOfClass(), v91 = v89, (v90 & 1) == 0))
   {
@@ -2871,7 +2871,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   v94 = v91;
 
   [v94 doubleValue];
-  *(v4 + 44) = v95;
+  *(dataCopy + 44) = v95;
 
   v96 = [v7 objectForKeyedSubscript:@"ExtractionAlgorithmConfiguration"];
   if (!v96 || (objc_opt_class(), v97 = objc_opt_isKindOfClass(), v98 = v96, (v97 & 1) == 0))
@@ -2890,8 +2890,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v101 = v98;
 
-  v102 = *(v4 + 18);
-  *(v4 + 18) = v101;
+  v102 = *(dataCopy + 18);
+  *(dataCopy + 18) = v101;
 
   objc_autoreleasePoolPop(v5);
   v103 = *MEMORY[0x277D85DE8];
@@ -2908,19 +2908,19 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [(_PASLock *)lock runWithLockAcquired:v3];
 }
 
-- (void)_loadQuickTypeConfigParamsWithGuardedData:(id)a3
+- (void)_loadQuickTypeConfigParamsWithGuardedData:(id)data
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
-  v7 = [v6 plistForFactorName:@"configuration_quicktype.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_QUICKTYPE"];
+  trialWrapperReloadingIfNeeded = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+  v7 = [trialWrapperReloadingIfNeeded plistForFactorName:@"configuration_quicktype.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_QUICKTYPE"];
 
   if ([v7 count] <= 1)
   {
-    v8 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+    trialWrapperReloadingIfNeeded2 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
 
-    if (v8)
+    if (trialWrapperReloadingIfNeeded2)
     {
       v9 = pp_default_log_handle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2930,8 +2930,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
       }
 
       v10 = objc_alloc(MEMORY[0x277CBEAC0]);
-      v11 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
-      v12 = [v11 defaultFilepathForFactor:@"configuration_quicktype.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_QUICKTYPE"];
+      trialWrapperReloadingIfNeeded3 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+      v12 = [trialWrapperReloadingIfNeeded3 defaultFilepathForFactor:@"configuration_quicktype.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_QUICKTYPE"];
       v13 = [v10 initWithContentsOfFile:v12];
 
       v7 = v13;
@@ -2956,7 +2956,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [v17 doubleValue];
   v19 = v18;
 
-  v4[49] = v19;
+  dataCopy[49] = v19;
   v20 = [v7 objectForKeyedSubscript:@"NavigationMinimumDistanceInMeters"];
   if (!v20 || (objc_opt_class(), v21 = objc_opt_isKindOfClass(), v22 = v20, (v21 & 1) == 0))
   {
@@ -2972,8 +2972,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v23 = v22;
 
-  v24 = [v23 unsignedIntegerValue];
-  *(v4 + 100) = v24;
+  unsignedIntegerValue = [v23 unsignedIntegerValue];
+  *(dataCopy + 100) = unsignedIntegerValue;
   v25 = [v7 objectForKeyedSubscript:@"NextEventFuzzMinutes"];
   if (!v25 || (objc_opt_class(), v26 = objc_opt_isKindOfClass(), v27 = v25, (v26 & 1) == 0))
   {
@@ -2989,8 +2989,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v28 = v27;
 
-  v29 = [v28 unsignedIntValue];
-  *(v4 + 404) = v29;
+  unsignedIntValue = [v28 unsignedIntValue];
+  *(dataCopy + 404) = unsignedIntValue;
   v30 = [v7 objectForKeyedSubscript:@"QueryTimeNextToMinutes"];
   if (!v30 || (objc_opt_class(), v31 = objc_opt_isKindOfClass(), v32 = v30, (v31 & 1) == 0))
   {
@@ -3006,8 +3006,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v33 = v32;
 
-  v34 = [v33 unsignedIntegerValue];
-  *(v4 + 103) = v34;
+  unsignedIntegerValue2 = [v33 unsignedIntegerValue];
+  *(dataCopy + 103) = unsignedIntegerValue2;
   v35 = [v7 objectForKeyedSubscript:@"QueryTimeNextFromMinutes"];
   if (!v35 || (objc_opt_class(), v36 = objc_opt_isKindOfClass(), v37 = v35, (v36 & 1) == 0))
   {
@@ -3023,8 +3023,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v38 = v37;
 
-  v39 = [v38 integerValue];
-  *(v4 + 102) = v39;
+  integerValue = [v38 integerValue];
+  *(dataCopy + 102) = integerValue;
   v40 = [v7 objectForKeyedSubscript:@"QueryTimeOtherToMinutes"];
   if (!v40 || (objc_opt_class(), v41 = objc_opt_isKindOfClass(), v42 = v40, (v41 & 1) == 0))
   {
@@ -3040,8 +3040,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v43 = v42;
 
-  v44 = [v43 unsignedIntegerValue];
-  *(v4 + 104) = v44;
+  unsignedIntegerValue3 = [v43 unsignedIntegerValue];
+  *(dataCopy + 104) = unsignedIntegerValue3;
 
   objc_autoreleasePoolPop(v5);
   v45 = *MEMORY[0x277D85DE8];
@@ -3058,19 +3058,19 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [(_PASLock *)lock runWithLockAcquired:v3];
 }
 
-- (void)_loadSocialHighlightConfigParamsWithGuardedData:(id)a3
+- (void)_loadSocialHighlightConfigParamsWithGuardedData:(id)data
 {
   v62 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
-  v7 = [v6 plistForFactorName:@"configuration_social_highlight.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_SOCIAL_HIGHLIGHT"];
+  trialWrapperReloadingIfNeeded = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+  v7 = [trialWrapperReloadingIfNeeded plistForFactorName:@"configuration_social_highlight.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_SOCIAL_HIGHLIGHT"];
 
   if ([v7 count] <= 1)
   {
-    v8 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+    trialWrapperReloadingIfNeeded2 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
 
-    if (v8)
+    if (trialWrapperReloadingIfNeeded2)
     {
       v9 = pp_default_log_handle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -3080,8 +3080,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
       }
 
       v10 = objc_alloc(MEMORY[0x277CBEAC0]);
-      v11 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
-      v12 = [v11 defaultFilepathForFactor:@"configuration_social_highlight.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_SOCIAL_HIGHLIGHT"];
+      trialWrapperReloadingIfNeeded3 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+      v12 = [trialWrapperReloadingIfNeeded3 defaultFilepathForFactor:@"configuration_social_highlight.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_SOCIAL_HIGHLIGHT"];
       v13 = [v10 initWithContentsOfFile:v12];
 
       v7 = v13;
@@ -3103,8 +3103,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v17 = v16;
 
-  v18 = [v17 unsignedIntegerValue];
-  v4[108] = v18;
+  unsignedIntegerValue = [v17 unsignedIntegerValue];
+  dataCopy[108] = unsignedIntegerValue;
   v19 = [v7 objectForKeyedSubscript:@"HighlightDecayInterval"];
   if (!v19 || (objc_opt_class(), v20 = objc_opt_isKindOfClass(), v21 = v19, (v20 & 1) == 0))
   {
@@ -3123,7 +3123,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [v22 doubleValue];
   v24 = v23;
 
-  *(v4 + 57) = v24;
+  *(dataCopy + 57) = v24;
   v25 = [v7 objectForKeyedSubscript:@"RankedStorageMaxAge"];
   if (!v25 || (objc_opt_class(), v26 = objc_opt_isKindOfClass(), v27 = v25, (v26 & 1) == 0))
   {
@@ -3142,7 +3142,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [v28 doubleValue];
   v30 = v29;
 
-  *(v4 + 58) = v30;
+  *(dataCopy + 58) = v30;
   v31 = [v7 objectForKeyedSubscript:@"CacheTimeoutInterval"];
   if (!v31 || (objc_opt_class(), v32 = objc_opt_isKindOfClass(), v33 = v31, (v32 & 1) == 0))
   {
@@ -3161,7 +3161,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [v34 doubleValue];
   v36 = v35;
 
-  *(v4 + 59) = v36;
+  *(dataCopy + 59) = v36;
   v37 = [v7 objectForKeyedSubscript:@"FeedbackDeletionInterval"];
   if (!v37 || (objc_opt_class(), v38 = objc_opt_isKindOfClass(), v39 = v37, (v38 & 1) == 0))
   {
@@ -3180,7 +3180,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [v40 doubleValue];
   v42 = v41;
 
-  *(v4 + 60) = v42;
+  *(dataCopy + 60) = v42;
   v43 = [v7 objectForKeyedSubscript:@"MetricReportingInterval"];
   if (!v43 || (objc_opt_class(), v44 = objc_opt_isKindOfClass(), v45 = v43, (v44 & 1) == 0))
   {
@@ -3199,7 +3199,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [v46 doubleValue];
   v48 = v47;
 
-  *(v4 + 61) = v48;
+  *(dataCopy + 61) = v48;
   v49 = [v7 objectForKeyedSubscript:@"MaxNumHighlights"];
   if (!v49 || (objc_opt_class(), v50 = objc_opt_isKindOfClass(), v51 = v49, (v50 & 1) == 0))
   {
@@ -3215,8 +3215,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v52 = v51;
 
-  v53 = [v52 unsignedIntegerValue];
-  v4[124] = v53;
+  unsignedIntegerValue2 = [v52 unsignedIntegerValue];
+  dataCopy[124] = unsignedIntegerValue2;
   v54 = [v7 objectForKeyedSubscript:@"TopKCount"];
   if (!v54 || (objc_opt_class(), v55 = objc_opt_isKindOfClass(), v56 = v54, (v55 & 1) == 0))
   {
@@ -3232,8 +3232,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v57 = v56;
 
-  v58 = [v57 unsignedIntegerValue];
-  v4[125] = v58;
+  unsignedIntegerValue3 = [v57 unsignedIntegerValue];
+  dataCopy[125] = unsignedIntegerValue3;
 
   objc_autoreleasePoolPop(v5);
   v59 = *MEMORY[0x277D85DE8];
@@ -3250,13 +3250,13 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [(_PASLock *)lock runWithLockAcquired:v3];
 }
 
-- (void)_loadUniversalSearchConfigParamsWithGuardedData:(id)a3
+- (void)_loadUniversalSearchConfigParamsWithGuardedData:(id)data
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
-  v7 = [v6 plistForFactorName:@"config_universal_search.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_UNIVERSAL_SEARCH"];
+  trialWrapperReloadingIfNeeded = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+  v7 = [trialWrapperReloadingIfNeeded plistForFactorName:@"config_universal_search.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_UNIVERSAL_SEARCH"];
 
   v8 = pp_default_log_handle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -3268,9 +3268,9 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   if ([(__CFString *)v7 count]<= 1)
   {
-    v9 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+    trialWrapperReloadingIfNeeded2 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
 
-    if (v9)
+    if (trialWrapperReloadingIfNeeded2)
     {
       v10 = pp_default_log_handle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -3280,8 +3280,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
       }
 
       v11 = objc_alloc(MEMORY[0x277CBEAC0]);
-      v12 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
-      v13 = [v12 defaultFilepathForFactor:@"config_universal_search.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_UNIVERSAL_SEARCH"];
+      trialWrapperReloadingIfNeeded3 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+      v13 = [trialWrapperReloadingIfNeeded3 defaultFilepathForFactor:@"config_universal_search.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_UNIVERSAL_SEARCH"];
       v14 = [v11 initWithContentsOfFile:v13];
 
       v7 = v14;
@@ -3303,8 +3303,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v18 = v17;
 
-  v19 = [v18 unsignedIntValue];
-  v4[109] = v19;
+  unsignedIntValue = [v18 unsignedIntValue];
+  dataCopy[109] = unsignedIntValue;
   v20 = [(__CFString *)v7 objectForKeyedSubscript:@"ScoreThreshold"];
   if (!v20 || (objc_opt_class(), v21 = objc_opt_isKindOfClass(), v22 = v20, (v21 & 1) == 0))
   {
@@ -3323,7 +3323,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [v23 doubleValue];
   v25 = v24;
 
-  *(v4 + 55) = v25;
+  *(dataCopy + 55) = v25;
   v26 = [(__CFString *)v7 objectForKeyedSubscript:@"StoreNewExtractions"];
   if (!v26 || (objc_opt_class(), v27 = objc_opt_isKindOfClass(), v28 = v26, (v27 & 1) == 0))
   {
@@ -3339,8 +3339,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v29 = v28;
 
-  v30 = [v29 BOOLValue];
-  *(v4 + 448) = v30;
+  bOOLValue = [v29 BOOLValue];
+  *(dataCopy + 448) = bOOLValue;
   v31 = [(__CFString *)v7 objectForKeyedSubscript:@"UseRawNEExtractionScores"];
   if (!v31 || (objc_opt_class(), v32 = objc_opt_isKindOfClass(), v33 = v31, (v32 & 1) == 0))
   {
@@ -3356,8 +3356,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v34 = v33;
 
-  v35 = [v34 BOOLValue];
-  *(v4 + 449) = v35;
+  bOOLValue2 = [v34 BOOLValue];
+  *(dataCopy + 449) = bOOLValue2;
   v36 = [(__CFString *)v7 objectForKeyedSubscript:@"UseCachedPortraitScores"];
   if (!v36 || (objc_opt_class(), v37 = objc_opt_isKindOfClass(), v38 = v36, (v37 & 1) == 0))
   {
@@ -3373,8 +3373,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v39 = v38;
 
-  v40 = [v39 BOOLValue];
-  *(v4 + 450) = v40;
+  bOOLValue3 = [v39 BOOLValue];
+  *(dataCopy + 450) = bOOLValue3;
   v41 = [(__CFString *)v7 objectForKeyedSubscript:@"MaxItemsInFeatureDictionary"];
   if (!v41 || (objc_opt_class(), v42 = objc_opt_isKindOfClass(), v43 = v41, (v42 & 1) == 0))
   {
@@ -3390,8 +3390,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v44 = v43;
 
-  v45 = [v44 unsignedIntValue];
-  v4[113] = v45;
+  unsignedIntValue2 = [v44 unsignedIntValue];
+  dataCopy[113] = unsignedIntValue2;
   v46 = [(__CFString *)v7 objectForKeyedSubscript:@"SkipInsignificantEmailExtractions"];
   if (!v46 || (objc_opt_class(), v47 = objc_opt_isKindOfClass(), v48 = v46, (v47 & 1) == 0))
   {
@@ -3407,8 +3407,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v49 = v48;
 
-  v50 = [v49 BOOLValue];
-  *(v4 + 504) = v50;
+  bOOLValue4 = [v49 BOOLValue];
+  *(dataCopy + 504) = bOOLValue4;
   v51 = [(__CFString *)v7 objectForKeyedSubscript:@"MaxEmailHarvestingEligiblityInterval"];
   if (!v51 || (objc_opt_class(), v52 = objc_opt_isKindOfClass(), v53 = v51, (v52 & 1) == 0))
   {
@@ -3427,7 +3427,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [v54 doubleValue];
   v56 = v55;
 
-  *(v4 + 64) = v56;
+  *(dataCopy + 64) = v56;
   objc_autoreleasePoolPop(v5);
 
   v57 = *MEMORY[0x277D85DE8];
@@ -3444,19 +3444,19 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [(_PASLock *)lock runWithLockAcquired:v3];
 }
 
-- (void)_loadContactsConfigParamsWithGuardedData:(id)a3
+- (void)_loadContactsConfigParamsWithGuardedData:(id)data
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
-  v7 = [v6 plistForFactorName:@"configuration_contacts.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_CONTACTS"];
+  trialWrapperReloadingIfNeeded = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+  v7 = [trialWrapperReloadingIfNeeded plistForFactorName:@"configuration_contacts.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_CONTACTS"];
 
   if ([v7 count] <= 1)
   {
-    v8 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+    trialWrapperReloadingIfNeeded2 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
 
-    if (v8)
+    if (trialWrapperReloadingIfNeeded2)
     {
       v9 = pp_default_log_handle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -3466,8 +3466,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
       }
 
       v10 = objc_alloc(MEMORY[0x277CBEAC0]);
-      v11 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
-      v12 = [v11 defaultFilepathForFactor:@"configuration_contacts.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_CONTACTS"];
+      trialWrapperReloadingIfNeeded3 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+      v12 = [trialWrapperReloadingIfNeeded3 defaultFilepathForFactor:@"configuration_contacts.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_CONTACTS"];
       v13 = [v10 initWithContentsOfFile:v12];
 
       v7 = v13;
@@ -3489,8 +3489,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v17 = v16;
 
-  v18 = v4[46];
-  v4[46] = v17;
+  v18 = dataCopy[46];
+  dataCopy[46] = v17;
 
   v19 = [v7 objectForKeyedSubscript:@"RecordSourceContactsInitialScore"];
   if (!v19 || (objc_opt_class(), v20 = objc_opt_isKindOfClass(), v21 = v19, (v20 & 1) == 0))
@@ -3510,7 +3510,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [v22 floatValue];
   v24 = v23;
 
-  *(v4 + 94) = v24;
+  *(dataCopy + 94) = v24;
   v25 = [v7 objectForKeyedSubscript:@"RecordSourceNonContactsInitialScore"];
   if (!v25 || (objc_opt_class(), v26 = objc_opt_isKindOfClass(), v27 = v25, (v26 & 1) == 0))
   {
@@ -3529,7 +3529,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [v28 floatValue];
   v30 = v29;
 
-  *(v4 + 95) = v30;
+  *(dataCopy + 95) = v30;
   v31 = [v7 objectForKeyedSubscript:@"PeopleSuggesterMaxCount"];
   if (!v31 || (objc_opt_class(), v32 = objc_opt_isKindOfClass(), v33 = v31, (v32 & 1) == 0))
   {
@@ -3545,8 +3545,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v34 = v33;
 
-  v35 = [v34 unsignedIntValue];
-  *(v4 + 384) = v35;
+  unsignedIntValue = [v34 unsignedIntValue];
+  *(dataCopy + 384) = unsignedIntValue;
 
   objc_autoreleasePoolPop(v5);
   v36 = *MEMORY[0x277D85DE8];
@@ -3563,19 +3563,19 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [(_PASLock *)lock runWithLockAcquired:v3];
 }
 
-- (void)_loadLocationsConfigParamsWithGuardedData:(id)a3
+- (void)_loadLocationsConfigParamsWithGuardedData:(id)data
 {
   v72 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
-  v7 = [v6 plistForFactorName:@"configuration_locations.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_LOCATIONS"];
+  trialWrapperReloadingIfNeeded = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+  v7 = [trialWrapperReloadingIfNeeded plistForFactorName:@"configuration_locations.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_LOCATIONS"];
 
   if ([v7 count] <= 1)
   {
-    v8 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+    trialWrapperReloadingIfNeeded2 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
 
-    if (v8)
+    if (trialWrapperReloadingIfNeeded2)
     {
       v9 = pp_default_log_handle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -3585,8 +3585,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
       }
 
       v10 = objc_alloc(MEMORY[0x277CBEAC0]);
-      v11 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
-      v12 = [v11 defaultFilepathForFactor:@"configuration_locations.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_LOCATIONS"];
+      trialWrapperReloadingIfNeeded3 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+      v12 = [trialWrapperReloadingIfNeeded3 defaultFilepathForFactor:@"configuration_locations.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_LOCATIONS"];
       v13 = [v10 initWithContentsOfFile:v12];
 
       v7 = v13;
@@ -3608,8 +3608,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v17 = v16;
 
-  v18 = [v17 BOOLValue];
-  v4[282] = v18;
+  bOOLValue = [v17 BOOLValue];
+  dataCopy[282] = bOOLValue;
   v19 = [v7 objectForKeyedSubscript:@"LocationDecayHalfLifeSeconds"];
   if (!v19 || (objc_opt_class(), v20 = objc_opt_isKindOfClass(), v21 = v19, (v20 & 1) == 0))
   {
@@ -3628,7 +3628,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [v22 doubleValue];
   v24 = v23;
 
-  *(v4 + 30) = v24;
+  *(dataCopy + 30) = v24;
   v25 = [v7 objectForKeyedSubscript:@"ScoreThresholdForLocation"];
   if (!v25 || (objc_opt_class(), v26 = objc_opt_isKindOfClass(), v27 = v25, (v26 & 1) == 0))
   {
@@ -3647,7 +3647,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [v28 floatValue];
   v30 = v29;
 
-  *(v4 + 47) = v30;
+  *(dataCopy + 47) = v30;
   v31 = [v7 objectForKeyedSubscript:@"LocationScoringUsesCoreML"];
   if (!v31 || (objc_opt_class(), v32 = objc_opt_isKindOfClass(), v33 = v31, (v32 & 1) == 0))
   {
@@ -3663,8 +3663,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v34 = v33;
 
-  v35 = [v34 BOOLValue];
-  v4[296] = v35;
+  bOOLValue2 = [v34 BOOLValue];
+  dataCopy[296] = bOOLValue2;
   v36 = [v7 objectForKeyedSubscript:@"LocationFeedbackUsesCoreML"];
   if (!v36 || (objc_opt_class(), v37 = objc_opt_isKindOfClass(), v38 = v36, (v37 & 1) == 0))
   {
@@ -3680,8 +3680,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v39 = v38;
 
-  v40 = [v39 BOOLValue];
-  v4[267] = v40;
+  bOOLValue3 = [v39 BOOLValue];
+  dataCopy[267] = bOOLValue3;
   v41 = [v7 objectForKeyedSubscript:@"LocationScoringUsesHybrid"];
   if (!v41 || (objc_opt_class(), v42 = objc_opt_isKindOfClass(), v43 = v41, (v42 & 1) == 0))
   {
@@ -3697,8 +3697,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v44 = v43;
 
-  v45 = [v44 BOOLValue];
-  v4[254] = v45;
+  bOOLValue4 = [v44 BOOLValue];
+  dataCopy[254] = bOOLValue4;
   v46 = [v7 objectForKeyedSubscript:@"RoutineExtractionScoreCountWeight"];
   if (!v46 || (objc_opt_class(), v47 = objc_opt_isKindOfClass(), v48 = v46, (v47 & 1) == 0))
   {
@@ -3717,7 +3717,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [v49 doubleValue];
   v51 = v50;
 
-  *(v4 + 38) = v51;
+  *(dataCopy + 38) = v51;
   v52 = [v7 objectForKeyedSubscript:@"RoutineExtractionScoreDurationWeight"];
   if (!v52 || (objc_opt_class(), v53 = objc_opt_isKindOfClass(), v54 = v52, (v53 & 1) == 0))
   {
@@ -3736,7 +3736,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [v55 doubleValue];
   v57 = v56;
 
-  *(v4 + 39) = v57;
+  *(dataCopy + 39) = v57;
   v58 = [v7 objectForKeyedSubscript:@"RoutineExtractionScoreDecayHalfLifeDays"];
   if (!v58 || (objc_opt_class(), v59 = objc_opt_isKindOfClass(), v60 = v58, (v59 & 1) == 0))
   {
@@ -3755,7 +3755,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [v61 doubleValue];
   v63 = v62;
 
-  *(v4 + 40) = v63;
+  *(dataCopy + 40) = v63;
   v64 = [v7 objectForKeyedSubscript:@"ExtractionAlgorithmConfiguration"];
   if (!v64 || (objc_opt_class(), v65 = objc_opt_isKindOfClass(), v66 = v64, (v65 & 1) == 0))
   {
@@ -3771,8 +3771,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v67 = v66;
 
-  v68 = *(v4 + 20);
-  *(v4 + 20) = v67;
+  v68 = *(dataCopy + 20);
+  *(dataCopy + 20) = v67;
 
   objc_autoreleasePoolPop(v5);
   v69 = *MEMORY[0x277D85DE8];
@@ -3789,19 +3789,19 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   [(_PASLock *)lock runWithLockAcquired:v3];
 }
 
-- (void)_loadGlobalConfigParamsWithGuardedData:(id)a3
+- (void)_loadGlobalConfigParamsWithGuardedData:(id)data
 {
   v201[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
-  v7 = [v6 plistForFactorName:@"configuration.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_GLOBAL"];
+  trialWrapperReloadingIfNeeded = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+  v7 = [trialWrapperReloadingIfNeeded plistForFactorName:@"configuration.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_GLOBAL"];
 
   if ([v7 count] <= 1)
   {
-    v8 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+    trialWrapperReloadingIfNeeded2 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
 
-    if (v8)
+    if (trialWrapperReloadingIfNeeded2)
     {
       v9 = pp_default_log_handle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -3811,20 +3811,20 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
       }
 
       v10 = objc_alloc(MEMORY[0x277CBEAC0]);
-      v11 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
-      v12 = [v11 defaultFilepathForFactor:@"configuration.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_GLOBAL"];
+      trialWrapperReloadingIfNeeded3 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+      v12 = [trialWrapperReloadingIfNeeded3 defaultFilepathForFactor:@"configuration.plist" namespaceName:@"PERSONALIZATION_PORTRAIT_GLOBAL"];
       v13 = [v10 initWithContentsOfFile:v12];
 
       v7 = v13;
     }
   }
 
-  v14 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
-  v15 = [v14 concatenatedTreatmentNames];
-  v16 = v15;
-  if (v15)
+  trialWrapperReloadingIfNeeded4 = [(PPConfiguration *)self trialWrapperReloadingIfNeeded];
+  concatenatedTreatmentNames = [trialWrapperReloadingIfNeeded4 concatenatedTreatmentNames];
+  v16 = concatenatedTreatmentNames;
+  if (concatenatedTreatmentNames)
   {
-    v17 = v15;
+    v17 = concatenatedTreatmentNames;
   }
 
   else
@@ -3834,12 +3834,12 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v18 = v17;
 
-  objc_storeStrong(v4 + 12, v17);
-  objc_storeStrong(v4 + 13, v17);
+  objc_storeStrong(dataCopy + 12, v17);
+  objc_storeStrong(dataCopy + 13, v17);
   v201[0] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v201 count:1];
-  v20 = v4[14];
-  v4[14] = v19;
+  v20 = dataCopy[14];
+  dataCopy[14] = v19;
 
   v21 = [v7 objectForKeyedSubscript:@"HalfValuePosition"];
   if (!v21 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v23 = v21, (isKindOfClass & 1) == 0))
@@ -3859,7 +3859,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   v26 = v23;
 
   [v26 doubleValue];
-  v4[2] = v27;
+  dataCopy[2] = v27;
 
   v28 = [v7 objectForKeyedSubscript:@"NonReaderTextWeight"];
   if (!v28 || (objc_opt_class(), v29 = objc_opt_isKindOfClass(), v30 = v28, (v29 & 1) == 0))
@@ -3879,7 +3879,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   v33 = v30;
 
   [v33 doubleValue];
-  v4[3] = v34;
+  dataCopy[3] = v34;
 
   v35 = [v7 objectForKeyedSubscript:@"AnalyticsSamplingRate"];
   if (!v35 || (objc_opt_class(), v36 = objc_opt_isKindOfClass(), v37 = v35, (v36 & 1) == 0))
@@ -3899,7 +3899,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   v40 = v37;
 
   [v40 doubleValue];
-  v4[4] = v41;
+  dataCopy[4] = v41;
 
   v42 = [v7 objectForKeyedSubscript:@"MusicDataCollectionSamplingRateForCTS"];
   if (!v42 || (objc_opt_class(), v43 = objc_opt_isKindOfClass(), v44 = v42, (v43 & 1) == 0))
@@ -3919,7 +3919,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   v47 = v44;
 
   [v47 doubleValue];
-  v4[5] = v48;
+  dataCopy[5] = v48;
 
   v49 = [v7 objectForKeyedSubscript:@"MusicDataCollectionSamplingRateForAMP"];
   if (!v49 || (objc_opt_class(), v50 = objc_opt_isKindOfClass(), v51 = v49, (v50 & 1) == 0))
@@ -3939,7 +3939,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   v54 = v51;
 
   [v54 doubleValue];
-  v4[6] = v55;
+  dataCopy[6] = v55;
 
   v56 = [v7 objectForKeyedSubscript:@"MusicDataCollectionMaximumRecordsPerType"];
   if (!v56 || (objc_opt_class(), v57 = objc_opt_isKindOfClass(), v58 = v56, (v57 & 1) == 0))
@@ -3958,7 +3958,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v61 = v58;
 
-  *(v4 + 14) = [v61 intValue];
+  *(dataCopy + 14) = [v61 intValue];
   v62 = [v7 objectForKeyedSubscript:@"MusicDataCollectionCollectNonAMPNowPlaying"];
   if (!v62 || (objc_opt_class(), v63 = objc_opt_isKindOfClass(), v64 = v62, (v63 & 1) == 0))
   {
@@ -3976,7 +3976,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v67 = v64;
 
-  *(v4 + 60) = [v67 BOOLValue];
+  *(dataCopy + 60) = [v67 BOOLValue];
   v68 = [v7 objectForKeyedSubscript:@"MusicDataCollectionAMPBundleIds"];
   if (!v68 || (objc_opt_class(), v69 = objc_opt_isKindOfClass(), v70 = v68, (v69 & 1) == 0))
   {
@@ -3994,8 +3994,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v73 = v70;
 
-  v74 = v4[8];
-  v4[8] = v73;
+  v74 = dataCopy[8];
+  dataCopy[8] = v73;
 
   v75 = [v7 objectForKeyedSubscript:@"SportsMetricsNumberOfTeamsLogged"];
   if (!v75 || (objc_opt_class(), v76 = objc_opt_isKindOfClass(), v77 = v75, (v76 & 1) == 0))
@@ -4014,7 +4014,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v80 = v77;
 
-  *(v4 + 18) = [v80 intValue];
+  *(dataCopy + 18) = [v80 intValue];
   v81 = [v7 objectForKeyedSubscript:@"SportsMetricsNumberOfLeaguesLogged"];
   if (!v81 || (objc_opt_class(), v82 = objc_opt_isKindOfClass(), v83 = v81, (v82 & 1) == 0))
   {
@@ -4032,7 +4032,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v86 = v83;
 
-  *(v4 + 19) = [v86 intValue];
+  *(dataCopy + 19) = [v86 intValue];
   v87 = [v7 objectForKeyedSubscript:@"SportsMetricsEventName"];
   if (!v87 || (objc_opt_class(), v88 = objc_opt_isKindOfClass(), v89 = v87, (v88 & 1) == 0))
   {
@@ -4050,8 +4050,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v92 = v89;
 
-  v93 = v4[10];
-  v4[10] = v92;
+  v93 = dataCopy[10];
+  dataCopy[10] = v92;
 
   v94 = [v7 objectForKeyedSubscript:@"SportsMetricsSamplingRate"];
   if (!v94 || (objc_opt_class(), v95 = objc_opt_isKindOfClass(), v96 = v94, (v95 & 1) == 0))
@@ -4071,7 +4071,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   v99 = v96;
 
   [v99 doubleValue];
-  v4[11] = v100;
+  dataCopy[11] = v100;
 
   v101 = [v7 objectForKeyedSubscript:@"TopicsSourceMultiplier"];
   if (!v101 || (objc_opt_class(), v102 = objc_opt_isKindOfClass(), v103 = v101, (v102 & 1) == 0))
@@ -4090,8 +4090,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v106 = v103;
 
-  v107 = v4[16];
-  v4[16] = v106;
+  v107 = dataCopy[16];
+  dataCopy[16] = v106;
 
   v108 = [v7 objectForKeyedSubscript:@"TopicsAlgorithmMultiplier"];
   if (!v108 || (objc_opt_class(), v109 = objc_opt_isKindOfClass(), v110 = v108, (v109 & 1) == 0))
@@ -4110,8 +4110,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v113 = v110;
 
-  v114 = v4[17];
-  v4[17] = v113;
+  v114 = dataCopy[17];
+  dataCopy[17] = v113;
 
   v115 = [v7 objectForKeyedSubscript:@"SafariDonationTitleExtractionEnabled"];
   if (!v115 || (objc_opt_class(), v116 = objc_opt_isKindOfClass(), v117 = v115, (v116 & 1) == 0))
@@ -4130,7 +4130,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v120 = v117;
 
-  *(v4 + 176) = [v120 BOOLValue];
+  *(dataCopy + 176) = [v120 BOOLValue];
   v121 = [v7 objectForKeyedSubscript:@"SafariDataDetectorsEnabledForHighMemoryDevices"];
   if (!v121 || (objc_opt_class(), v122 = objc_opt_isKindOfClass(), v123 = v121, (v122 & 1) == 0))
   {
@@ -4148,7 +4148,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v126 = v123;
 
-  *(v4 + 177) = [v126 BOOLValue];
+  *(dataCopy + 177) = [v126 BOOLValue];
   v127 = [v7 objectForKeyedSubscript:@"FeedbackSessionLogsSamplingRate"];
   if (!v127 || (objc_opt_class(), v128 = objc_opt_isKindOfClass(), v129 = v127, (v128 & 1) == 0))
   {
@@ -4167,7 +4167,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   v132 = v129;
 
   [v132 floatValue];
-  *(v4 + 48) = v133;
+  *(dataCopy + 48) = v133;
 
   v134 = [v7 objectForKeyedSubscript:@"FeedbackSessionLogsSamplingRateOverrides"];
   if (!v134 || (objc_opt_class(), v135 = objc_opt_isKindOfClass(), v136 = v134, (v135 & 1) == 0))
@@ -4186,8 +4186,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v139 = v136;
 
-  v140 = v4[25];
-  v4[25] = v139;
+  v140 = dataCopy[25];
+  dataCopy[25] = v139;
 
   v141 = [v7 objectForKeyedSubscript:@"FeedbackSessionLogsExtractionsSamplingRate"];
   if (!v141 || (objc_opt_class(), v142 = objc_opt_isKindOfClass(), v143 = v141, (v142 & 1) == 0))
@@ -4207,7 +4207,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   v146 = v143;
 
   [v146 floatValue];
-  *(v4 + 52) = v147;
+  *(dataCopy + 52) = v147;
 
   v148 = [v7 objectForKeyedSubscript:@"FeedbackSessionLogsGeohashLength"];
   if (!v148 || (objc_opt_class(), v149 = objc_opt_isKindOfClass(), v150 = v148, (v149 & 1) == 0))
@@ -4226,7 +4226,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v153 = v150;
 
-  *(v4 + 53) = [v153 intValue];
+  *(dataCopy + 53) = [v153 intValue];
   v154 = [v7 objectForKeyedSubscript:@"AnalyticsMaximumNumberOfRecords"];
   if (!v154 || (objc_opt_class(), v155 = objc_opt_isKindOfClass(), v156 = v154, (v155 & 1) == 0))
   {
@@ -4244,7 +4244,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v159 = v156;
 
-  *(v4 + 54) = [v159 intValue];
+  *(dataCopy + 54) = [v159 intValue];
   v160 = [v7 objectForKeyedSubscript:@"DecayedFeedbackCountsHalfLifeDays"];
   if (!v160 || (objc_opt_class(), v161 = objc_opt_isKindOfClass(), v162 = v160, (v161 & 1) == 0))
   {
@@ -4263,7 +4263,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   v165 = v162;
 
   [v165 doubleValue];
-  v4[32] = v166;
+  dataCopy[32] = v166;
 
   v167 = [v7 objectForKeyedSubscript:@"NotificationExtractionEnabled"];
   if (!v167 || (objc_opt_class(), v168 = objc_opt_isKindOfClass(), v169 = v167, (v168 & 1) == 0))
@@ -4282,7 +4282,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v172 = v169;
 
-  *(v4 + 264) = [v172 BOOLValue];
+  *(dataCopy + 264) = [v172 BOOLValue];
   v173 = [v7 objectForKeyedSubscript:@"EngagementKValues"];
   if (!v173 || (objc_opt_class(), v174 = objc_opt_isKindOfClass(), v175 = v173, (v174 & 1) == 0))
   {
@@ -4300,8 +4300,8 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v178 = v175;
 
-  v179 = v4[34];
-  v4[34] = v178;
+  v179 = dataCopy[34];
+  dataCopy[34] = v178;
 
   v180 = [v7 objectForKeyedSubscript:@"SentenceEmbeddingVersion"];
   if (!v180 || (objc_opt_class(), v181 = objc_opt_isKindOfClass(), v182 = v180, (v181 & 1) == 0))
@@ -4320,7 +4320,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v185 = v182;
 
-  v4[53] = [v185 unsignedIntegerValue];
+  dataCopy[53] = [v185 unsignedIntegerValue];
   v186 = [v7 objectForKeyedSubscript:@"EnableECRMessageTokenCountsPlugin"];
   if (!v186 || (objc_opt_class(), v187 = objc_opt_isKindOfClass(), v188 = v186, (v187 & 1) == 0))
   {
@@ -4338,7 +4338,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v191 = v188;
 
-  *(v4 + 520) = [v191 BOOLValue];
+  *(dataCopy + 520) = [v191 BOOLValue];
   v192 = [v7 objectForKeyedSubscript:@"MaxUniqueTokensInECRTokenCounts"];
   if (!v192 || (objc_opt_class(), v193 = objc_opt_isKindOfClass(), v194 = v192, (v193 & 1) == 0))
   {
@@ -4356,7 +4356,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
 
   v197 = v194;
 
-  v4[66] = [v197 unsignedLongValue];
+  dataCopy[66] = [v197 unsignedLongValue];
   objc_autoreleasePoolPop(v5);
 
   v198 = *MEMORY[0x277D85DE8];
@@ -4389,10 +4389,10 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
   return v3;
 }
 
-- (PPConfiguration)initWithTrialWrapper:(id)a3
+- (PPConfiguration)initWithTrialWrapper:(id)wrapper
 {
   v30 = *MEMORY[0x277D85DE8];
-  v20 = a3;
+  wrapperCopy = wrapper;
   v28.receiver = self;
   v28.super_class = PPConfiguration;
   v5 = [(PPConfiguration *)&v28 init];
@@ -4408,7 +4408,7 @@ void __36__PPConfiguration__loadConfigParams__block_invoke(uint64_t a1, void *a2
     cachedAlgorithms = v5->_cachedAlgorithms;
     v5->_cachedAlgorithms = v10;
 
-    objc_storeStrong(&v5->_trialWrapper, a3);
+    objc_storeStrong(&v5->_trialWrapper, wrapper);
     [(PPConfiguration *)v5 _loadConfigParams];
     objc_initWeak(&location, v5);
     v25 = 0u;

@@ -1,27 +1,27 @@
 @interface HMCacheEntry
 + (id)shortDescription;
 - (BOOL)isExpired;
-- (HMCacheEntry)initWithCoder:(id)a3;
-- (HMCacheEntry)initWithData:(id)a3 lastModificationDate:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (HMCacheEntry)initWithCoder:(id)coder;
+- (HMCacheEntry)initWithData:(id)data lastModificationDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMCacheEntry
 
-- (HMCacheEntry)initWithData:(id)a3 lastModificationDate:(id)a4
+- (HMCacheEntry)initWithData:(id)data lastModificationDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = HMCacheEntry;
   v8 = [(HMCacheEntry *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dataCopy copy];
     data = v8->_data;
     v8->_data = v9;
 
-    v11 = [v7 copy];
+    v11 = [dateCopy copy];
     lastModificationDate = v8->_lastModificationDate;
     v8->_lastModificationDate = v11;
   }
@@ -31,25 +31,25 @@
 
 - (BOOL)isExpired
 {
-  v2 = [(HMCacheEntry *)self lastModificationDate];
+  lastModificationDate = [(HMCacheEntry *)self lastModificationDate];
   v3 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-604800.0];
-  v4 = [v2 compare:v3] == -1;
+  v4 = [lastModificationDate compare:v3] == -1;
 
   return v4;
 }
 
-- (HMCacheEntry)initWithCoder:(id)a3
+- (HMCacheEntry)initWithCoder:(id)coder
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Data"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Data"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMCacheEntryLastModificationDateKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMCacheEntryLastModificationDateKey"];
     if (v6)
     {
       self = [(HMCacheEntry *)self initWithData:v5 lastModificationDate:v6];
-      v7 = self;
+      selfCopy = self;
     }
 
     else
@@ -65,7 +65,7 @@
       }
 
       objc_autoreleasePoolPop(v11);
-      v7 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -82,21 +82,21 @@
     }
 
     objc_autoreleasePoolPop(v8);
-    v7 = 0;
+    selfCopy = 0;
   }
 
   v14 = *MEMORY[0x1E69E9840];
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMCacheEntry *)self data];
-  [v4 encodeObject:v5 forKey:@"Data"];
+  coderCopy = coder;
+  data = [(HMCacheEntry *)self data];
+  [coderCopy encodeObject:data forKey:@"Data"];
 
-  v6 = [(HMCacheEntry *)self lastModificationDate];
-  [v4 encodeObject:v6 forKey:@"HMCacheEntryLastModificationDateKey"];
+  lastModificationDate = [(HMCacheEntry *)self lastModificationDate];
+  [coderCopy encodeObject:lastModificationDate forKey:@"HMCacheEntryLastModificationDateKey"];
 }
 
 + (id)shortDescription

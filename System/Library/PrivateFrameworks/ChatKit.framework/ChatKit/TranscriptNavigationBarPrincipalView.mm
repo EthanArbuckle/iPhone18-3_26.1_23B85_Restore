@@ -1,5 +1,5 @@
 @interface TranscriptNavigationBarPrincipalView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)handleTap;
 - (void)layoutSubviews;
 @end
@@ -8,15 +8,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_190C2434C();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   sub_190C2465C(width, height);
   v7 = v6;
   v9 = v8;
@@ -30,7 +30,7 @@
 
 - (void)handleTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_190C24AB4();
 }
 

@@ -1,20 +1,20 @@
 @interface FindMyLocateWrapper
 - (_TtC13findmydeviced19FindMyLocateWrapper)init;
-- (void)processLocationCommandPayload:(NSData *)a3 completionHandler:(id)a4;
-- (void)processLocationPayload:(NSData *)a3 completionHandler:(id)a4;
-- (void)publishLocation:(SPSecureLocation *)a3 completionHandler:(id)a4;
+- (void)processLocationCommandPayload:(NSData *)payload completionHandler:(id)handler;
+- (void)processLocationPayload:(NSData *)payload completionHandler:(id)handler;
+- (void)publishLocation:(SPSecureLocation *)location completionHandler:(id)handler;
 @end
 
 @implementation FindMyLocateWrapper
 
-- (void)processLocationPayload:(NSData *)a3 completionHandler:(id)a4
+- (void)processLocationPayload:(NSData *)payload completionHandler:(id)handler
 {
   v7 = (*(*(sub_1001F6D6C(&qword_100313A50, &qword_1002588F8) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = payload;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -29,19 +29,19 @@
   v14[3] = 0;
   v14[4] = &unk_100258978;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  payloadCopy = payload;
+  selfCopy = self;
   sub_1001F72B8(0, 0, v9, &unk_100258980, v14);
 }
 
-- (void)processLocationCommandPayload:(NSData *)a3 completionHandler:(id)a4
+- (void)processLocationCommandPayload:(NSData *)payload completionHandler:(id)handler
 {
   v7 = (*(*(sub_1001F6D6C(&qword_100313A50, &qword_1002588F8) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = payload;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -56,19 +56,19 @@
   v14[3] = 0;
   v14[4] = &unk_100258958;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  payloadCopy = payload;
+  selfCopy = self;
   sub_1001F72B8(0, 0, v9, &unk_100258960, v14);
 }
 
-- (void)publishLocation:(SPSecureLocation *)a3 completionHandler:(id)a4
+- (void)publishLocation:(SPSecureLocation *)location completionHandler:(id)handler
 {
   v7 = (*(*(sub_1001F6D6C(&qword_100313A50, &qword_1002588F8) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = location;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -83,8 +83,8 @@
   v14[3] = 0;
   v14[4] = &unk_100258918;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  locationCopy = location;
+  selfCopy = self;
   sub_1001F72B8(0, 0, v9, &unk_100258928, v14);
 }
 

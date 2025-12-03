@@ -1,25 +1,25 @@
 @interface SKUITabularLockupView
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4;
-+ (void)_requestLayoutForViewElements:(id)a3 width:(double)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (CGSize)_sizeViewsForColumn:(id)a3 toFitWidth:(double)a4;
-- (SKUITabularLockupView)initWithFrame:(CGRect)a3;
-- (void)_layoutSubviewsForColumn:(id)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringForLabel:(id)label context:(id)context;
++ (void)_requestLayoutForViewElements:(id)elements width:(double)width context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (CGSize)_sizeViewsForColumn:(id)column toFitWidth:(double)width;
+- (SKUITabularLockupView)initWithFrame:(CGRect)frame;
+- (void)_layoutSubviewsForColumn:(id)column;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
 @end
 
 @implementation SKUITabularLockupView
 
-- (SKUITabularLockupView)initWithFrame:(CGRect)a3
+- (SKUITabularLockupView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -34,18 +34,18 @@
 
   v20.receiver = self;
   v20.super_class = SKUITabularLockupView;
-  v16 = [(SKUIViewReuseView *)&v20 initWithFrame:x, y, width, height];
-  if (v16)
+  height = [(SKUIViewReuseView *)&v20 initWithFrame:x, y, width, height];
+  if (height)
   {
     v17 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:0 valueOptions:0 capacity:0];
-    viewElementViews = v16->_viewElementViews;
-    v16->_viewElementViews = v17;
+    viewElementViews = height->_viewElementViews;
+    height->_viewElementViews = v17;
   }
 
-  return v16;
+  return height;
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -62,7 +62,7 @@
   return 0;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -83,11 +83,11 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -100,14 +100,14 @@
     }
   }
 
-  v18 = [[SKUITabularLockupLayout alloc] initWithLockup:v8 context:v9];
-  [(SKUITabularLockupLayout *)v18 sizeColumnsToFitWidth:v9 context:a4];
+  v18 = [[SKUITabularLockupLayout alloc] initWithLockup:elementCopy context:contextCopy];
+  [(SKUITabularLockupLayout *)v18 sizeColumnsToFitWidth:contextCopy context:width];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v19 = [(SKUITabularLockupLayout *)v18 columns];
-  v20 = [v19 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  columns = [(SKUITabularLockupLayout *)v18 columns];
+  v20 = [columns countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v20)
   {
     v21 = v20;
@@ -118,24 +118,24 @@
       {
         if (*v29 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(columns);
         }
 
         v24 = *(*(&v28 + 1) + 8 * i);
         [v24 size];
         v26 = v25;
-        v27 = [v24 childViewElements];
-        [a1 _requestLayoutForViewElements:v27 width:v9 context:v26];
+        childViewElements = [v24 childViewElements];
+        [self _requestLayoutForViewElements:childViewElements width:contextCopy context:v26];
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v21 = [columns countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v21);
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -156,25 +156,25 @@
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
+  contextCopy = context;
   viewElementViews = self->_viewElementViews;
-  v10 = a3;
+  elementCopy = element;
   [(NSMapTable *)viewElementViews removeAllObjects];
-  v11 = [[SKUITabularLockupLayout alloc] initWithLockup:v10 context:v8];
+  v11 = [[SKUITabularLockupLayout alloc] initWithLockup:elementCopy context:contextCopy];
 
   layout = self->_layout;
   self->_layout = v11;
 
-  [(SKUITabularLockupLayout *)self->_layout sizeColumnsToFitWidth:v8 context:a4];
+  [(SKUITabularLockupLayout *)self->_layout sizeColumnsToFitWidth:contextCopy context:width];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __61__SKUITabularLockupView_reloadWithViewElement_width_context___block_invoke;
   v14[3] = &unk_2782006B0;
   v14[4] = self;
-  v15 = v8;
-  v13 = v8;
+  v15 = contextCopy;
+  v13 = contextCopy;
   [(SKUIViewReuseView *)self modifyUsingBlock:v14];
 }
 
@@ -249,8 +249,8 @@ void __61__SKUITabularLockupView_reloadWithViewElement_width_context___block_inv
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(SKUITabularLockupLayout *)self->_layout columns];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+  columns = [(SKUITabularLockupLayout *)self->_layout columns];
+  v4 = [columns countByEnumeratingWithState:&v8 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -262,24 +262,24 @@ void __61__SKUITabularLockupView_reloadWithViewElement_width_context___block_inv
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(columns);
         }
 
         [(SKUITabularLockupView *)self _layoutSubviewsForColumn:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+      v5 = [columns countByEnumeratingWithState:&v8 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  labelCopy = label;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -292,29 +292,29 @@ void __61__SKUITabularLockupView_reloadWithViewElement_width_context___block_inv
     }
   }
 
-  v15 = [SKUITabularLockupLayout fontForLabelViewElement:v5 context:v6];
-  v16 = [v5 style];
-  v17 = [v6 tintColor];
+  v15 = [SKUITabularLockupLayout fontForLabelViewElement:labelCopy context:contextCopy];
+  style = [labelCopy style];
+  tintColor = [contextCopy tintColor];
 
-  v18 = SKUIViewElementPlainColorWithStyle(v16, v17);
+  blackColor = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
-  if (!v18)
+  if (!blackColor)
   {
-    v18 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  v19 = [v5 text];
-  v20 = [v5 style];
-  v21 = [v19 attributedStringWithDefaultFont:v15 foregroundColor:v18 style:v20];
+  text = [labelCopy text];
+  style2 = [labelCopy style];
+  v21 = [text attributedStringWithDefaultFont:v15 foregroundColor:blackColor style:style2];
 
   return v21;
 }
 
-+ (void)_requestLayoutForViewElements:(id)a3 width:(double)a4 context:(id)a5
++ (void)_requestLayoutForViewElements:(id)elements width:(double)width context:(id)context
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  elementsCopy = elements;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -327,12 +327,12 @@ void __61__SKUITabularLockupView_reloadWithViewElement_width_context___block_inv
     }
   }
 
-  v17 = [v8 labelLayoutCache];
+  labelLayoutCache = [contextCopy labelLayoutCache];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v18 = v7;
+  v18 = elementsCopy;
   v19 = [v18 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v19)
   {
@@ -351,9 +351,9 @@ void __61__SKUITabularLockupView_reloadWithViewElement_width_context___block_inv
         if ([v23 elementType] == 138)
         {
           v24 = v23;
-          v25 = [v8 maxWidthForElement:v24 withDefaultWidth:a4];
-          v26 = [a1 _attributedStringForLabel:v24 context:v8];
-          [v17 requestLayoutForLabel:v24 attributedString:v26 width:v25];
+          v25 = [contextCopy maxWidthForElement:v24 withDefaultWidth:width];
+          v26 = [self _attributedStringForLabel:v24 context:contextCopy];
+          [labelLayoutCache requestLayoutForLabel:v24 attributedString:v26 width:v25];
         }
       }
 
@@ -364,24 +364,24 @@ void __61__SKUITabularLockupView_reloadWithViewElement_width_context___block_inv
   }
 }
 
-- (void)_layoutSubviewsForColumn:(id)a3
+- (void)_layoutSubviewsForColumn:(id)column
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
+  columnCopy = column;
+  identifier = [columnCopy identifier];
   [(SKUITabularLockupView *)self bounds];
   v30 = v7;
   v31 = v6;
   v28 = v9;
   v29 = v8;
   [(SKUITabularLockupView *)self bounds];
-  [(SKUITabularLockupView *)self _sizeViewsForColumn:v4 toFitWidth:CGRectGetWidth(v39)];
+  [(SKUITabularLockupView *)self _sizeViewsForColumn:columnCopy toFitWidth:CGRectGetWidth(v39)];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v10 = [v4 childViewElements];
-  v11 = [v10 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  childViewElements = [columnCopy childViewElements];
+  v11 = [childViewElements countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v11)
   {
     v12 = v11;
@@ -393,7 +393,7 @@ void __61__SKUITabularLockupView_reloadWithViewElement_width_context___block_inv
       {
         if (*v34 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(childViewElements);
         }
 
         v15 = [(NSMapTable *)self->_viewElementViews objectForKey:*(*(&v33 + 1) + 8 * v14)];
@@ -403,7 +403,7 @@ void __61__SKUITabularLockupView_reloadWithViewElement_width_context___block_inv
         v21 = v20;
         v23 = v22;
         rect = v18;
-        switch(v5)
+        switch(identifier)
         {
           case 2:
             v42.origin.y = v30;
@@ -451,30 +451,30 @@ void __61__SKUITabularLockupView_reloadWithViewElement_width_context___block_inv
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v12 = [childViewElements countByEnumeratingWithState:&v33 objects:v37 count:16];
     }
 
     while (v12);
   }
 }
 
-- (CGSize)_sizeViewsForColumn:(id)a3 toFitWidth:(double)a4
+- (CGSize)_sizeViewsForColumn:(id)column toFitWidth:(double)width
 {
-  v6 = a3;
+  columnCopy = column;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3010000000;
   v16 = &unk_215F8ACD7;
   v17 = *MEMORY[0x277CBF3A8];
-  v7 = [v6 childViewElements];
+  childViewElements = [columnCopy childViewElements];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __56__SKUITabularLockupView__sizeViewsForColumn_toFitWidth___block_invoke;
   v12[3] = &unk_2781FB2E8;
-  *&v12[6] = a4;
+  *&v12[6] = width;
   v12[4] = self;
   v12[5] = &v13;
-  [v7 enumerateObjectsUsingBlock:v12];
+  [childViewElements enumerateObjectsUsingBlock:v12];
   v8 = v14[4];
   v9 = v14[5];
 

@@ -7,7 +7,7 @@
 
 - (JSValue)timestamp
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_216E9D78C();
 
   return v3;
@@ -15,7 +15,7 @@
 
 - (JSValue)contentDescriptor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_216E9D78C();
 
   return v3;

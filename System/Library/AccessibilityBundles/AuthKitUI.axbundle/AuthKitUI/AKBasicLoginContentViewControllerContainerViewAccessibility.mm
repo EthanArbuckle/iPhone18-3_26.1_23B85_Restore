@@ -1,5 +1,5 @@
 @interface AKBasicLoginContentViewControllerContainerViewAccessibility
-- (AKBasicLoginContentViewControllerContainerViewAccessibility)initWithFrame:(CGRect)a3;
+- (AKBasicLoginContentViewControllerContainerViewAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
@@ -18,11 +18,11 @@
   [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F88]];
 }
 
-- (AKBasicLoginContentViewControllerContainerViewAccessibility)initWithFrame:(CGRect)a3
+- (AKBasicLoginContentViewControllerContainerViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = AKBasicLoginContentViewControllerContainerViewAccessibility;
-  v3 = [(AKBasicLoginContentViewControllerContainerViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AKBasicLoginContentViewControllerContainerViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(AKBasicLoginContentViewControllerContainerViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;

@@ -1,25 +1,25 @@
 @interface MusicAngel.Client.ViewController
-- (_TtCCC17_MusicKit_SwiftUI10MusicAngel6Client14ViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtCCC17_MusicKit_SwiftUI10MusicAngel6Client14ViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_UIRemoteSheet)_remoteSheet;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation MusicAngel.Client.ViewController
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_216650150(a3);
+  selfCopy = self;
+  sub_216650150(disappear);
 }
 
-- (_TtCCC17_MusicKit_SwiftUI10MusicAngel6Client14ViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtCCC17_MusicKit_SwiftUI10MusicAngel6Client14ViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_21666D44C();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_216650798();
 }
 

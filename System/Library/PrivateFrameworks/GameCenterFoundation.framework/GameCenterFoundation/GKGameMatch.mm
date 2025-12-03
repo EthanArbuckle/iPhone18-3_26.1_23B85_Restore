@@ -1,25 +1,25 @@
 @interface GKGameMatch
-+ (BOOL)instancesRespondToSelector:(SEL)a3;
-+ (id)instanceMethodSignatureForSelector:(SEL)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (GKGameMatch)initWithInternalRepresentation:(id)a3 game:(id)a4;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
++ (id)instanceMethodSignatureForSelector:(SEL)selector;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (GKGameMatch)initWithInternalRepresentation:(id)representation game:(id)game;
 - (id)description;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (id)valueForUndefinedKey:(id)key;
 - (unint64_t)hash;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation GKGameMatch
 
-- (GKGameMatch)initWithInternalRepresentation:(id)a3 game:(id)a4
+- (GKGameMatch)initWithInternalRepresentation:(id)representation game:(id)game
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  representationCopy = representation;
+  gameCopy = game;
+  if (!representationCopy)
   {
-    v6 = +[(GKInternalRepresentation *)GKRecentMatchInternal];
+    representationCopy = +[(GKInternalRepresentation *)GKRecentMatchInternal];
   }
 
   v20.receiver = self;
@@ -28,26 +28,26 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_internal, v6);
-    objc_storeStrong(&v9->_game, a4);
-    v10 = [(GKRecentMatchInternal *)v9->_internal player];
+    objc_storeStrong(&v8->_internal, representationCopy);
+    objc_storeStrong(&v9->_game, game);
+    player = [(GKRecentMatchInternal *)v9->_internal player];
 
-    if (v10)
+    if (player)
     {
-      v11 = [(GKRecentMatchInternal *)v9->_internal player];
-      v12 = [GKPlayer canonicalizedPlayerForInternal:v11];
+      player2 = [(GKRecentMatchInternal *)v9->_internal player];
+      v12 = [GKPlayer canonicalizedPlayerForInternal:player2];
       player = v9->_player;
       v9->_player = v12;
 
       if (!v9->_game)
       {
-        v14 = [(GKRecentMatchInternal *)v9->_internal game];
+        game = [(GKRecentMatchInternal *)v9->_internal game];
 
-        if (v14)
+        if (game)
         {
           v15 = [GKGameRecord alloc];
-          v16 = [(GKRecentMatchInternal *)v9->_internal game];
-          v17 = [(GKGameRecord *)v15 initWithInternalRepresentation:v16 player:v9->_player];
+          game2 = [(GKRecentMatchInternal *)v9->_internal game];
+          v17 = [(GKGameRecord *)v15 initWithInternalRepresentation:game2 player:v9->_player];
           game = v9->_game;
           v9->_game = v17;
         }
@@ -60,20 +60,20 @@
 
 - (id)description
 {
-  v3 = [(GKGameMatch *)self player];
-  v4 = [(GKGameMatch *)self game];
+  player = [(GKGameMatch *)self player];
+  game = [(GKGameMatch *)self game];
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
-  v7 = [v3 alias];
-  v8 = [v4 name];
-  v9 = [v5 stringWithFormat:@"<%@ %p> %@ %@ game:%@", v6, self, v3, v7, v8];
+  alias = [player alias];
+  name = [game name];
+  v9 = [v5 stringWithFormat:@"<%@ %p> %@ %@ game:%@", v6, self, player, alias, name];
 
   return v9;
 }
 
-+ (id)instanceMethodSignatureForSelector:(SEL)a3
++ (id)instanceMethodSignatureForSelector:(SEL)selector
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___GKGameMatch;
   v4 = objc_msgSendSuper2(&v9, sel_instanceMethodSignatureForSelector_);
   v5 = v4;
@@ -84,7 +84,7 @@
 
   else
   {
-    v6 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+    v6 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   }
 
   v7 = v6;
@@ -92,7 +92,7 @@
   return v7;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v10.receiver = self;
   v10.super_class = GKGameMatch;
@@ -105,14 +105,14 @@
 
   else
   {
-    v8 = [(GKGameMatch *)self forwardingTargetForSelector:a3];
-    v7 = [v8 methodSignatureForSelector:a3];
+    v8 = [(GKGameMatch *)self forwardingTargetForSelector:selector];
+    v7 = [v8 methodSignatureForSelector:selector];
   }
 
   return v7;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = GKGameMatch;
@@ -123,18 +123,18 @@
 
   else
   {
-    v6 = [(GKGameMatch *)self forwardingTargetForSelector:a3];
+    v6 = [(GKGameMatch *)self forwardingTargetForSelector:selector];
     v5 = objc_opt_respondsToSelector();
   }
 
   return v5 & 1;
 }
 
-+ (BOOL)instancesRespondToSelector:(SEL)a3
++ (BOOL)instancesRespondToSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    if (class_respondsToSelector(a1, a3))
+    if (class_respondsToSelector(self, selector))
     {
       LOBYTE(v4) = 1;
     }
@@ -145,7 +145,7 @@
       if (v4)
       {
 
-        LOBYTE(v4) = [GKRecentMatchInternal instancesRespondToSelector:a3];
+        LOBYTE(v4) = [GKRecentMatchInternal instancesRespondToSelector:selector];
       }
     }
   }
@@ -158,34 +158,34 @@
   return v4;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GKGameMatch *)self internal];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  internal = [(GKGameMatch *)self internal];
+  v6 = [internal valueForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKGameMatch *)self internal];
-  [v8 setValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  internal = [(GKGameMatch *)self internal];
+  [internal setValue:valueCopy forKey:keyCopy];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(GKGameMatch *)self internal];
-    v7 = [v5 internal];
+    v5 = equalCopy;
+    internal = [(GKGameMatch *)self internal];
+    internal2 = [v5 internal];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [internal isEqual:internal2];
   }
 
   else
@@ -198,8 +198,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(GKGameMatch *)self internal];
-  v3 = [v2 hash];
+  internal = [(GKGameMatch *)self internal];
+  v3 = [internal hash];
 
   return v3;
 }

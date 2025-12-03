@@ -1,16 +1,16 @@
 @interface MapsSuggestionsDestinationGraphUpdater
-- (BOOL)addPreloadableSource:(id)a3;
-- (MapsSuggestionsDestinationGraphUpdater)initWithDestinationGraph:(id)a3;
+- (BOOL)addPreloadableSource:(id)source;
+- (MapsSuggestionsDestinationGraphUpdater)initWithDestinationGraph:(id)graph;
 - (NSString)uniqueName;
-- (char)rebuildForPeriod:(id)a3 location:(id)a4 handler:(id)a5;
+- (char)rebuildForPeriod:(id)period location:(id)location handler:(id)handler;
 - (id).cxx_construct;
 @end
 
 @implementation MapsSuggestionsDestinationGraphUpdater
 
-- (MapsSuggestionsDestinationGraphUpdater)initWithDestinationGraph:(id)a3
+- (MapsSuggestionsDestinationGraphUpdater)initWithDestinationGraph:(id)graph
 {
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, graph);
   v16.receiver = self;
   v16.super_class = MapsSuggestionsDestinationGraphUpdater;
   v4 = [(MapsSuggestionsDestinationGraphUpdater *)&v16 init];
@@ -47,10 +47,10 @@
   return [v2 description];
 }
 
-- (BOOL)addPreloadableSource:(id)a3
+- (BOOL)addPreloadableSource:(id)source
 {
-  v4 = a3;
-  if (v4)
+  sourceCopy = source;
+  if (sourceCopy)
   {
     objc_initWeak(location, self);
     v7[0] = _NSConcreteStackBlock;
@@ -58,7 +58,7 @@
     v7[2] = sub_100030584;
     v7[3] = &unk_100075060;
     objc_copyWeak(&v9, location);
-    v8 = v4;
+    v8 = sourceCopy;
     dispatch_async(self->_queue._innerQueue, v7);
 
     objc_destroyWeak(&v9);
@@ -82,15 +82,15 @@
     }
   }
 
-  return v4 != 0;
+  return sourceCopy != 0;
 }
 
-- (char)rebuildForPeriod:(id)a3 location:(id)a4 handler:(id)a5
+- (char)rebuildForPeriod:(id)period location:(id)location handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v10)
+  periodCopy = period;
+  locationCopy = location;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -109,7 +109,7 @@
     goto LABEL_17;
   }
 
-  if (!v8)
+  if (!periodCopy)
   {
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -128,7 +128,7 @@
     goto LABEL_17;
   }
 
-  if (!v9)
+  if (!locationCopy)
   {
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
@@ -153,9 +153,9 @@ LABEL_17:
   v11 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [(MapsSuggestionsDestinationGraphUpdater *)self uniqueName];
+    uniqueName = [(MapsSuggestionsDestinationGraphUpdater *)self uniqueName];
     *buf = 138412546;
-    *&buf[4] = v12;
+    *&buf[4] = uniqueName;
     *&buf[12] = 2080;
     *&buf[14] = "rebuildForPeriod";
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -168,8 +168,8 @@ LABEL_17:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v13, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "rebuildForPeriod", "", buf, 2u);
   }
 
-  v14 = [v8 startDate];
-  sub_100031E38(buf, v14, v9);
+  startDate = [periodCopy startDate];
+  sub_100031E38(buf, startDate, locationCopy);
 
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
@@ -180,8 +180,8 @@ LABEL_17:
   v22 = *buf;
   v23 = *&buf[8];
   v24 = *&buf[16];
-  v19 = v8;
-  v20 = v10;
+  v19 = periodCopy;
+  v20 = handlerCopy;
   dispatch_async(self->_queue._innerQueue, block);
 
   objc_destroyWeak(&v21);

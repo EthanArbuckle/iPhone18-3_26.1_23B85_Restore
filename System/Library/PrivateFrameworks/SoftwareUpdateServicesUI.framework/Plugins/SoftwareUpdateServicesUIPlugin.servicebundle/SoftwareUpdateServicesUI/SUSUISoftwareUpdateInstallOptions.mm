@@ -28,17 +28,17 @@
 
 - (id)description
 {
-  v9 = self;
+  selfCopy = self;
   v8[1] = a2;
   v8[0] = [BSDescriptionBuilder builderWithObject:self];
-  v2 = [v8[0] appendBool:v9->_installDark withName:@"InstallDark"];
-  v3 = [v8[0] appendBool:v9->_automaticInstallAttempt withName:@"AutomaticInstallAttempt"];
-  v4 = [v8[0] appendBool:v9->_rescheduleIfAuthFails withName:@"RescheduleIfAuthFails"];
-  v5 = [v8[0] appendUnsignedInteger:v9->_ignorableConstraints withName:@"IgnorableConstraints"];
-  v7 = [v8[0] build];
+  v2 = [v8[0] appendBool:selfCopy->_installDark withName:@"InstallDark"];
+  v3 = [v8[0] appendBool:selfCopy->_automaticInstallAttempt withName:@"AutomaticInstallAttempt"];
+  v4 = [v8[0] appendBool:selfCopy->_rescheduleIfAuthFails withName:@"RescheduleIfAuthFails"];
+  v5 = [v8[0] appendUnsignedInteger:selfCopy->_ignorableConstraints withName:@"IgnorableConstraints"];
+  build = [v8[0] build];
   objc_storeStrong(v8, 0);
 
-  return v7;
+  return build;
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface NSXPCCoder
-+ (id)_testEncodeAndDecodeInvocation:(id)a3 interface:(id)a4;
-+ (id)_testEncodeAndDecodeObject:(id)a3 allowedClass:(Class)a4;
-+ (id)_testEncodeAndDecodeObject:(id)a3 allowedClasses:(id)a4;
++ (id)_testEncodeAndDecodeInvocation:(id)invocation interface:(id)interface;
++ (id)_testEncodeAndDecodeObject:(id)object allowedClass:(Class)class;
++ (id)_testEncodeAndDecodeObject:(id)object allowedClasses:(id)classes;
 - (NSXPCCoder)init;
 - (void)dealloc;
 @end
@@ -31,35 +31,35 @@
   [(NSXPCCoder *)&v3 dealloc];
 }
 
-+ (id)_testEncodeAndDecodeObject:(id)a3 allowedClasses:(id)a4
++ (id)_testEncodeAndDecodeObject:(id)object allowedClasses:(id)classes
 {
   v6 = objc_alloc_init(NSXPCEncoder);
   [(NSXPCEncoder *)v6 beginEncoding];
-  [(NSXPCEncoder *)v6 encodeObject:a3 forKey:@"root"];
-  v7 = [(NSXPCEncoder *)v6 finishEncoding];
+  [(NSXPCEncoder *)v6 encodeObject:object forKey:@"root"];
+  finishEncoding = [(NSXPCEncoder *)v6 finishEncoding];
 
   v8 = [[NSXPCDecoder alloc] initWithInterface:0];
-  [(NSXPCDecoder *)v8 _startReadingFromXPCObject:v7];
-  v9 = [(NSXPCDecoder *)v8 decodeObjectOfClasses:a4 forKey:@"root"];
+  [(NSXPCDecoder *)v8 _startReadingFromXPCObject:finishEncoding];
+  v9 = [(NSXPCDecoder *)v8 decodeObjectOfClasses:classes forKey:@"root"];
 
   return v9;
 }
 
-+ (id)_testEncodeAndDecodeObject:(id)a3 allowedClass:(Class)a4
++ (id)_testEncodeAndDecodeObject:(id)object allowedClass:(Class)class
 {
-  v6 = [MEMORY[0x1E695DFD8] setWithObject:a4];
+  v6 = [MEMORY[0x1E695DFD8] setWithObject:class];
 
-  return [a1 _testEncodeAndDecodeObject:a3 allowedClasses:v6];
+  return [self _testEncodeAndDecodeObject:object allowedClasses:v6];
 }
 
-+ (id)_testEncodeAndDecodeInvocation:(id)a3 interface:(id)a4
++ (id)_testEncodeAndDecodeInvocation:(id)invocation interface:(id)interface
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v6 = objc_alloc_init(NSXPCEncoder);
   v7 = xpc_dictionary_create(0, 0, 0);
-  [(NSXPCEncoder *)v6 _encodeInvocation:a3 isReply:0 into:v7];
+  [(NSXPCEncoder *)v6 _encodeInvocation:invocation isReply:0 into:v7];
 
-  v8 = [[NSXPCDecoder alloc] initWithInterface:a4];
+  v8 = [[NSXPCDecoder alloc] initWithInterface:interface];
   v11[0] = 0;
   [(NSXPCDecoder *)v8 _decodeMessageFromXPCObject:v7 allowingSimpleMessageSend:0 outInvocation:v11 outArguments:0 outArgumentsMaxCount:0 outMethodSignature:0 outSelector:0];
   v9 = v8;

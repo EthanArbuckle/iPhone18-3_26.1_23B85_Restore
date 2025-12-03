@@ -1,6 +1,6 @@
 @interface HMMNullRTCSession
 + (id)logCategory;
-- (HMMNullRTCSession)initWithUUID:(id)a3 serviceName:(id)a4;
+- (HMMNullRTCSession)initWithUUID:(id)d serviceName:(id)name;
 - (HMMRTCSessionVoucher)voucher;
 @end
 
@@ -9,25 +9,25 @@
 - (HMMRTCSessionVoucher)voucher
 {
   v3 = [HMMRTCSessionVoucher alloc];
-  v4 = [(HMMNullRTCSession *)self uuid];
-  v5 = [(HMMNullRTCSession *)self serviceName];
-  v6 = [(HMMRTCSessionVoucher *)v3 initWithUUID:v4 serviceName:v5];
+  uuid = [(HMMNullRTCSession *)self uuid];
+  serviceName = [(HMMNullRTCSession *)self serviceName];
+  v6 = [(HMMRTCSessionVoucher *)v3 initWithUUID:uuid serviceName:serviceName];
 
   return v6;
 }
 
-- (HMMNullRTCSession)initWithUUID:(id)a3 serviceName:(id)a4
+- (HMMNullRTCSession)initWithUUID:(id)d serviceName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = HMMNullRTCSession;
   v9 = [(HMMNullRTCSession *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_uuid, a3);
-    objc_storeStrong(&v10->_serviceName, a4);
+    objc_storeStrong(&v9->_uuid, d);
+    objc_storeStrong(&v10->_serviceName, name);
   }
 
   return v10;

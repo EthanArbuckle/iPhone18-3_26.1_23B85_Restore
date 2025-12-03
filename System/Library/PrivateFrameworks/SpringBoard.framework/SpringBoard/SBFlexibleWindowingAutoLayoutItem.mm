@@ -1,39 +1,39 @@
 @interface SBFlexibleWindowingAutoLayoutItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)compactedPosition;
 - (CGPoint)exposePosition;
 - (CGPoint)position;
 - (CGRect)frame;
 - (CGSize)size;
-- (SBFlexibleWindowingAutoLayoutItem)initWithDisplayItem:(id)a3;
-- (id)_copyWithClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (SBFlexibleWindowingAutoLayoutItem)initWithDisplayItem:(id)item;
+- (id)_copyWithClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
 @end
 
 @implementation SBFlexibleWindowingAutoLayoutItem
 
-- (SBFlexibleWindowingAutoLayoutItem)initWithDisplayItem:(id)a3
+- (SBFlexibleWindowingAutoLayoutItem)initWithDisplayItem:(id)item
 {
-  v6 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = SBFlexibleWindowingAutoLayoutItem;
   v7 = [(SBFlexibleWindowingAutoLayoutItem *)&v11 init];
   if (v7)
   {
-    if (!v6)
+    if (!itemCopy)
     {
       [(SBFlexibleWindowingAutoLayoutItem *)a2 initWithDisplayItem:v7];
     }
 
-    objc_storeStrong(&v7->_displayItem, a3);
-    v8 = [v6 uniqueIdentifier];
+    objc_storeStrong(&v7->_displayItem, item);
+    uniqueIdentifier = [itemCopy uniqueIdentifier];
     identifier = v7->_identifier;
-    v7->_identifier = v8;
+    v7->_identifier = uniqueIdentifier;
   }
 
   return v7;
@@ -52,10 +52,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -64,10 +64,10 @@
   {
     v11.receiver = self;
     v11.super_class = SBFlexibleWindowingAutoLayoutItem;
-    if ([(SBFlexibleWindowingAutoLayoutItem *)&v11 isEqual:v4])
+    if ([(SBFlexibleWindowingAutoLayoutItem *)&v11 isEqual:equalCopy])
     {
       v5 = objc_opt_class();
-      v6 = v4;
+      v6 = equalCopy;
       if (v5)
       {
         if (objc_opt_isKindOfClass())
@@ -176,23 +176,23 @@ LABEL_30:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 
   return [(SBFlexibleWindowingAutoLayoutItem *)self _copyWithClass:v4];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 
   return [(SBFlexibleWindowingAutoLayoutItem *)self _copyWithClass:v4];
 }
 
-- (id)_copyWithClass:(Class)a3
+- (id)_copyWithClass:(Class)class
 {
-  v4 = [a3 alloc];
+  v4 = [class alloc];
   v5 = [(SBDisplayItem *)self->_displayItem copy];
   v6 = [v4 initWithDisplayItem:v5];
 
@@ -213,39 +213,39 @@ LABEL_30:
 
 - (id)succinctDescription
 {
-  v2 = [(SBFlexibleWindowingAutoLayoutItem *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBFlexibleWindowingAutoLayoutItem *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBFlexibleWindowingAutoLayoutItem *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBFlexibleWindowingAutoLayoutItem *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBFlexibleWindowingAutoLayoutItem *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_displayItem withName:@"displayItem"];
+  succinctDescriptionBuilder = [(SBFlexibleWindowingAutoLayoutItem *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_displayItem withName:@"displayItem"];
   [(SBFlexibleWindowingAutoLayoutItem *)self frame];
-  v6 = [v4 appendRect:@"frame" withName:?];
-  v7 = [v4 appendSize:@"size" withName:{self->_size.width, self->_size.height}];
-  v8 = [v4 appendPoint:@"position" withName:{self->_position.x, self->_position.y}];
-  v9 = [v4 appendPoint:@"exposePosition" withName:{self->_exposePosition.x, self->_exposePosition.y}];
-  v10 = [v4 appendFloat:@"exposeScale" withName:self->_exposeScale];
-  v11 = [v4 appendBool:self->_positionIsSystemManaged withName:@"positionIsSystemManaged"];
-  v12 = [v4 appendBool:self->_overlapped withName:@"overlapped"];
-  v13 = [v4 appendBool:self->_fullyOccluded withName:@"fullyOccluded"];
-  v14 = [v4 appendUnsignedInteger:self->_ownedDisplayRectCorners withName:@"ownedDisplayRectCorners"];
-  v15 = [v4 appendUnsignedInteger:self->_intersectedDisplayRectCorners withName:@"intersectedDisplayRectCorners"];
-  v16 = [v4 appendBool:self->_inSlideOver withName:@"inSlideOver"];
-  v17 = [v4 appendInteger:self->_sceneRelevancyHint withName:@"sceneRelevancyHint"];
+  v6 = [succinctDescriptionBuilder appendRect:@"frame" withName:?];
+  v7 = [succinctDescriptionBuilder appendSize:@"size" withName:{self->_size.width, self->_size.height}];
+  v8 = [succinctDescriptionBuilder appendPoint:@"position" withName:{self->_position.x, self->_position.y}];
+  v9 = [succinctDescriptionBuilder appendPoint:@"exposePosition" withName:{self->_exposePosition.x, self->_exposePosition.y}];
+  v10 = [succinctDescriptionBuilder appendFloat:@"exposeScale" withName:self->_exposeScale];
+  v11 = [succinctDescriptionBuilder appendBool:self->_positionIsSystemManaged withName:@"positionIsSystemManaged"];
+  v12 = [succinctDescriptionBuilder appendBool:self->_overlapped withName:@"overlapped"];
+  v13 = [succinctDescriptionBuilder appendBool:self->_fullyOccluded withName:@"fullyOccluded"];
+  v14 = [succinctDescriptionBuilder appendUnsignedInteger:self->_ownedDisplayRectCorners withName:@"ownedDisplayRectCorners"];
+  v15 = [succinctDescriptionBuilder appendUnsignedInteger:self->_intersectedDisplayRectCorners withName:@"intersectedDisplayRectCorners"];
+  v16 = [succinctDescriptionBuilder appendBool:self->_inSlideOver withName:@"inSlideOver"];
+  v17 = [succinctDescriptionBuilder appendInteger:self->_sceneRelevancyHint withName:@"sceneRelevancyHint"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (CGSize)size

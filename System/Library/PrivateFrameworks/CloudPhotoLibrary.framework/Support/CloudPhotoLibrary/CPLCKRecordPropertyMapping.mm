@@ -2,16 +2,16 @@
 + (CPLCKRecordPropertyMapping)sharedInstance;
 + (NSSet)allSupportedClasses;
 + (NSSet)commonProperties;
-- (BOOL)getPairedProperties:(id *)a3 andCKKeys:(id *)a4 forCKKey:(id)a5;
-- (BOOL)getPairedProperties:(id *)a3 andCKKeys:(id *)a4 forProperty:(id)a5;
-- (BOOL)isKeyReadOnly:(id)a3 recordClass:(Class)a4;
-- (BOOL)shouldSplitIndirectRecordForKey:(id)a3 recordClass:(Class)a4;
-- (BOOL)shouldUpdateKeyOnBothRecords:(id)a3 recordClass:(Class)a4;
-- (BOOL)shouldUpdateKeyOnPrivateRecord:(id)a3 recordClass:(Class)a4;
-- (BOOL)shouldUpdateKeyOnSharedRecord:(id)a3 recordClass:(Class)a4;
-- (BOOL)shouldUpdatePropertyOnPrivateRecord:(id)a3 recordClass:(Class)a4;
-- (BOOL)shouldUpdatePropertyOnSharedRecord:(id)a3 recordClass:(Class)a4;
-- (id)allTranslatedPropertiesForClass:(Class)a3;
+- (BOOL)getPairedProperties:(id *)properties andCKKeys:(id *)keys forCKKey:(id)key;
+- (BOOL)getPairedProperties:(id *)properties andCKKeys:(id *)keys forProperty:(id)property;
+- (BOOL)isKeyReadOnly:(id)only recordClass:(Class)class;
+- (BOOL)shouldSplitIndirectRecordForKey:(id)key recordClass:(Class)class;
+- (BOOL)shouldUpdateKeyOnBothRecords:(id)records recordClass:(Class)class;
+- (BOOL)shouldUpdateKeyOnPrivateRecord:(id)record recordClass:(Class)class;
+- (BOOL)shouldUpdateKeyOnSharedRecord:(id)record recordClass:(Class)class;
+- (BOOL)shouldUpdatePropertyOnPrivateRecord:(id)record recordClass:(Class)class;
+- (BOOL)shouldUpdatePropertyOnSharedRecord:(id)record recordClass:(Class)class;
+- (id)allTranslatedPropertiesForClass:(Class)class;
 - (id)initSharedInstance;
 @end
 
@@ -885,9 +885,9 @@
   return v78;
 }
 
-- (BOOL)getPairedProperties:(id *)a3 andCKKeys:(id *)a4 forProperty:(id)a5
+- (BOOL)getPairedProperties:(id *)properties andCKKeys:(id *)keys forProperty:(id)property
 {
-  v8 = a5;
+  propertyCopy = property;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -908,10 +908,10 @@
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
-        if ([v14 hasProperty:{v8, v17}])
+        if ([v14 hasProperty:{propertyCopy, v17}])
         {
-          *a3 = [v14 properties];
-          *a4 = [v14 ckKeys];
+          *properties = [v14 properties];
+          *keys = [v14 ckKeys];
           v15 = 1;
           goto LABEL_11;
         }
@@ -933,9 +933,9 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)getPairedProperties:(id *)a3 andCKKeys:(id *)a4 forCKKey:(id)a5
+- (BOOL)getPairedProperties:(id *)properties andCKKeys:(id *)keys forCKKey:(id)key
 {
-  v8 = a5;
+  keyCopy = key;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -956,10 +956,10 @@ LABEL_11:
         }
 
         v14 = *(*(&v17 + 1) + 8 * i);
-        if ([v14 hasCKKey:{v8, v17}])
+        if ([v14 hasCKKey:{keyCopy, v17}])
         {
-          *a3 = [v14 properties];
-          *a4 = [v14 ckKeys];
+          *properties = [v14 properties];
+          *keys = [v14 ckKeys];
           v15 = 1;
           goto LABEL_11;
         }
@@ -981,16 +981,16 @@ LABEL_11:
   return v15;
 }
 
-- (id)allTranslatedPropertiesForClass:(Class)a3
+- (id)allTranslatedPropertiesForClass:(Class)class
 {
   v6 = [(NSDictionary *)self->_allPrivateProperties objectForKeyedSubscript:?];
   if (!v6)
   {
-    sub_1001A2234(a2, self, a3);
+    sub_1001A2234(a2, self, class);
   }
 
   v7 = v6;
-  v8 = [(NSDictionary *)self->_allSharedProperties objectForKeyedSubscript:a3];
+  v8 = [(NSDictionary *)self->_allSharedProperties objectForKeyedSubscript:class];
   if ([v8 count])
   {
     v9 = [v7 mutableCopy];
@@ -1005,60 +1005,60 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)shouldUpdatePropertyOnPrivateRecord:(id)a3 recordClass:(Class)a4
+- (BOOL)shouldUpdatePropertyOnPrivateRecord:(id)record recordClass:(Class)class
 {
   allPrivateProperties = self->_allPrivateProperties;
-  v6 = a3;
-  v7 = [(NSDictionary *)allPrivateProperties objectForKeyedSubscript:a4];
-  LOBYTE(allPrivateProperties) = [v7 containsObject:v6];
+  recordCopy = record;
+  v7 = [(NSDictionary *)allPrivateProperties objectForKeyedSubscript:class];
+  LOBYTE(allPrivateProperties) = [v7 containsObject:recordCopy];
 
   return allPrivateProperties;
 }
 
-- (BOOL)shouldUpdatePropertyOnSharedRecord:(id)a3 recordClass:(Class)a4
+- (BOOL)shouldUpdatePropertyOnSharedRecord:(id)record recordClass:(Class)class
 {
   allSharedProperties = self->_allSharedProperties;
-  v6 = a3;
-  v7 = [(NSDictionary *)allSharedProperties objectForKeyedSubscript:a4];
-  LOBYTE(allSharedProperties) = [v7 containsObject:v6];
+  recordCopy = record;
+  v7 = [(NSDictionary *)allSharedProperties objectForKeyedSubscript:class];
+  LOBYTE(allSharedProperties) = [v7 containsObject:recordCopy];
 
   return allSharedProperties;
 }
 
-- (BOOL)isKeyReadOnly:(id)a3 recordClass:(Class)a4
+- (BOOL)isKeyReadOnly:(id)only recordClass:(Class)class
 {
   v4 = qword_1002C52A8;
-  v5 = a3;
+  onlyCopy = only;
   if (v4 != -1)
   {
     sub_1001A2320();
   }
 
-  v6 = [qword_1002C52A0 containsObject:v5];
+  v6 = [qword_1002C52A0 containsObject:onlyCopy];
 
   return v6;
 }
 
-- (BOOL)shouldSplitIndirectRecordForKey:(id)a3 recordClass:(Class)a4
+- (BOOL)shouldSplitIndirectRecordForKey:(id)key recordClass:(Class)class
 {
-  v6 = a3;
-  if (objc_opt_class() == a4 || [(CPLCKRecordPropertyMapping *)self shouldUpdateKeyOnBothRecords:v6 recordClass:a4])
+  keyCopy = key;
+  if (objc_opt_class() == class || [(CPLCKRecordPropertyMapping *)self shouldUpdateKeyOnBothRecords:keyCopy recordClass:class])
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [(CPLCKRecordPropertyMapping *)self shouldUpdateKeyOnPrivateRecord:v6 recordClass:a4];
+    v7 = [(CPLCKRecordPropertyMapping *)self shouldUpdateKeyOnPrivateRecord:keyCopy recordClass:class];
   }
 
   return v7;
 }
 
-- (BOOL)shouldUpdateKeyOnBothRecords:(id)a3 recordClass:(Class)a4
+- (BOOL)shouldUpdateKeyOnBothRecords:(id)records recordClass:(Class)class
 {
-  v6 = a3;
-  if (objc_opt_class() == a4 || (-[NSDictionary objectForKeyedSubscript:](self->_allSharedAndPrivateCKKeys, "objectForKeyedSubscript:", a4), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 containsObject:v6], v7, (v8 & 1) != 0))
+  recordsCopy = records;
+  if (objc_opt_class() == class || (-[NSDictionary objectForKeyedSubscript:](self->_allSharedAndPrivateCKKeys, "objectForKeyedSubscript:", class), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 containsObject:recordsCopy], v7, (v8 & 1) != 0))
   {
     v9 = 1;
   }
@@ -1066,49 +1066,49 @@ LABEL_11:
   else
   {
     v10 = sub_100061744();
-    v9 = [v10 containsObject:v6];
+    v9 = [v10 containsObject:recordsCopy];
   }
 
   return v9;
 }
 
-- (BOOL)shouldUpdateKeyOnPrivateRecord:(id)a3 recordClass:(Class)a4
+- (BOOL)shouldUpdateKeyOnPrivateRecord:(id)record recordClass:(Class)class
 {
-  v6 = a3;
-  if ([(CPLCKRecordPropertyMapping *)self shouldUpdateKeyOnBothRecords:v6 recordClass:a4])
+  recordCopy = record;
+  if ([(CPLCKRecordPropertyMapping *)self shouldUpdateKeyOnBothRecords:recordCopy recordClass:class])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [(NSDictionary *)self->_allPrivateCKKeys objectForKeyedSubscript:a4];
-    v7 = [v8 containsObject:v6];
+    v8 = [(NSDictionary *)self->_allPrivateCKKeys objectForKeyedSubscript:class];
+    v7 = [v8 containsObject:recordCopy];
   }
 
   return v7;
 }
 
-- (BOOL)shouldUpdateKeyOnSharedRecord:(id)a3 recordClass:(Class)a4
+- (BOOL)shouldUpdateKeyOnSharedRecord:(id)record recordClass:(Class)class
 {
-  v6 = a3;
-  if (objc_opt_class() == a4)
+  recordCopy = record;
+  if (objc_opt_class() == class)
   {
     v8 = 1;
   }
 
   else
   {
-    v7 = [(NSDictionary *)self->_allSharedCKKeys objectForKeyedSubscript:a4];
-    if ([v7 containsObject:v6])
+    v7 = [(NSDictionary *)self->_allSharedCKKeys objectForKeyedSubscript:class];
+    if ([v7 containsObject:recordCopy])
     {
       v8 = 1;
     }
 
     else
     {
-      v9 = [(NSDictionary *)self->_allResourcesCKKeys objectForKeyedSubscript:a4];
-      if ([v9 containsObject:v6])
+      v9 = [(NSDictionary *)self->_allResourcesCKKeys objectForKeyedSubscript:class];
+      if ([v9 containsObject:recordCopy])
       {
         v8 = 1;
       }
@@ -1116,7 +1116,7 @@ LABEL_11:
       else
       {
         v10 = sub_100061744();
-        v8 = [v10 containsObject:v6];
+        v8 = [v10 containsObject:recordCopy];
       }
     }
   }

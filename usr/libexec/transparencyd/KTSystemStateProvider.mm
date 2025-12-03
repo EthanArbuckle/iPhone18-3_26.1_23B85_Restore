@@ -1,35 +1,35 @@
 @interface KTSystemStateProvider
 - (BOOL)pendingChanges;
-- (BOOL)treeStateUnstable:(id)a3 logBeginTime:(unint64_t)a4;
-- (KTSystemStateProvider)initWithDataStore:(id)a3 notificationCenter:(id)a4;
+- (BOOL)treeStateUnstable:(id)unstable logBeginTime:(unint64_t)time;
+- (KTSystemStateProvider)initWithDataStore:(id)store notificationCenter:(id)center;
 - (void)reset;
-- (void)setAccountStatus:(unint64_t)a3;
-- (void)setIDSAccountStatus:(unint64_t)a3;
-- (void)setKTAccountKey:(id)a3;
-- (void)setPendingChanges:(BOOL)a3;
-- (void)setSelfDevices:(id)a3;
-- (void)setSelfStatus:(unint64_t)a3;
-- (void)setServerOptInState:(unint64_t)a3;
-- (void)setSystemStatus:(unint64_t)a3;
+- (void)setAccountStatus:(unint64_t)status;
+- (void)setIDSAccountStatus:(unint64_t)status;
+- (void)setKTAccountKey:(id)key;
+- (void)setPendingChanges:(BOOL)changes;
+- (void)setSelfDevices:(id)devices;
+- (void)setSelfStatus:(unint64_t)status;
+- (void)setServerOptInState:(unint64_t)state;
+- (void)setSystemStatus:(unint64_t)status;
 @end
 
 @implementation KTSystemStateProvider
 
-- (KTSystemStateProvider)initWithDataStore:(id)a3 notificationCenter:(id)a4
+- (KTSystemStateProvider)initWithDataStore:(id)store notificationCenter:(id)center
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  centerCopy = center;
   v14.receiver = self;
   v14.super_class = KTSystemStateProvider;
   v8 = [(KTSystemStateProvider *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    [(KTSystemStateProvider *)v8 setDataStore:v6];
+    [(KTSystemStateProvider *)v8 setDataStore:storeCopy];
     v10 = objc_alloc_init(KTSelfStatusResult);
     [(KTSystemStateProvider *)v9 setKtStatus:v10];
 
-    [(KTSystemStateProvider *)v9 setDnc:v7];
+    [(KTSystemStateProvider *)v9 setDnc:centerCopy];
     v11 = objc_alloc_init(KTCondition);
     [(KTSystemStateProvider *)v9 setStatusFilled:v11];
 
@@ -39,12 +39,12 @@
   return v9;
 }
 
-- (BOOL)treeStateUnstable:(id)a3 logBeginTime:(unint64_t)a4
+- (BOOL)treeStateUnstable:(id)unstable logBeginTime:(unint64_t)time
 {
-  v6 = a3;
-  v7 = [(KTSystemStateProvider *)self dataStore];
+  unstableCopy = unstable;
+  dataStore = [(KTSystemStateProvider *)self dataStore];
   v12 = 0;
-  v8 = [v7 isMapStillPopulating:v6 logBeginMs:a4 error:&v12];
+  v8 = [dataStore isMapStillPopulating:unstableCopy logBeginMs:time error:&v12];
 
   v9 = v12;
   if (v9)
@@ -66,40 +66,40 @@
   return v8;
 }
 
-- (void)setPendingChanges:(BOOL)a3
+- (void)setPendingChanges:(BOOL)changes
 {
-  v3 = a3;
-  v5 = [(KTSystemStateProvider *)self ktStatus];
-  v6 = [v5 pendingStatusChanges];
+  changesCopy = changes;
+  ktStatus = [(KTSystemStateProvider *)self ktStatus];
+  pendingStatusChanges = [ktStatus pendingStatusChanges];
 
-  if (v6 != v3)
+  if (pendingStatusChanges != changesCopy)
   {
-    v7 = [(KTSystemStateProvider *)self ktStatus];
-    v8 = v7;
-    if (v3)
+    ktStatus2 = [(KTSystemStateProvider *)self ktStatus];
+    v8 = ktStatus2;
+    if (changesCopy)
     {
-      [v7 setPendingStatusChanges:1];
+      [ktStatus2 setPendingStatusChanges:1];
 
-      v9 = objc_alloc_init(KTCondition);
+      statusFilled = objc_alloc_init(KTCondition);
       [(KTSystemStateProvider *)self setStatusFilled:?];
     }
 
     else
     {
-      [v7 setPendingStatusChanges:0];
+      [ktStatus2 setPendingStatusChanges:0];
 
-      v9 = [(KTSystemStateProvider *)self statusFilled];
-      [(KTCondition *)v9 fulfill];
+      statusFilled = [(KTSystemStateProvider *)self statusFilled];
+      [(KTCondition *)statusFilled fulfill];
     }
   }
 }
 
 - (BOOL)pendingChanges
 {
-  v2 = [(KTSystemStateProvider *)self ktStatus];
-  v3 = [v2 pendingStatusChanges];
+  ktStatus = [(KTSystemStateProvider *)self ktStatus];
+  pendingStatusChanges = [ktStatus pendingStatusChanges];
 
-  return v3;
+  return pendingStatusChanges;
 }
 
 - (void)reset
@@ -108,41 +108,41 @@
   [(KTSystemStateProvider *)self setKtStatus:v3];
 }
 
-- (void)setServerOptInState:(unint64_t)a3
+- (void)setServerOptInState:(unint64_t)state
 {
-  v5 = [(KTSystemStateProvider *)self ktStatus];
-  v6 = [v5 serverOptIn];
+  ktStatus = [(KTSystemStateProvider *)self ktStatus];
+  serverOptIn = [ktStatus serverOptIn];
 
-  if (v6 != a3)
+  if (serverOptIn != state)
   {
-    v7 = [(KTSystemStateProvider *)self ktStatus];
-    [v7 setServerOptIn:a3];
+    ktStatus2 = [(KTSystemStateProvider *)self ktStatus];
+    [ktStatus2 setServerOptIn:state];
 
     v8 = [(KTSystemStateProvider *)self dnc];
     v9 = kTransparencyNotificationStatusChanged;
     v12 = kKTStatusServerOptInState;
-    v10 = [NSNumber numberWithUnsignedInteger:a3];
+    v10 = [NSNumber numberWithUnsignedInteger:state];
     v13 = v10;
     v11 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     [v8 postNotificationName:v9 object:0 userInfo:v11 deliverImmediately:1];
   }
 }
 
-- (void)setAccountStatus:(unint64_t)a3
+- (void)setAccountStatus:(unint64_t)status
 {
-  v5 = [(KTSystemStateProvider *)self ktStatus];
-  v6 = [v5 accountStatus];
+  ktStatus = [(KTSystemStateProvider *)self ktStatus];
+  accountStatus = [ktStatus accountStatus];
 
-  if (v6 != a3)
+  if (accountStatus != status)
   {
-    v7 = [(KTSystemStateProvider *)self ktStatus];
-    [v7 setAccountStatus:a3];
+    ktStatus2 = [(KTSystemStateProvider *)self ktStatus];
+    [ktStatus2 setAccountStatus:status];
 
     v8 = [(KTSystemStateProvider *)self dnc];
     v9 = kTransparencyNotificationAccountStatusChanged;
     v10 = kKTStatusAccountStatus;
     v19 = kKTStatusAccountStatus;
-    v11 = [NSNumber numberWithUnsignedInteger:a3];
+    v11 = [NSNumber numberWithUnsignedInteger:status];
     v20 = v11;
     v12 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     [v8 postNotificationName:v9 object:0 userInfo:v12 deliverImmediately:1];
@@ -150,71 +150,71 @@
     v13 = [(KTSystemStateProvider *)self dnc];
     v14 = kTransparencyNotificationStatusChanged;
     v17 = v10;
-    v15 = [NSNumber numberWithUnsignedInteger:a3];
+    v15 = [NSNumber numberWithUnsignedInteger:status];
     v18 = v15;
     v16 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     [v13 postNotificationName:v14 object:0 userInfo:v16 deliverImmediately:1];
   }
 }
 
-- (void)setSelfStatus:(unint64_t)a3
+- (void)setSelfStatus:(unint64_t)status
 {
-  v5 = [(KTSystemStateProvider *)self ktStatus];
-  v6 = [v5 selfStatus];
+  ktStatus = [(KTSystemStateProvider *)self ktStatus];
+  selfStatus = [ktStatus selfStatus];
 
-  if (v6 != a3)
+  if (selfStatus != status)
   {
-    v7 = [(KTSystemStateProvider *)self ktStatus];
-    [v7 setSelfStatus:a3];
+    ktStatus2 = [(KTSystemStateProvider *)self ktStatus];
+    [ktStatus2 setSelfStatus:status];
 
     v8 = [(KTSystemStateProvider *)self dnc];
     v9 = kTransparencyNotificationStatusChanged;
     v12 = kKTStatusSelfStatus;
-    v10 = [NSNumber numberWithUnsignedInteger:a3];
+    v10 = [NSNumber numberWithUnsignedInteger:status];
     v13 = v10;
     v11 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     [v8 postNotificationName:v9 object:0 userInfo:v11 deliverImmediately:1];
   }
 }
 
-- (void)setSelfDevices:(id)a3
+- (void)setSelfDevices:(id)devices
 {
-  v4 = a3;
-  v5 = [(KTSystemStateProvider *)self ktStatus];
-  [v5 setSelfDevices:v4];
+  devicesCopy = devices;
+  ktStatus = [(KTSystemStateProvider *)self ktStatus];
+  [ktStatus setSelfDevices:devicesCopy];
 }
 
-- (void)setSystemStatus:(unint64_t)a3
+- (void)setSystemStatus:(unint64_t)status
 {
-  v5 = [(KTSystemStateProvider *)self ktStatus];
-  v6 = [v5 systemStatus];
+  ktStatus = [(KTSystemStateProvider *)self ktStatus];
+  systemStatus = [ktStatus systemStatus];
 
-  if (v6 != a3)
+  if (systemStatus != status)
   {
-    v7 = [(KTSystemStateProvider *)self ktStatus];
-    [v7 setSystemStatus:a3];
+    ktStatus2 = [(KTSystemStateProvider *)self ktStatus];
+    [ktStatus2 setSystemStatus:status];
 
     v8 = [(KTSystemStateProvider *)self dnc];
     v9 = kTransparencyNotificationStatusChanged;
     v12 = kKTStatusSystemStatus;
-    v10 = [NSNumber numberWithUnsignedInteger:a3];
+    v10 = [NSNumber numberWithUnsignedInteger:status];
     v13 = v10;
     v11 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     [v8 postNotificationName:v9 object:0 userInfo:v11 deliverImmediately:1];
   }
 }
 
-- (void)setKTAccountKey:(id)a3
+- (void)setKTAccountKey:(id)key
 {
-  v4 = a3;
-  v5 = [(KTSystemStateProvider *)self ktStatus];
-  v6 = [v5 accountKey];
-  v7 = [v6 isEqual:v4];
+  keyCopy = key;
+  ktStatus = [(KTSystemStateProvider *)self ktStatus];
+  accountKey = [ktStatus accountKey];
+  v7 = [accountKey isEqual:keyCopy];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [(KTSystemStateProvider *)self ktStatus];
-    [v8 setAccountKey:v4];
+    ktStatus2 = [(KTSystemStateProvider *)self ktStatus];
+    [ktStatus2 setAccountKey:keyCopy];
 
     v9 = [(KTSystemStateProvider *)self dnc];
     v10 = kTransparencyNotificationStatusChanged;
@@ -225,20 +225,20 @@
   }
 }
 
-- (void)setIDSAccountStatus:(unint64_t)a3
+- (void)setIDSAccountStatus:(unint64_t)status
 {
-  v5 = [(KTSystemStateProvider *)self ktStatus];
-  v6 = [v5 idsAccountStatus];
+  ktStatus = [(KTSystemStateProvider *)self ktStatus];
+  idsAccountStatus = [ktStatus idsAccountStatus];
 
-  if (v6 != a3)
+  if (idsAccountStatus != status)
   {
-    v7 = [(KTSystemStateProvider *)self ktStatus];
-    [v7 setIdsAccountStatus:a3];
+    ktStatus2 = [(KTSystemStateProvider *)self ktStatus];
+    [ktStatus2 setIdsAccountStatus:status];
 
     v8 = [(KTSystemStateProvider *)self dnc];
     v9 = kTransparencyNotificationStatusChanged;
     v12 = kKTStatusIDSAccount;
-    v10 = [NSNumber numberWithUnsignedInteger:a3];
+    v10 = [NSNumber numberWithUnsignedInteger:status];
     v13 = v10;
     v11 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     [v8 postNotificationName:v9 object:0 userInfo:v11 deliverImmediately:1];

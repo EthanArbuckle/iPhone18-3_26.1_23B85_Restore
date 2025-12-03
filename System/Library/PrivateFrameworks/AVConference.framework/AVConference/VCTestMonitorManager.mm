@@ -3,7 +3,7 @@
 - (VCTestMonitorManager)init;
 - (void)dealloc;
 - (void)registerBlocksForService;
-- (void)reportSessionMediaDaemonStats:(id)a3;
+- (void)reportSessionMediaDaemonStats:(id)stats;
 @end
 
 @implementation VCTestMonitorManager
@@ -54,7 +54,7 @@ void __37__VCTestMonitorManager_sharedManager__block_invoke()
   }
 }
 
-- (void)reportSessionMediaDaemonStats:(id)a3
+- (void)reportSessionMediaDaemonStats:(id)stats
 {
   v46 = *MEMORY[0x1E69E9840];
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
@@ -145,16 +145,16 @@ LABEL_11:
     }
   }
 
-  v12 = [+[VCNetworkAgent sharedInstance](VCNetworkAgent getNetworkAgentRefCount];
+  getNetworkAgentRefCount = [+[VCNetworkAgent sharedInstance](VCNetworkAgent getNetworkAgentRefCount];
   v17[0] = @"SessionStatsReportToken";
   v17[1] = @"InitialMemoryUsageInfo";
   initialMemoryUsage = self->_initialMemoryUsage;
-  v18[0] = a3;
+  v18[0] = stats;
   v18[1] = initialMemoryUsage;
   v17[2] = @"MemoryUsageInfo";
   v18[2] = [MEMORY[0x1E696AD98] numberWithInt:v7];
   v17[3] = @"NetworkAgentRefCount";
-  v18[3] = [MEMORY[0x1E696AD98] numberWithInt:v12];
+  v18[3] = [MEMORY[0x1E696AD98] numberWithInt:getNetworkAgentRefCount];
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:4];
   xpcCallbackQueue = self->_xpcCallbackQueue;
   block[0] = MEMORY[0x1E69E9820];

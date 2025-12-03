@@ -27,11 +27,11 @@
         v8 = v6;
         if (os_log_type_enabled(v8, v7))
         {
-          v9 = [v5 localizedDescription];
+          localizedDescription = [v5 localizedDescription];
           *buf = 136315394;
           v35 = "[WFContentCachesContext init]";
           v36 = 2112;
-          v37 = v9;
+          v37 = localizedDescription;
           _os_log_impl(&dword_273ECD000, v8, v7, "%s: Failed to load content caches bundle from system path. Error: %@", buf, 0x16u);
         }
       }
@@ -51,11 +51,11 @@
           v24 = v12;
           if (os_log_type_enabled(v24, v23))
           {
-            v25 = [v5 localizedDescription];
+            localizedDescription2 = [v5 localizedDescription];
             *buf = 136315394;
             v35 = "[WFContentCachesContext init]";
             v36 = 2112;
-            v37 = v25;
+            v37 = localizedDescription2;
             _os_log_impl(&dword_273ECD000, v24, v23, "%s: Failed to load content caches bundle from internal path. Error: %@", buf, 0x16u);
           }
         }

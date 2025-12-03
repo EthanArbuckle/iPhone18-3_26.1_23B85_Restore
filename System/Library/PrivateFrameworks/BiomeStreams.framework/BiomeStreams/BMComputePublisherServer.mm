@@ -1,30 +1,30 @@
 @interface BMComputePublisherServer
-- (BMComputePublisherServer)initWithQueue:(id)a3 domain:(unint64_t)a4 delegate:(id)a5;
-- (BMComputePublisherServer)initWithQueue:(id)a3 listener:(id)a4 domain:(unint64_t)a5 delegate:(id)a6 computePublisherStreamName:(id)a7;
+- (BMComputePublisherServer)initWithQueue:(id)queue domain:(unint64_t)domain delegate:(id)delegate;
+- (BMComputePublisherServer)initWithQueue:(id)queue listener:(id)listener domain:(unint64_t)domain delegate:(id)delegate computePublisherStreamName:(id)name;
 - (BMComputePublisherServerDelegate)delegate;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NSString)description;
-- (id)subscriptionsForStream:(id)a3;
-- (void)_addSubscription:(id)a3;
-- (void)_handlePublisherAction:(unsigned int)a3 token:(unint64_t)a4 descriptor:(id)a5;
-- (void)_removeActiveSubscriptionMarkersForSubscription:(id)a3;
-- (void)_removeSubscriptionWithIdentifier:(id)a3 client:(id)a4;
-- (void)_removeSubscriptionWithToken:(unint64_t)a3;
-- (void)activateWithCompletion:(id)a3;
-- (void)receiveInputForSubscription:(id)a3 streamIdentifier:(id)a4 timestamp:(id)a5 storeEvent:(id)a6;
-- (void)subscribe:(id)a3;
-- (void)unsubscribeWithIdentifier:(id)a3;
+- (id)subscriptionsForStream:(id)stream;
+- (void)_addSubscription:(id)subscription;
+- (void)_handlePublisherAction:(unsigned int)action token:(unint64_t)token descriptor:(id)descriptor;
+- (void)_removeActiveSubscriptionMarkersForSubscription:(id)subscription;
+- (void)_removeSubscriptionWithIdentifier:(id)identifier client:(id)client;
+- (void)_removeSubscriptionWithToken:(unint64_t)token;
+- (void)activateWithCompletion:(id)completion;
+- (void)receiveInputForSubscription:(id)subscription streamIdentifier:(id)identifier timestamp:(id)timestamp storeEvent:(id)event;
+- (void)subscribe:(id)subscribe;
+- (void)unsubscribeWithIdentifier:(id)identifier;
 @end
 
 @implementation BMComputePublisherServer
 
-- (BMComputePublisherServer)initWithQueue:(id)a3 domain:(unint64_t)a4 delegate:(id)a5
+- (BMComputePublisherServer)initWithQueue:(id)queue domain:(unint64_t)domain delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a5;
-  if (a4)
+  queueCopy = queue;
+  delegateCopy = delegate;
+  if (domain)
   {
-    if (a4 != 1)
+    if (domain != 1)
     {
       goto LABEL_6;
     }
@@ -40,40 +40,40 @@
   v5 = *v12;
 LABEL_6:
   v13 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:v5];
-  if (a4 == 1)
+  if (domain == 1)
   {
     v14 = +[BMDaemon systemComputePublisherStreamName];
     goto LABEL_10;
   }
 
-  if (!a4)
+  if (!domain)
   {
     v14 = +[BMDaemon userComputePublisherStreamName];
 LABEL_10:
     v6 = v14;
   }
 
-  v15 = [(BMComputePublisherServer *)self initWithQueue:v10 listener:v13 domain:a4 delegate:v11 computePublisherStreamName:v6];
+  v15 = [(BMComputePublisherServer *)self initWithQueue:queueCopy listener:v13 domain:domain delegate:delegateCopy computePublisherStreamName:v6];
 
   return v15;
 }
 
-- (BMComputePublisherServer)initWithQueue:(id)a3 listener:(id)a4 domain:(unint64_t)a5 delegate:(id)a6 computePublisherStreamName:(id)a7
+- (BMComputePublisherServer)initWithQueue:(id)queue listener:(id)listener domain:(unint64_t)domain delegate:(id)delegate computePublisherStreamName:(id)name
 {
   v49 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  dispatch_assert_queue_V2(v13);
+  queueCopy = queue;
+  listenerCopy = listener;
+  delegateCopy = delegate;
+  nameCopy = name;
+  dispatch_assert_queue_V2(queueCopy);
   v47.receiver = self;
   v47.super_class = BMComputePublisherServer;
   v17 = [(BMComputePublisherServer *)&v47 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_queue, a3);
-    v18->_domain = a5;
+    objc_storeStrong(&v17->_queue, queue);
+    v18->_domain = domain;
     v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
     subscriptions = v18->_subscriptions;
     v18->_subscriptions = v19;
@@ -92,9 +92,9 @@ LABEL_10:
     subscriptionMarkerManager = v18->_subscriptionMarkerManager;
     v18->_subscriptionMarkerManager = v27;
 
-    v29 = [(BMComputePublisherServer *)v18 storage];
+    storage = [(BMComputePublisherServer *)v18 storage];
     v46 = 0;
-    v30 = [v29 readNonWakingSubscriptions:&v46];
+    v30 = [storage readNonWakingSubscriptions:&v46];
     v31 = v46;
 
     if (v30)
@@ -111,9 +111,9 @@ LABEL_10:
       }
     }
 
-    objc_storeWeak(&v18->_delegate, v15);
-    v33 = v16;
-    [v16 UTF8String];
+    objc_storeWeak(&v18->_delegate, delegateCopy);
+    v33 = nameCopy;
+    [nameCopy UTF8String];
     v34 = xpc_event_publisher_create();
     publisher = v18->_publisher;
     v18->_publisher = v34;
@@ -124,8 +124,8 @@ LABEL_10:
     xpc_event_publisher_set_handler();
     v37 = v18->_publisher;
     xpc_event_publisher_set_error_handler();
-    objc_storeStrong(&v18->_listener, a4);
-    [(NSXPCListener *)v18->_listener _setQueue:v13];
+    objc_storeStrong(&v18->_listener, listener);
+    [(NSXPCListener *)v18->_listener _setQueue:queueCopy];
     [(NSXPCListener *)v18->_listener setDelegate:v18];
     v38 = BMComputePublisherInterface();
     interface = v18->_interface;
@@ -134,8 +134,8 @@ LABEL_10:
     v40 = __biome_log_for_category();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
     {
-      v41 = [v14 serviceName];
-      [BMComputePublisherServer initWithQueue:v16 listener:v41 domain:buf delegate:v40 computePublisherStreamName:?];
+      serviceName = [listenerCopy serviceName];
+      [BMComputePublisherServer initWithQueue:nameCopy listener:serviceName domain:buf delegate:v40 computePublisherStreamName:?];
     }
 
     objc_destroyWeak(&v44);
@@ -163,63 +163,63 @@ void __94__BMComputePublisherServer_initWithQueue_listener_domain_delegate_compu
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BMComputePublisherServer *)self queue];
-  dispatch_assert_queue_V2(v8);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  queue = [(BMComputePublisherServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [MEMORY[0x1E698E9D8] processWithXPCConnection:v7];
+  v9 = [MEMORY[0x1E698E9D8] processWithXPCConnection:connectionCopy];
   v10 = __biome_log_for_category();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [v9 executableName];
+    executableName = [v9 executableName];
     *buf = 138412546;
-    v31 = v11;
+    v31 = executableName;
     v32 = 1024;
     v33 = [v9 pid];
     _os_log_impl(&dword_1848EE000, v10, OS_LOG_TYPE_INFO, "BMComputePublisherServiceServer received new connection request from %@(%d)", buf, 0x12u);
   }
 
   v12 = [MEMORY[0x1E698E970] policyForProcess:v9 connectionFlags:0 useCase:*MEMORY[0x1E698E948]];
-  v13 = [v12 allowsConnectionToComputePublisherService];
+  allowsConnectionToComputePublisherService = [v12 allowsConnectionToComputePublisherService];
   v14 = __biome_log_for_category();
   v15 = v14;
-  if (v13)
+  if (allowsConnectionToComputePublisherService)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       [BMComputePublisherServer listener:v9 shouldAcceptNewConnection:?];
     }
 
-    v16 = [(BMComputePublisherServer *)self queue];
-    [v7 _setQueue:v16];
+    queue2 = [(BMComputePublisherServer *)self queue];
+    [connectionCopy _setQueue:queue2];
 
     objc_initWeak(buf, self);
-    objc_initWeak(&location, v7);
+    objc_initWeak(&location, connectionCopy);
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __63__BMComputePublisherServer_listener_shouldAcceptNewConnection___block_invoke;
     v27[3] = &unk_1E6E53538;
     objc_copyWeak(&v28, &location);
-    [v7 setInterruptionHandler:v27];
+    [connectionCopy setInterruptionHandler:v27];
     v21 = MEMORY[0x1E69E9820];
     v22 = 3221225472;
     v23 = __63__BMComputePublisherServer_listener_shouldAcceptNewConnection___block_invoke_10;
     v24 = &unk_1E6E53560;
     objc_copyWeak(&v25, buf);
     objc_copyWeak(&v26, &location);
-    [v7 setInvalidationHandler:&v21];
+    [connectionCopy setInvalidationHandler:&v21];
     v17 = [(BMComputePublisherServer *)self interface:v21];
-    [v7 setExportedInterface:v17];
+    [connectionCopy setExportedInterface:v17];
 
-    [v7 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v18 = BMComputePublishingInterface();
-    [v7 setRemoteObjectInterface:v18];
+    [connectionCopy setRemoteObjectInterface:v18];
 
-    [v7 resume];
+    [connectionCopy resume];
     objc_destroyWeak(&v26);
     objc_destroyWeak(&v25);
     objc_destroyWeak(&v28);
@@ -236,7 +236,7 @@ void __94__BMComputePublisherServer_initWithQueue_listener_domain_delegate_compu
   }
 
   v19 = *MEMORY[0x1E69E9840];
-  return v13;
+  return allowsConnectionToComputePublisherService;
 }
 
 void __63__BMComputePublisherServer_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)
@@ -374,12 +374,12 @@ void __63__BMComputePublisherServer_listener_shouldAcceptNewConnection___block_i
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(BMComputePublisherServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  subscribeCopy = subscribe;
+  queue = [(BMComputePublisherServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = __biome_log_for_category();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -387,21 +387,21 @@ void __63__BMComputePublisherServer_listener_shouldAcceptNewConnection___block_i
     [BMComputePublisherServer subscribe:];
   }
 
-  if (v4)
+  if (subscribeCopy)
   {
-    v7 = [v4 identifier];
+    identifier = [subscribeCopy identifier];
     IsPathSafe = BMIdentifierIsPathSafe();
 
     if (IsPathSafe)
     {
-      v9 = [MEMORY[0x1E698E898] currentProcessValidator];
-      v10 = [v4 graph];
-      v11 = [v9 isExecutionAllowedForGraph:v10];
+      currentProcessValidator = [MEMORY[0x1E698E898] currentProcessValidator];
+      graph = [subscribeCopy graph];
+      v11 = [currentProcessValidator isExecutionAllowedForGraph:graph];
 
       if (v11)
       {
-        v12 = [MEMORY[0x1E696B0B8] currentConnection];
-        if (!v12)
+        currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+        if (!currentConnection)
         {
           v13 = __biome_log_for_category();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -412,39 +412,39 @@ void __63__BMComputePublisherServer_listener_shouldAcceptNewConnection___block_i
           goto LABEL_36;
         }
 
-        v13 = [MEMORY[0x1E698E9D8] processWithXPCConnection:v12];
+        v13 = [MEMORY[0x1E698E9D8] processWithXPCConnection:currentConnection];
         v14 = MEMORY[0x1E698E970];
-        v15 = [v4 useCase];
-        v16 = [v14 policyForProcess:v13 connectionFlags:0 useCase:v15];
+        useCase = [subscribeCopy useCase];
+        v16 = [v14 policyForProcess:v13 connectionFlags:0 useCase:useCase];
 
-        v17 = [v4 postMigrationStreamIdentifiers];
-        v18 = [v16 allowsComputePublisherAccessToStreams:v17];
+        postMigrationStreamIdentifiers = [subscribeCopy postMigrationStreamIdentifiers];
+        v18 = [v16 allowsComputePublisherAccessToStreams:postMigrationStreamIdentifiers];
 
         if ((v18 & 1) == 0)
         {
           v35 = __biome_log_for_category();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
           {
-            [BMComputePublisherServer subscribe:v4];
+            [BMComputePublisherServer subscribe:subscribeCopy];
           }
 
           goto LABEL_35;
         }
 
-        v19 = [v13 identifier];
-        [v4 setClient:v19];
+        identifier2 = [v13 identifier];
+        [subscribeCopy setClient:identifier2];
 
-        [v4 setConnection:v12];
-        if (([v4 waking] & 1) == 0)
+        [subscribeCopy setConnection:currentConnection];
+        if (([subscribeCopy waking] & 1) == 0)
         {
-          v20 = [(BMComputePublisherServer *)self subscriptions];
+          subscriptions = [(BMComputePublisherServer *)self subscriptions];
           v48[0] = MEMORY[0x1E69E9820];
           v48[1] = 3221225472;
           v48[2] = __38__BMComputePublisherServer_subscribe___block_invoke;
           v48[3] = &unk_1E6E53588;
-          v21 = v4;
+          v21 = subscribeCopy;
           v49 = v21;
-          v22 = [v20 indexesOfObjectsPassingTest:v48];
+          v22 = [subscriptions indexesOfObjectsPassingTest:v48];
 
           if ([v22 count])
           {
@@ -453,12 +453,12 @@ void __63__BMComputePublisherServer_listener_shouldAcceptNewConnection___block_i
             v23 = __biome_log_for_category();
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
             {
-              v24 = [v21 client];
-              v25 = [v21 identifier];
+              client = [v21 client];
+              identifier3 = [v21 identifier];
               *buf = 138412546;
-              v52 = v24;
+              v52 = client;
               v53 = 2112;
-              v54 = v25;
+              v54 = identifier3;
               _os_log_impl(&dword_1848EE000, v23, OS_LOG_TYPE_DEFAULT, "Found matching unclaimed subscription for %@:%@", buf, 0x16u);
             }
 
@@ -466,9 +466,9 @@ void __63__BMComputePublisherServer_listener_shouldAcceptNewConnection___block_i
             v47 = 0u;
             v44 = 0u;
             v45 = 0u;
-            v26 = [(BMComputePublisherServer *)self subscriptions];
+            subscriptions2 = [(BMComputePublisherServer *)self subscriptions];
             v37 = v22;
-            v27 = [v26 objectsAtIndexes:v22];
+            v27 = [subscriptions2 objectsAtIndexes:v22];
 
             v28 = [v27 countByEnumeratingWithState:&v44 objects:v50 count:16];
             if (v28)
@@ -485,22 +485,22 @@ void __63__BMComputePublisherServer_listener_shouldAcceptNewConnection___block_i
                   }
 
                   v32 = *(*(&v44 + 1) + 8 * i);
-                  [v32 setConnection:v12];
+                  [v32 setConnection:currentConnection];
                   if ([v32 pendingDemand])
                   {
-                    v33 = [(BMComputePublisherServer *)self queue];
+                    queue2 = [(BMComputePublisherServer *)self queue];
                     block[0] = MEMORY[0x1E69E9820];
                     block[1] = 3221225472;
                     block[2] = __38__BMComputePublisherServer_subscribe___block_invoke_16;
                     block[3] = &unk_1E6E52980;
                     v41 = v21;
-                    v42 = self;
+                    selfCopy = self;
                     v43 = v32;
-                    dispatch_async(v33, block);
+                    dispatch_async(queue2, block);
                   }
 
-                  v34 = [(BMComputePublisherServer *)self delegate];
-                  [v34 publisherServer:self didClaimSubscription:v32];
+                  delegate = [(BMComputePublisherServer *)self delegate];
+                  [delegate publisherServer:self didClaimSubscription:v32];
                 }
 
                 v29 = [v27 countByEnumeratingWithState:&v44 objects:v50 count:16];
@@ -515,34 +515,34 @@ void __63__BMComputePublisherServer_listener_shouldAcceptNewConnection___block_i
           }
         }
 
-        [(BMComputePublisherServer *)self _addSubscription:v4];
+        [(BMComputePublisherServer *)self _addSubscription:subscribeCopy];
 LABEL_35:
 
 LABEL_36:
         goto LABEL_37;
       }
 
-      v12 = __biome_log_for_category();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      currentConnection = __biome_log_for_category();
+      if (os_log_type_enabled(currentConnection, OS_LOG_TYPE_ERROR))
       {
-        [BMComputePublisherServer subscribe:v4];
+        [BMComputePublisherServer subscribe:subscribeCopy];
       }
     }
 
     else
     {
-      v12 = __biome_log_for_category();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      currentConnection = __biome_log_for_category();
+      if (os_log_type_enabled(currentConnection, OS_LOG_TYPE_ERROR))
       {
-        [BMComputePublisherServer subscribe:v4];
+        [BMComputePublisherServer subscribe:subscribeCopy];
       }
     }
   }
 
   else
   {
-    v12 = __biome_log_for_category();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    currentConnection = __biome_log_for_category();
+    if (os_log_type_enabled(currentConnection, OS_LOG_TYPE_ERROR))
     {
       [BMComputePublisherServer subscribe:];
     }
@@ -598,11 +598,11 @@ uint64_t __38__BMComputePublisherServer_subscribe___block_invoke_16(uint64_t a1)
   return result;
 }
 
-- (void)unsubscribeWithIdentifier:(id)a3
+- (void)unsubscribeWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BMComputePublisherServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  identifierCopy = identifier;
+  queue = [(BMComputePublisherServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = __biome_log_for_category();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -610,17 +610,17 @@ uint64_t __38__BMComputePublisherServer_subscribe___block_invoke_16(uint64_t a1)
     [BMComputePublisherServer unsubscribeWithIdentifier:];
   }
 
-  if (v4)
+  if (identifierCopy)
   {
     v7 = MEMORY[0x1E698E9D8];
-    v8 = [MEMORY[0x1E696B0B8] currentConnection];
-    v9 = [v7 processWithXPCConnection:v8];
+    currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+    v9 = [v7 processWithXPCConnection:currentConnection];
 
-    v10 = [v9 identifier];
-    v11 = [(BMComputePublisherServer *)self storage];
-    [v11 removeNonWakingSubscriptionWithIdentifier:v4 client:v10];
+    identifier = [v9 identifier];
+    storage = [(BMComputePublisherServer *)self storage];
+    [storage removeNonWakingSubscriptionWithIdentifier:identifierCopy client:identifier];
 
-    [(BMComputePublisherServer *)self _removeSubscriptionWithIdentifier:v4 client:v10];
+    [(BMComputePublisherServer *)self _removeSubscriptionWithIdentifier:identifierCopy client:identifier];
   }
 
   else
@@ -633,11 +633,11 @@ uint64_t __38__BMComputePublisherServer_subscribe___block_invoke_16(uint64_t a1)
   }
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BMComputePublisherServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  queue = [(BMComputePublisherServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = __biome_log_for_category();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -645,22 +645,22 @@ uint64_t __38__BMComputePublisherServer_subscribe___block_invoke_16(uint64_t a1)
     [BMComputePublisherServer activateWithCompletion:?];
   }
 
-  [(BMComputePublisherServer *)self setActivationCompletion:v4];
-  v7 = [(BMComputePublisherServer *)self listener];
-  [v7 activate];
+  [(BMComputePublisherServer *)self setActivationCompletion:completionCopy];
+  listener = [(BMComputePublisherServer *)self listener];
+  [listener activate];
 
-  v8 = [(BMComputePublisherServer *)self publisher];
+  publisher = [(BMComputePublisherServer *)self publisher];
   xpc_event_publisher_activate();
 }
 
-- (void)_handlePublisherAction:(unsigned int)a3 token:(unint64_t)a4 descriptor:(id)a5
+- (void)_handlePublisherAction:(unsigned int)action token:(unint64_t)token descriptor:(id)descriptor
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [(BMComputePublisherServer *)self queue];
-  dispatch_assert_queue_V2(v9);
+  descriptorCopy = descriptor;
+  queue = [(BMComputePublisherServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  switch(a3)
+  switch(action)
   {
     case 2u:
       v19 = __biome_log_for_category();
@@ -670,12 +670,12 @@ uint64_t __38__BMComputePublisherServer_subscribe___block_invoke_16(uint64_t a1)
         _os_log_impl(&dword_1848EE000, v19, OS_LOG_TYPE_INFO, "BMComputePublisher initial barrier", &v24, 2u);
       }
 
-      v20 = [(BMComputePublisherServer *)self activationCompletion];
+      activationCompletion = [(BMComputePublisherServer *)self activationCompletion];
 
-      if (v20)
+      if (activationCompletion)
       {
-        v21 = [(BMComputePublisherServer *)self activationCompletion];
-        v21[2]();
+        activationCompletion2 = [(BMComputePublisherServer *)self activationCompletion];
+        activationCompletion2[2]();
 
         [(BMComputePublisherServer *)self setActivationCompletion:0];
       }
@@ -685,20 +685,20 @@ uint64_t __38__BMComputePublisherServer_subscribe___block_invoke_16(uint64_t a1)
       v17 = __biome_log_for_category();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
-        v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+        v18 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:token];
         v24 = 138412290;
         v25 = v18;
         _os_log_impl(&dword_1848EE000, v17, OS_LOG_TYPE_INFO, "BMComputePublisher remove publisher for token %@", &v24, 0xCu);
       }
 
-      [(BMComputePublisherServer *)self _removeSubscriptionWithToken:a4];
+      [(BMComputePublisherServer *)self _removeSubscriptionWithToken:token];
       break;
     case 0u:
-      v10 = MEMORY[0x1865F7C40](v8);
+      v10 = MEMORY[0x1865F7C40](descriptorCopy);
       v11 = __biome_log_for_category();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:token];
         v24 = 138412546;
         v25 = v12;
         v26 = 2080;
@@ -706,12 +706,12 @@ uint64_t __38__BMComputePublisherServer_subscribe___block_invoke_16(uint64_t a1)
         _os_log_impl(&dword_1848EE000, v11, OS_LOG_TYPE_INFO, "BMComputePublisher add publisher for token %@ descriptor: %s", &v24, 0x16u);
       }
 
-      v13 = [[BMComputeSubscription alloc] initWithToken:a4 descriptor:v8];
+      v13 = [[BMComputeSubscription alloc] initWithToken:token descriptor:descriptorCopy];
       if (v13)
       {
-        v14 = [MEMORY[0x1E698E898] currentProcessValidator];
-        v15 = [(BMComputeSubscription *)v13 graph];
-        v16 = [v14 isExecutionAllowedForGraph:v15];
+        currentProcessValidator = [MEMORY[0x1E698E898] currentProcessValidator];
+        graph = [(BMComputeSubscription *)v13 graph];
+        v16 = [currentProcessValidator isExecutionAllowedForGraph:graph];
 
         if (v16)
         {
@@ -744,57 +744,57 @@ LABEL_21:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addSubscription:(id)a3
+- (void)_addSubscription:(id)subscription
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(BMComputePublisherServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  subscriptionCopy = subscription;
+  queue = [(BMComputePublisherServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (!v4)
+  if (!subscriptionCopy)
   {
     [BMComputePublisherServer _addSubscription:];
   }
 
-  v6 = [(BMComputePublisherServer *)self subscriptions];
+  subscriptions = [(BMComputePublisherServer *)self subscriptions];
   v44[0] = MEMORY[0x1E69E9820];
   v44[1] = 3221225472;
   v44[2] = __45__BMComputePublisherServer__addSubscription___block_invoke;
   v44[3] = &unk_1E6E53588;
-  v7 = v4;
+  v7 = subscriptionCopy;
   v45 = v7;
-  v8 = [v6 indexesOfObjectsPassingTest:v44];
+  v8 = [subscriptions indexesOfObjectsPassingTest:v44];
 
   if ([v8 count])
   {
-    v9 = [(BMComputePublisherServer *)self subscriptions];
-    v10 = [v9 objectsAtIndexes:v8];
+    subscriptions2 = [(BMComputePublisherServer *)self subscriptions];
+    v10 = [subscriptions2 objectsAtIndexes:v8];
 
     v11 = __biome_log_for_category();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v7 identifier];
+      identifier = [v7 identifier];
       *buf = 138412546;
-      v49 = v12;
+      v49 = identifier;
       v50 = 2112;
       v51 = v10;
       _os_log_impl(&dword_1848EE000, v11, OS_LOG_TYPE_DEFAULT, "Warning: clearing unexpected subscriptions for identifier %@ while adding new subscription. %@", buf, 0x16u);
     }
 
-    v13 = [(BMComputePublisherServer *)self storage];
-    v14 = [v7 identifier];
-    v15 = [v7 client];
-    [v13 removeBookmarkFileForSubscriptionWithIdentifier:v14 client:v15];
+    storage = [(BMComputePublisherServer *)self storage];
+    identifier2 = [v7 identifier];
+    client = [v7 client];
+    [storage removeBookmarkFileForSubscriptionWithIdentifier:identifier2 client:client];
 
-    v16 = [(BMComputePublisherServer *)self subscriptions];
-    [v16 removeObjectsAtIndexes:v8];
+    subscriptions3 = [(BMComputePublisherServer *)self subscriptions];
+    [subscriptions3 removeObjectsAtIndexes:v8];
 
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v17 = [v7 postMigrationStreamIdentifiers];
-    v18 = [v17 countByEnumeratingWithState:&v40 objects:v47 count:16];
+    postMigrationStreamIdentifiers = [v7 postMigrationStreamIdentifiers];
+    v18 = [postMigrationStreamIdentifiers countByEnumeratingWithState:&v40 objects:v47 count:16];
     if (v18)
     {
       v19 = v18;
@@ -805,36 +805,36 @@ LABEL_21:
         {
           if (*v41 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(postMigrationStreamIdentifiers);
           }
 
           v22 = *(*(&v40 + 1) + 8 * i);
-          v23 = [(BMComputePublisherServer *)self subscriptionMarkerManager];
-          [v23 removeSubscriptionWithStreamIdentifier:v22];
+          subscriptionMarkerManager = [(BMComputePublisherServer *)self subscriptionMarkerManager];
+          [subscriptionMarkerManager removeSubscriptionWithStreamIdentifier:v22];
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v40 objects:v47 count:16];
+        v19 = [postMigrationStreamIdentifiers countByEnumeratingWithState:&v40 objects:v47 count:16];
       }
 
       while (v19);
     }
   }
 
-  v24 = [(BMComputePublisherServer *)self subscriptions];
-  [v24 addObject:v7];
+  subscriptions4 = [(BMComputePublisherServer *)self subscriptions];
+  [subscriptions4 addObject:v7];
 
   if (([v7 waking] & 1) == 0)
   {
-    v25 = [(BMComputePublisherServer *)self storage];
-    [v25 writeNonWakingSubscription:v7];
+    storage2 = [(BMComputePublisherServer *)self storage];
+    [storage2 writeNonWakingSubscription:v7];
   }
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v26 = [v7 postMigrationStreamIdentifiers];
-  v27 = [v26 countByEnumeratingWithState:&v36 objects:v46 count:16];
+  postMigrationStreamIdentifiers2 = [v7 postMigrationStreamIdentifiers];
+  v27 = [postMigrationStreamIdentifiers2 countByEnumeratingWithState:&v36 objects:v46 count:16];
   if (v27)
   {
     v28 = v27;
@@ -845,22 +845,22 @@ LABEL_21:
       {
         if (*v37 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(postMigrationStreamIdentifiers2);
         }
 
         v31 = *(*(&v36 + 1) + 8 * j);
-        v32 = [(BMComputePublisherServer *)self subscriptionMarkerManager];
-        [v32 addSubscriptionWithStreamIdentifier:v31];
+        subscriptionMarkerManager2 = [(BMComputePublisherServer *)self subscriptionMarkerManager];
+        [subscriptionMarkerManager2 addSubscriptionWithStreamIdentifier:v31];
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v36 objects:v46 count:16];
+      v28 = [postMigrationStreamIdentifiers2 countByEnumeratingWithState:&v36 objects:v46 count:16];
     }
 
     while (v28);
   }
 
-  v33 = [(BMComputePublisherServer *)self delegate];
-  [v33 publisherServer:self didAddSubscription:v7];
+  delegate = [(BMComputePublisherServer *)self delegate];
+  [delegate publisherServer:self didAddSubscription:v7];
 
   v34 = __biome_log_for_category();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -893,26 +893,26 @@ uint64_t __45__BMComputePublisherServer__addSubscription___block_invoke(uint64_t
   return v8;
 }
 
-- (void)_removeSubscriptionWithToken:(unint64_t)a3
+- (void)_removeSubscriptionWithToken:(unint64_t)token
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = [(BMComputePublisherServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(BMComputePublisherServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(BMComputePublisherServer *)self subscriptions];
+  subscriptions = [(BMComputePublisherServer *)self subscriptions];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __57__BMComputePublisherServer__removeSubscriptionWithToken___block_invoke;
   v38[3] = &__block_descriptor_40_e38_B32__0__BMComputeSubscription_8Q16_B24l;
-  v38[4] = a3;
-  v7 = [v6 indexesOfObjectsPassingTest:v38];
+  v38[4] = token;
+  v7 = [subscriptions indexesOfObjectsPassingTest:v38];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v8 = [(BMComputePublisherServer *)self subscriptions];
-  v9 = [v8 objectsAtIndexes:v7];
+  subscriptions2 = [(BMComputePublisherServer *)self subscriptions];
+  v9 = [subscriptions2 objectsAtIndexes:v7];
 
   v10 = [v9 countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v10)
@@ -930,10 +930,10 @@ uint64_t __45__BMComputePublisherServer__addSubscription___block_invoke(uint64_t
         }
 
         v14 = *(*(&v34 + 1) + 8 * v13);
-        v15 = [(BMComputePublisherServer *)self storage];
-        v16 = [v14 identifier];
-        v17 = [v14 client];
-        [v15 removeBookmarkFileForSubscriptionWithIdentifier:v16 client:v17];
+        storage = [(BMComputePublisherServer *)self storage];
+        identifier = [v14 identifier];
+        client = [v14 client];
+        [storage removeBookmarkFileForSubscriptionWithIdentifier:identifier client:client];
 
         [(BMComputePublisherServer *)self _removeActiveSubscriptionMarkersForSubscription:v14];
         ++v13;
@@ -946,11 +946,11 @@ uint64_t __45__BMComputePublisherServer__addSubscription___block_invoke(uint64_t
     while (v11);
   }
 
-  v18 = [(BMComputePublisherServer *)self subscriptions];
-  v19 = [v18 objectsAtIndexes:v7];
+  subscriptions3 = [(BMComputePublisherServer *)self subscriptions];
+  v19 = [subscriptions3 objectsAtIndexes:v7];
 
-  v20 = [(BMComputePublisherServer *)self subscriptions];
-  [v20 removeObjectsAtIndexes:v7];
+  subscriptions4 = [(BMComputePublisherServer *)self subscriptions];
+  [subscriptions4 removeObjectsAtIndexes:v7];
 
   v32 = 0u;
   v33 = 0u;
@@ -973,8 +973,8 @@ uint64_t __45__BMComputePublisherServer__addSubscription___block_invoke(uint64_t
         }
 
         v26 = *(*(&v30 + 1) + 8 * v25);
-        v27 = [(BMComputePublisherServer *)self delegate];
-        [v27 publisherServer:self didRemoveSubscription:v26];
+        delegate = [(BMComputePublisherServer *)self delegate];
+        [delegate publisherServer:self didRemoveSubscription:v26];
 
         ++v25;
       }
@@ -997,36 +997,36 @@ uint64_t __45__BMComputePublisherServer__addSubscription___block_invoke(uint64_t
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_removeSubscriptionWithIdentifier:(id)a3 client:(id)a4
+- (void)_removeSubscriptionWithIdentifier:(id)identifier client:(id)client
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BMComputePublisherServer *)self queue];
-  dispatch_assert_queue_V2(v8);
+  identifierCopy = identifier;
+  clientCopy = client;
+  queue = [(BMComputePublisherServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (!v6)
+  if (!identifierCopy)
   {
     [BMComputePublisherServer _removeSubscriptionWithIdentifier:client:];
   }
 
-  v9 = [(BMComputePublisherServer *)self subscriptions];
+  subscriptions = [(BMComputePublisherServer *)self subscriptions];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __69__BMComputePublisherServer__removeSubscriptionWithIdentifier_client___block_invoke;
   v40[3] = &unk_1E6E535D0;
-  v10 = v6;
+  v10 = identifierCopy;
   v41 = v10;
-  v11 = v7;
+  v11 = clientCopy;
   v42 = v11;
-  v12 = [v9 indexesOfObjectsPassingTest:v40];
+  v12 = [subscriptions indexesOfObjectsPassingTest:v40];
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v13 = [(BMComputePublisherServer *)self subscriptions];
-  v14 = [v13 objectsAtIndexes:v12];
+  subscriptions2 = [(BMComputePublisherServer *)self subscriptions];
+  v14 = [subscriptions2 objectsAtIndexes:v12];
 
   v15 = [v14 countByEnumeratingWithState:&v36 objects:v46 count:16];
   if (v15)
@@ -1053,14 +1053,14 @@ uint64_t __45__BMComputePublisherServer__addSubscription___block_invoke(uint64_t
     while (v16);
   }
 
-  v19 = [(BMComputePublisherServer *)self storage];
-  [v19 removeBookmarkFileForSubscriptionWithIdentifier:v10 client:v11];
+  storage = [(BMComputePublisherServer *)self storage];
+  [storage removeBookmarkFileForSubscriptionWithIdentifier:v10 client:v11];
 
-  v20 = [(BMComputePublisherServer *)self subscriptions];
-  v21 = [v20 objectsAtIndexes:v12];
+  subscriptions3 = [(BMComputePublisherServer *)self subscriptions];
+  v21 = [subscriptions3 objectsAtIndexes:v12];
 
-  v22 = [(BMComputePublisherServer *)self subscriptions];
-  [v22 removeObjectsAtIndexes:v12];
+  subscriptions4 = [(BMComputePublisherServer *)self subscriptions];
+  [subscriptions4 removeObjectsAtIndexes:v12];
 
   v34 = 0u;
   v35 = 0u;
@@ -1083,8 +1083,8 @@ uint64_t __45__BMComputePublisherServer__addSubscription___block_invoke(uint64_t
         }
 
         v28 = *(*(&v32 + 1) + 8 * v27);
-        v29 = [(BMComputePublisherServer *)self delegate];
-        [v29 publisherServer:self didRemoveSubscription:v28];
+        delegate = [(BMComputePublisherServer *)self delegate];
+        [delegate publisherServer:self didRemoveSubscription:v28];
 
         ++v27;
       }
@@ -1125,14 +1125,14 @@ uint64_t __69__BMComputePublisherServer__removeSubscriptionWithIdentifier_client
   return v6;
 }
 
-- (void)_removeActiveSubscriptionMarkersForSubscription:(id)a3
+- (void)_removeActiveSubscriptionMarkersForSubscription:(id)subscription
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(BMComputePublisherServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  subscriptionCopy = subscription;
+  queue = [(BMComputePublisherServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (!v4)
+  if (!subscriptionCopy)
   {
     [BMComputePublisherServer _removeActiveSubscriptionMarkersForSubscription:];
   }
@@ -1141,8 +1141,8 @@ uint64_t __69__BMComputePublisherServer__removeSubscriptionWithIdentifier_client
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v4 postMigrationStreamIdentifiers];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  postMigrationStreamIdentifiers = [subscriptionCopy postMigrationStreamIdentifiers];
+  v7 = [postMigrationStreamIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1154,18 +1154,18 @@ uint64_t __69__BMComputePublisherServer__removeSubscriptionWithIdentifier_client
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(postMigrationStreamIdentifiers);
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
-        v12 = [(BMComputePublisherServer *)self subscriptionMarkerManager];
-        [v12 removeSubscriptionWithStreamIdentifier:v11];
+        subscriptionMarkerManager = [(BMComputePublisherServer *)self subscriptionMarkerManager];
+        [subscriptionMarkerManager removeSubscriptionWithStreamIdentifier:v11];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [postMigrationStreamIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -1174,27 +1174,27 @@ uint64_t __69__BMComputePublisherServer__removeSubscriptionWithIdentifier_client
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)subscriptionsForStream:(id)a3
+- (id)subscriptionsForStream:(id)stream
 {
-  v4 = a3;
-  v5 = [(BMComputePublisherServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  streamCopy = stream;
+  queue = [(BMComputePublisherServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (!v4)
+  if (!streamCopy)
   {
     [BMComputePublisherServer subscriptionsForStream:];
   }
 
-  v6 = [(BMComputePublisherServer *)self subscriptions];
+  subscriptions = [(BMComputePublisherServer *)self subscriptions];
   v7 = MEMORY[0x1E696AE18];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __51__BMComputePublisherServer_subscriptionsForStream___block_invoke;
   v12[3] = &unk_1E6E535F8;
-  v13 = v4;
-  v8 = v4;
+  v13 = streamCopy;
+  v8 = streamCopy;
   v9 = [v7 predicateWithBlock:v12];
-  v10 = [v6 filteredArrayUsingPredicate:v9];
+  v10 = [subscriptions filteredArrayUsingPredicate:v9];
 
   return v10;
 }
@@ -1207,16 +1207,16 @@ uint64_t __51__BMComputePublisherServer_subscriptionsForStream___block_invoke(ui
   return v4;
 }
 
-- (void)receiveInputForSubscription:(id)a3 streamIdentifier:(id)a4 timestamp:(id)a5 storeEvent:(id)a6
+- (void)receiveInputForSubscription:(id)subscription streamIdentifier:(id)identifier timestamp:(id)timestamp storeEvent:(id)event
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(BMComputePublisherServer *)self queue];
-  dispatch_assert_queue_V2(v14);
+  subscriptionCopy = subscription;
+  identifierCopy = identifier;
+  timestampCopy = timestamp;
+  eventCopy = event;
+  queue = [(BMComputePublisherServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (!v10)
+  if (!subscriptionCopy)
   {
     [BMComputePublisherServer receiveInputForSubscription:streamIdentifier:timestamp:storeEvent:];
   }
@@ -1228,18 +1228,18 @@ uint64_t __51__BMComputePublisherServer_subscriptionsForStream___block_invoke(ui
   }
 
   v16 = 0;
-  if (v11)
+  if (identifierCopy)
   {
-    if (v13)
+    if (eventCopy)
     {
       v31 = 0;
-      v16 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v13 requiringSecureCoding:1 error:&v31];
+      v16 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:eventCopy requiringSecureCoding:1 error:&v31];
       v17 = v31;
       if (v17)
       {
         empty = v17;
-        v19 = __biome_log_for_category();
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+        publisher = __biome_log_for_category();
+        if (os_log_type_enabled(publisher, OS_LOG_TYPE_ERROR))
         {
           [BMComputePublisherServer receiveInputForSubscription:streamIdentifier:timestamp:storeEvent:];
         }
@@ -1251,49 +1251,49 @@ LABEL_16:
     }
   }
 
-  if ([v10 waking])
+  if ([subscriptionCopy waking])
   {
     empty = xpc_dictionary_create_empty();
-    v20 = [v10 identifier];
-    xpc_dictionary_set_string(empty, "identifier", [v20 UTF8String]);
+    identifier = [subscriptionCopy identifier];
+    xpc_dictionary_set_string(empty, "identifier", [identifier UTF8String]);
 
-    if (v12)
+    if (timestampCopy)
     {
-      [v12 doubleValue];
+      [timestampCopy doubleValue];
       xpc_dictionary_set_double(empty, "timestamp", v21);
     }
 
     if (v16)
     {
       xpc_dictionary_set_data(empty, "event", [v16 bytes], objc_msgSend(v16, "length"));
-      xpc_dictionary_set_string(empty, "stream", [v11 UTF8String]);
+      xpc_dictionary_set_string(empty, "stream", [identifierCopy UTF8String]);
     }
 
-    v19 = [(BMComputePublisherServer *)self publisher];
-    [v10 token];
+    publisher = [(BMComputePublisherServer *)self publisher];
+    [subscriptionCopy token];
     xpc_event_publisher_fire();
     goto LABEL_16;
   }
 
-  empty = [v10 connection];
+  empty = [subscriptionCopy connection];
   if (empty)
   {
-    v22 = [v10 connection];
+    connection = [subscriptionCopy connection];
     v26 = MEMORY[0x1E69E9820];
     v27 = 3221225472;
     v28 = __94__BMComputePublisherServer_receiveInputForSubscription_streamIdentifier_timestamp_storeEvent___block_invoke;
     v29 = &unk_1E6E53620;
-    v23 = v10;
+    v23 = subscriptionCopy;
     v30 = v23;
-    v24 = [v22 remoteObjectProxyWithErrorHandler:&v26];
+    v24 = [connection remoteObjectProxyWithErrorHandler:&v26];
 
-    v25 = [v23 identifier];
-    [v24 receiveInputForIdentifier:v25 streamIdentifier:v11 storeEvent:v13];
+    identifier2 = [v23 identifier];
+    [v24 receiveInputForIdentifier:identifier2 streamIdentifier:identifierCopy storeEvent:eventCopy];
   }
 
   else
   {
-    [v10 setPendingDemand:1];
+    [subscriptionCopy setPendingDemand:1];
   }
 
 LABEL_20:
@@ -1316,9 +1316,9 @@ void __94__BMComputePublisherServer_receiveInputForSubscription_streamIdentifier
   v5 = NSStringFromClass(v4);
   domain = self->_domain;
   v7 = BMStringForServiceDomain();
-  v8 = [(BMComputePublisherServer *)self listener];
-  v9 = [v8 serviceName];
-  v10 = [v3 initWithFormat:@"%@ for domain: %@, listener: %@", v5, v7, v9];
+  listener = [(BMComputePublisherServer *)self listener];
+  serviceName = [listener serviceName];
+  v10 = [v3 initWithFormat:@"%@ for domain: %@, listener: %@", v5, v7, serviceName];
 
   return v10;
 }

@@ -1,37 +1,37 @@
 @interface WBSTrialSearchParameters
 + (NSArray)searchParameters;
 + (id)codePathUUIDForHideIgnoredSiriSuggestedWebsites;
-+ (id)getSearchParametersHelper:(id)a3 withTrial:(id)a4 withCache:(BOOL)a5;
++ (id)getSearchParametersHelper:(id)helper withTrial:(id)trial withCache:(BOOL)cache;
 - (BOOL)checkServerCompletionForPrefixNavigationalIntent;
 - (NSNumber)prefixNavigationalIntentThreshold;
 - (WBSTrialSearchParameters)init;
-- (WBSTrialSearchParameters)initWithCoder:(id)a3;
-- (WBSTrialSearchParameters)initWithPreferences:(id)a3;
-- (WBSTrialSearchParameters)initWithTrial:(BOOL)a3 forPrefs:(id)a4 forTrial:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateUsingPreferenceKeys:(id)a3;
+- (WBSTrialSearchParameters)initWithCoder:(id)coder;
+- (WBSTrialSearchParameters)initWithPreferences:(id)preferences;
+- (WBSTrialSearchParameters)initWithTrial:(BOOL)trial forPrefs:(id)prefs forTrial:(id)forTrial;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateUsingPreferenceKeys:(id)keys;
 - (void)updateWithDefaults;
-- (void)updateWithTrial:(BOOL)a3 forTrial:(id)a4;
+- (void)updateWithTrial:(BOOL)trial forTrial:(id)forTrial;
 @end
 
 @implementation WBSTrialSearchParameters
 
 + (NSArray)searchParameters
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
   v3 = +[WBSTrialManager shared];
-  v4 = [WBSTrialSearchParameters getSearchParametersHelper:v2 withTrial:v3 withCache:1];
+  v4 = [WBSTrialSearchParameters getSearchParametersHelper:standardUserDefaults withTrial:v3 withCache:1];
 
   return v4;
 }
 
-+ (id)getSearchParametersHelper:(id)a3 withTrial:(id)a4 withCache:(BOOL)a5
++ (id)getSearchParametersHelper:(id)helper withTrial:(id)trial withCache:(BOOL)cache
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E695DF70] array];
+  helperCopy = helper;
+  trialCopy = trial;
+  array = [MEMORY[0x1E695DF70] array];
   v10 = standard_params;
-  if (!standard_params || !a5)
+  if (!standard_params || !cache)
   {
     v11 = objc_alloc_init(WBSTrialSearchParameters);
     v12 = standard_params;
@@ -40,36 +40,36 @@
     v10 = standard_params;
   }
 
-  [v10 updateUsingPreferenceKeys:v7];
-  if (v8 && [v8 isReady] && objc_msgSend(v8, "inExperiment"))
+  [v10 updateUsingPreferenceKeys:helperCopy];
+  if (trialCopy && [trialCopy isReady] && objc_msgSend(trialCopy, "inExperiment"))
   {
     v13 = trial_params;
-    if (!trial_params || !a5)
+    if (!trial_params || !cache)
     {
-      if ([v8 runCFFlow])
+      if ([trialCopy runCFFlow])
       {
-        v14 = [[WBSTrialSearchParameters alloc] initWithTrial:1 forPrefs:v7 forTrial:v8];
-        [v9 addObject:v14];
+        v14 = [[WBSTrialSearchParameters alloc] initWithTrial:1 forPrefs:helperCopy forTrial:trialCopy];
+        [array addObject:v14];
       }
 
-      v15 = [[WBSTrialSearchParameters alloc] initWithTrial:0 forPrefs:v7 forTrial:v8];
-      [v9 addObject:v15];
+      v15 = [[WBSTrialSearchParameters alloc] initWithTrial:0 forPrefs:helperCopy forTrial:trialCopy];
+      [array addObject:v15];
 
-      objc_storeStrong(&trial_params, v9);
+      objc_storeStrong(&trial_params, array);
       v13 = trial_params;
     }
 
     v16 = v13;
 
-    v9 = v16;
+    array = v16;
   }
 
   else
   {
-    [v9 addObject:standard_params];
+    [array addObject:standard_params];
   }
 
-  return v9;
+  return array;
 }
 
 + (id)codePathUUIDForHideIgnoredSiriSuggestedWebsites
@@ -106,9 +106,9 @@ void __75__WBSTrialSearchParameters_codePathUUIDForHideIgnoredSiriSuggestedWebsi
   return v3;
 }
 
-- (WBSTrialSearchParameters)initWithPreferences:(id)a3
+- (WBSTrialSearchParameters)initWithPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v11.receiver = self;
   v11.super_class = WBSTrialSearchParameters;
   v5 = [(WBSTrialSearchParameters *)&v11 init];
@@ -116,15 +116,15 @@ void __75__WBSTrialSearchParameters_codePathUUIDForHideIgnoredSiriSuggestedWebsi
   if (v5)
   {
     [(WBSTrialSearchParameters *)v5 updateWithDefaults];
-    v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-    if (v4)
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    if (preferencesCopy)
     {
-      v8 = v4;
+      v8 = preferencesCopy;
 
-      v7 = v8;
+      standardUserDefaults = v8;
     }
 
-    [(WBSTrialSearchParameters *)v6 updateUsingPreferenceKeys:v7];
+    [(WBSTrialSearchParameters *)v6 updateUsingPreferenceKeys:standardUserDefaults];
     v9 = v6;
   }
 
@@ -148,26 +148,26 @@ void __75__WBSTrialSearchParameters_codePathUUIDForHideIgnoredSiriSuggestedWebsi
   self->_thresholdForHidingIgnoredSiriSuggestedSites = -1;
 }
 
-- (void)updateUsingPreferenceKeys:(id)a3
+- (void)updateUsingPreferenceKeys:(id)keys
 {
-  v8 = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  if (v8)
+  keysCopy = keys;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  if (keysCopy)
   {
-    v5 = v8;
+    v5 = keysCopy;
 
-    v4 = v5;
+    standardUserDefaults = v5;
   }
 
-  if ([v4 BOOLForKey:@"WBSSearchRelevanceOverrideDefaults"])
+  if ([standardUserDefaults BOOLForKey:@"WBSSearchRelevanceOverrideDefaults"])
   {
-    if ([v4 BOOLForKey:@"WBSDisableTrial"])
+    if ([standardUserDefaults BOOLForKey:@"WBSDisableTrial"])
     {
-      self->_isResultFilteringDisabled = [v4 BOOLForKey:@"WBSDebugDisableResultFiltering"];
-      self->_isDedupeThroughAlternativeURLsEnabled = [v4 BOOLForKey:@"WBSSearchRelevanceServerAssistedDeduplication"];
-      self->_enableCompletionListHistoryDeduplicationValue = [v4 BOOLForKey:@"WBSSearchRelevanceHistoryDeduplication"];
-      self->_enableCompletionListHistoryDeduplicationSwitchToTabValue = [v4 BOOLForKey:@"WBSSearchRelevanceHistoryDeduplicationSwitchToTab"];
-      v6 = [v4 BOOLForKey:@"WBSSearchRelevanceDecayResults"];
+      self->_isResultFilteringDisabled = [standardUserDefaults BOOLForKey:@"WBSDebugDisableResultFiltering"];
+      self->_isDedupeThroughAlternativeURLsEnabled = [standardUserDefaults BOOLForKey:@"WBSSearchRelevanceServerAssistedDeduplication"];
+      self->_enableCompletionListHistoryDeduplicationValue = [standardUserDefaults BOOLForKey:@"WBSSearchRelevanceHistoryDeduplication"];
+      self->_enableCompletionListHistoryDeduplicationSwitchToTabValue = [standardUserDefaults BOOLForKey:@"WBSSearchRelevanceHistoryDeduplicationSwitchToTab"];
+      v6 = [standardUserDefaults BOOLForKey:@"WBSSearchRelevanceDecayResults"];
       v7 = 0.0;
       if (v6)
       {
@@ -175,42 +175,42 @@ void __75__WBSTrialSearchParameters_codePathUUIDForHideIgnoredSiriSuggestedWebsi
       }
 
       self->_normalizedTopSitesScoreAndVisitCountMultiplier = v7;
-      self->_strengthenAutocompleteTriggerExtensionMatching = [v4 BOOLForKey:@"WBSSearchRelevanceStrengthenAutocompleteTriggerExtensionMatching"];
+      self->_strengthenAutocompleteTriggerExtensionMatching = [standardUserDefaults BOOLForKey:@"WBSSearchRelevanceStrengthenAutocompleteTriggerExtensionMatching"];
     }
 
-    if (([v4 BOOLForKey:@"WBSSearchRelevanceOverrideDefaults"] & 1) == 0)
+    if (([standardUserDefaults BOOLForKey:@"WBSSearchRelevanceOverrideDefaults"] & 1) == 0)
     {
       [(WBSTrialSearchParameters *)self updateWithDefaults];
     }
   }
 }
 
-- (WBSTrialSearchParameters)initWithTrial:(BOOL)a3 forPrefs:(id)a4 forTrial:(id)a5
+- (WBSTrialSearchParameters)initWithTrial:(BOOL)trial forPrefs:(id)prefs forTrial:(id)forTrial
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  trialCopy = trial;
+  prefsCopy = prefs;
+  forTrialCopy = forTrial;
   v21.receiver = self;
   v21.super_class = WBSTrialSearchParameters;
   v10 = [(WBSTrialSearchParameters *)&v21 init];
   if (v10)
   {
-    v11 = [MEMORY[0x1E695E000] standardUserDefaults];
-    if (v8)
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    if (prefsCopy)
     {
-      v12 = v8;
+      v12 = prefsCopy;
 
-      v11 = v12;
+      standardUserDefaults = v12;
     }
 
-    v13 = [MEMORY[0x1E69C8A48] sharedObserver];
-    [v13 setDelegate:v10];
+    mEMORY[0x1E69C8A48] = [MEMORY[0x1E69C8A48] sharedObserver];
+    [mEMORY[0x1E69C8A48] setDelegate:v10];
 
     [(WBSTrialSearchParameters *)v10 updateWithDefaults];
     v14 = +[WBSTrialManager shared];
-    if (v9)
+    if (forTrialCopy)
     {
-      v15 = v9;
+      v15 = forTrialCopy;
 
       v14 = v15;
     }
@@ -222,9 +222,9 @@ void __75__WBSTrialSearchParameters_codePathUUIDForHideIgnoredSiriSuggestedWebsi
     v16 = v10;
     v20 = v16;
     dispatch_async(MEMORY[0x1E69E96A0], block);
-    if (([v14 inExperiment] & 1) != 0 && (objc_msgSend(v11, "BOOLForKey:", @"WBSSearchRelevanceOverrideDefaults") & 1) == 0 && (objc_msgSend(v11, "BOOLForKey:", @"WBSDisableTrial") & 1) == 0)
+    if (([v14 inExperiment] & 1) != 0 && (objc_msgSend(standardUserDefaults, "BOOLForKey:", @"WBSSearchRelevanceOverrideDefaults") & 1) == 0 && (objc_msgSend(standardUserDefaults, "BOOLForKey:", @"WBSDisableTrial") & 1) == 0)
     {
-      [(WBSTrialSearchParameters *)v16 updateWithTrial:v6 forTrial:v14];
+      [(WBSTrialSearchParameters *)v16 updateWithTrial:trialCopy forTrial:v14];
     }
 
     v17 = v16;
@@ -239,19 +239,19 @@ void __60__WBSTrialSearchParameters_initWithTrial_forPrefs_forTrial___block_invo
   [v2 postNotificationName:*MEMORY[0x1E69C8D88] object:*(a1 + 32)];
 }
 
-- (void)updateWithTrial:(BOOL)a3 forTrial:(id)a4
+- (void)updateWithTrial:(BOOL)trial forTrial:(id)forTrial
 {
-  v4 = a3;
-  v17 = a4;
+  trialCopy = trial;
+  forTrialCopy = forTrial;
   v6 = +[WBSTrialManager shared];
-  if (v17)
+  if (forTrialCopy)
   {
-    v7 = v17;
+    v7 = forTrialCopy;
 
     v6 = v7;
   }
 
-  if (v4)
+  if (trialCopy)
   {
     self->_isCFSearch = 1;
     [v6 CFSearchTimeoutForDefault:0.06];
@@ -260,22 +260,22 @@ void __60__WBSTrialSearchParameters_initWithTrial_forPrefs_forTrial___block_invo
 
   self->_isProvider1Enabled = [v6 getBoolFactor:@"enableProvider1" forCF:0 forDefault:0];
   self->_isProvider2Enabled = [v6 getBoolFactor:@"enableProvider2" forCF:0 forDefault:0];
-  self->_isDedupeThroughAlternativeURLsEnabled = [v6 getBoolFactor:@"enableDedupeThroughAlternativeURLs" forCF:v4 forDefault:0];
-  self->_strengthenAutocompleteTriggerExtensionMatching = [v6 getBoolFactor:@"strengthenAutocompleteTriggerExtensionMatching" forCF:v4 forDefault:0];
-  self->_enableCompletionListHistoryDeduplicationValue = [v6 getBoolFactor:@"enableCompletionListHistoryDeduplication" forCF:v4 forDefault:1];
-  self->_characterThresholdForAnywhereInTitleOrURL = [v6 getIntFactor:@"characterThresholdForAnywhereInTitleOrURL" forCF:v4 forDefault:18];
-  [v6 getFloatFactor:@"percentageThresholdForAnywhereInTitle" forCF:v4 forDefault:0.8];
+  self->_isDedupeThroughAlternativeURLsEnabled = [v6 getBoolFactor:@"enableDedupeThroughAlternativeURLs" forCF:trialCopy forDefault:0];
+  self->_strengthenAutocompleteTriggerExtensionMatching = [v6 getBoolFactor:@"strengthenAutocompleteTriggerExtensionMatching" forCF:trialCopy forDefault:0];
+  self->_enableCompletionListHistoryDeduplicationValue = [v6 getBoolFactor:@"enableCompletionListHistoryDeduplication" forCF:trialCopy forDefault:1];
+  self->_characterThresholdForAnywhereInTitleOrURL = [v6 getIntFactor:@"characterThresholdForAnywhereInTitleOrURL" forCF:trialCopy forDefault:18];
+  [v6 getFloatFactor:@"percentageThresholdForAnywhereInTitle" forCF:trialCopy forDefault:0.8];
   self->_percentageThresholdForAnywhereInTitle = v9;
-  [v6 getFloatFactor:@"percentageThresholdForAnywhereInURL" forCF:v4 forDefault:0.8];
+  [v6 getFloatFactor:@"percentageThresholdForAnywhereInURL" forCF:trialCopy forDefault:0.8];
   self->_percentageThresholdForAnywhereInURL = v10;
-  self->_characterThresholdForStartOfURLPathComponent = [v6 getIntFactor:@"characterThresholdForStartOfURLPathComponent" forCF:v4 forDefault:4];
-  self->_matchingWordsInTitleThreshold = [v6 getIntFactor:@"matchingWordsInTitleThreshold" forCF:v4 forDefault:3];
-  self->_characterThresholdForStartOfTitle = [v6 getIntFactor:@"characterThresholdForStartOfTitle" forCF:v4 forDefault:3];
-  self->_characterThresholdForStartOfTitleWord = [v6 getIntFactor:@"characterThresholdForStartOfTitleWord" forCF:v4 forDefault:4];
-  self->_characterThresholdForStartOfURL = [v6 getIntFactor:@"characterThresholdForStartOfURL" forCF:v4 forDefault:3];
-  self->_normalizedTopSitesScoreAndVisitCountMultiplier = [v6 getIntFactor:@"normalizedTopSitesScoreAndVisitCountMultiplier" forCF:v4 forDefault:4];
-  self->_maxBookmarksAndHistoryItems = [v6 getIntFactor:@"maxBookmarksAndHistoryItems" forCF:v4 forDefault:-1];
-  self->_isPostFixSuggestionsEnabled = [v6 getBoolFactor:@"enablePostFixSearchEngineSuggestions" forCF:v4 forDefault:{objc_msgSend(MEMORY[0x1E69C8880], "isPostFixSuggestionsEnabled")}];
+  self->_characterThresholdForStartOfURLPathComponent = [v6 getIntFactor:@"characterThresholdForStartOfURLPathComponent" forCF:trialCopy forDefault:4];
+  self->_matchingWordsInTitleThreshold = [v6 getIntFactor:@"matchingWordsInTitleThreshold" forCF:trialCopy forDefault:3];
+  self->_characterThresholdForStartOfTitle = [v6 getIntFactor:@"characterThresholdForStartOfTitle" forCF:trialCopy forDefault:3];
+  self->_characterThresholdForStartOfTitleWord = [v6 getIntFactor:@"characterThresholdForStartOfTitleWord" forCF:trialCopy forDefault:4];
+  self->_characterThresholdForStartOfURL = [v6 getIntFactor:@"characterThresholdForStartOfURL" forCF:trialCopy forDefault:3];
+  self->_normalizedTopSitesScoreAndVisitCountMultiplier = [v6 getIntFactor:@"normalizedTopSitesScoreAndVisitCountMultiplier" forCF:trialCopy forDefault:4];
+  self->_maxBookmarksAndHistoryItems = [v6 getIntFactor:@"maxBookmarksAndHistoryItems" forCF:trialCopy forDefault:-1];
+  self->_isPostFixSuggestionsEnabled = [v6 getBoolFactor:@"enablePostFixSearchEngineSuggestions" forCF:trialCopy forDefault:{objc_msgSend(MEMORY[0x1E69C8880], "isPostFixSuggestionsEnabled")}];
   v11 = [v6 getNumberFactorWithName:@"enablePrefixNavigationalIntent"];
   prefixNavigationalIntentThreshold = self->_prefixNavigationalIntentThreshold;
   self->_prefixNavigationalIntentThreshold = v11;
@@ -287,9 +287,9 @@ void __60__WBSTrialSearchParameters_initWithTrial_forPrefs_forTrial___block_invo
     self->_prefixNavigationalIntentThreshold = v13;
   }
 
-  self->_checkServerCompletionForPrefixNavigationalIntent = [v6 getBoolFactor:@"checkServerCompletionForPrefixNavigationalIntent" forCF:v4 forDefault:{+[WBSDefaultSearchParameters checkServerCompletionForPrefixNavigationalIntent](WBSDefaultSearchParameters, "checkServerCompletionForPrefixNavigationalIntent")}];
-  self->_thresholdForHidingIgnoredSiriSuggestedSites = [v6 getIntFactor:@"thresholdForHidingIgnoredSiriSuggestedSites" forCF:v4 forDefault:-1];
-  self->_shouldHideIgnoredSiriSuggestedSites = [v6 getBoolFactor:@"shouldHideIgnoredSiriSuggestedSites" forCF:v4 forDefault:1];
+  self->_checkServerCompletionForPrefixNavigationalIntent = [v6 getBoolFactor:@"checkServerCompletionForPrefixNavigationalIntent" forCF:trialCopy forDefault:{+[WBSDefaultSearchParameters checkServerCompletionForPrefixNavigationalIntent](WBSDefaultSearchParameters, "checkServerCompletionForPrefixNavigationalIntent")}];
+  self->_thresholdForHidingIgnoredSiriSuggestedSites = [v6 getIntFactor:@"thresholdForHidingIgnoredSiriSuggestedSites" forCF:trialCopy forDefault:-1];
+  self->_shouldHideIgnoredSiriSuggestedSites = [v6 getBoolFactor:@"shouldHideIgnoredSiriSuggestedSites" forCF:trialCopy forDefault:1];
   v15 = [v6 stringFactorWithName:@"codepathIDs"];
   codepathIDs = self->_codepathIDs;
   self->_codepathIDs = v15;
@@ -301,9 +301,9 @@ void __60__WBSTrialSearchParameters_initWithTrial_forPrefs_forTrial___block_invo
   if ([v3 isReady])
   {
     v4 = +[WBSTrialManager shared];
-    v5 = [v4 inExperiment];
+    inExperiment = [v4 inExperiment];
 
-    if (v5)
+    if (inExperiment)
     {
       v6 = self->_prefixNavigationalIntentThreshold;
       goto LABEL_6;
@@ -326,9 +326,9 @@ LABEL_6:
   if ([v3 isReady])
   {
     v4 = +[WBSTrialManager shared];
-    v5 = [v4 inExperiment];
+    inExperiment = [v4 inExperiment];
 
-    if (v5)
+    if (inExperiment)
     {
       return self->_checkServerCompletionForPrefixNavigationalIntent;
     }
@@ -341,41 +341,41 @@ LABEL_6:
   return +[WBSDefaultSearchParameters checkServerCompletionForPrefixNavigationalIntent];
 }
 
-- (WBSTrialSearchParameters)initWithCoder:(id)a3
+- (WBSTrialSearchParameters)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = WBSTrialSearchParameters;
   v5 = [(WBSTrialSearchParameters *)&v14 init];
   if (v5)
   {
-    v5->_isCFSearch = [v4 decodeBoolForKey:@"isCFSearch"];
-    [v4 decodeFloatForKey:@"CFSearchTimeout"];
+    v5->_isCFSearch = [coderCopy decodeBoolForKey:@"isCFSearch"];
+    [coderCopy decodeFloatForKey:@"CFSearchTimeout"];
     v5->_CFSearchTimeout = v6;
-    v5->_isProvider1Enabled = [v4 decodeBoolForKey:@"isProvider1Enabled"];
-    v5->_isProvider2Enabled = [v4 decodeBoolForKey:@"isProvider2Enabled"];
-    v5->_isResultFilteringDisabled = [v4 decodeBoolForKey:@"isResultFilteringDisabled"];
-    v5->_isDedupeThroughAlternativeURLsEnabled = [v4 decodeBoolForKey:@"isDedupeThroughAlternativeURLsEnabled"];
-    v5->_strengthenAutocompleteTriggerExtensionMatching = [v4 decodeBoolForKey:@"strengthenAutocompleteTriggerExtensionMatching"];
-    v5->_enableCompletionListHistoryDeduplicationValue = [v4 decodeBoolForKey:@"enableCompletionListHistoryDeduplicationValue"];
-    v5->_enableCompletionListHistoryDeduplicationSwitchToTabValue = [v4 decodeBoolForKey:@"enableCompletionListHistoryDeduplicationSwitchToTabValue"];
-    v5->_characterThresholdForAnywhereInTitleOrURL = [v4 decodeIntegerForKey:@"characterThresholdForAnywhereInTitleOrURL"];
-    [v4 decodeFloatForKey:@"percentageThresholdForAnywhereInTitle"];
+    v5->_isProvider1Enabled = [coderCopy decodeBoolForKey:@"isProvider1Enabled"];
+    v5->_isProvider2Enabled = [coderCopy decodeBoolForKey:@"isProvider2Enabled"];
+    v5->_isResultFilteringDisabled = [coderCopy decodeBoolForKey:@"isResultFilteringDisabled"];
+    v5->_isDedupeThroughAlternativeURLsEnabled = [coderCopy decodeBoolForKey:@"isDedupeThroughAlternativeURLsEnabled"];
+    v5->_strengthenAutocompleteTriggerExtensionMatching = [coderCopy decodeBoolForKey:@"strengthenAutocompleteTriggerExtensionMatching"];
+    v5->_enableCompletionListHistoryDeduplicationValue = [coderCopy decodeBoolForKey:@"enableCompletionListHistoryDeduplicationValue"];
+    v5->_enableCompletionListHistoryDeduplicationSwitchToTabValue = [coderCopy decodeBoolForKey:@"enableCompletionListHistoryDeduplicationSwitchToTabValue"];
+    v5->_characterThresholdForAnywhereInTitleOrURL = [coderCopy decodeIntegerForKey:@"characterThresholdForAnywhereInTitleOrURL"];
+    [coderCopy decodeFloatForKey:@"percentageThresholdForAnywhereInTitle"];
     v5->_percentageThresholdForAnywhereInTitle = v7;
-    [v4 decodeFloatForKey:@"percentageThresholdForAnywhereInURL"];
+    [coderCopy decodeFloatForKey:@"percentageThresholdForAnywhereInURL"];
     v5->_percentageThresholdForAnywhereInURL = v8;
-    v5->_characterThresholdForStartOfURLPathComponent = [v4 decodeIntegerForKey:@"characterThresholdForStartOfURLPathComponent"];
-    v5->_matchingWordsInTitleThreshold = [v4 decodeIntegerForKey:@"matchingWordsInTitleThreshold"];
-    v5->_characterThresholdForStartOfTitle = [v4 decodeIntegerForKey:@"characterThresholdForStartOfTitle"];
-    v5->_characterThresholdForStartOfTitleWord = [v4 decodeIntegerForKey:@"characterThresholdForStartOfTitleWord"];
-    v5->_characterThresholdForStartOfTitleWordMatchLongEnoughForTopHit = [v4 decodeIntegerForKey:@"characterThresholdForStartOfTitleWordMatchLongEnoughForTopHit"];
-    v5->_characterThresholdForStartOfURL = [v4 decodeIntegerForKey:@"characterThresholdForStartOfURL"];
-    v5->_maxBookmarksAndHistoryItems = [v4 decodeIntegerForKey:@"maxBookmarksAndHistoryItems"];
-    [v4 decodeFloatForKey:@"normalizedTopSitesScoreAndVisitCountMultiplier"];
+    v5->_characterThresholdForStartOfURLPathComponent = [coderCopy decodeIntegerForKey:@"characterThresholdForStartOfURLPathComponent"];
+    v5->_matchingWordsInTitleThreshold = [coderCopy decodeIntegerForKey:@"matchingWordsInTitleThreshold"];
+    v5->_characterThresholdForStartOfTitle = [coderCopy decodeIntegerForKey:@"characterThresholdForStartOfTitle"];
+    v5->_characterThresholdForStartOfTitleWord = [coderCopy decodeIntegerForKey:@"characterThresholdForStartOfTitleWord"];
+    v5->_characterThresholdForStartOfTitleWordMatchLongEnoughForTopHit = [coderCopy decodeIntegerForKey:@"characterThresholdForStartOfTitleWordMatchLongEnoughForTopHit"];
+    v5->_characterThresholdForStartOfURL = [coderCopy decodeIntegerForKey:@"characterThresholdForStartOfURL"];
+    v5->_maxBookmarksAndHistoryItems = [coderCopy decodeIntegerForKey:@"maxBookmarksAndHistoryItems"];
+    [coderCopy decodeFloatForKey:@"normalizedTopSitesScoreAndVisitCountMultiplier"];
     v5->_normalizedTopSitesScoreAndVisitCountMultiplier = v9;
-    v5->_thresholdForHidingIgnoredSiriSuggestedSites = [v4 decodeIntegerForKey:@"thresholdForHidingIgnoredSiriSuggestedSites"];
-    v5->_shouldHideIgnoredSiriSuggestedSites = [v4 decodeBoolForKey:@"shouldHideIgnoredSiriSuggestedSites"];
-    v10 = [v4 decodeObjectForKey:@"codepathIDs"];
+    v5->_thresholdForHidingIgnoredSiriSuggestedSites = [coderCopy decodeIntegerForKey:@"thresholdForHidingIgnoredSiriSuggestedSites"];
+    v5->_shouldHideIgnoredSiriSuggestedSites = [coderCopy decodeBoolForKey:@"shouldHideIgnoredSiriSuggestedSites"];
+    v10 = [coderCopy decodeObjectForKey:@"codepathIDs"];
     codepathIDs = v5->_codepathIDs;
     v5->_codepathIDs = v10;
 
@@ -385,40 +385,40 @@ LABEL_6:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  [v8 encodeBool:self->_isCFSearch forKey:@"isCFSearch"];
+  coderCopy = coder;
+  [coderCopy encodeBool:self->_isCFSearch forKey:@"isCFSearch"];
   CFSearchTimeout = self->_CFSearchTimeout;
   *&CFSearchTimeout = CFSearchTimeout;
-  [v8 encodeFloat:@"CFSearchTimeout" forKey:CFSearchTimeout];
-  [v8 encodeBool:self->_isProvider1Enabled forKey:@"isProvider1Enabled"];
-  [v8 encodeBool:self->_isProvider2Enabled forKey:@"isProvider2Enabled"];
-  [v8 encodeBool:self->_isResultFilteringDisabled forKey:@"isResultFilteringDisabled"];
-  [v8 encodeBool:self->_isDedupeThroughAlternativeURLsEnabled forKey:@"isDedupeThroughAlternativeURLsEnabled"];
-  [v8 encodeBool:self->_strengthenAutocompleteTriggerExtensionMatching forKey:@"strengthenAutocompleteTriggerExtensionMatching"];
-  [v8 encodeBool:self->_enableCompletionListHistoryDeduplicationValue forKey:@"enableCompletionListHistoryDeduplicationValue"];
-  [v8 encodeBool:self->_enableCompletionListHistoryDeduplicationSwitchToTabValue forKey:@"enableCompletionListHistoryDeduplicationSwitchToTabValue"];
-  [v8 encodeInteger:self->_characterThresholdForAnywhereInTitleOrURL forKey:@"characterThresholdForAnywhereInTitleOrURL"];
+  [coderCopy encodeFloat:@"CFSearchTimeout" forKey:CFSearchTimeout];
+  [coderCopy encodeBool:self->_isProvider1Enabled forKey:@"isProvider1Enabled"];
+  [coderCopy encodeBool:self->_isProvider2Enabled forKey:@"isProvider2Enabled"];
+  [coderCopy encodeBool:self->_isResultFilteringDisabled forKey:@"isResultFilteringDisabled"];
+  [coderCopy encodeBool:self->_isDedupeThroughAlternativeURLsEnabled forKey:@"isDedupeThroughAlternativeURLsEnabled"];
+  [coderCopy encodeBool:self->_strengthenAutocompleteTriggerExtensionMatching forKey:@"strengthenAutocompleteTriggerExtensionMatching"];
+  [coderCopy encodeBool:self->_enableCompletionListHistoryDeduplicationValue forKey:@"enableCompletionListHistoryDeduplicationValue"];
+  [coderCopy encodeBool:self->_enableCompletionListHistoryDeduplicationSwitchToTabValue forKey:@"enableCompletionListHistoryDeduplicationSwitchToTabValue"];
+  [coderCopy encodeInteger:self->_characterThresholdForAnywhereInTitleOrURL forKey:@"characterThresholdForAnywhereInTitleOrURL"];
   percentageThresholdForAnywhereInTitle = self->_percentageThresholdForAnywhereInTitle;
   *&percentageThresholdForAnywhereInTitle = percentageThresholdForAnywhereInTitle;
-  [v8 encodeFloat:@"percentageThresholdForAnywhereInTitle" forKey:percentageThresholdForAnywhereInTitle];
+  [coderCopy encodeFloat:@"percentageThresholdForAnywhereInTitle" forKey:percentageThresholdForAnywhereInTitle];
   percentageThresholdForAnywhereInURL = self->_percentageThresholdForAnywhereInURL;
   *&percentageThresholdForAnywhereInURL = percentageThresholdForAnywhereInURL;
-  [v8 encodeFloat:@"percentageThresholdForAnywhereInURL" forKey:percentageThresholdForAnywhereInURL];
-  [v8 encodeInteger:self->_characterThresholdForStartOfURLPathComponent forKey:@"characterThresholdForStartOfURLPathComponent"];
-  [v8 encodeInteger:self->_matchingWordsInTitleThreshold forKey:@"matchingWordsInTitleThreshold"];
-  [v8 encodeInteger:self->_characterThresholdForStartOfTitle forKey:@"characterThresholdForStartOfTitle"];
-  [v8 encodeInteger:self->_characterThresholdForStartOfTitleWord forKey:@"characterThresholdForStartOfTitleWord"];
-  [v8 encodeInteger:self->_characterThresholdForStartOfTitleWordMatchLongEnoughForTopHit forKey:@"characterThresholdForStartOfTitleWordMatchLongEnoughForTopHit"];
-  [v8 encodeInteger:self->_characterThresholdForStartOfURL forKey:@"characterThresholdForStartOfURL"];
-  [v8 encodeInteger:self->_maxBookmarksAndHistoryItems forKey:@"maxBookmarksAndHistoryItems"];
+  [coderCopy encodeFloat:@"percentageThresholdForAnywhereInURL" forKey:percentageThresholdForAnywhereInURL];
+  [coderCopy encodeInteger:self->_characterThresholdForStartOfURLPathComponent forKey:@"characterThresholdForStartOfURLPathComponent"];
+  [coderCopy encodeInteger:self->_matchingWordsInTitleThreshold forKey:@"matchingWordsInTitleThreshold"];
+  [coderCopy encodeInteger:self->_characterThresholdForStartOfTitle forKey:@"characterThresholdForStartOfTitle"];
+  [coderCopy encodeInteger:self->_characterThresholdForStartOfTitleWord forKey:@"characterThresholdForStartOfTitleWord"];
+  [coderCopy encodeInteger:self->_characterThresholdForStartOfTitleWordMatchLongEnoughForTopHit forKey:@"characterThresholdForStartOfTitleWordMatchLongEnoughForTopHit"];
+  [coderCopy encodeInteger:self->_characterThresholdForStartOfURL forKey:@"characterThresholdForStartOfURL"];
+  [coderCopy encodeInteger:self->_maxBookmarksAndHistoryItems forKey:@"maxBookmarksAndHistoryItems"];
   normalizedTopSitesScoreAndVisitCountMultiplier = self->_normalizedTopSitesScoreAndVisitCountMultiplier;
   *&normalizedTopSitesScoreAndVisitCountMultiplier = normalizedTopSitesScoreAndVisitCountMultiplier;
-  [v8 encodeFloat:@"normalizedTopSitesScoreAndVisitCountMultiplier" forKey:normalizedTopSitesScoreAndVisitCountMultiplier];
-  [v8 encodeInteger:self->_thresholdForHidingIgnoredSiriSuggestedSites forKey:@"thresholdForHidingIgnoredSiriSuggestedSites"];
-  [v8 encodeBool:self->_shouldHideIgnoredSiriSuggestedSites forKey:@"shouldHideIgnoredSiriSuggestedSites"];
-  [v8 encodeObject:self->_codepathIDs forKey:@"codepathIDs"];
+  [coderCopy encodeFloat:@"normalizedTopSitesScoreAndVisitCountMultiplier" forKey:normalizedTopSitesScoreAndVisitCountMultiplier];
+  [coderCopy encodeInteger:self->_thresholdForHidingIgnoredSiriSuggestedSites forKey:@"thresholdForHidingIgnoredSiriSuggestedSites"];
+  [coderCopy encodeBool:self->_shouldHideIgnoredSiriSuggestedSites forKey:@"shouldHideIgnoredSiriSuggestedSites"];
+  [coderCopy encodeObject:self->_codepathIDs forKey:@"codepathIDs"];
 }
 
 @end

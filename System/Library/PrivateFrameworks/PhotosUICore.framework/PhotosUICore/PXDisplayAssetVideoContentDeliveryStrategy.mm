@@ -4,9 +4,9 @@
 - (CGSize)targetSize;
 - (NSString)identifier;
 - (PXDisplayAssetVideoContentDeliveryStrategy)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setSegmentTimeRange:(id *)a3;
+- (void)setSegmentTimeRange:(id *)range;
 @end
 
 @implementation PXDisplayAssetVideoContentDeliveryStrategy
@@ -20,11 +20,11 @@
   return result;
 }
 
-- (void)setSegmentTimeRange:(id *)a3
+- (void)setSegmentTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var3;
-  *&self->_segmentTimeRange.duration.timescale = *&a3->var1.var1;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var0.var3;
+  *&self->_segmentTimeRange.duration.timescale = *&range->var1.var1;
   *&self->_segmentTimeRange.start.epoch = v4;
   *&self->_segmentTimeRange.start.value = v3;
 }
@@ -43,17 +43,17 @@
   v19.receiver = self;
   v19.super_class = PXDisplayAssetVideoContentDeliveryStrategy;
   v3 = [(PXDisplayAssetVideoContentDeliveryStrategy *)&v19 description];
-  v4 = [(PXDisplayAssetVideoContentDeliveryStrategy *)self quality];
-  if (v4 >= 6)
+  quality = [(PXDisplayAssetVideoContentDeliveryStrategy *)self quality];
+  if (quality >= 6)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v17 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *PXVideoContentDeliveryQualityDescription(PXVideoContentDeliveryQuality)"];
-    [v16 handleFailureInFunction:v17 file:@"PXDisplayAssetVideoContentProvider.m" lineNumber:702 description:@"Code which should be unreachable has been reached"];
+    [currentHandler handleFailureInFunction:v17 file:@"PXDisplayAssetVideoContentProvider.m" lineNumber:702 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v5 = off_1E772C750[v4];
+  v5 = off_1E772C750[quality];
   [(PXDisplayAssetVideoContentDeliveryStrategy *)self segmentTimeRange];
   v6 = PXCMTimeRangeDescription(v18);
   if ([(PXDisplayAssetVideoContentDeliveryStrategy *)self isStreamingAllowed])
@@ -115,7 +115,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [(PXDisplayAssetVideoContentDeliveryStrategy *)self segmentTimeRange];

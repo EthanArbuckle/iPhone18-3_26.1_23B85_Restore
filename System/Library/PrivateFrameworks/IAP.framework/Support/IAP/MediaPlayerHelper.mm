@@ -15,19 +15,19 @@
 - (double)currentPlaybackTime;
 - (double)nowPlayingAppPlaybackRate;
 - (double)nowPlayingAppPlaybackSpeed;
-- (id)_nowPlayingInfoDesc:(id)a3;
+- (id)_nowPlayingInfoDesc:(id)desc;
 - (id)currentNowPlayingInfoArtwork;
-- (id)currentNowPlayingInfoString:(id)a3;
+- (id)currentNowPlayingInfoString:(id)string;
 - (id)getPBQItemsFromQueueQuery;
 - (id)nowPlayingAppName;
-- (id)nowPlayingInfoTitleForAudiobookIndex:(unsigned int)a3;
+- (id)nowPlayingInfoTitleForAudiobookIndex:(unsigned int)index;
 - (int)currentRepeatMode;
 - (int)currentShuffleMode;
 - (int)nowPlayingAppPlaybackState;
-- (int)prepareForPlaybackWithQuery:(id)a3 andFirstItem:(id)a4;
+- (int)prepareForPlaybackWithQuery:(id)query andFirstItem:(id)item;
 - (unint64_t)currentNowPlayingInfoPID;
-- (unsigned)_currentNowPlayingInfoTrack:(BOOL)a3;
-- (unsigned)currentNowPlayingInfoNumber:(id)a3;
+- (unsigned)_currentNowPlayingInfoTrack:(BOOL)track;
+- (unsigned)currentNowPlayingInfoNumber:(id)number;
 - (unsigned)currentNowPlayingInfoTrackCount;
 - (unsigned)nowPlayingAppIsIPodApp;
 - (unsigned)nowPlayingAppIsPodcastApp;
@@ -37,36 +37,36 @@
 - (unsigned)nowPlayingAppIsiTunesRadio;
 - (unsigned)nowPlayingAppIsiTunesUApp;
 - (void)_calcNewFakeStreamIndexCount;
-- (void)_canShowCloudTracksDidChangeNotification:(id)a3;
+- (void)_canShowCloudTracksDidChangeNotification:(id)notification;
 - (void)_checkShuffleRepeatModeChange;
-- (void)_findCommandRefForCommand:(unsigned int)a3;
-- (void)_handleNowPlayingAppDidChange:(id)a3;
-- (void)_handleNowPlayingInfo:(__CFDictionary *)a3;
+- (void)_findCommandRefForCommand:(unsigned int)command;
+- (void)_handleNowPlayingAppDidChange:(id)change;
+- (void)_handleNowPlayingInfo:(__CFDictionary *)info;
 - (void)_handlePlaybackQueueDidChange;
-- (void)_itemPlaybackDidEnd:(id)a3;
-- (void)_mediaLibraryChanged:(id)a3;
-- (void)_nowPlayingAppChanged:(id)a3;
-- (void)_nowPlayingAppIsPlayingChanged:(id)a3;
-- (void)_nowPlayingInfoChanged:(id)a3;
-- (void)_nowPlayingItemChanged:(id)a3;
-- (void)_playbackQueueDidChangeNotification:(id)a3;
-- (void)_printNowPlayingInfo:(id)a3 forName:(id)a4;
-- (void)_repeatModeChanged:(id)a3;
+- (void)_itemPlaybackDidEnd:(id)end;
+- (void)_mediaLibraryChanged:(id)changed;
+- (void)_nowPlayingAppChanged:(id)changed;
+- (void)_nowPlayingAppIsPlayingChanged:(id)changed;
+- (void)_nowPlayingInfoChanged:(id)changed;
+- (void)_nowPlayingItemChanged:(id)changed;
+- (void)_playbackQueueDidChangeNotification:(id)notification;
+- (void)_printNowPlayingInfo:(id)info forName:(id)name;
+- (void)_repeatModeChanged:(id)changed;
 - (void)_resetFakeStreamTrackCount;
-- (void)_setNowPlayingApp:(id)a3;
-- (void)_shuffleModeChanged:(id)a3;
-- (void)_startMusicPlayerNotifications:(id)a3;
-- (void)_stopMusicPlayerNotifications:(id)a3;
-- (void)_supportedCommandsDidChange:(__CFArray *)a3;
+- (void)_setNowPlayingApp:(id)app;
+- (void)_shuffleModeChanged:(id)changed;
+- (void)_startMusicPlayerNotifications:(id)notifications;
+- (void)_stopMusicPlayerNotifications:(id)notifications;
+- (void)_supportedCommandsDidChange:(__CFArray *)change;
 - (void)_supportedCommandsDidChangeNotification;
 - (void)_waitForNowPlayingInfoReceived;
 - (void)dealloc;
 - (void)initPBQItemsFromQueueQuery;
 - (void)postFakeShuffleModeChanged;
-- (void)setExpectedRepeatMode:(int)a3;
-- (void)setExpectedShuffleMode:(int)a3;
-- (void)setRepeatModeCache:(int)a3;
-- (void)setShuffleModeCache:(int)a3;
+- (void)setExpectedRepeatMode:(int)mode;
+- (void)setExpectedShuffleMode:(int)mode;
+- (void)setRepeatModeCache:(int)cache;
+- (void)setShuffleModeCache:(int)cache;
 @end
 
 @implementation MediaPlayerHelper
@@ -185,10 +185,10 @@ LABEL_7:
     return;
   }
 
-  v2 = self;
+  selfCopy = self;
   v3 = "[MediaPlayerHelper _waitForNowPlayingInfoReceived]";
   NSLog(@"MR: %s:%d wait for _nowPlayingInfoEverReceived, maxWaitTimeMs %d, maxWaitTimePerIterationMs %d, maxNumIterations %d", a2, "[MediaPlayerHelper _waitForNowPlayingInfoReceived]", 518, 15000, 50, 300);
-  v5 = v2->_nowPlayingInfoEverReceived;
+  v5 = selfCopy->_nowPlayingInfoEverReceived;
   if (v5 > 1)
   {
 LABEL_14:
@@ -198,7 +198,7 @@ LABEL_8:
       __break(0x550Au);
 LABEL_9:
       NSLog(@"WARNING timedout waiting for nowPlayingInfo dictionary!, playback information may not be correct", a2);
-      v5 = v2->_nowPlayingInfoEverReceived;
+      v5 = selfCopy->_nowPlayingInfoEverReceived;
     }
 
     while (v5 > 1);
@@ -217,7 +217,7 @@ LABEL_9:
 
       v6 = (v6 + 1);
       usleep(0xC350u);
-      v5 = v2->_nowPlayingInfoEverReceived;
+      v5 = selfCopy->_nowPlayingInfoEverReceived;
       if (v5 >= 2)
       {
         goto LABEL_8;
@@ -228,9 +228,9 @@ LABEL_9:
   NSLog(@"MR: %s:%d after waiting for _nowPlayingInfoEverReceived(%d), iteration %d / %d", v3, 529, v5, v6, 300);
 }
 
-- (void)_startMusicPlayerNotifications:(id)a3
+- (void)_startMusicPlayerNotifications:(id)notifications
 {
-  NSLog(@"system music player installed!", a2, a3);
+  NSLog(@"system music player installed!", a2, notifications);
   v4 = +[MediaPlayerHelper sharedSystemMusicPlayerQueue];
   if (v4)
   {
@@ -248,9 +248,9 @@ LABEL_9:
   }
 }
 
-- (void)_stopMusicPlayerNotifications:(id)a3
+- (void)_stopMusicPlayerNotifications:(id)notifications
 {
-  NSLog(@"system music player uninstalled!", a2, a3);
+  NSLog(@"system music player uninstalled!", a2, notifications);
   v3 = +[MediaPlayerHelper sharedSystemMusicPlayerQueue];
   if (v3)
   {
@@ -522,7 +522,7 @@ LABEL_25:
   block[1] = 3221225472;
   block[2] = sub_100039A94;
   block[3] = &unk_100111C88;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10012BAF0 != -1)
   {
     dispatch_once(&qword_10012BAF0, block);
@@ -549,7 +549,7 @@ LABEL_25:
   [(MediaPlayerHelper *)self performSelectorOnMainThread:"_nowPlayingItemChanged:" withObject:0 waitUntilDone:0];
 }
 
-- (int)prepareForPlaybackWithQuery:(id)a3 andFirstItem:(id)a4
+- (int)prepareForPlaybackWithQuery:(id)query andFirstItem:(id)item
 {
   v7 = 0;
   v26 = 0;
@@ -563,12 +563,12 @@ LABEL_25:
 
   *&self->podcastAppSelected = 0;
   self->iTunesUAppSelected = 0;
-  v10 = [a3 items];
+  items = [query items];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  v11 = [items countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v11)
   {
     v12 = *v23;
@@ -581,11 +581,11 @@ LABEL_25:
       {
         if (*v23 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(items);
         }
 
-        v17 = [*(*(&v22 + 1) + 8 * i) mediaType];
-        if (v17 == 1024)
+        mediaType = [*(*(&v22 + 1) + 8 * i) mediaType];
+        if (mediaType == 1024)
         {
           v18 = v15;
         }
@@ -595,13 +595,13 @@ LABEL_25:
           v18 = 0;
         }
 
-        if (v17 != 2)
+        if (mediaType != 2)
         {
           v15 = v18;
         }
 
-        v14 = (v17 == 4) & v14;
-        if (v17 == 4096)
+        v14 = (mediaType == 4) & v14;
+        if (mediaType == 4096)
         {
           v19 = v13;
         }
@@ -611,7 +611,7 @@ LABEL_25:
           v19 = 0;
         }
 
-        if (v17 != 8)
+        if (mediaType != 8)
         {
           v13 = v19;
         }
@@ -624,7 +624,7 @@ LABEL_25:
         }
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v11 = [items countByEnumeratingWithState:&v22 objects:v30 count:16];
       if (v11)
       {
         continue;
@@ -648,16 +648,16 @@ LABEL_29:
     v14 = 1;
   }
 
-  [NSKeyedArchiver archivedDataWithRootObject:a3];
+  [NSKeyedArchiver archivedDataWithRootObject:query];
   v7 = MRSystemAppPlaybackQueueCreate();
   MRSystemAppPlaybackQueueSetLocalQueryData();
   if (v15)
   {
-    NSLog(@"prepareForPlaybackWithQuery:andFirstItem: allPodcast, query=%@ count=%lu firstItem(%llu)=%@", a3, [objc_msgSend(a3 "items")], objc_msgSend(a4, "persistentID"), a4);
+    NSLog(@"prepareForPlaybackWithQuery:andFirstItem: allPodcast, query=%@ count=%lu firstItem(%llu)=%@", query, [objc_msgSend(query "items")], objc_msgSend(item, "persistentID"), item);
     self->podcastAppSelected = 1;
-    if (a4)
+    if (item)
     {
-      [a4 persistentID];
+      [item persistentID];
       MRSystemAppPlaybackQueueSetLocalQueryFirstItemPID();
     }
 
@@ -667,11 +667,11 @@ LABEL_29:
   if (v14)
   {
 LABEL_2:
-    NSLog(@"prepareForPlaybackWithQuery:andFirstItem: allAudioBooks, query=%@ count=%lu firstItem(%llu)=%@", a3, [objc_msgSend(a3 "items")], objc_msgSend(a4, "persistentID"), a4);
+    NSLog(@"prepareForPlaybackWithQuery:andFirstItem: allAudioBooks, query=%@ count=%lu firstItem(%llu)=%@", query, [objc_msgSend(query "items")], objc_msgSend(item, "persistentID"), item);
     self->iBooksAppSelected = 1;
-    if (a4)
+    if (item)
     {
-      [a4 persistentID];
+      [item persistentID];
       MRSystemAppPlaybackQueueSetLocalQueryFirstItemPID();
     }
 
@@ -684,11 +684,11 @@ LABEL_4:
 
   if (v13)
   {
-    NSLog(@"prepareForPlaybackWithQuery:andFirstItem: alliTunesU, query=%@ count=%lu firstItem(%llu)=%@", a3, [objc_msgSend(a3 "items")], objc_msgSend(a4, "persistentID"), a4);
+    NSLog(@"prepareForPlaybackWithQuery:andFirstItem: alliTunesU, query=%@ count=%lu firstItem(%llu)=%@", query, [objc_msgSend(query "items")], objc_msgSend(item, "persistentID"), item);
     self->iTunesUAppSelected = 1;
-    if (a4)
+    if (item)
     {
-      [a4 persistentID];
+      [item persistentID];
       MRSystemAppPlaybackQueueSetLocalQueryFirstItemPID();
     }
 
@@ -698,7 +698,7 @@ LABEL_4:
 LABEL_42:
   if (sub_100036874())
   {
-    [a3 setIgnoreSystemFilterPredicates:1];
+    [query setIgnoreSystemFilterPredicates:1];
   }
 
   if (sub_100036DB4())
@@ -714,8 +714,8 @@ LABEL_42:
     block[1] = 3221225472;
     block[2] = sub_100039FF4;
     block[3] = &unk_100114638;
-    block[4] = a3;
-    block[5] = a4;
+    block[4] = query;
+    block[5] = item;
     block[6] = &v26;
     dispatch_sync(v9, block);
     if (v7)
@@ -741,9 +741,9 @@ LABEL_7:
   return v9;
 }
 
-- (void)_nowPlayingItemChanged:(id)a3
+- (void)_nowPlayingItemChanged:(id)changed
 {
-  sub_1000DDE90(6u, @"MP: _nowPlayingItemChanged", a3);
+  sub_1000DDE90(6u, @"MP: _nowPlayingItemChanged", changed);
   if (byte_10012C64C >= 2u)
   {
     goto LABEL_24;
@@ -811,9 +811,9 @@ LABEL_24:
   v6();
 }
 
-- (void)_repeatModeChanged:(id)a3
+- (void)_repeatModeChanged:(id)changed
 {
-  sub_1000DDE90(6u, @"MP: _repeatModeChanged", a3);
+  sub_1000DDE90(6u, @"MP: _repeatModeChanged", changed);
   if (qword_10012BB28 != -1)
   {
     sub_1000E1F88();
@@ -842,9 +842,9 @@ LABEL_24:
   }
 }
 
-- (void)_shuffleModeChanged:(id)a3
+- (void)_shuffleModeChanged:(id)changed
 {
-  sub_1000DDE90(6u, @"MP: _shuffleModeChanged", a3);
+  sub_1000DDE90(6u, @"MP: _shuffleModeChanged", changed);
   if (qword_10012BB28 != -1)
   {
     sub_1000E1F88();
@@ -895,7 +895,7 @@ LABEL_24:
 
 - (unsigned)nowPlayingAppIsIPodApp
 {
-  v2 = self;
+  selfCopy = self;
   if (self->_nowPlayingAppIsIPodIsValid)
   {
     goto LABEL_10;
@@ -917,37 +917,37 @@ LABEL_24:
     LODWORD(self) = [(NSString *)*p_nowPlayingAppIdentifier isEqualToString:@"com.apple.Music"];
   }
 
-  v2->_nowPlayingAppIsIPod = self;
-  v2->_nowPlayingAppIsIPodRadio = 0;
+  selfCopy->_nowPlayingAppIsIPod = self;
+  selfCopy->_nowPlayingAppIsIPodRadio = 0;
   if (!self)
   {
     goto LABEL_9;
   }
 
-  if (((v2 + 8) & 7) != 0)
+  if (((selfCopy + 8) & 7) != 0)
   {
 LABEL_11:
     __break(0x5516u);
     return self;
   }
 
-  v2->_nowPlayingAppIsIPodRadio = [(NSMutableDictionary *)v2->_nowPlayingInfo objectForKey:kMRMediaRemoteNowPlayingInfoRadioStationName]!= 0;
+  selfCopy->_nowPlayingAppIsIPodRadio = [(NSMutableDictionary *)selfCopy->_nowPlayingInfo objectForKey:kMRMediaRemoteNowPlayingInfoRadioStationName]!= 0;
 LABEL_9:
-  v2->_nowPlayingAppIsIPodIsValid = 1;
+  selfCopy->_nowPlayingAppIsIPodIsValid = 1;
 LABEL_10:
-  LOBYTE(self) = v2->_nowPlayingAppIsIPod;
+  LOBYTE(self) = selfCopy->_nowPlayingAppIsIPod;
   return self;
 }
 
 - (unsigned)nowPlayingAppIsiTunesRadio
 {
-  v3 = [(MediaPlayerHelper *)self nowPlayingAppIsIPodApp];
-  if (v3)
+  nowPlayingAppIsIPodApp = [(MediaPlayerHelper *)self nowPlayingAppIsIPodApp];
+  if (nowPlayingAppIsIPodApp)
   {
-    LOBYTE(v3) = self->_nowPlayingAppIsIPodRadio != 0;
+    LOBYTE(nowPlayingAppIsIPodApp) = self->_nowPlayingAppIsIPodRadio != 0;
   }
 
-  return v3;
+  return nowPlayingAppIsIPodApp;
 }
 
 - (unsigned)nowPlayingAppIsVideosApp
@@ -1359,7 +1359,7 @@ LABEL_15:
   return result;
 }
 
-- (unsigned)currentNowPlayingInfoNumber:(id)a3
+- (unsigned)currentNowPlayingInfoNumber:(id)number
 {
   [(MediaPlayerHelper *)self _waitForNowPlayingInfoReceived];
   result = pthread_mutex_lock(&self->_nowPlayingInfoLock);
@@ -1370,7 +1370,7 @@ LABEL_15:
 
   else
   {
-    v6 = [-[NSMutableDictionary objectForKey:](self->_nowPlayingInfo objectForKey:{a3), "unsignedIntValue"}];
+    v6 = [-[NSMutableDictionary objectForKey:](self->_nowPlayingInfo objectForKey:{number), "unsignedIntValue"}];
     pthread_mutex_unlock(&self->_nowPlayingInfoLock);
     return v6;
   }
@@ -1378,7 +1378,7 @@ LABEL_15:
   return result;
 }
 
-- (id)currentNowPlayingInfoString:(id)a3
+- (id)currentNowPlayingInfoString:(id)string
 {
   [(MediaPlayerHelper *)self _waitForNowPlayingInfoReceived];
   result = pthread_mutex_lock(&self->_nowPlayingInfoLock);
@@ -1389,7 +1389,7 @@ LABEL_15:
 
   else
   {
-    v6 = [(NSMutableDictionary *)self->_nowPlayingInfo objectForKey:a3];
+    v6 = [(NSMutableDictionary *)self->_nowPlayingInfo objectForKey:string];
     v7 = v6;
     if (v6)
     {
@@ -1403,36 +1403,36 @@ LABEL_15:
   return result;
 }
 
-- (id)nowPlayingInfoTitleForAudiobookIndex:(unsigned int)a3
+- (id)nowPlayingInfoTitleForAudiobookIndex:(unsigned int)index
 {
   if (![(MediaPlayerHelper *)self nowPlayingAppIsiBooksApp])
   {
     return 0;
   }
 
-  v5 = [(MediaPlayerHelper *)self currentNowPlayingInfoChapterCount];
-  if (v5 <= a3)
+  currentNowPlayingInfoChapterCount = [(MediaPlayerHelper *)self currentNowPlayingInfoChapterCount];
+  if (currentNowPlayingInfoChapterCount <= index)
   {
     return 0;
   }
 
-  v6 = [NSString stringWithFormat:@"%@ %u/%u", [(MediaPlayerHelper *)self currentNowPlayingInfoString:kMRMediaRemoteNowPlayingInfoAlbum], a3 + 1, v5];
+  v6 = [NSString stringWithFormat:@"%@ %u/%u", [(MediaPlayerHelper *)self currentNowPlayingInfoString:kMRMediaRemoteNowPlayingInfoAlbum], index + 1, currentNowPlayingInfoChapterCount];
 
   return v6;
 }
 
-- (unsigned)_currentNowPlayingInfoTrack:(BOOL)a3
+- (unsigned)_currentNowPlayingInfoTrack:(BOOL)track
 {
-  v3 = a3;
+  trackCopy = track;
   v5 = [(MediaPlayerHelper *)self currentNowPlayingInfoNumber:kMRMediaRemoteNowPlayingInfoQueueIndex];
-  v6 = [(MediaPlayerHelper *)self fakeStreamTrackIndexTimeExpired];
-  if (v6)
+  selfCopy = [(MediaPlayerHelper *)self fakeStreamTrackIndexTimeExpired];
+  if (selfCopy)
   {
     if ([(MediaPlayerHelper *)self nowPlayingAppIsiBooksApp])
     {
-      v6 = self;
+      selfCopy = self;
 
-      return [v6 currentNowPlayingInfoChapter];
+      return [selfCopy currentNowPlayingInfoChapter];
     }
 
     if (qword_10012BB28 != -1)
@@ -1440,14 +1440,14 @@ LABEL_15:
       sub_1000E1F88();
     }
 
-    v6 = qword_10012BB20;
+    selfCopy = qword_10012BB20;
     if (!qword_10012BB20 || (qword_10012BB20 & 7) != 0)
     {
       goto LABEL_21;
     }
 
-    v6 = sub_10003AF10(qword_10012BB20, v3);
-    if (!v6)
+    selfCopy = sub_10003AF10(qword_10012BB20, trackCopy);
+    if (!selfCopy)
     {
       return v5;
     }
@@ -1484,7 +1484,7 @@ LABEL_15:
 
 LABEL_21:
   __break(0x5516u);
-  return [v6 currentNowPlayingInfoChapter];
+  return [selfCopy currentNowPlayingInfoChapter];
 }
 
 - (unsigned)currentNowPlayingInfoTrackCount
@@ -1657,20 +1657,20 @@ LABEL_24:
   return result;
 }
 
-- (void)setExpectedShuffleMode:(int)a3
+- (void)setExpectedShuffleMode:(int)mode
 {
-  NSLog(@"MR: %s:%d shuffleMode=%d", a2, "[MediaPlayerHelper setExpectedShuffleMode:]", 1460, a3);
+  NSLog(@"MR: %s:%d shuffleMode=%d", a2, "[MediaPlayerHelper setExpectedShuffleMode:]", 1460, mode);
   if ((&self->shuffleModeCache & 3) != 0)
   {
     goto LABEL_7;
   }
 
-  if (self->shuffleModeCache == a3)
+  if (self->shuffleModeCache == mode)
   {
     return;
   }
 
-  if ((&self->expectedShuffleMode & 3) != 0 || (self->expectedShuffleMode = a3, v5 = sub_100067278(), (&self->expectedShuffleModeTimestamp & 3) != 0))
+  if ((&self->expectedShuffleMode & 3) != 0 || (self->expectedShuffleMode = mode, v5 = sub_100067278(), (&self->expectedShuffleModeTimestamp & 3) != 0))
   {
 LABEL_7:
     __break(0x5516u);
@@ -1681,20 +1681,20 @@ LABEL_7:
   NSLog(@"MR: %s:%d expectedShuffleMode=%d expectedShuffleModeTimestamp=%u", "[MediaPlayerHelper setExpectedShuffleMode:]", 1466, self->expectedShuffleMode, v5);
 }
 
-- (void)setExpectedRepeatMode:(int)a3
+- (void)setExpectedRepeatMode:(int)mode
 {
-  NSLog(@"MR: %s:%d repeatMode=%d", a2, "[MediaPlayerHelper setExpectedRepeatMode:]", 1472, a3);
+  NSLog(@"MR: %s:%d repeatMode=%d", a2, "[MediaPlayerHelper setExpectedRepeatMode:]", 1472, mode);
   if ((&self->repeatModeCache & 3) != 0)
   {
     goto LABEL_7;
   }
 
-  if (self->repeatModeCache == a3)
+  if (self->repeatModeCache == mode)
   {
     return;
   }
 
-  if ((&self->expectedRepeatMode & 3) != 0 || (self->expectedRepeatMode = a3, v5 = sub_100067278(), (&self->expectedRepeatModeTimestamp & 3) != 0))
+  if ((&self->expectedRepeatMode & 3) != 0 || (self->expectedRepeatMode = mode, v5 = sub_100067278(), (&self->expectedRepeatModeTimestamp & 3) != 0))
   {
 LABEL_7:
     __break(0x5516u);
@@ -1797,13 +1797,13 @@ LABEL_7:
   {
     if (sub_100036DB4())
     {
-      v3 = [+[MediaPlayerHelper sharedSystemMusicPlayer](MediaPlayerHelper "sharedSystemMusicPlayer")];
-      if (v3)
+      items = [+[MediaPlayerHelper sharedSystemMusicPlayer](MediaPlayerHelper "sharedSystemMusicPlayer")];
+      if (items)
       {
-        v3 = [(NSArray *)v3 items];
+        items = [(NSArray *)items items];
       }
 
-      *p_pbqItems = v3;
+      *p_pbqItems = items;
     }
 
     else
@@ -1824,34 +1824,34 @@ LABEL_7:
   return self;
 }
 
-- (id)_nowPlayingInfoDesc:(id)a3
+- (id)_nowPlayingInfoDesc:(id)desc
 {
-  if (!a3)
+  if (!desc)
   {
     return 0;
   }
 
-  v5 = [a3 objectForKey:kMRMediaRemoteNowPlayingInfoUniqueIdentifier];
-  v30 = [a3 objectForKey:kMRMediaRemoteNowPlayingInfoTitle];
-  v32 = [a3 objectForKey:kMRMediaRemoteNowPlayingInfoPlaybackRate];
-  v31 = [a3 objectForKey:kMRMediaRemoteNowPlayingInfoQueueIndex];
-  v29 = [a3 objectForKey:kMRMediaRemoteNowPlayingInfoTotalQueueCount];
-  v28 = [a3 objectForKey:kMRMediaRemoteNowPlayingInfoChapterNumber];
-  v27 = [a3 objectForKey:kMRMediaRemoteNowPlayingInfoTotalChapterCount];
-  v26 = [a3 objectForKey:kMRMediaRemoteNowPlayingInfoDiscNumber];
-  v25 = [a3 objectForKey:kMRMediaRemoteNowPlayingInfoTotalDiscCount];
-  v24 = [a3 objectForKey:kMRMediaRemoteNowPlayingInfoTrackNumber];
-  v23 = [a3 objectForKey:kMRMediaRemoteNowPlayingInfoTotalTrackCount];
-  v22 = [a3 objectForKey:kMRMediaRemoteNowPlayingInfoDuration];
-  v21 = [a3 objectForKey:kMRMediaRemoteNowPlayingInfoElapsedTime];
-  v20 = [a3 objectForKey:kMRMediaRemoteNowPlayingInfoArtist];
-  v19 = [a3 objectForKey:kMRMediaRemoteNowPlayingInfoAlbum];
-  v6 = [a3 objectForKey:kMRMediaRemoteNowPlayingInfoComposer];
-  v7 = [a3 objectForKey:kMRMediaRemoteNowPlayingInfoGenre];
-  v8 = [a3 objectForKey:kMRMediaRemoteNowPlayingInfoStartTime];
-  v9 = [a3 objectForKey:kMRMediaRemoteNowPlayingInfoTimestamp];
+  v5 = [desc objectForKey:kMRMediaRemoteNowPlayingInfoUniqueIdentifier];
+  v30 = [desc objectForKey:kMRMediaRemoteNowPlayingInfoTitle];
+  v32 = [desc objectForKey:kMRMediaRemoteNowPlayingInfoPlaybackRate];
+  v31 = [desc objectForKey:kMRMediaRemoteNowPlayingInfoQueueIndex];
+  v29 = [desc objectForKey:kMRMediaRemoteNowPlayingInfoTotalQueueCount];
+  v28 = [desc objectForKey:kMRMediaRemoteNowPlayingInfoChapterNumber];
+  v27 = [desc objectForKey:kMRMediaRemoteNowPlayingInfoTotalChapterCount];
+  v26 = [desc objectForKey:kMRMediaRemoteNowPlayingInfoDiscNumber];
+  v25 = [desc objectForKey:kMRMediaRemoteNowPlayingInfoTotalDiscCount];
+  v24 = [desc objectForKey:kMRMediaRemoteNowPlayingInfoTrackNumber];
+  v23 = [desc objectForKey:kMRMediaRemoteNowPlayingInfoTotalTrackCount];
+  v22 = [desc objectForKey:kMRMediaRemoteNowPlayingInfoDuration];
+  v21 = [desc objectForKey:kMRMediaRemoteNowPlayingInfoElapsedTime];
+  v20 = [desc objectForKey:kMRMediaRemoteNowPlayingInfoArtist];
+  v19 = [desc objectForKey:kMRMediaRemoteNowPlayingInfoAlbum];
+  v6 = [desc objectForKey:kMRMediaRemoteNowPlayingInfoComposer];
+  v7 = [desc objectForKey:kMRMediaRemoteNowPlayingInfoGenre];
+  v8 = [desc objectForKey:kMRMediaRemoteNowPlayingInfoStartTime];
+  v9 = [desc objectForKey:kMRMediaRemoteNowPlayingInfoTimestamp];
   v10 = v5;
-  v11 = [v5 unsignedLongLongValue];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
   result = +[NSDate date];
   if ((&self->repeatModeCache & 3) != 0 || (&self->shuffleModeCache & 3) != 0)
   {
@@ -1866,25 +1866,25 @@ LABEL_7:
     [result timeIntervalSinceDate:v8];
     v17 = v16;
     [v13 timeIntervalSinceDate:v9];
-    return [NSString stringWithFormat:@"    pid=%@, 0x%qx track#:%@/%@ chap#:%@/%@ disc#:%@/%@\n    elapsed=%@/%@ playbackRate=%@\n    albumTrack#:%@/%@ cached:[repeat=%d shuffle=%d]\n    startTime=%@, %lf timeStamp=%@, %lf nowTime=%@\n    title=%@\n    artist=%@\n    album=%@\n    composer=%@\n    genre=%@", v10, v11, v31, v29, v28, v27, v26, v25, v21, v22, v32, v24, v23, repeatModeCache, shuffleModeCache, v8, v17, v9, v18, v13, v30, v20, v19, v6, v7];
+    return [NSString stringWithFormat:@"    pid=%@, 0x%qx track#:%@/%@ chap#:%@/%@ disc#:%@/%@\n    elapsed=%@/%@ playbackRate=%@\n    albumTrack#:%@/%@ cached:[repeat=%d shuffle=%d]\n    startTime=%@, %lf timeStamp=%@, %lf nowTime=%@\n    title=%@\n    artist=%@\n    album=%@\n    composer=%@\n    genre=%@", v10, unsignedLongLongValue, v31, v29, v28, v27, v26, v25, v21, v22, v32, v24, v23, repeatModeCache, shuffleModeCache, v8, v17, v9, v18, v13, v30, v20, v19, v6, v7];
   }
 
   return result;
 }
 
-- (void)_printNowPlayingInfo:(id)a3 forName:(id)a4
+- (void)_printNowPlayingInfo:(id)info forName:(id)name
 {
   if (sub_1000DDE68(7))
   {
-    NSLog(@"MR: %s:%d %@=%hhx", "[MediaPlayerHelper _printNowPlayingInfo:forName:]", 1633, a4, a3);
-    if (a3)
+    NSLog(@"MR: %s:%d %@=%hhx", "[MediaPlayerHelper _printNowPlayingInfo:forName:]", 1633, name, info);
+    if (info)
     {
-      NSLog(@"MR: %s:%d\n%@", "[MediaPlayerHelper _printNowPlayingInfo:forName:]", 1638, [(MediaPlayerHelper *)self _nowPlayingInfoDesc:a3]);
+      NSLog(@"MR: %s:%d\n%@", "[MediaPlayerHelper _printNowPlayingInfo:forName:]", 1638, [(MediaPlayerHelper *)self _nowPlayingInfoDesc:info]);
     }
   }
 }
 
-- (void)_handleNowPlayingInfo:(__CFDictionary *)a3
+- (void)_handleNowPlayingInfo:(__CFDictionary *)info
 {
   v96 = objc_alloc_init(NSAutoreleasePool);
   v100 = sub_1000CA714();
@@ -1963,7 +1963,7 @@ LABEL_7:
     }
   }
 
-  NSLog(@"MR: %s:%d nowPlayingInfo=%hhx", "[MediaPlayerHelper _handleNowPlayingInfo:]", 1670, a3);
+  NSLog(@"MR: %s:%d nowPlayingInfo=%hhx", "[MediaPlayerHelper _handleNowPlayingInfo:]", 1670, info);
   p_nowPlayingInfo = &self->_nowPlayingInfo;
   if ((&self->_nowPlayingInfo & 7) != 0)
   {
@@ -1983,9 +1983,9 @@ LABEL_7:
     v11 = 0.0;
   }
 
-  if (!a3 || ![(__CFDictionary *)a3 count])
+  if (!info || ![(__CFDictionary *)info count])
   {
-    sub_1000DDE90(7u, @"MR: %s:%d nil nowPlayingInfo=%hhx oldNowPlayingInfo=%hhx tmpNowPlayingInfo=%hhx", "[MediaPlayerHelper _handleNowPlayingInfo:]", 1706, a3, v8, 0);
+    sub_1000DDE90(7u, @"MR: %s:%d nil nowPlayingInfo=%hhx oldNowPlayingInfo=%hhx tmpNowPlayingInfo=%hhx", "[MediaPlayerHelper _handleNowPlayingInfo:]", 1706, info, v8, 0);
     v12 = 0;
     v15 = 0;
     v16 = 0;
@@ -1993,7 +1993,7 @@ LABEL_7:
     v92 = 0;
     v99 = 0;
     v97 = 0;
-    v93 = 0;
+    bOOLValue = 0;
     v82 = 0;
     v98 = 0;
     v90 = 1;
@@ -2004,8 +2004,8 @@ LABEL_7:
     goto LABEL_89;
   }
 
-  sub_1000DDE90(7u, @"MR: %s:%d copy nowPlayingInfo(%hhx) to tmpNowPlayingInfo(%hhx), oldNowPlayingInfo=%hhx", "[MediaPlayerHelper _handleNowPlayingInfo:]", 1700, a3, 0, v8);
-  v12 = [NSMutableDictionary dictionaryWithDictionary:a3];
+  sub_1000DDE90(7u, @"MR: %s:%d copy nowPlayingInfo(%hhx) to tmpNowPlayingInfo(%hhx), oldNowPlayingInfo=%hhx", "[MediaPlayerHelper _handleNowPlayingInfo:]", 1700, info, 0, v8);
+  v12 = [NSMutableDictionary dictionaryWithDictionary:info];
   [NowPlayingHelper validateNowPlayingInfo:v12];
   if (!v12)
   {
@@ -2015,7 +2015,7 @@ LABEL_7:
     v92 = 0;
     v99 = 0;
     v97 = 0;
-    v93 = 0;
+    bOOLValue = 0;
     v82 = 0;
     v98 = 0;
     v9 = 0;
@@ -2050,18 +2050,18 @@ LABEL_7:
   [v22 floatValue];
   v27 = v26;
   v97 = v23 != 0;
-  v93 = [v23 BOOLValue];
+  bOOLValue = [v23 BOOLValue];
   v89 = v20;
   v91 = v24;
-  v28 = [v20 unsignedLongLongValue];
+  unsignedLongLongValue = [v20 unsignedLongLongValue];
   v92 = v25 != 0;
   v95 = v21;
-  v29 = [v21 unsignedLongValue];
+  unsignedLongValue = [v21 unsignedLongValue];
   v99 = v24 != 0;
   if (v8)
   {
-    v78 = v29;
-    v79 = v28;
+    v78 = unsignedLongValue;
+    v79 = unsignedLongLongValue;
     v30 = kMRMediaRemoteNowPlayingInfoQueueIndex;
     v80 = [(NSMutableDictionary *)v12 objectForKey:kMRMediaRemoteNowPlayingInfoQueueIndex];
     v31 = kMRMediaRemoteNowPlayingInfoChapterNumber;
@@ -2178,7 +2178,7 @@ LABEL_54:
       v9 = 1;
     }
 
-    v28 = v40;
+    unsignedLongLongValue = v40;
     if (v37)
     {
       [v75 isEqualToNumber:v37];
@@ -2198,15 +2198,15 @@ LABEL_54:
     v49 = 1;
     if (!v43 && v44 && !dword_100129630)
     {
-      v50 = [v44 intValue];
-      if (v50 == 0x7FFFFFFF)
+      intValue = [v44 intValue];
+      if (intValue == 0x7FFFFFFF)
       {
         v51 = 0;
       }
 
       else
       {
-        v51 = v50;
+        v51 = intValue;
       }
 
       if (v51 < 1)
@@ -2245,7 +2245,7 @@ LABEL_54:
       v94 = 0;
     }
 
-    v29 = v78;
+    unsignedLongValue = v78;
     goto LABEL_88;
   }
 
@@ -2257,8 +2257,8 @@ LABEL_54:
   v17 = 1;
   v18 = 1;
 LABEL_88:
-  v15 = v28 != 0;
-  v90 = v29 == 0;
+  v15 = unsignedLongLongValue != 0;
+  v90 = unsignedLongValue == 0;
   v82 = v27 != 0.0;
 LABEL_89:
   NSLog(@"MR: %s:%d\n%@\n.... changed to ....\n%@", "[MediaPlayerHelper _handleNowPlayingInfo:]", 1832, [(MediaPlayerHelper *)self _nowPlayingInfoDesc:v8], [(MediaPlayerHelper *)self _nowPlayingInfoDesc:v12]);
@@ -2297,7 +2297,7 @@ LABEL_89:
   sub_10003CB30(qword_10012BB20);
   if (v97)
   {
-    self->_nowPlayingAppIsIPod = v93;
+    self->_nowPlayingAppIsIPod = bOOLValue;
     self->_nowPlayingAppIsIPodIsValid = 1;
   }
 
@@ -2712,11 +2712,11 @@ LABEL_11:
   __break(0x5510u);
 }
 
-- (void)_handleNowPlayingAppDidChange:(id)a3
+- (void)_handleNowPlayingAppDidChange:(id)change
 {
   v14 = objc_alloc_init(NSAutoreleasePool);
   pthread_mutex_lock(&self->_nowPlayingInfoLock);
-  if (!a3)
+  if (!change)
   {
     goto LABEL_5;
   }
@@ -2727,22 +2727,22 @@ LABEL_11:
     goto LABEL_40;
   }
 
-  if (!*p_nowPlayingAppIdentifier || ([*p_nowPlayingAppIdentifier isEqualToString:a3] & 1) == 0)
+  if (!*p_nowPlayingAppIdentifier || ([*p_nowPlayingAppIdentifier isEqualToString:change] & 1) == 0)
   {
 LABEL_5:
     v6 = &self->_nowPlayingAppIdentifier;
     if ((&self->_nowPlayingAppIdentifier & 7) == 0)
     {
-      NSLog(@"MR: %s:%d app='%@'->'%@'", "[MediaPlayerHelper _handleNowPlayingAppDidChange:]", 2097, *v6, a3);
+      NSLog(@"MR: %s:%d app='%@'->'%@'", "[MediaPlayerHelper _handleNowPlayingAppDidChange:]", 2097, *v6, change);
       if (*v6)
       {
 
         *v6 = 0;
       }
 
-      if (a3)
+      if (change)
       {
-        v7 = [NSString stringWithString:a3];
+        v7 = [NSString stringWithString:change];
         self->_nowPlayingAppIdentifier = v7;
         v8 = v7;
         self->_nowPlayingAppChanged = 1;
@@ -2840,7 +2840,7 @@ LABEL_33:
   sub_10003CB30(qword_10012BB20);
 }
 
-- (void)_setNowPlayingApp:(id)a3
+- (void)_setNowPlayingApp:(id)app
 {
   pthread_mutex_lock(&self->_nowPlayingInfoLock);
   p_nowPlayingAppIdentifier = &self->_nowPlayingAppIdentifier;
@@ -2857,9 +2857,9 @@ LABEL_33:
       *p_nowPlayingAppIdentifier = 0;
     }
 
-    if (a3)
+    if (app)
     {
-      v6 = [NSString stringWithString:a3];
+      v6 = [NSString stringWithString:app];
       *p_nowPlayingAppIdentifier = v6;
       v7 = v6;
     }
@@ -2870,7 +2870,7 @@ LABEL_33:
   }
 }
 
-- (void)_canShowCloudTracksDidChangeNotification:(id)a3
+- (void)_canShowCloudTracksDidChangeNotification:(id)notification
 {
   if (byte_100129624 >= 2u)
   {
@@ -2884,7 +2884,7 @@ LABEL_33:
   }
 }
 
-- (void)_nowPlayingInfoChanged:(id)a3
+- (void)_nowPlayingInfoChanged:(id)changed
 {
   pthread_once(&stru_10012B6E8, sub_1000CA2C8);
   if (dword_10012B6D8 >= 0xFFFFFFFFFFFFFFF4)
@@ -3048,9 +3048,9 @@ LABEL_39:
   __break(0x5512u);
 }
 
-- (void)_nowPlayingAppIsPlayingChanged:(id)a3
+- (void)_nowPlayingAppIsPlayingChanged:(id)changed
 {
-  sub_1000DDE90(7u, @"MR: %s, notification: %@", "[MediaPlayerHelper _nowPlayingAppIsPlayingChanged:]", a3);
+  sub_1000DDE90(7u, @"MR: %s, notification: %@", "[MediaPlayerHelper _nowPlayingAppIsPlayingChanged:]", changed);
   [(MediaPlayerHelper *)self _supportedCommandsDidChangeNotification];
   if (((self + 104) & 7) != 0)
   {
@@ -3064,9 +3064,9 @@ LABEL_39:
   }
 }
 
-- (void)_playbackQueueDidChangeNotification:(id)a3
+- (void)_playbackQueueDidChangeNotification:(id)notification
 {
-  sub_1000DDE90(7u, @"MR: %s, notification: %@", "[MediaPlayerHelper _playbackQueueDidChangeNotification:]", a3);
+  sub_1000DDE90(7u, @"MR: %s, notification: %@", "[MediaPlayerHelper _playbackQueueDidChangeNotification:]", notification);
   p_nowPlayingHandlerQueue = &self->nowPlayingHandlerQueue;
   if ((&self->nowPlayingHandlerQueue & 7) != 0)
   {
@@ -3091,9 +3091,9 @@ LABEL_39:
   __break(0x5510u);
 }
 
-- (void)_nowPlayingAppChanged:(id)a3
+- (void)_nowPlayingAppChanged:(id)changed
 {
-  sub_1000DDE90(7u, @"MR: %s, notification: %@", "[MediaPlayerHelper _nowPlayingAppChanged:]", a3);
+  sub_1000DDE90(7u, @"MR: %s, notification: %@", "[MediaPlayerHelper _nowPlayingAppChanged:]", changed);
   [(MediaPlayerHelper *)self _supportedCommandsDidChangeNotification];
   if (((self + 104) & 7) != 0)
   {
@@ -3107,9 +3107,9 @@ LABEL_39:
   }
 }
 
-- (void)_mediaLibraryChanged:(id)a3
+- (void)_mediaLibraryChanged:(id)changed
 {
-  sub_1000DDE90(6u, @"MP: _mediaLibraryChanged", a3);
+  sub_1000DDE90(6u, @"MP: _mediaLibraryChanged", changed);
   sub_10002F99C();
   if (qword_10012BB28 != -1)
   {
@@ -3139,9 +3139,9 @@ LABEL_39:
   }
 }
 
-- (void)_itemPlaybackDidEnd:(id)a3
+- (void)_itemPlaybackDidEnd:(id)end
 {
-  sub_1000DDE90(6u, @"MP: _itemPlaybackDidEnd", a3);
+  sub_1000DDE90(6u, @"MP: _itemPlaybackDidEnd", end);
   p_nowPlayingHandlerQueue = &self->nowPlayingHandlerQueue;
   if ((&self->nowPlayingHandlerQueue & 7) != 0)
   {
@@ -3282,7 +3282,7 @@ LABEL_33:
   }
 }
 
-- (void)_supportedCommandsDidChange:(__CFArray *)a3
+- (void)_supportedCommandsDidChange:(__CFArray *)change
 {
   p_currentSupportedCommands = &self->_currentSupportedCommands;
   if ((&self->_currentSupportedCommands & 7) != 0)
@@ -3292,20 +3292,20 @@ LABEL_33:
 
   else
   {
-    v5 = self;
-    NSLog(@"MR: %s:%d _currentSupportedCommands %@ ---> %@", a2, "[MediaPlayerHelper _supportedCommandsDidChange:]", 2399, *p_currentSupportedCommands, a3);
+    selfCopy = self;
+    NSLog(@"MR: %s:%d _currentSupportedCommands %@ ---> %@", a2, "[MediaPlayerHelper _supportedCommandsDidChange:]", 2399, *p_currentSupportedCommands, change);
     if (*p_currentSupportedCommands)
     {
       CFRelease(*p_currentSupportedCommands);
     }
 
-    *p_currentSupportedCommands = a3;
-    if (a3)
+    *p_currentSupportedCommands = change;
+    if (change)
     {
-      CFRetain(a3);
+      CFRetain(change);
     }
 
-    self = v5;
+    self = selfCopy;
   }
 
   [(MediaPlayerHelper *)self _checkShuffleRepeatModeChange];
@@ -3338,7 +3338,7 @@ LABEL_33:
   }
 }
 
-- (void)_findCommandRefForCommand:(unsigned int)a3
+- (void)_findCommandRefForCommand:(unsigned int)command
 {
   if ((&self->_currentSupportedCommands & 7) != 0)
   {
@@ -3368,7 +3368,7 @@ LABEL_4:
     }
 
     v9 = *(*(&v11 + 1) + 8 * v8);
-    if (MRMediaRemoteCommandInfoGetCommand() == a3)
+    if (MRMediaRemoteCommandInfoGetCommand() == command)
     {
       return v9;
     }
@@ -3386,7 +3386,7 @@ LABEL_4:
   }
 }
 
-- (void)setRepeatModeCache:(int)a3
+- (void)setRepeatModeCache:(int)cache
 {
   if ((&self->repeatModeCache & 3) != 0)
   {
@@ -3395,11 +3395,11 @@ LABEL_4:
 
   else
   {
-    self->repeatModeCache = a3;
+    self->repeatModeCache = cache;
   }
 }
 
-- (void)setShuffleModeCache:(int)a3
+- (void)setShuffleModeCache:(int)cache
 {
   if ((&self->shuffleModeCache & 3) != 0)
   {
@@ -3408,7 +3408,7 @@ LABEL_4:
 
   else
   {
-    self->shuffleModeCache = a3;
+    self->shuffleModeCache = cache;
   }
 }
 

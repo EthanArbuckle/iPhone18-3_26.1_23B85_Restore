@@ -5,9 +5,9 @@
 - (RBEntitlementManaging)entitlementManager;
 - (RBEntitlementPossessing)originatorEntitlements;
 - (RBEntitlementPossessing)targetEntitlements;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setTarget:(id)a3;
-- (void)setTargetClientRestriction:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setTarget:(id)target;
+- (void)setTargetClientRestriction:(id)restriction;
 @end
 
 @implementation RBAssertionDescriptorValidatorContext
@@ -115,40 +115,40 @@
   return v3;
 }
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
-  objc_storeStrong(&self->_target, a3);
-  v5 = a3;
-  v6 = [v5 isSystem];
+  objc_storeStrong(&self->_target, target);
+  targetCopy = target;
+  isSystem = [targetCopy isSystem];
 
-  self->_targetIsSystem = v6;
+  self->_targetIsSystem = isSystem;
 }
 
 - (RBDomainRestriction)targetClientRestriction
 {
-  v3 = self->_targetClientRestriction;
-  if (!v3)
+  clientRestriction = self->_targetClientRestriction;
+  if (!clientRestriction)
   {
-    v3 = [(RBProcess *)self->_targetProcess clientRestriction];
-    if (!v3)
+    clientRestriction = [(RBProcess *)self->_targetProcess clientRestriction];
+    if (!clientRestriction)
     {
-      v3 = [(RBAssertionAcquisitionContext *)self->_acquisitionContext targetClientRestriction];
+      clientRestriction = [(RBAssertionAcquisitionContext *)self->_acquisitionContext targetClientRestriction];
     }
   }
 
-  return v3;
+  return clientRestriction;
 }
 
-- (void)setTargetClientRestriction:(id)a3
+- (void)setTargetClientRestriction:(id)restriction
 {
-  v4 = [a3 copy];
+  v4 = [restriction copy];
   targetClientRestriction = self->_targetClientRestriction;
   self->_targetClientRestriction = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[RBAssertionDescriptorValidatorContext allocWithZone:?]];
   [(RBAssertionDescriptorValidatorContext *)v4 setAssertionDescriptionValidator:self->_assertionDescriptionValidator];

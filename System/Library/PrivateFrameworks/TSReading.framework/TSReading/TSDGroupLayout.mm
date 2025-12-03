@@ -5,19 +5,19 @@
 - (CGRect)alignmentFrame;
 - (CGRect)boundsForStandardKnobs;
 - (CGSize)minimumSize;
-- (id)additionalDependenciesForChildLayout:(id)a3;
+- (id)additionalDependenciesForChildLayout:(id)layout;
 - (id)computeInfoGeometryDuringResize;
 - (id)computeLayoutGeometry;
 - (id)i_computeWrapPath;
 - (id)i_externalWrapPath;
 - (id)i_wrapPath;
 - (id)layoutGeometryFromInfo;
-- (id)p_childWrapPathsFrom:(id)a3;
+- (id)p_childWrapPathsFrom:(id)from;
 - (id)reliedOnLayouts;
 - (id)visibleGeometries;
 - (void)beginDynamicOperation;
 - (void)dealloc;
-- (void)dragBy:(CGPoint)a3;
+- (void)dragBy:(CGPoint)by;
 - (void)endDynamicOperation;
 - (void)invalidate;
 - (void)invalidateExteriorWrap;
@@ -25,10 +25,10 @@
 - (void)p_destroyDynamicCopies;
 - (void)p_invalidateDescendentWrapPaths;
 - (void)p_invalidateParentForWrap;
-- (void)processChangedProperty:(int)a3;
-- (void)setDynamicGeometry:(id)a3;
-- (void)setGeometry:(id)a3;
-- (void)takeRotationFromTracker:(id)a3;
+- (void)processChangedProperty:(int)property;
+- (void)setDynamicGeometry:(id)geometry;
+- (void)setGeometry:(id)geometry;
+- (void)takeRotationFromTracker:(id)tracker;
 - (void)wrappableChildInvalidated;
 @end
 
@@ -44,14 +44,14 @@
 - (id)visibleGeometries
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v27 = 0u;
   v28 = 0u;
   v26 = 0u;
-  v4 = [(TSDAbstractLayout *)self geometry];
-  if (v4)
+  geometry = [(TSDAbstractLayout *)self geometry];
+  if (geometry)
   {
-    [(TSDLayoutGeometry *)v4 transform];
+    [(TSDLayoutGeometry *)geometry transform];
   }
 
   else
@@ -65,8 +65,8 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(TSDAbstractLayout *)self children];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  children = [(TSDAbstractLayout *)self children];
+  v6 = [(NSArray *)children countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v6)
   {
     v7 = v6;
@@ -78,15 +78,15 @@
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(children);
         }
 
-        v10 = [*(*(&v22 + 1) + 8 * v9) visibleGeometries];
+        visibleGeometries = [*(*(&v22 + 1) + 8 * v9) visibleGeometries];
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v11 = [v10 countByEnumeratingWithState:&v18 objects:v29 count:16];
+        v11 = [visibleGeometries countByEnumeratingWithState:&v18 objects:v29 count:16];
         if (v11)
         {
           v12 = v11;
@@ -98,19 +98,19 @@
             {
               if (*v19 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(visibleGeometries);
               }
 
               v15 = *(*(&v18 + 1) + 8 * v14);
               v17[0] = v26;
               v17[1] = v27;
               v17[2] = v28;
-              [v3 addObject:{objc_msgSend(v15, "geometryByTransformingBy:", v17)}];
+              [array addObject:{objc_msgSend(v15, "geometryByTransformingBy:", v17)}];
               ++v14;
             }
 
             while (v12 != v14);
-            v12 = [v10 countByEnumeratingWithState:&v18 objects:v29 count:16];
+            v12 = [visibleGeometries countByEnumeratingWithState:&v18 objects:v29 count:16];
           }
 
           while (v12);
@@ -120,13 +120,13 @@
       }
 
       while (v9 != v7);
-      v7 = [(NSArray *)v5 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v7 = [(NSArray *)children countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v7);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)layoutGeometryFromInfo
@@ -145,12 +145,12 @@
 - (id)reliedOnLayouts
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(TSDAbstractLayout *)self children];
+  children = [(TSDAbstractLayout *)self children];
 
-  return [v2 setWithArray:v3];
+  return [v2 setWithArray:children];
 }
 
-- (id)additionalDependenciesForChildLayout:(id)a3
+- (id)additionalDependenciesForChildLayout:(id)layout
 {
   v4[1] = *MEMORY[0x277D85DE8];
   v4[0] = self;
@@ -160,9 +160,9 @@
 - (id)computeLayoutGeometry
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(TSDLayout *)self i_layoutGeometryProvider];
-  v4 = [v3 layoutGeometryForLayout:self];
-  if (!v4)
+  i_layoutGeometryProvider = [(TSDLayout *)self i_layoutGeometryProvider];
+  layoutGeometryFromInfo = [i_layoutGeometryProvider layoutGeometryForLayout:self];
+  if (!layoutGeometryFromInfo)
   {
     x = *MEMORY[0x277CBF398];
     y = *(MEMORY[0x277CBF398] + 8);
@@ -172,8 +172,8 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v10 = [(TSDAbstractLayout *)self children];
-    v11 = [(NSArray *)v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    children = [(TSDAbstractLayout *)self children];
+    v11 = [(NSArray *)children countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v11)
     {
       v12 = v11;
@@ -185,7 +185,7 @@
         {
           if (*v16 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(children);
           }
 
           [objc_msgSend(*(*(&v15 + 1) + 8 * v14) "pureGeometry")];
@@ -202,7 +202,7 @@
         }
 
         while (v12 != v14);
-        v12 = [(NSArray *)v10 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v12 = [(NSArray *)children countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v12);
@@ -212,20 +212,20 @@
     self->mBoundsForStandardKnobs.origin.y = y;
     self->mBoundsForStandardKnobs.size.width = width;
     self->mBoundsForStandardKnobs.size.height = height;
-    v4 = [(TSDGroupLayout *)self layoutGeometryFromInfo];
-    if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+    layoutGeometryFromInfo = [(TSDGroupLayout *)self layoutGeometryFromInfo];
+    if (i_layoutGeometryProvider && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      return [v3 adjustLayoutGeometry:v4 forLayout:self];
+      return [i_layoutGeometryProvider adjustLayoutGeometry:layoutGeometryFromInfo forLayout:self];
     }
   }
 
-  return v4;
+  return layoutGeometryFromInfo;
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
-  v3 = *&a3;
-  if (a3 == 514)
+  v3 = *&property;
+  if (property == 514)
   {
     [-[TSDLayout layoutController](self "layoutController")];
   }
@@ -273,12 +273,12 @@
 
 - (id)computeInfoGeometryDuringResize
 {
-  v2 = [(TSDAbstractLayout *)self geometry];
+  geometry = [(TSDAbstractLayout *)self geometry];
 
-  return [(TSDLayoutGeometry *)v2 infoGeometry];
+  return [(TSDLayoutGeometry *)geometry infoGeometry];
 }
 
-- (void)takeRotationFromTracker:(id)a3
+- (void)takeRotationFromTracker:(id)tracker
 {
   v10.receiver = self;
   v10.super_class = TSDGroupLayout;
@@ -286,16 +286,16 @@
   v8 = 0u;
   v9 = 0u;
   v7 = 0u;
-  if (a3)
+  if (tracker)
   {
-    [a3 rotateTransform];
+    [tracker rotateTransform];
   }
 
-  v5 = [(TSDLayout *)self originalGeometry];
+  originalGeometry = [(TSDLayout *)self originalGeometry];
   v6[0] = v7;
   v6[1] = v8;
   v6[2] = v9;
-  [(TSDGroupLayout *)self setDynamicGeometry:[(TSDLayoutGeometry *)v5 geometryByTransformingBy:v6]];
+  [(TSDGroupLayout *)self setDynamicGeometry:[(TSDLayoutGeometry *)originalGeometry geometryByTransformingBy:v6]];
   [(TSDLayout *)self invalidatePosition];
 }
 
@@ -309,8 +309,8 @@
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v6 = [(TSDInfo *)[(TSDLayout *)self info] childInfos];
-  v7 = [v6 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  childInfos = [(TSDInfo *)[(TSDLayout *)self info] childInfos];
+  v7 = [childInfos countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v7)
   {
     v8 = v7;
@@ -323,7 +323,7 @@
       {
         if (*v31 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(childInfos);
         }
 
         v13 = [-[TSDLayout layoutController](self "layoutController")];
@@ -333,10 +333,10 @@
         [v13 minimumSize];
         v19 = v18;
         v21 = v20;
-        v22 = [v13 geometry];
-        if (v22)
+        geometry = [v13 geometry];
+        if (geometry)
         {
-          [v22 transform];
+          [geometry transform];
         }
 
         else
@@ -351,10 +351,10 @@
         v38 = CGRectApplyAffineTransform(v37, &v29);
         width = v38.size.width;
         height = v38.size.height;
-        v25 = [v13 geometry];
-        if (v25)
+        geometry2 = [v13 geometry];
+        if (geometry2)
         {
-          [v25 transform];
+          [geometry2 transform];
         }
 
         else
@@ -378,7 +378,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v8 = [childInfos countByEnumeratingWithState:&v30 objects:v34 count:16];
     }
 
     while (v8);
@@ -428,25 +428,25 @@
   self->mCachedExternalWrapPath = 0;
 }
 
-- (void)dragBy:(CGPoint)a3
+- (void)dragBy:(CGPoint)by
 {
   v4.receiver = self;
   v4.super_class = TSDGroupLayout;
-  [(TSDLayout *)&v4 dragBy:a3.x, a3.y];
+  [(TSDLayout *)&v4 dragBy:by.x, by.y];
   [(TSDGroupLayout *)self p_invalidateParentForWrap];
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  v5 = [(TSDAbstractLayout *)self geometry];
-  if (!v5 || ![(TSDLayoutGeometry *)v5 isEqual:a3])
+  geometry = [(TSDAbstractLayout *)self geometry];
+  if (!geometry || ![(TSDLayoutGeometry *)geometry isEqual:geometry])
   {
     [(TSDGroupLayout *)self p_invalidateDescendentWrapPaths];
   }
 
   v6.receiver = self;
   v6.super_class = TSDGroupLayout;
-  [(TSDAbstractLayout *)&v6 setGeometry:a3];
+  [(TSDAbstractLayout *)&v6 setGeometry:geometry];
 }
 
 - (BOOL)supportsParentRotation
@@ -456,8 +456,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(TSDAbstractLayout *)self children];
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  children = [(TSDAbstractLayout *)self children];
+  v3 = [(NSArray *)children countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -468,18 +468,18 @@ LABEL_3:
     {
       if (*v10 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(children);
       }
 
-      v7 = [*(*(&v9 + 1) + 8 * v6) supportsParentRotation];
-      if (!v7)
+      supportsParentRotation = [*(*(&v9 + 1) + 8 * v6) supportsParentRotation];
+      if (!supportsParentRotation)
       {
         break;
       }
 
       if (v4 == ++v6)
       {
-        v4 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v4 = [(NSArray *)children countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -493,10 +493,10 @@ LABEL_3:
   else
   {
 LABEL_9:
-    LOBYTE(v7) = 1;
+    LOBYTE(supportsParentRotation) = 1;
   }
 
-  return v7;
+  return supportsParentRotation;
 }
 
 - (BOOL)supportsRotation
@@ -506,8 +506,8 @@ LABEL_9:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(TSDAbstractLayout *)self children];
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  children = [(TSDAbstractLayout *)self children];
+  v3 = [(NSArray *)children countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -518,18 +518,18 @@ LABEL_3:
     {
       if (*v10 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(children);
       }
 
-      v7 = [*(*(&v9 + 1) + 8 * v6) supportsParentRotation];
-      if (!v7)
+      supportsParentRotation = [*(*(&v9 + 1) + 8 * v6) supportsParentRotation];
+      if (!supportsParentRotation)
       {
         break;
       }
 
       if (v4 == ++v6)
       {
-        v4 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v4 = [(NSArray *)children countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -543,10 +543,10 @@ LABEL_3:
   else
   {
 LABEL_9:
-    LOBYTE(v7) = 1;
+    LOBYTE(supportsParentRotation) = 1;
   }
 
-  return v7;
+  return supportsParentRotation;
 }
 
 - (BOOL)canFlip
@@ -556,8 +556,8 @@ LABEL_9:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(TSDAbstractLayout *)self children];
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  children = [(TSDAbstractLayout *)self children];
+  v3 = [(NSArray *)children countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -568,18 +568,18 @@ LABEL_3:
     {
       if (*v10 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(children);
       }
 
-      v7 = [*(*(&v9 + 1) + 8 * v6) canFlip];
-      if (!v7)
+      canFlip = [*(*(&v9 + 1) + 8 * v6) canFlip];
+      if (!canFlip)
       {
         break;
       }
 
       if (v4 == ++v6)
       {
-        v4 = [(NSArray *)v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v4 = [(NSArray *)children countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -593,13 +593,13 @@ LABEL_3:
   else
   {
 LABEL_9:
-    LOBYTE(v7) = 1;
+    LOBYTE(canFlip) = 1;
   }
 
-  return v7;
+  return canFlip;
 }
 
-- (id)p_childWrapPathsFrom:(id)a3
+- (id)p_childWrapPathsFrom:(id)from
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -607,7 +607,7 @@ LABEL_9:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [from countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -619,7 +619,7 @@ LABEL_9:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(from);
         }
 
         v10 = *(*(&v16 + 1) + 8 * v9);
@@ -643,7 +643,7 @@ LABEL_9:
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [from countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -696,16 +696,16 @@ LABEL_9:
   {
     if (self->mDynamicLayoutGeometry)
     {
-      v3 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGroupLayout p_createDynamicCopies]"];
-      [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGroupLayout.m"), 405, @"expected nil value for '%s'", "mDynamicLayoutGeometry"}];
+      [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGroupLayout.m"), 405, @"expected nil value for '%s'", "mDynamicLayoutGeometry"}];
     }
 
     self->mDynamicLayoutGeometry = [(TSDLayoutGeometry *)[(TSDAbstractLayout *)self geometry] copy];
   }
 }
 
-- (void)setDynamicGeometry:(id)a3
+- (void)setDynamicGeometry:(id)geometry
 {
   v5.receiver = self;
   v5.super_class = TSDGroupLayout;
@@ -713,7 +713,7 @@ LABEL_9:
   if (([(TSDInfo *)[(TSDLayout *)self info] isInlineWithText]& 1) == 0)
   {
 
-    self->mDynamicLayoutGeometry = [a3 copy];
+    self->mDynamicLayoutGeometry = [geometry copy];
   }
 }
 
@@ -724,9 +724,9 @@ LABEL_9:
     mDynamicLayoutGeometry = self->mDynamicLayoutGeometry;
     if (!mDynamicLayoutGeometry)
     {
-      v4 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDGroupLayout p_destroyDynamicCopies]"];
-      [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGroupLayout.m"), 422, @"invalid nil value for '%s'", "mDynamicLayoutGeometry"}];
+      [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDGroupLayout.m"), 422, @"invalid nil value for '%s'", "mDynamicLayoutGeometry"}];
       mDynamicLayoutGeometry = self->mDynamicLayoutGeometry;
     }
 
@@ -743,8 +743,8 @@ LABEL_9:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(TSDGroupLayout *)self descendentWrappables];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    descendentWrappables = [(TSDGroupLayout *)self descendentWrappables];
+    v4 = [descendentWrappables countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -755,26 +755,26 @@ LABEL_9:
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(descendentWrappables);
           }
 
           v8 = *(*(&v11 + 1) + 8 * i);
           if ([v8 wrapType])
           {
-            v9 = [v8 parent];
-            if (v9)
+            parent = [v8 parent];
+            if (parent)
             {
-              v10 = v9;
+              parent2 = parent;
               while ((objc_opt_respondsToSelector() & 1) == 0)
               {
-                v10 = [v10 parent];
-                if (!v10)
+                parent2 = [parent2 parent];
+                if (!parent2)
                 {
                   goto LABEL_14;
                 }
               }
 
-              [v10 wrappableChildInvalidated:v8];
+              [parent2 wrappableChildInvalidated:v8];
             }
           }
 
@@ -782,7 +782,7 @@ LABEL_14:
           ;
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [descendentWrappables countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v5);

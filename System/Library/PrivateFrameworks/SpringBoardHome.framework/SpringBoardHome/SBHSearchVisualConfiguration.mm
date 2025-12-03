@@ -1,11 +1,11 @@
 @interface SBHSearchVisualConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SBHSearchVisualConfiguration)init;
 - (UIEdgeInsets)textFieldLandscapeLayoutInsets;
 - (UIEdgeInsets)textFieldPortraitLayoutInsets;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 @end
 
@@ -44,7 +44,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   if (result)
@@ -61,10 +61,10 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -76,7 +76,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       if (self->_textFieldWidth == v7->f64[1] && (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_textFieldPortraitLayoutInsets.top, v7[1]), vceqq_f64(*&self->_textFieldPortraitLayoutInsets.bottom, v7[2])))) & 1) != 0)
       {
         v8 = vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_textFieldLandscapeLayoutInsets.top, v7[3]), vceqq_f64(*&self->_textFieldLandscapeLayoutInsets.bottom, v7[4]))));
@@ -99,34 +99,34 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBHSearchVisualConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHSearchVisualConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHSearchVisualConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHSearchVisualConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBHSearchVisualConfiguration *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBHSearchVisualConfiguration *)self succinctDescriptionBuilder];
   [(SBHSearchVisualConfiguration *)self textFieldWidth];
-  v5 = [v4 appendFloat:@"textFieldWidth" withName:?];
+  v5 = [succinctDescriptionBuilder appendFloat:@"textFieldWidth" withName:?];
   [(SBHSearchVisualConfiguration *)self textFieldPortraitLayoutInsets];
   v6 = NSStringFromUIEdgeInsets(v10);
-  [v4 appendString:v6 withName:@"textFieldPortraitLayoutInsets"];
+  [succinctDescriptionBuilder appendString:v6 withName:@"textFieldPortraitLayoutInsets"];
 
   [(SBHSearchVisualConfiguration *)self textFieldLandscapeLayoutInsets];
   v7 = NSStringFromUIEdgeInsets(v11);
-  [v4 appendString:v7 withName:@"textFieldLandscapeLayoutInsets"];
+  [succinctDescriptionBuilder appendString:v7 withName:@"textFieldLandscapeLayoutInsets"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (UIEdgeInsets)textFieldLandscapeLayoutInsets

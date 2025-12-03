@@ -1,12 +1,12 @@
 @interface SESProximityChip
 + (id)sharedObject;
-+ (void)cacheProximityChipData:(id)a3 completion:(id)a4;
++ (void)cacheProximityChipData:(id)data completion:(id)completion;
 - (BOOL)done;
 - (BOOL)isProduction;
 - (BOOL)isSupported;
 - (SESProximityChip)init;
 - (int64_t)getType;
-- (void)cacheProximityChipData:(id)a3 completion:(id)a4;
+- (void)cacheProximityChipData:(id)data completion:(id)completion;
 @end
 
 @implementation SESProximityChip
@@ -42,18 +42,18 @@
   return v3;
 }
 
-+ (void)cacheProximityChipData:(id)a3 completion:(id)a4
++ (void)cacheProximityChipData:(id)data completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dataCopy = data;
   v7 = +[SESProximityChip sharedObject];
-  [v7 cacheProximityChipData:v6 completion:v5];
+  [v7 cacheProximityChipData:dataCopy completion:completionCopy];
 }
 
-- (void)cacheProximityChipData:(id)a3 completion:(id)a4
+- (void)cacheProximityChipData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_cacheLock);
   if (![(SESProximityChip *)self done])
   {
@@ -76,8 +76,8 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Retrieving proximity chip information", buf, 2u);
     }
 
-    v12 = v6;
-    v13 = v7;
+    v12 = dataCopy;
+    v13 = completionCopy;
     PRGetChipInfoAsync();
 
     v11 = v12;
@@ -90,8 +90,8 @@
     block[2] = sub_100016B44;
     block[3] = &unk_1004C1138;
     block[4] = self;
-    v16 = v7;
-    dispatch_async(v6, block);
+    v16 = completionCopy;
+    dispatch_async(dataCopy, block);
     v11 = v16;
   }
 

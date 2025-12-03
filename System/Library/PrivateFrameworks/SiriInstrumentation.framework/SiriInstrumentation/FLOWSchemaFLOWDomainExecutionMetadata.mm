@@ -1,25 +1,25 @@
 @interface FLOWSchemaFLOWDomainExecutionMetadata
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWDomainExecutionMetadata)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWDomainExecutionMetadata)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWDomainExecutionMetadata)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWDomainExecutionMetadata)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWDomainExecutionMetadata
 
-- (FLOWSchemaFLOWDomainExecutionMetadata)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWDomainExecutionMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = FLOWSchemaFLOWDomainExecutionMetadata;
   v5 = [(FLOWSchemaFLOWDomainExecutionMetadata *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"domainExecutionAppIntentBundleID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"domainExecutionAppIntentBundleID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,30 +33,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWDomainExecutionMetadata)initWithJSON:(id)a3
+- (FLOWSchemaFLOWDomainExecutionMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWDomainExecutionMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWDomainExecutionMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWDomainExecutionMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -69,31 +69,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_domainExecutionAppIntentBundleID)
   {
-    v4 = [(FLOWSchemaFLOWDomainExecutionMetadata *)self domainExecutionAppIntentBundleID];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"domainExecutionAppIntentBundleID"];
+    domainExecutionAppIntentBundleID = [(FLOWSchemaFLOWDomainExecutionMetadata *)self domainExecutionAppIntentBundleID];
+    v5 = [domainExecutionAppIntentBundleID copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"domainExecutionAppIntentBundleID"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(FLOWSchemaFLOWDomainExecutionMetadata *)self domainExecutionAppIntentBundleID];
-    v6 = [v4 domainExecutionAppIntentBundleID];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    domainExecutionAppIntentBundleID = [(FLOWSchemaFLOWDomainExecutionMetadata *)self domainExecutionAppIntentBundleID];
+    domainExecutionAppIntentBundleID2 = [equalCopy domainExecutionAppIntentBundleID];
+    v7 = domainExecutionAppIntentBundleID2;
+    if ((domainExecutionAppIntentBundleID != 0) != (domainExecutionAppIntentBundleID2 == 0))
     {
-      v8 = [(FLOWSchemaFLOWDomainExecutionMetadata *)self domainExecutionAppIntentBundleID];
-      if (!v8)
+      domainExecutionAppIntentBundleID3 = [(FLOWSchemaFLOWDomainExecutionMetadata *)self domainExecutionAppIntentBundleID];
+      if (!domainExecutionAppIntentBundleID3)
       {
 
 LABEL_10:
@@ -101,10 +101,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(FLOWSchemaFLOWDomainExecutionMetadata *)self domainExecutionAppIntentBundleID];
-      v11 = [v4 domainExecutionAppIntentBundleID];
-      v12 = [v10 isEqual:v11];
+      v9 = domainExecutionAppIntentBundleID3;
+      domainExecutionAppIntentBundleID4 = [(FLOWSchemaFLOWDomainExecutionMetadata *)self domainExecutionAppIntentBundleID];
+      domainExecutionAppIntentBundleID5 = [equalCopy domainExecutionAppIntentBundleID];
+      v12 = [domainExecutionAppIntentBundleID4 isEqual:domainExecutionAppIntentBundleID5];
 
       if (v12)
       {
@@ -123,24 +123,24 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(FLOWSchemaFLOWDomainExecutionMetadata *)self domainExecutionAppIntentBundleID];
+  toCopy = to;
+  domainExecutionAppIntentBundleID = [(FLOWSchemaFLOWDomainExecutionMetadata *)self domainExecutionAppIntentBundleID];
 
-  if (v4)
+  if (domainExecutionAppIntentBundleID)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v8.receiver = self;
   v8.super_class = FLOWSchemaFLOWDomainExecutionMetadata;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:v4];
-  v6 = [v4 isConditionSet:{4, v8.receiver, v8.super_class}];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:policyCopy];
+  v6 = [policyCopy isConditionSet:{4, v8.receiver, v8.super_class}];
 
   if (v6)
   {

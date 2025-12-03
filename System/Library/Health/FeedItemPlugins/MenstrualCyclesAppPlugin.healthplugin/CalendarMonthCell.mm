@@ -1,7 +1,7 @@
 @interface CalendarMonthCell
 - (NSDate)ax_month;
-- (_TtC24MenstrualCyclesAppPlugin17CalendarMonthCell)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin17CalendarMonthCell)initWithFrame:(CGRect)a3;
+- (_TtC24MenstrualCyclesAppPlugin17CalendarMonthCell)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin17CalendarMonthCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CalendarMonthCell
@@ -28,12 +28,12 @@
   return v10;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin17CalendarMonthCell)initWithFrame:(CGRect)a3
+- (_TtC24MenstrualCyclesAppPlugin17CalendarMonthCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin17CalendarMonthCell_calendarView) = 0;
   v9 = OBJC_IVAR____TtC24MenstrualCyclesAppPlugin17CalendarMonthCell_viewModel;
@@ -44,12 +44,12 @@
   *(self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin17CalendarMonthCell_ax_flowDays) = v11;
   v14.receiver = self;
   v14.super_class = ObjectType;
-  v12 = [(CalendarMonthCell *)&v14 initWithFrame:x, y, width, height];
-  [(CalendarMonthCell *)v12 setMaximumContentSizeCategory:*MEMORY[0x29EDC8070]];
-  return v12;
+  height = [(CalendarMonthCell *)&v14 initWithFrame:x, y, width, height];
+  [(CalendarMonthCell *)height setMaximumContentSizeCategory:*MEMORY[0x29EDC8070]];
+  return height;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin17CalendarMonthCell)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin17CalendarMonthCell)initWithCoder:(id)coder
 {
   *(self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin17CalendarMonthCell_calendarView) = 0;
   v4 = OBJC_IVAR____TtC24MenstrualCyclesAppPlugin17CalendarMonthCell_viewModel;

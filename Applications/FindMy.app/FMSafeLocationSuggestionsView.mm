@@ -1,15 +1,15 @@
 @interface FMSafeLocationSuggestionsView
 - (_TtC6FindMy29FMSafeLocationSuggestionsView)init;
-- (void)locationRowTapWithSender:(id)a3;
+- (void)locationRowTapWithSender:(id)sender;
 @end
 
 @implementation FMSafeLocationSuggestionsView
 
-- (void)locationRowTapWithSender:(id)a3
+- (void)locationRowTapWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_1004EA29C(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_1004EA29C(senderCopy);
 }
 
 - (_TtC6FindMy29FMSafeLocationSuggestionsView)init

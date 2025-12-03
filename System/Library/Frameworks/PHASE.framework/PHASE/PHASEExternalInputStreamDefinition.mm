@@ -1,6 +1,6 @@
 @interface PHASEExternalInputStreamDefinition
 - (PHASEExternalInputStreamDefinition)init;
-- (PHASEExternalInputStreamDefinition)initWithStreamType:(int64_t)a3 format:(id)a4 maximumFrames:(unsigned int)a5 audioSessionToken:(unsigned int)a6;
+- (PHASEExternalInputStreamDefinition)initWithStreamType:(int64_t)type format:(id)format maximumFrames:(unsigned int)frames audioSessionToken:(unsigned int)token;
 - (id)description;
 @end
 
@@ -13,20 +13,20 @@
   return 0;
 }
 
-- (PHASEExternalInputStreamDefinition)initWithStreamType:(int64_t)a3 format:(id)a4 maximumFrames:(unsigned int)a5 audioSessionToken:(unsigned int)a6
+- (PHASEExternalInputStreamDefinition)initWithStreamType:(int64_t)type format:(id)format maximumFrames:(unsigned int)frames audioSessionToken:(unsigned int)token
 {
-  v11 = a4;
+  formatCopy = format;
   v15.receiver = self;
   v15.super_class = PHASEExternalInputStreamDefinition;
   v12 = [(PHASEExternalInputStreamDefinition *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_streamType = a3;
-    objc_storeStrong(&v12->_format, a4);
-    v13->_maximumFrames = a5;
-    v13->_audioSessionToken = a6;
-    if (!a6)
+    v12->_streamType = type;
+    objc_storeStrong(&v12->_format, format);
+    v13->_maximumFrames = frames;
+    v13->_audioSessionToken = token;
+    if (!token)
     {
       v13->_audioSessionToken = sDefaultAudioSessionToken();
     }

@@ -1,6 +1,6 @@
 @interface CSWallpaperComponent
 - (CSWallpaperComponent)init;
-- (void)setShouldMatchBackgroundStyle:(BOOL)a3;
+- (void)setShouldMatchBackgroundStyle:(BOOL)style;
 @end
 
 @implementation CSWallpaperComponent
@@ -19,7 +19,7 @@
   return v3;
 }
 
-- (void)setShouldMatchBackgroundStyle:(BOOL)a3
+- (void)setShouldMatchBackgroundStyle:(BOOL)style
 {
   v4 = BSSettingFlagForBool();
 

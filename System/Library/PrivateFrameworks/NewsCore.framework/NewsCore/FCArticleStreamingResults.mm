@@ -1,24 +1,24 @@
 @interface FCArticleStreamingResults
-- (void)fetchObjectsUpToCount:(unint64_t)a3 qualityOfService:(int64_t)a4 batchSize:(unint64_t)a5 completion:(id)a6;
+- (void)fetchObjectsUpToCount:(unint64_t)count qualityOfService:(int64_t)service batchSize:(unint64_t)size completion:(id)completion;
 @end
 
 @implementation FCArticleStreamingResults
 
-- (void)fetchObjectsUpToCount:(unint64_t)a3 qualityOfService:(int64_t)a4 batchSize:(unint64_t)a5 completion:(id)a6
+- (void)fetchObjectsUpToCount:(unint64_t)count qualityOfService:(int64_t)service batchSize:(unint64_t)size completion:(id)completion
 {
-  v10 = a6;
-  v11 = [(FCStreamingResults *)self serialQueue];
+  completionCopy = completion;
+  serialQueue = [(FCStreamingResults *)self serialQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __89__FCArticleStreamingResults_fetchObjectsUpToCount_qualityOfService_batchSize_completion___block_invoke;
   v13[3] = &unk_1E7C41758;
-  v15 = a3;
-  v16 = a5;
-  v17 = a4;
+  countCopy = count;
+  sizeCopy = size;
+  serviceCopy = service;
   v13[4] = self;
-  v14 = v10;
-  v12 = v10;
-  [v11 enqueueBlockForMainThread:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [serialQueue enqueueBlockForMainThread:v13];
 }
 
 void __89__FCArticleStreamingResults_fetchObjectsUpToCount_qualityOfService_batchSize_completion___block_invoke(uint64_t a1, void *a2)

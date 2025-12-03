@@ -1,8 +1,8 @@
 @interface SecKeyRSAPrivate
 - (SecKeyRSAPrivate)init;
-- (SecKeyRSAPrivate)initWithData:(id)a3 error:(id *)a4;
+- (SecKeyRSAPrivate)initWithData:(id)data error:(id *)error;
 - (id)dataRepresentation;
-- (id)decryptData:(id)a3 error:(id *)a4;
+- (id)decryptData:(id)data error:(id *)error;
 - (id)publicKey;
 - (void)init;
 @end
@@ -12,8 +12,8 @@
 - (id)publicKey
 {
   v3 = [SecKeyRSAPublic alloc];
-  v4 = [(SecKeyRSAPrivate *)self secKeyRef];
-  v5 = SecKeyCopyPublicKey(v4);
+  secKeyRef = [(SecKeyRSAPrivate *)self secKeyRef];
+  v5 = SecKeyCopyPublicKey(secKeyRef);
   v6 = [(SecKeyRSAPublic *)v3 initWithSecKeyRef:v5];
 
   return v6;
@@ -53,7 +53,7 @@
     }
 
     self = v11;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -64,20 +64,20 @@
       [(SecKeyRSAPrivate *)&error init];
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
   v14 = *MEMORY[0x277D85DE8];
-  return v12;
+  return selfCopy;
 }
 
-- (SecKeyRSAPrivate)initWithData:(id)a3 error:(id *)a4
+- (SecKeyRSAPrivate)initWithData:(id)data error:(id *)error
 {
   v18[3] = *MEMORY[0x277D85DE8];
   v15.receiver = self;
   v15.super_class = SecKeyRSAPrivate;
   error = 0;
-  v4 = a3;
+  dataCopy = data;
   v5 = [(SecKeyRSAPrivate *)&v15 init];
   v6 = *MEMORY[0x277CDC060];
   v7 = *MEMORY[0x277CDBFE0];
@@ -88,12 +88,12 @@
   v18[1] = v8;
   v17[2] = *MEMORY[0x277CDC018];
   v18[2] = &unk_283F13BC8;
-  v9 = SecKeyCreateWithData(v4, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:{3, v15.receiver, v15.super_class, error}], &error);
+  v9 = SecKeyCreateWithData(dataCopy, [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:{3, v15.receiver, v15.super_class, error}], &error);
 
   [(SecKeyRSAPrivate *)v5 setSecKeyRef:v9];
-  v10 = [(SecKeyRSAPrivate *)v5 secKeyRef];
+  secKeyRef = [(SecKeyRSAPrivate *)v5 secKeyRef];
 
-  if (v10)
+  if (secKeyRef)
   {
     v11 = v5;
   }
@@ -113,12 +113,12 @@
   return v11;
 }
 
-- (id)decryptData:(id)a3 error:(id *)a4
+- (id)decryptData:(id)data error:(id *)error
 {
   error = 0;
-  v6 = a3;
-  v7 = [(SecKeyRSAPrivate *)self secKeyRef];
-  v8 = SecKeyCreateDecryptedData(v7, *MEMORY[0x277CDC358], v6, &error);
+  dataCopy = data;
+  secKeyRef = [(SecKeyRSAPrivate *)self secKeyRef];
+  v8 = SecKeyCreateDecryptedData(secKeyRef, *MEMORY[0x277CDC358], dataCopy, &error);
 
   if (v8)
   {
@@ -133,9 +133,9 @@
       [SecKeyRSAPrivate decryptData:? error:?];
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = error;
+      *error = error;
     }
   }
 
@@ -144,8 +144,8 @@
 
 - (id)dataRepresentation
 {
-  v2 = [(SecKeyRSAPrivate *)self secKeyRef];
-  v3 = SecKeyCopyExternalRepresentation(v2, 0);
+  secKeyRef = [(SecKeyRSAPrivate *)self secKeyRef];
+  v3 = SecKeyCopyExternalRepresentation(secKeyRef, 0);
 
   return v3;
 }
@@ -153,7 +153,7 @@
 - (void)init
 {
   v9 = *MEMORY[0x277D85DE8];
-  v1 = CFCopyDescription(*a1);
+  v1 = CFCopyDescription(*self);
   OUTLINED_FUNCTION_0_2(&dword_22B404000, v2, v3, "Failed to generate an RSA Key with error: %@.", v4, v5, v6, v7, 2u);
 
   v8 = *MEMORY[0x277D85DE8];

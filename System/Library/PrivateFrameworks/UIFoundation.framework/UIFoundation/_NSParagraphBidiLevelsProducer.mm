@@ -1,29 +1,29 @@
 @interface _NSParagraphBidiLevelsProducer
-+ (uint64_t)resolvedBaseWritingDirectionForTextContentManager:(uint64_t)a3 AttributedString:(uint64_t)a4 paragraphRange:(size_t)a5 baseWritingDirection:(uint64_t)a6 fallbackBaseWritingDirection:(int)a7 bidiLevels:;
++ (uint64_t)resolvedBaseWritingDirectionForTextContentManager:(uint64_t)manager AttributedString:(uint64_t)string paragraphRange:(size_t)range baseWritingDirection:(uint64_t)direction fallbackBaseWritingDirection:(int)writingDirection bidiLevels:;
 @end
 
 @implementation _NSParagraphBidiLevelsProducer
 
-+ (uint64_t)resolvedBaseWritingDirectionForTextContentManager:(uint64_t)a3 AttributedString:(uint64_t)a4 paragraphRange:(size_t)a5 baseWritingDirection:(uint64_t)a6 fallbackBaseWritingDirection:(int)a7 bidiLevels:
++ (uint64_t)resolvedBaseWritingDirectionForTextContentManager:(uint64_t)manager AttributedString:(uint64_t)string paragraphRange:(size_t)range baseWritingDirection:(uint64_t)direction fallbackBaseWritingDirection:(int)writingDirection bidiLevels:
 {
   objc_opt_self();
-  if (a5)
+  if (range)
   {
     if (a2)
     {
-      v11 = [a2 baseWritingDirectionResolutionStrategy];
+      baseWritingDirectionResolutionStrategy = [a2 baseWritingDirectionResolutionStrategy];
     }
 
     else
     {
-      v11 = +[NSTextContentManager defaultBaseWritingDirectionResolutionStrategy];
+      baseWritingDirectionResolutionStrategy = +[NSTextContentManager defaultBaseWritingDirectionResolutionStrategy];
     }
 
-    v12 = v11 == 2 && a6 == -1;
-    if (a6 == -1)
+    v12 = baseWritingDirectionResolutionStrategy == 2 && direction == -1;
+    if (direction == -1)
     {
-      v13 = malloc_type_calloc(a5, 1uLL, 0x100004077774924uLL);
-      memset(v13, a7, a5);
+      v13 = malloc_type_calloc(range, 1uLL, 0x100004077774924uLL);
+      memset(v13, writingDirection, range);
       if (v12)
       {
 LABEL_10:
@@ -51,15 +51,15 @@ LABEL_10:
     {
 LABEL_15:
       free(v13);
-      return a6;
+      return direction;
     }
 
 LABEL_14:
-    a6 = *v13;
+    direction = *v13;
     goto LABEL_15;
   }
 
-  return a6;
+  return direction;
 }
 
 @end

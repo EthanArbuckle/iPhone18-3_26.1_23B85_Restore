@@ -1,41 +1,41 @@
 @interface UIWindowAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsInCarPlay;
 - (BOOL)_accessibilityIsSecure;
 - (BOOL)_accessibilityIsUserInteractionEnabled;
 - (BOOL)_accessibilitySceneContainsOnlySecureWindows;
-- (BOOL)_axShouldPostScreenChangeOnOrderFront:(BOOL)a3;
+- (BOOL)_axShouldPostScreenChangeOnOrderFront:(BOOL)front;
 - (BOOL)_prefersFocusContainment;
 - (BOOL)accessibilityElementsHidden;
-- (CGPoint)warpPoint:(CGPoint)a3;
-- (UIWindowAccessibility)initWithFrame:(CGRect)a3;
-- (UIWindowAccessibility)initWithWindowScene:(id)a3;
+- (CGPoint)warpPoint:(CGPoint)point;
+- (UIWindowAccessibility)initWithFrame:(CGRect)frame;
+- (UIWindowAccessibility)initWithWindowScene:(id)scene;
 - (id)_accessibilityAllRemoteElements;
 - (id)_accessibilityFirstResponderCoalesceTimer;
 - (id)_accessibilityGetRemoteElement;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilityMLRemoteElement;
 - (id)_accessibilityRemoteElement;
 - (id)_accessibilityUserTestingParent;
 - (id)_accessibilityWindowSections;
-- (id)_targetWindowForPathIndex:(int64_t)a3 atPoint:(CGPoint)a4 scenePointZ:(double)a5 forEvent:(id)a6 windowServerHitTestWindow:(id)a7;
+- (id)_targetWindowForPathIndex:(int64_t)index atPoint:(CGPoint)point scenePointZ:(double)z forEvent:(id)event windowServerHitTestWindow:(id)window;
 - (id)accessibilityContainer;
-- (id)accessibilityRemoteSubstituteChildren:(id)a3;
+- (id)accessibilityRemoteSubstituteChildren:(id)children;
 - (int)_accessibilityRemotePid;
 - (uint64_t)_accessibilityShouldUseRemoteElement;
 - (unsigned)_accessibilityContextId;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_accessibilityRegisterRemoteElement:(BOOL)a3;
-- (void)_accessibilitySetAllRemoteElements:(id)a3;
-- (void)_accessibilitySetFirstResponderCoalesceTimer:(uint64_t)a1;
-- (void)_accessibilitySetRemoteElement:(uint64_t)a1;
+- (void)_accessibilityRegisterRemoteElement:(BOOL)element;
+- (void)_accessibilitySetAllRemoteElements:(id)elements;
+- (void)_accessibilitySetFirstResponderCoalesceTimer:(uint64_t)timer;
+- (void)_accessibilitySetRemoteElement:(uint64_t)element;
 - (void)_axCheckForExistingRemoteElements;
 - (void)_axListenForRemoteElement;
-- (void)_axRemoteElementRegistered:(id)a3;
-- (void)_axUpdateForRemoteElement:(void *)a1;
+- (void)_axRemoteElementRegistered:(id)registered;
+- (void)_axUpdateForRemoteElement:(void *)element;
 - (void)_orderFrontWithoutMakingKey;
-- (void)_setBoundContext:(id)a3;
-- (void)_setFirstResponder:(id)a3;
+- (void)_setBoundContext:(id)context;
+- (void)_setFirstResponder:(id)responder;
 - (void)dealloc;
 - (void)makeKeyAndVisible;
 @end
@@ -44,9 +44,9 @@
 
 - (id)_accessibilityAllRemoteElements
 {
-  if (a1)
+  if (self)
   {
-    v2 = objc_getAssociatedObject(a1, &__UIWindow___accessibilityAllRemoteElements);
+    v2 = objc_getAssociatedObject(self, &__UIWindow___accessibilityAllRemoteElements);
   }
 
   else
@@ -57,24 +57,24 @@
   return v2;
 }
 
-- (void)_accessibilitySetAllRemoteElements:(id)a3
+- (void)_accessibilitySetAllRemoteElements:(id)elements
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, elements);
   __UIAccessibilitySetAssociatedObject();
   objc_storeStrong(location, 0);
 }
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v14 = location;
   v13 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v9 = @"UIWindow";
   [location[0] validateClass:? hasInstanceVariable:? withType:?];
   v12 = "@";
@@ -119,52 +119,52 @@
   objc_storeStrong(v14, v13);
 }
 
-- (UIWindowAccessibility)initWithWindowScene:(id)a3
+- (UIWindowAccessibility)initWithWindowScene:(id)scene
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
-  v9 = 0;
+  objc_storeStrong(location, scene);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6.receiver = v3;
   v6.super_class = UIWindowAccessibility;
-  v9 = [(UIWindowAccessibility *)&v6 initWithWindowScene:location[0]];
-  v7 = MEMORY[0x29EDC9748](v9);
-  [(UIWindowAccessibility *)v9 _axListenForRemoteElement];
+  selfCopy = [(UIWindowAccessibility *)&v6 initWithWindowScene:location[0]];
+  v7 = MEMORY[0x29EDC9748](selfCopy);
+  [(UIWindowAccessibility *)selfCopy _axListenForRemoteElement];
   v5 = MEMORY[0x29EDC9748](v7);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
 - (void)_axListenForRemoteElement
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     location = MEMORY[0x29EDC9748](@"_axRegisteredForRemoteElement");
-    if (([v3 _accessibilityBoolValueForKey:location] & 1) == 0)
+    if (([selfCopy _accessibilityBoolValueForKey:location] & 1) == 0)
     {
-      [v3 _axCheckForExistingRemoteElements];
-      v1 = [MEMORY[0x29EDBA068] defaultCenter];
-      [v1 addObserver:v3 selector:sel__axRemoteElementRegistered_ name:@"ax_remote_element_registered" object:0];
-      [v3 _accessibilitySetBoolValue:1 forKey:{location, MEMORY[0x29EDC9740](v1).n128_f64[0]}];
+      [selfCopy _axCheckForExistingRemoteElements];
+      defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+      [defaultCenter addObserver:selfCopy selector:sel__axRemoteElementRegistered_ name:@"ax_remote_element_registered" object:0];
+      [selfCopy _accessibilitySetBoolValue:1 forKey:{location, MEMORY[0x29EDC9740](defaultCenter).n128_f64[0]}];
     }
 
     objc_storeStrong(&location, 0);
   }
 }
 
-- (UIWindowAccessibility)initWithFrame:(CGRect)a3
+- (UIWindowAccessibility)initWithFrame:(CGRect)frame
 {
-  v8 = a3;
+  frameCopy = frame;
   v6[1] = a2;
   v7 = 0;
   v5.receiver = self;
   v5.super_class = UIWindowAccessibility;
-  v7 = [(UIWindowAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v7 = [(UIWindowAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6[0] = MEMORY[0x29EDC9748](v7);
   [(UIWindowAccessibility *)v7 _axListenForRemoteElement];
   v4 = MEMORY[0x29EDC9748](v6[0]);
@@ -173,14 +173,14 @@
   return v4;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  v27 = a3;
-  v26 = self;
+  testCopy = test;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  v24 = [(UIWindowAccessibility *)v26 _accessibilityBoolValueForKey:@"AXInHitTestOverride"];
+  objc_storeStrong(location, event);
+  v24 = [(UIWindowAccessibility *)selfCopy _accessibilityBoolValueForKey:@"AXInHitTestOverride"];
   v16 = 0;
   v11 = 0;
   if ((v24 & 1) == 0)
@@ -190,7 +190,7 @@
     v20 = 0;
     v21 = __57__UIWindowAccessibility__accessibilityHitTest_withEvent___block_invoke;
     v22 = &unk_29F30CEB0;
-    v23 = MEMORY[0x29EDC9748](v26);
+    v23 = MEMORY[0x29EDC9748](selfCopy);
     v17 = &v23;
     v16 = 1;
     v11 = (__57__UIWindowAccessibility__accessibilityHitTest_withEvent___block_invoke)();
@@ -198,9 +198,9 @@
 
   if (v11)
   {
-    [(UIWindowAccessibility *)v26 _accessibilitySetBoolValue:1 forKey:?];
-    v15 = [(UIWindowAccessibility *)v26 accessibilityHitTest:location[0] withEvent:v27];
-    [(UIWindowAccessibility *)v26 _accessibilitySetBoolValue:0 forKey:@"AXInHitTestOverride"];
+    [(UIWindowAccessibility *)selfCopy _accessibilitySetBoolValue:1 forKey:?];
+    v15 = [(UIWindowAccessibility *)selfCopy accessibilityHitTest:location[0] withEvent:testCopy];
+    [(UIWindowAccessibility *)selfCopy _accessibilitySetBoolValue:0 forKey:@"AXInHitTestOverride"];
     v28 = MEMORY[0x29EDC9748](v15);
     v14 = 1;
     objc_storeStrong(&v15, 0);
@@ -218,12 +218,12 @@
 
   if (!v14)
   {
-    v10 = [(UIWindowAccessibility *)v26 windowScene];
-    *&v4 = MEMORY[0x29EDC9740](v10).n128_u64[0];
-    if (v10)
+    windowScene = [(UIWindowAccessibility *)selfCopy windowScene];
+    *&v4 = MEMORY[0x29EDC9740](windowScene).n128_u64[0];
+    if (windowScene)
     {
-      [(UIWindowAccessibility *)v26 alpha];
-      if (v5 <= 0.0 || ([(UIWindowAccessibility *)v26 isHidden]& 1) != 0)
+      [(UIWindowAccessibility *)selfCopy alpha];
+      if (v5 <= 0.0 || ([(UIWindowAccessibility *)selfCopy isHidden]& 1) != 0)
       {
         v28 = 0;
         v14 = 1;
@@ -231,11 +231,11 @@
 
       else
       {
-        [(UIWindowAccessibility *)v26 warpPoint:v27];
+        [(UIWindowAccessibility *)selfCopy warpPoint:testCopy];
         v13.x = v6;
         v13.y = v7;
-        v27 = v13;
-        v12.receiver = v26;
+        testCopy = v13;
+        v12.receiver = selfCopy;
         v12.super_class = UIWindowAccessibility;
         v28 = [(UIWindowAccessibility *)&v12 _accessibilityHitTest:location[0] withEvent:v6, v7];
         v14 = 1;
@@ -349,11 +349,11 @@ void __57__UIWindowAccessibility__accessibilityHitTest_withEvent___block_invoke_
   v4 = 0;
   if (([(UIWindowAccessibility *)self _accessibilityShouldUseRemoteElement]& 1) != 0)
   {
-    v7 = [(UIWindowAccessibility *)self _accessibilityAllRemoteElements];
+    _accessibilityAllRemoteElements = [(UIWindowAccessibility *)self _accessibilityAllRemoteElements];
     v6 = 1;
-    v5 = [v7 lastObject];
+    lastObject = [_accessibilityAllRemoteElements lastObject];
     v4 = 1;
-    v2 = MEMORY[0x29EDC9748](v5);
+    v2 = MEMORY[0x29EDC9748](lastObject);
   }
 
   else
@@ -364,12 +364,12 @@ void __57__UIWindowAccessibility__accessibilityHitTest_withEvent___block_invoke_
   v9 = v2;
   if (v4)
   {
-    MEMORY[0x29EDC9740](v5);
+    MEMORY[0x29EDC9740](lastObject);
   }
 
   if (v6)
   {
-    MEMORY[0x29EDC9740](v7);
+    MEMORY[0x29EDC9740](_accessibilityAllRemoteElements);
   }
 
   return v9;
@@ -377,14 +377,14 @@ void __57__UIWindowAccessibility__accessibilityHitTest_withEvent___block_invoke_
 
 - (uint64_t)_accessibilityShouldUseRemoteElement
 {
-  v10 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v9 = MEMORY[0x29EDC9748](v10);
-    v8 = [v9 windowScene];
+    v9 = MEMORY[0x29EDC9748](selfCopy);
+    windowScene = [v9 windowScene];
     v6 = 0;
     objc_opt_class();
-    v2 = [v8 safeValueForKey:@"_FBSScene"];
+    v2 = [windowScene safeValueForKey:@"_FBSScene"];
     v5 = __UIAccessibilityCastAsClass();
     MEMORY[0x29EDC9740](v2);
     v4 = MEMORY[0x29EDC9748](v5);
@@ -403,7 +403,7 @@ void __57__UIWindowAccessibility__accessibilityHitTest_withEvent___block_invoke_
 
     objc_storeStrong(&v3, 0);
     objc_storeStrong(&v7, 0);
-    objc_storeStrong(&v8, 0);
+    objc_storeStrong(&windowScene, 0);
     objc_storeStrong(&v9, 0);
   }
 
@@ -417,52 +417,52 @@ void __57__UIWindowAccessibility__accessibilityHitTest_withEvent___block_invoke_
 
 - (id)_accessibilityUserTestingParent
 {
-  v4 = [(UIWindowAccessibility *)self _accessibilityRemoteElement];
-  *&v2 = MEMORY[0x29EDC9740](v4).n128_u64[0];
-  if (v4)
+  _accessibilityRemoteElement = [(UIWindowAccessibility *)self _accessibilityRemoteElement];
+  *&v2 = MEMORY[0x29EDC9740](_accessibilityRemoteElement).n128_u64[0];
+  if (_accessibilityRemoteElement)
   {
-    v6 = [(UIWindowAccessibility *)self _accessibilityRemoteElement];
+    _accessibilityRemoteElement2 = [(UIWindowAccessibility *)self _accessibilityRemoteElement];
   }
 
   else
   {
-    v6 = MEMORY[0x29EDC9748](*MEMORY[0x29EDC8008]);
+    _accessibilityRemoteElement2 = MEMORY[0x29EDC9748](*MEMORY[0x29EDC8008]);
   }
 
-  return v6;
+  return _accessibilityRemoteElement2;
 }
 
 - (id)accessibilityContainer
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UIWindowAccessibility *)self _accessibilityRemoteElement];
   if (location[0])
   {
-    v8 = MEMORY[0x29EDC9748](location[0]);
+    accessibilityContainer = MEMORY[0x29EDC9748](location[0]);
   }
 
   else
   {
-    v4.receiver = v7;
+    v4.receiver = selfCopy;
     v4.super_class = UIWindowAccessibility;
-    v8 = [(UIWindowAccessibility *)&v4 accessibilityContainer];
+    accessibilityContainer = [(UIWindowAccessibility *)&v4 accessibilityContainer];
   }
 
   v5 = 1;
   objc_storeStrong(location, 0);
-  v2 = v8;
+  v2 = accessibilityContainer;
 
   return v2;
 }
 
 - (id)_accessibilityWindowSections
 {
-  v84 = self;
+  selfCopy = self;
   v83[1] = a2;
   v82 = 0;
   objc_opt_class();
-  v34 = [(UIWindowAccessibility *)v84 safeValueForKey:@"rootViewController"];
+  v34 = [(UIWindowAccessibility *)selfCopy safeValueForKey:@"rootViewController"];
   v81 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v34);
   v80 = MEMORY[0x29EDC9748](v81);
@@ -473,15 +473,15 @@ void __57__UIWindowAccessibility__accessibilityHitTest_withEvent___block_invoke_
   [v78 axSafelyAddObject:v83[0]];
   while ([v78 count])
   {
-    v77 = [v78 ax_dequeueObject];
-    v33 = [v77 presentedViewController];
-    *&v2 = MEMORY[0x29EDC9740](v33).n128_u64[0];
-    if (v33)
+    ax_dequeueObject = [v78 ax_dequeueObject];
+    presentedViewController = [ax_dequeueObject presentedViewController];
+    *&v2 = MEMORY[0x29EDC9740](presentedViewController).n128_u64[0];
+    if (presentedViewController)
     {
       v31 = v78;
-      v32 = [v77 presentedViewController];
+      presentedViewController2 = [ax_dequeueObject presentedViewController];
       [v31 ax_enqueueObject:?];
-      MEMORY[0x29EDC9740](v32);
+      MEMORY[0x29EDC9740](presentedViewController2);
     }
 
     else
@@ -500,15 +500,15 @@ void __57__UIWindowAccessibility__accessibilityHitTest_withEvent___block_invoke_
         v73 = MEMORY[0x29EDC9748](v74);
         objc_storeStrong(&v74, 0);
         v76 = v73;
-        v30 = [v73 viewControllers];
+        viewControllers = [v73 viewControllers];
         v67 = MEMORY[0x29EDCA5F8];
         v68 = -1073741824;
         v69 = 0;
         v70 = __53__UIWindowAccessibility__accessibilityWindowSections__block_invoke;
         v71 = &unk_29F30E390;
         v72 = MEMORY[0x29EDC9748](v78);
-        [v30 enumerateObjectsUsingBlock:&v67];
-        MEMORY[0x29EDC9740](v30);
+        [viewControllers enumerateObjectsUsingBlock:&v67];
+        MEMORY[0x29EDC9740](viewControllers);
         objc_storeStrong(&v72, 0);
         objc_storeStrong(&v76, 0);
       }
@@ -529,35 +529,35 @@ void __57__UIWindowAccessibility__accessibilityHitTest_withEvent___block_invoke_
           v63 = MEMORY[0x29EDC9748](v64);
           objc_storeStrong(&v64, 0);
           v66 = v63;
-          v28 = [v63 toolbar];
-          v29 = [v28 _accessibilityViewIsVisible];
-          v3 = MEMORY[0x29EDC9740](v28).n128_u64[0];
-          if (v29)
+          toolbar = [v63 toolbar];
+          _accessibilityViewIsVisible = [toolbar _accessibilityViewIsVisible];
+          v3 = MEMORY[0x29EDC9740](toolbar).n128_u64[0];
+          if (_accessibilityViewIsVisible)
           {
             v26 = v79;
-            v27 = [v66 toolbar];
+            toolbar2 = [v66 toolbar];
             [v26 axSafelyAddObject:?];
-            v3 = MEMORY[0x29EDC9740](v27).n128_u64[0];
+            v3 = MEMORY[0x29EDC9740](toolbar2).n128_u64[0];
           }
 
-          v24 = [v66 navigationBar];
-          v25 = [v24 _accessibilityViewIsVisible];
-          *&v4 = MEMORY[0x29EDC9740](v24).n128_u64[0];
-          if (v25)
+          navigationBar = [v66 navigationBar];
+          _accessibilityViewIsVisible2 = [navigationBar _accessibilityViewIsVisible];
+          *&v4 = MEMORY[0x29EDC9740](navigationBar).n128_u64[0];
+          if (_accessibilityViewIsVisible2)
           {
-            v62 = [MEMORY[0x29EDC7328] defaultVoiceOverOptionsHonoringGroups];
-            v61 = [v62 leafNodePredicate];
+            defaultVoiceOverOptionsHonoringGroups = [MEMORY[0x29EDC7328] defaultVoiceOverOptionsHonoringGroups];
+            leafNodePredicate = [defaultVoiceOverOptionsHonoringGroups leafNodePredicate];
             v54 = MEMORY[0x29EDCA5F8];
             v55 = -1073741824;
             v56 = 0;
             v57 = __53__UIWindowAccessibility__accessibilityWindowSections__block_invoke_2;
             v58 = &unk_29F30E3B8;
             v59 = MEMORY[0x29EDC9748](v66);
-            v60 = MEMORY[0x29EDC9748](v61);
-            [v62 setLeafNodePredicate:&v54];
-            v22 = [v66 navigationBar];
-            v53 = [v22 _accessibilityLeafDescendantsWithOptions:v62];
-            MEMORY[0x29EDC9740](v22);
+            v60 = MEMORY[0x29EDC9748](leafNodePredicate);
+            [defaultVoiceOverOptionsHonoringGroups setLeafNodePredicate:&v54];
+            navigationBar2 = [v66 navigationBar];
+            v53 = [navigationBar2 _accessibilityLeafDescendantsWithOptions:defaultVoiceOverOptionsHonoringGroups];
+            MEMORY[0x29EDC9740](navigationBar2);
             v23 = v53;
             v47 = MEMORY[0x29EDCA5F8];
             v48 = -1073741824;
@@ -570,14 +570,14 @@ void __57__UIWindowAccessibility__accessibilityHitTest_withEvent___block_invoke_
             objc_storeStrong(&v53, 0);
             objc_storeStrong(&v60, 0);
             objc_storeStrong(&v59, 0);
-            objc_storeStrong(&v61, 0);
-            objc_storeStrong(&v62, 0);
+            objc_storeStrong(&leafNodePredicate, 0);
+            objc_storeStrong(&defaultVoiceOverOptionsHonoringGroups, 0);
           }
 
           v20 = v78;
-          v21 = [v66 topViewController];
+          topViewController = [v66 topViewController];
           [v20 ax_enqueueObject:?];
-          MEMORY[0x29EDC9740](v21);
+          MEMORY[0x29EDC9740](topViewController);
           objc_storeStrong(&v66, 0);
         }
 
@@ -597,31 +597,31 @@ void __57__UIWindowAccessibility__accessibilityHitTest_withEvent___block_invoke_
             v43 = MEMORY[0x29EDC9748](v44);
             objc_storeStrong(&v44, 0);
             v46 = v43;
-            v18 = [v43 tabBar];
-            v19 = [v18 _accessibilityViewIsVisible];
-            v5 = MEMORY[0x29EDC9740](v18).n128_u64[0];
-            if (v19)
+            tabBar = [v43 tabBar];
+            _accessibilityViewIsVisible3 = [tabBar _accessibilityViewIsVisible];
+            v5 = MEMORY[0x29EDC9740](tabBar).n128_u64[0];
+            if (_accessibilityViewIsVisible3)
             {
               v16 = v79;
-              v17 = [v46 tabBar];
+              tabBar2 = [v46 tabBar];
               [v16 axSafelyAddObject:?];
-              v5 = MEMORY[0x29EDC9740](v17).n128_u64[0];
+              v5 = MEMORY[0x29EDC9740](tabBar2).n128_u64[0];
             }
 
             v14 = v78;
-            v15 = [v46 selectedViewController];
+            selectedViewController = [v46 selectedViewController];
             [v14 ax_enqueueObject:?];
-            MEMORY[0x29EDC9740](v15);
+            MEMORY[0x29EDC9740](selectedViewController);
             objc_storeStrong(&v46, 0);
           }
 
           else
           {
-            v42 = [MEMORY[0x29EDC7328] options];
-            [v42 setLeafNodePredicate:&__block_literal_global_441];
-            v12 = [v77 view];
-            v41 = [v12 _accessibilityLeafDescendantsWithOptions:v42];
-            *&v6 = MEMORY[0x29EDC9740](v12).n128_u64[0];
+            options = [MEMORY[0x29EDC7328] options];
+            [options setLeafNodePredicate:&__block_literal_global_441];
+            view = [ax_dequeueObject view];
+            v41 = [view _accessibilityLeafDescendantsWithOptions:options];
+            *&v6 = MEMORY[0x29EDC9740](view).n128_u64[0];
             v7 = [v41 ax_filteredArrayUsingBlock:{&__block_literal_global_444_1, v6}];
             v8 = v41;
             v41 = v7;
@@ -636,23 +636,23 @@ void __57__UIWindowAccessibility__accessibilityHitTest_withEvent___block_invoke_
             [v13 enumerateObjectsUsingBlock:&v35];
             objc_storeStrong(&v40, 0);
             objc_storeStrong(&v41, 0);
-            objc_storeStrong(&v42, 0);
+            objc_storeStrong(&options, 0);
           }
         }
       }
     }
 
-    objc_storeStrong(&v77, 0);
+    objc_storeStrong(&ax_dequeueObject, 0);
   }
 
-  v10 = [v79 reverseObjectEnumerator];
-  v11 = [v10 allObjects];
-  MEMORY[0x29EDC9740](v10);
+  reverseObjectEnumerator = [v79 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
+  MEMORY[0x29EDC9740](reverseObjectEnumerator);
   objc_storeStrong(&v78, 0);
   objc_storeStrong(&v79, 0);
   objc_storeStrong(v83, 0);
 
-  return v11;
+  return allObjects;
 }
 
 void __53__UIWindowAccessibility__accessibilityWindowSections__block_invoke(id *a1, void *a2)
@@ -729,19 +729,19 @@ void __53__UIWindowAccessibility__accessibilityWindowSections__block_invoke_6(id
 
 - (int)_accessibilityRemotePid
 {
-  v3 = [(UIWindowAccessibility *)self accessibilityContainer];
-  v4 = [v3 remotePid];
-  MEMORY[0x29EDC9740](v3);
-  return v4;
+  accessibilityContainer = [(UIWindowAccessibility *)self accessibilityContainer];
+  remotePid = [accessibilityContainer remotePid];
+  MEMORY[0x29EDC9740](accessibilityContainer);
+  return remotePid;
 }
 
 - (void)dealloc
 {
   v16 = *MEMORY[0x29EDCA608];
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   memset(__b, 0, sizeof(__b));
-  obj = [(UIWindowAccessibility *)v14 _accessibilityAllRemoteElements];
+  obj = [(UIWindowAccessibility *)selfCopy _accessibilityAllRemoteElements];
   v9 = [obj countByEnumeratingWithState:__b objects:v15 count:16];
   if (v9)
   {
@@ -772,21 +772,21 @@ void __53__UIWindowAccessibility__accessibilityWindowSections__block_invoke_6(id
     }
   }
 
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:v14 name:@"ax_remote_element_registered" object:0];
-  *&v2 = MEMORY[0x29EDC9740](v3).n128_u64[0];
-  v10.receiver = v14;
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:selfCopy name:@"ax_remote_element_registered" object:0];
+  *&v2 = MEMORY[0x29EDC9740](defaultCenter).n128_u64[0];
+  v10.receiver = selfCopy;
   v10.super_class = UIWindowAccessibility;
   [(UIWindowAccessibility *)&v10 dealloc];
 }
 
-- (id)accessibilityRemoteSubstituteChildren:(id)a3
+- (id)accessibilityRemoteSubstituteChildren:(id)children
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (-[UIWindowAccessibility accessibilityElementsHidden](v21, "accessibilityElementsHidden") || ([location[0] remotePid] & 0x80000000) != 0)
+  objc_storeStrong(location, children);
+  if (-[UIWindowAccessibility accessibilityElementsHidden](selfCopy, "accessibilityElementsHidden") || ([location[0] remotePid] & 0x80000000) != 0)
   {
     v22 = MEMORY[0x29EDC9748](MEMORY[0x29EDB8E90]);
     v19 = 1;
@@ -797,33 +797,33 @@ void __53__UIWindowAccessibility__accessibilityWindowSections__block_invoke_6(id
     v18 = 0;
     if ([location[0] isAccessibilityOpaqueElementProvider] & 1) != 0 && (objc_msgSend(*MEMORY[0x29EDC8008], "_accessibilityWantsOpaqueElementProviders"))
     {
-      v6 = [(UIWindowAccessibility *)v21 _accessibilitySortedElementsWithin];
+      _accessibilitySortedElementsWithin = [(UIWindowAccessibility *)selfCopy _accessibilitySortedElementsWithin];
       v7 = v18;
-      v18 = v6;
+      v18 = _accessibilitySortedElementsWithin;
       v5 = MEMORY[0x29EDC9740](v7).n128_u64[0];
     }
 
     else
     {
-      v3 = [(UIWindowAccessibility *)v21 subviews];
+      subviews = [(UIWindowAccessibility *)selfCopy subviews];
       v4 = v18;
-      v18 = v3;
+      v18 = subviews;
       v5 = MEMORY[0x29EDC9740](v4).n128_u64[0];
     }
 
     v14 = MEMORY[0x29EDB8D80];
-    v15 = [(UIWindowAccessibility *)v21 _accessibilityAdditionalRemoteSubstituteChildren];
-    v8 = [v14 axArrayWithPossiblyNilArrays:{2, v15, v18}];
+    _accessibilityAdditionalRemoteSubstituteChildren = [(UIWindowAccessibility *)selfCopy _accessibilityAdditionalRemoteSubstituteChildren];
+    v8 = [v14 axArrayWithPossiblyNilArrays:{2, _accessibilityAdditionalRemoteSubstituteChildren, v18}];
     v9 = v18;
     v18 = v8;
     MEMORY[0x29EDC9740](v9);
-    *&v10 = MEMORY[0x29EDC9740](v15).n128_u64[0];
-    v16 = [v18 reverseObjectEnumerator];
-    v17 = [v16 allObjects];
-    *&v11 = MEMORY[0x29EDC9740](v16).n128_u64[0];
-    v22 = [MEMORY[0x29EDC7DA0] _subviewsReplacedByModalViewSubviewsIfNecessary:{v17, v11}];
+    *&v10 = MEMORY[0x29EDC9740](_accessibilityAdditionalRemoteSubstituteChildren).n128_u64[0];
+    reverseObjectEnumerator = [v18 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    *&v11 = MEMORY[0x29EDC9740](reverseObjectEnumerator).n128_u64[0];
+    v22 = [MEMORY[0x29EDC7DA0] _subviewsReplacedByModalViewSubviewsIfNecessary:{allObjects, v11}];
     v19 = 1;
-    objc_storeStrong(&v17, 0);
+    objc_storeStrong(&allObjects, 0);
     objc_storeStrong(&v18, 0);
   }
 
@@ -833,18 +833,18 @@ void __53__UIWindowAccessibility__accessibilityWindowSections__block_invoke_6(id
   return v12;
 }
 
-- (void)_axRemoteElementRegistered:(id)a3
+- (void)_axRemoteElementRegistered:(id)registered
 {
   v16 = *MEMORY[0x29EDCA608];
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, registered);
   v11 = 0;
   objc_opt_class();
-  v6 = [location[0] userInfo];
+  userInfo = [location[0] userInfo];
   v10 = __UIAccessibilityCastAsClass();
-  MEMORY[0x29EDC9740](v6);
+  MEMORY[0x29EDC9740](userInfo);
   v9 = MEMORY[0x29EDC9748](v10);
   objc_storeStrong(&v10, 0);
   v12 = [v9 objectForKey:@"element"];
@@ -854,10 +854,10 @@ void __53__UIWindowAccessibility__accessibilityWindowSections__block_invoke_6(id
     _AXAssert();
   }
 
-  v8 = [v12 contextId];
-  if (v12 && v8 == [(UIWindowAccessibility *)v14 _accessibilityContextId]&& v8)
+  contextId = [v12 contextId];
+  if (v12 && contextId == [(UIWindowAccessibility *)selfCopy _accessibilityContextId]&& contextId)
   {
-    [(UIWindowAccessibility *)v14 _axUpdateForRemoteElement:v12];
+    [(UIWindowAccessibility *)selfCopy _axUpdateForRemoteElement:v12];
   }
 
   else
@@ -865,9 +865,9 @@ void __53__UIWindowAccessibility__accessibilityWindowSections__block_invoke_6(id
     oslog = AXLogRemoteElement();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
     {
-      v5 = v14;
-      v4 = [(UIWindowAccessibility *)v14 _accessibilityContextId];
-      __os_log_helper_16_2_3_8_64_4_0_8_64(v15, v5, v4, v12);
+      v5 = selfCopy;
+      _accessibilityContextId = [(UIWindowAccessibility *)selfCopy _accessibilityContextId];
+      __os_log_helper_16_2_3_8_64_4_0_8_64(v15, v5, _accessibilityContextId, v12);
       _os_log_impl(&dword_29C4D6000, oslog, OS_LOG_TYPE_INFO, "This remote element does not belong to me: %@ (contextId: %u). Remote element: %@ ", v15, 0x1Cu);
     }
 
@@ -878,36 +878,36 @@ void __53__UIWindowAccessibility__accessibilityWindowSections__block_invoke_6(id
   objc_storeStrong(location, 0);
 }
 
-- (void)_axUpdateForRemoteElement:(void *)a1
+- (void)_axUpdateForRemoteElement:(void *)element
 {
   v8 = *MEMORY[0x29EDCA608];
-  v6 = a1;
+  elementCopy = element;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v6)
+  if (elementCopy)
   {
-    v3 = [(UIWindowAccessibility *)v6 _accessibilityAllRemoteElements];
-    if (!v3)
+    _accessibilityAllRemoteElements = [(UIWindowAccessibility *)elementCopy _accessibilityAllRemoteElements];
+    if (!_accessibilityAllRemoteElements)
     {
-      v3 = [MEMORY[0x29EDB8DE8] array];
-      [v6 _accessibilitySetAllRemoteElements:{v3, MEMORY[0x29EDC9740](0).n128_f64[0]}];
+      _accessibilityAllRemoteElements = [MEMORY[0x29EDB8DE8] array];
+      [elementCopy _accessibilitySetAllRemoteElements:{_accessibilityAllRemoteElements, MEMORY[0x29EDC9740](0).n128_f64[0]}];
     }
 
-    if (([v3 containsObject:location] & 1) == 0)
+    if (([_accessibilityAllRemoteElements containsObject:location] & 1) == 0)
     {
-      [location setRemoteChildrenDelegate:v6];
-      [v3 addObject:location];
+      [location setRemoteChildrenDelegate:elementCopy];
+      [_accessibilityAllRemoteElements addObject:location];
       oslog = AXLogRemoteElement();
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
       {
-        __os_log_helper_16_2_2_8_64_8_64(v7, v6, location);
+        __os_log_helper_16_2_2_8_64_8_64(v7, elementCopy, location);
         _os_log_impl(&dword_29C4D6000, oslog, OS_LOG_TYPE_INFO, "Added remote element to me: %@, remoteElement: %@", v7, 0x16u);
       }
 
       objc_storeStrong(&oslog, 0);
     }
 
-    objc_storeStrong(&v3, 0);
+    objc_storeStrong(&_accessibilityAllRemoteElements, 0);
     v4 = 0;
   }
 
@@ -922,13 +922,13 @@ void __53__UIWindowAccessibility__accessibilityWindowSections__block_invoke_6(id
 - (void)_axCheckForExistingRemoteElements
 {
   v17 = *MEMORY[0x29EDCA608];
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = [(UIWindowAccessibility *)self _accessibilityContextId];
-  if (v13)
+  _accessibilityContextId = [(UIWindowAccessibility *)self _accessibilityContextId];
+  if (_accessibilityContextId)
   {
     memset(__b, 0, sizeof(__b));
-    obj = [MEMORY[0x29EDBD800] remoteElementsForContextId:v13];
+    obj = [MEMORY[0x29EDBD800] remoteElementsForContextId:_accessibilityContextId];
     v10 = [obj countByEnumeratingWithState:__b objects:v16 count:16];
     if (v10)
     {
@@ -944,13 +944,13 @@ void __53__UIWindowAccessibility__accessibilityWindowSections__block_invoke_6(id
         }
 
         v12 = *(__b[1] + 8 * v7);
-        v3 = [v12 accessibilityContainer];
+        accessibilityContainer = [v12 accessibilityContainer];
         NSClassFromString(&cfstr_Wkcontentview.isa);
         isKindOfClass = objc_opt_isKindOfClass();
-        *&v2 = MEMORY[0x29EDC9740](v3).n128_u64[0];
+        *&v2 = MEMORY[0x29EDC9740](accessibilityContainer).n128_u64[0];
         if ((isKindOfClass & 1) == 0)
         {
-          [(UIWindowAccessibility *)v15 _axUpdateForRemoteElement:v12];
+          [(UIWindowAccessibility *)selfCopy _axUpdateForRemoteElement:v12];
         }
 
         ++v7;
@@ -972,28 +972,28 @@ void __53__UIWindowAccessibility__accessibilityWindowSections__block_invoke_6(id
 
 - (BOOL)_accessibilityIsInCarPlay
 {
-  v3 = [(UIWindowAccessibility *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom] == 3;
-  MEMORY[0x29EDC9740](v3);
+  traitCollection = [(UIWindowAccessibility *)self traitCollection];
+  v4 = [traitCollection userInterfaceIdiom] == 3;
+  MEMORY[0x29EDC9740](traitCollection);
   return v4;
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UIWindowAccessibility;
   [(UIWindowAccessibility *)&v2 _accessibilityLoadAccessibilityInformation];
-  [(UIWindowAccessibility *)v4 _axListenForRemoteElement];
-  [(UIWindowAccessibility *)v4 _accessibilityRegisterRemoteElement:1];
+  [(UIWindowAccessibility *)selfCopy _axListenForRemoteElement];
+  [(UIWindowAccessibility *)selfCopy _accessibilityRegisterRemoteElement:1];
 }
 
 - (id)_accessibilityFirstResponderCoalesceTimer
 {
-  if (a1)
+  if (self)
   {
-    v2 = objc_getAssociatedObject(a1, &__UIWindow___accessibilityFirstResponderCoalesceTimer);
+    v2 = objc_getAssociatedObject(self, &__UIWindow___accessibilityFirstResponderCoalesceTimer);
   }
 
   else
@@ -1004,12 +1004,12 @@ void __53__UIWindowAccessibility__accessibilityWindowSections__block_invoke_6(id
   return v2;
 }
 
-- (void)_accessibilitySetFirstResponderCoalesceTimer:(uint64_t)a1
+- (void)_accessibilitySetFirstResponderCoalesceTimer:(uint64_t)timer
 {
-  v3 = a1;
+  timerCopy = timer;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v3)
+  if (timerCopy)
   {
     __UIAccessibilitySetAssociatedObject();
   }
@@ -1017,14 +1017,14 @@ void __53__UIWindowAccessibility__accessibilityWindowSections__block_invoke_6(id
   objc_storeStrong(&location, 0);
 }
 
-- (void)_setFirstResponder:(id)a3
+- (void)_setFirstResponder:(id)responder
 {
   v28 = *MEMORY[0x29EDCA608];
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v24.receiver = v26;
+  objc_storeStrong(location, responder);
+  v24.receiver = selfCopy;
   v24.super_class = UIWindowAccessibility;
   [(UIWindowAccessibility *)&v24 _setFirstResponder:location[0]];
   if ([location[0] accessibilityElementsHidden])
@@ -1050,11 +1050,11 @@ void __53__UIWindowAccessibility__accessibilityWindowSections__block_invoke_6(id
   {
     if (location[0])
     {
-      v11 = [(UIWindowAccessibility *)v26 _accessibilityFirstResponderCoalesceTimer];
-      MEMORY[0x29EDC9740](v11);
-      if (!v11)
+      _accessibilityFirstResponderCoalesceTimer = [(UIWindowAccessibility *)selfCopy _accessibilityFirstResponderCoalesceTimer];
+      MEMORY[0x29EDC9740](_accessibilityFirstResponderCoalesceTimer);
+      if (!_accessibilityFirstResponderCoalesceTimer)
       {
-        v8 = v26;
+        v8 = selfCopy;
         v7 = objc_alloc(MEMORY[0x29EDBD6A0]);
         v6 = MEMORY[0x29EDCA578];
         v4 = MEMORY[0x29EDCA578];
@@ -1065,15 +1065,15 @@ void __53__UIWindowAccessibility__accessibilityWindowSections__block_invoke_6(id
         MEMORY[0x29EDC9740](v10);
       }
 
-      v5 = [(UIWindowAccessibility *)v26 _accessibilityFirstResponderCoalesceTimer];
+      _accessibilityFirstResponderCoalesceTimer2 = [(UIWindowAccessibility *)selfCopy _accessibilityFirstResponderCoalesceTimer];
       v14 = MEMORY[0x29EDCA5F8];
       v15 = -1073741824;
       v16 = 0;
       v17 = __44__UIWindowAccessibility__setFirstResponder___block_invoke;
       v18 = &unk_29F30C7C8;
       v19 = MEMORY[0x29EDC9748](location[0]);
-      [v5 afterDelay:&v14 processBlock:0.1];
-      MEMORY[0x29EDC9740](v5);
+      [_accessibilityFirstResponderCoalesceTimer2 afterDelay:&v14 processBlock:0.1];
+      MEMORY[0x29EDC9740](_accessibilityFirstResponderCoalesceTimer2);
       objc_storeStrong(&v19, 0);
     }
 
@@ -1099,21 +1099,21 @@ void __44__UIWindowAccessibility__setFirstResponder___block_invoke(void *a1)
   objc_storeStrong(location, 0);
 }
 
-- (CGPoint)warpPoint:(CGPoint)a3
+- (CGPoint)warpPoint:(CGPoint)point
 {
-  v10 = a3;
-  v9 = self;
+  pointCopy = point;
+  selfCopy = self;
   v8 = a2;
   if (axShouldDisableHitpointWarping())
   {
-    v11 = v10;
+    v11 = pointCopy;
   }
 
   else
   {
-    v7.receiver = v9;
+    v7.receiver = selfCopy;
     v7.super_class = UIWindowAccessibility;
-    [(UIWindowAccessibility *)&v7 warpPoint:v10];
+    [(UIWindowAccessibility *)&v7 warpPoint:pointCopy];
     v11.x = v3;
     v11.y = v4;
   }
@@ -1125,27 +1125,27 @@ void __44__UIWindowAccessibility__setFirstResponder___block_invoke(void *a1)
   return result;
 }
 
-- (id)_targetWindowForPathIndex:(int64_t)a3 atPoint:(CGPoint)a4 scenePointZ:(double)a5 forEvent:(id)a6 windowServerHitTestWindow:(id)a7
+- (id)_targetWindowForPathIndex:(int64_t)index atPoint:(CGPoint)point scenePointZ:(double)z forEvent:(id)event windowServerHitTestWindow:(id)window
 {
-  v29 = a4;
-  v28 = self;
+  pointCopy = point;
+  selfCopy = self;
   v27 = a2;
-  v26 = a3;
-  v25 = a5;
+  indexCopy = index;
+  zCopy = z;
   location = 0;
-  objc_storeStrong(&location, a6);
+  objc_storeStrong(&location, event);
   v23 = 0;
-  objc_storeStrong(&v23, a7);
+  objc_storeStrong(&v23, window);
   v22 = 0;
   v20 = 0;
   objc_opt_class();
   v19 = __UIAccessibilityCastAsClass();
   v18 = MEMORY[0x29EDC9748](v19);
   objc_storeStrong(&v19, 0);
-  v12 = [v18 _hidEvent];
+  _hidEvent = [v18 _hidEvent];
   MEMORY[0x29EDC9740](v18);
-  v21 = v12;
-  if (v12 && IOHIDEventGetSenderID() == 0x8000000817319380)
+  v21 = _hidEvent;
+  if (_hidEvent && IOHIDEventGetSenderID() == 0x8000000817319380)
   {
     v17 = 0;
     objc_opt_class();
@@ -1159,11 +1159,11 @@ void __44__UIWindowAccessibility__setFirstResponder___block_invoke(void *a1)
 
   if (!v22)
   {
-    v14.receiver = v28;
+    v14.receiver = selfCopy;
     v14.super_class = UIWindowAccessibility;
-    v8 = [(UIWindowAccessibility *)&v14 _targetWindowForPathIndex:v26 atPoint:location scenePointZ:v23 forEvent:v29.x windowServerHitTestWindow:v29.y, v25];
+    zCopy = [(UIWindowAccessibility *)&v14 _targetWindowForPathIndex:indexCopy atPoint:location scenePointZ:v23 forEvent:pointCopy.x windowServerHitTestWindow:pointCopy.y, zCopy];
     v9 = v22;
-    v22 = v8;
+    v22 = zCopy;
     MEMORY[0x29EDC9740](v9);
   }
 
@@ -1177,24 +1177,24 @@ void __44__UIWindowAccessibility__setFirstResponder___block_invoke(void *a1)
 
 - (void)_orderFrontWithoutMakingKey
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v4 = [(UIWindowAccessibility *)self windowScene];
-  v2 = [v4 keyWindow];
-  v5 = v2 == v9;
-  MEMORY[0x29EDC9740](v2);
-  *&v3 = MEMORY[0x29EDC9740](v4).n128_u64[0];
+  windowScene = [(UIWindowAccessibility *)self windowScene];
+  keyWindow = [windowScene keyWindow];
+  v5 = keyWindow == selfCopy;
+  MEMORY[0x29EDC9740](keyWindow);
+  *&v3 = MEMORY[0x29EDC9740](windowScene).n128_u64[0];
   v7 = v5;
-  v6.receiver = v9;
+  v6.receiver = selfCopy;
   v6.super_class = UIWindowAccessibility;
   [(UIWindowAccessibility *)&v6 _orderFrontWithoutMakingKey];
-  if ([(UIWindowAccessibility *)v9 _axShouldPostScreenChangeOnOrderFront:v7])
+  if ([(UIWindowAccessibility *)selfCopy _axShouldPostScreenChangeOnOrderFront:v7])
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
   }
 }
 
-- (BOOL)_axShouldPostScreenChangeOnOrderFront:(BOOL)a3
+- (BOOL)_axShouldPostScreenChangeOnOrderFront:(BOOL)front
 {
   if (!UIAccessibilityIsVoiceOverRunning())
   {
@@ -1214,7 +1214,7 @@ void __44__UIWindowAccessibility__setFirstResponder___block_invoke(void *a1)
     return 0;
   }
 
-  if (a3)
+  if (front)
   {
     return 0;
   }
@@ -1230,16 +1230,16 @@ void __44__UIWindowAccessibility__setFirstResponder___block_invoke(void *a1)
 
 - (unsigned)_accessibilityContextId
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6 = 0;
   objc_opt_class();
   v5 = __UIAccessibilityCastAsClass();
   v4 = MEMORY[0x29EDC9748](v5);
   objc_storeStrong(&v5, 0);
-  v3 = [v4 _contextId];
+  _contextId = [v4 _contextId];
   MEMORY[0x29EDC9740](v4);
-  return v3;
+  return _contextId;
 }
 
 - (BOOL)_accessibilityIsUserInteractionEnabled
@@ -1247,20 +1247,20 @@ void __44__UIWindowAccessibility__setFirstResponder___block_invoke(void *a1)
   v4[2] = self;
   v4[1] = a2;
   v4[0] = MEMORY[0x29EDC9748](self);
-  v3 = [v4[0] isUserInteractionEnabled];
+  isUserInteractionEnabled = [v4[0] isUserInteractionEnabled];
   objc_storeStrong(v4, 0);
-  return v3;
+  return isUserInteractionEnabled;
 }
 
 - (BOOL)accessibilityElementsHidden
 {
   v15 = *MEMORY[0x29EDCA608];
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   v9.receiver = self;
   v9.super_class = UIWindowAccessibility;
-  v10 = [(UIWindowAccessibility *)&v9 accessibilityElementsHidden];
-  if ((v10 & 1) == 0)
+  accessibilityElementsHidden = [(UIWindowAccessibility *)&v9 accessibilityElementsHidden];
+  if ((accessibilityElementsHidden & 1) == 0)
   {
     isDevicePasscodeLocked = _isDevicePasscodeLocked();
     v3 = 1;
@@ -1276,7 +1276,7 @@ void __44__UIWindowAccessibility__setFirstResponder___block_invoke(void *a1)
       type = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        __os_log_helper_16_2_1_8_64(v14, v12);
+        __os_log_helper_16_2_1_8_64(v14, selfCopy);
         _os_log_impl(&dword_29C4D6000, oslog, type, "App is active in Oneness session, not hiding window : %@", v14, 0xCu);
       }
 
@@ -1284,32 +1284,32 @@ void __44__UIWindowAccessibility__setFirstResponder___block_invoke(void *a1)
       isDevicePasscodeLocked = 0;
     }
 
-    if ([(UIWindowAccessibility *)v12 _accessibilityIsInCarPlay])
+    if ([(UIWindowAccessibility *)selfCopy _accessibilityIsInCarPlay])
     {
       isDevicePasscodeLocked = 0;
     }
 
-    if ((isDevicePasscodeLocked & 1) != 0 && ([(UIWindowAccessibility *)v12 safeBoolForKey:@"_shouldCreateContextAsSecure"]& 1) == 0)
+    if ((isDevicePasscodeLocked & 1) != 0 && ([(UIWindowAccessibility *)selfCopy safeBoolForKey:@"_shouldCreateContextAsSecure"]& 1) == 0)
     {
       v4 = AXLogCommon();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
-        __os_log_helper_16_2_1_8_64(v13, v12);
+        __os_log_helper_16_2_1_8_64(v13, selfCopy);
         _os_log_impl(&dword_29C4D6000, v4, OS_LOG_TYPE_DEFAULT, "Hiding this window since not secure: %@", v13, 0xCu);
       }
 
       objc_storeStrong(&v4, 0);
-      v10 = 1;
+      accessibilityElementsHidden = 1;
     }
   }
 
-  return v10 & 1;
+  return accessibilityElementsHidden & 1;
 }
 
 - (BOOL)_accessibilitySceneContainsOnlySecureWindows
 {
   v18 = *MEMORY[0x29EDCA608];
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
   v14 = 1;
   v13 = MEMORY[0x29EDC9748](self);
@@ -1361,24 +1361,24 @@ LABEL_10:
 
 - (BOOL)_accessibilityIsSecure
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UIWindowAccessibility *)self _windowHostingScene];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = 1;
-    if (([(UIWindowAccessibility *)v5 safeBoolForKey:@"_isSecure"]& 1) == 0)
+    _accessibilityIsSecure = 1;
+    if (([(UIWindowAccessibility *)selfCopy safeBoolForKey:@"_isSecure"]& 1) == 0)
     {
-      v3 = [location[0] _accessibilityIsSecure];
+      _accessibilityIsSecure = [location[0] _accessibilityIsSecure];
     }
 
-    v6 = v3 & 1;
+    v6 = _accessibilityIsSecure & 1;
   }
 
   else
   {
-    v6 = [(UIWindowAccessibility *)v5 safeBoolForKey:@"_isSecure"]& 1;
+    v6 = [(UIWindowAccessibility *)selfCopy safeBoolForKey:@"_isSecure"]& 1;
   }
 
   objc_storeStrong(location, 0);
@@ -1387,9 +1387,9 @@ LABEL_10:
 
 - (id)_accessibilityGetRemoteElement
 {
-  if (a1)
+  if (self)
   {
-    v2 = objc_getAssociatedObject(a1, &__UIWindowAccessibility___accessibilityGetRemoteElement);
+    v2 = objc_getAssociatedObject(self, &__UIWindowAccessibility___accessibilityGetRemoteElement);
   }
 
   else
@@ -1400,12 +1400,12 @@ LABEL_10:
   return v2;
 }
 
-- (void)_accessibilitySetRemoteElement:(uint64_t)a1
+- (void)_accessibilitySetRemoteElement:(uint64_t)element
 {
-  v3 = a1;
+  elementCopy = element;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v3)
+  if (elementCopy)
   {
     __UIAccessibilitySetAssociatedObject();
   }
@@ -1415,11 +1415,11 @@ LABEL_10:
 
 - (id)_accessibilityMLRemoteElement
 {
-  v11 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v10 = [(UIWindowAccessibility *)v11 _accessibilityGetRemoteElement];
-    if (!v10)
+    _accessibilityGetRemoteElement = [(UIWindowAccessibility *)selfCopy _accessibilityGetRemoteElement];
+    if (!_accessibilityGetRemoteElement)
     {
       v7 = MEMORY[0x29EDB8ED8];
       uuid = CFUUIDCreate(*MEMORY[0x29EDB8ED8]);
@@ -1433,22 +1433,22 @@ LABEL_10:
       }
 
       v2 = [objc_alloc(MEMORY[0x29EDBD808]) initWithUUID:location andContextId:0];
-      v3 = v10;
-      v10 = v2;
+      v3 = _accessibilityGetRemoteElement;
+      _accessibilityGetRemoteElement = v2;
       *&v4 = MEMORY[0x29EDC9740](v3).n128_u64[0];
-      if (v10)
+      if (_accessibilityGetRemoteElement)
       {
-        [v10 setOnClientSide:{1, v4}];
-        [v10 setRemoteChildrenDelegate:v11];
-        [v10 setAccessibilityContainer:v11];
+        [_accessibilityGetRemoteElement setOnClientSide:{1, v4}];
+        [_accessibilityGetRemoteElement setRemoteChildrenDelegate:selfCopy];
+        [_accessibilityGetRemoteElement setAccessibilityContainer:selfCopy];
       }
 
-      [(UIWindowAccessibility *)v11 _accessibilitySetRemoteElement:v10];
+      [(UIWindowAccessibility *)selfCopy _accessibilitySetRemoteElement:_accessibilityGetRemoteElement];
       objc_storeStrong(&location, 0);
     }
 
-    v12 = MEMORY[0x29EDC9748](v10);
-    objc_storeStrong(&v10, 0);
+    v12 = MEMORY[0x29EDC9748](_accessibilityGetRemoteElement);
+    objc_storeStrong(&_accessibilityGetRemoteElement, 0);
   }
 
   else
@@ -1461,34 +1461,34 @@ LABEL_10:
   return v5;
 }
 
-- (void)_setBoundContext:(id)a3
+- (void)_setBoundContext:(id)context
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(UIWindowAccessibility *)v5 _accessibilityRegisterRemoteElement:0];
-  v3.receiver = v5;
+  objc_storeStrong(location, context);
+  [(UIWindowAccessibility *)selfCopy _accessibilityRegisterRemoteElement:0];
+  v3.receiver = selfCopy;
   v3.super_class = UIWindowAccessibility;
   [(UIWindowAccessibility *)&v3 _setBoundContext:location[0]];
-  [(UIWindowAccessibility *)v5 _accessibilityRegisterRemoteElement:1];
+  [(UIWindowAccessibility *)selfCopy _accessibilityRegisterRemoteElement:1];
   objc_storeStrong(location, 0);
 }
 
-- (void)_accessibilityRegisterRemoteElement:(BOOL)a3
+- (void)_accessibilityRegisterRemoteElement:(BOOL)element
 {
   v34[4] = *MEMORY[0x29EDCA608];
-  v32 = self;
+  selfCopy = self;
   v31 = a2;
-  v30 = a3;
+  elementCopy = element;
   if ((AXProcessIsSystemApplication() & 1) == 0)
   {
-    v29 = MEMORY[0x29EDC9748](v32);
-    v28 = [v29 _contextId];
-    if (v28)
+    v29 = MEMORY[0x29EDC9748](selfCopy);
+    _contextId = [v29 _contextId];
+    if (_contextId)
     {
-      v27 = [v29 windowScene];
-      v26 = [v27 safeValueForKey:@"_FBSScene"];
+      windowScene = [v29 windowScene];
+      v26 = [windowScene safeValueForKey:@"_FBSScene"];
       location = [v26 safeStringForKey:@"identifier"];
       v11 = [v26 safeValueForKey:@"identity"];
       v24 = [v11 safeStringForKey:@"workspaceIdentifier"];
@@ -1526,12 +1526,12 @@ LABEL_10:
         v8 = [MEMORY[0x29EDBA070] numberWithInt:v20];
         v34[0] = v8;
         v33[1] = @"ax-context";
-        v7 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:v28];
+        v7 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:_contextId];
         v34[1] = v7;
         v33[2] = @"ax-uuid";
         v34[2] = v19;
         v33[3] = @"ax-register";
-        v6 = [MEMORY[0x29EDBA070] numberWithBool:v30];
+        v6 = [MEMORY[0x29EDBA070] numberWithBool:elementCopy];
         v34[3] = v6;
         v5 = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v34 forKeys:v33 count:4];
         [v4 registerRemoteElement:? remotePort:?];
@@ -1539,17 +1539,17 @@ LABEL_10:
         MEMORY[0x29EDC9740](v6);
         MEMORY[0x29EDC9740](v7);
         MEMORY[0x29EDC9740](v8);
-        if (!v30)
+        if (!elementCopy)
         {
-          v3 = [(UIWindowAccessibility *)v32 _accessibilityAllRemoteElements];
+          _accessibilityAllRemoteElements = [(UIWindowAccessibility *)selfCopy _accessibilityAllRemoteElements];
           v13 = MEMORY[0x29EDCA5F8];
           v14 = -1073741824;
           v15 = 0;
           v16 = __61__UIWindowAccessibility__accessibilityRegisterRemoteElement___block_invoke;
           v17 = &unk_29F30E3E0;
           v18 = MEMORY[0x29EDC9748](v19);
-          [v3 ax_removeObjectsFromArrayUsingBlock:&v13];
-          MEMORY[0x29EDC9740](v3);
+          [_accessibilityAllRemoteElements ax_removeObjectsFromArrayUsingBlock:&v13];
+          MEMORY[0x29EDC9740](_accessibilityAllRemoteElements);
           objc_storeStrong(&v18, 0);
         }
 
@@ -1559,7 +1559,7 @@ LABEL_10:
       objc_storeStrong(&v24, 0);
       objc_storeStrong(&location, 0);
       objc_storeStrong(&v26, 0);
-      objc_storeStrong(&v27, 0);
+      objc_storeStrong(&windowScene, 0);
     }
 
     objc_storeStrong(&v29, 0);
@@ -1580,15 +1580,15 @@ uint64_t __61__UIWindowAccessibility__accessibilityRegisterRemoteElement___block
 
 - (void)makeKeyAndVisible
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   v10.receiver = self;
   v10.super_class = UIWindowAccessibility;
   [(UIWindowAccessibility *)&v10 makeKeyAndVisible];
   v3 = objc_opt_new();
-  v4 = [v3 isClarityBoardEnabled];
+  isClarityBoardEnabled = [v3 isClarityBoardEnabled];
   MEMORY[0x29EDC9740](v3);
-  if (v4)
+  if (isClarityBoardEnabled)
   {
     if (NSClassFromString(&cfstr_Srsecurewindow.isa))
     {
@@ -1600,9 +1600,9 @@ uint64_t __61__UIWindowAccessibility__accessibilityRegisterRemoteElement___block
         v5 = MEMORY[0x29EDC9748](v6);
         objc_storeStrong(&v6, 0);
         v8 = v5;
-        v2 = [MEMORY[0x29EDC7A00] clearColor];
+        clearColor = [MEMORY[0x29EDC7A00] clearColor];
         [v5 setBackgroundColor:?];
-        MEMORY[0x29EDC9740](v2);
+        MEMORY[0x29EDC9740](clearColor);
         objc_storeStrong(&v8, 0);
       }
     }
@@ -1611,23 +1611,23 @@ uint64_t __61__UIWindowAccessibility__accessibilityRegisterRemoteElement___block
 
 - (BOOL)_prefersFocusContainment
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v4.receiver = self;
   v4.super_class = UIWindowAccessibility;
-  v5 = [(UIWindowAccessibility *)&v4 _prefersFocusContainment];
-  if (v5)
+  _prefersFocusContainment = [(UIWindowAccessibility *)&v4 _prefersFocusContainment];
+  if (_prefersFocusContainment)
   {
-    return v5 & 1;
+    return _prefersFocusContainment & 1;
   }
 
-  v3 = 1;
-  if (([(UIWindowAccessibility *)v7 _accessibilityIsTouchContainer]& 1) == 0)
+  shouldGroupAccessibilityChildren = 1;
+  if (([(UIWindowAccessibility *)selfCopy _accessibilityIsTouchContainer]& 1) == 0)
   {
-    v3 = [(UIWindowAccessibility *)v7 shouldGroupAccessibilityChildren];
+    shouldGroupAccessibilityChildren = [(UIWindowAccessibility *)selfCopy shouldGroupAccessibilityChildren];
   }
 
-  return v3 & 1;
+  return shouldGroupAccessibilityChildren & 1;
 }
 
 @end

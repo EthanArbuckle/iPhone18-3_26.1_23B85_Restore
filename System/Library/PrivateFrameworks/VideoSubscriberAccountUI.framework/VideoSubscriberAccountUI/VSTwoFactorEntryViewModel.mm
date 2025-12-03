@@ -1,9 +1,9 @@
 @interface VSTwoFactorEntryViewModel
 - (VSTwoFactorEntryViewModel)init;
 - (VSTwoFactorEntryViewModelDelegate)delegate;
-- (void)buttonAtIndexWasPressed:(unint64_t)a3;
-- (void)configureWithRequest:(id)a3;
-- (void)setTwoFactorTextField:(id)a3;
+- (void)buttonAtIndexWasPressed:(unint64_t)pressed;
+- (void)configureWithRequest:(id)request;
+- (void)setTwoFactorTextField:(id)field;
 @end
 
 @implementation VSTwoFactorEntryViewModel
@@ -52,38 +52,38 @@
   return v2;
 }
 
-- (void)configureWithRequest:(id)a3
+- (void)configureWithRequest:(id)request
 {
   v4 = MEMORY[0x277CCA8D8];
-  v5 = a3;
-  v6 = [v4 vs_frameworkBundle];
-  v7 = [v6 localizedStringForKey:@"TWO_FACTOR_VERIFY_BUTTON_TITLE" value:0 table:0];
+  requestCopy = request;
+  vs_frameworkBundle = [v4 vs_frameworkBundle];
+  v7 = [vs_frameworkBundle localizedStringForKey:@"TWO_FACTOR_VERIFY_BUTTON_TITLE" value:0 table:0];
 
   [(VSCuratedViewModel *)self setBeginValidationButtonTitle:v7];
-  v8 = [(VSViewModel *)self identityProvider];
-  v9 = [v8 displayName];
-  v10 = [v9 forceUnwrapObject];
+  identityProvider = [(VSViewModel *)self identityProvider];
+  displayName = [identityProvider displayName];
+  forceUnwrapObject = [displayName forceUnwrapObject];
 
-  [(VSViewModel *)self setTitle:v10];
+  [(VSViewModel *)self setTitle:forceUnwrapObject];
   v11.receiver = self;
   v11.super_class = VSTwoFactorEntryViewModel;
-  [(VSCuratedViewModel *)&v11 configureWithRequest:v5];
+  [(VSCuratedViewModel *)&v11 configureWithRequest:requestCopy];
 }
 
-- (void)setTwoFactorTextField:(id)a3
+- (void)setTwoFactorTextField:(id)field
 {
-  objc_storeStrong(&self->_twoFactorTextField, a3);
-  v5 = a3;
-  [v5 setReturnKeyType:9];
-  v6 = [v5 text];
+  objc_storeStrong(&self->_twoFactorTextField, field);
+  fieldCopy = field;
+  [fieldCopy setReturnKeyType:9];
+  text = [fieldCopy text];
 
-  [(VSTwoFactorEntryViewModel *)self setOriginalTwoFacorCode:v6];
+  [(VSTwoFactorEntryViewModel *)self setOriginalTwoFacorCode:text];
 }
 
-- (void)buttonAtIndexWasPressed:(unint64_t)a3
+- (void)buttonAtIndexWasPressed:(unint64_t)pressed
 {
-  v5 = [(VSTwoFactorEntryViewModel *)self delegate];
-  [v5 twoFactorEntryViewModel:self didPressButtonAtIndex:a3];
+  delegate = [(VSTwoFactorEntryViewModel *)self delegate];
+  [delegate twoFactorEntryViewModel:self didPressButtonAtIndex:pressed];
 }
 
 - (VSTwoFactorEntryViewModelDelegate)delegate

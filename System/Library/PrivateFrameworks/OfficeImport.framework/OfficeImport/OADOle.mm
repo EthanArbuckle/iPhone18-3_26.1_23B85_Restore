@@ -1,7 +1,7 @@
 @interface OADOle
-+ (BOOL)isCLSIDSupported:(id)a3;
-+ (BOOL)isProgIDChart:(id)a3;
-+ (BOOL)isProgIDMathType:(id)a3;
++ (BOOL)isCLSIDSupported:(id)supported;
++ (BOOL)isProgIDChart:(id)chart;
++ (BOOL)isProgIDMathType:(id)type;
 - (OADOle)init;
 - (id)description;
 @end
@@ -21,41 +21,41 @@
   return result;
 }
 
-+ (BOOL)isProgIDChart:(id)a3
++ (BOOL)isProgIDChart:(id)chart
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"MSGraph.Chart."] & 1) != 0 || (objc_msgSend(v3, "hasPrefix:", @"Excel.Sheet."))
+  chartCopy = chart;
+  if ([chartCopy hasPrefix:@"MSGraph.Chart."] & 1) != 0 || (objc_msgSend(chartCopy, "hasPrefix:", @"Excel.Sheet."))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 hasPrefix:@"Excel.Chart."];
+    v4 = [chartCopy hasPrefix:@"Excel.Chart."];
   }
 
   return v4;
 }
 
-+ (BOOL)isProgIDMathType:(id)a3
++ (BOOL)isProgIDMathType:(id)type
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"Equation.DSMT4"] & 1) != 0 || (objc_msgSend(v3, "hasPrefix:", @"Equation.DSMT36"))
+  typeCopy = type;
+  if ([typeCopy hasPrefix:@"Equation.DSMT4"] & 1) != 0 || (objc_msgSend(typeCopy, "hasPrefix:", @"Equation.DSMT36"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 hasPrefix:@"Equation"];
+    v4 = [typeCopy hasPrefix:@"Equation"];
   }
 
   return v4;
 }
 
-+ (BOOL)isCLSIDSupported:(id)a3
++ (BOOL)isCLSIDSupported:(id)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   v4 = +[OADOle isCLSIDSupported:]::classIdSet;
   if (!+[OADOle isCLSIDSupported:]::classIdSet)
   {
@@ -66,7 +66,7 @@
     v4 = +[OADOle isCLSIDSupported:]::classIdSet;
   }
 
-  v7 = [v4 containsObject:v3];
+  v7 = [v4 containsObject:supportedCopy];
 
   return v7;
 }

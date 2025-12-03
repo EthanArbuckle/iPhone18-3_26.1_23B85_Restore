@@ -1,16 +1,16 @@
 @interface NSObject
-- (BOOL)_maps_needsUpdateWithSelector:(SEL)a3;
-- (void)_maps_setNeedsUpdate:(BOOL)a3 withSelector:(SEL)a4;
+- (BOOL)_maps_needsUpdateWithSelector:(SEL)selector;
+- (void)_maps_setNeedsUpdate:(BOOL)update withSelector:(SEL)selector;
 @end
 
 @implementation NSObject
 
-- (void)_maps_setNeedsUpdate:(BOOL)a3 withSelector:(SEL)a4
+- (void)_maps_setNeedsUpdate:(BOOL)update withSelector:(SEL)selector
 {
-  v5 = a3;
+  updateCopy = update;
   v7 = objc_getAssociatedObject(self, off_95FF0);
   v8 = v7;
-  if (v5)
+  if (updateCopy)
   {
     if (!v7)
     {
@@ -18,7 +18,7 @@
       objc_setAssociatedObject(self, off_95FF0, v8, &dword_0 + 1);
     }
 
-    v9 = NSStringFromSelector(a4);
+    v9 = NSStringFromSelector(selector);
     [v8 addObject:v9];
 
     v10 = objc_getAssociatedObject(self, off_95FE8);
@@ -37,15 +37,15 @@
 
   else
   {
-    v11 = NSStringFromSelector(a4);
+    v11 = NSStringFromSelector(selector);
     [v8 removeObject:v11];
   }
 }
 
-- (BOOL)_maps_needsUpdateWithSelector:(SEL)a3
+- (BOOL)_maps_needsUpdateWithSelector:(SEL)selector
 {
   v4 = objc_getAssociatedObject(self, off_95FF0);
-  v5 = NSStringFromSelector(a3);
+  v5 = NSStringFromSelector(selector);
   v6 = [v4 containsObject:v5];
 
   return v6;

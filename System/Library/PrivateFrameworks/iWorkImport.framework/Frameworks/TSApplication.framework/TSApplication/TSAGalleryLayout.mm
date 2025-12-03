@@ -1,49 +1,49 @@
 @interface TSAGalleryLayout
-- (BOOL)shouldInvalidateSizeWhenInvalidateSizeOfReliedOnLayout:(id)a3;
-- (CGPoint)calculateOffsetForGalleryItem:(id)a3 withFacesRect:(CGRect)a4;
+- (BOOL)shouldInvalidateSizeWhenInvalidateSizeOfReliedOnLayout:(id)layout;
+- (CGPoint)calculateOffsetForGalleryItem:(id)item withFacesRect:(CGRect)rect;
 - (CGRect)alignmentFrameForProvidingGuidesInRoot;
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4;
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size;
 - (CGRect)imageContainerRect;
-- (CGRect)imageFrameInRootWithDragOffset:(CGPoint)a3;
+- (CGRect)imageFrameInRootWithDragOffset:(CGPoint)offset;
 - (CGRect)imageRect;
-- (CGRect)imageRectInImageContainerForItem:(id)a3;
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3;
-- (CGRect)p_imageRectInImageContainerForItem:(id)a3 dragOffset:(CGPoint)a4;
+- (CGRect)imageRectInImageContainerForItem:(id)item;
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout;
+- (CGRect)p_imageRectInImageContainerForItem:(id)item dragOffset:(CGPoint)offset;
 - (CGRect)pageControlBoundingRect;
 - (CGSize)minimumSize;
 - (CGSize)p_maxLayoutSize;
-- (TSAGalleryLayout)initWithInfo:(id)a3;
+- (TSAGalleryLayout)initWithInfo:(id)info;
 - (TSDLayoutGeometry)imageContainerGeometry;
 - (TSDLayoutGeometry)imageGeometry;
 - (TSDLayoutGeometry)imageGeometryInRoot;
 - (TSWPLayout)currentCaptionLayout;
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3;
-- (double)p_minScaleForItem:(id)a3;
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 target:(id)a5 outWidth:(double *)a6 outGap:(double *)a7;
-- (double)widthForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4;
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target;
+- (double)p_minScaleForItem:(id)item;
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width target:(id)target outWidth:(double *)outWidth outGap:(double *)gap;
+- (double)widthForColumnIndex:(unint64_t)index bodyWidth:(double)width;
 - (id)childInfosForChildLayouts;
 - (id)children;
 - (id)childrenForPencilAnnotations;
-- (id)computeInfoGeometryForFittingInFrame:(CGRect)a3;
+- (id)computeInfoGeometryForFittingInFrame:(CGRect)frame;
 - (id)computeLayoutGeometry;
-- (id)dependentsOfTextLayout:(id)a3;
+- (id)dependentsOfTextLayout:(id)layout;
 - (id)interiorClippingPath;
 - (id)p_galleryInfo;
 - (id)pathForClippingConnectionLines;
 - (void)dealloc;
 - (void)invalidateExteriorWrap;
 - (void)invalidateSize;
-- (void)setCurrentItem:(id)a3;
+- (void)setCurrentItem:(id)item;
 - (void)updateChildrenFromInfo;
 @end
 
 @implementation TSAGalleryLayout
 
-- (TSAGalleryLayout)initWithInfo:(id)a3
+- (TSAGalleryLayout)initWithInfo:(id)info
 {
   v19.receiver = self;
   v19.super_class = TSAGalleryLayout;
-  v3 = [(TSAGalleryLayout *)&v19 initWithInfo:a3];
+  v3 = [(TSAGalleryLayout *)&v19 initWithInfo:info];
   v7 = v3;
   if (v3)
   {
@@ -104,13 +104,13 @@
   return v7;
 }
 
-- (void)setCurrentItem:(id)a3
+- (void)setCurrentItem:(id)item
 {
-  v5 = a3;
-  if (self->_currentItem != v5)
+  itemCopy = item;
+  if (self->_currentItem != itemCopy)
   {
-    v62 = v5;
-    objc_storeStrong(&self->_currentItem, a3);
+    v62 = itemCopy;
+    objc_storeStrong(&self->_currentItem, item);
     objc_msgSend_invalidateSize(self, v6, v7, v8);
     v12 = objc_msgSend_info(self, v9, v10, v11);
     if (objc_msgSend_isAnchoredToText(v12, v13, v14, v15))
@@ -132,7 +132,7 @@ LABEL_7:
         v58 = TSUCheckedDynamicCast();
 
         objc_msgSend_invalidateCurrentItem(v58, v59, v60, v61);
-        v5 = v62;
+        itemCopy = v62;
         goto LABEL_8;
       }
     }
@@ -200,12 +200,12 @@ LABEL_3:
 {
   v10.receiver = self;
   v10.super_class = TSAGalleryLayout;
-  v3 = [(TSAGalleryLayout *)&v10 children];
-  v6 = v3;
+  children = [(TSAGalleryLayout *)&v10 children];
+  v6 = children;
   captionLayouts = self->_captionLayouts;
   if (captionLayouts)
   {
-    v8 = objc_msgSend_arrayByAddingObjectsFromArray_(v3, v4, captionLayouts, v5);
+    v8 = objc_msgSend_arrayByAddingObjectsFromArray_(children, v4, captionLayouts, v5);
 
     v6 = v8;
   }
@@ -218,7 +218,7 @@ LABEL_3:
   v67 = *MEMORY[0x277D85DE8];
   v65.receiver = self;
   v65.super_class = TSAGalleryLayout;
-  v3 = [(TSAGalleryLayout *)&v65 childInfosForChildLayouts];
+  childInfosForChildLayouts = [(TSAGalleryLayout *)&v65 childInfosForChildLayouts];
   v7 = objc_msgSend_p_galleryInfo(self, v4, v5, v6);
   v11 = objc_msgSend_captionMode(v7, v8, v9, v10);
   if (v11 == 1)
@@ -244,7 +244,7 @@ LABEL_3:
           }
 
           v44 = objc_msgSend_captionStorage(*(*(&v61 + 1) + 8 * i), v38, v39, v40, v59);
-          if (objc_msgSend_containsObject_(v3, v45, v44, v46))
+          if (objc_msgSend_containsObject_(childInfosForChildLayouts, v45, v44, v46))
           {
             v49 = MEMORY[0x277D81150];
             v50 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v47, "[TSAGalleryLayout childInfosForChildLayouts]", v48);
@@ -273,7 +273,7 @@ LABEL_3:
     if (v19)
     {
       obj = objc_msgSend_captionStorage(v7, v20, v21, v22);
-      if (objc_msgSend_containsObject_(v3, v23, obj, v24))
+      if (objc_msgSend_containsObject_(childInfosForChildLayouts, v23, obj, v24))
       {
         v27 = MEMORY[0x277D81150];
         v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v25, "[TSAGalleryLayout childInfosForChildLayouts]", v26);
@@ -287,7 +287,7 @@ LABEL_16:
     }
   }
 
-  return v3;
+  return childInfosForChildLayouts;
 }
 
 - (void)updateChildrenFromInfo
@@ -505,13 +505,13 @@ LABEL_16:
   }
 }
 
-- (BOOL)shouldInvalidateSizeWhenInvalidateSizeOfReliedOnLayout:(id)a3
+- (BOOL)shouldInvalidateSizeWhenInvalidateSizeOfReliedOnLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   captionLayouts = self->_captionLayouts;
   objc_opt_class();
   v6 = TSUDynamicCast();
-  v9 = objc_msgSend_indexOfObjectIdenticalTo_(captionLayouts, v7, v6, v8) != 0x7FFFFFFFFFFFFFFFLL || self->_galleryCaptionLayout == v4;
+  v9 = objc_msgSend_indexOfObjectIdenticalTo_(captionLayouts, v7, v6, v8) != 0x7FFFFFFFFFFFFFFFLL || self->_galleryCaptionLayout == layoutCopy;
 
   return v9;
 }
@@ -527,43 +527,43 @@ LABEL_16:
 
 - (id)computeLayoutGeometry
 {
-  v4 = self;
+  selfCopy = self;
   v183 = *MEMORY[0x277D85DE8];
   v5 = objc_msgSend_layoutGeometryFromInfo(self, a2, v2, v3);
   objc_msgSend_size(v5, v6, v7, v8);
   TSURectWithSize();
-  v4->_imageContainerRect.origin.x = v9;
-  v4->_imageContainerRect.origin.y = v10;
-  v4->_imageContainerRect.size.width = v11;
-  v4->_imageContainerRect.size.height = v12;
+  selfCopy->_imageContainerRect.origin.x = v9;
+  selfCopy->_imageContainerRect.origin.y = v10;
+  selfCopy->_imageContainerRect.size.width = v11;
+  selfCopy->_imageContainerRect.size.height = v12;
   v16 = objc_msgSend_mutableCopy(v5, v13, v14, v15);
   objc_msgSend_size(v16, v17, v18, v19);
   v21 = v20;
-  p_imageContainerRect = &v4->_imageContainerRect;
-  MaxY = CGRectGetMaxY(v4->_imageContainerRect);
+  p_imageContainerRect = &selfCopy->_imageContainerRect;
+  MaxY = CGRectGetMaxY(selfCopy->_imageContainerRect);
   v29 = 0.0;
   v30 = 6.0;
-  if (!objc_msgSend_count(v4->_captionLayouts, v23, v24, v25))
+  if (!objc_msgSend_count(selfCopy->_captionLayouts, v23, v24, v25))
   {
     v31 = 0.0;
     goto LABEL_14;
   }
 
   v31 = 0.0;
-  if (v4->_shouldSuppressCaptions)
+  if (selfCopy->_shouldSuppressCaptions)
   {
 LABEL_14:
-    objc_msgSend_p_maxLayoutSize(v4, v26, v27, v28);
+    objc_msgSend_p_maxLayoutSize(selfCopy, v26, v27, v28);
     goto LABEL_15;
   }
 
   v170 = v16;
-  v171 = v4;
+  v171 = selfCopy;
   v179 = 0u;
   v180 = 0u;
   v177 = 0u;
   v178 = 0u;
-  v32 = v4->_captionLayouts;
+  v32 = selfCopy->_captionLayouts;
   v34 = objc_msgSend_countByEnumeratingWithState_objects_count_(v32, v33, &v177, v182, 16);
   if (v34)
   {
@@ -605,23 +605,23 @@ LABEL_14:
 
   MaxY = MaxY + 6.0;
 
-  v4 = v171;
+  selfCopy = v171;
   v16 = v170;
   objc_msgSend_p_maxLayoutSize(v171, v62, v63, v64);
 LABEL_15:
   if (v68 < 1.79769313e308)
   {
-    v69 = objc_msgSend_parent(v4, v65, v66, v67);
+    v69 = objc_msgSend_parent(selfCopy, v65, v66, v67);
     v70 = TSUProtocolCast();
 
-    v74 = objc_msgSend_currentCaptionLayout(v4, v71, v72, v73, &unk_288524C48);
+    v74 = objc_msgSend_currentCaptionLayout(selfCopy, v71, v72, v73, &unk_288524C48);
     v77 = objc_msgSend_autosizeFlagsForTextLayout_(v70, v75, v74, v76);
 
     v29 = 0.0;
     if (v77 == 3)
     {
-      v81 = objc_msgSend_currentCaptionLayout(v4, v78, v79, v80);
-      objc_msgSend_nonAutosizedFrameForTextLayout_(v4, v82, v81, v83);
+      v81 = objc_msgSend_currentCaptionLayout(selfCopy, v78, v79, v80);
+      objc_msgSend_nonAutosizedFrameForTextLayout_(selfCopy, v82, v81, v83);
       v29 = v84;
     }
   }
@@ -632,7 +632,7 @@ LABEL_15:
   v174 = 0u;
   v175 = 0u;
   v176 = 0u;
-  v90 = v4->_captionLayouts;
+  v90 = selfCopy->_captionLayouts;
   v92 = objc_msgSend_countByEnumeratingWithState_objects_count_(v90, v91, &v173, v181, 16);
   if (v92)
   {
@@ -662,15 +662,15 @@ LABEL_15:
   v185.size.height = v30;
   v186.origin.y = CGRectGetMaxY(v185) + -6.0;
   v186.size.width = v21 + -10.0;
-  v4->_pageControlBoundingRect.origin.x = 5.0;
-  v4->_pageControlBoundingRect.origin.y = v186.origin.y;
-  v4->_pageControlBoundingRect.size.width = v21 + -10.0;
-  v4->_pageControlBoundingRect.size.height = 26.0;
+  selfCopy->_pageControlBoundingRect.origin.x = 5.0;
+  selfCopy->_pageControlBoundingRect.origin.y = v186.origin.y;
+  selfCopy->_pageControlBoundingRect.size.width = v21 + -10.0;
+  selfCopy->_pageControlBoundingRect.size.height = 26.0;
   v186.origin.x = 5.0;
   v186.size.height = 26.0;
   v98 = CGRectGetMaxY(v186);
   objc_msgSend_setSize_(v16, v99, v100, v101, v21, v98);
-  objc_msgSend_p_maxLayoutSize(v4, v102, v103, v104);
+  objc_msgSend_p_maxLayoutSize(selfCopy, v102, v103, v104);
   v110 = v109;
   if (v108 < 1.79769313e308 || v109 < 1.79769313e308)
   {
@@ -681,7 +681,7 @@ LABEL_15:
       objc_msgSend_p_constrainedImageContainerWidthForWidth_maxLayoutWidth_(v111, v115, v116, v117);
       v119 = v118;
       p_imageContainerRect->size.width = v118;
-      v4->_pageControlBoundingRect.size.width = v118 + -10.0;
+      selfCopy->_pageControlBoundingRect.size.width = v118 + -10.0;
       objc_msgSend_size(v16, v120, v121, v122);
       objc_msgSend_setSize_(v16, v123, v124, v125, v119);
     }
@@ -698,12 +698,12 @@ LABEL_15:
         v134 = v133;
         v135 = CGRectGetHeight(*p_imageContainerRect) - v133;
         p_imageContainerRect->size.height = v134;
-        v139 = objc_msgSend_currentCaptionLayout(v4, v136, v137, v138);
+        v139 = objc_msgSend_currentCaptionLayout(selfCopy, v136, v137, v138);
         v143 = objc_msgSend_geometry(v139, v140, v141, v142);
         v147 = objc_msgSend_geometryByTranslatingBy_(v143, v144, v145, v146, 0.0, -v135);
         objc_msgSend_setGeometry_(v139, v148, v147, v149);
 
-        v4->_pageControlBoundingRect.origin.y = v4->_pageControlBoundingRect.origin.y - v135;
+        selfCopy->_pageControlBoundingRect.origin.y = selfCopy->_pageControlBoundingRect.origin.y - v135;
         objc_msgSend_size(v16, v150, v151, v152);
         v154 = v153;
         objc_msgSend_size(v16, v155, v156, v157);
@@ -712,34 +712,34 @@ LABEL_15:
     }
   }
 
-  v162 = objc_msgSend_currentItem(v4, v105, v106, v107);
-  objc_msgSend_p_imageRectInImageContainerForItem_dragOffset_(v4, v163, v162, v164, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8));
-  v4->_imageRectInImageContainer.origin.x = v165;
-  v4->_imageRectInImageContainer.origin.y = v166;
-  v4->_imageRectInImageContainer.size.width = v167;
-  v4->_imageRectInImageContainer.size.height = v168;
+  v162 = objc_msgSend_currentItem(selfCopy, v105, v106, v107);
+  objc_msgSend_p_imageRectInImageContainerForItem_dragOffset_(selfCopy, v163, v162, v164, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8));
+  selfCopy->_imageRectInImageContainer.origin.x = v165;
+  selfCopy->_imageRectInImageContainer.origin.y = v166;
+  selfCopy->_imageRectInImageContainer.size.width = v167;
+  selfCopy->_imageRectInImageContainer.size.height = v168;
 
   return v16;
 }
 
-- (CGRect)p_imageRectInImageContainerForItem:(id)a3 dragOffset:(CGPoint)a4
+- (CGRect)p_imageRectInImageContainerForItem:(id)item dragOffset:(CGPoint)offset
 {
-  v5 = a3;
+  itemCopy = item;
   TSURectWithSize();
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  objc_msgSend_naturalSize(v5, v14, v15, v16);
+  objc_msgSend_naturalSize(itemCopy, v14, v15, v16);
   if (v18 > 0.0 && v17 > 0.0)
   {
     TSUCenterOfRect();
-    objc_msgSend_offset(v5, v19, v20, v21);
+    objc_msgSend_offset(itemCopy, v19, v20, v21);
     TSUAddPoints();
     TSUAddPoints();
-    objc_msgSend_scale(v5, v22, v23, v24);
+    objc_msgSend_scale(itemCopy, v22, v23, v24);
     v26 = v25;
-    objc_msgSend_p_minScaleForItem_(self, v27, v5, v28);
+    objc_msgSend_p_minScaleForItem_(self, v27, itemCopy, v28);
     if (fmax(v26, v31) <= 0.0)
     {
       v32 = MEMORY[0x277D81150];
@@ -770,9 +770,9 @@ LABEL_15:
   return result;
 }
 
-- (double)p_minScaleForItem:(id)a3
+- (double)p_minScaleForItem:(id)item
 {
-  objc_msgSend_naturalSize(a3, a2, a3, v3);
+  objc_msgSend_naturalSize(item, a2, item, v3);
   width = self->_imageContainerRect.size.width;
   height = self->_imageContainerRect.size.height;
   TSUMultiplySizeScalar();
@@ -853,23 +853,23 @@ LABEL_15:
 
 - (CGRect)imageRect
 {
-  v4 = self;
+  selfCopy = self;
   objc_msgSend_imageContainerRect(self, a2, v2, v3);
   x = v16.origin.x;
   y = v16.origin.y;
   width = v16.size.width;
   height = v16.size.height;
-  v4 = (v4 + 296);
+  selfCopy = (selfCopy + 296);
   MinX = CGRectGetMinX(v16);
   v17.origin.x = x;
   v17.origin.y = y;
   v17.size.width = width;
   v17.size.height = height;
   MinY = CGRectGetMinY(v17);
-  isa = v4->super.super.super.super.isa;
-  parent = v4->super.super.super._parent;
-  children = v4->super.super.super._children;
-  geometry = v4->super.super.super._geometry;
+  isa = selfCopy->super.super.super.super.isa;
+  parent = selfCopy->super.super.super._parent;
+  children = selfCopy->super.super.super._children;
+  geometry = selfCopy->super.super.super._geometry;
 
   return CGRectOffset(*&isa, MinX, MinY);
 }
@@ -938,9 +938,9 @@ LABEL_15:
   return v9;
 }
 
-- (CGRect)imageRectInImageContainerForItem:(id)a3
+- (CGRect)imageRectInImageContainerForItem:(id)item
 {
-  objc_msgSend_p_imageRectInImageContainerForItem_dragOffset_(self, a2, a3, v3, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8));
+  objc_msgSend_p_imageRectInImageContainerForItem_dragOffset_(self, a2, item, v3, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8));
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -948,10 +948,10 @@ LABEL_15:
   return result;
 }
 
-- (CGRect)imageFrameInRootWithDragOffset:(CGPoint)a3
+- (CGRect)imageFrameInRootWithDragOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v8 = objc_msgSend_currentItem(self, a2, v3, v4);
   objc_msgSend_p_imageRectInImageContainerForItem_dragOffset_(self, v9, v8, v10, x, y);
   rect.origin.x = v11;
@@ -1000,10 +1000,10 @@ LABEL_15:
   return result;
 }
 
-- (id)computeInfoGeometryForFittingInFrame:(CGRect)a3
+- (id)computeInfoGeometryForFittingInFrame:(CGRect)frame
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = objc_msgSend_currentCaptionLayout(self, a2, v3, v4);
   v12 = v8;
   if (v8)
@@ -1053,10 +1053,10 @@ LABEL_15:
   return v74;
 }
 
-- (CGPoint)calculateOffsetForGalleryItem:(id)a3 withFacesRect:(CGRect)a4
+- (CGPoint)calculateOffsetForGalleryItem:(id)item withFacesRect:(CGRect)rect
 {
   TSUCenterOfRect();
-  objc_msgSend_imageRectInImageContainerForItem_(self, v6, a3, v7);
+  objc_msgSend_imageRectInImageContainerForItem_(self, v6, item, v7);
   TSURectWithSize();
   TSUCenterOfRect();
 
@@ -1116,9 +1116,9 @@ LABEL_15:
   return cachedPathForClippingConnectionLines;
 }
 
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout
 {
-  v5 = objc_msgSend_layoutGeometryFromInfo(self, a2, a3, v3);
+  v5 = objc_msgSend_layoutGeometryFromInfo(self, a2, layout, v3);
   objc_msgSend_size(v5, v6, v7, v8);
   v10 = v9;
   objc_msgSend_p_maxLayoutSize(self, v11, v12, v13);
@@ -1170,10 +1170,10 @@ LABEL_15:
   return result;
 }
 
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size
 {
-  height = a4.height;
-  objc_msgSend_nonAutosizedFrameForTextLayout_(self, a2, a3, v4, a4.width);
+  height = size.height;
+  objc_msgSend_nonAutosizedFrameForTextLayout_(self, a2, layout, v4, size.width);
   x = v13.origin.x;
   y = v13.origin.y;
   width = v13.size.width;
@@ -1188,7 +1188,7 @@ LABEL_15:
   return result;
 }
 
-- (id)dependentsOfTextLayout:(id)a3
+- (id)dependentsOfTextLayout:(id)layout
 {
   v5[1] = *MEMORY[0x277D85DE8];
   v5[0] = self;
@@ -1213,43 +1213,43 @@ LABEL_15:
 {
   v12.receiver = self;
   v12.super_class = TSAGalleryLayout;
-  v3 = [(TSAGalleryLayout *)&v12 children];
+  children = [(TSAGalleryLayout *)&v12 children];
   v9 = objc_msgSend_currentCaptionLayout(self, v4, v5, v6);
   if (v9)
   {
-    v10 = objc_msgSend_arrayByAddingObject_(v3, v7, v9, v8);
+    v10 = objc_msgSend_arrayByAddingObject_(children, v7, v9, v8);
 
-    v3 = v10;
+    children = v10;
   }
 
-  return v3;
+  return children;
 }
 
-- (double)widthForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4
+- (double)widthForColumnIndex:(unint64_t)index bodyWidth:(double)width
 {
-  v5 = objc_msgSend_geometry(self, a2, a3, v4, a4);
+  v5 = objc_msgSend_geometry(self, a2, index, v4, width);
   objc_msgSend_size(v5, v6, v7, v8);
   v10 = v9;
 
   return v10 + -6.0 + -6.0;
 }
 
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 target:(id)a5 outWidth:(double *)a6 outGap:(double *)a7
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width target:(id)target outWidth:(double *)outWidth outGap:(double *)gap
 {
-  if (a6)
+  if (outWidth)
   {
-    *a6 = a4 + -6.0 + -6.0;
+    *outWidth = width + -6.0 + -6.0;
   }
 
-  if (a7)
+  if (gap)
   {
-    *a7 = 0.0;
+    *gap = 0.0;
   }
 
   return 6.0;
 }
 
-- (UIEdgeInsets)adjustedInsetsForTarget:(id)a3
+- (UIEdgeInsets)adjustedInsetsForTarget:(id)target
 {
   v3 = 6.0;
   v4 = 6.0;

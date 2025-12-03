@@ -1,22 +1,22 @@
 @interface SUUIExploreTemplateElement
 - (NSArray)childViewElements;
-- (SUUIExploreTemplateElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUIExploreTemplateElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (SUUIViewElement)leftSplit;
 - (SUUIViewElement)rightSplit;
-- (void)_getLeftSplit:(id *)a3 rightSplit:(id *)a4;
+- (void)_getLeftSplit:(id *)split rightSplit:(id *)rightSplit;
 @end
 
 @implementation SUUIExploreTemplateElement
 
-- (SUUIExploreTemplateElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIExploreTemplateElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v12.receiver = self;
   v12.super_class = SUUIExploreTemplateElement;
-  v9 = [(SUUIViewElement *)&v12 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v12 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 childElementsByTagName:@"split"];
+    v10 = [elementCopy childElementsByTagName:@"split"];
     v9->_usesSplits = [v10 count] == 2;
   }
 
@@ -25,21 +25,21 @@
 
 - (NSArray)childViewElements
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = self;
-  v5 = v4;
-  if (v4->_usesSplits)
+  array = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
+  v5 = selfCopy;
+  if (selfCopy->_usesSplits)
   {
-    v6 = [(SUUIExploreTemplateElement *)v4 leftSplit];
+    leftSplit = [(SUUIExploreTemplateElement *)selfCopy leftSplit];
 
-    v5 = v6;
+    v5 = leftSplit;
   }
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__SUUIExploreTemplateElement_childViewElements__block_invoke;
   v9[3] = &unk_2798F5B20;
-  v7 = v3;
+  v7 = array;
   v10 = v7;
   [v5 enumerateChildrenUsingBlock:v9];
 
@@ -94,7 +94,7 @@ void __47__SUUIExploreTemplateElement_childViewElements__block_invoke(uint64_t a
   return v4;
 }
 
-- (void)_getLeftSplit:(id *)a3 rightSplit:(id *)a4
+- (void)_getLeftSplit:(id *)split rightSplit:(id *)rightSplit
 {
   v14 = 0;
   v15 = &v14;
@@ -108,23 +108,23 @@ void __47__SUUIExploreTemplateElement_childViewElements__block_invoke(uint64_t a
   v11 = __Block_byref_object_copy__11;
   v12 = __Block_byref_object_dispose__11;
   v13 = 0;
-  v6 = [(SUUIExploreTemplateElement *)self children];
+  children = [(SUUIExploreTemplateElement *)self children];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__SUUIExploreTemplateElement__getLeftSplit_rightSplit___block_invoke;
   v7[3] = &unk_2798F6D58;
   v7[4] = &v14;
   v7[5] = &v8;
-  [v6 enumerateObjectsUsingBlock:v7];
+  [children enumerateObjectsUsingBlock:v7];
 
-  if (a3)
+  if (split)
   {
-    *a3 = v15[5];
+    *split = v15[5];
   }
 
-  if (a4)
+  if (rightSplit)
   {
-    *a4 = v9[5];
+    *rightSplit = v9[5];
   }
 
   _Block_object_dispose(&v8, 8);

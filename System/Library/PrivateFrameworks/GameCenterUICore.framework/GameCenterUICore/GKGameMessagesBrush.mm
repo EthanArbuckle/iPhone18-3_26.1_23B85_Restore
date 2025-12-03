@@ -1,22 +1,22 @@
 @interface GKGameMessagesBrush
-- (void)drawInRect:(CGRect)a3 withContext:(CGContext *)a4 input:(id)a5;
+- (void)drawInRect:(CGRect)rect withContext:(CGContext *)context input:(id)input;
 @end
 
 @implementation GKGameMessagesBrush
 
-- (void)drawInRect:(CGRect)a3 withContext:(CGContext *)a4 input:(id)a5
+- (void)drawInRect:(CGRect)rect withContext:(CGContext *)context input:(id)input
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a5;
-  CGContextSaveGState(a4);
-  UIGraphicsPushContext(a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  inputCopy = input;
+  CGContextSaveGState(context);
+  UIGraphicsPushContext(context);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v13;
+    v10 = inputCopy;
   }
 
   else
@@ -25,17 +25,17 @@
   }
 
   v11 = v10;
-  CGContextTranslateCTM(a4, 0.0, height);
-  CGContextScaleCTM(a4, 1.0, -1.0);
-  v12 = [v11 CGImage];
+  CGContextTranslateCTM(context, 0.0, height);
+  CGContextScaleCTM(context, 1.0, -1.0);
+  cGImage = [v11 CGImage];
 
   v15.origin.x = x;
   v15.origin.y = y;
   v15.size.width = width;
   v15.size.height = height;
-  CGContextDrawImage(a4, v15, v12);
+  CGContextDrawImage(context, v15, cGImage);
   UIGraphicsPopContext();
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
 @end

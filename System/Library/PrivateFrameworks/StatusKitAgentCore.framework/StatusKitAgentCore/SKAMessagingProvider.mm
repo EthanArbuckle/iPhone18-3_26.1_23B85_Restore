@@ -1,45 +1,45 @@
 @interface SKAMessagingProvider
-+ (BOOL)_isBlastdoorEnabledForService:(id)a3;
++ (BOOL)_isBlastdoorEnabledForService:(id)service;
 + (BOOL)isRegisteredWithIDS;
-+ (id)deviceTokenForTokenURI:(id)a3;
-+ (id)handleForTokenURI:(id)a3;
++ (id)deviceTokenForTokenURI:(id)i;
++ (id)handleForTokenURI:(id)i;
 + (id)logger;
 - (BOOL)_keysharingIsDisabledByServer;
 - (BOOL)_selfSharingIsDisabledByServer;
-- (BOOL)isFromIDFromSelfAccount:(id)a3;
-- (BOOL)isHandleAvailableToMessageFrom:(id)a3;
-- (BOOL)isValidURI:(id)a3;
-- (BOOL)sendMessage:(id)a3 toHandles:(id)a4 fromHandle:(id)a5 limitToPresenceCapable:(BOOL)a6 identifier:(id *)a7 error:(id *)a8;
-- (BOOL)sendMessageToSelfDevices:(id)a3 limitToPresenceCapable:(BOOL)a4 identifier:(id *)a5 error:(id *)a6;
-- (SKAMessagingProvider)initWithDelegate:(id)a3 serviceIdentifier:(id)a4 pushManager:(id)a5 queue:(id)a6;
+- (BOOL)isFromIDFromSelfAccount:(id)account;
+- (BOOL)isHandleAvailableToMessageFrom:(id)from;
+- (BOOL)isValidURI:(id)i;
+- (BOOL)sendMessage:(id)message toHandles:(id)handles fromHandle:(id)handle limitToPresenceCapable:(BOOL)capable identifier:(id *)identifier error:(id *)error;
+- (BOOL)sendMessageToSelfDevices:(id)devices limitToPresenceCapable:(BOOL)capable identifier:(id *)identifier error:(id *)error;
+- (SKAMessagingProvider)initWithDelegate:(id)delegate serviceIdentifier:(id)identifier pushManager:(id)manager queue:(id)queue;
 - (SKAMessagingProvidingDelegate)delegate;
-- (id)registerIDSDeviceChangedObserver:(id)a3;
-- (id)resolveSenderHandleWithPreferredSenderHandle:(id)a3;
-- (id)selfAddressedURIForURI:(id)a3 error:(id *)a4;
-- (id)tokenURIWithError:(id *)a3;
+- (id)registerIDSDeviceChangedObserver:(id)observer;
+- (id)resolveSenderHandleWithPreferredSenderHandle:(id)handle;
+- (id)selfAddressedURIForURI:(id)i error:(id *)error;
+- (id)tokenURIWithError:(id *)error;
 - (void)_keysharingIsDisabledByServer;
 - (void)_selfSharingIsDisabledByServer;
-- (void)isHandle:(id)a3 inFirewallForService:(id)a4 completion:(id)a5;
-- (void)isHandleMessageable:(id)a3 completion:(id)a4;
-- (void)isHandleMessageableForPresence:(id)a3 completion:(id)a4;
-- (void)listOfValidSenderHandles:(id)a3 containsSenderMergeID:(id)a4 completion:(id)a5;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)service:(id)a3 didHintCheckingTransportLogWithReason:(int64_t)a4;
-- (void)signPayload:(id)a3 completion:(id)a4;
-- (void)verifySignedPayload:(id)a3 matchesPayload:(id)a4 fromTokenURI:(id)a5 completion:(id)a6;
-- (void)verifySignedPayloads:(id)a3 completion:(id)a4;
+- (void)isHandle:(id)handle inFirewallForService:(id)service completion:(id)completion;
+- (void)isHandleMessageable:(id)messageable completion:(id)completion;
+- (void)isHandleMessageableForPresence:(id)presence completion:(id)completion;
+- (void)listOfValidSenderHandles:(id)handles containsSenderMergeID:(id)d completion:(id)completion;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)service:(id)service didHintCheckingTransportLogWithReason:(int64_t)reason;
+- (void)signPayload:(id)payload completion:(id)completion;
+- (void)verifySignedPayload:(id)payload matchesPayload:(id)matchesPayload fromTokenURI:(id)i completion:(id)completion;
+- (void)verifySignedPayloads:(id)payloads completion:(id)completion;
 @end
 
 @implementation SKAMessagingProvider
 
-- (SKAMessagingProvider)initWithDelegate:(id)a3 serviceIdentifier:(id)a4 pushManager:(id)a5 queue:(id)a6
+- (SKAMessagingProvider)initWithDelegate:(id)delegate serviceIdentifier:(id)identifier pushManager:(id)manager queue:(id)queue
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
+  managerCopy = manager;
+  queueCopy = queue;
   v26.receiver = self;
   v26.super_class = SKAMessagingProvider;
   v14 = [(SKAMessagingProvider *)&v26 init];
@@ -49,16 +49,16 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v28 = v11;
+      v28 = identifierCopy;
       v29 = 2112;
-      v30 = v10;
+      v30 = delegateCopy;
       _os_log_impl(&dword_220099000, v15, OS_LOG_TYPE_DEFAULT, "Initializing messaging provider with service %@ and delegate %@", buf, 0x16u);
     }
 
     if ([(SKAMessagingProvider *)v14 _keysharingIsDisabledByServer])
     {
-      v16 = +[SKAMessagingProvider logger];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      mEMORY[0x277D18728] = +[SKAMessagingProvider logger];
+      if (os_log_type_enabled(mEMORY[0x277D18728], OS_LOG_TYPE_ERROR))
       {
         [SKAMessagingProvider initWithDelegate:serviceIdentifier:pushManager:queue:];
       }
@@ -66,15 +66,15 @@
 
     else
     {
-      objc_storeWeak(&v14->_delegate, v10);
-      objc_storeStrong(&v14->_serviceIdentifier, a4);
-      objc_storeStrong(&v14->_pushManager, a5);
-      objc_storeStrong(&v14->_queue, a6);
+      objc_storeWeak(&v14->_delegate, delegateCopy);
+      objc_storeStrong(&v14->_serviceIdentifier, identifier);
+      objc_storeStrong(&v14->_pushManager, manager);
+      objc_storeStrong(&v14->_queue, queue);
       v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
       registeredIDSDeviceChangedObservers = v14->_registeredIDSDeviceChangedObservers;
       v14->_registeredIDSDeviceChangedObservers = v17;
 
-      v19 = [objc_alloc(MEMORY[0x277D18778]) initWithService:v11];
+      v19 = [objc_alloc(MEMORY[0x277D18778]) initWithService:identifierCopy];
       service = v14->_service;
       v14->_service = v19;
 
@@ -93,9 +93,9 @@
         _os_log_impl(&dword_220099000, v21, OS_LOG_TYPE_DEFAULT, "IDSService is Blastdoored: %@", buf, 0xCu);
       }
 
-      [(IDSService *)v14->_service addDelegate:v14 queue:v13];
-      v16 = [MEMORY[0x277D18728] sharedInstance];
-      [v16 addListenerID:@"com.apple.StatusKit" forService:@"com.apple.private.alloy.status.keysharing"];
+      [(IDSService *)v14->_service addDelegate:v14 queue:queueCopy];
+      mEMORY[0x277D18728] = [MEMORY[0x277D18728] sharedInstance];
+      [mEMORY[0x277D18728] addListenerID:@"com.apple.StatusKit" forService:@"com.apple.private.alloy.status.keysharing"];
     }
   }
 
@@ -103,25 +103,25 @@
   return v14;
 }
 
-+ (BOOL)_isBlastdoorEnabledForService:(id)a3
++ (BOOL)_isBlastdoorEnabledForService:(id)service
 {
   v3 = MEMORY[0x277D18A30];
-  v4 = a3;
+  serviceCopy = service;
   v5 = [v3 alloc];
-  v6 = [v4 serviceIdentifier];
+  serviceIdentifier = [serviceCopy serviceIdentifier];
 
-  v7 = [v5 initWithServiceIdentifier:v6];
-  LOBYTE(v4) = [v7 constraintType] == 2;
+  v7 = [v5 initWithServiceIdentifier:serviceIdentifier];
+  LOBYTE(serviceCopy) = [v7 constraintType] == 2;
 
-  return v4;
+  return serviceCopy;
 }
 
-- (BOOL)sendMessage:(id)a3 toHandles:(id)a4 fromHandle:(id)a5 limitToPresenceCapable:(BOOL)a6 identifier:(id *)a7 error:(id *)a8
+- (BOOL)sendMessage:(id)message toHandles:(id)handles fromHandle:(id)handle limitToPresenceCapable:(BOOL)capable identifier:(id *)identifier error:(id *)error
 {
   v60 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  messageCopy = message;
+  handlesCopy = handles;
+  handleCopy = handle;
   if ([(SKAMessagingProvider *)self _keysharingIsDisabledByServer])
   {
     v14 = +[SKAMessagingProvider logger];
@@ -135,15 +135,15 @@
 
   else
   {
-    v40 = self;
-    v42 = v13;
-    v43 = v11;
+    selfCopy = self;
+    v42 = handleCopy;
+    v43 = messageCopy;
     v14 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v16 = v12;
+    v16 = handlesCopy;
     v17 = [v16 countByEnumeratingWithState:&v47 objects:v59 count:16];
     if (v17)
     {
@@ -159,10 +159,10 @@
           }
 
           v21 = *(*(&v47 + 1) + 8 * i);
-          v22 = [v21 idsDestination];
-          if ([v22 length])
+          idsDestination = [v21 idsDestination];
+          if ([idsDestination length])
           {
-            [v14 addObject:v22];
+            [v14 addObject:idsDestination];
           }
 
           else
@@ -185,9 +185,9 @@
 
     if ([v14 count])
     {
-      v24 = [v42 idsDestination];
+      idsDestination2 = [v42 idsDestination];
       v57 = *MEMORY[0x277D185E0];
-      v58 = v24;
+      v58 = idsDestination2;
       v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
       v26 = [v25 mutableCopy];
 
@@ -203,7 +203,7 @@
         _os_log_impl(&dword_220099000, v27, OS_LOG_TYPE_DEFAULT, "Sending message %@ to destinations %@ options: %@", buf, 0x20u);
       }
 
-      service = v40->_service;
+      service = selfCopy->_service;
       v45 = 0;
       v46 = 0;
       v15 = [(IDSService *)service sendMessage:v43 toDestinations:v14 priority:300 options:v26 identifier:&v46 error:&v45];
@@ -213,7 +213,7 @@
       v32 = v31;
       if (v15)
       {
-        v33 = a8;
+        errorCopy2 = error;
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
@@ -224,45 +224,45 @@
 
       else
       {
-        v33 = a8;
+        errorCopy2 = error;
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
         {
           [SKAMessagingProvider sendMessage:toHandles:fromHandle:limitToPresenceCapable:identifier:error:];
         }
       }
 
-      if (a7)
+      if (identifier)
       {
         v37 = v29;
-        *a7 = v29;
+        *identifier = v29;
       }
 
-      v13 = v42;
-      if (v33)
+      handleCopy = v42;
+      if (errorCopy2)
       {
-        *v33 = [SKAError errorWithCode:505 underlyingError:v30];
+        *errorCopy2 = [SKAError errorWithCode:505 underlyingError:v30];
       }
 
-      v11 = v43;
+      messageCopy = v43;
     }
 
     else
     {
       v34 = +[SKAMessagingProvider logger];
-      v13 = v42;
-      v11 = v43;
+      handleCopy = v42;
+      messageCopy = v43;
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
         [SKAMessagingProvider sendMessage:toHandles:fromHandle:limitToPresenceCapable:identifier:error:];
       }
 
       v35 = [SKAError errorWithCode:502];
-      v24 = v35;
-      if (a8)
+      idsDestination2 = v35;
+      if (error)
       {
         v36 = v35;
         LOBYTE(v15) = 0;
-        *a8 = v24;
+        *error = idsDestination2;
       }
 
       else
@@ -276,10 +276,10 @@
   return v15;
 }
 
-- (BOOL)sendMessageToSelfDevices:(id)a3 limitToPresenceCapable:(BOOL)a4 identifier:(id *)a5 error:(id *)a6
+- (BOOL)sendMessageToSelfDevices:(id)devices limitToPresenceCapable:(BOOL)capable identifier:(id *)identifier error:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  devicesCopy = devices;
   if ([(SKAMessagingProvider *)self _selfSharingIsDisabledByServer])
   {
     v10 = +[SKAMessagingProvider logger];
@@ -298,10 +298,10 @@
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v12 = [(SKAMessagingProvider *)self service];
-    v13 = [v12 devices];
+    service = [(SKAMessagingProvider *)self service];
+    devices = [service devices];
 
-    v14 = [v13 countByEnumeratingWithState:&v35 objects:v45 count:16];
+    v14 = [devices countByEnumeratingWithState:&v35 objects:v45 count:16];
     if (v14)
     {
       v15 = v14;
@@ -312,7 +312,7 @@
         {
           if (*v36 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(devices);
           }
 
           v18 = *(*(&v35 + 1) + 8 * i);
@@ -323,7 +323,7 @@
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v35 objects:v45 count:16];
+        v15 = [devices countByEnumeratingWithState:&v35 objects:v45 count:16];
       }
 
       while (v15);
@@ -336,7 +336,7 @@
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v40 = v9;
+        v40 = devicesCopy;
         v41 = 2112;
         v42 = v10;
         v43 = 2112;
@@ -347,7 +347,7 @@
       service = self->_service;
       v33 = 0;
       v34 = 0;
-      v11 = [(IDSService *)service sendMessage:v9 toDestinations:v10 priority:300 options:v20 identifier:&v34 error:&v33];
+      v11 = [(IDSService *)service sendMessage:devicesCopy toDestinations:v10 priority:300 options:v20 identifier:&v34 error:&v33];
       v23 = v34;
       v24 = v33;
       v25 = +[SKAMessagingProvider logger];
@@ -367,15 +367,15 @@
         [SKAMessagingProvider sendMessage:toHandles:fromHandle:limitToPresenceCapable:identifier:error:];
       }
 
-      if (a5)
+      if (identifier)
       {
         v30 = v23;
-        *a5 = v23;
+        *identifier = v23;
       }
 
-      if (a6)
+      if (error)
       {
-        *a6 = [SKAError errorWithCode:505 underlyingError:v24];
+        *error = [SKAError errorWithCode:505 underlyingError:v24];
       }
     }
 
@@ -389,11 +389,11 @@
 
       v28 = [SKAError errorWithCode:502];
       v20 = v28;
-      if (a6)
+      if (error)
       {
         v29 = v28;
         LOBYTE(v11) = 0;
-        *a6 = v20;
+        *error = v20;
       }
 
       else
@@ -407,10 +407,10 @@
   return v11;
 }
 
-- (void)isHandleMessageable:(id)a3 completion:(id)a4
+- (void)isHandleMessageable:(id)messageable completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageableCopy = messageable;
+  completionCopy = completion;
   if ([(SKAMessagingProvider *)self _keysharingIsDisabledByServer])
   {
     v8 = +[SKAMessagingProvider logger];
@@ -419,32 +419,32 @@
       [SKAMessagingProvider sendMessage:toHandles:fromHandle:limitToPresenceCapable:identifier:error:];
     }
 
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    v9 = [v6 idsDestination];
-    v10 = [(SKAMessagingProvider *)self serviceIdentifier];
+    idsDestination = [messageableCopy idsDestination];
+    serviceIdentifier = [(SKAMessagingProvider *)self serviceIdentifier];
     v11 = MEMORY[0x277CCACA8];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
     v14 = [v11 stringWithFormat:@"%@_%p", v13, self];
 
-    v15 = [MEMORY[0x277D18728] sharedInstance];
+    mEMORY[0x277D18728] = [MEMORY[0x277D18728] sharedInstance];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __55__SKAMessagingProvider_isHandleMessageable_completion___block_invoke;
     v16[3] = &unk_27843E8C0;
-    v17 = v7;
-    [v15 refreshIDStatusForDestination:v9 service:v10 listenerID:v14 queue:MEMORY[0x277D85CD0] completionBlock:v16];
+    v17 = completionCopy;
+    [mEMORY[0x277D18728] refreshIDStatusForDestination:idsDestination service:serviceIdentifier listenerID:v14 queue:MEMORY[0x277D85CD0] completionBlock:v16];
   }
 }
 
-- (void)isHandleMessageableForPresence:(id)a3 completion:(id)a4
+- (void)isHandleMessageableForPresence:(id)presence completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  presenceCopy = presence;
+  completionCopy = completion;
   if ([(SKAMessagingProvider *)self _keysharingIsDisabledByServer])
   {
     v8 = +[SKAMessagingProvider logger];
@@ -453,44 +453,44 @@
       [SKAMessagingProvider sendMessage:toHandles:fromHandle:limitToPresenceCapable:identifier:error:];
     }
 
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    v9 = [v6 idsDestination];
-    v10 = [(SKAMessagingProvider *)self serviceIdentifier];
+    idsDestination = [presenceCopy idsDestination];
+    serviceIdentifier = [(SKAMessagingProvider *)self serviceIdentifier];
     v11 = MEMORY[0x277CCACA8];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
     v14 = [v11 stringWithFormat:@"%@_%p", v13, self];
 
-    v15 = [MEMORY[0x277D18728] sharedInstance];
+    mEMORY[0x277D18728] = [MEMORY[0x277D18728] sharedInstance];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __66__SKAMessagingProvider_isHandleMessageableForPresence_completion___block_invoke;
     v16[3] = &unk_27843E8C0;
-    v17 = v7;
-    [v15 refreshIDStatusForDestination:v9 service:v10 listenerID:v14 queue:MEMORY[0x277D85CD0] completionBlock:v16];
+    v17 = completionCopy;
+    [mEMORY[0x277D18728] refreshIDStatusForDestination:idsDestination service:serviceIdentifier listenerID:v14 queue:MEMORY[0x277D85CD0] completionBlock:v16];
   }
 }
 
-- (BOOL)isHandleAvailableToMessageFrom:(id)a3
+- (BOOL)isHandleAvailableToMessageFrom:(id)from
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v5 = objc_alloc(MEMORY[0x277D18A48]);
-  v6 = [v4 normalizedHandleString];
-  v7 = [v5 initWithUnprefixedURI:v6];
+  normalizedHandleString = [fromCopy normalizedHandleString];
+  v7 = [v5 initWithUnprefixedURI:normalizedHandleString];
 
-  v8 = [(SKAMessagingProvider *)self service];
-  v9 = [v8 URIs];
+  service = [(SKAMessagingProvider *)self service];
+  uRIs = [service URIs];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = v9;
+  v10 = uRIs;
   v11 = [v10 countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v11)
   {
@@ -511,7 +511,7 @@
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v25 = v4;
+            v25 = fromCopy;
             _os_log_impl(&dword_220099000, v17, OS_LOG_TYPE_DEFAULT, "Sender handle %@ is a valid sender handle for active iCloud account", buf, 0xCu);
           }
 
@@ -535,7 +535,7 @@
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v25 = v4;
+    v25 = fromCopy;
     _os_log_impl(&dword_220099000, v15, OS_LOG_TYPE_DEFAULT, "Sender handle %@ is not a valid sender handle for active iCloud account", buf, 0xCu);
   }
 
@@ -546,31 +546,31 @@ LABEL_15:
   return v16;
 }
 
-- (BOOL)isFromIDFromSelfAccount:(id)a3
+- (BOOL)isFromIDFromSelfAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(SKAMessagingProvider *)self service];
-  v6 = [v5 deviceForFromID:v4];
+  accountCopy = account;
+  service = [(SKAMessagingProvider *)self service];
+  v6 = [service deviceForFromID:accountCopy];
 
   return v6 != 0;
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
-  v12 = a7;
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
   v13 = +[SKAMessagingProvider logger];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v12 senderCorrelationIdentifier];
+    senderCorrelationIdentifier = [contextCopy senderCorrelationIdentifier];
     v22 = 138412802;
-    v23 = v10;
+    v23 = messageCopy;
     v24 = 2112;
-    v25 = v11;
+    v25 = dCopy;
     v26 = 2112;
-    v27 = v14;
+    v27 = senderCorrelationIdentifier;
     _os_log_impl(&dword_220099000, v13, OS_LOG_TYPE_DEFAULT, "Received incoming message: %@ fromID: %@ (%@)", &v22, 0x20u);
   }
 
@@ -579,8 +579,8 @@ LABEL_15:
   {
     if ([(SKAMessagingProvider *)self _keysharingIsDisabledByServer])
     {
-      v16 = +[SKAMessagingProvider logger];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      serviceIdentifier = +[SKAMessagingProvider logger];
+      if (os_log_type_enabled(serviceIdentifier, OS_LOG_TYPE_ERROR))
       {
         [SKAMessagingProvider service:account:incomingMessage:fromID:context:];
       }
@@ -588,21 +588,21 @@ LABEL_15:
 
     else
     {
-      v16 = [v12 serviceIdentifier];
-      v17 = [v12 originalGUID];
-      v18 = [v12 toID];
+      serviceIdentifier = [contextCopy serviceIdentifier];
+      originalGUID = [contextCopy originalGUID];
+      toID = [contextCopy toID];
       v19 = objc_loadWeakRetained(&self->_delegate);
-      v20 = [v12 senderCorrelationIdentifier];
-      [v19 service:v16 didReceiveIncomingMessage:v10 fromID:v11 fromMergeID:v20 toID:v18 messageGuid:v17];
+      senderCorrelationIdentifier2 = [contextCopy senderCorrelationIdentifier];
+      [v19 service:serviceIdentifier didReceiveIncomingMessage:messageCopy fromID:dCopy fromMergeID:senderCorrelationIdentifier2 toID:toID messageGuid:originalGUID];
     }
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 didHintCheckingTransportLogWithReason:(int64_t)a4
+- (void)service:(id)service didHintCheckingTransportLogWithReason:(int64_t)reason
 {
-  v5 = [SKAMessagingProvider logger:a3];
+  v5 = [SKAMessagingProvider logger:service];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *v8 = 0;
@@ -617,19 +617,19 @@ LABEL_15:
   }
 }
 
-- (id)resolveSenderHandleWithPreferredSenderHandle:(id)a3
+- (id)resolveSenderHandleWithPreferredSenderHandle:(id)handle
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  handleCopy = handle;
+  if (handleCopy)
   {
     v5 = objc_alloc(MEMORY[0x277D18A48]);
-    v6 = [v4 handleString];
-    v7 = [v5 initWithUnprefixedURI:v6];
+    handleString = [handleCopy handleString];
+    v7 = [v5 initWithUnprefixedURI:handleString];
 
     if (v7 && ([v7 unprefixedURI], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "length"), v8, v9))
     {
-      v10 = v4;
+      v10 = handleCopy;
     }
 
     else
@@ -646,13 +646,13 @@ LABEL_15:
 
   else
   {
-    v12 = [(IDSService *)self->_service URIs];
+    uRIs = [(IDSService *)self->_service URIs];
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v7 = v12;
+    v7 = uRIs;
     v14 = [v7 countByEnumeratingWithState:&v25 objects:v31 count:16];
     if (v14)
     {
@@ -667,10 +667,10 @@ LABEL_15:
             objc_enumerationMutation(v7);
           }
 
-          v18 = [*(*(&v25 + 1) + 8 * i) unprefixedURI];
-          if (v18)
+          unprefixedURI = [*(*(&v25 + 1) + 8 * i) unprefixedURI];
+          if (unprefixedURI)
           {
-            [v13 addObject:v18];
+            [v13 addObject:unprefixedURI];
           }
         }
 
@@ -714,18 +714,18 @@ LABEL_15:
   return v10;
 }
 
-- (id)tokenURIWithError:(id *)a3
+- (id)tokenURIWithError:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
   if (+[SKAMessagingProvider isRegisteredWithIDS])
   {
-    v5 = [(IDSService *)self->_service URIs];
+    uRIs = [(IDSService *)self->_service URIs];
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v7 = v5;
+    v7 = uRIs;
     v8 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v8)
     {
@@ -740,10 +740,10 @@ LABEL_15:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v24 + 1) + 8 * i) unprefixedURI];
-          if (v12)
+          unprefixedURI = [*(*(&v24 + 1) + 8 * i) unprefixedURI];
+          if (unprefixedURI)
           {
-            [v6 addObject:v12];
+            [v6 addObject:unprefixedURI];
           }
         }
 
@@ -756,31 +756,31 @@ LABEL_15:
     v13 = [v6 copy];
     v14 = _IDSCopyCallerID();
 
-    v15 = [(SKAMessagingProvider *)self deviceToken];
-    if (v15 && v14)
+    deviceToken = [(SKAMessagingProvider *)self deviceToken];
+    if (deviceToken && v14)
     {
       v28 = v14;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
       v17 = _IDSCopyOrderedAliases();
-      v18 = [v17 firstObject];
+      firstObject = [v17 firstObject];
 
-      v19 = MEMORY[0x223D77480](v15, v18);
+      v19 = MEMORY[0x223D77480](deviceToken, firstObject);
       v20 = v19;
       if (v19)
       {
         v21 = v19;
       }
 
-      else if (a3)
+      else if (error)
       {
-        *a3 = [SKAError errorWithCode:706 customDescription:@"Could not retrieve token URI"];
+        *error = [SKAError errorWithCode:706 customDescription:@"Could not retrieve token URI"];
       }
     }
 
-    else if (a3)
+    else if (error)
     {
       [SKAError errorWithCode:706 customDescription:@"Could not retrieve device token or caller ID destination"];
-      *a3 = v20 = 0;
+      *error = v20 = 0;
     }
 
     else
@@ -789,10 +789,10 @@ LABEL_15:
     }
   }
 
-  else if (a3)
+  else if (error)
   {
     [SKAError errorWithCode:705];
-    *a3 = v20 = 0;
+    *error = v20 = 0;
   }
 
   else
@@ -805,14 +805,14 @@ LABEL_15:
   return v20;
 }
 
-- (BOOL)isValidURI:(id)a3
+- (BOOL)isValidURI:(id)i
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  iCopy = i;
+  if (iCopy)
   {
-    v5 = v4;
-    if ([v4 isTokenURI])
+    v5 = iCopy;
+    if ([iCopy isTokenURI])
     {
       v6 = +[SKAMessagingProvider logger];
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -822,9 +822,9 @@ LABEL_15:
         _os_log_impl(&dword_220099000, v6, OS_LOG_TYPE_DEFAULT, "Stripping token from: %@", buf, 0xCu);
       }
 
-      v7 = [v5 tokenFreeURI];
+      tokenFreeURI = [v5 tokenFreeURI];
 
-      v5 = v7;
+      v5 = tokenFreeURI;
     }
 
     [(IDSService *)self->_service accounts];
@@ -854,8 +854,8 @@ LABEL_8:
           v39 = 0uLL;
           v36 = 0uLL;
           v37 = 0uLL;
-          v14 = [v13 pseudonyms];
-          v15 = [v14 countByEnumeratingWithState:&v36 objects:v45 count:16];
+          pseudonyms = [v13 pseudonyms];
+          v15 = [pseudonyms countByEnumeratingWithState:&v36 objects:v45 count:16];
           if (v15)
           {
             v16 = v15;
@@ -866,7 +866,7 @@ LABEL_14:
             {
               if (*v37 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(pseudonyms);
               }
 
               v19 = [*(*(&v36 + 1) + 8 * v18) URI];
@@ -879,7 +879,7 @@ LABEL_14:
 
               if (v16 == ++v18)
               {
-                v16 = [v14 countByEnumeratingWithState:&v36 objects:v45 count:16];
+                v16 = [pseudonyms countByEnumeratingWithState:&v36 objects:v45 count:16];
                 if (v16)
                 {
                   goto LABEL_14;
@@ -903,8 +903,8 @@ LABEL_35:
           v35 = 0uLL;
           v32 = 0uLL;
           v33 = 0uLL;
-          v14 = [v13 handles];
-          v21 = [v14 countByEnumeratingWithState:&v32 objects:v44 count:16];
+          pseudonyms = [v13 handles];
+          v21 = [pseudonyms countByEnumeratingWithState:&v32 objects:v44 count:16];
           if (v21)
           {
             v22 = v21;
@@ -915,7 +915,7 @@ LABEL_23:
             {
               if (*v33 != v23)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(pseudonyms);
               }
 
               v25 = [*(*(&v32 + 1) + 8 * v24) URI];
@@ -928,7 +928,7 @@ LABEL_23:
 
               if (v22 == ++v24)
               {
-                v22 = [v14 countByEnumeratingWithState:&v32 objects:v44 count:16];
+                v22 = [pseudonyms countByEnumeratingWithState:&v32 objects:v44 count:16];
                 if (v22)
                 {
                   goto LABEL_23;
@@ -980,26 +980,26 @@ LABEL_36:
   return v28;
 }
 
-- (id)selfAddressedURIForURI:(id)a3 error:(id *)a4
+- (id)selfAddressedURIForURI:(id)i error:(id *)error
 {
-  v6 = a3;
+  iCopy = i;
   if (+[SKAMessagingProvider isRegisteredWithIDS])
   {
     v7 = objc_alloc(MEMORY[0x277D18A08]);
-    v8 = [(SKAMessagingProvider *)self deviceToken];
-    v9 = [v7 initWithData:v8];
+    deviceToken = [(SKAMessagingProvider *)self deviceToken];
+    v9 = [v7 initWithData:deviceToken];
 
     if (v9 && ([v9 rawToken], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
     {
-      if ([v6 isTokenURI])
+      if ([iCopy isTokenURI])
       {
-        v11 = [v6 tokenFreeURI];
+        tokenFreeURI = [iCopy tokenFreeURI];
 
-        v6 = v11;
+        iCopy = tokenFreeURI;
       }
 
-      v12 = [v6 URIByAddingPushToken:v9];
-      v13 = [v12 prefixedURI];
+      v12 = [iCopy URIByAddingPushToken:v9];
+      prefixedURI = [v12 prefixedURI];
     }
 
     else
@@ -1010,41 +1010,41 @@ LABEL_36:
         [SKAMessagingProvider selfAddressedURIForURI:error:];
       }
 
-      if (a4)
+      if (error)
       {
         [SKAError errorWithCode:706 customDescription:@"Could not retrieve device token"];
-        *a4 = v13 = 0;
+        *error = prefixedURI = 0;
       }
 
       else
       {
-        v13 = 0;
+        prefixedURI = 0;
       }
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [SKAError errorWithCode:705];
-    *a4 = v13 = 0;
+    *error = prefixedURI = 0;
   }
 
   else
   {
-    v13 = 0;
+    prefixedURI = 0;
   }
 
-  return v13;
+  return prefixedURI;
 }
 
-+ (id)deviceTokenForTokenURI:(id)a3
++ (id)deviceTokenForTokenURI:(id)i
 {
   v3 = IDSCopyTokenAndIDForTokenWithID();
 
   return 0;
 }
 
-+ (id)handleForTokenURI:(id)a3
++ (id)handleForTokenURI:(id)i
 {
   v3 = IDSCopyRawAddressForDestination();
   v4 = [objc_alloc(MEMORY[0x277D680C0]) initWithString:v3];
@@ -1052,18 +1052,18 @@ LABEL_36:
   return v4;
 }
 
-- (void)signPayload:(id)a3 completion:(id)a4
+- (void)signPayload:(id)payload completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SKAMessagingProvider *)self service];
+  completionCopy = completion;
+  payloadCopy = payload;
+  service = [(SKAMessagingProvider *)self service];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __47__SKAMessagingProvider_signPayload_completion___block_invoke;
   v10[3] = &unk_27843E1F8;
-  v11 = v6;
-  v9 = v6;
-  [v8 signData:v7 withAlgorithm:2 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [service signData:payloadCopy withAlgorithm:2 completion:v10];
 }
 
 void __47__SKAMessagingProvider_signPayload_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -1084,23 +1084,23 @@ void __47__SKAMessagingProvider_signPayload_completion___block_invoke(uint64_t a
   }
 }
 
-- (void)verifySignedPayload:(id)a3 matchesPayload:(id)a4 fromTokenURI:(id)a5 completion:(id)a6
+- (void)verifySignedPayload:(id)payload matchesPayload:(id)matchesPayload fromTokenURI:(id)i completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v11 = MEMORY[0x277D18A48];
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[v11 alloc] initWithPrefixedURI:v12];
+  iCopy = i;
+  matchesPayloadCopy = matchesPayload;
+  payloadCopy = payload;
+  v15 = [[v11 alloc] initWithPrefixedURI:iCopy];
 
-  v16 = [(SKAMessagingProvider *)self service];
+  service = [(SKAMessagingProvider *)self service];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __83__SKAMessagingProvider_verifySignedPayload_matchesPayload_fromTokenURI_completion___block_invoke;
   v18[3] = &unk_27843E8E8;
-  v19 = v10;
-  v17 = v10;
-  [v16 verifySignedData:v14 matchesExpectedData:v13 withTokenURI:v15 forAlgorithm:2 completion:v18];
+  v19 = completionCopy;
+  v17 = completionCopy;
+  [service verifySignedData:payloadCopy matchesExpectedData:matchesPayloadCopy withTokenURI:v15 forAlgorithm:2 completion:v18];
 }
 
 void __83__SKAMessagingProvider_verifySignedPayload_matchesPayload_fromTokenURI_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -1130,18 +1130,18 @@ void __83__SKAMessagingProvider_verifySignedPayload_matchesPayload_fromTokenURI_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)verifySignedPayloads:(id)a3 completion:(id)a4
+- (void)verifySignedPayloads:(id)payloads completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SKAMessagingProvider *)self service];
+  completionCopy = completion;
+  payloadsCopy = payloads;
+  service = [(SKAMessagingProvider *)self service];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__SKAMessagingProvider_verifySignedPayloads_completion___block_invoke;
   v10[3] = &unk_27843E910;
-  v11 = v6;
-  v9 = v6;
-  [v8 verifySignedPayloads:v7 forAlgorithm:2 options:0 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [service verifySignedPayloads:payloadsCopy forAlgorithm:2 options:0 completion:v10];
 }
 
 void __56__SKAMessagingProvider_verifySignedPayloads_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1172,21 +1172,21 @@ void __56__SKAMessagingProvider_verifySignedPayloads_completion___block_invoke(u
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)isHandle:(id)a3 inFirewallForService:(id)a4 completion:(id)a5
+- (void)isHandle:(id)handle inFirewallForService:(id)service completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_alloc(MEMORY[0x277D18710]) initWithService:v9 queue:self->_queue];
+  handleCopy = handle;
+  serviceCopy = service;
+  completionCopy = completion;
+  v11 = [objc_alloc(MEMORY[0x277D18710]) initWithService:serviceCopy queue:self->_queue];
   if (v11)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __65__SKAMessagingProvider_isHandle_inFirewallForService_completion___block_invoke;
     v13[3] = &unk_27843E938;
-    v14 = v9;
-    v16 = v10;
-    v15 = v8;
+    v14 = serviceCopy;
+    v16 = completionCopy;
+    v15 = handleCopy;
     [v11 currentEntries:v13];
   }
 
@@ -1198,7 +1198,7 @@ void __56__SKAMessagingProvider_verifySignedPayloads_completion___block_invoke(u
       [SKAMessagingProvider isHandle:inFirewallForService:completion:];
     }
 
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -1289,18 +1289,18 @@ LABEL_17:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)listOfValidSenderHandles:(id)a3 containsSenderMergeID:(id)a4 completion:(id)a5
+- (void)listOfValidSenderHandles:(id)handles containsSenderMergeID:(id)d completion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  handlesCopy = handles;
+  dCopy = d;
+  completionCopy = completion;
   v10 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v11 = v7;
+  v11 = handlesCopy;
   v12 = [v11 countByEnumeratingWithState:&v31 objects:v39 count:16];
   if (v12)
   {
@@ -1316,10 +1316,10 @@ LABEL_17:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v31 + 1) + 8 * v15) idsURI];
-        v17 = [v16 destinationURIs];
-        v18 = [v17 allObjects];
-        [v10 addObjectsFromArray:v18];
+        idsURI = [*(*(&v31 + 1) + 8 * v15) idsURI];
+        destinationURIs = [idsURI destinationURIs];
+        allObjects = [destinationURIs allObjects];
+        [v10 addObjectsFromArray:allObjects];
 
         ++v15;
       }
@@ -1341,21 +1341,21 @@ LABEL_17:
       *buf = 138412546;
       v36 = v10;
       v37 = 2112;
-      v38 = v8;
+      v38 = dCopy;
       _os_log_impl(&dword_220099000, v21, OS_LOG_TYPE_DEFAULT, "Querying IDS for URI destinations: %@ looking for sender merge ID: %@", buf, 0x16u);
     }
 
-    v22 = [MEMORY[0x277D18728] sharedInstance];
-    v23 = [v10 allObjects];
+    mEMORY[0x277D18728] = [MEMORY[0x277D18728] sharedInstance];
+    allObjects2 = [v10 allObjects];
     queue = self->_queue;
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __82__SKAMessagingProvider_listOfValidSenderHandles_containsSenderMergeID_completion___block_invoke;
     v27[3] = &unk_27843E960;
-    v30 = v9;
+    v30 = completionCopy;
     v28 = v10;
-    v29 = v8;
-    [v22 idInfoForDestinations:v23 service:@"com.apple.private.alloy.status.keysharing" infoTypes:1 options:0 listenerID:@"com.apple.StatusKit" queue:queue completionBlock:v27];
+    v29 = dCopy;
+    [mEMORY[0x277D18728] idInfoForDestinations:allObjects2 service:@"com.apple.private.alloy.status.keysharing" infoTypes:1 options:0 listenerID:@"com.apple.StatusKit" queue:queue completionBlock:v27];
   }
 
   else
@@ -1365,7 +1365,7 @@ LABEL_17:
       [SKAMessagingProvider listOfValidSenderHandles:containsSenderMergeID:completion:];
     }
 
-    (*(v9 + 2))(v9, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -1475,8 +1475,8 @@ void __82__SKAMessagingProvider_listOfValidSenderHandles_containsSenderMergeID_c
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [v2 accounts];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  accounts = [v2 accounts];
+  v4 = [accounts countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -1486,7 +1486,7 @@ void __82__SKAMessagingProvider_listOfValidSenderHandles_containsSenderMergeID_c
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accounts);
         }
 
         if ([*(*(&v9 + 1) + 8 * i) isActive])
@@ -1496,7 +1496,7 @@ void __82__SKAMessagingProvider_listOfValidSenderHandles_containsSenderMergeID_c
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [accounts countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -1512,17 +1512,17 @@ LABEL_11:
   return v4;
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(SKAMessagingProvider *)self registeredIDSDeviceChangedObservers:a3];
-  v5 = [v4 allValues];
+  v4 = [(SKAMessagingProvider *)self registeredIDSDeviceChangedObservers:service];
+  allValues = [v4 allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1534,14 +1534,14 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         (*(*(*(&v11 + 1) + 8 * v9++) + 16))();
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -1598,12 +1598,12 @@ LABEL_11:
   return v5;
 }
 
-- (id)registerIDSDeviceChangedObserver:(id)a3
+- (id)registerIDSDeviceChangedObserver:(id)observer
 {
   v4 = MEMORY[0x277CCAD78];
-  v5 = a3;
+  observerCopy = observer;
   v6 = objc_alloc_init(v4);
-  v7 = _Block_copy(v5);
+  v7 = _Block_copy(observerCopy);
 
   [(NSMutableDictionary *)self->_registeredIDSDeviceChangedObservers setObject:v7 forKeyedSubscript:v6];
 

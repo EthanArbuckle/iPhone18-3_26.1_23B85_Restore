@@ -1,14 +1,14 @@
 @interface _PKPassImageConstruction_ImageRepresentation
-+ (id)representationFromDocument:(CGPDFDocument *)a3 page:(CGPDFPage *)a4;
-+ (id)representationFromImage:(id)a3;
++ (id)representationFromDocument:(CGPDFDocument *)document page:(CGPDFPage *)page;
++ (id)representationFromImage:(id)image;
 - (void)dealloc;
 @end
 
 @implementation _PKPassImageConstruction_ImageRepresentation
 
-+ (id)representationFromImage:(id)a3
++ (id)representationFromImage:(id)image
 {
-  result = a3;
+  result = image;
   if (result)
   {
     v4 = result;
@@ -27,13 +27,13 @@
   return result;
 }
 
-+ (id)representationFromDocument:(CGPDFDocument *)a3 page:(CGPDFPage *)a4
++ (id)representationFromDocument:(CGPDFDocument *)document page:(CGPDFPage *)page
 {
-  if (a3 && a4)
+  if (document && page)
   {
     v6 = objc_alloc_init(_PKPassImageConstruction_ImageRepresentation);
-    v6->_documentRef = CGPDFDocumentRetain(a3);
-    v6->_pageRef = CGPDFPageRetain(a4);
+    v6->_documentRef = CGPDFDocumentRetain(document);
+    v6->_pageRef = CGPDFPageRetain(page);
 
     return v6;
   }

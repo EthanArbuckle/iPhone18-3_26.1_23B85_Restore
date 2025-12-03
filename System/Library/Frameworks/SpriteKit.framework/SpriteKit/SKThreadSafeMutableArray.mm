@@ -1,17 +1,17 @@
 @interface SKThreadSafeMutableArray
 - (SKThreadSafeMutableArray)init;
-- (SKThreadSafeMutableArray)initWithNSMutableArray:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
-- (void)removeObjectsInArray:(id)a3;
+- (SKThreadSafeMutableArray)initWithNSMutableArray:(id)array;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
+- (void)removeObjectsInArray:(id)array;
 @end
 
 @implementation SKThreadSafeMutableArray
 
-- (SKThreadSafeMutableArray)initWithNSMutableArray:(id)a3
+- (SKThreadSafeMutableArray)initWithNSMutableArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v10.receiver = self;
   v10.super_class = SKThreadSafeMutableArray;
   v5 = [(SKThreadSafeMutableArray *)&v10 init];
@@ -19,7 +19,7 @@
   if (v5)
   {
     pthread_mutex_init(&v5->_storageLock, 0);
-    v7 = [v4 copy];
+    v7 = [arrayCopy copy];
     storage = v6->_storage;
     v6->_storage = v7;
   }
@@ -44,12 +44,12 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   pthread_mutex_init((v5 + 8), 0);
   pthread_mutex_lock(&self->_storageLock);
-  v6 = [(NSMutableArray *)self->_storage copyWithZone:a3];
+  v6 = [(NSMutableArray *)self->_storage copyWithZone:zone];
   v7 = *(v5 + 72);
   *(v5 + 72) = v6;
 
@@ -57,14 +57,14 @@
   return v5;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  [v4 selector];
+  invocationCopy = invocation;
+  [invocationCopy selector];
   if (objc_opt_respondsToSelector())
   {
     pthread_mutex_lock(&self->_storageLock);
-    [v4 invokeWithTarget:self->_storage];
+    [invocationCopy invokeWithTarget:self->_storage];
     pthread_mutex_unlock(&self->_storageLock);
   }
 
@@ -72,27 +72,27 @@
   {
     v5.receiver = self;
     v5.super_class = SKThreadSafeMutableArray;
-    [(SKThreadSafeMutableArray *)&v5 forwardInvocation:v4];
+    [(SKThreadSafeMutableArray *)&v5 forwardInvocation:invocationCopy];
   }
 }
 
-- (void)removeObjectsInArray:(id)a3
+- (void)removeObjectsInArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   pthread_mutex_lock(&self->_storageLock);
-  [(NSMutableArray *)self->_storage removeObjectsInArray:v4];
+  [(NSMutableArray *)self->_storage removeObjectsInArray:arrayCopy];
 
   pthread_mutex_unlock(&self->_storageLock);
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = SKThreadSafeMutableArray;
   v5 = [(SKThreadSafeMutableArray *)&v7 methodSignatureForSelector:?];
   if (!v5)
   {
-    v5 = [(NSMutableArray *)self->_storage methodSignatureForSelector:a3];
+    v5 = [(NSMutableArray *)self->_storage methodSignatureForSelector:selector];
   }
 
   return v5;

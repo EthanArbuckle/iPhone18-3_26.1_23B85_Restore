@@ -1,16 +1,16 @@
 @interface AMSEngagementCacheDatabase
-- (BOOL)closeWithError:(id *)a3;
-- (BOOL)collectGarbageWithError:(id *)a3;
-- (BOOL)connection:(id)a3 needsResetForCorruptionError:(id)a4 error:(id *)a5;
-- (BOOL)insertResponseData:(id)a3 filterData:(id)a4 expiration:(id)a5 error:(id *)a6;
-- (BOOL)openAtPath:(id)a3 error:(id *)a4;
-- (BOOL)selectWithExpirationDate:(id)a3 handler:(id)a4 error:(id *)a5;
-- (void)_performTransaction:(id)a3;
+- (BOOL)closeWithError:(id *)error;
+- (BOOL)collectGarbageWithError:(id *)error;
+- (BOOL)connection:(id)connection needsResetForCorruptionError:(id)error error:(id *)a5;
+- (BOOL)insertResponseData:(id)data filterData:(id)filterData expiration:(id)expiration error:(id *)error;
+- (BOOL)openAtPath:(id)path error:(id *)error;
+- (BOOL)selectWithExpirationDate:(id)date handler:(id)handler error:(id *)error;
+- (void)_performTransaction:(id)transaction;
 @end
 
 @implementation AMSEngagementCacheDatabase
 
-- (BOOL)closeWithError:(id *)a3
+- (BOOL)closeWithError:(id *)error
 {
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
@@ -23,9 +23,9 @@
   v8 = v7;
   v18 = v8;
   v9 = _Block_copy(aBlock);
-  v10 = [(AMSEngagementCacheDatabase *)self connection];
+  connection = [(AMSEngagementCacheDatabase *)self connection];
   v16 = 0;
-  v11 = [v10 closeWithError:&v16];
+  v11 = [connection closeWithError:&v16];
   v12 = v16;
 
   if (v11)
@@ -33,19 +33,19 @@
     [(AMSEngagementCacheDatabase *)self setConnection:0];
   }
 
-  else if (a3)
+  else if (error)
   {
-    *a3 = AMSError(16, @"Close Failure", @"Failed to close Engagement cache database.", v12);
+    *error = AMSError(16, @"Close Failure", @"Failed to close Engagement cache database.", v12);
   }
 
-  v13 = [(AMSEngagementCacheDatabase *)self connection];
-  v14 = v13 == 0;
+  connection2 = [(AMSEngagementCacheDatabase *)self connection];
+  v14 = connection2 == 0;
 
   v9[2](v9);
   return v14;
 }
 
-- (BOOL)collectGarbageWithError:(id *)a3
+- (BOOL)collectGarbageWithError:(id *)error
 {
   v6 = 0;
   v7 = &v6;
@@ -56,7 +56,7 @@
   v5[2] = __54__AMSEngagementCacheDatabase_collectGarbageWithError___block_invoke;
   v5[3] = &unk_1E73B7410;
   v5[4] = &v6;
-  v5[5] = a3;
+  v5[5] = error;
   [(AMSEngagementCacheDatabase *)self _performTransaction:v5];
   v3 = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
@@ -81,22 +81,22 @@ uint64_t __54__AMSEngagementCacheDatabase_collectGarbageWithError___block_invoke
   return 1;
 }
 
-- (BOOL)insertResponseData:(id)a3 filterData:(id)a4 expiration:(id)a5 error:(id *)a6
+- (BOOL)insertResponseData:(id)data filterData:(id)filterData expiration:(id)expiration error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dataCopy = data;
+  filterDataCopy = filterData;
+  expirationCopy = expiration;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __77__AMSEngagementCacheDatabase_insertResponseData_filterData_expiration_error___block_invoke;
   v17[3] = &unk_1E73B7438;
-  v18 = v10;
-  v19 = v12;
-  v20 = v11;
-  v21 = a6;
-  v13 = v11;
-  v14 = v12;
-  v15 = v10;
+  v18 = dataCopy;
+  v19 = expirationCopy;
+  v20 = filterDataCopy;
+  errorCopy = error;
+  v13 = filterDataCopy;
+  v14 = expirationCopy;
+  v15 = dataCopy;
   [(AMSEngagementCacheDatabase *)self _performTransaction:v17];
 
   return 1;
@@ -129,10 +129,10 @@ void __77__AMSEngagementCacheDatabase_insertResponseData_filterData_expiration_e
   [v4 bindData:a1[6] atPosition:3];
 }
 
-- (BOOL)selectWithExpirationDate:(id)a3 handler:(id)a4 error:(id *)a5
+- (BOOL)selectWithExpirationDate:(id)date handler:(id)handler error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dateCopy = date;
+  handlerCopy = handler;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -141,11 +141,11 @@ void __77__AMSEngagementCacheDatabase_insertResponseData_filterData_expiration_e
   v13[1] = 3221225472;
   v13[2] = __69__AMSEngagementCacheDatabase_selectWithExpirationDate_handler_error___block_invoke;
   v13[3] = &unk_1E73B74B0;
-  v10 = v8;
+  v10 = dateCopy;
   v16 = &v18;
-  v17 = a5;
+  errorCopy = error;
   v14 = v10;
-  v11 = v9;
+  v11 = handlerCopy;
   v15 = v11;
   [(AMSEngagementCacheDatabase *)self _performTransaction:v13];
   LOBYTE(self) = *(v19 + 24);
@@ -237,9 +237,9 @@ void __69__AMSEngagementCacheDatabase_selectWithExpirationDate_handler_error___b
   }
 }
 
-- (BOOL)openAtPath:(id)a3 error:(id *)a4
+- (BOOL)openAtPath:(id)path error:(id *)error
 {
-  v6 = a3;
+  pathCopy = path;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   v9 = [AMSKeepAlive keepAliveWithName:v8];
@@ -251,7 +251,7 @@ void __69__AMSEngagementCacheDatabase_selectWithExpirationDate_handler_error___b
   v10 = v9;
   v21 = v10;
   v11 = _Block_copy(aBlock);
-  v12 = [[AMSSQLiteConnectionOptions alloc] initWithDatabasePath:v6];
+  v12 = [[AMSSQLiteConnectionOptions alloc] initWithDatabasePath:pathCopy];
   v13 = [[AMSSQLiteConnection alloc] initWithOptions:v12];
   [(AMSSQLiteConnection *)v13 setDelegate:self];
   v19 = 0;
@@ -262,23 +262,23 @@ void __69__AMSEngagementCacheDatabase_selectWithExpirationDate_handler_error___b
     [(AMSEngagementCacheDatabase *)self setConnection:v13];
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = AMSError(16, @"Open Failure", @"Failed to open Engagement cache database.", v15);
+    *error = AMSError(16, @"Open Failure", @"Failed to open Engagement cache database.", v15);
   }
 
-  v16 = [(AMSEngagementCacheDatabase *)self connection];
-  v17 = v16 != 0;
+  connection = [(AMSEngagementCacheDatabase *)self connection];
+  v17 = connection != 0;
 
   v11[2](v11);
   return v17;
 }
 
-- (BOOL)connection:(id)a3 needsResetForCorruptionError:(id)a4 error:(id *)a5
+- (BOOL)connection:(id)connection needsResetForCorruptionError:(id)error error:(id *)a5
 {
   v45 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v32 = a4;
+  connectionCopy = connection;
+  errorCopy = error;
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   v9 = [AMSKeepAlive keepAliveWithName:v8];
@@ -291,23 +291,23 @@ void __69__AMSEngagementCacheDatabase_selectWithExpirationDate_handler_error___b
   v40 = v10;
   v11 = _Block_copy(aBlock);
   v38 = 0;
-  LOBYTE(v9) = [v6 truncateWithError:&v38];
+  LOBYTE(v9) = [connectionCopy truncateWithError:&v38];
   v33 = v38;
   if ((v9 & 1) == 0)
   {
     v37 = 0;
-    [v6 closeWithError:&v37];
+    [connectionCopy closeWithError:&v37];
     v31 = v37;
-    v12 = [MEMORY[0x1E696AC08] defaultManager];
-    v13 = [v6 options];
-    v14 = [v13 databasePath];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    options = [connectionCopy options];
+    databasePath = [options databasePath];
     v36 = 0;
-    v15 = [v12 removeItemAtPath:v14 error:&v36];
+    v15 = [defaultManager removeItemAtPath:databasePath error:&v36];
     v16 = v36;
 
     if (!v15)
     {
-      v20 = AMSErrorBySettingUnderlyingError(v33, v32);
+      v20 = AMSErrorBySettingUnderlyingError(v33, errorCopy);
       v18 = AMSErrorBySettingUnderlyingError(v16, v20);
 
       v21 = +[AMSLogConfig sharedConfig];
@@ -316,8 +316,8 @@ void __69__AMSEngagementCacheDatabase_selectWithExpirationDate_handler_error___b
         v21 = +[AMSLogConfig sharedConfig];
       }
 
-      v22 = [v21 OSLogObject];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v21 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v23 = objc_opt_class();
         v24 = AMSLogableError(v18);
@@ -325,7 +325,7 @@ void __69__AMSEngagementCacheDatabase_selectWithExpirationDate_handler_error___b
         v42 = v23;
         v43 = 2114;
         v44 = v24;
-        _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_ERROR, "%{public}@: Failed to delete Engagement database after corruption. This is bad! Error = %{public}@", buf, 0x16u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to delete Engagement database after corruption. This is bad! Error = %{public}@", buf, 0x16u);
       }
 
       goto LABEL_11;
@@ -333,7 +333,7 @@ void __69__AMSEngagementCacheDatabase_selectWithExpirationDate_handler_error___b
   }
 
   v35 = 0;
-  v17 = [AMSEngagementCacheDatabaseSchema createOrUpdateSchemaUsingConnection:v6 error:&v35];
+  v17 = [AMSEngagementCacheDatabaseSchema createOrUpdateSchemaUsingConnection:connectionCopy error:&v35];
   v18 = v35;
   if (v17)
   {
@@ -348,8 +348,8 @@ LABEL_11:
     v25 = +[AMSLogConfig sharedConfig];
   }
 
-  v26 = [v25 OSLogObject];
-  if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [v25 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v27 = objc_opt_class();
     v28 = AMSLogableError(v18);
@@ -357,7 +357,7 @@ LABEL_11:
     v42 = v27;
     v43 = 2114;
     v44 = v28;
-    _os_log_impl(&dword_192869000, v26, OS_LOG_TYPE_ERROR, "%{public}@: Failed to reset Engagement database after corruption. This is bad! Error = %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Failed to reset Engagement database after corruption. This is bad! Error = %{public}@", buf, 0x16u);
   }
 
   v19 = 0;
@@ -372,9 +372,9 @@ LABEL_16:
   return v19;
 }
 
-- (void)_performTransaction:(id)a3
+- (void)_performTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = [AMSKeepAlive keepAliveWithName:v6];
@@ -386,14 +386,14 @@ LABEL_16:
   v8 = v7;
   v17 = v8;
   v9 = _Block_copy(aBlock);
-  v10 = [(AMSEngagementCacheDatabase *)self connection];
+  connection = [(AMSEngagementCacheDatabase *)self connection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __50__AMSEngagementCacheDatabase__performTransaction___block_invoke_2;
   v13[3] = &unk_1E73B74D8;
-  v11 = v4;
+  v11 = transactionCopy;
   v15 = v11;
-  v12 = v10;
+  v12 = connection;
   v14 = v12;
   [v12 performTransaction:v13];
 

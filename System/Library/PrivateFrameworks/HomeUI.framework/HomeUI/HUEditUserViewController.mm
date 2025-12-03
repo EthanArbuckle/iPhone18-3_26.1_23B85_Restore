@@ -1,72 +1,72 @@
 @interface HUEditUserViewController
-- (BOOL)moduleController:(id)a3 shouldDisableItem:(id)a4;
-- (BOOL)shouldHideSeparatorsForCell:(id)a3 indexPath:(id)a4;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUEditUserViewController)initWithItem:(id)a3 home:(id)a4 pinCodeManager:(id)a5;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (BOOL)moduleController:(id)controller shouldDisableItem:(id)item;
+- (BOOL)shouldHideSeparatorsForCell:(id)cell indexPath:(id)path;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUEditUserViewController)initWithItem:(id)item home:(id)home pinCodeManager:(id)manager;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)_lazyAboutResidentDeviceFooterView;
 - (id)childViewControllersToPreload;
 - (id)itemModuleControllers;
-- (id)moduleController:(id)a3 requestPresentViewController:(id)a4 animated:(BOOL)a5 withCompletion:(id)a6;
+- (id)moduleController:(id)controller requestPresentViewController:(id)viewController animated:(BOOL)animated withCompletion:(id)completion;
 - (id)presentDefaultAccountViewController;
 - (id)presentPinDetailsViewController;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
 - (id)user;
-- (void)_handleUpdatedItem:(id)a3 atIndexPath:(id)a4;
+- (void)_handleUpdatedItem:(id)item atIndexPath:(id)path;
 - (void)_removeUser;
-- (void)didSelectDefaultAccounts:(id)a3;
-- (void)diffableDataItemManager:(id)a3 didUpdateItems:(id)a4 addItems:(id)a5 removeItems:(id)a6;
-- (void)doneButtonTapped:(id)a3;
-- (void)itemManager:(id)a3 didUpdateResultsForItem:(id)a4 atIndexPath:(id)a5;
-- (void)learnMoreLinkTapped:(id)a3;
-- (void)mediaServiceSettingsItemModuleController:(id)a3 didSelectMediaService:(id)a4;
-- (void)moduleController:(id)a3 preflightCheckToAllowSwitchingForSettingItem:(id)a4 changingToOn:(BOOL)a5 withCompletion:(id)a6;
-- (void)moduleController:(id)a3 presentGroup:(id)a4;
-- (void)moduleController:(id)a3 settingUpdatedForItem:(id)a4;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
+- (void)didSelectDefaultAccounts:(id)accounts;
+- (void)diffableDataItemManager:(id)manager didUpdateItems:(id)items addItems:(id)addItems removeItems:(id)removeItems;
+- (void)doneButtonTapped:(id)tapped;
+- (void)itemManager:(id)manager didUpdateResultsForItem:(id)item atIndexPath:(id)path;
+- (void)learnMoreLinkTapped:(id)tapped;
+- (void)mediaServiceSettingsItemModuleController:(id)controller didSelectMediaService:(id)service;
+- (void)moduleController:(id)controller preflightCheckToAllowSwitchingForSettingItem:(id)item changingToOn:(BOOL)on withCompletion:(id)completion;
+- (void)moduleController:(id)controller presentGroup:(id)group;
+- (void)moduleController:(id)controller settingUpdatedForItem:(id)item;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation HUEditUserViewController
 
-- (HUEditUserViewController)initWithItem:(id)a3 home:(id)a4 pinCodeManager:(id)a5
+- (HUEditUserViewController)initWithItem:(id)item home:(id)home pinCodeManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  itemCopy = item;
+  homeCopy = home;
+  managerCopy = manager;
   v12 = [HUEditUserItemManager alloc];
-  v13 = [v9 copy];
-  v14 = [(HUEditUserItemManager *)v12 initWithHome:v10 userItem:v13 delegate:self];
+  v13 = [itemCopy copy];
+  v14 = [(HUEditUserItemManager *)v12 initWithHome:homeCopy userItem:v13 delegate:self];
 
   v27.receiver = self;
   v27.super_class = HUEditUserViewController;
-  v15 = [(HUUserTableViewController *)&v27 initWithUserItemManager:v14 home:v10];
+  v15 = [(HUUserTableViewController *)&v27 initWithUserItemManager:v14 home:homeCopy];
   if (v15)
   {
-    v16 = [v9 copy];
+    v16 = [itemCopy copy];
     userItem = v15->_userItem;
     v15->_userItem = v16;
 
-    objc_storeStrong(&v15->_pinCodeManager, a5);
+    objc_storeStrong(&v15->_pinCodeManager, manager);
     objc_storeStrong(&v15->_editUserItemManager, v14);
     [(HFItemManager *)v15->_editUserItemManager setDelegate:v15];
     v18 = [HUPendingAccessoriesGridViewController alloc];
-    v19 = [v9 user];
-    v20 = [(HUPendingAccessoriesGridViewController *)v18 initWithUser:v19 home:v10];
+    user = [itemCopy user];
+    v20 = [(HUPendingAccessoriesGridViewController *)v18 initWithUser:user home:homeCopy];
     pendingAccessoriesViewController = v15->_pendingAccessoriesViewController;
     v15->_pendingAccessoriesViewController = v20;
 
-    v22 = [(HFUserItem *)v15->_userItem home];
-    LODWORD(v19) = [v22 isMultiUserEnabled];
+    home = [(HFUserItem *)v15->_userItem home];
+    LODWORD(user) = [home isMultiUserEnabled];
 
-    if (v19)
+    if (user)
     {
       objc_initWeak(&location, v15);
       v24[0] = MEMORY[0x277D85DD0];
@@ -121,58 +121,58 @@ void __61__HUEditUserViewController_initWithItem_home_pinCodeManager___block_inv
   v8.receiver = self;
   v8.super_class = HUEditUserViewController;
   [(HUItemTableViewController *)&v8 viewDidLoad];
-  v3 = [(HUEditUserViewController *)self navigationController];
+  navigationController = [(HUEditUserViewController *)self navigationController];
 
-  if (v3)
+  if (navigationController)
   {
     v4 = objc_alloc(MEMORY[0x277D751E0]);
     v5 = _HULocalizedStringWithDefaultValue(@"HUDoneTitle", @"HUDoneTitle", 1);
     v6 = [v4 initWithTitle:v5 style:2 target:self action:sel_doneButtonTapped_];
-    v7 = [(HUEditUserViewController *)self navigationItem];
-    [v7 setRightBarButtonItem:v6];
+    navigationItem = [(HUEditUserViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v6];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = HUEditUserViewController;
-  [(HUItemTableViewController *)&v7 viewWillAppear:a3];
-  v4 = [(HUEditUserViewController *)self navigationController];
-  v5 = [v4 delegate];
+  [(HUItemTableViewController *)&v7 viewWillAppear:appear];
+  navigationController = [(HUEditUserViewController *)self navigationController];
+  delegate = [navigationController delegate];
 
-  if (!v5)
+  if (!delegate)
   {
-    v6 = [(HUEditUserViewController *)self navigationController];
-    [v6 setDelegate:self];
+    navigationController2 = [(HUEditUserViewController *)self navigationController];
+    [navigationController2 setDelegate:self];
   }
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  if (a4 == self)
+  if (viewController == self)
   {
-    v6 = [(HUEditUserViewController *)self tableView];
-    [v6 reloadData];
+    tableView = [(HUEditUserViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
-- (void)doneButtonTapped:(id)a3
+- (void)doneButtonTapped:(id)tapped
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(HUEditUserViewController *)self userItem];
-    v7 = [v6 user];
-    v8 = [v7 hf_prettyDescription];
+    userItem = [(HUEditUserViewController *)self userItem];
+    user = [userItem user];
+    hf_prettyDescription = [user hf_prettyDescription];
     v9 = 136315650;
     v10 = "[HUEditUserViewController doneButtonTapped:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = tappedCopy;
     v13 = 2112;
-    v14 = v8;
+    v14 = hf_prettyDescription;
     _os_log_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEFAULT, "(%s) User tapped 'done' button %@. user = %@", &v9, 0x20u);
   }
 
@@ -181,55 +181,55 @@ void __61__HUEditUserViewController_initWithItem_home_pinCodeManager___block_inv
 
 - (id)user
 {
-  v2 = [(HUEditUserViewController *)self editUserItemManager];
-  v3 = [v2 userBeingEdited];
+  editUserItemManager = [(HUEditUserViewController *)self editUserItemManager];
+  userBeingEdited = [editUserItemManager userBeingEdited];
 
-  return v3;
+  return userBeingEdited;
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HUEditUserViewController *)self editUserItemManager];
-  v9 = [v8 allowEditingItem];
-  v10 = [v6 isEqual:v9];
+  itemCopy = item;
+  pathCopy = path;
+  editUserItemManager = [(HUEditUserViewController *)self editUserItemManager];
+  allowEditingItem = [editUserItemManager allowEditingItem];
+  v10 = [itemCopy isEqual:allowEditingItem];
 
   if (v10)
   {
     goto LABEL_15;
   }
 
-  v11 = [(HUEditUserViewController *)self editUserItemManager];
-  v12 = [v11 localAccessItem];
-  v13 = [v6 isEqual:v12];
+  editUserItemManager2 = [(HUEditUserViewController *)self editUserItemManager];
+  localAccessItem = [editUserItemManager2 localAccessItem];
+  v13 = [itemCopy isEqual:localAccessItem];
 
   if (v13)
   {
     goto LABEL_15;
   }
 
-  v14 = [(HUEditUserViewController *)self editUserItemManager];
-  v15 = [v14 personalRequestsFooterItem];
-  v16 = [v6 isEqual:v15];
+  editUserItemManager3 = [(HUEditUserViewController *)self editUserItemManager];
+  personalRequestsFooterItem = [editUserItemManager3 personalRequestsFooterItem];
+  v16 = [itemCopy isEqual:personalRequestsFooterItem];
 
   if (v16)
   {
     goto LABEL_15;
   }
 
-  v17 = [(HUEditUserViewController *)self editUserItemManager];
-  v18 = [v17 pendingAccessoriesItem];
-  v19 = [v6 isEqual:v18];
+  editUserItemManager4 = [(HUEditUserViewController *)self editUserItemManager];
+  pendingAccessoriesItem = [editUserItemManager4 pendingAccessoriesItem];
+  v19 = [itemCopy isEqual:pendingAccessoriesItem];
 
   if (v19)
   {
     goto LABEL_15;
   }
 
-  v20 = [(HUEditUserViewController *)self editUserItemManager];
-  v21 = [v20 camerasItem];
-  if ([v6 isEqual:v21])
+  editUserItemManager5 = [(HUEditUserViewController *)self editUserItemManager];
+  camerasItem = [editUserItemManager5 camerasItem];
+  if ([itemCopy isEqual:camerasItem])
   {
 LABEL_14:
 
@@ -238,62 +238,62 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v22 = [(HUEditUserViewController *)self editUserItemManager];
-  v23 = [v22 locksItem];
-  if ([v6 isEqual:v23])
+  editUserItemManager6 = [(HUEditUserViewController *)self editUserItemManager];
+  locksItem = [editUserItemManager6 locksItem];
+  if ([itemCopy isEqual:locksItem])
   {
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v24 = [(HUEditUserViewController *)self editUserItemManager];
-  v25 = [v24 personalRequestsItem];
-  if ([v6 isEqual:v25])
+  editUserItemManager7 = [(HUEditUserViewController *)self editUserItemManager];
+  personalRequestsItem = [editUserItemManager7 personalRequestsItem];
+  if ([itemCopy isEqual:personalRequestsItem])
   {
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v46 = v24;
-  v26 = [(HUEditUserViewController *)self editUserItemManager];
-  v27 = [v26 tvViewingProfilesItem];
-  if ([v6 isEqual:v27])
+  v46 = editUserItemManager7;
+  editUserItemManager8 = [(HUEditUserViewController *)self editUserItemManager];
+  tvViewingProfilesItem = [editUserItemManager8 tvViewingProfilesItem];
+  if ([itemCopy isEqual:tvViewingProfilesItem])
   {
 LABEL_11:
 
-    v24 = v46;
+    editUserItemManager7 = v46;
     goto LABEL_12;
   }
 
-  v44 = v27;
-  v45 = v26;
-  v28 = [(HUEditUserViewController *)self editUserItemManager];
-  v29 = [v28 remoteAccessItem];
-  if ([v6 isEqual:v29])
+  v44 = tvViewingProfilesItem;
+  v45 = editUserItemManager8;
+  editUserItemManager9 = [(HUEditUserViewController *)self editUserItemManager];
+  remoteAccessItem = [editUserItemManager9 remoteAccessItem];
+  if ([itemCopy isEqual:remoteAccessItem])
   {
 
-    v27 = v44;
-    v26 = v45;
+    tvViewingProfilesItem = v44;
+    editUserItemManager8 = v45;
     goto LABEL_11;
   }
 
-  v41 = v29;
-  v42 = v28;
-  v40 = [(HUEditUserViewController *)self editUserItemManager];
-  v33 = [v40 updateListeningHistoryItem];
-  if ([v6 isEqual:?])
+  v41 = remoteAccessItem;
+  v42 = editUserItemManager9;
+  editUserItemManager10 = [(HUEditUserViewController *)self editUserItemManager];
+  updateListeningHistoryItem = [editUserItemManager10 updateListeningHistoryItem];
+  if ([itemCopy isEqual:?])
   {
     v43 = 1;
   }
 
   else
   {
-    v39 = [(HUEditUserViewController *)self editUserItemManager];
-    v38 = [v39 allowedAccessoryCategoryItemProvider];
-    v34 = [v38 items];
-    v43 = [v34 containsObject:v6];
+    editUserItemManager11 = [(HUEditUserViewController *)self editUserItemManager];
+    allowedAccessoryCategoryItemProvider = [editUserItemManager11 allowedAccessoryCategoryItemProvider];
+    items = [allowedAccessoryCategoryItemProvider items];
+    v43 = [items containsObject:itemCopy];
   }
 
   if (v43)
@@ -301,9 +301,9 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  v35 = [(HUEditUserViewController *)self editUserItemManager];
-  v36 = [v35 homeScheduleItem];
-  v37 = [v6 isEqual:v36];
+  editUserItemManager12 = [(HUEditUserViewController *)self editUserItemManager];
+  homeScheduleItem = [editUserItemManager12 homeScheduleItem];
+  v37 = [itemCopy isEqual:homeScheduleItem];
 
   if (v37)
   {
@@ -312,56 +312,56 @@ LABEL_11:
 
   v47.receiver = self;
   v47.super_class = HUEditUserViewController;
-  v30 = [(HUUserTableViewController *)&v47 cellClassForItem:v6 indexPath:v7];
+  v30 = [(HUUserTableViewController *)&v47 cellClassForItem:itemCopy indexPath:pathCopy];
 LABEL_16:
   v31 = v30;
 
   return v31;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v61.receiver = self;
   v61.super_class = HUEditUserViewController;
-  [(HUUserTableViewController *)&v61 setupCell:v8 forItem:v9 indexPath:a5];
-  v10 = [(HUEditUserViewController *)self editUserItemManager];
-  v11 = [v10 allowEditingItem];
-  v12 = [v9 isEqual:v11];
+  [(HUUserTableViewController *)&v61 setupCell:cellCopy forItem:itemCopy indexPath:path];
+  editUserItemManager = [(HUEditUserViewController *)self editUserItemManager];
+  allowEditingItem = [editUserItemManager allowEditingItem];
+  v12 = [itemCopy isEqual:allowEditingItem];
 
   if (!v12)
   {
-    v14 = [(HUEditUserViewController *)self editUserItemManager];
-    v15 = [v14 pendingAccessoriesItem];
-    v16 = [v9 isEqual:v15];
+    editUserItemManager2 = [(HUEditUserViewController *)self editUserItemManager];
+    pendingAccessoriesItem = [editUserItemManager2 pendingAccessoriesItem];
+    v16 = [itemCopy isEqual:pendingAccessoriesItem];
 
     if (v16)
     {
       v17 = MEMORY[0x277D75348];
-      v18 = v8;
-      v19 = [v17 clearColor];
-      [v18 setBackgroundColor:v19];
+      v18 = cellCopy;
+      clearColor = [v17 clearColor];
+      [v18 setBackgroundColor:clearColor];
 
-      v20 = [MEMORY[0x277D75348] clearColor];
-      v21 = [v18 contentView];
-      [v21 setBackgroundColor:v20];
+      clearColor2 = [MEMORY[0x277D75348] clearColor];
+      contentView = [v18 contentView];
+      [contentView setBackgroundColor:clearColor2];
 
-      v13 = [(HUEditUserViewController *)self pendingAccessoriesViewController];
-      [v18 setViewController:v13];
+      pendingAccessoriesViewController = [(HUEditUserViewController *)self pendingAccessoriesViewController];
+      [v18 setViewController:pendingAccessoriesViewController];
 LABEL_5:
 
       goto LABEL_13;
     }
 
-    v22 = [(HUEditUserViewController *)self editUserItemManager];
-    v23 = [v22 camerasItem];
-    if ([v9 isEqual:v23])
+    editUserItemManager3 = [(HUEditUserViewController *)self editUserItemManager];
+    camerasItem = [editUserItemManager3 camerasItem];
+    if ([itemCopy isEqual:camerasItem])
     {
 
 LABEL_9:
       objc_opt_class();
-      v27 = v8;
+      v27 = cellCopy;
       if (objc_opt_isKindOfClass())
       {
         v28 = v27;
@@ -372,53 +372,53 @@ LABEL_9:
         v28 = 0;
       }
 
-      v13 = v28;
+      pendingAccessoriesViewController = v28;
 
-      [v13 setIconDisplayStyle:1];
+      [pendingAccessoriesViewController setIconDisplayStyle:1];
       v29 = +[HUIconCellContentMetrics compactMetrics];
-      [v13 setContentMetrics:v29];
+      [pendingAccessoriesViewController setContentMetrics:v29];
 
-      [v13 setDisableContinuousIconAnimation:1];
-      [v13 setAccessoryType:1];
+      [pendingAccessoriesViewController setDisableContinuousIconAnimation:1];
+      [pendingAccessoriesViewController setAccessoryType:1];
       goto LABEL_13;
     }
 
-    v24 = [(HUEditUserViewController *)self editUserItemManager];
-    v25 = [v24 locksItem];
-    v26 = [v9 isEqual:v25];
+    editUserItemManager4 = [(HUEditUserViewController *)self editUserItemManager];
+    locksItem = [editUserItemManager4 locksItem];
+    v26 = [itemCopy isEqual:locksItem];
 
     if (v26)
     {
       goto LABEL_9;
     }
 
-    v30 = [(HUEditUserViewController *)self editUserItemManager];
-    v31 = [v30 personalRequestsItem];
-    if (([v9 isEqual:v31] & 1) == 0)
+    editUserItemManager5 = [(HUEditUserViewController *)self editUserItemManager];
+    personalRequestsItem = [editUserItemManager5 personalRequestsItem];
+    if (([itemCopy isEqual:personalRequestsItem] & 1) == 0)
     {
-      v32 = [(HUEditUserViewController *)self editUserItemManager];
-      v33 = [v32 tvViewingProfilesItem];
-      if (([v9 isEqual:v33] & 1) == 0)
+      editUserItemManager6 = [(HUEditUserViewController *)self editUserItemManager];
+      tvViewingProfilesItem = [editUserItemManager6 tvViewingProfilesItem];
+      if (([itemCopy isEqual:tvViewingProfilesItem] & 1) == 0)
       {
-        v34 = [(HUEditUserViewController *)self editUserItemManager];
-        v35 = [v34 remoteAccessItem];
-        if (([v9 isEqual:v35] & 1) == 0)
+        editUserItemManager7 = [(HUEditUserViewController *)self editUserItemManager];
+        remoteAccessItem = [editUserItemManager7 remoteAccessItem];
+        if (([itemCopy isEqual:remoteAccessItem] & 1) == 0)
         {
-          v36 = [(HUEditUserViewController *)self editUserItemManager];
-          v60 = [v36 updateListeningHistoryItem];
-          if (([v9 isEqual:?] & 1) == 0)
+          editUserItemManager8 = [(HUEditUserViewController *)self editUserItemManager];
+          updateListeningHistoryItem = [editUserItemManager8 updateListeningHistoryItem];
+          if (([itemCopy isEqual:?] & 1) == 0)
           {
-            v57 = [(HUEditUserViewController *)self editUserItemManager];
-            v56 = [v57 allowedAccessoryCategoryItemProvider];
-            [v56 items];
-            v44 = v58 = v36;
-            v59 = [v44 containsObject:v9];
+            editUserItemManager9 = [(HUEditUserViewController *)self editUserItemManager];
+            allowedAccessoryCategoryItemProvider = [editUserItemManager9 allowedAccessoryCategoryItemProvider];
+            [allowedAccessoryCategoryItemProvider items];
+            v44 = v58 = editUserItemManager8;
+            v59 = [v44 containsObject:itemCopy];
 
             if ((v59 & 1) == 0)
             {
-              v45 = [(HUEditUserViewController *)self editUserItemManager];
-              v46 = [v45 homeScheduleItem];
-              v47 = [v9 isEqual:v46];
+              editUserItemManager10 = [(HUEditUserViewController *)self editUserItemManager];
+              homeScheduleItem = [editUserItemManager10 homeScheduleItem];
+              v47 = [itemCopy isEqual:homeScheduleItem];
 
               if (!v47)
               {
@@ -426,7 +426,7 @@ LABEL_9:
               }
 
               objc_opt_class();
-              v48 = v8;
+              v48 = cellCopy;
               if (objc_opt_isKindOfClass())
               {
                 v49 = v48;
@@ -444,13 +444,13 @@ LABEL_9:
               HUDefaultSizeForIconSize();
               v52 = v51;
               v54 = v53;
-              v55 = [v50 contentMetrics];
-              [v55 setIconSize:{v52, v54}];
+              contentMetrics = [v50 contentMetrics];
+              [contentMetrics setIconSize:{v52, v54}];
 
               [v50 setAccessoryType:0];
               [v50 setValueColorFollowsTintColor:1];
-              v13 = [v9 latestResults];
-              v18 = [v13 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+              pendingAccessoriesViewController = [itemCopy latestResults];
+              v18 = [pendingAccessoriesViewController objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
               [v50 setAccessibilityIdentifier:v18];
 
               goto LABEL_5;
@@ -458,7 +458,7 @@ LABEL_9:
 
 LABEL_23:
             objc_opt_class();
-            v37 = v8;
+            v37 = cellCopy;
             if (objc_opt_isKindOfClass())
             {
               v38 = v37;
@@ -469,21 +469,21 @@ LABEL_23:
               v38 = 0;
             }
 
-            v13 = v38;
+            pendingAccessoriesViewController = v38;
 
-            [v13 setAccessoryView:0];
-            [v13 setHideIcon:1];
-            [v13 setAccessoryType:1];
-            v39 = [(HUEditUserViewController *)self editUserItemManager];
-            v40 = [v39 allowedAccessoryCategoryItemProvider];
-            v41 = [v40 items];
-            v42 = [v41 containsObject:v9];
+            [pendingAccessoriesViewController setAccessoryView:0];
+            [pendingAccessoriesViewController setHideIcon:1];
+            [pendingAccessoriesViewController setAccessoryType:1];
+            editUserItemManager11 = [(HUEditUserViewController *)self editUserItemManager];
+            allowedAccessoryCategoryItemProvider2 = [editUserItemManager11 allowedAccessoryCategoryItemProvider];
+            items = [allowedAccessoryCategoryItemProvider2 items];
+            v42 = [items containsObject:itemCopy];
 
             if (v42)
             {
-              [v13 setHideIcon:0];
+              [pendingAccessoriesViewController setHideIcon:0];
               v43 = +[HUIconCellContentMetrics compactMetrics];
-              [v13 setContentMetrics:v43];
+              [pendingAccessoriesViewController setContentMetrics:v43];
             }
 
             goto LABEL_13;
@@ -495,46 +495,46 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v13 = v8;
-  [v13 setDelegate:self];
-  [v13 setSelectionStyle:0];
+  pendingAccessoriesViewController = cellCopy;
+  [pendingAccessoriesViewController setDelegate:self];
+  [pendingAccessoriesViewController setSelectionStyle:0];
 LABEL_13:
 
 LABEL_14:
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v28.receiver = self;
   v28.super_class = HUEditUserViewController;
-  [(HUItemTableViewController *)&v28 updateCell:v10 forItem:v11 indexPath:a5 animated:v6];
-  v12 = [(HUEditUserViewController *)self editUserItemManager];
-  v13 = [v12 personalRequestsFooterItem];
-  v14 = [v11 isEqual:v13];
+  [(HUItemTableViewController *)&v28 updateCell:cellCopy forItem:itemCopy indexPath:path animated:animatedCopy];
+  editUserItemManager = [(HUEditUserViewController *)self editUserItemManager];
+  personalRequestsFooterItem = [editUserItemManager personalRequestsFooterItem];
+  v14 = [itemCopy isEqual:personalRequestsFooterItem];
 
   if (v14)
   {
-    v15 = v10;
-    v16 = [v15 headerFooterView];
-    [v16 setType:1];
+    v15 = cellCopy;
+    headerFooterView = [v15 headerFooterView];
+    [headerFooterView setType:1];
 
-    v17 = [v11 latestResults];
-    v18 = [v17 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-    v19 = [v15 headerFooterView];
-    [v19 setMessage:v18];
+    latestResults = [itemCopy latestResults];
+    v18 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+    headerFooterView2 = [v15 headerFooterView];
+    [headerFooterView2 setMessage:v18];
 
-    v20 = [v15 headerFooterView];
-    v21 = [v20 messageTextView];
-    [v21 setDelegate:self];
+    headerFooterView3 = [v15 headerFooterView];
+    messageTextView = [headerFooterView3 messageTextView];
+    [messageTextView setDelegate:self];
 
-    v22 = [v11 latestResults];
-    v23 = [v22 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
-    v24 = [v15 headerFooterView];
+    latestResults2 = [itemCopy latestResults];
+    latestResults3 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+    headerFooterView4 = [v15 headerFooterView];
 
-    [v24 setAccessibilityIdentifier:v23];
+    [headerFooterView4 setAccessibilityIdentifier:latestResults3];
 LABEL_8:
 
     goto LABEL_9;
@@ -544,7 +544,7 @@ LABEL_8:
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v25 = v10;
+    v25 = cellCopy;
     if (objc_opt_isKindOfClass())
     {
       v26 = v25;
@@ -557,11 +557,11 @@ LABEL_8:
 
     v27 = v26;
 
-    v22 = [HUListContentConfigurationUtilities labelDefaultConfigurationForItem:v11];
-    [v27 setContentConfiguration:v22];
-    v23 = [v11 latestResults];
-    v24 = [v23 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
-    [v27 setAccessibilityIdentifier:v24];
+    latestResults2 = [HUListContentConfigurationUtilities labelDefaultConfigurationForItem:itemCopy];
+    [v27 setContentConfiguration:latestResults2];
+    latestResults3 = [itemCopy latestResults];
+    headerFooterView4 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+    [v27 setAccessibilityIdentifier:headerFooterView4];
 
     goto LABEL_8;
   }
@@ -569,103 +569,103 @@ LABEL_8:
 LABEL_9:
 }
 
-- (BOOL)shouldHideSeparatorsForCell:(id)a3 indexPath:(id)a4
+- (BOOL)shouldHideSeparatorsForCell:(id)cell indexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v6];
+  pathCopy = path;
+  cellCopy = cell;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
   v16.receiver = self;
   v16.super_class = HUEditUserViewController;
-  LOBYTE(v8) = [(HUItemTableViewController *)&v16 shouldHideSeparatorsForCell:v7 indexPath:v6];
+  LOBYTE(itemManager) = [(HUItemTableViewController *)&v16 shouldHideSeparatorsForCell:cellCopy indexPath:pathCopy];
 
-  if (v8)
+  if (itemManager)
   {
     v10 = 1;
   }
 
   else
   {
-    v11 = [(HUEditUserViewController *)self editUserItemManager];
-    v12 = [v11 allowEditingItem];
-    if ([v9 isEqual:v12])
+    editUserItemManager = [(HUEditUserViewController *)self editUserItemManager];
+    allowEditingItem = [editUserItemManager allowEditingItem];
+    if ([v9 isEqual:allowEditingItem])
     {
       v10 = 1;
     }
 
     else
     {
-      v13 = [(HUEditUserViewController *)self editUserItemManager];
-      v14 = [v13 pendingAccessoriesItem];
-      v10 = [v9 isEqual:v14];
+      editUserItemManager2 = [(HUEditUserViewController *)self editUserItemManager];
+      pendingAccessoriesItem = [editUserItemManager2 pendingAccessoriesItem];
+      v10 = [v9 isEqual:pendingAccessoriesItem];
     }
   }
 
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v165 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  pathCopy = path;
   v158.receiver = self;
   v158.super_class = HUEditUserViewController;
-  v7 = a3;
-  [(HUItemTableViewController *)&v158 tableView:v7 didSelectRowAtIndexPath:v6];
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v6];
+  viewCopy = view;
+  [(HUItemTableViewController *)&v158 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
 
-  v152 = v6;
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  v152 = pathCopy;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 
   v10 = HFLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(HUEditUserViewController *)self userItem];
-    v12 = [v11 user];
-    v13 = [v12 hf_prettyDescription];
+    userItem = [(HUEditUserViewController *)self userItem];
+    user = [userItem user];
+    hf_prettyDescription = [user hf_prettyDescription];
     *buf = 136315650;
-    v160 = "[HUEditUserViewController tableView:didSelectRowAtIndexPath:]";
+    selfCopy2 = "[HUEditUserViewController tableView:didSelectRowAtIndexPath:]";
     v161 = 2112;
     v162 = v9;
     v163 = 2112;
-    v164 = v13;
+    v164 = hf_prettyDescription;
     _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "(%s) User tapped '%@' for user = %@", buf, 0x20u);
   }
 
-  v14 = [(HUEditUserViewController *)self editUserItemManager];
-  v15 = [v14 removeItem];
-  v16 = [v9 isEqual:v15];
+  editUserItemManager = [(HUEditUserViewController *)self editUserItemManager];
+  removeItem = [editUserItemManager removeItem];
+  v16 = [v9 isEqual:removeItem];
 
   if (v16)
   {
-    v17 = [(HUItemTableViewController *)self itemManager];
-    v18 = [v17 home];
+    itemManager2 = [(HUItemTableViewController *)self itemManager];
+    home = [itemManager2 home];
 
-    if (([v18 hf_currentUserIsAdministrator] & 1) != 0 || objc_msgSend(v18, "hf_currentUserIsOwner"))
+    if (([home hf_currentUserIsAdministrator] & 1) != 0 || objc_msgSend(home, "hf_currentUserIsOwner"))
     {
-      v19 = [(HUEditUserViewController *)self editUserItemManager];
-      v20 = [v19 userBeingEdited];
-      v21 = [v20 name];
-      v28 = HULocalizedStringWithFormat(@"HUUsersRemovePersonAlertTitle", @"%@", v22, v23, v24, v25, v26, v27, v21);
+      editUserItemManager2 = [(HUEditUserViewController *)self editUserItemManager];
+      userBeingEdited = [editUserItemManager2 userBeingEdited];
+      name = [userBeingEdited name];
+      v28 = HULocalizedStringWithFormat(@"HUUsersRemovePersonAlertTitle", @"%@", v22, v23, v24, v25, v26, v27, name);
 
-      v29 = [(HUEditUserViewController *)self editUserItemManager];
-      v30 = [v29 userBeingEdited];
-      v31 = [v30 name];
-      v148 = [v18 name];
-      v38 = HULocalizedStringWithFormat(@"HUUsersRemovePersonConfirmationMessage", @"%@%@", v32, v33, v34, v35, v36, v37, v31);
+      editUserItemManager3 = [(HUEditUserViewController *)self editUserItemManager];
+      userBeingEdited2 = [editUserItemManager3 userBeingEdited];
+      name2 = [userBeingEdited2 name];
+      name3 = [home name];
+      v38 = HULocalizedStringWithFormat(@"HUUsersRemovePersonConfirmationMessage", @"%@%@", v32, v33, v34, v35, v36, v37, name2);
 
       v39 = @"HURemoveTitle";
     }
 
     else
     {
-      v40 = [v18 name];
-      v28 = HULocalizedStringWithFormat(@"HUEditLocationLeaveHomeAlertTitle", @"%@", v41, v42, v43, v44, v45, v46, v40);
+      name4 = [home name];
+      v28 = HULocalizedStringWithFormat(@"HUEditLocationLeaveHomeAlertTitle", @"%@", v41, v42, v43, v44, v45, v46, name4);
 
-      v29 = [v18 name];
-      v38 = HULocalizedStringWithFormat(@"HUEditLocationLeaveHomeConfirmationMessage", @"%@", v47, v48, v49, v50, v51, v52, v29);
+      editUserItemManager3 = [home name];
+      v38 = HULocalizedStringWithFormat(@"HUEditLocationLeaveHomeConfirmationMessage", @"%@", v47, v48, v49, v50, v51, v52, editUserItemManager3);
       v39 = @"HUDeleteTitle";
     }
 
@@ -690,7 +690,7 @@ LABEL_9:
     v153[2] = __62__HUEditUserViewController_tableView_didSelectRowAtIndexPath___block_invoke_60;
     v153[3] = &unk_277DBBD90;
     v154 = v54;
-    v155 = self;
+    selfCopy = self;
     v60 = v54;
     v61 = [v59 actionWithTitle:v60 style:2 handler:v153];
     [v55 addAction:v61];
@@ -698,28 +698,28 @@ LABEL_9:
     [(HUEditUserViewController *)self presentViewController:v55 animated:1 completion:0];
   }
 
-  v62 = [(HUEditUserViewController *)self editUserItemManager];
-  v63 = [v62 homeScheduleItem];
-  v64 = [v9 isEqual:v63];
+  editUserItemManager4 = [(HUEditUserViewController *)self editUserItemManager];
+  homeScheduleItem = [editUserItemManager4 homeScheduleItem];
+  v64 = [v9 isEqual:homeScheduleItem];
 
   if (v64)
   {
     v65 = [HURestrictedGuestScheduleViewController alloc];
-    v66 = [(HUItemTableViewController *)self itemManager];
-    v67 = [v66 home];
-    v68 = [(HUEditUserViewController *)self userItem];
-    v69 = [v68 user];
-    v70 = [(HURestrictedGuestScheduleViewController *)v65 initWithHome:v67 user:v69];
+    itemManager3 = [(HUItemTableViewController *)self itemManager];
+    home2 = [itemManager3 home];
+    userItem2 = [(HUEditUserViewController *)self userItem];
+    user2 = [userItem2 user];
+    v70 = [(HURestrictedGuestScheduleViewController *)v65 initWithHome:home2 user:user2];
 
     v71 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v70];
     [v71 setModalPresentationStyle:2];
     v72 = [(UIViewController *)self hu_presentPreloadableViewController:v71 animated:1];
   }
 
-  v73 = [(HUEditUserViewController *)self editUserItemManager];
-  v74 = [v73 allowedAccessoryCategoryItemProvider];
-  v75 = [v74 items];
-  v76 = [v75 containsObject:v9];
+  editUserItemManager5 = [(HUEditUserViewController *)self editUserItemManager];
+  allowedAccessoryCategoryItemProvider = [editUserItemManager5 allowedAccessoryCategoryItemProvider];
+  items = [allowedAccessoryCategoryItemProvider items];
+  v76 = [items containsObject:v9];
 
   if (v76)
   {
@@ -738,10 +738,10 @@ LABEL_9:
     v79 = v78;
 
     objc_opt_class();
-    v80 = [v79 sourceItem];
+    sourceItem = [v79 sourceItem];
     if (objc_opt_isKindOfClass())
     {
-      v81 = v80;
+      v81 = sourceItem;
     }
 
     else
@@ -751,38 +751,38 @@ LABEL_9:
 
     v82 = v81;
 
-    v83 = [v82 categoryType];
-    v84 = [v83 isEqualToString:*MEMORY[0x277CCE890]];
+    categoryType = [v82 categoryType];
+    v84 = [categoryType isEqualToString:*MEMORY[0x277CCE890]];
 
-    v85 = [(HUEditUserViewController *)self editUserItemManager];
-    v86 = [v85 home];
-    v87 = [v86 hf_canAddAccessCode];
+    editUserItemManager6 = [(HUEditUserViewController *)self editUserItemManager];
+    home3 = [editUserItemManager6 home];
+    hf_canAddAccessCode = [home3 hf_canAddAccessCode];
 
-    if (v84 && v87)
+    if (v84 && hf_canAddAccessCode)
     {
-      v88 = [(HUEditUserViewController *)self presentPinDetailsViewController];
+      presentPinDetailsViewController = [(HUEditUserViewController *)self presentPinDetailsViewController];
     }
 
     else
     {
       v150 = v79;
       v89 = [HUUserAccessoryAccessViewController alloc];
-      v90 = [(HUEditUserViewController *)self editUserItemManager];
-      v91 = [v90 home];
-      v92 = [(HUEditUserViewController *)self editUserItemManager];
-      v93 = [v92 userBeingEdited];
-      v94 = [v82 categoryType];
-      v95 = [(HUUserAccessoryAccessViewController *)v89 initWithHome:v91 user:v93 accessoryCategoryType:v94];
+      editUserItemManager7 = [(HUEditUserViewController *)self editUserItemManager];
+      home4 = [editUserItemManager7 home];
+      editUserItemManager8 = [(HUEditUserViewController *)self editUserItemManager];
+      userBeingEdited3 = [editUserItemManager8 userBeingEdited];
+      categoryType2 = [v82 categoryType];
+      v95 = [(HUUserAccessoryAccessViewController *)v89 initWithHome:home4 user:userBeingEdited3 accessoryCategoryType:categoryType2];
 
-      v96 = [(HUEditUserViewController *)self navigationController];
-      v97 = [v96 hu_pushPreloadableViewController:v95 animated:1];
+      navigationController = [(HUEditUserViewController *)self navigationController];
+      v97 = [navigationController hu_pushPreloadableViewController:v95 animated:1];
 
       v98 = HFLogForCategory();
       if (os_log_type_enabled(v98, OS_LOG_TYPE_DEFAULT))
       {
         v99 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v160 = self;
+        selfCopy2 = self;
         v161 = 2112;
         v162 = v99;
         v163 = 2112;
@@ -794,87 +794,87 @@ LABEL_9:
     }
   }
 
-  v100 = [(HUEditUserViewController *)self editUserItemManager];
-  v101 = [v100 remoteAccessItem];
-  v102 = [v9 isEqual:v101];
+  editUserItemManager9 = [(HUEditUserViewController *)self editUserItemManager];
+  remoteAccessItem = [editUserItemManager9 remoteAccessItem];
+  v102 = [v9 isEqual:remoteAccessItem];
 
   if (v102)
   {
     v103 = [HURemoteAccessTableViewController alloc];
-    v104 = [(HUEditUserViewController *)self userItem];
-    v105 = [(HUItemTableViewController *)self itemManager];
-    v106 = [v105 home];
-    v107 = [(HURemoteAccessTableViewController *)v103 initWithItem:v104 home:v106];
+    userItem3 = [(HUEditUserViewController *)self userItem];
+    itemManager4 = [(HUItemTableViewController *)self itemManager];
+    home5 = [itemManager4 home];
+    v107 = [(HURemoteAccessTableViewController *)v103 initWithItem:userItem3 home:home5];
 
-    v108 = [(HUEditUserViewController *)self navigationController];
-    v109 = [v108 hu_pushPreloadableViewController:v107 animated:1];
+    navigationController2 = [(HUEditUserViewController *)self navigationController];
+    v109 = [navigationController2 hu_pushPreloadableViewController:v107 animated:1];
   }
 
-  v110 = [(HUEditUserViewController *)self editUserItemManager];
-  v111 = [v110 camerasItem];
-  v112 = [v9 isEqual:v111];
+  editUserItemManager10 = [(HUEditUserViewController *)self editUserItemManager];
+  camerasItem = [editUserItemManager10 camerasItem];
+  v112 = [v9 isEqual:camerasItem];
 
   if (v112)
   {
     v113 = [HUUserCamerasAccessLevelViewController alloc];
-    v114 = [(HUEditUserViewController *)self userItem];
-    v115 = [(HUItemTableViewController *)self itemManager];
-    v116 = [v115 home];
-    v117 = [(HUUserCamerasAccessLevelViewController *)v113 initWithUserItem:v114 home:v116];
+    userItem4 = [(HUEditUserViewController *)self userItem];
+    itemManager5 = [(HUItemTableViewController *)self itemManager];
+    home6 = [itemManager5 home];
+    v117 = [(HUUserCamerasAccessLevelViewController *)v113 initWithUserItem:userItem4 home:home6];
 
-    v118 = [(HUEditUserViewController *)self navigationController];
-    v119 = [v118 hu_pushPreloadableViewController:v117 animated:1];
+    navigationController3 = [(HUEditUserViewController *)self navigationController];
+    v119 = [navigationController3 hu_pushPreloadableViewController:v117 animated:1];
   }
 
-  v120 = [(HUEditUserViewController *)self editUserItemManager];
-  v121 = [v120 locksItem];
-  v122 = [v9 isEqual:v121];
+  editUserItemManager11 = [(HUEditUserViewController *)self editUserItemManager];
+  locksItem = [editUserItemManager11 locksItem];
+  v122 = [v9 isEqual:locksItem];
 
   if (v122)
   {
-    v123 = [(HUEditUserViewController *)self presentPinDetailsViewController];
+    presentPinDetailsViewController2 = [(HUEditUserViewController *)self presentPinDetailsViewController];
   }
 
-  v124 = [(HUEditUserViewController *)self editUserItemManager];
-  v125 = [v124 personalRequestsItem];
-  v126 = [v9 isEqual:v125];
+  editUserItemManager12 = [(HUEditUserViewController *)self editUserItemManager];
+  personalRequestsItem = [editUserItemManager12 personalRequestsItem];
+  v126 = [v9 isEqual:personalRequestsItem];
 
   if (v126)
   {
     v127 = [HUPersonalRequestsEditorTableViewController alloc];
-    v128 = [(HUEditUserViewController *)self userItem];
-    v129 = [(HUPersonalRequestsEditorTableViewController *)v127 initWithUserItem:v128 onlyShowDeviceSwitches:0];
+    userItem5 = [(HUEditUserViewController *)self userItem];
+    v129 = [(HUPersonalRequestsEditorTableViewController *)v127 initWithUserItem:userItem5 onlyShowDeviceSwitches:0];
 
-    v130 = [(HUEditUserViewController *)self navigationController];
-    v131 = [v130 hu_pushPreloadableViewController:v129 animated:1];
+    navigationController4 = [(HUEditUserViewController *)self navigationController];
+    v131 = [navigationController4 hu_pushPreloadableViewController:v129 animated:1];
   }
 
-  v132 = [(HUEditUserViewController *)self editUserItemManager];
-  v133 = [v132 tvViewingProfilesItem];
-  v134 = [v9 isEqual:v133];
+  editUserItemManager13 = [(HUEditUserViewController *)self editUserItemManager];
+  tvViewingProfilesItem = [editUserItemManager13 tvViewingProfilesItem];
+  v134 = [v9 isEqual:tvViewingProfilesItem];
 
   if (v134)
   {
     v135 = [HUTVViewingProfilesEditorTableViewController alloc];
-    v136 = [(HUEditUserViewController *)self userItem];
-    v137 = [(HUTVViewingProfilesEditorTableViewController *)v135 initWithUserItem:v136];
+    userItem6 = [(HUEditUserViewController *)self userItem];
+    v137 = [(HUTVViewingProfilesEditorTableViewController *)v135 initWithUserItem:userItem6];
 
-    v138 = [(HUEditUserViewController *)self navigationController];
-    v139 = [v138 hu_pushPreloadableViewController:v137 animated:1];
+    navigationController5 = [(HUEditUserViewController *)self navigationController];
+    v139 = [navigationController5 hu_pushPreloadableViewController:v137 animated:1];
   }
 
-  v140 = [(HUEditUserViewController *)self editUserItemManager];
-  v141 = [v140 updateListeningHistoryItem];
-  v142 = [v9 isEqual:v141];
+  editUserItemManager14 = [(HUEditUserViewController *)self editUserItemManager];
+  updateListeningHistoryItem = [editUserItemManager14 updateListeningHistoryItem];
+  v142 = [v9 isEqual:updateListeningHistoryItem];
 
   if (v142)
   {
     v143 = [HUUpdateListeningHistorySettingsViewController alloc];
-    v144 = [(HUEditUserViewController *)self userItem];
-    v145 = [(HUUpdateListeningHistorySettingsViewController *)v143 initWithUserItem:v144];
+    userItem7 = [(HUEditUserViewController *)self userItem];
+    v145 = [(HUUpdateListeningHistorySettingsViewController *)v143 initWithUserItem:userItem7];
 
-    v146 = [(HUEditUserViewController *)self navigationController];
-    v147 = [v146 hu_pushPreloadableViewController:v145 animated:1];
+    navigationController6 = [(HUEditUserViewController *)self navigationController];
+    v147 = [navigationController6 hu_pushPreloadableViewController:v145 animated:1];
   }
 }
 
@@ -910,15 +910,15 @@ uint64_t __62__HUEditUserViewController_tableView_didSelectRowAtIndexPath___bloc
   return [*(a1 + 40) _removeUser];
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(HUEditUserViewController *)self editUserItemManager];
-  v8 = [v7 reuseIdentifierForFooterViewInSection:a4];
+  viewCopy = view;
+  editUserItemManager = [(HUEditUserViewController *)self editUserItemManager];
+  v8 = [editUserItemManager reuseIdentifierForFooterViewInSection:section];
 
   if ([v8 isEqualToString:@"HUAboutResidentDeviceFooterViewReuseIdentifier"])
   {
-    v9 = [(HUEditUserViewController *)self _lazyAboutResidentDeviceFooterView];
+    _lazyAboutResidentDeviceFooterView = [(HUEditUserViewController *)self _lazyAboutResidentDeviceFooterView];
   }
 
   else
@@ -927,7 +927,7 @@ uint64_t __62__HUEditUserViewController_tableView_didSelectRowAtIndexPath___bloc
     {
       v18.receiver = self;
       v18.super_class = HUEditUserViewController;
-      v10 = [(HUItemTableViewController *)&v18 tableView:v6 viewForFooterInSection:a4];
+      v10 = [(HUItemTableViewController *)&v18 tableView:viewCopy viewForFooterInSection:section];
       objc_opt_class();
       v11 = v10;
       if (objc_opt_isKindOfClass())
@@ -942,34 +942,34 @@ uint64_t __62__HUEditUserViewController_tableView_didSelectRowAtIndexPath___bloc
 
       v13 = v12;
 
-      v14 = [v13 messageTextView];
-      v15 = [v14 textDragInteraction];
-      [v15 setEnabled:1];
+      messageTextView = [v13 messageTextView];
+      textDragInteraction = [messageTextView textDragInteraction];
+      [textDragInteraction setEnabled:1];
 
       goto LABEL_10;
     }
 
     v17.receiver = self;
     v17.super_class = HUEditUserViewController;
-    v9 = [(HUItemTableViewController *)&v17 tableView:v6 viewForFooterInSection:a4];
+    _lazyAboutResidentDeviceFooterView = [(HUItemTableViewController *)&v17 tableView:viewCopy viewForFooterInSection:section];
   }
 
-  v11 = v9;
+  v11 = _lazyAboutResidentDeviceFooterView;
 LABEL_10:
 
   return v11;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(HUEditUserViewController *)self editUserItemManager];
-  v8 = [v7 reuseIdentifierForFooterViewInSection:a4];
+  viewCopy = view;
+  editUserItemManager = [(HUEditUserViewController *)self editUserItemManager];
+  v8 = [editUserItemManager reuseIdentifierForFooterViewInSection:section];
 
   if ([v8 isEqualToString:@"HUAboutResidentDeviceFooterViewReuseIdentifier"])
   {
-    v9 = [(HUEditUserViewController *)self _lazyAboutResidentDeviceFooterView];
-    [v9 bounds];
+    _lazyAboutResidentDeviceFooterView = [(HUEditUserViewController *)self _lazyAboutResidentDeviceFooterView];
+    [_lazyAboutResidentDeviceFooterView bounds];
     v11 = v10;
   }
 
@@ -982,18 +982,18 @@ LABEL_10:
   {
     v14.receiver = self;
     v14.super_class = HUEditUserViewController;
-    [(HUItemTableViewController *)&v14 tableView:v6 heightForFooterInSection:a4];
+    [(HUItemTableViewController *)&v14 tableView:viewCopy heightForFooterInSection:section];
     v11 = v12;
   }
 
   return v11;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(HUEditUserViewController *)self editUserItemManager];
-  v8 = [v7 displayedSectionIdentifierForSectionIndex:a4];
+  viewCopy = view;
+  editUserItemManager = [(HUEditUserViewController *)self editUserItemManager];
+  v8 = [editUserItemManager displayedSectionIdentifierForSectionIndex:section];
 
   if ([v8 isEqualToString:@"HUMediaServiceSettingsItemModule_PrimaryServiceSectionIdentifier"])
   {
@@ -1004,7 +1004,7 @@ LABEL_10:
   {
     v12.receiver = self;
     v12.super_class = HUEditUserViewController;
-    [(HUItemTableViewController *)&v12 tableView:v6 heightForHeaderInSection:a4];
+    [(HUItemTableViewController *)&v12 tableView:viewCopy heightForHeaderInSection:section];
     v9 = v10;
   }
 
@@ -1014,14 +1014,14 @@ LABEL_10:
 - (id)childViewControllersToPreload
 {
   v5[1] = *MEMORY[0x277D85DE8];
-  v2 = [(HUEditUserViewController *)self pendingAccessoriesViewController];
-  v5[0] = v2;
+  pendingAccessoriesViewController = [(HUEditUserViewController *)self pendingAccessoriesViewController];
+  v5[0] = pendingAccessoriesViewController;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v5 count:1];
 
   return v3;
 }
 
-- (void)learnMoreLinkTapped:(id)a3
+- (void)learnMoreLinkTapped:(id)tapped
 {
   v5 = [[HUAboutResidentDeviceViewController alloc] initWithStyle:1];
   [(HUAboutResidentDeviceViewController *)v5 setDelegate:self];
@@ -1030,42 +1030,42 @@ LABEL_10:
   [(HUEditUserViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
-- (void)switchCell:(id)a3 didTurnOn:(BOOL)a4
+- (void)switchCell:(id)cell didTurnOn:(BOOL)on
 {
-  v4 = a4;
+  onCopy = on;
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HUEditUserViewController *)self tableView];
-  v8 = [v7 indexPathForCell:v6];
+  cellCopy = cell;
+  tableView = [(HUEditUserViewController *)self tableView];
+  v8 = [tableView indexPathForCell:cellCopy];
 
-  v9 = [(HUItemTableViewController *)self itemManager];
-  v10 = [v9 displayedItemAtIndexPath:v8];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v10 = [itemManager displayedItemAtIndexPath:v8];
 
-  v11 = [(HUEditUserViewController *)self editUserItemManager];
-  v12 = [v11 userBeingEdited];
+  editUserItemManager = [(HUEditUserViewController *)self editUserItemManager];
+  userBeingEdited = [editUserItemManager userBeingEdited];
 
-  v13 = [(HUItemTableViewController *)self itemManager];
-  v14 = [v13 home];
-  v15 = [v14 homeAccessControlForUser:v12];
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  home = [itemManager2 home];
+  v15 = [home homeAccessControlForUser:userBeingEdited];
 
   v16 = HFLogForCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v12 hf_prettyDescription];
+    hf_prettyDescription = [userBeingEdited hf_prettyDescription];
     *buf = 136315906;
     v41 = "[HUEditUserViewController switchCell:didTurnOn:]";
     v42 = 2112;
     v43 = v10;
     v44 = 2112;
-    v45 = v17;
+    v45 = hf_prettyDescription;
     v46 = 1024;
-    v47 = v4;
+    v47 = onCopy;
     _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "(%s) User tapped switch of %@ for %@ to be %{BOOL}d", buf, 0x26u);
   }
 
-  v18 = [(HUEditUserViewController *)self editUserItemManager];
-  v19 = [v18 allowEditingItem];
-  v20 = [v10 isEqual:v19];
+  editUserItemManager2 = [(HUEditUserViewController *)self editUserItemManager];
+  allowEditingItem = [editUserItemManager2 allowEditingItem];
+  v20 = [v10 isEqual:allowEditingItem];
 
   if (v20)
   {
@@ -1074,7 +1074,7 @@ LABEL_10:
     aBlock[2] = __49__HUEditUserViewController_switchCell_didTurnOn___block_invoke;
     aBlock[3] = &unk_277DBAE20;
     v38 = v15;
-    v39 = v4;
+    v39 = onCopy;
     v21 = _Block_copy(aBlock);
   }
 
@@ -1097,16 +1097,16 @@ LABEL_10:
   v32[2] = __49__HUEditUserViewController_switchCell_didTurnOn___block_invoke_3;
   v32[3] = &unk_277DB9D90;
   objc_copyWeak(&v34, buf);
-  v25 = v12;
+  v25 = userBeingEdited;
   v33 = v25;
   v26 = [v24 addSuccessBlock:v32];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __49__HUEditUserViewController_switchCell_didTurnOn___block_invoke_5;
   v29[3] = &unk_277DBC098;
-  v27 = v6;
+  v27 = cellCopy;
   v30 = v27;
-  v31 = v4;
+  v31 = onCopy;
   v28 = [v24 addFailureBlock:v29];
 
   objc_destroyWeak(&v34);
@@ -1156,62 +1156,62 @@ uint64_t __49__HUEditUserViewController_switchCell_didTurnOn___block_invoke_5(ui
 - (id)itemModuleControllers
 {
   v3 = objc_opt_new();
-  v4 = [(HUEditUserViewController *)self userSettingsItemModuleController];
-  if (!v4)
+  userSettingsItemModuleController = [(HUEditUserViewController *)self userSettingsItemModuleController];
+  if (!userSettingsItemModuleController)
   {
-    v5 = [(HUEditUserViewController *)self editUserItemManager];
-    v6 = [v5 userSettingsItemModule];
+    editUserItemManager = [(HUEditUserViewController *)self editUserItemManager];
+    userSettingsItemModule = [editUserItemManager userSettingsItemModule];
 
-    if (!v6)
+    if (!userSettingsItemModule)
     {
       goto LABEL_5;
     }
 
     v7 = [HUAccessorySettingsItemModuleController alloc];
-    v4 = [(HUEditUserViewController *)self editUserItemManager];
-    v8 = [v4 userSettingsItemModule];
-    v9 = [(HUAccessorySettingsItemModuleController *)v7 initWithModule:v8 delegate:self];
+    userSettingsItemModuleController = [(HUEditUserViewController *)self editUserItemManager];
+    userSettingsItemModule2 = [userSettingsItemModuleController userSettingsItemModule];
+    v9 = [(HUAccessorySettingsItemModuleController *)v7 initWithModule:userSettingsItemModule2 delegate:self];
     [(HUEditUserViewController *)self setUserSettingsItemModuleController:v9];
   }
 
 LABEL_5:
-  v10 = [(HUEditUserViewController *)self userSettingsItemModuleController];
-  [v3 na_safeAddObject:v10];
+  userSettingsItemModuleController2 = [(HUEditUserViewController *)self userSettingsItemModuleController];
+  [v3 na_safeAddObject:userSettingsItemModuleController2];
 
-  v11 = [(HUEditUserViewController *)self mediaServiceSettingsItemModuleController];
-  if (!v11)
+  mediaServiceSettingsItemModuleController = [(HUEditUserViewController *)self mediaServiceSettingsItemModuleController];
+  if (!mediaServiceSettingsItemModuleController)
   {
-    v12 = [(HUEditUserViewController *)self editUserItemManager];
-    v13 = [v12 mediaServiceItemModule];
+    editUserItemManager2 = [(HUEditUserViewController *)self editUserItemManager];
+    mediaServiceItemModule = [editUserItemManager2 mediaServiceItemModule];
 
-    if (!v13)
+    if (!mediaServiceItemModule)
     {
       goto LABEL_9;
     }
 
     v14 = [HUMediaServiceSettingsItemModuleController alloc];
-    v15 = [(HUEditUserViewController *)self editUserItemManager];
-    v16 = [v15 mediaServiceItemModule];
-    v17 = [(HUItemModuleController *)v14 initWithModule:v16];
+    editUserItemManager3 = [(HUEditUserViewController *)self editUserItemManager];
+    mediaServiceItemModule2 = [editUserItemManager3 mediaServiceItemModule];
+    v17 = [(HUItemModuleController *)v14 initWithModule:mediaServiceItemModule2];
     [(HUEditUserViewController *)self setMediaServiceSettingsItemModuleController:v17];
 
-    v11 = [(HUEditUserViewController *)self mediaServiceSettingsItemModuleController];
-    [v11 setDelegate:self];
+    mediaServiceSettingsItemModuleController = [(HUEditUserViewController *)self mediaServiceSettingsItemModuleController];
+    [mediaServiceSettingsItemModuleController setDelegate:self];
   }
 
 LABEL_9:
-  v18 = [(HUEditUserViewController *)self mediaServiceSettingsItemModuleController];
-  [v3 na_safeAddObject:v18];
+  mediaServiceSettingsItemModuleController2 = [(HUEditUserViewController *)self mediaServiceSettingsItemModuleController];
+  [v3 na_safeAddObject:mediaServiceSettingsItemModuleController2];
 
   return v3;
 }
 
-- (void)moduleController:(id)a3 presentGroup:(id)a4
+- (void)moduleController:(id)controller presentGroup:(id)group
 {
-  v15 = a4;
-  v5 = [v15 latestResults];
+  groupCopy = group;
+  latestResults = [groupCopy latestResults];
   v6 = *MEMORY[0x277D13EA8];
-  v7 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+  v7 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
   if (!v7)
   {
 
@@ -1219,23 +1219,23 @@ LABEL_9:
   }
 
   v8 = v7;
-  v9 = [v15 latestResults];
-  v10 = [v9 objectForKeyedSubscript:v6];
-  v11 = [v10 BOOLValue];
+  latestResults2 = [groupCopy latestResults];
+  v10 = [latestResults2 objectForKeyedSubscript:v6];
+  bOOLValue = [v10 BOOLValue];
 
-  if ((v11 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
 LABEL_5:
-    v12 = [HUAccessorySettingsDetailsViewControllerFactory viewControllerForGroup:v15];
-    v13 = [(HUEditUserViewController *)self navigationController];
-    v14 = [v13 hu_pushPreloadableViewController:v12 animated:1];
+    v12 = [HUAccessorySettingsDetailsViewControllerFactory viewControllerForGroup:groupCopy];
+    navigationController = [(HUEditUserViewController *)self navigationController];
+    v14 = [navigationController hu_pushPreloadableViewController:v12 animated:1];
   }
 }
 
-- (id)moduleController:(id)a3 requestPresentViewController:(id)a4 animated:(BOOL)a5 withCompletion:(id)a6
+- (id)moduleController:(id)controller requestPresentViewController:(id)viewController animated:(BOOL)animated withCompletion:(id)completion
 {
-  v6 = a5;
-  v8 = a4;
+  animatedCopy = animated;
+  viewControllerCopy = viewController;
   v9 = objc_opt_new();
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -1243,31 +1243,31 @@ LABEL_5:
   v12[3] = &unk_277DB8488;
   v10 = v9;
   v13 = v10;
-  [(HUEditUserViewController *)self presentViewController:v8 animated:v6 completion:v12];
+  [(HUEditUserViewController *)self presentViewController:viewControllerCopy animated:animatedCopy completion:v12];
 
   return v10;
 }
 
-- (void)moduleController:(id)a3 preflightCheckToAllowSwitchingForSettingItem:(id)a4 changingToOn:(BOOL)a5 withCompletion:(id)a6
+- (void)moduleController:(id)controller preflightCheckToAllowSwitchingForSettingItem:(id)item changingToOn:(BOOL)on withCompletion:(id)completion
 {
-  v7 = a5;
+  onCopy = on;
   v56[1] = *MEMORY[0x277D85DE8];
-  v42 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!v11)
+  controllerCopy = controller;
+  itemCopy = item;
+  completionCopy = completion;
+  if (!itemCopy)
   {
     v13 = NSStringFromSelector(a2);
     NSLog(&cfstr_CalledWithNoSe.isa, v13);
   }
 
-  v14 = [v11 settingKeyPath];
+  settingKeyPath = [itemCopy settingKeyPath];
   v15 = *MEMORY[0x277D139B8];
-  v16 = [v14 isEqualToString:*MEMORY[0x277D139B8]];
+  v16 = [settingKeyPath isEqualToString:*MEMORY[0x277D139B8]];
 
   if (v16)
   {
-    v17 = !v7;
+    v17 = !onCopy;
   }
 
   else
@@ -1277,22 +1277,22 @@ LABEL_5:
 
   if (!v17)
   {
-    v37 = [(HUItemTableViewController *)self itemManager];
-    v38 = [v37 home];
+    itemManager = [(HUItemTableViewController *)self itemManager];
+    home = [itemManager home];
     v55 = @"OnboardingDisplayOption_OnboardingFromUserInput";
     v56[0] = MEMORY[0x277CBEC38];
     v39 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v56 forKeys:&v55 count:1];
-    v40 = [HUHomeFeatureOnboardingUtilities home:v38 onboardIdentifyVoiceFromPresentingViewController:self usageOptions:v39];
-    v12[2](v12, v40);
+    v40 = [HUHomeFeatureOnboardingUtilities home:home onboardIdentifyVoiceFromPresentingViewController:self usageOptions:v39];
+    completionCopy[2](completionCopy, v40);
     goto LABEL_16;
   }
 
-  v18 = [v11 settingKeyPath];
-  v19 = [v18 isEqualToString:*MEMORY[0x277D13990]];
+  settingKeyPath2 = [itemCopy settingKeyPath];
+  v19 = [settingKeyPath2 isEqualToString:*MEMORY[0x277D13990]];
 
   if (v19)
   {
-    v20 = !v7;
+    v20 = !onCopy;
   }
 
   else
@@ -1302,15 +1302,15 @@ LABEL_5:
 
   if (!v20)
   {
-    v21 = [(HUEditUserViewController *)self editUserItemManager];
-    v22 = [v21 userSettingsItemModule];
-    v23 = [v22 accessorySettingsItemProvider];
-    v24 = [v23 homeKitSettingsVendor];
-    v37 = [v24 settings];
+    editUserItemManager = [(HUEditUserViewController *)self editUserItemManager];
+    userSettingsItemModule = [editUserItemManager userSettingsItemModule];
+    accessorySettingsItemProvider = [userSettingsItemModule accessorySettingsItemProvider];
+    homeKitSettingsVendor = [accessorySettingsItemProvider homeKitSettingsVendor];
+    itemManager = [homeKitSettingsVendor settings];
 
-    v38 = [v37 hf_accessorySettingAtKeyPath:v15];
-    v25 = [v38 value];
-    v26 = [v25 BOOLValue];
+    home = [itemManager hf_accessorySettingAtKeyPath:v15];
+    value = [home value];
+    bOOLValue = [value BOOLValue];
 
     v27 = HFLogForCategory();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -1318,11 +1318,11 @@ LABEL_5:
       *buf = 136315394;
       v52 = "[HUEditUserViewController moduleController:preflightCheckToAllowSwitchingForSettingItem:changingToOn:withCompletion:]";
       v53 = 1024;
-      v54 = v26;
+      v54 = bOOLValue;
       _os_log_impl(&dword_20CEB6000, v27, OS_LOG_TYPE_DEFAULT, "(%s) isVoiceIDSetup = %{BOOL}d", buf, 0x12u);
     }
 
-    if (v26)
+    if (bOOLValue)
     {
       goto LABEL_17;
     }
@@ -1338,11 +1338,11 @@ LABEL_5:
     v46[1] = 3221225472;
     v46[2] = __118__HUEditUserViewController_moduleController_preflightCheckToAllowSwitchingForSettingItem_changingToOn_withCompletion___block_invoke;
     v46[3] = &unk_277DBDB08;
-    v37 = v37;
-    v47 = v37;
-    v48 = self;
+    itemManager = itemManager;
+    v47 = itemManager;
+    selfCopy = self;
     v50 = a2;
-    v33 = v12;
+    v33 = completionCopy;
     v49 = v33;
     v41 = [v31 actionWithTitle:v32 style:1 handler:v46];
 
@@ -1370,7 +1370,7 @@ LABEL_16:
 LABEL_17:
   }
 
-  v12[2](v12, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
 void __118__HUEditUserViewController_moduleController_preflightCheckToAllowSwitchingForSettingItem_changingToOn_withCompletion___block_invoke(uint64_t a1, void *a2)
@@ -1484,70 +1484,70 @@ void __118__HUEditUserViewController_moduleController_preflightCheckToAllowSwitc
   (*(v4 + 16))(v4, v8);
 }
 
-- (void)moduleController:(id)a3 settingUpdatedForItem:(id)a4
+- (void)moduleController:(id)controller settingUpdatedForItem:(id)item
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  controllerCopy = controller;
+  itemCopy = item;
+  v9 = itemCopy;
+  if (itemCopy)
   {
-    v10 = [v8 settingKeyPath];
-    v11 = [v10 isEqualToString:*MEMORY[0x277D139B8]];
+    settingKeyPath = [itemCopy settingKeyPath];
+    v11 = [settingKeyPath isEqualToString:*MEMORY[0x277D139B8]];
 
     if (v11)
     {
-      v12 = [(HUEditUserViewController *)self editUserItemManager];
-      v13 = [v12 sectionIndexForDisplayedSectionIdentifier:*MEMORY[0x277D139E8]];
+      editUserItemManager = [(HUEditUserViewController *)self editUserItemManager];
+      v13 = [editUserItemManager sectionIndexForDisplayedSectionIdentifier:*MEMORY[0x277D139E8]];
 
-      v14 = [(HUItemTableViewController *)self itemManager];
-      v15 = [v14 reloadAndUpdateAllItemsFromSenderSelector:a2];
+      itemManager = [(HUItemTableViewController *)self itemManager];
+      v15 = [itemManager reloadAndUpdateAllItemsFromSenderSelector:a2];
 
-      v16 = [(HUItemTableViewController *)self itemManager];
-      LODWORD(v14) = [v16 diffableDataSourceDisabled];
+      itemManager2 = [(HUItemTableViewController *)self itemManager];
+      LODWORD(itemManager) = [itemManager2 diffableDataSourceDisabled];
 
-      if (v14)
+      if (itemManager)
       {
-        v17 = [(HUEditUserViewController *)self tableView];
+        tableView = [(HUEditUserViewController *)self tableView];
         v18 = [MEMORY[0x277CCAA78] indexSetWithIndex:v13];
-        [v17 reloadSections:v18 withRowAnimation:5];
+        [tableView reloadSections:v18 withRowAnimation:5];
       }
 
       else
       {
-        v19 = [(HUItemTableViewController *)self itemManager];
-        v20 = [v19 itemSectionForSectionIndex:v13];
+        itemManager3 = [(HUItemTableViewController *)self itemManager];
+        v20 = [itemManager3 itemSectionForSectionIndex:v13];
 
         if (v20)
         {
-          v21 = [(HUItemTableViewController *)self itemManager];
+          itemManager4 = [(HUItemTableViewController *)self itemManager];
           v23[0] = v20;
           v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
-          [v21 reloadUIRepresentationForSections:v22 withAnimation:0];
+          [itemManager4 reloadUIRepresentationForSections:v22 withAnimation:0];
         }
       }
     }
   }
 }
 
-- (BOOL)moduleController:(id)a3 shouldDisableItem:(id)a4
+- (BOOL)moduleController:(id)controller shouldDisableItem:(id)item
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [MEMORY[0x277D14CE8] isAMac];
-  v7 = [v5 settingKeyPath];
-  v8 = [v7 isEqualToString:*MEMORY[0x277D13990]];
+  itemCopy = item;
+  isAMac = [MEMORY[0x277D14CE8] isAMac];
+  settingKeyPath = [itemCopy settingKeyPath];
+  v8 = [settingKeyPath isEqualToString:*MEMORY[0x277D13990]];
 
-  if (!v6)
+  if (!isAMac)
   {
     if (v8)
     {
-      v10 = [(HUEditUserViewController *)self userItem];
-      v11 = [v10 user];
-      v12 = [(HUEditUserViewController *)self editUserItemManager];
-      v13 = [v12 home];
-      v14 = [v13 currentUser];
-      v9 = [v11 isEqual:v14] ^ 1;
+      userItem = [(HUEditUserViewController *)self userItem];
+      user = [userItem user];
+      editUserItemManager = [(HUEditUserViewController *)self editUserItemManager];
+      home = [editUserItemManager home];
+      currentUser = [home currentUser];
+      v9 = [user isEqual:currentUser] ^ 1;
 
       goto LABEL_6;
     }
@@ -1559,45 +1559,45 @@ LABEL_15:
 
   if ((v8 & 1) == 0)
   {
-    v15 = [v5 settingKeyPath];
-    v16 = [v15 isEqualToString:*MEMORY[0x277D139B8]];
+    settingKeyPath2 = [itemCopy settingKeyPath];
+    v16 = [settingKeyPath2 isEqualToString:*MEMORY[0x277D139B8]];
 
     if (v16)
     {
       v17 = HFLogForCategory();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [(HUEditUserViewController *)self editUserItemManager];
-        v19 = [v18 home];
+        editUserItemManager2 = [(HUEditUserViewController *)self editUserItemManager];
+        home2 = [editUserItemManager2 home];
         v24 = 136315394;
         v25 = "[HUEditUserViewController moduleController:shouldDisableItem:]";
         v26 = 1024;
-        v27 = [v19 hf_hasRMVCapableAppleTV];
+        hf_hasRMVCapableAppleTV = [home2 hf_hasRMVCapableAppleTV];
         _os_log_impl(&dword_20CEB6000, v17, OS_LOG_TYPE_DEFAULT, "(%s) hasRMVCapableAppleTV = %{BOOL}d", &v24, 0x12u);
       }
 
       v20 = HFLogForCategory();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [(HUEditUserViewController *)self editUserItemManager];
-        v22 = [v21 isUserBeingEditedTheDeviceUser];
+        editUserItemManager3 = [(HUEditUserViewController *)self editUserItemManager];
+        isUserBeingEditedTheDeviceUser = [editUserItemManager3 isUserBeingEditedTheDeviceUser];
         v24 = 136315394;
         v25 = "[HUEditUserViewController moduleController:shouldDisableItem:]";
         v26 = 1024;
-        v27 = v22;
+        hf_hasRMVCapableAppleTV = isUserBeingEditedTheDeviceUser;
         _os_log_impl(&dword_20CEB6000, v20, OS_LOG_TYPE_DEFAULT, "(%s) isUserBeingEditedTheDeviceUser = %{BOOL}d", &v24, 0x12u);
       }
 
-      v10 = [(HUEditUserViewController *)self editUserItemManager];
-      v11 = [v10 home];
-      if (![v11 hf_hasRMVCapableAppleTV])
+      userItem = [(HUEditUserViewController *)self editUserItemManager];
+      user = [userItem home];
+      if (![user hf_hasRMVCapableAppleTV])
       {
         LOBYTE(v9) = 1;
         goto LABEL_7;
       }
 
-      v12 = [(HUEditUserViewController *)self editUserItemManager];
-      v9 = [v12 isUserBeingEditedTheDeviceUser] ^ 1;
+      editUserItemManager = [(HUEditUserViewController *)self editUserItemManager];
+      v9 = [editUserItemManager isUserBeingEditedTheDeviceUser] ^ 1;
 LABEL_6:
 
 LABEL_7:
@@ -1613,82 +1613,82 @@ LABEL_16:
   return v9;
 }
 
-- (void)mediaServiceSettingsItemModuleController:(id)a3 didSelectMediaService:(id)a4
+- (void)mediaServiceSettingsItemModuleController:(id)controller didSelectMediaService:(id)service
 {
-  v5 = a4;
+  serviceCopy = service;
   v6 = [HUMediaServiceTableViewController alloc];
-  v7 = [(HUEditUserViewController *)self userItem];
-  v10 = [(HUMediaServiceTableViewController *)v6 initWithItem:v7 mediaServiceItem:v5];
+  userItem = [(HUEditUserViewController *)self userItem];
+  v10 = [(HUMediaServiceTableViewController *)v6 initWithItem:userItem mediaServiceItem:serviceCopy];
 
-  v8 = [(HUEditUserViewController *)self navigationController];
-  v9 = [v8 hu_pushPreloadableViewController:v10 animated:1];
+  navigationController = [(HUEditUserViewController *)self navigationController];
+  v9 = [navigationController hu_pushPreloadableViewController:v10 animated:1];
 }
 
-- (void)didSelectDefaultAccounts:(id)a3
+- (void)didSelectDefaultAccounts:(id)accounts
 {
   v4 = [HUMediaServiceDefaultAccountsTableViewController alloc];
-  v5 = [(HUEditUserViewController *)self editUserItemManager];
-  v6 = [v5 mediaServiceItemModule];
-  v7 = [v6 defaultAccountsItem];
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 home];
-  v12 = [(HUMediaServiceDefaultAccountsTableViewController *)v4 initWithItem:v7 home:v9];
+  editUserItemManager = [(HUEditUserViewController *)self editUserItemManager];
+  mediaServiceItemModule = [editUserItemManager mediaServiceItemModule];
+  defaultAccountsItem = [mediaServiceItemModule defaultAccountsItem];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  home = [itemManager home];
+  v12 = [(HUMediaServiceDefaultAccountsTableViewController *)v4 initWithItem:defaultAccountsItem home:home];
 
-  v10 = [(HUEditUserViewController *)self navigationController];
-  v11 = [v10 hu_pushPreloadableViewController:v12 animated:1];
+  navigationController = [(HUEditUserViewController *)self navigationController];
+  v11 = [navigationController hu_pushPreloadableViewController:v12 animated:1];
 }
 
 - (void)_removeUser
 {
-  v3 = [(HUEditUserViewController *)self editUserItemManager];
-  v4 = [v3 userBeingEdited];
+  editUserItemManager = [(HUEditUserViewController *)self editUserItemManager];
+  userBeingEdited = [editUserItemManager userBeingEdited];
 
-  v5 = [(HUItemTableViewController *)self itemManager];
-  v6 = [v5 home];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  home = [itemManager home];
 
-  if ([v6 hf_currentUserIsAdministrator])
+  if ([home hf_currentUserIsAdministrator])
   {
-    v7 = 1;
+    hf_currentUserIsOwner = 1;
   }
 
   else
   {
-    v7 = [v6 hf_currentUserIsOwner];
+    hf_currentUserIsOwner = [home hf_currentUserIsOwner];
   }
 
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [(HUEditUserViewController *)self pinCodeManager];
-  v10 = [v9 deleteUserPinCodeWithUser:v4];
+  array = [MEMORY[0x277CBEB18] array];
+  pinCodeManager = [(HUEditUserViewController *)self pinCodeManager];
+  v10 = [pinCodeManager deleteUserPinCodeWithUser:userBeingEdited];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __39__HUEditUserViewController__removeUser__block_invoke;
   v33[3] = &unk_277DBDB58;
-  v11 = v4;
+  v11 = userBeingEdited;
   v34 = v11;
-  v12 = v6;
+  v12 = home;
   v35 = v12;
   v13 = [v10 recover:v33];
-  [v8 na_safeAddObject:v13];
+  [array na_safeAddObject:v13];
 
   v14 = MEMORY[0x277D2C900];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __39__HUEditUserViewController__removeUser__block_invoke_119;
   v29[3] = &unk_277DB89C0;
-  v32 = v7;
+  v32 = hf_currentUserIsOwner;
   v15 = v12;
   v30 = v15;
   v16 = v11;
   v31 = v16;
   v17 = [v14 lazyFutureWithBlock:v29];
-  [v8 addObject:v17];
+  [array addObject:v17];
 
-  v18 = [MEMORY[0x277D2C900] chainFutures:v8];
+  v18 = [MEMORY[0x277D2C900] chainFutures:array];
   v22 = MEMORY[0x277D85DD0];
   v23 = 3221225472;
   v24 = __39__HUEditUserViewController__removeUser__block_invoke_2;
   v25 = &unk_277DBDBD0;
-  v28 = v7;
+  v28 = hf_currentUserIsOwner;
   v26 = v15;
   v27 = v16;
   v19 = v16;
@@ -1807,18 +1807,18 @@ void __39__HUEditUserViewController__removeUser__block_invoke_3(uint64_t a1, voi
 - (id)_lazyAboutResidentDeviceFooterView
 {
   v29[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HUEditUserViewController *)self aboutResidentDeviceFooterView];
+  aboutResidentDeviceFooterView = [(HUEditUserViewController *)self aboutResidentDeviceFooterView];
 
-  if (!v3)
+  if (!aboutResidentDeviceFooterView)
   {
     v4 = [[HUAboutResidentDeviceFooterView alloc] initWithReuseIdentifier:@"HUAboutResidentDeviceFooterViewReuseIdentifier"];
     [(HUEditUserViewController *)self setAboutResidentDeviceFooterView:v4];
 
-    v5 = [(HUEditUserViewController *)self aboutResidentDeviceFooterView];
-    [v5 setDelegate:self];
+    aboutResidentDeviceFooterView2 = [(HUEditUserViewController *)self aboutResidentDeviceFooterView];
+    [aboutResidentDeviceFooterView2 setDelegate:self];
 
-    v6 = [(HUEditUserViewController *)self tableView];
-    [v6 bounds];
+    tableView = [(HUEditUserViewController *)self tableView];
+    [tableView bounds];
     v9 = HUViewSizeSubclassForViewSize(v7, v8);
 
     v28[0] = &unk_282491778;
@@ -1828,98 +1828,98 @@ void __39__HUEditUserViewController__removeUser__block_invoke_3(uint64_t a1, voi
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:2];
     v11 = HUConstantFloatForViewSizeSubclass(v9, v10);
 
-    v12 = [(HUEditUserViewController *)self aboutResidentDeviceFooterView];
-    [v12 setMessageInsets:{0.0, v11, 0.0, v11}];
+    aboutResidentDeviceFooterView3 = [(HUEditUserViewController *)self aboutResidentDeviceFooterView];
+    [aboutResidentDeviceFooterView3 setMessageInsets:{0.0, v11, 0.0, v11}];
 
-    v13 = [(HUEditUserViewController *)self aboutResidentDeviceFooterView];
-    [v13 frame];
+    aboutResidentDeviceFooterView4 = [(HUEditUserViewController *)self aboutResidentDeviceFooterView];
+    [aboutResidentDeviceFooterView4 frame];
     v15 = v14;
     v17 = v16;
 
-    v18 = [(HUEditUserViewController *)self aboutResidentDeviceFooterView];
-    v19 = [(HUEditUserViewController *)self tableView];
-    [v19 bounds];
-    [v18 sizeThatFits:{v20, 10000.0}];
+    aboutResidentDeviceFooterView5 = [(HUEditUserViewController *)self aboutResidentDeviceFooterView];
+    tableView2 = [(HUEditUserViewController *)self tableView];
+    [tableView2 bounds];
+    [aboutResidentDeviceFooterView5 sizeThatFits:{v20, 10000.0}];
     v22 = v21;
     v24 = v23;
 
-    v25 = [(HUEditUserViewController *)self aboutResidentDeviceFooterView];
-    [v25 setFrame:{v15, v17, v22, v24}];
+    aboutResidentDeviceFooterView6 = [(HUEditUserViewController *)self aboutResidentDeviceFooterView];
+    [aboutResidentDeviceFooterView6 setFrame:{v15, v17, v22, v24}];
   }
 
-  v26 = [(HUEditUserViewController *)self aboutResidentDeviceFooterView];
+  aboutResidentDeviceFooterView7 = [(HUEditUserViewController *)self aboutResidentDeviceFooterView];
 
-  return v26;
+  return aboutResidentDeviceFooterView7;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  lCopy = l;
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412546;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
-    v24 = v7;
+    v24 = lCopy;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "%@: User tapped URL: %@", &v21, 0x16u);
   }
 
-  v9 = [v7 absoluteString];
-  v10 = [MEMORY[0x277D14C80] musicPrivacyURL];
-  v11 = [v10 absoluteString];
-  v12 = [v9 isEqualToString:v11];
+  absoluteString = [lCopy absoluteString];
+  musicPrivacyURL = [MEMORY[0x277D14C80] musicPrivacyURL];
+  absoluteString2 = [musicPrivacyURL absoluteString];
+  v12 = [absoluteString isEqualToString:absoluteString2];
 
   if (v12)
   {
-    v13 = [(HUEditUserViewController *)self navigationController];
-    v14 = v13;
-    if (v13)
+    navigationController = [(HUEditUserViewController *)self navigationController];
+    v14 = navigationController;
+    if (navigationController)
     {
-      v15 = v13;
+      selfCopy2 = navigationController;
     }
 
     else
     {
-      v15 = self;
+      selfCopy2 = self;
     }
 
-    v16 = v15;
+    v16 = selfCopy2;
 
-    v17 = [MEMORY[0x277D37678] presenterForPrivacySplashWithIdentifier:*MEMORY[0x277D376B0]];
-    v18 = [v17 splashController];
-    [v18 setDisplayDeviceType:6];
+    mEMORY[0x277D148E8] = [MEMORY[0x277D37678] presenterForPrivacySplashWithIdentifier:*MEMORY[0x277D376B0]];
+    splashController = [mEMORY[0x277D148E8] splashController];
+    [splashController setDisplayDeviceType:6];
 
-    [v17 setPresentingViewController:v16];
-    [v17 present];
+    [mEMORY[0x277D148E8] setPresentingViewController:v16];
+    [mEMORY[0x277D148E8] present];
   }
 
   else
   {
-    v17 = [MEMORY[0x277D148E8] sharedInstance];
-    v19 = [v17 openURL:v7];
+    mEMORY[0x277D148E8] = [MEMORY[0x277D148E8] sharedInstance];
+    v19 = [mEMORY[0x277D148E8] openURL:lCopy];
   }
 
   return 0;
 }
 
-- (void)itemManager:(id)a3 didUpdateResultsForItem:(id)a4 atIndexPath:(id)a5
+- (void)itemManager:(id)manager didUpdateResultsForItem:(id)item atIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = HUEditUserViewController;
-  v8 = a5;
-  v9 = a4;
-  [(HUItemTableViewController *)&v10 itemManager:a3 didUpdateResultsForItem:v9 atIndexPath:v8];
-  [(HUEditUserViewController *)self _handleUpdatedItem:v9 atIndexPath:v8, v10.receiver, v10.super_class];
+  pathCopy = path;
+  itemCopy = item;
+  [(HUItemTableViewController *)&v10 itemManager:manager didUpdateResultsForItem:itemCopy atIndexPath:pathCopy];
+  [(HUEditUserViewController *)self _handleUpdatedItem:itemCopy atIndexPath:pathCopy, v10.receiver, v10.super_class];
 }
 
-- (void)_handleUpdatedItem:(id)a3 atIndexPath:(id)a4
+- (void)_handleUpdatedItem:(id)item atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  pathCopy = path;
   objc_opt_class();
-  v21 = v6;
+  v21 = itemCopy;
   if (objc_opt_isKindOfClass())
   {
     v8 = v21;
@@ -1932,63 +1932,63 @@ void __39__HUEditUserViewController__removeUser__block_invoke_3(uint64_t a1, voi
 
   v9 = v8;
 
-  v10 = [v9 settingKeyPath];
-  v11 = [v10 isEqualToString:*MEMORY[0x277D139B8]];
+  settingKeyPath = [v9 settingKeyPath];
+  v11 = [settingKeyPath isEqualToString:*MEMORY[0x277D139B8]];
 
   if (v11)
   {
-    v12 = [v21 latestResults];
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277D13370]];
+    latestResults = [v21 latestResults];
+    v13 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13370]];
 
-    v14 = [v13 value];
-    v15 = [v14 BOOLValue];
+    value = [v13 value];
+    bOOLValue = [value BOOLValue];
 
-    v16 = [v9 value];
-    v17 = [v16 BOOLValue];
+    value2 = [v9 value];
+    bOOLValue2 = [value2 BOOLValue];
 
-    if (v15 == v17)
+    if (bOOLValue == bOOLValue2)
     {
-      v18 = [(HUEditUserViewController *)self tableView];
-      v19 = [v18 cellForRowAtIndexPath:v7];
+      tableView = [(HUEditUserViewController *)self tableView];
+      v19 = [tableView cellForRowAtIndexPath:pathCopy];
 
-      v20 = [v9 value];
-      [v19 setOn:objc_msgSend(v20 animated:{"BOOLValue"), 1}];
+      value3 = [v9 value];
+      [v19 setOn:objc_msgSend(value3 animated:{"BOOLValue"), 1}];
     }
   }
 }
 
 - (id)presentPinDetailsViewController
 {
-  v3 = [(HUEditUserViewController *)self editUserItemManager];
-  v4 = [v3 sourceItem];
+  editUserItemManager = [(HUEditUserViewController *)self editUserItemManager];
+  sourceItem = [editUserItemManager sourceItem];
 
-  v5 = [(HUEditUserViewController *)self editUserItemManager];
-  v6 = [v5 home];
+  editUserItemManager2 = [(HUEditUserViewController *)self editUserItemManager];
+  home = [editUserItemManager2 home];
 
   objc_initWeak(&location, self);
-  v7 = [(HUEditUserViewController *)self editUserItemManager];
-  v8 = [v7 userBeingEdited];
+  editUserItemManager3 = [(HUEditUserViewController *)self editUserItemManager];
+  userBeingEdited = [editUserItemManager3 userBeingEdited];
 
-  v9 = [(HUEditUserViewController *)self pinCodeManager];
-  v10 = [v9 userPinCodes];
+  pinCodeManager = [(HUEditUserViewController *)self pinCodeManager];
+  userPinCodes = [pinCodeManager userPinCodes];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __59__HUEditUserViewController_presentPinDetailsViewController__block_invoke;
   v16[3] = &unk_277DBC550;
   objc_copyWeak(&v20, &location);
-  v11 = v8;
+  v11 = userBeingEdited;
   v17 = v11;
-  v12 = v6;
+  v12 = home;
   v18 = v12;
-  v13 = v4;
+  v13 = sourceItem;
   v19 = v13;
-  v14 = [v10 addSuccessBlock:v16];
+  v14 = [userPinCodes addSuccessBlock:v16];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
 
-  return v10;
+  return userPinCodes;
 }
 
 void __59__HUEditUserViewController_presentPinDetailsViewController__block_invoke(uint64_t a1, void *a2)
@@ -2034,22 +2034,22 @@ uint64_t __59__HUEditUserViewController_presentPinDetailsViewController__block_i
   return v5;
 }
 
-- (void)diffableDataItemManager:(id)a3 didUpdateItems:(id)a4 addItems:(id)a5 removeItems:(id)a6
+- (void)diffableDataItemManager:(id)manager didUpdateItems:(id)items addItems:(id)addItems removeItems:(id)removeItems
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  managerCopy = manager;
+  itemsCopy = items;
+  addItemsCopy = addItems;
+  removeItemsCopy = removeItems;
   v17.receiver = self;
   v17.super_class = HUEditUserViewController;
-  [(HUItemTableViewController *)&v17 diffableDataItemManager:v10 didUpdateItems:v11 addItems:v12 removeItems:v13];
+  [(HUItemTableViewController *)&v17 diffableDataItemManager:managerCopy didUpdateItems:itemsCopy addItems:addItemsCopy removeItems:removeItemsCopy];
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __88__HUEditUserViewController_diffableDataItemManager_didUpdateItems_addItems_removeItems___block_invoke;
   v14[3] = &unk_277DBBF90;
   objc_copyWeak(&v15, &location);
-  [v11 na_each:v14];
+  [itemsCopy na_each:v14];
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 }
@@ -2067,15 +2067,15 @@ void __88__HUEditUserViewController_diffableDataItemManager_didUpdateItems_addIt
 - (id)presentDefaultAccountViewController
 {
   v3 = [HUMediaServiceDefaultAccountsTableViewController alloc];
-  v4 = [(HUEditUserViewController *)self editUserItemManager];
-  v5 = [v4 mediaServiceItemModule];
-  v6 = [v5 defaultAccountsItem];
-  v7 = [(HUItemTableViewController *)self itemManager];
-  v8 = [v7 home];
-  v9 = [(HUMediaServiceDefaultAccountsTableViewController *)v3 initWithItem:v6 home:v8];
+  editUserItemManager = [(HUEditUserViewController *)self editUserItemManager];
+  mediaServiceItemModule = [editUserItemManager mediaServiceItemModule];
+  defaultAccountsItem = [mediaServiceItemModule defaultAccountsItem];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  home = [itemManager home];
+  v9 = [(HUMediaServiceDefaultAccountsTableViewController *)v3 initWithItem:defaultAccountsItem home:home];
 
-  v10 = [(HUEditUserViewController *)self navigationController];
-  v11 = [v10 hu_pushPreloadableViewController:v9 animated:1];
+  navigationController = [(HUEditUserViewController *)self navigationController];
+  v11 = [navigationController hu_pushPreloadableViewController:v9 animated:1];
 
   return v11;
 }

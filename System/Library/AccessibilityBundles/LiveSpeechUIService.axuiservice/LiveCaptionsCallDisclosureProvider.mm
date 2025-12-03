@@ -1,7 +1,7 @@
 @interface LiveCaptionsCallDisclosureProvider
 - (_TtC19LiveSpeechUIService34LiveCaptionsCallDisclosureProvider)init;
-- (void)audioPlayerDecodeErrorDidOccur:(id)a3 error:(id)a4;
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4;
+- (void)audioPlayerDecodeErrorDidOccur:(id)occur error:(id)error;
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully;
 @end
 
 @implementation LiveCaptionsCallDisclosureProvider
@@ -16,18 +16,18 @@
   return [(LiveCaptionsCallDisclosureProvider *)&v3 init];
 }
 
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully
 {
-  v6 = a3;
-  v7 = self;
-  sub_2FCA0(a4);
+  playingCopy = playing;
+  selfCopy = self;
+  sub_2FCA0(successfully);
 }
 
-- (void)audioPlayerDecodeErrorDidOccur:(id)a3 error:(id)a4
+- (void)audioPlayerDecodeErrorDidOccur:(id)occur error:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
+  occurCopy = occur;
+  selfCopy = self;
+  errorCopy = error;
   sub_2FE04();
 }
 

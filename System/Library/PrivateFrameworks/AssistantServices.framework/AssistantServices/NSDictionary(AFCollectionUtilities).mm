@@ -13,8 +13,8 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = a1;
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  selfCopy = self;
+  v8 = [selfCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -25,11 +25,11 @@
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(selfCopy);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v7 objectForKeyedSubscript:{v12, v18}];
+        v13 = [selfCopy objectForKeyedSubscript:{v12, v18}];
         v14 = v5[2](v5, v12, v13);
 
         if (v14)
@@ -38,7 +38,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [selfCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);

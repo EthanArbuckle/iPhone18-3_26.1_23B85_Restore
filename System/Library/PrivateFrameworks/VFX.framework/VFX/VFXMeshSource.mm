@@ -1,50 +1,50 @@
 @interface VFXMeshSource
-+ (id)_meshSourceWithData:(id)a3 semantic:(id)a4 vectorCount:(int64_t)a5 componentType:(signed __int16)a6 componentCount:(unint64_t)a7 dataOffset:(int64_t)a8 dataStride:(int64_t)a9;
-+ (id)_modelSourceWithSource:(id)a3 vertexFormat:(unint64_t)a4;
-+ (id)dataByConvertingDoublesToFloats:(const double *)a3 count:(int64_t)a4;
-+ (id)dataWithPointArray:(const CGPoint *)a3 count:(int64_t)a4 bytesPerComponent:(int64_t *)a5;
-+ (id)dataWithVector3Array:(id)a1 count:(SEL)a2 bytesPerComponent:;
-+ (id)geometrySourceWithColorData:(id)a3 colorSpace:(CGColorSpace *)a4 vectorCount:(int64_t)a5 floatComponents:(BOOL)a6 componentsPerVector:(int64_t)a7 bytesPerComponent:(int64_t)a8 dataOffset:(int64_t)a9 dataStride:(int64_t)a10;
-+ (id)meshSourceWithBuffer:(id)a3 vertexFormat:(unint64_t)a4 semantic:(id)a5 vertexCount:(int64_t)a6 dataOffset:(int64_t)a7 dataStride:(int64_t)a8;
-+ (id)meshSourceWithColorComponents:(const float *)a3 count:(int64_t)a4 hasAlpha:(BOOL)a5 colorSpace:(CGColorSpace *)a6;
-+ (id)meshSourceWithData:(id)a3 semantic:(id)a4 vectorCount:(int64_t)a5 floatComponents:(BOOL)a6 componentsPerVector:(int64_t)a7 bytesPerComponent:(int64_t)a8 dataOffset:(int64_t)a9 dataStride:(int64_t)a10;
-+ (id)meshSourceWithMDLVertexAttribute:(id)a3 mesh:(id)a4;
-+ (id)meshSourceWithMeshSourceRef:(__CFXMeshSource *)a3;
-+ (id)meshSourceWithNormals:(id)a1 count:(SEL)a2;
-+ (id)meshSourceWithTextureCoordinates:(const CGPoint *)a3 count:(int64_t)a4;
-+ (id)meshSourceWithVertices:(id)a1 count:(SEL)a2;
++ (id)_meshSourceWithData:(id)data semantic:(id)semantic vectorCount:(int64_t)count componentType:(signed __int16)type componentCount:(unint64_t)componentCount dataOffset:(int64_t)offset dataStride:(int64_t)stride;
++ (id)_modelSourceWithSource:(id)source vertexFormat:(unint64_t)format;
++ (id)dataByConvertingDoublesToFloats:(const double *)floats count:(int64_t)count;
++ (id)dataWithPointArray:(const CGPoint *)array count:(int64_t)count bytesPerComponent:(int64_t *)component;
++ (id)dataWithVector3Array:(id)array count:(SEL)count bytesPerComponent:;
++ (id)geometrySourceWithColorData:(id)data colorSpace:(CGColorSpace *)space vectorCount:(int64_t)count floatComponents:(BOOL)components componentsPerVector:(int64_t)vector bytesPerComponent:(int64_t)component dataOffset:(int64_t)offset dataStride:(int64_t)self0;
++ (id)meshSourceWithBuffer:(id)buffer vertexFormat:(unint64_t)format semantic:(id)semantic vertexCount:(int64_t)count dataOffset:(int64_t)offset dataStride:(int64_t)stride;
++ (id)meshSourceWithColorComponents:(const float *)components count:(int64_t)count hasAlpha:(BOOL)alpha colorSpace:(CGColorSpace *)space;
++ (id)meshSourceWithData:(id)data semantic:(id)semantic vectorCount:(int64_t)count floatComponents:(BOOL)components componentsPerVector:(int64_t)vector bytesPerComponent:(int64_t)component dataOffset:(int64_t)offset dataStride:(int64_t)self0;
++ (id)meshSourceWithMDLVertexAttribute:(id)attribute mesh:(id)mesh;
++ (id)meshSourceWithMeshSourceRef:(__CFXMeshSource *)ref;
++ (id)meshSourceWithNormals:(id)normals count:(SEL)count;
++ (id)meshSourceWithTextureCoordinates:(const CGPoint *)coordinates count:(int64_t)count;
++ (id)meshSourceWithVertices:(id)vertices count:(SEL)count;
 - (NSData)data;
 - (NSString)description;
-- (VFXMeshSource)initWithBuffer:(id)a3 vertexFormat:(unint64_t)a4 semantic:(id)a5 vertexCount:(int64_t)a6 dataOffset:(int64_t)a7 dataStride:(int64_t)a8;
-- (VFXMeshSource)initWithCoder:(id)a3;
-- (VFXMeshSource)initWithData:(id)a3 semantic:(id)a4 colorSpace:(CGColorSpace *)a5 vectorCount:(int64_t)a6 floatComponents:(BOOL)a7 componentsPerVector:(int64_t)a8 bytesPerComponent:(int64_t)a9 dataOffset:(int64_t)a10 dataStride:(int64_t)a11;
-- (VFXMeshSource)initWithData:(id)a3 semantic:(id)a4 vectorCount:(int64_t)a5 componentType:(signed __int16)a6 componentCount:(unint64_t)a7 dataOffset:(int64_t)a8 dataStride:(int64_t)a9;
-- (VFXMeshSource)initWithMeshSource:(__CFXMeshSource *)a3;
+- (VFXMeshSource)initWithBuffer:(id)buffer vertexFormat:(unint64_t)format semantic:(id)semantic vertexCount:(int64_t)count dataOffset:(int64_t)offset dataStride:(int64_t)stride;
+- (VFXMeshSource)initWithCoder:(id)coder;
+- (VFXMeshSource)initWithData:(id)data semantic:(id)semantic colorSpace:(CGColorSpace *)space vectorCount:(int64_t)count floatComponents:(BOOL)components componentsPerVector:(int64_t)vector bytesPerComponent:(int64_t)component dataOffset:(int64_t)self0 dataStride:(int64_t)self1;
+- (VFXMeshSource)initWithData:(id)data semantic:(id)semantic vectorCount:(int64_t)count componentType:(signed __int16)type componentCount:(unint64_t)componentCount dataOffset:(int64_t)offset dataStride:(int64_t)stride;
+- (VFXMeshSource)initWithMeshSource:(__CFXMeshSource *)source;
 - (VFXWorld)world;
 - (__CFXMeshSource)meshSource;
 - (__CFXWorld)worldRef;
-- (id)_uninterleaveData:(id)a3 count:(unint64_t)a4 srcOffset:(unint64_t)a5 srcStride:(unint64_t)a6 dstStride:(unint64_t)a7;
-- (id)dataByConvertingColorData:(id)a3 colorSpace:(CGColorSpace *)a4 newColorSpace:(CGColorSpace *)a5 vectorCount:(int64_t)a6 componentsPerVector:(int64_t)a7 bytesPerComponent:(int64_t)a8 dataOffset:(int64_t)a9 dataStride:(int64_t)a10 newDataOffset:(int64_t *)a11 newDataStride:(int64_t *)a12;
+- (id)_uninterleaveData:(id)data count:(unint64_t)count srcOffset:(unint64_t)offset srcStride:(unint64_t)stride dstStride:(unint64_t)dstStride;
+- (id)dataByConvertingColorData:(id)data colorSpace:(CGColorSpace *)space newColorSpace:(CGColorSpace *)colorSpace vectorCount:(int64_t)count componentsPerVector:(int64_t)vector bytesPerComponent:(int64_t)component dataOffset:(int64_t)offset dataStride:(int64_t)self0 newDataOffset:(int64_t *)self1 newDataStride:(int64_t *)self2;
 - (id)mkSemantic;
 - (void)_clearCFXCache;
 - (void)_printData;
-- (void)addWorldReference:(id)a3;
+- (void)addWorldReference:(id)reference;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeWorldReference:(id)a3;
-- (void)setMkSemantic:(id)a3;
-- (void)setWorld:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeWorldReference:(id)reference;
+- (void)setMkSemantic:(id)semantic;
+- (void)setWorld:(id)world;
 @end
 
 @implementation VFXMeshSource
 
-+ (id)meshSourceWithMeshSourceRef:(__CFXMeshSource *)a3
++ (id)meshSourceWithMeshSourceRef:(__CFXMeshSource *)ref
 {
-  result = sub_1AF16CDEC(a3);
+  result = sub_1AF16CDEC(ref);
   if (!result)
   {
-    v6 = [a1 alloc];
-    v9 = objc_msgSend_initWithMeshSource_(v6, v7, a3, v8);
+    v6 = [self alloc];
+    v9 = objc_msgSend_initWithMeshSource_(v6, v7, ref, v8);
 
     return v9;
   }
@@ -52,28 +52,28 @@
   return result;
 }
 
-- (VFXMeshSource)initWithMeshSource:(__CFXMeshSource *)a3
+- (VFXMeshSource)initWithMeshSource:(__CFXMeshSource *)source
 {
   v12.receiver = self;
   v12.super_class = VFXMeshSource;
   v4 = [(VFXMeshSource *)&v12 init];
-  if (a3)
+  if (source)
   {
-    v4->_meshSource = CFRetain(a3);
-    v4->_data = sub_1AF1AE6E8(a3);
+    v4->_meshSource = CFRetain(source);
+    v4->_data = sub_1AF1AE6E8(source);
     v10 = 0u;
     v11 = 0u;
-    sub_1AF1AE1A8(a3, &v10);
-    v5 = sub_1AF1AE3D8(a3);
+    sub_1AF1AE1A8(source, &v10);
+    v5 = sub_1AF1AE3D8(source);
     v6 = sub_1AF2E4E18(v5);
     v7 = v11;
     v4->_semantic = &v6->isa;
     v4->_vectorCount = v7;
     v4->_componentType = BYTE7(v11);
     v4->_componentCount = BYTE8(v11);
-    v4->_mkSemantic = sub_1AF1AF854(a3);
-    sub_1AF16CDFC(a3, v4);
-    v8 = sub_1AF1AF080(a3);
+    v4->_mkSemantic = sub_1AF1AF854(source);
+    sub_1AF16CDFC(source, v4);
+    v8 = sub_1AF1AF080(source);
     v4->_dataOffset = sub_1AF1CB564(v8);
     v4->_dataStride = sub_1AF121B74(v8);
   }
@@ -114,24 +114,24 @@
   return objc_msgSend_stringWithFormat_(v3, v19, @"<%@: %p | semantic=%@ vectors=%d %@x%d>", v20, v5, self, v9, v13, v14, v18);
 }
 
-+ (id)dataByConvertingDoublesToFloats:(const double *)a3 count:(int64_t)a4
++ (id)dataByConvertingDoublesToFloats:(const double *)floats count:(int64_t)count
 {
-  v4 = a4;
-  v6 = 4 * a4;
-  v7 = malloc_type_malloc(4 * a4, 0x100004052888210uLL);
+  countCopy = count;
+  v6 = 4 * count;
+  v7 = malloc_type_malloc(4 * count, 0x100004052888210uLL);
   v9 = v7;
-  if (v4 >= 1)
+  if (countCopy >= 1)
   {
     v10 = v7;
     do
     {
-      v11 = *a3++;
+      v11 = *floats++;
       v12 = v11;
       *v10++ = v12;
-      --v4;
+      --countCopy;
     }
 
-    while (v4);
+    while (countCopy);
   }
 
   v13 = MEMORY[0x1E695DEF0];
@@ -139,38 +139,38 @@
   return objc_msgSend_dataWithBytesNoCopy_length_freeWhenDone_(v13, v8, v9, v6, 1);
 }
 
-+ (id)dataWithVector3Array:(id)a1 count:(SEL)a2 bytesPerComponent:
++ (id)dataWithVector3Array:(id)array count:(SEL)count bytesPerComponent:
 {
   if (v4)
   {
     *v4 = 4;
   }
 
-  return objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], a2, v2, 16 * v3);
+  return objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], count, v2, 16 * v3);
 }
 
-+ (id)dataWithPointArray:(const CGPoint *)a3 count:(int64_t)a4 bytesPerComponent:(int64_t *)a5
++ (id)dataWithPointArray:(const CGPoint *)array count:(int64_t)count bytesPerComponent:(int64_t *)component
 {
-  v5 = a4;
-  if (a5)
+  countCopy = count;
+  if (component)
   {
-    *a5 = 4;
+    *component = 4;
   }
 
-  v7 = 8 * a4;
-  v8 = malloc_type_malloc(8 * a4, 0x100004052888210uLL);
+  v7 = 8 * count;
+  v8 = malloc_type_malloc(8 * count, 0x100004052888210uLL);
   v10 = v8;
-  if (v5 >= 1)
+  if (countCopy >= 1)
   {
     v11 = v8;
     do
     {
-      v12 = *a3++;
+      v12 = *array++;
       *v11++ = vcvt_f32_f64(v12);
-      --v5;
+      --countCopy;
     }
 
-    while (v5);
+    while (countCopy);
   }
 
   v13 = MEMORY[0x1E695DEF0];
@@ -178,13 +178,13 @@
   return objc_msgSend_dataWithBytesNoCopy_length_freeWhenDone_(v13, v9, v10, v7, 1);
 }
 
-- (VFXMeshSource)initWithData:(id)a3 semantic:(id)a4 colorSpace:(CGColorSpace *)a5 vectorCount:(int64_t)a6 floatComponents:(BOOL)a7 componentsPerVector:(int64_t)a8 bytesPerComponent:(int64_t)a9 dataOffset:(int64_t)a10 dataStride:(int64_t)a11
+- (VFXMeshSource)initWithData:(id)data semantic:(id)semantic colorSpace:(CGColorSpace *)space vectorCount:(int64_t)count floatComponents:(BOOL)components componentsPerVector:(int64_t)vector bytesPerComponent:(int64_t)component dataOffset:(int64_t)self0 dataStride:(int64_t)self1
 {
-  v12 = a7;
-  v16 = a3;
-  v18 = a10;
-  v19 = a11;
-  if ((sub_1AF2E54B8(a4, a2, a3, a4) & 1) == 0)
+  componentsCopy = components;
+  dataCopy = data;
+  offsetCopy = offset;
+  strideCopy = stride;
+  if ((sub_1AF2E54B8(semantic, a2, data, semantic) & 1) == 0)
   {
     v24 = sub_1AF0D5194();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -200,10 +200,10 @@
   self = [(VFXMeshSource *)&v37 init];
   if (self)
   {
-    v22 = a9;
-    if (a9 == 8)
+    componentCopy = component;
+    if (component == 8)
     {
-      if (v18 || v19 && 8 * a8 != v19)
+      if (offsetCopy || strideCopy && 8 * vector != strideCopy)
       {
         v23 = sub_1AF0D5194();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -217,60 +217,60 @@ LABEL_11:
       }
 
       v25 = objc_opt_class();
-      v29 = objc_msgSend_bytes(v16, v26, v27, v28);
-      v16 = objc_msgSend_dataByConvertingDoublesToFloats_count_(v25, v30, v29, a8 * a6);
-      v19 = 4 * a8;
-      a11 = 4 * a8;
-      v22 = 4;
+      v29 = objc_msgSend_bytes(dataCopy, v26, v27, v28);
+      dataCopy = objc_msgSend_dataByConvertingDoublesToFloats_count_(v25, v30, v29, vector * count);
+      strideCopy = 4 * vector;
+      stride = 4 * vector;
+      componentCopy = 4;
     }
 
-    if (a5 && objc_msgSend_isEqualToString_(a4, v20, @"kGeometrySourceSemanticColor", v21))
+    if (space && objc_msgSend_isEqualToString_(semantic, v20, @"kGeometrySourceSemanticColor", v21))
     {
-      v16 = objc_msgSend_dataByConvertingColorData_colorSpace_newColorSpace_vectorCount_componentsPerVector_bytesPerComponent_dataOffset_dataStride_newDataOffset_newDataStride_(self, v31, v16, a5, &self->_colorSpace, a6, a8, v22, v18, v19, &a10, &a11);
+      dataCopy = objc_msgSend_dataByConvertingColorData_colorSpace_newColorSpace_vectorCount_componentsPerVector_bytesPerComponent_dataOffset_dataStride_newDataOffset_newDataStride_(self, v31, dataCopy, space, &self->_colorSpace, count, vector, componentCopy, offsetCopy, strideCopy, &offset, &stride);
     }
 
-    self->_data = v16;
-    self->_semantic = objc_msgSend_copy(a4, v32, v33, v34);
-    self->_vectorCount = a6;
-    self->_componentType = sub_1AF288ADC(v22, 1, v12);
-    self->_componentCount = a8;
-    v35 = a11;
-    if (!a11)
+    self->_data = dataCopy;
+    self->_semantic = objc_msgSend_copy(semantic, v32, v33, v34);
+    self->_vectorCount = count;
+    self->_componentType = sub_1AF288ADC(componentCopy, 1, componentsCopy);
+    self->_componentCount = vector;
+    strideCopy2 = stride;
+    if (!stride)
     {
-      v35 = v22 * a8;
+      strideCopy2 = componentCopy * vector;
     }
 
-    self->_dataOffset = a10;
-    self->_dataStride = v35;
+    self->_dataOffset = offset;
+    self->_dataStride = strideCopy2;
   }
 
   return self;
 }
 
-- (VFXMeshSource)initWithData:(id)a3 semantic:(id)a4 vectorCount:(int64_t)a5 componentType:(signed __int16)a6 componentCount:(unint64_t)a7 dataOffset:(int64_t)a8 dataStride:(int64_t)a9
+- (VFXMeshSource)initWithData:(id)data semantic:(id)semantic vectorCount:(int64_t)count componentType:(signed __int16)type componentCount:(unint64_t)componentCount dataOffset:(int64_t)offset dataStride:(int64_t)stride
 {
-  v10 = a7;
-  v11 = a6;
-  if (sub_1AF2E54B8(a4, a2, a3, a4))
+  componentCountCopy = componentCount;
+  typeCopy = type;
+  if (sub_1AF2E54B8(semantic, a2, data, semantic))
   {
     v23.receiver = self;
     v23.super_class = VFXMeshSource;
     v16 = [(VFXMeshSource *)&v23 init];
     if (v16)
     {
-      v17 = a9;
-      v16->_data = a3;
-      v16->_semantic = objc_msgSend_copy(a4, v18, v19, v20);
-      v16->_vectorCount = a5;
-      v16->_componentType = v11;
-      v16->_componentCount = v10;
-      v16->_dataOffset = a8;
-      if (!a9)
+      strideCopy = stride;
+      v16->_data = data;
+      v16->_semantic = objc_msgSend_copy(semantic, v18, v19, v20);
+      v16->_vectorCount = count;
+      v16->_componentType = typeCopy;
+      v16->_componentCount = componentCountCopy;
+      v16->_dataOffset = offset;
+      if (!stride)
       {
-        v17 = sub_1AF288070(v11) * v16->_componentCount;
+        strideCopy = sub_1AF288070(typeCopy) * v16->_componentCount;
       }
 
-      v16->_dataStride = v17;
+      v16->_dataStride = strideCopy;
     }
   }
 
@@ -288,29 +288,29 @@ LABEL_11:
   return v16;
 }
 
-- (VFXMeshSource)initWithBuffer:(id)a3 vertexFormat:(unint64_t)a4 semantic:(id)a5 vertexCount:(int64_t)a6 dataOffset:(int64_t)a7 dataStride:(int64_t)a8
+- (VFXMeshSource)initWithBuffer:(id)buffer vertexFormat:(unint64_t)format semantic:(id)semantic vertexCount:(int64_t)count dataOffset:(int64_t)offset dataStride:(int64_t)stride
 {
-  if (sub_1AF2E54B8(a5, a2, a3, a4))
+  if (sub_1AF2E54B8(semantic, a2, buffer, format))
   {
     v22.receiver = self;
     v22.super_class = VFXMeshSource;
     v15 = [(VFXMeshSource *)&v22 init];
     if (v15)
     {
-      v15->_mtlBuffer = a3;
-      v15->_semantic = objc_msgSend_copy(a5, v16, v17, v18);
-      v15->_vectorCount = a6;
-      v15->_mtlVertexFormat = a4;
-      v19 = sub_1AF1F1980(a4);
+      v15->_mtlBuffer = buffer;
+      v15->_semantic = objc_msgSend_copy(semantic, v16, v17, v18);
+      v15->_vectorCount = count;
+      v15->_mtlVertexFormat = format;
+      v19 = sub_1AF1F1980(format);
       v15->_componentType = sub_1AF28844C(v19);
       v15->_componentCount = sub_1AF2884B4(v19);
-      v15->_dataOffset = a7;
-      if (!a8)
+      v15->_dataOffset = offset;
+      if (!stride)
       {
-        a8 = sub_1AF288070(v19);
+        stride = sub_1AF288070(v19);
       }
 
-      v15->_dataStride = a8;
+      v15->_dataStride = stride;
     }
   }
 
@@ -328,60 +328,60 @@ LABEL_11:
   return v15;
 }
 
-+ (id)meshSourceWithData:(id)a3 semantic:(id)a4 vectorCount:(int64_t)a5 floatComponents:(BOOL)a6 componentsPerVector:(int64_t)a7 bytesPerComponent:(int64_t)a8 dataOffset:(int64_t)a9 dataStride:(int64_t)a10
++ (id)meshSourceWithData:(id)data semantic:(id)semantic vectorCount:(int64_t)count floatComponents:(BOOL)components componentsPerVector:(int64_t)vector bytesPerComponent:(int64_t)component dataOffset:(int64_t)offset dataStride:(int64_t)self0
 {
-  v12 = a6;
-  v16 = [a1 alloc];
-  v18 = objc_msgSend_initWithData_semantic_colorSpace_vectorCount_floatComponents_componentsPerVector_bytesPerComponent_dataOffset_dataStride_(v16, v17, a3, a4, 0, a5, v12, a7, a8, a9, a10);
+  componentsCopy = components;
+  v16 = [self alloc];
+  v18 = objc_msgSend_initWithData_semantic_colorSpace_vectorCount_floatComponents_componentsPerVector_bytesPerComponent_dataOffset_dataStride_(v16, v17, data, semantic, 0, count, componentsCopy, vector, component, offset, stride);
 
   return v18;
 }
 
-+ (id)_meshSourceWithData:(id)a3 semantic:(id)a4 vectorCount:(int64_t)a5 componentType:(signed __int16)a6 componentCount:(unint64_t)a7 dataOffset:(int64_t)a8 dataStride:(int64_t)a9
++ (id)_meshSourceWithData:(id)data semantic:(id)semantic vectorCount:(int64_t)count componentType:(signed __int16)type componentCount:(unint64_t)componentCount dataOffset:(int64_t)offset dataStride:(int64_t)stride
 {
-  v11 = a6;
-  v15 = [a1 alloc];
-  v17 = objc_msgSend_initWithData_semantic_vectorCount_componentType_componentCount_dataOffset_dataStride_(v15, v16, a3, a4, a5, v11, a7, a8, a9);
+  typeCopy = type;
+  v15 = [self alloc];
+  v17 = objc_msgSend_initWithData_semantic_vectorCount_componentType_componentCount_dataOffset_dataStride_(v15, v16, data, semantic, count, typeCopy, componentCount, offset, stride);
 
   return v17;
 }
 
-+ (id)meshSourceWithVertices:(id)a1 count:(SEL)a2
++ (id)meshSourceWithVertices:(id)vertices count:(SEL)count
 {
   v4 = v3;
   v9 = 0;
-  v6 = objc_msgSend_dataWithVector3Array_count_bytesPerComponent_(a1, a2, v2, v3, &v9);
-  return objc_msgSend_meshSourceWithData_semantic_vectorCount_floatComponents_componentsPerVector_bytesPerComponent_dataOffset_dataStride_(a1, v7, v6, @"kGeometrySourceSemanticPosition", v4, 1, 3, v9, 0, 16);
+  v6 = objc_msgSend_dataWithVector3Array_count_bytesPerComponent_(vertices, count, v2, v3, &v9);
+  return objc_msgSend_meshSourceWithData_semantic_vectorCount_floatComponents_componentsPerVector_bytesPerComponent_dataOffset_dataStride_(vertices, v7, v6, @"kGeometrySourceSemanticPosition", v4, 1, 3, v9, 0, 16);
 }
 
-+ (id)meshSourceWithNormals:(id)a1 count:(SEL)a2
++ (id)meshSourceWithNormals:(id)normals count:(SEL)count
 {
   v4 = v3;
   v9 = 0;
-  v6 = objc_msgSend_dataWithVector3Array_count_bytesPerComponent_(a1, a2, v2, v3, &v9);
-  return objc_msgSend_meshSourceWithData_semantic_vectorCount_floatComponents_componentsPerVector_bytesPerComponent_dataOffset_dataStride_(a1, v7, v6, @"kGeometrySourceSemanticNormal", v4, 1, 3, v9, 0, 16);
+  v6 = objc_msgSend_dataWithVector3Array_count_bytesPerComponent_(normals, count, v2, v3, &v9);
+  return objc_msgSend_meshSourceWithData_semantic_vectorCount_floatComponents_componentsPerVector_bytesPerComponent_dataOffset_dataStride_(normals, v7, v6, @"kGeometrySourceSemanticNormal", v4, 1, 3, v9, 0, 16);
 }
 
-+ (id)meshSourceWithTextureCoordinates:(const CGPoint *)a3 count:(int64_t)a4
++ (id)meshSourceWithTextureCoordinates:(const CGPoint *)coordinates count:(int64_t)count
 {
   v9 = 0;
-  v6 = objc_msgSend_dataWithPointArray_count_bytesPerComponent_(a1, a2, a3, a4, &v9);
-  return objc_msgSend_meshSourceWithData_semantic_vectorCount_floatComponents_componentsPerVector_bytesPerComponent_dataOffset_dataStride_(a1, v7, v6, @"kGeometrySourceSemanticTexcoord", a4, 1, 2, v9, 0, 0);
+  v6 = objc_msgSend_dataWithPointArray_count_bytesPerComponent_(self, a2, coordinates, count, &v9);
+  return objc_msgSend_meshSourceWithData_semantic_vectorCount_floatComponents_componentsPerVector_bytesPerComponent_dataOffset_dataStride_(self, v7, v6, @"kGeometrySourceSemanticTexcoord", count, 1, 2, v9, 0, 0);
 }
 
-- (id)dataByConvertingColorData:(id)a3 colorSpace:(CGColorSpace *)a4 newColorSpace:(CGColorSpace *)a5 vectorCount:(int64_t)a6 componentsPerVector:(int64_t)a7 bytesPerComponent:(int64_t)a8 dataOffset:(int64_t)a9 dataStride:(int64_t)a10 newDataOffset:(int64_t *)a11 newDataStride:(int64_t *)a12
+- (id)dataByConvertingColorData:(id)data colorSpace:(CGColorSpace *)space newColorSpace:(CGColorSpace *)colorSpace vectorCount:(int64_t)count componentsPerVector:(int64_t)vector bytesPerComponent:(int64_t)component dataOffset:(int64_t)offset dataStride:(int64_t)self0 newDataOffset:(int64_t *)self1 newDataStride:(int64_t *)self2
 {
-  v17 = a12;
-  v18 = a9;
+  dataStrideCopy2 = dataStride;
+  offsetCopy2 = offset;
   sub_1AF16425C();
   ColorSpace = CGColorTransformGetColorSpace();
-  v20 = *a5;
-  if (*a5 != ColorSpace)
+  v20 = *colorSpace;
+  if (*colorSpace != ColorSpace)
   {
     if (v20)
     {
       CFRelease(v20);
-      *a5 = 0;
+      *colorSpace = 0;
     }
 
     if (ColorSpace)
@@ -394,60 +394,60 @@ LABEL_11:
       v21 = 0;
     }
 
-    *a5 = v21;
+    *colorSpace = v21;
   }
 
-  if (CFEqual(a4, ColorSpace))
+  if (CFEqual(space, ColorSpace))
   {
     goto LABEL_19;
   }
 
-  v36 = 3 * a8;
-  v25 = a8 * a7;
-  if (a10)
+  v36 = 3 * component;
+  v25 = component * vector;
+  if (stride)
   {
-    v26 = a10;
+    strideCopy = stride;
   }
 
   else
   {
-    v26 = a8 * a7;
+    strideCopy = component * vector;
   }
 
-  v37 = a3;
-  v27 = objc_msgSend_bytes(a3, v22, v23, v24) + a9;
-  v38 = v25 * a6;
-  v28 = malloc_type_malloc(v25 * a6, 0x100004077774924uLL);
+  dataCopy = data;
+  v27 = objc_msgSend_bytes(data, v22, v23, v24) + offset;
+  v38 = v25 * count;
+  v28 = malloc_type_malloc(v25 * count, 0x100004077774924uLL);
   if (!CGColorTransformConvertData())
   {
     free(v28);
-    v17 = a12;
-    v18 = a9;
-    a3 = v37;
+    dataStrideCopy2 = dataStride;
+    offsetCopy2 = offset;
+    data = dataCopy;
 LABEL_19:
-    *a11 = v18;
-    *v17 = a10;
-    return a3;
+    *dataOffset = offsetCopy2;
+    *dataStrideCopy2 = stride;
+    return data;
   }
 
-  *a11 = 0;
-  *a12 = v25;
-  if (a7 == 4)
+  *dataOffset = 0;
+  *dataStride = v25;
+  if (vector == 4)
   {
     v30 = v28;
-    if (a6 >= 1)
+    if (count >= 1)
     {
       v31 = &v28[v36];
       v32 = (v27 + v36);
       do
       {
-        memcpy(v31, v32, a8);
+        memcpy(v31, v32, component);
         v31 += v25;
-        v32 += v26;
-        --a6;
+        v32 += strideCopy;
+        --count;
       }
 
-      while (a6);
+      while (count);
     }
 
     v33 = MEMORY[0x1E695DEF0];
@@ -463,17 +463,17 @@ LABEL_19:
   return objc_msgSend_dataWithBytesNoCopy_length_freeWhenDone_(v33, v29, v34, v38, 1);
 }
 
-+ (id)meshSourceWithColorComponents:(const float *)a3 count:(int64_t)a4 hasAlpha:(BOOL)a5 colorSpace:(CGColorSpace *)a6
++ (id)meshSourceWithColorComponents:(const float *)components count:(int64_t)count hasAlpha:(BOOL)alpha colorSpace:(CGColorSpace *)space
 {
-  v7 = a5;
+  alphaCopy = alpha;
   sub_1AF16425C();
   ColorSpace = CGColorTransformGetColorSpace();
-  if (!a6)
+  if (!space)
   {
-    a6 = sub_1AF164420();
+    space = sub_1AF164420();
   }
 
-  if (v7)
+  if (alphaCopy)
   {
     v12 = 4;
   }
@@ -483,70 +483,70 @@ LABEL_19:
     v12 = 3;
   }
 
-  if (CFEqual(a6, ColorSpace))
+  if (CFEqual(space, ColorSpace))
   {
-    v14 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v13, a3, 4 * v12 * a4);
+    v14 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v13, components, 4 * v12 * count);
   }
 
   else
   {
-    v29 = a1;
-    v15 = malloc_type_malloc(4 * v12 * a4, 0x100004052888210uLL);
+    selfCopy = self;
+    v15 = malloc_type_malloc(4 * v12 * count, 0x100004052888210uLL);
     v28 = 4 * v12;
     v27 = 4 * v12;
     if (CGColorTransformConvertData())
     {
-      if (a4 >= 1 && v7)
+      if (count >= 1 && alphaCopy)
       {
         v17 = v15 + 3;
-        v18 = a3 + 3;
-        v19 = a4;
+        v18 = components + 3;
+        countCopy = count;
         do
         {
           v20 = *v18;
           v18 += 4;
           *v17 = v20;
           v17 += 4;
-          --v19;
+          --countCopy;
         }
 
-        while (v19);
+        while (countCopy);
       }
 
-      v21 = objc_msgSend_dataWithBytesNoCopy_length_freeWhenDone_(MEMORY[0x1E695DEF0], v16, v15, 4 * v12 * a4, 1, v27, v15, 96, v28);
+      v21 = objc_msgSend_dataWithBytesNoCopy_length_freeWhenDone_(MEMORY[0x1E695DEF0], v16, v15, 4 * v12 * count, 1, v27, v15, 96, v28);
     }
 
     else
     {
       free(v15);
-      v21 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v22, a3, 4 * v12 * a4, v27, v15, 96, v28);
+      v21 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v22, components, 4 * v12 * count, v27, v15, 96, v28);
     }
 
     v14 = v21;
-    a1 = v29;
+    self = selfCopy;
   }
 
-  v23 = [a1 alloc];
-  v25 = objc_msgSend_initWithData_semantic_colorSpace_vectorCount_floatComponents_componentsPerVector_bytesPerComponent_dataOffset_dataStride_(v23, v24, v14, @"kGeometrySourceSemanticColor", ColorSpace, a4, 1, v12, 4, 0, 4 * v12);
+  v23 = [self alloc];
+  v25 = objc_msgSend_initWithData_semantic_colorSpace_vectorCount_floatComponents_componentsPerVector_bytesPerComponent_dataOffset_dataStride_(v23, v24, v14, @"kGeometrySourceSemanticColor", ColorSpace, count, 1, v12, 4, 0, 4 * v12);
 
   return v25;
 }
 
-+ (id)geometrySourceWithColorData:(id)a3 colorSpace:(CGColorSpace *)a4 vectorCount:(int64_t)a5 floatComponents:(BOOL)a6 componentsPerVector:(int64_t)a7 bytesPerComponent:(int64_t)a8 dataOffset:(int64_t)a9 dataStride:(int64_t)a10
++ (id)geometrySourceWithColorData:(id)data colorSpace:(CGColorSpace *)space vectorCount:(int64_t)count floatComponents:(BOOL)components componentsPerVector:(int64_t)vector bytesPerComponent:(int64_t)component dataOffset:(int64_t)offset dataStride:(int64_t)self0
 {
-  v12 = a6;
-  v16 = [a1 alloc];
-  v18 = objc_msgSend_initWithData_semantic_colorSpace_vectorCount_floatComponents_componentsPerVector_bytesPerComponent_dataOffset_dataStride_(v16, v17, a3, @"kGeometrySourceSemanticColor", a4, a5, v12, a7, a8, a9, a10);
+  componentsCopy = components;
+  v16 = [self alloc];
+  v18 = objc_msgSend_initWithData_semantic_colorSpace_vectorCount_floatComponents_componentsPerVector_bytesPerComponent_dataOffset_dataStride_(v16, v17, data, @"kGeometrySourceSemanticColor", space, count, componentsCopy, vector, component, offset, stride);
 
   return v18;
 }
 
-+ (id)meshSourceWithBuffer:(id)a3 vertexFormat:(unint64_t)a4 semantic:(id)a5 vertexCount:(int64_t)a6 dataOffset:(int64_t)a7 dataStride:(int64_t)a8
++ (id)meshSourceWithBuffer:(id)buffer vertexFormat:(unint64_t)format semantic:(id)semantic vertexCount:(int64_t)count dataOffset:(int64_t)offset dataStride:(int64_t)stride
 {
-  if (a4)
+  if (format)
   {
-    v14 = [a1 alloc];
-    v16 = objc_msgSend_initWithBuffer_vertexFormat_semantic_vertexCount_dataOffset_dataStride_(v14, v15, a3, a4, a5, a6, a7, a8);
+    v14 = [self alloc];
+    v16 = objc_msgSend_initWithBuffer_vertexFormat_semantic_vertexCount_dataOffset_dataStride_(v14, v15, buffer, format, semantic, count, offset, stride);
 
     return v16;
   }
@@ -563,14 +563,14 @@ LABEL_19:
   }
 }
 
-+ (id)_modelSourceWithSource:(id)a3 vertexFormat:(unint64_t)a4
++ (id)_modelSourceWithSource:(id)source vertexFormat:(unint64_t)format
 {
-  if (!a3)
+  if (!source)
   {
     return 0;
   }
 
-  if (!a4)
+  if (!format)
   {
     v18 = sub_1AF0D5194();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -581,8 +581,8 @@ LABEL_19:
     return 0;
   }
 
-  v6 = sub_1AF1F1980(a4);
-  v10 = objc_msgSend_meshSource(a3, v7, v8, v9);
+  v6 = sub_1AF1F1980(format);
+  v10 = objc_msgSend_meshSource(source, v7, v8, v9);
   v11 = sub_1AF1AF184(v10, v6, 0);
   if (!v11)
   {
@@ -591,7 +591,7 @@ LABEL_19:
   }
 
   v12 = v11;
-  v13 = [a1 alloc];
+  v13 = [self alloc];
   v16 = objc_msgSend_initWithMeshSource_(v13, v14, v12, v15);
 
   return v16;
@@ -613,54 +613,54 @@ LABEL_19:
   return *v3;
 }
 
-- (void)setMkSemantic:(id)a3
+- (void)setMkSemantic:(id)semantic
 {
-  if (objc_msgSend_isEqualToString_(a3, a2, *MEMORY[0x1E6974AE0], v3))
+  if (objc_msgSend_isEqualToString_(semantic, a2, *MEMORY[0x1E6974AE0], v3))
   {
     v8 = 0;
   }
 
-  else if (objc_msgSend_isEqualToString_(a3, v6, *MEMORY[0x1E6974B28], v7))
+  else if (objc_msgSend_isEqualToString_(semantic, v6, *MEMORY[0x1E6974B28], v7))
   {
     v8 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(a3, v9, *MEMORY[0x1E6974B38], v10))
+  else if (objc_msgSend_isEqualToString_(semantic, v9, *MEMORY[0x1E6974B38], v10))
   {
     v8 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(a3, v11, *MEMORY[0x1E6974B18], v12))
+  else if (objc_msgSend_isEqualToString_(semantic, v11, *MEMORY[0x1E6974B18], v12))
   {
     v8 = 3;
   }
 
-  else if (objc_msgSend_isEqualToString_(a3, v13, @"aoCoord", v14))
+  else if (objc_msgSend_isEqualToString_(semantic, v13, @"aoCoord", v14))
   {
     v8 = 4;
   }
 
-  else if (objc_msgSend_isEqualToString_(a3, v15, *MEMORY[0x1E6974AF8], v16))
+  else if (objc_msgSend_isEqualToString_(semantic, v15, *MEMORY[0x1E6974AF8], v16))
   {
     v8 = 5;
   }
 
-  else if (objc_msgSend_isEqualToString_(a3, v17, *MEMORY[0x1E6974B20], v18))
+  else if (objc_msgSend_isEqualToString_(semantic, v17, *MEMORY[0x1E6974B20], v18))
   {
     v8 = 6;
   }
 
-  else if (objc_msgSend_isEqualToString_(a3, v19, *MEMORY[0x1E6974B30], v20))
+  else if (objc_msgSend_isEqualToString_(semantic, v19, *MEMORY[0x1E6974B30], v20))
   {
     v8 = 7;
   }
 
-  else if (objc_msgSend_isEqualToString_(a3, v21, *MEMORY[0x1E6974AE8], v22))
+  else if (objc_msgSend_isEqualToString_(semantic, v21, *MEMORY[0x1E6974AE8], v22))
   {
     v8 = 8;
   }
 
-  else if (objc_msgSend_isEqualToString_(a3, v23, @"lightmapCoord", v24))
+  else if (objc_msgSend_isEqualToString_(semantic, v23, @"lightmapCoord", v24))
   {
     v8 = 9;
   }
@@ -731,10 +731,10 @@ LABEL_19:
   }
 }
 
-- (void)addWorldReference:(id)a3
+- (void)addWorldReference:(id)reference
 {
   world = self->_world;
-  if (world == a3)
+  if (world == reference)
   {
     v6 = self->_worldReferenceCounter + 1;
   }
@@ -746,17 +746,17 @@ LABEL_19:
       self->_worldReferenceCounter = 0;
     }
 
-    objc_msgSend_setWorld_(self, a2, a3, v3);
+    objc_msgSend_setWorld_(self, a2, reference, v3);
     v6 = 1;
   }
 
   self->_worldReferenceCounter = v6;
 }
 
-- (void)removeWorldReference:(id)a3
+- (void)removeWorldReference:(id)reference
 {
   p_world = &self->_world;
-  if (!a3 || self->_world == a3)
+  if (!reference || self->_world == reference)
   {
     worldReferenceCounter = self->_worldReferenceCounter;
     if (worldReferenceCounter)
@@ -781,10 +781,10 @@ LABEL_19:
   }
 }
 
-- (void)setWorld:(id)a3
+- (void)setWorld:(id)world
 {
   world = self->_world;
-  if (world != a3)
+  if (world != world)
   {
     v9[9] = v3;
     v9[10] = v4;
@@ -798,8 +798,8 @@ LABEL_19:
       objc_msgSend_enumerateReferencesForOperation_usingBlock_(self, a2, 1, v9);
     }
 
-    self->_world = a3;
-    if (a3)
+    self->_world = world;
+    if (world)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
@@ -875,37 +875,37 @@ LABEL_19:
   return self->_meshSource;
 }
 
-- (id)_uninterleaveData:(id)a3 count:(unint64_t)a4 srcOffset:(unint64_t)a5 srcStride:(unint64_t)a6 dstStride:(unint64_t)a7
+- (id)_uninterleaveData:(id)data count:(unint64_t)count srcOffset:(unint64_t)offset srcStride:(unint64_t)stride dstStride:(unint64_t)dstStride
 {
-  v10 = a4;
-  v12 = a7 * a4;
-  v13 = objc_msgSend_dataWithCapacity_(MEMORY[0x1E695DF88], a2, a7 * a4, a4);
+  countCopy = count;
+  v12 = dstStride * count;
+  v13 = objc_msgSend_dataWithCapacity_(MEMORY[0x1E695DF88], a2, dstStride * count, count);
   objc_msgSend_setLength_(v13, v14, v12, v15);
   v19 = objc_msgSend_mutableBytes(v13, v16, v17, v18);
-  v23 = objc_msgSend_bytes(a3, v20, v21, v22);
-  if (v10)
+  v23 = objc_msgSend_bytes(data, v20, v21, v22);
+  if (countCopy)
   {
-    v24 = (v23 + a5);
+    v24 = (v23 + offset);
     do
     {
-      memcpy(v19, v24, a7);
-      v24 += a6;
-      v19 += a7;
-      --v10;
+      memcpy(v19, v24, dstStride);
+      v24 += stride;
+      v19 += dstStride;
+      --countCopy;
     }
 
-    while (v10);
+    while (countCopy);
   }
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   LOWORD(v6) = self->_componentType;
   dataOffset = self->_dataOffset;
   dataStride = self->_dataStride;
-  v9 = objc_msgSend_data(self, a2, a3, v3);
+  v9 = objc_msgSend_data(self, a2, coder, v3);
   if (v9)
   {
     v13 = v9;
@@ -985,7 +985,7 @@ LABEL_19:
 
       vImageEncodeVectorOptionsFree();
       v73 = objc_msgSend_dataWithBytesNoCopy_length_(MEMORY[0x1E695DEF0], v72, v86, v63);
-      objc_msgSend_encodeObject_forKey_(a3, v74, v73, @"cdata");
+      objc_msgSend_encodeObject_forKey_(coder, v74, v73, @"cdata");
     }
 
     else
@@ -999,45 +999,45 @@ LABEL_19:
         dataStride = v29;
       }
 
-      objc_msgSend_encodeObject_forKey_(a3, v28, v13, @"data");
+      objc_msgSend_encodeObject_forKey_(coder, v28, v13, @"data");
     }
   }
 
   semantic = self->_semantic;
   if (semantic)
   {
-    objc_msgSend_encodeObject_forKey_(a3, v10, semantic, @"semantic");
+    objc_msgSend_encodeObject_forKey_(coder, v10, semantic, @"semantic");
   }
 
-  objc_msgSend_encodeInteger_forKey_(a3, v10, self->_vectorCount, @"vectorCount");
+  objc_msgSend_encodeInteger_forKey_(coder, v10, self->_vectorCount, @"vectorCount");
   v86 = 0;
   v87 = 0;
   v85 = 0;
   if (sub_1AF288A0C(v6, &v87, &v86, &v85))
   {
-    objc_msgSend_encodeBool_forKey_(a3, v76, v85, @"floatComponents");
-    objc_msgSend_encodeInteger_forKey_(a3, v77, v87, @"bytesPerComponent");
+    objc_msgSend_encodeBool_forKey_(coder, v76, v85, @"floatComponents");
+    objc_msgSend_encodeInteger_forKey_(coder, v77, v87, @"bytesPerComponent");
   }
 
   else
   {
-    objc_msgSend_encodeInteger_forKey_(a3, v76, v6, @"componentType");
+    objc_msgSend_encodeInteger_forKey_(coder, v76, v6, @"componentType");
   }
 
-  objc_msgSend_encodeInteger_forKey_(a3, v78, self->_componentCount, @"componentsPerVector");
-  objc_msgSend_encodeInteger_forKey_(a3, v79, dataOffset, @"dataOffset");
-  objc_msgSend_encodeInteger_forKey_(a3, v80, dataStride, @"dataStride");
-  objc_msgSend_encodeInt_forKey_(a3, v81, self->_mkSemantic, @"mkSemantic");
+  objc_msgSend_encodeInteger_forKey_(coder, v78, self->_componentCount, @"componentsPerVector");
+  objc_msgSend_encodeInteger_forKey_(coder, v79, dataOffset, @"dataOffset");
+  objc_msgSend_encodeInteger_forKey_(coder, v80, dataStride, @"dataStride");
+  objc_msgSend_encodeInt_forKey_(coder, v81, self->_mkSemantic, @"mkSemantic");
   colorSpace = self->_colorSpace;
   if (colorSpace)
   {
     v83 = CGColorSpaceCopyPropertyList(colorSpace);
-    objc_msgSend_encodeObject_forKey_(a3, v84, v83, @"colorSpace");
+    objc_msgSend_encodeObject_forKey_(coder, v84, v83, @"colorSpace");
     CFRelease(v83);
   }
 }
 
-- (VFXMeshSource)initWithCoder:(id)a3
+- (VFXMeshSource)initWithCoder:(id)coder
 {
   v98.receiver = self;
   v98.super_class = VFXMeshSource;
@@ -1047,7 +1047,7 @@ LABEL_19:
     v8 = objc_msgSend_immediateMode(VFXTransaction, v4, v5, v6);
     objc_msgSend_setImmediateMode_(VFXTransaction, v9, 1, v10);
     v11 = objc_opt_class();
-    v13 = objc_msgSend_vfx_decodeObjectOfClass_forKey_(a3, v12, v11, @"semantic");
+    v13 = objc_msgSend_vfx_decodeObjectOfClass_forKey_(coder, v12, v11, @"semantic");
     if (objc_msgSend_isEqualToString_(v13, v14, @"kGeometrySourceSemanticVertex", v15))
     {
       v13 = @"kGeometrySourceSemanticPosition";
@@ -1065,11 +1065,11 @@ LABEL_19:
     }
 
     v7->_semantic = v13;
-    v7->_vectorCount = objc_msgSend_decodeIntegerForKey_(a3, v19, @"vectorCount", v20);
-    v7->_dataOffset = objc_msgSend_decodeIntegerForKey_(a3, v21, @"dataOffset", v22);
-    v7->_dataStride = objc_msgSend_decodeIntegerForKey_(a3, v23, @"dataStride", v24);
-    v7->_componentCount = objc_msgSend_decodeIntegerForKey_(a3, v25, @"componentsPerVector", v26);
-    v29 = objc_msgSend_decodeIntegerForKey_(a3, v27, @"componentType", v28);
+    v7->_vectorCount = objc_msgSend_decodeIntegerForKey_(coder, v19, @"vectorCount", v20);
+    v7->_dataOffset = objc_msgSend_decodeIntegerForKey_(coder, v21, @"dataOffset", v22);
+    v7->_dataStride = objc_msgSend_decodeIntegerForKey_(coder, v23, @"dataStride", v24);
+    v7->_componentCount = objc_msgSend_decodeIntegerForKey_(coder, v25, @"componentsPerVector", v26);
+    v29 = objc_msgSend_decodeIntegerForKey_(coder, v27, @"componentType", v28);
     v7->_componentType = v29;
     if (v29)
     {
@@ -1087,13 +1087,13 @@ LABEL_19:
 
     else
     {
-      v37 = objc_msgSend_decodeBoolForKey_(a3, v30, @"floatComponents", v31);
-      v40 = objc_msgSend_decodeIntegerForKey_(a3, v38, @"bytesPerComponent", v39);
+      v37 = objc_msgSend_decodeBoolForKey_(coder, v30, @"floatComponents", v31);
+      v40 = objc_msgSend_decodeIntegerForKey_(coder, v38, @"bytesPerComponent", v39);
       v7->_componentType = sub_1AF288ADC(v40, 1, v37);
     }
 
     v41 = objc_opt_class();
-    v43 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v42, v41, @"cdata");
+    v43 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v42, v41, @"cdata");
     v7->_encodeDataAsHalf = v43 != 0;
     if (v43)
     {
@@ -1162,7 +1162,7 @@ LABEL_13:
     else
     {
       v72 = objc_opt_class();
-      v68 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v73, v72, @"data");
+      v68 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v73, v72, @"data");
     }
 
     v7->_data = v68;
@@ -1179,8 +1179,8 @@ LABEL_13:
       goto LABEL_12;
     }
 
-    v7->_mkSemantic = objc_msgSend_decodeIntForKey_(a3, v82, @"mkSemantic", v83);
-    v88 = objc_msgSend_decodePropertyListForKey_(a3, v86, @"colorSpace", v87);
+    v7->_mkSemantic = objc_msgSend_decodeIntForKey_(coder, v82, @"mkSemantic", v83);
+    v88 = objc_msgSend_decodePropertyListForKey_(coder, v86, @"colorSpace", v87);
     if (v88)
     {
       v91 = CGColorSpaceCreateWithPropertyList(v88);
@@ -1202,10 +1202,10 @@ LABEL_13:
   return v7;
 }
 
-+ (id)meshSourceWithMDLVertexAttribute:(id)a3 mesh:(id)a4
++ (id)meshSourceWithMDLVertexAttribute:(id)attribute mesh:(id)mesh
 {
-  v6 = objc_msgSend_vertexDescriptor(a4, a2, a3, a4);
-  v13 = (objc_msgSend_format(a3, v7, v8, v9) >> 16) & 0xF;
+  v6 = objc_msgSend_vertexDescriptor(mesh, a2, attribute, mesh);
+  v13 = (objc_msgSend_format(attribute, v7, v8, v9) >> 16) & 0xF;
   if (v13 >= 5)
   {
     v14 = 0;
@@ -1227,7 +1227,7 @@ LABEL_13:
     v15 = 1;
   }
 
-  v17 = objc_msgSend_name(a3, v10, v11, v12);
+  v17 = objc_msgSend_name(attribute, v10, v11, v12);
   v20 = objc_msgSend_containsString_(v17, v18, *MEMORY[0x1E6974B28], v19);
   v24 = MEMORY[0x1E6974AF8];
   if (v20)
@@ -1279,24 +1279,24 @@ LABEL_14:
 LABEL_15:
   v27 = *v25;
   v28 = objc_msgSend_layouts(v6, v21, v22, v23);
-  v32 = objc_msgSend_bufferIndex(a3, v29, v30, v31);
+  v32 = objc_msgSend_bufferIndex(attribute, v29, v30, v31);
   v35 = objc_msgSend_objectAtIndexedSubscript_(v28, v33, v32, v34);
   v39 = objc_msgSend_stride(v35, v36, v37, v38);
-  v43 = objc_msgSend_format(a3, v40, v41, v42);
-  v47 = objc_msgSend_offset(a3, v44, v45, v46);
-  v51 = objc_msgSend_name(a3, v48, v49, v50);
-  if (objc_msgSend_containsString_(v51, v52, *v24, v53) && objc_msgSend_format(a3, v54, v55, v56) == 65540)
+  v43 = objc_msgSend_format(attribute, v40, v41, v42);
+  v47 = objc_msgSend_offset(attribute, v44, v45, v46);
+  v51 = objc_msgSend_name(attribute, v48, v49, v50);
+  if (objc_msgSend_containsString_(v51, v52, *v24, v53) && objc_msgSend_format(attribute, v54, v55, v56) == 65540)
   {
-    v57 = objc_msgSend_vertexBuffers(a4, v54, v55, v56);
-    v61 = objc_msgSend_bufferIndex(a3, v58, v59, v60);
+    v57 = objc_msgSend_vertexBuffers(mesh, v54, v55, v56);
+    v61 = objc_msgSend_bufferIndex(attribute, v58, v59, v60);
     v64 = objc_msgSend_objectAtIndexedSubscript_(v57, v62, v61, v63);
     v68 = objc_msgSend_map(v64, v65, v66, v67);
     v72 = objc_msgSend_bytes(v68, v69, v70, v71);
-    v76 = objc_msgSend_vertexBuffers(a4, v73, v74, v75);
-    v80 = objc_msgSend_bufferIndex(a3, v77, v78, v79);
+    v76 = objc_msgSend_vertexBuffers(mesh, v73, v74, v75);
+    v80 = objc_msgSend_bufferIndex(attribute, v77, v78, v79);
     v83 = objc_msgSend_objectAtIndexedSubscript_(v76, v81, v80, v82);
     v87 = objc_msgSend_length(v83, v84, v85, v86);
-    if (objc_msgSend_format(a3, v88, v89, v90) == 786436)
+    if (objc_msgSend_format(attribute, v88, v89, v90) == 786436)
     {
       __p = 0;
       v174 = 0;
@@ -1323,9 +1323,9 @@ LABEL_15:
 
     else
     {
-      if (objc_msgSend_format(a3, v91, v92, v93) != 786435)
+      if (objc_msgSend_format(attribute, v91, v92, v93) != 786435)
       {
-        if (objc_msgSend_format(a3, v91, v148, v149) == 65539)
+        if (objc_msgSend_format(attribute, v91, v148, v149) == 65539)
         {
           v156 = v87 / 3;
           __p = 0;
@@ -1360,7 +1360,7 @@ LABEL_15:
 
         else
         {
-          if (objc_msgSend_format(a3, v153, v154, v155) != 65540)
+          if (objc_msgSend_format(attribute, v153, v154, v155) != 65540)
           {
             return 0;
           }
@@ -1453,13 +1453,13 @@ LABEL_15:
   else
   {
     v97 = v43 & 7;
-    v98 = objc_msgSend_vertexBuffers(a4, v54, v55, v56);
-    v102 = objc_msgSend_bufferIndex(a3, v99, v100, v101);
+    v98 = objc_msgSend_vertexBuffers(mesh, v54, v55, v56);
+    v102 = objc_msgSend_bufferIndex(attribute, v99, v100, v101);
     v105 = objc_msgSend_objectAtIndexedSubscript_(v98, v103, v102, v104);
     v109 = objc_msgSend_map(v105, v106, v107, v108);
     v113 = objc_msgSend_bytes(v109, v110, v111, v112);
-    v117 = objc_msgSend_vertexBuffers(a4, v114, v115, v116);
-    v121 = objc_msgSend_bufferIndex(a3, v118, v119, v120);
+    v117 = objc_msgSend_vertexBuffers(mesh, v114, v115, v116);
+    v121 = objc_msgSend_bufferIndex(attribute, v118, v119, v120);
     v124 = objc_msgSend_objectAtIndexedSubscript_(v117, v122, v121, v123);
     v128 = objc_msgSend_length(v124, v125, v126, v127);
     v133 = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v129, v113, v128);
@@ -1474,7 +1474,7 @@ LABEL_23:
   v134 = objc_msgSend_length(v133, v130, v131, v132) / v39;
   if (objc_msgSend_isEqualToString_(v27, v135, @"kGeometrySourceSemanticTexcoord", v136))
   {
-    v140 = objc_msgSend_format(a3, v137, v138, v139);
+    v140 = objc_msgSend_format(attribute, v137, v138, v139);
     v144 = objc_msgSend_bytes(v133, v141, v142, v143);
     sub_1AF2F07B4(v140, v144, v47, v39, v134);
   }

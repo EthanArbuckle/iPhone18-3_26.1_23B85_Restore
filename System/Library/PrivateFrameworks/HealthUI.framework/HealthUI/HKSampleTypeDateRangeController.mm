@@ -1,13 +1,13 @@
 @interface HKSampleTypeDateRangeController
-- (HKSampleTypeDateRangeController)initWithHealthStore:(id)a3;
-- (id)_dateRangeSampleTypeForSampleType:(id)a3;
-- (id)dateRangeForSampleType:(id)a3;
+- (HKSampleTypeDateRangeController)initWithHealthStore:(id)store;
+- (id)_dateRangeSampleTypeForSampleType:(id)type;
+- (id)dateRangeForSampleType:(id)type;
 - (void)_alertObserversDidUpdateDateRanges;
-- (void)_applicationMovingToForeground:(id)a3;
+- (void)_applicationMovingToForeground:(id)foreground;
 - (void)_beginUpdates;
-- (void)_resultsDidUpdate:(id)a3;
-- (void)_updateHandlerDidReceiveError:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_resultsDidUpdate:(id)update;
+- (void)_updateHandlerDidReceiveError:(id)error;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 @end
 
@@ -71,34 +71,34 @@ void __48__HKSampleTypeDateRangeController__beginUpdates__block_invoke_2(uint64_
 - (void)_alertObserversDidUpdateDateRanges
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = [*(a1 + 24) count];
+  v4 = [*(self + 24) count];
   v5 = 134218240;
-  v6 = a1;
+  selfCopy = self;
   v7 = 2048;
   v8 = v4;
   _os_log_debug_impl(&dword_1C3942000, a2, OS_LOG_TYPE_DEBUG, "HKSampleTypeDateRangeController(%p): ChartDataUpdate: Alerting %ld observers of new date ranges", &v5, 0x16u);
 }
 
-- (HKSampleTypeDateRangeController)initWithHealthStore:(id)a3
+- (HKSampleTypeDateRangeController)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = HKSampleTypeDateRangeController;
   v6 = [(HKSampleTypeDateRangeController *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    objc_storeStrong(&v6->_healthStore, store);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v7->_observers;
-    v7->_observers = v8;
+    v7->_observers = weakObjectsHashTable;
 
     *&v7->_applicationIsInForeground = 1;
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v7 selector:sel__applicationMovingToForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__applicationMovingToForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v7 selector:sel__applicationMovingToBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel__applicationMovingToBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
 
     [(HKSampleTypeDateRangeController *)v7 _beginUpdates];
   }
@@ -114,9 +114,9 @@ void __48__HKSampleTypeDateRangeController__beginUpdates__block_invoke_2(uint64_
   [(HKSampleTypeDateRangeController *)&v3 dealloc];
 }
 
-- (id)dateRangeForSampleType:(id)a3
+- (id)dateRangeForSampleType:(id)type
 {
-  v4 = [(HKSampleTypeDateRangeController *)self _dateRangeSampleTypeForSampleType:a3];
+  v4 = [(HKSampleTypeDateRangeController *)self _dateRangeSampleTypeForSampleType:type];
   v5 = [(NSDictionary *)self->_dateRangesBySampleType objectForKeyedSubscript:v4];
   v6 = v5;
   if (v5)
@@ -134,20 +134,20 @@ void __48__HKSampleTypeDateRangeController__beginUpdates__block_invoke_2(uint64_
   return v8;
 }
 
-- (id)_dateRangeSampleTypeForSampleType:(id)a3
+- (id)_dateRangeSampleTypeForSampleType:(id)type
 {
-  v3 = a3;
-  v4 = [v3 identifier];
+  typeCopy = type;
+  identifier = [typeCopy identifier];
   v5 = *MEMORY[0x1E696C6A8];
 
-  if (v4 == v5 || ([v3 identifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = *MEMORY[0x1E696C6B0], v6, v6 == v7))
+  if (identifier == v5 || ([typeCopy identifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = *MEMORY[0x1E696C6B0], v6, v6 == v7))
   {
     v8 = [MEMORY[0x1E696BF90] categoryTypeForIdentifier:*MEMORY[0x1E696B698]];
   }
 
   else
   {
-    v8 = v3;
+    v8 = typeCopy;
   }
 
   v9 = v8;
@@ -155,7 +155,7 @@ void __48__HKSampleTypeDateRangeController__beginUpdates__block_invoke_2(uint64_
   return v9;
 }
 
-- (void)_applicationMovingToForeground:(id)a3
+- (void)_applicationMovingToForeground:(id)foreground
 {
   self->_applicationIsInForeground = 1;
   if (self->_lastQuerySufferedError)
@@ -164,10 +164,10 @@ void __48__HKSampleTypeDateRangeController__beginUpdates__block_invoke_2(uint64_
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  [(NSHashTable *)self->_observers addObject:v4];
+  observerCopy = observer;
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   if (self->_dateRangesBySampleType)
   {
     v5[0] = MEMORY[0x1E69E9820];
@@ -175,16 +175,16 @@ void __48__HKSampleTypeDateRangeController__beginUpdates__block_invoke_2(uint64_
     v5[2] = __47__HKSampleTypeDateRangeController_addObserver___block_invoke;
     v5[3] = &unk_1E81B5AD0;
     v5[4] = self;
-    v6 = v4;
+    v6 = observerCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v5);
   }
 }
 
-- (void)_resultsDidUpdate:(id)a3
+- (void)_resultsDidUpdate:(id)update
 {
   self->_lastQuerySufferedError = 0;
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  updateCopy = update;
   v6 = objc_alloc_init(v4);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -192,7 +192,7 @@ void __48__HKSampleTypeDateRangeController__beginUpdates__block_invoke_2(uint64_
   v10[3] = &unk_1E81B8110;
   v7 = v6;
   v11 = v7;
-  [v5 enumerateKeysAndObjectsUsingBlock:v10];
+  [updateCopy enumerateKeysAndObjectsUsingBlock:v10];
 
   dateRangesBySampleType = self->_dateRangesBySampleType;
   self->_dateRangesBySampleType = v7;
@@ -212,9 +212,9 @@ void __53__HKSampleTypeDateRangeController__resultsDidUpdate___block_invoke(uint
   [*(a1 + 32) setObject:v8 forKeyedSubscript:v6];
 }
 
-- (void)_updateHandlerDidReceiveError:(id)a3
+- (void)_updateHandlerDidReceiveError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   self->_lastQuerySufferedError = 1;
   [(HKHealthStore *)self->_healthStore stopQuery:self->_dateRangeQuery];
   dateRangeQuery = self->_dateRangeQuery;
@@ -226,7 +226,7 @@ void __53__HKSampleTypeDateRangeController__resultsDidUpdate___block_invoke(uint
     v7 = HKLogWellnessDashboard();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(HKSampleTypeDateRangeController *)self _updateHandlerDidReceiveError:v4, v7];
+      [(HKSampleTypeDateRangeController *)self _updateHandlerDidReceiveError:errorCopy, v7];
     }
 
     v8 = dispatch_time(0, 500000000);
@@ -244,7 +244,7 @@ void __53__HKSampleTypeDateRangeController__resultsDidUpdate___block_invoke(uint
     v6 = HKLogWellnessDashboard();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(HKSampleTypeDateRangeController *)self _updateHandlerDidReceiveError:v4, v6];
+      [(HKSampleTypeDateRangeController *)self _updateHandlerDidReceiveError:errorCopy, v6];
     }
   }
 }

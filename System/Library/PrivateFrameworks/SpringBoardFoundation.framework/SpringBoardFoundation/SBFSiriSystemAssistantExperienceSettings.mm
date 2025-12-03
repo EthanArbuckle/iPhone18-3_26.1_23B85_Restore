@@ -12,18 +12,18 @@
   [(PTSettings *)&v16 setDefaultValues];
   [(SBFSiriSystemAssistantExperienceSettings *)self setTypeToSiriLightInterfaceDimmingAlpha:0.2];
   [(SBFSiriSystemAssistantExperienceSettings *)self setTypeToSiriDarkInterfaceDimmingAlpha:0.3];
-  v3 = [(SBFSiriSystemAssistantExperienceSettings *)self typeToSiriDimmingAnimationSettings];
-  [v3 setDefaultValues];
+  typeToSiriDimmingAnimationSettings = [(SBFSiriSystemAssistantExperienceSettings *)self typeToSiriDimmingAnimationSettings];
+  [typeToSiriDimmingAnimationSettings setDefaultValues];
 
   [(SBFSiriSystemAssistantExperienceSettings *)self setTypeToSiriPushInScale:0.86];
-  v4 = [(SBFSiriSystemAssistantExperienceSettings *)self typeToSiriPushInAnimationSettings];
-  [v4 setDefaultValues];
+  typeToSiriPushInAnimationSettings = [(SBFSiriSystemAssistantExperienceSettings *)self typeToSiriPushInAnimationSettings];
+  [typeToSiriPushInAnimationSettings setDefaultValues];
 
-  v5 = [(SBFSiriSystemAssistantExperienceSettings *)self typeToSiriPushInAnimationSettings];
-  [v5 setDampingRatio:0.76];
+  typeToSiriPushInAnimationSettings2 = [(SBFSiriSystemAssistantExperienceSettings *)self typeToSiriPushInAnimationSettings];
+  [typeToSiriPushInAnimationSettings2 setDampingRatio:0.76];
 
-  v6 = [(SBFSiriSystemAssistantExperienceSettings *)self typeToSiriPushInAnimationSettings];
-  [v6 setResponse:0.55];
+  typeToSiriPushInAnimationSettings3 = [(SBFSiriSystemAssistantExperienceSettings *)self typeToSiriPushInAnimationSettings];
+  [typeToSiriPushInAnimationSettings3 setResponse:0.55];
 
   [(SBFSiriSystemAssistantExperienceSettings *)self setHomeAffordanceGlowInnerLightRadius:3.0];
   [(SBFSiriSystemAssistantExperienceSettings *)self setHomeAffordanceGlowOuterLightRadius:8.0];
@@ -33,36 +33,36 @@
   [(SBFSiriSystemAssistantExperienceSettings *)self setHomeAffordanceGlowHighlightRadius:2.0];
   [(SBFSiriSystemAssistantExperienceSettings *)self setHomeAffordanceGlowReverseAnimationDelay:0.5625];
   [(SBFSiriSystemAssistantExperienceSettings *)self setHomeAffordanceGlowEffectiveAnimationDuration:2.0625];
-  v7 = [(SBFSiriSystemAssistantExperienceSettings *)self homeAffordanceGlowAnimationSettings];
-  [v7 setDefaultValues];
+  homeAffordanceGlowAnimationSettings = [(SBFSiriSystemAssistantExperienceSettings *)self homeAffordanceGlowAnimationSettings];
+  [homeAffordanceGlowAnimationSettings setDefaultValues];
 
-  v8 = [(SBFSiriSystemAssistantExperienceSettings *)self homeAffordanceGlowAnimationSettings];
-  [v8 setDampingRatio:1.0];
+  homeAffordanceGlowAnimationSettings2 = [(SBFSiriSystemAssistantExperienceSettings *)self homeAffordanceGlowAnimationSettings];
+  [homeAffordanceGlowAnimationSettings2 setDampingRatio:1.0];
 
-  v9 = [(SBFSiriSystemAssistantExperienceSettings *)self homeAffordanceGlowAnimationSettings];
-  [v9 setResponse:3.0];
+  homeAffordanceGlowAnimationSettings3 = [(SBFSiriSystemAssistantExperienceSettings *)self homeAffordanceGlowAnimationSettings];
+  [homeAffordanceGlowAnimationSettings3 setResponse:3.0];
 
   [(SBFSiriSystemAssistantExperienceSettings *)self setHomeAffordancePulseXScale:0.943];
   [(SBFSiriSystemAssistantExperienceSettings *)self setHomeAffordancePulseYScale:1.0];
   [(SBFSiriSystemAssistantExperienceSettings *)self setHomeAffordancePulseReverseAnimationDelay:0.125];
   [(SBFSiriSystemAssistantExperienceSettings *)self setHomeAffordancePulseEffectiveAnimationDuration:1.0];
-  v10 = [(SBFSiriSystemAssistantExperienceSettings *)self homeAffordancePulseAnimationSettings];
-  [v10 setDefaultValues];
+  homeAffordancePulseAnimationSettings = [(SBFSiriSystemAssistantExperienceSettings *)self homeAffordancePulseAnimationSettings];
+  [homeAffordancePulseAnimationSettings setDefaultValues];
 
-  v11 = [(SBFSiriSystemAssistantExperienceSettings *)self homeAffordancePulseAnimationSettings];
-  [v11 setDampingRatio:0.3];
+  homeAffordancePulseAnimationSettings2 = [(SBFSiriSystemAssistantExperienceSettings *)self homeAffordancePulseAnimationSettings];
+  [homeAffordancePulseAnimationSettings2 setDampingRatio:0.3];
 
-  v12 = [(SBFSiriSystemAssistantExperienceSettings *)self homeAffordancePulseAnimationSettings];
-  [v12 setResponse:0.4];
+  homeAffordancePulseAnimationSettings3 = [(SBFSiriSystemAssistantExperienceSettings *)self homeAffordancePulseAnimationSettings];
+  [homeAffordancePulseAnimationSettings3 setResponse:0.4];
 
-  v13 = [(SBFSiriSystemAssistantExperienceSettings *)self homeAffordanceHintCancellationAnimationSettings];
-  [v13 setDefaultValues];
+  homeAffordanceHintCancellationAnimationSettings = [(SBFSiriSystemAssistantExperienceSettings *)self homeAffordanceHintCancellationAnimationSettings];
+  [homeAffordanceHintCancellationAnimationSettings setDefaultValues];
 
-  v14 = [(SBFSiriSystemAssistantExperienceSettings *)self homeAffordanceHintCancellationAnimationSettings];
-  [v14 setDampingRatio:1.0];
+  homeAffordanceHintCancellationAnimationSettings2 = [(SBFSiriSystemAssistantExperienceSettings *)self homeAffordanceHintCancellationAnimationSettings];
+  [homeAffordanceHintCancellationAnimationSettings2 setDampingRatio:1.0];
 
-  v15 = [(SBFSiriSystemAssistantExperienceSettings *)self homeAffordanceHintCancellationAnimationSettings];
-  [v15 setResponse:0.5];
+  homeAffordanceHintCancellationAnimationSettings3 = [(SBFSiriSystemAssistantExperienceSettings *)self homeAffordanceHintCancellationAnimationSettings];
+  [homeAffordanceHintCancellationAnimationSettings3 setResponse:0.5];
 }
 
 + (id)settingsControllerModule

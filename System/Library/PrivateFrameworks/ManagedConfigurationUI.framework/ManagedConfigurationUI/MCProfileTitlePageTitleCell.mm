@@ -1,24 +1,24 @@
 @interface MCProfileTitlePageTitleCell
-- (MCProfileTitlePageTitleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MCProfileTitlePageTitleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
 @implementation MCProfileTitlePageTitleCell
 
-- (MCProfileTitlePageTitleCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MCProfileTitlePageTitleCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v14.receiver = self;
   v14.super_class = MCProfileTitlePageTitleCell;
-  v4 = [(MCProfileTitlePageTitleCell *)&v14 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MCProfileTitlePageTitleCell *)&v14 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(MCProfileTitlePageTitleCell *)v4 setUserInteractionEnabled:0];
-    v6 = [(MCProfileTitlePageTitleCell *)v5 contentView];
-    [v6 setClipsToBounds:0];
+    contentView = [(MCProfileTitlePageTitleCell *)v5 contentView];
+    [contentView setClipsToBounds:0];
 
-    v7 = [MEMORY[0x277D75348] clearColor];
-    [(MCProfileTitlePageTitleCell *)v5 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(MCProfileTitlePageTitleCell *)v5 setBackgroundColor:clearColor];
 
     v8 = objc_opt_new();
     titleLabel = v5->_titleLabel;
@@ -29,8 +29,8 @@
     [(UILabel *)v10 setFont:v11];
 
     [(UILabel *)v5->_titleLabel setTextAlignment:1];
-    v12 = [(MCProfileTitlePageTitleCell *)v5 contentView];
-    [v12 addSubview:v5->_titleLabel];
+    contentView2 = [(MCProfileTitlePageTitleCell *)v5 contentView];
+    [contentView2 addSubview:v5->_titleLabel];
   }
 
   return v5;
@@ -41,23 +41,23 @@
   v12.receiver = self;
   v12.super_class = MCProfileTitlePageTitleCell;
   [(MCProfileTitlePageTitleCell *)&v12 layoutSubviews];
-  v3 = [(MCProfileTitlePageTitleCell *)self titleLabel];
-  v4 = [v3 superview];
-  v5 = [(MCProfileTitlePageTitleCell *)self contentView];
+  titleLabel = [(MCProfileTitlePageTitleCell *)self titleLabel];
+  superview = [titleLabel superview];
+  contentView = [(MCProfileTitlePageTitleCell *)self contentView];
 
-  if (v4 == v5)
+  if (superview == contentView)
   {
-    v6 = [(MCProfileTitlePageTitleCell *)self titleLabel];
+    titleLabel2 = [(MCProfileTitlePageTitleCell *)self titleLabel];
     [(MCProfileTitlePageTitleCell *)self bounds];
-    [v6 sizeThatFits:{CGRectGetWidth(v13), 1.79769313e308}];
+    [titleLabel2 sizeThatFits:{CGRectGetWidth(v13), 1.79769313e308}];
     v8 = v7;
 
     [(MCProfileTitlePageTitleCell *)self bounds];
     v9 = CGRectGetHeight(v14) - v8;
     [(MCProfileTitlePageTitleCell *)self bounds];
     Width = CGRectGetWidth(v15);
-    v11 = [(MCProfileTitlePageTitleCell *)self titleLabel];
-    [v11 setFrame:{0.0, v9, Width, v8}];
+    titleLabel3 = [(MCProfileTitlePageTitleCell *)self titleLabel];
+    [titleLabel3 setFrame:{0.0, v9, Width, v8}];
   }
 }
 

@@ -1,21 +1,21 @@
 @interface CNAbstractActivityAlertDescription
-- (BOOL)canUnifyValue:(id)a3 withValue:(id)a4;
+- (BOOL)canUnifyValue:(id)value withValue:(id)withValue;
 - (id)CNMutableValueForABMultivalue;
-- (id)CNValueFromABValue:(void *)a3;
-- (void)ABValueFromCNValue:(id)a3;
+- (id)CNValueFromABValue:(void *)value;
+- (void)ABValueFromCNValue:(id)value;
 @end
 
 @implementation CNAbstractActivityAlertDescription
 
-- (BOOL)canUnifyValue:(id)a3 withValue:(id)a4
+- (BOOL)canUnifyValue:(id)value withValue:(id)withValue
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 sound];
-  v8 = [v5 sound];
-  if (v7)
+  withValueCopy = withValue;
+  valueCopy = value;
+  sound = [valueCopy sound];
+  sound2 = [withValueCopy sound];
+  if (sound)
   {
-    v9 = v7;
+    v9 = sound;
   }
 
   else
@@ -23,9 +23,9 @@
     v9 = &stru_1F094DAB0;
   }
 
-  if (v8)
+  if (sound2)
   {
-    v10 = v8;
+    v10 = sound2;
   }
 
   else
@@ -35,11 +35,11 @@
 
   v11 = [(__CFString *)v9 localizedCaseInsensitiveCompare:v10];
 
-  v12 = [v6 vibration];
-  v13 = [v5 vibration];
-  if (v12)
+  vibration = [valueCopy vibration];
+  vibration2 = [withValueCopy vibration];
+  if (vibration)
   {
-    v14 = v12;
+    v14 = vibration;
   }
 
   else
@@ -47,9 +47,9 @@
     v14 = &stru_1F094DAB0;
   }
 
-  if (v13)
+  if (vibration2)
   {
-    v15 = v13;
+    v15 = vibration2;
   }
 
   else
@@ -59,8 +59,8 @@
 
   v16 = [(__CFString *)v14 localizedCaseInsensitiveCompare:v15];
 
-  v17 = [v6 ignoreMute];
-  v18 = [v5 ignoreMute];
+  ignoreMute = [valueCopy ignoreMute];
+  ignoreMute2 = [withValueCopy ignoreMute];
 
   if (v11)
   {
@@ -69,7 +69,7 @@
 
   else
   {
-    return (v16 == 0) & (v17 ^ v18 ^ 1);
+    return (v16 == 0) & (ignoreMute ^ ignoreMute2 ^ 1);
   }
 }
 
@@ -80,11 +80,11 @@
   return v2;
 }
 
-- (id)CNValueFromABValue:(void *)a3
+- (id)CNValueFromABValue:(void *)value
 {
-  v4 = CFDictionaryGetValue(a3, @"tone");
-  v5 = CFDictionaryGetValue(a3, @"vibration");
-  v6 = CFDictionaryGetValue(a3, @"ignoreMute");
+  v4 = CFDictionaryGetValue(value, @"tone");
+  v5 = CFDictionaryGetValue(value, @"vibration");
+  v6 = CFDictionaryGetValue(value, @"ignoreMute");
   v7 = *MEMORY[0x1E6996568];
   if (*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], v4) && (*(v7 + 16))(v7, v5) && ((*(v7 + 16))(v7, v6))
   {
@@ -99,27 +99,27 @@
   return v8;
 }
 
-- (void)ABValueFromCNValue:(id)a3
+- (void)ABValueFromCNValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x1E695E480], 2, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
-  v5 = [v3 sound];
-  v6 = [v5 length];
+  sound = [valueCopy sound];
+  v6 = [sound length];
 
   if (v6)
   {
-    CFDictionarySetValue(Mutable, @"tone", [v3 sound]);
+    CFDictionarySetValue(Mutable, @"tone", [valueCopy sound]);
   }
 
-  v7 = [v3 vibration];
-  v8 = [v7 length];
+  vibration = [valueCopy vibration];
+  v8 = [vibration length];
 
   if (v8)
   {
-    CFDictionarySetValue(Mutable, @"vibration", [v3 vibration]);
+    CFDictionarySetValue(Mutable, @"vibration", [valueCopy vibration]);
   }
 
-  if ([v3 ignoreMute])
+  if ([valueCopy ignoreMute])
   {
     CFDictionarySetValue(Mutable, @"ignoreMute", @"YES");
   }

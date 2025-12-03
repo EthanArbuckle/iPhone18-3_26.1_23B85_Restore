@@ -1,18 +1,18 @@
 @interface CADOperationGroupUtil
-+ (id)defaultCalendarForNewEventsInDelegateSource:(id)a3 withConnection:(id)a4 limitedAccess:(BOOL)a5;
-+ (id)defaultCalendarIDForNewEventsInStoreWithID:(id)a3 connection:(id)a4 inDatabase:(CalDatabase *)a5 defaultExists:(BOOL *)a6;
++ (id)defaultCalendarForNewEventsInDelegateSource:(id)source withConnection:(id)connection limitedAccess:(BOOL)access;
++ (id)defaultCalendarIDForNewEventsInStoreWithID:(id)d connection:(id)connection inDatabase:(CalDatabase *)database defaultExists:(BOOL *)exists;
 @end
 
 @implementation CADOperationGroupUtil
 
-+ (id)defaultCalendarIDForNewEventsInStoreWithID:(id)a3 connection:(id)a4 inDatabase:(CalDatabase *)a5 defaultExists:(BOOL *)a6
++ (id)defaultCalendarIDForNewEventsInStoreWithID:(id)d connection:(id)connection inDatabase:(CalDatabase *)database defaultExists:(BOOL *)exists
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  dCopy = d;
+  connectionCopy = connection;
+  if (dCopy)
   {
-    [v8 entityID];
+    [dCopy entityID];
     v10 = CalDatabaseCopyStoreWithUID();
     if (v10)
     {
@@ -35,7 +35,7 @@
 LABEL_29:
       v15 = 0;
       v28 = 0;
-      if (!a6)
+      if (!exists)
       {
         goto LABEL_31;
       }
@@ -74,7 +74,7 @@ LABEL_28:
   v11 = 0;
 LABEL_7:
   v15 = CADEntityCopyObjectID();
-  v16 = [v9 isCalendarRestricted:v13 forAction:1];
+  v16 = [connectionCopy isCalendarRestricted:v13 forAction:1];
   v17 = CADLogHandle;
   v18 = os_log_type_enabled(CADLogHandle, OS_LOG_TYPE_INFO);
   if (v16)
@@ -117,7 +117,7 @@ LABEL_35:
       if (CalCalendarCanContainEntityType())
       {
         UID = CalCalendarGetUID();
-        if (UID != CalCalendarGetUID() && ([v9 isCalendarRestricted:ValueAtIndex forAction:1] & 1) == 0)
+        if (UID != CalCalendarGetUID() && ([connectionCopy isCalendarRestricted:ValueAtIndex forAction:1] & 1) == 0)
         {
           break;
         }
@@ -169,10 +169,10 @@ LABEL_38:
   }
 
   v28 = 1;
-  if (a6)
+  if (exists)
   {
 LABEL_30:
-    *a6 = v28;
+    *exists = v28;
   }
 
 LABEL_31:
@@ -182,12 +182,12 @@ LABEL_31:
   return v15;
 }
 
-+ (id)defaultCalendarForNewEventsInDelegateSource:(id)a3 withConnection:(id)a4 limitedAccess:(BOOL)a5
++ (id)defaultCalendarForNewEventsInDelegateSource:(id)source withConnection:(id)connection limitedAccess:(BOOL)access
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
+  accessCopy = access;
+  sourceCopy = source;
+  connectionCopy = connection;
+  v10 = connectionCopy;
   v41 = 0;
   v42 = &v41;
   v43 = 0x3032000000;
@@ -198,7 +198,7 @@ LABEL_31:
   v39[1] = v39;
   v39[2] = 0x2020000000;
   v40 = 0;
-  if (v5)
+  if (accessCopy)
   {
     v11 = *MEMORY[0x277CF7570];
     v38[0] = MEMORY[0x277D85DD0];
@@ -206,20 +206,20 @@ LABEL_31:
     v38[2] = __98__CADOperationGroupUtil_defaultCalendarForNewEventsInDelegateSource_withConnection_limitedAccess___block_invoke;
     v38[3] = &unk_27851A408;
     v38[4] = &v41;
-    [v9 withDatabaseID:v11 perform:v38];
+    [connectionCopy withDatabaseID:v11 perform:v38];
   }
 
   else
   {
-    if (v8)
+    if (sourceCopy)
     {
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __98__CADOperationGroupUtil_defaultCalendarForNewEventsInDelegateSource_withConnection_limitedAccess___block_invoke_5;
       v17[3] = &unk_27851B9D8;
       v20 = &v41;
-      v21 = a1;
-      v18 = v8;
+      selfCopy = self;
+      v18 = sourceCopy;
       v19 = v10;
       [v19 withDatabaseForObject:v18 perform:v17];
 
@@ -239,11 +239,11 @@ LABEL_31:
       v31[1] = 3221225472;
       v31[2] = __98__CADOperationGroupUtil_defaultCalendarForNewEventsInDelegateSource_withConnection_limitedAccess___block_invoke_2;
       v31[3] = &unk_27851B988;
-      v14 = v9;
+      v14 = connectionCopy;
       v32 = v14;
       v33 = &v41;
       v34 = v39;
-      v35 = a1;
+      selfCopy2 = self;
       [v14 withDatabaseID:v13 perform:v31];
       if (!v42[5])
       {
@@ -256,7 +256,7 @@ LABEL_31:
         v22[2] = __98__CADOperationGroupUtil_defaultCalendarForNewEventsInDelegateSource_withConnection_limitedAccess___block_invoke_4;
         v22[3] = &unk_27851B9B0;
         v24 = &v41;
-        v28 = a1;
+        selfCopy3 = self;
         v23 = v14;
         v25 = v29;
         v26 = v39;

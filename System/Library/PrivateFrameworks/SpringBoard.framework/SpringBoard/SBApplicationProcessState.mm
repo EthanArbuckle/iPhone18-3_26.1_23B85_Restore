@@ -1,8 +1,8 @@
 @interface SBApplicationProcessState
 - (BOOL)isBeingDebugged;
-- (BOOL)isEqual:(id)a3;
-- (id)_initWithProcess:(id)a3 stateSnapshot:(id)a4;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)_initWithProcess:(id)process stateSnapshot:(id)snapshot;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
@@ -24,18 +24,18 @@
   return v3;
 }
 
-- (id)_initWithProcess:(id)a3 stateSnapshot:(id)a4
+- (id)_initWithProcess:(id)process stateSnapshot:(id)snapshot
 {
-  v7 = a3;
-  v8 = a4;
+  processCopy = process;
+  snapshotCopy = snapshot;
   v12.receiver = self;
   v12.super_class = SBApplicationProcessState;
   v9 = [(SBApplicationProcessState *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_process, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_process, process);
+    objc_storeStrong(p_isa + 2, snapshot);
   }
 
   return p_isa;
@@ -46,21 +46,21 @@
   v2 = self->_process;
   if ([(FBApplicationProcess *)v2 isApplicationProcess])
   {
-    v3 = [(FBApplicationProcess *)v2 isBeingDebugged];
+    isBeingDebugged = [(FBApplicationProcess *)v2 isBeingDebugged];
   }
 
   else
   {
-    v3 = 0;
+    isBeingDebugged = 0;
   }
 
-  return v3;
+  return isBeingDebugged;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -70,7 +70,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(FBProcessState *)self->_processState isEqual:v4->_processState];
+      v5 = [(FBProcessState *)self->_processState isEqual:equalCopy->_processState];
     }
 
     else
@@ -84,18 +84,18 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBApplicationProcessState *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBApplicationProcessState *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBApplicationProcessState *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBApplicationProcessState *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

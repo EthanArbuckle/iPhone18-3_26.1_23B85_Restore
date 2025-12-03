@@ -1,14 +1,14 @@
 @interface HFAccessorySettingProfilesFormatter
-- (id)stringForObjectValue:(id)a3;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation HFAccessorySettingProfilesFormatter
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
-  v4 = v3;
+  v4 = valueCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;

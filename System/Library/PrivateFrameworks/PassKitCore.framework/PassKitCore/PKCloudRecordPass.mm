@@ -1,24 +1,24 @@
 @interface PKCloudRecordPass
-- (PKCloudRecordPass)initWithCoder:(id)a3;
-- (id)_descriptionWithIncludeItem:(BOOL)a3;
+- (PKCloudRecordPass)initWithCoder:(id)coder;
+- (id)_descriptionWithIncludeItem:(BOOL)item;
 - (id)description;
-- (id)descriptionWithItem:(BOOL)a3;
-- (int64_t)compare:(id)a3;
-- (void)applyCloudRecordObject:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)descriptionWithItem:(BOOL)item;
+- (int64_t)compare:(id)compare;
+- (void)applyCloudRecordObject:(id)object;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCloudRecordPass
 
-- (PKCloudRecordPass)initWithCoder:(id)a3
+- (PKCloudRecordPass)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKCloudRecordPass;
-  v5 = [(PKCloudRecordObject *)&v9 initWithCoder:v4];
+  v5 = [(PKCloudRecordObject *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pass"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pass"];
     pass = v5->_pass;
     v5->_pass = v6;
   }
@@ -26,25 +26,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKCloudRecordPass;
-  v4 = a3;
-  [(PKCloudRecordObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_pass forKey:{@"pass", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PKCloudRecordObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_pass forKey:{@"pass", v5.receiver, v5.super_class}];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  compareCopy = compare;
+  if (compareCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [(PKCloudRecordPass *)self pass];
-    v6 = [v5 organizationName];
-    v7 = [v4 pass];
-    v8 = [v7 organizationName];
-    v9 = [v6 compare:v8];
+    pass = [(PKCloudRecordPass *)self pass];
+    organizationName = [pass organizationName];
+    pass2 = [compareCopy pass];
+    organizationName2 = [pass2 organizationName];
+    v9 = [organizationName compare:organizationName2];
   }
 
   else
@@ -55,13 +55,13 @@
   return v9;
 }
 
-- (id)descriptionWithItem:(BOOL)a3
+- (id)descriptionWithItem:(BOOL)item
 {
-  v3 = a3;
+  itemCopy = item;
   v5 = [(PKCloudRecordPass *)self _descriptionWithIncludeItem:?];
   v8.receiver = self;
   v8.super_class = PKCloudRecordPass;
-  v6 = [(PKCloudRecordObject *)&v8 descriptionWithItem:v3];
+  v6 = [(PKCloudRecordObject *)&v8 descriptionWithItem:itemCopy];
   [v5 appendFormat:@"\n%@", v6];
 
   return v5;
@@ -78,50 +78,50 @@
   return v3;
 }
 
-- (id)_descriptionWithIncludeItem:(BOOL)a3
+- (id)_descriptionWithIncludeItem:(BOOL)item
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E696AD60] string];
+  itemCopy = item;
+  string = [MEMORY[0x1E696AD60] string];
   pass = self->_pass;
   if (pass)
   {
-    if (v3)
+    if (itemCopy)
     {
-      v7 = [(PKPass *)pass organizationName];
-      v8 = [(PKPass *)self->_pass localizedName];
-      v9 = [(PKObject *)self->_pass uniqueID];
-      [v5 appendFormat:@"pass: name: %@, type: %@, unique id: %@\n%@\n", v7, v8, v9, self->_pass];
+      organizationName = [(PKPass *)pass organizationName];
+      localizedName = [(PKPass *)self->_pass localizedName];
+      uniqueID = [(PKObject *)self->_pass uniqueID];
+      [string appendFormat:@"pass: name: %@, type: %@, unique id: %@\n%@\n", organizationName, localizedName, uniqueID, self->_pass];
     }
   }
 
   else
   {
-    [v5 appendFormat:@"No associated pass in database\n"];
+    [string appendFormat:@"No associated pass in database\n"];
   }
 
-  return v5;
+  return string;
 }
 
-- (void)applyCloudRecordObject:(id)a3
+- (void)applyCloudRecordObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v10.receiver = self;
     v10.super_class = PKCloudRecordPass;
-    [(PKCloudRecordObject *)&v10 applyCloudRecordObject:v4];
-    v5 = v4;
+    [(PKCloudRecordObject *)&v10 applyCloudRecordObject:objectCopy];
+    v5 = objectCopy;
     v6 = v5;
     if (!self->_pass)
     {
-      v7 = [v5 pass];
+      pass = [v5 pass];
 
-      if (v7)
+      if (pass)
       {
-        v8 = [v6 pass];
+        pass2 = [v6 pass];
         pass = self->_pass;
-        self->_pass = v8;
+        self->_pass = pass2;
       }
     }
   }

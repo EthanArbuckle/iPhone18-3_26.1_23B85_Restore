@@ -1,36 +1,36 @@
 @interface MKTransitDepartureServiceGapFormatter
-- (MKTransitDepartureServiceGapFormatter)initWithTimeZone:(id)a3 departureCutoffDate:(id)a4;
-- (id)_descriptionForDepartureDate:(id)a3 canIncludeDate:(BOOL)a4 outDateFormat:(unint64_t *)a5;
-- (id)lastDepartureAtStringFromDate:(id)a3;
+- (MKTransitDepartureServiceGapFormatter)initWithTimeZone:(id)zone departureCutoffDate:(id)date;
+- (id)_descriptionForDepartureDate:(id)date canIncludeDate:(BOOL)includeDate outDateFormat:(unint64_t *)format;
+- (id)lastDepartureAtStringFromDate:(id)date;
 - (id)lastDepartureString;
-- (id)lastDepartureUntilStringFromDate:(id)a3;
+- (id)lastDepartureUntilStringFromDate:(id)date;
 @end
 
 @implementation MKTransitDepartureServiceGapFormatter
 
-- (id)_descriptionForDepartureDate:(id)a3 canIncludeDate:(BOOL)a4 outDateFormat:(unint64_t *)a5
+- (id)_descriptionForDepartureDate:(id)date canIncludeDate:(BOOL)includeDate outDateFormat:(unint64_t *)format
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [MEMORY[0x1E695DEE8] currentCalendar];
-  if (v6)
+  includeDateCopy = includeDate;
+  dateCopy = date;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  if (includeDateCopy)
   {
-    v10 = [(MKTransitDepartureServiceGapFormatter *)self timeZone];
-    if ([v9 _navigation_isDateInToday:v8 inTimeZone:v10])
+    timeZone = [(MKTransitDepartureServiceGapFormatter *)self timeZone];
+    if ([currentCalendar _navigation_isDateInToday:dateCopy inTimeZone:timeZone])
     {
     }
 
     else
     {
-      v11 = [(MKTransitDepartureServiceGapFormatter *)self departureCutoffDate];
-      [v8 timeIntervalSinceDate:v11];
+      departureCutoffDate = [(MKTransitDepartureServiceGapFormatter *)self departureCutoffDate];
+      [dateCopy timeIntervalSinceDate:departureCutoffDate];
       v13 = v12;
 
       if (v13 >= 43200.0)
       {
         v21 = 0;
-        v19 = [(MKTransitDepartureServiceGapFormatter *)self timeZone];
-        v16 = [v9 _navigation_transitRelativeDateStringForDate:v8 context:5 inTimeZone:v19 outUsedFormat:&v21];
+        timeZone2 = [(MKTransitDepartureServiceGapFormatter *)self timeZone];
+        v16 = [currentCalendar _navigation_transitRelativeDateStringForDate:dateCopy context:5 inTimeZone:timeZone2 outUsedFormat:&v21];
 
         v20 = 2;
         if (v21 == 1)
@@ -44,7 +44,7 @@
           v17 = v20;
         }
 
-        if (a5)
+        if (format)
         {
           goto LABEL_8;
         }
@@ -60,15 +60,15 @@
   }
 
   v14 = _descriptionForDepartureDate_canIncludeDate_outDateFormat__timestampFormatter;
-  v15 = [(MKTransitDepartureServiceGapFormatter *)self timeZone];
-  [v14 setTimeZone:v15];
+  timeZone3 = [(MKTransitDepartureServiceGapFormatter *)self timeZone];
+  [v14 setTimeZone:timeZone3];
 
-  v16 = [_descriptionForDepartureDate_canIncludeDate_outDateFormat__timestampFormatter stringFromDate:v8];
+  v16 = [_descriptionForDepartureDate_canIncludeDate_outDateFormat__timestampFormatter stringFromDate:dateCopy];
   v17 = 1;
-  if (a5)
+  if (format)
   {
 LABEL_8:
-    *a5 = v17;
+    *format = v17;
   }
 
 LABEL_9:
@@ -91,10 +91,10 @@ uint64_t __99__MKTransitDepartureServiceGapFormatter__descriptionForDepartureDat
   return [v4 setLocalizedDateFormatFromTemplate:@"jma"];
 }
 
-- (id)lastDepartureAtStringFromDate:(id)a3
+- (id)lastDepartureAtStringFromDate:(id)date
 {
   v8 = 0;
-  v3 = [(MKTransitDepartureServiceGapFormatter *)self _descriptionForDepartureDate:a3 canIncludeDate:0 outDateFormat:&v8];
+  v3 = [(MKTransitDepartureServiceGapFormatter *)self _descriptionForDepartureDate:date canIncludeDate:0 outDateFormat:&v8];
   v4 = 0;
   if ((v8 - 1) <= 3)
   {
@@ -107,10 +107,10 @@ uint64_t __99__MKTransitDepartureServiceGapFormatter__descriptionForDepartureDat
   return v6;
 }
 
-- (id)lastDepartureUntilStringFromDate:(id)a3
+- (id)lastDepartureUntilStringFromDate:(id)date
 {
   v8 = 0;
-  v3 = [(MKTransitDepartureServiceGapFormatter *)self _descriptionForDepartureDate:a3 canIncludeDate:1 outDateFormat:&v8];
+  v3 = [(MKTransitDepartureServiceGapFormatter *)self _descriptionForDepartureDate:date canIncludeDate:1 outDateFormat:&v8];
   v4 = 0;
   if ((v8 - 1) <= 3)
   {
@@ -132,18 +132,18 @@ uint64_t __99__MKTransitDepartureServiceGapFormatter__descriptionForDepartureDat
   return v4;
 }
 
-- (MKTransitDepartureServiceGapFormatter)initWithTimeZone:(id)a3 departureCutoffDate:(id)a4
+- (MKTransitDepartureServiceGapFormatter)initWithTimeZone:(id)zone departureCutoffDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  zoneCopy = zone;
+  dateCopy = date;
   v12.receiver = self;
   v12.super_class = MKTransitDepartureServiceGapFormatter;
   v9 = [(MKTransitDepartureServiceGapFormatter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_timeZone, a3);
-    objc_storeStrong(&v10->_departureCutoffDate, a4);
+    objc_storeStrong(&v9->_timeZone, zone);
+    objc_storeStrong(&v10->_departureCutoffDate, date);
   }
 
   return v10;

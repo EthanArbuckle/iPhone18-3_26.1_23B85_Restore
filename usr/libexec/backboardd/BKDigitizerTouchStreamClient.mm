@@ -1,20 +1,20 @@
 @interface BKDigitizerTouchStreamClient
 - (BKDigitizerTouchStreamClient)init;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 - (void)dealloc;
 @end
 
 @implementation BKDigitizerTouchStreamClient
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100092D20;
   v3[3] = &unk_1000FD128;
-  v3[4] = a3;
+  v3[4] = formatter;
   v3[5] = self;
-  [a3 appendProem:self block:v3];
+  [formatter appendProem:self block:v3];
 }
 
 - (void)dealloc
@@ -32,7 +32,7 @@
       v11 = 2114;
       v12 = v7;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
       v16 = @"BKDigitizerTouchStreamClient.m";
       v17 = 1024;

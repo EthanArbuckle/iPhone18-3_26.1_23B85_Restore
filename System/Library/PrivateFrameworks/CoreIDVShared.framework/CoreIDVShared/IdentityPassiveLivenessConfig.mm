@@ -1,24 +1,24 @@
 @interface IdentityPassiveLivenessConfig
 - (_TtC13CoreIDVShared29IdentityPassiveLivenessConfig)init;
-- (_TtC13CoreIDVShared29IdentityPassiveLivenessConfig)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC13CoreIDVShared29IdentityPassiveLivenessConfig)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IdentityPassiveLivenessConfig
 
-- (_TtC13CoreIDVShared29IdentityPassiveLivenessConfig)initWithCoder:(id)a3
+- (_TtC13CoreIDVShared29IdentityPassiveLivenessConfig)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_225B5E9A4(v3);
+  coderCopy = coder;
+  v4 = sub_225B5E9A4(coderCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  IdentityPassiveLivenessConfig.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  IdentityPassiveLivenessConfig.encode(with:)(coderCopy);
 }
 
 - (_TtC13CoreIDVShared29IdentityPassiveLivenessConfig)init

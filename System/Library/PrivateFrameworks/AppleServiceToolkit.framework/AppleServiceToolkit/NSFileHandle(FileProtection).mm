@@ -28,8 +28,8 @@
     v7 = 3;
   }
 
-  v8 = [v5 path];
-  v9 = open_dprotected_np([v8 UTF8String], 2562, v7, 0, 416);
+  path = [v5 path];
+  v9 = open_dprotected_np([path UTF8String], 2562, v7, 0, 416);
 
   if ((v9 & 0x80000000) != 0)
   {

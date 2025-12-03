@@ -1,11 +1,11 @@
 @interface PUMutableIndexPathSet
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PUMutableIndexPathSet)init;
-- (PUMutableIndexPathSet)initWithCapacity:(unint64_t)a3;
+- (PUMutableIndexPathSet)initWithCapacity:(unint64_t)capacity;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)enumerateIndexPathsUsingBlock:(id)a3;
-- (void)setIndexPathSet:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)enumerateIndexPathsUsingBlock:(id)block;
+- (void)setIndexPathSet:(id)set;
 @end
 
 @implementation PUMutableIndexPathSet
@@ -20,9 +20,9 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -30,7 +30,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(NSMutableSet *)self->_indexPaths isEqualToSet:v5[1]];
     *(v12 + 24) = v6;
   }
@@ -43,7 +43,7 @@
       goto LABEL_7;
     }
 
-    v5 = v4;
+    v5 = equalCopy;
     v7 = [v5 count];
     if (v7 == [(PUMutableIndexPathSet *)self count])
     {
@@ -77,13 +77,13 @@ uint64_t __33__PUMutableIndexPathSet_isEqual___block_invoke(uint64_t a1, uint64_
   return result;
 }
 
-- (void)setIndexPathSet:(id)a3
+- (void)setIndexPathSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(NSMutableSet *)self->_indexPaths setSet:v4[1]];
+    [(NSMutableSet *)self->_indexPaths setSet:setCopy[1]];
   }
 
   else
@@ -94,11 +94,11 @@ uint64_t __33__PUMutableIndexPathSet_isEqual___block_invoke(uint64_t a1, uint64_
     v5[2] = __41__PUMutableIndexPathSet_setIndexPathSet___block_invoke;
     v5[3] = &unk_1E7B78150;
     v5[4] = self;
-    [v4 enumerateIndexPathsUsingBlock:v5];
+    [setCopy enumerateIndexPathsUsingBlock:v5];
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [[PUMutableIndexPathSet alloc] initWithCapacity:[(NSMutableSet *)self->_indexPaths count]];
   v5 = v4;
@@ -110,10 +110,10 @@ uint64_t __33__PUMutableIndexPathSet_isEqual___block_invoke(uint64_t a1, uint64_
   return v5;
 }
 
-- (void)enumerateIndexPathsUsingBlock:(id)a3
+- (void)enumerateIndexPathsUsingBlock:(id)block
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -135,7 +135,7 @@ LABEL_3:
 
       v10 = *(*(&v12 + 1) + 8 * v9);
       v11 = 0;
-      v4[2](v4, v10, &v11);
+      blockCopy[2](blockCopy, v10, &v11);
       if (v11)
       {
         break;
@@ -155,14 +155,14 @@ LABEL_3:
   }
 }
 
-- (PUMutableIndexPathSet)initWithCapacity:(unint64_t)a3
+- (PUMutableIndexPathSet)initWithCapacity:(unint64_t)capacity
 {
   v8.receiver = self;
   v8.super_class = PUMutableIndexPathSet;
   v4 = [(PUMutableIndexPathSet *)&v8 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:a3];
+    v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:capacity];
     indexPaths = v4->_indexPaths;
     v4->_indexPaths = v5;
   }
@@ -172,8 +172,8 @@ LABEL_3:
 
 - (PUMutableIndexPathSet)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUIndexPathSet.m" lineNumber:48 description:{@"Do not use this initializer, use the designated one instead"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUIndexPathSet.m" lineNumber:48 description:{@"Do not use this initializer, use the designated one instead"}];
 
   return 0;
 }

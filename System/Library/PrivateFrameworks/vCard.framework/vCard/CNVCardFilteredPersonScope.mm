@@ -1,23 +1,23 @@
 @interface CNVCardFilteredPersonScope
 - (BOOL)isEmpty;
-- (CNVCardFilteredPersonScope)initWithExcludedFields:(id)a3 options:(unint64_t)a4;
+- (CNVCardFilteredPersonScope)initWithExcludedFields:(id)fields options:(unint64_t)options;
 @end
 
 @implementation CNVCardFilteredPersonScope
 
-- (CNVCardFilteredPersonScope)initWithExcludedFields:(id)a3 options:(unint64_t)a4
+- (CNVCardFilteredPersonScope)initWithExcludedFields:(id)fields options:(unint64_t)options
 {
-  v6 = a3;
+  fieldsCopy = fields;
   v12.receiver = self;
   v12.super_class = CNVCardFilteredPersonScope;
   v7 = [(CNVCardFilteredPersonScope *)&v12 init];
   if (v7)
   {
-    v8 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v6];
+    v8 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:fieldsCopy];
     excludedFields = v7->_excludedFields;
     v7->_excludedFields = v8;
 
-    v7->_filterOptions = a4;
+    v7->_filterOptions = options;
     v10 = v7;
   }
 
@@ -32,8 +32,8 @@
   }
 
   v4 = *MEMORY[0x277CFBD28];
-  v5 = [(CNVCardFilteredPersonScope *)self excludedFields];
-  LOBYTE(v4) = (*(v4 + 16))(v4, v5);
+  excludedFields = [(CNVCardFilteredPersonScope *)self excludedFields];
+  LOBYTE(v4) = (*(v4 + 16))(v4, excludedFields);
 
   return v4;
 }

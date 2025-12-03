@@ -1,7 +1,7 @@
 @interface _CPNewsUsagePropensity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPNewsUsagePropensity
@@ -26,13 +26,13 @@
   return ((*vbslq_s8(vnegq_f64(v6), v3, v2).i64 * 2654435760.0) + vcvtd_n_u64_f64(v5 - *v2.i64, 0x40uLL)) ^ (2654435761 * self->_totalEngagements);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (other = self->_other, objc_msgSend(v4, "other"), other == v6))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (other = self->_other, objc_msgSend(equalCopy, "other"), other == v6))
   {
     totalEngagements = self->_totalEngagements;
-    v7 = totalEngagements == [v4 totalEngagements];
+    v7 = totalEngagements == [equalCopy totalEngagements];
   }
 
   else
@@ -43,9 +43,9 @@
   return v7;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   [(_CPNewsUsagePropensity *)self other];
   if (v4 != 0.0)
   {

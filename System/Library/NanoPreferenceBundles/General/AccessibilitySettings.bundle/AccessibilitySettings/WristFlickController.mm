@@ -1,7 +1,7 @@
 @interface WristFlickController
 - (id)specifiers;
-- (void)_updateCheckedStatusForCell:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_updateCheckedStatusForCell:(id)cell;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation WristFlickController
@@ -25,19 +25,19 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v23.receiver = self;
   v23.super_class = WristFlickController;
-  [(WristFlickController *)&v23 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(WristFlickController *)&v23 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   v22.receiver = self;
   v22.super_class = WristFlickController;
-  v8 = [(WristFlickController *)&v22 tableView:v6 cellForRowAtIndexPath:v7];
-  v9 = [v8 specifier];
-  v10 = [v9 propertyForKey:*MEMORY[0x277D3FFF0]];
+  v8 = [(WristFlickController *)&v22 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v8 specifier];
+  v10 = [specifier propertyForKey:*MEMORY[0x277D3FFF0]];
   v11 = [(WristFlickController *)self _wristFlickSpeedFromSpecifierKey:v10];
 
   AXSetWristFlickSpeed(v11);
@@ -45,8 +45,8 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = [v6 visibleCells];
-  v13 = [v12 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  visibleCells = [viewCopy visibleCells];
+  v13 = [visibleCells countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v13)
   {
     v14 = v13;
@@ -58,14 +58,14 @@
       {
         if (*v19 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(visibleCells);
         }
 
         [(WristFlickController *)self _updateCheckedStatusForCell:*(*(&v18 + 1) + 8 * v16++)];
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      v14 = [visibleCells countByEnumeratingWithState:&v18 objects:v24 count:16];
     }
 
     while (v14);
@@ -75,14 +75,14 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateCheckedStatusForCell:(id)a3
+- (void)_updateCheckedStatusForCell:(id)cell
 {
-  v7 = a3;
-  v4 = [v7 specifier];
-  v5 = [v4 propertyForKey:*MEMORY[0x277D3FFF0]];
+  cellCopy = cell;
+  specifier = [cellCopy specifier];
+  v5 = [specifier propertyForKey:*MEMORY[0x277D3FFF0]];
   v6 = [(WristFlickController *)self _wristFlickSpeedFromSpecifierKey:v5];
 
-  [v7 setChecked:v6 == AXGetWristFlickSpeed()];
+  [cellCopy setChecked:v6 == AXGetWristFlickSpeed()];
 }
 
 @end

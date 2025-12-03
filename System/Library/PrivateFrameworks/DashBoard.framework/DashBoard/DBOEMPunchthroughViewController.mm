@@ -1,41 +1,41 @@
 @interface DBOEMPunchthroughViewController
 - (DBEnvironment)environment;
-- (DBOEMPunchthroughViewController)initWithOEMPunchthroughEntity:(id)a3 environment:(id)a4;
+- (DBOEMPunchthroughViewController)initWithOEMPunchthroughEntity:(id)entity environment:(id)environment;
 - (NSString)identifier;
 - (void)_requestDismissal;
-- (void)activateSceneWithSettings:(id)a3 completion:(id)a4;
-- (void)backgroundSceneWithCompletion:(id)a3;
-- (void)foregroundSceneWithSettings:(id)a3 completion:(id)a4;
-- (void)handleEvent:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)activateSceneWithSettings:(id)settings completion:(id)completion;
+- (void)backgroundSceneWithCompletion:(id)completion;
+- (void)foregroundSceneWithSettings:(id)settings completion:(id)completion;
+- (void)handleEvent:(id)event;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)wrapTransition:(id)a3;
+- (void)wrapTransition:(id)transition;
 @end
 
 @implementation DBOEMPunchthroughViewController
 
-- (DBOEMPunchthroughViewController)initWithOEMPunchthroughEntity:(id)a3 environment:(id)a4
+- (DBOEMPunchthroughViewController)initWithOEMPunchthroughEntity:(id)entity environment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
+  entityCopy = entity;
+  environmentCopy = environment;
   v18.receiver = self;
   v18.super_class = DBOEMPunchthroughViewController;
   v9 = [(DBOEMPunchthroughViewController *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_entity, a3);
-    v11 = [v7 identifier];
-    v12 = [v11 copy];
+    objc_storeStrong(&v9->_entity, entity);
+    identifier = [entityCopy identifier];
+    v12 = [identifier copy];
     oemPunchthroughIdentifier = v10->_oemPunchthroughIdentifier;
     v10->_oemPunchthroughIdentifier = v12;
 
-    objc_storeWeak(&v10->_environment, v8);
-    v14 = [v8 environmentConfiguration];
-    v15 = [v14 uisyncSession];
+    objc_storeWeak(&v10->_environment, environmentCopy);
+    environmentConfiguration = [environmentCopy environmentConfiguration];
+    uisyncSession = [environmentConfiguration uisyncSession];
     uisyncSession = v10->_uisyncSession;
-    v10->_uisyncSession = v15;
+    v10->_uisyncSession = uisyncSession;
   }
 
   return v10;
@@ -44,8 +44,8 @@
 - (NSString)identifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(DBOEMPunchthroughViewController *)self oemPunchthroughIdentifier];
-  v4 = [v2 stringWithFormat:@"stream:%@", v3];
+  oemPunchthroughIdentifier = [(DBOEMPunchthroughViewController *)self oemPunchthroughIdentifier];
+  v4 = [v2 stringWithFormat:@"stream:%@", oemPunchthroughIdentifier];
 
   return v4;
 }
@@ -56,8 +56,8 @@
   v10.super_class = DBOEMPunchthroughViewController;
   [(DBOEMPunchthroughViewController *)&v10 viewDidLoad];
   v3 = +[_TtC9DashBoard14DBAssetLibrary shared];
-  v4 = [(DBOEMPunchthroughViewController *)self oemPunchthroughIdentifier];
-  v5 = [v3 shouldHideBackgroundWithIdentifier:v4];
+  oemPunchthroughIdentifier = [(DBOEMPunchthroughViewController *)self oemPunchthroughIdentifier];
+  v5 = [v3 shouldHideBackgroundWithIdentifier:oemPunchthroughIdentifier];
 
   if (v5)
   {
@@ -69,19 +69,19 @@
     [MEMORY[0x277D75348] tableBackgroundColor];
   }
   v6 = ;
-  v7 = [(DBOEMPunchthroughViewController *)self view];
-  [v7 setBackgroundColor:v6];
+  view = [(DBOEMPunchthroughViewController *)self view];
+  [view setBackgroundColor:v6];
 
-  v8 = [(DBOEMPunchthroughViewController *)self view];
-  v9 = [v8 layer];
-  [v9 setHitTestsAsOpaque:1];
+  view2 = [(DBOEMPunchthroughViewController *)self view];
+  layer = [view2 layer];
+  [layer setHitTestsAsOpaque:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = DBOEMPunchthroughViewController;
-  [(DBOEMPunchthroughViewController *)&v5 viewDidAppear:a3];
+  [(DBOEMPunchthroughViewController *)&v5 viewDidAppear:appear];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __49__DBOEMPunchthroughViewController_viewDidAppear___block_invoke;
@@ -112,11 +112,11 @@ void __49__DBOEMPunchthroughViewController_viewDidAppear___block_invoke(uint64_t
   [v10 sendTransitionEnd:MEMORY[0x277CBEC10] error:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = DBOEMPunchthroughViewController;
-  [(DBOEMPunchthroughViewController *)&v5 viewDidDisappear:a3];
+  [(DBOEMPunchthroughViewController *)&v5 viewDidDisappear:disappear];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __52__DBOEMPunchthroughViewController_viewDidDisappear___block_invoke;
@@ -147,45 +147,45 @@ void __52__DBOEMPunchthroughViewController_viewDidDisappear___block_invoke(uint6
   [v10 sendTransitionEnd:MEMORY[0x277CBEC10] error:0];
 }
 
-- (void)wrapTransition:(id)a3
+- (void)wrapTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [(DBOEMPunchthroughViewController *)self uisyncSession];
-  [v5 metadataTransfer:&unk_285AA4B68 error:0];
+  transitionCopy = transition;
+  uisyncSession = [(DBOEMPunchthroughViewController *)self uisyncSession];
+  [uisyncSession metadataTransfer:&unk_285AA4B68 error:0];
 
-  v4[2](v4);
-  v6 = [(DBOEMPunchthroughViewController *)self uisyncSession];
-  [v6 metadataTransfer:&unk_285AA4B90 error:0];
+  transitionCopy[2](transitionCopy);
+  uisyncSession2 = [(DBOEMPunchthroughViewController *)self uisyncSession];
+  [uisyncSession2 metadataTransfer:&unk_285AA4B90 error:0];
 }
 
-- (void)foregroundSceneWithSettings:(id)a3 completion:(id)a4
+- (void)foregroundSceneWithSettings:(id)settings completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)backgroundSceneWithCompletion:(id)a3
+- (void)backgroundSceneWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)activateSceneWithSettings:(id)a3 completion:(id)a4
+- (void)activateSceneWithSettings:(id)settings completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
-  v4 = [a3 type];
-  if (v4 == 10 || v4 == 1)
+  type = [event type];
+  if (type == 10 || type == 1)
   {
 
     [(DBOEMPunchthroughViewController *)self _requestDismissal];
@@ -195,12 +195,12 @@ void __52__DBOEMPunchthroughViewController_viewDidDisappear___block_invoke(uint6
 - (void)_requestDismissal
 {
   v6 = objc_alloc_init(DBMutableWorkspaceStateChangeRequest);
-  v3 = [(DBOEMPunchthroughViewController *)self oemPunchthroughIdentifier];
-  [(DBMutableWorkspaceStateChangeRequest *)v6 deactivateOEMPunchthrough:v3];
+  oemPunchthroughIdentifier = [(DBOEMPunchthroughViewController *)self oemPunchthroughIdentifier];
+  [(DBMutableWorkspaceStateChangeRequest *)v6 deactivateOEMPunchthrough:oemPunchthroughIdentifier];
 
-  v4 = [(DBOEMPunchthroughViewController *)self environment];
-  v5 = [v4 workspace];
-  [v5 requestStateChange:v6];
+  environment = [(DBOEMPunchthroughViewController *)self environment];
+  workspace = [environment workspace];
+  [workspace requestStateChange:v6];
 }
 
 - (DBEnvironment)environment

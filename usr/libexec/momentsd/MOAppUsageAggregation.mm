@@ -3,12 +3,12 @@
 - (NSDateInterval)dateInterval;
 - (NSDateInterval)longestActivity;
 - (_TtC8momentsd21MOAppUsageAggregation)init;
-- (_TtC8momentsd21MOAppUsageAggregation)initWithCategoryUsages:(id)a3 dateInterval:(id)a4 longestActivity:(id)a5;
+- (_TtC8momentsd21MOAppUsageAggregation)initWithCategoryUsages:(id)usages dateInterval:(id)interval longestActivity:(id)activity;
 - (id)getCategoryUsage;
 - (id)getDateInterval;
-- (void)setCategoryUsages:(id)a3;
-- (void)setDateInterval:(id)a3;
-- (void)setLongestActivity:(id)a3;
+- (void)setCategoryUsages:(id)usages;
+- (void)setDateInterval:(id)interval;
+- (void)setLongestActivity:(id)activity;
 @end
 
 @implementation MOAppUsageAggregation
@@ -32,19 +32,19 @@
   return v4.super.isa;
 }
 
-- (void)setCategoryUsages:(id)a3
+- (void)setCategoryUsages:(id)usages
 {
-  v3 = a3;
-  if (a3)
+  usagesCopy = usages;
+  if (usages)
   {
     type metadata accessor for MOAppCategoryUsage();
-    v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    usagesCopy = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
   v5 = OBJC_IVAR____TtC8momentsd21MOAppUsageAggregation_categoryUsages;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = v3;
+  *(self + v5) = usagesCopy;
 }
 
 - (NSDateInterval)dateInterval
@@ -63,7 +63,7 @@
   return v10.super.isa;
 }
 
-- (void)setDateInterval:(id)a3
+- (void)setDateInterval:(id)interval
 {
   v4 = type metadata accessor for DateInterval();
   v5 = *(v4 - 8);
@@ -74,7 +74,7 @@
   v10 = OBJC_IVAR____TtC8momentsd21MOAppUsageAggregation_dateInterval;
   swift_beginAccess();
   v11 = *(v5 + 40);
-  v12 = self;
+  selfCopy = self;
   v11(self + v10, v9, v4);
   swift_endAccess();
 }
@@ -102,13 +102,13 @@
   return v12;
 }
 
-- (void)setLongestActivity:(id)a3
+- (void)setLongestActivity:(id)activity
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation12DateIntervalVSgMd, &_s10Foundation12DateIntervalVSgMR);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8, v7);
   v9 = &v14 - v8;
-  if (a3)
+  if (activity)
   {
     static DateInterval._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = type metadata accessor for DateInterval();
@@ -123,12 +123,12 @@
 
   v12 = OBJC_IVAR____TtC8momentsd21MOAppUsageAggregation_longestActivity;
   swift_beginAccess();
-  v13 = self;
+  selfCopy = self;
   outlined assign with take of DateInterval?(v9, self + v12);
   swift_endAccess();
 }
 
-- (_TtC8momentsd21MOAppUsageAggregation)initWithCategoryUsages:(id)a3 dateInterval:(id)a4 longestActivity:(id)a5
+- (_TtC8momentsd21MOAppUsageAggregation)initWithCategoryUsages:(id)usages dateInterval:(id)interval longestActivity:(id)activity
 {
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation12DateIntervalVSgMd, &_s10Foundation12DateIntervalVSgMR);
   v9 = *(*(v8 - 8) + 64);
@@ -139,14 +139,14 @@
   v15 = *(v14 + 64);
   __chkstk_darwin(v13, v16);
   v18 = &v26 - ((v17 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (usages)
   {
     type metadata accessor for MOAppCategoryUsage();
-    a3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    usages = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
   static DateInterval._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a5)
+  if (activity)
   {
     static DateInterval._unconditionallyBridgeFromObjectiveC(_:)();
     v19 = 0;
@@ -164,7 +164,7 @@
   v22 = OBJC_IVAR____TtC8momentsd21MOAppUsageAggregation_longestActivity;
   v20(self + OBJC_IVAR____TtC8momentsd21MOAppUsageAggregation_longestActivity, 1, 1, v13);
   swift_beginAccess();
-  *(self + v21) = a3;
+  *(self + v21) = usages;
   (*(v14 + 16))(self + OBJC_IVAR____TtC8momentsd21MOAppUsageAggregation_dateInterval, v18, v13);
   swift_beginAccess();
   outlined assign with copy of DateInterval?(v12, self + v22);
@@ -181,7 +181,7 @@
 - (id)getCategoryUsage
 {
   v2 = *((swift_isaMask & *self) + 0x68);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   if (v4)
@@ -206,7 +206,7 @@
   __chkstk_darwin(v3, v6);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   v9 = *((swift_isaMask & *self) + 0x80);
-  v10 = self;
+  selfCopy = self;
   v9();
 
   v11.super.isa = DateInterval._bridgeToObjectiveC()().super.isa;

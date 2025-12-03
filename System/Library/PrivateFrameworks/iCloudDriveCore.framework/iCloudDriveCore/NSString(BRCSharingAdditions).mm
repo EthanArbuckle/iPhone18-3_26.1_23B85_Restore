@@ -6,19 +6,19 @@
 
 - (id)brc_fixDocumentExtensionIfNeededForShareURL:()BRCSharingAdditions
 {
-  v4 = [a3 brc_iWorkPathExtensions];
-  if ([v4 count] && (objc_msgSend(a1, "br_pathExtension"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "containsObject:", v5), v5, (v6 & 1) == 0))
+  brc_iWorkPathExtensions = [a3 brc_iWorkPathExtensions];
+  if ([brc_iWorkPathExtensions count] && (objc_msgSend(self, "br_pathExtension"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(brc_iWorkPathExtensions, "containsObject:", v5), v5, (v6 & 1) == 0))
   {
-    v8 = [v4 firstObject];
-    v7 = [a1 stringByAppendingPathExtension:v8];
+    firstObject = [brc_iWorkPathExtensions firstObject];
+    selfCopy = [self stringByAppendingPathExtension:firstObject];
   }
 
   else
   {
-    v7 = a1;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

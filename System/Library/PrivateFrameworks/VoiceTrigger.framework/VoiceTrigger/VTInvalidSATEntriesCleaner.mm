@@ -1,17 +1,17 @@
 @interface VTInvalidSATEntriesCleaner
-+ (id)cleanupInvalidSATEntriesAtSATRoot:(id)a3 payloadUtteranceLifeTimeInDays:(int64_t)a4 dryRun:(BOOL)a5;
-+ (id)cleanupOrphanedMetafilesAtURL:(id)a3 dryRun:(BOOL)a4;
-+ (id)cleanupOrphanedMetafilesForLanguage:(id)a3 payloadUtteranceLifeTimeInDays:(int64_t)a4 dryRun:(BOOL)a5;
-+ (id)cleanupPayloadUtterancesExceedingLifeTimeInDays:(int64_t)a3 forType:(unint64_t)a4 forLanguageCode:(id)a5 dryRun:(BOOL)a6;
++ (id)cleanupInvalidSATEntriesAtSATRoot:(id)root payloadUtteranceLifeTimeInDays:(int64_t)days dryRun:(BOOL)run;
++ (id)cleanupOrphanedMetafilesAtURL:(id)l dryRun:(BOOL)run;
++ (id)cleanupOrphanedMetafilesForLanguage:(id)language payloadUtteranceLifeTimeInDays:(int64_t)days dryRun:(BOOL)run;
++ (id)cleanupPayloadUtterancesExceedingLifeTimeInDays:(int64_t)days forType:(unint64_t)type forLanguageCode:(id)code dryRun:(BOOL)run;
 @end
 
 @implementation VTInvalidSATEntriesCleaner
 
-+ (id)cleanupPayloadUtterancesExceedingLifeTimeInDays:(int64_t)a3 forType:(unint64_t)a4 forLanguageCode:(id)a5 dryRun:(BOOL)a6
++ (id)cleanupPayloadUtterancesExceedingLifeTimeInDays:(int64_t)days forType:(unint64_t)type forLanguageCode:(id)code dryRun:(BOOL)run
 {
   v22 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a3 * -86400.0];
+  codeCopy = code;
+  v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:days * -86400.0];
   v11 = VTLogContextFacilityVoiceTrigger;
   if (v10)
   {
@@ -20,18 +20,18 @@
       *buf = 138543874;
       v17 = v10;
       v18 = 2114;
-      v19 = v9;
+      v19 = codeCopy;
       v20 = 1024;
-      v21 = a4;
+      typeCopy = type;
       _os_log_impl(&dword_223A31000, v11, OS_LOG_TYPE_DEFAULT, "Checking payload utterances prior to %{public}@ for language %{public}@ and modelType %d", buf, 0x1Cu);
     }
 
-    v12 = [VTSpeakerIdUtilities getImplicitEnrollmentUtterancesPriorTo:v10 forType:a4 forLanguageCode:v9];
+    v12 = [VTSpeakerIdUtilities getImplicitEnrollmentUtterancesPriorTo:v10 forType:type forLanguageCode:codeCopy];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __109__VTInvalidSATEntriesCleaner_cleanupPayloadUtterancesExceedingLifeTimeInDays_forType_forLanguageCode_dryRun___block_invoke;
     v14[3] = &__block_descriptor_33_e25_v32__0__NSString_8Q16_B24l;
-    v15 = a6;
+    runCopy = run;
     [v12 enumerateObjectsUsingBlock:v14];
   }
 
@@ -110,21 +110,21 @@ void __109__VTInvalidSATEntriesCleaner_cleanupPayloadUtterancesExceedingLifeTime
   }
 }
 
-+ (id)cleanupOrphanedMetafilesAtURL:(id)a3 dryRun:(BOOL)a4
++ (id)cleanupOrphanedMetafilesAtURL:(id)l dryRun:(BOOL)run
 {
   v62[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
+  lCopy = l;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v62[0] = *MEMORY[0x277CBE8E8];
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v62 count:1];
   v54 = 0;
-  v41 = v6;
-  v8 = [v6 contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:v7 options:0 error:&v54];
+  v41 = defaultManager;
+  v8 = [defaultManager contentsOfDirectoryAtURL:lCopy includingPropertiesForKeys:v7 options:0 error:&v54];
   v9 = v54;
 
   if (v9)
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error reading contents of audioDir: %@, err: %@", v5, v9];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error reading contents of audioDir: %@, err: %@", lCopy, v9];
     v11 = VTLogContextFacilityVoiceTrigger;
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {
@@ -134,14 +134,14 @@ void __109__VTInvalidSATEntriesCleaner_cleanupPayloadUtterancesExceedingLifeTime
     }
 
     v61 = v10;
-    v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v61 count:1];
+    array = [MEMORY[0x277CBEA60] arrayWithObjects:&v61 count:1];
     goto LABEL_39;
   }
 
-  v42 = a4;
-  v40 = v5;
-  v13 = [MEMORY[0x277CBEB38] dictionary];
-  v44 = [@"meta_version.json" stringByDeletingPathExtension];
+  runCopy = run;
+  v40 = lCopy;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  stringByDeletingPathExtension = [@"meta_version.json" stringByDeletingPathExtension];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
@@ -163,22 +163,22 @@ void __109__VTInvalidSATEntriesCleaner_cleanupPayloadUtterancesExceedingLifeTime
         }
 
         v19 = *(*(&v50 + 1) + 8 * i);
-        v20 = [v19 absoluteString];
-        v21 = [v20 lastPathComponent];
-        v22 = [v21 stringByDeletingPathExtension];
+        absoluteString = [v19 absoluteString];
+        lastPathComponent = [absoluteString lastPathComponent];
+        stringByDeletingPathExtension2 = [lastPathComponent stringByDeletingPathExtension];
 
-        if ([v22 compare:@"enrollment_completed"] && (objc_msgSend(v22, "isEqualToString:", v44) & 1) == 0)
+        if ([stringByDeletingPathExtension2 compare:@"enrollment_completed"] && (objc_msgSend(stringByDeletingPathExtension2, "isEqualToString:", stringByDeletingPathExtension) & 1) == 0)
         {
-          v23 = [v13 objectForKeyedSubscript:v22];
+          v23 = [dictionary objectForKeyedSubscript:stringByDeletingPathExtension2];
 
           if (v23)
           {
-            [v13 removeObjectForKey:v22];
+            [dictionary removeObjectForKey:stringByDeletingPathExtension2];
           }
 
           else
           {
-            [v13 setObject:v19 forKeyedSubscript:v22];
+            [dictionary setObject:v19 forKeyedSubscript:stringByDeletingPathExtension2];
           }
         }
       }
@@ -189,12 +189,12 @@ void __109__VTInvalidSATEntriesCleaner_cleanupPayloadUtterancesExceedingLifeTime
     while (v16);
   }
 
-  v12 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v10 = v13;
+  v10 = dictionary;
   v24 = [v10 countByEnumeratingWithState:&v46 objects:v59 count:16];
   if (v24)
   {
@@ -212,8 +212,8 @@ void __109__VTInvalidSATEntriesCleaner_cleanupPayloadUtterancesExceedingLifeTime
 
         v29 = *(*(&v46 + 1) + 8 * j);
         v30 = [v10 objectForKeyedSubscript:v29];
-        v31 = [v30 pathExtension];
-        v32 = [v31 compare:@"json"];
+        pathExtension = [v30 pathExtension];
+        v32 = [pathExtension compare:@"json"];
 
         v33 = VTLogContextFacilityVoiceTrigger;
         v34 = os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT);
@@ -228,7 +228,7 @@ void __109__VTInvalidSATEntriesCleaner_cleanupPayloadUtterancesExceedingLifeTime
 
           v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Found non meta-file: %@", v30];
 LABEL_22:
-          [v12 addObject:v28];
+          [array addObject:v28];
 
           goto LABEL_23;
         }
@@ -242,10 +242,10 @@ LABEL_22:
           _os_log_impl(&dword_223A31000, v33, OS_LOG_TYPE_DEFAULT, "Deleting invalid SAT entry: %{public}@ : <%{public}@>", buf, 0x16u);
         }
 
-        v35 = [v30 absoluteString];
-        [v12 addObject:v35];
+        absoluteString2 = [v30 absoluteString];
+        [array addObject:absoluteString2];
 
-        if (!v42)
+        if (!runCopy)
         {
           v45 = v43;
           [v41 removeItemAtURL:v30 error:&v45];
@@ -286,86 +286,86 @@ LABEL_23:
 LABEL_38:
 
   v8 = v39;
-  v5 = v40;
+  lCopy = v40;
   v9 = v43;
 LABEL_39:
 
-  return v12;
+  return array;
 }
 
-+ (id)cleanupOrphanedMetafilesForLanguage:(id)a3 payloadUtteranceLifeTimeInDays:(int64_t)a4 dryRun:(BOOL)a5
++ (id)cleanupOrphanedMetafilesForLanguage:(id)language payloadUtteranceLifeTimeInDays:(int64_t)days dryRun:(BOOL)run
 {
-  v5 = a5;
+  runCopy = run;
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [MEMORY[0x277CBEB18] array];
+  languageCopy = language;
+  array = [MEMORY[0x277CBEB18] array];
   v10 = VTLogContextFacilityVoiceTrigger;
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v27 = v8;
+    v27 = languageCopy;
     _os_log_impl(&dword_223A31000, v10, OS_LOG_TYPE_DEFAULT, "Processing lang_dir: %{public}@", buf, 0xCu);
   }
 
-  v25 = [VTSpeakerIdUtilities getSATAudioDirectoryForType:1 forLanguageCode:v8];
+  v25 = [VTSpeakerIdUtilities getSATAudioDirectoryForType:1 forLanguageCode:languageCopy];
   v11 = [MEMORY[0x277CBEBC0] URLWithString:?];
-  v12 = [a1 cleanupOrphanedMetafilesAtURL:v11 dryRun:v5];
+  v12 = [self cleanupOrphanedMetafilesAtURL:v11 dryRun:runCopy];
 
   if (v12)
   {
-    [v9 addObjectsFromArray:v12];
+    [array addObjectsFromArray:v12];
   }
 
   v24 = v12;
-  v23 = [VTSpeakerIdUtilities getSATAudioDirectoryForType:3 forLanguageCode:v8];
+  v23 = [VTSpeakerIdUtilities getSATAudioDirectoryForType:3 forLanguageCode:languageCopy];
   v13 = [MEMORY[0x277CBEBC0] URLWithString:?];
-  v14 = [a1 cleanupOrphanedMetafilesAtURL:v13 dryRun:v5];
+  v14 = [self cleanupOrphanedMetafilesAtURL:v13 dryRun:runCopy];
 
   if (v14)
   {
-    [v9 addObjectsFromArray:v14];
+    [array addObjectsFromArray:v14];
   }
 
-  v15 = a4;
-  v16 = [a1 cleanupPayloadUtterancesExceedingLifeTimeInDays:a4 forType:3 forLanguageCode:v8 dryRun:v5];
+  daysCopy = days;
+  v16 = [self cleanupPayloadUtterancesExceedingLifeTimeInDays:days forType:3 forLanguageCode:languageCopy dryRun:runCopy];
   if (v16)
   {
-    [v9 addObjectsFromArray:v16];
+    [array addObjectsFromArray:v16];
   }
 
-  v17 = [VTSpeakerIdUtilities getSATAudioDirectoryForType:2 forLanguageCode:v8];
+  v17 = [VTSpeakerIdUtilities getSATAudioDirectoryForType:2 forLanguageCode:languageCopy];
   v18 = [MEMORY[0x277CBEBC0] URLWithString:v17];
-  v19 = [a1 cleanupOrphanedMetafilesAtURL:v18 dryRun:v5];
+  v19 = [self cleanupOrphanedMetafilesAtURL:v18 dryRun:runCopy];
 
   if (v19)
   {
-    [v9 addObjectsFromArray:v19];
+    [array addObjectsFromArray:v19];
   }
 
-  v20 = [a1 cleanupPayloadUtterancesExceedingLifeTimeInDays:v15 forType:2 forLanguageCode:v8 dryRun:v5];
+  v20 = [self cleanupPayloadUtterancesExceedingLifeTimeInDays:daysCopy forType:2 forLanguageCode:languageCopy dryRun:runCopy];
   if (v20)
   {
-    [v9 addObjectsFromArray:v20];
+    [array addObjectsFromArray:v20];
   }
 
-  v21 = [v9 copy];
+  v21 = [array copy];
 
   return v21;
 }
 
-+ (id)cleanupInvalidSATEntriesAtSATRoot:(id)a3 payloadUtteranceLifeTimeInDays:(int64_t)a4 dryRun:(BOOL)a5
++ (id)cleanupInvalidSATEntriesAtSATRoot:(id)root payloadUtteranceLifeTimeInDays:(int64_t)days dryRun:(BOOL)run
 {
-  v5 = a5;
+  runCopy = run;
   v48[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  rootCopy = root;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v9 = *MEMORY[0x277CBE868];
   v48[0] = *MEMORY[0x277CBE8E8];
   v48[1] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v48 count:2];
   v42 = 0;
-  v32 = v8;
-  v11 = [v8 contentsOfDirectoryAtURL:v7 includingPropertiesForKeys:v10 options:0 error:&v42];
+  v32 = defaultManager;
+  v11 = [defaultManager contentsOfDirectoryAtURL:rootCopy includingPropertiesForKeys:v10 options:0 error:&v42];
   v12 = v42;
 
   if (v12)
@@ -374,19 +374,19 @@ LABEL_39:
     if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v45 = v7;
+      v45 = rootCopy;
       v46 = 2114;
       v47 = v12;
       _os_log_impl(&dword_223A31000, v13, OS_LOG_TYPE_DEFAULT, "Error reading contents of SAT root: %{public}@: err: %{public}@", buf, 0x16u);
     }
 
-    v14 = 0;
+    array = 0;
     goto LABEL_32;
   }
 
-  v33 = a4;
-  v31 = v7;
-  v14 = [MEMORY[0x277CBEB18] array];
+  daysCopy = days;
+  v31 = rootCopy;
+  array = [MEMORY[0x277CBEB18] array];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
@@ -397,7 +397,7 @@ LABEL_39:
   if (v16)
   {
     v17 = v16;
-    v34 = v5;
+    v34 = runCopy;
     v12 = 0;
     v18 = *v39;
     while (1)
@@ -429,7 +429,7 @@ LABEL_39:
           }
 
           v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error determining if file is a dir: url: %@, err: %@", v20, v22];
-          [v14 addObject:v24];
+          [array addObject:v24];
 
 LABEL_17:
           v12 = 0;
@@ -440,12 +440,12 @@ LABEL_18:
 
         if ([v21 BOOLValue])
         {
-          v25 = [v20 lastPathComponent];
-          v22 = [VTInvalidSATEntriesCleaner cleanupOrphanedMetafilesForLanguage:v25 payloadUtteranceLifeTimeInDays:v33 dryRun:v34];
+          lastPathComponent = [v20 lastPathComponent];
+          v22 = [VTInvalidSATEntriesCleaner cleanupOrphanedMetafilesForLanguage:lastPathComponent payloadUtteranceLifeTimeInDays:daysCopy dryRun:v34];
 
           if (v22)
           {
-            [v14 addObjectsFromArray:v22];
+            [array addObjectsFromArray:v22];
           }
 
           goto LABEL_17;
@@ -459,8 +459,8 @@ LABEL_18:
           _os_log_impl(&dword_223A31000, v26, OS_LOG_TYPE_DEFAULT, "Deleting invalid SAT file-entry: %{public}@", buf, 0xCu);
         }
 
-        v27 = [v20 absoluteString];
-        [v14 addObject:v27];
+        absoluteString = [v20 absoluteString];
+        [array addObject:absoluteString];
 
         if (v34)
         {
@@ -484,7 +484,7 @@ LABEL_18:
           }
 
           v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error deleting invalid SAT file-entry: url: %@, err: %@", v20, v12];
-          [v14 addObject:v22];
+          [array addObject:v22];
           goto LABEL_18;
         }
 
@@ -503,10 +503,10 @@ LABEL_10:
 LABEL_31:
 
   v11 = v30;
-  v7 = v31;
+  rootCopy = v31;
 LABEL_32:
 
-  return v14;
+  return array;
 }
 
 @end

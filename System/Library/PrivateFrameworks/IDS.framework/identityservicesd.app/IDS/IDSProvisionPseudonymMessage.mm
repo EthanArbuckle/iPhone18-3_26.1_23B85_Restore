@@ -1,34 +1,34 @@
 @interface IDSProvisionPseudonymMessage
-- (BOOL)hasRequiredKeys:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)hasRequiredKeys:(id *)keys;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)messageBody;
 - (id)requiredKeys;
 @end
 
 @implementation IDSProvisionPseudonymMessage
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = IDSProvisionPseudonymMessage;
-  v4 = [(IDSProvisionPseudonymMessage *)&v11 copyWithZone:a3];
+  v4 = [(IDSProvisionPseudonymMessage *)&v11 copyWithZone:zone];
   [v4 setOperation:{-[IDSProvisionPseudonymMessage operation](self, "operation")}];
-  v5 = [(IDSProvisionPseudonymMessage *)self pseudonymAlias];
-  [v4 setPseudonymAlias:v5];
+  pseudonymAlias = [(IDSProvisionPseudonymMessage *)self pseudonymAlias];
+  [v4 setPseudonymAlias:pseudonymAlias];
 
-  v6 = [(IDSProvisionPseudonymMessage *)self featureID];
-  [v4 setFeatureID:v6];
+  featureID = [(IDSProvisionPseudonymMessage *)self featureID];
+  [v4 setFeatureID:featureID];
 
-  v7 = [(IDSProvisionPseudonymMessage *)self scopeID];
-  [v4 setScopeID:v7];
+  scopeID = [(IDSProvisionPseudonymMessage *)self scopeID];
+  [v4 setScopeID:scopeID];
 
-  v8 = [(IDSProvisionPseudonymMessage *)self subservicesByPrimaryService];
-  [v4 setSubservicesByPrimaryService:v8];
+  subservicesByPrimaryService = [(IDSProvisionPseudonymMessage *)self subservicesByPrimaryService];
+  [v4 setSubservicesByPrimaryService:subservicesByPrimaryService];
 
   [(IDSProvisionPseudonymMessage *)self expiryEpoch];
   [v4 setExpiryEpoch:?];
-  v9 = [(IDSProvisionPseudonymMessage *)self userVisibleName];
-  [v4 setUserVisibleName:v9];
+  userVisibleName = [(IDSProvisionPseudonymMessage *)self userVisibleName];
+  [v4 setUserVisibleName:userVisibleName];
 
   return v4;
 }
@@ -44,22 +44,22 @@
 {
   v3 = objc_alloc_init(NSMutableDictionary);
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [(IDSProvisionPseudonymMessage *)self featureID];
-  if (v5)
+  featureID = [(IDSProvisionPseudonymMessage *)self featureID];
+  if (featureID)
   {
-    CFDictionarySetValue(v4, @"featureId", v5);
+    CFDictionarySetValue(v4, @"featureId", featureID);
   }
 
-  v6 = [(IDSProvisionPseudonymMessage *)self scopeID];
-  if (v6)
+  scopeID = [(IDSProvisionPseudonymMessage *)self scopeID];
+  if (scopeID)
   {
-    CFDictionarySetValue(v4, @"scopeId", v6);
+    CFDictionarySetValue(v4, @"scopeId", scopeID);
   }
 
-  v7 = [(IDSProvisionPseudonymMessage *)self subservicesByPrimaryService];
-  if (v7)
+  subservicesByPrimaryService = [(IDSProvisionPseudonymMessage *)self subservicesByPrimaryService];
+  if (subservicesByPrimaryService)
   {
-    CFDictionarySetValue(v4, @"allowedServices", v7);
+    CFDictionarySetValue(v4, @"allowedServices", subservicesByPrimaryService);
   }
 
   [(IDSProvisionPseudonymMessage *)self expiryEpoch];
@@ -69,27 +69,27 @@
     CFDictionarySetValue(v4, @"expiry-epoch-seconds", v8);
   }
 
-  v9 = [(IDSProvisionPseudonymMessage *)self userVisibleName];
-  if (v9)
+  userVisibleName = [(IDSProvisionPseudonymMessage *)self userVisibleName];
+  if (userVisibleName)
   {
-    CFDictionarySetValue(v4, @"userVisibleName", v9);
+    CFDictionarySetValue(v4, @"userVisibleName", userVisibleName);
   }
 
-  v10 = [(IDSProvisionPseudonymMessage *)self pseudonymAlias];
-  if (v10)
+  pseudonymAlias = [(IDSProvisionPseudonymMessage *)self pseudonymAlias];
+  if (pseudonymAlias)
   {
-    CFDictionarySetValue(v3, @"alias", v10);
+    CFDictionarySetValue(v3, @"alias", pseudonymAlias);
   }
 
-  v11 = [(IDSProvisionPseudonymMessage *)self operation];
-  if (v11 > 2)
+  operation = [(IDSProvisionPseudonymMessage *)self operation];
+  if (operation > 2)
   {
     v12 = @"create";
   }
 
   else
   {
-    v12 = off_100BDD010[v11];
+    v12 = off_100BDD010[operation];
   }
 
   CFDictionarySetValue(v3, @"operation", v12);
@@ -107,20 +107,20 @@
   return v3;
 }
 
-- (BOOL)hasRequiredKeys:(id *)a3
+- (BOOL)hasRequiredKeys:(id *)keys
 {
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [(IDSProvisionPseudonymMessage *)self selfURI];
+  selfURI = [(IDSProvisionPseudonymMessage *)self selfURI];
 
-  if (!v6)
+  if (!selfURI)
   {
     [v5 addObject:@"self URI"];
   }
 
-  if (*a3 && [v5 count])
+  if (*keys && [v5 count])
   {
     v7 = v5;
-    *a3 = v5;
+    *keys = v5;
   }
 
   if ([v5 count])
@@ -132,7 +132,7 @@
   {
     v10.receiver = self;
     v10.super_class = IDSProvisionPseudonymMessage;
-    v8 = [(IDSProvisionPseudonymMessage *)&v10 hasRequiredKeys:a3];
+    v8 = [(IDSProvisionPseudonymMessage *)&v10 hasRequiredKeys:keys];
   }
 
   return v8;

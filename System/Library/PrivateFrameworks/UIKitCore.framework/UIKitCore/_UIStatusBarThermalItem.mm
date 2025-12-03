@@ -1,31 +1,31 @@
 @interface _UIStatusBarThermalItem
-- (id)_colorForThermalColor:(int64_t)a3 imageTintColor:(id)a4;
-- (id)imageForUpdate:(id)a3;
+- (id)_colorForThermalColor:(int64_t)color imageTintColor:(id)tintColor;
+- (id)imageForUpdate:(id)update;
 @end
 
 @implementation _UIStatusBarThermalItem
 
-- (id)imageForUpdate:(id)a3
+- (id)imageForUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 data];
-  v6 = [v5 thermalEntry];
+  updateCopy = update;
+  data = [updateCopy data];
+  thermalEntry = [data thermalEntry];
 
-  v7 = [v6 color];
-  v8 = [v4 styleAttributes];
-  v9 = [v8 imageTintColor];
-  v10 = [(_UIStatusBarThermalItem *)self _colorForThermalColor:v7 imageTintColor:v9];
+  color = [thermalEntry color];
+  styleAttributes = [updateCopy styleAttributes];
+  imageTintColor = [styleAttributes imageTintColor];
+  v10 = [(_UIStatusBarThermalItem *)self _colorForThermalColor:color imageTintColor:imageTintColor];
 
-  v11 = [v4 styleAttributes];
-  v12 = [v11 imageNamePrefixes];
-  LOBYTE(v9) = [v12 containsObject:@"SystemUpdate_"];
+  styleAttributes2 = [updateCopy styleAttributes];
+  imageNamePrefixes = [styleAttributes2 imageNamePrefixes];
+  LOBYTE(imageTintColor) = [imageNamePrefixes containsObject:@"SystemUpdate_"];
 
   v13 = 15.0;
-  if ((v9 & 1) == 0)
+  if ((imageTintColor & 1) == 0)
   {
-    v14 = [v4 styleAttributes];
-    v15 = [v14 imageNamePrefixes];
-    v16 = [v15 containsObject:@"Large_"];
+    styleAttributes3 = [updateCopy styleAttributes];
+    imageNamePrefixes2 = [styleAttributes3 imageNamePrefixes];
+    v16 = [imageNamePrefixes2 containsObject:@"Large_"];
 
     if (v16)
     {
@@ -44,21 +44,21 @@
   v22[2] = __42___UIStatusBarThermalItem_imageForUpdate___block_invoke;
   v22[3] = &unk_1E711FC70;
   v23 = v10;
-  v24 = v6;
-  v18 = v6;
+  v24 = thermalEntry;
+  v18 = thermalEntry;
   v19 = v10;
   v20 = [(UIGraphicsImageRenderer *)v17 imageWithActions:v22];
 
   return v20;
 }
 
-- (id)_colorForThermalColor:(int64_t)a3 imageTintColor:(id)a4
+- (id)_colorForThermalColor:(int64_t)color imageTintColor:(id)tintColor
 {
-  v5 = a4;
+  tintColorCopy = tintColor;
   v6 = 0;
-  if (a3 > 2)
+  if (color > 2)
   {
-    switch(a3)
+    switch(color)
     {
       case 5:
         v7 = +[UIColor whiteColor];
@@ -74,16 +74,16 @@
     }
   }
 
-  else if (a3)
+  else if (color)
   {
-    if (a3 == 1)
+    if (color == 1)
     {
       v7 = +[UIColor orangeColor];
     }
 
     else
     {
-      if (a3 != 2)
+      if (color != 2)
       {
         goto LABEL_15;
       }
@@ -99,7 +99,7 @@
 
   v6 = v7;
 LABEL_15:
-  v8 = [v5 colorWithAlphaComponent:0.15];
+  v8 = [tintColorCopy colorWithAlphaComponent:0.15];
   v9 = [v6 _colorBlendedWithColor:v8 compositingFilter:*MEMORY[0x1E6979D40]];
 
   return v9;

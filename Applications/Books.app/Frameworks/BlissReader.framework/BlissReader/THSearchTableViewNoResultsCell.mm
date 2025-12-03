@@ -1,16 +1,16 @@
 @interface THSearchTableViewNoResultsCell
-- (THSearchTableViewNoResultsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (THSearchTableViewNoResultsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
-- (void)setSearchKind:(int)a3;
+- (void)setSearchKind:(int)kind;
 @end
 
 @implementation THSearchTableViewNoResultsCell
 
-- (THSearchTableViewNoResultsCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (THSearchTableViewNoResultsCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = THSearchTableViewNoResultsCell;
-  v4 = [(THSearchTableViewNoResultsCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(THSearchTableViewNoResultsCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -27,10 +27,10 @@
   return v5;
 }
 
-- (void)setSearchKind:(int)a3
+- (void)setSearchKind:(int)kind
 {
   v5 = THBundle();
-  if (a3)
+  if (kind)
   {
     v6 = @"No matches in media found.";
   }
@@ -41,9 +41,9 @@
   }
 
   v7 = [v5 localizedStringForKey:v6 value:&stru_471858 table:0];
-  v8 = [(THSearchTableViewNoResultsCell *)self textLabel];
+  textLabel = [(THSearchTableViewNoResultsCell *)self textLabel];
 
-  [v8 setText:v7];
+  [textLabel setText:v7];
 }
 
 - (void)layoutSubviews

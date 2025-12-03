@@ -8,8 +8,8 @@
 - (HDCodableMedicalIDMedication)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableMedicalIDMedication);
-  v3 = [a1 textDescription];
-  [(HDCodableMedicalIDMedication *)v2 setTextDescription:v3];
+  textDescription = [self textDescription];
+  [(HDCodableMedicalIDMedication *)v2 setTextDescription:textDescription];
 
   return v2;
 }
@@ -23,9 +23,9 @@
     v4 = MEMORY[0x277CCDDF8];
     v5 = v3;
     v6 = objc_alloc_init(v4);
-    v7 = [v5 textDescription];
+    textDescription = [v5 textDescription];
 
-    [v6 setTextDescription:v7];
+    [v6 setTextDescription:textDescription];
   }
 
   else

@@ -53,7 +53,7 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __132__UINavigationController_PKPaymentSetupProtocols___pk_presentPaymentSetupViewController_animated_performPreflight_delay_completion___block_invoke_3;
     aBlock[3] = &unk_1E8010DD0;
-    aBlock[4] = a1;
+    aBlock[4] = self;
     v18 = v14;
     v29 = v18;
     v19 = _Block_copy(aBlock);
@@ -63,7 +63,7 @@
     v21[3] = &unk_1E8015D78;
     v26 = &v35;
     v22 = v12;
-    v23 = a1;
+    selfCopy = self;
     v24 = v18;
     v27 = a4;
     v25 = v19;
@@ -90,8 +90,8 @@
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = [a1 viewControllers];
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    viewControllers = [self viewControllers];
+    v9 = [viewControllers countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v9)
     {
       v10 = v9;
@@ -106,7 +106,7 @@
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(viewControllers);
           }
 
           v15 = *(*(&v20 + 1) + 8 * v13);
@@ -124,7 +124,7 @@
         }
 
         while (v10 != v13);
-        v10 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v10 = [viewControllers countByEnumeratingWithState:&v20 objects:v24 count:16];
         v12 = v14;
         if (v10)
         {
@@ -144,7 +144,7 @@ LABEL_15:
       v4 = 0;
     }
 
-    [a1 setViewControllers:v7 animated:a4];
+    [self setViewControllers:v7 animated:a4];
   }
 
   else
@@ -173,8 +173,8 @@ LABEL_15:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [a1 viewControllers];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  viewControllers = [self viewControllers];
+  v9 = [viewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -185,7 +185,7 @@ LABEL_3:
     {
       if (*v15 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(viewControllers);
       }
 
       v13 = *(*(&v14 + 1) + 8 * v12);
@@ -197,7 +197,7 @@ LABEL_3:
 
       if (v10 == ++v12)
       {
-        v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v10 = [viewControllers countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v10)
         {
           goto LABEL_3;
@@ -208,7 +208,7 @@ LABEL_3:
     }
   }
 
-  [a1 setViewControllers:v7 animated:a4];
+  [self setViewControllers:v7 animated:a4];
 }
 
 - (void)_pk_popViewControllersFromViewController:()PKPaymentSetupProtocols toViewController:animated:
@@ -217,12 +217,12 @@ LABEL_3:
   v7 = a3;
   v8 = a4;
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v10 = [a1 viewControllers];
+  viewControllers = [self viewControllers];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v11 = [viewControllers countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -235,7 +235,7 @@ LABEL_3:
       {
         if (*v20 != v14)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(viewControllers);
         }
 
         v16 = *(*(&v19 + 1) + 8 * v15);
@@ -263,7 +263,7 @@ LABEL_3:
       }
 
       while (v12 != v15);
-      v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v12 = [viewControllers countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v12);
@@ -271,7 +271,7 @@ LABEL_3:
 
   if ((PKEqualObjects() & 1) == 0)
   {
-    [a1 setViewControllers:v9 animated:a5];
+    [self setViewControllers:v9 animated:a5];
   }
 }
 

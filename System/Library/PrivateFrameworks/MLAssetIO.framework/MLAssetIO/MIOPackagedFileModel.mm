@@ -1,88 +1,88 @@
 @interface MIOPackagedFileModel
-- (BOOL)isEqual:(id)a3;
-- (BOOL)writeToURL:(id)a3 error:(id *)a4;
-- (MIOPackagedFileModel)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (MIOPackagedFileModel)initWithModel:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)writeToURL:(id)l error:(id *)error;
+- (MIOPackagedFileModel)initWithContentsOfURL:(id)l error:(id *)error;
+- (MIOPackagedFileModel)initWithModel:(id)model;
 - (MIOVersionInfo)specificationVersion;
 - (NSArray)layers;
 - (NSArray)subModels;
 - (NSString)modelTypeName;
-- (id)computePrecisionForFunctionNamed:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)neuralNetworkLayerHistogramForFunctionNamed:(id)a3;
-- (id)programOperationHistogramForFunctionNamed:(id)a3;
-- (id)storagePrecisionForFunctionNamed:(id)a3;
+- (id)computePrecisionForFunctionNamed:(id)named;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)neuralNetworkLayerHistogramForFunctionNamed:(id)named;
+- (id)programOperationHistogramForFunctionNamed:(id)named;
+- (id)storagePrecisionForFunctionNamed:(id)named;
 - (unint64_t)hash;
 - (void)irProgram;
 @end
 
 @implementation MIOPackagedFileModel
 
-- (MIOPackagedFileModel)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (MIOPackagedFileModel)initWithContentsOfURL:(id)l error:(id *)error
 {
   __p[22] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v5 = [v8 copy];
+  lCopy = l;
+  v5 = [lCopy copy];
   packageURL = self->_packageURL;
   self->_packageURL = v5;
 
-  std::string::basic_string[abi:ne200100]<0>(__p, [v8 fileSystemRepresentation]);
+  std::string::basic_string[abi:ne200100]<0>(__p, [lCopy fileSystemRepresentation]);
   MPL::ModelPackage::ModelPackage();
 }
 
-- (MIOPackagedFileModel)initWithModel:(id)a3
+- (MIOPackagedFileModel)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = MIOPackagedFileModel;
   v6 = [(MIOPackagedFileModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_specificationFileModel, a3);
+    objc_storeStrong(&v6->_specificationFileModel, model);
   }
 
   return v7;
 }
 
-- (BOOL)writeToURL:(id)a3 error:(id *)a4
+- (BOOL)writeToURL:(id)l error:(id *)error
 {
   __p[29] = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v21 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [(MIOPackagedFileModel *)self packageURL];
-  v24 = [v5 path];
+  lCopy = l;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  packageURL = [(MIOPackagedFileModel *)self packageURL];
+  path = [packageURL path];
 
-  v23 = [v22 path];
-  LOBYTE(v5) = [v21 copyItemAtPath:v24 toPath:? error:?];
+  path2 = [lCopy path];
+  LOBYTE(packageURL) = [defaultManager copyItemAtPath:path toPath:? error:?];
   v20 = 0;
-  if (v5)
+  if (packageURL)
   {
-    v6 = v23;
-    std::string::basic_string[abi:ne200100]<0>(__p, [v23 UTF8String]);
+    v6 = path2;
+    std::string::basic_string[abi:ne200100]<0>(__p, [path2 UTF8String]);
     MPL::ModelPackage::ModelPackage();
   }
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    v7 = v24;
-    v8 = [v24 UTF8String];
-    v9 = v23;
-    -[MIOPackagedFileModel writeToURL:error:].cold.1(v8, [v23 UTF8String], __p);
+    v7 = path;
+    uTF8String = [path UTF8String];
+    v9 = path2;
+    -[MIOPackagedFileModel writeToURL:error:].cold.1(uTF8String, [path2 UTF8String], __p);
   }
 
-  if (a4)
+  if (error)
   {
     v10 = MEMORY[0x1E696ABC0];
     v25 = *MEMORY[0x1E696A578];
     v11 = MEMORY[0x1E696AEC0];
-    v12 = v24;
-    v13 = [v24 UTF8String];
-    v14 = v23;
-    v18 = [v11 stringWithFormat:@"Failed to copy model from %s to %s", v13, objc_msgSend(v23, "UTF8String")];
+    v12 = path;
+    uTF8String2 = [path UTF8String];
+    v14 = path2;
+    v18 = [v11 stringWithFormat:@"Failed to copy model from %s to %s", uTF8String2, objc_msgSend(path2, "UTF8String")];
     v26 = v18;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-    *a4 = [v10 errorWithDomain:@"com.apple.mlassetio" code:2 userInfo:?];
+    *error = [v10 errorWithDomain:@"com.apple.mlassetio" code:2 userInfo:?];
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -91,84 +91,84 @@
 
 - (MIOVersionInfo)specificationVersion
 {
-  v2 = [(MIOPackagedFileModel *)self specificationFileModel];
-  v3 = [v2 specificationVersion];
+  specificationFileModel = [(MIOPackagedFileModel *)self specificationFileModel];
+  specificationVersion = [specificationFileModel specificationVersion];
 
-  return v3;
+  return specificationVersion;
 }
 
 - (NSString)modelTypeName
 {
-  v2 = [(MIOPackagedFileModel *)self specificationFileModel];
-  v3 = [v2 modelTypeName];
+  specificationFileModel = [(MIOPackagedFileModel *)self specificationFileModel];
+  modelTypeName = [specificationFileModel modelTypeName];
 
-  return v3;
+  return modelTypeName;
 }
 
 - (NSArray)layers
 {
-  v2 = [(MIOPackagedFileModel *)self specificationFileModel];
-  v3 = [v2 layers];
+  specificationFileModel = [(MIOPackagedFileModel *)self specificationFileModel];
+  layers = [specificationFileModel layers];
 
-  return v3;
+  return layers;
 }
 
 - (NSArray)subModels
 {
-  v2 = [(MIOPackagedFileModel *)self specificationFileModel];
-  v3 = [v2 subModels];
+  specificationFileModel = [(MIOPackagedFileModel *)self specificationFileModel];
+  subModels = [specificationFileModel subModels];
 
-  return v3;
+  return subModels;
 }
 
-- (id)neuralNetworkLayerHistogramForFunctionNamed:(id)a3
+- (id)neuralNetworkLayerHistogramForFunctionNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(MIOPackagedFileModel *)self specificationFileModel];
-  v6 = [v5 neuralNetworkLayerHistogramForFunctionNamed:v4];
+  namedCopy = named;
+  specificationFileModel = [(MIOPackagedFileModel *)self specificationFileModel];
+  v6 = [specificationFileModel neuralNetworkLayerHistogramForFunctionNamed:namedCopy];
 
   return v6;
 }
 
-- (id)programOperationHistogramForFunctionNamed:(id)a3
+- (id)programOperationHistogramForFunctionNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(MIOPackagedFileModel *)self specificationFileModel];
-  v6 = [v5 programOperationHistogramForFunctionNamed:v4];
+  namedCopy = named;
+  specificationFileModel = [(MIOPackagedFileModel *)self specificationFileModel];
+  v6 = [specificationFileModel programOperationHistogramForFunctionNamed:namedCopy];
 
   return v6;
 }
 
-- (id)computePrecisionForFunctionNamed:(id)a3
+- (id)computePrecisionForFunctionNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(MIOPackagedFileModel *)self specificationFileModel];
-  v6 = [v5 computePrecisionForFunctionNamed:v4];
+  namedCopy = named;
+  specificationFileModel = [(MIOPackagedFileModel *)self specificationFileModel];
+  v6 = [specificationFileModel computePrecisionForFunctionNamed:namedCopy];
 
   return v6;
 }
 
-- (id)storagePrecisionForFunctionNamed:(id)a3
+- (id)storagePrecisionForFunctionNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(MIOPackagedFileModel *)self specificationFileModel];
-  v6 = [v5 storagePrecisionForFunctionNamed:v4];
+  namedCopy = named;
+  specificationFileModel = [(MIOPackagedFileModel *)self specificationFileModel];
+  v6 = [specificationFileModel storagePrecisionForFunctionNamed:namedCopy];
 
   return v6;
 }
 
 - (void)irProgram
 {
-  v2 = [(MIOPackagedFileModel *)self specificationFileModel];
-  v3 = [v2 irProgram];
+  specificationFileModel = [(MIOPackagedFileModel *)self specificationFileModel];
+  irProgram = [specificationFileModel irProgram];
 
-  return v3;
+  return irProgram;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -176,11 +176,11 @@
   else
   {
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) != 0 && (-[MIOPackagedFileModel modelDescription](self, "modelDescription"), v5 = objc_claimAutoreleasedReturnValue(), -[MIOPackagedFileModel modelDescription](v4, "modelDescription"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v5 isEqual:v6], v6, v5, (v7))
+    if (objc_opt_isKindOfClass() & 1) != 0 && (-[MIOPackagedFileModel modelDescription](self, "modelDescription"), v5 = objc_claimAutoreleasedReturnValue(), -[MIOPackagedFileModel modelDescription](equalCopy, "modelDescription"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v5 isEqual:v6], v6, v5, (v7))
     {
-      v8 = [(MIOPackagedFileModel *)self specificationFileModel];
-      v9 = [(MIOPackagedFileModel *)v4 specificationFileModel];
-      v10 = [v8 isEqual:v9];
+      specificationFileModel = [(MIOPackagedFileModel *)self specificationFileModel];
+      specificationFileModel2 = [(MIOPackagedFileModel *)equalCopy specificationFileModel];
+      v10 = [specificationFileModel isEqual:specificationFileModel2];
     }
 
     else
@@ -194,25 +194,25 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MIOPackagedFileModel *)self specificationFileModel];
-  v3 = [v2 hash];
+  specificationFileModel = [(MIOPackagedFileModel *)self specificationFileModel];
+  v3 = [specificationFileModel hash];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MIOPackagedFileModel alloc];
-  v5 = [(MIOPackagedFileModel *)self specificationFileModel];
-  v6 = [v5 copy];
+  specificationFileModel = [(MIOPackagedFileModel *)self specificationFileModel];
+  v6 = [specificationFileModel copy];
   v7 = [(MIOPackagedFileModel *)v4 initWithModel:v6];
 
-  v8 = [(MIOPackagedFileModel *)self packageURL];
-  v9 = [v8 copy];
+  packageURL = [(MIOPackagedFileModel *)self packageURL];
+  v9 = [packageURL copy];
   [(MIOPackagedFileModel *)v7 setPackageURL:v9];
 
-  v10 = [(MIOPackagedFileModel *)self modelDescription];
-  v11 = [v10 copy];
+  modelDescription = [(MIOPackagedFileModel *)self modelDescription];
+  v11 = [modelDescription copy];
   [(MIOPackagedFileModel *)v7 setModelDescription:v11];
 
   return v7;

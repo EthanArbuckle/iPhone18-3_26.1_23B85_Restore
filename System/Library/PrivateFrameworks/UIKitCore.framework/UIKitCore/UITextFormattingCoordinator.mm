@@ -2,18 +2,18 @@
 + (UITextFormattingCoordinator)textFormattingCoordinatorForWindowScene:(UIWindowScene *)windowScene;
 - (UITextFormattingCoordinator)initWithWindowScene:(UIWindowScene *)windowScene;
 - (id)delegate;
-- (void)fontPickerViewControllerDidPickFont:(id)a3;
-- (void)updateTextAttributesWithConversionHandler:(id)a3;
+- (void)fontPickerViewControllerDidPickFont:(id)font;
+- (void)updateTextAttributesWithConversionHandler:(id)handler;
 @end
 
 @implementation UITextFormattingCoordinator
 
 + (UITextFormattingCoordinator)textFormattingCoordinatorForWindowScene:(UIWindowScene *)windowScene
 {
-  v3 = [(UIWindowScene *)windowScene keyboardSceneDelegate];
-  v4 = [v3 textFormattingCoordinator];
+  keyboardSceneDelegate = [(UIWindowScene *)windowScene keyboardSceneDelegate];
+  textFormattingCoordinator = [keyboardSceneDelegate textFormattingCoordinator];
 
-  return v4;
+  return textFormattingCoordinator;
 }
 
 - (UITextFormattingCoordinator)initWithWindowScene:(UIWindowScene *)windowScene
@@ -23,39 +23,39 @@
   return [(UITextFormattingCoordinator *)&v4 init];
 }
 
-- (void)updateTextAttributesWithConversionHandler:(id)a3
+- (void)updateTextAttributesWithConversionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 updateTextAttributesWithConversionHandler:v4];
+    [v7 updateTextAttributesWithConversionHandler:handlerCopy];
   }
 
   else
   {
     v7 = +[UIWindow _applicationKeyWindow];
-    v6 = [v7 firstResponder];
-    [v6 updateTextAttributesWithConversionHandler:v4];
+    firstResponder = [v7 firstResponder];
+    [firstResponder updateTextAttributesWithConversionHandler:handlerCopy];
 
-    v4 = v6;
+    handlerCopy = firstResponder;
   }
 }
 
-- (void)fontPickerViewControllerDidPickFont:(id)a3
+- (void)fontPickerViewControllerDidPickFont:(id)font
 {
-  v4 = a3;
-  v5 = [v4 selectedFontDescriptor];
+  fontCopy = font;
+  selectedFontDescriptor = [fontCopy selectedFontDescriptor];
 
-  if (v5)
+  if (selectedFontDescriptor)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __67__UITextFormattingCoordinator_fontPickerViewControllerDidPickFont___block_invoke;
     aBlock[3] = &unk_1E7124760;
-    v8 = v4;
+    v8 = fontCopy;
     v6 = _Block_copy(aBlock);
     [(UITextFormattingCoordinator *)self updateTextAttributesWithConversionHandler:v6];
   }

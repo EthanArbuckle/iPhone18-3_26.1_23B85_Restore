@@ -1,60 +1,60 @@
 @interface PRPosterDescriptorHomeScreenConfiguration
-+ (id)defaultHomeScreenConfigurationForProvider:(id)a3 role:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)defaultHomeScreenConfigurationForProvider:(id)provider role:(id)role;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PRPosterDescriptorHomeScreenConfiguration)initWithBSXPCCoder:(id)a3;
-- (PRPosterDescriptorHomeScreenConfiguration)initWithCoder:(id)a3;
-- (PRPosterDescriptorHomeScreenConfiguration)initWithPreferredStyle:(unint64_t)a3 allowsModifyingLegibilityBlur:(BOOL)a4 preferredSolidColors:(id)a5 preferredGradientColors:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (PRPosterDescriptorHomeScreenConfiguration)initWithBSXPCCoder:(id)coder;
+- (PRPosterDescriptorHomeScreenConfiguration)initWithCoder:(id)coder;
+- (PRPosterDescriptorHomeScreenConfiguration)initWithPreferredStyle:(unint64_t)style allowsModifyingLegibilityBlur:(BOOL)blur preferredSolidColors:(id)colors preferredGradientColors:(id)gradientColors;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRPosterDescriptorHomeScreenConfiguration
 
-+ (id)defaultHomeScreenConfigurationForProvider:(id)a3 role:(id)a4
++ (id)defaultHomeScreenConfigurationForProvider:(id)provider role:(id)role
 {
-  v4 = a3;
+  providerCopy = provider;
   if (PFCurrentDeviceClass() == 1)
   {
     v5 = 0;
   }
 
-  else if ([v4 isEqualToString:@"com.apple.EmojiPoster.EmojiPosterExtension"])
+  else if ([providerCopy isEqualToString:@"com.apple.EmojiPoster.EmojiPosterExtension"])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"];
+    v5 = [providerCopy isEqualToString:@"com.apple.PhotosUIPrivate.PhotosPosterProvider"];
   }
 
-  v6 = -[PRPosterDescriptorHomeScreenConfiguration initWithPreferredStyle:allowsModifyingLegibilityBlur:preferredSolidColors:preferredGradientColors:]([PRPosterDescriptorHomeScreenConfiguration alloc], "initWithPreferredStyle:allowsModifyingLegibilityBlur:preferredSolidColors:preferredGradientColors:", v5, [v4 isEqualToString:@"com.apple.GradientPoster.GradientPosterExtension"] ^ 1, 0, 0);
+  v6 = -[PRPosterDescriptorHomeScreenConfiguration initWithPreferredStyle:allowsModifyingLegibilityBlur:preferredSolidColors:preferredGradientColors:]([PRPosterDescriptorHomeScreenConfiguration alloc], "initWithPreferredStyle:allowsModifyingLegibilityBlur:preferredSolidColors:preferredGradientColors:", v5, [providerCopy isEqualToString:@"com.apple.GradientPoster.GradientPosterExtension"] ^ 1, 0, 0);
 
   return v6;
 }
 
-- (PRPosterDescriptorHomeScreenConfiguration)initWithPreferredStyle:(unint64_t)a3 allowsModifyingLegibilityBlur:(BOOL)a4 preferredSolidColors:(id)a5 preferredGradientColors:(id)a6
+- (PRPosterDescriptorHomeScreenConfiguration)initWithPreferredStyle:(unint64_t)style allowsModifyingLegibilityBlur:(BOOL)blur preferredSolidColors:(id)colors preferredGradientColors:(id)gradientColors
 {
-  v10 = a5;
-  v11 = a6;
+  colorsCopy = colors;
+  gradientColorsCopy = gradientColors;
   v19.receiver = self;
   v19.super_class = PRPosterDescriptorHomeScreenConfiguration;
   v12 = [(PRPosterDescriptorHomeScreenConfiguration *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    v12->_preferredStyle = a3;
-    v12->_allowsModifyingLegibilityBlur = a4;
-    v14 = [v10 copy];
+    v12->_preferredStyle = style;
+    v12->_allowsModifyingLegibilityBlur = blur;
+    v14 = [colorsCopy copy];
     preferredSolidColors = v13->_preferredSolidColors;
     v13->_preferredSolidColors = v14;
 
-    v16 = [v11 copy];
+    v16 = [gradientColorsCopy copy];
     preferredGradientColors = v13->_preferredGradientColors;
     v13->_preferredGradientColors = v16;
   }
@@ -62,24 +62,24 @@
   return v13;
 }
 
-- (PRPosterDescriptorHomeScreenConfiguration)initWithCoder:(id)a3
+- (PRPosterDescriptorHomeScreenConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferredStyle"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferredStyle"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  if ([v4 containsValueForKey:@"allowsModifyingLegibilityBlur"])
+  if ([coderCopy containsValueForKey:@"allowsModifyingLegibilityBlur"])
   {
-    v8 = [v4 decodeBoolForKey:@"allowsModifyingLegibilityBlur"];
+    v8 = [coderCopy decodeBoolForKey:@"allowsModifyingLegibilityBlur"];
   }
 
   else
@@ -87,69 +87,69 @@
     v8 = 1;
   }
 
-  v9 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"preferredSolidColors"];
-  v10 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"preferredGradientColors"];
-  v11 = [(PRPosterDescriptorHomeScreenConfiguration *)self initWithPreferredStyle:v7 allowsModifyingLegibilityBlur:v8 preferredSolidColors:v9 preferredGradientColors:v10];
+  v9 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"preferredSolidColors"];
+  v10 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"preferredGradientColors"];
+  v11 = [(PRPosterDescriptorHomeScreenConfiguration *)self initWithPreferredStyle:unsignedIntegerValue allowsModifyingLegibilityBlur:v8 preferredSolidColors:v9 preferredGradientColors:v10];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:{-[PRPosterDescriptorHomeScreenConfiguration preferredStyle](self, "preferredStyle")}];
-  [v5 encodeObject:v6 forKey:@"preferredStyle"];
+  [coderCopy encodeObject:v6 forKey:@"preferredStyle"];
 
-  [v5 encodeBool:-[PRPosterDescriptorHomeScreenConfiguration allowsModifyingLegibilityBlur](self forKey:{"allowsModifyingLegibilityBlur"), @"allowsModifyingLegibilityBlur"}];
-  v7 = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredSolidColors];
-  [v5 encodeObject:v7 forKey:@"preferredSolidColors"];
+  [coderCopy encodeBool:-[PRPosterDescriptorHomeScreenConfiguration allowsModifyingLegibilityBlur](self forKey:{"allowsModifyingLegibilityBlur"), @"allowsModifyingLegibilityBlur"}];
+  preferredSolidColors = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredSolidColors];
+  [coderCopy encodeObject:preferredSolidColors forKey:@"preferredSolidColors"];
 
-  v8 = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredGradientColors];
-  [v5 encodeObject:v8 forKey:@"preferredGradientColors"];
+  preferredGradientColors = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredGradientColors];
+  [coderCopy encodeObject:preferredGradientColors forKey:@"preferredGradientColors"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PRPosterDescriptorHomeScreenConfiguration alloc];
-  v5 = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredStyle];
-  v6 = [(PRPosterDescriptorHomeScreenConfiguration *)self allowsModifyingLegibilityBlur];
-  v7 = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredSolidColors];
-  v8 = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredGradientColors];
-  v9 = [(PRPosterDescriptorHomeScreenConfiguration *)v4 initWithPreferredStyle:v5 allowsModifyingLegibilityBlur:v6 preferredSolidColors:v7 preferredGradientColors:v8];
+  preferredStyle = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredStyle];
+  allowsModifyingLegibilityBlur = [(PRPosterDescriptorHomeScreenConfiguration *)self allowsModifyingLegibilityBlur];
+  preferredSolidColors = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredSolidColors];
+  preferredGradientColors = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredGradientColors];
+  v9 = [(PRPosterDescriptorHomeScreenConfiguration *)v4 initWithPreferredStyle:preferredStyle allowsModifyingLegibilityBlur:allowsModifyingLegibilityBlur preferredSolidColors:preferredSolidColors preferredGradientColors:preferredGradientColors];
 
   return v9;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [PRMutablePosterDescriptorHomeScreenConfiguration alloc];
-  v5 = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredStyle];
-  v6 = [(PRPosterDescriptorHomeScreenConfiguration *)self allowsModifyingLegibilityBlur];
-  v7 = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredSolidColors];
-  v8 = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredGradientColors];
-  v9 = [(PRPosterDescriptorHomeScreenConfiguration *)v4 initWithPreferredStyle:v5 allowsModifyingLegibilityBlur:v6 preferredSolidColors:v7 preferredGradientColors:v8];
+  preferredStyle = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredStyle];
+  allowsModifyingLegibilityBlur = [(PRPosterDescriptorHomeScreenConfiguration *)self allowsModifyingLegibilityBlur];
+  preferredSolidColors = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredSolidColors];
+  preferredGradientColors = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredGradientColors];
+  v9 = [(PRPosterDescriptorHomeScreenConfiguration *)v4 initWithPreferredStyle:preferredStyle allowsModifyingLegibilityBlur:allowsModifyingLegibilityBlur preferredSolidColors:preferredSolidColors preferredGradientColors:preferredGradientColors];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredStyle];
-    if (v7 == [(PRPosterDescriptorHomeScreenConfiguration *)v6 preferredStyle]&& (v8 = [(PRPosterDescriptorHomeScreenConfiguration *)self allowsModifyingLegibilityBlur], v8 == [(PRPosterDescriptorHomeScreenConfiguration *)v6 allowsModifyingLegibilityBlur]) && ([(PRPosterDescriptorHomeScreenConfiguration *)self preferredSolidColors], v9 = objc_claimAutoreleasedReturnValue(), [(PRPosterDescriptorHomeScreenConfiguration *)v6 preferredSolidColors], v10 = objc_claimAutoreleasedReturnValue(), v11 = BSEqualObjects(), v10, v9, v11))
+    preferredStyle = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredStyle];
+    if (preferredStyle == [(PRPosterDescriptorHomeScreenConfiguration *)v6 preferredStyle]&& (v8 = [(PRPosterDescriptorHomeScreenConfiguration *)self allowsModifyingLegibilityBlur], v8 == [(PRPosterDescriptorHomeScreenConfiguration *)v6 allowsModifyingLegibilityBlur]) && ([(PRPosterDescriptorHomeScreenConfiguration *)self preferredSolidColors], v9 = objc_claimAutoreleasedReturnValue(), [(PRPosterDescriptorHomeScreenConfiguration *)v6 preferredSolidColors], v10 = objc_claimAutoreleasedReturnValue(), v11 = BSEqualObjects(), v10, v9, v11))
     {
-      v12 = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredGradientColors];
-      v13 = [(PRPosterDescriptorHomeScreenConfiguration *)v6 preferredGradientColors];
+      preferredGradientColors = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredGradientColors];
+      preferredGradientColors2 = [(PRPosterDescriptorHomeScreenConfiguration *)v6 preferredGradientColors];
       v14 = BSEqualObjects();
     }
 
@@ -169,25 +169,25 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredSolidColors];
-  v4 = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredGradientColors];
-  v5 = [MEMORY[0x1E698E6B8] builder];
-  v6 = [v5 appendUnsignedInteger:{-[PRPosterDescriptorHomeScreenConfiguration preferredStyle](self, "preferredStyle")}];
-  v7 = [v5 appendBool:{-[PRPosterDescriptorHomeScreenConfiguration allowsModifyingLegibilityBlur](self, "allowsModifyingLegibilityBlur")}];
+  preferredSolidColors = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredSolidColors];
+  preferredGradientColors = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredGradientColors];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v6 = [builder appendUnsignedInteger:{-[PRPosterDescriptorHomeScreenConfiguration preferredStyle](self, "preferredStyle")}];
+  v7 = [builder appendBool:{-[PRPosterDescriptorHomeScreenConfiguration allowsModifyingLegibilityBlur](self, "allowsModifyingLegibilityBlur")}];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __49__PRPosterDescriptorHomeScreenConfiguration_hash__block_invoke;
   v17[3] = &unk_1E7843660;
-  v8 = v5;
+  v8 = builder;
   v18 = v8;
-  [v3 enumerateObjectsUsingBlock:v17];
+  [preferredSolidColors enumerateObjectsUsingBlock:v17];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __49__PRPosterDescriptorHomeScreenConfiguration_hash__block_invoke_2;
   v15 = &unk_1E7843660;
   v16 = v8;
   v9 = v8;
-  [v4 enumerateObjectsUsingBlock:&v12];
+  [preferredGradientColors enumerateObjectsUsingBlock:&v12];
   v10 = [v9 hash];
 
   return v10;
@@ -200,7 +200,7 @@
   v8 = 3221225472;
   v9 = __56__PRPosterDescriptorHomeScreenConfiguration_description__block_invoke;
   v10 = &unk_1E7843070;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -209,24 +209,24 @@
   return v5;
 }
 
-- (PRPosterDescriptorHomeScreenConfiguration)initWithBSXPCCoder:(id)a3
+- (PRPosterDescriptorHomeScreenConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferredStyle"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferredStyle"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  if ([v4 containsValueForKey:@"allowsModifyingLegibilityBlur"])
+  if ([coderCopy containsValueForKey:@"allowsModifyingLegibilityBlur"])
   {
-    v8 = [v4 decodeBoolForKey:@"allowsModifyingLegibilityBlur"];
+    v8 = [coderCopy decodeBoolForKey:@"allowsModifyingLegibilityBlur"];
   }
 
   else
@@ -235,50 +235,50 @@
   }
 
   v9 = objc_opt_class();
-  v10 = [v4 decodeCollectionOfClass:v9 containingClass:objc_opt_class() forKey:@"preferredSolidColors"];
+  v10 = [coderCopy decodeCollectionOfClass:v9 containingClass:objc_opt_class() forKey:@"preferredSolidColors"];
   v11 = objc_opt_class();
-  v12 = [v4 decodeCollectionOfClass:v11 containingClass:objc_opt_class() forKey:@"preferredGradientColors"];
-  v13 = [(PRPosterDescriptorHomeScreenConfiguration *)self initWithPreferredStyle:v7 allowsModifyingLegibilityBlur:v8 preferredSolidColors:v10 preferredGradientColors:v12];
+  v12 = [coderCopy decodeCollectionOfClass:v11 containingClass:objc_opt_class() forKey:@"preferredGradientColors"];
+  v13 = [(PRPosterDescriptorHomeScreenConfiguration *)self initWithPreferredStyle:unsignedIntegerValue allowsModifyingLegibilityBlur:v8 preferredSolidColors:v10 preferredGradientColors:v12];
 
   return v13;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:{-[PRPosterDescriptorHomeScreenConfiguration preferredStyle](self, "preferredStyle")}];
-  [v5 encodeObject:v6 forKey:@"preferredStyle"];
+  [coderCopy encodeObject:v6 forKey:@"preferredStyle"];
 
-  [v5 encodeBool:-[PRPosterDescriptorHomeScreenConfiguration allowsModifyingLegibilityBlur](self forKey:{"allowsModifyingLegibilityBlur"), @"allowsModifyingLegibilityBlur"}];
-  v7 = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredSolidColors];
-  [v5 encodeObject:v7 forKey:@"preferredSolidColors"];
+  [coderCopy encodeBool:-[PRPosterDescriptorHomeScreenConfiguration allowsModifyingLegibilityBlur](self forKey:{"allowsModifyingLegibilityBlur"), @"allowsModifyingLegibilityBlur"}];
+  preferredSolidColors = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredSolidColors];
+  [coderCopy encodeObject:preferredSolidColors forKey:@"preferredSolidColors"];
 
-  v8 = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredGradientColors];
-  [v5 encodeObject:v8 forKey:@"preferredGradientColors"];
+  preferredGradientColors = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredGradientColors];
+  [coderCopy encodeObject:preferredGradientColors forKey:@"preferredGradientColors"];
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v11 = a3;
-  v4 = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredStyle];
-  if (v4 > 3)
+  formatterCopy = formatter;
+  preferredStyle = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredStyle];
+  if (preferredStyle > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = off_1E7845FD8[v4];
+    v5 = off_1E7845FD8[preferredStyle];
   }
 
-  [v11 appendString:v5 withName:@"preferredStyle"];
-  v6 = [v11 appendBool:-[PRPosterDescriptorHomeScreenConfiguration allowsModifyingLegibilityBlur](self withName:{"allowsModifyingLegibilityBlur"), @"allowsModifyingLegibilityBlur"}];
-  v7 = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredSolidColors];
-  v8 = [v11 appendObject:v7 withName:@"preferredSolidColors"];
+  [formatterCopy appendString:v5 withName:@"preferredStyle"];
+  v6 = [formatterCopy appendBool:-[PRPosterDescriptorHomeScreenConfiguration allowsModifyingLegibilityBlur](self withName:{"allowsModifyingLegibilityBlur"), @"allowsModifyingLegibilityBlur"}];
+  preferredSolidColors = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredSolidColors];
+  v8 = [formatterCopy appendObject:preferredSolidColors withName:@"preferredSolidColors"];
 
-  v9 = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredGradientColors];
-  v10 = [v11 appendObject:v9 withName:@"preferredGradientColors"];
+  preferredGradientColors = [(PRPosterDescriptorHomeScreenConfiguration *)self preferredGradientColors];
+  v10 = [formatterCopy appendObject:preferredGradientColors withName:@"preferredGradientColors"];
 }
 
 @end

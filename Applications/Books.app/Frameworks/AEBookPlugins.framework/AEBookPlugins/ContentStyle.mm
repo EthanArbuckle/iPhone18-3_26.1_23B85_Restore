@@ -1,26 +1,26 @@
 @interface ContentStyle
-+ (id)fontNameFromSummaryString:(id)a3;
++ (id)fontNameFromSummaryString:(id)string;
 - (BOOL)autoHyphenate;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)justification;
 - (ContentStyle)init;
-- (ContentStyle)initWithCoder:(id)a3;
-- (ContentStyle)initWithFontFamily:(id)a3 andDetails:(id)a4;
-- (ContentStyle)initWithSummaryString:(id)a3;
+- (ContentStyle)initWithCoder:(id)coder;
+- (ContentStyle)initWithFontFamily:(id)family andDetails:(id)details;
+- (ContentStyle)initWithSummaryString:(id)string;
 - (ContentStyleOverrideProvider)overrideProvider;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)summaryString;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ContentStyle
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(ContentStyle *)self fontFamily];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  fontFamily = [(ContentStyle *)self fontFamily];
+  v7 = [fontFamily copyWithZone:zone];
   [v5 setFontFamily:v7];
 
   [(ContentStyle *)self lineHeight];
@@ -36,14 +36,14 @@
 - (BOOL)autoHyphenate
 {
   autoHyphenate = self->_autoHyphenate;
-  v4 = [(ContentStyle *)self overrideProvider];
-  if (v4)
+  overrideProvider = [(ContentStyle *)self overrideProvider];
+  if (overrideProvider)
   {
-    v5 = v4;
-    v6 = [(ContentStyle *)self overrideProvider];
-    v7 = [v6 noAutoHyphenation];
+    v5 = overrideProvider;
+    overrideProvider2 = [(ContentStyle *)self overrideProvider];
+    noAutoHyphenation = [overrideProvider2 noAutoHyphenation];
 
-    autoHyphenate &= v7 ^ 1;
+    autoHyphenate &= noAutoHyphenation ^ 1;
   }
 
   return autoHyphenate & 1;
@@ -52,37 +52,37 @@
 - (BOOL)justification
 {
   justification = self->_justification;
-  v4 = [(ContentStyle *)self overrideProvider];
-  if (v4)
+  overrideProvider = [(ContentStyle *)self overrideProvider];
+  if (overrideProvider)
   {
-    v5 = v4;
-    v6 = [(ContentStyle *)self overrideProvider];
-    v7 = [v6 noJustification];
+    v5 = overrideProvider;
+    overrideProvider2 = [(ContentStyle *)self overrideProvider];
+    noJustification = [overrideProvider2 noJustification];
 
-    justification &= v7 ^ 1;
+    justification &= noJustification ^ 1;
   }
 
   return justification & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(ContentStyle *)self fontSize];
     v7 = v6;
     [v5 fontSize];
     if (v7 == v8)
     {
       mFontFamily = self->mFontFamily;
-      v10 = [v5 fontFamily];
-      if (-[NSString isEqualToString:](mFontFamily, "isEqualToString:", v10) && (-[ContentStyle lineHeight](self, "lineHeight"), v12 = v11, [v5 lineHeight], v12 == v13) && (v14 = -[ContentStyle autoHyphenate](self, "autoHyphenate"), v14 == objc_msgSend(v5, "autoHyphenate")) && (v15 = -[ContentStyle optimizeLegibility](self, "optimizeLegibility"), v15 == objc_msgSend(v5, "optimizeLegibility")))
+      fontFamily = [v5 fontFamily];
+      if (-[NSString isEqualToString:](mFontFamily, "isEqualToString:", fontFamily) && (-[ContentStyle lineHeight](self, "lineHeight"), v12 = v11, [v5 lineHeight], v12 == v13) && (v14 = -[ContentStyle autoHyphenate](self, "autoHyphenate"), v14 == objc_msgSend(v5, "autoHyphenate")) && (v15 = -[ContentStyle optimizeLegibility](self, "optimizeLegibility"), v15 == objc_msgSend(v5, "optimizeLegibility")))
       {
-        v18 = [(ContentStyle *)self justification];
-        v16 = v18 ^ [v5 justification] ^ 1;
+        justification = [(ContentStyle *)self justification];
+        v16 = justification ^ [v5 justification] ^ 1;
       }
 
       else
@@ -107,62 +107,62 @@
 
 - (id)description
 {
-  v3 = [(ContentStyle *)self fontFamily];
+  fontFamily = [(ContentStyle *)self fontFamily];
   [(ContentStyle *)self lineHeight];
   v5 = v4;
   [(ContentStyle *)self fontSize];
-  v7 = [NSString stringWithFormat:@"ContentStyle: <%p> font-family:%@ line-height:%g; font-size:%g; autoHyphenate = %d; optimizeLegibility = %d, justification=%d", self, v3, *&v5, v6, [(ContentStyle *)self autoHyphenate], [(ContentStyle *)self optimizeLegibility], [(ContentStyle *)self justification]];;
+  v7 = [NSString stringWithFormat:@"ContentStyle: <%p> font-family:%@ line-height:%g; font-size:%g; autoHyphenate = %d; optimizeLegibility = %d, justification=%d", self, fontFamily, *&v5, v6, [(ContentStyle *)self autoHyphenate], [(ContentStyle *)self optimizeLegibility], [(ContentStyle *)self justification]];;
 
   return v7;
 }
 
-- (ContentStyle)initWithCoder:(id)a3
+- (ContentStyle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ContentStyle *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fontFamily"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fontFamily"];
     [(ContentStyle *)v5 setFontFamily:v6];
 
-    [v4 decodeFloatForKey:@"lineHeight"];
+    [coderCopy decodeFloatForKey:@"lineHeight"];
     [(ContentStyle *)v5 setLineHeight:?];
-    [v4 decodeFloatForKey:@"fontSize"];
+    [coderCopy decodeFloatForKey:@"fontSize"];
     [(ContentStyle *)v5 setFontSize:?];
-    -[ContentStyle setAutoHyphenate:](v5, "setAutoHyphenate:", [v4 decodeBoolForKey:@"autoHyphenate"]);
-    -[ContentStyle setOptimizeLegibility:](v5, "setOptimizeLegibility:", [v4 decodeBoolForKey:@"legibility"]);
-    -[ContentStyle setJustification:](v5, "setJustification:", [v4 decodeBoolForKey:@"justification"]);
+    -[ContentStyle setAutoHyphenate:](v5, "setAutoHyphenate:", [coderCopy decodeBoolForKey:@"autoHyphenate"]);
+    -[ContentStyle setOptimizeLegibility:](v5, "setOptimizeLegibility:", [coderCopy decodeBoolForKey:@"legibility"]);
+    -[ContentStyle setJustification:](v5, "setJustification:", [coderCopy decodeBoolForKey:@"justification"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(ContentStyle *)self fontFamily];
-  [v5 encodeObject:v4 forKey:@"fontFamily"];
+  coderCopy = coder;
+  fontFamily = [(ContentStyle *)self fontFamily];
+  [coderCopy encodeObject:fontFamily forKey:@"fontFamily"];
 
   [(ContentStyle *)self lineHeight];
-  [v5 encodeFloat:@"lineHeight" forKey:?];
+  [coderCopy encodeFloat:@"lineHeight" forKey:?];
   [(ContentStyle *)self fontSize];
-  [v5 encodeFloat:@"fontSize" forKey:?];
-  [v5 encodeBool:-[ContentStyle autoHyphenate](self forKey:{"autoHyphenate"), @"autoHyphenate"}];
-  [v5 encodeBool:-[ContentStyle optimizeLegibility](self forKey:{"optimizeLegibility"), @"legibility"}];
-  [v5 encodeBool:-[ContentStyle justification](self forKey:{"justification"), @"justification"}];
+  [coderCopy encodeFloat:@"fontSize" forKey:?];
+  [coderCopy encodeBool:-[ContentStyle autoHyphenate](self forKey:{"autoHyphenate"), @"autoHyphenate"}];
+  [coderCopy encodeBool:-[ContentStyle optimizeLegibility](self forKey:{"optimizeLegibility"), @"legibility"}];
+  [coderCopy encodeBool:-[ContentStyle justification](self forKey:{"justification"), @"justification"}];
 }
 
 - (id)summaryString
 {
   v3 = [NSArray alloc];
-  v4 = [(ContentStyle *)self fontFamily];
+  fontFamily = [(ContentStyle *)self fontFamily];
   [(ContentStyle *)self lineHeight];
   v6 = [NSString stringWithFormat:@"%f", v5];
   [(ContentStyle *)self fontSize];
   v8 = [NSString stringWithFormat:@"%f", v7];
   v9 = [NSString stringWithFormat:@"%d", [(ContentStyle *)self autoHyphenate]];
   v10 = [NSString stringWithFormat:@"%d", [(ContentStyle *)self optimizeLegibility]];
-  v11 = [v3 initWithObjects:{v4, v6, v8, v9, v10, 0}];
+  v11 = [v3 initWithObjects:{fontFamily, v6, v8, v9, v10, 0}];
 
   v12 = [v11 componentsJoinedByString:gContentStyleSeparator];
 
@@ -183,9 +183,9 @@
   return v2;
 }
 
-+ (id)fontNameFromSummaryString:(id)a3
++ (id)fontNameFromSummaryString:(id)string
 {
-  v3 = [a3 componentsSeparatedByString:gContentStyleSeparator];
+  v3 = [string componentsSeparatedByString:gContentStyleSeparator];
   if ([v3 count])
   {
     v4 = [v3 objectAtIndex:0];
@@ -199,13 +199,13 @@
   return v4;
 }
 
-- (ContentStyle)initWithSummaryString:(id)a3
+- (ContentStyle)initWithSummaryString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = [(ContentStyle *)self init];
   if (v5)
   {
-    v6 = [v4 componentsSeparatedByString:gContentStyleSeparator];
+    v6 = [stringCopy componentsSeparatedByString:gContentStyleSeparator];
     if ([v6 count] >= 3)
     {
       v7 = [v6 objectAtIndex:0];
@@ -235,23 +235,23 @@
   return v5;
 }
 
-- (ContentStyle)initWithFontFamily:(id)a3 andDetails:(id)a4
+- (ContentStyle)initWithFontFamily:(id)family andDetails:(id)details
 {
-  v6 = a3;
-  v7 = a4;
+  familyCopy = family;
+  detailsCopy = details;
   v8 = [(ContentStyle *)self init];
   v9 = v8;
   if (v8)
   {
-    [(ContentStyle *)v8 setFontFamily:v6];
+    [(ContentStyle *)v8 setFontFamily:familyCopy];
     objc_opt_class();
-    v10 = [v7 valueForKey:@"fontSize"];
+    v10 = [detailsCopy valueForKey:@"fontSize"];
     v11 = BUDynamicCast();
     [v11 floatValue];
     [(ContentStyle *)v9 setFontSize:?];
 
     objc_opt_class();
-    v12 = [v7 valueForKey:@"lineHeight"];
+    v12 = [detailsCopy valueForKey:@"lineHeight"];
     v13 = BUDynamicCast();
     [v13 floatValue];
     [(ContentStyle *)v9 setLineHeight:?];

@@ -1,12 +1,12 @@
 @interface AWDFlagstonePowerMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDFlagstonePowerMetrics
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = AWDFlagstonePowerMetrics;
   v3 = [(AWDFlagstonePowerMetrics *)&v7 description];
-  v4 = [(AWDFlagstonePowerMetrics *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AWDFlagstonePowerMetrics *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -34,70 +34,70 @@
   header = self->_header;
   if (header)
   {
-    v6 = [(AWDHeaderInfoS *)header dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"header"];
+    dictionaryRepresentation = [(AWDHeaderInfoS *)header dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"header"];
   }
 
   sCntrsPower = self->_sCntrsPower;
   if (sCntrsPower)
   {
-    v8 = [(AWDCountersPowerS *)sCntrsPower dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"s_cntrs_power"];
+    dictionaryRepresentation2 = [(AWDCountersPowerS *)sCntrsPower dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"s_cntrs_power"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_header)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sCntrsPower)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 32) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_header)
   {
-    [v4 setHeader:?];
-    v4 = v5;
+    [toCopy setHeader:?];
+    toCopy = v5;
   }
 
   if (self->_sCntrsPower)
   {
     [v5 setSCntrsPower:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -105,35 +105,35 @@
     *(v5 + 32) |= 1u;
   }
 
-  v7 = [(AWDHeaderInfoS *)self->_header copyWithZone:a3];
+  v7 = [(AWDHeaderInfoS *)self->_header copyWithZone:zone];
   v8 = v6[2];
   v6[2] = v7;
 
-  v9 = [(AWDCountersPowerS *)self->_sCntrsPower copyWithZone:a3];
+  v9 = [(AWDCountersPowerS *)self->_sCntrsPower copyWithZone:zone];
   v10 = v6[3];
   v6[3] = v9;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
 
@@ -141,13 +141,13 @@ LABEL_11:
   }
 
   header = self->_header;
-  if (header | *(v4 + 2) && ![(AWDHeaderInfoS *)header isEqual:?])
+  if (header | *(equalCopy + 2) && ![(AWDHeaderInfoS *)header isEqual:?])
   {
     goto LABEL_11;
   }
 
   sCntrsPower = self->_sCntrsPower;
-  if (sCntrsPower | *(v4 + 3))
+  if (sCntrsPower | *(equalCopy + 3))
   {
     v9 = [(AWDCountersPowerS *)sCntrsPower isEqual:?];
 
@@ -177,13 +177,13 @@ LABEL_11:
   return v4 ^ [(AWDCountersPowerS *)self->_sCntrsPower hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[4])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[4])
   {
-    self->_timestamp = v4[1];
+    self->_timestamp = fromCopy[1];
     *&self->_has |= 1u;
   }
 

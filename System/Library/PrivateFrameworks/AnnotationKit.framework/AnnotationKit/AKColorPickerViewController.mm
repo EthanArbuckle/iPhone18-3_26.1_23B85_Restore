@@ -1,24 +1,24 @@
 @interface AKColorPickerViewController
-- (AKColorPickerViewController)initWithController:(id)a3;
+- (AKColorPickerViewController)initWithController:(id)controller;
 - (AKController)controller;
-- (id)convertTextAttributes:(id)a3;
-- (void)valueChanged:(id)a3;
+- (id)convertTextAttributes:(id)attributes;
+- (void)valueChanged:(id)changed;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AKColorPickerViewController
 
-- (AKColorPickerViewController)initWithController:(id)a3
+- (AKColorPickerViewController)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = AKColorPickerViewController;
   v5 = [(AKColorPickerViewController *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(AKColorPickerViewController *)v5 setController:v4];
+    [(AKColorPickerViewController *)v5 setController:controllerCopy];
     [(AKColorPickerViewController *)v6 setPreferredContentSize:60.0, 382.0];
   }
 
@@ -37,21 +37,21 @@
   v7 = [(AKColorPaletteView *)v3 initWithFrame:0.0, 0.0, v5, v6];
   [(AKColorPickerViewController *)self setColorPalette:v7];
 
-  v8 = [(AKColorPickerViewController *)self colorPalette];
-  [v8 setScrollDirection:0];
+  colorPalette = [(AKColorPickerViewController *)self colorPalette];
+  [colorPalette setScrollDirection:0];
 
-  v9 = [(AKColorPickerViewController *)self colorPalette];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  colorPalette2 = [(AKColorPickerViewController *)self colorPalette];
+  [colorPalette2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(AKColorPickerViewController *)self colorPalette];
-  [v10 setTag:765101];
+  colorPalette3 = [(AKColorPickerViewController *)self colorPalette];
+  [colorPalette3 setTag:765101];
 
-  v11 = [(AKColorPickerViewController *)self colorPalette];
-  [v11 addTarget:self action:sel_valueChanged_ forControlEvents:4096];
+  colorPalette4 = [(AKColorPickerViewController *)self colorPalette];
+  [colorPalette4 addTarget:self action:sel_valueChanged_ forControlEvents:4096];
 
-  v12 = [(AKColorPickerViewController *)self view];
-  v13 = [(AKColorPickerViewController *)self colorPalette];
-  [v12 addSubview:v13];
+  view = [(AKColorPickerViewController *)self view];
+  colorPalette5 = [(AKColorPickerViewController *)self colorPalette];
+  [view addSubview:colorPalette5];
 
   v14 = _NSDictionaryOfVariableBindings(&cfstr_Colorpalette.isa, self->_colorPalette, 0);
   v15 = MEMORY[0x277CCAAD0];
@@ -63,34 +63,34 @@
   [v17 activateConstraints:v18];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = AKColorPickerViewController;
-  [(AKColorPickerViewController *)&v6 viewWillAppear:a3];
-  v4 = [(AKColorPickerViewController *)self color];
-  v5 = [(AKColorPickerViewController *)self colorPalette];
-  [v5 setColor:v4];
+  [(AKColorPickerViewController *)&v6 viewWillAppear:appear];
+  color = [(AKColorPickerViewController *)self color];
+  colorPalette = [(AKColorPickerViewController *)self colorPalette];
+  [colorPalette setColor:color];
 }
 
-- (void)valueChanged:(id)a3
+- (void)valueChanged:(id)changed
 {
-  v9 = a3;
-  v4 = [(AKColorPickerViewController *)self colorPalette];
-  v5 = [v4 color];
-  [(AKColorPickerViewController *)self setColor:v5];
+  changedCopy = changed;
+  colorPalette = [(AKColorPickerViewController *)self colorPalette];
+  color = [colorPalette color];
+  [(AKColorPickerViewController *)self setColor:color];
 
-  v6 = [(AKColorPickerViewController *)self controller];
+  controller = [(AKColorPickerViewController *)self controller];
   if ([(AKColorPickerViewController *)self colorAttributeTag]== 765101)
   {
-    [v6 performActionForSender:v9];
+    [controller performActionForSender:changedCopy];
   }
 
   else if ([(AKColorPickerViewController *)self colorAttributeTag]== 765106)
   {
-    v7 = [MEMORY[0x277D75128] sharedApplication];
-    v8 = [v6 actionController];
-    [v7 sendAction:sel_performActionForSender_ to:v8 from:self forEvent:0];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    actionController = [controller actionController];
+    [mEMORY[0x277D75128] sendAction:sel_performActionForSender_ to:actionController from:self forEvent:0];
   }
 
   else
@@ -99,36 +99,36 @@
   }
 }
 
-- (id)convertTextAttributes:(id)a3
+- (id)convertTextAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = *MEMORY[0x277D740C0];
-  v6 = [v4 objectForKey:*MEMORY[0x277D740C0]];
-  v7 = [(AKColorPickerViewController *)self color];
-  if (!v6)
+  blackColor = [attributesCopy objectForKey:*MEMORY[0x277D740C0]];
+  color = [(AKColorPickerViewController *)self color];
+  if (!blackColor)
   {
-    v6 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  if ([v6 akIsEqualToColor:v7])
+  if ([blackColor akIsEqualToColor:color])
   {
     v8 = 0;
   }
 
   else
   {
-    if (v4)
+    if (attributesCopy)
     {
-      v9 = [v4 mutableCopy];
+      dictionary = [attributesCopy mutableCopy];
     }
 
     else
     {
-      v9 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
-    v8 = v9;
-    [v9 setObject:v7 forKey:v5];
+    v8 = dictionary;
+    [dictionary setObject:color forKey:v5];
   }
 
   if (v8)
@@ -138,7 +138,7 @@
 
   else
   {
-    v10 = v4;
+    v10 = attributesCopy;
   }
 
   v11 = v10;

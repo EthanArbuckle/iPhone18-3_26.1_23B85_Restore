@@ -1,21 +1,21 @@
 @interface MacPopoverPresentationController
-- (BOOL)_isCoordinateVisibleInContainerViewController:(id)a3;
+- (BOOL)_isCoordinateVisibleInContainerViewController:(id)controller;
 - (CGRect)anchorRect;
 - (CGSize)preferredContentSize;
 - (CLLocationCoordinate2D)coordinate;
 - (ContaineeViewController)containeeViewController;
 - (ContainerViewController)containerViewController;
-- (MacPopoverPresentationController)initWithContaineeViewController:(id)a3;
+- (MacPopoverPresentationController)initWithContaineeViewController:(id)controller;
 - (MacPopoverPresentationControllerDelegate)delegate;
 - (NSArray)passthroughViews;
 - (void)_didDismiss;
 - (void)_willDismiss;
 - (void)configurePopoverPosition;
 - (void)configurePopoverSize;
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4;
-- (void)presentFromContainerViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setPassthroughViews:(id)a3;
-- (void)setPreferredContentSize:(CGSize)a3;
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion;
+- (void)presentFromContainerViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)setPassthroughViews:(id)views;
+- (void)setPreferredContentSize:(CGSize)size;
 @end
 
 @implementation MacPopoverPresentationController
@@ -120,14 +120,14 @@
     v55 = width;
     v56 = y;
     WeakRetained = objc_loadWeakRetained(&self->_containerViewController);
-    v61 = [WeakRetained chromeViewController];
+    chromeViewController = [WeakRetained chromeViewController];
 
-    v10 = [v61 view];
-    v11 = [v61 mapView];
-    v12 = v11;
+    view = [chromeViewController view];
+    mapView = [chromeViewController mapView];
+    v12 = mapView;
     if (v6)
     {
-      [v11 convertCoordinate:v11 toPointToView:{self->_coordinate.latitude, self->_coordinate.longitude}];
+      [mapView convertCoordinate:mapView toPointToView:{self->_coordinate.latitude, self->_coordinate.longitude}];
       x = v13 + -30.0;
       v16 = v15 + -74.0;
       v17 = 60.0;
@@ -143,22 +143,22 @@
     }
 
     v19 = objc_loadWeakRetained(&self->_containeeViewController);
-    v20 = [v19 popoverPresentationController];
+    popoverPresentationController = [v19 popoverPresentationController];
 
-    [v20 setSourceView:v10];
+    [popoverPresentationController setSourceView:view];
     v59 = v16;
     v60 = x;
     v57 = v18;
     v58 = v17;
-    [v20 setSourceRect:{x, v16, v18, v17}];
-    v21 = [v61 viewportLayoutGuide];
-    [v21 layoutFrame];
+    [popoverPresentationController setSourceRect:{x, v16, v18, v17}];
+    viewportLayoutGuide = [chromeViewController viewportLayoutGuide];
+    [viewportLayoutGuide layoutFrame];
     v23 = v22;
     v25 = v24;
     v27 = v26;
     v29 = v28;
-    v30 = [v21 owningView];
-    [v30 bounds];
+    owningView = [viewportLayoutGuide owningView];
+    [owningView bounds];
     v50 = v31;
     rect = v32;
     v52 = v34;
@@ -221,7 +221,7 @@
       }
     }
 
-    [v10 convertRect:v12 toView:{v60, v59, v57, v58}];
+    [view convertRect:v12 toView:{v60, v59, v57, v58}];
     CGRectGetMidX(v71);
     [v12 bounds];
     v72.origin.x = v41 + left;
@@ -242,15 +242,15 @@
       v48 = 4;
     }
 
-    [v20 setPermittedArrowDirections:v48];
+    [popoverPresentationController setPermittedArrowDirections:v48];
   }
 }
 
-- (BOOL)_isCoordinateVisibleInContainerViewController:(id)a3
+- (BOOL)_isCoordinateVisibleInContainerViewController:(id)controller
 {
-  v4 = [a3 chromeViewController];
-  v5 = [v4 mapView];
-  [v5 visibleMapRect];
+  chromeViewController = [controller chromeViewController];
+  mapView = [chromeViewController mapView];
+  [mapView visibleMapRect];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -293,10 +293,10 @@
   *&self->_isPresented = 256;
 }
 
-- (void)dismissAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if (self->_isPresented)
   {
     objc_initWeak(&location, self);
@@ -306,14 +306,14 @@
     v10[2] = sub_100895008;
     v10[3] = &unk_101660648;
     objc_copyWeak(&v12, &location);
-    v11 = v6;
+    v11 = completionCopy;
     v7 = objc_retainBlock(v10);
     WeakRetained = objc_loadWeakRetained(&self->_containeeViewController);
-    v9 = [WeakRetained presentingViewController];
+    presentingViewController = [WeakRetained presentingViewController];
 
-    if (v9)
+    if (presentingViewController)
     {
-      [v9 dismissViewControllerAnimated:v4 completion:v7];
+      [presentingViewController dismissViewControllerAnimated:animatedCopy completion:v7];
     }
 
     else
@@ -326,29 +326,29 @@
   }
 }
 
-- (void)presentFromContainerViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentFromContainerViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  obj = a3;
-  v8 = a5;
+  animatedCopy = animated;
+  obj = controller;
+  completionCopy = completion;
   if (!self->_isPresented && !self->_isDismissing)
   {
     WeakRetained = objc_loadWeakRetained(&self->_containeeViewController);
-    v10 = [WeakRetained presentingViewController];
+    presentingViewController = [WeakRetained presentingViewController];
 
-    if (!v10 && CLLocationCoordinate2DIsValid(self->_coordinate) && [(MacPopoverPresentationController *)self _isCoordinateVisibleInContainerViewController:obj])
+    if (!presentingViewController && CLLocationCoordinate2DIsValid(self->_coordinate) && [(MacPopoverPresentationController *)self _isCoordinateVisibleInContainerViewController:obj])
     {
       self->_isPresented = 1;
       objc_storeWeak(&self->_containerViewController, obj);
       v11 = objc_loadWeakRetained(&self->_containeeViewController);
-      v12 = [v11 popoverPresentationController];
-      [v12 setDelegate:self];
+      popoverPresentationController = [v11 popoverPresentationController];
+      [popoverPresentationController setDelegate:self];
 
       [(MacPopoverPresentationController *)self configurePopoverPosition];
       [(MacPopoverPresentationController *)self configurePopoverSize];
       v13 = objc_loadWeakRetained(&self->_containerViewController);
       v14 = objc_loadWeakRetained(&self->_containeeViewController);
-      [v13 _maps_topMostPresentViewController:v14 animated:v6 completion:v8];
+      [v13 _maps_topMostPresentViewController:v14 animated:animatedCopy completion:completionCopy];
 
       v15 = +[NSNotificationCenter defaultCenter];
       [v15 postNotificationName:@"MacPopoverPresentationControllerDidPresentPopover" object:self];
@@ -356,51 +356,51 @@
   }
 }
 
-- (void)setPassthroughViews:(id)a3
+- (void)setPassthroughViews:(id)views
 {
-  v4 = a3;
+  viewsCopy = views;
   WeakRetained = objc_loadWeakRetained(&self->_containeeViewController);
-  v5 = [WeakRetained popoverPresentationController];
-  [v5 setPassthroughViews:v4];
+  popoverPresentationController = [WeakRetained popoverPresentationController];
+  [popoverPresentationController setPassthroughViews:viewsCopy];
 }
 
 - (NSArray)passthroughViews
 {
   WeakRetained = objc_loadWeakRetained(&self->_containeeViewController);
-  v3 = [WeakRetained popoverPresentationController];
-  v4 = [v3 passthroughViews];
+  popoverPresentationController = [WeakRetained popoverPresentationController];
+  passthroughViews = [popoverPresentationController passthroughViews];
 
-  return v4;
+  return passthroughViews;
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  if (a3.width != self->_preferredContentSize.width || a3.height != self->_preferredContentSize.height)
+  height = size.height;
+  width = size.width;
+  if (size.width != self->_preferredContentSize.width || size.height != self->_preferredContentSize.height)
   {
-    self->_preferredContentSize = a3;
+    self->_preferredContentSize = size;
     WeakRetained = objc_loadWeakRetained(&self->_containeeViewController);
     [WeakRetained setPreferredContentSize:{width, height}];
 
     v10 = objc_loadWeakRetained(&self->_containeeViewController);
-    v8 = [v10 popoverPresentationController];
-    v9 = [v8 presentedViewController];
-    [v9 setPreferredContentSize:{width, height}];
+    popoverPresentationController = [v10 popoverPresentationController];
+    presentedViewController = [popoverPresentationController presentedViewController];
+    [presentedViewController setPreferredContentSize:{width, height}];
   }
 }
 
-- (MacPopoverPresentationController)initWithContaineeViewController:(id)a3
+- (MacPopoverPresentationController)initWithContaineeViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = MacPopoverPresentationController;
   v5 = [(MacPopoverPresentationController *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_containeeViewController, v4);
-    [v4 setModalPresentationStyle:7];
+    v7 = objc_storeWeak(&v5->_containeeViewController, controllerCopy);
+    [controllerCopy setModalPresentationStyle:7];
 
     v6->_coordinate = kCLLocationCoordinate2DInvalid;
     size = CGRectZero.size;

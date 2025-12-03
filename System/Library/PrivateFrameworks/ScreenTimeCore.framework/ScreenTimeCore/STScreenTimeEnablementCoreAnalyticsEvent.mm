@@ -1,20 +1,20 @@
 @interface STScreenTimeEnablementCoreAnalyticsEvent
 - (NSDictionary)payload;
-- (STScreenTimeEnablementCoreAnalyticsEvent)initWithScreenTimeEnabled:(BOOL)a3 numberOfGuardians:(int64_t)a4 pinSet:(BOOL)a5 userAgeGroup:(int64_t)a6 userIsRemote:(BOOL)a7;
+- (STScreenTimeEnablementCoreAnalyticsEvent)initWithScreenTimeEnabled:(BOOL)enabled numberOfGuardians:(int64_t)guardians pinSet:(BOOL)set userAgeGroup:(int64_t)group userIsRemote:(BOOL)remote;
 @end
 
 @implementation STScreenTimeEnablementCoreAnalyticsEvent
 
-- (STScreenTimeEnablementCoreAnalyticsEvent)initWithScreenTimeEnabled:(BOOL)a3 numberOfGuardians:(int64_t)a4 pinSet:(BOOL)a5 userAgeGroup:(int64_t)a6 userIsRemote:(BOOL)a7
+- (STScreenTimeEnablementCoreAnalyticsEvent)initWithScreenTimeEnabled:(BOOL)enabled numberOfGuardians:(int64_t)guardians pinSet:(BOOL)set userAgeGroup:(int64_t)group userIsRemote:(BOOL)remote
 {
   v13.receiver = self;
   v13.super_class = STScreenTimeEnablementCoreAnalyticsEvent;
   result = [(STScreenTimeEnablementCoreAnalyticsEvent *)&v13 init];
-  result->_screenTimeEnabled = a3;
-  result->_pinSet = a5;
-  result->_userAgeGroup = a6;
-  result->_numberOfGuardians = a4;
-  result->_userIsRemote = a7;
+  result->_screenTimeEnabled = enabled;
+  result->_pinSet = set;
+  result->_userAgeGroup = group;
+  result->_numberOfGuardians = guardians;
+  result->_userIsRemote = remote;
   return result;
 }
 

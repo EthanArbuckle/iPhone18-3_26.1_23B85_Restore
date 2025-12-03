@@ -1,17 +1,17 @@
 @interface AWDPowerBBCallMetricInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)rxTxDurationsAtIndex:(unint64_t)a3;
-- (unsigned)sleepStateDurationsAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)rxTxDurationsAtIndex:(unint64_t)index;
+- (unsigned)sleepStateDurationsAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPowerMicroWatt:(BOOL)a3;
-- (void)setHasThreshold:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasPowerMicroWatt:(BOOL)watt;
+- (void)setHasThreshold:(BOOL)threshold;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDPowerBBCallMetricInfo
@@ -25,9 +25,9 @@
   [(AWDPowerBBCallMetricInfo *)&v3 dealloc];
 }
 
-- (void)setHasThreshold:(BOOL)a3
+- (void)setHasThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 4;
   }
@@ -40,33 +40,33 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (unsigned)sleepStateDurationsAtIndex:(unint64_t)a3
+- (unsigned)sleepStateDurationsAtIndex:(unint64_t)index
 {
   p_sleepStateDurations = &self->_sleepStateDurations;
   count = self->_sleepStateDurations.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_sleepStateDurations->list[a3];
+  return p_sleepStateDurations->list[index];
 }
 
-- (unsigned)rxTxDurationsAtIndex:(unint64_t)a3
+- (unsigned)rxTxDurationsAtIndex:(unint64_t)index
 {
   p_rxTxDurations = &self->_rxTxDurations;
   count = self->_rxTxDurations.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_rxTxDurations->list[a3];
+  return p_rxTxDurations->list[index];
 }
 
-- (void)setHasPowerMicroWatt:(BOOL)a3
+- (void)setHasPowerMicroWatt:(BOOL)watt
 {
-  if (a3)
+  if (watt)
   {
     v3 = 2;
   }
@@ -88,30 +88,30 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_threshold), @"Threshold"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_threshold), @"Threshold"}];
     has = self->_has;
   }
 
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_callDuration), @"CallDuration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_callDuration), @"CallDuration"}];
   }
 
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"SleepStateDurations"];
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"RxTxDurations"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"SleepStateDurations"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"RxTxDurations"];
   if ((*&self->_has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_powerMicroWatt), @"PowerMicroWatt"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_powerMicroWatt), @"PowerMicroWatt"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
@@ -161,60 +161,60 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 16) = self->_threshold;
-    *(a3 + 68) |= 4u;
+    *(to + 16) = self->_threshold;
+    *(to + 68) |= 4u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(a3 + 14) = self->_callDuration;
-    *(a3 + 68) |= 1u;
+    *(to + 14) = self->_callDuration;
+    *(to + 68) |= 1u;
   }
 
   if ([(AWDPowerBBCallMetricInfo *)self sleepStateDurationsCount])
   {
-    [a3 clearSleepStateDurations];
-    v6 = [(AWDPowerBBCallMetricInfo *)self sleepStateDurationsCount];
-    if (v6)
+    [to clearSleepStateDurations];
+    sleepStateDurationsCount = [(AWDPowerBBCallMetricInfo *)self sleepStateDurationsCount];
+    if (sleepStateDurationsCount)
     {
-      v7 = v6;
+      v7 = sleepStateDurationsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addSleepStateDurations:{-[AWDPowerBBCallMetricInfo sleepStateDurationsAtIndex:](self, "sleepStateDurationsAtIndex:", i)}];
+        [to addSleepStateDurations:{-[AWDPowerBBCallMetricInfo sleepStateDurationsAtIndex:](self, "sleepStateDurationsAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDPowerBBCallMetricInfo *)self rxTxDurationsCount])
   {
-    [a3 clearRxTxDurations];
-    v9 = [(AWDPowerBBCallMetricInfo *)self rxTxDurationsCount];
-    if (v9)
+    [to clearRxTxDurations];
+    rxTxDurationsCount = [(AWDPowerBBCallMetricInfo *)self rxTxDurationsCount];
+    if (rxTxDurationsCount)
     {
-      v10 = v9;
+      v10 = rxTxDurationsCount;
       for (j = 0; j != v10; ++j)
       {
-        [a3 addRxTxDurations:{-[AWDPowerBBCallMetricInfo rxTxDurationsAtIndex:](self, "rxTxDurationsAtIndex:", j)}];
+        [to addRxTxDurations:{-[AWDPowerBBCallMetricInfo rxTxDurationsAtIndex:](self, "rxTxDurationsAtIndex:", j)}];
       }
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 15) = self->_powerMicroWatt;
-    *(a3 + 68) |= 2u;
+    *(to + 15) = self->_powerMicroWatt;
+    *(to + 68) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if ((has & 4) != 0)
@@ -241,21 +241,21 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  IsEqual = [a3 isMemberOfClass:objc_opt_class()];
+  IsEqual = [equal isMemberOfClass:objc_opt_class()];
   if (IsEqual)
   {
-    v6 = *(a3 + 68);
+    v6 = *(equal + 68);
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 68) & 4) == 0 || self->_threshold != *(a3 + 16))
+      if ((*(equal + 68) & 4) == 0 || self->_threshold != *(equal + 16))
       {
         goto LABEL_18;
       }
     }
 
-    else if ((*(a3 + 68) & 4) != 0)
+    else if ((*(equal + 68) & 4) != 0)
     {
 LABEL_18:
       LOBYTE(IsEqual) = 0;
@@ -264,13 +264,13 @@ LABEL_18:
 
     if (*&self->_has)
     {
-      if ((*(a3 + 68) & 1) == 0 || self->_callDuration != *(a3 + 14))
+      if ((*(equal + 68) & 1) == 0 || self->_callDuration != *(equal + 14))
       {
         goto LABEL_18;
       }
     }
 
-    else if (*(a3 + 68))
+    else if (*(equal + 68))
     {
       goto LABEL_18;
     }
@@ -281,10 +281,10 @@ LABEL_18:
       IsEqual = PBRepeatedUInt32IsEqual();
       if (IsEqual)
       {
-        LOBYTE(IsEqual) = (*(a3 + 68) & 2) == 0;
+        LOBYTE(IsEqual) = (*(equal + 68) & 2) == 0;
         if ((*&self->_has & 2) != 0)
         {
-          if ((*(a3 + 68) & 2) == 0 || self->_powerMicroWatt != *(a3 + 15))
+          if ((*(equal + 68) & 2) == 0 || self->_powerMicroWatt != *(equal + 15))
           {
             goto LABEL_18;
           }
@@ -337,45 +337,45 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 68);
+  v5 = *(from + 68);
   if ((v5 & 4) != 0)
   {
-    self->_threshold = *(a3 + 16);
+    self->_threshold = *(from + 16);
     *&self->_has |= 4u;
-    v5 = *(a3 + 68);
+    v5 = *(from + 68);
   }
 
   if (v5)
   {
-    self->_callDuration = *(a3 + 14);
+    self->_callDuration = *(from + 14);
     *&self->_has |= 1u;
   }
 
-  v6 = [a3 sleepStateDurationsCount];
-  if (v6)
+  sleepStateDurationsCount = [from sleepStateDurationsCount];
+  if (sleepStateDurationsCount)
   {
-    v7 = v6;
+    v7 = sleepStateDurationsCount;
     for (i = 0; i != v7; ++i)
     {
-      -[AWDPowerBBCallMetricInfo addSleepStateDurations:](self, "addSleepStateDurations:", [a3 sleepStateDurationsAtIndex:i]);
+      -[AWDPowerBBCallMetricInfo addSleepStateDurations:](self, "addSleepStateDurations:", [from sleepStateDurationsAtIndex:i]);
     }
   }
 
-  v9 = [a3 rxTxDurationsCount];
-  if (v9)
+  rxTxDurationsCount = [from rxTxDurationsCount];
+  if (rxTxDurationsCount)
   {
-    v10 = v9;
+    v10 = rxTxDurationsCount;
     for (j = 0; j != v10; ++j)
     {
-      -[AWDPowerBBCallMetricInfo addRxTxDurations:](self, "addRxTxDurations:", [a3 rxTxDurationsAtIndex:j]);
+      -[AWDPowerBBCallMetricInfo addRxTxDurations:](self, "addRxTxDurations:", [from rxTxDurationsAtIndex:j]);
     }
   }
 
-  if ((*(a3 + 68) & 2) != 0)
+  if ((*(from + 68) & 2) != 0)
   {
-    self->_powerMicroWatt = *(a3 + 15);
+    self->_powerMicroWatt = *(from + 15);
     *&self->_has |= 2u;
   }
 }

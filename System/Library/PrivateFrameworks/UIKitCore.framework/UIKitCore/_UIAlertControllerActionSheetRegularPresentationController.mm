@@ -1,13 +1,13 @@
 @interface _UIAlertControllerActionSheetRegularPresentationController
-- (BOOL)_shouldUseAlertPresentationForTraitCollection:(id)a3;
-- (BOOL)_shouldUseCompactPresentationForTraitCollection:(id)a3;
-- (BOOL)dimmingViewWasTapped:(id)a3 withDismissCompletion:(id)a4;
+- (BOOL)_shouldUseAlertPresentationForTraitCollection:(id)collection;
+- (BOOL)_shouldUseCompactPresentationForTraitCollection:(id)collection;
+- (BOOL)dimmingViewWasTapped:(id)tapped withDismissCompletion:(id)completion;
 - (id)_alertController;
 - (id)_alertControllerContainer;
 - (id)_alertPresentationController;
 - (id)_compactPresentationController;
 - (id)_exceptionStringForNilSourceViewOrBarButtonItem;
-- (id)_presentationControllerForTraitCollection:(id)a3;
+- (id)_presentationControllerForTraitCollection:(id)collection;
 - (unint64_t)permittedArrowDirections;
 @end
 
@@ -16,9 +16,9 @@
 - (id)_compactPresentationController
 {
   v3 = [_UIAlertControllerActionSheetCompactPresentationController alloc];
-  v4 = [(UIPresentationController *)self presentedViewController];
-  v5 = [(UIPresentationController *)self presentingViewController];
-  v6 = [(_UIAlertControllerPresentationController *)v3 initWithPresentedViewController:v4 presentingViewController:v5];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  presentingViewController = [(UIPresentationController *)self presentingViewController];
+  v6 = [(_UIAlertControllerPresentationController *)v3 initWithPresentedViewController:presentedViewController presentingViewController:presentingViewController];
 
   return v6;
 }
@@ -26,52 +26,52 @@
 - (id)_alertPresentationController
 {
   v3 = [_UIAlertControllerAlertPresentationController alloc];
-  v4 = [(UIPresentationController *)self presentedViewController];
-  v5 = [(UIPresentationController *)self presentingViewController];
-  v6 = [(_UIAlertControllerPresentationController *)v3 initWithPresentedViewController:v4 presentingViewController:v5];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  presentingViewController = [(UIPresentationController *)self presentingViewController];
+  v6 = [(_UIAlertControllerPresentationController *)v3 initWithPresentedViewController:presentedViewController presentingViewController:presentingViewController];
 
-  v7 = [(UIPresentationController *)self presentedViewController];
-  [v7 set_forceAlertStyle:1];
+  presentedViewController2 = [(UIPresentationController *)self presentedViewController];
+  [presentedViewController2 set_forceAlertStyle:1];
 
   return v6;
 }
 
-- (id)_presentationControllerForTraitCollection:(id)a3
+- (id)_presentationControllerForTraitCollection:(id)collection
 {
-  v5 = a3;
-  v6 = self;
-  if ([(_UIAlertControllerActionSheetRegularPresentationController *)v6 _shouldUseCompactPresentationForTraitCollection:v5])
+  collectionCopy = collection;
+  selfCopy = self;
+  if ([(_UIAlertControllerActionSheetRegularPresentationController *)selfCopy _shouldUseCompactPresentationForTraitCollection:collectionCopy])
   {
-    v7 = [(_UIAlertControllerActionSheetRegularPresentationController *)v6 _compactPresentationController];
+    _compactPresentationController = [(_UIAlertControllerActionSheetRegularPresentationController *)selfCopy _compactPresentationController];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [(_UIAlertControllerActionSheetRegularPresentationController *)v6 _alertController];
-      v13 = [v12 description];
-      [v9 handleFailureInMethod:a2 object:v6 file:@"_UIAlertControllerActionSheetRegularPresentationController.m" lineNumber:47 description:{@"Unknown presentation controller class %@ encountered when adapting UIAlertController %@", v11, v13}];
+      _alertController = [(_UIAlertControllerActionSheetRegularPresentationController *)selfCopy _alertController];
+      v13 = [_alertController description];
+      [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"_UIAlertControllerActionSheetRegularPresentationController.m" lineNumber:47 description:{@"Unknown presentation controller class %@ encountered when adapting UIAlertController %@", v11, v13}];
     }
 
-    [v7 _presentedAlertControllerDidAdapt];
+    [_compactPresentationController _presentedAlertControllerDidAdapt];
   }
 
-  else if ([(_UIAlertControllerActionSheetRegularPresentationController *)v6 _shouldUseAlertPresentationForTraitCollection:v5])
+  else if ([(_UIAlertControllerActionSheetRegularPresentationController *)selfCopy _shouldUseAlertPresentationForTraitCollection:collectionCopy])
   {
-    v7 = [(_UIAlertControllerActionSheetRegularPresentationController *)v6 _alertPresentationController];
+    _compactPresentationController = [(_UIAlertControllerActionSheetRegularPresentationController *)selfCopy _alertPresentationController];
   }
 
   else
   {
-    v7 = v6;
+    _compactPresentationController = selfCopy;
   }
 
-  return v7;
+  return _compactPresentationController;
 }
 
-- (BOOL)_shouldUseAlertPresentationForTraitCollection:(id)a3
+- (BOOL)_shouldUseAlertPresentationForTraitCollection:(id)collection
 {
   v4 = _UISolariumEnabled();
   if (v4)
@@ -94,24 +94,24 @@
   return [(UIPopoverPresentationController *)&v4 permittedArrowDirections];
 }
 
-- (BOOL)_shouldUseCompactPresentationForTraitCollection:(id)a3
+- (BOOL)_shouldUseCompactPresentationForTraitCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   if (_UISolariumEnabled())
   {
     goto LABEL_7;
   }
 
   v5 = +[UIDevice currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-  if (!v6)
+  if (!userInterfaceIdiom)
   {
     v10 = 1;
     goto LABEL_8;
   }
 
-  if ([v4 horizontalSizeClass] != 1 || objc_msgSend(v4, "userInterfaceIdiom") == 6 || (-[UIPresentationController presentingViewController](self, "presentingViewController"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "_presentationControllerClassName"), v8 = objc_claimAutoreleasedReturnValue(), v9 = NSClassFromString(v8), v8, v7, v9 == objc_opt_class()))
+  if ([collectionCopy horizontalSizeClass] != 1 || objc_msgSend(collectionCopy, "userInterfaceIdiom") == 6 || (-[UIPresentationController presentingViewController](self, "presentingViewController"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "_presentationControllerClassName"), v8 = objc_claimAutoreleasedReturnValue(), v9 = NSClassFromString(v8), v8, v7, v9 == objc_opt_class()))
   {
 LABEL_7:
     v10 = 0;
@@ -127,10 +127,10 @@ LABEL_8:
   return v10;
 }
 
-- (BOOL)dimmingViewWasTapped:(id)a3 withDismissCompletion:(id)a4
+- (BOOL)dimmingViewWasTapped:(id)tapped withDismissCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  tappedCopy = tapped;
+  completionCopy = completion;
   if ([(UIPopoverPresentationController *)self _popoverIsDismissingBecauseDismissInteractionOccurred])
   {
     v8 = 0;
@@ -140,9 +140,9 @@ LABEL_8:
   {
     v11.receiver = self;
     v11.super_class = _UIAlertControllerActionSheetRegularPresentationController;
-    v8 = [(UIPopoverPresentationController *)&v11 dimmingViewWasTapped:v6 withDismissCompletion:v7];
-    v9 = [(_UIAlertControllerActionSheetRegularPresentationController *)self _alertController];
-    [v9 _dismissFromPopoverDimmingView];
+    v8 = [(UIPopoverPresentationController *)&v11 dimmingViewWasTapped:tappedCopy withDismissCompletion:completionCopy];
+    _alertController = [(_UIAlertControllerActionSheetRegularPresentationController *)self _alertController];
+    [_alertController _dismissFromPopoverDimmingView];
   }
 
   return v8;
@@ -150,43 +150,43 @@ LABEL_8:
 
 - (id)_exceptionStringForNilSourceViewOrBarButtonItem
 {
-  v3 = [(_UIAlertControllerActionSheetRegularPresentationController *)self _alertController];
-  v4 = [(_UIAlertControllerActionSheetRegularPresentationController *)self _alertControllerContainer];
+  _alertController = [(_UIAlertControllerActionSheetRegularPresentationController *)self _alertController];
+  _alertControllerContainer = [(_UIAlertControllerActionSheetRegularPresentationController *)self _alertControllerContainer];
 
-  if (v3 == v4)
+  if (_alertController == _alertControllerContainer)
   {
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [(UIPresentationController *)self presentingViewController];
+    presentingViewController = [(UIPresentationController *)self presentingViewController];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [(UIPresentationController *)self presentingViewController];
-    v5 = [v6 stringWithFormat:@"Your application has presented a UIAlertController (%@) of style UIAlertControllerStyleActionSheet from %@ (%@). The modalPresentationStyle of a UIAlertController with this style is UIModalPresentationPopover. You must provide location information for this popover through the alert controller's popoverPresentationController. You must provide either a sourceView and sourceRect or a barButtonItem.  If this information is not known when you present the alert controller, you may provide it in the UIPopoverPresentationControllerDelegate method -prepareForPopoverPresentation.", v3, v9, v10];
+    presentingViewController2 = [(UIPresentationController *)self presentingViewController];
+    _exceptionStringForNilSourceViewOrBarButtonItem = [v6 stringWithFormat:@"Your application has presented a UIAlertController (%@) of style UIAlertControllerStyleActionSheet from %@ (%@). The modalPresentationStyle of a UIAlertController with this style is UIModalPresentationPopover. You must provide location information for this popover through the alert controller's popoverPresentationController. You must provide either a sourceView and sourceRect or a barButtonItem.  If this information is not known when you present the alert controller, you may provide it in the UIPopoverPresentationControllerDelegate method -prepareForPopoverPresentation.", _alertController, v9, presentingViewController2];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = _UIAlertControllerActionSheetRegularPresentationController;
-    v5 = [(UIPopoverPresentationController *)&v12 _exceptionStringForNilSourceViewOrBarButtonItem];
+    _exceptionStringForNilSourceViewOrBarButtonItem = [(UIPopoverPresentationController *)&v12 _exceptionStringForNilSourceViewOrBarButtonItem];
   }
 
-  return v5;
+  return _exceptionStringForNilSourceViewOrBarButtonItem;
 }
 
 - (id)_alertController
 {
-  v2 = [(UIPresentationController *)self presentedViewController];
-  v3 = [v2 _containedAlertController];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  _containedAlertController = [presentedViewController _containedAlertController];
 
-  return v3;
+  return _containedAlertController;
 }
 
 - (id)_alertControllerContainer
 {
-  v2 = [(_UIAlertControllerActionSheetRegularPresentationController *)self _alertController];
-  v3 = [v2 _alertControllerContainer];
+  _alertController = [(_UIAlertControllerActionSheetRegularPresentationController *)self _alertController];
+  _alertControllerContainer = [_alertController _alertControllerContainer];
 
-  return v3;
+  return _alertControllerContainer;
 }
 
 @end

@@ -1,30 +1,30 @@
 @interface PDFHighlightDetectedFormFieldsEffectLayer
-- (PDFHighlightDetectedFormFieldsEffectLayer)initWithPage:(id)a3;
-- (id)_addRect:(CGRect)a3 withColor:(id)a4 backgroundColor:(id)a5 labelText:(id)a6 itemIndex:(unint64_t)a7;
+- (PDFHighlightDetectedFormFieldsEffectLayer)initWithPage:(id)page;
+- (id)_addRect:(CGRect)rect withColor:(id)color backgroundColor:(id)backgroundColor labelText:(id)text itemIndex:(unint64_t)index;
 - (void)updateVisibleLayers;
 @end
 
 @implementation PDFHighlightDetectedFormFieldsEffectLayer
 
-- (PDFHighlightDetectedFormFieldsEffectLayer)initWithPage:(id)a3
+- (PDFHighlightDetectedFormFieldsEffectLayer)initWithPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   v14.receiver = self;
   v14.super_class = PDFHighlightDetectedFormFieldsEffectLayer;
   v5 = [(PDFHighlightDetectedFormFieldsEffectLayer *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_page, v4);
+    objc_storeWeak(&v5->_page, pageCopy);
     v6->_displayBox = 1;
-    [v4 boundsForBox:1];
+    [pageCopy boundsForBox:1];
     v6->_cropBox.origin.x = v7;
     v6->_cropBox.origin.y = v8;
     v6->_cropBox.size.width = v9;
     v6->_cropBox.size.height = v10;
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     addedSublayers = v6->_addedSublayers;
-    v6->_addedSublayers = v11;
+    v6->_addedSublayers = array;
   }
 
   return v6;
@@ -70,17 +70,17 @@
   {
     WeakRetained = objc_loadWeakRetained(&self->_page);
     v9 = objc_opt_new();
-    v10 = [WeakRetained annotationsIfAvail];
-    if (v10)
+    annotationsIfAvail = [WeakRetained annotationsIfAvail];
+    if (annotationsIfAvail)
     {
-      [v9 addObjectsFromArray:v10];
+      [v9 addObjectsFromArray:annotationsIfAvail];
     }
 
-    v11 = [WeakRetained detectedAnnotations];
+    detectedAnnotations = [WeakRetained detectedAnnotations];
 
-    if (v11)
+    if (detectedAnnotations)
     {
-      [v9 addObjectsFromArray:v11];
+      [v9 addObjectsFromArray:detectedAnnotations];
     }
 
     v12[0] = MEMORY[0x1E69E9820];
@@ -140,15 +140,15 @@ void __64__PDFHighlightDetectedFormFieldsEffectLayer_updateVisibleLayers__block_
   }
 }
 
-- (id)_addRect:(CGRect)a3 withColor:(id)a4 backgroundColor:(id)a5 labelText:(id)a6 itemIndex:(unint64_t)a7
+- (id)_addRect:(CGRect)rect withColor:(id)color backgroundColor:(id)backgroundColor labelText:(id)text itemIndex:(unint64_t)index
 {
-  width = a3.size.width;
-  height = a3.size.height;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  width = rect.size.width;
+  height = rect.size.height;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  colorCopy = color;
+  backgroundColorCopy = backgroundColor;
+  textCopy = text;
   v16 = x - self->_cropBox.origin.x;
   v17 = y - self->_cropBox.origin.y;
   v18 = *MEMORY[0x1E695EFD0];
@@ -170,14 +170,14 @@ void __64__PDFHighlightDetectedFormFieldsEffectLayer_updateVisibleLayers__block_
   [v26 setAffineTransform:v33];
   [v26 setPosition:{v24, v25}];
   [v26 setBounds:{0.0, 0.0, width, height}];
-  [v26 setBorderColor:{objc_msgSend(v13, "CGColor")}];
+  [v26 setBorderColor:{objc_msgSend(colorCopy, "CGColor")}];
   [v26 setBorderWidth:1.0];
-  if (v14)
+  if (backgroundColorCopy)
   {
-    [v26 setBackgroundColor:{objc_msgSend(v14, "CGColor")}];
+    [v26 setBackgroundColor:{objc_msgSend(backgroundColorCopy, "CGColor")}];
   }
 
-  if (v15)
+  if (textCopy)
   {
     v27 = objc_alloc_init(MEMORY[0x1E6979508]);
     [v27 setFont:@"Helvetica-Bold"];
@@ -185,14 +185,14 @@ void __64__PDFHighlightDetectedFormFieldsEffectLayer_updateVisibleLayers__block_
     [v26 bounds];
     v36 = CGRectInset(v35, 2.0, 0.0);
     [v27 setFrame:{v36.origin.x, v36.origin.y, v36.size.width, v36.size.height}];
-    [v27 setString:v15];
+    [v27 setString:textCopy];
     [v27 setAlignmentMode:*MEMORY[0x1E6979570]];
-    [v27 setForegroundColor:{objc_msgSend(v13, "CGColor")}];
+    [v27 setForegroundColor:{objc_msgSend(colorCopy, "CGColor")}];
     [v27 setContentsScale:4.0];
     [v26 addSublayer:v27];
   }
 
-  if (a7 != 0x7FFFFFFFFFFFFFFFLL)
+  if (index != 0x7FFFFFFFFFFFFFFFLL)
   {
     v28 = objc_alloc_init(MEMORY[0x1E6979508]);
     [v28 setFont:@"Helvetica-Bold"];
@@ -200,11 +200,11 @@ void __64__PDFHighlightDetectedFormFieldsEffectLayer_updateVisibleLayers__block_
     [v26 bounds];
     v38 = CGRectInset(v37, 2.0, 0.0);
     [v28 setFrame:{v38.origin.x, v38.origin.y, v38.size.width, v38.size.height}];
-    v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%lu)", a7];
-    [v28 setString:v29];
+    index = [MEMORY[0x1E696AEC0] stringWithFormat:@"(%lu)", index];
+    [v28 setString:index];
 
     [v28 setAlignmentMode:*MEMORY[0x1E6979580]];
-    [v28 setForegroundColor:{objc_msgSend(v13, "CGColor")}];
+    [v28 setForegroundColor:{objc_msgSend(colorCopy, "CGColor")}];
     [v28 setContentsScale:4.0];
     [v26 addSublayer:v28];
   }

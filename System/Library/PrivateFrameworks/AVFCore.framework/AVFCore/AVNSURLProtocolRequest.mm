@@ -1,6 +1,6 @@
 @interface AVNSURLProtocolRequest
 - (void)dealloc;
-- (void)setConnection:(_CFURLConnection *)a3;
+- (void)setConnection:(_CFURLConnection *)connection;
 @end
 
 @implementation AVNSURLProtocolRequest
@@ -24,13 +24,13 @@
   [(AVAssetCustomURLRequest *)&v5 dealloc];
 }
 
-- (void)setConnection:(_CFURLConnection *)a3
+- (void)setConnection:(_CFURLConnection *)connection
 {
   connection = self->_connection;
-  self->_connection = a3;
-  if (a3)
+  self->_connection = connection;
+  if (connection)
   {
-    CFRetain(a3);
+    CFRetain(connection);
   }
 
   if (connection)

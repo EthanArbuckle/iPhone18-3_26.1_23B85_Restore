@@ -1,6 +1,6 @@
 @interface FCAccessCheckResult
 - (FCAccessCheckResult)init;
-- (FCAccessCheckResult)initWithCanAccess:(BOOL)a3 blockedReason:(unint64_t)a4;
+- (FCAccessCheckResult)initWithCanAccess:(BOOL)access blockedReason:(unint64_t)reason;
 @end
 
 @implementation FCAccessCheckResult
@@ -31,15 +31,15 @@
   objc_exception_throw(v6);
 }
 
-- (FCAccessCheckResult)initWithCanAccess:(BOOL)a3 blockedReason:(unint64_t)a4
+- (FCAccessCheckResult)initWithCanAccess:(BOOL)access blockedReason:(unint64_t)reason
 {
   v7.receiver = self;
   v7.super_class = FCAccessCheckResult;
   result = [(FCAccessCheckResult *)&v7 init];
   if (result)
   {
-    result->_canAccess = a3;
-    result->_blockedReason = a4;
+    result->_canAccess = access;
+    result->_blockedReason = reason;
   }
 
   return result;

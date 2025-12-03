@@ -1,16 +1,16 @@
 @interface ATXDailyRoutinesPersonalizationManager
-+ (id)_filterActions:(id)a3 havingCounts:(id)a4 includeBundleIds:(id)a5 excludeBundleIds:(id)a6 includeActionTypes:(id)a7 excludeActionTypes:(id)a8 havingMinOccurrences:(unint64_t)a9;
-+ (id)_filterUnpackedActions:(id)a3;
-+ (id)_rankActions:(id)a3 havingCounts:(id)a4;
-+ (id)_unpackMostFrequentActionParameters:(id)a3 havingCounts:(id)a4 limit:(unint64_t)a5;
++ (id)_filterActions:(id)actions havingCounts:(id)counts includeBundleIds:(id)ids excludeBundleIds:(id)bundleIds includeActionTypes:(id)types excludeActionTypes:(id)actionTypes havingMinOccurrences:(unint64_t)occurrences;
++ (id)_filterUnpackedActions:(id)actions;
++ (id)_rankActions:(id)actions havingCounts:(id)counts;
++ (id)_unpackMostFrequentActionParameters:(id)parameters havingCounts:(id)counts limit:(unint64_t)limit;
 + (id)sharedInstance;
 - (ATXDailyRoutinesPersonalizationManager)init;
-- (ATXDailyRoutinesPersonalizationManager)initWithFakeActions:(id)a3 loiManager:(id)a4;
-- (BOOL)_allRequiredActionTypesPresent:(id)a3 minOccurrences:(unint64_t)a4 forContext:(id)a5;
+- (ATXDailyRoutinesPersonalizationManager)initWithFakeActions:(id)actions loiManager:(id)manager;
+- (BOOL)_allRequiredActionTypesPresent:(id)present minOccurrences:(unint64_t)occurrences forContext:(id)context;
 - (BOOL)_enoughActionHistory;
-- (BOOL)shouldDisplayDailyRoutineForContext:(id)a3;
-- (id)_getMostFrequentActionsForContext:(id)a3 includeBundleIds:(id)a4 excludeBundleIds:(id)a5 includeActionTypes:(id)a6 excludeActionTypes:(id)a7 minOccurrences:(unint64_t)a8 limit:(unint64_t)a9;
-- (id)getActionPredictionsForContext:(id)a3 includeBundleIds:(id)a4 excludeBundleIds:(id)a5 includeActionTypes:(id)a6 excludeActionTypes:(id)a7 limit:(unint64_t)a8;
+- (BOOL)shouldDisplayDailyRoutineForContext:(id)context;
+- (id)_getMostFrequentActionsForContext:(id)context includeBundleIds:(id)ids excludeBundleIds:(id)bundleIds includeActionTypes:(id)types excludeActionTypes:(id)actionTypes minOccurrences:(unint64_t)occurrences limit:(unint64_t)limit;
+- (id)getActionPredictionsForContext:(id)context includeBundleIds:(id)ids excludeBundleIds:(id)bundleIds includeActionTypes:(id)types excludeActionTypes:(id)actionTypes limit:(unint64_t)limit;
 @end
 
 @implementation ATXDailyRoutinesPersonalizationManager
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __56__ATXDailyRoutinesPersonalizationManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken7_17 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken7_17, block);
@@ -43,15 +43,15 @@ void __56__ATXDailyRoutinesPersonalizationManager_sharedInstance__block_invoke(u
   objc_autoreleasePoolPop(v2);
 }
 
-- (BOOL)shouldDisplayDailyRoutineForContext:(id)a3
+- (BOOL)shouldDisplayDailyRoutineForContext:(id)context
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = __atxlog_handle_dailyroutines();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 134217984;
-    v15 = [v4 contextType];
+    contextType = [contextCopy contextType];
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "Daily routines feasibility for context type %lu requested", &v14, 0xCu);
   }
 
@@ -72,10 +72,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v6 = [v4 contextType];
-  if (v6)
+  contextType2 = [contextCopy contextType];
+  if (contextType2)
   {
-    if (v6 == 1)
+    if (contextType2 == 1)
     {
       if (([(ATXLocationOfInterestManagerProtocol *)self->_loiManager isAvailableLocationOfInterestType:0]& 1) == 0)
       {
@@ -96,7 +96,7 @@ LABEL_15:
 
     else
     {
-      if (v6 == 2)
+      if (contextType2 == 2)
       {
         if (([(ATXLocationOfInterestManagerProtocol *)self->_loiManager isAvailableLocationOfInterestType:1]& 1) != 0)
         {
@@ -118,13 +118,13 @@ LABEL_15:
 
 LABEL_19:
   v11 = +[_ATXGlobals sharedInstance];
-  v10 = -[ATXDailyRoutinesPersonalizationManager _allRequiredActionTypesPresent:minOccurrences:forContext:](self, "_allRequiredActionTypesPresent:minOccurrences:forContext:", v7, [v11 personalizationRequiredCountForRelevance], v4);
+  v10 = -[ATXDailyRoutinesPersonalizationManager _allRequiredActionTypesPresent:minOccurrences:forContext:](self, "_allRequiredActionTypesPresent:minOccurrences:forContext:", v7, [v11 personalizationRequiredCountForRelevance], contextCopy);
 
   v8 = __atxlog_handle_dailyroutines();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 67109120;
-    LODWORD(v15) = v10;
+    LODWORD(contextType) = v10;
     _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "Action requirements met: %{BOOL}d", &v14, 8u);
   }
 
@@ -134,29 +134,29 @@ LABEL_21:
   return v10;
 }
 
-- (id)getActionPredictionsForContext:(id)a3 includeBundleIds:(id)a4 excludeBundleIds:(id)a5 includeActionTypes:(id)a6 excludeActionTypes:(id)a7 limit:(unint64_t)a8
+- (id)getActionPredictionsForContext:(id)context includeBundleIds:(id)ids excludeBundleIds:(id)bundleIds includeActionTypes:(id)types excludeActionTypes:(id)actionTypes limit:(unint64_t)limit
 {
   v34 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  contextCopy = context;
+  idsCopy = ids;
+  bundleIdsCopy = bundleIds;
+  typesCopy = types;
+  actionTypesCopy = actionTypes;
   v17 = __atxlog_handle_dailyroutines();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v33 = [v12 contextType];
+    contextType = [contextCopy contextType];
     _os_log_impl(&dword_2263AA000, v17, OS_LOG_TYPE_INFO, "Predictions for context type %lu requested", buf, 0xCu);
   }
 
-  if (v13)
+  if (idsCopy)
   {
-    v18 = [MEMORY[0x277CBEB98] setWithArray:v13];
-    if (v14)
+    v18 = [MEMORY[0x277CBEB98] setWithArray:idsCopy];
+    if (bundleIdsCopy)
     {
 LABEL_5:
-      v19 = [MEMORY[0x277CBEB98] setWithArray:v14];
+      v19 = [MEMORY[0x277CBEB98] setWithArray:bundleIdsCopy];
       goto LABEL_8;
     }
   }
@@ -164,7 +164,7 @@ LABEL_5:
   else
   {
     v18 = 0;
-    if (v14)
+    if (bundleIdsCopy)
     {
       goto LABEL_5;
     }
@@ -172,10 +172,10 @@ LABEL_5:
 
   v19 = 0;
 LABEL_8:
-  v31 = v14;
-  if (v15)
+  v31 = bundleIdsCopy;
+  if (typesCopy)
   {
-    v20 = [MEMORY[0x277CBEB98] setWithArray:v15];
+    v20 = [MEMORY[0x277CBEB98] setWithArray:typesCopy];
   }
 
   else
@@ -183,11 +183,11 @@ LABEL_8:
     v20 = 0;
   }
 
-  v21 = v13;
-  v22 = v12;
-  if (v16)
+  v21 = idsCopy;
+  v22 = contextCopy;
+  if (actionTypesCopy)
   {
-    v23 = [MEMORY[0x277CBEB98] setWithArray:v16];
+    v23 = [MEMORY[0x277CBEB98] setWithArray:actionTypesCopy];
   }
 
   else
@@ -196,7 +196,7 @@ LABEL_8:
   }
 
   v24 = +[_ATXGlobals sharedInstance];
-  v25 = -[ATXDailyRoutinesPersonalizationManager _getMostFrequentActionsForContext:includeBundleIds:excludeBundleIds:includeActionTypes:excludeActionTypes:minOccurrences:limit:](self, "_getMostFrequentActionsForContext:includeBundleIds:excludeBundleIds:includeActionTypes:excludeActionTypes:minOccurrences:limit:", v22, v18, v19, v20, v23, [v24 personalizationRequiredCountForRelevance], a8);
+  v25 = -[ATXDailyRoutinesPersonalizationManager _getMostFrequentActionsForContext:includeBundleIds:excludeBundleIds:includeActionTypes:excludeActionTypes:minOccurrences:limit:](self, "_getMostFrequentActionsForContext:includeBundleIds:excludeBundleIds:includeActionTypes:excludeActionTypes:minOccurrences:limit:", v22, v18, v19, v20, v23, [v24 personalizationRequiredCountForRelevance], limit);
 
   v26 = [objc_alloc(MEMORY[0x277CEB2F0]) initWithScoredActions:v25 cacheFileData:0 consumerSubType:0 error:0];
   v27 = *MEMORY[0x277D85DE8];
@@ -215,44 +215,44 @@ LABEL_8:
     actionManager = v2->_actionManager;
     v2->_actionManager = v3;
 
-    v5 = [MEMORY[0x277D41BF8] sharedInstance];
+    mEMORY[0x277D41BF8] = [MEMORY[0x277D41BF8] sharedInstance];
     loiManager = v2->_loiManager;
-    v2->_loiManager = v5;
+    v2->_loiManager = mEMORY[0x277D41BF8];
   }
 
   return v2;
 }
 
-- (ATXDailyRoutinesPersonalizationManager)initWithFakeActions:(id)a3 loiManager:(id)a4
+- (ATXDailyRoutinesPersonalizationManager)initWithFakeActions:(id)actions loiManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  actionsCopy = actions;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = ATXDailyRoutinesPersonalizationManager;
   v8 = [(ATXDailyRoutinesPersonalizationManager *)&v12 init];
   if (v8)
   {
-    v9 = [[ATXContextualActionManager alloc] initWithStaticActions:v6];
+    v9 = [[ATXContextualActionManager alloc] initWithStaticActions:actionsCopy];
     actionManager = v8->_actionManager;
     v8->_actionManager = v9;
 
-    objc_storeStrong(&v8->_loiManager, a4);
+    objc_storeStrong(&v8->_loiManager, manager);
   }
 
   return v8;
 }
 
-- (id)_getMostFrequentActionsForContext:(id)a3 includeBundleIds:(id)a4 excludeBundleIds:(id)a5 includeActionTypes:(id)a6 excludeActionTypes:(id)a7 minOccurrences:(unint64_t)a8 limit:(unint64_t)a9
+- (id)_getMostFrequentActionsForContext:(id)context includeBundleIds:(id)ids excludeBundleIds:(id)bundleIds includeActionTypes:(id)types excludeActionTypes:(id)actionTypes minOccurrences:(unint64_t)occurrences limit:(unint64_t)limit
 {
   v56 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v51 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = [v15 timeWindow];
+  contextCopy = context;
+  idsCopy = ids;
+  bundleIdsCopy = bundleIds;
+  typesCopy = types;
+  actionTypesCopy = actionTypes;
+  timeWindow = [contextCopy timeWindow];
 
-  if (v19)
+  if (timeWindow)
   {
     v20 = __atxlog_handle_dailyroutines();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
@@ -261,13 +261,13 @@ LABEL_8:
     }
   }
 
-  v21 = [(ATXContextualActionManager *)self->_actionManager getCountsForContext:v15];
+  v21 = [(ATXContextualActionManager *)self->_actionManager getCountsForContext:contextCopy];
   v22 = objc_opt_class();
-  v23 = [v21 allObjects];
-  v50 = v16;
-  v24 = [v22 _filterActions:v23 havingCounts:v21 includeBundleIds:v16 excludeBundleIds:v51 includeActionTypes:v17 excludeActionTypes:v18 havingMinOccurrences:a8];
+  allObjects = [v21 allObjects];
+  v50 = idsCopy;
+  v24 = [v22 _filterActions:allObjects havingCounts:v21 includeBundleIds:idsCopy excludeBundleIds:bundleIdsCopy includeActionTypes:typesCopy excludeActionTypes:actionTypesCopy havingMinOccurrences:occurrences];
 
-  v25 = [objc_opt_class() _unpackMostFrequentActionParameters:v24 havingCounts:v21 limit:a9];
+  v25 = [objc_opt_class() _unpackMostFrequentActionParameters:v24 havingCounts:v21 limit:limit];
   v26 = __atxlog_handle_dailyroutines();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
   {
@@ -276,28 +276,28 @@ LABEL_8:
     _os_log_impl(&dword_2263AA000, v26, OS_LOG_TYPE_INFO, "Found %lu actions for requested context", buf, 0xCu);
   }
 
-  if ([v15 contextType] && objc_msgSend(v25, "count") < a9)
+  if ([contextCopy contextType] && objc_msgSend(v25, "count") < limit)
   {
-    v47 = a9 - [v25 count];
+    v47 = limit - [v25 count];
     [(ATXContextualActionManager *)self->_actionManager getAllCounts];
     v28 = v27 = v24;
-    v29 = [v28 allObjects];
+    allObjects2 = [v28 allObjects];
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
     v52[2] = __169__ATXDailyRoutinesPersonalizationManager__getMostFrequentActionsForContext_includeBundleIds_excludeBundleIds_includeActionTypes_excludeActionTypes_minOccurrences_limit___block_invoke;
     v52[3] = &unk_27859D2D8;
     v48 = v27;
     v53 = v27;
-    [v29 _pas_filteredArrayWithTest:v52];
-    v30 = v18;
-    v32 = v31 = v17;
+    [allObjects2 _pas_filteredArrayWithTest:v52];
+    v30 = actionTypesCopy;
+    v32 = v31 = typesCopy;
 
     v33 = objc_opt_class();
     v49 = v32;
     v34 = v32;
-    v17 = v31;
-    v18 = v30;
-    v35 = [v33 _filterActions:v34 havingCounts:v28 includeBundleIds:v50 excludeBundleIds:v51 includeActionTypes:v17 excludeActionTypes:v30 havingMinOccurrences:a8];
+    typesCopy = v31;
+    actionTypesCopy = v30;
+    v35 = [v33 _filterActions:v34 havingCounts:v28 includeBundleIds:v50 excludeBundleIds:bundleIdsCopy includeActionTypes:typesCopy excludeActionTypes:v30 havingMinOccurrences:occurrences];
     v36 = [objc_opt_class() _unpackMostFrequentActionParameters:v35 havingCounts:v28 limit:v47];
     v37 = __atxlog_handle_dailyroutines();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
@@ -337,37 +337,37 @@ LABEL_8:
   return v25;
 }
 
-+ (id)_filterActions:(id)a3 havingCounts:(id)a4 includeBundleIds:(id)a5 excludeBundleIds:(id)a6 includeActionTypes:(id)a7 excludeActionTypes:(id)a8 havingMinOccurrences:(unint64_t)a9
++ (id)_filterActions:(id)actions havingCounts:(id)counts includeBundleIds:(id)ids excludeBundleIds:(id)bundleIds includeActionTypes:(id)types excludeActionTypes:(id)actionTypes havingMinOccurrences:(unint64_t)occurrences
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  countsCopy = counts;
+  idsCopy = ids;
+  bundleIdsCopy = bundleIds;
+  typesCopy = types;
+  actionTypesCopy = actionTypes;
   v19 = MEMORY[0x277CBEB98];
-  v20 = a3;
+  actionsCopy = actions;
   v21 = +[_ATXGlobals sharedInstance];
-  v22 = [v21 personalizationBlacklistedBundleIds];
-  v23 = [v19 setWithArray:v22];
+  personalizationBlacklistedBundleIds = [v21 personalizationBlacklistedBundleIds];
+  v23 = [v19 setWithArray:personalizationBlacklistedBundleIds];
 
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __163__ATXDailyRoutinesPersonalizationManager__filterActions_havingCounts_includeBundleIds_excludeBundleIds_includeActionTypes_excludeActionTypes_havingMinOccurrences___block_invoke;
   v32[3] = &unk_27859D300;
-  v33 = v15;
+  v33 = idsCopy;
   v34 = v23;
-  v35 = v16;
-  v36 = v17;
-  v37 = v18;
-  v38 = v14;
-  v39 = a9;
-  v24 = v14;
-  v25 = v18;
-  v26 = v17;
-  v27 = v16;
+  v35 = bundleIdsCopy;
+  v36 = typesCopy;
+  v37 = actionTypesCopy;
+  v38 = countsCopy;
+  occurrencesCopy = occurrences;
+  v24 = countsCopy;
+  v25 = actionTypesCopy;
+  v26 = typesCopy;
+  v27 = bundleIdsCopy;
   v28 = v23;
-  v29 = v15;
-  v30 = [v20 _pas_filteredArrayWithTest:v32];
+  v29 = idsCopy;
+  v30 = [actionsCopy _pas_filteredArrayWithTest:v32];
 
   return v30;
 }
@@ -438,13 +438,13 @@ BOOL __163__ATXDailyRoutinesPersonalizationManager__filterActions_havingCounts_i
   return v14;
 }
 
-+ (id)_unpackMostFrequentActionParameters:(id)a3 havingCounts:(id)a4 limit:(unint64_t)a5
++ (id)_unpackMostFrequentActionParameters:(id)parameters havingCounts:(id)counts limit:(unint64_t)limit
 {
   v53 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v37 = v7;
-  v9 = [objc_opt_class() _rankActions:v7 havingCounts:v8];
+  parametersCopy = parameters;
+  countsCopy = counts;
+  v37 = parametersCopy;
+  v9 = [objc_opt_class() _rankActions:parametersCopy havingCounts:countsCopy];
   v10 = objc_opt_new();
   v43 = 0u;
   v44 = 0u;
@@ -467,19 +467,19 @@ BOOL __163__ATXDailyRoutinesPersonalizationManager__filterActions_havingCounts_i
 
         v15 = *(*(&v43 + 1) + 8 * i);
         v16 = objc_autoreleasePoolPush();
-        *&v17 = [v8 countForObject:v15];
+        *&v17 = [countsCopy countForObject:v15];
         v18 = [v15 getContainerWithScore:v17];
         v19 = v18;
         if (v18)
         {
-          v20 = [v18 scoredAction];
-          v21 = [v20 predictedItem];
+          scoredAction = [v18 scoredAction];
+          predictedItem = [scoredAction predictedItem];
 
-          [_ATXActionUtils fetchDataAndUpdateContentAttributeSetForAction:v21];
+          [_ATXActionUtils fetchDataAndUpdateContentAttributeSetForAction:predictedItem];
           [v10 addObject:v19];
         }
 
-        if ([v10 count] >= a5)
+        if ([v10 count] >= limit)
         {
           v22 = [objc_opt_class() _filterUnpackedActions:v10];
 
@@ -490,11 +490,11 @@ BOOL __163__ATXDailyRoutinesPersonalizationManager__filterActions_havingCounts_i
             *buf = 134218240;
             v49 = v24;
             v50 = 2048;
-            v51 = a5;
+            limitCopy2 = limit;
             _os_log_impl(&dword_2263AA000, v23, OS_LOG_TYPE_INFO, "Recovered action data for %lu out of up to %lu entries", buf, 0x16u);
           }
 
-          if ([v22 count] >= a5)
+          if ([v22 count] >= limit)
           {
 
             objc_autoreleasePoolPop(v16);
@@ -529,7 +529,7 @@ LABEL_17:
     *buf = 134218240;
     v49 = v27;
     v50 = 2048;
-    v51 = a5;
+    limitCopy2 = limit;
     _os_log_impl(&dword_2263AA000, v26, OS_LOG_TYPE_INFO, "Recovered action data for %lu out of up to %lu entries", buf, 0x16u);
   }
 
@@ -553,8 +553,8 @@ LABEL_17:
           objc_enumerationMutation(v29);
         }
 
-        v34 = [*(*(&v39 + 1) + 8 * j) scoredAction];
-        [v28 addObject:v34];
+        scoredAction2 = [*(*(&v39 + 1) + 8 * j) scoredAction];
+        [v28 addObject:scoredAction2];
       }
 
       v31 = [v29 countByEnumeratingWithState:&v39 objects:v47 count:16];
@@ -568,16 +568,16 @@ LABEL_17:
   return v28;
 }
 
-+ (id)_rankActions:(id)a3 havingCounts:(id)a4
++ (id)_rankActions:(id)actions havingCounts:(id)counts
 {
-  v5 = a4;
+  countsCopy = counts;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __68__ATXDailyRoutinesPersonalizationManager__rankActions_havingCounts___block_invoke;
   v9[3] = &unk_278597CB8;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a3 sortedArrayUsingComparator:v9];
+  v10 = countsCopy;
+  v6 = countsCopy;
+  v7 = [actions sortedArrayUsingComparator:v9];
 
   return v7;
 }
@@ -600,9 +600,9 @@ uint64_t __68__ATXDailyRoutinesPersonalizationManager__rankActions_havingCounts_
   }
 }
 
-+ (id)_filterUnpackedActions:(id)a3
++ (id)_filterUnpackedActions:(id)actions
 {
-  v3 = [ATXActionPredictionsProcessor removeDuplicateActionPredictions:a3];
+  v3 = [ATXActionPredictionsProcessor removeDuplicateActionPredictions:actions];
   v4 = [ATXActionPredictionsProcessor removeMissingOrBlockedRecipientPredictions:v3];
 
   v5 = [MEMORY[0x277CBEB18] arrayWithArray:v4];
@@ -614,20 +614,20 @@ uint64_t __68__ATXDailyRoutinesPersonalizationManager__rankActions_havingCounts_
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = +[_ATXGlobals sharedInstance];
-  v4 = [v3 personalizationRequiredActionHistorySeconds];
+  personalizationRequiredActionHistorySeconds = [v3 personalizationRequiredActionHistorySeconds];
 
   [(ATXContextualActionManager *)self->_actionManager getIntervalSinceOldestEvent];
   v6 = v5;
   v7 = __atxlog_handle_dailyroutines();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6 < v4)
+  if (v6 < personalizationRequiredActionHistorySeconds)
   {
     if (v8)
     {
       v12 = 134218240;
       v13 = v6;
       v14 = 2048;
-      v15 = v4;
+      v15 = personalizationRequiredActionHistorySeconds;
       v9 = "Not enough action history for requested context (got %lu (s) < %lu (s))";
       goto LABEL_6;
     }
@@ -638,21 +638,21 @@ uint64_t __68__ATXDailyRoutinesPersonalizationManager__rankActions_havingCounts_
     v12 = 134218240;
     v13 = v6;
     v14 = 2048;
-    v15 = v4;
+    v15 = personalizationRequiredActionHistorySeconds;
     v9 = "Action history is old enough (got %lu (s) >= %lu (s))";
 LABEL_6:
     _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, v9, &v12, 0x16u);
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v6 >= v4;
+  return v6 >= personalizationRequiredActionHistorySeconds;
 }
 
-- (BOOL)_allRequiredActionTypesPresent:(id)a3 minOccurrences:(unint64_t)a4 forContext:(id)a5
+- (BOOL)_allRequiredActionTypesPresent:(id)present minOccurrences:(unint64_t)occurrences forContext:(id)context
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 count];
+  presentCopy = present;
+  v7 = [presentCopy count];
   v8 = __atxlog_handle_dailyroutines();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
   if (v7)
@@ -660,27 +660,27 @@ LABEL_6:
     if (v9)
     {
       *buf = 138412290;
-      v42 = v6;
+      v42 = presentCopy;
       _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_INFO, "Action types required: %@", buf, 0xCu);
     }
 
-    v8 = [MEMORY[0x277CBEB58] setWithArray:v6];
-    v10 = [(ATXContextualActionManager *)self->_actionManager getAllCounts];
+    v8 = [MEMORY[0x277CBEB58] setWithArray:presentCopy];
+    getAllCounts = [(ATXContextualActionManager *)self->_actionManager getAllCounts];
     v11 = MEMORY[0x277CBEB98];
     v12 = +[_ATXGlobals sharedInstance];
-    v13 = [v12 personalizationBlacklistedBundleIds];
-    v14 = [v11 setWithArray:v13];
+    personalizationBlacklistedBundleIds = [v12 personalizationBlacklistedBundleIds];
+    v14 = [v11 setWithArray:personalizationBlacklistedBundleIds];
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v15 = v10;
+    v15 = getAllCounts;
     v16 = [v15 countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v16)
     {
       v17 = v16;
-      v34 = v6;
+      v34 = presentCopy;
       v18 = *v37;
       while (2)
       {
@@ -695,14 +695,14 @@ LABEL_6:
           v21 = __atxlog_handle_dailyroutines();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
           {
-            v22 = [v20 bundleId];
+            bundleId = [v20 bundleId];
             *buf = 138412290;
-            v42 = v22;
+            v42 = bundleId;
             _os_log_impl(&dword_2263AA000, v21, OS_LOG_TYPE_INFO, "Processing action for %@", buf, 0xCu);
           }
 
-          v23 = [v20 bundleId];
-          v24 = [v14 containsObject:v23];
+          bundleId2 = [v20 bundleId];
+          v24 = [v14 containsObject:bundleId2];
 
           if (v24)
           {
@@ -716,25 +716,25 @@ LABEL_6:
 
           else
           {
-            if ([v15 countForObject:v20] >= a4)
+            if ([v15 countForObject:v20] >= occurrences)
             {
-              v26 = [v20 actionType];
-              v27 = [v8 containsObject:v26];
+              actionType = [v20 actionType];
+              v27 = [v8 containsObject:actionType];
 
               if (v27)
               {
                 v28 = __atxlog_handle_dailyroutines();
                 if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
                 {
-                  v29 = [v20 actionType];
+                  actionType2 = [v20 actionType];
                   *buf = 138412290;
-                  v42 = v29;
+                  v42 = actionType2;
                   _os_log_impl(&dword_2263AA000, v28, OS_LOG_TYPE_INFO, "Action type count requirement met: %@", buf, 0xCu);
                 }
               }
 
-              v30 = [v20 actionType];
-              [v8 removeObject:v30];
+              actionType3 = [v20 actionType];
+              [v8 removeObject:actionType3];
             }
 
             if (![v8 count])
@@ -756,7 +756,7 @@ LABEL_6:
 
       v31 = 0;
 LABEL_28:
-      v6 = v34;
+      presentCopy = v34;
     }
 
     else

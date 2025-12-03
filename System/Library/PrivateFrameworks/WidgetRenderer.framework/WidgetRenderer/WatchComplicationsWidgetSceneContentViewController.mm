@@ -1,24 +1,24 @@
 @interface WatchComplicationsWidgetSceneContentViewController
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
-- (void)_updateWithFrameSpecifier:(id)a3 completion:(id)a4;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
+- (void)_updateWithFrameSpecifier:(id)specifier completion:(id)completion;
 @end
 
 @implementation WatchComplicationsWidgetSceneContentViewController
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = self;
-  sub_1DAE4AE78(a4, a5, a6, a7);
+  sceneCopy = scene;
+  sSceneCopy = sScene;
+  diffCopy = diff;
+  settingsCopy = settings;
+  contextCopy = context;
+  selfCopy = self;
+  sub_1DAE4AE78(sScene, diff, settings, context);
 }
 
-- (void)_updateWithFrameSpecifier:(id)a3 completion:(id)a4
+- (void)_updateWithFrameSpecifier:(id)specifier completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = swift_allocObject();
@@ -34,12 +34,12 @@
   aBlock[2] = sub_1DAD751C0;
   aBlock[3] = &block_descriptor_95;
   v10 = _Block_copy(aBlock);
-  v11 = a3;
-  v12 = self;
+  specifierCopy = specifier;
+  selfCopy = self;
 
-  v13.receiver = v12;
+  v13.receiver = selfCopy;
   v13.super_class = type metadata accessor for WatchComplicationsWidgetSceneContentViewController();
-  [(WidgetSceneContentViewController *)&v13 _updateWithFrameSpecifier:v11 completion:v10];
+  [(WidgetSceneContentViewController *)&v13 _updateWithFrameSpecifier:specifierCopy completion:v10];
 
   _Block_release(v10);
 }

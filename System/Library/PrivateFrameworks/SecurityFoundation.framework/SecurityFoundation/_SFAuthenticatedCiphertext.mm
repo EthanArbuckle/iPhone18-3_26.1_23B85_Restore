@@ -1,28 +1,28 @@
 @interface _SFAuthenticatedCiphertext
-- (BOOL)isEqual:(id)a3;
-- (_SFAuthenticatedCiphertext)initWithCiphertext:(id)a3 authenticationCode:(id)a4 initializationVector:(id)a5;
-- (_SFAuthenticatedCiphertext)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_SFAuthenticatedCiphertext)initWithCiphertext:(id)ciphertext authenticationCode:(id)code initializationVector:(id)vector;
+- (_SFAuthenticatedCiphertext)initWithCoder:(id)coder;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SFAuthenticatedCiphertext
 
-- (_SFAuthenticatedCiphertext)initWithCiphertext:(id)a3 authenticationCode:(id)a4 initializationVector:(id)a5
+- (_SFAuthenticatedCiphertext)initWithCiphertext:(id)ciphertext authenticationCode:(id)code initializationVector:(id)vector
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  ciphertextCopy = ciphertext;
+  codeCopy = code;
+  vectorCopy = vector;
+  if (ciphertextCopy)
   {
-    if (v9)
+    if (codeCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [_SFAuthenticatedCiphertext initWithCiphertext:authenticationCode:initializationVector:];
-    if (v10)
+    if (vectorCopy)
     {
       goto LABEL_4;
     }
@@ -31,13 +31,13 @@ LABEL_8:
   }
 
   [_SFAuthenticatedCiphertext initWithCiphertext:authenticationCode:initializationVector:];
-  if (!v9)
+  if (!codeCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v10)
+  if (vectorCopy)
   {
     goto LABEL_4;
   }
@@ -47,39 +47,39 @@ LABEL_9:
 LABEL_4:
   v15.receiver = self;
   v15.super_class = _SFAuthenticatedCiphertext;
-  v11 = [(_SFCiphertext *)&v15 initWithCiphertext:v8];
+  v11 = [(_SFCiphertext *)&v15 initWithCiphertext:ciphertextCopy];
   if (v11)
   {
     v12 = objc_alloc_init(SFAuthenticatedCiphertext_Ivars);
     authenticatedCiphertextInternal = v11->_authenticatedCiphertextInternal;
     v11->_authenticatedCiphertextInternal = v12;
 
-    objc_storeStrong(v11->_authenticatedCiphertextInternal + 1, a4);
-    objc_storeStrong(v11->_authenticatedCiphertextInternal + 2, a5);
+    objc_storeStrong(v11->_authenticatedCiphertextInternal + 1, code);
+    objc_storeStrong(v11->_authenticatedCiphertextInternal + 2, vector);
   }
 
   return v11;
 }
 
-- (_SFAuthenticatedCiphertext)initWithCoder:(id)a3
+- (_SFAuthenticatedCiphertext)initWithCoder:(id)coder
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = _SFAuthenticatedCiphertext;
-  v5 = [(_SFCiphertext *)&v21 initWithCoder:v4];
+  v5 = [(_SFCiphertext *)&v21 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_alloc_init(SFAuthenticatedCiphertext_Ivars);
     authenticatedCiphertextInternal = v5->_authenticatedCiphertextInternal;
     v5->_authenticatedCiphertextInternal = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SFAuthenticationCode"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SFAuthenticationCode"];
     v9 = v5->_authenticatedCiphertextInternal;
     v10 = v9[1];
     v9[1] = v8;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SFInitializationVector"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SFInitializationVector"];
     v12 = v5->_authenticatedCiphertextInternal;
     v13 = v12[2];
     v12[2] = v11;
@@ -94,7 +94,7 @@ LABEL_4:
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
       v18 = [v15 errorWithDomain:@"SFCryptoServicesErrorDomain" code:8 userInfo:v17];
 
-      [v4 failWithError:v18];
+      [coderCopy failWithError:v18];
     }
   }
 
@@ -102,14 +102,14 @@ LABEL_4:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _SFAuthenticatedCiphertext;
-  v4 = a3;
-  [(_SFCiphertext *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:*(self->_authenticatedCiphertextInternal + 1) forKey:{@"SFAuthenticationCode", v5.receiver, v5.super_class}];
-  [v4 encodeObject:*(self->_authenticatedCiphertextInternal + 2) forKey:@"SFInitializationVector"];
+  coderCopy = coder;
+  [(_SFCiphertext *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:*(self->_authenticatedCiphertextInternal + 1) forKey:{@"SFAuthenticationCode", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:*(self->_authenticatedCiphertextInternal + 2) forKey:@"SFInitializationVector"];
 }
 
 - (id)debugDescription
@@ -121,22 +121,22 @@ LABEL_4:
   authenticatedCiphertextInternal = self->_authenticatedCiphertextInternal;
   v6 = authenticatedCiphertextInternal[1];
   v7 = authenticatedCiphertextInternal[2];
-  v8 = [(_SFCiphertext *)self ciphertext];
-  v9 = [v3 stringWithFormat:@"%@\nAuth Code: %@\nIV: %@\ndata: %@", v4, v6, v7, v8];
+  ciphertext = [(_SFCiphertext *)self ciphertext];
+  v9 = [v3 stringWithFormat:@"%@\nAuth Code: %@\nIV: %@\ndata: %@", v4, v6, v7, ciphertext];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v13.receiver = self;
@@ -144,12 +144,12 @@ LABEL_4:
     if ([(_SFCiphertext *)&v13 isEqual:v6])
     {
       v7 = *(self->_authenticatedCiphertextInternal + 1);
-      v8 = [(_SFAuthenticatedCiphertext *)v6 authenticationCode];
-      if ([v7 isEqual:v8])
+      authenticationCode = [(_SFAuthenticatedCiphertext *)v6 authenticationCode];
+      if ([v7 isEqual:authenticationCode])
       {
         v9 = *(self->_authenticatedCiphertextInternal + 2);
-        v10 = [(_SFAuthenticatedCiphertext *)v6 initializationVector];
-        v11 = [v9 isEqual:v10];
+        initializationVector = [(_SFAuthenticatedCiphertext *)v6 initializationVector];
+        v11 = [v9 isEqual:initializationVector];
       }
 
       else

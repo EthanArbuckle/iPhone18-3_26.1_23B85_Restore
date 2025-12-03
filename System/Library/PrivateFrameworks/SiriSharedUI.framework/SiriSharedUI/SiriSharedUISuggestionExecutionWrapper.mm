@@ -1,24 +1,24 @@
 @interface SiriSharedUISuggestionExecutionWrapper
-- (SiriSharedUISuggestionExecutionWrapper)initWithInvocationText:(id)a3 displayText:(id)a4 encodedToolInvocationData:(id)a5 suggestionRequestType:(int64_t)a6;
+- (SiriSharedUISuggestionExecutionWrapper)initWithInvocationText:(id)text displayText:(id)displayText encodedToolInvocationData:(id)data suggestionRequestType:(int64_t)type;
 @end
 
 @implementation SiriSharedUISuggestionExecutionWrapper
 
-- (SiriSharedUISuggestionExecutionWrapper)initWithInvocationText:(id)a3 displayText:(id)a4 encodedToolInvocationData:(id)a5 suggestionRequestType:(int64_t)a6
+- (SiriSharedUISuggestionExecutionWrapper)initWithInvocationText:(id)text displayText:(id)displayText encodedToolInvocationData:(id)data suggestionRequestType:(int64_t)type
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  textCopy = text;
+  displayTextCopy = displayText;
+  dataCopy = data;
   v17.receiver = self;
   v17.super_class = SiriSharedUISuggestionExecutionWrapper;
   v14 = [(SiriSharedUISuggestionExecutionWrapper *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_invocationText, a3);
-    objc_storeStrong(&v15->_displayText, a4);
-    objc_storeStrong(&v15->_encodedToolInvocationData, a5);
-    v15->_suggestionRequestType = a6;
+    objc_storeStrong(&v14->_invocationText, text);
+    objc_storeStrong(&v15->_displayText, displayText);
+    objc_storeStrong(&v15->_encodedToolInvocationData, data);
+    v15->_suggestionRequestType = type;
   }
 
   return v15;

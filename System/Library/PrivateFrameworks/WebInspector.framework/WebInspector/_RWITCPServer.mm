@@ -1,25 +1,25 @@
 @interface _RWITCPServer
 - (BOOL)_createListenDispatchSource;
-- (BOOL)_listenOnPort:(unsigned __int16)a3;
-- (_RWITCPServer)initWithLaunchdSocketName:(const char *)a3 delegate:(id)a4;
+- (BOOL)_listenOnPort:(unsigned __int16)port;
+- (_RWITCPServer)initWithLaunchdSocketName:(const char *)name delegate:(id)delegate;
 - (_RWITCPServerDelegate)delegate;
-- (id)_initWithDelegate:(id)a3;
-- (void)connectionClosed:(id)a3;
+- (id)_initWithDelegate:(id)delegate;
+- (void)connectionClosed:(id)closed;
 - (void)dealloc;
 @end
 
 @implementation _RWITCPServer
 
-- (id)_initWithDelegate:(id)a3
+- (id)_initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = _RWITCPServer;
   v5 = [(_RWITCPServer *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v6->_listenSocket = -1;
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
     connections = v6->_connections;
@@ -31,7 +31,7 @@
   return v6;
 }
 
-- (_RWITCPServer)initWithLaunchdSocketName:(const char *)a3 delegate:(id)a4
+- (_RWITCPServer)initWithLaunchdSocketName:(const char *)name delegate:(id)delegate
 {
   v5 = RWIDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -55,9 +55,9 @@
   [(_RWITCPServer *)&v4 dealloc];
 }
 
-- (BOOL)_listenOnPort:(unsigned __int16)a3
+- (BOOL)_listenOnPort:(unsigned __int16)port
 {
-  v3 = a3;
+  portCopy = port;
   v5 = socket(30, 1, 6);
   self->_listenSocket = v5;
   if (v5 == -1)
@@ -77,7 +77,7 @@
     v10 = 0uLL;
     v9 = 7680;
     v11 = 0;
-    WORD1(v9) = __rev16(v3);
+    WORD1(v9) = __rev16(portCopy);
     v10 = *MEMORY[0x277D85EF0];
     if (bind(self->_listenSocket, &v9, 0x1Cu) == -1)
     {
@@ -139,17 +139,17 @@
   return v7 != 0;
 }
 
-- (void)connectionClosed:(id)a3
+- (void)connectionClosed:(id)closed
 {
-  v4 = a3;
+  closedCopy = closed;
   serverQueue = self->_serverQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34___RWITCPServer_connectionClosed___block_invoke;
   v7[3] = &unk_279EAA508;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = closedCopy;
+  v6 = closedCopy;
   dispatch_async(serverQueue, v7);
 }
 

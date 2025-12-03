@@ -1,36 +1,36 @@
 @interface HDMCOvulationConfirmationNotificationFiredState
-+ (id)notificationStateFromDictionaryRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HDMCOvulationConfirmationNotificationFiredState)initWithFireDayIndex:(int64_t)a3;
-- (id)computeNewStateFromCorrelatingPeriodStartDayIndex:(int64_t)a3 fertileWindowEndDayIndex:(int64_t)a4 fireDayIndex:(int64_t)a5 daysShiftedForFertileWindow:(int64_t)a6 daysWithWristTemp45DaysBeforeOvulationConfirmed:(int64_t)a7;
++ (id)notificationStateFromDictionaryRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
+- (HDMCOvulationConfirmationNotificationFiredState)initWithFireDayIndex:(int64_t)index;
+- (id)computeNewStateFromCorrelatingPeriodStartDayIndex:(int64_t)index fertileWindowEndDayIndex:(int64_t)dayIndex fireDayIndex:(int64_t)fireDayIndex daysShiftedForFertileWindow:(int64_t)window daysWithWristTemp45DaysBeforeOvulationConfirmed:(int64_t)confirmed;
 - (id)description;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation HDMCOvulationConfirmationNotificationFiredState
 
-- (HDMCOvulationConfirmationNotificationFiredState)initWithFireDayIndex:(int64_t)a3
+- (HDMCOvulationConfirmationNotificationFiredState)initWithFireDayIndex:(int64_t)index
 {
   v5.receiver = self;
   v5.super_class = HDMCOvulationConfirmationNotificationFiredState;
   result = [(HDMCOvulationConfirmationNotificationFiredState *)&v5 init];
   if (result)
   {
-    result->_fireDayIndex = a3;
+    result->_fireDayIndex = index;
   }
 
   return result;
 }
 
-+ (id)notificationStateFromDictionaryRepresentation:(id)a3
++ (id)notificationStateFromDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"FireDayIndex"];
+  representationCopy = representation;
+  v5 = [representationCopy objectForKeyedSubscript:@"FireDayIndex"];
 
   if (v5)
   {
-    v6 = [a1 alloc];
-    v7 = [v4 objectForKeyedSubscript:@"FireDayIndex"];
+    v6 = [self alloc];
+    v7 = [representationCopy objectForKeyedSubscript:@"FireDayIndex"];
     v8 = [v6 initWithFireDayIndex:{objc_msgSend(v7, "integerValue")}];
   }
 
@@ -49,29 +49,29 @@
   return v8;
 }
 
-- (id)computeNewStateFromCorrelatingPeriodStartDayIndex:(int64_t)a3 fertileWindowEndDayIndex:(int64_t)a4 fireDayIndex:(int64_t)a5 daysShiftedForFertileWindow:(int64_t)a6 daysWithWristTemp45DaysBeforeOvulationConfirmed:(int64_t)a7
+- (id)computeNewStateFromCorrelatingPeriodStartDayIndex:(int64_t)index fertileWindowEndDayIndex:(int64_t)dayIndex fireDayIndex:(int64_t)fireDayIndex daysShiftedForFertileWindow:(int64_t)window daysWithWristTemp45DaysBeforeOvulationConfirmed:(int64_t)confirmed
 {
-  if ([(HDMCOvulationConfirmationNotificationFiredState *)self fireDayIndex]<= a3)
+  if ([(HDMCOvulationConfirmationNotificationFiredState *)self fireDayIndex]<= index)
   {
     v15.receiver = self;
     v15.super_class = HDMCOvulationConfirmationNotificationFiredState;
-    v13 = [(HDMCOvulationConfirmationNotificationStateMachineState *)&v15 computeNewStateFromCorrelatingPeriodStartDayIndex:a3 fertileWindowEndDayIndex:a4 fireDayIndex:a5 daysShiftedForFertileWindow:a6 daysWithWristTemp45DaysBeforeOvulationConfirmed:a7];
+    selfCopy = [(HDMCOvulationConfirmationNotificationStateMachineState *)&v15 computeNewStateFromCorrelatingPeriodStartDayIndex:index fertileWindowEndDayIndex:dayIndex fireDayIndex:fireDayIndex daysShiftedForFertileWindow:window daysWithWristTemp45DaysBeforeOvulationConfirmed:confirmed];
   }
 
   else
   {
-    v13 = self;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
 {
   v8.receiver = self;
   v8.super_class = HDMCOvulationConfirmationNotificationFiredState;
-  v3 = [(HDMCOvulationConfirmationNotificationStateMachineState *)&v8 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(HDMCOvulationConfirmationNotificationStateMachineState *)&v8 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HDMCOvulationConfirmationNotificationFiredState fireDayIndex](self, "fireDayIndex")}];
   [v4 setObject:v5 forKeyedSubscript:@"FireDayIndex"];
@@ -81,14 +81,14 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = HDMCOvulationConfirmationNotificationFiredState;
-  if ([(HDMCOvulationConfirmationNotificationStateMachineState *)&v7 isEqual:v4])
+  if ([(HDMCOvulationConfirmationNotificationStateMachineState *)&v7 isEqual:equalCopy])
   {
-    v5 = self->_fireDayIndex == v4[1];
+    v5 = self->_fireDayIndex == equalCopy[1];
   }
 
   else

@@ -1,19 +1,19 @@
 @interface PKPeerPayment3DCharacter
-+ (id)characterWithCharacter:(id)a3 node:(id)a4;
++ (id)characterWithCharacter:(id)character node:(id)node;
 @end
 
 @implementation PKPeerPayment3DCharacter
 
-+ (id)characterWithCharacter:(id)a3 node:(id)a4
++ (id)characterWithCharacter:(id)character node:(id)node
 {
-  v5 = a3;
-  v6 = a4;
+  characterCopy = character;
+  nodeCopy = node;
   v7 = objc_alloc_init(PKPeerPayment3DCharacter);
   v8 = v7;
   if (v7)
   {
-    [(PKPeerPayment3DCharacter *)v7 setNode:v6];
-    [(PKPeerPayment3DCharacter *)v8 setCharacter:v5];
+    [(PKPeerPayment3DCharacter *)v7 setNode:nodeCopy];
+    [(PKPeerPayment3DCharacter *)v8 setCharacter:characterCopy];
   }
 
   return v8;

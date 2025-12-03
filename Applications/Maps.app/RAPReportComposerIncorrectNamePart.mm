@@ -1,26 +1,26 @@
 @interface RAPReportComposerIncorrectNamePart
-- (RAPReportComposerIncorrectNamePart)initWithCorrectableString:(id)a3;
-- (void)setCorrectableString:(id)a3;
+- (RAPReportComposerIncorrectNamePart)initWithCorrectableString:(id)string;
+- (void)setCorrectableString:(id)string;
 @end
 
 @implementation RAPReportComposerIncorrectNamePart
 
-- (void)setCorrectableString:(id)a3
+- (void)setCorrectableString:(id)string
 {
-  v5 = a3;
-  if (self->_correctableString != v5)
+  stringCopy = string;
+  if (self->_correctableString != stringCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_correctableString, a3);
+    v6 = stringCopy;
+    objc_storeStrong(&self->_correctableString, string);
     [(RAPReportComposerIncorrectNameSection *)self->_incorrectNameSection setCurrentLabelCorrectableString:self->_correctableString];
-    v5 = v6;
+    stringCopy = v6;
   }
 }
 
-- (RAPReportComposerIncorrectNamePart)initWithCorrectableString:(id)a3
+- (RAPReportComposerIncorrectNamePart)initWithCorrectableString:(id)string
 {
-  v5 = a3;
-  v6 = [[RAPReportComposerIncorrectNameSection alloc] initWithCorrectableString:v5 required:1];
+  stringCopy = string;
+  v6 = [[RAPReportComposerIncorrectNameSection alloc] initWithCorrectableString:stringCopy required:1];
   v13 = v6;
   v7 = [NSArray arrayWithObjects:&v13 count:1];
   v12.receiver = self;
@@ -30,7 +30,7 @@
   if (v8)
   {
     objc_storeStrong(&v8->_incorrectNameSection, v6);
-    objc_storeStrong(&v8->_correctableString, a3);
+    objc_storeStrong(&v8->_correctableString, string);
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"Name [Labels]" value:@"localized string not found" table:0];
     [(RAPTablePartSection *)v8->_incorrectNameSection setHeaderTitle:v10];

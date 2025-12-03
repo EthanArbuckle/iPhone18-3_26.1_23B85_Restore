@@ -1,18 +1,18 @@
 @interface FRAnalyticsAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation FRAnalyticsAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerProtocol:&OBJC_PROTOCOL___NSSNewsAnalyticsSessionManager factory:&stru_1000C5508];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerProtocol:&OBJC_PROTOCOL___NSSNewsAnalyticsSessionManager factory:&stru_1000C5508];
 
-  v7 = [v3 publicContainer];
+  publicContainer2 = [registryCopy publicContainer];
 
-  v6 = [v7 registerProtocol:&OBJC_PROTOCOL___NSSNewsAnalyticsUserIDProvider factory:&stru_1000C5548];
+  v6 = [publicContainer2 registerProtocol:&OBJC_PROTOCOL___NSSNewsAnalyticsUserIDProvider factory:&stru_1000C5548];
 }
 
 @end

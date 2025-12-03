@@ -1,19 +1,19 @@
 @interface NTKGreenfieldCompanionActivityItemProvider
-- (NTKGreenfieldCompanionActivityItemProvider)initWithDraftRecipe:(id)a3 previewImage:(id)a4;
+- (NTKGreenfieldCompanionActivityItemProvider)initWithDraftRecipe:(id)recipe previewImage:(id)image;
 - (NTKGreenfieldCompanionActivityItemProviderDelegate)delegate;
-- (id)activityViewController:(id)a3 itemsForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4;
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3;
+- (id)activityViewController:(id)controller itemsForActivityType:(id)type;
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type;
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata;
 - (id)item;
-- (id)writeImageToDisk:(id)a3 suffix:(id)a4;
+- (id)writeImageToDisk:(id)disk suffix:(id)suffix;
 @end
 
 @implementation NTKGreenfieldCompanionActivityItemProvider
 
-- (NTKGreenfieldCompanionActivityItemProvider)initWithDraftRecipe:(id)a3 previewImage:(id)a4
+- (NTKGreenfieldCompanionActivityItemProvider)initWithDraftRecipe:(id)recipe previewImage:(id)image
 {
-  v7 = a3;
-  v8 = a4;
+  recipeCopy = recipe;
+  imageCopy = image;
   v9 = objc_alloc_init(MEMORY[0x277CCAA88]);
   [v9 registerDataRepresentationForTypeIdentifier:@"com.apple.watchface" visibility:0 loadHandler:&__block_literal_global_16];
   v13.receiver = self;
@@ -22,33 +22,33 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_draftRecipe, a3);
-    objc_storeStrong(&v11->_previewImage, a4);
+    objc_storeStrong(&v10->_draftRecipe, recipe);
+    objc_storeStrong(&v11->_previewImage, image);
   }
 
   return v11;
 }
 
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata
 {
   v4 = MEMORY[0x277CD46C8];
   v5 = self->_previewImage;
   v6 = objc_alloc_init(v4);
-  v7 = [(NTKGreenfieldDraftRecipe *)self->_draftRecipe faceForSharing];
-  v8 = [v7 faceSharingName];
-  [v6 setTitle:v8];
+  faceForSharing = [(NTKGreenfieldDraftRecipe *)self->_draftRecipe faceForSharing];
+  faceSharingName = [faceForSharing faceSharingName];
+  [v6 setTitle:faceSharingName];
 
   v9 = objc_alloc_init(MEMORY[0x277CD46B8]);
   [v9 setType:5];
   v10 = [objc_alloc(MEMORY[0x277CD46B0]) initWithPlatformImage:v5 properties:v9];
   [v6 setImage:v10];
 
-  v11 = [(NTKGreenfieldDraftRecipe *)self->_draftRecipe faceForSharingComplicationOptionsCount];
-  if (v11)
+  faceForSharingComplicationOptionsCount = [(NTKGreenfieldDraftRecipe *)self->_draftRecipe faceForSharingComplicationOptionsCount];
+  if (faceForSharingComplicationOptionsCount)
   {
     v12 = objc_alloc_init(MEMORY[0x277CD46F0]);
     v13 = NTKClockFaceLocalizedString(@"GREENFIELD_COMPLICATION_COUNT_DESCRIPTION", @"%lu Complications");
-    v14 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v13, v11];
+    v14 = [MEMORY[0x277CCACA8] localizedStringWithFormat:v13, faceForSharingComplicationOptionsCount];
     v15 = [objc_alloc(MEMORY[0x277CCA898]) initWithString:v14];
     [v12 setStatus:v15];
 
@@ -58,15 +58,15 @@
   return v6;
 }
 
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type
 {
-  if (*MEMORY[0x277D54728] == a4)
+  if (*MEMORY[0x277D54728] == type)
   {
-    v5 = [(NTKGreenfieldDraftRecipe *)self->_draftRecipe faceForSharing];
-    v6 = [v5 faceSharingName];
+    faceForSharing = [(NTKGreenfieldDraftRecipe *)self->_draftRecipe faceForSharing];
+    faceSharingName = [faceForSharing faceSharingName];
 
     v7 = NTKClockFaceLocalizedString(@"GREENFIELD_SHARE_WATCH_FACE_SUBJECT", @"Apple Watch Face — %@");
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:v7, v6];
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:v7, faceSharingName];
   }
 
   else
@@ -85,7 +85,7 @@
   v10 = 3221225472;
   v11 = __50__NTKGreenfieldCompanionActivityItemProvider_item__block_invoke;
   v12 = &unk_27877EEF0;
-  v13 = self;
+  selfCopy = self;
   v14 = v3;
   v5 = v3;
   [NTKGreenfieldUtilities encodeRecipeFromDraftRecipe:draftRecipe completionBlock:&v9];
@@ -133,18 +133,18 @@ void __50__NTKGreenfieldCompanionActivityItemProvider_item__block_invoke_2(uint6
   [v2 companionActivityItemProvider:*(a1 + 32) handleError:*(a1 + 40)];
 }
 
-- (id)writeImageToDisk:(id)a3 suffix:(id)a4
+- (id)writeImageToDisk:(id)disk suffix:(id)suffix
 {
-  if (a3)
+  if (disk)
   {
-    v6 = a4;
-    v7 = UIImagePNGRepresentation(a3);
+    suffixCopy = suffix;
+    v7 = UIImagePNGRepresentation(disk);
     v8 = MEMORY[0x277CCACA8];
-    v9 = [(NTKGreenfieldEncodedRecipe *)self->_encodedRecipe watchFaceName];
-    v10 = [v8 stringWithFormat:@"%@_%@@2x.png", v9, v6];
+    watchFaceName = [(NTKGreenfieldEncodedRecipe *)self->_encodedRecipe watchFaceName];
+    suffixCopy = [v8 stringWithFormat:@"%@_%@@2x.png", watchFaceName, suffixCopy];
 
     v11 = NSTemporaryDirectory();
-    v12 = [v11 stringByAppendingString:v10];
+    v12 = [v11 stringByAppendingString:suffixCopy];
 
     v13 = [MEMORY[0x277CBEBC0] fileURLWithPath:v12];
     [v7 writeToURL:v13 atomically:1];
@@ -158,26 +158,26 @@ void __50__NTKGreenfieldCompanionActivityItemProvider_item__block_invoke_2(uint6
   return v13;
 }
 
-- (id)activityViewController:(id)a3 itemsForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemsForActivityType:(id)type
 {
   v11.receiver = self;
   v11.super_class = NTKGreenfieldCompanionActivityItemProvider;
-  v6 = a4;
-  v7 = [(UIActivityItemProvider *)&v11 activityViewController:a3 itemForActivityType:v6];
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [v6 isEqualToString:*MEMORY[0x277D54728]];
+  typeCopy = type;
+  v7 = [(UIActivityItemProvider *)&v11 activityViewController:controller itemForActivityType:typeCopy];
+  array = [MEMORY[0x277CBEB18] array];
+  v9 = [typeCopy isEqualToString:*MEMORY[0x277D54728]];
 
   if (v9 && self->_emailImageUrl)
   {
-    [v8 addObject:?];
+    [array addObject:?];
   }
 
   if (v7)
   {
-    [v8 addObject:v7];
+    [array addObject:v7];
   }
 
-  return v8;
+  return array;
 }
 
 - (NTKGreenfieldCompanionActivityItemProviderDelegate)delegate

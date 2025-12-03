@@ -1,40 +1,40 @@
 @interface HDStatisticsCollectionCalculatorDefaultDataSource
-+ (uint64_t)_addValueForQuantitySample:(void *)a3 calculator:(uint64_t)a4 error:;
-- (BOOL)addValuesForQuantitySamples:(id)a3 calculator:(id)a4 includeSeries:(BOOL)a5 error:(id *)a6;
-- (BOOL)collectionCalculator:(id)a3 queryForInterval:(id)a4 error:(id *)a5 sampleHandler:(id)a6 mergeHandler:(id)a7;
++ (uint64_t)_addValueForQuantitySample:(void *)sample calculator:(uint64_t)calculator error:;
+- (BOOL)addValuesForQuantitySamples:(id)samples calculator:(id)calculator includeSeries:(BOOL)series error:(id *)error;
+- (BOOL)collectionCalculator:(id)calculator queryForInterval:(id)interval error:(id *)error sampleHandler:(id)handler mergeHandler:(id)mergeHandler;
 - (HDProfile)profile;
-- (id)initForProfile:(id)a3 categoryType:(id)a4 predicate:(id)a5 restrictedSourceEntities:(id)a6;
-- (id)initForProfile:(id)a3 quantityType:(id)a4 predicate:(id)a5 restrictedSourceEntities:(id)a6;
-- (uint64_t)_addValuesForQuantitySamples:(void *)a3 calculator:(char)a4 requiresSeriesValues:(void *)a5 transaction:(uint64_t)a6 error:;
+- (id)initForProfile:(id)profile categoryType:(id)type predicate:(id)predicate restrictedSourceEntities:(id)entities;
+- (id)initForProfile:(id)profile quantityType:(id)type predicate:(id)predicate restrictedSourceEntities:(id)entities;
+- (uint64_t)_addValuesForQuantitySamples:(void *)samples calculator:(char)calculator requiresSeriesValues:(void *)values transaction:(uint64_t)transaction error:;
 - (void)_updateFullPredicate;
-- (void)setPredicate:(id)a3;
-- (void)setRestrictedSourceEntities:(id)a3;
+- (void)setPredicate:(id)predicate;
+- (void)setRestrictedSourceEntities:(id)entities;
 @end
 
 @implementation HDStatisticsCollectionCalculatorDefaultDataSource
 
-- (id)initForProfile:(id)a3 quantityType:(id)a4 predicate:(id)a5 restrictedSourceEntities:(id)a6
+- (id)initForProfile:(id)profile quantityType:(id)type predicate:(id)predicate restrictedSourceEntities:(id)entities
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  profileCopy = profile;
+  typeCopy = type;
+  predicateCopy = predicate;
+  entitiesCopy = entities;
   v26.receiver = self;
   v26.super_class = HDStatisticsCollectionCalculatorDefaultDataSource;
   v14 = [(HDStatisticsCollectionCalculatorDefaultDataSource *)&v26 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_profile, v10);
-    v16 = [v11 copy];
+    objc_storeWeak(&v14->_profile, profileCopy);
+    v16 = [typeCopy copy];
     v17 = *(v15 + 32);
     *(v15 + 32) = v16;
 
-    v18 = [v12 copy];
+    v18 = [predicateCopy copy];
     v19 = *(v15 + 40);
     *(v15 + 40) = v18;
 
-    v20 = [v13 copy];
+    v20 = [entitiesCopy copy];
     v21 = *(v15 + 48);
     *(v15 + 48) = v20;
 
@@ -43,8 +43,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = [*(v15 + 32) underlyingSampleType];
-      v24 = [MEMORY[0x277CCD830] _quantityTypeWithCode:{objc_msgSend(v23, "code")}];
+      underlyingSampleType = [*(v15 + 32) underlyingSampleType];
+      v24 = [MEMORY[0x277CCD830] _quantityTypeWithCode:{objc_msgSend(underlyingSampleType, "code")}];
       *(v15 + 16) = v24 != 0;
     }
 
@@ -56,88 +56,88 @@
 
 - (void)_updateFullPredicate
 {
-  if (a1)
+  if (self)
   {
-    v8 = *(a1 + 32);
+    v8 = *(self + 32);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v2 = [v8 underlyingSampleType];
+      underlyingSampleType = [v8 underlyingSampleType];
 
-      v8 = v2;
+      v8 = underlyingSampleType;
     }
 
     v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v4 = HDSampleEntityPredicateForDataType(v8);
     [v3 addObject:v4];
 
-    if ([*(a1 + 48) count])
+    if ([*(self + 48) count])
     {
-      v5 = HDDataEntityPredicateForSourceEntitySet(7, *(a1 + 48));
+      v5 = HDDataEntityPredicateForSourceEntitySet(7, *(self + 48));
       [v3 addObject:v5];
     }
 
-    if (*(a1 + 40))
+    if (*(self + 40))
     {
       [v3 addObject:?];
     }
 
     v6 = [MEMORY[0x277D10B20] predicateMatchingAllPredicates:v3];
-    v7 = *(a1 + 8);
-    *(a1 + 8) = v6;
+    v7 = *(self + 8);
+    *(self + 8) = v6;
   }
 }
 
-- (id)initForProfile:(id)a3 categoryType:(id)a4 predicate:(id)a5 restrictedSourceEntities:(id)a6
+- (id)initForProfile:(id)profile categoryType:(id)type predicate:(id)predicate restrictedSourceEntities:(id)entities
 {
   v10 = MEMORY[0x277CCDAB0];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v10 countUnit];
-  v16 = [_HDStatisticsSyntheticQuantityType syntheticQuantityTypeWithUnderlyingSampleType:v13 aggregationStyle:1 canonicalUnit:v15];
+  entitiesCopy = entities;
+  predicateCopy = predicate;
+  typeCopy = type;
+  profileCopy = profile;
+  countUnit = [v10 countUnit];
+  v16 = [_HDStatisticsSyntheticQuantityType syntheticQuantityTypeWithUnderlyingSampleType:typeCopy aggregationStyle:1 canonicalUnit:countUnit];
 
-  v17 = [(HDStatisticsCollectionCalculatorDefaultDataSource *)self initForProfile:v14 quantityType:v16 predicate:v12 restrictedSourceEntities:v11];
+  v17 = [(HDStatisticsCollectionCalculatorDefaultDataSource *)self initForProfile:profileCopy quantityType:v16 predicate:predicateCopy restrictedSourceEntities:entitiesCopy];
   return v17;
 }
 
-- (void)setRestrictedSourceEntities:(id)a3
+- (void)setRestrictedSourceEntities:(id)entities
 {
-  v4 = [a3 copy];
+  v4 = [entities copy];
   restrictedSourceEntities = self->_restrictedSourceEntities;
   self->_restrictedSourceEntities = v4;
 
   [(HDStatisticsCollectionCalculatorDefaultDataSource *)self _updateFullPredicate];
 }
 
-- (void)setPredicate:(id)a3
+- (void)setPredicate:(id)predicate
 {
-  v4 = [a3 copy];
+  v4 = [predicate copy];
   predicate = self->_predicate;
   self->_predicate = v4;
 
   [(HDStatisticsCollectionCalculatorDefaultDataSource *)self _updateFullPredicate];
 }
 
-- (BOOL)collectionCalculator:(id)a3 queryForInterval:(id)a4 error:(id *)a5 sampleHandler:(id)a6 mergeHandler:(id)a7
+- (BOOL)collectionCalculator:(id)calculator queryForInterval:(id)interval error:(id *)error sampleHandler:(id)handler mergeHandler:(id)mergeHandler
 {
   v53[3] = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v11 = a4;
-  v38 = a6;
-  v12 = a7;
+  calculatorCopy = calculator;
+  intervalCopy = interval;
+  handlerCopy = handler;
+  mergeHandlerCopy = mergeHandler;
   v13 = self->_fullPredicate;
-  if (v11)
+  if (intervalCopy)
   {
     quantityType = self->_quantityType;
-    v15 = [v11 startDate];
-    v16 = [(HKQuantityType *)quantityType _earliestAllowedStartDateForSampleOverlappingDate:v15];
+    startDate = [intervalCopy startDate];
+    v16 = [(HKQuantityType *)quantityType _earliestAllowedStartDateForSampleOverlappingDate:startDate];
 
-    v17 = [v11 endDate];
+    endDate = [intervalCopy endDate];
     v18 = HDSampleEntityPredicateForStartDate(3);
 
-    v19 = [v11 startDate];
+    startDate2 = [intervalCopy startDate];
     v20 = HDSampleEntityPredicateForEndDate(6);
 
     v53[0] = self->_fullPredicate;
@@ -170,7 +170,7 @@
   v47[2] = 0x2020000000;
   v47[3] = -1;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v26 = [WeakRetained database];
+  database = [WeakRetained database];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __124__HDStatisticsCollectionCalculatorDefaultDataSource_collectionCalculator_queryForInterval_error_sampleHandler_mergeHandler___block_invoke;
@@ -181,11 +181,11 @@
   v44 = v48;
   v45 = &v49;
   v46 = v47;
-  v28 = v12;
+  v28 = mergeHandlerCopy;
   v42 = v28;
-  v29 = v38;
+  v29 = handlerCopy;
   v43 = v29;
-  v30 = [(HDHealthEntity *)HDSampleEntity performReadTransactionWithHealthDatabase:v26 error:a5 block:v40];
+  v30 = [(HDHealthEntity *)HDSampleEntity performReadTransactionWithHealthDatabase:database error:error block:v40];
 
   if (v30)
   {
@@ -459,12 +459,12 @@ uint64_t __120__HDStatisticsCollectionCalculatorDefaultDataSource__enumerateSamp
   return v14(v9, v10, v11, v12, v13);
 }
 
-- (BOOL)addValuesForQuantitySamples:(id)a3 calculator:(id)a4 includeSeries:(BOOL)a5 error:(id *)a6
+- (BOOL)addValuesForQuantitySamples:(id)samples calculator:(id)calculator includeSeries:(BOOL)series error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  if (!v7)
+  seriesCopy = series;
+  samplesCopy = samples;
+  calculatorCopy = calculator;
+  if (!seriesCopy)
   {
     goto LABEL_4;
   }
@@ -474,26 +474,26 @@ uint64_t __120__HDStatisticsCollectionCalculatorDefaultDataSource__enumerateSamp
   v20[2] = __112__HDStatisticsCollectionCalculatorDefaultDataSource_addValuesForQuantitySamples_calculator_includeSeries_error___block_invoke;
   v20[3] = &unk_27862EFE8;
   v20[4] = self;
-  v12 = [v10 hk_firstObjectPassingTest:v20];
+  v12 = [samplesCopy hk_firstObjectPassingTest:v20];
 
   if (v12)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v14 = [WeakRetained database];
+    database = [WeakRetained database];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __112__HDStatisticsCollectionCalculatorDefaultDataSource_addValuesForQuantitySamples_calculator_includeSeries_error___block_invoke_2;
     v17[3] = &unk_278615D40;
     v17[4] = self;
-    v18 = v10;
-    v19 = v11;
-    v15 = [(HDHealthEntity *)HDQuantitySampleEntity performReadTransactionWithHealthDatabase:v14 error:a6 block:v17];
+    v18 = samplesCopy;
+    v19 = calculatorCopy;
+    v15 = [(HDHealthEntity *)HDQuantitySampleEntity performReadTransactionWithHealthDatabase:database error:error block:v17];
   }
 
   else
   {
 LABEL_4:
-    v15 = [(HDStatisticsCollectionCalculatorDefaultDataSource *)self _addValuesForQuantitySamples:v10 calculator:v11 requiresSeriesValues:0 transaction:0 error:a6];
+    v15 = [(HDStatisticsCollectionCalculatorDefaultDataSource *)self _addValuesForQuantitySamples:samplesCopy calculator:calculatorCopy requiresSeriesValues:0 transaction:0 error:error];
   }
 
   return v15;
@@ -516,23 +516,23 @@ BOOL __112__HDStatisticsCollectionCalculatorDefaultDataSource_addValuesForQuanti
   return v5;
 }
 
-- (uint64_t)_addValuesForQuantitySamples:(void *)a3 calculator:(char)a4 requiresSeriesValues:(void *)a5 transaction:(uint64_t)a6 error:
+- (uint64_t)_addValuesForQuantitySamples:(void *)samples calculator:(char)calculator requiresSeriesValues:(void *)values transaction:(uint64_t)transaction error:
 {
   v11 = a2;
-  v12 = a3;
-  v13 = a5;
-  if (a1)
+  samplesCopy = samples;
+  valuesCopy = values;
+  if (self)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __132__HDStatisticsCollectionCalculatorDefaultDataSource__addValuesForQuantitySamples_calculator_requiresSeriesValues_transaction_error___block_invoke;
     v16[3] = &unk_27862F010;
     v17 = v11;
-    v18 = a1;
-    v21 = a4;
-    v19 = v12;
-    v20 = v13;
-    v14 = [v19 performAddSampleTransaction:v16 error:a6];
+    selfCopy = self;
+    calculatorCopy = calculator;
+    v19 = samplesCopy;
+    v20 = valuesCopy;
+    v14 = [v19 performAddSampleTransaction:v16 error:transaction];
   }
 
   else
@@ -689,28 +689,28 @@ LABEL_27:
   return v27;
 }
 
-+ (uint64_t)_addValueForQuantitySample:(void *)a3 calculator:(uint64_t)a4 error:
++ (uint64_t)_addValueForQuantitySample:(void *)sample calculator:(uint64_t)calculator error:
 {
-  v6 = a3;
+  sampleCopy = sample;
   v7 = a2;
   objc_opt_self();
-  v8 = [v7 quantity];
-  v9 = [v7 quantityType];
-  v10 = [v9 canonicalUnit];
-  [v8 doubleValueForUnit:v10];
+  quantity = [v7 quantity];
+  quantityType = [v7 quantityType];
+  canonicalUnit = [quantityType canonicalUnit];
+  [quantity doubleValueForUnit:canonicalUnit];
   v12 = v11;
 
-  v13 = [v7 startDate];
-  [v13 timeIntervalSinceReferenceDate];
+  startDate = [v7 startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v15 = v14;
-  v16 = [v7 endDate];
-  [v16 timeIntervalSinceReferenceDate];
+  endDate = [v7 endDate];
+  [endDate timeIntervalSinceReferenceDate];
   v18 = v17;
-  v19 = [v7 sourceRevision];
+  sourceRevision = [v7 sourceRevision];
 
-  v20 = [v19 source];
-  v21 = [v20 _sourceID];
-  v22 = [v6 addSampleValue:objc_msgSend(v21 startTime:"longLongValue") endTime:a4 sourceID:v12 error:{v15, v18}];
+  source = [sourceRevision source];
+  _sourceID = [source _sourceID];
+  v22 = [sampleCopy addSampleValue:objc_msgSend(_sourceID startTime:"longLongValue") endTime:calculator sourceID:v12 error:{v15, v18}];
 
   return v22;
 }

@@ -1,9 +1,9 @@
 @interface SBHPeopleWidgetPersonDetailFadeAnimator
 - (SBHPeopleWidgetPersonDetailFadeAnimator)init;
-- (void)_configureForEndpoint:(int64_t)a3 context:(id)a4;
-- (void)animateToEndpoint:(int64_t)a3 withContext:(id)a4 completion:(id)a5;
-- (void)finalizeAnimationAtEndpoint:(int64_t)a3 withContext:(id)a4;
-- (void)prepareToAnimateFromEndpoint:(int64_t)a3 withContext:(id)a4;
+- (void)_configureForEndpoint:(int64_t)endpoint context:(id)context;
+- (void)animateToEndpoint:(int64_t)endpoint withContext:(id)context completion:(id)completion;
+- (void)finalizeAnimationAtEndpoint:(int64_t)endpoint withContext:(id)context;
+- (void)prepareToAnimateFromEndpoint:(int64_t)endpoint withContext:(id)context;
 @end
 
 @implementation SBHPeopleWidgetPersonDetailFadeAnimator
@@ -16,31 +16,31 @@
   if (v2)
   {
     v3 = +[SBHHomeScreenDomain rootSettings];
-    v4 = [v3 iconAnimationSettings];
+    iconAnimationSettings = [v3 iconAnimationSettings];
 
-    v5 = [v4 reducedMotionSettings];
-    v6 = [v5 centralAnimationSettings];
+    reducedMotionSettings = [iconAnimationSettings reducedMotionSettings];
+    centralAnimationSettings = [reducedMotionSettings centralAnimationSettings];
 
-    v7 = [v6 BSAnimationSettings];
+    bSAnimationSettings = [centralAnimationSettings BSAnimationSettings];
     animationSettings = v2->_animationSettings;
-    v2->_animationSettings = v7;
+    v2->_animationSettings = bSAnimationSettings;
   }
 
   return v2;
 }
 
-- (void)prepareToAnimateFromEndpoint:(int64_t)a3 withContext:(id)a4
+- (void)prepareToAnimateFromEndpoint:(int64_t)endpoint withContext:(id)context
 {
-  v6 = [a4 userInfo];
+  userInfo = [context userInfo];
   v7 = MEMORY[0x1E69DD250];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __84__SBHPeopleWidgetPersonDetailFadeAnimator_prepareToAnimateFromEndpoint_withContext___block_invoke;
   v9[3] = &unk_1E808A090;
-  v10 = v6;
-  v11 = self;
-  v12 = a3;
-  v8 = v6;
+  v10 = userInfo;
+  selfCopy = self;
+  endpointCopy = endpoint;
+  v8 = userInfo;
   [v7 performWithoutAnimation:v9];
 }
 
@@ -74,47 +74,47 @@ void __84__SBHPeopleWidgetPersonDetailFadeAnimator_prepareToAnimateFromEndpoint_
   [*(a1 + 40) _configureForEndpoint:*(a1 + 48) context:*(a1 + 32)];
 }
 
-- (void)animateToEndpoint:(int64_t)a3 withContext:(id)a4 completion:(id)a5
+- (void)animateToEndpoint:(int64_t)endpoint withContext:(id)context completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [v9 userInfo];
-  v11 = [v9 wantsAnimation];
+  completionCopy = completion;
+  contextCopy = context;
+  userInfo = [contextCopy userInfo];
+  wantsAnimation = [contextCopy wantsAnimation];
 
-  if (v11)
+  if (wantsAnimation)
   {
-    v12 = 2 * (a3 == 1);
+    v12 = 2 * (endpoint == 1);
     if ([(SBHPeopleWidgetPersonDetailFadeAnimator *)self isAlreadyAnimating])
     {
-      v12 = (2 * (a3 == 1)) | 4;
+      v12 = (2 * (endpoint == 1)) | 4;
     }
 
     [(SBHPeopleWidgetPersonDetailFadeAnimator *)self setAlreadyAnimating:1];
-    v13 = [v10 platterView];
-    v14 = [v13 layer];
-    [v14 setAllowsHitTesting:a3 == 1];
+    platterView = [userInfo platterView];
+    layer = [platterView layer];
+    [layer setAllowsHitTesting:endpoint == 1];
 
-    v15 = [v10 backgroundView];
-    v16 = [v15 layer];
-    [v16 setAllowsHitTesting:a3 == 1];
+    backgroundView = [userInfo backgroundView];
+    layer2 = [backgroundView layer];
+    [layer2 setAllowsHitTesting:endpoint == 1];
 
     v17 = MEMORY[0x1E698E7D0];
-    v18 = [(SBHPeopleWidgetPersonDetailFadeAnimator *)self animationSettings];
+    animationSettings = [(SBHPeopleWidgetPersonDetailFadeAnimator *)self animationSettings];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __84__SBHPeopleWidgetPersonDetailFadeAnimator_animateToEndpoint_withContext_completion___block_invoke;
     v27[3] = &unk_1E808A090;
-    v28[0] = v10;
-    v28[1] = a3;
+    v28[0] = userInfo;
+    v28[1] = endpoint;
     v19 = v28;
     v27[4] = self;
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __84__SBHPeopleWidgetPersonDetailFadeAnimator_animateToEndpoint_withContext_completion___block_invoke_2;
     v25[3] = &unk_1E808A0B8;
-    v26 = v8;
-    v20 = v10;
-    [v17 animateWithSettings:v18 options:v12 actions:v27 completion:v25];
+    v26 = completionCopy;
+    v20 = userInfo;
+    [v17 animateWithSettings:animationSettings options:v12 actions:v27 completion:v25];
   }
 
   else
@@ -124,15 +124,15 @@ void __84__SBHPeopleWidgetPersonDetailFadeAnimator_prepareToAnimateFromEndpoint_
     v23[1] = 3221225472;
     v23[2] = __84__SBHPeopleWidgetPersonDetailFadeAnimator_animateToEndpoint_withContext_completion___block_invoke_3;
     v23[3] = &unk_1E808A090;
-    v24[0] = v10;
-    v24[1] = a3;
+    v24[0] = userInfo;
+    v24[1] = endpoint;
     v19 = v24;
     v23[4] = self;
-    v22 = v10;
+    v22 = userInfo;
     [v21 performWithoutAnimation:v23];
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8);
+      completionCopy[2](completionCopy);
     }
   }
 }
@@ -148,41 +148,41 @@ uint64_t __84__SBHPeopleWidgetPersonDetailFadeAnimator_animateToEndpoint_withCon
   return result;
 }
 
-- (void)finalizeAnimationAtEndpoint:(int64_t)a3 withContext:(id)a4
+- (void)finalizeAnimationAtEndpoint:(int64_t)endpoint withContext:(id)context
 {
-  v6 = [a4 userInfo];
+  userInfo = [context userInfo];
   [(SBHPeopleWidgetPersonDetailFadeAnimator *)self setAlreadyAnimating:0];
-  v7 = [v6 sourceView];
-  v8 = [v7 layer];
-  [v8 setShouldRasterize:0];
+  sourceView = [userInfo sourceView];
+  layer = [sourceView layer];
+  [layer setShouldRasterize:0];
 
-  v9 = [v6 sourceView];
-  [v9 removeFromSuperview];
+  sourceView2 = [userInfo sourceView];
+  [sourceView2 removeFromSuperview];
 
-  v10 = [v6 platterView];
-  v11 = [v6 targetView];
-  v12 = v11;
-  if (!a3)
+  platterView = [userInfo platterView];
+  targetView = [userInfo targetView];
+  v12 = targetView;
+  if (!endpoint)
   {
-    [v11 removeFromSuperview];
-    [v10 removeFromSuperview];
+    [targetView removeFromSuperview];
+    [platterView removeFromSuperview];
   }
 
-  v13 = [v10 layer];
-  [v13 setAllowsHitTesting:1];
+  layer2 = [platterView layer];
+  [layer2 setAllowsHitTesting:1];
 
-  v14 = [v6 backgroundView];
-  v15 = [v14 layer];
-  [v15 setAllowsHitTesting:1];
+  backgroundView = [userInfo backgroundView];
+  layer3 = [backgroundView layer];
+  [layer3 setAllowsHitTesting:1];
 
   v16 = MEMORY[0x1E69DD250];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __83__SBHPeopleWidgetPersonDetailFadeAnimator_finalizeAnimationAtEndpoint_withContext___block_invoke;
   v18[3] = &unk_1E8088CB8;
-  v19 = v6;
-  v20 = a3;
-  v17 = v6;
+  v19 = userInfo;
+  endpointCopy = endpoint;
+  v17 = userInfo;
   [v16 performWithoutAnimation:v18];
 }
 
@@ -199,10 +199,10 @@ void __83__SBHPeopleWidgetPersonDetailFadeAnimator_finalizeAnimationAtEndpoint_w
   [v2 setAlpha:v3];
 }
 
-- (void)_configureForEndpoint:(int64_t)a3 context:(id)a4
+- (void)_configureForEndpoint:(int64_t)endpoint context:(id)context
 {
-  v10 = a4;
-  if (a3)
+  contextCopy = context;
+  if (endpoint)
   {
     v5 = 1.0;
   }
@@ -214,18 +214,18 @@ void __83__SBHPeopleWidgetPersonDetailFadeAnimator_finalizeAnimationAtEndpoint_w
 
   if (!UIAccessibilityIsReduceTransparencyEnabled())
   {
-    v6 = [v10 sourceView];
-    [v6 setAlpha:1.0 - v5];
+    sourceView = [contextCopy sourceView];
+    [sourceView setAlpha:1.0 - v5];
   }
 
-  v7 = [v10 platterView];
-  [v7 setAlpha:v5];
+  platterView = [contextCopy platterView];
+  [platterView setAlpha:v5];
 
-  v8 = [v10 backgroundView];
-  [v8 setWeighting:v5];
+  backgroundView = [contextCopy backgroundView];
+  [backgroundView setWeighting:v5];
 
-  v9 = [v10 backgroundTintView];
-  [v9 setAlpha:v5];
+  backgroundTintView = [contextCopy backgroundTintView];
+  [backgroundTintView setAlpha:v5];
 }
 
 @end

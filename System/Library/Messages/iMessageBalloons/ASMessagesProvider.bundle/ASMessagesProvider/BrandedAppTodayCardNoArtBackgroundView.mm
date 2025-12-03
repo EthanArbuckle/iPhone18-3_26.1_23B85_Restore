@@ -1,11 +1,11 @@
 @interface BrandedAppTodayCardNoArtBackgroundView
-- (_TtC18ASMessagesProvider38BrandedAppTodayCardNoArtBackgroundView)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider38BrandedAppTodayCardNoArtBackgroundView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation BrandedAppTodayCardNoArtBackgroundView
 
-- (_TtC18ASMessagesProvider38BrandedAppTodayCardNoArtBackgroundView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider38BrandedAppTodayCardNoArtBackgroundView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider38BrandedAppTodayCardNoArtBackgroundView_style;
   v5 = sub_7652D0();
@@ -18,7 +18,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_6327D8();
 }
 

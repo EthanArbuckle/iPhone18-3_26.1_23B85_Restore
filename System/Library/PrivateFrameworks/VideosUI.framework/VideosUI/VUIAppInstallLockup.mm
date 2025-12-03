@@ -1,25 +1,25 @@
 @interface VUIAppInstallLockup
-- (VUIAppInstallLockup)initWithFrame:(CGRect)a3;
+- (VUIAppInstallLockup)initWithFrame:(CGRect)frame;
 - (VUITextBadge)ageRatingBadge;
 - (id)_textColorForDarkMode;
 - (void)_configureAgeRatingBadge;
 - (void)_configureLabels;
 - (void)_layoutForIos;
 - (void)_layoutForTvos;
-- (void)setAgeRating:(id)a3;
-- (void)setIAP:(id)a3;
-- (void)setIcon:(id)a3;
-- (void)setName:(id)a3;
-- (void)setSubtitle:(id)a3;
+- (void)setAgeRating:(id)rating;
+- (void)setIAP:(id)p;
+- (void)setIcon:(id)icon;
+- (void)setName:(id)name;
+- (void)setSubtitle:(id)subtitle;
 @end
 
 @implementation VUIAppInstallLockup
 
-- (VUIAppInstallLockup)initWithFrame:(CGRect)a3
+- (VUIAppInstallLockup)initWithFrame:(CGRect)frame
 {
   v28.receiver = self;
   v28.super_class = VUIAppInstallLockup;
-  v3 = [(VUIAppInstallLockup *)&v28 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUIAppInstallLockup *)&v28 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -47,10 +47,10 @@
     v16 = [@"UIA.TV.Text." stringByAppendingString:@"subtitle"];
     [(UILabel *)v15 setAccessibilityIdentifier:v16];
 
-    v17 = [MEMORY[0x1E69DC938] currentDevice];
-    v18 = [v17 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v18 == 2)
+    if (userInterfaceIdiom == 2)
     {
       v19 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v5, v6, v7, v8}];
       iAPLabel = v3->_iAPLabel;
@@ -140,24 +140,24 @@
   [(UIStackView *)self->_containerStack setAxis:0];
   [(UIStackView *)self->_containerStack setAlignment:3];
   [(VUIAppInstallLockup *)self addSubview:self->_containerStack];
-  v22 = [(UIStackView *)self->_containerStack leadingAnchor];
-  v23 = [(VUIAppInstallLockup *)self leadingAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  leadingAnchor = [(UIStackView *)self->_containerStack leadingAnchor];
+  leadingAnchor2 = [(VUIAppInstallLockup *)self leadingAnchor];
+  v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v24 setActive:1];
 
-  v25 = [(UIStackView *)self->_containerStack trailingAnchor];
-  v26 = [(VUIAppInstallLockup *)self trailingAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  trailingAnchor = [(UIStackView *)self->_containerStack trailingAnchor];
+  trailingAnchor2 = [(VUIAppInstallLockup *)self trailingAnchor];
+  v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v27 setActive:1];
 
-  v28 = [(UIStackView *)self->_containerStack topAnchor];
-  v29 = [(VUIAppInstallLockup *)self topAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  topAnchor = [(UIStackView *)self->_containerStack topAnchor];
+  topAnchor2 = [(VUIAppInstallLockup *)self topAnchor];
+  v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v30 setActive:1];
 
-  v31 = [(UIStackView *)self->_containerStack bottomAnchor];
-  v32 = [(VUIAppInstallLockup *)self bottomAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32];
+  bottomAnchor = [(UIStackView *)self->_containerStack bottomAnchor];
+  bottomAnchor2 = [(VUIAppInstallLockup *)self bottomAnchor];
+  v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v33 setActive:1];
 }
 
@@ -218,91 +218,91 @@
   [(UIStackView *)self->_containerStack setAxis:1];
   [(UIStackView *)self->_containerStack setAlignment:3];
   [(VUIAppInstallLockup *)self addSubview:self->_containerStack];
-  v23 = [(UIStackView *)self->_containerStack leadingAnchor];
-  v24 = [(VUIAppInstallLockup *)self leadingAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  leadingAnchor = [(UIStackView *)self->_containerStack leadingAnchor];
+  leadingAnchor2 = [(VUIAppInstallLockup *)self leadingAnchor];
+  v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v25 setActive:1];
 
-  v26 = [(UIStackView *)self->_containerStack trailingAnchor];
-  v27 = [(VUIAppInstallLockup *)self trailingAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  trailingAnchor = [(UIStackView *)self->_containerStack trailingAnchor];
+  trailingAnchor2 = [(VUIAppInstallLockup *)self trailingAnchor];
+  v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v28 setActive:1];
 
-  v29 = [(UIStackView *)self->_containerStack topAnchor];
-  v30 = [(VUIAppInstallLockup *)self topAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30];
+  topAnchor = [(UIStackView *)self->_containerStack topAnchor];
+  topAnchor2 = [(VUIAppInstallLockup *)self topAnchor];
+  v31 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v31 setActive:1];
 
-  v32 = [(UIStackView *)self->_containerStack bottomAnchor];
+  bottomAnchor = [(UIStackView *)self->_containerStack bottomAnchor];
 
-  v33 = [(VUIAppInstallLockup *)self bottomAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33];
+  bottomAnchor2 = [(VUIAppInstallLockup *)self bottomAnchor];
+  v34 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v34 setActive:1];
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  objc_storeStrong(&self->_icon, a3);
-  v5 = a3;
-  [(VUIAppInstallView *)self->_iconView setAppIcon:v5];
+  objc_storeStrong(&self->_icon, icon);
+  iconCopy = icon;
+  [(VUIAppInstallView *)self->_iconView setAppIcon:iconCopy];
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  nameCopy = name;
+  v4 = [nameCopy copy];
   name = self->_name;
   self->_name = v4;
 
-  [(UILabel *)self->_nameLabel setText:v6];
+  [(UILabel *)self->_nameLabel setText:nameCopy];
 }
 
-- (void)setAgeRating:(id)a3
+- (void)setAgeRating:(id)rating
 {
-  v4 = a3;
-  if (self->_ageRating != v4)
+  ratingCopy = rating;
+  if (self->_ageRating != ratingCopy)
   {
-    v9 = v4;
-    v5 = [(NSString *)v4 copy];
+    v9 = ratingCopy;
+    v5 = [(NSString *)ratingCopy copy];
     ageRating = self->_ageRating;
     self->_ageRating = v5;
 
-    v7 = [(VUIAppInstallLockup *)self ageRatingBadge];
+    ageRatingBadge = [(VUIAppInstallLockup *)self ageRatingBadge];
 
-    if (v7)
+    if (ageRatingBadge)
     {
-      v8 = [(VUIAppInstallLockup *)self ageRatingBadge];
-      [v8 setTitle:self->_ageRating];
+      ageRatingBadge2 = [(VUIAppInstallLockup *)self ageRatingBadge];
+      [ageRatingBadge2 setTitle:self->_ageRating];
     }
 
     else
     {
-      v8 = [(VUIAppInstallLockup *)self ageRatingLabel];
-      [v8 setText:self->_ageRating];
+      ageRatingBadge2 = [(VUIAppInstallLockup *)self ageRatingLabel];
+      [ageRatingBadge2 setText:self->_ageRating];
     }
 
-    v4 = v9;
+    ratingCopy = v9;
   }
 }
 
-- (void)setIAP:(id)a3
+- (void)setIAP:(id)p
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  pCopy = p;
+  v4 = [pCopy copy];
   iAP = self->_iAP;
   self->_iAP = v4;
 
-  [(UILabel *)self->_iAPLabel setText:v6];
+  [(UILabel *)self->_iAPLabel setText:pCopy];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  subtitleCopy = subtitle;
+  v4 = [subtitleCopy copy];
   subtitle = self->_subtitle;
   self->_subtitle = v4;
 
-  [(UILabel *)self->_subtitleLabel setText:v6];
+  [(UILabel *)self->_subtitleLabel setText:subtitleCopy];
 }
 
 - (VUITextBadge)ageRatingBadge
@@ -321,19 +321,19 @@
 {
   v3 = [VUITextBadge alloc];
   ageRating = self->_ageRating;
-  v5 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-  v6 = [(VUITextBadge *)v3 initWithTitle:ageRating tintColor:v5 fontSize:14.0 cornerRadius:4.0];
+  vui_secondaryTextColor = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+  v6 = [(VUITextBadge *)v3 initWithTitle:ageRating tintColor:vui_secondaryTextColor fontSize:14.0 cornerRadius:4.0];
 
   [(VUITextBadge *)v6 setBadgeStyle:1];
   [(VUITextBadge *)v6 setStrokeSize:0.5];
   [(VUITextBadge *)v6 setBadgeInsets:1.0, 5.0, 1.0, 5.0];
   [(VUITextBadge *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [(VUITextBadge *)v6 heightAnchor];
-  v8 = [v7 constraintEqualToConstant:20.0];
+  heightAnchor = [(VUITextBadge *)v6 heightAnchor];
+  v8 = [heightAnchor constraintEqualToConstant:20.0];
   [v8 setActive:1];
 
-  v9 = [(VUITextBadge *)v6 widthAnchor];
-  v10 = [v9 constraintEqualToConstant:34.0];
+  widthAnchor = [(VUITextBadge *)v6 widthAnchor];
+  v10 = [widthAnchor constraintEqualToConstant:34.0];
   [v10 setActive:1];
 
   ageRatingBadge = self->_ageRatingBadge;
@@ -349,26 +349,26 @@
 
 - (void)_configureLabels
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 == 2)
+  if (userInterfaceIdiom == 2)
   {
     nameLabel = self->_nameLabel;
     v6 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD40]];
     [(UILabel *)nameLabel setFont:v6];
 
     v7 = self->_nameLabel;
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v7 setTextColor:v8];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v7 setTextColor:whiteColor];
 
     ageRatingLabel = self->_ageRatingLabel;
     v10 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD00]];
     [(UILabel *)ageRatingLabel setFont:v10];
 
     v11 = self->_ageRatingLabel;
-    v12 = [(VUIAppInstallLockup *)self _textColorForDarkMode];
-    [(UILabel *)v11 setTextColor:v12];
+    _textColorForDarkMode = [(VUIAppInstallLockup *)self _textColorForDarkMode];
+    [(UILabel *)v11 setTextColor:_textColorForDarkMode];
 
     iAPLabel = self->_iAPLabel;
     v14 = *MEMORY[0x1E69DDD10];
@@ -376,40 +376,40 @@
     [(UILabel *)iAPLabel setFont:v15];
 
     v16 = self->_iAPLabel;
-    v17 = [(VUIAppInstallLockup *)self _textColorForDarkMode];
-    [(UILabel *)v16 setTextColor:v17];
+    _textColorForDarkMode2 = [(VUIAppInstallLockup *)self _textColorForDarkMode];
+    [(UILabel *)v16 setTextColor:_textColorForDarkMode2];
 
     subtitleLabel = self->_subtitleLabel;
     v19 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v14];
     [(UILabel *)subtitleLabel setFont:v19];
 
     v20 = self->_subtitleLabel;
-    v26 = [(VUIAppInstallLockup *)self _textColorForDarkMode];
+    _textColorForDarkMode3 = [(VUIAppInstallLockup *)self _textColorForDarkMode];
     [(UILabel *)v20 setTextColor:?];
   }
 
   else
   {
-    v26 = objc_opt_new();
-    [v26 setTextStyle:2];
-    [v26 setFontWeight:6];
-    [v26 setMaximumContentSizeCategory:7];
-    v21 = [MEMORY[0x1E69DB878] vui_fontFromTextLayout:v26];
+    _textColorForDarkMode3 = objc_opt_new();
+    [_textColorForDarkMode3 setTextStyle:2];
+    [_textColorForDarkMode3 setFontWeight:6];
+    [_textColorForDarkMode3 setMaximumContentSizeCategory:7];
+    v21 = [MEMORY[0x1E69DB878] vui_fontFromTextLayout:_textColorForDarkMode3];
     [(UILabel *)self->_nameLabel setFont:v21];
     v22 = self->_subtitleLabel;
     v23 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD78] maximumContentSizeCategory:*MEMORY[0x1E69DDC50]];
     [(UILabel *)v22 setFont:v23];
 
     v24 = self->_subtitleLabel;
-    v25 = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
-    [(UILabel *)v24 setTextColor:v25];
+    vui_secondaryTextColor = [MEMORY[0x1E69DC888] vui_secondaryTextColor];
+    [(UILabel *)v24 setTextColor:vui_secondaryTextColor];
   }
 }
 
 - (id)_textColorForDarkMode
 {
-  v2 = [MEMORY[0x1E69DC888] whiteColor];
-  v3 = [v2 colorWithAlphaComponent:0.7];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v3 = [whiteColor colorWithAlphaComponent:0.7];
 
   return v3;
 }

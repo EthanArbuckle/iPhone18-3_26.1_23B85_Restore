@@ -1,81 +1,81 @@
 @interface _UILegacyEffectConverterTVOS
-- (id)backdropSettingsForBlurStyle:(int64_t)a3;
-- (id)vibrancyConfigForHighQualityVibrancyStyle:(int64_t)a3;
-- (id)vibrancyConfigForLowQualityVibrancyStyle:(int64_t)a3;
-- (id)vibrancyConfigForReducedTransperancyVibrancyStyle:(int64_t)a3;
+- (id)backdropSettingsForBlurStyle:(int64_t)style;
+- (id)vibrancyConfigForHighQualityVibrancyStyle:(int64_t)style;
+- (id)vibrancyConfigForLowQualityVibrancyStyle:(int64_t)style;
+- (id)vibrancyConfigForReducedTransperancyVibrancyStyle:(int64_t)style;
 @end
 
 @implementation _UILegacyEffectConverterTVOS
 
-- (id)backdropSettingsForBlurStyle:(int64_t)a3
+- (id)backdropSettingsForBlurStyle:(int64_t)style
 {
   v3 = -2;
-  if (a3 <= 500)
+  if (style <= 500)
   {
-    if (a3 > 2)
+    if (style > 2)
     {
-      if (a3 == 3)
+      if (style == 3)
       {
 LABEL_19:
-        a3 = 4008;
+        style = 4008;
       }
 
       else
       {
         v4 = 2050;
-        if (a3 == 100)
+        if (style == 100)
         {
           v3 = 2080;
         }
 
-        v5 = a3 == 99;
+        v5 = style == 99;
 LABEL_16:
         if (v5)
         {
-          a3 = v4;
+          style = v4;
         }
 
         else
         {
-          a3 = v3;
+          style = v3;
         }
       }
     }
 
-    else if (a3)
+    else if (style)
     {
-      if (a3 == 1)
+      if (style == 1)
       {
 LABEL_20:
-        a3 = 4001;
+        style = 4001;
       }
 
-      else if (a3 == 2)
+      else if (style == 2)
       {
 LABEL_8:
-        a3 = 4006;
+        style = 4006;
       }
 
       else
       {
-        a3 = -2;
+        style = -2;
       }
     }
 
     else
     {
 LABEL_21:
-      a3 = 4003;
+      style = 4003;
     }
   }
 
   else
   {
-    switch(a3)
+    switch(style)
     {
       case 4000:
       case 4012:
-        a3 = 4000;
+        style = 4000;
         break;
       case 4001:
         goto LABEL_20;
@@ -85,55 +85,55 @@ LABEL_21:
       case 4009:
       case 4010:
       case 4011:
-        return [_UIBackdropViewSettings settingsForPrivateStyle:a3];
+        return [_UIBackdropViewSettings settingsForPrivateStyle:style];
       case 4003:
         goto LABEL_21;
       case 4005:
       case 4013:
       case 4016:
-        a3 = 4005;
+        style = 4005;
         break;
       case 4006:
         goto LABEL_8;
       case 4008:
         goto LABEL_19;
       case 4014:
-        a3 = 4012;
+        style = 4012;
         break;
       case 4015:
-        a3 = 4013;
+        style = 4013;
         break;
       case 4017:
-        a3 = 4014;
+        style = 4014;
         break;
       case 4018:
-        a3 = 4015;
+        style = 4015;
         break;
       default:
         v4 = 3901;
-        if (a3 == 502)
+        if (style == 502)
         {
           v3 = 3902;
         }
 
-        v5 = a3 == 501;
+        v5 = style == 501;
         goto LABEL_16;
     }
   }
 
-  return [_UIBackdropViewSettings settingsForPrivateStyle:a3];
+  return [_UIBackdropViewSettings settingsForPrivateStyle:style];
 }
 
-- (id)vibrancyConfigForHighQualityVibrancyStyle:(int64_t)a3
+- (id)vibrancyConfigForHighQualityVibrancyStyle:(int64_t)style
 {
   v3 = 0;
-  if (a3 <= 4004)
+  if (style <= 4004)
   {
-    if ((a3 - 4000) >= 5 && a3 >= 2)
+    if ((style - 4000) >= 5 && style >= 2)
     {
       v4 = 0;
       v5 = 0;
-      if ((a3 - 2) >= 2)
+      if ((style - 2) >= 2)
       {
         goto LABEL_18;
       }
@@ -144,7 +144,7 @@ LABEL_21:
     goto LABEL_16;
   }
 
-  if (a3 < 4012)
+  if (style < 4012)
   {
 LABEL_14:
     v5 = [UIColor colorWithRed:0.274509804 green:0.274509804 blue:0.274509804 alpha:1.0];
@@ -155,9 +155,9 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (a3 <= 4013)
+  if (style <= 4013)
   {
-    if (a3 != 4012)
+    if (style != 4012)
     {
       v7 = [UIColor colorWithWhite:0.156862745 alpha:0.3];
       v3 = [_UIVisualEffectLayerConfig layerWithFillColor:v7 opacity:*MEMORY[0x1E6979CF8] filterType:1.0];
@@ -174,19 +174,19 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a3 == 4014)
+  if (style == 4014)
   {
     goto LABEL_16;
   }
 
-  if (a3 == 4015)
+  if (style == 4015)
   {
     goto LABEL_14;
   }
 
   v4 = 0;
   v5 = 0;
-  if (a3 == 4016)
+  if (style == 4016)
   {
     v6 = [(_UILegacyEffectConverterTVOS *)self vibrancyConfigForLowQualityVibrancyStyle:?];
     goto LABEL_21;
@@ -206,21 +206,21 @@ LABEL_21:
   return v6;
 }
 
-- (id)vibrancyConfigForLowQualityVibrancyStyle:(int64_t)a3
+- (id)vibrancyConfigForLowQualityVibrancyStyle:(int64_t)style
 {
   v3 = 0;
-  if (a3 > 4004)
+  if (style > 4004)
   {
-    if (a3 >= 4012)
+    if (style >= 4012)
     {
-      if (a3 > 4013)
+      if (style > 4013)
       {
-        if (a3 != 4014)
+        if (style != 4014)
         {
-          if (a3 != 4015)
+          if (style != 4015)
           {
             v4 = 0;
-            if (a3 != 4016)
+            if (style != 4016)
             {
               goto LABEL_24;
             }
@@ -238,7 +238,7 @@ LABEL_22:
         goto LABEL_23;
       }
 
-      if (a3 == 4012)
+      if (style == 4012)
       {
         v3 = [UIColor colorWithWhite:1.0 alpha:0.2];
         goto LABEL_22;
@@ -254,17 +254,17 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (a3 <= 3999)
+  if (style <= 3999)
   {
-    if ((a3 - 2) < 2)
+    if ((style - 2) < 2)
     {
       goto LABEL_19;
     }
 
-    if (a3)
+    if (style)
     {
       v4 = 0;
-      if (a3 == 1)
+      if (style == 1)
       {
         goto LABEL_22;
       }
@@ -278,18 +278,18 @@ LABEL_20:
     goto LABEL_24;
   }
 
-  if ((a3 - 4000) < 3)
+  if ((style - 4000) < 3)
   {
     goto LABEL_22;
   }
 
-  if (a3 == 4003)
+  if (style == 4003)
   {
     goto LABEL_20;
   }
 
   v4 = 0;
-  if (a3 == 4004)
+  if (style == 4004)
   {
     goto LABEL_22;
   }
@@ -307,13 +307,13 @@ LABEL_24:
   return v7;
 }
 
-- (id)vibrancyConfigForReducedTransperancyVibrancyStyle:(int64_t)a3
+- (id)vibrancyConfigForReducedTransperancyVibrancyStyle:(int64_t)style
 {
-  if (a3 > 2)
+  if (style > 2)
   {
     v3 = 0;
     v4 = 0;
-    switch(a3)
+    switch(style)
     {
       case 4000:
         goto LABEL_35;
@@ -386,7 +386,7 @@ LABEL_32:
         v3 = v4;
         goto LABEL_24;
       default:
-        if (a3 != 3)
+        if (style != 3)
         {
           goto LABEL_13;
         }
@@ -399,9 +399,9 @@ LABEL_12:
     }
   }
 
-  if (a3)
+  if (style)
   {
-    if (a3 == 1)
+    if (style == 1)
     {
 LABEL_9:
       v5 = 0.368627451;
@@ -411,7 +411,7 @@ LABEL_9:
 
     else
     {
-      if (a3 != 2)
+      if (style != 2)
       {
 LABEL_13:
         v8 = [(_UILegacyEffectConverterTVOS *)self vibrancyConfigForLowQualityVibrancyStyle:?];

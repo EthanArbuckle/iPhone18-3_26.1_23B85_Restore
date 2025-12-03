@@ -1,13 +1,13 @@
 @interface ICMediaTime
-- (BOOL)isEqualToMediaTime:(id)a3;
-- (ICMediaTime)initWithSeconds:(double)a3 ignoreFractionalSeconds:(BOOL)a4;
+- (BOOL)isEqualToMediaTime:(id)time;
+- (ICMediaTime)initWithSeconds:(double)seconds ignoreFractionalSeconds:(BOOL)fractionalSeconds;
 - (NSString)durationDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ICMediaTime
 
-- (ICMediaTime)initWithSeconds:(double)a3 ignoreFractionalSeconds:(BOOL)a4
+- (ICMediaTime)initWithSeconds:(double)seconds ignoreFractionalSeconds:(BOOL)fractionalSeconds
 {
   v14.receiver = self;
   v14.super_class = ICMediaTime;
@@ -15,46 +15,46 @@
   v8 = v6;
   if (v6)
   {
-    if (a3 < 0.0)
+    if (seconds < 0.0)
     {
       [(ICMediaTime *)v6 setNegative:1];
-      a3 = -a3;
+      seconds = -seconds;
     }
 
-    if (a3 >= 86400.0)
+    if (seconds >= 86400.0)
     {
-      v9 = a3 / 86400.0;
-      a3 = a3 - floor(a3 / 86400.0) * 86400.0;
+      v9 = seconds / 86400.0;
+      seconds = seconds - floor(seconds / 86400.0) * 86400.0;
       LODWORD(v7) = vcvtmd_s64_f64(v9);
       [(ICMediaTime *)v8 setDays:v7];
     }
 
-    if (a3 >= 3600.0)
+    if (seconds >= 3600.0)
     {
-      v10 = a3 / 3600.0;
-      a3 = a3 - floor(a3 / 3600.0) * 3600.0;
+      v10 = seconds / 3600.0;
+      seconds = seconds - floor(seconds / 3600.0) * 3600.0;
       LODWORD(v7) = vcvtmd_s64_f64(v10);
       [(ICMediaTime *)v8 setHours:v7];
     }
 
-    if (a3 >= 60.0)
+    if (seconds >= 60.0)
     {
-      v11 = a3 / 60.0;
-      a3 = a3 - floor(a3 / 60.0) * 60.0;
+      v11 = seconds / 60.0;
+      seconds = seconds - floor(seconds / 60.0) * 60.0;
       LODWORD(v7) = vcvtmd_s64_f64(v11);
       [(ICMediaTime *)v8 setMinutes:v7];
     }
 
-    LODWORD(v7) = vcvtmd_s64_f64(a3);
+    LODWORD(v7) = vcvtmd_s64_f64(seconds);
     [(ICMediaTime *)v8 setSeconds:v7];
-    if (a4)
+    if (fractionalSeconds)
     {
       v12 = 0;
     }
 
     else
     {
-      LODWORD(v12) = vcvtmd_s64_f64((a3 - [(ICMediaTime *)v8 seconds]) * 100.0);
+      LODWORD(v12) = vcvtmd_s64_f64((seconds - [(ICMediaTime *)v8 seconds]) * 100.0);
     }
 
     [(ICMediaTime *)v8 setCentiseconds:v12];
@@ -63,14 +63,14 @@
   return v8;
 }
 
-- (BOOL)isEqualToMediaTime:(id)a3
+- (BOOL)isEqualToMediaTime:(id)time
 {
-  v4 = a3;
-  v5 = [(ICMediaTime *)self days];
-  if (v5 == [v4 days] && (v6 = -[ICMediaTime hours](self, "hours"), v6 == objc_msgSend(v4, "days")) && (v7 = -[ICMediaTime minutes](self, "minutes"), v7 == objc_msgSend(v4, "minutes")) && (v8 = -[ICMediaTime seconds](self, "seconds"), v8 == objc_msgSend(v4, "seconds")))
+  timeCopy = time;
+  days = [(ICMediaTime *)self days];
+  if (days == [timeCopy days] && (v6 = -[ICMediaTime hours](self, "hours"), v6 == objc_msgSend(timeCopy, "days")) && (v7 = -[ICMediaTime minutes](self, "minutes"), v7 == objc_msgSend(timeCopy, "minutes")) && (v8 = -[ICMediaTime seconds](self, "seconds"), v8 == objc_msgSend(timeCopy, "seconds")))
   {
-    v9 = [(ICMediaTime *)self centiseconds];
-    v10 = v9 == [v4 centiseconds];
+    centiseconds = [(ICMediaTime *)self centiseconds];
+    v10 = centiseconds == [timeCopy centiseconds];
   }
 
   else
@@ -81,7 +81,7 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[ICMediaTime allocWithZone:?]];
   [(ICMediaTime *)v4 setDays:[(ICMediaTime *)self days]];
@@ -141,8 +141,8 @@
     {
       if ([(ICMediaTime *)self centiseconds])
       {
-        v19 = [(ICMediaTime *)self seconds];
-        v20 = (([(ICMediaTime *)self centiseconds]/ 100.0) + v19);
+        seconds = [(ICMediaTime *)self seconds];
+        v20 = (([(ICMediaTime *)self centiseconds]/ 100.0) + seconds);
         if (!__accessibilityCentisecondsNumberFormatter)
         {
           v21 = objc_alloc_init(MEMORY[0x1E696ADA0]);

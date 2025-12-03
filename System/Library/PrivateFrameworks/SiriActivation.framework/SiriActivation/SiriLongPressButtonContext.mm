@@ -1,7 +1,7 @@
 @interface SiriLongPressButtonContext
-- (SiriLongPressButtonContext)initWithCoder:(id)a3;
+- (SiriLongPressButtonContext)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SiriLongPressButtonContext
@@ -9,33 +9,33 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SiriContext *)self contextOverride];
+  contextOverride = [(SiriContext *)self contextOverride];
   v5 = MEMORY[0x1E696AD98];
   [(SiriLongPressButtonContext *)self buttonDownTimestamp];
   v6 = [v5 numberWithDouble:?];
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[SiriLongPressButtonContext longPressBehavior](self, "longPressBehavior")}];
-  v8 = [(SiriLongPressButtonContext *)self activationEventInstrumentationIdentifier];
-  v9 = [v3 stringWithFormat:@"<SiriLongPressButtonContext contextOverride:%@ buttonDownTimestamp:%@ longPressBehavior: %@, activationEventInstrumentationIdentifier: %@>", v4, v6, v7, v8];
+  activationEventInstrumentationIdentifier = [(SiriLongPressButtonContext *)self activationEventInstrumentationIdentifier];
+  v9 = [v3 stringWithFormat:@"<SiriLongPressButtonContext contextOverride:%@ buttonDownTimestamp:%@ longPressBehavior: %@, activationEventInstrumentationIdentifier: %@>", contextOverride, v6, v7, activationEventInstrumentationIdentifier];
 
   return v9;
 }
 
-- (SiriLongPressButtonContext)initWithCoder:(id)a3
+- (SiriLongPressButtonContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = SiriLongPressButtonContext;
-  v5 = [(SiriContext *)&v12 initWithCoder:v4];
+  v5 = [(SiriContext *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"buttonDownTimestamp"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"buttonDownTimestamp"];
     [v6 doubleValue];
     v5->_buttonDownTimestamp = v7;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"longPressBehavior"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"longPressBehavior"];
     v5->_longPressBehavior = [v8 integerValue];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activationEventIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activationEventIdentifier"];
     activationEventInstrumentationIdentifier = v5->_activationEventInstrumentationIdentifier;
     v5->_activationEventInstrumentationIdentifier = v9;
   }
@@ -43,22 +43,22 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = SiriLongPressButtonContext;
-  v4 = a3;
-  [(SiriContext *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(SiriContext *)&v9 encodeWithCoder:coderCopy];
   v5 = MEMORY[0x1E696AD98];
   [(SiriLongPressButtonContext *)self buttonDownTimestamp:v9.receiver];
   v6 = [v5 numberWithDouble:?];
-  [v4 encodeObject:v6 forKey:@"buttonDownTimestamp"];
+  [coderCopy encodeObject:v6 forKey:@"buttonDownTimestamp"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[SiriLongPressButtonContext longPressBehavior](self, "longPressBehavior")}];
-  [v4 encodeObject:v7 forKey:@"longPressBehavior"];
+  [coderCopy encodeObject:v7 forKey:@"longPressBehavior"];
 
-  v8 = [(SiriLongPressButtonContext *)self activationEventInstrumentationIdentifier];
-  [v4 encodeObject:v8 forKey:@"activationEventIdentifier"];
+  activationEventInstrumentationIdentifier = [(SiriLongPressButtonContext *)self activationEventInstrumentationIdentifier];
+  [coderCopy encodeObject:activationEventInstrumentationIdentifier forKey:@"activationEventIdentifier"];
 }
 
 @end

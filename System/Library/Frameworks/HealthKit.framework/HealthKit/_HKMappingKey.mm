@@ -1,15 +1,15 @@
 @interface _HKMappingKey
-- (BOOL)isEqual:(id)a3;
-- (id)initWithObject:(void *)a3 andKey:;
+- (BOOL)isEqual:(id)equal;
+- (id)initWithObject:(void *)object andKey:;
 - (uint64_t)objectMatches:(uint64_t)result;
 @end
 
 @implementation _HKMappingKey
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -19,7 +19,7 @@
     v5 = objc_opt_class();
     if ([v5 isEqual:objc_opt_class()])
     {
-      v6 = v4;
+      v6 = equalCopy;
       if ([v6[1] isEqual:self->_addressOfObject])
       {
         v7 = [v6[2] isEqual:self->_key];
@@ -40,26 +40,26 @@
   return v7;
 }
 
-- (id)initWithObject:(void *)a3 andKey:
+- (id)initWithObject:(void *)object andKey:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  objectCopy = object;
+  if (self)
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = _HKMappingKey;
-    a1 = objc_msgSendSuper2(&v10, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v10, sel_init);
+    if (self)
     {
       v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%p", v5];
-      v8 = a1[1];
-      a1[1] = v7;
+      v8 = self[1];
+      self[1] = v7;
 
-      objc_storeStrong(a1 + 2, a3);
+      objc_storeStrong(self + 2, object);
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)objectMatches:(uint64_t)result

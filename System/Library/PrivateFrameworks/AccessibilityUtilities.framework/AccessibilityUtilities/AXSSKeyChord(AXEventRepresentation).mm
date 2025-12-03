@@ -10,11 +10,11 @@
   v3 = a3;
   if ([v3 type] == 10)
   {
-    v4 = [v3 keyInfo];
-    v5 = v4;
-    if (v4)
+    keyInfo = [v3 keyInfo];
+    v5 = keyInfo;
+    if (keyInfo)
     {
-      v6 = [v4 keyCode] - 40;
+      v6 = [keyInfo keyCode] - 40;
       if (v6 > 0x30)
       {
         v7 = 0;
@@ -85,16 +85,16 @@
 {
   v4 = a3;
   v5 = MEMORY[0x1E695DFA8];
-  v6 = [a1 keys];
-  v7 = [v5 setWithArray:v6];
+  keys = [self keys];
+  v7 = [v5 setWithArray:keys];
 
   if ([v4 type] == 10 || objc_msgSend(v4, "type") == 11 || objc_msgSend(v4, "type") == 12)
   {
-    v8 = [v4 keyInfo];
-    v9 = v8;
-    if (v8)
+    keyInfo = [v4 keyInfo];
+    v9 = keyInfo;
+    if (keyInfo)
     {
-      if ([v8 modifierState])
+      if ([keyInfo modifierState])
       {
         [v7 addObject:@"⌘"];
       }
@@ -157,8 +157,8 @@
   }
 
   v10 = MEMORY[0x1E6989400];
-  v11 = [v7 allObjects];
-  v12 = [v10 keyChordWithKeys:v11];
+  allObjects = [v7 allObjects];
+  v12 = [v10 keyChordWithKeys:allObjects];
 
   return v12;
 }

@@ -1,5 +1,5 @@
 @interface AATransparencyLogging
-+ (id)logsWithError:(id *)a3;
++ (id)logsWithError:(id *)error;
 - (AATransparencyLogging)init;
 @end
 
@@ -12,7 +12,7 @@
   return result;
 }
 
-+ (id)logsWithError:(id *)a3
++ (id)logsWithError:(id *)error
 {
   sub_1B6A2A6F8();
   sub_1B6AB8BB0();

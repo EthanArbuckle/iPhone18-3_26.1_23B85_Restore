@@ -1,13 +1,13 @@
 @interface TIHandwritingStrokes
-- (CGPoint)pointAtIndex:(unint64_t)a3 inStrokeAtIndex:(unint64_t)a4;
-- (TIHandwritingStrokes)initWithCoder:(id)a3;
+- (CGPoint)pointAtIndex:(unint64_t)index inStrokeAtIndex:(unint64_t)atIndex;
+- (TIHandwritingStrokes)initWithCoder:(id)coder;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)totalNumberOfPoints;
-- (void)addPoint:(CGPoint)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeStrokeAtIndex:(unint64_t)a3;
+- (void)addPoint:(CGPoint)point;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeStrokeAtIndex:(unint64_t)index;
 @end
 
 @implementation TIHandwritingStrokes
@@ -42,9 +42,9 @@
   return result;
 }
 
-- (CGPoint)pointAtIndex:(unint64_t)a3 inStrokeAtIndex:(unint64_t)a4
+- (CGPoint)pointAtIndex:(unint64_t)index inStrokeAtIndex:(unint64_t)atIndex
 {
-  v4 = (*(self->_strokes.__begin_ + 3 * a4) + 16 * a3);
+  v4 = (*(self->_strokes.__begin_ + 3 * atIndex) + 16 * index);
   v5 = *v4;
   v6 = v4[1];
   result.y = v6;
@@ -52,10 +52,10 @@
   return result;
 }
 
-- (void)removeStrokeAtIndex:(unint64_t)a3
+- (void)removeStrokeAtIndex:(unint64_t)index
 {
   end = self->_strokes.__end_;
-  v5 = self->_strokes.__begin_ + 24 * a3;
+  v5 = self->_strokes.__begin_ + 24 * index;
   if (v5 + 24 != end)
   {
     do
@@ -106,10 +106,10 @@
   self->_strokes.__end_ = v5;
 }
 
-- (void)addPoint:(CGPoint)a3
+- (void)addPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   begin = self->_strokes.__begin_;
   end = self->_strokes.__end_;
   p_strokes = &self->_strokes;
@@ -281,10 +281,10 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = 0xAAAAAAAAAAAAAAABLL * ((self->_strokes.__end_ - self->_strokes.__begin_) >> 3);
   if (v5 >= 1)
   {
@@ -304,7 +304,7 @@
     }
 
     while (v6 != v9);
-    v13 = [v4 encodeBytes:? length:? forKey:?];
+    v13 = [coderCopy encodeBytes:? length:? forKey:?];
     MEMORY[0x1EEE9AC00](v13);
     v14 = 0;
     v15 = 0;
@@ -337,21 +337,21 @@
     }
 
     while (v14 != v6);
-    [v4 encodeBytes:? length:? forKey:?];
+    [coderCopy encodeBytes:? length:? forKey:?];
   }
 }
 
-- (TIHandwritingStrokes)initWithCoder:(id)a3
+- (TIHandwritingStrokes)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v39.receiver = self;
   v39.super_class = TIHandwritingStrokes;
   v5 = [(TIHandwritingStrokes *)&v39 init];
   if (v5)
   {
     v38 = 0;
-    v31 = v4;
-    v37 = [v4 decodeBytesForKey:@"strokePointsCount" returnedLength:&v38];
+    v31 = coderCopy;
+    v37 = [coderCopy decodeBytesForKey:@"strokePointsCount" returnedLength:&v38];
     if (v37)
     {
       v6 = v38;
@@ -497,13 +497,13 @@ LABEL_37:
       }
     }
 
-    v4 = v31;
+    coderCopy = v31;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v5 = v4;

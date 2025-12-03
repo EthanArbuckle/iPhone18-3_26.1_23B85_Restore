@@ -18,13 +18,13 @@
     passLibraryDataProvider = v2->_passLibraryDataProvider;
     v2->_passLibraryDataProvider = v3;
 
-    v5 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+    defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
     paymentDataProvider = v2->_paymentDataProvider;
-    v2->_paymentDataProvider = v5;
+    v2->_paymentDataProvider = defaultDataProvider;
 
-    v7 = [MEMORY[0x1E69B8CF8] defaults];
+    defaults = [MEMORY[0x1E69B8CF8] defaults];
     options = v2->_options;
-    v2->_options = v7;
+    v2->_options = defaults;
 
     v9 = objc_alloc_init(PKPassbookPeerPaymentSettingsDefaultBehavior);
     peerPaymentDefaultBehavior = v2->_peerPaymentDefaultBehavior;
@@ -62,8 +62,8 @@
 
   if (!PKStoreDemoModeEnabled())
   {
-    v3 = [MEMORY[0x1E69B8EF8] sharedService];
-    v4 = [MEMORY[0x1E69B9020] sharedService];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
     v5 = PKPeerPaymentServiceOverrideURL();
 
     if (v5)
@@ -71,34 +71,34 @@
       goto LABEL_10;
     }
 
-    v6 = [v3 context];
-    v7 = [v6 isRegistered];
+    context = [mEMORY[0x1E69B8EF8] context];
+    isRegistered = [context isRegistered];
 
-    if ((v7 & 1) == 0)
+    if ((isRegistered & 1) == 0)
     {
-      v8 = [v3 context];
-      v9 = [v8 configuration];
-      v10 = [v3 targetDevice];
-      v11 = [v10 deviceRegion];
-      v2 = [v9 peerPaymentEnabledForRegion:v11];
+      context2 = [mEMORY[0x1E69B8EF8] context];
+      configuration = [context2 configuration];
+      targetDevice = [mEMORY[0x1E69B8EF8] targetDevice];
+      deviceRegion = [targetDevice deviceRegion];
+      _canRegisterForPeerPayment = [configuration peerPaymentEnabledForRegion:deviceRegion];
 
       goto LABEL_16;
     }
 
-    if (v4 && ![v4 needsRegistration])
+    if (mEMORY[0x1E69B9020] && ![mEMORY[0x1E69B9020] needsRegistration])
     {
 LABEL_10:
-      v2 = 1;
+      _canRegisterForPeerPayment = 1;
     }
 
     else
     {
-      v2 = [v3 _canRegisterForPeerPayment];
+      _canRegisterForPeerPayment = [mEMORY[0x1E69B8EF8] _canRegisterForPeerPayment];
     }
 
 LABEL_16:
 
-    return v2;
+    return _canRegisterForPeerPayment;
   }
 
   return MEMORY[0x1EEE24778]();

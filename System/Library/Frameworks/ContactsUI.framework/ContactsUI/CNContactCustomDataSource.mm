@@ -1,18 +1,18 @@
 @interface CNContactCustomDataSource
-- (CNContactCustomDataSource)initWithContacts:(id)a3;
-- (CNContactCustomDataSource)initWithContacts:(id)a3 keysToFetch:(id)a4 filter:(id)a5;
+- (CNContactCustomDataSource)initWithContacts:(id)contacts;
+- (CNContactCustomDataSource)initWithContacts:(id)contacts keysToFetch:(id)fetch filter:(id)filter;
 - (CNContactDataSourceDelegate)delegate;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)indexPathForContact:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)indexPathForContact:(id)contact;
 - (void)_sendDataSourceDidChange;
 - (void)_startObservingContacts;
 - (void)_stopObservingContacts;
 - (void)_updateContactsObserving;
 - (void)_updateFilter;
-- (void)contactDidChange:(id)a3;
+- (void)contactDidChange:(id)change;
 - (void)dealloc;
-- (void)setAutoUpdateContacts:(BOOL)a3;
-- (void)setFilter:(id)a3;
+- (void)setAutoUpdateContacts:(BOOL)contacts;
+- (void)setFilter:(id)filter;
 @end
 
 @implementation CNContactCustomDataSource
@@ -26,21 +26,21 @@
 
 - (void)_sendDataSourceDidChange
 {
-  v3 = [(CNContactCustomDataSource *)self delegate];
-  [v3 contactDataSourceDidChange:self];
+  delegate = [(CNContactCustomDataSource *)self delegate];
+  [delegate contactDataSourceDidChange:self];
 }
 
-- (void)contactDidChange:(id)a3
+- (void)contactDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(CNContactCustomDataSource *)self delegate];
+  changeCopy = change;
+  delegate = [(CNContactCustomDataSource *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
     value = 0;
-    v6 = [(CNContactCustomDataSource *)self identifiersToIndexes];
-    v7 = [v4 identifier];
-    v8 = NSMapMember(v6, v7, 0, &value);
+    identifiersToIndexes = [(CNContactCustomDataSource *)self identifiersToIndexes];
+    identifier = [changeCopy identifier];
+    v8 = NSMapMember(identifiersToIndexes, identifier, 0, &value);
 
     if (v8)
     {
@@ -78,8 +78,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(CNContactCustomDataSource *)self allContacts];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allContacts = [(CNContactCustomDataSource *)self allContacts];
+  v4 = [allContacts countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -91,19 +91,19 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allContacts);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
         v9 = +[CNUIContactsEnvironment currentEnvironment];
-        v10 = [v9 contactChangesNotifier];
-        [v10 unregisterObserver:self forContact:v8];
+        contactChangesNotifier = [v9 contactChangesNotifier];
+        [contactChangesNotifier unregisterObserver:self forContact:v8];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allContacts countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -117,8 +117,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(CNContactCustomDataSource *)self allContacts];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allContacts = [(CNContactCustomDataSource *)self allContacts];
+  v4 = [allContacts countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -130,47 +130,47 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allContacts);
         }
 
         v8 = *(*(&v12 + 1) + 8 * v7);
         v9 = +[CNUIContactsEnvironment currentEnvironment];
-        v10 = [v9 contactChangesNotifier];
-        v11 = [(CNContactCustomDataSource *)self keysToFetch];
-        [v10 registerObserver:self forContact:v8 keysToFetch:v11];
+        contactChangesNotifier = [v9 contactChangesNotifier];
+        keysToFetch = [(CNContactCustomDataSource *)self keysToFetch];
+        [contactChangesNotifier registerObserver:self forContact:v8 keysToFetch:keysToFetch];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [allContacts countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)setAutoUpdateContacts:(BOOL)a3
+- (void)setAutoUpdateContacts:(BOOL)contacts
 {
-  if (self->_autoUpdateContacts != a3)
+  if (self->_autoUpdateContacts != contacts)
   {
-    self->_autoUpdateContacts = a3;
+    self->_autoUpdateContacts = contacts;
     [(CNContactCustomDataSource *)self _updateContactsObserving];
   }
 }
 
 - (void)_updateFilter
 {
-  v3 = [(CNContactFilter *)self->_filter predicate];
-  v4 = v3;
+  predicate = [(CNContactFilter *)self->_filter predicate];
+  v4 = predicate;
   allContacts = self->_allContacts;
-  if (v3)
+  if (predicate)
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __42__CNContactCustomDataSource__updateFilter__block_invoke;
     v8[3] = &unk_1E74E4838;
-    v9 = v3;
+    v9 = predicate;
     v6 = [(NSMutableArray *)allContacts indexesOfObjectsPassingTest:v8];
     if ([v6 count])
     {
@@ -190,34 +190,34 @@
   }
 }
 
-- (void)setFilter:(id)a3
+- (void)setFilter:(id)filter
 {
-  v5 = a3;
+  filterCopy = filter;
   p_filter = &self->_filter;
-  if (self->_filter != v5)
+  if (self->_filter != filterCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_filter, a3);
+    v8 = filterCopy;
+    objc_storeStrong(p_filter, filter);
     [(CNContactCustomDataSource *)self _updateFilter];
-    v7 = [(CNContactCustomDataSource *)self delegate];
-    [v7 contactDataSourceDidChange:self];
+    delegate = [(CNContactCustomDataSource *)self delegate];
+    [delegate contactDataSourceDidChange:self];
 
-    v5 = v8;
+    filterCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](p_filter, v5);
+  MEMORY[0x1EEE66BB8](p_filter, filterCopy);
 }
 
-- (id)indexPathForContact:(id)a3
+- (id)indexPathForContact:(id)contact
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = [a3 identifier];
+  identifier = [contact identifier];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(CNContactCustomDataSource *)self contacts];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  contacts = [(CNContactCustomDataSource *)self contacts];
+  v6 = [contacts countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = 0;
@@ -231,11 +231,11 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(contacts);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v9) identifier];
-        v12 = [v4 isEqual:v11];
+        identifier2 = [*(*(&v14 + 1) + 8 * v9) identifier];
+        v12 = [identifier isEqual:identifier2];
 
         if (v12)
         {
@@ -248,7 +248,7 @@
       }
 
       while (v6 != v9);
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [contacts countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -263,19 +263,19 @@ LABEL_11:
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(CNContactCustomDataSource *)self contacts];
-  v6 = [v5 copy];
-  v7 = [(CNContactCustomDataSource *)self keysToFetch];
-  v8 = [v7 copy];
-  v9 = [(CNContactCustomDataSource *)self filter];
-  v10 = [v9 copy];
+  contacts = [(CNContactCustomDataSource *)self contacts];
+  v6 = [contacts copy];
+  keysToFetch = [(CNContactCustomDataSource *)self keysToFetch];
+  v8 = [keysToFetch copy];
+  filter = [(CNContactCustomDataSource *)self filter];
+  v10 = [filter copy];
   v11 = [v4 initWithContacts:v6 keysToFetch:v8 filter:v10];
 
-  v12 = [(CNContactCustomDataSource *)self contactFormatter];
-  [v11 setContactFormatter:v12];
+  contactFormatter = [(CNContactCustomDataSource *)self contactFormatter];
+  [v11 setContactFormatter:contactFormatter];
 
   return v11;
 }
@@ -288,22 +288,22 @@ LABEL_11:
   [(CNContactCustomDataSource *)&v3 dealloc];
 }
 
-- (CNContactCustomDataSource)initWithContacts:(id)a3 keysToFetch:(id)a4 filter:(id)a5
+- (CNContactCustomDataSource)initWithContacts:(id)contacts keysToFetch:(id)fetch filter:(id)filter
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contactsCopy = contacts;
+  fetchCopy = fetch;
+  filterCopy = filter;
   v28.receiver = self;
   v28.super_class = CNContactCustomDataSource;
   v11 = [(CNContactCustomDataSource *)&v28 init];
-  v12 = [v8 mutableCopy];
+  v12 = [contactsCopy mutableCopy];
   [(CNContactCustomDataSource *)v11 setAllContacts:v12];
 
-  [(CNContactCustomDataSource *)v11 setKeysToFetch:v9];
-  if (v10)
+  [(CNContactCustomDataSource *)v11 setKeysToFetch:fetchCopy];
+  if (filterCopy)
   {
-    [(CNContactCustomDataSource *)v11 setFilter:v10];
+    [(CNContactCustomDataSource *)v11 setFilter:filterCopy];
   }
 
   else
@@ -320,7 +320,7 @@ LABEL_11:
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v16 = v8;
+  v16 = contactsCopy;
   v17 = [v16 countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v17)
   {
@@ -338,8 +338,8 @@ LABEL_11:
         }
 
         ++v19;
-        v22 = [*(*(&v24 + 1) + 8 * v21) identifier];
-        NSMapInsert(v15, v22, v19);
+        identifier = [*(*(&v24 + 1) + 8 * v21) identifier];
+        NSMapInsert(v15, identifier, v19);
 
         ++v21;
       }
@@ -357,17 +357,17 @@ LABEL_11:
   return v11;
 }
 
-- (CNContactCustomDataSource)initWithContacts:(id)a3
+- (CNContactCustomDataSource)initWithContacts:(id)contacts
 {
   v17[3] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695CD80];
-  v5 = a3;
+  contactsCopy = contacts;
   v6 = objc_alloc_init(v4);
   [v6 setStyle:1001];
   [v6 setFallbackStyle:-1];
   v7 = MEMORY[0x1E695CD58];
-  v8 = [v6 descriptorForRequiredKeys];
-  v17[0] = v8;
+  descriptorForRequiredKeys = [v6 descriptorForRequiredKeys];
+  v17[0] = descriptorForRequiredKeys;
   v9 = +[CNAvatarView descriptorForRequiredKeys];
   v17[1] = v9;
   v10 = +[CNQuickActionsView descriptorForRequiredKeys];
@@ -377,7 +377,7 @@ LABEL_11:
 
   v16 = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
-  v14 = [(CNContactCustomDataSource *)self initWithContacts:v5 keysToFetch:v13 filter:0];
+  v14 = [(CNContactCustomDataSource *)self initWithContacts:contactsCopy keysToFetch:v13 filter:0];
 
   return v14;
 }

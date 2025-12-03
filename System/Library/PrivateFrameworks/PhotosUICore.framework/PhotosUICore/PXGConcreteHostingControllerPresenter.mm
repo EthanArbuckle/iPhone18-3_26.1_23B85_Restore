@@ -1,12 +1,12 @@
 @interface PXGConcreteHostingControllerPresenter
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
 - (PXGHostingController)hostingController;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)performChanges:(id)a3;
-- (void)setDisplayScale:(double)a3;
+- (void)performChanges:(id)changes;
+- (void)setDisplayScale:(double)scale;
 @end
 
 @implementation PXGConcreteHostingControllerPresenter
@@ -33,13 +33,13 @@
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v5 = [WeakRetained clientQueue];
+    clientQueue = [WeakRetained clientQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __48__PXGConcreteHostingControllerPresenter_dealloc__block_invoke;
     block[3] = &unk_1E774C648;
     v8 = v4;
-    dispatch_async(v5, block);
+    dispatch_async(clientQueue, block);
   }
 
   v6.receiver = self;
@@ -47,13 +47,13 @@
   [(PXGConcreteHostingControllerPresenter *)&v6 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(PXGConcreteHostingControllerPresenter *)self size];
     v7 = v6;
     v9 = v8;
@@ -80,41 +80,41 @@
   return v13;
 }
 
-- (void)setDisplayScale:(double)a3
+- (void)setDisplayScale:(double)scale
 {
-  if (self->_displayScale != a3)
+  if (self->_displayScale != scale)
   {
-    self->_displayScale = a3;
+    self->_displayScale = scale;
     self->_didChange = 1;
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   isPerformingChanges = self->_isPerformingChanges;
-  v7 = v4;
+  v7 = changesCopy;
   if (isPerformingChanges)
   {
-    (*(v4 + 2))(v4, self);
+    (*(changesCopy + 2))(changesCopy, self);
     self->_isPerformingChanges = isPerformingChanges;
   }
 
   else
   {
     self->_didChange = 0;
-    (*(v4 + 2))(v4, self);
+    (*(changesCopy + 2))(changesCopy, self);
     self->_isPerformingChanges = isPerformingChanges;
     if (self->_didChange)
     {
       self->_didChange = 0;
-      v6 = [(PXGConcreteHostingControllerPresenter *)self hostingController];
-      [v6 clientQueue_presenterDidChange:self];
+      hostingController = [(PXGConcreteHostingControllerPresenter *)self hostingController];
+      [hostingController clientQueue_presenterDidChange:self];
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PXGConcreteHostingControllerPresenter);
   [(PXGConcreteHostingControllerPresenter *)self size];

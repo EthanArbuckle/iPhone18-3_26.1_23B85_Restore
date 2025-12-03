@@ -1,10 +1,10 @@
 @interface HindsightCloudShareManagerEnergyKitDataSource
-- (BOOL)shouldCreateZoneForHome:(id)a3;
-- (BOOL)shouldGrantWriteAccessToUser:(id)a3;
-- (BOOL)shouldShareWithUser:(id)a3;
+- (BOOL)shouldCreateZoneForHome:(id)home;
+- (BOOL)shouldGrantWriteAccessToUser:(id)user;
+- (BOOL)shouldShareWithUser:(id)user;
 - (HMDHomeKitVersion)minimumHomeKitVersion;
 - (_TtC13HomeKitDaemon45HindsightCloudShareManagerEnergyKitDataSource)init;
-- (id)zoneUUIDForHome:(id)a3;
+- (id)zoneUUIDForHome:(id)home;
 @end
 
 @implementation HindsightCloudShareManagerEnergyKitDataSource
@@ -18,12 +18,12 @@
 
 - (HMDHomeKitVersion)minimumHomeKitVersion
 {
-  v2 = [objc_opt_self() version13_0];
+  version13_0 = [objc_opt_self() version13_0];
 
-  return v2;
+  return version13_0;
 }
 
-- (id)zoneUUIDForHome:(id)a3
+- (id)zoneUUIDForHome:(id)home
 {
   v4 = sub_22A4DB7DC();
   v5 = *(v4 - 8);
@@ -33,8 +33,8 @@
   MEMORY[0x28223BE20](v7);
   v11 = &v17 - v10;
   sub_22A4DBDAC();
-  v12 = a3;
-  v13 = [v12 spiClientIdentifier];
+  homeCopy = home;
+  spiClientIdentifier = [homeCopy spiClientIdentifier];
   sub_22A4DB79C();
 
   sub_22A4DBD9C();
@@ -46,19 +46,19 @@
   return v15;
 }
 
-- (BOOL)shouldCreateZoneForHome:(id)a3
+- (BOOL)shouldCreateZoneForHome:(id)home
 {
-  v3 = a3;
-  v4 = [objc_msgSend(v3 featuresDataSource)];
+  homeCopy = home;
+  v4 = [objc_msgSend(homeCopy featuresDataSource)];
 
   swift_unknownObjectRelease();
   return v4;
 }
 
-- (BOOL)shouldShareWithUser:(id)a3
+- (BOOL)shouldShareWithUser:(id)user
 {
-  v3 = a3;
-  if ([v3 isAllowedToAccessActivityHistory] && (v4 = objc_msgSend(v3, sel_home)) != 0)
+  userCopy = user;
+  if ([userCopy isAllowedToAccessActivityHistory] && (v4 = objc_msgSend(userCopy, sel_home)) != 0)
   {
     v5 = v4;
     v6 = [objc_msgSend(v4 featuresDataSource)];
@@ -74,14 +74,14 @@
   return v6;
 }
 
-- (BOOL)shouldGrantWriteAccessToUser:(id)a3
+- (BOOL)shouldGrantWriteAccessToUser:(id)user
 {
-  v3 = a3;
-  v4 = [v3 home];
-  if (v4)
+  userCopy = user;
+  home = [userCopy home];
+  if (home)
   {
-    v5 = v4;
-    v6 = [objc_msgSend(v4 featuresDataSource)];
+    v5 = home;
+    v6 = [objc_msgSend(home featuresDataSource)];
 
     swift_unknownObjectRelease();
   }

@@ -1,21 +1,21 @@
 @interface RadioPowerTargetCC
-- (RadioPowerTargetCC)initWithRunLoopAndParams:(__CFRunLoop *)a3 withParams:(__CFDictionary *)a4;
+- (RadioPowerTargetCC)initWithRunLoopAndParams:(__CFRunLoop *)params withParams:(__CFDictionary *)withParams;
 - (int)numberOfFields;
 - (void)calculateAdditionalRadioMitigations;
 @end
 
 @implementation RadioPowerTargetCC
 
-- (RadioPowerTargetCC)initWithRunLoopAndParams:(__CFRunLoop *)a3 withParams:(__CFDictionary *)a4
+- (RadioPowerTargetCC)initWithRunLoopAndParams:(__CFRunLoop *)params withParams:(__CFDictionary *)withParams
 {
   v8.receiver = self;
   v8.super_class = RadioPowerTargetCC;
-  v5 = [(RadioCC *)&v8 initWithRunLoopAndParams:a3 withParams:?];
+  v5 = [(RadioCC *)&v8 initWithRunLoopAndParams:params withParams:?];
   v6 = v5;
   if (v5)
   {
     *(&v5->super.maxLoadingIndexPrevious + 1) = -1;
-    if (a4 && sub_100002A20(a4, @"maxRadioPower", kCFNumberIntType, &v5->super.maxLoadingIndexPrevious + 1) && (sub_100002A20(a4, @"minRadioPower", kCFNumberIntType, &v6->radioPowerTarget) & 1) == 0)
+    if (withParams && sub_100002A20(withParams, @"maxRadioPower", kCFNumberIntType, &v5->super.maxLoadingIndexPrevious + 1) && (sub_100002A20(withParams, @"minRadioPower", kCFNumberIntType, &v6->radioPowerTarget) & 1) == 0)
     {
       v6->radioPowerTarget = 0;
     }

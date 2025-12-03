@@ -1,11 +1,11 @@
 @interface MFLANHandoffAgent
 - (MFLANHandoffAgent)init;
 - (id)_getDeviceHostname;
-- (id)startServerWithCompletion:(id)a3;
+- (id)startServerWithCompletion:(id)completion;
 - (void)_cleanupRunLoopSource;
 - (void)_cleanupSocket;
 - (void)_socketListenerRunLoop;
-- (void)connectToServerWithContext:(id)a3 completion:(id)a4;
+- (void)connectToServerWithContext:(id)context completion:(id)completion;
 - (void)dealloc;
 - (void)stopServer;
 @end
@@ -111,7 +111,7 @@ LABEL_9:
   self->_handoffContext = 0;
 }
 
-- (id)startServerWithCompletion:(id)a3
+- (id)startServerWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
   if (self->_serverRunning)
@@ -155,10 +155,10 @@ LABEL_9:
     return self->_handoffContext;
   }
 
-  v11 = [(MFLANHandoffAgent *)self _getDeviceHostname];
-  if (v11)
+  _getDeviceHostname = [(MFLANHandoffAgent *)self _getDeviceHostname];
+  if (_getDeviceHostname)
   {
-    v12 = v11;
+    v12 = _getDeviceHostname;
     *&v26.sa_len = 0xAAAAAAAAAAAAAAAALL;
     *&v26.sa_data[6] = 0xAAAAAAAAAAAAAAAALL;
     v13 = CFSocketGetNative(self->_socket);
@@ -178,7 +178,7 @@ LABEL_9:
       _os_log_impl(&dword_1BE819000, v16, OS_LOG_TYPE_INFO, "#Hand-Off [LAN] Successfully created server socket (%@:%d).", buf, 0x12u);
     }
 
-    self->_connectCallbackBlock = _Block_copy(a3);
+    self->_connectCallbackBlock = _Block_copy(completion);
     [MEMORY[0x1E696AF00] detachNewThreadSelector:sel__socketListenerRunLoop toTarget:self withObject:0];
     return self->_handoffContext;
   }
@@ -192,21 +192,21 @@ LABEL_9:
   return 0;
 }
 
-- (void)connectToServerWithContext:(id)a3 completion:(id)a4
+- (void)connectToServerWithContext:(id)context completion:(id)completion
 {
-  v6 = [a3 host];
-  v7 = [a3 port];
-  if (v6)
+  host = [context host];
+  port = [context port];
+  if (host)
   {
-    v8 = v7;
-    if (v7)
+    v8 = port;
+    if (port)
     {
       v10 = 0xAAAAAAAAAAAAAAAALL;
       readStream = 0xAAAAAAAAAAAAAAAALL;
-      CFStreamCreatePairWithSocketToHost(*MEMORY[0x1E695E480], v6, v7, &readStream, &v10);
+      CFStreamCreatePairWithSocketToHost(*MEMORY[0x1E695E480], host, port, &readStream, &v10);
       if (readStream && v10)
       {
-        (*(a4 + 2))(a4);
+        (*(completion + 2))(completion);
       }
 
       else
@@ -214,7 +214,7 @@ LABEL_9:
         v9 = MFLogGeneral();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
-          [(MFLANHandoffAgent *)v6 connectToServerWithContext:v8 completion:v9];
+          [(MFLANHandoffAgent *)host connectToServerWithContext:v8 completion:v9];
         }
       }
     }

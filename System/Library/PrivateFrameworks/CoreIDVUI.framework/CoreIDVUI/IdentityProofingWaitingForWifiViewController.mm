@@ -1,12 +1,12 @@
 @interface IdentityProofingWaitingForWifiViewController
-- (_TtC9CoreIDVUI44IdentityProofingWaitingForWifiViewController)initWithCoder:(id)a3;
+- (_TtC9CoreIDVUI44IdentityProofingWaitingForWifiViewController)initWithCoder:(id)coder;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation IdentityProofingWaitingForWifiViewController
 
-- (_TtC9CoreIDVUI44IdentityProofingWaitingForWifiViewController)initWithCoder:(id)a3
+- (_TtC9CoreIDVUI44IdentityProofingWaitingForWifiViewController)initWithCoder:(id)coder
 {
   result = sub_2459115D4();
   __break(1u);
@@ -15,17 +15,17 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2458B2D54();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for IdentityProofingWaitingForWifiViewController();
   v4 = v5.receiver;
-  [(IdentityProofingViewController *)&v5 viewWillAppear:v3];
+  [(IdentityProofingViewController *)&v5 viewWillAppear:appearCopy];
   sub_2458B20A0();
 }
 

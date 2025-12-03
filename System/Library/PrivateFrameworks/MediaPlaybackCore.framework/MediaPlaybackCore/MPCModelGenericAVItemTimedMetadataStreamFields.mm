@@ -1,27 +1,27 @@
 @interface MPCModelGenericAVItemTimedMetadataStreamFields
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation MPCModelGenericAVItemTimedMetadataStreamFields
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_13;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (album = self->_album, album != v4->_album) && ![(NSString *)album isEqual:?]|| (title = self->_title, title != v4->_title) && ![(NSString *)title isEqual:?]|| (artist = self->_artist, artist != v4->_artist) && ![(NSString *)artist isEqual:?]|| self->_explicitContent != v4->_explicitContent)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (album = self->_album, album != equalCopy->_album) && ![(NSString *)album isEqual:?]|| (title = self->_title, title != equalCopy->_title) && ![(NSString *)title isEqual:?]|| (artist = self->_artist, artist != equalCopy->_artist) && ![(NSString *)artist isEqual:?]|| self->_explicitContent != equalCopy->_explicitContent)
   {
     v9 = 0;
     goto LABEL_14;
   }
 
   artworkDictionaries = self->_artworkDictionaries;
-  if (artworkDictionaries == v4->_artworkDictionaries)
+  if (artworkDictionaries == equalCopy->_artworkDictionaries)
   {
 LABEL_13:
     v9 = 1;

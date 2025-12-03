@@ -1,14 +1,14 @@
 @interface BWCameraInfoMetadataNode
-- (CMMetadataFormatDescriptionRef)_initForMotionMetadataSource:(int)a3 generateLivePhotosMetadata:generateDebugMetadata:generateMotionMetadata:;
+- (CMMetadataFormatDescriptionRef)_initForMotionMetadataSource:(int)source generateLivePhotosMetadata:generateDebugMetadata:generateMotionMetadata:;
 - (uint64_t)_emptyMetadataBlockBuffer;
-- (void)_emitLivePhotosAndDebugBoxedMetadataForSampleBuffer:(void *)a3 metadata:(uint64_t)a4 time:;
-- (void)_updateBoxedMetadataFormatDescriptionWithMetadata:(uint64_t)a1;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)_emitLivePhotosAndDebugBoxedMetadataForSampleBuffer:(void *)buffer metadata:(uint64_t)metadata time:;
+- (void)_updateBoxedMetadataFormatDescriptionWithMetadata:(uint64_t)metadata;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWCameraInfoMetadataNode
@@ -44,12 +44,12 @@
   [(BWNode *)&v7 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
-  [(BWNodeOutput *)self->_passthruOutput setFormat:a3, a4];
+  [(BWNodeOutput *)self->_passthruOutput setFormat:format, input];
   if (self->_generateLivePhotosMetadata)
   {
-    Dimensions = CMVideoFormatDescriptionGetDimensions([a3 formatDescription]);
+    Dimensions = CMVideoFormatDescriptionGetDimensions([format formatDescription]);
     v21 = 0;
     formatDescriptionOut = 0;
     v7 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:4];
@@ -123,29 +123,29 @@
   }
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  [(BWNodeOutput *)self->_passthruOutput makeConfiguredFormatLive:a3];
+  [(BWNodeOutput *)self->_passthruOutput makeConfiguredFormatLive:d];
   boxedMetadataOutput = self->_boxedMetadataOutput;
 
   [(BWNodeOutput *)boxedMetadataOutput makeConfiguredFormatLive];
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
-  [(BWNodeOutput *)self->_passthruOutput markEndOfLiveOutputForConfigurationID:a3, a4];
+  [(BWNodeOutput *)self->_passthruOutput markEndOfLiveOutputForConfigurationID:d, input];
   boxedMetadataOutput = self->_boxedMetadataOutput;
 
-  [(BWNodeOutput *)boxedMetadataOutput markEndOfLiveOutputForConfigurationID:a3];
+  [(BWNodeOutput *)boxedMetadataOutput markEndOfLiveOutputForConfigurationID:d];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   memset(&v11, 0, sizeof(v11));
-  CMSampleBufferGetPresentationTimeStamp(&v11, a3);
-  if (BWSampleBufferIsMarkerBuffer(a3))
+  CMSampleBufferGetPresentationTimeStamp(&v11, buffer);
+  if (BWSampleBufferIsMarkerBuffer(buffer))
   {
-    v6 = CMGetAttachment(a3, @"FileWriterAction", 0);
+    v6 = CMGetAttachment(buffer, @"FileWriterAction", 0);
     if (v6)
     {
       v7 = v6;
@@ -161,7 +161,7 @@
     }
 
     sampleBufferOut = 0;
-    if (CMSampleBufferCreateCopy(*MEMORY[0x1E695E480], a3, &sampleBufferOut))
+    if (CMSampleBufferCreateCopy(*MEMORY[0x1E695E480], buffer, &sampleBufferOut))
     {
       v9 = v11;
       [(BWNodeOutput *)self->_boxedMetadataOutput emitDroppedSample:[BWDroppedSample newDroppedSampleWithReason:0x1F219BFF0 pts:&v9]];
@@ -180,33 +180,33 @@
 
   else
   {
-    v8 = CMGetAttachment(a3, *off_1E798A3C8, 0);
+    v8 = CMGetAttachment(buffer, *off_1E798A3C8, 0);
     if (v8 && self->_generateLivePhotosMetadata)
     {
       v9 = v11;
-      [(BWCameraInfoMetadataNode *)self _emitLivePhotosAndDebugBoxedMetadataForSampleBuffer:a3 metadata:v8 time:&v9];
+      [(BWCameraInfoMetadataNode *)self _emitLivePhotosAndDebugBoxedMetadataForSampleBuffer:buffer metadata:v8 time:&v9];
     }
   }
 
-  [(BWNodeOutput *)self->_passthruOutput emitSampleBuffer:a3];
+  [(BWNodeOutput *)self->_passthruOutput emitSampleBuffer:buffer];
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
-  [(BWNodeOutput *)self->_passthruOutput emitDroppedSample:a3, a4];
+  [(BWNodeOutput *)self->_passthruOutput emitDroppedSample:sample, input];
   boxedMetadataOutput = self->_boxedMetadataOutput;
 
-  [(BWNodeOutput *)boxedMetadataOutput emitDroppedSample:a3];
+  [(BWNodeOutput *)boxedMetadataOutput emitDroppedSample:sample];
 }
 
-- (CMMetadataFormatDescriptionRef)_initForMotionMetadataSource:(int)a3 generateLivePhotosMetadata:generateDebugMetadata:generateMotionMetadata:
+- (CMMetadataFormatDescriptionRef)_initForMotionMetadataSource:(int)source generateLivePhotosMetadata:generateDebugMetadata:generateMotionMetadata:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = BWCameraInfoMetadataNode;
   v4 = objc_msgSendSuper2(&v12, sel_init);
   if (v4)
@@ -222,7 +222,7 @@
     *(v4 + 49) = 0;
     *(v4 + 208) = 1;
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (a3)
+    if (source)
     {
       MEMORY[0x1B26F02D0](&_initForMotionMetadataSource_generateLivePhotosMetadata_generateDebugMetadata_generateMotionMetadata__s_cimn_registerLivePhotosMetadata_once, cimn_registerLivePhotosMetadata_once);
       *(v4 + 128) = 1;
@@ -265,9 +265,9 @@
   return v4;
 }
 
-- (void)_emitLivePhotosAndDebugBoxedMetadataForSampleBuffer:(void *)a3 metadata:(uint64_t)a4 time:
+- (void)_emitLivePhotosAndDebugBoxedMetadataForSampleBuffer:(void *)buffer metadata:(uint64_t)metadata time:
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
@@ -279,21 +279,21 @@
   point.y = 0.0;
   v87 = 0;
   v88 = 0;
-  v6 = *(a1 + 160);
-  if ((*(a4 + 12) & 1) == 0)
+  v6 = *(self + 160);
+  if ((*(metadata + 12) & 1) == 0)
   {
     OUTLINED_FUNCTION_2_76();
     goto LABEL_56;
   }
 
-  v70 = *(a1 + 160);
-  if (*(a1 + 209) == 1)
+  v70 = *(self + 160);
+  if (*(self + 209) == 1)
   {
-    [(BWCameraInfoMetadataNode *)a1 _updateBoxedMetadataFormatDescriptionWithMetadata:a3];
-    *(a1 + 209) = 0;
+    [(BWCameraInfoMetadataNode *)self _updateBoxedMetadataFormatDescriptionWithMetadata:buffer];
+    *(self + 209) = 0;
   }
 
-  if (![a3 count])
+  if (![buffer count])
   {
     OUTLINED_FUNCTION_2_76();
 LABEL_29:
@@ -301,7 +301,7 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  if (*(a1 + 128) == 1)
+  if (*(self + 128) == 1)
   {
     v84 = 0.0;
     v85 = 0.0;
@@ -309,7 +309,7 @@ LABEL_29:
 
     v86 = _Q0;
     FigCFDictionaryGetCGRectIfPresent();
-    v11 = [a3 objectForKeyedSubscript:*off_1E798B218];
+    v11 = [buffer objectForKeyedSubscript:*off_1E798B218];
     v12 = [v11 count];
     if (v12 < 1)
     {
@@ -327,7 +327,7 @@ LABEL_29:
       v12 = [v77 count];
     }
 
-    v14 = [a3 objectForKeyedSubscript:*off_1E798B220];
+    v14 = [buffer objectForKeyedSubscript:*off_1E798B220];
     if (v14 && (v15 = v14, [v14 count]))
     {
       [v15 objectForKeyedSubscript:*off_1E798ACB0];
@@ -385,12 +385,12 @@ LABEL_29:
     OUTLINED_FUNCTION_2_76();
   }
 
-  if (!*(a1 + 204))
+  if (!*(self + 204))
   {
     goto LABEL_29;
   }
 
-  v45 = [a3 objectForKeyedSubscript:*off_1E798D4C0];
+  v45 = [buffer objectForKeyedSubscript:*off_1E798D4C0];
   if (!v45)
   {
     goto LABEL_29;
@@ -446,10 +446,10 @@ LABEL_30:
       }
 
       v51->i32[0] = bswap32(LODWORD(v92[0]) + 8);
-      v51->i32[1] = *(a1 + 200);
-      *&__dst.duration.value = *a4;
-      __dst.duration.epoch = *(a4 + 16);
-      v54 = FigLivePhotoMetadataSerializeIntoBufferV3(a2, &__dst, a3, v77, CorrectedDetectedObjects, v75, v74, v73, 3u, v53, &v51[1]);
+      v51->i32[1] = *(self + 200);
+      *&__dst.duration.value = *metadata;
+      __dst.duration.epoch = *(metadata + 16);
+      v54 = FigLivePhotoMetadataSerializeIntoBufferV3(a2, &__dst, buffer, v77, CorrectedDetectedObjects, v75, v74, v73, 3u, v53, &v51[1]);
       if (!v54)
       {
         break;
@@ -484,7 +484,7 @@ LABEL_44:
     if (v47)
     {
       v60->i32[0] = (v47 + 8) << 24;
-      v60->i32[1] = *(a1 + 204);
+      v60->i32[1] = *(self + 204);
       v60[1] = vrev32_s8(vcvt_f32_f64(point));
     }
 
@@ -498,9 +498,9 @@ LABEL_44:
       LODWORD(blockBufferOut) = v67;
       FigDebugAssert3();
 LABEL_61:
-      *&__dst.duration.value = *a4;
-      __dst.duration.epoch = *(a4 + 16);
-      [*(a1 + 184) emitDroppedSample:{+[BWDroppedSample newDroppedSampleWithReason:pts:](BWDroppedSample, "newDroppedSampleWithReason:pts:", 0x1F219BFF0, &__dst, blockBufferOut, numSampleSizeEntries)}];
+      *&__dst.duration.value = *metadata;
+      __dst.duration.epoch = *(metadata + 16);
+      [*(self + 184) emitDroppedSample:{+[BWDroppedSample newDroppedSampleWithReason:pts:](BWDroppedSample, "newDroppedSampleWithReason:pts:", 0x1F219BFF0, &__dst, blockBufferOut, numSampleSizeEntries)}];
       goto LABEL_62;
     }
   }
@@ -510,8 +510,8 @@ LABEL_61:
 LABEL_40:
     if ((v70 & 1) == 0)
     {
-      v65 = [(BWCameraInfoMetadataNode *)a1 _emptyMetadataBlockBuffer];
-      if (!v65)
+      _emptyMetadataBlockBuffer = [(BWCameraInfoMetadataNode *)self _emptyMetadataBlockBuffer];
+      if (!_emptyMetadataBlockBuffer)
       {
         v6 = 0;
         v64 = 0;
@@ -519,7 +519,7 @@ LABEL_40:
         goto LABEL_57;
       }
 
-      v66 = CFRetain(v65);
+      v66 = CFRetain(_emptyMetadataBlockBuffer);
       v88 = v66;
       v59 = MEMORY[0x1E695E480];
       if (v66)
@@ -548,9 +548,9 @@ LABEL_56:
 
 LABEL_48:
   memcpy(&__dst, MEMORY[0x1E6960CF0], sizeof(__dst));
-  __dst.presentationTimeStamp = *a4;
+  __dst.presentationTimeStamp = *metadata;
   sampleSizeArray = CMBlockBufferGetDataLength(v62);
-  v63 = CMSampleBufferCreate(*v59, v88, 1u, 0, 0, *(a1 + 136), 1, 1, &__dst, 1, &sampleSizeArray, &v87);
+  v63 = CMSampleBufferCreate(*v59, v88, 1u, 0, 0, *(self + 136), 1, 1, &__dst, 1, &sampleSizeArray, &v87);
   if (v63)
   {
     fig_log_get_emitter();
@@ -566,8 +566,8 @@ LABEL_57:
     goto LABEL_61;
   }
 
-  [*(a1 + 184) emitSampleBuffer:?];
-  *(a1 + 160) = v6;
+  [*(self + 184) emitSampleBuffer:?];
+  *(self + 160) = v6;
 LABEL_62:
 
   if (v88)
@@ -581,17 +581,17 @@ LABEL_62:
   }
 }
 
-- (void)_updateBoxedMetadataFormatDescriptionWithMetadata:(uint64_t)a1
+- (void)_updateBoxedMetadataFormatDescriptionWithMetadata:(uint64_t)metadata
 {
-  if (!a1)
+  if (!metadata)
   {
     return;
   }
 
-  *(a1 + 204) = 0;
+  *(metadata + 204) = 0;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = [a2 objectForKeyedSubscript:*off_1E798D498];
-  v6 = *(a1 + 208) != 1 || v5 == 0;
+  v6 = *(metadata + 208) != 1 || v5 == 0;
   v7 = MEMORY[0x1E6960348];
   v8 = MEMORY[0x1E6960338];
   if (v6)
@@ -648,7 +648,7 @@ LABEL_11:
       goto LABEL_30;
     }
 
-    v14 = *(a1 + 144);
+    v14 = *(metadata + 144);
     if (v14)
     {
       v15 = CMMetadataFormatDescriptionCreateByMergingMetadataFormatDescriptions(v13, v14, *&point.x, &formatDescriptionOut);
@@ -672,36 +672,36 @@ LABEL_30:
       formatDescriptionOut = *&point.x;
     }
 
-    v18 = *(a1 + 136);
+    v18 = *(metadata + 136);
     if (v18)
     {
       CFRelease(v18);
     }
 
-    *(a1 + 136) = formatDescriptionOut;
+    *(metadata + 136) = formatDescriptionOut;
     if (v9)
     {
       [(__CFDictionary *)v9 objectForKeyedSubscript:*v7];
       [(__CFDictionary *)v9 objectForKeyedSubscript:*v8];
-      *(a1 + 204) = bswap32(FigMetadataFormatDescriptionGetLocalIDForMetadataIdentifyingFactors());
+      *(metadata + 204) = bswap32(FigMetadataFormatDescriptionGetLocalIDForMetadataIdentifyingFactors());
     }
   }
 
   else
   {
-    v16 = *(a1 + 136);
+    v16 = *(metadata + 136);
     if (v16)
     {
       CFRelease(v16);
     }
 
-    v17 = *(a1 + 144);
+    v17 = *(metadata + 144);
     if (v17)
     {
       v17 = CFRetain(v17);
     }
 
-    *(a1 + 136) = v17;
+    *(metadata + 136) = v17;
   }
 }
 

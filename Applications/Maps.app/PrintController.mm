@@ -1,22 +1,22 @@
 @interface PrintController
 - (BOOL)_isInBackground;
-- (BOOL)_searchResults:(id)a3 areFarAwayFromView:(id)a4;
-- (PrintController)initWithMapView:(id)a3 delegate:(id)a4;
+- (BOOL)_searchResults:(id)results areFarAwayFromView:(id)view;
+- (PrintController)initWithMapView:(id)view delegate:(id)delegate;
 - (PrintControllerDelegate)delegate;
-- (id)_printControllerForRoute:(id)a3 searchString:(id)a4;
-- (id)_printControllerForSearchString:(id)a3 searchResults:(id)a4 title:(id)a5 subTitle:(id)a6;
-- (id)_printInfoForSearchString:(id)a3 route:(id)a4 title:(id)a5;
-- (id)_rendererForRoute:(id)a3;
-- (id)_rendererForSearchResults:(id)a3 title:(id)a4 subTitle:(id)a5;
-- (id)mapRegion:(id)a3 insetLat:(double)a4 insetLng:(double)a5;
+- (id)_printControllerForRoute:(id)route searchString:(id)string;
+- (id)_printControllerForSearchString:(id)string searchResults:(id)results title:(id)title subTitle:(id)subTitle;
+- (id)_printInfoForSearchString:(id)string route:(id)route title:(id)title;
+- (id)_rendererForRoute:(id)route;
+- (id)_rendererForSearchResults:(id)results title:(id)title subTitle:(id)subTitle;
+- (id)mapRegion:(id)region insetLat:(double)lat insetLng:(double)lng;
 - (void)_endBackgroundTask;
-- (void)_print:(id)a3;
+- (void)_print:(id)_print;
 - (void)orientationDidChange;
 - (void)orientationWillChange;
-- (void)printInteractionControllerDidPresentPrinterOptions:(id)a3;
-- (void)printInteractionControllerWillStartJob:(id)a3;
-- (void)printRoute:(id)a3 searchString:(id)a4;
-- (void)printSearchString:(id)a3 searchResults:(id)a4 title:(id)a5 subTitle:(id)a6;
+- (void)printInteractionControllerDidPresentPrinterOptions:(id)options;
+- (void)printInteractionControllerWillStartJob:(id)job;
+- (void)printRoute:(id)route searchString:(id)string;
+- (void)printSearchString:(id)string searchResults:(id)results title:(id)title subTitle:(id)subTitle;
 @end
 
 @implementation PrintController
@@ -28,7 +28,7 @@
   return WeakRetained;
 }
 
-- (void)printInteractionControllerWillStartJob:(id)a3
+- (void)printInteractionControllerWillStartJob:(id)job
 {
   v4 = +[UIApplication sharedApplication];
   v5[0] = _NSConcreteStackBlock;
@@ -39,23 +39,23 @@
   self->_printTaskBackgroundIdentifier = [v4 beginBackgroundTaskWithExpirationHandler:v5];
 }
 
-- (void)printInteractionControllerDidPresentPrinterOptions:(id)a3
+- (void)printInteractionControllerDidPresentPrinterOptions:(id)options
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained printControllerDidPresentPrinterOptions:self];
 }
 
-- (id)_printInfoForSearchString:(id)a3 route:(id)a4 title:(id)a5
+- (id)_printInfoForSearchString:(id)string route:(id)route title:(id)title
 {
-  v6 = a3;
+  stringCopy = string;
   v7 = +[UIPrintInfo printInfo];
   [v7 setOutputType:0];
   [v7 setOrientation:1];
-  if (v6)
+  if (stringCopy)
   {
     v8 = +[NSBundle mainBundle];
     v9 = v8;
-    if (a4)
+    if (route)
     {
       v10 = @"Directions Title [Printing]";
     }
@@ -66,15 +66,15 @@
     }
 
     v13 = [v8 localizedStringForKey:v10 value:@"localized string not found" table:0];
-    v14 = [NSString stringWithFormat:v13, v6];
-    [v7 setJobName:v14];
+    stringCopy = [NSString stringWithFormat:v13, stringCopy];
+    [v7 setJobName:stringCopy];
   }
 
   else
   {
     v11 = +[NSBundle mainBundle];
     v9 = v11;
-    if (a4)
+    if (route)
     {
       v12 = @"PrintController_Directions";
     }
@@ -91,14 +91,14 @@
   return v7;
 }
 
-- (id)_rendererForSearchResults:(id)a3 title:(id)a4 subTitle:(id)a5
+- (id)_rendererForSearchResults:(id)results title:(id)title subTitle:(id)subTitle
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count] && !-[PrintController _searchResults:areFarAwayFromView:](self, "_searchResults:areFarAwayFromView:", v8, self->_mapView))
+  resultsCopy = results;
+  titleCopy = title;
+  subTitleCopy = subTitle;
+  if ([resultsCopy count] && !-[PrintController _searchResults:areFarAwayFromView:](self, "_searchResults:areFarAwayFromView:", resultsCopy, self->_mapView))
   {
-    v11 = [[SearchResultsPageRenderer alloc] initWithSearchResults:v8 title:v9 subTitle:v10 mapView:self->_mapView];
+    v11 = [[SearchResultsPageRenderer alloc] initWithSearchResults:resultsCopy title:titleCopy subTitle:subTitleCopy mapView:self->_mapView];
   }
 
   else
@@ -111,18 +111,18 @@
   return v12;
 }
 
-- (id)_rendererForRoute:(id)a3
+- (id)_rendererForRoute:(id)route
 {
-  v4 = a3;
-  v5 = [[MapRoutePageRenderer alloc] initWithRoute:v4 mapView:self->_mapView];
+  routeCopy = route;
+  v5 = [[MapRoutePageRenderer alloc] initWithRoute:routeCopy mapView:self->_mapView];
 
   return v5;
 }
 
-- (BOOL)_searchResults:(id)a3 areFarAwayFromView:(id)a4
+- (BOOL)_searchResults:(id)results areFarAwayFromView:(id)view
 {
-  v5 = a3;
-  [a4 visibleMapRect];
+  resultsCopy = results;
+  [view visibleMapRect];
   v25 = MKMapRectInset(v24, -v24.size.width, -v24.size.height);
   x = v25.origin.x;
   y = v25.origin.y;
@@ -132,7 +132,7 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v5;
+  v10 = resultsCopy;
   v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
@@ -176,48 +176,48 @@ LABEL_11:
   return v15;
 }
 
-- (id)mapRegion:(id)a3 insetLat:(double)a4 insetLng:(double)a5
+- (id)mapRegion:(id)region insetLat:(double)lat insetLng:(double)lng
 {
-  v7 = a3;
+  regionCopy = region;
   v8 = objc_alloc_init(GEOMapRegion);
-  [v7 southLat];
-  v9 = a4 * 0.5;
+  [regionCopy southLat];
+  v9 = lat * 0.5;
   v11 = v10 + v9;
   v12 = -90.0;
   if (v11 > -90.0)
   {
-    [v7 southLat];
+    [regionCopy southLat];
     v12 = v13 + v9;
   }
 
   [v8 setSouthLat:v12];
-  [v7 northLat];
+  [regionCopy northLat];
   v15 = v14 - v9;
   v16 = 90.0;
   if (v15 < 90.0)
   {
-    [v7 northLat];
+    [regionCopy northLat];
     v16 = v17 - v9;
   }
 
   [v8 setNorthLat:v16];
-  [v7 westLng];
-  v18 = a5 * 0.5;
+  [regionCopy westLng];
+  v18 = lng * 0.5;
   v20 = v19 + v18;
   v21 = -180.0;
   if (v20 > -180.0)
   {
-    [v7 westLng];
+    [regionCopy westLng];
     v21 = v22 + v18;
   }
 
   [v8 setWestLng:v21];
-  [v7 eastLng];
+  [regionCopy eastLng];
   v24 = v23 - v18;
   v25 = 180.0;
   if (v24 < 180.0)
   {
-    [v7 eastLng];
+    [regionCopy eastLng];
     v25 = v26 - v18;
   }
 
@@ -236,9 +236,9 @@ LABEL_11:
   else
   {
     v4 = +[UIDevice currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-    if (v5 != 5)
+    if (userInterfaceIdiom != 5)
     {
       return;
     }
@@ -261,9 +261,9 @@ LABEL_11:
   else
   {
     v4 = +[UIDevice currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-    if (v5 != 5)
+    if (userInterfaceIdiom != 5)
     {
       return;
     }
@@ -273,17 +273,17 @@ LABEL_11:
   self->_shouldShowPopoverAfterOrientationChange = isShowingPopover;
   if (isShowingPopover)
   {
-    v8 = [(UIPrintInteractionController *)self->_pic printPageRenderer];
+    printPageRenderer = [(UIPrintInteractionController *)self->_pic printPageRenderer];
     v7 = +[UIPrintInteractionController sharedPrintController];
     [v7 dismissAnimated:0];
 
-    [(UIPrintInteractionController *)self->_pic setPrintPageRenderer:v8];
+    [(UIPrintInteractionController *)self->_pic setPrintPageRenderer:printPageRenderer];
   }
 }
 
-- (void)printSearchString:(id)a3 searchResults:(id)a4 title:(id)a5 subTitle:(id)a6
+- (void)printSearchString:(id)string searchResults:(id)results title:(id)title subTitle:(id)subTitle
 {
-  v7 = [(PrintController *)self _printControllerForSearchString:a3 searchResults:a4 title:a5 subTitle:a6];
+  v7 = [(PrintController *)self _printControllerForSearchString:string searchResults:results title:title subTitle:subTitle];
   pic = self->_pic;
   self->_pic = v7;
 
@@ -292,10 +292,10 @@ LABEL_11:
   [(PrintController *)self _print:v9];
 }
 
-- (void)_print:(id)a3
+- (void)_print:(id)_print
 {
-  v4 = a3;
-  [v4 setDelegate:self];
+  _printCopy = _print;
+  [_printCopy setDelegate:self];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10072BBD4;
@@ -303,9 +303,9 @@ LABEL_11:
   v17[4] = self;
   v5 = objc_retainBlock(v17);
   v6 = +[UIDevice currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  userInterfaceIdiom = [v6 userInterfaceIdiom];
 
-  if (v7)
+  if (userInterfaceIdiom)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained popoverPresentationRectForPrintController:self];
@@ -314,19 +314,19 @@ LABEL_11:
     v14 = v13;
     v16 = v15;
 
-    [v4 presentFromRect:self->_presentationView inView:1 animated:v5 completionHandler:{v10, v12, v14, v16}];
+    [_printCopy presentFromRect:self->_presentationView inView:1 animated:v5 completionHandler:{v10, v12, v14, v16}];
     self->_isShowingPopover = 1;
   }
 
   else
   {
-    [v4 presentAnimated:1 completionHandler:v5];
+    [_printCopy presentAnimated:1 completionHandler:v5];
   }
 }
 
-- (void)printRoute:(id)a3 searchString:(id)a4
+- (void)printRoute:(id)route searchString:(id)string
 {
-  v5 = [(PrintController *)self _printControllerForRoute:a3 searchString:a4];
+  v5 = [(PrintController *)self _printControllerForRoute:route searchString:string];
   pic = self->_pic;
   self->_pic = v5;
 
@@ -335,32 +335,32 @@ LABEL_11:
   [(PrintController *)self _print:v7];
 }
 
-- (id)_printControllerForSearchString:(id)a3 searchResults:(id)a4 title:(id)a5 subTitle:(id)a6
+- (id)_printControllerForSearchString:(id)string searchResults:(id)results title:(id)title subTitle:(id)subTitle
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  subTitleCopy = subTitle;
+  titleCopy = title;
+  resultsCopy = results;
+  stringCopy = string;
   v14 = +[UIPrintInteractionController sharedPrintController];
-  v15 = [(PrintController *)self _printInfoForSearchString:v13 route:0 title:v11];
+  v15 = [(PrintController *)self _printInfoForSearchString:stringCopy route:0 title:titleCopy];
 
   [v14 setPrintInfo:v15];
-  v16 = [(PrintController *)self _rendererForSearchResults:v12 title:v11 subTitle:v10];
+  v16 = [(PrintController *)self _rendererForSearchResults:resultsCopy title:titleCopy subTitle:subTitleCopy];
 
   [v14 setPrintPageRenderer:v16];
 
   return v14;
 }
 
-- (id)_printControllerForRoute:(id)a3 searchString:(id)a4
+- (id)_printControllerForRoute:(id)route searchString:(id)string
 {
-  v6 = a4;
-  v7 = a3;
+  stringCopy = string;
+  routeCopy = route;
   v8 = +[UIPrintInteractionController sharedPrintController];
-  v9 = [(PrintController *)self _printInfoForSearchString:v6 route:v7 title:0];
+  v9 = [(PrintController *)self _printInfoForSearchString:stringCopy route:routeCopy title:0];
 
   [v8 setPrintInfo:v9];
-  v10 = [(PrintController *)self _rendererForRoute:v7];
+  v10 = [(PrintController *)self _rendererForRoute:routeCopy];
 
   [v8 setPrintPageRenderer:v10];
 
@@ -373,8 +373,8 @@ LABEL_11:
   {
     if ([(PrintController *)self _isInBackground])
     {
-      v3 = [UIApp delegate];
-      [v3 sendDidEnterBackgroundNotification];
+      delegate = [UIApp delegate];
+      [delegate sendDidEnterBackgroundNotification];
     }
 
     v4 = +[UIApplication sharedApplication];
@@ -387,31 +387,31 @@ LABEL_11:
 - (BOOL)_isInBackground
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 applicationState];
+  applicationState = [v2 applicationState];
 
-  if (v3 != 1)
+  if (applicationState != 1)
   {
-    return v3 == 2;
+    return applicationState == 2;
   }
 
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 isSuspendedUnderLock];
+  isSuspendedUnderLock = [v5 isSuspendedUnderLock];
 
-  return v6;
+  return isSuspendedUnderLock;
 }
 
-- (PrintController)initWithMapView:(id)a3 delegate:(id)a4
+- (PrintController)initWithMapView:(id)view delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = PrintController;
   v9 = [(PrintController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mapView, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_mapView, view);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
   }
 
   return v10;

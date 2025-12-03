@@ -1,8 +1,8 @@
 @interface ButtonLayout
 - (double)_topOffset;
 - (double)topOffset;
-- (void)setTopOffset:(double)a3;
-- (void)set_topOffset:(double)a3;
+- (void)setTopOffset:(double)offset;
+- (void)set_topOffset:(double)offset;
 @end
 
 @implementation ButtonLayout
@@ -23,7 +23,7 @@
   return topOffset;
 }
 
-- (void)set_topOffset:(double)a3
+- (void)set_topOffset:(double)offset
 {
   sub_25B005B34();
   sub_25B005B24();
@@ -34,7 +34,7 @@
   }
 
   swift_beginAccess();
-  self->_topOffset = a3;
+  self->_topOffset = offset;
 }
 
 - (double)topOffset
@@ -58,7 +58,7 @@
   return topOffset;
 }
 
-- (void)setTopOffset:(double)a3
+- (void)setTopOffset:(double)offset
 {
   sub_25B005B34();
   sub_25B005B24();
@@ -68,7 +68,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  ButtonLayout.topOffset.setter(a3);
+  ButtonLayout.topOffset.setter(offset);
 }
 
 @end

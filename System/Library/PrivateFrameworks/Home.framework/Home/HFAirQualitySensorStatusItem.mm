@@ -1,40 +1,40 @@
 @interface HFAirQualitySensorStatusItem
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)iconDescriptorForRepresentedHomeKitObjects:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)iconDescriptorForRepresentedHomeKitObjects:(id)objects;
 @end
 
 @implementation HFAirQualitySensorStatusItem
 
-- (id)iconDescriptorForRepresentedHomeKitObjects:(id)a3
+- (id)iconDescriptorForRepresentedHomeKitObjects:(id)objects
 {
-  v3 = [MEMORY[0x277D755D0] configurationWithPointSize:{a3, 24.0}];
+  v3 = [MEMORY[0x277D755D0] configurationWithPointSize:{objects, 24.0}];
   v4 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:@"aqi.medium" configuration:v3];
 
   return v4;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_opt_class() serviceTypes];
-  v6 = [v5 anyObject];
+  optionsCopy = options;
+  serviceTypes = [objc_opt_class() serviceTypes];
+  anyObject = [serviceTypes anyObject];
 
-  v7 = [objc_opt_class() characteristicTypesForServiceType:v6 includingAssociatedTypes:1];
-  v21[0] = v6;
+  v7 = [objc_opt_class() characteristicTypesForServiceType:anyObject includingAssociatedTypes:1];
+  v21[0] = anyObject;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
-  v9 = [v7 allObjects];
-  v10 = [(HFStatusItem *)self filteredServicesOfTypes:v8 containingCharacteristicTypes:v9];
+  allObjects = [v7 allObjects];
+  v10 = [(HFStatusItem *)self filteredServicesOfTypes:v8 containingCharacteristicTypes:allObjects];
 
   objc_initWeak(&location, self);
-  v11 = [(HFStatusItem *)self valueSource];
-  v12 = [v11 readValuesForCharacteristicTypes:v7 inServices:v10];
+  valueSource = [(HFStatusItem *)self valueSource];
+  v12 = [valueSource readValuesForCharacteristicTypes:v7 inServices:v10];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __60__HFAirQualitySensorStatusItem__subclass_updateWithOptions___block_invoke;
   v17[3] = &unk_277DF61A0;
   objc_copyWeak(&v19, &location);
-  v13 = v6;
+  v13 = anyObject;
   v18 = v13;
   v14 = [v12 flatMap:v17];
 

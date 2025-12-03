@@ -1,29 +1,29 @@
 @interface MFDragSource
-- (BOOL)dragInteraction:(id)a3 sessionAllowsMoveOperation:(id)a4;
-- (BOOL)dragInteraction:(id)a3 sessionIsRestrictedToDraggingApplication:(id)a4;
-- (MFDragSource)initWithView:(id)a3 delegate:(id)a4;
+- (BOOL)dragInteraction:(id)interaction sessionAllowsMoveOperation:(id)operation;
+- (BOOL)dragInteraction:(id)interaction sessionIsRestrictedToDraggingApplication:(id)application;
+- (MFDragSource)initWithView:(id)view delegate:(id)delegate;
 - (MFDragSourceDelegate)delegate;
 - (UIView)sourceView;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4;
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session;
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation;
 @end
 
 @implementation MFDragSource
 
-- (MFDragSource)initWithView:(id)a3 delegate:(id)a4
+- (MFDragSource)initWithView:(id)view delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = MFDragSource;
   v8 = [(MFDragSource *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_sourceView, v6);
-    [(MFDragSource *)v9 setDelegate:v7];
+    objc_storeWeak(&v8->_sourceView, viewCopy);
+    [(MFDragSource *)v9 setDelegate:delegateCopy];
     v9->_delegateFlags.respondsToTeamDataForItem = objc_opt_respondsToSelector() & 1;
     v9->_delegateFlags.respondsToLocalObjectForItem = objc_opt_respondsToSelector() & 1;
     v9->_delegateFlags.respondsToTargetedPreviewForItem = objc_opt_respondsToSelector() & 1;
@@ -36,9 +36,9 @@
     v10 = [objc_alloc(MEMORY[0x1E69DC988]) initWithDelegate:v9];
     [(MFDragSource *)v9 setDragInteraction:v10];
 
-    v11 = [(MFDragSource *)v9 sourceView];
-    v12 = [(MFDragSource *)v9 dragInteraction];
-    [v11 addInteraction:v12];
+    sourceView = [(MFDragSource *)v9 sourceView];
+    dragInteraction = [(MFDragSource *)v9 dragInteraction];
+    [sourceView addInteraction:dragInteraction];
 
     [(MFDragSource *)v9 setAllowsDragOverridingMasterSwitch:0];
   }
@@ -46,22 +46,22 @@
   return v9;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
-  v6 = a4;
-  v7 = [a3 view];
-  [v6 locationInView:v7];
+  sessionCopy = session;
+  view = [interaction view];
+  [sessionCopy locationInView:view];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(MFDragSource *)self delegate];
-  v13 = [v12 dragSource:self draggableItemsAtPoint:{v9, v11}];
+  delegate = [(MFDragSource *)self delegate];
+  v13 = [delegate dragSource:self draggableItemsAtPoint:{v9, v11}];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __57__MFDragSource_dragInteraction_itemsForBeginningSession___block_invoke;
   v17[3] = &unk_1E806E0E0;
   v17[4] = self;
-  v14 = v12;
+  v14 = delegate;
   v18 = v14;
   v15 = [v13 ef_map:v17];
 
@@ -101,27 +101,27 @@ id __57__MFDragSource_dragInteraction_itemsForBeginningSession___block_invoke(ui
   return v5;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  interactionCopy = interaction;
+  itemCopy = item;
+  sessionCopy = session;
   if (self->_delegateFlags.respondsToTargetedPreviewForItem)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v12 = [v9 localObject];
-    v13 = [WeakRetained dragSource:self targetedPreviewForDraggableItem:v12];
+    localObject = [itemCopy localObject];
+    v13 = [WeakRetained dragSource:self targetedPreviewForDraggableItem:localObject];
   }
 
   else if (self->_delegateFlags.respondsToPreviewForItem)
   {
-    v14 = [(MFDragSource *)self delegate];
-    v15 = [v9 localObject];
-    v16 = [v14 dragSource:self previewForDraggableItem:v15];
+    delegate = [(MFDragSource *)self delegate];
+    localObject2 = [itemCopy localObject];
+    v16 = [delegate dragSource:self previewForDraggableItem:localObject2];
 
-    v17 = [v16 window];
+    window = [v16 window];
 
-    if (v17)
+    if (window)
     {
       v13 = [objc_alloc(MEMORY[0x1E69DD068]) initWithView:v16];
     }
@@ -129,7 +129,7 @@ id __57__MFDragSource_dragInteraction_itemsForBeginningSession___block_invoke(ui
     else
     {
       v18 = objc_alloc(MEMORY[0x1E69DC9A8]);
-      v19 = [v8 view];
+      view = [interactionCopy view];
       [v16 center];
       v21 = v20;
       v23 = v22;
@@ -143,11 +143,11 @@ id __57__MFDragSource_dragInteraction_itemsForBeginningSession___block_invoke(ui
         memset(v28, 0, sizeof(v28));
       }
 
-      v24 = [v18 initWithContainer:v19 center:v28 transform:{v21, v23}];
+      v24 = [v18 initWithContainer:view center:v28 transform:{v21, v23}];
 
       v25 = objc_alloc_init(MEMORY[0x1E69DC9A0]);
-      v26 = [MEMORY[0x1E69DC888] clearColor];
-      [v25 setBackgroundColor:v26];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
+      [v25 setBackgroundColor:clearColor];
 
       v13 = [objc_alloc(MEMORY[0x1E69DD068]) initWithView:v16 parameters:v25 target:v24];
     }
@@ -161,27 +161,27 @@ id __57__MFDragSource_dragInteraction_itemsForBeginningSession___block_invoke(ui
   return v13;
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation
 {
-  v7 = a4;
+  sessionCopy = session;
   if (self->_delegateFlags.respondsToDragWillEnd)
   {
-    v10 = v7;
+    v10 = sessionCopy;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v9 = [v10 items];
-    [WeakRetained dragSource:self willEndInteractionWithItems:v9 dropOperation:a5];
+    items = [v10 items];
+    [WeakRetained dragSource:self willEndInteractionWithItems:items dropOperation:operation];
 
-    v7 = v10;
+    sessionCopy = v10;
   }
 }
 
-- (BOOL)dragInteraction:(id)a3 sessionAllowsMoveOperation:(id)a4
+- (BOOL)dragInteraction:(id)interaction sessionAllowsMoveOperation:(id)operation
 {
-  v5 = a4;
+  operationCopy = operation;
   if (self->_delegateFlags.respondsToAllowsMoveOperation)
   {
-    v6 = [(MFDragSource *)self delegate];
-    v7 = [v6 dragSource:self sessionAllowsMoveOperation:v5];
+    delegate = [(MFDragSource *)self delegate];
+    v7 = [delegate dragSource:self sessionAllowsMoveOperation:operationCopy];
   }
 
   else
@@ -192,13 +192,13 @@ id __57__MFDragSource_dragInteraction_itemsForBeginningSession___block_invoke(ui
   return v7;
 }
 
-- (BOOL)dragInteraction:(id)a3 sessionIsRestrictedToDraggingApplication:(id)a4
+- (BOOL)dragInteraction:(id)interaction sessionIsRestrictedToDraggingApplication:(id)application
 {
-  v5 = a4;
+  applicationCopy = application;
   if (self->_delegateFlags.respondsToIsRestrictedToMail)
   {
-    v6 = [(MFDragSource *)self delegate];
-    v7 = [v6 dragSource:self sessionIsRestrictedToMail:v5];
+    delegate = [(MFDragSource *)self delegate];
+    v7 = [delegate dragSource:self sessionIsRestrictedToMail:applicationCopy];
   }
 
   else
@@ -209,13 +209,13 @@ id __57__MFDragSource_dragInteraction_itemsForBeginningSession___block_invoke(ui
   return v7;
 }
 
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session
 {
-  v5 = a4;
+  sessionCopy = session;
   if (self->_delegateFlags.respondsToDataOwner)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v7 = [WeakRetained dragSource:self dataOwnerForSession:v5];
+    v7 = [WeakRetained dragSource:self dataOwnerForSession:sessionCopy];
   }
 
   else

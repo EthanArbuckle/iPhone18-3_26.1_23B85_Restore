@@ -1,13 +1,13 @@
 @interface BNPenderQueueEntry
-- (BNPenderQueueEntry)initWithPender:(id)a3;
+- (BNPenderQueueEntry)initWithPender:(id)pender;
 @end
 
 @implementation BNPenderQueueEntry
 
-- (BNPenderQueueEntry)initWithPender:(id)a3
+- (BNPenderQueueEntry)initWithPender:(id)pender
 {
-  v6 = a3;
-  if (!v6)
+  penderCopy = pender;
+  if (!penderCopy)
   {
     [(BNPenderQueueEntry *)a2 initWithPender:?];
   }
@@ -18,10 +18,10 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_pender, a3);
-    v9 = [MEMORY[0x1E696AFB0] UUID];
+    objc_storeStrong(&v7->_pender, pender);
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     entryIdentifier = v8->_entryIdentifier;
-    v8->_entryIdentifier = v9;
+    v8->_entryIdentifier = uUID;
   }
 
   return v8;

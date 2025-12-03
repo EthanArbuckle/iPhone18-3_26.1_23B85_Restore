@@ -1,23 +1,23 @@
 @interface NMSMediaDownloadInfo
-- (NMSMediaDownloadInfo)initWithItems:(id)a3;
+- (NMSMediaDownloadInfo)initWithItems:(id)items;
 - (id)description;
 - (id)externalLibraryItemIdentifiers;
 - (id)mediaLibraryItemIdentifiers;
 - (unint64_t)totalItemSize;
-- (void)enumerateMediaItemsUsingBlock:(id)a3;
+- (void)enumerateMediaItemsUsingBlock:(id)block;
 @end
 
 @implementation NMSMediaDownloadInfo
 
-- (NMSMediaDownloadInfo)initWithItems:(id)a3
+- (NMSMediaDownloadInfo)initWithItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = NMSMediaDownloadInfo;
   v5 = [(NMSMediaDownloadInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [itemsCopy mutableCopy];
     items = v5->_items;
     v5->_items = v6;
   }
@@ -68,16 +68,16 @@
   return result;
 }
 
-- (void)enumerateMediaItemsUsingBlock:(id)a3
+- (void)enumerateMediaItemsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   items = self->_items;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__NMSMediaDownloadInfo_enumerateMediaItemsUsingBlock___block_invoke;
   v7[3] = &unk_27993E298;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableOrderedSet *)items enumerateObjectsUsingBlock:v7];
 }
 

@@ -1,10 +1,10 @@
 @interface CCSControlCenterOperationService
 + (id)sharedService;
 - (CCSControlCenterOperationServiceDelegate)delegate;
-- (void)handleControlCenterOperationType:(int64_t)a3 completionHandler:(id)a4;
-- (void)handleIconElementRequest:(id)a3 completionHandler:(id)a4;
-- (void)requestIconElementState:(id)a3 completionHandler:(id)a4;
-- (void)resetToDefaultLayoutWithCompletionHandler:(id)a3;
+- (void)handleControlCenterOperationType:(int64_t)type completionHandler:(id)handler;
+- (void)handleIconElementRequest:(id)request completionHandler:(id)handler;
+- (void)requestIconElementState:(id)state completionHandler:(id)handler;
+- (void)resetToDefaultLayoutWithCompletionHandler:(id)handler;
 @end
 
 @implementation CCSControlCenterOperationService
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __49__CCSControlCenterOperationService_sharedService__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedService_onceToken != -1)
   {
     dispatch_once(&sharedService_onceToken, block);
@@ -33,34 +33,34 @@ uint64_t __49__CCSControlCenterOperationService_sharedService__block_invoke(uint
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)handleIconElementRequest:(id)a3 completionHandler:(id)a4
+- (void)handleIconElementRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  requestCopy = request;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained handleIconElementRequestWithOperationService:self iconElementRequest:v7 completionHandler:v6];
+  [WeakRetained handleIconElementRequestWithOperationService:self iconElementRequest:requestCopy completionHandler:handlerCopy];
 }
 
-- (void)handleControlCenterOperationType:(int64_t)a3 completionHandler:(id)a4
+- (void)handleControlCenterOperationType:(int64_t)type completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained handleControlCenterOperationTypeWithOperationService:self operationType:a3 completionHandler:v6];
+  [WeakRetained handleControlCenterOperationTypeWithOperationService:self operationType:type completionHandler:handlerCopy];
 }
 
-- (void)requestIconElementState:(id)a3 completionHandler:(id)a4
+- (void)requestIconElementState:(id)state completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  stateCopy = state;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained requestIconElementStateWithOperationService:self iconElementRequest:v7 completionHandler:v6];
+  [WeakRetained requestIconElementStateWithOperationService:self iconElementRequest:stateCopy completionHandler:handlerCopy];
 }
 
-- (void)resetToDefaultLayoutWithCompletionHandler:(id)a3
+- (void)resetToDefaultLayoutWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained resetToDefaultLayoutWithCompletionHandler:v4];
+  [WeakRetained resetToDefaultLayoutWithCompletionHandler:handlerCopy];
 }
 
 - (CCSControlCenterOperationServiceDelegate)delegate

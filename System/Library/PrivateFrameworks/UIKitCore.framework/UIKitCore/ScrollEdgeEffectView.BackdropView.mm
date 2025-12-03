@@ -1,9 +1,9 @@
 @interface ScrollEdgeEffectView.BackdropView
 + (Class)layerClass;
 - (NSString)description;
-- (_TtCC5UIKit20ScrollEdgeEffectView12BackdropView)initWithCoder:(id)a3;
-- (_TtCC5UIKit20ScrollEdgeEffectView12BackdropView)initWithFrame:(CGRect)a3;
-- (void)backdropLayer:(id)a3 didChangeLuma:(double)a4;
+- (_TtCC5UIKit20ScrollEdgeEffectView12BackdropView)initWithCoder:(id)coder;
+- (_TtCC5UIKit20ScrollEdgeEffectView12BackdropView)initWithFrame:(CGRect)frame;
+- (void)backdropLayer:(id)layer didChangeLuma:(double)luma;
 @end
 
 @implementation ScrollEdgeEffectView.BackdropView
@@ -15,16 +15,16 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)backdropLayer:(id)a3 didChangeLuma:(double)a4
+- (void)backdropLayer:(id)layer didChangeLuma:(double)luma
 {
-  v6 = a3;
-  v7 = self;
-  sub_188FF7A70(a4);
+  layerCopy = layer;
+  selfCopy = self;
+  sub_188FF7A70(luma);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_188FF778C();
 
   v3 = sub_18A4A7258();
@@ -32,12 +32,12 @@
   return v3;
 }
 
-- (_TtCC5UIKit20ScrollEdgeEffectView12BackdropView)initWithFrame:(CGRect)a3
+- (_TtCC5UIKit20ScrollEdgeEffectView12BackdropView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = (&self->super.super.super.isa + OBJC_IVAR____TtCC5UIKit20ScrollEdgeEffectView12BackdropView_lumaDidChangeHandler);
   *v7 = 0;
   v7[1] = 0;
@@ -49,7 +49,7 @@
   return [(UIView *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (_TtCC5UIKit20ScrollEdgeEffectView12BackdropView)initWithCoder:(id)a3
+- (_TtCC5UIKit20ScrollEdgeEffectView12BackdropView)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtCC5UIKit20ScrollEdgeEffectView12BackdropView_lumaDidChangeHandler);
   *v4 = 0;
@@ -59,8 +59,8 @@
   v5[8] = 1;
   v9.receiver = self;
   v9.super_class = _s12BackdropViewCMa();
-  v6 = a3;
-  v7 = [(UIView *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(UIView *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

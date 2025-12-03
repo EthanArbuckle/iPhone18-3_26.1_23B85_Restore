@@ -1,37 +1,37 @@
 @interface HKOverlayRoomViewControllerDistributionContext
-- (BOOL)isEqual:(id)a3;
-- (HKOverlayRoomViewControllerDistributionContext)initWithStyle:(int64_t)a3 namedPredicate:(id)a4 overlayChartController:(id)a5 applicationItems:(id)a6 optionalDelegate:(id)a7 options:(int64_t)a8 mode:(int64_t)a9;
+- (BOOL)isEqual:(id)equal;
+- (HKOverlayRoomViewControllerDistributionContext)initWithStyle:(int64_t)style namedPredicate:(id)predicate overlayChartController:(id)controller applicationItems:(id)items optionalDelegate:(id)delegate options:(int64_t)options mode:(int64_t)mode;
 - (HKOverlayRoomViewControllerIntegratedContextDelegate)optionalDelegate;
 - (id)_computeTitleAndIdentifierFromStyleAndPredicate;
-- (id)_representativeDisplayTypeForStyle:(int64_t)a3;
-- (id)_selectedMetricColorsForDistributionStyle:(int64_t)a3;
-- (id)buildContextItemWithValue:(id)a3 unit:(id)a4 valueContext:(id)a5 forTimeScope:(int64_t)a6 isUnitIncludedInValue:(BOOL)a7;
-- (id)buildOverlayDisplayTypeForTimeScope:(int64_t)a3;
+- (id)_representativeDisplayTypeForStyle:(int64_t)style;
+- (id)_selectedMetricColorsForDistributionStyle:(int64_t)style;
+- (id)buildContextItemWithValue:(id)value unit:(id)unit valueContext:(id)context forTimeScope:(int64_t)scope isUnitIncludedInValue:(BOOL)inValue;
+- (id)buildOverlayDisplayTypeForTimeScope:(int64_t)scope;
 - (id)representativeDisplayType;
-- (id)unitString:(id)a3 applicationItems:(id)a4 representativeDisplayType:(id)a5;
-- (id)valueString:(id)a3 applicationItems:(id)a4 representativeDisplayType:(id)a5 isUnitIncludedInValue:(BOOL *)a6;
-- (void)fetchCachedDataForTimeScope:(int64_t)a3 resolution:(int64_t)a4 dateInterval:(id)a5 completion:(id)a6;
+- (id)unitString:(id)string applicationItems:(id)items representativeDisplayType:(id)type;
+- (id)valueString:(id)string applicationItems:(id)items representativeDisplayType:(id)type isUnitIncludedInValue:(BOOL *)value;
+- (void)fetchCachedDataForTimeScope:(int64_t)scope resolution:(int64_t)resolution dateInterval:(id)interval completion:(id)completion;
 @end
 
 @implementation HKOverlayRoomViewControllerDistributionContext
 
-- (HKOverlayRoomViewControllerDistributionContext)initWithStyle:(int64_t)a3 namedPredicate:(id)a4 overlayChartController:(id)a5 applicationItems:(id)a6 optionalDelegate:(id)a7 options:(int64_t)a8 mode:(int64_t)a9
+- (HKOverlayRoomViewControllerDistributionContext)initWithStyle:(int64_t)style namedPredicate:(id)predicate overlayChartController:(id)controller applicationItems:(id)items optionalDelegate:(id)delegate options:(int64_t)options mode:(int64_t)mode
 {
   v34[8] = *MEMORY[0x1E69E9840];
-  v16 = a4;
-  v17 = a7;
+  predicateCopy = predicate;
+  delegateCopy = delegate;
   v32.receiver = self;
   v32.super_class = HKOverlayRoomViewControllerDistributionContext;
-  v18 = [(HKOverlayRoomViewControllerIntegratedContext *)&v32 initWithOverlayChartController:a5 applicationItems:a6 mode:a9];
+  v18 = [(HKOverlayRoomViewControllerIntegratedContext *)&v32 initWithOverlayChartController:controller applicationItems:items mode:mode];
   v19 = v18;
   if (v18)
   {
-    v18->_distributionStyle = a3;
-    objc_storeWeak(&v18->_optionalDelegate, v17);
-    v19->_options = a8;
-    objc_storeStrong(&v19->_namedPredicate, a4);
+    v18->_distributionStyle = style;
+    objc_storeWeak(&v18->_optionalDelegate, delegateCopy);
+    v19->_options = options;
+    objc_storeStrong(&v19->_namedPredicate, predicate);
     v33[0] = &unk_1F43821E8;
-    v31 = v16;
+    v31 = predicateCopy;
     v20 = +[HKUIMetricColors vitalsColors];
     v34[0] = v20;
     v33[1] = &unk_1F4382200;
@@ -59,7 +59,7 @@
     styleToMetricColors = v19->_styleToMetricColors;
     v19->_styleToMetricColors = v28;
 
-    v16 = v31;
+    predicateCopy = v31;
   }
 
   return v19;
@@ -67,19 +67,19 @@
 
 - (id)representativeDisplayType
 {
-  v3 = [(HKOverlayRoomViewControllerDistributionContext *)self distributionStyle];
+  distributionStyle = [(HKOverlayRoomViewControllerDistributionContext *)self distributionStyle];
 
-  return [(HKOverlayRoomViewControllerDistributionContext *)self _representativeDisplayTypeForStyle:v3];
+  return [(HKOverlayRoomViewControllerDistributionContext *)self _representativeDisplayTypeForStyle:distributionStyle];
 }
 
-- (id)valueString:(id)a3 applicationItems:(id)a4 representativeDisplayType:(id)a5 isUnitIncludedInValue:(BOOL *)a6
+- (id)valueString:(id)string applicationItems:(id)items representativeDisplayType:(id)type isUnitIncludedInValue:(BOOL *)value
 {
   v40 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 firstObject];
-  v14 = [v13 userInfo];
+  stringCopy = string;
+  itemsCopy = items;
+  typeCopy = type;
+  firstObject = [stringCopy firstObject];
+  userInfo = [firstObject userInfo];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -87,16 +87,16 @@
   {
     v34.receiver = self;
     v34.super_class = HKOverlayRoomViewControllerDistributionContext;
-    v29 = [(HKOverlayRoomViewControllerIntegratedContext *)&v34 valueString:v10 applicationItems:v11 representativeDisplayType:v12 isUnitIncludedInValue:a6];
+    v29 = [(HKOverlayRoomViewControllerIntegratedContext *)&v34 valueString:stringCopy applicationItems:itemsCopy representativeDisplayType:typeCopy isUnitIncludedInValue:value];
     goto LABEL_21;
   }
 
-  v33 = v11;
+  v33 = itemsCopy;
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v16 = v10;
+  v16 = stringCopy;
   v17 = [v16 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (!v17)
   {
@@ -105,8 +105,8 @@
   }
 
   v18 = v17;
-  v31 = v12;
-  v32 = v10;
+  v31 = typeCopy;
+  v32 = stringCopy;
   v19 = 0;
   v20 = *v36;
   do
@@ -119,14 +119,14 @@
       }
 
       v22 = *(*(&v35 + 1) + 8 * i);
-      v23 = [v22 userInfo];
+      userInfo2 = [v22 userInfo];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v24 = [v22 userInfo];
-        v25 = [v24 identifiers];
+        userInfo3 = [v22 userInfo];
+        identifiers = [userInfo3 identifiers];
 
-        if (!v25)
+        if (!identifiers)
         {
           continue;
         }
@@ -136,9 +136,9 @@
           v19 = objc_alloc_init(MEMORY[0x1E695DFA8]);
         }
 
-        v23 = [v22 userInfo];
-        v26 = [v23 identifiers];
-        [v19 addObjectsFromArray:v26];
+        userInfo2 = [v22 userInfo];
+        identifiers2 = [userInfo2 identifiers];
+        [v19 addObjectsFromArray:identifiers2];
       }
     }
 
@@ -147,8 +147,8 @@
 
   while (v18);
 
-  v12 = v31;
-  v10 = v32;
+  typeCopy = v31;
+  stringCopy = v32;
   if (v19)
   {
     v27 = MEMORY[0x1E696ADA0];
@@ -162,78 +162,78 @@ LABEL_19:
   v19 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v29 = [v19 localizedStringForKey:@"NO_DATA" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
 LABEL_20:
-  v11 = v33;
+  itemsCopy = v33;
 
 LABEL_21:
 
   return v29;
 }
 
-- (id)unitString:(id)a3 applicationItems:(id)a4 representativeDisplayType:(id)a5
+- (id)unitString:(id)string applicationItems:(id)items representativeDisplayType:(id)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HKOverlayRoomViewControllerDistributionContext *)self optionalDelegate];
+  stringCopy = string;
+  itemsCopy = items;
+  typeCopy = type;
+  optionalDelegate = [(HKOverlayRoomViewControllerDistributionContext *)self optionalDelegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(HKOverlayRoomViewControllerDistributionContext *)self optionalDelegate];
-    v14 = [v13 unitString:v8 applicationItems:v9 representativeDisplayType:v10];
+    optionalDelegate2 = [(HKOverlayRoomViewControllerDistributionContext *)self optionalDelegate];
+    v14 = [optionalDelegate2 unitString:stringCopy applicationItems:itemsCopy representativeDisplayType:typeCopy];
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = HKOverlayRoomViewControllerDistributionContext;
-    v14 = [(HKOverlayRoomViewControllerIntegratedContext *)&v16 unitString:v8 applicationItems:v9 representativeDisplayType:v10];
+    v14 = [(HKOverlayRoomViewControllerIntegratedContext *)&v16 unitString:stringCopy applicationItems:itemsCopy representativeDisplayType:typeCopy];
   }
 
   return v14;
 }
 
-- (id)buildContextItemWithValue:(id)a3 unit:(id)a4 valueContext:(id)a5 forTimeScope:(int64_t)a6 isUnitIncludedInValue:(BOOL)a7
+- (id)buildContextItemWithValue:(id)value unit:(id)unit valueContext:(id)context forTimeScope:(int64_t)scope isUnitIncludedInValue:(BOOL)inValue
 {
-  v7 = a7;
-  v11 = a4;
-  v12 = a5;
-  v13 = a3;
-  v14 = [(HKOverlayRoomViewControllerDistributionContext *)self representativeDisplayType];
+  inValueCopy = inValue;
+  unitCopy = unit;
+  contextCopy = context;
+  valueCopy = value;
+  representativeDisplayType = [(HKOverlayRoomViewControllerDistributionContext *)self representativeDisplayType];
   v15 = objc_alloc_init(HKDisplayTypeContextItem);
-  v16 = [(HKOverlayRoomViewControllerDistributionContext *)self _computeTitleAndIdentifierFromStyleAndPredicate];
-  v17 = [v16 title];
-  [(HKDisplayTypeContextItem *)v15 setTitle:v17];
+  _computeTitleAndIdentifierFromStyleAndPredicate = [(HKOverlayRoomViewControllerDistributionContext *)self _computeTitleAndIdentifierFromStyleAndPredicate];
+  title = [_computeTitleAndIdentifierFromStyleAndPredicate title];
+  [(HKDisplayTypeContextItem *)v15 setTitle:title];
 
-  v18 = [v16 accessibilityIdentifier];
-  [(HKDisplayTypeContextItem *)v15 setAccessibilityIdentifier:v18];
+  accessibilityIdentifier = [_computeTitleAndIdentifierFromStyleAndPredicate accessibilityIdentifier];
+  [(HKDisplayTypeContextItem *)v15 setAccessibilityIdentifier:accessibilityIdentifier];
 
   [(HKDisplayTypeContextItem *)v15 setInfoHidden:1];
-  [(HKDisplayTypeContextItem *)v15 setValue:v13];
+  [(HKDisplayTypeContextItem *)v15 setValue:valueCopy];
 
-  [(HKDisplayTypeContextItem *)v15 setValueContext:v12];
-  if (([v14 contextItemShouldDisplayEventCountForDistributionStyle:{-[HKOverlayRoomViewControllerDistributionContext distributionStyle](self, "distributionStyle")}] & 1) == 0)
+  [(HKDisplayTypeContextItem *)v15 setValueContext:contextCopy];
+  if (([representativeDisplayType contextItemShouldDisplayEventCountForDistributionStyle:{-[HKOverlayRoomViewControllerDistributionContext distributionStyle](self, "distributionStyle")}] & 1) == 0)
   {
-    v19 = [v14 objectType];
-    v20 = [(HKOverlayRoomViewControllerIntegratedContext *)self applicationItems];
-    v21 = [v20 healthStore];
-    v22 = [v19 hk_metadataValueDisplayTypeInStore:v21];
+    objectType = [representativeDisplayType objectType];
+    applicationItems = [(HKOverlayRoomViewControllerIntegratedContext *)self applicationItems];
+    healthStore = [applicationItems healthStore];
+    v22 = [objectType hk_metadataValueDisplayTypeInStore:healthStore];
 
-    if (v11)
+    if (unitCopy)
     {
-      [(HKDisplayTypeContextItem *)v15 setUnit:v11];
+      [(HKDisplayTypeContextItem *)v15 setUnit:unitCopy];
     }
 
     else
     {
-      v23 = [(HKOverlayRoomViewControllerIntegratedContext *)self applicationItems];
-      v24 = [v23 unitController];
-      v25 = [v24 localizedDisplayNameForDisplayType:v22];
+      applicationItems2 = [(HKOverlayRoomViewControllerIntegratedContext *)self applicationItems];
+      unitController = [applicationItems2 unitController];
+      v25 = [unitController localizedDisplayNameForDisplayType:v22];
       [(HKDisplayTypeContextItem *)v15 setUnit:v25];
     }
 
     -[HKDisplayTypeContextItem setUseTightSpacingBetweenValueAndUnit:](v15, "setUseTightSpacingBetweenValueAndUnit:", [v22 contextItemShouldUseTightSpacingBetweenValueAndUnit]);
-    [(HKDisplayTypeContextItem *)v15 setIsUnitIncludedInValue:v7];
+    [(HKDisplayTypeContextItem *)v15 setIsUnitIncludedInValue:inValueCopy];
   }
 
   v26 = [HKOverlayContextUtilities defaultMetricColorsForOverlayMode:[(HKOverlayRoomViewControllerIntegratedContext *)self overlayMode]];
@@ -245,15 +245,15 @@ LABEL_21:
   return v15;
 }
 
-- (id)buildOverlayDisplayTypeForTimeScope:(int64_t)a3
+- (id)buildOverlayDisplayTypeForTimeScope:(int64_t)scope
 {
-  v5 = [(HKOverlayRoomViewControllerDistributionContext *)self optionalDelegate];
+  optionalDelegate = [(HKOverlayRoomViewControllerDistributionContext *)self optionalDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(HKOverlayRoomViewControllerDistributionContext *)self optionalDelegate];
-    v8 = [v7 formatterForTimescope:a3];
+    optionalDelegate2 = [(HKOverlayRoomViewControllerDistributionContext *)self optionalDelegate];
+    v8 = [optionalDelegate2 formatterForTimescope:scope];
   }
 
   else
@@ -262,46 +262,46 @@ LABEL_21:
   }
 
   v9 = [(HKOverlayRoomViewControllerDistributionContext *)self _selectedMetricColorsForDistributionStyle:[(HKOverlayRoomViewControllerDistributionContext *)self distributionStyle]];
-  v10 = [v9 keyColor];
+  keyColor = [v9 keyColor];
 
-  v11 = [(HKOverlayRoomViewControllerIntegratedContext *)self overlayChartController];
-  v12 = [(HKOverlayRoomViewControllerDistributionContext *)self distributionStyle];
-  v13 = [(HKOverlayRoomViewControllerDistributionContext *)self options];
-  v14 = [(HKOverlayRoomViewControllerDistributionContext *)self namedPredicate];
-  v15 = [v11 displayTypeForQuantityDistributionStyle:v12 timeScope:a3 overlayColor:v10 options:v13 alternateFormatter:v8 namedPredicate:v14];
+  overlayChartController = [(HKOverlayRoomViewControllerIntegratedContext *)self overlayChartController];
+  distributionStyle = [(HKOverlayRoomViewControllerDistributionContext *)self distributionStyle];
+  options = [(HKOverlayRoomViewControllerDistributionContext *)self options];
+  namedPredicate = [(HKOverlayRoomViewControllerDistributionContext *)self namedPredicate];
+  v15 = [overlayChartController displayTypeForQuantityDistributionStyle:distributionStyle timeScope:scope overlayColor:keyColor options:options alternateFormatter:v8 namedPredicate:namedPredicate];
 
   return v15;
 }
 
-- (void)fetchCachedDataForTimeScope:(int64_t)a3 resolution:(int64_t)a4 dateInterval:(id)a5 completion:(id)a6
+- (void)fetchCachedDataForTimeScope:(int64_t)scope resolution:(int64_t)resolution dateInterval:(id)interval completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = [(HKOverlayRoomViewControllerIntegratedContext *)self overlayChartController];
-  v13 = [(HKOverlayRoomViewControllerDistributionContext *)self distributionStyle];
-  v14 = [v11 startDate];
-  v15 = [v11 endDate];
+  completionCopy = completion;
+  intervalCopy = interval;
+  overlayChartController = [(HKOverlayRoomViewControllerIntegratedContext *)self overlayChartController];
+  distributionStyle = [(HKOverlayRoomViewControllerDistributionContext *)self distributionStyle];
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
 
-  v16 = [(HKOverlayRoomViewControllerDistributionContext *)self namedPredicate];
+  namedPredicate = [(HKOverlayRoomViewControllerDistributionContext *)self namedPredicate];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __113__HKOverlayRoomViewControllerDistributionContext_fetchCachedDataForTimeScope_resolution_dateInterval_completion___block_invoke;
   v18[3] = &unk_1E81B5F58;
-  v19 = v10;
-  v17 = v10;
-  [v12 cachedDataForQuantityDistributionStyle:v13 timeScope:a3 resolution:a4 startDate:v14 endDate:v15 namedPredicate:v16 completion:v18];
+  v19 = completionCopy;
+  v17 = completionCopy;
+  [overlayChartController cachedDataForQuantityDistributionStyle:distributionStyle timeScope:scope resolution:resolution startDate:startDate endDate:endDate namedPredicate:namedPredicate completion:v18];
 }
 
-- (id)_representativeDisplayTypeForStyle:(int64_t)a3
+- (id)_representativeDisplayTypeForStyle:(int64_t)style
 {
-  v3 = 0;
-  if (a3 > 3)
+  primaryDisplayType = 0;
+  if (style > 3)
   {
-    if (a3 > 5)
+    if (style > 5)
     {
-      if (a3 != 7)
+      if (style != 7)
       {
-        if (a3 != 6)
+        if (style != 6)
         {
           goto LABEL_15;
         }
@@ -309,95 +309,95 @@ LABEL_21:
         goto LABEL_10;
       }
 
-      v4 = [(HKOverlayRoomViewControllerIntegratedContext *)self applicationItems];
-      v5 = [v4 displayTypeController];
-      v6 = v5;
+      applicationItems = [(HKOverlayRoomViewControllerIntegratedContext *)self applicationItems];
+      displayTypeController = [applicationItems displayTypeController];
+      v6 = displayTypeController;
       v7 = &unk_1F43822F0;
     }
 
-    else if (a3 == 4)
+    else if (style == 4)
     {
-      v4 = [(HKOverlayRoomViewControllerIntegratedContext *)self applicationItems];
-      v5 = [v4 displayTypeController];
-      v6 = v5;
+      applicationItems = [(HKOverlayRoomViewControllerIntegratedContext *)self applicationItems];
+      displayTypeController = [applicationItems displayTypeController];
+      v6 = displayTypeController;
       v7 = &unk_1F43822C0;
     }
 
     else
     {
-      v4 = [(HKOverlayRoomViewControllerIntegratedContext *)self applicationItems];
-      v5 = [v4 displayTypeController];
-      v6 = v5;
+      applicationItems = [(HKOverlayRoomViewControllerIntegratedContext *)self applicationItems];
+      displayTypeController = [applicationItems displayTypeController];
+      v6 = displayTypeController;
       v7 = &unk_1F43822D8;
     }
 
 LABEL_13:
-    v3 = [v5 displayTypeWithIdentifier:v7];
+    primaryDisplayType = [displayTypeController displayTypeWithIdentifier:v7];
 
     goto LABEL_14;
   }
 
-  if (a3 >= 3)
+  if (style >= 3)
   {
-    if (a3 != 3)
+    if (style != 3)
     {
       goto LABEL_15;
     }
 
-    v4 = [(HKOverlayRoomViewControllerIntegratedContext *)self applicationItems];
-    v5 = [v4 displayTypeController];
-    v6 = v5;
+    applicationItems = [(HKOverlayRoomViewControllerIntegratedContext *)self applicationItems];
+    displayTypeController = [applicationItems displayTypeController];
+    v6 = displayTypeController;
     v7 = &unk_1F43822A8;
     goto LABEL_13;
   }
 
 LABEL_10:
-  v4 = [(HKOverlayRoomViewControllerIntegratedContext *)self overlayChartController];
-  v3 = [v4 primaryDisplayType];
+  applicationItems = [(HKOverlayRoomViewControllerIntegratedContext *)self overlayChartController];
+  primaryDisplayType = [applicationItems primaryDisplayType];
 LABEL_14:
 
 LABEL_15:
 
-  return v3;
+  return primaryDisplayType;
 }
 
 - (id)_computeTitleAndIdentifierFromStyleAndPredicate
 {
-  v3 = [(HKOverlayRoomViewControllerDistributionContext *)self distributionStyle];
+  distributionStyle = [(HKOverlayRoomViewControllerDistributionContext *)self distributionStyle];
   v4 = 0;
-  if (v3 > 3)
+  if (distributionStyle > 3)
   {
-    if (v3 > 5)
+    if (distributionStyle > 5)
     {
-      if (v3 == 6)
+      if (distributionStyle == 6)
       {
         v5 = [_HKContextTitleAndIdentifier alloc];
         v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-        v7 = [v6 localizedStringForKey:@"SLEEP" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
+        namedPredicate2 = [v6 localizedStringForKey:@"SLEEP" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
         v8 = MEMORY[0x1E696AEC0];
         v9 = @"Sleep";
       }
 
       else
       {
-        if (v3 != 7)
+        if (distributionStyle != 7)
         {
           goto LABEL_21;
         }
 
         v5 = [_HKContextTitleAndIdentifier alloc];
         v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-        v7 = [v6 localizedStringForKey:@"AUDIO_OVERLAY_HEADPHONES_NOTIFICATIONS" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
+        namedPredicate2 = [v6 localizedStringForKey:@"AUDIO_OVERLAY_HEADPHONES_NOTIFICATIONS" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
         v8 = MEMORY[0x1E696AEC0];
         v9 = @"HeadphoneNotification";
       }
     }
 
-    else if (v3 == 4)
+    else if (distributionStyle == 4)
     {
       v5 = [_HKContextTitleAndIdentifier alloc];
       v6 = HKHealthKitFrameworkBundle();
-      v7 = [v6 localizedStringForKey:@"BRADYCARDIA" value:&stru_1F42FFBE0 table:*MEMORY[0x1E696B910]];
+      namedPredicate2 = [v6 localizedStringForKey:@"BRADYCARDIA" value:&stru_1F42FFBE0 table:*MEMORY[0x1E696B910]];
       v8 = MEMORY[0x1E696AEC0];
       v9 = @"LowHeartRate";
     }
@@ -406,7 +406,7 @@ LABEL_15:
     {
       v5 = [_HKContextTitleAndIdentifier alloc];
       v6 = HKHealthKitFrameworkBundle();
-      v7 = [v6 localizedStringForKey:@"AUDIO_EXPOSURE_EVENT" value:&stru_1F42FFBE0 table:*MEMORY[0x1E696B910]];
+      namedPredicate2 = [v6 localizedStringForKey:@"AUDIO_EXPOSURE_EVENT" value:&stru_1F42FFBE0 table:*MEMORY[0x1E696B910]];
       v8 = MEMORY[0x1E696AEC0];
       v9 = @"NoiseNotification";
     }
@@ -414,13 +414,13 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  if (v3 > 1)
+  if (distributionStyle > 1)
   {
-    if (v3 == 2)
+    if (distributionStyle == 2)
     {
       v5 = [_HKContextTitleAndIdentifier alloc];
       v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-      v7 = [v6 localizedStringForKey:@"WORKOUT_SINGULAR" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
+      namedPredicate2 = [v6 localizedStringForKey:@"WORKOUT_SINGULAR" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
       v8 = MEMORY[0x1E696AEC0];
       v9 = @"Workouts";
     }
@@ -429,7 +429,7 @@ LABEL_15:
     {
       v5 = [_HKContextTitleAndIdentifier alloc];
       v6 = HKHealthKitFrameworkBundle();
-      v7 = [v6 localizedStringForKey:@"TACHYCARDIA" value:&stru_1F42FFBE0 table:*MEMORY[0x1E696B910]];
+      namedPredicate2 = [v6 localizedStringForKey:@"TACHYCARDIA" value:&stru_1F42FFBE0 table:*MEMORY[0x1E696B910]];
       v8 = MEMORY[0x1E696AEC0];
       v9 = @"HighHeartRate";
     }
@@ -437,34 +437,34 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  if (v3)
+  if (distributionStyle)
   {
-    if (v3 != 1)
+    if (distributionStyle != 1)
     {
       goto LABEL_21;
     }
 
     v5 = [_HKContextTitleAndIdentifier alloc];
     v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v7 = [v6 localizedStringForKey:@"BREATHE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
+    namedPredicate2 = [v6 localizedStringForKey:@"BREATHE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
     v8 = MEMORY[0x1E696AEC0];
     v9 = @"Breathe";
     goto LABEL_19;
   }
 
-  v10 = [(HKOverlayRoomViewControllerDistributionContext *)self namedPredicate];
+  namedPredicate = [(HKOverlayRoomViewControllerDistributionContext *)self namedPredicate];
 
-  if (v10)
+  if (namedPredicate)
   {
     v11 = [_HKContextTitleAndIdentifier alloc];
     v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v7 = [(HKOverlayRoomViewControllerDistributionContext *)self namedPredicate];
-    v12 = [v7 localizedNameKey];
-    v13 = [v6 localizedStringForKey:v12 value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
+    namedPredicate2 = [(HKOverlayRoomViewControllerDistributionContext *)self namedPredicate];
+    localizedNameKey = [namedPredicate2 localizedNameKey];
+    v13 = [v6 localizedStringForKey:localizedNameKey value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
     v14 = MEMORY[0x1E696AEC0];
-    v15 = [(HKOverlayRoomViewControllerDistributionContext *)self namedPredicate];
-    v16 = [v15 localizedNameKey];
-    v17 = [v14 hk_chartOverlayAccessibilityIdentifier:v16];
+    namedPredicate3 = [(HKOverlayRoomViewControllerDistributionContext *)self namedPredicate];
+    localizedNameKey2 = [namedPredicate3 localizedNameKey];
+    v17 = [v14 hk_chartOverlayAccessibilityIdentifier:localizedNameKey2];
     v4 = [(_HKContextTitleAndIdentifier *)v11 initWithTitle:v13 accessibilityIdentifier:v17];
 
 LABEL_20:
@@ -475,12 +475,12 @@ LABEL_20:
   {
     v5 = [_HKContextTitleAndIdentifier alloc];
     v6 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
-    v7 = [v6 localizedStringForKey:@"OVERLAY_RANGE_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
+    namedPredicate2 = [v6 localizedStringForKey:@"OVERLAY_RANGE_TITLE" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
     v8 = MEMORY[0x1E696AEC0];
     v9 = @"Range";
 LABEL_19:
-    v12 = [v8 hk_chartOverlayAccessibilityIdentifier:v9];
-    v4 = [(_HKContextTitleAndIdentifier *)v5 initWithTitle:v7 accessibilityIdentifier:v12];
+    localizedNameKey = [v8 hk_chartOverlayAccessibilityIdentifier:v9];
+    v4 = [(_HKContextTitleAndIdentifier *)v5 initWithTitle:namedPredicate2 accessibilityIdentifier:localizedNameKey];
     goto LABEL_20;
   }
 
@@ -490,28 +490,28 @@ LABEL_21:
   return v4;
 }
 
-- (id)_selectedMetricColorsForDistributionStyle:(int64_t)a3
+- (id)_selectedMetricColorsForDistributionStyle:(int64_t)style
 {
-  if (a3)
+  if (style)
   {
-    v4 = [(HKOverlayRoomViewControllerDistributionContext *)self styleToMetricColors];
-    v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    v6 = [v4 objectForKeyedSubscript:v5];
+    styleToMetricColors = [(HKOverlayRoomViewControllerDistributionContext *)self styleToMetricColors];
+    v5 = [MEMORY[0x1E696AD98] numberWithInteger:style];
+    v6 = [styleToMetricColors objectForKeyedSubscript:v5];
   }
 
   else
   {
-    v4 = [(HKOverlayRoomViewControllerDistributionContext *)self representativeDisplayType];
-    v6 = +[HKOverlayContextUtilities selectedMetricColorsForCategory:](HKOverlayContextUtilities, "selectedMetricColorsForCategory:", [v4 categoryIdentifier]);
+    styleToMetricColors = [(HKOverlayRoomViewControllerDistributionContext *)self representativeDisplayType];
+    v6 = +[HKOverlayContextUtilities selectedMetricColorsForCategory:](HKOverlayContextUtilities, "selectedMetricColorsForCategory:", [styleToMetricColors categoryIdentifier]);
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -521,17 +521,17 @@ LABEL_21:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKOverlayRoomViewControllerDistributionContext *)self distributionStyle];
-      if (v6 == [(HKOverlayRoomViewControllerDistributionContext *)v5 distributionStyle]&& (v7 = [(HKOverlayRoomViewControllerDistributionContext *)self options], v7 == [(HKOverlayRoomViewControllerDistributionContext *)v5 options]))
+      v5 = equalCopy;
+      distributionStyle = [(HKOverlayRoomViewControllerDistributionContext *)self distributionStyle];
+      if (distributionStyle == [(HKOverlayRoomViewControllerDistributionContext *)v5 distributionStyle]&& (v7 = [(HKOverlayRoomViewControllerDistributionContext *)self options], v7 == [(HKOverlayRoomViewControllerDistributionContext *)v5 options]))
       {
-        v8 = [(HKOverlayRoomViewControllerDistributionContext *)self optionalDelegate];
-        v9 = [v8 cacheDataSource];
-        v10 = [v9 name];
-        v11 = [(HKOverlayRoomViewControllerDistributionContext *)v5 optionalDelegate];
-        v12 = [v11 cacheDataSource];
-        v13 = [v12 name];
-        v14 = v10 == v13;
+        optionalDelegate = [(HKOverlayRoomViewControllerDistributionContext *)self optionalDelegate];
+        cacheDataSource = [optionalDelegate cacheDataSource];
+        name = [cacheDataSource name];
+        optionalDelegate2 = [(HKOverlayRoomViewControllerDistributionContext *)v5 optionalDelegate];
+        cacheDataSource2 = [optionalDelegate2 cacheDataSource];
+        name2 = [cacheDataSource2 name];
+        v14 = name == name2;
       }
 
       else

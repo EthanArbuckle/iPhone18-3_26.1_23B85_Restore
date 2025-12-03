@@ -1,44 +1,44 @@
 @interface ASVInlinePreview
 + (id)getService;
-+ (void)_kill:(int)a3;
-+ (void)debugGetMemoryUsage:(id)a3;
-+ (void)remoteInstanceCount:(id)a3;
-- (ASVInlinePreview)initWithFrame:(CGRect)a3;
++ (void)_kill:(int)_kill;
++ (void)debugGetMemoryUsage:(id)usage;
++ (void)remoteInstanceCount:(id)count;
+- (ASVInlinePreview)initWithFrame:(CGRect)frame;
 - (id)_createErrorLayer;
-- (id)inlineTouchesFromUITouches:(id)a3;
-- (void)_getCameraTransform:(id)a3;
-- (void)centerLayerInParent:(id)a3;
-- (void)commonInitWithFrame:(CGRect)a3;
-- (void)createFullscreenInstanceWithInitialFrame:(CGRect)a3 previewOptions:(id)a4 completionHandler:(id)a5;
+- (id)inlineTouchesFromUITouches:(id)touches;
+- (void)_getCameraTransform:(id)transform;
+- (void)centerLayerInParent:(id)parent;
+- (void)commonInitWithFrame:(CGRect)frame;
+- (void)createFullscreenInstanceWithInitialFrame:(CGRect)frame previewOptions:(id)options completionHandler:(id)handler;
 - (void)dealloc;
-- (void)getCameraTransform:(id)a3;
-- (void)getSharedInlineServiceFailable:(id)a3;
-- (void)observeDismissFullscreenWithCompletionHandler:(id)a3;
-- (void)preparePreviewOfFileAtURL:(id)a3 completionHandler:(id)a4;
+- (void)getCameraTransform:(id)transform;
+- (void)getSharedInlineServiceFailable:(id)failable;
+- (void)observeDismissFullscreenWithCompletionHandler:(id)handler;
+- (void)preparePreviewOfFileAtURL:(id)l completionHandler:(id)handler;
 - (void)sendTeardownEvent;
 - (void)setCameraTransform:(ASVInlinePreview *)self;
-- (void)setFrameWithinFencedTransaction:(CGRect)a3;
-- (void)setIsPlaying:(BOOL)a3 reply:(id)a4;
-- (void)setWantsDebugColors:(BOOL)a3;
-- (void)setupRemoteConnectionWithCompletionHandler:(id)a3;
+- (void)setFrameWithinFencedTransaction:(CGRect)transaction;
+- (void)setIsPlaying:(BOOL)playing reply:(id)reply;
+- (void)setWantsDebugColors:(BOOL)colors;
+- (void)setupRemoteConnectionWithCompletionHandler:(id)handler;
 - (void)showErrorLayer;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)updateFrame:(CGRect)a3 completionHandler:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)updateFrame:(CGRect)frame completionHandler:(id)handler;
 - (void)updateLayout;
-- (void)updateRuntimeStateFrom:(id)a3;
+- (void)updateRuntimeStateFrom:(id)from;
 @end
 
 @implementation ASVInlinePreview
 
-- (void)commonInitWithFrame:(CGRect)a3
+- (void)commonInitWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ++_instanceCount;
   self->_duration = 0.0;
   v8 = objc_opt_new();
@@ -46,9 +46,9 @@
   self->_layer = v8;
 
   [(CALayer *)self->_layer setFrame:x, y, width, height];
-  v10 = [(ASVInlinePreview *)self _createErrorLayer];
+  _createErrorLayer = [(ASVInlinePreview *)self _createErrorLayer];
   errorLayer = self->_errorLayer;
-  self->_errorLayer = v10;
+  self->_errorLayer = _createErrorLayer;
 
   [(CALayer *)self->_errorLayer setHidden:1];
   [(CALayer *)self->_layer addSublayer:self->_errorLayer];
@@ -60,8 +60,8 @@
   [(CAActivityIndicatorLayer *)self->_spinnerLayer setFrame:0.0, 0.0, 20.0, 20.0];
   [(CALayer *)self->_layer addSublayer:self->_spinnerLayer];
   [(ASVInlinePreview *)self updateLayout];
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v14 addObserver:self selector:sel_showErrorLayer name:@"ASVConnectionInterrupted" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_showErrorLayer name:@"ASVConnectionInterrupted" object:0];
 }
 
 - (void)dealloc
@@ -90,12 +90,12 @@
 + (id)getService
 {
   v2 = +[ASVInlinePreviewFactory shared];
-  v3 = [v2 sharedInlineService];
+  sharedInlineService = [v2 sharedInlineService];
 
-  if (v3)
+  if (sharedInlineService)
   {
     v4 = +[ASVInlinePreviewFactory shared];
-    v5 = [v4 sharedInlineService];
+    sharedInlineService2 = [v4 sharedInlineService];
   }
 
   else
@@ -113,10 +113,10 @@
       _os_log_impl(&dword_241215000, v6, OS_LOG_TYPE_INFO, "#Inline: Extension not launched", v8, 2u);
     }
 
-    v5 = 0;
+    sharedInlineService2 = 0;
   }
 
-  return v5;
+  return sharedInlineService2;
 }
 
 - (void)sendTeardownEvent
@@ -124,8 +124,8 @@
   v3 = +[ASVInlinePreview getService];
   if (v3)
   {
-    v4 = [(ASVInlinePreview *)self uuid];
-    [v3 teardownInlinePreviewWithUUID:v4 completion:&__block_literal_global_2];
+    uuid = [(ASVInlinePreview *)self uuid];
+    [v3 teardownInlinePreviewWithUUID:uuid completion:&__block_literal_global_2];
   }
 
   else
@@ -164,9 +164,9 @@ void __46__ASVInlinePreview_Private__sendTeardownEvent__block_invoke(uint64_t a1
   }
 }
 
-+ (void)remoteInstanceCount:(id)a3
++ (void)remoteInstanceCount:(id)count
 {
-  v3 = a3;
+  countCopy = count;
   v4 = _asvLogHandle;
   if (!_asvLogHandle)
   {
@@ -188,7 +188,7 @@ void __46__ASVInlinePreview_Private__sendTeardownEvent__block_invoke(uint64_t a1
     v8[1] = 3221225472;
     v8[2] = __49__ASVInlinePreview_Private__remoteInstanceCount___block_invoke;
     v8[3] = &unk_278CCAD98;
-    v9 = v3;
+    v9 = countCopy;
     [v5 sendARQLEvent:&unk_285313458 forUUID:v6 completion:v8];
   }
 
@@ -207,7 +207,7 @@ void __46__ASVInlinePreview_Private__sendTeardownEvent__block_invoke(uint64_t a1
       _os_log_impl(&dword_241215000, v7, OS_LOG_TYPE_INFO, "#Inline: Couldn't get service", buf, 2u);
     }
 
-    (*(v3 + 2))(v3, 0);
+    (*(countCopy + 2))(countCopy, 0);
   }
 }
 
@@ -256,9 +256,9 @@ void __49__ASVInlinePreview_Private__remoteInstanceCount___block_invoke(uint64_t
   }
 }
 
-+ (void)debugGetMemoryUsage:(id)a3
++ (void)debugGetMemoryUsage:(id)usage
 {
-  v3 = a3;
+  usageCopy = usage;
   v4 = +[ASVInlinePreview getService];
   if (v4)
   {
@@ -267,7 +267,7 @@ void __49__ASVInlinePreview_Private__remoteInstanceCount___block_invoke(uint64_t
     v7[1] = 3221225472;
     v7[2] = __49__ASVInlinePreview_Private__debugGetMemoryUsage___block_invoke;
     v7[3] = &unk_278CCAD98;
-    v8 = v3;
+    v8 = usageCopy;
     [v4 sendARQLEvent:&unk_285313480 forUUID:v5 completion:v7];
   }
 
@@ -286,7 +286,7 @@ void __49__ASVInlinePreview_Private__remoteInstanceCount___block_invoke(uint64_t
       _os_log_impl(&dword_241215000, v6, OS_LOG_TYPE_INFO, "#Inline: Couldn't get service", buf, 2u);
     }
 
-    (*(v3 + 2))(v3, 0, 0);
+    (*(usageCopy + 2))(usageCopy, 0, 0);
   }
 }
 
@@ -307,25 +307,25 @@ void __49__ASVInlinePreview_Private__debugGetMemoryUsage___block_invoke(uint64_t
   [(ASVInlinePreview *)self centerLayerInParent:errorLayer];
 }
 
-- (void)centerLayerInParent:(id)a3
+- (void)centerLayerInParent:(id)parent
 {
-  v15 = a3;
-  v3 = [v15 superlayer];
-  v4 = v3;
-  if (v3)
+  parentCopy = parent;
+  superlayer = [parentCopy superlayer];
+  v4 = superlayer;
+  if (superlayer)
   {
-    [v3 bounds];
+    [superlayer bounds];
     v6 = v5;
-    [v15 bounds];
+    [parentCopy bounds];
     v8 = (v6 - v7) * 0.5;
     [v4 bounds];
     v10 = v9;
-    [v15 bounds];
+    [parentCopy bounds];
     v12 = (v10 - v11) * 0.5;
-    [v15 bounds];
+    [parentCopy bounds];
     v14 = v13;
-    [v15 bounds];
-    [v15 setFrame:{v8, v12, v14}];
+    [parentCopy bounds];
+    [parentCopy setFrame:{v8, v12, v14}];
   }
 }
 
@@ -365,8 +365,8 @@ uint64_t __43__ASVInlinePreview_Private__showErrorLayer__block_invoke(uint64_t a
 {
   v2 = objc_opt_new();
   [v2 setName:@"CircleMask"];
-  v3 = [MEMORY[0x277D75348] blackColor];
-  [v2 setBackgroundColor:{objc_msgSend(v3, "CGColor")}];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [v2 setBackgroundColor:{objc_msgSend(blackColor, "CGColor")}];
 
   [v2 setFrame:{0.0, 0.0, 60.0, 60.0}];
   [v2 bounds];
@@ -382,14 +382,14 @@ uint64_t __43__ASVInlinePreview_Private__showErrorLayer__block_invoke(uint64_t a
   [v7 size];
   v9 = v8;
   v11 = v10;
-  v12 = [v7 CGImage];
-  v13 = [MEMORY[0x277D75348] whiteColor];
-  [v13 CGColor];
+  cGImage = [v7 CGImage];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [whiteColor CGColor];
 
   v14 = objc_opt_new();
   [v14 setContentsGravity:*MEMORY[0x277CDA710]];
   [v14 setName:@"IconMask"];
-  [v14 setContents:v12];
+  [v14 setContents:cGImage];
   [v14 setFrame:{0.0, 0.0, v9, v11}];
   v15 = objc_alloc_init(MEMORY[0x277CFFFA0]);
   [v15 setFrame:{(60.0 - v9) * 0.5 + 2.5, (60.0 - v11) * 0.5, v9, v11}];
@@ -426,17 +426,17 @@ void __46__ASVInlinePreview_Private__setEnableShadows___block_invoke(uint64_t a1
   [v5 inlinePreview:v9 setEnableShadows:*(a1 + 32)];
 }
 
-- (void)setIsPlaying:(BOOL)a3 reply:(id)a4
+- (void)setIsPlaying:(BOOL)playing reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __48__ASVInlinePreview_Private__setIsPlaying_reply___block_invoke;
   v8[3] = &unk_278CCAE30;
-  v10 = a3;
+  playingCopy = playing;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
+  v9 = replyCopy;
+  v7 = replyCopy;
   [(ASVInlinePreview *)self getSharedInlineServiceFailable:v8];
 }
 
@@ -627,9 +627,9 @@ void __44__ASVInlinePreview_Private__setCurrentTime___block_invoke(uint64_t a1, 
   [v5 inlinePreview:v6 setCurrentTime:*(a1 + 32)];
 }
 
-- (void)_getCameraTransform:(id)a3
+- (void)_getCameraTransform:(id)transform
 {
-  v4 = a3;
+  transformCopy = transform;
   v5 = _asvLogHandle;
   if (!_asvLogHandle)
   {
@@ -644,15 +644,15 @@ void __44__ASVInlinePreview_Private__setCurrentTime___block_invoke(uint64_t a1, 
   }
 
   v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.AssetViewer.ASVInlinePreview" code:5 userInfo:0];
-  v7 = [(ASVInlinePreview *)self cameraTransformReply];
+  cameraTransformReply = [(ASVInlinePreview *)self cameraTransformReply];
 
-  if (v7)
+  if (cameraTransformReply)
   {
-    v8 = [(ASVInlinePreview *)self cameraTransformReply];
-    (v8)[2](v8, v6, 0);
+    cameraTransformReply2 = [(ASVInlinePreview *)self cameraTransformReply];
+    (cameraTransformReply2)[2](cameraTransformReply2, v6, 0);
   }
 
-  [(ASVInlinePreview *)self setCameraTransformReply:v4];
+  [(ASVInlinePreview *)self setCameraTransformReply:transformCopy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__ASVInlinePreview_Private___getCameraTransform___block_invoke;
@@ -736,10 +736,10 @@ void __48__ASVInlinePreview_Private__setCameraTransform___block_invoke(uint64_t 
   [v5 inlinePreview:v11 setCameraYaw:&unk_2853134F8 pitch:v12 scale:*(a1 + 32) options:v13];
 }
 
-- (void)updateRuntimeStateFrom:(id)a3
+- (void)updateRuntimeStateFrom:(id)from
 {
-  v22 = a3;
-  v4 = [v22 objectForKey:@"duration"];
+  fromCopy = from;
+  v4 = [fromCopy objectForKey:@"duration"];
   if (v4)
   {
     [(ASVInlinePreview *)self willChangeValueForKey:@"duration"];
@@ -748,7 +748,7 @@ void __48__ASVInlinePreview_Private__setCameraTransform___block_invoke(uint64_t 
     [(ASVInlinePreview *)self didChangeValueForKey:@"duration"];
   }
 
-  v6 = [v22 objectForKey:@"isPlaying"];
+  v6 = [fromCopy objectForKey:@"isPlaying"];
   if (v6)
   {
     [(ASVInlinePreview *)self willChangeValueForKey:@"isPlaying"];
@@ -756,7 +756,7 @@ void __48__ASVInlinePreview_Private__setCameraTransform___block_invoke(uint64_t 
     [(ASVInlinePreview *)self didChangeValueForKey:@"isPlaying"];
   }
 
-  v7 = [v22 objectForKey:@"hasAudio"];
+  v7 = [fromCopy objectForKey:@"hasAudio"];
   if (v7)
   {
     [(ASVInlinePreview *)self willChangeValueForKey:@"hasAudio"];
@@ -764,7 +764,7 @@ void __48__ASVInlinePreview_Private__setCameraTransform___block_invoke(uint64_t 
     [(ASVInlinePreview *)self didChangeValueForKey:@"hasAudio"];
   }
 
-  v8 = [v22 objectForKey:@"currentTime"];
+  v8 = [fromCopy objectForKey:@"currentTime"];
   if (v8)
   {
     [(ASVInlinePreview *)self willChangeValueForKey:@"currentTime"];
@@ -773,9 +773,9 @@ void __48__ASVInlinePreview_Private__setCameraTransform___block_invoke(uint64_t 
     [(ASVInlinePreview *)self didChangeValueForKey:@"currentTime"];
   }
 
-  v10 = [v22 objectForKey:@"yaw"];
-  v11 = [v22 objectForKey:@"pitch"];
-  v12 = [v22 objectForKey:@"scale"];
+  v10 = [fromCopy objectForKey:@"yaw"];
+  v11 = [fromCopy objectForKey:@"pitch"];
+  v12 = [fromCopy objectForKey:@"scale"];
   v13 = v12;
   if (v10)
   {
@@ -792,12 +792,12 @@ void __48__ASVInlinePreview_Private__setCameraTransform___block_invoke(uint64_t 
         DWORD1(v16) = v20;
         DWORD2(v16) = v17;
         *self->_cameraTransform = v16;
-        v18 = [(ASVInlinePreview *)self cameraTransformReply];
+        cameraTransformReply = [(ASVInlinePreview *)self cameraTransformReply];
 
-        if (v18)
+        if (cameraTransformReply)
         {
-          v19 = [(ASVInlinePreview *)self cameraTransformReply];
-          v19[2](v19, 0, *self->_cameraTransform);
+          cameraTransformReply2 = [(ASVInlinePreview *)self cameraTransformReply];
+          cameraTransformReply2[2](cameraTransformReply2, 0, *self->_cameraTransform);
 
           [(ASVInlinePreview *)self setCameraTransformReply:0];
         }
@@ -806,12 +806,12 @@ void __48__ASVInlinePreview_Private__setCameraTransform___block_invoke(uint64_t 
   }
 }
 
-- (ASVInlinePreview)initWithFrame:(CGRect)a3
+- (ASVInlinePreview)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v12.receiver = self;
   v12.super_class = ASVInlinePreview;
   v7 = [(ASVInlinePreview *)&v12 init];
@@ -829,9 +829,9 @@ void __48__ASVInlinePreview_Private__setCameraTransform___block_invoke(uint64_t 
   return v7;
 }
 
-- (void)getSharedInlineServiceFailable:(id)a3
+- (void)getSharedInlineServiceFailable:(id)failable
 {
-  v4 = a3;
+  failableCopy = failable;
   v5 = +[ASVInlinePreviewFactory shared];
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
@@ -839,7 +839,7 @@ void __48__ASVInlinePreview_Private__setCameraTransform___block_invoke(uint64_t 
   v8[2] = __51__ASVInlinePreview_getSharedInlineServiceFailable___block_invoke;
   v8[3] = &unk_278CCB570;
   objc_copyWeak(&v11, &location);
-  v6 = v4;
+  v6 = failableCopy;
   v10 = v6;
   v7 = v5;
   v9 = v7;
@@ -882,9 +882,9 @@ void __51__ASVInlinePreview_getSharedInlineServiceFailable___block_invoke(uint64
   }
 }
 
-- (void)setupRemoteConnectionWithCompletionHandler:(id)a3
+- (void)setupRemoteConnectionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[ASVInlinePreviewFactory shared];
   objc_initWeak(&location, self);
   [(CALayer *)self->_layer bounds];
@@ -897,7 +897,7 @@ void __51__ASVInlinePreview_getSharedInlineServiceFailable___block_invoke(uint64
   v16[2] = __63__ASVInlinePreview_setupRemoteConnectionWithCompletionHandler___block_invoke;
   v16[3] = &unk_278CCB5E8;
   objc_copyWeak(v19, &location);
-  v14 = v4;
+  v14 = handlerCopy;
   v18 = v14;
   v19[1] = v7;
   v19[2] = v9;
@@ -1054,10 +1054,10 @@ void __63__ASVInlinePreview_setupRemoteConnectionWithCompletionHandler___block_i
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)preparePreviewOfFileAtURL:(id)a3 completionHandler:(id)a4
+- (void)preparePreviewOfFileAtURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   [(CAActivityIndicatorLayer *)self->_spinnerLayer startAnimating];
   v8 = +[ASVInlinePreviewFactory shared];
   objc_initWeak(&location, self);
@@ -1066,13 +1066,13 @@ void __63__ASVInlinePreview_setupRemoteConnectionWithCompletionHandler___block_i
   v12[2] = __64__ASVInlinePreview_preparePreviewOfFileAtURL_completionHandler___block_invoke;
   v12[3] = &unk_278CCB6B0;
   objc_copyWeak(&v17, &location);
-  v9 = v7;
+  v9 = handlerCopy;
   v16 = v9;
-  v10 = v6;
+  v10 = lCopy;
   v13 = v10;
   v11 = v8;
   v14 = v11;
-  v15 = self;
+  selfCopy = self;
   [v11 getSharedInlineServiceWithCompletionHandler:v12];
 
   objc_destroyWeak(&v17);
@@ -1272,14 +1272,14 @@ void __64__ASVInlinePreview_preparePreviewOfFileAtURL_completionHandler___block_
   [WeakRetained setFrameWithinFencedTransaction:?];
 }
 
-- (void)createFullscreenInstanceWithInitialFrame:(CGRect)a3 previewOptions:(id)a4 completionHandler:(id)a5
+- (void)createFullscreenInstanceWithInitialFrame:(CGRect)frame previewOptions:(id)options completionHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
-  v13 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (self->_fullscreenService)
   {
     [ASVInlinePreview createFullscreenInstanceWithInitialFrame:a2 previewOptions:self completionHandler:?];
@@ -1293,10 +1293,10 @@ void __64__ASVInlinePreview_preparePreviewOfFileAtURL_completionHandler___block_
   v17[2] = __94__ASVInlinePreview_createFullscreenInstanceWithInitialFrame_previewOptions_completionHandler___block_invoke;
   v17[3] = &unk_278CCB700;
   objc_copyWeak(v19, &location);
-  v16 = v13;
+  v16 = handlerCopy;
   v18 = v16;
   v19[1] = a2;
-  [v14 createFullscreenInstanceWithUUID:uuid initialFrame:v12 previewOptions:v17 completionHandler:{x, y, width, height}];
+  [v14 createFullscreenInstanceWithUUID:uuid initialFrame:optionsCopy previewOptions:v17 completionHandler:{x, y, width, height}];
 
   objc_destroyWeak(v19);
   objc_destroyWeak(&location);
@@ -1395,9 +1395,9 @@ void __94__ASVInlinePreview_createFullscreenInstanceWithInitialFrame_previewOpti
   }
 }
 
-- (void)observeDismissFullscreenWithCompletionHandler:(id)a3
+- (void)observeDismissFullscreenWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (!self->_fullscreenService)
   {
     [(ASVInlinePreview *)a2 observeDismissFullscreenWithCompletionHandler:?];
@@ -1411,7 +1411,7 @@ void __94__ASVInlinePreview_createFullscreenInstanceWithInitialFrame_previewOpti
   v9[2] = __66__ASVInlinePreview_observeDismissFullscreenWithCompletionHandler___block_invoke;
   v9[3] = &unk_278CCB728;
   objc_copyWeak(v11, &location);
-  v8 = v5;
+  v8 = handlerCopy;
   v10 = v8;
   v11[1] = a2;
   [(ARQLInlineService2 *)fullscreenService observeReturnedToInlineForUUID:uuid fenceHandleCompletion:v9];
@@ -1475,14 +1475,14 @@ void __66__ASVInlinePreview_observeDismissFullscreenWithCompletionHandler___bloc
   }
 }
 
-- (void)updateFrame:(CGRect)a3 completionHandler:(id)a4
+- (void)updateFrame:(CGRect)frame completionHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  handlerCopy = handler;
   v10 = _asvLogHandle;
   if (!_asvLogHandle)
   {
@@ -1558,16 +1558,16 @@ void __66__ASVInlinePreview_observeDismissFullscreenWithCompletionHandler___bloc
   }
 
   v23 = +[ASVInlinePreviewFactory shared];
-  v24 = [v23 sharedInlineService];
+  sharedInlineService = [v23 sharedInlineService];
   uuid = self->_uuid;
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __50__ASVInlinePreview_updateFrame_completionHandler___block_invoke;
   v27[3] = &unk_278CCB750;
-  v28 = v9;
+  v28 = handlerCopy;
   v29 = fullscreenService == 0;
-  v26 = v9;
-  [v24 updateBounds:uuid forUUID:v27 fenceHandleCompletion:{x, y, width, height}];
+  v26 = handlerCopy;
+  [sharedInlineService updateBounds:uuid forUUID:v27 fenceHandleCompletion:{x, y, width, height}];
 }
 
 void __50__ASVInlinePreview_updateFrame_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -1625,12 +1625,12 @@ void __50__ASVInlinePreview_updateFrame_completionHandler___block_invoke(uint64_
   }
 }
 
-- (void)setFrameWithinFencedTransaction:(CGRect)a3
+- (void)setFrameWithinFencedTransaction:(CGRect)transaction
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = transaction.size.height;
+  width = transaction.size.width;
+  y = transaction.origin.y;
+  x = transaction.origin.x;
   v13 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v8 = _asvLogHandle;
@@ -1659,16 +1659,16 @@ void __50__ASVInlinePreview_updateFrame_completionHandler___block_invoke(uint64_
   [(ASVInlinePreview *)self updateLayout];
 }
 
-- (id)inlineTouchesFromUITouches:(id)a3
+- (id)inlineTouchesFromUITouches:(id)touches
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  touchesCopy = touches;
   v6 = [MEMORY[0x277CBEB58] set];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v5;
+  v7 = touchesCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -1703,11 +1703,11 @@ void __50__ASVInlinePreview_updateFrame_completionHandler___block_invoke(uint64_
   return v6;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = a3;
+  beganCopy = began;
   v6 = +[ASVInlinePreviewFactory shared];
-  v7 = [(ASVInlinePreview *)self inlineTouchesFromUITouches:v5];
+  v7 = [(ASVInlinePreview *)self inlineTouchesFromUITouches:beganCopy];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -1715,7 +1715,7 @@ void __50__ASVInlinePreview_updateFrame_completionHandler___block_invoke(uint64_
   v10[3] = &unk_278CCB778;
   v11 = v6;
   v12 = v7;
-  v13 = self;
+  selfCopy = self;
   v8 = v7;
   v9 = v6;
   [v9 getSharedInlineServiceWithCompletionHandler:v10];
@@ -1727,11 +1727,11 @@ void __43__ASVInlinePreview_touchesBegan_withEvent___block_invoke(uint64_t a1)
   [v2 touchesBegan:*(a1 + 40) forUUID:*(*(a1 + 48) + 8)];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v5 = a3;
+  movedCopy = moved;
   v6 = +[ASVInlinePreviewFactory shared];
-  v7 = [(ASVInlinePreview *)self inlineTouchesFromUITouches:v5];
+  v7 = [(ASVInlinePreview *)self inlineTouchesFromUITouches:movedCopy];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -1739,7 +1739,7 @@ void __43__ASVInlinePreview_touchesBegan_withEvent___block_invoke(uint64_t a1)
   v10[3] = &unk_278CCB778;
   v11 = v6;
   v12 = v7;
-  v13 = self;
+  selfCopy = self;
   v8 = v7;
   v9 = v6;
   [v9 getSharedInlineServiceWithCompletionHandler:v10];
@@ -1751,12 +1751,12 @@ void __43__ASVInlinePreview_touchesMoved_withEvent___block_invoke(uint64_t a1)
   [v2 touchesMoved:*(a1 + 40) forUUID:*(*(a1 + 48) + 8)];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  endedCopy = ended;
   v6 = +[ASVInlinePreviewFactory shared];
-  v7 = [(ASVInlinePreview *)self inlineTouchesFromUITouches:v5];
+  v7 = [(ASVInlinePreview *)self inlineTouchesFromUITouches:endedCopy];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __43__ASVInlinePreview_touchesEnded_withEvent___block_invoke;
@@ -1765,13 +1765,13 @@ void __43__ASVInlinePreview_touchesMoved_withEvent___block_invoke(uint64_t a1)
   v20 = v8;
   v9 = v7;
   v21 = v9;
-  v22 = self;
+  selfCopy = self;
   [v8 getSharedInlineServiceWithCompletionHandler:v19];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = v5;
+  v10 = endedCopy;
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {
@@ -1804,10 +1804,10 @@ void __43__ASVInlinePreview_touchesEnded_withEvent___block_invoke(uint64_t a1)
   [v2 touchesEnded:*(a1 + 40) forUUID:*(*(a1 + 48) + 8)];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  cancelledCopy = cancelled;
   v6 = +[ASVInlinePreviewFactory shared];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
@@ -1815,8 +1815,8 @@ void __43__ASVInlinePreview_touchesEnded_withEvent___block_invoke(uint64_t a1)
   v18[3] = &unk_278CCB778;
   v7 = v6;
   v19 = v7;
-  v20 = self;
-  v8 = v5;
+  selfCopy = self;
+  v8 = cancelledCopy;
   v21 = v8;
   [v7 getSharedInlineServiceWithCompletionHandler:v18];
   v16 = 0u;
@@ -1857,9 +1857,9 @@ void __47__ASVInlinePreview_touchesCancelled_withEvent___block_invoke(uint64_t a
   [v3 touchesCancelled:v2 forUUID:*(*(a1 + 40) + 8)];
 }
 
-- (void)getCameraTransform:(id)a3
+- (void)getCameraTransform:(id)transform
 {
-  v4 = a3;
+  transformCopy = transform;
   v5 = _asvLogHandle;
   if (!_asvLogHandle)
   {
@@ -1873,12 +1873,12 @@ void __47__ASVInlinePreview_touchesCancelled_withEvent___block_invoke(uint64_t a
     _os_log_impl(&dword_241215000, v5, OS_LOG_TYPE_INFO, "#Inline: getCameraTransform() called", v6, 2u);
   }
 
-  [(ASVInlinePreview *)self _getCameraTransform:v4];
+  [(ASVInlinePreview *)self _getCameraTransform:transformCopy];
 }
 
-+ (void)_kill:(int)a3
++ (void)_kill:(int)_kill
 {
-  v3 = *&a3;
+  v3 = *&_kill;
   v8 = *MEMORY[0x277D85DE8];
   v4 = _asvLogHandle;
   if (!_asvLogHandle)
@@ -1895,41 +1895,41 @@ void __47__ASVInlinePreview_touchesCancelled_withEvent___block_invoke(uint64_t a
   }
 
   v5 = +[ASVInlinePreviewFactory shared];
-  v6 = [v5 extension];
-  [v6 _kill:v3];
+  extension = [v5 extension];
+  [extension _kill:v3];
 }
 
-- (void)setWantsDebugColors:(BOOL)a3
+- (void)setWantsDebugColors:(BOOL)colors
 {
   p_layerHost = &self->_layerHost;
   layerHost = self->_layerHost;
-  if (a3)
+  if (colors)
   {
     [(CALayerHost *)layerHost setBorderWidth:2.0];
-    v6 = [MEMORY[0x277D75348] orangeColor];
-    -[CALayerHost setBorderColor:](self->_layerHost, "setBorderColor:", [v6 CGColor]);
+    orangeColor = [MEMORY[0x277D75348] orangeColor];
+    -[CALayerHost setBorderColor:](self->_layerHost, "setBorderColor:", [orangeColor CGColor]);
 
-    v7 = [MEMORY[0x277D75348] purpleColor];
-    -[CALayerHost setBackgroundColor:](self->_layerHost, "setBackgroundColor:", [v7 CGColor]);
+    purpleColor = [MEMORY[0x277D75348] purpleColor];
+    -[CALayerHost setBackgroundColor:](self->_layerHost, "setBackgroundColor:", [purpleColor CGColor]);
 
     layer = self->_layer;
     p_layer = &self->_layer;
     [(CALayer *)layer setBorderWidth:2.0];
-    v10 = [MEMORY[0x277D75348] blueColor];
-    -[CALayer setBorderColor:](*p_layer, "setBorderColor:", [v10 CGColor]);
+    blueColor = [MEMORY[0x277D75348] blueColor];
+    -[CALayer setBorderColor:](*p_layer, "setBorderColor:", [blueColor CGColor]);
 
-    v11 = [MEMORY[0x277D75348] greenColor];
+    greenColor = [MEMORY[0x277D75348] greenColor];
   }
 
   else
   {
     [(CALayerHost *)layerHost setBorderWidth:0.0];
-    v11 = [MEMORY[0x277D75348] clearColor];
+    greenColor = [MEMORY[0x277D75348] clearColor];
     p_layer = p_layerHost;
   }
 
-  v13 = v11;
-  v12 = v11;
+  v13 = greenColor;
+  v12 = greenColor;
   -[CALayer setBackgroundColor:](*p_layer, "setBackgroundColor:", [v13 CGColor]);
 }
 

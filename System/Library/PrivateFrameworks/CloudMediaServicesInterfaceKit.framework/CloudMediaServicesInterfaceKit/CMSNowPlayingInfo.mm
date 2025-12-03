@@ -1,21 +1,21 @@
 @interface CMSNowPlayingInfo
-+ (id)instanceFromCMSCoded:(id)a3;
-+ (id)nowPlayingInfoFromDictionary:(id)a3;
++ (id)instanceFromCMSCoded:(id)coded;
++ (id)nowPlayingInfoFromDictionary:(id)dictionary;
 @end
 
 @implementation CMSNowPlayingInfo
 
-+ (id)nowPlayingInfoFromDictionary:(id)a3
++ (id)nowPlayingInfoFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [objc_opt_class() instanceFromCMSCoded:v3];
+  dictionaryCopy = dictionary;
+  v4 = [objc_opt_class() instanceFromCMSCoded:dictionaryCopy];
 
   return v4;
 }
 
-+ (id)instanceFromCMSCoded:(id)a3
++ (id)instanceFromCMSCoded:(id)coded
 {
-  v3 = cmsSafeDictionary(a3);
+  v3 = cmsSafeDictionary(coded);
   if (v3)
   {
     v4 = objc_opt_new();
@@ -38,8 +38,8 @@
     [v4 setTitle:v10];
 
     v11 = [v3 cmsOptionalArrayOfClass:objc_opt_class() forKey:@"genreNames"];
-    v12 = [v11 firstObject];
-    [v4 setGenre:v12];
+    firstObject = [v11 firstObject];
+    [v4 setGenre:firstObject];
   }
 
   else

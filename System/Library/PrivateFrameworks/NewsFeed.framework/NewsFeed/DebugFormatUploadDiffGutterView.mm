@@ -1,12 +1,12 @@
 @interface DebugFormatUploadDiffGutterView
-- (_TtC8NewsFeed31DebugFormatUploadDiffGutterView)initWithCoder:(id)a3;
-- (_TtC8NewsFeed31DebugFormatUploadDiffGutterView)initWithFrame:(CGRect)a3;
+- (_TtC8NewsFeed31DebugFormatUploadDiffGutterView)initWithCoder:(id)coder;
+- (_TtC8NewsFeed31DebugFormatUploadDiffGutterView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation DebugFormatUploadDiffGutterView
 
-- (_TtC8NewsFeed31DebugFormatUploadDiffGutterView)initWithCoder:(id)a3
+- (_TtC8NewsFeed31DebugFormatUploadDiffGutterView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC8NewsFeed31DebugFormatUploadDiffGutterView_contentSize);
   *v3 = 0;
@@ -24,11 +24,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D72456E4();
 }
 
-- (_TtC8NewsFeed31DebugFormatUploadDiffGutterView)initWithFrame:(CGRect)a3
+- (_TtC8NewsFeed31DebugFormatUploadDiffGutterView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,21 +1,21 @@
 @interface CLSClassKitSettingsController
 - (CLSClassKitSettingsController)init;
-- (id)activeClassKitAppleIDWithSpecifier:(id)a3;
-- (id)allowBrowseSync:(id)a3;
+- (id)activeClassKitAppleIDWithSpecifier:(id)specifier;
+- (id)allowBrowseSync:(id)sync;
 - (id)appleIDSpecifier;
-- (id)bundleIdentifierForAttachment:(id)a3;
+- (id)bundleIdentifierForAttachment:(id)attachment;
 - (id)createStudentSpecifiers;
 - (id)createTeacherSpecifiers;
-- (id)descriptionForAttachment:(id)a3;
-- (id)fileTypeDescriptionForAsset:(id)a3;
-- (id)specifierWithContextActivity:(id)a3;
-- (id)specifierWithHandoutAssignedItemActivity:(id)a3;
-- (id)specifierWithProgressActivity:(id)a3;
+- (id)descriptionForAttachment:(id)attachment;
+- (id)fileTypeDescriptionForAsset:(id)asset;
+- (id)specifierWithContextActivity:(id)activity;
+- (id)specifierWithHandoutAssignedItemActivity:(id)activity;
+- (id)specifierWithProgressActivity:(id)activity;
 - (id)specifiers;
 - (void)loadUserProgressActivities;
-- (void)setAllowBrowseSync:(id)a3 specifier:(id)a4;
-- (void)showMoreTapped:(id)a3;
-- (void)showProgressPrivacyInfo:(id)a3;
+- (void)setAllowBrowseSync:(id)sync specifier:(id)specifier;
+- (void)showMoreTapped:(id)tapped;
+- (void)showProgressPrivacyInfo:(id)info;
 - (void)viewDidLoad;
 @end
 
@@ -78,36 +78,36 @@
 
     v8 = dispatch_time(0, 100000000);
     dispatch_block_wait(v7, v8);
-    v9 = [(CLSClassKitSettingsController *)self cachedCurrentUser];
+    cachedCurrentUser = [(CLSClassKitSettingsController *)self cachedCurrentUser];
 
-    if (v9)
+    if (cachedCurrentUser)
     {
-      v10 = [(CLSClassKitSettingsController *)self cachedCurrentUser];
-      v11 = [v10 isInstructor];
+      cachedCurrentUser2 = [(CLSClassKitSettingsController *)self cachedCurrentUser];
+      isInstructor = [cachedCurrentUser2 isInstructor];
 
-      if (v11)
+      if (isInstructor)
       {
-        v12 = [(CLSClassKitSettingsController *)self createTeacherSpecifiers];
+        createTeacherSpecifiers = [(CLSClassKitSettingsController *)self createTeacherSpecifiers];
       }
 
       else
       {
-        v13 = [(CLSClassKitSettingsController *)self cachedCurrentUser];
-        v14 = [v13 isStudent];
+        cachedCurrentUser3 = [(CLSClassKitSettingsController *)self cachedCurrentUser];
+        isStudent = [cachedCurrentUser3 isStudent];
 
-        if (v14)
+        if (isStudent)
         {
-          v12 = [(CLSClassKitSettingsController *)self createStudentSpecifiers];
+          createTeacherSpecifiers = [(CLSClassKitSettingsController *)self createStudentSpecifiers];
         }
 
         else
         {
-          v12 = &__NSArray0__struct;
+          createTeacherSpecifiers = &__NSArray0__struct;
         }
       }
 
       v15 = *&self->PSListController_opaque[v3];
-      *&self->PSListController_opaque[v3] = v12;
+      *&self->PSListController_opaque[v3] = createTeacherSpecifiers;
     }
 
     objc_destroyWeak(&v19);
@@ -124,8 +124,8 @@
   v3 = [[NSMutableArray alloc] initWithCapacity:2];
   v15 = [PSSpecifier groupSpecifierWithID:@"IdentityGroupID"];
   [v3 addObject:v15];
-  v4 = [(CLSClassKitSettingsController *)self appleIDSpecifier];
-  [v3 addObject:v4];
+  appleIDSpecifier = [(CLSClassKitSettingsController *)self appleIDSpecifier];
+  [v3 addObject:appleIDSpecifier];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"ALLOW_BROWSE_SYNC_HEADER" value:&stru_C898 table:@"ClassKitSettings"];
   v7 = [PSSpecifier groupSpecifierWithID:@"AllowBrowseSyncGroupID" name:v6];
@@ -140,8 +140,8 @@
   v12 = [PSSpecifier preferenceSpecifierNamed:v11 target:self set:"setAllowBrowseSync:specifier:" get:"allowBrowseSync:" detail:0 cell:6 edit:0];
   [(CLSClassKitSettingsController *)self setAllowBrowseToggleSpecifier:v12];
 
-  v13 = [(CLSClassKitSettingsController *)self allowBrowseToggleSpecifier];
-  [v3 addObject:v13];
+  allowBrowseToggleSpecifier = [(CLSClassKitSettingsController *)self allowBrowseToggleSpecifier];
+  [v3 addObject:allowBrowseToggleSpecifier];
 
   return v3;
 }
@@ -159,14 +159,14 @@
   v9 = [v8 localizedStringForKey:@"STUDENT_ACTIVITY_FOOTER" value:&stru_C898 table:@"ClassKitSettings"];
   v10 = [NSString localizedStringWithFormat:v9, v7];
 
-  v11 = [(CLSClassKitSettingsController *)self cachedCurrentUser];
-  v12 = [v11 person];
-  if ([v12 isProgressTrackingAllowed])
+  cachedCurrentUser = [(CLSClassKitSettingsController *)self cachedCurrentUser];
+  person = [cachedCurrentUser person];
+  if ([person isProgressTrackingAllowed])
   {
-    v13 = [(CLSClassKitSettingsController *)self cachedCurrentUser];
-    v14 = [v13 organizationProgressTrackingAllowed];
+    cachedCurrentUser2 = [(CLSClassKitSettingsController *)self cachedCurrentUser];
+    organizationProgressTrackingAllowed = [cachedCurrentUser2 organizationProgressTrackingAllowed];
 
-    if (v14)
+    if (organizationProgressTrackingAllowed)
     {
       v15 = v5;
       goto LABEL_10;
@@ -181,16 +181,16 @@
   v17 = [v16 localizedStringForKey:@"STUDENT_ACTIVITY_HEADER_OPT_OUT" value:&stru_C898 table:@"ClassKitSettings"];
   v15 = [PSSpecifier groupSpecifierWithID:@"StudentProgressGroupID" name:v17];
 
-  v18 = [(CLSClassKitSettingsController *)self cachedCurrentUser];
-  LODWORD(v16) = [v18 organizationProgressTrackingAllowed];
+  cachedCurrentUser3 = [(CLSClassKitSettingsController *)self cachedCurrentUser];
+  LODWORD(v16) = [cachedCurrentUser3 organizationProgressTrackingAllowed];
 
   if (v16)
   {
-    v19 = [(CLSClassKitSettingsController *)self cachedCurrentUser];
-    v20 = [v19 person];
-    v21 = [v20 isProgressTrackingAllowed];
+    cachedCurrentUser4 = [(CLSClassKitSettingsController *)self cachedCurrentUser];
+    person2 = [cachedCurrentUser4 person];
+    isProgressTrackingAllowed = [person2 isProgressTrackingAllowed];
 
-    if (v21)
+    if (isProgressTrackingAllowed)
     {
       goto LABEL_10;
     }
@@ -214,8 +214,8 @@ LABEL_10:
   v29 = [[NSMutableArray alloc] initWithCapacity:1];
   v30 = [PSSpecifier groupSpecifierWithID:@"IdentityGroupID"];
   [v29 addObject:v30];
-  v31 = [(CLSClassKitSettingsController *)self appleIDSpecifier];
-  [v29 addObject:v31];
+  appleIDSpecifier = [(CLSClassKitSettingsController *)self appleIDSpecifier];
+  [v29 addObject:appleIDSpecifier];
   v47 = v10;
   v48 = v7;
   if (v26 == 0x7FFFFFFFFFFFFFFFLL)
@@ -248,8 +248,8 @@ LABEL_10:
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v37 = [(CLSClassKitSettingsController *)self userProgressActivities];
-  v38 = [v37 countByEnumeratingWithState:&v49 objects:v53 count:16];
+  userProgressActivities = [(CLSClassKitSettingsController *)self userProgressActivities];
+  v38 = [userProgressActivities countByEnumeratingWithState:&v49 objects:v53 count:16];
   if (v38)
   {
     v39 = v38;
@@ -260,14 +260,14 @@ LABEL_10:
       {
         if (*v50 != v40)
         {
-          objc_enumerationMutation(v37);
+          objc_enumerationMutation(userProgressActivities);
         }
 
         v42 = [(CLSClassKitSettingsController *)self specifierWithProgressActivity:*(*(&v49 + 1) + 8 * i)];
         [v29 addObject:v42];
       }
 
-      v39 = [v37 countByEnumeratingWithState:&v49 objects:v53 count:16];
+      v39 = [userProgressActivities countByEnumeratingWithState:&v49 objects:v53 count:16];
     }
 
     while (v39);
@@ -331,8 +331,8 @@ LABEL_10:
   [v34 awaitExecuteQuery:v3 completion:v49];
   if (![(CLSClassKitSettingsController *)self fetchAllActivities])
   {
-    v6 = [(CLSClassKitSettingsController *)self userProgressActivities];
-    v7 = [v6 count];
+    userProgressActivities = [(CLSClassKitSettingsController *)self userProgressActivities];
+    v7 = [userProgressActivities count];
 
     if (v7 <= 7)
     {
@@ -346,8 +346,8 @@ LABEL_10:
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v10 = [(CLSClassKitSettingsController *)self userProgressActivities];
-  v11 = [v10 countByEnumeratingWithState:&v45 objects:v51 count:16];
+  userProgressActivities2 = [(CLSClassKitSettingsController *)self userProgressActivities];
+  v11 = [userProgressActivities2 countByEnumeratingWithState:&v45 objects:v51 count:16];
   if (v11)
   {
     v12 = v11;
@@ -358,15 +358,15 @@ LABEL_10:
       {
         if (*v46 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(userProgressActivities2);
         }
 
         v15 = *(*(&v45 + 1) + 8 * i);
-        v16 = [v15 type];
+        type = [v15 type];
         v17 = v8;
-        if (v16 >= 2)
+        if (type >= 2)
         {
-          if (v16 != &dword_0 + 2)
+          if (type != &dword_0 + 2)
           {
             continue;
           }
@@ -374,18 +374,18 @@ LABEL_10:
           v17 = v9;
         }
 
-        v18 = [v15 parentObjectID];
-        [v17 addObject:v18];
+        parentObjectID = [v15 parentObjectID];
+        [v17 addObject:parentObjectID];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v45 objects:v51 count:16];
+      v12 = [userProgressActivities2 countByEnumeratingWithState:&v45 objects:v51 count:16];
     }
 
     while (v12);
   }
 
-  v19 = [(CLSClassKitSettingsController *)self objectIDToContextMap];
-  [v19 removeAllObjects];
+  objectIDToContextMap = [(CLSClassKitSettingsController *)self objectIDToContextMap];
+  [objectIDToContextMap removeAllObjects];
 
   v31 = [NSPredicate predicateWithFormat:@"objectID IN %@", v8];
 
@@ -398,9 +398,9 @@ LABEL_10:
   v43[3] = &unk_C650;
   v43[4] = self;
   [v34 awaitExecuteQuery:v33 completion:v43];
-  v21 = [(CLSClassKitSettingsController *)self objectIDToAssignedItemMap];
+  objectIDToAssignedItemMap = [(CLSClassKitSettingsController *)self objectIDToAssignedItemMap];
 
-  [v21 removeAllObjects];
+  [objectIDToAssignedItemMap removeAllObjects];
   v22 = objc_alloc_init(NSMutableSet);
   v23 = [NSPredicate predicateWithFormat:@"objectID IN %@", v9];
   v42 = 0;
@@ -411,11 +411,11 @@ LABEL_10:
   v39[2] = sub_3770;
   v39[3] = &unk_C678;
   v40 = v22;
-  v41 = self;
+  selfCopy = self;
   v26 = v22;
   [v34 awaitExecuteQuery:v24 completion:v39];
-  v27 = [(CLSClassKitSettingsController *)self objectIDToAttachmentMap];
-  [v27 removeAllObjects];
+  objectIDToAttachmentMap = [(CLSClassKitSettingsController *)self objectIDToAttachmentMap];
+  [objectIDToAttachmentMap removeAllObjects];
 
   v28 = [NSPredicate predicateWithFormat:@"objectID IN %@", v26];
 
@@ -430,23 +430,23 @@ LABEL_10:
   [v34 awaitExecuteQuery:v29 completion:v37];
 }
 
-- (id)specifierWithProgressActivity:(id)a3
+- (id)specifierWithProgressActivity:(id)activity
 {
-  v5 = a3;
-  v6 = [v5 type];
-  if (v6 >= 2)
+  activityCopy = activity;
+  type = [activityCopy type];
+  if (type >= 2)
   {
-    if (v6 != &dword_0 + 2)
+    if (type != &dword_0 + 2)
     {
       goto LABEL_6;
     }
 
-    v7 = [(CLSClassKitSettingsController *)self specifierWithHandoutAssignedItemActivity:v5];
+    v7 = [(CLSClassKitSettingsController *)self specifierWithHandoutAssignedItemActivity:activityCopy];
   }
 
   else
   {
-    v7 = [(CLSClassKitSettingsController *)self specifierWithContextActivity:v5];
+    v7 = [(CLSClassKitSettingsController *)self specifierWithContextActivity:activityCopy];
   }
 
   v3 = v7;
@@ -455,31 +455,31 @@ LABEL_6:
   return v3;
 }
 
-- (id)specifierWithContextActivity:(id)a3
+- (id)specifierWithContextActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = CLSLocalizedNameFromContextType();
-  v6 = [(CLSClassKitSettingsController *)self objectIDToContextMap];
-  v7 = [v4 parentObjectID];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  objectIDToContextMap = [(CLSClassKitSettingsController *)self objectIDToContextMap];
+  parentObjectID = [activityCopy parentObjectID];
+  v8 = [objectIDToContextMap objectForKeyedSubscript:parentObjectID];
 
   if (!v8)
   {
-    v9 = 0;
-    v10 = &stru_C898;
+    appIdentifier = 0;
+    title = &stru_C898;
     goto LABEL_10;
   }
 
-  v9 = [v8 appIdentifier];
-  v10 = [v8 title];
+  appIdentifier = [v8 appIdentifier];
+  title = [v8 title];
   if ([v8 type] != &dword_10 + 1)
   {
     goto LABEL_8;
   }
 
-  v11 = [v8 customTypeName];
+  customTypeName = [v8 customTypeName];
   v12 = +[NSCharacterSet whitespaceCharacterSet];
-  v13 = [v11 stringByTrimmingCharactersInSet:v12];
+  v13 = [customTypeName stringByTrimmingCharactersInSet:v12];
 
   if (![v13 length])
   {
@@ -499,102 +499,102 @@ LABEL_9:
 
   v5 = v13;
 LABEL_10:
-  v14 = [PSSpecifier preferenceSpecifierNamed:v10 target:0 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+  v14 = [PSSpecifier preferenceSpecifierNamed:title target:0 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
   [v14 setProperty:v5 forKey:@"CLSSettingsSpecifierContextType"];
-  v15 = [v4 objectID];
-  [v14 setProperty:v15 forKey:PSIDKey];
+  objectID = [activityCopy objectID];
+  [v14 setProperty:objectID forKey:PSIDKey];
 
-  v16 = [v4 objectID];
-  [v14 setProperty:v16 forKey:@"CLSSettingsSpecifierActivityID"];
+  objectID2 = [activityCopy objectID];
+  [v14 setProperty:objectID2 forKey:@"CLSSettingsSpecifierActivityID"];
 
-  v17 = [v4 dateLastModified];
-  [v14 setProperty:v17 forKey:@"CLSSettingsSpecifierActivityLastModifiedDate"];
+  dateLastModified = [activityCopy dateLastModified];
+  [v14 setProperty:dateLastModified forKey:@"CLSSettingsSpecifierActivityLastModifiedDate"];
 
   [v14 setProperty:objc_opt_class() forKey:PSCellClassKey];
   [v14 setProperty:&__kCFBooleanTrue forKey:PSLazyIconLoading];
-  [v14 setProperty:v9 forKey:PSLazyIconAppID];
+  [v14 setProperty:appIdentifier forKey:PSLazyIconAppID];
 
   return v14;
 }
 
-- (id)specifierWithHandoutAssignedItemActivity:(id)a3
+- (id)specifierWithHandoutAssignedItemActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(CLSClassKitSettingsController *)self objectIDToAssignedItemMap];
-  v6 = [v4 parentObjectID];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  activityCopy = activity;
+  objectIDToAssignedItemMap = [(CLSClassKitSettingsController *)self objectIDToAssignedItemMap];
+  parentObjectID = [activityCopy parentObjectID];
+  v7 = [objectIDToAssignedItemMap objectForKeyedSubscript:parentObjectID];
 
   if (v7)
   {
-    v8 = [(CLSClassKitSettingsController *)self objectIDToAttachmentMap];
-    v9 = [v7 parentObjectID];
-    v10 = [v8 objectForKeyedSubscript:v9];
+    objectIDToAttachmentMap = [(CLSClassKitSettingsController *)self objectIDToAttachmentMap];
+    parentObjectID2 = [v7 parentObjectID];
+    v10 = [objectIDToAttachmentMap objectForKeyedSubscript:parentObjectID2];
 
     if (v10)
     {
-      v11 = [v10 title];
-      v12 = [(CLSClassKitSettingsController *)self bundleIdentifierForAttachment:v10];
+      title = [v10 title];
+      appIdentifier = [(CLSClassKitSettingsController *)self bundleIdentifierForAttachment:v10];
       v13 = [(CLSClassKitSettingsController *)self descriptionForAttachment:v10];
     }
 
     else
     {
-      v11 = [v7 title];
-      v12 = [v7 appIdentifier];
+      title = [v7 title];
+      appIdentifier = [v7 appIdentifier];
       v13 = &stru_C898;
     }
   }
 
   else
   {
-    v12 = 0;
+    appIdentifier = 0;
     v13 = &stru_C898;
-    v11 = &stru_C898;
+    title = &stru_C898;
   }
 
-  v14 = [PSSpecifier preferenceSpecifierNamed:v11 target:0 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
+  v14 = [PSSpecifier preferenceSpecifierNamed:title target:0 set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
   [v14 setProperty:v13 forKey:@"CLSSettingsSpecifierContextType"];
-  v15 = [v4 objectID];
-  [v14 setProperty:v15 forKey:PSIDKey];
+  objectID = [activityCopy objectID];
+  [v14 setProperty:objectID forKey:PSIDKey];
 
-  v16 = [v4 objectID];
-  [v14 setProperty:v16 forKey:@"CLSSettingsSpecifierActivityID"];
+  objectID2 = [activityCopy objectID];
+  [v14 setProperty:objectID2 forKey:@"CLSSettingsSpecifierActivityID"];
 
-  v17 = [v4 dateLastModified];
-  [v14 setProperty:v17 forKey:@"CLSSettingsSpecifierActivityLastModifiedDate"];
+  dateLastModified = [activityCopy dateLastModified];
+  [v14 setProperty:dateLastModified forKey:@"CLSSettingsSpecifierActivityLastModifiedDate"];
 
   [v14 setProperty:objc_opt_class() forKey:PSCellClassKey];
   [v14 setProperty:&__kCFBooleanTrue forKey:PSLazyIconLoading];
-  [v14 setProperty:v12 forKey:PSLazyIconAppID];
+  [v14 setProperty:appIdentifier forKey:PSLazyIconAppID];
 
   return v14;
 }
 
-- (id)bundleIdentifierForAttachment:(id)a3
+- (id)bundleIdentifierForAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  v6 = [(CLSClassKitSettingsController *)self cachedCurrentUser];
-  v7 = [v6 person];
-  v8 = [v7 objectID];
+  attachmentCopy = attachment;
+  bundleIdentifier = [attachmentCopy bundleIdentifier];
+  cachedCurrentUser = [(CLSClassKitSettingsController *)self cachedCurrentUser];
+  person = [cachedCurrentUser person];
+  objectID = [person objectID];
 
-  if (v5 || !v8)
+  if (bundleIdentifier || !objectID)
   {
-    if (v5)
+    if (bundleIdentifier)
     {
       goto LABEL_24;
     }
   }
 
-  else if ([v4 type] == 2)
+  else if ([attachmentCopy type] == 2)
   {
-    v9 = [v4 assetForPerson:v8];
+    v9 = [attachmentCopy assetForPerson:objectID];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 fileUTType];
-      v12 = [v11 identifier];
-      v13 = [LSDocumentProxy documentProxyForName:0 type:v12 MIMEType:0];
+      fileUTType = [v9 fileUTType];
+      identifier = [fileUTType identifier];
+      v13 = [LSDocumentProxy documentProxyForName:0 type:identifier MIMEType:0];
 
       v26 = v13;
       v27 = 0;
@@ -612,23 +612,23 @@ LABEL_10:
         }
       }
 
-      v17 = [v14 firstObject];
-      v18 = [v17 bundleRecord];
-      v5 = [v18 bundleIdentifier];
+      firstObject = [v14 firstObject];
+      bundleRecord = [firstObject bundleRecord];
+      bundleIdentifier = [bundleRecord bundleIdentifier];
 
-      v25 = [v11 conformsToType:UTTypePDF];
-      v19 = [v11 conformsToType:UTTypeHTML];
-      LOBYTE(v18) = [v11 conformsToType:UTTypeImage];
-      v20 = [v11 conformsToType:UTTypeMovie];
+      v25 = [fileUTType conformsToType:UTTypePDF];
+      v19 = [fileUTType conformsToType:UTTypeHTML];
+      LOBYTE(bundleRecord) = [fileUTType conformsToType:UTTypeImage];
+      v20 = [fileUTType conformsToType:UTTypeMovie];
 
-      if ((v18 & 1) != 0 || v20)
+      if ((bundleRecord & 1) != 0 || v20)
       {
         v21 = @"com.apple.mobileslideshow";
 
-        v5 = v21;
+        bundleIdentifier = v21;
       }
 
-      if (!((v5 == 0) | (v25 | v19) & 1))
+      if (!((bundleIdentifier == 0) | (v25 | v19) & 1))
       {
         goto LABEL_22;
       }
@@ -636,51 +636,51 @@ LABEL_10:
 
     else
     {
-      v5 = 0;
+      bundleIdentifier = 0;
     }
 
     v23 = @"com.apple.DocumentsApp";
 
-    v5 = v23;
+    bundleIdentifier = v23;
 LABEL_22:
 
     goto LABEL_24;
   }
 
-  if (![v4 type])
+  if (![attachmentCopy type])
   {
     v22 = &CLSSettingsMobileSafariAppBundleIdentifier;
     goto LABEL_19;
   }
 
-  if ([v4 type] == 5 || objc_msgSend(v4, "type") == 6)
+  if ([attachmentCopy type] == 5 || objc_msgSend(attachmentCopy, "type") == 6)
   {
     v22 = &CLSSettingsSchoolworkAppBundleIdentifier;
 LABEL_19:
-    v5 = *v22;
+    bundleIdentifier = *v22;
     goto LABEL_24;
   }
 
-  v5 = 0;
+  bundleIdentifier = 0;
 LABEL_24:
 
-  return v5;
+  return bundleIdentifier;
 }
 
-- (id)descriptionForAttachment:(id)a3
+- (id)descriptionForAttachment:(id)attachment
 {
-  v4 = a3;
-  if ([v4 type])
+  attachmentCopy = attachment;
+  if ([attachmentCopy type])
   {
-    if ([v4 type] == 2)
+    if ([attachmentCopy type] == 2)
     {
-      v5 = [(CLSClassKitSettingsController *)self cachedCurrentUser];
-      v6 = [v5 person];
-      v7 = [v6 objectID];
+      cachedCurrentUser = [(CLSClassKitSettingsController *)self cachedCurrentUser];
+      person = [cachedCurrentUser person];
+      objectID = [person objectID];
 
-      if (v7)
+      if (objectID)
       {
-        v8 = [v4 assetForPerson:v7];
+        v8 = [attachmentCopy assetForPerson:objectID];
         if (v8)
         {
           v9 = [(CLSClassKitSettingsController *)self fileTypeDescriptionForAsset:v8];
@@ -700,23 +700,23 @@ LABEL_24:
       goto LABEL_16;
     }
 
-    if ([v4 type] == 5)
+    if ([attachmentCopy type] == 5)
     {
       v10 = [NSBundle bundleForClass:objc_opt_class()];
-      v7 = v10;
+      objectID = v10;
       v11 = @"ACTIVITY_EXIT_TICKET";
     }
 
     else
     {
-      if ([v4 type] != 6)
+      if ([attachmentCopy type] != 6)
       {
         v9 = 0;
         goto LABEL_17;
       }
 
       v10 = [NSBundle bundleForClass:objc_opt_class()];
-      v7 = v10;
+      objectID = v10;
       v11 = @"ACTIVITY_ASSESSMENT";
     }
   }
@@ -724,7 +724,7 @@ LABEL_24:
   else
   {
     v10 = [NSBundle bundleForClass:objc_opt_class()];
-    v7 = v10;
+    objectID = v10;
     v11 = @"STUDENT_ACTIVITY_WEB_LINK";
   }
 
@@ -736,46 +736,46 @@ LABEL_17:
   return v9;
 }
 
-- (id)fileTypeDescriptionForAsset:(id)a3
+- (id)fileTypeDescriptionForAsset:(id)asset
 {
-  v3 = [a3 fileUTType];
-  v4 = [v3 localizedDescription];
+  fileUTType = [asset fileUTType];
+  localizedDescription = [fileUTType localizedDescription];
 
-  return v4;
+  return localizedDescription;
 }
 
-- (id)activeClassKitAppleIDWithSpecifier:(id)a3
+- (id)activeClassKitAppleIDWithSpecifier:(id)specifier
 {
   v3 = +[CLSDataStore shared];
-  v4 = [v3 currentUser];
+  currentUser = [v3 currentUser];
 
-  v5 = [v4 person];
-  v6 = [v5 appleID];
+  person = [currentUser person];
+  appleID = [person appleID];
 
-  return v6;
+  return appleID;
 }
 
-- (void)setAllowBrowseSync:(id)a3 specifier:(id)a4
+- (void)setAllowBrowseSync:(id)sync specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 BOOLValue];
+  syncCopy = sync;
+  specifierCopy = specifier;
+  bOOLValue = [syncCopy BOOLValue];
   v9 = +[CLSDataStore shared];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_4768;
   v12[3] = &unk_C6C8;
   v12[4] = self;
-  v13 = v7;
-  v14 = v6;
-  v10 = v6;
-  v11 = v7;
-  [v9 setShouldSyncTeacherBrowsedContexts:v8 completion:v12];
+  v13 = specifierCopy;
+  v14 = syncCopy;
+  v10 = syncCopy;
+  v11 = specifierCopy;
+  [v9 setShouldSyncTeacherBrowsedContexts:bOOLValue completion:v12];
 }
 
-- (id)allowBrowseSync:(id)a3
+- (id)allowBrowseSync:(id)sync
 {
-  v3 = a3;
+  syncCopy = sync;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -787,7 +787,7 @@ LABEL_17:
   v11[2] = sub_49D0;
   v11[3] = &unk_C710;
   v14 = &v15;
-  v6 = v3;
+  v6 = syncCopy;
   v12 = v6;
   v7 = v4;
   v13 = v7;
@@ -802,9 +802,9 @@ LABEL_17:
   return v9;
 }
 
-- (void)showMoreTapped:(id)a3
+- (void)showMoreTapped:(id)tapped
 {
-  [a3 setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
+  [tapped setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
   if (![(CLSClassKitSettingsController *)self fetchAllActivities])
   {
     [(CLSClassKitSettingsController *)self setFetchAllActivities:1];
@@ -813,7 +813,7 @@ LABEL_17:
   }
 }
 
-- (void)showProgressPrivacyInfo:(id)a3
+- (void)showProgressPrivacyInfo:(id)info
 {
   v4 = [OBPrivacyPresenter presenterForPrivacySplashWithIdentifier:@"com.apple.onboarding.classkit"];
   [v4 setPresentingViewController:self];

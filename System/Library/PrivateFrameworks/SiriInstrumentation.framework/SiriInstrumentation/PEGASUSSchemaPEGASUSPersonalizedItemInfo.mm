@@ -1,38 +1,38 @@
 @interface PEGASUSSchemaPEGASUSPersonalizedItemInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSPersonalizedItemInfo)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSPersonalizedItemInfo)initWithJSON:(id)a3;
+- (PEGASUSSchemaPEGASUSPersonalizedItemInfo)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSPersonalizedItemInfo)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasPersonalizationArtistAffinity:(BOOL)a3;
-- (void)setHasPersonalizationCosineSimilarity:(BOOL)a3;
-- (void)setHasPersonalizationPafFrequency:(BOOL)a3;
-- (void)setHasPersonalizationRankingScore:(BOOL)a3;
-- (void)setHasPositionWithoutPersonalization:(BOOL)a3;
-- (void)setHasScore:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasPersonalizationArtistAffinity:(BOOL)affinity;
+- (void)setHasPersonalizationCosineSimilarity:(BOOL)similarity;
+- (void)setHasPersonalizationPafFrequency:(BOOL)frequency;
+- (void)setHasPersonalizationRankingScore:(BOOL)score;
+- (void)setHasPositionWithoutPersonalization:(BOOL)personalization;
+- (void)setHasScore:(BOOL)score;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSPersonalizedItemInfo
 
-- (PEGASUSSchemaPEGASUSPersonalizedItemInfo)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSPersonalizedItemInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = PEGASUSSchemaPEGASUSPersonalizedItemInfo;
   v5 = [(PEGASUSSchemaPEGASUSPersonalizedItemInfo *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isPersonalized"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isPersonalized"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSPersonalizedItemInfo setIsPersonalized:](v5, "setIsPersonalized:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"score"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"score"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       [(PEGASUSSchemaPEGASUSPersonalizedItemInfo *)v5 setScore:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"personalizationRankingScore"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"personalizationRankingScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,14 +48,14 @@
       [(PEGASUSSchemaPEGASUSPersonalizedItemInfo *)v5 setPersonalizationRankingScore:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"positionWithoutPersonalization"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"positionWithoutPersonalization"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSPersonalizedItemInfo setPositionWithoutPersonalization:](v5, "setPositionWithoutPersonalization:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"personalizationCosineSimilarity"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"personalizationCosineSimilarity"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -63,7 +63,7 @@
       [(PEGASUSSchemaPEGASUSPersonalizedItemInfo *)v5 setPersonalizationCosineSimilarity:?];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"personalizationArtistAffinity"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"personalizationArtistAffinity"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,7 +71,7 @@
       [(PEGASUSSchemaPEGASUSPersonalizedItemInfo *)v5 setPersonalizationArtistAffinity:?];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"personalizationPafFrequency"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"personalizationPafFrequency"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,30 +85,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSPersonalizedItemInfo)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSPersonalizedItemInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSPersonalizedItemInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSPersonalizedItemInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSPersonalizedItemInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -121,12 +121,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[PEGASUSSchemaPEGASUSPersonalizedItemInfo isPersonalized](self, "isPersonalized")}];
-    [v3 setObject:v8 forKeyedSubscript:@"isPersonalized"];
+    [dictionary setObject:v8 forKeyedSubscript:@"isPersonalized"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -149,7 +149,7 @@ LABEL_3:
   v9 = MEMORY[0x1E696AD98];
   [(PEGASUSSchemaPEGASUSPersonalizedItemInfo *)self personalizationArtistAffinity];
   v10 = [v9 numberWithFloat:?];
-  [v3 setObject:v10 forKeyedSubscript:@"personalizationArtistAffinity"];
+  [dictionary setObject:v10 forKeyedSubscript:@"personalizationArtistAffinity"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -167,7 +167,7 @@ LABEL_14:
   v11 = MEMORY[0x1E696AD98];
   [(PEGASUSSchemaPEGASUSPersonalizedItemInfo *)self personalizationCosineSimilarity];
   v12 = [v11 numberWithFloat:?];
-  [v3 setObject:v12 forKeyedSubscript:@"personalizationCosineSimilarity"];
+  [dictionary setObject:v12 forKeyedSubscript:@"personalizationCosineSimilarity"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -185,7 +185,7 @@ LABEL_15:
   v13 = MEMORY[0x1E696AD98];
   [(PEGASUSSchemaPEGASUSPersonalizedItemInfo *)self personalizationPafFrequency];
   v14 = [v13 numberWithFloat:?];
-  [v3 setObject:v14 forKeyedSubscript:@"personalizationPafFrequency"];
+  [dictionary setObject:v14 forKeyedSubscript:@"personalizationPafFrequency"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -203,7 +203,7 @@ LABEL_16:
   v15 = MEMORY[0x1E696AD98];
   [(PEGASUSSchemaPEGASUSPersonalizedItemInfo *)self personalizationRankingScore];
   v16 = [v15 numberWithFloat:?];
-  [v3 setObject:v16 forKeyedSubscript:@"personalizationRankingScore"];
+  [dictionary setObject:v16 forKeyedSubscript:@"personalizationRankingScore"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -219,7 +219,7 @@ LABEL_7:
 
 LABEL_17:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSPersonalizedItemInfo positionWithoutPersonalization](self, "positionWithoutPersonalization")}];
-  [v3 setObject:v17 forKeyedSubscript:@"positionWithoutPersonalization"];
+  [dictionary setObject:v17 forKeyedSubscript:@"positionWithoutPersonalization"];
 
   if ((*&self->_has & 2) != 0)
   {
@@ -227,13 +227,13 @@ LABEL_8:
     v5 = MEMORY[0x1E696AD98];
     [(PEGASUSSchemaPEGASUSPersonalizedItemInfo *)self score];
     v6 = [v5 numberWithFloat:?];
-    [v3 setObject:v6 forKeyedSubscript:@"score"];
+    [dictionary setObject:v6 forKeyedSubscript:@"score"];
   }
 
 LABEL_9:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -461,16 +461,16 @@ LABEL_30:
   return v9 ^ v4 ^ v10 ^ v15 ^ v20 ^ v21 ^ v26;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
   has = self->_has;
-  v6 = v4[36];
+  v6 = equalCopy[36];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_29;
@@ -479,13 +479,13 @@ LABEL_30:
   if (*&has)
   {
     isPersonalized = self->_isPersonalized;
-    if (isPersonalized != [v4 isPersonalized])
+    if (isPersonalized != [equalCopy isPersonalized])
     {
       goto LABEL_29;
     }
 
     has = self->_has;
-    v6 = v4[36];
+    v6 = equalCopy[36];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -494,14 +494,14 @@ LABEL_30:
     if (v8)
     {
       score = self->_score;
-      [v4 score];
+      [equalCopy score];
       if (score != v10)
       {
         goto LABEL_29;
       }
 
       has = self->_has;
-      v6 = v4[36];
+      v6 = equalCopy[36];
     }
 
     v11 = (*&has >> 2) & 1;
@@ -510,14 +510,14 @@ LABEL_30:
       if (v11)
       {
         personalizationRankingScore = self->_personalizationRankingScore;
-        [v4 personalizationRankingScore];
+        [equalCopy personalizationRankingScore];
         if (personalizationRankingScore != v13)
         {
           goto LABEL_29;
         }
 
         has = self->_has;
-        v6 = v4[36];
+        v6 = equalCopy[36];
       }
 
       v14 = (*&has >> 3) & 1;
@@ -526,13 +526,13 @@ LABEL_30:
         if (v14)
         {
           positionWithoutPersonalization = self->_positionWithoutPersonalization;
-          if (positionWithoutPersonalization != [v4 positionWithoutPersonalization])
+          if (positionWithoutPersonalization != [equalCopy positionWithoutPersonalization])
           {
             goto LABEL_29;
           }
 
           has = self->_has;
-          v6 = v4[36];
+          v6 = equalCopy[36];
         }
 
         v16 = (*&has >> 4) & 1;
@@ -541,14 +541,14 @@ LABEL_30:
           if (v16)
           {
             personalizationCosineSimilarity = self->_personalizationCosineSimilarity;
-            [v4 personalizationCosineSimilarity];
+            [equalCopy personalizationCosineSimilarity];
             if (personalizationCosineSimilarity != v18)
             {
               goto LABEL_29;
             }
 
             has = self->_has;
-            v6 = v4[36];
+            v6 = equalCopy[36];
           }
 
           v19 = (*&has >> 5) & 1;
@@ -557,20 +557,20 @@ LABEL_30:
             if (v19)
             {
               personalizationArtistAffinity = self->_personalizationArtistAffinity;
-              [v4 personalizationArtistAffinity];
+              [equalCopy personalizationArtistAffinity];
               if (personalizationArtistAffinity != v21)
               {
                 goto LABEL_29;
               }
 
               has = self->_has;
-              v6 = v4[36];
+              v6 = equalCopy[36];
             }
 
             v22 = (*&has >> 6) & 1;
             if (v22 == ((v6 >> 6) & 1))
             {
-              if (!v22 || (personalizationPafFrequency = self->_personalizationPafFrequency, [v4 personalizationPafFrequency], personalizationPafFrequency == v24))
+              if (!v22 || (personalizationPafFrequency = self->_personalizationPafFrequency, [equalCopy personalizationPafFrequency], personalizationPafFrequency == v24))
               {
                 v25 = 1;
                 goto LABEL_30;
@@ -589,9 +589,9 @@ LABEL_30:
   return v25;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -680,9 +680,9 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setHasPersonalizationPafFrequency:(BOOL)a3
+- (void)setHasPersonalizationPafFrequency:(BOOL)frequency
 {
-  if (a3)
+  if (frequency)
   {
     v3 = 64;
   }
@@ -695,9 +695,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasPersonalizationArtistAffinity:(BOOL)a3
+- (void)setHasPersonalizationArtistAffinity:(BOOL)affinity
 {
-  if (a3)
+  if (affinity)
   {
     v3 = 32;
   }
@@ -710,9 +710,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasPersonalizationCosineSimilarity:(BOOL)a3
+- (void)setHasPersonalizationCosineSimilarity:(BOOL)similarity
 {
-  if (a3)
+  if (similarity)
   {
     v3 = 16;
   }
@@ -725,9 +725,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasPositionWithoutPersonalization:(BOOL)a3
+- (void)setHasPositionWithoutPersonalization:(BOOL)personalization
 {
-  if (a3)
+  if (personalization)
   {
     v3 = 8;
   }
@@ -740,9 +740,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasPersonalizationRankingScore:(BOOL)a3
+- (void)setHasPersonalizationRankingScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 4;
   }
@@ -755,9 +755,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasScore:(BOOL)a3
+- (void)setHasScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 2;
   }

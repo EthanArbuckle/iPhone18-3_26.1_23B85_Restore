@@ -1,18 +1,18 @@
 @interface ACUISActivitySceneMetrics
-- (ACUISActivitySceneMetrics)initWithSceneMetrics:(id)a3;
-- (ACUISActivitySceneMetrics)initWithSize:(CGSize)a3 cornerRadius:(double)a4 edgeInsets:(id)a5;
+- (ACUISActivitySceneMetrics)initWithSceneMetrics:(id)metrics;
+- (ACUISActivitySceneMetrics)initWithSize:(CGSize)size cornerRadius:(double)radius edgeInsets:(id)insets;
 - (CGSize)size;
 - (id)_ActivitySceneMetrics;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ACUISActivitySceneMetrics
 
-- (ACUISActivitySceneMetrics)initWithSize:(CGSize)a3 cornerRadius:(double)a4 edgeInsets:(id)a5
+- (ACUISActivitySceneMetrics)initWithSize:(CGSize)size cornerRadius:(double)radius edgeInsets:(id)insets
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  insetsCopy = insets;
   v14.receiver = self;
   v14.super_class = ACUISActivitySceneMetrics;
   v11 = [(ACUISActivitySceneMetrics *)&v14 init];
@@ -21,29 +21,29 @@
   {
     v11->_size.width = width;
     v11->_size.height = height;
-    v11->_cornerRadius = a4;
-    objc_storeStrong(&v11->_edgeInsets, a5);
+    v11->_cornerRadius = radius;
+    objc_storeStrong(&v11->_edgeInsets, insets);
   }
 
   return v12;
 }
 
-- (ACUISActivitySceneMetrics)initWithSceneMetrics:(id)a3
+- (ACUISActivitySceneMetrics)initWithSceneMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v14.receiver = self;
   v14.super_class = ACUISActivitySceneMetrics;
   v5 = [(ACUISActivitySceneMetrics *)&v14 init];
   if (v5)
   {
-    [v4 size];
+    [metricsCopy size];
     v5->_size.width = v6;
     v5->_size.height = v7;
-    [v4 cornerRadius];
+    [metricsCopy cornerRadius];
     v5->_cornerRadius = v8;
     v9 = [ACUISEdgeInsets alloc];
-    v10 = [v4 edgeInsets];
-    v11 = [(ACUISEdgeInsets *)v9 _initWithEdgeInsets:v10];
+    edgeInsets = [metricsCopy edgeInsets];
+    v11 = [(ACUISEdgeInsets *)v9 _initWithEdgeInsets:edgeInsets];
     edgeInsets = v5->_edgeInsets;
     v5->_edgeInsets = v11;
   }
@@ -59,14 +59,14 @@
   v7 = v6;
   [(ACUISActivitySceneMetrics *)self cornerRadius];
   v9 = v8;
-  v10 = [(ACUISActivitySceneMetrics *)self edgeInsets];
-  v11 = [v10 _edgeInsets];
-  v12 = [(ActivitySceneMetrics *)v3 initWithSize:v11 cornerRadius:v5 edgeInsets:v7, v9];
+  edgeInsets = [(ACUISActivitySceneMetrics *)self edgeInsets];
+  _edgeInsets = [edgeInsets _edgeInsets];
+  v12 = [(ActivitySceneMetrics *)v3 initWithSize:_edgeInsets cornerRadius:v5 edgeInsets:v7, v9];
 
   return v12;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [ACUISMutableActivitySceneMetrics alloc];
   [(ACUISActivitySceneMetrics *)self size];
@@ -74,8 +74,8 @@
   v8 = v7;
   [(ACUISActivitySceneMetrics *)self cornerRadius];
   v10 = v9;
-  v11 = [(ACUISActivitySceneMetrics *)self edgeInsets];
-  v12 = [(ACUISActivitySceneMetrics *)v4 initWithSize:v11 cornerRadius:v6 edgeInsets:v8, v10];
+  edgeInsets = [(ACUISActivitySceneMetrics *)self edgeInsets];
+  v12 = [(ACUISActivitySceneMetrics *)v4 initWithSize:edgeInsets cornerRadius:v6 edgeInsets:v8, v10];
 
   return v12;
 }

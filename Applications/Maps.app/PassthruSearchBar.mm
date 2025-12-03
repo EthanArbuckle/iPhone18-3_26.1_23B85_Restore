@@ -1,24 +1,24 @@
 @interface PassthruSearchBar
-- (BOOL)_pasteAndNavigateURL:(id)a3;
-- (BOOL)keyboardInputChanged:(id)a3;
-- (BOOL)keyboardInputShouldDelete:(id)a3;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
-- (BOOL)textFieldShouldClear:(id)a3;
-- (BOOL)textFieldShouldEndEditing:(id)a3;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)_pasteAndNavigateURL:(id)l;
+- (BOOL)keyboardInputChanged:(id)changed;
+- (BOOL)keyboardInputShouldDelete:(id)delete;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
+- (BOOL)textFieldShouldClear:(id)clear;
+- (BOOL)textFieldShouldEndEditing:(id)editing;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (CGSize)intrinsicContentSize;
-- (PassthruSearchBar)initWithStyle:(int64_t)a3;
+- (PassthruSearchBar)initWithStyle:(int64_t)style;
 - (PassthruSearchBarDelegate)textFieldDelegate;
-- (id)_editActions:(id)a3 addingTitle:(id)a4 identifier:(id)a5 handler:(id)a6;
-- (id)textField:(id)a3 editMenuForCharactersInRange:(_NSRange)a4 suggestedActions:(id)a5;
+- (id)_editActions:(id)actions addingTitle:(id)title identifier:(id)identifier handler:(id)handler;
+- (id)textField:(id)field editMenuForCharactersInRange:(_NSRange)range suggestedActions:(id)actions;
 - (void)_pasteAndNavigate;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTextFieldDelegate:(id)a3;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setTextColor:(id)color;
+- (void)setTextFieldDelegate:(id)delegate;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PassthruSearchBar
@@ -27,8 +27,8 @@
 {
   if (sub_10000FA08(self) == 5)
   {
-    v3 = [(PassthruSearchBar *)self searchTextField];
-    [v3 intrinsicContentSize];
+    searchTextField = [(PassthruSearchBar *)self searchTextField];
+    [searchTextField intrinsicContentSize];
     v5 = v4;
 
     [(PassthruSearchBar *)self contentInset];
@@ -57,36 +57,36 @@
   return WeakRetained;
 }
 
-- (BOOL)keyboardInputChanged:(id)a3
+- (BOOL)keyboardInputChanged:(id)changed
 {
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 isRunningTest];
+  isRunningTest = [v4 isRunningTest];
 
-  if (v5)
+  if (isRunningTest)
   {
     v6 = +[NSNotificationCenter defaultCenter];
-    v7 = [(PassthruSearchBar *)self searchField];
-    [v6 postNotificationName:@"PPTShouldSendTextChangeNotification" object:v7];
+    searchField = [(PassthruSearchBar *)self searchField];
+    [v6 postNotificationName:@"PPTShouldSendTextChangeNotification" object:searchField];
   }
 
   return 1;
 }
 
-- (BOOL)_pasteAndNavigateURL:(id)a3
+- (BOOL)_pasteAndNavigateURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   BOOL = GEOConfigGetBOOL();
   v6 = 0;
-  if (v4 && BOOL)
+  if (lCopy && BOOL)
   {
-    if ([_MKURLParser isValidMapURL:v4]&& self->_delegateHandlesLinks)
+    if ([_MKURLParser isValidMapURL:lCopy]&& self->_delegateHandlesLinks)
     {
-      v7 = [(PassthruSearchBar *)self searchField];
-      [v7 setText:0];
+      searchField = [(PassthruSearchBar *)self searchField];
+      [searchField setText:0];
 
       [(PassthruSearchBar *)self resignFirstResponder];
-      v8 = [(PassthruSearchBar *)self textFieldDelegate];
-      [v8 searchBar:self didPasteMapsLink:v4];
+      textFieldDelegate = [(PassthruSearchBar *)self textFieldDelegate];
+      [textFieldDelegate searchBar:self didPasteMapsLink:lCopy];
 
       v6 = 1;
     }
@@ -106,14 +106,14 @@
   v3 = [v8 URL];
   if (![(PassthruSearchBar *)self _pasteAndNavigateURL:v3])
   {
-    v4 = [v8 string];
-    if (v4)
+    string = [v8 string];
+    if (string)
     {
-      v5 = [(PassthruSearchBar *)self searchField];
-      [v5 setText:v4];
+      searchField = [(PassthruSearchBar *)self searchField];
+      [searchField setText:string];
 
-      v6 = [(PassthruSearchBar *)self searchField];
-      v7 = [(PassthruSearchBar *)self textFieldShouldReturn:v6];
+      searchField2 = [(PassthruSearchBar *)self searchField];
+      v7 = [(PassthruSearchBar *)self textFieldShouldReturn:searchField2];
 
       if (v7)
       {
@@ -123,13 +123,13 @@
   }
 }
 
-- (id)_editActions:(id)a3 addingTitle:(id)a4 identifier:(id)a5 handler:(id)a6
+- (id)_editActions:(id)actions addingTitle:(id)title identifier:(id)identifier handler:(id)handler
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [NSMutableArray arrayWithArray:a3];
-  v13 = [UIAction actionWithTitle:v11 image:0 identifier:v10 handler:v9];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  titleCopy = title;
+  v12 = [NSMutableArray arrayWithArray:actions];
+  v13 = [UIAction actionWithTitle:titleCopy image:0 identifier:identifierCopy handler:handlerCopy];
 
   [v12 insertObject:v13 atIndex:0];
   v14 = [v12 copy];
@@ -137,10 +137,10 @@
   return v14;
 }
 
-- (id)textField:(id)a3 editMenuForCharactersInRange:(_NSRange)a4 suggestedActions:(id)a5
+- (id)textField:(id)field editMenuForCharactersInRange:(_NSRange)range suggestedActions:(id)actions
 {
-  v7 = a3;
-  v8 = a5;
+  fieldCopy = field;
+  actionsCopy = actions;
   v9 = +[UIPasteboard generalPasteboard];
   if ([v9 hasURLs] && self->_delegateHandlesLinks)
   {
@@ -153,7 +153,7 @@
     v21[2] = sub_100B063D8;
     v21[3] = &unk_101661900;
     objc_copyWeak(&v22, &location);
-    v13 = [(PassthruSearchBar *)self _editActions:v8 addingTitle:v11 identifier:UIActionPasteAndGo handler:v21];
+    v13 = [(PassthruSearchBar *)self _editActions:actionsCopy addingTitle:v11 identifier:UIActionPasteAndGo handler:v21];
 
     v14 = [UIMenu menuWithChildren:v13];
 LABEL_6:
@@ -174,29 +174,29 @@ LABEL_6:
     v19[2] = sub_100B06418;
     v19[3] = &unk_101661900;
     objc_copyWeak(&v20, &location);
-    v13 = [(PassthruSearchBar *)self _editActions:v8 addingTitle:v16 identifier:UIActionPasteAndSearch handler:v19];
+    v13 = [(PassthruSearchBar *)self _editActions:actionsCopy addingTitle:v16 identifier:UIActionPasteAndSearch handler:v19];
 
     v14 = [UIMenu menuWithChildren:v13];
     goto LABEL_6;
   }
 
-  v17 = [UIMenu menuWithChildren:v8];
-  v13 = v8;
+  v17 = [UIMenu menuWithChildren:actionsCopy];
+  v13 = actionsCopy;
 LABEL_8:
 
   return v17;
 }
 
-- (BOOL)keyboardInputShouldDelete:(id)a3
+- (BOOL)keyboardInputShouldDelete:(id)delete
 {
-  v4 = a3;
-  v5 = [(PassthruSearchBar *)self textFieldDelegate];
+  deleteCopy = delete;
+  textFieldDelegate = [(PassthruSearchBar *)self textFieldDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PassthruSearchBar *)self textFieldDelegate];
-    v8 = [v7 keyboardInputShouldDelete:v4];
+    textFieldDelegate2 = [(PassthruSearchBar *)self textFieldDelegate];
+    v8 = [textFieldDelegate2 keyboardInputShouldDelete:deleteCopy];
   }
 
   else
@@ -207,29 +207,29 @@ LABEL_8:
   return v8;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v7 = a3;
-  v4 = [(PassthruSearchBar *)self textFieldDelegate];
+  editingCopy = editing;
+  textFieldDelegate = [(PassthruSearchBar *)self textFieldDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(PassthruSearchBar *)self textFieldDelegate];
-    [v6 textFieldDidEndEditing:v7];
+    textFieldDelegate2 = [(PassthruSearchBar *)self textFieldDelegate];
+    [textFieldDelegate2 textFieldDidEndEditing:editingCopy];
   }
 }
 
-- (BOOL)textFieldShouldEndEditing:(id)a3
+- (BOOL)textFieldShouldEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [(PassthruSearchBar *)self textFieldDelegate];
+  editingCopy = editing;
+  textFieldDelegate = [(PassthruSearchBar *)self textFieldDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PassthruSearchBar *)self textFieldDelegate];
-    v8 = [v7 textFieldShouldEndEditing:v4];
+    textFieldDelegate2 = [(PassthruSearchBar *)self textFieldDelegate];
+    v8 = [textFieldDelegate2 textFieldShouldEndEditing:editingCopy];
   }
 
   else
@@ -240,33 +240,33 @@ LABEL_8:
   return v8;
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v7 = a3;
-  v4 = [(PassthruSearchBar *)self textFieldDelegate];
+  editingCopy = editing;
+  textFieldDelegate = [(PassthruSearchBar *)self textFieldDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(PassthruSearchBar *)self textFieldDelegate];
-    [v6 textFieldDidBeginEditing:v7];
+    textFieldDelegate2 = [(PassthruSearchBar *)self textFieldDelegate];
+    [textFieldDelegate2 textFieldDidBeginEditing:editingCopy];
   }
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   v5 = MapsSuggestionsResourceDepotForMapsProcess();
-  v6 = [v5 oneInsights];
-  [v6 preload];
+  oneInsights = [v5 oneInsights];
+  [oneInsights preload];
 
-  v7 = [(PassthruSearchBar *)self textFieldDelegate];
-  LOBYTE(v6) = objc_opt_respondsToSelector();
+  textFieldDelegate = [(PassthruSearchBar *)self textFieldDelegate];
+  LOBYTE(oneInsights) = objc_opt_respondsToSelector();
 
-  if (v6)
+  if (oneInsights)
   {
-    v8 = [(PassthruSearchBar *)self textFieldDelegate];
-    v9 = [v8 textFieldShouldBeginEditing:v4];
+    textFieldDelegate2 = [(PassthruSearchBar *)self textFieldDelegate];
+    v9 = [textFieldDelegate2 textFieldShouldBeginEditing:editingCopy];
   }
 
   else
@@ -277,16 +277,16 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)textFieldShouldClear:(id)a3
+- (BOOL)textFieldShouldClear:(id)clear
 {
-  v4 = a3;
-  v5 = [(PassthruSearchBar *)self textFieldDelegate];
+  clearCopy = clear;
+  textFieldDelegate = [(PassthruSearchBar *)self textFieldDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PassthruSearchBar *)self textFieldDelegate];
-    v8 = [v7 textFieldShouldClear:v4];
+    textFieldDelegate2 = [(PassthruSearchBar *)self textFieldDelegate];
+    v8 = [textFieldDelegate2 textFieldShouldClear:clearCopy];
   }
 
   else
@@ -297,19 +297,19 @@ LABEL_8:
   return v8;
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = [(PassthruSearchBar *)self textFieldDelegate];
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  textFieldDelegate = [(PassthruSearchBar *)self textFieldDelegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(PassthruSearchBar *)self textFieldDelegate];
-    v14 = [v13 textField:v9 shouldChangeCharactersInRange:location replacementString:{length, v10}];
+    textFieldDelegate2 = [(PassthruSearchBar *)self textFieldDelegate];
+    v14 = [textFieldDelegate2 textField:fieldCopy shouldChangeCharactersInRange:location replacementString:{length, stringCopy}];
   }
 
   else
@@ -320,16 +320,16 @@ LABEL_8:
   return v14;
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v4 = a3;
-  v5 = [(PassthruSearchBar *)self textFieldDelegate];
+  returnCopy = return;
+  textFieldDelegate = [(PassthruSearchBar *)self textFieldDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PassthruSearchBar *)self textFieldDelegate];
-    v8 = [v7 textFieldShouldReturn:v4];
+    textFieldDelegate2 = [(PassthruSearchBar *)self textFieldDelegate];
+    v8 = [textFieldDelegate2 textFieldShouldReturn:returnCopy];
   }
 
   else
@@ -340,55 +340,55 @@ LABEL_8:
   return v8;
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_textColor != v5)
+  colorCopy = color;
+  if (self->_textColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_textColor, a3);
-    v6 = [(PassthruSearchBar *)self searchField];
-    [v6 setTextColor:v7];
+    v7 = colorCopy;
+    objc_storeStrong(&self->_textColor, color);
+    searchField = [(PassthruSearchBar *)self searchField];
+    [searchField setTextColor:v7];
 
-    v5 = v7;
+    colorCopy = v7;
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = PassthruSearchBar;
-  v4 = a3;
-  [(PassthruSearchBar *)&v9 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(PassthruSearchBar *)&v9 traitCollectionDidChange:changeCopy];
   v5 = [(PassthruSearchBar *)self traitCollection:v9.receiver];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v5 preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
 
-  v8 = sub_10008FB5C(v6, v7);
+  v8 = sub_10008FB5C(preferredContentSizeCategory, preferredContentSizeCategory2);
   if (v8)
   {
     [(PassthruSearchBar *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
   v4.receiver = self;
   v4.super_class = PassthruSearchBar;
-  [(PassthruSearchBar *)&v4 setContentInset:a3.top, a3.left, a3.bottom, a3.right];
+  [(PassthruSearchBar *)&v4 setContentInset:inset.top, inset.left, inset.bottom, inset.right];
   [(PassthruSearchBar *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setTextFieldDelegate:(id)a3
+- (void)setTextFieldDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_textFieldDelegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_textFieldDelegate, delegateCopy);
   v5 = objc_opt_respondsToSelector();
 
   self->_delegateHandlesLinks = v5 & 1;
 }
 
-- (PassthruSearchBar)initWithStyle:(int64_t)a3
+- (PassthruSearchBar)initWithStyle:(int64_t)style
 {
   v44.receiver = self;
   v44.super_class = PassthruSearchBar;
@@ -400,8 +400,8 @@ LABEL_8:
   }
 
   [(PassthruSearchBar *)v4 setAccessibilityIdentifier:@"MapsSearchBar"];
-  v6 = [(PassthruSearchBar *)v5 searchField];
-  [v6 setDelegate:v5];
+  searchField = [(PassthruSearchBar *)v5 searchField];
+  [searchField setDelegate:v5];
 
   [(PassthruSearchBar *)v5 setTranslucent:1];
   [(PassthruSearchBar *)v5 setOpaque:0];
@@ -414,86 +414,86 @@ LABEL_8:
   [(PassthruSearchBar *)v5 _setBackdropStyle:2005];
   [(PassthruSearchBar *)v5 _setAutoDisableCancelButton:0];
   [(PassthruSearchBar *)v5 setCenterPlaceholder:0];
-  if (!a3)
+  if (!style)
   {
     v9 = &qword_1012163A8;
     goto LABEL_6;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
     v9 = &qword_101215410;
 LABEL_6:
     [(PassthruSearchBar *)v5 setContentInset:*v9, 16.0, *v9, 16.0];
   }
 
-  v10 = [(PassthruSearchBar *)v5 searchTextField];
-  [v10 _setRoundedRectBackgroundCornerRadius:10.0];
+  searchTextField = [(PassthruSearchBar *)v5 searchTextField];
+  [searchTextField _setRoundedRectBackgroundCornerRadius:10.0];
 
-  v11 = [(PassthruSearchBar *)v5 searchTextField];
-  [v11 setBecomesFirstResponderOnClearButtonTap:0];
+  searchTextField2 = [(PassthruSearchBar *)v5 searchTextField];
+  [searchTextField2 setBecomesFirstResponderOnClearButtonTap:0];
 
-  v12 = [(PassthruSearchBar *)v5 searchTextField];
-  [v12 setAutocorrectionType:1];
+  searchTextField3 = [(PassthruSearchBar *)v5 searchTextField];
+  [searchTextField3 setAutocorrectionType:1];
 
-  v13 = [(PassthruSearchBar *)v5 searchTextField];
-  [v13 setSpellCheckingType:1];
+  searchTextField4 = [(PassthruSearchBar *)v5 searchTextField];
+  [searchTextField4 setSpellCheckingType:1];
 
-  v14 = [(PassthruSearchBar *)v5 searchTextField];
-  [v14 setTextLoupeVisibility:3];
+  searchTextField5 = [(PassthruSearchBar *)v5 searchTextField];
+  [searchTextField5 setTextLoupeVisibility:3];
 
-  v15 = [(PassthruSearchBar *)v5 searchTextField];
-  [v15 setReturnKeyType:6];
+  searchTextField6 = [(PassthruSearchBar *)v5 searchTextField];
+  [searchTextField6 setReturnKeyType:6];
 
-  v16 = [(PassthruSearchBar *)v5 searchTextField];
-  [v16 setEnablesReturnKeyAutomatically:1];
+  searchTextField7 = [(PassthruSearchBar *)v5 searchTextField];
+  [searchTextField7 setEnablesReturnKeyAutomatically:1];
 
-  v17 = [(PassthruSearchBar *)v5 searchTextField];
-  [v17 setEnablesReturnKeyOnNonWhiteSpaceContent:1];
+  searchTextField8 = [(PassthruSearchBar *)v5 searchTextField];
+  [searchTextField8 setEnablesReturnKeyOnNonWhiteSpaceContent:1];
 
-  v18 = [(PassthruSearchBar *)v5 searchTextField];
-  [v18 setClipsToBounds:1];
+  searchTextField9 = [(PassthruSearchBar *)v5 searchTextField];
+  [searchTextField9 setClipsToBounds:1];
 
-  v19 = [(PassthruSearchBar *)v5 searchTextField];
-  [v19 setAccessibilityIdentifier:@"MapsSearchTextField"];
+  searchTextField10 = [(PassthruSearchBar *)v5 searchTextField];
+  [searchTextField10 setAccessibilityIdentifier:@"MapsSearchTextField"];
 
   if (sub_10000FA08(v5) != 5)
   {
-    v20 = [(PassthruSearchBar *)v5 searchTextField];
-    [v20 setClearButtonMode:1];
+    searchTextField11 = [(PassthruSearchBar *)v5 searchTextField];
+    [searchTextField11 setClearButtonMode:1];
   }
 
   v21 = objc_alloc_init(UIFocusGuide);
   [(PassthruSearchBar *)v5 setFocusGuide:v21];
 
-  v22 = [(PassthruSearchBar *)v5 searchTextField];
-  v46 = v22;
+  searchTextField12 = [(PassthruSearchBar *)v5 searchTextField];
+  v46 = searchTextField12;
   v23 = [NSArray arrayWithObjects:&v46 count:1];
-  v24 = [(PassthruSearchBar *)v5 focusGuide];
-  [v24 setPreferredFocusEnvironments:v23];
+  focusGuide = [(PassthruSearchBar *)v5 focusGuide];
+  [focusGuide setPreferredFocusEnvironments:v23];
 
-  v25 = [(PassthruSearchBar *)v5 focusGuide];
-  [(PassthruSearchBar *)v5 addLayoutGuide:v25];
+  focusGuide2 = [(PassthruSearchBar *)v5 focusGuide];
+  [(PassthruSearchBar *)v5 addLayoutGuide:focusGuide2];
 
-  v43 = [(PassthruSearchBar *)v5 focusGuide];
-  v42 = [v43 topAnchor];
-  v41 = [(PassthruSearchBar *)v5 topAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  focusGuide3 = [(PassthruSearchBar *)v5 focusGuide];
+  topAnchor = [focusGuide3 topAnchor];
+  topAnchor2 = [(PassthruSearchBar *)v5 topAnchor];
+  v40 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v45[0] = v40;
-  v39 = [(PassthruSearchBar *)v5 focusGuide];
-  v38 = [v39 bottomAnchor];
-  v37 = [(PassthruSearchBar *)v5 bottomAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  focusGuide4 = [(PassthruSearchBar *)v5 focusGuide];
+  bottomAnchor = [focusGuide4 bottomAnchor];
+  bottomAnchor2 = [(PassthruSearchBar *)v5 bottomAnchor];
+  v36 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v45[1] = v36;
-  v26 = [(PassthruSearchBar *)v5 focusGuide];
-  v27 = [v26 leadingAnchor];
-  v28 = [(PassthruSearchBar *)v5 leadingAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
+  focusGuide5 = [(PassthruSearchBar *)v5 focusGuide];
+  leadingAnchor = [focusGuide5 leadingAnchor];
+  leadingAnchor2 = [(PassthruSearchBar *)v5 leadingAnchor];
+  v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v45[2] = v29;
-  v30 = [(PassthruSearchBar *)v5 focusGuide];
-  v31 = [v30 trailingAnchor];
-  v32 = [(PassthruSearchBar *)v5 trailingAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32];
+  focusGuide6 = [(PassthruSearchBar *)v5 focusGuide];
+  trailingAnchor = [focusGuide6 trailingAnchor];
+  trailingAnchor2 = [(PassthruSearchBar *)v5 trailingAnchor];
+  v33 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v45[3] = v33;
   v34 = [NSArray arrayWithObjects:v45 count:4];
   [NSLayoutConstraint activateConstraints:v34];

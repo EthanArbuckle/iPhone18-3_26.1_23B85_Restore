@@ -7,9 +7,9 @@
 
 - (id)_sbWindowScene
 {
-  v1 = [a1 windowScene];
+  windowScene = [self windowScene];
   v2 = objc_opt_class();
-  v3 = v1;
+  v3 = windowScene;
   if (v2)
   {
     if (objc_opt_isKindOfClass())
@@ -28,9 +28,9 @@
     v4 = 0;
   }
 
-  v5 = v4;
+  associatedWindowScene = v4;
 
-  if (!v5)
+  if (!associatedWindowScene)
   {
     v6 = objc_opt_class();
     v7 = v3;
@@ -54,18 +54,18 @@
 
     v9 = v8;
 
-    v5 = [v9 associatedWindowScene];
+    associatedWindowScene = [v9 associatedWindowScene];
   }
 
-  return v5;
+  return associatedWindowScene;
 }
 
 - (id)_sbDisplayConfiguration
 {
-  v1 = [a1 _sbWindowScene];
-  v2 = [v1 _sbDisplayConfiguration];
+  _sbWindowScene = [self _sbWindowScene];
+  _sbDisplayConfiguration = [_sbWindowScene _sbDisplayConfiguration];
 
-  return v2;
+  return _sbDisplayConfiguration;
 }
 
 @end

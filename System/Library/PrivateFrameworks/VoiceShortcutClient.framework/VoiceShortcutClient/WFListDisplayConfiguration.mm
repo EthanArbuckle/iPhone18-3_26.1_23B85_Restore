@@ -1,26 +1,26 @@
 @interface WFListDisplayConfiguration
-- (WFListDisplayConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFListDisplayConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFListDisplayConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFListDisplayConfiguration *)self titleLineLimit];
-  [v4 encodeObject:v5 forKey:@"titleLineLimit"];
+  coderCopy = coder;
+  titleLineLimit = [(WFListDisplayConfiguration *)self titleLineLimit];
+  [coderCopy encodeObject:titleLineLimit forKey:@"titleLineLimit"];
 }
 
-- (WFListDisplayConfiguration)initWithCoder:(id)a3
+- (WFListDisplayConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFListDisplayConfiguration;
   v5 = [(WFListDisplayConfiguration *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"titleLineLimit"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"titleLineLimit"];
     titleLineLimit = v5->_titleLineLimit;
     v5->_titleLineLimit = v6;
 

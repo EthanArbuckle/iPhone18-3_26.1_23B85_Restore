@@ -1,35 +1,35 @@
 @interface MSCMSCounterSignerInfo
-- (BOOL)createRequiredAttributes:(id *)a3;
-- (BOOL)verifyContentTypeAttribute:(id *)a3;
+- (BOOL)createRequiredAttributes:(id *)attributes;
+- (BOOL)verifyContentTypeAttribute:(id *)attribute;
 - (MSCMSSignerInfo)containingSignerInfo;
-- (id)calculateSignerInfoDigest:(id *)a3;
+- (id)calculateSignerInfoDigest:(id *)digest;
 - (id)certificates;
-- (void)setContainingSignerInfo:(id)a3;
+- (void)setContainingSignerInfo:(id)info;
 @end
 
 @implementation MSCMSCounterSignerInfo
 
 - (id)certificates
 {
-  v3 = [(MSCMSCounterSignerInfo *)self containingSignerInfo];
+  containingSignerInfo = [(MSCMSCounterSignerInfo *)self containingSignerInfo];
 
-  if (v3)
+  if (containingSignerInfo)
   {
-    v4 = [(MSCMSCounterSignerInfo *)self containingSignerInfo];
-    v5 = [v4 certificates];
+    containingSignerInfo2 = [(MSCMSCounterSignerInfo *)self containingSignerInfo];
+    certificates = [containingSignerInfo2 certificates];
   }
 
   else
   {
-    v5 = 0;
+    certificates = 0;
   }
 
-  return v5;
+  return certificates;
 }
 
-- (void)setContainingSignerInfo:(id)a3
+- (void)setContainingSignerInfo:(id)info
 {
-  obj = a3;
+  obj = info;
   WeakRetained = objc_loadWeakRetained(&self->_containingSignerInfo);
 
   if (WeakRetained != obj)
@@ -40,11 +40,11 @@
   }
 }
 
-- (BOOL)verifyContentTypeAttribute:(id *)a3
+- (BOOL)verifyContentTypeAttribute:(id *)attribute
 {
-  if (a3 && *a3)
+  if (attribute && *attribute)
   {
-    v5 = [*a3 copy];
+    v5 = [*attribute copy];
   }
 
   else
@@ -63,7 +63,7 @@
     [(MSCMSCounterSignerInfo *)v7 verifyContentTypeAttribute:?];
     v9 = 0;
     v7 = v13;
-    if (!a3)
+    if (!attribute)
     {
       goto LABEL_10;
     }
@@ -72,7 +72,7 @@
   else
   {
     v9 = 1;
-    if (!a3)
+    if (!attribute)
     {
       goto LABEL_10;
     }
@@ -81,7 +81,7 @@
   if (v7)
   {
     v10 = v7;
-    *a3 = v7;
+    *attribute = v7;
   }
 
 LABEL_10:
@@ -89,37 +89,37 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)createRequiredAttributes:(id *)a3
+- (BOOL)createRequiredAttributes:(id *)attributes
 {
-  v5 = [(MSCMSSignerInfo *)self protectedAttributes];
-  if (!v5 || (v6 = v5, -[MSCMSSignerInfo protectedAttributes](self, "protectedAttributes"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, v6, !v8))
+  protectedAttributes = [(MSCMSSignerInfo *)self protectedAttributes];
+  if (!protectedAttributes || (v6 = protectedAttributes, -[MSCMSSignerInfo protectedAttributes](self, "protectedAttributes"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, v6, !v8))
   {
     v13 = 0;
     v22 = 1;
     goto LABEL_12;
   }
 
-  v9 = [(MSCMSCounterSignerInfo *)self containingSignerInfo];
-  v10 = [(MSCMSSignerInfo *)self digestAlgorithm];
-  v11 = [v10 algorithm];
+  containingSignerInfo = [(MSCMSCounterSignerInfo *)self containingSignerInfo];
+  digestAlgorithm = [(MSCMSSignerInfo *)self digestAlgorithm];
+  algorithm = [digestAlgorithm algorithm];
   v27 = 0;
-  v12 = [v9 calculateSignatureDigestWithAlgorithm:v11 error:&v27];
+  v12 = [containingSignerInfo calculateSignatureDigestWithAlgorithm:algorithm error:&v27];
   v13 = v27;
 
   if (![(MSCMSCounterSignerInfo *)self verifyContentTypeAttribute:0]|| ![(MSCMSSignerInfo *)self verifyMessageDigestAttribute:v12 error:0])
   {
-    v14 = [(MSCMSSignerInfo *)self protectedAttributes];
+    protectedAttributes2 = [(MSCMSSignerInfo *)self protectedAttributes];
     v26 = v13;
     v15 = [MSOID OIDWithString:@"1.2.840.113549.1.9.3" error:&v26];
     v16 = v26;
 
-    [v14 removeAttributes:v15];
-    v17 = [(MSCMSSignerInfo *)self protectedAttributes];
+    [protectedAttributes2 removeAttributes:v15];
+    protectedAttributes3 = [(MSCMSSignerInfo *)self protectedAttributes];
     v25 = v16;
     v18 = [MSOID OIDWithString:@"1.2.840.113549.1.9.4" error:&v25];
     v13 = v25;
 
-    [v17 removeAttributes:v18];
+    [protectedAttributes3 removeAttributes:v18];
     v19 = [MSCMSMessageDigestAttribute messageDigestAttributeWithDigest:v12];
     if (!v19)
     {
@@ -128,17 +128,17 @@ LABEL_10:
     }
 
     v20 = v19;
-    v21 = [(MSCMSSignerInfo *)self protectedAttributes];
-    [v21 addObject:v20];
+    protectedAttributes4 = [(MSCMSSignerInfo *)self protectedAttributes];
+    [protectedAttributes4 addObject:v20];
   }
 
   v22 = 1;
 LABEL_8:
 
-  if (a3 && v13)
+  if (attributes && v13)
   {
     v23 = v13;
-    *a3 = v13;
+    *attributes = v13;
   }
 
 LABEL_12:
@@ -153,11 +153,11 @@ LABEL_12:
   return WeakRetained;
 }
 
-- (id)calculateSignerInfoDigest:(id *)a3
+- (id)calculateSignerInfoDigest:(id *)digest
 {
-  if (a3 && *a3)
+  if (digest && *digest)
   {
-    v5 = [*a3 copy];
+    v5 = [*digest copy];
   }
 
   else
@@ -165,17 +165,17 @@ LABEL_12:
     v5 = 0;
   }
 
-  v6 = [(MSCMSCounterSignerInfo *)self containingSignerInfo];
-  if (!v6)
+  containingSignerInfo = [(MSCMSCounterSignerInfo *)self containingSignerInfo];
+  if (!containingSignerInfo)
   {
     goto LABEL_18;
   }
 
-  v7 = v6;
-  v8 = [(MSCMSCounterSignerInfo *)self containingSignerInfo];
-  v9 = [v8 signature];
+  v7 = containingSignerInfo;
+  containingSignerInfo2 = [(MSCMSCounterSignerInfo *)self containingSignerInfo];
+  signature = [containingSignerInfo2 signature];
 
-  if (!v9)
+  if (!signature)
   {
 LABEL_18:
     v27 = MSErrorCMSDomain[0];
@@ -187,42 +187,42 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v10 = [(MSCMSSignerInfo *)self digestAlgorithm];
+  digestAlgorithm = [(MSCMSSignerInfo *)self digestAlgorithm];
 
-  if (!v10)
+  if (!digestAlgorithm)
   {
-    v11 = [(MSCMSSignerInfo *)self signatureAlgorithm];
+    signatureAlgorithm = [(MSCMSSignerInfo *)self signatureAlgorithm];
 
-    if (!v11)
+    if (!signatureAlgorithm)
     {
       v27 = MSErrorCMSDomain[0];
       v28 = @"signer has no signature algorithm";
       goto LABEL_19;
     }
 
-    v12 = [(MSCMSSignerInfo *)self signatureAlgorithm];
+    signatureAlgorithm2 = [(MSCMSSignerInfo *)self signatureAlgorithm];
     v35 = v5;
-    v13 = [MSAlgorithmIdentifier digestAlgorithmWithSignatureAlgorithm:v12 error:&v35];
+    v13 = [MSAlgorithmIdentifier digestAlgorithmWithSignatureAlgorithm:signatureAlgorithm2 error:&v35];
     v14 = v35;
 
     [(MSCMSSignerInfo *)self setDigestAlgorithm:v13];
     v5 = v14;
   }
 
-  v15 = [(MSCMSSignerInfo *)self digestAlgorithm];
+  digestAlgorithm2 = [(MSCMSSignerInfo *)self digestAlgorithm];
 
-  if (!v15)
+  if (!digestAlgorithm2)
   {
     v27 = MSErrorCMSDomain[0];
     v28 = @"No digest algorithm specified";
     goto LABEL_19;
   }
 
-  v16 = [(MSCMSCounterSignerInfo *)self containingSignerInfo];
-  v17 = [(MSCMSSignerInfo *)self digestAlgorithm];
-  v18 = [v17 algorithm];
+  containingSignerInfo3 = [(MSCMSCounterSignerInfo *)self containingSignerInfo];
+  digestAlgorithm3 = [(MSCMSSignerInfo *)self digestAlgorithm];
+  algorithm = [digestAlgorithm3 algorithm];
   v34 = v5;
-  v19 = [v16 calculateSignatureDigestWithAlgorithm:v18 error:&v34];
+  v19 = [containingSignerInfo3 calculateSignatureDigestWithAlgorithm:algorithm error:&v34];
   v20 = v34;
 
   if (!v19)
@@ -230,8 +230,8 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v21 = [(MSCMSSignerInfo *)self protectedAttributes];
-  v22 = [v21 count];
+  protectedAttributes = [(MSCMSSignerInfo *)self protectedAttributes];
+  v22 = [protectedAttributes count];
 
   if (v22)
   {
@@ -244,7 +244,7 @@ LABEL_19:
       v26 = 0;
 LABEL_16:
       v20 = v24;
-      if (!a3)
+      if (!digest)
       {
         goto LABEL_25;
       }
@@ -267,7 +267,7 @@ LABEL_16:
 
 LABEL_20:
     v26 = 0;
-    if (!a3)
+    if (!digest)
     {
       goto LABEL_25;
     }
@@ -277,7 +277,7 @@ LABEL_20:
 
   v19 = v19;
   v26 = v19;
-  if (!a3)
+  if (!digest)
   {
     goto LABEL_25;
   }
@@ -286,7 +286,7 @@ LABEL_23:
   if (v20)
   {
     v29 = v20;
-    *a3 = v20;
+    *digest = v20;
   }
 
 LABEL_25:

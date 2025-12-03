@@ -1,10 +1,10 @@
 @interface LPCollaborationFooterStyle
-- (LPCollaborationFooterStyle)initWithPlatform:(int64_t)a3 sizeClass:(unint64_t)a4 fontScalingFactor:(double)a5;
+- (LPCollaborationFooterStyle)initWithPlatform:(int64_t)platform sizeClass:(unint64_t)class fontScalingFactor:(double)factor;
 @end
 
 @implementation LPCollaborationFooterStyle
 
-- (LPCollaborationFooterStyle)initWithPlatform:(int64_t)a3 sizeClass:(unint64_t)a4 fontScalingFactor:(double)a5
+- (LPCollaborationFooterStyle)initWithPlatform:(int64_t)platform sizeClass:(unint64_t)class fontScalingFactor:(double)factor
 {
   v34.receiver = self;
   v34.super_class = LPCollaborationFooterStyle;
@@ -22,8 +22,8 @@
     separatorMargin = v8->_separatorMargin;
     v8->_separatorMargin = v12;
 
-    v14 = [(LPPadding *)v8->_margin bottom];
-    [(LPPadding *)v8->_separatorMargin setBottom:v14];
+    bottom = [(LPPadding *)v8->_margin bottom];
+    [(LPPadding *)v8->_separatorMargin setBottom:bottom];
 
     v15 = objc_alloc_init(LPPadding);
     padding = v8->_padding;
@@ -35,7 +35,7 @@
     indicatorSpacing = v8->_indicatorSpacing;
     v8->_indicatorSpacing = v17;
 
-    v19 = [[LPTextViewStyle alloc] initWithPlatform:a3 fontScalingFactor:a5];
+    v19 = [[LPTextViewStyle alloc] initWithPlatform:platform fontScalingFactor:factor];
     options = v8->_options;
     v8->_options = v19;
 
@@ -46,9 +46,9 @@
 
     else
     {
-      IsCardHeading = sizeClassIsCardHeading(a4);
+      IsCardHeading = sizeClassIsCardHeading(class);
       v23 = MEMORY[0x1E69DDCF8];
-      if (a3 != 5)
+      if (platform != 5)
       {
         v23 = MEMORY[0x1E69DDD80];
       }
@@ -58,13 +58,13 @@
         v23 = MEMORY[0x1E69DDD28];
       }
 
-      v21 = fontWithTraits(*v23, 0x8000, a4);
+      v21 = fontWithTraits(*v23, 0x8000, class);
     }
 
     v24 = v21;
     [(LPTextViewStyle *)v8->_options setFont:v21];
 
-    if (a3 == 5)
+    if (platform == 5)
     {
       [MEMORY[0x1E69DC888] labelColor];
     }
@@ -76,7 +76,7 @@
     v25 = ;
     [(LPTextViewStyle *)v8->_options setColor:v25];
 
-    v26 = [[LPTextViewStyle alloc] initWithPlatform:a3 fontScalingFactor:a5];
+    v26 = [[LPTextViewStyle alloc] initWithPlatform:platform fontScalingFactor:factor];
     handle = v8->_handle;
     v8->_handle = v26;
 
@@ -88,19 +88,19 @@
     else
     {
       v29 = MEMORY[0x1E69DDD28];
-      if (a3 != 5)
+      if (platform != 5)
       {
         v29 = MEMORY[0x1E69DDD10];
       }
 
-      v28 = fontWithTraits(*v29, 0, a4);
+      v28 = fontWithTraits(*v29, 0, class);
     }
 
     v30 = v28;
     [(LPTextViewStyle *)v8->_handle setFont:v28];
 
-    v31 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(LPTextViewStyle *)v8->_handle setColor:v31];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(LPTextViewStyle *)v8->_handle setColor:secondaryLabelColor];
 
     v32 = v8;
   }

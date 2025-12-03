@@ -1,26 +1,26 @@
 @interface FKAmount
-- (BOOL)isEqual:(id)a3;
-- (FKAmount)initWithDecimalNumber:(id)a3 currency:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (FKAmount)initWithDecimalNumber:(id)number currency:(id)currency;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation FKAmount
 
-- (FKAmount)initWithDecimalNumber:(id)a3 currency:(id)a4
+- (FKAmount)initWithDecimalNumber:(id)number currency:(id)currency
 {
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  currencyCopy = currency;
   v14.receiver = self;
   v14.super_class = FKAmount;
   v8 = [(FKAmount *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [numberCopy copy];
     decimal = v8->_decimal;
     v8->_decimal = v9;
 
-    v11 = [v7 copy];
+    v11 = [currencyCopy copy];
     currency = v8->_currency;
     v8->_currency = v11;
   }
@@ -28,7 +28,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(FKAmount);
   v5 = [(NSDecimalNumber *)self->_decimal copy];
@@ -52,16 +52,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     if ([(NSDecimalNumber *)self->_decimal isEqualToNumber:v6[1]])

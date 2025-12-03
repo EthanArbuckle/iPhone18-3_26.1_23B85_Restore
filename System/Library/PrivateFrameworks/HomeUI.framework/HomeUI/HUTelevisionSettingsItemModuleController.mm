@@ -1,40 +1,40 @@
 @interface HUTelevisionSettingsItemModuleController
-- (Class)cellClassForItem:(id)a3;
-- (unint64_t)didSelectItem:(id)a3;
+- (Class)cellClassForItem:(id)item;
+- (unint64_t)didSelectItem:(id)item;
 @end
 
 @implementation HUTelevisionSettingsItemModuleController
 
-- (Class)cellClassForItem:(id)a3
+- (Class)cellClassForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 showPowerModeSelectionItem];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  showPowerModeSelectionItem = [module showPowerModeSelectionItem];
 
-  if (v6 == v4)
+  if (showPowerModeSelectionItem == itemCopy)
   {
     v7 = objc_opt_class();
   }
 
   else
   {
-    NSLog(&cfstr_UnknownItem.isa, v4);
+    NSLog(&cfstr_UnknownItem.isa, itemCopy);
     v7 = 0;
   }
 
   return v7;
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemModuleController *)self module];
-  v6 = [v5 showPowerModeSelectionItem];
+  itemCopy = item;
+  module = [(HUItemModuleController *)self module];
+  showPowerModeSelectionItem = [module showPowerModeSelectionItem];
 
-  if (v6 == v4)
+  if (showPowerModeSelectionItem == itemCopy)
   {
-    v7 = [(HUItemModuleController *)self module];
-    v8 = [v7 showPowerModeSelection];
+    module2 = [(HUItemModuleController *)self module];
+    showPowerModeSelection = [module2 showPowerModeSelection];
   }
 
   return 0;

@@ -1,16 +1,16 @@
 @interface SeparatorHeaderCell
-- (_TtC19HealthMedicationsUI19SeparatorHeaderCell)initWithCoder:(id)a3;
-- (_TtC19HealthMedicationsUI19SeparatorHeaderCell)initWithFrame:(CGRect)a3;
+- (_TtC19HealthMedicationsUI19SeparatorHeaderCell)initWithCoder:(id)coder;
+- (_TtC19HealthMedicationsUI19SeparatorHeaderCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SeparatorHeaderCell
 
-- (_TtC19HealthMedicationsUI19SeparatorHeaderCell)initWithFrame:(CGRect)a3
+- (_TtC19HealthMedicationsUI19SeparatorHeaderCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = self + OBJC_IVAR____TtC19HealthMedicationsUI19SeparatorHeaderCell_item;
   *v7 = 0u;
   *(v7 + 1) = 0u;
@@ -18,13 +18,13 @@
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI19SeparatorHeaderCell____lazy_storage___separatorView) = 0;
   v10.receiver = self;
   v10.super_class = type metadata accessor for SeparatorHeaderCell();
-  v8 = [(SeparatorHeaderCell *)&v10 initWithFrame:x, y, width, height];
+  height = [(SeparatorHeaderCell *)&v10 initWithFrame:x, y, width, height];
   sub_228253998();
 
-  return v8;
+  return height;
 }
 
-- (_TtC19HealthMedicationsUI19SeparatorHeaderCell)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI19SeparatorHeaderCell)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC19HealthMedicationsUI19SeparatorHeaderCell_item;
   *v4 = 0u;
@@ -33,8 +33,8 @@
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI19SeparatorHeaderCell____lazy_storage___separatorView) = 0;
   v10.receiver = self;
   v10.super_class = type metadata accessor for SeparatorHeaderCell();
-  v5 = a3;
-  v6 = [(SeparatorHeaderCell *)&v10 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(SeparatorHeaderCell *)&v10 initWithCoder:coderCopy];
   v7 = v6;
   if (v6)
   {

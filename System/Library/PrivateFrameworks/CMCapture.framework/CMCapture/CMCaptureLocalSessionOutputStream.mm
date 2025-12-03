@@ -1,17 +1,17 @@
 @interface CMCaptureLocalSessionOutputStream
 + (void)initialize;
-- (CMCaptureLocalSessionOutputStream)initWithSampleBufferReceiver:(id)a3;
-- (opaqueCMSampleBuffer)_copyMetadataOnlySampleBufferFromSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)_handleLocalQueueMessage:(FigLocalQueueMessage *)a3;
+- (CMCaptureLocalSessionOutputStream)initWithSampleBufferReceiver:(id)receiver;
+- (opaqueCMSampleBuffer)_copyMetadataOnlySampleBufferFromSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)_handleLocalQueueMessage:(FigLocalQueueMessage *)message;
 - (void)dealloc;
-- (void)handleNotification:(id)a3 payload:(id)a4;
+- (void)handleNotification:(id)notification payload:(id)payload;
 @end
 
 @implementation CMCaptureLocalSessionOutputStream
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -20,7 +20,7 @@
   }
 }
 
-- (CMCaptureLocalSessionOutputStream)initWithSampleBufferReceiver:(id)a3
+- (CMCaptureLocalSessionOutputStream)initWithSampleBufferReceiver:(id)receiver
 {
   v14.receiver = self;
   v14.super_class = CMCaptureLocalSessionOutputStream;
@@ -28,7 +28,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_sampleBufferReceiver = a3;
+    v4->_sampleBufferReceiver = receiver;
     v4->_videoConfiguration = objc_alloc_init(CMCaptureLocalSessionVideoConfiguration);
     v5->_requestedMetadataObjects = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v5->_faceTrackingAttributes = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -85,7 +85,7 @@ LABEL_10:
   [(CMCaptureLocalSessionOutputStream *)&v3 dealloc];
 }
 
-- (void)handleNotification:(id)a3 payload:(id)a4
+- (void)handleNotification:(id)notification payload:(id)payload
 {
   objc_initWeak(&location, self);
   if (dword_1EB58E760)
@@ -97,10 +97,10 @@ LABEL_10:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if ([a3 isEqualToString:{@"LocalQueueUpdated", v13, v14}])
+  if ([notification isEqualToString:{@"LocalQueueUpdated", v13, v14}])
   {
-    v8 = [a4 objectForKeyedSubscript:@"LocalQueue"];
-    v9 = [a4 objectForKeyedSubscript:@"SectionID"];
+    v8 = [payload objectForKeyedSubscript:@"LocalQueue"];
+    v9 = [payload objectForKeyedSubscript:@"SectionID"];
     if ([(NSArray *)self->_associatedSinkIDs containsObject:v9])
     {
       if (dword_1EB58E760)
@@ -124,7 +124,7 @@ LABEL_10:
           v17 = 136315906;
           v18 = "[CMCaptureLocalSessionOutputStream handleNotification:payload:]";
           v19 = 2114;
-          v20 = self;
+          selfCopy = self;
           v21 = 2112;
           v22 = v8;
           v23 = 2114;
@@ -160,11 +160,11 @@ void __64__CMCaptureLocalSessionOutputStream_handleNotification_payload___block_
   }
 }
 
-- (void)_handleLocalQueueMessage:(FigLocalQueueMessage *)a3
+- (void)_handleLocalQueueMessage:(FigLocalQueueMessage *)message
 {
-  if (a3->var0 == 3)
+  if (message->var0 == 3)
   {
-    v5 = *(&a3->var0 + 1);
+    v5 = *(&message->var0 + 1);
     if (CMSampleBufferGetFormatDescription(v5))
     {
       v6 = 0;
@@ -197,7 +197,7 @@ void __64__CMCaptureLocalSessionOutputStream_handleNotification_payload___block_
     }
   }
 
-  else if (a3->var0 == 5)
+  else if (message->var0 == 5)
   {
     if (dword_1EB58E760)
     {
@@ -208,7 +208,7 @@ void __64__CMCaptureLocalSessionOutputStream_handleNotification_payload___block_
   }
 }
 
-- (opaqueCMSampleBuffer)_copyMetadataOnlySampleBufferFromSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (opaqueCMSampleBuffer)_copyMetadataOnlySampleBufferFromSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   formatDescriptionOut = 0;
   v30 = 0;
@@ -225,9 +225,9 @@ LABEL_24:
   }
 
   memset(&sampleTimingArray, 0, sizeof(sampleTimingArray));
-  CMSampleBufferGetDuration(&sampleTimingArray.duration, a3);
-  CMSampleBufferGetPresentationTimeStamp(&sampleTimingArray.presentationTimeStamp, a3);
-  CMSampleBufferGetDecodeTimeStamp(&sampleTimingArray.decodeTimeStamp, a3);
+  CMSampleBufferGetDuration(&sampleTimingArray.duration, buffer);
+  CMSampleBufferGetPresentationTimeStamp(&sampleTimingArray.presentationTimeStamp, buffer);
+  CMSampleBufferGetDecodeTimeStamp(&sampleTimingArray.decodeTimeStamp, buffer);
   v5 = CMSampleBufferCreate(v4, 0, 1u, 0, 0, formatDescriptionOut, 0, 1, &sampleTimingArray, 0, 0, &v30);
   if (v5)
   {
@@ -259,11 +259,11 @@ LABEL_24:
   }
 
   v6 = *off_1E798A518;
-  v7 = CMGetAttachment(a3, *off_1E798A518, 0);
+  v7 = CMGetAttachment(buffer, *off_1E798A518, 0);
   v8 = [v7 objectForKeyedSubscript:@"DetectedObjectsInfo"];
   v9 = [v7 objectForKeyedSubscript:@"TrackedFaces"];
-  v10 = CMGetAttachment(a3, @"DetectedObjectsInfo", 0);
-  v11 = CMGetAttachment(a3, @"TrackedFaces", 0);
+  v10 = CMGetAttachment(buffer, @"DetectedObjectsInfo", 0);
+  v11 = CMGetAttachment(buffer, @"TrackedFaces", 0);
   v12 = v8 == 0 && v10 != 0;
   if (!v12)
   {
@@ -284,16 +284,16 @@ LABEL_24:
   {
     if (v7)
     {
-      v14 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v7];
+      dictionary = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v7];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v15 = v14;
-    [v14 setObject:v10 forKeyedSubscript:@"DetectedObjectsInfo"];
+    v15 = dictionary;
+    [dictionary setObject:v10 forKeyedSubscript:@"DetectedObjectsInfo"];
     [v15 setObject:v13 forKeyedSubscript:@"TrackedFaces"];
     v7 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v15];
   }

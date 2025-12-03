@@ -1,51 +1,51 @@
 @interface MADPhotosDatabaseMigrationProcessingTask
-+ (id)taskWithPhotoLibraries:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5 cancelBlock:(id)a6;
++ (id)taskWithPhotoLibraries:(id)libraries progressHandler:(id)handler completionHandler:(id)completionHandler cancelBlock:(id)block;
 - (BOOL)isCancelled;
-- (MADPhotosDatabaseMigrationProcessingTask)initWithPhotoLibraries:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5 cancelBlock:(id)a6;
-- (id)_analyticsForPhotoLibrary:(id)a3;
-- (id)_mocForPhotoLibrary:(id)a3;
-- (int)_bumpImageEmbeddingVersionWithAssetBatch:(id)a3 fromImageEmbeddingVersion:(int)a4 fromUnifiedEmbeddingVersion:(unint64_t)a5 toImageEmbeddingVersion:(int)a6 toUnifiedEmbeddingVersion:(unint64_t)a7 photoLibrary:(id)a8;
-- (int)_bumpVectorDatabaseVersionWithLocalIdentifiers:(id)a3 embeddingType:(unint64_t)a4 fromUnifiedEmbeddingVersion:(unint64_t)a5 toUnifiedEmbeddingVersion:(unint64_t)a6 updatedLocalIdentifiers:(id)a7 photoLibrary:(id)a8;
-- (int)_bumpVideoEmbeddingVersionWithAssetBatch:(id)a3 fromVideoEmbeddingVersion:(int)a4 fromUnifiedEmbeddingVersion:(unint64_t)a5 toVideoEmbeddingVersion:(int)a6 toUnifiedEmbeddingVersion:(unint64_t)a7 photoLibrary:(id)a8;
-- (int)_migrateAssetsAndResultsForPhotoLibrary:(id)a3;
-- (int)_migrateChangeTokensForLibrary:(id)a3;
-- (int)_migrateDatabaseForPhotoLibrary:(id)a3;
-- (int)_migrateDatabaseToV1ForPhotoLibrary:(id)a3;
-- (int)_migrateDatabaseToV2ForPhotoLibrary:(id)a3;
-- (int)_migrateKeyValueStoreForLibrary:(id)a3;
-- (int)_migrateMomentsScheduledAssetForLibrary:(id)a3;
-- (int)_migrateProcessingStatusForLibrary:(id)a3;
-- (int)_migrateProgressHistoryForLibrary:(id)a3;
+- (MADPhotosDatabaseMigrationProcessingTask)initWithPhotoLibraries:(id)libraries progressHandler:(id)handler completionHandler:(id)completionHandler cancelBlock:(id)block;
+- (id)_analyticsForPhotoLibrary:(id)library;
+- (id)_mocForPhotoLibrary:(id)library;
+- (int)_bumpImageEmbeddingVersionWithAssetBatch:(id)batch fromImageEmbeddingVersion:(int)version fromUnifiedEmbeddingVersion:(unint64_t)embeddingVersion toImageEmbeddingVersion:(int)imageEmbeddingVersion toUnifiedEmbeddingVersion:(unint64_t)unifiedEmbeddingVersion photoLibrary:(id)library;
+- (int)_bumpVectorDatabaseVersionWithLocalIdentifiers:(id)identifiers embeddingType:(unint64_t)type fromUnifiedEmbeddingVersion:(unint64_t)version toUnifiedEmbeddingVersion:(unint64_t)embeddingVersion updatedLocalIdentifiers:(id)localIdentifiers photoLibrary:(id)library;
+- (int)_bumpVideoEmbeddingVersionWithAssetBatch:(id)batch fromVideoEmbeddingVersion:(int)version fromUnifiedEmbeddingVersion:(unint64_t)embeddingVersion toVideoEmbeddingVersion:(int)videoEmbeddingVersion toUnifiedEmbeddingVersion:(unint64_t)unifiedEmbeddingVersion photoLibrary:(id)library;
+- (int)_migrateAssetsAndResultsForPhotoLibrary:(id)library;
+- (int)_migrateChangeTokensForLibrary:(id)library;
+- (int)_migrateDatabaseForPhotoLibrary:(id)library;
+- (int)_migrateDatabaseToV1ForPhotoLibrary:(id)library;
+- (int)_migrateDatabaseToV2ForPhotoLibrary:(id)library;
+- (int)_migrateKeyValueStoreForLibrary:(id)library;
+- (int)_migrateMomentsScheduledAssetForLibrary:(id)library;
+- (int)_migrateProcessingStatusForLibrary:(id)library;
+- (int)_migrateProgressHistoryForLibrary:(id)library;
 - (int)_run;
-- (int)_saveBatch:(id)a3 entityName:(id)a4 photoLibrary:(id)a5;
-- (int)_updateAnalysisMetricsForPhotoLibrary:(id)a3;
+- (int)_saveBatch:(id)batch entityName:(id)name photoLibrary:(id)library;
+- (int)_updateAnalysisMetricsForPhotoLibrary:(id)library;
 - (int)run;
-- (void)_accumulateOverallField:(id)a3 value:(unint64_t)a4;
-- (void)_accumulateOverallInserted:(unint64_t)a3;
-- (void)_accumulateOverallRetrieved:(unint64_t)a3;
+- (void)_accumulateOverallField:(id)field value:(unint64_t)value;
+- (void)_accumulateOverallInserted:(unint64_t)inserted;
+- (void)_accumulateOverallRetrieved:(unint64_t)retrieved;
 - (void)dealloc;
 @end
 
 @implementation MADPhotosDatabaseMigrationProcessingTask
 
-- (MADPhotosDatabaseMigrationProcessingTask)initWithPhotoLibraries:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5 cancelBlock:(id)a6
+- (MADPhotosDatabaseMigrationProcessingTask)initWithPhotoLibraries:(id)libraries progressHandler:(id)handler completionHandler:(id)completionHandler cancelBlock:(id)block
 {
-  v37 = a3;
-  v38 = a4;
-  v39 = a5;
-  v40 = a6;
+  librariesCopy = libraries;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  blockCopy = block;
   v45.receiver = self;
   v45.super_class = MADPhotosDatabaseMigrationProcessingTask;
   v11 = [(MADPhotosDatabaseMigrationProcessingTask *)&v45 init];
   if (v11)
   {
-    v12 = objc_retainBlock(v38);
+    v12 = objc_retainBlock(handlerCopy);
     progressHandler = v11->_progressHandler;
     v11->_progressHandler = v12;
 
-    if (v39)
+    if (completionHandlerCopy)
     {
-      v14 = v39;
+      v14 = completionHandlerCopy;
     }
 
     else
@@ -57,9 +57,9 @@
     completionHandler = v11->_completionHandler;
     v11->_completionHandler = v15;
 
-    if (v40)
+    if (blockCopy)
     {
-      v17 = v40;
+      v17 = blockCopy;
     }
 
     else
@@ -71,7 +71,7 @@
     cancelBlock = v11->_cancelBlock;
     v11->_cancelBlock = v18;
 
-    objc_storeStrong(&v11->_photoLibraries, a3);
+    objc_storeStrong(&v11->_photoLibraries, libraries);
     v20 = +[NSMutableDictionary dictionary];
     mocDict = v11->_mocDict;
     v11->_mocDict = v20;
@@ -80,7 +80,7 @@
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v22 = v37;
+    v22 = librariesCopy;
     v23 = [v22 countByEnumeratingWithState:&v41 objects:v48 count:16];
     if (v23)
     {
@@ -103,9 +103,9 @@
               v34 = VCPLogToOSLogType[3];
               if (os_log_type_enabled(&_os_log_default, v34))
               {
-                v35 = [v26 photoLibraryURL];
+                photoLibraryURL = [v26 photoLibraryURL];
                 *buf = 138412290;
-                v47 = v35;
+                v47 = photoLibraryURL;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, v34, "[MACDMigration] Failed to create context for photo library %@", buf, 0xCu);
               }
             }
@@ -115,9 +115,9 @@
           }
 
           v28 = v11->_mocDict;
-          v29 = [v26 photoLibraryURL];
-          v30 = [v29 path];
-          [(NSMutableDictionary *)v28 setObject:v27 forKeyedSubscript:v30];
+          photoLibraryURL2 = [v26 photoLibraryURL];
+          path = [photoLibraryURL2 path];
+          [(NSMutableDictionary *)v28 setObject:v27 forKeyedSubscript:path];
         }
 
         v23 = [v22 countByEnumeratingWithState:&v41 objects:v48 count:16];
@@ -141,13 +141,13 @@ LABEL_22:
   return v33;
 }
 
-+ (id)taskWithPhotoLibraries:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5 cancelBlock:(id)a6
++ (id)taskWithPhotoLibraries:(id)libraries progressHandler:(id)handler completionHandler:(id)completionHandler cancelBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [objc_alloc(objc_opt_class()) initWithPhotoLibraries:v9 progressHandler:v10 completionHandler:v11 cancelBlock:v12];
+  librariesCopy = libraries;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  blockCopy = block;
+  v13 = [objc_alloc(objc_opt_class()) initWithPhotoLibraries:librariesCopy progressHandler:handlerCopy completionHandler:completionHandlerCopy cancelBlock:blockCopy];
 
   return v13;
 }
@@ -180,59 +180,59 @@ LABEL_22:
   return v3 & 1;
 }
 
-- (id)_mocForPhotoLibrary:(id)a3
+- (id)_mocForPhotoLibrary:(id)library
 {
   mocDict = self->_mocDict;
-  v4 = [a3 photoLibraryURL];
-  v5 = [v4 path];
-  v6 = [(NSMutableDictionary *)mocDict objectForKeyedSubscript:v5];
+  photoLibraryURL = [library photoLibraryURL];
+  path = [photoLibraryURL path];
+  v6 = [(NSMutableDictionary *)mocDict objectForKeyedSubscript:path];
 
   return v6;
 }
 
-- (id)_analyticsForPhotoLibrary:(id)a3
+- (id)_analyticsForPhotoLibrary:(id)library
 {
-  v4 = [a3 photoLibraryURL];
-  v5 = [v4 path];
+  photoLibraryURL = [library photoLibraryURL];
+  path = [photoLibraryURL path];
 
-  v6 = [(NSMutableDictionary *)self->_migrationAnalytics objectForKeyedSubscript:v5];
+  v6 = [(NSMutableDictionary *)self->_migrationAnalytics objectForKeyedSubscript:path];
 
   if (!v6)
   {
     v7 = +[NSMutableDictionary dictionary];
-    [(NSMutableDictionary *)self->_migrationAnalytics setObject:v7 forKeyedSubscript:v5];
+    [(NSMutableDictionary *)self->_migrationAnalytics setObject:v7 forKeyedSubscript:path];
   }
 
-  v8 = [(NSMutableDictionary *)self->_migrationAnalytics objectForKeyedSubscript:v5];
+  v8 = [(NSMutableDictionary *)self->_migrationAnalytics objectForKeyedSubscript:path];
 
   return v8;
 }
 
-- (void)_accumulateOverallField:(id)a3 value:(unint64_t)a4
+- (void)_accumulateOverallField:(id)field value:(unint64_t)value
 {
-  v9 = a3;
+  fieldCopy = field;
   v6 = [(NSMutableDictionary *)self->_migrationAnalytics objectForKeyedSubscript:?];
-  v7 = [v6 unsignedIntegerValue];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v8 = [NSNumber numberWithUnsignedInteger:&v7[a4]];
-  [(NSMutableDictionary *)self->_migrationAnalytics setObject:v8 forKeyedSubscript:v9];
+  v8 = [NSNumber numberWithUnsignedInteger:&unsignedIntegerValue[value]];
+  [(NSMutableDictionary *)self->_migrationAnalytics setObject:v8 forKeyedSubscript:fieldCopy];
 }
 
-- (void)_accumulateOverallRetrieved:(unint64_t)a3
+- (void)_accumulateOverallRetrieved:(unint64_t)retrieved
 {
   v4 = VCPAnalyticsFieldMigrationRetrievedForTable(@"Overall");
   [MADPhotosDatabaseMigrationProcessingTask _accumulateOverallField:"_accumulateOverallField:value:" value:?];
 }
 
-- (void)_accumulateOverallInserted:(unint64_t)a3
+- (void)_accumulateOverallInserted:(unint64_t)inserted
 {
   v4 = VCPAnalyticsFieldMigrationInsertedForTable(@"Overall");
   [MADPhotosDatabaseMigrationProcessingTask _accumulateOverallField:"_accumulateOverallField:value:" value:?];
 }
 
-- (int)_migrateAssetsAndResultsForPhotoLibrary:(id)a3
+- (int)_migrateAssetsAndResultsForPhotoLibrary:(id)library
 {
-  v54 = a3;
+  libraryCopy = library;
   v51 = +[NSDate now];
   if ((atomic_load_explicit(&qword_1002B8300, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1002B8300))
   {
@@ -250,10 +250,10 @@ LABEL_22:
     __cxa_guard_release(&qword_1002B8310);
   }
 
-  v3 = [VCPAnalyzedAssets assetsFromPhotoLibrary:v54];
-  v55 = [VCPDatabaseReader databaseForPhotoLibrary:v54];
-  v52 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v54];
-  v56 = [(MADPhotosDatabaseMigrationProcessingTask *)self _mocForPhotoLibrary:v54];
+  v3 = [VCPAnalyzedAssets assetsFromPhotoLibrary:libraryCopy];
+  v55 = [VCPDatabaseReader databaseForPhotoLibrary:libraryCopy];
+  v52 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:libraryCopy];
+  v56 = [(MADPhotosDatabaseMigrationProcessingTask *)self _mocForPhotoLibrary:libraryCopy];
   v4 = 0;
   v77 = 0;
   v78 = &v77;
@@ -269,44 +269,44 @@ LABEL_22:
   v72 = 0;
   v5 = VCPLogToOSLogType[4];
   type = VCPLogToOSLogType[3];
-  v57 = "ecTask=}32";
+  qword_1002B8308 = "ecTask=}32";
   do
   {
     if (v4 >= [v3 count])
     {
       [v51 timeIntervalSinceNow];
       v31 = v30;
-      v57 = [NSString stringWithFormat:@"%@And%@", qword_1002B82F8, qword_1002B8308];
-      v32 = VCPAnalyticsFieldMigrationDurationForTable(v57);
+      qword_1002B8308 = [NSString stringWithFormat:@"%@And%@", qword_1002B82F8, qword_1002B8308];
+      v32 = VCPAnalyticsFieldMigrationDurationForTable(qword_1002B8308);
       v33 = VCPAnalyticsFieldMigrationRetrievedForTable(qword_1002B82F8);
       v34 = VCPAnalyticsFieldMigrationInsertedForTable(qword_1002B82F8);
       v35 = VCPAnalyticsFieldMigrationRetrievedForTable(qword_1002B8308);
       v36 = VCPAnalyticsFieldMigrationInsertedForTable(qword_1002B8308);
       v37 = [NSNumber numberWithDouble:-v31];
-      v38 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:v54];
+      v38 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:libraryCopy];
       [v38 setObject:v37 forKeyedSubscript:v32];
 
       v39 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", [v3 count]);
-      v40 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:v54];
+      v40 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:libraryCopy];
       [v40 setObject:v39 forKeyedSubscript:v33];
 
       v41 = [NSNumber numberWithUnsignedInteger:v78[3]];
-      v42 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:v54];
+      v42 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:libraryCopy];
       [v42 setObject:v41 forKeyedSubscript:v34];
 
       v43 = [NSNumber numberWithUnsignedInteger:v70[3]];
-      v44 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:v54];
+      v44 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:libraryCopy];
       [v44 setObject:v43 forKeyedSubscript:v35];
 
       v45 = [NSNumber numberWithUnsignedInteger:v74[3]];
-      v46 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:v54];
+      v46 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:libraryCopy];
       [v46 setObject:v45 forKeyedSubscript:v36];
 
       v47 = [v3 count];
       [(MADPhotosDatabaseMigrationProcessingTask *)self _accumulateOverallRetrieved:&v47[v70[3]]];
       [(MADPhotosDatabaseMigrationProcessingTask *)self _accumulateOverallInserted:v74[3] + v78[3]];
 
-      LODWORD(v57) = 0;
+      LODWORD(qword_1002B8308) = 0;
       break;
     }
 
@@ -337,8 +337,8 @@ LABEL_22:
 
       if (i >= v13)
       {
-        v20 = [v10 allKeys];
-        v21 = [v55 migration_queryAnalysesForAssets:v20 statsFlags:0 withTypes:0];
+        allKeys = [v10 allKeys];
+        v21 = [v55 migration_queryAnalysesForAssets:allKeys statsFlags:0 withTypes:0];
 
         v60[0] = _NSConcreteStackBlock;
         v60[1] = 3221225472;
@@ -346,7 +346,7 @@ LABEL_22:
         v60[3] = &unk_100285AE8;
         v22 = v10;
         v61 = v22;
-        v62 = self;
+        selfCopy = self;
         v23 = v56;
         v63 = v23;
         v65 = &v77;
@@ -360,7 +360,7 @@ LABEL_22:
         if ((v24 & 1) == 0)
         {
           v26 = v25;
-          v57 = [v25 code];
+          qword_1002B8308 = [v25 code];
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
           {
             v27 = [v22 count];
@@ -379,18 +379,18 @@ LABEL_22:
           if ([(MADPhotosDatabaseMigrationProcessingTask *)self isCancelled])
           {
             v7 = 0;
-            v57 = 4294967168;
+            qword_1002B8308 = 4294967168;
 LABEL_33:
 
-            v14 = v57;
+            v14 = qword_1002B8308;
             goto LABEL_34;
           }
 
           v28 = +[VCPWatchdog sharedWatchdog];
           [v28 pet];
 
-          v29 = [v22 allKeys];
-          [v52 migration_deleteAnalysisForAssets:v29];
+          allKeys2 = [v22 allKeys];
+          [v52 migration_deleteAnalysisForAssets:allKeys2];
 
           [v52 commit];
         }
@@ -409,8 +409,8 @@ LABEL_33:
         break;
       }
 
-      v17 = [v15 localIdentifier];
-      v18 = v17 == 0;
+      localIdentifier = [v15 localIdentifier];
+      v18 = localIdentifier == 0;
 
       if (v18)
       {
@@ -423,8 +423,8 @@ LABEL_33:
 
       else
       {
-        v19 = [v16 localIdentifier];
-        [v10 setObject:v16 forKeyedSubscript:v19];
+        localIdentifier2 = [v16 localIdentifier];
+        [v10 setObject:v16 forKeyedSubscript:localIdentifier2];
       }
     }
 
@@ -439,7 +439,7 @@ LABEL_34:
 
     v8 = v14;
 LABEL_35:
-    v57 = v8;
+    qword_1002B8308 = v8;
     objc_autoreleasePoolPop(v6);
     v4 += 100;
   }
@@ -449,17 +449,17 @@ LABEL_35:
   _Block_object_dispose(&v73, 8);
   _Block_object_dispose(&v77, 8);
 
-  return v57;
+  return qword_1002B8308;
 }
 
-- (int)_saveBatch:(id)a3 entityName:(id)a4 photoLibrary:(id)a5
+- (int)_saveBatch:(id)batch entityName:(id)name photoLibrary:(id)library
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  batchCopy = batch;
+  nameCopy = name;
+  libraryCopy = library;
   v18 = 0;
-  v11 = [(MADPhotosDatabaseMigrationProcessingTask *)self _mocForPhotoLibrary:v10];
-  if ([v11 mad_insertBatch:v8 entityName:v9 insertedCount:&v18])
+  v11 = [(MADPhotosDatabaseMigrationProcessingTask *)self _mocForPhotoLibrary:libraryCopy];
+  if ([v11 mad_insertBatch:batchCopy entityName:nameCopy insertedCount:&v18])
   {
     v12 = -18;
   }
@@ -469,8 +469,8 @@ LABEL_35:
     if (v18)
     {
       v13 = [NSNumber numberWithUnsignedInteger:?];
-      v14 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:v10];
-      v15 = VCPAnalyticsFieldMigrationInsertedForTable(v9);
+      v14 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:libraryCopy];
+      v15 = VCPAnalyticsFieldMigrationInsertedForTable(nameCopy);
       [v14 setObject:v13 forKeyedSubscript:v15];
 
       [(MADPhotosDatabaseMigrationProcessingTask *)self _accumulateOverallInserted:v18];
@@ -482,7 +482,7 @@ LABEL_35:
       if (os_log_type_enabled(&_os_log_default, v16))
       {
         *buf = 138412290;
-        v20 = v9;
+        v20 = nameCopy;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v16, "[MACDMigration|v1] Unable to track inserted rows for entity: %@", buf, 0xCu);
       }
     }
@@ -493,9 +493,9 @@ LABEL_35:
   return v12;
 }
 
-- (int)_migrateKeyValueStoreForLibrary:(id)a3
+- (int)_migrateKeyValueStoreForLibrary:(id)library
 {
-  v27 = a3;
+  libraryCopy = library;
   v25 = +[NSDate now];
   if ((atomic_load_explicit(&qword_1002B8320, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1002B8320))
   {
@@ -505,20 +505,20 @@ LABEL_35:
     __cxa_guard_release(&qword_1002B8320);
   }
 
-  v3 = [VCPDatabaseReader databaseForPhotoLibrary:v27];
+  v3 = [VCPDatabaseReader databaseForPhotoLibrary:libraryCopy];
   v24 = v3;
   if (v3)
   {
-    v28 = [v3 migration_loadKeyValues];
-    if (v28)
+    migration_loadKeyValues = [v3 migration_loadKeyValues];
+    if (migration_loadKeyValues)
     {
       v4 = +[NSMutableArray array];
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v5 = [v28 allKeys];
-      v6 = [v5 countByEnumeratingWithState:&v29 objects:v35 count:16];
+      allKeys = [migration_loadKeyValues allKeys];
+      v6 = [allKeys countByEnumeratingWithState:&v29 objects:v35 count:16];
       if (v6)
       {
         v7 = *v30;
@@ -528,34 +528,34 @@ LABEL_35:
           {
             if (*v30 != v7)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(allKeys);
             }
 
             v9 = *(*(&v29 + 1) + 8 * i);
             v33[1] = @"value";
             v34[0] = v9;
             v33[0] = @"key";
-            v10 = [v28 valueForKey:?];
+            v10 = [migration_loadKeyValues valueForKey:?];
             v34[1] = v10;
             v11 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:2];
             [v4 addObject:v11];
           }
 
-          v6 = [v5 countByEnumeratingWithState:&v29 objects:v35 count:16];
+          v6 = [allKeys countByEnumeratingWithState:&v29 objects:v35 count:16];
         }
 
         while (v6);
       }
 
       v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 count]);
-      v13 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:v27];
+      v13 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:libraryCopy];
       v14 = VCPAnalyticsFieldMigrationRetrievedForTable(qword_1002B8318);
       [v13 setObject:v12 forKeyedSubscript:v14];
 
       -[MADPhotosDatabaseMigrationProcessingTask _accumulateOverallRetrieved:](self, "_accumulateOverallRetrieved:", [v4 count]);
       if ([v4 count])
       {
-        v15 = [(MADPhotosDatabaseMigrationProcessingTask *)self _saveBatch:v4 entityName:qword_1002B8318 photoLibrary:v27];
+        v15 = [(MADPhotosDatabaseMigrationProcessingTask *)self _saveBatch:v4 entityName:qword_1002B8318 photoLibrary:libraryCopy];
       }
 
       else
@@ -565,7 +565,7 @@ LABEL_35:
 
       [v25 timeIntervalSinceNow];
       v19 = [NSNumber numberWithDouble:-v18];
-      v20 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:v27];
+      v20 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:libraryCopy];
       v21 = VCPAnalyticsFieldMigrationDurationForTable(qword_1002B8318);
       [v20 setObject:v19 forKeyedSubscript:v21];
     }
@@ -605,9 +605,9 @@ LABEL_35:
   return v15;
 }
 
-- (int)_migrateChangeTokensForLibrary:(id)a3
+- (int)_migrateChangeTokensForLibrary:(id)library
 {
-  v30 = a3;
+  libraryCopy = library;
   v28 = +[NSDate now];
   if ((atomic_load_explicit(&qword_1002B8330, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1002B8330))
   {
@@ -617,19 +617,19 @@ LABEL_35:
     __cxa_guard_release(&qword_1002B8330);
   }
 
-  v3 = [VCPDatabaseReader databaseForPhotoLibrary:v30];
+  v3 = [VCPDatabaseReader databaseForPhotoLibrary:libraryCopy];
   v27 = v3;
   if (v3)
   {
-    v26 = [v3 loadChangeTokens];
-    if (v26)
+    loadChangeTokens = [v3 loadChangeTokens];
+    if (loadChangeTokens)
     {
       v32 = +[NSMutableArray array];
       v35 = 0u;
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      obj = v26;
+      obj = loadChangeTokens;
       v4 = [obj countByEnumeratingWithState:&v33 objects:v39 count:16];
       if (v4)
       {
@@ -651,11 +651,11 @@ LABEL_35:
             v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 tokenType]);
             v38[1] = v9;
             v37[2] = @"tokenData";
-            v10 = [v7 tokenData];
-            v38[2] = v10;
+            tokenData = [v7 tokenData];
+            v38[2] = tokenData;
             v37[3] = @"date";
-            v11 = [v7 date];
-            v38[3] = v11;
+            date = [v7 date];
+            v38[3] = date;
             v37[4] = @"version";
             v12 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v7 version]);
             v38[4] = v12;
@@ -670,14 +670,14 @@ LABEL_35:
       }
 
       v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v32 count]);
-      v15 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:v30];
+      v15 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:libraryCopy];
       v16 = VCPAnalyticsFieldMigrationRetrievedForTable(qword_1002B8328);
       [v15 setObject:v14 forKeyedSubscript:v16];
 
       -[MADPhotosDatabaseMigrationProcessingTask _accumulateOverallRetrieved:](self, "_accumulateOverallRetrieved:", [v32 count]);
       if ([v32 count])
       {
-        v17 = [(MADPhotosDatabaseMigrationProcessingTask *)self _saveBatch:v32 entityName:qword_1002B8328 photoLibrary:v30];
+        v17 = [(MADPhotosDatabaseMigrationProcessingTask *)self _saveBatch:v32 entityName:qword_1002B8328 photoLibrary:libraryCopy];
       }
 
       else
@@ -687,7 +687,7 @@ LABEL_35:
 
       [v28 timeIntervalSinceNow];
       v21 = [NSNumber numberWithDouble:-v20];
-      v22 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:v30];
+      v22 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:libraryCopy];
       v23 = VCPAnalyticsFieldMigrationDurationForTable(qword_1002B8328);
       [v22 setObject:v21 forKeyedSubscript:v23];
     }
@@ -727,9 +727,9 @@ LABEL_35:
   return v17;
 }
 
-- (int)_migrateProgressHistoryForLibrary:(id)a3
+- (int)_migrateProgressHistoryForLibrary:(id)library
 {
-  v30 = a3;
+  libraryCopy = library;
   v27 = +[NSDate now];
   if ((atomic_load_explicit(&qword_1002B8340, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1002B8340))
   {
@@ -739,7 +739,7 @@ LABEL_35:
     __cxa_guard_release(&qword_1002B8340);
   }
 
-  v29 = [VCPDatabaseReader databaseForPhotoLibrary:v30];
+  v29 = [VCPDatabaseReader databaseForPhotoLibrary:libraryCopy];
   if (v29)
   {
     v38 = 0;
@@ -779,8 +779,8 @@ LABEL_35:
             v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 processedAssetCount]);
             v40[2] = v9;
             v39[3] = @"storeDate";
-            v10 = [v6 storeDate];
-            v40[3] = v10;
+            storeDate = [v6 storeDate];
+            v40[3] = storeDate;
             v39[4] = @"totalAssetCount";
             v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 totalAssetCount]);
             v40[4] = v11;
@@ -798,14 +798,14 @@ LABEL_35:
       }
 
       v14 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v33 count]);
-      v15 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:v30];
+      v15 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:libraryCopy];
       v16 = VCPAnalyticsFieldMigrationRetrievedForTable(qword_1002B8338);
       [v15 setObject:v14 forKeyedSubscript:v16];
 
       -[MADPhotosDatabaseMigrationProcessingTask _accumulateOverallRetrieved:](self, "_accumulateOverallRetrieved:", [v33 count]);
       if ([v33 count])
       {
-        v17 = [(MADPhotosDatabaseMigrationProcessingTask *)self _saveBatch:v33 entityName:qword_1002B8338 photoLibrary:v30];
+        v17 = [(MADPhotosDatabaseMigrationProcessingTask *)self _saveBatch:v33 entityName:qword_1002B8338 photoLibrary:libraryCopy];
       }
 
       else
@@ -815,7 +815,7 @@ LABEL_35:
 
       [v27 timeIntervalSinceNow];
       v21 = [NSNumber numberWithDouble:-v20];
-      v22 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:v30];
+      v22 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:libraryCopy];
       v23 = VCPAnalyticsFieldMigrationDurationForTable(qword_1002B8338);
       [v22 setObject:v21 forKeyedSubscript:v23];
     }
@@ -855,9 +855,9 @@ LABEL_35:
   return v17;
 }
 
-- (int)_migrateProcessingStatusForLibrary:(id)a3
+- (int)_migrateProcessingStatusForLibrary:(id)library
 {
-  v32 = a3;
+  libraryCopy = library;
   v30 = +[NSDate now];
   if ((atomic_load_explicit(&qword_1002B8350, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1002B8350))
   {
@@ -867,19 +867,19 @@ LABEL_35:
     __cxa_guard_release(&qword_1002B8350);
   }
 
-  v3 = [VCPDatabaseReader databaseForPhotoLibrary:v32];
+  v3 = [VCPDatabaseReader databaseForPhotoLibrary:libraryCopy];
   v29 = v3;
   if (v3)
   {
-    v28 = [v3 loadProcessingStatus];
-    if (v28)
+    loadProcessingStatus = [v3 loadProcessingStatus];
+    if (loadProcessingStatus)
     {
       v35 = +[NSMutableArray array];
       v41 = 0u;
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      obj = v28;
+      obj = loadProcessingStatus;
       v4 = [obj countByEnumeratingWithState:&v39 objects:v45 count:16];
       if (v4)
       {
@@ -905,11 +905,11 @@ LABEL_35:
             v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 errorLine]);
             v44[2] = v7;
             v43[3] = @"lastAttemptDate";
-            v8 = [v6 lastAttemptDate];
-            v44[3] = v8;
+            lastAttemptDate = [v6 lastAttemptDate];
+            v44[3] = lastAttemptDate;
             v43[4] = @"localIdentifier";
-            v9 = [v6 localIdentifier];
-            v44[4] = v9;
+            localIdentifier = [v6 localIdentifier];
+            v44[4] = localIdentifier;
             v43[5] = @"mediaType";
             v10 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v6 mediaType]);
             v44[5] = v10;
@@ -917,8 +917,8 @@ LABEL_35:
             v11 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v6 mediaSubtypes]);
             v44[6] = v11;
             v43[7] = @"nextAttemptDate";
-            v12 = [v6 nextAttemptDate];
-            v44[7] = v12;
+            nextAttemptDate = [v6 nextAttemptDate];
+            v44[7] = nextAttemptDate;
             v43[8] = @"status";
             v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 status]);
             v44[8] = v13;
@@ -936,14 +936,14 @@ LABEL_35:
       }
 
       v16 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v35 count]);
-      v17 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:v32];
+      v17 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:libraryCopy];
       v18 = VCPAnalyticsFieldMigrationRetrievedForTable(qword_1002B8348);
       [v17 setObject:v16 forKeyedSubscript:v18];
 
       -[MADPhotosDatabaseMigrationProcessingTask _accumulateOverallRetrieved:](self, "_accumulateOverallRetrieved:", [v35 count]);
       if ([v35 count])
       {
-        v19 = [(MADPhotosDatabaseMigrationProcessingTask *)self _saveBatch:v35 entityName:qword_1002B8348 photoLibrary:v32];
+        v19 = [(MADPhotosDatabaseMigrationProcessingTask *)self _saveBatch:v35 entityName:qword_1002B8348 photoLibrary:libraryCopy];
       }
 
       else
@@ -953,7 +953,7 @@ LABEL_35:
 
       [v30 timeIntervalSinceNow];
       v23 = [NSNumber numberWithDouble:-v22];
-      v24 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:v32];
+      v24 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:libraryCopy];
       v25 = VCPAnalyticsFieldMigrationDurationForTable(qword_1002B8348);
       [v24 setObject:v23 forKeyedSubscript:v25];
     }
@@ -993,9 +993,9 @@ LABEL_35:
   return v19;
 }
 
-- (int)_migrateMomentsScheduledAssetForLibrary:(id)a3
+- (int)_migrateMomentsScheduledAssetForLibrary:(id)library
 {
-  v28 = a3;
+  libraryCopy = library;
   v26 = +[NSDate now];
   if ((atomic_load_explicit(&qword_1002B8360, memory_order_acquire) & 1) == 0 && __cxa_guard_acquire(&qword_1002B8360))
   {
@@ -1005,19 +1005,19 @@ LABEL_35:
     __cxa_guard_release(&qword_1002B8360);
   }
 
-  v3 = [VCPDatabaseReader databaseForPhotoLibrary:v28];
+  v3 = [VCPDatabaseReader databaseForPhotoLibrary:libraryCopy];
   v25 = v3;
   if (v3)
   {
-    v24 = [v3 migration_loadMomentsScheduledAssets];
-    if (v24)
+    migration_loadMomentsScheduledAssets = [v3 migration_loadMomentsScheduledAssets];
+    if (migration_loadMomentsScheduledAssets)
     {
       v30 = +[NSMutableArray array];
       v33 = 0u;
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      obj = v24;
+      obj = migration_loadMomentsScheduledAssets;
       v4 = [obj countByEnumeratingWithState:&v31 objects:v37 count:16];
       if (v4)
       {
@@ -1033,11 +1033,11 @@ LABEL_35:
 
             v7 = *(*(&v31 + 1) + 8 * i);
             v35[0] = @"localIdentifier";
-            v8 = [v7 localIdentifier];
-            v36[0] = v8;
+            localIdentifier = [v7 localIdentifier];
+            v36[0] = localIdentifier;
             v35[1] = @"requestDate";
-            v9 = [v7 requestDate];
-            v36[1] = v9;
+            requestDate = [v7 requestDate];
+            v36[1] = requestDate;
             v35[2] = @"taskID";
             v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 taskID]);
             v36[2] = v10;
@@ -1052,14 +1052,14 @@ LABEL_35:
       }
 
       v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v30 count]);
-      v13 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:v28];
+      v13 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:libraryCopy];
       v14 = VCPAnalyticsFieldMigrationRetrievedForTable(qword_1002B8358);
       [v13 setObject:v12 forKeyedSubscript:v14];
 
       -[MADPhotosDatabaseMigrationProcessingTask _accumulateOverallRetrieved:](self, "_accumulateOverallRetrieved:", [v30 count]);
       if ([v30 count])
       {
-        v15 = [(MADPhotosDatabaseMigrationProcessingTask *)self _saveBatch:v30 entityName:qword_1002B8358 photoLibrary:v28];
+        v15 = [(MADPhotosDatabaseMigrationProcessingTask *)self _saveBatch:v30 entityName:qword_1002B8358 photoLibrary:libraryCopy];
       }
 
       else
@@ -1069,7 +1069,7 @@ LABEL_35:
 
       [v26 timeIntervalSinceNow];
       v19 = [NSNumber numberWithDouble:-v18];
-      v20 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:v28];
+      v20 = [(MADPhotosDatabaseMigrationProcessingTask *)self _analyticsForPhotoLibrary:libraryCopy];
       v21 = VCPAnalyticsFieldMigrationDurationForTable(qword_1002B8358);
       [v20 setObject:v19 forKeyedSubscript:v21];
     }
@@ -1109,17 +1109,17 @@ LABEL_35:
   return v15;
 }
 
-- (int)_migrateDatabaseToV1ForPhotoLibrary:(id)a3
+- (int)_migrateDatabaseToV1ForPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   if (MediaAnalysisLogLevel() >= 5)
   {
     v5 = VCPLogToOSLogType[5];
     if (os_log_type_enabled(&_os_log_default, v5))
     {
-      v6 = [v4 photoLibraryURL];
+      photoLibraryURL = [libraryCopy photoLibraryURL];
       v24 = 138412290;
-      v25 = v6;
+      v25 = photoLibraryURL;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "[MACDMigration|v1] Migrating database to v1 for photo library %@", &v24, 0xCu);
     }
   }
@@ -1129,9 +1129,9 @@ LABEL_35:
     v8 = +[VCPWatchdog sharedWatchdog];
     [v8 pet];
 
-    v9 = [v4 vcp_mediaAnalysisDatabaseFilepath];
+    vcp_mediaAnalysisDatabaseFilepath = [libraryCopy vcp_mediaAnalysisDatabaseFilepath];
     v10 = +[NSFileManager defaultManager];
-    v11 = [v10 fileExistsAtPath:v9];
+    v11 = [v10 fileExistsAtPath:vcp_mediaAnalysisDatabaseFilepath];
 
     if (v11)
     {
@@ -1145,7 +1145,7 @@ LABEL_35:
         }
       }
 
-      v7 = [(MADPhotosDatabaseMigrationProcessingTask *)self _migrateAssetsAndResultsForPhotoLibrary:v4];
+      v7 = [(MADPhotosDatabaseMigrationProcessingTask *)self _migrateAssetsAndResultsForPhotoLibrary:libraryCopy];
       if (v7)
       {
         if (MediaAnalysisLogLevel() < 3)
@@ -1178,7 +1178,7 @@ LABEL_21:
         }
       }
 
-      v7 = [(MADPhotosDatabaseMigrationProcessingTask *)self _migrateKeyValueStoreForLibrary:v4];
+      v7 = [(MADPhotosDatabaseMigrationProcessingTask *)self _migrateKeyValueStoreForLibrary:libraryCopy];
       if (v7)
       {
         if (MediaAnalysisLogLevel() < 3)
@@ -1207,7 +1207,7 @@ LABEL_21:
         }
       }
 
-      v7 = [(MADPhotosDatabaseMigrationProcessingTask *)self _migrateChangeTokensForLibrary:v4];
+      v7 = [(MADPhotosDatabaseMigrationProcessingTask *)self _migrateChangeTokensForLibrary:libraryCopy];
       if (v7)
       {
         if (MediaAnalysisLogLevel() < 3)
@@ -1236,7 +1236,7 @@ LABEL_21:
         }
       }
 
-      v7 = [(MADPhotosDatabaseMigrationProcessingTask *)self _migrateProcessingStatusForLibrary:v4];
+      v7 = [(MADPhotosDatabaseMigrationProcessingTask *)self _migrateProcessingStatusForLibrary:libraryCopy];
       if (v7)
       {
         if (MediaAnalysisLogLevel() < 3)
@@ -1265,7 +1265,7 @@ LABEL_21:
         }
       }
 
-      v7 = [(MADPhotosDatabaseMigrationProcessingTask *)self _migrateProgressHistoryForLibrary:v4];
+      v7 = [(MADPhotosDatabaseMigrationProcessingTask *)self _migrateProgressHistoryForLibrary:libraryCopy];
       if (v7)
       {
         if (MediaAnalysisLogLevel() < 3)
@@ -1294,7 +1294,7 @@ LABEL_21:
         }
       }
 
-      v7 = [(MADPhotosDatabaseMigrationProcessingTask *)self _migrateMomentsScheduledAssetForLibrary:v4];
+      v7 = [(MADPhotosDatabaseMigrationProcessingTask *)self _migrateMomentsScheduledAssetForLibrary:libraryCopy];
       if (v7)
       {
         if (MediaAnalysisLogLevel() < 3)
@@ -1335,7 +1335,7 @@ LABEL_21:
     }
 
     v17 = +[MADPhotosDataStoreClient sharedClient];
-    v7 = [v17 setDatabaseVersion:1 photoLibrary:v4];
+    v7 = [v17 setDatabaseVersion:1 photoLibrary:libraryCopy];
 
     goto LABEL_21;
   }
@@ -1346,29 +1346,29 @@ LABEL_22:
   return v7;
 }
 
-- (int)_bumpVectorDatabaseVersionWithLocalIdentifiers:(id)a3 embeddingType:(unint64_t)a4 fromUnifiedEmbeddingVersion:(unint64_t)a5 toUnifiedEmbeddingVersion:(unint64_t)a6 updatedLocalIdentifiers:(id)a7 photoLibrary:(id)a8
+- (int)_bumpVectorDatabaseVersionWithLocalIdentifiers:(id)identifiers embeddingType:(unint64_t)type fromUnifiedEmbeddingVersion:(unint64_t)version toUnifiedEmbeddingVersion:(unint64_t)embeddingVersion updatedLocalIdentifiers:(id)localIdentifiers photoLibrary:(id)library
 {
-  v33 = a3;
-  v13 = a7;
-  v34 = a8;
-  v36 = v13;
-  [v13 removeAllObjects];
-  v35 = [NSString stringWithFormat:@"[MACDMigration][VSKEmbedding][v%lu->v%lu][%lu]", a5, a6, a4];
-  [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:v34];
+  identifiersCopy = identifiers;
+  localIdentifiersCopy = localIdentifiers;
+  libraryCopy = library;
+  v36 = localIdentifiersCopy;
+  [localIdentifiersCopy removeAllObjects];
+  type = [NSString stringWithFormat:@"[MACDMigration][VSKEmbedding][v%lu->v%lu][%lu]", version, embeddingVersion, type];
+  [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:libraryCopy];
   v31 = v42 = 0;
-  v32 = [v31 fetchAssetsWithLocalIdentifiers:v33 embeddingType:a4 error:&v42];
+  v32 = [v31 fetchAssetsWithLocalIdentifiers:identifiersCopy embeddingType:type error:&v42];
   v14 = v42;
   if (v14)
   {
     v15 = v14;
-    v16 = [v14 code];
+    code = [v14 code];
     if (MediaAnalysisLogLevel() >= 3)
     {
       v17 = VCPLogToOSLogType[3];
       if (os_log_type_enabled(&_os_log_default, v17))
       {
         *buf = 138412546;
-        v45 = v35;
+        v45 = type;
         v46 = 2112;
         v47 = v15;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v17, "%@ Failed fetching from VSK database - %@", buf, 0x16u);
@@ -1400,21 +1400,21 @@ LABEL_22:
 
           v24 = *(*(&v38 + 1) + 8 * i);
           v25 = objc_autoreleasePoolPush();
-          v26 = [v24 mad_updateAssetWithEmbeddingVersion:a6];
+          v26 = [v24 mad_updateAssetWithEmbeddingVersion:embeddingVersion];
           if (v26)
           {
             [v18 addObject:v26];
-            v27 = [v26 mad_photosLocalIdentifier];
-            [v36 addObject:v27];
+            mad_photosLocalIdentifier = [v26 mad_photosLocalIdentifier];
+            [v36 addObject:mad_photosLocalIdentifier];
           }
 
           else if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, v22))
           {
-            v28 = [v24 mad_photosLocalIdentifier];
+            mad_photosLocalIdentifier2 = [v24 mad_photosLocalIdentifier];
             *buf = 138412546;
-            v45 = v35;
+            v45 = type;
             v46 = 2112;
-            v47 = v28;
+            v47 = mad_photosLocalIdentifier2;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v22, "%@[%@] Failed to package new attributes; ignore", buf, 0x16u);
           }
 
@@ -1428,9 +1428,9 @@ LABEL_22:
     }
 
     v37 = 0;
-    v16 = [v31 insertOrReplaceAssetsEmbeddings:v18 error:&v37];
+    code = [v31 insertOrReplaceAssetsEmbeddings:v18 error:&v37];
     v15 = v37;
-    if (v16)
+    if (code)
     {
       if (MediaAnalysisLogLevel() >= 3)
       {
@@ -1438,7 +1438,7 @@ LABEL_22:
         if (os_log_type_enabled(&_os_log_default, v29))
         {
           *buf = 138412546;
-          v45 = v35;
+          v45 = type;
           v46 = 2112;
           v47 = v15;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v29, "%@ Failed to publish VSKAssets - %@", buf, 0x16u);
@@ -1447,15 +1447,15 @@ LABEL_22:
     }
   }
 
-  return v16;
+  return code;
 }
 
-- (int)_bumpImageEmbeddingVersionWithAssetBatch:(id)a3 fromImageEmbeddingVersion:(int)a4 fromUnifiedEmbeddingVersion:(unint64_t)a5 toImageEmbeddingVersion:(int)a6 toUnifiedEmbeddingVersion:(unint64_t)a7 photoLibrary:(id)a8
+- (int)_bumpImageEmbeddingVersionWithAssetBatch:(id)batch fromImageEmbeddingVersion:(int)version fromUnifiedEmbeddingVersion:(unint64_t)embeddingVersion toImageEmbeddingVersion:(int)imageEmbeddingVersion toUnifiedEmbeddingVersion:(unint64_t)unifiedEmbeddingVersion photoLibrary:(id)library
 {
-  v9 = *&a6;
-  v10 = *&a4;
-  v39 = a3;
-  v38 = a8;
+  v9 = *&imageEmbeddingVersion;
+  v10 = *&version;
+  batchCopy = batch;
+  libraryCopy = library;
   v12 = [NSString stringWithFormat:@"[MACDMigration][ImageEmbedding][v%d->v%d]", v10, v9];
   if (MediaAnalysisLogLevel() >= 7)
   {
@@ -1465,14 +1465,14 @@ LABEL_22:
       *buf = 138412546;
       v53 = v12;
       v54 = 2048;
-      v55 = [v39 count];
+      v55 = [batchCopy count];
       _os_log_impl(&_mh_execute_header, &_os_log_default, v13, "%@ Start migrating %lu assets ...", buf, 0x16u);
     }
   }
 
   if ([(MADPhotosDatabaseMigrationProcessingTask *)self isCancelled])
   {
-    v14 = -128;
+    code = -128;
   }
 
   else
@@ -1487,7 +1487,7 @@ LABEL_22:
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v17 = v39;
+    v17 = batchCopy;
     v18 = [v17 countByEnumeratingWithState:&v47 objects:v51 count:16];
     if (v18)
     {
@@ -1503,8 +1503,8 @@ LABEL_22:
 
           v21 = *(*(&v47 + 1) + 8 * i);
           v22 = objc_autoreleasePoolPush();
-          v23 = [v21 localIdentifier];
-          [v16 setObject:v21 forKeyedSubscript:v23];
+          localIdentifier = [v21 localIdentifier];
+          [v16 setObject:v21 forKeyedSubscript:localIdentifier];
 
           objc_autoreleasePoolPop(v22);
         }
@@ -1516,10 +1516,10 @@ LABEL_22:
     }
 
     v24 = +[NSMutableArray array];
-    v25 = [v16 allKeys];
-    v14 = [(MADPhotosDatabaseMigrationProcessingTask *)self _bumpVectorDatabaseVersionWithLocalIdentifiers:v25 embeddingType:1 fromUnifiedEmbeddingVersion:a5 toUnifiedEmbeddingVersion:a7 updatedLocalIdentifiers:v24 photoLibrary:v38];
+    allKeys = [v16 allKeys];
+    code = [(MADPhotosDatabaseMigrationProcessingTask *)self _bumpVectorDatabaseVersionWithLocalIdentifiers:allKeys embeddingType:1 fromUnifiedEmbeddingVersion:embeddingVersion toUnifiedEmbeddingVersion:unifiedEmbeddingVersion updatedLocalIdentifiers:v24 photoLibrary:libraryCopy];
 
-    if (!v14)
+    if (!code)
     {
       if (![v24 count])
       {
@@ -1539,17 +1539,17 @@ LABEL_22:
       v27 = objc_retainBlock(v41);
       cancelBlock = self->_cancelBlock;
       v40 = 0;
-      v29 = [v38 mad_performChangesAndWait:v27 activity:259 cancelBlock:cancelBlock extendTimeoutBlock:&stru_100285B30 error:&v40];
+      v29 = [libraryCopy mad_performChangesAndWait:v27 activity:259 cancelBlock:cancelBlock extendTimeoutBlock:&stru_100285B30 error:&v40];
       v30 = v40;
       v31 = v30;
       if (v29)
       {
-        v14 = 0;
+        code = 0;
       }
 
       else
       {
-        v14 = [v30 code];
+        code = [v30 code];
         if (MediaAnalysisLogLevel() >= 3)
         {
           v32 = VCPLogToOSLogType[3];
@@ -1567,22 +1567,22 @@ LABEL_22:
       if (v29)
       {
 LABEL_21:
-        v14 = 0;
+        code = 0;
       }
     }
 
     v12 = v35;
   }
 
-  return v14;
+  return code;
 }
 
-- (int)_bumpVideoEmbeddingVersionWithAssetBatch:(id)a3 fromVideoEmbeddingVersion:(int)a4 fromUnifiedEmbeddingVersion:(unint64_t)a5 toVideoEmbeddingVersion:(int)a6 toUnifiedEmbeddingVersion:(unint64_t)a7 photoLibrary:(id)a8
+- (int)_bumpVideoEmbeddingVersionWithAssetBatch:(id)batch fromVideoEmbeddingVersion:(int)version fromUnifiedEmbeddingVersion:(unint64_t)embeddingVersion toVideoEmbeddingVersion:(int)videoEmbeddingVersion toUnifiedEmbeddingVersion:(unint64_t)unifiedEmbeddingVersion photoLibrary:(id)library
 {
-  v9 = *&a6;
-  v11 = *&a4;
-  v48 = a3;
-  v49 = a8;
+  v9 = *&videoEmbeddingVersion;
+  v11 = *&version;
+  batchCopy = batch;
+  libraryCopy = library;
   v43 = v11;
   v44 = v9;
   v13 = [NSString stringWithFormat:@"[MACDMigration][VideoEmbedding][v%d->v%d]", v11, v9];
@@ -1594,14 +1594,14 @@ LABEL_21:
       *buf = 138412546;
       v68 = v13;
       v69 = 2048;
-      v70 = [v48 count];
+      v70 = [batchCopy count];
       _os_log_impl(&_mh_execute_header, &_os_log_default, v14, "%@ Start migrating %lu assets ...", buf, 0x16u);
     }
   }
 
   if ([(MADPhotosDatabaseMigrationProcessingTask *)self isCancelled])
   {
-    v15 = -128;
+    code = -128;
   }
 
   else
@@ -1615,7 +1615,7 @@ LABEL_21:
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v18 = v48;
+    v18 = batchCopy;
     v19 = [v18 countByEnumeratingWithState:&v62 objects:v66 count:16];
     if (v19)
     {
@@ -1631,8 +1631,8 @@ LABEL_21:
 
           v22 = *(*(&v62 + 1) + 8 * i);
           v23 = objc_autoreleasePoolPush();
-          v24 = [v22 localIdentifier];
-          [v17 setObject:v22 forKeyedSubscript:v24];
+          localIdentifier = [v22 localIdentifier];
+          [v17 setObject:v22 forKeyedSubscript:localIdentifier];
 
           objc_autoreleasePoolPop(v23);
         }
@@ -1644,14 +1644,14 @@ LABEL_21:
     }
 
     v25 = +[NSMutableArray array];
-    v26 = [v17 allKeys];
-    v15 = [(MADPhotosDatabaseMigrationProcessingTask *)self _bumpVectorDatabaseVersionWithLocalIdentifiers:v26 embeddingType:2 fromUnifiedEmbeddingVersion:a5 toUnifiedEmbeddingVersion:a7 updatedLocalIdentifiers:v25 photoLibrary:v49];
+    allKeys = [v17 allKeys];
+    code = [(MADPhotosDatabaseMigrationProcessingTask *)self _bumpVectorDatabaseVersionWithLocalIdentifiers:allKeys embeddingType:2 fromUnifiedEmbeddingVersion:embeddingVersion toUnifiedEmbeddingVersion:unifiedEmbeddingVersion updatedLocalIdentifiers:v25 photoLibrary:libraryCopy];
 
-    if (!v15)
+    if (!code)
     {
       v27 = MediaAnalysisResultsTypesForAnalysisTypes();
-      v28 = [v49 mad_fetchRequest];
-      v29 = [v28 fetchAnalysesWithLocalIdentifiers:v25 predicate:0 resultTypes:v27];
+      mad_fetchRequest = [libraryCopy mad_fetchRequest];
+      v29 = [mad_fetchRequest fetchAnalysesWithLocalIdentifiers:v25 predicate:0 resultTypes:v27];
 
       v58[0] = _NSConcreteStackBlock;
       v58[1] = 3221225472;
@@ -1664,7 +1664,7 @@ LABEL_21:
       v32 = v17;
       v61 = v32;
       v57 = 0;
-      LOBYTE(v29) = [v49 mad_performAnalysisDataStoreChanges:v58 error:&v57];
+      LOBYTE(v29) = [libraryCopy mad_performAnalysisDataStoreChanges:v58 error:&v57];
       v33 = v57;
       v47 = v33;
       if (v29)
@@ -1687,17 +1687,17 @@ LABEL_21:
         v35 = objc_retainBlock(v51);
         cancelBlock = self->_cancelBlock;
         v50 = 0;
-        v37 = [v49 mad_performChangesAndWait:v35 activity:259 cancelBlock:cancelBlock extendTimeoutBlock:&stru_100285B78 error:&v50];
+        v37 = [libraryCopy mad_performChangesAndWait:v35 activity:259 cancelBlock:cancelBlock extendTimeoutBlock:&stru_100285B78 error:&v50];
         v38 = v50;
         v39 = v38;
         if (v37)
         {
-          v15 = 0;
+          code = 0;
         }
 
         else
         {
-          v15 = [v38 code];
+          code = [v38 code];
           if (MediaAnalysisLogLevel() >= 3)
           {
             v41 = VCPLogToOSLogType[3];
@@ -1715,13 +1715,13 @@ LABEL_21:
         if (v37)
         {
 LABEL_25:
-          v15 = 0;
+          code = 0;
         }
       }
 
       else
       {
-        v15 = [v33 code];
+        code = [v33 code];
         if (MediaAnalysisLogLevel() >= 3)
         {
           v40 = VCPLogToOSLogType[3];
@@ -1740,12 +1740,12 @@ LABEL_25:
     v13 = v45;
   }
 
-  return v15;
+  return code;
 }
 
-- (int)_migrateDatabaseToV2ForPhotoLibrary:(id)a3
+- (int)_migrateDatabaseToV2ForPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   if ((+[VCPVideoCNNAnalyzer isMUBackboneEnabled]& 1) != 0)
   {
     if (MediaAnalysisLogLevel() >= 5)
@@ -1753,11 +1753,11 @@ LABEL_25:
       v5 = VCPLogToOSLogType[5];
       if (os_log_type_enabled(&_os_log_default, v5))
       {
-        v6 = [v4 photoLibraryURL];
+        photoLibraryURL = [libraryCopy photoLibraryURL];
         *buf = 138412546;
         v42 = @"[MACDMigration|v2]";
         v43 = 2112;
-        *v44 = v6;
+        *v44 = photoLibraryURL;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "%@ Migrating database to v2 for photo library %@", buf, 0x16u);
       }
     }
@@ -1790,7 +1790,7 @@ LABEL_25:
       LOWORD(v35) = 0;
       v40[1] = 0;
       v39 = [[PHMediaProcessingAlgorithmVersionProvider alloc] initWithSceneAnalysisVersion:0 faceAnalysisVersion:0 characterRecognitionAlgorithmVersion:0 visualSearchAlgorithmVersion:0 stickerConfidenceAlgorithmVersion:0 vaAnalysisVersion:0 vaLocationAnalysisVersion:v35 mediaAnalysisVersion:0 mediaAnalysisImageVersion:0x4A00000000 captionGenerationVersion:? imageEmbeddingVersion:? videoEmbeddingVersion:?];
-      v9 = [v4 fetchProcessedAssetsForMediaProcessingTaskID:17 priority:0 algorithmVersion:0.0 sceneConfidenceThreshold:? error:?];
+      v9 = [libraryCopy fetchProcessedAssetsForMediaProcessingTaskID:17 priority:0 algorithmVersion:0.0 sceneConfidenceThreshold:? error:?];
       v10 = 0;
       if (v10)
       {
@@ -1842,7 +1842,7 @@ LABEL_25:
           }
 
           v18 = objc_autoreleasePoolPush();
-          v19 = [(MADPhotosDatabaseMigrationProcessingTask *)self _bumpImageEmbeddingVersionWithAssetBatch:v14 fromImageEmbeddingVersion:74 fromUnifiedEmbeddingVersion:8 toImageEmbeddingVersion:75 toUnifiedEmbeddingVersion:9 photoLibrary:v4];
+          v19 = [(MADPhotosDatabaseMigrationProcessingTask *)self _bumpImageEmbeddingVersionWithAssetBatch:v14 fromImageEmbeddingVersion:74 fromUnifiedEmbeddingVersion:8 toImageEmbeddingVersion:75 toUnifiedEmbeddingVersion:9 photoLibrary:libraryCopy];
           if (v19)
           {
             LODWORD(v7) = v19;
@@ -1904,7 +1904,7 @@ LABEL_33:
 
         v39 = v22;
         v40[0] = 0;
-        v23 = [v4 fetchProcessedAssetsForMediaProcessingTaskID:1 priority:0 algorithmVersion:v22 sceneConfidenceThreshold:v40 error:0.0];
+        v23 = [libraryCopy fetchProcessedAssetsForMediaProcessingTaskID:1 priority:0 algorithmVersion:v22 sceneConfidenceThreshold:v40 error:0.0];
         v11 = v40[0];
 
         v9 = v23;
@@ -1937,7 +1937,7 @@ LABEL_33:
             }
 
             v30 = objc_autoreleasePoolPush();
-            v31 = [(MADPhotosDatabaseMigrationProcessingTask *)self _bumpVideoEmbeddingVersionWithAssetBatch:v14 fromVideoEmbeddingVersion:74 fromUnifiedEmbeddingVersion:8 toVideoEmbeddingVersion:75 toUnifiedEmbeddingVersion:9 photoLibrary:v4];
+            v31 = [(MADPhotosDatabaseMigrationProcessingTask *)self _bumpVideoEmbeddingVersionWithAssetBatch:v14 fromVideoEmbeddingVersion:74 fromUnifiedEmbeddingVersion:8 toVideoEmbeddingVersion:75 toUnifiedEmbeddingVersion:9 photoLibrary:libraryCopy];
             if (v31)
             {
               LODWORD(v7) = v31;
@@ -1991,7 +1991,7 @@ LABEL_62:
           }
 
           v34 = +[MADPhotosDataStoreClient sharedClient];
-          LODWORD(v7) = [v34 setDatabaseVersion:2 photoLibrary:v4];
+          LODWORD(v7) = [v34 setDatabaseVersion:2 photoLibrary:libraryCopy];
 
 LABEL_35:
           v11 = 0;
@@ -2027,23 +2027,23 @@ LABEL_44:
     }
 
     v38 = +[MADPhotosDataStoreClient sharedClient];
-    LODWORD(v7) = [v38 setDatabaseVersion:2 photoLibrary:v4];
+    LODWORD(v7) = [v38 setDatabaseVersion:2 photoLibrary:libraryCopy];
   }
 
   return v7;
 }
 
-- (int)_migrateDatabaseForPhotoLibrary:(id)a3
+- (int)_migrateDatabaseForPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   if (MediaAnalysisLogLevel() >= 5)
   {
     v5 = VCPLogToOSLogType[5];
     if (os_log_type_enabled(&_os_log_default, v5))
     {
-      v6 = [v4 photoLibraryURL];
+      photoLibraryURL = [libraryCopy photoLibraryURL];
       *buf = 138412290;
-      *v43 = v6;
+      *v43 = photoLibraryURL;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "[MACDMigration] Migrating database for photo library %@", buf, 0xCu);
     }
   }
@@ -2056,7 +2056,7 @@ LABEL_44:
     v9 = mach_continuous_time();
     v10 = +[MADPhotosDataStoreClient sharedClient];
     v41 = 0;
-    v7 = [v10 queryDatabaseVersion:&v41 photoLibrary:v4];
+    v7 = [v10 queryDatabaseVersion:&v41 photoLibrary:libraryCopy];
     if (v7)
     {
       if (MediaAnalysisLogLevel() >= 3)
@@ -2064,9 +2064,9 @@ LABEL_44:
         v11 = VCPLogToOSLogType[3];
         if (os_log_type_enabled(&_os_log_default, v11))
         {
-          v12 = [v4 photoLibraryURL];
+          photoLibraryURL2 = [libraryCopy photoLibraryURL];
           *buf = 138412290;
-          *v43 = v12;
+          *v43 = photoLibraryURL2;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v11, "[MACDMigration] Failed to query current database version for photo library %@", buf, 0xCu);
         }
       }
@@ -2125,7 +2125,7 @@ LABEL_67:
         }
       }
 
-      v7 = [v10 recreatePersistentStoreForPhotoLibrary:v4];
+      v7 = [v10 recreatePersistentStoreForPhotoLibrary:libraryCopy];
       if (v7)
       {
         if (MediaAnalysisLogLevel() >= 3)
@@ -2133,9 +2133,9 @@ LABEL_67:
           v22 = VCPLogToOSLogType[3];
           if (os_log_type_enabled(&_os_log_default, v22))
           {
-            v23 = [v4 photoLibraryURL];
+            photoLibraryURL3 = [libraryCopy photoLibraryURL];
             *buf = 138412290;
-            *v43 = v23;
+            *v43 = photoLibraryURL3;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v22, "[MACDMigration] Failed to recreate persistent store for photo library %@", buf, 0xCu);
           }
         }
@@ -2143,7 +2143,7 @@ LABEL_67:
         goto LABEL_68;
       }
 
-      v7 = [v10 queryDatabaseVersion:&v41 photoLibrary:v4];
+      v7 = [v10 queryDatabaseVersion:&v41 photoLibrary:libraryCopy];
       if (v7)
       {
         if (MediaAnalysisLogLevel() < 3)
@@ -2201,7 +2201,7 @@ LABEL_77:
         goto LABEL_63;
       }
 
-      v7 = [(MADPhotosDatabaseMigrationProcessingTask *)self _migrateDatabaseToV1ForPhotoLibrary:v4];
+      v7 = [(MADPhotosDatabaseMigrationProcessingTask *)self _migrateDatabaseToV1ForPhotoLibrary:libraryCopy];
       if (v7)
       {
         if (MediaAnalysisLogLevel() < 3)
@@ -2220,7 +2220,7 @@ LABEL_77:
         goto LABEL_51;
       }
 
-      v7 = [v10 queryDatabaseVersion:&v41 photoLibrary:v4];
+      v7 = [v10 queryDatabaseVersion:&v41 photoLibrary:libraryCopy];
       if (v7)
       {
         if (MediaAnalysisLogLevel() < 3)
@@ -2256,7 +2256,7 @@ LABEL_77:
       }
     }
 
-    v7 = [(MADPhotosDatabaseMigrationProcessingTask *)self _migrateDatabaseToV2ForPhotoLibrary:v4];
+    v7 = [(MADPhotosDatabaseMigrationProcessingTask *)self _migrateDatabaseToV2ForPhotoLibrary:libraryCopy];
     if (v7)
     {
       if (MediaAnalysisLogLevel() < 3)
@@ -2279,7 +2279,7 @@ LABEL_68:
       goto LABEL_69;
     }
 
-    v7 = [v10 queryDatabaseVersion:&v41 photoLibrary:v4];
+    v7 = [v10 queryDatabaseVersion:&v41 photoLibrary:libraryCopy];
     if (v7)
     {
       if (MediaAnalysisLogLevel() < 3)
@@ -2294,9 +2294,9 @@ LABEL_68:
       }
 
 LABEL_55:
-      v30 = [v4 photoLibraryURL];
+      photoLibraryURL4 = [libraryCopy photoLibraryURL];
       *buf = 138412290;
-      *v43 = v30;
+      *v43 = photoLibraryURL4;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v24, "[MACDMigration] Failed to query recreated database version for photo library %@", buf, 0xCu);
 
       goto LABEL_68;
@@ -2323,7 +2323,7 @@ LABEL_55:
     if (+[VCPVideoCNNAnalyzer isMUBackboneEnabled])
     {
       v31 = objc_autoreleasePoolPush();
-      v32 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:v4];
+      v32 = [MADVectorDatabaseManager sharedDatabaseWithPhotoLibrary:libraryCopy];
       v7 = [v32 rebuildWithForce:1 cancelBlock:self->_cancelBlock extendTimeoutBlock:&stru_100285B98 totalEmbeddingCount:0];
       if (v7)
       {
@@ -2355,13 +2355,13 @@ LABEL_63:
       qos_class_self();
       v37 = VCPMAQoSDescription();
       v38 = v37;
-      v39 = [v37 UTF8String];
+      uTF8String = [v37 UTF8String];
       *buf = 134349570;
       *v43 = v9;
       *&v43[8] = 2082;
       v44 = "Migration";
       v45 = 2082;
-      v46 = v39;
+      v46 = uTF8String;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v34, OS_SIGNPOST_EVENT, v36, "CoreDataPersistence", "%{public, signpost.description:begin_time}llu Type=%{public, signpost.telemetry:string1}s QoS=%{public, signpost.telemetry:string2}s  enableTelemetry=YES ", buf, 0x20u);
     }
 
@@ -2374,10 +2374,10 @@ LABEL_69:
   return v7;
 }
 
-- (int)_updateAnalysisMetricsForPhotoLibrary:(id)a3
+- (int)_updateAnalysisMetricsForPhotoLibrary:(id)library
 {
-  v3 = a3;
-  v4 = [v3 mad_bumpFaceProcessingVersionIfNeededWithError:0];
+  libraryCopy = library;
+  v4 = [libraryCopy mad_bumpFaceProcessingVersionIfNeededWithError:0];
   if (v4)
   {
     if (MediaAnalysisLogLevel() >= 3)
@@ -2396,7 +2396,7 @@ LABEL_13:
 
   else
   {
-    v4 = [v3 mad_migrateVectorDatabaseIfNeededWithError:0];
+    v4 = [libraryCopy mad_migrateVectorDatabaseIfNeededWithError:0];
     if (v4)
     {
       if (MediaAnalysisLogLevel() >= 3)
@@ -2414,7 +2414,7 @@ LABEL_13:
 
     else
     {
-      v4 = [v3 mad_updateAnalysisMetricsOnVersionUpdateWithError:0];
+      v4 = [libraryCopy mad_updateAnalysisMetricsOnVersionUpdateWithError:0];
       if (v4)
       {
         if (MediaAnalysisLogLevel() >= 3)
@@ -2480,20 +2480,20 @@ LABEL_13:
         goto LABEL_76;
       }
 
-      v66 = [v8 mad_migrationDirectory];
-      v11 = [v8 mad_migrationStatusFilepath];
-      if (v11)
+      mad_migrationDirectory = [v8 mad_migrationDirectory];
+      mad_migrationStatusFilepath = [v8 mad_migrationStatusFilepath];
+      if (mad_migrationStatusFilepath)
       {
-        v62 = [NSURL fileURLWithPath:v11 isDirectory:0];
+        v62 = [NSURL fileURLWithPath:mad_migrationStatusFilepath isDirectory:0];
         v64 = +[NSMutableDictionary dictionary];
         v63 = +[NSFileManager defaultManager];
-        if (![v63 fileExistsAtPath:v66])
+        if (![v63 fileExistsAtPath:mad_migrationDirectory])
         {
           v89 = NSFilePosixPermissions;
           v90 = &off_100294740;
           v14 = [NSDictionary dictionaryWithObjects:&v90 forKeys:&v89 count:1];
           v81 = 0;
-          v15 = [v63 createDirectoryAtPath:v66 withIntermediateDirectories:1 attributes:v14 error:&v81];
+          v15 = [v63 createDirectoryAtPath:mad_migrationDirectory withIntermediateDirectories:1 attributes:v14 error:&v81];
           v13 = v81;
 
           if (v15)
@@ -2504,7 +2504,7 @@ LABEL_13:
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
           {
             *buf = 138412546;
-            v92 = v66;
+            v92 = mad_migrationDirectory;
             v93 = 2112;
             v94 = v13;
             _os_log_impl(&_mh_execute_header, &_os_log_default, type, "Failed to create migration directory at %@ (%@); migration failed", buf, 0x16u);
@@ -2515,7 +2515,7 @@ LABEL_25:
           goto LABEL_75;
         }
 
-        if ([v63 fileExistsAtPath:v11])
+        if ([v63 fileExistsAtPath:mad_migrationStatusFilepath])
         {
           v82 = 0;
           v12 = [NSDictionary dictionaryWithContentsOfURL:v62 error:&v82];
@@ -2525,7 +2525,7 @@ LABEL_25:
             if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
             {
               *buf = 138412546;
-              v92 = v11;
+              v92 = mad_migrationStatusFilepath;
               v93 = 2112;
               v94 = v13;
               _os_log_impl(&_mh_execute_header, &_os_log_default, type, "Failed to read migration status file at %@ (%@), skipping restore", buf, 0x16u);
@@ -2549,11 +2549,11 @@ LABEL_27:
           if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, v58))
           {
             v17 = [v64 objectForKeyedSubscript:@"MigrationAttempts"];
-            v18 = [v8 photoLibraryURL];
+            photoLibraryURL = [v8 photoLibraryURL];
             *buf = 138412546;
             v92 = v17;
             v93 = 2112;
-            v94 = v18;
+            v94 = photoLibraryURL;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v58, "[MACDMigration] Increasing migration attempts to %@ for photo library %@", buf, 0x16u);
           }
 
@@ -2574,9 +2574,9 @@ LABEL_27:
             {
               if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
               {
-                v23 = [v8 photoLibraryURL];
+                photoLibraryURL2 = [v8 photoLibraryURL];
                 *buf = 138412290;
-                v92 = v23;
+                v92 = photoLibraryURL2;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[MACDMigration] Failed to restore database for photo library %@", buf, 0xCu);
               }
 
@@ -2588,12 +2588,12 @@ LABEL_27:
             {
               if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
               {
-                v30 = [v8 photoLibraryURL];
+                photoLibraryURL3 = [v8 photoLibraryURL];
                 *buf = 138412546;
-                v92 = v30;
+                v92 = photoLibraryURL3;
                 v93 = 1024;
                 LODWORD(v94) = v29;
-                v31 = v30;
+                v31 = photoLibraryURL3;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[MACDMigration] Failed to migrate database for photo library %@ (%d)", buf, 0x12u);
               }
 
@@ -2632,9 +2632,9 @@ LABEL_27:
 LABEL_64:
             if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, v58))
             {
-              v34 = [v8 photoLibraryURL];
+              photoLibraryURL4 = [v8 photoLibraryURL];
               *buf = 138412290;
-              v92 = v34;
+              v92 = photoLibraryURL4;
               _os_log_impl(&_mh_execute_header, &_os_log_default, v58, "[MACDMigration] Migration completed for photo library %@", buf, 0xCu);
             }
 
@@ -2653,9 +2653,9 @@ LABEL_76:
             {
               if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
               {
-                v36 = [v8 photoLibraryURL];
+                photoLibraryURL5 = [v8 photoLibraryURL];
                 *buf = 138412290;
-                v92 = v36;
+                v92 = photoLibraryURL5;
                 _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[MACDMigration] Failed to update analysis metrics for photo library %@", buf, 0xCu);
               }
 
@@ -2687,9 +2687,9 @@ LABEL_73:
 
         if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(&_os_log_default, v58))
         {
-          v24 = [v8 photoLibraryURL];
+          photoLibraryURL6 = [v8 photoLibraryURL];
           *buf = 138412290;
-          v92 = v24;
+          v92 = photoLibraryURL6;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v58, "[MACDMigration] Reached max migration attempts, recreating database for photo library %@", buf, 0xCu);
         }
 
@@ -2699,9 +2699,9 @@ LABEL_73:
         {
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
           {
-            v26 = [v8 photoLibraryURL];
+            photoLibraryURL7 = [v8 photoLibraryURL];
             *buf = 138412546;
-            v92 = v26;
+            v92 = photoLibraryURL7;
             v93 = 1024;
             LODWORD(v94) = v25;
             _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[MACDMigration] Failed to recreate new database for photo library %@ (%d)", buf, 0x12u);
@@ -2742,9 +2742,9 @@ LABEL_72:
 
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
           {
-            v28 = [v8 photoLibraryURL];
+            photoLibraryURL8 = [v8 photoLibraryURL];
             *buf = 138412546;
-            v92 = v28;
+            v92 = photoLibraryURL8;
             v93 = 1024;
             LODWORD(v94) = v27;
             _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[MACDMigration] Failed to set database version for photo library %@ (%d)", buf, 0x12u);
@@ -2802,9 +2802,9 @@ LABEL_86:
           v44 = objc_autoreleasePoolPush();
           if ([VCPDatabaseManager removeLegacyDatabaseFilesForPhotoLibrary:v43]&& MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, v41))
           {
-            v45 = [v43 photoLibraryURL];
+            photoLibraryURL9 = [v43 photoLibraryURL];
             *buf = 138412290;
-            v92 = v45;
+            v92 = photoLibraryURL9;
             _os_log_impl(&_mh_execute_header, &_os_log_default, v41, "[MACDMigration] Failed to remove legacy database files for photo library %@", buf, 0xCu);
           }
 
@@ -2827,8 +2827,8 @@ LABEL_86:
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v48 = [(NSMutableDictionary *)self->_migrationAnalytics allKeys];
-  v49 = [v48 countByEnumeratingWithState:&v68 objects:v87 count:16];
+  allKeys = [(NSMutableDictionary *)self->_migrationAnalytics allKeys];
+  v49 = [allKeys countByEnumeratingWithState:&v68 objects:v87 count:16];
   if (v49)
   {
     v50 = *v69;
@@ -2838,7 +2838,7 @@ LABEL_86:
       {
         if (*v69 != v50)
         {
-          objc_enumerationMutation(v48);
+          objc_enumerationMutation(allKeys);
         }
 
         v52 = *(*(&v68 + 1) + 8 * k);
@@ -2847,7 +2847,7 @@ LABEL_86:
         [v53 setValue:v54 forField:v52 andEvent:v5];
       }
 
-      v49 = [v48 countByEnumeratingWithState:&v68 objects:v87 count:16];
+      v49 = [allKeys countByEnumeratingWithState:&v68 objects:v87 count:16];
     }
 
     while (v49);
@@ -2862,11 +2862,11 @@ LABEL_107:
 - (int)run
 {
   atomic_store(1u, &self->_started);
-  v3 = [(MADPhotosDatabaseMigrationProcessingTask *)self _run];
-  v4 = v3;
-  if (v3 != -128)
+  _run = [(MADPhotosDatabaseMigrationProcessingTask *)self _run];
+  v4 = _run;
+  if (_run != -128)
   {
-    if (v3)
+    if (_run)
     {
       if (MediaAnalysisLogLevel() >= 3)
       {

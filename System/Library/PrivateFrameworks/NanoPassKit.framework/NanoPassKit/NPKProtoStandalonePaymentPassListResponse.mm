@@ -1,32 +1,32 @@
 @interface NPKProtoStandalonePaymentPassListResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addPaymentPasses:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPaymentPasses:(id)passes;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentPassListResponse
 
-- (void)addPaymentPasses:(id)a3
+- (void)addPaymentPasses:(id)passes
 {
-  v4 = a3;
+  passesCopy = passes;
   paymentPasses = self->_paymentPasses;
-  v8 = v4;
+  v8 = passesCopy;
   if (!paymentPasses)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_paymentPasses;
     self->_paymentPasses = v6;
 
-    v4 = v8;
+    passesCopy = v8;
     paymentPasses = self->_paymentPasses;
   }
 
-  [(NSMutableArray *)paymentPasses addObject:v4];
+  [(NSMutableArray *)paymentPasses addObject:passesCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentPassListResponse;
   v4 = [(NPKProtoStandalonePaymentPassListResponse *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentPassListResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentPassListResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,12 +44,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   responseHeader = self->_responseHeader;
   if (responseHeader)
   {
-    v5 = [(NPKProtoStandaloneResponseHeader *)responseHeader dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"responseHeader"];
+    dictionaryRepresentation = [(NPKProtoStandaloneResponseHeader *)responseHeader dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"responseHeader"];
   }
 
   if ([(NSMutableArray *)self->_paymentPasses count])
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -84,24 +84,24 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"paymentPasses"];
+    [dictionary setObject:v6 forKey:@"paymentPasses"];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (!self->_responseHeader)
   {
     [NPKProtoStandalonePaymentPassListResponse writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteSubmessage();
   v15 = 0u;
   v16 = 0u;
@@ -138,31 +138,31 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setResponseHeader:self->_responseHeader];
+  toCopy = to;
+  [toCopy setResponseHeader:self->_responseHeader];
   if ([(NPKProtoStandalonePaymentPassListResponse *)self paymentPassesCount])
   {
-    [v8 clearPaymentPasses];
-    v4 = [(NPKProtoStandalonePaymentPassListResponse *)self paymentPassesCount];
-    if (v4)
+    [toCopy clearPaymentPasses];
+    paymentPassesCount = [(NPKProtoStandalonePaymentPassListResponse *)self paymentPassesCount];
+    if (paymentPassesCount)
     {
-      v5 = v4;
+      v5 = paymentPassesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoStandalonePaymentPassListResponse *)self paymentPassesAtIndex:i];
-        [v8 addPaymentPasses:v7];
+        [toCopy addPaymentPasses:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NPKProtoStandaloneResponseHeader *)self->_responseHeader copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NPKProtoStandaloneResponseHeader *)self->_responseHeader copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -186,7 +186,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addPaymentPasses:v13];
 
         ++v12;
@@ -203,13 +203,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((responseHeader = self->_responseHeader, !(responseHeader | v4[2])) || -[NPKProtoStandaloneResponseHeader isEqual:](responseHeader, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((responseHeader = self->_responseHeader, !(responseHeader | equalCopy[2])) || -[NPKProtoStandaloneResponseHeader isEqual:](responseHeader, "isEqual:")))
   {
     paymentPasses = self->_paymentPasses;
-    if (paymentPasses | v4[1])
+    if (paymentPasses | equalCopy[1])
     {
       v7 = [(NSMutableArray *)paymentPasses isEqual:?];
     }
@@ -228,12 +228,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   responseHeader = self->_responseHeader;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (responseHeader)
   {
     if (v6)
@@ -251,7 +251,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {

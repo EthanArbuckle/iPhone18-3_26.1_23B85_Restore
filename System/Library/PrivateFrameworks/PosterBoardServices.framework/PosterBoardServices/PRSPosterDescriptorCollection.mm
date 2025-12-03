@@ -1,5 +1,5 @@
 @interface PRSPosterDescriptorCollection
-+ (BOOL)validatePoster:(id)a3;
++ (BOOL)validatePoster:(id)poster;
 - (NSSet)mutableDescriptors;
 - (void)dealloc;
 @end
@@ -8,8 +8,8 @@
 
 - (NSSet)mutableDescriptors
 {
-  v2 = [(PFPosterCollection *)self posters];
-  v3 = [v2 bs_filter:&__block_literal_global_1];
+  posters = [(PFPosterCollection *)self posters];
+  v3 = [posters bs_filter:&__block_literal_global_1];
 
   return v3;
 }
@@ -23,9 +23,9 @@ uint64_t __51__PRSPosterDescriptorCollection_mutableDescriptors__block_invoke(ui
   return isKindOfClass & 1;
 }
 
-+ (BOOL)validatePoster:(id)a3
++ (BOOL)validatePoster:(id)poster
 {
-  v4 = a3;
+  posterCopy = poster;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -34,9 +34,9 @@ uint64_t __51__PRSPosterDescriptorCollection_mutableDescriptors__block_invoke(ui
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___PRSPosterDescriptorCollection;
-    v5 = objc_msgSendSuper2(&v7, sel_validatePoster_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_validatePoster_, posterCopy);
   }
 
   return v5;
@@ -49,8 +49,8 @@ uint64_t __51__PRSPosterDescriptorCollection_mutableDescriptors__block_invoke(ui
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(PRSPosterDescriptorCollection *)self mutableDescriptors];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  mutableDescriptors = [(PRSPosterDescriptorCollection *)self mutableDescriptors];
+  v4 = [mutableDescriptors countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -62,17 +62,17 @@ uint64_t __51__PRSPosterDescriptorCollection_mutableDescriptors__block_invoke(ui
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(mutableDescriptors);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * v7) _path];
-        [v8 invalidate];
+        _path = [*(*(&v11 + 1) + 8 * v7) _path];
+        [_path invalidate];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [mutableDescriptors countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);

@@ -25,7 +25,7 @@
 
 - (void)configureAfterDelay
 {
-  v2 = self;
+  selfCopy = self;
   CNUISharedProfileNavigationBarPalette.configureAfterDelay()();
 }
 

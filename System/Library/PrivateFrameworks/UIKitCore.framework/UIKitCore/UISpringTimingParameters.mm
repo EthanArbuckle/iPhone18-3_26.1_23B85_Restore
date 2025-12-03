@@ -1,21 +1,21 @@
 @interface UISpringTimingParameters
-+ (void)_convertBounce:(double)a3 toDampingRatio:(double *)a4;
-+ (void)_convertDampingRatio:(double)a3 response:(double)a4 toMass:(double *)a5 stiffness:(double *)a6 damping:(double *)a7;
-+ (void)_convertMass:(double)a3 stiffness:(double)a4 damping:(double)a5 toDampingRatio:(double *)a6 response:(double *)a7;
-- (BOOL)isEqual:(id)a3;
++ (void)_convertBounce:(double)bounce toDampingRatio:(double *)ratio;
++ (void)_convertDampingRatio:(double)ratio response:(double)response toMass:(double *)mass stiffness:(double *)stiffness damping:(double *)damping;
++ (void)_convertMass:(double)mass stiffness:(double)stiffness damping:(double)damping toDampingRatio:(double *)ratio response:(double *)response;
+- (BOOL)isEqual:(id)equal;
 - (CGVector)initialVelocity;
 - (UISpringTimingParameters)init;
 - (UISpringTimingParameters)initWithCoder:(NSCoder *)coder;
 - (UISpringTimingParameters)initWithDampingRatio:(CGFloat)ratio initialVelocity:(CGVector)velocity;
-- (UISpringTimingParameters)initWithDampingRatio:(double)a3 response:(double)a4 initialVelocity:(CGVector)a5;
+- (UISpringTimingParameters)initWithDampingRatio:(double)ratio response:(double)response initialVelocity:(CGVector)velocity;
 - (UISpringTimingParameters)initWithDuration:(NSTimeInterval)duration bounce:(CGFloat)bounce initialVelocity:(CGVector)velocity;
 - (UISpringTimingParameters)initWithMass:(CGFloat)mass stiffness:(CGFloat)stiffness damping:(CGFloat)damping initialVelocity:(CGVector)velocity;
-- (UISpringTimingParameters)initWithParameters:(id)a3 initialVelocity:(CGVector)a4;
-- (UISpringTimingParameters)initWithVelocity:(CGVector)a3;
+- (UISpringTimingParameters)initWithParameters:(id)parameters initialVelocity:(CGVector)velocity;
+- (UISpringTimingParameters)initWithVelocity:(CGVector)velocity;
 - (double)settlingDuration;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UISpringTimingParameters
@@ -90,11 +90,11 @@
 
 - (id)description
 {
-  v3 = [(UISpringTimingParameters *)self implicitDuration];
+  implicitDuration = [(UISpringTimingParameters *)self implicitDuration];
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  if (v3)
+  if (implicitDuration)
   {
     [(UISpringTimingParameters *)self mass];
     v8 = v7;
@@ -139,10 +139,10 @@
   return v11;
 }
 
-- (UISpringTimingParameters)initWithVelocity:(CGVector)a3
+- (UISpringTimingParameters)initWithVelocity:(CGVector)velocity
 {
-  dy = a3.dy;
-  dx = a3.dx;
+  dy = velocity.dy;
+  dx = velocity.dx;
   v13.receiver = self;
   v13.super_class = UISpringTimingParameters;
   v5 = [(UISpringTimingParameters *)&v13 init];
@@ -178,14 +178,14 @@
   return result;
 }
 
-- (UISpringTimingParameters)initWithDampingRatio:(double)a3 response:(double)a4 initialVelocity:(CGVector)a5
+- (UISpringTimingParameters)initWithDampingRatio:(double)ratio response:(double)response initialVelocity:(CGVector)velocity
 {
-  dy = a5.dy;
-  dx = a5.dx;
+  dy = velocity.dy;
+  dx = velocity.dx;
   v10 = 0.0;
   v11 = 0.0;
   v9 = 0.0;
-  [UISpringTimingParameters _convertDampingRatio:&v11 response:&v10 toMass:&v9 stiffness:a3 damping:a4];
+  [UISpringTimingParameters _convertDampingRatio:&v11 response:&v10 toMass:&v9 stiffness:ratio damping:response];
   return [(UISpringTimingParameters *)self initWithMass:v11 stiffness:v10 damping:v9 initialVelocity:dx, dy];
 }
 
@@ -205,24 +205,24 @@
   return v9;
 }
 
-- (UISpringTimingParameters)initWithParameters:(id)a3 initialVelocity:(CGVector)a4
+- (UISpringTimingParameters)initWithParameters:(id)parameters initialVelocity:(CGVector)velocity
 {
-  dy = a4.dy;
-  dx = a4.dx;
-  v7 = a3;
-  [v7 _dampingRatio];
+  dy = velocity.dy;
+  dx = velocity.dx;
+  parametersCopy = parameters;
+  [parametersCopy _dampingRatio];
   v9 = v8;
-  [v7 _response];
+  [parametersCopy _response];
   v11 = v10;
 
   return [(UISpringTimingParameters *)self initWithDampingRatio:v9 response:v11 initialVelocity:dx, dy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [(UISpringTimingParameters *)self implicitDuration];
-  v6 = [objc_opt_class() allocWithZone:a3];
-  if (v5)
+  implicitDuration = [(UISpringTimingParameters *)self implicitDuration];
+  v6 = [objc_opt_class() allocWithZone:zone];
+  if (implicitDuration)
   {
     [(UISpringTimingParameters *)self mass];
     v8 = v7;
@@ -245,13 +245,13 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if ([(UISpringTimingParameters *)self implicitDuration])
     {
       [(UISpringTimingParameters *)self mass];
@@ -310,16 +310,16 @@ LABEL_13:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeBool:-[UISpringTimingParameters implicitDuration](self forKey:{"implicitDuration"), @"implicitDuration"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[UISpringTimingParameters implicitDuration](self forKey:{"implicitDuration"), @"implicitDuration"}];
   if ([(UISpringTimingParameters *)self implicitDuration])
   {
     [(UISpringTimingParameters *)self mass];
-    [v5 encodeDouble:@"mass" forKey:?];
+    [coderCopy encodeDouble:@"mass" forKey:?];
     [(UISpringTimingParameters *)self stiffness];
-    [v5 encodeDouble:@"stiffness" forKey:?];
+    [coderCopy encodeDouble:@"stiffness" forKey:?];
     [(UISpringTimingParameters *)self damping];
     v4 = @"damping";
   }
@@ -330,9 +330,9 @@ LABEL_13:
     v4 = @"dampingRatio";
   }
 
-  [v5 encodeDouble:v4 forKey:?];
+  [coderCopy encodeDouble:v4 forKey:?];
   [(UISpringTimingParameters *)self initialVelocity];
-  [v5 encodeCGVector:@"velocity" forKey:?];
+  [coderCopy encodeCGVector:@"velocity" forKey:?];
 }
 
 - (UISpringTimingParameters)initWithCoder:(NSCoder *)coder
@@ -375,68 +375,68 @@ LABEL_13:
     }
 
     self = v5;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E696A4C8] format:{@"%@ only supports keyed coding.", objc_opt_class()}];
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-+ (void)_convertDampingRatio:(double)a3 response:(double)a4 toMass:(double *)a5 stiffness:(double *)a6 damping:(double *)a7
++ (void)_convertDampingRatio:(double)ratio response:(double)response toMass:(double *)mass stiffness:(double *)stiffness damping:(double *)damping
 {
-  v7 = 6.28318531 / a4;
-  if (a5)
+  v7 = 6.28318531 / response;
+  if (mass)
   {
-    *a5 = 1.0;
+    *mass = 1.0;
   }
 
   v8 = v7 * v7;
-  if (a6)
+  if (stiffness)
   {
-    *a6 = v8;
+    *stiffness = v8;
   }
 
-  if (a7)
+  if (damping)
   {
     v9 = sqrt(v8);
-    *a7 = (v9 + v9) * a3;
+    *damping = (v9 + v9) * ratio;
   }
 }
 
-+ (void)_convertMass:(double)a3 stiffness:(double)a4 damping:(double)a5 toDampingRatio:(double *)a6 response:(double *)a7
++ (void)_convertMass:(double)mass stiffness:(double)stiffness damping:(double)damping toDampingRatio:(double *)ratio response:(double *)response
 {
-  if (a6)
+  if (ratio)
   {
-    v7 = sqrt(a3 * a4);
-    *a6 = a5 / (v7 + v7);
+    v7 = sqrt(mass * stiffness);
+    *ratio = damping / (v7 + v7);
   }
 
-  if (a7)
+  if (response)
   {
-    *a7 = 6.28318531 / sqrt(a4 / a3);
+    *response = 6.28318531 / sqrt(stiffness / mass);
   }
 }
 
-+ (void)_convertBounce:(double)a3 toDampingRatio:(double *)a4
++ (void)_convertBounce:(double)bounce toDampingRatio:(double *)ratio
 {
-  if (a4)
+  if (ratio)
   {
-    if (a3 >= 0.0)
+    if (bounce >= 0.0)
     {
-      v4 = 1.0 - a3;
+      v4 = 1.0 - bounce;
     }
 
     else
     {
-      v4 = 1.0 / (a3 + 1.0);
+      v4 = 1.0 / (bounce + 1.0);
     }
 
-    *a4 = v4;
+    *ratio = v4;
   }
 }
 

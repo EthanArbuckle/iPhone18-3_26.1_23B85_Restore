@@ -1,36 +1,36 @@
 @interface BKExpandedContentViewControllerAccessibility
-- (void)close:(BOOL)a3;
-- (void)setToolbarVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)stopActivityIndicator:(BOOL)a3;
+- (void)close:(BOOL)close;
+- (void)setToolbarVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)stopActivityIndicator:(BOOL)indicator;
 @end
 
 @implementation BKExpandedContentViewControllerAccessibility
 
-- (void)setToolbarVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setToolbarVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if (!UIAccessibilityIsVoiceOverRunning() || v5)
+  animatedCopy = animated;
+  visibleCopy = visible;
+  if (!UIAccessibilityIsVoiceOverRunning() || visibleCopy)
   {
     v7.receiver = self;
     v7.super_class = BKExpandedContentViewControllerAccessibility;
-    [(BKExpandedContentViewControllerAccessibility *)&v7 setToolbarVisible:v5 animated:v4];
+    [(BKExpandedContentViewControllerAccessibility *)&v7 setToolbarVisible:visibleCopy animated:animatedCopy];
   }
 }
 
-- (void)close:(BOOL)a3
+- (void)close:(BOOL)close
 {
   v3.receiver = self;
   v3.super_class = BKExpandedContentViewControllerAccessibility;
-  [(BKExpandedContentViewControllerAccessibility *)&v3 close:a3];
+  [(BKExpandedContentViewControllerAccessibility *)&v3 close:close];
   UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, 0);
 }
 
-- (void)stopActivityIndicator:(BOOL)a3
+- (void)stopActivityIndicator:(BOOL)indicator
 {
   v8.receiver = self;
   v8.super_class = BKExpandedContentViewControllerAccessibility;
-  [(BKExpandedContentViewControllerAccessibility *)&v8 stopActivityIndicator:a3];
+  [(BKExpandedContentViewControllerAccessibility *)&v8 stopActivityIndicator:indicator];
   v4 = UIAccessibilityAnnouncementNotification;
   v5 = AEAXLocString(@"preview.visible");
   UIAccessibilityPostNotification(v4, v5);

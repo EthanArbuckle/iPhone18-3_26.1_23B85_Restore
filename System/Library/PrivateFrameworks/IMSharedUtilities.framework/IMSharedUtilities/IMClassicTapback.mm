@@ -1,33 +1,33 @@
 @interface IMClassicTapback
 + (id)classicTapbackOptions;
 - (IMClassicTapback)counterpart;
-- (IMClassicTapback)initWithAssociatedMessageType:(int64_t)a3;
+- (IMClassicTapback)initWithAssociatedMessageType:(int64_t)type;
 - (IMClassicTapback)removedTapbackCounterpart;
 - (IMClassicTapback)visibleTapbackCounterpart;
-- (id)actionStringFormatWithAdaptiveImageGlyphAvailable:(BOOL)a3;
+- (id)actionStringFormatWithAdaptiveImageGlyphAvailable:(BOOL)available;
 @end
 
 @implementation IMClassicTapback
 
-- (IMClassicTapback)initWithAssociatedMessageType:(int64_t)a3
+- (IMClassicTapback)initWithAssociatedMessageType:(int64_t)type
 {
   v4.receiver = self;
   v4.super_class = IMClassicTapback;
-  return [(IMTapback *)&v4 initWithAssociatedMessageType:a3];
+  return [(IMTapback *)&v4 initWithAssociatedMessageType:type];
 }
 
-- (id)actionStringFormatWithAdaptiveImageGlyphAvailable:(BOOL)a3
+- (id)actionStringFormatWithAdaptiveImageGlyphAvailable:(BOOL)available
 {
-  v4 = [(IMTapback *)self associatedMessageType];
-  if (v4 > 2005)
+  associatedMessageType = [(IMTapback *)self associatedMessageType];
+  if (associatedMessageType > 2005)
   {
-    if (v4 <= 3002)
+    if (associatedMessageType <= 3002)
     {
-      if (v4 <= 3000)
+      if (associatedMessageType <= 3000)
       {
-        if ((v4 - 2006) >= 2)
+        if ((associatedMessageType - 2006) >= 2)
         {
-          v5 = v4 == 3000;
+          v5 = associatedMessageType == 3000;
           v6 = @"Removed a heart from";
 LABEL_29:
           if (v5)
@@ -48,19 +48,19 @@ LABEL_29:
 
       v7 = @"Removed a like from";
       v8 = @"Removed a dislike from";
-      if (v4 != 3002)
+      if (associatedMessageType != 3002)
       {
         v8 = 0;
       }
 
-      v10 = v4 == 3001;
+      v10 = associatedMessageType == 3001;
     }
 
     else
     {
-      if (v4 > 3005)
+      if (associatedMessageType > 3005)
       {
-        if ((v4 - 3006) >= 2 && v4 != 4000)
+        if ((associatedMessageType - 3006) >= 2 && associatedMessageType != 4000)
         {
 LABEL_39:
           v16 = 0;
@@ -80,17 +80,17 @@ LABEL_36:
       v7 = @"Removed a laugh from";
       v8 = @"Removed an exclamation from";
       v9 = @"Removed a question mark from";
-      if (v4 != 3005)
+      if (associatedMessageType != 3005)
       {
         v9 = 0;
       }
 
-      if (v4 != 3004)
+      if (associatedMessageType != 3004)
       {
         v8 = v9;
       }
 
-      v10 = v4 == 3003;
+      v10 = associatedMessageType == 3003;
     }
 
     if (v10)
@@ -106,11 +106,11 @@ LABEL_36:
 
   else
   {
-    if (v4 <= 2000)
+    if (associatedMessageType <= 2000)
     {
-      if ((v4 > 3 || v4 == 1) && (v4 - 1000) >= 2)
+      if ((associatedMessageType > 3 || associatedMessageType == 1) && (associatedMessageType - 1000) >= 2)
       {
-        v5 = v4 == 2000;
+        v5 = associatedMessageType == 2000;
         v6 = @"Loved";
         goto LABEL_29;
       }
@@ -121,34 +121,34 @@ LABEL_36:
     v11 = @"Laughed at";
     v12 = @"Emphasized";
     v13 = @"Questioned";
-    if (v4 != 2005)
+    if (associatedMessageType != 2005)
     {
       v13 = 0;
     }
 
-    if (v4 != 2004)
+    if (associatedMessageType != 2004)
     {
       v12 = v13;
     }
 
-    if (v4 != 2003)
+    if (associatedMessageType != 2003)
     {
       v11 = v12;
     }
 
     v14 = @"Liked";
     v15 = @"Disliked";
-    if (v4 != 2002)
+    if (associatedMessageType != 2002)
     {
       v15 = 0;
     }
 
-    if (v4 != 2001)
+    if (associatedMessageType != 2001)
     {
       v14 = v15;
     }
 
-    if (v4 <= 2002)
+    if (associatedMessageType <= 2002)
     {
       v16 = v14;
     }
@@ -169,30 +169,30 @@ LABEL_46:
 {
   if ([(IMTapback *)self isRemoved])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [[IMClassicTapback alloc] initWithAssociatedMessageType:IMCounterpartAcknowledgmentTypeForAcknowledgmentType([(IMTapback *)self associatedMessageType])];
+    selfCopy = [[IMClassicTapback alloc] initWithAssociatedMessageType:IMCounterpartAcknowledgmentTypeForAcknowledgmentType([(IMTapback *)self associatedMessageType])];
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (IMClassicTapback)visibleTapbackCounterpart
 {
   if ([(IMTapback *)self isRemoved])
   {
-    v3 = [[IMClassicTapback alloc] initWithAssociatedMessageType:IMCounterpartAcknowledgmentTypeForAcknowledgmentType([(IMTapback *)self associatedMessageType])];
+    selfCopy = [[IMClassicTapback alloc] initWithAssociatedMessageType:IMCounterpartAcknowledgmentTypeForAcknowledgmentType([(IMTapback *)self associatedMessageType])];
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (IMClassicTapback)counterpart

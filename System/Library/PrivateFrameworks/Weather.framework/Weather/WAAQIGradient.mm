@@ -1,16 +1,16 @@
 @interface WAAQIGradient
-- (WAAQIGradient)initWithRange:(_NSRange)a3;
+- (WAAQIGradient)initWithRange:(_NSRange)range;
 - (_NSRange)range;
-- (id)gradientStopForLocation:(unint64_t)a3;
-- (void)addGradientStop:(id)a3;
+- (id)gradientStopForLocation:(unint64_t)location;
+- (void)addGradientStop:(id)stop;
 @end
 
 @implementation WAAQIGradient
 
-- (WAAQIGradient)initWithRange:(_NSRange)a3
+- (WAAQIGradient)initWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v14.receiver = self;
   v14.super_class = WAAQIGradient;
   v5 = [(WAAQIGradient *)&v14 init];
@@ -19,38 +19,38 @@
   {
     v5->_range.location = location;
     v5->_range.length = length;
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     internalStops = v6->_internalStops;
-    v6->_internalStops = v7;
+    v6->_internalStops = array;
 
-    v9 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
     locationStops = v6->_locationStops;
-    v6->_locationStops = v9;
+    v6->_locationStops = indexSet;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     colorsByLocation = v6->_colorsByLocation;
-    v6->_colorsByLocation = v11;
+    v6->_colorsByLocation = dictionary;
   }
 
   return v6;
 }
 
-- (void)addGradientStop:(id)a3
+- (void)addGradientStop:(id)stop
 {
-  if (a3)
+  if (stop)
   {
     internalStops = self->_internalStops;
-    v5 = a3;
-    [(NSMutableArray *)internalStops addObject:v5];
+    stopCopy = stop;
+    [(NSMutableArray *)internalStops addObject:stopCopy];
     colorsByLocation = self->_colorsByLocation;
-    v7 = [v5 color];
+    color = [stopCopy color];
     v8 = MEMORY[0x277CCABB0];
-    [v5 location];
+    [stopCopy location];
     v9 = [v8 numberWithFloat:?];
-    [(NSMutableDictionary *)colorsByLocation setObject:v7 forKey:v9];
+    [(NSMutableDictionary *)colorsByLocation setObject:color forKey:v9];
 
     locationStops = self->_locationStops;
-    [v5 location];
+    [stopCopy location];
     v12 = v11;
 
     [(NSMutableIndexSet *)locationStops addIndex:v12];
@@ -74,7 +74,7 @@ uint64_t __22__WAAQIGradient_stops__block_invoke(uint64_t a1, void *a2, void *a3
   return v12;
 }
 
-- (id)gradientStopForLocation:(unint64_t)a3
+- (id)gradientStopForLocation:(unint64_t)location
 {
   colorsByLocation = self->_colorsByLocation;
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
@@ -82,24 +82,24 @@ uint64_t __22__WAAQIGradient_stops__block_invoke(uint64_t a1, void *a2, void *a3
 
   if (!v7)
   {
-    v9 = [(NSMutableIndexSet *)self->_locationStops indexLessThanOrEqualToIndex:a3];
-    v10 = [(NSMutableIndexSet *)self->_locationStops indexGreaterThanOrEqualToIndex:a3];
-    if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+    firstIndex = [(NSMutableIndexSet *)self->_locationStops indexLessThanOrEqualToIndex:location];
+    lastIndex = [(NSMutableIndexSet *)self->_locationStops indexGreaterThanOrEqualToIndex:location];
+    if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = [(NSMutableIndexSet *)self->_locationStops firstIndex];
+      firstIndex = [(NSMutableIndexSet *)self->_locationStops firstIndex];
     }
 
-    if (v10 == 0x7FFFFFFFFFFFFFFFLL)
+    if (lastIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = [(NSMutableIndexSet *)self->_locationStops lastIndex];
+      lastIndex = [(NSMutableIndexSet *)self->_locationStops lastIndex];
     }
 
     v11 = self->_colorsByLocation;
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v9];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:firstIndex];
     v13 = [(NSMutableDictionary *)v11 objectForKey:v12];
 
     v14 = self->_colorsByLocation;
-    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
+    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:lastIndex];
     v16 = [(NSMutableDictionary *)v14 objectForKey:v15];
 
     v24 = 0.0;
@@ -111,15 +111,15 @@ uint64_t __22__WAAQIGradient_stops__block_invoke(uint64_t a1, void *a2, void *a3
     v20 = 0.0;
     [v16 getRed:&v22 green:&v21 blue:&v20 alpha:0];
     v17 = 0.0;
-    if (v9 != v10)
+    if (firstIndex != lastIndex)
     {
-      v17 = (a3 - v9) / (v10 - v9);
+      v17 = (location - firstIndex) / (lastIndex - firstIndex);
     }
 
     v7 = [MEMORY[0x277D75348] colorWithRed:v25 - (v25 - v22) * v17 green:v24 - (v24 - v21) * v17 blue:v23 - (v23 - v20) * v17 alpha:1.0];
   }
 
-  *&v8 = a3;
+  *&v8 = location;
   v18 = [WAAQIGradientStop gradientStopWithColor:v7 location:v8];
 
   return v18;

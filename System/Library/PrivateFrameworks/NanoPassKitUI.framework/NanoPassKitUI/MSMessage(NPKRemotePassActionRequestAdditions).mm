@@ -6,16 +6,16 @@
 
 - (id)request
 {
-  v2 = [a1 remotePassAction];
-  if ([v2 supportsTopUp])
+  remotePassAction = [self remotePassAction];
+  if ([remotePassAction supportsTopUp])
   {
     v3 = off_27995ABE0;
 LABEL_5:
-    v4 = [objc_alloc(*v3) initWithUnderlyingMessage:a1];
+    v4 = [objc_alloc(*v3) initWithUnderlyingMessage:self];
     goto LABEL_7;
   }
 
-  if ([v2 supportsCommutePlanRenewal])
+  if ([remotePassAction supportsCommutePlanRenewal])
   {
     v3 = off_27995ABF0;
     goto LABEL_5;

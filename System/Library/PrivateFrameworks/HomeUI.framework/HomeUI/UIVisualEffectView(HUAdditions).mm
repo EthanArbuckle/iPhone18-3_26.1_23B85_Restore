@@ -9,17 +9,17 @@
   v6 = a3;
   if ([v6 isEqualToString:@"HUSharedVisualEffectIdentifierTileOff"])
   {
-    v4 = [MEMORY[0x277D75D58] hu_gridCellBackgroundOffEffects];
+    hu_gridCellBackgroundOffEffects = [MEMORY[0x277D75D58] hu_gridCellBackgroundOffEffects];
 LABEL_5:
-    v5 = v4;
-    [a1 setBackgroundEffects:v4];
+    v5 = hu_gridCellBackgroundOffEffects;
+    [self setBackgroundEffects:hu_gridCellBackgroundOffEffects];
 
     goto LABEL_7;
   }
 
   if ([v6 isEqualToString:@"HUSharedVisualEffectIdentifierTileOn"])
   {
-    v4 = [MEMORY[0x277D75D58] hu_gridCellBackgroundOnEffects];
+    hu_gridCellBackgroundOffEffects = [MEMORY[0x277D75D58] hu_gridCellBackgroundOnEffects];
     goto LABEL_5;
   }
 

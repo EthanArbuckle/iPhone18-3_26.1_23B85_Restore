@@ -1,18 +1,18 @@
 @interface HPSMultilineSubtitleTableViewCell
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation HPSMultilineSubtitleTableViewCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(HPSMultilineSubtitleTableViewCell *)self detailTextLabel];
-  [v5 setNumberOfLines:0];
+  specifierCopy = specifier;
+  detailTextLabel = [(HPSMultilineSubtitleTableViewCell *)self detailTextLabel];
+  [detailTextLabel setNumberOfLines:0];
 
   v6.receiver = self;
   v6.super_class = HPSMultilineSubtitleTableViewCell;
-  [(PSSubtitleSwitchTableCell *)&v6 refreshCellContentsWithSpecifier:v4];
+  [(PSSubtitleSwitchTableCell *)&v6 refreshCellContentsWithSpecifier:specifierCopy];
 }
 
 @end

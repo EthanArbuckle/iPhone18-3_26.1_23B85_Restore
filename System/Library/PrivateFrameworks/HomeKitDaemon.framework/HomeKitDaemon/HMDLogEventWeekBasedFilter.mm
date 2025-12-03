@@ -1,17 +1,17 @@
 @interface HMDLogEventWeekBasedFilter
-- (BOOL)isEventInSample:(id)a3;
-- (HMDLogEventWeekBasedFilter)initWithDateProvider:(id)a3;
-- (unint64_t)resultHashWithEvent:(id)a3;
+- (BOOL)isEventInSample:(id)sample;
+- (HMDLogEventWeekBasedFilter)initWithDateProvider:(id)provider;
+- (unint64_t)resultHashWithEvent:(id)event;
 @end
 
 @implementation HMDLogEventWeekBasedFilter
 
-- (BOOL)isEventInSample:(id)a3
+- (BOOL)isEventInSample:(id)sample
 {
-  v4 = a3;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v4 enableEventFilterSpecifying])
+  sampleCopy = sample;
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [sampleCopy enableEventFilterSpecifying])
   {
-    v5 = v4;
+    v5 = sampleCopy;
     if ([v5 conformsToProtocol:&unk_283EF0FD8])
     {
       v6 = v5;
@@ -27,10 +27,10 @@
     if (v7)
     {
       v8 = [(HMDLogEventWeekBasedFilter *)self resultHashWithEvent:v7]% 7 + 1;
-      v9 = [(HMDLogEventWeekBasedFilter *)self dateProvider];
-      v10 = [v9 currentDayNumberOfWeek];
+      dateProvider = [(HMDLogEventWeekBasedFilter *)self dateProvider];
+      currentDayNumberOfWeek = [dateProvider currentDayNumberOfWeek];
 
-      v11 = v8 == v10;
+      v11 = v8 == currentDayNumberOfWeek;
     }
 
     else
@@ -47,45 +47,45 @@
   return v11;
 }
 
-- (unint64_t)resultHashWithEvent:(id)a3
+- (unint64_t)resultHashWithEvent:(id)event
 {
   v4 = MEMORY[0x277CBEB28];
-  v5 = a3;
-  v6 = [v5 sampledUUID];
-  v7 = [v6 hm_convertToData];
-  v8 = [v4 dataWithData:v7];
+  eventCopy = event;
+  sampledUUID = [eventCopy sampledUUID];
+  hm_convertToData = [sampledUUID hm_convertToData];
+  v8 = [v4 dataWithData:hm_convertToData];
 
-  v9 = [(HMDLogEventWeekBasedFilter *)self dateProvider];
-  v10 = [v9 startOfCurrentWeek];
-  v11 = [v10 hash];
+  dateProvider = [(HMDLogEventWeekBasedFilter *)self dateProvider];
+  startOfCurrentWeek = [dateProvider startOfCurrentWeek];
+  v11 = [startOfCurrentWeek hash];
 
   v19 = v11;
   [v8 appendBytes:&v19 length:8];
-  v12 = [v5 sampledCategory];
-  v13 = [v12 dataUsingEncoding:4];
+  sampledCategory = [eventCopy sampledCategory];
+  v13 = [sampledCategory dataUsingEncoding:4];
   [v8 appendData:v13];
 
-  v14 = [v5 sampledData];
+  sampledData = [eventCopy sampledData];
 
-  [v8 appendData:v14];
-  v15 = [v8 hm_generateSHA256];
+  [v8 appendData:sampledData];
+  hm_generateSHA256 = [v8 hm_generateSHA256];
   v18 = 0;
-  [v15 getBytes:&v18 length:8];
+  [hm_generateSHA256 getBytes:&v18 length:8];
   v16 = v18;
 
   return v16;
 }
 
-- (HMDLogEventWeekBasedFilter)initWithDateProvider:(id)a3
+- (HMDLogEventWeekBasedFilter)initWithDateProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = HMDLogEventWeekBasedFilter;
   v6 = [(HMDLogEventWeekBasedFilter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dateProvider, a3);
+    objc_storeStrong(&v6->_dateProvider, provider);
   }
 
   return v7;

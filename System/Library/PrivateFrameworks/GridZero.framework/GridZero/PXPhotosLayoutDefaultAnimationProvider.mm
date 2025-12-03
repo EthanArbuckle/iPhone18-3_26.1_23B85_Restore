@@ -1,54 +1,54 @@
 @interface PXPhotosLayoutDefaultAnimationProvider
-- (id)createAnimationForLayout:(id)a3 presentedLayoutState:(id)a4 targetLayoutState:(id)a5;
+- (id)createAnimationForLayout:(id)layout presentedLayoutState:(id)state targetLayoutState:(id)layoutState;
 @end
 
 @implementation PXPhotosLayoutDefaultAnimationProvider
 
-- (id)createAnimationForLayout:(id)a3 presentedLayoutState:(id)a4 targetLayoutState:(id)a5
+- (id)createAnimationForLayout:(id)layout presentedLayoutState:(id)state targetLayoutState:(id)layoutState
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 pendingAnimations];
-  v11 = [v10 lastObject];
+  layoutCopy = layout;
+  stateCopy = state;
+  layoutStateCopy = layoutState;
+  pendingAnimations = [layoutCopy pendingAnimations];
+  lastObject = [pendingAnimations lastObject];
 
-  if (!v11)
+  if (!lastObject)
   {
-    v12 = [v7 superlayout];
+    superlayout = [layoutCopy superlayout];
 
-    if (v12)
+    if (superlayout)
     {
-      v13 = [v7 superlayout];
-      v11 = [v13 createDefaultAnimationForCurrentContext];
+      superlayout2 = [layoutCopy superlayout];
+      lastObject = [superlayout2 createDefaultAnimationForCurrentContext];
     }
 
     else
     {
-      v11 = [v7 createAnimation];
+      lastObject = [layoutCopy createAnimation];
     }
   }
 
-  v14 = [v8 bodyProvider];
-  [v9 bodyProvider];
+  bodyProvider = [stateCopy bodyProvider];
+  [layoutStateCopy bodyProvider];
 
   v15 = objc_opt_class();
-  v16 = [v11 delegate];
+  delegate = [lastObject delegate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = [v11 delegate];
+    delegate2 = [lastObject delegate];
   }
 
   else
   {
-    v17 = 0;
+    delegate2 = 0;
   }
 
-  v18 = [v17 context];
-  v19 = v18;
-  if (v18)
+  context = [delegate2 context];
+  v19 = context;
+  if (context)
   {
-    v20 = v18;
+    v20 = context;
   }
 
   else
@@ -58,11 +58,11 @@
 
   v21 = v20;
 
-  [(PXPhotosLayoutAnimationContext *)v21 setFromState:v8];
-  [(PXPhotosLayoutAnimationContext *)v21 setToState:v9];
+  [(PXPhotosLayoutAnimationContext *)v21 setFromState:stateCopy];
+  [(PXPhotosLayoutAnimationContext *)v21 setToState:layoutStateCopy];
   if (v15 == objc_opt_class())
   {
-    v22 = v17;
+    v22 = delegate2;
   }
 
   else
@@ -71,16 +71,16 @@
   }
 
   v23 = v22;
-  [v11 setCurve:{objc_msgSend(v22, "animationCurve")}];
+  [lastObject setCurve:{objc_msgSend(v22, "animationCurve")}];
   [v23 animationDuration];
-  [v11 setDuration:?];
-  [v11 setDoubleSided:{objc_msgSend(v23, "wantsDoubleSidedAnimations")}];
-  [v11 setSupportsPresentationAdjustment:{objc_msgSend(v23, "wantsPresentationAdjustment")}];
-  [v11 setSupportsSpriteTransfer:{objc_msgSend(v23, "wantsAnimationWithSpriteTransfer")}];
-  [v11 setHighFrameRateReason:{objc_msgSend(v23, "highFrameRateReason")}];
-  [v11 setDelegate:v23];
+  [lastObject setDuration:?];
+  [lastObject setDoubleSided:{objc_msgSend(v23, "wantsDoubleSidedAnimations")}];
+  [lastObject setSupportsPresentationAdjustment:{objc_msgSend(v23, "wantsPresentationAdjustment")}];
+  [lastObject setSupportsSpriteTransfer:{objc_msgSend(v23, "wantsAnimationWithSpriteTransfer")}];
+  [lastObject setHighFrameRateReason:{objc_msgSend(v23, "highFrameRateReason")}];
+  [lastObject setDelegate:v23];
 
-  return v11;
+  return lastObject;
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface AVCScreenCaptureConfiguration
 - (AVCScreenCaptureConfiguration)init;
-- (AVCScreenCaptureConfiguration)initWithHeight:(unsigned int)a3 width:(unsigned int)a4 framerate:(unsigned int)a5 screenCaptureDisplayID:(unsigned int)a6;
+- (AVCScreenCaptureConfiguration)initWithHeight:(unsigned int)height width:(unsigned int)width framerate:(unsigned int)framerate screenCaptureDisplayID:(unsigned int)d;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation AVCScreenCaptureConfiguration
 
-- (AVCScreenCaptureConfiguration)initWithHeight:(unsigned int)a3 width:(unsigned int)a4 framerate:(unsigned int)a5 screenCaptureDisplayID:(unsigned int)a6
+- (AVCScreenCaptureConfiguration)initWithHeight:(unsigned int)height width:(unsigned int)width framerate:(unsigned int)framerate screenCaptureDisplayID:(unsigned int)d
 {
   v21 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -31,10 +31,10 @@
   result = [(AVCScreenCaptureConfiguration *)&v14 init];
   if (result)
   {
-    result->_height = a3;
-    result->_width = a4;
-    result->_frameRate = a5;
-    result->_screenCaptureDisplayID = a6;
+    result->_height = height;
+    result->_width = width;
+    result->_frameRate = framerate;
+    result->_screenCaptureDisplayID = d;
   }
 
   return result;

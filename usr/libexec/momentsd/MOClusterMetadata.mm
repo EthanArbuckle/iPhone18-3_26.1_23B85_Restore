@@ -1,256 +1,256 @@
 @interface MOClusterMetadata
-- (MOClusterMetadata)initWithClusterMetadataMO:(id)a3;
-- (MOClusterMetadata)initWithCoder:(id)a3;
-- (MOClusterMetadata)initWithIdentifier:(id)a3 isFiltered:(BOOL)a4 phenoType:(id)a5 topLevelActivityHistogram:(id)a6 secondLevelActivityHistogram:(id)a7 activityTypeFromPhotoTraitsHistogram:(id)a8 timeTagHistogram:(id)a9 dayOfWeekHistogram:(id)a10 weekOfYearHistogram:(id)a11 timeContextFromPhotoTraitsHistogram:(id)a12 holidayHistogram:(id)a13 celebrationHistogram:(id)a14 placeNameHistogram:(id)a15 combinedPlaceTypeHistogram:(id)a16 enclosingPlaceNameHistogram:(id)a17 placeTypeFromPhotoTraitsHistogram:(id)a18 contactNamesHistogram:(id)a19 personRelationshipHistogram:(id)a20 socialEventFromPhotoTraitsHistogram:(id)a21 otherSubjectFromPhotoTraitsHistogram:(id)a22 stateOfMindValenceHistogram:(id)a23 subBundleGoodnessScores:(id)a24 subSuggestionIDsBeforePruning:(id)a25 phenotypePersonUUIDs:(id)a26;
-- (void)encodeWithCoder:(id)a3;
+- (MOClusterMetadata)initWithClusterMetadataMO:(id)o;
+- (MOClusterMetadata)initWithCoder:(id)coder;
+- (MOClusterMetadata)initWithIdentifier:(id)identifier isFiltered:(BOOL)filtered phenoType:(id)type topLevelActivityHistogram:(id)histogram secondLevelActivityHistogram:(id)activityHistogram activityTypeFromPhotoTraitsHistogram:(id)traitsHistogram timeTagHistogram:(id)tagHistogram dayOfWeekHistogram:(id)self0 weekOfYearHistogram:(id)self1 timeContextFromPhotoTraitsHistogram:(id)self2 holidayHistogram:(id)self3 celebrationHistogram:(id)self4 placeNameHistogram:(id)self5 combinedPlaceTypeHistogram:(id)self6 enclosingPlaceNameHistogram:(id)self7 placeTypeFromPhotoTraitsHistogram:(id)self8 contactNamesHistogram:(id)self9 personRelationshipHistogram:(id)relationshipHistogram socialEventFromPhotoTraitsHistogram:(id)eventFromPhotoTraitsHistogram otherSubjectFromPhotoTraitsHistogram:(id)subjectFromPhotoTraitsHistogram stateOfMindValenceHistogram:(id)valenceHistogram subBundleGoodnessScores:(id)scores subSuggestionIDsBeforePruning:(id)pruning phenotypePersonUUIDs:(id)ds;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOClusterMetadata
 
-- (MOClusterMetadata)initWithClusterMetadataMO:(id)a3
+- (MOClusterMetadata)initWithClusterMetadataMO:(id)o
 {
-  if (a3)
+  if (o)
   {
-    v3 = a3;
-    v29 = [v3 identifier];
-    v19 = [v3 isFiltered];
-    v28 = [v3 phenotype];
-    v26 = [v3 topLevelActivityHistogram];
-    v24 = [v3 secondLevelActivityHistogram];
-    v18 = [v3 activityTypeFromPhotoTraitsHistogram];
-    v27 = [v3 timeTagHistogram];
-    v17 = [v3 dayOfWeekHistogram];
-    v25 = [v3 weekOfYearHistogram];
-    v23 = [v3 timeContextFromPhotoTraitsHistogram];
-    v16 = [v3 holidayHistogram];
-    v22 = [v3 celebrationHistogram];
-    v15 = [v3 placeNameHistogram];
-    v21 = [v3 combinedPlaceTypeHistogram];
-    v20 = [v3 enclosingPlaceNameHistogram];
-    v14 = [v3 placeTypeFromPhotoTraitsHistogram];
-    v13 = [v3 contactNamesHistogram];
-    v4 = [v3 personRelationshipHistogram];
-    v12 = [v3 socialEventFromPhotoTraitsHistogram];
-    v5 = [v3 otherSubjectFromPhotoTraitsHistogram];
-    v6 = [v3 stateOfMindValenceHistogram];
-    v7 = [v3 subBundleGoodnessScores];
-    v8 = [v3 subSuggestionIDsBeforePruning];
-    v9 = [v3 phenotypePersonUUIDs];
+    oCopy = o;
+    identifier = [oCopy identifier];
+    isFiltered = [oCopy isFiltered];
+    phenotype = [oCopy phenotype];
+    topLevelActivityHistogram = [oCopy topLevelActivityHistogram];
+    secondLevelActivityHistogram = [oCopy secondLevelActivityHistogram];
+    activityTypeFromPhotoTraitsHistogram = [oCopy activityTypeFromPhotoTraitsHistogram];
+    timeTagHistogram = [oCopy timeTagHistogram];
+    dayOfWeekHistogram = [oCopy dayOfWeekHistogram];
+    weekOfYearHistogram = [oCopy weekOfYearHistogram];
+    timeContextFromPhotoTraitsHistogram = [oCopy timeContextFromPhotoTraitsHistogram];
+    holidayHistogram = [oCopy holidayHistogram];
+    celebrationHistogram = [oCopy celebrationHistogram];
+    placeNameHistogram = [oCopy placeNameHistogram];
+    combinedPlaceTypeHistogram = [oCopy combinedPlaceTypeHistogram];
+    enclosingPlaceNameHistogram = [oCopy enclosingPlaceNameHistogram];
+    placeTypeFromPhotoTraitsHistogram = [oCopy placeTypeFromPhotoTraitsHistogram];
+    contactNamesHistogram = [oCopy contactNamesHistogram];
+    personRelationshipHistogram = [oCopy personRelationshipHistogram];
+    socialEventFromPhotoTraitsHistogram = [oCopy socialEventFromPhotoTraitsHistogram];
+    otherSubjectFromPhotoTraitsHistogram = [oCopy otherSubjectFromPhotoTraitsHistogram];
+    stateOfMindValenceHistogram = [oCopy stateOfMindValenceHistogram];
+    subBundleGoodnessScores = [oCopy subBundleGoodnessScores];
+    subSuggestionIDsBeforePruning = [oCopy subSuggestionIDsBeforePruning];
+    phenotypePersonUUIDs = [oCopy phenotypePersonUUIDs];
 
-    self = [(MOClusterMetadata *)self initWithIdentifier:v29 isFiltered:v19 phenoType:v28 topLevelActivityHistogram:v26 secondLevelActivityHistogram:v24 activityTypeFromPhotoTraitsHistogram:v18 timeTagHistogram:v27 dayOfWeekHistogram:v17 weekOfYearHistogram:v25 timeContextFromPhotoTraitsHistogram:v23 holidayHistogram:v16 celebrationHistogram:v22 placeNameHistogram:v15 combinedPlaceTypeHistogram:v21 enclosingPlaceNameHistogram:v20 placeTypeFromPhotoTraitsHistogram:v14 contactNamesHistogram:v13 personRelationshipHistogram:v4 socialEventFromPhotoTraitsHistogram:v12 otherSubjectFromPhotoTraitsHistogram:v5 stateOfMindValenceHistogram:v6 subBundleGoodnessScores:v7 subSuggestionIDsBeforePruning:v8 phenotypePersonUUIDs:v9];
-    v10 = self;
+    self = [(MOClusterMetadata *)self initWithIdentifier:identifier isFiltered:isFiltered phenoType:phenotype topLevelActivityHistogram:topLevelActivityHistogram secondLevelActivityHistogram:secondLevelActivityHistogram activityTypeFromPhotoTraitsHistogram:activityTypeFromPhotoTraitsHistogram timeTagHistogram:timeTagHistogram dayOfWeekHistogram:dayOfWeekHistogram weekOfYearHistogram:weekOfYearHistogram timeContextFromPhotoTraitsHistogram:timeContextFromPhotoTraitsHistogram holidayHistogram:holidayHistogram celebrationHistogram:celebrationHistogram placeNameHistogram:placeNameHistogram combinedPlaceTypeHistogram:combinedPlaceTypeHistogram enclosingPlaceNameHistogram:enclosingPlaceNameHistogram placeTypeFromPhotoTraitsHistogram:placeTypeFromPhotoTraitsHistogram contactNamesHistogram:contactNamesHistogram personRelationshipHistogram:personRelationshipHistogram socialEventFromPhotoTraitsHistogram:socialEventFromPhotoTraitsHistogram otherSubjectFromPhotoTraitsHistogram:otherSubjectFromPhotoTraitsHistogram stateOfMindValenceHistogram:stateOfMindValenceHistogram subBundleGoodnessScores:subBundleGoodnessScores subSuggestionIDsBeforePruning:subSuggestionIDsBeforePruning phenotypePersonUUIDs:phenotypePersonUUIDs];
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (MOClusterMetadata)initWithIdentifier:(id)a3 isFiltered:(BOOL)a4 phenoType:(id)a5 topLevelActivityHistogram:(id)a6 secondLevelActivityHistogram:(id)a7 activityTypeFromPhotoTraitsHistogram:(id)a8 timeTagHistogram:(id)a9 dayOfWeekHistogram:(id)a10 weekOfYearHistogram:(id)a11 timeContextFromPhotoTraitsHistogram:(id)a12 holidayHistogram:(id)a13 celebrationHistogram:(id)a14 placeNameHistogram:(id)a15 combinedPlaceTypeHistogram:(id)a16 enclosingPlaceNameHistogram:(id)a17 placeTypeFromPhotoTraitsHistogram:(id)a18 contactNamesHistogram:(id)a19 personRelationshipHistogram:(id)a20 socialEventFromPhotoTraitsHistogram:(id)a21 otherSubjectFromPhotoTraitsHistogram:(id)a22 stateOfMindValenceHistogram:(id)a23 subBundleGoodnessScores:(id)a24 subSuggestionIDsBeforePruning:(id)a25 phenotypePersonUUIDs:(id)a26
+- (MOClusterMetadata)initWithIdentifier:(id)identifier isFiltered:(BOOL)filtered phenoType:(id)type topLevelActivityHistogram:(id)histogram secondLevelActivityHistogram:(id)activityHistogram activityTypeFromPhotoTraitsHistogram:(id)traitsHistogram timeTagHistogram:(id)tagHistogram dayOfWeekHistogram:(id)self0 weekOfYearHistogram:(id)self1 timeContextFromPhotoTraitsHistogram:(id)self2 holidayHistogram:(id)self3 celebrationHistogram:(id)self4 placeNameHistogram:(id)self5 combinedPlaceTypeHistogram:(id)self6 enclosingPlaceNameHistogram:(id)self7 placeTypeFromPhotoTraitsHistogram:(id)self8 contactNamesHistogram:(id)self9 personRelationshipHistogram:(id)relationshipHistogram socialEventFromPhotoTraitsHistogram:(id)eventFromPhotoTraitsHistogram otherSubjectFromPhotoTraitsHistogram:(id)subjectFromPhotoTraitsHistogram stateOfMindValenceHistogram:(id)valenceHistogram subBundleGoodnessScores:(id)scores subSuggestionIDsBeforePruning:(id)pruning phenotypePersonUUIDs:(id)ds
 {
-  v59 = a3;
-  v58 = a5;
-  v57 = a6;
-  v56 = a7;
-  v40 = a8;
-  v55 = a8;
-  v54 = a9;
-  v53 = a10;
-  v52 = a11;
-  v51 = a12;
-  v50 = a13;
-  v47 = a14;
-  v49 = a15;
-  v48 = a16;
-  v46 = a17;
-  v30 = a18;
-  v31 = a19;
-  v32 = a20;
-  v45 = a21;
-  v44 = a22;
-  v43 = a23;
-  v42 = a24;
-  v33 = a25;
-  v34 = a26;
+  identifierCopy = identifier;
+  typeCopy = type;
+  histogramCopy = histogram;
+  activityHistogramCopy = activityHistogram;
+  traitsHistogramCopy = traitsHistogram;
+  traitsHistogramCopy2 = traitsHistogram;
+  tagHistogramCopy = tagHistogram;
+  weekHistogramCopy = weekHistogram;
+  yearHistogramCopy = yearHistogram;
+  photoTraitsHistogramCopy = photoTraitsHistogram;
+  holidayHistogramCopy = holidayHistogram;
+  celebrationHistogramCopy = celebrationHistogram;
+  nameHistogramCopy = nameHistogram;
+  typeHistogramCopy = typeHistogram;
+  placeNameHistogramCopy = placeNameHistogram;
+  fromPhotoTraitsHistogramCopy = fromPhotoTraitsHistogram;
+  namesHistogramCopy = namesHistogram;
+  relationshipHistogramCopy = relationshipHistogram;
+  eventFromPhotoTraitsHistogramCopy = eventFromPhotoTraitsHistogram;
+  subjectFromPhotoTraitsHistogramCopy = subjectFromPhotoTraitsHistogram;
+  valenceHistogramCopy = valenceHistogram;
+  scoresCopy = scores;
+  pruningCopy = pruning;
+  dsCopy = ds;
   v60.receiver = self;
   v60.super_class = MOClusterMetadata;
   v35 = [(MOClusterMetadata *)&v60 init];
   v36 = v35;
   if (v35)
   {
-    objc_storeStrong(&v35->_identifier, a3);
-    v36->_isFiltered = a4;
-    objc_storeStrong(&v36->_phenotype, a5);
-    objc_storeStrong(&v36->_topLevelActivityHistogram, a6);
-    objc_storeStrong(&v36->_secondLevelActivityHistogram, a7);
-    objc_storeStrong(&v36->_activityTypeFromPhotoTraitsHistogram, v40);
-    objc_storeStrong(&v36->_timeTagHistogram, a9);
-    objc_storeStrong(&v36->_dayOfWeekHistogram, a10);
-    objc_storeStrong(&v36->_weekOfYearHistogram, a11);
-    objc_storeStrong(&v36->_timeContextFromPhotoTraitsHistogram, a12);
-    objc_storeStrong(&v36->_placeNameHistogram, a15);
-    objc_storeStrong(&v36->_combinedPlaceTypeHistogram, a16);
-    objc_storeStrong(&v36->_enclosingPlaceNameHistogram, a17);
-    objc_storeStrong(&v36->_placeTypeFromPhotoTraitsHistogram, a18);
-    objc_storeStrong(&v36->_contactNamesHistogram, a19);
-    objc_storeStrong(&v36->_personRelationshipHistogram, a20);
-    objc_storeStrong(&v36->_socialEventFromPhotoTraitsHistogram, a21);
-    objc_storeStrong(&v36->_otherSubjectFromPhotoTraitsHistogram, a22);
-    objc_storeStrong(&v36->_subBundleGoodnessScores, a24);
-    objc_storeStrong(&v36->_subSuggestionIDsBeforePruning, a25);
-    objc_storeStrong(&v36->_stateOfMindValenceHistogram, a23);
-    objc_storeStrong(&v36->_holidayHistogram, a13);
-    objc_storeStrong(&v36->_celebrationHistogram, a14);
-    objc_storeStrong(&v36->_phenotypePersonUUIDs, a26);
+    objc_storeStrong(&v35->_identifier, identifier);
+    v36->_isFiltered = filtered;
+    objc_storeStrong(&v36->_phenotype, type);
+    objc_storeStrong(&v36->_topLevelActivityHistogram, histogram);
+    objc_storeStrong(&v36->_secondLevelActivityHistogram, activityHistogram);
+    objc_storeStrong(&v36->_activityTypeFromPhotoTraitsHistogram, traitsHistogramCopy);
+    objc_storeStrong(&v36->_timeTagHistogram, tagHistogram);
+    objc_storeStrong(&v36->_dayOfWeekHistogram, weekHistogram);
+    objc_storeStrong(&v36->_weekOfYearHistogram, yearHistogram);
+    objc_storeStrong(&v36->_timeContextFromPhotoTraitsHistogram, photoTraitsHistogram);
+    objc_storeStrong(&v36->_placeNameHistogram, nameHistogram);
+    objc_storeStrong(&v36->_combinedPlaceTypeHistogram, typeHistogram);
+    objc_storeStrong(&v36->_enclosingPlaceNameHistogram, placeNameHistogram);
+    objc_storeStrong(&v36->_placeTypeFromPhotoTraitsHistogram, fromPhotoTraitsHistogram);
+    objc_storeStrong(&v36->_contactNamesHistogram, namesHistogram);
+    objc_storeStrong(&v36->_personRelationshipHistogram, relationshipHistogram);
+    objc_storeStrong(&v36->_socialEventFromPhotoTraitsHistogram, eventFromPhotoTraitsHistogram);
+    objc_storeStrong(&v36->_otherSubjectFromPhotoTraitsHistogram, subjectFromPhotoTraitsHistogram);
+    objc_storeStrong(&v36->_subBundleGoodnessScores, scores);
+    objc_storeStrong(&v36->_subSuggestionIDsBeforePruning, pruning);
+    objc_storeStrong(&v36->_stateOfMindValenceHistogram, valenceHistogram);
+    objc_storeStrong(&v36->_holidayHistogram, holidayHistogram);
+    objc_storeStrong(&v36->_celebrationHistogram, celebrationHistogram);
+    objc_storeStrong(&v36->_phenotypePersonUUIDs, ds);
   }
 
   return v36;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v24 = a3;
-  [v24 encodeObject:identifier forKey:@"identifier"];
-  [v24 encodeBool:self->_isFiltered forKey:@"isFiltered"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeBool:self->_isFiltered forKey:@"isFiltered"];
   v5 = [MODictionaryEncoder encodeDictionary:self->_phenotype];
-  [v24 encodeObject:v5 forKey:@"phenotype"];
+  [coderCopy encodeObject:v5 forKey:@"phenotype"];
 
   v6 = [MODictionaryEncoder encodeDictionary:self->_topLevelActivityHistogram];
-  [v24 encodeObject:v6 forKey:@"topLevelActivityTypeHistogram"];
+  [coderCopy encodeObject:v6 forKey:@"topLevelActivityTypeHistogram"];
 
   v7 = [MODictionaryEncoder encodeDictionary:self->_secondLevelActivityHistogram];
-  [v24 encodeObject:v7 forKey:@"secondLevelActivityTypeHistogram"];
+  [coderCopy encodeObject:v7 forKey:@"secondLevelActivityTypeHistogram"];
 
   v8 = [MODictionaryEncoder encodeDictionary:self->_activityTypeFromPhotoTraitsHistogram];
-  [v24 encodeObject:v8 forKey:@"activityTypeFromPhotoTraitsHistogram"];
+  [coderCopy encodeObject:v8 forKey:@"activityTypeFromPhotoTraitsHistogram"];
 
   v9 = [MODictionaryEncoder encodeDictionary:self->_timeTagHistogram];
-  [v24 encodeObject:v9 forKey:@"timeTagHistogram"];
+  [coderCopy encodeObject:v9 forKey:@"timeTagHistogram"];
 
   v10 = [MODictionaryEncoder encodeDictionary:self->_dayOfWeekHistogram];
-  [v24 encodeObject:v10 forKey:@"dayOfWeekHistogram"];
+  [coderCopy encodeObject:v10 forKey:@"dayOfWeekHistogram"];
 
   v11 = [MODictionaryEncoder encodeDictionary:self->_weekOfYearHistogram];
-  [v24 encodeObject:v11 forKey:@"weekOfYearHistogram"];
+  [coderCopy encodeObject:v11 forKey:@"weekOfYearHistogram"];
 
   v12 = [MODictionaryEncoder encodeDictionary:self->_timeContextFromPhotoTraitsHistogram];
-  [v24 encodeObject:v12 forKey:@"timeContextFromPhotoTraitsHistogram"];
+  [coderCopy encodeObject:v12 forKey:@"timeContextFromPhotoTraitsHistogram"];
 
   v13 = [MODictionaryEncoder encodeDictionary:self->_placeNameHistogram];
-  [v24 encodeObject:v13 forKey:@"placeNameHistogram"];
+  [coderCopy encodeObject:v13 forKey:@"placeNameHistogram"];
 
   v14 = [MODictionaryEncoder encodeDictionary:self->_combinedPlaceTypeHistogram];
-  [v24 encodeObject:v14 forKey:@"combinedPlaceTypeHistogram"];
+  [coderCopy encodeObject:v14 forKey:@"combinedPlaceTypeHistogram"];
 
   v15 = [MODictionaryEncoder encodeDictionary:self->_enclosingPlaceNameHistogram];
-  [v24 encodeObject:v15 forKey:@"enclosingPlaceNameHistogram"];
+  [coderCopy encodeObject:v15 forKey:@"enclosingPlaceNameHistogram"];
 
   v16 = [MODictionaryEncoder encodeDictionary:self->_placeTypeFromPhotoTraitsHistogram];
-  [v24 encodeObject:v16 forKey:@"placeTypeFromPhotoTraitsHistogram"];
+  [coderCopy encodeObject:v16 forKey:@"placeTypeFromPhotoTraitsHistogram"];
 
   v17 = [MODictionaryEncoder encodeDictionary:self->_contactNamesHistogram];
-  [v24 encodeObject:v17 forKey:@"contactNamesHistogram"];
+  [coderCopy encodeObject:v17 forKey:@"contactNamesHistogram"];
 
   v18 = [MODictionaryEncoder encodeDictionary:self->_personRelationshipHistogram];
-  [v24 encodeObject:v18 forKey:@"personRelationshipHistogram"];
+  [coderCopy encodeObject:v18 forKey:@"personRelationshipHistogram"];
 
   v19 = [MODictionaryEncoder encodeDictionary:self->_socialEventFromPhotoTraitsHistogram];
-  [v24 encodeObject:v19 forKey:@"socialEventFromPhotoTraitsHistogram"];
+  [coderCopy encodeObject:v19 forKey:@"socialEventFromPhotoTraitsHistogram"];
 
   v20 = [MODictionaryEncoder encodeDictionary:self->_otherSubjectFromPhotoTraitsHistogram];
-  [v24 encodeObject:v20 forKey:@"otherSubjectFromPhotoTraitsHistogram"];
+  [coderCopy encodeObject:v20 forKey:@"otherSubjectFromPhotoTraitsHistogram"];
 
-  [v24 encodeObject:self->_subBundleGoodnessScores forKey:@"subBundleGoodnessScores"];
-  [v24 encodeObject:self->_subSuggestionIDsBeforePruning forKey:@"subSuggestionIDsBeforePruning"];
+  [coderCopy encodeObject:self->_subBundleGoodnessScores forKey:@"subBundleGoodnessScores"];
+  [coderCopy encodeObject:self->_subSuggestionIDsBeforePruning forKey:@"subSuggestionIDsBeforePruning"];
   v21 = [MODictionaryEncoder encodeDictionary:self->_holidayHistogram];
-  [v24 encodeObject:v21 forKey:@"holidayHistogram"];
+  [coderCopy encodeObject:v21 forKey:@"holidayHistogram"];
 
   v22 = [MODictionaryEncoder encodeDictionary:self->_celebrationHistogram];
-  [v24 encodeObject:v22 forKey:@"celebrationHistogram"];
+  [coderCopy encodeObject:v22 forKey:@"celebrationHistogram"];
 
   v23 = [MODictionaryEncoder encodeDictionary:self->_stateOfMindValenceHistogram];
-  [v24 encodeObject:v23 forKey:@"stateOfMindValenceHistogram"];
+  [coderCopy encodeObject:v23 forKey:@"stateOfMindValenceHistogram"];
 
-  [v24 encodeObject:self->_phenotypePersonUUIDs forKey:@"phenotypePersonUUIDs"];
+  [coderCopy encodeObject:self->_phenotypePersonUUIDs forKey:@"phenotypePersonUUIDs"];
 }
 
-- (MOClusterMetadata)initWithCoder:(id)a3
+- (MOClusterMetadata)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v54 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v41 = [v3 decodeBoolForKey:@"isFiltered"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"phenotype"];
+  coderCopy = coder;
+  v54 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v41 = [coderCopy decodeBoolForKey:@"isFiltered"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phenotype"];
   v55 = [MODictionaryEncoder decodeToDictionary:v4];
 
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"topLevelActivityTypeHistogram"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"topLevelActivityTypeHistogram"];
   v53 = [MODictionaryEncoder decodeToDictionary:v5];
 
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"secondLevelActivityTypeHistogram"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondLevelActivityTypeHistogram"];
   v52 = [MODictionaryEncoder decodeToDictionary:v6];
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"activityTypeFromPhotoTraitsHistogram"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activityTypeFromPhotoTraitsHistogram"];
   v51 = [MODictionaryEncoder decodeToDictionary:v7];
 
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"timeTagHistogram"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeTagHistogram"];
   v50 = [MODictionaryEncoder decodeToDictionary:v8];
 
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"dayOfWeekHistogram"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dayOfWeekHistogram"];
   v49 = [MODictionaryEncoder decodeToDictionary:v9];
 
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"weekOfYearHistogram"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"weekOfYearHistogram"];
   v48 = [MODictionaryEncoder decodeToDictionary:v10];
 
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"timeContextFromPhotoTraitsHistogram"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeContextFromPhotoTraitsHistogram"];
   v47 = [MODictionaryEncoder decodeToDictionary:v11];
 
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"placeNameHistogram"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placeNameHistogram"];
   v46 = [MODictionaryEncoder decodeToDictionary:v12];
 
-  v13 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"combinedPlaceTypeHistogram"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"combinedPlaceTypeHistogram"];
   v45 = [MODictionaryEncoder decodeToDictionary:v13];
 
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"enclosingPlaceNameHistogram"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"enclosingPlaceNameHistogram"];
   v44 = [MODictionaryEncoder decodeToDictionary:v14];
 
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"placeTypeFromPhotoTraitsHistogram"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placeTypeFromPhotoTraitsHistogram"];
   v40 = [MODictionaryEncoder decodeToDictionary:v15];
 
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"contactNamesHistogram"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contactNamesHistogram"];
   v39 = [MODictionaryEncoder decodeToDictionary:v16];
 
-  v17 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"personRelationshipHistogram"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"personRelationshipHistogram"];
   v38 = [MODictionaryEncoder decodeToDictionary:v17];
 
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"socialEventFromPhotoTraitsHistogram"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"socialEventFromPhotoTraitsHistogram"];
   v37 = [MODictionaryEncoder decodeToDictionary:v18];
 
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"otherSubjectFromPhotoTraitsHistogram"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"otherSubjectFromPhotoTraitsHistogram"];
   v36 = [MODictionaryEncoder decodeToDictionary:v19];
 
   v20 = objc_opt_class();
   v21 = [NSSet setWithObjects:v20, objc_opt_class(), 0];
-  v35 = [v3 decodeObjectOfClasses:v21 forKey:@"subBundleGoodnessScores"];
+  v35 = [coderCopy decodeObjectOfClasses:v21 forKey:@"subBundleGoodnessScores"];
 
   v22 = objc_opt_class();
   v23 = [NSSet setWithObjects:v22, objc_opt_class(), 0];
-  v33 = [v3 decodeObjectOfClasses:v23 forKey:@"subSuggestionIDsBeforePruning"];
+  v33 = [coderCopy decodeObjectOfClasses:v23 forKey:@"subSuggestionIDsBeforePruning"];
 
-  v24 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"holidayHistogram"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"holidayHistogram"];
   v34 = [MODictionaryEncoder decodeToDictionary:v24];
 
-  v25 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"celebrationHistogram"];
+  v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"celebrationHistogram"];
   v26 = [MODictionaryEncoder decodeToDictionary:v25];
 
-  v27 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"stateOfMindValenceHistogram"];
+  v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stateOfMindValenceHistogram"];
   v28 = [MODictionaryEncoder decodeToDictionary:v27];
 
   v29 = objc_opt_class();
   v30 = [NSSet setWithObjects:v29, objc_opt_class(), 0];
-  v31 = [v3 decodeObjectOfClasses:v30 forKey:@"phenotypePersonUUIDs"];
+  v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"phenotypePersonUUIDs"];
 
   v43 = [(MOClusterMetadata *)self initWithIdentifier:v54 isFiltered:v41 phenoType:v55 topLevelActivityHistogram:v53 secondLevelActivityHistogram:v52 activityTypeFromPhotoTraitsHistogram:v51 timeTagHistogram:v50 dayOfWeekHistogram:v49 weekOfYearHistogram:v48 timeContextFromPhotoTraitsHistogram:v47 holidayHistogram:v34 celebrationHistogram:v26 placeNameHistogram:v46 combinedPlaceTypeHistogram:v45 enclosingPlaceNameHistogram:v44 placeTypeFromPhotoTraitsHistogram:v40 contactNamesHistogram:v39 personRelationshipHistogram:v38 socialEventFromPhotoTraitsHistogram:v37 otherSubjectFromPhotoTraitsHistogram:v36 stateOfMindValenceHistogram:v28 subBundleGoodnessScores:v35 subSuggestionIDsBeforePruning:v33 phenotypePersonUUIDs:v31];
   return v43;

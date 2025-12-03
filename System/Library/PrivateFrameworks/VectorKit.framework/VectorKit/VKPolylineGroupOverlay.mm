@@ -2,14 +2,14 @@
 - ($F24F406B2B787EFB06265DBA3D28CBD5)coordinate;
 - (void)_updateBoundingMapRegion;
 - (void)_updateContainsTransit;
-- (void)addObserver:(id)a3;
-- (void)addPolyline:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)addPolyline:(id)polyline;
 - (void)dealloc;
-- (void)removePolyline:(id)a3;
-- (void)setFocusedPolyline:(id)a3;
-- (void)setSelectedPolyline:(id)a3;
-- (void)setShowTraffic:(BOOL)a3;
-- (void)setSkippedPolyline:(id)a3;
+- (void)removePolyline:(id)polyline;
+- (void)setFocusedPolyline:(id)polyline;
+- (void)setSelectedPolyline:(id)polyline;
+- (void)setShowTraffic:(BOOL)traffic;
+- (void)setSkippedPolyline:(id)polyline;
 @end
 
 @implementation VKPolylineGroupOverlay
@@ -55,15 +55,15 @@
 
         if (self->_containsTransit)
         {
-          v7 = 1;
+          containsTransit = 1;
         }
 
         else
         {
-          v7 = [*(*(&v8 + 1) + 8 * v6) containsTransit];
+          containsTransit = [*(*(&v8 + 1) + 8 * v6) containsTransit];
         }
 
-        self->_containsTransit = v7;
+        self->_containsTransit = containsTransit;
         ++v6;
       }
 
@@ -110,11 +110,11 @@
             objc_enumerationMutation(v6);
           }
 
-          v10 = [*(*(&v28 + 1) + 8 * v9) boundingMapRegion];
+          boundingMapRegion = [*(*(&v28 + 1) + 8 * v9) boundingMapRegion];
           [(GEOMapRegion *)self->_boundingMapRegion northLat];
           v12 = v11;
-          [v10 northLat];
-          v13 = v10;
+          [boundingMapRegion northLat];
+          v13 = boundingMapRegion;
           if (v12 > v14)
           {
             v13 = self->_boundingMapRegion;
@@ -124,8 +124,8 @@
           [(GEOMapRegion *)self->_boundingMapRegion setNorthLat:?];
           [(GEOMapRegion *)self->_boundingMapRegion southLat];
           v16 = v15;
-          [v10 southLat];
-          v17 = v10;
+          [boundingMapRegion southLat];
+          v17 = boundingMapRegion;
           if (v16 < v18)
           {
             v17 = self->_boundingMapRegion;
@@ -135,8 +135,8 @@
           [(GEOMapRegion *)self->_boundingMapRegion setSouthLat:?];
           [(GEOMapRegion *)self->_boundingMapRegion eastLng];
           v20 = v19;
-          [v10 eastLng];
-          v21 = v10;
+          [boundingMapRegion eastLng];
+          v21 = boundingMapRegion;
           if (v20 > v22)
           {
             v21 = self->_boundingMapRegion;
@@ -146,8 +146,8 @@
           [(GEOMapRegion *)self->_boundingMapRegion setEastLng:?];
           [(GEOMapRegion *)self->_boundingMapRegion westLng];
           v24 = v23;
-          [v10 westLng];
-          v25 = v10;
+          [boundingMapRegion westLng];
+          v25 = boundingMapRegion;
           if (v24 < v26)
           {
             v25 = self->_boundingMapRegion;
@@ -166,15 +166,15 @@
       while (v7);
     }
 
-    v27 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v27 postNotificationName:@"VKRouteOverlayBoundingMapRegionDidChange" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"VKRouteOverlayBoundingMapRegionDidChange" object:self];
   }
 }
 
-- (void)setSkippedPolyline:(id)a3
+- (void)setSkippedPolyline:(id)polyline
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  polylineCopy = polyline;
   if (GEOGetVectorKitRouteLog_onceToken != -1)
   {
     dispatch_once(&GEOGetVectorKitRouteLog_onceToken, &__block_literal_global_37_15545);
@@ -183,22 +183,22 @@
   v6 = GEOGetVectorKitRouteLog_log;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(VKPolylineOverlay *)v5 composedRoute];
-    v8 = [v7 uniqueRouteID];
+    composedRoute = [(VKPolylineOverlay *)polylineCopy composedRoute];
+    uniqueRouteID = [composedRoute uniqueRouteID];
     *buf = 134218242;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
-    v23 = v8;
+    v23 = uniqueRouteID;
     _os_log_impl(&dword_1B2754000, v6, OS_LOG_TYPE_INFO, "VKPolylineGroupOverlay %p setSelectedPolyline | route: %@", buf, 0x16u);
   }
 
   p_skippedPolyline = &self->_skippedPolyline;
   skippedPolyline = self->_skippedPolyline;
-  if (skippedPolyline != v5)
+  if (skippedPolyline != polylineCopy)
   {
-    if (v5)
+    if (polylineCopy)
     {
-      if (![(NSMutableSet *)self->_polylines containsObject:v5])
+      if (![(NSMutableSet *)self->_polylines containsObject:polylineCopy])
       {
         goto LABEL_17;
       }
@@ -207,7 +207,7 @@
     }
 
     [(VKPolylineOverlay *)skippedPolyline setSkipped:0];
-    objc_storeStrong(&self->_skippedPolyline, a3);
+    objc_storeStrong(&self->_skippedPolyline, polyline);
     [*p_skippedPolyline setSkipped:1];
     v17 = 0u;
     v18 = 0u;
@@ -227,7 +227,7 @@
             objc_enumerationMutation(v11);
           }
 
-          [*(*(&v15 + 1) + 8 * i) polylineGroup:self didSkipPolyline:{v5, v15}];
+          [*(*(&v15 + 1) + 8 * i) polylineGroup:self didSkipPolyline:{polylineCopy, v15}];
         }
 
         v12 = [(__CFSet *)v11 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -240,10 +240,10 @@
 LABEL_17:
 }
 
-- (void)setFocusedPolyline:(id)a3
+- (void)setFocusedPolyline:(id)polyline
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  polylineCopy = polyline;
   if (GEOGetVectorKitRouteLog_onceToken != -1)
   {
     dispatch_once(&GEOGetVectorKitRouteLog_onceToken, &__block_literal_global_37_15545);
@@ -252,22 +252,22 @@ LABEL_17:
   v6 = GEOGetVectorKitRouteLog_log;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(VKPolylineOverlay *)v5 composedRoute];
-    v8 = [v7 uniqueRouteID];
+    composedRoute = [(VKPolylineOverlay *)polylineCopy composedRoute];
+    uniqueRouteID = [composedRoute uniqueRouteID];
     *buf = 134218242;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
-    v23 = v8;
+    v23 = uniqueRouteID;
     _os_log_impl(&dword_1B2754000, v6, OS_LOG_TYPE_INFO, "VKPolylineGroupOverlay %p setFocusedPolyline | route: %@", buf, 0x16u);
   }
 
   p_focusedPolyline = &self->_focusedPolyline;
   focusedPolyline = self->_focusedPolyline;
-  if (focusedPolyline != v5)
+  if (focusedPolyline != polylineCopy)
   {
-    if (v5)
+    if (polylineCopy)
     {
-      if (![(NSMutableSet *)self->_polylines containsObject:v5])
+      if (![(NSMutableSet *)self->_polylines containsObject:polylineCopy])
       {
         goto LABEL_17;
       }
@@ -276,7 +276,7 @@ LABEL_17:
     }
 
     [(VKPolylineOverlay *)focusedPolyline setHasFocus:0];
-    objc_storeStrong(&self->_focusedPolyline, a3);
+    objc_storeStrong(&self->_focusedPolyline, polyline);
     [*p_focusedPolyline setHasFocus:1];
     v17 = 0u;
     v18 = 0u;
@@ -296,7 +296,7 @@ LABEL_17:
             objc_enumerationMutation(v11);
           }
 
-          [*(*(&v15 + 1) + 8 * i) polylineGroup:self didFocusPolyline:{v5, v15}];
+          [*(*(&v15 + 1) + 8 * i) polylineGroup:self didFocusPolyline:{polylineCopy, v15}];
         }
 
         v12 = [(__CFSet *)v11 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -309,10 +309,10 @@ LABEL_17:
 LABEL_17:
 }
 
-- (void)setSelectedPolyline:(id)a3
+- (void)setSelectedPolyline:(id)polyline
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  polylineCopy = polyline;
   if (GEOGetVectorKitRouteLog_onceToken != -1)
   {
     dispatch_once(&GEOGetVectorKitRouteLog_onceToken, &__block_literal_global_37_15545);
@@ -321,22 +321,22 @@ LABEL_17:
   v6 = GEOGetVectorKitRouteLog_log;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(VKPolylineOverlay *)v5 composedRoute];
-    v8 = [v7 uniqueRouteID];
+    composedRoute = [(VKPolylineOverlay *)polylineCopy composedRoute];
+    uniqueRouteID = [composedRoute uniqueRouteID];
     *buf = 134218242;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
-    v23 = v8;
+    v23 = uniqueRouteID;
     _os_log_impl(&dword_1B2754000, v6, OS_LOG_TYPE_INFO, "VKPolylineGroupOverlay %p setSelectedPolyline | route: %@", buf, 0x16u);
   }
 
   p_selectedPolyline = &self->_selectedPolyline;
   selectedPolyline = self->_selectedPolyline;
-  if (selectedPolyline != v5)
+  if (selectedPolyline != polylineCopy)
   {
-    if (v5)
+    if (polylineCopy)
     {
-      if (![(NSMutableSet *)self->_polylines containsObject:v5])
+      if (![(NSMutableSet *)self->_polylines containsObject:polylineCopy])
       {
         goto LABEL_17;
       }
@@ -345,7 +345,7 @@ LABEL_17:
     }
 
     [(VKPolylineOverlay *)selectedPolyline setSelected:0];
-    objc_storeStrong(&self->_selectedPolyline, a3);
+    objc_storeStrong(&self->_selectedPolyline, polyline);
     [*p_selectedPolyline setSelected:1];
     v17 = 0u;
     v18 = 0u;
@@ -365,7 +365,7 @@ LABEL_17:
             objc_enumerationMutation(v11);
           }
 
-          [*(*(&v15 + 1) + 8 * i) polylineGroup:self didSelectPolyline:{v5, v15}];
+          [*(*(&v15 + 1) + 8 * i) polylineGroup:self didSelectPolyline:{polylineCopy, v15}];
         }
 
         v12 = [(__CFSet *)v11 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -378,10 +378,10 @@ LABEL_17:
 LABEL_17:
 }
 
-- (void)removePolyline:(id)a3
+- (void)removePolyline:(id)polyline
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  polylineCopy = polyline;
   if (GEOGetVectorKitRouteLog_onceToken != -1)
   {
     dispatch_once(&GEOGetVectorKitRouteLog_onceToken, &__block_literal_global_37_15545);
@@ -390,39 +390,39 @@ LABEL_17:
   v5 = GEOGetVectorKitRouteLog_log;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(VKPolylineOverlay *)v4 composedRoute];
-    v7 = [v6 uniqueRouteID];
+    composedRoute = [(VKPolylineOverlay *)polylineCopy composedRoute];
+    uniqueRouteID = [composedRoute uniqueRouteID];
     showTraffic = self->_showTraffic;
-    v9 = [(VKPolylineOverlay *)v4 traffic];
+    traffic = [(VKPolylineOverlay *)polylineCopy traffic];
     *buf = 134218754;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
-    v22 = v7;
+    v22 = uniqueRouteID;
     v23 = 1024;
     v24 = showTraffic;
     v25 = 2112;
-    v26 = v9;
+    v26 = traffic;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "VKPolylineGroupOverlay %p removePolyline | route: %@ | _showTraffic: %d | traffic: %@", buf, 0x26u);
   }
 
-  if (([(NSMutableSet *)self->_polylines containsObject:v4]& 1) != 0 && [(NSMutableSet *)self->_polylines containsObject:v4])
+  if (([(NSMutableSet *)self->_polylines containsObject:polylineCopy]& 1) != 0 && [(NSMutableSet *)self->_polylines containsObject:polylineCopy])
   {
-    if (self->_selectedPolyline == v4)
+    if (self->_selectedPolyline == polylineCopy)
     {
       [(VKPolylineGroupOverlay *)self setSelectedPolyline:0];
     }
 
-    if (self->_focusedPolyline == v4)
+    if (self->_focusedPolyline == polylineCopy)
     {
       [(VKPolylineGroupOverlay *)self setFocusedPolyline:0];
     }
 
-    if (self->_skippedPolyline == v4)
+    if (self->_skippedPolyline == polylineCopy)
     {
       [(VKPolylineGroupOverlay *)self setSkippedPolyline:0];
     }
 
-    [(NSMutableSet *)self->_polylines removeObject:v4];
+    [(NSMutableSet *)self->_polylines removeObject:polylineCopy];
     [(VKPolylineGroupOverlay *)self _updateBoundingMapRegion];
     [(VKPolylineGroupOverlay *)self _updateContainsTransit];
     v16 = 0u;
@@ -443,7 +443,7 @@ LABEL_17:
             objc_enumerationMutation(v10);
           }
 
-          [*(*(&v14 + 1) + 8 * i) polylineGroup:self didRemovePolyline:{v4, v14}];
+          [*(*(&v14 + 1) + 8 * i) polylineGroup:self didRemovePolyline:{polylineCopy, v14}];
         }
 
         v11 = [(__CFSet *)v10 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -454,10 +454,10 @@ LABEL_17:
   }
 }
 
-- (void)addPolyline:(id)a3
+- (void)addPolyline:(id)polyline
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  polylineCopy = polyline;
   if (GEOGetVectorKitRouteLog_onceToken != -1)
   {
     dispatch_once(&GEOGetVectorKitRouteLog_onceToken, &__block_literal_global_37_15545);
@@ -466,18 +466,18 @@ LABEL_17:
   v5 = GEOGetVectorKitRouteLog_log;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 composedRoute];
-    v7 = [v6 uniqueRouteID];
+    composedRoute = [polylineCopy composedRoute];
+    uniqueRouteID = [composedRoute uniqueRouteID];
     showTraffic = self->_showTraffic;
-    v9 = [v4 traffic];
+    traffic = [polylineCopy traffic];
     *buf = 134218754;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
-    v25 = v7;
+    v25 = uniqueRouteID;
     v26 = 1024;
     v27 = showTraffic;
     v28 = 2112;
-    v29 = v9;
+    v29 = traffic;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "VKPolylineGroupOverlay %p addPolyline | route: %@ | _showTraffic: %d | traffic: %@", buf, 0x26u);
   }
 
@@ -491,10 +491,10 @@ LABEL_17:
     polylines = self->_polylines;
   }
 
-  if (([(NSMutableSet *)polylines containsObject:v4]& 1) == 0)
+  if (([(NSMutableSet *)polylines containsObject:polylineCopy]& 1) == 0)
   {
-    [v4 setShowTraffic:self->_showTraffic];
-    [(NSMutableSet *)self->_polylines addObject:v4];
+    [polylineCopy setShowTraffic:self->_showTraffic];
+    [(NSMutableSet *)self->_polylines addObject:polylineCopy];
     [(VKPolylineGroupOverlay *)self _updateBoundingMapRegion];
     [(VKPolylineGroupOverlay *)self _updateContainsTransit];
     v19 = 0u;
@@ -515,7 +515,7 @@ LABEL_17:
             objc_enumerationMutation(v13);
           }
 
-          [*(*(&v17 + 1) + 8 * i) polylineGroup:self didAddPolyline:{v4, v17}];
+          [*(*(&v17 + 1) + 8 * i) polylineGroup:self didAddPolyline:{polylineCopy, v17}];
         }
 
         v14 = [(__CFSet *)v13 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -526,9 +526,9 @@ LABEL_17:
   }
 }
 
-- (void)setShowTraffic:(BOOL)a3
+- (void)setShowTraffic:(BOOL)traffic
 {
-  v3 = a3;
+  trafficCopy = traffic;
   v17 = *MEMORY[0x1E69E9840];
   if (GEOGetVectorKitRouteLog_onceToken != -1)
   {
@@ -539,13 +539,13 @@ LABEL_17:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    v16 = v3;
+    v16 = trafficCopy;
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "VKPolylineGroupOverlay setShowTraffic: %d", buf, 8u);
   }
 
-  if (self->_showTraffic != v3)
+  if (self->_showTraffic != trafficCopy)
   {
-    self->_showTraffic = v3;
+    self->_showTraffic = trafficCopy;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -564,7 +564,7 @@ LABEL_17:
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v10 + 1) + 8 * i) setShowTraffic:{v3, v10}];
+          [*(*(&v10 + 1) + 8 * i) setShowTraffic:{trafficCopy, v10}];
         }
 
         v7 = [(NSMutableSet *)v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -575,9 +575,9 @@ LABEL_17:
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
   if (!observers)
   {
@@ -586,7 +586,7 @@ LABEL_17:
     self->_observers = observers;
   }
 
-  CFSetAddValue(observers, v4);
+  CFSetAddValue(observers, observerCopy);
 }
 
 - (void)dealloc

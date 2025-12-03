@@ -1,7 +1,7 @@
 @interface ClimateVerticalQuickActionPopover
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
 - (NSArray)preferredFocusEnvironments;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation ClimateVerticalQuickActionPopover
@@ -10,7 +10,7 @@
 {
   if (*(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Climate33ClimateVerticalQuickActionPopover_focusManager))
   {
-    v2 = self;
+    selfCopy = self;
 
     sub_100030784();
   }
@@ -21,38 +21,38 @@
   return v3.super.isa;
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
   if (*(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Climate33ClimateVerticalQuickActionPopover_focusManager))
   {
-    v4 = a3;
-    v5 = self;
+    contextCopy = context;
+    selfCopy = self;
 
-    v6 = sub_1000309B8(v4);
+    v6 = sub_1000309B8(contextCopy);
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = type metadata accessor for ClimateVerticalQuickActionPopover();
-    return [(ClimateVerticalQuickActionPopover *)&v9 shouldUpdateFocusInContext:a3];
+    return [(ClimateVerticalQuickActionPopover *)&v9 shouldUpdateFocusInContext:context];
   }
 
   return v6;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for ClimateVerticalQuickActionPopover();
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
   v8 = v9.receiver;
-  [(ClimateQuickActionPopover *)&v9 didUpdateFocusInContext:v6 withAnimationCoordinator:v7];
+  [(ClimateQuickActionPopover *)&v9 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinatorCopy];
   if (*&v8[OBJC_IVAR____TtC7Climate33ClimateVerticalQuickActionPopover_focusManager])
   {
 
-    sub_10003417C(v6);
+    sub_10003417C(contextCopy);
   }
 }
 

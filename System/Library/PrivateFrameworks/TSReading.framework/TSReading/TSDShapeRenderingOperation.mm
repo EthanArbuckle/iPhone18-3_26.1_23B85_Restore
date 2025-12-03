@@ -1,21 +1,21 @@
 @interface TSDShapeRenderingOperation
 - (BOOL)needsPressedStateBackground;
-- (TSDShapeRenderingOperation)initWithPreset:(id)a3 imageSize:(CGSize)a4 imageScale:(double)a5 swatchFrame:(CGRect)a6 shapeType:(int)a7 angle:(double)a8 documentRoot:(id)a9;
+- (TSDShapeRenderingOperation)initWithPreset:(id)preset imageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame shapeType:(int)type angle:(double)angle documentRoot:(id)root;
 - (UIEdgeInsets)swatchEdgeInsets;
 - (void)doWorkWithReadLock;
 @end
 
 @implementation TSDShapeRenderingOperation
 
-- (TSDShapeRenderingOperation)initWithPreset:(id)a3 imageSize:(CGSize)a4 imageScale:(double)a5 swatchFrame:(CGRect)a6 shapeType:(int)a7 angle:(double)a8 documentRoot:(id)a9
+- (TSDShapeRenderingOperation)initWithPreset:(id)preset imageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame shapeType:(int)type angle:(double)angle documentRoot:(id)root
 {
   v12.receiver = self;
   v12.super_class = TSDShapeRenderingOperation;
-  result = [(TSDSwatchRenderingOperation *)&v12 initWithPreset:a3 imageSize:a9 imageScale:a4.width swatchFrame:a4.height documentRoot:a5, a6.origin.x, a6.origin.y, a6.size.width, a6.size.height];
+  result = [(TSDSwatchRenderingOperation *)&v12 initWithPreset:preset imageSize:root imageScale:size.width swatchFrame:size.height documentRoot:scale, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
-    result->mShapeType = a7;
-    result->mAngle = a8;
+    result->mShapeType = type;
+    result->mAngle = angle;
   }
 
   return result;
@@ -69,9 +69,9 @@
     v8 = [v4 imageForShapePreset:mPreset imageSize:self->mShapeType imageScale:self->super.mDocumentRoot shapeType:p_mImageSize->width angle:self->super.mImageSize.height documentRoot:{mImageScale, self->mAngle}];
   }
 
-  v9 = [v8 CGImage];
+  cGImage = [v8 CGImage];
 
-  [(TSDSwatchRenderingOperation *)self deliverCGImage:v9];
+  [(TSDSwatchRenderingOperation *)self deliverCGImage:cGImage];
 }
 
 @end

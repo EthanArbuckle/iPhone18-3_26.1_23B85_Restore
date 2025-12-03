@@ -1,22 +1,22 @@
 @interface VGArchivedSurface
-+ (id)archivedSurfaceWithSurface:(id)a3;
-- (VGArchivedSurface)initWithCoder:(id)a3;
++ (id)archivedSurfaceWithSurface:(id)surface;
+- (VGArchivedSurface)initWithCoder:(id)coder;
 @end
 
 @implementation VGArchivedSurface
 
-+ (id)archivedSurfaceWithSurface:(id)a3
++ (id)archivedSurfaceWithSurface:(id)surface
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  surfaceCopy = surface;
+  v5 = surfaceCopy;
+  if (surfaceCopy)
   {
-    v6 = objc_getAssociatedObject(v4, a1);
+    v6 = objc_getAssociatedObject(surfaceCopy, self);
     if (!v6)
     {
       v6 = objc_opt_new();
       v6[1] = v5;
-      objc_setAssociatedObject(v5, a1, v6, 1);
+      objc_setAssociatedObject(v5, self, v6, 1);
     }
   }
 
@@ -28,15 +28,15 @@
   return v6;
 }
 
-- (VGArchivedSurface)initWithCoder:(id)a3
+- (VGArchivedSurface)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = VGArchivedSurface;
   v5 = [(VGArchivedSurface *)&v10 init];
   if (v5)
   {
-    v6 = [v4 _vg_decodeSurfaceForKey:@"surface"];
+    v6 = [coderCopy _vg_decodeSurfaceForKey:@"surface"];
     decodedSurface = v5->_decodedSurface;
     v5->_decodedSurface = v6;
 

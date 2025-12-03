@@ -1,21 +1,21 @@
 @interface B332SetupViewControllerProxy
-- (_TtC18SharingViewService28B332SetupViewControllerProxy)initWithNibName:(id)a3 bundle:(id)a4;
-- (int64_t)pnpDeviceTypeForType:(unint64_t)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (_TtC18SharingViewService28B332SetupViewControllerProxy)initWithNibName:(id)name bundle:(id)bundle;
+- (int64_t)pnpDeviceTypeForType:(unint64_t)type;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)didTapCancelPairing;
 - (void)didTapToPairPencil;
-- (void)dismissUIAnimated:(BOOL)a3;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)handleButtonActions:(id)a3;
+- (void)dismissUIAnimated:(BOOL)animated;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)handleButtonActions:(id)actions;
 - (void)showAlertIfNeeded;
 - (void)showPairConsentPrompt;
 - (void)showPairingFailure;
 - (void)showPairingStarted;
 - (void)showPairingSuccess;
 - (void)showSubsequentPairSuccess;
-- (void)updateDeviceInfoWithDeviceType:(unint64_t)a3 batteryLevel:(double)a4 batteryLevelKnown:(BOOL)a5 edge:(unint64_t)a6 orientation:(int64_t)a7 isCharging:(BOOL)a8 identifier:(id)a9;
-- (void)viewControllerDidDismiss:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateDeviceInfoWithDeviceType:(unint64_t)type batteryLevel:(double)level batteryLevelKnown:(BOOL)known edge:(unint64_t)edge orientation:(int64_t)orientation isCharging:(BOOL)charging identifier:(id)identifier;
+- (void)viewControllerDidDismiss:(id)dismiss;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -23,13 +23,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000B1B6C();
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -43,8 +43,8 @@
     v7 = 0;
   }
 
-  v12 = self;
-  if (a3 && (v9 = [a3 userInfo]) != 0)
+  selfCopy = self;
+  if (context && (v9 = [context userInfo]) != 0)
   {
     v10 = v9;
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
@@ -57,7 +57,7 @@
     v11.super.isa = 0;
   }
 
-  [(SVSBaseMainController *)v12 setUserInfo:v11.super.isa];
+  [(SVSBaseMainController *)selfCopy setUserInfo:v11.super.isa];
 
   if (v6)
   {
@@ -66,25 +66,25 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v4 = self->super.SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC18SharingViewService28B332SetupViewControllerProxy_dismissed];
-  v5 = self;
-  v6 = v5;
+  selfCopy = self;
+  v6 = selfCopy;
   if ((v4 & 1) == 0)
   {
-    [(B332SetupViewControllerProxy *)v5 dismiss:21];
+    [(B332SetupViewControllerProxy *)selfCopy dismiss:21];
   }
 
   v7.receiver = v6;
   v7.super_class = type metadata accessor for B332SetupViewControllerProxy();
-  [(SVSBaseMainController *)&v7 viewDidDisappear:v3];
+  [(SVSBaseMainController *)&v7 viewDidDisappear:disappearCopy];
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     v7 = swift_allocObject();
@@ -97,14 +97,14 @@
     v7 = 0;
   }
 
-  v8 = self;
-  sub_1000B2140(a3, v6, v7);
+  selfCopy = self;
+  sub_1000B2140(animated, v6, v7);
   sub_100025EF4(v6, v7);
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  if (a3)
+  if (actions)
   {
     sub_1000122EC(0, &qword_1001BC220);
     sub_1000670A4();
@@ -116,13 +116,13 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_1000B2540(v4);
 }
 
-- (_TtC18SharingViewService28B332SetupViewControllerProxy)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18SharingViewService28B332SetupViewControllerProxy)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -134,16 +134,16 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1000B287C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1000B287C(v5, v7, bundle);
 }
 
-- (void)updateDeviceInfoWithDeviceType:(unint64_t)a3 batteryLevel:(double)a4 batteryLevelKnown:(BOOL)a5 edge:(unint64_t)a6 orientation:(int64_t)a7 isCharging:(BOOL)a8 identifier:(id)a9
+- (void)updateDeviceInfoWithDeviceType:(unint64_t)type batteryLevel:(double)level batteryLevelKnown:(BOOL)known edge:(unint64_t)edge orientation:(int64_t)orientation isCharging:(BOOL)charging identifier:(id)identifier
 {
   v16 = sub_100005DCC(&unk_1001BBAA0);
   __chkstk_darwin(v16 - 8);
   v18 = &v22 - v17;
-  if (a9)
+  if (identifier)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     v19 = type metadata accessor for UUID();
@@ -156,83 +156,83 @@
     (*(*(v20 - 8) + 56))(v18, 1, 1, v20);
   }
 
-  v21 = self;
-  sub_1000B45F4(a3, a6, a7, a8, v18, a4);
+  selfCopy = self;
+  sub_1000B45F4(type, edge, orientation, charging, v18, level);
 
   sub_10001259C(v18, &unk_1001BBAA0);
 }
 
-- (void)dismissUIAnimated:(BOOL)a3
+- (void)dismissUIAnimated:(BOOL)animated
 {
-  v3 = self;
+  selfCopy = self;
   sub_1000B48D0();
 }
 
 - (void)didTapToPairPencil
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000B2D60();
 }
 
 - (void)didTapCancelPairing
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000B2EA8();
 }
 
 - (void)showAlertIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000B3004();
 }
 
 - (void)showPairingStarted
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000B3314();
 }
 
 - (void)showPairingSuccess
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000B35A0();
 }
 
-- (int64_t)pnpDeviceTypeForType:(unint64_t)a3
+- (int64_t)pnpDeviceTypeForType:(unint64_t)type
 {
-  if (a3 - 1 > 3)
+  if (type - 1 > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_100170288[a3 - 1];
+    return qword_100170288[type - 1];
   }
 }
 
 - (void)showSubsequentPairSuccess
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000B37B4("showSubsequentPairingSuccess", &selRef_pairingSucceededSubsequently);
 }
 
 - (void)showPairingFailure
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000B37B4("showPairingFailure", &selRef_pairingFailed);
 }
 
 - (void)showPairConsentPrompt
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000B3928();
 }
 
-- (void)viewControllerDidDismiss:(id)a3
+- (void)viewControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_1000B49CC();
 }
 

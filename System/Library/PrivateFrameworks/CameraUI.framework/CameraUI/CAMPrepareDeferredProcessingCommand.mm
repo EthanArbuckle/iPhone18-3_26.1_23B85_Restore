@@ -1,54 +1,54 @@
 @interface CAMPrepareDeferredProcessingCommand
-- (CAMPrepareDeferredProcessingCommand)initWithRequest:(id)a3 coordinator:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)executeWithContext:(id)a3;
+- (CAMPrepareDeferredProcessingCommand)initWithRequest:(id)request coordinator:(id)coordinator;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)executeWithContext:(id)context;
 @end
 
 @implementation CAMPrepareDeferredProcessingCommand
 
-- (CAMPrepareDeferredProcessingCommand)initWithRequest:(id)a3 coordinator:(id)a4
+- (CAMPrepareDeferredProcessingCommand)initWithRequest:(id)request coordinator:(id)coordinator
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  coordinatorCopy = coordinator;
   v12.receiver = self;
   v12.super_class = CAMPrepareDeferredProcessingCommand;
   v9 = [(CAMCaptureCommand *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->__request, a3);
-    objc_storeStrong(&v10->__deferredProcessingCoordinator, a4);
+    objc_storeStrong(&v9->__request, request);
+    objc_storeStrong(&v10->__deferredProcessingCoordinator, coordinator);
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = CAMPrepareDeferredProcessingCommand;
-  v4 = [(CAMCaptureCommand *)&v10 copyWithZone:a3];
-  v5 = [(CAMPrepareDeferredProcessingCommand *)self _request];
+  v4 = [(CAMCaptureCommand *)&v10 copyWithZone:zone];
+  _request = [(CAMPrepareDeferredProcessingCommand *)self _request];
   v6 = v4[3];
-  v4[3] = v5;
+  v4[3] = _request;
 
-  v7 = [(CAMPrepareDeferredProcessingCommand *)self _deferredProcessingCoordinator];
+  _deferredProcessingCoordinator = [(CAMPrepareDeferredProcessingCommand *)self _deferredProcessingCoordinator];
   v8 = v4[4];
-  v4[4] = v7;
+  v4[4] = _deferredProcessingCoordinator;
 
   return v4;
 }
 
-- (void)executeWithContext:(id)a3
+- (void)executeWithContext:(id)context
 {
-  v4 = a3;
-  v9 = [(CAMPrepareDeferredProcessingCommand *)self _request];
-  v5 = [v9 capturePhotoSettingsWithContext:v4];
-  v6 = [v4 currentStillImageOutput];
+  contextCopy = context;
+  _request = [(CAMPrepareDeferredProcessingCommand *)self _request];
+  v5 = [_request capturePhotoSettingsWithContext:contextCopy];
+  currentStillImageOutput = [contextCopy currentStillImageOutput];
 
-  v7 = [v6 deferredSettingsForCapturingPhotoWithSettings:v5];
-  v8 = [(CAMPrepareDeferredProcessingCommand *)self _deferredProcessingCoordinator];
-  [v8 prewarmWithPhotoSettings:v7 completionHandler:&__block_literal_global_29];
+  v7 = [currentStillImageOutput deferredSettingsForCapturingPhotoWithSettings:v5];
+  _deferredProcessingCoordinator = [(CAMPrepareDeferredProcessingCommand *)self _deferredProcessingCoordinator];
+  [_deferredProcessingCoordinator prewarmWithPhotoSettings:v7 completionHandler:&__block_literal_global_29];
 }
 
 void __58__CAMPrepareDeferredProcessingCommand_executeWithContext___block_invoke(uint64_t a1, char a2, void *a3)

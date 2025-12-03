@@ -1,6 +1,6 @@
 @interface TIKeyboardInputManager_zh_Base
-- (BOOL)_shouldCommitInputDirectly:(id)a3;
-- (BOOL)acceptInputString:(id)a3;
+- (BOOL)_shouldCommitInputDirectly:(id)directly;
+- (BOOL)acceptInputString:(id)string;
 - (id)inputsToReject;
 - (id)keyboardBehaviors;
 - (void)initImplementation;
@@ -15,32 +15,32 @@
   return v2;
 }
 
-- (BOOL)acceptInputString:(id)a3
+- (BOOL)acceptInputString:(id)string
 {
-  v4 = a3;
-  if ([v4 length] && objc_msgSend(v4, "_containsBopomofoOnly"))
+  stringCopy = string;
+  if ([stringCopy length] && objc_msgSend(stringCopy, "_containsBopomofoOnly"))
   {
-    v5 = [(TIKeyboardInputManagerChinesePhonetic *)self inputString];
-    v6 = [(TIKeyboardInputManagerChinesePhonetic *)self externalStringToInternal:v5];
+    inputString = [(TIKeyboardInputManagerChinesePhonetic *)self inputString];
+    v6 = [(TIKeyboardInputManagerChinesePhonetic *)self externalStringToInternal:inputString];
 
-    v7 = [v4 substringToIndex:1];
-    v8 = [v7 _containsBopomofoToneOnly];
+    v7 = [stringCopy substringToIndex:1];
+    _containsBopomofoToneOnly = [v7 _containsBopomofoToneOnly];
 
-    if (v8 && (![v6 length] || (objc_msgSend(v6, "substringWithRange:", -[TIKeyboardInputManagerChinesePhonetic inputIndex](self, "inputIndex") - 1, 1), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "_containsBopomofoToneOnly"), v9, (v10 & 1) != 0)))
+    if (_containsBopomofoToneOnly && (![v6 length] || (objc_msgSend(v6, "substringWithRange:", -[TIKeyboardInputManagerChinesePhonetic inputIndex](self, "inputIndex") - 1, 1), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "_containsBopomofoToneOnly"), v9, (v10 & 1) != 0)))
     {
       v11 = 0;
     }
 
     else
     {
-      v12 = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
-      v13 = [v12 candidates];
+      wordSearchCandidateResultSet = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
+      candidates = [wordSearchCandidateResultSet candidates];
 
-      if ([v13 count] == 1)
+      if ([candidates count] == 1)
       {
-        v14 = [v13 objectAtIndex:0];
-        v15 = [v14 candidate];
-        v16 = [v6 isEqualToString:v15];
+        v14 = [candidates objectAtIndex:0];
+        candidate = [v14 candidate];
+        v16 = [v6 isEqualToString:candidate];
 
         v11 = v16 ^ 1;
       }
@@ -68,15 +68,15 @@
   return [(TIKeyboardInputManagerChinese *)&v4 initImplementationWithMode:@"Zhuyin" andLanguage:v2];
 }
 
-- (BOOL)_shouldCommitInputDirectly:(id)a3
+- (BOOL)_shouldCommitInputDirectly:(id)directly
 {
-  v4 = a3;
+  directlyCopy = directly;
   if (![(TIKeyboardInputManagerChinesePhonetic *)self inputCount])
   {
-    v6 = [(TIKeyboardInputManagerChinesePhonetic *)self conversionHistory];
-    if ([v6 convertedLength])
+    conversionHistory = [(TIKeyboardInputManagerChinesePhonetic *)self conversionHistory];
+    if ([conversionHistory convertedLength])
     {
-      v7 = [v4 length];
+      v7 = [directlyCopy length];
 
       if (v7 > 1)
       {
@@ -91,11 +91,11 @@
 
   v9.receiver = self;
   v9.super_class = TIKeyboardInputManager_zh_Base;
-  if (![(TIKeyboardInputManagerChinesePhonetic *)&v9 _shouldCommitInputDirectly:v4])
+  if (![(TIKeyboardInputManagerChinesePhonetic *)&v9 _shouldCommitInputDirectly:directlyCopy])
   {
-    if (([v4 _containsBopomofoOnly] & 1) == 0 && !-[TIKeyboardInputManagerChinesePhonetic isSpecialInput:](self, "isSpecialInput:", v4))
+    if (([directlyCopy _containsBopomofoOnly] & 1) == 0 && !-[TIKeyboardInputManagerChinesePhonetic isSpecialInput:](self, "isSpecialInput:", directlyCopy))
     {
-      v5 = ![(TIKeyboardInputManagerMecabra *)self stringContainsActiveSupplementalLexiconSearchPrefix:v4];
+      v5 = ![(TIKeyboardInputManagerMecabra *)self stringContainsActiveSupplementalLexiconSearchPrefix:directlyCopy];
       goto LABEL_10;
     }
 
@@ -112,14 +112,14 @@ LABEL_10:
 
 - (id)inputsToReject
 {
-  v3 = [(TIKeyboardInputManagerChinesePhonetic *)self inputString];
-  v4 = [(TIKeyboardInputManagerChinesePhonetic *)self externalStringToInternal:v3];
+  inputString = [(TIKeyboardInputManagerChinesePhonetic *)self inputString];
+  v4 = [(TIKeyboardInputManagerChinesePhonetic *)self externalStringToInternal:inputString];
 
-  v5 = [(TIKeyboardInputManagerChinesePhonetic *)self inputIndex];
-  v6 = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
-  v7 = [v6 candidates];
+  inputIndex = [(TIKeyboardInputManagerChinesePhonetic *)self inputIndex];
+  wordSearchCandidateResultSet = [(TIKeyboardInputManagerMecabra *)self wordSearchCandidateResultSet];
+  candidates = [wordSearchCandidateResultSet candidates];
 
-  if (v5 == -[TIKeyboardInputManagerChinesePhonetic inputCount](self, "inputCount") && [v7 count] == 1 && (objc_msgSend(v7, "objectAtIndex:", 0), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "candidate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v4, "isEqualToString:", v9), v9, v8, (v10 & 1) != 0))
+  if (inputIndex == -[TIKeyboardInputManagerChinesePhonetic inputCount](self, "inputCount") && [candidates count] == 1 && (objc_msgSend(candidates, "objectAtIndex:", 0), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "candidate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v4, "isEqualToString:", v9), v9, v8, (v10 & 1) != 0))
   {
     v11 = 0;
     v12 = @"ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ";
@@ -127,8 +127,8 @@ LABEL_10:
 
   else
   {
-    v11 = v5 != 0;
-    if (v5)
+    v11 = inputIndex != 0;
+    if (inputIndex)
     {
       v12 = 0;
     }
@@ -141,18 +141,18 @@ LABEL_10:
 
   v18.receiver = self;
   v18.super_class = TIKeyboardInputManager_zh_Base;
-  v13 = [(TIKeyboardInputManagerMecabra *)&v18 inputsToReject];
-  v14 = v13;
+  inputsToReject = [(TIKeyboardInputManagerMecabra *)&v18 inputsToReject];
+  v14 = inputsToReject;
   if (v11)
   {
-    v15 = v13;
+    v15 = inputsToReject;
   }
 
   else
   {
-    if (v13)
+    if (inputsToReject)
     {
-      v16 = [v13 mutableCopy];
+      v16 = [inputsToReject mutableCopy];
       [v16 addCharactersInString:v12];
       goto LABEL_14;
     }

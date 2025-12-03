@@ -1,20 +1,20 @@
 @interface _MLCCPUPooling
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6;
-+ (id)layerWithDevice:(id)a3 descriptor:(id)a4;
-- (_MLCCPUPooling)initWithDevice:(id)a3 descriptor:(id)a4;
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor;
++ (id)layerWithDevice:(id)device descriptor:(id)descriptor;
+- (_MLCCPUPooling)initWithDevice:(id)device descriptor:(id)descriptor;
 @end
 
 @implementation _MLCCPUPooling
 
-- (_MLCCPUPooling)initWithDevice:(id)a3 descriptor:(id)a4
+- (_MLCCPUPooling)initWithDevice:(id)device descriptor:(id)descriptor
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  descriptorCopy = descriptor;
+  deviceCopy = device;
   v8 = [MEMORY[0x277CBEBF8] mutableCopy];
   bzero(v24, 0x2A8uLL);
-  v9 = [v6 poolingType];
-  switch(v9)
+  poolingType = [descriptorCopy poolingType];
+  switch(poolingType)
   {
     case 1:
       v10 = 0;
@@ -23,7 +23,7 @@
       v10 = 4;
       break;
     case 2:
-      if ([v6 countIncludesPadding])
+      if ([descriptorCopy countIncludesPadding])
       {
         v10 = 1;
       }
@@ -40,16 +40,16 @@
 
   v25 = v10;
 LABEL_10:
-  v26 = [v6 kernelWidth];
-  v27 = [v6 kernelHeight];
-  v28 = [v6 strideInX];
-  v29 = [v6 strideInY];
-  v30 = [v6 dilationRateInX];
-  v31 = [v6 dilationRateInY];
-  if ([v6 paddingPolicy] == 2)
+  kernelWidth = [descriptorCopy kernelWidth];
+  kernelHeight = [descriptorCopy kernelHeight];
+  strideInX = [descriptorCopy strideInX];
+  strideInY = [descriptorCopy strideInY];
+  dilationRateInX = [descriptorCopy dilationRateInX];
+  dilationRateInY = [descriptorCopy dilationRateInY];
+  if ([descriptorCopy paddingPolicy] == 2)
   {
-    v32 = [v6 paddingSizeInX];
-    v33 = [v6 paddingSizeInY];
+    paddingSizeInX = [descriptorCopy paddingSizeInX];
+    paddingSizeInY = [descriptorCopy paddingSizeInY];
   }
 
   v11 = [MEMORY[0x277CBEA90] dataWithBytes:v24 length:680];
@@ -65,55 +65,55 @@ LABEL_10:
 
   if (v16)
   {
-    [v16 setPaddingPolicy:{objc_msgSend(v6, "paddingPolicy")}];
+    [v16 setPaddingPolicy:{objc_msgSend(descriptorCopy, "paddingPolicy")}];
     [v8 addObject:v16];
   }
 
   v17 = [v8 copy];
   v21.receiver = self;
   v21.super_class = _MLCCPUPooling;
-  v18 = [(_MLCCPULayer *)&v21 initWithDevice:v7 deviceOps:v17];
+  v18 = [(_MLCCPULayer *)&v21 initWithDevice:deviceCopy deviceOps:v17];
 
   v19 = *MEMORY[0x277D85DE8];
   return v18;
 }
 
-+ (id)layerWithDevice:(id)a3 descriptor:(id)a4
++ (id)layerWithDevice:(id)device descriptor:(id)descriptor
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithDevice:v7 descriptor:v6];
+  descriptorCopy = descriptor;
+  deviceCopy = device;
+  v8 = [[self alloc] initWithDevice:deviceCopy descriptor:descriptorCopy];
 
   return v8;
 }
 
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor
 {
-  v8 = a5;
-  v44 = a6;
-  v46 = [a4 objectAtIndexedSubscript:0];
-  v45 = [v46 params];
-  v9 = [v45 bytes];
-  v10 = [v8 objectAtIndexedSubscript:0];
-  v11 = [v10 descriptor];
-  v12 = [v11 shape];
-  v13 = [v8 objectAtIndexedSubscript:0];
-  v14 = [v13 descriptor];
-  v15 = [v14 stride];
-  v47 = v8;
-  v16 = [v8 objectAtIndexedSubscript:0];
-  v17 = [v16 descriptor];
-  LODWORD(v8) = CPU_BuildBNNSNDArrayDescriptor(v9, v12, v15, 0, [v17 dataType], 1, 0);
+  tensorsCopy = tensors;
+  tensorCopy = tensor;
+  v46 = [ops objectAtIndexedSubscript:0];
+  params = [v46 params];
+  bytes = [params bytes];
+  v10 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor = [v10 descriptor];
+  shape = [descriptor shape];
+  v13 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor2 = [v13 descriptor];
+  stride = [descriptor2 stride];
+  v47 = tensorsCopy;
+  v16 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor3 = [v16 descriptor];
+  LODWORD(tensorsCopy) = CPU_BuildBNNSNDArrayDescriptor(bytes, shape, stride, 0, [descriptor3 dataType], 1, 0);
 
-  if (v8)
+  if (tensorsCopy)
   {
-    v18 = v44;
-    v19 = [v44 descriptor];
-    v20 = [v19 shape];
-    v21 = [v44 descriptor];
-    v22 = [v21 stride];
-    v23 = [v44 descriptor];
-    v24 = CPU_BuildBNNSNDArrayDescriptor(v9 + 176, v20, v22, 0, [v23 dataType], 1, 0);
+    v18 = tensorCopy;
+    descriptor4 = [tensorCopy descriptor];
+    shape2 = [descriptor4 shape];
+    descriptor5 = [tensorCopy descriptor];
+    stride2 = [descriptor5 stride];
+    descriptor6 = [tensorCopy descriptor];
+    v24 = CPU_BuildBNNSNDArrayDescriptor(bytes + 176, shape2, stride2, 0, [descriptor6 dataType], 1, 0);
 
     if (v24)
     {
@@ -121,69 +121,69 @@ LABEL_10:
       v26 = v47;
       if ([v46 paddingPolicy] != 2)
       {
-        v27 = *(v9 + 600);
-        v28 = (v27 * *(v9 + 184));
-        v29 = *(v9 + 8);
-        if (*(v9 + 576))
+        v27 = *(bytes + 600);
+        v28 = (v27 * *(bytes + 184));
+        v29 = *(bytes + 8);
+        if (*(bytes + 576))
         {
-          v30 = v28 - ((v29 - *(v9 + 584)) + v27);
+          v30 = v28 - ((v29 - *(bytes + 584)) + v27);
           if (v30 < 0.0)
           {
             v30 = 0.0;
           }
 
           v31 = (v30 * 0.5);
-          *(v9 + 648) = v31;
-          *(v9 + 656) = (v30 - v31);
-          v32 = *(v9 + 608);
-          v33 = v32 * *(v9 + 192);
-          v34 = *(v9 + 592);
+          *(bytes + 648) = v31;
+          *(bytes + 656) = (v30 - v31);
+          v32 = *(bytes + 608);
+          v33 = v32 * *(bytes + 192);
+          v34 = *(bytes + 592);
         }
 
         else
         {
-          v35 = v28 - ((v29 - ((*(v9 + 584) - 1) * *(v9 + 616) + 1)) + v27);
+          v35 = v28 - ((v29 - ((*(bytes + 584) - 1) * *(bytes + 616) + 1)) + v27);
           if (v35 < 0.0)
           {
             v35 = 0.0;
           }
 
           v36 = (v35 * 0.5);
-          *(v9 + 648) = v36;
-          *(v9 + 656) = (v35 - v36);
-          v32 = *(v9 + 608);
-          v33 = v32 * *(v9 + 192);
-          v34 = (*(v9 + 592) - 1) * *(v9 + 624) + 1;
+          *(bytes + 648) = v36;
+          *(bytes + 656) = (v35 - v36);
+          v32 = *(bytes + 608);
+          v33 = v32 * *(bytes + 192);
+          v34 = (*(bytes + 592) - 1) * *(bytes + 624) + 1;
         }
 
-        v37 = v33 - ((*(v9 + 16) - v34) + v32);
+        v37 = v33 - ((*(bytes + 16) - v34) + v32);
         if (v37 < 0.0)
         {
           v37 = 0.0;
         }
 
         v38 = (v37 * 0.5);
-        *(v9 + 664) = v38;
-        *(v9 + 672) = (v37 - v38);
+        *(bytes + 664) = v38;
+        *(bytes + 672) = (v37 - v38);
       }
 
       memset(v48, 0, sizeof(v48));
       LODWORD(v48[0]) = 1;
-      v39 = MEMORY[0x23EE75CD0](v9, v48);
+      v39 = MEMORY[0x23EE75CD0](bytes, v48);
       if (v39)
       {
         v40 = [v47 objectAtIndexedSubscript:0];
         [v46 setSourceStride:CPU_SetBatchStride(v40)];
 
-        [v46 setResultStride:CPU_SetBatchStride(v44)];
+        [v46 setResultStride:CPU_SetBatchStride(tensorCopy)];
       }
 
       objc_opt_class();
       v41 = objc_opt_new();
       [v46 setLayer:v41];
 
-      v42 = [v46 layer];
-      [v42 setFilter:v39];
+      layer = [v46 layer];
+      [layer setFilter:v39];
 
       LOBYTE(v24) = 1;
     }
@@ -200,7 +200,7 @@ LABEL_10:
     LOBYTE(v24) = 0;
     v25 = v46;
     v26 = v47;
-    v18 = v44;
+    v18 = tensorCopy;
   }
 
   return v24;

@@ -1,13 +1,13 @@
 @interface UIPageControlProgress
 - (UIPageControl)pageControl;
 - (UIPageControlProgress)init;
-- (float)_initialProgressForPage:(int64_t)a3;
+- (float)_initialProgressForPage:(int64_t)page;
 - (id)delegate;
 - (void)_didChangeCurrentPage;
-- (void)_progressVisibilityChanged:(BOOL)a3;
+- (void)_progressVisibilityChanged:(BOOL)changed;
 - (void)setCurrentProgress:(float)currentProgress;
 - (void)setDelegate:(id)delegate;
-- (void)setPageControl:(id)a3;
+- (void)setPageControl:(id)control;
 @end
 
 @implementation UIPageControlProgress
@@ -32,8 +32,8 @@
   if (self->_currentProgress != v4)
   {
     self->_currentProgress = v4;
-    v5 = [(UIPageControlProgress *)self pageControl];
-    [v5 _updateCurrentPageProgress];
+    pageControl = [(UIPageControlProgress *)self pageControl];
+    [pageControl _updateCurrentPageProgress];
   }
 }
 
@@ -57,43 +57,43 @@
   *&self->_delegateImplements = *&self->_delegateImplements & 0xFD | v6;
 }
 
-- (void)_progressVisibilityChanged:(BOOL)a3
+- (void)_progressVisibilityChanged:(BOOL)changed
 {
-  self->_progressVisible = a3;
+  self->_progressVisible = changed;
   if ((*&self->_delegateImplements & 2) != 0)
   {
-    v5 = [(UIPageControlProgress *)self delegate];
-    [v5 pageControlProgressVisibilityDidChange:self];
+    delegate = [(UIPageControlProgress *)self delegate];
+    [delegate pageControlProgressVisibilityDidChange:self];
   }
 }
 
 - (void)_didChangeCurrentPage
 {
-  v3 = [(UIPageControlProgress *)self pageControl];
-  -[UIPageControlProgress _initialProgressForPage:](self, "_initialProgressForPage:", [v3 currentPage]);
+  pageControl = [(UIPageControlProgress *)self pageControl];
+  -[UIPageControlProgress _initialProgressForPage:](self, "_initialProgressForPage:", [pageControl currentPage]);
   [(UIPageControlProgress *)self setCurrentProgress:?];
 
-  v4 = [(UIPageControlProgress *)self pageControl];
-  [v4 _updateCurrentPageProgress];
+  pageControl2 = [(UIPageControlProgress *)self pageControl];
+  [pageControl2 _updateCurrentPageProgress];
 }
 
-- (float)_initialProgressForPage:(int64_t)a3
+- (float)_initialProgressForPage:(int64_t)page
 {
   if ((*&self->_delegateImplements & 1) == 0)
   {
     return 0.0;
   }
 
-  v6 = [(UIPageControlProgress *)self delegate];
-  [v6 pageControlProgress:self initialProgressForPage:a3];
+  delegate = [(UIPageControlProgress *)self delegate];
+  [delegate pageControlProgress:self initialProgressForPage:page];
   v8 = v7;
 
   return v8;
 }
 
-- (void)setPageControl:(id)a3
+- (void)setPageControl:(id)control
 {
-  obj = a3;
+  obj = control;
   WeakRetained = objc_loadWeakRetained(&self->_pageControl);
 
   v5 = obj;

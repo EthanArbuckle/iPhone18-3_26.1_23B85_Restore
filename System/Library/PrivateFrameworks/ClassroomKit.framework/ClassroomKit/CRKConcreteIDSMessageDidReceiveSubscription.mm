@@ -1,22 +1,22 @@
 @interface CRKConcreteIDSMessageDidReceiveSubscription
-- (CRKConcreteIDSMessageDidReceiveSubscription)initWithHandler:(id)a3;
+- (CRKConcreteIDSMessageDidReceiveSubscription)initWithHandler:(id)handler;
 - (CRKConcreteIDSMessageDidReceiveSubscriptionDelegate)delegate;
 - (void)cancel;
-- (void)receiveMessage:(id)a3 senderAppleID:(id)a4 senderAddress:(id)a5;
+- (void)receiveMessage:(id)message senderAppleID:(id)d senderAddress:(id)address;
 - (void)resume;
 @end
 
 @implementation CRKConcreteIDSMessageDidReceiveSubscription
 
-- (CRKConcreteIDSMessageDidReceiveSubscription)initWithHandler:(id)a3
+- (CRKConcreteIDSMessageDidReceiveSubscription)initWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = CRKConcreteIDSMessageDidReceiveSubscription;
   v5 = [(CRKConcreteIDSMessageDidReceiveSubscription *)&v9 init];
   if (v5)
   {
-    v6 = MEMORY[0x245D3AAD0](v4);
+    v6 = MEMORY[0x245D3AAD0](handlerCopy);
     handler = v5->_handler;
     v5->_handler = v6;
   }
@@ -24,35 +24,35 @@
   return v5;
 }
 
-- (void)receiveMessage:(id)a3 senderAppleID:(id)a4 senderAddress:(id)a5
+- (void)receiveMessage:(id)message senderAppleID:(id)d senderAddress:(id)address
 {
-  v13 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  dCopy = d;
+  addressCopy = address;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [CRKConcreteIDSMessageDidReceiveSubscription receiveMessage:a2 senderAppleID:? senderAddress:?];
   }
 
-  v11 = [(CRKConcreteIDSMessageDidReceiveSubscription *)self handler];
-  v12 = v11;
-  if (v11)
+  handler = [(CRKConcreteIDSMessageDidReceiveSubscription *)self handler];
+  v12 = handler;
+  if (handler)
   {
-    (*(v11 + 16))(v11, v13, v9, v10);
+    (*(handler + 16))(handler, messageCopy, dCopy, addressCopy);
   }
 }
 
 - (void)cancel
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  v2 = NSStringFromSelector(a1);
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  v2 = NSStringFromSelector(self);
   [OUTLINED_FUNCTION_0_0(v2 v3];
 }
 
 - (void)resume
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  v2 = NSStringFromSelector(a1);
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  v2 = NSStringFromSelector(self);
   [OUTLINED_FUNCTION_0_0(v2 v3];
 }
 

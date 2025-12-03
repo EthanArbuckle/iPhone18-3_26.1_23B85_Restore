@@ -1,27 +1,27 @@
 @interface PRXFeatureTableViewCell
-- (PRXFeatureTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (PRXFeatureTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_updateImageViewAnchors;
 - (void)_updateLabelHyphenationFactor;
 - (void)_updateTitleIndent;
 - (void)_updateTitleLeadingAnchor;
 - (void)layoutMarginsDidChange;
-- (void)setFeatureImageSize:(double)a3;
-- (void)setFeatureImageView:(id)a3;
-- (void)setHidingSeparator:(BOOL)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setSwitchControl:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setFeatureImageSize:(double)size;
+- (void)setFeatureImageView:(id)view;
+- (void)setHidingSeparator:(BOOL)separator;
+- (void)setSubtitle:(id)subtitle;
+- (void)setSwitchControl:(id)control;
+- (void)setTitle:(id)title;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PRXFeatureTableViewCell
 
-- (PRXFeatureTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PRXFeatureTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v74[11] = *MEMORY[0x277D85DE8];
   v73.receiver = self;
   v73.super_class = PRXFeatureTableViewCell;
-  v4 = [(PRXFeatureTableViewCell *)&v73 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(PRXFeatureTableViewCell *)&v73 initWithStyle:0 reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:*MEMORY[0x277D769D0]];
@@ -47,8 +47,8 @@
     [(UILabel *)v4->_titleLabel setAdjustsFontForContentSizeCategory:1];
     LODWORD(v11) = 1148846080;
     [(UILabel *)v4->_titleLabel setContentCompressionResistancePriority:1 forAxis:v11];
-    v12 = [(PRXFeatureTableViewCell *)v4 contentView];
-    [v12 addSubview:v4->_titleLabel];
+    contentView = [(PRXFeatureTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_titleLabel];
 
     v13 = objc_alloc_init(MEMORY[0x277D756B8]);
     subtitleLabel = v4->_subtitleLabel;
@@ -57,84 +57,84 @@
     [(UILabel *)v4->_subtitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v4->_subtitleLabel setFont:v69];
     [(UILabel *)v4->_subtitleLabel setNumberOfLines:0];
-    v15 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v4->_subtitleLabel setTextColor:v15];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v4->_subtitleLabel setTextColor:secondaryLabelColor];
 
     [(UILabel *)v4->_subtitleLabel setLineBreakMode:0];
     [(UILabel *)v4->_subtitleLabel setAdjustsFontForContentSizeCategory:1];
     LODWORD(v16) = 1148846080;
     [(UILabel *)v4->_subtitleLabel setContentCompressionResistancePriority:1 forAxis:v16];
-    v17 = [(PRXFeatureTableViewCell *)v4 contentView];
-    [v17 addSubview:v4->_subtitleLabel];
+    contentView2 = [(PRXFeatureTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_subtitleLabel];
 
-    v18 = [(UILabel *)v4->_titleLabel leadingAnchor];
-    v19 = [(PRXFeatureTableViewCell *)v4 contentView];
-    v20 = [v19 layoutMarginsGuide];
-    v21 = [v20 leadingAnchor];
-    v22 = [v18 constraintEqualToAnchor:v21];
+    leadingAnchor = [(UILabel *)v4->_titleLabel leadingAnchor];
+    contentView3 = [(PRXFeatureTableViewCell *)v4 contentView];
+    layoutMarginsGuide = [contentView3 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     titleLabelLeadingAnchor = v4->_titleLabelLeadingAnchor;
     v4->_titleLabelLeadingAnchor = v22;
 
-    v24 = [(UILabel *)v4->_titleLabel trailingAnchor];
-    v25 = [(PRXFeatureTableViewCell *)v4 contentView];
-    v26 = [v25 layoutMarginsGuide];
-    v27 = [v26 trailingAnchor];
-    v28 = [v24 constraintEqualToAnchor:v27];
+    trailingAnchor = [(UILabel *)v4->_titleLabel trailingAnchor];
+    contentView4 = [(PRXFeatureTableViewCell *)v4 contentView];
+    layoutMarginsGuide2 = [contentView4 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     titleLabelTrailingAnchor = v4->_titleLabelTrailingAnchor;
     v4->_titleLabelTrailingAnchor = v28;
 
     v30 = objc_alloc_init(MEMORY[0x277D756D0]);
     v31 = objc_alloc_init(MEMORY[0x277D756D0]);
-    v32 = [(PRXFeatureTableViewCell *)v4 contentView];
-    [v32 addLayoutGuide:v30];
+    contentView5 = [(PRXFeatureTableViewCell *)v4 contentView];
+    [contentView5 addLayoutGuide:v30];
 
-    v33 = [(PRXFeatureTableViewCell *)v4 contentView];
-    [v33 addLayoutGuide:v31];
+    contentView6 = [(PRXFeatureTableViewCell *)v4 contentView];
+    [contentView6 addLayoutGuide:v31];
 
-    v34 = [v30 heightAnchor];
-    v35 = [v34 constraintGreaterThanOrEqualToConstant:15.0];
+    heightAnchor = [v30 heightAnchor];
+    v35 = [heightAnchor constraintGreaterThanOrEqualToConstant:15.0];
     layoutGuideHeightConstraint = v4->_layoutGuideHeightConstraint;
     v4->_layoutGuideHeightConstraint = v35;
 
     v55 = MEMORY[0x277CCAAD0];
-    v68 = [v30 heightAnchor];
-    v67 = [v31 heightAnchor];
-    v66 = [v68 constraintEqualToAnchor:v67];
+    heightAnchor2 = [v30 heightAnchor];
+    heightAnchor3 = [v31 heightAnchor];
+    v66 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
     v74[0] = v66;
     v74[1] = v4->_layoutGuideHeightConstraint;
     v63 = v30;
-    v64 = [v30 topAnchor];
-    v65 = [(PRXFeatureTableViewCell *)v4 contentView];
-    v62 = [v65 topAnchor];
-    [v64 constraintEqualToAnchor:v62];
+    topAnchor = [v30 topAnchor];
+    contentView7 = [(PRXFeatureTableViewCell *)v4 contentView];
+    topAnchor2 = [contentView7 topAnchor];
+    [topAnchor constraintEqualToAnchor:topAnchor2];
     v61 = v60 = v31;
     v74[2] = v61;
-    v58 = [v31 bottomAnchor];
-    v59 = [(PRXFeatureTableViewCell *)v4 contentView];
-    v57 = [v59 bottomAnchor];
-    v56 = [v58 constraintEqualToAnchor:v57];
+    bottomAnchor = [v31 bottomAnchor];
+    contentView8 = [(PRXFeatureTableViewCell *)v4 contentView];
+    bottomAnchor2 = [contentView8 bottomAnchor];
+    v56 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v74[3] = v56;
-    v54 = [(UILabel *)v4->_titleLabel topAnchor];
-    v53 = [v30 bottomAnchor];
-    v52 = [v54 constraintEqualToAnchor:v53];
+    topAnchor3 = [(UILabel *)v4->_titleLabel topAnchor];
+    bottomAnchor3 = [v30 bottomAnchor];
+    v52 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3];
     v74[4] = v52;
-    v51 = [(UILabel *)v4->_subtitleLabel bottomAnchor];
-    v50 = [v31 topAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50];
+    bottomAnchor4 = [(UILabel *)v4->_subtitleLabel bottomAnchor];
+    topAnchor4 = [v31 topAnchor];
+    v49 = [bottomAnchor4 constraintEqualToAnchor:topAnchor4];
     v74[5] = v49;
     v74[6] = v4->_titleLabelLeadingAnchor;
     v74[7] = v4->_titleLabelTrailingAnchor;
-    v48 = [(UILabel *)v4->_subtitleLabel topAnchor];
-    v37 = [(UILabel *)v4->_titleLabel bottomAnchor];
-    v38 = [v48 constraintEqualToAnchor:v37 constant:2.0];
+    topAnchor5 = [(UILabel *)v4->_subtitleLabel topAnchor];
+    bottomAnchor5 = [(UILabel *)v4->_titleLabel bottomAnchor];
+    v38 = [topAnchor5 constraintEqualToAnchor:bottomAnchor5 constant:2.0];
     v74[8] = v38;
-    v39 = [(UILabel *)v4->_subtitleLabel leadingAnchor];
-    v40 = [(UILabel *)v4->_titleLabel leadingAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40];
+    leadingAnchor3 = [(UILabel *)v4->_subtitleLabel leadingAnchor];
+    leadingAnchor4 = [(UILabel *)v4->_titleLabel leadingAnchor];
+    v41 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v74[9] = v41;
-    v42 = [(UILabel *)v4->_subtitleLabel trailingAnchor];
-    v43 = [(UILabel *)v4->_titleLabel trailingAnchor];
-    v44 = [v42 constraintEqualToAnchor:v43];
+    trailingAnchor3 = [(UILabel *)v4->_subtitleLabel trailingAnchor];
+    trailingAnchor4 = [(UILabel *)v4->_titleLabel trailingAnchor];
+    v44 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v74[10] = v44;
     v45 = [MEMORY[0x277CBEA60] arrayWithObjects:v74 count:11];
     [v55 activateConstraints:v45];
@@ -146,11 +146,11 @@
   return v4;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PRXFeatureTableViewCell;
-  [(PRXFeatureTableViewCell *)&v4 traitCollectionDidChange:a3];
+  [(PRXFeatureTableViewCell *)&v4 traitCollectionDidChange:change];
   [(PRXFeatureTableViewCell *)self _updateLabelHyphenationFactor];
   [(PRXFeatureTableViewCell *)self _updateImageViewAnchors];
   [(PRXFeatureTableViewCell *)self _updateTitleIndent];
@@ -163,9 +163,9 @@
   [(PRXFeatureTableViewCell *)&v7 layoutMarginsDidChange];
   [(PRXFeatureTableViewCell *)self directionalLayoutMargins];
   v4 = v3;
-  v5 = [(PRXFeatureTableViewCell *)self featureImageView];
+  featureImageView = [(PRXFeatureTableViewCell *)self featureImageView];
 
-  if (v5)
+  if (featureImageView)
   {
     [(PRXFeatureTableViewCell *)self featureImageSize];
     v4 = v4 + v6 + 16.0;
@@ -175,110 +175,110 @@
   [(PRXFeatureTableViewCell *)self setSeparatorInset:0.0, v4, 0.0];
 }
 
-- (void)setFeatureImageView:(id)a3
+- (void)setFeatureImageView:(id)view
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_featureImageView != v5)
+  viewCopy = view;
+  if (self->_featureImageView != viewCopy)
   {
-    objc_storeStrong(&self->_featureImageView, a3);
+    objc_storeStrong(&self->_featureImageView, view);
     [(UIView *)self->_featureImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v6 = [(PRXFeatureTableViewCell *)self contentView];
-    [v6 addSubview:self->_featureImageView];
+    contentView = [(PRXFeatureTableViewCell *)self contentView];
+    [contentView addSubview:self->_featureImageView];
 
-    v7 = [(UIView *)self->_featureImageView leadingAnchor];
-    v8 = [(PRXFeatureTableViewCell *)self contentView];
-    v9 = [v8 layoutMarginsGuide];
-    v10 = [v9 leadingAnchor];
-    v11 = [v7 constraintEqualToAnchor:v10];
+    leadingAnchor = [(UIView *)self->_featureImageView leadingAnchor];
+    contentView2 = [(PRXFeatureTableViewCell *)self contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v11 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [(PRXFeatureTableViewCell *)self setImageViewLeadingAnchor:v11];
 
     [(PRXFeatureTableViewCell *)self _updateImageViewAnchors];
     [(PRXFeatureTableViewCell *)self _updateTitleLeadingAnchor];
     [(PRXFeatureTableViewCell *)self _updateTitleIndent];
     v12 = MEMORY[0x277CCAAD0];
-    v13 = [(PRXFeatureTableViewCell *)self imageViewLeadingAnchor];
-    v15[0] = v13;
+    imageViewLeadingAnchor = [(PRXFeatureTableViewCell *)self imageViewLeadingAnchor];
+    v15[0] = imageViewLeadingAnchor;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
     [v12 activateConstraints:v14];
   }
 }
 
-- (void)setSwitchControl:(id)a3
+- (void)setSwitchControl:(id)control
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  controlCopy = control;
   switchControl = self->_switchControl;
-  if (switchControl != v5)
+  if (switchControl != controlCopy)
   {
-    v27 = v5;
+    v27 = controlCopy;
     [(UISwitch *)switchControl removeFromSuperview];
-    objc_storeStrong(&self->_switchControl, a3);
+    objc_storeStrong(&self->_switchControl, control);
     [(UISwitch *)self->_switchControl setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v7) = 1148846080;
     [(UISwitch *)self->_switchControl setContentCompressionResistancePriority:0 forAxis:v7];
-    v8 = [(PRXFeatureTableViewCell *)self contentView];
-    [v8 addSubview:self->_switchControl];
+    contentView = [(PRXFeatureTableViewCell *)self contentView];
+    [contentView addSubview:self->_switchControl];
 
     v9 = MEMORY[0x277CCAAD0];
-    v10 = [(PRXFeatureTableViewCell *)self titleLabelTrailingAnchor];
-    v29[0] = v10;
+    titleLabelTrailingAnchor = [(PRXFeatureTableViewCell *)self titleLabelTrailingAnchor];
+    v29[0] = titleLabelTrailingAnchor;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
     [v9 deactivateConstraints:v11];
 
     v22 = MEMORY[0x277CCAAD0];
-    v25 = [(UISwitch *)self->_switchControl leadingAnchor];
-    v26 = [(PRXFeatureTableViewCell *)self titleLabel];
-    v24 = [v26 trailingAnchor];
-    v23 = [v25 constraintGreaterThanOrEqualToAnchor:v24 constant:12.0];
+    leadingAnchor = [(UISwitch *)self->_switchControl leadingAnchor];
+    titleLabel = [(PRXFeatureTableViewCell *)self titleLabel];
+    trailingAnchor = [titleLabel trailingAnchor];
+    v23 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor constant:12.0];
     v28[0] = v23;
-    v12 = [(UISwitch *)self->_switchControl centerYAnchor];
-    v13 = [(PRXFeatureTableViewCell *)self contentView];
-    v14 = [v13 centerYAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    centerYAnchor = [(UISwitch *)self->_switchControl centerYAnchor];
+    contentView2 = [(PRXFeatureTableViewCell *)self contentView];
+    centerYAnchor2 = [contentView2 centerYAnchor];
+    v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v28[1] = v15;
-    v16 = [(UISwitch *)self->_switchControl trailingAnchor];
-    v17 = [(PRXFeatureTableViewCell *)self contentView];
-    v18 = [v17 layoutMarginsGuide];
-    v19 = [v18 trailingAnchor];
-    v20 = [v16 constraintEqualToAnchor:v19 constant:-2.0];
+    trailingAnchor2 = [(UISwitch *)self->_switchControl trailingAnchor];
+    contentView3 = [(PRXFeatureTableViewCell *)self contentView];
+    layoutMarginsGuide = [contentView3 layoutMarginsGuide];
+    trailingAnchor3 = [layoutMarginsGuide trailingAnchor];
+    v20 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-2.0];
     v28[2] = v20;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:3];
     [v22 activateConstraints:v21];
 
-    v5 = v27;
+    controlCopy = v27;
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v4 = MEMORY[0x277CCA898];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithString:v5];
+  titleCopy = title;
+  v6 = [[v4 alloc] initWithString:titleCopy];
 
-  v7 = [(PRXFeatureTableViewCell *)self titleLabel];
-  [v7 setAttributedText:v6];
+  titleLabel = [(PRXFeatureTableViewCell *)self titleLabel];
+  [titleLabel setAttributedText:v6];
 
   [(PRXFeatureTableViewCell *)self _updateTitleIndent];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(PRXFeatureTableViewCell *)self subtitleLabel];
-  [v5 setText:v4];
+  subtitleCopy = subtitle;
+  subtitleLabel = [(PRXFeatureTableViewCell *)self subtitleLabel];
+  [subtitleLabel setText:subtitleCopy];
 }
 
-- (void)setFeatureImageSize:(double)a3
+- (void)setFeatureImageSize:(double)size
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  self->_featureImageSize = a3;
+  self->_featureImageSize = size;
   v5 = MEMORY[0x277CCAAD0];
-  v6 = [(UIView *)self->_featureImageView widthAnchor];
-  v7 = [v6 constraintEqualToConstant:a3];
+  widthAnchor = [(UIView *)self->_featureImageView widthAnchor];
+  v7 = [widthAnchor constraintEqualToConstant:size];
   v11[0] = v7;
-  v8 = [(UIView *)self->_featureImageView heightAnchor];
-  v9 = [v8 constraintEqualToConstant:a3];
+  heightAnchor = [(UIView *)self->_featureImageView heightAnchor];
+  v9 = [heightAnchor constraintEqualToConstant:size];
   v11[1] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:2];
   [v5 activateConstraints:v10];
@@ -286,67 +286,67 @@
   [(PRXFeatureTableViewCell *)self _updateTitleIndent];
 }
 
-- (void)setHidingSeparator:(BOOL)a3
+- (void)setHidingSeparator:(BOOL)separator
 {
-  self->_hidingSeparator = a3;
-  v3 = [(PRXFeatureTableViewCell *)self layoutGuideHeightConstraint];
-  [v3 setConstant:15.0];
+  self->_hidingSeparator = separator;
+  layoutGuideHeightConstraint = [(PRXFeatureTableViewCell *)self layoutGuideHeightConstraint];
+  [layoutGuideHeightConstraint setConstant:15.0];
 }
 
 - (void)_updateLabelHyphenationFactor
 {
-  v3 = [(PRXFeatureTableViewCell *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(PRXFeatureTableViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
-    v6 = [(PRXFeatureTableViewCell *)self titleLabel];
+    titleLabel = [(PRXFeatureTableViewCell *)self titleLabel];
     LODWORD(v7) = 1045220557;
-    [v6 _setHyphenationFactor:v7];
+    [titleLabel _setHyphenationFactor:v7];
 
-    v9 = [(PRXFeatureTableViewCell *)self subtitleLabel];
+    subtitleLabel = [(PRXFeatureTableViewCell *)self subtitleLabel];
     LODWORD(v8) = 1055286886;
-    [v9 _setHyphenationFactor:v8];
+    [subtitleLabel _setHyphenationFactor:v8];
   }
 }
 
 - (void)_updateImageViewAnchors
 {
-  v3 = [(PRXFeatureTableViewCell *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(PRXFeatureTableViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (self->_featureImageView)
   {
-    v6 = [(PRXFeatureTableViewCell *)self imageViewVerticalAnchor];
-    [v6 setActive:0];
+    imageViewVerticalAnchor = [(PRXFeatureTableViewCell *)self imageViewVerticalAnchor];
+    [imageViewVerticalAnchor setActive:0];
 
     if (IsAccessibilityCategory)
     {
-      v7 = [(PRXFeatureTableViewCell *)self titleLabel];
-      v8 = [v7 font];
-      [v8 lineHeight];
+      titleLabel = [(PRXFeatureTableViewCell *)self titleLabel];
+      font = [titleLabel font];
+      [font lineHeight];
       v10 = v9 * 0.5;
 
-      v11 = [(UIView *)self->_featureImageView centerYAnchor];
-      v12 = [(PRXFeatureTableViewCell *)self titleLabel];
-      v13 = [v12 topAnchor];
-      [v11 constraintEqualToAnchor:v13 constant:v10];
+      centerYAnchor = [(UIView *)self->_featureImageView centerYAnchor];
+      titleLabel2 = [(PRXFeatureTableViewCell *)self titleLabel];
+      topAnchor = [titleLabel2 topAnchor];
+      [centerYAnchor constraintEqualToAnchor:topAnchor constant:v10];
     }
 
     else
     {
-      v11 = [(UIView *)self->_featureImageView centerYAnchor];
-      v12 = [(PRXFeatureTableViewCell *)self contentView];
-      v13 = [v12 centerYAnchor];
-      [v11 constraintEqualToAnchor:v13];
+      centerYAnchor = [(UIView *)self->_featureImageView centerYAnchor];
+      titleLabel2 = [(PRXFeatureTableViewCell *)self contentView];
+      topAnchor = [titleLabel2 centerYAnchor];
+      [centerYAnchor constraintEqualToAnchor:topAnchor];
     }
     v14 = ;
     [(PRXFeatureTableViewCell *)self setImageViewVerticalAnchor:v14];
 
-    v15 = [(PRXFeatureTableViewCell *)self imageViewVerticalAnchor];
-    [v15 setActive:1];
+    imageViewVerticalAnchor2 = [(PRXFeatureTableViewCell *)self imageViewVerticalAnchor];
+    [imageViewVerticalAnchor2 setActive:1];
   }
 }
 
@@ -354,43 +354,43 @@
 {
   if (self->_featureImageView)
   {
-    v3 = [(PRXFeatureTableViewCell *)self titleLabelLeadingAnchor];
-    [v3 setActive:0];
+    titleLabelLeadingAnchor = [(PRXFeatureTableViewCell *)self titleLabelLeadingAnchor];
+    [titleLabelLeadingAnchor setActive:0];
 
-    v4 = [(PRXFeatureTableViewCell *)self traitCollection];
-    v5 = [v4 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+    traitCollection = [(PRXFeatureTableViewCell *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-    v7 = [(PRXFeatureTableViewCell *)self titleLabel];
-    v8 = [v7 leadingAnchor];
+    titleLabel = [(PRXFeatureTableViewCell *)self titleLabel];
+    leadingAnchor = [titleLabel leadingAnchor];
     if (IsAccessibilityCategory)
     {
-      v9 = [(PRXFeatureTableViewCell *)self contentView];
-      v10 = [v9 layoutMarginsGuide];
-      v11 = [v10 leadingAnchor];
-      v12 = [v8 constraintEqualToAnchor:v11];
+      contentView = [(PRXFeatureTableViewCell *)self contentView];
+      layoutMarginsGuide = [contentView layoutMarginsGuide];
+      leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+      v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       [(PRXFeatureTableViewCell *)self setTitleLabelLeadingAnchor:v12];
     }
 
     else
     {
-      v9 = [(PRXFeatureTableViewCell *)self featureImageView];
-      v10 = [v9 trailingAnchor];
-      v11 = [v8 constraintEqualToAnchor:v10 constant:16.0];
-      [(PRXFeatureTableViewCell *)self setTitleLabelLeadingAnchor:v11];
+      contentView = [(PRXFeatureTableViewCell *)self featureImageView];
+      layoutMarginsGuide = [contentView trailingAnchor];
+      leadingAnchor2 = [leadingAnchor constraintEqualToAnchor:layoutMarginsGuide constant:16.0];
+      [(PRXFeatureTableViewCell *)self setTitleLabelLeadingAnchor:leadingAnchor2];
     }
 
-    v13 = [(PRXFeatureTableViewCell *)self titleLabelLeadingAnchor];
-    [v13 setActive:1];
+    titleLabelLeadingAnchor2 = [(PRXFeatureTableViewCell *)self titleLabelLeadingAnchor];
+    [titleLabelLeadingAnchor2 setActive:1];
   }
 }
 
 - (void)_updateTitleIndent
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v3 = [(PRXFeatureTableViewCell *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  if (!UIContentSizeCategoryIsAccessibilityCategory(v4))
+  traitCollection = [(PRXFeatureTableViewCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  if (!UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
 
     goto LABEL_5;
@@ -414,13 +414,13 @@ LABEL_5:
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
 
 LABEL_6:
-  v9 = [(PRXFeatureTableViewCell *)self titleLabel];
-  v10 = [v9 attributedText];
-  v11 = [v10 mutableCopy];
+  titleLabel = [(PRXFeatureTableViewCell *)self titleLabel];
+  attributedText = [titleLabel attributedText];
+  v11 = [attributedText mutableCopy];
 
   [v11 setAttributes:v8 range:{0, objc_msgSend(v11, "length")}];
-  v12 = [(PRXFeatureTableViewCell *)self titleLabel];
-  [v12 setAttributedText:v11];
+  titleLabel2 = [(PRXFeatureTableViewCell *)self titleLabel];
+  [titleLabel2 setAttributedText:v11];
 }
 
 @end

@@ -3,11 +3,11 @@
 - (OADTextListStyle)init;
 - (OADTextListStyle)initWithDefaults;
 - (id)description;
-- (void)changeParentTextListStylePreservingEffectiveValues:(id)a3;
+- (void)changeParentTextListStylePreservingEffectiveValues:(id)values;
 - (void)flatten;
-- (void)overrideWithTextStyle:(id)a3;
+- (void)overrideWithTextStyle:(id)style;
 - (void)removeUnnecessaryOverrides;
-- (void)setParentTextListStyle:(id)a3;
+- (void)setParentTextListStyle:(id)style;
 @end
 
 @implementation OADTextListStyle
@@ -26,8 +26,8 @@
     v5 = 10;
     do
     {
-      v6 = [[OADParagraphProperties alloc] initWithDefaults];
-      [(NSMutableArray *)v2->mParagraphProperties addObject:v6];
+      initWithDefaults = [[OADParagraphProperties alloc] initWithDefaults];
+      [(NSMutableArray *)v2->mParagraphProperties addObject:initWithDefaults];
 
       --v5;
     }
@@ -78,9 +78,9 @@
   v2 = +[OADTextListStyle defaultObject]::defaultObject;
   if (!+[OADTextListStyle defaultObject]::defaultObject)
   {
-    v3 = [[OADTextListStyle alloc] initWithDefaults];
+    initWithDefaults = [[OADTextListStyle alloc] initWithDefaults];
     v4 = +[OADTextListStyle defaultObject]::defaultObject;
-    +[OADTextListStyle defaultObject]::defaultObject = v3;
+    +[OADTextListStyle defaultObject]::defaultObject = initWithDefaults;
 
     v2 = +[OADTextListStyle defaultObject]::defaultObject;
   }
@@ -88,32 +88,32 @@
   return v2;
 }
 
-- (void)setParentTextListStyle:(id)a3
+- (void)setParentTextListStyle:(id)style
 {
-  v9 = a3;
-  v4 = [(OADTextListStyle *)self defaultProperties];
-  v5 = [v9 defaultProperties];
-  [v4 setParent:v5];
+  styleCopy = style;
+  defaultProperties = [(OADTextListStyle *)self defaultProperties];
+  defaultProperties2 = [styleCopy defaultProperties];
+  [defaultProperties setParent:defaultProperties2];
 
   for (i = 0; i != 9; ++i)
   {
     v7 = [(OADTextListStyle *)self propertiesForListLevel:i];
-    v8 = [v9 propertiesForListLevel:i];
+    v8 = [styleCopy propertiesForListLevel:i];
     [v7 setParent:v8];
   }
 }
 
-- (void)changeParentTextListStylePreservingEffectiveValues:(id)a3
+- (void)changeParentTextListStylePreservingEffectiveValues:(id)values
 {
-  v9 = a3;
-  v4 = [(OADTextListStyle *)self defaultProperties];
-  v5 = [v9 defaultProperties];
-  [v4 changeParentPreservingEffectiveValues:v5];
+  valuesCopy = values;
+  defaultProperties = [(OADTextListStyle *)self defaultProperties];
+  defaultProperties2 = [valuesCopy defaultProperties];
+  [defaultProperties changeParentPreservingEffectiveValues:defaultProperties2];
 
   for (i = 0; i != 9; ++i)
   {
     v7 = [(OADTextListStyle *)self propertiesForListLevel:i];
-    v8 = [v9 propertiesForListLevel:i];
+    v8 = [valuesCopy propertiesForListLevel:i];
     [v7 changeParentPreservingEffectiveValues:v8];
   }
 }
@@ -127,13 +127,13 @@
   }
 }
 
-- (void)overrideWithTextStyle:(id)a3
+- (void)overrideWithTextStyle:(id)style
 {
-  v7 = a3;
+  styleCopy = style;
   for (i = 0; i != 9; ++i)
   {
     v5 = [(OADTextListStyle *)self propertiesForListLevel:i];
-    v6 = [v7 propertiesForListLevel:i];
+    v6 = [styleCopy propertiesForListLevel:i];
     [v5 overrideWithProperties:v6];
   }
 }

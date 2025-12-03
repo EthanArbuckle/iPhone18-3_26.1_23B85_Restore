@@ -1,20 +1,20 @@
 @interface HKSampleTypeChange
-- (BOOL)isEqual:(id)a3;
-- (HKSampleTypeChange)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKSampleTypeChange)initWithCoder:(id)coder;
 - (NSDateInterval)dateInterval;
 - (NSString)hk_redactedDescription;
-- (id)_initWithSampleType:(id)a3 startTime:(double)a4 endTime:(double)a5 hasUnfrozenSeries:(BOOL)a6 queryStrategy:(int64_t)a7;
+- (id)_initWithSampleType:(id)type startTime:(double)time endTime:(double)endTime hasUnfrozenSeries:(BOOL)series queryStrategy:(int64_t)strategy;
 - (id)description;
-- (void)_extendDateIntervalWithSample:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_extendDateIntervalWithSample:(id)sample;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSampleTypeChange
 
-- (id)_initWithSampleType:(id)a3 startTime:(double)a4 endTime:(double)a5 hasUnfrozenSeries:(BOOL)a6 queryStrategy:(int64_t)a7
+- (id)_initWithSampleType:(id)type startTime:(double)time endTime:(double)endTime hasUnfrozenSeries:(BOOL)series queryStrategy:(int64_t)strategy
 {
-  v13 = a3;
-  if (a4 > a5)
+  typeCopy = type;
+  if (time > endTime)
   {
     [HKSampleTypeChange _initWithSampleType:a2 startTime:self endTime:? hasUnfrozenSeries:? queryStrategy:?];
   }
@@ -24,14 +24,14 @@
   v14 = [(HKSampleTypeChange *)&v18 init];
   if (v14)
   {
-    v15 = [v13 copy];
+    v15 = [typeCopy copy];
     sampleType = v14->_sampleType;
     v14->_sampleType = v15;
 
-    v14->_startTime = a4;
-    v14->_endTime = a5;
-    v14->_hasUnfrozenSeries = a6;
-    v14->_queryStrategy = a7;
+    v14->_startTime = time;
+    v14->_endTime = endTime;
+    v14->_hasUnfrozenSeries = series;
+    v14->_queryStrategy = strategy;
   }
 
   return v14;
@@ -54,11 +54,11 @@
   return v3;
 }
 
-- (void)_extendDateIntervalWithSample:(id)a3
+- (void)_extendDateIntervalWithSample:(id)sample
 {
-  v10 = a3;
+  sampleCopy = sample;
   startTime = self->_startTime;
-  [v10 _startTimestamp];
+  [sampleCopy _startTimestamp];
   if (startTime >= v5)
   {
     v6 = v5;
@@ -76,7 +76,7 @@
 
   self->_startTime = v5;
   endTime = self->_endTime;
-  [v10 _endTimestamp];
+  [sampleCopy _endTimestamp];
   if (endTime >= v8 && endTime != -1.79769313e308)
   {
     v8 = endTime;
@@ -89,12 +89,12 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(HKSampleTypeChange *)self dateInterval];
-  v6 = v5;
+  dateInterval = [(HKSampleTypeChange *)self dateInterval];
+  v6 = dateInterval;
   v7 = &stru_1F05FF230;
-  if (v5)
+  if (dateInterval)
   {
-    v7 = v5;
+    v7 = dateInterval;
   }
 
   v8 = [v3 stringWithFormat:@"<%@:%p %@>", v4, self, v7];
@@ -107,12 +107,12 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   sampleType = self->_sampleType;
-  v6 = [(HKSampleTypeChange *)self dateInterval];
-  v7 = v6;
+  dateInterval = [(HKSampleTypeChange *)self dateInterval];
+  v7 = dateInterval;
   v8 = &stru_1F05FF230;
-  if (v6)
+  if (dateInterval)
   {
-    v8 = v6;
+    v8 = dateInterval;
   }
 
   v9 = [v3 stringWithFormat:@"<%@:%p %@ %@>", v4, self, sampleType, v8];
@@ -120,47 +120,47 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ((sampleType = self->_sampleType, v7 = v5->_sampleType, sampleType == v7) || v7 && [(HKObjectType *)sampleType isEqual:?]) && self->_startTime == v5->_startTime && self->_endTime == v5->_endTime && self->_queryStrategy == v5->_queryStrategy;
+    v8 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && ((sampleType = self->_sampleType, v7 = v5->_sampleType, sampleType == v7) || v7 && [(HKObjectType *)sampleType isEqual:?]) && self->_startTime == v5->_startTime && self->_endTime == v5->_endTime && self->_queryStrategy == v5->_queryStrategy;
   }
 
   return v8;
 }
 
-- (HKSampleTypeChange)initWithCoder:(id)a3
+- (HKSampleTypeChange)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sampleType"];
-  [v4 decodeDoubleForKey:@"start"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sampleType"];
+  [coderCopy decodeDoubleForKey:@"start"];
   v7 = v6;
-  [v4 decodeDoubleForKey:@"end"];
+  [coderCopy decodeDoubleForKey:@"end"];
   v9 = v8;
-  v10 = [v4 decodeBoolForKey:@"unfrozen"];
-  v11 = [v4 decodeIntegerForKey:@"strategy"];
+  v10 = [coderCopy decodeBoolForKey:@"unfrozen"];
+  v11 = [coderCopy decodeIntegerForKey:@"strategy"];
 
   v12 = [(HKSampleTypeChange *)self _initWithSampleType:v5 startTime:v10 endTime:v11 hasUnfrozenSeries:v7 queryStrategy:v9];
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sampleType = self->_sampleType;
-  v5 = a3;
-  [v5 encodeObject:sampleType forKey:@"sampleType"];
-  [v5 encodeDouble:@"start" forKey:self->_startTime];
-  [v5 encodeDouble:@"end" forKey:self->_endTime];
-  [v5 encodeBool:self->_hasUnfrozenSeries forKey:@"unfrozen"];
-  [v5 encodeInteger:self->_queryStrategy forKey:@"strategy"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sampleType forKey:@"sampleType"];
+  [coderCopy encodeDouble:@"start" forKey:self->_startTime];
+  [coderCopy encodeDouble:@"end" forKey:self->_endTime];
+  [coderCopy encodeBool:self->_hasUnfrozenSeries forKey:@"unfrozen"];
+  [coderCopy encodeInteger:self->_queryStrategy forKey:@"strategy"];
 }
 
 - (void)_initWithSampleType:(uint64_t)a1 startTime:(uint64_t)a2 endTime:hasUnfrozenSeries:queryStrategy:.cold.1(uint64_t a1, uint64_t a2)

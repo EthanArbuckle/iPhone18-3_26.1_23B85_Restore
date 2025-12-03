@@ -1,12 +1,12 @@
 @interface STStorageDataService
-- (void)storageInfoDict:(id)a3;
+- (void)storageInfoDict:(id)dict;
 @end
 
 @implementation STStorageDataService
 
-- (void)storageInfoDict:(id)a3
+- (void)storageInfoDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   v4 = sub_100000D18();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -15,10 +15,10 @@
   }
 
   v5 = objc_alloc_init(STStorageDataInterface);
-  v6 = [v5 storageInfoDict];
-  if (v3)
+  storageInfoDict = [v5 storageInfoDict];
+  if (dictCopy)
   {
-    v3[2](v3, v6);
+    dictCopy[2](dictCopy, storageInfoDict);
   }
 }
 

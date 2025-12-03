@@ -1,35 +1,35 @@
 @interface ASDLevelControl
-- (BOOL)getProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 qualifierData:(const void *)a5 dataSize:(unsigned int *)a6 andData:(void *)a7 forClient:(int)a8;
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3;
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3;
-- (float)_decibelFromScalar:(float)a3;
-- (float)_scalarFromDecibel:(float)a3;
-- (float)decibelFromScalar:(float)a3;
+- (BOOL)getProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size qualifierData:(const void *)data dataSize:(unsigned int *)dataSize andData:(void *)andData forClient:(int)client;
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property;
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable;
+- (float)_decibelFromScalar:(float)scalar;
+- (float)_scalarFromDecibel:(float)decibel;
+- (float)decibelFromScalar:(float)scalar;
 - (float)decibelValue;
 - (float)maximumDecibelValue;
 - (float)minimumDecibelValue;
-- (float)scalarFromDecibel:(float)a3;
+- (float)scalarFromDecibel:(float)decibel;
 - (float)scalarValue;
 - (id)driverClassName;
-- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 andQualifierData:(const void *)a5;
-- (void)setDecibelValue:(float)a3;
-- (void)setMaximumDecibelValue:(float)a3;
-- (void)setMinimumDecibelValue:(float)a3;
-- (void)setScalarValue:(float)a3;
+- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size andQualifierData:(const void *)data;
+- (void)setDecibelValue:(float)value;
+- (void)setMaximumDecibelValue:(float)value;
+- (void)setMinimumDecibelValue:(float)value;
+- (void)setScalarValue:(float)value;
 @end
 
 @implementation ASDLevelControl
 
-- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)a3
+- (BOOL)hasProperty:(const AudioObjectPropertyAddress *)property
 {
-  if (!a3)
+  if (!property)
   {
     return 0;
   }
 
-  mSelector = a3->mSelector;
+  mSelector = property->mSelector;
   v6 = 1;
-  if ((a3->mSelector - 1818453106 > 4 || ((1 << (a3->mSelector - 114)) & 0x13) == 0) && mSelector != 1818456932 && mSelector != 1818456950)
+  if ((property->mSelector - 1818453106 > 4 || ((1 << (property->mSelector - 114)) & 0x13) == 0) && mSelector != 1818456932 && mSelector != 1818456950)
   {
     v12 = v3;
     v13 = v4;
@@ -41,16 +41,16 @@
   return v6;
 }
 
-- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 andQualifierData:(const void *)a5
+- (unsigned)dataSizeForProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size andQualifierData:(const void *)data
 {
-  if (!a3)
+  if (!property)
   {
     return 0;
   }
 
-  mSelector = a3->mSelector;
+  mSelector = property->mSelector;
   result = 4;
-  if (a3->mSelector <= 1818453109)
+  if (property->mSelector <= 1818453109)
   {
     if (mSelector == 1818453106)
     {
@@ -76,17 +76,17 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)getProperty:(const AudioObjectPropertyAddress *)a3 withQualifierSize:(unsigned int)a4 qualifierData:(const void *)a5 dataSize:(unsigned int *)a6 andData:(void *)a7 forClient:(int)a8
+- (BOOL)getProperty:(const AudioObjectPropertyAddress *)property withQualifierSize:(unsigned int)size qualifierData:(const void *)data dataSize:(unsigned int *)dataSize andData:(void *)andData forClient:(int)client
 {
   v9 = 0;
-  if (a3 && a6 && a7)
+  if (property && dataSize && andData)
   {
-    mSelector = a3->mSelector;
-    if (a3->mSelector <= 1818453109)
+    mSelector = property->mSelector;
+    if (property->mSelector <= 1818453109)
     {
       if (mSelector == 1818453106)
       {
-        if (*a6 >= 0x10)
+        if (*dataSize >= 0x10)
         {
           valueQueue = self->_valueQueue;
           block[0] = MEMORY[0x277D85DD0];
@@ -94,7 +94,7 @@ LABEL_15:
           block[2] = __90__ASDLevelControl_getProperty_withQualifierSize_qualifierData_dataSize_andData_forClient___block_invoke;
           block[3] = &unk_278CE3F90;
           block[4] = self;
-          block[5] = a7;
+          block[5] = andData;
           dispatch_sync(valueQueue, block);
           v14 = 16;
           goto LABEL_19;
@@ -105,9 +105,9 @@ LABEL_15:
 
       if (mSelector == 1818453107)
       {
-        if (*a6 >= 4)
+        if (*dataSize >= 4)
         {
-          LODWORD(v8) = *a7;
+          LODWORD(v8) = *andData;
           [(ASDLevelControl *)self scalarFromDecibel:v8];
           goto LABEL_18;
         }
@@ -121,7 +121,7 @@ LABEL_15:
       switch(mSelector)
       {
         case 0x6C636476u:
-          if (*a6 >= 4)
+          if (*dataSize >= 4)
           {
             [(ASDLevelControl *)self decibelValue];
             goto LABEL_18;
@@ -129,23 +129,23 @@ LABEL_15:
 
           return 0;
         case 0x6C637364u:
-          if (*a6 >= 4)
+          if (*dataSize >= 4)
           {
-            LODWORD(v8) = *a7;
+            LODWORD(v8) = *andData;
             [(ASDLevelControl *)self decibelFromScalar:v8];
             goto LABEL_18;
           }
 
           return 0;
         case 0x6C637376u:
-          if (*a6 >= 4)
+          if (*dataSize >= 4)
           {
             [(ASDLevelControl *)self scalarValue];
 LABEL_18:
-            *a7 = v13;
+            *andData = v13;
             v14 = 4;
 LABEL_19:
-            *a6 = v14;
+            *dataSize = v14;
             return 1;
           }
 
@@ -170,16 +170,16 @@ double __90__ASDLevelControl_getProperty_withQualifierSize_qualifierData_dataSiz
   return result;
 }
 
-- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)a3
+- (BOOL)isPropertySettable:(const AudioObjectPropertyAddress *)settable
 {
   v5 = 0;
-  if (!a3)
+  if (!settable)
   {
     return v5;
   }
 
-  mSelector = a3->mSelector;
-  if (a3->mSelector <= 1818456931)
+  mSelector = settable->mSelector;
+  if (settable->mSelector <= 1818456931)
   {
     if (mSelector - 1818453106 >= 2)
     {
@@ -209,34 +209,34 @@ LABEL_7:
   return [(ASDLevelControl *)self isSettable];
 }
 
-- (float)_scalarFromDecibel:(float)a3
+- (float)_scalarFromDecibel:(float)decibel
 {
   minimumDecibelValue = self->_minimumDecibelValue;
   maximumDecibelValue = self->_maximumDecibelValue;
-  v5 = minimumDecibelValue;
-  if (minimumDecibelValue <= a3)
+  decibelCopy = minimumDecibelValue;
+  if (minimumDecibelValue <= decibel)
   {
-    v5 = a3;
-    if (maximumDecibelValue < a3)
+    decibelCopy = decibel;
+    if (maximumDecibelValue < decibel)
     {
-      v5 = self->_maximumDecibelValue;
+      decibelCopy = self->_maximumDecibelValue;
     }
   }
 
-  return (v5 - minimumDecibelValue) / (maximumDecibelValue - minimumDecibelValue);
+  return (decibelCopy - minimumDecibelValue) / (maximumDecibelValue - minimumDecibelValue);
 }
 
-- (float)_decibelFromScalar:(float)a3
+- (float)_decibelFromScalar:(float)scalar
 {
-  v3 = 1.0;
-  if (a3 <= 1.0)
+  scalarCopy = 1.0;
+  if (scalar <= 1.0)
   {
-    v3 = a3;
+    scalarCopy = scalar;
   }
 
-  if (a3 >= 0.0)
+  if (scalar >= 0.0)
   {
-    v4 = v3;
+    v4 = scalarCopy;
   }
 
   else
@@ -247,7 +247,7 @@ LABEL_7:
   return self->_minimumDecibelValue + (v4 * (self->_maximumDecibelValue - self->_minimumDecibelValue));
 }
 
-- (float)scalarFromDecibel:(float)a3
+- (float)scalarFromDecibel:(float)decibel
 {
   v8 = 0;
   v9 = &v8;
@@ -260,7 +260,7 @@ LABEL_7:
   block[3] = &unk_278CE4280;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  decibelCopy = decibel;
   dispatch_sync(valueQueue, block);
   v4 = v9[6];
   _Block_object_dispose(&v8, 8);
@@ -275,7 +275,7 @@ uint64_t __37__ASDLevelControl_scalarFromDecibel___block_invoke(uint64_t a1, dou
   return result;
 }
 
-- (float)decibelFromScalar:(float)a3
+- (float)decibelFromScalar:(float)scalar
 {
   v8 = 0;
   v9 = &v8;
@@ -288,7 +288,7 @@ uint64_t __37__ASDLevelControl_scalarFromDecibel___block_invoke(uint64_t a1, dou
   block[3] = &unk_278CE4280;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  scalarCopy = scalar;
   dispatch_sync(valueQueue, block);
   v4 = v9[6];
   _Block_object_dispose(&v8, 8);
@@ -303,7 +303,7 @@ uint64_t __37__ASDLevelControl_decibelFromScalar___block_invoke(uint64_t a1, dou
   return result;
 }
 
-- (void)setMaximumDecibelValue:(float)a3
+- (void)setMaximumDecibelValue:(float)value
 {
   v10 = 0;
   v11 = &v10;
@@ -314,7 +314,7 @@ uint64_t __37__ASDLevelControl_decibelFromScalar___block_invoke(uint64_t a1, dou
   block[1] = 3221225472;
   block[2] = __42__ASDLevelControl_setMaximumDecibelValue___block_invoke;
   block[3] = &unk_278CE4230;
-  v9 = a3;
+  valueCopy = value;
   block[4] = self;
   block[5] = &v10;
   dispatch_sync(valueQueue, block);
@@ -322,8 +322,8 @@ uint64_t __37__ASDLevelControl_decibelFromScalar___block_invoke(uint64_t a1, dou
   {
     v7 = 0;
     v6 = 0x676C6F626C636472;
-    v5 = [(ASDObject *)self propertyChangedDelegate];
-    [v5 changedProperty:&v6 forObject:self];
+    propertyChangedDelegate = [(ASDObject *)self propertyChangedDelegate];
+    [propertyChangedDelegate changedProperty:&v6 forObject:self];
   }
 
   _Block_object_dispose(&v10, 8);
@@ -368,7 +368,7 @@ float __38__ASDLevelControl_maximumDecibelValue__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setMinimumDecibelValue:(float)a3
+- (void)setMinimumDecibelValue:(float)value
 {
   v10 = 0;
   v11 = &v10;
@@ -379,7 +379,7 @@ float __38__ASDLevelControl_maximumDecibelValue__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __42__ASDLevelControl_setMinimumDecibelValue___block_invoke;
   block[3] = &unk_278CE4230;
-  v9 = a3;
+  valueCopy = value;
   block[4] = self;
   block[5] = &v10;
   dispatch_sync(valueQueue, block);
@@ -387,8 +387,8 @@ float __38__ASDLevelControl_maximumDecibelValue__block_invoke(uint64_t a1)
   {
     v7 = 0;
     v6 = 0x676C6F626C636472;
-    v5 = [(ASDObject *)self propertyChangedDelegate];
-    [v5 changedProperty:&v6 forObject:self];
+    propertyChangedDelegate = [(ASDObject *)self propertyChangedDelegate];
+    [propertyChangedDelegate changedProperty:&v6 forObject:self];
   }
 
   _Block_object_dispose(&v10, 8);
@@ -433,7 +433,7 @@ float __38__ASDLevelControl_minimumDecibelValue__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setDecibelValue:(float)a3
+- (void)setDecibelValue:(float)value
 {
   v11 = 0;
   v12 = &v11;
@@ -444,7 +444,7 @@ float __38__ASDLevelControl_minimumDecibelValue__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __35__ASDLevelControl_setDecibelValue___block_invoke;
   block[3] = &unk_278CE4230;
-  v10 = a3;
+  valueCopy = value;
   block[4] = self;
   block[5] = &v11;
   dispatch_sync(valueQueue, block);
@@ -452,12 +452,12 @@ float __38__ASDLevelControl_minimumDecibelValue__block_invoke(uint64_t a1)
   {
     v8 = 0;
     v7 = 0x676C6F626C636476;
-    v5 = [(ASDObject *)self propertyChangedDelegate];
-    [v5 changedProperty:&v7 forObject:self];
+    propertyChangedDelegate = [(ASDObject *)self propertyChangedDelegate];
+    [propertyChangedDelegate changedProperty:&v7 forObject:self];
 
     LODWORD(v7) = 1818456950;
-    v6 = [(ASDObject *)self propertyChangedDelegate];
-    [v6 changedProperty:&v7 forObject:self];
+    propertyChangedDelegate2 = [(ASDObject *)self propertyChangedDelegate];
+    [propertyChangedDelegate2 changedProperty:&v7 forObject:self];
   }
 
   _Block_object_dispose(&v11, 8);
@@ -502,7 +502,7 @@ float __31__ASDLevelControl_decibelValue__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setScalarValue:(float)a3
+- (void)setScalarValue:(float)value
 {
   [(ASDLevelControl *)self decibelFromScalar:?];
 
@@ -519,14 +519,14 @@ float __31__ASDLevelControl_decibelValue__block_invoke(uint64_t a1)
 
 - (id)driverClassName
 {
-  v2 = [(ASDControl *)self objectClass];
+  objectClass = [(ASDControl *)self objectClass];
   v3 = @"AudioLevelControl";
-  if (v2 == 1986817381)
+  if (objectClass == 1986817381)
   {
     v3 = @"AudioVolumeControl";
   }
 
-  if (v2 == 1937072758)
+  if (objectClass == 1937072758)
   {
     return @"AudioLFEVolumeControl";
   }

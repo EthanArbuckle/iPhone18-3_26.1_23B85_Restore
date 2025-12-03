@@ -1,27 +1,27 @@
 @interface VIFaissIndex
-- (VIFaissIndex)initWithContentsOfFile:(id)a3 error:(id *)a4;
-- (VIFaissIndex)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (id)computeResidualForEmbedding:(id)a3 identifier:(int64_t)a4 error:(id *)a5;
-- (id)reconstructEmbeddingForIdentifier:(int64_t)a3;
-- (id)searchWithQuery:(id)a3 numberOfNearestNeighbors:(int64_t)a4 options:(unint64_t)a5 error:(id *)a6;
-- (void)getFaissError:(id *)a3 forCode:(int64_t)a4 userInfo:(id)a5;
-- (void)getFaissError:(id *)a3 forFaissException:(const void *)a4;
+- (VIFaissIndex)initWithContentsOfFile:(id)file error:(id *)error;
+- (VIFaissIndex)initWithContentsOfURL:(id)l error:(id *)error;
+- (id)computeResidualForEmbedding:(id)embedding identifier:(int64_t)identifier error:(id *)error;
+- (id)reconstructEmbeddingForIdentifier:(int64_t)identifier;
+- (id)searchWithQuery:(id)query numberOfNearestNeighbors:(int64_t)neighbors options:(unint64_t)options error:(id *)error;
+- (void)getFaissError:(id *)error forCode:(int64_t)code userInfo:(id)info;
+- (void)getFaissError:(id *)error forFaissException:(const void *)exception;
 @end
 
 @implementation VIFaissIndex
 
-- (VIFaissIndex)initWithContentsOfFile:(id)a3 error:(id *)a4
+- (VIFaissIndex)initWithContentsOfFile:(id)file error:(id *)error
 {
-  v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:a3];
-  v7 = [(VIFaissIndex *)self initWithContentsOfURL:v6 error:a4];
+  v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:file];
+  v7 = [(VIFaissIndex *)self initWithContentsOfURL:v6 error:error];
 
   return v7;
 }
 
-- (VIFaissIndex)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (VIFaissIndex)initWithContentsOfURL:(id)l error:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = VIFaissIndex;
   v7 = [(VIFaissIndex *)&v15 init];
@@ -30,28 +30,28 @@
     goto LABEL_8;
   }
 
-  if (([v6 isFileURL] & 1) == 0)
+  if (([lCopy isFileURL] & 1) == 0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_9;
     }
 
     v16 = *MEMORY[0x1E696A998];
-    v17[0] = v6;
+    v17[0] = lCopy;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:262 userInfo:v13];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:262 userInfo:v13];
 
 LABEL_8:
-    a4 = 0;
+    error = 0;
     goto LABEL_9;
   }
 
-  v8 = [v6 path];
-  v9 = v8;
-  v10 = [v8 fileSystemRepresentation];
+  path = [lCopy path];
+  v9 = path;
+  fileSystemRepresentation = [path fileSystemRepresentation];
 
-  index = faiss::read_index(v10, 0);
+  index = faiss::read_index(fileSystemRepresentation, 0);
   ptr = v7->_index.__ptr_;
   v7->_index.__ptr_ = index;
   if (ptr)
@@ -59,27 +59,27 @@ LABEL_8:
     (*(*ptr + 8))(ptr);
   }
 
-  a4 = v7;
+  error = v7;
 LABEL_9:
 
-  return a4;
+  return error;
 }
 
-- (id)searchWithQuery:(id)a3 numberOfNearestNeighbors:(int64_t)a4 options:(unint64_t)a5 error:(id *)a6
+- (id)searchWithQuery:(id)query numberOfNearestNeighbors:(int64_t)neighbors options:(unint64_t)options error:(id *)error
 {
-  v7 = a5;
-  v40 = a3;
-  if ([v40 dataType] != 65568)
+  optionsCopy = options;
+  queryCopy = query;
+  if ([queryCopy dataType] != 65568)
   {
     v17 = 5;
 LABEL_8:
-    [(VIFaissIndex *)self getFaissError:a6 forCode:v17];
+    [(VIFaissIndex *)self getFaissError:error forCode:v17];
     v18 = 0;
     goto LABEL_40;
   }
 
-  v9 = [v40 shape];
-  v10 = [v9 count];
+  shape = [queryCopy shape];
+  v10 = [shape count];
 
   if (v10 != 2)
   {
@@ -87,48 +87,48 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v38 = [v40 dataPointer];
+  dataPointer = [queryCopy dataPointer];
   v47 = objc_opt_new();
-  v11 = [v40 shape];
-  v12 = [v11 objectAtIndexedSubscript:0];
-  v13 = [v12 integerValue];
+  shape2 = [queryCopy shape];
+  v12 = [shape2 objectAtIndexedSubscript:0];
+  integerValue = [v12 integerValue];
 
-  v14 = [v40 shape];
-  v15 = [v14 objectAtIndexedSubscript:1];
-  v46 = [v15 integerValue];
+  shape3 = [queryCopy shape];
+  v15 = [shape3 objectAtIndexedSubscript:1];
+  integerValue2 = [v15 integerValue];
 
-  if (v46 == [(VIFaissIndex *)self embeddingLength])
+  if (integerValue2 == [(VIFaissIndex *)self embeddingLength])
   {
     v52[0] = 0;
-    std::vector<long long>::vector[abi:ne200100](v53, v13 * a4);
+    std::vector<long long>::vector[abi:ne200100](v53, integerValue * neighbors);
     LODWORD(v51[0]) = 0;
-    std::vector<float>::vector[abi:ne200100](v52, v13 * a4);
+    std::vector<float>::vector[abi:ne200100](v52, integerValue * neighbors);
     LODWORD(__p) = 0;
-    std::vector<float>::vector[abi:ne200100](v51, v46 * v13 * a4);
-    std::vector<float>::vector[abi:ne200100](&__p, v46);
+    std::vector<float>::vector[abi:ne200100](v51, integerValue2 * integerValue * neighbors);
+    std::vector<float>::vector[abi:ne200100](&__p, integerValue2);
     ptr = self->_index.__ptr_;
-    v45 = self;
-    if (v7)
+    selfCopy = self;
+    if (optionsCopy)
     {
-      (*(*ptr + 96))(ptr, v13, v38, a4, v52[0], v53[0], v51[0]);
+      (*(*ptr + 96))(ptr, integerValue, dataPointer, neighbors, v52[0], v53[0], v51[0]);
     }
 
     else
     {
-      (*(*ptr + 40))(ptr, v13, v38, a4, v52[0], v53[0]);
+      (*(*ptr + 40))(ptr, integerValue, dataPointer, neighbors, v52[0], v53[0]);
     }
 
-    if (v13 >= 1)
+    if (integerValue >= 1)
     {
       v41 = 0;
       v42 = 0;
-      v39 = v13;
-      v44 = v7;
-      while (a4 < 1)
+      v39 = integerValue;
+      v44 = optionsCopy;
+      while (neighbors < 1)
       {
 LABEL_30:
         ++v41;
-        v42 += 4 * v46 * a4;
+        v42 += 4 * integerValue2 * neighbors;
         if (v41 == v39)
         {
           goto LABEL_31;
@@ -137,8 +137,8 @@ LABEL_30:
 
       v19 = 0;
       v20 = v42;
-      v21 = v41 * a4;
-      v43 = v38 + 4 * v41 * v46;
+      v21 = v41 * neighbors;
+      v43 = dataPointer + 4 * v41 * integerValue2;
       while (1)
       {
         v22 = *(v52[0] + v19 + v21);
@@ -151,17 +151,17 @@ LABEL_30:
 
         else
         {
-          if (v7)
+          if (optionsCopy)
           {
-            v24 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v46];
-            v30 = v46;
+            v24 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:integerValue2];
+            v30 = integerValue2;
             v31 = v20;
-            if (v46 >= 1)
+            if (integerValue2 >= 1)
             {
               do
               {
                 LODWORD(v29) = *(v51[0] + v31);
-                v32 = [MEMORY[0x1E696AD98] numberWithFloat:{v29, v38}];
+                v32 = [MEMORY[0x1E696AD98] numberWithFloat:{v29, dataPointer}];
                 [v24 addObject:v32];
 
                 v31 += 4;
@@ -171,13 +171,13 @@ LABEL_30:
               while (v30);
             }
 
-            v7 = v44;
-            self = v45;
+            optionsCopy = v44;
+            self = selfCopy;
             if ((v44 & 2) != 0)
             {
 LABEL_26:
               (*(*self->_index.__ptr_ + 104))(self->_index.__ptr_, v43, __p, v23);
-              v25 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v46];
+              v25 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:integerValue2];
               v34 = __p;
               if (v50 != __p)
               {
@@ -185,7 +185,7 @@ LABEL_26:
                 do
                 {
                   LODWORD(v33) = v34[v35];
-                  v36 = [MEMORY[0x1E696AD98] numberWithFloat:{v33, v38}];
+                  v36 = [MEMORY[0x1E696AD98] numberWithFloat:{v33, dataPointer}];
                   [v25 addObject:v36];
 
                   ++v35;
@@ -193,8 +193,8 @@ LABEL_26:
                 }
 
                 while (v35 < (v50 - __p) >> 2);
-                v7 = v44;
-                self = v45;
+                optionsCopy = v44;
+                self = selfCopy;
               }
 
               goto LABEL_18;
@@ -204,7 +204,7 @@ LABEL_26:
           else
           {
             v24 = 0;
-            if ((v7 & 2) != 0)
+            if ((optionsCopy & 2) != 0)
             {
               goto LABEL_26;
             }
@@ -220,8 +220,8 @@ LABEL_18:
         [v47 addObject:v28];
 
         ++v19;
-        v20 += 4 * v46;
-        if (v19 == a4)
+        v20 += 4 * integerValue2;
+        if (v19 == neighbors)
         {
           goto LABEL_30;
         }
@@ -257,7 +257,7 @@ LABEL_31:
 
   else
   {
-    [(VIFaissIndex *)self getFaissError:a6 forCode:3];
+    [(VIFaissIndex *)self getFaissError:error forCode:3];
     v18 = 0;
   }
 
@@ -266,12 +266,12 @@ LABEL_40:
   return v18;
 }
 
-- (id)reconstructEmbeddingForIdentifier:(int64_t)a3
+- (id)reconstructEmbeddingForIdentifier:(int64_t)identifier
 {
-  v5 = [(VIFaissIndex *)self embeddingLength];
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v5];
-  std::vector<float>::vector[abi:ne200100](&__p, v5);
-  (*(*self->_index.__ptr_ + 80))(self->_index.__ptr_, a3, __p);
+  embeddingLength = [(VIFaissIndex *)self embeddingLength];
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:embeddingLength];
+  std::vector<float>::vector[abi:ne200100](&__p, embeddingLength);
+  (*(*self->_index.__ptr_ + 80))(self->_index.__ptr_, identifier, __p);
   v8 = __p;
   if (v13 != __p)
   {
@@ -298,21 +298,21 @@ LABEL_40:
   return v6;
 }
 
-- (id)computeResidualForEmbedding:(id)a3 identifier:(int64_t)a4 error:(id *)a5
+- (id)computeResidualForEmbedding:(id)embedding identifier:(int64_t)identifier error:(id *)error
 {
-  v7 = a3;
-  v8 = [(VIFaissIndex *)self embeddingLength];
-  if ([v7 count] == v8)
+  embeddingCopy = embedding;
+  embeddingLength = [(VIFaissIndex *)self embeddingLength];
+  if ([embeddingCopy count] == embeddingLength)
   {
-    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v8];
-    std::vector<float>::vector[abi:ne200100](&v21, v8);
-    std::vector<float>::vector[abi:ne200100](&__p, v8);
+    v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:embeddingLength];
+    std::vector<float>::vector[abi:ne200100](&v21, embeddingLength);
+    std::vector<float>::vector[abi:ne200100](&__p, embeddingLength);
     if (v22 != v21)
     {
       v10 = 0;
       do
       {
-        v11 = [v7 objectAtIndexedSubscript:v10];
+        v11 = [embeddingCopy objectAtIndexedSubscript:v10];
         [v11 floatValue];
         *(v21 + v10) = v12;
 
@@ -356,36 +356,36 @@ LABEL_40:
 
   else
   {
-    [(VIFaissIndex *)self getFaissError:a5 forCode:4];
+    [(VIFaissIndex *)self getFaissError:error forCode:4];
     v17 = 0;
   }
 
   return v17;
 }
 
-- (void)getFaissError:(id *)a3 forCode:(int64_t)a4 userInfo:(id)a5
+- (void)getFaissError:(id *)error forCode:(int64_t)code userInfo:(id)info
 {
-  v7 = a5;
-  v8 = v7;
-  if (a3)
+  infoCopy = info;
+  v8 = infoCopy;
+  if (error)
   {
-    v9 = v7;
-    v7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.argos.faiss.error_domain" code:a4 userInfo:v7];
-    *a3 = v7;
+    v9 = infoCopy;
+    infoCopy = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.argos.faiss.error_domain" code:code userInfo:infoCopy];
+    *error = infoCopy;
     v8 = v9;
   }
 
-  MEMORY[0x1EEE66BB8](v7, v8);
+  MEMORY[0x1EEE66BB8](infoCopy, v8);
 }
 
-- (void)getFaissError:(id *)a3 forFaissException:(const void *)a4
+- (void)getFaissError:(id *)error forFaissException:(const void *)exception
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (error)
   {
     v11 = *MEMORY[0x1E696A578];
-    v7 = *(a4 + 1);
-    v5 = a4 + 8;
+    v7 = *(exception + 1);
+    v5 = exception + 8;
     v6 = v7;
     if (v5[23] >= 0)
     {
@@ -401,7 +401,7 @@ LABEL_40:
     v12[0] = v9;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-    *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.argos.faiss.error_domain" code:2 userInfo:v10];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.argos.faiss.error_domain" code:2 userInfo:v10];
   }
 }
 

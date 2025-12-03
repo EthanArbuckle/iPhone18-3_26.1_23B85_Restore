@@ -1,19 +1,19 @@
 @interface MKError
-- (MKError)initWithDomain:(id)a3 code:(int64_t)a4 message:(id)a5;
+- (MKError)initWithDomain:(id)domain code:(int64_t)code message:(id)message;
 @end
 
 @implementation MKError
 
-- (MKError)initWithDomain:(id)a3 code:(int64_t)a4 message:(id)a5
+- (MKError)initWithDomain:(id)domain code:(int64_t)code message:(id)message
 {
-  v8 = a5;
+  messageCopy = message;
   v12.receiver = self;
   v12.super_class = MKError;
-  v9 = [(MKError *)&v12 initWithDomain:a3 code:a4 userInfo:0];
+  v9 = [(MKError *)&v12 initWithDomain:domain code:code userInfo:0];
   v10 = v9;
   if (v9)
   {
-    [(MKError *)v9 setMessage:v8];
+    [(MKError *)v9 setMessage:messageCopy];
   }
 
   return v10;

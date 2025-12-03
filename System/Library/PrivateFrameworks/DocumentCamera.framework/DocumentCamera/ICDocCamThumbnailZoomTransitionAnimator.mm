@@ -1,25 +1,25 @@
 @interface ICDocCamThumbnailZoomTransitionAnimator
-- (ICDocCamThumbnailZoomTransitionAnimator)initWithImage:(id)a3 indexPath:(id)a4 duration:(double)a5 completion:(id)a6;
-- (void)animateTransition:(id)a3;
+- (ICDocCamThumbnailZoomTransitionAnimator)initWithImage:(id)image indexPath:(id)path duration:(double)duration completion:(id)completion;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation ICDocCamThumbnailZoomTransitionAnimator
 
-- (ICDocCamThumbnailZoomTransitionAnimator)initWithImage:(id)a3 indexPath:(id)a4 duration:(double)a5 completion:(id)a6
+- (ICDocCamThumbnailZoomTransitionAnimator)initWithImage:(id)image indexPath:(id)path duration:(double)duration completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  imageCopy = image;
+  pathCopy = path;
+  completionCopy = completion;
   v19.receiver = self;
   v19.super_class = ICDocCamThumbnailZoomTransitionAnimator;
   v14 = [(ICDocCamThumbnailZoomTransitionAnimator *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_thumbnailImage, a3);
-    objc_storeStrong(&v15->_indexPath, a4);
-    v15->_duration = a5;
-    v16 = _Block_copy(v13);
+    objc_storeStrong(&v14->_thumbnailImage, image);
+    objc_storeStrong(&v15->_indexPath, path);
+    v15->_duration = duration;
+    v16 = _Block_copy(completionCopy);
     completion = v15->_completion;
     v15->_completion = v16;
   }
@@ -27,34 +27,34 @@
   return v15;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:*MEMORY[0x277D77240]];
-  v6 = [v4 viewControllerForKey:*MEMORY[0x277D77230]];
-  v7 = [v4 containerView];
-  v8 = [v5 view];
-  [v7 addSubview:v8];
+  transitionCopy = transition;
+  v5 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77240]];
+  v6 = [transitionCopy viewControllerForKey:*MEMORY[0x277D77230]];
+  containerView = [transitionCopy containerView];
+  view = [v5 view];
+  [containerView addSubview:view];
 
-  v9 = [v6 view];
-  [v9 frame];
+  view2 = [v6 view];
+  [view2 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [v5 view];
-  [v18 setFrame:{v11, v13, v15, v17}];
+  view3 = [v5 view];
+  [view3 setFrame:{v11, v13, v15, v17}];
 
-  v19 = [v5 view];
-  [v19 setNeedsLayout];
+  view4 = [v5 view];
+  [view4 setNeedsLayout];
 
-  v20 = [v5 view];
-  [v20 layoutIfNeeded];
+  view5 = [v5 view];
+  [view5 layoutIfNeeded];
 
-  LODWORD(v20) = [(ICDocCamThumbnailZoomTransitionAnimator *)self presenting];
+  LODWORD(view5) = [(ICDocCamThumbnailZoomTransitionAnimator *)self presenting];
   v21 = objc_opt_class();
   v145 = v5;
-  if (v20)
+  if (view5)
   {
     v22 = DCDynamicCast(v21, v5);
     v23 = objc_opt_class();
@@ -72,15 +72,15 @@
     v25 = v24;
   }
 
-  v27 = [(ICDocCamThumbnailZoomTransitionAnimator *)self indexPath];
-  [v24 zoomTargetForIndexPath:v27];
+  indexPath = [(ICDocCamThumbnailZoomTransitionAnimator *)self indexPath];
+  [v24 zoomTargetForIndexPath:indexPath];
   v29 = v28;
   v31 = v30;
   v33 = v32;
   v35 = v34;
 
-  v36 = [(ICDocCamThumbnailZoomTransitionAnimator *)self indexPath];
-  [v22 zoomTargetForIndexPath:v36];
+  indexPath2 = [(ICDocCamThumbnailZoomTransitionAnimator *)self indexPath];
+  [v22 zoomTargetForIndexPath:indexPath2];
   v136 = v38;
   v137 = v37;
   v134 = v40;
@@ -92,12 +92,12 @@
   v139 = v33;
   v41 = [objc_alloc(MEMORY[0x277D755E8]) initWithFrame:{v29, v31, v33, v35}];
   [v41 setContentMode:2];
-  v42 = [(ICDocCamThumbnailZoomTransitionAnimator *)self thumbnailImage];
-  [v41 setImage:v42];
+  thumbnailImage = [(ICDocCamThumbnailZoomTransitionAnimator *)self thumbnailImage];
+  [v41 setImage:thumbnailImage];
 
   [v41 setClipsToBounds:1];
-  v43 = [v4 containerView];
-  [v43 addSubview:v41];
+  containerView2 = [transitionCopy containerView];
+  [containerView2 addSubview:v41];
 
   if ([(ICDocCamThumbnailZoomTransitionAnimator *)self presenting])
   {
@@ -111,7 +111,7 @@
 
   else
   {
-    v49 = [v4 containerView];
+    containerView3 = [transitionCopy containerView];
     v50 = objc_alloc_init(MEMORY[0x277CBEB18]);
     if ([v25 statusBarWasHiddenWhenDoneTapped])
     {
@@ -121,102 +121,102 @@
 
     else
     {
-      v52 = [v25 view];
-      v53 = [v52 window];
-      [v53 windowScene];
-      v54 = v132 = v49;
-      v55 = [v54 statusBarManager];
-      [v55 statusBarFrame];
+      view6 = [v25 view];
+      window = [view6 window];
+      [window windowScene];
+      v54 = v132 = containerView3;
+      statusBarManager = [v54 statusBarManager];
+      [statusBarManager statusBarFrame];
       v57 = v56;
       v59 = v58;
       v61 = v60;
       v51 = v62;
 
       v63 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v57, v59, v61, v51}];
-      v64 = [MEMORY[0x277D75348] whiteColor];
-      [v63 setBackgroundColor:v64];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      [v63 setBackgroundColor:whiteColor];
 
-      v65 = [v4 containerView];
-      [v65 addSubview:v63];
+      containerView4 = [transitionCopy containerView];
+      [containerView4 addSubview:v63];
 
-      v66 = [v63 leadingAnchor];
-      v67 = [v132 leadingAnchor];
-      v68 = [v66 constraintEqualToAnchor:v67 constant:0.0];
+      leadingAnchor = [v63 leadingAnchor];
+      leadingAnchor2 = [v132 leadingAnchor];
+      v68 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
       [v50 addObject:v68];
 
-      v69 = [v63 trailingAnchor];
-      v70 = [v132 trailingAnchor];
-      v71 = [v69 constraintEqualToAnchor:v70 constant:0.0];
+      trailingAnchor = [v63 trailingAnchor];
+      trailingAnchor2 = [v132 trailingAnchor];
+      v71 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
       [v50 addObject:v71];
 
-      v72 = [v63 topAnchor];
-      v73 = [v132 topAnchor];
-      v74 = [v72 constraintEqualToAnchor:v73 constant:0.0];
+      topAnchor = [v63 topAnchor];
+      topAnchor2 = [v132 topAnchor];
+      v74 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
       [v50 addObject:v74];
 
       v142 = v63;
       v75 = v63;
-      v49 = v132;
-      v76 = [v75 heightAnchor];
-      v77 = [v76 constraintEqualToConstant:v51];
+      containerView3 = v132;
+      heightAnchor = [v75 heightAnchor];
+      v77 = [heightAnchor constraintEqualToConstant:v51];
       [v50 addObject:v77];
     }
 
-    v78 = [v25 navigationItem];
-    v79 = [v78 navigationBar];
+    navigationItem = [v25 navigationItem];
+    navigationBar = [navigationItem navigationBar];
 
-    [v79 size];
+    [navigationBar size];
     v81 = v80;
-    [v79 size];
+    [navigationBar size];
     v45 = *MEMORY[0x277D768C8];
     v46 = *(MEMORY[0x277D768C8] + 8);
     v47 = *(MEMORY[0x277D768C8] + 16);
     v48 = *(MEMORY[0x277D768C8] + 24);
-    v44 = [v79 resizableSnapshotViewFromRect:1 afterScreenUpdates:0.0 withCapInsets:{0.0, v81, v82, *MEMORY[0x277D768C8], v46, v47, v48}];
+    v44 = [navigationBar resizableSnapshotViewFromRect:1 afterScreenUpdates:0.0 withCapInsets:{0.0, v81, v82, *MEMORY[0x277D768C8], v46, v47, v48}];
     [v44 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v79 size];
+    [navigationBar size];
     v84 = v83;
-    [v79 size];
+    [navigationBar size];
     [v44 setFrame:{0.0, v51, v84, v85}];
-    v86 = [v4 containerView];
-    [v86 addSubview:v44];
+    containerView5 = [transitionCopy containerView];
+    [containerView5 addSubview:v44];
 
     [MEMORY[0x277CCAAD0] activateConstraints:v50];
   }
 
   v133 = v6;
-  v87 = [v25 bottomToolbar];
-  [v87 frame];
+  bottomToolbar = [v25 bottomToolbar];
+  [bottomToolbar frame];
   v89 = v88;
-  [v87 frame];
+  [bottomToolbar frame];
   v91 = v90;
-  [v87 frame];
+  [bottomToolbar frame];
   v93 = v92;
-  [v87 frame];
+  [bottomToolbar frame];
   v95 = v94;
-  v96 = [v25 view];
-  [v96 safeAreaInsets];
+  view7 = [v25 view];
+  [view7 safeAreaInsets];
   v98 = v95 + v97;
 
-  v99 = [v87 resizableSnapshotViewFromRect:1 afterScreenUpdates:0.0 withCapInsets:{0.0, v93, v98, v45, v46, v47, v48}];
+  v99 = [bottomToolbar resizableSnapshotViewFromRect:1 afterScreenUpdates:0.0 withCapInsets:{0.0, v93, v98, v45, v46, v47, v48}];
   [v99 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v99 setFrame:{v89, v91, v93, v98}];
-  v100 = [v4 containerView];
-  [v100 addSubview:v99];
+  containerView6 = [transitionCopy containerView];
+  [containerView6 addSubview:v99];
 
-  v101 = [v25 pageViewController];
-  v102 = [v101 view];
-  [v102 setHidden:1];
+  pageViewController = [v25 pageViewController];
+  view8 = [pageViewController view];
+  [view8 setHidden:1];
 
   if (![(ICDocCamThumbnailZoomTransitionAnimator *)self presenting])
   {
     v128 = v44;
-    v103 = v4;
+    v103 = transitionCopy;
     v104 = v41;
-    v105 = [v25 indexPathForCurrentDocument];
-    v106 = [v143 thumbnailViewController];
-    v107 = [v106 collectionView];
-    v108 = [v107 cellForItemAtIndexPath:v105];
+    indexPathForCurrentDocument = [v25 indexPathForCurrentDocument];
+    thumbnailViewController = [v143 thumbnailViewController];
+    collectionView = [thumbnailViewController collectionView];
+    v108 = [collectionView cellForItemAtIndexPath:indexPathForCurrentDocument];
 
     if ([v25 documentCount] == 1)
     {
@@ -225,12 +225,12 @@
 
     else
     {
-      v109 = [v108 layer];
-      [v109 setOpacity:0.0];
+      layer = [v108 layer];
+      [layer setOpacity:0.0];
     }
 
     v41 = v104;
-    v4 = v103;
+    transitionCopy = v103;
     v44 = v128;
   }
 
@@ -250,7 +250,7 @@
   v160 = v111;
   v129 = v25;
   v161 = v129;
-  v131 = v4;
+  v131 = transitionCopy;
   v162 = v131;
   v112 = v142;
   v163 = v112;
@@ -259,13 +259,13 @@
   v144 = v143;
   v165 = v144;
   v114 = _Block_copy(aBlock);
-  v115 = [v145 view];
-  [v115 setAlpha:0.0];
+  view9 = [v145 view];
+  [view9 setAlpha:0.0];
 
-  v116 = [(ICDocCamThumbnailZoomTransitionAnimator *)self presenting];
+  presenting = [(ICDocCamThumbnailZoomTransitionAnimator *)self presenting];
   v117 = 0.0;
   v118 = v111;
-  if (!v116)
+  if (!presenting)
   {
     v117 = 1.0;
     [v111 setAlpha:{1.0, v129, v131}];
@@ -281,7 +281,7 @@
   v152[3] = &unk_278F931E0;
   v120 = v145;
   v153 = v120;
-  v154 = self;
+  selfCopy = self;
   v121 = v111;
   v155 = v121;
   v122 = v112;

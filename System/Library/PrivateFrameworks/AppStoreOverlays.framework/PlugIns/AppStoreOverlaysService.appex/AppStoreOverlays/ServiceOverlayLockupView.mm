@@ -2,28 +2,28 @@
 - (ASCLockup)lockup;
 - (ASCViewMetrics)viewMetrics;
 - (ASOServiceAdInteractionAttributor)adInteractionAttributor;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC23AppStoreOverlaysService24ServiceOverlayLockupView)initWithCoder:(id)a3;
-- (_TtC23AppStoreOverlaysService24ServiceOverlayLockupView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC23AppStoreOverlaysService24ServiceOverlayLockupView)initWithCoder:(id)coder;
+- (_TtC23AppStoreOverlaysService24ServiceOverlayLockupView)initWithFrame:(CGRect)frame;
 - (id)additionalMetricsFields;
-- (id)lockupViewPerformAdAttributionForState:(id)a3;
-- (id)metricsActivityForLockupView:(id)a3 toPerformActionOfOffer:(id)a4;
+- (id)lockupViewPerformAdAttributionForState:(id)state;
+- (id)metricsActivityForLockupView:(id)view toPerformActionOfOffer:(id)offer;
 - (int64_t)semanticContentAttribute;
 - (void)didTapOnOverlay;
 - (void)layoutSubviews;
-- (void)lockupView:(id)a3 didFailRequestWithError:(id)a4;
-- (void)lockupViewDidBeginRequest:(id)a3;
-- (void)lockupViewDidFinishRequest:(id)a3;
-- (void)setAdInteractionAttributor:(id)a3;
-- (void)setHostSignpostSpan:(id)a3;
-- (void)setSemanticContentAttribute:(int64_t)a3;
-- (void)setVariant:(int64_t)a3;
+- (void)lockupView:(id)view didFailRequestWithError:(id)error;
+- (void)lockupViewDidBeginRequest:(id)request;
+- (void)lockupViewDidFinishRequest:(id)request;
+- (void)setAdInteractionAttributor:(id)attributor;
+- (void)setHostSignpostSpan:(id)span;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
+- (void)setVariant:(int64_t)variant;
 - (void)updateFonts;
 @end
 
 @implementation ServiceOverlayLockupView
 
-- (_TtC23AppStoreOverlaysService24ServiceOverlayLockupView)initWithCoder:(id)a3
+- (_TtC23AppStoreOverlaysService24ServiceOverlayLockupView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23AppStoreOverlaysService24ServiceOverlayLockupView_adInteractionAttributor) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC23AppStoreOverlaysService24ServiceOverlayLockupView_hostSignpostSpan) = 0;
@@ -33,10 +33,10 @@
   return result;
 }
 
-- (void)setVariant:(int64_t)a3
+- (void)setVariant:(int64_t)variant
 {
-  v4 = self;
-  sub_100012AA0(a3);
+  selfCopy = self;
+  sub_100012AA0(variant);
 }
 
 - (ASOServiceAdInteractionAttributor)adInteractionAttributor
@@ -49,29 +49,29 @@
   return v5;
 }
 
-- (void)setAdInteractionAttributor:(id)a3
+- (void)setAdInteractionAttributor:(id)attributor
 {
   v5 = OBJC_IVAR____TtC23AppStoreOverlaysService24ServiceOverlayLockupView_adInteractionAttributor;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = a3;
+  *(&self->super.super.super.isa + v5) = attributor;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
 
 - (ASCLockup)lockup
 {
-  v2 = [*(&self->super.super.super.isa + OBJC_IVAR____TtC23AppStoreOverlaysService24ServiceOverlayLockupView_lockupView) lockup];
+  lockup = [*(&self->super.super.super.isa + OBJC_IVAR____TtC23AppStoreOverlaysService24ServiceOverlayLockupView_lockupView) lockup];
 
-  return v2;
+  return lockup;
 }
 
-- (void)setHostSignpostSpan:(id)a3
+- (void)setHostSignpostSpan:(id)span
 {
   v6 = *(&self->super.super.super.isa + OBJC_IVAR____TtC23AppStoreOverlaysService24ServiceOverlayLockupView_hostSignpostSpan);
-  *(&self->super.super.super.isa + OBJC_IVAR____TtC23AppStoreOverlaysService24ServiceOverlayLockupView_hostSignpostSpan) = a3;
-  v4 = a3;
-  v5 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR____TtC23AppStoreOverlaysService24ServiceOverlayLockupView_hostSignpostSpan) = span;
+  spanCopy = span;
+  selfCopy = self;
   sub_100013074(v6);
 }
 
@@ -82,15 +82,15 @@
   return [(ServiceOverlayLockupView *)&v3 semanticContentAttribute];
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   ObjectType = swift_getObjectType();
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = self;
-  [(ServiceOverlayLockupView *)&v9 setSemanticContentAttribute:a3];
-  v7 = *(&v6->super.super.super.isa + OBJC_IVAR____TtC23AppStoreOverlaysService24ServiceOverlayLockupView_calloutLabel);
-  v8.receiver = v6;
+  selfCopy = self;
+  [(ServiceOverlayLockupView *)&v9 setSemanticContentAttribute:attribute];
+  v7 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC23AppStoreOverlaysService24ServiceOverlayLockupView_calloutLabel);
+  v8.receiver = selfCopy;
   v8.super_class = ObjectType;
   [v7 setSemanticContentAttribute:{-[ServiceOverlayLockupView semanticContentAttribute](&v8, "semanticContentAttribute")}];
 }
@@ -110,15 +110,15 @@
   v13 = &v25 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   v25.receiver = self;
   v25.super_class = ObjectType;
-  v14 = self;
+  selfCopy = self;
   [(ServiceOverlayLockupView *)&v25 layoutSubviews];
   sub_1000133D8(v13);
-  [(ServiceOverlayLockupView *)v14 bounds];
+  [(ServiceOverlayLockupView *)selfCopy bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  [(ServiceOverlayLockupView *)v14 layoutMargins];
+  [(ServiceOverlayLockupView *)selfCopy layoutMargins];
   sub_100010BD8(v16, v18, v20, v22, v23, v24);
   sub_1000181E8();
 
@@ -126,15 +126,15 @@
   (*(v10 + 8))(v13, v9);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v4 = sub_100018268();
   v5 = *(v4 - 8);
   v6 = *(v5 + 64);
   __chkstk_darwin(v4);
   v8 = &v16 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = self;
-  [(ServiceOverlayLockupView *)v9 layoutMargins];
+  selfCopy = self;
+  [(ServiceOverlayLockupView *)selfCopy layoutMargins];
   sub_1000184E8(v18);
   sub_1000133D8(v8);
   sub_100018168();
@@ -154,7 +154,7 @@
   v3 = *(&self->super.super.super.isa + OBJC_IVAR____TtC23AppStoreOverlaysService24ServiceOverlayLockupView_calloutLabel);
   sub_10000D548(0, &qword_10002C5F8, UIFont_ptr);
   v4 = qword_10002BF68;
-  v5 = self;
+  selfCopy = self;
   if (v4 != -1)
   {
     swift_once();
@@ -162,39 +162,39 @@
 
   v6 = sub_100018178();
   sub_10000E764(v6, qword_10002CDC0);
-  v7 = [(ServiceOverlayLockupView *)v5 traitCollection];
+  traitCollection = [(ServiceOverlayLockupView *)selfCopy traitCollection];
   v8 = sub_100018508();
 
   [v3 setFont:v8];
 }
 
-- (void)lockupViewDidBeginRequest:(id)a3
+- (void)lockupViewDidBeginRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
+  requestCopy = request;
+  selfCopy = self;
   sub_100017034();
 }
 
-- (void)lockupViewDidFinishRequest:(id)a3
+- (void)lockupViewDidFinishRequest:(id)request
 {
-  v4 = a3;
-  v5 = self;
+  requestCopy = request;
+  selfCopy = self;
   sub_100017154();
 }
 
-- (void)lockupView:(id)a3 didFailRequestWithError:(id)a4
+- (void)lockupView:(id)view didFailRequestWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
+  viewCopy = view;
+  errorCopy = error;
+  selfCopy = self;
   sub_10001727C();
 }
 
-- (id)metricsActivityForLockupView:(id)a3 toPerformActionOfOffer:(id)a4
+- (id)metricsActivityForLockupView:(id)view toPerformActionOfOffer:(id)offer
 {
-  v5 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   v7 = sub_100017404();
 
   swift_unknownObjectRelease();
@@ -205,22 +205,22 @@
 - (ASCViewMetrics)viewMetrics
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC23AppStoreOverlaysService24ServiceOverlayLockupView_lockupView);
-  v3 = self;
-  v4 = [v2 lockup];
-  v5 = [v4 metrics];
+  selfCopy = self;
+  lockup = [v2 lockup];
+  metrics = [lockup metrics];
 
-  return v5;
+  return metrics;
 }
 
 - (void)didTapOnOverlay
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000144F0();
 }
 
 - (id)additionalMetricsFields
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000151B8();
 
   v3.super.isa = sub_100018408().super.isa;
@@ -228,21 +228,21 @@
   return v3.super.isa;
 }
 
-- (_TtC23AppStoreOverlaysService24ServiceOverlayLockupView)initWithFrame:(CGRect)a3
+- (_TtC23AppStoreOverlaysService24ServiceOverlayLockupView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (id)lockupViewPerformAdAttributionForState:(id)a3
+- (id)lockupViewPerformAdAttributionForState:(id)state
 {
   v5 = sub_10000D4AC(&qword_10002C1C8, &unk_10001CCA0);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v18 - v7;
-  v9 = a3;
-  v10 = self;
+  stateCopy = state;
+  selfCopy = self;
   sub_100015424(v8);
 
   v11 = sub_100018088();

@@ -1,8 +1,8 @@
 @interface _ClauseGenerationContext
 - (_ClauseGenerationContext)init;
-- (id)clauseWithBindings:(id)a3;
-- (id)kindClauseWithBindings:(id)a3;
-- (void)addPredicate:(id)a3 forFieldName:(id)a4;
+- (id)clauseWithBindings:(id)bindings;
+- (id)kindClauseWithBindings:(id)bindings;
+- (void)addPredicate:(id)predicate forFieldName:(id)name;
 - (void)dealloc;
 @end
 
@@ -47,18 +47,18 @@
   [(_ClauseGenerationContext *)&v3 dealloc];
 }
 
-- (void)addPredicate:(id)a3 forFieldName:(id)a4
+- (void)addPredicate:(id)predicate forFieldName:(id)name
 {
-  v8 = -[NSDictionary objectForKey:](self->_predicateCollectionsMap, "objectForKey:", [objc_msgSend(a4 componentsSeparatedByString:{@".", "objectAtIndex:", 0}]);
+  v8 = -[NSDictionary objectForKey:](self->_predicateCollectionsMap, "objectForKey:", [objc_msgSend(name componentsSeparatedByString:{@".", "objectAtIndex:", 0}]);
   if (!v8)
   {
-    sub_1000191B8(a2, self, a4);
+    sub_1000191B8(a2, self, name);
   }
 
-  [v8 makeObjectsPerformSelector:"addObject:" withObject:a3];
+  [v8 makeObjectsPerformSelector:"addObject:" withObject:predicate];
 }
 
-- (id)kindClauseWithBindings:(id)a3
+- (id)kindClauseWithBindings:(id)bindings
 {
   v6 = +[NSMutableArray array];
   v15 = 0u;
@@ -97,17 +97,17 @@
   }
 
   v13 = +[NSMutableString string];
-  [[NSComparisonPredicate predicateWithLeftExpression:[NSExpression expressionForConstantValue:v6] rightExpression:0 modifier:10 type:0 options:?], "cr_addToClause:usingOperator:bindings:", v13, &stru_10002DA70, a3];
+  [[NSComparisonPredicate predicateWithLeftExpression:[NSExpression expressionForConstantValue:v6] rightExpression:0 modifier:10 type:0 options:?], "cr_addToClause:usingOperator:bindings:", v13, &stru_10002DA70, bindings];
   return v13;
 }
 
-- (id)clauseWithBindings:(id)a3
+- (id)clauseWithBindings:(id)bindings
 {
   v5 = +[NSMutableString string];
   v6 = v5;
   if (self->_wantsGroups)
   {
-    v7 = [(_ClauseGenerationContext *)self kindClauseWithBindings:a3];
+    v7 = [(_ClauseGenerationContext *)self kindClauseWithBindings:bindings];
     if (v7)
     {
       [v6 appendString:v7];
@@ -140,7 +140,7 @@
             objc_enumerationMutation(predicates);
           }
 
-          [*(*(&v25 + 1) + 8 * i) cr_addToClause:v6 usingOperator:v18 bindings:a3];
+          [*(*(&v25 + 1) + 8 * i) cr_addToClause:v6 usingOperator:v18 bindings:bindings];
           v18 = @"\n AND ";
         }
 
@@ -176,7 +176,7 @@
             objc_enumerationMutation(v9);
           }
 
-          [*(*(&v21 + 1) + 8 * j) cr_addToClause:v6 usingOperator:@"\n AND " bindings:a3];
+          [*(*(&v21 + 1) + 8 * j) cr_addToClause:v6 usingOperator:@"\n AND " bindings:bindings];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v21 objects:v29 count:16];

@@ -1,20 +1,20 @@
 @interface HUPRXItemModuleTableViewController
-- (void)itemManagerDidFinishUpdate:(id)a3;
+- (void)itemManagerDidFinishUpdate:(id)update;
 @end
 
 @implementation HUPRXItemModuleTableViewController
 
-- (void)itemManagerDidFinishUpdate:(id)a3
+- (void)itemManagerDidFinishUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v9.receiver = self;
   v9.super_class = HUPRXItemModuleTableViewController;
-  [(HUPRXItemModuleTableViewController *)&v9 itemManagerDidFinishUpdate:v4];
+  [(HUPRXItemModuleTableViewController *)&v9 itemManagerDidFinishUpdate:updateCopy];
   objc_opt_class();
-  v5 = [(HUPRXItemModuleTableViewController *)self parentViewController];
+  parentViewController = [(HUPRXItemModuleTableViewController *)self parentViewController];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = parentViewController;
   }
 
   else
@@ -26,7 +26,7 @@
 
   if (v7)
   {
-    [v7 itemManagerDidFinishUpdate:v4];
+    [v7 itemManagerDidFinishUpdate:updateCopy];
   }
 
   else

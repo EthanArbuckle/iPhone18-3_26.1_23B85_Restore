@@ -2,7 +2,7 @@
 - (BOOL)_deviceHasBiometrics;
 - (id)stringsTable;
 - (int)passcodeLength;
-- (void)setPIN:(id)a3;
+- (void)setPIN:(id)n;
 @end
 
 @implementation AXDevicePINController
@@ -35,15 +35,15 @@
 
   if (v5)
   {
-    v6 = [(AXDevicePINController *)self _deviceHasBiometrics];
+    _deviceHasBiometrics = [(AXDevicePINController *)self _deviceHasBiometrics];
   }
 
   else
   {
-    v6 = v8 == 1;
+    _deviceHasBiometrics = v8 == 1;
   }
 
-  if (v6)
+  if (_deviceHasBiometrics)
   {
     return 6;
   }
@@ -60,12 +60,12 @@
   NSRequestConcreteImplementation();
   v5.receiver = self;
   v5.super_class = AXDevicePINController;
-  v3 = [(AXDevicePINController *)&v5 stringsTable];
+  stringsTable = [(AXDevicePINController *)&v5 stringsTable];
 
-  return v3;
+  return stringsTable;
 }
 
-- (void)setPIN:(id)a3
+- (void)setPIN:(id)n
 {
   objc_opt_class();
 

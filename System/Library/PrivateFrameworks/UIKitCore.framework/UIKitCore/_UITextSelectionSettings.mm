@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __42___UITextSelectionSettings_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED4963E8 != -1)
   {
     dispatch_once(&qword_1ED4963E8, block);

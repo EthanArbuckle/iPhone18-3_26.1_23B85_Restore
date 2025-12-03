@@ -1,6 +1,6 @@
 @interface MusicKit_SoftLinking_MPModelLibraryDeleteEntityChangeRequest
 - (MusicKit_SoftLinking_MPModelLibraryDeleteEntityChangeRequest)init;
-- (void)setModelObject:(id)a3;
+- (void)setModelObject:(id)object;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelLibraryDeleteEntityChangeRequest
@@ -38,11 +38,11 @@
   return v2;
 }
 
-- (void)setModelObject:(id)a3
+- (void)setModelObject:(id)object
 {
   underlyingLibraryDeleteEntityChangeRequest = self->_underlyingLibraryDeleteEntityChangeRequest;
-  v4 = [a3 _underlyingModelObject];
-  [(MPModelLibraryDeleteEntityChangeRequest *)underlyingLibraryDeleteEntityChangeRequest setModelObject:v4];
+  _underlyingModelObject = [object _underlyingModelObject];
+  [(MPModelLibraryDeleteEntityChangeRequest *)underlyingLibraryDeleteEntityChangeRequest setModelObject:_underlyingModelObject];
 }
 
 @end

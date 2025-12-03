@@ -1,37 +1,37 @@
 @interface PICompositionSerializer
-+ (BOOL)_validateValueTypesForKeys:(id)a3 requiredKeys:(id)a4 inDictionary:(id)a5 error:(id *)a6;
-+ (BOOL)canInterpretDataWithFormatIdentifier:(id)a3 formatVersion:(id)a4;
-+ (BOOL)validateAdjustmentsEnvelope:(id)a3 error:(id *)a4;
-+ (BOOL)validateCompositionWithMissingSource:(id)a3 error:(id *)a4;
-+ (id)_serializeComposition:(id)a3 versionInfo:(id)a4 skipMetadata:(BOOL)a5 error:(id *)a6;
-+ (id)adjustmentInformationForComposition:(id)a3 skipMetadata:(BOOL)a4 error:(id *)a5;
-+ (id)deserializeCompositionFromAdjustments:(id)a3 metadata:(id)a4 formatIdentifier:(id)a5 formatVersion:(id)a6 sidecarData:(id)a7 error:(id *)a8;
-+ (id)deserializeCompositionFromData:(id)a3 formatIdentifier:(id)a4 formatVersion:(id)a5 sidecarData:(id)a6 error:(id *)a7;
-+ (id)deserializeDictionaryFromData:(id)a3 error:(id *)a4;
-+ (id)serializeComposition:(id)a3 versionInfo:(id)a4 serializerMetadata:(id)a5 error:(id *)a6;
-+ (id)serializeDictionary:(id)a3 error:(id *)a4;
-+ (void)_sanitizeComposition:(id)a3;
++ (BOOL)_validateValueTypesForKeys:(id)keys requiredKeys:(id)requiredKeys inDictionary:(id)dictionary error:(id *)error;
++ (BOOL)canInterpretDataWithFormatIdentifier:(id)identifier formatVersion:(id)version;
++ (BOOL)validateAdjustmentsEnvelope:(id)envelope error:(id *)error;
++ (BOOL)validateCompositionWithMissingSource:(id)source error:(id *)error;
++ (id)_serializeComposition:(id)composition versionInfo:(id)info skipMetadata:(BOOL)metadata error:(id *)error;
++ (id)adjustmentInformationForComposition:(id)composition skipMetadata:(BOOL)metadata error:(id *)error;
++ (id)deserializeCompositionFromAdjustments:(id)adjustments metadata:(id)metadata formatIdentifier:(id)identifier formatVersion:(id)version sidecarData:(id)data error:(id *)error;
++ (id)deserializeCompositionFromData:(id)data formatIdentifier:(id)identifier formatVersion:(id)version sidecarData:(id)sidecarData error:(id *)error;
++ (id)deserializeDictionaryFromData:(id)data error:(id *)error;
++ (id)serializeComposition:(id)composition versionInfo:(id)info serializerMetadata:(id)metadata error:(id *)error;
++ (id)serializeDictionary:(id)dictionary error:(id *)error;
++ (void)_sanitizeComposition:(id)composition;
 + (void)initialize;
 @end
 
 @implementation PICompositionSerializer
 
-+ (id)adjustmentInformationForComposition:(id)a3 skipMetadata:(BOOL)a4 error:(id *)a5
++ (id)adjustmentInformationForComposition:(id)composition skipMetadata:(BOOL)metadata error:(id *)error
 {
-  v6 = a4;
+  metadataCopy = metadata;
   v33[4] = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  compositionCopy = composition;
   v10 = _CFCopySystemVersionDictionary();
   v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E695E1E8]];
-  if (!v9)
+  if (!compositionCopy)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"PICompositionSerializer.m" lineNumber:620 description:{@"Invalid parameter not satisfying: %@", @"composition"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PICompositionSerializer.m" lineNumber:620 description:{@"Invalid parameter not satisfying: %@", @"composition"}];
   }
 
-  v12 = [MEMORY[0x1E696AAE8] mainBundle];
-  v13 = [v12 infoDictionary];
-  v14 = [v13 objectForKey:@"CFBundleVersion"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
+  v14 = [infoDictionary objectForKey:@"CFBundleVersion"];
   v15 = v14;
   v16 = &stru_1F46EAF88;
   if (v14)
@@ -51,29 +51,29 @@
   v33[3] = &unk_1F471E940;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:4];
   v29 = 0;
-  v19 = [PICompositionSerializer _serializeComposition:v9 versionInfo:v18 skipMetadata:v6 error:&v29];
+  v19 = [PICompositionSerializer _serializeComposition:compositionCopy versionInfo:v18 skipMetadata:metadataCopy error:&v29];
 
   v20 = v29;
   v21 = v20;
   if (v19)
   {
-    v22 = [MEMORY[0x1E695DF90] dictionary];
-    v23 = [v19 data];
-    [v22 setObject:v23 forKeyedSubscript:@"adjustmentData"];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    data = [v19 data];
+    [dictionary setObject:data forKeyedSubscript:@"adjustmentData"];
 
-    v24 = [v19 formatIdentifier];
-    [v22 setObject:v24 forKeyedSubscript:@"adjustmentFormatIdentifier"];
+    formatIdentifier = [v19 formatIdentifier];
+    [dictionary setObject:formatIdentifier forKeyedSubscript:@"adjustmentFormatIdentifier"];
 
-    v25 = [v19 formatVersion];
-    [v22 setObject:v25 forKeyedSubscript:@"adjustmentFormatVersion"];
+    formatVersion = [v19 formatVersion];
+    [dictionary setObject:formatVersion forKeyedSubscript:@"adjustmentFormatVersion"];
   }
 
   else
   {
-    if (a5)
+    if (error)
     {
       v26 = v20;
-      *a5 = v21;
+      *error = v21;
     }
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -83,23 +83,23 @@
       _os_log_error_impl(&dword_1C7694000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to serialize finalized composition: %{public}@", buf, 0xCu);
     }
 
-    v22 = 0;
+    dictionary = 0;
   }
 
-  return v22;
+  return dictionary;
 }
 
-+ (void)_sanitizeComposition:(id)a3
++ (void)_sanitizeComposition:(id)composition
 {
   v44 = *MEMORY[0x1E69E9840];
-  v34 = a3;
-  v3 = [[PICompositionController alloc] initWithComposition:v34];
-  v4 = [(PICompositionController *)v3 compositionKeys];
+  compositionCopy = composition;
+  v3 = [[PICompositionController alloc] initWithComposition:compositionCopy];
+  compositionKeys = [(PICompositionController *)v3 compositionKeys];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v35 objects:v43 count:16];
+  v5 = [compositionKeys countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v5)
   {
     v6 = v5;
@@ -112,7 +112,7 @@
       {
         if (*v36 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(compositionKeys);
         }
 
         v9 = *(*(&v35 + 1) + 8 * v8);
@@ -121,8 +121,8 @@
           v10 = [(PICompositionController *)v3 adjustmentControllerForKey:v9];
           if ([v10 _isDefault])
           {
-            v11 = [v34 debugDescription];
-            [v34 setObject:0 forKeyedSubscript:v9];
+            v11 = [compositionCopy debugDescription];
+            [compositionCopy setObject:0 forKeyedSubscript:v9];
             if (*MEMORY[0x1E69B3D78] != -1)
             {
               dispatch_once(MEMORY[0x1E69B3D78], &__block_literal_global_293);
@@ -154,8 +154,8 @@ LABEL_16:
                   v28 = MEMORY[0x1E696AF00];
                   v31 = specific;
                   log = v17;
-                  v29 = [v28 callStackSymbols];
-                  v19 = [v29 componentsJoinedByString:@"\n"];
+                  callStackSymbols = [v28 callStackSymbols];
+                  v19 = [callStackSymbols componentsJoinedByString:@"\n"];
                   *buf = 138543618;
                   v40 = specific;
                   v41 = 2114;
@@ -185,8 +185,8 @@ LABEL_16:
             {
               v22 = MEMORY[0x1E696AF00];
               v30 = v21;
-              v32 = [v22 callStackSymbols];
-              v23 = [v32 componentsJoinedByString:@"\n"];
+              callStackSymbols2 = [v22 callStackSymbols];
+              v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
               *buf = 138543362;
               v40 = v23;
               v20 = v30;
@@ -208,7 +208,7 @@ LABEL_21:
       }
 
       while (v6 != v8);
-      v24 = [v4 countByEnumeratingWithState:&v35 objects:v43 count:16];
+      v24 = [compositionKeys countByEnumeratingWithState:&v35 objects:v43 count:16];
       v6 = v24;
     }
 
@@ -216,11 +216,11 @@ LABEL_21:
   }
 }
 
-+ (id)deserializeDictionaryFromData:(id)a3 error:(id *)a4
++ (id)deserializeDictionaryFromData:(id)data error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v9 = NUAssertLogger_1936();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -250,8 +250,8 @@ LABEL_21:
       v22 = dispatch_get_specific(*v11);
       v23 = MEMORY[0x1E696AF00];
       v24 = v22;
-      v25 = [v23 callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v23 callStackSymbols];
+      v26 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v34 = v22;
       v35 = 2114;
@@ -266,7 +266,7 @@ LABEL_22:
     JUMPOUT(0x1C76B891CLL);
   }
 
-  if (!a4)
+  if (!error)
   {
     v15 = NUAssertLogger_1936();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -288,8 +288,8 @@ LABEL_22:
         v27 = dispatch_get_specific(*v17);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [v28 callStackSymbols];
+        v31 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v34 = v27;
         v35 = 2114;
@@ -301,8 +301,8 @@ LABEL_22:
     else if (v19)
     {
 LABEL_16:
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols3 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v34 = v21;
       _os_log_error_impl(&dword_1C7694000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -313,14 +313,14 @@ LABEL_16:
     goto LABEL_22;
   }
 
-  v6 = v5;
+  v6 = dataCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [MEMORY[0x1E69C0948] decompressData:v6 options:0 error:a4];
+    v7 = [MEMORY[0x1E69C0948] decompressData:v6 options:0 error:error];
     if (v7)
     {
-      v8 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v7 options:0 error:a4];
+      v8 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v7 options:0 error:error];
     }
 
     else
@@ -332,17 +332,17 @@ LABEL_16:
   else
   {
     [MEMORY[0x1E69B3A48] mismatchError:@"Data object is not of the correct type" object:v6];
-    *a4 = v8 = 0;
+    *error = v8 = 0;
   }
 
   return v8;
 }
 
-+ (id)serializeDictionary:(id)a3 error:(id *)a4
++ (id)serializeDictionary:(id)dictionary error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     v11 = NUAssertLogger_1936();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -372,8 +372,8 @@ LABEL_16:
       v24 = dispatch_get_specific(*v13);
       v25 = MEMORY[0x1E696AF00];
       v26 = v24;
-      v27 = [v25 callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v25 callStackSymbols];
+      v28 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v37 = v24;
       v38 = 2114;
@@ -388,7 +388,7 @@ LABEL_23:
     JUMPOUT(0x1C76B8EBCLL);
   }
 
-  if (!a4)
+  if (!error)
   {
     v17 = NUAssertLogger_1936();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -410,8 +410,8 @@ LABEL_23:
         v29 = dispatch_get_specific(*v19);
         v30 = MEMORY[0x1E696AF00];
         v31 = v29;
-        v32 = [v30 callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [v30 callStackSymbols];
+        v33 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v37 = v29;
         v38 = 2114;
@@ -423,8 +423,8 @@ LABEL_23:
     else if (v21)
     {
 LABEL_17:
-      v22 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v22 componentsJoinedByString:@"\n"];
+      callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v23 = [callStackSymbols3 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v37 = v23;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -435,8 +435,8 @@ LABEL_17:
     goto LABEL_23;
   }
 
-  v6 = v5;
-  v7 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v5 options:0 error:a4];
+  v6 = dictionaryCopy;
+  v7 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryCopy options:0 error:error];
   if (v7)
   {
     v35 = 0;
@@ -449,7 +449,7 @@ LABEL_17:
 
     else
     {
-      *a4 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to compress composition data" object:v6 underlyingError:v9];
+      *error = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to compress composition data" object:v6 underlyingError:v9];
     }
   }
 
@@ -461,11 +461,11 @@ LABEL_17:
   return v8;
 }
 
-+ (BOOL)_validateValueTypesForKeys:(id)a3 requiredKeys:(id)a4 inDictionary:(id)a5 error:(id *)a6
++ (BOOL)_validateValueTypesForKeys:(id)keys requiredKeys:(id)requiredKeys inDictionary:(id)dictionary error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  keysCopy = keys;
+  requiredKeysCopy = requiredKeys;
+  dictionaryCopy = dictionary;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -480,16 +480,16 @@ LABEL_17:
   v16[1] = 3221225472;
   v16[2] = __86__PICompositionSerializer__validateValueTypesForKeys_requiredKeys_inDictionary_error___block_invoke;
   v16[3] = &unk_1E82A9E70;
-  v12 = v11;
+  v12 = dictionaryCopy;
   v17 = v12;
-  v13 = v10;
+  v13 = requiredKeysCopy;
   v18 = v13;
   v19 = &v21;
   v20 = &v27;
-  [v9 enumerateKeysAndObjectsUsingBlock:v16];
-  if (a6)
+  [keysCopy enumerateKeysAndObjectsUsingBlock:v16];
+  if (error)
   {
-    *a6 = v22[5];
+    *error = v22[5];
   }
 
   v14 = *(v28 + 24);
@@ -545,10 +545,10 @@ void __86__PICompositionSerializer__validateValueTypesForKeys_requiredKeys_inDic
   }
 }
 
-+ (BOOL)validateAdjustmentsEnvelope:(id)a3 error:(id *)a4
++ (BOOL)validateAdjustmentsEnvelope:(id)envelope error:(id *)error
 {
   v27[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  envelopeCopy = envelope;
   v26[0] = @"metadata";
   v27[0] = objc_opt_class();
   v26[1] = @"formatVersion";
@@ -558,7 +558,7 @@ void __86__PICompositionSerializer__validateValueTypesForKeys_requiredKeys_inDic
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:3];
   v8 = [MEMORY[0x1E695DFD8] setWithArray:&unk_1F471FC50];
   v23 = 0;
-  v9 = [a1 _validateValueTypesForKeys:v7 requiredKeys:v8 inDictionary:v6 error:&v23];
+  v9 = [self _validateValueTypesForKeys:v7 requiredKeys:v8 inDictionary:envelopeCopy error:&v23];
   v10 = v23;
   v11 = v10;
   if (v9)
@@ -571,28 +571,28 @@ void __86__PICompositionSerializer__validateValueTypesForKeys_requiredKeys_inDic
     v25[2] = objc_opt_class();
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:3];
     v13 = MEMORY[0x1E695DFD8];
-    v14 = [v12 allKeys];
-    v15 = [v13 setWithArray:v14];
+    allKeys = [v12 allKeys];
+    v15 = [v13 setWithArray:allKeys];
 
-    v16 = [v6 objectForKeyedSubscript:@"metadata"];
+    v16 = [envelopeCopy objectForKeyedSubscript:@"metadata"];
     v22 = 0;
-    v17 = [a1 _validateValueTypesForKeys:v12 requiredKeys:v15 inDictionary:v16 error:&v22];
+    v17 = [self _validateValueTypesForKeys:v12 requiredKeys:v15 inDictionary:v16 error:&v22];
     v18 = v22;
 
-    if (a4 && (v17 & 1) == 0)
+    if (error && (v17 & 1) == 0)
     {
       v19 = v18;
-      *a4 = v18;
+      *error = v18;
     }
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
       v20 = v10;
       v17 = 0;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -606,32 +606,32 @@ void __86__PICompositionSerializer__validateValueTypesForKeys_requiredKeys_inDic
   return v17;
 }
 
-+ (id)serializeComposition:(id)a3 versionInfo:(id)a4 serializerMetadata:(id)a5 error:(id *)a6
++ (id)serializeComposition:(id)composition versionInfo:(id)info serializerMetadata:(id)metadata error:(id *)error
 {
   v139 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v94 = a6;
-  if (!a6)
+  compositionCopy = composition;
+  infoCopy = info;
+  metadataCopy = metadata;
+  errorCopy = error;
+  if (!error)
   {
-    v89 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v89 handleFailureInMethod:a2 object:a1 file:@"PICompositionSerializer.m" lineNumber:319 description:{@"Invalid parameter not satisfying: %@", @"error != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PICompositionSerializer.m" lineNumber:319 description:{@"Invalid parameter not satisfying: %@", @"error != nil"}];
   }
 
-  v92 = v12;
+  v92 = infoCopy;
   v14 = objc_opt_new();
-  v15 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v13, "width")}];
+  v15 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(metadataCopy, "width")}];
   [v14 setObject:v15 forKeyedSubscript:@"masterWidth"];
 
-  v16 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v13, "height")}];
+  v16 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(metadataCopy, "height")}];
   [v14 setObject:v16 forKeyedSubscript:@"masterHeight"];
 
-  v17 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v13, "orientation")}];
+  v17 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(metadataCopy, "orientation")}];
   [v14 setObject:v17 forKeyedSubscript:@"orientation"];
 
-  v100 = [MEMORY[0x1E695DF70] array];
-  v18 = [PICompositionNoOpRemoval copyOfCompositionRemovingNoOps:v11];
+  array = [MEMORY[0x1E695DF70] array];
+  v18 = [PICompositionNoOpRemoval copyOfCompositionRemovingNoOps:compositionCopy];
 
   v99 = v18;
   v98 = [[PICompositionController alloc] initWithComposition:v18];
@@ -646,10 +646,10 @@ void __86__PICompositionSerializer__validateValueTypesForKeys_requiredKeys_inDic
     }
   }
 
-  v90 = a1;
+  selfCopy = self;
   v91 = v14;
   v93 = v20;
-  v95 = v13;
+  v95 = metadataCopy;
   v101 = +[PICompositionSerializerConstants mapForSerialization];
   v22 = [MEMORY[0x1E695DFD8] setWithObjects:{@"source", @"orientation", @"sourceSpatialOvercapture", 0}];
   v120 = 0u;
@@ -718,8 +718,8 @@ LABEL_57:
               v78 = MEMORY[0x1E696AF00];
               v79 = specific;
               v80 = v76;
-              v81 = [v78 callStackSymbols];
-              v82 = [v81 componentsJoinedByString:@"\n"];
+              callStackSymbols = [v78 callStackSymbols];
+              v82 = [callStackSymbols componentsJoinedByString:@"\n"];
               *buf = 138543618;
               v135 = specific;
               v136 = 2114;
@@ -730,7 +730,7 @@ LABEL_57:
 LABEL_65:
             _NUAssertContinueHandler();
             [MEMORY[0x1E69B3A48] missingError:@"Serialization map missing adjustment key" object:{v26, v26}];
-            *v94 = v66 = 0;
+            *errorCopy = v66 = 0;
             v22 = v96;
             goto LABEL_66;
           }
@@ -751,8 +751,8 @@ LABEL_65:
         {
           v85 = MEMORY[0x1E696AF00];
           v86 = v83;
-          v87 = [v85 callStackSymbols];
-          v88 = [v87 componentsJoinedByString:@"\n"];
+          callStackSymbols2 = [v85 callStackSymbols];
+          v88 = [callStackSymbols2 componentsJoinedByString:@"\n"];
           *buf = 138543362;
           v135 = v88;
           _os_log_error_impl(&dword_1C7694000, v86, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -791,7 +791,7 @@ LABEL_65:
       v34 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v133 forKeys:v132 count:4];
 
       v106 = v34;
-      [v100 addObject:v34];
+      [array addObject:v34];
 LABEL_44:
 
 LABEL_45:
@@ -810,7 +810,7 @@ LABEL_45:
     v35 = [(PICompositionController *)v98 adjustmentControllerForKey:v26];
     if (!v35)
     {
-      *v94 = [MEMORY[0x1E69B3A48] missingError:@"Missing adjustment" object:v26];
+      *errorCopy = [MEMORY[0x1E69B3A48] missingError:@"Missing adjustment" object:v26];
 
       v66 = 0;
       v64 = v91;
@@ -856,8 +856,8 @@ LABEL_45:
     v44 = [v28 objectForKeyedSubscript:@"customSerialization"];
     if (v44)
     {
-      v45 = [v30 adjustment];
-      (*(v44 + 16))(v44, v40, v45);
+      adjustment = [v30 adjustment];
+      (*(v44 + 16))(v44, v40, adjustment);
     }
 
     v102 = v44;
@@ -924,7 +924,7 @@ LABEL_43:
 
       [v31 setObject:@"com.apple.photo" forKeyedSubscript:@"formatIdentifier"];
       [v31 setObject:&unk_1F471E910 forKeyedSubscript:@"formatVersion"];
-      [v100 addObject:v31];
+      [array addObject:v31];
 
       v22 = v96;
       goto LABEL_44;
@@ -933,8 +933,8 @@ LABEL_43:
     v60 = [v28 objectForKeyedSubscript:@"autoValue"];
     if (v60)
     {
-      v61 = [v30 adjustment];
-      (v60)[2](v60, v31, v61);
+      adjustment2 = [v30 adjustment];
+      (v60)[2](v60, v31, adjustment2);
     }
 
     else
@@ -950,9 +950,9 @@ LABEL_42:
       v126[1] = @"current";
       v127[0] = MEMORY[0x1E695E0F8];
       v127[1] = @"auto";
-      v61 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v127 forKeys:v126 count:2];
+      adjustment2 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v127 forKeys:v126 count:2];
       v58 = v105;
-      [v31 setObject:v61 forKeyedSubscript:@"auto"];
+      [v31 setObject:adjustment2 forKeyedSubscript:@"auto"];
     }
 
     v24 = v97;
@@ -966,13 +966,13 @@ LABEL_47:
   v64 = v91;
   v63 = v92;
   v125[0] = v91;
-  v125[1] = v100;
+  v125[1] = array;
   v124[2] = @"formatVersion";
   v124[3] = @"versionInfo";
   v125[2] = &unk_1F471E928;
   v125[3] = v92;
   obj = [MEMORY[0x1E695DF20] dictionaryWithObjects:v125 forKeys:v124 count:4];
-  v65 = [v90 serializeDictionary:? error:?];
+  v65 = [selfCopy serializeDictionary:? error:?];
   if (v65)
   {
     v66 = objc_opt_new();
@@ -1028,34 +1028,34 @@ void __85__PICompositionSerializer_serializeComposition_versionInfo_serializerMe
   }
 }
 
-+ (id)_serializeComposition:(id)a3 versionInfo:(id)a4 skipMetadata:(BOOL)a5 error:(id *)a6
++ (id)_serializeComposition:(id)composition versionInfo:(id)info skipMetadata:(BOOL)metadata error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  compositionCopy = composition;
+  infoCopy = info;
   v12 = objc_alloc_init(PICompositionSerializerMetadata);
-  if (a5)
+  if (metadata)
   {
     goto LABEL_4;
   }
 
-  v13 = [PIPhotoEditHelper geometryRequestWithComposition:v10];
+  v13 = [PIPhotoEditHelper geometryRequestWithComposition:compositionCopy];
   [v13 setName:@"PICompositionSerializer-geometry"];
-  v14 = [v13 submitSynchronous:a6];
+  v14 = [v13 submitSynchronous:error];
   if (v14)
   {
     v15 = v14;
-    v16 = [v14 geometry];
-    -[PICompositionSerializerMetadata setWidth:](v12, "setWidth:", [v16 size]);
+    geometry = [v14 geometry];
+    -[PICompositionSerializerMetadata setWidth:](v12, "setWidth:", [geometry size]);
 
-    v17 = [v15 geometry];
-    [v17 size];
+    geometry2 = [v15 geometry];
+    [geometry2 size];
     [(PICompositionSerializerMetadata *)v12 setHeight:v18];
 
-    v19 = [v15 geometry];
-    -[PICompositionSerializerMetadata setOrientation:](v12, "setOrientation:", [v19 orientation]);
+    geometry3 = [v15 geometry];
+    -[PICompositionSerializerMetadata setOrientation:](v12, "setOrientation:", [geometry3 orientation]);
 
 LABEL_4:
-    v20 = [a1 serializeComposition:v10 versionInfo:v11 serializerMetadata:v12 error:a6];
+    v20 = [self serializeComposition:compositionCopy versionInfo:infoCopy serializerMetadata:v12 error:error];
     goto LABEL_5;
   }
 
@@ -1065,18 +1065,18 @@ LABEL_5:
   return v20;
 }
 
-+ (id)deserializeCompositionFromAdjustments:(id)a3 metadata:(id)a4 formatIdentifier:(id)a5 formatVersion:(id)a6 sidecarData:(id)a7 error:(id *)a8
++ (id)deserializeCompositionFromAdjustments:(id)adjustments metadata:(id)metadata formatIdentifier:(id)identifier formatVersion:(id)version sidecarData:(id)data error:(id *)error
 {
   v93 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v71 = a5;
-  v70 = a6;
-  v78 = a7;
-  if (!a8)
+  adjustmentsCopy = adjustments;
+  metadataCopy = metadata;
+  identifierCopy = identifier;
+  versionCopy = version;
+  dataCopy = data;
+  if (!error)
   {
-    v66 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v66 handleFailureInMethod:a2 object:a1 file:@"PICompositionSerializer.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"error != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PICompositionSerializer.m" lineNumber:151 description:{@"Invalid parameter not satisfying: %@", @"error != NULL"}];
   }
 
   v16 = +[PICompositionSerializerConstants conversionMap];
@@ -1085,7 +1085,7 @@ LABEL_5:
   v89 = 0u;
   v90 = 0u;
   v91 = 0u;
-  v18 = v14;
+  v18 = adjustmentsCopy;
   v19 = [v18 countByEnumeratingWithState:&v88 objects:v92 count:16];
   v75 = v16;
   v76 = v18;
@@ -1096,15 +1096,15 @@ LABEL_5:
 
   v20 = v19;
   v21 = *v89;
-  v68 = v15;
-  v69 = a8;
+  v68 = metadataCopy;
+  errorCopy = error;
   v74 = v17;
   v77 = *v89;
   while (2)
   {
     v22 = 0;
     v73 = v20;
-    v23 = v78;
+    v23 = dataCopy;
     do
     {
       if (*v89 != v21)
@@ -1119,7 +1119,7 @@ LABEL_5:
         v25 = [v24 objectForKeyedSubscript:@"identifier"];
         if (!v25)
         {
-          *v69 = [MEMORY[0x1E69B3A48] missingError:@"Adjustment missing identifier" object:v24];
+          *errorCopy = [MEMORY[0x1E69B3A48] missingError:@"Adjustment missing identifier" object:v24];
           goto LABEL_55;
         }
 
@@ -1128,7 +1128,7 @@ LABEL_5:
         if (!v27)
         {
           v64 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Conversion map is missing adjustment identifier '%@'", v26];
-          *v69 = [MEMORY[0x1E69B3A48] missingError:v64 object:v16];
+          *errorCopy = [MEMORY[0x1E69B3A48] missingError:v64 object:v16];
 
           goto LABEL_55;
         }
@@ -1140,7 +1140,7 @@ LABEL_5:
         v31 = v30;
         if (v30 && ((*(v30 + 16))(v30, v29) & 1) == 0)
         {
-          *v69 = [MEMORY[0x1E69B3A48] unsupportedError:@"Unsupported adjustment" object:v26];
+          *errorCopy = [MEMORY[0x1E69B3A48] unsupportedError:@"Unsupported adjustment" object:v26];
 
           goto LABEL_54;
         }
@@ -1148,7 +1148,7 @@ LABEL_5:
         v81 = v31;
         if (sDisableApertureEffects == 1 && (([v26 isEqualToString:@"DepthEffect"] & 1) != 0 || objc_msgSend(v26, "isEqualToString:", @"PortraitEffect")))
         {
-          *v69 = [MEMORY[0x1E69B3A48] unsupportedError:@"Configuration does not support Aperture adjustments" object:0];
+          *errorCopy = [MEMORY[0x1E69B3A48] unsupportedError:@"Configuration does not support Aperture adjustments" object:0];
 
           goto LABEL_52;
         }
@@ -1166,13 +1166,13 @@ LABEL_5:
 
         if (!v32)
         {
-          *v69 = [MEMORY[0x1E69B3A48] failureError:@"Failed to generate or read identifier from composition definition" object:v28];
+          *errorCopy = [MEMORY[0x1E69B3A48] failureError:@"Failed to generate or read identifier from composition definition" object:v28];
 LABEL_52:
           v31 = v81;
 LABEL_54:
 
 LABEL_55:
-          v15 = v68;
+          metadataCopy = v68;
           v17 = v74;
 LABEL_56:
 
@@ -1183,8 +1183,8 @@ LABEL_56:
         if ([v32 isEqualToString:@"InpaintMasks"])
         {
           v33 = [v29 objectForKeyedSubscript:@"maskIdentifiers"];
-          v34 = [v23 maskSources];
-          if (!v34)
+          maskSources = [v23 maskSources];
+          if (!maskSources)
           {
             v39 = v32;
             v41 = v81;
@@ -1202,9 +1202,9 @@ LABEL_39:
           v17 = v74;
           if (![v35 isEqualToSet:v38])
           {
-            *v69 = [MEMORY[0x1E69B3A48] mismatchError:@"Sidecar mask sources do not match serialized mask identifiers" object:v35];
+            *errorCopy = [MEMORY[0x1E69B3A48] mismatchError:@"Sidecar mask sources do not match serialized mask identifiers" object:v35];
 
-            v15 = v68;
+            metadataCopy = v68;
             v16 = v75;
             v18 = v76;
             goto LABEL_56;
@@ -1213,12 +1213,12 @@ LABEL_39:
           v79 = v35;
           v39 = v32;
           v40 = [v28 objectForKeyedSubscript:@"compositionName"];
-          [v74 setObject:v34 forKeyedSubscript:v40];
+          [v74 setObject:maskSources forKeyedSubscript:v40];
 
           v16 = v75;
           v20 = v73;
           v41 = v81;
-          v23 = v78;
+          v23 = dataCopy;
 LABEL_38:
 
           v18 = v76;
@@ -1289,17 +1289,17 @@ LABEL_38:
         else
         {
           v57 = [v28 objectForKeyedSubscript:@"omitIfDisabled"];
-          v58 = [v57 BOOLValue];
+          bOOLValue = [v57 BOOLValue];
 
           v41 = v81;
-          if (v58)
+          if (bOOLValue)
           {
 LABEL_37:
 
             v38 = v84;
-            v23 = v78;
+            v23 = dataCopy;
             v16 = v75;
-            v34 = v72;
+            maskSources = v72;
             v20 = v73;
             goto LABEL_38;
           }
@@ -1315,8 +1315,8 @@ LABEL_40:
 
     while (v20 != v22);
     v20 = [v18 countByEnumeratingWithState:&v88 objects:v92 count:16];
-    v15 = v68;
-    a8 = v69;
+    metadataCopy = v68;
+    error = errorCopy;
     v17 = v74;
     if (v20)
     {
@@ -1332,7 +1332,7 @@ LABEL_42:
 
   if (!v59)
   {
-    v60 = [v15 objectForKeyedSubscript:@"orientation"];
+    v60 = [metadataCopy objectForKeyedSubscript:@"orientation"];
     if ([v60 integerValue])
     {
       v61 = [objc_alloc(MEMORY[0x1E69B3AD0]) initWithName:@"Orientation"];
@@ -1345,8 +1345,8 @@ LABEL_42:
     }
   }
 
-  [a1 _sanitizeComposition:v17];
-  if ([a1 validateCompositionWithMissingSource:v17 error:a8])
+  [self _sanitizeComposition:v17];
+  if ([self validateCompositionWithMissingSource:v17 error:error])
   {
     v63 = v17;
   }
@@ -1380,47 +1380,47 @@ void __123__PICompositionSerializer_deserializeCompositionFromAdjustments_metada
   }
 }
 
-+ (BOOL)validateCompositionWithMissingSource:(id)a3 error:(id *)a4
++ (BOOL)validateCompositionWithMissingSource:(id)source error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"source"];
+  sourceCopy = source;
+  v6 = [sourceCopy objectForKeyedSubscript:@"source"];
 
   if (!v6)
   {
     v7 = objc_alloc_init(MEMORY[0x1E69B3CB8]);
     [v7 setAssetIdentifier:@"dummy"];
-    [v5 setObject:v7 forKeyedSubscript:@"source"];
+    [sourceCopy setObject:v7 forKeyedSubscript:@"source"];
   }
 
-  v8 = [v5 schema];
-  v9 = [v8 validateComposition:v5 error:a4];
+  schema = [sourceCopy schema];
+  v9 = [schema validateComposition:sourceCopy error:error];
 
   if (!v6)
   {
-    [v5 setObject:0 forKeyedSubscript:@"source"];
+    [sourceCopy setObject:0 forKeyedSubscript:@"source"];
   }
 
   return v9;
 }
 
-+ (id)deserializeCompositionFromData:(id)a3 formatIdentifier:(id)a4 formatVersion:(id)a5 sidecarData:(id)a6 error:(id *)a7
++ (id)deserializeCompositionFromData:(id)data formatIdentifier:(id)identifier formatVersion:(id)version sidecarData:(id)sidecarData error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  if (!a7)
+  dataCopy = data;
+  identifierCopy = identifier;
+  versionCopy = version;
+  sidecarDataCopy = sidecarData;
+  if (!error)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"PICompositionSerializer.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"error != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PICompositionSerializer.m" lineNumber:82 description:{@"Invalid parameter not satisfying: %@", @"error != NULL"}];
   }
 
-  v17 = [a1 deserializeDictionaryFromData:v13 error:a7];
-  if (v17 && [a1 validateAdjustmentsEnvelope:v17 error:a7])
+  v17 = [self deserializeDictionaryFromData:dataCopy error:error];
+  if (v17 && [self validateAdjustmentsEnvelope:v17 error:error])
   {
     v18 = [v17 objectForKeyedSubscript:@"adjustments"];
     v19 = [v17 objectForKeyedSubscript:@"metadata"];
-    v20 = [a1 deserializeCompositionFromAdjustments:v18 metadata:v19 formatIdentifier:v14 formatVersion:v15 sidecarData:v16 error:a7];
+    v20 = [self deserializeCompositionFromAdjustments:v18 metadata:v19 formatIdentifier:identifierCopy formatVersion:versionCopy sidecarData:sidecarDataCopy error:error];
   }
 
   else
@@ -1431,12 +1431,12 @@ void __123__PICompositionSerializer_deserializeCompositionFromAdjustments_metada
   return v20;
 }
 
-+ (BOOL)canInterpretDataWithFormatIdentifier:(id)a3 formatVersion:(id)a4
++ (BOOL)canInterpretDataWithFormatIdentifier:(id)identifier formatVersion:(id)version
 {
-  v5 = a4;
-  if ([__s_allowedIdentifiers containsObject:a3])
+  versionCopy = version;
+  if ([__s_allowedIdentifiers containsObject:identifier])
   {
-    v6 = [__s_allowedVersions containsObject:v5];
+    v6 = [__s_allowedVersions containsObject:versionCopy];
   }
 
   else
@@ -1449,7 +1449,7 @@ void __123__PICompositionSerializer_deserializeCompositionFromAdjustments_metada
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [MEMORY[0x1E695DFD8] setWithObjects:{@"com.apple.photo", 0}];
     v3 = __s_allowedIdentifiers;

@@ -1,10 +1,10 @@
 @interface CPDashboardController
 + (id)_dashboardProvidingInterface;
 - (id)_init;
-- (void)_connectToListenerEndpoint:(id)a3;
+- (void)_connectToListenerEndpoint:(id)endpoint;
 - (void)_invalidate;
-- (void)_sceneConnect:(id)a3;
-- (void)handleActionForControlIdentifier:(id)a3;
+- (void)_sceneConnect:(id)connect;
+- (void)handleActionForControlIdentifier:(id)identifier;
 - (void)setShortcutButtons:(NSArray *)shortcutButtons;
 @end
 
@@ -36,7 +36,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
     v13 = v4;
     _os_log_impl(&dword_236ED4000, v5, OS_LOG_TYPE_DEFAULT, "%@: Setting shortcut buttons: %@", &v10, 0x16u);
@@ -46,58 +46,58 @@
   v7 = self->_shortcutButtons;
   self->_shortcutButtons = v6;
 
-  v8 = [(CPDashboardController *)self dashboardProvider];
-  [v8 hostSetShortcutButtons:v4 completion:&__block_literal_global_18];
+  dashboardProvider = [(CPDashboardController *)self dashboardProvider];
+  [dashboardProvider hostSetShortcutButtons:v4 completion:&__block_literal_global_18];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sceneConnect:(id)a3
+- (void)_sceneConnect:(id)connect
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 _FBSScene];
-  if (CPCurrentProcessHasMapsEntitlement() && ([v5 settings], v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, (isKindOfClass & 1) != 0))
+  connectCopy = connect;
+  _FBSScene = [connectCopy _FBSScene];
+  if (CPCurrentProcessHasMapsEntitlement() && ([_FBSScene settings], v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, (isKindOfClass & 1) != 0))
   {
-    v8 = [v5 settings];
-    v9 = [v8 templateEndpoint];
+    settings = [_FBSScene settings];
+    templateEndpoint = [settings templateEndpoint];
 
     v10 = CarPlayFrameworkGeneralLogging();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v4 _identifier];
+      _identifier = [connectCopy _identifier];
       v21 = 138543618;
-      v22 = v11;
+      v22 = _identifier;
       v23 = 2112;
-      v24 = v9;
+      v24 = templateEndpoint;
       _os_log_impl(&dword_236ED4000, v10, OS_LOG_TYPE_DEFAULT, "Connecting to dashboard listener endpoint for scene identifier: %{public}@ endpoint %@", &v21, 0x16u);
     }
 
     v12 = objc_alloc_init(MEMORY[0x277CCAEA0]);
-    [v12 _setEndpoint:v9];
+    [v12 _setEndpoint:templateEndpoint];
     [(CPDashboardController *)self _connectToListenerEndpoint:v12];
   }
 
   else
   {
-    v9 = CarPlayFrameworkGeneralLogging();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    templateEndpoint = CarPlayFrameworkGeneralLogging();
+    if (os_log_type_enabled(templateEndpoint, OS_LOG_TYPE_ERROR))
     {
-      [(CPDashboardController *)v9 _sceneConnect:v13, v14, v15, v16, v17, v18, v19];
+      [(CPDashboardController *)templateEndpoint _sceneConnect:v13, v14, v15, v16, v17, v18, v19];
     }
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_connectToListenerEndpoint:(id)a3
+- (void)_connectToListenerEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:v4];
-  v6 = [objc_opt_class() _dashboardProvidingInterface];
-  [v5 setRemoteObjectInterface:v6];
-  v7 = [objc_opt_class() _dashboardClientInterface];
-  [v5 setExportedInterface:v7];
+  endpointCopy = endpoint;
+  v5 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:endpointCopy];
+  _dashboardProvidingInterface = [objc_opt_class() _dashboardProvidingInterface];
+  [v5 setRemoteObjectInterface:_dashboardProvidingInterface];
+  _dashboardClientInterface = [objc_opt_class() _dashboardClientInterface];
+  [v5 setExportedInterface:_dashboardClientInterface];
   [v5 setExportedObject:self];
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x277D85DD0];
@@ -114,8 +114,8 @@
   [v5 setInvalidationHandler:v9];
   [v5 resume];
   [(CPDashboardController *)self setConnection:v5];
-  v8 = [v5 remoteObjectProxy];
-  [(CPDashboardController *)self setDashboardProvider:v8];
+  remoteObjectProxy = [v5 remoteObjectProxy];
+  [(CPDashboardController *)self setDashboardProvider:remoteObjectProxy];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&v12);
@@ -148,24 +148,24 @@ void __52__CPDashboardController__connectToListenerEndpoint___block_invoke_57(ui
 
 - (void)_invalidate
 {
-  v3 = [(CPDashboardController *)self connection];
-  [v3 invalidate];
+  connection = [(CPDashboardController *)self connection];
+  [connection invalidate];
 
   [(CPDashboardController *)self setConnection:0];
 
   [(CPDashboardController *)self setDashboardProvider:0];
 }
 
-- (void)handleActionForControlIdentifier:(id)a3
+- (void)handleActionForControlIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __58__CPDashboardController_handleActionForControlIdentifier___block_invoke;
   v6[3] = &unk_278A10780;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

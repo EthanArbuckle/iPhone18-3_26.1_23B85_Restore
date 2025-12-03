@@ -1,61 +1,61 @@
 @interface BKLibrarySearchProvider
-- (BKLibrarySearchProvider)initWithFetchRequest:(id)a3 name:(id)a4 searchTerm:(id)a5 limit:(unint64_t)a6;
-- (BKLibrarySearchProvider)initWithFetchRequest:(id)a3 name:(id)a4 searchTerm:(id)a5 limit:(unint64_t)a6 moc:(id)a7;
-- (id)_assetDictionariesForDynamicArrayWithFetchRequest:(id)a3 isInitialFetch:(BOOL)a4 matchedAssets:(id)a5;
-- (id)_classifyAllResultsWithSearchItemStatus:(id)a3 searchItemStatus:(int64_t)a4;
-- (id)_classifyResultsSearchItemStatus:(id)a3 wideningSearch:(BOOL)a4;
-- (void)updateSearchResultEntityType:(int64_t)a3;
-- (void)updateSearchTerm:(id)a3 resettingResultType:(BOOL)a4;
+- (BKLibrarySearchProvider)initWithFetchRequest:(id)request name:(id)name searchTerm:(id)term limit:(unint64_t)limit;
+- (BKLibrarySearchProvider)initWithFetchRequest:(id)request name:(id)name searchTerm:(id)term limit:(unint64_t)limit moc:(id)moc;
+- (id)_assetDictionariesForDynamicArrayWithFetchRequest:(id)request isInitialFetch:(BOOL)fetch matchedAssets:(id)assets;
+- (id)_classifyAllResultsWithSearchItemStatus:(id)status searchItemStatus:(int64_t)itemStatus;
+- (id)_classifyResultsSearchItemStatus:(id)status wideningSearch:(BOOL)search;
+- (void)updateSearchResultEntityType:(int64_t)type;
+- (void)updateSearchTerm:(id)term resettingResultType:(BOOL)type;
 @end
 
 @implementation BKLibrarySearchProvider
 
-- (BKLibrarySearchProvider)initWithFetchRequest:(id)a3 name:(id)a4 searchTerm:(id)a5 limit:(unint64_t)a6 moc:(id)a7
+- (BKLibrarySearchProvider)initWithFetchRequest:(id)request name:(id)name searchTerm:(id)term limit:(unint64_t)limit moc:(id)moc
 {
-  v12 = a5;
+  termCopy = term;
   v16.receiver = self;
   v16.super_class = BKLibrarySearchProvider;
-  v13 = [(BKLibraryProvider *)&v16 initWithFetchRequest:a3 name:a4 moc:a7];
+  v13 = [(BKLibraryProvider *)&v16 initWithFetchRequest:request name:name moc:moc];
   v14 = v13;
   if (v13)
   {
-    [(BKLibrarySearchProvider *)v13 _commonInitWithSearchTerm:v12 limit:a6];
+    [(BKLibrarySearchProvider *)v13 _commonInitWithSearchTerm:termCopy limit:limit];
   }
 
   return v14;
 }
 
-- (BKLibrarySearchProvider)initWithFetchRequest:(id)a3 name:(id)a4 searchTerm:(id)a5 limit:(unint64_t)a6
+- (BKLibrarySearchProvider)initWithFetchRequest:(id)request name:(id)name searchTerm:(id)term limit:(unint64_t)limit
 {
-  v10 = a5;
+  termCopy = term;
   v14.receiver = self;
   v14.super_class = BKLibrarySearchProvider;
-  v11 = [(BKLibraryProvider *)&v14 initWithFetchRequest:a3 name:a4];
+  v11 = [(BKLibraryProvider *)&v14 initWithFetchRequest:request name:name];
   v12 = v11;
   if (v11)
   {
-    [(BKLibrarySearchProvider *)v11 _commonInitWithSearchTerm:v10 limit:a6];
+    [(BKLibrarySearchProvider *)v11 _commonInitWithSearchTerm:termCopy limit:limit];
   }
 
   return v12;
 }
 
-- (void)updateSearchTerm:(id)a3 resettingResultType:(BOOL)a4
+- (void)updateSearchTerm:(id)term resettingResultType:(BOOL)type
 {
-  v4 = a4;
-  v15 = a3;
+  typeCopy = type;
+  termCopy = term;
   v7 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v8 = [v15 stringByTrimmingCharactersInSet:v7];
+  v8 = [termCopy stringByTrimmingCharactersInSet:v7];
 
   v9 = [v8 length];
   currentSearchTerm = self->_currentSearchTerm;
   if (v9)
   {
     objc_storeStrong(&self->_previousSearchTerm, currentSearchTerm);
-    objc_storeStrong(&self->_currentSearchTerm, a3);
+    objc_storeStrong(&self->_currentSearchTerm, term);
     currentSearchResultEntityType = self->_currentSearchResultEntityType;
     self->_previousSearchResultEntityType = currentSearchResultEntityType;
-    if (v4)
+    if (typeCopy)
     {
       currentSearchResultEntityType = 0;
       self->_currentSearchResultEntityType = 0;
@@ -74,7 +74,7 @@
     self->_previousSearchTerm = 0;
 
     v12 = 0;
-    if (v4)
+    if (typeCopy)
     {
       v12 = 0;
       self->_currentSearchResultEntityType = 0;
@@ -85,56 +85,56 @@
   [(BKLibraryProvider *)self configureFetchedResultsControllerWithFetchRequest:v12];
 }
 
-- (void)updateSearchResultEntityType:(int64_t)a3
+- (void)updateSearchResultEntityType:(int64_t)type
 {
   currentSearchResultEntityType = self->_currentSearchResultEntityType;
-  if (currentSearchResultEntityType == a3)
+  if (currentSearchResultEntityType == type)
   {
     return;
   }
 
   self->_previousSearchResultEntityType = currentSearchResultEntityType;
-  self->_currentSearchResultEntityType = a3;
+  self->_currentSearchResultEntityType = type;
   objc_storeStrong(&self->_previousSearchTerm, self->_currentSearchTerm);
   currentSearchTerm = self->_currentSearchTerm;
   v8 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
   v14 = [(NSString *)currentSearchTerm stringByTrimmingCharactersInSet:v8];
 
-  if (a3 == 4)
+  if (type == 4)
   {
-    v9 = [(BKLibraryProvider *)self dynamicArray];
-    [v9 updateArray:&__NSArray0__struct];
+    dynamicArray = [(BKLibraryProvider *)self dynamicArray];
+    [dynamicArray updateArray:&__NSArray0__struct];
 
-    v10 = [(BKLibraryProvider *)self delegate];
+    delegate = [(BKLibraryProvider *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [(BKLibraryProvider *)self delegate];
-      [v12 libraryProvider:self contentDidLoad:&__NSArray0__struct];
+      delegate2 = [(BKLibraryProvider *)self delegate];
+      [delegate2 libraryProvider:self contentDidLoad:&__NSArray0__struct];
 LABEL_7:
     }
   }
 
   else if ([v14 length])
   {
-    v12 = [BKLibraryManager searchFetchRequestWithText:v14 entityType:a3];
+    delegate2 = [BKLibraryManager searchFetchRequestWithText:v14 entityType:type];
     v13 = +[BSUIAsset propertiesNeededFromBKLibraryAsset];
-    [v12 setPropertiesToFetch:v13];
+    [delegate2 setPropertiesToFetch:v13];
 
-    [(BKLibraryProvider *)self configureFetchedResultsControllerWithFetchRequest:v12];
+    [(BKLibraryProvider *)self configureFetchedResultsControllerWithFetchRequest:delegate2];
     goto LABEL_7;
   }
 }
 
-- (id)_assetDictionariesForDynamicArrayWithFetchRequest:(id)a3 isInitialFetch:(BOOL)a4 matchedAssets:(id)a5
+- (id)_assetDictionariesForDynamicArrayWithFetchRequest:(id)request isInitialFetch:(BOOL)fetch matchedAssets:(id)assets
 {
-  v5 = a4;
+  fetchCopy = fetch;
   v17.receiver = self;
   v17.super_class = BKLibrarySearchProvider;
-  v7 = [(BKLibraryProvider *)&v17 _assetDictionariesForDynamicArrayWithFetchRequest:a3 isInitialFetch:a4 matchedAssets:a5];
+  v7 = [(BKLibraryProvider *)&v17 _assetDictionariesForDynamicArrayWithFetchRequest:request isInitialFetch:fetch matchedAssets:assets];
   v8 = v7;
-  if (v5 && [v7 count])
+  if (fetchCopy && [v7 count])
   {
     currentSearchResultEntityType = self->_currentSearchResultEntityType;
     if (currentSearchResultEntityType == self->_previousSearchResultEntityType)
@@ -168,7 +168,7 @@ LABEL_7:
         if (!self->_previousSearchResultEntityType)
         {
 LABEL_15:
-          v12 = self;
+          selfCopy2 = self;
           v13 = v8;
           v14 = 0;
           goto LABEL_16;
@@ -184,11 +184,11 @@ LABEL_17:
       }
     }
 
-    v12 = self;
+    selfCopy2 = self;
     v13 = v8;
     v14 = 1;
 LABEL_16:
-    v11 = [(BKLibrarySearchProvider *)v12 _classifyResultsSearchItemStatus:v13 wideningSearch:v14];
+    v11 = [(BKLibrarySearchProvider *)selfCopy2 _classifyResultsSearchItemStatus:v13 wideningSearch:v14];
     goto LABEL_17;
   }
 
@@ -197,15 +197,15 @@ LABEL_18:
   return v8;
 }
 
-- (id)_classifyAllResultsWithSearchItemStatus:(id)a3 searchItemStatus:(int64_t)a4
+- (id)_classifyAllResultsWithSearchItemStatus:(id)status searchItemStatus:(int64_t)itemStatus
 {
-  v5 = a3;
+  statusCopy = status;
   v6 = objc_alloc_init(NSMutableArray);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = statusCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -221,7 +221,7 @@ LABEL_18:
         }
 
         v12 = [*(*(&v15 + 1) + 8 * i) mutableCopy];
-        v13 = [NSNumber numberWithInteger:a4];
+        v13 = [NSNumber numberWithInteger:itemStatus];
         [v12 setObject:v13 forKeyedSubscript:@"searchItemStatus"];
 
         [v6 addObject:v12];
@@ -236,26 +236,26 @@ LABEL_18:
   return v6;
 }
 
-- (id)_classifyResultsSearchItemStatus:(id)a3 wideningSearch:(BOOL)a4
+- (id)_classifyResultsSearchItemStatus:(id)status wideningSearch:(BOOL)search
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(BKLibraryProvider *)self dynamicArray];
-  v8 = [v7 internalArray];
+  searchCopy = search;
+  statusCopy = status;
+  dynamicArray = [(BKLibraryProvider *)self dynamicArray];
+  internalArray = [dynamicArray internalArray];
 
-  if ([v8 count])
+  if ([internalArray count])
   {
     v24 = objc_alloc_init(NSMutableArray);
     v9 = BSUIAssetKeyAssetID;
-    v10 = [v6 valueForKey:BSUIAssetKeyAssetID];
-    v11 = [v8 valueForKey:v9];
+    v10 = [statusCopy valueForKey:BSUIAssetKeyAssetID];
+    v11 = [internalArray valueForKey:v9];
     v12 = [NSSet setWithArray:v10];
     v13 = [NSSet setWithArray:v11];
     v14 = [v12 mutableCopy];
     [v14 minusSet:v13];
     v15 = [v13 mutableCopy];
     [v15 minusSet:v12];
-    if (v4)
+    if (searchCopy)
     {
       v31[0] = _NSConcreteStackBlock;
       v31[1] = 3221225472;
@@ -283,14 +283,14 @@ LABEL_18:
     v19 = v11;
     v20 = v15;
     v21 = v14;
-    [v6 enumerateObjectsUsingBlock:v25];
+    [statusCopy enumerateObjectsUsingBlock:v25];
     v22 = v29;
     v17 = v18;
   }
 
   else
   {
-    v17 = [(BKLibrarySearchProvider *)self _classifyAllResultsWithSearchItemStatus:v6 searchItemStatus:1];
+    v17 = [(BKLibrarySearchProvider *)self _classifyAllResultsWithSearchItemStatus:statusCopy searchItemStatus:1];
   }
 
   return v17;

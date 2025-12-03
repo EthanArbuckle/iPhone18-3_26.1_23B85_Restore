@@ -1,31 +1,31 @@
 @interface WBSSavedAccountStore
-+ (BOOL)getProtectionSpaceAndHighLevelDomainForUserTypedSite:(id)a3 protectionSpace:(id *)a4 highLevelDomain:(id *)a5 mode:(int64_t)a6;
++ (BOOL)getProtectionSpaceAndHighLevelDomainForUserTypedSite:(id)site protectionSpace:(id *)space highLevelDomain:(id *)domain mode:(int64_t)mode;
 + (BOOL)shouldShowServiceNamesForPasswordAndPasskeyItems;
-+ (BOOL)userTypedTitleShouldBeTreatedAsAWebsiteWhenAddingNewAccount:(id)a3;
++ (BOOL)userTypedTitleShouldBeTreatedAsAWebsiteWhenAddingNewAccount:(id)account;
 + (WBSSavedAccountStore)sharedStore;
 + (id)protectionSpaceForNewStandalonePassword;
-+ (void)removeCredentialTypes:(int64_t)a3 forSavedAccount:(id)a4 forGroup:(id)a5;
-- (BOOL)_applyServiceNamesToSavedAccounts:(id)a3;
-- (BOOL)_canChangeSavedAccount:(id)a3 toUser:(id)a4 password:(id)a5 forGroupID:(id)a6;
-- (BOOL)_canMoveSavedAccount:(id)a3 toGroupWithID:(id)a4;
-- (BOOL)_canMoveSavedAccountWithPasskey:(id)a3 toGroup:(id)a4;
++ (void)removeCredentialTypes:(int64_t)types forSavedAccount:(id)account forGroup:(id)group;
+- (BOOL)_applyServiceNamesToSavedAccounts:(id)accounts;
+- (BOOL)_canChangeSavedAccount:(id)account toUser:(id)user password:(id)password forGroupID:(id)d;
+- (BOOL)_canMoveSavedAccount:(id)account toGroupWithID:(id)d;
+- (BOOL)_canMoveSavedAccountWithPasskey:(id)passkey toGroup:(id)group;
 - (BOOL)_canPerformMaintenanceTasks;
-- (BOOL)_copySavedAccount:(id)a3 toGroup:(id)a4;
-- (BOOL)_deleteSavedAccountsWithUnknownOriginalContributorParticipantIDsFromSavedAccounts:(id)a3 inGroup:(id)a4;
-- (BOOL)_hasPersonWithParticipantID:(id)a3 contributedSavedAccountsToGroupWithID:(id)a4;
-- (BOOL)_hasSavedAccountWithSameUserNameOfSavedAccount:(id)a3 forProtectionSpace:(id)a4;
+- (BOOL)_copySavedAccount:(id)account toGroup:(id)group;
+- (BOOL)_deleteSavedAccountsWithUnknownOriginalContributorParticipantIDsFromSavedAccounts:(id)accounts inGroup:(id)group;
+- (BOOL)_hasPersonWithParticipantID:(id)d contributedSavedAccountsToGroupWithID:(id)iD;
+- (BOOL)_hasSavedAccountWithSameUserNameOfSavedAccount:(id)account forProtectionSpace:(id)space;
 - (BOOL)_isMigratingKeychainItemsWithInvalidAuthenticationTypes;
-- (BOOL)_moveSavedAccountsOriginallyContributedByCurrentUserToPersonalKeychainFromGroupID:(id)a3 isForAlreadyExitedGroup:(BOOL)a4;
-- (BOOL)_moveSavedAccountsOriginallyContributedByCurrentUserToPersonalKeychainFromGroupIDOnInternalQueue:(id)a3 isForAlreadyExitedGroup:(BOOL)a4;
-- (BOOL)_moveSignInWithAppleSavedAccount:(id)a3 toGroupID:(id)a4;
-- (BOOL)_shareSignInWithAppleAccountWithContext:(id)a3 withGroupInfo:(id)a4 savedAccount:(id)a5;
-- (BOOL)_shouldLoadCredentialRecordWithHostIntoAccountStore:(id)a3;
-- (BOOL)_shouldUpdateLastUsedDateForSavedAccount:(id)a3 forProtectionSpace:(id)a4 inContext:(id)a5;
-- (BOOL)_unshareSignInWithAppleAccountWithContext:(id)a3;
-- (BOOL)canChangeSavedAccount:(id)a3 toUser:(id)a4 password:(id)a5;
-- (BOOL)canChangeSavedAccountWithRequest:(id)a3;
-- (BOOL)canSaveUser:(id)a3 password:(id)a4 forProtectionSpace:(id)a5 highLevelDomain:(id)a6 notes:(id)a7 customTitle:(id)a8 groupID:(id)a9 error:(id *)a10;
-- (BOOL)canSaveUser:(id)a3 password:(id)a4 forUserTypedSite:(id)a5 notes:(id)a6 customTitle:(id)a7 groupID:(id)a8 error:(id *)a9;
+- (BOOL)_moveSavedAccountsOriginallyContributedByCurrentUserToPersonalKeychainFromGroupID:(id)d isForAlreadyExitedGroup:(BOOL)group;
+- (BOOL)_moveSavedAccountsOriginallyContributedByCurrentUserToPersonalKeychainFromGroupIDOnInternalQueue:(id)queue isForAlreadyExitedGroup:(BOOL)group;
+- (BOOL)_moveSignInWithAppleSavedAccount:(id)account toGroupID:(id)d;
+- (BOOL)_shareSignInWithAppleAccountWithContext:(id)context withGroupInfo:(id)info savedAccount:(id)account;
+- (BOOL)_shouldLoadCredentialRecordWithHostIntoAccountStore:(id)store;
+- (BOOL)_shouldUpdateLastUsedDateForSavedAccount:(id)account forProtectionSpace:(id)space inContext:(id)context;
+- (BOOL)_unshareSignInWithAppleAccountWithContext:(id)context;
+- (BOOL)canChangeSavedAccount:(id)account toUser:(id)user password:(id)password;
+- (BOOL)canChangeSavedAccountWithRequest:(id)request;
+- (BOOL)canSaveUser:(id)user password:(id)password forProtectionSpace:(id)space highLevelDomain:(id)domain notes:(id)notes customTitle:(id)title groupID:(id)d error:(id *)self0;
+- (BOOL)canSaveUser:(id)user password:(id)password forUserTypedSite:(id)site notes:(id)notes customTitle:(id)title groupID:(id)d error:(id *)error;
 - (BOOL)shouldShowServiceNamesForPasswordAndPasskeyItems;
 - (NSArray)allRecentlyDeletedSavedAccounts;
 - (NSArray)recentlyDeletedSavedAccountsInPersonalKeychain;
@@ -43,61 +43,61 @@
 - (NSSet)highLevelDomainsOfAllSavedAccountsExcludingNeverSaveMarkerPasswords;
 - (NSSet)highLevelDomainsOfAllSavedAccountsWithPasswordsExcludingNeverSaveMarkerPasswords;
 - (NSSet)highLevelDomainsOfRecentlyDeletedAccounts;
-- (id)_allInternetPasswordEntriesFromGroupID:(id)a3;
+- (id)_allInternetPasswordEntriesFromGroupID:(id)d;
 - (id)_allInternetPasswordEntriesFromPersonalKeychain;
-- (id)_allPersonalSidecarsFromPersonalKeychainFromRecentlyDeleted:(BOOL)a3;
+- (id)_allPersonalSidecarsFromPersonalKeychainFromRecentlyDeleted:(BOOL)deleted;
 - (id)_allSidecarsFromPersonalKeychain;
-- (id)_convertSignInWithAppleAccountsToSavedAccounts:(id)a3;
+- (id)_convertSignInWithAppleAccountsToSavedAccounts:(id)accounts;
 - (id)_diagnosticStateDictionary;
-- (id)_fetchCurrentAutoFillPasskeysWithCriteria:(id)a3;
-- (id)_getSavedAccountMatchesFromSavedAccountTreeMatchesOnInternalQueue:(id)a3 withCriteria:(id)a4 mergingAutoFillPasskeys:(id)a5 nearbyDeviceOptions:(id)a6;
-- (id)_getSavedAccountTreeMatchesWithCriteriaOnInternalQueue:(id)a3 relyingPartyURL:(id)a4;
-- (id)_getSavedAccountsMatchingCriteriaOnInternalQueue:(id)a3;
-- (id)_groupIDArrayForUserDefaultsKey:(id)a3;
-- (id)_loadAndMergeSavedAccountsFromGroupID:(id)a3 intoAllSavedAccounts:(id)a4;
+- (id)_fetchCurrentAutoFillPasskeysWithCriteria:(id)criteria;
+- (id)_getSavedAccountMatchesFromSavedAccountTreeMatchesOnInternalQueue:(id)queue withCriteria:(id)criteria mergingAutoFillPasskeys:(id)passkeys nearbyDeviceOptions:(id)options;
+- (id)_getSavedAccountTreeMatchesWithCriteriaOnInternalQueue:(id)queue relyingPartyURL:(id)l;
+- (id)_getSavedAccountsMatchingCriteriaOnInternalQueue:(id)queue;
+- (id)_groupIDArrayForUserDefaultsKey:(id)key;
+- (id)_loadAndMergeSavedAccountsFromGroupID:(id)d intoAllSavedAccounts:(id)accounts;
 - (id)_loadSavedAccounts;
 - (id)_loadSavedAccountsAfterSettingTestMode;
-- (id)_loadSavedAccountsWithPasskeysFromPasskeyData:(id)a3 forGroupID:(id)a4 fromRecentlyDeleted:(BOOL)a5 withDictionaryForSavedAccountsWithPasskeys:(id)a6;
-- (id)_loadSavedAccountsWithPasswordsFromKeychainData:(id)a3 forGroupID:(id)a4 withDictionaryForSavedAccountsWithPasswords:(id)a5 fromRecentlyDeleted:(BOOL)a6;
-- (id)_mergeLoadedSavedAccounts:(id)a3 intoAllSavedAccounts:(id)a4;
-- (id)_mergeSavedAccountsWithPasskeys:(id)a3 andSavedAccountsWithPasswords:(id)a4 usingDictionaryForSavedAccountsWithPasswords:(id)a5 dictionaryForSavedAccountsWithPasskeys:(id)a6;
-- (id)_moveCredentialTypesToRecentlyDeletedOnInternalQueue:(int64_t)a3 fromSavedAccount:(id)a4;
-- (id)_persistentIdentifierForUser:(id)a3 host:(id)a4;
-- (id)_relyingPartyURLForPasskeyCredentialIdentifierOnInternalQueue:(id)a3 credentialIdentifiersToAutoFillPasskeys:(id)a4;
-- (id)_saveAccountOnInternalQueueWithUser:(id)a3 password:(id)a4 forUserTypedSite:(id)a5 groupID:(id)a6;
-- (id)_saveAccountOnInternalQueueWithUser:(id)a3 password:(id)a4 protectionSpace:(id)a5 highLevelDomain:(id)a6 groupID:(id)a7;
-- (id)_saveUser:(id)a3 passkeyCredential:(id)a4 passkeyRelyingPartyID:(id)a5;
-- (id)_savedAccountForProtectionSpace:(id)a3 user:(id)a4 password:(id)a5;
+- (id)_loadSavedAccountsWithPasskeysFromPasskeyData:(id)data forGroupID:(id)d fromRecentlyDeleted:(BOOL)deleted withDictionaryForSavedAccountsWithPasskeys:(id)passkeys;
+- (id)_loadSavedAccountsWithPasswordsFromKeychainData:(id)data forGroupID:(id)d withDictionaryForSavedAccountsWithPasswords:(id)passwords fromRecentlyDeleted:(BOOL)deleted;
+- (id)_mergeLoadedSavedAccounts:(id)accounts intoAllSavedAccounts:(id)savedAccounts;
+- (id)_mergeSavedAccountsWithPasskeys:(id)passkeys andSavedAccountsWithPasswords:(id)passwords usingDictionaryForSavedAccountsWithPasswords:(id)withPasswords dictionaryForSavedAccountsWithPasskeys:(id)withPasskeys;
+- (id)_moveCredentialTypesToRecentlyDeletedOnInternalQueue:(int64_t)queue fromSavedAccount:(id)account;
+- (id)_persistentIdentifierForUser:(id)user host:(id)host;
+- (id)_relyingPartyURLForPasskeyCredentialIdentifierOnInternalQueue:(id)queue credentialIdentifiersToAutoFillPasskeys:(id)passkeys;
+- (id)_saveAccountOnInternalQueueWithUser:(id)user password:(id)password forUserTypedSite:(id)site groupID:(id)d;
+- (id)_saveAccountOnInternalQueueWithUser:(id)user password:(id)password protectionSpace:(id)space highLevelDomain:(id)domain groupID:(id)d;
+- (id)_saveUser:(id)user passkeyCredential:(id)credential passkeyRelyingPartyID:(id)d;
+- (id)_savedAccountForProtectionSpace:(id)space user:(id)user password:(id)password;
 - (id)_savedAccounts;
 - (id)_savedAccountsWithPasswords;
-- (id)duplicateAccountsWithGroupID:(id)a3;
-- (id)exportPasskeyCredentialWithID:(id)a3;
-- (id)exportPasskeyCredentialWithIDOnInternalQueue:(id)a3;
-- (id)highLevelDomainsOfSavedAccountsExcludingNeverSaveMarkerPasswordsForGroupID:(id)a3;
-- (id)importPasskeyCredentialOnInternalQueue:(id)a3;
-- (id)passkeyDataForPasskeyCredentialIDOnInternalQueue:(id)a3;
-- (id)persistentIdentifierForCredential:(id)a3 protectionSpace:(id)a4;
-- (id)persistentIdentifierForSavedAccount:(id)a3;
-- (id)recentlyDeletedSavedAccountsForGroupWithID:(id)a3;
-- (id)saveUser:(id)a3 password:(id)a4 forProtectionSpace:(id)a5 highLevelDomain:(id)a6 groupID:(id)a7;
-- (id)savedAccountForURL:(id)a3 user:(id)a4 password:(id)a5;
-- (id)savedAccountForURLCredential:(id)a3 protectionSpace:(id)a4;
-- (id)savedAccountForUserTypedSite:(id)a3 userName:(id)a4;
-- (id)savedAccountWithAllMetadataForURLCredential:(id)a3 protectionSpace:(id)a4;
-- (id)savedAccountsForGroupID:(id)a3;
-- (id)savedAccountsForPersistentIdentifiers:(id)a3;
-- (unint64_t)numberOfSavedAccountsInPersonalKeychainForHighLevelDomain:(id)a3;
-- (void)_addAccountHistoryItemOnInternalQueue:(id)a3 toSavedAccount:(id)a4 completionHandler:(id)a5;
-- (void)_addGroupID:(id)a3 toArrayForUserDefaultsKey:(id)a4;
-- (void)_addNewGroupToCachedSharingGroups:(id)a3;
-- (void)_addSavedAccount:(id)a3 toCachedDictionaryForSavedAccountsWithPasskeysForGroupID:(id)a4;
-- (void)_addSavedAccount:(id)a3 toCachedDictionaryForSavedAccountsWithPasswordsForGroupID:(id)a4;
-- (void)_addSavedAccountToRecentlyDeletedCachedCollections:(id)a3;
-- (void)_changeSavedAccountWithRequestOnInternalQueue:(id)a3 performPostUpdateActions:(BOOL)a4;
+- (id)duplicateAccountsWithGroupID:(id)d;
+- (id)exportPasskeyCredentialWithID:(id)d;
+- (id)exportPasskeyCredentialWithIDOnInternalQueue:(id)queue;
+- (id)highLevelDomainsOfSavedAccountsExcludingNeverSaveMarkerPasswordsForGroupID:(id)d;
+- (id)importPasskeyCredentialOnInternalQueue:(id)queue;
+- (id)passkeyDataForPasskeyCredentialIDOnInternalQueue:(id)queue;
+- (id)persistentIdentifierForCredential:(id)credential protectionSpace:(id)space;
+- (id)persistentIdentifierForSavedAccount:(id)account;
+- (id)recentlyDeletedSavedAccountsForGroupWithID:(id)d;
+- (id)saveUser:(id)user password:(id)password forProtectionSpace:(id)space highLevelDomain:(id)domain groupID:(id)d;
+- (id)savedAccountForURL:(id)l user:(id)user password:(id)password;
+- (id)savedAccountForURLCredential:(id)credential protectionSpace:(id)space;
+- (id)savedAccountForUserTypedSite:(id)site userName:(id)name;
+- (id)savedAccountWithAllMetadataForURLCredential:(id)credential protectionSpace:(id)space;
+- (id)savedAccountsForGroupID:(id)d;
+- (id)savedAccountsForPersistentIdentifiers:(id)identifiers;
+- (unint64_t)numberOfSavedAccountsInPersonalKeychainForHighLevelDomain:(id)domain;
+- (void)_addAccountHistoryItemOnInternalQueue:(id)queue toSavedAccount:(id)account completionHandler:(id)handler;
+- (void)_addGroupID:(id)d toArrayForUserDefaultsKey:(id)key;
+- (void)_addNewGroupToCachedSharingGroups:(id)groups;
+- (void)_addSavedAccount:(id)account toCachedDictionaryForSavedAccountsWithPasskeysForGroupID:(id)d;
+- (void)_addSavedAccount:(id)account toCachedDictionaryForSavedAccountsWithPasswordsForGroupID:(id)d;
+- (void)_addSavedAccountToRecentlyDeletedCachedCollections:(id)collections;
+- (void)_changeSavedAccountWithRequestOnInternalQueue:(id)queue performPostUpdateActions:(BOOL)actions;
 - (void)_cleanUpRedundantCredentialsWithoutUsernames;
 - (void)_clearExpiredRecentlyDeletedNotificationDates;
-- (void)_deleteAccountHistoryItemOnInternalQueue:(id)a3 fromSavedAccount:(id)a4 completionHandler:(id)a5;
-- (void)_ensureNoRecentlyDeletedSavedAccountsConflictWithSavedAccount:(id)a3;
+- (void)_deleteAccountHistoryItemOnInternalQueue:(id)queue fromSavedAccount:(id)account completionHandler:(id)handler;
+- (void)_ensureNoRecentlyDeletedSavedAccountsConflictWithSavedAccount:(id)account;
 - (void)_ensureRecentlyDeletedSavedAccountsAreLoadedOnInternalQueue;
 - (void)_fetchAndFilterAllPasskeysData;
 - (void)_fetchAndFilterPasskeysData;
@@ -106,94 +106,94 @@
 - (void)_fetchSignInWithAppleAccounts;
 - (void)_identifySharedSavedAccountsWithSameUsernameAndHighLevelDomainPairs;
 - (void)_loadRecentlyDeletedSavedAccounts;
-- (void)_loadRecentlyDeletedSavedAccountsFromSharedGroupIDs:(id)a3;
+- (void)_loadRecentlyDeletedSavedAccountsFromSharedGroupIDs:(id)ds;
 - (void)_loadRecentlyDeletedSavedAccountsInPersonalKeychain;
-- (void)_matchSidecars:(id)a3 toSavedAccountsWithPasskeysInDictionary:(id)a4 unmatchedSidecars:(id)a5;
-- (void)_matchSidecars:(id)a3 toSavedAccountsWithPasswordsInDictionary:(id)a4 unmatchedSidecars:(id)a5;
-- (void)_mergeSavedAccountWithPasskey:(id)a3 toSavedAccountWithPassword:(id)a4;
-- (void)_mergeSavedAccountWithPassword:(id)a3 toSavedAccountWithPasskey:(id)a4;
+- (void)_matchSidecars:(id)sidecars toSavedAccountsWithPasskeysInDictionary:(id)dictionary unmatchedSidecars:(id)unmatchedSidecars;
+- (void)_matchSidecars:(id)sidecars toSavedAccountsWithPasswordsInDictionary:(id)dictionary unmatchedSidecars:(id)unmatchedSidecars;
+- (void)_mergeSavedAccountWithPasskey:(id)passkey toSavedAccountWithPassword:(id)password;
+- (void)_mergeSavedAccountWithPassword:(id)password toSavedAccountWithPasskey:(id)passkey;
 - (void)_migratePasswordsWithInvalidAuthenticationTypes;
 - (void)_moveContributedSavedAccountsBackToPersonalKeychainIfNecessary;
-- (void)_moveCredentialTypesToRecentlyDeleted:(int64_t)a3 fromSavedAccount:(id)a4 completionHandler:(id)a5;
-- (void)_moveSavedAccount:(id)a3 toGroupWithID:(id)a4 completionHandler:(id)a5;
+- (void)_moveCredentialTypesToRecentlyDeleted:(int64_t)deleted fromSavedAccount:(id)account completionHandler:(id)handler;
+- (void)_moveSavedAccount:(id)account toGroupWithID:(id)d completionHandler:(id)handler;
 - (void)_notifyClientsAboutWebsiteNamesChanges;
-- (void)_performCleanupForExitedGroupsIfNecessary:(id)a3;
-- (void)_performLegacySidecarModificationWithChangeRequest:(id)a3 toSavedAccount:(id)a4;
+- (void)_performCleanupForExitedGroupsIfNecessary:(id)necessary;
+- (void)_performLegacySidecarModificationWithChangeRequest:(id)request toSavedAccount:(id)account;
 - (void)_performPostUpdateActionsOnInternalQueue;
 - (void)_performRecentlyDeletedMaintenanceIfNecessary;
 - (void)_postSavedAccountStoreDidChangeNotification;
 - (void)_prewarm;
-- (void)_pruneSavedAccountTreeMatchesOnInternalQueue:(id)a3 basedOnUsernameAndPasswordCriteria:(id)a4 autoFillPasskeyIdentifiers:(id)a5 keepAllPasskeyMatches:(BOOL)a6;
-- (void)_recordGroupIdentifierForExitCleanup:(id)a3 completionHandler:(id)a4;
-- (void)_recordGroupIdentifierForMovingContributedCredentialsBackToPersonalKeychain:(id)a3;
-- (void)_recoverRecentlyDeletedSavedAccount:(id)a3 completionHandler:(id)a4;
-- (void)_removeCredentialTypes:(int64_t)a3 forSavedAccount:(id)a4;
-- (void)_removeGroupID:(id)a3 fromArrayForUserDefaultsKey:(id)a4;
-- (void)_removeSavedAccount:(id)a3 fromCachedCollectionsForCredentialTypes:(int64_t)a4;
-- (void)_removeSavedAccount:(id)a3 fromCachedDictionaryForSavedAccountsWithPasskeysForGroupID:(id)a4;
-- (void)_removeSavedAccount:(id)a3 fromCachedDictionaryForSavedAccountsWithPasswordsForGroupID:(id)a4;
-- (void)_removeSavedAccount:(id)a3 fromGroupID:(id)a4;
-- (void)_removeSavedAccountFromRecentlyDeletedCachedCollections:(id)a3;
+- (void)_pruneSavedAccountTreeMatchesOnInternalQueue:(id)queue basedOnUsernameAndPasswordCriteria:(id)criteria autoFillPasskeyIdentifiers:(id)identifiers keepAllPasskeyMatches:(BOOL)matches;
+- (void)_recordGroupIdentifierForExitCleanup:(id)cleanup completionHandler:(id)handler;
+- (void)_recordGroupIdentifierForMovingContributedCredentialsBackToPersonalKeychain:(id)keychain;
+- (void)_recoverRecentlyDeletedSavedAccount:(id)account completionHandler:(id)handler;
+- (void)_removeCredentialTypes:(int64_t)types forSavedAccount:(id)account;
+- (void)_removeGroupID:(id)d fromArrayForUserDefaultsKey:(id)key;
+- (void)_removeSavedAccount:(id)account fromCachedCollectionsForCredentialTypes:(int64_t)types;
+- (void)_removeSavedAccount:(id)account fromCachedDictionaryForSavedAccountsWithPasskeysForGroupID:(id)d;
+- (void)_removeSavedAccount:(id)account fromCachedDictionaryForSavedAccountsWithPasswordsForGroupID:(id)d;
+- (void)_removeSavedAccount:(id)account fromGroupID:(id)d;
+- (void)_removeSavedAccountFromRecentlyDeletedCachedCollections:(id)collections;
 - (void)_reportAccountsWithUnknownContributorIDIfNeeded;
 - (void)_reportKeychainItemsWithInvalidAuthenticationTypesIfNeeded;
 - (void)_resetOnInternalQueue;
-- (void)_saveSidecarObjectsOnInternalQueueForSavedAccount:(id)a3 withBlock:(id)a4;
-- (void)_saveSidecarObjectsOnInternalQueueForSavedAccountWithPassword:(id)a3 withBlock:(id)a4;
-- (void)_saveSidecarOnInternalQueueForSavedAccountWithPasskey:(id)a3 withBlock:(id)a4;
-- (void)_setSavedAccountAsDefaultOnInternalQueue:(id)a3 forProtectionSpace:(id)a4 context:(id)a5 associatedDomainsManager:(id)a6;
-- (void)_signInWithApplePushNotificationReceived:(id)a3;
+- (void)_saveSidecarObjectsOnInternalQueueForSavedAccount:(id)account withBlock:(id)block;
+- (void)_saveSidecarObjectsOnInternalQueueForSavedAccountWithPassword:(id)password withBlock:(id)block;
+- (void)_saveSidecarOnInternalQueueForSavedAccountWithPasskey:(id)passkey withBlock:(id)block;
+- (void)_setSavedAccountAsDefaultOnInternalQueue:(id)queue forProtectionSpace:(id)space context:(id)context associatedDomainsManager:(id)manager;
+- (void)_signInWithApplePushNotificationReceived:(id)received;
 - (void)_updateCachedSharedAccountGroupsOnInternalQueue;
-- (void)_updateCachedSignInWithAppleAccountsOnInternalQueueWithAccounts:(id)a3;
-- (void)_updateLastOneTimeShareDateforSavedAccountIfNeeded:(id)a3;
-- (void)_updateSavedAccountsAndSavedAccountsWithPasswordsDictionary:(id)a3 withChangeFromOldUser:(id)a4 oldPassword:(id)a5 forSavedAccountWithPassword:(id)a6;
+- (void)_updateCachedSignInWithAppleAccountsOnInternalQueueWithAccounts:(id)accounts;
+- (void)_updateLastOneTimeShareDateforSavedAccountIfNeeded:(id)needed;
+- (void)_updateSavedAccountsAndSavedAccountsWithPasswordsDictionary:(id)dictionary withChangeFromOldUser:(id)user oldPassword:(id)password forSavedAccountWithPassword:(id)withPassword;
 - (void)_updateShowServiceNamesInPasswordsPreference;
 - (void)_verifyGroupsInSync;
-- (void)_warmDataStoreAfterResetTimerFired:(id)a3;
-- (void)_writeSidecarDataForMergedSavedAccount:(id)a3;
-- (void)addAccountHistoryItem:(id)a3 toSavedAccount:(id)a4 completionHandler:(id)a5;
-- (void)addAdditionalSite:(id)a3 toSavedAccount:(id)a4 completionHandler:(id)a5;
-- (void)changeSavedAccount:(id)a3 toUser:(id)a4 password:(id)a5;
-- (void)changeSavedAccountWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)changeSavedAccountsWithRequests:(id)a3 completionHandler:(id)a4;
-- (void)clearSavedAccountHistory:(id)a3 withCompletionHandler:(id)a4;
+- (void)_warmDataStoreAfterResetTimerFired:(id)fired;
+- (void)_writeSidecarDataForMergedSavedAccount:(id)account;
+- (void)addAccountHistoryItem:(id)item toSavedAccount:(id)account completionHandler:(id)handler;
+- (void)addAdditionalSite:(id)site toSavedAccount:(id)account completionHandler:(id)handler;
+- (void)changeSavedAccount:(id)account toUser:(id)user password:(id)password;
+- (void)changeSavedAccountWithRequest:(id)request completionHandler:(id)handler;
+- (void)changeSavedAccountsWithRequests:(id)requests completionHandler:(id)handler;
+- (void)clearSavedAccountHistory:(id)history withCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)deleteAccountHistoryItem:(id)a3 fromSavedAccount:(id)a4 completionHandler:(id)a5;
-- (void)deletePasskeyWithIdentifier:(WBSPublicKeyCredentialIdentifier *)a3 completionHandler:(id)a4;
-- (void)deletePasskeyWithIdentifierOnInternalQueue:(id)a3;
-- (void)getSavedAccountsMatchingCriteria:(id)a3 withSynchronousCompletionHandler:(id)a4;
+- (void)deleteAccountHistoryItem:(id)item fromSavedAccount:(id)account completionHandler:(id)handler;
+- (void)deletePasskeyWithIdentifier:(WBSPublicKeyCredentialIdentifier *)identifier completionHandler:(id)handler;
+- (void)deletePasskeyWithIdentifierOnInternalQueue:(id)queue;
+- (void)getSavedAccountsMatchingCriteria:(id)criteria withSynchronousCompletionHandler:(id)handler;
 - (void)knownWebsiteNamesDidChange;
-- (void)knownWebsiteNamesDidChangeOnDomains:(id)a3;
-- (void)newPasskeysAvailableForApplicationIdentifier:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performTaskEnsuringAllAccountSourcesAreLoadedOnQueue:(id)a3 task:(id)a4;
-- (void)removeCredentialTypes:(int64_t)a3 forSavedAccount:(id)a4 completionHandler:(id)a5;
-- (void)removeDontSaveMarkerForProtectionSpace:(id)a3;
-- (void)removeHideWarningMarkerForSavedAccount:(id)a3;
-- (void)removeLegacyPlatformCredentialsForDomains:(id)a3;
-- (void)removeSite:(id)a3 fromSavedAccountWithPassword:(id)a4 withCompletion:(id)a5;
-- (void)removeTOTPGeneratorForSavedAccount:(id)a3;
+- (void)knownWebsiteNamesDidChangeOnDomains:(id)domains;
+- (void)newPasskeysAvailableForApplicationIdentifier:(id)identifier;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performTaskEnsuringAllAccountSourcesAreLoadedOnQueue:(id)queue task:(id)task;
+- (void)removeCredentialTypes:(int64_t)types forSavedAccount:(id)account completionHandler:(id)handler;
+- (void)removeDontSaveMarkerForProtectionSpace:(id)space;
+- (void)removeHideWarningMarkerForSavedAccount:(id)account;
+- (void)removeLegacyPlatformCredentialsForDomains:(id)domains;
+- (void)removeSite:(id)site fromSavedAccountWithPassword:(id)password withCompletion:(id)completion;
+- (void)removeTOTPGeneratorForSavedAccount:(id)account;
 - (void)reset;
-- (void)resetHiddenSecurityRecommendationsWithCompletionHandler:(id)a3;
-- (void)saveAdditionalSites:(id)a3 forSavedAccount:(id)a4 completionHandler:(id)a5;
-- (void)saveCustomTitle:(id)a3 forSavedAccount:(id)a4 completionHandler:(id)a5;
-- (void)saveHideMarker:(id)a3 forSavedAccount:(id)a4 completionHandler:(id)a5;
-- (void)saveNotesEntry:(id)a3 forSavedAccount:(id)a4 completionHandler:(id)a5;
-- (void)saveTOTPGenerator:(id)a3 forSavedAccount:(id)a4 completionHandler:(id)a5;
-- (void)saveUser:(id)a3 password:(id)a4 forUserTypedSite:(id)a5 customTitle:(id)a6 notesEntry:(id)a7 groupID:(id)a8 completionHandler:(id)a9;
-- (void)saveUser:(id)a3 password:(id)a4 forUserTypedSite:(id)a5 groupID:(id)a6 completionHandler:(id)a7;
-- (void)saveUser:(id)a3 password:(id)a4 forUserTypedSite:(id)a5 notesEntry:(id)a6 groupID:(id)a7 completionHandler:(id)a8;
-- (void)savedAccountWithAllMetadataForURLCredential:(id)a3 protectionSpace:(id)a4 completion:(id)a5;
-- (void)savedAccountsMatchingCriteria:(id)a3 withCompletionHandler:(id)a4;
-- (void)setDontSaveMarkerForSavedAccountsWithProtectionSpace:(id)a3;
-- (void)setSavedAccountAsDefault:(id)a3 forProtectionSpace:(id)a4 context:(id)a5 associatedDomainsManager:(id)a6;
-- (void)setSavedAccountAsDefault:(id)a3 forProtectionSpace:(id)a4 context:(id)a5 associatedDomainsManager:(id)a6 completionHandler:(id)a7;
-- (void)setShouldShowServiceNamesForPasswordAndPasskeyItems:(BOOL)a3;
-- (void)test_createLegacyWebAuthnCredentialWithUserName:(id)a3 displayName:(id)a4 relyingPartyIdentifier:(id)a5 userHandle:(id)a6 completionHandler:(id)a7;
+- (void)resetHiddenSecurityRecommendationsWithCompletionHandler:(id)handler;
+- (void)saveAdditionalSites:(id)sites forSavedAccount:(id)account completionHandler:(id)handler;
+- (void)saveCustomTitle:(id)title forSavedAccount:(id)account completionHandler:(id)handler;
+- (void)saveHideMarker:(id)marker forSavedAccount:(id)account completionHandler:(id)handler;
+- (void)saveNotesEntry:(id)entry forSavedAccount:(id)account completionHandler:(id)handler;
+- (void)saveTOTPGenerator:(id)generator forSavedAccount:(id)account completionHandler:(id)handler;
+- (void)saveUser:(id)user password:(id)password forUserTypedSite:(id)site customTitle:(id)title notesEntry:(id)entry groupID:(id)d completionHandler:(id)handler;
+- (void)saveUser:(id)user password:(id)password forUserTypedSite:(id)site groupID:(id)d completionHandler:(id)handler;
+- (void)saveUser:(id)user password:(id)password forUserTypedSite:(id)site notesEntry:(id)entry groupID:(id)d completionHandler:(id)handler;
+- (void)savedAccountWithAllMetadataForURLCredential:(id)credential protectionSpace:(id)space completion:(id)completion;
+- (void)savedAccountsMatchingCriteria:(id)criteria withCompletionHandler:(id)handler;
+- (void)setDontSaveMarkerForSavedAccountsWithProtectionSpace:(id)space;
+- (void)setSavedAccountAsDefault:(id)default forProtectionSpace:(id)space context:(id)context associatedDomainsManager:(id)manager;
+- (void)setSavedAccountAsDefault:(id)default forProtectionSpace:(id)space context:(id)context associatedDomainsManager:(id)manager completionHandler:(id)handler;
+- (void)setShouldShowServiceNamesForPasswordAndPasskeyItems:(BOOL)items;
+- (void)test_createLegacyWebAuthnCredentialWithUserName:(id)name displayName:(id)displayName relyingPartyIdentifier:(id)identifier userHandle:(id)handle completionHandler:(id)handler;
 - (void)test_reloadAllSavedAccounts;
-- (void)test_setSharedAccountsGroups:(id)a3;
-- (void)updateAllSavedAccountsWithPasswordsWithUser:(id)a3 protectionSpace:(id)a4 withNewPassword:(id)a5;
-- (void)updateUserVisibleName:(NSString *)a3 forPasskeyWithIdentifier:(WBSPublicKeyCredentialIdentifier *)a4 completionHandler:(id)a5;
-- (void)updateUserVisibleNameOnInternalQueue:(id)a3 forPasskeyWithIdentifier:(id)a4;
+- (void)test_setSharedAccountsGroups:(id)groups;
+- (void)updateAllSavedAccountsWithPasswordsWithUser:(id)user protectionSpace:(id)space withNewPassword:(id)password;
+- (void)updateUserVisibleName:(NSString *)name forPasskeyWithIdentifier:(WBSPublicKeyCredentialIdentifier *)identifier completionHandler:(id)handler;
+- (void)updateUserVisibleNameOnInternalQueue:(id)queue forPasskeyWithIdentifier:(id)identifier;
 @end
 
 @implementation WBSSavedAccountStore
@@ -204,7 +204,7 @@
   block[1] = 3221225472;
   block[2] = __35__WBSSavedAccountStore_sharedStore__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedStore_onceToken_0 != -1)
   {
     dispatch_once(&sharedStore_onceToken_0, block);
@@ -244,11 +244,11 @@ void __35__WBSSavedAccountStore_sharedStore__block_invoke(uint64_t a1)
 - (void)_updateCachedSharedAccountGroupsOnInternalQueue
 {
   v3 = +[WBSOngoingSharingGroupProvider sharedProvider];
-  v4 = [v3 cachedGroups];
+  cachedGroups = [v3 cachedGroups];
 
-  if ((WBSIsEqual(v4, self->_sharedAccountsGroups) & 1) == 0)
+  if ((WBSIsEqual(cachedGroups, self->_sharedAccountsGroups) & 1) == 0)
   {
-    v5 = [v4 copy];
+    v5 = [cachedGroups copy];
     sharedAccountsGroups = self->_sharedAccountsGroups;
     self->_sharedAccountsGroups = v5;
 
@@ -326,7 +326,7 @@ uint64_t __32__WBSSavedAccountStore__prewarm__block_invoke(uint64_t a1)
   v14 = *MEMORY[0x1E69E9840];
   if (!self->_savedAccountsWithPasswords)
   {
-    v3 = [(WBSSavedAccountStore *)self _loadSavedAccounts];
+    _loadSavedAccounts = [(WBSSavedAccountStore *)self _loadSavedAccounts];
   }
 
   v4 = WBS_LOG_CHANNEL_PREFIXKeychain();
@@ -364,16 +364,16 @@ uint64_t __32__WBSSavedAccountStore__prewarm__block_invoke(uint64_t a1)
     v4[4] = self;
     v4[5] = &v5;
     [MEMORY[0x1E695AC50] safari_performUsingTestingMode:v4];
-    v2 = v6[5];
+    _loadSavedAccountsAfterSettingTestMode = v6[5];
     _Block_object_dispose(&v5, 8);
   }
 
   else
   {
-    v2 = [(WBSSavedAccountStore *)self _loadSavedAccountsAfterSettingTestMode];
+    _loadSavedAccountsAfterSettingTestMode = [(WBSSavedAccountStore *)self _loadSavedAccountsAfterSettingTestMode];
   }
 
-  return v2;
+  return _loadSavedAccountsAfterSettingTestMode;
 }
 
 - (id)_loadSavedAccountsAfterSettingTestMode
@@ -393,9 +393,9 @@ uint64_t __32__WBSSavedAccountStore__prewarm__block_invoke(uint64_t a1)
     _os_signpost_emit_with_name_impl(&dword_1B8447000, v4, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "AccountStoreLoad", "", buf, 2u);
   }
 
-  v5 = [MEMORY[0x1E696AE30] processInfo];
-  v6 = [v5 processName];
-  v7 = [v6 isEqualToString:@"AuthenticationServicesAgent"];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  v7 = [processName isEqualToString:@"AuthenticationServicesAgent"];
 
   if (v7)
   {
@@ -407,19 +407,19 @@ uint64_t __32__WBSSavedAccountStore__prewarm__block_invoke(uint64_t a1)
     v51 = 0;
   }
 
-  v8 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   allSavedAccountsHighLevelDomainToUsernameToCredentialTypesToSavedAccounts = self->_allSavedAccountsHighLevelDomainToUsernameToCredentialTypesToSavedAccounts;
-  self->_allSavedAccountsHighLevelDomainToUsernameToCredentialTypesToSavedAccounts = v8;
+  self->_allSavedAccountsHighLevelDomainToUsernameToCredentialTypesToSavedAccounts = dictionary;
 
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(WBSSavedAccountStore *)self _fetchAndFilterAllPasskeysData];
-  v11 = [(WBSSavedAccountStore *)self _loadAndMergeSavedAccountsFromPersonalKeychainIntoAllSavedAccounts:v10];
+  v11 = [(WBSSavedAccountStore *)self _loadAndMergeSavedAccountsFromPersonalKeychainIntoAllSavedAccounts:array];
   savedAccountsInPersonalKeychain = self->_savedAccountsInPersonalKeychain;
   self->_savedAccountsInPersonalKeychain = v11;
 
-  v13 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   groupIdentifiersToSavedAccounts = self->_groupIdentifiersToSavedAccounts;
-  self->_groupIdentifiersToSavedAccounts = v13;
+  self->_groupIdentifiersToSavedAccounts = dictionary2;
 
   v58 = 0u;
   v59 = 0u;
@@ -441,11 +441,11 @@ uint64_t __32__WBSSavedAccountStore__prewarm__block_invoke(uint64_t a1)
         }
 
         v20 = *(*(&v56 + 1) + 8 * i);
-        v21 = [v20 groupID];
-        v22 = [(WBSSavedAccountStore *)self _loadAndMergeSavedAccountsFromGroupID:v21 intoAllSavedAccounts:v10];
+        groupID = [v20 groupID];
+        v22 = [(WBSSavedAccountStore *)self _loadAndMergeSavedAccountsFromGroupID:groupID intoAllSavedAccounts:array];
         v23 = self->_groupIdentifiersToSavedAccounts;
-        v24 = [v20 groupID];
-        [(NSMutableDictionary *)v23 setObject:v22 forKeyedSubscript:v24];
+        groupID2 = [v20 groupID];
+        [(NSMutableDictionary *)v23 setObject:v22 forKeyedSubscript:groupID2];
       }
 
       v17 = [(NSArray *)v15 countByEnumeratingWithState:&v56 objects:v62 count:16];
@@ -459,21 +459,21 @@ uint64_t __32__WBSSavedAccountStore__prewarm__block_invoke(uint64_t a1)
     [(WBSSavedAccountStore *)self _identifySharedSavedAccountsWithSameUsernameAndHighLevelDomainPairs];
   }
 
-  v25 = [MEMORY[0x1E696AE30] processInfo];
-  v26 = [v25 safari_isPasswordManagerTestMode];
+  processInfo2 = [MEMORY[0x1E696AE30] processInfo];
+  safari_isPasswordManagerTestMode = [processInfo2 safari_isPasswordManagerTestMode];
 
-  if ((v26 & 1) == 0)
+  if ((safari_isPasswordManagerTestMode & 1) == 0)
   {
     [(WBSSavedAccountStore *)self _fetchSignInWithAppleAccounts];
   }
 
-  v27 = [MEMORY[0x1E695DF70] array];
-  v28 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v29 = v10;
+  v29 = array;
   v30 = [v29 countByEnumeratingWithState:&v52 objects:v61 count:16];
   if (v30)
   {
@@ -491,12 +491,12 @@ uint64_t __32__WBSSavedAccountStore__prewarm__block_invoke(uint64_t a1)
         v34 = *(*(&v52 + 1) + 8 * j);
         if ([v34 userIsNeverSaveMarker])
         {
-          v35 = v28;
+          v35 = array3;
         }
 
         else
         {
-          v35 = v27;
+          v35 = array2;
         }
 
         [v35 addObject:v34];
@@ -508,11 +508,11 @@ uint64_t __32__WBSSavedAccountStore__prewarm__block_invoke(uint64_t a1)
     while (v31);
   }
 
-  v36 = [v27 sortedArrayUsingSelector:sel_compare_];
+  v36 = [array2 sortedArrayUsingSelector:sel_compare_];
   savedAccounts = self->_savedAccounts;
   self->_savedAccounts = v36;
 
-  v38 = [v28 sortedArrayUsingSelector:sel_compare_];
+  v38 = [array3 sortedArrayUsingSelector:sel_compare_];
   savedAccountsWithNeverSaveMarker = self->_savedAccountsWithNeverSaveMarker;
   self->_savedAccountsWithNeverSaveMarker = v38;
 
@@ -567,18 +567,18 @@ uint64_t __32__WBSSavedAccountStore__prewarm__block_invoke(uint64_t a1)
 - (void)_fetchAndFilterPasskeysData
 {
   v47 = *MEMORY[0x1E69E9840];
-  v3 = [(WBSSavedAccountStore *)self passkeysDataOnInternalQueue];
-  v36 = [MEMORY[0x1E695DF70] array];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  passkeysDataOnInternalQueue = [(WBSSavedAccountStore *)self passkeysDataOnInternalQueue];
+  array = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   highLevelDomainToLegacyPlatformAuthenticatorCredentials = self->_highLevelDomainToLegacyPlatformAuthenticatorCredentials;
-  self->_highLevelDomainToLegacyPlatformAuthenticatorCredentials = v4;
+  self->_highLevelDomainToLegacyPlatformAuthenticatorCredentials = dictionary;
 
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v3;
+  obj = passkeysDataOnInternalQueue;
   v7 = [obj countByEnumeratingWithState:&v38 objects:v46 count:16];
   if (v7)
   {
@@ -597,14 +597,14 @@ uint64_t __32__WBSSavedAccountStore__prewarm__block_invoke(uint64_t a1)
         v11 = *(*(&v38 + 1) + 8 * v10);
         v12 = [v11 safari_numberForKey:@"IsSynchronizable"];
         v13 = [v11 safari_numberForKey:@"Test_isLegacyCredential"];
-        v14 = [v13 BOOLValue];
+        bOOLValue = [v13 BOOLValue];
 
-        v15 = [v12 BOOLValue];
+        bOOLValue2 = [v12 BOOLValue];
         v16 = [v11 safari_stringForKey:@"GroupID"];
         v17 = v16;
         isForTesting = self->_isForTesting;
-        v19 = isForTesting | v15;
-        if (isForTesting && (v15 & 1) == 0)
+        v19 = isForTesting | bOOLValue2;
+        if (isForTesting && (bOOLValue2 & 1) == 0)
         {
           v19 = [v16 length] == 0;
           LOBYTE(isForTesting) = self->_isForTesting;
@@ -612,12 +612,12 @@ uint64_t __32__WBSSavedAccountStore__prewarm__block_invoke(uint64_t a1)
 
         if (isForTesting)
         {
-          v19 &= ~v14;
+          v19 &= ~bOOLValue;
         }
 
         if (v19)
         {
-          [v36 addObject:v11];
+          [array addObject:v11];
 LABEL_17:
           self->_hasPasskeysEligibleForAutoFill = 1;
           goto LABEL_18;
@@ -625,24 +625,24 @@ LABEL_17:
 
         if ([v17 length])
         {
-          v20 = [v6 objectForKeyedSubscript:v17];
+          v20 = [dictionary2 objectForKeyedSubscript:v17];
 
           if (!v20)
           {
-            v21 = [MEMORY[0x1E695DF70] array];
-            [v6 setObject:v21 forKeyedSubscript:v17];
+            array2 = [MEMORY[0x1E695DF70] array];
+            [dictionary2 setObject:array2 forKeyedSubscript:v17];
           }
 
-          v22 = [v6 objectForKeyedSubscript:v17];
+          v22 = [dictionary2 objectForKeyedSubscript:v17];
           [v22 addObject:v11];
 
           goto LABEL_17;
         }
 
         v23 = [v11 safari_stringForKey:@"CredentialRelyingPartyID"];
-        v24 = [v23 safari_highLevelDomainForPasswordManager];
+        safari_highLevelDomainForPasswordManager = [v23 safari_highLevelDomainForPasswordManager];
 
-        v25 = [(NSMutableDictionary *)self->_highLevelDomainToLegacyPlatformAuthenticatorCredentials safari_mutableArrayForKey:v24];
+        v25 = [(NSMutableDictionary *)self->_highLevelDomainToLegacyPlatformAuthenticatorCredentials safari_mutableArrayForKey:safari_highLevelDomainForPasswordManager];
         if (v25)
         {
           v26 = v25;
@@ -652,7 +652,7 @@ LABEL_17:
         else
         {
           v26 = [MEMORY[0x1E695DF70] arrayWithObject:v11];
-          [(NSMutableDictionary *)self->_highLevelDomainToLegacyPlatformAuthenticatorCredentials setObject:v26 forKeyedSubscript:v24];
+          [(NSMutableDictionary *)self->_highLevelDomainToLegacyPlatformAuthenticatorCredentials setObject:v26 forKeyedSubscript:safari_highLevelDomainForPasswordManager];
         }
 
 LABEL_18:
@@ -667,7 +667,7 @@ LABEL_18:
     while (v27);
   }
 
-  v28 = [v36 copy];
+  v28 = [array copy];
   passkeysDataInPersonalKeychain = self->_passkeysDataInPersonalKeychain;
   self->_passkeysDataInPersonalKeychain = v28;
 
@@ -675,7 +675,7 @@ LABEL_18:
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
     v31 = v30;
-    v32 = [v36 count];
+    v32 = [array count];
     *buf = 136315394;
     v43 = "[WBSSavedAccountStore _fetchAndFilterPasskeysData]";
     v44 = 2048;
@@ -683,11 +683,11 @@ LABEL_18:
     _os_log_impl(&dword_1B8447000, v31, OS_LOG_TYPE_DEFAULT, "%s: Loaded %zu passkey keychain records from personal keychain", buf, 0x16u);
   }
 
-  v33 = [v6 copy];
+  v33 = [dictionary2 copy];
   groupIdentifiersToPasskeysData = self->_groupIdentifiersToPasskeysData;
   self->_groupIdentifiersToPasskeysData = v33;
 
-  [v6 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_243];
+  [dictionary2 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_243];
   v35 = *MEMORY[0x1E69E9840];
 }
 
@@ -705,14 +705,14 @@ LABEL_18:
 - (void)_fetchAndFilterRecentlyDeletedPasskeysData
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [(WBSSavedAccountStore *)self recentlyDeletedPasskeysDataOnInternalQueue];
-  v24 = [MEMORY[0x1E695DF70] array];
-  v23 = [MEMORY[0x1E695DF90] dictionary];
+  recentlyDeletedPasskeysDataOnInternalQueue = [(WBSSavedAccountStore *)self recentlyDeletedPasskeysDataOnInternalQueue];
+  array = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v4 = v3;
+  v4 = recentlyDeletedPasskeysDataOnInternalQueue;
   v25 = [v4 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v25)
   {
@@ -728,35 +728,35 @@ LABEL_18:
 
         v7 = *(*(&v26 + 1) + 8 * i);
         v8 = [v7 safari_numberForKey:@"IsSynchronizable"];
-        v9 = [v8 BOOLValue];
+        bOOLValue = [v8 BOOLValue];
         v10 = [v7 safari_stringForKey:@"GroupID"];
         v11 = v10;
         if (self->_isForTesting)
         {
-          if ((v9 & 1) != 0 || ![v10 length])
+          if ((bOOLValue & 1) != 0 || ![v10 length])
           {
 LABEL_14:
-            [v24 addObject:v7];
+            [array addObject:v7];
             goto LABEL_15;
           }
         }
 
-        else if (v9)
+        else if (bOOLValue)
         {
           goto LABEL_14;
         }
 
         if ([v11 length])
         {
-          v12 = [v23 objectForKeyedSubscript:v11];
+          v12 = [dictionary objectForKeyedSubscript:v11];
 
           if (!v12)
           {
-            v13 = [MEMORY[0x1E695DF70] array];
-            [v23 setObject:v13 forKeyedSubscript:v11];
+            array2 = [MEMORY[0x1E695DF70] array];
+            [dictionary setObject:array2 forKeyedSubscript:v11];
           }
 
-          v14 = [v23 objectForKeyedSubscript:v11];
+          v14 = [dictionary objectForKeyedSubscript:v11];
           [v14 addObject:v7];
         }
 
@@ -769,7 +769,7 @@ LABEL_15:
     while (v25);
   }
 
-  v15 = [v24 copy];
+  v15 = [array copy];
   recentlyDeletedPasskeysDataInPersonalKeychain = self->_recentlyDeletedPasskeysDataInPersonalKeychain;
   self->_recentlyDeletedPasskeysDataInPersonalKeychain = v15;
 
@@ -777,7 +777,7 @@ LABEL_15:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v18 = v17;
-    v19 = [v24 count];
+    v19 = [array count];
     *buf = 136315394;
     v31 = "[WBSSavedAccountStore _fetchAndFilterRecentlyDeletedPasskeysData]";
     v32 = 2048;
@@ -785,11 +785,11 @@ LABEL_15:
     _os_log_impl(&dword_1B8447000, v18, OS_LOG_TYPE_DEFAULT, "%s: Loaded %zu recently deleted passkey keychain records from personal keychain", buf, 0x16u);
   }
 
-  v20 = [v23 copy];
+  v20 = [dictionary copy];
   groupIdentifiersToRecentlyDeletedPasskeysData = self->_groupIdentifiersToRecentlyDeletedPasskeysData;
   self->_groupIdentifiersToRecentlyDeletedPasskeysData = v20;
 
-  [v23 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_245_0];
+  [dictionary enumerateKeysAndObjectsUsingBlock:&__block_literal_global_245_0];
   v22 = *MEMORY[0x1E69E9840];
 }
 
@@ -839,26 +839,26 @@ LABEL_15:
 
 - (id)_allInternetPasswordEntriesFromPersonalKeychain
 {
-  v2 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
-  v3 = [v2 safari_allPasswordCredentialItemsInPersonalKeychain];
+  mEMORY[0x1E695AC50] = [MEMORY[0x1E695AC50] sharedCredentialStorage];
+  safari_allPasswordCredentialItemsInPersonalKeychain = [mEMORY[0x1E695AC50] safari_allPasswordCredentialItemsInPersonalKeychain];
 
-  return v3;
+  return safari_allPasswordCredentialItemsInPersonalKeychain;
 }
 
 - (id)_allSidecarsFromPersonalKeychain
 {
-  v2 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
-  v3 = [v2 safari_allPersonalSidecarsInPersonalKeychain];
+  mEMORY[0x1E695AC50] = [MEMORY[0x1E695AC50] sharedCredentialStorage];
+  safari_allPersonalSidecarsInPersonalKeychain = [mEMORY[0x1E695AC50] safari_allPersonalSidecarsInPersonalKeychain];
 
-  return v3;
+  return safari_allPersonalSidecarsInPersonalKeychain;
 }
 
 - (void)_resetOnInternalQueue
 {
   v3 = +[WBSKeyBagLockStatusManager sharedManager];
-  v4 = [v3 keyBagLockStatus];
+  keyBagLockStatus = [v3 keyBagLockStatus];
 
-  if (v4)
+  if (keyBagLockStatus)
   {
     v5 = WBS_LOG_CHANNEL_PREFIXKeychain();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -956,12 +956,12 @@ LABEL_15:
   v21 = *MEMORY[0x1E69E9840];
   if (!self->_savedAccountsWithPasswords)
   {
-    v3 = [(WBSSavedAccountStore *)self _loadSavedAccounts];
+    _loadSavedAccounts = [(WBSSavedAccountStore *)self _loadSavedAccounts];
   }
 
-  v4 = [MEMORY[0x1E696AE30] processInfo];
-  v5 = [v4 processName];
-  v6 = [v5 isEqualToString:@"AuthenticationServicesAgent"];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  v6 = [processName isEqualToString:@"AuthenticationServicesAgent"];
 
   if (v6)
   {
@@ -982,8 +982,8 @@ LABEL_15:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = [(NSMutableDictionary *)self->_sharedGroupIdentifiersToRecentlyDeletedSavedAccounts allValues];
-  v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allValues = [(NSMutableDictionary *)self->_sharedGroupIdentifiersToRecentlyDeletedSavedAccounts allValues];
+  v11 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
   {
     v12 = v11;
@@ -995,14 +995,14 @@ LABEL_15:
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allValues);
         }
 
         [v8 addObjectsFromArray:*(*(&v16 + 1) + 8 * v14++)];
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v12 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v12);
@@ -1022,18 +1022,18 @@ LABEL_15:
 
 - (void)_loadRecentlyDeletedSavedAccountsInPersonalKeychain
 {
-  v13 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  mEMORY[0x1E695AC50] = [MEMORY[0x1E695AC50] sharedCredentialStorage];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   recentlyDeletedPersonalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts = self->_recentlyDeletedPersonalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts;
-  self->_recentlyDeletedPersonalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts = v3;
-  v5 = v3;
+  self->_recentlyDeletedPersonalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts = dictionary;
+  v5 = dictionary;
 
-  v6 = [v13 safari_allRecentlyDeletedPasswordCredentialItemsInPersonalKeychain];
-  v7 = [(WBSSavedAccountStore *)self _loadSavedAccountsWithPasswordsFromKeychainData:v6 forGroupID:&stru_1F3064D08 withDictionaryForSavedAccountsWithPasswords:self->_recentlyDeletedPersonalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts fromRecentlyDeleted:1];
+  safari_allRecentlyDeletedPasswordCredentialItemsInPersonalKeychain = [mEMORY[0x1E695AC50] safari_allRecentlyDeletedPasswordCredentialItemsInPersonalKeychain];
+  v7 = [(WBSSavedAccountStore *)self _loadSavedAccountsWithPasswordsFromKeychainData:safari_allRecentlyDeletedPasswordCredentialItemsInPersonalKeychain forGroupID:&stru_1F3064D08 withDictionaryForSavedAccountsWithPasswords:self->_recentlyDeletedPersonalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts fromRecentlyDeleted:1];
 
-  v8 = [MEMORY[0x1E695DF90] dictionary];
-  v9 = [(WBSSavedAccountStore *)self _loadSavedAccountsWithPasskeysFromPasskeyData:self->_recentlyDeletedPasskeysDataInPersonalKeychain forGroupID:&stru_1F3064D08 fromRecentlyDeleted:1 withDictionaryForSavedAccountsWithPasskeys:v8];
-  v10 = [(WBSSavedAccountStore *)self _mergeSavedAccountsWithPasskeys:v9 andSavedAccountsWithPasswords:v7 usingDictionaryForSavedAccountsWithPasswords:v5 dictionaryForSavedAccountsWithPasskeys:v8];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  v9 = [(WBSSavedAccountStore *)self _loadSavedAccountsWithPasskeysFromPasskeyData:self->_recentlyDeletedPasskeysDataInPersonalKeychain forGroupID:&stru_1F3064D08 fromRecentlyDeleted:1 withDictionaryForSavedAccountsWithPasskeys:dictionary2];
+  v10 = [(WBSSavedAccountStore *)self _mergeSavedAccountsWithPasskeys:v9 andSavedAccountsWithPasswords:v7 usingDictionaryForSavedAccountsWithPasswords:v5 dictionaryForSavedAccountsWithPasskeys:dictionary2];
   v11 = [v10 mutableCopy];
   recentlyDeletedSavedAccountsInPersonalKeychain = self->_recentlyDeletedSavedAccountsInPersonalKeychain;
   self->_recentlyDeletedSavedAccountsInPersonalKeychain = v11;
@@ -1050,27 +1050,27 @@ uint64_t __68__WBSSavedAccountStore__updateShowServiceNamesInPasswordsPreference
 
 + (BOOL)shouldShowServiceNamesForPasswordAndPasskeyItems
 {
-  v3 = [MEMORY[0x1E696AE30] processInfo];
-  v4 = [v3 processName];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
 
-  if ([v4 isEqualToString:@"AuthenticationServicesAgent"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"webbookmarksd"))
+  if ([processName isEqualToString:@"AuthenticationServicesAgent"] & 1) != 0 || (objc_msgSend(processName, "isEqualToString:", @"webbookmarksd"))
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    v7 = [v6 objectForKey:@"ShowServiceNamesInPasswords"];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    v7 = [safari_browserDefaults objectForKey:@"ShowServiceNamesInPasswords"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [a1 setShouldShowServiceNamesForPasswordAndPasskeyItems:{objc_msgSend(v7, "BOOLValue")}];
-      [v6 removeObjectForKey:@"ShowServiceNamesInPasswords"];
+      [self setShouldShowServiceNamesForPasswordAndPasskeyItems:{objc_msgSend(v7, "BOOLValue")}];
+      [safari_browserDefaults removeObjectForKey:@"ShowServiceNamesInPasswords"];
     }
 
-    v8 = [MEMORY[0x1E695E000] pm_defaults];
-    v5 = [v8 safari_BOOLForKey:@"ShowServiceNamesInPasswords" defaultValue:1];
+    pm_defaults = [MEMORY[0x1E695E000] pm_defaults];
+    v5 = [pm_defaults safari_BOOLForKey:@"ShowServiceNamesInPasswords" defaultValue:1];
   }
 
   return v5;
@@ -1283,11 +1283,11 @@ id __120__WBSSavedAccountStore_initWithAuthenticationServicesAgentProxy_shouldPr
   return v3;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (showServiceNamesInPasswordsEnabledKVOContext == a6)
+  if (showServiceNamesInPasswordsEnabledKVOContext == context)
   {
-    [(WBSSavedAccountStore *)self _updateShowServiceNamesInPasswordsPreference:a3];
+    [(WBSSavedAccountStore *)self _updateShowServiceNamesInPasswordsPreference:path];
   }
 }
 
@@ -1317,22 +1317,22 @@ id __120__WBSSavedAccountStore_initWithAuthenticationServicesAgentProxy_shouldPr
 {
   [(WBSKeychainCredentialNotificationMonitor *)self->_keychainMonitor removeObserverForToken:self->_keychainNotificationRegistrationToken];
   [(NSTimer *)self->_warmDataStoreAfterResetTimer invalidate];
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = WBSSavedAccountStore;
   [(WBSSavedAccountStore *)&v4 dealloc];
 }
 
-- (id)savedAccountForURLCredential:(id)a3 protectionSpace:(id)a4
+- (id)savedAccountForURLCredential:(id)credential protectionSpace:(id)space
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 user];
-  v9 = [v7 password];
+  spaceCopy = space;
+  credentialCopy = credential;
+  user = [credentialCopy user];
+  password = [credentialCopy password];
 
-  v10 = [(WBSSavedAccountStore *)self _savedAccountForProtectionSpace:v6 user:v8 password:v9];
+  v10 = [(WBSSavedAccountStore *)self _savedAccountForProtectionSpace:spaceCopy user:user password:password];
 
   return v10;
 }
@@ -1377,16 +1377,16 @@ void __55__WBSSavedAccountStore_savedAccountsInPersonalKeychain__block_invoke(ui
 
 - (NSArray)savedAccountsInPersonalKeychainExcludingNeverSaveMarkerPasswords
 {
-  v2 = [(WBSSavedAccountStore *)self savedAccountsInPersonalKeychain];
-  v3 = [v2 safari_filterObjectsUsingBlock:&__block_literal_global_167];
+  savedAccountsInPersonalKeychain = [(WBSSavedAccountStore *)self savedAccountsInPersonalKeychain];
+  v3 = [savedAccountsInPersonalKeychain safari_filterObjectsUsingBlock:&__block_literal_global_167];
 
   return v3;
 }
 
-- (id)savedAccountsForGroupID:(id)a3
+- (id)savedAccountsForGroupID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     v13 = 0;
     v14 = &v13;
@@ -1401,12 +1401,12 @@ void __55__WBSSavedAccountStore_savedAccountsInPersonalKeychain__block_invoke(ui
     block[3] = &unk_1E7CF2D98;
     block[4] = self;
     v12 = &v13;
-    v11 = v4;
+    v11 = dCopy;
     dispatch_sync(queue, block);
     v6 = v14[5];
     if (v6)
     {
-      v7 = v6;
+      savedAccountsInPersonalKeychainExcludingNeverSaveMarkerPasswords = v6;
     }
 
     else
@@ -1417,7 +1417,7 @@ void __55__WBSSavedAccountStore_savedAccountsInPersonalKeychain__block_invoke(ui
         [WBSSavedAccountStore savedAccountsForGroupID:];
       }
 
-      v7 = MEMORY[0x1E695E0F0];
+      savedAccountsInPersonalKeychainExcludingNeverSaveMarkerPasswords = MEMORY[0x1E695E0F0];
     }
 
     _Block_object_dispose(&v13, 8);
@@ -1425,10 +1425,10 @@ void __55__WBSSavedAccountStore_savedAccountsInPersonalKeychain__block_invoke(ui
 
   else
   {
-    v7 = [(WBSSavedAccountStore *)self savedAccountsInPersonalKeychainExcludingNeverSaveMarkerPasswords];
+    savedAccountsInPersonalKeychainExcludingNeverSaveMarkerPasswords = [(WBSSavedAccountStore *)self savedAccountsInPersonalKeychainExcludingNeverSaveMarkerPasswords];
   }
 
-  return v7;
+  return savedAccountsInPersonalKeychainExcludingNeverSaveMarkerPasswords;
 }
 
 void __48__WBSSavedAccountStore_savedAccountsForGroupID___block_invoke(void *a1)
@@ -1446,17 +1446,17 @@ void __48__WBSSavedAccountStore_savedAccountsForGroupID___block_invoke(void *a1)
   *(v5 + 40) = v4;
 }
 
-- (void)removeLegacyPlatformCredentialsForDomains:(id)a3
+- (void)removeLegacyPlatformCredentialsForDomains:(id)domains
 {
-  v4 = a3;
+  domainsCopy = domains;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__WBSSavedAccountStore_removeLegacyPlatformCredentialsForDomains___block_invoke;
   v7[3] = &unk_1E7CF1708;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = domainsCopy;
+  v6 = domainsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1550,23 +1550,23 @@ LABEL_20:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)savedAccountWithAllMetadataForURLCredential:(id)a3 protectionSpace:(id)a4 completion:(id)a5
+- (void)savedAccountWithAllMetadataForURLCredential:(id)credential protectionSpace:(id)space completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  credentialCopy = credential;
+  spaceCopy = space;
+  completionCopy = completion;
   v11 = dispatch_get_global_queue(17, 0);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __95__WBSSavedAccountStore_savedAccountWithAllMetadataForURLCredential_protectionSpace_completion___block_invoke;
   v15[3] = &unk_1E7CF4738;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = credentialCopy;
+  v17 = spaceCopy;
+  v18 = completionCopy;
+  v12 = spaceCopy;
+  v13 = credentialCopy;
+  v14 = completionCopy;
   dispatch_async(v11, v15);
 }
 
@@ -1577,22 +1577,22 @@ void __95__WBSSavedAccountStore_savedAccountWithAllMetadataForURLCredential_prot
   (*(v1 + 16))(v1, v2);
 }
 
-- (id)savedAccountWithAllMetadataForURLCredential:(id)a3 protectionSpace:(id)a4
+- (id)savedAccountWithAllMetadataForURLCredential:(id)credential protectionSpace:(id)space
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v23 = a4;
-  v7 = [v6 user];
-  v8 = [v6 password];
+  credentialCopy = credential;
+  spaceCopy = space;
+  user = [credentialCopy user];
+  password = [credentialCopy password];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = [(WBSSavedAccountStore *)self savedAccountsWithPasswords];
-  v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  savedAccountsWithPasswords = [(WBSSavedAccountStore *)self savedAccountsWithPasswords];
+  v10 = [savedAccountsWithPasswords countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v10)
   {
-    v22 = v6;
+    v22 = credentialCopy;
     v11 = *v26;
     while (1)
     {
@@ -1600,20 +1600,20 @@ void __95__WBSSavedAccountStore_savedAccountWithAllMetadataForURLCredential_prot
       {
         if (*v26 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(savedAccountsWithPasswords);
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
         if (([v13 userIsNeverSaveMarker] & 1) == 0)
         {
-          v14 = [v13 user];
-          if (![v14 isEqualToString:v7])
+          user2 = [v13 user];
+          if (![user2 isEqualToString:user])
           {
             goto LABEL_12;
           }
 
-          v15 = [v13 password];
-          if (([v15 isEqualToString:v8] & 1) == 0)
+          password2 = [v13 password];
+          if (([password2 isEqualToString:password] & 1) == 0)
           {
 
 LABEL_12:
@@ -1621,14 +1621,14 @@ LABEL_12:
           }
 
           [v13 protectionSpaces];
-          v16 = v9;
-          v17 = v7;
-          v19 = v18 = v8;
-          v24 = [v19 containsObject:v23];
+          v16 = savedAccountsWithPasswords;
+          v17 = user;
+          v19 = v18 = password;
+          v24 = [v19 containsObject:spaceCopy];
 
-          v8 = v18;
-          v7 = v17;
-          v9 = v16;
+          password = v18;
+          user = v17;
+          savedAccountsWithPasswords = v16;
 
           if (v24)
           {
@@ -1638,11 +1638,11 @@ LABEL_12:
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v10 = [savedAccountsWithPasswords countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (!v10)
       {
 LABEL_15:
-        v6 = v22;
+        credentialCopy = v22;
         break;
       }
     }
@@ -1653,44 +1653,44 @@ LABEL_15:
   return v10;
 }
 
-- (id)savedAccountForURL:(id)a3 user:(id)a4 password:(id)a5
+- (id)savedAccountForURL:(id)l user:(id)user password:(id)password
 {
   v8 = MEMORY[0x1E695AC58];
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 safari_HTMLFormProtectionSpaceForURL:a3];
-  v12 = [(WBSSavedAccountStore *)self _savedAccountForProtectionSpace:v11 user:v10 password:v9];
+  passwordCopy = password;
+  userCopy = user;
+  v11 = [v8 safari_HTMLFormProtectionSpaceForURL:l];
+  v12 = [(WBSSavedAccountStore *)self _savedAccountForProtectionSpace:v11 user:userCopy password:passwordCopy];
 
   return v12;
 }
 
-- (id)_savedAccountForProtectionSpace:(id)a3 user:(id)a4 password:(id)a5
+- (id)_savedAccountForProtectionSpace:(id)space user:(id)user password:(id)password
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 host];
-  v10 = [v9 safari_highLevelDomainForPasswordManager];
+  userCopy = user;
+  passwordCopy = password;
+  host = [space host];
+  safari_highLevelDomainForPasswordManager = [host safari_highLevelDomainForPasswordManager];
 
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v12 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v13 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
-  v14 = [v13 safari_allSafariCredentials];
+  mEMORY[0x1E695AC50] = [MEMORY[0x1E695AC50] sharedCredentialStorage];
+  safari_allSafariCredentials = [mEMORY[0x1E695AC50] safari_allSafariCredentials];
   v39[0] = MEMORY[0x1E69E9820];
   v39[1] = 3221225472;
   v39[2] = __70__WBSSavedAccountStore__savedAccountForProtectionSpace_user_password___block_invoke;
   v39[3] = &unk_1E7CF4760;
-  v15 = v10;
+  v15 = safari_highLevelDomainForPasswordManager;
   v40 = v15;
-  v16 = v7;
+  v16 = userCopy;
   v41 = v16;
-  v17 = v8;
+  v17 = passwordCopy;
   v42 = v17;
   v18 = v11;
   v43 = v18;
   v19 = v12;
   v44 = v19;
-  [v14 enumerateKeysAndObjectsUsingBlock:v39];
+  [safari_allSafariCredentials enumerateKeysAndObjectsUsingBlock:v39];
 
   v33 = v15;
   v34 = v16;
@@ -1716,19 +1716,19 @@ LABEL_15:
         }
 
         v26 = *(*(&v35 + 1) + 8 * i);
-        v27 = [v26 host];
-        if ([v19 containsObject:v27])
+        host2 = [v26 host];
+        if ([v19 containsObject:host2])
         {
-          v28 = [v26 safari_addressString];
-          v29 = [v28 safari_simplifiedUserVisibleURLStringWithSimplifications:135 forDisplayOnly:0 simplifiedStringOffset:0];
+          safari_addressString = [v26 safari_addressString];
+          v29 = [safari_addressString safari_simplifiedUserVisibleURLStringWithSimplifications:135 forDisplayOnly:0 simplifiedStringOffset:0];
         }
 
         else
         {
-          v29 = v27;
+          v29 = host2;
         }
 
-        [v20 _addProtectionSpace:v26 forSite:v29 isDefaultCredentialForSite:{objc_msgSend(v20, "isDefaultCredentialForFullyQualifiedHostname:", v27)}];
+        [v20 _addProtectionSpace:v26 forSite:v29 isDefaultCredentialForSite:{objc_msgSend(v20, "isDefaultCredentialForFullyQualifiedHostname:", host2)}];
       }
 
       v23 = [v21 countByEnumeratingWithState:&v35 objects:v45 count:16];
@@ -1774,17 +1774,17 @@ void __70__WBSSavedAccountStore__savedAccountForProtectionSpace_user_password___
   }
 }
 
-- (id)savedAccountsForPersistentIdentifiers:(id)a3
+- (id)savedAccountsForPersistentIdentifiers:(id)identifiers
 {
-  v4 = [MEMORY[0x1E695DFD8] setWithArray:a3];
-  v5 = [(WBSSavedAccountStore *)self savedAccountsWithPasswords];
+  v4 = [MEMORY[0x1E695DFD8] setWithArray:identifiers];
+  savedAccountsWithPasswords = [(WBSSavedAccountStore *)self savedAccountsWithPasswords];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__WBSSavedAccountStore_savedAccountsForPersistentIdentifiers___block_invoke;
   v9[3] = &unk_1E7CF4788;
   v10 = v4;
   v6 = v4;
-  v7 = [v5 safari_filterObjectsUsingBlock:v9];
+  v7 = [savedAccountsWithPasswords safari_filterObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -1839,29 +1839,29 @@ LABEL_11:
   return v8;
 }
 
-+ (void)removeCredentialTypes:(int64_t)a3 forSavedAccount:(id)a4 forGroup:(id)a5
++ (void)removeCredentialTypes:(int64_t)types forSavedAccount:(id)account forGroup:(id)group
 {
-  v6 = a3;
-  v11 = a4;
-  v7 = a5;
-  v8 = v7;
-  if (v6)
+  typesCopy = types;
+  accountCopy = account;
+  groupCopy = group;
+  v8 = groupCopy;
+  if (typesCopy)
   {
-    v9 = [v7 groupID];
-    [v11 _deletePasswordCredentialsForGroupID:v9];
+    groupID = [groupCopy groupID];
+    [accountCopy _deletePasswordCredentialsForGroupID:groupID];
   }
 
-  if ((v6 & 2) != 0)
+  if ((typesCopy & 2) != 0)
   {
-    v10 = [v8 groupID];
-    [v11 _deletePasskeyCredentialForGroupID:v10];
+    groupID2 = [v8 groupID];
+    [accountCopy _deletePasskeyCredentialForGroupID:groupID2];
   }
 }
 
 - (NSArray)savedAccountsWithTOTPGenerators
 {
-  v2 = [(WBSSavedAccountStore *)self savedAccountsWithPasswords];
-  v3 = [v2 safari_filterObjectsUsingBlock:&__block_literal_global_179];
+  savedAccountsWithPasswords = [(WBSSavedAccountStore *)self savedAccountsWithPasswords];
+  v3 = [savedAccountsWithPasswords safari_filterObjectsUsingBlock:&__block_literal_global_179];
 
   return v3;
 }
@@ -1874,65 +1874,65 @@ BOOL __55__WBSSavedAccountStore_savedAccountsWithTOTPGenerators__block_invoke(ui
   return v3;
 }
 
-- (id)_allPersonalSidecarsFromPersonalKeychainFromRecentlyDeleted:(BOOL)a3
+- (id)_allPersonalSidecarsFromPersonalKeychainFromRecentlyDeleted:(BOOL)deleted
 {
-  if (a3)
+  if (deleted)
   {
-    v3 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
-    v4 = [v3 safari_allRecentlyDeletedPersonalSidecarsInPersonalKeychain];
+    mEMORY[0x1E695AC50] = [MEMORY[0x1E695AC50] sharedCredentialStorage];
+    safari_allRecentlyDeletedPersonalSidecarsInPersonalKeychain = [mEMORY[0x1E695AC50] safari_allRecentlyDeletedPersonalSidecarsInPersonalKeychain];
   }
 
   else
   {
-    v4 = [(WBSSavedAccountStore *)self _allSidecarsFromPersonalKeychain];
+    safari_allRecentlyDeletedPersonalSidecarsInPersonalKeychain = [(WBSSavedAccountStore *)self _allSidecarsFromPersonalKeychain];
   }
 
-  return v4;
+  return safari_allRecentlyDeletedPersonalSidecarsInPersonalKeychain;
 }
 
 - (NSArray)savedAccountsWithPasswordsExcludingNeverSaveMarkerPasswords
 {
-  v2 = [(WBSSavedAccountStore *)self savedAccountsWithPasswords];
-  v3 = [v2 safari_filterObjectsUsingBlock:&__block_literal_global_181_0];
+  savedAccountsWithPasswords = [(WBSSavedAccountStore *)self savedAccountsWithPasswords];
+  v3 = [savedAccountsWithPasswords safari_filterObjectsUsingBlock:&__block_literal_global_181_0];
 
   return v3;
 }
 
 - (NSSet)highLevelDomainsOfAllSavedAccountsWithPasswordsExcludingNeverSaveMarkerPasswords
 {
-  v2 = [(WBSSavedAccountStore *)self savedAccountsWithPasswordsExcludingNeverSaveMarkerPasswords];
-  v3 = [v2 safari_setByApplyingBlock:&__block_literal_global_184];
+  savedAccountsWithPasswordsExcludingNeverSaveMarkerPasswords = [(WBSSavedAccountStore *)self savedAccountsWithPasswordsExcludingNeverSaveMarkerPasswords];
+  v3 = [savedAccountsWithPasswordsExcludingNeverSaveMarkerPasswords safari_setByApplyingBlock:&__block_literal_global_184];
 
   return v3;
 }
 
 - (NSArray)savedAccountsExcludingNeverSaveMarkerPasswords
 {
-  v2 = [(WBSSavedAccountStore *)self savedAccounts];
-  v3 = [v2 safari_filterObjectsUsingBlock:&__block_literal_global_186];
+  savedAccounts = [(WBSSavedAccountStore *)self savedAccounts];
+  v3 = [savedAccounts safari_filterObjectsUsingBlock:&__block_literal_global_186];
 
   return v3;
 }
 
 - (NSSet)highLevelDomainsOfAllSavedAccountsExcludingNeverSaveMarkerPasswords
 {
-  v2 = [(WBSSavedAccountStore *)self savedAccountsExcludingNeverSaveMarkerPasswords];
-  v3 = [v2 safari_setByApplyingBlock:&__block_literal_global_188_0];
+  savedAccountsExcludingNeverSaveMarkerPasswords = [(WBSSavedAccountStore *)self savedAccountsExcludingNeverSaveMarkerPasswords];
+  v3 = [savedAccountsExcludingNeverSaveMarkerPasswords safari_setByApplyingBlock:&__block_literal_global_188_0];
 
   return v3;
 }
 
 - (NSSet)highLevelDomainsOfRecentlyDeletedAccounts
 {
-  v2 = [(WBSSavedAccountStore *)self allRecentlyDeletedSavedAccounts];
-  v3 = [v2 safari_setByApplyingBlock:&__block_literal_global_190_0];
+  allRecentlyDeletedSavedAccounts = [(WBSSavedAccountStore *)self allRecentlyDeletedSavedAccounts];
+  v3 = [allRecentlyDeletedSavedAccounts safari_setByApplyingBlock:&__block_literal_global_190_0];
 
   return v3;
 }
 
-- (id)highLevelDomainsOfSavedAccountsExcludingNeverSaveMarkerPasswordsForGroupID:(id)a3
+- (id)highLevelDomainsOfSavedAccountsExcludingNeverSaveMarkerPasswordsForGroupID:(id)d
 {
-  v3 = [(WBSSavedAccountStore *)self savedAccountsForGroupID:a3];
+  v3 = [(WBSSavedAccountStore *)self savedAccountsForGroupID:d];
   v4 = [v3 safari_setByApplyingBlock:&__block_literal_global_192];
 
   return v4;
@@ -1954,7 +1954,7 @@ id __99__WBSSavedAccountStore_highLevelDomainsOfSavedAccountsExcludingNeverSaveM
   return v3;
 }
 
-- (void)_warmDataStoreAfterResetTimerFired:(id)a3
+- (void)_warmDataStoreAfterResetTimerFired:(id)fired
 {
   [(WBSSavedAccountStore *)self _prewarm];
   [(NSTimer *)self->_warmDataStoreAfterResetTimer invalidate];
@@ -2047,7 +2047,7 @@ void __56__WBSSavedAccountStore_savedAccountsWithNeverSaveMarker__block_invoke(u
   savedAccountsWithPasswords = self->_savedAccountsWithPasswords;
   if (!savedAccountsWithPasswords)
   {
-    v4 = [(WBSSavedAccountStore *)self _loadSavedAccounts];
+    _loadSavedAccounts = [(WBSSavedAccountStore *)self _loadSavedAccounts];
     savedAccountsWithPasswords = self->_savedAccountsWithPasswords;
   }
 
@@ -2222,9 +2222,9 @@ BOOL __69__WBSSavedAccountStore_sharingGroupsWithRecentlyDeletedSavedAccounts__b
   return v5;
 }
 
-- (id)recentlyDeletedSavedAccountsForGroupWithID:(id)a3
+- (id)recentlyDeletedSavedAccountsForGroupWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -2236,10 +2236,10 @@ BOOL __69__WBSSavedAccountStore_sharingGroupsWithRecentlyDeletedSavedAccounts__b
   block[1] = 3221225472;
   block[2] = __67__WBSSavedAccountStore_recentlyDeletedSavedAccountsForGroupWithID___block_invoke;
   block[3] = &unk_1E7CF2D98;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -2258,10 +2258,10 @@ void __67__WBSSavedAccountStore_recentlyDeletedSavedAccountsForGroupWithID___blo
   *(v3 + 40) = v2;
 }
 
-- (BOOL)_shouldLoadCredentialRecordWithHostIntoAccountStore:(id)a3
+- (BOOL)_shouldLoadCredentialRecordWithHostIntoAccountStore:(id)store
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   if ([(NSArray *)self->_domainsStoreIsLimitedTo count])
   {
     v13 = 0u;
@@ -2282,7 +2282,7 @@ void __67__WBSSavedAccountStore_recentlyDeletedSavedAccountsForGroupWithID___blo
             objc_enumerationMutation(v5);
           }
 
-          if ([v4 safari_isHostOrSubdomainOfHost:{*(*(&v11 + 1) + 8 * i), v11}])
+          if ([storeCopy safari_isHostOrSubdomainOfHost:{*(*(&v11 + 1) + 8 * i), v11}])
           {
             LOBYTE(v6) = 1;
             goto LABEL_12;
@@ -2311,21 +2311,21 @@ LABEL_12:
   return v6;
 }
 
-- (id)_loadSavedAccountsWithPasswordsFromKeychainData:(id)a3 forGroupID:(id)a4 withDictionaryForSavedAccountsWithPasswords:(id)a5 fromRecentlyDeleted:(BOOL)a6
+- (id)_loadSavedAccountsWithPasswordsFromKeychainData:(id)data forGroupID:(id)d withDictionaryForSavedAccountsWithPasswords:(id)passwords fromRecentlyDeleted:(BOOL)deleted
 {
-  v6 = a6;
+  deletedCopy = deleted;
   v138 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v86 = a5;
-  v106 = [MEMORY[0x1E695DF90] dictionary];
+  dataCopy = data;
+  dCopy = d;
+  passwordsCopy = passwords;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v12 = WBS_LOG_CHANNEL_PREFIXKeychain();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = v12;
-    v14 = [v10 count];
+    v14 = [dataCopy count];
     v15 = @"NO";
-    if (v6)
+    if (deletedCopy)
     {
       v15 = @"YES";
     }
@@ -2336,19 +2336,19 @@ LABEL_12:
     v132 = 2048;
     v133 = v14;
     v134 = 2114;
-    v135 = v11;
+    v135 = dCopy;
     v136 = 2112;
     v137 = v16;
     _os_log_impl(&dword_1B8447000, v13, OS_LOG_TYPE_DEFAULT, "%s: Loaded %zu password keychain records from group: %{public}@ from Recently Deleted: %@", buf, 0x2Au);
   }
 
-  v85 = v11;
-  v87 = v6;
+  v85 = dCopy;
+  v87 = deletedCopy;
   v125 = 0u;
   v126 = 0u;
   v123 = 0u;
   v124 = 0u;
-  v17 = v10;
+  v17 = dataCopy;
   v18 = [v17 countByEnumeratingWithState:&v123 objects:v129 count:16];
   if (v18)
   {
@@ -2371,7 +2371,7 @@ LABEL_12:
     v90 = *MEMORY[0x1E697ADC8];
     v91 = *MEMORY[0x1E697ACC8];
     v102 = v17;
-    v103 = self;
+    selfCopy = self;
     v100 = *MEMORY[0x1E697AE00];
     v101 = *v124;
     do
@@ -2427,22 +2427,22 @@ LABEL_12:
                 v30 = v32;
               }
 
-              v35 = [v30 safari_highLevelDomainForPasswordManager];
+              safari_highLevelDomainForPasswordManager = [v30 safari_highLevelDomainForPasswordManager];
               v36 = v30;
-              v37 = v35;
+              v37 = safari_highLevelDomainForPasswordManager;
               v38 = v36;
-              if (v35)
+              if (safari_highLevelDomainForPasswordManager)
               {
-                v36 = v35;
+                v36 = safari_highLevelDomainForPasswordManager;
               }
 
               v39 = v36;
 
-              v40 = [v106 objectForKeyedSubscript:v39];
-              if (!v40)
+              dictionary2 = [dictionary objectForKeyedSubscript:v39];
+              if (!dictionary2)
               {
-                v40 = [MEMORY[0x1E695DF90] dictionary];
-                [v106 setObject:v40 forKeyedSubscript:v39];
+                dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+                [dictionary setObject:dictionary2 forKeyedSubscript:v39];
               }
 
               v41 = [v23 objectForKeyedSubscript:v97];
@@ -2465,18 +2465,18 @@ LABEL_12:
                 v45 = &stru_1F3064D08;
               }
 
-              v47 = [v40 objectForKeyedSubscript:v29];
-              if (!v47)
+              dictionary3 = [dictionary2 objectForKeyedSubscript:v29];
+              if (!dictionary3)
               {
-                v47 = [MEMORY[0x1E695DF90] dictionary];
-                [v40 setObject:v47 forKeyedSubscript:v29];
+                dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+                [dictionary2 setObject:dictionary3 forKeyedSubscript:v29];
               }
 
-              v114 = v47;
-              v48 = [v47 objectForKeyedSubscript:v45];
+              v114 = dictionary3;
+              v48 = [dictionary3 objectForKeyedSubscript:v45];
               v112 = v39;
               v113 = v31;
-              v111 = v40;
+              v111 = dictionary2;
               v109 = v45;
               if (v48)
               {
@@ -2522,7 +2522,7 @@ LABEL_12:
               v30 = v108;
 
               v17 = v102;
-              self = v103;
+              self = selfCopy;
               v21 = v100;
               v20 = v101;
               v19 = v105;
@@ -2565,15 +2565,15 @@ LABEL_12:
   v122 = v87;
   v64 = v62;
   v119 = v64;
-  v120 = self;
-  v65 = v86;
+  selfCopy2 = self;
+  v65 = passwordsCopy;
   v121 = v65;
-  [v106 enumerateKeysAndObjectsUsingBlock:v117];
-  v66 = [MEMORY[0x1E695DF70] array];
+  [dictionary enumerateKeysAndObjectsUsingBlock:v117];
+  array = [MEMORY[0x1E695DF70] array];
   if ([v63 length])
   {
     v67 = [(WBSSavedAccountStore *)self _allSharedSidecarsForGroupID:v63 fromRecentlyDeleted:v87];
-    [(WBSSavedAccountStore *)self _matchSidecars:v67 toSavedAccountsWithPasswordsInDictionary:v65 unmatchedSidecars:v66];
+    [(WBSSavedAccountStore *)self _matchSidecars:v67 toSavedAccountsWithPasswordsInDictionary:v65 unmatchedSidecars:array];
     v68 = WBS_LOG_CHANNEL_PREFIXKeychain();
     if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
     {
@@ -2589,7 +2589,7 @@ LABEL_12:
     }
 
     v71 = [(WBSSavedAccountStore *)self _allPersonalSidecarsForGroupID:v63 fromRecentlyDeleted:v87, v85];
-    [(WBSSavedAccountStore *)self _matchSidecars:v71 toSavedAccountsWithPasswordsInDictionary:v65 unmatchedSidecars:v66];
+    [(WBSSavedAccountStore *)self _matchSidecars:v71 toSavedAccountsWithPasswordsInDictionary:v65 unmatchedSidecars:array];
     v72 = WBS_LOG_CHANNEL_PREFIXKeychain();
     if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
     {
@@ -2608,7 +2608,7 @@ LABEL_12:
   else
   {
     v67 = [(WBSSavedAccountStore *)self _allPersonalSidecarsFromPersonalKeychainFromRecentlyDeleted:v87];
-    [(WBSSavedAccountStore *)self _matchSidecars:v67 toSavedAccountsWithPasswordsInDictionary:v65 unmatchedSidecars:v66];
+    [(WBSSavedAccountStore *)self _matchSidecars:v67 toSavedAccountsWithPasswordsInDictionary:v65 unmatchedSidecars:array];
     v75 = WBS_LOG_CHANNEL_PREFIXKeychain();
     if (!os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
     {
@@ -2629,7 +2629,7 @@ LABEL_54:
   if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
   {
     v78 = v77;
-    v79 = [v66 count];
+    v79 = [array count];
     *buf = 134217984;
     v131 = v79;
     _os_log_impl(&dword_1B8447000, v78, OS_LOG_TYPE_DEFAULT, "%ld unmatched sidecars", buf, 0xCu);
@@ -3052,24 +3052,24 @@ void __147__WBSSavedAccountStore__loadSavedAccountsWithPasswordsFromKeychainData
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_matchSidecars:(id)a3 toSavedAccountsWithPasswordsInDictionary:(id)a4 unmatchedSidecars:(id)a5
+- (void)_matchSidecars:(id)sidecars toSavedAccountsWithPasswordsInDictionary:(id)dictionary unmatchedSidecars:(id)unmatchedSidecars
 {
   v62 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v40 = a4;
-  v36 = a5;
+  sidecarsCopy = sidecars;
+  dictionaryCopy = dictionary;
+  unmatchedSidecarsCopy = unmatchedSidecars;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v8;
-  v9 = [v8 countByEnumeratingWithState:&v55 objects:v61 count:16];
+  obj = sidecarsCopy;
+  v9 = [sidecarsCopy countByEnumeratingWithState:&v55 objects:v61 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v56;
     v37 = *v56;
-    v38 = self;
+    selfCopy = self;
     do
     {
       v12 = 0;
@@ -3082,12 +3082,12 @@ void __147__WBSSavedAccountStore__loadSavedAccountsWithPasswordsFromKeychainData
         }
 
         v13 = *(*(&v55 + 1) + 8 * v12);
-        v14 = [v13 protectionSpace];
-        v15 = [v14 host];
-        if ([(WBSSavedAccountStore *)self _shouldLoadCredentialRecordWithHostIntoAccountStore:v15])
+        protectionSpace = [v13 protectionSpace];
+        host = [protectionSpace host];
+        if ([(WBSSavedAccountStore *)self _shouldLoadCredentialRecordWithHostIntoAccountStore:host])
         {
-          v16 = [v15 safari_highLevelDomainForPasswordManager];
-          v17 = [v40 objectForKeyedSubscript:v16];
+          safari_highLevelDomainForPasswordManager = [host safari_highLevelDomainForPasswordManager];
+          v17 = [dictionaryCopy objectForKeyedSubscript:safari_highLevelDomainForPasswordManager];
           v45 = v13;
           [v13 user];
           v19 = v18 = v11;
@@ -3100,17 +3100,17 @@ void __147__WBSSavedAccountStore__loadSavedAccountsWithPasswordsFromKeychainData
           v23 = v22;
           self = v21;
           v10 = v20;
-          v24 = [v23 allValues];
+          allValues = [v23 allValues];
           v51 = 0u;
           v52 = 0u;
           v53 = 0u;
           v54 = 0u;
-          v25 = v24;
+          v25 = allValues;
           v43 = [v25 countByEnumeratingWithState:&v51 objects:v60 count:16];
           if (v43)
           {
             v26 = *v52;
-            v42 = v16;
+            v42 = safari_highLevelDomainForPasswordManager;
             v44 = v25;
             do
             {
@@ -3126,8 +3126,8 @@ void __147__WBSSavedAccountStore__loadSavedAccountsWithPasswordsFromKeychainData
                 v48 = 0u;
                 v49 = 0u;
                 v50 = 0u;
-                v29 = [v28 protectionSpaces];
-                v30 = [v29 countByEnumeratingWithState:&v47 objects:v59 count:16];
+                protectionSpaces = [v28 protectionSpaces];
+                v30 = [protectionSpaces countByEnumeratingWithState:&v47 objects:v59 count:16];
                 if (v30)
                 {
                   v31 = v30;
@@ -3138,24 +3138,24 @@ void __147__WBSSavedAccountStore__loadSavedAccountsWithPasswordsFromKeychainData
                     {
                       if (*v48 != v32)
                       {
-                        objc_enumerationMutation(v29);
+                        objc_enumerationMutation(protectionSpaces);
                       }
 
-                      if ([*(*(&v47 + 1) + 8 * j) isEqualToProtectionSpaceForPasswordManager:v14])
+                      if ([*(*(&v47 + 1) + 8 * j) isEqualToProtectionSpaceForPasswordManager:protectionSpace])
                       {
-                        v34 = [v14 host];
-                        [v28 _addSidecar:v45 forSite:v34];
+                        host2 = [protectionSpace host];
+                        [v28 _addSidecar:v45 forSite:host2];
 
                         v25 = v44;
                         v11 = v37;
-                        self = v38;
+                        self = selfCopy;
                         v10 = v39;
-                        v16 = v42;
+                        safari_highLevelDomainForPasswordManager = v42;
                         goto LABEL_24;
                       }
                     }
 
-                    v31 = [v29 countByEnumeratingWithState:&v47 objects:v59 count:16];
+                    v31 = [protectionSpaces countByEnumeratingWithState:&v47 objects:v59 count:16];
                     if (v31)
                     {
                       continue;
@@ -3169,16 +3169,16 @@ void __147__WBSSavedAccountStore__loadSavedAccountsWithPasswordsFromKeychainData
               }
 
               v11 = v37;
-              self = v38;
+              self = selfCopy;
               v10 = v39;
-              v16 = v42;
+              safari_highLevelDomainForPasswordManager = v42;
               v43 = [v44 countByEnumeratingWithState:&v51 objects:v60 count:16];
             }
 
             while (v43);
           }
 
-          [v36 addObject:v45];
+          [unmatchedSidecarsCopy addObject:v45];
 LABEL_24:
         }
 
@@ -3198,17 +3198,17 @@ LABEL_24:
 - (void)_reportKeychainItemsWithInvalidAuthenticationTypesIfNeeded
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v4 = [v3 safari_dateForKey:@"LastInvalidAuthTypeMigrationDate"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v4 = [safari_browserDefaults safari_dateForKey:@"LastInvalidAuthTypeMigrationDate"];
 
   if (!v4)
   {
     goto LABEL_7;
   }
 
-  v5 = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v6 = [MEMORY[0x1E695DF00] now];
-  v7 = [v5 dateByAddingUnit:16 value:-7 toDate:v6 options:0];
+  v7 = [currentCalendar dateByAddingUnit:16 value:-7 toDate:v6 options:0];
 
   if (![v7 safari_isEarlierThanDate:v4])
   {
@@ -3218,9 +3218,9 @@ LABEL_7:
     dispatch_async(v9, &__block_literal_global_213_0);
 
     [(WBSSavedAccountStore *)self _migratePasswordsWithInvalidAuthenticationTypes];
-    v10 = [MEMORY[0x1E695E000] safari_browserDefaults];
+    safari_browserDefaults2 = [MEMORY[0x1E695E000] safari_browserDefaults];
     v11 = [MEMORY[0x1E695DF00] now];
-    [v10 safari_setDate:v11 forKey:@"LastInvalidAuthTypeMigrationDate"];
+    [safari_browserDefaults2 safari_setDate:v11 forKey:@"LastInvalidAuthTypeMigrationDate"];
 
     goto LABEL_8;
   }
@@ -3300,9 +3300,9 @@ uint64_t __53__WBSSavedAccountStore__fetchSignInWithAppleAccounts__block_invoke_
   return result;
 }
 
-- (void)_updateCachedSignInWithAppleAccountsOnInternalQueueWithAccounts:(id)a3
+- (void)_updateCachedSignInWithAppleAccountsOnInternalQueueWithAccounts:(id)accounts
 {
-  v4 = [(WBSSavedAccountStore *)self _convertSignInWithAppleAccountsToSavedAccounts:a3];
+  v4 = [(WBSSavedAccountStore *)self _convertSignInWithAppleAccountsToSavedAccounts:accounts];
   savedAccounts = self->_savedAccounts;
   if (!savedAccounts)
   {
@@ -3349,16 +3349,16 @@ uint64_t __53__WBSSavedAccountStore__fetchSignInWithAppleAccounts__block_invoke_
   }
 }
 
-- (id)_convertSignInWithAppleAccountsToSavedAccounts:(id)a3
+- (id)_convertSignInWithAppleAccountsToSavedAccounts:(id)accounts
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  accountsCopy = accounts;
   v4 = objc_opt_new();
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = accountsCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v6)
   {
@@ -3374,8 +3374,8 @@ uint64_t __53__WBSSavedAccountStore__fetchSignInWithAppleAccounts__block_invoke_
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 localizedAppName];
-        v12 = [v11 length];
+        localizedAppName = [v10 localizedAppName];
+        v12 = [localizedAppName length];
 
         if (v12)
         {
@@ -3405,7 +3405,7 @@ uint64_t __53__WBSSavedAccountStore__fetchSignInWithAppleAccounts__block_invoke_
   return v15;
 }
 
-- (void)_signInWithApplePushNotificationReceived:(id)a3
+- (void)_signInWithApplePushNotificationReceived:(id)received
 {
   v4 = WBS_LOG_CHANNEL_PREFIXPasswords();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -3417,43 +3417,43 @@ uint64_t __53__WBSSavedAccountStore__fetchSignInWithAppleAccounts__block_invoke_
   [(WBSSavedAccountStore *)self _fetchSignInWithAppleAccounts];
 }
 
-- (BOOL)_moveSignInWithAppleSavedAccount:(id)a3 toGroupID:(id)a4
+- (BOOL)_moveSignInWithAppleSavedAccount:(id)account toGroupID:(id)d
 {
-  v5 = a3;
-  v28 = a4;
-  v31 = v5;
-  v6 = [v5 signInWithAppleAccount];
-  v7 = [MEMORY[0x1E698DC80] sharedInstance];
-  v8 = [v7 primaryAuthKitAccount];
+  accountCopy = account;
+  dCopy = d;
+  v31 = accountCopy;
+  signInWithAppleAccount = [accountCopy signInWithAppleAccount];
+  mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+  primaryAuthKitAccount = [mEMORY[0x1E698DC80] primaryAuthKitAccount];
 
-  v9 = [MEMORY[0x1E698DC80] sharedInstance];
-  v10 = [v9 altDSIDForAccount:v8];
+  mEMORY[0x1E698DC80]2 = [MEMORY[0x1E698DC80] sharedInstance];
+  v10 = [mEMORY[0x1E698DC80]2 altDSIDForAccount:primaryAuthKitAccount];
 
   v11 = +[WBSOngoingSharingGroupProvider sharedProvider];
-  v12 = [v11 currentUserParticipantID];
+  currentUserParticipantID = [v11 currentUserParticipantID];
 
   v13 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-  v14 = [MEMORY[0x1E698DC80] sharedInstance];
-  v15 = [v14 familyNameForAccount:v8];
+  mEMORY[0x1E698DC80]3 = [MEMORY[0x1E698DC80] sharedInstance];
+  v15 = [mEMORY[0x1E698DC80]3 familyNameForAccount:primaryAuthKitAccount];
   [v13 setFamilyName:v15];
 
-  v16 = [MEMORY[0x1E698DC80] sharedInstance];
-  v29 = v8;
-  v17 = [v16 givenNameForAccount:v8];
+  mEMORY[0x1E698DC80]4 = [MEMORY[0x1E698DC80] sharedInstance];
+  v29 = primaryAuthKitAccount;
+  v17 = [mEMORY[0x1E698DC80]4 givenNameForAccount:primaryAuthKitAccount];
   [v13 setGivenName:v17];
 
   v18 = objc_alloc_init(MEMORY[0x1E696ADF8]);
   v19 = [v18 stringFromPersonNameComponents:v13];
-  v30 = v12;
-  v20 = [objc_alloc(MEMORY[0x1E698DDE0]) initWithGroupID:v28 participantID:v12 participantName:v19];
+  v30 = currentUserParticipantID;
+  v20 = [objc_alloc(MEMORY[0x1E698DDE0]) initWithGroupID:dCopy participantID:currentUserParticipantID participantName:v19];
   v21 = [objc_alloc(MEMORY[0x1E698DDF0]) initWithAltDSID:v10];
-  [v21 setSignInWithAppleAccount:v6];
-  v33 = v6;
-  v22 = [v6 shareInfo];
-  v23 = [v22 groupID];
-  [v21 setCurrentGroupID:v23];
+  [v21 setSignInWithAppleAccount:signInWithAppleAccount];
+  v33 = signInWithAppleAccount;
+  shareInfo = [signInWithAppleAccount shareInfo];
+  groupID = [shareInfo groupID];
+  [v21 setCurrentGroupID:groupID];
 
-  v24 = [v28 length];
+  v24 = [dCopy length];
   if (v24)
   {
     v25 = v31;
@@ -3469,11 +3469,11 @@ uint64_t __53__WBSSavedAccountStore__fetchSignInWithAppleAccounts__block_invoke_
   return v26;
 }
 
-- (BOOL)_shareSignInWithAppleAccountWithContext:(id)a3 withGroupInfo:(id)a4 savedAccount:(id)a5
+- (BOOL)_shareSignInWithAppleAccountWithContext:(id)context withGroupInfo:(id)info savedAccount:(id)account
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  infoCopy = info;
+  accountCopy = account;
   v10 = objc_alloc_init(MEMORY[0x1E698DDE8]);
   v11 = dispatch_group_create();
   v21 = 0;
@@ -3486,11 +3486,11 @@ uint64_t __53__WBSSavedAccountStore__fetchSignInWithAppleAccounts__block_invoke_
   v17[2] = __91__WBSSavedAccountStore__shareSignInWithAppleAccountWithContext_withGroupInfo_savedAccount___block_invoke;
   v17[3] = &unk_1E7CF48B8;
   v20 = &v21;
-  v12 = v9;
+  v12 = accountCopy;
   v18 = v12;
   v13 = v11;
   v19 = v13;
-  [v10 shareAccountWithContext:v7 withGroup:v8 completion:v17];
+  [v10 shareAccountWithContext:contextCopy withGroup:infoCopy completion:v17];
   v14 = dispatch_time(0, 5000000000);
   dispatch_group_wait(v13, v14);
   v15 = *(v22 + 24);
@@ -3531,9 +3531,9 @@ void __91__WBSSavedAccountStore__shareSignInWithAppleAccountWithContext_withGrou
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (BOOL)_unshareSignInWithAppleAccountWithContext:(id)a3
+- (BOOL)_unshareSignInWithAppleAccountWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_alloc_init(MEMORY[0x1E698DDE8]);
   v5 = dispatch_group_create();
   v13 = 0;
@@ -3548,7 +3548,7 @@ void __91__WBSSavedAccountStore__shareSignInWithAppleAccountWithContext_withGrou
   v12 = &v13;
   v6 = v5;
   v11 = v6;
-  [v4 unshareAccountWithContext:v3 completion:v10];
+  [v4 unshareAccountWithContext:contextCopy completion:v10];
   v7 = dispatch_time(0, 5000000000);
   dispatch_group_wait(v6, v7);
   v8 = *(v14 + 24);
@@ -3580,9 +3580,9 @@ void __66__WBSSavedAccountStore__unshareSignInWithAppleAccountWithContext___bloc
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (id)exportPasskeyCredentialWithID:(id)a3
+- (id)exportPasskeyCredentialWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -3594,10 +3594,10 @@ void __66__WBSSavedAccountStore__unshareSignInWithAppleAccountWithContext___bloc
   block[1] = 3221225472;
   block[2] = __54__WBSSavedAccountStore_exportPasskeyCredentialWithID___block_invoke;
   block[3] = &unk_1E7CF1730;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -3614,12 +3614,12 @@ void __54__WBSSavedAccountStore_exportPasskeyCredentialWithID___block_invoke(uin
   *(v3 + 40) = v2;
 }
 
-- (void)_loadRecentlyDeletedSavedAccountsFromSharedGroupIDs:(id)a3
+- (void)_loadRecentlyDeletedSavedAccountsFromSharedGroupIDs:(id)ds
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v22 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
-  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  dsCopy = ds;
+  mEMORY[0x1E695AC50] = [MEMORY[0x1E695AC50] sharedCredentialStorage];
+  v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(dsCopy, "count")}];
   sharedGroupIdentifiersToRecentlyDeletedSavedAccounts = self->_sharedGroupIdentifiersToRecentlyDeletedSavedAccounts;
   self->_sharedGroupIdentifiersToRecentlyDeletedSavedAccounts = v5;
 
@@ -3627,7 +3627,7 @@ void __54__WBSSavedAccountStore_exportPasskeyCredentialWithID___block_invoke(uin
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v4;
+  obj = dsCopy;
   v7 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
   {
@@ -3644,15 +3644,15 @@ void __54__WBSSavedAccountStore_exportPasskeyCredentialWithID___block_invoke(uin
         }
 
         v10 = *(*(&v23 + 1) + 8 * v9);
-        v11 = [MEMORY[0x1E695DF90] dictionary];
-        v12 = [v22 safari_allRecentlyDeletedPasswordCredentialItemsInGroupWithID:v10];
-        v13 = [(WBSSavedAccountStore *)self _loadSavedAccountsWithPasswordsFromKeychainData:v12 forGroupID:v10 withDictionaryForSavedAccountsWithPasswords:v11 fromRecentlyDeleted:1];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        v12 = [mEMORY[0x1E695AC50] safari_allRecentlyDeletedPasswordCredentialItemsInGroupWithID:v10];
+        v13 = [(WBSSavedAccountStore *)self _loadSavedAccountsWithPasswordsFromKeychainData:v12 forGroupID:v10 withDictionaryForSavedAccountsWithPasswords:dictionary fromRecentlyDeleted:1];
 
-        v14 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
         v15 = [(NSDictionary *)self->_groupIdentifiersToRecentlyDeletedPasskeysData objectForKeyedSubscript:v10];
-        v16 = [(WBSSavedAccountStore *)self _loadSavedAccountsWithPasskeysFromPasskeyData:v15 forGroupID:v10 fromRecentlyDeleted:1 withDictionaryForSavedAccountsWithPasskeys:v14];
+        v16 = [(WBSSavedAccountStore *)self _loadSavedAccountsWithPasskeysFromPasskeyData:v15 forGroupID:v10 fromRecentlyDeleted:1 withDictionaryForSavedAccountsWithPasskeys:dictionary2];
 
-        v17 = [(WBSSavedAccountStore *)self _mergeSavedAccountsWithPasskeys:v16 andSavedAccountsWithPasswords:v13 usingDictionaryForSavedAccountsWithPasswords:v11 dictionaryForSavedAccountsWithPasskeys:v14];
+        v17 = [(WBSSavedAccountStore *)self _mergeSavedAccountsWithPasskeys:v16 andSavedAccountsWithPasswords:v13 usingDictionaryForSavedAccountsWithPasswords:dictionary dictionaryForSavedAccountsWithPasskeys:dictionary2];
         v18 = [v17 mutableCopy];
         [(NSMutableDictionary *)self->_sharedGroupIdentifiersToRecentlyDeletedSavedAccounts setObject:v18 forKeyedSubscript:v10];
 
@@ -3711,79 +3711,79 @@ void __66__WBSSavedAccountStore__fetchAndFilterRecentlyDeletedPasskeysData__bloc
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_loadAndMergeSavedAccountsFromGroupID:(id)a3 intoAllSavedAccounts:(id)a4
+- (id)_loadAndMergeSavedAccountsFromGroupID:(id)d intoAllSavedAccounts:(id)accounts
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
+  dCopy = d;
+  accountsCopy = accounts;
+  v8 = [dCopy length];
   if (v8)
   {
     if (!self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts)
     {
-      v9 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts = self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts;
-      self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts = v9;
+      self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts = dictionary;
     }
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
-    [(NSMutableDictionary *)self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts setObject:v11 forKeyedSubscript:v6];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [(NSMutableDictionary *)self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts setObject:dictionary2 forKeyedSubscript:dCopy];
 
-    v12 = [(NSMutableDictionary *)self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:v6];
+    v12 = [(NSMutableDictionary *)self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:dCopy];
   }
 
   else
   {
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts = self->_personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts;
-    self->_personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts = v13;
+    self->_personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts = dictionary3;
 
     v12 = self->_personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts;
   }
 
   v15 = v12;
-  v16 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary4 = [MEMORY[0x1E695DF90] dictionary];
   if (v8)
   {
-    v17 = [(WBSSavedAccountStore *)self _allInternetPasswordEntriesFromGroupID:v6];
-    v18 = [(WBSSavedAccountStore *)self _loadSavedAccountsWithPasswordsFromKeychainData:v17 forGroupID:v6 withDictionaryForSavedAccountsWithPasswords:v15 fromRecentlyDeleted:0];
-    v19 = [(NSDictionary *)self->_groupIdentifiersToPasskeysData objectForKeyedSubscript:v6];
+    _allInternetPasswordEntriesFromPersonalKeychain = [(WBSSavedAccountStore *)self _allInternetPasswordEntriesFromGroupID:dCopy];
+    v18 = [(WBSSavedAccountStore *)self _loadSavedAccountsWithPasswordsFromKeychainData:_allInternetPasswordEntriesFromPersonalKeychain forGroupID:dCopy withDictionaryForSavedAccountsWithPasswords:v15 fromRecentlyDeleted:0];
+    v19 = [(NSDictionary *)self->_groupIdentifiersToPasskeysData objectForKeyedSubscript:dCopy];
   }
 
   else
   {
-    v17 = [(WBSSavedAccountStore *)self _allInternetPasswordEntriesFromPersonalKeychain];
-    v18 = [(WBSSavedAccountStore *)self _loadSavedAccountsWithPasswordsFromKeychainData:v17 forGroupID:v6 withDictionaryForSavedAccountsWithPasswords:v15 fromRecentlyDeleted:0];
+    _allInternetPasswordEntriesFromPersonalKeychain = [(WBSSavedAccountStore *)self _allInternetPasswordEntriesFromPersonalKeychain];
+    v18 = [(WBSSavedAccountStore *)self _loadSavedAccountsWithPasswordsFromKeychainData:_allInternetPasswordEntriesFromPersonalKeychain forGroupID:dCopy withDictionaryForSavedAccountsWithPasswords:v15 fromRecentlyDeleted:0];
     v19 = self->_passkeysDataInPersonalKeychain;
   }
 
   v20 = v19;
-  v21 = [(WBSSavedAccountStore *)self _loadSavedAccountsWithPasskeysFromPasskeyData:v19 forGroupID:v6 fromRecentlyDeleted:0 withDictionaryForSavedAccountsWithPasskeys:v16];
-  v22 = [(WBSSavedAccountStore *)self _mergeSavedAccountsWithPasskeys:v21 andSavedAccountsWithPasswords:v18 usingDictionaryForSavedAccountsWithPasswords:v15 dictionaryForSavedAccountsWithPasskeys:v16];
-  v23 = [(WBSSavedAccountStore *)self _mergeLoadedSavedAccounts:v22 intoAllSavedAccounts:v7];
+  v21 = [(WBSSavedAccountStore *)self _loadSavedAccountsWithPasskeysFromPasskeyData:v19 forGroupID:dCopy fromRecentlyDeleted:0 withDictionaryForSavedAccountsWithPasskeys:dictionary4];
+  v22 = [(WBSSavedAccountStore *)self _mergeSavedAccountsWithPasskeys:v21 andSavedAccountsWithPasswords:v18 usingDictionaryForSavedAccountsWithPasswords:v15 dictionaryForSavedAccountsWithPasskeys:dictionary4];
+  v23 = [(WBSSavedAccountStore *)self _mergeLoadedSavedAccounts:v22 intoAllSavedAccounts:accountsCopy];
 
   return v23;
 }
 
-- (id)_loadSavedAccountsWithPasskeysFromPasskeyData:(id)a3 forGroupID:(id)a4 fromRecentlyDeleted:(BOOL)a5 withDictionaryForSavedAccountsWithPasskeys:(id)a6
+- (id)_loadSavedAccountsWithPasskeysFromPasskeyData:(id)data forGroupID:(id)d fromRecentlyDeleted:(BOOL)deleted withDictionaryForSavedAccountsWithPasskeys:(id)passkeys
 {
-  v7 = a5;
+  deletedCopy = deleted;
   v103 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v86 = v11;
-  v13 = [v11 length];
+  dataCopy = data;
+  dCopy = d;
+  passkeysCopy = passkeys;
+  v86 = dCopy;
+  v13 = [dCopy length];
   v14 = v13;
-  v81 = v7;
-  v82 = v12;
+  v81 = deletedCopy;
+  v82 = passkeysCopy;
   v78 = v13;
-  if (v7)
+  if (deletedCopy)
   {
-    v15 = [MEMORY[0x1E695DF90] dictionary];
-    v84 = v15;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v84 = dictionary;
     if (!v14)
     {
-      objc_storeStrong(&self->_recentlyDeletedPersonalKeychainUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys, v15);
+      objc_storeStrong(&self->_recentlyDeletedPersonalKeychainUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys, dictionary);
     }
   }
 
@@ -3793,22 +3793,22 @@ void __66__WBSSavedAccountStore__fetchAndFilterRecentlyDeletedPasskeysData__bloc
     {
       if (!self->_groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys)
       {
-        v16 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
         groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys = self->_groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys;
-        self->_groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys = v16;
+        self->_groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys = dictionary2;
       }
 
-      v18 = [MEMORY[0x1E695DF90] dictionary];
-      [(NSMutableDictionary *)self->_groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys setObject:v18 forKeyedSubscript:v11];
+      dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+      [(NSMutableDictionary *)self->_groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys setObject:dictionary3 forKeyedSubscript:dCopy];
 
-      v19 = [(NSMutableDictionary *)self->_groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys objectForKeyedSubscript:v11];
+      v19 = [(NSMutableDictionary *)self->_groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys objectForKeyedSubscript:dCopy];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary4 = [MEMORY[0x1E695DF90] dictionary];
       personalKeychainUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys = self->_personalKeychainUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys;
-      self->_personalKeychainUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys = v20;
+      self->_personalKeychainUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys = dictionary4;
 
       v19 = self->_personalKeychainUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys;
     }
@@ -3816,18 +3816,18 @@ void __66__WBSSavedAccountStore__fetchAndFilterRecentlyDeletedPasskeysData__bloc
     v84 = v19;
   }
 
-  v80 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
-  v22 = v10;
+  v22 = dataCopy;
   v23 = [v22 countByEnumeratingWithState:&v94 objects:v102 count:16];
   if (v23)
   {
     v24 = v23;
     v25 = *v95;
-    v88 = self;
+    selfCopy = self;
     v79 = v22;
     v87 = *v95;
     do
@@ -3850,9 +3850,9 @@ void __66__WBSSavedAccountStore__fetchAndFilterRecentlyDeletedPasskeysData__bloc
           v30 = [v27 objectForKeyedSubscript:@"CredentialID"];
           v31 = [v30 base64EncodedStringWithOptions:0];
 
-          v91 = [(__CFString *)v28 safari_highLevelDomainForPasswordManager];
+          safari_highLevelDomainForPasswordManager = [(__CFString *)v28 safari_highLevelDomainForPasswordManager];
           v89 = v31;
-          if (v91)
+          if (safari_highLevelDomainForPasswordManager)
           {
             if (v31)
             {
@@ -3869,7 +3869,7 @@ void __66__WBSSavedAccountStore__fetchAndFilterRecentlyDeletedPasskeysData__bloc
               if (([(__CFString *)v35 isEqualToString:v86]& 1) != 0)
               {
                 v85 = v35;
-                v36 = [(NSMutableDictionary *)self->_highLevelDomainToLegacyPlatformAuthenticatorCredentials safari_mutableArrayForKey:v91];
+                v36 = [(NSMutableDictionary *)self->_highLevelDomainToLegacyPlatformAuthenticatorCredentials safari_mutableArrayForKey:safari_highLevelDomainForPasswordManager];
                 v37 = 0;
                 if ([v36 count])
                 {
@@ -3899,14 +3899,14 @@ void __66__WBSSavedAccountStore__fetchAndFilterRecentlyDeletedPasskeysData__bloc
                       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
                       {
                         *buf = 138543618;
-                        v99 = v91;
+                        v99 = safari_highLevelDomainForPasswordManager;
                         v100 = 2114;
                         v101 = v43;
                         _os_log_impl(&dword_1B8447000, v44, OS_LOG_TYPE_DEFAULT, "Found passkey and legacy credential for %{public}@ with matching userHandle %{public}@. Removing legacy credential.", buf, 0x16u);
                       }
 
                       v45 = [[WBSPublicKeyCredentialIdentifier alloc] initWithCredentialID:v43 groupID:&stru_1F3064D08];
-                      [(WBSSavedAccountStore *)v88 deletePasskeyWithIdentifierOnInternalQueue:v45];
+                      [(WBSSavedAccountStore *)selfCopy deletePasskeyWithIdentifierOnInternalQueue:v45];
                     }
 
                     ++v38;
@@ -3934,49 +3934,49 @@ void __66__WBSSavedAccountStore__fetchAndFilterRecentlyDeletedPasskeysData__bloc
                 v53 = [v27 objectForKeyedSubscript:@"CreationDate"];
                 [v52 setCreationDateForPasskey:v53];
 
-                v54 = [v47 objectForKeyedSubscript:v91];
+                v54 = [v47 objectForKeyedSubscript:safari_highLevelDomainForPasswordManager];
 
                 if (!v54)
                 {
-                  v55 = [MEMORY[0x1E695DF90] dictionary];
-                  [v47 setObject:v55 forKeyedSubscript:v91];
+                  dictionary5 = [MEMORY[0x1E695DF90] dictionary];
+                  [v47 setObject:dictionary5 forKeyedSubscript:safari_highLevelDomainForPasswordManager];
                 }
 
-                v56 = [v47 objectForKeyedSubscript:v91];
+                v56 = [v47 objectForKeyedSubscript:safari_highLevelDomainForPasswordManager];
                 v57 = [v56 objectForKeyedSubscript:v48];
 
                 if (!v57)
                 {
-                  v58 = [MEMORY[0x1E695DF70] array];
-                  v59 = [v47 objectForKeyedSubscript:v91];
-                  [v59 setObject:v58 forKeyedSubscript:v90];
+                  array2 = [MEMORY[0x1E695DF70] array];
+                  v59 = [v47 objectForKeyedSubscript:safari_highLevelDomainForPasswordManager];
+                  [v59 setObject:array2 forKeyedSubscript:v90];
                 }
 
-                v60 = [v47 objectForKeyedSubscript:v91];
+                v60 = [v47 objectForKeyedSubscript:safari_highLevelDomainForPasswordManager];
                 v61 = [v60 objectForKeyedSubscript:v90];
                 [v61 addObject:v52];
 
                 v62 = [MEMORY[0x1E695AC58] safari_passkeySidecarProtectionSpaceForRelyingPartyIdentifier:v28];
                 v63 = [[WBSPair alloc] initWithFirst:v29 second:v62];
-                v64 = [(NSMutableDictionary *)v84 objectForKeyedSubscript:v63];
-                if (!v64)
+                array3 = [(NSMutableDictionary *)v84 objectForKeyedSubscript:v63];
+                if (!array3)
                 {
-                  v64 = [MEMORY[0x1E695DF70] array];
-                  [(NSMutableDictionary *)v84 setObject:v64 forKeyedSubscript:v63];
+                  array3 = [MEMORY[0x1E695DF70] array];
+                  [(NSMutableDictionary *)v84 setObject:array3 forKeyedSubscript:v63];
                 }
 
-                [v64 addObject:v52];
+                [array3 addObject:v52];
                 v65 = [v27 objectForKeyedSubscript:@"LastModifiedDate"];
                 [v52 setLastModifiedDateForPasskey:v65];
 
-                v66 = [v52 lastModifiedDateForPasskey];
-                [v52 setLastUsedDateForPasskey:v66];
+                lastModifiedDateForPasskey = [v52 lastModifiedDateForPasskey];
+                [v52 setLastUsedDateForPasskey:lastModifiedDateForPasskey];
 
                 [v52 setSharedGroupID:v86];
                 [v52 setIsRecentlyDeleted:v81];
-                [v80 addObject:v52];
+                [array addObject:v52];
 
-                self = v88;
+                self = selfCopy;
                 v22 = v79;
                 v24 = v83;
                 v35 = v85;
@@ -4030,28 +4030,28 @@ void __66__WBSSavedAccountStore__fetchAndFilterRecentlyDeletedPasskeysData__bloc
     while (v24);
   }
 
-  v67 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
   if (v78)
   {
     v68 = [(WBSSavedAccountStore *)self _allSharedSidecarsForGroupID:v86 fromRecentlyDeleted:v81];
     v69 = v84;
-    [(WBSSavedAccountStore *)self _matchSidecars:v68 toSavedAccountsWithPasskeysInDictionary:v84 unmatchedSidecars:v67];
+    [(WBSSavedAccountStore *)self _matchSidecars:v68 toSavedAccountsWithPasskeysInDictionary:v84 unmatchedSidecars:array4];
     v70 = [(WBSSavedAccountStore *)self _allPersonalSidecarsForGroupID:v86 fromRecentlyDeleted:v81];
-    [(WBSSavedAccountStore *)self _matchSidecars:v70 toSavedAccountsWithPasskeysInDictionary:v84 unmatchedSidecars:v67];
+    [(WBSSavedAccountStore *)self _matchSidecars:v70 toSavedAccountsWithPasskeysInDictionary:v84 unmatchedSidecars:array4];
   }
 
   else
   {
     v68 = [(WBSSavedAccountStore *)self _allPersonalSidecarsFromPersonalKeychainFromRecentlyDeleted:v81];
     v69 = v84;
-    [(WBSSavedAccountStore *)self _matchSidecars:v68 toSavedAccountsWithPasskeysInDictionary:v84 unmatchedSidecars:v67];
+    [(WBSSavedAccountStore *)self _matchSidecars:v68 toSavedAccountsWithPasskeysInDictionary:v84 unmatchedSidecars:array4];
   }
 
   v71 = WBS_LOG_CHANNEL_PREFIXKeychain();
   if (os_log_type_enabled(v71, OS_LOG_TYPE_INFO))
   {
     v72 = v71;
-    v73 = [v67 count];
+    v73 = [array4 count];
     *buf = 134217984;
     v99 = v73;
     _os_log_impl(&dword_1B8447000, v72, OS_LOG_TYPE_INFO, "%ld unmatched sidecars.", buf, 0xCu);
@@ -4063,25 +4063,25 @@ void __66__WBSSavedAccountStore__fetchAndFilterRecentlyDeletedPasskeysData__bloc
     [WBSSavedAccountStore _loadSavedAccountsWithPasswordsFromKeychainData:forGroupID:withDictionaryForSavedAccountsWithPasswords:fromRecentlyDeleted:];
   }
 
-  v75 = [v80 copy];
+  v75 = [array copy];
 
   v76 = *MEMORY[0x1E69E9840];
 
   return v75;
 }
 
-- (void)_matchSidecars:(id)a3 toSavedAccountsWithPasskeysInDictionary:(id)a4 unmatchedSidecars:(id)a5
+- (void)_matchSidecars:(id)sidecars toSavedAccountsWithPasskeysInDictionary:(id)dictionary unmatchedSidecars:(id)unmatchedSidecars
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v25 = a5;
-  obj = v7;
+  sidecarsCopy = sidecars;
+  dictionaryCopy = dictionary;
+  unmatchedSidecarsCopy = unmatchedSidecars;
+  obj = sidecarsCopy;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v9 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  v9 = [sidecarsCopy countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v9)
   {
     v10 = v9;
@@ -4097,11 +4097,11 @@ void __66__WBSSavedAccountStore__fetchAndFilterRecentlyDeletedPasskeysData__bloc
 
         v13 = *(*(&v31 + 1) + 8 * i);
         v14 = [WBSPair alloc];
-        v15 = [v13 user];
-        v16 = [v13 protectionSpace];
-        v17 = [(WBSPair *)v14 initWithFirst:v15 second:v16];
+        user = [v13 user];
+        protectionSpace = [v13 protectionSpace];
+        v17 = [(WBSPair *)v14 initWithFirst:user second:protectionSpace];
 
-        v18 = [v8 objectForKeyedSubscript:v17];
+        v18 = [dictionaryCopy objectForKeyedSubscript:v17];
         v19 = v18;
         if (v18)
         {
@@ -4135,7 +4135,7 @@ void __66__WBSSavedAccountStore__fetchAndFilterRecentlyDeletedPasskeysData__bloc
 
         else
         {
-          [v25 addObject:v13];
+          [unmatchedSidecarsCopy addObject:v13];
         }
       }
 
@@ -4148,18 +4148,18 @@ void __66__WBSSavedAccountStore__fetchAndFilterRecentlyDeletedPasskeysData__bloc
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_mergeSavedAccountsWithPasskeys:(id)a3 andSavedAccountsWithPasswords:(id)a4 usingDictionaryForSavedAccountsWithPasswords:(id)a5 dictionaryForSavedAccountsWithPasskeys:(id)a6
+- (id)_mergeSavedAccountsWithPasskeys:(id)passkeys andSavedAccountsWithPasswords:(id)passwords usingDictionaryForSavedAccountsWithPasswords:(id)withPasswords dictionaryForSavedAccountsWithPasskeys:(id)withPasskeys
 {
   v82 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v55 = a5;
-  v54 = a6;
-  v52 = [a4 mutableCopy];
+  passkeysCopy = passkeys;
+  withPasswordsCopy = withPasswords;
+  withPasskeysCopy = withPasskeys;
+  v52 = [passwords mutableCopy];
   v75 = 0u;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
-  obj = v9;
+  obj = passkeysCopy;
   v56 = [obj countByEnumeratingWithState:&v75 objects:v81 count:16];
   if (v56)
   {
@@ -4175,29 +4175,29 @@ void __66__WBSSavedAccountStore__fetchAndFilterRecentlyDeletedPasskeysData__bloc
         }
 
         v12 = *(*(&v75 + 1) + 8 * i);
-        v13 = [v12 user];
-        v14 = [v12 highLevelDomain];
-        v15 = [v55 objectForKeyedSubscript:v14];
-        v16 = [v15 objectForKeyedSubscript:v13];
+        user = [v12 user];
+        highLevelDomain = [v12 highLevelDomain];
+        v15 = [withPasswordsCopy objectForKeyedSubscript:highLevelDomain];
+        v16 = [v15 objectForKeyedSubscript:user];
 
-        v17 = [v16 allValues];
-        v18 = [v54 objectForKeyedSubscript:v14];
-        v19 = [v18 objectForKeyedSubscript:v13];
+        allValues = [v16 allValues];
+        v18 = [withPasskeysCopy objectForKeyedSubscript:highLevelDomain];
+        v19 = [v18 objectForKeyedSubscript:user];
 
         v64 = v19;
         v62 = [v19 count];
-        if ([v17 count])
+        if ([allValues count])
         {
-          v59 = v14;
-          v60 = v13;
+          v59 = highLevelDomain;
+          v60 = user;
           v61 = i;
-          v63 = [*(v10 + 3952) array];
+          array = [*(v10 + 3952) array];
           v71 = 0u;
           v72 = 0u;
           v73 = 0u;
           v74 = 0u;
-          v57 = v17;
-          v65 = v17;
+          v57 = allValues;
+          v65 = allValues;
           v20 = [v65 countByEnumeratingWithState:&v71 objects:v80 count:16];
           if (v20)
           {
@@ -4213,13 +4213,13 @@ void __66__WBSSavedAccountStore__fetchAndFilterRecentlyDeletedPasskeysData__bloc
                 }
 
                 v24 = *(*(&v71 + 1) + 8 * j);
-                v25 = [v24 sites];
-                v26 = [v12 passkeyRelyingPartyID];
-                v27 = [v25 containsObject:v26];
+                sites = [v24 sites];
+                passkeyRelyingPartyID = [v12 passkeyRelyingPartyID];
+                v27 = [sites containsObject:passkeyRelyingPartyID];
 
                 if (v27)
                 {
-                  [v63 addObject:v24];
+                  [array addObject:v24];
                   goto LABEL_17;
                 }
               }
@@ -4237,7 +4237,7 @@ void __66__WBSSavedAccountStore__fetchAndFilterRecentlyDeletedPasskeysData__bloc
 LABEL_17:
           v58 = v16;
 
-          v28 = [*(v10 + 3952) array];
+          array2 = [*(v10 + 3952) array];
           v67 = 0u;
           v68 = 0u;
           v69 = 0u;
@@ -4258,13 +4258,13 @@ LABEL_17:
                 }
 
                 v34 = *(*(&v67 + 1) + 8 * k);
-                v35 = [v12 passkeyRelyingPartyID];
-                v36 = [v34 passkeyRelyingPartyID];
-                v37 = [v35 isEqualToString:v36];
+                passkeyRelyingPartyID2 = [v12 passkeyRelyingPartyID];
+                passkeyRelyingPartyID3 = [v34 passkeyRelyingPartyID];
+                v37 = [passkeyRelyingPartyID2 isEqualToString:passkeyRelyingPartyID3];
 
                 if (v37)
                 {
-                  [v28 addObject:v34];
+                  [array2 addObject:v34];
                 }
               }
 
@@ -4274,44 +4274,44 @@ LABEL_17:
             while (v31);
           }
 
-          if ([v63 count] == 1 && (v38 = objc_msgSend(v28, "count"), v39 = v63, v38 == 1) || objc_msgSend(v65, "count") == 1 && (v39 = v65, v62 == 1))
+          if ([array count] == 1 && (v38 = objc_msgSend(array2, "count"), v39 = array, v38 == 1) || objc_msgSend(v65, "count") == 1 && (v39 = v65, v62 == 1))
           {
-            v40 = [v39 firstObject];
+            firstObject = [v39 firstObject];
             v66 = 0;
             v16 = v58;
-            v14 = v59;
-            if ([v40 _canMergeWithSavedAccount:v12 requiresDataCopying:&v66])
+            highLevelDomain = v59;
+            if ([firstObject _canMergeWithSavedAccount:v12 requiresDataCopying:&v66])
             {
-              v41 = [v12 passkeyCredentialID];
-              [v40 setPasskeyCredentialID:v41];
+              passkeyCredentialID = [v12 passkeyCredentialID];
+              [firstObject setPasskeyCredentialID:passkeyCredentialID];
 
-              v42 = [v12 passkeyUserHandle];
-              [v40 setPasskeyUserHandle:v42];
+              passkeyUserHandle = [v12 passkeyUserHandle];
+              [firstObject setPasskeyUserHandle:passkeyUserHandle];
 
-              v43 = [v12 passkeyRelyingPartyID];
-              [v40 setPasskeyRelyingPartyID:v43];
+              passkeyRelyingPartyID4 = [v12 passkeyRelyingPartyID];
+              [firstObject setPasskeyRelyingPartyID:passkeyRelyingPartyID4];
 
-              v44 = [v12 creationDateForPasskey];
-              [v40 setCreationDateForPasskey:v44];
+              creationDateForPasskey = [v12 creationDateForPasskey];
+              [firstObject setCreationDateForPasskey:creationDateForPasskey];
 
-              v45 = [v12 lastModifiedDate];
-              [v40 setLastModifiedDateForPasskey:v45];
+              lastModifiedDate = [v12 lastModifiedDate];
+              [firstObject setLastModifiedDateForPasskey:lastModifiedDate];
 
-              v46 = [v12 lastUsedDateForPasskey];
-              [v40 setLastUsedDateForPasskey:v46];
+              lastUsedDateForPasskey = [v12 lastUsedDateForPasskey];
+              [firstObject setLastUsedDateForPasskey:lastUsedDateForPasskey];
 
-              [v40 _mergePasskeySidecarsFromSavedAccount:v12];
-              v13 = v60;
+              [firstObject _mergePasskeySidecarsFromSavedAccount:v12];
+              user = v60;
               if (v66 == 1)
               {
-                [(WBSSavedAccountStore *)self _writeSidecarDataForMergedSavedAccount:v40];
+                [(WBSSavedAccountStore *)self _writeSidecarDataForMergedSavedAccount:firstObject];
               }
             }
 
             else
             {
               [v52 addObject:v12];
-              v13 = v60;
+              user = v60;
             }
 
             v10 = 0x1E695D000;
@@ -4321,13 +4321,13 @@ LABEL_17:
           {
             [v52 addObject:v12];
             v10 = 0x1E695D000;
-            v14 = v59;
-            v13 = v60;
+            highLevelDomain = v59;
+            user = v60;
             v16 = v58;
           }
 
           i = v61;
-          v17 = v57;
+          allValues = v57;
         }
 
         else
@@ -4349,11 +4349,11 @@ LABEL_17:
   return v47;
 }
 
-- (id)_mergeLoadedSavedAccounts:(id)a3 intoAllSavedAccounts:(id)a4
+- (id)_mergeLoadedSavedAccounts:(id)accounts intoAllSavedAccounts:(id)savedAccounts
 {
   v55 = *MEMORY[0x1E69E9840];
-  obj = a3;
-  v36 = a4;
+  obj = accounts;
+  savedAccountsCopy = savedAccounts;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -4374,17 +4374,17 @@ LABEL_17:
         }
 
         v8 = *(*(&v44 + 1) + 8 * i);
-        v9 = [v8 highLevelDomain];
+        highLevelDomain = [v8 highLevelDomain];
 
-        if (v9)
+        if (highLevelDomain)
         {
           v39 = i;
-          v10 = [v8 highLevelDomain];
-          v49 = v10;
+          highLevelDomain2 = [v8 highLevelDomain];
+          v49 = highLevelDomain2;
           v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v49 count:1];
 
-          v12 = [v8 additionalSites];
-          v13 = [v12 safari_mapObjectsUsingBlock:&__block_literal_global_251];
+          additionalSites = [v8 additionalSites];
+          v13 = [additionalSites safari_mapObjectsUsingBlock:&__block_literal_global_251];
           v14 = [v11 arrayByAddingObjectsFromArray:v13];
 
           v42 = 0u;
@@ -4407,32 +4407,32 @@ LABEL_17:
                 }
 
                 v20 = *(*(&v40 + 1) + 8 * j);
-                v21 = [(NSMutableDictionary *)self->_allSavedAccountsHighLevelDomainToUsernameToCredentialTypesToSavedAccounts objectForKeyedSubscript:v20];
-                if (!v21)
+                dictionary = [(NSMutableDictionary *)self->_allSavedAccountsHighLevelDomainToUsernameToCredentialTypesToSavedAccounts objectForKeyedSubscript:v20];
+                if (!dictionary)
                 {
-                  v21 = [MEMORY[0x1E695DF90] dictionary];
-                  [(NSMutableDictionary *)self->_allSavedAccountsHighLevelDomainToUsernameToCredentialTypesToSavedAccounts setObject:v21 forKeyedSubscript:v20];
+                  dictionary = [MEMORY[0x1E695DF90] dictionary];
+                  [(NSMutableDictionary *)self->_allSavedAccountsHighLevelDomainToUsernameToCredentialTypesToSavedAccounts setObject:dictionary forKeyedSubscript:v20];
                 }
 
-                v22 = [v8 user];
-                v23 = [v21 objectForKeyedSubscript:v22];
+                user = [v8 user];
+                dictionary2 = [dictionary objectForKeyedSubscript:user];
 
-                if (!v23)
+                if (!dictionary2)
                 {
-                  v23 = [MEMORY[0x1E695DF90] dictionary];
-                  v24 = [v8 user];
-                  [v21 setObject:v23 forKeyedSubscript:v24];
+                  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+                  user2 = [v8 user];
+                  [dictionary setObject:dictionary2 forKeyedSubscript:user2];
                 }
 
                 v25 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v8, "credentialTypes")}];
-                v26 = [v23 objectForKeyedSubscript:v25];
-                if (!v26)
+                array = [dictionary2 objectForKeyedSubscript:v25];
+                if (!array)
                 {
-                  v26 = [MEMORY[0x1E695DF70] array];
-                  [v23 setObject:v26 forKeyedSubscript:v25];
+                  array = [MEMORY[0x1E695DF70] array];
+                  [dictionary2 setObject:array forKeyedSubscript:v25];
                 }
 
-                [v26 addObject:v8];
+                [array addObject:v8];
               }
 
               v17 = [v15 countByEnumeratingWithState:&v40 objects:v48 count:16];
@@ -4441,7 +4441,7 @@ LABEL_17:
             while (v17);
           }
 
-          [v36 addObject:v8];
+          [savedAccountsCopy addObject:v8];
           i = v39;
         }
 
@@ -4451,12 +4451,12 @@ LABEL_17:
           if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
           {
             v28 = v27;
-            v29 = [v8 user];
-            v30 = [v8 protectionSpaces];
+            user3 = [v8 user];
+            protectionSpaces = [v8 protectionSpaces];
             *buf = v34;
-            v51 = v29;
+            v51 = user3;
             v52 = 2117;
-            v53 = v30;
+            v53 = protectionSpaces;
             _os_log_error_impl(&dword_1B8447000, v28, OS_LOG_TYPE_ERROR, "Encountered saved account without high level domain with user: %{sensitive}@ protectionSpaces: %{sensitive}@", buf, 0x16u);
           }
         }
@@ -4475,45 +4475,45 @@ LABEL_17:
   return v31;
 }
 
-- (void)_removeSavedAccount:(id)a3 fromCachedCollectionsForCredentialTypes:(int64_t)a4
+- (void)_removeSavedAccount:(id)account fromCachedCollectionsForCredentialTypes:(int64_t)types
 {
-  v23 = a3;
+  accountCopy = account;
   v6 = [(NSArray *)self->_savedAccountsWithPasswords containsObject:?];
-  if ((a4 & 1) != 0 && v6)
+  if ((types & 1) != 0 && v6)
   {
     personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts = self->_personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts;
-    v8 = [v23 highLevelDomain];
-    v9 = [(NSMutableDictionary *)personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:v8];
+    highLevelDomain = [accountCopy highLevelDomain];
+    v9 = [(NSMutableDictionary *)personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:highLevelDomain];
 
-    v10 = [v23 user];
-    v11 = [v9 objectForKeyedSubscript:v10];
+    user = [accountCopy user];
+    v11 = [v9 objectForKeyedSubscript:user];
 
-    v12 = [v23 password];
-    [v11 removeObjectForKey:v12];
+    password = [accountCopy password];
+    [v11 removeObjectForKey:password];
 
     v13 = [(NSArray *)self->_savedAccountsWithPasswords mutableCopy];
-    [v13 removeObject:v23];
+    [v13 removeObject:accountCopy];
     v14 = [v13 copy];
     savedAccountsWithPasswords = self->_savedAccountsWithPasswords;
     self->_savedAccountsWithPasswords = v14;
   }
 
-  if ([(NSArray *)self->_savedAccounts containsObject:v23])
+  if ([(NSArray *)self->_savedAccounts containsObject:accountCopy])
   {
-    v16 = [v23 credentialTypes];
-    if (v16 == ([v23 credentialTypes] & a4))
+    credentialTypes = [accountCopy credentialTypes];
+    if (credentialTypes == ([accountCopy credentialTypes] & types))
     {
-      if ([v23 credentialTypes] == 4)
+      if ([accountCopy credentialTypes] == 4)
       {
         v17 = [(NSArray *)self->_savedAccountsWithSignInWithAppleRecords mutableCopy];
-        [v17 removeObject:v23];
+        [v17 removeObject:accountCopy];
         v18 = [v17 copy];
         savedAccountsWithSignInWithAppleRecords = self->_savedAccountsWithSignInWithAppleRecords;
         self->_savedAccountsWithSignInWithAppleRecords = v18;
       }
 
       v20 = [(NSArray *)self->_savedAccounts mutableCopy];
-      [v20 removeObject:v23];
+      [v20 removeObject:accountCopy];
       v21 = [v20 copy];
       savedAccounts = self->_savedAccounts;
       self->_savedAccounts = v21;
@@ -4521,58 +4521,58 @@ LABEL_17:
   }
 }
 
-- (void)_addSavedAccountToRecentlyDeletedCachedCollections:(id)a3
+- (void)_addSavedAccountToRecentlyDeletedCachedCollections:(id)collections
 {
-  v6 = a3;
-  [(NSMutableArray *)self->_allRecentlyDeletedSavedAccounts addObject:v6];
+  collectionsCopy = collections;
+  [(NSMutableArray *)self->_allRecentlyDeletedSavedAccounts addObject:collectionsCopy];
   [(NSMutableArray *)self->_allRecentlyDeletedSavedAccounts sortUsingSelector:sel_compare_];
-  v4 = [v6 sharedGroupID];
-  if (v4)
+  sharedGroupID = [collectionsCopy sharedGroupID];
+  if (sharedGroupID)
   {
-    v5 = [(NSMutableDictionary *)self->_sharedGroupIdentifiersToRecentlyDeletedSavedAccounts objectForKeyedSubscript:v4];
-    [v5 addObject:v6];
+    v5 = [(NSMutableDictionary *)self->_sharedGroupIdentifiersToRecentlyDeletedSavedAccounts objectForKeyedSubscript:sharedGroupID];
+    [v5 addObject:collectionsCopy];
     [v5 sortUsingSelector:sel_compare_];
   }
 
   else
   {
-    [(NSMutableArray *)self->_recentlyDeletedSavedAccountsInPersonalKeychain addObject:v6];
+    [(NSMutableArray *)self->_recentlyDeletedSavedAccountsInPersonalKeychain addObject:collectionsCopy];
     [(NSMutableArray *)self->_recentlyDeletedSavedAccountsInPersonalKeychain sortUsingSelector:sel_compare_];
   }
 }
 
-- (void)_removeSavedAccountFromRecentlyDeletedCachedCollections:(id)a3
+- (void)_removeSavedAccountFromRecentlyDeletedCachedCollections:(id)collections
 {
-  v6 = a3;
-  [(NSMutableArray *)self->_allRecentlyDeletedSavedAccounts removeObject:v6];
-  v4 = [v6 sharedGroupID];
-  if (v4)
+  collectionsCopy = collections;
+  [(NSMutableArray *)self->_allRecentlyDeletedSavedAccounts removeObject:collectionsCopy];
+  sharedGroupID = [collectionsCopy sharedGroupID];
+  if (sharedGroupID)
   {
-    v5 = [(NSMutableDictionary *)self->_sharedGroupIdentifiersToRecentlyDeletedSavedAccounts objectForKeyedSubscript:v4];
-    [v5 removeObject:v6];
+    v5 = [(NSMutableDictionary *)self->_sharedGroupIdentifiersToRecentlyDeletedSavedAccounts objectForKeyedSubscript:sharedGroupID];
+    [v5 removeObject:collectionsCopy];
   }
 
   else
   {
-    [(NSMutableArray *)self->_recentlyDeletedSavedAccountsInPersonalKeychain removeObject:v6];
+    [(NSMutableArray *)self->_recentlyDeletedSavedAccountsInPersonalKeychain removeObject:collectionsCopy];
   }
 }
 
-- (void)removeCredentialTypes:(int64_t)a3 forSavedAccount:(id)a4 completionHandler:(id)a5
+- (void)removeCredentialTypes:(int64_t)types forSavedAccount:(id)account completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  accountCopy = account;
+  handlerCopy = handler;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __80__WBSSavedAccountStore_removeCredentialTypes_forSavedAccount_completionHandler___block_invoke;
   v13[3] = &unk_1E7CF4948;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = accountCopy;
+  v15 = handlerCopy;
+  typesCopy = types;
+  v11 = handlerCopy;
+  v12 = accountCopy;
   dispatch_async(queue, v13);
 }
 
@@ -4584,39 +4584,39 @@ uint64_t __80__WBSSavedAccountStore_removeCredentialTypes_forSavedAccount_comple
   return v2();
 }
 
-- (void)_removeCredentialTypes:(int64_t)a3 forSavedAccount:(id)a4
+- (void)_removeCredentialTypes:(int64_t)types forSavedAccount:(id)account
 {
-  v6 = a4;
-  if ([v6 isRecentlyDeleted])
+  accountCopy = account;
+  if ([accountCopy isRecentlyDeleted])
   {
-    [(WBSSavedAccountStore *)self _removeSavedAccountFromRecentlyDeletedCachedCollections:v6];
+    [(WBSSavedAccountStore *)self _removeSavedAccountFromRecentlyDeletedCachedCollections:accountCopy];
   }
 
   else
   {
-    [(WBSSavedAccountStore *)self _removeSavedAccount:v6 fromCachedCollectionsForCredentialTypes:a3];
+    [(WBSSavedAccountStore *)self _removeSavedAccount:accountCopy fromCachedCollectionsForCredentialTypes:types];
   }
 
-  [v6 _deleteCredentialTypes:a3];
+  [accountCopy _deleteCredentialTypes:types];
 }
 
-- (void)removeSite:(id)a3 fromSavedAccountWithPassword:(id)a4 withCompletion:(id)a5
+- (void)removeSite:(id)site fromSavedAccountWithPassword:(id)password withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  siteCopy = site;
+  passwordCopy = password;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __79__WBSSavedAccountStore_removeSite_fromSavedAccountWithPassword_withCompletion___block_invoke;
   v15[3] = &unk_1E7CF4970;
-  v16 = v9;
-  v17 = v8;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = passwordCopy;
+  v17 = siteCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = siteCopy;
+  v14 = passwordCopy;
   dispatch_async(queue, v15);
 }
 
@@ -4651,16 +4651,16 @@ uint64_t __79__WBSSavedAccountStore_removeSite_fromSavedAccountWithPassword_with
   return result;
 }
 
-- (BOOL)canChangeSavedAccount:(id)a3 toUser:(id)a4 password:(id)a5
+- (BOOL)canChangeSavedAccount:(id)account toUser:(id)user password:(id)password
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 user];
-  v12 = [v9 isEqualToString:v11];
+  accountCopy = account;
+  userCopy = user;
+  passwordCopy = password;
+  user = [accountCopy user];
+  v12 = [userCopy isEqualToString:user];
 
-  v13 = [v8 password];
-  if (v12 && ([v10 isEqualToString:v13] & 1) != 0)
+  password = [accountCopy password];
+  if (v12 && ([passwordCopy isEqualToString:password] & 1) != 0)
   {
     v14 = 1;
   }
@@ -4677,10 +4677,10 @@ uint64_t __79__WBSSavedAccountStore_removeSite_fromSavedAccountWithPassword_with
     block[2] = __62__WBSSavedAccountStore_canChangeSavedAccount_toUser_password___block_invoke;
     block[3] = &unk_1E7CF4998;
     v22 = &v23;
-    v18 = v8;
-    v19 = self;
-    v20 = v9;
-    v21 = v10;
+    v18 = accountCopy;
+    selfCopy = self;
+    v20 = userCopy;
+    v21 = passwordCopy;
     dispatch_sync(queue, block);
     v14 = *(v24 + 24);
 
@@ -4717,53 +4717,53 @@ void __62__WBSSavedAccountStore_canChangeSavedAccount_toUser_password___block_in
   }
 }
 
-- (BOOL)_canChangeSavedAccount:(id)a3 toUser:(id)a4 password:(id)a5 forGroupID:(id)a6
+- (BOOL)_canChangeSavedAccount:(id)account toUser:(id)user password:(id)password forGroupID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  accountCopy = account;
+  userCopy = user;
+  passwordCopy = password;
+  dCopy = d;
+  if (dCopy)
   {
-    v14 = [(NSMutableDictionary *)self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:v13];
-    v15 = [v10 highLevelDomain];
-    v16 = [v14 objectForKeyedSubscript:v15];
+    highLevelDomain2 = [(NSMutableDictionary *)self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:dCopy];
+    highLevelDomain = [accountCopy highLevelDomain];
+    v16 = [highLevelDomain2 objectForKeyedSubscript:highLevelDomain];
   }
 
   else
   {
     personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts = self->_personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts;
-    v14 = [v10 highLevelDomain];
-    v16 = [(NSMutableDictionary *)personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:v14];
+    highLevelDomain2 = [accountCopy highLevelDomain];
+    v16 = [(NSMutableDictionary *)personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:highLevelDomain2];
   }
 
-  v18 = [v16 objectForKeyedSubscript:v11];
-  v19 = [v10 protectionSpaces];
+  v18 = [v16 objectForKeyedSubscript:userCopy];
+  protectionSpaces = [accountCopy protectionSpaces];
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 1;
-  v20 = [v10 user];
-  v21 = [v11 isEqualToString:v20];
+  user = [accountCopy user];
+  v21 = [userCopy isEqualToString:user];
 
-  v22 = [v10 password];
+  password = [accountCopy password];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __74__WBSSavedAccountStore__canChangeSavedAccount_toUser_password_forGroupID___block_invoke;
   v27[3] = &unk_1E7CF49C0;
   v32 = v21;
-  v23 = v22;
+  v23 = password;
   v28 = v23;
-  v24 = v12;
+  v24 = passwordCopy;
   v29 = v24;
-  v25 = v19;
+  v25 = protectionSpaces;
   v30 = v25;
   v31 = &v33;
   [v18 enumerateKeysAndObjectsUsingBlock:v27];
-  LOBYTE(v20) = *(v34 + 24);
+  LOBYTE(user) = *(v34 + 24);
 
   _Block_object_dispose(&v33, 8);
-  return v20;
+  return user;
 }
 
 void __74__WBSSavedAccountStore__canChangeSavedAccount_toUser_password_forGroupID___block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)
@@ -4816,15 +4816,15 @@ LABEL_14:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)changeSavedAccount:(id)a3 toUser:(id)a4 password:(id)a5
+- (void)changeSavedAccount:(id)account toUser:(id)user password:(id)password
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 user];
-  v12 = [v9 isEqualToString:v11];
-  v13 = [v8 password];
-  v14 = [v10 isEqualToString:v13];
+  accountCopy = account;
+  userCopy = user;
+  passwordCopy = password;
+  user = [accountCopy user];
+  v12 = [userCopy isEqualToString:user];
+  password = [accountCopy password];
+  v14 = [passwordCopy isEqualToString:password];
   v15 = v14;
   if (!v12 || (v14 & 1) == 0)
   {
@@ -4834,12 +4834,12 @@ LABEL_14:
     block[2] = __59__WBSSavedAccountStore_changeSavedAccount_toUser_password___block_invoke;
     block[3] = &unk_1E7CF49E8;
     v24 = v12;
-    v18 = v8;
-    v19 = self;
-    v20 = v9;
-    v21 = v10;
-    v22 = v11;
-    v23 = v13;
+    v18 = accountCopy;
+    selfCopy = self;
+    v20 = userCopy;
+    v21 = passwordCopy;
+    v22 = user;
+    v23 = password;
     v25 = v15;
     dispatch_sync(queue, block);
   }
@@ -4899,16 +4899,16 @@ uint64_t __59__WBSSavedAccountStore_changeSavedAccount_toUser_password___block_i
   return result;
 }
 
-- (BOOL)canChangeSavedAccountWithRequest:(id)a3
+- (BOOL)canChangeSavedAccountWithRequest:(id)request
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 savedAccount];
-  if (([v5 hasValidWebsite] & 1) == 0)
+  requestCopy = request;
+  savedAccount = [requestCopy savedAccount];
+  if (([savedAccount hasValidWebsite] & 1) == 0)
   {
-    v6 = [v4 customTitle];
-    v7 = [v6 safari_stringByTrimmingWhitespace];
-    v8 = [v7 length];
+    customTitle = [requestCopy customTitle];
+    safari_stringByTrimmingWhitespace = [customTitle safari_stringByTrimmingWhitespace];
+    v8 = [safari_stringByTrimmingWhitespace length];
 
     if (!v8)
     {
@@ -4917,51 +4917,51 @@ uint64_t __59__WBSSavedAccountStore_changeSavedAccount_toUser_password___block_i
     }
   }
 
-  v9 = [v5 credentialTypes];
+  credentialTypes = [savedAccount credentialTypes];
   v10 = 0;
-  if (v9 <= 9)
+  if (credentialTypes <= 9)
   {
-    if (((1 << v9) & 0x30A) != 0)
+    if (((1 << credentialTypes) & 0x30A) != 0)
     {
-      v11 = [v4 password];
-      if (![v11 length])
+      password = [requestCopy password];
+      if (![password length])
       {
         v10 = 0;
         goto LABEL_10;
       }
 
-      v12 = [v4 user];
-      v13 = [v4 password];
-      v10 = [(WBSSavedAccountStore *)self canChangeSavedAccount:v5 toUser:v12 password:v13];
+      user = [requestCopy user];
+      password2 = [requestCopy password];
+      v10 = [(WBSSavedAccountStore *)self canChangeSavedAccount:savedAccount toUser:user password:password2];
       goto LABEL_7;
     }
 
-    if (v9 == 2)
+    if (credentialTypes == 2)
     {
-      v11 = [v4 password];
-      v34 = [v11 length];
-      v35 = [v4 user];
-      v12 = v35;
+      password = [requestCopy password];
+      v34 = [password length];
+      user2 = [requestCopy user];
+      user = user2;
       if (v34)
       {
-        v13 = [v4 password];
-        v41 = [v5 passkeyRelyingPartyID];
-        v36 = [v4 notesEntry];
-        v37 = [v4 customTitle];
-        v38 = [v5 sharedGroupID];
-        v10 = [(WBSSavedAccountStore *)self canSaveUser:v12 password:v13 forUserTypedSite:v41 notes:v36 customTitle:v37 groupID:v38 error:0];
+        password2 = [requestCopy password];
+        passkeyRelyingPartyID = [savedAccount passkeyRelyingPartyID];
+        notesEntry = [requestCopy notesEntry];
+        customTitle2 = [requestCopy customTitle];
+        sharedGroupID = [savedAccount sharedGroupID];
+        v10 = [(WBSSavedAccountStore *)self canSaveUser:user password:password2 forUserTypedSite:passkeyRelyingPartyID notes:notesEntry customTitle:customTitle2 groupID:sharedGroupID error:0];
       }
 
       else
       {
-        if ([v35 length])
+        if ([user2 length])
         {
           v10 = 1;
           goto LABEL_8;
         }
 
-        v13 = [v5 user];
-        v10 = [v13 length] == 0;
+        password2 = [savedAccount user];
+        v10 = [password2 length] == 0;
       }
 
 LABEL_7:
@@ -4971,10 +4971,10 @@ LABEL_10:
     }
   }
 
-  v14 = [v4 notesEntry];
-  v15 = [v14 length];
-  v16 = [v5 notesEntry];
-  v17 = [v16 length];
+  notesEntry2 = [requestCopy notesEntry];
+  v15 = [notesEntry2 length];
+  notesEntry3 = [savedAccount notesEntry];
+  v17 = [notesEntry3 length];
 
   if (v17 <= 0x1000)
   {
@@ -4986,10 +4986,10 @@ LABEL_10:
     v18 = v17;
   }
 
-  v19 = [v4 customTitle];
-  v20 = [v19 length];
-  v21 = [v5 customTitle];
-  v22 = [v21 length];
+  customTitle3 = [requestCopy customTitle];
+  v20 = [customTitle3 length];
+  customTitle4 = [savedAccount customTitle];
+  v22 = [customTitle4 length];
 
   if (v22 <= 0x80)
   {
@@ -5003,14 +5003,14 @@ LABEL_10:
 
   v25 = v20 <= v23 && v15 <= v18;
   v26 = v25 && v10;
-  if ([v4 hasAdditionalSitesChange])
+  if ([requestCopy hasAdditionalSitesChange])
   {
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v27 = [v4 additionalSites];
-    v28 = [v27 countByEnumeratingWithState:&v44 objects:v48 count:16];
+    additionalSites = [requestCopy additionalSites];
+    v28 = [additionalSites countByEnumeratingWithState:&v44 objects:v48 count:16];
     if (v28)
     {
       v29 = v28;
@@ -5021,7 +5021,7 @@ LABEL_10:
         {
           if (*v45 != v30)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(additionalSites);
           }
 
           v32 = *(*(&v44 + 1) + 8 * i);
@@ -5037,7 +5037,7 @@ LABEL_10:
           }
         }
 
-        v29 = [v27 countByEnumeratingWithState:&v44 objects:v48 count:16];
+        v29 = [additionalSites countByEnumeratingWithState:&v44 objects:v48 count:16];
         if (v29)
         {
           continue;
@@ -5056,11 +5056,11 @@ LABEL_39:
   return v26;
 }
 
-- (void)changeSavedAccountWithRequest:(id)a3 completionHandler:(id)a4
+- (void)changeSavedAccountWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hasChanges])
+  requestCopy = request;
+  handlerCopy = handler;
+  if ([requestCopy hasChanges])
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
@@ -5068,14 +5068,14 @@ LABEL_39:
     block[2] = __72__WBSSavedAccountStore_changeSavedAccountWithRequest_completionHandler___block_invoke;
     block[3] = &unk_1E7CF1908;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
+    v10 = requestCopy;
+    v11 = handlerCopy;
     dispatch_async(queue, block);
   }
 
   else
   {
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -5087,26 +5087,26 @@ uint64_t __72__WBSSavedAccountStore_changeSavedAccountWithRequest_completionHand
   return v2();
 }
 
-- (void)changeSavedAccountsWithRequests:(id)a3 completionHandler:(id)a4
+- (void)changeSavedAccountsWithRequests:(id)requests completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 safari_containsObjectPassingTest:&__block_literal_global_262])
+  requestsCopy = requests;
+  handlerCopy = handler;
+  if ([requestsCopy safari_containsObjectPassingTest:&__block_literal_global_262])
   {
     queue = self->_queue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __74__WBSSavedAccountStore_changeSavedAccountsWithRequests_completionHandler___block_invoke_2;
     block[3] = &unk_1E7CF1908;
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
+    v10 = requestsCopy;
+    selfCopy = self;
+    v12 = handlerCopy;
     dispatch_async(queue, block);
   }
 
   else
   {
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -5149,72 +5149,72 @@ uint64_t __74__WBSSavedAccountStore_changeSavedAccountsWithRequests_completionHa
   return result;
 }
 
-- (void)_changeSavedAccountWithRequestOnInternalQueue:(id)a3 performPostUpdateActions:(BOOL)a4
+- (void)_changeSavedAccountWithRequestOnInternalQueue:(id)queue performPostUpdateActions:(BOOL)actions
 {
-  v4 = a4;
+  actionsCopy = actions;
   v68 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 savedAccount];
-  if (![v6 hasChanges])
+  queueCopy = queue;
+  savedAccount = [queueCopy savedAccount];
+  if (![queueCopy hasChanges])
   {
     goto LABEL_46;
   }
 
-  v50 = v4;
-  v8 = [v6 user];
-  v9 = [v6 password];
-  v53 = [v7 user];
-  v54 = [v7 password];
-  v10 = [v7 credentialTypes];
-  v11 = [v6 hasPasswordChange];
-  v51 = [v6 shouldClearHistory];
-  v52 = v8;
-  if (([v6 hasUserChange] & 1) != 0 || v11)
+  v50 = actionsCopy;
+  user = [queueCopy user];
+  password = [queueCopy password];
+  user2 = [savedAccount user];
+  password2 = [savedAccount password];
+  credentialTypes = [savedAccount credentialTypes];
+  hasPasswordChange = [queueCopy hasPasswordChange];
+  shouldClearHistory = [queueCopy shouldClearHistory];
+  v52 = user;
+  if (([queueCopy hasUserChange] & 1) != 0 || hasPasswordChange)
   {
-    v12 = [v7 passkeyCredentialID];
-    if (v12)
+    passkeyCredentialID = [savedAccount passkeyCredentialID];
+    if (passkeyCredentialID)
     {
-      v13 = v12;
-      v14 = [v6 hasUserChange];
+      v13 = passkeyCredentialID;
+      hasUserChange = [queueCopy hasUserChange];
 
-      if (v14)
+      if (hasUserChange)
       {
         v15 = [WBSPublicKeyCredentialIdentifier alloc];
-        v16 = [v7 passkeyCredentialID];
-        v17 = [v7 sharedGroupID];
-        v18 = [(WBSPublicKeyCredentialIdentifier *)v15 initWithCredentialID:v16 groupID:v17];
-        [(WBSSavedAccountStore *)self updateUserVisibleNameOnInternalQueue:v8 forPasskeyWithIdentifier:v18];
+        passkeyCredentialID2 = [savedAccount passkeyCredentialID];
+        sharedGroupID = [savedAccount sharedGroupID];
+        v18 = [(WBSPublicKeyCredentialIdentifier *)v15 initWithCredentialID:passkeyCredentialID2 groupID:sharedGroupID];
+        [(WBSSavedAccountStore *)self updateUserVisibleNameOnInternalQueue:user forPasskeyWithIdentifier:v18];
       }
     }
 
-    [v7 _setUser:v8 password:v9];
-    if (v11)
+    [savedAccount _setUser:user password:password];
+    if (hasPasswordChange)
     {
       v19 = +[WBSGeneratedPasswordStore sharedStore];
-      [v19 removeGeneratedPasswordMatchingSavedAccount:v7];
+      [v19 removeGeneratedPasswordMatchingSavedAccount:savedAccount];
     }
   }
 
-  v49 = v9;
-  v20 = [v6 sites];
+  v49 = password;
+  sites = [queueCopy sites];
 
-  if (v20)
+  if (sites)
   {
     v21 = MEMORY[0x1E695DFA8];
-    v22 = [v7 sites];
-    v23 = [v21 setWithArray:v22];
+    sites2 = [savedAccount sites];
+    v23 = [v21 setWithArray:sites2];
 
     v24 = MEMORY[0x1E695DFD8];
-    v25 = [v6 sites];
-    v26 = [v24 setWithArray:v25];
+    sites3 = [queueCopy sites];
+    v26 = [v24 setWithArray:sites3];
     [v23 minusSet:v26];
 
-    v27 = [v23 allObjects];
+    allObjects = [v23 allObjects];
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v28 = [v27 countByEnumeratingWithState:&v63 objects:v67 count:16];
+    v28 = [allObjects countByEnumeratingWithState:&v63 objects:v67 count:16];
     if (v28)
     {
       v29 = v28;
@@ -5225,45 +5225,45 @@ uint64_t __74__WBSSavedAccountStore_changeSavedAccountsWithRequests_completionHa
         {
           if (*v64 != v30)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(allObjects);
           }
 
-          [v7 _deletePasswordCredentialsForSite:*(*(&v63 + 1) + 8 * i)];
+          [savedAccount _deletePasswordCredentialsForSite:*(*(&v63 + 1) + 8 * i)];
         }
 
-        v29 = [v27 countByEnumeratingWithState:&v63 objects:v67 count:16];
+        v29 = [allObjects countByEnumeratingWithState:&v63 objects:v67 count:16];
       }
 
       while (v29);
     }
   }
 
-  if (v10)
+  if (credentialTypes)
   {
-    if ([v7 isSavedInPersonalKeychain])
+    if ([savedAccount isSavedInPersonalKeychain])
     {
-      [(WBSSavedAccountStore *)self _updateSavedAccountsAndSavedAccountsWithPasswordsDictionary:self->_personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts withChangeFromOldUser:v53 oldPassword:v54 forSavedAccountWithPassword:v7];
+      [(WBSSavedAccountStore *)self _updateSavedAccountsAndSavedAccountsWithPasswordsDictionary:self->_personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts withChangeFromOldUser:user2 oldPassword:password2 forSavedAccountWithPassword:savedAccount];
     }
 
-    if ([v7 isSavedInSharedGroup])
+    if ([savedAccount isSavedInSharedGroup])
     {
       groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts = self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts;
-      v33 = [v7 sharedGroupID];
-      v34 = [(NSMutableDictionary *)groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:v33];
+      sharedGroupID2 = [savedAccount sharedGroupID];
+      v34 = [(NSMutableDictionary *)groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:sharedGroupID2];
 
-      [(WBSSavedAccountStore *)self _updateSavedAccountsAndSavedAccountsWithPasswordsDictionary:v34 withChangeFromOldUser:v53 oldPassword:v54 forSavedAccountWithPassword:v7];
+      [(WBSSavedAccountStore *)self _updateSavedAccountsAndSavedAccountsWithPasswordsDictionary:v34 withChangeFromOldUser:user2 oldPassword:password2 forSavedAccountWithPassword:savedAccount];
     }
   }
 
-  v35 = [v6 hasTOTPGeneratorChange];
-  v36 = [v6 hasNotesEntryChange];
-  v37 = [v6 hasCustomTitleChange];
-  v38 = [v6 hasAdditionalSitesChange];
-  v39 = v38;
-  if ((v35 & 1) != 0 || (v36 & 1) != 0 || (v11 & 1) != 0 || (v37 & 1) != 0 || (v51 & 1) != 0 || v38)
+  hasTOTPGeneratorChange = [queueCopy hasTOTPGeneratorChange];
+  hasNotesEntryChange = [queueCopy hasNotesEntryChange];
+  hasCustomTitleChange = [queueCopy hasCustomTitleChange];
+  hasAdditionalSitesChange = [queueCopy hasAdditionalSitesChange];
+  v39 = hasAdditionalSitesChange;
+  if ((hasTOTPGeneratorChange & 1) != 0 || (hasNotesEntryChange & 1) != 0 || (hasPasswordChange & 1) != 0 || (hasCustomTitleChange & 1) != 0 || (shouldClearHistory & 1) != 0 || hasAdditionalSitesChange)
   {
-    v40 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    v41 = [v40 valueForKey:@"safariUseLegacySidecarModificationPath"];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    v41 = [safari_browserDefaults valueForKey:@"safariUseLegacySidecarModificationPath"];
 
     if (!v41)
     {
@@ -5271,16 +5271,16 @@ uint64_t __74__WBSSavedAccountStore_changeSavedAccountsWithRequests_completionHa
       v55[1] = 3221225472;
       v55[2] = __95__WBSSavedAccountStore__changeSavedAccountWithRequestOnInternalQueue_performPostUpdateActions___block_invoke;
       v55[3] = &unk_1E7CF4A30;
-      v57 = v35;
-      v56 = v6;
-      v58 = v36;
-      v59 = v37;
-      v60 = v11;
+      v57 = hasTOTPGeneratorChange;
+      v56 = queueCopy;
+      v58 = hasNotesEntryChange;
+      v59 = hasCustomTitleChange;
+      v60 = hasPasswordChange;
       v61 = v39;
-      v62 = v51;
-      [(WBSSavedAccountStore *)self _saveSidecarObjectsOnInternalQueueForSavedAccount:v7 withBlock:v55];
+      v62 = shouldClearHistory;
+      [(WBSSavedAccountStore *)self _saveSidecarObjectsOnInternalQueueForSavedAccount:savedAccount withBlock:v55];
 
-      if (!v37)
+      if (!hasCustomTitleChange)
       {
         goto LABEL_32;
       }
@@ -5288,25 +5288,25 @@ uint64_t __74__WBSSavedAccountStore_changeSavedAccountsWithRequests_completionHa
       goto LABEL_31;
     }
 
-    [(WBSSavedAccountStore *)self _performLegacySidecarModificationWithChangeRequest:v6 toSavedAccount:v7];
-    if (v37)
+    [(WBSSavedAccountStore *)self _performLegacySidecarModificationWithChangeRequest:queueCopy toSavedAccount:savedAccount];
+    if (hasCustomTitleChange)
     {
 LABEL_31:
-      v42 = [v6 customTitle];
-      [v7 setCustomTitle:v42 performSidecarUpdate:0];
+      customTitle = [queueCopy customTitle];
+      [savedAccount setCustomTitle:customTitle performSidecarUpdate:0];
     }
   }
 
 LABEL_32:
-  if ([v6 isAddingPasswordToAccountWithPasskey])
+  if ([queueCopy isAddingPasswordToAccountWithPasskey])
   {
-    v43 = [v7 passkeyRelyingPartyID];
-    v44 = [v7 sharedGroupID];
-    v45 = [(WBSSavedAccountStore *)self _saveAccountOnInternalQueueWithUser:v52 password:v49 forUserTypedSite:v43 groupID:v44];
+    passkeyRelyingPartyID = [savedAccount passkeyRelyingPartyID];
+    sharedGroupID3 = [savedAccount sharedGroupID];
+    v45 = [(WBSSavedAccountStore *)self _saveAccountOnInternalQueueWithUser:v52 password:v49 forUserTypedSite:passkeyRelyingPartyID groupID:sharedGroupID3];
 
     if (v45)
     {
-      [(WBSSavedAccountStore *)self _mergeSavedAccountWithPassword:v45 toSavedAccountWithPasskey:v7];
+      [(WBSSavedAccountStore *)self _mergeSavedAccountWithPassword:v45 toSavedAccountWithPasskey:savedAccount];
     }
 
     else
@@ -5319,10 +5319,10 @@ LABEL_32:
     }
   }
 
-  if (v11 && +[WBSFeatureAvailability isSavedAccountHistoryEnabled])
+  if (hasPasswordChange && +[WBSFeatureAvailability isSavedAccountHistoryEnabled])
   {
-    v47 = [[WBSSavedAccountPasswordHistoryItem alloc] initWithPassword:v49 oldPassword:v54];
-    [(WBSSavedAccountStore *)self _addAccountHistoryItemOnInternalQueue:v47 toSavedAccount:v7 completionHandler:&__block_literal_global_272];
+    v47 = [[WBSSavedAccountPasswordHistoryItem alloc] initWithPassword:v49 oldPassword:password2];
+    [(WBSSavedAccountStore *)self _addAccountHistoryItemOnInternalQueue:v47 toSavedAccount:savedAccount completionHandler:&__block_literal_global_272];
   }
 
   if (v50)
@@ -5443,9 +5443,9 @@ uint64_t __95__WBSSavedAccountStore__changeSavedAccountWithRequestOnInternalQueu
   self->_savedAccountsWithPasswords = v5;
 
   v7 = +[WBSKeychainSyncingMonitor sharedMonitor];
-  v8 = [v7 keychainSyncSettingValue];
+  keychainSyncSettingValue = [v7 keychainSyncSettingValue];
 
-  if (v8 == 1)
+  if (keychainSyncSettingValue == 1)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -5456,15 +5456,15 @@ uint64_t __95__WBSSavedAccountStore__changeSavedAccountWithRequestOnInternalQueu
   }
 }
 
-- (void)_performLegacySidecarModificationWithChangeRequest:(id)a3 toSavedAccount:(id)a4
+- (void)_performLegacySidecarModificationWithChangeRequest:(id)request toSavedAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hasTOTPGeneratorChange])
+  requestCopy = request;
+  accountCopy = account;
+  if ([requestCopy hasTOTPGeneratorChange])
   {
-    v8 = [v7 totpGenerators];
-    v9 = [v8 firstObject];
-    v10 = v9 != 0;
+    totpGenerators = [accountCopy totpGenerators];
+    firstObject = [totpGenerators firstObject];
+    v10 = firstObject != 0;
   }
 
   else
@@ -5472,10 +5472,10 @@ uint64_t __95__WBSSavedAccountStore__changeSavedAccountWithRequestOnInternalQueu
     v10 = 0;
   }
 
-  if ([v6 hasNotesEntryChange])
+  if ([requestCopy hasNotesEntryChange])
   {
-    v11 = [v7 notesEntry];
-    v12 = v11 != 0;
+    notesEntry = [accountCopy notesEntry];
+    v12 = notesEntry != 0;
   }
 
   else
@@ -5483,10 +5483,10 @@ uint64_t __95__WBSSavedAccountStore__changeSavedAccountWithRequestOnInternalQueu
     v12 = 0;
   }
 
-  if ([v6 hasCustomTitleChange])
+  if ([requestCopy hasCustomTitleChange])
   {
-    v13 = [v7 customTitle];
-    v14 = v13 != 0;
+    customTitle = [accountCopy customTitle];
+    v14 = customTitle != 0;
   }
 
   else
@@ -5501,15 +5501,15 @@ uint64_t __95__WBSSavedAccountStore__changeSavedAccountWithRequestOnInternalQueu
   v36 = v10;
   v37 = v12;
   v38 = v14;
-  v15 = v7;
+  v15 = accountCopy;
   v34 = v15;
-  v16 = v6;
+  v16 = requestCopy;
   v35 = v16;
   [(WBSSavedAccountStore *)self _saveSidecarObjectsOnInternalQueueForSavedAccount:v15 withBlock:v33];
   if ([v16 hasTOTPGeneratorChange])
   {
-    v17 = [v16 totpGenerator];
-    v18 = v17 != 0;
+    totpGenerator = [v16 totpGenerator];
+    v18 = totpGenerator != 0;
   }
 
   else
@@ -5519,8 +5519,8 @@ uint64_t __95__WBSSavedAccountStore__changeSavedAccountWithRequestOnInternalQueu
 
   if ([v16 hasNotesEntryChange])
   {
-    v19 = [v16 notesEntry];
-    v20 = [v19 length] != 0;
+    notesEntry2 = [v16 notesEntry];
+    v20 = [notesEntry2 length] != 0;
   }
 
   else
@@ -5530,12 +5530,12 @@ uint64_t __95__WBSSavedAccountStore__changeSavedAccountWithRequestOnInternalQueu
 
   if ([v16 hasCustomTitleChange])
   {
-    v21 = [v16 customTitle];
-    if ([v21 length])
+    customTitle2 = [v16 customTitle];
+    if ([customTitle2 length])
     {
-      v22 = [v16 customTitle];
-      v23 = [v15 userVisibleDomain];
-      v24 = WBSIsEqual(v22, v23) ^ 1;
+      customTitle3 = [v16 customTitle];
+      userVisibleDomain = [v15 userVisibleDomain];
+      v24 = WBSIsEqual(customTitle3, userVisibleDomain) ^ 1;
     }
 
     else
@@ -5611,53 +5611,53 @@ void __90__WBSSavedAccountStore__performLegacySidecarModificationWithChangeReque
   }
 }
 
-- (void)_updateSavedAccountsAndSavedAccountsWithPasswordsDictionary:(id)a3 withChangeFromOldUser:(id)a4 oldPassword:(id)a5 forSavedAccountWithPassword:(id)a6
+- (void)_updateSavedAccountsAndSavedAccountsWithPasswordsDictionary:(id)dictionary withChangeFromOldUser:(id)user oldPassword:(id)password forSavedAccountWithPassword:(id)withPassword
 {
-  v25 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = a3;
-  v13 = [v11 highLevelDomain];
-  v14 = [v12 objectForKeyedSubscript:v13];
+  userCopy = user;
+  passwordCopy = password;
+  withPasswordCopy = withPassword;
+  dictionaryCopy = dictionary;
+  highLevelDomain = [withPasswordCopy highLevelDomain];
+  v14 = [dictionaryCopy objectForKeyedSubscript:highLevelDomain];
 
-  v15 = [v14 objectForKeyedSubscript:v25];
-  v16 = [v11 user];
-  v17 = [v11 password];
-  v18 = [v11 user];
-  v19 = [v25 isEqualToString:v18];
+  dictionary = [v14 objectForKeyedSubscript:userCopy];
+  user = [withPasswordCopy user];
+  password = [withPasswordCopy password];
+  user2 = [withPasswordCopy user];
+  v19 = [userCopy isEqualToString:user2];
 
   if ((v19 & 1) == 0)
   {
-    v20 = [v14 objectForKeyedSubscript:v25];
+    v20 = [v14 objectForKeyedSubscript:userCopy];
 
-    [v20 removeObjectForKey:v10];
+    [v20 removeObjectForKey:passwordCopy];
     if (![v20 count])
     {
-      [v14 removeObjectForKey:v25];
+      [v14 removeObjectForKey:userCopy];
     }
 
-    v15 = [v14 objectForKeyedSubscript:v16];
+    dictionary = [v14 objectForKeyedSubscript:user];
 
-    if (!v15)
+    if (!dictionary)
     {
-      v15 = [MEMORY[0x1E695DF90] dictionary];
-      [v14 setObject:v15 forKeyedSubscript:v16];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [v14 setObject:dictionary forKeyedSubscript:user];
     }
   }
 
-  v21 = [v15 objectForKeyedSubscript:v17];
+  v21 = [dictionary objectForKeyedSubscript:password];
   if (v21)
   {
-    [v11 _adoptSitesFromSavedAccount:v21];
+    [withPasswordCopy _adoptSitesFromSavedAccount:v21];
     v22 = [(NSArray *)self->_savedAccountsWithPasswords mutableCopy];
     [v22 removeObject:v21];
-    [v22 addObject:v11];
+    [v22 addObject:withPasswordCopy];
     objc_storeStrong(&self->_savedAccountsWithPasswords, v22);
     if ([(NSArray *)self->_savedAccounts containsObject:v21])
     {
       v23 = [(NSArray *)self->_savedAccounts mutableCopy];
       [(NSArray *)v23 removeObject:v21];
-      [(NSArray *)v23 addObject:v11];
+      [(NSArray *)v23 addObject:withPasswordCopy];
       savedAccounts = self->_savedAccounts;
       self->_savedAccounts = v23;
     }
@@ -5665,32 +5665,32 @@ void __90__WBSSavedAccountStore__performLegacySidecarModificationWithChangeReque
 
   else
   {
-    [v15 setObject:v11 forKeyedSubscript:v17];
+    [dictionary setObject:withPasswordCopy forKeyedSubscript:password];
   }
 }
 
 + (id)protectionSpaceForNewStandalonePassword
 {
-  v2 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v3 = objc_alloc(MEMORY[0x1E695AC58]);
-  v4 = [v2 UUIDString];
-  v5 = [v3 initWithHost:v4 port:0 protocol:@"https" realm:0 authenticationMethod:*MEMORY[0x1E695AB50]];
+  uUIDString = [uUID UUIDString];
+  v5 = [v3 initWithHost:uUIDString port:0 protocol:@"https" realm:0 authenticationMethod:*MEMORY[0x1E695AB50]];
 
   return v5;
 }
 
-+ (BOOL)getProtectionSpaceAndHighLevelDomainForUserTypedSite:(id)a3 protectionSpace:(id *)a4 highLevelDomain:(id *)a5 mode:(int64_t)a6
++ (BOOL)getProtectionSpaceAndHighLevelDomainForUserTypedSite:(id)site protectionSpace:(id *)space highLevelDomain:(id *)domain mode:(int64_t)mode
 {
-  v9 = a3;
-  v10 = [v9 safari_bestURLForUserTypedString];
-  if (v10)
+  siteCopy = site;
+  safari_bestURLForUserTypedString = [siteCopy safari_bestURLForUserTypedString];
+  if (safari_bestURLForUserTypedString)
   {
-    v11 = [MEMORY[0x1E695AC58] safari_HTMLFormProtectionSpaceForURL:v10];
-    v12 = [v11 protocol];
-    if ([v12 isEqualToString:*MEMORY[0x1E695AB98]])
+    v11 = [MEMORY[0x1E695AC58] safari_HTMLFormProtectionSpaceForURL:safari_bestURLForUserTypedString];
+    protocol = [v11 protocol];
+    if ([protocol isEqualToString:*MEMORY[0x1E695AB98]])
     {
-      v13 = [v9 safari_stringByTrimmingWhitespace];
-      v14 = [v13 safari_hasCaseInsensitivePrefix:@"http:"];
+      safari_stringByTrimmingWhitespace = [siteCopy safari_stringByTrimmingWhitespace];
+      v14 = [safari_stringByTrimmingWhitespace safari_hasCaseInsensitivePrefix:@"http:"];
 
       if (v14)
       {
@@ -5698,50 +5698,50 @@ void __90__WBSSavedAccountStore__performLegacySidecarModificationWithChangeReque
       }
 
       v29 = objc_alloc(MEMORY[0x1E695AC58]);
-      v12 = [v11 host];
-      v28 = [v11 port];
+      protocol = [v11 host];
+      port = [v11 port];
       v15 = *MEMORY[0x1E695ABA0];
-      v16 = [v11 realm];
-      v17 = [v11 authenticationMethod];
-      v18 = [v29 initWithHost:v12 port:v28 protocol:v15 realm:v16 authenticationMethod:v17];
+      realm = [v11 realm];
+      authenticationMethod = [v11 authenticationMethod];
+      v18 = [v29 initWithHost:protocol port:port protocol:v15 realm:realm authenticationMethod:authenticationMethod];
 
       v11 = v18;
     }
 
 LABEL_6:
-    if (a4)
+    if (space)
     {
       v19 = v11;
-      *a4 = v11;
+      *space = v11;
     }
 
-    v20 = [v11 host];
-    v21 = [v20 safari_isCaseInsensitiveEqualToString:@"localhost"];
+    host = [v11 host];
+    v21 = [host safari_isCaseInsensitiveEqualToString:@"localhost"];
 
     if (v21)
     {
       v22 = @"localhost";
-      if (a5)
+      if (domain)
       {
-        *a5 = @"localhost";
+        *domain = @"localhost";
       }
 
       v23 = 1;
       goto LABEL_20;
     }
 
-    if (a6 == 1)
+    if (mode == 1)
     {
-      v24 = [v11 host];
-      v25 = [v24 safari_highLevelDomainForPasswordManager];
+      host2 = [v11 host];
+      safari_highLevelDomainForPasswordManager = [host2 safari_highLevelDomainForPasswordManager];
     }
 
     else
     {
-      if (a6)
+      if (mode)
       {
         v22 = 0;
-        if (!a5)
+        if (!domain)
         {
           goto LABEL_19;
         }
@@ -5749,13 +5749,13 @@ LABEL_6:
         goto LABEL_18;
       }
 
-      v24 = [v11 host];
-      v25 = [v24 safari_highLevelDomainForUserTypedStringWhenAddingPasswordInPasswordManager];
+      host2 = [v11 host];
+      safari_highLevelDomainForPasswordManager = [host2 safari_highLevelDomainForUserTypedStringWhenAddingPasswordInPasswordManager];
     }
 
-    v22 = v25;
+    v22 = safari_highLevelDomainForPasswordManager;
 
-    if (!a5)
+    if (!domain)
     {
 LABEL_19:
       v23 = v22 != 0;
@@ -5766,7 +5766,7 @@ LABEL_20:
 
 LABEL_18:
     v26 = v22;
-    *a5 = v22;
+    *domain = v22;
     goto LABEL_19;
   }
 
@@ -5776,37 +5776,37 @@ LABEL_21:
   return v23;
 }
 
-- (BOOL)canSaveUser:(id)a3 password:(id)a4 forUserTypedSite:(id)a5 notes:(id)a6 customTitle:(id)a7 groupID:(id)a8 error:(id *)a9
+- (BOOL)canSaveUser:(id)user password:(id)password forUserTypedSite:(id)site notes:(id)notes customTitle:(id)title groupID:(id)d error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  if ([v16 length])
+  userCopy = user;
+  passwordCopy = password;
+  siteCopy = site;
+  notesCopy = notes;
+  titleCopy = title;
+  dCopy = d;
+  if ([passwordCopy length])
   {
-    if ([v17 length])
+    if ([siteCopy length])
     {
-      v26 = v15;
+      v26 = userCopy;
       v27 = 0;
       v28 = 0;
-      v21 = [objc_opt_class() getProtectionSpaceAndHighLevelDomainForUserTypedSite:v17 protectionSpace:&v28 highLevelDomain:&v27];
+      v21 = [objc_opt_class() getProtectionSpaceAndHighLevelDomainForUserTypedSite:siteCopy protectionSpace:&v28 highLevelDomain:&v27];
       v22 = v28;
       v23 = v27;
       if (v21)
       {
-        [v19 length];
-        v15 = v26;
-        v24 = [(WBSSavedAccountStore *)self canSaveUser:v26 password:v16 forProtectionSpace:v22 highLevelDomain:v23 notes:v18 customTitle:v19 groupID:v20 error:a9];
+        [titleCopy length];
+        userCopy = v26;
+        v24 = [(WBSSavedAccountStore *)self canSaveUser:v26 password:passwordCopy forProtectionSpace:v22 highLevelDomain:v23 notes:notesCopy customTitle:titleCopy groupID:dCopy error:error];
       }
 
       else
       {
-        if (a9)
+        if (error)
         {
           [MEMORY[0x1E696ABC0] safari_errorWithDomain:@"com.apple.AuthenticationServices.SaveUserErrorDomain" code:1 privacyPreservingDescription:@"userTypedSite does not have a valid format."];
-          *a9 = v24 = 0;
+          *error = v24 = 0;
         }
 
         else
@@ -5814,23 +5814,23 @@ LABEL_21:
           v24 = 0;
         }
 
-        v15 = v26;
+        userCopy = v26;
       }
     }
 
-    else if ([v19 length])
+    else if ([titleCopy length])
     {
       v23 = 0;
       v22 = 0;
       v24 = 1;
     }
 
-    else if (a9)
+    else if (error)
     {
       [MEMORY[0x1E696ABC0] safari_errorWithDomain:@"com.apple.AuthenticationServices.SaveUserErrorDomain" code:4 privacyPreservingDescription:@"Must provide either a website or a custom title"];
       v23 = 0;
       v22 = 0;
-      *a9 = v24 = 0;
+      *error = v24 = 0;
     }
 
     else
@@ -5841,10 +5841,10 @@ LABEL_21:
     }
   }
 
-  else if (a9)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] safari_errorWithDomain:@"com.apple.AuthenticationServices.SaveUserErrorDomain" code:4 privacyPreservingDescription:@"Account details provided are incomplete."];
-    *a9 = v24 = 0;
+    *error = v24 = 0;
   }
 
   else
@@ -5855,29 +5855,29 @@ LABEL_21:
   return v24;
 }
 
-- (void)saveUser:(id)a3 password:(id)a4 forUserTypedSite:(id)a5 groupID:(id)a6 completionHandler:(id)a7
+- (void)saveUser:(id)user password:(id)password forUserTypedSite:(id)site groupID:(id)d completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  userCopy = user;
+  passwordCopy = password;
+  siteCopy = site;
+  dCopy = d;
+  handlerCopy = handler;
   queue = self->_queue;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __85__WBSSavedAccountStore_saveUser_password_forUserTypedSite_groupID_completionHandler___block_invoke;
   v23[3] = &unk_1E7CF4A80;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v15;
-  v19 = v14;
-  v20 = v13;
-  v21 = v12;
-  v22 = v16;
+  v24 = userCopy;
+  v25 = passwordCopy;
+  v26 = siteCopy;
+  v27 = dCopy;
+  v28 = handlerCopy;
+  v18 = dCopy;
+  v19 = siteCopy;
+  v20 = passwordCopy;
+  v21 = userCopy;
+  v22 = handlerCopy;
   dispatch_async(queue, v23);
 }
 
@@ -5888,35 +5888,35 @@ void __85__WBSSavedAccountStore_saveUser_password_forUserTypedSite_groupID_compl
   (*(v1 + 16))(v1, v2);
 }
 
-- (id)_saveAccountOnInternalQueueWithUser:(id)a3 password:(id)a4 forUserTypedSite:(id)a5 groupID:(id)a6
+- (id)_saveAccountOnInternalQueueWithUser:(id)user password:(id)password forUserTypedSite:(id)site groupID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v12 length];
+  userCopy = user;
+  passwordCopy = password;
+  siteCopy = site;
+  dCopy = d;
+  v14 = [siteCopy length];
   v15 = objc_opt_class();
   if (!v14)
   {
-    v17 = [v15 protectionSpaceForNewStandalonePassword];
-    v18 = [v17 host];
+    protectionSpaceForNewStandalonePassword = [v15 protectionSpaceForNewStandalonePassword];
+    host = [protectionSpaceForNewStandalonePassword host];
     goto LABEL_6;
   }
 
   v23 = 0;
   v24 = 0;
-  v16 = [v15 getProtectionSpaceAndHighLevelDomainForUserTypedSite:v12 protectionSpace:&v24 highLevelDomain:&v23];
-  v17 = v24;
-  v18 = v23;
-  v19 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v12];
+  v16 = [v15 getProtectionSpaceAndHighLevelDomainForUserTypedSite:siteCopy protectionSpace:&v24 highLevelDomain:&v23];
+  protectionSpaceForNewStandalonePassword = v24;
+  host = v23;
+  v19 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:siteCopy];
 
   if (v19)
   {
-    v20 = v12;
+    v20 = siteCopy;
 
-    v18 = v20;
+    host = v20;
 LABEL_6:
-    v21 = [(WBSSavedAccountStore *)self _saveAccountOnInternalQueueWithUser:v10 password:v11 protectionSpace:v17 highLevelDomain:v18 groupID:v13];
+    v21 = [(WBSSavedAccountStore *)self _saveAccountOnInternalQueueWithUser:userCopy password:passwordCopy protectionSpace:protectionSpaceForNewStandalonePassword highLevelDomain:host groupID:dCopy];
     goto LABEL_7;
   }
 
@@ -5931,20 +5931,20 @@ LABEL_7:
   return v21;
 }
 
-- (void)saveUser:(id)a3 password:(id)a4 forUserTypedSite:(id)a5 notesEntry:(id)a6 groupID:(id)a7 completionHandler:(id)a8
+- (void)saveUser:(id)user password:(id)password forUserTypedSite:(id)site notesEntry:(id)entry groupID:(id)d completionHandler:(id)handler
 {
-  v14 = a6;
-  v15 = a8;
+  entryCopy = entry;
+  handlerCopy = handler;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __96__WBSSavedAccountStore_saveUser_password_forUserTypedSite_notesEntry_groupID_completionHandler___block_invoke;
   v18[3] = &unk_1E7CF4AA8;
   v18[4] = self;
-  v19 = v14;
-  v20 = v15;
-  v16 = v15;
-  v17 = v14;
-  [(WBSSavedAccountStore *)self saveUser:a3 password:a4 forUserTypedSite:a5 groupID:a7 completionHandler:v18];
+  v19 = entryCopy;
+  v20 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = entryCopy;
+  [(WBSSavedAccountStore *)self saveUser:user password:password forUserTypedSite:site groupID:d completionHandler:v18];
 }
 
 void __96__WBSSavedAccountStore_saveUser_password_forUserTypedSite_notesEntry_groupID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -5963,23 +5963,23 @@ void __96__WBSSavedAccountStore_saveUser_password_forUserTypedSite_notesEntry_gr
   [v4 saveNotesEntry:v5 forSavedAccount:v7 completionHandler:v8];
 }
 
-- (void)saveUser:(id)a3 password:(id)a4 forUserTypedSite:(id)a5 customTitle:(id)a6 notesEntry:(id)a7 groupID:(id)a8 completionHandler:(id)a9
+- (void)saveUser:(id)user password:(id)password forUserTypedSite:(id)site customTitle:(id)title notesEntry:(id)entry groupID:(id)d completionHandler:(id)handler
 {
-  v15 = a6;
-  v16 = a7;
-  v17 = a9;
+  titleCopy = title;
+  entryCopy = entry;
+  handlerCopy = handler;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __108__WBSSavedAccountStore_saveUser_password_forUserTypedSite_customTitle_notesEntry_groupID_completionHandler___block_invoke;
   v21[3] = &unk_1E7CF4AD0;
   v21[4] = self;
-  v22 = v15;
-  v23 = v16;
-  v24 = v17;
-  v18 = v17;
-  v19 = v16;
-  v20 = v15;
-  [(WBSSavedAccountStore *)self saveUser:a3 password:a4 forUserTypedSite:a5 groupID:a8 completionHandler:v21];
+  v22 = titleCopy;
+  v23 = entryCopy;
+  v24 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = entryCopy;
+  v20 = titleCopy;
+  [(WBSSavedAccountStore *)self saveUser:user password:password forUserTypedSite:site groupID:d completionHandler:v21];
 }
 
 void __108__WBSSavedAccountStore_saveUser_password_forUserTypedSite_customTitle_notesEntry_groupID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -5999,16 +5999,16 @@ void __108__WBSSavedAccountStore_saveUser_password_forUserTypedSite_customTitle_
   [v4 saveNotesEntry:v5 forSavedAccount:v7 completionHandler:v8];
 }
 
-- (BOOL)canSaveUser:(id)a3 password:(id)a4 forProtectionSpace:(id)a5 highLevelDomain:(id)a6 notes:(id)a7 customTitle:(id)a8 groupID:(id)a9 error:(id *)a10
+- (BOOL)canSaveUser:(id)user password:(id)password forProtectionSpace:(id)space highLevelDomain:(id)domain notes:(id)notes customTitle:(id)title groupID:(id)d error:(id *)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  if (v16 && (v23 = [v17 length], v18) && v23 && objc_msgSend(v19, "length"))
+  userCopy = user;
+  passwordCopy = password;
+  spaceCopy = space;
+  domainCopy = domain;
+  notesCopy = notes;
+  titleCopy = title;
+  dCopy = d;
+  if (userCopy && (v23 = [passwordCopy length], spaceCopy) && v23 && objc_msgSend(domainCopy, "length"))
   {
     v43 = 0;
     v44 = &v43;
@@ -6026,21 +6026,21 @@ void __108__WBSSavedAccountStore_saveUser_password_forUserTypedSite_customTitle_
     block[2] = __112__WBSSavedAccountStore_canSaveUser_password_forProtectionSpace_highLevelDomain_notes_customTitle_groupID_error___block_invoke;
     block[3] = &unk_1E7CF4B20;
     block[4] = self;
-    v29 = v22;
+    v29 = dCopy;
     v35 = &v37;
     v36 = &v43;
-    v30 = v19;
-    v31 = v16;
-    v32 = v18;
-    v33 = v17;
-    v34 = v20;
+    v30 = domainCopy;
+    v31 = userCopy;
+    v32 = spaceCopy;
+    v33 = passwordCopy;
+    v34 = notesCopy;
     dispatch_sync(queue, block);
-    if (a10)
+    if (error)
     {
       v24 = v38[5];
       if (v24)
       {
-        *a10 = v24;
+        *error = v24;
       }
     }
 
@@ -6050,10 +6050,10 @@ void __108__WBSSavedAccountStore_saveUser_password_forUserTypedSite_customTitle_
     _Block_object_dispose(&v43, 8);
   }
 
-  else if (a10)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] safari_errorWithDomain:@"com.apple.AuthenticationServices.SaveUserErrorDomain" code:4 privacyPreservingDescription:@"Account details provided are incomplete."];
-    *a10 = v25 = 0;
+    *error = v25 = 0;
   }
 
   else
@@ -6173,13 +6173,13 @@ void __112__WBSSavedAccountStore_canSaveUser_password_forProtectionSpace_highLev
   }
 }
 
-- (id)saveUser:(id)a3 password:(id)a4 forProtectionSpace:(id)a5 highLevelDomain:(id)a6 groupID:(id)a7
+- (id)saveUser:(id)user password:(id)password forProtectionSpace:(id)space highLevelDomain:(id)domain groupID:(id)d
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  userCopy = user;
+  passwordCopy = password;
+  spaceCopy = space;
+  domainCopy = domain;
+  dCopy = d;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -6191,18 +6191,18 @@ void __112__WBSSavedAccountStore_canSaveUser_password_forProtectionSpace_highLev
   block[1] = 3221225472;
   block[2] = __85__WBSSavedAccountStore_saveUser_password_forProtectionSpace_highLevelDomain_groupID___block_invoke;
   block[3] = &unk_1E7CF4B48;
-  v30 = v16;
+  v30 = dCopy;
   v31 = &v32;
   block[4] = self;
-  v26 = v12;
-  v27 = v13;
-  v28 = v14;
-  v29 = v15;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
+  v26 = userCopy;
+  v27 = passwordCopy;
+  v28 = spaceCopy;
+  v29 = domainCopy;
+  v18 = dCopy;
+  v19 = domainCopy;
+  v20 = spaceCopy;
+  v21 = passwordCopy;
+  v22 = userCopy;
   dispatch_sync(queue, block);
   v23 = v33[5];
 
@@ -6219,10 +6219,10 @@ void __85__WBSSavedAccountStore_saveUser_password_forProtectionSpace_highLevelDo
   *(v3 + 40) = v2;
 }
 
-- (BOOL)_canMoveSavedAccountWithPasskey:(id)a3 toGroup:(id)a4
+- (BOOL)_canMoveSavedAccountWithPasskey:(id)passkey toGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
+  passkeyCopy = passkey;
+  groupCopy = group;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -6233,11 +6233,11 @@ void __85__WBSSavedAccountStore_saveUser_password_forProtectionSpace_highLevelDo
   v12[2] = __64__WBSSavedAccountStore__canMoveSavedAccountWithPasskey_toGroup___block_invoke;
   v12[3] = &unk_1E7CF4B70;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = passkeyCopy;
+  v14 = groupCopy;
   v15 = &v16;
-  v9 = v7;
-  v10 = v6;
+  v9 = groupCopy;
+  v10 = passkeyCopy;
   dispatch_sync(queue, v12);
   LOBYTE(queue) = *(v17 + 24);
 
@@ -6290,62 +6290,62 @@ LABEL_5:
 LABEL_9:
 }
 
-- (id)_saveAccountOnInternalQueueWithUser:(id)a3 password:(id)a4 protectionSpace:(id)a5 highLevelDomain:(id)a6 groupID:(id)a7
+- (id)_saveAccountOnInternalQueueWithUser:(id)user password:(id)password protectionSpace:(id)space highLevelDomain:(id)domain groupID:(id)d
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  userCopy = user;
+  passwordCopy = password;
+  spaceCopy = space;
+  domainCopy = domain;
+  dCopy = d;
   v17 = 0;
-  if (!v12 || !v14)
+  if (!userCopy || !spaceCopy)
   {
     goto LABEL_32;
   }
 
-  if (![v15 length])
+  if (![domainCopy length])
   {
     goto LABEL_18;
   }
 
-  if (!v13)
+  if (!passwordCopy)
   {
-    v13 = &stru_1F3064D08;
+    passwordCopy = &stru_1F3064D08;
   }
 
-  if ([v16 length])
+  if ([dCopy length])
   {
     v18 = +[WBSOngoingSharingGroupProvider sharedProvider];
-    v19 = [v18 currentUserParticipantID];
+    currentUserParticipantID = [v18 currentUserParticipantID];
 
-    if (v19)
+    if (currentUserParticipantID)
     {
       groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts = self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts;
       if (!groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts)
       {
-        v21 = [MEMORY[0x1E695DF90] dictionary];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v22 = self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts;
-        self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts = v21;
+        self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts = dictionary;
 
         groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts = self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts;
       }
 
-      v23 = [(NSMutableDictionary *)groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:v16];
+      v23 = [(NSMutableDictionary *)groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:dCopy];
 
       if (!v23)
       {
-        v24 = [MEMORY[0x1E695DF90] dictionary];
-        [(NSMutableDictionary *)self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts setObject:v24 forKeyedSubscript:v16];
+        dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+        [(NSMutableDictionary *)self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts setObject:dictionary2 forKeyedSubscript:dCopy];
       }
 
-      v25 = [(NSMutableDictionary *)self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:v16];
-      v26 = [v25 objectForKeyedSubscript:v15];
+      v25 = [(NSMutableDictionary *)self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:dCopy];
+      dictionary3 = [v25 objectForKeyedSubscript:domainCopy];
 
-      if (!v26)
+      if (!dictionary3)
       {
-        v26 = [MEMORY[0x1E695DF90] dictionary];
-        v27 = [(NSMutableDictionary *)self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:v16];
-        [v27 setObject:v26 forKeyedSubscript:v15];
+        dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+        v27 = [(NSMutableDictionary *)self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:dCopy];
+        [v27 setObject:dictionary3 forKeyedSubscript:domainCopy];
       }
 
       goto LABEL_20;
@@ -6362,52 +6362,52 @@ LABEL_18:
     goto LABEL_32;
   }
 
-  v28 = [(NSMutableDictionary *)self->_personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:v15];
+  v28 = [(NSMutableDictionary *)self->_personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:domainCopy];
   if (v28)
   {
-    v26 = v28;
+    dictionary3 = v28;
   }
 
   else
   {
-    v26 = [MEMORY[0x1E695DF90] dictionary];
-    [(NSMutableDictionary *)self->_personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts setObject:v26 forKeyedSubscript:v15];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+    [(NSMutableDictionary *)self->_personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts setObject:dictionary3 forKeyedSubscript:domainCopy];
   }
 
 LABEL_20:
-  v30 = [v26 objectForKeyedSubscript:v12];
-  if (!v30)
+  dictionary4 = [dictionary3 objectForKeyedSubscript:userCopy];
+  if (!dictionary4)
   {
-    v30 = [MEMORY[0x1E695DF90] dictionary];
-    [v26 setObject:v30 forKeyedSubscript:v12];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary3 setObject:dictionary4 forKeyedSubscript:userCopy];
   }
 
-  v45 = v26;
-  v46 = v30;
-  v31 = [v30 objectForKeyedSubscript:v13];
+  v45 = dictionary3;
+  v46 = dictionary4;
+  v31 = [dictionary4 objectForKeyedSubscript:passwordCopy];
   v32 = v31;
   if (!v31)
   {
-    v32 = [[WBSSavedAccount alloc] _initWithHighLevelDomain:v15 user:v12 password:v13];
-    [v30 setObject:v32 forKeyedSubscript:v13];
+    v32 = [[WBSSavedAccount alloc] _initWithHighLevelDomain:domainCopy user:userCopy password:passwordCopy];
+    [dictionary4 setObject:v32 forKeyedSubscript:passwordCopy];
     v33 = [(NSArray *)self->_savedAccountsWithPasswords mutableCopy];
     [(NSArray *)v33 safari_insertObject:v32 inSortedOrderUsingComparator:&__block_literal_global_309_0];
     savedAccountsWithPasswords = self->_savedAccountsWithPasswords;
     self->_savedAccountsWithPasswords = v33;
   }
 
-  v35 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
-  v36 = [MEMORY[0x1E695AC48] safari_credentialWithUser:v12 password:v13 persistence:3];
-  [v35 safari_setCredential:v36 forHTMLFormProtectionSpace:v14 forGroupID:v16];
+  mEMORY[0x1E695AC50] = [MEMORY[0x1E695AC50] sharedCredentialStorage];
+  v36 = [MEMORY[0x1E695AC48] safari_credentialWithUser:userCopy password:passwordCopy persistence:3];
+  [mEMORY[0x1E695AC50] safari_setCredential:v36 forHTMLFormProtectionSpace:spaceCopy forGroupID:dCopy];
 
-  if ([v16 length])
+  if ([dCopy length])
   {
     sharedAccountsGroups = self->_sharedAccountsGroups;
     v47[0] = MEMORY[0x1E69E9820];
     v47[1] = 3221225472;
     v47[2] = __109__WBSSavedAccountStore__saveAccountOnInternalQueueWithUser_password_protectionSpace_highLevelDomain_groupID___block_invoke_2;
     v47[3] = &unk_1E7CF2D20;
-    v48 = v16;
+    v48 = dCopy;
     v38 = [(NSArray *)sharedAccountsGroups safari_firstObjectPassingTest:v47];
     if (!v38)
     {
@@ -6418,8 +6418,8 @@ LABEL_20:
       }
     }
 
-    v39 = [v38 groupID];
-    [v32 setSharedGroupID:v39];
+    groupID = [v38 groupID];
+    [v32 setSharedGroupID:groupID];
   }
 
   else
@@ -6427,19 +6427,19 @@ LABEL_20:
     [v32 setSharedGroupID:&stru_1F3064D08];
   }
 
-  [v32 _createSidecarsForProtectionSpaceIfNecessary:v14];
-  v40 = [v14 host];
-  [v32 _addProtectionSpace:v14 forSite:v40 isDefaultCredentialForSite:v31 == 0];
+  [v32 _createSidecarsForProtectionSpaceIfNecessary:spaceCopy];
+  host = [spaceCopy host];
+  [v32 _addProtectionSpace:spaceCopy forSite:host isDefaultCredentialForSite:v31 == 0];
 
   if (!v31)
   {
     if (!self->_shouldSkipHistoryEvents)
     {
-      v42 = [[WBSSavedAccountPasswordHistoryItem alloc] initWithPassword:v13 type:@"pwcr"];
+      v42 = [[WBSSavedAccountPasswordHistoryItem alloc] initWithPassword:passwordCopy type:@"pwcr"];
       [v32 addItemToAccountHistory:v42];
     }
 
-    if ([v16 length])
+    if ([dCopy length])
     {
       if (([v32 markOriginalContributorParticipantID] & 1) == 0)
       {
@@ -6467,70 +6467,70 @@ uint64_t __109__WBSSavedAccountStore__saveAccountOnInternalQueueWithUser_passwor
   return v4;
 }
 
-- (void)_saveSidecarObjectsOnInternalQueueForSavedAccount:(id)a3 withBlock:(id)a4
+- (void)_saveSidecarObjectsOnInternalQueueForSavedAccount:(id)account withBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  [(WBSSavedAccountStore *)self _saveSidecarObjectsOnInternalQueueForSavedAccountWithPassword:v7 withBlock:v6];
-  [(WBSSavedAccountStore *)self _saveSidecarOnInternalQueueForSavedAccountWithPasskey:v7 withBlock:v6];
+  blockCopy = block;
+  accountCopy = account;
+  [(WBSSavedAccountStore *)self _saveSidecarObjectsOnInternalQueueForSavedAccountWithPassword:accountCopy withBlock:blockCopy];
+  [(WBSSavedAccountStore *)self _saveSidecarOnInternalQueueForSavedAccountWithPasskey:accountCopy withBlock:blockCopy];
 }
 
-- (void)_saveSidecarObjectsOnInternalQueueForSavedAccountWithPassword:(id)a3 withBlock:(id)a4
+- (void)_saveSidecarObjectsOnInternalQueueForSavedAccountWithPassword:(id)password withBlock:(id)block
 {
-  v7 = a3;
-  v5 = a4;
-  v6 = [v7 password];
+  passwordCopy = password;
+  blockCopy = block;
+  password = [passwordCopy password];
 
-  if (v6)
+  if (password)
   {
-    [v7 _updatePasswordSidecarsIfNecessaryWithBlock:v5];
+    [passwordCopy _updatePasswordSidecarsIfNecessaryWithBlock:blockCopy];
   }
 }
 
-- (void)_saveSidecarOnInternalQueueForSavedAccountWithPasskey:(id)a3 withBlock:(id)a4
+- (void)_saveSidecarOnInternalQueueForSavedAccountWithPasskey:(id)passkey withBlock:(id)block
 {
-  v7 = a3;
-  v5 = a4;
-  v6 = [v7 passkeyCredentialID];
+  passkeyCopy = passkey;
+  blockCopy = block;
+  passkeyCredentialID = [passkeyCopy passkeyCredentialID];
 
-  if (v6)
+  if (passkeyCredentialID)
   {
-    [v7 _updatePasskeySidecarsIfNecessaryWithBlock:v5];
+    [passkeyCopy _updatePasskeySidecarsIfNecessaryWithBlock:blockCopy];
   }
 }
 
-- (void)_writeSidecarDataForMergedSavedAccount:(id)a3
+- (void)_writeSidecarDataForMergedSavedAccount:(id)account
 {
-  v5 = a3;
-  v3 = [v5 notesEntry];
-  if ([v3 length])
+  accountCopy = account;
+  notesEntry = [accountCopy notesEntry];
+  if ([notesEntry length])
   {
-    [v5 setNotesEntry:v3];
+    [accountCopy setNotesEntry:notesEntry];
   }
 
-  v4 = [v5 customTitle];
-  if ([v4 length])
+  customTitle = [accountCopy customTitle];
+  if ([customTitle length])
   {
-    [v5 setCustomTitle:v4 performSidecarUpdate:1];
+    [accountCopy setCustomTitle:customTitle performSidecarUpdate:1];
   }
 }
 
-- (void)saveAdditionalSites:(id)a3 forSavedAccount:(id)a4 completionHandler:(id)a5
+- (void)saveAdditionalSites:(id)sites forSavedAccount:(id)account completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sitesCopy = sites;
+  accountCopy = account;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__WBSSavedAccountStore_saveAdditionalSites_forSavedAccount_completionHandler___block_invoke;
   block[3] = &unk_1E7CF1908;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = accountCopy;
+  v17 = sitesCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = sitesCopy;
+  v14 = accountCopy;
   dispatch_async(queue, block);
 }
 
@@ -6542,44 +6542,44 @@ uint64_t __78__WBSSavedAccountStore_saveAdditionalSites_forSavedAccount_completi
   return v2();
 }
 
-- (void)addAdditionalSite:(id)a3 toSavedAccount:(id)a4 completionHandler:(id)a5
+- (void)addAdditionalSite:(id)site toSavedAccount:(id)account completionHandler:(id)handler
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 additionalSites];
-  v11 = [v10 containsObject:v14];
+  siteCopy = site;
+  accountCopy = account;
+  handlerCopy = handler;
+  additionalSites = [accountCopy additionalSites];
+  v11 = [additionalSites containsObject:siteCopy];
 
   if (v11)
   {
-    v9[2](v9);
+    handlerCopy[2](handlerCopy);
   }
 
   else
   {
-    v12 = [v8 additionalSites];
-    v13 = [v12 arrayByAddingObject:v14];
-    [(WBSSavedAccountStore *)self saveAdditionalSites:v13 forSavedAccount:v8 completionHandler:v9];
+    additionalSites2 = [accountCopy additionalSites];
+    v13 = [additionalSites2 arrayByAddingObject:siteCopy];
+    [(WBSSavedAccountStore *)self saveAdditionalSites:v13 forSavedAccount:accountCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)addAccountHistoryItem:(id)a3 toSavedAccount:(id)a4 completionHandler:(id)a5
+- (void)addAccountHistoryItem:(id)item toSavedAccount:(id)account completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  accountCopy = account;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __79__WBSSavedAccountStore_addAccountHistoryItem_toSavedAccount_completionHandler___block_invoke;
   v15[3] = &unk_1E7CF4BB8;
-  v16 = v9;
-  v17 = v8;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = accountCopy;
+  v17 = itemCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = itemCopy;
+  v14 = accountCopy;
   dispatch_async(queue, v15);
 }
 
@@ -6606,34 +6606,34 @@ uint64_t __79__WBSSavedAccountStore_addAccountHistoryItem_toSavedAccount_complet
   }
 }
 
-- (void)_addAccountHistoryItemOnInternalQueue:(id)a3 toSavedAccount:(id)a4 completionHandler:(id)a5
+- (void)_addAccountHistoryItemOnInternalQueue:(id)queue toSavedAccount:(id)account completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   if (!self->_shouldSkipHistoryEvents)
   {
-    [a4 addItemToAccountHistory:a3];
+    [account addItemToAccountHistory:queue];
   }
 
-  v8[2]();
+  handlerCopy[2]();
 }
 
-- (void)deleteAccountHistoryItem:(id)a3 fromSavedAccount:(id)a4 completionHandler:(id)a5
+- (void)deleteAccountHistoryItem:(id)item fromSavedAccount:(id)account completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  accountCopy = account;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __84__WBSSavedAccountStore_deleteAccountHistoryItem_fromSavedAccount_completionHandler___block_invoke;
   v15[3] = &unk_1E7CF4BB8;
-  v16 = v9;
-  v17 = v8;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = accountCopy;
+  v17 = itemCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = itemCopy;
+  v14 = accountCopy;
   dispatch_async(queue, v15);
 }
 
@@ -6660,21 +6660,21 @@ uint64_t __84__WBSSavedAccountStore_deleteAccountHistoryItem_fromSavedAccount_co
   }
 }
 
-- (void)_deleteAccountHistoryItemOnInternalQueue:(id)a3 fromSavedAccount:(id)a4 completionHandler:(id)a5
+- (void)_deleteAccountHistoryItemOnInternalQueue:(id)queue fromSavedAccount:(id)account completionHandler:(id)handler
 {
-  v7 = a5;
-  [a4 deleteItemFromAccountHistory:a3];
-  v7[2]();
+  handlerCopy = handler;
+  [account deleteItemFromAccountHistory:queue];
+  handlerCopy[2]();
 }
 
-- (void)clearSavedAccountHistory:(id)a3 withCompletionHandler:(id)a4
+- (void)clearSavedAccountHistory:(id)history withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isCurrentUserOriginalContributor])
+  historyCopy = history;
+  handlerCopy = handler;
+  if ([historyCopy isCurrentUserOriginalContributor])
   {
     v8 = objc_alloc_init(WBSSavedAccountChangeRequest);
-    [(WBSSavedAccountChangeRequest *)v8 setSavedAccount:v6];
+    [(WBSSavedAccountChangeRequest *)v8 setSavedAccount:historyCopy];
     [(WBSSavedAccountChangeRequest *)v8 setShouldClearHistory:1];
     v9 = dispatch_group_create();
     dispatch_group_enter(v9);
@@ -6687,15 +6687,15 @@ uint64_t __84__WBSSavedAccountStore_deleteAccountHistoryItem_fromSavedAccount_co
     [(WBSSavedAccountStore *)self changeSavedAccountWithRequest:v8 completionHandler:v15];
     dispatch_group_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
     v11 = [WBSSavedAccountPasswordHistoryItem alloc];
-    v12 = [v6 password];
-    v13 = [(WBSSavedAccountPasswordHistoryItem *)v11 initWithPassword:v12 type:@"pw"];
+    password = [historyCopy password];
+    v13 = [(WBSSavedAccountPasswordHistoryItem *)v11 initWithPassword:password type:@"pw"];
 
     if (!self->_shouldSkipHistoryEvents)
     {
-      [v6 addItemToAccountHistory:v13];
+      [historyCopy addItemToAccountHistory:v13];
     }
 
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 
   else
@@ -6706,26 +6706,26 @@ uint64_t __84__WBSSavedAccountStore_deleteAccountHistoryItem_fromSavedAccount_co
       [WBSSavedAccountStore clearSavedAccountHistory:withCompletionHandler:];
     }
 
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 }
 
-- (void)saveTOTPGenerator:(id)a3 forSavedAccount:(id)a4 completionHandler:(id)a5
+- (void)saveTOTPGenerator:(id)generator forSavedAccount:(id)account completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  generatorCopy = generator;
+  accountCopy = account;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__WBSSavedAccountStore_saveTOTPGenerator_forSavedAccount_completionHandler___block_invoke;
   block[3] = &unk_1E7CF1908;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = accountCopy;
+  v17 = generatorCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = generatorCopy;
+  v14 = accountCopy;
   dispatch_async(queue, block);
 }
 
@@ -6737,35 +6737,35 @@ uint64_t __76__WBSSavedAccountStore_saveTOTPGenerator_forSavedAccount_completion
   return v2();
 }
 
-- (void)removeTOTPGeneratorForSavedAccount:(id)a3
+- (void)removeTOTPGeneratorForSavedAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__WBSSavedAccountStore_removeTOTPGeneratorForSavedAccount___block_invoke;
   block[3] = &unk_1E7CF16E0;
-  v8 = v4;
-  v6 = v4;
+  v8 = accountCopy;
+  v6 = accountCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)saveNotesEntry:(id)a3 forSavedAccount:(id)a4 completionHandler:(id)a5
+- (void)saveNotesEntry:(id)entry forSavedAccount:(id)account completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  entryCopy = entry;
+  accountCopy = account;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __73__WBSSavedAccountStore_saveNotesEntry_forSavedAccount_completionHandler___block_invoke;
   block[3] = &unk_1E7CF1A28;
-  v17 = v9;
-  v18 = v10;
-  v16 = v8;
-  v12 = v9;
-  v13 = v10;
-  v14 = v8;
+  v17 = accountCopy;
+  v18 = handlerCopy;
+  v16 = entryCopy;
+  v12 = accountCopy;
+  v13 = handlerCopy;
+  v14 = entryCopy;
   dispatch_async(queue, block);
 }
 
@@ -6781,23 +6781,23 @@ uint64_t __73__WBSSavedAccountStore_saveNotesEntry_forSavedAccount_completionHan
   return v2();
 }
 
-- (void)saveCustomTitle:(id)a3 forSavedAccount:(id)a4 completionHandler:(id)a5
+- (void)saveCustomTitle:(id)title forSavedAccount:(id)account completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  accountCopy = account;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __74__WBSSavedAccountStore_saveCustomTitle_forSavedAccount_completionHandler___block_invoke;
   v15[3] = &unk_1E7CF4BB8;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = titleCopy;
+  v17 = accountCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = accountCopy;
+  v14 = titleCopy;
   dispatch_async(queue, v15);
 }
 
@@ -6829,23 +6829,23 @@ void __74__WBSSavedAccountStore_saveCustomTitle_forSavedAccount_completionHandle
   }
 }
 
-- (void)saveHideMarker:(id)a3 forSavedAccount:(id)a4 completionHandler:(id)a5
+- (void)saveHideMarker:(id)marker forSavedAccount:(id)account completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  markerCopy = marker;
+  accountCopy = account;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __73__WBSSavedAccountStore_saveHideMarker_forSavedAccount_completionHandler___block_invoke;
   v15[3] = &unk_1E7CF4970;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = accountCopy;
+  v17 = markerCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = markerCopy;
+  v14 = accountCopy;
   dispatch_async(queue, v15);
 }
 
@@ -6873,17 +6873,17 @@ void __73__WBSSavedAccountStore_saveHideMarker_forSavedAccount_completionHandler
   }
 }
 
-- (void)removeHideWarningMarkerForSavedAccount:(id)a3
+- (void)removeHideWarningMarkerForSavedAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__WBSSavedAccountStore_removeHideWarningMarkerForSavedAccount___block_invoke;
   v7[3] = &unk_1E7CF1708;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = accountCopy;
+  v6 = accountCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -6898,17 +6898,17 @@ void __63__WBSSavedAccountStore_removeHideWarningMarkerForSavedAccount___block_i
   }
 }
 
-- (void)resetHiddenSecurityRecommendationsWithCompletionHandler:(id)a3
+- (void)resetHiddenSecurityRecommendationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __80__WBSSavedAccountStore_resetHiddenSecurityRecommendationsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7CF16B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -6967,13 +6967,13 @@ void __80__WBSSavedAccountStore_resetHiddenSecurityRecommendationsWithCompletion
 
 - (void)_postSavedAccountStoreDidChangeNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"WBSSavedAccountStoreDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"WBSSavedAccountStoreDidChangeNotification" object:self];
 }
 
-- (unint64_t)numberOfSavedAccountsInPersonalKeychainForHighLevelDomain:(id)a3
+- (unint64_t)numberOfSavedAccountsInPersonalKeychainForHighLevelDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -6983,10 +6983,10 @@ void __80__WBSSavedAccountStore_resetHiddenSecurityRecommendationsWithCompletion
   block[1] = 3221225472;
   block[2] = __82__WBSSavedAccountStore_numberOfSavedAccountsInPersonalKeychainForHighLevelDomain___block_invoke;
   block[3] = &unk_1E7CF1730;
-  v10 = v4;
+  v10 = domainCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = domainCopy;
   dispatch_sync(queue, block);
   v7 = v13[3];
 
@@ -7087,35 +7087,35 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)_deleteSavedAccountsWithUnknownOriginalContributorParticipantIDsFromSavedAccounts:(id)a3 inGroup:(id)a4
+- (BOOL)_deleteSavedAccountsWithUnknownOriginalContributorParticipantIDsFromSavedAccounts:(id)accounts inGroup:(id)group
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count] && (objc_msgSend(v6, "participants"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8))
+  accountsCopy = accounts;
+  groupCopy = group;
+  if ([accountsCopy count] && (objc_msgSend(groupCopy, "participants"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8))
   {
     v9 = +[WBSOngoingSharingGroupProvider sharedProvider];
-    v10 = [v9 currentUserParticipantID];
+    currentUserParticipantID = [v9 currentUserParticipantID];
 
-    if (v10)
+    if (currentUserParticipantID)
     {
       v11 = MEMORY[0x1E695DFD8];
-      v12 = [v6 participants];
+      participants = [groupCopy participants];
       v37[0] = MEMORY[0x1E69E9820];
       v37[1] = 3221225472;
       v37[2] = __114__WBSSavedAccountStore__deleteSavedAccountsWithUnknownOriginalContributorParticipantIDsFromSavedAccounts_inGroup___block_invoke;
       v37[3] = &unk_1E7CF4BE0;
-      v30 = v10;
-      v38 = v10;
-      v13 = [v12 safari_mapObjectsUsingBlock:v37];
+      v30 = currentUserParticipantID;
+      v38 = currentUserParticipantID;
+      v13 = [participants safari_mapObjectsUsingBlock:v37];
       v14 = [v11 setWithArray:v13];
 
       v35 = 0u;
       v36 = 0u;
       v33 = 0u;
       v34 = 0u;
-      v31 = v5;
-      v15 = [v5 copy];
+      v31 = accountsCopy;
+      v15 = [accountsCopy copy];
       v16 = [v15 countByEnumeratingWithState:&v33 objects:v45 count:16];
       if (v16)
       {
@@ -7132,26 +7132,26 @@ LABEL_13:
             }
 
             v21 = *(*(&v33 + 1) + 8 * i);
-            v22 = [v6 groupID];
-            v23 = [v21 originalContributorParticipantID];
-            if (v23)
+            groupID = [groupCopy groupID];
+            originalContributorParticipantID = [v21 originalContributorParticipantID];
+            if (originalContributorParticipantID)
             {
-              if (([v14 containsObject:v23] & 1) == 0)
+              if (([v14 containsObject:originalContributorParticipantID] & 1) == 0)
               {
                 v24 = WBS_LOG_CHANNEL_PREFIXPasswords();
                 if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138478339;
-                  v40 = v22;
+                  v40 = groupID;
                   v41 = 2113;
-                  v42 = v23;
+                  v42 = originalContributorParticipantID;
                   v43 = 2113;
                   v44 = v14;
                   _os_log_impl(&dword_1B8447000, v24, OS_LOG_TYPE_DEFAULT, "Deleting a shared saved account with a contributor ID that does not map to a participant in group ID: %{private}@, saved account original contributor ID: %{private}@, group participant IDs: %{private}@", buf, 0x20u);
                 }
 
-                v25 = [v6 groupID];
-                [(WBSSavedAccountStore *)self _removeSavedAccount:v21 fromGroupID:v25];
+                groupID2 = [groupCopy groupID];
+                [(WBSSavedAccountStore *)self _removeSavedAccount:v21 fromGroupID:groupID2];
 
                 v18 = 1;
               }
@@ -7163,7 +7163,7 @@ LABEL_13:
               if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138477827;
-                v40 = v22;
+                v40 = groupID;
                 _os_log_error_impl(&dword_1B8447000, v26, OS_LOG_TYPE_ERROR, "Found a shared saved account without an original contributor participant ID in group ID: %{private}@", buf, 0xCu);
               }
 
@@ -7182,8 +7182,8 @@ LABEL_13:
         v18 = 0;
       }
 
-      v10 = v30;
-      v5 = v31;
+      currentUserParticipantID = v30;
+      accountsCopy = v31;
     }
 
     else
@@ -7350,15 +7350,15 @@ void __126__WBSSavedAccountStore__cleanUpSharedSavedAccountsWithUnknownOriginalC
 - (void)_identifySharedSavedAccountsWithSameUsernameAndHighLevelDomainPairs
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(NSMutableDictionary *)self->_groupIdentifiersToSavedAccounts allValues];
-  v5 = [v4 safari_flattenedArray];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  allValues = [(NSMutableDictionary *)self->_groupIdentifiersToSavedAccounts allValues];
+  safari_flattenedArray = [allValues safari_flattenedArray];
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v6 = v5;
+  v6 = safari_flattenedArray;
   v7 = [v6 countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v7)
   {
@@ -7376,21 +7376,21 @@ void __126__WBSSavedAccountStore__cleanUpSharedSavedAccountsWithUnknownOriginalC
 
         v11 = *(*(&v37 + 1) + 8 * v10);
         v12 = [WBSPair alloc];
-        v13 = [v11 highLevelDomain];
-        v14 = [v11 user];
-        v15 = [(WBSPair *)v12 initWithFirst:v13 second:v14];
+        highLevelDomain = [v11 highLevelDomain];
+        user = [v11 user];
+        v15 = [(WBSPair *)v12 initWithFirst:highLevelDomain second:user];
 
-        v16 = [v3 objectForKeyedSubscript:v15];
+        v16 = [dictionary objectForKeyedSubscript:v15];
 
         if (!v16)
         {
           v17 = [MEMORY[0x1E695DFA8] set];
-          [v3 setObject:v17 forKeyedSubscript:v15];
+          [dictionary setObject:v17 forKeyedSubscript:v15];
         }
 
-        v18 = [v3 objectForKeyedSubscript:v15];
-        v19 = [v11 sharedGroupID];
-        [v18 addObject:v19];
+        v18 = [dictionary objectForKeyedSubscript:v15];
+        sharedGroupID = [v11 sharedGroupID];
+        [v18 addObject:sharedGroupID];
 
         ++v10;
       }
@@ -7424,11 +7424,11 @@ void __126__WBSSavedAccountStore__cleanUpSharedSavedAccountsWithUnknownOriginalC
 
         v25 = *(*(&v33 + 1) + 8 * v24);
         v26 = [WBSPair alloc];
-        v27 = [v25 highLevelDomain];
-        v28 = [v25 user];
-        v29 = [(WBSPair *)v26 initWithFirst:v27 second:v28];
+        highLevelDomain2 = [v25 highLevelDomain];
+        user2 = [v25 user];
+        v29 = [(WBSPair *)v26 initWithFirst:highLevelDomain2 second:user2];
 
-        v30 = [v3 objectForKeyedSubscript:v29];
+        v30 = [dictionary objectForKeyedSubscript:v29];
         v31 = [v30 count];
 
         if (v31 >= 2)
@@ -7449,33 +7449,33 @@ void __126__WBSSavedAccountStore__cleanUpSharedSavedAccountsWithUnknownOriginalC
   v32 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_mergeSavedAccountWithPassword:(id)a3 toSavedAccountWithPasskey:(id)a4
+- (void)_mergeSavedAccountWithPassword:(id)password toSavedAccountWithPasskey:(id)passkey
 {
   v41 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 password];
-  [v6 setPassword:v7];
+  passwordCopy = password;
+  passkeyCopy = passkey;
+  password = [passwordCopy password];
+  [passkeyCopy setPassword:password];
 
-  v8 = [v5 protectionSpaces];
-  v9 = [v8 firstObject];
+  protectionSpaces = [passwordCopy protectionSpaces];
+  firstObject = [protectionSpaces firstObject];
 
-  v10 = [v9 host];
-  v11 = v9;
-  [v6 _addProtectionSpace:v9 forSite:v10 isDefaultCredentialForSite:{objc_msgSend(v5, "isDefaultCredentialForFullyQualifiedHostname:", v10)}];
-  if ([v6 hasPasskeySidecars])
+  host = [firstObject host];
+  v11 = firstObject;
+  [passkeyCopy _addProtectionSpace:firstObject forSite:host isDefaultCredentialForSite:{objc_msgSend(passwordCopy, "isDefaultCredentialForFullyQualifiedHostname:", host)}];
+  if ([passkeyCopy hasPasskeySidecars])
   {
-    v32 = v10;
+    v32 = host;
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v12 = v6;
-    v13 = [v6 passkeyCredentialSidecarsDictionary];
-    v14 = [v13 allValues];
+    v12 = passkeyCopy;
+    passkeyCredentialSidecarsDictionary = [passkeyCopy passkeyCredentialSidecarsDictionary];
+    allValues = [passkeyCredentialSidecarsDictionary allValues];
 
-    obj = v14;
-    v15 = [v14 countByEnumeratingWithState:&v36 objects:v40 count:16];
+    obj = allValues;
+    v15 = [allValues countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v15)
     {
       v16 = v15;
@@ -7497,9 +7497,9 @@ void __126__WBSSavedAccountStore__cleanUpSharedSavedAccountsWithUnknownOriginalC
           if (isKindOfClass & 1) != 0 || (objc_opt_class(), v22 = objc_opt_isKindOfClass(), v21 = off_1E7CEFB10, (v22))
           {
             v23 = objc_alloc(*v21);
-            v24 = [v5 user];
-            v25 = [v19 dictionaryRepresentation];
-            v26 = [v23 initWithUser:v24 protectionSpace:v11 dictionaryRepresentation:v25];
+            user = [passwordCopy user];
+            dictionaryRepresentation = [v19 dictionaryRepresentation];
+            v26 = [v23 initWithUser:user protectionSpace:v11 dictionaryRepresentation:dictionaryRepresentation];
 
             v27 = v19;
             objc_opt_class();
@@ -7508,9 +7508,9 @@ void __126__WBSSavedAccountStore__cleanUpSharedSavedAccountsWithUnknownOriginalC
               [v27 setLastOneTimeShareDateForPasskey:0];
             }
 
-            v28 = [v26 protectionSpace];
-            v29 = [v28 host];
-            [v12 _addSidecar:v26 forSite:v29];
+            protectionSpace = [v26 protectionSpace];
+            host2 = [protectionSpace host];
+            [v12 _addSidecar:v26 forSite:host2];
           }
 
           else
@@ -7532,94 +7532,94 @@ void __126__WBSSavedAccountStore__cleanUpSharedSavedAccountsWithUnknownOriginalC
       while (v16);
     }
 
-    v6 = v12;
+    passkeyCopy = v12;
     [v12 _updatePasswordSidecarsIfNecessaryWithBlock:0];
-    v10 = v32;
+    host = v32;
   }
 
   v31 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_mergeSavedAccountWithPasskey:(id)a3 toSavedAccountWithPassword:(id)a4
+- (void)_mergeSavedAccountWithPasskey:(id)passkey toSavedAccountWithPassword:(id)password
 {
-  v25 = a3;
-  v5 = a4;
-  v6 = [v25 passkeyUserHandle];
-  [v5 setPasskeyUserHandle:v6];
+  passkeyCopy = passkey;
+  passwordCopy = password;
+  passkeyUserHandle = [passkeyCopy passkeyUserHandle];
+  [passwordCopy setPasskeyUserHandle:passkeyUserHandle];
 
-  v7 = [v25 passkeyCredentialID];
-  [v5 setPasskeyCredentialID:v7];
+  passkeyCredentialID = [passkeyCopy passkeyCredentialID];
+  [passwordCopy setPasskeyCredentialID:passkeyCredentialID];
 
-  v8 = [v25 passkeyRelyingPartyID];
-  [v5 setPasskeyRelyingPartyID:v8];
+  passkeyRelyingPartyID = [passkeyCopy passkeyRelyingPartyID];
+  [passwordCopy setPasskeyRelyingPartyID:passkeyRelyingPartyID];
 
-  v9 = [v25 creationDateForPasskey];
-  [v5 setCreationDateForPasskey:v9];
+  creationDateForPasskey = [passkeyCopy creationDateForPasskey];
+  [passwordCopy setCreationDateForPasskey:creationDateForPasskey];
 
-  v10 = [v25 lastModifiedDateForPasskey];
-  [v5 setLastModifiedDateForPasskey:v10];
+  lastModifiedDateForPasskey = [passkeyCopy lastModifiedDateForPasskey];
+  [passwordCopy setLastModifiedDateForPasskey:lastModifiedDateForPasskey];
 
-  v11 = [v25 lastUsedDateForPasskey];
-  [v5 setLastUsedDateForPasskey:v11];
+  lastUsedDateForPasskey = [passkeyCopy lastUsedDateForPasskey];
+  [passwordCopy setLastUsedDateForPasskey:lastUsedDateForPasskey];
 
-  if ([v5 hasPasswordSidecars])
+  if ([passwordCopy hasPasswordSidecars])
   {
-    v12 = [v5 allPasswordSidecars];
-    v13 = [v12 firstObject];
+    allPasswordSidecars = [passwordCopy allPasswordSidecars];
+    firstObject = [allPasswordSidecars firstObject];
 
-    v14 = [v13 copy];
-    v15 = [v25 passkeyUserHandle];
-    [v14 setUser:v15];
+    v14 = [firstObject copy];
+    passkeyUserHandle2 = [passkeyCopy passkeyUserHandle];
+    [v14 setUser:passkeyUserHandle2];
 
-    [v5 _addPasskeySidecar:v14];
+    [passwordCopy _addPasskeySidecar:v14];
     v16 = MEMORY[0x1E695AC58];
-    v17 = [v25 passkeyRelyingPartyID];
-    v18 = [v16 safari_passkeySidecarProtectionSpaceForRelyingPartyIdentifier:v17];
+    passkeyRelyingPartyID2 = [passkeyCopy passkeyRelyingPartyID];
+    v18 = [v16 safari_passkeySidecarProtectionSpaceForRelyingPartyIdentifier:passkeyRelyingPartyID2];
 
     v19 = MEMORY[0x1E695AC48];
-    v20 = [v25 passkeyUserHandle];
-    v21 = [v19 safari_credentialWithUser:v20 password:&stru_1F3064D08 persistence:3];
+    passkeyUserHandle3 = [passkeyCopy passkeyUserHandle];
+    v21 = [v19 safari_credentialWithUser:passkeyUserHandle3 password:&stru_1F3064D08 persistence:3];
 
-    if ([v5 isSavedInPersonalKeychain])
+    if ([passwordCopy isSavedInPersonalKeychain])
     {
-      v22 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
-      [v22 safari_setSidecar:v13 credential:v21 htmlFormProtectionSpace:v18 forGroupID:&stru_1F3064D08 fromRecentlyDeleted:{objc_msgSend(v5, "isRecentlyDeleted")}];
+      mEMORY[0x1E695AC50] = [MEMORY[0x1E695AC50] sharedCredentialStorage];
+      [mEMORY[0x1E695AC50] safari_setSidecar:firstObject credential:v21 htmlFormProtectionSpace:v18 forGroupID:&stru_1F3064D08 fromRecentlyDeleted:{objc_msgSend(passwordCopy, "isRecentlyDeleted")}];
     }
 
-    if ([v5 isSavedInSharedGroup])
+    if ([passwordCopy isSavedInSharedGroup])
     {
-      v23 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
-      v24 = [v5 sharedGroupID];
-      [v23 safari_setSidecar:v13 credential:v21 htmlFormProtectionSpace:v18 forGroupID:v24 fromRecentlyDeleted:{objc_msgSend(v5, "isRecentlyDeleted")}];
+      mEMORY[0x1E695AC50]2 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
+      sharedGroupID = [passwordCopy sharedGroupID];
+      [mEMORY[0x1E695AC50]2 safari_setSidecar:firstObject credential:v21 htmlFormProtectionSpace:v18 forGroupID:sharedGroupID fromRecentlyDeleted:{objc_msgSend(passwordCopy, "isRecentlyDeleted")}];
     }
   }
 }
 
-- (id)_saveUser:(id)a3 passkeyCredential:(id)a4 passkeyRelyingPartyID:(id)a5
+- (id)_saveUser:(id)user passkeyCredential:(id)credential passkeyRelyingPartyID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  userCopy = user;
+  credentialCopy = credential;
+  dCopy = d;
+  if (!userCopy)
   {
     goto LABEL_9;
   }
 
-  v11 = [v9 first];
-  if (![v11 length])
+  first = [credentialCopy first];
+  if (![first length])
   {
     goto LABEL_8;
   }
 
-  v12 = [v9 second];
-  if (![v12 length])
+  second = [credentialCopy second];
+  if (![second length])
   {
 
 LABEL_8:
     goto LABEL_9;
   }
 
-  v13 = [v10 length];
+  v13 = [dCopy length];
 
   if (v13)
   {
@@ -7641,17 +7641,17 @@ LABEL_8:
     v21 = __74__WBSSavedAccountStore__saveUser_passkeyCredential_passkeyRelyingPartyID___block_invoke;
     v22 = &unk_1E7CF4C30;
     v25 = &v33;
-    v23 = self;
-    v24 = v9;
+    selfCopy = self;
+    v24 = credentialCopy;
     v26 = &v27;
     dispatch_sync(queue, &v19);
     if ([v28[5] length])
     {
       v15 = [WBSSavedAccount alloc];
-      v16 = [(WBSSavedAccount *)v15 _initWithPasskeyRelyingPartyID:v10 user:v8 passkeyUserHandle:v28[5] passkeyCredentialID:v34[5]];
-      v17 = [MEMORY[0x1E695DF00] date];
-      [v16 setCreationDateForPasskey:v17];
-      [v16 setLastModifiedDateForPasskey:v17];
+      v16 = [(WBSSavedAccount *)v15 _initWithPasskeyRelyingPartyID:dCopy user:userCopy passkeyUserHandle:v28[5] passkeyCredentialID:v34[5]];
+      date = [MEMORY[0x1E695DF00] date];
+      [v16 setCreationDateForPasskey:date];
+      [v16 setLastModifiedDateForPasskey:date];
     }
 
     else
@@ -7693,52 +7693,52 @@ void __74__WBSSavedAccountStore__saveUser_passkeyCredential_passkeyRelyingPartyI
   }
 }
 
-- (void)setSavedAccountAsDefault:(id)a3 forProtectionSpace:(id)a4 context:(id)a5 associatedDomainsManager:(id)a6
+- (void)setSavedAccountAsDefault:(id)default forProtectionSpace:(id)space context:(id)context associatedDomainsManager:(id)manager
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  defaultCopy = default;
+  spaceCopy = space;
+  contextCopy = context;
+  managerCopy = manager;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __101__WBSSavedAccountStore_setSavedAccountAsDefault_forProtectionSpace_context_associatedDomainsManager___block_invoke;
   block[3] = &unk_1E7CF4C58;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = defaultCopy;
+  v21 = spaceCopy;
+  v22 = contextCopy;
+  v23 = managerCopy;
+  v15 = managerCopy;
+  v16 = contextCopy;
+  v17 = spaceCopy;
+  v18 = defaultCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)setSavedAccountAsDefault:(id)a3 forProtectionSpace:(id)a4 context:(id)a5 associatedDomainsManager:(id)a6 completionHandler:(id)a7
+- (void)setSavedAccountAsDefault:(id)default forProtectionSpace:(id)space context:(id)context associatedDomainsManager:(id)manager completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  defaultCopy = default;
+  spaceCopy = space;
+  contextCopy = context;
+  managerCopy = manager;
+  handlerCopy = handler;
   queue = self->_queue;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __119__WBSSavedAccountStore_setSavedAccountAsDefault_forProtectionSpace_context_associatedDomainsManager_completionHandler___block_invoke;
   v23[3] = &unk_1E7CF4C80;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
+  v24 = defaultCopy;
+  v25 = spaceCopy;
+  v26 = contextCopy;
+  v27 = managerCopy;
+  v28 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = managerCopy;
+  v20 = contextCopy;
+  v21 = spaceCopy;
+  v22 = defaultCopy;
   dispatch_async(queue, v23);
 }
 
@@ -7750,37 +7750,37 @@ uint64_t __119__WBSSavedAccountStore_setSavedAccountAsDefault_forProtectionSpace
   return v2();
 }
 
-- (void)_setSavedAccountAsDefaultOnInternalQueue:(id)a3 forProtectionSpace:(id)a4 context:(id)a5 associatedDomainsManager:(id)a6
+- (void)_setSavedAccountAsDefaultOnInternalQueue:(id)queue forProtectionSpace:(id)space context:(id)context associatedDomainsManager:(id)manager
 {
   v78 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v11 safari_protectionSpaceBySimplifyingHost];
-  if (v14 != v11)
+  queueCopy = queue;
+  spaceCopy = space;
+  contextCopy = context;
+  managerCopy = manager;
+  safari_protectionSpaceBySimplifyingHost = [spaceCopy safari_protectionSpaceBySimplifyingHost];
+  if (safari_protectionSpaceBySimplifyingHost != spaceCopy)
   {
     v15 = WBS_LOG_CHANNEL_PREFIXKeychain();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [v11 host];
-      v18 = [v14 host];
+      host = [spaceCopy host];
+      host2 = [safari_protectionSpaceBySimplifyingHost host];
       *buf = 138740227;
-      v75 = v17;
+      v75 = host;
       v76 = 2117;
-      v77 = v18;
+      v77 = host2;
       _os_log_impl(&dword_1B8447000, v16, OS_LOG_TYPE_DEFAULT, "Simplified protection space from %{sensitive}@ to %{sensitive}@ before setting saved account as default", buf, 0x16u);
     }
 
-    v19 = v14;
+    v19 = safari_protectionSpaceBySimplifyingHost;
 
-    v11 = v19;
+    spaceCopy = v19;
   }
 
-  if ([(WBSSavedAccountStore *)self _hasSavedAccountWithSameUserNameOfSavedAccount:v10 forProtectionSpace:v11])
+  if ([(WBSSavedAccountStore *)self _hasSavedAccountWithSameUserNameOfSavedAccount:queueCopy forProtectionSpace:spaceCopy])
   {
-    v20 = [(WBSSavedAccountStore *)self _shouldUpdateLastUsedDateForSavedAccount:v10 forProtectionSpace:v11 inContext:v12];
+    v20 = [(WBSSavedAccountStore *)self _shouldUpdateLastUsedDateForSavedAccount:queueCopy forProtectionSpace:spaceCopy inContext:contextCopy];
     v21 = WBS_LOG_CHANNEL_PREFIXKeychain();
     v22 = v21;
     if (v20)
@@ -7788,18 +7788,18 @@ uint64_t __119__WBSSavedAccountStore_setSavedAccountAsDefault_forProtectionSpace
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         v23 = v22;
-        v24 = [v10 user];
-        v25 = [v11 host];
+        user = [queueCopy user];
+        host3 = [spaceCopy host];
         *buf = 138740227;
-        v75 = v24;
+        v75 = user;
         v76 = 2117;
-        v77 = v25;
+        v77 = host3;
         _os_log_impl(&dword_1B8447000, v23, OS_LOG_TYPE_DEFAULT, "Setting last used date on account for user '%{sensitive}@' and host '%{sensitive}@'", buf, 0x16u);
       }
 
       v26 = [MEMORY[0x1E695DF00] now];
-      v27 = [v11 host];
-      [v10 setLastUsedDate:v26 forSite:v27 inContext:v12];
+      host4 = [spaceCopy host];
+      [queueCopy setLastUsedDate:v26 forSite:host4 inContext:contextCopy];
     }
 
     else if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -7810,50 +7810,50 @@ uint64_t __119__WBSSavedAccountStore_setSavedAccountAsDefault_forProtectionSpace
     goto LABEL_40;
   }
 
-  v28 = [v10 protectionSpaces];
-  v29 = [v28 count];
+  protectionSpaces = [queueCopy protectionSpaces];
+  v29 = [protectionSpaces count];
 
   if (!v29)
   {
-    v73 = v13;
+    v73 = managerCopy;
     goto LABEL_25;
   }
 
-  v72 = v12;
-  v30 = [v10 hasProtectionSpace:v11];
-  v31 = [v10 hasProtectionSpaceWithHighLevelDomainMatchingProtectionSpace:v11];
-  v32 = [v10 highLevelDomain];
-  v33 = [v13 domainsWithAssociatedCredentialsForDomain:v32];
-  v34 = [v33 allObjects];
+  v72 = contextCopy;
+  v30 = [queueCopy hasProtectionSpace:spaceCopy];
+  v31 = [queueCopy hasProtectionSpaceWithHighLevelDomainMatchingProtectionSpace:spaceCopy];
+  highLevelDomain = [queueCopy highLevelDomain];
+  v33 = [managerCopy domainsWithAssociatedCredentialsForDomain:highLevelDomain];
+  allObjects = [v33 allObjects];
 
-  v35 = [v11 host];
-  v36 = [v34 containsObject:v35];
+  host5 = [spaceCopy host];
+  v36 = [allObjects containsObject:host5];
 
   if ((v30 & 1) == 0 && v31)
   {
-    v71 = v34;
-    v73 = v13;
+    v71 = allObjects;
+    v73 = managerCopy;
     v37 = WBS_LOG_CHANNEL_PREFIXKeychain();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_INFO))
     {
       v38 = v37;
-      v39 = [v10 user];
-      v40 = [v11 host];
+      user2 = [queueCopy user];
+      host6 = [spaceCopy host];
       *buf = 138740227;
-      v75 = v39;
+      v75 = user2;
       v76 = 2117;
-      v77 = v40;
+      v77 = host6;
       _os_log_impl(&dword_1B8447000, v38, OS_LOG_TYPE_INFO, "While setting the account for '%{sensitive}@' as default for host '%{sensitive}@', adding high-level domain to the account's sites list", buf, 0x16u);
     }
 
-    v41 = [v10 user];
-    v42 = [v10 password];
-    v43 = [v11 host];
-    v44 = [v43 safari_highLevelDomainFromHost];
-    v45 = [v10 sharedGroupID];
-    v46 = [(WBSSavedAccountStore *)self _saveAccountOnInternalQueueWithUser:v41 password:v42 protectionSpace:v11 highLevelDomain:v44 groupID:v45];
+    user3 = [queueCopy user];
+    password = [queueCopy password];
+    host7 = [spaceCopy host];
+    safari_highLevelDomainFromHost = [host7 safari_highLevelDomainFromHost];
+    sharedGroupID = [queueCopy sharedGroupID];
+    v46 = [(WBSSavedAccountStore *)self _saveAccountOnInternalQueueWithUser:user3 password:password protectionSpace:spaceCopy highLevelDomain:safari_highLevelDomainFromHost groupID:sharedGroupID];
 
-    if (v46 != v10)
+    if (v46 != queueCopy)
     {
       v47 = WBS_LOG_CHANNEL_PREFIXKeychain();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
@@ -7862,80 +7862,80 @@ uint64_t __119__WBSSavedAccountStore_setSavedAccountAsDefault_forProtectionSpace
       }
     }
 
-    v10 = v46;
-    v34 = v71;
-    v12 = v72;
+    queueCopy = v46;
+    allObjects = v71;
+    contextCopy = v72;
     goto LABEL_24;
   }
 
   if ((v36 | v30))
   {
-    v73 = v13;
-    v12 = v72;
+    v73 = managerCopy;
+    contextCopy = v72;
 LABEL_24:
 
 LABEL_25:
-    v48 = [v11 authenticationMethod];
-    v49 = [v48 isEqualToString:*MEMORY[0x1E695AB50]];
+    authenticationMethod = [spaceCopy authenticationMethod];
+    v49 = [authenticationMethod isEqualToString:*MEMORY[0x1E695AB50]];
 
     if (v49)
     {
-      if ([(WBSSavedAccountStore *)self _shouldUpdateLastUsedDateForSavedAccount:v10 forProtectionSpace:v11 inContext:v12])
+      if ([(WBSSavedAccountStore *)self _shouldUpdateLastUsedDateForSavedAccount:queueCopy forProtectionSpace:spaceCopy inContext:contextCopy])
       {
         v50 = MEMORY[0x1E695AC58];
-        v51 = [v11 safari_URL];
-        v52 = [v50 safari_HTMLFormProtectionSpaceForURL:v51];
+        safari_URL = [spaceCopy safari_URL];
+        v52 = [v50 safari_HTMLFormProtectionSpaceForURL:safari_URL];
 
         v53 = WBS_LOG_CHANNEL_PREFIXKeychain();
         if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
         {
           v54 = v53;
-          v55 = [v10 user];
-          v56 = [v52 host];
+          user4 = [queueCopy user];
+          host8 = [v52 host];
           *buf = 138740227;
-          v75 = v55;
+          v75 = user4;
           v76 = 2117;
-          v77 = v56;
+          v77 = host8;
           _os_log_impl(&dword_1B8447000, v54, OS_LOG_TYPE_DEFAULT, "Setting last used date on account for user '%{sensitive}@' and host '%{sensitive}@'", buf, 0x16u);
         }
 
         v57 = [MEMORY[0x1E695DF00] now];
-        v58 = [v52 host];
-        [v10 setLastUsedDate:v57 forSite:v58 inContext:v12];
+        host9 = [v52 host];
+        [queueCopy setLastUsedDate:v57 forSite:host9 inContext:contextCopy];
       }
 
-      v13 = v73;
-      if ([v10 isSavedInPersonalKeychain] && objc_msgSend(v10, "hasProtectionSpaceWithHighLevelDomainMatchingProtectionSpace:", v11))
+      managerCopy = v73;
+      if ([queueCopy isSavedInPersonalKeychain] && objc_msgSend(queueCopy, "hasProtectionSpaceWithHighLevelDomainMatchingProtectionSpace:", spaceCopy))
       {
         v59 = WBS_LOG_CHANNEL_PREFIXKeychain();
         if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
         {
           v60 = v59;
-          v61 = [v10 user];
-          v62 = [v11 host];
+          user5 = [queueCopy user];
+          host10 = [spaceCopy host];
           *buf = 138740227;
-          v75 = v61;
+          v75 = user5;
           v76 = 2117;
-          v77 = v62;
+          v77 = host10;
           _os_log_impl(&dword_1B8447000, v60, OS_LOG_TYPE_DEFAULT, "Setting account for user '%{sensitive}@' as default for host '%{sensitive}@'", buf, 0x16u);
         }
 
         v63 = objc_alloc(MEMORY[0x1E695AC48]);
-        v64 = [v10 user];
-        v65 = [v10 password];
-        v66 = [v63 initWithUser:v64 password:v65 persistence:3];
+        user6 = [queueCopy user];
+        password2 = [queueCopy password];
+        v66 = [v63 initWithUser:user6 password:password2 persistence:3];
 
-        v67 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
-        [v67 safari_setDefaultCredential:v66 forHTMLFormProtectionSpace:v11];
+        mEMORY[0x1E695AC50] = [MEMORY[0x1E695AC50] sharedCredentialStorage];
+        [mEMORY[0x1E695AC50] safari_setDefaultCredential:v66 forHTMLFormProtectionSpace:spaceCopy];
 
-        v13 = v73;
+        managerCopy = v73;
       }
     }
 
     else
     {
       v68 = WBS_LOG_CHANNEL_PREFIXKeychain();
-      v13 = v73;
+      managerCopy = v73;
       if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
       {
         [WBSSavedAccountStore _setSavedAccountAsDefaultOnInternalQueue:forProtectionSpace:context:associatedDomainsManager:];
@@ -7946,7 +7946,7 @@ LABEL_25:
   }
 
   v69 = WBS_LOG_CHANNEL_PREFIXKeychain();
-  v12 = v72;
+  contextCopy = v72;
   if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
   {
     [WBSSavedAccountStore _setSavedAccountAsDefaultOnInternalQueue:forProtectionSpace:context:associatedDomainsManager:];
@@ -7956,30 +7956,30 @@ LABEL_40:
   v70 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_hasSavedAccountWithSameUserNameOfSavedAccount:(id)a3 forProtectionSpace:(id)a4
+- (BOOL)_hasSavedAccountWithSameUserNameOfSavedAccount:(id)account forProtectionSpace:(id)space
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  spaceCopy = space;
   v8 = [WBSStringQuery alloc];
-  v9 = [v6 user];
-  v10 = [(WBSStringQuery *)v8 initWithString:v9 matchingType:1];
+  user = [accountCopy user];
+  v10 = [(WBSStringQuery *)v8 initWithString:user matchingType:1];
 
   v11 = [WBSSavedAccountMatchCriteria alloc];
-  v12 = [v7 safari_URL];
+  safari_URL = [spaceCopy safari_URL];
 
-  v13 = [(WBSSavedAccountMatchCriteria *)v11 initWithURL:v12 options:16 userNameQuery:v10 associatedDomainsManager:0 webFrameIdentifier:0];
+  v13 = [(WBSSavedAccountMatchCriteria *)v11 initWithURL:safari_URL options:16 userNameQuery:v10 associatedDomainsManager:0 webFrameIdentifier:0];
   v14 = [(WBSSavedAccountStore *)self _getSavedAccountsMatchingCriteriaOnInternalQueue:v13];
-  v15 = [v14 matchesForPasswordAutoFill];
+  matchesForPasswordAutoFill = [v14 matchesForPasswordAutoFill];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __90__WBSSavedAccountStore__hasSavedAccountWithSameUserNameOfSavedAccount_forProtectionSpace___block_invoke;
   v19[3] = &unk_1E7CF4428;
-  v20 = v6;
-  v16 = v6;
-  v17 = [v15 safari_firstObjectPassingTest:v19];
-  LOBYTE(v12) = v17 != 0;
+  v20 = accountCopy;
+  v16 = accountCopy;
+  v17 = [matchesForPasswordAutoFill safari_firstObjectPassingTest:v19];
+  LOBYTE(safari_URL) = v17 != 0;
 
-  return v12;
+  return safari_URL;
 }
 
 uint64_t __90__WBSSavedAccountStore__hasSavedAccountWithSameUserNameOfSavedAccount_forProtectionSpace___block_invoke(uint64_t a1, void *a2)
@@ -7990,27 +7990,27 @@ uint64_t __90__WBSSavedAccountStore__hasSavedAccountWithSameUserNameOfSavedAccou
   return a1 ^ 1;
 }
 
-- (void)updateAllSavedAccountsWithPasswordsWithUser:(id)a3 protectionSpace:(id)a4 withNewPassword:(id)a5
+- (void)updateAllSavedAccountsWithPasswordsWithUser:(id)user protectionSpace:(id)space withNewPassword:(id)password
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[WBSStringQuery alloc] initWithString:v7 matchingType:1];
+  userCopy = user;
+  spaceCopy = space;
+  passwordCopy = password;
+  v10 = [[WBSStringQuery alloc] initWithString:userCopy matchingType:1];
   v11 = [WBSSavedAccountMatchCriteria alloc];
-  v12 = [v8 safari_URL];
-  v13 = [(WBSSavedAccountMatchCriteria *)v11 initWithURL:v12 options:16 userNameQuery:v10 associatedDomainsManager:0 webFrameIdentifier:0];
+  safari_URL = [spaceCopy safari_URL];
+  v13 = [(WBSSavedAccountMatchCriteria *)v11 initWithURL:safari_URL options:16 userNameQuery:v10 associatedDomainsManager:0 webFrameIdentifier:0];
 
   v14 = +[WBSSavedAccountStore sharedStore];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __100__WBSSavedAccountStore_updateAllSavedAccountsWithPasswordsWithUser_protectionSpace_withNewPassword___block_invoke;
   v18[3] = &unk_1E7CF4CA8;
-  v19 = v7;
-  v20 = v9;
-  v21 = v8;
-  v15 = v8;
-  v16 = v9;
-  v17 = v7;
+  v19 = userCopy;
+  v20 = passwordCopy;
+  v21 = spaceCopy;
+  v15 = spaceCopy;
+  v16 = passwordCopy;
+  v17 = userCopy;
   [v14 getSavedAccountsMatchingCriteria:v13 withSynchronousCompletionHandler:v18];
 }
 
@@ -8056,27 +8056,27 @@ void __100__WBSSavedAccountStore_updateAllSavedAccountsWithPasswordsWithUser_pro
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_shouldUpdateLastUsedDateForSavedAccount:(id)a3 forProtectionSpace:(id)a4 inContext:(id)a5
+- (BOOL)_shouldUpdateLastUsedDateForSavedAccount:(id)account forProtectionSpace:(id)space inContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 host];
-  v12 = [v8 lastUsedDateForSite:v11 inContext:v10];
+  accountCopy = account;
+  spaceCopy = space;
+  contextCopy = context;
+  host = [spaceCopy host];
+  v12 = [accountCopy lastUsedDateForSite:host inContext:contextCopy];
 
   if (v12)
   {
-    v13 = [v9 safari_URL];
-    v14 = [WBSSavedAccountMatchCriteria criteriaForExactFQDNPasswordMatchesOfURL:v13];
+    safari_URL = [spaceCopy safari_URL];
+    v14 = [WBSSavedAccountMatchCriteria criteriaForExactFQDNPasswordMatchesOfURL:safari_URL];
 
     [v14 setOptions:{objc_msgSend(v14, "options") | 0x21}];
-    [v14 setContext:v10];
+    [v14 setContext:contextCopy];
     v15 = [(WBSSavedAccountStore *)self _getSavedAccountsMatchingCriteriaOnInternalQueue:v14];
-    v16 = [v15 matchesForPasswordAutoFill];
-    v17 = [v16 firstObject];
-    v18 = [v17 savedAccount];
+    matchesForPasswordAutoFill = [v15 matchesForPasswordAutoFill];
+    firstObject = [matchesForPasswordAutoFill firstObject];
+    savedAccount = [firstObject savedAccount];
 
-    v19 = [v18 isEqual:v8];
+    v19 = [savedAccount isEqual:accountCopy];
     v20 = WBS_LOG_CHANNEL_PREFIXAutoFill();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
@@ -8100,16 +8100,16 @@ void __100__WBSSavedAccountStore_updateAllSavedAccountsWithPasswordsWithUser_pro
   return v27;
 }
 
-- (id)savedAccountForUserTypedSite:(id)a3 userName:(id)a4
+- (id)savedAccountForUserTypedSite:(id)site userName:(id)name
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v25 = a4;
-  v8 = [(WBSSavedAccountStore *)self savedAccounts];
+  siteCopy = site;
+  nameCopy = name;
+  savedAccounts = [(WBSSavedAccountStore *)self savedAccounts];
   v30 = 0;
   v31 = 0;
-  v24 = v7;
-  LODWORD(self) = [objc_opt_class() getProtectionSpaceAndHighLevelDomainForUserTypedSite:v7 protectionSpace:&v31 highLevelDomain:&v30];
+  v24 = siteCopy;
+  LODWORD(self) = [objc_opt_class() getProtectionSpaceAndHighLevelDomainForUserTypedSite:siteCopy protectionSpace:&v31 highLevelDomain:&v30];
   v9 = v31;
   v10 = v30;
   v11 = 0;
@@ -8119,12 +8119,12 @@ void __100__WBSSavedAccountStore_updateAllSavedAccountsWithPasswordsWithUser_pro
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    obj = v8;
+    obj = savedAccounts;
     v11 = [obj countByEnumeratingWithState:&v26 objects:v32 count:16];
     if (v11)
     {
       v21 = v10;
-      v22 = v8;
+      v22 = savedAccounts;
       v12 = *v27;
       do
       {
@@ -8136,12 +8136,12 @@ void __100__WBSSavedAccountStore_updateAllSavedAccountsWithPasswordsWithUser_pro
           }
 
           v14 = *(*(&v26 + 1) + 8 * i);
-          v15 = [v14 protectionSpaces];
-          v16 = [v15 containsObject:v9];
+          protectionSpaces = [v14 protectionSpaces];
+          v16 = [protectionSpaces containsObject:v9];
           if (v16 & 1) != 0 || ([v14 passkeyRelyingPartyID], v4 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v24, "isEqualToString:", v4)))
           {
-            v17 = [v14 user];
-            v18 = [v17 isEqualToString:v25];
+            user = [v14 user];
+            v18 = [user isEqualToString:nameCopy];
 
             if ((v16 & 1) == 0)
             {
@@ -8165,7 +8165,7 @@ void __100__WBSSavedAccountStore_updateAllSavedAccountsWithPasswordsWithUser_pro
       while (v11);
 LABEL_16:
       v10 = v21;
-      v8 = v22;
+      savedAccounts = v22;
     }
   }
 
@@ -8182,13 +8182,13 @@ LABEL_16:
   {
     v7[7] = v2;
     v7[8] = v3;
-    v6 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
+    mEMORY[0x1E695AC50] = [MEMORY[0x1E695AC50] sharedCredentialStorage];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __71__WBSSavedAccountStore__migratePasswordsWithInvalidAuthenticationTypes__block_invoke;
     v7[3] = &unk_1E7CF16E0;
     v7[4] = self;
-    [v6 safari_migrateKeychainItemsWithInvalidAuthenticationTypesWithCompletionHandler:v7];
+    [mEMORY[0x1E695AC50] safari_migrateKeychainItemsWithInvalidAuthenticationTypesWithCompletionHandler:v7];
   }
 }
 
@@ -8212,23 +8212,23 @@ void __71__WBSSavedAccountStore__migratePasswordsWithInvalidAuthenticationTypes_
   return v2 == 1;
 }
 
-- (void)_moveSavedAccount:(id)a3 toGroupWithID:(id)a4 completionHandler:(id)a5
+- (void)_moveSavedAccount:(id)account toGroupWithID:(id)d completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  dCopy = d;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __74__WBSSavedAccountStore__moveSavedAccount_toGroupWithID_completionHandler___block_invoke;
   v15[3] = &unk_1E7CF4BB8;
-  v16 = v9;
-  v17 = self;
-  v18 = v8;
-  v19 = v10;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v16 = dCopy;
+  selfCopy = self;
+  v18 = accountCopy;
+  v19 = handlerCopy;
+  v12 = accountCopy;
+  v13 = handlerCopy;
+  v14 = dCopy;
   dispatch_async(queue, v15);
 }
 
@@ -8406,24 +8406,24 @@ void __74__WBSSavedAccountStore__moveSavedAccount_toGroupWithID_completionHandle
   }
 }
 
-- (BOOL)_copySavedAccount:(id)a3 toGroup:(id)a4
+- (BOOL)_copySavedAccount:(id)account toGroup:(id)group
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 credentialTypes];
-  v9 = [v7 groupID];
-  if (v8)
+  accountCopy = account;
+  groupCopy = group;
+  credentialTypes = [accountCopy credentialTypes];
+  groupID = [groupCopy groupID];
+  if (credentialTypes)
   {
-    v10 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
-    v11 = v10;
-    if (v7)
+    mEMORY[0x1E695AC50] = [MEMORY[0x1E695AC50] sharedCredentialStorage];
+    v11 = mEMORY[0x1E695AC50];
+    if (groupCopy)
     {
-      v12 = [v10 safari_copySavedAccountWithPassword:v6 toGroupWithID:v9];
+      v12 = [mEMORY[0x1E695AC50] safari_copySavedAccountWithPassword:accountCopy toGroupWithID:groupID];
     }
 
     else
     {
-      v12 = [v10 safari_copySavedAccountWithPasswordToPersonalKeychain:v6];
+      v12 = [mEMORY[0x1E695AC50] safari_copySavedAccountWithPasswordToPersonalKeychain:accountCopy];
     }
 
     v13 = v12;
@@ -8439,28 +8439,28 @@ void __74__WBSSavedAccountStore__moveSavedAccount_toGroupWithID_completionHandle
       goto LABEL_21;
     }
 
-    [(WBSSavedAccountStore *)self _addSavedAccount:v6 toCachedDictionaryForSavedAccountsWithPasswordsForGroupID:v9];
+    [(WBSSavedAccountStore *)self _addSavedAccount:accountCopy toCachedDictionaryForSavedAccountsWithPasswordsForGroupID:groupID];
   }
 
-  if ((v8 & 2) != 0)
+  if ((credentialTypes & 2) != 0)
   {
-    v14 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
-    v15 = v14;
-    if (v7)
+    mEMORY[0x1E695AC50]2 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
+    v15 = mEMORY[0x1E695AC50]2;
+    if (groupCopy)
     {
-      v16 = [v14 safari_copySavedAccountWithPasskey:v6 toGroupWithID:v9];
+      v16 = [mEMORY[0x1E695AC50]2 safari_copySavedAccountWithPasskey:accountCopy toGroupWithID:groupID];
     }
 
     else
     {
-      v16 = [v14 safari_copySavedAccountWithPasskeyToPersonalKeychain:v6];
+      v16 = [mEMORY[0x1E695AC50]2 safari_copySavedAccountWithPasskeyToPersonalKeychain:accountCopy];
     }
 
     v18 = v16;
 
     if (v18)
     {
-      [(WBSSavedAccountStore *)self _addSavedAccount:v6 toCachedDictionaryForSavedAccountsWithPasskeysForGroupID:v9];
+      [(WBSSavedAccountStore *)self _addSavedAccount:accountCopy toCachedDictionaryForSavedAccountsWithPasskeysForGroupID:groupID];
       goto LABEL_15;
     }
 
@@ -8476,39 +8476,39 @@ LABEL_21:
   }
 
 LABEL_15:
-  v19 = [v7 groupID];
-  [v6 setSharedGroupID:v19];
+  groupID2 = [groupCopy groupID];
+  [accountCopy setSharedGroupID:groupID2];
 
-  if (v7)
+  if (groupCopy)
   {
     groupIdentifiersToSavedAccounts = self->_groupIdentifiersToSavedAccounts;
-    v21 = [v7 groupID];
-    v22 = [(NSMutableDictionary *)groupIdentifiersToSavedAccounts objectForKeyedSubscript:v21];
+    groupID3 = [groupCopy groupID];
+    v22 = [(NSMutableDictionary *)groupIdentifiersToSavedAccounts objectForKeyedSubscript:groupID3];
     v23 = [v22 mutableCopy];
     v24 = v23;
     if (v23)
     {
-      v25 = v23;
+      array = v23;
     }
 
     else
     {
-      v25 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
     }
 
-    v30 = v25;
+    v30 = array;
 
-    [v30 addObject:v6];
+    [v30 addObject:accountCopy];
     [v30 sortUsingSelector:sel_compare_];
     v31 = self->_groupIdentifiersToSavedAccounts;
-    v32 = [v7 groupID];
-    [(NSMutableDictionary *)v31 setObject:v30 forKeyedSubscript:v32];
+    groupID4 = [groupCopy groupID];
+    [(NSMutableDictionary *)v31 setObject:v30 forKeyedSubscript:groupID4];
   }
 
   else
   {
     v26 = [(NSArray *)self->_savedAccountsInPersonalKeychain mutableCopy];
-    [(NSArray *)v26 addObject:v6];
+    [(NSArray *)v26 addObject:accountCopy];
     [(NSArray *)v26 sortUsingSelector:sel_compare_];
     savedAccountsInPersonalKeychain = self->_savedAccountsInPersonalKeychain;
     self->_savedAccountsInPersonalKeychain = v26;
@@ -8520,97 +8520,97 @@ LABEL_25:
   return v29;
 }
 
-- (void)_removeSavedAccount:(id)a3 fromGroupID:(id)a4
+- (void)_removeSavedAccount:(id)account fromGroupID:(id)d
 {
-  v14 = a3;
-  v6 = a4;
-  if ([v14 credentialTypes])
+  accountCopy = account;
+  dCopy = d;
+  if ([accountCopy credentialTypes])
   {
-    [v14 _deletePasswordCredentialsForGroupID:v6];
-    [(WBSSavedAccountStore *)self _removeSavedAccount:v14 fromCachedDictionaryForSavedAccountsWithPasswordsForGroupID:v6];
+    [accountCopy _deletePasswordCredentialsForGroupID:dCopy];
+    [(WBSSavedAccountStore *)self _removeSavedAccount:accountCopy fromCachedDictionaryForSavedAccountsWithPasswordsForGroupID:dCopy];
   }
 
-  if (([v14 credentialTypes] & 2) != 0)
+  if (([accountCopy credentialTypes] & 2) != 0)
   {
-    [v14 _deletePasskeyCredentialForGroupID:v6];
-    [(WBSSavedAccountStore *)self _removeSavedAccount:v14 fromCachedDictionaryForSavedAccountsWithPasskeysForGroupID:v6];
+    [accountCopy _deletePasskeyCredentialForGroupID:dCopy];
+    [(WBSSavedAccountStore *)self _removeSavedAccount:accountCopy fromCachedDictionaryForSavedAccountsWithPasskeysForGroupID:dCopy];
   }
 
-  if ([v6 length])
+  if ([dCopy length])
   {
-    v7 = [(NSMutableDictionary *)self->_groupIdentifiersToSavedAccounts objectForKeyedSubscript:v6];
+    v7 = [(NSMutableDictionary *)self->_groupIdentifiersToSavedAccounts objectForKeyedSubscript:dCopy];
     v8 = [v7 mutableCopy];
     v9 = v8;
     if (v8)
     {
-      v10 = v8;
+      array = v8;
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
     }
 
-    v11 = v10;
+    v11 = array;
 
-    [v11 removeObject:v14];
+    [v11 removeObject:accountCopy];
     savedAccountsInPersonalKeychain = [v11 copy];
-    [(NSMutableDictionary *)self->_groupIdentifiersToSavedAccounts setObject:savedAccountsInPersonalKeychain forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_groupIdentifiersToSavedAccounts setObject:savedAccountsInPersonalKeychain forKeyedSubscript:dCopy];
   }
 
   else
   {
     v11 = [(NSArray *)self->_savedAccountsInPersonalKeychain mutableCopy];
-    [v11 removeObject:v14];
+    [v11 removeObject:accountCopy];
     v12 = [v11 copy];
     savedAccountsInPersonalKeychain = self->_savedAccountsInPersonalKeychain;
     self->_savedAccountsInPersonalKeychain = v12;
   }
 }
 
-- (BOOL)_canMoveSavedAccount:(id)a3 toGroupWithID:(id)a4
+- (BOOL)_canMoveSavedAccount:(id)account toGroupWithID:(id)d
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isCurrentUserOriginalContributor] && objc_msgSend(v6, "canUserEditSavedAccount"))
+  accountCopy = account;
+  dCopy = d;
+  if ([accountCopy isCurrentUserOriginalContributor] && objc_msgSend(accountCopy, "canUserEditSavedAccount"))
   {
-    if ([v7 length])
+    if ([dCopy length])
     {
       sharedAccountsGroups = self->_sharedAccountsGroups;
       v35[0] = MEMORY[0x1E69E9820];
       v35[1] = 3221225472;
       v35[2] = __59__WBSSavedAccountStore__canMoveSavedAccount_toGroupWithID___block_invoke;
       v35[3] = &unk_1E7CF2D20;
-      v36 = v7;
+      v36 = dCopy;
       v9 = [(NSArray *)sharedAccountsGroups safari_firstObjectPassingTest:v35];
       v10 = v9;
       if (v9)
       {
-        v11 = [v9 participants];
-        v12 = [v11 safari_firstObjectPassingTest:&__block_literal_global_342];
+        participants = [v9 participants];
+        v12 = [participants safari_firstObjectPassingTest:&__block_literal_global_342];
 
         if (!v12 || [v12 permissionLevel])
         {
 
 LABEL_10:
-          v14 = [v6 sharedGroupID];
-          v15 = WBSIsEqual(v14, v7);
+          sharedGroupID = [accountCopy sharedGroupID];
+          v15 = WBSIsEqual(sharedGroupID, dCopy);
 
           if ((v15 & 1) == 0)
           {
-            if ([v6 credentialTypes])
+            if ([accountCopy credentialTypes])
             {
-              v30 = [v6 user];
-              v29 = [v6 password];
-              v28 = [v6 highLevelDomain];
-              v27 = [v6 notesEntry];
-              v16 = [v6 customTitle];
+              user = [accountCopy user];
+              password = [accountCopy password];
+              highLevelDomain = [accountCopy highLevelDomain];
+              notesEntry = [accountCopy notesEntry];
+              customTitle = [accountCopy customTitle];
               v31 = 0u;
               v32 = 0u;
               v33 = 0u;
               v34 = 0u;
-              obj = [v6 protectionSpaces];
+              obj = [accountCopy protectionSpaces];
               v17 = [obj countByEnumeratingWithState:&v31 objects:v37 count:16];
               if (v17)
               {
@@ -8627,8 +8627,8 @@ LABEL_10:
 
                     v21 = *(*(&v31 + 1) + 8 * i);
                     v22 = v10;
-                    v23 = [v10 groupID];
-                    LODWORD(v21) = [(WBSSavedAccountStore *)self canSaveUser:v30 password:v29 forProtectionSpace:v21 highLevelDomain:v28 notes:v27 customTitle:v16 groupID:v23 error:0];
+                    groupID = [v10 groupID];
+                    LODWORD(v21) = [(WBSSavedAccountStore *)self canSaveUser:user password:password forProtectionSpace:v21 highLevelDomain:highLevelDomain notes:notesEntry customTitle:customTitle groupID:groupID error:0];
 
                     if (!v21)
                     {
@@ -8652,7 +8652,7 @@ LABEL_10:
               }
             }
 
-            if (([v6 credentialTypes] & 2) == 0 || -[WBSSavedAccountStore _canMoveSavedAccountWithPasskey:toGroup:](self, "_canMoveSavedAccountWithPasskey:toGroup:", v6, v10))
+            if (([accountCopy credentialTypes] & 2) == 0 || -[WBSSavedAccountStore _canMoveSavedAccountWithPasskey:toGroup:](self, "_canMoveSavedAccountWithPasskey:toGroup:", accountCopy, v10))
             {
               v13 = 1;
 LABEL_28:
@@ -8689,13 +8689,13 @@ uint64_t __59__WBSSavedAccountStore__canMoveSavedAccount_toGroupWithID___block_i
   return v4;
 }
 
-- (BOOL)_moveSavedAccountsOriginallyContributedByCurrentUserToPersonalKeychainFromGroupID:(id)a3 isForAlreadyExitedGroup:(BOOL)a4
+- (BOOL)_moveSavedAccountsOriginallyContributedByCurrentUserToPersonalKeychainFromGroupID:(id)d isForAlreadyExitedGroup:(BOOL)group
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  groupCopy = group;
+  dCopy = d;
+  if (groupCopy)
   {
-    [(WBSSavedAccountStore *)self _recordGroupIdentifierForMovingContributedCredentialsBackToPersonalKeychain:v6];
+    [(WBSSavedAccountStore *)self _recordGroupIdentifierForMovingContributedCredentialsBackToPersonalKeychain:dCopy];
   }
 
   v18 = 0;
@@ -8711,9 +8711,9 @@ uint64_t __59__WBSSavedAccountStore__canMoveSavedAccount_toGroupWithID___block_i
   v13[3] = &unk_1E7CF4CF0;
   v16 = &v18;
   v13[4] = self;
-  v9 = v6;
+  v9 = dCopy;
   v14 = v9;
-  v17 = v4;
+  v17 = groupCopy;
   v10 = v7;
   v15 = v10;
   [(WBSSavedAccountStore *)self performTaskEnsuringAllAccountSourcesAreLoadedOnQueue:queue task:v13];
@@ -8732,29 +8732,29 @@ void __130__WBSSavedAccountStore__moveSavedAccountsOriginallyContributedByCurren
   dispatch_group_leave(v2);
 }
 
-- (BOOL)_moveSavedAccountsOriginallyContributedByCurrentUserToPersonalKeychainFromGroupIDOnInternalQueue:(id)a3 isForAlreadyExitedGroup:(BOOL)a4
+- (BOOL)_moveSavedAccountsOriginallyContributedByCurrentUserToPersonalKeychainFromGroupIDOnInternalQueue:(id)queue isForAlreadyExitedGroup:(BOOL)group
 {
-  v82 = a4;
+  groupCopy = group;
   v102 = *MEMORY[0x1E69E9840];
-  v80 = a3;
+  queueCopy = queue;
   v5 = WBS_LOG_CHANNEL_PREFIXPasswords();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v101 = v80;
+    v101 = queueCopy;
     _os_log_impl(&dword_1B8447000, v5, OS_LOG_TYPE_DEFAULT, "Beginning sweep to move contributed credentials back to personal keychain from groupID: %{private}@", buf, 0xCu);
   }
 
   self->_shouldIgnoreKeychainUpdates = 1;
-  if (v82)
+  if (groupCopy)
   {
-    v6 = [(WBSSavedAccountStore *)self _loadAndMergeSavedAccountsFromGroupID:v80 intoAllSavedAccounts:0];
+    v6 = [(WBSSavedAccountStore *)self _loadAndMergeSavedAccountsFromGroupID:queueCopy intoAllSavedAccounts:0];
     v7 = [v6 safari_filterObjectsUsingBlock:&__block_literal_global_344];
-    v99 = v80;
+    v99 = queueCopy;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v99 count:1];
     [(WBSSavedAccountStore *)self _loadRecentlyDeletedSavedAccountsFromSharedGroupIDs:v8];
 
-    v9 = [(NSMutableDictionary *)self->_sharedGroupIdentifiersToRecentlyDeletedSavedAccounts objectForKeyedSubscript:v80];
+    v9 = [(NSMutableDictionary *)self->_sharedGroupIdentifiersToRecentlyDeletedSavedAccounts objectForKeyedSubscript:queueCopy];
     v10 = [v9 safari_filterObjectsUsingBlock:&__block_literal_global_344];
     v11 = v7;
     v12 = v10;
@@ -8762,9 +8762,9 @@ void __130__WBSSavedAccountStore__moveSavedAccountsOriginallyContributedByCurren
 
   else
   {
-    v6 = [(NSMutableDictionary *)self->_groupIdentifiersToSavedAccounts objectForKeyedSubscript:v80];
+    v6 = [(NSMutableDictionary *)self->_groupIdentifiersToSavedAccounts objectForKeyedSubscript:queueCopy];
     v9 = [v6 safari_filterObjectsUsingBlock:&__block_literal_global_344];
-    v10 = [(NSMutableDictionary *)self->_sharedGroupIdentifiersToRecentlyDeletedSavedAccounts objectForKeyedSubscript:v80];
+    v10 = [(NSMutableDictionary *)self->_sharedGroupIdentifiersToRecentlyDeletedSavedAccounts objectForKeyedSubscript:queueCopy];
     v7 = [v10 safari_filterObjectsUsingBlock:&__block_literal_global_344];
     v11 = v9;
     v12 = v7;
@@ -8800,11 +8800,11 @@ void __130__WBSSavedAccountStore__moveSavedAccountsOriginallyContributedByCurren
       }
 
       v18 = *(*(&v92 + 1) + 8 * v17);
-      v19 = [v18 credentialTypes];
-      if ((v19 & 1) == 0)
+      credentialTypes = [v18 credentialTypes];
+      if ((credentialTypes & 1) == 0)
       {
         v20 = 0;
-        if ((v19 & 2) != 0)
+        if ((credentialTypes & 2) != 0)
         {
           goto LABEL_49;
         }
@@ -8812,44 +8812,44 @@ void __130__WBSSavedAccountStore__moveSavedAccountsOriginallyContributedByCurren
         goto LABEL_74;
       }
 
-      v85 = v19;
+      v85 = credentialTypes;
       v88 = v17;
-      v21 = [v18 user];
+      user = [v18 user];
       v89 = 0;
       v22 = 0;
       for (i = 0; i != 10; ++i)
       {
         if (i)
         {
-          v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%ld)", v21, i];
+          v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%ld)", user, i];
         }
 
         else
         {
-          v24 = v21;
+          v24 = user;
         }
 
         v25 = v24;
-        v26 = [v18 isRecentlyDeleted];
+        isRecentlyDeleted = [v18 isRecentlyDeleted];
         v27 = 8;
-        if (v26)
+        if (isRecentlyDeleted)
         {
           v27 = 40;
         }
 
-        v28 = self;
+        selfCopy = self;
         v29 = *(&self->super.isa + v27);
-        v30 = [v18 highLevelDomain];
-        v31 = [v29 objectForKeyedSubscript:v30];
+        highLevelDomain = [v18 highLevelDomain];
+        v31 = [v29 objectForKeyedSubscript:highLevelDomain];
         v32 = [v31 objectForKeyedSubscript:v25];
-        v33 = [v32 allValues];
+        allValues = [v32 allValues];
 
         v91[0] = MEMORY[0x1E69E9820];
         v91[1] = 3221225472;
         v91[2] = __145__WBSSavedAccountStore__moveSavedAccountsOriginallyContributedByCurrentUserToPersonalKeychainFromGroupIDOnInternalQueue_isForAlreadyExitedGroup___block_invoke_2;
         v91[3] = &unk_1E7CF4788;
         v91[4] = v18;
-        v34 = [v33 safari_firstObjectPassingTest:v91];
+        v34 = [allValues safari_firstObjectPassingTest:v91];
         if (v34)
         {
           v35 = WBS_LOG_CHANNEL_PREFIXPasswords();
@@ -8864,7 +8864,7 @@ void __130__WBSSavedAccountStore__moveSavedAccountsOriginallyContributedByCurren
           v22 = 1;
         }
 
-        else if ([v33 count])
+        else if ([allValues count])
         {
           v36 = 0;
         }
@@ -8881,14 +8881,14 @@ void __130__WBSSavedAccountStore__moveSavedAccountsOriginallyContributedByCurren
             v37 = v89;
           }
 
-          v38 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
-          v39 = [v38 safari_copySavedAccountWithPasswordToPersonalKeychain:v18 withNewUsername:v37];
+          mEMORY[0x1E695AC50] = [MEMORY[0x1E695AC50] sharedCredentialStorage];
+          v39 = [mEMORY[0x1E695AC50] safari_copySavedAccountWithPasswordToPersonalKeychain:v18 withNewUsername:v37];
 
           v89 = v37;
           if (v39)
           {
-            self = v28;
-            [(WBSSavedAccountStore *)v28 _addSavedAccount:v18 toCachedDictionaryForSavedAccountsWithPasswordsForGroupID:&stru_1F3064D08];
+            self = selfCopy;
+            [(WBSSavedAccountStore *)selfCopy _addSavedAccount:v18 toCachedDictionaryForSavedAccountsWithPasswordsForGroupID:&stru_1F3064D08];
             v36 = 1;
             v22 = 1;
             goto LABEL_35;
@@ -8898,7 +8898,7 @@ void __130__WBSSavedAccountStore__moveSavedAccountsOriginallyContributedByCurren
           if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
           {
             *buf = 138477827;
-            v101 = v80;
+            v101 = queueCopy;
             _os_log_error_impl(&dword_1B8447000, v40, OS_LOG_TYPE_ERROR, "Failed to copy saved account with password back to personal keychain on exit from group %{private}@.", buf, 0xCu);
           }
 
@@ -8907,7 +8907,7 @@ void __130__WBSSavedAccountStore__moveSavedAccountsOriginallyContributedByCurren
           v87 = 0;
         }
 
-        self = v28;
+        self = selfCopy;
 LABEL_35:
 
         if (v36)
@@ -8949,9 +8949,9 @@ LABEL_41:
       if (v89)
       {
         v41 = [WBSPublicKeyCredentialIdentifier alloc];
-        v42 = [v18 passkeyCredentialID];
-        v43 = [v18 sharedGroupID];
-        v44 = [(WBSPublicKeyCredentialIdentifier *)v41 initWithCredentialID:v42 groupID:v43];
+        passkeyCredentialID = [v18 passkeyCredentialID];
+        sharedGroupID = [v18 sharedGroupID];
+        v44 = [(WBSPublicKeyCredentialIdentifier *)v41 initWithCredentialID:passkeyCredentialID groupID:sharedGroupID];
         [(WBSSavedAccountStore *)self updateUserVisibleNameOnInternalQueue:v89 forPasskeyWithIdentifier:v44];
 
         v20 = v89;
@@ -8967,29 +8967,29 @@ LABEL_49:
       v88 = v17;
       v89 = v20;
       v46 = MEMORY[0x1E695AC58];
-      v47 = [v18 passkeyRelyingPartyID];
-      v48 = [v46 safari_passkeySidecarProtectionSpaceForRelyingPartyIdentifier:v47];
+      passkeyRelyingPartyID = [v18 passkeyRelyingPartyID];
+      v48 = [v46 safari_passkeySidecarProtectionSpaceForRelyingPartyIdentifier:passkeyRelyingPartyID];
 
       v49 = [WBSPair alloc];
-      v50 = [v18 passkeyUserHandle];
-      v51 = [(WBSPair *)v49 initWithFirst:v50 second:v48];
+      passkeyUserHandle = [v18 passkeyUserHandle];
+      v51 = [(WBSPair *)v49 initWithFirst:passkeyUserHandle second:v48];
 
-      v52 = [v18 isRecentlyDeleted];
+      isRecentlyDeleted2 = [v18 isRecentlyDeleted];
       v53 = 16;
-      if (v52)
+      if (isRecentlyDeleted2)
       {
         v53 = 48;
       }
 
       v54 = [*(&self->super.isa + v53) objectForKeyedSubscript:v51];
-      v55 = [v54 firstObject];
+      firstObject = [v54 firstObject];
 
-      if (!v55)
+      if (!firstObject)
       {
         goto LABEL_71;
       }
 
-      if ([v55 isEqualForMovingSharedSavedAccountsBackToPersonalKeychainOnGroupExit:v18])
+      if ([firstObject isEqualForMovingSharedSavedAccountsBackToPersonalKeychainOnGroupExit:v18])
       {
         v56 = WBS_LOG_CHANNEL_PREFIXPasswords();
         if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
@@ -8998,37 +8998,37 @@ LABEL_49:
           _os_log_impl(&dword_1B8447000, v56, OS_LOG_TYPE_DEFAULT, "Skipping moving saved account from group to personal keychain because there is already an identical copy in personal keychain.", buf, 2u);
         }
 
-        [v55 _writeFormerlySharedSavedAccountMarkerForCredentialTypes:2];
-        [(WBSSavedAccountStore *)self _removeSavedAccount:v18 fromGroupID:v80];
+        [firstObject _writeFormerlySharedSavedAccountMarkerForCredentialTypes:2];
+        [(WBSSavedAccountStore *)self _removeSavedAccount:v18 fromGroupID:queueCopy];
         v57 = v87;
         goto LABEL_84;
       }
 
       if ([v18 isRecentlyDeleted])
       {
-        [(WBSSavedAccountStore *)self _removeSavedAccount:v55 fromGroupID:&stru_1F3064D08];
-        v58 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
-        v59 = [v58 safari_copySavedAccountWithPasskeyToPersonalKeychain:v18];
+        [(WBSSavedAccountStore *)self _removeSavedAccount:firstObject fromGroupID:&stru_1F3064D08];
+        mEMORY[0x1E695AC50]2 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
+        v59 = [mEMORY[0x1E695AC50]2 safari_copySavedAccountWithPasskeyToPersonalKeychain:v18];
 
         v57 = v59 & v87;
-        if (v59 && !v82)
+        if (v59 && !groupCopy)
         {
           v57 = v87;
-          [(WBSSavedAccountStore *)self _removeSavedAccount:v18 fromGroupID:v80];
+          [(WBSSavedAccountStore *)self _removeSavedAccount:v18 fromGroupID:queueCopy];
         }
 
         goto LABEL_84;
       }
 
-      v60 = [v18 lastModifiedDate];
-      v61 = [v55 lastModifiedDate];
-      v62 = [v60 earlierDate:v61];
-      v86 = v60;
-      LODWORD(v60) = [v62 isEqual:v60];
+      lastModifiedDate = [v18 lastModifiedDate];
+      lastModifiedDate2 = [firstObject lastModifiedDate];
+      v62 = [lastModifiedDate earlierDate:lastModifiedDate2];
+      v86 = lastModifiedDate;
+      LODWORD(lastModifiedDate) = [v62 isEqual:lastModifiedDate];
 
       v63 = WBS_LOG_CHANNEL_PREFIXPasswords();
       v64 = os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT);
-      if (!v60)
+      if (!lastModifiedDate)
       {
         if (v64)
         {
@@ -9036,11 +9036,11 @@ LABEL_49:
           _os_log_impl(&dword_1B8447000, v63, OS_LOG_TYPE_DEFAULT, "Moving passkey already in personal keychain into Recently Deleted because there is a more recently modified conflicting passkey being moved to the personal keychain from a group.", buf, 2u);
         }
 
-        v68 = [(WBSSavedAccountStore *)self _moveCredentialTypesToRecentlyDeletedOnInternalQueue:2 fromSavedAccount:v55];
+        v68 = [(WBSSavedAccountStore *)self _moveCredentialTypesToRecentlyDeletedOnInternalQueue:2 fromSavedAccount:firstObject];
 
 LABEL_71:
-        v69 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
-        v70 = [v69 safari_copySavedAccountWithPasskeyToPersonalKeychain:v18];
+        mEMORY[0x1E695AC50]3 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
+        v70 = [mEMORY[0x1E695AC50]3 safari_copySavedAccountWithPasskeyToPersonalKeychain:v18];
 
         if ((v70 & 1) == 0)
         {
@@ -9048,7 +9048,7 @@ LABEL_71:
           if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
           {
             *buf = 138477827;
-            v101 = v80;
+            v101 = queueCopy;
             _os_log_error_impl(&dword_1B8447000, v71, OS_LOG_TYPE_ERROR, "Failed to copy saved account with passkey back to personal keychain on exit from group %{private}@.", buf, 0xCu);
           }
 
@@ -9062,9 +9062,9 @@ LABEL_73:
         v17 = v88;
         v20 = v89;
 LABEL_74:
-        if (!v82)
+        if (!groupCopy)
         {
-          [(WBSSavedAccountStore *)self _removeSavedAccount:v18 fromGroupID:v80];
+          [(WBSSavedAccountStore *)self _removeSavedAccount:v18 fromGroupID:queueCopy];
         }
 
         goto LABEL_86;
@@ -9086,7 +9086,7 @@ LABEL_74:
         }
 
         *buf = 138477827;
-        v101 = v80;
+        v101 = queueCopy;
         v73 = v72;
         v74 = "Failed to move saved account with passkey back to personal keychain on exit from group %{private}@.";
 LABEL_89:
@@ -9094,14 +9094,14 @@ LABEL_89:
         goto LABEL_82;
       }
 
-      v66 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
-      v67 = [v66 safari_copySavedAccountWithPasskeyToPersonalKeychain:v65];
+      mEMORY[0x1E695AC50]4 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
+      v67 = [mEMORY[0x1E695AC50]4 safari_copySavedAccountWithPasskeyToPersonalKeychain:v65];
 
       if (v67)
       {
-        if (!v82)
+        if (!groupCopy)
         {
-          [(WBSSavedAccountStore *)self _removeSavedAccount:v65 fromGroupID:v80];
+          [(WBSSavedAccountStore *)self _removeSavedAccount:v65 fromGroupID:queueCopy];
         }
 
         v57 = v87;
@@ -9112,7 +9112,7 @@ LABEL_89:
       if (os_log_type_enabled(v75, OS_LOG_TYPE_ERROR))
       {
         *buf = 138477827;
-        v101 = v80;
+        v101 = queueCopy;
         v73 = v75;
         v74 = "Failed to copy saved account with passkey back to personal keychain on exit from group %{private}@.";
         goto LABEL_89;
@@ -9152,17 +9152,17 @@ LABEL_93:
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
-  if (v82)
+  if (groupCopy)
   {
-    [(WBSSavedAccountStore *)self _recordGroupIdentifierForExitCleanup:v80 completionHandler:&__block_literal_global_351];
-    [(WBSSavedAccountStore *)self _removeGroupID:v80 fromArrayForUserDefaultsKey:@"groupIdentifiersToMoveContributedCredentialsBackToPersonalKeychainFrom"];
+    [(WBSSavedAccountStore *)self _recordGroupIdentifierForExitCleanup:queueCopy completionHandler:&__block_literal_global_351];
+    [(WBSSavedAccountStore *)self _removeGroupID:queueCopy fromArrayForUserDefaultsKey:@"groupIdentifiersToMoveContributedCredentialsBackToPersonalKeychainFrom"];
   }
 
   v77 = WBS_LOG_CHANNEL_PREFIXPasswords();
   if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v101 = v80;
+    v101 = queueCopy;
     _os_log_impl(&dword_1B8447000, v77, OS_LOG_TYPE_DEFAULT, "Ended sweep to move contributed credentials back to personal keychain from groupID: %{private}@", buf, 0xCu);
   }
 
@@ -9170,12 +9170,12 @@ LABEL_93:
   return v87 & 1;
 }
 
-- (id)_groupIDArrayForUserDefaultsKey:(id)a3
+- (id)_groupIDArrayForUserDefaultsKey:(id)key
 {
   v3 = MEMORY[0x1E695E000];
-  v4 = a3;
-  v5 = [v3 safari_browserDefaults];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  safari_browserDefaults = [v3 safari_browserDefaults];
+  v6 = [safari_browserDefaults valueForKey:keyCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -9191,91 +9191,91 @@ LABEL_93:
   return v7;
 }
 
-- (void)_addGroupID:(id)a3 toArrayForUserDefaultsKey:(id)a4
+- (void)_addGroupID:(id)d toArrayForUserDefaultsKey:(id)key
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  keyCopy = key;
   v7 = WBS_LOG_CHANNEL_PREFIXPasswords();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138478083;
-    v14 = v5;
+    v14 = dCopy;
     v15 = 2112;
-    v16 = v6;
+    v16 = keyCopy;
     _os_log_impl(&dword_1B8447000, v7, OS_LOG_TYPE_DEFAULT, "Logging groupID %{private}@ in user defaults list %@", &v13, 0x16u);
   }
 
-  v8 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v9 = [v8 valueForKey:v6];
-  v10 = [v9 mutableCopy];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v9 = [safari_browserDefaults valueForKey:keyCopy];
+  array = [v9 mutableCopy];
 
-  if (!v10)
+  if (!array)
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
   }
 
-  [v10 addObject:v5];
-  v11 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  [v11 setValue:v10 forKey:v6];
+  [array addObject:dCopy];
+  safari_browserDefaults2 = [MEMORY[0x1E695E000] safari_browserDefaults];
+  [safari_browserDefaults2 setValue:array forKey:keyCopy];
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_removeGroupID:(id)a3 fromArrayForUserDefaultsKey:(id)a4
+- (void)_removeGroupID:(id)d fromArrayForUserDefaultsKey:(id)key
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  keyCopy = key;
   v7 = WBS_LOG_CHANNEL_PREFIXPasswords();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412546;
-    v14 = v5;
+    v14 = dCopy;
     v15 = 2112;
-    v16 = v6;
+    v16 = keyCopy;
     _os_log_impl(&dword_1B8447000, v7, OS_LOG_TYPE_DEFAULT, "Removing groupID %@ from user defaults list %@", &v13, 0x16u);
   }
 
-  v8 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v9 = [v8 valueForKey:v6];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v9 = [safari_browserDefaults valueForKey:keyCopy];
   v10 = [v9 mutableCopy];
 
   if (v10)
   {
-    [v10 removeObject:v5];
-    v11 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    [v11 setValue:v10 forKey:v6];
+    [v10 removeObject:dCopy];
+    safari_browserDefaults2 = [MEMORY[0x1E695E000] safari_browserDefaults];
+    [safari_browserDefaults2 setValue:v10 forKey:keyCopy];
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_addSavedAccount:(id)a3 toCachedDictionaryForSavedAccountsWithPasswordsForGroupID:(id)a4
+- (void)_addSavedAccount:(id)account toCachedDictionaryForSavedAccountsWithPasswordsForGroupID:(id)d
 {
-  v34 = a3;
-  v6 = a4;
-  if ([v6 length])
+  accountCopy = account;
+  dCopy = d;
+  if ([dCopy length])
   {
     groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts = self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts;
     if (!groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts)
     {
-      v8 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v9 = self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts;
-      self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts = v8;
+      self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts = dictionary;
 
       groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts = self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts;
     }
 
-    v10 = [(NSMutableDictionary *)groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:v6];
+    v10 = [(NSMutableDictionary *)groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:dCopy];
 
     if (!v10)
     {
-      v11 = [MEMORY[0x1E695DF90] dictionary];
-      [(NSMutableDictionary *)self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts setObject:v11 forKeyedSubscript:v6];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+      [(NSMutableDictionary *)self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts setObject:dictionary2 forKeyedSubscript:dCopy];
     }
 
-    v12 = [(NSMutableDictionary *)self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:v6];
+    v12 = [(NSMutableDictionary *)self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:dCopy];
   }
 
   else
@@ -9283,9 +9283,9 @@ LABEL_93:
     personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts = self->_personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts;
     if (!personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts)
     {
-      v14 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary3 = [MEMORY[0x1E695DF90] dictionary];
       v15 = self->_personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts;
-      self->_personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts = v14;
+      self->_personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts = dictionary3;
 
       personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts = self->_personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts;
     }
@@ -9294,90 +9294,90 @@ LABEL_93:
   }
 
   v16 = v12;
-  v17 = [v34 highLevelDomain];
-  v18 = [(NSMutableDictionary *)v16 objectForKeyedSubscript:v17];
+  highLevelDomain = [accountCopy highLevelDomain];
+  v18 = [(NSMutableDictionary *)v16 objectForKeyedSubscript:highLevelDomain];
 
   if (!v18)
   {
-    v19 = [MEMORY[0x1E695DF90] dictionary];
-    v20 = [v34 highLevelDomain];
-    [(NSMutableDictionary *)v16 setObject:v19 forKeyedSubscript:v20];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+    highLevelDomain2 = [accountCopy highLevelDomain];
+    [(NSMutableDictionary *)v16 setObject:dictionary4 forKeyedSubscript:highLevelDomain2];
   }
 
-  v21 = [v34 highLevelDomain];
-  v22 = [(NSMutableDictionary *)v16 objectForKeyedSubscript:v21];
-  v23 = [v34 user];
-  v24 = [v22 objectForKeyedSubscript:v23];
+  highLevelDomain3 = [accountCopy highLevelDomain];
+  v22 = [(NSMutableDictionary *)v16 objectForKeyedSubscript:highLevelDomain3];
+  user = [accountCopy user];
+  v24 = [v22 objectForKeyedSubscript:user];
 
   if (!v24)
   {
-    v25 = [MEMORY[0x1E695DF90] dictionary];
-    v26 = [v34 highLevelDomain];
-    v27 = [(NSMutableDictionary *)v16 objectForKeyedSubscript:v26];
-    v28 = [v34 user];
-    [v27 setObject:v25 forKeyedSubscript:v28];
+    dictionary5 = [MEMORY[0x1E695DF90] dictionary];
+    highLevelDomain4 = [accountCopy highLevelDomain];
+    v27 = [(NSMutableDictionary *)v16 objectForKeyedSubscript:highLevelDomain4];
+    user2 = [accountCopy user];
+    [v27 setObject:dictionary5 forKeyedSubscript:user2];
   }
 
-  v29 = [v34 highLevelDomain];
-  v30 = [(NSMutableDictionary *)v16 objectForKeyedSubscript:v29];
-  v31 = [v34 user];
-  v32 = [v30 objectForKeyedSubscript:v31];
-  v33 = [v34 password];
-  [v32 setObject:v34 forKeyedSubscript:v33];
+  highLevelDomain5 = [accountCopy highLevelDomain];
+  v30 = [(NSMutableDictionary *)v16 objectForKeyedSubscript:highLevelDomain5];
+  user3 = [accountCopy user];
+  v32 = [v30 objectForKeyedSubscript:user3];
+  password = [accountCopy password];
+  [v32 setObject:accountCopy forKeyedSubscript:password];
 }
 
-- (void)_removeSavedAccount:(id)a3 fromCachedDictionaryForSavedAccountsWithPasswordsForGroupID:(id)a4
+- (void)_removeSavedAccount:(id)account fromCachedDictionaryForSavedAccountsWithPasswordsForGroupID:(id)d
 {
-  v14 = a4;
-  v6 = a3;
-  if ([v14 length])
+  dCopy = d;
+  accountCopy = account;
+  if ([dCopy length])
   {
-    v7 = [(NSMutableDictionary *)self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:v14];
-    v8 = [v6 highLevelDomain];
-    v9 = [v7 objectForKeyedSubscript:v8];
-    v10 = [v6 user];
-    v11 = [v9 objectForKeyedSubscript:v10];
+    highLevelDomain2 = [(NSMutableDictionary *)self->_groupIdentifiersToHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:dCopy];
+    highLevelDomain = [accountCopy highLevelDomain];
+    user2 = [highLevelDomain2 objectForKeyedSubscript:highLevelDomain];
+    user = [accountCopy user];
+    v11 = [user2 objectForKeyedSubscript:user];
   }
 
   else
   {
     personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts = self->_personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts;
-    v7 = [v6 highLevelDomain];
-    v8 = [(NSMutableDictionary *)personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:v7];
-    v9 = [v6 user];
-    v11 = [v8 objectForKeyedSubscript:v9];
+    highLevelDomain2 = [accountCopy highLevelDomain];
+    highLevelDomain = [(NSMutableDictionary *)personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts objectForKeyedSubscript:highLevelDomain2];
+    user2 = [accountCopy user];
+    v11 = [highLevelDomain objectForKeyedSubscript:user2];
   }
 
-  v13 = [v6 password];
+  password = [accountCopy password];
 
-  [v11 removeObjectForKey:v13];
+  [v11 removeObjectForKey:password];
 }
 
-- (void)_addSavedAccount:(id)a3 toCachedDictionaryForSavedAccountsWithPasskeysForGroupID:(id)a4
+- (void)_addSavedAccount:(id)account toCachedDictionaryForSavedAccountsWithPasskeysForGroupID:(id)d
 {
-  v24 = a3;
-  v6 = a4;
-  if ([v6 length])
+  accountCopy = account;
+  dCopy = d;
+  if ([dCopy length])
   {
     groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys = self->_groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys;
     if (!groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys)
     {
-      v8 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v9 = self->_groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys;
-      self->_groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys = v8;
+      self->_groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys = dictionary;
 
       groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys = self->_groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys;
     }
 
-    v10 = [(NSMutableDictionary *)groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys objectForKeyedSubscript:v6];
+    v10 = [(NSMutableDictionary *)groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys objectForKeyedSubscript:dCopy];
 
     if (!v10)
     {
-      v11 = [MEMORY[0x1E695DF90] dictionary];
-      [(NSMutableDictionary *)self->_groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys setObject:v11 forKeyedSubscript:v6];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+      [(NSMutableDictionary *)self->_groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys setObject:dictionary2 forKeyedSubscript:dCopy];
     }
 
-    v12 = [(NSMutableDictionary *)self->_groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys objectForKeyedSubscript:v6];
+    v12 = [(NSMutableDictionary *)self->_groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys objectForKeyedSubscript:dCopy];
   }
 
   else
@@ -9385,9 +9385,9 @@ LABEL_93:
     personalKeychainUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys = self->_personalKeychainUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys;
     if (!personalKeychainUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys)
     {
-      v14 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary3 = [MEMORY[0x1E695DF90] dictionary];
       v15 = self->_personalKeychainUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys;
-      self->_personalKeychainUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys = v14;
+      self->_personalKeychainUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys = dictionary3;
 
       personalKeychainUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys = self->_personalKeychainUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys;
     }
@@ -9397,38 +9397,38 @@ LABEL_93:
 
   v16 = v12;
   v17 = MEMORY[0x1E695AC58];
-  v18 = [v24 passkeyRelyingPartyID];
-  v19 = [v17 safari_passkeySidecarProtectionSpaceForRelyingPartyIdentifier:v18];
+  passkeyRelyingPartyID = [accountCopy passkeyRelyingPartyID];
+  v19 = [v17 safari_passkeySidecarProtectionSpaceForRelyingPartyIdentifier:passkeyRelyingPartyID];
 
   v20 = [WBSPair alloc];
-  v21 = [v24 passkeyUserHandle];
-  v22 = [(WBSPair *)v20 initWithFirst:v21 second:v19];
+  passkeyUserHandle = [accountCopy passkeyUserHandle];
+  v22 = [(WBSPair *)v20 initWithFirst:passkeyUserHandle second:v19];
 
-  v23 = [(NSMutableDictionary *)v16 objectForKeyedSubscript:v22];
-  if (!v23)
+  array = [(NSMutableDictionary *)v16 objectForKeyedSubscript:v22];
+  if (!array)
   {
-    v23 = [MEMORY[0x1E695DF70] array];
-    [(NSMutableDictionary *)v16 setObject:v23 forKeyedSubscript:v22];
+    array = [MEMORY[0x1E695DF70] array];
+    [(NSMutableDictionary *)v16 setObject:array forKeyedSubscript:v22];
   }
 
-  [v23 addObject:v24];
+  [array addObject:accountCopy];
 }
 
-- (void)_removeSavedAccount:(id)a3 fromCachedDictionaryForSavedAccountsWithPasskeysForGroupID:(id)a4
+- (void)_removeSavedAccount:(id)account fromCachedDictionaryForSavedAccountsWithPasskeysForGroupID:(id)d
 {
-  v15 = a4;
+  dCopy = d;
   v6 = MEMORY[0x1E695AC58];
-  v7 = a3;
-  v8 = [v7 passkeyRelyingPartyID];
-  v9 = [v6 safari_passkeySidecarProtectionSpaceForRelyingPartyIdentifier:v8];
+  accountCopy = account;
+  passkeyRelyingPartyID = [accountCopy passkeyRelyingPartyID];
+  v9 = [v6 safari_passkeySidecarProtectionSpaceForRelyingPartyIdentifier:passkeyRelyingPartyID];
 
   v10 = [WBSPair alloc];
-  v11 = [v7 passkeyUserHandle];
+  passkeyUserHandle = [accountCopy passkeyUserHandle];
 
-  v12 = [(WBSPair *)v10 initWithFirst:v11 second:v9];
-  if ([v15 length])
+  v12 = [(WBSPair *)v10 initWithFirst:passkeyUserHandle second:v9];
+  if ([dCopy length])
   {
-    v13 = [(NSMutableDictionary *)self->_groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys objectForKeyedSubscript:v15];
+    v13 = [(NSMutableDictionary *)self->_groupIdentifiersToUserHandleProtectionSpacePairsToSavedAccountsWithPasskeys objectForKeyedSubscript:dCopy];
   }
 
   else
@@ -9440,27 +9440,27 @@ LABEL_93:
   [(NSMutableDictionary *)v13 removeObjectForKey:v12];
 }
 
-- (id)_allInternetPasswordEntriesFromGroupID:(id)a3
+- (id)_allInternetPasswordEntriesFromGroupID:(id)d
 {
   v3 = MEMORY[0x1E695AC50];
-  v4 = a3;
-  v5 = [v3 sharedCredentialStorage];
-  v6 = [v5 safari_allPasswordCredentialItemsFromGroupID:v4];
+  dCopy = d;
+  sharedCredentialStorage = [v3 sharedCredentialStorage];
+  v6 = [sharedCredentialStorage safari_allPasswordCredentialItemsFromGroupID:dCopy];
 
   return v6;
 }
 
-- (void)_addNewGroupToCachedSharingGroups:(id)a3
+- (void)_addNewGroupToCachedSharingGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__WBSSavedAccountStore__addNewGroupToCachedSharingGroups___block_invoke;
   v7[3] = &unk_1E7CF1708;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = groupsCopy;
+  v6 = groupsCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -9515,22 +9515,22 @@ void __58__WBSSavedAccountStore__addNewGroupToCachedSharingGroups___block_invoke
 - (void)_clearExpiredRecentlyDeletedNotificationDates
 {
   v23 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v3 = [v2 dictionaryForKey:@"lastRecentlyDeletedNotificationDateDictionary"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v3 = [safari_browserDefaults dictionaryForKey:@"lastRecentlyDeletedNotificationDateDictionary"];
   v4 = [v3 mutableCopy];
 
   if (v4)
   {
-    v5 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     v6 = [MEMORY[0x1E695DF00] now];
-    v7 = [v5 dateByAddingUnit:16 value:-30 toDate:v6 options:0];
+    v7 = [currentCalendar dateByAddingUnit:16 value:-30 toDate:v6 options:0];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = [v4 allKeys];
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    allKeys = [v4 allKeys];
+    v9 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
       v10 = v9;
@@ -9541,7 +9541,7 @@ void __58__WBSSavedAccountStore__addNewGroupToCachedSharingGroups___block_invoke
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allKeys);
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
@@ -9555,7 +9555,7 @@ void __58__WBSSavedAccountStore__addNewGroupToCachedSharingGroups___block_invoke
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v10 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v10);
@@ -9568,36 +9568,36 @@ void __58__WBSSavedAccountStore__addNewGroupToCachedSharingGroups___block_invoke
 - (NSArray)sharedSavedAccountsInRecentlyDeletedToNotifyUserAbout
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v4 = [v3 BOOLForKey:@"DebugIgnoreLastNotificationDateAndFiveDayGracePeriodForRecentlyDeletedNotifications"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v4 = [safari_browserDefaults BOOLForKey:@"DebugIgnoreLastNotificationDateAndFiveDayGracePeriodForRecentlyDeletedNotifications"];
 
   if (v4)
   {
-    v5 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    [v5 removeObjectForKey:@"DebugIgnoreLastNotificationDateAndFiveDayGracePeriodForRecentlyDeletedNotifications"];
+    safari_browserDefaults2 = [MEMORY[0x1E695E000] safari_browserDefaults];
+    [safari_browserDefaults2 removeObjectForKey:@"DebugIgnoreLastNotificationDateAndFiveDayGracePeriodForRecentlyDeletedNotifications"];
   }
 
-  v37 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v32 = self;
-  v6 = [(WBSSavedAccountStore *)self allRecentlyDeletedSavedAccounts];
-  v7 = [v6 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  selfCopy = self;
+  allRecentlyDeletedSavedAccounts = [(WBSSavedAccountStore *)self allRecentlyDeletedSavedAccounts];
+  v7 = [allRecentlyDeletedSavedAccounts countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v39;
     v36 = v4;
-    v35 = v6;
+    v35 = allRecentlyDeletedSavedAccounts;
     do
     {
       for (i = 0; i != v8; ++i)
       {
         if (*v39 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allRecentlyDeletedSavedAccounts);
         }
 
         v11 = *(*(&v38 + 1) + 8 * i);
@@ -9605,59 +9605,59 @@ void __58__WBSSavedAccountStore__addNewGroupToCachedSharingGroups___block_invoke
         {
           if ([v11 isCurrentUserOriginalContributor])
           {
-            v12 = [v11 participantIDThatMovedSavedAccountToRecentlyDeleted];
-            v13 = [v11 originalContributorParticipantID];
-            v14 = [v12 isEqual:v13];
+            participantIDThatMovedSavedAccountToRecentlyDeleted = [v11 participantIDThatMovedSavedAccountToRecentlyDeleted];
+            originalContributorParticipantID = [v11 originalContributorParticipantID];
+            v14 = [participantIDThatMovedSavedAccountToRecentlyDeleted isEqual:originalContributorParticipantID];
 
             if ((v14 & 1) == 0)
             {
               v15 = [MEMORY[0x1E695DF00] now];
-              v16 = [MEMORY[0x1E695DEE8] currentCalendar];
-              v17 = [v11 lastModifiedDate];
-              v18 = [v16 dateByAddingUnit:16 value:30 toDate:v17 options:0];
+              currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+              lastModifiedDate = [v11 lastModifiedDate];
+              v18 = [currentCalendar dateByAddingUnit:16 value:30 toDate:lastModifiedDate options:0];
 
               if (([v15 safari_numberOfDaysUntilDate:v18] & 0x8000000000000000) == 0)
               {
                 if (v4)
                 {
-                  [v37 addObject:v11];
+                  [array addObject:v11];
                 }
 
                 else
                 {
-                  v19 = [MEMORY[0x1E695DEE8] currentCalendar];
-                  v20 = [v19 dateByAddingUnit:16 value:-5 toDate:v15 options:0];
+                  currentCalendar2 = [MEMORY[0x1E695DEE8] currentCalendar];
+                  v20 = [currentCalendar2 dateByAddingUnit:16 value:-5 toDate:v15 options:0];
 
-                  v21 = [v11 lastModifiedDate];
-                  v22 = [v21 earlierDate:v20];
+                  lastModifiedDate2 = [v11 lastModifiedDate];
+                  v22 = [lastModifiedDate2 earlierDate:v20];
                   v23 = [v22 isEqual:v20];
 
                   if ((v23 & 1) == 0)
                   {
-                    v24 = [MEMORY[0x1E695DEE8] currentCalendar];
-                    v25 = [v24 dateByAddingUnit:16 value:-7 toDate:v15 options:0];
+                    currentCalendar3 = [MEMORY[0x1E695DEE8] currentCalendar];
+                    v25 = [currentCalendar3 dateByAddingUnit:16 value:-7 toDate:v15 options:0];
 
-                    v26 = [v11 lastRecentlyDeletedNotificationDate];
-                    if (!v26)
+                    lastRecentlyDeletedNotificationDate = [v11 lastRecentlyDeletedNotificationDate];
+                    if (!lastRecentlyDeletedNotificationDate)
                     {
                       goto LABEL_17;
                     }
 
-                    v27 = v26;
-                    v34 = [v11 lastRecentlyDeletedNotificationDate];
-                    v28 = [v34 earlierDate:v25];
+                    v27 = lastRecentlyDeletedNotificationDate;
+                    lastRecentlyDeletedNotificationDate2 = [v11 lastRecentlyDeletedNotificationDate];
+                    v28 = [lastRecentlyDeletedNotificationDate2 earlierDate:v25];
                     v33 = [v28 isEqual:v25];
 
                     if ((v33 & 1) == 0)
                     {
 LABEL_17:
-                      [v37 addObject:v11];
+                      [array addObject:v11];
                       [v11 setLastRecentlyDeletedNotificationDate:v15];
                     }
                   }
 
                   v4 = v36;
-                  v6 = v35;
+                  allRecentlyDeletedSavedAccounts = v35;
                 }
               }
             }
@@ -9665,26 +9665,26 @@ LABEL_17:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v8 = [allRecentlyDeletedSavedAccounts countByEnumeratingWithState:&v38 objects:v42 count:16];
     }
 
     while (v8);
   }
 
-  [(WBSSavedAccountStore *)v32 _clearExpiredRecentlyDeletedNotificationDates];
-  v29 = [v37 copy];
+  [(WBSSavedAccountStore *)selfCopy _clearExpiredRecentlyDeletedNotificationDates];
+  v29 = [array copy];
 
   v30 = *MEMORY[0x1E69E9840];
 
   return v29;
 }
 
-- (void)_recordGroupIdentifierForMovingContributedCredentialsBackToPersonalKeychain:(id)a3
+- (void)_recordGroupIdentifierForMovingContributedCredentialsBackToPersonalKeychain:(id)keychain
 {
-  v4 = a3;
-  if ([v4 length])
+  keychainCopy = keychain;
+  if ([keychainCopy length])
   {
-    [(WBSSavedAccountStore *)self _addGroupID:v4 toArrayForUserDefaultsKey:@"groupIdentifiersToMoveContributedCredentialsBackToPersonalKeychainFrom"];
+    [(WBSSavedAccountStore *)self _addGroupID:keychainCopy toArrayForUserDefaultsKey:@"groupIdentifiersToMoveContributedCredentialsBackToPersonalKeychainFrom"];
   }
 
   else
@@ -9697,51 +9697,51 @@ LABEL_17:
   }
 }
 
-- (void)_recordGroupIdentifierForExitCleanup:(id)a3 completionHandler:(id)a4
+- (void)_recordGroupIdentifierForExitCleanup:(id)cleanup completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 length])
+  cleanupCopy = cleanup;
+  handlerCopy = handler;
+  if (![cleanupCopy length])
   {
     v8 = WBS_LOG_CHANNEL_PREFIXPasswords();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       [WBSSavedAccountStore _recordGroupIdentifierForMovingContributedCredentialsBackToPersonalKeychain:];
-      if (!v7)
+      if (!handlerCopy)
       {
         goto LABEL_6;
       }
     }
 
-    else if (!v7)
+    else if (!handlerCopy)
     {
       goto LABEL_6;
     }
 
     v9 = [MEMORY[0x1E696ABC0] safari_errorWithDomain:@"com.apple.AuthenticationServices.CredentialSharingGroupsErrorDomain" code:1 privacyPreservingDescription:@"Failed find group with given group ID."];
-    v7[2](v7, v9);
+    handlerCopy[2](handlerCopy, v9);
 
     goto LABEL_6;
   }
 
-  [(WBSSavedAccountStore *)self _addGroupID:v6 toArrayForUserDefaultsKey:@"groupIdentifiersToDeleteAllItemsFrom"];
-  [(WBSSavedAccountStore *)self _performCleanupForExitedGroupsIfNecessary:v7];
+  [(WBSSavedAccountStore *)self _addGroupID:cleanupCopy toArrayForUserDefaultsKey:@"groupIdentifiersToDeleteAllItemsFrom"];
+  [(WBSSavedAccountStore *)self _performCleanupForExitedGroupsIfNecessary:handlerCopy];
 LABEL_6:
 }
 
-- (BOOL)_hasPersonWithParticipantID:(id)a3 contributedSavedAccountsToGroupWithID:(id)a4
+- (BOOL)_hasPersonWithParticipantID:(id)d contributedSavedAccountsToGroupWithID:(id)iD
 {
-  v6 = a3;
-  v7 = [(WBSSavedAccountStore *)self savedAccountsForGroupID:a4];
+  dCopy = d;
+  v7 = [(WBSSavedAccountStore *)self savedAccountsForGroupID:iD];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __90__WBSSavedAccountStore__hasPersonWithParticipantID_contributedSavedAccountsToGroupWithID___block_invoke;
   v10[3] = &unk_1E7CF4788;
-  v11 = v6;
-  v8 = v6;
-  LOBYTE(v6) = [v7 safari_containsObjectPassingTest:v10];
+  v11 = dCopy;
+  v8 = dCopy;
+  LOBYTE(dCopy) = [v7 safari_containsObjectPassingTest:v10];
 
-  return v6;
+  return dCopy;
 }
 
 uint64_t __90__WBSSavedAccountStore__hasPersonWithParticipantID_contributedSavedAccountsToGroupWithID___block_invoke(uint64_t a1, void *a2)
@@ -9809,9 +9809,9 @@ void __86__WBSSavedAccountStore__moveContributedSavedAccountsBackToPersonalKeych
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_performCleanupForExitedGroupsIfNecessary:(id)a3
+- (void)_performCleanupForExitedGroupsIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   if ([(WBSSavedAccountStore *)self _canPerformMaintenanceTasks])
   {
     v5 = [(WBSSavedAccountStore *)self _groupIDArrayForUserDefaultsKey:@"groupIdentifiersToDeleteAllItemsFrom"];
@@ -9823,7 +9823,7 @@ void __86__WBSSavedAccountStore__moveContributedSavedAccountsBackToPersonalKeych
       v8[1] = 3221225472;
       v8[2] = __66__WBSSavedAccountStore__performCleanupForExitedGroupsIfNecessary___block_invoke;
       v8[3] = &unk_1E7CF4D38;
-      v10 = v4;
+      v10 = necessaryCopy;
       v8[4] = self;
       v9 = v5;
       [v6 performTaskOnQueueAfterFetchingGroups:queue task:v8];
@@ -9831,13 +9831,13 @@ void __86__WBSSavedAccountStore__moveContributedSavedAccountsBackToPersonalKeych
 
     else
     {
-      (*(v4 + 2))(v4, 0);
+      (*(necessaryCopy + 2))(necessaryCopy, 0);
     }
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(necessaryCopy + 2))(necessaryCopy, 0);
   }
 }
 
@@ -9982,20 +9982,20 @@ LABEL_31:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performTaskEnsuringAllAccountSourcesAreLoadedOnQueue:(id)a3 task:(id)a4
+- (void)performTaskEnsuringAllAccountSourcesAreLoadedOnQueue:(id)queue task:(id)task
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  taskCopy = task;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__WBSSavedAccountStore_performTaskEnsuringAllAccountSourcesAreLoadedOnQueue_task___block_invoke;
   block[3] = &unk_1E7CF1908;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = queueCopy;
+  v13 = taskCopy;
+  v9 = taskCopy;
+  v10 = queueCopy;
   dispatch_async(queue, block);
 }
 
@@ -10037,16 +10037,16 @@ void __82__WBSSavedAccountStore_performTaskEnsuringAllAccountSourcesAreLoadedOnQ
   dispatch_async(v3, v4);
 }
 
-- (void)setDontSaveMarkerForSavedAccountsWithProtectionSpace:(id)a3
+- (void)setDontSaveMarkerForSavedAccountsWithProtectionSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__WBSSavedAccountStore_setDontSaveMarkerForSavedAccountsWithProtectionSpace___block_invoke;
   block[3] = &unk_1E7CF16E0;
-  v8 = v4;
-  v6 = v4;
+  v8 = spaceCopy;
+  v6 = spaceCopy;
   dispatch_async(queue, block);
 }
 
@@ -10060,16 +10060,16 @@ void __77__WBSSavedAccountStore_setDontSaveMarkerForSavedAccountsWithProtectionS
   [v4 safari_setDefaultCredential:v5 forHTMLFormProtectionSpace:*(a1 + 32)];
 }
 
-- (void)removeDontSaveMarkerForProtectionSpace:(id)a3
+- (void)removeDontSaveMarkerForProtectionSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__WBSSavedAccountStore_removeDontSaveMarkerForProtectionSpace___block_invoke;
   block[3] = &unk_1E7CF16E0;
-  v8 = v4;
-  v6 = v4;
+  v8 = spaceCopy;
+  v6 = spaceCopy;
   dispatch_async(queue, block);
 }
 
@@ -10110,17 +10110,17 @@ void __63__WBSSavedAccountStore_removeDontSaveMarkerForProtectionSpace___block_i
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateLastOneTimeShareDateforSavedAccountIfNeeded:(id)a3
+- (void)_updateLastOneTimeShareDateforSavedAccountIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __75__WBSSavedAccountStore__updateLastOneTimeShareDateforSavedAccountIfNeeded___block_invoke;
   v7[3] = &unk_1E7CF1708;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = neededCopy;
+  v6 = neededCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -10135,21 +10135,21 @@ void __75__WBSSavedAccountStore__updateLastOneTimeShareDateforSavedAccountIfNeed
   }
 }
 
-- (void)_moveCredentialTypesToRecentlyDeleted:(int64_t)a3 fromSavedAccount:(id)a4 completionHandler:(id)a5
+- (void)_moveCredentialTypesToRecentlyDeleted:(int64_t)deleted fromSavedAccount:(id)account completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  accountCopy = account;
+  handlerCopy = handler;
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __97__WBSSavedAccountStore__moveCredentialTypesToRecentlyDeleted_fromSavedAccount_completionHandler___block_invoke;
   v13[3] = &unk_1E7CF4948;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
+  v14 = accountCopy;
+  v15 = handlerCopy;
+  deletedCopy = deleted;
+  v11 = handlerCopy;
+  v12 = accountCopy;
   dispatch_async(queue, v13);
 }
 
@@ -10159,34 +10159,34 @@ void __97__WBSSavedAccountStore__moveCredentialTypesToRecentlyDeleted_fromSavedA
   (*(*(a1 + 48) + 16))();
 }
 
-- (id)_moveCredentialTypesToRecentlyDeletedOnInternalQueue:(int64_t)a3 fromSavedAccount:(id)a4
+- (id)_moveCredentialTypesToRecentlyDeletedOnInternalQueue:(int64_t)queue fromSavedAccount:(id)account
 {
-  v6 = a4;
-  [(WBSSavedAccountStore *)self _ensureNoRecentlyDeletedSavedAccountsConflictWithSavedAccount:v6];
-  v7 = [MEMORY[0x1E695AC50] sharedCredentialStorage];
-  v8 = [v7 safari_moveCredentialTypesToRecentlyDeleted:a3 onSavedAccount:v6];
+  accountCopy = account;
+  [(WBSSavedAccountStore *)self _ensureNoRecentlyDeletedSavedAccountsConflictWithSavedAccount:accountCopy];
+  mEMORY[0x1E695AC50] = [MEMORY[0x1E695AC50] sharedCredentialStorage];
+  v8 = [mEMORY[0x1E695AC50] safari_moveCredentialTypesToRecentlyDeleted:queue onSavedAccount:accountCopy];
 
   if (v8)
   {
-    if ([v6 credentialTypes] == a3)
+    if ([accountCopy credentialTypes] == queue)
     {
-      v9 = 3;
+      queueCopy = 3;
     }
 
     else
     {
-      v9 = a3;
+      queueCopy = queue;
     }
 
-    [v6 setLastRecentlyDeletedNotificationDate:0];
-    v10 = v6;
+    [accountCopy setLastRecentlyDeletedNotificationDate:0];
+    v10 = accountCopy;
     v11 = v10;
-    if (v9 > 3)
+    if (queueCopy > 3)
     {
-      if ((v9 - 8) >= 2)
+      if ((queueCopy - 8) >= 2)
       {
         v13 = 0;
-        if (v9 == 4)
+        if (queueCopy == 4)
         {
 LABEL_25:
 
@@ -10196,8 +10196,8 @@ LABEL_25:
 LABEL_20:
         if ([v11 isSavedInSharedGroup])
         {
-          v17 = [MEMORY[0x1E695E000] safari_browserDefaults];
-          v18 = [v17 BOOLForKey:@"useOriginalContributorWorkaround"];
+          safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+          v18 = [safari_browserDefaults BOOLForKey:@"useOriginalContributorWorkaround"];
 
           if (v18)
           {
@@ -10223,11 +10223,11 @@ LABEL_20:
       }
     }
 
-    else if (v9 != 1)
+    else if (queueCopy != 1)
     {
-      if (v9 != 2)
+      if (queueCopy != 2)
       {
-        if (v9 == 3)
+        if (queueCopy == 3)
         {
           [v10 setIsRecentlyDeleted:1];
           [(WBSSavedAccountStore *)self _removeSavedAccount:v11 fromCachedCollectionsForCredentialTypes:3];
@@ -10237,15 +10237,15 @@ LABEL_20:
         goto LABEL_20;
       }
 
-      v14 = [v10 _movePasskeyCredentialToNewSavedAccount];
-      [v14 setIsRecentlyDeleted:1];
+      _movePasskeyCredentialToNewSavedAccount = [v10 _movePasskeyCredentialToNewSavedAccount];
+      [_movePasskeyCredentialToNewSavedAccount setIsRecentlyDeleted:1];
       goto LABEL_19;
     }
 
-    v14 = [v10 _movePasswordCredentialToNewSavedAccount];
-    [v14 setIsRecentlyDeleted:1];
-    v15 = [v14 totpGenerators];
-    v16 = [v15 count];
+    _movePasskeyCredentialToNewSavedAccount = [v10 _movePasswordCredentialToNewSavedAccount];
+    [_movePasskeyCredentialToNewSavedAccount setIsRecentlyDeleted:1];
+    totpGenerators = [_movePasskeyCredentialToNewSavedAccount totpGenerators];
+    v16 = [totpGenerators count];
 
     if (v16)
     {
@@ -10253,9 +10253,9 @@ LABEL_20:
     }
 
 LABEL_19:
-    [(WBSSavedAccountStore *)self _addSavedAccountToRecentlyDeletedCachedCollections:v14];
+    [(WBSSavedAccountStore *)self _addSavedAccountToRecentlyDeletedCachedCollections:_movePasskeyCredentialToNewSavedAccount];
 
-    v11 = v14;
+    v11 = _movePasskeyCredentialToNewSavedAccount;
     goto LABEL_20;
   }
 
@@ -10271,23 +10271,23 @@ LABEL_26:
   return v13;
 }
 
-- (void)_ensureNoRecentlyDeletedSavedAccountsConflictWithSavedAccount:(id)a3
+- (void)_ensureNoRecentlyDeletedSavedAccountsConflictWithSavedAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   [(WBSSavedAccountStore *)self _ensureRecentlyDeletedSavedAccountsAreLoadedOnInternalQueue];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __86__WBSSavedAccountStore__ensureNoRecentlyDeletedSavedAccountsConflictWithSavedAccount___block_invoke;
   aBlock[3] = &unk_1E7CF4DB0;
-  v5 = v4;
+  v5 = accountCopy;
   v19 = v5;
-  v20 = self;
+  selfCopy = self;
   v6 = _Block_copy(aBlock);
   if ([v5 isSavedInSharedGroup])
   {
     sharedGroupIdentifiersToRecentlyDeletedSavedAccounts = self->_sharedGroupIdentifiersToRecentlyDeletedSavedAccounts;
-    v8 = [v5 sharedGroupID];
-    v9 = [(NSMutableDictionary *)sharedGroupIdentifiersToRecentlyDeletedSavedAccounts objectForKeyedSubscript:v8];
+    sharedGroupID = [v5 sharedGroupID];
+    v9 = [(NSMutableDictionary *)sharedGroupIdentifiersToRecentlyDeletedSavedAccounts objectForKeyedSubscript:sharedGroupID];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __86__WBSSavedAccountStore__ensureNoRecentlyDeletedSavedAccountsConflictWithSavedAccount___block_invoke_368;
@@ -10341,20 +10341,20 @@ void __86__WBSSavedAccountStore__ensureNoRecentlyDeletedSavedAccountsConflictWit
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_recoverRecentlyDeletedSavedAccount:(id)a3 completionHandler:(id)a4
+- (void)_recoverRecentlyDeletedSavedAccount:(id)account completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __78__WBSSavedAccountStore__recoverRecentlyDeletedSavedAccount_completionHandler___block_invoke;
   block[3] = &unk_1E7CF1A28;
-  v13 = self;
-  v14 = v7;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v12 = accountCopy;
+  v9 = handlerCopy;
+  v10 = accountCopy;
   dispatch_async(queue, block);
 }
 
@@ -10398,16 +10398,16 @@ uint64_t __78__WBSSavedAccountStore__recoverRecentlyDeletedSavedAccount_completi
   return v4();
 }
 
-- (void)savedAccountsMatchingCriteria:(id)a3 withCompletionHandler:(id)a4
+- (void)savedAccountsMatchingCriteria:(id)criteria withCompletionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  criteriaCopy = criteria;
+  handlerCopy = handler;
   v8 = WBS_LOG_CHANNEL_PREFIXPasswords();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138739971;
-    v17 = v6;
+    v17 = criteriaCopy;
     _os_log_impl(&dword_1B8447000, v8, OS_LOG_TYPE_DEFAULT, "Enqueueing asynchronous query for saved accounts matching criteria %{sensitive}@", buf, 0xCu);
   }
 
@@ -10416,11 +10416,11 @@ uint64_t __78__WBSSavedAccountStore__recoverRecentlyDeletedSavedAccount_completi
   block[1] = 3221225472;
   block[2] = __76__WBSSavedAccountStore_savedAccountsMatchingCriteria_withCompletionHandler___block_invoke;
   block[3] = &unk_1E7CF2AA8;
-  v14 = v6;
-  v15 = v7;
+  v14 = criteriaCopy;
+  v15 = handlerCopy;
   block[4] = self;
-  v10 = v6;
-  v11 = v7;
+  v10 = criteriaCopy;
+  v11 = handlerCopy;
   dispatch_async(queue, block);
 
   v12 = *MEMORY[0x1E69E9840];
@@ -10433,9 +10433,9 @@ void __76__WBSSavedAccountStore_savedAccountsMatchingCriteria_withCompletionHand
   (*(v1 + 16))(v1, v2);
 }
 
-- (id)_getSavedAccountsMatchingCriteriaOnInternalQueue:(id)a3
+- (id)_getSavedAccountsMatchingCriteriaOnInternalQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = WBS_LOG_CHANNEL_PREFIXPasswords();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -10443,34 +10443,34 @@ void __76__WBSSavedAccountStore_savedAccountsMatchingCriteria_withCompletionHand
     _os_log_impl(&dword_1B8447000, v5, OS_LOG_TYPE_DEFAULT, "Beginning query for saved accounts matching criteria", buf, 2u);
   }
 
-  v6 = [v4 context];
+  context = [queueCopy context];
 
-  if (!v6)
+  if (!context)
   {
     v7 = +[WBSSavedAccountContext defaultContext];
-    [v4 setContext:v7];
+    [queueCopy setContext:v7];
   }
 
   if (!self->_personalKeychainHighLevelDomainToUsernameToPasswordToSavedAccounts)
   {
-    v8 = [(WBSSavedAccountStore *)self _loadSavedAccounts];
+    _loadSavedAccounts = [(WBSSavedAccountStore *)self _loadSavedAccounts];
   }
 
-  v9 = [(WBSSavedAccountStore *)self _fetchCurrentAutoFillPasskeysWithCriteria:v4];
-  v10 = [v9 first];
-  v11 = [v9 second];
-  v12 = [v4 passkeyCredentialIdentifier];
-  v13 = [(WBSSavedAccountStore *)self _relyingPartyURLForPasskeyCredentialIdentifierOnInternalQueue:v12 credentialIdentifiersToAutoFillPasskeys:v10];
+  v9 = [(WBSSavedAccountStore *)self _fetchCurrentAutoFillPasskeysWithCriteria:queueCopy];
+  first = [v9 first];
+  second = [v9 second];
+  passkeyCredentialIdentifier = [queueCopy passkeyCredentialIdentifier];
+  v13 = [(WBSSavedAccountStore *)self _relyingPartyURLForPasskeyCredentialIdentifierOnInternalQueue:passkeyCredentialIdentifier credentialIdentifiersToAutoFillPasskeys:first];
 
-  v14 = [(WBSSavedAccountStore *)self _getSavedAccountTreeMatchesWithCriteriaOnInternalQueue:v4 relyingPartyURL:v13];
-  v15 = [v10 allValues];
-  v16 = [v15 firstObject];
-  v17 = [v16 requestUsedNonEmptyAllowList];
+  v14 = [(WBSSavedAccountStore *)self _getSavedAccountTreeMatchesWithCriteriaOnInternalQueue:queueCopy relyingPartyURL:v13];
+  allValues = [first allValues];
+  firstObject = [allValues firstObject];
+  requestUsedNonEmptyAllowList = [firstObject requestUsedNonEmptyAllowList];
 
-  v18 = [v10 allKeys];
-  [(WBSSavedAccountStore *)self _pruneSavedAccountTreeMatchesOnInternalQueue:v14 basedOnUsernameAndPasswordCriteria:v4 autoFillPasskeyIdentifiers:v18 keepAllPasskeyMatches:v17];
+  allKeys = [first allKeys];
+  [(WBSSavedAccountStore *)self _pruneSavedAccountTreeMatchesOnInternalQueue:v14 basedOnUsernameAndPasswordCriteria:queueCopy autoFillPasskeyIdentifiers:allKeys keepAllPasskeyMatches:requestUsedNonEmptyAllowList];
 
-  v19 = [(WBSSavedAccountStore *)self _getSavedAccountMatchesFromSavedAccountTreeMatchesOnInternalQueue:v14 withCriteria:v4 mergingAutoFillPasskeys:v10 nearbyDeviceOptions:v11];
+  v19 = [(WBSSavedAccountStore *)self _getSavedAccountMatchesFromSavedAccountTreeMatchesOnInternalQueue:v14 withCriteria:queueCopy mergingAutoFillPasskeys:first nearbyDeviceOptions:second];
   v20 = WBS_LOG_CHANNEL_PREFIXPasswords();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -10481,16 +10481,16 @@ void __76__WBSSavedAccountStore_savedAccountsMatchingCriteria_withCompletionHand
   return v19;
 }
 
-- (void)getSavedAccountsMatchingCriteria:(id)a3 withSynchronousCompletionHandler:(id)a4
+- (void)getSavedAccountsMatchingCriteria:(id)criteria withSynchronousCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  criteriaCopy = criteria;
+  handlerCopy = handler;
   v8 = WBS_LOG_CHANNEL_PREFIXPasswords();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138739971;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = criteriaCopy;
     _os_log_impl(&dword_1B8447000, v8, OS_LOG_TYPE_DEFAULT, "Enqueueing synchronous query for saved accounts matching criteria %{sensitive}@", &buf, 0xCu);
   }
 
@@ -10507,10 +10507,10 @@ void __76__WBSSavedAccountStore_savedAccountsMatchingCriteria_withCompletionHand
   block[3] = &unk_1E7CF1730;
   p_buf = &buf;
   block[4] = self;
-  v10 = v6;
+  v10 = criteriaCopy;
   v13 = v10;
   dispatch_sync(queue, block);
-  v7[2](v7, *(*(&buf + 1) + 40));
+  handlerCopy[2](handlerCopy, *(*(&buf + 1) + 40));
 
   _Block_object_dispose(&buf, 8);
   v11 = *MEMORY[0x1E69E9840];
@@ -10524,12 +10524,12 @@ void __90__WBSSavedAccountStore_getSavedAccountsMatchingCriteria_withSynchronous
   *(v3 + 40) = v2;
 }
 
-- (id)_relyingPartyURLForPasskeyCredentialIdentifierOnInternalQueue:(id)a3 credentialIdentifiersToAutoFillPasskeys:(id)a4
+- (id)_relyingPartyURLForPasskeyCredentialIdentifierOnInternalQueue:(id)queue credentialIdentifiersToAutoFillPasskeys:(id)passkeys
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  queueCopy = queue;
+  passkeysCopy = passkeys;
+  v8 = passkeysCopy;
+  if (queueCopy)
   {
     v29 = 0;
     v30 = &v29;
@@ -10542,7 +10542,7 @@ void __90__WBSSavedAccountStore_getSavedAccountsMatchingCriteria_withSynchronous
     v27[1] = 3221225472;
     v27[2] = __126__WBSSavedAccountStore__relyingPartyURLForPasskeyCredentialIdentifierOnInternalQueue_credentialIdentifiersToAutoFillPasskeys___block_invoke;
     v27[3] = &unk_1E7CF4E00;
-    v10 = v6;
+    v10 = queueCopy;
     v28 = v10;
     v11 = [(NSArray *)passkeysDataInPersonalKeychain safari_firstObjectPassingTest:v27];
     v12 = v30[5];
@@ -10554,14 +10554,14 @@ void __90__WBSSavedAccountStore_getSavedAccountsMatchingCriteria_withSynchronous
       goto LABEL_4;
     }
 
-    v14 = [(NSDictionary *)self->_groupIdentifiersToPasskeysData allValues];
+    allValues = [(NSDictionary *)self->_groupIdentifiersToPasskeysData allValues];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __126__WBSSavedAccountStore__relyingPartyURLForPasskeyCredentialIdentifierOnInternalQueue_credentialIdentifiersToAutoFillPasskeys___block_invoke_2;
     v24[3] = &unk_1E7CF4E28;
     v26 = &v29;
     v25 = v10;
-    [v14 enumerateObjectsUsingBlock:v24];
+    [allValues enumerateObjectsUsingBlock:v24];
 
     v13 = v30[5];
     if (v13)
@@ -10581,14 +10581,14 @@ LABEL_4:
     _Block_object_dispose(&v29, 8);
   }
 
-  else if ([v7 count])
+  else if ([passkeysCopy count])
   {
     v19 = objc_alloc_init(MEMORY[0x1E696AF20]);
     [v19 setScheme:@"https"];
-    v20 = [v8 allValues];
-    v21 = [v20 firstObject];
-    v22 = [v21 relyingPartyIdentifier];
-    [v19 setHost:v22];
+    allValues2 = [v8 allValues];
+    firstObject = [allValues2 firstObject];
+    relyingPartyIdentifier = [firstObject relyingPartyIdentifier];
+    [v19 setHost:relyingPartyIdentifier];
 
     v18 = [v19 URL];
   }
@@ -10630,11 +10630,11 @@ uint64_t __126__WBSSavedAccountStore__relyingPartyURLForPasskeyCredentialIdentif
   return v4;
 }
 
-- (id)_getSavedAccountTreeMatchesWithCriteriaOnInternalQueue:(id)a3 relyingPartyURL:(id)a4
+- (id)_getSavedAccountTreeMatchesWithCriteriaOnInternalQueue:(id)queue relyingPartyURL:(id)l
 {
   v83 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  lCopy = l;
   v8 = WBS_LOG_CHANNEL_PREFIXAutoFill();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -10642,9 +10642,9 @@ uint64_t __126__WBSSavedAccountStore__relyingPartyURLForPasskeyCredentialIdentif
     _os_log_impl(&dword_1B8447000, v8, OS_LOG_TYPE_INFO, "Getting credential matches by looking through account store by high level domain.", buf, 2u);
   }
 
-  if ([v6 queryShouldOnlyIncludePasswordsWithoutWebsites])
+  if ([queueCopy queryShouldOnlyIncludePasswordsWithoutWebsites])
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
@@ -10654,8 +10654,8 @@ uint64_t __126__WBSSavedAccountStore__relyingPartyURLForPasskeyCredentialIdentif
     if (v10)
     {
       v11 = v10;
-      v54 = v7;
-      v56 = v6;
+      v54 = lCopy;
+      v56 = queueCopy;
       v12 = *v67;
       do
       {
@@ -10669,8 +10669,8 @@ uint64_t __126__WBSSavedAccountStore__relyingPartyURLForPasskeyCredentialIdentif
           v14 = *(*(&v66 + 1) + 8 * i);
           if (([v14 hasValidWebsite] & 1) == 0)
           {
-            v15 = [v14 user];
-            v80 = v15;
+            user = [v14 user];
+            v80 = user;
             v77 = v14;
             v78 = &unk_1F308E4E0;
             v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v77 count:1];
@@ -10680,10 +10680,10 @@ uint64_t __126__WBSSavedAccountStore__relyingPartyURLForPasskeyCredentialIdentif
             v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v81 forKeys:&v80 count:1];
 
             v19 = [WBSSavedAccountTreeMatch alloc];
-            v20 = [v14 highLevelDomain];
-            v21 = [(WBSSavedAccountTreeMatch *)v19 initWithDomain:v20 savedAccountTree:v18 matchLevel:2];
-            v22 = [v14 highLevelDomain];
-            [v9 setObject:v21 forKeyedSubscript:v22];
+            highLevelDomain = [v14 highLevelDomain];
+            v21 = [(WBSSavedAccountTreeMatch *)v19 initWithDomain:highLevelDomain savedAccountTree:v18 matchLevel:2];
+            highLevelDomain2 = [v14 highLevelDomain];
+            [dictionary setObject:v21 forKeyedSubscript:highLevelDomain2];
           }
         }
 
@@ -10691,49 +10691,49 @@ uint64_t __126__WBSSavedAccountStore__relyingPartyURLForPasskeyCredentialIdentif
       }
 
       while (v11);
-      v7 = v54;
-      v6 = v56;
+      lCopy = v54;
+      queueCopy = v56;
     }
   }
 
   else
   {
-    obj = [v6 URL];
-    v23 = [(NSArray *)obj host];
-    v24 = [v23 safari_highLevelDomainForPasswordManager];
-    v25 = [v7 host];
-    v26 = [v25 safari_highLevelDomainForPasswordManager];
-    v9 = [MEMORY[0x1E695DF90] dictionary];
-    v27 = [(NSMutableDictionary *)self->_allSavedAccountsHighLevelDomainToUsernameToCredentialTypesToSavedAccounts objectForKeyedSubscript:v24];
+    obj = [queueCopy URL];
+    host = [(NSArray *)obj host];
+    safari_highLevelDomainForPasswordManager = [host safari_highLevelDomainForPasswordManager];
+    host2 = [lCopy host];
+    safari_highLevelDomainForPasswordManager2 = [host2 safari_highLevelDomainForPasswordManager];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v27 = [(NSMutableDictionary *)self->_allSavedAccountsHighLevelDomainToUsernameToCredentialTypesToSavedAccounts objectForKeyedSubscript:safari_highLevelDomainForPasswordManager];
     if (v27)
     {
-      v28 = [[WBSSavedAccountTreeMatch alloc] initWithDomain:v23 savedAccountTree:v27 matchLevel:4];
-      [v9 setObject:v28 forKeyedSubscript:v24];
+      v28 = [[WBSSavedAccountTreeMatch alloc] initWithDomain:host savedAccountTree:v27 matchLevel:4];
+      [dictionary setObject:v28 forKeyedSubscript:safari_highLevelDomainForPasswordManager];
     }
 
-    v29 = [(NSMutableDictionary *)self->_allSavedAccountsHighLevelDomainToUsernameToCredentialTypesToSavedAccounts objectForKeyedSubscript:v26];
+    v29 = [(NSMutableDictionary *)self->_allSavedAccountsHighLevelDomainToUsernameToCredentialTypesToSavedAccounts objectForKeyedSubscript:safari_highLevelDomainForPasswordManager2];
     v52 = v29;
     if (v29)
     {
-      v30 = [[WBSSavedAccountTreeMatch alloc] initWithDomain:v23 savedAccountTree:v29 matchLevel:4];
-      [v9 setObject:v30 forKeyedSubscript:v26];
+      v30 = [[WBSSavedAccountTreeMatch alloc] initWithDomain:host savedAccountTree:v29 matchLevel:4];
+      [dictionary setObject:v30 forKeyedSubscript:safari_highLevelDomainForPasswordManager2];
     }
 
-    v58 = [v6 associatedDomainsForURL];
+    associatedDomainsForURL = [queueCopy associatedDomainsForURL];
     v60 = v27;
-    v53 = v26;
-    if ([v6 queryShouldReturnSavedAccountsMatchingAssociatedDomains])
+    v53 = safari_highLevelDomainForPasswordManager2;
+    if ([queueCopy queryShouldReturnSavedAccountsMatchingAssociatedDomains])
     {
-      v50 = v25;
-      v51 = v23;
-      v59 = v24;
-      v55 = v7;
-      v57 = v6;
+      v50 = host2;
+      v51 = host;
+      v59 = safari_highLevelDomainForPasswordManager;
+      v55 = lCopy;
+      v57 = queueCopy;
       v64 = 0u;
       v65 = 0u;
       v62 = 0u;
       v63 = 0u;
-      v31 = v58;
+      v31 = associatedDomainsForURL;
       v32 = [v31 countByEnumeratingWithState:&v62 objects:v76 count:16];
       if (v32)
       {
@@ -10749,11 +10749,11 @@ uint64_t __126__WBSSavedAccountStore__relyingPartyURLForPasskeyCredentialIdentif
             }
 
             v36 = *(*(&v62 + 1) + 8 * j);
-            v37 = [v36 safari_highLevelDomainForPasswordManager];
-            v38 = [(NSMutableDictionary *)self->_allSavedAccountsHighLevelDomainToUsernameToCredentialTypesToSavedAccounts objectForKeyedSubscript:v37];
+            safari_highLevelDomainForPasswordManager3 = [v36 safari_highLevelDomainForPasswordManager];
+            v38 = [(NSMutableDictionary *)self->_allSavedAccountsHighLevelDomainToUsernameToCredentialTypesToSavedAccounts objectForKeyedSubscript:safari_highLevelDomainForPasswordManager3];
             if (v38)
             {
-              v39 = [v9 objectForKeyedSubscript:v37];
+              v39 = [dictionary objectForKeyedSubscript:safari_highLevelDomainForPasswordManager3];
 
               if (v39)
               {
@@ -10770,7 +10770,7 @@ uint64_t __126__WBSSavedAccountStore__relyingPartyURLForPasskeyCredentialIdentif
               else
               {
                 v41 = [[WBSSavedAccountTreeMatch alloc] initWithDomain:v36 savedAccountTree:v38 matchLevel:3];
-                [v9 setObject:v41 forKeyedSubscript:v37];
+                [dictionary setObject:v41 forKeyedSubscript:safari_highLevelDomainForPasswordManager3];
 
                 v27 = v60;
               }
@@ -10783,45 +10783,45 @@ uint64_t __126__WBSSavedAccountStore__relyingPartyURLForPasskeyCredentialIdentif
         while (v33);
       }
 
-      v7 = v55;
-      v6 = v57;
-      v25 = v50;
-      v23 = v51;
-      v24 = v59;
-      v26 = v53;
+      lCopy = v55;
+      queueCopy = v57;
+      host2 = v50;
+      host = v51;
+      safari_highLevelDomainForPasswordManager = v59;
+      safari_highLevelDomainForPasswordManager2 = v53;
     }
 
     v42 = WBS_LOG_CHANNEL_PREFIXAutoFill();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
     {
       v43 = v42;
-      v44 = v25;
-      v45 = [v9 count];
-      v46 = [v58 allObjects];
-      v47 = [v46 componentsJoinedByString:{@", "}];
+      v44 = host2;
+      v45 = [dictionary count];
+      allObjects = [associatedDomainsForURL allObjects];
+      v47 = [allObjects componentsJoinedByString:{@", "}];
       *buf = 134218499;
       v71 = v45;
-      v25 = v44;
+      host2 = v44;
       v72 = 2117;
-      v73 = v24;
+      v73 = safari_highLevelDomainForPasswordManager;
       v74 = 2117;
       v75 = v47;
       _os_log_impl(&dword_1B8447000, v43, OS_LOG_TYPE_DEFAULT, "Found %lu tree matches for %{sensitive}@ and associated domains: %{sensitive}@", buf, 0x20u);
 
-      v26 = v53;
+      safari_highLevelDomainForPasswordManager2 = v53;
       v27 = v60;
     }
   }
 
   v48 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return dictionary;
 }
 
-- (id)_fetchCurrentAutoFillPasskeysWithCriteria:(id)a3
+- (id)_fetchCurrentAutoFillPasskeysWithCriteria:(id)criteria
 {
-  v4 = a3;
-  if ([v4 queryShouldOmitAutoFillPasskeyMatches])
+  criteriaCopy = criteria;
+  if ([criteriaCopy queryShouldOmitAutoFillPasskeyMatches])
   {
     v5 = WBS_LOG_CHANNEL_PREFIXAutoFill();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -10836,7 +10836,7 @@ uint64_t __126__WBSSavedAccountStore__relyingPartyURLForPasskeyCredentialIdentif
 
   else
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     *buf = 0;
     v27 = buf;
     v28 = 0x3032000000;
@@ -10846,19 +10846,19 @@ uint64_t __126__WBSSavedAccountStore__relyingPartyURLForPasskeyCredentialIdentif
     v9 = dispatch_group_create();
     dispatch_group_enter(v9);
     authenticationServicesAgentProxy = self->_authenticationServicesAgentProxy;
-    v11 = [MEMORY[0x1E696AAE8] mainBundle];
-    v12 = [v11 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
     v18 = MEMORY[0x1E69E9820];
     v19 = 3221225472;
     v20 = __66__WBSSavedAccountStore__fetchCurrentAutoFillPasskeysWithCriteria___block_invoke;
     v21 = &unk_1E7CF4E78;
-    v22 = v4;
-    v13 = v8;
+    v22 = criteriaCopy;
+    v13 = dictionary;
     v23 = v13;
     v25 = buf;
     v14 = v9;
     v24 = v14;
-    [(WBSAuthenticationServicesAgentProxy *)authenticationServicesAgentProxy getPasskeysForRunningAssertionWithApplicationIdentifier:v12 withCompletionHandler:&v18];
+    [(WBSAuthenticationServicesAgentProxy *)authenticationServicesAgentProxy getPasskeysForRunningAssertionWithApplicationIdentifier:bundleIdentifier withCompletionHandler:&v18];
 
     v15 = dispatch_time(0, 3000000000);
     dispatch_group_wait(v14, v15);
@@ -10944,31 +10944,31 @@ BOOL __66__WBSSavedAccountStore__fetchCurrentAutoFillPasskeysWithCriteria___bloc
   return v10;
 }
 
-- (void)_pruneSavedAccountTreeMatchesOnInternalQueue:(id)a3 basedOnUsernameAndPasswordCriteria:(id)a4 autoFillPasskeyIdentifiers:(id)a5 keepAllPasskeyMatches:(BOOL)a6
+- (void)_pruneSavedAccountTreeMatchesOnInternalQueue:(id)queue basedOnUsernameAndPasswordCriteria:(id)criteria autoFillPasskeyIdentifiers:(id)identifiers keepAllPasskeyMatches:(BOOL)matches
 {
-  v6 = a6;
+  matchesCopy = matches;
   v33 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v26 = a5;
-  v11 = [v10 queryShouldReturnSavedAccountsWithEmptyUsernames];
-  v12 = [v10 queryShouldIncludePasskeyMatchesForNonAutoFillContext];
-  v13 = [v10 queryShouldOmitAutoFillPasskeyMatches];
-  v14 = [v10 queryShouldIncludeSavedAccountsWithDoNotSaveMarkers];
+  queueCopy = queue;
+  criteriaCopy = criteria;
+  identifiersCopy = identifiers;
+  queryShouldReturnSavedAccountsWithEmptyUsernames = [criteriaCopy queryShouldReturnSavedAccountsWithEmptyUsernames];
+  queryShouldIncludePasskeyMatchesForNonAutoFillContext = [criteriaCopy queryShouldIncludePasskeyMatchesForNonAutoFillContext];
+  queryShouldOmitAutoFillPasskeyMatches = [criteriaCopy queryShouldOmitAutoFillPasskeyMatches];
+  queryShouldIncludeSavedAccountsWithDoNotSaveMarkers = [criteriaCopy queryShouldIncludeSavedAccountsWithDoNotSaveMarkers];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v25 = v9;
-  obj = [v9 allValues];
+  v25 = queueCopy;
+  obj = [queueCopy allValues];
   v15 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v15)
   {
     v16 = v15;
     v17 = *v29;
-    if (v6)
+    if (matchesCopy)
     {
-      v18 = v26;
+      v18 = identifiersCopy;
     }
 
     else
@@ -10976,7 +10976,7 @@ BOOL __66__WBSSavedAccountStore__fetchCurrentAutoFillPasskeysWithCriteria___bloc
       v18 = MEMORY[0x1E695E0F0];
     }
 
-    v19 = v12 | v13;
+    v19 = queryShouldIncludePasskeyMatchesForNonAutoFillContext | queryShouldOmitAutoFillPasskeyMatches;
     do
     {
       v20 = 0;
@@ -10988,28 +10988,28 @@ BOOL __66__WBSSavedAccountStore__fetchCurrentAutoFillPasskeysWithCriteria___bloc
         }
 
         v21 = *(*(&v28 + 1) + 8 * v20);
-        if ((v14 & 1) == 0)
+        if ((queryShouldIncludeSavedAccountsWithDoNotSaveMarkers & 1) == 0)
         {
           [*(*(&v28 + 1) + 8 * v20) pruneDontSaveTrees];
         }
 
-        if (v11)
+        if (queryShouldReturnSavedAccountsWithEmptyUsernames)
         {
           [v21 pruneEmptyUsernameTrees];
         }
 
-        v22 = [v10 userNameQuery];
-        [v21 pruneUsernameTreesNotMatchingUserNameQuery:v22 orPasskeyIdentifiers:v18];
+        userNameQuery = [criteriaCopy userNameQuery];
+        [v21 pruneUsernameTreesNotMatchingUserNameQuery:userNameQuery orPasskeyIdentifiers:v18];
 
-        v23 = [v10 titleQuery];
-        if (v23)
+        titleQuery = [criteriaCopy titleQuery];
+        if (titleQuery)
         {
-          [v21 pruneUsernameTreesNotMatchingTitleQuery:v23];
+          [v21 pruneUsernameTreesNotMatchingTitleQuery:titleQuery];
         }
 
         if ((v19 & 1) == 0)
         {
-          [v21 pruneTreesWithoutPasswordOrMatchingPasskeyIdentifiers:v26];
+          [v21 pruneTreesWithoutPasswordOrMatchingPasskeyIdentifiers:identifiersCopy];
         }
 
         ++v20;
@@ -11025,48 +11025,48 @@ BOOL __66__WBSSavedAccountStore__fetchCurrentAutoFillPasskeysWithCriteria___bloc
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_getSavedAccountMatchesFromSavedAccountTreeMatchesOnInternalQueue:(id)a3 withCriteria:(id)a4 mergingAutoFillPasskeys:(id)a5 nearbyDeviceOptions:(id)a6
+- (id)_getSavedAccountMatchesFromSavedAccountTreeMatchesOnInternalQueue:(id)queue withCriteria:(id)criteria mergingAutoFillPasskeys:(id)passkeys nearbyDeviceOptions:(id)options
 {
   v217 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v131 = a6;
-  v141 = [v10 queryShouldReturnSavedAccountsMatchingHighLevelAndSimplifiedDomains];
-  v12 = [v10 URL];
-  v13 = [v12 host];
-  v163 = [v13 safari_highLevelDomainForPasswordManager];
-  v170 = v13;
-  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"https://%@", v13];
+  queueCopy = queue;
+  criteriaCopy = criteria;
+  passkeysCopy = passkeys;
+  optionsCopy = options;
+  queryShouldReturnSavedAccountsMatchingHighLevelAndSimplifiedDomains = [criteriaCopy queryShouldReturnSavedAccountsMatchingHighLevelAndSimplifiedDomains];
+  v12 = [criteriaCopy URL];
+  host = [v12 host];
+  safari_highLevelDomainForPasswordManager = [host safari_highLevelDomainForPasswordManager];
+  v170 = host;
+  v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"https://%@", host];
   v162 = [v14 safari_simplifiedUserVisibleURLStringWithSimplifications:330 forDisplayOnly:0 simplifiedStringOffset:0];
 
-  v15 = [v12 port];
-  v16 = [v15 integerValue];
+  port = [v12 port];
+  integerValue = [port integerValue];
 
   v139 = v12;
-  v171 = [v12 scheme];
-  v130 = [v10 passkeyCredentialIdentifier];
-  v17 = [v130 base64EncodedStringWithOptions:0];
-  v18 = [MEMORY[0x1E695DF70] array];
-  v140 = [MEMORY[0x1E695DF70] array];
-  v142 = [MEMORY[0x1E695DF70] array];
-  v145 = [MEMORY[0x1E695DF70] array];
-  v149 = [MEMORY[0x1E695DF70] array];
-  v132 = v11;
-  v146 = [v11 safari_mapAndFilterKeysUsingBlock:&__block_literal_global_390];
+  scheme = [v12 scheme];
+  passkeyCredentialIdentifier = [criteriaCopy passkeyCredentialIdentifier];
+  v17 = [passkeyCredentialIdentifier base64EncodedStringWithOptions:0];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
+  array5 = [MEMORY[0x1E695DF70] array];
+  v132 = passkeysCopy;
+  v146 = [passkeysCopy safari_mapAndFilterKeysUsingBlock:&__block_literal_global_390];
   v197 = 0u;
   v198 = 0u;
   v199 = 0u;
   v200 = 0u;
-  v133 = v9;
-  obj = [v9 allValues];
+  v133 = queueCopy;
+  obj = [queueCopy allValues];
   v143 = v17;
   v136 = [obj countByEnumeratingWithState:&v197 objects:v216 count:16];
   if (v136)
   {
     v135 = *v198;
-    v148 = v10;
-    v150 = v18;
+    v148 = criteriaCopy;
+    v150 = array;
     do
     {
       for (i = 0; i != v136; ++i)
@@ -11077,16 +11077,16 @@ BOOL __66__WBSSavedAccountStore__fetchCurrentAutoFillPasskeysWithCriteria___bloc
         }
 
         v20 = *(*(&v197 + 1) + 8 * i);
-        v21 = [v20 flattenedSavedAccountsFromTree];
-        if ([v10 queryShouldOnlyIncludePasswordsWithoutWebsites])
+        flattenedSavedAccountsFromTree = [v20 flattenedSavedAccountsFromTree];
+        if ([criteriaCopy queryShouldOnlyIncludePasswordsWithoutWebsites])
         {
-          v137 = v21;
+          v137 = flattenedSavedAccountsFromTree;
           v138 = i;
           v195 = 0u;
           v196 = 0u;
           v193 = 0u;
           v194 = 0u;
-          v22 = v21;
+          v22 = flattenedSavedAccountsFromTree;
           v23 = [v22 countByEnumeratingWithState:&v193 objects:v215 count:16];
           if (v23)
           {
@@ -11103,10 +11103,10 @@ BOOL __66__WBSSavedAccountStore__fetchCurrentAutoFillPasskeysWithCriteria___bloc
 
                 v27 = *(*(&v193 + 1) + 8 * j);
                 v28 = [WBSSavedAccountMatch alloc];
-                v29 = [v10 context];
-                v30 = [(WBSSavedAccountMatch *)v28 initWithSavedAccount:v27 protectionSpace:0 context:v29 matchLevel:1 autoFillPasskey:0];
+                context = [criteriaCopy context];
+                v30 = [(WBSSavedAccountMatch *)v28 initWithSavedAccount:v27 protectionSpace:0 context:context matchLevel:1 autoFillPasskey:0];
 
-                [v18 addObject:v30];
+                [array addObject:v30];
               }
 
               v24 = [v22 countByEnumeratingWithState:&v193 objects:v215 count:16];
@@ -11116,7 +11116,7 @@ BOOL __66__WBSSavedAccountStore__fetchCurrentAutoFillPasskeysWithCriteria___bloc
           }
 
 LABEL_91:
-          v21 = v137;
+          flattenedSavedAccountsFromTree = v137;
 
           v17 = v143;
           i = v138;
@@ -11125,13 +11125,13 @@ LABEL_91:
 
         if ([v20 matchLevel] == 4)
         {
-          v137 = v21;
+          v137 = flattenedSavedAccountsFromTree;
           v138 = i;
           v191 = 0u;
           v192 = 0u;
           v189 = 0u;
           v190 = 0u;
-          v147 = v21;
+          v147 = flattenedSavedAccountsFromTree;
           v153 = [v147 countByEnumeratingWithState:&v189 objects:v214 count:16];
           if (!v153)
           {
@@ -11143,7 +11143,7 @@ LABEL_91:
           {
             v31 = 0;
             v32 = v143;
-            v33 = v149;
+            v33 = array5;
             do
             {
               if (*v190 != v152)
@@ -11154,39 +11154,39 @@ LABEL_91:
               v158 = v31;
               v34 = *(*(&v189 + 1) + 8 * v31);
               v154 = [v34 isDefaultCredentialForFullyQualifiedHostname:v170];
-              v35 = [v34 passkeyCredentialID];
-              v36 = [v35 isEqualToString:v32];
+              passkeyCredentialID = [v34 passkeyCredentialID];
+              v36 = [passkeyCredentialID isEqualToString:v32];
 
               if (v36)
               {
                 v37 = [WBSSavedAccountMatch alloc];
-                v38 = [v10 context];
-                v39 = [(WBSSavedAccountMatch *)v37 initWithSavedAccount:v34 protectionSpace:0 context:v38 matchLevel:1 autoFillPasskey:0];
+                context2 = [criteriaCopy context];
+                v39 = [(WBSSavedAccountMatch *)v37 initWithSavedAccount:v34 protectionSpace:0 context:context2 matchLevel:1 autoFillPasskey:0];
                 [v33 addObject:v39];
                 v40 = v158;
                 goto LABEL_64;
               }
 
-              v41 = [v34 passkeyCredentialID];
-              v42 = [v146 objectForKeyedSubscript:v41];
+              passkeyCredentialID2 = [v34 passkeyCredentialID];
+              v42 = [v146 objectForKeyedSubscript:passkeyCredentialID2];
 
               v151 = v42;
               if (v42)
               {
                 v43 = [WBSSavedAccountMatch alloc];
-                v44 = [v10 context];
-                v45 = [(WBSSavedAccountMatch *)v43 initWithSavedAccount:v34 protectionSpace:0 context:v44 matchLevel:1 autoFillPasskey:v42];
+                context3 = [criteriaCopy context];
+                v45 = [(WBSSavedAccountMatch *)v43 initWithSavedAccount:v34 protectionSpace:0 context:context3 matchLevel:1 autoFillPasskey:v42];
                 v46 = v33;
               }
 
               else
               {
-                if (![v10 queryShouldIncludePasskeyMatchesForNonAutoFillContext] || objc_msgSend(v34, "credentialTypes") != 2 || (objc_msgSend(v34, "passkeyRelyingPartyID"), v47 = objc_claimAutoreleasedReturnValue(), v48 = objc_msgSend(v47, "isEqualToString:", v170), v47, !v48))
+                if (![criteriaCopy queryShouldIncludePasskeyMatchesForNonAutoFillContext] || objc_msgSend(v34, "credentialTypes") != 2 || (objc_msgSend(v34, "passkeyRelyingPartyID"), v47 = objc_claimAutoreleasedReturnValue(), v48 = objc_msgSend(v47, "isEqualToString:", v170), v47, !v48))
                 {
-                  v51 = [v34 protectionSpaces];
+                  protectionSpaces = [v34 protectionSpaces];
                   v144 = v34;
-                  v52 = [v34 protectionSpacesForAdditionalSites];
-                  v53 = [v51 arrayByAddingObjectsFromArray:v52];
+                  protectionSpacesForAdditionalSites = [v34 protectionSpacesForAdditionalSites];
+                  v53 = [protectionSpaces arrayByAddingObjectsFromArray:protectionSpacesForAdditionalSites];
 
                   v187 = 0u;
                   v188 = 0u;
@@ -11200,9 +11200,9 @@ LABEL_91:
                     v56 = v55;
                     v166 = 0;
                     v168 = 0;
-                    v38 = 0;
+                    context2 = 0;
                     v164 = *v186;
-                    v57 = v142;
+                    v57 = array3;
                     if (v154)
                     {
                       v57 = v33;
@@ -11220,29 +11220,29 @@ LABEL_91:
                         }
 
                         v59 = *(*(&v185 + 1) + 8 * k);
-                        v60 = [v59 host];
-                        v61 = [v59 port] != v16 && (v16 || (objc_msgSend(v59, "safari_hasDefaultPortForProtocol") & 1) == 0) && (v16 != objc_msgSend(v59, "safari_defaultPortForProtocol") || objc_msgSend(v59, "port") != 0);
-                        v62 = [v59 protocol];
-                        v63 = [v62 isEqualToString:v171];
+                        host2 = [v59 host];
+                        v61 = [v59 port] != integerValue && (integerValue || (objc_msgSend(v59, "safari_hasDefaultPortForProtocol") & 1) == 0) && (integerValue != objc_msgSend(v59, "safari_defaultPortForProtocol") || objc_msgSend(v59, "port") != 0);
+                        protocol = [v59 protocol];
+                        v63 = [protocol isEqualToString:scheme];
 
-                        v64 = [v60 safari_highLevelDomainForPasswordManager];
-                        v65 = [v64 isEqualToString:v163];
+                        safari_highLevelDomainForPasswordManager2 = [host2 safari_highLevelDomainForPasswordManager];
+                        v65 = [safari_highLevelDomainForPasswordManager2 isEqualToString:safari_highLevelDomainForPasswordManager];
 
                         if (v65)
                         {
                           v66 = v59;
 
-                          v38 = v66;
+                          context2 = v66;
                         }
 
-                        v67 = [v60 isEqualToString:v170];
+                        v67 = [host2 isEqualToString:v170];
                         if (!v61 && (v63 & 1) != 0 && v67)
                         {
-                          v33 = v149;
+                          v33 = array5;
                           v75 = v150;
                           if (v154)
                           {
-                            v75 = v149;
+                            v75 = array5;
                           }
 
                           v73 = v75;
@@ -11252,7 +11252,7 @@ LABEL_91:
                           goto LABEL_57;
                         }
 
-                        v68 = [MEMORY[0x1E696AEC0] stringWithFormat:@"https://%@", v60];
+                        v68 = [MEMORY[0x1E696AEC0] stringWithFormat:@"https://%@", host2];
                         v69 = [v68 safari_simplifiedUserVisibleURLStringWithSimplifications:330 forDisplayOnly:0 simplifiedStringOffset:0];
 
                         if ([v69 isEqualToString:v162])
@@ -11275,67 +11275,67 @@ LABEL_91:
                       break;
                     }
 
-                    v33 = v149;
+                    v33 = array5;
                     v73 = v166;
                     v72 = v168;
                     v74 = v156;
                     if (!v156)
                     {
-                      v10 = v148;
+                      criteriaCopy = v148;
                       v32 = v143;
-                      v18 = v150;
+                      array = v150;
                       goto LABEL_59;
                     }
 
 LABEL_57:
                     v76 = [WBSSavedAccountMatch alloc];
-                    v10 = v148;
-                    v77 = [v148 context];
+                    criteriaCopy = v148;
+                    context4 = [v148 context];
                     v168 = v72;
-                    v78 = [(WBSSavedAccountMatch *)v76 initWithSavedAccount:v144 protectionSpace:v72 context:v77 matchLevel:v74 autoFillPasskey:0];
+                    v78 = [(WBSSavedAccountMatch *)v76 initWithSavedAccount:v144 protectionSpace:v72 context:context4 matchLevel:v74 autoFillPasskey:0];
 
                     v166 = v73;
                     [v73 addObject:v78];
                     v32 = v143;
-                    v18 = v150;
+                    array = v150;
 LABEL_61:
                   }
 
                   else
                   {
 
-                    v38 = 0;
+                    context2 = 0;
                     v166 = 0;
                     v168 = 0;
 LABEL_59:
-                    if (v141)
+                    if (queryShouldReturnSavedAccountsMatchingHighLevelAndSimplifiedDomains)
                     {
                       v79 = [WBSSavedAccountMatch alloc];
-                      v80 = [v10 context];
-                      v78 = [(WBSSavedAccountMatch *)v79 initWithSavedAccount:v144 protectionSpace:v38 context:v80 matchLevel:4 autoFillPasskey:0];
+                      context5 = [criteriaCopy context];
+                      v78 = [(WBSSavedAccountMatch *)v79 initWithSavedAccount:v144 protectionSpace:context2 context:context5 matchLevel:4 autoFillPasskey:0];
 
-                      [v140 addObject:v78];
+                      [array2 addObject:v78];
                       goto LABEL_61;
                     }
                   }
 
                   v40 = v158;
 
-                  v44 = v160;
+                  context3 = v160;
                   v45 = v168;
                   goto LABEL_63;
                 }
 
-                v44 = [MEMORY[0x1E695AC58] safari_HTMLFormProtectionSpaceForURL:v139];
+                context3 = [MEMORY[0x1E695AC58] safari_HTMLFormProtectionSpaceForURL:v139];
                 v49 = [WBSSavedAccountMatch alloc];
-                v50 = [v10 context];
-                v45 = [(WBSSavedAccountMatch *)v49 initWithSavedAccount:v34 protectionSpace:v44 context:v50 matchLevel:1];
+                context6 = [criteriaCopy context];
+                v45 = [(WBSSavedAccountMatch *)v49 initWithSavedAccount:v34 protectionSpace:context3 context:context6 matchLevel:1];
 
-                v46 = v18;
+                v46 = array;
               }
 
               [v46 addObject:v45];
-              v38 = 0;
+              context2 = 0;
               v40 = v158;
 LABEL_63:
 
@@ -11356,13 +11356,13 @@ LABEL_64:
 
         if ([v20 matchLevel] == 3)
         {
-          v137 = v21;
+          v137 = flattenedSavedAccountsFromTree;
           v138 = i;
           v183 = 0u;
           v184 = 0u;
           v181 = 0u;
           v182 = 0u;
-          v157 = v21;
+          v157 = flattenedSavedAccountsFromTree;
           v165 = [v157 countByEnumeratingWithState:&v181 objects:v212 count:16];
           if (!v165)
           {
@@ -11383,11 +11383,11 @@ LABEL_64:
 
               v169 = v81;
               v82 = *(*(&v181 + 1) + 8 * v81);
-              v83 = [v20 domain];
-              v84 = [v82 protectionSpaces];
+              domain = [v20 domain];
+              protectionSpaces2 = [v82 protectionSpaces];
               v167 = v82;
-              v85 = [v82 protectionSpacesForAdditionalSites];
-              v86 = [v84 arrayByAddingObjectsFromArray:v85];
+              protectionSpacesForAdditionalSites2 = [v82 protectionSpacesForAdditionalSites];
+              v86 = [protectionSpaces2 arrayByAddingObjectsFromArray:protectionSpacesForAdditionalSites2];
 
               v179 = 0u;
               v180 = 0u;
@@ -11414,13 +11414,13 @@ LABEL_75:
                 }
 
                 v92 = *(*(&v177 + 1) + 8 * v91);
-                v93 = [v92 host];
-                if ([v92 port] == v16)
+                host3 = [v92 host];
+                if ([v92 port] == integerValue)
                 {
-                  v94 = [v92 protocol];
-                  v95 = [v94 isEqualToString:v171];
+                  protocol2 = [v92 protocol];
+                  v95 = [protocol2 isEqualToString:scheme];
 
-                  v96 = [v93 isEqualToString:v83];
+                  v96 = [host3 isEqualToString:domain];
                   if (v95)
                   {
                     if (v96)
@@ -11442,33 +11442,33 @@ LABEL_75:
                 }
               }
 
-              v97 = v92;
+              firstObject = v92;
 
-              if (!v97)
+              if (!firstObject)
               {
 LABEL_85:
-                v97 = [v87 firstObject];
+                firstObject = [v87 firstObject];
               }
 
               v98 = [WBSSavedAccountMatch alloc];
-              v10 = v148;
-              v99 = [v148 context];
-              v100 = [(WBSSavedAccountMatch *)v98 initWithSavedAccount:v167 protectionSpace:v97 context:v99 matchLevel:3];
+              criteriaCopy = v148;
+              context7 = [v148 context];
+              v100 = [(WBSSavedAccountMatch *)v98 initWithSavedAccount:v167 protectionSpace:firstObject context:context7 matchLevel:3];
 
               if ([v167 isDefaultCredentialForFullyQualifiedHostname:v170])
               {
-                v101 = v149;
+                v101 = array5;
               }
 
               else
               {
-                v101 = v145;
+                v101 = array4;
               }
 
               [v101 addObject:v100];
 
               v81 = v169 + 1;
-              v18 = v150;
+              array = v150;
               v20 = v161;
             }
 
@@ -11494,21 +11494,21 @@ LABEL_92:
   if (os_log_type_enabled(v102, OS_LOG_TYPE_DEFAULT))
   {
     v103 = v102;
-    v104 = [v139 host];
-    v105 = [v10 userNameQuery];
-    v106 = [v105 string];
-    v107 = [v10 userNameQuery];
-    v108 = [v107 matchingTypeDescriptionString];
+    host4 = [v139 host];
+    userNameQuery = [criteriaCopy userNameQuery];
+    string = [userNameQuery string];
+    userNameQuery2 = [criteriaCopy userNameQuery];
+    matchingTypeDescriptionString = [userNameQuery2 matchingTypeDescriptionString];
     *buf = 141559043;
     v202 = 1752392040;
     v203 = 2117;
-    v204 = v104;
+    v204 = host4;
     v205 = 2160;
     v206 = 1752392040;
     v207 = 2117;
-    v208 = v106;
+    v208 = string;
     v209 = 2112;
-    v210 = v108;
+    v210 = matchingTypeDescriptionString;
     v17 = v143;
     _os_log_impl(&dword_1B8447000, v103, OS_LOG_TYPE_DEFAULT, "Executed query for host '%{sensitive, mask.hash}@' with partial username '%{sensitive, mask.hash}@', %@", buf, 0x34u);
   }
@@ -11519,7 +11519,7 @@ LABEL_92:
   v112 = v111;
   if (v110)
   {
-    v113 = v142;
+    v113 = array3;
     if (os_log_type_enabled(v111, OS_LOG_TYPE_DEBUG))
     {
       [WBSSavedAccountStore _getSavedAccountMatchesFromSavedAccountTreeMatchesOnInternalQueue:v112 withCriteria:? mergingAutoFillPasskeys:? nearbyDeviceOptions:?];
@@ -11552,70 +11552,70 @@ LABEL_92:
 
   else
   {
-    v113 = v142;
+    v113 = array3;
     if (os_log_type_enabled(v111, OS_LOG_TYPE_DEFAULT))
     {
       v118 = v112;
-      v119 = [v18 count];
-      v120 = [v140 count] + v119;
-      v121 = [v142 count];
-      v122 = v120 + v121 + [v145 count];
-      v123 = [v149 count];
+      v119 = [array count];
+      v120 = [array2 count] + v119;
+      v121 = [array3 count];
+      v122 = v120 + v121 + [array4 count];
+      v123 = [array5 count];
       *buf = 67109120;
       LODWORD(v202) = v122 + v123;
       _os_log_impl(&dword_1B8447000, v118, OS_LOG_TYPE_DEFAULT, "Query returned %d matches", buf, 8u);
     }
   }
 
-  if ([v163 isEqualToString:@"apple.com"])
+  if ([safari_highLevelDomainForPasswordManager isEqualToString:@"apple.com"])
   {
     v172[0] = MEMORY[0x1E69E9820];
     v172[1] = 3221225472;
     v172[2] = __147__WBSSavedAccountStore__getSavedAccountMatchesFromSavedAccountTreeMatchesOnInternalQueue_withCriteria_mergingAutoFillPasskeys_nearbyDeviceOptions___block_invoke_395;
     v172[3] = &unk_1E7CF4F10;
-    v173 = v18;
-    v174 = v149;
-    v175 = v140;
-    v176 = v10;
+    v173 = array;
+    v174 = array5;
+    v175 = array2;
+    v176 = criteriaCopy;
     [v146 enumerateKeysAndObjectsUsingBlock:v172];
   }
 
   if ([v113 count])
   {
-    if ([v18 count])
+    if ([array count])
     {
-      if (!v141)
+      if (!queryShouldReturnSavedAccountsMatchingHighLevelAndSimplifiedDomains)
       {
         goto LABEL_117;
       }
 
-      v124 = v140;
-      [v113 addObjectsFromArray:v140];
-      v140 = v113;
+      v124 = array2;
+      [v113 addObjectsFromArray:array2];
+      array2 = v113;
     }
 
     else
     {
-      v124 = v18;
-      v18 = v113;
+      v124 = array;
+      array = v113;
     }
 
     v125 = v113;
   }
 
 LABEL_117:
-  if ([v149 count])
+  if ([array5 count])
   {
-    [v149 addObjectsFromArray:v18];
-    v126 = v149;
+    [array5 addObjectsFromArray:array];
+    v126 = array5;
 
-    v18 = v126;
+    array = v126;
   }
 
-  [v18 sortUsingSelector:sel_compare_];
-  [v140 sortUsingSelector:sel_compare_];
-  [v145 sortUsingSelector:sel_compare_];
-  v127 = [[WBSSavedAccountMatchResult alloc] initWithExactMatches:v18 potentialMatches:v140 associatedDomainMatches:v145 nearbyDeviceOptions:v131];
+  [array sortUsingSelector:sel_compare_];
+  [array2 sortUsingSelector:sel_compare_];
+  [array4 sortUsingSelector:sel_compare_];
+  v127 = [[WBSSavedAccountMatchResult alloc] initWithExactMatches:array potentialMatches:array2 associatedDomainMatches:array4 nearbyDeviceOptions:optionsCopy];
 
   v128 = *MEMORY[0x1E69E9840];
 
@@ -11747,19 +11747,19 @@ void __43__WBSSavedAccountStore__verifyGroupsInSync__block_invoke(uint64_t a1, i
 LABEL_8:
 }
 
-- (id)duplicateAccountsWithGroupID:(id)a3
+- (id)duplicateAccountsWithGroupID:(id)d
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WBSSavedAccountStore *)self savedAccountsInPersonalKeychain];
-  v20 = v4;
-  v6 = [(WBSSavedAccountStore *)self savedAccountsForGroupID:v4];
+  dCopy = d;
+  savedAccountsInPersonalKeychain = [(WBSSavedAccountStore *)self savedAccountsInPersonalKeychain];
+  v20 = dCopy;
+  v6 = [(WBSSavedAccountStore *)self savedAccountsForGroupID:dCopy];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v5;
+  obj = savedAccountsInPersonalKeychain;
   v8 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v8)
   {
@@ -11818,9 +11818,9 @@ LABEL_8:
   return v7;
 }
 
-- (void)newPasskeysAvailableForApplicationIdentifier:(id)a3
+- (void)newPasskeysAvailableForApplicationIdentifier:(id)identifier
 {
-  if ([MEMORY[0x1E696AAE8] safari_isSafariFamilyBundleIdentifier:a3])
+  if ([MEMORY[0x1E696AAE8] safari_isSafariFamilyBundleIdentifier:identifier])
   {
     v3 = WBS_LOG_CHANNEL_PREFIXAutoFill();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -11829,43 +11829,43 @@ LABEL_8:
       _os_log_impl(&dword_1B8447000, v3, OS_LOG_TYPE_INFO, "Notifying that new passkeys are available.", v5, 2u);
     }
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 postNotificationName:@"WBSSavedAccountStoreNewAutoFillablePasskeysAvailableNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"WBSSavedAccountStoreNewAutoFillablePasskeysAvailableNotification" object:0];
   }
 }
 
-- (id)persistentIdentifierForCredential:(id)a3 protectionSpace:(id)a4
+- (id)persistentIdentifierForCredential:(id)credential protectionSpace:(id)space
 {
-  v6 = a3;
-  v7 = [a4 host];
-  v8 = [v6 user];
+  credentialCopy = credential;
+  host = [space host];
+  user = [credentialCopy user];
 
-  v9 = [(WBSSavedAccountStore *)self _persistentIdentifierForUser:v8 host:v7];
+  v9 = [(WBSSavedAccountStore *)self _persistentIdentifierForUser:user host:host];
 
   return v9;
 }
 
-- (id)persistentIdentifierForSavedAccount:(id)a3
+- (id)persistentIdentifierForSavedAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 protectionSpaces];
-  v6 = [v5 firstObject];
-  v7 = [v6 host];
+  accountCopy = account;
+  protectionSpaces = [accountCopy protectionSpaces];
+  firstObject = [protectionSpaces firstObject];
+  host = [firstObject host];
 
-  v8 = [v4 user];
+  user = [accountCopy user];
 
-  v9 = [(WBSSavedAccountStore *)self _persistentIdentifierForUser:v8 host:v7];
+  v9 = [(WBSSavedAccountStore *)self _persistentIdentifierForUser:user host:host];
 
   return v9;
 }
 
-- (id)_persistentIdentifierForUser:(id)a3 host:(id)a4
+- (id)_persistentIdentifierForUser:(id)user host:(id)host
 {
   v25[8] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  userCopy = user;
+  hostCopy = host;
+  v7 = hostCopy;
+  if (userCopy && hostCopy)
   {
     v23 = 0;
     v8 = *MEMORY[0x1E697B018];
@@ -11890,15 +11890,15 @@ LABEL_8:
     v15 = *MEMORY[0x1E697AC30];
     v24[6] = *MEMORY[0x1E697AE80];
     v24[7] = v15;
-    v25[6] = v6;
-    v25[7] = v5;
+    v25[6] = hostCopy;
+    v25[7] = userCopy;
     v16 = SecItemCopyMatching([MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:8], &v23);
     if (v16 != -25300)
     {
       if (!v16)
       {
         v17 = v23;
-        v18 = [v23 firstObject];
+        firstObject = [v23 firstObject];
 
         goto LABEL_11;
       }
@@ -11920,42 +11920,42 @@ LABEL_8:
     }
   }
 
-  v18 = 0;
+  firstObject = 0;
 LABEL_11:
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v18;
+  return firstObject;
 }
 
-- (void)test_createLegacyWebAuthnCredentialWithUserName:(id)a3 displayName:(id)a4 relyingPartyIdentifier:(id)a5 userHandle:(id)a6 completionHandler:(id)a7
+- (void)test_createLegacyWebAuthnCredentialWithUserName:(id)name displayName:(id)displayName relyingPartyIdentifier:(id)identifier userHandle:(id)handle completionHandler:(id)handler
 {
-  v18 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (!v14)
+  nameCopy = name;
+  displayNameCopy = displayName;
+  identifierCopy = identifier;
+  handleCopy = handle;
+  handlerCopy = handler;
+  if (!handleCopy)
   {
-    v16 = [MEMORY[0x1E696AFB0] UUID];
-    v17 = [v16 UUIDString];
-    v14 = [v17 dataUsingEncoding:4];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    handleCopy = [uUIDString dataUsingEncoding:4];
   }
 
-  [(WBSPasskeyStore *)self->_passkeyStore test_createLegacyCredentialWithName:v18 displayName:v12 relyingParty:v13 userHandle:v14 completionHandler:v15];
+  [(WBSPasskeyStore *)self->_passkeyStore test_createLegacyCredentialWithName:nameCopy displayName:displayNameCopy relyingParty:identifierCopy userHandle:handleCopy completionHandler:handlerCopy];
 }
 
-- (void)test_setSharedAccountsGroups:(id)a3
+- (void)test_setSharedAccountsGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__WBSSavedAccountStore_test_setSharedAccountsGroups___block_invoke;
   v7[3] = &unk_1E7CF1708;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = groupsCopy;
+  v6 = groupsCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -11998,7 +11998,7 @@ uint64_t __51__WBSSavedAccountStore_test_reloadAllSavedAccounts__block_invoke(ui
   return v3;
 }
 
-- (void)setShouldShowServiceNamesForPasswordAndPasskeyItems:(BOOL)a3
+- (void)setShouldShowServiceNamesForPasswordAndPasskeyItems:(BOOL)items
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -12006,7 +12006,7 @@ uint64_t __51__WBSSavedAccountStore_test_reloadAllSavedAccounts__block_invoke(ui
   v4[2] = __76__WBSSavedAccountStore_setShouldShowServiceNamesForPasswordAndPasskeyItems___block_invoke;
   v4[3] = &unk_1E7CF3D78;
   v4[4] = self;
-  v5 = a3;
+  itemsCopy = items;
   dispatch_async(queue, v4);
 }
 
@@ -12099,16 +12099,16 @@ _BYTE *__76__WBSSavedAccountStore_setShouldShowServiceNamesForPasswordAndPasskey
   return result;
 }
 
-- (BOOL)_applyServiceNamesToSavedAccounts:(id)a3
+- (BOOL)_applyServiceNamesToSavedAccounts:(id)accounts
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v23 = [(WBSSavedAccountStore *)self websiteNameProvider];
+  accountsCopy = accounts;
+  websiteNameProvider = [(WBSSavedAccountStore *)self websiteNameProvider];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = v4;
+  v5 = accountsCopy;
   v6 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v6)
   {
@@ -12132,21 +12132,21 @@ _BYTE *__76__WBSSavedAccountStore_setShouldShowServiceNamesForPasswordAndPasskey
       v11 = *(*(&v24 + 1) + 8 * v10);
       if ([v11 hasValidWebsite] && (objc_msgSend(v11, "userIsNeverSaveMarker") & 1) == 0)
       {
-        v12 = [v11 serviceName];
+        serviceName = [v11 serviceName];
         if (self->_shouldShowServiceNamesForPasswordAndPasskeyItems)
         {
-          v13 = [v11 userVisibleDomain];
-          v14 = [v23 knownWebsiteNameForDomain:v13];
+          userVisibleDomain = [v11 userVisibleDomain];
+          v14 = [websiteNameProvider knownWebsiteNameForDomain:userVisibleDomain];
           if ([v14 length])
           {
-            if (![v11 shouldShowSpecificSubdomainForUserVisibleDomain] || objc_msgSend(v13, "safari_isCaseInsensitiveEqualToString:", v14))
+            if (![v11 shouldShowSpecificSubdomainForUserVisibleDomain] || objc_msgSend(userVisibleDomain, "safari_isCaseInsensitiveEqualToString:", v14))
             {
               v15 = v11;
               v16 = v14;
               goto LABEL_15;
             }
 
-            v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%@)", v14, v13];
+            v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ (%@)", v14, userVisibleDomain];
             [v11 setServiceName:v22];
           }
 
@@ -12164,8 +12164,8 @@ LABEL_15:
           [v11 setServiceName:0];
         }
 
-        v17 = [v11 serviceName];
-        v18 = WBSIsEqual(v12, v17);
+        serviceName2 = [v11 serviceName];
+        v18 = WBSIsEqual(serviceName, serviceName2);
 
         v8 |= v18 ^ 1;
       }
@@ -12213,7 +12213,7 @@ _BYTE *__50__WBSSavedAccountStore_knownWebsiteNamesDidChange__block_invoke(uint6
   return result;
 }
 
-- (void)knownWebsiteNamesDidChangeOnDomains:(id)a3
+- (void)knownWebsiteNamesDidChangeOnDomains:(id)domains
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -12251,11 +12251,11 @@ _BYTE *__60__WBSSavedAccountStore_knownWebsiteNamesDidChangeOnDomains___block_in
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-+ (BOOL)userTypedTitleShouldBeTreatedAsAWebsiteWhenAddingNewAccount:(id)a3
++ (BOOL)userTypedTitleShouldBeTreatedAsAWebsiteWhenAddingNewAccount:(id)account
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-  [v3 rangeOfCharacterFromSet:v4];
+  accountCopy = account;
+  whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+  [accountCopy rangeOfCharacterFromSet:whitespaceCharacterSet];
   v6 = v5;
 
   if (v6)
@@ -12267,23 +12267,23 @@ _BYTE *__60__WBSSavedAccountStore_knownWebsiteNamesDidChangeOnDomains___block_in
   {
     v9 = 0;
     v10 = 0;
-    v7 = [objc_opt_class() getProtectionSpaceAndHighLevelDomainForUserTypedSite:v3 protectionSpace:&v10 highLevelDomain:&v9];
+    v7 = [objc_opt_class() getProtectionSpaceAndHighLevelDomainForUserTypedSite:accountCopy protectionSpace:&v10 highLevelDomain:&v9];
   }
 
   return v7;
 }
 
-- (id)passkeyDataForPasskeyCredentialIDOnInternalQueue:(id)a3
+- (id)passkeyDataForPasskeyCredentialIDOnInternalQueue:(id)queue
 {
-  v4 = a3;
-  v5 = self;
+  queueCopy = queue;
+  selfCopy = self;
   v6 = sub_1B85659D8();
   v8 = v7;
 
-  v9 = [(WBSSavedAccountStore *)v5 passkeyStore];
+  passkeyStore = [(WBSSavedAccountStore *)selfCopy passkeyStore];
   v12[2] = v6;
   v12[3] = v8;
-  v12[4] = v5;
+  v12[4] = selfCopy;
   sub_1B8450D18(sub_1B8526968, v12);
 
   sub_1B851D53C(v6, v8);
@@ -12294,16 +12294,16 @@ _BYTE *__60__WBSSavedAccountStore_knownWebsiteNamesDidChangeOnDomains___block_in
   return v10;
 }
 
-- (void)updateUserVisibleName:(NSString *)a3 forPasskeyWithIdentifier:(WBSPublicKeyCredentialIdentifier *)a4 completionHandler:(id)a5
+- (void)updateUserVisibleName:(NSString *)name forPasskeyWithIdentifier:(WBSPublicKeyCredentialIdentifier *)identifier completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBA8A638, &qword_1B8574410);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x1EEE9AC00](v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = name;
+  v14[3] = identifier;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_1B8566108();
@@ -12318,33 +12318,33 @@ _BYTE *__60__WBSSavedAccountStore_knownWebsiteNamesDidChangeOnDomains___block_in
   v17[3] = 0;
   v17[4] = &unk_1B8574728;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  nameCopy = name;
+  identifierCopy = identifier;
+  selfCopy = self;
   sub_1B8534B98(0, 0, v12, &unk_1B8574730, v17);
 }
 
-- (void)updateUserVisibleNameOnInternalQueue:(id)a3 forPasskeyWithIdentifier:(id)a4
+- (void)updateUserVisibleNameOnInternalQueue:(id)queue forPasskeyWithIdentifier:(id)identifier
 {
   v6 = sub_1B8565DA8();
   v8 = v7;
-  v9 = a4;
-  v10 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   v11._countAndFlagsBits = v6;
   v11._object = v8;
-  v13.super.isa = v9;
+  v13.super.isa = identifierCopy;
   WBSSavedAccountStore.updateUserVisibleName(onInternalQueue:forPasskeyWith:)(v11, v13);
 }
 
-- (void)deletePasskeyWithIdentifier:(WBSPublicKeyCredentialIdentifier *)a3 completionHandler:(id)a4
+- (void)deletePasskeyWithIdentifier:(WBSPublicKeyCredentialIdentifier *)identifier completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EBA8A638, &qword_1B8574410);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = identifier;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1B8566108();
@@ -12359,26 +12359,26 @@ _BYTE *__60__WBSSavedAccountStore_knownWebsiteNamesDidChangeOnDomains___block_in
   v15[3] = 0;
   v15[4] = &unk_1B8574428;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   sub_1B8534B98(0, 0, v10, &unk_1B8574430, v15);
 }
 
-- (void)deletePasskeyWithIdentifierOnInternalQueue:(id)a3
+- (void)deletePasskeyWithIdentifierOnInternalQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v7._credentialID = self;
   credentialID = v7._credentialID;
-  v7.super.isa = v4;
+  v7.super.isa = queueCopy;
   WBSSavedAccountStore.deletePasskeyWithIdentifier(onInternalQueue:)(v7);
 }
 
-- (id)exportPasskeyCredentialWithIDOnInternalQueue:(id)a3
+- (id)exportPasskeyCredentialWithIDOnInternalQueue:(id)queue
 {
   v4 = sub_1B8565DA8();
   v6 = v5;
-  v7 = self;
-  v8 = [(WBSSavedAccountStore *)v7 passkeyStore];
+  selfCopy = self;
+  passkeyStore = [(WBSSavedAccountStore *)selfCopy passkeyStore];
   v11[2] = v4;
   v11[3] = v6;
   v9 = sub_1B851FE7C(sub_1B8526998, v11);
@@ -12386,12 +12386,12 @@ _BYTE *__60__WBSSavedAccountStore_knownWebsiteNamesDidChangeOnDomains___block_in
   return v9;
 }
 
-- (id)importPasskeyCredentialOnInternalQueue:(id)a3
+- (id)importPasskeyCredentialOnInternalQueue:(id)queue
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(WBSSavedAccountStore *)v5 passkeyStore];
-  v11[2] = v4;
+  queueCopy = queue;
+  selfCopy = self;
+  passkeyStore = [(WBSSavedAccountStore *)selfCopy passkeyStore];
+  v11[2] = queueCopy;
   sub_1B8520078(sub_1B8526950, v11);
   v8 = v7;
 

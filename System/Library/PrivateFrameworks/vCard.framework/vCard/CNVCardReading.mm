@@ -1,18 +1,18 @@
 @interface CNVCardReading
-+ (id)firstDictionaryInData:(id)a3 error:(id *)a4;
++ (id)firstDictionaryInData:(id)data error:(id *)error;
 @end
 
 @implementation CNVCardReading
 
-+ (id)firstDictionaryInData:(id)a3 error:(id *)a4
++ (id)firstDictionaryInData:(id)data error:(id *)error
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_alloc_init(CNVCardParsedDictionaryResultBuilder);
-  [CNVCardParser parseFirstResultInData:v4 resultBuilder:v5];
+  [CNVCardParser parseFirstResultInData:dataCopy resultBuilder:v5];
 
-  v6 = [(CNVCardParsedDictionaryResultBuilder *)v5 build];
+  build = [(CNVCardParsedDictionaryResultBuilder *)v5 build];
 
-  return v6;
+  return build;
 }
 
 @end

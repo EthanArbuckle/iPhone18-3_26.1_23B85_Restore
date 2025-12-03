@@ -2,10 +2,10 @@
 - (SHAPSConnection)init;
 - (SHMediaLibraryController)libraryController;
 - (SHMediaLibraryInfoFetcher)libraryInfoFetcher;
-- (void)_libraryDidCompleteSync:(id)a3;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
-- (void)fetchAPSEnvironmentWithCompletionHandler:(id)a3;
+- (void)_libraryDidCompleteSync:(id)sync;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
+- (void)fetchAPSEnvironmentWithCompletionHandler:(id)handler;
 - (void)finishLibrarySync;
 - (void)registerForPushNotifications;
 - (void)startListeningForPushNotifications;
@@ -44,13 +44,13 @@
   else
   {
     objc_initWeak(buf, self);
-    v4 = [(SHAPSConnection *)self libraryInfoFetcher];
+    libraryInfoFetcher = [(SHAPSConnection *)self libraryInfoFetcher];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_10002C428;
     v5[3] = &unk_10007DA30;
     objc_copyWeak(&v6, buf);
-    [v4 fetchLibraryInfoWithCompletionHandler:v5];
+    [libraryInfoFetcher fetchLibraryInfoWithCompletionHandler:v5];
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(buf);
@@ -74,8 +74,8 @@
 {
   if (self->_connection)
   {
-    v3 = [(SHAPSConnection *)self connection];
-    [v3 _setEnabledTopics:&__NSArray0__struct];
+    connection = [(SHAPSConnection *)self connection];
+    [connection _setEnabledTopics:&__NSArray0__struct];
 
     v4 = sh_log_object();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -89,9 +89,9 @@
   }
 }
 
-- (void)fetchAPSEnvironmentWithCompletionHandler:(id)a3
+- (void)fetchAPSEnvironmentWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = xpc_copy_entitlement_for_self();
   if (v4)
   {
@@ -106,7 +106,7 @@
   v6 = [v5 compare:CKPushEnvironmentServerPreferred options:1];
   if (!v5 || v6)
   {
-    v3[2](v3, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -116,40 +116,40 @@
     v8[1] = 3221225472;
     v8[2] = sub_10002C948;
     v8[3] = &unk_10007DA80;
-    v9 = v3;
+    v9 = handlerCopy;
     [v7 serverPreferredPushEnvironmentWithCompletionHandler:v8];
   }
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v5 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  tokenCopy = token;
   v7 = sh_log_object();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138412546;
-    v9 = v6;
+    v9 = tokenCopy;
     v10 = 2112;
-    v11 = v5;
+    v11 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Received public token '%@' on connection %@", &v8, 0x16u);
   }
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v5 = a4;
+  messageCopy = message;
   v6 = sh_log_object();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [v5 topic];
+    topic = [messageCopy topic];
     v14 = 138412290;
-    v15 = v7;
+    v15 = topic;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "APS push received for topic: '%@'", &v14, 0xCu);
   }
 
-  v8 = [v5 userInfo];
-  v9 = [CKNotification notificationFromRemoteNotificationDictionary:v8];
+  userInfo = [messageCopy userInfo];
+  v9 = [CKNotification notificationFromRemoteNotificationDictionary:userInfo];
 
   if ([v9 notificationType] == 2)
   {
@@ -158,8 +158,8 @@
     v12 = [(SHMediaLibraryContext *)v10 initWithSnapshot:v11 startCondition:SHMediaLibrarySyncStartConditionRemotePush];
 
     [v12 setDelegate:self];
-    v13 = [(SHAPSConnection *)self libraryController];
-    [v13 synchronizeWithContext:v12];
+    libraryController = [(SHAPSConnection *)self libraryController];
+    [libraryController synchronizeWithContext:v12];
   }
 
   else
@@ -173,7 +173,7 @@
   }
 }
 
-- (void)_libraryDidCompleteSync:(id)a3
+- (void)_libraryDidCompleteSync:(id)sync
 {
   v4 = +[NSDistributedNotificationCenter defaultCenter];
   [v4 postNotificationName:SHMediaLibraryRemoteChangeNotification object:0 userInfo:0 deliverImmediately:1];

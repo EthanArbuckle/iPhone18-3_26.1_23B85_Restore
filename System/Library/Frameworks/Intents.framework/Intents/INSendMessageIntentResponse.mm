@@ -1,18 +1,18 @@
 @interface INSendMessageIntentResponse
-+ (int)_errorCodeFromCode:(int64_t)a3;
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
++ (int)_errorCodeFromCode:(int64_t)code;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
 - (INMessage)sentMessage;
-- (INSendMessageIntentResponse)initWithBackingStore:(id)a3;
+- (INSendMessageIntentResponse)initWithBackingStore:(id)store;
 - (INSendMessageIntentResponse)initWithCode:(INSendMessageIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INSendMessageIntentResponse)initWithCoder:(id)a3;
+- (INSendMessageIntentResponse)initWithCoder:(id)coder;
 - (INSendMessageIntentResponseCode)code;
 - (NSArray)sentMessages;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setSentMessage:(INMessage *)sentMessage;
 - (void)setSentMessages:(NSArray *)sentMessages;
 @end
@@ -21,9 +21,9 @@
 
 - (NSArray)sentMessages
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 sentMessages];
-  v4 = INIntentSlotValueTransformFromMessages(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  sentMessages = [_responseMessagePBRepresentation sentMessages];
+  v4 = INIntentSlotValueTransformFromMessages(sentMessages);
 
   return v4;
 }
@@ -33,24 +33,24 @@
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"code";
   v3 = INSendMessageIntentResponseCodeGetName([(INSendMessageIntentResponse *)self code]);
-  v4 = v3;
+  null = v3;
   if (!v3)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"sentMessages";
-  v11[0] = v4;
-  v5 = [(INSendMessageIntentResponse *)self sentMessages];
-  v6 = v5;
-  if (!v5)
+  v11[0] = null;
+  sentMessages = [(INSendMessageIntentResponse *)self sentMessages];
+  null2 = sentMessages;
+  if (!sentMessages)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (!v5)
+  if (!sentMessages)
   {
   }
 
@@ -66,71 +66,71 @@
 - (void)setSentMessages:(NSArray *)sentMessages
 {
   v4 = sentMessages;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToMessages(v4);
 
-  [v5 setSentMessages:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setSentMessages:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INSendMessageIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INSendMessageIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INSendMessageIntentResponseCodeInProgress"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INSendMessageIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INSendMessageIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INSendMessageIntentResponseCodeInProgress"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INSendMessageIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INSendMessageIntentResponseCodeSuccess"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INSendMessageIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INSendMessageIntentResponseCodeFailure"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"INSendMessageIntentResponseCodeFailureRequiringAppLaunch"])
+  if ([nameCopy isEqualToString:@"INSendMessageIntentResponseCodeFailureRequiringAppLaunch"])
   {
     v4 = 5;
   }
 
-  if ([v3 isEqualToString:@"INSendMessageIntentResponseCodeFailureMessageServiceNotAvailable"])
+  if ([nameCopy isEqualToString:@"INSendMessageIntentResponseCodeFailureMessageServiceNotAvailable"])
   {
     v4 = 6;
   }
 
-  if ([v3 isEqualToString:@"INSendMessageIntentResponseCodeFailureMessageAttachmentError"])
+  if ([nameCopy isEqualToString:@"INSendMessageIntentResponseCodeFailureMessageAttachmentError"])
   {
     v4 = 1000;
   }
 
-  if ([v3 isEqualToString:@"INSendMessageIntentResponseCodeFailureMessageLocationNotAllowed"])
+  if ([nameCopy isEqualToString:@"INSendMessageIntentResponseCodeFailureMessageLocationNotAllowed"])
   {
     v4 = 1001;
   }
 
-  if ([v3 isEqualToString:@"INSendMessageIntentResponseCodeFailureScreenTimeRestrictionEnabled"])
+  if ([nameCopy isEqualToString:@"INSendMessageIntentResponseCodeFailureScreenTimeRestrictionEnabled"])
   {
     v4 = 1002;
   }
 
-  if ([v3 isEqualToString:@"INSendMessageIntentResponseCodeFailureNotAMemberOfConversation"])
+  if ([nameCopy isEqualToString:@"INSendMessageIntentResponseCodeFailureNotAMemberOfConversation"])
   {
     v4 = 1003;
   }
 
-  if ([v3 isEqualToString:@"INSendMessageIntentResponseCodeFailureMessageLocationAuthorizationNotDetermined"])
+  if ([nameCopy isEqualToString:@"INSendMessageIntentResponseCodeFailureMessageLocationAuthorizationNotDetermined"])
   {
     v4 = 1004;
   }
 
-  if ([v3 isEqualToString:@"INSendMessageIntentResponseCodeFailureMessagePreciseLocationNotAuthorized"])
+  if ([nameCopy isEqualToString:@"INSendMessageIntentResponseCodeFailureMessagePreciseLocationNotAuthorized"])
   {
     v5 = 1005;
   }
@@ -140,7 +140,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INSendMessageIntentResponseCodeFailureRequiringInAppAuthentication"];
+  v6 = [nameCopy isEqualToString:@"INSendMessageIntentResponseCodeFailureRequiringInAppAuthentication"];
 
   if (v6)
   {
@@ -155,23 +155,23 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INSendMessageIntentResponse *)self code];
+  code = [(INSendMessageIntentResponse *)self code];
   v3 = 5;
-  if (v2 <= INSendMessageIntentResponseCodeFailureMessageServiceNotAvailable)
+  if (code <= INSendMessageIntentResponseCodeFailureMessageServiceNotAvailable)
   {
     v13 = 6;
     v14 = 5;
-    if (v2 != INSendMessageIntentResponseCodeFailureMessageServiceNotAvailable)
+    if (code != INSendMessageIntentResponseCodeFailureMessageServiceNotAvailable)
     {
       v14 = 0;
     }
 
-    if (v2 != INSendMessageIntentResponseCodeFailureRequiringAppLaunch)
+    if (code != INSendMessageIntentResponseCodeFailureRequiringAppLaunch)
     {
       v13 = v14;
     }
 
-    if (v2 != INSendMessageIntentResponseCodeFailure)
+    if (code != INSendMessageIntentResponseCodeFailure)
     {
       v3 = v13;
     }
@@ -179,52 +179,52 @@
     v7 = 1;
     v15 = 3;
     v16 = 4;
-    if (v2 != INSendMessageIntentResponseCodeSuccess)
+    if (code != INSendMessageIntentResponseCodeSuccess)
     {
       v16 = 0;
     }
 
-    if (v2 != INSendMessageIntentResponseCodeInProgress)
+    if (code != INSendMessageIntentResponseCodeInProgress)
     {
       v15 = v16;
     }
 
-    if (v2 != INSendMessageIntentResponseCodeReady)
+    if (code != INSendMessageIntentResponseCodeReady)
     {
       v7 = v15;
     }
 
-    v12 = __OFSUB__(v2, 3);
-    v10 = v2 == INSendMessageIntentResponseCodeSuccess;
-    v11 = v2 - 3 < 0;
+    v12 = __OFSUB__(code, 3);
+    v10 = code == INSendMessageIntentResponseCodeSuccess;
+    v11 = code - 3 < 0;
   }
 
   else
   {
     v4 = 5;
-    if (v2 != 1005)
+    if (code != 1005)
     {
       v4 = 0;
     }
 
-    if (v2 != 1004)
+    if (code != 1004)
     {
       v3 = v4;
     }
 
     v5 = 5;
     v6 = 5;
-    if (v2 != 1003)
+    if (code != 1003)
     {
       v6 = 0;
     }
 
-    if (v2 != 1002)
+    if (code != 1002)
     {
       v5 = v6;
     }
 
-    if (v2 <= 1003)
+    if (code <= 1003)
     {
       v3 = v5;
     }
@@ -232,24 +232,24 @@
     v7 = 5;
     v8 = 5;
     v9 = 5;
-    if (v2 != 1001)
+    if (code != 1001)
     {
       v9 = 0;
     }
 
-    if (v2 != 1000)
+    if (code != 1000)
     {
       v8 = v9;
     }
 
-    if (v2 != INSendMessageIntentResponseCodeFailureRequiringInAppAuthentication)
+    if (code != INSendMessageIntentResponseCodeFailureRequiringInAppAuthentication)
     {
       v7 = v8;
     }
 
-    v12 = __OFSUB__(v2, 1001);
-    v10 = v2 == 1001;
-    v11 = v2 - 1001 < 0;
+    v12 = __OFSUB__(code, 1001);
+    v10 = code == 1001;
+    v11 = code - 1001 < 0;
   }
 
   if (v11 ^ v12 | v10)
@@ -263,18 +263,18 @@
   }
 }
 
-- (INSendMessageIntentResponse)initWithCoder:(id)a3
+- (INSendMessageIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INSendMessageIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INSendMessageIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (INSendMessageIntentResponseCode)code
@@ -284,18 +284,18 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INSendMessageIntentResponse)initWithBackingStore:(id)a3
+- (INSendMessageIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INSendMessageIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INSendMessageIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
 - (INSendMessageIntentResponse)initWithCode:(INSendMessageIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
@@ -326,9 +326,9 @@
   return v10;
 }
 
-+ (int)_errorCodeFromCode:(int64_t)a3
++ (int)_errorCodeFromCode:(int64_t)code
 {
-  if (a3 == 1005)
+  if (code == 1005)
   {
     v3 = 7;
   }
@@ -338,7 +338,7 @@
     v3 = 0x7FFFFFFF;
   }
 
-  if (a3 == 1004)
+  if (code == 1004)
   {
     v4 = 6;
   }
@@ -348,7 +348,7 @@
     v4 = v3;
   }
 
-  if (a3 == 1003)
+  if (code == 1003)
   {
     v5 = 5;
   }
@@ -358,7 +358,7 @@
     v5 = 0x7FFFFFFF;
   }
 
-  if (a3 == 1002)
+  if (code == 1002)
   {
     v6 = 4;
   }
@@ -368,12 +368,12 @@
     v6 = v5;
   }
 
-  if (a3 <= 1003)
+  if (code <= 1003)
   {
     v4 = v6;
   }
 
-  if (a3 == 1001)
+  if (code == 1001)
   {
     v7 = 3;
   }
@@ -383,7 +383,7 @@
     v7 = 0x7FFFFFFF;
   }
 
-  if (a3 == 1000)
+  if (code == 1000)
   {
     v8 = 2;
   }
@@ -393,7 +393,7 @@
     v8 = v7;
   }
 
-  if (a3 == 7)
+  if (code == 7)
   {
     v9 = 8;
   }
@@ -403,17 +403,17 @@
     v9 = 0x7FFFFFFF;
   }
 
-  if (a3 == 6)
+  if (code == 6)
   {
     v9 = 1;
   }
 
-  if (a3 > 999)
+  if (code > 999)
   {
     v9 = v8;
   }
 
-  if (a3 <= 1001)
+  if (code <= 1001)
   {
     return v9;
   }
@@ -424,12 +424,12 @@
   }
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
   result = 3;
-  if (a3 > 999)
+  if (code > 999)
   {
-    if ((a3 - 1000) >= 6)
+    if ((code - 1000) >= 6)
     {
       return result;
     }
@@ -437,9 +437,9 @@
     return 1;
   }
 
-  if (a3 > 3)
+  if (code > 3)
   {
-    if ((a3 - 4) >= 4)
+    if ((code - 4) >= 4)
     {
       return result;
     }
@@ -447,7 +447,7 @@
     return 1;
   }
 
-  if (a3 == 3)
+  if (code == 3)
   {
     v4 = 0;
   }
@@ -457,7 +457,7 @@
     v4 = 3;
   }
 
-  if (a3 == 2)
+  if (code == 2)
   {
     v5 = 2;
   }
@@ -467,7 +467,7 @@
     v5 = v4;
   }
 
-  if (a3 == 1)
+  if (code == 1)
   {
     return 5;
   }
@@ -478,28 +478,28 @@
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       return 2;
     }
 
     else
     {
-      return a3 == 5;
+      return type == 5;
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      if ((a4 - 1) >= 8)
+      if ((code - 1) >= 8)
       {
-        if (a5)
+        if (requested)
         {
           return 5;
         }
@@ -512,7 +512,7 @@
 
       else
       {
-        return qword_18EE5EF80[a4 - 1];
+        return qword_18EE5EF80[code - 1];
       }
     }
 
@@ -542,13 +542,13 @@
 
 - (INMessage)sentMessage
 {
-  v3 = [(INSendMessageIntentResponse *)self sentMessages];
-  v4 = [v3 count];
+  sentMessages = [(INSendMessageIntentResponse *)self sentMessages];
+  v4 = [sentMessages count];
 
   if (v4)
   {
-    v5 = [(INSendMessageIntentResponse *)self sentMessages];
-    v6 = [v5 objectAtIndexedSubscript:0];
+    sentMessages2 = [(INSendMessageIntentResponse *)self sentMessages];
+    v6 = [sentMessages2 objectAtIndexedSubscript:0];
   }
 
   else

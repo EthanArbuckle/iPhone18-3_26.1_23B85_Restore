@@ -3,8 +3,8 @@
 - (RMSPairingRecordStore)init;
 - (id)allPairingRecords;
 - (void)_synchronizePreferences;
-- (void)removePairingRecordForServiceWithNetworkName:(id)a3;
-- (void)savePairingRecord:(id)a3 forServiceWithNetworkName:(id)a4;
+- (void)removePairingRecordForServiceWithNetworkName:(id)name;
+- (void)savePairingRecord:(id)record forServiceWithNetworkName:(id)name;
 @end
 
 @implementation RMSPairingRecordStore
@@ -59,16 +59,16 @@ uint64_t __42__RMSPairingRecordStore_sharedRecordStore__block_invoke()
   return v2;
 }
 
-- (void)savePairingRecord:(id)a3 forServiceWithNetworkName:(id)a4
+- (void)savePairingRecord:(id)record forServiceWithNetworkName:(id)name
 {
-  [(NSMutableDictionary *)self->_pairingRecords setObject:a3 forKeyedSubscript:a4];
+  [(NSMutableDictionary *)self->_pairingRecords setObject:record forKeyedSubscript:name];
 
   [(RMSPairingRecordStore *)self _synchronizePreferences];
 }
 
-- (void)removePairingRecordForServiceWithNetworkName:(id)a3
+- (void)removePairingRecordForServiceWithNetworkName:(id)name
 {
-  [(NSMutableDictionary *)self->_pairingRecords removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_pairingRecords removeObjectForKey:name];
 
   [(RMSPairingRecordStore *)self _synchronizePreferences];
 }

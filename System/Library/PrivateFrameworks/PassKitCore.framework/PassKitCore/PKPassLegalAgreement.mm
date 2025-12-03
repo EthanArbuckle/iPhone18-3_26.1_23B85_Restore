@@ -1,9 +1,9 @@
 @interface PKPassLegalAgreement
-- (PKPassLegalAgreement)initWithCoder:(id)a3;
-- (PKPassLegalAgreement)initWithDictionary:(id)a3;
-- (PKPassLegalAgreement)initWithIdentifier:(id)a3 type:(unint64_t)a4 agreementUpdated:(BOOL)a5 removePassOnDecline:(BOOL)a6;
+- (PKPassLegalAgreement)initWithCoder:(id)coder;
+- (PKPassLegalAgreement)initWithDictionary:(id)dictionary;
+- (PKPassLegalAgreement)initWithIdentifier:(id)identifier type:(unint64_t)type agreementUpdated:(BOOL)updated removePassOnDecline:(BOOL)decline;
 - (id)_initForDatabase;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassLegalAgreement
@@ -15,83 +15,83 @@
   return [(PKPassLegalAgreement *)&v3 init];
 }
 
-- (PKPassLegalAgreement)initWithDictionary:(id)a3
+- (PKPassLegalAgreement)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v6 = [v4 PKStringForKey:@"identifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"identifier"];
     if (v6)
     {
       v7 = [v5 PKStringForKey:@"type"];
-      v8 = PKUserLegalAgreementTypeFromString(v7);
+      selfCopy = PKUserLegalAgreementTypeFromString(v7);
 
-      if (v8)
+      if (selfCopy)
       {
-        self = -[PKPassLegalAgreement initWithIdentifier:type:agreementUpdated:removePassOnDecline:](self, "initWithIdentifier:type:agreementUpdated:removePassOnDecline:", v6, v8, [v5 PKBoolForKey:@"agreementUpdated"], objc_msgSend(v5, "PKBoolForKey:", @"removePassOnDecline"));
-        v8 = self;
+        self = -[PKPassLegalAgreement initWithIdentifier:type:agreementUpdated:removePassOnDecline:](self, "initWithIdentifier:type:agreementUpdated:removePassOnDecline:", v6, selfCopy, [v5 PKBoolForKey:@"agreementUpdated"], objc_msgSend(v5, "PKBoolForKey:", @"removePassOnDecline"));
+        selfCopy = self;
       }
     }
 
     else
     {
-      v8 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (PKPassLegalAgreement)initWithIdentifier:(id)a3 type:(unint64_t)a4 agreementUpdated:(BOOL)a5 removePassOnDecline:(BOOL)a6
+- (PKPassLegalAgreement)initWithIdentifier:(id)identifier type:(unint64_t)type agreementUpdated:(BOOL)updated removePassOnDecline:(BOOL)decline
 {
-  v11 = a3;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = PKPassLegalAgreement;
   v12 = [(PKPassLegalAgreement *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    v13->_type = a4;
-    v13->_agreementUpdated = a5;
-    v13->_removePassOnDecline = a6;
+    objc_storeStrong(&v12->_identifier, identifier);
+    v13->_type = type;
+    v13->_agreementUpdated = updated;
+    v13->_removePassOnDecline = decline;
   }
 
   return v13;
 }
 
-- (PKPassLegalAgreement)initWithCoder:(id)a3
+- (PKPassLegalAgreement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PKPassLegalAgreement;
   v5 = [(PKPassLegalAgreement *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = PKUserLegalAgreementTypeFromString(v8);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
   v6 = PKUserLegalAgreementTypeToString(self->_type);
-  [v5 encodeObject:v6 forKey:@"type"];
+  [coderCopy encodeObject:v6 forKey:@"type"];
 }
 
 @end

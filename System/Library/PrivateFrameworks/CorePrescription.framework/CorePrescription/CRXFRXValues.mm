@@ -1,35 +1,35 @@
 @interface CRXFRXValues
-- (CRXFRXValues)initWithCoder:(id)a3;
-- (CRXFRXValues)initWithSphere:(float)a3 cylinder:(float)a4 axis:(unint64_t)a5;
+- (CRXFRXValues)initWithCoder:(id)coder;
+- (CRXFRXValues)initWithSphere:(float)sphere cylinder:(float)cylinder axis:(unint64_t)axis;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRXFRXValues
 
-- (CRXFRXValues)initWithSphere:(float)a3 cylinder:(float)a4 axis:(unint64_t)a5
+- (CRXFRXValues)initWithSphere:(float)sphere cylinder:(float)cylinder axis:(unint64_t)axis
 {
   v9.receiver = self;
   v9.super_class = CRXFRXValues;
   result = [(CRXFRXValues *)&v9 init];
   if (result)
   {
-    result->_sphere = a3;
-    result->_cylinder = a4;
-    result->_axis = a5;
+    result->_sphere = sphere;
+    result->_cylinder = cylinder;
+    result->_axis = axis;
   }
 
   return result;
 }
 
-- (CRXFRXValues)initWithCoder:(id)a3
+- (CRXFRXValues)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeFloatForKey:@"sph"];
+  coderCopy = coder;
+  [coderCopy decodeFloatForKey:@"sph"];
   v6 = v5;
-  [v4 decodeFloatForKey:@"cyl"];
+  [coderCopy decodeFloatForKey:@"cyl"];
   v8 = v7;
-  v9 = [v4 decodeIntegerForKey:@"axis"];
+  v9 = [coderCopy decodeIntegerForKey:@"axis"];
 
   LODWORD(v10) = v6;
   LODWORD(v11) = v8;
@@ -37,15 +37,15 @@
   return [(CRXFRXValues *)self initWithSphere:v9 cylinder:v10 axis:v11];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sphere = self->_sphere;
-  v7 = a3;
+  coderCopy = coder;
   *&v5 = sphere;
-  [v7 encodeFloat:@"sph" forKey:v5];
+  [coderCopy encodeFloat:@"sph" forKey:v5];
   *&v6 = self->_cylinder;
-  [v7 encodeFloat:@"cyl" forKey:v6];
-  [v7 encodeInteger:self->_axis forKey:@"axis"];
+  [coderCopy encodeFloat:@"cyl" forKey:v6];
+  [coderCopy encodeInteger:self->_axis forKey:@"axis"];
 }
 
 - (id)description

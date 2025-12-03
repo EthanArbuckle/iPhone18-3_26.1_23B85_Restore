@@ -1,7 +1,7 @@
 @interface AntMappingPolicy
 - (AntMappingPolicy)init;
 - (id)constructXpcMessage;
-- (void)extractPolicy:(id)a3;
+- (void)extractPolicy:(id)policy;
 @end
 
 @implementation AntMappingPolicy
@@ -16,13 +16,13 @@
   return result;
 }
 
-- (void)extractPolicy:(id)a3
+- (void)extractPolicy:(id)policy
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"Physical_Antenna_Index"];
+  policyCopy = policy;
+  v5 = [policyCopy objectForKey:@"Physical_Antenna_Index"];
   -[AntMappingPolicy setMPhysicalAntId:](self, "setMPhysicalAntId:", [v5 integerValue]);
 
-  v6 = [v4 objectForKey:@"SPMI_Antenna_Index"];
+  v6 = [policyCopy objectForKey:@"SPMI_Antenna_Index"];
 
   -[AntMappingPolicy setMSPMIAntId:](self, "setMSPMIAntId:", [v6 integerValue]);
 }

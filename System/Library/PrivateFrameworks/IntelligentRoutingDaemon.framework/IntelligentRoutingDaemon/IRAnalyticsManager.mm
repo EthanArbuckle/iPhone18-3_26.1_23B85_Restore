@@ -1,31 +1,31 @@
 @interface IRAnalyticsManager
-+ (BOOL)_isClientAllowedCA:(id)a3;
-+ (BOOL)logUiEvent:(id)a3 withService:(id)a4 forCandidateIdentifier:(id)a5 systemStateManager:(id)a6 candidatesContainer:(id)a7 inspections:(id)a8 statisticsManager:(id)a9 historyEventsContainer:(id)a10;
-+ (void)sendEventLazyForEventIdentifier:(id)a3 clientIdentifier:(id)a4 analytics:(id)a5;
-- (IRAnalyticsManager)initWithBackgroundActivitiesManager:(id)a3;
++ (BOOL)_isClientAllowedCA:(id)a;
++ (BOOL)logUiEvent:(id)event withService:(id)service forCandidateIdentifier:(id)identifier systemStateManager:(id)manager candidatesContainer:(id)container inspections:(id)inspections statisticsManager:(id)statisticsManager historyEventsContainer:(id)self0;
++ (void)sendEventLazyForEventIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier analytics:(id)analytics;
+- (IRAnalyticsManager)initWithBackgroundActivitiesManager:(id)manager;
 - (IRBackgroundActivitiesManager)backgroundActivitiesManager;
 - (void)_handleCoreAnalyticsXPCActivity;
 @end
 
 @implementation IRAnalyticsManager
 
-+ (BOOL)logUiEvent:(id)a3 withService:(id)a4 forCandidateIdentifier:(id)a5 systemStateManager:(id)a6 candidatesContainer:(id)a7 inspections:(id)a8 statisticsManager:(id)a9 historyEventsContainer:(id)a10
++ (BOOL)logUiEvent:(id)event withService:(id)service forCandidateIdentifier:(id)identifier systemStateManager:(id)manager candidatesContainer:(id)container inspections:(id)inspections statisticsManager:(id)statisticsManager historyEventsContainer:(id)self0
 {
   v48 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  v15 = a4;
-  v42 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = [v15 clientIdentifier];
-  LOBYTE(a8) = [IRAnalyticsManager _isClientAllowedCA:v21];
+  eventCopy = event;
+  serviceCopy = service;
+  identifierCopy = identifier;
+  managerCopy = manager;
+  containerCopy = container;
+  inspectionsCopy = inspections;
+  statisticsManagerCopy = statisticsManager;
+  eventsContainerCopy = eventsContainer;
+  clientIdentifier = [serviceCopy clientIdentifier];
+  LOBYTE(inspections) = [IRAnalyticsManager _isClientAllowedCA:clientIdentifier];
 
-  if (a8)
+  if (inspections)
   {
-    v22 = IRCreateServicePackageAdapter([v15 servicePackage]);
+    v22 = IRCreateServicePackageAdapter([serviceCopy servicePackage]);
     v23 = objc_opt_respondsToSelector();
     if (v23)
     {
@@ -33,30 +33,30 @@
       if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_DEFAULT))
       {
         log = v24;
-        v39 = [v15 serviceIdentifier];
-        v38 = [v15 clientIdentifier];
+        serviceIdentifier = [serviceCopy serviceIdentifier];
+        clientIdentifier2 = [serviceCopy clientIdentifier];
         *buf = 138412546;
-        v45 = v39;
+        v45 = serviceIdentifier;
         v46 = 2112;
-        v47 = v38;
+        v47 = clientIdentifier2;
         _os_log_impl(&dword_25543D000, log, OS_LOG_TYPE_DEFAULT, "#analytics, Starting ui event analytics for service: %@, client: %@", buf, 0x16u);
       }
 
-      v25 = [v22 uiAnalyticsWithEvent:v43 forCandidateIdentifier:v42 systemStateManager:v16 candidatesContainer:v17 inspections:v18 statisticsManager:v19 service:v15 historyEventsContainer:v20];
-      [v15 clientIdentifier];
+      v25 = [v22 uiAnalyticsWithEvent:eventCopy forCandidateIdentifier:identifierCopy systemStateManager:managerCopy candidatesContainer:containerCopy inspections:inspectionsCopy statisticsManager:statisticsManagerCopy service:serviceCopy historyEventsContainer:eventsContainerCopy];
+      [serviceCopy clientIdentifier];
       loga = v22;
-      v26 = v20;
-      v27 = v19;
-      v28 = v18;
-      v29 = v17;
-      v31 = v30 = v16;
+      v26 = eventsContainerCopy;
+      v27 = statisticsManagerCopy;
+      v28 = inspectionsCopy;
+      v29 = containerCopy;
+      v31 = v30 = managerCopy;
       [IRAnalyticsManager sendEventLazyForEventIdentifier:@"com.apple.com.apple.intelligentroutingd.CoreAnalyticsUiEvent" clientIdentifier:v31 analytics:v25];
 
-      v16 = v30;
-      v17 = v29;
-      v18 = v28;
-      v19 = v27;
-      v20 = v26;
+      managerCopy = v30;
+      containerCopy = v29;
+      inspectionsCopy = v28;
+      statisticsManagerCopy = v27;
+      eventsContainerCopy = v26;
       v22 = loga;
     }
   }
@@ -68,12 +68,12 @@
     if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_DEFAULT))
     {
       v33 = v32;
-      v34 = [v15 serviceIdentifier];
-      v35 = [v15 clientIdentifier];
+      serviceIdentifier2 = [serviceCopy serviceIdentifier];
+      clientIdentifier3 = [serviceCopy clientIdentifier];
       *buf = 138412546;
-      v45 = v34;
+      v45 = serviceIdentifier2;
       v46 = 2112;
-      v47 = v35;
+      v47 = clientIdentifier3;
       _os_log_impl(&dword_25543D000, v33, OS_LOG_TYPE_DEFAULT, "#analytics, Skipping ui event analytics for service: %@, client: %@", buf, 0x16u);
 
       v23 = 0;
@@ -84,30 +84,30 @@
   return v23 & 1;
 }
 
-+ (void)sendEventLazyForEventIdentifier:(id)a3 clientIdentifier:(id)a4 analytics:(id)a5
++ (void)sendEventLazyForEventIdentifier:(id)identifier clientIdentifier:(id)clientIdentifier analytics:(id)analytics
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  clientIdentifierCopy = clientIdentifier;
+  analyticsCopy = analytics;
   v10 = *MEMORY[0x277D21260];
   if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v19 = v7;
+    v19 = identifierCopy;
     v20 = 2112;
-    v21 = v8;
+    v21 = clientIdentifierCopy;
     v22 = 2112;
-    v23 = v9;
+    v23 = analyticsCopy;
     _os_log_impl(&dword_25543D000, v10, OS_LOG_TYPE_DEFAULT, "#analytics, [%@]:[%@]: Preparing to submit analytics: %@", buf, 0x20u);
   }
 
-  v15 = v7;
-  v16 = v8;
-  v17 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = v7;
+  v15 = identifierCopy;
+  v16 = clientIdentifierCopy;
+  v17 = analyticsCopy;
+  v11 = analyticsCopy;
+  v12 = clientIdentifierCopy;
+  v13 = identifierCopy;
   AnalyticsSendEventLazy();
 
   v14 = *MEMORY[0x277D85DE8];
@@ -137,42 +137,42 @@ id __81__IRAnalyticsManager_sendEventLazyForEventIdentifier_clientIdentifier_ana
   return v6;
 }
 
-+ (BOOL)_isClientAllowedCA:(id)a3
++ (BOOL)_isClientAllowedCA:(id)a
 {
-  v3 = a3;
-  if ([&unk_286768EC0 containsObject:v3])
+  aCopy = a;
+  if ([&unk_286768EC0 containsObject:aCopy])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 containsString:@"com.apple.mediaremoted"];
+    v4 = [aCopy containsString:@"com.apple.mediaremoted"];
   }
 
   return v4;
 }
 
-- (IRAnalyticsManager)initWithBackgroundActivitiesManager:(id)a3
+- (IRAnalyticsManager)initWithBackgroundActivitiesManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = IRAnalyticsManager;
   v5 = [(IRAnalyticsManager *)&v13 init];
   if (v5)
   {
     v6 = +[IRPreferences shared];
-    v7 = [v6 coreAnalyticsXPCActivityInterval];
-    v8 = [v7 longLongValue];
+    coreAnalyticsXPCActivityInterval = [v6 coreAnalyticsXPCActivityInterval];
+    longLongValue = [coreAnalyticsXPCActivityInterval longLongValue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __58__IRAnalyticsManager_initWithBackgroundActivitiesManager___block_invoke;
     v11[3] = &unk_2797E0BA8;
     v9 = v5;
     v12 = v9;
-    [v4 registerForRepeatingBackgroundXPCActivityWithIdentifier:@"com.apple.intelligentroutingd.CoreAnalyticsXPCActivityIdentifier" interval:v8 isDiskIntensive:1 isMemoryIntensive:1 handler:v11];
+    [managerCopy registerForRepeatingBackgroundXPCActivityWithIdentifier:@"com.apple.intelligentroutingd.CoreAnalyticsXPCActivityIdentifier" interval:longLongValue isDiskIntensive:1 isMemoryIntensive:1 handler:v11];
 
-    [(IRAnalyticsManager *)v9 setBackgroundActivitiesManager:v4];
+    [(IRAnalyticsManager *)v9 setBackgroundActivitiesManager:managerCopy];
   }
 
   return v5;
@@ -180,9 +180,9 @@ id __81__IRAnalyticsManager_sendEventLazyForEventIdentifier_clientIdentifier_ana
 
 - (void)_handleCoreAnalyticsXPCActivity
 {
-  v3 = [(IRAnalyticsManager *)self backgroundActivitiesManager];
-  v2 = [v3 server];
-  [v2 performXPCActivityUnderServerContext:&__block_literal_global];
+  backgroundActivitiesManager = [(IRAnalyticsManager *)self backgroundActivitiesManager];
+  server = [backgroundActivitiesManager server];
+  [server performXPCActivityUnderServerContext:&__block_literal_global];
 }
 
 void __53__IRAnalyticsManager__handleCoreAnalyticsXPCActivity__block_invoke(uint64_t a1, void *a2, void *a3)

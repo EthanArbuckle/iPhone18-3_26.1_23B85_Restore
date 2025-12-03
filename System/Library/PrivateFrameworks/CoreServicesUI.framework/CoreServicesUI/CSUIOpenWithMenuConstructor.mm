@@ -1,20 +1,20 @@
 @interface CSUIOpenWithMenuConstructor
 - (CSUIOpenWithMenuConstructor)init;
-- (CSUIOpenWithMenuConstructor)initWithConfiguration:(id)a3;
+- (CSUIOpenWithMenuConstructor)initWithConfiguration:(id)configuration;
 - (CSUIOpenWithMenuConstructorDelegate)delegate;
-- (id)buildUIMenuForPreparedMenu:(id)a3 withError:(id *)a4;
+- (id)buildUIMenuForPreparedMenu:(id)menu withError:(id *)error;
 - (id)noApplicationsMenuItem;
-- (id)prepareMenuForBindable:(id)a3 error:(id *)a4;
-- (id)prepareMenuForBindables:(id)a3 error:(id *)a4;
-- (void)setDelegate:(id)a3;
+- (id)prepareMenuForBindable:(id)bindable error:(id *)error;
+- (id)prepareMenuForBindables:(id)bindables error:(id *)error;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation CSUIOpenWithMenuConstructor
 
-- (CSUIOpenWithMenuConstructor)initWithConfiguration:(id)a3
+- (CSUIOpenWithMenuConstructor)initWithConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = sub_2478D1978(v3);
+  configurationCopy = configuration;
+  v4 = sub_2478D1978(configurationCopy);
 
   return v4;
 }
@@ -22,7 +22,7 @@
 - (CSUIOpenWithMenuConstructorDelegate)delegate
 {
   v2 = *(&self->super.isa + OBJC_IVAR___CSUIOpenWithMenuConstructor_mutableState);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2 + 6);
   Strong = swift_unknownObjectWeakLoadStrong();
   os_unfair_lock_unlock(v2 + 6);
@@ -30,11 +30,11 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CSUIOpenWithMenuConstructor_mutableState);
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v4 + 6);
   swift_unknownObjectWeakAssign();
   os_unfair_lock_unlock(v4 + 6);
@@ -42,21 +42,21 @@
   swift_unknownObjectRelease();
 }
 
-- (id)prepareMenuForBindables:(id)a3 error:(id *)a4
+- (id)prepareMenuForBindables:(id)bindables error:(id *)error
 {
   type metadata accessor for CSUIBindable(0);
   v5 = sub_2478D8ABC();
-  v6 = self;
+  selfCopy = self;
   v7 = sub_2478C85A8(v5);
 
   return v7;
 }
 
-- (id)prepareMenuForBindable:(id)a3 error:(id *)a4
+- (id)prepareMenuForBindable:(id)bindable error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_2478CA730(v5);
+  bindableCopy = bindable;
+  selfCopy = self;
+  v7 = sub_2478CA730(bindableCopy);
 
   return v7;
 }
@@ -76,7 +76,7 @@
   return v2;
 }
 
-- (id)buildUIMenuForPreparedMenu:(id)a3 withError:(id *)a4
+- (id)buildUIMenuForPreparedMenu:(id)menu withError:(id *)error
 {
   sub_2478D8B4C();
   sub_2478D8B3C();
@@ -86,9 +86,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v6 = a3;
-  v7 = self;
-  v8 = sub_2478CAA44(v6);
+  menuCopy = menu;
+  selfCopy = self;
+  v8 = sub_2478CAA44(menuCopy);
 
   return v8;
 }

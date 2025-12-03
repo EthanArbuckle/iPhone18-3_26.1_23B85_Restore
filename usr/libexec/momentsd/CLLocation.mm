@@ -1,25 +1,25 @@
 @interface CLLocation
-- (CLLocation)initWithRTLocation:(id)a3;
+- (CLLocation)initWithRTLocation:(id)location;
 @end
 
 @implementation CLLocation
 
-- (CLLocation)initWithRTLocation:(id)a3
+- (CLLocation)initWithRTLocation:(id)location
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  locationCopy = location;
+  v6 = locationCopy;
+  if (locationCopy)
   {
-    [v5 latitude];
+    [locationCopy latitude];
     v8 = v7;
     [v6 longitude];
     v10 = CLLocationCoordinate2DMake(v8, v9);
     [v6 horizontalUncertainty];
     v12 = v11;
-    v13 = [v6 date];
-    self = [(CLLocation *)self initWithCoordinate:v13 altitude:v10.latitude horizontalAccuracy:v10.longitude verticalAccuracy:0.0 timestamp:v12, -1.0];
+    date = [v6 date];
+    self = [(CLLocation *)self initWithCoordinate:date altitude:v10.latitude horizontalAccuracy:v10.longitude verticalAccuracy:0.0 timestamp:v12, -1.0];
 
-    v14 = self;
+    selfCopy = self;
   }
 
   else
@@ -33,10 +33,10 @@
     v16 = +[NSAssertionHandler currentHandler];
     [v16 handleFailureInMethod:a2 object:self file:@"CLLocation+MOExtensions.m" lineNumber:20 description:@"Invalid parameter not satisfying: location"];
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 @end

@@ -1,84 +1,84 @@
 @interface CSUISettingsBundleController
-- (BOOL)_cnfreg_overrideForController:(id)a3 withDictionary:(id)a4;
-- (CSUISettingsBundleController)initWithParentListController:(id)a3;
-- (Class)controllerClassToInstantiate:(id)a3;
+- (BOOL)_cnfreg_overrideForController:(id)controller withDictionary:(id)dictionary;
+- (CSUISettingsBundleController)initWithParentListController:(id)controller;
+- (Class)controllerClassToInstantiate:(id)instantiate;
 - (id)name;
 - (id)settingsClassName;
 - (int64_t)serviceType;
-- (void)_resetSpecifierAction:(id)a3;
-- (void)bundleTappedWithSpecifier:(id)a3;
+- (void)_resetSpecifierAction:(id)action;
+- (void)bundleTappedWithSpecifier:(id)specifier;
 @end
 
 @implementation CSUISettingsBundleController
 
-- (CSUISettingsBundleController)initWithParentListController:(id)a3
+- (CSUISettingsBundleController)initWithParentListController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = CSUISettingsBundleController;
-  v3 = [(CSUISettingsBundleController *)&v7 initWithParentListController:a3];
+  v3 = [(CSUISettingsBundleController *)&v7 initWithParentListController:controller];
   if (v3)
   {
-    v4 = [MEMORY[0x277D18D68] sharedInstance];
-    v5 = [(CSUISettingsBundleController *)v3 name];
-    [v4 addListenerID:v5 capabilities:*MEMORY[0x277D19338]];
+    mEMORY[0x277D18D68] = [MEMORY[0x277D18D68] sharedInstance];
+    name = [(CSUISettingsBundleController *)v3 name];
+    [mEMORY[0x277D18D68] addListenerID:name capabilities:*MEMORY[0x277D19338]];
   }
 
   return v3;
 }
 
-- (Class)controllerClassToInstantiate:(id)a3
+- (Class)controllerClassToInstantiate:(id)instantiate
 {
-  v4 = [(CSUISettingsBundleController *)self settingsClassName];
-  v5 = NSClassFromString(v4);
+  settingsClassName = [(CSUISettingsBundleController *)self settingsClassName];
+  v5 = NSClassFromString(settingsClassName);
 
   if (MarcoShouldLogRegistration())
   {
-    v6 = [(CSUISettingsBundleController *)self name];
+    name = [(CSUISettingsBundleController *)self name];
     MarcoLogRegistration();
   }
 
   return v5;
 }
 
-- (void)_resetSpecifierAction:(id)a3
+- (void)_resetSpecifierAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v3 = NSStringFromSelector(sel_lazyLoadSpecialBundleForSpecifier_);
-  [v4 setProperty:v3 forKey:*MEMORY[0x277D3FEC8]];
+  [actionCopy setProperty:v3 forKey:*MEMORY[0x277D3FEC8]];
 
-  [v4 setControllerLoadAction:sel_lazyLoadSpecialBundleForSpecifier_];
+  [actionCopy setControllerLoadAction:sel_lazyLoadSpecialBundleForSpecifier_];
 }
 
-- (void)bundleTappedWithSpecifier:(id)a3
+- (void)bundleTappedWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   if (MarcoShouldLogRegistration())
   {
-    v5 = [(CSUISettingsBundleController *)self name];
-    v23 = v4;
+    name = [(CSUISettingsBundleController *)self name];
+    v23 = specifierCopy;
     MarcoLogRegistration();
   }
 
-  v6 = [MEMORY[0x277D18D68] sharedInstance];
-  v7 = [v6 isConnected];
+  mEMORY[0x277D18D68] = [MEMORY[0x277D18D68] sharedInstance];
+  isConnected = [mEMORY[0x277D18D68] isConnected];
 
-  if ((v7 & 1) == 0)
+  if ((isConnected & 1) == 0)
   {
-    v8 = [MEMORY[0x277D18D68] sharedInstance];
-    [v8 blockUntilConnected];
+    mEMORY[0x277D18D68]2 = [MEMORY[0x277D18D68] sharedInstance];
+    [mEMORY[0x277D18D68]2 blockUntilConnected];
   }
 
-  [v4 setProperty:self forKey:@"bundleController"];
-  v9 = [v4 propertyForKey:@"ft-serviceType"];
-  v10 = [v9 integerValue];
-  v11 = [CNFRegController controllerForServiceType:v10];
+  [specifierCopy setProperty:self forKey:@"bundleController"];
+  v9 = [specifierCopy propertyForKey:@"ft-serviceType"];
+  integerValue = [v9 integerValue];
+  v11 = [CNFRegController controllerForServiceType:integerValue];
   v12 = v11;
   if (!v11)
   {
     if (MarcoShouldLogRegistration())
     {
-      v16 = [(CSUISettingsBundleController *)self name];
-      v24 = v10;
+      name2 = [(CSUISettingsBundleController *)self name];
+      v24 = integerValue;
       MarcoLogRegistration();
     }
 
@@ -89,12 +89,12 @@
   {
     if (MarcoShouldLogRegistration())
     {
-      v17 = [(CSUISettingsBundleController *)self name];
+      name3 = [(CSUISettingsBundleController *)self name];
       MarcoLogRegistration();
     }
 
 LABEL_19:
-    [(CSUISettingsBundleController *)self _resetSpecifierAction:v4, v24];
+    [(CSUISettingsBundleController *)self _resetSpecifierAction:specifierCopy, v24];
     goto LABEL_29;
   }
 
@@ -111,33 +111,33 @@ LABEL_19:
   [v12 setWillLaunchURLBlock:v25];
   [v12 resetNetworkFirstRunAlert];
   CNFRegSetStringTableForServiceType([(CSUISettingsBundleController *)self serviceType]);
-  v13 = [MEMORY[0x277D75418] currentDevice];
-  v14 = [v13 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v14 == 1)
+  if (userInterfaceIdiom == 1)
   {
     CNFRegSetGlobalAppearanceStyle(2);
     CNFRegSetSupportsAutoRotation(1);
   }
 
-  if (v10 != 2)
+  if (integerValue != 2)
   {
-    if (v10 == 1)
+    if (integerValue == 1)
     {
-      v15 = [MEMORY[0x277D18DE0] iMessageService];
+      iMessageService = [MEMORY[0x277D18DE0] iMessageService];
       goto LABEL_21;
     }
 
-    if (v10)
+    if (integerValue)
     {
       v18 = 0;
       goto LABEL_23;
     }
   }
 
-  v15 = [MEMORY[0x277D18DE0] facetimeService];
+  iMessageService = [MEMORY[0x277D18DE0] facetimeService];
 LABEL_21:
-  v18 = v15;
+  v18 = iMessageService;
 LABEL_23:
   if ([CNFRegAppleIDSplashViewController shouldShowSplashViewForService:v18 inProgressRegisteringNonPhoneAccount:0])
   {
@@ -150,19 +150,19 @@ LABEL_23:
   }
 
   v20 = v19;
-  [v4 setControllerLoadAction:0];
-  *&v4[*MEMORY[0x277D3FC98]] = v20;
+  [specifierCopy setControllerLoadAction:0];
+  *&specifierCopy[*MEMORY[0x277D3FC98]] = v20;
   if (MarcoShouldLogRegistration())
   {
-    v21 = [(CSUISettingsBundleController *)self name];
+    name4 = [(CSUISettingsBundleController *)self name];
     v24 = v20;
     MarcoLogRegistration();
   }
 
-  v22 = [(CSUISettingsBundleController *)self settingsClassName];
-  [v4 setProperty:v22 forKey:@"cnf-completionclass"];
+  settingsClassName = [(CSUISettingsBundleController *)self settingsClassName];
+  [specifierCopy setProperty:settingsClassName forKey:@"cnf-completionclass"];
 
-  [v4 setProperty:MEMORY[0x277CBEC38] forKey:@"cnf-hideLearnMoreButton"];
+  [specifierCopy setProperty:MEMORY[0x277CBEC38] forKey:@"cnf-hideLearnMoreButton"];
 LABEL_29:
 }
 
@@ -184,44 +184,44 @@ void __58__CSUISettingsBundleController_bundleTappedWithSpecifier___block_invoke
   }
 }
 
-- (BOOL)_cnfreg_overrideForController:(id)a3 withDictionary:(id)a4
+- (BOOL)_cnfreg_overrideForController:(id)controller withDictionary:(id)dictionary
 {
   v73 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKey:@"path"];
+  controllerCopy = controller;
+  dictionaryCopy = dictionary;
+  v8 = [dictionaryCopy objectForKey:@"path"];
   v9 = MEMORY[0x277CBEB18];
-  v10 = [v8 pathComponents];
-  v11 = [v9 arrayWithArray:v10];
+  pathComponents = [v8 pathComponents];
+  v11 = [v9 arrayWithArray:pathComponents];
 
   if ([v11 count])
   {
     v12 = [v11 objectAtIndex:0];
     v13 = MEMORY[0x245D4D140]();
     v14 = [v13 objectForKey:@"object"];
-    v59 = [v6 regController];
+    regController = [controllerCopy regController];
     WeakRetained = objc_loadWeakRetained((&self->super.super.isa + *MEMORY[0x277D3FBE0]));
-    v58 = [WeakRetained rootController];
+    rootController = [WeakRetained rootController];
 
     if (([v14 isEqualToString:@"CHANGE_PASSWORD"] & 1) != 0 || objc_msgSend(v14, "isEqualToString:", @"REAUTHORIZE"))
     {
       v57 = v14;
       v55 = v13;
-      v16 = [v7 objectForKey:@"appleID"];
+      v16 = [dictionaryCopy objectForKey:@"appleID"];
       if (v16)
       {
         v69 = 0u;
         v70 = 0u;
         v67 = 0u;
         v68 = 0u;
-        v17 = [v59 appleIDAccounts];
-        v18 = [v17 countByEnumeratingWithState:&v67 objects:v72 count:16];
+        appleIDAccounts = [regController appleIDAccounts];
+        v18 = [appleIDAccounts countByEnumeratingWithState:&v67 objects:v72 count:16];
         if (v18)
         {
           v19 = v18;
           v50 = v8;
           v52 = v12;
-          v47 = v6;
+          v47 = controllerCopy;
           v48 = v11;
           v20 = *v68;
           while (2)
@@ -230,12 +230,12 @@ void __58__CSUISettingsBundleController_bundleTappedWithSpecifier___block_invoke
             {
               if (*v68 != v20)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(appleIDAccounts);
               }
 
               v22 = *(*(&v67 + 1) + 8 * i);
-              v23 = [v22 loginDisplayString];
-              v24 = [v23 isEqualToString:v16];
+              loginDisplayString = [v22 loginDisplayString];
+              v24 = [loginDisplayString isEqualToString:v16];
 
               if (v24)
               {
@@ -244,7 +244,7 @@ void __58__CSUISettingsBundleController_bundleTappedWithSpecifier___block_invoke
               }
             }
 
-            v19 = [v17 countByEnumeratingWithState:&v67 objects:v72 count:16];
+            v19 = [appleIDAccounts countByEnumeratingWithState:&v67 objects:v72 count:16];
             if (v19)
             {
               continue;
@@ -255,7 +255,7 @@ void __58__CSUISettingsBundleController_bundleTappedWithSpecifier___block_invoke
 
           v56 = 0;
 LABEL_16:
-          v6 = v47;
+          controllerCopy = v47;
           v11 = v48;
           v8 = v50;
           v12 = v52;
@@ -272,33 +272,33 @@ LABEL_16:
         v56 = 0;
       }
 
-      v35 = v58;
+      v35 = rootController;
       if ([v57 isEqualToString:@"CHANGE_PASSWORD"])
       {
-        v29 = [FTRegUtilities standaloneNewPasswordControllerWithRegController:v59 appleID:v16];
+        v29 = [FTRegUtilities standaloneNewPasswordControllerWithRegController:regController appleID:v16];
       }
 
       else
       {
         v54 = v12;
-        v36 = [v7 objectForKey:@"authID"];
-        v37 = [v7 objectForKey:@"authToken"];
+        v36 = [dictionaryCopy objectForKey:@"authID"];
+        v37 = [dictionaryCopy objectForKey:@"authToken"];
         if ((!v36 || ![v36 length]) && (!v37 || !objc_msgSend(v37, "length")))
         {
-          v38 = [v56 authorizationID];
+          authorizationID = [v56 authorizationID];
 
           [v56 authorizationToken];
           v39 = v11;
           v41 = v40 = v8;
 
-          v36 = v38;
+          v36 = authorizationID;
           v37 = v41;
           v8 = v40;
           v11 = v39;
-          v35 = v58;
+          v35 = rootController;
         }
 
-        v29 = [FTRegUtilities standaloneAuthorizationControllerWithRegController:v59 authID:v36 token:v37];
+        v29 = [FTRegUtilities standaloneAuthorizationControllerWithRegController:regController authID:v36 token:v37];
 
         v12 = v54;
       }
@@ -316,17 +316,17 @@ LABEL_46:
 
       v57 = v14;
       v55 = v13;
-      v26 = v6;
-      v16 = [v7 objectForKey:@"guid"];
+      v26 = controllerCopy;
+      v16 = [dictionaryCopy objectForKey:@"guid"];
       v63 = 0u;
       v64 = 0u;
       v65 = 0u;
       v66 = 0u;
       v56 = v26;
-      v27 = [v26 regController];
-      v28 = [v27 appleIDAccounts];
+      regController2 = [v26 regController];
+      appleIDAccounts2 = [regController2 appleIDAccounts];
 
-      v29 = [v28 countByEnumeratingWithState:&v63 objects:v71 count:16];
+      v29 = [appleIDAccounts2 countByEnumeratingWithState:&v63 objects:v71 count:16];
       if (v29)
       {
         v51 = v8;
@@ -339,12 +339,12 @@ LABEL_22:
         {
           if (*v64 != v30)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(appleIDAccounts2);
           }
 
           v32 = *(*(&v63 + 1) + 8 * v31);
-          v33 = [v32 uniqueID];
-          v34 = [v33 isEqualToString:v16];
+          uniqueID = [v32 uniqueID];
+          v34 = [uniqueID isEqualToString:v16];
 
           if (v34)
           {
@@ -353,7 +353,7 @@ LABEL_22:
 
           if (v29 == ++v31)
           {
-            v29 = [v28 countByEnumeratingWithState:&v63 objects:v71 count:16];
+            v29 = [appleIDAccounts2 countByEnumeratingWithState:&v63 objects:v71 count:16];
             if (v29)
             {
               goto LABEL_22;
@@ -368,7 +368,7 @@ LABEL_22:
         if (v46)
         {
           v29 = [v56 _localeChooserForAccount:v46];
-          v28 = v46;
+          appleIDAccounts2 = v46;
 LABEL_50:
           v11 = v49;
           v8 = v51;
@@ -380,23 +380,23 @@ LABEL_50:
         v11 = v49;
         v8 = v51;
         v12 = v53;
-        v35 = v58;
+        v35 = rootController;
       }
 
       else
       {
 LABEL_51:
-        v35 = v58;
+        v35 = rootController;
       }
     }
 
     if (v29)
     {
-      v42 = [v35 presentedViewController];
+      presentedViewController = [v35 presentedViewController];
 
       v13 = v55;
       v14 = v57;
-      if (v42)
+      if (presentedViewController)
       {
         v60[0] = MEMORY[0x277D85DD0];
         v60[1] = 3221225472;
@@ -435,27 +435,27 @@ LABEL_47:
 
 - (int64_t)serviceType
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"CSUISettingsBundleController.m" lineNumber:228 description:{@"Call to abstract method (%@) on %@", v5, objc_opt_class()}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CSUISettingsBundleController.m" lineNumber:228 description:{@"Call to abstract method (%@) on %@", v5, objc_opt_class()}];
 
   return 0;
 }
 
 - (id)settingsClassName
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"CSUISettingsBundleController.m" lineNumber:233 description:{@"Call to abstract method (%@) on %@", v5, objc_opt_class()}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CSUISettingsBundleController.m" lineNumber:233 description:{@"Call to abstract method (%@) on %@", v5, objc_opt_class()}];
 
   return 0;
 }
 
 - (id)name
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:@"CSUISettingsBundleController.m" lineNumber:238 description:{@"Call to abstract method (%@) on %@", v5, objc_opt_class()}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CSUISettingsBundleController.m" lineNumber:238 description:{@"Call to abstract method (%@) on %@", v5, objc_opt_class()}];
 
   return 0;
 }

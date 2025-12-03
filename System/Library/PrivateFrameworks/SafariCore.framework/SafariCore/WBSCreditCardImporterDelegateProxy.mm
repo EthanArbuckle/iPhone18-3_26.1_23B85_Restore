@@ -1,31 +1,31 @@
 @interface WBSCreditCardImporterDelegateProxy
-- (WBSCreditCardImporterDelegateProxy)initWithDelegate:(id)a3;
-- (void)importCreditCardDataWithCardNumber:(id)a3 cardName:(id)a4 cardholderName:(id)a5 cardExpirationMonth:(id)a6 cardExpirationYear:(id)a7 lastUsedDate:(id)a8;
+- (WBSCreditCardImporterDelegateProxy)initWithDelegate:(id)delegate;
+- (void)importCreditCardDataWithCardNumber:(id)number cardName:(id)name cardholderName:(id)cardholderName cardExpirationMonth:(id)month cardExpirationYear:(id)year lastUsedDate:(id)date;
 @end
 
 @implementation WBSCreditCardImporterDelegateProxy
 
-- (WBSCreditCardImporterDelegateProxy)initWithDelegate:(id)a3
+- (WBSCreditCardImporterDelegateProxy)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = WBSCreditCardImporterDelegateProxy;
   v6 = [(WBSCreditCardImporterDelegateProxy *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)importCreditCardDataWithCardNumber:(id)a3 cardName:(id)a4 cardholderName:(id)a5 cardExpirationMonth:(id)a6 cardExpirationYear:(id)a7 lastUsedDate:(id)a8
+- (void)importCreditCardDataWithCardNumber:(id)number cardName:(id)name cardholderName:(id)cardholderName cardExpirationMonth:(id)month cardExpirationYear:(id)year lastUsedDate:(id)date
 {
   delegate = self->_delegate;
   ++self->_numberOfCreditCardsImported;
-  [(WBSCreditCardImporterDelegate *)delegate importCreditCardDataWithCardNumber:a3 cardName:a4 cardholderName:a5 cardExpirationMonth:a6 cardExpirationYear:a7 lastUsedDate:a8];
+  [(WBSCreditCardImporterDelegate *)delegate importCreditCardDataWithCardNumber:number cardName:name cardholderName:cardholderName cardExpirationMonth:month cardExpirationYear:year lastUsedDate:date];
 }
 
 @end

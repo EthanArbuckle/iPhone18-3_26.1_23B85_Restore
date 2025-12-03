@@ -1,57 +1,57 @@
 @interface _SFPBPerson
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBPerson)initWithDictionary:(id)a3;
-- (_SFPBPerson)initWithFacade:(id)a3;
-- (_SFPBPerson)initWithJSON:(id)a3;
+- (_SFPBPerson)initWithDictionary:(id)dictionary;
+- (_SFPBPerson)initWithFacade:(id)facade;
+- (_SFPBPerson)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addEmailAddresses:(id)a3;
-- (void)addPhoneNumbers:(id)a3;
-- (void)setContactIdentifier:(id)a3;
-- (void)setDisplayName:(id)a3;
-- (void)setEmailAddresses:(id)a3;
-- (void)setPersonIdentifier:(id)a3;
-- (void)setPhoneNumbers:(id)a3;
-- (void)setPhotosIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addEmailAddresses:(id)addresses;
+- (void)addPhoneNumbers:(id)numbers;
+- (void)setContactIdentifier:(id)identifier;
+- (void)setDisplayName:(id)name;
+- (void)setEmailAddresses:(id)addresses;
+- (void)setPersonIdentifier:(id)identifier;
+- (void)setPhoneNumbers:(id)numbers;
+- (void)setPhotosIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBPerson
 
-- (_SFPBPerson)initWithFacade:(id)a3
+- (_SFPBPerson)initWithFacade:(id)facade
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBPerson *)self init];
   if (v5)
   {
-    v6 = [v4 personIdentifier];
+    personIdentifier = [facadeCopy personIdentifier];
 
-    if (v6)
+    if (personIdentifier)
     {
-      v7 = [v4 personIdentifier];
-      [(_SFPBPerson *)v5 setPersonIdentifier:v7];
+      personIdentifier2 = [facadeCopy personIdentifier];
+      [(_SFPBPerson *)v5 setPersonIdentifier:personIdentifier2];
     }
 
-    v8 = [v4 contactIdentifier];
+    contactIdentifier = [facadeCopy contactIdentifier];
 
-    if (v8)
+    if (contactIdentifier)
     {
-      v9 = [v4 contactIdentifier];
-      [(_SFPBPerson *)v5 setContactIdentifier:v9];
+      contactIdentifier2 = [facadeCopy contactIdentifier];
+      [(_SFPBPerson *)v5 setContactIdentifier:contactIdentifier2];
     }
 
-    v10 = [v4 displayName];
+    displayName = [facadeCopy displayName];
 
-    if (v10)
+    if (displayName)
     {
-      v11 = [v4 displayName];
-      [(_SFPBPerson *)v5 setDisplayName:v11];
+      displayName2 = [facadeCopy displayName];
+      [(_SFPBPerson *)v5 setDisplayName:displayName2];
     }
 
-    v12 = [v4 phoneNumbers];
-    if (v12)
+    phoneNumbers = [facadeCopy phoneNumbers];
+    if (phoneNumbers)
     {
       v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -65,8 +65,8 @@
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v14 = [v4 phoneNumbers];
-    v15 = [v14 countByEnumeratingWithState:&v35 objects:v40 count:16];
+    phoneNumbers2 = [facadeCopy phoneNumbers];
+    v15 = [phoneNumbers2 countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v15)
     {
       v16 = v15;
@@ -77,7 +77,7 @@
         {
           if (*v36 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(phoneNumbers2);
           }
 
           if (*(*(&v35 + 1) + 8 * i))
@@ -86,15 +86,15 @@
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v35 objects:v40 count:16];
+        v16 = [phoneNumbers2 countByEnumeratingWithState:&v35 objects:v40 count:16];
       }
 
       while (v16);
     }
 
     [(_SFPBPerson *)v5 setPhoneNumbers:v13];
-    v19 = [v4 emailAddresses];
-    if (v19)
+    emailAddresses = [facadeCopy emailAddresses];
+    if (emailAddresses)
     {
       v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -108,8 +108,8 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v21 = [v4 emailAddresses];
-    v22 = [v21 countByEnumeratingWithState:&v31 objects:v39 count:16];
+    emailAddresses2 = [facadeCopy emailAddresses];
+    v22 = [emailAddresses2 countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v22)
     {
       v23 = v22;
@@ -120,7 +120,7 @@
         {
           if (*v32 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(emailAddresses2);
           }
 
           if (*(*(&v31 + 1) + 8 * j))
@@ -129,19 +129,19 @@
           }
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        v23 = [emailAddresses2 countByEnumeratingWithState:&v31 objects:v39 count:16];
       }
 
       while (v23);
     }
 
     [(_SFPBPerson *)v5 setEmailAddresses:v20];
-    v26 = [v4 photosIdentifier];
+    photosIdentifier = [facadeCopy photosIdentifier];
 
-    if (v26)
+    if (photosIdentifier)
     {
-      v27 = [v4 photosIdentifier];
-      [(_SFPBPerson *)v5 setPhotosIdentifier:v27];
+      photosIdentifier2 = [facadeCopy photosIdentifier];
+      [(_SFPBPerson *)v5 setPhotosIdentifier:photosIdentifier2];
     }
 
     v28 = v5;
@@ -151,16 +151,16 @@
   return v5;
 }
 
-- (_SFPBPerson)initWithDictionary:(id)a3
+- (_SFPBPerson)initWithDictionary:(id)dictionary
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v44.receiver = self;
   v44.super_class = _SFPBPerson;
   v5 = [(_SFPBPerson *)&v44 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"personIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"personIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -169,7 +169,7 @@
     }
 
     v35 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"contactIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"contactIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -177,7 +177,7 @@
       [(_SFPBPerson *)v5 setContactIdentifier:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"displayName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"displayName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -185,7 +185,7 @@
       [(_SFPBPerson *)v5 setDisplayName:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"phoneNumbers"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"phoneNumbers"];
     objc_opt_class();
     v33 = v10;
     v34 = v8;
@@ -233,7 +233,7 @@
       v8 = v34;
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"emailAddresses"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"emailAddresses"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -279,7 +279,7 @@
       v8 = v34;
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"photosIdentifier"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"photosIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -294,30 +294,30 @@
   return v5;
 }
 
-- (_SFPBPerson)initWithJSON:(id)a3
+- (_SFPBPerson)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBPerson *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBPerson *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBPerson *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -330,50 +330,50 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_contactIdentifier)
   {
-    v4 = [(_SFPBPerson *)self contactIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"contactIdentifier"];
+    contactIdentifier = [(_SFPBPerson *)self contactIdentifier];
+    v5 = [contactIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"contactIdentifier"];
   }
 
   if (self->_displayName)
   {
-    v6 = [(_SFPBPerson *)self displayName];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"displayName"];
+    displayName = [(_SFPBPerson *)self displayName];
+    v7 = [displayName copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"displayName"];
   }
 
   if (self->_emailAddresses)
   {
-    v8 = [(_SFPBPerson *)self emailAddresses];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"emailAddresses"];
+    emailAddresses = [(_SFPBPerson *)self emailAddresses];
+    v9 = [emailAddresses copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"emailAddresses"];
   }
 
   if (self->_personIdentifier)
   {
-    v10 = [(_SFPBPerson *)self personIdentifier];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"personIdentifier"];
+    personIdentifier = [(_SFPBPerson *)self personIdentifier];
+    v11 = [personIdentifier copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"personIdentifier"];
   }
 
   if (self->_phoneNumbers)
   {
-    v12 = [(_SFPBPerson *)self phoneNumbers];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"phoneNumbers"];
+    phoneNumbers = [(_SFPBPerson *)self phoneNumbers];
+    v13 = [phoneNumbers copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"phoneNumbers"];
   }
 
   if (self->_photosIdentifier)
   {
-    v14 = [(_SFPBPerson *)self photosIdentifier];
-    v15 = [v14 copy];
-    [v3 setObject:v15 forKeyedSubscript:@"photosIdentifier"];
+    photosIdentifier = [(_SFPBPerson *)self photosIdentifier];
+    v15 = [photosIdentifier copy];
+    [dictionary setObject:v15 forKeyedSubscript:@"photosIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -386,28 +386,28 @@
   return v6 ^ v7 ^ [(NSString *)self->_photosIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
-  v5 = [(_SFPBPerson *)self personIdentifier];
-  v6 = [v4 personIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  personIdentifier = [(_SFPBPerson *)self personIdentifier];
+  personIdentifier2 = [equalCopy personIdentifier];
+  if ((personIdentifier != 0) == (personIdentifier2 == 0))
   {
     goto LABEL_31;
   }
 
-  v7 = [(_SFPBPerson *)self personIdentifier];
-  if (v7)
+  personIdentifier3 = [(_SFPBPerson *)self personIdentifier];
+  if (personIdentifier3)
   {
-    v8 = v7;
-    v9 = [(_SFPBPerson *)self personIdentifier];
-    v10 = [v4 personIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = personIdentifier3;
+    personIdentifier4 = [(_SFPBPerson *)self personIdentifier];
+    personIdentifier5 = [equalCopy personIdentifier];
+    v11 = [personIdentifier4 isEqual:personIdentifier5];
 
     if (!v11)
     {
@@ -419,20 +419,20 @@
   {
   }
 
-  v5 = [(_SFPBPerson *)self contactIdentifier];
-  v6 = [v4 contactIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  personIdentifier = [(_SFPBPerson *)self contactIdentifier];
+  personIdentifier2 = [equalCopy contactIdentifier];
+  if ((personIdentifier != 0) == (personIdentifier2 == 0))
   {
     goto LABEL_31;
   }
 
-  v12 = [(_SFPBPerson *)self contactIdentifier];
-  if (v12)
+  contactIdentifier = [(_SFPBPerson *)self contactIdentifier];
+  if (contactIdentifier)
   {
-    v13 = v12;
-    v14 = [(_SFPBPerson *)self contactIdentifier];
-    v15 = [v4 contactIdentifier];
-    v16 = [v14 isEqual:v15];
+    v13 = contactIdentifier;
+    contactIdentifier2 = [(_SFPBPerson *)self contactIdentifier];
+    contactIdentifier3 = [equalCopy contactIdentifier];
+    v16 = [contactIdentifier2 isEqual:contactIdentifier3];
 
     if (!v16)
     {
@@ -444,20 +444,20 @@
   {
   }
 
-  v5 = [(_SFPBPerson *)self displayName];
-  v6 = [v4 displayName];
-  if ((v5 != 0) == (v6 == 0))
+  personIdentifier = [(_SFPBPerson *)self displayName];
+  personIdentifier2 = [equalCopy displayName];
+  if ((personIdentifier != 0) == (personIdentifier2 == 0))
   {
     goto LABEL_31;
   }
 
-  v17 = [(_SFPBPerson *)self displayName];
-  if (v17)
+  displayName = [(_SFPBPerson *)self displayName];
+  if (displayName)
   {
-    v18 = v17;
-    v19 = [(_SFPBPerson *)self displayName];
-    v20 = [v4 displayName];
-    v21 = [v19 isEqual:v20];
+    v18 = displayName;
+    displayName2 = [(_SFPBPerson *)self displayName];
+    displayName3 = [equalCopy displayName];
+    v21 = [displayName2 isEqual:displayName3];
 
     if (!v21)
     {
@@ -469,20 +469,20 @@
   {
   }
 
-  v5 = [(_SFPBPerson *)self phoneNumbers];
-  v6 = [v4 phoneNumbers];
-  if ((v5 != 0) == (v6 == 0))
+  personIdentifier = [(_SFPBPerson *)self phoneNumbers];
+  personIdentifier2 = [equalCopy phoneNumbers];
+  if ((personIdentifier != 0) == (personIdentifier2 == 0))
   {
     goto LABEL_31;
   }
 
-  v22 = [(_SFPBPerson *)self phoneNumbers];
-  if (v22)
+  phoneNumbers = [(_SFPBPerson *)self phoneNumbers];
+  if (phoneNumbers)
   {
-    v23 = v22;
-    v24 = [(_SFPBPerson *)self phoneNumbers];
-    v25 = [v4 phoneNumbers];
-    v26 = [v24 isEqual:v25];
+    v23 = phoneNumbers;
+    phoneNumbers2 = [(_SFPBPerson *)self phoneNumbers];
+    phoneNumbers3 = [equalCopy phoneNumbers];
+    v26 = [phoneNumbers2 isEqual:phoneNumbers3];
 
     if (!v26)
     {
@@ -494,20 +494,20 @@
   {
   }
 
-  v5 = [(_SFPBPerson *)self emailAddresses];
-  v6 = [v4 emailAddresses];
-  if ((v5 != 0) == (v6 == 0))
+  personIdentifier = [(_SFPBPerson *)self emailAddresses];
+  personIdentifier2 = [equalCopy emailAddresses];
+  if ((personIdentifier != 0) == (personIdentifier2 == 0))
   {
     goto LABEL_31;
   }
 
-  v27 = [(_SFPBPerson *)self emailAddresses];
-  if (v27)
+  emailAddresses = [(_SFPBPerson *)self emailAddresses];
+  if (emailAddresses)
   {
-    v28 = v27;
-    v29 = [(_SFPBPerson *)self emailAddresses];
-    v30 = [v4 emailAddresses];
-    v31 = [v29 isEqual:v30];
+    v28 = emailAddresses;
+    emailAddresses2 = [(_SFPBPerson *)self emailAddresses];
+    emailAddresses3 = [equalCopy emailAddresses];
+    v31 = [emailAddresses2 isEqual:emailAddresses3];
 
     if (!v31)
     {
@@ -519,12 +519,12 @@
   {
   }
 
-  v5 = [(_SFPBPerson *)self photosIdentifier];
-  v6 = [v4 photosIdentifier];
-  if ((v5 != 0) != (v6 == 0))
+  personIdentifier = [(_SFPBPerson *)self photosIdentifier];
+  personIdentifier2 = [equalCopy photosIdentifier];
+  if ((personIdentifier != 0) != (personIdentifier2 == 0))
   {
-    v32 = [(_SFPBPerson *)self photosIdentifier];
-    if (!v32)
+    photosIdentifier = [(_SFPBPerson *)self photosIdentifier];
+    if (!photosIdentifier)
     {
 
 LABEL_35:
@@ -532,10 +532,10 @@ LABEL_35:
       goto LABEL_33;
     }
 
-    v33 = v32;
-    v34 = [(_SFPBPerson *)self photosIdentifier];
-    v35 = [v4 photosIdentifier];
-    v36 = [v34 isEqual:v35];
+    v33 = photosIdentifier;
+    photosIdentifier2 = [(_SFPBPerson *)self photosIdentifier];
+    photosIdentifier3 = [equalCopy photosIdentifier];
+    v36 = [photosIdentifier2 isEqual:photosIdentifier3];
 
     if (v36)
     {
@@ -555,34 +555,34 @@ LABEL_33:
   return v37;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBPerson *)self personIdentifier];
-  if (v5)
+  toCopy = to;
+  personIdentifier = [(_SFPBPerson *)self personIdentifier];
+  if (personIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBPerson *)self contactIdentifier];
-  if (v6)
+  contactIdentifier = [(_SFPBPerson *)self contactIdentifier];
+  if (contactIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_SFPBPerson *)self displayName];
-  if (v7)
+  displayName = [(_SFPBPerson *)self displayName];
+  if (displayName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_SFPBPerson *)self phoneNumbers];
+  phoneNumbers = [(_SFPBPerson *)self phoneNumbers];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  v9 = [phoneNumbers countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v9)
   {
     v10 = v9;
@@ -594,7 +594,7 @@ LABEL_33:
       {
         if (*v27 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(phoneNumbers);
         }
 
         v13 = *(*(&v26 + 1) + 8 * v12);
@@ -603,18 +603,18 @@ LABEL_33:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v10 = [phoneNumbers countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v10);
   }
 
-  v14 = [(_SFPBPerson *)self emailAddresses];
+  emailAddresses = [(_SFPBPerson *)self emailAddresses];
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v15 = [v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  v15 = [emailAddresses countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v15)
   {
     v16 = v15;
@@ -626,7 +626,7 @@ LABEL_33:
       {
         if (*v23 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(emailAddresses);
         }
 
         v19 = *(*(&v22 + 1) + 8 * v18);
@@ -635,14 +635,14 @@ LABEL_33:
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v16 = [emailAddresses countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v16);
   }
 
-  v20 = [(_SFPBPerson *)self photosIdentifier];
-  if (v20)
+  photosIdentifier = [(_SFPBPerson *)self photosIdentifier];
+  if (photosIdentifier)
   {
     PBDataWriterWriteStringField();
   }
@@ -650,90 +650,90 @@ LABEL_33:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setPhotosIdentifier:(id)a3
+- (void)setPhotosIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   photosIdentifier = self->_photosIdentifier;
   self->_photosIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addEmailAddresses:(id)a3
+- (void)addEmailAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   emailAddresses = self->_emailAddresses;
-  v8 = v4;
+  v8 = addressesCopy;
   if (!emailAddresses)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_emailAddresses;
-    self->_emailAddresses = v6;
+    self->_emailAddresses = array;
 
-    v4 = v8;
+    addressesCopy = v8;
     emailAddresses = self->_emailAddresses;
   }
 
-  [(NSArray *)emailAddresses addObject:v4];
+  [(NSArray *)emailAddresses addObject:addressesCopy];
 }
 
-- (void)setEmailAddresses:(id)a3
+- (void)setEmailAddresses:(id)addresses
 {
-  v4 = [a3 copy];
+  v4 = [addresses copy];
   emailAddresses = self->_emailAddresses;
   self->_emailAddresses = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addPhoneNumbers:(id)a3
+- (void)addPhoneNumbers:(id)numbers
 {
-  v4 = a3;
+  numbersCopy = numbers;
   phoneNumbers = self->_phoneNumbers;
-  v8 = v4;
+  v8 = numbersCopy;
   if (!phoneNumbers)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_phoneNumbers;
-    self->_phoneNumbers = v6;
+    self->_phoneNumbers = array;
 
-    v4 = v8;
+    numbersCopy = v8;
     phoneNumbers = self->_phoneNumbers;
   }
 
-  [(NSArray *)phoneNumbers addObject:v4];
+  [(NSArray *)phoneNumbers addObject:numbersCopy];
 }
 
-- (void)setPhoneNumbers:(id)a3
+- (void)setPhoneNumbers:(id)numbers
 {
-  v4 = [a3 copy];
+  v4 = [numbers copy];
   phoneNumbers = self->_phoneNumbers;
   self->_phoneNumbers = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   displayName = self->_displayName;
   self->_displayName = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setContactIdentifier:(id)a3
+- (void)setContactIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   contactIdentifier = self->_contactIdentifier;
   self->_contactIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPersonIdentifier:(id)a3
+- (void)setPersonIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   personIdentifier = self->_personIdentifier;
   self->_personIdentifier = v4;
 

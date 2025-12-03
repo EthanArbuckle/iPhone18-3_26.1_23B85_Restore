@@ -1,14 +1,14 @@
 @interface SXBookmarkActionActivityProvider
-- (id)activityGroupForAction:(id)a3;
-- (id)initWithBookmarkManager:(id *)a1;
+- (id)activityGroupForAction:(id)action;
+- (id)initWithBookmarkManager:(id *)manager;
 @end
 
 @implementation SXBookmarkActionActivityProvider
 
-- (id)activityGroupForAction:(id)a3
+- (id)activityGroupForAction:(id)action
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  actionCopy = action;
+  if (actionCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = [[SXActionActivityGroup alloc] initWithTitle:0];
     v6 = [SXBlockActionActivity alloc];
@@ -18,10 +18,10 @@
     v12 = 3221225472;
     v13 = __59__SXBookmarkActionActivityProvider_activityGroupForAction___block_invoke;
     v14 = &unk_1E84FEDD0;
-    v15 = self;
-    v16 = v4;
+    selfCopy = self;
+    v16 = actionCopy;
     v9 = [(SXBlockActionActivity *)v6 initWithLabel:v8 type:0 block:&v11];
-    [(SXActionActivityGroup *)v5 addActivity:v9, v11, v12, v13, v14, v15];
+    [(SXActionActivityGroup *)v5 addActivity:v9, v11, v12, v13, v14, selfCopy];
   }
 
   else
@@ -32,22 +32,22 @@
   return v5;
 }
 
-- (id)initWithBookmarkManager:(id *)a1
+- (id)initWithBookmarkManager:(id *)manager
 {
   v4 = a2;
-  if (a1)
+  if (manager)
   {
-    v7.receiver = a1;
+    v7.receiver = manager;
     v7.super_class = SXBookmarkActionActivityProvider;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    manager = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
     }
   }
 
-  return a1;
+  return manager;
 }
 
 void __59__SXBookmarkActionActivityProvider_activityGroupForAction___block_invoke(uint64_t a1)

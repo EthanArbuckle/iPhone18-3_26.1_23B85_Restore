@@ -1,17 +1,17 @@
 @interface SBUIPasscodeLockNumberPadAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_configureAdditionalButtons;
 @end
 
 @implementation SBUIPasscodeLockNumberPadAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBUIPasscodeLockNumberPad" hasInstanceMethod:@"_configureAdditionalButtons" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBUIPasscodeLockNumberPad" hasInstanceVariable:@"_cancelButton" withType:"SBUIButton"];
-  [v3 validateClass:@"SBUIPasscodeLockNumberPad" hasInstanceVariable:@"_backspaceButton" withType:"SBUIButton"];
-  [v3 validateClass:@"SBUIPasscodeLockNumberPad" hasInstanceVariable:@"_emergencyCallButton" withType:"SBUIButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBUIPasscodeLockNumberPad" hasInstanceMethod:@"_configureAdditionalButtons" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBUIPasscodeLockNumberPad" hasInstanceVariable:@"_cancelButton" withType:"SBUIButton"];
+  [validationsCopy validateClass:@"SBUIPasscodeLockNumberPad" hasInstanceVariable:@"_backspaceButton" withType:"SBUIButton"];
+  [validationsCopy validateClass:@"SBUIPasscodeLockNumberPad" hasInstanceVariable:@"_emergencyCallButton" withType:"SBUIButton"];
 }
 
 - (void)_configureAdditionalButtons

@@ -41,13 +41,13 @@
           if (objc_opt_isKindOfClass())
           {
             v13 = v5;
-            v14 = self;
+            selfCopy = self;
             v15 = v6;
             v16 = v9;
-            v17 = [v16 _w5DictionaryRepresentation];
-            if (v17)
+            _w5DictionaryRepresentation = [v16 _w5DictionaryRepresentation];
+            if (_w5DictionaryRepresentation)
             {
-              [v29 setValue:v17 forKey:v8];
+              [v29 setValue:_w5DictionaryRepresentation forKey:v8];
             }
 
             else
@@ -57,7 +57,7 @@
             }
 
             v6 = v15;
-            self = v14;
+            self = selfCopy;
             v5 = v13;
             v4 = v28;
           }
@@ -103,8 +103,8 @@
     while (v4);
   }
 
-  v22 = [v29 allKeys];
-  if ([v22 count])
+  allKeys = [v29 allKeys];
+  if ([allKeys count])
   {
     v23 = v29;
   }

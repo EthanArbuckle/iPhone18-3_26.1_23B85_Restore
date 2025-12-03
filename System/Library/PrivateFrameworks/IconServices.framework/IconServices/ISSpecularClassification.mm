@@ -2,21 +2,21 @@
 - (BOOL)_prepareMaskIfNeeded;
 - (BOOL)classifySpecularWithDebug:(ISSpecularClassification *)self;
 - (CGImage)createSpecularImage;
-- (ISSpecularClassification)initWithSpecularImage:(CGImage *)a3 useAlphaOnly:(BOOL)a4;
+- (ISSpecularClassification)initWithSpecularImage:(CGImage *)image useAlphaOnly:(BOOL)only;
 - (void)dealloc;
 @end
 
 @implementation ISSpecularClassification
 
-- (ISSpecularClassification)initWithSpecularImage:(CGImage *)a3 useAlphaOnly:(BOOL)a4
+- (ISSpecularClassification)initWithSpecularImage:(CGImage *)image useAlphaOnly:(BOOL)only
 {
   v8.receiver = self;
   v8.super_class = ISSpecularClassification;
   v6 = [(ISSpecularClassification *)&v8 init];
   if (v6)
   {
-    v6->_cgImage = CGImageRetain(a3);
-    v6->_useAlphaOnly = a4;
+    v6->_cgImage = CGImageRetain(image);
+    v6->_useAlphaOnly = only;
   }
 
   return v6;

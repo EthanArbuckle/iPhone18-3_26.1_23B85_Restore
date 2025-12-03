@@ -4,13 +4,13 @@
 - (NSString)itemIdentifier;
 - (id)_requestBodyData;
 - (id)responseBlock;
-- (id)valueForHTTPHeaderField:(id)a3;
+- (id)valueForHTTPHeaderField:(id)field;
 - (void)main;
-- (void)setAssetStoreFrontIdentifier:(id)a3;
-- (void)setHTTPHeaderFields:(id)a3;
-- (void)setItemIdentifier:(id)a3;
-- (void)setResponseBlock:(id)a3;
-- (void)setValue:(id)a3 forHTTPHeaderField:(id)a4;
+- (void)setAssetStoreFrontIdentifier:(id)identifier;
+- (void)setHTTPHeaderFields:(id)fields;
+- (void)setItemIdentifier:(id)identifier;
+- (void)setResponseBlock:(id)block;
+- (void)setValue:(id)value forHTTPHeaderField:(id)field;
 @end
 
 @implementation SSVAccountLessPlaybackOperation
@@ -123,9 +123,9 @@ void __48__SSVAccountLessPlaybackOperation_responseBlock__block_invoke(uint64_t 
   *(v3 + 40) = v2;
 }
 
-- (void)setAssetStoreFrontIdentifier:(id)a3
+- (void)setAssetStoreFrontIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __64__SSVAccountLessPlaybackOperation_setAssetStoreFrontIdentifier___block_invoke;
@@ -136,16 +136,16 @@ void __48__SSVAccountLessPlaybackOperation_responseBlock__block_invoke(uint64_t 
   [(SSVOperation *)self dispatchAsync:v6];
 }
 
-- (void)setItemIdentifier:(id)a3
+- (void)setItemIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__SSVAccountLessPlaybackOperation_setItemIdentifier___block_invoke;
   v6[3] = &unk_1E84AC028;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(SSVOperation *)self dispatchAsync:v6];
 }
 
@@ -162,16 +162,16 @@ void __53__SSVAccountLessPlaybackOperation_setItemIdentifier___block_invoke(uint
   }
 }
 
-- (void)setResponseBlock:(id)a3
+- (void)setResponseBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__SSVAccountLessPlaybackOperation_setResponseBlock___block_invoke;
   v6[3] = &unk_1E84AC360;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = blockCopy;
+  v5 = blockCopy;
   [(SSVOperation *)self dispatchAsync:v6];
 }
 
@@ -188,9 +188,9 @@ void __52__SSVAccountLessPlaybackOperation_setResponseBlock___block_invoke(uint6
   }
 }
 
-- (void)setHTTPHeaderFields:(id)a3
+- (void)setHTTPHeaderFields:(id)fields
 {
-  v4 = [a3 mutableCopy];
+  v4 = [fields mutableCopy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __55__SSVAccountLessPlaybackOperation_setHTTPHeaderFields___block_invoke;
@@ -201,19 +201,19 @@ void __52__SSVAccountLessPlaybackOperation_setResponseBlock___block_invoke(uint6
   [(SSVOperation *)self dispatchAsync:v6];
 }
 
-- (void)setValue:(id)a3 forHTTPHeaderField:(id)a4
+- (void)setValue:(id)value forHTTPHeaderField:(id)field
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  fieldCopy = field;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __63__SSVAccountLessPlaybackOperation_setValue_forHTTPHeaderField___block_invoke;
   v10[3] = &unk_1E84AC078;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = valueCopy;
+  selfCopy = self;
+  v13 = fieldCopy;
+  v8 = fieldCopy;
+  v9 = valueCopy;
   [(SSVOperation *)self dispatchAsync:v10];
 }
 
@@ -247,9 +247,9 @@ uint64_t __63__SSVAccountLessPlaybackOperation_setValue_forHTTPHeaderField___blo
   }
 }
 
-- (id)valueForHTTPHeaderField:(id)a3
+- (id)valueForHTTPHeaderField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -262,7 +262,7 @@ uint64_t __63__SSVAccountLessPlaybackOperation_setValue_forHTTPHeaderField___blo
   v8[3] = &unk_1E84ABF90;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = fieldCopy;
   v9 = v5;
   [(SSVOperation *)self dispatchSync:v8];
   v6 = v12[5];
@@ -288,8 +288,8 @@ void __59__SSVAccountLessPlaybackOperation_valueForHTTPHeaderField___block_invok
   v44 = __Block_byref_object_copy__69;
   v45 = __Block_byref_object_dispose__69;
   v46 = 0;
-  v3 = [(SSVComplexOperation *)self URLBagDictionary];
-  v4 = [v3 objectForKey:@"subDownload"];
+  uRLBagDictionary = [(SSVComplexOperation *)self URLBagDictionary];
+  v4 = [uRLBagDictionary objectForKey:@"subDownload"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -311,14 +311,14 @@ void __59__SSVAccountLessPlaybackOperation_valueForHTTPHeaderField___block_invok
   v6 = [objc_alloc(MEMORY[0x1E696AD68]) initWithURL:v5];
   [v6 setHTTPMethod:@"POST"];
   [v6 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-  v7 = [(SSVAccountLessPlaybackOperation *)self HTTPHeaderFields];
+  hTTPHeaderFields = [(SSVAccountLessPlaybackOperation *)self HTTPHeaderFields];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __39__SSVAccountLessPlaybackOperation_main__block_invoke;
   v33[3] = &unk_1E84ADD90;
   v8 = v6;
   v34 = v8;
-  [v7 enumerateKeysAndObjectsUsingBlock:v33];
+  [hTTPHeaderFields enumerateKeysAndObjectsUsingBlock:v33];
   v9 = [(SSVComplexOperation *)self newLoadURLOperationWithRequest:v8];
   v10 = +[(SSVURLDataConsumer *)SSVURLProtocolConsumer];
   [v9 setDataConsumer:v10];
@@ -340,7 +340,7 @@ void __59__SSVAccountLessPlaybackOperation_valueForHTTPHeaderField___block_invok
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v29 = v7;
+    v29 = hTTPHeaderFields;
     v30 = v5;
     v11 = [v36[5] objectForKey:@"keybag"];
     objc_opt_class();
@@ -356,11 +356,11 @@ void __59__SSVAccountLessPlaybackOperation_valueForHTTPHeaderField___block_invok
     if (v12)
     {
       v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v14 = [v36[5] objectForKey:@"dialog"];
+      pastisKeyServerURL = [v36[5] objectForKey:@"dialog"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(SSVURLBagInterpreter *)v13 setObject:v14 forKey:@"SSVPlaybackResponseErrorUserInfoKeyDialogDictionary"];
+        [(SSVURLBagInterpreter *)v13 setObject:pastisKeyServerURL forKey:@"SSVPlaybackResponseErrorUserInfoKeyDialogDictionary"];
       }
 
       if (![(SSVURLBagInterpreter *)v13 count])
@@ -372,15 +372,15 @@ void __59__SSVAccountLessPlaybackOperation_valueForHTTPHeaderField___block_invok
       v15 = MEMORY[0x1E696ABC0];
       if (objc_opt_respondsToSelector())
       {
-        v16 = [v12 integerValue];
+        integerValue = [v12 integerValue];
       }
 
       else
       {
-        v16 = 0;
+        integerValue = 0;
       }
 
-      v25 = [v15 errorWithDomain:@"SSServerErrorDomain" code:v16 userInfo:v13];
+      v25 = [v15 errorWithDomain:@"SSServerErrorDomain" code:integerValue userInfo:v13];
       v26 = v42[5];
       v42[5] = v25;
 
@@ -391,18 +391,18 @@ void __59__SSVAccountLessPlaybackOperation_valueForHTTPHeaderField___block_invok
     {
       v21 = [SSVPlaybackResponse alloc];
       v22 = v36[5];
-      v23 = [v9 URLResponse];
-      v19 = [(SSVPlaybackResponse *)v21 initWithDictionary:v22 URLResponse:v23];
+      uRLResponse = [v9 URLResponse];
+      v19 = [(SSVPlaybackResponse *)v21 initWithDictionary:v22 URLResponse:uRLResponse];
 
-      v13 = [[SSVURLBagInterpreter alloc] initWithURLBagDictionary:v3];
-      v24 = [(SSVURLBagInterpreter *)v13 pastisCertificateURL];
-      [(SSVPlaybackResponse *)v19 setFallbackStreamingKeyCertificateURL:v24];
+      v13 = [[SSVURLBagInterpreter alloc] initWithURLBagDictionary:uRLBagDictionary];
+      pastisCertificateURL = [(SSVURLBagInterpreter *)v13 pastisCertificateURL];
+      [(SSVPlaybackResponse *)v19 setFallbackStreamingKeyCertificateURL:pastisCertificateURL];
 
-      v14 = [(SSVURLBagInterpreter *)v13 pastisKeyServerURL];
-      [(SSVPlaybackResponse *)v19 setFallbackStreamingKeyServerURL:v14];
+      pastisKeyServerURL = [(SSVURLBagInterpreter *)v13 pastisKeyServerURL];
+      [(SSVPlaybackResponse *)v19 setFallbackStreamingKeyServerURL:pastisKeyServerURL];
     }
 
-    v7 = v29;
+    hTTPHeaderFields = v29;
     v5 = v30;
     goto LABEL_20;
   }
@@ -423,11 +423,11 @@ LABEL_21:
 
   _Block_object_dispose(&v35, 8);
 LABEL_22:
-  v27 = [(SSVAccountLessPlaybackOperation *)self responseBlock];
-  v28 = v27;
-  if (v27)
+  responseBlock = [(SSVAccountLessPlaybackOperation *)self responseBlock];
+  v28 = responseBlock;
+  if (responseBlock)
   {
-    (*(v27 + 16))(v27, v19, v42[5]);
+    (*(responseBlock + 16))(responseBlock, v19, v42[5]);
   }
 
   _Block_object_dispose(&v41, 8);
@@ -455,26 +455,26 @@ void __39__SSVAccountLessPlaybackOperation_main__block_invoke_3(uint64_t a1, voi
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v4 = +[SSDevice currentDevice];
-  v5 = [v4 uniqueDeviceIdentifier];
+  uniqueDeviceIdentifier = [v4 uniqueDeviceIdentifier];
 
-  if (v5)
+  if (uniqueDeviceIdentifier)
   {
-    [v3 setObject:v5 forKey:@"guid"];
+    [v3 setObject:uniqueDeviceIdentifier forKey:@"guid"];
   }
 
-  v6 = [(SSVAccountLessPlaybackOperation *)self itemIdentifier];
+  itemIdentifier = [(SSVAccountLessPlaybackOperation *)self itemIdentifier];
 
-  if (v6)
+  if (itemIdentifier)
   {
-    [v3 setObject:v6 forKey:@"salableAdamId"];
+    [v3 setObject:itemIdentifier forKey:@"salableAdamId"];
   }
 
   [v3 setObject:@"accountless-streaming" forKey:@"action"];
-  v7 = [(SSVAccountLessPlaybackOperation *)self assetStoreFrontIdentifier];
+  assetStoreFrontIdentifier = [(SSVAccountLessPlaybackOperation *)self assetStoreFrontIdentifier];
 
-  if (v7)
+  if (assetStoreFrontIdentifier)
   {
-    [v3 setObject:v7 forKey:@"assetStoreFront"];
+    [v3 setObject:assetStoreFrontIdentifier forKey:@"assetStoreFront"];
   }
 
   v16 = 0;

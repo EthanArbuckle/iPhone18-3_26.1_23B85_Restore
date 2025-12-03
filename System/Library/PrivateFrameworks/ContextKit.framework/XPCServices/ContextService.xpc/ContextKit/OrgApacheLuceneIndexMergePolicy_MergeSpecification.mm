@@ -1,7 +1,7 @@
 @interface OrgApacheLuceneIndexMergePolicy_MergeSpecification
 - (OrgApacheLuceneIndexMergePolicy_MergeSpecification)init;
-- (id)segStringWithOrgApacheLuceneStoreDirectory:(id)a3;
-- (void)addWithOrgApacheLuceneIndexMergePolicy_OneMerge:(id)a3;
+- (id)segStringWithOrgApacheLuceneStoreDirectory:(id)directory;
+- (void)addWithOrgApacheLuceneIndexMergePolicy_OneMerge:(id)merge;
 - (void)dealloc;
 @end
 
@@ -14,7 +14,7 @@
   return self;
 }
 
-- (void)addWithOrgApacheLuceneIndexMergePolicy_OneMerge:(id)a3
+- (void)addWithOrgApacheLuceneIndexMergePolicy_OneMerge:(id)merge
 {
   merges = self->merges_;
   if (!merges)
@@ -22,10 +22,10 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilList *)merges addWithId:a3];
+  [(JavaUtilList *)merges addWithId:merge];
 }
 
-- (id)segStringWithOrgApacheLuceneStoreDirectory:(id)a3
+- (id)segStringWithOrgApacheLuceneStoreDirectory:(id)directory
 {
   v4 = new_JavaLangStringBuilder_init();
   [(JavaLangStringBuilder *)v4 appendWithNSString:@"MergeSpec:\n"];

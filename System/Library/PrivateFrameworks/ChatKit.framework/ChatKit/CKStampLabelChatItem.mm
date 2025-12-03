@@ -1,5 +1,5 @@
 @interface CKStampLabelChatItem
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (Class)cellClass;
 @end
 
@@ -14,28 +14,28 @@
   return v3;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v8 = +[CKUIBehavior sharedBehaviors];
   v9 = v8;
-  if (a4)
+  if (insets)
   {
     [v8 transcriptBoldTextAlignmentInsets];
-    a4->top = v10;
-    a4->left = v11;
-    a4->bottom = v12;
-    a4->right = v13;
+    insets->top = v10;
+    insets->left = v11;
+    insets->bottom = v12;
+    insets->right = v13;
   }
 
   if ([v9 isAccessibilityPreferredContentSizeCategory])
   {
-    v14 = [(objc_class *)[(CKStampLabelChatItem *)self cellClass] createStampLabelView];
-    v15 = [(CKChatItem *)self transcriptText];
-    [v14 setAttributedText:v15];
+    createStampLabelView = [(objc_class *)[(CKStampLabelChatItem *)self cellClass] createStampLabelView];
+    transcriptText = [(CKChatItem *)self transcriptText];
+    [createStampLabelView setAttributedText:transcriptText];
 
-    [v14 sizeThatFits:{width, height}];
+    [createStampLabelView sizeThatFits:{width, height}];
     v17 = v16;
   }
 

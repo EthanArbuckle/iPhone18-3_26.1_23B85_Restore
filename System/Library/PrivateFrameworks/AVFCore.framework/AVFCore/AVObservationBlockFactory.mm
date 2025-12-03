@@ -1,18 +1,18 @@
 @interface AVObservationBlockFactory
-+ (id)observationBlockForWeakObserver:(id)a3 passedToBlock:(id)a4;
++ (id)observationBlockForWeakObserver:(id)observer passedToBlock:(id)block;
 @end
 
 @implementation AVObservationBlockFactory
 
-+ (id)observationBlockForWeakObserver:(id)a3 passedToBlock:(id)a4
++ (id)observationBlockForWeakObserver:(id)observer passedToBlock:(id)block
 {
-  v5 = [[AVWeakReference alloc] initWithReferencedObject:a3];
+  v5 = [[AVWeakReference alloc] initWithReferencedObject:observer];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __75__AVObservationBlockFactory_observationBlockForWeakObserver_passedToBlock___block_invoke;
   v8[3] = &unk_1E7465DB8;
   v8[4] = v5;
-  v8[5] = a4;
+  v8[5] = block;
   v6 = [v8 copy];
 
   return v6;

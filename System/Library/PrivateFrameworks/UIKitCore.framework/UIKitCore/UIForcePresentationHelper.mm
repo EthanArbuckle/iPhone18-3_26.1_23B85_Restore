@@ -1,32 +1,32 @@
 @interface UIForcePresentationHelper
-+ (CGRect)sourceRectForView:(id)a3 proposedSourceRect:(CGRect)a4;
-+ (id)snapshotViewForSourceView:(id)a3 sourceRect:(CGRect)a4;
-+ (id)visualEffectForPresentationPhase:(unint64_t)a3 traitCollection:(id)a4 variant:(int64_t)a5;
-+ (void)applyPhase:(unint64_t)a3 toSnapshotView:(id)a4;
++ (CGRect)sourceRectForView:(id)view proposedSourceRect:(CGRect)rect;
++ (id)snapshotViewForSourceView:(id)view sourceRect:(CGRect)rect;
++ (id)visualEffectForPresentationPhase:(unint64_t)phase traitCollection:(id)collection variant:(int64_t)variant;
++ (void)applyPhase:(unint64_t)phase toSnapshotView:(id)view;
 @end
 
 @implementation UIForcePresentationHelper
 
-+ (id)visualEffectForPresentationPhase:(unint64_t)a3 traitCollection:(id)a4 variant:(int64_t)a5
++ (id)visualEffectForPresentationPhase:(unint64_t)phase traitCollection:(id)collection variant:(int64_t)variant
 {
   v51[4] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (a3 <= 5 && ((1 << a3) & 0x31) != 0)
+  collectionCopy = collection;
+  if (phase <= 5 && ((1 << phase) & 0x31) != 0)
   {
     v8 = 0;
     goto LABEL_20;
   }
 
   v9 = __UIStatusBarManagerForWindow(0);
-  v10 = [v9 statusBarStyle];
+  statusBarStyle = [v9 statusBarStyle];
 
-  if (!v10)
+  if (!statusBarStyle)
   {
-    v22 = [v7 userInterfaceStyle];
-    v23 = v22 != 2;
-    if (a3 == 1)
+    userInterfaceStyle = [collectionCopy userInterfaceStyle];
+    v23 = userInterfaceStyle != 2;
+    if (phase == 1)
     {
-      v24 = v22;
+      v24 = userInterfaceStyle;
       v25 = _UIColorEffectPremultiplyGray(0.0, 0.1);
       v18 = 4.0;
       v19 = 0.015;
@@ -66,9 +66,9 @@ LABEL_11:
     v20 = 0.0;
     v21 = 0.0;
     v18 = 0.0;
-    if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    if ((phase & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
-      v21 = _UIColorEffectPremultiplyGray(0.0, dbl_18A680D70[a5 == 1]);
+      v21 = _UIColorEffectPremultiplyGray(0.0, dbl_18A680D70[variant == 1]);
       v20 = v32;
       v49 = v33;
       v50 = v34;
@@ -95,7 +95,7 @@ LABEL_11:
     goto LABEL_17;
   }
 
-  if (a3 != 1)
+  if (phase != 1)
   {
     v23 = 0;
     goto LABEL_11;
@@ -138,14 +138,14 @@ LABEL_20:
   return v8;
 }
 
-+ (CGRect)sourceRectForView:(id)a3 proposedSourceRect:(CGRect)a4
++ (CGRect)sourceRectForView:(id)view proposedSourceRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
-  [v8 bounds];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  [viewCopy bounds];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -172,12 +172,12 @@ LABEL_20:
   v33.size.height = v16;
   if (CGRectEqualToRect(v28, v33))
   {
-    v17 = [v8 window];
-    v18 = v17;
-    if (v17)
+    window = [viewCopy window];
+    v18 = window;
+    if (window)
     {
-      [v17 bounds];
-      [v8 convertRect:v18 fromCoordinateSpace:?];
+      [window bounds];
+      [viewCopy convertRect:v18 fromCoordinateSpace:?];
       v19 = v29.origin.x;
       v20 = v29.origin.y;
       v21 = v29.size.width;
@@ -216,33 +216,33 @@ LABEL_20:
   return result;
 }
 
-+ (id)snapshotViewForSourceView:(id)a3 sourceRect:(CGRect)a4
++ (id)snapshotViewForSourceView:(id)view sourceRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = [a3 resizableSnapshotViewFromRect:0 afterScreenUpdates:a4.origin.x withCapInsets:{a4.origin.y, a4.size.width, a4.size.height, 0.0, 0.0, 0.0, 0.0}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = [view resizableSnapshotViewFromRect:0 afterScreenUpdates:rect.origin.x withCapInsets:{rect.origin.y, rect.size.width, rect.size.height, 0.0, 0.0, 0.0, 0.0}];
   [v8 setAutoresizingMask:18];
-  v9 = [[_UIPreviewPresentationEffectView alloc] initWithFrame:x, y, width, height];
-  [(UIView *)v9 addSubview:v8];
+  height = [[_UIPreviewPresentationEffectView alloc] initWithFrame:x, y, width, height];
+  [(UIView *)height addSubview:v8];
 
-  return v9;
+  return height;
 }
 
-+ (void)applyPhase:(unint64_t)a3 toSnapshotView:(id)a4
++ (void)applyPhase:(unint64_t)phase toSnapshotView:(id)view
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 == 2)
+  viewCopy = view;
+  v6 = viewCopy;
+  if (phase == 2)
   {
-    [v5 setBlurRadius:60.0];
+    [viewCopy setBlurRadius:60.0];
     [v6 setAlpha:0.0];
   }
 
-  else if (a3 == 1)
+  else if (phase == 1)
   {
-    [v5 frame];
+    [viewCopy frame];
     if (v7 >= v8)
     {
       v9 = v7;

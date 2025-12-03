@@ -1,34 +1,34 @@
 @interface SIRINLUEXTERNALUsoEdge
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
 - (unsigned)fromIndex;
 - (unsigned)toIndex;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasToIndex:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasToIndex:(BOOL)index;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALUsoEdge
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 28);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 28);
   if (v6)
   {
-    self->_fromIndex = v4[2];
+    self->_fromIndex = fromCopy[2];
     *&self->_has |= 1u;
-    v6 = *(v4 + 28);
+    v6 = *(fromCopy + 28);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_toIndex = v4[6];
+    self->_toIndex = fromCopy[6];
     *&self->_has |= 2u;
   }
 
@@ -76,24 +76,24 @@ LABEL_3:
   return v7 ^ v6 ^ [(SIRINLUEXTERNALUsoEdgeLabel *)self->_label hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(equalCopy + 28);
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_fromIndex != *(v4 + 2))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_fromIndex != *(equalCopy + 2))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 28))
+  else if (*(equalCopy + 28))
   {
 LABEL_14:
     v7 = 0;
@@ -102,19 +102,19 @@ LABEL_14:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_toIndex != *(v4 + 6))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_toIndex != *(equalCopy + 6))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_14;
   }
 
   label = self->_label;
-  if (label | *(v4 + 2))
+  if (label | *(equalCopy + 2))
   {
     v7 = [(SIRINLUEXTERNALUsoEdgeLabel *)label isEqual:?];
   }
@@ -129,9 +129,9 @@ LABEL_15:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -147,48 +147,48 @@ LABEL_15:
     *(v5 + 28) |= 2u;
   }
 
-  v8 = [(SIRINLUEXTERNALUsoEdgeLabel *)self->_label copyWithZone:a3];
+  v8 = [(SIRINLUEXTERNALUsoEdgeLabel *)self->_label copyWithZone:zone];
   v9 = v6[2];
   v6[2] = v8;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[2] = self->_fromIndex;
-    *(v4 + 28) |= 1u;
+    toCopy[2] = self->_fromIndex;
+    *(toCopy + 28) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[6] = self->_toIndex;
-    *(v4 + 28) |= 2u;
+    toCopy[6] = self->_toIndex;
+    *(toCopy + 28) |= 2u;
   }
 
   if (self->_label)
   {
-    v6 = v4;
-    [v4 setLabel:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setLabel:?];
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if (has)
   {
     fromIndex = self->_fromIndex;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -196,24 +196,24 @@ LABEL_15:
   {
     toIndex = self->_toIndex;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_label)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_fromIndex];
-    [v3 setObject:v5 forKey:@"from_index"];
+    [dictionary setObject:v5 forKey:@"from_index"];
 
     has = self->_has;
   }
@@ -221,17 +221,17 @@ LABEL_15:
   if ((has & 2) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_toIndex];
-    [v3 setObject:v6 forKey:@"to_index"];
+    [dictionary setObject:v6 forKey:@"to_index"];
   }
 
   label = self->_label;
   if (label)
   {
-    v8 = [(SIRINLUEXTERNALUsoEdgeLabel *)label dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"label"];
+    dictionaryRepresentation = [(SIRINLUEXTERNALUsoEdgeLabel *)label dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"label"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -240,15 +240,15 @@ LABEL_15:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALUsoEdge;
   v4 = [(SIRINLUEXTERNALUsoEdge *)&v8 description];
-  v5 = [(SIRINLUEXTERNALUsoEdge *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALUsoEdge *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasToIndex:(BOOL)a3
+- (void)setHasToIndex:(BOOL)index
 {
-  if (a3)
+  if (index)
   {
     v3 = 2;
   }

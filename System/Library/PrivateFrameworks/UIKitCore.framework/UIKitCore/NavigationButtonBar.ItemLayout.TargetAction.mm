@@ -1,16 +1,16 @@
 @interface NavigationButtonBar.ItemLayout.TargetAction
-- (void)_invokeWithRealSender:(id)a3 forEvent:(id)a4;
+- (void)_invokeWithRealSender:(id)sender forEvent:(id)event;
 - (void)init;
 @end
 
 @implementation NavigationButtonBar.ItemLayout.TargetAction
 
-- (void)_invokeWithRealSender:(id)a3 forEvent:(id)a4
+- (void)_invokeWithRealSender:(id)sender forEvent:(id)event
 {
   v5 = OBJC_IVAR____TtCCC5UIKit19NavigationButtonBar10ItemLayoutP33_7414260656797E7BB737FC627AD30E4912TargetAction_barButtonItem;
   v6 = *(&self->super.isa + OBJC_IVAR____TtCCC5UIKit19NavigationButtonBar10ItemLayoutP33_7414260656797E7BB737FC627AD30E4912TargetAction_barButtonItem);
-  v8 = a4;
-  v7 = self;
+  eventCopy = event;
+  selfCopy = self;
   [v6 _triggerActionForEvent_];
   [*(&self->super.isa + v5) _executeValidationHandler];
 }

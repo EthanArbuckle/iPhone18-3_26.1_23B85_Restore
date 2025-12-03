@@ -1,44 +1,44 @@
 @interface WFFileState
-- (WFFileState)initWithCoder:(id)a3;
-- (WFFileState)initWithIdentifier:(id)a3 lastModifiedDate:(id)a4 path:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (WFFileState)initWithCoder:(id)coder;
+- (WFFileState)initWithIdentifier:(id)identifier lastModifiedDate:(id)date path:(id)path;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFFileState
 
-- (WFFileState)initWithCoder:(id)a3
+- (WFFileState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectForKey:@"identifier"];
-  v6 = [v4 decodeObjectForKey:@"lastModifiedDate"];
-  v7 = [v4 decodeObjectForKey:@"path"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectForKey:@"identifier"];
+  v6 = [coderCopy decodeObjectForKey:@"lastModifiedDate"];
+  v7 = [coderCopy decodeObjectForKey:@"path"];
 
   v8 = [(WFFileState *)self initWithIdentifier:v5 lastModifiedDate:v6 path:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFFileState *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(WFFileState *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(WFFileState *)self lastModifiedDate];
-  [v4 encodeObject:v6 forKey:@"lastModifiedDate"];
+  lastModifiedDate = [(WFFileState *)self lastModifiedDate];
+  [coderCopy encodeObject:lastModifiedDate forKey:@"lastModifiedDate"];
 
-  v7 = [(WFFileState *)self path];
-  [v4 encodeObject:v7 forKey:@"path"];
+  path = [(WFFileState *)self path];
+  [coderCopy encodeObject:path forKey:@"path"];
 }
 
-- (WFFileState)initWithIdentifier:(id)a3 lastModifiedDate:(id)a4 path:(id)a5
+- (WFFileState)initWithIdentifier:(id)identifier lastModifiedDate:(id)date path:(id)path
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v9)
+  identifierCopy = identifier;
+  dateCopy = date;
+  pathCopy = path;
+  v12 = pathCopy;
+  if (identifierCopy)
   {
-    if (v11)
+    if (pathCopy)
     {
       goto LABEL_3;
     }
@@ -46,8 +46,8 @@
 
   else
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"WFFileState.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFFileState.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
     if (v12)
     {
@@ -55,8 +55,8 @@
     }
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"WFFileState.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFFileState.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"path"}];
 
 LABEL_3:
   v24.receiver = self;
@@ -64,11 +64,11 @@ LABEL_3:
   v13 = [(WFFileState *)&v24 init];
   if (v13)
   {
-    v14 = [v9 copy];
+    v14 = [identifierCopy copy];
     identifier = v13->_identifier;
     v13->_identifier = v14;
 
-    v16 = [v10 copy];
+    v16 = [dateCopy copy];
     lastModifiedDate = v13->_lastModifiedDate;
     v13->_lastModifiedDate = v16;
 

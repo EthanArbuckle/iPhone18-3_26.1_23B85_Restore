@@ -2,20 +2,20 @@
 - (MDMapControllerDelegate)mapDelegate;
 - (VKEdgeInsets)edgeInsets;
 - (VKEdgeInsets)fullyOccludedEdgeInsets;
-- (VKScreenCanvas)initWithMapEngine:(void *)a3 inBackground:(BOOL)a4;
+- (VKScreenCanvas)initWithMapEngine:(void *)engine inBackground:(BOOL)background;
 - (_retain_ptr<VKCamera)vkCamera;
 - (id).cxx_construct;
 - (shared_ptr<gdc::Camera>)camera;
-- (void)cameraController:(id)a3 requestsDisplayRate:(int64_t)a4;
+- (void)cameraController:(id)controller requestsDisplayRate:(int64_t)rate;
 - (void)dealloc;
-- (void)setBaseDisplayRate:(int64_t)a3;
-- (void)setCamera:(shared_ptr<gdc::Camera>)a3;
-- (void)setCameraController:(id)a3;
-- (void)setEdgeInsets:(VKEdgeInsets)a3;
-- (void)setGesturing:(BOOL)a3;
-- (void)setMaxDisplayRate:(int64_t)a3;
+- (void)setBaseDisplayRate:(int64_t)rate;
+- (void)setCamera:(shared_ptr<gdc::Camera>)camera;
+- (void)setCameraController:(id)controller;
+- (void)setEdgeInsets:(VKEdgeInsets)insets;
+- (void)setGesturing:(BOOL)gesturing;
+- (void)setMaxDisplayRate:(int64_t)rate;
 - (void)setVkCamera:(_retain_ptr<VKCamera *);
-- (void)transferStateFromCanvas:(id)a3;
+- (void)transferStateFromCanvas:(id)canvas;
 - (void)updateCameraForFrameResize;
 @end
 
@@ -134,10 +134,10 @@
   return result;
 }
 
-- (void)setCamera:(shared_ptr<gdc::Camera>)a3
+- (void)setCamera:(shared_ptr<gdc::Camera>)camera
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *camera.__ptr_;
+  v3 = *(camera.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -182,15 +182,15 @@
   return result;
 }
 
-- (void)transferStateFromCanvas:(id)a3
+- (void)transferStateFromCanvas:(id)canvas
 {
-  v4 = [a3 cameraController];
+  cameraController = [canvas cameraController];
   [(VKCameraController *)self->_cameraController transferStatesWithCameraController:?];
 }
 
-- (void)setMaxDisplayRate:(int64_t)a3
+- (void)setMaxDisplayRate:(int64_t)rate
 {
-  self->_maxDisplayRate = a3;
+  self->_maxDisplayRate = rate;
   cameraController = self->_cameraController;
   if (cameraController)
   {
@@ -198,9 +198,9 @@
   }
 }
 
-- (void)setBaseDisplayRate:(int64_t)a3
+- (void)setBaseDisplayRate:(int64_t)rate
 {
-  self->_baseDisplayRate = a3;
+  self->_baseDisplayRate = rate;
   cameraController = self->_cameraController;
   if (cameraController)
   {
@@ -208,17 +208,17 @@
   }
 }
 
-- (void)cameraController:(id)a3 requestsDisplayRate:(int64_t)a4
+- (void)cameraController:(id)controller requestsDisplayRate:(int64_t)rate
 {
   WeakRetained = objc_loadWeakRetained(&self->_mapDelegate);
-  [WeakRetained mapController:self requestsDisplayRate:a4];
+  [WeakRetained mapController:self requestsDisplayRate:rate];
 }
 
-- (void)setCameraController:(id)a3
+- (void)setCameraController:(id)controller
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_cameraController != v5)
+  controllerCopy = controller;
+  if (self->_cameraController != controllerCopy)
   {
     if (GEOGetVectorKitVKMapViewLog(void)::onceToken != -1)
     {
@@ -233,12 +233,12 @@
       *buf = 138412546;
       v30 = v8;
       v31 = 2048;
-      v32 = v5;
+      v32 = controllerCopy;
       _os_log_impl(&dword_1B2754000, v6, OS_LOG_TYPE_INFO, "Camera controller did change:%@ %p", buf, 0x16u);
     }
 
     v9 = self->_cameraController;
-    [(VKCameraController *)v5 setVkCamera:self->_vkCamera._obj];
+    [(VKCameraController *)controllerCopy setVkCamera:self->_vkCamera._obj];
     if (v9)
     {
       obj = self->_vkCamera._obj;
@@ -299,28 +299,28 @@
       atomic_fetch_add_explicit(v15 + 1, 1uLL, memory_order_relaxed);
     }
 
-    [(VKCameraController *)v5 setCamera:&v22];
+    [(VKCameraController *)controllerCopy setCamera:&v22];
     if (v23)
     {
       std::__shared_weak_count::__release_shared[abi:nn200100](v23);
     }
 
-    [(VKCameraController *)v5 setCanvas:self->_displayTarget];
+    [(VKCameraController *)controllerCopy setCanvas:self->_displayTarget];
     *&v16 = self->_edgeInsets.top;
     *&v17 = self->_edgeInsets.left;
     *&v18 = self->_edgeInsets.bottom;
     *&v19 = self->_edgeInsets.right;
-    [(VKCameraController *)v5 setEdgeInsets:v16, v17, v18, v19];
-    [(VKCameraController *)v5 setBaseDisplayRate:self->_baseDisplayRate];
-    [(VKCameraController *)v5 setMaxDisplayRate:self->_maxDisplayRate];
-    objc_storeStrong(&self->_cameraController, a3);
-    [(VKCameraController *)v5 transferStatesWithCameraController:v9];
+    [(VKCameraController *)controllerCopy setEdgeInsets:v16, v17, v18, v19];
+    [(VKCameraController *)controllerCopy setBaseDisplayRate:self->_baseDisplayRate];
+    [(VKCameraController *)controllerCopy setMaxDisplayRate:self->_maxDisplayRate];
+    objc_storeStrong(&self->_cameraController, controller);
+    [(VKCameraController *)controllerCopy transferStatesWithCameraController:v9];
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
       [(VKCameraController *)v9 transferGestureState:self->_cameraController];
     }
 
-    [(VKCameraController *)v5 willBecomeActive];
+    [(VKCameraController *)controllerCopy willBecomeActive];
     [(VKCameraController *)v9 setVkCamera:0];
     v20 = 0;
     v21 = 0;
@@ -335,13 +335,13 @@
   }
 }
 
-- (void)setGesturing:(BOOL)a3
+- (void)setGesturing:(BOOL)gesturing
 {
-  if (self->_userIsGesturing != a3)
+  if (self->_userIsGesturing != gesturing)
   {
     v8 = v3;
     v9 = v4;
-    self->_userIsGesturing = a3;
+    self->_userIsGesturing = gesturing;
     [(VKCameraController *)self->_cameraController setGesturing:?];
     var0 = self->_runLoopController->var0;
     if (var0)
@@ -352,18 +352,18 @@
   }
 }
 
-- (void)setEdgeInsets:(VKEdgeInsets)a3
+- (void)setEdgeInsets:(VKEdgeInsets)insets
 {
-  *&v5.bottom = *&a3.bottom;
-  if (*&v5.top != *&self->_edgeInsets.top || *&a3.bottom != *&self->_edgeInsets.bottom)
+  *&v5.bottom = *&insets.bottom;
+  if (*&v5.top != *&self->_edgeInsets.top || *&insets.bottom != *&self->_edgeInsets.bottom)
   {
     HIDWORD(v4) = LODWORD(v5.left);
     self->_edgeInsets = v5;
     *&v4 = self->_edgeInsets.top;
-    a3.left = self->_edgeInsets.left;
-    a3.bottom = self->_edgeInsets.bottom;
-    a3.right = self->_edgeInsets.right;
-    [(VKCameraController *)self->_cameraController setEdgeInsets:v4, *&a3.left, *&a3.bottom, *&a3.right];
+    insets.left = self->_edgeInsets.left;
+    insets.bottom = self->_edgeInsets.bottom;
+    insets.right = self->_edgeInsets.right;
+    [(VKCameraController *)self->_cameraController setEdgeInsets:v4, *&insets.left, *&insets.bottom, *&insets.right];
   }
 }
 
@@ -378,20 +378,20 @@
   [(VKScreenCanvas *)&v4 dealloc];
 }
 
-- (VKScreenCanvas)initWithMapEngine:(void *)a3 inBackground:(BOOL)a4
+- (VKScreenCanvas)initWithMapEngine:(void *)engine inBackground:(BOOL)background
 {
   v12.receiver = self;
   v12.super_class = VKScreenCanvas;
-  v5 = [(VKScreenCanvas *)&v12 init:a3];
+  v5 = [(VKScreenCanvas *)&v12 init:engine];
   v6 = v5;
   if (v5)
   {
-    v5->_mapEngine = a3;
-    v5->_runLoopController = *(a3 + 26);
-    v5->_animationRunner = *(a3 + 25);
-    objc_storeStrong(&v5->_displayTarget, *(a3 + 5207));
-    v8 = *(a3 + 11);
-    v7 = *(a3 + 12);
+    v5->_mapEngine = engine;
+    v5->_runLoopController = *(engine + 26);
+    v5->_animationRunner = *(engine + 25);
+    objc_storeStrong(&v5->_displayTarget, *(engine + 5207));
+    v8 = *(engine + 11);
+    v7 = *(engine + 12);
     if (v7)
     {
       atomic_fetch_add_explicit((v7 + 8), 1uLL, memory_order_relaxed);

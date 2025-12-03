@@ -1,16 +1,16 @@
 @interface RoomBannerCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation RoomBannerCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosUI.RoomBannerCollectionViewCell" hasSwiftField:@"bannerImage" withSwiftType:"Optional<VUIImageView>"];
-  [v3 validateClass:@"VUIImageView" hasInstanceVariable:@"_imageView" withType:"UIImageView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosUI.RoomBannerCollectionViewCell" hasSwiftField:@"bannerImage" withSwiftType:"Optional<VUIImageView>"];
+  [validationsCopy validateClass:@"VUIImageView" hasInstanceVariable:@"_imageView" withType:"UIImageView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

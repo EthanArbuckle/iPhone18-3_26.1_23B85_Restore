@@ -1,14 +1,14 @@
 @interface CSDAudioSessionProvider
-+ (id)getAudioSessionFor:(id)a3;
++ (id)getAudioSessionFor:(id)for;
 @end
 
 @implementation CSDAudioSessionProvider
 
-+ (id)getAudioSessionFor:(id)a3
++ (id)getAudioSessionFor:(id)for
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_10003F454(v4);
+  forCopy = for;
+  v5 = sub_10003F454(forCopy);
 
   return v5;
 }

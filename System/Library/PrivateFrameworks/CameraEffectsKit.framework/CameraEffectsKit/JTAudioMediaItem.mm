@@ -1,8 +1,8 @@
 @interface JTAudioMediaItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (JTAudioMediaItem)init;
-- (JTAudioMediaItem)initWithInfo:(id)a3 delegate:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (JTAudioMediaItem)initWithInfo:(id)info delegate:(id)delegate;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)info;
 - (void)dealloc;
@@ -40,25 +40,25 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = JTAudioMediaItem;
-  return [(JFXMediaItem *)&v4 copyWithZone:a3];
+  return [(JFXMediaItem *)&v4 copyWithZone:zone];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v4.receiver = self;
   v4.super_class = JTAudioMediaItem;
-  return [(JFXMediaItem *)&v4 isEqual:a3];
+  return [(JFXMediaItem *)&v4 isEqual:equal];
 }
 
-- (JTAudioMediaItem)initWithInfo:(id)a3 delegate:(id)a4
+- (JTAudioMediaItem)initWithInfo:(id)info delegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = JTAudioMediaItem;
-  return [(JFXMediaItem *)&v5 initWithInfo:a3 delegate:a4];
+  return [(JFXMediaItem *)&v5 initWithInfo:info delegate:delegate];
 }
 
 - (id)info
@@ -66,8 +66,8 @@
   v2 = MEMORY[0x277CBEB38];
   v6.receiver = self;
   v6.super_class = JTAudioMediaItem;
-  v3 = [(JFXMediaItem *)&v6 info];
-  v4 = [v2 dictionaryWithDictionary:v3];
+  info = [(JFXMediaItem *)&v6 info];
+  v4 = [v2 dictionaryWithDictionary:info];
 
   return v4;
 }

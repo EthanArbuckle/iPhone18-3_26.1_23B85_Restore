@@ -3,34 +3,34 @@
 + (CPSSessionConfiguration)pptConfiguration;
 + (CPSSessionConfiguration)pptLocalConfiguration;
 + (id)_defaultSourceBundleIDToReasonMap;
-+ (id)reasonForSourceBundleID:(id)a3;
-+ (id)standardConfigurationWithURL:(id)a3 fallbackBundleID:(id)a4;
++ (id)reasonForSourceBundleID:(id)d;
++ (id)standardConfigurationWithURL:(id)l fallbackBundleID:(id)d;
 - (BOOL)analyticsShouldIncludeReferrerURL;
 - (BOOL)canPrefetchEncryptionKey;
 - (BOOL)isInvokedByPhysicalCode;
 - (BOOL)mayLaunchWithoutInvocationUI;
-- (CPSSessionConfiguration)initWithCoder:(id)a3;
+- (CPSSessionConfiguration)initWithCoder:(id)coder;
 - (NSString)analyticsLaunchReason;
 - (NSString)analyticsReferrerBundleID;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPSSessionConfiguration
 
-+ (id)standardConfigurationWithURL:(id)a3 fallbackBundleID:(id)a4
++ (id)standardConfigurationWithURL:(id)l fallbackBundleID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  dCopy = d;
   v7 = objc_alloc_init(CPSSessionConfiguration);
-  v8 = [MEMORY[0x277CCAD78] UUID];
-  [(CPSSessionConfiguration *)v7 setSessionID:v8];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [(CPSSessionConfiguration *)v7 setSessionID:uUID];
 
-  v9 = [MEMORY[0x277CCA8D8] mainBundle];
-  v10 = [v9 bundleIdentifier];
-  [(CPSSessionConfiguration *)v7 setSourceBundleID:v10];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [(CPSSessionConfiguration *)v7 setSourceBundleID:bundleIdentifier];
 
-  v11 = [(CPSSessionConfiguration *)v7 sourceBundleID];
-  v12 = [CPSSessionConfiguration reasonForSourceBundleID:v11];
+  sourceBundleID = [(CPSSessionConfiguration *)v7 sourceBundleID];
+  v12 = [CPSSessionConfiguration reasonForSourceBundleID:sourceBundleID];
   v13 = v12;
   if (v12)
   {
@@ -44,12 +44,12 @@
 
   [(CPSSessionConfiguration *)v7 setLaunchReason:v14];
 
-  if (!v6)
+  if (!dCopy)
   {
-    v6 = [v5 cps_fallbackBundleIdentifier];
+    dCopy = [lCopy cps_fallbackBundleIdentifier];
   }
 
-  [(CPSSessionConfiguration *)v7 setFallbackClipBundleID:v6];
+  [(CPSSessionConfiguration *)v7 setFallbackClipBundleID:dCopy];
 
   return v7;
 }
@@ -116,11 +116,11 @@
   return v2;
 }
 
-+ (id)reasonForSourceBundleID:(id)a3
++ (id)reasonForSourceBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[CPSSessionConfiguration _defaultSourceBundleIDToReasonMap];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:dCopy];
 
   return v5;
 }
@@ -173,8 +173,8 @@
   v7[0] = @"Web Referral";
   v7[1] = @"App Referral";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:2];
-  v4 = [(CPSSessionConfiguration *)self analyticsLaunchReason];
-  LOBYTE(self) = [v3 containsObject:v4];
+  analyticsLaunchReason = [(CPSSessionConfiguration *)self analyticsLaunchReason];
+  LOBYTE(self) = [v3 containsObject:analyticsLaunchReason];
 
   v5 = *MEMORY[0x277D85DE8];
   return self;
@@ -212,71 +212,71 @@
 
 - (BOOL)isInvokedByPhysicalCode
 {
-  v2 = [(CPSSessionConfiguration *)self launchReason];
-  if ([v2 isEqualToString:@"QR"] & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"AppclipCode"))
+  launchReason = [(CPSSessionConfiguration *)self launchReason];
+  if ([launchReason isEqualToString:@"QR"] & 1) != 0 || (objc_msgSend(launchReason, "isEqualToString:", @"AppclipCode"))
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v2 isEqualToString:@"NFC"];
+    v3 = [launchReason isEqualToString:@"NFC"];
   }
 
   return v3;
 }
 
-- (CPSSessionConfiguration)initWithCoder:(id)a3
+- (CPSSessionConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = CPSSessionConfiguration;
   v5 = [(CPSSessionConfiguration *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionID"];
     sessionID = v5->_sessionID;
     v5->_sessionID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceBundleID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceBundleID"];
     sourceBundleID = v5->_sourceBundleID;
     v5->_sourceBundleID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referrerBundleID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referrerBundleID"];
     referrerBundleID = v5->_referrerBundleID;
     v5->_referrerBundleID = v10;
 
-    v5->_usedByPPT = [v4 decodeBoolForKey:@"useByTest"];
-    v5->_useLocalContent = [v4 decodeBoolForKey:@"useLocalContent"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceReason"];
+    v5->_usedByPPT = [coderCopy decodeBoolForKey:@"useByTest"];
+    v5->_useLocalContent = [coderCopy decodeBoolForKey:@"useLocalContent"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceReason"];
     launchReason = v5->_launchReason;
     v5->_launchReason = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fallbackClipBundleID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fallbackClipBundleID"];
     fallbackClipBundleID = v5->_fallbackClipBundleID;
     v5->_fallbackClipBundleID = v14;
 
-    v5->_originIsControlCenter = [v4 decodeBoolForKey:@"originIsControlCenter"];
-    v5->_isForSwitcherOverlay = [v4 decodeBoolForKey:@"isForSwitcherOverlay"];
+    v5->_originIsControlCenter = [coderCopy decodeBoolForKey:@"originIsControlCenter"];
+    v5->_isForSwitcherOverlay = [coderCopy decodeBoolForKey:@"isForSwitcherOverlay"];
     v16 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sessionID = self->_sessionID;
-  v5 = a3;
-  [v5 encodeObject:sessionID forKey:@"sessionID"];
-  [v5 encodeObject:self->_sourceBundleID forKey:@"sourceBundleID"];
-  [v5 encodeObject:self->_referrerBundleID forKey:@"referrerBundleID"];
-  [v5 encodeBool:self->_usedByPPT forKey:@"useByTest"];
-  [v5 encodeBool:self->_useLocalContent forKey:@"useLocalContent"];
-  [v5 encodeObject:self->_launchReason forKey:@"sourceReason"];
-  [v5 encodeObject:self->_fallbackClipBundleID forKey:@"fallbackClipBundleID"];
-  [v5 encodeBool:self->_originIsControlCenter forKey:@"originIsControlCenter"];
-  [v5 encodeBool:self->_isForSwitcherOverlay forKey:@"isForSwitcherOverlay"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sessionID forKey:@"sessionID"];
+  [coderCopy encodeObject:self->_sourceBundleID forKey:@"sourceBundleID"];
+  [coderCopy encodeObject:self->_referrerBundleID forKey:@"referrerBundleID"];
+  [coderCopy encodeBool:self->_usedByPPT forKey:@"useByTest"];
+  [coderCopy encodeBool:self->_useLocalContent forKey:@"useLocalContent"];
+  [coderCopy encodeObject:self->_launchReason forKey:@"sourceReason"];
+  [coderCopy encodeObject:self->_fallbackClipBundleID forKey:@"fallbackClipBundleID"];
+  [coderCopy encodeBool:self->_originIsControlCenter forKey:@"originIsControlCenter"];
+  [coderCopy encodeBool:self->_isForSwitcherOverlay forKey:@"isForSwitcherOverlay"];
 }
 
 @end

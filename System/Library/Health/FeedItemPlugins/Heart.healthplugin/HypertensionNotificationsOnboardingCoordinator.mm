@@ -1,6 +1,6 @@
 @interface HypertensionNotificationsOnboardingCoordinator
 - (_TtC5Heart46HypertensionNotificationsOnboardingCoordinator)init;
-- (void)presentationControllerWillDismiss:(id)a3;
+- (void)presentationControllerWillDismiss:(id)dismiss;
 @end
 
 @implementation HypertensionNotificationsOnboardingCoordinator
@@ -12,10 +12,10 @@
   return result;
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_29D8E8400();
 }
 

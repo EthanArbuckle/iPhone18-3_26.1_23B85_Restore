@@ -1,14 +1,14 @@
 @interface PearlCoreAnalyticsDailyTemplateMatchCountsEvent
-- (PearlCoreAnalyticsDailyTemplateMatchCountsEvent)initWithTemplateInfo:(id)a3;
+- (PearlCoreAnalyticsDailyTemplateMatchCountsEvent)initWithTemplateInfo:(id)info;
 - (void)reset;
-- (void)setTemplateInfo:(id)a3;
+- (void)setTemplateInfo:(id)info;
 @end
 
 @implementation PearlCoreAnalyticsDailyTemplateMatchCountsEvent
 
-- (PearlCoreAnalyticsDailyTemplateMatchCountsEvent)initWithTemplateInfo:(id)a3
+- (PearlCoreAnalyticsDailyTemplateMatchCountsEvent)initWithTemplateInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v10.receiver = self;
   v10.super_class = PearlCoreAnalyticsDailyTemplateMatchCountsEvent;
   v5 = [(PearlCoreAnalyticsEvent *)&v10 initWithName:@"com.apple.biometrickit.pearl.dailyTemplateMatchCounts"];
@@ -19,7 +19,7 @@
     v8 = *(&v5->super.super.super.isa + v7);
     *(&v5->super.super.super.isa + v7) = &unk_2A1E03A90;
 
-    [(PearlCoreAnalyticsDailyTemplateMatchCountsEvent *)v6 setTemplateInfo:v4];
+    [(PearlCoreAnalyticsDailyTemplateMatchCountsEvent *)v6 setTemplateInfo:infoCopy];
   }
 
   return v6;
@@ -236,19 +236,19 @@
   self->_identity1PasscodeUpdateTemplateFeatureCountType1 = &unk_2A1E037C8;
 }
 
-- (void)setTemplateInfo:(id)a3
+- (void)setTemplateInfo:(id)info
 {
   v211 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  infoCopy = info;
   v5 = MEMORY[0x29EDBA070];
-  v6 = [v4 count];
+  v6 = [infoCopy count];
   v7 = v5;
-  v8 = v4;
+  v8 = infoCopy;
   v9 = [v7 numberWithUnsignedInteger:v6];
   enrolledIdentityCount = self->_enrolledIdentityCount;
   self->_enrolledIdentityCount = v9;
 
-  if (![v4 count])
+  if (![infoCopy count])
   {
     goto LABEL_76;
   }
@@ -256,7 +256,7 @@
   v11 = 0;
   v203 = 0;
   v12 = MEMORY[0x29EDCA988];
-  v181 = v4;
+  v181 = infoCopy;
   do
   {
     if (__osLog)
@@ -330,26 +330,26 @@ LABEL_84:
           goto LABEL_84;
         }
 
-        v17 = [v16 bytes];
-        if (!v17)
+        bytes = [v16 bytes];
+        if (!bytes)
         {
           [PearlCoreAnalyticsDailyTemplateMatchCountsEvent setTemplateInfo:];
           goto LABEL_84;
         }
 
-        if (!*v17)
+        if (!*bytes)
         {
           [PearlCoreAnalyticsDailyTemplateMatchCountsEvent setTemplateInfo:];
           goto LABEL_84;
         }
 
-        v18 = *(v17 + 38);
-        v19 = *(v17 + 37);
+        v18 = *(bytes + 38);
+        v19 = *(bytes + 37);
         if (v18 == 1)
         {
           if (v19 != 1)
           {
-            if (!*(v17 + 37))
+            if (!*(bytes + 37))
             {
               v33 = 0;
               v20 = 0;
@@ -364,10 +364,10 @@ LABEL_84:
               v30 = 0;
               v37 = 0;
               v32 = 0;
-              v26 = *(v17 + 33);
-              v34 = *(v17 + 21);
+              v26 = *(bytes + 33);
+              v34 = *(bytes + 21);
               v35 = 0.0;
-              v36 = *(v17 + 29);
+              v36 = *(bytes + 29);
               v31 = 1;
               goto LABEL_41;
             }
@@ -375,7 +375,7 @@ LABEL_84:
             goto LABEL_29;
           }
 
-          v21 = *(v17 + 33);
+          v21 = *(bytes + 33);
           if ((v201 & 1) == 0)
           {
             v33 = 0;
@@ -389,11 +389,11 @@ LABEL_84:
             v30 = 0;
             v31 = 0;
             v37 = 0;
-            v35 = *(v17 + 21);
+            v35 = *(bytes + 21);
             v34 = 0.0;
-            v25 = *(v17 + 29);
+            v25 = *(bytes + 29);
             v19 = 1;
-            v24 = *(v17 + 33);
+            v24 = *(bytes + 33);
             v28 = 1;
             v32 = 1;
             v183 = 1;
@@ -423,7 +423,7 @@ LABEL_84:
         {
           if (v19 != 1)
           {
-            if (!*(v17 + 37))
+            if (!*(bytes + 37))
             {
               v33 = 0;
               v21 = 0;
@@ -438,10 +438,10 @@ LABEL_84:
               v31 = 0;
               v37 = 0;
               v32 = 0;
-              v20 = *(v17 + 33);
-              v34 = *(v17 + 21);
+              v20 = *(bytes + 33);
+              v34 = *(bytes + 21);
               v35 = 0.0;
-              v36 = *(v17 + 29);
+              v36 = *(bytes + 29);
               v30 = 1;
               goto LABEL_41;
             }
@@ -449,7 +449,7 @@ LABEL_84:
             goto LABEL_29;
           }
 
-          v23 = *(v17 + 33);
+          v23 = *(bytes + 33);
           if ((v201 & 1) == 0)
           {
             v33 = 0;
@@ -463,14 +463,14 @@ LABEL_84:
             v30 = 0;
             v31 = 0;
             v37 = 0;
-            v35 = *(v17 + 21);
+            v35 = *(bytes + 21);
             v34 = 0.0;
-            v25 = *(v17 + 29);
+            v25 = *(bytes + 29);
             v19 = 1;
-            v24 = *(v17 + 33);
+            v24 = *(bytes + 33);
             v27 = 1;
             v32 = 1;
-            v183 = *(v17 + 38);
+            v183 = *(bytes + 38);
             goto LABEL_40;
           }
 
@@ -497,7 +497,7 @@ LABEL_84:
         {
           if (v19 != 1)
           {
-            if (!*(v17 + 37))
+            if (!*(bytes + 37))
             {
               v20 = 0;
               v21 = 0;
@@ -512,10 +512,10 @@ LABEL_84:
               v30 = 0;
               v31 = 0;
               v32 = 0;
-              v33 = *(v17 + 33);
-              v34 = *(v17 + 21);
+              v33 = *(bytes + 33);
+              v34 = *(bytes + 21);
               v35 = 0.0;
-              v36 = *(v17 + 29);
+              v36 = *(bytes + 29);
               v37 = 1;
               goto LABEL_41;
             }
@@ -542,7 +542,7 @@ LABEL_29:
             goto LABEL_41;
           }
 
-          v22 = *(v17 + 33);
+          v22 = *(bytes + 33);
           if ((v201 & 1) == 0)
           {
             v33 = 0;
@@ -557,11 +557,11 @@ LABEL_29:
             v31 = 0;
             v37 = 0;
             v183 = 0;
-            v35 = *(v17 + 21);
+            v35 = *(bytes + 21);
             v34 = 0.0;
-            v25 = *(v17 + 29);
+            v25 = *(bytes + 29);
             v19 = 1;
-            v24 = *(v17 + 33);
+            v24 = *(bytes + 33);
             v29 = 1;
             v32 = 1;
             goto LABEL_40;
@@ -957,8 +957,8 @@ LABEL_76:
   self->_enrolledTemplateCountType1Unknown = v154;
 
   v156 = MEMORY[0x29EDBA070];
-  v157 = [(NSNumber *)self->_identity0TemplateType1Enrolled BOOLValue]|| [(NSNumber *)self->_identity1TemplateType1Enrolled BOOLValue];
-  v158 = [v156 numberWithInt:v157];
+  bOOLValue = [(NSNumber *)self->_identity0TemplateType1Enrolled BOOLValue]|| [(NSNumber *)self->_identity1TemplateType1Enrolled BOOLValue];
+  v158 = [v156 numberWithInt:bOOLValue];
   templateType1Enrolled = self->_templateType1Enrolled;
   self->_templateType1Enrolled = v158;
 

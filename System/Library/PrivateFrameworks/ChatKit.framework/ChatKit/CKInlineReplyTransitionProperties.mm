@@ -1,7 +1,7 @@
 @interface CKInlineReplyTransitionProperties
 + (id)defaultProperties;
 - (CGPoint)swipeVelocity;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CKInlineReplyTransitionProperties
@@ -18,17 +18,17 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CKInlineReplyTransitionProperties);
   [(CKInlineReplyTransitionProperties *)self initialBalloonOffsetX];
   [(CKInlineReplyTransitionProperties *)v4 setInitialBalloonOffsetX:?];
-  v5 = [(CKInlineReplyTransitionProperties *)self chatItemGUIDs];
-  v6 = [v5 copy];
+  chatItemGUIDs = [(CKInlineReplyTransitionProperties *)self chatItemGUIDs];
+  v6 = [chatItemGUIDs copy];
   [(CKInlineReplyTransitionProperties *)v4 setChatItemGUIDs:v6];
 
-  v7 = [(CKInlineReplyTransitionProperties *)self associatedChatItemGUIDs];
-  v8 = [v7 copy];
+  associatedChatItemGUIDs = [(CKInlineReplyTransitionProperties *)self associatedChatItemGUIDs];
+  v8 = [associatedChatItemGUIDs copy];
   [(CKInlineReplyTransitionProperties *)v4 setAssociatedChatItemGUIDs:v8];
 
   [(CKInlineReplyTransitionProperties *)self swipeVelocity];

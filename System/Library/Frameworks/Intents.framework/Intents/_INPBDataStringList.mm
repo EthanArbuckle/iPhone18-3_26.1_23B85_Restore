@@ -1,12 +1,12 @@
 @interface _INPBDataStringList
-- (BOOL)isEqual:(id)a3;
-- (_INPBDataStringList)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBDataStringList)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)addDataString:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDataStrings:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDataString:(id)string;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDataStrings:(id)strings;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBDataStringList
@@ -14,14 +14,14 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBDataStringList *)self conditionType];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"conditionType"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  conditionType = [(_INPBDataStringList *)self conditionType];
+  dictionaryRepresentation = [conditionType dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"conditionType"];
 
   if ([(NSArray *)self->_dataStrings count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -41,8 +41,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -51,36 +51,36 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"dataString"];
+    [dictionary setObject:array forKeyedSubscript:@"dataString"];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBDataStringList *)self conditionType];
-  v6 = [v4 conditionType];
-  if ((v5 != 0) == (v6 == 0))
+  conditionType = [(_INPBDataStringList *)self conditionType];
+  conditionType2 = [equalCopy conditionType];
+  if ((conditionType != 0) == (conditionType2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBDataStringList *)self conditionType];
-  if (v7)
+  conditionType3 = [(_INPBDataStringList *)self conditionType];
+  if (conditionType3)
   {
-    v8 = v7;
-    v9 = [(_INPBDataStringList *)self conditionType];
-    v10 = [v4 conditionType];
-    v11 = [v9 isEqual:v10];
+    v8 = conditionType3;
+    conditionType4 = [(_INPBDataStringList *)self conditionType];
+    conditionType5 = [equalCopy conditionType];
+    v11 = [conditionType4 isEqual:conditionType5];
 
     if (!v11)
     {
@@ -92,12 +92,12 @@
   {
   }
 
-  v5 = [(_INPBDataStringList *)self dataStrings];
-  v6 = [v4 dataStrings];
-  if ((v5 != 0) != (v6 == 0))
+  conditionType = [(_INPBDataStringList *)self dataStrings];
+  conditionType2 = [equalCopy dataStrings];
+  if ((conditionType != 0) != (conditionType2 == 0))
   {
-    v12 = [(_INPBDataStringList *)self dataStrings];
-    if (!v12)
+    dataStrings = [(_INPBDataStringList *)self dataStrings];
+    if (!dataStrings)
     {
 
 LABEL_15:
@@ -105,10 +105,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBDataStringList *)self dataStrings];
-    v15 = [v4 dataStrings];
-    v16 = [v14 isEqual:v15];
+    v13 = dataStrings;
+    dataStrings2 = [(_INPBDataStringList *)self dataStrings];
+    dataStrings3 = [equalCopy dataStrings];
+    v16 = [dataStrings2 isEqual:dataStrings3];
 
     if (v16)
     {
@@ -128,51 +128,51 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBDataStringList allocWithZone:](_INPBDataStringList init];
-  v6 = [(_INPBCondition *)self->_conditionType copyWithZone:a3];
+  v6 = [(_INPBCondition *)self->_conditionType copyWithZone:zone];
   [(_INPBDataStringList *)v5 setConditionType:v6];
 
-  v7 = [(NSArray *)self->_dataStrings copyWithZone:a3];
+  v7 = [(NSArray *)self->_dataStrings copyWithZone:zone];
   [(_INPBDataStringList *)v5 setDataStrings:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBDataStringList *)self data];
+  coderCopy = coder;
+  data = [(_INPBDataStringList *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBDataStringList)initWithCoder:(id)a3
+- (_INPBDataStringList)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBDataStringList *)self initWithData:v6];
+    self = [(_INPBDataStringList *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBDataStringList *)self conditionType];
+  toCopy = to;
+  conditionType = [(_INPBDataStringList *)self conditionType];
 
-  if (v5)
+  if (conditionType)
   {
-    v6 = [(_INPBDataStringList *)self conditionType];
+    conditionType2 = [(_INPBDataStringList *)self conditionType];
     PBDataWriterWriteSubmessage();
   }
 
@@ -211,27 +211,27 @@ LABEL_13:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addDataString:(id)a3
+- (void)addDataString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   dataStrings = self->_dataStrings;
-  v8 = v4;
+  v8 = stringCopy;
   if (!dataStrings)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_dataStrings;
-    self->_dataStrings = v6;
+    self->_dataStrings = array;
 
-    v4 = v8;
+    stringCopy = v8;
     dataStrings = self->_dataStrings;
   }
 
-  [(NSArray *)dataStrings addObject:v4];
+  [(NSArray *)dataStrings addObject:stringCopy];
 }
 
-- (void)setDataStrings:(id)a3
+- (void)setDataStrings:(id)strings
 {
-  v4 = [a3 mutableCopy];
+  v4 = [strings mutableCopy];
   dataStrings = self->_dataStrings;
   self->_dataStrings = v4;
 

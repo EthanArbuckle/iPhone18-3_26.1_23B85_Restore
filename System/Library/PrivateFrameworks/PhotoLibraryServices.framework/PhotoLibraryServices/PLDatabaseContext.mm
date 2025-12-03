@@ -1,21 +1,21 @@
 @interface PLDatabaseContext
-+ (id)newShortLivedLibraryWithName:(const char *)a3 libraryRole:(unint64_t)a4 bundle:(id)a5;
-- (PLDatabaseContext)initWithLibraryBundle:(id)a3;
++ (id)newShortLivedLibraryWithName:(const char *)name libraryRole:(unint64_t)role bundle:(id)bundle;
+- (PLDatabaseContext)initWithLibraryBundle:(id)bundle;
 - (id)newMomentLibrary;
-- (id)newShortLivedComputeSyncApplyLibraryWithNameSuffix:(const char *)a3;
-- (id)newShortLivedCplLibraryWithNameSuffix:(const char *)a3;
-- (id)newShortLivedLibraryForHistoryPersistenceReadingWithName:(const char *)a3;
-- (id)newShortLivedLibraryForOrderKeyManagerWithName:(const char *)a3;
-- (id)newShortLivedLibraryWithName:(const char *)a3;
-- (id)newShortLivedLibraryWithName:(const char *)a3 libraryRole:(unint64_t)a4;
-- (id)newShortLivedMacOpenClientLibraryWithName:(const char *)a3;
+- (id)newShortLivedComputeSyncApplyLibraryWithNameSuffix:(const char *)suffix;
+- (id)newShortLivedCplLibraryWithNameSuffix:(const char *)suffix;
+- (id)newShortLivedLibraryForHistoryPersistenceReadingWithName:(const char *)name;
+- (id)newShortLivedLibraryForOrderKeyManagerWithName:(const char *)name;
+- (id)newShortLivedLibraryWithName:(const char *)name;
+- (id)newShortLivedLibraryWithName:(const char *)name libraryRole:(unint64_t)role;
+- (id)newShortLivedMacOpenClientLibraryWithName:(const char *)name;
 - (int64_t)wellKnownPhotoLibraryIdentifier;
 - (void)dealloc;
 - (void)invalidate;
-- (void)perform:(id)a3 withName:(const char *)a4;
-- (void)performSync:(id)a3 withName:(const char *)a4;
-- (void)performTransaction:(id)a3 withName:(const char *)a4;
-- (void)performTransactionSync:(id)a3 withName:(const char *)a4;
+- (void)perform:(id)perform withName:(const char *)name;
+- (void)performSync:(id)sync withName:(const char *)name;
+- (void)performTransaction:(id)transaction withName:(const char *)name;
+- (void)performTransactionSync:(id)sync withName:(const char *)name;
 @end
 
 @implementation PLDatabaseContext
@@ -23,23 +23,23 @@
 - (int64_t)wellKnownPhotoLibraryIdentifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_libraryBundle);
-  v3 = [WeakRetained libraryServicesManager];
-  v4 = [v3 wellKnownPhotoLibraryIdentifier];
+  libraryServicesManager = [WeakRetained libraryServicesManager];
+  wellKnownPhotoLibraryIdentifier = [libraryServicesManager wellKnownPhotoLibraryIdentifier];
 
-  return v4;
+  return wellKnownPhotoLibraryIdentifier;
 }
 
 - (id)newMomentLibrary
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [PLDatabaseContextNameMomentLibrary UTF8String];
+  uTF8String = [PLDatabaseContextNameMomentLibrary UTF8String];
   v4 = objc_alloc_init(PLPhotoLibraryOptions);
   [(PLPhotoLibraryOptions *)v4 setLibraryRole:1];
   [(PLPhotoLibraryOptions *)v4 setRequiredState:6];
   [(PLPhotoLibraryOptions *)v4 setAutomaticallyPinToFirstFetch:0];
   WeakRetained = objc_loadWeakRetained(&self->_libraryBundle);
   v13 = 0;
-  v6 = [PLPhotoLibrary newPhotoLibraryWithName:v3 loadedFromBundle:WeakRetained options:v4 error:&v13];
+  v6 = [PLPhotoLibrary newPhotoLibraryWithName:uTF8String loadedFromBundle:WeakRetained options:v4 error:&v13];
   v7 = v13;
 
   if (!v6)
@@ -48,24 +48,24 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v9 = objc_loadWeakRetained(&self->_libraryBundle);
-      v10 = [v9 libraryURL];
+      libraryURL = [v9 libraryURL];
       *buf = 136446722;
-      v15 = v3;
+      v15 = uTF8String;
       v16 = 2112;
-      v17 = v10;
+      v17 = libraryURL;
       v18 = 2112;
       v19 = v7;
       _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_ERROR, "failed to load photo library %{public}s with url %@, %@", buf, 0x20u);
     }
   }
 
-  v11 = [v6 managedObjectContext];
-  [v11 setChangeSource:1];
+  managedObjectContext = [v6 managedObjectContext];
+  [managedObjectContext setChangeSource:1];
 
   return v6;
 }
 
-- (id)newShortLivedComputeSyncApplyLibraryWithNameSuffix:(const char *)a3
+- (id)newShortLivedComputeSyncApplyLibraryWithNameSuffix:(const char *)suffix
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(PLPhotoLibraryOptions);
@@ -75,7 +75,7 @@
   [(PLPhotoLibraryOptions *)v5 setRollbackOnErrors:1];
   WeakRetained = objc_loadWeakRetained(&self->_libraryBundle);
   v15 = 0;
-  v7 = [PLPhotoLibrary newPhotoLibraryWithName:a3 loadedFromBundle:WeakRetained options:v5 error:&v15];
+  v7 = [PLPhotoLibrary newPhotoLibraryWithName:suffix loadedFromBundle:WeakRetained options:v5 error:&v15];
   v8 = v15;
 
   if (!v7)
@@ -84,40 +84,40 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v10 = objc_loadWeakRetained(&self->_libraryBundle);
-      v11 = [v10 libraryURL];
+      libraryURL = [v10 libraryURL];
       *buf = 136446722;
-      v17 = a3;
+      suffixCopy = suffix;
       v18 = 2112;
-      v19 = v11;
+      v19 = libraryURL;
       v20 = 2112;
       v21 = v8;
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "failed to load photo library %{public}s with url %@, %@", buf, 0x20u);
     }
   }
 
-  v12 = [v7 managedObjectContext];
-  [v12 setChangeSource:1];
+  managedObjectContext = [v7 managedObjectContext];
+  [managedObjectContext setChangeSource:1];
 
-  v13 = [v7 managedObjectContext];
-  [v13 setLocalOnlyDelete:1];
+  managedObjectContext2 = [v7 managedObjectContext];
+  [managedObjectContext2 setLocalOnlyDelete:1];
 
   return v7;
 }
 
-- (id)newShortLivedCplLibraryWithNameSuffix:(const char *)a3
+- (id)newShortLivedCplLibraryWithNameSuffix:(const char *)suffix
 {
-  v4 = [PLDatabaseContextNameCPLLibrary stringByAppendingFormat:@": %s", a3];
-  v5 = -[PLDatabaseContext newShortLivedLibraryWithName:libraryRole:](self, "newShortLivedLibraryWithName:libraryRole:", [v4 UTF8String], 4);
-  v6 = [v5 managedObjectContext];
-  [v6 setChangeSource:1];
+  suffix = [PLDatabaseContextNameCPLLibrary stringByAppendingFormat:@": %s", suffix];
+  v5 = -[PLDatabaseContext newShortLivedLibraryWithName:libraryRole:](self, "newShortLivedLibraryWithName:libraryRole:", [suffix UTF8String], 4);
+  managedObjectContext = [v5 managedObjectContext];
+  [managedObjectContext setChangeSource:1];
 
-  v7 = [v5 managedObjectContext];
-  [v7 setLocalOnlyDelete:1];
+  managedObjectContext2 = [v5 managedObjectContext];
+  [managedObjectContext2 setLocalOnlyDelete:1];
 
   return v5;
 }
 
-- (id)newShortLivedLibraryForOrderKeyManagerWithName:(const char *)a3
+- (id)newShortLivedLibraryForOrderKeyManagerWithName:(const char *)name
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(PLPhotoLibraryOptions);
@@ -126,7 +126,7 @@
   [(PLPhotoLibraryOptions *)v5 setAutomaticallyPinToFirstFetch:0];
   WeakRetained = objc_loadWeakRetained(&self->_libraryBundle);
   v15 = 0;
-  v7 = [PLPhotoLibrary newPhotoLibraryWithName:a3 loadedFromBundle:WeakRetained options:v5 error:&v15];
+  v7 = [PLPhotoLibrary newPhotoLibraryWithName:name loadedFromBundle:WeakRetained options:v5 error:&v15];
   v8 = v15;
 
   if (v7)
@@ -146,11 +146,11 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v10 = objc_loadWeakRetained(&self->_libraryBundle);
-      v11 = [v10 libraryURL];
+      libraryURL = [v10 libraryURL];
       *buf = 136446722;
-      v17 = a3;
+      nameCopy = name;
       v18 = 2112;
-      v19 = v11;
+      v19 = libraryURL;
       v20 = 2112;
       v21 = v8;
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "failed to load photo library %{public}s with url %@, %@", buf, 0x20u);
@@ -166,7 +166,7 @@ void __68__PLDatabaseContext_newShortLivedLibraryForOrderKeyManagerWithName___bl
   [v1 setStalenessInterval:0.0];
 }
 
-- (id)newShortLivedLibraryForHistoryPersistenceReadingWithName:(const char *)a3
+- (id)newShortLivedLibraryForHistoryPersistenceReadingWithName:(const char *)name
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(PLPhotoLibraryOptions);
@@ -175,7 +175,7 @@ void __68__PLDatabaseContext_newShortLivedLibraryForOrderKeyManagerWithName___bl
   [(PLPhotoLibraryOptions *)v5 setAutomaticallyPinToFirstFetch:0];
   WeakRetained = objc_loadWeakRetained(&self->_libraryBundle);
   v15 = 0;
-  v7 = [PLPhotoLibrary newPhotoLibraryWithName:a3 loadedFromBundle:WeakRetained options:v5 error:&v15];
+  v7 = [PLPhotoLibrary newPhotoLibraryWithName:name loadedFromBundle:WeakRetained options:v5 error:&v15];
   v8 = v15;
 
   if (v7)
@@ -195,11 +195,11 @@ void __68__PLDatabaseContext_newShortLivedLibraryForOrderKeyManagerWithName___bl
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v10 = objc_loadWeakRetained(&self->_libraryBundle);
-      v11 = [v10 libraryURL];
+      libraryURL = [v10 libraryURL];
       *buf = 136446722;
-      v17 = a3;
+      nameCopy = name;
       v18 = 2112;
-      v19 = v11;
+      v19 = libraryURL;
       v20 = 2112;
       v21 = v8;
       _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_ERROR, "failed to load photo library %{public}s with url %@, %@", buf, 0x20u);
@@ -215,81 +215,81 @@ void __78__PLDatabaseContext_newShortLivedLibraryForHistoryPersistenceReadingWit
   [v1 setStalenessInterval:0.0];
 }
 
-- (id)newShortLivedLibraryWithName:(const char *)a3 libraryRole:(unint64_t)a4
+- (id)newShortLivedLibraryWithName:(const char *)name libraryRole:(unint64_t)role
 {
   v7 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_libraryBundle);
-  v9 = [v7 newShortLivedLibraryWithName:a3 libraryRole:a4 bundle:WeakRetained];
+  v9 = [v7 newShortLivedLibraryWithName:name libraryRole:role bundle:WeakRetained];
 
   return v9;
 }
 
-- (id)newShortLivedLibraryWithName:(const char *)a3
+- (id)newShortLivedLibraryWithName:(const char *)name
 {
   v5 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_libraryBundle);
-  v7 = [v5 newShortLivedLibraryWithName:a3 bundle:WeakRetained];
+  v7 = [v5 newShortLivedLibraryWithName:name bundle:WeakRetained];
 
   return v7;
 }
 
-- (void)performTransactionSync:(id)a3 withName:(const char *)a4
+- (void)performTransactionSync:(id)sync withName:(const char *)name
 {
-  v6 = a3;
-  v7 = [(PLDatabaseContext *)self newShortLivedLibraryWithName:a4];
+  syncCopy = sync;
+  v7 = [(PLDatabaseContext *)self newShortLivedLibraryWithName:name];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __53__PLDatabaseContext_performTransactionSync_withName___block_invoke;
   v10[3] = &unk_1E7577C08;
   v11 = v7;
-  v12 = v6;
+  v12 = syncCopy;
   v8 = v7;
-  v9 = v6;
+  v9 = syncCopy;
   [v8 performTransactionAndWait:v10];
 }
 
-- (void)performSync:(id)a3 withName:(const char *)a4
+- (void)performSync:(id)sync withName:(const char *)name
 {
-  v6 = a3;
-  v7 = [(PLDatabaseContext *)self newShortLivedLibraryWithName:a4];
+  syncCopy = sync;
+  v7 = [(PLDatabaseContext *)self newShortLivedLibraryWithName:name];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __42__PLDatabaseContext_performSync_withName___block_invoke;
   v10[3] = &unk_1E7577C08;
   v11 = v7;
-  v12 = v6;
+  v12 = syncCopy;
   v8 = v7;
-  v9 = v6;
+  v9 = syncCopy;
   [v8 performBlockAndWait:v10];
 }
 
-- (void)performTransaction:(id)a3 withName:(const char *)a4
+- (void)performTransaction:(id)transaction withName:(const char *)name
 {
-  v6 = a3;
-  v7 = [(PLDatabaseContext *)self newShortLivedLibraryWithName:a4];
+  transactionCopy = transaction;
+  v7 = [(PLDatabaseContext *)self newShortLivedLibraryWithName:name];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __49__PLDatabaseContext_performTransaction_withName___block_invoke;
   v10[3] = &unk_1E7577C08;
   v11 = v7;
-  v12 = v6;
+  v12 = transactionCopy;
   v8 = v7;
-  v9 = v6;
+  v9 = transactionCopy;
   [v8 performTransaction:v10];
 }
 
-- (void)perform:(id)a3 withName:(const char *)a4
+- (void)perform:(id)perform withName:(const char *)name
 {
-  v6 = a3;
-  v7 = [(PLDatabaseContext *)self newShortLivedLibraryWithName:a4];
+  performCopy = perform;
+  v7 = [(PLDatabaseContext *)self newShortLivedLibraryWithName:name];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __38__PLDatabaseContext_perform_withName___block_invoke;
   v10[3] = &unk_1E7577C08;
   v11 = v7;
-  v12 = v6;
+  v12 = performCopy;
   v8 = v7;
-  v9 = v6;
+  v9 = performCopy;
   [v8 performBlock:v10];
 }
 
@@ -302,7 +302,7 @@ void __78__PLDatabaseContext_newShortLivedLibraryForHistoryPersistenceReadingWit
     *buf = 138412546;
     v6 = objc_opt_class();
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "%@ %p dealloc", buf, 0x16u);
   }
 
@@ -320,7 +320,7 @@ void __78__PLDatabaseContext_newShortLivedLibraryForHistoryPersistenceReadingWit
     v4 = 138412546;
     v5 = objc_opt_class();
     v6 = 2048;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_DEBUG, "%@ %p invalidate", &v4, 0x16u);
   }
 
@@ -328,13 +328,13 @@ void __78__PLDatabaseContext_newShortLivedLibraryForHistoryPersistenceReadingWit
   [(PLLazyObject *)self->_lazyMomentLibrary invalidate];
 }
 
-- (PLDatabaseContext)initWithLibraryBundle:(id)a3
+- (PLDatabaseContext)initWithLibraryBundle:(id)bundle
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  bundleCopy = bundle;
   if (PLIsAssetsd())
   {
-    if (v5)
+    if (bundleCopy)
     {
       goto LABEL_3;
     }
@@ -342,17 +342,17 @@ void __78__PLDatabaseContext_newShortLivedLibraryForHistoryPersistenceReadingWit
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PLDatabaseContext.m" lineNumber:36 description:@"Must only be initialized in assetsd"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDatabaseContext.m" lineNumber:36 description:@"Must only be initialized in assetsd"];
 
-    if (v5)
+    if (bundleCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"PLDatabaseContext.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"libraryBundle != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLDatabaseContext.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"libraryBundle != nil"}];
 
 LABEL_3:
   v21.receiver = self;
@@ -361,7 +361,7 @@ LABEL_3:
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_libraryBundle, v5);
+    objc_storeWeak(&v6->_libraryBundle, bundleCopy);
     v8 = objc_initWeak(location, v7);
 
     v9 = objc_alloc(MEMORY[0x1E69BF270]);
@@ -390,7 +390,7 @@ LABEL_3:
     v23 = 2048;
     v24 = v7;
     v25 = 2112;
-    v26 = v5;
+    v26 = bundleCopy;
     _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_DEBUG, "%@ %p initWithLibraryBundle:%@", location, 0x20u);
   }
 
@@ -414,27 +414,27 @@ id __43__PLDatabaseContext_initWithLibraryBundle___block_invoke(uint64_t a1)
   return v3;
 }
 
-+ (id)newShortLivedLibraryWithName:(const char *)a3 libraryRole:(unint64_t)a4 bundle:(id)a5
++ (id)newShortLivedLibraryWithName:(const char *)name libraryRole:(unint64_t)role bundle:(id)bundle
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  bundleCopy = bundle;
   v8 = objc_alloc_init(PLPhotoLibraryOptions);
   [(PLPhotoLibraryOptions *)v8 setRequiredState:6];
   [(PLPhotoLibraryOptions *)v8 setRefreshesAfterSave:0];
-  [(PLPhotoLibraryOptions *)v8 setLibraryRole:a4];
+  [(PLPhotoLibraryOptions *)v8 setLibraryRole:role];
   v14 = 0;
-  v9 = [PLPhotoLibrary newPhotoLibraryWithName:a3 loadedFromBundle:v7 options:v8 error:&v14];
+  v9 = [PLPhotoLibrary newPhotoLibraryWithName:name loadedFromBundle:bundleCopy options:v8 error:&v14];
   v10 = v14;
   if (!v9)
   {
     v11 = PLLibraryServicesGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [v7 libraryURL];
+      libraryURL = [bundleCopy libraryURL];
       *buf = 136446722;
-      v16 = a3;
+      nameCopy = name;
       v17 = 2112;
-      v18 = v12;
+      v18 = libraryURL;
       v19 = 2112;
       v20 = v10;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_ERROR, "failed to load photo library %{public}s with url %@, %@", buf, 0x20u);
@@ -444,22 +444,22 @@ id __43__PLDatabaseContext_initWithLibraryBundle___block_invoke(uint64_t a1)
   return v9;
 }
 
-- (id)newShortLivedMacOpenClientLibraryWithName:(const char *)a3
+- (id)newShortLivedMacOpenClientLibraryWithName:(const char *)name
 {
   v6 = objc_alloc_init(PLPhotoLibraryOptions);
   [(PLPhotoLibraryOptions *)v6 setRequiredState:4];
   [(PLPhotoLibraryOptions *)v6 setRefreshesAfterSave:0];
   WeakRetained = objc_loadWeakRetained(&self->_libraryBundle);
   v14 = 0;
-  v8 = [PLPhotoLibrary newPhotoLibraryWithName:a3 loadedFromBundle:WeakRetained options:v6 error:&v14];
+  v8 = [PLPhotoLibrary newPhotoLibraryWithName:name loadedFromBundle:WeakRetained options:v6 error:&v14];
   v9 = v14;
 
   if (!v8)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = objc_loadWeakRetained(&self->_libraryBundle);
-    v13 = [v12 libraryURL];
-    [v11 handleFailureInMethod:a2 object:self file:@"PLDatabaseContext.m" lineNumber:231 description:{@"failed to load photo library %s with url %@, %@", a3, v13, v9}];
+    libraryURL = [v12 libraryURL];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLDatabaseContext.m" lineNumber:231 description:{@"failed to load photo library %s with url %@, %@", name, libraryURL, v9}];
   }
 
   return v8;

@@ -6,14 +6,14 @@
 - (id)copyLastKnownLocation;
 - (void)dealloc;
 - (void)fetchLocationServiceEnabled;
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManager:(id)a3 didVisit:(id)a4;
-- (void)setRegistry:(const void *)a3;
-- (void)shouldUpdateLocation:(BOOL)a3;
-- (void)startLocationMonitoringVisitsWithReason:(const char *)a3;
-- (void)startLocationUpdatesWithReason:(const char *)a3;
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManager:(id)manager didVisit:(id)visit;
+- (void)setRegistry:(const void *)registry;
+- (void)shouldUpdateLocation:(BOOL)location;
+- (void)startLocationMonitoringVisitsWithReason:(const char *)reason;
+- (void)startLocationUpdatesWithReason:(const char *)reason;
 - (void)stopLocationMonitoringVisits;
 - (void)stopLocationUpdates;
 @end
@@ -55,10 +55,10 @@
   return 0;
 }
 
-- (void)setRegistry:(const void *)a3
+- (void)setRegistry:(const void *)registry
 {
-  v4 = self;
-  v5 = *(a3 + 1);
+  selfCopy = self;
+  v5 = *(registry + 1);
   if (v5)
   {
     atomic_fetch_add_explicit((v5 + 8), 1uLL, memory_order_relaxed);
@@ -105,17 +105,17 @@
   sub_100332C08(&self->fServiceEnabledRestSource, &v7);
 }
 
-- (void)shouldUpdateLocation:(BOOL)a3
+- (void)shouldUpdateLocation:(BOOL)location
 {
-  v3 = a3;
+  locationCopy = location;
   v5 = self->_manager;
   if (v5)
   {
     if ([(CTLocationManager *)self isLocationServiceAuthorized])
     {
-      if ([(CTLocationManager *)self locationRequested]!= v3)
+      if ([(CTLocationManager *)self locationRequested]!= locationCopy)
       {
-        if (v3)
+        if (locationCopy)
         {
           [(CLLocationManager *)v5 startUpdatingLocation];
         }
@@ -125,7 +125,7 @@
           [(CLLocationManager *)v5 stopUpdatingLocation];
         }
 
-        [(CTLocationManager *)self setLocationRequested:v3];
+        [(CTLocationManager *)self setLocationRequested:locationCopy];
       }
     }
 
@@ -141,13 +141,13 @@
   }
 }
 
-- (void)startLocationUpdatesWithReason:(const char *)a3
+- (void)startLocationUpdatesWithReason:(const char *)reason
 {
   v5 = *self->logger.__ptr_;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315138;
-    v7 = a3;
+    reasonCopy = reason;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I START LOCATION UPDATE: %s", &v6, 0xCu);
   }
 
@@ -168,20 +168,20 @@
 
 - (BOOL)isLocationServiceEnabled
 {
-  v2 = self;
-  v5 = self;
-  fObj = v2->_queue.fObj.fObj;
+  selfCopy = self;
+  selfCopy2 = self;
+  fObj = selfCopy->_queue.fObj.fObj;
   v7 = 0;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10033401C;
   block[3] = &unk_101E26940;
   block[4] = &v7;
-  block[5] = &v5;
+  block[5] = &selfCopy2;
   dispatch_sync(fObj, block);
-  LOBYTE(v2) = v7;
+  LOBYTE(selfCopy) = v7;
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)copyLastKnownLocation
@@ -191,19 +191,19 @@
     return 0;
   }
 
-  v3 = [(CTLocationManager *)self location];
-  v4 = [v3 copy];
+  location = [(CTLocationManager *)self location];
+  v4 = [location copy];
 
   return v4;
 }
 
-- (void)startLocationMonitoringVisitsWithReason:(const char *)a3
+- (void)startLocationMonitoringVisitsWithReason:(const char *)reason
 {
   v5 = *self->logger.__ptr_;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315138;
-    v7 = a3;
+    reasonCopy = reason;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#I START LOCATION MONITORING VISITS: %s", &v6, 0xCu);
   }
 
@@ -222,9 +222,9 @@
   [(CLLocationManager *)self->_manager stopMonitoringVisits];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = [a4 lastObject];
+  lastObject = [locations lastObject];
   v6 = *self->logger.__ptr_;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -233,25 +233,25 @@
   }
 
   [(CTLocationManager *)self setLocationAvailable:1];
-  [(CTLocationManager *)self setLocation:v5];
-  v7 = [(CTLocationManager *)self location];
-  [v7 coordinate];
+  [(CTLocationManager *)self setLocation:lastObject];
+  location = [(CTLocationManager *)self location];
+  [location coordinate];
   v9 = v8;
 
-  v10 = [(CTLocationManager *)self location];
-  [v10 coordinate];
+  location2 = [(CTLocationManager *)self location];
+  [location2 coordinate];
   v12 = v11;
 
   v13 = sub_1000FFCA4(&event::location::locationAvailable[1]);
   sub_100334104(v13, v9, v12);
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && ![v7 code])
+  managerCopy = manager;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (errorCopy && ![errorCopy code])
   {
     v10 = *self->logger.__ptr_;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -277,11 +277,11 @@
   sub_100334BE0(v12, v11);
 }
 
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status
 {
-  v6 = a3;
-  self->_locationServiceAuthorized = (a4 - 3) < 0xFFFFFFFE;
-  if (a4 && a4 != 3)
+  managerCopy = manager;
+  self->_locationServiceAuthorized = (status - 3) < 0xFFFFFFFE;
+  if (status && status != 3)
   {
     [(CTLocationManager *)self stopLocationUpdates];
     v7 = sub_100B3931C("kPosixErrorDomain", 1);
@@ -301,38 +301,38 @@
   sub_100081ADC(v10);
 }
 
-- (void)locationManager:(id)a3 didVisit:(id)a4
+- (void)locationManager:(id)manager didVisit:(id)visit
 {
-  v18 = a3;
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  managerCopy = manager;
+  visitCopy = visit;
+  v6 = visitCopy;
+  if (visitCopy)
   {
-    v7 = [v5 arrivalDate];
+    arrivalDate = [visitCopy arrivalDate];
     v8 = +[NSDate distantPast];
-    if ([v7 isEqual:v8])
+    if ([arrivalDate isEqual:v8])
     {
       v9 = 0;
     }
 
     else
     {
-      v11 = [v6 arrivalDate];
-      [v11 timeIntervalSince1970];
+      arrivalDate2 = [v6 arrivalDate];
+      [arrivalDate2 timeIntervalSince1970];
       v9 = v12;
     }
 
-    v13 = [v6 departureDate];
+    departureDate = [v6 departureDate];
     v14 = +[NSDate distantFuture];
-    if ([v13 isEqual:v14])
+    if ([departureDate isEqual:v14])
     {
       v10 = 0;
     }
 
     else
     {
-      v15 = [v6 departureDate];
-      [v15 timeIntervalSince1970];
+      departureDate2 = [v6 departureDate];
+      [departureDate2 timeIntervalSince1970];
       v10 = v16;
     }
   }

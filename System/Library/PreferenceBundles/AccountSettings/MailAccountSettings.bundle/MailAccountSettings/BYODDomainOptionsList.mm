@@ -1,34 +1,34 @@
 @interface BYODDomainOptionsList
-- (BYODDomainOptionsList)initWithDictionary:(id)a3;
+- (BYODDomainOptionsList)initWithDictionary:(id)dictionary;
 @end
 
 @implementation BYODDomainOptionsList
 
-- (BYODDomainOptionsList)initWithDictionary:(id)a3
+- (BYODDomainOptionsList)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = BYODDomainOptionsList;
   v5 = [(BYODDomainOptionsList *)&v29 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isAvailable"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isAvailable"];
     v5->_isAvailable = [v6 BOOLValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"isKeywordSearch"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isKeywordSearch"];
     v5->_isKeywordSearch = [v7 BOOLValue];
 
-    v8 = [v4 objectForKeyedSubscript:@"dnsProviderName"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"dnsProviderName"];
     dnsProviderName = v5->_dnsProviderName;
     v5->_dnsProviderName = v8;
 
     v10 = [BYODDomainOption alloc];
-    v11 = [v4 objectForKeyedSubscript:@"searchedDomain"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"searchedDomain"];
     v12 = [(BYODDomainOption *)v10 initWithDictionary:v11];
     searchedDomain = v5->_searchedDomain;
     v5->_searchedDomain = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"suggestedDomains"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"suggestedDomains"];
     v15 = objc_alloc_init(NSMutableArray);
     v27 = 0u;
     v28 = 0u;

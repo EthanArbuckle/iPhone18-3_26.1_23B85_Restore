@@ -1,39 +1,39 @@
 @interface AppStoreComponentsWrapper
-- (AppStoreComponentsWrapper)initWithLogKey:(id)a3;
-- (id)lockupWithItemID:(id)a3 versionID:(id)a4 distributorID:(id)a5 isForAppStore:(BOOL)a6 delegate:(id)a7;
-- (id)presentingViewControllerForMiniProductPageView:(id)a3;
-- (void)miniProductPageView:(id)a3 didFailRequestWithError:(id)a4;
-- (void)miniProductPageViewDidBeginRequest:(id)a3;
-- (void)miniProductPageViewDidFinishRequest:(id)a3;
-- (void)miniProductPageViewDidInvalidateIntrinsicContentSize:(id)a3;
-- (void)miniProductPageViewDidPresentDescription:(id)a3;
+- (AppStoreComponentsWrapper)initWithLogKey:(id)key;
+- (id)lockupWithItemID:(id)d versionID:(id)iD distributorID:(id)distributorID isForAppStore:(BOOL)store delegate:(id)delegate;
+- (id)presentingViewControllerForMiniProductPageView:(id)view;
+- (void)miniProductPageView:(id)view didFailRequestWithError:(id)error;
+- (void)miniProductPageViewDidBeginRequest:(id)request;
+- (void)miniProductPageViewDidFinishRequest:(id)request;
+- (void)miniProductPageViewDidInvalidateIntrinsicContentSize:(id)size;
+- (void)miniProductPageViewDidPresentDescription:(id)description;
 @end
 
 @implementation AppStoreComponentsWrapper
 
-- (AppStoreComponentsWrapper)initWithLogKey:(id)a3
+- (AppStoreComponentsWrapper)initWithLogKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v9.receiver = self;
   v9.super_class = AppStoreComponentsWrapper;
   v6 = [(AppStoreComponentsWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_logKey, a3);
+    objc_storeStrong(&v6->_logKey, key);
   }
 
   return v7;
 }
 
-- (id)lockupWithItemID:(id)a3 versionID:(id)a4 distributorID:(id)a5 isForAppStore:(BOOL)a6 delegate:(id)a7
+- (id)lockupWithItemID:(id)d versionID:(id)iD distributorID:(id)distributorID isForAppStore:(BOOL)store delegate:(id)delegate
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  objc_storeWeak(&self->_delegate, v15);
+  storeCopy = store;
+  dCopy = d;
+  iDCopy = iD;
+  distributorIDCopy = distributorID;
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   v41 = 0;
   v42 = &v41;
   v43 = 0x2050000000;
@@ -72,10 +72,10 @@
 
   v20 = v19;
   _Block_object_dispose(&v41, 8);
-  v21 = [[v19 alloc] initWithStringValue:v12];
+  v21 = [[v19 alloc] initWithStringValue:dCopy];
   v22 = sub_100002B0C();
   v23 = v22;
-  if (v8)
+  if (storeCopy)
   {
     v24 = [v22 alloc];
     v25 = sub_100002BEC();
@@ -138,7 +138,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v29 = [(objc_class *)v23 _requestWithID:v21 kind:v25 context:*v30 appVersionId:v13 distributorId:v14];
+  v29 = [(objc_class *)v23 _requestWithID:v21 kind:v25 context:*v30 appVersionId:iDCopy distributorId:distributorIDCopy];
 LABEL_14:
   v33 = v29;
 
@@ -147,10 +147,10 @@ LABEL_14:
   return v18;
 }
 
-- (id)presentingViewControllerForMiniProductPageView:(id)a3
+- (id)presentingViewControllerForMiniProductPageView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained miniProductPagePresentingViewController];
+  miniProductPagePresentingViewController = [WeakRetained miniProductPagePresentingViewController];
 
   v6 = sub_1000025E8(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -159,14 +159,14 @@ LABEL_14:
     v9 = 138543618;
     v10 = logKey;
     v11 = 2112;
-    v12 = v5;
+    v12 = miniProductPagePresentingViewController;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Mini product page asked for it's presenting controller, returning %@", &v9, 0x16u);
   }
 
-  return v5;
+  return miniProductPagePresentingViewController;
 }
 
-- (void)miniProductPageViewDidBeginRequest:(id)a3
+- (void)miniProductPageViewDidBeginRequest:(id)request
 {
   v4 = sub_1000025E8(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -178,9 +178,9 @@ LABEL_14:
   }
 }
 
-- (void)miniProductPageViewDidFinishRequest:(id)a3
+- (void)miniProductPageViewDidFinishRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = sub_1000025E8(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -193,32 +193,32 @@ LABEL_14:
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained miniProductPageRequestDidFinish];
 
-  [v4 setNeedsLayout];
+  [requestCopy setNeedsLayout];
 }
 
-- (void)miniProductPageView:(id)a3 didFailRequestWithError:(id)a4
+- (void)miniProductPageView:(id)view didFailRequestWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = sub_1000025E8(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    sub_1000619E0(self, v5, v6);
+    sub_1000619E0(self, errorCopy, v6);
   }
 }
 
-- (void)miniProductPageViewDidInvalidateIntrinsicContentSize:(id)a3
+- (void)miniProductPageViewDidInvalidateIntrinsicContentSize:(id)size
 {
-  v4 = a3;
+  sizeCopy = size;
   v5 = sub_1000025E8(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_100061A6C(self, v5);
   }
 
-  [v4 setNeedsLayout];
+  [sizeCopy setNeedsLayout];
 }
 
-- (void)miniProductPageViewDidPresentDescription:(id)a3
+- (void)miniProductPageViewDidPresentDescription:(id)description
 {
   v4 = sub_1000025E8(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))

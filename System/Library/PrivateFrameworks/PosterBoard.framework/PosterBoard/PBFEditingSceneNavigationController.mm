@@ -1,37 +1,37 @@
 @interface PBFEditingSceneNavigationController
 - (PBFEditingSceneNavigationControllerDelegate)dismissalDelegate;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PBFEditingSceneNavigationController
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PBFEditingSceneNavigationController;
-  [(PBFEditingSceneNavigationController *)&v5 viewWillDisappear:a3];
+  [(PBFEditingSceneNavigationController *)&v5 viewWillDisappear:disappear];
   if ([(PBFEditingSceneNavigationController *)self isBeingDismissed])
   {
-    v4 = [(PBFEditingSceneNavigationController *)self dismissalDelegate];
+    dismissalDelegate = [(PBFEditingSceneNavigationController *)self dismissalDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [v4 editingSceneNavigationControllerWillDismiss:self];
+      [dismissalDelegate editingSceneNavigationControllerWillDismiss:self];
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PBFEditingSceneNavigationController;
-  [(PBFEditingSceneNavigationController *)&v5 viewDidDisappear:a3];
+  [(PBFEditingSceneNavigationController *)&v5 viewDidDisappear:disappear];
   if ([(PBFEditingSceneNavigationController *)self isBeingDismissed])
   {
-    v4 = [(PBFEditingSceneNavigationController *)self dismissalDelegate];
+    dismissalDelegate = [(PBFEditingSceneNavigationController *)self dismissalDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [v4 editingSceneNavigationControllerDidDismiss:self];
+      [dismissalDelegate editingSceneNavigationControllerDidDismiss:self];
     }
   }
 }

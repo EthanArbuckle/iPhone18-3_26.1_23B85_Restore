@@ -1,6 +1,6 @@
 @interface LACSharedModePolicyCoordinatorACMStorage
 - (LACSharedModePolicyCoordinatorACMStorage)init;
-- (void)performRequest:(id)a3 completion:(id)a4;
+- (void)performRequest:(id)request completion:(id)completion;
 @end
 
 @implementation LACSharedModePolicyCoordinatorACMStorage
@@ -22,19 +22,19 @@
   return v2;
 }
 
-- (void)performRequest:(id)a3 completion:(id)a4
+- (void)performRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   storage = self->_storage;
-  v8 = a3;
-  v9 = [v8 value];
+  requestCopy = request;
+  value = [requestCopy value];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __70__LACSharedModePolicyCoordinatorACMStorage_performRequest_completion___block_invoke;
   v11[3] = &unk_1E7A97310;
-  v12 = v6;
-  v10 = v6;
-  [(LACSecureStorage *)storage setObject:v9 forRequest:v8 completionHandler:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [(LACSecureStorage *)storage setObject:value forRequest:requestCopy completionHandler:v11];
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface _UIStatusBarCellularItemAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_updateSignalView:(id)a3 withUpdate:(id)a4 entry:(id)a5 forceShowingDisabledSignalBars:(BOOL)a6;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_updateSignalView:(id)view withUpdate:(id)update entry:(id)entry forceShowingDisabledSignalBars:(BOOL)bars;
 - (_UIStatusBarCellularItemAccessibility)init;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axAnnotateDataNetworkViewWithEntry:(void *)a1;
+- (void)_axAnnotateDataNetworkViewWithEntry:(void *)entry;
 @end
 
 @implementation _UIStatusBarCellularItemAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   v5 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"_UIStatusBarStringView" isKindOfClass:@"UILabel"];
   v3 = @"_UIStatusBarCellularItem";
   v4 = "@";
@@ -30,19 +30,19 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
   v19.receiver = self;
   v19.super_class = _UIStatusBarCellularItemAccessibility;
   [(_UIStatusBarCellularItemAccessibility *)&v19 _accessibilityLoadAccessibilityInformation];
-  v18 = [(_UIStatusBarCellularItemAccessibility *)v21 safeUIViewForKey:@"signalView"];
+  v18 = [(_UIStatusBarCellularItemAccessibility *)selfCopy safeUIViewForKey:@"signalView"];
   [v18 _accessibilitySetRetainedValue:@"status.signal.bars" forKey:@"AccessibilityStatusBarSignalViewLabelKey"];
-  v17 = [(_UIStatusBarCellularItemAccessibility *)v21 safeValueForKey:@"callForwardingView"];
+  v17 = [(_UIStatusBarCellularItemAccessibility *)selfCopy safeValueForKey:@"callForwardingView"];
   [v17 setIsAccessibilityElement:1];
   v3 = accessibilityLocalizedString(@"status.call.forward.icon");
   [v17 setAccessibilityLabel:?];
   *&v2 = MEMORY[0x29EDC9740](v3).n128_u64[0];
-  v16 = [(_UIStatusBarCellularItemAccessibility *)v21 safeValueForKey:@"networkTypeView", v2];
+  v16 = [(_UIStatusBarCellularItemAccessibility *)selfCopy safeValueForKey:@"networkTypeView", v2];
   [v16 _accessibilitySetBoolValue:1 forKey:@"AccessibilityStatusBarStringIsDataNetwork"];
   v15 = [NSClassFromString(&cfstr_Uistatusbarcel_6.isa) safeValueForKey:@"typeDisplayIdentifier"];
   v7 = 0;
@@ -53,7 +53,7 @@
   v12 = __Block_byref_object_dispose__32;
   v13 = 0;
   v6[1] = &v7;
-  v5 = MEMORY[0x29EDC9748](v21);
+  v5 = MEMORY[0x29EDC9748](selfCopy);
   v6[0] = MEMORY[0x29EDC9748](v15);
   AXPerformSafeBlock();
   v4 = MEMORY[0x29EDC9748](v8[5]);
@@ -62,7 +62,7 @@
   _Block_object_dispose(&v7, 8);
   objc_storeStrong(&v13, 0);
   v14 = v4;
-  [(_UIStatusBarCellularItemAccessibility *)v21 _axAnnotateDataNetworkViewWithEntry:v4];
+  [(_UIStatusBarCellularItemAccessibility *)selfCopy _axAnnotateDataNetworkViewWithEntry:v4];
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v16, 0);
@@ -70,15 +70,15 @@
   objc_storeStrong(&v18, 0);
 }
 
-- (void)_axAnnotateDataNetworkViewWithEntry:(void *)a1
+- (void)_axAnnotateDataNetworkViewWithEntry:(void *)entry
 {
-  v6 = a1;
+  entryCopy = entry;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v6)
+  if (entryCopy)
   {
     v3 = axAnnotateDataNetworkViewWithType([location type]);
-    v2 = [v6 safeValueForKey:@"networkTypeView"];
+    v2 = [entryCopy safeValueForKey:@"networkTypeView"];
     [v2 setAccessibilityLabel:v3];
     MEMORY[0x29EDC9740](v2);
     objc_storeStrong(&v3, 0);
@@ -93,20 +93,20 @@
   objc_storeStrong(&location, 0);
 }
 
-- (BOOL)_updateSignalView:(id)a3 withUpdate:(id)a4 entry:(id)a5 forceShowingDisabledSignalBars:(BOOL)a6
+- (BOOL)_updateSignalView:(id)view withUpdate:(id)update entry:(id)entry forceShowingDisabledSignalBars:(BOOL)bars
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, update);
   v21 = 0;
-  objc_storeStrong(&v21, a5);
-  v20 = a6;
-  v18.receiver = v24;
+  objc_storeStrong(&v21, entry);
+  barsCopy = bars;
+  v18.receiver = selfCopy;
   v18.super_class = _UIStatusBarCellularItemAccessibility;
-  v19 = [(_UIStatusBarCellularItemAccessibility *)&v18 _updateSignalView:location[0] withUpdate:v22 entry:v21 forceShowingDisabledSignalBars:a6];
+  v19 = [(_UIStatusBarCellularItemAccessibility *)&v18 _updateSignalView:location[0] withUpdate:v22 entry:v21 forceShowingDisabledSignalBars:bars];
   v16 = 0;
   objc_opt_class();
   v15 = __UIAccessibilityCastAsClass();
@@ -114,11 +114,11 @@
   objc_storeStrong(&v15, 0);
   v17 = v14;
   v8 = location[0];
-  v9 = [v14 string];
+  string = [v14 string];
   [v8 _accessibilitySetRetainedValue:? forKey:?];
-  *&v6 = MEMORY[0x29EDC9740](v9).n128_u64[0];
+  *&v6 = MEMORY[0x29EDC9740](string).n128_u64[0];
   [location[0] _accessibilitySetRetainedValue:@"status.signal.bars" forKey:{@"AccessibilityStatusBarSignalViewLabelKey", v6}];
-  [(_UIStatusBarCellularItemAccessibility *)v24 _axAnnotateDataNetworkViewWithEntry:v17];
+  [(_UIStatusBarCellularItemAccessibility *)selfCopy _axAnnotateDataNetworkViewWithEntry:v17];
   v10 = v19;
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v21, 0);

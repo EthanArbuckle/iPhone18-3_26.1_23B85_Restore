@@ -1,71 +1,71 @@
 @interface TVRUICoreDevice
-- (BOOL)_isVolumeButton:(id)a3;
-- (BOOL)_isVolumeControlButton:(id)a3;
+- (BOOL)_isVolumeButton:(id)button;
+- (BOOL)_isVolumeControlButton:(id)button;
 - (BOOL)isConnected;
 - (BOOL)isConnecting;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDevice:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDevice:(id)device;
 - (BOOL)isPaired;
 - (BOOL)supportsModernConnections;
 - (NSString)description;
 - (TVRUIDeviceDelegate)delegate;
-- (id)_initWithCoreDevice:(id)a3;
-- (id)_initWithDeviceIdentifier:(id)a3;
+- (id)_initWithCoreDevice:(id)device;
+- (id)_initWithDeviceIdentifier:(id)identifier;
 - (id)currentText;
 - (id)debugName;
 - (id)deviceContextInformation;
 - (id)keyboardAttributes;
-- (int64_t)_tvrcTouchPhaseFromUITouchPhase:(int64_t)a3;
+- (int64_t)_tvrcTouchPhaseFromUITouchPhase:(int64_t)phase;
 - (unint64_t)hash;
-- (void)_disconnectWithType:(unint64_t)a3;
-- (void)_processButtonsForFeatureAdditions:(id)a3;
-- (void)_processButtonsForFeatureRemovals:(id)a3;
-- (void)addItemWithMediaIdentifier:(id)a3 completion:(id)a4;
+- (void)_disconnectWithType:(unint64_t)type;
+- (void)_processButtonsForFeatureAdditions:(id)additions;
+- (void)_processButtonsForFeatureRemovals:(id)removals;
+- (void)addItemWithMediaIdentifier:(id)identifier completion:(id)completion;
 - (void)cancelAuthenitcationChallenge;
-- (void)connectWithConnectionContext:(int64_t)a3;
-- (void)device:(id)a3 disconnectedForReason:(int64_t)a4 error:(id)a5;
-- (void)device:(id)a3 encounteredAuthenticationChallenge:(id)a4;
-- (void)device:(id)a3 removedSupportedButtons:(id)a4 added:(id)a5;
-- (void)device:(id)a3 supportsFindMyRemote:(BOOL)a4;
-- (void)device:(id)a3 updatedAttentionState:(int64_t)a4;
-- (void)device:(id)a3 updatedNowPlayingInfo:(id)a4;
-- (void)device:(id)a3 updatedSiriRemoteFindingSessionState:(int64_t)a4;
-- (void)deviceBeganConnecting:(id)a3;
-- (void)deviceConnected:(id)a3;
-- (void)deviceNameChanged:(id)a3;
+- (void)connectWithConnectionContext:(int64_t)context;
+- (void)device:(id)device disconnectedForReason:(int64_t)reason error:(id)error;
+- (void)device:(id)device encounteredAuthenticationChallenge:(id)challenge;
+- (void)device:(id)device removedSupportedButtons:(id)buttons added:(id)added;
+- (void)device:(id)device supportsFindMyRemote:(BOOL)remote;
+- (void)device:(id)device updatedAttentionState:(int64_t)state;
+- (void)device:(id)device updatedNowPlayingInfo:(id)info;
+- (void)device:(id)device updatedSiriRemoteFindingSessionState:(int64_t)state;
+- (void)deviceBeganConnecting:(id)connecting;
+- (void)deviceConnected:(id)connected;
+- (void)deviceNameChanged:(id)changed;
 - (void)disconnectWithTimeOut;
-- (void)enableFindingSession:(BOOL)a3;
-- (void)enableTVRemoteOnLockscreen:(BOOL)a3;
-- (void)fetchLaunchableAppsWithCompletion:(id)a3;
-- (void)fetchUpNextInfoWithPaginationToken:(id)a3 completion:(id)a4;
-- (void)keyboardController:(id)a3 beganTextEditingWithAttributes:(id)a4;
-- (void)keyboardController:(id)a3 didUpdateAttributes:(id)a4;
-- (void)keyboardController:(id)a3 didUpdateText:(id)a4;
-- (void)keyboardControllerEndedTextEditing:(id)a3;
-- (void)launchAppWithBundleID:(id)a3 completion:(id)a4;
-- (void)markAsWatchedWithMediaIdentifier:(id)a3 completion:(id)a4;
-- (void)playItem:(id)a3 completion:(id)a4;
-- (void)removeItemWithMediaIdentifier:(id)a3 completion:(id)a4;
-- (void)sendAuthenticationCode:(id)a3;
-- (void)sendButtonEvent:(id)a3;
+- (void)enableFindingSession:(BOOL)session;
+- (void)enableTVRemoteOnLockscreen:(BOOL)lockscreen;
+- (void)fetchLaunchableAppsWithCompletion:(id)completion;
+- (void)fetchUpNextInfoWithPaginationToken:(id)token completion:(id)completion;
+- (void)keyboardController:(id)controller beganTextEditingWithAttributes:(id)attributes;
+- (void)keyboardController:(id)controller didUpdateAttributes:(id)attributes;
+- (void)keyboardController:(id)controller didUpdateText:(id)text;
+- (void)keyboardControllerEndedTextEditing:(id)editing;
+- (void)launchAppWithBundleID:(id)d completion:(id)completion;
+- (void)markAsWatchedWithMediaIdentifier:(id)identifier completion:(id)completion;
+- (void)playItem:(id)item completion:(id)completion;
+- (void)removeItemWithMediaIdentifier:(id)identifier completion:(id)completion;
+- (void)sendAuthenticationCode:(id)code;
+- (void)sendButtonEvent:(id)event;
 - (void)sendReturnKey;
-- (void)sendText:(id)a3;
-- (void)sendTextInputPayload:(id)a3;
-- (void)sendTouchEvent:(id)a3;
+- (void)sendText:(id)text;
+- (void)sendTextInputPayload:(id)payload;
+- (void)sendTouchEvent:(id)event;
 @end
 
 @implementation TVRUICoreDevice
 
-- (id)_initWithDeviceIdentifier:(id)a3
+- (id)_initWithDeviceIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = TVRUICoreDevice;
   v5 = [(TVRUICoreDevice *)&v10 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277D6C4D8]) initWithDeviceIdentifier:v4];
+    v6 = [objc_alloc(MEMORY[0x277D6C4D8]) initWithDeviceIdentifier:identifierCopy];
     device = v5->_device;
     v5->_device = v6;
 
@@ -83,17 +83,17 @@
   return v5;
 }
 
-- (id)_initWithCoreDevice:(id)a3
+- (id)_initWithCoreDevice:(id)device
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = TVRUICoreDevice;
   v6 = [(TVRUICoreDevice *)&v11 init];
   p_isa = &v6->super.isa;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -106,8 +106,8 @@
 
     if ([p_isa[3] connectionState] == 2)
     {
-      v9 = [p_isa[3] keyboardController];
-      [v9 setDelegate:p_isa];
+      keyboardController = [p_isa[3] keyboardController];
+      [keyboardController setDelegate:p_isa];
     }
   }
 
@@ -117,36 +117,36 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(TVRUICoreDevice *)self identifier];
-  [v3 appendString:v4 withName:@"identifier"];
+  identifier = [(TVRUICoreDevice *)self identifier];
+  [v3 appendString:identifier withName:@"identifier"];
 
-  v5 = [(TVRUICoreDevice *)self name];
-  [v3 appendString:v5 withName:@"name"];
+  name = [(TVRUICoreDevice *)self name];
+  [v3 appendString:name withName:@"name"];
 
-  v6 = [(TVRUICoreDevice *)self model];
-  [v3 appendString:v6 withName:@"model"];
+  model = [(TVRUICoreDevice *)self model];
+  [v3 appendString:model withName:@"model"];
 
   v7 = [v3 appendBool:-[TVRUICoreDevice supportsDirectCaptionQueries](self withName:{"supportsDirectCaptionQueries"), @"supportsDirectCaptionQueries"}];
   v8 = [v3 appendBool:-[TVRUICoreDevice supportsFindMyRemote](self withName:{"supportsFindMyRemote"), @"supportsFindMyRemote"}];
   v9 = [v3 appendBool:-[TVRUICoreDevice isConnected](self withName:{"isConnected"), @"isConnected"}];
-  v10 = [(TVRUICoreDevice *)self device];
-  [v10 classification];
+  device = [(TVRUICoreDevice *)self device];
+  [device classification];
   v11 = TVRCDeviceClassificationDescription();
   [v3 appendString:v11 withName:@"classification"];
 
-  v12 = [(TVRUICoreDevice *)self device];
-  v13 = [v3 appendObject:v12 withName:@"device"];
+  device2 = [(TVRUICoreDevice *)self device];
+  v13 = [v3 appendObject:device2 withName:@"device"];
 
-  v14 = [v3 build];
+  build = [v3 build];
 
-  return v14;
+  return build;
 }
 
 - (id)debugName
 {
   v3 = objc_alloc(MEMORY[0x277CCAB68]);
-  v4 = [(TVRUICoreDevice *)self name];
-  v5 = [v3 initWithString:v4];
+  name = [(TVRUICoreDevice *)self name];
+  v5 = [v3 initWithString:name];
 
   [(TVRCDevice *)self->_device linkType];
   v6 = TVRCDeviceLinkTypeDescription();
@@ -161,17 +161,17 @@
   return v5;
 }
 
-- (BOOL)isEqualToDevice:(id)a3
+- (BOOL)isEqualToDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(TVRUICoreDevice *)self device];
-    v7 = [v5 device];
+    v5 = deviceCopy;
+    device = [(TVRUICoreDevice *)self device];
+    device2 = [v5 device];
 
-    v8 = [v6 isEqualToDevice:v7];
+    v8 = [device isEqualToDevice:device2];
   }
 
   else
@@ -182,18 +182,18 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TVRUICoreDevice *)self isEqualToDevice:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TVRUICoreDevice *)self isEqualToDevice:v5];
   }
 
   return v6;
@@ -201,21 +201,21 @@
 
 - (unint64_t)hash
 {
-  v2 = [(TVRUICoreDevice *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(TVRUICoreDevice *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (void)sendButtonEvent:(id)a3
+- (void)sendButtonEvent:(id)event
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TVRUICoreDevice *)self device];
+  eventCopy = event;
+  device = [(TVRUICoreDevice *)self device];
 
-  if (v5)
+  if (device)
   {
-    if ([v4 buttonType] == 9998)
+    if ([eventCopy buttonType] == 9998)
     {
       v6 = objc_alloc(MEMORY[0x277D6C4C8]);
       v25 = *MEMORY[0x277D6C568];
@@ -223,9 +223,9 @@
       v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
       v8 = [v6 _initWithButtonType:20 hasTapAction:1 properties:v7];
 
-      v9 = [(TVRUICoreDevice *)self device];
+      device2 = [(TVRUICoreDevice *)self device];
       v10 = [MEMORY[0x277D6C4D0] buttonEventForButton:v8 eventType:0];
-      [v9 sendButtonEvent:v10];
+      [device2 sendButtonEvent:v10];
 
       v11 = _TVRUIViewControllerLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -237,17 +237,17 @@
 
     else
     {
-      v12 = +[TVRUICoreDevice _coreButtonEventTypeForEventType:](TVRUICoreDevice, "_coreButtonEventTypeForEventType:", [v4 eventType]);
-      v13 = [(TVRUICoreDevice *)self coreButtons];
-      v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "buttonType")}];
-      v8 = [v13 objectForKeyedSubscript:v14];
+      v12 = +[TVRUICoreDevice _coreButtonEventTypeForEventType:](TVRUICoreDevice, "_coreButtonEventTypeForEventType:", [eventCopy eventType]);
+      coreButtons = [(TVRUICoreDevice *)self coreButtons];
+      v14 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(eventCopy, "buttonType")}];
+      v8 = [coreButtons objectForKeyedSubscript:v14];
 
       if (!v8)
       {
-        v15 = +[TVRUICoreDevice _coreButtonTypeForButton:](TVRUICoreDevice, "_coreButtonTypeForButton:", [v4 buttonType]);
-        if ([v4 buttonType] == 6 || objc_msgSend(v4, "buttonType") == 7)
+        v15 = +[TVRUICoreDevice _coreButtonTypeForButton:](TVRUICoreDevice, "_coreButtonTypeForButton:", [eventCopy buttonType]);
+        if ([eventCopy buttonType] == 6 || objc_msgSend(eventCopy, "buttonType") == 7)
         {
-          if ([v4 buttonType] == 6)
+          if ([eventCopy buttonType] == 6)
           {
             v16 = 10.0;
           }
@@ -273,256 +273,256 @@
         v20 = _TVRUIViewControllerLog();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
-          [(TVRUICoreDevice *)v4 sendButtonEvent:v20];
+          [(TVRUICoreDevice *)eventCopy sendButtonEvent:v20];
         }
       }
 
       v11 = [MEMORY[0x277D6C4D0] buttonEventForButton:v8 eventType:v12];
-      v21 = [(TVRUICoreDevice *)self device];
-      [v21 sendButtonEvent:v11];
+      device3 = [(TVRUICoreDevice *)self device];
+      [device3 sendButtonEvent:v11];
     }
   }
 }
 
-- (void)sendTouchEvent:(id)a3
+- (void)sendTouchEvent:(id)event
 {
-  v14 = a3;
-  v4 = [(TVRUICoreDevice *)self device];
+  eventCopy = event;
+  device = [(TVRUICoreDevice *)self device];
 
-  if (v4)
+  if (device)
   {
     v5 = objc_alloc(MEMORY[0x277D6C538]);
-    [v14 timestamp];
+    [eventCopy timestamp];
     v7 = v6;
-    v8 = [v14 fingerIndex];
-    v9 = -[TVRUICoreDevice _tvrcTouchPhaseFromUITouchPhase:](self, "_tvrcTouchPhaseFromUITouchPhase:", [v14 touchPhase]);
-    [v14 digitizerLocation];
-    v12 = [v5 _initWithTimestamp:v8 finger:v9 phase:v7 digitizerLocation:{v10, v11}];
-    v13 = [(TVRUICoreDevice *)self device];
-    [v13 sendTouchEvent:v12];
+    fingerIndex = [eventCopy fingerIndex];
+    v9 = -[TVRUICoreDevice _tvrcTouchPhaseFromUITouchPhase:](self, "_tvrcTouchPhaseFromUITouchPhase:", [eventCopy touchPhase]);
+    [eventCopy digitizerLocation];
+    v12 = [v5 _initWithTimestamp:fingerIndex finger:v9 phase:v7 digitizerLocation:{v10, v11}];
+    device2 = [(TVRUICoreDevice *)self device];
+    [device2 sendTouchEvent:v12];
   }
 }
 
-- (void)sendText:(id)a3
+- (void)sendText:(id)text
 {
-  v7 = a3;
-  v4 = [(TVRUICoreDevice *)self device];
+  textCopy = text;
+  device = [(TVRUICoreDevice *)self device];
 
-  if (v7 && v4)
+  if (textCopy && device)
   {
-    v5 = [(TVRUICoreDevice *)self device];
-    v6 = [v5 keyboardController];
-    [v6 setText:v7];
+    device2 = [(TVRUICoreDevice *)self device];
+    keyboardController = [device2 keyboardController];
+    [keyboardController setText:textCopy];
   }
 }
 
 - (void)sendReturnKey
 {
-  v3 = [(TVRUICoreDevice *)self device];
+  device = [(TVRUICoreDevice *)self device];
 
-  if (v3)
+  if (device)
   {
-    v5 = [(TVRUICoreDevice *)self device];
-    v4 = [v5 keyboardController];
-    [v4 sendReturnKey];
+    device2 = [(TVRUICoreDevice *)self device];
+    keyboardController = [device2 keyboardController];
+    [keyboardController sendReturnKey];
   }
 }
 
-- (void)sendTextInputPayload:(id)a3
+- (void)sendTextInputPayload:(id)payload
 {
-  v6 = a3;
-  v4 = [(TVRUICoreDevice *)self device];
+  payloadCopy = payload;
+  device = [(TVRUICoreDevice *)self device];
 
-  if (v4)
+  if (device)
   {
-    v5 = [(TVRUICoreDevice *)self device];
-    [v5 _sendRTIDataPayload:v6];
+    device2 = [(TVRUICoreDevice *)self device];
+    [device2 _sendRTIDataPayload:payloadCopy];
   }
 }
 
-- (void)fetchUpNextInfoWithPaginationToken:(id)a3 completion:(id)a4
+- (void)fetchUpNextInfoWithPaginationToken:(id)token completion:(id)completion
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(TVRUICoreDevice *)self device];
-  if (v7)
+  tokenCopy = token;
+  completionCopy = completion;
+  device = [(TVRUICoreDevice *)self device];
+  if (device)
   {
-    v8 = v7;
-    v9 = [(TVRUICoreDevice *)self device];
+    v8 = device;
+    device2 = [(TVRUICoreDevice *)self device];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(TVRUICoreDevice *)self device];
-      [v11 fetchUpNextInfoWithPaginationToken:v12 completion:v6];
+      device3 = [(TVRUICoreDevice *)self device];
+      [device3 fetchUpNextInfoWithPaginationToken:tokenCopy completion:completionCopy];
     }
   }
 }
 
-- (void)markAsWatchedWithMediaIdentifier:(id)a3 completion:(id)a4
+- (void)markAsWatchedWithMediaIdentifier:(id)identifier completion:(id)completion
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(TVRUICoreDevice *)self device];
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  device = [(TVRUICoreDevice *)self device];
+  if (device)
   {
-    v8 = v7;
-    v9 = [(TVRUICoreDevice *)self device];
+    v8 = device;
+    device2 = [(TVRUICoreDevice *)self device];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(TVRUICoreDevice *)self device];
-      [v11 markAsWatchedWithMediaIdentifier:v12 completion:v6];
+      device3 = [(TVRUICoreDevice *)self device];
+      [device3 markAsWatchedWithMediaIdentifier:identifierCopy completion:completionCopy];
     }
   }
 }
 
-- (void)addItemWithMediaIdentifier:(id)a3 completion:(id)a4
+- (void)addItemWithMediaIdentifier:(id)identifier completion:(id)completion
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(TVRUICoreDevice *)self device];
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  device = [(TVRUICoreDevice *)self device];
+  if (device)
   {
-    v8 = v7;
-    v9 = [(TVRUICoreDevice *)self device];
+    v8 = device;
+    device2 = [(TVRUICoreDevice *)self device];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(TVRUICoreDevice *)self device];
-      [v11 addItemWithMediaIdentifier:v12 completion:v6];
+      device3 = [(TVRUICoreDevice *)self device];
+      [device3 addItemWithMediaIdentifier:identifierCopy completion:completionCopy];
     }
   }
 }
 
-- (void)removeItemWithMediaIdentifier:(id)a3 completion:(id)a4
+- (void)removeItemWithMediaIdentifier:(id)identifier completion:(id)completion
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(TVRUICoreDevice *)self device];
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  device = [(TVRUICoreDevice *)self device];
+  if (device)
   {
-    v8 = v7;
-    v9 = [(TVRUICoreDevice *)self device];
+    v8 = device;
+    device2 = [(TVRUICoreDevice *)self device];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(TVRUICoreDevice *)self device];
-      [v11 removeItemWithMediaIdentifier:v12 completion:v6];
+      device3 = [(TVRUICoreDevice *)self device];
+      [device3 removeItemWithMediaIdentifier:identifierCopy completion:completionCopy];
     }
   }
 }
 
-- (void)playItem:(id)a3 completion:(id)a4
+- (void)playItem:(id)item completion:(id)completion
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(TVRUICoreDevice *)self device];
-  if (v7)
+  itemCopy = item;
+  completionCopy = completion;
+  device = [(TVRUICoreDevice *)self device];
+  if (device)
   {
-    v8 = v7;
-    v9 = [(TVRUICoreDevice *)self device];
+    v8 = device;
+    device2 = [(TVRUICoreDevice *)self device];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(TVRUICoreDevice *)self device];
-      [v11 playItem:v12 completion:v6];
+      device3 = [(TVRUICoreDevice *)self device];
+      [device3 playItem:itemCopy completion:completionCopy];
     }
   }
 }
 
-- (void)fetchLaunchableAppsWithCompletion:(id)a3
+- (void)fetchLaunchableAppsWithCompletion:(id)completion
 {
-  v9 = a3;
-  v4 = [(TVRUICoreDevice *)self device];
-  if (v4)
+  completionCopy = completion;
+  device = [(TVRUICoreDevice *)self device];
+  if (device)
   {
-    v5 = v4;
-    v6 = [(TVRUICoreDevice *)self device];
+    v5 = device;
+    device2 = [(TVRUICoreDevice *)self device];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(TVRUICoreDevice *)self device];
-      [v8 fetchLaunchableAppsWithCompletion:v9];
+      device3 = [(TVRUICoreDevice *)self device];
+      [device3 fetchLaunchableAppsWithCompletion:completionCopy];
     }
   }
 }
 
-- (void)launchAppWithBundleID:(id)a3 completion:(id)a4
+- (void)launchAppWithBundleID:(id)d completion:(id)completion
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(TVRUICoreDevice *)self device];
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  device = [(TVRUICoreDevice *)self device];
+  if (device)
   {
-    v8 = v7;
-    v9 = [(TVRUICoreDevice *)self device];
+    v8 = device;
+    device2 = [(TVRUICoreDevice *)self device];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(TVRUICoreDevice *)self device];
-      [v11 launchAppWithBundleID:v12 completion:v6];
+      device3 = [(TVRUICoreDevice *)self device];
+      [device3 launchAppWithBundleID:dCopy completion:completionCopy];
     }
   }
 }
 
 - (id)keyboardAttributes
 {
-  v3 = [(TVRUICoreDevice *)self device];
+  device = [(TVRUICoreDevice *)self device];
 
-  if (v3)
+  if (device)
   {
-    v4 = [(TVRUICoreDevice *)self device];
-    v5 = [v4 keyboardController];
-    v6 = [v5 attributes];
+    device2 = [(TVRUICoreDevice *)self device];
+    keyboardController = [device2 keyboardController];
+    attributes = [keyboardController attributes];
   }
 
   else
   {
-    v6 = 0;
+    attributes = 0;
   }
 
-  return v6;
+  return attributes;
 }
 
 - (id)currentText
 {
-  v3 = [(TVRUICoreDevice *)self device];
+  device = [(TVRUICoreDevice *)self device];
 
-  if (v3)
+  if (device)
   {
-    v4 = [(TVRUICoreDevice *)self device];
-    v5 = [v4 keyboardController];
-    v6 = [v5 text];
+    device2 = [(TVRUICoreDevice *)self device];
+    keyboardController = [device2 keyboardController];
+    text = [keyboardController text];
   }
 
   else
   {
-    v6 = &stru_287E6AEF8;
+    text = &stru_287E6AEF8;
   }
 
-  return v6;
+  return text;
 }
 
-- (void)sendAuthenticationCode:(id)a3
+- (void)sendAuthenticationCode:(id)code
 {
-  v8 = a3;
-  v4 = [(TVRUICoreDevice *)self device];
-  if (v4)
+  codeCopy = code;
+  device = [(TVRUICoreDevice *)self device];
+  if (device)
   {
-    v5 = v4;
-    v6 = [(TVRUICoreDevice *)self currentChallenge];
+    v5 = device;
+    currentChallenge = [(TVRUICoreDevice *)self currentChallenge];
 
-    if (v6)
+    if (currentChallenge)
     {
-      v7 = [(TVRUICoreDevice *)self currentChallenge];
-      [v7 userEnteredCodeLocally:v8];
+      currentChallenge2 = [(TVRUICoreDevice *)self currentChallenge];
+      [currentChallenge2 userEnteredCodeLocally:codeCopy];
     }
   }
 }
@@ -533,25 +533,25 @@
   v3 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(TVRUICoreDevice *)self currentChallenge];
-    v5 = [(TVRUICoreDevice *)self device];
+    currentChallenge = [(TVRUICoreDevice *)self currentChallenge];
+    device = [(TVRUICoreDevice *)self device];
     v10 = 138412546;
-    v11 = v4;
+    v11 = currentChallenge;
     v12 = 2114;
-    v13 = v5;
+    v13 = device;
     _os_log_impl(&dword_26CFEB000, v3, OS_LOG_TYPE_DEFAULT, "ui device cancelling auth challenge %@ for device %{public}@", &v10, 0x16u);
   }
 
-  v6 = [(TVRUICoreDevice *)self device];
-  if (v6)
+  device2 = [(TVRUICoreDevice *)self device];
+  if (device2)
   {
-    v7 = v6;
-    v8 = [(TVRUICoreDevice *)self currentChallenge];
+    v7 = device2;
+    currentChallenge2 = [(TVRUICoreDevice *)self currentChallenge];
 
-    if (v8)
+    if (currentChallenge2)
     {
-      v9 = [(TVRUICoreDevice *)self currentChallenge];
-      [v9 cancel];
+      currentChallenge3 = [(TVRUICoreDevice *)self currentChallenge];
+      [currentChallenge3 cancel];
 
       [(TVRUICoreDevice *)self setCurrentChallenge:0];
       [(TVRUICoreDevice *)self setConnecting:0];
@@ -559,39 +559,39 @@
   }
 }
 
-- (int64_t)_tvrcTouchPhaseFromUITouchPhase:(int64_t)a3
+- (int64_t)_tvrcTouchPhaseFromUITouchPhase:(int64_t)phase
 {
-  if (a3 > 4)
+  if (phase > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_26D0D2648[a3];
+    return qword_26D0D2648[phase];
   }
 }
 
 - (BOOL)isPaired
 {
-  v3 = [(TVRUICoreDevice *)self device];
+  device = [(TVRUICoreDevice *)self device];
 
-  if (!v3)
+  if (!device)
   {
     return 0;
   }
 
-  v4 = [(TVRUICoreDevice *)self device];
-  v5 = [v4 isPaired];
+  device2 = [(TVRUICoreDevice *)self device];
+  isPaired = [device2 isPaired];
 
-  return v5;
+  return isPaired;
 }
 
-- (void)connectWithConnectionContext:(int64_t)a3
+- (void)connectWithConnectionContext:(int64_t)context
 {
-  v5 = [(TVRUICoreDevice *)self device];
+  device = [(TVRUICoreDevice *)self device];
 
-  if (v5)
+  if (device)
   {
     v6 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -600,11 +600,11 @@
       _os_log_impl(&dword_26CFEB000, v6, OS_LOG_TYPE_DEFAULT, "UI requesting deviceConnect on core device", v9, 2u);
     }
 
-    v7 = [(TVRUICoreDevice *)self device];
-    [v7 setDelegate:self];
+    device2 = [(TVRUICoreDevice *)self device];
+    [device2 setDelegate:self];
 
-    v8 = [(TVRUICoreDevice *)self device];
-    [v8 connectWithConnectionContext:a3];
+    device3 = [(TVRUICoreDevice *)self device];
+    [device3 connectWithConnectionContext:context];
 
     [(TVRUICoreDevice *)self setConnecting:1];
   }
@@ -612,30 +612,30 @@
 
 - (void)disconnectWithTimeOut
 {
-  v3 = [(TVRUICoreDevice *)self device];
+  device = [(TVRUICoreDevice *)self device];
 
-  if (v3)
+  if (device)
   {
-    v4 = [MEMORY[0x277D6C4B8] sharedInstance];
-    v5 = [(TVRUICoreDevice *)self device];
-    [v4 logConnectionStatus:3 type:objc_msgSend(v5 reason:{"connectionType"), -1}];
+    mEMORY[0x277D6C4B8] = [MEMORY[0x277D6C4B8] sharedInstance];
+    device2 = [(TVRUICoreDevice *)self device];
+    [mEMORY[0x277D6C4B8] logConnectionStatus:3 type:objc_msgSend(device2 reason:{"connectionType"), -1}];
 
     [(TVRUICoreDevice *)self disconnectUserInitiated];
   }
 }
 
-- (void)_disconnectWithType:(unint64_t)a3
+- (void)_disconnectWithType:(unint64_t)type
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = [(TVRUICoreDevice *)self device];
-  if (v5)
+  device = [(TVRUICoreDevice *)self device];
+  if (device)
   {
     [(TVRUICoreDevice *)self cancelAuthenitcationChallenge];
-    [v5 disconnectWithType:a3];
+    [device disconnectWithType:type];
     [(TVRUICoreDevice *)self setConnecting:0];
-    [v5 setDelegate:0];
-    v6 = [v5 keyboardController];
-    [v6 setDelegate:0];
+    [device setDelegate:0];
+    keyboardController = [device keyboardController];
+    [keyboardController setDelegate:0];
 
     self->_supportsLaunchingApplications = 0;
     *&self->_supportsSiri = 0;
@@ -644,7 +644,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134217984;
-      v9 = a3;
+      typeCopy = type;
       _os_log_impl(&dword_26CFEB000, v7, OS_LOG_TYPE_DEFAULT, "UI requested disconnect with type %ld", &v8, 0xCu);
     }
   }
@@ -652,27 +652,27 @@
 
 - (BOOL)isConnected
 {
-  v3 = [(TVRUICoreDevice *)self device];
+  device = [(TVRUICoreDevice *)self device];
 
-  if (!v3)
+  if (!device)
   {
     return 0;
   }
 
-  v4 = [(TVRUICoreDevice *)self device];
-  v5 = [v4 connectionState] == 2;
+  device2 = [(TVRUICoreDevice *)self device];
+  v5 = [device2 connectionState] == 2;
 
   return v5;
 }
 
 - (BOOL)isConnecting
 {
-  v3 = [(TVRUICoreDevice *)self device];
+  device = [(TVRUICoreDevice *)self device];
 
-  if (v3)
+  if (device)
   {
-    v4 = [(TVRUICoreDevice *)self device];
-    v5 = [v4 connectionState] == 1 || self->_connecting;
+    device2 = [(TVRUICoreDevice *)self device];
+    v5 = [device2 connectionState] == 1 || self->_connecting;
   }
 
   else
@@ -683,31 +683,31 @@
   return v5;
 }
 
-- (void)device:(id)a3 encounteredAuthenticationChallenge:(id)a4
+- (void)device:(id)device encounteredAuthenticationChallenge:(id)challenge
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  challengeCopy = challenge;
   v6 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 67109376;
-    *v26 = [v5 challengeAttributes] == 1;
+    *v26 = [challengeCopy challengeAttributes] == 1;
     *&v26[4] = 1024;
-    *&v26[6] = [v5 challengeAttributes] == 2;
+    *&v26[6] = [challengeCopy challengeAttributes] == 2;
     _os_log_impl(&dword_26CFEB000, v6, OS_LOG_TYPE_DEFAULT, "tvrui deviceEncounteredAuthChallenge pin=%d text=%d", &v25, 0xEu);
   }
 
-  if ([v5 throttleSeconds] < 0)
+  if ([challengeCopy throttleSeconds] < 0)
   {
-    [(TVRUICoreDevice *)self setCurrentChallenge:v5];
-    v15 = [(TVRUICoreDevice *)self delegate];
-    if (!v15)
+    [(TVRUICoreDevice *)self setCurrentChallenge:challengeCopy];
+    delegate = [(TVRUICoreDevice *)self delegate];
+    if (!delegate)
     {
       goto LABEL_17;
     }
 
-    v16 = v15;
-    v17 = [(TVRUICoreDevice *)self delegate];
+    v16 = delegate;
+    delegate2 = [(TVRUICoreDevice *)self delegate];
     v18 = objc_opt_respondsToSelector();
 
     if ((v18 & 1) == 0)
@@ -715,28 +715,28 @@
       goto LABEL_17;
     }
 
-    if ([v5 challengeAttributes] == 1)
+    if ([challengeCopy challengeAttributes] == 1)
     {
-      v19 = [(TVRUICoreDevice *)self delegate];
-      v14 = v19;
-      v20 = self;
+      delegate3 = [(TVRUICoreDevice *)self delegate];
+      delegate4 = delegate3;
+      selfCopy2 = self;
       v21 = 0;
     }
 
     else
     {
-      if ([v5 challengeAttributes] != 2)
+      if ([challengeCopy challengeAttributes] != 2)
       {
-        if ([v5 challengeType] == 1)
+        if ([challengeCopy challengeType] == 1)
         {
-          v22 = [v5 codeToEnterOnDevice];
-          v23 = [v22 length];
+          codeToEnterOnDevice = [challengeCopy codeToEnterOnDevice];
+          v23 = [codeToEnterOnDevice length];
 
           if (v23 == 4)
           {
-            v14 = [(TVRUICoreDevice *)self delegate];
-            v24 = [v5 codeToEnterOnDevice];
-            [v14 deviceDidEncounterAuthenticationChallenge:self passwordType:2 passcode:v24];
+            delegate4 = [(TVRUICoreDevice *)self delegate];
+            codeToEnterOnDevice2 = [challengeCopy codeToEnterOnDevice];
+            [delegate4 deviceDidEncounterAuthenticationChallenge:self passwordType:2 passcode:codeToEnterOnDevice2];
 
             goto LABEL_16;
           }
@@ -745,39 +745,39 @@
         goto LABEL_17;
       }
 
-      v19 = [(TVRUICoreDevice *)self delegate];
-      v14 = v19;
-      v20 = self;
+      delegate3 = [(TVRUICoreDevice *)self delegate];
+      delegate4 = delegate3;
+      selfCopy2 = self;
       v21 = 1;
     }
 
-    [v19 deviceDidEncounterAuthenticationChallenge:v20 passwordType:v21 passcode:0];
+    [delegate3 deviceDidEncounterAuthenticationChallenge:selfCopy2 passwordType:v21 passcode:0];
     goto LABEL_16;
   }
 
   v7 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 throttleSeconds];
-    v9 = [(TVRUICoreDevice *)self delegate];
+    throttleSeconds = [challengeCopy throttleSeconds];
+    delegate5 = [(TVRUICoreDevice *)self delegate];
     v25 = 134218242;
-    *v26 = v8;
+    *v26 = throttleSeconds;
     *&v26[8] = 2112;
-    v27 = v9;
+    v27 = delegate5;
     _os_log_impl(&dword_26CFEB000, v7, OS_LOG_TYPE_DEFAULT, "tvrui encountered a throttle challenge for %ld seconds. sending to delegate %@", &v25, 0x16u);
   }
 
-  v10 = [(TVRUICoreDevice *)self delegate];
-  if (v10)
+  delegate6 = [(TVRUICoreDevice *)self delegate];
+  if (delegate6)
   {
-    v11 = v10;
-    v12 = [(TVRUICoreDevice *)self delegate];
+    v11 = delegate6;
+    delegate7 = [(TVRUICoreDevice *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(TVRUICoreDevice *)self delegate];
-      [v14 device:self didEncounterAuthenticationThrottle:{objc_msgSend(v5, "throttleSeconds")}];
+      delegate4 = [(TVRUICoreDevice *)self delegate];
+      [delegate4 device:self didEncounterAuthenticationThrottle:{objc_msgSend(challengeCopy, "throttleSeconds")}];
 LABEL_16:
     }
   }
@@ -785,159 +785,159 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)deviceBeganConnecting:(id)a3
+- (void)deviceBeganConnecting:(id)connecting
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectingCopy = connecting;
   v5 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = v4;
+    v12 = connectingCopy;
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "deviceBeganConnecting %{public}@", &v11, 0xCu);
   }
 
   [(TVRUICoreDevice *)self setConnecting:1];
-  v6 = [(TVRUICoreDevice *)self delegate];
-  if (v6)
+  delegate = [(TVRUICoreDevice *)self delegate];
+  if (delegate)
   {
-    v7 = v6;
-    v8 = [(TVRUICoreDevice *)self delegate];
+    v7 = delegate;
+    delegate2 = [(TVRUICoreDevice *)self delegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(TVRUICoreDevice *)self delegate];
-      [v10 deviceBeganConnecting:self];
+      delegate3 = [(TVRUICoreDevice *)self delegate];
+      [delegate3 deviceBeganConnecting:self];
     }
   }
 }
 
-- (void)deviceConnected:(id)a3
+- (void)deviceConnected:(id)connected
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectedCopy = connected;
   v5 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138543362;
-    v20 = v4;
+    v20 = connectedCopy;
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "deviceConnected %{public}@", &v19, 0xCu);
   }
 
-  [(TVRUICoreDevice *)self setDevice:v4];
-  v6 = [(TVRUICoreDevice *)self device];
-  v7 = [v6 keyboardController];
-  [v7 setDelegate:self];
+  [(TVRUICoreDevice *)self setDevice:connectedCopy];
+  device = [(TVRUICoreDevice *)self device];
+  keyboardController = [device keyboardController];
+  [keyboardController setDelegate:self];
 
-  v8 = [(TVRUICoreDevice *)self currentChallenge];
+  currentChallenge = [(TVRUICoreDevice *)self currentChallenge];
 
-  if (v8)
+  if (currentChallenge)
   {
     [(TVRUICoreDevice *)self setCurrentChallenge:0];
   }
 
   v9 = MEMORY[0x277CBEB38];
-  v10 = [v4 supportedButtons];
-  v11 = [v9 dictionaryWithCapacity:{objc_msgSend(v10, "count")}];
+  supportedButtons = [connectedCopy supportedButtons];
+  v11 = [v9 dictionaryWithCapacity:{objc_msgSend(supportedButtons, "count")}];
   [(TVRUICoreDevice *)self setCoreButtons:v11];
 
-  v12 = [v4 supportedButtons];
-  [(TVRUICoreDevice *)self _processButtonsForFeatureAdditions:v12];
+  supportedButtons2 = [connectedCopy supportedButtons];
+  [(TVRUICoreDevice *)self _processButtonsForFeatureAdditions:supportedButtons2];
 
-  v13 = [(TVRUICoreDevice *)self delegate];
-  if (v13)
+  delegate = [(TVRUICoreDevice *)self delegate];
+  if (delegate)
   {
-    v14 = v13;
-    v15 = [(TVRUICoreDevice *)self delegate];
+    v14 = delegate;
+    delegate2 = [(TVRUICoreDevice *)self delegate];
     v16 = objc_opt_respondsToSelector();
 
     if (v16)
     {
-      v17 = [(TVRUICoreDevice *)self delegate];
-      [v17 deviceDidConnect:self];
+      delegate3 = [(TVRUICoreDevice *)self delegate];
+      [delegate3 deviceDidConnect:self];
     }
   }
 
   [(TVRUICoreDevice *)self setConnecting:0];
-  v18 = [MEMORY[0x277D6C4B8] sharedInstance];
-  [v18 logConnectionStatus:2 type:objc_msgSend(v4 reason:{"connectionType"), -1}];
+  mEMORY[0x277D6C4B8] = [MEMORY[0x277D6C4B8] sharedInstance];
+  [mEMORY[0x277D6C4B8] logConnectionStatus:2 type:objc_msgSend(connectedCopy reason:{"connectionType"), -1}];
 }
 
-- (void)device:(id)a3 disconnectedForReason:(int64_t)a4 error:(id)a5
+- (void)device:(id)device disconnectedForReason:(int64_t)reason error:(id)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  deviceCopy = device;
+  errorCopy = error;
   v10 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(TVRUICoreDevice *)self delegate];
+    delegate = [(TVRUICoreDevice *)self delegate];
     v21 = 138413058;
-    v22 = v8;
+    v22 = deviceCopy;
     v23 = 2048;
-    v24 = a4;
+    reasonCopy = reason;
     v25 = 2112;
-    v26 = v9;
+    v26 = errorCopy;
     v27 = 2112;
-    v28 = v11;
+    v28 = delegate;
     _os_log_impl(&dword_26CFEB000, v10, OS_LOG_TYPE_DEFAULT, "UIDevice: deviceDisconnected device=%@, reason=%ld, error=%@. Sending to delegate %@", &v21, 0x2Au);
   }
 
-  v12 = [(TVRUICoreDevice *)self delegate];
-  if (v12)
+  delegate2 = [(TVRUICoreDevice *)self delegate];
+  if (delegate2)
   {
-    v13 = v12;
-    v14 = [(TVRUICoreDevice *)self delegate];
+    v13 = delegate2;
+    delegate3 = [(TVRUICoreDevice *)self delegate];
     v15 = objc_opt_respondsToSelector();
 
     if (v15)
     {
-      v16 = [(TVRUICoreDevice *)self delegate];
-      [v16 deviceDidDisconnect:self reason:-[TVRUICoreDevice _disconnectReasonFromCoreReason:](self error:{"_disconnectReasonFromCoreReason:", a4), v9}];
+      delegate4 = [(TVRUICoreDevice *)self delegate];
+      [delegate4 deviceDidDisconnect:self reason:-[TVRUICoreDevice _disconnectReasonFromCoreReason:](self error:{"_disconnectReasonFromCoreReason:", reason), errorCopy}];
     }
   }
 
   [(TVRUICoreDevice *)self setConnecting:0];
-  if (a4 && v9)
+  if (reason && errorCopy)
   {
-    v17 = [MEMORY[0x277D6C4B8] sharedInstance];
-    [v17 logConnectionStatus:1 type:objc_msgSend(v8 reason:{"connectionType"), a4}];
+    mEMORY[0x277D6C4B8] = [MEMORY[0x277D6C4B8] sharedInstance];
+    [mEMORY[0x277D6C4B8] logConnectionStatus:1 type:objc_msgSend(deviceCopy reason:{"connectionType"), reason}];
   }
 
-  v18 = [(TVRUICoreDevice *)self device];
-  [v18 setDelegate:0];
+  device = [(TVRUICoreDevice *)self device];
+  [device setDelegate:0];
 
-  v19 = [(TVRUICoreDevice *)self device];
-  v20 = [v19 keyboardController];
-  [v20 setDelegate:0];
+  device2 = [(TVRUICoreDevice *)self device];
+  keyboardController = [device2 keyboardController];
+  [keyboardController setDelegate:0];
 }
 
-- (void)device:(id)a3 removedSupportedButtons:(id)a4 added:(id)a5
+- (void)device:(id)device removedSupportedButtons:(id)buttons added:(id)added
 {
   v54 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  deviceCopy = device;
+  buttonsCopy = buttons;
+  addedCopy = added;
   v10 = _TVRUIButtonLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v51 = v8;
+    v51 = buttonsCopy;
     v52 = 2114;
-    v53 = v9;
+    v53 = addedCopy;
     _os_log_impl(&dword_26CFEB000, v10, OS_LOG_TYPE_DEFAULT, "Removed %{public}@ added %{public}@", buf, 0x16u);
   }
 
-  v32 = v9;
+  v32 = addedCopy;
 
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v34 = v7;
-  v11 = [v7 supportedButtons];
-  v12 = [v11 countByEnumeratingWithState:&v43 objects:v49 count:16];
+  v34 = deviceCopy;
+  supportedButtons = [deviceCopy supportedButtons];
+  v12 = [supportedButtons countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v12)
   {
     v13 = v12;
@@ -948,7 +948,7 @@ LABEL_17:
       {
         if (*v44 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(supportedButtons);
         }
 
         v16 = *(*(&v43 + 1) + 8 * i);
@@ -961,7 +961,7 @@ LABEL_17:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v43 objects:v49 count:16];
+      v13 = [supportedButtons countByEnumeratingWithState:&v43 objects:v49 count:16];
     }
 
     while (v13);
@@ -971,7 +971,7 @@ LABEL_17:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v18 = v8;
+  v18 = buttonsCopy;
   v19 = [v18 countByEnumeratingWithState:&v39 objects:v48 count:16];
   if (v19)
   {
@@ -1041,18 +1041,18 @@ LABEL_17:
   [(TVRUICoreDevice *)self _processButtonsForFeatureAdditions:v25];
 }
 
-- (void)_processButtonsForFeatureAdditions:(id)a3
+- (void)_processButtonsForFeatureAdditions:(id)additions
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  additionsCopy = additions;
   v41 = [MEMORY[0x277CBEB18] arrayWithCapacity:3];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v5 = v4;
-  v6 = [v5 countByEnumeratingWithState:&v43 objects:v47 count:16];
-  obj = v5;
+  delegate11 = additionsCopy;
+  v6 = [delegate11 countByEnumeratingWithState:&v43 objects:v47 count:16];
+  obj = delegate11;
   if (!v6)
   {
     goto LABEL_48;
@@ -1136,9 +1136,9 @@ LABEL_17:
         self->_supportsPaging = 1;
       }
 
-      v14 = [(TVRUICoreDevice *)self coreButtons];
+      coreButtons = [(TVRUICoreDevice *)self coreButtons];
       v15 = [MEMORY[0x277CCABB0] numberWithInteger:v12];
-      [v14 setObject:v11 forKeyedSubscript:v15];
+      [coreButtons setObject:v11 forKeyedSubscript:v15];
     }
 
     v7 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
@@ -1148,17 +1148,17 @@ LABEL_17:
 
   if (v39)
   {
-    v16 = [(TVRUICoreDevice *)self delegate];
-    if (v16)
+    delegate = [(TVRUICoreDevice *)self delegate];
+    if (delegate)
     {
-      v17 = v16;
-      v18 = [(TVRUICoreDevice *)self delegate];
+      v17 = delegate;
+      delegate2 = [(TVRUICoreDevice *)self delegate];
       v19 = objc_opt_respondsToSelector();
 
       if (v19)
       {
-        v20 = [(TVRUICoreDevice *)self delegate];
-        [v20 device:self supportsSiri:self->_supportsSiri volumeControl:self->_supportsVolumeControl];
+        delegate3 = [(TVRUICoreDevice *)self delegate];
+        [delegate3 device:self supportsSiri:self->_supportsSiri volumeControl:self->_supportsVolumeControl];
 LABEL_39:
       }
     }
@@ -1166,17 +1166,17 @@ LABEL_39:
 
   else if (v8)
   {
-    v21 = [(TVRUICoreDevice *)self delegate];
-    if (v21)
+    delegate4 = [(TVRUICoreDevice *)self delegate];
+    if (delegate4)
     {
-      v22 = v21;
-      v23 = [(TVRUICoreDevice *)self delegate];
+      v22 = delegate4;
+      delegate5 = [(TVRUICoreDevice *)self delegate];
       v24 = objc_opt_respondsToSelector();
 
       if (v24)
       {
-        v20 = [(TVRUICoreDevice *)self delegate];
-        [v20 device:self supportsVolumeControl:1];
+        delegate3 = [(TVRUICoreDevice *)self delegate];
+        [delegate3 device:self supportsVolumeControl:1];
         goto LABEL_39;
       }
     }
@@ -1184,66 +1184,66 @@ LABEL_39:
 
   if ((v40 & 0x100000000) != 0)
   {
-    v25 = [(TVRUICoreDevice *)self delegate];
-    if (v25)
+    delegate6 = [(TVRUICoreDevice *)self delegate];
+    if (delegate6)
     {
-      v26 = v25;
-      v27 = [(TVRUICoreDevice *)self delegate];
+      v26 = delegate6;
+      delegate7 = [(TVRUICoreDevice *)self delegate];
       v28 = objc_opt_respondsToSelector();
 
       if (v28)
       {
-        v29 = [(TVRUICoreDevice *)self delegate];
-        [v29 device:self needsMediaControls:v41];
+        delegate8 = [(TVRUICoreDevice *)self delegate];
+        [delegate8 device:self needsMediaControls:v41];
       }
     }
   }
 
   if (v40)
   {
-    v30 = [(TVRUICoreDevice *)self delegate];
-    if (v30)
+    delegate9 = [(TVRUICoreDevice *)self delegate];
+    if (delegate9)
     {
-      v31 = v30;
-      v32 = [(TVRUICoreDevice *)self delegate];
+      v31 = delegate9;
+      delegate10 = [(TVRUICoreDevice *)self delegate];
       v33 = objc_opt_respondsToSelector();
 
       if (v33)
       {
-        v5 = [(TVRUICoreDevice *)self delegate];
-        [v5 device:self hasCaptionsEnabled:self->_captionsEnabled];
+        delegate11 = [(TVRUICoreDevice *)self delegate];
+        [delegate11 device:self hasCaptionsEnabled:self->_captionsEnabled];
 LABEL_48:
       }
     }
   }
 
-  v34 = [(TVRUICoreDevice *)self delegate];
-  if (v34)
+  delegate12 = [(TVRUICoreDevice *)self delegate];
+  if (delegate12)
   {
-    v35 = v34;
-    v36 = [(TVRUICoreDevice *)self delegate];
+    v35 = delegate12;
+    delegate13 = [(TVRUICoreDevice *)self delegate];
     v37 = objc_opt_respondsToSelector();
 
     if (v37)
     {
-      v38 = [(TVRUICoreDevice *)self delegate];
-      [v38 device:self hasGuideButtonEnabled:self->_supportsGuide];
+      delegate14 = [(TVRUICoreDevice *)self delegate];
+      [delegate14 device:self hasGuideButtonEnabled:self->_supportsGuide];
     }
   }
 }
 
-- (void)_processButtonsForFeatureRemovals:(id)a3
+- (void)_processButtonsForFeatureRemovals:(id)removals
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  removalsCopy = removals;
   v32 = [MEMORY[0x277CBEB18] arrayWithCapacity:3];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v5 = v4;
+  v5 = removalsCopy;
   v6 = [v5 countByEnumeratingWithState:&v33 objects:v37 count:16];
-  v7 = v5;
+  delegate6 = v5;
   if (!v6)
   {
     goto LABEL_22;
@@ -1284,9 +1284,9 @@ LABEL_48:
         self->_supportsGuide = 0;
       }
 
-      v15 = [(TVRUICoreDevice *)self coreButtons];
+      coreButtons = [(TVRUICoreDevice *)self coreButtons];
       v16 = [MEMORY[0x277CCABB0] numberWithInteger:v13];
-      [v15 removeObjectForKey:v16];
+      [coreButtons removeObjectForKey:v16];
     }
 
     v8 = [v5 countByEnumeratingWithState:&v33 objects:v37 count:16];
@@ -1296,123 +1296,123 @@ LABEL_48:
 
   if (v9)
   {
-    v17 = [(TVRUICoreDevice *)self delegate];
-    if (v17)
+    delegate = [(TVRUICoreDevice *)self delegate];
+    if (delegate)
     {
-      v18 = v17;
-      v19 = [(TVRUICoreDevice *)self delegate];
+      v18 = delegate;
+      delegate2 = [(TVRUICoreDevice *)self delegate];
       v20 = objc_opt_respondsToSelector();
 
       if (v20)
       {
-        v21 = [(TVRUICoreDevice *)self delegate];
-        [v21 device:self hidesMediaControls:v32];
+        delegate3 = [(TVRUICoreDevice *)self delegate];
+        [delegate3 device:self hidesMediaControls:v32];
       }
     }
   }
 
   if (v31)
   {
-    v22 = [(TVRUICoreDevice *)self delegate];
-    if (v22)
+    delegate4 = [(TVRUICoreDevice *)self delegate];
+    if (delegate4)
     {
-      v23 = v22;
-      v24 = [(TVRUICoreDevice *)self delegate];
+      v23 = delegate4;
+      delegate5 = [(TVRUICoreDevice *)self delegate];
       v25 = objc_opt_respondsToSelector();
 
       if (v25)
       {
-        v7 = [(TVRUICoreDevice *)self delegate];
-        [v7 device:self supportsVolumeControl:0];
+        delegate6 = [(TVRUICoreDevice *)self delegate];
+        [delegate6 device:self supportsVolumeControl:0];
 LABEL_22:
       }
     }
   }
 
-  v26 = [(TVRUICoreDevice *)self delegate];
-  if (v26)
+  delegate7 = [(TVRUICoreDevice *)self delegate];
+  if (delegate7)
   {
-    v27 = v26;
-    v28 = [(TVRUICoreDevice *)self delegate];
+    v27 = delegate7;
+    delegate8 = [(TVRUICoreDevice *)self delegate];
     v29 = objc_opt_respondsToSelector();
 
     if (v29)
     {
-      v30 = [(TVRUICoreDevice *)self delegate];
-      [v30 device:self hasGuideButtonEnabled:self->_supportsGuide];
+      delegate9 = [(TVRUICoreDevice *)self delegate];
+      [delegate9 device:self hasGuideButtonEnabled:self->_supportsGuide];
     }
   }
 }
 
-- (void)device:(id)a3 supportsFindMyRemote:(BOOL)a4
+- (void)device:(id)device supportsFindMyRemote:(BOOL)remote
 {
-  v4 = a4;
+  remoteCopy = remote;
   v13 = *MEMORY[0x277D85DE8];
   v6 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v12[0] = 67109120;
-    v12[1] = v4;
+    v12[1] = remoteCopy;
     _os_log_impl(&dword_26CFEB000, v6, OS_LOG_TYPE_DEFAULT, "Find My Remote state enabled: %d", v12, 8u);
   }
 
-  v7 = [(TVRUICoreDevice *)self delegate];
-  if (v7)
+  delegate = [(TVRUICoreDevice *)self delegate];
+  if (delegate)
   {
-    v8 = v7;
-    v9 = [(TVRUICoreDevice *)self delegate];
+    v8 = delegate;
+    delegate2 = [(TVRUICoreDevice *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(TVRUICoreDevice *)self delegate];
-      [v11 device:self supportsFindMyRemote:v4];
+      delegate3 = [(TVRUICoreDevice *)self delegate];
+      [delegate3 device:self supportsFindMyRemote:remoteCopy];
     }
   }
 }
 
-- (void)device:(id)a3 updatedNowPlayingInfo:(id)a4
+- (void)device:(id)device updatedNowPlayingInfo:(id)info
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  infoCopy = info;
   v6 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v5;
+    v13 = infoCopy;
     _os_log_impl(&dword_26CFEB000, v6, OS_LOG_TYPE_DEFAULT, "Now playing info changed: %@", &v12, 0xCu);
   }
 
-  v7 = [(TVRUICoreDevice *)self delegate];
-  if (v7)
+  delegate = [(TVRUICoreDevice *)self delegate];
+  if (delegate)
   {
-    v8 = v7;
-    v9 = [(TVRUICoreDevice *)self delegate];
+    v8 = delegate;
+    delegate2 = [(TVRUICoreDevice *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(TVRUICoreDevice *)self delegate];
-      [v11 device:self didUpdateNowPlayingInfo:v5];
+      delegate3 = [(TVRUICoreDevice *)self delegate];
+      [delegate3 device:self didUpdateNowPlayingInfo:infoCopy];
     }
   }
 }
 
-- (void)device:(id)a3 updatedSiriRemoteFindingSessionState:(int64_t)a4
+- (void)device:(id)device updatedSiriRemoteFindingSessionState:(int64_t)state
 {
   v17 = *MEMORY[0x277D85DE8];
   v6 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    if (a4 < 7 && ((0x77u >> a4) & 1) != 0)
+    if (state < 7 && ((0x77u >> state) & 1) != 0)
     {
-      v7 = off_279D88698[a4];
+      v7 = off_279D88698[state];
     }
 
     else
     {
       v8 = MEMORY[0x277CCACA8];
-      v9 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+      v9 = [MEMORY[0x277CCABB0] numberWithInteger:state];
       v7 = [v8 stringWithFormat:@"Unknown %@", v9];
     }
 
@@ -1421,152 +1421,152 @@ LABEL_22:
     _os_log_impl(&dword_26CFEB000, v6, OS_LOG_TYPE_DEFAULT, "Siri Remote finding session state changed to: %{public}@", buf, 0xCu);
   }
 
-  v10 = [(TVRUICoreDevice *)self delegate];
-  if (v10)
+  delegate = [(TVRUICoreDevice *)self delegate];
+  if (delegate)
   {
-    v11 = v10;
-    v12 = [(TVRUICoreDevice *)self delegate];
+    v11 = delegate;
+    delegate2 = [(TVRUICoreDevice *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
     if (v13)
     {
-      v14 = [(TVRUICoreDevice *)self delegate];
-      [v14 device:self didUpdateSiriRemoteFindingSessionState:a4];
+      delegate3 = [(TVRUICoreDevice *)self delegate];
+      [delegate3 device:self didUpdateSiriRemoteFindingSessionState:state];
     }
   }
 }
 
-- (void)device:(id)a3 updatedAttentionState:(int64_t)a4
+- (void)device:(id)device updatedAttentionState:(int64_t)state
 {
   v9 = *MEMORY[0x277D85DE8];
   v5 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if ((a4 - 1) >= 3)
+    if ((state - 1) >= 3)
     {
-      v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %ld)", a4];
+      state = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %ld)", state];
     }
 
     else
     {
-      v6 = off_279D886D0[a4 - 1];
+      state = off_279D886D0[state - 1];
     }
 
     *buf = 138543362;
-    v8 = v6;
+    v8 = state;
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "Attention state was updated to: %{public}@", buf, 0xCu);
   }
 }
 
-- (void)deviceNameChanged:(id)a3
+- (void)deviceNameChanged:(id)changed
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = _TVRUIViewControllerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [changedCopy name];
     v10 = 138543362;
-    v11 = v6;
+    v11 = name;
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "Device name was changed: %{public}@", &v10, 0xCu);
   }
 
-  v7 = [(TVRUICoreDevice *)self delegate];
+  delegate = [(TVRUICoreDevice *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(TVRUICoreDevice *)self delegate];
-    [v9 deviceInfoUpdated:self];
+    delegate2 = [(TVRUICoreDevice *)self delegate];
+    [delegate2 deviceInfoUpdated:self];
   }
 }
 
-- (BOOL)_isVolumeButton:(id)a3
+- (BOOL)_isVolumeButton:(id)button
 {
-  v3 = a3;
-  v4 = [v3 buttonType] == 10 || objc_msgSend(v3, "buttonType") == 11;
+  buttonCopy = button;
+  v4 = [buttonCopy buttonType] == 10 || objc_msgSend(buttonCopy, "buttonType") == 11;
 
   return v4;
 }
 
-- (BOOL)_isVolumeControlButton:(id)a3
+- (BOOL)_isVolumeControlButton:(id)button
 {
-  v3 = a3;
-  v4 = [v3 buttonType] == 10 || objc_msgSend(v3, "buttonType") == 11 || objc_msgSend(v3, "buttonType") == 29;
+  buttonCopy = button;
+  v4 = [buttonCopy buttonType] == 10 || objc_msgSend(buttonCopy, "buttonType") == 11 || objc_msgSend(buttonCopy, "buttonType") == 29;
 
   return v4;
 }
 
-- (void)keyboardController:(id)a3 beganTextEditingWithAttributes:(id)a4
+- (void)keyboardController:(id)controller beganTextEditingWithAttributes:(id)attributes
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  attributesCopy = attributes;
   v6 = _TVRUIKeyboardLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(TVRUICoreDevice *)self identifier];
+    identifier = [(TVRUICoreDevice *)self identifier];
     v10 = 138412290;
-    v11 = v7;
+    v11 = identifier;
     _os_log_impl(&dword_26CFEB000, v6, OS_LOG_TYPE_DEFAULT, "Started text editing for %@", &v10, 0xCu);
   }
 
-  v8 = [(TVRUICoreDevice *)self delegate];
+  delegate = [(TVRUICoreDevice *)self delegate];
 
-  if (v8)
+  if (delegate)
   {
-    v9 = [(TVRUICoreDevice *)self delegate];
-    [v9 device:self beganTextEditingWithAttributes:v5 initialText:0];
+    delegate2 = [(TVRUICoreDevice *)self delegate];
+    [delegate2 device:self beganTextEditingWithAttributes:attributesCopy initialText:0];
   }
 }
 
-- (void)keyboardControllerEndedTextEditing:(id)a3
+- (void)keyboardControllerEndedTextEditing:(id)editing
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  editingCopy = editing;
   v5 = _TVRUIKeyboardLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(TVRUICoreDevice *)self identifier];
+    identifier = [(TVRUICoreDevice *)self identifier];
     v11 = 138412290;
-    v12 = v6;
+    v12 = identifier;
     _os_log_impl(&dword_26CFEB000, v5, OS_LOG_TYPE_DEFAULT, "Ended text editing for %@", &v11, 0xCu);
   }
 
-  v7 = [(TVRUICoreDevice *)self delegate];
+  delegate = [(TVRUICoreDevice *)self delegate];
 
-  if (v7)
+  if (delegate)
   {
-    v8 = [v4 text];
-    v9 = [(TVRUICoreDevice *)self delegate];
-    v10 = [v4 attributes];
-    [v9 device:self endedTextEditingWithAttributes:v10 endingText:v8];
+    text = [editingCopy text];
+    delegate2 = [(TVRUICoreDevice *)self delegate];
+    attributes = [editingCopy attributes];
+    [delegate2 device:self endedTextEditingWithAttributes:attributes endingText:text];
   }
 }
 
-- (void)keyboardController:(id)a3 didUpdateText:(id)a4
+- (void)keyboardController:(id)controller didUpdateText:(id)text
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  textCopy = text;
   v6 = _TVRUIKeyboardLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = textCopy;
     _os_log_impl(&dword_26CFEB000, v6, OS_LOG_TYPE_DEFAULT, "Text updated with value %@", &v9, 0xCu);
   }
 
-  v7 = [(TVRUICoreDevice *)self delegate];
+  delegate = [(TVRUICoreDevice *)self delegate];
 
-  if (v7)
+  if (delegate)
   {
-    v8 = [(TVRUICoreDevice *)self delegate];
-    [v8 device:self didUpdateText:v5];
+    delegate2 = [(TVRUICoreDevice *)self delegate];
+    [delegate2 device:self didUpdateText:textCopy];
   }
 }
 
-- (void)keyboardController:(id)a3 didUpdateAttributes:(id)a4
+- (void)keyboardController:(id)controller didUpdateAttributes:(id)attributes
 {
-  v5 = a4;
+  attributesCopy = attributes;
   v6 = _TVRUIKeyboardLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1574,21 +1574,21 @@ LABEL_22:
     _os_log_impl(&dword_26CFEB000, v6, OS_LOG_TYPE_DEFAULT, "Keyboard attributes attributed", v9, 2u);
   }
 
-  v7 = [(TVRUICoreDevice *)self delegate];
+  delegate = [(TVRUICoreDevice *)self delegate];
 
-  if (v7)
+  if (delegate)
   {
-    v8 = [(TVRUICoreDevice *)self delegate];
-    [v8 device:self didUpdateAttributes:v5];
+    delegate2 = [(TVRUICoreDevice *)self delegate];
+    [delegate2 device:self didUpdateAttributes:attributesCopy];
   }
 }
 
 - (id)deviceContextInformation
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = [(TVRUICoreDevice *)self device];
+  device = [(TVRUICoreDevice *)self device];
 
-  if (v3 && (-[TVRUICoreDevice device](self, "device"), v4 = objc_claimAutoreleasedReturnValue(), [v4 connectionType], TVRCDeviceConnectionTypeDescription(), v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
+  if (device && (-[TVRUICoreDevice device](self, "device"), v4 = objc_claimAutoreleasedReturnValue(), [v4 connectionType], TVRCDeviceConnectionTypeDescription(), v5 = objc_claimAutoreleasedReturnValue(), v4, v5))
   {
     v8 = @"connectionType";
     v9[0] = v5;
@@ -1605,26 +1605,26 @@ LABEL_22:
 
 - (BOOL)supportsModernConnections
 {
-  v2 = [(TVRUICoreDevice *)self deviceContextInformation];
-  v3 = [v2 objectForKeyedSubscript:@"connectionType"];
+  deviceContextInformation = [(TVRUICoreDevice *)self deviceContextInformation];
+  v3 = [deviceContextInformation objectForKeyedSubscript:@"connectionType"];
   v4 = [v3 isEqualToString:@"Rapport"];
 
   return v4;
 }
 
-- (void)enableTVRemoteOnLockscreen:(BOOL)a3
+- (void)enableTVRemoteOnLockscreen:(BOOL)lockscreen
 {
-  v3 = a3;
+  lockscreenCopy = lockscreen;
   v11 = *MEMORY[0x277D85DE8];
-  v5 = [(TVRUICoreDevice *)self device];
+  device = [(TVRUICoreDevice *)self device];
 
-  if (v5)
+  if (device)
   {
     v6 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = @"stop showing";
-      if (v3)
+      if (lockscreenCopy)
       {
         v7 = @"show";
       }
@@ -1634,24 +1634,24 @@ LABEL_22:
       _os_log_impl(&dword_26CFEB000, v6, OS_LOG_TYPE_DEFAULT, "UI requesting to %@ TVRemote app on lock screen", &v9, 0xCu);
     }
 
-    v8 = [(TVRUICoreDevice *)self device];
-    [v8 enableTVRemoteOnLockscreen:v3];
+    device2 = [(TVRUICoreDevice *)self device];
+    [device2 enableTVRemoteOnLockscreen:lockscreenCopy];
   }
 }
 
-- (void)enableFindingSession:(BOOL)a3
+- (void)enableFindingSession:(BOOL)session
 {
-  v3 = a3;
+  sessionCopy = session;
   v11 = *MEMORY[0x277D85DE8];
-  v5 = [(TVRUICoreDevice *)self device];
+  device = [(TVRUICoreDevice *)self device];
 
-  if (v5)
+  if (device)
   {
     v6 = _TVRUIViewControllerLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = @"disable";
-      if (v3)
+      if (sessionCopy)
       {
         v7 = @"enable";
       }
@@ -1661,8 +1661,8 @@ LABEL_22:
       _os_log_impl(&dword_26CFEB000, v6, OS_LOG_TYPE_DEFAULT, "UI requesting to %@ finding session", &v9, 0xCu);
     }
 
-    v8 = [(TVRUICoreDevice *)self device];
-    [v8 enableFindingSession:v3];
+    device2 = [(TVRUICoreDevice *)self device];
+    [device2 enableFindingSession:sessionCopy];
   }
 }
 

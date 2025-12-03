@@ -1,6 +1,6 @@
 @interface NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface
 + (id)interface;
-- (NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface)initWithProtocol:(id)a3;
+- (NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface)initWithProtocol:(id)protocol;
 @end
 
 @implementation NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface
@@ -8,20 +8,20 @@
 + (id)interface
 {
   v2 = [[NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface alloc] initWithProtocol:&OBJC_PROTOCOL___NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface];
-  v3 = [(NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface *)v2 protocolInterface];
+  protocolInterface = [(NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface *)v2 protocolInterface];
 
-  return v3;
+  return protocolInterface;
 }
 
-- (NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface)initWithProtocol:(id)a3
+- (NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface)initWithProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v9.receiver = self;
   v9.super_class = NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface;
   v5 = [(NFSecureTransactionServicesHandoverBaseSessionCallbacksInterface *)&v9 init];
   if (v5)
   {
-    v6 = [NSXPCInterface interfaceWithProtocol:v4];
+    v6 = [NSXPCInterface interfaceWithProtocol:protocolCopy];
     protocolInterface = v5->_protocolInterface;
     v5->_protocolInterface = v6;
 

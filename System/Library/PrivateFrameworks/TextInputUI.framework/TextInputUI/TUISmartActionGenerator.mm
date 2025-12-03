@@ -2,10 +2,10 @@
 - (BOOL)enabled;
 - (TUISmartActionGenerator)init;
 - (_TtC11TextInputUI28TUITextComposerClientWrapper)textComposerClient;
-- (void)generateCandidatesWithContext:(id)a3 completion:(id)a4;
-- (void)setEnabled:(BOOL)a3;
-- (void)setTextComposerClient:(id)a3;
-- (void)syncToKeyboardState:(id)a3;
+- (void)generateCandidatesWithContext:(id)context completion:(id)completion;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setTextComposerClient:(id)client;
+- (void)syncToKeyboardState:(id)state;
 @end
 
 @implementation TUISmartActionGenerator
@@ -19,11 +19,11 @@
   return [(TUISmartActionGenerator *)&v3 init];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v5 = OBJC_IVAR___TUISmartActionGenerator_enabled;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = enabled;
 }
 
 - (BOOL)enabled
@@ -40,31 +40,31 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setTextComposerClient:(id)a3
+- (void)setTextComposerClient:(id)client
 {
   v5 = OBJC_IVAR___TUISmartActionGenerator_textComposerClient;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = client;
+  clientCopy = client;
 }
 
-- (void)generateCandidatesWithContext:(id)a3 completion:(id)a4
+- (void)generateCandidatesWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_18FFEAD38(v7, v8, v6);
+  contextCopy = context;
+  selfCopy = self;
+  sub_18FFEAD38(contextCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)syncToKeyboardState:(id)a3
+- (void)syncToKeyboardState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  SmartActionGenerator.sync(to:)(v4);
+  stateCopy = state;
+  selfCopy = self;
+  SmartActionGenerator.sync(to:)(stateCopy);
 }
 
 @end

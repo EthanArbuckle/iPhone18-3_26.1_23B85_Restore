@@ -1,15 +1,15 @@
 @interface HAPBridgedAccessory
 - (BOOL)__isReachable;
-- (BOOL)__parseBridgeService:(id)a3;
+- (BOOL)__parseBridgeService:(id)service;
 - (BOOL)__parseServices;
-- (BOOL)mergeObject:(id)a3;
-- (BOOL)mergeWithAccessory:(id)a3;
-- (BOOL)shouldMergeObject:(id)a3;
-- (HAPBridgedAccessory)initWithServer:(id)a3 instanceID:(id)a4 parsedServices:(id)a5;
+- (BOOL)mergeObject:(id)object;
+- (BOOL)mergeWithAccessory:(id)accessory;
+- (BOOL)shouldMergeObject:(id)object;
+- (HAPBridgedAccessory)initWithServer:(id)server instanceID:(id)d parsedServices:(id)services;
 - (HAPCharacteristic)reachabilityCharacteristic;
-- (id)accessoryServerDidRequestCharacteristicsToRegisterForNotifications:(id)a3;
+- (id)accessoryServerDidRequestCharacteristicsToRegisterForNotifications:(id)notifications;
 - (id)shortDescription;
-- (void)accessoryServer:(id)a3 didUpdateValueForCharacteristic:(id)a4;
+- (void)accessoryServer:(id)server didUpdateValueForCharacteristic:(id)characteristic;
 @end
 
 @implementation HAPBridgedAccessory
@@ -21,26 +21,26 @@
   return WeakRetained;
 }
 
-- (void)accessoryServer:(id)a3 didUpdateValueForCharacteristic:(id)a4
+- (void)accessoryServer:(id)server didUpdateValueForCharacteristic:(id)characteristic
 {
-  v5 = a4;
-  v6 = [v5 service];
-  v7 = [v6 accessory];
-  v8 = [v7 isEqual:self];
+  characteristicCopy = characteristic;
+  service = [characteristicCopy service];
+  accessory = [service accessory];
+  v8 = [accessory isEqual:self];
 
   if (v8)
   {
-    v9 = [v5 value];
-    v10 = [(HAPAccessory *)self workQueue];
+    value = [characteristicCopy value];
+    workQueue = [(HAPAccessory *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __71__HAPBridgedAccessory_accessoryServer_didUpdateValueForCharacteristic___block_invoke;
     block[3] = &unk_2786D7078;
-    v13 = v5;
-    v14 = v9;
-    v15 = self;
-    v11 = v9;
-    dispatch_async(v10, block);
+    v13 = characteristicCopy;
+    v14 = value;
+    selfCopy = self;
+    v11 = value;
+    dispatch_async(workQueue, block);
   }
 }
 
@@ -98,19 +98,19 @@ LABEL_8:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)accessoryServerDidRequestCharacteristicsToRegisterForNotifications:(id)a3
+- (id)accessoryServerDidRequestCharacteristicsToRegisterForNotifications:(id)notifications
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HAPAccessory *)self server];
+  notificationsCopy = notifications;
+  server = [(HAPAccessory *)self server];
 
-  if (v5 == v4)
+  if (server == notificationsCopy)
   {
-    v7 = [(HAPBridgedAccessory *)self reachabilityCharacteristic];
-    v8 = v7;
-    if (v7)
+    reachabilityCharacteristic = [(HAPBridgedAccessory *)self reachabilityCharacteristic];
+    v8 = reachabilityCharacteristic;
+    if (reachabilityCharacteristic)
     {
-      v11[0] = v7;
+      v11[0] = reachabilityCharacteristic;
       v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
     }
 
@@ -130,14 +130,14 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)mergeObject:(id)a3
+- (BOOL)mergeObject:(id)object
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -151,7 +151,7 @@ LABEL_8:
   {
     v14.receiver = self;
     v14.super_class = HAPBridgedAccessory;
-    v7 = [(HAPAccessory *)&v14 mergeObject:v4];
+    v7 = [(HAPAccessory *)&v14 mergeObject:objectCopy];
     if (![(HAPBridgedAccessory *)self __parseServices])
     {
       v8 = objc_autoreleasePoolPush();
@@ -159,11 +159,11 @@ LABEL_8:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         v10 = HMFGetLogIdentifier();
-        v11 = [(HAPBridgedAccessory *)self shortDescription];
+        shortDescription = [(HAPBridgedAccessory *)self shortDescription];
         *buf = 138543618;
         v16 = v10;
         v17 = 2112;
-        v18 = v11;
+        v18 = shortDescription;
         _os_log_impl(&dword_22AADC000, v9, OS_LOG_TYPE_ERROR, "%{public}@[%@] Failed to parse services during merge", buf, 0x16u);
       }
 
@@ -180,13 +180,13 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)shouldMergeObject:(id)a3
+- (BOOL)shouldMergeObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -210,10 +210,10 @@ LABEL_8:
   return v7;
 }
 
-- (BOOL)mergeWithAccessory:(id)a3
+- (BOOL)mergeWithAccessory:(id)accessory
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoryCopy = accessory;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && ![(HAPBridgedAccessory *)self __parseServices])
   {
@@ -222,11 +222,11 @@ LABEL_8:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v7 = HMFGetLogIdentifier();
-      v8 = [(HAPBridgedAccessory *)self shortDescription];
+      shortDescription = [(HAPBridgedAccessory *)self shortDescription];
       v11 = 138543618;
       v12 = v7;
       v13 = 2112;
-      v14 = v8;
+      v14 = shortDescription;
       _os_log_impl(&dword_22AADC000, v6, OS_LOG_TYPE_ERROR, "%{public}@[%@] Failed to parse services during merge", &v11, 0x16u);
     }
 
@@ -237,15 +237,15 @@ LABEL_8:
   return 0;
 }
 
-- (BOOL)__parseBridgeService:(id)a3
+- (BOOL)__parseBridgeService:(id)service
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [a3 characteristics];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  characteristics = [service characteristics];
+  v5 = [characteristics countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -257,21 +257,21 @@ LABEL_8:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(characteristics);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 type];
-        v12 = [v11 isEqualToString:@"00000063-0000-1000-8000-0026BB765291"];
+        type = [v10 type];
+        v12 = [type isEqualToString:@"00000063-0000-1000-8000-0026BB765291"];
 
         if (v12)
         {
           [(HAPBridgedAccessory *)self setReachabilityCharacteristic:v10];
-          v13 = [v10 value];
+          value = [v10 value];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v14 = v13;
+            v14 = value;
           }
 
           else
@@ -290,7 +290,7 @@ LABEL_8:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [characteristics countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -312,8 +312,8 @@ LABEL_8:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = [(HAPAccessory *)self services];
-  v4 = [v3 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  services = [(HAPAccessory *)self services];
+  v4 = [services countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v4)
   {
     v5 = v4;
@@ -325,12 +325,12 @@ LABEL_8:
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(services);
         }
 
         v9 = *(*(&v23 + 1) + 8 * i);
-        v10 = [v9 type];
-        v11 = [v10 isEqualToString:@"00000062-0000-1000-8000-0026BB765291"];
+        type = [v9 type];
+        v11 = [type isEqualToString:@"00000062-0000-1000-8000-0026BB765291"];
 
         if (v11)
         {
@@ -341,11 +341,11 @@ LABEL_8:
             if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
             {
               v18 = HMFGetLogIdentifier();
-              v19 = [(HAPBridgedAccessory *)self shortDescription];
+              shortDescription = [(HAPBridgedAccessory *)self shortDescription];
               *buf = 138543618;
               v28 = v18;
               v29 = 2112;
-              v30 = v19;
+              v30 = shortDescription;
               _os_log_impl(&dword_22AADC000, v17, OS_LOG_TYPE_ERROR, "%{public}@[%@] Accessory has more than one Bridge Service", buf, 0x16u);
             }
 
@@ -357,7 +357,7 @@ LABEL_8:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v5 = [services countByEnumeratingWithState:&v23 objects:v31 count:16];
       if (v5)
       {
         continue;
@@ -373,11 +373,11 @@ LABEL_8:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v14 = HMFGetLogIdentifier();
-        v15 = [(HAPBridgedAccessory *)self shortDescription];
+        shortDescription2 = [(HAPBridgedAccessory *)self shortDescription];
         *buf = 138543618;
         v28 = v14;
         v29 = 2112;
-        v30 = v15;
+        v30 = shortDescription2;
         _os_log_impl(&dword_22AADC000, v13, OS_LOG_TYPE_ERROR, "%{public}@[%@] Failed to parse bridge service", buf, 0x16u);
       }
 
@@ -403,39 +403,39 @@ LABEL_22:
 
 - (BOOL)__isReachable
 {
-  v3 = [(HAPBridgedAccessory *)self reachabilityCharacteristic];
+  reachabilityCharacteristic = [(HAPBridgedAccessory *)self reachabilityCharacteristic];
 
-  if (!v3)
+  if (!reachabilityCharacteristic)
   {
     return 1;
   }
 
-  v4 = [(HAPBridgedAccessory *)self reachabilityCharacteristic];
-  v5 = [v4 value];
-  v6 = [v5 BOOLValue];
+  reachabilityCharacteristic2 = [(HAPBridgedAccessory *)self reachabilityCharacteristic];
+  value = [reachabilityCharacteristic2 value];
+  bOOLValue = [value BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(HAPAccessory *)self instanceID];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  instanceID = [(HAPAccessory *)self instanceID];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, instanceID];
 
   return v6;
 }
 
-- (HAPBridgedAccessory)initWithServer:(id)a3 instanceID:(id)a4 parsedServices:(id)a5
+- (HAPBridgedAccessory)initWithServer:(id)server instanceID:(id)d parsedServices:(id)services
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serverCopy = server;
+  dCopy = d;
+  servicesCopy = services;
   v20.receiver = self;
   v20.super_class = HAPBridgedAccessory;
-  v11 = [(HAPAccessory *)&v20 initWithServer:v8 instanceID:v9 parsedServices:v10];
+  v11 = [(HAPAccessory *)&v20 initWithServer:serverCopy instanceID:dCopy parsedServices:servicesCopy];
   v12 = v11;
   if (!v11)
   {
@@ -444,7 +444,7 @@ LABEL_22:
 
   if ([(HAPBridgedAccessory *)v11 __parseServices])
   {
-    [v8 addInternalDelegate:v12];
+    [serverCopy addInternalDelegate:v12];
 LABEL_4:
     v13 = v12;
     goto LABEL_8;
@@ -455,11 +455,11 @@ LABEL_4:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
     v16 = HMFGetLogIdentifier();
-    v17 = [(HAPBridgedAccessory *)v12 shortDescription];
+    shortDescription = [(HAPBridgedAccessory *)v12 shortDescription];
     *buf = 138543618;
     v22 = v16;
     v23 = 2112;
-    v24 = v17;
+    v24 = shortDescription;
     _os_log_impl(&dword_22AADC000, v15, OS_LOG_TYPE_ERROR, "%{public}@[%@] Failed to parse services", buf, 0x16u);
   }
 

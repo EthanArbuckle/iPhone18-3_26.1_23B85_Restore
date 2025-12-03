@@ -1,6 +1,6 @@
 @interface _REAppleParkLocationManager
 - (id)currentLocation;
-- (void)startLocationUpdatesWithHandler:(id)a3;
+- (void)startLocationUpdatesWithHandler:(id)handler;
 @end
 
 @implementation _REAppleParkLocationManager
@@ -32,16 +32,16 @@
   return v11;
 }
 
-- (void)startLocationUpdatesWithHandler:(id)a3
+- (void)startLocationUpdatesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63___REAppleParkLocationManager_startLocationUpdatesWithHandler___block_invoke;
   v6[3] = &unk_2785FA150;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

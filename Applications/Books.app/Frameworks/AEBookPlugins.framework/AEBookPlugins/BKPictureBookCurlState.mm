@@ -2,16 +2,16 @@
 - (BKPictureBookCurlContainerView)curlContainer;
 - (BKPictureBookCurlState)init;
 - (BOOL)_isNightMode;
-- (BOOL)finishManualCurlAtPostion:(CGPoint)a3;
-- (BOOL)generateWithOldLeftPageNumber:(int64_t)a3 oldRightPageNumber:(int64_t)a4 newLeftPageNumber:(int64_t)a5 newRightPageNumber:(int64_t)a6 useMirrorForBackImage:(BOOL)a7;
+- (BOOL)finishManualCurlAtPostion:(CGPoint)postion;
+- (BOOL)generateWithOldLeftPageNumber:(int64_t)number oldRightPageNumber:(int64_t)pageNumber newLeftPageNumber:(int64_t)leftPageNumber newRightPageNumber:(int64_t)rightPageNumber useMirrorForBackImage:(BOOL)image;
 - (CGPoint)manualCurlStartPosition;
-- (id)_getDummyImageForSize:(CGSize)a3;
+- (id)_getDummyImageForSize:(CGSize)size;
 - (id)backPagesImageArray;
 - (id)curlPage;
 - (id)pageArray;
 - (id)pagesImageArray;
 - (void)dealloc;
-- (void)updateManualCurlToPosition:(CGPoint)a3;
+- (void)updateManualCurlToPosition:(CGPoint)position;
 @end
 
 @implementation BKPictureBookCurlState
@@ -39,13 +39,13 @@
   [(BKPictureBookCurlState *)&v3 dealloc];
 }
 
-- (BOOL)generateWithOldLeftPageNumber:(int64_t)a3 oldRightPageNumber:(int64_t)a4 newLeftPageNumber:(int64_t)a5 newRightPageNumber:(int64_t)a6 useMirrorForBackImage:(BOOL)a7
+- (BOOL)generateWithOldLeftPageNumber:(int64_t)number oldRightPageNumber:(int64_t)pageNumber newLeftPageNumber:(int64_t)leftPageNumber newRightPageNumber:(int64_t)rightPageNumber useMirrorForBackImage:(BOOL)image
 {
   WeakRetained = objc_loadWeakRetained(&self->_curlContainer);
   v13 = WeakRetained;
   if (WeakRetained && self->_navDelegate)
   {
-    v54 = a5;
+    leftPageNumberCopy = leftPageNumber;
     [WeakRetained bounds];
     x = v70.origin.x;
     y = v70.origin.y;
@@ -84,35 +84,35 @@
       v22 = v20 + -1.0;
     }
 
-    v23 = [[BKPictureBookCurlPageView alloc] initWithFrame:x, y, v17, height];
-    v24 = [[BKPictureBookCurlPageView alloc] initWithFrame:v19, y, v17, height];
-    v25 = [[BKPictureBookCurlPageView alloc] initWithFrame:v22, y, v17 + 1.0, height];
-    v26 = [[BKPictureBookCurlPageView alloc] initWithFrame:v21, y, v17, height];
-    objc_storeStrong(&self->_leftPage, v23);
-    objc_storeStrong(&self->_rightPage, v24);
-    v56 = v25;
-    objc_storeStrong(&self->_backPage, v25);
-    v55 = v26;
-    objc_storeStrong(&self->_otherBackPage, v26);
+    height = [[BKPictureBookCurlPageView alloc] initWithFrame:x, y, v17, height];
+    height2 = [[BKPictureBookCurlPageView alloc] initWithFrame:v19, y, v17, height];
+    height3 = [[BKPictureBookCurlPageView alloc] initWithFrame:v22, y, v17 + 1.0, height];
+    height4 = [[BKPictureBookCurlPageView alloc] initWithFrame:v21, y, v17, height];
+    objc_storeStrong(&self->_leftPage, height);
+    objc_storeStrong(&self->_rightPage, height2);
+    v56 = height3;
+    objc_storeStrong(&self->_backPage, height3);
+    v55 = height4;
+    objc_storeStrong(&self->_otherBackPage, height4);
     [(BKPictureBookCurlPageView *)self->_backPage setClipsToBounds:0];
-    [(BKPictureBookCurlPageView *)v23 setScale:self->_scale];
-    [(BKPictureBookCurlPageView *)v23 setDrawsSpine:self->_applyMaskAndGutter];
-    [(BKPictureBookCurlPageView *)v24 setScale:self->_scale];
-    [(BKPictureBookCurlPageView *)v24 setDrawsSpine:self->_applyMaskAndGutter];
-    [(BKPictureBookCurlPageView *)v24 setRight:1];
-    v27 = [(BKPictureBookCurlState *)self leftSourceView];
-    v28 = [v27 window];
+    [(BKPictureBookCurlPageView *)height setScale:self->_scale];
+    [(BKPictureBookCurlPageView *)height setDrawsSpine:self->_applyMaskAndGutter];
+    [(BKPictureBookCurlPageView *)height2 setScale:self->_scale];
+    [(BKPictureBookCurlPageView *)height2 setDrawsSpine:self->_applyMaskAndGutter];
+    [(BKPictureBookCurlPageView *)height2 setRight:1];
+    leftSourceView = [(BKPictureBookCurlState *)self leftSourceView];
+    window = [leftSourceView window];
 
-    v58 = v23;
-    if (v28)
+    v58 = height;
+    if (window)
     {
-      v29 = [(BKPictureBookCurlState *)self leftSourceView];
-      v30 = [(BKPictureBookCurlState *)self leftSourceView];
-      [v30 bounds];
-      v31 = [v29 resizableSnapshotViewFromRect:0 afterScreenUpdates:? withCapInsets:?];
+      leftSourceView2 = [(BKPictureBookCurlState *)self leftSourceView];
+      leftSourceView3 = [(BKPictureBookCurlState *)self leftSourceView];
+      [leftSourceView3 bounds];
+      v31 = [leftSourceView2 resizableSnapshotViewFromRect:0 afterScreenUpdates:? withCapInsets:?];
       [(BKPictureBookCurlPageView *)v58 addSubview:v31];
 
-      v23 = v58;
+      height = v58;
     }
 
     else
@@ -123,21 +123,21 @@
       v68[1] = 3221225472;
       v68[2] = sub_17564;
       v68[3] = &unk_1E2C48;
-      v69 = v23;
-      [(BKPictureBookNavigationDelegate *)navDelegate pageNavigationSnapshotForPageNumber:a3 size:0 isRight:0 zoomScale:v68 applyMaskAndGutter:v17 completion:height, scale];
+      v69 = height;
+      [(BKPictureBookNavigationDelegate *)navDelegate pageNavigationSnapshotForPageNumber:number size:0 isRight:0 zoomScale:v68 applyMaskAndGutter:v17 completion:height, scale];
     }
 
-    [(BKPictureBookCurlPageView *)v23 setPageOffset:a3];
-    v35 = [(BKPictureBookCurlState *)self rightSourceView];
-    v36 = [v35 window];
+    [(BKPictureBookCurlPageView *)height setPageOffset:number];
+    rightSourceView = [(BKPictureBookCurlState *)self rightSourceView];
+    window2 = [rightSourceView window];
 
-    if (v36)
+    if (window2)
     {
-      v37 = [(BKPictureBookCurlState *)self rightSourceView];
-      v38 = [(BKPictureBookCurlState *)self rightSourceView];
-      [v38 bounds];
-      v39 = [v37 resizableSnapshotViewFromRect:0 afterScreenUpdates:? withCapInsets:?];
-      [(BKPictureBookCurlPageView *)v24 addSubview:v39];
+      rightSourceView2 = [(BKPictureBookCurlState *)self rightSourceView];
+      rightSourceView3 = [(BKPictureBookCurlState *)self rightSourceView];
+      [rightSourceView3 bounds];
+      v39 = [rightSourceView2 resizableSnapshotViewFromRect:0 afterScreenUpdates:? withCapInsets:?];
+      [(BKPictureBookCurlPageView *)height2 addSubview:v39];
     }
 
     else
@@ -148,23 +148,23 @@
       v66[1] = 3221225472;
       v66[2] = sub_17570;
       v66[3] = &unk_1E2C48;
-      v67 = v24;
-      [(BKPictureBookNavigationDelegate *)v40 pageNavigationSnapshotForPageNumber:a4 size:1 isRight:0 zoomScale:v66 applyMaskAndGutter:v17 completion:height, v41];
-      v37 = v67;
+      v67 = height2;
+      [(BKPictureBookNavigationDelegate *)v40 pageNavigationSnapshotForPageNumber:pageNumber size:1 isRight:0 zoomScale:v66 applyMaskAndGutter:v17 completion:height, v41];
+      rightSourceView2 = v67;
     }
 
-    [(BKPictureBookCurlPageView *)v24 setPageOffset:a4];
+    [(BKPictureBookCurlPageView *)height2 setPageOffset:pageNumber];
     if (self->_forwardCurl)
     {
-      v42 = v54;
+      rightPageNumberCopy = leftPageNumberCopy;
     }
 
     else
     {
-      v42 = a6;
+      rightPageNumberCopy = rightPageNumber;
     }
 
-    [(BKPictureBookCurlPageView *)self->_backPage setPageOffset:v42];
+    [(BKPictureBookCurlPageView *)self->_backPage setPageOffset:rightPageNumberCopy];
     [(BKPictureBookCurlPageView *)self->_backPage setScale:self->_scale];
     [(BKPictureBookCurlPageView *)self->_backPage setDrawsSpine:self->_applyMaskAndGutter];
     if ([(BKPictureBookCurlState *)self _isNightMode])
@@ -181,12 +181,12 @@
     v44 = self->_navDelegate;
     if (self->_forwardCurl)
     {
-      v45 = v54;
+      rightPageNumberCopy2 = leftPageNumberCopy;
     }
 
     else
     {
-      v45 = a6;
+      rightPageNumberCopy2 = rightPageNumber;
     }
 
     v46 = self->_scale;
@@ -198,7 +198,7 @@
     v65 = !forwardCurl;
     v47 = v13;
     v64 = v47;
-    [(BKPictureBookNavigationDelegate *)v44 pageNavigationSnapshotForPageNumber:v45 size:!forwardCurl isRight:0 zoomScale:v63 applyMaskAndGutter:v17 completion:height, v46];
+    [(BKPictureBookNavigationDelegate *)v44 pageNavigationSnapshotForPageNumber:rightPageNumberCopy2 size:!forwardCurl isRight:0 zoomScale:v63 applyMaskAndGutter:v17 completion:height, v46];
     v48 = self->_navDelegate;
     v49 = self->_scale;
     v61[0] = _NSConcreteStackBlock;
@@ -208,7 +208,7 @@
     v50 = v47;
     v62 = v50;
     v32 = 1;
-    [(BKPictureBookNavigationDelegate *)v48 pageNavigationSnapshotForPageNumber:a6 size:1 isRight:0 zoomScale:v61 applyMaskAndGutter:v17 completion:height, v49];
+    [(BKPictureBookNavigationDelegate *)v48 pageNavigationSnapshotForPageNumber:rightPageNumber size:1 isRight:0 zoomScale:v61 applyMaskAndGutter:v17 completion:height, v49];
     v51 = self->_navDelegate;
     v52 = self->_scale;
     v59[0] = _NSConcreteStackBlock;
@@ -216,7 +216,7 @@
     v59[2] = sub_17618;
     v59[3] = &unk_1E2C48;
     v60 = v50;
-    [(BKPictureBookNavigationDelegate *)v51 pageNavigationSnapshotForPageNumber:v54 size:0 isRight:0 zoomScale:v59 applyMaskAndGutter:v17 completion:height, v52];
+    [(BKPictureBookNavigationDelegate *)v51 pageNavigationSnapshotForPageNumber:leftPageNumberCopy size:0 isRight:0 zoomScale:v59 applyMaskAndGutter:v17 completion:height, v52];
   }
 
   else
@@ -230,17 +230,17 @@
 - (BOOL)_isNightMode
 {
   WeakRetained = objc_loadWeakRetained(&self->_curlContainer);
-  v3 = [WeakRetained traitCollection];
-  v4 = [v3 userInterfaceStyle] == &dword_0 + 2 || UIAccessibilityIsInvertColorsEnabled();
+  traitCollection = [WeakRetained traitCollection];
+  v4 = [traitCollection userInterfaceStyle] == &dword_0 + 2 || UIAccessibilityIsInvertColorsEnabled();
 
   return v4;
 }
 
-- (id)_getDummyImageForSize:(CGSize)a3
+- (id)_getDummyImageForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  UIGraphicsBeginImageContextWithOptions(a3, 0, 0.0);
+  height = size.height;
+  width = size.width;
+  UIGraphicsBeginImageContextWithOptions(size, 0, 0.0);
   v5 = +[UIColor whiteColor];
   [v5 setFill];
 
@@ -255,19 +255,19 @@
   return v6;
 }
 
-- (void)updateManualCurlToPosition:(CGPoint)a3
+- (void)updateManualCurlToPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   self->_manualCurlCurrentTime = CFAbsoluteTimeGetCurrent();
   pageCurl = self->_pageCurl;
 
   [(BKPageCurl *)pageCurl updateManualCurlToLocation:x, y];
 }
 
-- (BOOL)finishManualCurlAtPostion:(CGPoint)a3
+- (BOOL)finishManualCurlAtPostion:(CGPoint)postion
 {
-  v4 = vabdd_f64(a3.x, self->_manualCurlStartPosition.x);
+  v4 = vabdd_f64(postion.x, self->_manualCurlStartPosition.x);
   WeakRetained = objc_loadWeakRetained(&self->_curlContainer);
   [WeakRetained frame];
   v7 = v6;
@@ -285,8 +285,8 @@
   {
     if (!self->_applyMaskAndGutter)
     {
-      v20 = [(BKPictureBookCurlState *)self curlPage];
-      [v20 pageCurlWillCancel];
+      curlPage = [(BKPictureBookCurlState *)self curlPage];
+      [curlPage pageCurlWillCancel];
     }
 
     [(BKPictureBookCurlState *)self cancelManualCurl];
@@ -295,18 +295,18 @@
   else
   {
     [(BKPageCurl *)self->_pageCurl finishManualCurl];
-    v16 = [(BKPictureBookCurlPageView *)self->_backPage image];
+    image = [(BKPictureBookCurlPageView *)self->_backPage image];
     forwardCurl = self->_forwardCurl;
     v18 = objc_loadWeakRetained(&self->_curlContainer);
     v19 = v18;
     if (forwardCurl)
     {
-      [v18 setLeftImage:v16];
+      [v18 setLeftImage:image];
     }
 
     else
     {
-      [v18 setRightImage:v16];
+      [v18 setRightImage:image];
     }
   }
 
@@ -315,18 +315,18 @@
 
 - (id)pagesImageArray
 {
-  v3 = [(BKPictureBookCurlPageView *)self->_leftPage image];
-  v4 = [(BKPictureBookCurlPageView *)self->_rightPage image];
-  v5 = [NSArray arrayWithObjects:v3, v4, 0];
+  image = [(BKPictureBookCurlPageView *)self->_leftPage image];
+  image2 = [(BKPictureBookCurlPageView *)self->_rightPage image];
+  v5 = [NSArray arrayWithObjects:image, image2, 0];
 
   return v5;
 }
 
 - (id)backPagesImageArray
 {
-  v3 = [(BKPictureBookCurlPageView *)self->_backPage image];
-  v4 = [(BKPictureBookCurlPageView *)self->_otherBackPage image];
-  v5 = [NSArray arrayWithObjects:v3, v4, 0];
+  image = [(BKPictureBookCurlPageView *)self->_backPage image];
+  image2 = [(BKPictureBookCurlPageView *)self->_otherBackPage image];
+  v5 = [NSArray arrayWithObjects:image, image2, 0];
 
   return v5;
 }

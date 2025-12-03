@@ -1,40 +1,40 @@
 @interface EKSpotlightSearch
-+ (id)queryStringForSearchTerm:(id)a3 matchingTypes:(unint64_t)a4 fromStartDate:(id)a5 toEndDate:(id)a6;
-+ (id)searchWithCSQuery:(id)a3 inStore:(id)a4 inCalendars:(id)a5 resultHandler:(id)a6 completionHandler:(id)a7;
++ (id)queryStringForSearchTerm:(id)term matchingTypes:(unint64_t)types fromStartDate:(id)date toEndDate:(id)endDate;
++ (id)searchWithCSQuery:(id)query inStore:(id)store inCalendars:(id)calendars resultHandler:(id)handler completionHandler:(id)completionHandler;
 - (EKEventStore)eventStore;
-- (EKSpotlightSearch)initWithSearchWithCSQuery:(id)a3 inStore:(id)a4 inCalendars:(id)a5 resultHandler:(id)a6 completionHandler:(id)a7;
-- (void)setCachedNextOccurrenceDateOnRepeatingRemindersInEvents:(id)a3 withDateMap:(id)a4;
+- (EKSpotlightSearch)initWithSearchWithCSQuery:(id)query inStore:(id)store inCalendars:(id)calendars resultHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)setCachedNextOccurrenceDateOnRepeatingRemindersInEvents:(id)events withDateMap:(id)map;
 @end
 
 @implementation EKSpotlightSearch
 
-+ (id)searchWithCSQuery:(id)a3 inStore:(id)a4 inCalendars:(id)a5 resultHandler:(id)a6 completionHandler:(id)a7
++ (id)searchWithCSQuery:(id)query inStore:(id)store inCalendars:(id)calendars resultHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[EKSpotlightSearch alloc] initWithSearchWithCSQuery:v15 inStore:v14 inCalendars:v13 resultHandler:v12 completionHandler:v11];
+  completionHandlerCopy = completionHandler;
+  handlerCopy = handler;
+  calendarsCopy = calendars;
+  storeCopy = store;
+  queryCopy = query;
+  v16 = [[EKSpotlightSearch alloc] initWithSearchWithCSQuery:queryCopy inStore:storeCopy inCalendars:calendarsCopy resultHandler:handlerCopy completionHandler:completionHandlerCopy];
 
   return v16;
 }
 
-- (EKSpotlightSearch)initWithSearchWithCSQuery:(id)a3 inStore:(id)a4 inCalendars:(id)a5 resultHandler:(id)a6 completionHandler:(id)a7
+- (EKSpotlightSearch)initWithSearchWithCSQuery:(id)query inStore:(id)store inCalendars:(id)calendars resultHandler:(id)handler completionHandler:(id)completionHandler
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  queryCopy = query;
+  storeCopy = store;
+  calendarsCopy = calendars;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v34.receiver = self;
   v34.super_class = EKSpotlightSearch;
   v17 = [(EKSpotlightSearch *)&v34 init];
   if (v17)
   {
     objc_initWeak(&location, v17);
-    objc_storeWeak(&v17->_eventStore, v13);
+    objc_storeWeak(&v17->_eventStore, storeCopy);
     v18 = EKWeakLinkClass();
     EKWeakLinkClass();
     v19 = objc_opt_new();
@@ -46,7 +46,7 @@
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1];
     [v19 setBundleIDs:v21];
 
-    v22 = [[v18 alloc] initWithQueryString:v12 context:v19];
+    v22 = [[v18 alloc] initWithQueryString:queryCopy context:v19];
     csQuery = v17->csQuery;
     v17->csQuery = v22;
 
@@ -55,14 +55,14 @@
     v29[2] = __99__EKSpotlightSearch_initWithSearchWithCSQuery_inStore_inCalendars_resultHandler_completionHandler___block_invoke;
     v29[3] = &unk_1E77FFDE0;
     objc_copyWeak(&v32, &location);
-    v30 = v14;
-    v31 = v15;
+    v30 = calendarsCopy;
+    v31 = handlerCopy;
     [(CSSearchQuery *)v17->csQuery setFoundItemsHandler:v29];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __99__EKSpotlightSearch_initWithSearchWithCSQuery_inStore_inCalendars_resultHandler_completionHandler___block_invoke_2;
     v26[3] = &unk_1E77FFE08;
-    v27 = v16;
+    v27 = completionHandlerCopy;
     objc_copyWeak(&v28, &location);
     [(CSSearchQuery *)v17->csQuery setCompletionHandler:v26];
     objc_destroyWeak(&v28);
@@ -215,17 +215,17 @@ void __99__EKSpotlightSearch_initWithSearchWithCSQuery_inStore_inCalendars_resul
   (*(v3 + 16))(v3, WeakRetained, v4);
 }
 
-- (void)setCachedNextOccurrenceDateOnRepeatingRemindersInEvents:(id)a3 withDateMap:(id)a4
+- (void)setCachedNextOccurrenceDateOnRepeatingRemindersInEvents:(id)events withDateMap:(id)map
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v20 = a4;
+  eventsCopy = events;
+  mapCopy = map;
   v21 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v5;
+  v6 = eventsCopy;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
@@ -243,18 +243,18 @@ void __99__EKSpotlightSearch_initWithSearchWithCSQuery_inStore_inCalendars_resul
         v11 = *(*(&v22 + 1) + 8 * i);
         if ([v11 hasRecurrenceRules] && objc_msgSend(v11, "isReminderIntegrationEvent"))
         {
-          v12 = [v11 calendarItemIdentifier];
-          v13 = [v21 objectForKeyedSubscript:v12];
+          calendarItemIdentifier = [v11 calendarItemIdentifier];
+          v13 = [v21 objectForKeyedSubscript:calendarItemIdentifier];
           if (!v13)
           {
-            v13 = [v20 objectForKeyedSubscript:v12];
-            [v21 setObject:v13 forKeyedSubscript:v12];
+            v13 = [mapCopy objectForKeyedSubscript:calendarItemIdentifier];
+            [v21 setObject:v13 forKeyedSubscript:calendarItemIdentifier];
             [v13 sortUsingSelector:sel_compare_];
           }
 
           v14 = [v13 count];
-          v15 = [v11 startDate];
-          v16 = [v13 indexOfObject:v15 inSortedRange:0 options:v14 usingComparator:{0, &__block_literal_global_64}];
+          startDate = [v11 startDate];
+          v16 = [v13 indexOfObject:startDate inSortedRange:0 options:v14 usingComparator:{0, &__block_literal_global_64}];
 
           if (v16 != 0x7FFFFFFFFFFFFFFFLL && v16 + 1 < v14)
           {
@@ -273,37 +273,37 @@ void __99__EKSpotlightSearch_initWithSearchWithCSQuery_inStore_inCalendars_resul
   v19 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)queryStringForSearchTerm:(id)a3 matchingTypes:(unint64_t)a4 fromStartDate:(id)a5 toEndDate:(id)a6
++ (id)queryStringForSearchTerm:(id)term matchingTypes:(unint64_t)types fromStartDate:(id)date toEndDate:(id)endDate
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  termCopy = term;
+  dateCopy = date;
+  endDateCopy = endDate;
   v13 = MEMORY[0x1E696AD60];
-  v14 = [*MEMORY[0x1E6982D30] identifier];
-  v15 = objc_msgSend(v13, "stringWithFormat:", @"contentType == %@ && ("), v14;
+  identifier = [*MEMORY[0x1E6982D30] identifier];
+  v15 = objc_msgSend(v13, "stringWithFormat:", @"contentType == %@ && ("), identifier;
 
-  if (!a4)
+  if (!types)
   {
-    [v15 appendFormat:@"title == %@*cdwt || comment == %@*cdwt || namedLocation == %@*cdwt || ", v10, v10, v10];
-    v16 = [a1 _queryStringForPeopleMatchingSearchTerm:v10];
+    [v15 appendFormat:@"title == %@*cdwt || comment == %@*cdwt || namedLocation == %@*cdwt || ", termCopy, termCopy, termCopy];
+    v16 = [self _queryStringForPeopleMatchingSearchTerm:termCopy];
     [v15 appendString:v16];
 
     goto LABEL_12;
   }
 
-  if ((a4 & 1) == 0)
+  if ((types & 1) == 0)
   {
-    if ((a4 & 2) == 0)
+    if ((types & 2) == 0)
     {
       goto LABEL_4;
     }
 
 LABEL_9:
-    [v15 appendFormat:@"namedLocation == %@*cdwt || ", v10];
-    if ((a4 & 4) == 0)
+    [v15 appendFormat:@"namedLocation == %@*cdwt || ", termCopy];
+    if ((types & 4) == 0)
     {
 LABEL_5:
-      if ((a4 & 8) == 0)
+      if ((types & 8) == 0)
       {
         goto LABEL_12;
       }
@@ -314,48 +314,48 @@ LABEL_5:
     goto LABEL_10;
   }
 
-  [v15 appendFormat:@"title == %@*cdwt || ", v10];
-  if ((a4 & 2) != 0)
+  [v15 appendFormat:@"title == %@*cdwt || ", termCopy];
+  if ((types & 2) != 0)
   {
     goto LABEL_9;
   }
 
 LABEL_4:
-  if ((a4 & 4) == 0)
+  if ((types & 4) == 0)
   {
     goto LABEL_5;
   }
 
 LABEL_10:
-  v17 = [a1 _queryStringForPeopleMatchingSearchTerm:v10];
+  v17 = [self _queryStringForPeopleMatchingSearchTerm:termCopy];
   [v15 appendString:v17];
 
-  if ((a4 & 8) != 0)
+  if ((types & 8) != 0)
   {
 LABEL_11:
-    [v15 appendFormat:@"comment == %@*cdwt || ", v10];
+    [v15 appendFormat:@"comment == %@*cdwt || ", termCopy];
   }
 
 LABEL_12:
   v18 = [@" || " length];
   [v15 replaceCharactersInRange:objc_msgSend(v15 withString:{"length") - v18, v18, @""}]);
-  if (v11 && v12)
+  if (dateCopy && endDateCopy)
   {
-    [v11 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v20 = v19;
-    [v12 timeIntervalSinceReferenceDate];
+    [endDateCopy timeIntervalSinceReferenceDate];
     [v15 appendFormat:@"&& startDate <= $time.absolute(%f) && endDate >= $time.absolute(%f)", v21, v20];
   }
 
-  else if (v11)
+  else if (dateCopy)
   {
-    [v11 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     [v15 appendFormat:@"&& endDate > $time.absolute(%f)", v22, v25];
   }
 
-  else if (v12)
+  else if (endDateCopy)
   {
-    [v12 timeIntervalSinceReferenceDate];
+    [endDateCopy timeIntervalSinceReferenceDate];
     [v15 appendFormat:@"&& startDate < $time.absolute(%f)", v23, v25];
   }
 

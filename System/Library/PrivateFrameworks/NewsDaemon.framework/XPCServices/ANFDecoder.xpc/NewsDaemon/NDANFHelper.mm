@@ -1,14 +1,14 @@
 @interface NDANFHelper
-- (id)_resourceIDFromURL:(id)a3;
-- (id)_resourceIDsFromURLs:(id)a3;
-- (id)manifestFromANFDocumentData:(id)a3;
+- (id)_resourceIDFromURL:(id)l;
+- (id)_resourceIDsFromURLs:(id)ls;
+- (id)manifestFromANFDocumentData:(id)data;
 @end
 
 @implementation NDANFHelper
 
-- (id)manifestFromANFDocumentData:(id)a3
+- (id)manifestFromANFDocumentData:(id)data
 {
-  v33 = a3;
+  dataCopy = data;
   v41 = 0;
   v42 = &v41;
   v43 = 0x2050000000;
@@ -29,9 +29,9 @@
   _Block_object_dispose(&v41, 8);
   v5 = [v3 alloc];
   v6 = +[NSUUID UUID];
-  v7 = [v6 UUIDString];
+  uUIDString = [v6 UUIDString];
   v39 = 0;
-  v8 = [v5 initWithIdentifier:v7 shareURL:0 JSONData:v33 resourceDataSource:0 host:0 error:&v39];
+  v8 = [v5 initWithIdentifier:uUIDString shareURL:0 JSONData:dataCopy resourceDataSource:0 host:0 error:&v39];
   v31 = v39;
 
   if (v8)
@@ -42,8 +42,8 @@
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v11 = [v8 documentController];
-    obj = [v11 orderedImageIdentifiers];
+    documentController = [v8 documentController];
+    obj = [documentController orderedImageIdentifiers];
 
     v12 = [obj countByEnumeratingWithState:&v35 objects:v45 count:16];
     if (v12)
@@ -59,17 +59,17 @@
           }
 
           v15 = *(*(&v35 + 1) + 8 * i);
-          v16 = [v8 documentController];
-          v17 = [v16 imageResourceForIdentifier:v15];
+          documentController2 = [v8 documentController];
+          v17 = [documentController2 imageResourceForIdentifier:v15];
 
           v18 = [v17 URL];
           [v9 fc_safelyAddObject:v18];
 
-          v19 = [v8 documentController];
-          v20 = [v19 allResourcesForImageIdentifier:v15];
+          documentController3 = [v8 documentController];
+          v20 = [documentController3 allResourcesForImageIdentifier:v15];
 
-          v21 = [v20 firstObject];
-          v22 = [v21 URL];
+          firstObject = [v20 firstObject];
+          v22 = [firstObject URL];
           [v10 fc_safelyAddObject:v22];
         }
 
@@ -79,11 +79,11 @@
       while (v12);
     }
 
-    v23 = [v8 documentController];
-    v24 = [v23 requiredNonImageResourceURLs];
+    documentController4 = [v8 documentController];
+    requiredNonImageResourceURLs = [documentController4 requiredNonImageResourceURLs];
 
     v25 = [FCANFDocumentManifest alloc];
-    v26 = [(NDANFHelper *)self _resourceIDsFromURLs:v24];
+    v26 = [(NDANFHelper *)self _resourceIDsFromURLs:requiredNonImageResourceURLs];
     v27 = [(NDANFHelper *)self _resourceIDsFromURLs:v9];
     v28 = [(NDANFHelper *)self _resourceIDsFromURLs:v10];
     v29 = [v25 initWithNonImageResourceIDs:v26 optimalImageResourceIDs:v27 smallestImageResourceIDs:v28];
@@ -97,33 +97,33 @@
   return v29;
 }
 
-- (id)_resourceIDsFromURLs:(id)a3
+- (id)_resourceIDsFromURLs:(id)ls
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000013B8;
   v5[3] = &unk_100004178;
   v5[4] = self;
-  v3 = [a3 fc_arrayByTransformingWithBlock:v5];
+  v3 = [ls fc_arrayByTransformingWithBlock:v5];
 
   return v3;
 }
 
-- (id)_resourceIDFromURL:(id)a3
+- (id)_resourceIDFromURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 scheme];
-  if ([v4 isEqualToString:@"asset"])
+  lCopy = l;
+  scheme = [lCopy scheme];
+  if ([scheme isEqualToString:@"asset"])
   {
-    v5 = [v3 host];
+    host = [lCopy host];
   }
 
   else
   {
-    v5 = 0;
+    host = 0;
   }
 
-  return v5;
+  return host;
 }
 
 @end

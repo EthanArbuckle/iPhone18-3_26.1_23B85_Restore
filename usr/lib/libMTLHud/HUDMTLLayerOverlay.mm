@@ -1,21 +1,21 @@
 @interface HUDMTLLayerOverlay
-- (BOOL)layerTracking:(id)a3 presentDrawable:(id)a4;
+- (BOOL)layerTracking:(id)tracking presentDrawable:(id)drawable;
 - (CGRect)overlayLayoutRectInPoints;
-- (HUDMTLLayerOverlay)initWithDevice:(id)a3;
-- (void)_drawablePresentedCommon:(id)a3;
-- (void)_log:(HUDMTLLayerState *)a3 drawableState:(HUDMTLLayerDrawableState *)a4;
+- (HUDMTLLayerOverlay)initWithDevice:(id)device;
+- (void)_drawablePresentedCommon:(id)common;
+- (void)_log:(HUDMTLLayerState *)_log drawableState:(HUDMTLLayerDrawableState *)state;
 - (void)dealloc;
-- (void)drawInsightsFrame:(HUDMTLLayerState *)a3 drawableState:(HUDMTLLayerDrawableState *)a4;
-- (void)drawUpdatedFrame:(HUDMTLLayerState *)a3 drawableState:(HUDMTLLayerDrawableState *)a4;
-- (void)generateQRCodeContent:(id)a3;
-- (void)layerTracking:(id)a3 setSnapshotTexture:(id)a4 callback:(id)a5;
+- (void)drawInsightsFrame:(HUDMTLLayerState *)frame drawableState:(HUDMTLLayerDrawableState *)state;
+- (void)drawUpdatedFrame:(HUDMTLLayerState *)frame drawableState:(HUDMTLLayerDrawableState *)state;
+- (void)generateQRCodeContent:(id)content;
+- (void)layerTracking:(id)tracking setSnapshotTexture:(id)texture callback:(id)callback;
 @end
 
 @implementation HUDMTLLayerOverlay
 
-- (HUDMTLLayerOverlay)initWithDevice:(id)a3
+- (HUDMTLLayerOverlay)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v21.receiver = self;
   v21.super_class = HUDMTLLayerOverlay;
   v5 = [(HUDMTLLayerOverlay *)&v21 init];
@@ -35,7 +35,7 @@
 
     if (!_HUDMTLOverlayGlobalInstance_tracker)
     {
-      _HUDMTLOverlayGlobalInstance_tracker = HUDUIOverlayCreate(v4);
+      _HUDMTLOverlayGlobalInstance_tracker = HUDUIOverlayCreate(deviceCopy);
       CACurrentMediaTime();
       HUDGPUTimelineInit();
     }
@@ -53,23 +53,23 @@
     updateGroup = v6->_layer.updateGroup;
     v6->_layer.updateGroup = v8;
 
-    v10 = [v4 name];
-    if ([v10 hasPrefix:@"Apple "])
+    name = [deviceCopy name];
+    if ([name hasPrefix:@"Apple "])
     {
-      v11 = [v10 substringFromIndex:6];
+      v11 = [name substringFromIndex:6];
 
-      v10 = v11;
+      name = v11;
     }
 
-    if ([v10 hasSuffix:@"GPU"])
+    if ([name hasSuffix:@"GPU"])
     {
-      v12 = [v10 substringToIndex:{objc_msgSend(v10, "length") - 4}];
+      v12 = [name substringToIndex:{objc_msgSend(name, "length") - 4}];
 
-      v10 = v12;
+      name = v12;
     }
 
     v13 = +[_CADeveloperHUDProperties instance];
-    [v13 updateLabelMetric:@"com.apple.hud-stat.gpu-name" label:v10];
+    [v13 updateLabelMetric:@"com.apple.hud-stat.gpu-name" label:name];
 
     LODWORD(v6->_lastLayout.mainHUDWindow.x) = HUDUIRectMake(0.0, 0.0, 0.0, 0.0).n128_u32[0];
     v6->_lastLayout.mainHUDWindow.y = v14;
@@ -84,10 +84,10 @@
   return v6;
 }
 
-- (BOOL)layerTracking:(id)a3 presentDrawable:(id)a4
+- (BOOL)layerTracking:(id)tracking presentDrawable:(id)drawable
 {
-  v6 = a3;
-  v7 = a4;
+  trackingCopy = tracking;
+  drawableCopy = drawable;
   v8 = +[MTLCaptureManager sharedCaptureManager];
   if ([v8 isCapturing])
   {
@@ -109,9 +109,9 @@
   }
 
   LODWORD(v10) = *HUDGetGlobalConfig();
-  if (*([v6 layerState] + 65))
+  if (*([trackingCopy layerState] + 65))
   {
-    if (!*([v6 layerState] + 64))
+    if (!*([trackingCopy layerState] + 64))
     {
 LABEL_9:
       LOBYTE(v10) = 0;
@@ -142,11 +142,11 @@ LABEL_9:
     goto LABEL_19;
   }
 
-  v14 = [v6 layer];
+  layer = [trackingCopy layer];
   v15 = +[HUDAlternateWindow instance];
-  v16 = [v15 layer];
+  layer2 = [v15 layer];
 
-  if (v14 == v16)
+  if (layer == layer2)
   {
     v17 = +[HUDMTLLayerTracking mainTracker];
     if (v17)
@@ -157,12 +157,12 @@ LABEL_9:
       {
         v19 = +[HUDMTLLayerTracking mainTracker];
 
-        v79 = [v19 client];
+        client = [v19 client];
 
-        opaque = *(v79 + 16);
-        if (*(v79 + 72))
+        opaque = *(client + 16);
+        if (*(client + 72))
         {
-          v80 = (v79 + 48);
+          v80 = (client + 48);
         }
 
         else
@@ -172,23 +172,23 @@ LABEL_9:
 
         v13 = *v80;
 LABEL_20:
-        v20 = [v7 texture];
-        v21 = [v20 width];
+        texture = [drawableCopy texture];
+        width = [texture width];
 
-        v22 = [v7 texture];
-        v23 = [v22 height];
+        texture2 = [drawableCopy texture];
+        height = [texture2 height];
 
-        v24 = [v7 layer];
-        [v24 bounds];
+        layer3 = [drawableCopy layer];
+        [layer3 bounds];
         v86 = v25;
 
-        v26 = [v7 layer];
-        [v26 bounds];
+        layer4 = [drawableCopy layer];
+        [layer4 bounds];
         v85 = v27;
 
         self->_lastLayout.insightsCurrentHeight = self->_layer.insightsWindowFrame.currentHeight;
         self->_lastLayout.mainWindowCurrentHeight = self->_layer.mainWindowFrame.currentHeight;
-        v6 = v19;
+        trackingCopy = v19;
         LODWORD(v95[0]) = 0;
         LODWORD(v89) = 0;
         HUDUIFrameGetSizeInPoints(opaque, v95, &v89);
@@ -197,18 +197,18 @@ LABEL_20:
         HUDUIFrameGetSizeInPoints(v13, &v97 + 1, &v97);
         LODWORD(v97) = self->_lastLayout.insightsCurrentHeight;
         v28 = HUDGetGlobalConfig();
-        [v6 safeAreaInsets];
+        [trackingCopy safeAreaInsets];
         v81 = v29;
         v31 = v30;
         v33 = v32;
         v35 = v34;
-        *&v30 = v21 / v86;
+        *&v30 = width / v86;
         v87 = *&v30;
-        v82 = v21;
-        v83 = v23;
-        v36 = v21 / *&v30;
+        v82 = width;
+        v83 = height;
+        v36 = width / *&v30;
         v84 = *&v30;
-        v37 = v23 / *&v30;
+        v37 = height / *&v30;
         v38 = 1.0;
         if ((*(v28 + 17) & 1) == 0)
         {
@@ -224,17 +224,17 @@ LABEL_20:
         }
 
         v39 = *(v28 + 9);
-        if (!*([v6 layerState] + 70))
+        if (!*([trackingCopy layerState] + 70))
         {
           v39 = *(v28 + 10);
         }
 
-        if (*([v6 layerState] + 70) && *(v28 + 9) == 16)
+        if (*([trackingCopy layerState] + 70) && *(v28 + 9) == 16)
         {
           v38 = v38 * 0.5;
         }
 
-        if (!*([v6 layerState] + 70) && *(v28 + 10) == 16)
+        if (!*([trackingCopy layerState] + 70) && *(v28 + 10) == 16)
         {
           v38 = v38 * 0.5;
         }
@@ -309,10 +309,10 @@ LABEL_20:
         v49 = v33 + 10.0;
         v50 = v31 + 10.0;
         v51 = v35 + 10.0;
-        if (*([v6 layerState] + 67))
+        if (*([trackingCopy layerState] + 67))
         {
-          self->_lastLayout.mainHUDWindow.x = *([v6 layerState] + 28);
-          v52 = *([v6 layerState] + 29);
+          self->_lastLayout.mainHUDWindow.x = *([trackingCopy layerState] + 28);
+          v52 = *([trackingCopy layerState] + 29);
         }
 
         else
@@ -435,7 +435,7 @@ LABEL_67:
               v67 = 0;
             }
 
-            if (*([v6 layerState] + 70) && HUDUIFrameIsValid(v13) && *(HUDGetGlobalConfig() + 3) == 1)
+            if (*([trackingCopy layerState] + 70) && HUDUIFrameIsValid(v13) && *(HUDGetGlobalConfig() + 3) == 1)
             {
               v68 = &buf[28 * v67];
               *v68 = v13;
@@ -462,10 +462,10 @@ LABEL_67:
             }
 
             v10 = _HUDMTLOverlayGlobalInstance_tracker;
-            v69 = [v7 texture];
+            texture3 = [drawableCopy texture];
             v70 = v90[5];
-            v71 = *[v6 layerState];
-            v72 = [v6 frameEvent];
+            v71 = *[trackingCopy layerState];
+            frameEvent = [trackingCopy frameEvent];
             v88[0] = _NSConcreteStackBlock;
             v88[1] = 3221225472;
             v88[2] = __52__HUDMTLLayerOverlay_layerTracking_presentDrawable___block_invoke;
@@ -473,7 +473,7 @@ LABEL_67:
             v88[4] = self;
             v88[5] = &v89;
             v88[6] = v95;
-            LOBYTE(v10) = HUDUIDrawFrames(v10, v69, v70, buf, v67, v71, v72, [v6 frameEventValue], v88);
+            LOBYTE(v10) = HUDUIDrawFrames(v10, texture3, v70, buf, v67, v71, frameEvent, [trackingCopy frameEventValue], v88);
 
             snapshotTexture = self->_snapshotTexture;
             self->_snapshotTexture = 0;
@@ -514,7 +514,7 @@ LABEL_67:
     }
 
 LABEL_19:
-    v19 = v6;
+    v19 = trackingCopy;
     goto LABEL_20;
   }
 
@@ -575,20 +575,20 @@ void __52__HUDMTLLayerOverlay_layerTracking_presentDrawable___block_invoke_2(uin
   }
 }
 
-- (void)layerTracking:(id)a3 setSnapshotTexture:(id)a4 callback:(id)a5
+- (void)layerTracking:(id)tracking setSnapshotTexture:(id)texture callback:(id)callback
 {
-  objc_storeStrong(&self->_snapshotTexture, a4);
-  v11 = a4;
-  v8 = a5;
-  v9 = [v8 copy];
+  objc_storeStrong(&self->_snapshotTexture, texture);
+  textureCopy = texture;
+  callbackCopy = callback;
+  v9 = [callbackCopy copy];
 
   snapshotCallback = self->_snapshotCallback;
   self->_snapshotCallback = v9;
 }
 
-- (void)_drawablePresentedCommon:(id)a3
+- (void)_drawablePresentedCommon:(id)common
 {
-  v3 = __chkstk_darwin(self, a2, a3);
+  v3 = __chkstk_darwin(self, a2, common);
   v5 = v4;
   v6 = +[MTLCaptureManager sharedCaptureManager];
   if ([v6 isCapturing])
@@ -631,16 +631,16 @@ void __52__HUDMTLLayerOverlay_layerTracking_presentDrawable___block_invoke_2(uin
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v9 = [v5 lastDrawableState];
-  v11 = v9[1];
-  v10 = v9[2];
-  v34 = *v9;
+  lastDrawableState = [v5 lastDrawableState];
+  v11 = lastDrawableState[1];
+  v10 = lastDrawableState[2];
+  v34 = *lastDrawableState;
   v35 = v11;
   v36 = v10;
-  v12 = v9[6];
-  v14 = v9[3];
-  v13 = v9[4];
-  v39 = v9[5];
+  v12 = lastDrawableState[6];
+  v14 = lastDrawableState[3];
+  v13 = lastDrawableState[4];
+  v39 = lastDrawableState[5];
   v40 = v12;
   v37 = v14;
   v38 = v13;
@@ -771,14 +771,14 @@ void __47__HUDMTLLayerOverlay__drawablePresentedCommon___block_invoke_3(uint64_t
   [(HUDMTLLayerOverlay *)&v3 dealloc];
 }
 
-- (void)drawUpdatedFrame:(HUDMTLLayerState *)a3 drawableState:(HUDMTLLayerDrawableState *)a4
+- (void)drawUpdatedFrame:(HUDMTLLayerState *)frame drawableState:(HUDMTLLayerDrawableState *)state
 {
   if (*(HUDGetGlobalConfig() + 16) == 1)
   {
     drawUpdatedFrame_drawableState___renderBegin = HUDCurrentTimeInNs();
   }
 
-  if (__ROR8__(0xEEEEEEEEEEEEEEEFLL * a3->frameNumber, 3) <= 0x222222222222222uLL)
+  if (__ROR8__(0xEEEEEEEEEEEEEEEFLL * frame->frameNumber, 3) <= 0x222222222222222uLL)
   {
     if (_HUDMTLOverlayGlobalInstance_onceToken != -1)
     {
@@ -790,10 +790,10 @@ void __47__HUDMTLLayerOverlay__drawablePresentedCommon___block_invoke_3(uint64_t
     HUDGPUTimeTrackerEnableEncoderGPUTimeSampling(GlobalInstance, *(v8 + 4));
   }
 
-  if (a4->drawableWidth && a4->drawableHeight)
+  if (state->drawableWidth && state->drawableHeight)
   {
-    frameNumber = a3->frameNumber;
-    isMainLayer = a3->isMainLayer;
+    frameNumber = frame->frameNumber;
+    isMainLayer = frame->isMainLayer;
     v11 = HUDGetGlobalConfig();
     v12 = 36;
     if (!isMainLayer)
@@ -817,7 +817,7 @@ LABEL_18:
             HUDMTLOverlayResetStats_cold_1();
           }
 
-          opaque = HUDUICreateFrame(_HUDMTLOverlayGlobalInstance_tracker, v14, 1u, fmaxf(a4->contentsScale, 2.0), v14, 0);
+          opaque = HUDUICreateFrame(_HUDMTLOverlayGlobalInstance_tracker, v14, 1u, fmaxf(state->contentsScale, 2.0), v14, 0);
           HUDUIReleaseFrame(&self->_layer.mainWindowFrame.tempFrame);
           self->_layer.mainWindowFrame.tempFrame.opaque = opaque;
         }
@@ -825,11 +825,11 @@ LABEL_18:
         if (HUDUIBeginFrame(opaque))
         {
           v17 = +[_CADeveloperHUDProperties instance];
-          v18 = [v17 mainWindow];
-          [v18 draw:a3 drawableState:a4 fontSize:self->_layer.fontSize frame:opaque layout:v15 height:&self->_layer.mainWindowFrame.currentHeight qrCode:self->_qrCode];
+          mainWindow = [v17 mainWindow];
+          [mainWindow draw:frame drawableState:state fontSize:self->_layer.fontSize frame:opaque layout:v15 height:&self->_layer.mainWindowFrame.currentHeight qrCode:self->_qrCode];
 
           objc_initWeak(&location, self);
-          v19 = a3->frameNumber;
+          v19 = frame->frameNumber;
           v21[0] = _NSConcreteStackBlock;
           v21[1] = 3221225472;
           v21[2] = __53__HUDMTLLayerOverlay_drawUpdatedFrame_drawableState___block_invoke;
@@ -859,7 +859,7 @@ LABEL_18:
     {
       v14 = 80.0;
       v15 = 16;
-      if (a4->drawableHeight < 0xC9 || v13 == 16)
+      if (state->drawableHeight < 0xC9 || v13 == 16)
       {
         goto LABEL_18;
       }
@@ -914,7 +914,7 @@ uint64_t __53__HUDMTLLayerOverlay_drawUpdatedFrame_drawableState___block_invoke_
   return _objc_release_x1();
 }
 
-- (void)drawInsightsFrame:(HUDMTLLayerState *)a3 drawableState:(HUDMTLLayerDrawableState *)a4
+- (void)drawInsightsFrame:(HUDMTLLayerState *)frame drawableState:(HUDMTLLayerDrawableState *)state
 {
   if (*(HUDGetGlobalConfig() + 16) == 1)
   {
@@ -923,10 +923,10 @@ uint64_t __53__HUDMTLLayerOverlay_drawUpdatedFrame_drawableState___block_invoke_
 
   if (*(HUDGetGlobalConfig() + 3) == 1)
   {
-    frameNumber = a3->frameNumber;
+    frameNumber = frame->frameNumber;
     opaque = self->_layer.insightsWindowFrame.tempFrame.opaque;
-    drawableWidth = a4->drawableWidth;
-    contentsScale = a4->contentsScale;
+    drawableWidth = state->drawableWidth;
+    contentsScale = state->contentsScale;
     v11 = fmin((((drawableWidth - self->_lastLayout.mainHUDWindow.w) / contentsScale) + -10.0), 1024.0);
     v12 = fmin((drawableWidth / contentsScale), 1024.0);
     if (v11)
@@ -946,18 +946,18 @@ uint64_t __53__HUDMTLLayerOverlay_drawUpdatedFrame_drawableState___block_invoke_
         HUDMTLOverlayResetStats_cold_1();
       }
 
-      opaque = HUDUICreateFrame(_HUDMTLOverlayGlobalInstance_tracker, v13, 1u, fmaxf(a4->contentsScale, 2.0), v13, 0);
+      opaque = HUDUICreateFrame(_HUDMTLOverlayGlobalInstance_tracker, v13, 1u, fmaxf(state->contentsScale, 2.0), v13, 0);
       self->_layer.insightsWindowFrame.tempFrame.opaque = opaque;
     }
 
     if (HUDUIBeginFrame(opaque))
     {
       v14 = +[_CADeveloperHUDProperties instance];
-      v15 = [v14 insightsWindow];
-      self->_layer.insightsWindowFrame.hasContent = [v15 draw:a3 drawableState:a4 fontSize:self->_layer.fontSize frame:opaque width:&self->_layer.insightsWindowFrame.contentWidth height:&self->_layer.insightsWindowFrame.currentHeight];
+      insightsWindow = [v14 insightsWindow];
+      self->_layer.insightsWindowFrame.hasContent = [insightsWindow draw:frame drawableState:state fontSize:self->_layer.fontSize frame:opaque width:&self->_layer.insightsWindowFrame.contentWidth height:&self->_layer.insightsWindowFrame.currentHeight];
 
       objc_initWeak(&location, self);
-      v16 = a3->frameNumber;
+      v16 = frame->frameNumber;
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = __54__HUDMTLLayerOverlay_drawInsightsFrame_drawableState___block_invoke;
@@ -1040,13 +1040,13 @@ uint64_t __54__HUDMTLLayerOverlay_drawInsightsFrame_drawableState___block_invoke
   return result;
 }
 
-- (void)generateQRCodeContent:(id)a3
+- (void)generateQRCodeContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v5 = objc_autoreleasePoolPush();
   if (*(HUDGetGlobalConfig() + 35))
   {
-    v6 = *[v4 layerState];
+    v6 = *[contentCopy layerState];
     if (!(v6 % *(HUDGetGlobalConfig() + 35)))
     {
       v30 = 0;
@@ -1055,19 +1055,19 @@ uint64_t __54__HUDMTLLayerOverlay_drawInsightsFrame_drawableState___block_invoke
       ValueRecord = HUDGPUTimeTrackerGetValueRecord(GlobalInstance, 0);
       v35[0] = @"drawable";
       v33[0] = @"frame";
-      v29 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", *([v4 lastDrawableState] + 1));
+      v29 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", *([contentCopy lastDrawableState] + 1));
       v34[0] = v29;
       v33[1] = @"logical-frame";
-      v28 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", *([v4 lastDrawableState] + 2));
+      v28 = +[NSNumber numberWithUnsignedLong:](NSNumber, "numberWithUnsignedLong:", *([contentCopy lastDrawableState] + 2));
       v34[1] = v28;
       v33[2] = @"drawable-id";
-      v27 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", *[v4 lastDrawableState]);
+      v27 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", *[contentCopy lastDrawableState]);
       v34[2] = v27;
       v33[3] = @"frame-interval";
-      v26 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", *([v4 lastDrawableState] + 7));
+      v26 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", *([contentCopy lastDrawableState] + 7));
       v34[3] = v26;
       v33[4] = @"presented-time";
-      v25 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", *([v4 lastDrawableState] + 4));
+      v25 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", *([contentCopy lastDrawableState] + 4));
       v34[4] = v25;
       v24 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:5];
       v35[1] = @"stats";
@@ -1091,12 +1091,12 @@ uint64_t __54__HUDMTLLayerOverlay_drawInsightsFrame_drawableState___block_invoke
       v32[3] = v12;
       v31[4] = @"marker";
       v13 = +[_CADeveloperHUDProperties instance];
-      v14 = [v13 frameMarker];
-      v15 = v14;
+      frameMarker = [v13 frameMarker];
+      v15 = frameMarker;
       v16 = @"none";
-      if (v14)
+      if (frameMarker)
       {
-        v16 = v14;
+        v16 = frameMarker;
       }
 
       v32[4] = v16;
@@ -1123,9 +1123,9 @@ uint64_t __54__HUDMTLLayerOverlay_drawInsightsFrame_drawableState___block_invoke
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)_log:(HUDMTLLayerState *)a3 drawableState:(HUDMTLLayerDrawableState *)a4
+- (void)_log:(HUDMTLLayerState *)_log drawableState:(HUDMTLLayerDrawableState *)state
 {
-  if (a3->isMainLayer)
+  if (_log->isMainLayer)
   {
     if (*(HUDGetGlobalConfig() + 16) == 1)
     {
@@ -1139,23 +1139,23 @@ uint64_t __54__HUDMTLLayerOverlay_drawInsightsFrame_drawableState___block_invoke
       if (os_signpost_enabled(v7))
       {
         v8 = +[_CADeveloperHUDProperties instance];
-        v9 = [v8 mainWindow];
+        mainWindow = [v8 mainWindow];
         v30[0] = _NSConcreteStackBlock;
         v30[1] = 3221225472;
         v30[2] = __41__HUDMTLLayerOverlay__log_drawableState___block_invoke;
         v30[3] = &unk_690B0;
         v31 = v7;
-        [v9 requestMetrics:v30];
+        [mainWindow requestMetrics:v30];
       }
     }
 
-    if ((*(v6 + 1) & 1) != 0 || a3->userLoggingEnabled)
+    if ((*(v6 + 1) & 1) != 0 || _log->userLoggingEnabled)
     {
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
       v29[2] = __41__HUDMTLLayerOverlay__log_drawableState___block_invoke_463;
       v29[3] = &__block_descriptor_40_e5_v8__0l;
-      v29[4] = a3;
+      v29[4] = _log;
       v10 = objc_retainBlock(v29);
       GlobalInstance = HUDGPUTimeTrackerGetGlobalInstance();
       ValueRecord = HUDGPUTimeTrackerGetValueRecord(GlobalInstance, 0);
@@ -1169,7 +1169,7 @@ uint64_t __54__HUDMTLLayerOverlay_drawInsightsFrame_drawableState___block_invoke
         v13 = 0;
       }
 
-      presentedDeltaTime = a4->presentedDeltaTime;
+      presentedDeltaTime = state->presentedDeltaTime;
       if (presentedDeltaTime)
       {
         v15 = &_log_drawableState__logBuffer - _log_drawableState__logBufferPos + 986;
@@ -1178,7 +1178,7 @@ uint64_t __54__HUDMTLLayerOverlay_drawInsightsFrame_drawableState___block_invoke
         {
           *_log_drawableState__logBufferPos = 0;
           (v10[2])(v10);
-          _log_drawableState__logBufferPos += snprintf(_log_drawableState__logBufferPos, &_log_drawableState__logBuffer - _log_drawableState__logBufferPos + 986, ",%.2f,%.2f", a4->presentedDeltaTime * 0.000001, v13 * 0.000001);
+          _log_drawableState__logBufferPos += snprintf(_log_drawableState__logBufferPos, &_log_drawableState__logBuffer - _log_drawableState__logBufferPos + 986, ",%.2f,%.2f", state->presentedDeltaTime * 0.000001, v13 * 0.000001);
         }
 
         else
@@ -1195,19 +1195,19 @@ uint64_t __54__HUDMTLLayerOverlay_drawInsightsFrame_drawableState___block_invoke
       if (os_signpost_enabled(v17))
       {
         v18 = +[_CADeveloperHUDProperties instance];
-        v19 = [v18 frameMarker];
+        frameMarker = [v18 frameMarker];
 
         v20 = v17;
         v21 = v20;
-        layerID = a3->layerID;
+        layerID = _log->layerID;
         if (layerID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
         {
-          frameNumber = a3->frameNumber;
-          logicalFrameNumber = a3->logicalFrameNumber;
-          v25 = a4->presentedDeltaTime / 1000000000.0;
+          frameNumber = _log->frameNumber;
+          logicalFrameNumber = _log->logicalFrameNumber;
+          v25 = state->presentedDeltaTime / 1000000000.0;
           *buf = 134350850;
-          presentedTime = a4->presentedTime;
-          drawableID = a4->drawableID;
+          presentedTime = state->presentedTime;
+          drawableID = state->drawableID;
           v33 = layerID;
           v34 = 2050;
           v35 = frameNumber;
@@ -1220,9 +1220,9 @@ uint64_t __54__HUDMTLLayerOverlay_drawInsightsFrame_drawableState___block_invoke
           v28 = @"none";
           v42 = 2050;
           v43 = drawableID;
-          if (v19)
+          if (frameMarker)
           {
-            v28 = v19;
+            v28 = frameMarker;
           }
 
           v44 = 2050;
@@ -1233,7 +1233,7 @@ uint64_t __54__HUDMTLLayerOverlay_drawInsightsFrame_drawableState___block_invoke
         }
       }
 
-      _log_drawableState__logTime += a4->updateDeltaNs;
+      _log_drawableState__logTime += state->updateDeltaNs;
       if (*(HUDGetGlobalConfig() + 16) == 1)
       {
         [HUDMTLLayerOverlay _log:drawableState:];

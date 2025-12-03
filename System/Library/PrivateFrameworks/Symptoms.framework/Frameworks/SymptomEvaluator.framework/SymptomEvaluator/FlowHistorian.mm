@@ -3,15 +3,15 @@
 - (FlowHistorian)init;
 - (double)lastInterfaceTrafficTimestamp;
 - (id)description;
-- (id)getState:(BOOL)a3;
+- (id)getState:(BOOL)state;
 - (unint64_t)lastSampledRxBytes;
 - (unint64_t)lastSampledTxBytes;
 - (unint64_t)totalClosedFlows;
 - (unint64_t)totalOpenedFlows;
 - (unint64_t)totalRxBytes;
 - (unint64_t)totalTxBytes;
-- (void)applyDeltaRx:(unint64_t)a3 deltaTx:(unint64_t)a4 snapshot:(id)a5;
-- (void)updateSamplesWithTime:(double)a3 bumpSamples:(BOOL)a4;
+- (void)applyDeltaRx:(unint64_t)rx deltaTx:(unint64_t)tx snapshot:(id)snapshot;
+- (void)updateSamplesWithTime:(double)time bumpSamples:(BOOL)samples;
 @end
 
 @implementation FlowHistorian
@@ -134,12 +134,12 @@
 
 - (BOOL)pendingInterfaceSampleIsIdle
 {
-  v3 = [(FlowHistorian *)self totalRxBytes];
+  totalRxBytes = [(FlowHistorian *)self totalRxBytes];
   result = 0;
-  if (v3 == [(FlowHistorian *)self lastSampledRxBytes])
+  if (totalRxBytes == [(FlowHistorian *)self lastSampledRxBytes])
   {
-    v4 = [(FlowHistorian *)self totalTxBytes];
-    if (v4 == [(FlowHistorian *)self lastSampledTxBytes])
+    totalTxBytes = [(FlowHistorian *)self totalTxBytes];
+    if (totalTxBytes == [(FlowHistorian *)self lastSampledTxBytes])
     {
       return 1;
     }
@@ -160,32 +160,32 @@
   return result;
 }
 
-- (void)updateSamplesWithTime:(double)a3 bumpSamples:(BOOL)a4
+- (void)updateSamplesWithTime:(double)time bumpSamples:(BOOL)samples
 {
-  v4 = a4;
+  samplesCopy = samples;
   v39 = *MEMORY[0x277D85DE8];
   v7 = flowScrutinyLogHandle;
   if (os_log_type_enabled(flowScrutinyLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v8 = v7;
     v27 = 134219264;
-    v28 = a3;
+    timeCopy = time;
     v29 = 1024;
-    v30 = v4;
+    v30 = samplesCopy;
     v31 = 2048;
-    v32 = [(FlowHistorian *)self lastSampledRxBytes];
+    lastSampledRxBytes = [(FlowHistorian *)self lastSampledRxBytes];
     v33 = 2048;
-    v34 = [(FlowHistorian *)self totalRxBytes];
+    totalRxBytes = [(FlowHistorian *)self totalRxBytes];
     v35 = 2048;
-    v36 = [(FlowHistorian *)self lastSampledTxBytes];
+    lastSampledTxBytes = [(FlowHistorian *)self lastSampledTxBytes];
     v37 = 2048;
-    v38 = [(FlowHistorian *)self totalTxBytes];
+    totalTxBytes = [(FlowHistorian *)self totalTxBytes];
     _os_log_impl(&dword_23255B000, v8, OS_LOG_TYPE_DEBUG, "FlowHistorySampler updateSamplesWithTime %.3f bump %d, self.lastSampledRxBytes %lld self.totalRxBytes %lld  tx %lld %lld", &v27, 0x3Au);
   }
 
   if (self->_lastSampleTimeIntervalSinceReferenceDate == 0.0)
   {
-    self->_lastSampleTimeIntervalSinceReferenceDate = a3;
+    self->_lastSampleTimeIntervalSinceReferenceDate = time;
     v9 = *&self->_currentCounts.counts[6].openedFlows;
     *&self->_lastSampledCounts.counts[6].rxBytes = *&self->_currentCounts.counts[6].rxBytes;
     *&self->_lastSampledCounts.counts[6].openedFlows = v9;
@@ -212,11 +212,11 @@
     *&self->_lastSampledCounts.counts[1].openedFlows = v16;
   }
 
-  else if (v4)
+  else if (samplesCopy)
   {
     v17 = objc_alloc_init(FlowHistorySample);
     [(FlowHistorySample *)v17 setStartTimeIntervalSinceReferenceDate:self->_lastSampleTimeIntervalSinceReferenceDate];
-    [(FlowHistorySample *)v17 setElapsedTime:a3 - self->_lastSampleTimeIntervalSinceReferenceDate];
+    [(FlowHistorySample *)v17 setElapsedTime:time - self->_lastSampleTimeIntervalSinceReferenceDate];
     [(FlowHistorySample *)v17 noteCurent:&self->_currentCounts previous:&self->_lastSampledCounts];
     [(NSMutableArray *)self->_historySamples addObject:v17];
     if ([(NSMutableArray *)self->_historySamples count]> self->_maxHistorySamples)
@@ -248,26 +248,26 @@
     v25 = *&self->_currentCounts.counts[1].openedFlows;
     *&self->_lastSampledCounts.counts[1].rxBytes = *&self->_currentCounts.counts[1].rxBytes;
     *&self->_lastSampledCounts.counts[1].openedFlows = v25;
-    self->_lastSampleTimeIntervalSinceReferenceDate = a3;
+    self->_lastSampleTimeIntervalSinceReferenceDate = time;
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applyDeltaRx:(unint64_t)a3 deltaTx:(unint64_t)a4 snapshot:(id)a5
+- (void)applyDeltaRx:(unint64_t)rx deltaTx:(unint64_t)tx snapshot:(id)snapshot
 {
-  v13 = a5;
-  if ([v13 interfaceCellularViaPreferredFallback])
+  snapshotCopy = snapshot;
+  if ([snapshotCopy interfaceCellularViaPreferredFallback])
   {
     v8 = 1;
   }
 
-  else if ([v13 interfaceCellularViaAnyFallback])
+  else if ([snapshotCopy interfaceCellularViaAnyFallback])
   {
     v8 = 2;
   }
 
-  else if ([v13 flowUsesChannels])
+  else if ([snapshotCopy flowUsesChannels])
   {
     v8 = 0;
   }
@@ -277,9 +277,9 @@
     v8 = 3;
   }
 
-  v9 = [v13 snapshotAppStateIsForeground];
+  snapshotAppStateIsForeground = [snapshotCopy snapshotAppStateIsForeground];
   LODWORD(v10) = v8 | 4;
-  if (v9)
+  if (snapshotAppStateIsForeground)
   {
     v10 = v8;
   }
@@ -290,15 +290,15 @@
   }
 
   v11 = &self->super.isa + 4 * v10;
-  v12 = v11[34] + a4;
-  v11[33] = (v11[33] + a3);
+  v12 = v11[34] + tx;
+  v11[33] = (v11[33] + rx);
   v11[34] = v12;
-  if ([v13 firstOccurrence])
+  if ([snapshotCopy firstOccurrence])
   {
     v11[35] = (v11[35] + 1);
   }
 
-  if ([v13 snapshotReason] == 2)
+  if ([snapshotCopy snapshotReason] == 2)
   {
     v11[36] = (v11[36] + 1);
   }
@@ -306,9 +306,9 @@
   self->_lastInterfaceTrafficTimestamp = apparentTime();
 }
 
-- (id)getState:(BOOL)a3
+- (id)getState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v34 = *MEMORY[0x277D85DE8];
   v5 = apparentTime();
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -316,7 +316,7 @@
   v28 = v6;
   [v6 addObject:v7];
 
-  if (v3)
+  if (stateCopy)
   {
     v31 = 0u;
     v32 = 0u;
@@ -396,7 +396,7 @@
 
   else if ([(NSMutableArray *)self->_historySamples count])
   {
-    v18 = [(NSMutableArray *)self->_historySamples lastObject];
+    lastObject = [(NSMutableArray *)self->_historySamples lastObject];
     v19 = objc_alloc(MEMORY[0x277CCACA8]);
     v20 = self->_logPrefix;
     if (!v20)
@@ -404,7 +404,7 @@
       v20 = &stru_2847966D8;
     }
 
-    v11 = [v19 initWithFormat:@"          %@%@", v20, v18];
+    v11 = [v19 initWithFormat:@"          %@%@", v20, lastObject];
     [v28 addObject:v11];
   }
 

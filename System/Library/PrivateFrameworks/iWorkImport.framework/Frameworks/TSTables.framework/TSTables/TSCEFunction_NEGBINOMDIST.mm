@@ -1,14 +1,14 @@
 @interface TSCEFunction_NEGBINOMDIST
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_NEGBINOMDIST
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
+  v8 = **arguments;
   v76[0] = 0;
-  v10 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v9, a3, a4, 0, v76);
+  v10 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v9, context, spec, 0, v76);
   v11 = v76[0];
   v16 = objc_msgSend_trunc(v10, v12, v13, v14, v15);
 
@@ -18,15 +18,15 @@
   v75._decimal.w[1] = v21;
   if (v11)
   {
-    v26 = objc_msgSend_raiseErrorOrConvert_(a3, v21, v11, v22, v23);
+    v26 = objc_msgSend_raiseErrorOrConvert_(context, v21, v11, v22, v23);
   }
 
   else
   {
-    v27 = *(*a5 + 8);
+    v27 = *(*arguments + 8);
     v74 = 0;
     v64 = v27;
-    v29 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v27, v28, a3, a4, 1, &v74);
+    v29 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v27, v28, context, spec, 1, &v74);
     v11 = v74;
     v34 = objc_msgSend_trunc(v29, v30, v31, v32, v33);
 
@@ -34,20 +34,20 @@
     v73._decimal.w[1] = v39;
     if (v11)
     {
-      v26 = objc_msgSend_raiseErrorOrConvert_(a3, v39, v11, v40, v41);
+      v26 = objc_msgSend_raiseErrorOrConvert_(context, v39, v11, v40, v41);
     }
 
     else
     {
-      v42 = *(*a5 + 16);
+      v42 = *(*arguments + 16);
       v72 = 0;
-      v44 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v42, v43, a3, a4, 2, &v72);
+      v44 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v42, v43, context, spec, 2, &v72);
       v11 = v72;
       v71._decimal.w[0] = objc_msgSend_decimalRepresentation(v44, v45, v46, v47, v48);
       v71._decimal.w[1] = v49;
       if (v11)
       {
-        v52 = objc_msgSend_raiseErrorOrConvert_(a3, v49, v11, v50, v51);
+        v52 = objc_msgSend_raiseErrorOrConvert_(context, v49, v11, v50, v51);
       }
 
       else

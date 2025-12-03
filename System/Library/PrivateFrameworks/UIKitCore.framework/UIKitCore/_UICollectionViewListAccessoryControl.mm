@@ -1,27 +1,27 @@
 @interface _UICollectionViewListAccessoryControl
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_UICollectionViewListAccessoryControl)initWithType:(int64_t)a3 constants:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_UICollectionViewListAccessoryControl)initWithType:(int64_t)type constants:(id)constants;
 - (id)_renderedImage;
 - (id)viewForFirstBaselineLayout;
 - (id)viewForLastBaselineLayout;
 - (void)_executeActionHandler;
 - (void)_updateImageViewIfNeeded;
 - (void)layoutSubviews;
-- (void)setAccessoryBackgroundColor:(id)a3;
-- (void)setAccessoryTintColor:(id)a3;
-- (void)setAccessoryUsesMonochromaticTreatment:(BOOL)a3;
-- (void)setActionHandler:(id)a3;
-- (void)setConstants:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3 isUserInitiated:(BOOL)a4;
-- (void)setType:(int64_t)a3;
+- (void)setAccessoryBackgroundColor:(id)color;
+- (void)setAccessoryTintColor:(id)color;
+- (void)setAccessoryUsesMonochromaticTreatment:(BOOL)treatment;
+- (void)setActionHandler:(id)handler;
+- (void)setConstants:(id)constants;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected isUserInitiated:(BOOL)initiated;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation _UICollectionViewListAccessoryControl
 
-- (_UICollectionViewListAccessoryControl)initWithType:(int64_t)a3 constants:(id)a4
+- (_UICollectionViewListAccessoryControl)initWithType:(int64_t)type constants:(id)constants
 {
-  v7 = a4;
+  constantsCopy = constants;
   v15.receiver = self;
   v15.super_class = _UICollectionViewListAccessoryControl;
   v8 = [(UIControl *)&v15 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -29,8 +29,8 @@
   if (v8)
   {
     [(UIView *)v8 setOpaque:0];
-    v9->_type = a3;
-    objc_storeStrong(&v9->_constants, a4);
+    v9->_type = type;
+    objc_storeStrong(&v9->_constants, constants);
     v9->_needsImageViewUpdate = 1;
     v10 = +[UITraitCollection systemTraitsAffectingColorAppearance];
     v11 = +[UITraitCollection systemTraitsAffectingImageLookup];
@@ -42,16 +42,16 @@
   return v9;
 }
 
-- (void)setActionHandler:(id)a3
+- (void)setActionHandler:(id)handler
 {
   actionHandler = self->_actionHandler;
-  v6 = [a3 copy];
+  v6 = [handler copy];
   v7 = self->_actionHandler;
   self->_actionHandler = v6;
 
-  if (!a3 || actionHandler)
+  if (!handler || actionHandler)
   {
-    if (!a3 && actionHandler)
+    if (!handler && actionHandler)
     {
 
       [(UIControl *)self removeTarget:self action:sel__executeActionHandler forControlEvents:0x2000];
@@ -74,82 +74,82 @@
   }
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
-  if (self->_type != a3)
+  if (self->_type != type)
   {
-    self->_type = a3;
+    self->_type = type;
     self->_nextImageViewUpdateShouldAnimate = 0;
     [(_UICollectionViewListAccessoryControl *)self _setNeedsImageViewUpdate];
   }
 }
 
-- (void)setConstants:(id)a3
+- (void)setConstants:(id)constants
 {
-  v5 = a3;
-  if (self->_constants != v5)
+  constantsCopy = constants;
+  if (self->_constants != constantsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_constants, a3);
+    v6 = constantsCopy;
+    objc_storeStrong(&self->_constants, constants);
     [(_UICollectionViewListAccessoryControl *)self _setNeedsImageViewUpdate];
-    v5 = v6;
+    constantsCopy = v6;
   }
 }
 
-- (void)setAccessoryTintColor:(id)a3
+- (void)setAccessoryTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_accessoryTintColor != v5)
+  colorCopy = color;
+  if (self->_accessoryTintColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_accessoryTintColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_accessoryTintColor, color);
     [(_UICollectionViewListAccessoryControl *)self _setNeedsImageViewUpdate];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setAccessoryBackgroundColor:(id)a3
+- (void)setAccessoryBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_accessoryBackgroundColor != v5)
+  colorCopy = color;
+  if (self->_accessoryBackgroundColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_accessoryBackgroundColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_accessoryBackgroundColor, color);
     [(_UICollectionViewListAccessoryControl *)self _setNeedsImageViewUpdate];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setAccessoryUsesMonochromaticTreatment:(BOOL)a3
+- (void)setAccessoryUsesMonochromaticTreatment:(BOOL)treatment
 {
-  if (self->_accessoryUsesMonochromaticTreatment != a3)
+  if (self->_accessoryUsesMonochromaticTreatment != treatment)
   {
-    self->_accessoryUsesMonochromaticTreatment = a3;
+    self->_accessoryUsesMonochromaticTreatment = treatment;
     [(_UICollectionViewListAccessoryControl *)self _setNeedsImageViewUpdate];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v4.receiver = self;
   v4.super_class = _UICollectionViewListAccessoryControl;
-  [(UIControl *)&v4 setHighlighted:a3];
+  [(UIControl *)&v4 setHighlighted:highlighted];
   [(_UICollectionViewListAccessoryControl *)self _setNeedsImageViewUpdate];
 }
 
-- (void)setSelected:(BOOL)a3 isUserInitiated:(BOOL)a4
+- (void)setSelected:(BOOL)selected isUserInitiated:(BOOL)initiated
 {
-  v5 = a3;
-  v7 = [(UIControl *)self isSelected];
+  selectedCopy = selected;
+  isSelected = [(UIControl *)self isSelected];
   v9.receiver = self;
   v9.super_class = _UICollectionViewListAccessoryControl;
-  [(UIControl *)&v9 setSelected:v5];
-  if (v7 != v5)
+  [(UIControl *)&v9 setSelected:selectedCopy];
+  if (isSelected != selectedCopy)
   {
     [(_UICollectionViewListAccessoryControl *)self _setNeedsImageViewUpdate];
     if (_UISolariumEnabled())
     {
-      v8 = self->_type == 2 && a4;
+      v8 = self->_type == 2 && initiated;
     }
 
     else
@@ -185,18 +185,18 @@
   {
     if (type == 2)
     {
-      v13 = [(UIControl *)self isSelected];
+      isSelected = [(UIControl *)self isSelected];
       constants = self->_constants;
-      v15 = [(UIView *)self traitCollection];
+      traitCollection = [(UIView *)self traitCollection];
       accessoryTintColor = self->_accessoryTintColor;
-      if (v13)
+      if (isSelected)
       {
-        [(UITableConstants *)constants defaultMultiSelectSelectedImageForCellStyle:0 traitCollection:v15 checkmarkColor:accessoryTintColor backgroundColor:self->_accessoryBackgroundColor];
+        [(UITableConstants *)constants defaultMultiSelectSelectedImageForCellStyle:0 traitCollection:traitCollection checkmarkColor:accessoryTintColor backgroundColor:self->_accessoryBackgroundColor];
       }
 
       else
       {
-        [(UITableConstants *)constants defaultMultiSelectNotSelectedImageForCellStyle:0 traitCollection:v15 accessoryBaseColor:accessoryTintColor];
+        [(UITableConstants *)constants defaultMultiSelectNotSelectedImageForCellStyle:0 traitCollection:traitCollection accessoryBaseColor:accessoryTintColor];
       }
       v10 = ;
 
@@ -205,12 +205,12 @@
 
     if (type == 3)
     {
-      v9 = [(UITableConstants *)self->_constants defaultDetailAccessoryImage];
-      v10 = v9;
+      defaultDetailAccessoryImage = [(UITableConstants *)self->_constants defaultDetailAccessoryImage];
+      v10 = defaultDetailAccessoryImage;
       v11 = self->_accessoryTintColor;
       if (v11)
       {
-        v12 = [v9 imageWithTintColor:v11 renderingMode:1];
+        v12 = [defaultDetailAccessoryImage imageWithTintColor:v11 renderingMode:1];
 
         v10 = v12;
       }
@@ -239,7 +239,7 @@ LABEL_14:
   v10 = 0;
 LABEL_19:
   v17 = self->_constants;
-  v18 = [(UIView *)self traitCollection];
+  traitCollection2 = [(UIView *)self traitCollection];
   if (self->_type >= 4uLL)
   {
     v19 = 4;
@@ -250,12 +250,12 @@ LABEL_19:
     v19 = self->_type;
   }
 
-  v20 = [(UITableConstants *)v17 defaultListCellAccessoryImageSymbolConfigurationForTraitCollection:v18 accessoryType:v19];
+  v20 = [(UITableConstants *)v17 defaultListCellAccessoryImageSymbolConfigurationForTraitCollection:traitCollection2 accessoryType:v19];
   [(UIImageView *)self->_imageView setPreferredSymbolConfiguration:v20];
 
-  v21 = [(_UICollectionViewListAccessoryControl *)self accessoryUsesMonochromaticTreatment];
+  accessoryUsesMonochromaticTreatment = [(_UICollectionViewListAccessoryControl *)self accessoryUsesMonochromaticTreatment];
   v22 = self->_imageView;
-  if (v21)
+  if (accessoryUsesMonochromaticTreatment)
   {
     [(UIView *)v22 _setMonochromaticTreatment:1];
     v22 = self->_imageView;
@@ -286,11 +286,11 @@ LABEL_19:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(_UICollectionViewListAccessoryControl *)self _updateImageViewIfNeeded:a3.width];
-  v4 = [(UIImageView *)self->_imageView _currentImage];
-  [v4 size];
+  [(_UICollectionViewListAccessoryControl *)self _updateImageViewIfNeeded:fits.width];
+  _currentImage = [(UIImageView *)self->_imageView _currentImage];
+  [_currentImage size];
   v6 = v5;
   v8 = v7;
 
@@ -307,8 +307,8 @@ LABEL_19:
   v12.super_class = _UICollectionViewListAccessoryControl;
   [(UIView *)&v12 layoutSubviews];
   [(_UICollectionViewListAccessoryControl *)self _updateImageViewIfNeeded];
-  v3 = [(UIImageView *)self->_imageView _currentImage];
-  [v3 size];
+  _currentImage = [(UIImageView *)self->_imageView _currentImage];
+  [_currentImage size];
   v5 = v4;
   v7 = v6;
 

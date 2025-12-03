@@ -1,16 +1,16 @@
 @interface HKCodableQuantityDistributionData
-- (BOOL)isEqual:(id)a3;
-- (double)histogramCountsAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (double)histogramCountsAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addContextIdentifiers:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addContextIdentifiers:(id)identifiers;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasStartDate:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasStartDate:(BOOL)date;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableQuantityDistributionData
@@ -23,9 +23,9 @@
   [(HKCodableQuantityDistributionData *)&v3 dealloc];
 }
 
-- (void)setHasStartDate:(BOOL)a3
+- (void)setHasStartDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -38,38 +38,38 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (double)histogramCountsAtIndex:(unint64_t)a3
+- (double)histogramCountsAtIndex:(unint64_t)index
 {
   p_histogramCounts = &self->_histogramCounts;
   count = self->_histogramCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_histogramCounts->list[a3];
+  return p_histogramCounts->list[index];
 }
 
-- (void)addContextIdentifiers:(id)a3
+- (void)addContextIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   contextIdentifiers = self->_contextIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!contextIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_contextIdentifiers;
     self->_contextIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     contextIdentifiers = self->_contextIdentifiers;
   }
 
-  [(NSMutableArray *)contextIdentifiers addObject:v4];
+  [(NSMutableArray *)contextIdentifiers addObject:identifiersCopy];
 }
 
 - (id)description
@@ -78,20 +78,20 @@
   v8.receiver = self;
   v8.super_class = HKCodableQuantityDistributionData;
   v4 = [(HKCodableQuantityDistributionData *)&v8 description];
-  v5 = [(HKCodableQuantityDistributionData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableQuantityDistributionData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_startDate];
-    [v3 setObject:v5 forKey:@"startDate"];
+    [dictionary setObject:v5 forKey:@"startDate"];
 
     has = self->_has;
   }
@@ -99,60 +99,60 @@
   if (has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_endDate];
-    [v3 setObject:v6 forKey:@"endDate"];
+    [dictionary setObject:v6 forKey:@"endDate"];
   }
 
   minimumBucketValue = self->_minimumBucketValue;
   if (minimumBucketValue)
   {
-    v8 = [(HKCodableQuantity *)minimumBucketValue dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"minimumBucketValue"];
+    dictionaryRepresentation = [(HKCodableQuantity *)minimumBucketValue dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"minimumBucketValue"];
   }
 
   minimumValue = self->_minimumValue;
   if (minimumValue)
   {
-    v10 = [(HKCodableQuantity *)minimumValue dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"minimumValue"];
+    dictionaryRepresentation2 = [(HKCodableQuantity *)minimumValue dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"minimumValue"];
   }
 
   maximumValue = self->_maximumValue;
   if (maximumValue)
   {
-    v12 = [(HKCodableQuantity *)maximumValue dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"maximumValue"];
+    dictionaryRepresentation3 = [(HKCodableQuantity *)maximumValue dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"maximumValue"];
   }
 
   averageValue = self->_averageValue;
   if (averageValue)
   {
-    v14 = [(HKCodableQuantity *)averageValue dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"averageValue"];
+    dictionaryRepresentation4 = [(HKCodableQuantity *)averageValue dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"averageValue"];
   }
 
   duration = self->_duration;
   if (duration)
   {
-    v16 = [(HKCodableQuantity *)duration dictionaryRepresentation];
-    [v3 setObject:v16 forKey:@"duration"];
+    dictionaryRepresentation5 = [(HKCodableQuantity *)duration dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"duration"];
   }
 
   v17 = PBRepeatedDoubleNSArray();
-  [v3 setObject:v17 forKey:@"histogramCounts"];
+  [dictionary setObject:v17 forKey:@"histogramCounts"];
 
   contextIdentifiers = self->_contextIdentifiers;
   if (contextIdentifiers)
   {
-    [v3 setObject:contextIdentifiers forKey:@"contextIdentifiers"];
+    [dictionary setObject:contextIdentifiers forKey:@"contextIdentifiers"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -231,27 +231,27 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[5] = *&self->_startDate;
-    *(v4 + 96) |= 2u;
+    toCopy[5] = *&self->_startDate;
+    *(toCopy + 96) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[4] = *&self->_endDate;
-    *(v4 + 96) |= 1u;
+    toCopy[4] = *&self->_endDate;
+    *(toCopy + 96) |= 1u;
   }
 
-  v13 = v4;
+  v13 = toCopy;
   if (self->_minimumBucketValue)
   {
-    [v4 setMinimumBucketValue:?];
+    [toCopy setMinimumBucketValue:?];
   }
 
   if (self->_minimumValue)
@@ -277,10 +277,10 @@
   if ([(HKCodableQuantityDistributionData *)self histogramCountsCount])
   {
     [v13 clearHistogramCounts];
-    v6 = [(HKCodableQuantityDistributionData *)self histogramCountsCount];
-    if (v6)
+    histogramCountsCount = [(HKCodableQuantityDistributionData *)self histogramCountsCount];
+    if (histogramCountsCount)
     {
-      v7 = v6;
+      v7 = histogramCountsCount;
       for (i = 0; i != v7; ++i)
       {
         [(HKCodableQuantityDistributionData *)self histogramCountsAtIndex:i];
@@ -292,10 +292,10 @@
   if ([(HKCodableQuantityDistributionData *)self contextIdentifiersCount])
   {
     [v13 clearContextIdentifiers];
-    v9 = [(HKCodableQuantityDistributionData *)self contextIdentifiersCount];
-    if (v9)
+    contextIdentifiersCount = [(HKCodableQuantityDistributionData *)self contextIdentifiersCount];
+    if (contextIdentifiersCount)
     {
-      v10 = v9;
+      v10 = contextIdentifiersCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(HKCodableQuantityDistributionData *)self contextIdentifiersAtIndex:j];
@@ -305,10 +305,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -324,23 +324,23 @@
     *(v5 + 96) |= 1u;
   }
 
-  v8 = [(HKCodableQuantity *)self->_minimumBucketValue copyWithZone:a3];
+  v8 = [(HKCodableQuantity *)self->_minimumBucketValue copyWithZone:zone];
   v9 = v6[10];
   v6[10] = v8;
 
-  v10 = [(HKCodableQuantity *)self->_minimumValue copyWithZone:a3];
+  v10 = [(HKCodableQuantity *)self->_minimumValue copyWithZone:zone];
   v11 = v6[11];
   v6[11] = v10;
 
-  v12 = [(HKCodableQuantity *)self->_maximumValue copyWithZone:a3];
+  v12 = [(HKCodableQuantity *)self->_maximumValue copyWithZone:zone];
   v13 = v6[9];
   v6[9] = v12;
 
-  v14 = [(HKCodableQuantity *)self->_averageValue copyWithZone:a3];
+  v14 = [(HKCodableQuantity *)self->_averageValue copyWithZone:zone];
   v15 = v6[6];
   v6[6] = v14;
 
-  v16 = [(HKCodableQuantity *)self->_duration copyWithZone:a3];
+  v16 = [(HKCodableQuantity *)self->_duration copyWithZone:zone];
   v17 = v6[8];
   v6[8] = v16;
 
@@ -364,7 +364,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v25 + 1) + 8 * i) copyWithZone:{a3, v25}];
+        v23 = [*(*(&v25 + 1) + 8 * i) copyWithZone:{zone, v25}];
         [v6 addContextIdentifiers:v23];
       }
 
@@ -377,23 +377,23 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 96) & 2) == 0 || self->_startDate != *(v4 + 5))
+    if ((*(equalCopy + 96) & 2) == 0 || self->_startDate != *(equalCopy + 5))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 96) & 2) != 0)
+  else if ((*(equalCopy + 96) & 2) != 0)
   {
 LABEL_25:
     v11 = 0;
@@ -402,25 +402,25 @@ LABEL_25:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 96) & 1) == 0 || self->_endDate != *(v4 + 4))
+    if ((*(equalCopy + 96) & 1) == 0 || self->_endDate != *(equalCopy + 4))
     {
       goto LABEL_25;
     }
   }
 
-  else if (*(v4 + 96))
+  else if (*(equalCopy + 96))
   {
     goto LABEL_25;
   }
 
   minimumBucketValue = self->_minimumBucketValue;
-  if (minimumBucketValue | *(v4 + 10) && ![(HKCodableQuantity *)minimumBucketValue isEqual:?])
+  if (minimumBucketValue | *(equalCopy + 10) && ![(HKCodableQuantity *)minimumBucketValue isEqual:?])
   {
     goto LABEL_25;
   }
 
   minimumValue = self->_minimumValue;
-  if (minimumValue | *(v4 + 11))
+  if (minimumValue | *(equalCopy + 11))
   {
     if (![(HKCodableQuantity *)minimumValue isEqual:?])
     {
@@ -429,7 +429,7 @@ LABEL_25:
   }
 
   maximumValue = self->_maximumValue;
-  if (maximumValue | *(v4 + 9))
+  if (maximumValue | *(equalCopy + 9))
   {
     if (![(HKCodableQuantity *)maximumValue isEqual:?])
     {
@@ -438,7 +438,7 @@ LABEL_25:
   }
 
   averageValue = self->_averageValue;
-  if (averageValue | *(v4 + 6))
+  if (averageValue | *(equalCopy + 6))
   {
     if (![(HKCodableQuantity *)averageValue isEqual:?])
     {
@@ -447,7 +447,7 @@ LABEL_25:
   }
 
   duration = self->_duration;
-  if (duration | *(v4 + 8))
+  if (duration | *(equalCopy + 8))
   {
     if (![(HKCodableQuantity *)duration isEqual:?])
     {
@@ -461,7 +461,7 @@ LABEL_25:
   }
 
   contextIdentifiers = self->_contextIdentifiers;
-  if (contextIdentifiers | *(v4 + 7))
+  if (contextIdentifiers | *(equalCopy + 7))
   {
     v11 = [(NSMutableArray *)contextIdentifiers isEqual:?];
   }
@@ -554,22 +554,22 @@ LABEL_26:
   return v18 ^ [(NSMutableArray *)self->_contextIdentifiers hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 96);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 96);
   if ((v6 & 2) != 0)
   {
-    self->_startDate = v4[5];
+    self->_startDate = fromCopy[5];
     *&self->_has |= 2u;
-    v6 = *(v4 + 96);
+    v6 = *(fromCopy + 96);
   }
 
   if (v6)
   {
-    self->_endDate = v4[4];
+    self->_endDate = fromCopy[4];
     *&self->_has |= 1u;
   }
 
@@ -648,10 +648,10 @@ LABEL_26:
     [(HKCodableQuantityDistributionData *)self setDuration:?];
   }
 
-  v17 = [v5 histogramCountsCount];
-  if (v17)
+  histogramCountsCount = [v5 histogramCountsCount];
+  if (histogramCountsCount)
   {
-    v18 = v17;
+    v18 = histogramCountsCount;
     for (i = 0; i != v18; ++i)
     {
       [v5 histogramCountsAtIndex:i];

@@ -1,22 +1,22 @@
 @interface PKDeviceVersion
 + (id)fromCurrentDeviceVersion;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDeviceVersion:(id)a3;
-- (PKDeviceVersion)initWithCoder:(id)a3;
-- (PKDeviceVersion)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDeviceVersion:(id)version;
+- (PKDeviceVersion)initWithCoder:(id)coder;
+- (PKDeviceVersion)initWithDictionary:(id)dictionary;
 - (id)asDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKDeviceVersion
 
-- (PKDeviceVersion)initWithDictionary:(id)a3
+- (PKDeviceVersion)initWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = PKDeviceVersion;
   v5 = [(PKDeviceVersion *)&v22 init];
@@ -25,19 +25,19 @@
     goto LABEL_8;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"deviceClass"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"deviceClass"];
   deviceClass = v5->_deviceClass;
   v5->_deviceClass = v6;
 
-  v8 = [v4 objectForKeyedSubscript:@"generation"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"generation"];
   generation = v5->_generation;
   v5->_generation = v8;
 
-  v10 = [v4 objectForKeyedSubscript:@"model"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"model"];
   model = v5->_model;
   v5->_model = v10;
 
-  v12 = [v4 objectForKeyedSubscript:@"companion"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"companion"];
   if (v12)
   {
     v13 = [[PKDeviceVersion alloc] initWithDictionary:v12];
@@ -75,7 +75,7 @@ LABEL_14:
       *buf = 138412546;
       v24 = v17;
       v25 = 2112;
-      v26 = v4;
+      v26 = dictionaryCopy;
       v18 = v17;
       v19 = "Invalid %@: %@";
 LABEL_13:
@@ -105,7 +105,7 @@ LABEL_15:
   v5 = v3;
   v6 = v4;
   v7 = v6;
-  v8 = 0;
+  firstObject = 0;
   if (v5 && v6)
   {
     v9 = [v6 rangeOfString:v5];
@@ -121,7 +121,7 @@ LABEL_15:
         _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Invalid deviceClass: '%@' for model: '%@'", &v16, 0x16u);
       }
 
-      v8 = 0;
+      firstObject = 0;
     }
 
     else
@@ -130,7 +130,7 @@ LABEL_15:
       v12 = [v11 componentsSeparatedByString:@", "];
       if ([v12 count])
       {
-        v8 = [v12 firstObject];
+        firstObject = [v12 firstObject];
       }
 
       else
@@ -145,12 +145,12 @@ LABEL_15:
           _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "Invalid numeric substring: '%@' for model: '%@'", &v16, 0x16u);
         }
 
-        v8 = 0;
+        firstObject = 0;
       }
     }
   }
 
-  [v2 setObject:v8 forKeyedSubscript:@"generation"];
+  [v2 setObject:firstObject forKeyedSubscript:@"generation"];
   v14 = [[PKDeviceVersion alloc] initWithDictionary:v2];
 
   return v14;
@@ -162,36 +162,36 @@ LABEL_15:
   [v3 setObject:self->_deviceClass forKeyedSubscript:@"deviceClass"];
   [v3 setObject:self->_generation forKeyedSubscript:@"generation"];
   [v3 setObject:self->_model forKeyedSubscript:@"model"];
-  v4 = [(PKDeviceVersion *)self->_companion asDictionary];
-  [v3 setObject:v4 forKeyedSubscript:@"companion"];
+  asDictionary = [(PKDeviceVersion *)self->_companion asDictionary];
+  [v3 setObject:asDictionary forKeyedSubscript:@"companion"];
 
   v5 = [v3 copy];
 
   return v5;
 }
 
-- (PKDeviceVersion)initWithCoder:(id)a3
+- (PKDeviceVersion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = PKDeviceVersion;
   v5 = [(PKDeviceVersion *)&v16 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"deviceClass"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"deviceClass"];
     deviceClass = v5->_deviceClass;
     v5->_deviceClass = v7;
 
-    v9 = [v4 decodeObjectOfClass:v6 forKey:@"generation"];
+    v9 = [coderCopy decodeObjectOfClass:v6 forKey:@"generation"];
     generation = v5->_generation;
     v5->_generation = v9;
 
-    v11 = [v4 decodeObjectOfClass:v6 forKey:@"model"];
+    v11 = [coderCopy decodeObjectOfClass:v6 forKey:@"model"];
     model = v5->_model;
     v5->_model = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"companion"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"companion"];
     companion = v5->_companion;
     v5->_companion = v13;
   }
@@ -199,62 +199,62 @@ LABEL_15:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_deviceClass forKey:@"deviceClass"];
-  [v5 encodeObject:self->_generation forKey:@"generation"];
-  [v5 encodeObject:self->_model forKey:@"model"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_deviceClass forKey:@"deviceClass"];
+  [coderCopy encodeObject:self->_generation forKey:@"generation"];
+  [coderCopy encodeObject:self->_model forKey:@"model"];
   companion = self->_companion;
   if (companion)
   {
-    [v5 encodeObject:companion forKey:@"companion"];
+    [coderCopy encodeObject:companion forKey:@"companion"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKDeviceVersion allocWithZone:](PKDeviceVersion init];
-  v6 = [(NSString *)self->_deviceClass copyWithZone:a3];
+  v6 = [(NSString *)self->_deviceClass copyWithZone:zone];
   deviceClass = v5->_deviceClass;
   v5->_deviceClass = v6;
 
-  v8 = [(NSString *)self->_generation copyWithZone:a3];
+  v8 = [(NSString *)self->_generation copyWithZone:zone];
   generation = v5->_generation;
   v5->_generation = v8;
 
-  v10 = [(NSString *)self->_model copyWithZone:a3];
+  v10 = [(NSString *)self->_model copyWithZone:zone];
   model = v5->_model;
   v5->_model = v10;
 
-  v12 = [(PKDeviceVersion *)self->_companion copyWithZone:a3];
+  v12 = [(PKDeviceVersion *)self->_companion copyWithZone:zone];
   companion = v5->_companion;
   v5->_companion = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKDeviceVersion *)self isEqualToDeviceVersion:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKDeviceVersion *)self isEqualToDeviceVersion:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToDeviceVersion:(id)a3
+- (BOOL)isEqualToDeviceVersion:(id)version
 {
-  v4 = a3;
-  v5 = v4[1];
+  versionCopy = version;
+  v5 = versionCopy[1];
   v6 = self->_deviceClass;
   v7 = v5;
   v8 = v7;
@@ -287,7 +287,7 @@ LABEL_15:
     }
   }
 
-  v11 = v4[2];
+  v11 = versionCopy[2];
   v6 = self->_generation;
   v12 = v11;
   v8 = v12;
@@ -310,7 +310,7 @@ LABEL_15:
     }
   }
 
-  v14 = v4[3];
+  v14 = versionCopy[3];
   v6 = self->_model;
   v15 = v14;
   v8 = v15;
@@ -337,7 +337,7 @@ LABEL_20:
 
 LABEL_24:
   companion = self->_companion;
-  v20 = v4[4];
+  v20 = versionCopy[4];
   if (companion && v20)
   {
     v17 = [(PKDeviceVersion *)companion isEqual:?];
@@ -355,12 +355,12 @@ LABEL_22:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_deviceClass];
-  [v3 safelyAddObject:self->_generation];
-  [v3 safelyAddObject:self->_model];
-  [v3 safelyAddObject:self->_companion];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_deviceClass];
+  [array safelyAddObject:self->_generation];
+  [array safelyAddObject:self->_model];
+  [array safelyAddObject:self->_companion];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }

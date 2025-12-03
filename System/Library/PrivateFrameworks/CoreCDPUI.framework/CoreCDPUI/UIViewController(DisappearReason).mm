@@ -6,16 +6,16 @@
 
 - (uint64_t)isDisappearingDueToPop
 {
-  v2 = [a1 navigationController];
+  navigationController = [self navigationController];
 
-  if (!v2)
+  if (!navigationController)
   {
     return 0;
   }
 
-  v3 = [a1 navigationController];
-  v4 = [v3 viewControllers];
-  v5 = [v4 containsObject:a1] ^ 1;
+  navigationController2 = [self navigationController];
+  viewControllers = [navigationController2 viewControllers];
+  v5 = [viewControllers containsObject:self] ^ 1;
 
   return v5;
 }

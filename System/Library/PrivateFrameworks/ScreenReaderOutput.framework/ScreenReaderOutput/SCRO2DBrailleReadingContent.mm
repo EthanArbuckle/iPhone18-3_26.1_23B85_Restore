@@ -1,6 +1,6 @@
 @interface SCRO2DBrailleReadingContent
 - (id)multiLineBraille;
-- (void)drawOnCanvas:(id)a3;
+- (void)drawOnCanvas:(id)canvas;
 - (void)multiLineBraille;
 - (void)panLeft;
 - (void)panRight;
@@ -8,15 +8,15 @@
 
 @implementation SCRO2DBrailleReadingContent
 
-- (void)drawOnCanvas:(id)a3
+- (void)drawOnCanvas:(id)canvas
 {
-  v4 = a3;
-  v5 = [(SCRO2DBrailleReadingContent *)self multiLineBraille];
-  v11 = v4;
-  v6 = [MEMORY[0x277CBEA90] data];
-  [v11 setImageData:v6];
+  canvasCopy = canvas;
+  multiLineBraille = [(SCRO2DBrailleReadingContent *)self multiLineBraille];
+  v11 = canvasCopy;
+  data = [MEMORY[0x277CBEA90] data];
+  [v11 setImageData:data];
 
-  v7 = [v5 componentsJoinedByString:&stru_28763D5C8];
+  v7 = [multiLineBraille componentsJoinedByString:&stru_28763D5C8];
   v8 = [v7 length];
   v9 = malloc_type_malloc(v8, 0x100004077774924uLL);
   if (v8)
@@ -82,10 +82,10 @@
 
 - (void)multiLineBraille
 {
-  v10 = [MEMORY[0x277CCA890] currentHandler];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a1, "length")}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(self, "length")}];
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:*a2];
-  [v10 handleFailureInMethod:a3 object:a4 file:@"SCRO2DBrailleReadingContent.m" lineNumber:106 description:{@"Each element of _brailleLine (%@, length %@) must be of length _width (%@)", a1, v8, v9}];
+  [currentHandler handleFailureInMethod:a3 object:a4 file:@"SCRO2DBrailleReadingContent.m" lineNumber:106 description:{@"Each element of _brailleLine (%@, length %@) must be of length _width (%@)", self, v8, v9}];
 }
 
 @end

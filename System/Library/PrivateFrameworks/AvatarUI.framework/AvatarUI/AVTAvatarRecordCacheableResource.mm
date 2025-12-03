@@ -1,27 +1,27 @@
 @interface AVTAvatarRecordCacheableResource
-- (AVTAvatarRecordCacheableResource)initWithAvatarRecord:(id)a3 includeAvatarData:(BOOL)a4 environment:(id)a5;
+- (AVTAvatarRecordCacheableResource)initWithAvatarRecord:(id)record includeAvatarData:(BOOL)data environment:(id)environment;
 - (BOOL)requiresEncryption;
 - (NSString)description;
-- (id)identifierForScope:(id)a3;
-- (id)persistentDataHashForScope:(id)a3;
-- (id)tokenForObservingChangesWithHandler:(id)a3;
+- (id)identifierForScope:(id)scope;
+- (id)persistentDataHashForScope:(id)scope;
+- (id)tokenForObservingChangesWithHandler:(id)handler;
 @end
 
 @implementation AVTAvatarRecordCacheableResource
 
-- (AVTAvatarRecordCacheableResource)initWithAvatarRecord:(id)a3 includeAvatarData:(BOOL)a4 environment:(id)a5
+- (AVTAvatarRecordCacheableResource)initWithAvatarRecord:(id)record includeAvatarData:(BOOL)data environment:(id)environment
 {
-  v6 = a4;
-  v9 = a3;
-  v10 = a5;
+  dataCopy = data;
+  recordCopy = record;
+  environmentCopy = environment;
   v15.receiver = self;
   v15.super_class = AVTAvatarRecordCacheableResource;
   v11 = [(AVTAvatarRecordCacheableResource *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_record, a3);
-    if (v6)
+    objc_storeStrong(&v11->_record, record);
+    if (dataCopy)
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -33,23 +33,23 @@
     }
 
     v12->_includeAvatarData = isKindOfClass & 1;
-    objc_storeStrong(&v12->_environment, a5);
+    objc_storeStrong(&v12->_environment, environment);
   }
 
   return v12;
 }
 
-- (id)persistentDataHashForScope:(id)a3
+- (id)persistentDataHashForScope:(id)scope
 {
-  v4 = [(AVTAvatarRecordCacheableResource *)self record];
-  v5 = [v4 isEditable];
+  record = [(AVTAvatarRecordCacheableResource *)self record];
+  isEditable = [record isEditable];
 
-  if (v5)
+  if (isEditable)
   {
     v6 = objc_opt_class();
-    v7 = [(AVTAvatarRecordCacheableResource *)self record];
-    v8 = [v7 avatarData];
-    v9 = [v6 persistentIdentifierForRecordData:v8];
+    record2 = [(AVTAvatarRecordCacheableResource *)self record];
+    avatarData = [record2 avatarData];
+    v9 = [v6 persistentIdentifierForRecordData:avatarData];
   }
 
   else
@@ -60,58 +60,58 @@
   return v9;
 }
 
-- (id)identifierForScope:(id)a3
+- (id)identifierForScope:(id)scope
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD60] string];
+  scopeCopy = scope;
+  string = [MEMORY[0x1E696AD60] string];
   v6 = objc_opt_class();
-  v7 = [(AVTAvatarRecordCacheableResource *)self record];
-  v8 = [v7 identifier];
-  v9 = [v6 persistentIdentifierPrefixForRecordWithIdentifier:v8];
-  [v5 appendString:v9];
+  record = [(AVTAvatarRecordCacheableResource *)self record];
+  identifier = [record identifier];
+  v9 = [v6 persistentIdentifierPrefixForRecordWithIdentifier:identifier];
+  [string appendString:v9];
 
-  [v5 appendFormat:@"_AK%lu", AVTAvatarKitSnapshotVersionNumber()];
+  [string appendFormat:@"_AK%lu", AVTAvatarKitSnapshotVersionNumber()];
   if ([(AVTAvatarRecordCacheableResource *)self includeAvatarData])
   {
     v10 = objc_opt_class();
-    v11 = [(AVTAvatarRecordCacheableResource *)self record];
-    v12 = [v11 avatarData];
-    v13 = [v10 persistentIdentifierForRecordData:v12];
-    [v5 appendFormat:@"_%@", v13];
+    record2 = [(AVTAvatarRecordCacheableResource *)self record];
+    avatarData = [record2 avatarData];
+    v13 = [v10 persistentIdentifierForRecordData:avatarData];
+    [string appendFormat:@"_%@", v13];
   }
 
-  if (v4)
+  if (scopeCopy)
   {
-    v14 = [v4 cacheableResourceAssociatedIdentifier];
-    [v5 appendString:v14];
+    cacheableResourceAssociatedIdentifier = [scopeCopy cacheableResourceAssociatedIdentifier];
+    [string appendString:cacheableResourceAssociatedIdentifier];
   }
 
-  v15 = [v5 copy];
+  v15 = [string copy];
 
   return v15;
 }
 
 - (BOOL)requiresEncryption
 {
-  v2 = [(AVTAvatarRecordCacheableResource *)self record];
-  v3 = [v2 isEditable];
+  record = [(AVTAvatarRecordCacheableResource *)self record];
+  isEditable = [record isEditable];
 
-  return v3;
+  return isEditable;
 }
 
-- (id)tokenForObservingChangesWithHandler:(id)a3
+- (id)tokenForObservingChangesWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(AVTAvatarRecordCacheableResource *)self record];
-  v6 = [v5 isEditable];
+  handlerCopy = handler;
+  record = [(AVTAvatarRecordCacheableResource *)self record];
+  isEditable = [record isEditable];
 
-  if (v6)
+  if (isEditable)
   {
     v7 = [AVTAvatarRecordCacheableResourceChangeToken alloc];
-    v8 = [(AVTAvatarRecordCacheableResource *)self environment];
-    v9 = [(AVTAvatarRecordCacheableResource *)self record];
-    v10 = [v9 identifier];
-    v11 = [(AVTAvatarRecordCacheableResourceChangeToken *)v7 initWithEnvironment:v8 recordIdentifier:v10 changeHandler:v4];
+    environment = [(AVTAvatarRecordCacheableResource *)self environment];
+    record2 = [(AVTAvatarRecordCacheableResource *)self record];
+    identifier = [record2 identifier];
+    v11 = [(AVTAvatarRecordCacheableResourceChangeToken *)v7 initWithEnvironment:environment recordIdentifier:identifier changeHandler:handlerCopy];
 
     [(AVTAvatarRecordCacheableResourceChangeToken *)v11 startObservingChanges];
   }
@@ -132,9 +132,9 @@
   v4 = [v3 mutableCopy];
 
   v5 = objc_opt_class();
-  v6 = [(AVTAvatarRecordCacheableResource *)self record];
-  v7 = [v6 identifier];
-  v8 = [v5 persistentIdentifierPrefixForRecordWithIdentifier:v7];
+  record = [(AVTAvatarRecordCacheableResource *)self record];
+  identifier = [record identifier];
+  v8 = [v5 persistentIdentifierPrefixForRecordWithIdentifier:identifier];
   [v4 appendFormat:@" persistentIDPrefix: %@", v8];
 
   v9 = [v4 copy];

@@ -1,26 +1,26 @@
 @interface SUUIIndexBarEntryViewElement
-- (SUUIIndexBarEntryViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUIIndexBarEntryViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (SUUIViewElement)childElement;
-- (id)applyUpdatesWithElement:(id)a3;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUIIndexBarEntryViewElement
 
-- (SUUIIndexBarEntryViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIIndexBarEntryViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v15.receiver = self;
   v15.super_class = SUUIIndexBarEntryViewElement;
-  v9 = [(SUUIViewElement *)&v15 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v15 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"targetIndexBarEntryID"];
+    v10 = [elementCopy getAttribute:@"targetIndexBarEntryID"];
     if ([v10 length])
     {
       objc_storeStrong(&v9->_targetIndexBarEntryID, v10);
     }
 
-    v11 = [v8 getAttribute:@"visibility"];
+    v11 = [elementCopy getAttribute:@"visibility"];
     v12 = [v11 isEqualToString:@"required"];
     v13 = 1000;
     if (!v12)
@@ -34,20 +34,20 @@
   return v9;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SUUIIndexBarEntryViewElement;
-  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self || [v5 updateType])
+  if (elementCopy != self || [v5 updateType])
   {
-    v7 = [(SUUIIndexBarEntryViewElement *)v4 targetIndexBarEntryID];
+    targetIndexBarEntryID = [(SUUIIndexBarEntryViewElement *)elementCopy targetIndexBarEntryID];
     targetIndexBarEntryID = self->_targetIndexBarEntryID;
-    self->_targetIndexBarEntryID = v7;
+    self->_targetIndexBarEntryID = targetIndexBarEntryID;
 
-    self->_visibilityPriority = [(SUUIIndexBarEntryViewElement *)v4 visibilityPriority];
+    self->_visibilityPriority = [(SUUIIndexBarEntryViewElement *)elementCopy visibilityPriority];
   }
 
   return v6;

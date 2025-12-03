@@ -1,37 +1,37 @@
 @interface SGMIMetricsSubmodelsProbabilities
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConversationProbability:(BOOL)a3;
-- (void)setHasDomainFromSenderProbability:(BOOL)a3;
-- (void)setHasListIdProbability:(BOOL)a3;
-- (void)setHasMailboxProbability:(BOOL)a3;
-- (void)setHasMailboxTypeProbability:(BOOL)a3;
-- (void)setHasPersonCCRecipientsProbability:(BOOL)a3;
-- (void)setHasPersonFromSenderInDyadicConversationProbability:(BOOL)a3;
-- (void)setHasPersonFromSenderProbability:(BOOL)a3;
-- (void)setHasPersonToRecipientsProbability:(BOOL)a3;
-- (void)setHasStandardMailRulesProbability:(BOOL)a3;
-- (void)setHasSubjectContentProbability:(BOOL)a3;
-- (void)setHasSubjectCountStatsProbability:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasConversationProbability:(BOOL)probability;
+- (void)setHasDomainFromSenderProbability:(BOOL)probability;
+- (void)setHasListIdProbability:(BOOL)probability;
+- (void)setHasMailboxProbability:(BOOL)probability;
+- (void)setHasMailboxTypeProbability:(BOOL)probability;
+- (void)setHasPersonCCRecipientsProbability:(BOOL)probability;
+- (void)setHasPersonFromSenderInDyadicConversationProbability:(BOOL)probability;
+- (void)setHasPersonFromSenderProbability:(BOOL)probability;
+- (void)setHasPersonToRecipientsProbability:(BOOL)probability;
+- (void)setHasStandardMailRulesProbability:(BOOL)probability;
+- (void)setHasSubjectContentProbability:(BOOL)probability;
+- (void)setHasSubjectCountStatsProbability:(BOOL)probability;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGMIMetricsSubmodelsProbabilities
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 30);
+  fromCopy = from;
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x100) != 0)
   {
-    self->_personFromSenderProbability = *(v4 + 10);
+    self->_personFromSenderProbability = *(fromCopy + 10);
     *&self->_has |= 0x100u;
-    v5 = *(v4 + 30);
+    v5 = *(fromCopy + 30);
     if ((v5 & 0x80) == 0)
     {
 LABEL_3:
@@ -49,9 +49,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_personFromSenderInDyadicConversationProbability = *(v4 + 9);
+  self->_personFromSenderInDyadicConversationProbability = *(fromCopy + 9);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x800) == 0)
   {
 LABEL_4:
@@ -64,9 +64,9 @@ LABEL_4:
   }
 
 LABEL_20:
-  self->_subjectContentProbability = *(v4 + 13);
+  self->_subjectContentProbability = *(fromCopy + 13);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x200) == 0)
   {
 LABEL_5:
@@ -79,9 +79,9 @@ LABEL_5:
   }
 
 LABEL_21:
-  self->_personToRecipientsProbability = *(v4 + 11);
+  self->_personToRecipientsProbability = *(fromCopy + 11);
   *&self->_has |= 0x200u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x40) == 0)
   {
 LABEL_6:
@@ -94,9 +94,9 @@ LABEL_6:
   }
 
 LABEL_22:
-  self->_personCCRecipientsProbability = *(v4 + 8);
+  self->_personCCRecipientsProbability = *(fromCopy + 8);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 4) == 0)
   {
 LABEL_7:
@@ -109,9 +109,9 @@ LABEL_7:
   }
 
 LABEL_23:
-  self->_domainFromSenderProbability = *(v4 + 4);
+  self->_domainFromSenderProbability = *(fromCopy + 4);
   *&self->_has |= 4u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 2) == 0)
   {
 LABEL_8:
@@ -124,9 +124,9 @@ LABEL_8:
   }
 
 LABEL_24:
-  self->_conversationProbability = *(v4 + 3);
+  self->_conversationProbability = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 8) == 0)
   {
 LABEL_9:
@@ -139,9 +139,9 @@ LABEL_9:
   }
 
 LABEL_25:
-  self->_listIdProbability = *(v4 + 5);
+  self->_listIdProbability = *(fromCopy + 5);
   *&self->_has |= 8u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 1) == 0)
   {
 LABEL_10:
@@ -154,9 +154,9 @@ LABEL_10:
   }
 
 LABEL_26:
-  self->_attachmentsProbability = *(v4 + 2);
+  self->_attachmentsProbability = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_11:
@@ -169,9 +169,9 @@ LABEL_11:
   }
 
 LABEL_27:
-  self->_subjectCountStatsProbability = *(v4 + 14);
+  self->_subjectCountStatsProbability = *(fromCopy + 14);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x400) == 0)
   {
 LABEL_12:
@@ -184,9 +184,9 @@ LABEL_12:
   }
 
 LABEL_28:
-  self->_standardMailRulesProbability = *(v4 + 12);
+  self->_standardMailRulesProbability = *(fromCopy + 12);
   *&self->_has |= 0x400u;
-  v5 = *(v4 + 30);
+  v5 = *(fromCopy + 30);
   if ((v5 & 0x10) == 0)
   {
 LABEL_13:
@@ -199,12 +199,12 @@ LABEL_13:
   }
 
 LABEL_29:
-  self->_mailboxProbability = *(v4 + 6);
+  self->_mailboxProbability = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  if ((*(v4 + 30) & 0x20) != 0)
+  if ((*(fromCopy + 30) & 0x20) != 0)
   {
 LABEL_14:
-    self->_mailboxTypeProbability = *(v4 + 7);
+    self->_mailboxTypeProbability = *(fromCopy + 7);
     *&self->_has |= 0x20u;
   }
 
@@ -658,25 +658,25 @@ LABEL_15:
   return v9 ^ v5 ^ v13 ^ v17 ^ v21 ^ v25 ^ v29 ^ v33 ^ v37 ^ v41 ^ v45 ^ v49 ^ v53;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_67;
   }
 
   has = self->_has;
-  v6 = *(v4 + 30);
+  v6 = *(equalCopy + 30);
   if ((has & 0x100) != 0)
   {
-    if ((*(v4 + 30) & 0x100) == 0 || self->_personFromSenderProbability != *(v4 + 10))
+    if ((*(equalCopy + 30) & 0x100) == 0 || self->_personFromSenderProbability != *(equalCopy + 10))
     {
       goto LABEL_67;
     }
   }
 
-  else if ((*(v4 + 30) & 0x100) != 0)
+  else if ((*(equalCopy + 30) & 0x100) != 0)
   {
 LABEL_67:
     v7 = 0;
@@ -685,7 +685,7 @@ LABEL_67:
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_personFromSenderInDyadicConversationProbability != *(v4 + 9))
+    if ((v6 & 0x80) == 0 || self->_personFromSenderInDyadicConversationProbability != *(equalCopy + 9))
     {
       goto LABEL_67;
     }
@@ -698,33 +698,33 @@ LABEL_67:
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 30) & 0x800) == 0 || self->_subjectContentProbability != *(v4 + 13))
+    if ((*(equalCopy + 30) & 0x800) == 0 || self->_subjectContentProbability != *(equalCopy + 13))
     {
       goto LABEL_67;
     }
   }
 
-  else if ((*(v4 + 30) & 0x800) != 0)
+  else if ((*(equalCopy + 30) & 0x800) != 0)
   {
     goto LABEL_67;
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 30) & 0x200) == 0 || self->_personToRecipientsProbability != *(v4 + 11))
+    if ((*(equalCopy + 30) & 0x200) == 0 || self->_personToRecipientsProbability != *(equalCopy + 11))
     {
       goto LABEL_67;
     }
   }
 
-  else if ((*(v4 + 30) & 0x200) != 0)
+  else if ((*(equalCopy + 30) & 0x200) != 0)
   {
     goto LABEL_67;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_personCCRecipientsProbability != *(v4 + 8))
+    if ((v6 & 0x40) == 0 || self->_personCCRecipientsProbability != *(equalCopy + 8))
     {
       goto LABEL_67;
     }
@@ -737,7 +737,7 @@ LABEL_67:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_domainFromSenderProbability != *(v4 + 4))
+    if ((v6 & 4) == 0 || self->_domainFromSenderProbability != *(equalCopy + 4))
     {
       goto LABEL_67;
     }
@@ -750,7 +750,7 @@ LABEL_67:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_conversationProbability != *(v4 + 3))
+    if ((v6 & 2) == 0 || self->_conversationProbability != *(equalCopy + 3))
     {
       goto LABEL_67;
     }
@@ -763,7 +763,7 @@ LABEL_67:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_listIdProbability != *(v4 + 5))
+    if ((v6 & 8) == 0 || self->_listIdProbability != *(equalCopy + 5))
     {
       goto LABEL_67;
     }
@@ -776,7 +776,7 @@ LABEL_67:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_attachmentsProbability != *(v4 + 2))
+    if ((v6 & 1) == 0 || self->_attachmentsProbability != *(equalCopy + 2))
     {
       goto LABEL_67;
     }
@@ -789,33 +789,33 @@ LABEL_67:
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(v4 + 30) & 0x1000) == 0 || self->_subjectCountStatsProbability != *(v4 + 14))
+    if ((*(equalCopy + 30) & 0x1000) == 0 || self->_subjectCountStatsProbability != *(equalCopy + 14))
     {
       goto LABEL_67;
     }
   }
 
-  else if ((*(v4 + 30) & 0x1000) != 0)
+  else if ((*(equalCopy + 30) & 0x1000) != 0)
   {
     goto LABEL_67;
   }
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 30) & 0x400) == 0 || self->_standardMailRulesProbability != *(v4 + 12))
+    if ((*(equalCopy + 30) & 0x400) == 0 || self->_standardMailRulesProbability != *(equalCopy + 12))
     {
       goto LABEL_67;
     }
   }
 
-  else if ((*(v4 + 30) & 0x400) != 0)
+  else if ((*(equalCopy + 30) & 0x400) != 0)
   {
     goto LABEL_67;
   }
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_mailboxProbability != *(v4 + 6))
+    if ((v6 & 0x10) == 0 || self->_mailboxProbability != *(equalCopy + 6))
     {
       goto LABEL_67;
     }
@@ -828,7 +828,7 @@ LABEL_67:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_mailboxTypeProbability != *(v4 + 7))
+    if ((v6 & 0x20) == 0 || self->_mailboxTypeProbability != *(equalCopy + 7))
     {
       goto LABEL_67;
     }
@@ -846,9 +846,9 @@ LABEL_68:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x100) != 0)
   {
@@ -1035,14 +1035,14 @@ LABEL_14:
   return result;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x100) != 0)
   {
-    v4[10] = LODWORD(self->_personFromSenderProbability);
-    *(v4 + 30) |= 0x100u;
+    toCopy[10] = LODWORD(self->_personFromSenderProbability);
+    *(toCopy + 30) |= 0x100u;
     has = self->_has;
     if ((has & 0x80) == 0)
     {
@@ -1061,8 +1061,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[9] = LODWORD(self->_personFromSenderInDyadicConversationProbability);
-  *(v4 + 30) |= 0x80u;
+  toCopy[9] = LODWORD(self->_personFromSenderInDyadicConversationProbability);
+  *(toCopy + 30) |= 0x80u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -1076,8 +1076,8 @@ LABEL_4:
   }
 
 LABEL_20:
-  v4[13] = LODWORD(self->_subjectContentProbability);
-  *(v4 + 30) |= 0x800u;
+  toCopy[13] = LODWORD(self->_subjectContentProbability);
+  *(toCopy + 30) |= 0x800u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -1091,8 +1091,8 @@ LABEL_5:
   }
 
 LABEL_21:
-  v4[11] = LODWORD(self->_personToRecipientsProbability);
-  *(v4 + 30) |= 0x200u;
+  toCopy[11] = LODWORD(self->_personToRecipientsProbability);
+  *(toCopy + 30) |= 0x200u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -1106,8 +1106,8 @@ LABEL_6:
   }
 
 LABEL_22:
-  v4[8] = LODWORD(self->_personCCRecipientsProbability);
-  *(v4 + 30) |= 0x40u;
+  toCopy[8] = LODWORD(self->_personCCRecipientsProbability);
+  *(toCopy + 30) |= 0x40u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -1121,8 +1121,8 @@ LABEL_7:
   }
 
 LABEL_23:
-  v4[4] = LODWORD(self->_domainFromSenderProbability);
-  *(v4 + 30) |= 4u;
+  toCopy[4] = LODWORD(self->_domainFromSenderProbability);
+  *(toCopy + 30) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -1136,8 +1136,8 @@ LABEL_8:
   }
 
 LABEL_24:
-  v4[3] = LODWORD(self->_conversationProbability);
-  *(v4 + 30) |= 2u;
+  toCopy[3] = LODWORD(self->_conversationProbability);
+  *(toCopy + 30) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -1151,8 +1151,8 @@ LABEL_9:
   }
 
 LABEL_25:
-  v4[5] = LODWORD(self->_listIdProbability);
-  *(v4 + 30) |= 8u;
+  toCopy[5] = LODWORD(self->_listIdProbability);
+  *(toCopy + 30) |= 8u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -1166,8 +1166,8 @@ LABEL_10:
   }
 
 LABEL_26:
-  v4[2] = LODWORD(self->_attachmentsProbability);
-  *(v4 + 30) |= 1u;
+  toCopy[2] = LODWORD(self->_attachmentsProbability);
+  *(toCopy + 30) |= 1u;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -1181,8 +1181,8 @@ LABEL_11:
   }
 
 LABEL_27:
-  v4[14] = LODWORD(self->_subjectCountStatsProbability);
-  *(v4 + 30) |= 0x1000u;
+  toCopy[14] = LODWORD(self->_subjectCountStatsProbability);
+  *(toCopy + 30) |= 0x1000u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -1196,8 +1196,8 @@ LABEL_12:
   }
 
 LABEL_28:
-  v4[12] = LODWORD(self->_standardMailRulesProbability);
-  *(v4 + 30) |= 0x400u;
+  toCopy[12] = LODWORD(self->_standardMailRulesProbability);
+  *(toCopy + 30) |= 0x400u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -1211,21 +1211,21 @@ LABEL_13:
   }
 
 LABEL_29:
-  v4[6] = LODWORD(self->_mailboxProbability);
-  *(v4 + 30) |= 0x10u;
+  toCopy[6] = LODWORD(self->_mailboxProbability);
+  *(toCopy + 30) |= 0x10u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_14:
-    v4[7] = LODWORD(self->_mailboxTypeProbability);
-    *(v4 + 30) |= 0x20u;
+    toCopy[7] = LODWORD(self->_mailboxTypeProbability);
+    *(toCopy + 30) |= 0x20u;
   }
 
 LABEL_15:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v18 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x100) != 0)
   {
@@ -1413,13 +1413,13 @@ LABEL_15:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 0x100) != 0)
   {
     *&v4 = self->_personFromSenderProbability;
     v8 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-    [v3 setObject:v8 forKey:@"personFromSenderProbability"];
+    [dictionary setObject:v8 forKey:@"personFromSenderProbability"];
 
     has = self->_has;
     if ((has & 0x80) == 0)
@@ -1441,7 +1441,7 @@ LABEL_3:
 
   *&v4 = self->_personFromSenderInDyadicConversationProbability;
   v9 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v9 forKey:@"personFromSenderInDyadicConversationProbability"];
+  [dictionary setObject:v9 forKey:@"personFromSenderInDyadicConversationProbability"];
 
   has = self->_has;
   if ((has & 0x800) == 0)
@@ -1458,7 +1458,7 @@ LABEL_4:
 LABEL_20:
   *&v4 = self->_subjectContentProbability;
   v10 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v10 forKey:@"subjectContentProbability"];
+  [dictionary setObject:v10 forKey:@"subjectContentProbability"];
 
   has = self->_has;
   if ((has & 0x200) == 0)
@@ -1475,7 +1475,7 @@ LABEL_5:
 LABEL_21:
   *&v4 = self->_personToRecipientsProbability;
   v11 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v11 forKey:@"personToRecipientsProbability"];
+  [dictionary setObject:v11 forKey:@"personToRecipientsProbability"];
 
   has = self->_has;
   if ((has & 0x40) == 0)
@@ -1492,7 +1492,7 @@ LABEL_6:
 LABEL_22:
   *&v4 = self->_personCCRecipientsProbability;
   v12 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v12 forKey:@"personCCRecipientsProbability"];
+  [dictionary setObject:v12 forKey:@"personCCRecipientsProbability"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -1509,7 +1509,7 @@ LABEL_7:
 LABEL_23:
   *&v4 = self->_domainFromSenderProbability;
   v13 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v13 forKey:@"domainFromSenderProbability"];
+  [dictionary setObject:v13 forKey:@"domainFromSenderProbability"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -1526,7 +1526,7 @@ LABEL_8:
 LABEL_24:
   *&v4 = self->_conversationProbability;
   v14 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v14 forKey:@"conversationProbability"];
+  [dictionary setObject:v14 forKey:@"conversationProbability"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -1543,7 +1543,7 @@ LABEL_9:
 LABEL_25:
   *&v4 = self->_listIdProbability;
   v15 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v15 forKey:@"listIdProbability"];
+  [dictionary setObject:v15 forKey:@"listIdProbability"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -1560,7 +1560,7 @@ LABEL_10:
 LABEL_26:
   *&v4 = self->_attachmentsProbability;
   v16 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v16 forKey:@"attachmentsProbability"];
+  [dictionary setObject:v16 forKey:@"attachmentsProbability"];
 
   has = self->_has;
   if ((has & 0x1000) == 0)
@@ -1577,7 +1577,7 @@ LABEL_11:
 LABEL_27:
   *&v4 = self->_subjectCountStatsProbability;
   v17 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v17 forKey:@"subjectCountStatsProbability"];
+  [dictionary setObject:v17 forKey:@"subjectCountStatsProbability"];
 
   has = self->_has;
   if ((has & 0x400) == 0)
@@ -1594,7 +1594,7 @@ LABEL_12:
 LABEL_28:
   *&v4 = self->_standardMailRulesProbability;
   v18 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v18 forKey:@"standardMailRulesProbability"];
+  [dictionary setObject:v18 forKey:@"standardMailRulesProbability"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -1611,19 +1611,19 @@ LABEL_13:
 LABEL_29:
   *&v4 = self->_mailboxProbability;
   v19 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-  [v3 setObject:v19 forKey:@"mailboxProbability"];
+  [dictionary setObject:v19 forKey:@"mailboxProbability"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_14:
     *&v4 = self->_mailboxTypeProbability;
     v6 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-    [v3 setObject:v6 forKey:@"mailboxTypeProbability"];
+    [dictionary setObject:v6 forKey:@"mailboxTypeProbability"];
   }
 
 LABEL_15:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -1632,15 +1632,15 @@ LABEL_15:
   v8.receiver = self;
   v8.super_class = SGMIMetricsSubmodelsProbabilities;
   v4 = [(SGMIMetricsSubmodelsProbabilities *)&v8 description];
-  v5 = [(SGMIMetricsSubmodelsProbabilities *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGMIMetricsSubmodelsProbabilities *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasMailboxTypeProbability:(BOOL)a3
+- (void)setHasMailboxTypeProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 32;
   }
@@ -1653,9 +1653,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasMailboxProbability:(BOOL)a3
+- (void)setHasMailboxProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 16;
   }
@@ -1668,9 +1668,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasStandardMailRulesProbability:(BOOL)a3
+- (void)setHasStandardMailRulesProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 1024;
   }
@@ -1683,9 +1683,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasSubjectCountStatsProbability:(BOOL)a3
+- (void)setHasSubjectCountStatsProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 4096;
   }
@@ -1698,9 +1698,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasListIdProbability:(BOOL)a3
+- (void)setHasListIdProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 8;
   }
@@ -1713,9 +1713,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasConversationProbability:(BOOL)a3
+- (void)setHasConversationProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 2;
   }
@@ -1728,9 +1728,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasDomainFromSenderProbability:(BOOL)a3
+- (void)setHasDomainFromSenderProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 4;
   }
@@ -1743,9 +1743,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasPersonCCRecipientsProbability:(BOOL)a3
+- (void)setHasPersonCCRecipientsProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 64;
   }
@@ -1758,9 +1758,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasPersonToRecipientsProbability:(BOOL)a3
+- (void)setHasPersonToRecipientsProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 512;
   }
@@ -1773,9 +1773,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasSubjectContentProbability:(BOOL)a3
+- (void)setHasSubjectContentProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 2048;
   }
@@ -1788,9 +1788,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasPersonFromSenderInDyadicConversationProbability:(BOOL)a3
+- (void)setHasPersonFromSenderInDyadicConversationProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 128;
   }
@@ -1803,9 +1803,9 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasPersonFromSenderProbability:(BOOL)a3
+- (void)setHasPersonFromSenderProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 256;
   }

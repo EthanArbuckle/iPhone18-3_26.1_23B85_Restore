@@ -1,46 +1,46 @@
 @interface VIVisualUnderstanding
-- (BOOL)isEqual:(id)a3;
-- (VIVisualUnderstanding)initWithImageRegions:(id)a3 annotation:(id)a4 payload:(id)a5;
-- (VIVisualUnderstanding)initWithImageRegions:(id)a3 textBlockAnnotation:(id)a4 payload:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (VIVisualUnderstanding)initWithImageRegions:(id)regions annotation:(id)annotation payload:(id)payload;
+- (VIVisualUnderstanding)initWithImageRegions:(id)regions textBlockAnnotation:(id)annotation payload:(id)payload;
 - (unint64_t)hash;
 @end
 
 @implementation VIVisualUnderstanding
 
-- (VIVisualUnderstanding)initWithImageRegions:(id)a3 textBlockAnnotation:(id)a4 payload:(id)a5
+- (VIVisualUnderstanding)initWithImageRegions:(id)regions textBlockAnnotation:(id)annotation payload:(id)payload
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4)
+  regionsCopy = regions;
+  payloadCopy = payload;
+  if (annotation)
   {
-    v10 = a4;
-    a4 = [[VIAnnotation alloc] initWithTextAnnotations:v10];
+    annotationCopy = annotation;
+    annotation = [[VIAnnotation alloc] initWithTextAnnotations:annotationCopy];
   }
 
-  v11 = [(VIVisualUnderstanding *)self initWithImageRegions:v8 annotation:a4 payload:v9];
+  v11 = [(VIVisualUnderstanding *)self initWithImageRegions:regionsCopy annotation:annotation payload:payloadCopy];
 
   return v11;
 }
 
-- (VIVisualUnderstanding)initWithImageRegions:(id)a3 annotation:(id)a4 payload:(id)a5
+- (VIVisualUnderstanding)initWithImageRegions:(id)regions annotation:(id)annotation payload:(id)payload
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  regionsCopy = regions;
+  annotationCopy = annotation;
+  payloadCopy = payload;
   v19.receiver = self;
   v19.super_class = VIVisualUnderstanding;
   v11 = [(VIVisualUnderstanding *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [regionsCopy copy];
     imageRegions = v11->_imageRegions;
     v11->_imageRegions = v12;
 
-    v14 = [v9 copy];
+    v14 = [annotationCopy copy];
     annotation = v11->_annotation;
     v11->_annotation = v14;
 
-    v16 = [v10 copy];
+    v16 = [payloadCopy copy];
     payload = v11->_payload;
     v11->_payload = v16;
   }
@@ -48,10 +48,10 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     IsEqual = 1;
   }
@@ -61,7 +61,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -71,16 +71,16 @@
 
     v6 = v5;
     imageRegions = self->_imageRegions;
-    v8 = [(VIVisualUnderstanding *)v6 imageRegions];
-    if (VIObjectIsEqual(imageRegions, v8))
+    imageRegions = [(VIVisualUnderstanding *)v6 imageRegions];
+    if (VIObjectIsEqual(imageRegions, imageRegions))
     {
       annotation = self->_annotation;
-      v10 = [(VIVisualUnderstanding *)v6 annotation];
-      if (VIObjectIsEqual(annotation, v10))
+      annotation = [(VIVisualUnderstanding *)v6 annotation];
+      if (VIObjectIsEqual(annotation, annotation))
       {
         payload = self->_payload;
-        v12 = [(VIVisualUnderstanding *)v6 payload];
-        IsEqual = VIObjectIsEqual(payload, v12);
+        payload = [(VIVisualUnderstanding *)v6 payload];
+        IsEqual = VIObjectIsEqual(payload, payload);
       }
 
       else

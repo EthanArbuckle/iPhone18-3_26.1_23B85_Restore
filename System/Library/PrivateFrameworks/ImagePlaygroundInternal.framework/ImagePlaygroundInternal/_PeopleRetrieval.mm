@@ -1,6 +1,6 @@
 @interface _PeopleRetrieval
 - (_TtC23ImagePlaygroundInternal16_PeopleRetrieval)init;
-- (void)photoLibraryDidChange:(id)a3;
+- (void)photoLibraryDidChange:(id)change;
 @end
 
 @implementation _PeopleRetrieval
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D2563C78(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1D2563C78(changeCopy);
 }
 
 @end

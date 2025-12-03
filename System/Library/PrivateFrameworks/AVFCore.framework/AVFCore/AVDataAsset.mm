@@ -1,6 +1,6 @@
 @interface AVDataAsset
-+ (id)_getFigAssetCreationOptionsFromDataAssetInitializationOptions:(id)a3 figAssetCreationFlags:(unint64_t *)a4;
-- (AVDataAsset)initWithData:(id)a3 contentType:(id)a4 options:(id)a5;
++ (id)_getFigAssetCreationOptionsFromDataAssetInitializationOptions:(id)options figAssetCreationFlags:(unint64_t *)flags;
+- (AVDataAsset)initWithData:(id)data contentType:(id)type options:(id)options;
 - (id)tracks;
 - (unint64_t)referenceRestrictions;
 - (void)dealloc;
@@ -8,19 +8,19 @@
 
 @implementation AVDataAsset
 
-+ (id)_getFigAssetCreationOptionsFromDataAssetInitializationOptions:(id)a3 figAssetCreationFlags:(unint64_t *)a4
++ (id)_getFigAssetCreationOptionsFromDataAssetInitializationOptions:(id)options figAssetCreationFlags:(unint64_t *)flags
 {
-  if (a3)
+  if (options)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
   else
   {
-    v6 = 0;
+    dictionary = 0;
   }
 
-  v7 = [a3 objectForKey:@"AVAssetReferenceRestrictionsKey"];
+  v7 = [options objectForKey:@"AVAssetReferenceRestrictionsKey"];
   if (v7)
   {
     v8 = 4 * ([v7 unsignedIntegerValue] & 0xF);
@@ -31,8 +31,8 @@
     v8 = 8;
   }
 
-  *a4 = v8;
-  v9 = [a3 objectForKey:@"AVAssetPreferNominalDurationsKey"];
+  *flags = v8;
+  v9 = [options objectForKey:@"AVAssetPreferNominalDurationsKey"];
   if (v9)
   {
     if (([v9 BOOLValue] & 1) == 0)
@@ -46,42 +46,42 @@
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
 LABEL_9:
-    *a4 |= 0x100uLL;
+    *flags |= 0x100uLL;
   }
 
 LABEL_10:
-  v10 = [a3 objectForKey:@"AVAssetPreferPreciseDurationAndTimingKey"];
+  v10 = [options objectForKey:@"AVAssetPreferPreciseDurationAndTimingKey"];
   if (v10)
   {
-    [v6 setObject:v10 forKey:*MEMORY[0x1E6971090]];
+    [dictionary setObject:v10 forKey:*MEMORY[0x1E6971090]];
   }
 
-  v11 = [a3 objectForKey:@"AVURLAssetAllowableTypeCategoriesKey"];
+  v11 = [options objectForKey:@"AVURLAssetAllowableTypeCategoriesKey"];
   if (v11)
   {
-    [v6 setObject:v11 forKey:*MEMORY[0x1E6970EF8]];
+    [dictionary setObject:v11 forKey:*MEMORY[0x1E6970EF8]];
   }
 
-  if ([AVAsset _assetCreationOptionsRequiresInProcessOperation:a3])
+  if ([AVAsset _assetCreationOptionsRequiresInProcessOperation:options])
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:1];
-    [v6 setObject:v12 forKey:*MEMORY[0x1E69710D0]];
+    [dictionary setObject:v12 forKey:*MEMORY[0x1E69710D0]];
   }
 
-  if ([AVAsset _assetCreationOptionsPrefersSandboxedOption:a3])
+  if ([AVAsset _assetCreationOptionsPrefersSandboxedOption:options])
   {
     v13 = [MEMORY[0x1E696AD98] numberWithBool:1];
-    [v6 setObject:v13 forKey:*MEMORY[0x1E6971098]];
+    [dictionary setObject:v13 forKey:*MEMORY[0x1E6971098]];
   }
 
-  return v6;
+  return dictionary;
 }
 
-- (AVDataAsset)initWithData:(id)a3 contentType:(id)a4 options:(id)a5
+- (AVDataAsset)initWithData:(id)data contentType:(id)type options:(id)options
 {
-  if ([a3 length] > 0xA00000)
+  if ([data length] > 0xA00000)
   {
-    v16 = self;
+    selfCopy = self;
     v22 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"Data length cannot exceed %llu bytes", v17, v18, v19, v20, v21, 10485760), 0}];
     objc_exception_throw(v22);
   }
@@ -93,8 +93,8 @@ LABEL_10:
   {
     v24 = 0;
     cf = 0;
-    v10 = [a3 copy];
-    v9->_initializationOptions = [a5 copy];
+    v10 = [data copy];
+    v9->_initializationOptions = [options copy];
     v9->_allocateTracksOnceOnly = objc_alloc_init(AVDispatchOnce);
     [v10 length];
     BlockBufferWithCFDataNoCopy = FigCreateBlockBufferWithCFDataNoCopy();

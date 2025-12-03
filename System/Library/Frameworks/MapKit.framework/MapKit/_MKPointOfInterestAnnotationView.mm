@@ -1,20 +1,20 @@
 @interface _MKPointOfInterestAnnotationView
 - (MKMapView)mapView;
-- (_MKPointOfInterestAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
+- (_MKPointOfInterestAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
 - (id)_currentStyle;
 - (id)_labelMarker;
 - (id)_loadStyle;
 - (void)_addBalloonUI;
 - (void)_animateDisplay;
-- (void)_animateRemoval:(id)a3;
+- (void)_animateRemoval:(id)removal;
 - (void)_removeBalloonUI;
-- (void)_setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)_setSelected:(BOOL)selected animated:(BOOL)animated;
 - (void)_updateContent;
 - (void)_updateFromMap;
-- (void)_updateViewAnimated:(BOOL)a3;
+- (void)_updateViewAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)setAnnotation:(id)a3;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
+- (void)setAnnotation:(id)annotation;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
 @end
 
 @implementation _MKPointOfInterestAnnotationView
@@ -26,7 +26,7 @@
   return WeakRetained;
 }
 
-- (void)_animateRemoval:(id)a3
+- (void)_animateRemoval:(id)removal
 {
   v28[2] = *MEMORY[0x1E69E9840];
   dotView = self->_dotView;
@@ -67,38 +67,38 @@
   v13 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
   [v13 setFromValue:&unk_1F1611908];
   [v13 setToValue:&unk_1F16118F0];
-  v14 = [MEMORY[0x1E6979308] animation];
+  animation = [MEMORY[0x1E6979308] animation];
   v15 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED8]];
-  [v14 setTimingFunction:v15];
+  [animation setTimingFunction:v15];
 
-  [v14 setDuration:0.133330002];
+  [animation setDuration:0.133330002];
   v28[0] = v6;
   v28[1] = v13;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
-  [v14 setAnimations:v16];
+  [animation setAnimations:v16];
 
-  [v14 setRemovedOnCompletion:1];
-  v17 = [(MKMarkerDotView *)self->_dotView layer];
-  [v17 setOpacity:0.0];
+  [animation setRemovedOnCompletion:1];
+  layer = [(MKMarkerDotView *)self->_dotView layer];
+  [layer setOpacity:0.0];
 
-  v18 = [(MKMarkerBalloonView *)self->_markerView layer];
-  [v18 setOpacity:0.0];
+  layer2 = [(MKMarkerBalloonView *)self->_markerView layer];
+  [layer2 setOpacity:0.0];
 
-  v19 = [(MKMarkerDotView *)self->_dotView layer];
+  layer3 = [(MKMarkerDotView *)self->_dotView layer];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __52___MKPointOfInterestAnnotationView__animateRemoval___block_invoke;
   v25[3] = &unk_1E76CA670;
   v25[4] = self;
-  [v19 _mapkit_addAnimation:v14 forKey:@"hide" completion:v25];
+  [layer3 _mapkit_addAnimation:animation forKey:@"hide" completion:v25];
 
-  v20 = [(MKMarkerBalloonView *)self->_markerView layer];
+  layer4 = [(MKMarkerBalloonView *)self->_markerView layer];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __52___MKPointOfInterestAnnotationView__animateRemoval___block_invoke_2;
   v24[3] = &unk_1E76CA670;
   v24[4] = self;
-  [v20 _mapkit_addAnimation:v14 forKey:@"hide" completion:v24];
+  [layer4 _mapkit_addAnimation:animation forKey:@"hide" completion:v24];
 }
 
 - (void)_animateDisplay
@@ -147,39 +147,39 @@
   [v12 setFromValue:&unk_1F16118F0];
   [v12 setToValue:&unk_1F1611908];
   [v12 setDuration:0.239999995];
-  v13 = [MEMORY[0x1E6979308] animation];
-  [v13 setRemovedOnCompletion:1];
+  animation = [MEMORY[0x1E6979308] animation];
+  [animation setRemovedOnCompletion:1];
   [v5 settlingDuration];
-  [v13 setDuration:?];
+  [animation setDuration:?];
   v14 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED8]];
-  [v13 setTimingFunction:v14];
+  [animation setTimingFunction:v14];
 
   v29[0] = v5;
   v29[1] = v12;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
-  [v13 setAnimations:v15];
+  [animation setAnimations:v15];
 
-  v16 = [(MKMarkerDotView *)self->_dotView layer];
+  layer = [(MKMarkerDotView *)self->_dotView layer];
   LODWORD(v17) = 1.0;
-  [v16 setOpacity:v17];
+  [layer setOpacity:v17];
 
-  v18 = [(MKMarkerDotView *)self->_dotView layer];
-  [v18 addAnimation:v13 forKey:@"show"];
+  layer2 = [(MKMarkerDotView *)self->_dotView layer];
+  [layer2 addAnimation:animation forKey:@"show"];
 
-  v19 = [(MKMarkerBalloonView *)self->_markerView layer];
+  layer3 = [(MKMarkerBalloonView *)self->_markerView layer];
   LODWORD(v20) = 1.0;
-  [v19 setOpacity:v20];
+  [layer3 setOpacity:v20];
 
-  v21 = [(MKMarkerBalloonView *)self->_markerView layer];
-  [v21 addAnimation:v13 forKey:@"show"];
+  layer4 = [(MKMarkerBalloonView *)self->_markerView layer];
+  [layer4 addAnimation:animation forKey:@"show"];
 
   if (_MKMarkerAnnotationViewSelectionShouldSway())
   {
     v22 = _MKMarkerAnnotationViewSelectionSwayAnimation();
     if (v22)
     {
-      v23 = [(MKMarkerBalloonView *)self->_markerView layer];
-      [v23 addAnimation:v22 forKey:@"sway"];
+      layer5 = [(MKMarkerBalloonView *)self->_markerView layer];
+      [layer5 addAnimation:v22 forKey:@"sway"];
     }
   }
 }
@@ -201,25 +201,25 @@
 
 - (void)_updateContent
 {
-  v5 = [(_MKPointOfInterestAnnotationView *)self _currentStyle];
-  v3 = [v5 balloonImage];
-  [(MKMarkerBalloonView *)self->_markerView setImage:v3];
+  _currentStyle = [(_MKPointOfInterestAnnotationView *)self _currentStyle];
+  balloonImage = [_currentStyle balloonImage];
+  [(MKMarkerBalloonView *)self->_markerView setImage:balloonImage];
 
-  v4 = [v5 dotImage];
-  [(MKMarkerDotView *)self->_dotView setImage:v4];
+  dotImage = [_currentStyle dotImage];
+  [(MKMarkerDotView *)self->_dotView setImage:dotImage];
 }
 
 - (void)_addBalloonUI
 {
   if (!self->_dotView)
   {
-    v7 = [(_MKPointOfInterestAnnotationView *)self _currentStyle];
-    v3 = [[MKMarkerDotView alloc] initWithMarkerStyle:v7];
+    _currentStyle = [(_MKPointOfInterestAnnotationView *)self _currentStyle];
+    v3 = [[MKMarkerDotView alloc] initWithMarkerStyle:_currentStyle];
     dotView = self->_dotView;
     self->_dotView = v3;
 
     [(_MKPointOfInterestAnnotationView *)self addSubview:self->_dotView];
-    v5 = [[MKMarkerBalloonView alloc] initWithMarkerStyle:v7];
+    v5 = [[MKMarkerBalloonView alloc] initWithMarkerStyle:_currentStyle];
     markerView = self->_markerView;
     self->_markerView = v5;
 
@@ -229,20 +229,20 @@
   }
 }
 
-- (void)_updateViewAnimated:(BOOL)a3
+- (void)_updateViewAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(MKAnnotationView *)self isSelected])
   {
     [(_MKPointOfInterestAnnotationView *)self _addBalloonUI];
-    if (v3)
+    if (animatedCopy)
     {
 
       [(_MKPointOfInterestAnnotationView *)self _animateDisplay];
     }
   }
 
-  else if (v3)
+  else if (animatedCopy)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
@@ -259,11 +259,11 @@
   }
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(_MKPointOfInterestAnnotationView *)self traitCollection];
-  v7 = [v6 hasDifferentColorAppearanceComparedToTraitCollection:v5];
+  collectionCopy = collection;
+  traitCollection = [(_MKPointOfInterestAnnotationView *)self traitCollection];
+  v7 = [traitCollection hasDifferentColorAppearanceComparedToTraitCollection:collectionCopy];
 
   if (v7)
   {
@@ -279,10 +279,10 @@
   v5.receiver = self;
   v5.super_class = _MKPointOfInterestAnnotationView;
   [(MKAnnotationView *)&v5 _updateFromMap];
-  v3 = [(MKAnnotationView *)self annotation];
-  v4 = [v3 marker];
+  annotation = [(MKAnnotationView *)self annotation];
+  marker = [annotation marker];
 
-  [v4 calloutAnchorPointWithSnapToPixels:1];
+  [marker calloutAnchorPointWithSnapToPixels:1];
   [(_MKPointOfInterestAnnotationView *)self setCenter:?];
 }
 
@@ -302,23 +302,23 @@
   v13.size.width = width;
   v13.size.height = height;
   MaxY = CGRectGetMaxY(v13);
-  v9 = [(MKMarkerDotView *)self->_dotView layer];
-  [v9 setPosition:{MidX, MaxY}];
+  layer = [(MKMarkerDotView *)self->_dotView layer];
+  [layer setPosition:{MidX, MaxY}];
 
-  v10 = [(MKMarkerBalloonView *)self->_markerView layer];
-  [v10 setPosition:{MidX, MaxY}];
+  layer2 = [(MKMarkerBalloonView *)self->_markerView layer];
+  [layer2 setPosition:{MidX, MaxY}];
 }
 
 - (id)_loadStyle
 {
-  v3 = [(_MKPointOfInterestAnnotationView *)self _labelMarker];
-  v4 = [v3 styleAttributes];
-  v5 = [v4 copy];
+  _labelMarker = [(_MKPointOfInterestAnnotationView *)self _labelMarker];
+  styleAttributes = [_labelMarker styleAttributes];
+  v5 = [styleAttributes copy];
 
   v6 = [MKMarkerStyleConfiguration configurationForView:self];
   [v6 setElevated:1];
   WeakRetained = objc_loadWeakRetained(&self->_mapView);
-  v8 = [WeakRetained preferredConfiguration];
+  preferredConfiguration = [WeakRetained preferredConfiguration];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -326,8 +326,8 @@
   {
     [v6 setDarkMode:{objc_msgSend(v5, "isLandmarkPOI") ^ 1}];
     v10 = objc_loadWeakRetained(&self->_mapView);
-    v11 = [v10 preferredConfiguration];
-    [v6 setElevated:{objc_msgSend(v11, "elevationStyle") == 1}];
+    preferredConfiguration2 = [v10 preferredConfiguration];
+    [v6 setElevated:{objc_msgSend(preferredConfiguration2, "elevationStyle") == 1}];
   }
 
   [v6 setStyleAttributes:v5];
@@ -342,9 +342,9 @@
   currentStyle = self->_currentStyle;
   if (!currentStyle)
   {
-    v4 = [(_MKPointOfInterestAnnotationView *)self _loadStyle];
+    _loadStyle = [(_MKPointOfInterestAnnotationView *)self _loadStyle];
     v5 = self->_currentStyle;
-    self->_currentStyle = v4;
+    self->_currentStyle = _loadStyle;
 
     currentStyle = self->_currentStyle;
   }
@@ -354,33 +354,33 @@
 
 - (id)_labelMarker
 {
-  v2 = [(MKAnnotationView *)self annotation];
-  v3 = [v2 marker];
+  annotation = [(MKAnnotationView *)self annotation];
+  marker = [annotation marker];
 
-  return v3;
+  return marker;
 }
 
-- (void)_setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)_setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(MKAnnotationView *)self isSelected];
+  animatedCopy = animated;
+  selectedCopy = selected;
+  isSelected = [(MKAnnotationView *)self isSelected];
   v9.receiver = self;
   v9.super_class = _MKPointOfInterestAnnotationView;
-  [(MKAnnotationView *)&v9 _setSelected:v5 animated:v4];
-  if (v7 != v5)
+  [(MKAnnotationView *)&v9 _setSelected:selectedCopy animated:animatedCopy];
+  if (isSelected != selectedCopy)
   {
-    v8 = [(MKAnnotationView *)self annotation];
-    if (![v8 featureType])
+    annotation = [(MKAnnotationView *)self annotation];
+    if (![annotation featureType])
     {
-      [(_MKPointOfInterestAnnotationView *)self _updateViewAnimated:v4];
+      [(_MKPointOfInterestAnnotationView *)self _updateViewAnimated:animatedCopy];
     }
   }
 }
 
-- (void)setAnnotation:(id)a3
+- (void)setAnnotation:(id)annotation
 {
-  if (self->super.super._annotation != a3)
+  if (self->super.super._annotation != annotation)
   {
     v6 = v3;
     v7 = v4;
@@ -390,11 +390,11 @@
   }
 }
 
-- (_MKPointOfInterestAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (_MKPointOfInterestAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = _MKPointOfInterestAnnotationView;
-  v4 = [(_MKMapFeatureAnnotationView *)&v9 initWithAnnotation:a3 reuseIdentifier:a4];
+  v4 = [(_MKMapFeatureAnnotationView *)&v9 initWithAnnotation:annotation reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -402,8 +402,8 @@
     [(MKAnnotationView *)v5 setCanShowCallout:1];
     [(MKAnnotationView *)v5 _setCalloutStyle:1];
     [(MKAnnotationView *)v5 setCollisionMode:1];
-    v6 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
-    v7 = [(_MKPointOfInterestAnnotationView *)v5 registerForTraitChanges:v6 withAction:sel_traitEnvironment_didChangeTraitCollection_];
+    systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+    v7 = [(_MKPointOfInterestAnnotationView *)v5 registerForTraitChanges:systemTraitsAffectingColorAppearance withAction:sel_traitEnvironment_didChangeTraitCollection_];
   }
 
   return v5;

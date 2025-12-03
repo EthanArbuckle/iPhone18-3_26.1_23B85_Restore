@@ -1,38 +1,38 @@
 @interface MPRouteLabel
-- (BOOL)_labelFitsText:(id)a3 withSize:(CGSize)a4;
+- (BOOL)_labelFitsText:(id)text withSize:(CGSize)size;
 - (BOOL)_textColorFollowsTintColor;
-- (CGSize)_labelSizeForText:(id)a3;
+- (CGSize)_labelSizeForText:(id)text;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MPRouteLabel)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MPRouteLabel)initWithFrame:(CGRect)frame;
 - (NSString)designatedGroupLeaderName;
-- (id)_bestStringThatFitsSize:(CGSize)a3;
+- (id)_bestStringThatFitsSize:(CGSize)size;
 - (id)_formattedRouteName;
-- (id)_formattedRouteNameForDesignatedGroupLeaderNameText:(id)a3 routeNamesText:(id)a4;
+- (id)_formattedRouteNameForDesignatedGroupLeaderNameText:(id)text routeNamesText:(id)namesText;
 - (id)_marketingNames;
-- (id)_plusSeparatedRouteNames:(id)a3;
-- (id)_routeNamesSortedLength:(id)a3;
-- (id)_truncateText:(id)a3 by:(int64_t)a4;
-- (int64_t)_compareLength:(id)a3 with:(id)a4;
-- (void)_routeDidChangeNotification:(id)a3;
-- (void)_setTextColorFollowsTintColor:(BOOL)a3;
+- (id)_plusSeparatedRouteNames:(id)names;
+- (id)_routeNamesSortedLength:(id)length;
+- (id)_truncateText:(id)text by:(int64_t)by;
+- (int64_t)_compareLength:(id)length with:(id)with;
+- (void)_routeDidChangeNotification:(id)notification;
+- (void)_setTextColorFollowsTintColor:(BOOL)color;
 - (void)_updateRouteLabel;
 - (void)_updateTitleIfNeeded;
-- (void)addRouteName:(id)a3;
-- (void)addRouteNamesFromArray:(id)a3;
+- (void)addRouteName:(id)name;
+- (void)addRouteNamesFromArray:(id)array;
 - (void)layoutSubviews;
-- (void)removeRouteName:(id)a3;
-- (void)removeRouteNamesFromArray:(id)a3;
-- (void)setDisplayAsSiriSuggestion:(BOOL)a3;
-- (void)setFont:(id)a3;
-- (void)setForcesUppercaseText:(BOOL)a3;
-- (void)setMinimumEndCharacterCount:(int64_t)a3;
-- (void)setOmitGroupLeaderName:(BOOL)a3;
-- (void)setRoute:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTruncationMode:(int64_t)a3;
-- (void)setUpdatesRouteInternally:(BOOL)a3;
+- (void)removeRouteName:(id)name;
+- (void)removeRouteNamesFromArray:(id)array;
+- (void)setDisplayAsSiriSuggestion:(BOOL)suggestion;
+- (void)setFont:(id)font;
+- (void)setForcesUppercaseText:(BOOL)text;
+- (void)setMinimumEndCharacterCount:(int64_t)count;
+- (void)setOmitGroupLeaderName:(BOOL)name;
+- (void)setRoute:(id)route;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTextColor:(id)color;
+- (void)setTruncationMode:(int64_t)mode;
+- (void)setUpdatesRouteInternally:(BOOL)internally;
 - (void)subscribeToRouteNotificationIfNeeded;
 @end
 
@@ -40,10 +40,10 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(MPRouteLabel *)self designatedGroupLeaderName];
-  v4 = [(NSMutableSet *)self->_routeNames allObjects];
-  v5 = [(MPRouteLabel *)self _plusSeparatedRouteNames:v4];
-  v6 = [(MPRouteLabel *)self _formattedRouteNameForDesignatedGroupLeaderNameText:v3 routeNamesText:v5];
+  designatedGroupLeaderName = [(MPRouteLabel *)self designatedGroupLeaderName];
+  allObjects = [(NSMutableSet *)self->_routeNames allObjects];
+  v5 = [(MPRouteLabel *)self _plusSeparatedRouteNames:allObjects];
+  v6 = [(MPRouteLabel *)self _formattedRouteNameForDesignatedGroupLeaderNameText:designatedGroupLeaderName routeNamesText:v5];
 
   [(MPRouteLabel *)self _labelSizeForText:v6];
   v8 = v7;
@@ -109,8 +109,8 @@ void __31__MPRouteLabel__marketingNames__block_invoke()
 - (void)_updateTitleIfNeeded
 {
   previousDesignatedGroupLeaderName = self->_previousDesignatedGroupLeaderName;
-  v4 = [(MPRouteLabel *)self designatedGroupLeaderName];
-  if (previousDesignatedGroupLeaderName == v4)
+  designatedGroupLeaderName = [(MPRouteLabel *)self designatedGroupLeaderName];
+  if (previousDesignatedGroupLeaderName == designatedGroupLeaderName)
   {
     LOBYTE(v31) = 0;
   }
@@ -118,8 +118,8 @@ void __31__MPRouteLabel__marketingNames__block_invoke()
   else
   {
     v5 = self->_previousDesignatedGroupLeaderName;
-    v6 = [(MPRouteLabel *)self designatedGroupLeaderName];
-    v31 = [(NSString *)v5 isEqual:v6]^ 1;
+    designatedGroupLeaderName2 = [(MPRouteLabel *)self designatedGroupLeaderName];
+    v31 = [(NSString *)v5 isEqual:designatedGroupLeaderName2]^ 1;
   }
 
   v7 = [(NSMutableSet *)self->_previousRouteNames isEqualToSet:self->_routeNames];
@@ -143,8 +143,8 @@ void __31__MPRouteLabel__marketingNames__block_invoke()
     previousFont = self->_previousFont;
     self->_previousFont = v20;
 
-    v22 = [(MPRouteLabel *)self designatedGroupLeaderName];
-    v23 = [v22 copy];
+    designatedGroupLeaderName3 = [(MPRouteLabel *)self designatedGroupLeaderName];
+    v23 = [designatedGroupLeaderName3 copy];
     v24 = self->_previousDesignatedGroupLeaderName;
     self->_previousDesignatedGroupLeaderName = v23;
 
@@ -166,15 +166,15 @@ void __31__MPRouteLabel__marketingNames__block_invoke()
   }
 }
 
-- (int64_t)_compareLength:(id)a3 with:(id)a4
+- (int64_t)_compareLength:(id)length with:(id)with
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 length];
-  if (v7 <= [v6 length])
+  lengthCopy = length;
+  withCopy = with;
+  v7 = [lengthCopy length];
+  if (v7 <= [withCopy length])
   {
-    v9 = [v5 length];
-    v8 = v9 < [v6 length];
+    v9 = [lengthCopy length];
+    v8 = v9 < [withCopy length];
   }
 
   else
@@ -185,7 +185,7 @@ void __31__MPRouteLabel__marketingNames__block_invoke()
   return v8;
 }
 
-- (void)_routeDidChangeNotification:(id)a3
+- (void)_routeDidChangeNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -200,54 +200,54 @@ void __31__MPRouteLabel__marketingNames__block_invoke()
   if (self->_route)
   {
     updatesRouteInternally = self->_updatesRouteInternally;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    v5 = v4;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    v5 = defaultCenter;
     if (updatesRouteInternally)
     {
-      [v4 addObserver:self selector:sel__routeDidChangeNotification_ name:@"MPAVRouteDidChangeNotification" object:self->_route];
+      [defaultCenter addObserver:self selector:sel__routeDidChangeNotification_ name:@"MPAVRouteDidChangeNotification" object:self->_route];
     }
 
     else
     {
-      [v4 removeObserver:self name:@"MPAVRouteDidChangeNotification" object:self->_route];
+      [defaultCenter removeObserver:self name:@"MPAVRouteDidChangeNotification" object:self->_route];
     }
   }
 }
 
-- (id)_bestStringThatFitsSize:(CGSize)a3
+- (id)_bestStringThatFitsSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
-  v6 = [(NSMutableSet *)self->_routeNames allObjects];
-  v7 = [(MPRouteLabel *)v5 _routeNamesSortedAlphanumeric:v6];
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  allObjects = [(NSMutableSet *)self->_routeNames allObjects];
+  v7 = [(MPRouteLabel *)selfCopy _routeNamesSortedAlphanumeric:allObjects];
 
-  v8 = [(NSMutableSet *)v5->_routeNames allObjects];
-  v65 = [(MPRouteLabel *)v5 _routeNamesSortedLength:v8];
+  allObjects2 = [(NSMutableSet *)selfCopy->_routeNames allObjects];
+  v65 = [(MPRouteLabel *)selfCopy _routeNamesSortedLength:allObjects2];
 
-  v9 = [(MPRouteLabel *)v5 designatedGroupLeaderName];
-  v10 = [v9 copy];
+  designatedGroupLeaderName = [(MPRouteLabel *)selfCopy designatedGroupLeaderName];
+  v10 = [designatedGroupLeaderName copy];
 
-  v11 = [(MPRouteLabel *)v5 _plusSeparatedRouteNames:v7];
+  v11 = [(MPRouteLabel *)selfCopy _plusSeparatedRouteNames:v7];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __40__MPRouteLabel__bestStringThatFitsSize___block_invoke;
   aBlock[3] = &unk_1E7682438;
-  aBlock[4] = v5;
+  aBlock[4] = selfCopy;
   *&aBlock[5] = width;
   *&aBlock[6] = height;
   v66 = _Block_copy(aBlock);
   if (v66[2](v66, v10, v11))
   {
-    v12 = [(MPRouteLabel *)v5 _formattedRouteNameForDesignatedGroupLeaderNameText:v10 routeNamesText:v11];
+    v12 = [(MPRouteLabel *)selfCopy _formattedRouteNameForDesignatedGroupLeaderNameText:v10 routeNamesText:v11];
 LABEL_46:
-    if ([(MPRouteLabel *)v5 displayAsSiriSuggestion])
+    if ([(MPRouteLabel *)selfCopy displayAsSiriSuggestion])
     {
       v55 = MEMORY[0x1E696AEC0];
-      v56 = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
-      v57 = [v56 localizedStringForKey:@"NOW_PLAYING_SIRI_SUGGESTION" value:&stru_1F149ECA8 table:@"MediaPlayer"];
-      v58 = [v57 localizedUppercaseString];
-      v54 = [v55 stringWithFormat:v58, v12];
+      mediaPlayerBundle = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
+      v57 = [mediaPlayerBundle localizedStringForKey:@"NOW_PLAYING_SIRI_SUGGESTION" value:&stru_1F149ECA8 table:@"MediaPlayer"];
+      localizedUppercaseString = [v57 localizedUppercaseString];
+      v54 = [v55 stringWithFormat:localizedUppercaseString, v12];
     }
 
     else
@@ -259,7 +259,7 @@ LABEL_46:
     goto LABEL_49;
   }
 
-  v13 = [v10 length] - 2 * v5->_minimumEndCharacterCount;
+  v13 = [v10 length] - 2 * selfCopy->_minimumEndCharacterCount;
   v80 = 0;
   v81 = &v80;
   v82 = 0x2020000000;
@@ -274,13 +274,13 @@ LABEL_46:
   {
     while (1)
     {
-      v14 = [(MPRouteLabel *)v5 designatedGroupLeaderName];
-      v15 = [v14 isEqualToString:v10];
+      designatedGroupLeaderName2 = [(MPRouteLabel *)selfCopy designatedGroupLeaderName];
+      v15 = [designatedGroupLeaderName2 isEqualToString:v10];
 
       v16 = v15 ? 1 : 2;
-      v17 = [(MPRouteLabel *)v5 _truncateText:v10 by:v16];
+      v17 = [(MPRouteLabel *)selfCopy _truncateText:v10 by:v16];
 
-      v18 = [(MPRouteLabel *)v5 _plusSeparatedRouteNames:v65];
+      v18 = [(MPRouteLabel *)selfCopy _plusSeparatedRouteNames:v65];
       v10 = v17;
       v19 = v75[5];
       v75[5] = v18;
@@ -312,10 +312,10 @@ LABEL_11:
   {
     v22 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v65];
     v61 = v7;
-    v23 = [v22 firstObject];
-    v24 = [v23 length];
+    firstObject = [v22 firstObject];
+    v24 = [firstObject length];
     v64 = v11;
-    minimumEndCharacterCount = v5->_minimumEndCharacterCount;
+    minimumEndCharacterCount = selfCopy->_minimumEndCharacterCount;
 
     *(v81 + 24) = 0;
     v26 = v75[5];
@@ -334,7 +334,7 @@ LABEL_11:
         v67[2] = __40__MPRouteLabel__bestStringThatFitsSize___block_invoke_44;
         v67[3] = v29;
         v68 = v22;
-        v69 = v5;
+        v69 = selfCopy;
         v72 = &v74;
         v71 = v66;
         v70 = v10;
@@ -390,26 +390,26 @@ LABEL_11:
       {
         v11 = v38;
         v21 = 0;
-        v39 = v36;
+        firstObject2 = v36;
       }
 
       else
       {
         v60 = v38;
-        v39 = [v61 firstObject];
+        firstObject2 = [v61 firstObject];
 
         v35 = &stru_1F149ECA8;
         v40 = 1;
         while (1)
         {
-          v41 = [v39 length];
+          v41 = [firstObject2 length];
           v21 = v40 > v41;
           if (v40 > v41)
           {
             break;
           }
 
-          v42 = [(MPRouteLabel *)v5 _truncateText:v39 by:v40];
+          v42 = [(MPRouteLabel *)selfCopy _truncateText:firstObject2 by:v40];
 
           if ([v61 count] < 2)
           {
@@ -424,15 +424,15 @@ LABEL_11:
           ++v40;
           if (v66[2](v66, v10, v35))
           {
-            v43 = v35;
-            v35 = v43;
+            firstObject3 = v35;
+            v35 = firstObject3;
             goto LABEL_34;
           }
         }
 
-        v43 = [v61 firstObject];
+        firstObject3 = [v61 firstObject];
 LABEL_34:
-        v11 = v43;
+        v11 = firstObject3;
 
         v38 = v60;
       }
@@ -442,7 +442,7 @@ LABEL_34:
   _Block_object_dispose(&v74, 8);
 
   _Block_object_dispose(&v80, 8);
-  v44 = [(MPRouteLabel *)v5 _formattedRouteNameForDesignatedGroupLeaderNameText:v10 routeNamesText:v11];
+  v44 = [(MPRouteLabel *)selfCopy _formattedRouteNameForDesignatedGroupLeaderNameText:v10 routeNamesText:v11];
   v12 = v44;
   if (!v21 || ![v44 length])
   {
@@ -454,21 +454,21 @@ LABEL_34:
   v45 = 0;
   while (1)
   {
-    v46 = [(MPRouteLabel *)v5 _truncateText:v12 by:v45 + 1];
-    if ([(MPRouteLabel *)v5 displayAsSiriSuggestion])
+    v46 = [(MPRouteLabel *)selfCopy _truncateText:v12 by:v45 + 1];
+    if ([(MPRouteLabel *)selfCopy displayAsSiriSuggestion])
     {
       v47 = MEMORY[0x1E696AEC0];
-      v48 = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
-      [v48 localizedStringForKey:@"NOW_PLAYING_SIRI_SUGGESTION" value:&stru_1F149ECA8 table:@"MediaPlayer"];
-      v49 = v5;
+      mediaPlayerBundle2 = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
+      [mediaPlayerBundle2 localizedStringForKey:@"NOW_PLAYING_SIRI_SUGGESTION" value:&stru_1F149ECA8 table:@"MediaPlayer"];
+      v49 = selfCopy;
       v50 = v12;
       v52 = v51 = v11;
-      v53 = [v52 localizedUppercaseString];
-      v54 = [v47 stringWithFormat:v53, v46];
+      localizedUppercaseString2 = [v52 localizedUppercaseString];
+      v54 = [v47 stringWithFormat:localizedUppercaseString2, v46];
 
       v11 = v51;
       v12 = v50;
-      v5 = v49;
+      selfCopy = v49;
       v10 = v63;
     }
 
@@ -477,7 +477,7 @@ LABEL_34:
       v54 = v46;
     }
 
-    if ([(MPRouteLabel *)v5 _labelFitsText:v54 withSize:width, height])
+    if ([(MPRouteLabel *)selfCopy _labelFitsText:v54 withSize:width, height])
     {
       break;
     }
@@ -557,30 +557,30 @@ id __40__MPRouteLabel__bestStringThatFitsSize___block_invoke_2(void *a1, uint64_
   return v8;
 }
 
-- (id)_truncateText:(id)a3 by:(int64_t)a4
+- (id)_truncateText:(id)text by:(int64_t)by
 {
-  v6 = a3;
-  v7 = v6;
+  textCopy = text;
+  v7 = textCopy;
   truncationMode = self->_truncationMode;
   if (!truncationMode)
   {
-    v18 = [v6 length];
+    v18 = [textCopy length];
     minimumEndCharacterCount = self->_minimumEndCharacterCount;
-    if (v18 - a4 >= minimumEndCharacterCount)
+    if (v18 - by >= minimumEndCharacterCount)
     {
-      v20 = a4;
+      byCopy = by;
     }
 
     else
     {
-      v20 = (v18 - minimumEndCharacterCount) & ~((v18 - minimumEndCharacterCount) >> 63);
+      byCopy = (v18 - minimumEndCharacterCount) & ~((v18 - minimumEndCharacterCount) >> 63);
     }
 
-    v12 = [v7 substringWithRange:{0, (v18 - v20) & ~((v18 - v20) >> 63)}];
+    v12 = [v7 substringWithRange:{0, (v18 - byCopy) & ~((v18 - byCopy) >> 63)}];
     v21 = MEMORY[0x1E696AEC0];
-    v13 = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
-    v15 = [v13 localizedStringForKey:@"ROUTE_NAME_CENTER_TRUNCATING_SEPARATOR" value:&stru_1F149ECA8 table:@"MediaPlayer"];
-    v17 = [v21 stringWithFormat:@"%@%@", v12, v15];
+    mediaPlayerBundle = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
+    mediaPlayerBundle2 = [mediaPlayerBundle localizedStringForKey:@"ROUTE_NAME_CENTER_TRUNCATING_SEPARATOR" value:&stru_1F149ECA8 table:@"MediaPlayer"];
+    v17 = [v21 stringWithFormat:@"%@%@", v12, mediaPlayerBundle2];
 LABEL_10:
 
     goto LABEL_12;
@@ -588,20 +588,20 @@ LABEL_10:
 
   if (truncationMode == 1)
   {
-    if ([v6 length] - (a4 + 2 * self->_minimumEndCharacterCount) <= 0)
+    if ([textCopy length] - (by + 2 * self->_minimumEndCharacterCount) <= 0)
     {
-      a4 = [v7 length] - 2 * self->_minimumEndCharacterCount;
+      by = [v7 length] - 2 * self->_minimumEndCharacterCount;
     }
 
     v9 = vcvtpd_s64_f64(vcvtd_n_f64_u64([v7 length], 1uLL));
-    v10 = vcvtd_n_f64_s64(a4, 1uLL);
+    v10 = vcvtd_n_f64_s64(by, 1uLL);
     v11 = (v10 + v9);
     v12 = [v7 substringWithRange:{0, (v9 - v10)}];
-    v13 = [v7 substringWithRange:{v11, objc_msgSend(v7, "length") - v11}];
+    mediaPlayerBundle = [v7 substringWithRange:{v11, objc_msgSend(v7, "length") - v11}];
     v14 = MEMORY[0x1E696AEC0];
-    v15 = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
-    v16 = [v15 localizedStringForKey:@"ROUTE_NAME_CENTER_TRUNCATING_SEPARATOR" value:&stru_1F149ECA8 table:@"MediaPlayer"];
-    v17 = [v14 stringWithFormat:@"%@%@%@", v12, v16, v13];
+    mediaPlayerBundle2 = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
+    v16 = [mediaPlayerBundle2 localizedStringForKey:@"ROUTE_NAME_CENTER_TRUNCATING_SEPARATOR" value:&stru_1F149ECA8 table:@"MediaPlayer"];
+    v17 = [v14 stringWithFormat:@"%@%@%@", v12, v16, mediaPlayerBundle];
 
     goto LABEL_10;
   }
@@ -612,10 +612,10 @@ LABEL_12:
   return v17;
 }
 
-- (BOOL)_labelFitsText:(id)a3 withSize:(CGSize)a4
+- (BOOL)_labelFitsText:(id)text withSize:(CGSize)size
 {
-  width = a4.width;
-  [(MPRouteLabel *)self _labelSizeForText:a3, a4.width, a4.height];
+  width = size.width;
+  [(MPRouteLabel *)self _labelSizeForText:text, size.width, size.height];
   if (v5 < width)
   {
     return 1;
@@ -630,9 +630,9 @@ LABEL_12:
   return v7 < 0.00000011920929;
 }
 
-- (CGSize)_labelSizeForText:(id)a3
+- (CGSize)_labelSizeForText:(id)text
 {
-  [(UILabel *)self->_sizingLabel setText:a3];
+  [(UILabel *)self->_sizingLabel setText:text];
   sizingLabel = self->_sizingLabel;
 
   [(UILabel *)sizingLabel intrinsicContentSize];
@@ -641,57 +641,57 @@ LABEL_12:
   return result;
 }
 
-- (id)_plusSeparatedRouteNames:(id)a3
+- (id)_plusSeparatedRouteNames:(id)names
 {
-  v3 = [(MPRouteLabel *)self _routeNamesSortedAlphanumeric:a3];
-  v4 = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
-  v5 = [v4 localizedStringForKey:@"ROUTE_NAME_PLUS_SEPARATOR" value:&stru_1F149ECA8 table:@"MediaPlayer"];
+  v3 = [(MPRouteLabel *)self _routeNamesSortedAlphanumeric:names];
+  mediaPlayerBundle = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
+  v5 = [mediaPlayerBundle localizedStringForKey:@"ROUTE_NAME_PLUS_SEPARATOR" value:&stru_1F149ECA8 table:@"MediaPlayer"];
   v6 = [v3 componentsJoinedByString:v5];
 
   return v6;
 }
 
-- (id)_routeNamesSortedLength:(id)a3
+- (id)_routeNamesSortedLength:(id)length
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __40__MPRouteLabel__routeNamesSortedLength___block_invoke;
   v5[3] = &unk_1E7682410;
   v5[4] = self;
-  v3 = [a3 sortedArrayUsingComparator:v5];
+  v3 = [length sortedArrayUsingComparator:v5];
 
   return v3;
 }
 
-- (id)_formattedRouteNameForDesignatedGroupLeaderNameText:(id)a3 routeNamesText:(id)a4
+- (id)_formattedRouteNameForDesignatedGroupLeaderNameText:(id)text routeNamesText:(id)namesText
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 copy];
-  v9 = [(MPRouteLabel *)self _marketingNames];
-  v10 = [(MPRouteLabel *)self designatedGroupLeaderName];
-  v11 = [v9 containsObject:v10];
+  textCopy = text;
+  namesTextCopy = namesText;
+  v8 = [namesTextCopy copy];
+  _marketingNames = [(MPRouteLabel *)self _marketingNames];
+  designatedGroupLeaderName = [(MPRouteLabel *)self designatedGroupLeaderName];
+  v11 = [_marketingNames containsObject:designatedGroupLeaderName];
 
   if (v11)
   {
-    v12 = [(MPRouteLabel *)self designatedGroupLeaderName];
+    designatedGroupLeaderName2 = [(MPRouteLabel *)self designatedGroupLeaderName];
   }
 
   else
   {
-    v12 = v6;
+    designatedGroupLeaderName2 = textCopy;
   }
 
-  v13 = v12;
+  v13 = designatedGroupLeaderName2;
   if ([v8 length] && objc_msgSend(v13, "length"))
   {
     v14 = MEMORY[0x1E696AEC0];
-    v15 = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
-    v16 = [v15 localizedStringForKey:@"ROUTE_NAME_ARROW_FORMAT" value:&stru_1F149ECA8 table:@"MediaPlayer"];
+    mediaPlayerBundle = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
+    v16 = [mediaPlayerBundle localizedStringForKey:@"ROUTE_NAME_ARROW_FORMAT" value:&stru_1F149ECA8 table:@"MediaPlayer"];
     v17 = [v14 stringWithFormat:v16, v13, v8];
 
-    v8 = v15;
+    v8 = mediaPlayerBundle;
   }
 
   else
@@ -705,7 +705,7 @@ LABEL_12:
 
       else
       {
-        v18 = v7;
+        v18 = namesTextCopy;
       }
 
       v19 = v18;
@@ -713,12 +713,12 @@ LABEL_12:
 
     else
     {
-      if (![v7 length])
+      if (![namesTextCopy length])
       {
         goto LABEL_16;
       }
 
-      v19 = v7;
+      v19 = namesTextCopy;
     }
 
     v17 = v19;
@@ -728,16 +728,16 @@ LABEL_12:
 LABEL_16:
   if (self->_forcesUppercaseText)
   {
-    v32 = v6;
-    v20 = [v8 localizedUppercaseString];
-    v21 = [v20 mutableCopy];
+    v32 = textCopy;
+    localizedUppercaseString = [v8 localizedUppercaseString];
+    v21 = [localizedUppercaseString mutableCopy];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v22 = [(MPRouteLabel *)self _marketingNames];
-    v23 = [v22 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    _marketingNames2 = [(MPRouteLabel *)self _marketingNames];
+    v23 = [_marketingNames2 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v23)
     {
       v24 = v23;
@@ -748,7 +748,7 @@ LABEL_16:
         {
           if (*v34 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(_marketingNames2);
           }
 
           v27 = *(*(&v33 + 1) + 8 * i);
@@ -759,7 +759,7 @@ LABEL_16:
           }
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v24 = [_marketingNames2 countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v24);
@@ -767,7 +767,7 @@ LABEL_16:
 
     v30 = [v21 copy];
     v8 = v30;
-    v6 = v32;
+    textCopy = v32;
   }
 
   return v8;
@@ -775,24 +775,24 @@ LABEL_16:
 
 - (id)_formattedRouteName
 {
-  v3 = [(MPRouteLabel *)self designatedGroupLeaderName];
-  v4 = [(NSMutableSet *)self->_routeNames allObjects];
-  v5 = [(MPRouteLabel *)self _plusSeparatedRouteNames:v4];
+  designatedGroupLeaderName = [(MPRouteLabel *)self designatedGroupLeaderName];
+  allObjects = [(NSMutableSet *)self->_routeNames allObjects];
+  v5 = [(MPRouteLabel *)self _plusSeparatedRouteNames:allObjects];
 
-  v6 = [(MPRouteLabel *)self _formattedRouteNameForDesignatedGroupLeaderNameText:v3 routeNamesText:v5];
+  v6 = [(MPRouteLabel *)self _formattedRouteNameForDesignatedGroupLeaderNameText:designatedGroupLeaderName routeNamesText:v5];
 
   return v6;
 }
 
-- (void)removeRouteNamesFromArray:(id)a3
+- (void)removeRouteNamesFromArray:(id)array
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  arrayCopy = array;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [arrayCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -804,14 +804,14 @@ LABEL_16:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arrayCopy);
         }
 
         [(NSMutableSet *)self->_routeNames removeObject:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [arrayCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -821,34 +821,34 @@ LABEL_16:
   [(MPRouteLabel *)self setNeedsLayout];
 }
 
-- (void)removeRouteName:(id)a3
+- (void)removeRouteName:(id)name
 {
-  [(NSMutableSet *)self->_routeNames removeObject:a3];
+  [(NSMutableSet *)self->_routeNames removeObject:name];
   [(MPRouteLabel *)self invalidateIntrinsicContentSize];
 
   [(MPRouteLabel *)self setNeedsLayout];
 }
 
-- (void)addRouteNamesFromArray:(id)a3
+- (void)addRouteNamesFromArray:(id)array
 {
-  [(NSMutableSet *)self->_routeNames addObjectsFromArray:a3];
+  [(NSMutableSet *)self->_routeNames addObjectsFromArray:array];
   [(MPRouteLabel *)self invalidateIntrinsicContentSize];
 
   [(MPRouteLabel *)self setNeedsLayout];
 }
 
-- (void)addRouteName:(id)a3
+- (void)addRouteName:(id)name
 {
-  [(NSMutableSet *)self->_routeNames addObject:a3];
+  [(NSMutableSet *)self->_routeNames addObject:name];
   [(MPRouteLabel *)self invalidateIntrinsicContentSize];
 
   [(MPRouteLabel *)self setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = [(MPRouteLabel *)self _bestStringThatFitsSize:?];
   [(MPRouteLabel *)self _labelSizeForText:v6];
   if (v7 < width)
@@ -868,85 +868,85 @@ LABEL_16:
   return result;
 }
 
-- (void)_setTextColorFollowsTintColor:(BOOL)a3
+- (void)_setTextColorFollowsTintColor:(BOOL)color
 {
-  v3 = a3;
-  v4 = [(MPRouteLabel *)self titleLabel];
-  [v4 _setTextColorFollowsTintColor:v3];
+  colorCopy = color;
+  titleLabel = [(MPRouteLabel *)self titleLabel];
+  [titleLabel _setTextColorFollowsTintColor:colorCopy];
 }
 
-- (void)setUpdatesRouteInternally:(BOOL)a3
+- (void)setUpdatesRouteInternally:(BOOL)internally
 {
-  if (self->_updatesRouteInternally != a3)
+  if (self->_updatesRouteInternally != internally)
   {
-    self->_updatesRouteInternally = a3;
+    self->_updatesRouteInternally = internally;
     [(MPRouteLabel *)self subscribeToRouteNotificationIfNeeded];
   }
 }
 
-- (void)setOmitGroupLeaderName:(BOOL)a3
+- (void)setOmitGroupLeaderName:(BOOL)name
 {
-  if (self->_omitGroupLeaderName != a3)
+  if (self->_omitGroupLeaderName != name)
   {
-    self->_omitGroupLeaderName = a3;
+    self->_omitGroupLeaderName = name;
     [(MPRouteLabel *)self invalidateIntrinsicContentSize];
 
     [(MPRouteLabel *)self setNeedsLayout];
   }
 }
 
-- (void)setDisplayAsSiriSuggestion:(BOOL)a3
+- (void)setDisplayAsSiriSuggestion:(BOOL)suggestion
 {
-  if (self->_displayAsSiriSuggestion != a3)
+  if (self->_displayAsSiriSuggestion != suggestion)
   {
-    self->_displayAsSiriSuggestion = a3;
+    self->_displayAsSiriSuggestion = suggestion;
     [(MPRouteLabel *)self invalidateIntrinsicContentSize];
 
     [(MPRouteLabel *)self setNeedsLayout];
   }
 }
 
-- (void)setTruncationMode:(int64_t)a3
+- (void)setTruncationMode:(int64_t)mode
 {
-  if (self->_truncationMode != a3)
+  if (self->_truncationMode != mode)
   {
-    self->_truncationMode = a3;
+    self->_truncationMode = mode;
     [(MPRouteLabel *)self invalidateIntrinsicContentSize];
 
     [(MPRouteLabel *)self setNeedsLayout];
   }
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  if (self->_textAlignment != a3)
+  if (self->_textAlignment != alignment)
   {
-    self->_textAlignment = a3;
+    self->_textAlignment = alignment;
     [(BSUIEmojiLabelView *)self->_contentView setTextAlignment:?];
   }
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  routeCopy = route;
   route = self->_route;
-  if (route != v5)
+  if (route != routeCopy)
   {
     if (route)
     {
-      v7 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v7 removeObserver:self name:@"MPAVRouteDidChangeNotification" object:self->_route];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter removeObserver:self name:@"MPAVRouteDidChangeNotification" object:self->_route];
     }
 
-    objc_storeStrong(&self->_route, a3);
+    objc_storeStrong(&self->_route, route);
     [(MPRouteLabel *)self subscribeToRouteNotificationIfNeeded];
   }
 
-  if ([(MPAVRoute *)v5 isAppleTVRoute])
+  if ([(MPAVRoute *)routeCopy isAppleTVRoute])
   {
-    v8 = [(MPAVRoute *)v5 designatedGroupLeaderName];
-    v9 = [v8 length] != 0;
+    designatedGroupLeaderName = [(MPAVRoute *)routeCopy designatedGroupLeaderName];
+    v9 = [designatedGroupLeaderName length] != 0;
   }
 
   else
@@ -954,68 +954,68 @@ LABEL_16:
     v9 = 0;
   }
 
-  if (![(MPAVRoute *)v5 isDeviceRoute]|| v9)
+  if (![(MPAVRoute *)routeCopy isDeviceRoute]|| v9)
   {
-    v10 = [(MPAVRoute *)v5 designatedGroupLeaderName];
+    designatedGroupLeaderName2 = [(MPAVRoute *)routeCopy designatedGroupLeaderName];
   }
 
   else
   {
-    v10 = MRAVOutputDeviceCopyLocalDeviceLocalizedName();
+    designatedGroupLeaderName2 = MRAVOutputDeviceCopyLocalDeviceLocalizedName();
   }
 
-  v11 = v10;
-  if (![(__CFString *)v10 length]|| ![(MPAVRoute *)v5 isAirPlayingToDevice]|| ![(MPAVRoute *)v5 isProxyGroupPlayer])
+  v11 = designatedGroupLeaderName2;
+  if (![(__CFString *)designatedGroupLeaderName2 length]|| ![(MPAVRoute *)routeCopy isAirPlayingToDevice]|| ![(MPAVRoute *)routeCopy isProxyGroupPlayer])
   {
-    if (![(MPAVRoute *)v5 isDeviceRoute]|| [(MPAVRoute *)v5 numberOfOutputDevices]> 1)
+    if (![(MPAVRoute *)routeCopy isDeviceRoute]|| [(MPAVRoute *)routeCopy numberOfOutputDevices]> 1)
     {
-      v21 = [(MPAVRoute *)v5 isSplitRoute];
+      isSplitRoute = [(MPAVRoute *)routeCopy isSplitRoute];
 
-      if (v21)
+      if (isSplitRoute)
       {
         v22 = MEMORY[0x1E696AEC0];
-        v23 = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
+        mediaPlayerBundle = [MEMORY[0x1E696AAE8] mediaPlayerBundle];
         v11 = &stru_1F149ECA8;
-        v24 = [v23 localizedStringForKey:@"ROUTE_NAME_HEADPHONES_COUNT" value:&stru_1F149ECA8 table:@"MediaPlayer"];
-        v25 = [v22 stringWithFormat:v24, -[MPAVRoute numberOfOutputDevices](v5, "numberOfOutputDevices")];
+        v24 = [mediaPlayerBundle localizedStringForKey:@"ROUTE_NAME_HEADPHONES_COUNT" value:&stru_1F149ECA8 table:@"MediaPlayer"];
+        v25 = [v22 stringWithFormat:v24, -[MPAVRoute numberOfOutputDevices](routeCopy, "numberOfOutputDevices")];
         v31 = v25;
-        v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
+        routeNames = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
 
         goto LABEL_34;
       }
 
-      v14 = [(MPAVRoute *)v5 routeNames];
+      routeNames = [(MPAVRoute *)routeCopy routeNames];
       goto LABEL_33;
     }
 
-    v16 = v5;
+    v16 = routeCopy;
     v11 = v16;
     if (v16 && self->_usesPredictedOutputDevice)
     {
-      v17 = [(__CFString *)v16 predictedOutputDevice];
-      v18 = v17;
-      if (v17)
+      predictedOutputDevice = [(__CFString *)v16 predictedOutputDevice];
+      routeName2 = predictedOutputDevice;
+      if (predictedOutputDevice)
       {
-        v19 = [v17 routeName];
-        v34[0] = v19;
+        routeName = [predictedOutputDevice routeName];
+        v34[0] = routeName;
         v20 = v34;
       }
 
       else
       {
-        v19 = [(__CFString *)v11 routeName];
-        v33 = v19;
+        routeName = [(__CFString *)v11 routeName];
+        v33 = routeName;
         v20 = &v33;
       }
 
-      v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
+      routeNames = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
     }
 
     else
     {
-      v18 = [(__CFString *)v16 routeName];
-      v32 = v18;
-      v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
+      routeName2 = [(__CFString *)v16 routeName];
+      v32 = routeName2;
+      routeNames = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
     }
 
 LABEL_32:
@@ -1025,13 +1025,13 @@ LABEL_33:
   }
 
   v12 = objc_alloc(MEMORY[0x1E695DF70]);
-  v13 = [(MPAVRoute *)v5 routeNames];
-  v14 = [v12 initWithArray:v13];
+  routeNames2 = [(MPAVRoute *)routeCopy routeNames];
+  routeNames = [v12 initWithArray:routeNames2];
 
-  v15 = [v14 indexOfObject:v11];
+  v15 = [routeNames indexOfObject:v11];
   if (v15 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v14 removeObjectAtIndex:v15];
+    [routeNames removeObjectAtIndex:v15];
   }
 
   if (self->_omitGroupLeaderName)
@@ -1040,17 +1040,17 @@ LABEL_33:
   }
 
 LABEL_34:
-  v26 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v14];
-  v27 = [(MPRouteLabel *)self designatedGroupLeaderName];
-  if (v11 == v27)
+  v26 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:routeNames];
+  designatedGroupLeaderName3 = [(MPRouteLabel *)self designatedGroupLeaderName];
+  if (v11 == designatedGroupLeaderName3)
   {
     v29 = 1;
   }
 
   else
   {
-    v28 = [(MPRouteLabel *)self designatedGroupLeaderName];
-    v29 = [(__CFString *)v11 isEqualToString:v28];
+    designatedGroupLeaderName4 = [(MPRouteLabel *)self designatedGroupLeaderName];
+    v29 = [(__CFString *)v11 isEqualToString:designatedGroupLeaderName4];
   }
 
   v30 = [v26 isEqualToSet:self->_routeNames];
@@ -1063,52 +1063,52 @@ LABEL_34:
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_textColor isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_textColor, a3);
-    [(BSUIEmojiLabelView *)self->_contentView setTextColor:v5];
+    objc_storeStrong(&self->_textColor, color);
+    [(BSUIEmojiLabelView *)self->_contentView setTextColor:colorCopy];
   }
 }
 
-- (void)setMinimumEndCharacterCount:(int64_t)a3
+- (void)setMinimumEndCharacterCount:(int64_t)count
 {
-  if (a3 < 0)
+  if (count < 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"MPRouteLabel.m" lineNumber:111 description:@"MPRouteLabel's minimumEndCharacter property must be greater than or equal to 0."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPRouteLabel.m" lineNumber:111 description:@"MPRouteLabel's minimumEndCharacter property must be greater than or equal to 0."];
   }
 
-  if (self->_minimumEndCharacterCount != a3)
+  if (self->_minimumEndCharacterCount != count)
   {
-    self->_minimumEndCharacterCount = a3;
+    self->_minimumEndCharacterCount = count;
     [(MPRouteLabel *)self invalidateIntrinsicContentSize];
 
     [(MPRouteLabel *)self setNeedsLayout];
   }
 }
 
-- (void)setForcesUppercaseText:(BOOL)a3
+- (void)setForcesUppercaseText:(BOOL)text
 {
-  if (self->_forcesUppercaseText != a3)
+  if (self->_forcesUppercaseText != text)
   {
-    self->_forcesUppercaseText = a3;
+    self->_forcesUppercaseText = text;
     [(MPRouteLabel *)self invalidateIntrinsicContentSize];
 
     [(MPRouteLabel *)self setNeedsLayout];
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
+  fontCopy = font;
   if (([(UIFont *)self->_font isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_font, a3);
-    [(BSUIEmojiLabelView *)self->_contentView setFont:v5];
-    [(UILabel *)self->_sizingLabel setFont:v5];
+    objc_storeStrong(&self->_font, font);
+    [(BSUIEmojiLabelView *)self->_contentView setFont:fontCopy];
+    [(UILabel *)self->_sizingLabel setFont:fontCopy];
     [(MPRouteLabel *)self invalidateIntrinsicContentSize];
     [(MPRouteLabel *)self setNeedsLayout];
   }
@@ -1116,17 +1116,17 @@ LABEL_34:
 
 - (BOOL)_textColorFollowsTintColor
 {
-  v2 = [(MPRouteLabel *)self titleLabel];
-  v3 = [v2 _textColorFollowsTintColor];
+  titleLabel = [(MPRouteLabel *)self titleLabel];
+  _textColorFollowsTintColor = [titleLabel _textColorFollowsTintColor];
 
-  return v3;
+  return _textColorFollowsTintColor;
 }
 
-- (MPRouteLabel)initWithFrame:(CGRect)a3
+- (MPRouteLabel)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = MPRouteLabel;
-  v3 = [(MPRouteLabel *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MPRouteLabel *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E696AEC0]);

@@ -1,26 +1,26 @@
 @interface SMSessionConfigurationEnumerationOptions
-- (SMSessionConfigurationEnumerationOptions)initWithBatchSize:(unint64_t)a3 fetchLimit:(unint64_t)a4 sortBySessionStartDate:(BOOL)a5 ascending:(BOOL)a6 sessionTypes:(id)a7 timeInADayInterval:(id)a8 pickOneConfigInTimeInADayInterval:(BOOL)a9 dateInterval:(id)a10 startBoundingBoxLocation:(id)a11 destinationBoundingBoxLocation:(id)a12 boundingBoxRadius:(id)a13 sessionIdentifier:(id)a14;
-- (SMSessionConfigurationEnumerationOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SMSessionConfigurationEnumerationOptions)initWithBatchSize:(unint64_t)size fetchLimit:(unint64_t)limit sortBySessionStartDate:(BOOL)date ascending:(BOOL)ascending sessionTypes:(id)types timeInADayInterval:(id)interval pickOneConfigInTimeInADayInterval:(BOOL)dayInterval dateInterval:(id)self0 startBoundingBoxLocation:(id)self1 destinationBoundingBoxLocation:(id)self2 boundingBoxRadius:(id)self3 sessionIdentifier:(id)self4;
+- (SMSessionConfigurationEnumerationOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMSessionConfigurationEnumerationOptions
 
-- (SMSessionConfigurationEnumerationOptions)initWithBatchSize:(unint64_t)a3 fetchLimit:(unint64_t)a4 sortBySessionStartDate:(BOOL)a5 ascending:(BOOL)a6 sessionTypes:(id)a7 timeInADayInterval:(id)a8 pickOneConfigInTimeInADayInterval:(BOOL)a9 dateInterval:(id)a10 startBoundingBoxLocation:(id)a11 destinationBoundingBoxLocation:(id)a12 boundingBoxRadius:(id)a13 sessionIdentifier:(id)a14
+- (SMSessionConfigurationEnumerationOptions)initWithBatchSize:(unint64_t)size fetchLimit:(unint64_t)limit sortBySessionStartDate:(BOOL)date ascending:(BOOL)ascending sessionTypes:(id)types timeInADayInterval:(id)interval pickOneConfigInTimeInADayInterval:(BOOL)dayInterval dateInterval:(id)self0 startBoundingBoxLocation:(id)self1 destinationBoundingBoxLocation:(id)self2 boundingBoxRadius:(id)self3 sessionIdentifier:(id)self4
 {
   v53 = *MEMORY[0x277D85DE8];
-  v17 = a7;
-  v18 = a8;
-  v19 = a10;
-  v20 = a11;
-  v44 = a12;
-  v45 = a13;
-  v21 = v17;
-  v22 = v19;
-  v23 = v20;
-  v43 = a14;
+  typesCopy = types;
+  intervalCopy = interval;
+  dateIntervalCopy = dateInterval;
+  locationCopy = location;
+  boxLocationCopy = boxLocation;
+  radiusCopy = radius;
+  v21 = typesCopy;
+  v22 = dateIntervalCopy;
+  v23 = locationCopy;
+  identifierCopy = identifier;
   v51.receiver = self;
   v51.super_class = SMSessionConfigurationEnumerationOptions;
   v24 = [(SMSessionConfigurationEnumerationOptions *)&v51 init];
@@ -30,15 +30,15 @@
     goto LABEL_16;
   }
 
-  v38 = v20;
-  v24->_batchSize = a3;
-  v24->_fetchLimit = a4;
-  v24->_sortBySessionStartDate = a5;
-  v24->_ascending = a6;
-  objc_storeStrong(&v24->_sessionTypes, a7);
-  objc_storeStrong(&v25->_timeInADayInterval, a8);
-  v25->_pickOneConfigInTimeInADayInterval = a9;
-  if (a9 && !v25->_timeInADayInterval)
+  v38 = locationCopy;
+  v24->_batchSize = size;
+  v24->_fetchLimit = limit;
+  v24->_sortBySessionStartDate = date;
+  v24->_ascending = ascending;
+  objc_storeStrong(&v24->_sessionTypes, types);
+  objc_storeStrong(&v25->_timeInADayInterval, interval);
+  v25->_pickOneConfigInTimeInADayInterval = dayInterval;
+  if (dayInterval && !v25->_timeInADayInterval)
   {
     v34 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -59,7 +59,7 @@
     v47 = 0u;
     v26 = v21;
     v27 = [v26 countByEnumeratingWithState:&v46 objects:v52 count:16];
-    v23 = v20;
+    v23 = locationCopy;
     if (v27)
     {
       v28 = v27;
@@ -73,8 +73,8 @@
             objc_enumerationMutation(v26);
           }
 
-          v31 = [*(*(&v46 + 1) + 8 * i) unsignedIntValue];
-          if (v18 && v31 != 2)
+          unsignedIntValue = [*(*(&v46 + 1) + 8 * i) unsignedIntValue];
+          if (intervalCopy && unsignedIntValue != 2)
           {
             v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -97,17 +97,17 @@
       }
     }
 
-    objc_storeStrong(&v25->_dateInterval, a10);
-    objc_storeStrong(&v25->_startBoundingBoxLocation, a11);
-    objc_storeStrong(&v25->_destinationBoundingBoxLocation, a12);
-    objc_storeStrong(&v25->_boundingBoxRadius, a13);
+    objc_storeStrong(&v25->_dateInterval, dateInterval);
+    objc_storeStrong(&v25->_startBoundingBoxLocation, location);
+    objc_storeStrong(&v25->_destinationBoundingBoxLocation, boxLocation);
+    objc_storeStrong(&v25->_boundingBoxRadius, radius);
     if (v25->_startBoundingBoxLocation)
     {
       v23 = v38;
-      if (v45)
+      if (radiusCopy)
       {
 LABEL_15:
-        objc_storeStrong(&v25->_sessionIdentifier, a14);
+        objc_storeStrong(&v25->_sessionIdentifier, identifier);
 LABEL_16:
         v32 = v25;
         goto LABEL_29;
@@ -117,7 +117,7 @@ LABEL_16:
     else
     {
       v23 = v38;
-      if (v45 || !v25->_destinationBoundingBoxLocation)
+      if (radiusCopy || !v25->_destinationBoundingBoxLocation)
       {
         goto LABEL_15;
       }
@@ -140,47 +140,47 @@ LABEL_29:
   return v32;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   boundingBoxRadius = self->_boundingBoxRadius;
   LOBYTE(v7) = self->_pickOneConfigInTimeInADayInterval;
   return [v4 initWithBatchSize:self->_batchSize fetchLimit:self->_fetchLimit sortBySessionStartDate:self->_sortBySessionStartDate ascending:self->_ascending sessionTypes:self->_sessionTypes timeInADayInterval:self->_timeInADayInterval pickOneConfigInTimeInADayInterval:v7 dateInterval:self->_dateInterval startBoundingBoxLocation:self->_startBoundingBoxLocation destinationBoundingBoxLocation:self->_destinationBoundingBoxLocation boundingBoxRadius:boundingBoxRadius sessionIdentifier:self->_sessionIdentifier];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   batchSize = self->_batchSize;
-  v5 = a3;
-  [v5 encodeInteger:batchSize forKey:@"batchSize"];
-  [v5 encodeInteger:self->_fetchLimit forKey:@"fetchLimit"];
-  [v5 encodeBool:self->_sortBySessionStartDate forKey:@"sortBySessionStartDate"];
-  [v5 encodeBool:self->_ascending forKey:@"ascending"];
-  [v5 encodeObject:self->_sessionTypes forKey:@"sessionTypes"];
-  [v5 encodeObject:self->_timeInADayInterval forKey:@"timeInADayInterval"];
-  [v5 encodeBool:self->_pickOneConfigInTimeInADayInterval forKey:@"pickOneConfigInTimeInADayInterval"];
-  [v5 encodeObject:self->_dateInterval forKey:@"dateInterval"];
-  [v5 encodeObject:self->_startBoundingBoxLocation forKey:@"startBoundingBoxLocation"];
-  [v5 encodeObject:self->_destinationBoundingBoxLocation forKey:@"destinationBoundingBoxLocation"];
-  [v5 encodeObject:self->_boundingBoxRadius forKey:@"boundingBoxRadius"];
-  [v5 encodeObject:self->_sessionIdentifier forKey:@"sessionIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:batchSize forKey:@"batchSize"];
+  [coderCopy encodeInteger:self->_fetchLimit forKey:@"fetchLimit"];
+  [coderCopy encodeBool:self->_sortBySessionStartDate forKey:@"sortBySessionStartDate"];
+  [coderCopy encodeBool:self->_ascending forKey:@"ascending"];
+  [coderCopy encodeObject:self->_sessionTypes forKey:@"sessionTypes"];
+  [coderCopy encodeObject:self->_timeInADayInterval forKey:@"timeInADayInterval"];
+  [coderCopy encodeBool:self->_pickOneConfigInTimeInADayInterval forKey:@"pickOneConfigInTimeInADayInterval"];
+  [coderCopy encodeObject:self->_dateInterval forKey:@"dateInterval"];
+  [coderCopy encodeObject:self->_startBoundingBoxLocation forKey:@"startBoundingBoxLocation"];
+  [coderCopy encodeObject:self->_destinationBoundingBoxLocation forKey:@"destinationBoundingBoxLocation"];
+  [coderCopy encodeObject:self->_boundingBoxRadius forKey:@"boundingBoxRadius"];
+  [coderCopy encodeObject:self->_sessionIdentifier forKey:@"sessionIdentifier"];
 }
 
-- (SMSessionConfigurationEnumerationOptions)initWithCoder:(id)a3
+- (SMSessionConfigurationEnumerationOptions)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v18 = [v3 decodeIntegerForKey:@"batchSize"];
-  v17 = [v3 decodeIntegerForKey:@"fetchLimit"];
-  v16 = [v3 decodeBoolForKey:@"sortBySessionStartDate"];
-  v4 = [v3 decodeBoolForKey:@"ascending"];
-  v5 = [v3 decodeObjectForKey:@"sessionTypes"];
-  v6 = [v3 decodeObjectForKey:@"timeInADayInterval"];
-  v7 = [v3 decodeBoolForKey:@"pickOneConfigInTimeInADayInterval"];
-  v8 = [v3 decodeObjectForKey:@"dateInterval"];
-  v9 = [v3 decodeObjectForKey:@"startBoundingBoxLocation"];
-  v10 = [v3 decodeObjectForKey:@"destinationBoundingBoxLocation"];
-  v11 = [v3 decodeObjectForKey:@"boundingBoxRadius"];
-  v12 = [v3 decodeObjectForKey:@"sessionIdentifier"];
+  coderCopy = coder;
+  v18 = [coderCopy decodeIntegerForKey:@"batchSize"];
+  v17 = [coderCopy decodeIntegerForKey:@"fetchLimit"];
+  v16 = [coderCopy decodeBoolForKey:@"sortBySessionStartDate"];
+  v4 = [coderCopy decodeBoolForKey:@"ascending"];
+  v5 = [coderCopy decodeObjectForKey:@"sessionTypes"];
+  v6 = [coderCopy decodeObjectForKey:@"timeInADayInterval"];
+  v7 = [coderCopy decodeBoolForKey:@"pickOneConfigInTimeInADayInterval"];
+  v8 = [coderCopy decodeObjectForKey:@"dateInterval"];
+  v9 = [coderCopy decodeObjectForKey:@"startBoundingBoxLocation"];
+  v10 = [coderCopy decodeObjectForKey:@"destinationBoundingBoxLocation"];
+  v11 = [coderCopy decodeObjectForKey:@"boundingBoxRadius"];
+  v12 = [coderCopy decodeObjectForKey:@"sessionIdentifier"];
 
   LOBYTE(v15) = v7;
   v13 = [(SMSessionConfigurationEnumerationOptions *)self initWithBatchSize:v18 fetchLimit:v17 sortBySessionStartDate:v16 ascending:v4 sessionTypes:v5 timeInADayInterval:v6 pickOneConfigInTimeInADayInterval:v15 dateInterval:v8 startBoundingBoxLocation:v9 destinationBoundingBoxLocation:v10 boundingBoxRadius:v11 sessionIdentifier:v12];
@@ -191,8 +191,8 @@ LABEL_29:
 - (id)description
 {
   v21 = MEMORY[0x277CCACA8];
-  v20 = [(SMSessionConfigurationEnumerationOptions *)self batchSize];
-  v19 = [(SMSessionConfigurationEnumerationOptions *)self fetchLimit];
+  batchSize = [(SMSessionConfigurationEnumerationOptions *)self batchSize];
+  fetchLimit = [(SMSessionConfigurationEnumerationOptions *)self fetchLimit];
   if ([(SMSessionConfigurationEnumerationOptions *)self sortBySessionStartDate])
   {
     v3 = @"YES";
@@ -214,9 +214,9 @@ LABEL_29:
     v4 = @"NO";
   }
 
-  v5 = [(SMSessionConfigurationEnumerationOptions *)self sessionTypes];
-  v6 = [v5 count];
-  v7 = [(SMSessionConfigurationEnumerationOptions *)self timeInADayInterval];
+  sessionTypes = [(SMSessionConfigurationEnumerationOptions *)self sessionTypes];
+  v6 = [sessionTypes count];
+  timeInADayInterval = [(SMSessionConfigurationEnumerationOptions *)self timeInADayInterval];
   if ([(SMSessionConfigurationEnumerationOptions *)self pickOneConfigInTimeInADayInterval])
   {
     v8 = @"YES";
@@ -227,14 +227,14 @@ LABEL_29:
     v8 = @"NO";
   }
 
-  v9 = [(SMSessionConfigurationEnumerationOptions *)self dateInterval];
-  v10 = [(SMSessionConfigurationEnumerationOptions *)self startBoundingBoxLocation];
-  v11 = [(SMSessionConfigurationEnumerationOptions *)self destinationBoundingBoxLocation];
-  v12 = [(SMSessionConfigurationEnumerationOptions *)self boundingBoxRadius];
-  [v12 doubleValue];
+  dateInterval = [(SMSessionConfigurationEnumerationOptions *)self dateInterval];
+  startBoundingBoxLocation = [(SMSessionConfigurationEnumerationOptions *)self startBoundingBoxLocation];
+  destinationBoundingBoxLocation = [(SMSessionConfigurationEnumerationOptions *)self destinationBoundingBoxLocation];
+  boundingBoxRadius = [(SMSessionConfigurationEnumerationOptions *)self boundingBoxRadius];
+  [boundingBoxRadius doubleValue];
   v14 = v13;
-  v15 = [(SMSessionConfigurationEnumerationOptions *)self sessionIdentifier];
-  v16 = [v21 stringWithFormat:@"batchSize, %lu, fetchLimit, %lu, sortBySessionStartDate, %@, ascending, %@, session types count, %lu, timeInADayInterval, %@, pickOneConfigInTimeInADayInterval, %@, dateInterval, %@, startBoundingBoxLocation, %@, destinationBoundingBoxLocation, %@, boundingBoxRadius, %.3f, sessionIdentifier, %@", v20, v19, v18, v4, v6, v7, v8, v9, v10, v11, v14, v15];
+  sessionIdentifier = [(SMSessionConfigurationEnumerationOptions *)self sessionIdentifier];
+  v16 = [v21 stringWithFormat:@"batchSize, %lu, fetchLimit, %lu, sortBySessionStartDate, %@, ascending, %@, session types count, %lu, timeInADayInterval, %@, pickOneConfigInTimeInADayInterval, %@, dateInterval, %@, startBoundingBoxLocation, %@, destinationBoundingBoxLocation, %@, boundingBoxRadius, %.3f, sessionIdentifier, %@", batchSize, fetchLimit, v18, v4, v6, timeInADayInterval, v8, dateInterval, startBoundingBoxLocation, destinationBoundingBoxLocation, v14, sessionIdentifier];
 
   return v16;
 }

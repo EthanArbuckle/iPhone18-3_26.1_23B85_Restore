@@ -1,18 +1,18 @@
 @interface PISmartToneAutoCalculator
-- (id)submitSynchronous:(id *)a3;
-- (void)submit:(id)a3;
+- (id)submitSynchronous:(id *)synchronous;
+- (void)submit:(id)submit;
 @end
 
 @implementation PISmartToneAutoCalculator
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
   v53[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  submitCopy = submit;
   v5 = MEMORY[0x1E69B3A18];
-  v37 = v4;
-  v6 = [(NURenderRequest *)self composition];
-  v7 = [v5 isHDRComposition:v6];
+  v37 = submitCopy;
+  composition = [(NURenderRequest *)self composition];
+  v7 = [v5 isHDRComposition:composition];
 
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -54,8 +54,8 @@
       if (v31)
       {
         v34 = dispatch_get_specific(*v28);
-        v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+        v36 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v34;
         *&buf[12] = 2114;
@@ -66,8 +66,8 @@
 
     else if (v31)
     {
-      v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v33 = [v32 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v33 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v33;
       _os_log_error_impl(&dword_1C7694000, v30, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -78,8 +78,8 @@
   }
 
   v11 = dispatch_queue_create("PISmartToneAutoCalculator", 0);
-  v12 = [(NURenderRequest *)self responseQueue];
-  dispatch_set_target_queue(v11, v12);
+  responseQueue = [(NURenderRequest *)self responseQueue];
+  dispatch_set_target_queue(v11, responseQueue);
 
   if (v7)
   {
@@ -333,12 +333,12 @@ void __36__PISmartToneAutoCalculator_submit___block_invoke_30(void *a1)
   }
 }
 
-- (id)submitSynchronous:(id *)a3
+- (id)submitSynchronous:(id *)synchronous
 {
   v35 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69B3A18];
-  v6 = [(NURenderRequest *)self composition];
-  v7 = [v5 isHDRComposition:v6];
+  composition = [(NURenderRequest *)self composition];
+  v7 = [v5 isHDRComposition:composition];
 
   v8 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
@@ -362,8 +362,8 @@ void __36__PISmartToneAutoCalculator_submit___block_invoke_30(void *a1)
   }
 
   v12 = dispatch_queue_create("PISmartToneAutoCalculator", 0);
-  v13 = [(NURenderRequest *)self responseQueue];
-  dispatch_set_target_queue(v12, v13);
+  responseQueue = [(NURenderRequest *)self responseQueue];
+  dispatch_set_target_queue(v12, responseQueue);
 
   if (v7)
   {
@@ -398,8 +398,8 @@ void __36__PISmartToneAutoCalculator_submit___block_invoke_30(void *a1)
     _os_log_impl(&dword_1C7694000, v19, OS_LOG_TYPE_DEFAULT, "PISmartToneAutoCalculator smartTone request submitting: %{public}@", buf, 0xCu);
   }
 
-  v20 = [v15 submitGenericSynchronous:a3];
-  v21 = [v20 data];
+  v20 = [v15 submitGenericSynchronous:synchronous];
+  data = [v20 data];
 
   if (*v8 != -1)
   {
@@ -410,11 +410,11 @@ void __36__PISmartToneAutoCalculator_submit___block_invoke_30(void *a1)
   if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v34 = v21;
+    v34 = data;
     _os_log_impl(&dword_1C7694000, v22, OS_LOG_TYPE_DEFAULT, "PISmartToneAutoCalculator smartTone result: %{public}@", buf, 0xCu);
   }
 
-  if (v21)
+  if (data)
   {
 
     if (v7)
@@ -446,8 +446,8 @@ void __36__PISmartToneAutoCalculator_submit___block_invoke_30(void *a1)
       _os_log_impl(&dword_1C7694000, v26, OS_LOG_TYPE_DEFAULT, "PISmartToneAutoCalculator localLight request submitting: %{public}@", buf, 0xCu);
     }
 
-    v27 = [v15 submitGenericSynchronous:a3];
-    v28 = [v27 data];
+    v27 = [v15 submitGenericSynchronous:synchronous];
+    data2 = [v27 data];
 
     if (*v8 != -1)
     {
@@ -458,15 +458,15 @@ void __36__PISmartToneAutoCalculator_submit___block_invoke_30(void *a1)
     if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v34 = v28;
+      v34 = data2;
       _os_log_impl(&dword_1C7694000, v29, OS_LOG_TYPE_DEFAULT, "PISmartToneAutoCalculator localLight result: %{public}@", buf, 0xCu);
     }
 
-    if (v28)
+    if (data2)
     {
       v23 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      [v23 addEntriesFromDictionary:v21];
-      [v23 addEntriesFromDictionary:v28];
+      [v23 addEntriesFromDictionary:data];
+      [v23 addEntriesFromDictionary:data2];
     }
 
     else

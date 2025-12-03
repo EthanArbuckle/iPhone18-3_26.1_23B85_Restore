@@ -9,45 +9,45 @@
 
 - (void)userDidInteract
 {
-  v4 = [(SearchTopHitsSuggestion *)self queryResult];
+  queryResult = [(SearchTopHitsSuggestion *)self queryResult];
   v3 = [SearchTopHitsSuggestion messageConversationID]_0(self);
-  [v4 userDidInteractWithConversationID:v3];
+  [queryResult userDidInteractWithConversationID:v3];
 }
 
 - (id)messageConversationID
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 message];
-    v2 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v1 conversationID]);
-    v3 = [v2 stringValue];
+    message = [self message];
+    v2 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [message conversationID]);
+    stringValue = [v2 stringValue];
   }
 
   else
   {
-    v3 = 0;
+    stringValue = 0;
   }
 
-  return v3;
+  return stringValue;
 }
 
 - (int64_t)rankingIndex
 {
-  v3 = [(SearchTopHitsSuggestion *)self queryResult];
+  queryResult = [(SearchTopHitsSuggestion *)self queryResult];
   v4 = [SearchTopHitsSuggestion messageConversationID]_0(self);
-  v5 = [v3 rankingIndexForConversationID:v4];
+  v5 = [queryResult rankingIndexForConversationID:v4];
 
   return v5;
 }
 
 - (EMMessage)message
 {
-  v3 = [(SearchTopHitsSuggestion *)self messageList];
-  v4 = [(SearchTopHitsSuggestion *)self itemID];
-  v5 = [v3 messageListItemForItemID:v4];
-  v6 = [v5 result];
+  messageList = [(SearchTopHitsSuggestion *)self messageList];
+  itemID = [(SearchTopHitsSuggestion *)self itemID];
+  v5 = [messageList messageListItemForItemID:itemID];
+  result = [v5 result];
 
-  return v6;
+  return result;
 }
 
 @end

@@ -1,107 +1,107 @@
 @interface DMDiphoneOSAppLifeCycle
-- (DMDiphoneOSAppLifeCycle)initWithBundleIdentifier:(id)a3;
-- (void)_findProxyInProxies:(id)a3 andCallBlock:(id)a4;
-- (void)applicationInstallsDidCancel:(id)a3;
-- (void)applicationInstallsDidChange:(id)a3;
-- (void)applicationInstallsDidPause:(id)a3;
-- (void)applicationInstallsDidResume:(id)a3;
-- (void)applicationInstallsDidStart:(id)a3;
-- (void)applicationsDidFailToInstall:(id)a3;
-- (void)applicationsDidFailToUninstall:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)applicationsWillInstall:(id)a3;
-- (void)applicationsWillUninstall:(id)a3;
+- (DMDiphoneOSAppLifeCycle)initWithBundleIdentifier:(id)identifier;
+- (void)_findProxyInProxies:(id)proxies andCallBlock:(id)block;
+- (void)applicationInstallsDidCancel:(id)cancel;
+- (void)applicationInstallsDidChange:(id)change;
+- (void)applicationInstallsDidPause:(id)pause;
+- (void)applicationInstallsDidResume:(id)resume;
+- (void)applicationInstallsDidStart:(id)start;
+- (void)applicationsDidFailToInstall:(id)install;
+- (void)applicationsDidFailToUninstall:(id)uninstall;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)applicationsWillInstall:(id)install;
+- (void)applicationsWillUninstall:(id)uninstall;
 - (void)dealloc;
 @end
 
 @implementation DMDiphoneOSAppLifeCycle
 
-- (DMDiphoneOSAppLifeCycle)initWithBundleIdentifier:(id)a3
+- (DMDiphoneOSAppLifeCycle)initWithBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = DMFAppLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v40 = v3;
+    v40 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Initialize app life cycle with bundle identifier: %{public}@", buf, 0xCu);
   }
 
   v38 = 0;
-  v5 = [[LSApplicationRecord alloc] initWithBundleIdentifier:v3 allowPlaceholder:1 error:&v38];
+  v5 = [[LSApplicationRecord alloc] initWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:&v38];
   v6 = v38;
   if (!v5)
   {
     v7 = DMFAppLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_10007DC10(v3, v6, v7);
+      sub_10007DC10(identifierCopy, v6, v7);
     }
   }
 
-  v8 = [v5 compatibilityObject];
-  v9 = v8;
-  if (v5 && v8)
+  compatibilityObject = [v5 compatibilityObject];
+  v9 = compatibilityObject;
+  if (v5 && compatibilityObject)
   {
-    v10 = [v8 appState];
-    v11 = [v10 isInstalled];
+    appState = [compatibilityObject appState];
+    isInstalled = [appState isInstalled];
 
-    v12 = [v9 installType];
-    if (v12 <= 0xA)
+    installType = [v9 installType];
+    if (installType <= 0xA)
     {
-      if (((1 << v12) & 0x45E) == 0)
+      if (((1 << installType) & 0x45E) == 0)
       {
         v15 = 4;
-        if (!v11)
+        if (!isInstalled)
         {
           v15 = 0;
         }
 
         v16 = 6;
-        if (v12 != 5)
+        if (installType != 5)
         {
           v16 = 0;
         }
 
-        v18 = v12 == 0;
+        v18 = installType == 0;
         goto LABEL_35;
       }
 
-      v13 = [v9 installProgress];
-      v14 = [v13 installState];
+      installProgress = [v9 installProgress];
+      installState = [installProgress installState];
 
-      if (v14 <= 2)
+      if (installState <= 2)
       {
         v15 = 5;
-        if (!v11)
+        if (!isInstalled)
         {
           v15 = 1;
         }
 
         v16 = 2;
-        if (v11)
+        if (isInstalled)
         {
           v16 = 6;
         }
 
         v17 = 3;
-        if (v11)
+        if (isInstalled)
         {
           v17 = 7;
         }
 
-        if (v14 != 2)
+        if (installState != 2)
         {
           v17 = 0;
         }
 
-        if (v14 != 1)
+        if (installState != 1)
         {
           v16 = v17;
         }
 
-        v18 = v14 == 0;
+        v18 = installState == 0;
 LABEL_35:
         if (v18)
         {
@@ -116,9 +116,9 @@ LABEL_35:
         goto LABEL_38;
       }
 
-      if ((v14 - 3) < 2)
+      if ((installState - 3) < 2)
       {
-        if (v11)
+        if (isInstalled)
         {
           v21 = 4;
         }
@@ -133,7 +133,7 @@ LABEL_38:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           v22 = [DMFApp stringForInstallationState:v21];
-          if (v11)
+          if (isInstalled)
           {
             v23 = @"YES";
           }
@@ -143,9 +143,9 @@ LABEL_38:
             v23 = @"NO";
           }
 
-          v35 = [v9 appState];
+          appState2 = [v9 appState];
           v24 = v6;
-          if ([v35 isPlaceholder])
+          if ([appState2 isPlaceholder])
           {
             v25 = @"YES";
           }
@@ -155,11 +155,11 @@ LABEL_38:
             v25 = @"NO";
           }
 
-          v26 = [v9 installType];
-          v27 = [v9 installProgress];
-          v28 = [v27 installState];
+          installType2 = [v9 installType];
+          installProgress2 = [v9 installProgress];
+          installState2 = [installProgress2 installState];
           *buf = 138544642;
-          v40 = v3;
+          v40 = identifierCopy;
           v41 = 2114;
           v42 = v22;
           v43 = 2114;
@@ -168,16 +168,16 @@ LABEL_38:
           v46 = v25;
           v6 = v24;
           v47 = 2048;
-          v48 = v26;
+          v48 = installType2;
           v49 = 2048;
-          v50 = v28;
+          v50 = installState2;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "App lifecycle for %{public}@\n\tcalculated install state:%{public}@\n\tis installed: %{public}@\n\tis placeholder: %{public}@\n\tinstall type: %lu\n\tinstall progress install state: %lu", buf, 0x3Eu);
         }
 
         goto LABEL_46;
       }
 
-      if (v14 == 5)
+      if (installState == 5)
       {
         v21 = 4;
         goto LABEL_38;
@@ -193,7 +193,7 @@ LABEL_38:
   {
     v20 = [DMFApp stringForInstallationState:0];
     *buf = 138543618;
-    v40 = v3;
+    v40 = identifierCopy;
     v41 = 2114;
     v42 = v20;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "App lifecycle for %{public}@ (no proxy)\n\tassumed install state:%{public}@", buf, 0x16u);
@@ -204,12 +204,12 @@ LABEL_46:
 
   v37.receiver = self;
   v37.super_class = DMDiphoneOSAppLifeCycle;
-  v29 = [(DMDAppLifeCycle *)&v37 initWithBundleIdentifier:v3 currentState:v21];
+  v29 = [(DMDAppLifeCycle *)&v37 initWithBundleIdentifier:identifierCopy currentState:v21];
   if (v29)
   {
-    v30 = [v9 installProgress];
+    installProgress3 = [v9 installProgress];
     proxyProgress = v29->_proxyProgress;
-    v29->_proxyProgress = v30;
+    v29->_proxyProgress = installProgress3;
 
     v32 = +[LSApplicationWorkspace defaultWorkspace];
     [v32 addObserver:v29];
@@ -228,121 +228,121 @@ LABEL_46:
   [(DMDiphoneOSAppLifeCycle *)&v4 dealloc];
 }
 
-- (void)applicationsWillInstall:(id)a3
+- (void)applicationsWillInstall:(id)install
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100020A58;
   v3[3] = &unk_1000CE5C8;
   v3[4] = self;
-  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:a3 andCallBlock:v3];
+  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:install andCallBlock:v3];
 }
 
-- (void)applicationInstallsDidStart:(id)a3
+- (void)applicationInstallsDidStart:(id)start
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100020C74;
   v3[3] = &unk_1000CE5C8;
   v3[4] = self;
-  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:a3 andCallBlock:v3];
+  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:start andCallBlock:v3];
 }
 
-- (void)applicationInstallsDidChange:(id)a3
+- (void)applicationInstallsDidChange:(id)change
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000210DC;
   v3[3] = &unk_1000CE5C8;
   v3[4] = self;
-  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:a3 andCallBlock:v3];
+  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:change andCallBlock:v3];
 }
 
-- (void)applicationInstallsDidPause:(id)a3
+- (void)applicationInstallsDidPause:(id)pause
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000212FC;
   v3[3] = &unk_1000CE5C8;
   v3[4] = self;
-  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:a3 andCallBlock:v3];
+  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:pause andCallBlock:v3];
 }
 
-- (void)applicationInstallsDidResume:(id)a3
+- (void)applicationInstallsDidResume:(id)resume
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10002151C;
   v3[3] = &unk_1000CE5C8;
   v3[4] = self;
-  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:a3 andCallBlock:v3];
+  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:resume andCallBlock:v3];
 }
 
-- (void)applicationInstallsDidCancel:(id)a3
+- (void)applicationInstallsDidCancel:(id)cancel
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_10002173C;
   v3[3] = &unk_1000CE5C8;
   v3[4] = self;
-  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:a3 andCallBlock:v3];
+  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:cancel andCallBlock:v3];
 }
 
-- (void)applicationsDidFailToInstall:(id)a3
+- (void)applicationsDidFailToInstall:(id)install
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100021988;
   v3[3] = &unk_1000CE5C8;
   v3[4] = self;
-  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:a3 andCallBlock:v3];
+  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:install andCallBlock:v3];
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100021CCC;
   v3[3] = &unk_1000CE5C8;
   v3[4] = self;
-  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:a3 andCallBlock:v3];
+  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:install andCallBlock:v3];
 }
 
-- (void)applicationsWillUninstall:(id)a3
+- (void)applicationsWillUninstall:(id)uninstall
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100022084;
   v3[3] = &unk_1000CE5C8;
   v3[4] = self;
-  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:a3 andCallBlock:v3];
+  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:uninstall andCallBlock:v3];
 }
 
-- (void)applicationsDidFailToUninstall:(id)a3
+- (void)applicationsDidFailToUninstall:(id)uninstall
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100022348;
   v3[3] = &unk_1000CE5C8;
   v3[4] = self;
-  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:a3 andCallBlock:v3];
+  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:uninstall andCallBlock:v3];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100022504;
   v3[3] = &unk_1000CE5C8;
   v3[4] = self;
-  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:a3 andCallBlock:v3];
+  [(DMDiphoneOSAppLifeCycle *)self _findProxyInProxies:uninstall andCallBlock:v3];
 }
 
-- (void)_findProxyInProxies:(id)a3 andCallBlock:(id)a4
+- (void)_findProxyInProxies:(id)proxies andCallBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  proxiesCopy = proxies;
+  blockCopy = block;
+  if (!blockCopy)
   {
     sub_10007DC98(a2, self);
   }
@@ -351,7 +351,7 @@ LABEL_46:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v7;
+  v9 = proxiesCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
@@ -367,13 +367,13 @@ LABEL_46:
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [(DMDAppLifeCycle *)self bundleIdentifier];
-        v16 = [v14 bundleIdentifier];
-        v17 = [v15 isEqualToString:v16];
+        bundleIdentifier = [(DMDAppLifeCycle *)self bundleIdentifier];
+        bundleIdentifier2 = [v14 bundleIdentifier];
+        v17 = [bundleIdentifier isEqualToString:bundleIdentifier2];
 
         if (v17)
         {
-          v8[2](v8, v14);
+          blockCopy[2](blockCopy, v14);
           goto LABEL_13;
         }
       }

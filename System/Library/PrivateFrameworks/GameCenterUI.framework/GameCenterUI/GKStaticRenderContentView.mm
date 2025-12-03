@@ -1,8 +1,8 @@
 @interface GKStaticRenderContentView
 - (id)description;
 - (void)layoutSubviews;
-- (void)prepareToReuseSubviewsOfView:(id)a3;
-- (void)setContentView:(id)a3;
+- (void)prepareToReuseSubviewsOfView:(id)view;
+- (void)setContentView:(id)view;
 - (void)setNeedsLayout;
 @end
 
@@ -11,24 +11,24 @@
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(UIView *)self->_contentView recursiveDescription];
-  v4 = [v2 stringWithFormat:@"DETACHED: %@", v3];
+  recursiveDescription = [(UIView *)self->_contentView recursiveDescription];
+  v4 = [v2 stringWithFormat:@"DETACHED: %@", recursiveDescription];
 
   return v4;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
-  if (self->_contentView != v5)
+  viewCopy = view;
+  if (self->_contentView != viewCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_contentView, a3);
+    v6 = viewCopy;
+    objc_storeStrong(&self->_contentView, view);
     [(UIView *)self->_contentView setBackgroundColor:0];
     [(UIView *)self->_contentView setOpaque:0];
     [(GKStaticRenderContentView *)self addSubview:self->_contentView];
     [(UIView *)self->_contentView setTranslatesAutoresizingMaskIntoConstraints:1];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
@@ -52,21 +52,21 @@
   [(UIView *)self->_contentView setNeedsLayout];
 }
 
-- (void)prepareToReuseSubviewsOfView:(id)a3
+- (void)prepareToReuseSubviewsOfView:(id)view
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   if (objc_opt_respondsToSelector())
   {
-    [v4 prepareForReuse];
+    [viewCopy prepareForReuse];
   }
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [v4 subviews];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  subviews = [viewCopy subviews];
+  v6 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -78,14 +78,14 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         [(GKStaticRenderContentView *)self prepareToReuseSubviewsOfView:*(*(&v10 + 1) + 8 * v9++)];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);

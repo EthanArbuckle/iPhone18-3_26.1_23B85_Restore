@@ -1,6 +1,6 @@
 @interface ATXCorrelationMatrixGuardedData
 - (ATXCorrelationMatrixGuardedData)init;
-- (ATXCorrelationMatrixGuardedData)initWithCorrelationMatrix:(id)a3 locationTotals:(id)a4;
+- (ATXCorrelationMatrixGuardedData)initWithCorrelationMatrix:(id)matrix locationTotals:(id)totals;
 @end
 
 @implementation ATXCorrelationMatrixGuardedData
@@ -14,21 +14,21 @@
   return v5;
 }
 
-- (ATXCorrelationMatrixGuardedData)initWithCorrelationMatrix:(id)a3 locationTotals:(id)a4
+- (ATXCorrelationMatrixGuardedData)initWithCorrelationMatrix:(id)matrix locationTotals:(id)totals
 {
-  v7 = a3;
-  v8 = a4;
+  matrixCopy = matrix;
+  totalsCopy = totals;
   v16.receiver = self;
   v16.super_class = ATXCorrelationMatrixGuardedData;
   v9 = [(ATXCorrelationMatrixGuardedData *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    if (v7 && v8)
+    if (matrixCopy && totalsCopy)
     {
-      objc_storeStrong(&v9->_correlationMatrix, a3);
-      v11 = v8;
-      v8 = v11;
+      objc_storeStrong(&v9->_correlationMatrix, matrix);
+      v11 = totalsCopy;
+      totalsCopy = v11;
     }
 
     else
@@ -39,8 +39,8 @@
       v10->_correlationMatrix = v12;
 
       v11 = objc_opt_new();
-      v7 = 0;
-      v8 = 0;
+      matrixCopy = 0;
+      totalsCopy = 0;
     }
 
     locationTotals = v10->_locationTotals;

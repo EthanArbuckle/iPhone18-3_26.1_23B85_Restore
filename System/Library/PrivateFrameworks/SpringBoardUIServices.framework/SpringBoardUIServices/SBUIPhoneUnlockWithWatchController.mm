@@ -1,28 +1,28 @@
 @interface SBUIPhoneUnlockWithWatchController
 + (id)sharedInstance;
 - (BOOL)attemptPhoneUnlockWithWatch;
-- (BOOL)handleBiometricEvent:(unint64_t)a3;
+- (BOOL)handleBiometricEvent:(unint64_t)event;
 - (BOOL)isPhoneUnlockEnabledAndRequirementsMet;
 - (BOOL)shouldPhoneCompleteAutoUnlockWithNotification;
 - (BOOL)showRawErrorCodes;
 - (SBUIPhoneUnlockWithWatchController)init;
 - (SBUIPhoneUnlockWithWatchControllerDelegate)delegate;
 - (id)_autoUnlockManager;
-- (void)_handleUnlockAttemptFailedWithError:(id)a3;
+- (void)_handleUnlockAttemptFailedWithError:(id)error;
 - (void)_handleUnlockAttemptSucceeded;
-- (void)_sendCoreAnalyticsEventWithPayload:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)completePhoneAutoUnlockWithNotification:(BOOL)a3;
-- (void)handleScreenOff:(BOOL)a3;
+- (void)_sendCoreAnalyticsEventWithPayload:(id)payload;
+- (void)addObserver:(id)observer;
+- (void)completePhoneAutoUnlockWithNotification:(BOOL)notification;
+- (void)handleScreenOff:(BOOL)off;
 - (void)handleWakeSourceIsUserActive;
-- (void)manager:(id)a3 beganAttemptWithDevice:(id)a4;
-- (void)manager:(id)a3 completedUnlockWithDevice:(id)a4;
-- (void)manager:(id)a3 failedAttemptWithError:(id)a4;
-- (void)removeObserver:(id)a3;
-- (void)setBottomFaceOccludedSinceScreenOn:(BOOL)a3;
-- (void)setFaceOccludedSinceScreenOn:(BOOL)a3;
-- (void)setFaceWUPoseEligibleSinceScreenOn:(BOOL)a3;
-- (void)setTestAutoUnlockManager:(id)a3;
+- (void)manager:(id)manager beganAttemptWithDevice:(id)device;
+- (void)manager:(id)manager completedUnlockWithDevice:(id)device;
+- (void)manager:(id)manager failedAttemptWithError:(id)error;
+- (void)removeObserver:(id)observer;
+- (void)setBottomFaceOccludedSinceScreenOn:(BOOL)on;
+- (void)setFaceOccludedSinceScreenOn:(BOOL)on;
+- (void)setFaceWUPoseEligibleSinceScreenOn:(BOOL)on;
+- (void)setTestAutoUnlockManager:(id)manager;
 @end
 
 @implementation SBUIPhoneUnlockWithWatchController
@@ -87,11 +87,11 @@ LABEL_7:
   }
 
   v7 = +[SBUIPeriocularController sharedInstance];
-  v8 = [v7 periocularEnabled];
+  periocularEnabled = [v7 periocularEnabled];
 
   v9 = SBLogPhoneUnlockWithWatch();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (periocularEnabled)
   {
     if (v10)
     {
@@ -99,8 +99,8 @@ LABEL_7:
       _os_log_impl(&dword_1A9A79000, v9, OS_LOG_TYPE_DEFAULT, "Attempt phone unlock with watch without notification", v14, 2u);
     }
 
-    v11 = [(SBUIPhoneUnlockWithWatchController *)self _autoUnlockManager];
-    [v11 attemptAutoUnlockWithoutNotifyingWatch];
+    _autoUnlockManager = [(SBUIPhoneUnlockWithWatchController *)self _autoUnlockManager];
+    [_autoUnlockManager attemptAutoUnlockWithoutNotifyingWatch];
   }
 
   else
@@ -111,8 +111,8 @@ LABEL_7:
       _os_log_impl(&dword_1A9A79000, v9, OS_LOG_TYPE_DEFAULT, "Attempt phone unlock with watch", v14, 2u);
     }
 
-    v11 = [(SBUIPhoneUnlockWithWatchController *)self _autoUnlockManager];
-    [v11 attemptAutoUnlock];
+    _autoUnlockManager = [(SBUIPhoneUnlockWithWatchController *)self _autoUnlockManager];
+    [_autoUnlockManager attemptAutoUnlock];
   }
 
   v15[0] = @"bottomFaceOcclusion";
@@ -148,9 +148,9 @@ LABEL_9:
   if ([(SBUIPhoneUnlockWithWatchController *)self phoneUnlockWithWatchEnabled])
   {
     v3 = +[SBUIPeriocularController sharedInstance];
-    v4 = [v3 periocularEnabled];
+    periocularEnabled = [v3 periocularEnabled];
 
-    if (v4)
+    if (periocularEnabled)
     {
       if ([(SBUIPhoneUnlockWithWatchController *)self didDetectFaceRequirementsForPAU])
       {
@@ -171,8 +171,8 @@ LABEL_9:
     self->_wakeSourceIsUserAction = 1;
     if ([(SBUIPhoneUnlockWithWatchController *)self phoneUnlockWithWatchEnabled])
     {
-      v5 = [(SBUIPhoneUnlockWithWatchController *)self _autoUnlockManager];
-      [v5 prewarmAutoUnlock];
+      _autoUnlockManager = [(SBUIPhoneUnlockWithWatchController *)self _autoUnlockManager];
+      [_autoUnlockManager prewarmAutoUnlock];
 
       v6 = SBLogPhoneUnlockWithWatch();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -213,23 +213,23 @@ uint64_t __52__SBUIPhoneUnlockWithWatchController_sharedInstance__block_invoke()
 
 - (BOOL)showRawErrorCodes
 {
-  v2 = self;
-  v3 = [(SBUIPhoneUnlockWithWatchController *)self delegate];
-  LOBYTE(v2) = [v3 phoneUnlockWithWatchControllerShowRawErrorCodes:v2];
+  selfCopy = self;
+  delegate = [(SBUIPhoneUnlockWithWatchController *)self delegate];
+  LOBYTE(selfCopy) = [delegate phoneUnlockWithWatchControllerShowRawErrorCodes:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
-    v9 = v4;
-    v4 = [(NSHashTable *)self->_observers containsObject:v4];
+    v9 = observerCopy;
+    observerCopy = [(NSHashTable *)self->_observers containsObject:observerCopy];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((observerCopy & 1) == 0)
     {
       observers = self->_observers;
       if (!observers)
@@ -241,34 +241,34 @@ uint64_t __52__SBUIPhoneUnlockWithWatchController_sharedInstance__block_invoke()
         observers = self->_observers;
       }
 
-      v4 = [(NSHashTable *)observers addObject:v9];
+      observerCopy = [(NSHashTable *)observers addObject:v9];
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](observerCopy, v5);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
 }
 
-- (void)handleScreenOff:(BOOL)a3
+- (void)handleScreenOff:(BOOL)off
 {
-  if (a3)
+  if (off)
   {
     self->_significantUserInteractionOccurred = 0;
     *&self->_bottomFaceOccludedSinceScreenOn = 0;
   }
 }
 
-- (void)completePhoneAutoUnlockWithNotification:(BOOL)a3
+- (void)completePhoneAutoUnlockWithNotification:(BOOL)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v10 = *MEMORY[0x1E69E9840];
   if ([(SBUIPhoneUnlockWithWatchController *)self shouldPhoneCompleteAutoUnlockWithNotification])
   {
@@ -281,8 +281,8 @@ uint64_t __52__SBUIPhoneUnlockWithWatchController_sharedInstance__block_invoke()
       _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_DEFAULT, "Complete phone unlock with watch notification: %{public}@", &v8, 0xCu);
     }
 
-    v7 = [(SBUIPhoneUnlockWithWatchController *)self _autoUnlockManager];
-    [v7 completeAutoUnlockWithNotification:v3];
+    _autoUnlockManager = [(SBUIPhoneUnlockWithWatchController *)self _autoUnlockManager];
+    [_autoUnlockManager completeAutoUnlockWithNotification:notificationCopy];
   }
 }
 
@@ -326,10 +326,10 @@ uint64_t __52__SBUIPhoneUnlockWithWatchController_sharedInstance__block_invoke()
   }
 }
 
-- (void)_handleUnlockAttemptFailedWithError:(id)a3
+- (void)_handleUnlockAttemptFailedWithError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -353,7 +353,7 @@ uint64_t __52__SBUIPhoneUnlockWithWatchController_sharedInstance__block_invoke()
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 phoneUnlockWithWatchControllerAttemptFailed:self withError:v4];
+          [v10 phoneUnlockWithWatchControllerAttemptFailed:self withError:errorCopy];
         }
 
         ++v9;
@@ -367,10 +367,10 @@ uint64_t __52__SBUIPhoneUnlockWithWatchController_sharedInstance__block_invoke()
   }
 }
 
-- (void)_sendCoreAnalyticsEventWithPayload:(id)a3
+- (void)_sendCoreAnalyticsEventWithPayload:(id)payload
 {
-  v4 = a3;
-  v3 = v4;
+  payloadCopy = payload;
+  v3 = payloadCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -387,22 +387,22 @@ uint64_t __52__SBUIPhoneUnlockWithWatchController_sharedInstance__block_invoke()
 
 - (BOOL)isPhoneUnlockEnabledAndRequirementsMet
 {
-  v3 = [(SBUIPhoneUnlockWithWatchController *)self phoneUnlockWithWatchEnabled];
-  if (v3)
+  phoneUnlockWithWatchEnabled = [(SBUIPhoneUnlockWithWatchController *)self phoneUnlockWithWatchEnabled];
+  if (phoneUnlockWithWatchEnabled)
   {
 
-    LOBYTE(v3) = [(SBUIPhoneUnlockWithWatchController *)self didDetectFaceRequirementsForPAU];
+    LOBYTE(phoneUnlockWithWatchEnabled) = [(SBUIPhoneUnlockWithWatchController *)self didDetectFaceRequirementsForPAU];
   }
 
-  return v3;
+  return phoneUnlockWithWatchEnabled;
 }
 
-- (BOOL)handleBiometricEvent:(unint64_t)a3
+- (BOOL)handleBiometricEvent:(unint64_t)event
 {
   v4 = 0;
-  if (a3 > 27)
+  if (event > 27)
   {
-    if (a3 == 28)
+    if (event == 28)
     {
       self->_bottomFaceOccludedSinceScreenOn = 1;
       v6 = SBLogPhoneUnlockWithWatch();
@@ -420,7 +420,7 @@ LABEL_16:
 
     else
     {
-      if (a3 != 29)
+      if (event != 29)
       {
         return v4;
       }
@@ -441,16 +441,16 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (a3 == 4)
+  if (event == 4)
   {
-    v9 = [(SBUIPhoneUnlockWithWatchController *)self _autoUnlockManager];
+    _autoUnlockManager = [(SBUIPhoneUnlockWithWatchController *)self _autoUnlockManager];
     v4 = 1;
-    [v9 donateDeviceUnlockedWithMask:1];
+    [_autoUnlockManager donateDeviceUnlockedWithMask:1];
 
     return v4;
   }
 
-  if (a3 == 21)
+  if (event == 21)
   {
     self->_faceOccludedSinceScreenOn = 1;
     v5 = SBLogPhoneUnlockWithWatch();
@@ -471,29 +471,29 @@ LABEL_16:
   return v4;
 }
 
-- (void)manager:(id)a3 beganAttemptWithDevice:(id)a4
+- (void)manager:(id)manager beganAttemptWithDevice:(id)device
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  deviceCopy = device;
   v5 = SBLogPhoneUnlockWithWatch();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = deviceCopy;
     _os_log_impl(&dword_1A9A79000, v5, OS_LOG_TYPE_DEFAULT, "Attempt phone unlock with watch began with device: %{public}@", &v6, 0xCu);
   }
 }
 
-- (void)manager:(id)a3 completedUnlockWithDevice:(id)a4
+- (void)manager:(id)manager completedUnlockWithDevice:(id)device
 {
-  v5 = a4;
+  deviceCopy = device;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __72__SBUIPhoneUnlockWithWatchController_manager_completedUnlockWithDevice___block_invoke;
   v7[3] = &unk_1E789DD98;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = deviceCopy;
+  selfCopy = self;
+  v6 = deviceCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -512,16 +512,16 @@ uint64_t __72__SBUIPhoneUnlockWithWatchController_manager_completedUnlockWithDev
   return [*(a1 + 40) _handleUnlockAttemptSucceeded];
 }
 
-- (void)manager:(id)a3 failedAttemptWithError:(id)a4
+- (void)manager:(id)manager failedAttemptWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__SBUIPhoneUnlockWithWatchController_manager_failedAttemptWithError___block_invoke;
   v7[3] = &unk_1E789DD98;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = errorCopy;
+  selfCopy = self;
+  v6 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 
@@ -540,40 +540,40 @@ uint64_t __69__SBUIPhoneUnlockWithWatchController_manager_failedAttemptWithError
   return [*(a1 + 40) _handleUnlockAttemptFailedWithError:*(a1 + 32)];
 }
 
-- (void)setTestAutoUnlockManager:(id)a3
+- (void)setTestAutoUnlockManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   testAutoUnlockManager = self->_testAutoUnlockManager;
   p_testAutoUnlockManager = &self->_testAutoUnlockManager;
-  if (testAutoUnlockManager != v5)
+  if (testAutoUnlockManager != managerCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_testAutoUnlockManager, a3);
-    v5 = v8;
+    v8 = managerCopy;
+    objc_storeStrong(p_testAutoUnlockManager, manager);
+    managerCopy = v8;
   }
 }
 
-- (void)setBottomFaceOccludedSinceScreenOn:(BOOL)a3
+- (void)setBottomFaceOccludedSinceScreenOn:(BOOL)on
 {
-  if (self->_bottomFaceOccludedSinceScreenOn != a3)
+  if (self->_bottomFaceOccludedSinceScreenOn != on)
   {
-    self->_bottomFaceOccludedSinceScreenOn = a3;
+    self->_bottomFaceOccludedSinceScreenOn = on;
   }
 }
 
-- (void)setFaceWUPoseEligibleSinceScreenOn:(BOOL)a3
+- (void)setFaceWUPoseEligibleSinceScreenOn:(BOOL)on
 {
-  if (self->_faceWUPoseEligibleSinceScreenOn != a3)
+  if (self->_faceWUPoseEligibleSinceScreenOn != on)
   {
-    self->_faceWUPoseEligibleSinceScreenOn = a3;
+    self->_faceWUPoseEligibleSinceScreenOn = on;
   }
 }
 
-- (void)setFaceOccludedSinceScreenOn:(BOOL)a3
+- (void)setFaceOccludedSinceScreenOn:(BOOL)on
 {
-  if (self->_faceOccludedSinceScreenOn != a3)
+  if (self->_faceOccludedSinceScreenOn != on)
   {
-    self->_faceOccludedSinceScreenOn = a3;
+    self->_faceOccludedSinceScreenOn = on;
   }
 }
 

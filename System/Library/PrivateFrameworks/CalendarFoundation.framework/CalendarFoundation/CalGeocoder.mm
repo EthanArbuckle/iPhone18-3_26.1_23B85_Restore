@@ -1,7 +1,7 @@
 @interface CalGeocoder
-+ (void)geocodeLocationString:(id)a3 withCompletionBlock:(id)a4;
-- (CalGeocoder)initWithLocationString:(id)a3 andCompletionBlock:(id)a4;
-- (void)_callCompletionBlockWithResult:(id)a3 error:(id)a4;
++ (void)geocodeLocationString:(id)string withCompletionBlock:(id)block;
+- (CalGeocoder)initWithLocationString:(id)string andCompletionBlock:(id)block;
+- (void)_callCompletionBlockWithResult:(id)result error:(id)error;
 - (void)cancel;
 - (void)dealloc;
 - (void)startGeocoding;
@@ -9,18 +9,18 @@
 
 @implementation CalGeocoder
 
-- (CalGeocoder)initWithLocationString:(id)a3 andCompletionBlock:(id)a4
+- (CalGeocoder)initWithLocationString:(id)string andCompletionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  blockCopy = block;
   v11.receiver = self;
   v11.super_class = CalGeocoder;
   v8 = [(CalGeocoder *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(CalGeocoder *)v8 setLocationString:v6];
-    [(CalGeocoder *)v9 setCompletionBlock:v7];
+    [(CalGeocoder *)v8 setLocationString:stringCopy];
+    [(CalGeocoder *)v9 setCompletionBlock:blockCopy];
   }
 
   return v9;
@@ -38,7 +38,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B990D000, a2, OS_LOG_TYPE_ERROR, "nil or empty location string given: [%@].  Will not geocode.", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -112,29 +112,29 @@ LABEL_16:
 
 - (void)cancel
 {
-  v3 = [(CalGeocoder *)self search];
-  [v3 cancel];
+  search = [(CalGeocoder *)self search];
+  [search cancel];
 
   [(CalGeocoder *)self setSearch:0];
 }
 
-+ (void)geocodeLocationString:(id)a3 withCompletionBlock:(id)a4
++ (void)geocodeLocationString:(id)string withCompletionBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = MEMORY[0x1E695DF70];
-  v7 = a3;
+  stringCopy = string;
   v8 = objc_alloc_init(v6);
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __57__CalGeocoder_geocodeLocationString_withCompletionBlock___block_invoke;
   v17 = &unk_1E7EC7150;
   v18 = v8;
-  v19 = v5;
+  v19 = blockCopy;
   v9 = v8;
-  v10 = v5;
+  v10 = blockCopy;
   v11 = _Block_copy(&v14);
   v12 = objc_alloc(objc_opt_class());
-  v13 = [v12 initWithLocationString:v7 andCompletionBlock:{v11, v14, v15, v16, v17}];
+  v13 = [v12 initWithLocationString:stringCopy andCompletionBlock:{v11, v14, v15, v16, v17}];
 
   [v9 addObject:v13];
   [v13 startGeocoding];
@@ -153,16 +153,16 @@ uint64_t __57__CalGeocoder_geocodeLocationString_withCompletionBlock___block_inv
   return [v3 removeAllObjects];
 }
 
-- (void)_callCompletionBlockWithResult:(id)a3 error:(id)a4
+- (void)_callCompletionBlockWithResult:(id)result error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(CalGeocoder *)self completionBlock];
+  resultCopy = result;
+  errorCopy = error;
+  completionBlock = [(CalGeocoder *)self completionBlock];
 
-  if (v7)
+  if (completionBlock)
   {
-    v8 = [(CalGeocoder *)self completionBlock];
-    (v8)[2](v8, v9, v6);
+    completionBlock2 = [(CalGeocoder *)self completionBlock];
+    (completionBlock2)[2](completionBlock2, resultCopy, errorCopy);
 
     [(CalGeocoder *)self setCompletionBlock:0];
   }

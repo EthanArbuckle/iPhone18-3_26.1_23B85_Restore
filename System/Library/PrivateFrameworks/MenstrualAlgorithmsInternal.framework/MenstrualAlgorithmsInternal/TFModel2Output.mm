@@ -1,28 +1,28 @@
 @interface TFModel2Output
-- (TFModel2Output)initWithOut:(id)a3;
-- (id)featureValueForName:(id)a3;
+- (TFModel2Output)initWithOut:(id)out;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation TFModel2Output
 
-- (TFModel2Output)initWithOut:(id)a3
+- (TFModel2Output)initWithOut:(id)out
 {
-  v5 = a3;
+  outCopy = out;
   v9.receiver = self;
   v9.super_class = TFModel2Output;
   v6 = [(TFModel2Output *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_out_, a3);
+    objc_storeStrong(&v6->_out_, out);
   }
 
   return v7;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  if ([a3 isEqualToString:@"out"])
+  if ([name isEqualToString:@"out"])
   {
     v4 = MEMORY[0x277CBFEF8];
     v5 = [(TFModel2Output *)self out];

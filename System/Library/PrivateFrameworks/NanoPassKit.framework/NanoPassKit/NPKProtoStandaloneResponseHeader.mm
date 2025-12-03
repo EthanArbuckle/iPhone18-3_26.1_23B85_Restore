@@ -1,11 +1,11 @@
 @interface NPKProtoStandaloneResponseHeader
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandaloneResponseHeader
@@ -16,15 +16,15 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandaloneResponseHeader;
   v4 = [(NPKProtoStandaloneResponseHeader *)&v8 description];
-  v5 = [(NPKProtoStandaloneResponseHeader *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandaloneResponseHeader *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (self->_protocolVersion == 1)
   {
     v4 = @"Version1";
@@ -35,22 +35,22 @@
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", self->_protocolVersion];
   }
 
-  [v3 setObject:v4 forKey:@"protocolVersion"];
+  [dictionary setObject:v4 forKey:@"protocolVersion"];
 
   sessionIdentifier = self->_sessionIdentifier;
   if (sessionIdentifier)
   {
-    [v3 setObject:sessionIdentifier forKey:@"sessionIdentifier"];
+    [dictionary setObject:sessionIdentifier forKey:@"sessionIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   protocolVersion = self->_protocolVersion;
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteInt32Field();
   if (self->_sessionIdentifier)
   {
@@ -58,34 +58,34 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 2) = self->_protocolVersion;
+  *(to + 2) = self->_protocolVersion;
   sessionIdentifier = self->_sessionIdentifier;
   if (sessionIdentifier)
   {
-    [a3 setSessionIdentifier:sessionIdentifier];
+    [to setSessionIdentifier:sessionIdentifier];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 8) = self->_protocolVersion;
-  v6 = [(NSString *)self->_sessionIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_sessionIdentifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_protocolVersion == *(v4 + 2))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_protocolVersion == *(equalCopy + 2))
   {
     sessionIdentifier = self->_sessionIdentifier;
-    if (sessionIdentifier | v4[2])
+    if (sessionIdentifier | equalCopy[2])
     {
       v6 = [(NSString *)sessionIdentifier isEqual:?];
     }
@@ -104,10 +104,10 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_protocolVersion = *(a3 + 2);
-  if (*(a3 + 2))
+  self->_protocolVersion = *(from + 2);
+  if (*(from + 2))
   {
     [(NPKProtoStandaloneResponseHeader *)self setSessionIdentifier:?];
   }

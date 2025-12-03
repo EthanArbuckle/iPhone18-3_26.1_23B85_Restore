@@ -17,9 +17,9 @@
   }
 
   v3 = objc_allocWithZone(type metadata accessor for LoupeHostingOverlayView());
-  v5 = self;
+  selfCopy = self;
   v4 = [v3 initWithFrame:{0.0, 0.0, 0.0, 0.0}];
-  [(DocumentSceneUIKitRepresentable.DocumentLaunchExperienceViewController *)v5 setView:v4];
+  [(DocumentSceneUIKitRepresentable.DocumentLaunchExperienceViewController *)selfCopy setView:v4];
 }
 
 - (void)viewDidLoad
@@ -34,9 +34,9 @@
 
   v4.receiver = self;
   v4.super_class = type metadata accessor for DocumentSceneUIKitRepresentable.DocumentLaunchExperienceViewController();
-  v3 = self;
+  selfCopy = self;
   [(DocumentSceneUIKitRepresentable.DocumentLaunchExperienceViewController *)&v4 viewDidLoad];
-  sub_1000822E8(*(&v3->super.super.super.super.isa + OBJC_IVAR____TtCV7Preview31DocumentSceneUIKitRepresentable38DocumentLaunchExperienceViewController_documentViewController), 1, 0);
+  sub_1000822E8(*(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtCV7Preview31DocumentSceneUIKitRepresentable38DocumentLaunchExperienceViewController_documentViewController), 1, 0);
 }
 
 - (_TtCV7Preview31DocumentSceneUIKitRepresentable38DocumentLaunchExperienceViewController)init

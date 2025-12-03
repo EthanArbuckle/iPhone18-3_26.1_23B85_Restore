@@ -1,20 +1,20 @@
 @interface NSPersistentStoreCoordinatorMigrationContext
-- (NSPersistentStoreCoordinatorMigrationContext)initWithStoreURL:(id)a3 type:(id)a4 options:(id)a5;
+- (NSPersistentStoreCoordinatorMigrationContext)initWithStoreURL:(id)l type:(id)type options:(id)options;
 - (void)dealloc;
 @end
 
 @implementation NSPersistentStoreCoordinatorMigrationContext
 
-- (NSPersistentStoreCoordinatorMigrationContext)initWithStoreURL:(id)a3 type:(id)a4 options:(id)a5
+- (NSPersistentStoreCoordinatorMigrationContext)initWithStoreURL:(id)l type:(id)type options:(id)options
 {
   v10.receiver = self;
   v10.super_class = NSPersistentStoreCoordinatorMigrationContext;
   v8 = [(NSPersistentStoreCoordinatorMigrationContext *)&v10 init];
   if (v8)
   {
-    v8->_storeURL = a3;
-    v8->_storeType = a4;
-    v8->_options = a5;
+    v8->_storeURL = l;
+    v8->_storeType = type;
+    v8->_options = options;
   }
 
   return v8;

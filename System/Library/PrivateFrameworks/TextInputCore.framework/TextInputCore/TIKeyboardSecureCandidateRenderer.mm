@@ -1,91 +1,91 @@
 @interface TIKeyboardSecureCandidateRenderer
 + (id)allRenderers;
-- (CGImage)imageForSendCurrentLocationWithRenderTraits:(id)a3;
+- (CGImage)imageForSendCurrentLocationWithRenderTraits:(id)traits;
 - (TIKeyboardSecureCandidateRenderer)init;
-- (TIKeyboardSecureCandidateRenderer)initWithLocaleIdentifier:(id)a3;
-- (__CFArray)arrayOfContexts:(unint64_t)a3 withRenderTraits:(id)a4;
-- (__CFArray)imagesFromContexts:(__CFArray *)a3;
-- (__CFArray)imagesFromSecureCandidates:(id)a3 withRenderTraits:(id)a4 outAccessibilityLabels:(id *)a5;
+- (TIKeyboardSecureCandidateRenderer)initWithLocaleIdentifier:(id)identifier;
+- (__CFArray)arrayOfContexts:(unint64_t)contexts withRenderTraits:(id)traits;
+- (__CFArray)imagesFromContexts:(__CFArray *)contexts;
+- (__CFArray)imagesFromSecureCandidates:(id)candidates withRenderTraits:(id)traits outAccessibilityLabels:(id *)labels;
 - (id)_truncationSentinel;
-- (id)accessibilityLabelsForSecureHeaders:(id)a3 secureContents:(id)a4 truncationSentinel:(id)a5;
-- (id)cachedCandidateForSecureCandidate:(id)a3;
+- (id)accessibilityLabelsForSecureHeaders:(id)headers secureContents:(id)contents truncationSentinel:(id)sentinel;
+- (id)cachedCandidateForSecureCandidate:(id)candidate;
 - (id)initForLocalizedStrings;
-- (id)localizedApplicationNameWithBundleIdentifier:(id)a3;
-- (id)localizedStringForKey:(id)a3;
-- (id)slotIDsFromSecureCandidates:(id)a3 withRenderTraits:(id)a4;
-- (id)updateCachedCandidate:(id)a3 withCandidateString:(id)a4;
-- (id)updateCachedCandidate:(id)a3 withStickerIdentifier:(id)a4;
-- (unsigned)slotIDForSendCurrentLocationWithRenderTraits:(id)a3;
+- (id)localizedApplicationNameWithBundleIdentifier:(id)identifier;
+- (id)localizedStringForKey:(id)key;
+- (id)slotIDsFromSecureCandidates:(id)candidates withRenderTraits:(id)traits;
+- (id)updateCachedCandidate:(id)candidate withCandidateString:(id)string;
+- (id)updateCachedCandidate:(id)candidate withStickerIdentifier:(id)identifier;
+- (unsigned)slotIDForSendCurrentLocationWithRenderTraits:(id)traits;
 - (void)clearSecureCandidateCache;
 - (void)createContext;
 - (void)dealloc;
 - (void)recreateContext;
-- (void)setLocaleIdentifier:(id)a3;
+- (void)setLocaleIdentifier:(id)identifier;
 @end
 
 @implementation TIKeyboardSecureCandidateRenderer
 
-- (id)updateCachedCandidate:(id)a3 withStickerIdentifier:(id)a4
+- (id)updateCachedCandidate:(id)candidate withStickerIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 copy];
+  identifierCopy = identifier;
+  candidateCopy = candidate;
+  v8 = [candidateCopy copy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 setStickerIdentifier:v6];
+    [v8 setStickerIdentifier:identifierCopy];
   }
 
-  [v8 setSlotID:{objc_msgSend(v7, "slotID")}];
-  v9 = [(TIKeyboardSecureCandidateRenderer *)self secureCandidateCache];
+  [v8 setSlotID:{objc_msgSend(candidateCopy, "slotID")}];
+  secureCandidateCache = [(TIKeyboardSecureCandidateRenderer *)self secureCandidateCache];
   v10 = MEMORY[0x277CCABB0];
-  v11 = [v7 slotID];
+  slotID = [candidateCopy slotID];
 
-  v12 = [v10 numberWithUnsignedInt:v11];
-  [v9 setObject:v8 forKey:v12];
+  v12 = [v10 numberWithUnsignedInt:slotID];
+  [secureCandidateCache setObject:v8 forKey:v12];
 
   return v8;
 }
 
-- (id)updateCachedCandidate:(id)a3 withCandidateString:(id)a4
+- (id)updateCachedCandidate:(id)candidate withCandidateString:(id)string
 {
-  v6 = a4;
-  v7 = [(TIKeyboardSecureCandidateRenderer *)self cachedCandidateForSecureCandidate:a3];
-  v8 = [v7 candidateByReplacingWithCandidate:v6];
+  stringCopy = string;
+  v7 = [(TIKeyboardSecureCandidateRenderer *)self cachedCandidateForSecureCandidate:candidate];
+  v8 = [v7 candidateByReplacingWithCandidate:stringCopy];
 
   [v8 setSlotID:{objc_msgSend(v7, "slotID")}];
-  v9 = [(TIKeyboardSecureCandidateRenderer *)self secureCandidateCache];
+  secureCandidateCache = [(TIKeyboardSecureCandidateRenderer *)self secureCandidateCache];
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v7, "slotID")}];
-  [v9 setObject:v8 forKey:v10];
+  [secureCandidateCache setObject:v8 forKey:v10];
 
   return v8;
 }
 
-- (id)cachedCandidateForSecureCandidate:(id)a3
+- (id)cachedCandidateForSecureCandidate:(id)candidate
 {
-  v4 = a3;
-  if ([v4 slotID])
+  candidateCopy = candidate;
+  if ([candidateCopy slotID])
   {
-    v5 = [(TIKeyboardSecureCandidateRenderer *)self secureCandidateCache];
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v4, "slotID")}];
-    v7 = [v5 objectForKey:v6];
+    secureCandidateCache = [(TIKeyboardSecureCandidateRenderer *)self secureCandidateCache];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(candidateCopy, "slotID")}];
+    v7 = [secureCandidateCache objectForKey:v6];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [(TIKeyboardSecureCandidateRenderer *)self secureCandidateCache];
-      v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v4, "slotID")}];
-      v11 = [v9 objectForKey:v10];
+      secureCandidateCache2 = [(TIKeyboardSecureCandidateRenderer *)self secureCandidateCache];
+      v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(candidateCopy, "slotID")}];
+      v11 = [secureCandidateCache2 objectForKey:v10];
 
-      [v11 setSlotID:{objc_msgSend(v4, "slotID")}];
+      [v11 setSlotID:{objc_msgSend(candidateCopy, "slotID")}];
     }
 
     else
     {
       v13 = MEMORY[0x277D6F3D8];
-      v14 = [v4 input];
-      v11 = [v13 secureCandidateForInput:v14 slotID:objc_msgSend(v4 customInfoType:{"slotID"), objc_msgSend(v4, "customInfoType")}];
+      input = [candidateCopy input];
+      v11 = [v13 secureCandidateForInput:input slotID:objc_msgSend(candidateCopy customInfoType:{"slotID"), objc_msgSend(candidateCopy, "customInfoType")}];
     }
 
     if (v11)
@@ -95,7 +95,7 @@
 
     else
     {
-      v15 = v4;
+      v15 = candidateCopy;
     }
 
     v12 = v15;
@@ -103,7 +103,7 @@
 
   else
   {
-    v12 = v4;
+    v12 = candidateCopy;
   }
 
   return v12;
@@ -112,18 +112,18 @@
 - (void)clearSecureCandidateCache
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(TIKeyboardSecureCandidateRenderer *)self secureCandidateCache];
+  secureCandidateCache = [(TIKeyboardSecureCandidateRenderer *)self secureCandidateCache];
 
-  if (v3)
+  if (secureCandidateCache)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v4 = [(TIKeyboardSecureCandidateRenderer *)self secureCandidateCache];
-    v5 = [v4 allKeys];
+    secureCandidateCache2 = [(TIKeyboardSecureCandidateRenderer *)self secureCandidateCache];
+    allKeys = [secureCandidateCache2 allKeys];
 
-    v6 = [v5 countByEnumeratingWithState:&v19 objects:v27 count:16];
+    v6 = [allKeys countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v6)
     {
       v8 = v6;
@@ -138,36 +138,36 @@
         {
           if (*v20 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allKeys);
           }
 
           v12 = *(*(&v19 + 1) + 8 * v11);
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
           {
-            v13 = [v12 unsignedIntValue];
+            unsignedIntValue = [v12 unsignedIntValue];
             *buf = v18;
             v24 = "[TIKeyboardSecureCandidateRenderer clearSecureCandidateCache]";
             v25 = 1024;
-            v26 = v13;
+            v26 = unsignedIntValue;
             _os_log_impl(&dword_22CA55000, v10, OS_LOG_TYPE_DEFAULT, "%s  Deleted slotID %X", buf, 0x12u);
           }
 
-          v14 = [(TIKeyboardSecureCandidateRenderer *)self context];
-          [v14 deleteSlot:{objc_msgSend(v12, "unsignedIntValue")}];
+          context = [(TIKeyboardSecureCandidateRenderer *)self context];
+          [context deleteSlot:{objc_msgSend(v12, "unsignedIntValue")}];
 
           ++v11;
         }
 
         while (v8 != v11);
-        v8 = [v5 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v19 objects:v27 count:16];
       }
 
       while (v8);
     }
 
     [(NSMutableDictionary *)self->_accessibilityLabelCache removeAllObjects];
-    v15 = [(TIKeyboardSecureCandidateRenderer *)self secureCandidateCache];
-    [v15 removeAllObjects];
+    secureCandidateCache3 = [(TIKeyboardSecureCandidateRenderer *)self secureCandidateCache];
+    [secureCandidateCache3 removeAllObjects];
 
     v16 = +[TIKeyboardSecureTouchManager sharedInstance];
     [v16 clearRegistrations];
@@ -183,28 +183,28 @@
   [(TIKeyboardSecureCandidateRenderer *)self createContext];
 }
 
-- (unsigned)slotIDForSendCurrentLocationWithRenderTraits:(id)a3
+- (unsigned)slotIDForSendCurrentLocationWithRenderTraits:(id)traits
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TIKeyboardSecureCandidateRenderer *)self context];
-  v6 = [v5 createSlot];
+  traitsCopy = traits;
+  context = [(TIKeyboardSecureCandidateRenderer *)self context];
+  createSlot = [context createSlot];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v15 = "[TIKeyboardSecureCandidateRenderer slotIDForSendCurrentLocationWithRenderTraits:]";
     v16 = 1024;
-    v17 = v6;
+    v17 = createSlot;
     _os_log_impl(&dword_22CA55000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%s  Created slotID %X", buf, 0x12u);
   }
 
-  v7 = [(TIKeyboardSecureCandidateRenderer *)self imageForSendCurrentLocationWithRenderTraits:v4];
+  v7 = [(TIKeyboardSecureCandidateRenderer *)self imageForSendCurrentLocationWithRenderTraits:traitsCopy];
 
   v8 = [(TIKeyboardSecureCandidateRenderer *)self localizedStringForKey:@"SEND_CURRENT_LOCATION_BUTTON_ACCESSIBILITY_LABEL"];
-  [(TIKeyboardSecureCandidateRenderer *)self cacheAccessibilityLabel:v8 forSlotID:v6];
-  v9 = [(TIKeyboardSecureCandidateRenderer *)self context];
-  [v9 setObject:v7 forSlot:v6];
+  [(TIKeyboardSecureCandidateRenderer *)self cacheAccessibilityLabel:v8 forSlotID:createSlot];
+  context2 = [(TIKeyboardSecureCandidateRenderer *)self context];
+  [context2 setObject:v7 forSlot:createSlot];
 
   CFRelease(v7);
   if (TICanLogMessageAtLevel_onceToken != -1)
@@ -217,7 +217,7 @@
     v10 = TIOSLogFacility();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s TISecureCandidateLogging: send current location slotID = %ud", "-[TIKeyboardSecureCandidateRenderer slotIDForSendCurrentLocationWithRenderTraits:]", v6];
+      v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s TISecureCandidateLogging: send current location slotID = %ud", "-[TIKeyboardSecureCandidateRenderer slotIDForSendCurrentLocationWithRenderTraits:]", createSlot];
       *buf = 138412290;
       v15 = v13;
       _os_log_debug_impl(&dword_22CA55000, v10, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -225,14 +225,14 @@
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v6;
+  return createSlot;
 }
 
-- (CGImage)imageForSendCurrentLocationWithRenderTraits:(id)a3
+- (CGImage)imageForSendCurrentLocationWithRenderTraits:(id)traits
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TIKeyboardSecureCandidateRenderer *)self arrayOfContexts:1 withRenderTraits:v4];
+  traitsCopy = traits;
+  v5 = [(TIKeyboardSecureCandidateRenderer *)self arrayOfContexts:1 withRenderTraits:traitsCopy];
   v6 = MEMORY[0x277CCACA8];
   v7 = [(TIKeyboardSecureCandidateRenderer *)self localizedStringForKey:@"SEND_CURRENT_LOCATION_BUTTON_CAPTION"];
   v21 = 0;
@@ -265,7 +265,7 @@
 
   v22 = v11;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:1];
-  v14 = [TIKeyboardSecureCandidateTextRendering drawSecureHeaders:&unk_28400B898 secureContents:v13 inContexts:v5 traits:v4 truncationSentinel:0];
+  v14 = [TIKeyboardSecureCandidateTextRendering drawSecureHeaders:&unk_28400B898 secureContents:v13 inContexts:v5 traits:traitsCopy truncationSentinel:0];
 
   v15 = [(TIKeyboardSecureCandidateRenderer *)self imagesFromContexts:v5];
   CFRelease(v5);
@@ -277,11 +277,11 @@
   return v17;
 }
 
-- (id)slotIDsFromSecureCandidates:(id)a3 withRenderTraits:(id)a4
+- (id)slotIDsFromSecureCandidates:(id)candidates withRenderTraits:(id)traits
 {
   v35 = *MEMORY[0x277D85DE8];
   v30 = 0;
-  v5 = [(TIKeyboardSecureCandidateRenderer *)self imagesFromSecureCandidates:a3 withRenderTraits:a4 outAccessibilityLabels:&v30];
+  v5 = [(TIKeyboardSecureCandidateRenderer *)self imagesFromSecureCandidates:candidates withRenderTraits:traits outAccessibilityLabels:&v30];
   v6 = v30;
   v7 = [v6 count];
   Count = CFArrayGetCount(v5);
@@ -324,10 +324,10 @@
     while (1)
     {
       ValueAtIndex = CFArrayGetValueAtIndex(v5, v15);
-      v18 = [(TIKeyboardSecureCandidateRenderer *)self context];
-      v19 = [v18 createSlot];
+      context = [(TIKeyboardSecureCandidateRenderer *)self context];
+      createSlot = [context createSlot];
 
-      if (!v19)
+      if (!createSlot)
       {
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
@@ -337,10 +337,10 @@
         }
 
         [(TIKeyboardSecureCandidateRenderer *)self recreateContext];
-        v20 = [(TIKeyboardSecureCandidateRenderer *)self context];
-        v19 = [v20 createSlot];
+        context2 = [(TIKeyboardSecureCandidateRenderer *)self context];
+        createSlot = [context2 createSlot];
 
-        if (!v19)
+        if (!createSlot)
         {
           break;
         }
@@ -351,7 +351,7 @@
         *buf = 136315394;
         v32 = "[TIKeyboardSecureCandidateRenderer slotIDsFromSecureCandidates:withRenderTraits:]";
         v33 = 1024;
-        v34 = v19;
+        v34 = createSlot;
         _os_log_impl(&dword_22CA55000, v16, OS_LOG_TYPE_DEFAULT, "%s  Created slotID %X", buf, 0x12u);
       }
 
@@ -367,7 +367,7 @@
           v21 = TIOSLogFacility();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
           {
-            v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s TISecureCandidateLogging: proactive candidate first slotID = %ud", "-[TIKeyboardSecureCandidateRenderer slotIDsFromSecureCandidates:withRenderTraits:]", v19];
+            v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s TISecureCandidateLogging: proactive candidate first slotID = %ud", "-[TIKeyboardSecureCandidateRenderer slotIDsFromSecureCandidates:withRenderTraits:]", createSlot];
             *buf = 138412290;
             v32 = v29;
             _os_log_debug_impl(&dword_22CA55000, v21, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
@@ -375,16 +375,16 @@
         }
       }
 
-      v22 = [(TIKeyboardSecureCandidateRenderer *)self context];
-      [v22 setObject:ValueAtIndex forSlot:v19];
+      context3 = [(TIKeyboardSecureCandidateRenderer *)self context];
+      [context3 setObject:ValueAtIndex forSlot:createSlot];
 
       v23 = [(NSArray *)self->_arrayOfAttributes objectAtIndexedSubscript:v15];
-      [v23 setSlotID:v19];
+      [v23 setSlotID:createSlot];
 
       if (v6 && v15 < v7)
       {
         v24 = [v6 objectAtIndex:v15];
-        [(TIKeyboardSecureCandidateRenderer *)self cacheAccessibilityLabel:v24 forSlotID:v19];
+        [(TIKeyboardSecureCandidateRenderer *)self cacheAccessibilityLabel:v24 forSlotID:createSlot];
       }
 
       if (Count == ++v15)
@@ -410,10 +410,10 @@ LABEL_30:
   return v25;
 }
 
-- (id)localizedApplicationNameWithBundleIdentifier:(id)a3
+- (id)localizedApplicationNameWithBundleIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v10 = 0;
     v11 = &v10;
@@ -433,44 +433,44 @@ LABEL_30:
 
     v5 = v4;
     _Block_object_dispose(&v10, 8);
-    v6 = [v4 applicationProxyForIdentifier:v3];
-    v7 = [v6 localizedName];
+    v6 = [v4 applicationProxyForIdentifier:identifierCopy];
+    localizedName = [v6 localizedName];
   }
 
   else
   {
-    v7 = 0;
+    localizedName = 0;
   }
 
-  return v7;
+  return localizedName;
 }
 
-- (id)accessibilityLabelsForSecureHeaders:(id)a3 secureContents:(id)a4 truncationSentinel:(id)a5
+- (id)accessibilityLabelsForSecureHeaders:(id)headers secureContents:(id)contents truncationSentinel:(id)sentinel
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
-  if ([v7 count])
+  headersCopy = headers;
+  contentsCopy = contents;
+  sentinelCopy = sentinel;
+  v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(headersCopy, "count")}];
+  if ([headersCopy count])
   {
     v11 = 0;
     v27 = v10;
     do
     {
-      v12 = [v7 objectAtIndex:v11];
+      v12 = [headersCopy objectAtIndex:v11];
       v13 = v12;
-      if (v9)
+      if (sentinelCopy)
       {
-        v14 = [v12 stringByReplacingOccurrencesOfString:v9 withString:&stru_283FDFAF8];
+        v14 = [v12 stringByReplacingOccurrencesOfString:sentinelCopy withString:&stru_283FDFAF8];
 
         v13 = v14;
       }
 
-      v15 = [v8 objectAtIndex:v11];
+      v15 = [contentsCopy objectAtIndex:v11];
       if ([v13 length] && objc_msgSend(v15, "length"))
       {
-        v16 = v8;
+        v16 = contentsCopy;
         v17 = [(TIKeyboardSecureCandidateRenderer *)self localizedStringForKey:@"PROACTIVE_CANDIDATE_ACCESSIBILITY_LABEL"];
         v29 = 0;
         v18 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v17 validFormatSpecifiers:@"%@%@" error:&v29, v13, v15];
@@ -500,7 +500,7 @@ LABEL_30:
           }
         }
 
-        v8 = v16;
+        contentsCopy = v16;
         v10 = v27;
         goto LABEL_21;
       }
@@ -528,7 +528,7 @@ LABEL_21:
       ++v11;
     }
 
-    while (v11 < [v7 count]);
+    while (v11 < [headersCopy count]);
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -536,11 +536,11 @@ LABEL_21:
   return v10;
 }
 
-- (__CFArray)imagesFromSecureCandidates:(id)a3 withRenderTraits:(id)a4 outAccessibilityLabels:(id *)a5
+- (__CFArray)imagesFromSecureCandidates:(id)candidates withRenderTraits:(id)traits outAccessibilityLabels:(id *)labels
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  candidatesCopy = candidates;
+  traitsCopy = traits;
   if (TICanLogMessageAtLevel_onceToken != -1)
   {
     dispatch_once(&TICanLogMessageAtLevel_onceToken, &__block_literal_global_24093);
@@ -552,10 +552,10 @@ LABEL_21:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v31 = MEMORY[0x277CCACA8];
-      v32 = [v8 count];
-      [v9 singleCellWidth];
+      v32 = [candidatesCopy count];
+      [traitsCopy singleCellWidth];
       v34 = v33;
-      [v9 singleCellHeight];
+      [traitsCopy singleCellHeight];
       v36 = [v31 stringWithFormat:@"%s DEBUG:ProactiveQuickType:TI: Secure rendering %lu items (width: %f, height: %f)", "-[TIKeyboardSecureCandidateRenderer imagesFromSecureCandidates:withRenderTraits:outAccessibilityLabels:]", v32, v34, v35];
       *buf = 138412290;
       v47 = v36;
@@ -563,28 +563,28 @@ LABEL_21:
     }
   }
 
-  v39 = a5;
-  if ([v8 count])
+  labelsCopy = labels;
+  if ([candidatesCopy count])
   {
-    v11 = [v8 objectAtIndex:0];
-    v37 = [v11 truncationSentinel];
+    v11 = [candidatesCopy objectAtIndex:0];
+    truncationSentinel = [v11 truncationSentinel];
   }
 
   else
   {
-    v37 = 0;
+    truncationSentinel = 0;
   }
 
-  v38 = self;
-  v40 = v9;
-  v12 = -[TIKeyboardSecureCandidateRenderer arrayOfContexts:withRenderTraits:](self, "arrayOfContexts:withRenderTraits:", [v8 count], v9);
-  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
-  v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  selfCopy = self;
+  v40 = traitsCopy;
+  v12 = -[TIKeyboardSecureCandidateRenderer arrayOfContexts:withRenderTraits:](self, "arrayOfContexts:withRenderTraits:", [candidatesCopy count], traitsCopy);
+  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(candidatesCopy, "count")}];
+  v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(candidatesCopy, "count")}];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v15 = v8;
+  v15 = candidatesCopy;
   v16 = [v15 countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v16)
   {
@@ -600,19 +600,19 @@ LABEL_21:
         }
 
         v20 = *(*(&v41 + 1) + 8 * i);
-        v21 = [v20 secureHeader];
-        if (v21)
+        secureHeader = [v20 secureHeader];
+        if (secureHeader)
         {
-          v22 = v21;
-          v23 = [v20 secureContent];
+          v22 = secureHeader;
+          secureContent = [v20 secureContent];
 
-          if (v23)
+          if (secureContent)
           {
-            v24 = [v20 secureHeader];
-            [v13 addObject:v24];
+            secureHeader2 = [v20 secureHeader];
+            [v13 addObject:secureHeader2];
 
-            v25 = [v20 secureContent];
-            [v14 addObject:v25];
+            secureContent2 = [v20 secureContent];
+            [v14 addObject:secureContent2];
           }
         }
       }
@@ -623,15 +623,15 @@ LABEL_21:
     while (v17);
   }
 
-  v26 = [TIKeyboardSecureCandidateTextRendering drawSecureHeaders:v13 secureContents:v14 inContexts:v12 traits:v40 truncationSentinel:v37];
-  arrayOfAttributes = v38->_arrayOfAttributes;
-  v38->_arrayOfAttributes = v26;
+  v26 = [TIKeyboardSecureCandidateTextRendering drawSecureHeaders:v13 secureContents:v14 inContexts:v12 traits:v40 truncationSentinel:truncationSentinel];
+  arrayOfAttributes = selfCopy->_arrayOfAttributes;
+  selfCopy->_arrayOfAttributes = v26;
 
-  v28 = [(TIKeyboardSecureCandidateRenderer *)v38 imagesFromContexts:v12];
+  v28 = [(TIKeyboardSecureCandidateRenderer *)selfCopy imagesFromContexts:v12];
   CFRelease(v12);
-  if (v39)
+  if (labelsCopy)
   {
-    *v39 = [(TIKeyboardSecureCandidateRenderer *)v38 accessibilityLabelsForSecureHeaders:v13 secureContents:v14 truncationSentinel:v37];
+    *labelsCopy = [(TIKeyboardSecureCandidateRenderer *)selfCopy accessibilityLabelsForSecureHeaders:v13 secureContents:v14 truncationSentinel:truncationSentinel];
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -646,21 +646,21 @@ LABEL_21:
   arc4random_buf(__buf, 0x10uLL);
   v2 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:__buf];
   v3 = MEMORY[0x277CCACA8];
-  v4 = [v2 UUIDString];
-  v5 = [v3 stringWithFormat:@"*%@*", v4];
+  uUIDString = [v2 UUIDString];
+  v5 = [v3 stringWithFormat:@"*%@*", uUIDString];
 
   v6 = *MEMORY[0x277D85DE8];
 
   return v5;
 }
 
-- (__CFArray)imagesFromContexts:(__CFArray *)a3
+- (__CFArray)imagesFromContexts:(__CFArray *)contexts
 {
-  Count = CFArrayGetCount(a3);
+  Count = CFArrayGetCount(contexts);
   Mutable = CFArrayCreateMutable(0, Count, MEMORY[0x277CBF128]);
-  for (i = 0; i < CFArrayGetCount(a3); ++i)
+  for (i = 0; i < CFArrayGetCount(contexts); ++i)
   {
-    ValueAtIndex = CFArrayGetValueAtIndex(a3, i);
+    ValueAtIndex = CFArrayGetValueAtIndex(contexts, i);
     Image = CGBitmapContextCreateImage(ValueAtIndex);
     CFArrayAppendValue(Mutable, Image);
     CGImageRelease(Image);
@@ -669,62 +669,62 @@ LABEL_21:
   return Mutable;
 }
 
-- (__CFArray)arrayOfContexts:(unint64_t)a3 withRenderTraits:(id)a4
+- (__CFArray)arrayOfContexts:(unint64_t)contexts withRenderTraits:(id)traits
 {
-  v5 = a4;
+  traitsCopy = traits;
   if (arrayOfContexts_withRenderTraits__onceToken != -1)
   {
     dispatch_once(&arrayOfContexts_withRenderTraits__onceToken, &__block_literal_global_399);
   }
 
-  Mutable = CFArrayCreateMutable(0, a3, MEMORY[0x277CBF128]);
-  if (a3)
+  Mutable = CFArrayCreateMutable(0, contexts, MEMORY[0x277CBF128]);
+  if (contexts)
   {
-    if ([v5 maxCellCount] >= 1)
+    if ([traitsCopy maxCellCount] >= 1)
     {
-      v7 = [v5 maxCellCount];
-      if (v7 < a3)
+      maxCellCount = [traitsCopy maxCellCount];
+      if (maxCellCount < contexts)
       {
-        a3 = v7;
+        contexts = maxCellCount;
       }
     }
 
-    v8 = a3;
-    if ([v5 sharedCellCount])
+    contextsCopy = contexts;
+    if ([traitsCopy sharedCellCount])
     {
-      v8 = [v5 sharedCellCount] + a3;
+      contextsCopy = [traitsCopy sharedCellCount] + contexts;
     }
 
-    v9 = [v5 resultCountToSingleCellWidth];
-    v10 = [v9 count];
+    resultCountToSingleCellWidth = [traitsCopy resultCountToSingleCellWidth];
+    v10 = [resultCountToSingleCellWidth count];
 
     if (v10)
     {
-      v11 = [v5 resultCountToSingleCellWidth];
-      v12 = [v11 count];
+      resultCountToSingleCellWidth2 = [traitsCopy resultCountToSingleCellWidth];
+      v12 = [resultCountToSingleCellWidth2 count];
 
-      v13 = [v5 resultCountToSingleCellWidth];
-      v14 = v13;
-      if (v12 <= a3)
+      resultCountToSingleCellWidth3 = [traitsCopy resultCountToSingleCellWidth];
+      v14 = resultCountToSingleCellWidth3;
+      if (v12 <= contexts)
       {
-        [v13 lastObject];
+        [resultCountToSingleCellWidth3 lastObject];
       }
 
       else
       {
-        [v13 objectAtIndexedSubscript:a3];
+        [resultCountToSingleCellWidth3 objectAtIndexedSubscript:contexts];
       }
       v15 = ;
     }
 
     else
     {
-      v16 = [v5 cellRenderingStyle];
-      v17 = [v5 cellWidthOptions];
-      v14 = v17;
-      if (v16)
+      cellRenderingStyle = [traitsCopy cellRenderingStyle];
+      cellWidthOptions = [traitsCopy cellWidthOptions];
+      v14 = cellWidthOptions;
+      if (cellRenderingStyle)
       {
-        switch(v8)
+        switch(contextsCopy)
         {
           case 1uLL:
             v18 = MEMORY[0x277D6F938];
@@ -741,12 +741,12 @@ LABEL_21:
         }
       }
 
-      else if (v8 == 1)
+      else if (contextsCopy == 1)
       {
         v18 = MEMORY[0x277D6F940];
       }
 
-      else if (v8 == 2)
+      else if (contextsCopy == 2)
       {
         v18 = MEMORY[0x277D6F960];
       }
@@ -756,24 +756,24 @@ LABEL_21:
         v18 = MEMORY[0x277D6F950];
       }
 
-      v15 = [v17 objectForKey:*v18];
+      v15 = [cellWidthOptions objectForKey:*v18];
     }
 
     v19 = v15;
     [v15 doubleValue];
     v21 = v20;
 
-    for (; a3; --a3)
+    for (; contexts; --contexts)
     {
-      [v5 screenScale];
+      [traitsCopy screenScale];
       v23 = fmax(ceil(v21 * v22), 1.0);
-      [v5 singleCellHeight];
+      [traitsCopy singleCellHeight];
       v25 = v24;
-      [v5 screenScale];
+      [traitsCopy screenScale];
       v27 = CGBitmapContextCreate(0, v23, fmax(ceil(v25 * v26), 1.0), 8uLL, 0, arrayOfContexts_withRenderTraits__colorSpace, 2u);
-      [v5 screenScale];
+      [traitsCopy screenScale];
       v29 = v28;
-      [v5 screenScale];
+      [traitsCopy screenScale];
       CGContextScaleCTM(v27, v29, v30);
       CFArrayAppendValue(Mutable, v27);
       CGContextRelease(v27);
@@ -790,23 +790,23 @@ CGColorSpaceRef __70__TIKeyboardSecureCandidateRenderer_arrayOfContexts_withRend
   return result;
 }
 
-- (id)localizedStringForKey:(id)a3
+- (id)localizedStringForKey:(id)key
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keyCopy = key;
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v5 = [MEMORY[0x277CBEAF8] _deviceLanguage];
-  v6 = [v4 preferredLocalizations];
+  _deviceLanguage = [MEMORY[0x277CBEAF8] _deviceLanguage];
+  preferredLocalizations = [v4 preferredLocalizations];
   v7 = MEMORY[0x277CCA8D8];
-  v16[0] = v5;
+  v16[0] = _deviceLanguage;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-  v9 = [v7 preferredLocalizationsFromArray:v6 forPreferences:v8];
+  v9 = [v7 preferredLocalizationsFromArray:preferredLocalizations forPreferences:v8];
 
-  v10 = [v9 firstObject];
-  v11 = [v4 localizedStringForKey:v3 value:0 table:@"SecureCandidate" localization:v10];
-  if ([v11 isEqual:v3])
+  firstObject = [v9 firstObject];
+  v11 = [v4 localizedStringForKey:keyCopy value:0 table:@"SecureCandidate" localization:firstObject];
+  if ([v11 isEqual:keyCopy])
   {
-    v12 = [v4 localizedStringForKey:v3 value:&stru_283FDFAF8 table:@"SecureCandidate"];
+    v12 = [v4 localizedStringForKey:keyCopy value:&stru_283FDFAF8 table:@"SecureCandidate"];
   }
 
   else
@@ -821,12 +821,12 @@ CGColorSpaceRef __70__TIKeyboardSecureCandidateRenderer_arrayOfContexts_withRend
   return v13;
 }
 
-- (void)setLocaleIdentifier:(id)a3
+- (void)setLocaleIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (([v5 isEqualToString:self->_localeIdentifier] & 1) == 0)
+  identifierCopy = identifier;
+  if (([identifierCopy isEqualToString:self->_localeIdentifier] & 1) == 0)
   {
-    objc_storeStrong(&self->_localeIdentifier, a3);
+    objc_storeStrong(&self->_localeIdentifier, identifier);
     [(TIKeyboardSecureCandidateRenderer *)self clearSecureCandidateCache];
   }
 }
@@ -868,9 +868,9 @@ CGColorSpaceRef __70__TIKeyboardSecureCandidateRenderer_arrayOfContexts_withRend
   [(TIKeyboardSecureCandidateRenderer *)&v4 dealloc];
 }
 
-- (TIKeyboardSecureCandidateRenderer)initWithLocaleIdentifier:(id)a3
+- (TIKeyboardSecureCandidateRenderer)initWithLocaleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = TIKeyboardSecureCandidateRenderer;
   v6 = [(TIKeyboardSecureCandidateRenderer *)&v14 init];
@@ -882,7 +882,7 @@ CGColorSpaceRef __70__TIKeyboardSecureCandidateRenderer_arrayOfContexts_withRend
     secureCandidateCache = v7->_secureCandidateCache;
     v7->_secureCandidateCache = v8;
 
-    objc_storeStrong(&v7->_localeIdentifier, a3);
+    objc_storeStrong(&v7->_localeIdentifier, identifier);
     v10 = __allSecureRenderers;
     objc_sync_enter(v10);
     if (__allSecureRenderers)
@@ -910,10 +910,10 @@ CGColorSpaceRef __70__TIKeyboardSecureCandidateRenderer_arrayOfContexts_withRend
   v2 = [(TIKeyboardSecureCandidateRenderer *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAF8] currentLocale];
-    v4 = [v3 localeIdentifier];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
     localeIdentifier = v2->_localeIdentifier;
-    v2->_localeIdentifier = v4;
+    v2->_localeIdentifier = localeIdentifier;
   }
 
   return v2;
@@ -921,9 +921,9 @@ CGColorSpaceRef __70__TIKeyboardSecureCandidateRenderer_arrayOfContexts_withRend
 
 - (TIKeyboardSecureCandidateRenderer)init
 {
-  v3 = [MEMORY[0x277CBEAF8] currentLocale];
-  v4 = [v3 localeIdentifier];
-  v5 = [(TIKeyboardSecureCandidateRenderer *)self initWithLocaleIdentifier:v4];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v5 = [(TIKeyboardSecureCandidateRenderer *)self initWithLocaleIdentifier:localeIdentifier];
 
   return v5;
 }

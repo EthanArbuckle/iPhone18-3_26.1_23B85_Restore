@@ -1,8 +1,8 @@
 @interface CIMaskedVariableBlur
 + (id)customAttributes;
-- (id)downTwo:(id)a3;
+- (id)downTwo:(id)two;
 - (id)outputImage;
-- (id)upCubic:(id)a3 scale:(float)a4;
+- (id)upCubic:(id)cubic scale:(float)scale;
 @end
 
 @implementation CIMaskedVariableBlur
@@ -37,10 +37,10 @@
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:v6 count:4];
 }
 
-- (id)downTwo:(id)a3
+- (id)downTwo:(id)two
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  [a3 extent];
+  [two extent];
   x = v25.origin.x;
   y = v25.origin.y;
   width = v25.size.width;
@@ -77,7 +77,7 @@
   Rectangle::scale(&v20, 0.5, &v21);
   Rectangle::integralize(&v21, 0.0001, &v22);
   v23 = v22;
-  v9 = [(CIMaskedVariableBlur *)self _kernelD2];
+  _kernelD2 = [(CIMaskedVariableBlur *)self _kernelD2];
   v10 = vceqq_f64(*&v23.var2, vdupq_n_s64(0x7FEFFFFFFFFFFFFFuLL));
   v11 = vmvnq_s8(vuzp1q_s32(vceqq_f64(*&v23.var0, vdupq_n_s64(0xFFDFFFFFFFFFFFFFLL)), v10));
   if (vmaxv_u16(vmovn_s32(v11)))
@@ -98,9 +98,9 @@
     v18 = v10;
   }
 
-  v24[0] = a3;
+  v24[0] = two;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:{1, *&v16, *&v18}];
-  return [v9 applyWithExtent:&__block_literal_global_47 roiCallback:v14 arguments:{v19, var1, v17, var3}];
+  return [_kernelD2 applyWithExtent:&__block_literal_global_47 roiCallback:v14 arguments:{v19, var1, v17, var3}];
 }
 
 void __32__CIMaskedVariableBlur_downTwo___block_invoke(CGFloat a1, CGFloat a2, CGFloat a3, CGFloat a4)
@@ -138,12 +138,12 @@ void __32__CIMaskedVariableBlur_downTwo___block_invoke(CGFloat a1, CGFloat a2, C
   Rectangle::integralize(&v9, 0.0001, &v10);
 }
 
-- (id)upCubic:(id)a3 scale:(float)a4
+- (id)upCubic:(id)cubic scale:(float)scale
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v6 = @"inputScale";
   v7[0] = [MEMORY[0x1E696AD98] numberWithFloat:?];
-  return [a3 imageByApplyingFilter:@"CISoftCubicUpsample" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v7, &v6, 1)}];
+  return [cubic imageByApplyingFilter:@"CISoftCubicUpsample" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v7, &v6, 1)}];
 }
 
 - (id)outputImage
@@ -249,7 +249,7 @@ void __32__CIMaskedVariableBlur_downTwo___block_invoke(CGFloat a1, CGFloat a2, C
     v21 = v20;
     v23 = v22;
     v25 = v24;
-    v26 = [(CIMaskedVariableBlur *)self _kernelCombine];
+    _kernelCombine = [(CIMaskedVariableBlur *)self _kernelCombine];
     inputImage = self->inputImage;
     v28[0] = self->inputMask;
     v28[1] = inputImage;
@@ -260,7 +260,7 @@ void __32__CIMaskedVariableBlur_downTwo___block_invoke(CGFloat a1, CGFloat a2, C
     v28[6] = v13;
     v28[7] = v17;
     v28[8] = self->inputRadius;
-    return [v26 applyWithExtent:&__block_literal_global_29 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v28, 9), v19, v21, v23, v25}];
+    return [_kernelCombine applyWithExtent:&__block_literal_global_29 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v28, 9), v19, v21, v23, v25}];
   }
 }
 

@@ -2,12 +2,12 @@
 - (SFDigestOperation)digestOperation;
 - (SFKeyDerivingOperation)sharedSecretOperation;
 - (SFX963KeyDerivationOperation)init;
-- (SFX963KeyDerivationOperation)initWithCoder:(id)a3;
-- (SFX963KeyDerivationOperation)initWithSharedSecretOperation:(id)a3;
-- (SFX963KeyDerivationOperation)initWithSharedSecretOperation:(id)a3 digestOperation:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setDigestOperation:(id)a3;
-- (void)setSharedSecretOperation:(id)a3;
+- (SFX963KeyDerivationOperation)initWithCoder:(id)coder;
+- (SFX963KeyDerivationOperation)initWithSharedSecretOperation:(id)operation;
+- (SFX963KeyDerivationOperation)initWithSharedSecretOperation:(id)operation digestOperation:(id)digestOperation;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setDigestOperation:(id)operation;
+- (void)setSharedSecretOperation:(id)operation;
 @end
 
 @implementation SFX963KeyDerivationOperation
@@ -20,47 +20,47 @@
   return v4;
 }
 
-- (SFX963KeyDerivationOperation)initWithSharedSecretOperation:(id)a3
+- (SFX963KeyDerivationOperation)initWithSharedSecretOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v5 = _defaultDigestOperation();
-  v6 = [(SFX963KeyDerivationOperation *)self initWithSharedSecretOperation:v4 digestOperation:v5];
+  v6 = [(SFX963KeyDerivationOperation *)self initWithSharedSecretOperation:operationCopy digestOperation:v5];
 
   return v6;
 }
 
-- (SFX963KeyDerivationOperation)initWithSharedSecretOperation:(id)a3 digestOperation:(id)a4
+- (SFX963KeyDerivationOperation)initWithSharedSecretOperation:(id)operation digestOperation:(id)digestOperation
 {
-  v7 = a3;
-  v8 = a4;
+  operationCopy = operation;
+  digestOperationCopy = digestOperation;
   v12.receiver = self;
   v12.super_class = SFX963KeyDerivationOperation;
   v9 = [(SFX963KeyDerivationOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(v9->_x963KeyDerivationOperationInternal + 1, a3);
-    objc_storeStrong(v10->_x963KeyDerivationOperationInternal + 2, a4);
+    objc_storeStrong(v9->_x963KeyDerivationOperationInternal + 1, operation);
+    objc_storeStrong(v10->_x963KeyDerivationOperationInternal + 2, digestOperation);
   }
 
   return v10;
 }
 
-- (SFX963KeyDerivationOperation)initWithCoder:(id)a3
+- (SFX963KeyDerivationOperation)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SFX963KeyDerivationOperation;
   return [(SFX963KeyDerivationOperation *)&v4 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = self;
-  x963KeyDerivationOperationInternal = v3->_x963KeyDerivationOperationInternal;
+  selfCopy = self;
+  x963KeyDerivationOperationInternal = selfCopy->_x963KeyDerivationOperationInternal;
   v5 = x963KeyDerivationOperationInternal[1];
   v6 = x963KeyDerivationOperationInternal[2];
 
-  return [(SFX963KeyDerivationOperation *)v3 initWithSharedSecretOperation:v5 digestOperation:v6];
+  return [(SFX963KeyDerivationOperation *)selfCopy initWithSharedSecretOperation:v5 digestOperation:v6];
 }
 
 - (SFKeyDerivingOperation)sharedSecretOperation
@@ -70,9 +70,9 @@
   return v2;
 }
 
-- (void)setSharedSecretOperation:(id)a3
+- (void)setSharedSecretOperation:(id)operation
 {
-  v4 = [a3 copyWithZone:0];
+  v4 = [operation copyWithZone:0];
   x963KeyDerivationOperationInternal = self->_x963KeyDerivationOperationInternal;
   v6 = x963KeyDerivationOperationInternal[1];
   x963KeyDerivationOperationInternal[1] = v4;
@@ -87,9 +87,9 @@
   return v2;
 }
 
-- (void)setDigestOperation:(id)a3
+- (void)setDigestOperation:(id)operation
 {
-  v4 = [a3 copyWithZone:0];
+  v4 = [operation copyWithZone:0];
   x963KeyDerivationOperationInternal = self->_x963KeyDerivationOperationInternal;
   v6 = x963KeyDerivationOperationInternal[2];
   x963KeyDerivationOperationInternal[2] = v4;

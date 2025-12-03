@@ -1,44 +1,44 @@
 @interface DKDiagnosticHostContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (DKDiagnosticHostContext)initWithConnection:(id)a3;
+- (DKDiagnosticHostContext)initWithConnection:(id)connection;
 - (DKExtensionHostAdapterDelegate)delegate;
 - (id)_helperConnnection;
-- (void)cancelWithCompletion:(id)a3;
-- (void)checkShouldShowViewController:(id)a3;
-- (void)remoteHostAllowSessionAccessoryDisconnectForDuration:(id)a3;
+- (void)cancelWithCompletion:(id)completion;
+- (void)checkShouldShowViewController:(id)controller;
+- (void)remoteHostAllowSessionAccessoryDisconnectForDuration:(id)duration;
 - (void)remoteHostClearAllowSessionAccessoryDisconnect;
-- (void)remoteHostCompleteWithResult:(id)a3 completion:(id)a4;
-- (void)remoteHostDismissViewControllerWithCompletion:(id)a3;
-- (void)remoteHostDisplayAlertWithHeader:(id)a3 message:(id)a4 buttonStrings:(id)a5 completion:(id)a6;
-- (void)remoteHostDisplayInstructions:(id)a3 style:(int)a4 imageLocators:(id)a5 title:(id)a6 subtitle:(id)a7 iconLocator:(id)a8 options:(id)a9 navigationBarActions:(id)a10 completion:(id)a11;
-- (void)remoteHostGetAsset:(id)a3 completion:(id)a4;
+- (void)remoteHostCompleteWithResult:(id)result completion:(id)completion;
+- (void)remoteHostDismissViewControllerWithCompletion:(id)completion;
+- (void)remoteHostDisplayAlertWithHeader:(id)header message:(id)message buttonStrings:(id)strings completion:(id)completion;
+- (void)remoteHostDisplayInstructions:(id)instructions style:(int)style imageLocators:(id)locators title:(id)title subtitle:(id)subtitle iconLocator:(id)locator options:(id)options navigationBarActions:(id)self0 completion:(id)self1;
+- (void)remoteHostGetAsset:(id)asset completion:(id)completion;
 - (void)remoteHostHideStatusBar;
-- (void)remoteHostRequestPluginReloadOnFinishWithCompletion:(id)a3;
-- (void)remoteHostRequestSessionAccessoryIdentifierWithCompletion:(id)a3;
-- (void)remoteHostSetStatusBarStyle:(int64_t)a3;
+- (void)remoteHostRequestPluginReloadOnFinishWithCompletion:(id)completion;
+- (void)remoteHostRequestSessionAccessoryIdentifierWithCompletion:(id)completion;
+- (void)remoteHostSetStatusBarStyle:(int64_t)style;
 - (void)remoteHostShowStatusBar;
-- (void)remoteHostShowUI:(id)a3 completion:(id)a4;
+- (void)remoteHostShowUI:(id)i completion:(id)completion;
 - (void)remoteHostUnpairSessionAccessoryOnTestCompletion;
-- (void)remoteHostUpdateProgress:(id)a3 forTest:(id)a4;
-- (void)remoteHostUploadAssets:(id)a3 completion:(id)a4;
+- (void)remoteHostUpdateProgress:(id)progress forTest:(id)test;
+- (void)remoteHostUploadAssets:(id)assets completion:(id)completion;
 - (void)setNeedsUpdateResponder;
-- (void)setNotAllowListedWithContactMessage:(id)a3;
-- (void)startWithPayload:(id)a3 completion:(id)a4;
+- (void)setNotAllowListedWithContactMessage:(id)message;
+- (void)startWithPayload:(id)payload completion:(id)completion;
 @end
 
 @implementation DKDiagnosticHostContext
 
-- (DKDiagnosticHostContext)initWithConnection:(id)a3
+- (DKDiagnosticHostContext)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = DKDiagnosticHostContext;
   v6 = [(DKDiagnosticHostContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_xpcConnection, a3);
+    objc_storeStrong(&v6->_xpcConnection, connection);
     v7->_isXPC = 1;
   }
 
@@ -49,15 +49,15 @@
 {
   if ([(DKDiagnosticHostContext *)self isXPC]&& ([(DKDiagnosticHostContext *)self xpcConnection], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(DKDiagnosticHostContext *)self xpcConnection];
+    xpcConnection = [(DKDiagnosticHostContext *)self xpcConnection];
   }
 
   else
   {
-    v4 = [(DKDiagnosticHostContext *)self _auxiliaryConnection];
+    xpcConnection = [(DKDiagnosticHostContext *)self _auxiliaryConnection];
   }
 
-  return v4;
+  return xpcConnection;
 }
 
 + (id)_extensionAuxiliaryVendorProtocol
@@ -106,11 +106,11 @@ void __58__DKDiagnosticHostContext__extensionAuxiliaryHostProtocol__block_invoke
   [v2 setClasses:v3 forSelector:sel_remoteHostCompleteWithResult_completion_ argumentIndex:0 ofReply:0];
 }
 
-- (void)startWithPayload:(id)a3 completion:(id)a4
+- (void)startWithPayload:(id)payload completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  payloadCopy = payload;
+  completionCopy = completion;
   v8 = DiagnosticsKitLogHandleForCategory(4);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -118,15 +118,15 @@ void __58__DKDiagnosticHostContext__extensionAuxiliaryHostProtocol__block_invoke
     _os_log_impl(&dword_248B9D000, v8, OS_LOG_TYPE_DEFAULT, "DKDiagnosticHostContext::startWithCompletion:", buf, 2u);
   }
 
-  v9 = [(DKDiagnosticHostContext *)self _helperConnnection];
+  _helperConnnection = [(DKDiagnosticHostContext *)self _helperConnnection];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __55__DKDiagnosticHostContext_startWithPayload_completion___block_invoke;
   v18 = &unk_278F6C3F8;
-  v19 = self;
-  v10 = v7;
+  selfCopy = self;
+  v10 = completionCopy;
   v20 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:&v15];
+  v11 = [_helperConnnection remoteObjectProxyWithErrorHandler:&v15];
 
   v12 = DiagnosticsKitLogHandleForCategory(4);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -146,7 +146,7 @@ void __58__DKDiagnosticHostContext__extensionAuxiliaryHostProtocol__block_invoke
 
   if (v11)
   {
-    [v11 startRemoteDiagnosticWithDiagnosticParameters:v6 completion:{v10, v15, v16, v17, v18, v19}];
+    [v11 startRemoteDiagnosticWithDiagnosticParameters:payloadCopy completion:{v10, v15, v16, v17, v18, selfCopy}];
   }
 
   else
@@ -175,18 +175,18 @@ void __55__DKDiagnosticHostContext_startWithPayload_completion___block_invoke(ui
   [DKAnalytics sendAnalyticsWithEvent:2 error:v3];
 }
 
-- (void)cancelWithCompletion:(id)a3
+- (void)cancelWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DKDiagnosticHostContext *)self _helperConnnection];
+  completionCopy = completion;
+  _helperConnnection = [(DKDiagnosticHostContext *)self _helperConnnection];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __48__DKDiagnosticHostContext_cancelWithCompletion___block_invoke;
   v11 = &unk_278F6C3F8;
-  v12 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = completionCopy;
   v13 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:&v8];
+  v7 = [_helperConnnection remoteObjectProxyWithErrorHandler:&v8];
 
   if (!v6)
   {
@@ -195,7 +195,7 @@ void __55__DKDiagnosticHostContext_startWithPayload_completion___block_invoke(ui
 
   if (v7)
   {
-    [v7 cancelRemoteDiagnosticWithCompletion:{v6, v8, v9, v10, v11, v12}];
+    [v7 cancelRemoteDiagnosticWithCompletion:{v6, v8, v9, v10, v11, selfCopy}];
   }
 
   else
@@ -222,10 +222,10 @@ void __48__DKDiagnosticHostContext_cancelWithCompletion___block_invoke(uint64_t 
   [DKAnalytics sendAnalyticsWithEvent:2 error:v3];
 }
 
-- (void)setNotAllowListedWithContactMessage:(id)a3
+- (void)setNotAllowListedWithContactMessage:(id)message
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = DiagnosticsKitLogHandleForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -233,13 +233,13 @@ void __48__DKDiagnosticHostContext_cancelWithCompletion___block_invoke(uint64_t 
     _os_log_impl(&dword_248B9D000, v5, OS_LOG_TYPE_DEFAULT, "DKDiagnosticHostContext::setNotAllowListedWithContactMessage", buf, 2u);
   }
 
-  v6 = [(DKDiagnosticHostContext *)self _helperConnnection];
+  _helperConnnection = [(DKDiagnosticHostContext *)self _helperConnnection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __63__DKDiagnosticHostContext_setNotAllowListedWithContactMessage___block_invoke;
   v11[3] = &unk_278F6BFA8;
   v11[4] = self;
-  v7 = [v6 remoteObjectProxyWithErrorHandler:v11];
+  v7 = [_helperConnnection remoteObjectProxyWithErrorHandler:v11];
 
   v8 = DiagnosticsKitLogHandleForCategory(4);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -256,7 +256,7 @@ void __48__DKDiagnosticHostContext_cancelWithCompletion___block_invoke(uint64_t 
     _os_log_impl(&dword_248B9D000, v9, OS_LOG_TYPE_DEFAULT, "About to call setRemoteDiagnosticNotAllowListed", buf, 2u);
   }
 
-  [v7 setRemoteDiagnosticNotAllowListedWithContactMessage:v4];
+  [v7 setRemoteDiagnosticNotAllowListedWithContactMessage:messageCopy];
   v10 = *MEMORY[0x277D85DE8];
 }
 
@@ -277,10 +277,10 @@ void __63__DKDiagnosticHostContext_setNotAllowListedWithContactMessage___block_i
   [DKAnalytics sendAnalyticsWithEvent:2 error:v3];
 }
 
-- (void)checkShouldShowViewController:(id)a3
+- (void)checkShouldShowViewController:(id)controller
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = DiagnosticsKitLogHandleForCategory(4);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -288,13 +288,13 @@ void __63__DKDiagnosticHostContext_setNotAllowListedWithContactMessage___block_i
     _os_log_impl(&dword_248B9D000, v5, OS_LOG_TYPE_DEFAULT, "DKDiagnosticHostContext::checkShouldShowViewController", buf, 2u);
   }
 
-  v6 = [(DKDiagnosticHostContext *)self _helperConnnection];
+  _helperConnnection = [(DKDiagnosticHostContext *)self _helperConnnection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __57__DKDiagnosticHostContext_checkShouldShowViewController___block_invoke;
   v11[3] = &unk_278F6BFA8;
   v11[4] = self;
-  v7 = [v6 remoteObjectProxyWithErrorHandler:v11];
+  v7 = [_helperConnnection remoteObjectProxyWithErrorHandler:v11];
 
   v8 = DiagnosticsKitLogHandleForCategory(4);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -311,7 +311,7 @@ void __63__DKDiagnosticHostContext_setNotAllowListedWithContactMessage___block_i
     _os_log_impl(&dword_248B9D000, v9, OS_LOG_TYPE_DEFAULT, "About to call checkShouldShowViewController", buf, 2u);
   }
 
-  [v7 checkShouldShowRemoteDiagnosticViewController:v4];
+  [v7 checkShouldShowRemoteDiagnosticViewController:controllerCopy];
   v10 = *MEMORY[0x277D85DE8];
 }
 
@@ -342,13 +342,13 @@ void __57__DKDiagnosticHostContext_checkShouldShowViewController___block_invoke(
     _os_log_impl(&dword_248B9D000, v3, OS_LOG_TYPE_DEFAULT, "DKDiagnosticHostContext::setNeedsUpdateResponder", buf, 2u);
   }
 
-  v4 = [(DKDiagnosticHostContext *)self _helperConnnection];
+  _helperConnnection = [(DKDiagnosticHostContext *)self _helperConnnection];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __50__DKDiagnosticHostContext_setNeedsUpdateResponder__block_invoke;
   v9[3] = &unk_278F6BFA8;
   v9[4] = self;
-  v5 = [v4 remoteObjectProxyWithErrorHandler:v9];
+  v5 = [_helperConnnection remoteObjectProxyWithErrorHandler:v9];
 
   v6 = DiagnosticsKitLogHandleForCategory(4);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -386,27 +386,27 @@ void __50__DKDiagnosticHostContext_setNeedsUpdateResponder__block_invoke(uint64_
   [DKAnalytics sendAnalyticsWithEvent:2 error:v3];
 }
 
-- (void)remoteHostUpdateProgress:(id)a3 forTest:(id)a4
+- (void)remoteHostUpdateProgress:(id)progress forTest:(id)test
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(DKDiagnosticHostContext *)self delegate];
-  v8 = [v7 hostServicesDelegate];
-  v9 = [v8 conformsToProtocol:&unk_285B9E2A8];
+  progressCopy = progress;
+  testCopy = test;
+  delegate = [(DKDiagnosticHostContext *)self delegate];
+  hostServicesDelegate = [delegate hostServicesDelegate];
+  v9 = [hostServicesDelegate conformsToProtocol:&unk_285B9E2A8];
 
   if (v9)
   {
-    v10 = [(DKDiagnosticHostContext *)self delegate];
-    v11 = [v10 hostServicesDelegate];
+    delegate2 = [(DKDiagnosticHostContext *)self delegate];
+    hostServicesDelegate2 = [delegate2 hostServicesDelegate];
 
-    [v11 updateProgress:v12 forTest:v6];
+    [hostServicesDelegate2 updateProgress:progressCopy forTest:testCopy];
   }
 }
 
-- (void)remoteHostGetAsset:(id)a3 completion:(id)a4
+- (void)remoteHostGetAsset:(id)asset completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  completionCopy = completion;
   v8 = DiagnosticsKitLogHandleForCategory(4);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -414,28 +414,28 @@ void __50__DKDiagnosticHostContext_setNeedsUpdateResponder__block_invoke(uint64_
     _os_log_impl(&dword_248B9D000, v8, OS_LOG_TYPE_DEFAULT, "DKDiagnosticHostContext::getAsset:completion:", v14, 2u);
   }
 
-  v9 = [(DKDiagnosticHostContext *)self delegate];
-  v10 = [v9 hostServicesDelegate];
-  v11 = [v10 conformsToProtocol:&unk_285B9E350];
+  delegate = [(DKDiagnosticHostContext *)self delegate];
+  hostServicesDelegate = [delegate hostServicesDelegate];
+  v11 = [hostServicesDelegate conformsToProtocol:&unk_285B9E350];
 
   if (v11)
   {
-    v12 = [(DKDiagnosticHostContext *)self delegate];
-    v13 = [v12 hostServicesDelegate];
+    delegate2 = [(DKDiagnosticHostContext *)self delegate];
+    hostServicesDelegate2 = [delegate2 hostServicesDelegate];
 
-    [v13 getAsset:v6 completion:v7];
+    [hostServicesDelegate2 getAsset:assetCopy completion:completionCopy];
   }
 
   else
   {
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)remoteHostUploadAssets:(id)a3 completion:(id)a4
+- (void)remoteHostUploadAssets:(id)assets completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  assetsCopy = assets;
+  completionCopy = completion;
   v8 = DiagnosticsKitLogHandleForCategory(4);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -443,226 +443,226 @@ void __50__DKDiagnosticHostContext_setNeedsUpdateResponder__block_invoke(uint64_
     _os_log_impl(&dword_248B9D000, v8, OS_LOG_TYPE_DEFAULT, "DKDiagnosticHostContext::uploadAssets:completion:", v15, 2u);
   }
 
-  v9 = [(DKDiagnosticHostContext *)self delegate];
-  v10 = [v9 hostServicesDelegate];
-  v11 = [v10 conformsToProtocol:&unk_285B9E350];
+  delegate = [(DKDiagnosticHostContext *)self delegate];
+  hostServicesDelegate = [delegate hostServicesDelegate];
+  v11 = [hostServicesDelegate conformsToProtocol:&unk_285B9E350];
 
   if (v11)
   {
-    v12 = [(DKDiagnosticHostContext *)self delegate];
-    v13 = [v12 hostServicesDelegate];
+    delegate2 = [(DKDiagnosticHostContext *)self delegate];
+    hostServicesDelegate2 = [delegate2 hostServicesDelegate];
 
-    [v13 uploadAssets:v6 completion:v7];
+    [hostServicesDelegate2 uploadAssets:assetsCopy completion:completionCopy];
   }
 
   else
   {
-    v13 = [MEMORY[0x277CBEA60] array];
+    hostServicesDelegate2 = [MEMORY[0x277CBEA60] array];
     v14 = [MEMORY[0x277CCA9B8] errorWithDomain:@"DKErrorDomain" code:-1008 userInfo:0];
-    v7[2](v7, v13, v14);
+    completionCopy[2](completionCopy, hostServicesDelegate2, v14);
   }
 }
 
-- (void)remoteHostCompleteWithResult:(id)a3 completion:(id)a4
+- (void)remoteHostCompleteWithResult:(id)result completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DKDiagnosticHostContext *)self delegate];
-  [v8 completeWithPayload:v7 completion:v6];
+  completionCopy = completion;
+  resultCopy = result;
+  delegate = [(DKDiagnosticHostContext *)self delegate];
+  [delegate completeWithPayload:resultCopy completion:completionCopy];
 }
 
-- (void)remoteHostDismissViewControllerWithCompletion:(id)a3
+- (void)remoteHostDismissViewControllerWithCompletion:(id)completion
 {
-  v7 = a3;
-  v4 = [(DKDiagnosticHostContext *)self delegate];
+  completionCopy = completion;
+  delegate = [(DKDiagnosticHostContext *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(DKDiagnosticHostContext *)self delegate];
-    [v6 dismissViewControllerWithCompletion:v7];
+    delegate2 = [(DKDiagnosticHostContext *)self delegate];
+    [delegate2 dismissViewControllerWithCompletion:completionCopy];
   }
 }
 
-- (void)remoteHostShowUI:(id)a3 completion:(id)a4
+- (void)remoteHostShowUI:(id)i completion:(id)completion
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(DKDiagnosticHostContext *)self delegate];
-  v8 = [v7 hostServicesDelegate];
-  v9 = [v8 conformsToProtocol:&unk_285B9E3D0];
+  iCopy = i;
+  completionCopy = completion;
+  delegate = [(DKDiagnosticHostContext *)self delegate];
+  hostServicesDelegate = [delegate hostServicesDelegate];
+  v9 = [hostServicesDelegate conformsToProtocol:&unk_285B9E3D0];
 
   if (v9)
   {
-    v10 = [(DKDiagnosticHostContext *)self delegate];
-    v11 = [v10 hostServicesDelegate];
+    delegate2 = [(DKDiagnosticHostContext *)self delegate];
+    hostServicesDelegate2 = [delegate2 hostServicesDelegate];
 
-    [v11 showUI:v12 completion:v6];
+    [hostServicesDelegate2 showUI:iCopy completion:completionCopy];
   }
 }
 
-- (void)remoteHostRequestPluginReloadOnFinishWithCompletion:(id)a3
+- (void)remoteHostRequestPluginReloadOnFinishWithCompletion:(id)completion
 {
-  v9 = a3;
-  v4 = [(DKDiagnosticHostContext *)self delegate];
-  v5 = [v4 hostServicesDelegate];
-  v6 = [v5 conformsToProtocol:&unk_285B9E878];
+  completionCopy = completion;
+  delegate = [(DKDiagnosticHostContext *)self delegate];
+  hostServicesDelegate = [delegate hostServicesDelegate];
+  v6 = [hostServicesDelegate conformsToProtocol:&unk_285B9E878];
 
   if (v6)
   {
-    v7 = [(DKDiagnosticHostContext *)self delegate];
-    v8 = [v7 hostServicesDelegate];
+    delegate2 = [(DKDiagnosticHostContext *)self delegate];
+    hostServicesDelegate2 = [delegate2 hostServicesDelegate];
 
-    [v8 requestPluginReloadOnFinishWithCompletion:v9];
+    [hostServicesDelegate2 requestPluginReloadOnFinishWithCompletion:completionCopy];
   }
 }
 
-- (void)remoteHostRequestSessionAccessoryIdentifierWithCompletion:(id)a3
+- (void)remoteHostRequestSessionAccessoryIdentifierWithCompletion:(id)completion
 {
-  v9 = a3;
-  v4 = [(DKDiagnosticHostContext *)self delegate];
-  v5 = [v4 hostServicesDelegate];
-  v6 = [v5 conformsToProtocol:&unk_285B9E508];
+  completionCopy = completion;
+  delegate = [(DKDiagnosticHostContext *)self delegate];
+  hostServicesDelegate = [delegate hostServicesDelegate];
+  v6 = [hostServicesDelegate conformsToProtocol:&unk_285B9E508];
 
   if (v6)
   {
-    v7 = [(DKDiagnosticHostContext *)self delegate];
-    v8 = [v7 hostServicesDelegate];
+    delegate2 = [(DKDiagnosticHostContext *)self delegate];
+    hostServicesDelegate2 = [delegate2 hostServicesDelegate];
 
-    [v8 requestSessionAccessoryIdentifierWithCompletion:v9];
+    [hostServicesDelegate2 requestSessionAccessoryIdentifierWithCompletion:completionCopy];
   }
 }
 
 - (void)remoteHostUnpairSessionAccessoryOnTestCompletion
 {
-  v3 = [(DKDiagnosticHostContext *)self delegate];
-  v4 = [v3 hostServicesDelegate];
-  v5 = [v4 conformsToProtocol:&unk_285B9E508];
+  delegate = [(DKDiagnosticHostContext *)self delegate];
+  hostServicesDelegate = [delegate hostServicesDelegate];
+  v5 = [hostServicesDelegate conformsToProtocol:&unk_285B9E508];
 
   if (v5)
   {
-    v6 = [(DKDiagnosticHostContext *)self delegate];
-    v7 = [v6 hostServicesDelegate];
+    delegate2 = [(DKDiagnosticHostContext *)self delegate];
+    hostServicesDelegate2 = [delegate2 hostServicesDelegate];
 
-    [v7 unpairSessionAccessoryOnTestCompletion];
+    [hostServicesDelegate2 unpairSessionAccessoryOnTestCompletion];
   }
 }
 
-- (void)remoteHostAllowSessionAccessoryDisconnectForDuration:(id)a3
+- (void)remoteHostAllowSessionAccessoryDisconnectForDuration:(id)duration
 {
-  v9 = a3;
-  v4 = [(DKDiagnosticHostContext *)self delegate];
-  v5 = [v4 hostServicesDelegate];
-  v6 = [v5 conformsToProtocol:&unk_285B9E508];
+  durationCopy = duration;
+  delegate = [(DKDiagnosticHostContext *)self delegate];
+  hostServicesDelegate = [delegate hostServicesDelegate];
+  v6 = [hostServicesDelegate conformsToProtocol:&unk_285B9E508];
 
   if (v6)
   {
-    v7 = [(DKDiagnosticHostContext *)self delegate];
-    v8 = [v7 hostServicesDelegate];
+    delegate2 = [(DKDiagnosticHostContext *)self delegate];
+    hostServicesDelegate2 = [delegate2 hostServicesDelegate];
 
-    [v8 allowSessionAccessoryDisconnectForDuration:v9];
+    [hostServicesDelegate2 allowSessionAccessoryDisconnectForDuration:durationCopy];
   }
 }
 
 - (void)remoteHostClearAllowSessionAccessoryDisconnect
 {
-  v3 = [(DKDiagnosticHostContext *)self delegate];
-  v4 = [v3 hostServicesDelegate];
-  v5 = [v4 conformsToProtocol:&unk_285B9E508];
+  delegate = [(DKDiagnosticHostContext *)self delegate];
+  hostServicesDelegate = [delegate hostServicesDelegate];
+  v5 = [hostServicesDelegate conformsToProtocol:&unk_285B9E508];
 
   if (v5)
   {
-    v6 = [(DKDiagnosticHostContext *)self delegate];
-    v7 = [v6 hostServicesDelegate];
+    delegate2 = [(DKDiagnosticHostContext *)self delegate];
+    hostServicesDelegate2 = [delegate2 hostServicesDelegate];
 
-    [v7 clearAllowSessionAccessoryDisconnect];
+    [hostServicesDelegate2 clearAllowSessionAccessoryDisconnect];
   }
 }
 
-- (void)remoteHostDisplayAlertWithHeader:(id)a3 message:(id)a4 buttonStrings:(id)a5 completion:(id)a6
+- (void)remoteHostDisplayAlertWithHeader:(id)header message:(id)message buttonStrings:(id)strings completion:(id)completion
 {
-  v18 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(DKDiagnosticHostContext *)self delegate];
-  v14 = [v13 hostServicesDelegate];
-  v15 = [v14 conformsToProtocol:&unk_285B9E628];
+  headerCopy = header;
+  messageCopy = message;
+  stringsCopy = strings;
+  completionCopy = completion;
+  delegate = [(DKDiagnosticHostContext *)self delegate];
+  hostServicesDelegate = [delegate hostServicesDelegate];
+  v15 = [hostServicesDelegate conformsToProtocol:&unk_285B9E628];
 
   if (v15)
   {
-    v16 = [(DKDiagnosticHostContext *)self delegate];
-    v17 = [v16 hostServicesDelegate];
+    delegate2 = [(DKDiagnosticHostContext *)self delegate];
+    hostServicesDelegate2 = [delegate2 hostServicesDelegate];
 
-    [v17 displayAlertWithHeader:v18 message:v10 buttonStrings:v11 completion:v12];
+    [hostServicesDelegate2 displayAlertWithHeader:headerCopy message:messageCopy buttonStrings:stringsCopy completion:completionCopy];
   }
 }
 
-- (void)remoteHostDisplayInstructions:(id)a3 style:(int)a4 imageLocators:(id)a5 title:(id)a6 subtitle:(id)a7 iconLocator:(id)a8 options:(id)a9 navigationBarActions:(id)a10 completion:(id)a11
+- (void)remoteHostDisplayInstructions:(id)instructions style:(int)style imageLocators:(id)locators title:(id)title subtitle:(id)subtitle iconLocator:(id)locator options:(id)options navigationBarActions:(id)self0 completion:(id)self1
 {
-  v28 = a3;
-  v27 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  v22 = [(DKDiagnosticHostContext *)self delegate];
-  v23 = [v22 hostServicesDelegate];
-  LODWORD(a5) = [v23 conformsToProtocol:&unk_285B9E628];
+  instructionsCopy = instructions;
+  locatorsCopy = locators;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  locatorCopy = locator;
+  optionsCopy = options;
+  actionsCopy = actions;
+  completionCopy = completion;
+  delegate = [(DKDiagnosticHostContext *)self delegate];
+  hostServicesDelegate = [delegate hostServicesDelegate];
+  LODWORD(locators) = [hostServicesDelegate conformsToProtocol:&unk_285B9E628];
 
-  if (a5)
+  if (locators)
   {
-    v24 = [(DKDiagnosticHostContext *)self delegate];
-    v25 = [v24 hostServicesDelegate];
+    delegate2 = [(DKDiagnosticHostContext *)self delegate];
+    hostServicesDelegate2 = [delegate2 hostServicesDelegate];
 
-    [v25 displayInstructions:v28 style:a4 imageLocators:v27 title:v16 subtitle:v17 iconLocator:v18 options:v19 navigationBarActions:v20 completion:v21];
+    [hostServicesDelegate2 displayInstructions:instructionsCopy style:style imageLocators:locatorsCopy title:titleCopy subtitle:subtitleCopy iconLocator:locatorCopy options:optionsCopy navigationBarActions:actionsCopy completion:completionCopy];
   }
 }
 
 - (void)remoteHostShowStatusBar
 {
-  v3 = [(DKDiagnosticHostContext *)self delegate];
-  v4 = [v3 hostServicesDelegate];
-  v5 = [v4 conformsToProtocol:&unk_285B9E7E0];
+  delegate = [(DKDiagnosticHostContext *)self delegate];
+  hostServicesDelegate = [delegate hostServicesDelegate];
+  v5 = [hostServicesDelegate conformsToProtocol:&unk_285B9E7E0];
 
   if (v5)
   {
-    v6 = [(DKDiagnosticHostContext *)self delegate];
-    v7 = [v6 hostServicesDelegate];
+    delegate2 = [(DKDiagnosticHostContext *)self delegate];
+    hostServicesDelegate2 = [delegate2 hostServicesDelegate];
 
-    [v7 showStatusBar];
+    [hostServicesDelegate2 showStatusBar];
   }
 }
 
 - (void)remoteHostHideStatusBar
 {
-  v3 = [(DKDiagnosticHostContext *)self delegate];
-  v4 = [v3 hostServicesDelegate];
-  v5 = [v4 conformsToProtocol:&unk_285B9E7E0];
+  delegate = [(DKDiagnosticHostContext *)self delegate];
+  hostServicesDelegate = [delegate hostServicesDelegate];
+  v5 = [hostServicesDelegate conformsToProtocol:&unk_285B9E7E0];
 
   if (v5)
   {
-    v6 = [(DKDiagnosticHostContext *)self delegate];
-    v7 = [v6 hostServicesDelegate];
+    delegate2 = [(DKDiagnosticHostContext *)self delegate];
+    hostServicesDelegate2 = [delegate2 hostServicesDelegate];
 
-    [v7 hideStatusBar];
+    [hostServicesDelegate2 hideStatusBar];
   }
 }
 
-- (void)remoteHostSetStatusBarStyle:(int64_t)a3
+- (void)remoteHostSetStatusBarStyle:(int64_t)style
 {
-  v5 = [(DKDiagnosticHostContext *)self delegate];
-  v6 = [v5 hostServicesDelegate];
-  v7 = [v6 conformsToProtocol:&unk_285B9E7E0];
+  delegate = [(DKDiagnosticHostContext *)self delegate];
+  hostServicesDelegate = [delegate hostServicesDelegate];
+  v7 = [hostServicesDelegate conformsToProtocol:&unk_285B9E7E0];
 
   if (v7)
   {
-    v8 = [(DKDiagnosticHostContext *)self delegate];
-    v9 = [v8 hostServicesDelegate];
+    delegate2 = [(DKDiagnosticHostContext *)self delegate];
+    hostServicesDelegate2 = [delegate2 hostServicesDelegate];
 
-    [v9 setStatusBarStyle:a3];
+    [hostServicesDelegate2 setStatusBarStyle:style];
   }
 }
 

@@ -1,49 +1,49 @@
 @interface PDFTextInputView
-- (BOOL)interactionShouldBegin:(id)a3 atPoint:(CGPoint)a4;
-- (CGRect)caretRectForPosition:(id)a3;
-- (CGRect)firstRectForRange:(id)a3;
-- (PDFTextInputView)initWithDelegate:(id)a3;
+- (BOOL)interactionShouldBegin:(id)begin atPoint:(CGPoint)point;
+- (CGRect)caretRectForPosition:(id)position;
+- (CGRect)firstRectForRange:(id)range;
+- (PDFTextInputView)initWithDelegate:(id)delegate;
 - (UITextPosition)beginningOfDocument;
 - (UITextPosition)endOfDocument;
-- (id)_closestPositionToPoint:(CGPoint)a3 withinRange:(id)a4;
-- (id)_selectionForTextRange:(id)a3;
-- (id)_targetedPreviewForRange:(id)a3;
-- (id)characterRangeAtPoint:(CGPoint)a3;
-- (id)characterRangeByExtendingPosition:(id)a3 inDirection:(int64_t)a4;
-- (id)editMenuForTextRange:(id)a3 suggestedActions:(id)a4;
-- (id)linkRegionsConstrainedToLineAtPoint:(CGPoint)a3;
-- (id)positionFromPosition:(id)a3 inDirection:(int64_t)a4 offset:(int64_t)a5;
-- (id)positionWithinRange:(id)a3 farthestInDirection:(int64_t)a4;
-- (id)selectionRectsForRange:(id)a3;
-- (id)textInRange:(id)a3;
-- (id)textRangeFromPosition:(id)a3 toPosition:(id)a4;
-- (int64_t)compareFoundRange:(id)a3 toRange:(id)a4 inDocument:(id)a5;
-- (int64_t)comparePosition:(id)a3 toPosition:(id)a4;
-- (int64_t)offsetFromPosition:(id)a3 toPosition:(id)a4;
-- (void)_setDimmingViewVisible:(BOOL)a3;
+- (id)_closestPositionToPoint:(CGPoint)point withinRange:(id)range;
+- (id)_selectionForTextRange:(id)range;
+- (id)_targetedPreviewForRange:(id)range;
+- (id)characterRangeAtPoint:(CGPoint)point;
+- (id)characterRangeByExtendingPosition:(id)position inDirection:(int64_t)direction;
+- (id)editMenuForTextRange:(id)range suggestedActions:(id)actions;
+- (id)linkRegionsConstrainedToLineAtPoint:(CGPoint)point;
+- (id)positionFromPosition:(id)position inDirection:(int64_t)direction offset:(int64_t)offset;
+- (id)positionWithinRange:(id)range farthestInDirection:(int64_t)direction;
+- (id)selectionRectsForRange:(id)range;
+- (id)textInRange:(id)range;
+- (id)textRangeFromPosition:(id)position toPosition:(id)toPosition;
+- (int64_t)compareFoundRange:(id)range toRange:(id)toRange inDocument:(id)document;
+- (int64_t)comparePosition:(id)position toPosition:(id)toPosition;
+- (int64_t)offsetFromPosition:(id)position toPosition:(id)toPosition;
+- (void)_setDimmingViewVisible:(BOOL)visible;
 - (void)clearAllDecoratedFoundText;
-- (void)decorateFoundTextRange:(id)a3 inDocument:(id)a4 usingStyle:(int64_t)a5;
-- (void)handleGesture:(unint64_t)a3 state:(int64_t)a4 location:(CGPoint)a5 locationOfFirstTouch:(CGPoint)a6 isIndirectTouch:(BOOL)a7;
+- (void)decorateFoundTextRange:(id)range inDocument:(id)document usingStyle:(int64_t)style;
+- (void)handleGesture:(unint64_t)gesture state:(int64_t)state location:(CGPoint)location locationOfFirstTouch:(CGPoint)touch isIndirectTouch:(BOOL)indirectTouch;
 - (void)layoutSubviews;
-- (void)performTextSearchWithQueryString:(id)a3 usingOptions:(id)a4 resultAggregator:(id)a5;
-- (void)setSelectedTextRange:(id)a3;
-- (void)setSelection:(id)a3;
+- (void)performTextSearchWithQueryString:(id)string usingOptions:(id)options resultAggregator:(id)aggregator;
+- (void)setSelectedTextRange:(id)range;
+- (void)setSelection:(id)selection;
 - (void)updateGestureRecognizerDependencies;
 - (void)updateTextSelectionGraphics;
 @end
 
 @implementation PDFTextInputView
 
-- (PDFTextInputView)initWithDelegate:(id)a3
+- (PDFTextInputView)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = PDFTextInputView;
   v5 = [(PDFTextInputView *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = [objc_alloc(MEMORY[0x1E69DD100]) initWithTextInput:v6];
     textInputTokenizer = v6->_textInputTokenizer;
     v6->_textInputTokenizer = v7;
@@ -68,18 +68,18 @@
   [(UITextInputDelegate *)textInputDelegate selectionDidChange:self];
 }
 
-- (void)setSelection:(id)a3
+- (void)setSelection:(id)selection
 {
-  if (a3)
+  if (selection)
   {
     v4 = [PDFTextRange textRangeFromSelection:?];
     textSelectionRange = self->_textSelectionRange;
     obj = v4;
     if (textSelectionRange)
     {
-      v6 = [(UITextRange *)textSelectionRange isEmpty];
+      isEmpty = [(UITextRange *)textSelectionRange isEmpty];
       v4 = obj;
-      v7 = !v6;
+      v7 = !isEmpty;
       if (obj)
       {
 LABEL_4:
@@ -118,15 +118,15 @@ LABEL_10:
   [(UITextInputDelegate *)textInputDelegate textDidChange:self];
 }
 
-- (void)handleGesture:(unint64_t)a3 state:(int64_t)a4 location:(CGPoint)a5 locationOfFirstTouch:(CGPoint)a6 isIndirectTouch:(BOOL)a7
+- (void)handleGesture:(unint64_t)gesture state:(int64_t)state location:(CGPoint)location locationOfFirstTouch:(CGPoint)touch isIndirectTouch:(BOOL)indirectTouch
 {
-  if (a3 > 1)
+  if (gesture > 1)
   {
-    if (a3 != 2)
+    if (gesture != 2)
     {
-      if (a3 == 3)
+      if (gesture == 3)
       {
-        if (a7)
+        if (indirectTouch)
         {
           v7 = 3;
         }
@@ -149,9 +149,9 @@ LABEL_10:
 
   else
   {
-    if (a3)
+    if (gesture)
     {
-      if (a3 == 1)
+      if (gesture == 1)
       {
         v7 = 2;
         goto LABEL_13;
@@ -164,7 +164,7 @@ LABEL_10:
   }
 
 LABEL_13:
-  if (a7)
+  if (indirectTouch)
   {
     v8 = 3;
   }
@@ -174,22 +174,22 @@ LABEL_13:
     v8 = 0;
   }
 
-  [(UITextInteraction *)self->_textInteraction _performGestureType:v7 state:a4 location:v8 locationOfFirstTouch:a5.x forTouchType:a5.y, a6.x, a6.y];
+  [(UITextInteraction *)self->_textInteraction _performGestureType:v7 state:state location:v8 locationOfFirstTouch:location.x forTouchType:location.y, touch.x, touch.y];
 }
 
 - (void)updateGestureRecognizerDependencies
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(PDFTextInputView *)self gestureRecognizers];
+  gestureRecognizers = [(PDFTextInputView *)self gestureRecognizers];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained pdfView];
-  v19 = [v5 gestureRecognizers];
+  pdfView = [WeakRetained pdfView];
+  gestureRecognizers2 = [pdfView gestureRecognizers];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v3;
+  obj = gestureRecognizers;
   v6 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v6)
   {
@@ -210,7 +210,7 @@ LABEL_13:
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v10 = v19;
+        v10 = gestureRecognizers2;
         v11 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v11)
         {
@@ -242,8 +242,8 @@ LABEL_16:
                 goto LABEL_17;
               }
 
-              v16 = [v9 numberOfTapsRequired];
-              if (v16 == [v15 numberOfTapsRequired])
+              numberOfTapsRequired = [v9 numberOfTapsRequired];
+              if (numberOfTapsRequired == [v15 numberOfTapsRequired])
               {
                 goto LABEL_16;
               }
@@ -270,79 +270,79 @@ LABEL_17:
   }
 }
 
-- (id)_selectionForTextRange:(id)a3
+- (id)_selectionForTextRange:(id)range
 {
-  v4 = a3;
-  if (v4)
+  rangeCopy = range;
+  if (rangeCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v6 = [WeakRetained pdfView];
+    pdfView = [WeakRetained pdfView];
 
-    v7 = [v6 document];
-    v8 = v7;
-    if (v7 && ([v7 isLocked] & 1) == 0)
+    document = [pdfView document];
+    v8 = document;
+    if (document && ([document isLocked] & 1) == 0)
     {
-      v10 = [v4 start];
-      v11 = [v4 end];
-      v12 = [v10 page];
-      v13 = [v10 offset];
-      v14 = [v11 page];
-      v15 = [v8 selectionFromPage:v12 atCharacterIndex:v13 toPage:v14 atCharacterIndex:{objc_msgSend(v11, "offset") - 1}];
+      start = [rangeCopy start];
+      v11 = [rangeCopy end];
+      page = [start page];
+      offset = [start offset];
+      page2 = [v11 page];
+      v15 = [v8 selectionFromPage:page atCharacterIndex:offset toPage:page2 atCharacterIndex:{objc_msgSend(v11, "offset") - 1}];
 
-      v9 = [v15 copyAsTextSelection];
+      copyAsTextSelection = [v15 copyAsTextSelection];
     }
 
     else
     {
-      v9 = 0;
+      copyAsTextSelection = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    copyAsTextSelection = 0;
   }
 
-  return v9;
+  return copyAsTextSelection;
 }
 
-- (id)textInRange:(id)a3
+- (id)textInRange:(id)range
 {
-  v3 = [(PDFTextInputView *)self _selectionForTextRange:a3];
-  v4 = [v3 string];
+  v3 = [(PDFTextInputView *)self _selectionForTextRange:range];
+  string = [v3 string];
 
-  return v4;
+  return string;
 }
 
-- (void)setSelectedTextRange:(id)a3
+- (void)setSelectedTextRange:(id)range
 {
-  v28 = a3;
-  v5 = [v28 start];
-  v6 = [v5 page];
-  v7 = [(UITextRange *)self->_textSelectionRange start];
-  v8 = [v7 page];
-  if (v6 == v8)
+  rangeCopy = range;
+  start = [rangeCopy start];
+  page = [start page];
+  start2 = [(UITextRange *)self->_textSelectionRange start];
+  page2 = [start2 page];
+  if (page == page2)
   {
-    v9 = [v28 start];
-    v10 = [v9 offset];
-    v11 = [(UITextRange *)self->_textSelectionRange start];
-    if (v10 == [v11 offset])
+    start3 = [rangeCopy start];
+    offset = [start3 offset];
+    start4 = [(UITextRange *)self->_textSelectionRange start];
+    if (offset == [start4 offset])
     {
-      v27 = v9;
-      v26 = [v28 end];
-      v12 = [v26 page];
+      v27 = start3;
+      v26 = [rangeCopy end];
+      page3 = [v26 page];
       v24 = [(UITextRange *)self->_textSelectionRange end];
-      v13 = [v24 page];
-      v14 = v13;
-      v25 = v12;
-      if (v12 == v13)
+      page4 = [v24 page];
+      v14 = page4;
+      v25 = page3;
+      if (page3 == page4)
       {
-        v21 = [v28 end];
-        v22 = [v21 offset];
+        v21 = [rangeCopy end];
+        offset2 = [v21 offset];
         v20 = [(UITextRange *)self->_textSelectionRange end];
-        v23 = [v20 offset];
+        offset3 = [v20 offset];
 
-        if (v22 == v23)
+        if (offset2 == offset3)
         {
           goto LABEL_11;
         }
@@ -350,21 +350,21 @@ LABEL_17:
         goto LABEL_7;
       }
 
-      v9 = v27;
+      start3 = v27;
     }
   }
 
 LABEL_7:
-  objc_storeStrong(&self->_textSelectionRange, a3);
+  objc_storeStrong(&self->_textSelectionRange, range);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v16 = [WeakRetained pdfView];
+  pdfView = [WeakRetained pdfView];
 
-  v17 = [v16 document];
-  v18 = v17;
-  if (v17 && ([v17 isLocked] & 1) == 0)
+  document = [pdfView document];
+  v18 = document;
+  if (document && ([document isLocked] & 1) == 0)
   {
-    v19 = [(PDFTextInputView *)self _selectionForTextRange:v28];
-    [v16 setCurrentSelection:v19 updateTextInput:0];
+    v19 = [(PDFTextInputView *)self _selectionForTextRange:rangeCopy];
+    [pdfView setCurrentSelection:v19 updateTextInput:0];
   }
 
 LABEL_11:
@@ -373,17 +373,17 @@ LABEL_11:
 - (UITextPosition)beginningOfDocument
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained pdfView];
+  pdfView = [WeakRetained pdfView];
 
-  v4 = [v3 document];
-  v5 = v4;
-  if (!v4 || ([v4 isLocked] & 1) != 0)
+  document = [pdfView document];
+  v5 = document;
+  if (!document || ([document isLocked] & 1) != 0)
   {
     goto LABEL_10;
   }
 
-  v6 = [v5 pageCount];
-  if (!v6)
+  pageCount = [v5 pageCount];
+  if (!pageCount)
   {
     goto LABEL_11;
   }
@@ -392,15 +392,15 @@ LABEL_11:
   while (1)
   {
     v8 = [v5 pageAtIndex:v7];
-    v9 = [v8 selectionForAll];
-    v10 = [v9 numberOfTextRangesOnPage:v8];
+    selectionForAll = [v8 selectionForAll];
+    v10 = [selectionForAll numberOfTextRangesOnPage:v8];
 
     if (v10)
     {
       break;
     }
 
-    if (v6 == ++v7)
+    if (pageCount == ++v7)
     {
       goto LABEL_10;
     }
@@ -408,49 +408,49 @@ LABEL_11:
 
   if (v8)
   {
-    v6 = [[PDFTextPosition alloc] initWithOffset:0 onPage:v8];
+    pageCount = [[PDFTextPosition alloc] initWithOffset:0 onPage:v8];
   }
 
   else
   {
 LABEL_10:
-    v6 = 0;
+    pageCount = 0;
   }
 
 LABEL_11:
 
-  return v6;
+  return pageCount;
 }
 
 - (UITextPosition)endOfDocument
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained pdfView];
+  pdfView = [WeakRetained pdfView];
 
-  v4 = [v3 document];
-  v5 = v4;
-  if (!v4)
+  document = [pdfView document];
+  v5 = document;
+  if (!document)
   {
     goto LABEL_10;
   }
 
-  if ([v4 isLocked])
+  if ([document isLocked])
   {
     goto LABEL_10;
   }
 
-  v6 = [v5 pageCount];
-  if (v6 < 1)
+  pageCount = [v5 pageCount];
+  if (pageCount < 1)
   {
     goto LABEL_10;
   }
 
-  v7 = v6 + 1;
+  v7 = pageCount + 1;
   while (1)
   {
     v8 = [v5 pageAtIndex:v7 - 2];
-    v9 = [v8 selectionForAll];
-    v10 = [v9 numberOfTextRangesOnPage:v8];
+    selectionForAll = [v8 selectionForAll];
+    v10 = [selectionForAll numberOfTextRangesOnPage:v8];
 
     if (v10)
     {
@@ -465,8 +465,8 @@ LABEL_11:
 
   if (v8)
   {
-    v11 = [v8 selectionForAll];
-    v12 = [v11 rangeAtIndex:objc_msgSend(v11 onPage:{"numberOfTextRangesOnPage:", v8) - 1, v8}];
+    selectionForAll2 = [v8 selectionForAll];
+    v12 = [selectionForAll2 rangeAtIndex:objc_msgSend(selectionForAll2 onPage:{"numberOfTextRangesOnPage:", v8) - 1, v8}];
     v14 = [[PDFTextPosition alloc] initWithOffset:v12 + v13 onPage:v8];
   }
 
@@ -479,42 +479,42 @@ LABEL_10:
   return v14;
 }
 
-- (id)textRangeFromPosition:(id)a3 toPosition:(id)a4
+- (id)textRangeFromPosition:(id)position toPosition:(id)toPosition
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PDFTextRange alloc] initFromPos:v6 toPos:v5];
+  toPositionCopy = toPosition;
+  positionCopy = position;
+  v7 = [[PDFTextRange alloc] initFromPos:positionCopy toPos:toPositionCopy];
 
   return v7;
 }
 
-- (id)positionFromPosition:(id)a3 inDirection:(int64_t)a4 offset:(int64_t)a5
+- (id)positionFromPosition:(id)position inDirection:(int64_t)direction offset:(int64_t)offset
 {
-  v7 = a3;
-  if (a5)
+  positionCopy = position;
+  if (offset)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v9 = [WeakRetained pdfView];
+    pdfView = [WeakRetained pdfView];
 
-    v10 = [v9 document];
-    v11 = v10;
-    if (v10 && ([v10 isLocked] & 1) == 0)
+    document = [pdfView document];
+    v11 = document;
+    if (document && ([document isLocked] & 1) == 0)
     {
-      v15 = [v7 page];
-      v16 = [v11 textPositionFromPage:v15 atCharacterIndex:objc_msgSend(v7 offset:{"offset"), a5}];
+      page = [positionCopy page];
+      v16 = [v11 textPositionFromPage:page atCharacterIndex:objc_msgSend(positionCopy offset:{"offset"), offset}];
 
       if (v16)
       {
         v17 = [PDFTextPosition alloc];
-        v18 = [v16 offset];
-        v19 = [v16 page];
-        v12 = [(PDFTextPosition *)v17 initWithOffset:v18 onPage:v19];
+        offset = [v16 offset];
+        page2 = [v16 page];
+        v12 = [(PDFTextPosition *)v17 initWithOffset:offset onPage:page2];
       }
 
       else
       {
-        v19 = [v7 page];
-        NSLog(&cfstr_ErrorFailedToC.isa, v19, [v7 offset], a5);
+        page2 = [positionCopy page];
+        NSLog(&cfstr_ErrorFailedToC.isa, page2, [positionCopy offset], offset);
         v12 = 0;
       }
     }
@@ -528,27 +528,27 @@ LABEL_10:
   else
   {
     v13 = [PDFTextPosition alloc];
-    v14 = [v7 offset];
-    v9 = [v7 page];
-    v12 = [(PDFTextPosition *)v13 initWithOffset:v14 onPage:v9];
+    offset2 = [positionCopy offset];
+    pdfView = [positionCopy page];
+    v12 = [(PDFTextPosition *)v13 initWithOffset:offset2 onPage:pdfView];
   }
 
   return v12;
 }
 
-- (int64_t)comparePosition:(id)a3 toPosition:(id)a4
+- (int64_t)comparePosition:(id)position toPosition:(id)toPosition
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  v8 = [v7 page];
-  v9 = [v8 document];
-  v10 = [v9 indexForPage:v8];
+  positionCopy = position;
+  toPositionCopy = toPosition;
+  v7 = positionCopy;
+  page = [v7 page];
+  document = [page document];
+  v10 = [document indexForPage:page];
 
-  v11 = v6;
-  v12 = [v11 page];
-  v13 = [v12 document];
-  v14 = [v13 indexForPage:v12];
+  v11 = toPositionCopy;
+  page2 = [v11 page];
+  document2 = [page2 document];
+  v14 = [document2 indexForPage:page2];
 
   if (v10 >= v14)
   {
@@ -558,11 +558,11 @@ LABEL_10:
       goto LABEL_7;
     }
 
-    v16 = [v7 offset];
-    if (v16 >= [v11 offset])
+    offset = [v7 offset];
+    if (offset >= [v11 offset])
     {
-      v17 = [v7 offset];
-      v15 = v17 > [v11 offset];
+      offset2 = [v7 offset];
+      v15 = offset2 > [v11 offset];
       goto LABEL_7;
     }
   }
@@ -573,49 +573,49 @@ LABEL_7:
   return v15;
 }
 
-- (int64_t)offsetFromPosition:(id)a3 toPosition:(id)a4
+- (int64_t)offsetFromPosition:(id)position toPosition:(id)toPosition
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  positionCopy = position;
+  toPositionCopy = toPosition;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [WeakRetained pdfView];
+  pdfView = [WeakRetained pdfView];
 
-  v10 = [v9 document];
-  v11 = v10;
-  if (v10 && ([v10 isLocked] & 1) == 0)
+  document = [pdfView document];
+  v11 = document;
+  if (document && ([document isLocked] & 1) == 0)
   {
-    v13 = v6;
-    if (v7)
+    v13 = positionCopy;
+    if (toPositionCopy)
     {
-      v14 = v7;
+      endOfDocument = toPositionCopy;
     }
 
     else
     {
-      v14 = [(PDFTextInputView *)self endOfDocument];
+      endOfDocument = [(PDFTextInputView *)self endOfDocument];
     }
 
-    v15 = v14;
-    v16 = [v13 page];
-    v17 = [v13 offset];
-    v18 = [v15 page];
+    v15 = endOfDocument;
+    page = [v13 page];
+    offset = [v13 offset];
+    page2 = [v15 page];
     v38 = v15;
-    v19 = [v11 selectionFromPage:v16 atCharacterIndex:v17 toPage:v18 atCharacterIndex:{objc_msgSend(v15, "offset")}];
+    v19 = [v11 selectionFromPage:page atCharacterIndex:offset toPage:page2 atCharacterIndex:{objc_msgSend(v15, "offset")}];
 
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v20 = [v19 pages];
-    v21 = [v20 countByEnumeratingWithState:&v39 objects:v43 count:16];
+    pages = [v19 pages];
+    v21 = [pages countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v21)
     {
       v22 = v21;
       v34 = v13;
-      v35 = v9;
-      v36 = v7;
-      v37 = v6;
+      v35 = pdfView;
+      v36 = toPositionCopy;
+      v37 = positionCopy;
       v23 = 0;
       v24 = *v40;
       do
@@ -624,7 +624,7 @@ LABEL_7:
         {
           if (*v40 != v24)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(pages);
           }
 
           v26 = *(*(&v39 + 1) + 8 * i);
@@ -639,24 +639,24 @@ LABEL_7:
             }
           }
 
-          v31 = [v19 pages];
-          v32 = [v31 firstObject];
+          pages2 = [v19 pages];
+          firstObject = [pages2 firstObject];
 
-          if (v26 != v32)
+          if (v26 != firstObject)
           {
             ++v23;
           }
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v39 objects:v43 count:16];
+        v22 = [pages countByEnumeratingWithState:&v39 objects:v43 count:16];
       }
 
       while (v22);
       v12 = v23 - 1;
-      v7 = v36;
-      v6 = v37;
+      toPositionCopy = v36;
+      positionCopy = v37;
       v13 = v34;
-      v9 = v35;
+      pdfView = v35;
     }
 
     else
@@ -673,21 +673,21 @@ LABEL_7:
   return v12;
 }
 
-- (id)positionWithinRange:(id)a3 farthestInDirection:(int64_t)a4
+- (id)positionWithinRange:(id)range farthestInDirection:(int64_t)direction
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4 == 3)
+  rangeCopy = range;
+  v6 = rangeCopy;
+  if (direction == 3)
   {
-    v7 = [v5 start];
+    start = [rangeCopy start];
     goto LABEL_5;
   }
 
-  if (a4 == 2)
+  if (direction == 2)
   {
-    v7 = [v5 end];
+    start = [rangeCopy end];
 LABEL_5:
-    v8 = v7;
+    v8 = start;
     goto LABEL_7;
   }
 
@@ -697,35 +697,35 @@ LABEL_7:
   return v8;
 }
 
-- (id)characterRangeByExtendingPosition:(id)a3 inDirection:(int64_t)a4
+- (id)characterRangeByExtendingPosition:(id)position inDirection:(int64_t)direction
 {
-  v6 = a3;
-  v7 = [(PDFTextInputView *)self positionFromPosition:v6 inDirection:a4 offset:1];
-  v8 = [(PDFTextInputView *)self textRangeFromPosition:v6 toPosition:v7];
+  positionCopy = position;
+  v7 = [(PDFTextInputView *)self positionFromPosition:positionCopy inDirection:direction offset:1];
+  v8 = [(PDFTextInputView *)self textRangeFromPosition:positionCopy toPosition:v7];
 
   return v8;
 }
 
-- (CGRect)firstRectForRange:(id)a3
+- (CGRect)firstRectForRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained pdfView];
+  pdfView = [WeakRetained pdfView];
 
-  v7 = [v6 document];
-  v8 = v7;
-  if (v7 && ![v7 isLocked])
+  document = [pdfView document];
+  v8 = document;
+  if (document && ![document isLocked])
   {
-    v13 = [(PDFTextInputView *)self _selectionForTextRange:v4];
+    v13 = [(PDFTextInputView *)self _selectionForTextRange:rangeCopy];
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 pages];
-      v16 = [v15 firstObject];
+      pages = [v13 pages];
+      firstObject = [pages firstObject];
 
-      [v14 firstSpanBoundsForPage:v16];
-      [v6 convertRect:v16 fromPage:?];
-      [v6 convertRect:self toView:?];
+      [v14 firstSpanBoundsForPage:firstObject];
+      [pdfView convertRect:firstObject fromPage:?];
+      [pdfView convertRect:self toView:?];
       v9 = v17;
       v10 = v18;
       v11 = v19;
@@ -760,24 +760,24 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
-  v4 = a3;
+  positionCopy = position;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained pdfView];
+  pdfView = [WeakRetained pdfView];
 
-  v7 = [v6 document];
-  v8 = v7;
-  if (v7 && ![v7 isLocked])
+  document = [pdfView document];
+  v8 = document;
+  if (document && ![document isLocked])
   {
-    v13 = v4;
-    v14 = [v13 page];
-    v15 = [v13 offset];
+    v13 = positionCopy;
+    page = [v13 page];
+    offset = [v13 offset];
 
-    v16 = [v8 selectionFromPage:v14 atCharacterIndex:v15 toPage:v14 atCharacterIndex:v15];
-    [v16 boundsForPage:v14];
-    [v6 convertRect:v14 fromPage:?];
-    [v6 convertRect:self toView:?];
+    v16 = [v8 selectionFromPage:page atCharacterIndex:offset toPage:page atCharacterIndex:offset];
+    [v16 boundsForPage:page];
+    [pdfView convertRect:page fromPage:?];
+    [pdfView convertRect:self toView:?];
     v9 = v17;
     v10 = v18;
     v11 = v19;
@@ -803,31 +803,31 @@ LABEL_7:
   return result;
 }
 
-- (id)selectionRectsForRange:(id)a3
+- (id)selectionRectsForRange:(id)range
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v31 = self;
+  rangeCopy = range;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained pdfView];
+  pdfView = [WeakRetained pdfView];
 
-  v7 = [v6 document];
-  v8 = v7;
-  if (v7 && ([v7 isLocked] & 1) == 0)
+  document = [pdfView document];
+  v8 = document;
+  if (document && ([document isLocked] & 1) == 0)
   {
-    v10 = [(PDFTextInputView *)v31 _selectionForTextRange:v4];
+    v10 = [(PDFTextInputView *)selfCopy _selectionForTextRange:rangeCopy];
     if (v10)
     {
       v29 = v8;
-      v30 = v4;
+      v30 = rangeCopy;
       v28 = v10;
-      v11 = [v10 selectionsByLine];
+      selectionsByLine = [v10 selectionsByLine];
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v32 = 0u;
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v12 = v11;
+      v12 = selectionsByLine;
       v13 = [v12 countByEnumeratingWithState:&v32 objects:v36 count:16];
       if (v13)
       {
@@ -842,24 +842,24 @@ LABEL_7:
               objc_enumerationMutation(v12);
             }
 
-            v17 = [*(*(&v32 + 1) + 8 * i) copyAsTextSelection];
-            v18 = [v17 pages];
-            v19 = [v18 firstObject];
+            copyAsTextSelection = [*(*(&v32 + 1) + 8 * i) copyAsTextSelection];
+            pages = [copyAsTextSelection pages];
+            firstObject = [pages firstObject];
 
-            [v17 boundsForPage:v19];
-            [v6 convertRect:v19 fromPage:?];
-            [v6 convertRect:v31 toView:?];
-            v24 = [[PDFTextSelectionRect alloc] initWithRect:v19 onPage:v20, v21, v22, v23];
-            v25 = [v12 firstObject];
+            [copyAsTextSelection boundsForPage:firstObject];
+            [pdfView convertRect:firstObject fromPage:?];
+            [pdfView convertRect:selfCopy toView:?];
+            v24 = [[PDFTextSelectionRect alloc] initWithRect:firstObject onPage:v20, v21, v22, v23];
+            firstObject2 = [v12 firstObject];
 
-            if (v17 == v25)
+            if (copyAsTextSelection == firstObject2)
             {
               [(PDFTextSelectionRect *)v24 setIsStartingRect:1];
             }
 
-            v26 = [v12 lastObject];
+            lastObject = [v12 lastObject];
 
-            if (v17 == v26)
+            if (copyAsTextSelection == lastObject)
             {
               [(PDFTextSelectionRect *)v24 setIsEndingRect:1];
             }
@@ -874,7 +874,7 @@ LABEL_7:
       }
 
       v8 = v29;
-      v4 = v30;
+      rangeCopy = v30;
       v10 = v28;
     }
 
@@ -892,37 +892,37 @@ LABEL_7:
   return v9;
 }
 
-- (id)_closestPositionToPoint:(CGPoint)a3 withinRange:(id)a4
+- (id)_closestPositionToPoint:(CGPoint)point withinRange:(id)range
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  rangeCopy = range;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [WeakRetained pdfView];
+  pdfView = [WeakRetained pdfView];
 
-  v10 = [v9 document];
-  v11 = v10;
-  if (!v10 || ([v10 isLocked] & 1) != 0)
+  document = [pdfView document];
+  v11 = document;
+  if (!document || ([document isLocked] & 1) != 0)
   {
     v12 = 0;
     goto LABEL_17;
   }
 
-  [(PDFTextInputView *)self convertPoint:v9 toView:x, y];
+  [(PDFTextInputView *)self convertPoint:pdfView toView:x, y];
   v14 = v13;
   v16 = v15;
-  v17 = [v9 pageForPoint:1 nearest:?];
+  v17 = [pdfView pageForPoint:1 nearest:?];
   if (v17)
   {
-    v18 = [v7 start];
-    v19 = [v7 end];
-    if (v7)
+    start = [rangeCopy start];
+    v19 = [rangeCopy end];
+    if (rangeCopy)
     {
-      v20 = [v18 page];
-      v21 = [v11 indexForPage:v20];
+      page = [start page];
+      v21 = [v11 indexForPage:page];
 
-      v22 = [v19 page];
-      v23 = [v11 indexForPage:v22];
+      page2 = [v19 page];
+      v23 = [v11 indexForPage:page2];
 
       v24 = [v11 indexForPage:v17];
       v12 = 0;
@@ -932,7 +932,7 @@ LABEL_7:
       }
     }
 
-    [v9 convertPoint:v17 toPage:{v14, v16}];
+    [pdfView convertPoint:v17 toPage:{v14, v16}];
     v26 = v25;
     v28 = v27;
     v29 = [v17 selectionForCharacterAtPoint:?];
@@ -967,38 +967,38 @@ LABEL_17:
   return v12;
 }
 
-- (id)characterRangeAtPoint:(CGPoint)a3
+- (id)characterRangeAtPoint:(CGPoint)point
 {
-  v4 = [(PDFTextInputView *)self _closestPositionToPoint:0 withinRange:a3.x, a3.y];
+  v4 = [(PDFTextInputView *)self _closestPositionToPoint:0 withinRange:point.x, point.y];
   v5 = [(PDFTextInputView *)self positionFromPosition:v4 offset:1];
   v6 = [[PDFTextRange alloc] initFromPos:v4 toPos:v5];
 
   return v6;
 }
 
-- (BOOL)interactionShouldBegin:(id)a3 atPoint:(CGPoint)a4
+- (BOOL)interactionShouldBegin:(id)begin atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [WeakRetained pdfView];
+  pdfView = [WeakRetained pdfView];
 
-  v9 = [v8 document];
-  v10 = v9;
-  if (!v9 || ([v9 isLocked] & 1) != 0 || objc_msgSend(v8, "isInMarkupMode") && !objc_msgSend(v8, "isTextSelectionEnabled"))
+  document = [pdfView document];
+  v10 = document;
+  if (!document || ([document isLocked] & 1) != 0 || objc_msgSend(pdfView, "isInMarkupMode") && !objc_msgSend(pdfView, "isTextSelectionEnabled"))
   {
     LOBYTE(v11) = 0;
   }
 
   else
   {
-    [(PDFTextInputView *)self convertPoint:v8 toView:x, y];
+    [(PDFTextInputView *)self convertPoint:pdfView toView:x, y];
     v13 = v12;
     v15 = v14;
-    v16 = [v8 pageForPoint:1 nearest:?];
+    v16 = [pdfView pageForPoint:1 nearest:?];
     if (v16)
     {
-      [v8 convertPoint:v16 toPage:{v13, v15}];
+      [pdfView convertPoint:v16 toPage:{v13, v15}];
       v17 = [v16 annotationAtPoint:?];
       v18 = [v17 valueForAnnotationKey:@"/FT"];
       if ([v18 isEqualToString:@"/Tx"])
@@ -1021,22 +1021,22 @@ LABEL_17:
   return v11;
 }
 
-- (id)linkRegionsConstrainedToLineAtPoint:(CGPoint)a3
+- (id)linkRegionsConstrainedToLineAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v45 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained pdfView];
+  pdfView = [WeakRetained pdfView];
 
-  v38 = self;
-  [(PDFTextInputView *)self convertPoint:v7 toView:x, y];
+  selfCopy = self;
+  [(PDFTextInputView *)self convertPoint:pdfView toView:x, y];
   v9 = v8;
   v11 = v10;
-  v12 = [v7 pageForPoint:1 nearest:?];
+  v12 = [pdfView pageForPoint:1 nearest:?];
   if (v12)
   {
-    [v7 convertPoint:v12 toPage:{v9, v11}];
+    [pdfView convertPoint:v12 toPage:{v9, v11}];
     v13 = [v12 selectionForLineAtPoint:?];
     if (v13)
     {
@@ -1048,12 +1048,12 @@ LABEL_17:
       v21 = v20;
       v39 = objc_alloc_init(MEMORY[0x1E695DFA8]);
       v37 = v12;
-      v22 = [v12 annotations];
+      annotations = [v12 annotations];
       v40 = 0u;
       v41 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v23 = [v22 countByEnumeratingWithState:&v40 objects:v44 count:16];
+      v23 = [annotations countByEnumeratingWithState:&v40 objects:v44 count:16];
       if (v23)
       {
         v24 = v23;
@@ -1064,7 +1064,7 @@ LABEL_17:
           {
             if (*v41 != v25)
             {
-              objc_enumerationMutation(v22);
+              objc_enumerationMutation(annotations);
             }
 
             v27 = *(*(&v40 + 1) + 8 * i);
@@ -1084,15 +1084,15 @@ LABEL_17:
               v48.size.height = v21;
               if (PDFRectIntersectsRect(v47, v48))
               {
-                [v7 convertRect:v37 fromPage:{v30, v31, width, height}];
-                [v7 convertRect:v38 toView:?];
+                [pdfView convertRect:v37 fromPage:{v30, v31, width, height}];
+                [pdfView convertRect:selfCopy toView:?];
                 v34 = [MEMORY[0x1E696B098] PDFKitValueWithPDFRect:?];
                 [v39 addObject:v34];
               }
             }
           }
 
-          v24 = [v22 countByEnumeratingWithState:&v40 objects:v44 count:16];
+          v24 = [annotations countByEnumeratingWithState:&v40 objects:v44 count:16];
         }
 
         while (v24);
@@ -1116,18 +1116,18 @@ LABEL_17:
   return v39;
 }
 
-- (void)_setDimmingViewVisible:(BOOL)a3
+- (void)_setDimmingViewVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   dimmingViewVisible = self->_dimmingViewVisible;
-  self->_dimmingViewVisible = a3;
+  self->_dimmingViewVisible = visible;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained pdfView];
-  v8 = [v7 documentView];
+  pdfView = [WeakRetained pdfView];
+  documentView = [pdfView documentView];
 
-  if (!v3 || dimmingViewVisible)
+  if (!visibleCopy || dimmingViewVisible)
   {
-    if (!v3 && dimmingViewVisible)
+    if (!visibleCopy && dimmingViewVisible)
     {
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
@@ -1149,7 +1149,7 @@ LABEL_17:
     if (!searchDimmingView)
     {
       v10 = objc_alloc(MEMORY[0x1E69DD138]);
-      [v8 bounds];
+      [documentView bounds];
       v11 = [v10 initWithFrame:?];
       v12 = self->_searchDimmingView;
       self->_searchDimmingView = v11;
@@ -1157,11 +1157,11 @@ LABEL_17:
       searchDimmingView = self->_searchDimmingView;
     }
 
-    v13 = [(UITextSearchingDimmingView *)searchDimmingView superview];
+    superview = [(UITextSearchingDimmingView *)searchDimmingView superview];
 
-    if (!v13)
+    if (!superview)
     {
-      [v8 addSubview:self->_searchDimmingView];
+      [documentView addSubview:self->_searchDimmingView];
     }
 
     [(UITextSearchingDimmingView *)self->_searchDimmingView setAlpha:0.0];
@@ -1173,9 +1173,9 @@ LABEL_17:
     [MEMORY[0x1E69DD250] animateWithDuration:4 delay:v16 options:0 animations:0.2 completion:0.0];
   }
 
-  if (v3)
+  if (visibleCopy)
   {
-    [v8 bringSubviewToFront:self->_searchDimmingView];
+    [documentView bringSubviewToFront:self->_searchDimmingView];
   }
 }
 
@@ -1189,16 +1189,16 @@ uint64_t __43__PDFTextInputView__setDimmingViewVisible___block_invoke_3(uint64_t
   return result;
 }
 
-- (id)_targetedPreviewForRange:(id)a3
+- (id)_targetedPreviewForRange:(id)range
 {
   v54 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  rangeCopy = range;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained pdfView];
+  pdfView = [WeakRetained pdfView];
 
-  v7 = [(PDFTextInputView *)self _selectionForTextRange:v4];
-  v8 = [v7 pages];
-  v9 = [v8 objectAtIndex:0];
+  v7 = [(PDFTextInputView *)self _selectionForTextRange:rangeCopy];
+  pages = [v7 pages];
+  v9 = [pages objectAtIndex:0];
 
   [v7 boundsForPage:v9];
   x = v56.origin.x;
@@ -1208,8 +1208,8 @@ uint64_t __43__PDFTextInputView__setDimmingViewVisible___block_invoke_3(uint64_t
   v14 = 0;
   if (!CGRectIsNull(v56))
   {
-    v40 = v6;
-    [v6 convertRect:v9 fromPage:{x, y, width, height}];
+    v40 = pdfView;
+    [pdfView convertRect:v9 fromPage:{x, y, width, height}];
     v41 = v15;
     v17 = v16;
     v19 = v18;
@@ -1231,8 +1231,8 @@ uint64_t __43__PDFTextInputView__setDimmingViewVisible___block_invoke_3(uint64_t
     v24 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v38];
     [v24 setFrame:{v41, v17, v19, v21}];
     [v24 setClipsToBounds:1];
-    v25 = [(PDFTextInputView *)self selectionRectsForRange:v4];
-    v26 = [MEMORY[0x1E695DF70] array];
+    v25 = [(PDFTextInputView *)self selectionRectsForRange:rangeCopy];
+    array = [MEMORY[0x1E695DF70] array];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
@@ -1255,7 +1255,7 @@ uint64_t __43__PDFTextInputView__setDimmingViewVisible___block_invoke_3(uint64_t
           v32 = MEMORY[0x1E696B098];
           [*(*(&v42 + 1) + 8 * i) rect];
           v33 = [v32 valueWithCGRect:?];
-          [v26 addObject:v33];
+          [array addObject:v33];
         }
 
         v29 = [v27 countByEnumeratingWithState:&v42 objects:v53 count:16];
@@ -1264,9 +1264,9 @@ uint64_t __43__PDFTextInputView__setDimmingViewVisible___block_invoke_3(uint64_t
       while (v29);
     }
 
-    v34 = [MEMORY[0x1E69DD0D0] preferredPreviewParametersForTextLineRects:v26];
+    v34 = [MEMORY[0x1E69DD0D0] preferredPreviewParametersForTextLineRects:array];
     v35 = objc_alloc(MEMORY[0x1E69DCE38]);
-    v6 = v40;
+    pdfView = v40;
     [v40 frame];
     UIRectGetCenter();
     v36 = [v35 initWithContainer:v40 center:?];
@@ -1294,44 +1294,44 @@ uint64_t __45__PDFTextInputView__targetedPreviewForRange___block_invoke(uint64_t
   return [*(a1 + 32) drawWithBox:0 toContext:v7];
 }
 
-- (int64_t)compareFoundRange:(id)a3 toRange:(id)a4 inDocument:(id)a5
+- (int64_t)compareFoundRange:(id)range toRange:(id)toRange inDocument:(id)document
 {
-  v7 = a4;
-  v8 = [(PDFTextInputView *)self _selectionForTextRange:a3];
-  v9 = [(PDFTextInputView *)self _selectionForTextRange:v7];
+  toRangeCopy = toRange;
+  v8 = [(PDFTextInputView *)self _selectionForTextRange:range];
+  v9 = [(PDFTextInputView *)self _selectionForTextRange:toRangeCopy];
 
   v10 = [v8 compare:v9];
   return v10;
 }
 
-- (void)performTextSearchWithQueryString:(id)a3 usingOptions:(id)a4 resultAggregator:(id)a5
+- (void)performTextSearchWithQueryString:(id)string usingOptions:(id)options resultAggregator:(id)aggregator
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  aggregatorCopy = aggregator;
+  optionsCopy = options;
+  stringCopy = string;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v12 = [WeakRetained pdfView];
+  pdfView = [WeakRetained pdfView];
 
-  v13 = [v12 document];
+  document = [pdfView document];
   [(PDFTextSearchAggregator *)self->_activeSearch invalidate];
-  v14 = [[PDFTextSearchAggregator alloc] initWithSearchString:v10 aggregator:v8];
+  v14 = [[PDFTextSearchAggregator alloc] initWithSearchString:stringCopy aggregator:aggregatorCopy];
 
   activeSearch = self->_activeSearch;
   self->_activeSearch = v14;
 
-  v18[0] = v10;
+  v18[0] = stringCopy;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-  v17 = [v9 stringCompareOptions];
+  stringCompareOptions = [optionsCopy stringCompareOptions];
 
-  [v13 asyncFindStrings:v16 withOptions:v17 withDelegate:self->_activeSearch onQueue:MEMORY[0x1E69E96A0]];
+  [document asyncFindStrings:v16 withOptions:stringCompareOptions withDelegate:self->_activeSearch onQueue:MEMORY[0x1E69E96A0]];
 }
 
-- (void)decorateFoundTextRange:(id)a3 inDocument:(id)a4 usingStyle:(int64_t)a5
+- (void)decorateFoundTextRange:(id)range inDocument:(id)document usingStyle:(int64_t)style
 {
-  v9 = a3;
-  v10 = a4;
-  if (a5 == 1)
+  rangeCopy = range;
+  documentCopy = document;
+  if (style == 1)
   {
     foundTextRanges = self->_foundTextRanges;
     if (!foundTextRanges)
@@ -1343,24 +1343,24 @@ uint64_t __45__PDFTextInputView__targetedPreviewForRange___block_invoke(uint64_t
       foundTextRanges = self->_foundTextRanges;
     }
 
-    [(NSMutableArray *)foundTextRanges addObject:v9];
+    [(NSMutableArray *)foundTextRanges addObject:rangeCopy];
   }
 
-  else if (a5 == 2)
+  else if (style == 2)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v12 = [WeakRetained pdfView];
+    pdfView = [WeakRetained pdfView];
 
-    objc_storeStrong(&self->_highlightedTextRange, a3);
-    v13 = [(PDFTextInputView *)self _selectionForTextRange:v9];
+    objc_storeStrong(&self->_highlightedTextRange, range);
+    v13 = [(PDFTextInputView *)self _selectionForTextRange:rangeCopy];
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 pages];
-      v16 = [v15 objectAtIndex:0];
+      pages = [v13 pages];
+      v16 = [pages objectAtIndex:0];
 
       [v14 boundsForPage:v16];
-      [v12 goToRect:v16 onPage:?];
+      [pdfView goToRect:v16 onPage:?];
     }
 
     searchHighlightView = self->_searchHighlightView;
@@ -1434,17 +1434,17 @@ void __65__PDFTextInputView_decorateFoundTextRange_inDocument_usingStyle___block
   v77.super_class = PDFTextInputView;
   [(PDFTextInputView *)&v77 layoutSubviews];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained pdfView];
+  pdfView = [WeakRetained pdfView];
 
-  v5 = [v4 documentView];
-  v6 = [v4 documentScrollView];
-  v60 = v4;
-  v7 = [v4 findInteraction];
-  v8 = [v7 isFindNavigatorVisible];
+  documentView = [pdfView documentView];
+  documentScrollView = [pdfView documentScrollView];
+  v60 = pdfView;
+  findInteraction = [pdfView findInteraction];
+  isFindNavigatorVisible = [findInteraction isFindNavigatorVisible];
 
   if ([(NSMutableArray *)self->_foundTextRanges count])
   {
-    v9 = v8 == 0;
+    v9 = isFindNavigatorVisible == 0;
   }
 
   else
@@ -1452,7 +1452,7 @@ void __65__PDFTextInputView_decorateFoundTextRange_inDocument_usingStyle___block
     v9 = 1;
   }
 
-  v61 = v6;
+  v61 = documentScrollView;
   if (v9)
   {
     [(PDFTextInputView *)self _setDimmingViewVisible:0];
@@ -1461,7 +1461,7 @@ void __65__PDFTextInputView_decorateFoundTextRange_inDocument_usingStyle___block
   else
   {
     [(PDFTextInputView *)self _setDimmingViewVisible:1];
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v73 = 0u;
     v74 = 0u;
     v75 = 0u;
@@ -1502,9 +1502,9 @@ void __65__PDFTextInputView_decorateFoundTextRange_inDocument_usingStyle___block
                 }
 
                 [*(*(&v69 + 1) + 8 * i) rect];
-                [v5 convertRect:self fromView:?];
+                [documentView convertRect:self fromView:?];
                 v18 = [MEMORY[0x1E696B098] valueWithCGRect:?];
-                [v10 addObject:v18];
+                [array addObject:v18];
               }
 
               v15 = [v13 countByEnumeratingWithState:&v69 objects:v79 count:16];
@@ -1523,10 +1523,10 @@ void __65__PDFTextInputView_decorateFoundTextRange_inDocument_usingStyle___block
       while (v64);
     }
 
-    v6 = v61;
+    documentScrollView = v61;
     [v61 contentSize];
     v20 = v19;
-    [v5 bounds];
+    [documentView bounds];
     if (v20 >= v21)
     {
       v22 = v20;
@@ -1539,7 +1539,7 @@ void __65__PDFTextInputView_decorateFoundTextRange_inDocument_usingStyle___block
 
     [v61 contentSize];
     v24 = v23;
-    [v5 bounds];
+    [documentView bounds];
     if (v24 >= v25)
     {
       v26 = v24;
@@ -1551,18 +1551,18 @@ void __65__PDFTextInputView_decorateFoundTextRange_inDocument_usingStyle___block
     }
 
     [(UITextSearchingDimmingView *)self->_searchDimmingView setFrame:-800.0, -800.0, v22 + 1600.0, v26 + 1600.0];
-    [(UITextSearchingDimmingView *)self->_searchDimmingView setTextRects:v10];
+    [(UITextSearchingDimmingView *)self->_searchDimmingView setTextRects:array];
     [(UITextSearchingDimmingView *)self->_searchDimmingView setContentInset:-800.0, -800.0, -800.0, -800.0];
   }
 
   searchHighlightView = self->_searchHighlightView;
   if (self->_highlightedTextRange)
   {
-    v28 = [(UITextHighlightView *)searchHighlightView superview];
+    superview = [(UITextHighlightView *)searchHighlightView superview];
 
-    if (!v28)
+    if (!superview)
     {
-      [v5 addSubview:self->_searchHighlightView];
+      [documentView addSubview:self->_searchHighlightView];
     }
 
     v29 = [(PDFTextInputView *)self selectionRectsForRange:self->_highlightedTextRange];
@@ -1570,7 +1570,7 @@ void __65__PDFTextInputView_decorateFoundTextRange_inDocument_usingStyle___block
     y = *(MEMORY[0x1E695F050] + 8);
     width = *(MEMORY[0x1E695F050] + 16);
     height = *(MEMORY[0x1E695F050] + 24);
-    v34 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
@@ -1608,7 +1608,7 @@ void __65__PDFTextInputView_decorateFoundTextRange_inDocument_usingStyle___block
           v45 = MEMORY[0x1E696B098];
           [v40 rect];
           v46 = [v45 valueWithCGRect:?];
-          [v34 addObject:v46];
+          [array2 addObject:v46];
         }
 
         v37 = [v35 countByEnumeratingWithState:&v65 objects:v78 count:16];
@@ -1617,9 +1617,9 @@ void __65__PDFTextInputView_decorateFoundTextRange_inDocument_usingStyle___block
       while (v37);
     }
 
-    v47 = [MEMORY[0x1E69DD0D0] preferredPreviewParametersForTextLineRects:v34];
+    v47 = [MEMORY[0x1E69DD0D0] preferredPreviewParametersForTextLineRects:array2];
     [v47 _textPathInsets];
-    [v5 convertRect:self fromView:{x + v51, y + v48, width - (v51 + v49), height - (v48 + v50)}];
+    [documentView convertRect:self fromView:{x + v51, y + v48, width - (v51 + v49), height - (v48 + v50)}];
     v53 = v52;
     v55 = v54;
     v57 = v56;
@@ -1630,10 +1630,10 @@ void __65__PDFTextInputView_decorateFoundTextRange_inDocument_usingStyle___block
       [(UITextHighlightView *)self->_searchHighlightView invalidateContentView];
     }
 
-    [v5 bringSubviewToFront:self->_searchHighlightView];
+    [documentView bringSubviewToFront:self->_searchHighlightView];
 
-    v4 = v60;
-    v6 = v61;
+    pdfView = v60;
+    documentScrollView = v61;
   }
 
   else
@@ -1642,19 +1642,19 @@ void __65__PDFTextInputView_decorateFoundTextRange_inDocument_usingStyle___block
   }
 }
 
-- (id)editMenuForTextRange:(id)a3 suggestedActions:(id)a4
+- (id)editMenuForTextRange:(id)range suggestedActions:(id)actions
 {
   v57 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  rangeCopy = range;
+  actionsCopy = actions;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [WeakRetained pdfView];
+  pdfView = [WeakRetained pdfView];
 
-  v10 = [(PDFTextInputView *)self _selectionForTextRange:v6];
-  v11 = [v9 renderingProperties];
-  v12 = [v11 isUsingPDFExtensionView];
+  v10 = [(PDFTextInputView *)self _selectionForTextRange:rangeCopy];
+  renderingProperties = [pdfView renderingProperties];
+  isUsingPDFExtensionView = [renderingProperties isUsingPDFExtensionView];
 
-  if (v12)
+  if (isUsingPDFExtensionView)
   {
     if (v10 && ([v10 isEmpty] & 1) == 0)
     {
@@ -1662,8 +1662,8 @@ void __65__PDFTextInputView_decorateFoundTextRange_inDocument_usingStyle___block
       v53 = 0u;
       v50 = 0u;
       v51 = 0u;
-      v13 = [v10 pages];
-      v14 = [v13 countByEnumeratingWithState:&v50 objects:v56 count:16];
+      pages = [v10 pages];
+      v14 = [pages countByEnumeratingWithState:&v50 objects:v56 count:16];
       if (v14)
       {
         v15 = v14;
@@ -1674,14 +1674,14 @@ LABEL_6:
         {
           if (*v51 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(pages);
           }
 
           v18 = *(*(&v50 + 1) + 8 * v17);
-          v19 = [v9 document];
-          v20 = [v19 indexForPage:v18];
+          document = [pdfView document];
+          v20 = [document indexForPage:v18];
 
-          v21 = [v9 pageViewForPageAtIndex:v20];
+          v21 = [pdfView pageViewForPageAtIndex:v20];
           if ([v21 isVisible])
           {
             break;
@@ -1689,7 +1689,7 @@ LABEL_6:
 
           if (v15 == ++v17)
           {
-            v15 = [v13 countByEnumeratingWithState:&v50 objects:v56 count:16];
+            v15 = [pages countByEnumeratingWithState:&v50 objects:v56 count:16];
             if (v15)
             {
               goto LABEL_6;
@@ -1704,34 +1704,34 @@ LABEL_6:
           goto LABEL_21;
         }
 
-        v28 = [v21 page];
-        [v10 boundsForPage:v28];
+        page = [v21 page];
+        [v10 boundsForPage:page];
         v30 = v29;
         v32 = v31;
         v34 = v33;
         v36 = v35;
 
-        v37 = [v21 page];
-        [v9 convertRect:v37 fromPage:{v30, v32, v34, v36}];
+        page2 = [v21 page];
+        [pdfView convertRect:page2 fromPage:{v30, v32, v34, v36}];
         v39 = v38;
         v41 = v40;
         v43 = v42;
         v45 = v44;
 
-        v46 = [MEMORY[0x1E696AD88] defaultCenter];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
         v54[0] = @"visible";
         v54[1] = @"selectionRect";
         v55[0] = MEMORY[0x1E695E118];
         v47 = [MEMORY[0x1E696B098] PDFKitValueWithPDFRect:{v39, v41, v43, v45}];
         v55[1] = v47;
         v48 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:v54 count:2];
-        [v46 postNotificationName:@"PDFTextSelectionShowTextSelectionMenu" object:v9 userInfo:v48];
+        [defaultCenter postNotificationName:@"PDFTextSelectionShowTextSelectionMenu" object:pdfView userInfo:v48];
       }
 
       else
       {
 LABEL_12:
-        v21 = v13;
+        v21 = pages;
       }
     }
 
@@ -1741,15 +1741,15 @@ LABEL_21:
 
   else
   {
-    v22 = [v9 controller];
-    v23 = [MEMORY[0x1E695DF70] arrayWithArray:v7];
-    v24 = [v22 additionalEditMenuElementsForSelection:v10];
+    controller = [pdfView controller];
+    v23 = [MEMORY[0x1E695DF70] arrayWithArray:actionsCopy];
+    v24 = [controller additionalEditMenuElementsForSelection:v10];
     if ([v24 count])
     {
-      v25 = [v7 indexOfObjectPassingTest:&__block_literal_global_3];
+      v25 = [actionsCopy indexOfObjectPassingTest:&__block_literal_global_3];
       if (v25 == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v25 = [v7 count] - 1;
+        v25 = [actionsCopy count] - 1;
       }
 
       v26 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v25 + 1, objc_msgSend(v24, "count")}];

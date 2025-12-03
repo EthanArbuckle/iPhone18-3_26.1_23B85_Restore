@@ -1,37 +1,37 @@
 @interface PKProvisioningAnalyticsSessionCampaignAttributionSubjectHandle
-- (PKProvisioningAnalyticsSessionCampaignAttributionSubjectHandle)initWithArchivedParent:(id)a3;
-- (void)reportProvisioningCompleteWithState:(id)a3 success:(BOOL)a4;
-- (void)reportProvisioningStartWithState:(id)a3;
+- (PKProvisioningAnalyticsSessionCampaignAttributionSubjectHandle)initWithArchivedParent:(id)parent;
+- (void)reportProvisioningCompleteWithState:(id)state success:(BOOL)success;
+- (void)reportProvisioningStartWithState:(id)state;
 @end
 
 @implementation PKProvisioningAnalyticsSessionCampaignAttributionSubjectHandle
 
-- (PKProvisioningAnalyticsSessionCampaignAttributionSubjectHandle)initWithArchivedParent:(id)a3
+- (PKProvisioningAnalyticsSessionCampaignAttributionSubjectHandle)initWithArchivedParent:(id)parent
 {
   v4.receiver = self;
   v4.super_class = PKProvisioningAnalyticsSessionCampaignAttributionSubjectHandle;
-  return [(PKProvisioningAnalyticsSessionSubjectHandle *)&v4 _initWithSubject:@"attribution" archivedParent:a3];
+  return [(PKProvisioningAnalyticsSessionSubjectHandle *)&v4 _initWithSubject:@"attribution" archivedParent:parent];
 }
 
-- (void)reportProvisioningStartWithState:(id)a3
+- (void)reportProvisioningStartWithState:(id)state
 {
-  v8 = a3;
-  v4 = [v8 campaignAttributionReferrerIdentifier];
-  if (v4)
+  stateCopy = state;
+  campaignAttributionReferrerIdentifier = [stateCopy campaignAttributionReferrerIdentifier];
+  if (campaignAttributionReferrerIdentifier)
   {
     [(PKProvisioningAnalyticsSessionSubjectHandle *)self _startReportingIfNecessary];
-    v5 = [v8 environment];
-    if (v5 != @"partner_app.payment_sheet")
+    environment = [stateCopy environment];
+    if (environment != @"partner_app.payment_sheet")
     {
-      v6 = v5;
-      if (!v5)
+      v6 = environment;
+      if (!environment)
       {
 LABEL_7:
-        +[PKAnalyticsReporter reportCampaignIdentifier:eventType:referralSource:deepLinkType:productType:](PKAnalyticsReporter, "reportCampaignIdentifier:eventType:referralSource:deepLinkType:productType:", v4, 1, v6, 0, [v8 campaignAttributionProductType]);
+        +[PKAnalyticsReporter reportCampaignIdentifier:eventType:referralSource:deepLinkType:productType:](PKAnalyticsReporter, "reportCampaignIdentifier:eventType:referralSource:deepLinkType:productType:", campaignAttributionReferrerIdentifier, 1, v6, 0, [stateCopy campaignAttributionProductType]);
         goto LABEL_8;
       }
 
-      v7 = [(__CFString *)v5 isEqualToString:@"partner_app.payment_sheet"];
+      v7 = [(__CFString *)environment isEqualToString:@"partner_app.payment_sheet"];
 
       if (!v7)
       {
@@ -47,24 +47,24 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)reportProvisioningCompleteWithState:(id)a3 success:(BOOL)a4
+- (void)reportProvisioningCompleteWithState:(id)state success:(BOOL)success
 {
-  v4 = a4;
-  v10 = a3;
-  v6 = [v10 campaignAttributionReferrerIdentifier];
-  if (v6)
+  successCopy = success;
+  stateCopy = state;
+  campaignAttributionReferrerIdentifier = [stateCopy campaignAttributionReferrerIdentifier];
+  if (campaignAttributionReferrerIdentifier)
   {
     [(PKProvisioningAnalyticsSessionSubjectHandle *)self _startReportingIfNecessary];
-    v7 = [v10 environment];
-    v8 = v7;
-    if (v7 == @"partner_app.payment_sheet")
+    environment = [stateCopy environment];
+    v8 = environment;
+    if (environment == @"partner_app.payment_sheet")
     {
       v9 = 4;
     }
 
-    else if (v7)
+    else if (environment)
     {
-      v9 = [(__CFString *)v7 isEqualToString:@"partner_app.payment_sheet"]? 4 : 0;
+      v9 = [(__CFString *)environment isEqualToString:@"partner_app.payment_sheet"]? 4 : 0;
     }
 
     else
@@ -72,9 +72,9 @@ LABEL_8:
       v9 = 0;
     }
 
-    if (v4)
+    if (successCopy)
     {
-      +[PKAnalyticsReporter reportCampaignIdentifier:eventType:referralSource:deepLinkType:productType:](PKAnalyticsReporter, "reportCampaignIdentifier:eventType:referralSource:deepLinkType:productType:", v6, 2, v9, 0, [v10 campaignAttributionProductType]);
+      +[PKAnalyticsReporter reportCampaignIdentifier:eventType:referralSource:deepLinkType:productType:](PKAnalyticsReporter, "reportCampaignIdentifier:eventType:referralSource:deepLinkType:productType:", campaignAttributionReferrerIdentifier, 2, v9, 0, [stateCopy campaignAttributionProductType]);
     }
   }
 }

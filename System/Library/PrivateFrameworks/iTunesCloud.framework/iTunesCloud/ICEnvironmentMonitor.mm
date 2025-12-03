@@ -25,25 +25,25 @@
 - (int64_t)networkType;
 - (unint64_t)currentNetworkLinkQuality;
 - (unint64_t)currentThermalLevel;
-- (void)_handleApplicationDidEnterForegroundNotification:(id)a3;
+- (void)_handleApplicationDidEnterForegroundNotification:(id)notification;
 - (void)_notifyObserversEnvironmentMonitorDidChangeTelephonyStatus;
 - (void)_onQueue_loadInitialThermalLevel;
-- (void)_onQueue_updateNetworkReachabilityAndNotifyObservers:(BOOL)a3;
-- (void)_onQueue_updatePowerStateNotifyingObservers:(BOOL)a3;
-- (void)_onQueue_updateTelephonyStateAndNotifyObservers:(BOOL)a3;
-- (void)_onQueue_updateThermalLevelWithToken:(int)a3;
-- (void)cellMonitorUpdate:(id)a3 info:(id)a4;
-- (void)connectionStateChanged:(id)a3 connection:(int)a4 dataConnectionStatusInfo:(id)a5;
-- (void)currentDataSimChanged:(id)a3;
+- (void)_onQueue_updateNetworkReachabilityAndNotifyObservers:(BOOL)observers;
+- (void)_onQueue_updatePowerStateNotifyingObservers:(BOOL)observers;
+- (void)_onQueue_updateTelephonyStateAndNotifyObservers:(BOOL)observers;
+- (void)_onQueue_updateThermalLevelWithToken:(int)token;
+- (void)cellMonitorUpdate:(id)update info:(id)info;
+- (void)connectionStateChanged:(id)changed connection:(int)connection dataConnectionStatusInfo:(id)info;
+- (void)currentDataSimChanged:(id)changed;
 - (void)dealloc;
-- (void)didStartTrackingNOI:(id)a3;
-- (void)didStopTrackingAllNOIs:(id)a3;
-- (void)didStopTrackingNOI:(id)a3;
-- (void)displayStatusChanged:(id)a3 status:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)operatorNameChanged:(id)a3 name:(id)a4;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)didStartTrackingNOI:(id)i;
+- (void)didStopTrackingAllNOIs:(id)is;
+- (void)didStopTrackingNOI:(id)i;
+- (void)displayStatusChanged:(id)changed status:(id)status;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)operatorNameChanged:(id)changed name:(id)name;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation ICEnvironmentMonitor
@@ -82,9 +82,9 @@ uint64_t __37__ICEnvironmentMonitor_sharedMonitor__block_invoke()
     v6 = *(v2 + 2);
     *(v2 + 2) = v5;
 
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v8 = *(v2 + 3);
-    *(v2 + 3) = v7;
+    *(v2 + 3) = weakObjectsHashTable;
 
     *(v2 + 4) = 0;
     *(v2 + 14) = -1;
@@ -99,9 +99,9 @@ uint64_t __37__ICEnvironmentMonitor_sharedMonitor__block_invoke()
     v10 = v2;
     v14 = v10;
     dispatch_async(v9, block);
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 addObserver:v10 selector:sel__handleApplicationDidEnterForegroundNotification_ name:@"UIApplicationDidEnterForegroundNotification" object:0];
-    [v11 addObserver:v10 selector:sel__handleApplicationDidEnterForegroundNotification_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__handleApplicationDidEnterForegroundNotification_ name:@"UIApplicationDidEnterForegroundNotification" object:0];
+    [defaultCenter addObserver:v10 selector:sel__handleApplicationDidEnterForegroundNotification_ name:@"UIApplicationWillEnterForegroundNotification" object:0];
   }
 
   return v2;
@@ -320,10 +320,10 @@ void __28__ICEnvironmentMonitor_init__block_invoke(uint64_t a1)
 - (BOOL)_onQueue_networkConstrained
 {
   dispatch_assert_queue_V2(self->_accessQueue);
-  v3 = [(NWPathEvaluator *)self->_networkPathEvaluator path];
-  v4 = [v3 isConstrained];
+  path = [(NWPathEvaluator *)self->_networkPathEvaluator path];
+  isConstrained = [path isConstrained];
 
-  return v4;
+  return isConstrained;
 }
 
 - (void)_onQueue_loadInitialThermalLevel
@@ -410,48 +410,48 @@ void __28__ICEnvironmentMonitor_init__block_invoke_30(uint64_t a1, void *a2, voi
   v28 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_accessQueue);
   v3 = +[ICDeviceInfo currentDeviceInfo];
-  v4 = [v3 isInternalBuild];
+  isInternalBuild = [v3 isInternalBuild];
 
-  if (v4)
+  if (isInternalBuild)
   {
     v5 = +[ICDefaults standardDefaults];
-    v6 = [v5 networkTypeOverride];
+    networkTypeOverride = [v5 networkTypeOverride];
 
-    if (v6)
+    if (networkTypeOverride)
     {
       v7 = os_log_create("com.apple.amp.iTunesCloud", "Default");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v24 = 138543618;
-        v25 = self;
+        selfCopy = self;
         v26 = 2114;
-        v27 = v6;
+        v27 = networkTypeOverride;
         _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Found network type override value %{public}@", &v24, 0x16u);
       }
 
-      v8 = [v6 integerValue];
-      return v8;
+      integerValue = [networkTypeOverride integerValue];
+      return integerValue;
     }
   }
 
-  v9 = [(NWPathEvaluator *)self->_networkPathEvaluator path];
-  v10 = [v9 status];
+  path = [(NWPathEvaluator *)self->_networkPathEvaluator path];
+  status = [path status];
 
-  if ((v10 & 0xFFFFFFFFFFFFFFFDLL) != 1)
+  if ((status & 0xFFFFFFFFFFFFFFFDLL) != 1)
   {
     goto LABEL_38;
   }
 
-  v11 = [(NWPathEvaluator *)self->_networkPathEvaluator path];
-  v12 = [v11 usesInterfaceType:3];
+  path2 = [(NWPathEvaluator *)self->_networkPathEvaluator path];
+  v12 = [path2 usesInterfaceType:3];
 
   if (v12)
   {
     return 2000;
   }
 
-  v13 = [(NWPathEvaluator *)self->_networkPathEvaluator path];
-  v14 = [v13 usesInterfaceType:1];
+  path3 = [(NWPathEvaluator *)self->_networkPathEvaluator path];
+  v14 = [path3 usesInterfaceType:1];
 
   if (v14)
   {
@@ -521,23 +521,23 @@ void __28__ICEnvironmentMonitor_init__block_invoke_30(uint64_t a1, void *a2, voi
 
   if (!telephonyStatusIndicator)
   {
-    v16 = [(NWPathEvaluator *)self->_networkPathEvaluator path];
-    v17 = [v16 usesInterfaceType:2];
+    path4 = [(NWPathEvaluator *)self->_networkPathEvaluator path];
+    v17 = [path4 usesInterfaceType:2];
 
     if (v17)
     {
       return 100;
     }
 
-    v18 = [(NWPathEvaluator *)self->_networkPathEvaluator path];
-    if ([v18 usesInterfaceType:0])
+    path5 = [(NWPathEvaluator *)self->_networkPathEvaluator path];
+    if ([path5 usesInterfaceType:0])
     {
 
       return 3000;
     }
 
-    v19 = [(NWPathEvaluator *)self->_networkPathEvaluator path];
-    v20 = [v19 usesInterfaceType:4];
+    path6 = [(NWPathEvaluator *)self->_networkPathEvaluator path];
+    v20 = [path6 usesInterfaceType:4];
 
     if (v20)
     {
@@ -547,9 +547,9 @@ void __28__ICEnvironmentMonitor_init__block_invoke_30(uint64_t a1, void *a2, voi
 
 LABEL_38:
   v21 = +[ICDeviceInfo currentDeviceInfo];
-  v22 = [v21 isWatch];
+  isWatch = [v21 isWatch];
 
-  if (!v22)
+  if (!isWatch)
   {
     return 0;
   }
@@ -562,27 +562,27 @@ LABEL_38:
   v26 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_accessQueue);
   v3 = +[ICDeviceInfo currentDeviceInfo];
-  v4 = [v3 isInternalBuild];
+  isInternalBuild = [v3 isInternalBuild];
 
-  if (v4)
+  if (isInternalBuild)
   {
     v5 = +[ICDefaults standardDefaults];
-    v6 = [v5 networkLinkQualityOverride];
+    networkLinkQualityOverride = [v5 networkLinkQualityOverride];
 
-    if (v6)
+    if (networkLinkQualityOverride)
     {
       v7 = os_log_create("com.apple.amp.iTunesCloud", "Default");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v23 = self;
+        selfCopy = self;
         v24 = 2114;
-        v25 = v6;
+        v25 = networkLinkQualityOverride;
         _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Found network link quality override value %{public}@", buf, 0x16u);
       }
 
-      v8 = [v6 intValue];
-      return v8;
+      intValue = [networkLinkQualityOverride intValue];
+      return intValue;
     }
   }
 
@@ -600,7 +600,7 @@ LABEL_38:
 
   v11 = v10;
   v12 = 0;
-  v8 = 0;
+  intValue = 0;
   v13 = *v18;
   do
   {
@@ -614,9 +614,9 @@ LABEL_38:
       v15 = *(*(&v17 + 1) + 8 * i);
       if ([v15 interface] == 2)
       {
-        if ([v15 linkQuality] > v8)
+        if ([v15 linkQuality] > intValue)
         {
-          v8 = [v15 linkQuality];
+          intValue = [v15 linkQuality];
         }
 
         v12 = 1;
@@ -633,7 +633,7 @@ LABEL_38:
     return self->_currentNetworkLinkQuality;
   }
 
-  return v8;
+  return intValue;
 }
 
 - (BOOL)_onQueue_isWiFiAssociated
@@ -655,7 +655,7 @@ LABEL_38:
   {
     v6 = v5;
     v7 = 0;
-    v8 = 0;
+    linkQuality = 0;
     v9 = *v13;
     do
     {
@@ -669,9 +669,9 @@ LABEL_38:
         v11 = *(*(&v12 + 1) + 8 * i);
         if ([v11 interface] == 1)
         {
-          if ([v11 linkQuality] > v8)
+          if ([v11 linkQuality] > linkQuality)
           {
-            v8 = [v11 linkQuality];
+            linkQuality = [v11 linkQuality];
           }
 
           v7 = 1;
@@ -685,7 +685,7 @@ LABEL_38:
 
     if (v7)
     {
-      return v8 > 0;
+      return linkQuality > 0;
     }
   }
 
@@ -880,25 +880,25 @@ void __38__ICEnvironmentMonitor_signalStrength__block_invoke(void *a1)
     [v3 setObject:v24 forKeyedSubscript:@"wifi-txRate"];
 
     v25 = MEMORY[0x1E696AD98];
-    v26 = [v44[5] channel];
-    v27 = [v25 numberWithUnsignedInt:{objc_msgSend(v26, "flags")}];
+    channel = [v44[5] channel];
+    v27 = [v25 numberWithUnsignedInt:{objc_msgSend(channel, "flags")}];
     [v3 setObject:v27 forKeyedSubscript:@"wifi-channel-flags"];
 
     v28 = MEMORY[0x1E696AD98];
-    v29 = [v44[5] channel];
-    v30 = [v28 numberWithUnsignedInt:{objc_msgSend(v29, "width")}];
+    channel2 = [v44[5] channel];
+    v30 = [v28 numberWithUnsignedInt:{objc_msgSend(channel2, "width")}];
     [v3 setObject:v30 forKeyedSubscript:@"wifi-channel-width"];
 
     v31 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v44[5], "PHYMode")}];
     [v3 setObject:v31 forKeyedSubscript:@"wifi-phyMode"];
 
-    v32 = [v44[5] countryCode];
-    LOBYTE(v31) = v32 == 0;
+    countryCode = [v44[5] countryCode];
+    LOBYTE(v31) = countryCode == 0;
 
     if ((v31 & 1) == 0)
     {
-      v33 = [v44[5] countryCode];
-      [v3 setObject:v33 forKeyedSubscript:@"wifi-countryCode"];
+      countryCode2 = [v44[5] countryCode];
+      [v3 setObject:countryCode2 forKeyedSubscript:@"wifi-countryCode"];
     }
 
     v34 = MEMORY[0x1E696AD98];
@@ -997,22 +997,22 @@ void __38__ICEnvironmentMonitor_signalStrength__block_invoke(void *a1)
       v12 = v37;
       if (v12)
       {
-        v13 = os_log_create("com.apple.amp.iTunesCloud", "Default");
-        if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+        displayBars = os_log_create("com.apple.amp.iTunesCloud", "Default");
+        if (os_log_type_enabled(displayBars, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
           v57 = v12;
-          _os_log_impl(&dword_1B4491000, v13, OS_LOG_TYPE_ERROR, "Failed to retrieve CTSignalStrengthInfo %{public}@", buf, 0xCu);
+          _os_log_impl(&dword_1B4491000, displayBars, OS_LOG_TYPE_ERROR, "Failed to retrieve CTSignalStrengthInfo %{public}@", buf, 0xCu);
         }
       }
 
       else
       {
-        v14 = [v10 maxDisplayBars];
-        [v3 setObject:v14 forKeyedSubscript:@"signal-bars-max"];
+        maxDisplayBars = [v10 maxDisplayBars];
+        [v3 setObject:maxDisplayBars forKeyedSubscript:@"signal-bars-max"];
 
-        v13 = [v10 displayBars];
-        [v3 setObject:v13 forKeyedSubscript:@"signal-bars"];
+        displayBars = [v10 displayBars];
+        [v3 setObject:displayBars forKeyedSubscript:@"signal-bars"];
       }
 
       v15 = v51[5];
@@ -1022,40 +1022,40 @@ void __38__ICEnvironmentMonitor_signalStrength__block_invoke(void *a1)
 
       if (v9)
       {
-        v17 = os_log_create("com.apple.amp.iTunesCloud", "Default");
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+        rxagc = os_log_create("com.apple.amp.iTunesCloud", "Default");
+        if (os_log_type_enabled(rxagc, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543362;
           v57 = v9;
-          _os_log_impl(&dword_1B4491000, v17, OS_LOG_TYPE_ERROR, "Failed to retrieve CTSignalStrengthMeasurements %{public}@", buf, 0xCu);
+          _os_log_impl(&dword_1B4491000, rxagc, OS_LOG_TYPE_ERROR, "Failed to retrieve CTSignalStrengthMeasurements %{public}@", buf, 0xCu);
         }
       }
 
       else
       {
-        v18 = [v16 rssi];
-        [v3 setObject:v18 forKeyedSubscript:@"gsm-rssi"];
+        rssi = [v16 rssi];
+        [v3 setObject:rssi forKeyedSubscript:@"gsm-rssi"];
 
-        v19 = [v16 rscp];
-        [v3 setObject:v19 forKeyedSubscript:@"umts-rscp"];
+        rscp = [v16 rscp];
+        [v3 setObject:rscp forKeyedSubscript:@"umts-rscp"];
 
-        v20 = [v16 ecn0];
-        [v3 setObject:v20 forKeyedSubscript:@"umts-ecn0"];
+        ecn0 = [v16 ecn0];
+        [v3 setObject:ecn0 forKeyedSubscript:@"umts-ecn0"];
 
-        v21 = [v16 rsrp];
-        [v3 setObject:v21 forKeyedSubscript:@"lte-rsrp"];
+        rsrp = [v16 rsrp];
+        [v3 setObject:rsrp forKeyedSubscript:@"lte-rsrp"];
 
-        v22 = [v16 rsrq];
-        [v3 setObject:v22 forKeyedSubscript:@"lte-rsrq"];
+        rsrq = [v16 rsrq];
+        [v3 setObject:rsrq forKeyedSubscript:@"lte-rsrq"];
 
         v23 = [v16 snr];
         [v3 setObject:v23 forKeyedSubscript:@"lte-snr"];
 
-        v24 = [v16 ecio];
-        [v3 setObject:v24 forKeyedSubscript:@"evdo-ecio"];
+        ecio = [v16 ecio];
+        [v3 setObject:ecio forKeyedSubscript:@"evdo-ecio"];
 
-        v17 = [v16 rxagc];
-        [v3 setObject:v17 forKeyedSubscript:@"evdo-rxagc"];
+        rxagc = [v16 rxagc];
+        [v3 setObject:rxagc forKeyedSubscript:@"evdo-rxagc"];
       }
     }
 
@@ -1192,38 +1192,38 @@ uint64_t __55__ICEnvironmentMonitor_isCurrentNetworkLinkHighQuality__block_invok
 
 - (int64_t)currentThermalPressureLevel
 {
-  v2 = [(ICEnvironmentMonitor *)self currentThermalLevel];
+  currentThermalLevel = [(ICEnvironmentMonitor *)self currentThermalLevel];
   v3 = 30;
   v4 = 40;
   v5 = 50;
-  if (v2 != 50)
+  if (currentThermalLevel != 50)
   {
     v5 = 0;
   }
 
-  if (v2 != 40)
+  if (currentThermalLevel != 40)
   {
     v4 = v5;
   }
 
-  if (v2 != 30)
+  if (currentThermalLevel != 30)
   {
     v3 = v4;
   }
 
   v6 = 10;
   v7 = 20;
-  if (v2 != 20)
+  if (currentThermalLevel != 20)
   {
     v7 = 0;
   }
 
-  if (v2 != 10)
+  if (currentThermalLevel != 10)
   {
     v6 = v7;
   }
 
-  if (v2 <= 29)
+  if (currentThermalLevel <= 29)
   {
     return v6;
   }
@@ -1234,17 +1234,17 @@ uint64_t __55__ICEnvironmentMonitor_isCurrentNetworkLinkHighQuality__block_invok
   }
 }
 
-- (void)didStopTrackingAllNOIs:(id)a3
+- (void)didStopTrackingAllNOIs:(id)is
 {
-  v4 = a3;
+  isCopy = is;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__ICEnvironmentMonitor_didStopTrackingAllNOIs___block_invoke;
   v7[3] = &unk_1E7BFA078;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = isCopy;
+  selfCopy = self;
+  v6 = isCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -1313,17 +1313,17 @@ uint64_t __47__ICEnvironmentMonitor_didStopTrackingAllNOIs___block_invoke_119(ui
   return [*(*(a1 + 32) + 96) trackNOIAnyForInterfaceType:1 options:0];
 }
 
-- (void)didStopTrackingNOI:(id)a3
+- (void)didStopTrackingNOI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __43__ICEnvironmentMonitor_didStopTrackingNOI___block_invoke;
   v7[3] = &unk_1E7BFA078;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = iCopy;
+  selfCopy = self;
+  v6 = iCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -1379,17 +1379,17 @@ uint64_t __43__ICEnvironmentMonitor_didStopTrackingNOI___block_invoke(uint64_t a
   return result;
 }
 
-- (void)didStartTrackingNOI:(id)a3
+- (void)didStartTrackingNOI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__ICEnvironmentMonitor_didStartTrackingNOI___block_invoke;
   v7[3] = &unk_1E7BFA078;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = iCopy;
+  selfCopy = self;
+  v6 = iCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -1445,52 +1445,52 @@ uint64_t __44__ICEnvironmentMonitor_didStartTrackingNOI___block_invoke(uint64_t 
   return result;
 }
 
-- (void)currentDataSimChanged:(id)a3
+- (void)currentDataSimChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   dispatch_assert_queue_V2(self->_accessQueue);
   dataSubscriptionContext = self->_dataSubscriptionContext;
-  self->_dataSubscriptionContext = v4;
+  self->_dataSubscriptionContext = changedCopy;
 
   [(ICEnvironmentMonitor *)self _onQueue_updateTelephonyStateAndNotifyObservers:1];
 }
 
-- (void)connectionStateChanged:(id)a3 connection:(int)a4 dataConnectionStatusInfo:(id)a5
+- (void)connectionStateChanged:(id)changed connection:(int)connection dataConnectionStatusInfo:(id)info
 {
   accessQueue = self->_accessQueue;
-  v7 = a3;
+  changedCopy = changed;
   dispatch_assert_queue_V2(accessQueue);
-  v8 = [(CTXPCServiceSubscriptionContext *)self->_dataSubscriptionContext uuid];
-  v9 = [v7 uuid];
+  uuid = [(CTXPCServiceSubscriptionContext *)self->_dataSubscriptionContext uuid];
+  uuid2 = [changedCopy uuid];
 
-  LODWORD(v7) = [v8 isEqual:v9];
-  if (v7)
+  LODWORD(changedCopy) = [uuid isEqual:uuid2];
+  if (changedCopy)
   {
 
     [(ICEnvironmentMonitor *)self _onQueue_updateTelephonyStateAndNotifyObservers:1];
   }
 }
 
-- (void)cellMonitorUpdate:(id)a3 info:(id)a4
+- (void)cellMonitorUpdate:(id)update info:(id)info
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_accessQueue);
-  v8 = [(CTXPCServiceSubscriptionContext *)self->_dataSubscriptionContext uuid];
-  v9 = [v6 uuid];
-  v10 = [v8 isEqual:v9];
+  uuid = [(CTXPCServiceSubscriptionContext *)self->_dataSubscriptionContext uuid];
+  uuid2 = [updateCopy uuid];
+  v10 = [uuid isEqual:uuid2];
 
   if (v10)
   {
-    v24 = v7;
-    v25 = v6;
+    v24 = infoCopy;
+    v25 = updateCopy;
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v11 = [v7 legacyInfo];
-    v12 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    legacyInfo = [infoCopy legacyInfo];
+    v12 = [legacyInfo countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (!v12)
     {
       goto LABEL_14;
@@ -1506,7 +1506,7 @@ uint64_t __44__ICEnvironmentMonitor_didStartTrackingNOI___block_invoke(uint64_t 
       {
         if (*v27 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(legacyInfo);
         }
 
         v18 = *(*(&v26 + 1) + 8 * i);
@@ -1531,57 +1531,57 @@ LABEL_11:
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v13 = [legacyInfo countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (!v13)
       {
 LABEL_14:
 
-        v7 = v24;
-        v6 = v25;
+        infoCopy = v24;
+        updateCopy = v25;
         break;
       }
     }
   }
 }
 
-- (void)operatorNameChanged:(id)a3 name:(id)a4
+- (void)operatorNameChanged:(id)changed name:(id)name
 {
   accessQueue = self->_accessQueue;
-  v6 = a3;
+  changedCopy = changed;
   dispatch_assert_queue_V2(accessQueue);
-  v7 = [(CTXPCServiceSubscriptionContext *)self->_dataSubscriptionContext uuid];
-  v8 = [v6 uuid];
+  uuid = [(CTXPCServiceSubscriptionContext *)self->_dataSubscriptionContext uuid];
+  uuid2 = [changedCopy uuid];
 
-  LODWORD(v6) = [v7 isEqual:v8];
-  if (v6)
+  LODWORD(changedCopy) = [uuid isEqual:uuid2];
+  if (changedCopy)
   {
 
     [(ICEnvironmentMonitor *)self _onQueue_updateTelephonyStateAndNotifyObservers:1];
   }
 }
 
-- (void)displayStatusChanged:(id)a3 status:(id)a4
+- (void)displayStatusChanged:(id)changed status:(id)status
 {
   accessQueue = self->_accessQueue;
-  v6 = a3;
+  changedCopy = changed;
   dispatch_assert_queue_V2(accessQueue);
-  v7 = [(CTXPCServiceSubscriptionContext *)self->_dataSubscriptionContext uuid];
-  v8 = [v6 uuid];
+  uuid = [(CTXPCServiceSubscriptionContext *)self->_dataSubscriptionContext uuid];
+  uuid2 = [changedCopy uuid];
 
-  LODWORD(v6) = [v7 isEqual:v8];
-  if (v6)
+  LODWORD(changedCopy) = [uuid isEqual:uuid2];
+  if (changedCopy)
   {
 
     [(ICEnvironmentMonitor *)self _onQueue_updateTelephonyStateAndNotifyObservers:1];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (ICEnvironmentMonitorNetworkPathEvaluatorContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (ICEnvironmentMonitorNetworkPathEvaluatorContext == context)
   {
     accessQueue = self->_accessQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -1592,15 +1592,15 @@ LABEL_14:
     dispatch_async(accessQueue, block);
   }
 
-  else if (ICEnvironmentMonitorNOIContext == a6)
+  else if (ICEnvironmentMonitorNOIContext == context)
   {
     v14 = self->_accessQueue;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __71__ICEnvironmentMonitor_observeValueForKeyPath_ofObject_change_context___block_invoke_2;
     v16[3] = &unk_1E7BFA078;
-    v17 = v11;
-    v18 = self;
+    v17 = objectCopy;
+    selfCopy = self;
     dispatch_async(v14, v16);
   }
 
@@ -1608,7 +1608,7 @@ LABEL_14:
   {
     v15.receiver = self;
     v15.super_class = ICEnvironmentMonitor;
-    [(ICEnvironmentMonitor *)&v15 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(ICEnvironmentMonitor *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -1654,7 +1654,7 @@ LABEL_7:
   }
 }
 
-- (void)_handleApplicationDidEnterForegroundNotification:(id)a3
+- (void)_handleApplicationDidEnterForegroundNotification:(id)notification
 {
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1673,9 +1673,9 @@ uint64_t __73__ICEnvironmentMonitor__handleApplicationDidEnterForegroundNotifica
   return [v2 _onQueue_updateNetworkReachabilityAndNotifyObservers:1];
 }
 
-- (void)_onQueue_updateTelephonyStateAndNotifyObservers:(BOOL)a3
+- (void)_onQueue_updateTelephonyStateAndNotifyObservers:(BOOL)observers
 {
-  v3 = a3;
+  observersCopy = observers;
   v36 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_accessQueue);
   dataSubscriptionContext = self->_dataSubscriptionContext;
@@ -1769,9 +1769,9 @@ uint64_t __73__ICEnvironmentMonitor__handleApplicationDidEnterForegroundNotifica
 
     if (v25)
     {
-      v29 = [v25 indicator];
-      self->_telephonyStatusIndicator = v29;
-      if (v29 == telephonyStatusIndicator)
+      indicator = [v25 indicator];
+      self->_telephonyStatusIndicator = indicator;
+      if (indicator == telephonyStatusIndicator)
       {
         v30 = v21;
       }
@@ -1781,12 +1781,12 @@ uint64_t __73__ICEnvironmentMonitor__handleApplicationDidEnterForegroundNotifica
         v30 = 1;
       }
 
-      if (!v3)
+      if (!observersCopy)
       {
         goto LABEL_31;
       }
 
-      if (v29 == telephonyStatusIndicator)
+      if (indicator == telephonyStatusIndicator)
       {
         if (!v30)
         {
@@ -1800,7 +1800,7 @@ uint64_t __73__ICEnvironmentMonitor__handleApplicationDidEnterForegroundNotifica
       }
     }
 
-    else if ((v3 & v21 & 1) == 0)
+    else if ((observersCopy & v21 & 1) == 0)
     {
 LABEL_31:
 
@@ -1812,9 +1812,9 @@ LABEL_31:
   }
 }
 
-- (void)_onQueue_updatePowerStateNotifyingObservers:(BOOL)a3
+- (void)_onQueue_updatePowerStateNotifyingObservers:(BOOL)observers
 {
-  v3 = a3;
+  observersCopy = observers;
   v39 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_accessQueue);
   currentBatteryLevel = self->_currentBatteryLevel;
@@ -1838,9 +1838,9 @@ LABEL_31:
 
   charging |= v5;
   v9 = +[ICDefaults standardDefaults];
-  v10 = [v9 chargingStateOverride];
+  chargingStateOverride = [v9 chargingStateOverride];
 
-  if (v10)
+  if (chargingStateOverride)
   {
     v11 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1848,20 +1848,20 @@ LABEL_31:
       *buf = 138543618;
       *v37 = self;
       *&v37[8] = 2114;
-      v38 = v10;
+      v38 = chargingStateOverride;
       _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Found charging state override value %{public}@", buf, 0x16u);
     }
 
-    v12 = [v10 BOOLValue];
-    charging = v12;
+    bOOLValue = [chargingStateOverride BOOLValue];
+    charging = bOOLValue;
   }
 
   else
   {
-    v12 = charging;
+    bOOLValue = charging;
   }
 
-  if (self->_charging != v12)
+  if (self->_charging != bOOLValue)
   {
     v13 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -1876,7 +1876,7 @@ LABEL_31:
     }
 
     self->_charging = charging;
-    if (v3)
+    if (observersCopy)
     {
       os_unfair_recursive_lock_lock_with_options();
       v14 = [(NSHashTable *)self->_observers copy];
@@ -1887,7 +1887,7 @@ LABEL_31:
       block[2] = __68__ICEnvironmentMonitor__onQueue_updatePowerStateNotifyingObservers___block_invoke;
       block[3] = &unk_1E7BFA078;
       v31 = v14;
-      v32 = self;
+      selfCopy = self;
       v16 = v14;
       dispatch_async(calloutQueue, block);
     }
@@ -1895,9 +1895,9 @@ LABEL_31:
 
   v17 = currentBatteryLevel;
   v18 = +[ICDefaults standardDefaults];
-  v19 = [v18 batteryLevelOverride];
+  batteryLevelOverride = [v18 batteryLevelOverride];
 
-  if (v19)
+  if (batteryLevelOverride)
   {
     v20 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -1905,11 +1905,11 @@ LABEL_31:
       *buf = 138543618;
       *v37 = self;
       *&v37[8] = 2114;
-      v38 = v19;
+      v38 = batteryLevelOverride;
       _os_log_impl(&dword_1B4491000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ Found battery level override value %{public}@", buf, 0x16u);
     }
 
-    [v19 doubleValue];
+    [batteryLevelOverride doubleValue];
     v22 = v21;
   }
 
@@ -1929,7 +1929,7 @@ LABEL_31:
     }
 
     self->_currentBatteryLevel = v22;
-    if (v3)
+    if (observersCopy)
     {
       os_unfair_recursive_lock_lock_with_options();
       v24 = [(NSHashTable *)self->_observers copy];
@@ -1940,7 +1940,7 @@ LABEL_31:
       v27[2] = __68__ICEnvironmentMonitor__onQueue_updatePowerStateNotifyingObservers___block_invoke_114;
       v27[3] = &unk_1E7BFA078;
       v28 = v24;
-      v29 = self;
+      selfCopy2 = self;
       v26 = v24;
       dispatch_async(v25, v27);
     }
@@ -2038,7 +2038,7 @@ void __68__ICEnvironmentMonitor__onQueue_updatePowerStateNotifyingObservers___bl
   v6[2] = __82__ICEnvironmentMonitor__notifyObserversEnvironmentMonitorDidChangeTelephonyStatus__block_invoke;
   v6[3] = &unk_1E7BFA078;
   v7 = v3;
-  v8 = self;
+  selfCopy = self;
   v5 = v3;
   dispatch_async(calloutQueue, v6);
 }
@@ -2083,12 +2083,12 @@ void __82__ICEnvironmentMonitor__notifyObserversEnvironmentMonitorDidChangeTelep
   }
 }
 
-- (void)_onQueue_updateThermalLevelWithToken:(int)a3
+- (void)_onQueue_updateThermalLevelWithToken:(int)token
 {
   v19 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_accessQueue);
   state64 = 0;
-  state = notify_get_state(a3, &state64);
+  state = notify_get_state(token, &state64);
   if (state)
   {
     v6 = state;
@@ -2132,7 +2132,7 @@ void __82__ICEnvironmentMonitor__notifyObserversEnvironmentMonitorDidChangeTelep
     block[2] = __61__ICEnvironmentMonitor__onQueue_updateThermalLevelWithToken___block_invoke;
     block[3] = &unk_1E7BFA078;
     v14 = v11;
-    v15 = self;
+    selfCopy = self;
     v7 = v11;
     dispatch_async(calloutQueue, block);
   }
@@ -2178,54 +2178,54 @@ void __61__ICEnvironmentMonitor__onQueue_updateThermalLevelWithToken___block_inv
   }
 }
 
-- (void)_onQueue_updateNetworkReachabilityAndNotifyObservers:(BOOL)a3
+- (void)_onQueue_updateNetworkReachabilityAndNotifyObservers:(BOOL)observers
 {
-  v3 = a3;
+  observersCopy = observers;
   v64 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_accessQueue);
-  v5 = [(ICEnvironmentMonitor *)self _onQueue_currentNetworkType];
+  _onQueue_currentNetworkType = [(ICEnvironmentMonitor *)self _onQueue_currentNetworkType];
   wifiAssociated = self->_wifiAssociated;
   ethernetWired = self->_ethernetWired;
   networkConstrained = self->_networkConstrained;
-  v7 = [(ICEnvironmentMonitor *)self _onQueue_currentCellularLinkQuality];
+  _onQueue_currentCellularLinkQuality = [(ICEnvironmentMonitor *)self _onQueue_currentCellularLinkQuality];
   self->_wifiAssociated = [(ICEnvironmentMonitor *)self _onQueue_isWiFiAssociated];
-  self->_ethernetWired = v5 == 2000;
+  self->_ethernetWired = _onQueue_currentNetworkType == 2000;
   self->_networkConstrained = [(ICEnvironmentMonitor *)self _onQueue_networkConstrained];
-  v8 = [(NWPathEvaluator *)self->_networkPathEvaluator path];
-  v9 = [v8 status];
+  path = [(NWPathEvaluator *)self->_networkPathEvaluator path];
+  status = [path status];
 
-  v10 = v9 == 1;
-  if (v9 == 1)
+  v10 = status == 1;
+  if (status == 1)
   {
     v12 = 1;
   }
 
   else
   {
-    v11 = [(NWPathEvaluator *)self->_networkPathEvaluator path];
-    v12 = [v11 status] == 3;
+    path2 = [(NWPathEvaluator *)self->_networkPathEvaluator path];
+    v12 = [path2 status] == 3;
   }
 
   v13 = +[ICDeviceInfo currentDeviceInfo];
-  v14 = [v13 isWatch];
+  isWatch = [v13 isWatch];
 
-  if (v14 && v5)
+  if (isWatch && _onQueue_currentNetworkType)
   {
     v12 = 1;
   }
 
-  v15 = v9 == 1;
-  v16 = [(NWPathEvaluator *)self->_networkPathEvaluator path];
-  self->_currentNetworkLinkExpensive = [v16 isExpensive];
+  v15 = status == 1;
+  path3 = [(NWPathEvaluator *)self->_networkPathEvaluator path];
+  self->_currentNetworkLinkExpensive = [path3 isExpensive];
 
   v39 = v12;
-  if (self->_remoteServerReachable == v10 && self->_remoteServerLikelyReachable == v12 && self->_currentNetworkLinkQuality == v7 && self->_wifiAssociated == wifiAssociated && self->_networkConstrained == networkConstrained)
+  if (self->_remoteServerReachable == v10 && self->_remoteServerLikelyReachable == v12 && self->_currentNetworkLinkQuality == _onQueue_currentCellularLinkQuality && self->_wifiAssociated == wifiAssociated && self->_networkConstrained == networkConstrained)
   {
     v17 = self->_ethernetWired;
     networkType = self->_networkType;
-    v19 = networkType == v5;
+    v19 = networkType == _onQueue_currentNetworkType;
     v20 = v17 != ethernetWired;
-    if (v17 == ethernetWired && networkType == v5)
+    if (v17 == ethernetWired && networkType == _onQueue_currentNetworkType)
     {
       goto LABEL_25;
     }
@@ -2233,23 +2233,23 @@ void __61__ICEnvironmentMonitor__onQueue_updateThermalLevelWithToken___block_inv
 
   else
   {
-    v19 = self->_networkType == v5;
+    v19 = self->_networkType == _onQueue_currentNetworkType;
     v20 = 1;
   }
 
   v21 = v15;
   v22 = @"fair";
-  if (v7 < 0x14)
+  if (_onQueue_currentCellularLinkQuality < 0x14)
   {
     v22 = @"low";
   }
 
-  if (v7 > 0x31)
+  if (_onQueue_currentCellularLinkQuality > 0x31)
   {
     v22 = @"high";
   }
 
-  v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d (%@)", v7, v22];
+  v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d (%@)", _onQueue_currentCellularLinkQuality, v22];
   v24 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
@@ -2260,7 +2260,7 @@ void __61__ICEnvironmentMonitor__onQueue_updateThermalLevelWithToken___block_inv
     v28 = self->_ethernetWired;
     v29 = self->_networkConstrained;
     *buf = 67242242;
-    v47 = v5;
+    v47 = _onQueue_currentNetworkType;
     v48 = 2114;
     v49 = v25;
     v50 = 1024;
@@ -2286,8 +2286,8 @@ void __61__ICEnvironmentMonitor__onQueue_updateThermalLevelWithToken___block_inv
   {
     self->_remoteServerReachable = v10;
     self->_remoteServerLikelyReachable = v39;
-    self->_currentNetworkLinkQuality = v7;
-    if (v3)
+    self->_currentNetworkLinkQuality = _onQueue_currentCellularLinkQuality;
+    if (observersCopy)
     {
       os_unfair_recursive_lock_lock_with_options();
       v30 = [(NSHashTable *)self->_observers copy];
@@ -2298,7 +2298,7 @@ void __61__ICEnvironmentMonitor__onQueue_updateThermalLevelWithToken___block_inv
       block[2] = __77__ICEnvironmentMonitor__onQueue_updateNetworkReachabilityAndNotifyObservers___block_invoke;
       block[3] = &unk_1E7BFA078;
       v44 = v30;
-      v45 = self;
+      selfCopy = self;
       v32 = v30;
       dispatch_async(calloutQueue, block);
     }
@@ -2307,14 +2307,14 @@ void __61__ICEnvironmentMonitor__onQueue_updateThermalLevelWithToken___block_inv
 LABEL_25:
   if (!v19)
   {
-    self->_networkType = v5;
-    self->_wiFiActive = (v5 - 1000) < 0x3E8;
-    if (v5)
+    self->_networkType = _onQueue_currentNetworkType;
+    self->_wiFiActive = (_onQueue_currentNetworkType - 1000) < 0x3E8;
+    if (_onQueue_currentNetworkType)
     {
-      self->_lastKnownNetworkType = v5;
+      self->_lastKnownNetworkType = _onQueue_currentNetworkType;
     }
 
-    if (v3)
+    if (observersCopy)
     {
       os_unfair_recursive_lock_lock_with_options();
       v33 = [(NSHashTable *)self->_observers copy];
@@ -2325,7 +2325,7 @@ LABEL_25:
       v40[2] = __77__ICEnvironmentMonitor__onQueue_updateNetworkReachabilityAndNotifyObservers___block_invoke_2;
       v40[3] = &unk_1E7BFA078;
       v41 = v33;
-      v42 = self;
+      selfCopy2 = self;
       v35 = v33;
       dispatch_async(v34, v40);
     }
@@ -2414,16 +2414,16 @@ void __77__ICEnvironmentMonitor__onQueue_updateNetworkReachabilityAndNotifyObser
 
 - (int64_t)currentThermalState
 {
-  v2 = [(ICEnvironmentMonitor *)self currentThermalLevel];
-  if (v2 <= 29)
+  currentThermalLevel = [(ICEnvironmentMonitor *)self currentThermalLevel];
+  if (currentThermalLevel <= 29)
   {
     v4 = 2;
-    if (v2 != 20)
+    if (currentThermalLevel != 20)
     {
       v4 = 0;
     }
 
-    if (v2 == 10)
+    if (currentThermalLevel == 10)
     {
       return 1;
     }
@@ -2434,7 +2434,7 @@ void __77__ICEnvironmentMonitor__onQueue_updateNetworkReachabilityAndNotifyObser
     }
   }
 
-  else if (v2 == 30 || v2 == 40 || v2 == 50)
+  else if (currentThermalLevel == 30 || currentThermalLevel == 40 || currentThermalLevel == 50)
   {
     return 3;
   }
@@ -2610,22 +2610,22 @@ double __43__ICEnvironmentMonitor_currentBatteryLevel__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_recursive_lock_lock_with_options();
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_recursive_lock_lock_with_options();
-    [(NSHashTable *)self->_observers addObject:v4];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
 
     os_unfair_recursive_lock_unlock();
   }
@@ -2720,8 +2720,8 @@ double __43__ICEnvironmentMonitor_currentBatteryLevel__block_invoke(uint64_t a1)
     notify_cancel(powerSourceNotificationToken);
   }
 
-  v17 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v17 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   thermalNotificationToken = self->_thermalNotificationToken;
   if (thermalNotificationToken != -1)

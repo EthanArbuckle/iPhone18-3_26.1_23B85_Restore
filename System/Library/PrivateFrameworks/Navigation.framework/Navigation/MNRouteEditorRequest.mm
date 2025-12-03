@@ -1,37 +1,37 @@
 @interface MNRouteEditorRequest
 - (MNRouteEditorRequest)init;
 - (id)newAnchorPoints;
-- (void)setTraits:(id)a3;
+- (void)setTraits:(id)traits;
 @end
 
 @implementation MNRouteEditorRequest
 
-- (void)setTraits:(id)a3
+- (void)setTraits:(id)traits
 {
-  v4 = a3;
-  if (!v4)
+  traitsCopy = traits;
+  if (!traitsCopy)
   {
-    v5 = [MEMORY[0x1E69A2208] sharedService];
-    v4 = [v5 defaultTraits];
+    mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+    traitsCopy = [mEMORY[0x1E69A2208] defaultTraits];
   }
 
-  [v4 useOnlineToOfflineFailoverRequestModeIfAllowed];
+  [traitsCopy useOnlineToOfflineFailoverRequestModeIfAllowed];
   traits = self->_traits;
-  self->_traits = v4;
+  self->_traits = traitsCopy;
 }
 
 - (id)newAnchorPoints
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = [(MNRouteEditorRequest *)self currentRoute];
-  v5 = [v4 anchorPoints];
-  v6 = [v5 anchorPoints];
-  v7 = [v3 setWithArray:v6];
+  currentRoute = [(MNRouteEditorRequest *)self currentRoute];
+  anchorPoints = [currentRoute anchorPoints];
+  v5AnchorPoints = [anchorPoints anchorPoints];
+  v7 = [v3 setWithArray:v5AnchorPoints];
 
   v8 = MEMORY[0x1E695DFA8];
-  v9 = [(MNRouteEditorRequest *)self anchorPoints];
-  v10 = [v9 anchorPoints];
-  v11 = [v8 setWithArray:v10];
+  anchorPoints2 = [(MNRouteEditorRequest *)self anchorPoints];
+  v9AnchorPoints = [anchorPoints2 anchorPoints];
+  v11 = [v8 setWithArray:v9AnchorPoints];
 
   [v11 minusSet:v7];
   return v11;

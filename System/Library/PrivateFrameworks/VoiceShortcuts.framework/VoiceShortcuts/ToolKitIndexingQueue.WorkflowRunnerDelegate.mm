@@ -1,16 +1,16 @@
 @interface ToolKitIndexingQueue.WorkflowRunnerDelegate
-- (void)outOfProcessWorkflowController:(id)a3 didFinishWithResult:(id)a4 dialogAttribution:(id)a5 runResidency:(unint64_t)a6;
+- (void)outOfProcessWorkflowController:(id)controller didFinishWithResult:(id)result dialogAttribution:(id)attribution runResidency:(unint64_t)residency;
 @end
 
 @implementation ToolKitIndexingQueue.WorkflowRunnerDelegate
 
-- (void)outOfProcessWorkflowController:(id)a3 didFinishWithResult:(id)a4 dialogAttribution:(id)a5 runResidency:(unint64_t)a6
+- (void)outOfProcessWorkflowController:(id)controller didFinishWithResult:(id)result dialogAttribution:(id)attribution runResidency:(unint64_t)residency
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = self;
-  sub_2310CFC24(v12, v10);
+  controllerCopy = controller;
+  resultCopy = result;
+  attributionCopy = attribution;
+  selfCopy = self;
+  sub_2310CFC24(selfCopy, resultCopy);
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface VUIShelfView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
-- (void)setHeaderView:(id)a3;
+- (void)setHeaderView:(id)view;
 @end
 
 @implementation VUIShelfView
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   headerView = self->_headerView;
-  if (headerView != v5)
+  if (headerView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     if (headerView)
     {
       [(UIView *)headerView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_headerView, a3);
+    objc_storeStrong(&self->_headerView, view);
     if (self->_headerView)
     {
       [(VUIShelfView *)self addSubview:?];
     }
 
     [(VUIShelfView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
@@ -46,32 +46,32 @@
     [(UIView *)headerView sizeThatFits:v9 - (v7 + v8), 1.79769313e308];
     v11 = v10;
     v13 = v12;
-    v14 = [(VUIShelfView *)self headerView];
-    [v14 setFrame:{v7, 0.0, v11, v13}];
+    headerView = [(VUIShelfView *)self headerView];
+    [headerView setFrame:{v7, 0.0, v11, v13}];
 
-    v15 = [(VUIShelfView *)self collectionView];
-    v16 = [(VUIShelfView *)self headerView];
-    [v16 frame];
+    collectionView = [(VUIShelfView *)self collectionView];
+    headerView2 = [(VUIShelfView *)self headerView];
+    [headerView2 frame];
     MaxY = CGRectGetMaxY(v23);
     [(VUIShelfView *)self bounds];
     v19 = v18;
     [(VUIShelfView *)self bounds];
-    [v15 setFrame:{0.0, MaxY, v19, v20 - v13}];
+    [collectionView setFrame:{0.0, MaxY, v19, v20 - v13}];
   }
 
   else
   {
-    v15 = [(VUIShelfView *)self collectionView];
+    collectionView = [(VUIShelfView *)self collectionView];
     [(VUIShelfView *)self bounds];
-    [v15 setFrame:?];
+    [collectionView setFrame:?];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v5 = MEMORY[0x1E69DD2E8];
-  [(VUIShelfView *)self bounds:a3.width];
+  [(VUIShelfView *)self bounds:fits.width];
   [v5 vui_paddingForWindowWidth:CGRectGetWidth(v18)];
   headerView = self->_headerView;
   if (headerView)
@@ -85,10 +85,10 @@
     v10 = 0.0;
   }
 
-  v11 = [(VUIShelfView *)self collectionView];
-  v12 = [v11 collectionViewLayout];
+  collectionView = [(VUIShelfView *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
-  [v12 computedContentHeight];
+  [collectionViewLayout computedContentHeight];
   v14 = v10 + v13;
 
   v15 = width;

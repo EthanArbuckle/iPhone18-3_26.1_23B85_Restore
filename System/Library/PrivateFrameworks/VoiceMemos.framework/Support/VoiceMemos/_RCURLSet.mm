@@ -1,22 +1,22 @@
 @interface _RCURLSet
-+ (id)setWithURLs:(id)a3;
-- (BOOL)containsURL:(id)a3;
++ (id)setWithURLs:(id)ls;
+- (BOOL)containsURL:(id)l;
 - (_RCURLSet)init;
 - (id)URLs;
-- (void)addURL:(id)a3;
+- (void)addURL:(id)l;
 @end
 
 @implementation _RCURLSet
 
-+ (id)setWithURLs:(id)a3
++ (id)setWithURLs:(id)ls
 {
-  v3 = a3;
+  lsCopy = ls;
   v4 = objc_alloc_init(objc_opt_class());
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = v3;
+  v5 = lsCopy;
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -58,17 +58,17 @@
   return v2;
 }
 
-- (void)addURL:(id)a3
+- (void)addURL:(id)l
 {
   set = self->_set;
-  v4 = [a3 URLByStandardizingPath];
-  [(NSMutableSet *)set addObject:v4];
+  uRLByStandardizingPath = [l URLByStandardizingPath];
+  [(NSMutableSet *)set addObject:uRLByStandardizingPath];
 }
 
-- (BOOL)containsURL:(id)a3
+- (BOOL)containsURL:(id)l
 {
-  v4 = [a3 URLByStandardizingPath];
-  LOBYTE(self) = [(NSMutableSet *)self->_set containsObject:v4];
+  uRLByStandardizingPath = [l URLByStandardizingPath];
+  LOBYTE(self) = [(NSMutableSet *)self->_set containsObject:uRLByStandardizingPath];
 
   return self;
 }

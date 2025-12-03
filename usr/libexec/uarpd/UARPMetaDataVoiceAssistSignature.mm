@@ -1,7 +1,7 @@
 @interface UARPMetaDataVoiceAssistSignature
 - (UARPMetaDataVoiceAssistSignature)init;
-- (UARPMetaDataVoiceAssistSignature)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataVoiceAssistSignature)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataVoiceAssistSignature)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataVoiceAssistSignature)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 @end
 
@@ -23,16 +23,16 @@
   return v3;
 }
 
-- (UARPMetaDataVoiceAssistSignature)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataVoiceAssistSignature)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataVoiceAssistSignature *)self init];
   v7 = v6;
   if (v6)
   {
     v13.receiver = v6;
     v13.super_class = UARPMetaDataVoiceAssistSignature;
-    v8 = [(UARPMetaData *)&v13 dataFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v13 dataFromPlistValue:valueCopy];
     modelSignature = v7->_modelSignature;
     v7->_modelSignature = v8;
 
@@ -52,12 +52,12 @@ LABEL_6:
   return v11;
 }
 
-- (UARPMetaDataVoiceAssistSignature)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataVoiceAssistSignature)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataVoiceAssistSignature *)self init];
   if (v6)
   {
-    v7 = [[NSData alloc] initWithBytes:a4 length:a3];
+    v7 = [[NSData alloc] initWithBytes:value length:length];
     modelSignature = v6->_modelSignature;
     v6->_modelSignature = v7;
 
@@ -69,9 +69,9 @@ LABEL_6:
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataVoiceAssistSignature *)self modelSignature];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  modelSignature = [(UARPMetaDataVoiceAssistSignature *)self modelSignature];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, modelSignature];
 
   return v5;
 }

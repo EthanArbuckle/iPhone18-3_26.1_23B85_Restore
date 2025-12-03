@@ -1,7 +1,7 @@
 @interface PGInterruptionAssistant
 - (BOOL)_lock_calculateIsInterrupted;
 - (BOOL)allowsResumingAfterInterruptionEnds;
-- (BOOL)hasInterruptionReason:(int64_t)a3;
+- (BOOL)hasInterruptionReason:(int64_t)reason;
 - (BOOL)isExemptFromUILockInterruptionsWhenActive;
 - (BOOL)isInterrupted;
 - (BOOL)isProxyActive;
@@ -10,33 +10,33 @@
 - (PGInterruptionAssistant)init;
 - (id)_interruptionsDescription;
 - (id)cameraInterruptionAttributions;
-- (id)copyWithExemptAttribution:(id)a3;
+- (id)copyWithExemptAttribution:(id)attribution;
 - (id)description;
 - (id)exemptAttribution;
-- (void)addReason:(int64_t)a3 attribution:(id)a4;
+- (void)addReason:(int64_t)reason attribution:(id)attribution;
 - (void)dealloc;
 - (void)noteDidNotifyProxyOfInterruptionBegan;
 - (void)noteDidNotifyProxyOfInterruptionEnded;
-- (void)removeReason:(int64_t)a3 attribution:(id)a4;
-- (void)setExemptAttribution:(id)a3;
-- (void)setExemptFromUILockInterruptionsWhenActive:(BOOL)a3;
-- (void)setProxyActive:(BOOL)a3;
+- (void)removeReason:(int64_t)reason attribution:(id)attribution;
+- (void)setExemptAttribution:(id)attribution;
+- (void)setExemptFromUILockInterruptionsWhenActive:(BOOL)active;
+- (void)setProxyActive:(BOOL)active;
 @end
 
 @implementation PGInterruptionAssistant
 
 - (BOOL)_lock_calculateIsInterrupted
 {
-  v2 = self;
-  v3 = [(NSMutableDictionary *)self->_lock_interruptions allKeys];
+  selfCopy = self;
+  allKeys = [(NSMutableDictionary *)self->_lock_interruptions allKeys];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __55__PGInterruptionAssistant__lock_calculateIsInterrupted__block_invoke;
   v5[3] = &unk_1E7F32640;
-  v5[4] = v2;
-  LOBYTE(v2) = [v3 bs_containsObjectPassingTest:v5];
+  v5[4] = selfCopy;
+  LOBYTE(selfCopy) = [allKeys bs_containsObjectPassingTest:v5];
 
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __55__PGInterruptionAssistant__lock_calculateIsInterrupted__block_invoke(uint64_t a1, void *a2)
@@ -116,8 +116,8 @@ __CFString *__31__PGInterruptionAssistant_init__block_invoke(uint64_t a1)
     v4 = @"NO";
   }
 
-  v5 = [(PGInterruptionAssistant *)self _interruptionsDescription];
-  v6 = [v3 stringWithFormat:@"isInterrupted:%@ interruptions: %@; exempt attribution:%@;", v4, v5, self->_lock_exemptAttribution];;
+  _interruptionsDescription = [(PGInterruptionAssistant *)self _interruptionsDescription];
+  v6 = [v3 stringWithFormat:@"isInterrupted:%@ interruptions: %@; exempt attribution:%@;", v4, _interruptionsDescription, self->_lock_exemptAttribution];;
 
   return v6;
 }
@@ -130,16 +130,16 @@ __CFString *__31__PGInterruptionAssistant_init__block_invoke(uint64_t a1)
   [(PGInterruptionAssistant *)&v3 dealloc];
 }
 
-- (id)copyWithExemptAttribution:(id)a3
+- (id)copyWithExemptAttribution:(id)attribution
 {
-  v4 = a3;
+  attributionCopy = attribution;
   v5 = objc_alloc_init(objc_opt_class());
   os_unfair_lock_lock(&self->_lock);
   v6 = [(NSMutableDictionary *)self->_lock_interruptions mutableCopy];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [v4 copy];
+  v8 = [attributionCopy copy];
   v9 = v5[2];
   v5[2] = v8;
 
@@ -158,19 +158,19 @@ __CFString *__31__PGInterruptionAssistant_init__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setExemptAttribution:(id)a3
+- (void)setExemptAttribution:(id)attribution
 {
-  v4 = a3;
+  attributionCopy = attribution;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [attributionCopy copy];
 
   lock_exemptAttribution = self->_lock_exemptAttribution;
   self->_lock_exemptAttribution = v5;
 
-  LOBYTE(v4) = self->_lock_isInterrupted;
-  v7 = [(PGInterruptionAssistant *)self _lock_calculateIsInterrupted];
-  self->_lock_isInterrupted = v7;
-  if ((v4 & 1) == 0 && v7)
+  LOBYTE(attributionCopy) = self->_lock_isInterrupted;
+  _lock_calculateIsInterrupted = [(PGInterruptionAssistant *)self _lock_calculateIsInterrupted];
+  self->_lock_isInterrupted = _lock_calculateIsInterrupted;
+  if ((attributionCopy & 1) == 0 && _lock_calculateIsInterrupted)
   {
     self->_lock_allowsResumingAfterInterruptionEnds = 1;
   }
@@ -186,10 +186,10 @@ __CFString *__31__PGInterruptionAssistant_init__block_invoke(uint64_t a1)
   return lock_isProxyActive;
 }
 
-- (void)setProxyActive:(BOOL)a3
+- (void)setProxyActive:(BOOL)active
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_isProxyActive = a3;
+  self->_lock_isProxyActive = active;
   self->_lock_isInterrupted = [(PGInterruptionAssistant *)self _lock_calculateIsInterrupted];
 
   os_unfair_lock_unlock(&self->_lock);
@@ -203,10 +203,10 @@ __CFString *__31__PGInterruptionAssistant_init__block_invoke(uint64_t a1)
   return lock_exemptFromUILockInterruptionsWhenActive;
 }
 
-- (void)setExemptFromUILockInterruptionsWhenActive:(BOOL)a3
+- (void)setExemptFromUILockInterruptionsWhenActive:(BOOL)active
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_exemptFromUILockInterruptionsWhenActive = a3;
+  self->_lock_exemptFromUILockInterruptionsWhenActive = active;
   self->_lock_isInterrupted = [(PGInterruptionAssistant *)self _lock_calculateIsInterrupted];
 
   os_unfair_lock_unlock(&self->_lock);
@@ -223,8 +223,8 @@ __CFString *__31__PGInterruptionAssistant_init__block_invoke(uint64_t a1)
 - (id)_interruptionsDescription
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_lock_interruptions allKeys];
-  v4 = [v3 bs_map:&__block_literal_global_2];
+  allKeys = [(NSMutableDictionary *)self->_lock_interruptions allKeys];
+  v4 = [allKeys bs_map:&__block_literal_global_2];
 
   os_unfair_lock_unlock(&self->_lock);
   v5 = [v4 componentsJoinedByString:{@", "}];
@@ -272,13 +272,13 @@ __CFString *__31__PGInterruptionAssistant_init__block_invoke(uint64_t a1)
   return lock_allowsResumingAfterInterruptionEnds;
 }
 
-- (void)addReason:(int64_t)a3 attribution:(id)a4
+- (void)addReason:(int64_t)reason attribution:(id)attribution
 {
-  v6 = a4;
+  attributionCopy = attribution;
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_isInterrupted)
   {
-    if (a3 == 1)
+    if (reason == 1)
     {
       self->_lock_allowsResumingAfterInterruptionEnds = 0;
     }
@@ -286,48 +286,48 @@ __CFString *__31__PGInterruptionAssistant_init__block_invoke(uint64_t a1)
 
   else
   {
-    self->_lock_allowsResumingAfterInterruptionEnds = a3 != 1;
+    self->_lock_allowsResumingAfterInterruptionEnds = reason != 1;
   }
 
-  v13 = [[_PGInterruption alloc] initWithReason:a3 attribution:v6];
+  v13 = [[_PGInterruption alloc] initWithReason:reason attribution:attributionCopy];
 
   lock_interruptions = self->_lock_interruptions;
   if (!lock_interruptions)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v9 = self->_lock_interruptions;
-    self->_lock_interruptions = v8;
+    self->_lock_interruptions = dictionary;
 
     lock_interruptions = self->_lock_interruptions;
   }
 
   v10 = [(NSMutableDictionary *)lock_interruptions objectForKeyedSubscript:v13];
-  v11 = [v10 integerValue];
+  integerValue = [v10 integerValue];
 
-  v12 = [MEMORY[0x1E696AD98] numberWithInteger:v11 + 1];
+  v12 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue + 1];
   [(NSMutableDictionary *)self->_lock_interruptions setObject:v12 forKeyedSubscript:v13];
 
   self->_lock_isInterrupted = [(PGInterruptionAssistant *)self _lock_calculateIsInterrupted];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeReason:(int64_t)a3 attribution:(id)a4
+- (void)removeReason:(int64_t)reason attribution:(id)attribution
 {
-  v6 = a4;
+  attributionCopy = attribution;
   os_unfair_lock_lock(&self->_lock);
-  v11 = [[_PGInterruption alloc] initWithReason:a3 attribution:v6];
+  v11 = [[_PGInterruption alloc] initWithReason:reason attribution:attributionCopy];
 
   v7 = [(NSMutableDictionary *)self->_lock_interruptions objectForKeyedSubscript:v11];
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
 
-  if (v8 <= 1)
+  if (integerValue <= 1)
   {
     [(NSMutableDictionary *)self->_lock_interruptions setObject:0 forKeyedSubscript:v11];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:v8 - 1];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue - 1];
     [(NSMutableDictionary *)self->_lock_interruptions setObject:v9 forKeyedSubscript:v11];
   }
 
@@ -341,20 +341,20 @@ __CFString *__31__PGInterruptionAssistant_init__block_invoke(uint64_t a1)
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)hasInterruptionReason:(int64_t)a3
+- (BOOL)hasInterruptionReason:(int64_t)reason
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_lock_interruptions allKeys];
+  allKeys = [(NSMutableDictionary *)self->_lock_interruptions allKeys];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__PGInterruptionAssistant_hasInterruptionReason___block_invoke;
   v7[3] = &unk_1E7F32618;
   v7[4] = self;
-  v7[5] = a3;
-  LOBYTE(a3) = [v5 bs_containsObjectPassingTest:v7];
+  v7[5] = reason;
+  LOBYTE(reason) = [allKeys bs_containsObjectPassingTest:v7];
 
   os_unfair_lock_unlock(&self->_lock);
-  return a3;
+  return reason;
 }
 
 uint64_t __49__PGInterruptionAssistant_hasInterruptionReason___block_invoke(uint64_t a1, void *a2)
@@ -377,8 +377,8 @@ uint64_t __49__PGInterruptionAssistant_hasInterruptionReason___block_invoke(uint
 - (id)cameraInterruptionAttributions
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_lock_interruptions allKeys];
-  v4 = [v3 bs_map:&__block_literal_global_59];
+  allKeys = [(NSMutableDictionary *)self->_lock_interruptions allKeys];
+  v4 = [allKeys bs_map:&__block_literal_global_59];
 
   os_unfair_lock_unlock(&self->_lock);
   if (v4)

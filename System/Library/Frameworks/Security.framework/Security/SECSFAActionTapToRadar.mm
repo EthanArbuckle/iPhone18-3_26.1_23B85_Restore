@@ -1,40 +1,40 @@
 @interface SECSFAActionTapToRadar
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SECSFAActionTapToRadar
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[1])
+  fromCopy = from;
+  if (fromCopy[1])
   {
     [(SECSFAActionTapToRadar *)self setAlert:?];
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
     [(SECSFAActionTapToRadar *)self setRadarDescription:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(SECSFAActionTapToRadar *)self setComponentName:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(SECSFAActionTapToRadar *)self setComponentVersion:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(SECSFAActionTapToRadar *)self setComponentID:?];
   }
@@ -49,13 +49,13 @@
   return v6 ^ [(NSString *)self->_componentID hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((alert = self->_alert, !(alert | v4[1])) || -[NSString isEqual:](alert, "isEqual:")) && ((radarDescription = self->_radarDescription, !(radarDescription | v4[5])) || -[NSString isEqual:](radarDescription, "isEqual:")) && ((componentName = self->_componentName, !(componentName | v4[3])) || -[NSString isEqual:](componentName, "isEqual:")) && ((componentVersion = self->_componentVersion, !(componentVersion | v4[4])) || -[NSString isEqual:](componentVersion, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((alert = self->_alert, !(alert | equalCopy[1])) || -[NSString isEqual:](alert, "isEqual:")) && ((radarDescription = self->_radarDescription, !(radarDescription | equalCopy[5])) || -[NSString isEqual:](radarDescription, "isEqual:")) && ((componentName = self->_componentName, !(componentName | equalCopy[3])) || -[NSString isEqual:](componentName, "isEqual:")) && ((componentVersion = self->_componentVersion, !(componentVersion | equalCopy[4])) || -[NSString isEqual:](componentVersion, "isEqual:")))
   {
     componentID = self->_componentID;
-    if (componentID | v4[2])
+    if (componentID | equalCopy[2])
     {
       v10 = [(NSString *)componentID isEqual:?];
     }
@@ -74,110 +74,110 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_alert copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_alert copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_radarDescription copyWithZone:a3];
+  v8 = [(NSString *)self->_radarDescription copyWithZone:zone];
   v9 = v5[5];
   v5[5] = v8;
 
-  v10 = [(NSString *)self->_componentName copyWithZone:a3];
+  v10 = [(NSString *)self->_componentName copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(NSString *)self->_componentVersion copyWithZone:a3];
+  v12 = [(NSString *)self->_componentVersion copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
-  v14 = [(NSString *)self->_componentID copyWithZone:a3];
+  v14 = [(NSString *)self->_componentID copyWithZone:zone];
   v15 = v5[2];
   v5[2] = v14;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_alert)
   {
-    [v4 setAlert:?];
-    v4 = v5;
+    [toCopy setAlert:?];
+    toCopy = v5;
   }
 
   if (self->_radarDescription)
   {
     [v5 setRadarDescription:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_componentName)
   {
     [v5 setComponentName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_componentVersion)
   {
     [v5 setComponentVersion:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_componentID)
   {
     [v5 setComponentID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_alert)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_radarDescription)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_componentName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_componentVersion)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_componentID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   alert = self->_alert;
   if (alert)
   {
-    [v3 setObject:alert forKey:@"alert"];
+    [dictionary setObject:alert forKey:@"alert"];
   }
 
   radarDescription = self->_radarDescription;
@@ -213,8 +213,8 @@
   v8.receiver = self;
   v8.super_class = SECSFAActionTapToRadar;
   v4 = [(SECSFAActionTapToRadar *)&v8 description];
-  v5 = [(SECSFAActionTapToRadar *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SECSFAActionTapToRadar *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

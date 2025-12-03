@@ -1,7 +1,7 @@
 @interface ASAuthorizationSingleSignOnRequest
-- (ASAuthorizationSingleSignOnRequest)initWithProvider:(id)a3;
+- (ASAuthorizationSingleSignOnRequest)initWithProvider:(id)provider;
 - (BOOL)isUserInterfaceEnabled;
-- (BOOL)supportsStyle:(int64_t)a3;
+- (BOOL)supportsStyle:(int64_t)style;
 - (NSArray)authorizationOptions;
 - (void)setAuthorizationOptions:(NSArray *)authorizationOptions;
 - (void)setUserInterfaceEnabled:(BOOL)userInterfaceEnabled;
@@ -9,11 +9,11 @@
 
 @implementation ASAuthorizationSingleSignOnRequest
 
-- (ASAuthorizationSingleSignOnRequest)initWithProvider:(id)a3
+- (ASAuthorizationSingleSignOnRequest)initWithProvider:(id)provider
 {
   v7.receiver = self;
   v7.super_class = ASAuthorizationSingleSignOnRequest;
-  v3 = [(ASAuthorizationRequest *)&v7 initWithProvider:a3];
+  v3 = [(ASAuthorizationRequest *)&v7 initWithProvider:provider];
   v4 = v3;
   if (v3)
   {
@@ -25,11 +25,11 @@
   return v4;
 }
 
-- (BOOL)supportsStyle:(int64_t)a3
+- (BOOL)supportsStyle:(int64_t)style
 {
-  if (a3 < 3)
+  if (style < 3)
   {
-    return 1u >> (a3 & 7);
+    return 1u >> (style & 7);
   }
 
   else

@@ -1,14 +1,14 @@
 @interface JSPersistence
-- (id)getValueForKey:(id)a3 :(id)a4;
+- (id)getValueForKey:(id)key :(id)a4;
 @end
 
 @implementation JSPersistence
 
-- (id)getValueForKey:(id)a3 :(id)a4
+- (id)getValueForKey:(id)key :(id)a4
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = a4;
-  v8 = self;
+  selfCopy = self;
   v9 = sub_216AE3860();
 
   return v9;

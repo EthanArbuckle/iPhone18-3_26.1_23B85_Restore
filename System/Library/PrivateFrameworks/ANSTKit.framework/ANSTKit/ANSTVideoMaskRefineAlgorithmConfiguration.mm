@@ -1,15 +1,15 @@
 @interface ANSTVideoMaskRefineAlgorithmConfiguration
-- (ANSTVideoMaskRefineAlgorithmConfiguration)initWithVersion:(unint64_t)a3;
+- (ANSTVideoMaskRefineAlgorithmConfiguration)initWithVersion:(unint64_t)version;
 - (id)description;
 @end
 
 @implementation ANSTVideoMaskRefineAlgorithmConfiguration
 
-- (ANSTVideoMaskRefineAlgorithmConfiguration)initWithVersion:(unint64_t)a3
+- (ANSTVideoMaskRefineAlgorithmConfiguration)initWithVersion:(unint64_t)version
 {
   v4.receiver = self;
   v4.super_class = ANSTVideoMaskRefineAlgorithmConfiguration;
-  return [(ANSTConfiguration *)&v4 initWithVersion:a3];
+  return [(ANSTConfiguration *)&v4 initWithVersion:version];
 }
 
 - (id)description

@@ -1,47 +1,47 @@
 @interface TRINamespaceDescriptorSetExternalRefStore
-- (BOOL)hasReferenceToPath:(id)a3;
-- (TRINamespaceDescriptorSetExternalRefStore)initWithServerContext:(id)a3;
+- (BOOL)hasReferenceToPath:(id)path;
+- (TRINamespaceDescriptorSetExternalRefStore)initWithServerContext:(id)context;
 @end
 
 @implementation TRINamespaceDescriptorSetExternalRefStore
 
-- (TRINamespaceDescriptorSetExternalRefStore)initWithServerContext:(id)a3
+- (TRINamespaceDescriptorSetExternalRefStore)initWithServerContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = TRINamespaceDescriptorSetExternalRefStore;
   v6 = [(TRINamespaceDescriptorSetExternalRefStore *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
 }
 
-- (BOOL)hasReferenceToPath:(id)a3
+- (BOOL)hasReferenceToPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = [TRINamespaceDescriptorSetStorage alloc];
-  v6 = [(TRIServerContext *)self->_context paths];
-  v7 = [(TRINamespaceDescriptorSetStorage *)v5 initWithPaths:v6];
+  paths = [(TRIServerContext *)self->_context paths];
+  v7 = [(TRINamespaceDescriptorSetStorage *)v5 initWithPaths:paths];
 
-  v8 = [(TRINamespaceDescriptorSetStorage *)v7 parentDirForNamespaceDescriptorSets];
-  v9 = [v8 stringByAppendingString:@"/"];
+  parentDirForNamespaceDescriptorSets = [(TRINamespaceDescriptorSetStorage *)v7 parentDirForNamespaceDescriptorSets];
+  v9 = [parentDirForNamespaceDescriptorSets stringByAppendingString:@"/"];
 
-  v10 = [v4 triStringByResolvingSymlinksInPath];
-  v11 = [v9 triStringByResolvingSymlinksInPath];
-  v12 = [v10 hasPrefix:v11];
+  triStringByResolvingSymlinksInPath = [pathCopy triStringByResolvingSymlinksInPath];
+  triStringByResolvingSymlinksInPath2 = [v9 triStringByResolvingSymlinksInPath];
+  v12 = [triStringByResolvingSymlinksInPath hasPrefix:triStringByResolvingSymlinksInPath2];
 
   if (v12)
   {
-    v13 = [v4 lastPathComponent];
-    v14 = v13;
-    if (v13 && [v13 triIsPathSafePlausibleUniqueId])
+    lastPathComponent = [pathCopy lastPathComponent];
+    v14 = lastPathComponent;
+    if (lastPathComponent && [lastPathComponent triIsPathSafePlausibleUniqueId])
     {
-      v15 = [(TRIServerContext *)self->_context experimentDatabase];
-      v16 = [v15 hasRecordReferencingTreatmentId:v14 withReferenceType:3];
+      experimentDatabase = [(TRIServerContext *)self->_context experimentDatabase];
+      v16 = [experimentDatabase hasRecordReferencingTreatmentId:v14 withReferenceType:3];
     }
 
     else

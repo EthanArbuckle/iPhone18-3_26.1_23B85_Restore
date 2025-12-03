@@ -1,47 +1,47 @@
 @interface ATXContextFlightEventSuggestionProducer
-- (ATXContextFlightEventSuggestionProducer)initWithTitle:(id)a3 flightInformationSchema:(id)a4 urlString:(id)a5 teamIdentifier:(id)a6 validFromStartDate:(id)a7 validToEndDate:(id)a8 alternateDestinationTitle:(id)a9 dateInterval:(id)a10;
-- (id)_contextTitleWithReasons:(unint64_t)a3;
-- (id)_stringsWithPredictionReasons:(unint64_t)a3;
-- (id)suggestionForAirplaneModeWithPredictionReasons:(unint64_t)a3 score:(double)a4;
-- (id)suggestionForFlightCheckInWithReason:(unint64_t)a3 score:(double)a4;
-- (id)suggestionForFlightInformationWithReason:(unint64_t)a3 score:(double)a4 date:(id)a5;
-- (id)suggestionForRideShareAppForDestination:(id)a3 source:(id)a4 rideOptionName:(id)a5 preferredBundleId:(id)a6 predictionReasons:(unint64_t)a7 score:(double)a8;
-- (id)suggestionForWeatherAtFlightDestinationLocation:(CLLocationCoordinate2D)a3 destination:(id)a4 predictionReasons:(unint64_t)a5 score:(double)a6;
-- (id)suggestionWithAction:(id)a3 predictionReasons:(unint64_t)a4 score:(double)a5;
+- (ATXContextFlightEventSuggestionProducer)initWithTitle:(id)title flightInformationSchema:(id)schema urlString:(id)string teamIdentifier:(id)identifier validFromStartDate:(id)date validToEndDate:(id)endDate alternateDestinationTitle:(id)destinationTitle dateInterval:(id)self0;
+- (id)_contextTitleWithReasons:(unint64_t)reasons;
+- (id)_stringsWithPredictionReasons:(unint64_t)reasons;
+- (id)suggestionForAirplaneModeWithPredictionReasons:(unint64_t)reasons score:(double)score;
+- (id)suggestionForFlightCheckInWithReason:(unint64_t)reason score:(double)score;
+- (id)suggestionForFlightInformationWithReason:(unint64_t)reason score:(double)score date:(id)date;
+- (id)suggestionForRideShareAppForDestination:(id)destination source:(id)source rideOptionName:(id)name preferredBundleId:(id)id predictionReasons:(unint64_t)reasons score:(double)score;
+- (id)suggestionForWeatherAtFlightDestinationLocation:(CLLocationCoordinate2D)location destination:(id)destination predictionReasons:(unint64_t)reasons score:(double)score;
+- (id)suggestionWithAction:(id)action predictionReasons:(unint64_t)reasons score:(double)score;
 @end
 
 @implementation ATXContextFlightEventSuggestionProducer
 
-- (ATXContextFlightEventSuggestionProducer)initWithTitle:(id)a3 flightInformationSchema:(id)a4 urlString:(id)a5 teamIdentifier:(id)a6 validFromStartDate:(id)a7 validToEndDate:(id)a8 alternateDestinationTitle:(id)a9 dateInterval:(id)a10
+- (ATXContextFlightEventSuggestionProducer)initWithTitle:(id)title flightInformationSchema:(id)schema urlString:(id)string teamIdentifier:(id)identifier validFromStartDate:(id)date validToEndDate:(id)endDate alternateDestinationTitle:(id)destinationTitle dateInterval:(id)self0
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v22 = a8;
-  v17 = a9;
-  v18 = a10;
+  titleCopy = title;
+  schemaCopy = schema;
+  stringCopy = string;
+  identifierCopy = identifier;
+  dateCopy = date;
+  endDateCopy = endDate;
+  destinationTitleCopy = destinationTitle;
+  intervalCopy = interval;
   v28.receiver = self;
   v28.super_class = ATXContextFlightEventSuggestionProducer;
   v19 = [(ATXContextFlightEventSuggestionProducer *)&v28 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_title, a3);
-    objc_storeStrong(&v20->_flightInformationSchema, a4);
-    objc_storeStrong(&v20->_urlString, a5);
-    objc_storeStrong(&v20->_teamIdentifier, a6);
-    objc_storeStrong(&v20->_validFromStartDate, a7);
-    objc_storeStrong(&v20->_validToEndDate, a8);
-    objc_storeStrong(&v20->_alternateDestinationTitle, a9);
-    objc_storeStrong(&v20->_dateInterval, a10);
+    objc_storeStrong(&v19->_title, title);
+    objc_storeStrong(&v20->_flightInformationSchema, schema);
+    objc_storeStrong(&v20->_urlString, string);
+    objc_storeStrong(&v20->_teamIdentifier, identifier);
+    objc_storeStrong(&v20->_validFromStartDate, date);
+    objc_storeStrong(&v20->_validToEndDate, endDate);
+    objc_storeStrong(&v20->_alternateDestinationTitle, destinationTitle);
+    objc_storeStrong(&v20->_dateInterval, interval);
   }
 
   return v20;
 }
 
-- (id)_contextTitleWithReasons:(unint64_t)a3
+- (id)_contextTitleWithReasons:(unint64_t)reasons
 {
   v32 = *MEMORY[0x277D85DE8];
   v5 = __atxlog_handle_context_heuristic();
@@ -63,7 +63,7 @@
 
   if (v11)
   {
-    if ((a3 & 0x80000000) == 0)
+    if ((reasons & 0x80000000) == 0)
     {
       goto LABEL_5;
     }
@@ -89,13 +89,13 @@ LABEL_22:
   }
 
   v11 = self->_alternateDestinationTitle;
-  if ((a3 & 0x80000000) != 0)
+  if ((reasons & 0x80000000) != 0)
   {
     goto LABEL_11;
   }
 
 LABEL_5:
-  if ((a3 & 0x100000000) != 0)
+  if ((reasons & 0x100000000) != 0)
   {
     if (!v11)
     {
@@ -110,7 +110,7 @@ LABEL_5:
     goto LABEL_18;
   }
 
-  if ((a3 & 0x200000000) != 0)
+  if ((reasons & 0x200000000) != 0)
   {
     if (v11)
     {
@@ -131,7 +131,7 @@ LABEL_21:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
   {
     v22 = self->_title;
-    v23 = [(ATXContextFlightEventSuggestionProducer *)self _stringsWithPredictionReasons:a3];
+    v23 = [(ATXContextFlightEventSuggestionProducer *)self _stringsWithPredictionReasons:reasons];
     *buf = 136446978;
     v25 = "[ATXContextFlightEventSuggestionProducer _contextTitleWithReasons:]";
     v26 = 2112;
@@ -151,7 +151,7 @@ LABEL_23:
   return v13;
 }
 
-- (id)_stringsWithPredictionReasons:(unint64_t)a3
+- (id)_stringsWithPredictionReasons:(unint64_t)reasons
 {
   v5 = 0;
   v6 = &v5;
@@ -172,20 +172,20 @@ void __73__ATXContextFlightEventSuggestionProducer__stringsWithPredictionReasons
   [*(*(*(a1 + 32) + 8) + 40) addObject:v2];
 }
 
-- (id)suggestionWithAction:(id)a3 predictionReasons:(unint64_t)a4 score:(double)a5
+- (id)suggestionWithAction:(id)action predictionReasons:(unint64_t)reasons score:(double)score
 {
-  v8 = a3;
-  v9 = [(ATXContextFlightEventSuggestionProducer *)self _contextTitleWithReasons:a4];
-  v10 = [ATXContextHeuristicSuggestionProducer suggestionWithSpotlightAction:v8 predictionReasons:a4 localizedReason:v9 score:0 dateInterval:a5];
+  actionCopy = action;
+  v9 = [(ATXContextFlightEventSuggestionProducer *)self _contextTitleWithReasons:reasons];
+  v10 = [ATXContextHeuristicSuggestionProducer suggestionWithSpotlightAction:actionCopy predictionReasons:reasons localizedReason:v9 score:0 dateInterval:score];
 
   return v10;
 }
 
-- (id)suggestionForFlightInformationWithReason:(unint64_t)a3 score:(double)a4 date:(id)a5
+- (id)suggestionForFlightInformationWithReason:(unint64_t)reason score:(double)score date:(id)date
 {
   v23 = *MEMORY[0x277D85DE8];
   flightInformationSchema = self->_flightInformationSchema;
-  v10 = a5;
+  dateCopy = date;
   v11 = [(NSDictionary *)flightInformationSchema objectForKeyedSubscript:@"reservationFor"];
   v12 = [v11 objectForKeyedSubscript:@"flightNumber"];
 
@@ -205,41 +205,41 @@ void __73__ATXContextFlightEventSuggestionProducer__stringsWithPredictionReasons
   }
 
   v14 = [objc_alloc(MEMORY[0x277CEB2D0]) initWithStartDate:self->_validFromStartDate endDate:self->_validToEndDate lockScreenEligible:0 predicate:0];
-  v15 = [objc_alloc(MEMORY[0x277CEB860]) initWithFlightCode:v12 date:v10 criteria:v14];
+  v15 = [objc_alloc(MEMORY[0x277CEB860]) initWithFlightCode:v12 date:dateCopy criteria:v14];
 
-  v16 = [(ATXContextFlightEventSuggestionProducer *)self suggestionWithAction:v15 predictionReasons:a3 score:a4];
+  v16 = [(ATXContextFlightEventSuggestionProducer *)self suggestionWithAction:v15 predictionReasons:reason score:score];
 
   v17 = *MEMORY[0x277D85DE8];
 
   return v16;
 }
 
-- (id)suggestionForWeatherAtFlightDestinationLocation:(CLLocationCoordinate2D)a3 destination:(id)a4 predictionReasons:(unint64_t)a5 score:(double)a6
+- (id)suggestionForWeatherAtFlightDestinationLocation:(CLLocationCoordinate2D)location destination:(id)destination predictionReasons:(unint64_t)reasons score:(double)score
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = location.longitude;
+  latitude = location.latitude;
   v11 = MEMORY[0x277CEB2D0];
-  v12 = a4;
+  destinationCopy = destination;
   v13 = [[v11 alloc] initWithStartDate:self->_validFromStartDate endDate:self->_validToEndDate lockScreenEligible:0 predicate:0];
-  v14 = [objc_alloc(MEMORY[0x277CEB860]) initWithWeatherLocation:v12 latitude:v13 longitude:latitude criteria:longitude];
+  v14 = [objc_alloc(MEMORY[0x277CEB860]) initWithWeatherLocation:destinationCopy latitude:v13 longitude:latitude criteria:longitude];
 
-  v15 = [(ATXContextFlightEventSuggestionProducer *)self suggestionWithAction:v14 predictionReasons:a5 score:a6];
+  v15 = [(ATXContextFlightEventSuggestionProducer *)self suggestionWithAction:v14 predictionReasons:reasons score:score];
 
   return v15;
 }
 
-- (id)suggestionForRideShareAppForDestination:(id)a3 source:(id)a4 rideOptionName:(id)a5 preferredBundleId:(id)a6 predictionReasons:(unint64_t)a7 score:(double)a8
+- (id)suggestionForRideShareAppForDestination:(id)destination source:(id)source rideOptionName:(id)name preferredBundleId:(id)id predictionReasons:(unint64_t)reasons score:(double)score
 {
-  v12 = a6;
-  v13 = a3;
-  v14 = [(ATXContextFlightEventSuggestionProducer *)self _contextTitleWithReasons:a7];
+  idCopy = id;
+  destinationCopy = destination;
+  v14 = [(ATXContextFlightEventSuggestionProducer *)self _contextTitleWithReasons:reasons];
   validToEndDate = self->_validToEndDate;
-  v16 = [ATXContextHeuristicSuggestionProducer rideshareAppActionForDestination:v13 preferredBundleId:v12 predictionReasons:a7 title:self->_title localizedReason:v14 score:self->_validFromStartDate validFromStartDate:a8 validToEndDate:validToEndDate dateInterval:self->_dateInterval];
+  v16 = [ATXContextHeuristicSuggestionProducer rideshareAppActionForDestination:destinationCopy preferredBundleId:idCopy predictionReasons:reasons title:self->_title localizedReason:v14 score:self->_validFromStartDate validFromStartDate:score validToEndDate:validToEndDate dateInterval:self->_dateInterval];
 
   return v16;
 }
 
-- (id)suggestionForFlightCheckInWithReason:(unint64_t)a3 score:(double)a4
+- (id)suggestionForFlightCheckInWithReason:(unint64_t)reason score:(double)score
 {
   if (!self->_title)
   {
@@ -251,16 +251,16 @@ void __73__ATXContextFlightEventSuggestionProducer__stringsWithPredictionReasons
     [ATXContextFlightEventSuggestionProducer suggestionForFlightCheckInWithReason:a2 score:self];
   }
 
-  v8 = [(ATXContextFlightEventSuggestionProducer *)self _contextTitleWithReasons:a3];
-  v9 = [ATXContextHeuristicSuggestionProducer flightCheckInActivityWithSubtitle:self->_title url:self->_urlString teamIdentifier:self->_teamIdentifier predictionReasons:a3 localizedReason:v8 score:self->_validFromStartDate validStartDate:a4 validEndDate:self->_validToEndDate];
+  v8 = [(ATXContextFlightEventSuggestionProducer *)self _contextTitleWithReasons:reason];
+  v9 = [ATXContextHeuristicSuggestionProducer flightCheckInActivityWithSubtitle:self->_title url:self->_urlString teamIdentifier:self->_teamIdentifier predictionReasons:reason localizedReason:v8 score:self->_validFromStartDate validStartDate:score validEndDate:self->_validToEndDate];
 
   return v9;
 }
 
-- (id)suggestionForAirplaneModeWithPredictionReasons:(unint64_t)a3 score:(double)a4
+- (id)suggestionForAirplaneModeWithPredictionReasons:(unint64_t)reasons score:(double)score
 {
   v7 = [(ATXContextFlightEventSuggestionProducer *)self _contextTitleWithReasons:?];
-  v8 = [ATXContextHeuristicSuggestionProducer toggleAirplaneModeWithPredictionReasons:a3 localizedReason:v7 score:self->_validFromStartDate validFromStartDate:self->_validToEndDate validToEndDate:self->_dateInterval dateInterval:a4];
+  v8 = [ATXContextHeuristicSuggestionProducer toggleAirplaneModeWithPredictionReasons:reasons localizedReason:v7 score:self->_validFromStartDate validFromStartDate:self->_validToEndDate validToEndDate:self->_dateInterval dateInterval:score];
 
   return v8;
 }

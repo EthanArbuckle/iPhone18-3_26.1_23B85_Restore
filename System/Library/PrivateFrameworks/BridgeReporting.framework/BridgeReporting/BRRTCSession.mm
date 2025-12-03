@@ -1,7 +1,7 @@
 @interface BRRTCSession
-+ (id)_parentRTCReportingSession:(id)a3;
++ (id)_parentRTCReportingSession:(id)session;
 + (id)reportingSession;
-+ (void)startRTCReportingSessionWithConfiguration:(id)a3 andComplection:(id)a4;
++ (void)startRTCReportingSessionWithConfiguration:(id)configuration andComplection:(id)complection;
 @end
 
 @implementation BRRTCSession
@@ -25,10 +25,10 @@ uint64_t __32__BRRTCSession_reportingSession__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)startRTCReportingSessionWithConfiguration:(id)a3 andComplection:(id)a4
++ (void)startRTCReportingSessionWithConfiguration:(id)configuration andComplection:(id)complection
 {
-  v5 = a3;
-  v6 = a4;
+  configurationCopy = configuration;
+  complectionCopy = complection;
   if (_utilityQueue_onceToken != -1)
   {
     +[BRRTCSession startRTCReportingSessionWithConfiguration:andComplection:];
@@ -39,10 +39,10 @@ uint64_t __32__BRRTCSession_reportingSession__block_invoke()
   v10[1] = 3221225472;
   v10[2] = __73__BRRTCSession_startRTCReportingSessionWithConfiguration_andComplection___block_invoke;
   v10[3] = &unk_278D26F90;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = configurationCopy;
+  v12 = complectionCopy;
+  v8 = complectionCopy;
+  v9 = configurationCopy;
   dispatch_async(v7, v10);
 }
 
@@ -89,7 +89,7 @@ uint64_t __73__BRRTCSession_startRTCReportingSessionWithConfiguration_andComplec
   return result;
 }
 
-+ (id)_parentRTCReportingSession:(id)a3
++ (id)_parentRTCReportingSession:(id)session
 {
   v19[4] = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277D44040];
@@ -103,13 +103,13 @@ uint64_t __73__BRRTCSession_startRTCReportingSessionWithConfiguration_andComplec
   v19[2] = &unk_2854117C8;
   v19[3] = MEMORY[0x277CBEC38];
   v5 = MEMORY[0x277CBEAC0];
-  v6 = a3;
+  sessionCopy = session;
   v7 = [v5 dictionaryWithObjects:v19 forKeys:v18 count:4];
   v8 = *MEMORY[0x277D44098];
   v16[0] = *MEMORY[0x277D44090];
   v16[1] = v8;
   v17[0] = @"SetupAndPairing";
-  v17[1] = v6;
+  v17[1] = sessionCopy;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
   v10 = objc_alloc(MEMORY[0x277D43FE0]);
 

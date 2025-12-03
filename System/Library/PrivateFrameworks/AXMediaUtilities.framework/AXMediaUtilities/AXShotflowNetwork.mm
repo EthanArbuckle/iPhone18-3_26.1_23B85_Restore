@@ -1,57 +1,57 @@
 @interface AXShotflowNetwork
-+ (id)cpuNetworkWithModelPath:(id)a3 configuration:(id)a4 version:(int)a5 modelType:(int64_t)a6;
-+ (id)gpuNetworkWithModelPath:(id)a3 configuration:(id)a4 preferredMetalDeviceID:(int)a5 version:(int)a6 modelType:(int64_t)a7;
-- (AXShotflowNetwork)initWithModelPath:(id)a3 espressoEngineID:(int)a4 espressoDeviceID:(int)a5 configuration:(id)a6 version:(int)a7 modelType:(int64_t)a8;
++ (id)cpuNetworkWithModelPath:(id)path configuration:(id)configuration version:(int)version modelType:(int64_t)type;
++ (id)gpuNetworkWithModelPath:(id)path configuration:(id)configuration preferredMetalDeviceID:(int)d version:(int)version modelType:(int64_t)type;
+- (AXShotflowNetwork)initWithModelPath:(id)path espressoEngineID:(int)d espressoDeviceID:(int)iD configuration:(id)configuration version:(int)version modelType:(int64_t)type;
 - (id).cxx_construct;
-- (id)processCIImage:(id)a3;
-- (id)processVImage:(vImage_Buffer *)a3 inputIsBGR:(BOOL)a4;
-- (id)resizeAndProcessVImage:(vImage_Buffer *)a3 inputIsBGR:(BOOL)a4;
-- (int)setInputShape:(unint64_t)a3 height:(unint64_t)a4;
+- (id)processCIImage:(id)image;
+- (id)processVImage:(vImage_Buffer *)image inputIsBGR:(BOOL)r;
+- (id)resizeAndProcessVImage:(vImage_Buffer *)image inputIsBGR:(BOOL)r;
+- (int)setInputShape:(unint64_t)shape height:(unint64_t)height;
 - (void)dealloc;
-- (void)runNetwork:(vImage_Buffer *)a3 inputIsBGR:(BOOL)a4;
+- (void)runNetwork:(vImage_Buffer *)network inputIsBGR:(BOOL)r;
 @end
 
 @implementation AXShotflowNetwork
 
-+ (id)cpuNetworkWithModelPath:(id)a3 configuration:(id)a4 version:(int)a5 modelType:(int64_t)a6
++ (id)cpuNetworkWithModelPath:(id)path configuration:(id)configuration version:(int)version modelType:(int64_t)type
 {
-  v7 = *&a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = [[a1 alloc] initWithModelPath:v10 espressoEngineID:0 espressoDeviceID:0xFFFFFFFFLL configuration:v11 version:v7 modelType:a6];
+  v7 = *&version;
+  pathCopy = path;
+  configurationCopy = configuration;
+  v12 = [[self alloc] initWithModelPath:pathCopy espressoEngineID:0 espressoDeviceID:0xFFFFFFFFLL configuration:configurationCopy version:v7 modelType:type];
 
   return v12;
 }
 
-+ (id)gpuNetworkWithModelPath:(id)a3 configuration:(id)a4 preferredMetalDeviceID:(int)a5 version:(int)a6 modelType:(int64_t)a7
++ (id)gpuNetworkWithModelPath:(id)path configuration:(id)configuration preferredMetalDeviceID:(int)d version:(int)version modelType:(int64_t)type
 {
-  v8 = *&a6;
-  v9 = *&a5;
-  v12 = a3;
-  v13 = a4;
-  NSLog(&cfstr_TryingAneBacke.isa, v12);
-  v14 = [[a1 alloc] initWithModelPath:v12 espressoEngineID:10007 espressoDeviceID:v9 configuration:v13 version:v8 modelType:a7];
+  v8 = *&version;
+  v9 = *&d;
+  pathCopy = path;
+  configurationCopy = configuration;
+  NSLog(&cfstr_TryingAneBacke.isa, pathCopy);
+  v14 = [[self alloc] initWithModelPath:pathCopy espressoEngineID:10007 espressoDeviceID:v9 configuration:configurationCopy version:v8 modelType:type];
 
   return v14;
 }
 
-- (AXShotflowNetwork)initWithModelPath:(id)a3 espressoEngineID:(int)a4 espressoDeviceID:(int)a5 configuration:(id)a6 version:(int)a7 modelType:(int64_t)a8
+- (AXShotflowNetwork)initWithModelPath:(id)path espressoEngineID:(int)d espressoDeviceID:(int)iD configuration:(id)configuration version:(int)version modelType:(int64_t)type
 {
   v130 = *MEMORY[0x1E69E9840];
-  v89 = a3;
-  v90 = a6;
+  pathCopy = path;
+  configurationCopy = configuration;
   v109.receiver = self;
   v109.super_class = AXShotflowNetwork;
   v91 = [(AXShotflowNetwork *)&v109 init];
   if (v91)
   {
-    v12 = [v90 networkThreshold];
-    [v12 floatValue];
+    networkThreshold = [configurationCopy networkThreshold];
+    [networkThreshold floatValue];
     *(v91 + 341) = v13;
 
     v14 = v91;
-    *(v91 + 46) = a7;
-    *(v91 + 1) = a8;
+    *(v91 + 46) = version;
+    *(v91 + 1) = type;
     *(v91 + 98) = 1;
     *(v91 + 678) = 257;
     *(v91 + 340) = 1140064256;
@@ -62,7 +62,7 @@
     __src[0] = xmmword_1AE451E78;
     *&__src[1] = 0x3F6666663F19999ALL;
     std::vector<float>::__assign_with_size[abi:ne200100]<float const*,float const*>(v91 + 39, __src, &__src[1] + 8, 6uLL);
-    if (a8 == 2)
+    if (type == 2)
     {
       v91[196] = 0;
       *(v91 + 47) = 0;
@@ -100,8 +100,8 @@
       v98 = 0u;
       v99 = 0u;
       v100 = 0u;
-      v17 = [v90 ratios];
-      v18 = [v17 countByEnumeratingWithState:&v97 objects:v111 count:16];
+      ratios = [configurationCopy ratios];
+      v18 = [ratios countByEnumeratingWithState:&v97 objects:v111 count:16];
       if (v18)
       {
         v19 = *v98;
@@ -111,7 +111,7 @@
           {
             if (*v98 != v19)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(ratios);
             }
 
             [*(*(&v97 + 1) + 8 * j) floatValue];
@@ -119,14 +119,14 @@
             std::vector<float>::push_back[abi:ne200100](v91 + 33, __src);
           }
 
-          v18 = [v17 countByEnumeratingWithState:&v97 objects:v111 count:16];
+          v18 = [ratios countByEnumeratingWithState:&v97 objects:v111 count:16];
         }
 
         while (v18);
       }
 
-      v22 = [v90 ratios];
-      *(v91 + 64) = [v22 count];
+      ratios2 = [configurationCopy ratios];
+      *(v91 + 64) = [ratios2 count];
 
       *(v91 + 37) = *(v91 + 36);
       *(v91 + 40) = *(v91 + 39);
@@ -134,8 +134,8 @@
       v94 = 0u;
       v95 = 0u;
       v96 = 0u;
-      v23 = [v90 defaultBoxesSidesNormalized];
-      v24 = [v23 countByEnumeratingWithState:&v93 objects:v110 count:16];
+      defaultBoxesSidesNormalized = [configurationCopy defaultBoxesSidesNormalized];
+      v24 = [defaultBoxesSidesNormalized countByEnumeratingWithState:&v93 objects:v110 count:16];
       if (v24)
       {
         v25 = *v94;
@@ -145,7 +145,7 @@
           {
             if (*v94 != v25)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(defaultBoxesSidesNormalized);
             }
 
             v27 = *(*(&v93 + 1) + 8 * k);
@@ -157,7 +157,7 @@
             std::vector<float>::push_back[abi:ne200100](v91 + 36, __src);
           }
 
-          v24 = [v23 countByEnumeratingWithState:&v93 objects:v110 count:16];
+          v24 = [defaultBoxesSidesNormalized countByEnumeratingWithState:&v93 objects:v110 count:16];
         }
 
         while (v24);
@@ -174,7 +174,7 @@
       goto LABEL_28;
     }
 
-    if (a8 != 1)
+    if (type != 1)
     {
 LABEL_96:
       context = espresso_create_context();
@@ -185,8 +185,8 @@ LABEL_96:
         *(v14 + 2) = plan;
         if (plan)
         {
-          v71 = v89;
-          [v89 UTF8String];
+          v71 = pathCopy;
+          [pathCopy UTF8String];
           if (!espresso_plan_add_network() && !espresso_plan_build())
           {
             memset(__src, 0, sizeof(__src));
@@ -216,11 +216,11 @@ LABEL_96:
       __cxa_throw(v86, MEMORY[0x1E69E5408], MEMORY[0x1E69E5288]);
     }
 
-    if (a7 > 8)
+    if (version > 8)
     {
-      if (a7 <= 11)
+      if (version <= 11)
       {
-        if (a7 == 9)
+        if (version == 9)
         {
           *(v91 + 47) = 0;
           *(v91 + 50) = 6;
@@ -240,7 +240,7 @@ LABEL_96:
 
         else
         {
-          if (a7 != 10)
+          if (version != 10)
           {
             v91[196] = 0;
             *(v91 + 50) = 20;
@@ -314,7 +314,7 @@ LABEL_31:
         goto LABEL_91;
       }
 
-      switch(a7)
+      switch(version)
       {
         case 12:
           v91[197] = 1;
@@ -380,8 +380,8 @@ LABEL_95:
         case 14:
           v91[196] = 0;
           *(v91 + 47) = 0;
-          v33 = [v90 filterThresholds];
-          *(v91 + 50) = [v33 count];
+          filterThresholds = [configurationCopy filterThresholds];
+          *(v91 + 50) = [filterThresholds count];
 
           v35 = (v91 + 208);
           v34 = *(v91 + 26);
@@ -407,8 +407,8 @@ LABEL_95:
           std::vector<NSString * {__strong}>::__destroy_vector::operator()[abi:ne200100](&v92);
           for (mm = 1; ; ++mm)
           {
-            v38 = [v90 filterThresholds];
-            v39 = [v38 count] > (mm - 1);
+            filterThresholds2 = [configurationCopy filterThresholds];
+            v39 = [filterThresholds2 count] > (mm - 1);
 
             if (!v39)
             {
@@ -527,8 +527,8 @@ LABEL_95:
           v106 = 0u;
           v107 = 0u;
           v108 = 0u;
-          v73 = [v90 ratios];
-          v74 = [v73 countByEnumeratingWithState:&v105 objects:v115 count:16];
+          ratios3 = [configurationCopy ratios];
+          v74 = [ratios3 countByEnumeratingWithState:&v105 objects:v115 count:16];
           if (v74)
           {
             v75 = *v106;
@@ -538,7 +538,7 @@ LABEL_95:
               {
                 if (*v106 != v75)
                 {
-                  objc_enumerationMutation(v73);
+                  objc_enumerationMutation(ratios3);
                 }
 
                 [*(*(&v105 + 1) + 8 * nn) floatValue];
@@ -546,14 +546,14 @@ LABEL_95:
                 std::vector<float>::push_back[abi:ne200100](v91 + 33, __src);
               }
 
-              v74 = [v73 countByEnumeratingWithState:&v105 objects:v115 count:16];
+              v74 = [ratios3 countByEnumeratingWithState:&v105 objects:v115 count:16];
             }
 
             while (v74);
           }
 
-          v78 = [v90 ratios];
-          *(v91 + 64) = [v78 count];
+          ratios4 = [configurationCopy ratios];
+          *(v91 + 64) = [ratios4 count];
 
           *(v91 + 37) = *(v91 + 36);
           *(v91 + 40) = *(v91 + 39);
@@ -561,8 +561,8 @@ LABEL_95:
           v102 = 0u;
           v103 = 0u;
           v104 = 0u;
-          v79 = [v90 defaultBoxesSidesNormalized];
-          v80 = [v79 countByEnumeratingWithState:&v101 objects:v114 count:16];
+          defaultBoxesSidesNormalized2 = [configurationCopy defaultBoxesSidesNormalized];
+          v80 = [defaultBoxesSidesNormalized2 countByEnumeratingWithState:&v101 objects:v114 count:16];
           if (v80)
           {
             v81 = *v102;
@@ -572,7 +572,7 @@ LABEL_95:
               {
                 if (*v102 != v81)
                 {
-                  objc_enumerationMutation(v79);
+                  objc_enumerationMutation(defaultBoxesSidesNormalized2);
                 }
 
                 v83 = *(*(&v101 + 1) + 8 * i1);
@@ -584,7 +584,7 @@ LABEL_95:
                 std::vector<float>::push_back[abi:ne200100](v91 + 36, __src);
               }
 
-              v80 = [v79 countByEnumeratingWithState:&v101 objects:v114 count:16];
+              v80 = [defaultBoxesSidesNormalized2 countByEnumeratingWithState:&v101 objects:v114 count:16];
             }
 
             while (v80);
@@ -613,9 +613,9 @@ LABEL_28:
       goto LABEL_92;
     }
 
-    if (a7 <= 5)
+    if (version <= 5)
     {
-      if (a7 == 2)
+      if (version == 2)
       {
         __src[0] = xmmword_1AE451FE4;
         *&__src[1] = 0x432B800042D70000;
@@ -636,7 +636,7 @@ LABEL_28:
         goto LABEL_93;
       }
 
-      if (a7 != 5)
+      if (version != 5)
       {
 LABEL_92:
         __src[0] = xmmword_1AE451FE4;
@@ -683,9 +683,9 @@ LABEL_92:
 
     else
     {
-      if (a7 != 6)
+      if (version != 6)
       {
-        if (a7 == 7)
+        if (version == 7)
         {
           *(v91 + 188) = 0x400000002;
           v91[196] = 0;
@@ -792,17 +792,17 @@ LABEL_94:
   [(AXShotflowNetwork *)&v3 dealloc];
 }
 
-- (int)setInputShape:(unint64_t)a3 height:(unint64_t)a4
+- (int)setInputShape:(unint64_t)shape height:(unint64_t)height
 {
-  v4 = a4;
-  v5 = a3;
-  if (*&self->_currentNetworkWidth == __PAIR128__(a4, a3))
+  heightCopy = height;
+  shapeCopy = shape;
+  if (*&self->_currentNetworkWidth == __PAIR128__(height, shape))
   {
     return 0;
   }
 
-  LODWORD(v20) = a4;
-  HIDWORD(v20) = a3;
+  LODWORD(v20) = height;
+  HIDWORD(v20) = shape;
   v19 = 0x300000001;
   v18 = "image";
   v8 = espresso_plan_build_clean();
@@ -895,8 +895,8 @@ LABEL_94:
     if (v11 == 6)
     {
       v7 = 0;
-      self->_currentNetworkWidth = v5;
-      self->_currentNetworkHeight = v4;
+      self->_currentNetworkWidth = shapeCopy;
+      self->_currentNetworkHeight = heightCopy;
       return v7;
     }
   }
@@ -904,7 +904,7 @@ LABEL_94:
   return v7;
 }
 
-- (void)runNetwork:(vImage_Buffer *)a3 inputIsBGR:(BOOL)a4
+- (void)runNetwork:(vImage_Buffer *)network inputIsBGR:(BOOL)r
 {
   if (espresso_network_bind_input_vimagebuffer_bgra8() || espresso_plan_execute_sync())
   {
@@ -914,11 +914,11 @@ LABEL_94:
   }
 }
 
-- (id)processVImage:(vImage_Buffer *)a3 inputIsBGR:(BOOL)a4
+- (id)processVImage:(vImage_Buffer *)image inputIsBGR:(BOOL)r
 {
-  v4 = a4;
-  height = a3->height;
-  width = a3->width;
+  rCopy = r;
+  height = image->height;
+  width = image->width;
   if ([(AXShotflowNetwork *)self setInputShape:width height:height])
   {
     exception = __cxa_allocate_exception(0x10uLL);
@@ -927,10 +927,10 @@ LABEL_94:
   }
 
   v67 = [MEMORY[0x1E695DF00] now];
-  v9 = *&a3->width;
-  v90[0] = *&a3->data;
+  v9 = *&image->width;
+  v90[0] = *&image->data;
   v90[1] = v9;
-  [(AXShotflowNetwork *)self runNetwork:v90 inputIsBGR:v4];
+  [(AXShotflowNetwork *)self runNetwork:v90 inputIsBGR:rCopy];
   v10 = [MEMORY[0x1E695DF00] now];
   [v10 timeIntervalSinceDate:v67];
   v12 = v11;
@@ -1226,11 +1226,11 @@ LABEL_94:
   return v60;
 }
 
-- (id)resizeAndProcessVImage:(vImage_Buffer *)a3 inputIsBGR:(BOOL)a4
+- (id)resizeAndProcessVImage:(vImage_Buffer *)image inputIsBGR:(BOOL)r
 {
   v67 = *MEMORY[0x1E69E9840];
-  height = a3->height;
-  width = a3->width;
+  height = image->height;
+  width = image->width;
   if (width)
   {
     v6 = height == 0;
@@ -1248,7 +1248,7 @@ LABEL_94:
     __cxa_throw(exception, MEMORY[0x1E69E5408], MEMORY[0x1E69E5288]);
   }
 
-  v7 = a4;
+  rCopy = r;
   v10 = width;
   v11 = height;
   if (self->_can_rotate && v11 > v10)
@@ -1261,7 +1261,7 @@ LABEL_94:
       __cxa_throw(v56, MEMORY[0x1E69E5408], MEMORY[0x1E69E5288]);
     }
 
-    vImageRotate90_ARGB8888(a3, &dest, 1u, &backColor, 0);
+    vImageRotate90_ARGB8888(image, &dest, 1u, &backColor, 0);
     v10 = dest.width;
     v11 = dest.height;
     v12 = 1;
@@ -1270,8 +1270,8 @@ LABEL_94:
   else
   {
     v12 = 0;
-    v13 = *&a3->width;
-    *&dest.data = *&a3->data;
+    v13 = *&image->width;
+    *&dest.data = *&image->data;
     *&dest.width = v13;
   }
 
@@ -1339,7 +1339,7 @@ LABEL_94:
   else
   {
     v61 = v63;
-    v21 = [(AXShotflowNetwork *)self processVImage:&v61 inputIsBGR:v7];
+    v21 = [(AXShotflowNetwork *)self processVImage:&v61 inputIsBGR:rCopy];
     [v21 objectForKeyedSubscript:@"boxes"];
     v59 = 0u;
     v60 = 0u;
@@ -1425,10 +1425,10 @@ LABEL_94:
   return v21;
 }
 
-- (id)processCIImage:(id)a3
+- (id)processCIImage:(id)image
 {
-  v4 = a3;
-  [v4 extent];
+  imageCopy = image;
+  [imageCopy extent];
   v7 = v6;
   if (v7 == 0.0 || (v8 = v5, v8 == 0.0))
   {
@@ -1437,7 +1437,7 @@ LABEL_94:
     __cxa_throw(exception, MEMORY[0x1E69E5408], MEMORY[0x1E69E5288]);
   }
 
-  v9 = [AXShotflowHelpers createVImageBuffer:v4];
+  v9 = [AXShotflowHelpers createVImageBuffer:imageCopy];
   v10 = *&v9->width;
   v14[0] = *&v9->data;
   v14[1] = v10;

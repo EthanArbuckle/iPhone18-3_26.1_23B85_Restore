@@ -1,6 +1,6 @@
 @interface PKPassShareActivationViewController
-- (PKPassShareActivationViewController)initWithPendingActivation:(id)a3;
-- (void)_showError:(id)a3;
+- (PKPassShareActivationViewController)initWithPendingActivation:(id)activation;
+- (void)_showError:(id)error;
 - (void)continueButtonPressed;
 - (void)loadCardArt;
 - (void)loadView;
@@ -8,16 +8,16 @@
 
 @implementation PKPassShareActivationViewController
 
-- (PKPassShareActivationViewController)initWithPendingActivation:(id)a3
+- (PKPassShareActivationViewController)initWithPendingActivation:(id)activation
 {
-  v5 = a3;
+  activationCopy = activation;
   v9.receiver = self;
   v9.super_class = PKPassShareActivationViewController;
   v6 = [(PKPassShareRedemptionViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pendingActivation, a3);
+    objc_storeStrong(&v6->_pendingActivation, activation);
   }
 
   return v7;
@@ -35,12 +35,12 @@
   v4 = PKLocalizedShareableCredentialString(&cfstr_ShareActivatio_6.isa);
   [(PKPaymentSetupOptionsViewController *)self setSubtitleText:v4];
 
-  v5 = [(PKPassShareRedemptionViewController *)self cardHeaderView];
-  [v5 showLoadingContent];
+  cardHeaderView = [(PKPassShareRedemptionViewController *)self cardHeaderView];
+  [cardHeaderView showLoadingContent];
 
-  v6 = [(PKPassSharePendingActivation *)self->_pendingActivation originalInvitation];
+  originalInvitation = [(PKPassSharePendingActivation *)self->_pendingActivation originalInvitation];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([v6 activationOptions], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((objc_opt_isKindOfClass() & 1) == 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([originalInvitation activationOptions], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     [(PKPassShareActivationViewController *)self _showError:0];
     v7 = 0;
@@ -51,24 +51,24 @@
 
 - (void)loadCardArt
 {
-  v3 = [(PKPassShareRedemptionViewController *)self cardHeaderView];
-  v4 = [(PKPassSharePendingActivation *)self->_pendingActivation originalInvitation];
-  v5 = [v4 displayInformation];
-  v6 = [v5 imageURL];
+  cardHeaderView = [(PKPassShareRedemptionViewController *)self cardHeaderView];
+  originalInvitation = [(PKPassSharePendingActivation *)self->_pendingActivation originalInvitation];
+  displayInformation = [originalInvitation displayInformation];
+  imageURL = [displayInformation imageURL];
 
-  if (v6)
+  if (imageURL)
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __50__PKPassShareActivationViewController_loadCardArt__block_invoke;
     v7[3] = &unk_1E8013A10;
-    v8 = v3;
-    PKCommonCachedImageFromURL(v6, v7);
+    v8 = cardHeaderView;
+    PKCommonCachedImageFromURL(imageURL, v7);
   }
 
   else
   {
-    [v3 hideLoadingContent];
+    [cardHeaderView hideLoadingContent];
   }
 }
 
@@ -80,12 +80,12 @@ uint64_t __50__PKPassShareActivationViewController_loadCardArt__block_invoke(uin
   return [v2 hideLoadingContent];
 }
 
-- (void)_showError:(id)a3
+- (void)_showError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(PKPassShareRedemptionViewController *)self showFailureUI];
   v19 = 0;
-  v5 = PKSharingDisplayableError(v4, &v19);
+  v5 = PKSharingDisplayableError(errorCopy, &v19);
 
   if (!v5)
   {
@@ -137,9 +137,9 @@ uint64_t __50__PKPassShareActivationViewController_loadCardArt__block_invoke(uin
   if ([(NSString *)self->_activationCode length])
   {
     [(PKPassShareRedemptionViewController *)self showLoadingUI];
-    v3 = [MEMORY[0x1E69B8DB8] paymentService];
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
     objc_initWeak(&location, self);
-    v4 = [(PKPassSharePendingActivation *)self->_pendingActivation originalInvitation];
+    originalInvitation = [(PKPassSharePendingActivation *)self->_pendingActivation originalInvitation];
     activationCode = self->_activationCode;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -147,7 +147,7 @@ uint64_t __50__PKPassShareActivationViewController_loadCardArt__block_invoke(uin
     v6[3] = &unk_1E8013A60;
     v6[4] = self;
     objc_copyWeak(&v7, &location);
-    [v3 acceptCarKeyShareForMessage:v4 activationCode:activationCode completion:v6];
+    [paymentService acceptCarKeyShareForMessage:originalInvitation activationCode:activationCode completion:v6];
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);

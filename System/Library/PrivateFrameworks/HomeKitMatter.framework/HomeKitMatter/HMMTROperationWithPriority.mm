@@ -1,5 +1,5 @@
 @interface HMMTROperationWithPriority
-- (HMMTROperationWithPriority)initWithQueuePriority:(int64_t)a3 block:(id)a4;
+- (HMMTROperationWithPriority)initWithQueuePriority:(int64_t)priority block:(id)block;
 - (void)main;
 @end
 
@@ -7,23 +7,23 @@
 
 - (void)main
 {
-  v2 = [(HMMTROperationWithPriority *)self operationBlock];
-  v2[2]();
+  operationBlock = [(HMMTROperationWithPriority *)self operationBlock];
+  operationBlock[2]();
 }
 
-- (HMMTROperationWithPriority)initWithQueuePriority:(int64_t)a3 block:(id)a4
+- (HMMTROperationWithPriority)initWithQueuePriority:(int64_t)priority block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v11.receiver = self;
   v11.super_class = HMMTROperationWithPriority;
   v7 = [(HMMTROperationWithPriority *)&v11 init];
   if (v7)
   {
-    v8 = MEMORY[0x2318887D0](v6);
+    v8 = MEMORY[0x2318887D0](blockCopy);
     operationBlock = v7->_operationBlock;
     v7->_operationBlock = v8;
 
-    [(HMMTROperationWithPriority *)v7 setQueuePriority:a3];
+    [(HMMTROperationWithPriority *)v7 setQueuePriority:priority];
   }
 
   return v7;

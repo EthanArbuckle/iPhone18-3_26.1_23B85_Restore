@@ -1,19 +1,19 @@
 @interface NTKAlaskanGMTTimezoneLocation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation NTKAlaskanGMTTimezoneLocation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v8 = a3;
-  v9 = [(NTKAlaskanGMTTimezoneLocation *)self locationName];
-  v10 = [v8 locationName];
-  if (v9 != v10)
+  equalCopy = equal;
+  locationName = [(NTKAlaskanGMTTimezoneLocation *)self locationName];
+  locationName2 = [equalCopy locationName];
+  if (locationName != locationName2)
   {
-    v3 = [(NTKAlaskanGMTTimezoneLocation *)self locationName];
-    v4 = [v8 locationName];
-    if (![v3 isEqualToString:v4])
+    locationName3 = [(NTKAlaskanGMTTimezoneLocation *)self locationName];
+    locationName4 = [equalCopy locationName];
+    if (![locationName3 isEqualToString:locationName4])
     {
       v11 = 0;
 LABEL_16:
@@ -24,23 +24,23 @@ LABEL_16:
 
   [(NTKAlaskanGMTTimezoneLocation *)self hourOffset];
   v13 = v12;
-  [v8 hourOffset];
+  [equalCopy hourOffset];
   if (v13 != v14)
   {
     v11 = 0;
     goto LABEL_15;
   }
 
-  v15 = [(NTKAlaskanGMTTimezoneLocation *)self timezone];
-  v16 = [v8 timezone];
-  if (v15 == v16 || (-[NTKAlaskanGMTTimezoneLocation timezone](self, "timezone"), v5 = objc_claimAutoreleasedReturnValue(), [v8 timezone], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "isEqualToString:", v6)))
+  timezone = [(NTKAlaskanGMTTimezoneLocation *)self timezone];
+  timezone2 = [equalCopy timezone];
+  if (timezone == timezone2 || (-[NTKAlaskanGMTTimezoneLocation timezone](self, "timezone"), v5 = objc_claimAutoreleasedReturnValue(), [equalCopy timezone], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "isEqualToString:", v6)))
   {
     [(NTKAlaskanGMTTimezoneLocation *)self sunriseHourOfDay];
-    [v8 sunriseHourOfDay];
+    [equalCopy sunriseHourOfDay];
     if (CLKFloatEqualsFloat())
     {
       [(NTKAlaskanGMTTimezoneLocation *)self sunsetHourOfDay];
-      [v8 sunsetHourOfDay];
+      [equalCopy sunsetHourOfDay];
       v11 = CLKFloatEqualsFloat();
     }
 
@@ -49,7 +49,7 @@ LABEL_16:
       v11 = 0;
     }
 
-    if (v15 == v16)
+    if (timezone == timezone2)
     {
       goto LABEL_14;
     }
@@ -62,7 +62,7 @@ LABEL_16:
 
 LABEL_14:
 LABEL_15:
-  if (v9 != v10)
+  if (locationName != locationName2)
   {
     goto LABEL_16;
   }

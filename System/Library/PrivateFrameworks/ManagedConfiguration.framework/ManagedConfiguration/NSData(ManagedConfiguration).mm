@@ -11,15 +11,15 @@
 - (id)MCHexString
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 length];
-  v3 = [a1 bytes];
+  v2 = [self length];
+  bytes = [self bytes];
   v4 = v10 - ((2 * v2 + 16) & 0xFFFFFFFFFFFFFFF0);
   if (v2)
   {
     v5 = v10 - ((2 * v2 + 16) & 0xFFFFFFFFFFFFFFF0);
     do
     {
-      v6 = *v3++;
+      v6 = *bytes++;
       *v5 = MCHexString_digits[v6 >> 4];
       v4 = v5 + 2;
       v5[1] = MCHexString_digits[v6 & 0xF];
@@ -40,7 +40,7 @@
 + (id)MCDataWithHexString:()ManagedConfiguration
 {
   v3 = a3;
-  v4 = [MEMORY[0x1E695DF88] data];
+  data = [MEMORY[0x1E695DF88] data];
   v5 = [v3 length];
   v14 = 0;
   if (v5)
@@ -85,7 +85,7 @@
       else
       {
         v14 |= v10;
-        [v4 appendBytes:&v14 length:1];
+        [data appendBytes:&v14 length:1];
       }
 
       v8 ^= 1u;
@@ -95,7 +95,7 @@
     while (v6 != v7);
   }
 
-  return v4;
+  return data;
 }
 
 + (uint64_t)MCDataWithCFData:()ManagedConfiguration
@@ -110,7 +110,7 @@
 - (id)MCSHA256Hash
 {
   v5 = *MEMORY[0x1E69E9840];
-  CC_SHA256([a1 bytes], objc_msgSend(a1, "length"), md);
+  CC_SHA256([self bytes], objc_msgSend(self, "length"), md);
   v1 = [MEMORY[0x1E695DEF0] dataWithBytes:md length:32];
   v2 = *MEMORY[0x1E69E9840];
 
@@ -138,8 +138,8 @@
 
     if (MCIsDaemonProcess == 1 && [v5 code] == 257)
     {
-      v7 = [v5 domain];
-      v8 = [v7 isEqualToString:*MEMORY[0x1E696A250]];
+      domain = [v5 domain];
+      v8 = [domain isEqualToString:*MEMORY[0x1E696A250]];
 
       if (v8)
       {

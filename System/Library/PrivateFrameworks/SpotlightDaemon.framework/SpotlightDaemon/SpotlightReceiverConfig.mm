@@ -1,34 +1,34 @@
 @interface SpotlightReceiverConfig
-- (BOOL)wantsBundleID:(id)a3;
-- (BOOL)wantsContentType:(id)a3;
-- (BOOL)wantsDomainID:(id)a3;
-- (BOOL)wantsINIntentClassNames:(id)a3;
-- (id)initForClient:(int64_t)a3;
+- (BOOL)wantsBundleID:(id)d;
+- (BOOL)wantsContentType:(id)type;
+- (BOOL)wantsDomainID:(id)d;
+- (BOOL)wantsINIntentClassNames:(id)names;
+- (id)initForClient:(int64_t)client;
 @end
 
 @implementation SpotlightReceiverConfig
 
-- (id)initForClient:(int64_t)a3
+- (id)initForClient:(int64_t)client
 {
   v5.receiver = self;
   v5.super_class = SpotlightReceiverConfig;
   result = [(SpotlightReceiverConfig *)&v5 init];
   if (result)
   {
-    *(result + 4) = a3;
+    *(result + 4) = client;
   }
 
   return result;
 }
 
-- (BOOL)wantsBundleID:(id)a3
+- (BOOL)wantsBundleID:(id)d
 {
-  v4 = a3;
-  if (!-[NSArray count](self->_bundleIDs, "count") || [v4 length] && -[NSArray containsObject:](self->_bundleIDs, "containsObject:", v4))
+  dCopy = d;
+  if (!-[NSArray count](self->_bundleIDs, "count") || [dCopy length] && -[NSArray containsObject:](self->_bundleIDs, "containsObject:", dCopy))
   {
-    if (-[NSArray count](self->_disableBundleIDs, "count") && [v4 length])
+    if (-[NSArray count](self->_disableBundleIDs, "count") && [dCopy length])
     {
-      v5 = ![(NSArray *)self->_disableBundleIDs containsObject:v4];
+      v5 = ![(NSArray *)self->_disableBundleIDs containsObject:dCopy];
     }
 
     else
@@ -45,14 +45,14 @@
   return v5;
 }
 
-- (BOOL)wantsDomainID:(id)a3
+- (BOOL)wantsDomainID:(id)d
 {
-  v4 = a3;
-  if (!-[NSArray count](self->_domainIDs, "count") || [v4 length] && -[NSArray containsObject:](self->_domainIDs, "containsObject:", v4))
+  dCopy = d;
+  if (!-[NSArray count](self->_domainIDs, "count") || [dCopy length] && -[NSArray containsObject:](self->_domainIDs, "containsObject:", dCopy))
   {
-    if (-[NSArray count](self->_disableDomainIDs, "count") && [v4 length])
+    if (-[NSArray count](self->_disableDomainIDs, "count") && [dCopy length])
     {
-      v5 = ![(NSArray *)self->_disableDomainIDs containsObject:v4];
+      v5 = ![(NSArray *)self->_disableDomainIDs containsObject:dCopy];
     }
 
     else
@@ -69,13 +69,13 @@
   return v5;
 }
 
-- (BOOL)wantsContentType:(id)a3
+- (BOOL)wantsContentType:(id)type
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   if ([(NSArray *)self->_contentTypes count])
   {
-    if (!v4)
+    if (!typeCopy)
     {
 LABEL_30:
       v6 = 1;
@@ -87,19 +87,19 @@ LABEL_30:
   {
     v5 = [(NSArray *)self->_disableContentTypes count];
     v6 = 1;
-    if (!v4 || !v5)
+    if (!typeCopy || !v5)
     {
       goto LABEL_31;
     }
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([(NSMutableSet *)self->_positiveSet containsObject:v4]& 1) != 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([(NSMutableSet *)self->_positiveSet containsObject:typeCopy]& 1) != 0)
   {
     goto LABEL_30;
   }
 
-  if (([(NSMutableSet *)self->_negativeSet containsObject:v4]& 1) == 0)
+  if (([(NSMutableSet *)self->_negativeSet containsObject:typeCopy]& 1) == 0)
   {
     v31 = 0u;
     v32 = 0u;
@@ -120,7 +120,7 @@ LABEL_30:
             objc_enumerationMutation(v7);
           }
 
-          if (UTTypeConformsTo(v4, *(*(&v29 + 1) + 8 * i)))
+          if (UTTypeConformsTo(typeCopy, *(*(&v29 + 1) + 8 * i)))
           {
             positiveSet = self->_positiveSet;
             if (!positiveSet)
@@ -132,7 +132,7 @@ LABEL_30:
               positiveSet = self->_positiveSet;
             }
 
-            [(NSMutableSet *)positiveSet addObject:v4];
+            [(NSMutableSet *)positiveSet addObject:typeCopy];
 
             goto LABEL_30;
           }
@@ -167,7 +167,7 @@ LABEL_30:
             objc_enumerationMutation(v12);
           }
 
-          if (UTTypeConformsTo(v4, *(*(&v25 + 1) + 8 * j)))
+          if (UTTypeConformsTo(typeCopy, *(*(&v25 + 1) + 8 * j)))
           {
             negativeSet = self->_negativeSet;
             if (!negativeSet)
@@ -179,7 +179,7 @@ LABEL_30:
               negativeSet = self->_negativeSet;
             }
 
-            [(NSMutableSet *)negativeSet addObject:v4, v25];
+            [(NSMutableSet *)negativeSet addObject:typeCopy, v25];
 
             goto LABEL_9;
           }
@@ -195,7 +195,7 @@ LABEL_30:
       }
     }
 
-    [(NSMutableSet *)self->_negativeSet addObject:v4, v25];
+    [(NSMutableSet *)self->_negativeSet addObject:typeCopy, v25];
   }
 
 LABEL_9:
@@ -206,14 +206,14 @@ LABEL_31:
   return v6;
 }
 
-- (BOOL)wantsINIntentClassNames:(id)a3
+- (BOOL)wantsINIntentClassNames:(id)names
 {
-  v4 = a3;
-  if ([v4 length])
+  namesCopy = names;
+  if ([namesCopy length])
   {
     if ([(NSSet *)self->_INIntentClassNames count])
     {
-      v5 = [(NSSet *)self->_INIntentClassNames containsObject:v4];
+      v5 = [(NSSet *)self->_INIntentClassNames containsObject:namesCopy];
     }
 
     else

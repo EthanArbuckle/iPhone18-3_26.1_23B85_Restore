@@ -1,10 +1,10 @@
 @interface RAPAppState
 - (NSString)debugDescription;
-- (RAPAppState)initWithMapView:(id)a3 lookAroundContext:(id)a4 traits:(id)a5;
-- (RAPAppState)initWithMapView:(id)a3 traits:(id)a4 searchHistory:(id)a5 directionHistory:(id)a6 place:(id)a7 searchDataSource:(id)a8 directionsDataSource:(id)a9 currentlyConnectedAuxiliaryControls:(id)a10;
-- (RAPAppState)initWithMapView:(id)a3 traits:(id)a4 searchHistory:(id)a5 directionHistory:(id)a6 place:(id)a7 searchDataSource:(id)a8 directionsDataSource:(id)a9 currentlyConnectedAuxiliaryControls:(id)a10 homeShortuts:(id)a11 workShorcuts:(id)a12 schoolShorcuts:(id)a13;
-- (RAPAppState)initWithTraits:(id)a3 curatedCollectionContext:(id)a4;
-- (RAPAppState)initWithTraits:(id)a3 placecardImageryContext:(id)a4;
+- (RAPAppState)initWithMapView:(id)view lookAroundContext:(id)context traits:(id)traits;
+- (RAPAppState)initWithMapView:(id)view traits:(id)traits searchHistory:(id)history directionHistory:(id)directionHistory place:(id)place searchDataSource:(id)source directionsDataSource:(id)dataSource currentlyConnectedAuxiliaryControls:(id)self0;
+- (RAPAppState)initWithMapView:(id)view traits:(id)traits searchHistory:(id)history directionHistory:(id)directionHistory place:(id)place searchDataSource:(id)source directionsDataSource:(id)dataSource currentlyConnectedAuxiliaryControls:(id)self0 homeShortuts:(id)self1 workShorcuts:(id)self2 schoolShorcuts:(id)self3;
+- (RAPAppState)initWithTraits:(id)traits curatedCollectionContext:(id)context;
+- (RAPAppState)initWithTraits:(id)traits placecardImageryContext:(id)context;
 @end
 
 @implementation RAPAppState
@@ -78,44 +78,44 @@
   return v9;
 }
 
-- (RAPAppState)initWithTraits:(id)a3 curatedCollectionContext:(id)a4
+- (RAPAppState)initWithTraits:(id)traits curatedCollectionContext:(id)context
 {
-  v7 = a4;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = RAPAppState;
-  v8 = [(RAPMapState *)&v11 initWithTraits:a3];
+  v8 = [(RAPMapState *)&v11 initWithTraits:traits];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_curatedCollectionContext, a4);
+    objc_storeStrong(&v8->_curatedCollectionContext, context);
   }
 
   return v9;
 }
 
-- (RAPAppState)initWithMapView:(id)a3 lookAroundContext:(id)a4 traits:(id)a5
+- (RAPAppState)initWithMapView:(id)view lookAroundContext:(id)context traits:(id)traits
 {
-  v9 = a4;
-  v10 = [(RAPAppState *)self initWithMapView:a3 traits:a5 searchHistory:&__NSArray0__struct directionHistory:&__NSArray0__struct place:0 searchDataSource:0 directionsDataSource:0 currentlyConnectedAuxiliaryControls:0];
+  contextCopy = context;
+  v10 = [(RAPAppState *)self initWithMapView:view traits:traits searchHistory:&__NSArray0__struct directionHistory:&__NSArray0__struct place:0 searchDataSource:0 directionsDataSource:0 currentlyConnectedAuxiliaryControls:0];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_reportedLookAroundContext, a4);
+    objc_storeStrong(&v10->_reportedLookAroundContext, context);
   }
 
   return v11;
 }
 
-- (RAPAppState)initWithMapView:(id)a3 traits:(id)a4 searchHistory:(id)a5 directionHistory:(id)a6 place:(id)a7 searchDataSource:(id)a8 directionsDataSource:(id)a9 currentlyConnectedAuxiliaryControls:(id)a10 homeShortuts:(id)a11 workShorcuts:(id)a12 schoolShorcuts:(id)a13
+- (RAPAppState)initWithMapView:(id)view traits:(id)traits searchHistory:(id)history directionHistory:(id)directionHistory place:(id)place searchDataSource:(id)source directionsDataSource:(id)dataSource currentlyConnectedAuxiliaryControls:(id)self0 homeShortuts:(id)self1 workShorcuts:(id)self2 schoolShorcuts:(id)self3
 {
-  v18 = a11;
-  v19 = a12;
-  v20 = a13;
-  v21 = v19;
-  v22 = [(RAPAppState *)self initWithMapView:a3 traits:a4 searchHistory:a5 directionHistory:a6 place:a7 searchDataSource:a8 directionsDataSource:a9 currentlyConnectedAuxiliaryControls:a10];
+  shortutsCopy = shortuts;
+  shorcutsCopy = shorcuts;
+  schoolShorcutsCopy = schoolShorcuts;
+  v21 = shorcutsCopy;
+  v22 = [(RAPAppState *)self initWithMapView:view traits:traits searchHistory:history directionHistory:directionHistory place:place searchDataSource:source directionsDataSource:dataSource currentlyConnectedAuxiliaryControls:controls];
   if (v22)
   {
-    v23 = [v18 copy];
+    v23 = [shortutsCopy copy];
     homeShortcuts = v22->_homeShortcuts;
     v22->_homeShortcuts = v23;
 
@@ -123,7 +123,7 @@
     workShortcuts = v22->_workShortcuts;
     v22->_workShortcuts = v25;
 
-    v27 = [v20 copy];
+    v27 = [schoolShorcutsCopy copy];
     schoolShortcuts = v22->_schoolShortcuts;
     v22->_schoolShortcuts = v27;
   }
@@ -131,57 +131,57 @@
   return v22;
 }
 
-- (RAPAppState)initWithMapView:(id)a3 traits:(id)a4 searchHistory:(id)a5 directionHistory:(id)a6 place:(id)a7 searchDataSource:(id)a8 directionsDataSource:(id)a9 currentlyConnectedAuxiliaryControls:(id)a10
+- (RAPAppState)initWithMapView:(id)view traits:(id)traits searchHistory:(id)history directionHistory:(id)directionHistory place:(id)place searchDataSource:(id)source directionsDataSource:(id)dataSource currentlyConnectedAuxiliaryControls:(id)self0
 {
-  v33 = a5;
-  v32 = a6;
-  v17 = a8;
-  v18 = a9;
-  v19 = a10;
+  historyCopy = history;
+  directionHistoryCopy = directionHistory;
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
+  controlsCopy = controls;
   v34.receiver = self;
   v34.super_class = RAPAppState;
-  v20 = [(RAPMapState *)&v34 initWithMapView:a3 traits:a4 place:a7];
+  v20 = [(RAPMapState *)&v34 initWithMapView:view traits:traits place:place];
   if (v20)
   {
-    v21 = [v18 activeComposedRoute];
+    activeComposedRoute = [dataSourceCopy activeComposedRoute];
     activeComposedRoute = v20->_activeComposedRoute;
-    v20->_activeComposedRoute = v21;
+    v20->_activeComposedRoute = activeComposedRoute;
 
-    v23 = [v18 currentDirections];
+    currentDirections = [dataSourceCopy currentDirections];
     currentDirections = v20->_currentDirections;
-    v20->_currentDirections = v23;
+    v20->_currentDirections = currentDirections;
 
-    v25 = [v17 currentSearchString];
+    currentSearchString = [sourceCopy currentSearchString];
     currentSearchString = v20->_currentSearchString;
-    v20->_currentSearchString = v25;
+    v20->_currentSearchString = currentSearchString;
 
-    v27 = [v17 currentUserTypedSearchString];
+    currentUserTypedSearchString = [sourceCopy currentUserTypedSearchString];
     currentUserTypedSearchString = v20->_currentUserTypedSearchString;
-    v20->_currentUserTypedSearchString = v27;
+    v20->_currentUserTypedSearchString = currentUserTypedSearchString;
 
-    v29 = [v18 displayedDirectionsPlan];
+    displayedDirectionsPlan = [dataSourceCopy displayedDirectionsPlan];
     displayedDirectionsPlan = v20->_displayedDirectionsPlan;
-    v20->_displayedDirectionsPlan = v29;
+    v20->_displayedDirectionsPlan = displayedDirectionsPlan;
 
-    v20->_isShowingDirections = [v18 isShowingDirections];
-    objc_storeStrong(&v20->_currentlyConnectedAuxiliaryControls, a10);
-    objc_storeStrong(&v20->_searchesHistory, a5);
-    objc_storeStrong(&v20->_directionsHistory, a6);
+    v20->_isShowingDirections = [dataSourceCopy isShowingDirections];
+    objc_storeStrong(&v20->_currentlyConnectedAuxiliaryControls, controls);
+    objc_storeStrong(&v20->_searchesHistory, history);
+    objc_storeStrong(&v20->_directionsHistory, directionHistory);
   }
 
   return v20;
 }
 
-- (RAPAppState)initWithTraits:(id)a3 placecardImageryContext:(id)a4
+- (RAPAppState)initWithTraits:(id)traits placecardImageryContext:(id)context
 {
-  v7 = a4;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = RAPAppState;
-  v8 = [(RAPMapState *)&v11 initWithTraits:a3];
+  v8 = [(RAPMapState *)&v11 initWithTraits:traits];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_placecardImageryContext, a4);
+    objc_storeStrong(&v8->_placecardImageryContext, context);
   }
 
   return v9;

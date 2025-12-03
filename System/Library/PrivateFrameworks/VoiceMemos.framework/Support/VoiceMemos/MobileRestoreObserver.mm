@@ -1,38 +1,38 @@
 @interface MobileRestoreObserver
-- (MobileRestoreObserver)initWithQueue:(id)a3;
-- (void)_pollBackupManager:(id)a3;
-- (void)manager:(id)a3 didFinishRestoreForPath:(id)a4;
-- (void)managerDidFinishRestore:(id)a3;
-- (void)managerDidUpdateBackgroundRestoreProgress:(id)a3;
-- (void)observeMobileRestore:(id)a3;
+- (MobileRestoreObserver)initWithQueue:(id)queue;
+- (void)_pollBackupManager:(id)manager;
+- (void)manager:(id)manager didFinishRestoreForPath:(id)path;
+- (void)managerDidFinishRestore:(id)restore;
+- (void)managerDidUpdateBackgroundRestoreProgress:(id)progress;
+- (void)observeMobileRestore:(id)restore;
 @end
 
 @implementation MobileRestoreObserver
 
-- (MobileRestoreObserver)initWithQueue:(id)a3
+- (MobileRestoreObserver)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = MobileRestoreObserver;
   v6 = [(MobileRestoreObserver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_completionQueue, a3);
+    objc_storeStrong(&v6->_completionQueue, queue);
   }
 
   return v7;
 }
 
-- (void)_pollBackupManager:(id)a3
+- (void)_pollBackupManager:(id)manager
 {
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10000322C;
   v12[3] = &unk_1000551C0;
   v12[4] = self;
-  v4 = a3;
-  v13 = v4;
+  managerCopy = manager;
+  v13 = managerCopy;
   v5 = objc_retainBlock(v12);
   backupManager = self->_backupManager;
   v9[0] = _NSConcreteStackBlock;
@@ -40,16 +40,16 @@
   v9[2] = sub_1000032F0;
   v9[3] = &unk_1000551E8;
   v9[4] = self;
-  v10 = v4;
+  v10 = managerCopy;
   v11 = v5;
   v7 = v5;
-  v8 = v4;
+  v8 = managerCopy;
   [(MBManager *)backupManager fetchiCloudRestoreIsCompleteWithCompletion:v9];
 }
 
-- (void)observeMobileRestore:(id)a3
+- (void)observeMobileRestore:(id)restore
 {
-  v4 = a3;
+  restoreCopy = restore;
   v5 = [[MBManager alloc] initWithDelegate:self eventQueue:self->_completionQueue];
   backupManager = self->_backupManager;
   self->_backupManager = v5;
@@ -76,10 +76,10 @@
     v16[3] = &unk_100055210;
     v18 = &v20;
     objc_copyWeak(&v19, &location);
-    v17 = v4;
+    v17 = restoreCopy;
     v10 = objc_retainBlock(v16);
-    v11 = [v9 UTF8String];
-    notify_register_dispatch(v11, v21 + 6, self->_completionQueue, v10);
+    uTF8String = [v9 UTF8String];
+    notify_register_dispatch(uTF8String, v21 + 6, self->_completionQueue, v10);
     if ((BYSetupAssistantNeedsToRun() & 1) == 0)
     {
       (v10[2])(v10, v21[6]);
@@ -92,39 +92,39 @@
 
   else
   {
-    v12 = [(MBManager *)self->_backupManager restoreState];
-    if ([v12 state] - 1 > 2)
+    restoreState = [(MBManager *)self->_backupManager restoreState];
+    if ([restoreState state] - 1 > 2)
     {
       completionQueue = self->_completionQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10000373C;
       block[3] = &unk_100055238;
-      v15 = v4;
+      v15 = restoreCopy;
       dispatch_async(completionQueue, block);
     }
 
     else
     {
       self->_waitingForMobileRestoreToFinish = 1;
-      [(MobileRestoreObserver *)self _pollBackupManager:v4];
+      [(MobileRestoreObserver *)self _pollBackupManager:restoreCopy];
     }
   }
 }
 
-- (void)managerDidFinishRestore:(id)a3
+- (void)managerDidFinishRestore:(id)restore
 {
-  v3 = [a3 restoreState];
+  restoreState = [restore restoreState];
   v4 = OSLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    sub_100034494(v3, v4);
+    sub_100034494(restoreState, v4);
   }
 }
 
-- (void)manager:(id)a3 didFinishRestoreForPath:(id)a4
+- (void)manager:(id)manager didFinishRestoreForPath:(id)path
 {
-  v4 = a4;
+  pathCopy = path;
   v5 = OSLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -132,13 +132,13 @@
   }
 }
 
-- (void)managerDidUpdateBackgroundRestoreProgress:(id)a3
+- (void)managerDidUpdateBackgroundRestoreProgress:(id)progress
 {
-  v3 = [a3 restoreState];
+  restoreState = [progress restoreState];
   v4 = OSLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000345A8(v3, v4);
+    sub_1000345A8(restoreState, v4);
   }
 }
 

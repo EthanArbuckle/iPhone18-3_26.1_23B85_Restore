@@ -1,19 +1,19 @@
 @interface TSCH3DStrokePatternTexture
-- (TSCH3DStrokePatternTexture)initWithStroke:(id)a3;
+- (TSCH3DStrokePatternTexture)initWithStroke:(id)stroke;
 - (id)get;
 @end
 
 @implementation TSCH3DStrokePatternTexture
 
-- (TSCH3DStrokePatternTexture)initWithStroke:(id)a3
+- (TSCH3DStrokePatternTexture)initWithStroke:(id)stroke
 {
-  v4 = a3;
+  strokeCopy = stroke;
   v36.receiver = self;
   v36.super_class = TSCH3DStrokePatternTexture;
   v6 = [(TSCH3DResource *)&v36 init];
   if (v6)
   {
-    if (!v4)
+    if (!strokeCopy)
     {
       v10 = MEMORY[0x277D81150];
       v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, v7, v8, v9, "[TSCH3DStrokePatternTexture initWithStroke:]");
@@ -23,16 +23,16 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24);
     }
 
-    objc_msgSend_width(v4, v5, v7, v8, v9);
+    objc_msgSend_width(strokeCopy, v5, v7, v8, v9);
     v28 = 3.0;
     if (v26 >= 3.0)
     {
-      v29 = v4;
+      v29 = strokeCopy;
     }
 
     else
     {
-      v29 = objc_msgSend_mutableCopy(v4, v25, v26, 3.0, v27);
+      v29 = objc_msgSend_mutableCopy(strokeCopy, v25, v26, 3.0, v27);
       objc_msgSend_setWidth_(v29, v30, 3.0, v31, v32);
     }
 
@@ -43,7 +43,7 @@
 
   else
   {
-    v29 = v4;
+    v29 = strokeCopy;
   }
 
   return v6;

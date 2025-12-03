@@ -1,30 +1,30 @@
 @interface CNChangeHistoryDeleteGroupEvent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CNChangeHistoryDeleteGroupEvent)init;
-- (CNChangeHistoryDeleteGroupEvent)initWithCoder:(id)a3;
-- (CNChangeHistoryDeleteGroupEvent)initWithGroupIdentifier:(id)a3 externalURI:(id)a4 externalModificationTag:(id)a5;
+- (CNChangeHistoryDeleteGroupEvent)initWithCoder:(id)coder;
+- (CNChangeHistoryDeleteGroupEvent)initWithGroupIdentifier:(id)identifier externalURI:(id)i externalModificationTag:(id)tag;
 - (id)description;
-- (int64_t)comparisonResultWithinSameClass:(id)a3;
+- (int64_t)comparisonResultWithinSameClass:(id)class;
 - (unint64_t)hash;
-- (void)acceptEventVisitor:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)acceptEventVisitor:(id)visitor;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNChangeHistoryDeleteGroupEvent
 
 - (CNChangeHistoryDeleteGroupEvent)init
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CNInitializerUnavailableException();
   objc_exception_throw(v3);
 }
 
-- (CNChangeHistoryDeleteGroupEvent)initWithGroupIdentifier:(id)a3 externalURI:(id)a4 externalModificationTag:(id)a5
+- (CNChangeHistoryDeleteGroupEvent)initWithGroupIdentifier:(id)identifier externalURI:(id)i externalModificationTag:(id)tag
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  identifierCopy = identifier;
+  iCopy = i;
+  tagCopy = tag;
+  if (!identifierCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     if (CNGuardOSLog_cn_once_token_0_3 != -1)
     {
@@ -43,19 +43,19 @@
   v12 = [(CNChangeHistoryDeleteGroupEvent *)&v26 init];
   if (v12)
   {
-    v13 = [v8 copy];
+    v13 = [identifierCopy copy];
     groupIdentifier = v12->_groupIdentifier;
     v12->_groupIdentifier = v13;
 
     v15 = MEMORY[0x1E69964C0];
     v16 = *MEMORY[0x1E69964C0];
-    v17 = [v9 copy];
+    v17 = [iCopy copy];
     v18 = (*(v16 + 16))(v16, v17);
     externalURI = v12->_externalURI;
     v12->_externalURI = v18;
 
     v20 = *v15;
-    v21 = [v10 copy];
+    v21 = [tagCopy copy];
     v22 = (*(v20 + 16))(v20, v21);
     externalModificationTag = v12->_externalModificationTag;
     v12->_externalModificationTag = v22;
@@ -66,33 +66,33 @@
   return v12;
 }
 
-- (CNChangeHistoryDeleteGroupEvent)initWithCoder:(id)a3
+- (CNChangeHistoryDeleteGroupEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_groupIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_externalURI"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_externalModificationTag"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_groupIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_externalURI"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_externalModificationTag"];
 
   v8 = [(CNChangeHistoryDeleteGroupEvent *)self initWithGroupIdentifier:v5 externalURI:v6 externalModificationTag:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   groupIdentifier = self->_groupIdentifier;
-  v5 = a3;
-  [v5 encodeObject:groupIdentifier forKey:@"_groupIdentifier"];
-  [v5 encodeObject:self->_externalURI forKey:@"_externalURI"];
-  [v5 encodeObject:self->_externalModificationTag forKey:@"_externalModificationTag"];
+  coderCopy = coder;
+  [coderCopy encodeObject:groupIdentifier forKey:@"_groupIdentifier"];
+  [coderCopy encodeObject:self->_externalURI forKey:@"_externalURI"];
+  [coderCopy encodeObject:self->_externalModificationTag forKey:@"_externalModificationTag"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8 = 1;
-  if (self != v4)
+  if (self != equalCopy)
   {
-    if ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (groupIdentifier = self->_groupIdentifier, groupIdentifier | v4->_groupIdentifier) && ![(NSString *)groupIdentifier isEqual:?]|| (externalURI = self->_externalURI, externalURI | v4->_externalURI) && ![(NSString *)externalURI isEqual:?]|| (externalModificationTag = self->_externalModificationTag, externalModificationTag | v4->_externalModificationTag) && ![(NSString *)externalModificationTag isEqual:?])
+    if ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (groupIdentifier = self->_groupIdentifier, groupIdentifier | equalCopy->_groupIdentifier) && ![(NSString *)groupIdentifier isEqual:?]|| (externalURI = self->_externalURI, externalURI | equalCopy->_externalURI) && ![(NSString *)externalURI isEqual:?]|| (externalModificationTag = self->_externalModificationTag, externalModificationTag | equalCopy->_externalModificationTag) && ![(NSString *)externalModificationTag isEqual:?])
     {
       v8 = 0;
     }
@@ -114,26 +114,26 @@
   v4 = [v3 appendName:@"groupIdentifier" object:self->_groupIdentifier];
   v5 = [v3 appendName:@"externalURI" object:self->_externalURI];
   v6 = [v3 appendName:@"externalModificationTag" object:self->_externalModificationTag];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (void)acceptEventVisitor:(id)a3
+- (void)acceptEventVisitor:(id)visitor
 {
-  v4 = a3;
-  v5 = [[CNSafeChangeHistoryEventVisitorWrapper alloc] initWithChangeHistoryEventVisitor:v4];
+  visitorCopy = visitor;
+  v5 = [[CNSafeChangeHistoryEventVisitorWrapper alloc] initWithChangeHistoryEventVisitor:visitorCopy];
 
   [(CNSafeChangeHistoryEventVisitorWrapper *)v5 visitDeleteGroupEvent:self];
 }
 
-- (int64_t)comparisonResultWithinSameClass:(id)a3
+- (int64_t)comparisonResultWithinSameClass:(id)class
 {
-  v4 = a3;
-  v5 = [(CNChangeHistoryDeleteGroupEvent *)self groupIdentifier];
-  v6 = [v4 groupIdentifier];
+  classCopy = class;
+  groupIdentifier = [(CNChangeHistoryDeleteGroupEvent *)self groupIdentifier];
+  groupIdentifier2 = [classCopy groupIdentifier];
 
-  v7 = [v5 compare:v6];
+  v7 = [groupIdentifier compare:groupIdentifier2];
   return v7;
 }
 

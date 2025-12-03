@@ -1,52 +1,52 @@
 @interface NARPBLocalizationInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addKey:(id)a3;
-- (void)addLocalizedValue:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addKey:(id)key;
+- (void)addLocalizedValue:(id)value;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NARPBLocalizationInfo
 
-- (void)addKey:(id)a3
+- (void)addKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   keys = self->_keys;
-  v8 = v4;
+  v8 = keyCopy;
   if (!keys)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_keys;
     self->_keys = v6;
 
-    v4 = v8;
+    keyCopy = v8;
     keys = self->_keys;
   }
 
-  [(NSMutableArray *)keys addObject:v4];
+  [(NSMutableArray *)keys addObject:keyCopy];
 }
 
-- (void)addLocalizedValue:(id)a3
+- (void)addLocalizedValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   localizedValues = self->_localizedValues;
-  v8 = v4;
+  v8 = valueCopy;
   if (!localizedValues)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_localizedValues;
     self->_localizedValues = v6;
 
-    v4 = v8;
+    valueCopy = v8;
     localizedValues = self->_localizedValues;
   }
 
-  [(NSMutableArray *)localizedValues addObject:v4];
+  [(NSMutableArray *)localizedValues addObject:valueCopy];
 }
 
 - (id)description
@@ -54,8 +54,8 @@
   v7.receiver = self;
   v7.super_class = NARPBLocalizationInfo;
   v3 = [(NARPBLocalizationInfo *)&v7 description];
-  v4 = [(NARPBLocalizationInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NARPBLocalizationInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -85,9 +85,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_localization)
   {
     PBDataWriterWriteStringField();
@@ -158,49 +158,49 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if (self->_localization)
   {
-    [v12 setLocalization:?];
+    [toCopy setLocalization:?];
   }
 
   if ([(NARPBLocalizationInfo *)self keysCount])
   {
-    [v12 clearKeys];
-    v4 = [(NARPBLocalizationInfo *)self keysCount];
-    if (v4)
+    [toCopy clearKeys];
+    keysCount = [(NARPBLocalizationInfo *)self keysCount];
+    if (keysCount)
     {
-      v5 = v4;
+      v5 = keysCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NARPBLocalizationInfo *)self keyAtIndex:i];
-        [v12 addKey:v7];
+        [toCopy addKey:v7];
       }
     }
   }
 
   if ([(NARPBLocalizationInfo *)self localizedValuesCount])
   {
-    [v12 clearLocalizedValues];
-    v8 = [(NARPBLocalizationInfo *)self localizedValuesCount];
-    if (v8)
+    [toCopy clearLocalizedValues];
+    localizedValuesCount = [(NARPBLocalizationInfo *)self localizedValuesCount];
+    if (localizedValuesCount)
     {
-      v9 = v8;
+      v9 = localizedValuesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(NARPBLocalizationInfo *)self localizedValueAtIndex:j];
-        [v12 addLocalizedValue:v11];
+        [toCopy addLocalizedValue:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_localization copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_localization copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -224,7 +224,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v25 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v25 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addKey:v13];
 
         v12 = v12 + 1;
@@ -257,7 +257,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v21 + 1) + 8 * v18) copyWithZone:{a3, v21}];
+        v19 = [*(*(&v21 + 1) + 8 * v18) copyWithZone:{zone, v21}];
         [v5 addLocalizedValue:v19];
 
         v18 = v18 + 1;
@@ -273,13 +273,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((localization = self->_localization, !(localization | v4[2])) || -[NSString isEqual:](localization, "isEqual:")) && ((keys = self->_keys, !(keys | v4[1])) || -[NSMutableArray isEqual:](keys, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((localization = self->_localization, !(localization | equalCopy[2])) || -[NSString isEqual:](localization, "isEqual:")) && ((keys = self->_keys, !(keys | equalCopy[1])) || -[NSMutableArray isEqual:](keys, "isEqual:")))
   {
     localizedValues = self->_localizedValues;
-    if (localizedValues | v4[3])
+    if (localizedValues | equalCopy[3])
     {
       v8 = [(NSMutableArray *)localizedValues isEqual:?];
     }
@@ -305,10 +305,10 @@
   return v4 ^ [(NSMutableArray *)self->_localizedValues hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(NARPBLocalizationInfo *)self setLocalization:?];
   }
@@ -317,7 +317,7 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
@@ -345,7 +345,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {

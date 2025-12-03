@@ -1,14 +1,14 @@
 @interface _BKAcquireSlotDialogButtonAction
-+ (id)actionButtonWithTitle:(id)a3;
++ (id)actionButtonWithTitle:(id)title;
 @end
 
 @implementation _BKAcquireSlotDialogButtonAction
 
-+ (id)actionButtonWithTitle:(id)a3
++ (id)actionButtonWithTitle:(id)title
 {
-  v3 = a3;
+  titleCopy = title;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setTitle:v3];
+  [v4 setTitle:titleCopy];
 
   return v4;
 }

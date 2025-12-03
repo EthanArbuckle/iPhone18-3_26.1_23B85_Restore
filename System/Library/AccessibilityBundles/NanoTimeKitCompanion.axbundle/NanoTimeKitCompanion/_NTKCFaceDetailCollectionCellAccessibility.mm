@@ -1,5 +1,5 @@
 @interface _NTKCFaceDetailCollectionCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
@@ -7,39 +7,39 @@
 
 @implementation _NTKCFaceDetailCollectionCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_NTKCFaceDetailCollectionCell" hasInstanceMethod:@"active" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"_NTKCFaceDetailCollectionCell" hasInstanceMethod:@"disabled" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"_NTKCFaceDetailCollectionCell" hasInstanceVariable:@"_label" withType:"_NTKCFaceDetailCollectionCellLabel"];
-  [v3 validateClass:@"_NTKCFaceDetailCollectionCellLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKEditOption"];
-  [v3 validateClass:@"NTKEditOption" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_NTKCFaceDetailCollectionCell" hasInstanceMethod:@"active" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"_NTKCFaceDetailCollectionCell" hasInstanceMethod:@"disabled" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"_NTKCFaceDetailCollectionCell" hasInstanceVariable:@"_label" withType:"_NTKCFaceDetailCollectionCellLabel"];
+  [validationsCopy validateClass:@"_NTKCFaceDetailCollectionCellLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKEditOption"];
+  [validationsCopy validateClass:@"NTKEditOption" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(_NTKCFaceDetailCollectionCellAccessibility *)self isAccessibilityUserDefinedElement];
+  isAccessibilityUserDefinedElement = [(_NTKCFaceDetailCollectionCellAccessibility *)self isAccessibilityUserDefinedElement];
 
-  if (!v3)
+  if (!isAccessibilityUserDefinedElement)
   {
     return 1;
   }
 
-  v4 = [(_NTKCFaceDetailCollectionCellAccessibility *)self isAccessibilityUserDefinedElement];
-  v5 = [v4 BOOLValue];
+  isAccessibilityUserDefinedElement2 = [(_NTKCFaceDetailCollectionCellAccessibility *)self isAccessibilityUserDefinedElement];
+  bOOLValue = [isAccessibilityUserDefinedElement2 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(_NTKCFaceDetailCollectionCellAccessibility *)self accessibilityUserDefinedLabel];
+  accessibilityUserDefinedLabel = [(_NTKCFaceDetailCollectionCellAccessibility *)self accessibilityUserDefinedLabel];
 
-  if (v3)
+  if (accessibilityUserDefinedLabel)
   {
-    v4 = [(_NTKCFaceDetailCollectionCellAccessibility *)self accessibilityUserDefinedLabel];
+    accessibilityUserDefinedLabel2 = [(_NTKCFaceDetailCollectionCellAccessibility *)self accessibilityUserDefinedLabel];
   }
 
   else
@@ -48,8 +48,8 @@
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 _accessibilityEditOptionDescription];
-      v8 = [v7 length];
+      _accessibilityEditOptionDescription = [v5 _accessibilityEditOptionDescription];
+      v8 = [_accessibilityEditOptionDescription length];
 
       if (v8)
       {
@@ -60,7 +60,7 @@
       {
         [v6 safeValueForKey:@"localizedName"];
       }
-      v4 = ;
+      accessibilityUserDefinedLabel2 = ;
     }
 
     else
@@ -70,34 +70,34 @@
 
       if ([v10 length])
       {
-        v11 = v10;
+        accessibilityLabel = v10;
       }
 
       else
       {
         v13.receiver = self;
         v13.super_class = _NTKCFaceDetailCollectionCellAccessibility;
-        v11 = [(_NTKCFaceDetailCollectionCellAccessibility *)&v13 accessibilityLabel];
+        accessibilityLabel = [(_NTKCFaceDetailCollectionCellAccessibility *)&v13 accessibilityLabel];
       }
 
-      v4 = v11;
+      accessibilityUserDefinedLabel2 = accessibilityLabel;
     }
   }
 
-  return v4;
+  return accessibilityUserDefinedLabel2;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v6.receiver = self;
   v6.super_class = _NTKCFaceDetailCollectionCellAccessibility;
-  v3 = [(_NTKCFaceDetailCollectionCellAccessibility *)&v6 accessibilityTraits];
+  accessibilityTraits = [(_NTKCFaceDetailCollectionCellAccessibility *)&v6 accessibilityTraits];
   if ([(_NTKCFaceDetailCollectionCellAccessibility *)self safeBoolForKey:@"disabled"])
   {
     v4 = &UIAccessibilityTraitNotEnabled;
 LABEL_5:
-    v3 |= *v4;
-    return v3;
+    accessibilityTraits |= *v4;
+    return accessibilityTraits;
   }
 
   if ([(_NTKCFaceDetailCollectionCellAccessibility *)self safeBoolForKey:@"active"])
@@ -106,7 +106,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
 @end

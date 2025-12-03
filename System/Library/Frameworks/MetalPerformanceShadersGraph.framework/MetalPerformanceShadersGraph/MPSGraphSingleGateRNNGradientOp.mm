@@ -1,34 +1,34 @@
 @interface MPSGraphSingleGateRNNGradientOp
-- (MPSGraphSingleGateRNNGradientOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 descriptor:(id)a6 name:(id)a7;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (MPSGraphSingleGateRNNGradientOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies descriptor:(id)descriptor name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphSingleGateRNNGradientOp
 
-- (MPSGraphSingleGateRNNGradientOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 descriptor:(id)a6 name:(id)a7
+- (MPSGraphSingleGateRNNGradientOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies descriptor:(id)descriptor name:(id)name
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v15 copy];
+  graphCopy = graph;
+  tensorsCopy = tensors;
+  dependenciesCopy = dependencies;
+  descriptorCopy = descriptor;
+  nameCopy = name;
+  v17 = [descriptorCopy copy];
   desc = self->super._desc;
   self->super._desc = v17;
 
-  v19 = [(MPSGraphOperation *)self initWithGraph:v12 inputTensors:v13 controlDependencies:v14 name:v16];
+  v19 = [(MPSGraphOperation *)self initWithGraph:graphCopy inputTensors:tensorsCopy controlDependencies:dependenciesCopy name:nameCopy];
   return v19;
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v54 = *MEMORY[0x1E69E9840];
-  v11 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphSingleGateRNNGradientOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphRNNOps.mm", __p);
-  v12 = v11;
+  v12 = nameCopy;
   v53 = 260;
   v52[0] = __p;
-  StringAttr = mlir::Builder::getStringAttr(a3, v52);
+  StringAttr = mlir::Builder::getStringAttr(builder, v52);
   v14 = mlir::FileLineColLoc::get(StringAttr, 0x178u, 0);
   if (!v12)
   {
@@ -36,8 +36,8 @@
   }
 
   v15 = v12;
-  v16 = [v12 UTF8String];
-  v17 = strlen(v16);
+  uTF8String = [v12 UTF8String];
+  v17 = strlen(uTF8String);
   if (v17 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -52,11 +52,11 @@
   HIBYTE(v51) = v17;
   if (v17)
   {
-    memmove(&__dst, v16, v17);
+    memmove(&__dst, uTF8String, v17);
   }
 
   *(&__dst + v19) = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v18, &v47);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v18, &v47);
   v20 = v47.__r_.__value_.__r.__words[0];
   if ((v47.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -72,7 +72,7 @@
   }
 
   LOBYTE(v53) = v21;
-  v22 = mlir::Builder::getStringAttr(a3, v52);
+  v22 = mlir::Builder::getStringAttr(builder, v52);
   v23 = mlir::NameLoc::get(v22, v14);
   if (SHIBYTE(v47.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -96,21 +96,21 @@ LABEL_15:
     operator delete(__p[0]);
   }
 
-  v24 = [(MPSGraphSingleGateRNNDescriptor *)self->super._desc activation];
-  if (v24 >= (MPSGraphRNNActivationHardSigmoid|MPSGraphRNNActivationRelu))
+  activation = [(MPSGraphSingleGateRNNDescriptor *)self->super._desc activation];
+  if (activation >= (MPSGraphRNNActivationHardSigmoid|MPSGraphRNNActivationRelu))
   {
     v25 = 1;
   }
 
   else
   {
-    v25 = v24;
+    v25 = activation;
   }
 
   desc = self->super._desc;
   hasInitState = desc->_hasInitState;
-  v29 = *a5;
-  v28 = *(a5 + 1);
+  v29 = *values;
+  v28 = *(values + 1);
   if (hasInitState != 1)
   {
     v30 = 0;
@@ -169,8 +169,8 @@ LABEL_27:
   }
 
   mlir::OperationState::OperationState(v52, v23, v37);
-  mlir::mps::SingleGateRNNGradientOp::build(a3, v52, *v29, v29[1], v29[2], v25, hasInitState, v30, v34);
-  v39 = mlir::OpBuilder::create(a3, v52);
+  mlir::mps::SingleGateRNNGradientOp::build(builder, v52, *v29, v29[1], v29[2], v25, hasInitState, v30, v34);
+  v39 = mlir::OpBuilder::create(builder, v52);
   v40 = *(v39[6] + 16);
   mlir::OperationState::~OperationState(v52);
   if (v40 != &mlir::detail::TypeIDResolver<mlir::mps::SingleGateRNNGradientOp,void>::id)

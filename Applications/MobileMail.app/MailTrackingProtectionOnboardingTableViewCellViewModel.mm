@@ -1,28 +1,28 @@
 @interface MailTrackingProtectionOnboardingTableViewCellViewModel
-- (MailTrackingProtectionOnboardingTableViewCellViewModel)initWithTitle:(id)a3 detail:(id)a4 image:(id)a5 isSelected:(BOOL)a6 preventTracking:(BOOL)a7 accessibilityIdentifier:(id)a8;
+- (MailTrackingProtectionOnboardingTableViewCellViewModel)initWithTitle:(id)title detail:(id)detail image:(id)image isSelected:(BOOL)selected preventTracking:(BOOL)tracking accessibilityIdentifier:(id)identifier;
 - (void)handleSelection;
 @end
 
 @implementation MailTrackingProtectionOnboardingTableViewCellViewModel
 
-- (MailTrackingProtectionOnboardingTableViewCellViewModel)initWithTitle:(id)a3 detail:(id)a4 image:(id)a5 isSelected:(BOOL)a6 preventTracking:(BOOL)a7 accessibilityIdentifier:(id)a8
+- (MailTrackingProtectionOnboardingTableViewCellViewModel)initWithTitle:(id)title detail:(id)detail image:(id)image isSelected:(BOOL)selected preventTracking:(BOOL)tracking accessibilityIdentifier:(id)identifier
 {
-  v21 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
+  titleCopy = title;
+  detailCopy = detail;
+  imageCopy = image;
+  identifierCopy = identifier;
   v22.receiver = self;
   v22.super_class = MailTrackingProtectionOnboardingTableViewCellViewModel;
   v18 = [(MailTrackingProtectionOnboardingTableViewCellViewModel *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_title, a3);
-    objc_storeStrong(&v19->_detail, a4);
-    objc_storeStrong(&v19->_image, a5);
-    v19->_selected = a6;
-    v19->_preventTracking = a7;
-    objc_storeStrong(&v19->_accessibilityIdentifier, a8);
+    objc_storeStrong(&v18->_title, title);
+    objc_storeStrong(&v19->_detail, detail);
+    objc_storeStrong(&v19->_image, image);
+    v19->_selected = selected;
+    v19->_preventTracking = tracking;
+    objc_storeStrong(&v19->_accessibilityIdentifier, identifier);
   }
 
   return v19;

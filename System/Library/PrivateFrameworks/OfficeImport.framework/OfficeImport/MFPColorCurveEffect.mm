@@ -1,19 +1,19 @@
 @interface MFPColorCurveEffect
-- (MFPColorCurveEffect)initWithAdjustment:(int)a3 channel:(int)a4 adjustValue:(int)a5;
+- (MFPColorCurveEffect)initWithAdjustment:(int)adjustment channel:(int)channel adjustValue:(int)value;
 @end
 
 @implementation MFPColorCurveEffect
 
-- (MFPColorCurveEffect)initWithAdjustment:(int)a3 channel:(int)a4 adjustValue:(int)a5
+- (MFPColorCurveEffect)initWithAdjustment:(int)adjustment channel:(int)channel adjustValue:(int)value
 {
   v9.receiver = self;
   v9.super_class = MFPColorCurveEffect;
   result = [(MFPColorCurveEffect *)&v9 init];
   if (result)
   {
-    result->mAdjustment = a3;
-    result->mChannel = a4;
-    result->mAdjustValue = a5;
+    result->mAdjustment = adjustment;
+    result->mChannel = channel;
+    result->mAdjustValue = value;
   }
 
   return result;

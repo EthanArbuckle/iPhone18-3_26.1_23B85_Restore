@@ -1,12 +1,12 @@
 @interface _CLRangingPeerDistanceInternal
-- (_CLRangingPeerDistanceInternal)initWithPeer:(id)a3 date:(id)a4 distanceMeters:(id)a5 accuracyMeters:(id)a6 initiator:(BOOL)a7 shouldUnlock:(BOOL)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_CLRangingPeerDistanceInternal)initWithPeer:(id)peer date:(id)date distanceMeters:(id)meters accuracyMeters:(id)accuracyMeters initiator:(BOOL)initiator shouldUnlock:(BOOL)unlock;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
 @implementation _CLRangingPeerDistanceInternal
 
-- (_CLRangingPeerDistanceInternal)initWithPeer:(id)a3 date:(id)a4 distanceMeters:(id)a5 accuracyMeters:(id)a6 initiator:(BOOL)a7 shouldUnlock:(BOOL)a8
+- (_CLRangingPeerDistanceInternal)initWithPeer:(id)peer date:(id)date distanceMeters:(id)meters accuracyMeters:(id)accuracyMeters initiator:(BOOL)initiator shouldUnlock:(BOOL)unlock
 {
   v21.receiver = self;
   v21.super_class = _CLRangingPeerDistanceInternal;
@@ -15,35 +15,35 @@
   if (v14)
   {
     peer = v14->_peer;
-    if (peer != a3)
+    if (peer != peer)
     {
 
-      v15->_peer = [a3 copy];
+      v15->_peer = [peer copy];
     }
 
     date = v15->_date;
-    if (date != a4)
+    if (date != date)
     {
 
-      v15->_date = [a4 copy];
+      v15->_date = [date copy];
     }
 
     distanceMeters = v15->_distanceMeters;
-    if (distanceMeters != a5)
+    if (distanceMeters != meters)
     {
 
-      v15->_distanceMeters = [a5 copy];
+      v15->_distanceMeters = [meters copy];
     }
 
     accuracyMeters = v15->_accuracyMeters;
-    if (accuracyMeters != a6)
+    if (accuracyMeters != accuracyMeters)
     {
 
-      v15->_accuracyMeters = [a6 copy];
+      v15->_accuracyMeters = [accuracyMeters copy];
     }
 
-    v15->_initiator = a7;
-    v15->_shouldUnlock = a8;
+    v15->_initiator = initiator;
+    v15->_shouldUnlock = unlock;
   }
 
   return v15;
@@ -62,9 +62,9 @@
   [(_CLRangingPeerDistanceInternal *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   peer = self->_peer;
   date = self->_date;
   distanceMeters = self->_distanceMeters;

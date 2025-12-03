@@ -1,24 +1,24 @@
 @interface JFXDisparityAsMatte
 + (CGSize)mattingDepthInputSize;
-- (id)initForFrameSet:(id)a3;
-- (void)alphaMatteForFrameSet:(id)a3 mattingPerfState:(id)a4 completionHandler:(id)a5;
+- (id)initForFrameSet:(id)set;
+- (void)alphaMatteForFrameSet:(id)set mattingPerfState:(id)state completionHandler:(id)handler;
 @end
 
 @implementation JFXDisparityAsMatte
 
-- (id)initForFrameSet:(id)a3
+- (id)initForFrameSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v12.receiver = self;
   v12.super_class = JFXDisparityAsMatte;
-  v5 = [(JFXMatting *)&v12 initForFrameSet:v4];
+  v5 = [(JFXMatting *)&v12 initForFrameSet:setCopy];
   if (v5)
   {
-    v6 = [v4 depthData];
-    v7 = [v6 depthDataMap];
+    depthData = [setCopy depthData];
+    depthDataMap = [depthData depthDataMap];
 
-    Width = CVPixelBufferGetWidth(v7);
-    Height = CVPixelBufferGetHeight(v7);
+    Width = CVPixelBufferGetWidth(depthDataMap);
+    Height = CVPixelBufferGetHeight(depthDataMap);
     JFXCreatePixelBufferPool(Width, Height, 825306677, v5 + 5);
     JFXCreatePixelBufferPool(Height, Width, 825306677, v5 + 6);
     JFXCreatePixelBufferPool(*(v5 + 1), *(v5 + 2), 825306677, v5 + 7);
@@ -31,16 +31,16 @@
   return v5;
 }
 
-- (void)alphaMatteForFrameSet:(id)a3 mattingPerfState:(id)a4 completionHandler:(id)a5
+- (void)alphaMatteForFrameSet:(id)set mattingPerfState:(id)state completionHandler:(id)handler
 {
-  v7 = a3;
+  setCopy = set;
   v28 = 0;
   pixelBufferOut = 0;
   v26 = 0;
   v27 = 0;
   v25 = 0;
   fixedPointBufferPool = self->_fixedPointBufferPool;
-  v9 = a5;
+  handlerCopy = handler;
   CVPixelBufferPoolCreatePixelBuffer(0, fixedPointBufferPool, &pixelBufferOut);
   CVPixelBufferPoolCreatePixelBuffer(0, self->_rotatedFPBufferPool, &v28);
   CVPixelBufferPoolCreatePixelBuffer(0, self->_scaledUpFPBufferPool, &v27);
@@ -50,22 +50,22 @@
   }
 
   CVPixelBufferPoolCreatePixelBuffer(0, self->_alphaMattePool, &v25);
-  v10 = [v7 depthData];
-  v11 = [v10 depthDataType];
-  v12 = [v7 depthData];
-  v13 = v12;
-  if (v11 == 1751411059)
+  depthData = [setCopy depthData];
+  depthDataType = [depthData depthDataType];
+  depthData2 = [setCopy depthData];
+  v13 = depthData2;
+  if (depthDataType == 1751411059)
   {
-    v14 = [v12 depthDataMap];
+    depthDataMap = [depthData2 depthDataMap];
   }
 
   else
   {
-    v15 = [v12 depthDataByConvertingToDepthDataType:1751411059];
-    v14 = [v15 depthDataMap];
+    v15 = [depthData2 depthDataByConvertingToDepthDataType:1751411059];
+    depthDataMap = [v15 depthDataMap];
   }
 
-  CVPixelBufferLockBaseAddress(v14, 1uLL);
+  CVPixelBufferLockBaseAddress(depthDataMap, 1uLL);
   CVPixelBufferLockBaseAddress(pixelBufferOut, 0);
   CVPixelBufferLockBaseAddress(v28, 0);
   CVPixelBufferLockBaseAddress(v27, 0);
@@ -75,12 +75,12 @@
   }
 
   CVPixelBufferLockBaseAddress(v25, 0);
-  v16 = [v7 depthData];
+  depthData3 = [setCopy depthData];
 
-  if (v16)
+  if (depthData3)
   {
     memset(&src, 0, sizeof(src));
-    JFXToVImage(v14, &src.data);
+    JFXToVImage(depthDataMap, &src.data);
     memset(&dest, 0, sizeof(dest));
     JFXToVImage(pixelBufferOut, &dest.data);
     memset(&v22, 0, sizeof(v22));
@@ -118,7 +118,7 @@
   }
 
 LABEL_19:
-  CVPixelBufferUnlockBaseAddress(v14, 1uLL);
+  CVPixelBufferUnlockBaseAddress(depthDataMap, 1uLL);
   CVPixelBufferUnlockBaseAddress(pixelBufferOut, 0);
   CVPixelBufferUnlockBaseAddress(v28, 0);
   CVPixelBufferUnlockBaseAddress(v27, 0);
@@ -138,7 +138,7 @@ LABEL_19:
 
   v18 = [MEMORY[0x277D41618] imageWithCVPixelBuffer:v25];
   CVPixelBufferRelease(v25);
-  v9[2](v9, v18);
+  handlerCopy[2](handlerCopy, v18);
 }
 
 + (CGSize)mattingDepthInputSize

@@ -1,7 +1,7 @@
 @interface SBDashBoardHomeAffordanceController
 - (SBDashBoardHomeAffordanceController)init;
-- (void)registerHomeGestureParticipant:(id)a3 withIdentifier:(int64_t)a4;
-- (void)unregisterHomeGestureParticipant:(id)a3 withIdentifier:(int64_t)a4;
+- (void)registerHomeGestureParticipant:(id)participant withIdentifier:(int64_t)identifier;
+- (void)unregisterHomeGestureParticipant:(id)participant withIdentifier:(int64_t)identifier;
 @end
 
 @implementation SBDashBoardHomeAffordanceController
@@ -21,9 +21,9 @@
   return v2;
 }
 
-- (void)registerHomeGestureParticipant:(id)a3 withIdentifier:(int64_t)a4
+- (void)registerHomeGestureParticipant:(id)participant withIdentifier:(int64_t)identifier
 {
-  object = a3;
+  object = participant;
   v5 = objc_getAssociatedObject(object, "SBDashBoardHomeAffordanceControllerParticipantKey");
   if (!v5)
   {
@@ -34,12 +34,12 @@
   [(SBNotificationHomeAffordanceController *)self->_notificationHomeAffordanceController registerClient:v5 withZStackIdentifier:14];
 }
 
-- (void)unregisterHomeGestureParticipant:(id)a3 withIdentifier:(int64_t)a4
+- (void)unregisterHomeGestureParticipant:(id)participant withIdentifier:(int64_t)identifier
 {
-  v5 = a3;
-  v6 = objc_getAssociatedObject(v5, "SBDashBoardHomeAffordanceControllerParticipantKey");
+  participantCopy = participant;
+  v6 = objc_getAssociatedObject(participantCopy, "SBDashBoardHomeAffordanceControllerParticipantKey");
   [(SBNotificationHomeAffordanceController *)self->_notificationHomeAffordanceController unregisterClient:v6 withZStackIdentifier:14];
-  objc_setAssociatedObject(v5, "SBDashBoardHomeAffordanceControllerParticipantKey", 0, 1);
+  objc_setAssociatedObject(participantCopy, "SBDashBoardHomeAffordanceControllerParticipantKey", 0, 1);
 }
 
 @end

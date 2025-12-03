@@ -21,7 +21,7 @@
 
 - (void)beginObserving
 {
-  v2 = self;
+  selfCopy = self;
   dispatch thunk of ActivityPausedRingsObserver.beginObserving()();
 }
 

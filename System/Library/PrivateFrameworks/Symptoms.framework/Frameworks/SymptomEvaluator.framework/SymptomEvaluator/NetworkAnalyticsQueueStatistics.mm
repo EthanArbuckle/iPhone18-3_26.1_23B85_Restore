@@ -1,7 +1,7 @@
 @interface NetworkAnalyticsQueueStatistics
-+ (id)schedulerToString:(unsigned int)a3;
-+ (id)slotToString:(unsigned __int8)a3;
-- (NetworkAnalyticsQueueStatistics)initWithInterfaceName:(id)a3;
++ (id)schedulerToString:(unsigned int)string;
++ (id)slotToString:(unsigned __int8)string;
+- (NetworkAnalyticsQueueStatistics)initWithInterfaceName:(id)name;
 - (id)description;
 - (void)cleanupIoctlSocket;
 - (void)createIoctlSocket;
@@ -14,8 +14,8 @@
 - (void)update
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [v3 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v5 = v4;
 
   lastUpdateTime = self->_lastUpdateTime;
@@ -94,16 +94,16 @@ LABEL_16:
   return v2;
 }
 
-- (NetworkAnalyticsQueueStatistics)initWithInterfaceName:(id)a3
+- (NetworkAnalyticsQueueStatistics)initWithInterfaceName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = NetworkAnalyticsQueueStatistics;
   v6 = [(NetworkAnalyticsQueueStatistics *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_interfaceName, a3);
+    objc_storeStrong(&v6->_interfaceName, name);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     slots = v7->_slots;
     v7->_slots = v8;
@@ -157,29 +157,29 @@ LABEL_16:
   }
 }
 
-+ (id)schedulerToString:(unsigned int)a3
++ (id)schedulerToString:(unsigned int)string
 {
-  if (a3 > 7)
+  if (string > 7)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_27898D768[a3];
+    return off_27898D768[string];
   }
 }
 
-+ (id)slotToString:(unsigned __int8)a3
++ (id)slotToString:(unsigned __int8)string
 {
-  if (a3 > 9u)
+  if (string > 9u)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_27898D7A8[a3];
+    return off_27898D7A8[string];
   }
 }
 

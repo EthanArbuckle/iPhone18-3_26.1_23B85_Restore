@@ -1,14 +1,14 @@
 @interface pnVJs93OcjCilNjA
 - (id)toDictionary;
-- (pnVJs93OcjCilNjA)initWithDictionary:(id)a3;
+- (pnVJs93OcjCilNjA)initWithDictionary:(id)dictionary;
 @end
 
 @implementation pnVJs93OcjCilNjA
 
-- (pnVJs93OcjCilNjA)initWithDictionary:(id)a3
+- (pnVJs93OcjCilNjA)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"_classType"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"_classType"];
   v6 = [v5 isEqualToString:@"name"];
 
   if (v6)
@@ -18,26 +18,26 @@
     v7 = [(pnVJs93OcjCilNjA *)&v13 init];
     if (v7)
     {
-      v8 = [v4 objectForKey:@"firstName"];
+      v8 = [dictionaryCopy objectForKey:@"firstName"];
       [(pnVJs93OcjCilNjA *)v7 setFirstName:v8];
 
-      v9 = [v4 objectForKey:@"lastName"];
+      v9 = [dictionaryCopy objectForKey:@"lastName"];
       [(pnVJs93OcjCilNjA *)v7 setLastName:v9];
 
-      v10 = [v4 objectForKey:@"fullName"];
+      v10 = [dictionaryCopy objectForKey:@"fullName"];
       [(pnVJs93OcjCilNjA *)v7 setFullName:v10];
     }
 
     self = v7;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)toDictionary

@@ -1,20 +1,20 @@
 @interface HDHRNotificationMetric
-- (HDHRNotificationMetric)initWithNotificationType:(id)a3 areHealthNotificationsAuthorized:(BOOL)a4;
+- (HDHRNotificationMetric)initWithNotificationType:(id)type areHealthNotificationsAuthorized:(BOOL)authorized;
 - (id)eventPayload;
 - (void)submit;
 @end
 
 @implementation HDHRNotificationMetric
 
-- (HDHRNotificationMetric)initWithNotificationType:(id)a3 areHealthNotificationsAuthorized:(BOOL)a4
+- (HDHRNotificationMetric)initWithNotificationType:(id)type areHealthNotificationsAuthorized:(BOOL)authorized
 {
-  v6 = a3;
+  typeCopy = type;
   v14.receiver = self;
   v14.super_class = HDHRNotificationMetric;
   v7 = [(HDHRNotificationMetric *)&v14 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [typeCopy copy];
     notificationType = v7->_notificationType;
     v7->_notificationType = v8;
 
@@ -28,7 +28,7 @@
     v7->_cardioFitnessNotificationType = @"-1";
 
     v7->_irregularRhythmNotificationsAlgorithmVersion = -1;
-    v7->_areHealthNotificationsAuthorized = a4;
+    v7->_areHealthNotificationsAuthorized = authorized;
   }
 
   return v7;
@@ -56,8 +56,8 @@
 {
   if (HKImproveHealthAndActivityAnalyticsAllowed())
   {
-    v4 = [objc_opt_class() eventName];
-    v3 = [(HDHRNotificationMetric *)self eventPayload];
+    eventName = [objc_opt_class() eventName];
+    eventPayload = [(HDHRNotificationMetric *)self eventPayload];
     AnalyticsSendEvent();
   }
 }

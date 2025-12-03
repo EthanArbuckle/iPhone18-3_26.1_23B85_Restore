@@ -1,25 +1,25 @@
 @interface STSetUpForFamilyGroupSpecifierProvider
-+ (id)providerWithCoordinator:(id)a3 presenter:(id)a4;
++ (id)providerWithCoordinator:(id)coordinator presenter:(id)presenter;
 - (STSetUpForFamilyGroupSpecifierProvider)init;
 - (UIViewController)presenter;
 - (void)_updateEnabledValue;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)presentAppleAccountSetupFamilyController:(id)a3;
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4;
-- (void)setCoordinator:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)presentAppleAccountSetupFamilyController:(id)controller;
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info;
+- (void)setCoordinator:(id)coordinator;
 @end
 
 @implementation STSetUpForFamilyGroupSpecifierProvider
 
-+ (id)providerWithCoordinator:(id)a3 presenter:(id)a4
++ (id)providerWithCoordinator:(id)coordinator presenter:(id)presenter
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 providerWithCoordinator:v7];
-  [v8 setPresenter:v6];
+  presenterCopy = presenter;
+  coordinatorCopy = coordinator;
+  v8 = [self providerWithCoordinator:coordinatorCopy];
+  [v8 setPresenter:presenterCopy];
 
-  [v8 setCoordinator:v7];
+  [v8 setCoordinator:coordinatorCopy];
 
   return v8;
 }
@@ -35,8 +35,8 @@
     [(STGroupSpecifierProvider *)v2 setIsHidden:1];
     v4 = +[STScreenTimeSettingsUIBundle bundle];
     v5 = [v4 localizedStringForKey:@"SetUpForFamilyFooterText" value:&stru_28766E5A8 table:0];
-    v6 = [(STGroupSpecifierProvider *)v3 groupSpecifier];
-    [v6 setObject:v5 forKeyedSubscript:*MEMORY[0x277D3FF88]];
+    groupSpecifier = [(STGroupSpecifierProvider *)v3 groupSpecifier];
+    [groupSpecifier setObject:v5 forKeyedSubscript:*MEMORY[0x277D3FF88]];
 
     v7 = [v4 localizedStringForKey:@"SetUpForFamilyButtonName" value:&stru_28766E5A8 table:0];
     v8 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v7 target:v3 set:0 get:0 detail:0 cell:13 edit:0];
@@ -50,11 +50,11 @@
     v3->_setupFamilySpecifier = v8;
     v10 = v8;
 
-    v11 = [(STGroupSpecifierProvider *)v3 mutableSpecifiers];
-    [v11 addObject:v10];
-    v12 = [MEMORY[0x277D262A0] sharedConnection];
+    mutableSpecifiers = [(STGroupSpecifierProvider *)v3 mutableSpecifiers];
+    [mutableSpecifiers addObject:v10];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
 
-    [v12 registerObserver:v3];
+    [mEMORY[0x277D262A0] registerObserver:v3];
     [(STSetUpForFamilyGroupSpecifierProvider *)v3 _updateEnabledValue];
   }
 
@@ -63,44 +63,44 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  [v3 unregisterObserver:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unregisterObserver:self];
 
   v4.receiver = self;
   v4.super_class = STSetUpForFamilyGroupSpecifierProvider;
   [(STGroupSpecifierProvider *)&v4 dealloc];
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"viewModel.canSetUpFamily" context:@"STSetUpForFamilyGroupSpecifierProviderObservationContext"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"viewModel.canSetUpFamily" context:@"STSetUpForFamilyGroupSpecifierProviderObservationContext"];
   v6.receiver = self;
   v6.super_class = STSetUpForFamilyGroupSpecifierProvider;
-  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:v4];
-  [v4 addObserver:self forKeyPath:@"viewModel.canSetUpFamily" options:4 context:@"STSetUpForFamilyGroupSpecifierProviderObservationContext"];
+  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:coordinatorCopy];
+  [coordinatorCopy addObserver:self forKeyPath:@"viewModel.canSetUpFamily" options:4 context:@"STSetUpForFamilyGroupSpecifierProviderObservationContext"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"STSetUpForFamilyGroupSpecifierProviderObservationContext")
+  if (context == @"STSetUpForFamilyGroupSpecifierProviderObservationContext")
   {
-    v11 = a3;
+    pathCopy = path;
     [(STRootGroupSpecifierProvider *)self coordinator];
 
-    v12 = [v11 isEqualToString:@"viewModel.canSetUpFamily"];
+    v12 = [pathCopy isEqualToString:@"viewModel.canSetUpFamily"];
     if (v12)
     {
-      v13 = [MEMORY[0x277D262A0] sharedConnection];
-      v14 = [v13 effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
+      mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+      v14 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
 
-      v19 = [(STSetUpForFamilyGroupSpecifierProvider *)self presenter];
-      if (v19)
+      presenter = [(STSetUpForFamilyGroupSpecifierProvider *)self presenter];
+      if (presenter)
       {
-        v15 = [(STRootGroupSpecifierProvider *)self coordinator];
-        v16 = [v15 viewModel];
-        v17 = [v16 canSetUpFamily] ^ 1;
+        coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+        viewModel = [coordinator viewModel];
+        v17 = [viewModel canSetUpFamily] ^ 1;
         if (v14 == 2)
         {
           v18 = 1;
@@ -125,24 +125,24 @@
   {
     v20.receiver = self;
     v20.super_class = STSetUpForFamilyGroupSpecifierProvider;
-    v10 = a3;
-    [(STSetUpForFamilyGroupSpecifierProvider *)&v20 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+    pathCopy2 = path;
+    [(STSetUpForFamilyGroupSpecifierProvider *)&v20 observeValueForKeyPath:pathCopy2 ofObject:object change:change context:context];
   }
 }
 
 - (void)_updateEnabledValue
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v3 effectiveBoolValueForSetting:*MEMORY[0x277D25CD0]] != 2;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v4 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25CD0]] != 2;
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:v4];
-  v5 = [(STSetUpForFamilyGroupSpecifierProvider *)self setupFamilySpecifier];
-  [v5 setObject:v6 forKeyedSubscript:*MEMORY[0x277D3FF38]];
+  setupFamilySpecifier = [(STSetUpForFamilyGroupSpecifierProvider *)self setupFamilySpecifier];
+  [setupFamilySpecifier setObject:v6 forKeyedSubscript:*MEMORY[0x277D3FF38]];
 }
 
-- (void)presentAppleAccountSetupFamilyController:(id)a3
+- (void)presentAppleAccountSetupFamilyController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2050000000;
@@ -162,8 +162,8 @@
   v6 = v5;
   _Block_object_dispose(&v26, 8);
   v7 = [v5 alloc];
-  v8 = [(STSetUpForFamilyGroupSpecifierProvider *)self presenter];
-  v9 = [v7 initWithPresenter:v8];
+  presenter = [(STSetUpForFamilyGroupSpecifierProvider *)self presenter];
+  v9 = [v7 initWithPresenter:presenter];
   controller = self->_controller;
   self->_controller = v9;
 
@@ -250,21 +250,21 @@ void __83__STSetUpForFamilyGroupSpecifierProvider_presentAppleAccountSetupFamily
   }
 }
 
-- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveEffectiveSettingsChangedNotification:(id)notification userInfo:(id)info
 {
-  [(STSetUpForFamilyGroupSpecifierProvider *)self _updateEnabledValue:a3];
-  v5 = [(STSetUpForFamilyGroupSpecifierProvider *)self setupFamilySpecifier];
-  [(STGroupSpecifierProvider *)self reloadSpecifier:v5 animated:1];
+  [(STSetUpForFamilyGroupSpecifierProvider *)self _updateEnabledValue:notification];
+  setupFamilySpecifier = [(STSetUpForFamilyGroupSpecifierProvider *)self setupFamilySpecifier];
+  [(STGroupSpecifierProvider *)self reloadSpecifier:setupFamilySpecifier animated:1];
 
-  v6 = [MEMORY[0x277D262A0] sharedConnection];
-  v7 = [v6 effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v7 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
 
-  v12 = [(STSetUpForFamilyGroupSpecifierProvider *)self presenter];
-  if (v12)
+  presenter = [(STSetUpForFamilyGroupSpecifierProvider *)self presenter];
+  if (presenter)
   {
-    v8 = [(STRootGroupSpecifierProvider *)self coordinator];
-    v9 = [v8 viewModel];
-    v10 = [v9 canSetUpFamily] ^ 1;
+    coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+    viewModel = [coordinator viewModel];
+    v10 = [viewModel canSetUpFamily] ^ 1;
     if (v7 == 2)
     {
       v11 = 1;

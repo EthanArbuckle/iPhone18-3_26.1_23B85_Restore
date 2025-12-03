@@ -1,7 +1,7 @@
 @interface CPSClipEventsReporter
 + (id)reporter;
 - (CPSClipEventsReporter)init;
-- (void)logClipLaunchEventForSession:(id)a3;
+- (void)logClipLaunchEventForSession:(id)session;
 @end
 
 @implementation CPSClipEventsReporter
@@ -52,10 +52,10 @@ uint64_t __33__CPSClipEventsReporter_reporter__block_invoke()
     _Block_object_dispose(&v16, 8);
     if (v3)
     {
-      v5 = [v3 appClipLaunch];
-      v6 = [v5 source];
+      appClipLaunch = [v3 appClipLaunch];
+      source = [appClipLaunch source];
       source = v2->_source;
-      v2->_source = v6;
+      v2->_source = source;
     }
 
     else
@@ -78,17 +78,17 @@ uint64_t __33__CPSClipEventsReporter_reporter__block_invoke()
   return v2;
 }
 
-- (void)logClipLaunchEventForSession:(id)a3
+- (void)logClipLaunchEventForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   logQueue = self->_logQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__CPSClipEventsReporter_logClipLaunchEventForSession___block_invoke;
   v7[3] = &unk_278DCDE58;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = sessionCopy;
+  selfCopy = self;
+  v6 = sessionCopy;
   dispatch_async(logQueue, v7);
 }
 

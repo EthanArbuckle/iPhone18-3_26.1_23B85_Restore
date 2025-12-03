@@ -1,8 +1,8 @@
 @interface TSWPListLabelGeometry
 + (id)listLabelGeometry;
-- (BOOL)isEqual:(id)a3;
-- (TSWPListLabelGeometry)initWithScale:(double)a3 scaleWithText:(BOOL)a4 baselineOffset:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TSWPListLabelGeometry)initWithScale:(double)scale scaleWithText:(BOOL)text baselineOffset:(double)offset;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -11,32 +11,32 @@
 
 + (id)listLabelGeometry
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (TSWPListLabelGeometry)initWithScale:(double)a3 scaleWithText:(BOOL)a4 baselineOffset:(double)a5
+- (TSWPListLabelGeometry)initWithScale:(double)scale scaleWithText:(BOOL)text baselineOffset:(double)offset
 {
   v9.receiver = self;
   v9.super_class = TSWPListLabelGeometry;
   result = [(TSWPListLabelGeometry *)&v9 init];
   if (result)
   {
-    result->mScaleWithText = a4;
-    result->mScale = a3;
-    result->mBaselineOffset = a5;
+    result->mScaleWithText = text;
+    result->mScale = scale;
+    result->mBaselineOffset = offset;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = v4 == self;
-  if (v4 && v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  v6 = equalCopy == self;
+  if (equalCopy && equalCopy != self)
   {
     v7 = objc_opt_class();
     if (objc_msgSend_isMemberOfClass_(v5, v8, v7))
@@ -65,7 +65,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSWPListLabelGeometry alloc];
   mScaleWithText = self->mScaleWithText;

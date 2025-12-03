@@ -1,20 +1,20 @@
 @interface TSWebsheetSignupFlow
 - (TSWebsheetSignupFlow)init;
-- (TSWebsheetSignupFlow)initWithIccid:(id)a3;
-- (TSWebsheetSignupFlow)initWithPlan:(id)a3;
-- (TSWebsheetSignupFlow)initWithRequestType:(unint64_t)a3 skipIntroPaneForWebsheetFlow:(BOOL)a4 websheetURL:(id)a5 postdata:(id)a6;
+- (TSWebsheetSignupFlow)initWithIccid:(id)iccid;
+- (TSWebsheetSignupFlow)initWithPlan:(id)plan;
+- (TSWebsheetSignupFlow)initWithRequestType:(unint64_t)type skipIntroPaneForWebsheetFlow:(BOOL)flow websheetURL:(id)l postdata:(id)postdata;
 - (id)firstViewController;
 - (id)getWebsheetViewController;
-- (id)nextViewControllerFrom:(id)a3;
-- (unint64_t)_translateRequestType:(id)a3;
-- (void)_createURLRequest:(id)a3;
+- (id)nextViewControllerFrom:(id)from;
+- (unint64_t)_translateRequestType:(id)type;
+- (void)_createURLRequest:(id)request;
 - (void)accountCancelled;
 - (void)accountPendingRelease;
 - (void)dealloc;
-- (void)didPurchasePlanSuccessfullyWithCarrier:(id)a3 mnc:(id)a4 gid1:(id)a5 gid2:(id)a6 state:(id)a7;
-- (void)didPurchasePlanSuccessfullyWithEid:(id)a3 imei:(id)a4 meid:(id)a5 iccid:(id)a6 alternateSDMP:(id)a7 state:(id)a8;
-- (void)didTransferPlanSuccessfullyWithEid:(id)a3 imei:(id)a4 meid:(id)a5 iccid:(id)a6 srcIccid:(id)a7 alternateSDMP:(id)a8 state:(id)a9;
-- (void)firstViewController:(id)a3;
+- (void)didPurchasePlanSuccessfullyWithCarrier:(id)carrier mnc:(id)mnc gid1:(id)gid1 gid2:(id)gid2 state:(id)state;
+- (void)didPurchasePlanSuccessfullyWithEid:(id)eid imei:(id)imei meid:(id)meid iccid:(id)iccid alternateSDMP:(id)p state:(id)state;
+- (void)didTransferPlanSuccessfullyWithEid:(id)eid imei:(id)imei meid:(id)meid iccid:(id)iccid srcIccid:(id)srcIccid alternateSDMP:(id)p state:(id)state;
+- (void)firstViewController:(id)controller;
 @end
 
 @implementation TSWebsheetSignupFlow
@@ -37,11 +37,11 @@
   return v2;
 }
 
-- (TSWebsheetSignupFlow)initWithRequestType:(unint64_t)a3 skipIntroPaneForWebsheetFlow:(BOOL)a4 websheetURL:(id)a5 postdata:(id)a6
+- (TSWebsheetSignupFlow)initWithRequestType:(unint64_t)type skipIntroPaneForWebsheetFlow:(BOOL)flow websheetURL:(id)l postdata:(id)postdata
 {
   v25 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a6;
+  lCopy = l;
+  postdataCopy = postdata;
   v13 = [(TSWebsheetSignupFlow *)self init];
   if (v13)
   {
@@ -49,9 +49,9 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 136315650;
-      v20 = [v11 UTF8String];
+      uTF8String = [lCopy UTF8String];
       v21 = 2112;
-      v22 = v12;
+      v22 = postdataCopy;
       v23 = 2080;
       v24 = "[TSWebsheetSignupFlow initWithRequestType:skipIntroPaneForWebsheetFlow:websheetURL:postdata:]";
       _os_log_impl(&dword_262AA8000, v14, OS_LOG_TYPE_DEFAULT, "websheet: [%s] %@ @%s", &v19, 0x20u);
@@ -63,20 +63,20 @@
     iccid = v13->_iccid;
     v13->_iccid = 0;
 
-    objc_storeStrong(&v13->_websheetURL, a5);
-    objc_storeStrong(&v13->_postdata, a6);
-    v13->_requestType = a3;
-    v13->_skipIntroPaneForWebsheetFlow = a4;
+    objc_storeStrong(&v13->_websheetURL, l);
+    objc_storeStrong(&v13->_postdata, postdata);
+    v13->_requestType = type;
+    v13->_skipIntroPaneForWebsheetFlow = flow;
   }
 
   v17 = *MEMORY[0x277D85DE8];
   return v13;
 }
 
-- (TSWebsheetSignupFlow)initWithPlan:(id)a3
+- (TSWebsheetSignupFlow)initWithPlan:(id)plan
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  planCopy = plan;
   v6 = [(TSWebsheetSignupFlow *)self init];
   if (v6)
   {
@@ -84,13 +84,13 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = v5;
+      v13 = planCopy;
       v14 = 2080;
       v15 = "[TSWebsheetSignupFlow initWithPlan:]";
       _os_log_impl(&dword_262AA8000, v7, OS_LOG_TYPE_DEFAULT, "Websheet flow: %@ @%s", &v12, 0x16u);
     }
 
-    objc_storeStrong(&v6->_plan, a3);
+    objc_storeStrong(&v6->_plan, plan);
     iccid = v6->_iccid;
     v6->_iccid = 0;
 
@@ -104,10 +104,10 @@
   return v6;
 }
 
-- (TSWebsheetSignupFlow)initWithIccid:(id)a3
+- (TSWebsheetSignupFlow)initWithIccid:(id)iccid
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  iccidCopy = iccid;
   v6 = [(TSWebsheetSignupFlow *)self init];
   if (v6)
   {
@@ -115,7 +115,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = v5;
+      v13 = iccidCopy;
       v14 = 2080;
       v15 = "[TSWebsheetSignupFlow initWithIccid:]";
       _os_log_impl(&dword_262AA8000, v7, OS_LOG_TYPE_DEFAULT, "Websheet flow: ICCID %@ @%s", &v12, 0x16u);
@@ -124,7 +124,7 @@
     plan = v6->_plan;
     v6->_plan = 0;
 
-    objc_storeStrong(&v6->_iccid, a3);
+    objc_storeStrong(&v6->_iccid, iccid);
     websheetURL = v6->_websheetURL;
     v6->_websheetURL = 0;
 
@@ -150,33 +150,33 @@
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   if (self->_skipIntroPaneForWebsheetFlow)
   {
-    v3 = [(TSWebsheetSignupFlow *)self getWebsheetViewController];
+    getWebsheetViewController = [(TSWebsheetSignupFlow *)self getWebsheetViewController];
   }
 
   else
   {
-    v3 = [[TSAddCellularPlanViewController alloc] initWithType:2 allowDismiss:1];
-    [(TSAddCellularPlanViewController *)v3 setDelegate:self];
+    getWebsheetViewController = [[TSAddCellularPlanViewController alloc] initWithType:2 allowDismiss:1];
+    [(TSAddCellularPlanViewController *)getWebsheetViewController setDelegate:self];
   }
 
-  [(TSSIMSetupFlow *)self setTopViewController:v3];
+  [(TSSIMSetupFlow *)self setTopViewController:getWebsheetViewController];
 
-  return v3;
+  return getWebsheetViewController;
 }
 
-- (void)firstViewController:(id)a3
+- (void)firstViewController:(id)controller
 {
-  if (a3)
+  if (controller)
   {
-    v5 = a3;
-    v6 = [(TSWebsheetSignupFlow *)self firstViewController];
-    (*(a3 + 2))(v5, v6);
+    controllerCopy = controller;
+    firstViewController = [(TSWebsheetSignupFlow *)self firstViewController];
+    (*(controller + 2))(controllerCopy, firstViewController);
   }
 }
 
-- (id)nextViewControllerFrom:(id)a3
+- (id)nextViewControllerFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -243,56 +243,56 @@ void __49__TSWebsheetSignupFlow_getWebsheetViewController__block_invoke(uint64_t
   dispatch_async(MEMORY[0x277D85CD0], v5);
 }
 
-- (void)didPurchasePlanSuccessfullyWithEid:(id)a3 imei:(id)a4 meid:(id)a5 iccid:(id)a6 alternateSDMP:(id)a7 state:(id)a8
+- (void)didPurchasePlanSuccessfullyWithEid:(id)eid imei:(id)imei meid:(id)meid iccid:(id)iccid alternateSDMP:(id)p state:(id)state
 {
-  v11 = a8;
-  v12 = a7;
-  v13 = a6;
-  v14 = a3;
+  stateCopy = state;
+  pCopy = p;
+  iccidCopy = iccid;
+  eidCopy = eid;
   v15 = +[TSCellularPlanManagerCache sharedInstance];
-  [v15 didPurchasePlanForEid:v14 iccid:v13 smdpURL:v12 state:v11];
+  [v15 didPurchasePlanForEid:eidCopy iccid:iccidCopy smdpURL:pCopy state:stateCopy];
 }
 
-- (void)didPurchasePlanSuccessfullyWithCarrier:(id)a3 mnc:(id)a4 gid1:(id)a5 gid2:(id)a6 state:(id)a7
+- (void)didPurchasePlanSuccessfullyWithCarrier:(id)carrier mnc:(id)mnc gid1:(id)gid1 gid2:(id)gid2 state:(id)state
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  stateCopy = state;
+  gid2Copy = gid2;
+  gid1Copy = gid1;
+  mncCopy = mnc;
+  carrierCopy = carrier;
   v16 = +[TSCellularPlanManagerCache sharedInstance];
-  [v16 didPurchasePlanForCarrier:v15 mnc:v14 gid1:v13 gid2:v12 state:v11];
+  [v16 didPurchasePlanForCarrier:carrierCopy mnc:mncCopy gid1:gid1Copy gid2:gid2Copy state:stateCopy];
 }
 
-- (void)didTransferPlanSuccessfullyWithEid:(id)a3 imei:(id)a4 meid:(id)a5 iccid:(id)a6 srcIccid:(id)a7 alternateSDMP:(id)a8 state:(id)a9
+- (void)didTransferPlanSuccessfullyWithEid:(id)eid imei:(id)imei meid:(id)meid iccid:(id)iccid srcIccid:(id)srcIccid alternateSDMP:(id)p state:(id)state
 {
-  v13 = a9;
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a3;
+  stateCopy = state;
+  pCopy = p;
+  srcIccidCopy = srcIccid;
+  iccidCopy = iccid;
+  eidCopy = eid;
   v18 = +[TSCellularPlanManagerCache sharedInstance];
-  [v18 didTransferPlanForEid:v17 iccid:v16 srcIccid:v15 smdpURL:v14 state:v13];
+  [v18 didTransferPlanForEid:eidCopy iccid:iccidCopy srcIccid:srcIccidCopy smdpURL:pCopy state:stateCopy];
 }
 
 - (void)accountCancelled
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_0(&dword_262AA8000, a1, a3, "[E]not supported @%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_0(&dword_262AA8000, self, a3, "[E]not supported @%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
 - (void)accountPendingRelease
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_0(&dword_262AA8000, a1, a3, "[E]not supported @%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_0(&dword_262AA8000, self, a3, "[E]not supported @%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createURLRequest:(id)a3
+- (void)_createURLRequest:(id)request
 {
-  v4 = a3;
-  v5 = v4;
+  requestCopy = request;
+  v5 = requestCopy;
   if (self->_websheetURL)
   {
     requestType = self->_requestType;
@@ -312,7 +312,7 @@ void __49__TSWebsheetSignupFlow_getWebsheetViewController__block_invoke(uint64_t
     v24[2] = __42__TSWebsheetSignupFlow__createURLRequest___block_invoke;
     v24[3] = &unk_279B45B50;
     v24[4] = self;
-    v25 = v4;
+    v25 = requestCopy;
     [(CoreTelephonyClient *)client websheetInfoForPlan:plan completion:v24];
     v11 = v25;
 LABEL_7:
@@ -329,7 +329,7 @@ LABEL_7:
     v22[2] = __42__TSWebsheetSignupFlow__createURLRequest___block_invoke_2;
     v22[3] = &unk_279B45B50;
     v22[4] = self;
-    v23 = v4;
+    v23 = requestCopy;
     [(CoreTelephonyClient *)v13 websheetInfoForIccid:iccid completion:v22];
     v11 = v23;
     goto LABEL_7;
@@ -383,17 +383,17 @@ void __42__TSWebsheetSignupFlow__createURLRequest___block_invoke_2(uint64_t a1, 
   }
 }
 
-- (unint64_t)_translateRequestType:(id)a3
+- (unint64_t)_translateRequestType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"buddyml"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"buddyml"])
   {
     v4 = 5;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"websheet"];
+    v4 = [typeCopy isEqualToString:@"websheet"];
   }
 
   return v4;

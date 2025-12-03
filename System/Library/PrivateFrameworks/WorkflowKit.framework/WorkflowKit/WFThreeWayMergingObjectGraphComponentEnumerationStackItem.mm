@@ -1,38 +1,38 @@
 @interface WFThreeWayMergingObjectGraphComponentEnumerationStackItem
-+ (void)initialItemWithVertex:(uint64_t)a1;
-- (void)initWithVertex:(uint64_t)a3 step:(uint64_t)a4 predecessorIndex:;
++ (void)initialItemWithVertex:(uint64_t)vertex;
+- (void)initWithVertex:(uint64_t)vertex step:(uint64_t)step predecessorIndex:;
 @end
 
 @implementation WFThreeWayMergingObjectGraphComponentEnumerationStackItem
 
-- (void)initWithVertex:(uint64_t)a3 step:(uint64_t)a4 predecessorIndex:
+- (void)initWithVertex:(uint64_t)vertex step:(uint64_t)step predecessorIndex:
 {
   v8 = a2;
   v9 = v8;
-  if (a1)
+  if (self)
   {
     if (!v8)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:sel_initWithVertex_step_predecessorIndex_ object:a1 file:@"WFThreeWayMergingObjectGraph.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"vertex"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_initWithVertex_step_predecessorIndex_ object:self file:@"WFThreeWayMergingObjectGraph.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"vertex"}];
     }
 
-    v13.receiver = a1;
+    v13.receiver = self;
     v13.super_class = WFThreeWayMergingObjectGraphComponentEnumerationStackItem;
     v10 = objc_msgSendSuper2(&v13, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       objc_storeStrong(v10 + 1, a2);
-      a1[2] = a3;
-      a1[3] = a4;
+      self[2] = vertex;
+      self[3] = step;
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (void)initialItemWithVertex:(uint64_t)a1
++ (void)initialItemWithVertex:(uint64_t)vertex
 {
   v2 = a2;
   v3 = objc_alloc(objc_opt_self());

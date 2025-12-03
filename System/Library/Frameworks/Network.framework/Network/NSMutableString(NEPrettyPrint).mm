@@ -13,7 +13,7 @@
     v5 = @"YES";
   }
 
-  return [a1 appendFormat:@"\n%*s%@ = %@", (4 * a5 + 4), " ", a4, v5];
+  return [self appendFormat:@"\n%*s%@ = %@", (4 * a5 + 4), " ", a4, v5];
 }
 
 - (void)appendPrettyObject:()NEPrettyPrint withName:indent:showFullContent:
@@ -32,7 +32,7 @@
       v53 = v8;
       v12 = v10;
       v52 = v9;
-      objc_msgSend(a1, "appendFormat:", @"\n%*s%@ = ("), (4 * a5 + 4), " ", v9;
+      objc_msgSend(self, "appendFormat:", @"\n%*s%@ = ("), (4 * a5 + 4), " ", v9;
       v63 = 0u;
       v64 = 0u;
       v61 = 0u;
@@ -57,9 +57,9 @@
             if (objc_opt_respondsToSelector())
             {
               v21 = [v20 descriptionWithIndent:(a5 + 2) showFullContent:a6];
-              [a1 appendFormat:@"\n%*s{%@", v16, " ", v21];
+              [self appendFormat:@"\n%*s{%@", v16, " ", v21];
 
-              [a1 appendFormat:@"\n%*s}, ", v16, " ", v49];
+              [self appendFormat:@"\n%*s}, ", v16, " ", v49];
             }
 
             else
@@ -71,12 +71,12 @@
               if (v23 & 1) == 0 || (a6)
               {
                 v19 = [v22 description];
-                [a1 appendFormat:@"\n%*s%@, ", v16, " ", v19];
+                [self appendFormat:@"\n%*s%@, ", v16, " ", v19];
               }
 
               else
               {
-                [a1 appendFormat:@"\n%*s<%lu-char-str>, ", v16, " ", objc_msgSend(v22, "length")];
+                [self appendFormat:@"\n%*s<%lu-char-str>, ", v16, " ", objc_msgSend(v22, "length")];
               }
             }
           }
@@ -87,7 +87,7 @@
         while (v15);
       }
 
-      [a1 appendFormat:@"\n%*s"], (4 * a5 + 4), " ");
+      [self appendFormat:@"\n%*s"], (4 * a5 + 4), " ");
 LABEL_37:
 
       v9 = v52;
@@ -105,7 +105,7 @@ LABEL_37:
       v26 = v24;
       v52 = v9;
       v27 = " ";
-      [a1 appendFormat:@"\n%*s%@ = {", (4 * a5 + 4), " ", v9];
+      [self appendFormat:@"\n%*s%@ = {", (4 * a5 + 4), " ", v9];
       v59 = 0u;
       v60 = 0u;
       v57 = 0u;
@@ -131,9 +131,9 @@ LABEL_37:
             if (objc_opt_respondsToSelector())
             {
               v32 = [v34 descriptionWithIndent:(a5 + 2) showFullContent:a6];
-              [a1 appendFormat:@"\n%*s%@ = {%@", v54, v27, v33, v32];
+              [self appendFormat:@"\n%*s%@ = {%@", v54, v27, v33, v32];
 
-              [a1 appendFormat:@"\n%*s}, ", v54, v27];
+              [self appendFormat:@"\n%*s}, ", v54, v27];
             }
 
             else
@@ -150,13 +150,13 @@ LABEL_37:
               {
                 v41 = [v39 description];
                 v27 = v38;
-                [a1 appendFormat:@"\n%*s%@ = %@", v54, v38, v33, v41];
+                [self appendFormat:@"\n%*s%@ = %@", v54, v38, v33, v41];
               }
 
               else
               {
                 v27 = v38;
-                [a1 appendFormat:@"\n%*s%@ = <%lu-char-str>", v54, v38, v33, objc_msgSend(v39, "length")];
+                [self appendFormat:@"\n%*s%@ = <%lu-char-str>", v54, v38, v33, objc_msgSend(v39, "length")];
               }
 
               v29 = v37;
@@ -171,7 +171,7 @@ LABEL_37:
         while (v29);
       }
 
-      [a1 appendFormat:@"\n%*s}", (4 * a5 + 4), v27];
+      [self appendFormat:@"\n%*s}", (4 * a5 + 4), v27];
       goto LABEL_37;
     }
 
@@ -181,8 +181,8 @@ LABEL_37:
 
     if (v43)
     {
-      v44 = [v42 UUIDString];
-      [a1 appendFormat:@"\n%*s%@ = %@", (4 * a5 + 4), " ", v9, v44];
+      uUIDString = [v42 UUIDString];
+      [self appendFormat:@"\n%*s%@ = %@", (4 * a5 + 4), " ", v9, uUIDString];
 LABEL_35:
 
       goto LABEL_38;
@@ -194,19 +194,19 @@ LABEL_35:
 
     if ((v46 & 1) == 0)
     {
-      v44 = v45;
+      uUIDString = v45;
       if (objc_opt_respondsToSelector())
       {
-        v47 = [v44 descriptionWithIndent:? showFullContent:?];
-        [a1 appendFormat:@"\n%*s%@ = {%@", (4 * (a5 + 1)), " ", v9, v47];
+        v47 = [uUIDString descriptionWithIndent:? showFullContent:?];
+        [self appendFormat:@"\n%*s%@ = {%@", (4 * (a5 + 1)), " ", v9, v47];
 
-        [a1 appendFormat:@"\n%*s}", (4 * (a5 + 1)), " ", v50, v51];
+        [self appendFormat:@"\n%*s}", (4 * (a5 + 1)), " ", v50, v51];
       }
 
       else
       {
-        v48 = [v44 description];
-        [a1 appendFormat:@"\n%*s%@ = %@", (4 * a5 + 4), " ", v9, v48];
+        v48 = [uUIDString description];
+        [self appendFormat:@"\n%*s%@ = %@", (4 * a5 + 4), " ", v9, v48];
       }
 
       goto LABEL_35;
@@ -214,12 +214,12 @@ LABEL_35:
 
     if (a6)
     {
-      [a1 appendFormat:@"\n%*s%@ = %@", (4 * a5 + 4), " ", v9, v45];
+      [self appendFormat:@"\n%*s%@ = %@", (4 * a5 + 4), " ", v9, v45];
     }
 
     else
     {
-      [a1 appendFormat:@"\n%*s%@ = <%lu-char-str>", (4 * a5 + 4), " ", v9, objc_msgSend(v45, "length")];
+      [self appendFormat:@"\n%*s%@ = <%lu-char-str>", (4 * a5 + 4), " ", v9, objc_msgSend(v45, "length")];
     }
   }
 

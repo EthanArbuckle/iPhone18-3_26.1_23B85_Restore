@@ -1,32 +1,32 @@
 @interface HostRemoteViewCoordinator
 - (_TtC14FamilyCircleUI25HostRemoteViewCoordinator)init;
-- (void)dismissWithError:(id)a3 response:(id)a4;
-- (void)hostViewControllerDidActivate:(id)a3;
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4;
+- (void)dismissWithError:(id)error response:(id)response;
+- (void)hostViewControllerDidActivate:(id)activate;
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error;
 @end
 
 @implementation HostRemoteViewCoordinator
 
-- (void)hostViewControllerDidActivate:(id)a3
+- (void)hostViewControllerDidActivate:(id)activate
 {
-  v3 = self;
+  selfCopy = self;
   sub_21BD958DC();
 }
 
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_21BD96814(a4);
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  errorCopy = error;
+  sub_21BD96814(error);
 }
 
-- (void)dismissWithError:(id)a3 response:(id)a4
+- (void)dismissWithError:(id)error response:(id)response
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_21BD96194(a3, a4);
+  errorCopy = error;
+  responseCopy = response;
+  selfCopy = self;
+  sub_21BD96194(error, response);
 }
 
 - (_TtC14FamilyCircleUI25HostRemoteViewCoordinator)init

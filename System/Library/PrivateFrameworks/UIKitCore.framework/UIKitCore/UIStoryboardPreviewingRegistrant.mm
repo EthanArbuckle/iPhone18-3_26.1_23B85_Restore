@@ -1,16 +1,16 @@
 @interface UIStoryboardPreviewingRegistrant
-- (UIStoryboardPreviewingRegistrant)initWithCoder:(id)a3;
+- (UIStoryboardPreviewingRegistrant)initWithCoder:(id)coder;
 - (UIView)sourceView;
 - (UIViewController)viewController;
-- (id)previewingContext:(id)a3 viewControllerForLocation:(CGPoint)a4;
-- (void)previewingContext:(id)a3 commitViewController:(id)a4;
+- (id)previewingContext:(id)context viewControllerForLocation:(CGPoint)location;
+- (void)previewingContext:(id)context commitViewController:(id)controller;
 - (void)registerForPreviewing;
 - (void)unregisterForPreviewing;
 @end
 
 @implementation UIStoryboardPreviewingRegistrant
 
-- (UIStoryboardPreviewingRegistrant)initWithCoder:(id)a3
+- (UIStoryboardPreviewingRegistrant)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = UIStoryboardPreviewingRegistrant;
@@ -23,14 +23,14 @@
 
   if (!WeakRetained)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UIStoryboardPreviewingRegistrant.m" lineNumber:37 description:@"Cannot register without a source view to register for."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIStoryboardPreviewingRegistrant.m" lineNumber:37 description:@"Cannot register without a source view to register for."];
   }
 
   if (self->_previewingContext)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"UIStoryboardPreviewingRegistrant.m" lineNumber:39 description:@"It is a programming error to register multiple times."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UIStoryboardPreviewingRegistrant.m" lineNumber:39 description:@"It is a programming error to register multiple times."];
   }
 
   v10 = objc_loadWeakRetained(&self->_viewController);
@@ -49,16 +49,16 @@
   self->_previewingContext = 0;
 }
 
-- (id)previewingContext:(id)a3 viewControllerForLocation:(CGPoint)a4
+- (id)previewingContext:(id)context viewControllerForLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = location.y;
+  x = location.x;
+  contextCopy = context;
   segueTemplateStorage = self->_segueTemplateStorage;
   self->_segueTemplateStorage = 0;
 
-  v9 = [v7 sourceView];
-  v10 = [v9 hitTest:0 withEvent:{x, y}];
+  sourceView = [contextCopy sourceView];
+  v10 = [sourceView hitTest:0 withEvent:{x, y}];
   v11 = self->_segueTemplateStorage;
   if (v11)
   {
@@ -74,22 +74,22 @@
   {
     while (1)
     {
-      v13 = [v10 _previewingSegueTemplateStorageForLocation:v9 inView:{x, y}];
+      v13 = [v10 _previewingSegueTemplateStorageForLocation:sourceView inView:{x, y}];
       v14 = self->_segueTemplateStorage;
       self->_segueTemplateStorage = v13;
 
-      if (v10 == v9)
+      if (v10 == sourceView)
       {
         break;
       }
 
-      v15 = [v10 superview];
+      superview = [v10 superview];
 
       v11 = self->_segueTemplateStorage;
       if (!v11)
       {
-        v10 = v15;
-        if (v15)
+        v10 = superview;
+        if (superview)
         {
           continue;
         }
@@ -101,28 +101,28 @@
     v11 = self->_segueTemplateStorage;
   }
 
-  v15 = v10;
+  superview = v10;
 LABEL_11:
-  v16 = [(UIStoryboardPreviewingSegueTemplateStorage *)v11 sender];
-  v17 = [(UIStoryboardPreviewingSegueTemplateStorage *)self->_segueTemplateStorage sender];
-  [v17 bounds];
-  [v16 convertRect:v9 toView:?];
-  [v7 setSourceRect:?];
+  sender = [(UIStoryboardPreviewingSegueTemplateStorage *)v11 sender];
+  sender2 = [(UIStoryboardPreviewingSegueTemplateStorage *)self->_segueTemplateStorage sender];
+  [sender2 bounds];
+  [sender convertRect:sourceView toView:?];
+  [contextCopy setSourceRect:?];
 
-  v18 = [(UIStoryboardPreviewingSegueTemplateStorage *)self->_segueTemplateStorage previewTemplate];
-  v19 = [(UIStoryboardPreviewingSegueTemplateStorage *)self->_segueTemplateStorage sender];
-  v20 = [v18 perform:v19];
-  v21 = [v20 destinationViewController];
+  previewTemplate = [(UIStoryboardPreviewingSegueTemplateStorage *)self->_segueTemplateStorage previewTemplate];
+  sender3 = [(UIStoryboardPreviewingSegueTemplateStorage *)self->_segueTemplateStorage sender];
+  v20 = [previewTemplate perform:sender3];
+  destinationViewController = [v20 destinationViewController];
 
-  return v21;
+  return destinationViewController;
 }
 
-- (void)previewingContext:(id)a3 commitViewController:(id)a4
+- (void)previewingContext:(id)context commitViewController:(id)controller
 {
-  v9 = a4;
-  v5 = [(UIStoryboardPreviewingSegueTemplateStorage *)self->_segueTemplateStorage commitTemplate];
-  v6 = [(UIStoryboardPreviewingSegueTemplateStorage *)self->_segueTemplateStorage sender];
-  v7 = [v5 _performWithDestinationViewController:v9 sender:v6];
+  controllerCopy = controller;
+  commitTemplate = [(UIStoryboardPreviewingSegueTemplateStorage *)self->_segueTemplateStorage commitTemplate];
+  sender = [(UIStoryboardPreviewingSegueTemplateStorage *)self->_segueTemplateStorage sender];
+  v7 = [commitTemplate _performWithDestinationViewController:controllerCopy sender:sender];
 
   segueTemplateStorage = self->_segueTemplateStorage;
   self->_segueTemplateStorage = 0;

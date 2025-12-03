@@ -1,55 +1,55 @@
 @interface BuddyCloudConfigInstallationController
-- (BOOL)_isEscrowMissingError:(id)a3;
+- (BOOL)_isEscrowMissingError:(id)error;
 - (BOOL)controllerNeedsToRun;
 - (BuddyCloudConfigInstallationController)init;
 - (id)_clearImage;
-- (void)_cancelDevicePasscodePicker:(id)a3;
-- (void)_createUnlockEscrowAndRetryProfileInstallationWithCompletion:(id)a3;
+- (void)_cancelDevicePasscodePicker:(id)picker;
+- (void)_createUnlockEscrowAndRetryProfileInstallationWithCompletion:(id)completion;
 - (void)_setupForState;
-- (void)_tryToInstallStoredProfileShouldCreateEscrowIfNeeded:(BOOL)a3 completion:(id)a4;
-- (void)cloudConfigDidChange:(id)a3;
+- (void)_tryToInstallStoredProfileShouldCreateEscrowIfNeeded:(BOOL)needed completion:(id)completion;
+- (void)cloudConfigDidChange:(id)change;
 - (void)controllerDone;
 - (void)dealloc;
 - (void)loadView;
-- (void)nextButtonPressed:(id)a3;
-- (void)passcodeEntryController:(id)a3 didEnterPasscode:(id)a4;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)nextButtonPressed:(id)pressed;
+- (void)passcodeEntryController:(id)controller didEnterPasscode:(id)passcode;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BuddyCloudConfigInstallationController
 
 - (BOOL)controllerNeedsToRun
 {
-  v2 = [(BuddyCloudConfigInstallationController *)self managedConfiguration];
-  v3 = [(MCProfileConnection *)v2 shouldInstallStoredProfile];
+  managedConfiguration = [(BuddyCloudConfigInstallationController *)self managedConfiguration];
+  shouldInstallStoredProfile = [(MCProfileConnection *)managedConfiguration shouldInstallStoredProfile];
 
-  if ((v3 & 1) == 0)
+  if ((shouldInstallStoredProfile & 1) == 0)
   {
-    v4 = [(BuddyCloudConfigInstallationController *)self managedConfiguration];
-    [(MCProfileConnection *)v4 markStoredProfileAsInstalled];
+    managedConfiguration2 = [(BuddyCloudConfigInstallationController *)self managedConfiguration];
+    [(MCProfileConnection *)managedConfiguration2 markStoredProfileAsInstalled];
   }
 
   v10 = 0;
   v8 = 0;
-  v5 = 1;
-  if ((v3 & 1) == 0)
+  isAwaitingDeviceConfigured = 1;
+  if ((shouldInstallStoredProfile & 1) == 0)
   {
-    v11 = [(BuddyCloudConfigInstallationController *)self managedConfiguration];
+    managedConfiguration3 = [(BuddyCloudConfigInstallationController *)self managedConfiguration];
     v10 = 1;
-    v6 = [(MCProfileConnection *)v11 wasCloudConfigurationApplied];
-    v5 = 0;
-    if (v6)
+    wasCloudConfigurationApplied = [(MCProfileConnection *)managedConfiguration3 wasCloudConfigurationApplied];
+    isAwaitingDeviceConfigured = 0;
+    if (wasCloudConfigurationApplied)
     {
-      v9 = [(BuddyCloudConfigInstallationController *)self managedConfiguration];
+      managedConfiguration4 = [(BuddyCloudConfigInstallationController *)self managedConfiguration];
       v8 = 1;
-      v5 = [(MCProfileConnection *)v9 isAwaitingDeviceConfigured];
+      isAwaitingDeviceConfigured = [(MCProfileConnection *)managedConfiguration4 isAwaitingDeviceConfigured];
     }
   }
 
-  v12 = v5 & 1;
+  v12 = isAwaitingDeviceConfigured & 1;
   if (v8)
   {
   }
@@ -68,11 +68,11 @@
   v3 = +[NSBundle mainBundle];
   v4 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"CLOUD_CONFIG_CONFIGURING"];
   v5 = [(NSBundle *)v3 localizedStringForKey:v4 value:&stru_10032F900 table:@"Localizable"];
-  v6 = [location _clearImage];
+  _clearImage = [location _clearImage];
   location = 0;
   v10.receiver = self;
   v10.super_class = BuddyCloudConfigInstallationController;
-  location = [(BuddyCloudConfigInstallationController *)&v10 initWithTitle:v5 detailText:0 icon:v6];
+  location = [(BuddyCloudConfigInstallationController *)&v10 initWithTitle:v5 detailText:0 icon:_clearImage];
   objc_storeStrong(&location, location);
 
   if (location)
@@ -90,78 +90,78 @@
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v2 = +[NSNotificationCenter defaultCenter];
-  [(NSNotificationCenter *)v2 removeObserver:v5];
+  [(NSNotificationCenter *)v2 removeObserver:selfCopy];
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = BuddyCloudConfigInstallationController;
   [(BuddyCloudConfigInstallationController *)&v3 dealloc];
 }
 
 - (void)loadView
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5.receiver = self;
   v5.super_class = BuddyCloudConfigInstallationController;
   [(BuddyCloudConfigInstallationController *)&v5 loadView];
   v2 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
-  spinnerView = v7->_spinnerView;
-  v7->_spinnerView = v2;
+  spinnerView = selfCopy->_spinnerView;
+  selfCopy->_spinnerView = v2;
 
-  v4 = [(BuddyCloudConfigInstallationController *)v7 view];
-  [v4 addSubview:v7->_spinnerView];
+  view = [(BuddyCloudConfigInstallationController *)selfCopy view];
+  [view addSubview:selfCopy->_spinnerView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  appearCopy = appear;
   v10.receiver = self;
   v10.super_class = BuddyCloudConfigInstallationController;
-  [(BuddyCloudConfigInstallationController *)&v10 viewWillAppear:a3];
-  v3 = [(BuddyCloudConfigInstallationController *)v13 managedConfiguration];
-  v9 = [(MCProfileConnection *)v3 cloudConfigurationDetails];
+  [(BuddyCloudConfigInstallationController *)&v10 viewWillAppear:appear];
+  managedConfiguration = [(BuddyCloudConfigInstallationController *)selfCopy managedConfiguration];
+  cloudConfigurationDetails = [(MCProfileConnection *)managedConfiguration cloudConfigurationDetails];
 
-  location = [v9 objectForKeyedSubscript:kMCCCOrganizationNameKey];
-  v4 = [(BuddyCloudConfigInstallationController *)v13 headerView];
+  location = [cloudConfigurationDetails objectForKeyedSubscript:kMCCCOrganizationNameKey];
+  headerView = [(BuddyCloudConfigInstallationController *)selfCopy headerView];
   v5 = +[NSBundle mainBundle];
   v6 = [(NSBundle *)v5 localizedStringForKey:@"CLOUD_CONFIG_INSTALLING_DESCRIPTION_%@" value:&stru_10032F900 table:@"Localizable"];
-  v7 = [NSString localizedStringWithFormat:v6, location];
-  [v4 setDetailText:v7];
+  location = [NSString localizedStringWithFormat:v6, location];
+  [headerView setDetailText:location];
 
-  if (![(BuddyCloudConfigInstallationController *)v13 state])
+  if (![(BuddyCloudConfigInstallationController *)selfCopy state])
   {
-    [(BuddyCloudConfigInstallationController *)v13 setState:1];
-    [(BuddyCloudConfigInstallationController *)v13 _setupForState];
+    [(BuddyCloudConfigInstallationController *)selfCopy setState:1];
+    [(BuddyCloudConfigInstallationController *)selfCopy _setupForState];
   }
 
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&cloudConfigurationDetails, 0);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  appearCopy = appear;
   self->_controllerDoneCalled = 0;
-  v3.receiver = v6;
+  v3.receiver = selfCopy;
   v3.super_class = BuddyCloudConfigInstallationController;
-  [(BuddyCloudConfigInstallationController *)&v3 viewDidAppear:v4];
-  if ([(BuddyCloudConfigInstallationController *)v6 state]== 1)
+  [(BuddyCloudConfigInstallationController *)&v3 viewDidAppear:appearCopy];
+  if ([(BuddyCloudConfigInstallationController *)selfCopy state]== 1)
   {
-    [(BuddyCloudConfigInstallationController *)v6 setState:2];
-    [(BuddyCloudConfigInstallationController *)v6 _setupForState];
+    [(BuddyCloudConfigInstallationController *)selfCopy setState:2];
+    [(BuddyCloudConfigInstallationController *)selfCopy _setupForState];
   }
 }
 
 - (void)controllerDone
 {
-  v13 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if (self->_controllerDoneCalled)
   {
@@ -169,7 +169,7 @@
     v11 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
     {
-      sub_10006AE18(buf, v13);
+      sub_10006AE18(buf, selfCopy);
       _os_log_impl(&_mh_execute_header, oslog[0], v11, "CloudConfig controller %@ is sending buddyControllerDone multiple times", buf, 0xCu);
     }
 
@@ -189,9 +189,9 @@
     v7 = _BYLoggingFacility();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(BuddyCloudConfigInstallationController *)v13 navigationController];
-      v6 = [v5 viewControllers];
-      sub_10006AE18(v14, v6);
+      navigationController = [(BuddyCloudConfigInstallationController *)selfCopy navigationController];
+      viewControllers = [navigationController viewControllers];
+      sub_10006AE18(v14, viewControllers);
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "VC stack: %@", v14, 0xCu);
     }
 
@@ -200,46 +200,46 @@
 
   else
   {
-    v13->_controllerDoneCalled = 1;
-    [(BuddyCloudConfigInstallationController *)v13 setState:6];
-    v2 = [(BuddyWelcomeController *)v13 delegate];
-    v17 = v13;
+    selfCopy->_controllerDoneCalled = 1;
+    [(BuddyCloudConfigInstallationController *)selfCopy setState:6];
+    delegate = [(BuddyWelcomeController *)selfCopy delegate];
+    v17 = selfCopy;
     v3 = [NSArray arrayWithObjects:&v17 count:1];
-    [(BFFFlowItemDelegate *)v2 removeViewControllersOnNextPush:v3];
+    [(BFFFlowItemDelegate *)delegate removeViewControllersOnNextPush:v3];
 
-    v4 = [(BuddyWelcomeController *)v13 delegate];
-    [(BFFFlowItemDelegate *)v4 flowItemDone:v13];
+    delegate2 = [(BuddyWelcomeController *)selfCopy delegate];
+    [(BFFFlowItemDelegate *)delegate2 flowItemDone:selfCopy];
   }
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v2 = [(BuddyCloudConfigInstallationController *)self view];
-  [v2 center];
+  view = [(BuddyCloudConfigInstallationController *)self view];
+  [view center];
   v7.receiver = v3;
   v7.super_class = v4;
-  v5 = [(BuddyCloudConfigInstallationController *)v9 spinnerView];
+  spinnerView = [(BuddyCloudConfigInstallationController *)selfCopy spinnerView];
   v6[1] = v7;
-  [(UIActivityIndicatorView *)v5 setCenter:v7];
+  [(UIActivityIndicatorView *)spinnerView setCenter:v7];
 
-  v6[0].receiver = v9;
+  v6[0].receiver = selfCopy;
   v6[0].super_class = BuddyCloudConfigInstallationController;
   [(objc_super *)v6 viewDidLayoutSubviews];
 }
 
-- (BOOL)_isEscrowMissingError:(id)a3
+- (BOOL)_isEscrowMissingError:(id)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v9 = 0;
   while (location[0])
   {
-    v3 = [location[0] domain];
-    v4 = [v3 isEqualToString:MCInstallationErrorDomain];
+    domain = [location[0] domain];
+    v4 = [domain isEqualToString:MCInstallationErrorDomain];
 
     if ((v4 & 1) == 0)
     {
@@ -252,8 +252,8 @@
       break;
     }
 
-    v5 = [location[0] userInfo];
-    v6 = [v5 objectForKeyedSubscript:NSUnderlyingErrorKey];
+    userInfo = [location[0] userInfo];
+    v6 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
     v7 = location[0];
     location[0] = v6;
   }
@@ -262,34 +262,34 @@
   return v9 & 1;
 }
 
-- (void)_createUnlockEscrowAndRetryProfileInstallationWithCompletion:(id)a3
+- (void)_createUnlockEscrowAndRetryProfileInstallationWithCompletion:(id)completion
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v15 = _NSConcreteStackBlock;
   v16 = -1073741824;
   v17 = 0;
   v18 = sub_1001AA818;
   v19 = &unk_10032E368;
-  v20 = v24;
+  v20 = selfCopy;
   v21 = location[0];
   v22 = objc_retainBlock(&v15);
-  v3 = [(BuddyCloudConfigInstallationController *)v24 passcodeCacheManager];
-  v14 = [(BYPasscodeCacheManager *)v3 cachedPasscode];
+  passcodeCacheManager = [(BuddyCloudConfigInstallationController *)selfCopy passcodeCacheManager];
+  cachedPasscode = [(BYPasscodeCacheManager *)passcodeCacheManager cachedPasscode];
 
-  if (v14 && location[0])
+  if (cachedPasscode && location[0])
   {
-    (*(v22 + 2))(v22, v14);
+    (*(v22 + 2))(v22, cachedPasscode);
     v13 = 1;
   }
 
   else
   {
     v4 = [v22 copy];
-    devicePasscodeCompletion = v24->_devicePasscodeCompletion;
-    v24->_devicePasscodeCompletion = v4;
+    devicePasscodeCompletion = selfCopy->_devicePasscodeCompletion;
+    selfCopy->_devicePasscodeCompletion = v4;
 
     v6 = &_dispatch_main_q;
     block = _NSConcreteStackBlock;
@@ -297,32 +297,32 @@
     v9 = 0;
     v10 = sub_1001AAB08;
     v11 = &unk_10032B0D0;
-    v12 = v24;
+    v12 = selfCopy;
     dispatch_async(v6, &block);
 
     objc_storeStrong(&v12, 0);
     v13 = 0;
   }
 
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&cachedPasscode, 0);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_tryToInstallStoredProfileShouldCreateEscrowIfNeeded:(BOOL)a3 completion:(id)a4
+- (void)_tryToInstallStoredProfileShouldCreateEscrowIfNeeded:(BOOL)needed completion:(id)completion
 {
-  v23 = self;
+  selfCopy = self;
   v22 = a2;
-  v21 = a3;
+  neededCopy = needed;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v19 = [(BuddyCloudConfigInstallationController *)v23 managedConfiguration];
+  objc_storeStrong(&location, completion);
+  managedConfiguration = [(BuddyCloudConfigInstallationController *)selfCopy managedConfiguration];
   v18 = 0;
   v4 = +[BuddyCloudConfigManager sharedManager];
-  v5 = [v4 cloudConfigurationDetails];
-  v17 = [v5 objectForKeyedSubscript:kCCRemoteManagementAccountIdentifierKey];
+  cloudConfigurationDetails = [v4 cloudConfigurationDetails];
+  v17 = [cloudConfigurationDetails objectForKeyedSubscript:kCCRemoteManagementAccountIdentifierKey];
 
   if ([v17 length])
   {
@@ -338,143 +338,143 @@
   v10 = 0;
   v11 = sub_1001AAF98;
   v12 = &unk_10032E3B8;
-  v16 = v21;
-  v13 = v23;
+  v16 = neededCopy;
+  v13 = selfCopy;
   v15 = location;
-  v14 = v19;
-  [v19 installStoredProfileDataWithExtraOptions:v18 completion:&v8];
+  v14 = managedConfiguration;
+  [managedConfiguration installStoredProfileDataWithExtraOptions:v18 completion:&v8];
   objc_storeStrong(&v14, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v18, 0);
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&managedConfiguration, 0);
   objc_storeStrong(&location, 0);
 }
 
 - (void)_setupForState
 {
-  v39 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _BYLoggingFacility();
   v37 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEFAULT))
   {
-    sub_100082D54(buf, [(BuddyCloudConfigInstallationController *)v39 state]);
+    sub_100082D54(buf, [(BuddyCloudConfigInstallationController *)selfCopy state]);
     _os_log_impl(&_mh_execute_header, location[0], v37, "Setting up for state %d", buf, 8u);
   }
 
   objc_storeStrong(location, 0);
-  v2 = [(BuddyCloudConfigInstallationController *)v39 state];
-  if (v2)
+  state = [(BuddyCloudConfigInstallationController *)selfCopy state];
+  if (state)
   {
-    switch(v2)
+    switch(state)
     {
       case 1u:
-        [(BuddyCloudConfigInstallationController *)v39 setDeviceConfiguredCompletionBlock:0];
-        [(BuddyCloudConfigInstallationController *)v39 setLastErrorDescription:0];
-        v3 = [(BuddyCloudConfigInstallationController *)v39 navigationItem];
-        v4 = [v3 leftBarButtonItem];
-        [v4 setEnabled:0];
+        [(BuddyCloudConfigInstallationController *)selfCopy setDeviceConfiguredCompletionBlock:0];
+        [(BuddyCloudConfigInstallationController *)selfCopy setLastErrorDescription:0];
+        navigationItem = [(BuddyCloudConfigInstallationController *)selfCopy navigationItem];
+        leftBarButtonItem = [navigationItem leftBarButtonItem];
+        [leftBarButtonItem setEnabled:0];
 
-        v5 = [(BuddyCloudConfigInstallationController *)v39 spinnerView];
-        [(UIActivityIndicatorView *)v5 startAnimating];
+        spinnerView = [(BuddyCloudConfigInstallationController *)selfCopy spinnerView];
+        [(UIActivityIndicatorView *)spinnerView startAnimating];
 
         break;
       case 2u:
-        [(BuddyCloudConfigInstallationController *)v39 setState:3];
-        [(BuddyCloudConfigInstallationController *)v39 _setupForState];
-        v36 = [(BuddyCloudConfigInstallationController *)v39 managedConfiguration];
+        [(BuddyCloudConfigInstallationController *)selfCopy setState:3];
+        [(BuddyCloudConfigInstallationController *)selfCopy _setupForState];
+        managedConfiguration = [(BuddyCloudConfigInstallationController *)selfCopy managedConfiguration];
         v28 = _NSConcreteStackBlock;
         v29 = -1073741824;
         v30 = 0;
         v31 = sub_1001AB8FC;
         v32 = &unk_10032B838;
-        v33 = v36;
-        v34 = v39;
+        v33 = managedConfiguration;
+        v34 = selfCopy;
         v35 = objc_retainBlock(&v28);
-        v6 = [v36 installedMDMProfileIdentifier];
+        installedMDMProfileIdentifier = [managedConfiguration installedMDMProfileIdentifier];
 
-        if (v6)
+        if (installedMDMProfileIdentifier)
         {
           (*(v35 + 2))();
         }
 
         else
         {
-          [(BuddyCloudConfigInstallationController *)v39 _tryToInstallStoredProfileShouldCreateEscrowIfNeeded:1 completion:v35];
+          [(BuddyCloudConfigInstallationController *)selfCopy _tryToInstallStoredProfileShouldCreateEscrowIfNeeded:1 completion:v35];
         }
 
         objc_storeStrong(&v35, 0);
         objc_storeStrong(&v34, 0);
         objc_storeStrong(&v33, 0);
-        objc_storeStrong(&v36, 0);
+        objc_storeStrong(&managedConfiguration, 0);
         break;
       case 3u:
-        v7 = [(BuddyCloudConfigInstallationController *)v39 spinnerView];
-        [(UIActivityIndicatorView *)v7 startAnimating];
+        spinnerView2 = [(BuddyCloudConfigInstallationController *)selfCopy spinnerView];
+        [(UIActivityIndicatorView *)spinnerView2 startAnimating];
 
-        v8 = [(BuddyCloudConfigInstallationController *)v39 navigationItem];
-        [v8 setHidesBackButton:1];
+        navigationItem2 = [(BuddyCloudConfigInstallationController *)selfCopy navigationItem];
+        [navigationItem2 setHidesBackButton:1];
 
-        v9 = [(BuddyCloudConfigInstallationController *)v39 view];
-        [v9 setNeedsLayout];
+        view = [(BuddyCloudConfigInstallationController *)selfCopy view];
+        [view setNeedsLayout];
 
         break;
       case 4u:
-        v10 = [(BuddyCloudConfigInstallationController *)v39 spinnerView];
-        [(UIActivityIndicatorView *)v10 startAnimating];
+        spinnerView3 = [(BuddyCloudConfigInstallationController *)selfCopy spinnerView];
+        [(UIActivityIndicatorView *)spinnerView3 startAnimating];
 
-        v11 = [(BuddyCloudConfigInstallationController *)v39 managedConfiguration];
-        v27 = [(MCProfileConnection *)v11 cloudConfigurationDetails];
+        managedConfiguration2 = [(BuddyCloudConfigInstallationController *)selfCopy managedConfiguration];
+        cloudConfigurationDetails = [(MCProfileConnection *)managedConfiguration2 cloudConfigurationDetails];
 
-        v26 = [v27 objectForKeyedSubscript:kMCCCOrganizationNameKey];
-        v12 = [(BuddyCloudConfigInstallationController *)v39 headerView];
+        v26 = [cloudConfigurationDetails objectForKeyedSubscript:kMCCCOrganizationNameKey];
+        headerView = [(BuddyCloudConfigInstallationController *)selfCopy headerView];
         v13 = +[NSBundle mainBundle];
         v14 = [(NSBundle *)v13 localizedStringForKey:@"CLOUD_CONFIG_GETTING_CONFIGURATION_DESCRIPTION_%@" value:&stru_10032F900 table:@"Localizable"];
         v15 = [NSString localizedStringWithFormat:v14, v26];
-        [v12 setDetailText:v15];
+        [headerView setDetailText:v15];
 
-        v16 = [(BuddyCloudConfigInstallationController *)v39 navigationItem];
-        [v16 setHidesBackButton:1];
+        navigationItem3 = [(BuddyCloudConfigInstallationController *)selfCopy navigationItem];
+        [navigationItem3 setHidesBackButton:1];
 
         objc_storeStrong(&v26, 0);
-        objc_storeStrong(&v27, 0);
+        objc_storeStrong(&cloudConfigurationDetails, 0);
         break;
       case 5u:
-        v17 = [(BuddyCloudConfigInstallationController *)v39 spinnerView];
-        [(UIActivityIndicatorView *)v17 stopAnimating];
+        spinnerView4 = [(BuddyCloudConfigInstallationController *)selfCopy spinnerView];
+        [(UIActivityIndicatorView *)spinnerView4 stopAnimating];
 
         oslog = _BYLoggingFacility();
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [(BuddyCloudConfigInstallationController *)v39 lastErrorDescription];
-          sub_10006AE18(v40, v18);
+          lastErrorDescription = [(BuddyCloudConfigInstallationController *)selfCopy lastErrorDescription];
+          sub_10006AE18(v40, lastErrorDescription);
           _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Last error description: %@", v40, 0xCu);
         }
 
         objc_storeStrong(&oslog, 0);
-        v19 = [(BuddyCloudConfigInstallationController *)v39 lastErrorDescription];
+        lastErrorDescription2 = [(BuddyCloudConfigInstallationController *)selfCopy lastErrorDescription];
 
-        if (v19)
+        if (lastErrorDescription2)
         {
-          v20 = [(BuddyCloudConfigInstallationController *)v39 headerView];
-          v21 = [(BuddyCloudConfigInstallationController *)v39 lastErrorDescription];
-          [v20 setDetailText:v21];
+          headerView2 = [(BuddyCloudConfigInstallationController *)selfCopy headerView];
+          lastErrorDescription3 = [(BuddyCloudConfigInstallationController *)selfCopy lastErrorDescription];
+          [headerView2 setDetailText:lastErrorDescription3];
 
-          v22 = [(BuddyCloudConfigInstallationController *)v39 navigationItem];
-          [v22 setHidesBackButton:0];
+          navigationItem4 = [(BuddyCloudConfigInstallationController *)selfCopy navigationItem];
+          [navigationItem4 setHidesBackButton:0];
 
-          v23 = [(BuddyCloudConfigInstallationController *)v39 navigationItem];
-          v24 = [(BuddyEnrollmentCoordinator *)v23 rightBarButtonItem];
-          [v24 setEnabled:0];
+          navigationItem5 = [(BuddyCloudConfigInstallationController *)selfCopy navigationItem];
+          rightBarButtonItem = [(BuddyEnrollmentCoordinator *)navigationItem5 rightBarButtonItem];
+          [rightBarButtonItem setEnabled:0];
         }
 
         else
         {
-          [(BuddyCloudConfigInstallationController *)v39 controllerDone];
-          v23 = [(BuddyCloudConfigInstallationController *)v39 enrollmentCoordinator];
-          [(BuddyEnrollmentCoordinator *)v23 profileInstallationDone];
+          [(BuddyCloudConfigInstallationController *)selfCopy controllerDone];
+          navigationItem5 = [(BuddyCloudConfigInstallationController *)selfCopy enrollmentCoordinator];
+          [(BuddyEnrollmentCoordinator *)navigationItem5 profileInstallationDone];
         }
 
         break;
@@ -482,52 +482,52 @@
   }
 }
 
-- (void)cloudConfigDidChange:(id)a3
+- (void)cloudConfigDidChange:(id)change
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, change);
   v3 = &_dispatch_main_q;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1001ABE98;
   v8 = &unk_10032B0D0;
-  v9 = v11;
+  v9 = selfCopy;
   dispatch_async(v3, &v4);
 
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)nextButtonPressed:(id)a3
+- (void)nextButtonPressed:(id)pressed
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyCloudConfigInstallationController *)v4 controllerDone];
+  objc_storeStrong(location, pressed);
+  [(BuddyCloudConfigInstallationController *)selfCopy controllerDone];
   objc_storeStrong(location, 0);
 }
 
-- (void)_cancelDevicePasscodePicker:(id)a3
+- (void)_cancelDevicePasscodePicker:(id)picker
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyCloudConfigInstallationController *)v5 dismissViewControllerAnimated:1 completion:0];
-  (*(v5->_devicePasscodeCompletion + 2))();
-  devicePasscodeCompletion = v5->_devicePasscodeCompletion;
-  v5->_devicePasscodeCompletion = 0;
+  objc_storeStrong(location, picker);
+  [(BuddyCloudConfigInstallationController *)selfCopy dismissViewControllerAnimated:1 completion:0];
+  (*(selfCopy->_devicePasscodeCompletion + 2))();
+  devicePasscodeCompletion = selfCopy->_devicePasscodeCompletion;
+  selfCopy->_devicePasscodeCompletion = 0;
 
   objc_storeStrong(location, 0);
 }
 
 - (id)_clearImage
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v10.width = sub_1001AC2B0();
   size = v10;
@@ -545,22 +545,22 @@
   return v3;
 }
 
-- (void)passcodeEntryController:(id)a3 didEnterPasscode:(id)a4
+- (void)passcodeEntryController:(id)controller didEnterPasscode:(id)passcode
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, passcode);
   if ([v6 length])
   {
-    [(BuddyCloudConfigInstallationController *)v8 dismissViewControllerAnimated:1 completion:0];
-    if (v8->_devicePasscodeCompletion)
+    [(BuddyCloudConfigInstallationController *)selfCopy dismissViewControllerAnimated:1 completion:0];
+    if (selfCopy->_devicePasscodeCompletion)
     {
-      (*(v8->_devicePasscodeCompletion + 2))();
-      devicePasscodeCompletion = v8->_devicePasscodeCompletion;
-      v8->_devicePasscodeCompletion = 0;
+      (*(selfCopy->_devicePasscodeCompletion + 2))();
+      devicePasscodeCompletion = selfCopy->_devicePasscodeCompletion;
+      selfCopy->_devicePasscodeCompletion = 0;
     }
   }
 
@@ -568,12 +568,12 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dismiss);
   oslog = _BYLoggingFacility();
   v7 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -585,11 +585,11 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  if (v10->_devicePasscodeCompletion)
+  if (selfCopy->_devicePasscodeCompletion)
   {
-    (*(v10->_devicePasscodeCompletion + 2))();
-    devicePasscodeCompletion = v10->_devicePasscodeCompletion;
-    v10->_devicePasscodeCompletion = 0;
+    (*(selfCopy->_devicePasscodeCompletion + 2))();
+    devicePasscodeCompletion = selfCopy->_devicePasscodeCompletion;
+    selfCopy->_devicePasscodeCompletion = 0;
   }
 
   objc_storeStrong(location, 0);

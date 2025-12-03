@@ -1,35 +1,35 @@
 @interface TPIncomingCallMetricsProvider
 + (BOOL)deviceHasHomeButton;
 + (CGRect)fullDeviceBounds;
-+ (CGRect)horizontalNameLabelBoundingRectForName:(id)a3 caption:(id)a4 window:(id)a5 preferredTitleFont:(id)a6;
-+ (CGRect)horizontalNameLabelBoundingRectForName:(id)a3 window:(id)a4;
-+ (CGRect)verticalNameLabelBoundingRectForName:(id)a3 caption:(id)a4 window:(id)a5 preferredTitleFont:(id)a6;
-+ (CGRect)verticalNameLabelBoundingRectForName:(id)a3 window:(id)a4;
++ (CGRect)horizontalNameLabelBoundingRectForName:(id)name caption:(id)caption window:(id)window preferredTitleFont:(id)font;
++ (CGRect)horizontalNameLabelBoundingRectForName:(id)name window:(id)window;
++ (CGRect)verticalNameLabelBoundingRectForName:(id)name caption:(id)caption window:(id)window preferredTitleFont:(id)font;
++ (CGRect)verticalNameLabelBoundingRectForName:(id)name window:(id)window;
 + (double)callDetailsButtonPaddingPercentTop_ForSnapshot;
 + (double)callDetailsButtonPaddingTop_ForSnapshot;
 + (double)callDetailsButtonPaddingTrailPercent_ForSnapshot;
 + (double)callDetailsButtonPaddingTrail_ForSnapshot;
 + (double)fullDeviceHeight;
 + (double)fullDeviceWidth;
-+ (double)homeButtonOffsetForSafeAreaFrame:(CGRect)a3;
++ (double)homeButtonOffsetForSafeAreaFrame:(CGRect)frame;
 + (double)incomingCallAndInCallControlsBottomPadding;
 + (double)sixPercentOfDeviceHeight;
 + (double)twelvePercentOfDeviceHeight;
 + (double)twentyTwoPointFivePercentOfDeviceHeight;
 + (double)verticalTextTopMargin;
-+ (id)posterDisplayNameForContact:(id)a3;
-+ (void)addCallerNameView:(id)a3 toContainerView:(id)a4;
-+ (void)addCallerNameView:(id)a3 toViewController:(id)a4;
-+ (void)constraintIncomingCallTextViewAdapterWrapper:(id)a3 toView:(id)a4;
-+ (void)constraintIncomingCallTextViewForHorizontalLayout:(id)a3 toView:(id)a4;
-+ (void)constraintIncomingCallTextViewForVerticalLayout:(id)a3 toView:(id)a4;
++ (id)posterDisplayNameForContact:(id)contact;
++ (void)addCallerNameView:(id)view toContainerView:(id)containerView;
++ (void)addCallerNameView:(id)view toViewController:(id)controller;
++ (void)constraintIncomingCallTextViewAdapterWrapper:(id)wrapper toView:(id)view;
++ (void)constraintIncomingCallTextViewForHorizontalLayout:(id)layout toView:(id)view;
++ (void)constraintIncomingCallTextViewForVerticalLayout:(id)layout toView:(id)view;
 @end
 
 @implementation TPIncomingCallMetricsProvider
 
-+ (CGRect)horizontalNameLabelBoundingRectForName:(id)a3 window:(id)a4
++ (CGRect)horizontalNameLabelBoundingRectForName:(id)name window:(id)window
 {
-  [TPIncomingCallMetricsProvider horizontalNameLabelBoundingRectForName:a3 caption:0 window:a4 preferredTitleFont:0];
+  [TPIncomingCallMetricsProvider horizontalNameLabelBoundingRectForName:name caption:0 window:window preferredTitleFont:0];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -37,24 +37,24 @@
   return result;
 }
 
-+ (CGRect)horizontalNameLabelBoundingRectForName:(id)a3 caption:(id)a4 window:(id)a5 preferredTitleFont:(id)a6
++ (CGRect)horizontalNameLabelBoundingRectForName:(id)name caption:(id)caption window:(id)window preferredTitleFont:(id)font
 {
   v50 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [objc_alloc(getPRIncomingCallTextViewAdapterWrapperClass()) initWithName:v13 status:v12];
+  windowCopy = window;
+  fontCopy = font;
+  captionCopy = caption;
+  nameCopy = name;
+  v14 = [objc_alloc(getPRIncomingCallTextViewAdapterWrapperClass()) initWithName:nameCopy status:captionCopy];
 
   [v14 setPreferredLayout:0];
-  if (v11)
+  if (fontCopy)
   {
-    [v14 setEmphasizedNameFont:v11];
+    [v14 setEmphasizedNameFont:fontCopy];
   }
 
-  if (v10)
+  if (windowCopy)
   {
-    [v10 frame];
+    [windowCopy frame];
     v16 = v15;
     v18 = v17;
     v20 = v19;
@@ -63,8 +63,8 @@
 
   else
   {
-    v23 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v23 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v16 = v24;
     v18 = v25;
     v20 = v26;
@@ -72,14 +72,14 @@
   }
 
   v28 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v16, v18, v20, v22}];
-  v29 = [v14 viewController];
-  v30 = [v29 view];
+  viewController = [v14 viewController];
+  view = [viewController view];
 
-  [v28 addSubview:v30];
-  [a1 constraintIncomingCallTextViewAdapterWrapper:v14 toView:v28];
+  [v28 addSubview:view];
+  [self constraintIncomingCallTextViewAdapterWrapper:v14 toView:v28];
   [v28 setNeedsLayout];
   [v28 layoutIfNeeded];
-  [v30 frame];
+  [view frame];
   v32 = v31;
   v34 = v33;
   v36 = v35;
@@ -95,7 +95,7 @@
     v46 = 138412546;
     v47 = v40;
     v48 = 2112;
-    v49 = v10;
+    v49 = windowCopy;
     _os_log_impl(&dword_1B4894000, v39, OS_LOG_TYPE_DEFAULT, "Returning horizontalNameLabelBoundingRect: %@ using window: %@", &v46, 0x16u);
   }
 
@@ -111,9 +111,9 @@
   return result;
 }
 
-+ (CGRect)verticalNameLabelBoundingRectForName:(id)a3 window:(id)a4
++ (CGRect)verticalNameLabelBoundingRectForName:(id)name window:(id)window
 {
-  [TPIncomingCallMetricsProvider verticalNameLabelBoundingRectForName:a3 caption:0 window:a4 preferredTitleFont:0];
+  [TPIncomingCallMetricsProvider verticalNameLabelBoundingRectForName:name caption:0 window:window preferredTitleFont:0];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -121,24 +121,24 @@
   return result;
 }
 
-+ (CGRect)verticalNameLabelBoundingRectForName:(id)a3 caption:(id)a4 window:(id)a5 preferredTitleFont:(id)a6
++ (CGRect)verticalNameLabelBoundingRectForName:(id)name caption:(id)caption window:(id)window preferredTitleFont:(id)font
 {
   v50 = *MEMORY[0x1E69E9840];
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [objc_alloc(getPRIncomingCallTextViewAdapterWrapperClass()) initWithName:v13 status:v12];
+  windowCopy = window;
+  fontCopy = font;
+  captionCopy = caption;
+  nameCopy = name;
+  v14 = [objc_alloc(getPRIncomingCallTextViewAdapterWrapperClass()) initWithName:nameCopy status:captionCopy];
 
   [v14 setPreferredLayout:1];
-  if (v11)
+  if (fontCopy)
   {
-    [v14 setEmphasizedNameFont:v11];
+    [v14 setEmphasizedNameFont:fontCopy];
   }
 
-  if (v10)
+  if (windowCopy)
   {
-    [v10 frame];
+    [windowCopy frame];
     v16 = v15;
     v18 = v17;
     v20 = v19;
@@ -147,8 +147,8 @@
 
   else
   {
-    v23 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v23 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v16 = v24;
     v18 = v25;
     v20 = v26;
@@ -156,14 +156,14 @@
   }
 
   v28 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v16, v18, v20, v22}];
-  v29 = [v14 viewController];
-  v30 = [v29 view];
+  viewController = [v14 viewController];
+  view = [viewController view];
 
-  [v28 addSubview:v30];
-  [a1 constraintIncomingCallTextViewAdapterWrapper:v14 toView:v28];
+  [v28 addSubview:view];
+  [self constraintIncomingCallTextViewAdapterWrapper:v14 toView:v28];
   [v28 setNeedsLayout];
   [v28 layoutIfNeeded];
-  [v30 frame];
+  [view frame];
   v32 = v31;
   v34 = v33;
   v36 = v35;
@@ -200,147 +200,147 @@
   return result;
 }
 
-+ (void)addCallerNameView:(id)a3 toViewController:(id)a4
++ (void)addCallerNameView:(id)view toViewController:(id)controller
 {
   v46[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 contentViewCoordinator];
-  v8 = [v7 vibrantObscurableContentView];
-  v9 = v5;
-  v10 = [v9 viewController];
-  [v10 willMoveToParentViewController:v6];
-  [v6 addChildViewController:v10];
-  v11 = [v10 view];
-  [v8 addSubview:v11];
+  viewCopy = view;
+  controllerCopy = controller;
+  contentViewCoordinator = [controllerCopy contentViewCoordinator];
+  vibrantObscurableContentView = [contentViewCoordinator vibrantObscurableContentView];
+  v9 = viewCopy;
+  viewController = [v9 viewController];
+  [viewController willMoveToParentViewController:controllerCopy];
+  [controllerCopy addChildViewController:viewController];
+  view = [viewController view];
+  [vibrantObscurableContentView addSubview:view];
 
-  [v10 didMoveToParentViewController:v6];
-  [v6 registerPosterAppearanceObserver:v9];
-  v12 = [v6 obscurableContentView];
-  [TPIncomingCallMetricsProvider constraintIncomingCallTextViewAdapterWrapper:v9 toView:v12];
+  [viewController didMoveToParentViewController:controllerCopy];
+  [controllerCopy registerPosterAppearanceObserver:v9];
+  obscurableContentView = [controllerCopy obscurableContentView];
+  [TPIncomingCallMetricsProvider constraintIncomingCallTextViewAdapterWrapper:v9 toView:obscurableContentView];
 
-  v13 = [v9 emojiViewController];
-  if (v13)
+  emojiViewController = [v9 emojiViewController];
+  if (emojiViewController)
   {
-    v45 = [v7 obscurableOverlayView];
-    [v13 willMoveToParentViewController:v6];
-    [v6 addChildViewController:v13];
-    v14 = [v13 view];
-    [v45 addSubview:v14];
+    obscurableOverlayView = [contentViewCoordinator obscurableOverlayView];
+    [emojiViewController willMoveToParentViewController:controllerCopy];
+    [controllerCopy addChildViewController:emojiViewController];
+    view2 = [emojiViewController view];
+    [obscurableOverlayView addSubview:view2];
 
-    [v13 didMoveToParentViewController:v6];
-    v15 = [v13 view];
-    [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [emojiViewController didMoveToParentViewController:controllerCopy];
+    view3 = [emojiViewController view];
+    [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v35 = MEMORY[0x1E696ACD8];
-    v44 = [v13 view];
-    v42 = [v44 leadingAnchor];
-    v43 = [v10 view];
-    v41 = [v43 leadingAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41];
+    view4 = [emojiViewController view];
+    leadingAnchor = [view4 leadingAnchor];
+    view5 = [viewController view];
+    leadingAnchor2 = [view5 leadingAnchor];
+    v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v46[0] = v40;
-    v39 = [v13 view];
-    v37 = [v39 trailingAnchor];
-    v38 = [v10 view];
-    v36 = [v38 trailingAnchor];
-    v34 = [v37 constraintEqualToAnchor:v36];
+    view6 = [emojiViewController view];
+    trailingAnchor = [view6 trailingAnchor];
+    view7 = [viewController view];
+    trailingAnchor2 = [view7 trailingAnchor];
+    v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v46[1] = v34;
-    v33 = [v13 view];
-    v31 = [v33 topAnchor];
-    v32 = [v10 view];
-    v30 = [v32 topAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    view8 = [emojiViewController view];
+    topAnchor = [view8 topAnchor];
+    view9 = [viewController view];
+    topAnchor2 = [view9 topAnchor];
+    v29 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v46[2] = v29;
-    v28 = [v13 view];
-    v27 = [v28 bottomAnchor];
-    v16 = [v10 view];
-    v17 = [v16 bottomAnchor];
-    [v27 constraintEqualToAnchor:v17];
-    v19 = v18 = v7;
+    view10 = [emojiViewController view];
+    bottomAnchor = [view10 bottomAnchor];
+    view11 = [viewController view];
+    bottomAnchor2 = [view11 bottomAnchor];
+    [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
+    v19 = v18 = contentViewCoordinator;
     v46[3] = v19;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:4];
-    v20 = v10;
-    v21 = v8;
+    v20 = viewController;
+    v21 = vibrantObscurableContentView;
     v23 = v22 = v9;
     [v35 activateConstraints:v23];
 
     v9 = v22;
-    v8 = v21;
-    v10 = v20;
+    vibrantObscurableContentView = v21;
+    viewController = v20;
 
-    v7 = v18;
+    contentViewCoordinator = v18;
   }
 
-  v24 = [v7 vibrantObscurableContentView];
-  [v24 setNeedsLayout];
+  vibrantObscurableContentView2 = [contentViewCoordinator vibrantObscurableContentView];
+  [vibrantObscurableContentView2 setNeedsLayout];
 
-  v25 = [v7 vibrantObscurableContentView];
-  [v25 layoutIfNeeded];
+  vibrantObscurableContentView3 = [contentViewCoordinator vibrantObscurableContentView];
+  [vibrantObscurableContentView3 layoutIfNeeded];
 
   [v9 tightFrame];
-  [v7 setPrimaryContentTightFrame:?];
+  [contentViewCoordinator setPrimaryContentTightFrame:?];
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)addCallerNameView:(id)a3 toContainerView:(id)a4
++ (void)addCallerNameView:(id)view toContainerView:(id)containerView
 {
-  v8 = a3;
-  v5 = a4;
-  v6 = [v8 viewController];
-  v7 = [v6 view];
-  [v5 addSubview:v7];
+  viewCopy = view;
+  containerViewCopy = containerView;
+  viewController = [viewCopy viewController];
+  view = [viewController view];
+  [containerViewCopy addSubview:view];
 
-  [TPIncomingCallMetricsProvider constraintIncomingCallTextViewAdapterWrapper:v8 toView:v5];
+  [TPIncomingCallMetricsProvider constraintIncomingCallTextViewAdapterWrapper:viewCopy toView:containerViewCopy];
 }
 
-+ (void)constraintIncomingCallTextViewAdapterWrapper:(id)a3 toView:(id)a4
++ (void)constraintIncomingCallTextViewAdapterWrapper:(id)wrapper toView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 viewController];
-  v10 = [v8 view];
+  viewCopy = view;
+  wrapperCopy = wrapper;
+  viewController = [wrapperCopy viewController];
+  view = [viewController view];
 
-  v9 = [v7 layout];
-  if (v9 == 1)
+  layout = [wrapperCopy layout];
+  if (layout == 1)
   {
-    [a1 constraintIncomingCallTextViewForVerticalLayout:v10 toView:v6];
+    [self constraintIncomingCallTextViewForVerticalLayout:view toView:viewCopy];
   }
 
   else
   {
-    [a1 constraintIncomingCallTextViewForHorizontalLayout:v10 toView:v6];
+    [self constraintIncomingCallTextViewForHorizontalLayout:view toView:viewCopy];
   }
 }
 
-+ (void)constraintIncomingCallTextViewForHorizontalLayout:(id)a3 toView:(id)a4
++ (void)constraintIncomingCallTextViewForHorizontalLayout:(id)layout toView:(id)view
 {
   v26[4] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  viewCopy = view;
+  layoutCopy = layout;
+  [layoutCopy setTranslatesAutoresizingMaskIntoConstraints:0];
   +[TPIncomingCallMetricsProvider twentyTwoPointFivePercentOfDeviceHeight];
   v8 = v7;
   [getPRIncomingCallMetricsProviderClass() horizontalTextEdgePadding];
   v10 = v9;
   v22 = MEMORY[0x1E696ACD8];
-  v25 = [v6 lastBaselineAnchor];
-  v24 = [v5 topAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24 constant:v8];
+  lastBaselineAnchor = [layoutCopy lastBaselineAnchor];
+  topAnchor = [viewCopy topAnchor];
+  v23 = [lastBaselineAnchor constraintEqualToAnchor:topAnchor constant:v8];
   v26[0] = v23;
-  v11 = [v6 centerXAnchor];
-  v12 = [v5 centerXAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  centerXAnchor = [layoutCopy centerXAnchor];
+  centerXAnchor2 = [viewCopy centerXAnchor];
+  v13 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v26[1] = v13;
-  v14 = [v6 leadingAnchor];
-  v15 = [v5 leadingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15 constant:v10];
+  leadingAnchor = [layoutCopy leadingAnchor];
+  leadingAnchor2 = [viewCopy leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v10];
   v26[2] = v16;
-  v17 = [v6 trailingAnchor];
+  trailingAnchor = [layoutCopy trailingAnchor];
 
-  v18 = [v5 trailingAnchor];
+  trailingAnchor2 = [viewCopy trailingAnchor];
 
-  v19 = [v17 constraintEqualToAnchor:v18 constant:-v10];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v10];
   v26[3] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:4];
   [v22 activateConstraints:v20];
@@ -348,16 +348,16 @@
   v21 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)constraintIncomingCallTextViewForVerticalLayout:(id)a3 toView:(id)a4
++ (void)constraintIncomingCallTextViewForVerticalLayout:(id)layout toView:(id)view
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  viewCopy = view;
+  layoutCopy = layout;
+  [layoutCopy setTranslatesAutoresizingMaskIntoConstraints:0];
   +[TPIncomingCallMetricsProvider verticalTextTopMargin];
   v8 = v7;
-  v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-  if ([v9 screenSizeCategory] == 1)
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  if ([mainScreen screenSizeCategory] == 1)
   {
     v10 = 16.0;
   }
@@ -368,19 +368,19 @@
   }
 
   v22 = MEMORY[0x1E696ACD8];
-  v11 = [v6 topAnchor];
-  v12 = [v5 topAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12 constant:v8];
+  topAnchor = [layoutCopy topAnchor];
+  topAnchor2 = [viewCopy topAnchor];
+  v13 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v8];
   v23[0] = v13;
-  v14 = [v6 leftAnchor];
-  v15 = [v5 leftAnchor];
-  v16 = [v14 constraintGreaterThanOrEqualToAnchor:v15 constant:v10];
+  leftAnchor = [layoutCopy leftAnchor];
+  leftAnchor2 = [viewCopy leftAnchor];
+  v16 = [leftAnchor constraintGreaterThanOrEqualToAnchor:leftAnchor2 constant:v10];
   v23[1] = v16;
-  v17 = [v6 rightAnchor];
+  rightAnchor = [layoutCopy rightAnchor];
 
-  v18 = [v5 rightAnchor];
+  rightAnchor2 = [viewCopy rightAnchor];
 
-  v19 = [v17 constraintEqualToAnchor:v18 constant:-v10];
+  v19 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-v10];
   v23[2] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:3];
   [v22 activateConstraints:v20];
@@ -388,12 +388,12 @@
   v21 = *MEMORY[0x1E69E9840];
 }
 
-+ (double)homeButtonOffsetForSafeAreaFrame:(CGRect)a3
++ (double)homeButtonOffsetForSafeAreaFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = 0.0;
   if (+[TPUIConfiguration pipStatusBarPadding]== 5)
   {
@@ -403,8 +403,8 @@
     v11.size.height = height;
     if (!CGRectIsEmpty(v11))
     {
-      v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v8 bounds];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen bounds];
       v7 = v9 - (y + height);
     }
   }
@@ -414,12 +414,12 @@
 
 + (double)sixPercentOfDeviceHeight
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
 
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v5 bounds];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen2 bounds];
   v7 = v6;
 
   if (v4 >= v7)
@@ -437,12 +437,12 @@
 
 + (double)twelvePercentOfDeviceHeight
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
 
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v5 bounds];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen2 bounds];
   v7 = v6;
 
   if (v4 >= v7)
@@ -460,12 +460,12 @@
 
 + (double)twentyTwoPointFivePercentOfDeviceHeight
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
 
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v5 bounds];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen2 bounds];
   v7 = v6;
 
   if (v4 >= v7)
@@ -483,8 +483,8 @@
 
 + (CGRect)fullDeviceBounds
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -503,9 +503,9 @@
 
 + (double)fullDeviceHeight
 {
-  [a1 fullDeviceBounds];
+  [self fullDeviceBounds];
   v4 = v3;
-  [a1 fullDeviceBounds];
+  [self fullDeviceBounds];
   if (v4 >= v5)
   {
     return v4;
@@ -519,9 +519,9 @@
 
 + (double)fullDeviceWidth
 {
-  [a1 fullDeviceBounds];
+  [self fullDeviceBounds];
   v4 = v3;
-  [a1 fullDeviceBounds];
+  [self fullDeviceBounds];
   if (v4 >= v5)
   {
     return v5;
@@ -552,16 +552,16 @@ uint64_t __52__TPIncomingCallMetricsProvider_deviceHasHomeButton__block_invoke()
 
 + (double)callDetailsButtonPaddingPercentTop_ForSnapshot
 {
-  if ([a1 deviceHasHomeButton])
+  if ([self deviceHasHomeButton])
   {
 
-    [a1 callDetailsButtonPaddingTopPercent_HomeButton];
+    [self callDetailsButtonPaddingTopPercent_HomeButton];
   }
 
   else
   {
 
-    [a1 callDetailsButtonPaddingTopPercent_DynamicIsland];
+    [self callDetailsButtonPaddingTopPercent_DynamicIsland];
   }
 
   return result;
@@ -569,16 +569,16 @@ uint64_t __52__TPIncomingCallMetricsProvider_deviceHasHomeButton__block_invoke()
 
 + (double)callDetailsButtonPaddingTrailPercent_ForSnapshot
 {
-  if ([a1 deviceHasHomeButton])
+  if ([self deviceHasHomeButton])
   {
 
-    [a1 callDetailsButtonPaddingTrailingPercent_HomeButton];
+    [self callDetailsButtonPaddingTrailingPercent_HomeButton];
   }
 
   else
   {
 
-    [a1 callDetailsButtonPaddingTrailingPercent_DynamicIsland];
+    [self callDetailsButtonPaddingTrailingPercent_DynamicIsland];
   }
 
   return result;
@@ -586,28 +586,28 @@ uint64_t __52__TPIncomingCallMetricsProvider_deviceHasHomeButton__block_invoke()
 
 + (double)callDetailsButtonPaddingTop_ForSnapshot
 {
-  [a1 fullDeviceHeight];
+  [self fullDeviceHeight];
   v4 = v3;
-  [a1 callDetailsButtonPaddingPercentTop_ForSnapshot];
+  [self callDetailsButtonPaddingPercentTop_ForSnapshot];
   return v4 * v5 / 100.0;
 }
 
 + (double)callDetailsButtonPaddingTrail_ForSnapshot
 {
-  [a1 fullDeviceWidth];
+  [self fullDeviceWidth];
   v4 = v3;
-  [a1 callDetailsButtonPaddingTrailPercent_ForSnapshot];
+  [self callDetailsButtonPaddingTrailPercent_ForSnapshot];
   return v4 * v5 / 100.0;
 }
 
 + (double)verticalTextTopMargin
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
 
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v5 bounds];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen2 bounds];
   v7 = v6;
 
   if (v4 >= v7)
@@ -626,13 +626,13 @@ uint64_t __52__TPIncomingCallMetricsProvider_deviceHasHomeButton__block_invoke()
 + (double)incomingCallAndInCallControlsBottomPadding
 {
   v3 = +[TPUIConfiguration screenSize]== 1;
-  [a1 fullDeviceHeight];
+  [self fullDeviceHeight];
   return v4 * dbl_1B48EBD70[v3];
 }
 
-+ (id)posterDisplayNameForContact:(id)a3
++ (id)posterDisplayNameForContact:(id)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   v4 = posterDisplayNameForContact__sFormatter;
   if (!posterDisplayNameForContact__sFormatter)
   {
@@ -644,7 +644,7 @@ uint64_t __52__TPIncomingCallMetricsProvider_deviceHasHomeButton__block_invoke()
     v4 = posterDisplayNameForContact__sFormatter;
   }
 
-  v7 = [v4 stringFromContact:v3];
+  v7 = [v4 stringFromContact:contactCopy];
   v8 = v7;
   if (v7)
   {

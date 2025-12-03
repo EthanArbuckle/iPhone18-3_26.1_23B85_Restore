@@ -1,12 +1,12 @@
 @interface SQLiteComparisonPredicate
-+ (id)predicateWithProperty:(id)a3 value:(id)a4 comparisonType:(int64_t)a5;
-+ (id)predicateWithProperty:(id)a3 value:(id)a4 comparisonType:(int64_t)a5 collatingStrategy:(int64_t)a6;
++ (id)predicateWithProperty:(id)property value:(id)value comparisonType:(int64_t)type;
++ (id)predicateWithProperty:(id)property value:(id)value comparisonType:(int64_t)type collatingStrategy:(int64_t)strategy;
 - (BOOL)_isCollatingStrategyNoCase;
-- (BOOL)isEqual:(id)a3;
-- (id)SQLForEntityClass:(Class)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)SQLForEntityClass:(Class)class;
 - (id)_comparisonTypeFormat;
 - (id)description;
-- (void)bindToStatement:(sqlite3_stmt *)a3 bindingIndex:(int *)a4;
+- (void)bindToStatement:(sqlite3_stmt *)statement bindingIndex:(int *)index;
 @end
 
 @implementation SQLiteComparisonPredicate
@@ -21,14 +21,14 @@
     {
       if (comparisonType == 3)
       {
-        v5 = [(SQLiteComparisonPredicate *)self _isCollatingStrategyNoCase];
+        _isCollatingStrategyNoCase = [(SQLiteComparisonPredicate *)self _isCollatingStrategyNoCase];
         v6 = @"(%@ < ?)";
         v7 = @"(%@ < ? COLLATE NOCASE)";
       }
 
       else
       {
-        v5 = [(SQLiteComparisonPredicate *)self _isCollatingStrategyNoCase];
+        _isCollatingStrategyNoCase = [(SQLiteComparisonPredicate *)self _isCollatingStrategyNoCase];
         v6 = @"(%@ <= ?)";
         v7 = @"(%@ <= ? COLLATE NOCASE)";
       }
@@ -36,7 +36,7 @@
 
     else if (comparisonType == 1)
     {
-      v5 = [(SQLiteComparisonPredicate *)self _isCollatingStrategyNoCase];
+      _isCollatingStrategyNoCase = [(SQLiteComparisonPredicate *)self _isCollatingStrategyNoCase];
       v6 = @"(%@ = ?)";
       v7 = @"(%@ = ? COLLATE NOCASE)";
     }
@@ -48,7 +48,7 @@
         return result;
       }
 
-      v5 = [(SQLiteComparisonPredicate *)self _isCollatingStrategyNoCase];
+      _isCollatingStrategyNoCase = [(SQLiteComparisonPredicate *)self _isCollatingStrategyNoCase];
       v6 = @"(%@ != ?)";
       v7 = @"(%@ != ? COLLATE NOCASE)";
     }
@@ -60,20 +60,20 @@
   {
     if (comparisonType == 5)
     {
-      v5 = [(SQLiteComparisonPredicate *)self _isCollatingStrategyNoCase];
+      _isCollatingStrategyNoCase = [(SQLiteComparisonPredicate *)self _isCollatingStrategyNoCase];
       v6 = @"(%@ > ?)";
       v7 = @"(%@ > ? COLLATE NOCASE)";
     }
 
     else
     {
-      v5 = [(SQLiteComparisonPredicate *)self _isCollatingStrategyNoCase];
+      _isCollatingStrategyNoCase = [(SQLiteComparisonPredicate *)self _isCollatingStrategyNoCase];
       v6 = @"(%@ >= ?)";
       v7 = @"(%@ >= ? COLLATE NOCASE)";
     }
 
 LABEL_17:
-    if (v5)
+    if (_isCollatingStrategyNoCase)
     {
       return v7;
     }
@@ -113,15 +113,15 @@ LABEL_17:
   return isKindOfClass & 1;
 }
 
-+ (id)predicateWithProperty:(id)a3 value:(id)a4 comparisonType:(int64_t)a5
++ (id)predicateWithProperty:(id)property value:(id)value comparisonType:(int64_t)type
 {
-  v8 = a4;
-  v9 = a3;
+  valueCopy = value;
+  propertyCopy = property;
   objc_opt_class();
-  v10 = (objc_opt_isKindOfClass() & 1) != 0 && [v8 length] > 0x20;
+  v10 = (objc_opt_isKindOfClass() & 1) != 0 && [valueCopy length] > 0x20;
   v11 = objc_alloc_init(objc_opt_class());
-  *(v11 + 3) = a5;
-  v12 = [v9 copy];
+  *(v11 + 3) = type;
+  v12 = [propertyCopy copy];
 
   v13 = *(v11 + 1);
   *(v11 + 1) = v12;
@@ -131,25 +131,25 @@ LABEL_17:
     *(v11 + 16) = 1;
   }
 
-  else if ([v8 conformsToProtocol:&OBJC_PROTOCOL___NSCopying])
+  else if ([valueCopy conformsToProtocol:&OBJC_PROTOCOL___NSCopying])
   {
-    v14 = [v8 copy];
+    v14 = [valueCopy copy];
     v15 = *(v11 + 4);
     *(v11 + 4) = v14;
   }
 
   else
   {
-    objc_storeStrong(v11 + 4, a4);
+    objc_storeStrong(v11 + 4, value);
   }
 
   return v11;
 }
 
-+ (id)predicateWithProperty:(id)a3 value:(id)a4 comparisonType:(int64_t)a5 collatingStrategy:(int64_t)a6
++ (id)predicateWithProperty:(id)property value:(id)value comparisonType:(int64_t)type collatingStrategy:(int64_t)strategy
 {
-  result = [a1 predicateWithProperty:a3 value:a4 comparisonType:a5];
-  *(result + 5) = a6;
+  result = [self predicateWithProperty:property value:value comparisonType:type];
+  *(result + 5) = strategy;
   return result;
 }
 
@@ -189,14 +189,14 @@ LABEL_17:
   return v3;
 }
 
-- (void)bindToStatement:(sqlite3_stmt *)a3 bindingIndex:(int *)a4
+- (void)bindToStatement:(sqlite3_stmt *)statement bindingIndex:(int *)index
 {
   if (!self->_forceFalse)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      sqlite3_bind_text(a3, *a4, [self->_value UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+      sqlite3_bind_text(statement, *index, [self->_value UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
     }
 
     else
@@ -204,18 +204,18 @@ LABEL_17:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [self->_value objCType];
-        v8 = *v7;
-        if ((v8 == 102 || v8 == 100) && !v7[1])
+        objCType = [self->_value objCType];
+        v8 = *objCType;
+        if ((v8 == 102 || v8 == 100) && !objCType[1])
         {
-          v9 = *a4;
+          v9 = *index;
           [self->_value doubleValue];
-          sqlite3_bind_double(a3, v9, v10);
+          sqlite3_bind_double(statement, v9, v10);
         }
 
         else
         {
-          sqlite3_bind_int64(a3, *a4, [self->_value longLongValue]);
+          sqlite3_bind_int64(statement, *index, [self->_value longLongValue]);
         }
       }
 
@@ -224,28 +224,28 @@ LABEL_17:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && [self->_value length] <= 0x20)
         {
-          sqlite3_bind_blob(a3, *a4, [self->_value bytes], objc_msgSend(self->_value, "length"), 0xFFFFFFFFFFFFFFFFLL);
+          sqlite3_bind_blob(statement, *index, [self->_value bytes], objc_msgSend(self->_value, "length"), 0xFFFFFFFFFFFFFFFFLL);
         }
 
         else if (!self->_value)
         {
-          sqlite3_bind_null(a3, *a4);
+          sqlite3_bind_null(statement, *index);
         }
       }
     }
 
-    ++*a4;
+    ++*index;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = SQLiteComparisonPredicate;
-  if ([(SQLitePropertyPredicate *)&v9 isEqual:v4])
+  if ([(SQLitePropertyPredicate *)&v9 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v7 = self->_comparisonType == v5[3] && ((value = self->_value, value == v5[4]) || [value isEqual:?]) && self->_forceFalse == *(v5 + 16) && self->_collatingStrategy == v5[5];
   }
 
@@ -257,7 +257,7 @@ LABEL_17:
   return v7;
 }
 
-- (id)SQLForEntityClass:(Class)a3
+- (id)SQLForEntityClass:(Class)class
 {
   if (self->_forceFalse)
   {
@@ -266,8 +266,8 @@ LABEL_17:
 
   else
   {
-    v5 = [(objc_class *)a3 disambiguatedSQLForProperty:self->super._property];
-    v6 = [(SQLiteComparisonPredicate *)self _comparisonTypeFormat];
+    v5 = [(objc_class *)class disambiguatedSQLForProperty:self->super._property];
+    _comparisonTypeFormat = [(SQLiteComparisonPredicate *)self _comparisonTypeFormat];
     v7 = +[NSLocale systemLocale];
     v3 = PKStringWithValidatedFormatWithLocale();
   }

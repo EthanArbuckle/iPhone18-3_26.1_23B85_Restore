@@ -1,6 +1,6 @@
 @interface PublicKeysResponse
 + (id)descriptor;
-- (void)setMetadataValue:(id)a3 key:(id)a4;
+- (void)setMetadataValue:(id)value key:(id)key;
 @end
 
 @implementation PublicKeysResponse
@@ -19,21 +19,21 @@
   return v2;
 }
 
-- (void)setMetadataValue:(id)a3 key:(id)a4
+- (void)setMetadataValue:(id)value key:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9)
+  valueCopy = value;
+  keyCopy = key;
+  if (valueCopy)
   {
-    v7 = [(PublicKeysResponse *)self metadata];
-    v8 = [v7 mutableCopy];
+    metadata = [(PublicKeysResponse *)self metadata];
+    v8 = [metadata mutableCopy];
 
     if (!v8)
     {
       v8 = objc_alloc_init(NSMutableDictionary);
     }
 
-    [v8 setObject:v9 forKeyedSubscript:v6];
+    [v8 setObject:valueCopy forKeyedSubscript:keyCopy];
     [(PublicKeysResponse *)self setMetadata:v8];
   }
 }

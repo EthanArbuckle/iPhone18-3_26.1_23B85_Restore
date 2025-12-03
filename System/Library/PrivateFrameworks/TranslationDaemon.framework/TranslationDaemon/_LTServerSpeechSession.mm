@@ -1,46 +1,46 @@
 @interface _LTServerSpeechSession
-- (_LTServerSpeechSession)initWithEngine:(id)a3 delegate:(id)a4 selfLoggingManager:(id)a5;
-- (void)_startSpeechTranslationWithContext:(id)a3;
-- (void)_translateSpeechAudioData:(id)a3;
-- (void)_updateOVADStreamingState_onQueue:(BOOL)a3;
-- (void)addSpeechAudioData:(id)a3;
+- (_LTServerSpeechSession)initWithEngine:(id)engine delegate:(id)delegate selfLoggingManager:(id)manager;
+- (void)_startSpeechTranslationWithContext:(id)context;
+- (void)_translateSpeechAudioData:(id)data;
+- (void)_updateOVADStreamingState_onQueue:(BOOL)queue;
+- (void)addSpeechAudioData:(id)data;
 - (void)cancel;
 - (void)cancelOwnVoicePendingSwapAndRestartTimer;
-- (void)delegateTranslationDidFinishWithError:(id)a3;
+- (void)delegateTranslationDidFinishWithError:(id)error;
 - (void)endAudio;
 - (void)forcePendingSwapAndRestart;
 - (void)hybridEndpointerFoundEndpoint;
 - (void)languageDetectionCompleted;
-- (void)languageDetectionResult:(id)a3;
-- (void)serverEndpointerFeatures:(id)a3 locale:(id)a4;
+- (void)languageDetectionResult:(id)result;
+- (void)serverEndpointerFeatures:(id)features locale:(id)locale;
 - (void)speechActivityDetected;
-- (void)speechRecognitionResult:(id)a3;
-- (void)startSpeechTranslationWithContext:(id)a3;
-- (void)startTextToSpeechTranslationWithContext:(id)a3 text:(id)a4;
+- (void)speechRecognitionResult:(id)result;
+- (void)startSpeechTranslationWithContext:(id)context;
+- (void)startTextToSpeechTranslationWithContext:(id)context text:(id)text;
 - (void)swapLocalesAndRestart;
-- (void)swapLocalesAndRestartWithStateResetAndLogMessage:(id)a3;
-- (void)translationDidFinishWithError:(id)a3;
-- (void)translatorDidTranslate:(id)a3;
-- (void)updateOVADStreamingState:(BOOL)a3;
+- (void)swapLocalesAndRestartWithStateResetAndLogMessage:(id)message;
+- (void)translationDidFinishWithError:(id)error;
+- (void)translatorDidTranslate:(id)translate;
+- (void)updateOVADStreamingState:(BOOL)state;
 - (void)updateOwnVoicePendingSwapAndRestartTimer;
 @end
 
 @implementation _LTServerSpeechSession
 
-- (_LTServerSpeechSession)initWithEngine:(id)a3 delegate:(id)a4 selfLoggingManager:(id)a5
+- (_LTServerSpeechSession)initWithEngine:(id)engine delegate:(id)delegate selfLoggingManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  engineCopy = engine;
+  delegateCopy = delegate;
+  managerCopy = manager;
   v20.receiver = self;
   v20.super_class = _LTServerSpeechSession;
   v12 = [(_LTServerSpeechSession *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_engine, a3);
-    objc_storeStrong(&v13->_delegate, a4);
-    objc_storeStrong(&v13->_selfLoggingManager, a5);
+    objc_storeStrong(&v12->_engine, engine);
+    objc_storeStrong(&v13->_delegate, delegate);
+    objc_storeStrong(&v13->_selfLoggingManager, manager);
     v14 = objc_alloc_init(_LTHybridEndpointer);
     endpointer = v13->_endpointer;
     v13->_endpointer = v14;
@@ -55,23 +55,23 @@
   return v13;
 }
 
-- (void)startSpeechTranslationWithContext:(id)a3
+- (void)startSpeechTranslationWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   *&self->_expectFinalLidResult = 0;
   self->_translationFinished = 0;
   atomic_store(0, &self->_speechActivityDetected);
   atomic_store(0, &self->_ownVoiceIsActive);
   atomic_store(0, &self->_pendingFinalTranslation);
-  v16 = v5;
-  v6 = [v5 localePair];
+  v16 = contextCopy;
+  localePair = [contextCopy localePair];
   originalLocalePair = self->_originalLocalePair;
-  self->_originalLocalePair = v6;
+  self->_originalLocalePair = localePair;
 
   translationError = self->_translationError;
   self->_translationError = 0;
 
-  objc_storeStrong(&self->_context, a3);
+  objc_storeStrong(&self->_context, context);
   if ([v16 enableMultiFieldInput])
   {
     v9 = [_LTSpeechDataQueue alloc];
@@ -103,47 +103,47 @@
 LABEL_7:
 }
 
-- (void)_startSpeechTranslationWithContext:(id)a3
+- (void)_startSpeechTranslationWithContext:(id)context
 {
-  v4 = a3;
-  if ([v4 autodetectLanguage])
+  contextCopy = context;
+  if ([contextCopy autodetectLanguage])
   {
     self->_expectFinalLidResult = 1;
-    [(_LTLanguageDetector *)self->_languageDetector startLanguageDetectionWithContext:v4 delegate:self];
+    [(_LTLanguageDetector *)self->_languageDetector startLanguageDetectionWithContext:contextCopy delegate:self];
   }
 
-  [(_LTHybridEndpointer *)self->_endpointer startEndpointingWithContext:v4 delegate:self];
-  [(_LTTranslationEngine *)self->_engine startSpeechTranslationWithContext:v4 delegate:self];
+  [(_LTHybridEndpointer *)self->_endpointer startEndpointingWithContext:contextCopy delegate:self];
+  [(_LTTranslationEngine *)self->_engine startSpeechTranslationWithContext:contextCopy delegate:self];
 }
 
-- (void)startTextToSpeechTranslationWithContext:(id)a3 text:(id)a4
+- (void)startTextToSpeechTranslationWithContext:(id)context text:(id)text
 {
-  v6 = a3;
+  contextCopy = context;
   *&self->_expectFinalLidResult = 0;
   self->_translationFinished = 0;
   atomic_store(0, &self->_pendingFinalTranslation);
   translationError = self->_translationError;
   self->_translationError = 0;
-  v10 = a4;
+  textCopy = text;
 
   context = self->_context;
-  self->_context = v6;
-  v9 = v6;
+  self->_context = contextCopy;
+  v9 = contextCopy;
 
-  [(_LTTranslationEngine *)self->_engine startTextToSpeechTranslationWithContext:v9 text:v10 delegate:self];
+  [(_LTTranslationEngine *)self->_engine startTextToSpeechTranslationWithContext:v9 text:textCopy delegate:self];
 }
 
-- (void)addSpeechAudioData:(id)a3
+- (void)addSpeechAudioData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if ([(_LTTranslationContext *)self->_context enableMultiFieldInput])
   {
     v5 = atomic_load(&self->_pendingSwapAndRestart);
     if ((v5 & 1) == 0)
     {
-      [(_LTServerSpeechSession *)self _translateSpeechAudioData:v4];
+      [(_LTServerSpeechSession *)self _translateSpeechAudioData:dataCopy];
 LABEL_9:
-      [(_LTSpeechDataQueue *)self->_cache addSpeechAudioData:v4];
+      [(_LTSpeechDataQueue *)self->_cache addSpeechAudioData:dataCopy];
     }
   }
 
@@ -152,7 +152,7 @@ LABEL_9:
     v6 = atomic_load(&self->_speechActivityDetected);
     if ((v6 & 1) == 0)
     {
-      [(_LTSpeechActivityDetector *)self->_speechDetector addSpeechAudioData:v4];
+      [(_LTSpeechActivityDetector *)self->_speechDetector addSpeechAudioData:dataCopy];
       goto LABEL_9;
     }
 
@@ -169,16 +169,16 @@ LABEL_9:
       self->_cache = 0;
     }
 
-    [(_LTServerSpeechSession *)self _translateSpeechAudioData:v4];
+    [(_LTServerSpeechSession *)self _translateSpeechAudioData:dataCopy];
   }
 }
 
-- (void)_translateSpeechAudioData:(id)a3
+- (void)_translateSpeechAudioData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   [(_LTLanguageDetector *)self->_languageDetector addSpeechAudioData:?];
-  [(_LTHybridEndpointer *)self->_endpointer addSpeechAudioData:v4];
-  [(_LTTranslationEngine *)self->_engine addSpeechAudioData:v4];
+  [(_LTHybridEndpointer *)self->_endpointer addSpeechAudioData:dataCopy];
+  [(_LTTranslationEngine *)self->_engine addSpeechAudioData:dataCopy];
 }
 
 - (void)endAudio
@@ -227,28 +227,28 @@ LABEL_9:
   }
 }
 
-- (void)delegateTranslationDidFinishWithError:(id)a3
+- (void)delegateTranslationDidFinishWithError:(id)error
 {
-  v7 = a3;
+  errorCopy = error;
   v4 = _sharedQueue();
   dispatch_assert_queue_V2(v4);
 
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
-    [(_LTSpeechTranslationDelegate *)self->_delegate translationDidFinishWithError:v7];
+    [(_LTSpeechTranslationDelegate *)self->_delegate translationDidFinishWithError:errorCopy];
   }
 
   completionHandler = self->_completionHandler;
   if (completionHandler)
   {
-    completionHandler[2](completionHandler, v7);
+    completionHandler[2](completionHandler, errorCopy);
   }
 }
 
-- (void)_updateOVADStreamingState_onQueue:(BOOL)a3
+- (void)_updateOVADStreamingState_onQueue:(BOOL)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   v36 = *MEMORY[0x277D85DE8];
   v5 = _sharedQueue();
   dispatch_assert_queue_V2(v5);
@@ -271,7 +271,7 @@ LABEL_9:
     }
 
     *v31 = 67109890;
-    *&v31[4] = v3;
+    *&v31[4] = queueCopy;
     if (v9)
     {
       v12 = @"true";
@@ -297,7 +297,7 @@ LABEL_9:
   }
 
   v13 = atomic_load(&self->_ownVoiceIsActive);
-  if ((v13 & 1) == v3)
+  if ((v13 & 1) == queueCopy)
   {
     v22 = _LTOSLogSpeech();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -308,7 +308,7 @@ LABEL_9:
 
   else
   {
-    atomic_store(v3, &self->_ownVoiceIsActive);
+    atomic_store(queueCopy, &self->_ownVoiceIsActive);
     v14 = [MEMORY[0x277CE1BB0] generateSilentAudioDataWithDuration:3.0];
     [(_LTServerSpeechSession *)self _translateSpeechAudioData:v14];
     v15 = atomic_load(&self->_pendingFinalTranslation);
@@ -318,10 +318,10 @@ LABEL_9:
       v23 = _LTOSLogSpeech();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [(_LTLocalePair *)self->_originalLocalePair targetLocale];
-        v25 = [v24 localeIdentifier];
+        targetLocale = [(_LTLocalePair *)self->_originalLocalePair targetLocale];
+        localeIdentifier = [targetLocale localeIdentifier];
         *v31 = 138412290;
-        *&v31[4] = v25;
+        *&v31[4] = localeIdentifier;
         _os_log_impl(&dword_232E53000, v23, OS_LOG_TYPE_DEFAULT, "OVAD transitioning to pending locale swap and restart state for source: %@", v31, 0xCu);
       }
 
@@ -337,10 +337,10 @@ LABEL_9:
         v19 = _LTOSLogSpeech();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [(_LTLocalePair *)self->_originalLocalePair targetLocale];
-          v21 = [v20 localeIdentifier];
+          targetLocale2 = [(_LTLocalePair *)self->_originalLocalePair targetLocale];
+          localeIdentifier2 = [targetLocale2 localeIdentifier];
           *v31 = 138412290;
-          *&v31[4] = v21;
+          *&v31[4] = localeIdentifier2;
           _os_log_impl(&dword_232E53000, v19, OS_LOG_TYPE_DEFAULT, "OVAD signaled while waiting for pending locale swap. Reseting pending swap and restart state for source: %@", v31, 0xCu);
         }
 
@@ -360,10 +360,10 @@ LABEL_9:
       v27 = _LTOSLogSpeech();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [(_LTLocalePair *)self->_originalLocalePair targetLocale];
-        v29 = [v28 localeIdentifier];
+        targetLocale3 = [(_LTLocalePair *)self->_originalLocalePair targetLocale];
+        localeIdentifier3 = [targetLocale3 localeIdentifier];
         *v31 = 138412290;
-        *&v31[4] = v29;
+        *&v31[4] = localeIdentifier3;
         _os_log_impl(&dword_232E53000, v27, OS_LOG_TYPE_DEFAULT, "OVAD assuming pending final translation for source: %@", v31, 0xCu);
       }
     }
@@ -372,7 +372,7 @@ LABEL_9:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateOVADStreamingState:(BOOL)a3
+- (void)updateOVADStreamingState:(BOOL)state
 {
   objc_initWeak(&location, self);
   v4 = _sharedQueue();
@@ -381,7 +381,7 @@ LABEL_9:
   block[2] = __51___LTServerSpeechSession_updateOVADStreamingState___block_invoke;
   block[3] = &unk_2789B7290;
   objc_copyWeak(&v6, &location);
-  v7 = a3;
+  stateCopy = state;
   dispatch_async(v4, block);
 
   objc_destroyWeak(&v6);
@@ -497,10 +497,10 @@ LABEL_9:
   }
 }
 
-- (void)swapLocalesAndRestartWithStateResetAndLogMessage:(id)a3
+- (void)swapLocalesAndRestartWithStateResetAndLogMessage:(id)message
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = _sharedQueue();
   dispatch_assert_queue_V2(v5);
 
@@ -513,7 +513,7 @@ LABEL_9:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = messageCopy;
       _os_log_impl(&dword_232E53000, v7, OS_LOG_TYPE_DEFAULT, "%@", &v9, 0xCu);
     }
 
@@ -551,22 +551,22 @@ LABEL_9:
   }
 }
 
-- (void)languageDetectionResult:(id)a3
+- (void)languageDetectionResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
-    [(_LTSpeechTranslationDelegate *)self->_delegate languageDetectionResult:v4];
+    [(_LTSpeechTranslationDelegate *)self->_delegate languageDetectionResult:resultCopy];
   }
 
   engine = self->_engine;
   if (objc_opt_respondsToSelector())
   {
-    [(_LTTranslationEngine *)self->_engine setLanguagesRecognized:v4 context:self->_context];
+    [(_LTTranslationEngine *)self->_engine setLanguagesRecognized:resultCopy context:self->_context];
   }
 
-  if ([v4 isFinal])
+  if ([resultCopy isFinal])
   {
     objc_initWeak(&location, self);
     v7 = _sharedQueue();
@@ -610,21 +610,21 @@ LABEL_9:
   }
 }
 
-- (void)serverEndpointerFeatures:(id)a3 locale:(id)a4
+- (void)serverEndpointerFeatures:(id)features locale:(id)locale
 {
-  v8 = a3;
-  v6 = a4;
-  [(_LTHybridEndpointer *)self->_endpointer setServerEndpointerFeatures:v8 withLocale:v6];
+  featuresCopy = features;
+  localeCopy = locale;
+  [(_LTHybridEndpointer *)self->_endpointer setServerEndpointerFeatures:featuresCopy withLocale:localeCopy];
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
-    [(_LTSpeechTranslationDelegate *)self->_delegate serverEndpointerFeatures:v8 locale:v6];
+    [(_LTSpeechTranslationDelegate *)self->_delegate serverEndpointerFeatures:featuresCopy locale:localeCopy];
   }
 }
 
-- (void)speechRecognitionResult:(id)a3
+- (void)speechRecognitionResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   objc_initWeak(&location, self);
   v5 = _sharedQueue();
   block[0] = MEMORY[0x277D85DD0];
@@ -632,7 +632,7 @@ LABEL_9:
   block[2] = __50___LTServerSpeechSession_speechRecognitionResult___block_invoke;
   block[3] = &unk_2789B72B8;
   objc_copyWeak(&v10, &location);
-  v6 = v4;
+  v6 = resultCopy;
   v9 = v6;
   dispatch_async(v5, block);
 
@@ -647,9 +647,9 @@ LABEL_9:
   objc_destroyWeak(&location);
 }
 
-- (void)translatorDidTranslate:(id)a3
+- (void)translatorDidTranslate:(id)translate
 {
-  v4 = a3;
+  translateCopy = translate;
   objc_initWeak(&location, self);
   v5 = _sharedQueue();
   v8 = MEMORY[0x277D85DD0];
@@ -657,9 +657,9 @@ LABEL_9:
   v10 = __49___LTServerSpeechSession_translatorDidTranslate___block_invoke;
   v11 = &unk_2789B7B18;
   objc_copyWeak(&v14, &location);
-  v6 = v4;
+  v6 = translateCopy;
   v12 = v6;
-  v13 = self;
+  selfCopy = self;
   dispatch_async(v5, &v8);
 
   delegate = self->_delegate;
@@ -672,9 +672,9 @@ LABEL_9:
   objc_destroyWeak(&location);
 }
 
-- (void)translationDidFinishWithError:(id)a3
+- (void)translationDidFinishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_initWeak(&location, self);
   v5 = _sharedQueue();
   block[0] = MEMORY[0x277D85DD0];
@@ -682,8 +682,8 @@ LABEL_9:
   block[2] = __56___LTServerSpeechSession_translationDidFinishWithError___block_invoke;
   block[3] = &unk_2789B72B8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(v5, block);
 
   objc_destroyWeak(&v9);

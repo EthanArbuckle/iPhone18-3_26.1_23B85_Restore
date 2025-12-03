@@ -2,49 +2,49 @@
 - (HMAccessory)currentAccessory;
 - (HMHome)currentHome;
 - (NSArray)allHomes;
-- (void)accessoryDidUpdateControllable:(id)a3;
-- (void)accessoryDidUpdateName:(id)a3;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)home:(id)a3 didAddAccessory:(id)a4;
-- (void)home:(id)a3 didAddUser:(id)a4;
-- (void)home:(id)a3 didRemoveAccessory:(id)a4;
-- (void)home:(id)a3 didRemoveUser:(id)a4;
-- (void)homeDidUpdateAccessControlForCurrentUser:(id)a3;
-- (void)homeManager:(id)a3 didAddHome:(id)a4;
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)accessoryDidUpdateControllable:(id)controllable;
+- (void)accessoryDidUpdateName:(id)name;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)home:(id)home didAddAccessory:(id)accessory;
+- (void)home:(id)home didAddUser:(id)user;
+- (void)home:(id)home didRemoveAccessory:(id)accessory;
+- (void)home:(id)home didRemoveUser:(id)user;
+- (void)homeDidUpdateAccessControlForCurrentUser:(id)user;
+- (void)homeManager:(id)manager didAddHome:(id)home;
+- (void)homeManager:(id)manager didRemoveHome:(id)home;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 - (void)loadHomeSynchronous;
-- (void)loadHomes:(id)a3;
+- (void)loadHomes:(id)homes;
 @end
 
 @implementation HomeManager
 
-- (void)loadHomes:(id)a3
+- (void)loadHomes:(id)homes
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(homes);
   *(swift_allocObject() + 16) = v4;
-  v5 = self;
+  selfCopy = self;
   sub_249E526DC();
 }
 
 - (void)loadHomeSynchronous
 {
-  v2 = self;
+  selfCopy = self;
   sub_249E52C50();
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
+  queueCopy = queue;
+  selfCopy = self;
   sub_249E52C9C();
   swift_unknownObjectRelease();
 }
 
 - (NSArray)allHomes
 {
-  v2 = self;
+  selfCopy = self;
   sub_249E530FC();
 
   sub_249DF691C(0, &unk_28130D1A0, 0x277CD1A60);
@@ -55,7 +55,7 @@
 
 - (HMHome)currentHome
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_249E53144();
 
   return v3;
@@ -63,86 +63,86 @@
 
 - (HMAccessory)currentAccessory
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_249E531C8();
 
   return v3;
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
-  v5 = self;
-  HomeManager.homeManagerDidUpdateHomes(_:)(v4);
+  homesCopy = homes;
+  selfCopy = self;
+  HomeManager.homeManagerDidUpdateHomes(_:)(homesCopy);
 }
 
-- (void)homeManager:(id)a3 didAddHome:(id)a4
+- (void)homeManager:(id)manager didAddHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  HomeManager.homeManager(_:didAdd:)(v8, v7);
+  managerCopy = manager;
+  homeCopy = home;
+  selfCopy = self;
+  HomeManager.homeManager(_:didAdd:)(selfCopy, homeCopy);
 }
 
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4
+- (void)homeManager:(id)manager didRemoveHome:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  HomeManager.homeManager(_:didRemove:)(v8, v7);
+  managerCopy = manager;
+  homeCopy = home;
+  selfCopy = self;
+  HomeManager.homeManager(_:didRemove:)(selfCopy, homeCopy);
 }
 
-- (void)homeDidUpdateAccessControlForCurrentUser:(id)a3
+- (void)homeDidUpdateAccessControlForCurrentUser:(id)user
 {
-  v4 = a3;
-  v5 = self;
-  HomeManager.homeDidUpdateAccessControl(forCurrentUser:)(v4);
+  userCopy = user;
+  selfCopy = self;
+  HomeManager.homeDidUpdateAccessControl(forCurrentUser:)(userCopy);
 }
 
-- (void)home:(id)a3 didAddAccessory:(id)a4
+- (void)home:(id)home didAddAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  HomeManager.home(_:didAdd:)(v6, v7);
+  homeCopy = home;
+  accessoryCopy = accessory;
+  selfCopy = self;
+  HomeManager.home(_:didAdd:)(homeCopy, accessoryCopy);
 }
 
-- (void)home:(id)a3 didRemoveAccessory:(id)a4
+- (void)home:(id)home didRemoveAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  HomeManager.home(_:didRemove:)(v6, v7);
+  homeCopy = home;
+  accessoryCopy = accessory;
+  selfCopy = self;
+  HomeManager.home(_:didRemove:)(homeCopy, accessoryCopy);
 }
 
-- (void)home:(id)a3 didAddUser:(id)a4
+- (void)home:(id)home didAddUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  HomeManager.home(_:didAdd:)(v6, v7);
+  homeCopy = home;
+  userCopy = user;
+  selfCopy = self;
+  HomeManager.home(_:didAdd:)(homeCopy, userCopy);
 }
 
-- (void)home:(id)a3 didRemoveUser:(id)a4
+- (void)home:(id)home didRemoveUser:(id)user
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  HomeManager.home(_:didRemove:)(v6, v7);
+  homeCopy = home;
+  userCopy = user;
+  selfCopy = self;
+  HomeManager.home(_:didRemove:)(homeCopy, userCopy);
 }
 
-- (void)accessoryDidUpdateName:(id)a3
+- (void)accessoryDidUpdateName:(id)name
 {
-  v4 = a3;
-  v5 = self;
-  HomeManager.accessoryDidUpdateName(_:)(v4);
+  nameCopy = name;
+  selfCopy = self;
+  HomeManager.accessoryDidUpdateName(_:)(nameCopy);
 }
 
-- (void)accessoryDidUpdateControllable:(id)a3
+- (void)accessoryDidUpdateControllable:(id)controllable
 {
-  v4 = a3;
-  v5 = self;
-  HomeManager.accessoryDidUpdateControllable(_:)(v4);
+  controllableCopy = controllable;
+  selfCopy = self;
+  HomeManager.accessoryDidUpdateControllable(_:)(controllableCopy);
 }
 
 @end

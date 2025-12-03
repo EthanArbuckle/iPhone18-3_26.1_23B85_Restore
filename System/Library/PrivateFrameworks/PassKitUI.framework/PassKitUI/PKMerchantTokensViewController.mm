@@ -1,50 +1,50 @@
 @interface PKMerchantTokensViewController
 + (id)_collectionViewLayout;
 - (BOOL)_hasMoreUnfetchedMerchantTokens;
-- (BOOL)_isLoadingRow:(id)a3;
-- (PKMerchantTokensViewController)initWithPass:(id)a3 merchantTokensResponse:(id)a4;
+- (BOOL)_isLoadingRow:(id)row;
+- (PKMerchantTokensViewController)initWithPass:(id)pass merchantTokensResponse:(id)response;
 - (PKMerchantTokensViewControllerDelegate)delegate;
 - (id)_initialSnapshot;
-- (id)_updateIdentifiersWithMerchantTokens:(id)a3;
-- (id)_updatedSnapshotRemovingMerchantToken:(id)a3;
-- (id)_updatedSnapshotWithMerchantTokens:(id)a3;
-- (void)_deselectSelectedItemAnimated:(BOOL)a3;
+- (id)_updateIdentifiersWithMerchantTokens:(id)tokens;
+- (id)_updatedSnapshotRemovingMerchantToken:(id)token;
+- (id)_updatedSnapshotWithMerchantTokens:(id)tokens;
+- (void)_deselectSelectedItemAnimated:(BOOL)animated;
 - (void)_fetchNextPageOfMerchantTokens;
 - (void)_setUpCollectionView;
 - (void)_setUpViews;
-- (void)_trackButtonTapForMerchantToken:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)merchantTokenDetailViewController:(id)a3 didDeleteMerchantToken:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)_trackButtonTapForMerchantToken:(id)token;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)merchantTokenDetailViewController:(id)controller didDeleteMerchantToken:(id)token;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKMerchantTokensViewController
 
-- (PKMerchantTokensViewController)initWithPass:(id)a3 merchantTokensResponse:(id)a4
+- (PKMerchantTokensViewController)initWithPass:(id)pass merchantTokensResponse:(id)response
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_opt_class() _collectionViewLayout];
+  passCopy = pass;
+  responseCopy = response;
+  _collectionViewLayout = [objc_opt_class() _collectionViewLayout];
   v21.receiver = self;
   v21.super_class = PKMerchantTokensViewController;
-  v10 = [(PKMerchantTokensViewController *)&v21 initWithCollectionViewLayout:v9];
+  v10 = [(PKMerchantTokensViewController *)&v21 initWithCollectionViewLayout:_collectionViewLayout];
 
   if (v10)
   {
-    if (([v7 hasMerchantTokens] & 1) == 0)
+    if (([passCopy hasMerchantTokens] & 1) == 0)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Attempting to show PKMerchantTokensViewController for pass that has no merchant tokens."];
     }
 
-    objc_storeStrong(&v10->_pass, a3);
-    objc_storeStrong(&v10->_previousMerchantTokensResponse, a4);
-    v11 = [v8 merchantTokens];
-    v12 = [v11 mutableCopy];
+    objc_storeStrong(&v10->_pass, pass);
+    objc_storeStrong(&v10->_previousMerchantTokensResponse, response);
+    merchantTokens = [responseCopy merchantTokens];
+    v12 = [merchantTokens mutableCopy];
     v13 = v12;
     if (!v12)
     {
@@ -61,20 +61,20 @@
     v10->_idsToMerchantTokens = v14;
 
     v10->_isFetchingMerchantTokens = 0;
-    v16 = [MEMORY[0x1E69B8EF8] sharedService];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
     webService = v10->_webService;
-    v10->_webService = v16;
+    v10->_webService = mEMORY[0x1E69B8EF8];
 
     v10->_merchantIconsEnabled = PKMerchantTokensForceMerchantIconsEnabled();
-    v18 = [(PKMerchantTokensViewController *)v10 navigationItem];
+    navigationItem = [(PKMerchantTokensViewController *)v10 navigationItem];
     v19 = PKLocalizedMerchantTokensString(&cfstr_MerchantTokens_7.isa);
-    [v18 setTitle:v19];
+    [navigationItem setTitle:v19];
 
-    [v18 setBackButtonDisplayMode:2];
+    [navigationItem setBackButtonDisplayMode:2];
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      [v18 pkui_setupScrollEdgeChromelessAppearance];
-      [v18 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+      [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+      [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
     }
   }
 
@@ -89,9 +89,9 @@
   [(PKMerchantTokensViewController *)self _setUpViews];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = PKMerchantTokensViewController;
   [(PKMerchantTokensViewController *)&v5 viewWillAppear:?];
@@ -100,17 +100,17 @@
     [(PKMerchantTokensViewController *)self _fetchNextPageOfMerchantTokens];
   }
 
-  [(PKMerchantTokensViewController *)self _deselectSelectedItemAnimated:v3];
+  [(PKMerchantTokensViewController *)self _deselectSelectedItemAnimated:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = PKMerchantTokensViewController;
-  [(PKMerchantTokensViewController *)&v10 viewDidAppear:a3];
-  v4 = [(PKMerchantTokensViewController *)self collectionView];
-  [v4 flashScrollIndicators];
+  [(PKMerchantTokensViewController *)&v10 viewDidAppear:appear];
+  collectionView = [(PKMerchantTokensViewController *)self collectionView];
+  [collectionView flashScrollIndicators];
 
   v5 = MEMORY[0x1E69B8540];
   v6 = *MEMORY[0x1E69BB6F8];
@@ -124,12 +124,12 @@
   [v5 subject:v6 sendEvent:v9];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v12[3] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = PKMerchantTokensViewController;
-  [(PKMerchantTokensViewController *)&v10 viewDidDisappear:a3];
+  [(PKMerchantTokensViewController *)&v10 viewDidDisappear:disappear];
   if (([(PKMerchantTokensViewController *)self isBeingDismissed]& 1) != 0 || [(PKMerchantTokensViewController *)self isMovingFromParentViewController])
   {
     v4 = MEMORY[0x1E69B8540];
@@ -155,18 +155,18 @@
   [(PKMerchantTokensViewController *)&v5 viewWillLayoutSubviews];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v3 = [(PKMerchantTokensViewController *)self collectionView];
-    v4 = [(PKMerchantTokensViewController *)self navigationItem];
-    [v3 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v4];
+    collectionView = [(PKMerchantTokensViewController *)self collectionView];
+    navigationItem = [(PKMerchantTokensViewController *)self navigationItem];
+    [collectionView pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([(PKMerchantTokensViewController *)self _isMerchantRow:v5])
+  pathCopy = path;
+  if ([(PKMerchantTokensViewController *)self _isMerchantRow:pathCopy])
   {
-    v6 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:v5];
+    v6 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:pathCopy];
     v7 = [(NSMutableDictionary *)self->_idsToMerchantTokens objectForKeyedSubscript:v6];
     [(PKMerchantTokensViewController *)self _trackButtonTapForMerchantToken:v7];
     v8 = [[PKMerchantTokenDetailViewController alloc] initWithMerchantToken:v7];
@@ -175,7 +175,7 @@
     v10[2] = __74__PKMerchantTokensViewController_collectionView_didSelectItemAtIndexPath___block_invoke;
     v10[3] = &unk_1E8012FD0;
     v11 = v8;
-    v12 = self;
+    selfCopy = self;
     v9 = v8;
     [(PKMerchantTokenDetailViewController *)v9 preflightWithCompletion:v10];
   }
@@ -211,40 +211,40 @@ void __74__PKMerchantTokensViewController_collectionView_didSelectItemAtIndexPat
   }
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  if ([(PKMerchantTokensViewController *)self _isLoadingRow:a5, a4])
+  if ([(PKMerchantTokensViewController *)self _isLoadingRow:path, cell])
   {
 
     [(PKMerchantTokensViewController *)self _fetchNextPageOfMerchantTokens];
   }
 }
 
-- (void)merchantTokenDetailViewController:(id)a3 didDeleteMerchantToken:(id)a4
+- (void)merchantTokenDetailViewController:(id)controller didDeleteMerchantToken:(id)token
 {
-  v20 = a3;
-  v6 = a4;
-  [(NSMutableArray *)self->_merchantTokens removeObject:v6];
+  controllerCopy = controller;
+  tokenCopy = token;
+  [(NSMutableArray *)self->_merchantTokens removeObject:tokenCopy];
   dataSource = self->_dataSource;
-  v8 = [(PKMerchantTokensViewController *)self _updatedSnapshotRemovingMerchantToken:v6];
+  v8 = [(PKMerchantTokensViewController *)self _updatedSnapshotRemovingMerchantToken:tokenCopy];
   [(UICollectionViewDiffableDataSource *)dataSource applySnapshot:v8 animatingDifferences:1];
 
-  v9 = [(PKMerchantTokensViewController *)self navigationController];
-  if (!v9 || [(NSMutableArray *)self->_merchantTokens count])
+  navigationController = [(PKMerchantTokensViewController *)self navigationController];
+  if (!navigationController || [(NSMutableArray *)self->_merchantTokens count])
   {
-    v10 = [v9 topViewController];
-    if (v10)
+    topViewController = [navigationController topViewController];
+    if (topViewController)
     {
-      if (v10 == v20 || ([v20 parentViewController], v11 = objc_claimAutoreleasedReturnValue(), v11, v10 == v11))
+      if (topViewController == controllerCopy || ([controllerCopy parentViewController], v11 = objc_claimAutoreleasedReturnValue(), v11, topViewController == v11))
       {
-        if ([v9 pk_settings_useStateDrivenNavigation])
+        if ([navigationController pk_settings_useStateDrivenNavigation])
         {
-          [v9 pk_settings_popViewController];
+          [navigationController pk_settings_popViewController];
         }
 
         else
         {
-          v17 = [v9 popViewControllerAnimated:1];
+          v17 = [navigationController popViewControllerAnimated:1];
         }
       }
     }
@@ -252,29 +252,29 @@ void __74__PKMerchantTokensViewController_collectionView_didSelectItemAtIndexPat
     goto LABEL_14;
   }
 
-  v12 = [v9 viewControllers];
-  v13 = [v12 indexOfObject:self];
+  viewControllers = [navigationController viewControllers];
+  v13 = [viewControllers indexOfObject:self];
 
-  if (v13 != 0x7FFFFFFFFFFFFFFFLL || ([v9 viewControllers], v14 = objc_claimAutoreleasedReturnValue(), -[PKMerchantTokensViewController parentViewController](self, "parentViewController"), v15 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v14, "indexOfObject:", v15), v15, v14, v13 != 0x7FFFFFFFFFFFFFFFLL))
+  if (v13 != 0x7FFFFFFFFFFFFFFFLL || ([navigationController viewControllers], v14 = objc_claimAutoreleasedReturnValue(), -[PKMerchantTokensViewController parentViewController](self, "parentViewController"), v15 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v14, "indexOfObject:", v15), v15, v14, v13 != 0x7FFFFFFFFFFFFFFFLL))
   {
-    v16 = [v9 viewControllers];
-    v10 = [v16 objectAtIndex:v13 - 1];
+    viewControllers2 = [navigationController viewControllers];
+    topViewController = [viewControllers2 objectAtIndex:v13 - 1];
 
-    if ([v9 pk_settings_useStateDrivenNavigation])
+    if ([navigationController pk_settings_useStateDrivenNavigation])
     {
-      [v9 pk_settings_popToViewController:v10];
+      [navigationController pk_settings_popToViewController:topViewController];
     }
 
     else
     {
-      v18 = [v9 popToViewController:v10 animated:1];
+      v18 = [navigationController popToViewController:topViewController animated:1];
     }
 
 LABEL_14:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained merchantTokensViewController:self didDeleteMerchantToken:v6];
+  [WeakRetained merchantTokensViewController:self didDeleteMerchantToken:tokenCopy];
 }
 
 - (void)_setUpViews
@@ -286,15 +286,15 @@ LABEL_14:
 
 - (void)_setUpCollectionView
 {
-  v3 = [(PKMerchantTokensViewController *)self collectionView];
+  collectionView = [(PKMerchantTokensViewController *)self collectionView];
   if ([(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts])
   {
-    [v3 layoutMargins];
-    [v3 setLayoutMargins:?];
+    [collectionView layoutMargins];
+    [collectionView setLayoutMargins:?];
   }
 
-  [v3 contentInset];
-  [v3 setContentInset:?];
+  [collectionView contentInset];
+  [collectionView setContentInset:?];
   merchantIconsEnabled = self->_merchantIconsEnabled;
   v5 = MEMORY[0x1E69DC800];
   v6 = objc_opt_class();
@@ -324,7 +324,7 @@ LABEL_14:
   v25 = v13;
   v14 = v10;
   v26 = v14;
-  v15 = [v12 initWithCollectionView:v3 cellProvider:v24];
+  v15 = [v12 initWithCollectionView:collectionView cellProvider:v24];
   dataSource = self->_dataSource;
   self->_dataSource = v15;
 
@@ -336,12 +336,12 @@ LABEL_14:
   v18 = v11;
   v23 = v18;
   [(UICollectionViewDiffableDataSource *)v17 setSupplementaryViewProvider:v22];
-  v19 = [(PKMerchantTokensViewController *)self collectionView];
-  [v19 setDataSource:self->_dataSource];
+  collectionView2 = [(PKMerchantTokensViewController *)self collectionView];
+  [collectionView2 setDataSource:self->_dataSource];
 
   v20 = self->_dataSource;
-  v21 = [(PKMerchantTokensViewController *)self _initialSnapshot];
-  [(UICollectionViewDiffableDataSource *)v20 applySnapshot:v21 animatingDifferences:0];
+  _initialSnapshot = [(PKMerchantTokensViewController *)self _initialSnapshot];
+  [(UICollectionViewDiffableDataSource *)v20 applySnapshot:_initialSnapshot animatingDifferences:0];
 
   objc_destroyWeak(&v27);
   objc_destroyWeak(&location);
@@ -440,49 +440,49 @@ id __55__PKMerchantTokensViewController__collectionViewLayout__block_invoke(uint
   return v4;
 }
 
-- (id)_updatedSnapshotWithMerchantTokens:(id)a3
+- (id)_updatedSnapshotWithMerchantTokens:(id)tokens
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = [(PKMerchantTokensViewController *)self _updateIdentifiersWithMerchantTokens:a3];
-  v5 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+  v4 = [(PKMerchantTokensViewController *)self _updateIdentifiersWithMerchantTokens:tokens];
+  snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
   v10[0] = @"MerchantTokenLoadingCell";
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  [v5 deleteItemsWithIdentifiers:v6];
+  [snapshot deleteItemsWithIdentifiers:v6];
 
-  [v5 appendItemsWithIdentifiers:v4];
+  [snapshot appendItemsWithIdentifiers:v4];
   if ([(PKMerchantTokensViewController *)self _shouldShowLoadingRow])
   {
     v9 = @"MerchantTokenLoadingCell";
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:1];
-    [v5 appendItemsWithIdentifiers:v7];
+    [snapshot appendItemsWithIdentifiers:v7];
   }
 
-  return v5;
+  return snapshot;
 }
 
-- (id)_updatedSnapshotRemovingMerchantToken:(id)a3
+- (id)_updatedSnapshotRemovingMerchantToken:(id)token
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 merchantTokenId];
-  [(NSMutableDictionary *)self->_idsToMerchantTokens setObject:0 forKeyedSubscript:v4];
-  v5 = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
-  v8[0] = v4;
+  merchantTokenId = [token merchantTokenId];
+  [(NSMutableDictionary *)self->_idsToMerchantTokens setObject:0 forKeyedSubscript:merchantTokenId];
+  snapshot = [(UICollectionViewDiffableDataSource *)self->_dataSource snapshot];
+  v8[0] = merchantTokenId;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
-  [v5 deleteItemsWithIdentifiers:v6];
+  [snapshot deleteItemsWithIdentifiers:v6];
 
-  return v5;
+  return snapshot;
 }
 
-- (id)_updateIdentifiersWithMerchantTokens:(id)a3
+- (id)_updateIdentifiersWithMerchantTokens:(id)tokens
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokensCopy = tokens;
   v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v4;
+  v5 = tokensCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -498,15 +498,15 @@ id __55__PKMerchantTokensViewController__collectionViewLayout__block_invoke(uint
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 merchantTokenId];
-        if ([v11 length])
+        merchantTokenId = [v10 merchantTokenId];
+        if ([merchantTokenId length])
         {
-          v12 = [(NSMutableDictionary *)self->_idsToMerchantTokens objectForKeyedSubscript:v11];
+          v12 = [(NSMutableDictionary *)self->_idsToMerchantTokens objectForKeyedSubscript:merchantTokenId];
 
           if (!v12)
           {
-            [(NSMutableDictionary *)self->_idsToMerchantTokens setObject:v10 forKeyedSubscript:v11];
-            [v14 addObject:v11];
+            [(NSMutableDictionary *)self->_idsToMerchantTokens setObject:v10 forKeyedSubscript:merchantTokenId];
+            [v14 addObject:merchantTokenId];
           }
         }
       }
@@ -520,9 +520,9 @@ id __55__PKMerchantTokensViewController__collectionViewLayout__block_invoke(uint
   return v14;
 }
 
-- (BOOL)_isLoadingRow:(id)a3
+- (BOOL)_isLoadingRow:(id)row
 {
-  v3 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:a3];
+  v3 = [(UICollectionViewDiffableDataSource *)self->_dataSource itemIdentifierForIndexPath:row];
   v4 = [v3 isEqualToString:@"MerchantTokenLoadingCell"];
 
   return v4;
@@ -536,8 +536,8 @@ id __55__PKMerchantTokensViewController__collectionViewLayout__block_invoke(uint
   }
 
   v3 = [(NSMutableArray *)self->_merchantTokens count];
-  v4 = [(PKRetrieveMerchantTokensResponse *)self->_previousMerchantTokensResponse totalMerchantTokens];
-  v5 = v3 < [v4 integerValue];
+  totalMerchantTokens = [(PKRetrieveMerchantTokensResponse *)self->_previousMerchantTokensResponse totalMerchantTokens];
+  v5 = v3 < [totalMerchantTokens integerValue];
 
   return v5;
 }
@@ -549,22 +549,22 @@ id __55__PKMerchantTokensViewController__collectionViewLayout__block_invoke(uint
     self->_isFetchingMerchantTokens = 1;
     v3 = objc_alloc_init(MEMORY[0x1E69B9150]);
     [v3 setPass:self->_pass];
-    v4 = [(PKRetrieveMerchantTokensResponse *)self->_previousMerchantTokensResponse pageNumber];
+    pageNumber = [(PKRetrieveMerchantTokensResponse *)self->_previousMerchantTokensResponse pageNumber];
 
-    if (v4)
+    if (pageNumber)
     {
       v5 = MEMORY[0x1E696AD98];
-      v6 = [(PKRetrieveMerchantTokensResponse *)self->_previousMerchantTokensResponse pageNumber];
-      v7 = [v5 numberWithInteger:{objc_msgSend(v6, "integerValue") + 1}];
+      pageNumber2 = [(PKRetrieveMerchantTokensResponse *)self->_previousMerchantTokensResponse pageNumber];
+      v7 = [v5 numberWithInteger:{objc_msgSend(pageNumber2, "integerValue") + 1}];
       [v3 setPageNumber:v7];
     }
 
-    v8 = [(PKRetrieveMerchantTokensResponse *)self->_previousMerchantTokensResponse pageSize];
+    pageSize = [(PKRetrieveMerchantTokensResponse *)self->_previousMerchantTokensResponse pageSize];
 
-    if (v8)
+    if (pageSize)
     {
-      v9 = [(PKRetrieveMerchantTokensResponse *)self->_previousMerchantTokensResponse pageSize];
-      [v3 setPageSize:v9];
+      pageSize2 = [(PKRetrieveMerchantTokensResponse *)self->_previousMerchantTokensResponse pageSize];
+      [v3 setPageSize:pageSize2];
     }
 
     objc_initWeak(&location, self);
@@ -662,36 +662,36 @@ void __64__PKMerchantTokensViewController__fetchNextPageOfMerchantTokens__block_
   }
 }
 
-- (void)_deselectSelectedItemAnimated:(BOOL)a3
+- (void)_deselectSelectedItemAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PKMerchantTokensViewController *)self collectionView];
-  v6 = [v5 indexPathsForSelectedItems];
-  v7 = [v6 firstObject];
+  animatedCopy = animated;
+  collectionView = [(PKMerchantTokensViewController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [(PKMerchantTokensViewController *)self transitionCoordinator];
-    if (v8)
+    transitionCoordinator = [(PKMerchantTokensViewController *)self transitionCoordinator];
+    if (transitionCoordinator)
     {
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __64__PKMerchantTokensViewController__deselectSelectedItemAnimated___block_invoke;
       v12[3] = &unk_1E8020758;
-      v13 = v5;
-      v14 = v7;
+      v13 = collectionView;
+      v14 = firstObject;
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __64__PKMerchantTokensViewController__deselectSelectedItemAnimated___block_invoke_2;
       v9[3] = &unk_1E8020758;
       v10 = v13;
       v11 = v14;
-      [v8 animateAlongsideTransition:v12 completion:v9];
+      [transitionCoordinator animateAlongsideTransition:v12 completion:v9];
     }
 
     else
     {
-      [v5 deselectItemAtIndexPath:v7 animated:v3];
+      [collectionView deselectItemAtIndexPath:firstObject animated:animatedCopy];
     }
   }
 }
@@ -710,7 +710,7 @@ uint64_t __64__PKMerchantTokensViewController__deselectSelectedItemAnimated___bl
   return result;
 }
 
-- (void)_trackButtonTapForMerchantToken:(id)a3
+- (void)_trackButtonTapForMerchantToken:(id)token
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v3 setValue:*MEMORY[0x1E69BA6F0] forKey:*MEMORY[0x1E69BA680]];

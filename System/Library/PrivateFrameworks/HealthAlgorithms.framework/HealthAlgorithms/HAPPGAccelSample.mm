@@ -1,19 +1,19 @@
 @interface HAPPGAccelSample
-- (HAPPGAccelSample)initWithSamplingFrequency:(unsigned __int16)a3 timestamp:(int64_t)a4 x:(float)a5 y:(float)a6 z:(float)a7;
+- (HAPPGAccelSample)initWithSamplingFrequency:(unsigned __int16)frequency timestamp:(int64_t)timestamp x:(float)x y:(float)y z:(float)z;
 @end
 
 @implementation HAPPGAccelSample
 
-- (HAPPGAccelSample)initWithSamplingFrequency:(unsigned __int16)a3 timestamp:(int64_t)a4 x:(float)a5 y:(float)a6 z:(float)a7
+- (HAPPGAccelSample)initWithSamplingFrequency:(unsigned __int16)frequency timestamp:(int64_t)timestamp x:(float)x y:(float)y z:(float)z
 {
   v13.receiver = self;
   v13.super_class = HAPPGAccelSample;
   result = [(HAPPGAccelSample *)&v13 init];
-  result->_samplingFrequency = a3;
-  result->_timestamp = a4;
-  result->_x = a5;
-  result->_y = a6;
-  result->_z = a7;
+  result->_samplingFrequency = frequency;
+  result->_timestamp = timestamp;
+  result->_x = x;
+  result->_y = y;
+  result->_z = z;
   return result;
 }
 

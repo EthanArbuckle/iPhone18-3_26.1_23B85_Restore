@@ -45,12 +45,12 @@
     return 0;
   }
 
-  v4 = [(CIHighKey *)self _highKey];
+  _highKey = [(CIHighKey *)self _highKey];
   [(CIImage *)self->inputImage extent];
   inputStrength = self->inputStrength;
   v11[0] = inputImage;
   v11[1] = inputStrength;
-  return [v4 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v11, 2), v6, v7, v8, v9}];
+  return [_highKey applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v11, 2), v6, v7, v8, v9}];
 }
 
 @end

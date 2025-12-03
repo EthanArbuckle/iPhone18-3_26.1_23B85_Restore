@@ -1,52 +1,52 @@
 @interface APPBColor
-+ (id)stringsToColorArray:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)stringsToColorArray:(id)array;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addColors:(id)a3;
-- (void)addDarkModeColors:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addColors:(id)colors;
+- (void)addDarkModeColors:(id)colors;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBColor
 
-- (void)addColors:(id)a3
+- (void)addColors:(id)colors
 {
-  v4 = a3;
+  colorsCopy = colors;
   colors = self->_colors;
-  v8 = v4;
+  v8 = colorsCopy;
   if (!colors)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_colors;
     self->_colors = v6;
 
-    v4 = v8;
+    colorsCopy = v8;
     colors = self->_colors;
   }
 
-  [(NSMutableArray *)colors addObject:v4];
+  [(NSMutableArray *)colors addObject:colorsCopy];
 }
 
-- (void)addDarkModeColors:(id)a3
+- (void)addDarkModeColors:(id)colors
 {
-  v4 = a3;
+  colorsCopy = colors;
   darkModeColors = self->_darkModeColors;
-  v8 = v4;
+  v8 = colorsCopy;
   if (!darkModeColors)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_darkModeColors;
     self->_darkModeColors = v6;
 
-    v4 = v8;
+    colorsCopy = v8;
     darkModeColors = self->_darkModeColors;
   }
 
-  [(NSMutableArray *)darkModeColors addObject:v4];
+  [(NSMutableArray *)darkModeColors addObject:colorsCopy];
 }
 
 - (id)description
@@ -54,8 +54,8 @@
   v7.receiver = self;
   v7.super_class = APPBColor;
   v3 = [(APPBColor *)&v7 description];
-  v4 = [(APPBColor *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBColor *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -82,9 +82,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -150,45 +150,45 @@
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(APPBColor *)self colorsCount])
   {
-    [v12 clearColors];
-    v4 = [(APPBColor *)self colorsCount];
-    if (v4)
+    [toCopy clearColors];
+    colorsCount = [(APPBColor *)self colorsCount];
+    if (colorsCount)
     {
-      v5 = v4;
+      v5 = colorsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(APPBColor *)self colorsAtIndex:i];
-        [v12 addColors:v7];
+        [toCopy addColors:v7];
       }
     }
   }
 
   if ([(APPBColor *)self darkModeColorsCount])
   {
-    [v12 clearDarkModeColors];
-    v8 = [(APPBColor *)self darkModeColorsCount];
-    if (v8)
+    [toCopy clearDarkModeColors];
+    darkModeColorsCount = [(APPBColor *)self darkModeColorsCount];
+    if (darkModeColorsCount)
     {
-      v9 = v8;
+      v9 = darkModeColorsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(APPBColor *)self darkModeColorsAtIndex:j];
-        [v12 addDarkModeColors:v11];
+        [toCopy addDarkModeColors:v11];
       }
     }
   }
 
-  v12[6] = self->_direction;
+  toCopy[6] = self->_direction;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -209,7 +209,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v23 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v23 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addColors:v11];
 
         v10 = v10 + 1;
@@ -242,7 +242,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v19 + 1) + 8 * v16) copyWithZone:{a3, v19}];
+        v17 = [*(*(&v19 + 1) + 8 * v16) copyWithZone:{zone, v19}];
         [v5 addDarkModeColors:v17];
 
         v16 = v16 + 1;
@@ -259,22 +259,22 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v7 = [v4 isMemberOfClass:objc_opt_class()] && ((colors = self->_colors, !(colors | *(v4 + 1))) || -[NSMutableArray isEqual:](colors, "isEqual:")) && ((darkModeColors = self->_darkModeColors, !(darkModeColors | *(v4 + 2))) || -[NSMutableArray isEqual:](darkModeColors, "isEqual:")) && self->_direction == *(v4 + 6);
+  equalCopy = equal;
+  v7 = [equalCopy isMemberOfClass:objc_opt_class()] && ((colors = self->_colors, !(colors | *(equalCopy + 1))) || -[NSMutableArray isEqual:](colors, "isEqual:")) && ((darkModeColors = self->_darkModeColors, !(darkModeColors | *(equalCopy + 2))) || -[NSMutableArray isEqual:](darkModeColors, "isEqual:")) && self->_direction == *(equalCopy + 6);
 
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
@@ -305,7 +305,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = *(v4 + 2);
+  v10 = *(fromCopy + 2);
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {
@@ -332,18 +332,18 @@
     while (v12);
   }
 
-  self->_direction = *(v4 + 6);
+  self->_direction = *(fromCopy + 6);
 }
 
-+ (id)stringsToColorArray:(id)a3
++ (id)stringsToColorArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {

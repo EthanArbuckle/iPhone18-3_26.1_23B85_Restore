@@ -1,8 +1,8 @@
 @interface PXGTextLegibilityEffect
-- (PXGTextLegibilityEffect)initWithEntityManager:(id)a3;
+- (PXGTextLegibilityEffect)initWithEntityManager:(id)manager;
 - (void)_updateValues;
-- (void)setAlpha:(double)a3;
-- (void)setStrength:(double)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setStrength:(double)strength;
 @end
 
 @implementation PXGTextLegibilityEffect
@@ -20,46 +20,46 @@
   [(PXGUniform *)values setFloat2Value:v6];
 }
 
-- (void)setStrength:(double)a3
+- (void)setStrength:(double)strength
 {
-  if (self->_strength != a3)
+  if (self->_strength != strength)
   {
-    self->_strength = a3;
+    self->_strength = strength;
     [(PXGTextLegibilityEffect *)self _updateValues];
   }
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  if (self->_alpha != a3)
+  if (self->_alpha != alpha)
   {
-    self->_alpha = a3;
+    self->_alpha = alpha;
     [(PXGTextLegibilityEffect *)self _updateValues];
   }
 }
 
-- (PXGTextLegibilityEffect)initWithEntityManager:(id)a3
+- (PXGTextLegibilityEffect)initWithEntityManager:(id)manager
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v18.receiver = self;
   v18.super_class = PXGTextLegibilityEffect;
-  v4 = [(PXGEffect *)&v18 initWithEntityManager:a3];
+  v4 = [(PXGEffect *)&v18 initWithEntityManager:manager];
   if (v4)
   {
     v6 = +[PXTungstenSettings sharedInstance];
-    v7 = [v6 textLegibilityDimmingType];
+    textLegibilityDimmingType = [v6 textLegibilityDimmingType];
 
-    if (v7 >= 3)
+    if (textLegibilityDimmingType >= 3)
     {
-      v9 = [MEMORY[0x277CCA890] currentHandler];
-      [v9 handleFailureInMethod:a2 object:v4 file:@"PXGTextLegibilityEffect.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"opcode != PXGFragmentColorOpcodeNil"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v4 file:@"PXGTextLegibilityEffect.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"opcode != PXGFragmentColorOpcodeNil"}];
 
       v8 = 0;
     }
 
     else
     {
-      v8 = (v7 << 32) + 0x300000000;
+      v8 = (textLegibilityDimmingType << 32) + 0x300000000;
     }
 
     v10 = [[PXGUniform alloc] initWithName:@"values" type:1];

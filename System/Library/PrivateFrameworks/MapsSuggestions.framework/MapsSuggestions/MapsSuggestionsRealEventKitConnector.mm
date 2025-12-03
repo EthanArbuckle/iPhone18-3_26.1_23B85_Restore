@@ -1,15 +1,15 @@
 @interface MapsSuggestionsRealEventKitConnector
-- (BOOL)removeEvent:(id)a3 span:(int64_t)a4 error:(id *)a5;
+- (BOOL)removeEvent:(id)event span:(int64_t)span error:(id *)error;
 - (MapsSuggestionsEventKitConnectorDelegate)delegate;
 - (MapsSuggestionsRealEventKitConnector)init;
 - (NSString)uniqueName;
 - (id)calVisibilityManager;
-- (id)calendarsForEntityType:(unint64_t)a3;
-- (id)eventWithIdentifier:(id)a3;
-- (id)eventsMatchingPredicate:(id)a3;
-- (id)predicateForEventsWithStartDate:(id)a3 endDate:(id)a4 calendars:(id)a5;
+- (id)calendarsForEntityType:(unint64_t)type;
+- (id)eventWithIdentifier:(id)identifier;
+- (id)eventsMatchingPredicate:(id)predicate;
+- (id)predicateForEventsWithStartDate:(id)date endDate:(id)endDate calendars:(id)calendars;
 - (id)visibleCalendars;
-- (void)_eventStoreDidChange:(id)a3;
+- (void)_eventStoreDidChange:(id)change;
 - (void)_q_eventStoreDidChange;
 - (void)startListeningForChanges;
 - (void)stopListeningForChanges;
@@ -20,14 +20,14 @@
 - (void)_q_eventStoreDidChange
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(a1[1]);
-    v2 = [(dispatch_queue_t *)a1 delegate];
-    v3 = v2;
-    if (v2)
+    dispatch_assert_queue_V2(self[1]);
+    delegate = [(dispatch_queue_t *)self delegate];
+    v3 = delegate;
+    if (delegate)
     {
-      [v2 eventKitDidChange:a1];
+      [delegate eventKitDidChange:self];
     }
 
     else
@@ -57,28 +57,28 @@
 - (void)startListeningForChanges
 {
   v3 = +[MapsSuggestionsSharedEventStore sharedEventStore];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__eventStoreDidChange_ name:*MEMORY[0x1E6966928] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__eventStoreDidChange_ name:*MEMORY[0x1E6966928] object:0];
 }
 
 - (id)visibleCalendars
 {
-  v2 = [(MapsSuggestionsRealEventKitConnector *)self calVisibilityManager];
-  v3 = [v2 visibleCalendars];
+  calVisibilityManager = [(MapsSuggestionsRealEventKitConnector *)self calVisibilityManager];
+  visibleCalendars = [calVisibilityManager visibleCalendars];
 
-  return v3;
+  return visibleCalendars;
 }
 
 - (id)calVisibilityManager
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __60__MapsSuggestionsRealEventKitConnector_calVisibilityManager__block_invoke;
     block[3] = &unk_1E81F6168;
-    block[4] = a1;
+    block[4] = self;
     if (qword_1EDC51EE0 != -1)
     {
       dispatch_once(&qword_1EDC51EE0, block);
@@ -221,7 +221,7 @@ void __60__MapsSuggestionsRealEventKitConnector_calVisibilityManager__block_invo
   }
 }
 
-- (id)calendarsForEntityType:(unint64_t)a3
+- (id)calendarsForEntityType:(unint64_t)type
 {
   v17 = *MEMORY[0x1E69E9840];
   v4 = +[MapsSuggestionsSharedEventStore sharedEventStore];
@@ -229,7 +229,7 @@ void __60__MapsSuggestionsRealEventKitConnector_calVisibilityManager__block_invo
   if (v4)
   {
     v5 = +[MapsSuggestionsSharedEventStore sharedEventStore];
-    v6 = [v5 calendarsForEntityType:a3];
+    v6 = [v5 calendarsForEntityType:type];
   }
 
   else
@@ -254,51 +254,51 @@ void __60__MapsSuggestionsRealEventKitConnector_calVisibilityManager__block_invo
   return v6;
 }
 
-- (id)predicateForEventsWithStartDate:(id)a3 endDate:(id)a4 calendars:(id)a5
+- (id)predicateForEventsWithStartDate:(id)date endDate:(id)endDate calendars:(id)calendars
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  calendarsCopy = calendars;
+  endDateCopy = endDate;
+  dateCopy = date;
   v10 = +[MapsSuggestionsSharedEventStore sharedEventStore];
-  v11 = [v10 predicateForEventsWithStartDate:v9 endDate:v8 calendars:v7];
+  v11 = [v10 predicateForEventsWithStartDate:dateCopy endDate:endDateCopy calendars:calendarsCopy];
 
   return v11;
 }
 
-- (id)eventsMatchingPredicate:(id)a3
+- (id)eventsMatchingPredicate:(id)predicate
 {
-  v3 = a3;
+  predicateCopy = predicate;
   v4 = +[MapsSuggestionsSharedEventStore sharedEventStore];
-  v5 = [v4 eventsMatchingPredicate:v3];
+  v5 = [v4 eventsMatchingPredicate:predicateCopy];
 
   return v5;
 }
 
-- (id)eventWithIdentifier:(id)a3
+- (id)eventWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[MapsSuggestionsSharedEventStore sharedEventStore];
-  v5 = [v4 eventWithIdentifier:v3];
+  v5 = [v4 eventWithIdentifier:identifierCopy];
 
   return v5;
 }
 
-- (BOOL)removeEvent:(id)a3 span:(int64_t)a4 error:(id *)a5
+- (BOOL)removeEvent:(id)event span:(int64_t)span error:(id *)error
 {
-  v7 = a3;
+  eventCopy = event;
   v8 = +[MapsSuggestionsSharedEventStore sharedEventStore];
-  LOBYTE(a5) = [v8 removeEvent:v7 span:a4 error:a5];
+  LOBYTE(error) = [v8 removeEvent:eventCopy span:span error:error];
 
-  return a5;
+  return error;
 }
 
 - (void)stopListeningForChanges
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E6966928] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E6966928] object:0];
 }
 
-- (void)_eventStoreDidChange:(id)a3
+- (void)_eventStoreDidChange:(id)change
 {
   objc_initWeak(&location, self);
   queue = self->_queue;

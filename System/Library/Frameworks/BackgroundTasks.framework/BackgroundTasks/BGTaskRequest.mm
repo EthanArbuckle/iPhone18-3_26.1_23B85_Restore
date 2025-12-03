@@ -1,8 +1,8 @@
 @interface BGTaskRequest
-+ (id)_requestFromActivity:(id)a3;
++ (id)_requestFromActivity:(id)activity;
 + (void)initialize;
-- (id)_initWithIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation BGTaskRequest
@@ -14,37 +14,37 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_initWithIdentifier:(id)a3
+- (id)_initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = BGTaskRequest;
   v6 = [(BGTaskRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v7;
 }
 
-+ (id)_requestFromActivity:(id)a3
++ (id)_requestFromActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 launchReason];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E699A548]];
+  activityCopy = activity;
+  launchReason = [activityCopy launchReason];
+  v5 = [launchReason isEqualToString:*MEMORY[0x1E699A548]];
 
   if (v5)
   {
     v6 = BGProcessingTaskRequest;
 LABEL_11:
-    v15 = [(__objc2_class *)v6 _requestFromActivity:v3];
+    v15 = [(__objc2_class *)v6 _requestFromActivity:activityCopy];
     goto LABEL_12;
   }
 
-  v7 = [v3 launchReason];
-  v8 = [v7 isEqualToString:*MEMORY[0x1E699A568]];
+  launchReason2 = [activityCopy launchReason];
+  v8 = [launchReason2 isEqualToString:*MEMORY[0x1E699A568]];
 
   if (v8)
   {
@@ -52,8 +52,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v9 = [v3 launchReason];
-  v10 = [v9 isEqualToString:*MEMORY[0x1E699A558]];
+  launchReason3 = [activityCopy launchReason];
+  v10 = [launchReason3 isEqualToString:*MEMORY[0x1E699A558]];
 
   if (v10)
   {
@@ -61,8 +61,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v11 = [v3 launchReason];
-  v12 = [v11 isEqualToString:*MEMORY[0x1E699A560]];
+  launchReason4 = [activityCopy launchReason];
+  v12 = [launchReason4 isEqualToString:*MEMORY[0x1E699A560]];
 
   if (v12)
   {
@@ -70,8 +70,8 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v13 = [v3 launchReason];
-  v14 = [v13 isEqualToString:*MEMORY[0x1E699A550]];
+  launchReason5 = [activityCopy launchReason];
+  v14 = [launchReason5 isEqualToString:*MEMORY[0x1E699A550]];
 
   if (v14)
   {
@@ -82,7 +82,7 @@ LABEL_11:
   v17 = _log;
   if (os_log_type_enabled(_log, OS_LOG_TYPE_ERROR))
   {
-    [(BGTaskRequest *)v17 _requestFromActivity:v3];
+    [(BGTaskRequest *)v17 _requestFromActivity:activityCopy];
   }
 
   v15 = 0;
@@ -91,11 +91,11 @@ LABEL_12:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(BGTaskRequest *)self identifier];
-  v6 = [v4 _initWithIdentifier:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  identifier = [(BGTaskRequest *)self identifier];
+  v6 = [v4 _initWithIdentifier:identifier];
 
   return v6;
 }

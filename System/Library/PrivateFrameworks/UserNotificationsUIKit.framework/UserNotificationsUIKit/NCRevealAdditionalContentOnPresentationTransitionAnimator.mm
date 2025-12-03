@@ -1,18 +1,18 @@
 @interface NCRevealAdditionalContentOnPresentationTransitionAnimator
-- (void)animateTransition:(id)a3;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation NCRevealAdditionalContentOnPresentationTransitionAnimator
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v3 = a3;
+  transitionCopy = transition;
   if (objc_opt_respondsToSelector())
   {
-    [v3 __runAlongsideAnimations];
+    [transitionCopy __runAlongsideAnimations];
   }
 
-  [v3 completeTransition:1];
+  [transitionCopy completeTransition:1];
 }
 
 @end

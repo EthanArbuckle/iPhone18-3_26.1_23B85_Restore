@@ -9,55 +9,55 @@
 
 - (id)preferredSourceAddress
 {
-  v2 = [(CWFLocalNetworkDevice *)self sourceAddresses];
-  v3 = [v2 anyObject];
+  sourceAddresses = [(CWFLocalNetworkDevice *)self sourceAddresses];
+  anyObject = [sourceAddresses anyObject];
 
-  return v3;
+  return anyObject;
 }
 
 - (id)sanitizedName
 {
-  v2 = [(CWFLocalNetworkDevice *)self name];
-  v3 = [v2 _stringByRemovingSpecialCharacters];
+  name = [(CWFLocalNetworkDevice *)self name];
+  _stringByRemovingSpecialCharacters = [name _stringByRemovingSpecialCharacters];
 
-  return v3;
+  return _stringByRemovingSpecialCharacters;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(CWFLocalNetworkDevice *)self name];
-  v4 = [v3 hash];
-  v5 = [(CWFLocalNetworkDevice *)self sourceAddresses];
-  v6 = [v5 hash];
+  name = [(CWFLocalNetworkDevice *)self name];
+  v4 = [name hash];
+  sourceAddresses = [(CWFLocalNetworkDevice *)self sourceAddresses];
+  v6 = [sourceAddresses hash];
 
   return v6 ^ v4;
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ : %p", v5, self];
+  [string appendFormat:@"<%@ : %p", v5, self];
 
-  v6 = [(CWFLocalNetworkDevice *)self name];
+  name = [(CWFLocalNetworkDevice *)self name];
 
-  if (v6)
+  if (name)
   {
-    v7 = [(CWFLocalNetworkDevice *)self name];
-    [v3 appendFormat:@" name='%@'", v7];
+    name2 = [(CWFLocalNetworkDevice *)self name];
+    [string appendFormat:@" name='%@'", name2];
   }
 
-  v8 = [(CWFLocalNetworkDevice *)self sourceAddresses];
+  sourceAddresses = [(CWFLocalNetworkDevice *)self sourceAddresses];
 
-  if (v8)
+  if (sourceAddresses)
   {
-    v9 = [(CWFLocalNetworkDevice *)self sourceAddresses];
-    v10 = [v9 count];
+    sourceAddresses2 = [(CWFLocalNetworkDevice *)self sourceAddresses];
+    v10 = [sourceAddresses2 count];
 
-    v11 = [(CWFLocalNetworkDevice *)self sourceAddresses];
-    v12 = [v11 _prettyDescription];
-    v13 = v12;
+    sourceAddresses3 = [(CWFLocalNetworkDevice *)self sourceAddresses];
+    _prettyDescription = [sourceAddresses3 _prettyDescription];
+    v13 = _prettyDescription;
     if (v10 == 1)
     {
       v14 = @" address='%@'";
@@ -68,21 +68,21 @@
       v14 = @" addresses='%@'";
     }
 
-    [v3 appendFormat:v14, v12];
+    [string appendFormat:v14, _prettyDescription];
   }
 
-  v15 = [(CWFLocalNetworkDevice *)self serviceNames];
+  serviceNames = [(CWFLocalNetworkDevice *)self serviceNames];
 
-  if (v15)
+  if (serviceNames)
   {
-    v16 = [(CWFLocalNetworkDevice *)self serviceNames];
-    v17 = [v16 _prettyDescription];
-    [v3 appendFormat:@" services='%@'", v17];
+    serviceNames2 = [(CWFLocalNetworkDevice *)self serviceNames];
+    _prettyDescription2 = [serviceNames2 _prettyDescription];
+    [string appendFormat:@" services='%@'", _prettyDescription2];
   }
 
-  [v3 appendString:@">"];
+  [string appendString:@">"];
 
-  return v3;
+  return string;
 }
 
 @end

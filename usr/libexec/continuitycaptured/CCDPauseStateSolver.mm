@@ -3,11 +3,11 @@
 - (BOOL)resolvePauseState;
 - (CCDPauseStateSolver)init;
 - (void)dealloc;
-- (void)incomingCallDeclinedStatusUpdated:(BOOL)a3;
-- (void)incomingCallStatusUpdated:(BOOL)a3;
-- (void)pauseForEvent:(int64_t)a3;
-- (void)resumeForEvent:(int64_t)a3;
-- (void)saveUserPauseState:(BOOL)a3;
+- (void)incomingCallDeclinedStatusUpdated:(BOOL)updated;
+- (void)incomingCallStatusUpdated:(BOOL)updated;
+- (void)pauseForEvent:(int64_t)event;
+- (void)resumeForEvent:(int64_t)event;
+- (void)saveUserPauseState:(BOOL)state;
 - (void)sideButtonPressed;
 - (void)sideButtonReleased;
 @end
@@ -35,27 +35,27 @@
   [(CCDPauseStateSolver *)&v3 dealloc];
 }
 
-- (void)incomingCallStatusUpdated:(BOOL)a3
+- (void)incomingCallStatusUpdated:(BOOL)updated
 {
   os_unfair_lock_lock_with_options();
-  self->_incomingCall = a3;
+  self->_incomingCall = updated;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)incomingCallDeclinedStatusUpdated:(BOOL)a3
+- (void)incomingCallDeclinedStatusUpdated:(BOOL)updated
 {
   os_unfair_lock_lock_with_options();
-  self->_incomingCallDeclined = a3;
+  self->_incomingCallDeclined = updated;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)pauseForEvent:(int64_t)a3
+- (void)pauseForEvent:(int64_t)event
 {
-  if (a3 <= 2)
+  if (event <= 2)
   {
-    v5 = qword_100014948[a3];
+    v5 = qword_100014948[event];
     os_unfair_lock_lock_with_options();
     *(&self->super.isa + v5) = 1;
 
@@ -63,11 +63,11 @@
   }
 }
 
-- (void)resumeForEvent:(int64_t)a3
+- (void)resumeForEvent:(int64_t)event
 {
-  if ((a3 - 1) >= 2)
+  if ((event - 1) >= 2)
   {
-    if (a3)
+    if (event)
     {
       return;
     }
@@ -88,36 +88,36 @@
   os_unfair_lock_unlock(p_lock);
 }
 
-- (void)saveUserPauseState:(BOOL)a3
+- (void)saveUserPauseState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = CMContinuityCaptureLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 1024;
-    v11 = v3;
+    v11 = stateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Saving user pause %d", &v8, 0x12u);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
   v7 = &kCFBooleanTrue;
-  if (!v3)
+  if (!stateCopy)
   {
     v7 = &kCFBooleanFalse;
   }
 
   CFPreferencesSetAppValue(@"com.apple.continuitycapture.userPressedPause", *v7, @"com.apple.cameracapture");
   CFPreferencesAppSynchronize(@"com.apple.cameracapture");
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy2);
 }
 
 - (BOOL)isUserPauseStored
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = CFPreferencesCopyAppValue(@"com.apple.continuitycapture.userPressedPause", @"com.apple.cameracapture");
   if (v3)
   {
@@ -130,7 +130,7 @@
     v4 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }

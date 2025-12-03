@@ -1,61 +1,61 @@
 @interface PKCreditInstallmentPlan
 - (BOOL)isComplete;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToInstallmentPlan:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToInstallmentPlan:(id)plan;
 - (NSDecimalNumber)remainingAmount;
 - (NSDecimalNumber)totalBilled;
-- (PKCreditInstallmentPlan)initWithCoder:(id)a3;
-- (PKCreditInstallmentPlan)initWithDictionary:(id)a3;
+- (PKCreditInstallmentPlan)initWithCoder:(id)coder;
+- (PKCreditInstallmentPlan)initWithDictionary:(id)dictionary;
 - (PKCreditInstallmentPlanPayment)nextPaymentDue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCreditInstallmentPlan
 
-- (PKCreditInstallmentPlan)initWithDictionary:(id)a3
+- (PKCreditInstallmentPlan)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v52.receiver = self;
   v52.super_class = PKCreditInstallmentPlan;
   v5 = [(PKCreditInstallmentPlan *)&v52 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"identifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 PKStringForKey:@"state"];
+    v8 = [dictionaryCopy PKStringForKey:@"state"];
     v5->_state = PKInstallmentPlanStateFromString(v8);
 
-    v9 = [v4 PKDateForKey:@"lastUpdated"];
+    v9 = [dictionaryCopy PKDateForKey:@"lastUpdated"];
     lastUpdated = v5->_lastUpdated;
     v5->_lastUpdated = v9;
 
-    v11 = [v4 PKDecimalNumberFromStringForKey:@"apr"];
+    v11 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"apr"];
     apr = v5->_apr;
     v5->_apr = v11;
 
-    v5->_duration = [v4 PKIntegerForKey:@"duration"];
-    v13 = [v4 PKStringForKey:@"currencyCode"];
+    v5->_duration = [dictionaryCopy PKIntegerForKey:@"duration"];
+    v13 = [dictionaryCopy PKStringForKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v13;
 
-    v15 = [v4 PKDecimalNumberFromStringForKey:@"totalAmount"];
+    v15 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"totalAmount"];
     totalAmount = v5->_totalAmount;
     v5->_totalAmount = v15;
 
-    v17 = [v4 PKDecimalNumberFromStringForKey:@"totalProduct"];
+    v17 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"totalProduct"];
     totalProductAmount = v5->_totalProductAmount;
     v5->_totalProductAmount = v17;
 
-    v19 = [v4 PKDecimalNumberFromStringForKey:@"totalInterest"];
+    v19 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"totalInterest"];
     totalInterestAmount = v5->_totalInterestAmount;
     v5->_totalInterestAmount = v19;
 
-    v21 = [v4 PKStringForKey:@"periodType"];
+    v21 = [dictionaryCopy PKStringForKey:@"periodType"];
     v22 = v21;
     v24 = 1;
     if (v21 != @"monthly")
@@ -67,15 +67,15 @@
     }
 
     v5->_periodType = v24;
-    v25 = [v4 PKStringForKey:@"transactionReferenceIdentifier"];
+    v25 = [dictionaryCopy PKStringForKey:@"transactionReferenceIdentifier"];
     transactionReferenceIdentifier = v5->_transactionReferenceIdentifier;
     v5->_transactionReferenceIdentifier = v25;
 
-    v27 = [v4 PKStringForKey:@"accountUserAltDSID"];
+    v27 = [dictionaryCopy PKStringForKey:@"accountUserAltDSID"];
     accountUserAltDSID = v5->_accountUserAltDSID;
     v5->_accountUserAltDSID = v27;
 
-    v29 = [v4 PKDictionaryForKey:@"summary"];
+    v29 = [dictionaryCopy PKDictionaryForKey:@"summary"];
     if (v29)
     {
       v30 = [[PKInstallmentPlanSummary alloc] initWithDictionary:v29];
@@ -83,7 +83,7 @@
       v5->_summary = v30;
     }
 
-    v32 = [v4 PKArrayContaining:objc_opt_class() forKey:@"lineItems"];
+    v32 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"lineItems"];
     v33 = v32;
     if (v32)
     {
@@ -92,7 +92,7 @@
       v5->_lineItems = v34;
     }
 
-    v36 = [v4 PKDictionaryForKey:@"product"];
+    v36 = [dictionaryCopy PKDictionaryForKey:@"product"];
     if (v36)
     {
       v37 = [[PKCreditInstallmentPlanProduct alloc] initWithDictionary:v36];
@@ -100,7 +100,7 @@
       v5->_product = v37;
     }
 
-    v39 = [v4 PKArrayContaining:objc_opt_class() forKey:@"payments"];
+    v39 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"payments"];
     v40 = v39;
     if (v39)
     {
@@ -109,7 +109,7 @@
       v5->_payments = v41;
     }
 
-    v43 = [v4 PKDictionaryForKey:@"merchant"];
+    v43 = [dictionaryCopy PKDictionaryForKey:@"merchant"];
     if (v43)
     {
       v44 = [[PKInstallmentPlanMerchant alloc] initWithDictionary:v43];
@@ -117,7 +117,7 @@
       v5->_merchant = v44;
     }
 
-    v46 = [v4 PKArrayContaining:objc_opt_class() forKey:@"rewards"];
+    v46 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"rewards"];
     v47 = v46;
     if (v46)
     {
@@ -127,7 +127,7 @@
       v5->_rewards = v49;
     }
 
-    v5->_userViewedIntroduction = [v4 PKBoolForKey:@"userViewedIntroduction"];
+    v5->_userViewedIntroduction = [dictionaryCopy PKBoolForKey:@"userViewedIntroduction"];
   }
 
   return v5;
@@ -160,11 +160,11 @@ PKPaymentTransactionRewardsItem *__46__PKCreditInstallmentPlan_initWithDictionar
 - (NSDecimalNumber)remainingAmount
 {
   v3 = self->_totalAmount;
-  v4 = [(PKInstallmentPlanSummary *)self->_summary paymentsToDateAmount];
-  v5 = v4;
+  paymentsToDateAmount = [(PKInstallmentPlanSummary *)self->_summary paymentsToDateAmount];
+  v5 = paymentsToDateAmount;
   if (v3)
   {
-    v6 = v4 == 0;
+    v6 = paymentsToDateAmount == 0;
   }
 
   else
@@ -174,7 +174,7 @@ PKPaymentTransactionRewardsItem *__46__PKCreditInstallmentPlan_initWithDictionar
 
   if (!v6)
   {
-    v7 = [(NSDecimalNumber *)v3 decimalNumberBySubtracting:v4];
+    v7 = [(NSDecimalNumber *)v3 decimalNumberBySubtracting:paymentsToDateAmount];
 
     v3 = v7;
   }
@@ -185,7 +185,7 @@ PKPaymentTransactionRewardsItem *__46__PKCreditInstallmentPlan_initWithDictionar
 - (NSDecimalNumber)totalBilled
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AB90] zero];
+  zero = [MEMORY[0x1E696AB90] zero];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -206,28 +206,28 @@ PKPaymentTransactionRewardsItem *__46__PKCreditInstallmentPlan_initWithDictionar
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 originalAmountDue];
-        if (v10)
+        originalAmountDue = [v9 originalAmountDue];
+        if (originalAmountDue)
         {
-          v11 = v10;
+          amountDue = originalAmountDue;
         }
 
         else
         {
-          v11 = [v9 amountDue];
-          if (!v11)
+          amountDue = [v9 amountDue];
+          if (!amountDue)
           {
             goto LABEL_11;
           }
         }
 
-        v12 = [v9 statementIdentifier];
+        statementIdentifier = [v9 statementIdentifier];
 
-        if (v12)
+        if (statementIdentifier)
         {
-          v13 = [v3 decimalNumberByAdding:v11];
+          v13 = [zero decimalNumberByAdding:amountDue];
 
-          v3 = v13;
+          zero = v13;
         }
 
 LABEL_11:
@@ -239,7 +239,7 @@ LABEL_11:
     while (v6);
   }
 
-  return v3;
+  return zero;
 }
 
 - (PKCreditInstallmentPlanPayment)nextPaymentDue
@@ -249,8 +249,8 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(NSArray *)self->_payments reverseObjectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  reverseObjectEnumerator = [(NSArray *)self->_payments reverseObjectEnumerator];
+  v3 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -264,13 +264,13 @@ LABEL_11:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v9 = *(*(&v12 + 1) + 8 * v7);
-        v10 = [v9 statementIdentifier];
+        statementIdentifier = [v9 statementIdentifier];
 
-        if (v10)
+        if (statementIdentifier)
         {
           v5 = v8;
           goto LABEL_12;
@@ -283,7 +283,7 @@ LABEL_11:
       }
 
       while (v4 != v7);
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v4)
       {
         continue;
@@ -313,51 +313,51 @@ LABEL_12:
     return v4 < 2;
   }
 
-  v6 = [(PKInstallmentPlanSummary *)self->_summary paymentsToDateAmount];
-  v7 = v6;
-  if (v6)
+  paymentsToDateAmount = [(PKInstallmentPlanSummary *)self->_summary paymentsToDateAmount];
+  v7 = paymentsToDateAmount;
+  if (paymentsToDateAmount)
   {
-    v8 = v6;
+    zero = paymentsToDateAmount;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AB90] zero];
+    zero = [MEMORY[0x1E696AB90] zero];
   }
 
-  v10 = v8;
+  v10 = zero;
 
   v9 = [(NSDecimalNumber *)self->_totalAmount compare:v10]!= NSOrderedDescending;
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCreditInstallmentPlan *)self isEqualToInstallmentPlan:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKCreditInstallmentPlan *)self isEqualToInstallmentPlan:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToInstallmentPlan:(id)a3
+- (BOOL)isEqualToInstallmentPlan:(id)plan
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  planCopy = plan;
+  v5 = planCopy;
+  if (!planCopy)
   {
     goto LABEL_84;
   }
 
-  v6 = *(v4 + 2);
+  v6 = *(planCopy + 2);
   v7 = self->_identifier;
   v8 = v6;
   v9 = v8;
@@ -700,162 +700,162 @@ LABEL_85:
   return v3;
 }
 
-- (PKCreditInstallmentPlan)initWithCoder:(id)a3
+- (PKCreditInstallmentPlan)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v43.receiver = self;
   v43.super_class = PKCreditInstallmentPlan;
   v5 = [(PKCreditInstallmentPlan *)&v43 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v5->_state = [v4 decodeIntegerForKey:@"state"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdated"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"state"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdated"];
     lastUpdated = v5->_lastUpdated;
     v5->_lastUpdated = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"apr"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"apr"];
     apr = v5->_apr;
     v5->_apr = v10;
 
-    v5->_duration = [v4 decodeIntegerForKey:@"duration"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v5->_duration = [coderCopy decodeIntegerForKey:@"duration"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalAmount"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalAmount"];
     totalAmount = v5->_totalAmount;
     v5->_totalAmount = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalProduct"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalProduct"];
     totalProductAmount = v5->_totalProductAmount;
     v5->_totalProductAmount = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalInterest"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalInterest"];
     totalInterestAmount = v5->_totalInterestAmount;
     v5->_totalInterestAmount = v18;
 
-    v5->_periodType = [v4 decodeIntegerForKey:@"periodType"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"summary"];
+    v5->_periodType = [coderCopy decodeIntegerForKey:@"periodType"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"summary"];
     summary = v5->_summary;
     v5->_summary = v20;
 
     v22 = MEMORY[0x1E695DFD8];
     v23 = objc_opt_class();
     v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"lineItems"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"lineItems"];
     lineItems = v5->_lineItems;
     v5->_lineItems = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"product"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"product"];
     product = v5->_product;
     v5->_product = v27;
 
     v29 = MEMORY[0x1E695DFD8];
     v30 = objc_opt_class();
     v31 = [v29 setWithObjects:{v30, objc_opt_class(), 0}];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"payments"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"payments"];
     payments = v5->_payments;
     v5->_payments = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchant"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchant"];
     merchant = v5->_merchant;
     v5->_merchant = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rewards"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rewards"];
     rewards = v5->_rewards;
     v5->_rewards = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionReferenceIdentifier"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionReferenceIdentifier"];
     transactionReferenceIdentifier = v5->_transactionReferenceIdentifier;
     v5->_transactionReferenceIdentifier = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountUserAltDSID"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountUserAltDSID"];
     accountUserAltDSID = v5->_accountUserAltDSID;
     v5->_accountUserAltDSID = v40;
 
-    v5->_userViewedIntroduction = [v4 decodeBoolForKey:@"userViewedIntroduction"];
+    v5->_userViewedIntroduction = [coderCopy decodeBoolForKey:@"userViewedIntroduction"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeInteger:self->_state forKey:@"state"];
-  [v5 encodeObject:self->_lastUpdated forKey:@"lastUpdated"];
-  [v5 encodeObject:self->_apr forKey:@"apr"];
-  [v5 encodeInteger:self->_duration forKey:@"duration"];
-  [v5 encodeObject:self->_currencyCode forKey:@"currencyCode"];
-  [v5 encodeObject:self->_totalAmount forKey:@"totalAmount"];
-  [v5 encodeObject:self->_totalProductAmount forKey:@"totalProduct"];
-  [v5 encodeObject:self->_totalInterestAmount forKey:@"totalInterest"];
-  [v5 encodeInteger:self->_periodType forKey:@"periodType"];
-  [v5 encodeObject:self->_summary forKey:@"summary"];
-  [v5 encodeObject:self->_lineItems forKey:@"lineItems"];
-  [v5 encodeObject:self->_product forKey:@"product"];
-  [v5 encodeObject:self->_payments forKey:@"payments"];
-  [v5 encodeObject:self->_merchant forKey:@"merchant"];
-  [v5 encodeObject:self->_rewards forKey:@"rewards"];
-  [v5 encodeObject:self->_transactionReferenceIdentifier forKey:@"transactionReferenceIdentifier"];
-  [v5 encodeObject:self->_accountUserAltDSID forKey:@"accountUserAltDSID"];
-  [v5 encodeBool:self->_userViewedIntroduction forKey:@"userViewedIntroduction"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeInteger:self->_state forKey:@"state"];
+  [coderCopy encodeObject:self->_lastUpdated forKey:@"lastUpdated"];
+  [coderCopy encodeObject:self->_apr forKey:@"apr"];
+  [coderCopy encodeInteger:self->_duration forKey:@"duration"];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  [coderCopy encodeObject:self->_totalAmount forKey:@"totalAmount"];
+  [coderCopy encodeObject:self->_totalProductAmount forKey:@"totalProduct"];
+  [coderCopy encodeObject:self->_totalInterestAmount forKey:@"totalInterest"];
+  [coderCopy encodeInteger:self->_periodType forKey:@"periodType"];
+  [coderCopy encodeObject:self->_summary forKey:@"summary"];
+  [coderCopy encodeObject:self->_lineItems forKey:@"lineItems"];
+  [coderCopy encodeObject:self->_product forKey:@"product"];
+  [coderCopy encodeObject:self->_payments forKey:@"payments"];
+  [coderCopy encodeObject:self->_merchant forKey:@"merchant"];
+  [coderCopy encodeObject:self->_rewards forKey:@"rewards"];
+  [coderCopy encodeObject:self->_transactionReferenceIdentifier forKey:@"transactionReferenceIdentifier"];
+  [coderCopy encodeObject:self->_accountUserAltDSID forKey:@"accountUserAltDSID"];
+  [coderCopy encodeBool:self->_userViewedIntroduction forKey:@"userViewedIntroduction"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v61 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
   *(v5 + 24) = self->_state;
-  v8 = [(NSDate *)self->_lastUpdated copyWithZone:a3];
+  v8 = [(NSDate *)self->_lastUpdated copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSDecimalNumber *)self->_apr copyWithZone:a3];
+  v10 = [(NSDecimalNumber *)self->_apr copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
   *(v5 + 48) = self->_duration;
-  v12 = [(NSString *)self->_currencyCode copyWithZone:a3];
+  v12 = [(NSString *)self->_currencyCode copyWithZone:zone];
   v13 = *(v5 + 56);
   *(v5 + 56) = v12;
 
-  v14 = [(NSDecimalNumber *)self->_totalAmount copyWithZone:a3];
+  v14 = [(NSDecimalNumber *)self->_totalAmount copyWithZone:zone];
   v15 = *(v5 + 64);
   *(v5 + 64) = v14;
 
-  v16 = [(NSDecimalNumber *)self->_totalProductAmount copyWithZone:a3];
+  v16 = [(NSDecimalNumber *)self->_totalProductAmount copyWithZone:zone];
   v17 = *(v5 + 72);
   *(v5 + 72) = v16;
 
-  v18 = [(NSDecimalNumber *)self->_totalInterestAmount copyWithZone:a3];
+  v18 = [(NSDecimalNumber *)self->_totalInterestAmount copyWithZone:zone];
   v19 = *(v5 + 80);
   *(v5 + 80) = v18;
 
   *(v5 + 88) = self->_periodType;
-  v20 = [(PKInstallmentPlanSummary *)self->_summary copyWithZone:a3];
+  v20 = [(PKInstallmentPlanSummary *)self->_summary copyWithZone:zone];
   v21 = *(v5 + 112);
   *(v5 + 112) = v20;
 
-  v22 = [(PKPaymentTransactionRewards *)self->_rewards copyWithZone:a3];
+  v22 = [(PKPaymentTransactionRewards *)self->_rewards copyWithZone:zone];
   v23 = *(v5 + 152);
   *(v5 + 152) = v22;
 
-  v24 = [(NSString *)self->_transactionReferenceIdentifier copyWithZone:a3];
+  v24 = [(NSString *)self->_transactionReferenceIdentifier copyWithZone:zone];
   v25 = *(v5 + 96);
   *(v5 + 96) = v24;
 
-  v26 = [(NSString *)self->_accountUserAltDSID copyWithZone:a3];
+  v26 = [(NSString *)self->_accountUserAltDSID copyWithZone:zone];
   v27 = *(v5 + 104);
   *(v5 + 104) = v26;
 
@@ -880,7 +880,7 @@ LABEL_85:
           objc_enumerationMutation(v29);
         }
 
-        v34 = [*(*(&v55 + 1) + 8 * v33) copyWithZone:a3];
+        v34 = [*(*(&v55 + 1) + 8 * v33) copyWithZone:zone];
         [v28 addObject:v34];
 
         ++v33;
@@ -900,7 +900,7 @@ LABEL_85:
     *(v5 + 136) = v35;
   }
 
-  v37 = [(PKCreditInstallmentPlanProduct *)self->_product copyWithZone:a3];
+  v37 = [(PKCreditInstallmentPlanProduct *)self->_product copyWithZone:zone];
   v38 = *(v5 + 128);
   *(v5 + 128) = v37;
 
@@ -925,7 +925,7 @@ LABEL_85:
           objc_enumerationMutation(v40);
         }
 
-        v45 = [*(*(&v51 + 1) + 8 * v44) copyWithZone:{a3, v51}];
+        v45 = [*(*(&v51 + 1) + 8 * v44) copyWithZone:{zone, v51}];
         [v39 addObject:v45];
 
         ++v44;
@@ -945,7 +945,7 @@ LABEL_85:
     *(v5 + 144) = v46;
   }
 
-  v48 = [(PKInstallmentPlanMerchant *)self->_merchant copyWithZone:a3, v51];
+  v48 = [(PKInstallmentPlanMerchant *)self->_merchant copyWithZone:zone, v51];
   v49 = *(v5 + 120);
   *(v5 + 120) = v48;
 

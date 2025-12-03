@@ -1,15 +1,15 @@
 @interface XBSnapshotContainerIdentity
-+ (id)identityForApplicationInfo:(id)a3;
-+ (id)identityForApplicationRecord:(id)a3;
-+ (id)identityForBundleProxy:(id)a3;
-+ (id)identityForCompatibilityInfo:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)identityForApplicationInfo:(id)info;
++ (id)identityForApplicationRecord:(id)record;
++ (id)identityForBundleProxy:(id)proxy;
++ (id)identityForCompatibilityInfo:(id)info;
+- (BOOL)isEqual:(id)equal;
 - (XBSnapshotContainerIdentity)init;
-- (id)_initWithBundleIdentifier:(id)a3 bundlePath:(id)a4 dataContainerPath:(id)a5 bundleContainerPath:(id)a6;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)snapshotContainerPathForGroupID:(id)a3;
-- (id)snapshotContainerPathForSnapshot:(id)a3;
+- (id)_initWithBundleIdentifier:(id)identifier bundlePath:(id)path dataContainerPath:(id)containerPath bundleContainerPath:(id)bundleContainerPath;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)snapshotContainerPathForGroupID:(id)d;
+- (id)snapshotContainerPathForSnapshot:(id)snapshot;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
@@ -19,19 +19,19 @@
 
 - (XBSnapshotContainerIdentity)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"XBSnapshotContainerIdentity.m" lineNumber:31 description:@"this constructor is disallowed"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"XBSnapshotContainerIdentity.m" lineNumber:31 description:@"this constructor is disallowed"];
 
   return [(XBSnapshotContainerIdentity *)self _initWithBundleIdentifier:0 bundlePath:0 dataContainerPath:0 bundleContainerPath:0];
 }
 
-- (id)_initWithBundleIdentifier:(id)a3 bundlePath:(id)a4 dataContainerPath:(id)a5 bundleContainerPath:(id)a6
+- (id)_initWithBundleIdentifier:(id)identifier bundlePath:(id)path dataContainerPath:(id)containerPath bundleContainerPath:(id)bundleContainerPath
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  identifierCopy = identifier;
+  pathCopy = path;
+  containerPathCopy = containerPath;
+  bundleContainerPathCopy = bundleContainerPath;
+  if (!identifierCopy)
   {
     [XBSnapshotContainerIdentity _initWithBundleIdentifier:a2 bundlePath:self dataContainerPath:? bundleContainerPath:?];
   }
@@ -41,19 +41,19 @@
   v15 = [(XBSnapshotContainerIdentity *)&v28 init];
   if (v15)
   {
-    v16 = [v11 copy];
+    v16 = [identifierCopy copy];
     bundleIdentifier = v15->_bundleIdentifier;
     v15->_bundleIdentifier = v16;
 
-    v18 = [v12 copy];
+    v18 = [pathCopy copy];
     bundlePath = v15->_bundlePath;
     v15->_bundlePath = v18;
 
-    v20 = [v13 copy];
+    v20 = [containerPathCopy copy];
     dataContainerPath = v15->_dataContainerPath;
     v15->_dataContainerPath = v20;
 
-    v22 = [v14 copy];
+    v22 = [bundleContainerPathCopy copy];
     bundleContainerPath = v15->_bundleContainerPath;
     v15->_bundleContainerPath = v22;
 
@@ -66,63 +66,63 @@
   return v15;
 }
 
-+ (id)identityForApplicationRecord:(id)a3
++ (id)identityForApplicationRecord:(id)record
 {
-  v5 = a3;
-  if (!v5)
+  recordCopy = record;
+  if (!recordCopy)
   {
-    [(XBSnapshotContainerIdentity *)a2 identityForApplicationRecord:a1];
+    [(XBSnapshotContainerIdentity *)a2 identityForApplicationRecord:self];
   }
 
   v6 = [XBSnapshotContainerIdentity alloc];
-  v7 = [v5 bundleIdentifier];
-  v8 = [v5 URL];
-  v9 = [v8 path];
-  v10 = [v5 dataContainerURL];
-  v11 = [v10 path];
-  v12 = [v5 bundleContainerURL];
-  v13 = [v12 path];
-  v14 = [(XBSnapshotContainerIdentity *)v6 _initWithBundleIdentifier:v7 bundlePath:v9 dataContainerPath:v11 bundleContainerPath:v13];
+  bundleIdentifier = [recordCopy bundleIdentifier];
+  v8 = [recordCopy URL];
+  path = [v8 path];
+  dataContainerURL = [recordCopy dataContainerURL];
+  path2 = [dataContainerURL path];
+  bundleContainerURL = [recordCopy bundleContainerURL];
+  path3 = [bundleContainerURL path];
+  v14 = [(XBSnapshotContainerIdentity *)v6 _initWithBundleIdentifier:bundleIdentifier bundlePath:path dataContainerPath:path2 bundleContainerPath:path3];
 
   return v14;
 }
 
-+ (id)identityForBundleProxy:(id)a3
++ (id)identityForBundleProxy:(id)proxy
 {
-  v5 = a3;
-  if (!v5)
+  proxyCopy = proxy;
+  if (!proxyCopy)
   {
-    [(XBSnapshotContainerIdentity *)a2 identityForBundleProxy:a1];
+    [(XBSnapshotContainerIdentity *)a2 identityForBundleProxy:self];
   }
 
   v6 = [XBSnapshotContainerIdentity alloc];
-  v7 = [v5 bundleIdentifier];
-  v8 = [v5 bundleURL];
-  v9 = [v8 path];
-  v10 = [v5 dataContainerURL];
-  v11 = [v10 path];
-  v12 = [v5 bundleContainerURL];
-  v13 = [v12 path];
-  v14 = [(XBSnapshotContainerIdentity *)v6 _initWithBundleIdentifier:v7 bundlePath:v9 dataContainerPath:v11 bundleContainerPath:v13];
+  bundleIdentifier = [proxyCopy bundleIdentifier];
+  bundleURL = [proxyCopy bundleURL];
+  path = [bundleURL path];
+  dataContainerURL = [proxyCopy dataContainerURL];
+  path2 = [dataContainerURL path];
+  bundleContainerURL = [proxyCopy bundleContainerURL];
+  path3 = [bundleContainerURL path];
+  v14 = [(XBSnapshotContainerIdentity *)v6 _initWithBundleIdentifier:bundleIdentifier bundlePath:path dataContainerPath:path2 bundleContainerPath:path3];
 
   return v14;
 }
 
-+ (id)identityForApplicationInfo:(id)a3
++ (id)identityForApplicationInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
-    v3 = a3;
+    infoCopy = info;
     v4 = [XBSnapshotContainerIdentity alloc];
-    v5 = [v3 bundleIdentifier];
-    v6 = [v3 bundleURL];
-    v7 = [v6 path];
-    v8 = [v3 dataContainerURL];
-    v9 = [v8 path];
-    v10 = [v3 bundleContainerURL];
+    bundleIdentifier = [infoCopy bundleIdentifier];
+    bundleURL = [infoCopy bundleURL];
+    path = [bundleURL path];
+    dataContainerURL = [infoCopy dataContainerURL];
+    path2 = [dataContainerURL path];
+    bundleContainerURL = [infoCopy bundleContainerURL];
 
-    v11 = [v10 path];
-    v12 = [(XBSnapshotContainerIdentity *)v4 _initWithBundleIdentifier:v5 bundlePath:v7 dataContainerPath:v9 bundleContainerPath:v11];
+    path3 = [bundleContainerURL path];
+    v12 = [(XBSnapshotContainerIdentity *)v4 _initWithBundleIdentifier:bundleIdentifier bundlePath:path dataContainerPath:path2 bundleContainerPath:path3];
   }
 
   else
@@ -133,18 +133,18 @@
   return v12;
 }
 
-+ (id)identityForCompatibilityInfo:(id)a3
++ (id)identityForCompatibilityInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
-    v3 = a3;
+    infoCopy = info;
     v4 = [XBSnapshotContainerIdentity alloc];
-    v5 = [v3 bundleIdentifier];
-    v6 = [v3 bundlePath];
-    v7 = [v3 sandboxPath];
-    v8 = [v3 bundleContainerPath];
+    bundleIdentifier = [infoCopy bundleIdentifier];
+    bundlePath = [infoCopy bundlePath];
+    sandboxPath = [infoCopy sandboxPath];
+    bundleContainerPath = [infoCopy bundleContainerPath];
 
-    v9 = [(XBSnapshotContainerIdentity *)v4 _initWithBundleIdentifier:v5 bundlePath:v6 dataContainerPath:v7 bundleContainerPath:v8];
+    v9 = [(XBSnapshotContainerIdentity *)v4 _initWithBundleIdentifier:bundleIdentifier bundlePath:bundlePath dataContainerPath:sandboxPath bundleContainerPath:bundleContainerPath];
   }
 
   else
@@ -155,13 +155,13 @@
   return v9;
 }
 
-- (id)snapshotContainerPathForGroupID:(id)a3
+- (id)snapshotContainerPathForGroupID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v4 = a3;
-    v5 = [(XBSnapshotContainerIdentity *)self snapshotContainerPath];
-    v6 = [v5 stringByAppendingPathComponent:v4];
+    dCopy = d;
+    snapshotContainerPath = [(XBSnapshotContainerIdentity *)self snapshotContainerPath];
+    v6 = [snapshotContainerPath stringByAppendingPathComponent:dCopy];
   }
 
   else
@@ -172,21 +172,21 @@
   return v6;
 }
 
-- (id)snapshotContainerPathForSnapshot:(id)a3
+- (id)snapshotContainerPathForSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  snapshotCopy = snapshot;
+  v5 = snapshotCopy;
+  if (snapshotCopy)
   {
-    v6 = [v4 groupID];
-    v7 = [(XBSnapshotContainerIdentity *)self snapshotContainerPathForGroupID:v6];
+    groupID = [snapshotCopy groupID];
+    v7 = [(XBSnapshotContainerIdentity *)self snapshotContainerPathForGroupID:groupID];
 
-    v8 = [v5 variantID];
+    variantID = [v5 variantID];
 
-    if (v8)
+    if (variantID)
     {
-      v9 = [v5 variantID];
-      v10 = [v7 stringByAppendingPathComponent:v9];
+      variantID2 = [v5 variantID];
+      v10 = [v7 stringByAppendingPathComponent:variantID2];
 
       v7 = v10;
     }
@@ -202,20 +202,20 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_bundleIdentifier];
-  v5 = [v3 appendObject:self->_bundlePath];
-  v6 = [v3 appendObject:self->_dataContainerPath];
-  v7 = [v3 appendObject:self->_bundleContainerPath];
-  v8 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_bundleIdentifier];
+  v5 = [builder appendObject:self->_bundlePath];
+  v6 = [builder appendObject:self->_dataContainerPath];
+  v7 = [builder appendObject:self->_bundleContainerPath];
+  v8 = [builder hash];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -225,16 +225,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(XBSnapshotContainerIdentity *)v4 bundleIdentifier];
+      bundleIdentifier = [(XBSnapshotContainerIdentity *)equalCopy bundleIdentifier];
       if (BSEqualStrings())
       {
-        v6 = [(XBSnapshotContainerIdentity *)v4 bundlePath];
+        bundlePath = [(XBSnapshotContainerIdentity *)equalCopy bundlePath];
         if (BSEqualStrings())
         {
-          v7 = [(XBSnapshotContainerIdentity *)v4 dataContainerPath];
+          dataContainerPath = [(XBSnapshotContainerIdentity *)equalCopy dataContainerPath];
           if (BSEqualStrings())
           {
-            v8 = [(XBSnapshotContainerIdentity *)v4 bundleContainerPath];
+            bundleContainerPath = [(XBSnapshotContainerIdentity *)equalCopy bundleContainerPath];
             v9 = BSEqualStrings();
           }
 
@@ -267,10 +267,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(XBSnapshotContainerIdentity *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(XBSnapshotContainerIdentity *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -282,26 +282,26 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(XBSnapshotContainerIdentity *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(XBSnapshotContainerIdentity *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(XBSnapshotContainerIdentity *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(XBSnapshotContainerIdentity *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__XBSnapshotContainerIdentity_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_279CF9508;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

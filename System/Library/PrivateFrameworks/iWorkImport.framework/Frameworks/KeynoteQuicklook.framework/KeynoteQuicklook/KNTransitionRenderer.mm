@@ -1,31 +1,31 @@
 @interface KNTransitionRenderer
-- (BOOL)addAnimationsAtTime:(double)a3 relativeToCurrentMediaTime:(BOOL)a4;
-- (BOOL)p_addAnimations:(id)a3 atTime:(double)a4 relativeToCurrentMediaTime:(BOOL)a5;
-- (KNTransitionRenderer)initWithEffectClass:(Class)a3 direction:(unint64_t)a4 duration:(double)a5 session:(id)a6 attributes:(id)a7 animatedSlideView:(id)a8;
+- (BOOL)addAnimationsAtTime:(double)time relativeToCurrentMediaTime:(BOOL)mediaTime;
+- (BOOL)p_addAnimations:(id)animations atTime:(double)time relativeToCurrentMediaTime:(BOOL)mediaTime;
+- (KNTransitionRenderer)initWithEffectClass:(Class)class direction:(unint64_t)direction duration:(double)duration session:(id)session attributes:(id)attributes animatedSlideView:(id)view;
 - (NSString)description;
 - (id)plugin;
 - (void)animate;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
 - (void)generateTextures;
-- (void)p_checkForNullTransitions:(Class)a3;
-- (void)p_removeAnimationsShouldForceRemove:(BOOL)a3;
-- (void)pauseAnimationsAtTime:(double)a3;
-- (void)registerForTransitionEndCallback:(SEL)a3 target:(id)a4;
-- (void)removeAnimationsAndFinish:(BOOL)a3;
-- (void)renderSlideIndex:(unint64_t)a3;
+- (void)p_checkForNullTransitions:(Class)transitions;
+- (void)p_removeAnimationsShouldForceRemove:(BOOL)remove;
+- (void)pauseAnimationsAtTime:(double)time;
+- (void)registerForTransitionEndCallback:(SEL)callback target:(id)target;
+- (void)removeAnimationsAndFinish:(BOOL)finish;
+- (void)renderSlideIndex:(unint64_t)index;
 - (void)renderTextures;
 - (void)renderTexturesSynchronously;
-- (void)resumeAnimationsIfPausedAtTime:(double)a3;
+- (void)resumeAnimationsIfPausedAtTime:(double)time;
 - (void)setupLayerTreeForTransition;
 - (void)setupPluginContext;
 - (void)teardown;
-- (void)waitUntilAsyncRenderingIsCompleteShouldCancel:(BOOL)a3;
+- (void)waitUntilAsyncRenderingIsCompleteShouldCancel:(BOOL)cancel;
 @end
 
 @implementation KNTransitionRenderer
 
-- (KNTransitionRenderer)initWithEffectClass:(Class)a3 direction:(unint64_t)a4 duration:(double)a5 session:(id)a6 attributes:(id)a7 animatedSlideView:(id)a8
+- (KNTransitionRenderer)initWithEffectClass:(Class)class direction:(unint64_t)direction duration:(double)duration session:(id)session attributes:(id)attributes animatedSlideView:(id)view
 {
   v20.receiver = self;
   v20.super_class = KNTransitionRenderer;
@@ -33,14 +33,14 @@
   v15 = v14;
   if (v14)
   {
-    v14->super._ASV = a8;
-    v14->super._session = a6;
-    v14->super._pluginClass = a3;
-    v14->super._direction = a4;
+    v14->super._ASV = view;
+    v14->super._session = session;
+    v14->super._pluginClass = class;
+    v14->super._direction = direction;
     v14->_numberOfAnimationsStarted = 0;
-    v14->_attributes = a7;
-    objc_msgSend_setDuration_(v15, v16, v17, a5);
-    objc_msgSend_p_checkForNullTransitions_(v15, v18, a3);
+    v14->_attributes = attributes;
+    objc_msgSend_setDuration_(v15, v16, v17, duration);
+    objc_msgSend_p_checkForNullTransitions_(v15, v18, class);
   }
 
   return v15;
@@ -125,23 +125,23 @@
   objc_msgSend_setBoundingRect_(v5, v33, v34, v24, v26, v28, v30);
 }
 
-- (void)registerForTransitionEndCallback:(SEL)a3 target:(id)a4
+- (void)registerForTransitionEndCallback:(SEL)callback target:(id)target
 {
-  self->_transitionEndCallbackTarget = a4;
-  if (a3)
+  self->_transitionEndCallbackTarget = target;
+  if (callback)
   {
-    v4 = a3;
+    callbackCopy = callback;
   }
 
   else
   {
-    v4 = 0;
+    callbackCopy = 0;
   }
 
-  self->_transitionEndCallbackSelector = v4;
+  self->_transitionEndCallbackSelector = callbackCopy;
 }
 
-- (void)p_checkForNullTransitions:(Class)a3
+- (void)p_checkForNullTransitions:(Class)transitions
 {
   pluginClass = self->super._pluginClass;
   v5 = objc_opt_class();
@@ -323,9 +323,9 @@
   }
 }
 
-- (void)waitUntilAsyncRenderingIsCompleteShouldCancel:(BOOL)a3
+- (void)waitUntilAsyncRenderingIsCompleteShouldCancel:(BOOL)cancel
 {
-  v3 = a3;
+  cancelCopy = cancel;
   v16 = *MEMORY[0x277D85DE8];
   objc_sync_enter(self);
   v11 = 0u;
@@ -346,7 +346,7 @@
           objc_enumerationMutation(textures);
         }
 
-        objc_msgSend_waitUntilAsyncRenderingIsCompleteShouldCancel_(*(*(&v11 + 1) + 8 * i), v7, v3);
+        objc_msgSend_waitUntilAsyncRenderingIsCompleteShouldCancel_(*(*(&v11 + 1) + 8 * i), v7, cancelCopy);
       }
 
       v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(textures, v7, &v11, v15, 16);
@@ -358,7 +358,7 @@
   objc_sync_exit(self);
 }
 
-- (void)renderSlideIndex:(unint64_t)a3
+- (void)renderSlideIndex:(unint64_t)index
 {
   objc_sync_enter(self);
   objc_msgSend_begin(MEMORY[0x277CD9FF0], v5, v6);
@@ -410,7 +410,7 @@
   }
 
   objc_msgSend_renderTextures(self, v28, v29);
-  v31 = objc_msgSend_objectAtIndex_(self->_textures, v30, a3);
+  v31 = objc_msgSend_objectAtIndex_(self->_textures, v30, index);
   objc_msgSend_waitUntilAsyncRenderingIsCompleteShouldCancel_(v31, v32, 0);
   objc_msgSend_setupLayerTreeForTransition(self, v33, v34);
   v37 = objc_msgSend_layer(v31, v35, v36);
@@ -439,15 +439,15 @@
   }
 }
 
-- (BOOL)addAnimationsAtTime:(double)a3 relativeToCurrentMediaTime:(BOOL)a4
+- (BOOL)addAnimationsAtTime:(double)time relativeToCurrentMediaTime:(BOOL)mediaTime
 {
-  v4 = a4;
+  mediaTimeCopy = mediaTime;
   if (self->_animatedLayers)
   {
-    objc_msgSend_stopAnimations(self, a2, a4);
+    objc_msgSend_stopAnimations(self, a2, mediaTime);
   }
 
-  v7 = objc_msgSend_plugin(self, a2, a4);
+  v7 = objc_msgSend_plugin(self, a2, mediaTime);
   objc_msgSend_begin(MEMORY[0x277CD9FF0], v8, v9);
   objc_msgSend_setDisableActions_(MEMORY[0x277CD9FF0], v10, 1);
   if (!self->_textures)
@@ -492,7 +492,7 @@ LABEL_10:
   objc_msgSend_addAnimationsTo_context_(v7, v45, v41, v44);
   if (v41 && objc_msgSend_count(v41, v46, v47))
   {
-    v48 = objc_msgSend_p_addAnimations_atTime_relativeToCurrentMediaTime_(self, v46, v41, v4, a3);
+    v48 = objc_msgSend_p_addAnimations_atTime_relativeToCurrentMediaTime_(self, v46, v41, mediaTimeCopy, time);
   }
 
   else
@@ -504,34 +504,34 @@ LABEL_10:
   return v48;
 }
 
-- (BOOL)p_addAnimations:(id)a3 atTime:(double)a4 relativeToCurrentMediaTime:(BOOL)a5
+- (BOOL)p_addAnimations:(id)animations atTime:(double)time relativeToCurrentMediaTime:(BOOL)mediaTime
 {
-  v5 = a5;
+  mediaTimeCopy = mediaTime;
   v57 = *MEMORY[0x277D85DE8];
   self->_numberOfAnimationsStarted = 0;
-  self->_animatedLayers = a3;
-  v11 = 1.0e-100;
-  if (v5)
+  self->_animatedLayers = animations;
+  timeCopy = 1.0e-100;
+  if (mediaTimeCopy)
   {
-    v11 = a4;
+    timeCopy = time;
   }
 
-  if (a4 == 0.0)
+  if (time == 0.0)
   {
-    a4 = v11;
+    time = timeCopy;
   }
 
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = objc_msgSend_keyEnumerator(a3, v9, v10);
+  obj = objc_msgSend_keyEnumerator(animations, v9, v10);
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v12, &v52, v56, 16);
   if (v13)
   {
     v15 = v13;
     v16 = *v53;
-    v17 = a4 > 0.0 && v5;
+    v17 = time > 0.0 && mediaTimeCopy;
     v50 = *MEMORY[0x277D801A0];
     v51 = *MEMORY[0x277CDA230];
     do
@@ -544,7 +544,7 @@ LABEL_10:
         }
 
         v19 = *(*(&v52 + 1) + 8 * i);
-        v20 = objc_msgSend_objectForKey_(a3, v14, v19);
+        v20 = objc_msgSend_objectForKey_(animations, v14, v19);
         if (v20)
         {
           v22 = v20;
@@ -554,11 +554,11 @@ LABEL_10:
             v25 = objc_msgSend_arrayWithObjects_(MEMORY[0x277CBEA60], v24, v22, 0);
             objc_msgSend_setAnimations_(v23, v26, v25);
             objc_msgSend_duration(self, v27, v28);
-            objc_msgSend_setDuration_(v23, v30, v31, a4 + v29);
+            objc_msgSend_setDuration_(v23, v30, v31, time + v29);
             objc_msgSend_setRemovedOnCompletion_(v23, v32, 0);
             objc_msgSend_setFillMode_(v23, v33, v51);
             objc_msgSend_beginTime(v22, v34, v35);
-            objc_msgSend_setBeginTime_(v22, v37, v38, a4 + v36);
+            objc_msgSend_setBeginTime_(v22, v37, v38, time + v36);
             if ((objc_msgSend_disableAutoAnimationRemoval(self->super._session, v39, v40) & 1) == 0)
             {
               objc_msgSend_setDelegate_(v23, v41, self);
@@ -571,7 +571,7 @@ LABEL_10:
           {
             objc_msgSend_setRemovedOnCompletion_(v20, v14, 0);
             objc_msgSend_setFillMode_(v22, v42, v51);
-            objc_msgSend_setBeginTime_(v22, v43, v44, a4);
+            objc_msgSend_setBeginTime_(v22, v43, v44, time);
             if ((objc_msgSend_disableAutoAnimationRemoval(self->super._session, v45, v46) & 1) == 0)
             {
               objc_msgSend_setDelegate_(v22, v47, self);
@@ -593,7 +593,7 @@ LABEL_10:
   return 1;
 }
 
-- (void)p_removeAnimationsShouldForceRemove:(BOOL)a3
+- (void)p_removeAnimationsShouldForceRemove:(BOOL)remove
 {
   v63 = *MEMORY[0x277D85DE8];
   objc_msgSend_waitUntilAsyncRenderingIsCompleteShouldCancel_(self, a2, 0);
@@ -601,7 +601,7 @@ LABEL_10:
   objc_msgSend_setDisableActions_(MEMORY[0x277CD9FF0], v7, 1);
   context = objc_autoreleasePoolPush();
   animatedLayers = self->_animatedLayers;
-  if (a3 || animatedLayers)
+  if (remove || animatedLayers)
   {
     v58 = 0u;
     v59 = 0u;
@@ -703,9 +703,9 @@ LABEL_10:
   objc_msgSend_commit(MEMORY[0x277CD9FF0], v45, v46);
 }
 
-- (void)removeAnimationsAndFinish:(BOOL)a3
+- (void)removeAnimationsAndFinish:(BOOL)finish
 {
-  if (a3)
+  if (finish)
   {
     self->_numberOfAnimationsStarted = 0;
     self->_animationsRanToCompletion = 1;
@@ -714,7 +714,7 @@ LABEL_10:
   MEMORY[0x2821F9670](self, sel_p_removeAnimationsShouldForceRemove_, 0);
 }
 
-- (void)pauseAnimationsAtTime:(double)a3
+- (void)pauseAnimationsAtTime:(double)time
 {
   v20 = *MEMORY[0x277D85DE8];
   if (self->_numberOfAnimationsStarted >= 1)
@@ -744,7 +744,7 @@ LABEL_10:
                 objc_enumerationMutation(v7);
               }
 
-              objc_msgSend_kn_pauseAtTime_(*(*(&v15 + 1) + 8 * v14), v10, v11, a3);
+              objc_msgSend_kn_pauseAtTime_(*(*(&v15 + 1) + 8 * v14), v10, v11, time);
               self->super._areAnimationsPaused = 1;
               ++v14;
             }
@@ -760,7 +760,7 @@ LABEL_10:
   }
 }
 
-- (void)resumeAnimationsIfPausedAtTime:(double)a3
+- (void)resumeAnimationsIfPausedAtTime:(double)time
 {
   v19 = *MEMORY[0x277D85DE8];
   if (self->_numberOfAnimationsStarted >= 1 && self->super._areAnimationsPaused)
@@ -785,7 +785,7 @@ LABEL_10:
             objc_enumerationMutation(v6);
           }
 
-          objc_msgSend_kn_resumeAtTime_(*(*(&v14 + 1) + 8 * v13++), v9, v10, a3);
+          objc_msgSend_kn_resumeAtTime_(*(*(&v14 + 1) + 8 * v13++), v9, v10, time);
         }
 
         while (v11 != v13);
@@ -799,9 +799,9 @@ LABEL_10:
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  if (self->_numberOfAnimationsStarted >= 1 && (objc_msgSend_disableAutoAnimationRemoval(self->super._session, a2, a3, a4) & 1) == 0)
+  if (self->_numberOfAnimationsStarted >= 1 && (objc_msgSend_disableAutoAnimationRemoval(self->super._session, a2, stop, finished) & 1) == 0)
   {
     v7 = self->_numberOfAnimationsStarted - 1;
     self->_numberOfAnimationsStarted = v7;

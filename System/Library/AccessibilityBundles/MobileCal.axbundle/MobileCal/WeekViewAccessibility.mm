@@ -1,6 +1,6 @@
 @interface WeekViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (WeekViewAccessibility)initWithFrame:(CGRect)a3 sizeClass:(int64_t)a4 targetWindow:(id)a5 rightClickDelegate:(id)a6;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (WeekViewAccessibility)initWithFrame:(CGRect)frame sizeClass:(int64_t)class targetWindow:(id)window rightClickDelegate:(id)delegate;
 - (id)accessibilityCustomRotors;
 - (id)accessibilityElements;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -9,19 +9,19 @@
 
 @implementation WeekViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WeekAllDayView"];
-  [v3 validateClass:@"EKDayViewContent"];
-  [v3 validateClass:@"WeekView" hasInstanceMethod:@"initWithFrame:sizeClass:targetWindow:rightClickDelegate:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "q", "@", "@", 0}];
-  [v3 validateClass:@"EKDayViewContent" hasInstanceMethod:@"grid" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WeekView" hasInstanceVariable:@"_scrollView" withType:"UIScrollView"];
-  [v3 validateClass:@"WeekView" hasInstanceVariable:@"_allDayView" withType:"WeekAllDayView"];
-  [v3 validateClass:@"WeekView" hasInstanceVariable:@"_content" withType:"EKDayViewContent"];
-  [v3 validateClass:@"WeekView" hasInstanceVariable:@"_daysToDisplay" withType:"q"];
-  [v3 validateClass:@"EKDayViewContent" hasInstanceMethod:@"occurrenceViews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WeekAllDayView" hasInstanceMethod:@"occurrenceViews" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WeekAllDayView"];
+  [validationsCopy validateClass:@"EKDayViewContent"];
+  [validationsCopy validateClass:@"WeekView" hasInstanceMethod:@"initWithFrame:sizeClass:targetWindow:rightClickDelegate:" withFullSignature:{"@", "{CGRect={CGPoint=dd}{CGSize=dd}}", "q", "@", "@", 0}];
+  [validationsCopy validateClass:@"EKDayViewContent" hasInstanceMethod:@"grid" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WeekView" hasInstanceVariable:@"_scrollView" withType:"UIScrollView"];
+  [validationsCopy validateClass:@"WeekView" hasInstanceVariable:@"_allDayView" withType:"WeekAllDayView"];
+  [validationsCopy validateClass:@"WeekView" hasInstanceVariable:@"_content" withType:"EKDayViewContent"];
+  [validationsCopy validateClass:@"WeekView" hasInstanceVariable:@"_daysToDisplay" withType:"q"];
+  [validationsCopy validateClass:@"EKDayViewContent" hasInstanceMethod:@"occurrenceViews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WeekAllDayView" hasInstanceMethod:@"occurrenceViews" withFullSignature:{"@", 0}];
 }
 
 - (void)_axAnnotateScrollView
@@ -30,11 +30,11 @@
   [v2 setAccessibilityIdentifier:@"_AXWeekViewScrollViewIdentifier"];
 }
 
-- (WeekViewAccessibility)initWithFrame:(CGRect)a3 sizeClass:(int64_t)a4 targetWindow:(id)a5 rightClickDelegate:(id)a6
+- (WeekViewAccessibility)initWithFrame:(CGRect)frame sizeClass:(int64_t)class targetWindow:(id)window rightClickDelegate:(id)delegate
 {
   v9.receiver = self;
   v9.super_class = WeekViewAccessibility;
-  v6 = [(WeekViewAccessibility *)&v9 initWithFrame:a4 sizeClass:a5 targetWindow:a6 rightClickDelegate:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v6 = [(WeekViewAccessibility *)&v9 initWithFrame:class sizeClass:window targetWindow:delegate rightClickDelegate:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v7 = v6;
   if (v6)
   {
@@ -56,43 +56,43 @@
 {
   if (_UIAccessibilityFullKeyboardAccessEnabled())
   {
-    v3 = 0;
+    array = 0;
     goto LABEL_15;
   }
 
   v4 = [(WeekViewAccessibility *)self safeValueForKey:@"_daysToDisplay"];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
   v6 = [(WeekViewAccessibility *)self safeValueForKey:@"_allDayView"];
-  v7 = [v6 accessibilityElements];
+  accessibilityElements = [v6 accessibilityElements];
 
-  v8 = [v7 count];
-  if (v8 != v5)
+  v8 = [accessibilityElements count];
+  if (v8 != integerValue)
   {
     _AXAssert();
   }
 
   v9 = [(WeekViewAccessibility *)self safeValueForKey:@"_content"];
   v10 = [v9 safeValueForKey:@"grid"];
-  v11 = [v10 accessibilityElements];
+  accessibilityElements2 = [v10 accessibilityElements];
 
-  if (v11)
+  if (accessibilityElements2)
   {
-    if ([v11 count] == v5)
+    if ([accessibilityElements2 count] == integerValue)
     {
-      if (v8 == v5)
+      if (v8 == integerValue)
       {
-        v3 = [MEMORY[0x29EDB8DE8] array];
-        if (v5)
+        array = [MEMORY[0x29EDB8DE8] array];
+        if (integerValue)
         {
-          for (i = 0; i != v5; ++i)
+          for (i = 0; i != integerValue; ++i)
           {
-            v13 = [v7 objectAtIndex:i];
+            v13 = [accessibilityElements objectAtIndex:i];
             [v13 setAccessibilityContainer:self];
-            [v3 addObject:v13];
-            v14 = [v11 objectAtIndex:i];
+            [array addObject:v13];
+            v14 = [accessibilityElements2 objectAtIndex:i];
             [v14 setAccessibilityContainer:self];
-            [v3 addObject:v14];
+            [array addObject:v14];
           }
         }
 
@@ -106,12 +106,12 @@
     }
   }
 
-  v3 = 0;
+  array = 0;
 LABEL_14:
 
 LABEL_15:
 
-  return v3;
+  return array;
 }
 
 - (id)accessibilityCustomRotors

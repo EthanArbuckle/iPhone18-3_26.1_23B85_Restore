@@ -2,7 +2,7 @@
 - (BOOL)getIsDucking;
 - (BOOL)getIsTwoShot;
 - (BOOL)getIsVoiceTrigger;
-- (_AFInterstitialConfigurationMutation)initWithBase:(id)a3;
+- (_AFInterstitialConfigurationMutation)initWithBase:(id)base;
 - (id)getLanguageCode;
 - (id)getRecordRoute;
 - (int64_t)getGender;
@@ -29,15 +29,15 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_languageCode;
+    languageCode = self->_languageCode;
   }
 
   else
   {
-    v2 = [(AFInterstitialConfiguration *)self->_base languageCode];
+    languageCode = [(AFInterstitialConfiguration *)self->_base languageCode];
   }
 
-  return v2;
+  return languageCode;
 }
 
 - (int64_t)getGender
@@ -57,15 +57,15 @@
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_recordRoute;
+    recordRoute = self->_recordRoute;
   }
 
   else
   {
-    v2 = [(AFInterstitialConfiguration *)self->_base recordRoute];
+    recordRoute = [(AFInterstitialConfiguration *)self->_base recordRoute];
   }
 
-  return v2;
+  return recordRoute;
 }
 
 - (BOOL)getIsDucking
@@ -120,16 +120,16 @@
   }
 }
 
-- (_AFInterstitialConfigurationMutation)initWithBase:(id)a3
+- (_AFInterstitialConfigurationMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFInterstitialConfigurationMutation;
   v6 = [(_AFInterstitialConfigurationMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

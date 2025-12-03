@@ -1,8 +1,8 @@
 @interface RECustomRelevanceProvider
-- (BOOL)isEqual:(id)a3;
-- (RECustomRelevanceProvider)initWithDictionary:(id)a3;
-- (RECustomRelevanceProvider)initWithFeature:(id)a3 value:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RECustomRelevanceProvider)initWithDictionary:(id)dictionary;
+- (RECustomRelevanceProvider)initWithFeature:(id)feature value:(unint64_t)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryEncoding;
 - (void)dealloc;
@@ -10,18 +10,18 @@
 
 @implementation RECustomRelevanceProvider
 
-- (RECustomRelevanceProvider)initWithFeature:(id)a3 value:(unint64_t)a4
+- (RECustomRelevanceProvider)initWithFeature:(id)feature value:(unint64_t)value
 {
-  v7 = a3;
+  featureCopy = feature;
   v11.receiver = self;
   v11.super_class = RECustomRelevanceProvider;
   v8 = [(RERelevanceProvider *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_feature, a3);
-    v9->_value = a4;
-    RERetainFeatureValueTaggedPointer(a4);
+    objc_storeStrong(&v8->_feature, feature);
+    v9->_value = value;
+    RERetainFeatureValueTaggedPointer(value);
   }
 
   return v9;
@@ -35,10 +35,10 @@
   [(RECustomRelevanceProvider *)&v3 dealloc];
 }
 
-- (RECustomRelevanceProvider)initWithDictionary:(id)a3
+- (RECustomRelevanceProvider)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"feature_name"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"feature_name"];
   v6 = v5;
   v7 = &stru_283B97458;
   if (v5)
@@ -48,10 +48,10 @@
 
   v8 = v7;
 
-  v9 = [v4 objectForKeyedSubscript:@"feature_type"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"feature_type"];
   v10 = +[REFeature featureWithName:featureType:](REFeature, "featureWithName:featureType:", v8, [v9 integerValue]);
 
-  v11 = [REFeatureValue featureValueWithDictionary:v4];
+  v11 = [REFeatureValue featureValueWithDictionary:dictionaryCopy];
 
   v12 = RECreateFeatureValueTaggedPointer(v11);
   v13 = [(RECustomRelevanceProvider *)self initWithFeature:v10 value:v12];
@@ -63,8 +63,8 @@
 - (id)dictionaryEncoding
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v3 = [(REFeature *)self->_feature _dependentFeatures];
-  v4 = [v3 count];
+  _dependentFeatures = [(REFeature *)self->_feature _dependentFeatures];
+  v4 = [_dependentFeatures count];
 
   if (v4)
   {
@@ -72,16 +72,16 @@
   }
 
   v21[0] = @"feature_name";
-  v11 = [(REFeature *)self->_feature name];
+  name = [(REFeature *)self->_feature name];
   v21[1] = @"feature_type";
-  v22[0] = v11;
+  v22[0] = name;
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[REFeature featureType](self->_feature, "featureType")}];
   v22[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
 
   v14 = REFeatureValueForTaggedPointer(self->_value);
-  v15 = [v14 dictionaryEncoding];
-  v16 = [v15 mutableCopy];
+  dictionaryEncoding = [v14 dictionaryEncoding];
+  v16 = [dictionaryEncoding mutableCopy];
 
   [v16 addEntriesFromDictionary:v13];
   v17 = [v16 copy];
@@ -91,11 +91,11 @@
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = RECustomRelevanceProvider;
-  v4 = [(RERelevanceProvider *)&v7 copyWithZone:a3];
+  v4 = [(RERelevanceProvider *)&v7 copyWithZone:zone];
   objc_storeStrong(v4 + 4, self->_feature);
   value = self->_value;
   v4[5] = value;
@@ -103,10 +103,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -115,12 +115,12 @@
   {
     v17.receiver = self;
     v17.super_class = RECustomRelevanceProvider;
-    if ([(RERelevanceProvider *)&v17 isEqual:v4])
+    if ([(RERelevanceProvider *)&v17 isEqual:equalCopy])
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = v4;
+        v5 = equalCopy;
         feature = v5->_feature;
         v7 = self->_feature;
         v8 = v7;

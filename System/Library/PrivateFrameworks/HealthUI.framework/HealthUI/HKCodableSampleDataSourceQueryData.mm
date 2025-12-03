@@ -1,32 +1,32 @@
 @interface HKCodableSampleDataSourceQueryData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addSamples:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSamples:(id)samples;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableSampleDataSourceQueryData
 
-- (void)addSamples:(id)a3
+- (void)addSamples:(id)samples
 {
-  v4 = a3;
+  samplesCopy = samples;
   samples = self->_samples;
-  v8 = v4;
+  v8 = samplesCopy;
   if (!samples)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_samples;
     self->_samples = v6;
 
-    v4 = v8;
+    samplesCopy = v8;
     samples = self->_samples;
   }
 
-  [(NSMutableArray *)samples addObject:v4];
+  [(NSMutableArray *)samples addObject:samplesCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = HKCodableSampleDataSourceQueryData;
   v4 = [(HKCodableSampleDataSourceQueryData *)&v8 description];
-  v5 = [(HKCodableSampleDataSourceQueryData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableSampleDataSourceQueryData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,7 +44,7 @@
 - (id)dictionaryRepresentation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_samples count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_samples, "count")}];
@@ -67,8 +67,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -77,16 +77,16 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"samples"];
+    [dictionary setObject:v4 forKey:@"samples"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -119,29 +119,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(HKCodableSampleDataSourceQueryData *)self samplesCount])
   {
-    [v8 clearSamples];
-    v4 = [(HKCodableSampleDataSourceQueryData *)self samplesCount];
-    if (v4)
+    [toCopy clearSamples];
+    samplesCount = [(HKCodableSampleDataSourceQueryData *)self samplesCount];
+    if (samplesCount)
     {
-      v5 = v4;
+      v5 = samplesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HKCodableSampleDataSourceQueryData *)self samplesAtIndex:i];
-        [v8 addSamples:v7];
+        [toCopy addSamples:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -162,7 +162,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [v5 addSamples:v11];
 
         ++v10;
@@ -178,13 +178,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     samples = self->_samples;
-    if (samples | v4[1])
+    if (samples | equalCopy[1])
     {
       v6 = [(NSMutableArray *)samples isEqual:?];
     }
@@ -203,14 +203,14 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {

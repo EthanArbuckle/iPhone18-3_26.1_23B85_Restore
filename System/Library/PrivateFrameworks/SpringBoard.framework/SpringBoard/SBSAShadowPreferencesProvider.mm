@@ -1,18 +1,18 @@
 @interface SBSAShadowPreferencesProvider
 - (BOOL)_stretchProviderPresentInStack;
-- (id)preferencesFromContext:(id)a3;
-- (int64_t)_shadowStyleForContainerDescription:(id)a3 elementContext:(id)a4 useHeavyShadowForTransition:(BOOL)a5 isFirstContainer:(BOOL)a6;
-- (int64_t)_shadowStyleForContainerDescription:(id)a3 indicatorElementContext:(id)a4;
+- (id)preferencesFromContext:(id)context;
+- (int64_t)_shadowStyleForContainerDescription:(id)description elementContext:(id)context useHeavyShadowForTransition:(BOOL)transition isFirstContainer:(BOOL)container;
+- (int64_t)_shadowStyleForContainerDescription:(id)description indicatorElementContext:(id)context;
 @end
 
 @implementation SBSAShadowPreferencesProvider
 
 - (BOOL)_stretchProviderPresentInStack
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v3 = v2;
+    v3 = selfCopy;
     do
     {
       objc_opt_class();
@@ -22,12 +22,12 @@
         break;
       }
 
-      v5 = [v3 parentProvider];
+      parentProvider = [v3 parentProvider];
 
-      v3 = v5;
+      v3 = parentProvider;
     }
 
-    while (v5);
+    while (parentProvider);
   }
 
   else
@@ -38,13 +38,13 @@
   return isKindOfClass & 1;
 }
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
-  v5 = a3;
-  if (v5)
+  contextCopy = context;
+  if (contextCopy)
   {
     v6 = objc_opt_self();
-    v7 = v5;
+    v7 = contextCopy;
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -81,9 +81,9 @@
   v38 = 0x3032000000;
   v39 = __Block_byref_object_copy__12;
   v40 = __Block_byref_object_dispose__12;
-  v10 = [v9 preferences];
+  preferences = [v9 preferences];
   v11 = objc_opt_class();
-  v12 = v10;
+  v12 = preferences;
   if (v11)
   {
     if (objc_opt_isKindOfClass())
@@ -105,7 +105,7 @@
   v14 = v13;
 
   v41 = v14;
-  v15 = [v9 elementContexts];
+  elementContexts = [v9 elementContexts];
   v16 = ([v9 isHeavyShadowRequiredForTransition] & 1) != 0 || -[SBSAShadowPreferencesProvider _stretchProviderPresentInStack](self, "_stretchProviderPresentInStack");
   v17 = v37[5];
   v31[0] = MEMORY[0x277D85DD0];
@@ -115,7 +115,7 @@
   v31[4] = self;
   v33 = &v36;
   v34 = a2;
-  v18 = v15;
+  v18 = elementContexts;
   v32 = v18;
   v35 = v16;
   v19 = [v17 copyWithBlock:v31];
@@ -403,13 +403,13 @@ void __56__SBSAShadowPreferencesProvider_preferencesFromContext___block_invoke_4
   [v6 associateAnimatedTransitionDescriptionOfProperty:v9 withProperty:v12 withMilestones:0];
 }
 
-- (int64_t)_shadowStyleForContainerDescription:(id)a3 indicatorElementContext:(id)a4
+- (int64_t)_shadowStyleForContainerDescription:(id)description indicatorElementContext:(id)context
 {
-  v5 = [objc_opt_class() settings];
-  v6 = [v5 elementShadowEnabled];
-  if (a4)
+  settings = [objc_opt_class() settings];
+  elementShadowEnabled = [settings elementShadowEnabled];
+  if (context)
   {
-    v7 = v6;
+    v7 = elementShadowEnabled;
   }
 
   else
@@ -420,35 +420,35 @@ void __56__SBSAShadowPreferencesProvider_preferencesFromContext___block_invoke_4
   return v7;
 }
 
-- (int64_t)_shadowStyleForContainerDescription:(id)a3 elementContext:(id)a4 useHeavyShadowForTransition:(BOOL)a5 isFirstContainer:(BOOL)a6
+- (int64_t)_shadowStyleForContainerDescription:(id)description elementContext:(id)context useHeavyShadowForTransition:(BOOL)transition isFirstContainer:(BOOL)container
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = [objc_opt_class() settings];
-  v12 = [v11 elementShadowEnabled];
+  transitionCopy = transition;
+  descriptionCopy = description;
+  contextCopy = context;
+  settings = [objc_opt_class() settings];
+  elementShadowEnabled = [settings elementShadowEnabled];
 
-  if (!v12)
+  if (!elementShadowEnabled)
   {
     goto LABEL_14;
   }
 
-  if (v7 && a6)
+  if (transitionCopy && container)
   {
     v13 = 7;
     goto LABEL_15;
   }
 
-  if (!v10)
+  if (!contextCopy)
   {
     goto LABEL_14;
   }
 
-  v14 = [v10 layoutMode];
-  [v9 bounds];
-  if ((v14 - 1) < 2)
+  layoutMode = [contextCopy layoutMode];
+  [descriptionCopy bounds];
+  if ((layoutMode - 1) < 2)
   {
-    if ([v10 systemApertureLayoutCustomizingOptions])
+    if ([contextCopy systemApertureLayoutCustomizingOptions])
     {
       v13 = 2;
     }
@@ -461,7 +461,7 @@ void __56__SBSAShadowPreferencesProvider_preferencesFromContext___block_invoke_4
     goto LABEL_15;
   }
 
-  if (v14 != 3)
+  if (layoutMode != 3)
   {
 LABEL_14:
     v13 = 0;
@@ -491,10 +491,10 @@ LABEL_14:
     v13 = 2;
   }
 
-  v18 = [v10 systemApertureCustomLayout];
-  if ((v18 - 1) >= 2)
+  systemApertureCustomLayout = [contextCopy systemApertureCustomLayout];
+  if ((systemApertureCustomLayout - 1) >= 2)
   {
-    if (v18 == 3)
+    if (systemApertureCustomLayout == 3)
     {
       v13 = 6;
     }

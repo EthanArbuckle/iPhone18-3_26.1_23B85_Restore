@@ -1,10 +1,10 @@
 @interface DynamicButtonView
 - (BOOL)hasContent;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (NSString)accessibilityLabel;
 - (void)layoutSubviews;
-- (void)setAccessibilityLabel:(id)a3;
+- (void)setAccessibilityLabel:(id)label;
 - (void)tintColorDidChange;
 @end
 
@@ -12,7 +12,7 @@
 
 - (BOOL)hasContent
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_90640();
 
   return v3 & 1;
@@ -20,15 +20,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_90694();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
-  width = a3.width;
+  width = fitting.width;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   v7 = sub_9084C(width);
   v9 = v8;
   v11 = v10;
@@ -48,7 +48,7 @@
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_90A1C();
   v4 = v3;
 
@@ -65,23 +65,23 @@
   return v5;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     sub_13BB84();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_8F1CC();
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = self;
-  v10 = sub_90E10(width, height, a4, a5);
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  v10 = sub_90E10(width, height, priority, fittingPriority);
   v12 = v11;
 
   v13 = v10;
@@ -93,7 +93,7 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_90E80();
 }
 

@@ -1,6 +1,6 @@
 @interface VCHardwareSettingsEmbedded
 + (id)sharedInstance;
-+ (id)virtualHardwareSettings:(id)a3;
++ (id)virtualHardwareSettings:(id)settings;
 + (int64_t)deviceClass;
 - (BOOL)allowScreenShareResolutionModuloAdjustment;
 - (BOOL)canDo1080p;
@@ -51,7 +51,7 @@
 - (NSString)deviceName;
 - (VCHardwareSettingsEmbedded)init;
 - (double)previewPreferredAspectRatio;
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 - (id)marketingName;
 - (int64_t)chipId;
 - (int64_t)deviceClass;
@@ -74,9 +74,9 @@
 - (unsigned)maxOneToOneFramerateSupported;
 - (unsigned)maxRemoteParticipants30fps;
 - (unsigned)screenHeight;
-- (unsigned)screenHeightForDisplayID:(unsigned int)a3;
+- (unsigned)screenHeightForDisplayID:(unsigned int)d;
 - (unsigned)screenWidth;
-- (unsigned)screenWidthForDisplayID:(unsigned int)a3;
+- (unsigned)screenWidthForDisplayID:(unsigned int)d;
 - (void)_initializeScreenDimension;
 - (void)addPixelFormat;
 - (void)dealloc;
@@ -120,20 +120,20 @@
   return v3;
 }
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
   v14 = *MEMORY[0x1E69E9840];
   v4 = [(VCHardwareSettingsEmbedded *)self init];
   if (v4)
   {
-    if (a3)
+    if (device)
     {
       *&v5 = 0xAAAAAAAAAAAAAAAALL;
       *(&v5 + 1) = 0xAAAAAAAAAAAAAAAALL;
       v12 = v5;
       v13 = v5;
       v11 = v5;
-      if (VCVirtualHardwareConfigurations_EmbeddedConfigurationForDevice(a3, &v11))
+      if (VCVirtualHardwareConfigurations_EmbeddedConfigurationForDevice(device, &v11))
       {
 
         v6 = [v11 copy];
@@ -178,7 +178,7 @@
 
       else
       {
-        [VCHardwareSettingsEmbedded initForDevice:a3];
+        [VCHardwareSettingsEmbedded initForDevice:device];
       }
     }
 
@@ -202,19 +202,19 @@
   return v4;
 }
 
-+ (id)virtualHardwareSettings:(id)a3
++ (id)virtualHardwareSettings:(id)settings
 {
   v19 = *MEMORY[0x1E69E9840];
   if (virtualHardwareSettings___virtualHardwareSettingsDeviceA_0)
   {
-    if ([a3 isEqual:{objc_msgSend(virtualHardwareSettings___virtualHardwareSettingsDeviceA_0, "deviceName")}])
+    if ([settings isEqual:{objc_msgSend(virtualHardwareSettings___virtualHardwareSettingsDeviceA_0, "deviceName")}])
     {
       return virtualHardwareSettings___virtualHardwareSettingsDeviceA_0;
     }
 
     else if (virtualHardwareSettings___virtualHardwareSettingsDeviceB_0)
     {
-      if ([a3 isEqual:{objc_msgSend(virtualHardwareSettings___virtualHardwareSettingsDeviceB_0, "deviceName")}])
+      if ([settings isEqual:{objc_msgSend(virtualHardwareSettings___virtualHardwareSettingsDeviceB_0, "deviceName")}])
       {
         return virtualHardwareSettings___virtualHardwareSettingsDeviceB_0;
       }
@@ -239,7 +239,7 @@
 
         virtualHardwareSettings___virtualHardwareSettingsDeviceA_0 = 0;
         virtualHardwareSettings___virtualHardwareSettingsDeviceB_0 = 0;
-        return [VCHardwareSettingsEmbedded virtualHardwareSettings:a3];
+        return [VCHardwareSettingsEmbedded virtualHardwareSettings:settings];
       }
     }
 
@@ -258,12 +258,12 @@
           v15 = 1024;
           v16 = 191;
           v17 = 2112;
-          v18 = a3;
+          settingsCopy2 = settings;
           _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Initializing new virtual hardware settings B for device=%@", &v11, 0x26u);
         }
       }
 
-      result = [[VCHardwareSettingsEmbedded alloc] initForDevice:a3];
+      result = [[VCHardwareSettingsEmbedded alloc] initForDevice:settings];
       virtualHardwareSettings___virtualHardwareSettingsDeviceB_0 = result;
     }
   }
@@ -283,12 +283,12 @@
         v15 = 1024;
         v16 = 181;
         v17 = 2112;
-        v18 = a3;
+        settingsCopy2 = settings;
         _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Initializing new virtual hardware settings A for device=%@", &v11, 0x26u);
       }
     }
 
-    result = [[VCHardwareSettingsEmbedded alloc] initForDevice:a3];
+    result = [[VCHardwareSettingsEmbedded alloc] initForDevice:settings];
     virtualHardwareSettings___virtualHardwareSettingsDeviceA_0 = result;
   }
 
@@ -301,7 +301,7 @@
   objc_sync_enter(v3);
   if (VRTraceIsInternalOSInstalled() && (v4 = [+[VCDefaults virtualHardware] sharedInstance]!= 0)
   {
-    v5 = [a1 virtualHardwareSettings:v4];
+    v5 = [self virtualHardwareSettings:v4];
     objc_sync_exit(v3);
   }
 
@@ -519,11 +519,11 @@
 
 - (BOOL)isSpatialAudioSupportedIPhone
 {
-  v2 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 0;
-  if (v2 > 33024)
+  if (chipId > 33024)
   {
-    if (v2 <= 35151 || v2 != 35152 && v2 != 35168)
+    if (chipId <= 35151 || chipId != 35152 && chipId != 35168)
     {
       return 1;
     }
@@ -531,20 +531,20 @@
 
   else
   {
-    if ((v2 - 0x8000) <= 0x30)
+    if ((chipId - 0x8000) <= 0x30)
     {
-      if (((1 << v2) & 0x210009) != 0)
+      if (((1 << chipId) & 0x210009) != 0)
       {
         return result;
       }
 
-      if (v2 == 32800 || v2 == 32816)
+      if (chipId == 32800 || chipId == 32816)
       {
         return 1;
       }
     }
 
-    if (v2 != 28672)
+    if (chipId != 28672)
     {
       return 1;
     }
@@ -555,14 +555,14 @@
 
 - (BOOL)isSpatialAudioSupportedAppleTV
 {
-  v2 = [(VCHardwareSettingsEmbedded *)self chipId];
-  if (v2 > 32799)
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
+  if (chipId > 32799)
   {
     return 1;
   }
 
   v3 = 0;
-  if (v2 != 28672 && v2 != 32785)
+  if (chipId != 28672 && chipId != 32785)
   {
     return 1;
   }
@@ -572,13 +572,13 @@
 
 - (BOOL)isSpatialAudioSupportedIPad
 {
-  v3 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 0;
-  if (v3 <= 32799)
+  if (chipId <= 32799)
   {
-    if (v3 <= 32770)
+    if (chipId <= 32770)
     {
-      if ((v3 - 28672) >= 2 && (v3 - 0x8000) >= 2)
+      if ((chipId - 28672) >= 2 && (chipId - 0x8000) >= 2)
       {
         return 1;
       }
@@ -586,12 +586,12 @@
       return result;
     }
 
-    if (v3 == 32771)
+    if (chipId == 32771)
     {
       return result;
     }
 
-    if (v3 == 32784)
+    if (chipId == 32784)
     {
       v6 = *&self->_productType;
       if (v6 == -1)
@@ -607,16 +607,16 @@
     goto LABEL_16;
   }
 
-  if (v3 <= 33026 || v3 <= 35156)
+  if (chipId <= 33026 || chipId <= 35156)
   {
     return 1;
   }
 
-  if (v3 != 35157)
+  if (chipId != 35157)
   {
     v5 = 35168;
 LABEL_16:
-    if (v3 != v5)
+    if (chipId != v5)
     {
       return 1;
     }
@@ -651,17 +651,17 @@ LABEL_16:
     return 0;
   }
 
-  v3 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 0;
-  if (v3 > 35151)
+  if (chipId > 35151)
   {
-    if (v3 != 35152 && v3 != 35168)
+    if (chipId != 35152 && chipId != 35168)
     {
       return 1;
     }
   }
 
-  else if (((v3 - 0x8000) > 0x30 || ((1 << v3) & 0x1000100210009) == 0) && v3 != 28672)
+  else if (((chipId - 0x8000) > 0x30 || ((1 << chipId) & 0x1000100210009) == 0) && chipId != 28672)
   {
     return 1;
   }
@@ -767,12 +767,12 @@ uint64_t __49__VCHardwareSettingsEmbedded_supportsPSVoiceOnAP__block_invoke()
   }
 
   v5 = v3;
-  v6 = [+[VCHardwareSettingsEmbedded sharedInstance](VCHardwareSettingsEmbedded chipId];
+  chipId = [+[VCHardwareSettingsEmbedded sharedInstance](VCHardwareSettingsEmbedded chipId];
   v7 = 0;
-  if ((v6 - 0x8000) > 0x27 || ((1 << v6) & 0x810023000BLL) == 0)
+  if ((chipId - 0x8000) > 0x27 || ((1 << chipId) & 0x810023000BLL) == 0)
   {
-    v9 = (v6 - 35152) > 0x10 || ((1 << (v6 - 80)) & 0x10021) == 0;
-    if (v9 && (v6 - 28672) >= 2)
+    v9 = (chipId - 35152) > 0x10 || ((1 << (chipId - 80)) & 0x10021) == 0;
+    if (v9 && (chipId - 28672) >= 2)
     {
       v7 = 1;
     }
@@ -813,23 +813,23 @@ uint64_t __49__VCHardwareSettingsEmbedded_supportsPSVoiceOnAP__block_invoke()
   return result;
 }
 
-- (unsigned)screenWidthForDisplayID:(unsigned int)a3
+- (unsigned)screenWidthForDisplayID:(unsigned int)d
 {
-  v4 = [(VCHardwareSettingsEmbedded *)self screenWidth];
-  if (!a3 && +[VCHardwareSettings deviceClass]!= 8)
+  screenWidth = [(VCHardwareSettingsEmbedded *)self screenWidth];
+  if (!d && +[VCHardwareSettings deviceClass]!= 8)
   {
-    v5 = [MEMORY[0x1E6979328] mainDisplay];
-    if (v5)
+    mainDisplay = [MEMORY[0x1E6979328] mainDisplay];
+    if (mainDisplay)
     {
-      v6 = v5;
-      if ([objc_msgSend(v5 "currentMode")])
+      v6 = mainDisplay;
+      if ([objc_msgSend(mainDisplay "currentMode")])
       {
         return [objc_msgSend(v6 "currentMode")];
       }
     }
   }
 
-  return v4;
+  return screenWidth;
 }
 
 - (unsigned)screenHeight
@@ -844,23 +844,23 @@ uint64_t __49__VCHardwareSettingsEmbedded_supportsPSVoiceOnAP__block_invoke()
   return result;
 }
 
-- (unsigned)screenHeightForDisplayID:(unsigned int)a3
+- (unsigned)screenHeightForDisplayID:(unsigned int)d
 {
-  v4 = [(VCHardwareSettingsEmbedded *)self screenHeight];
-  if (!a3 && +[VCHardwareSettings deviceClass]!= 8)
+  screenHeight = [(VCHardwareSettingsEmbedded *)self screenHeight];
+  if (!d && +[VCHardwareSettings deviceClass]!= 8)
   {
-    v5 = [MEMORY[0x1E6979328] mainDisplay];
-    if (v5)
+    mainDisplay = [MEMORY[0x1E6979328] mainDisplay];
+    if (mainDisplay)
     {
-      v6 = v5;
-      if ([objc_msgSend(v5 "currentMode")])
+      v6 = mainDisplay;
+      if ([objc_msgSend(mainDisplay "currentMode")])
       {
         return [objc_msgSend(v6 "currentMode")];
       }
     }
   }
 
-  return v4;
+  return screenHeight;
 }
 
 - (double)previewPreferredAspectRatio
@@ -884,8 +884,8 @@ uint64_t __49__VCHardwareSettingsEmbedded_supportsPSVoiceOnAP__block_invoke()
     return 5603328;
   }
 
-  v4 = [(VCHardwareSettingsEmbedded *)self chipId];
-  if (((v4 - 0x8000) > 0x20 || ((1 << v4) & 0x10023000BLL) == 0) && ((v4 - 35152) > 0x10 || ((1 << (v4 - 80)) & 0x10021) == 0) && (v4 - 28672) >= 2)
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
+  if (((chipId - 0x8000) > 0x20 || ((1 << chipId) & 0x10023000BLL) == 0) && ((chipId - 35152) > 0x10 || ((1 << (chipId - 80)) & 0x10021) == 0) && (chipId - 28672) >= 2)
   {
     return 5603328;
   }
@@ -900,21 +900,21 @@ uint64_t __49__VCHardwareSettingsEmbedded_supportsPSVoiceOnAP__block_invoke()
     return 0;
   }
 
-  v3 = [(VCHardwareSettingsEmbedded *)self chipId];
-  if ((v3 - 0x8000) <= 0x20 && ((1 << v3) & 0x10023000BLL) != 0)
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
+  if ((chipId - 0x8000) <= 0x20 && ((1 << chipId) & 0x10023000BLL) != 0)
   {
     return 0;
   }
 
-  if ((v3 - 35152) > 0x10)
+  if ((chipId - 35152) > 0x10)
   {
-    return (v3 - 28672) >= 2;
+    return (chipId - 28672) >= 2;
   }
 
   v4 = 0;
-  if (((1 << (v3 - 80)) & 0x10021) == 0)
+  if (((1 << (chipId - 80)) & 0x10021) == 0)
   {
-    return (v3 - 28672) >= 2;
+    return (chipId - 28672) >= 2;
   }
 
   return v4;
@@ -927,11 +927,11 @@ uint64_t __49__VCHardwareSettingsEmbedded_supportsPSVoiceOnAP__block_invoke()
     return 30;
   }
 
-  v4 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 30;
-  if (((v4 - 0x8000) > 0x20 || ((1 << v4) & 0x10023000BLL) == 0) && ((v4 - 35152) > 0x10 || ((1 << (v4 - 80)) & 0x10021) == 0))
+  if (((chipId - 0x8000) > 0x20 || ((1 << chipId) & 0x10023000BLL) == 0) && ((chipId - 35152) > 0x10 || ((1 << (chipId - 80)) & 0x10021) == 0))
   {
-    if ((v4 - 28672) >= 2)
+    if ((chipId - 28672) >= 2)
     {
       return 60;
     }
@@ -949,17 +949,17 @@ uint64_t __49__VCHardwareSettingsEmbedded_supportsPSVoiceOnAP__block_invoke()
 {
   if (+[VCHardwareSettingsEmbedded deviceClass]== 1)
   {
-    v3 = [(VCHardwareSettingsEmbedded *)self chipId];
+    chipId = [(VCHardwareSettingsEmbedded *)self chipId];
     result = 24;
-    if (v3 > 35151)
+    if (chipId > 35151)
     {
-      if (v3 != 35152 && v3 != 35168)
+      if (chipId != 35152 && chipId != 35168)
       {
         return 60;
       }
     }
 
-    else if (((v3 - 0x8000) > 0x30 || ((1 << v3) & 0x1000100210009) == 0) && v3 != 28672)
+    else if (((chipId - 0x8000) > 0x30 || ((1 << chipId) & 0x1000100210009) == 0) && chipId != 28672)
     {
       return 60;
     }
@@ -1025,12 +1025,12 @@ uint64_t __49__VCHardwareSettingsEmbedded_supportsPSVoiceOnAP__block_invoke()
 
 - (int64_t)deviceClass
 {
-  v2 = self;
+  selfCopy = self;
   LODWORD(self) = *(self + 56);
   if (!self)
   {
     LODWORD(self) = +[VCHardwareSettingsEmbedded deviceClass];
-    *(v2 + 56) = self;
+    *(selfCopy + 56) = self;
   }
 
   return self;
@@ -1058,8 +1058,8 @@ uint64_t __49__VCHardwareSettingsEmbedded_supportsPSVoiceOnAP__block_invoke()
   result = self->_videoEncoderType;
   if (!result)
   {
-    v4 = [(VCHardwareSettingsEmbedded *)self chipId];
-    if ((v4 - 35152) <= 0x10 && ((1 << (v4 - 80)) & 0x10021) != 0)
+    chipId = [(VCHardwareSettingsEmbedded *)self chipId];
+    if ((chipId - 35152) <= 0x10 && ((1 << (chipId - 80)) & 0x10021) != 0)
     {
       result = 1;
     }
@@ -1087,21 +1087,21 @@ uint64_t __49__VCHardwareSettingsEmbedded_supportsPSVoiceOnAP__block_invoke()
     return 0;
   }
 
-  v4 = [(VCHardwareSettingsEmbedded *)self chipId];
-  if ((v4 - 0x8000) <= 0x11 && ((1 << v4) & 0x3000B) != 0)
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
+  if ((chipId - 0x8000) <= 0x11 && ((1 << chipId) & 0x3000B) != 0)
   {
     return 0;
   }
 
-  if ((v4 - 35152) > 0x10)
+  if ((chipId - 35152) > 0x10)
   {
-    return (v4 - 28672) >= 2;
+    return (chipId - 28672) >= 2;
   }
 
   v3 = 0;
-  if (((1 << (v4 - 80)) & 0x10021) == 0)
+  if (((1 << (chipId - 80)) & 0x10021) == 0)
   {
-    return (v4 - 28672) >= 2;
+    return (chipId - 28672) >= 2;
   }
 
   return v3;
@@ -1109,17 +1109,17 @@ uint64_t __49__VCHardwareSettingsEmbedded_supportsPSVoiceOnAP__block_invoke()
 
 - (BOOL)supportsMultiway1080pStreamEmbeddedOS
 {
-  v2 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 0;
-  if (v2 > 33024)
+  if (chipId > 33024)
   {
-    if (((v2 - 35152) > 0x10 || ((1 << (v2 - 80)) & 0x10021) == 0) && v2 != 33025 && v2 != 33027)
+    if (((chipId - 35152) > 0x10 || ((1 << (chipId - 80)) & 0x10021) == 0) && chipId != 33025 && chipId != 33027)
     {
       return 1;
     }
   }
 
-  else if (((v2 - 0x8000) > 0x30 || ((1 << v2) & 0x100810023000BLL) == 0) && (v2 - 28672) >= 2)
+  else if (((chipId - 0x8000) > 0x30 || ((1 << chipId) & 0x100810023000BLL) == 0) && (chipId - 28672) >= 2)
   {
     return 1;
   }
@@ -1151,9 +1151,9 @@ uint64_t __49__VCHardwareSettingsEmbedded_supportsPSVoiceOnAP__block_invoke()
 
 - (BOOL)supportsMultiway1080pStream
 {
-  v2 = [(VCHardwareSettingsEmbedded *)self deviceSupportsMultiway1080p];
+  deviceSupportsMultiway1080p = [(VCHardwareSettingsEmbedded *)self deviceSupportsMultiway1080p];
 
-  return VCDefaults_GetBoolValueForKey(@"supportsMultiway1080pStream", v2);
+  return VCDefaults_GetBoolValueForKey(@"supportsMultiway1080pStream", deviceSupportsMultiway1080p);
 }
 
 - (unsigned)maxOneToOneFramerateSupported
@@ -1180,17 +1180,17 @@ uint64_t __49__VCHardwareSettingsEmbedded_supportsPSVoiceOnAP__block_invoke()
   result = VCDefaults_GetIntValueForKey(@"MaxMultiwayFramerate", 0xFFFFFFFFLL);
   if (result == -1)
   {
-    v4 = [(VCHardwareSettingsEmbedded *)self chipId];
+    chipId = [(VCHardwareSettingsEmbedded *)self chipId];
     result = 15;
-    if (v4 > 35156)
+    if (chipId > 35156)
     {
-      if (v4 != 35157 && v4 != 35168)
+      if (chipId != 35157 && chipId != 35168)
       {
         return 30;
       }
     }
 
-    else if (((v4 - 0x8000) > 0x10 || ((1 << v4) & 0x1000B) == 0) && (v4 - 28672) >= 2)
+    else if (((chipId - 0x8000) > 0x10 || ((1 << chipId) & 0x1000B) == 0) && (chipId - 28672) >= 2)
     {
       return 30;
     }
@@ -1228,24 +1228,24 @@ uint64_t __49__VCHardwareSettingsEmbedded_supportsPSVoiceOnAP__block_invoke()
   result = [+[VCDefaults sharedInstance](VCDefaults maxActiveVideoEncoders];
   if (result == -1)
   {
-    v4 = [(VCHardwareSettingsEmbedded *)self chipId];
-    v5 = v4;
-    if (v4 <= 35156)
+    chipId = [(VCHardwareSettingsEmbedded *)self chipId];
+    v5 = chipId;
+    if (chipId <= 35156)
     {
-      if ((v4 - 0x8000) <= 0x11)
+      if ((chipId - 0x8000) <= 0x11)
       {
-        if (((1 << v4) & 0xB) != 0)
+        if (((1 << chipId) & 0xB) != 0)
         {
           return 3;
         }
 
-        if (((1 << v4) & 0x30000) != 0)
+        if (((1 << chipId) & 0x30000) != 0)
         {
           return 5;
         }
       }
 
-      if ((v4 - 28672) < 2)
+      if ((chipId - 28672) < 2)
       {
         return 3;
       }
@@ -1270,29 +1270,29 @@ uint64_t __49__VCHardwareSettingsEmbedded_supportsPSVoiceOnAP__block_invoke()
     return 15;
   }
 
-  v3 = [+[VCDefaults sharedInstance](VCDefaults maxActiveVideoDecoders];
-  if (v3 != -1)
+  maxActiveVideoDecoders = [+[VCDefaults sharedInstance](VCDefaults maxActiveVideoDecoders];
+  if (maxActiveVideoDecoders != -1)
   {
-    return v3;
+    return maxActiveVideoDecoders;
   }
 
-  v5 = [(VCHardwareSettingsEmbedded *)self chipId];
-  if (v5 <= 32788)
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
+  if (chipId <= 32788)
   {
-    if (v5 > 32770)
+    if (chipId > 32770)
     {
-      if ((v5 - 32784) < 2)
+      if ((chipId - 32784) < 2)
       {
         return 9;
       }
 
-      if (v5 != 32771)
+      if (chipId != 32771)
       {
         goto LABEL_25;
       }
     }
 
-    else if ((v5 - 28672) >= 2 && (v5 - 0x8000) >= 2)
+    else if ((chipId - 28672) >= 2 && (chipId - 0x8000) >= 2)
     {
 LABEL_25:
       v6 = 24;
@@ -1302,16 +1302,16 @@ LABEL_25:
     return 4;
   }
 
-  if (v5 <= 32815)
+  if (chipId <= 32815)
   {
-    if (v5 == 32789)
+    if (chipId == 32789)
     {
       v7 = 10;
       v6 = 10;
       goto LABEL_27;
     }
 
-    if (v5 != 32800 && v5 != 32807)
+    if (chipId != 32800 && chipId != 32807)
     {
       goto LABEL_25;
     }
@@ -1331,19 +1331,19 @@ LABEL_27:
     }
   }
 
-  if (v5 == 32816)
+  if (chipId == 32816)
   {
     v6 = 16;
     goto LABEL_26;
   }
 
-  v3 = 1;
-  if (v5 != 35157 && v5 != 35168)
+  maxActiveVideoDecoders = 1;
+  if (chipId != 35157 && chipId != 35168)
   {
     goto LABEL_25;
   }
 
-  return v3;
+  return maxActiveVideoDecoders;
 }
 
 - (unsigned)maxActiveScreenEncoders
@@ -1353,17 +1353,17 @@ LABEL_27:
     return 1;
   }
 
-  v4 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 1;
-  if (v4 > 35156)
+  if (chipId > 35156)
   {
-    if (v4 != 35157 && v4 != 35168)
+    if (chipId != 35157 && chipId != 35168)
     {
       return 2;
     }
   }
 
-  else if (((v4 - 0x8000) > 0x20 || ((1 << v4) & 0x10023000BLL) == 0) && (v4 - 28672) >= 2)
+  else if (((chipId - 0x8000) > 0x20 || ((1 << chipId) & 0x10023000BLL) == 0) && (chipId - 28672) >= 2)
   {
     return 2;
   }
@@ -1373,13 +1373,13 @@ LABEL_27:
 
 - (BOOL)supportsCompressedPixelFormat
 {
-  v2 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 0;
-  if (v2 > 33024)
+  if (chipId > 33024)
   {
-    if ((v2 - 33025) > 0x11 || ((1 << (v2 - 1)) & 0x28005) == 0)
+    if ((chipId - 33025) > 0x11 || ((1 << (chipId - 1)) & 0x28005) == 0)
     {
-      v4 = v2 - 35152;
+      v4 = chipId - 35152;
       if (v4 > 0x10 || ((1 << v4) & 0x10021) == 0)
       {
         return 1;
@@ -1387,7 +1387,7 @@ LABEL_27:
     }
   }
 
-  else if (((v2 - 0x8000) > 0x30 || ((1 << v2) & 0x100810023000BLL) == 0) && (v2 - 28672) >= 2)
+  else if (((chipId - 0x8000) > 0x30 || ((1 << chipId) & 0x100810023000BLL) == 0) && (chipId - 28672) >= 2)
   {
     return 1;
   }
@@ -1430,21 +1430,21 @@ uint64_t __50__VCHardwareSettingsEmbedded_hasAppleNeuralEngine__block_invoke(uin
     return +[VCHardwareSettingsEmbedded deviceClass](VCHardwareSettingsEmbedded, "deviceClass") == 3 || +[VCHardwareSettingsEmbedded deviceClass](VCHardwareSettingsEmbedded, "deviceClass") == 4 || +[VCHardwareSettingsEmbedded deviceClass]== 8;
   }
 
-  v3 = [(VCHardwareSettingsEmbedded *)self chipId];
-  if ((v3 - 0x8000) <= 0x15 && ((1 << v3) & 0x23000B) != 0)
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
+  if ((chipId - 0x8000) <= 0x15 && ((1 << chipId) & 0x23000B) != 0)
   {
     return 0;
   }
 
-  if ((v3 - 35152) > 0x10)
+  if ((chipId - 35152) > 0x10)
   {
-    return (v3 - 28672) >= 2;
+    return (chipId - 28672) >= 2;
   }
 
   v4 = 0;
-  if (((1 << (v3 - 80)) & 0x10021) == 0)
+  if (((1 << (chipId - 80)) & 0x10021) == 0)
   {
-    return (v3 - 28672) >= 2;
+    return (chipId - 28672) >= 2;
   }
 
   return v4;
@@ -1457,17 +1457,17 @@ uint64_t __50__VCHardwareSettingsEmbedded_hasAppleNeuralEngine__block_invoke(uin
     return 0;
   }
 
-  v3 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 0;
-  if (v3 > 33024)
+  if (chipId > 33024)
   {
-    if (v3 != 33025 && v3 != 35152 && v3 != 35168)
+    if (chipId != 33025 && chipId != 35152 && chipId != 35168)
     {
       return 1;
     }
   }
 
-  else if (((v3 - 0x8000) > 0x30 || ((1 << v3) & 0x1000100210009) == 0) && v3 != 28672)
+  else if (((chipId - 0x8000) > 0x30 || ((1 << chipId) & 0x1000100210009) == 0) && chipId != 28672)
   {
     return 1;
   }
@@ -1482,21 +1482,21 @@ uint64_t __50__VCHardwareSettingsEmbedded_hasAppleNeuralEngine__block_invoke(uin
     return 1;
   }
 
-  v4 = [(VCHardwareSettingsEmbedded *)self chipId];
-  if ((v4 - 0x8000) <= 3 && v4 != 32770)
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
+  if ((chipId - 0x8000) <= 3 && chipId != 32770)
   {
     return 0;
   }
 
-  if ((v4 - 35152) > 0x10)
+  if ((chipId - 35152) > 0x10)
   {
-    return (v4 - 28672) >= 2;
+    return (chipId - 28672) >= 2;
   }
 
   v3 = 0;
-  if (((1 << (v4 - 80)) & 0x10021) == 0)
+  if (((1 << (chipId - 80)) & 0x10021) == 0)
   {
-    return (v4 - 28672) >= 2;
+    return (chipId - 28672) >= 2;
   }
 
   return v3;
@@ -1537,17 +1537,17 @@ uint64_t __50__VCHardwareSettingsEmbedded_hasAppleNeuralEngine__block_invoke(uin
 
 - (BOOL)isRemoteCameraSenderSupportediPad
 {
-  v2 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 0;
-  if (v2 > 35156)
+  if (chipId > 35156)
   {
-    if (v2 != 35157 && v2 != 35168)
+    if (chipId != 35157 && chipId != 35168)
     {
       return 1;
     }
   }
 
-  else if (((v2 - 0x8000) > 3 || v2 == 32770) && (v2 - 28672) >= 2)
+  else if (((chipId - 0x8000) > 3 || chipId == 32770) && (chipId - 28672) >= 2)
   {
     return 1;
   }
@@ -1558,17 +1558,17 @@ uint64_t __50__VCHardwareSettingsEmbedded_hasAppleNeuralEngine__block_invoke(uin
 - (BOOL)isRemoteCameraSenderSupportediPhone
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(VCHardwareSettingsEmbedded *)self chipId];
-  if (v3 > 32815)
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
+  if (chipId > 32815)
   {
-    if (v3 == 32816 || v3 == 33040)
+    if (chipId == 32816 || chipId == 33040)
     {
       return 1;
     }
 
     v5 = 33025;
 LABEL_8:
-    if (v3 != v5 && VRTraceGetErrorLogLevelForModule() >= 5)
+    if (chipId != v5 && VRTraceGetErrorLogLevelForModule() >= 5)
     {
       v7 = VRTraceErrorLogLevelToCSTR();
       v8 = *MEMORY[0x1E6986650];
@@ -1581,7 +1581,7 @@ LABEL_8:
         v13 = 1024;
         v14 = 1192;
         v15 = 2048;
-        v16 = [(VCHardwareSettingsEmbedded *)self chipId];
+        chipId2 = [(VCHardwareSettingsEmbedded *)self chipId];
         _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Unknown chipID 0x%llx", &v9, 0x26u);
       }
     }
@@ -1590,7 +1590,7 @@ LABEL_8:
   }
 
   v4 = 0;
-  if (v3 != 32784 && v3 != 32789)
+  if (chipId != 32784 && chipId != 32789)
   {
     v5 = 32800;
     goto LABEL_8;
@@ -1631,16 +1631,16 @@ LABEL_8:
     return 0;
   }
 
-  v4 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 0;
-  if (v4 > 33026)
+  if (chipId > 33026)
   {
-    if (v4 == 35168 || v4 == 35157)
+    if (chipId == 35168 || chipId == 35157)
     {
       return result;
     }
 
-    if (v4 != 33027)
+    if (chipId != 33027)
     {
       goto LABEL_15;
     }
@@ -1648,11 +1648,11 @@ LABEL_8:
     return 1;
   }
 
-  if ((v4 - 0x8000) <= 0x27)
+  if ((chipId - 0x8000) <= 0x27)
   {
-    if (((1 << v4) & 0x810003000ALL) == 0)
+    if (((1 << chipId) & 0x810003000ALL) == 0)
     {
-      if (v4 == 0x8000)
+      if (chipId == 0x8000)
       {
         return result;
       }
@@ -1664,7 +1664,7 @@ LABEL_8:
   }
 
 LABEL_8:
-  if ((v4 - 28672) >= 2)
+  if ((chipId - 28672) >= 2)
   {
 LABEL_15:
     if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -1680,7 +1680,7 @@ LABEL_15:
         v11 = 1024;
         v12 = 1231;
         v13 = 2048;
-        v14 = [(VCHardwareSettingsEmbedded *)self chipId];
+        chipId2 = [(VCHardwareSettingsEmbedded *)self chipId];
         _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Unknown chipID 0x%llx", &v7, 0x26u);
       }
     }
@@ -1699,13 +1699,13 @@ LABEL_15:
     return 1;
   }
 
-  v3 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 0;
-  if (v3 > 33024)
+  if (chipId > 33024)
   {
-    if (v3 <= 35156)
+    if (chipId <= 35156)
     {
-      if (v3 == 33025 || v3 == 33027)
+      if (chipId == 33025 || chipId == 33027)
       {
         return 1;
       }
@@ -1713,7 +1713,7 @@ LABEL_15:
       goto LABEL_16;
     }
 
-    if (v3 != 35157 && v3 != 35168)
+    if (chipId != 35157 && chipId != 35168)
     {
       goto LABEL_16;
     }
@@ -1721,20 +1721,20 @@ LABEL_15:
 
   else
   {
-    if ((v3 - 0x8000) > 0x30)
+    if ((chipId - 0x8000) > 0x30)
     {
       goto LABEL_12;
     }
 
-    if (((1 << v3) & 0x1008100230000) != 0)
+    if (((1 << chipId) & 0x1008100230000) != 0)
     {
       return 1;
     }
 
-    if (((1 << v3) & 0xB) == 0)
+    if (((1 << chipId) & 0xB) == 0)
     {
 LABEL_12:
-      if ((v3 - 28672) >= 2)
+      if ((chipId - 28672) >= 2)
       {
 LABEL_16:
         if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -1750,7 +1750,7 @@ LABEL_16:
             v11 = 1024;
             v12 = 1261;
             v13 = 2048;
-            v14 = [(VCHardwareSettingsEmbedded *)self chipId];
+            chipId2 = [(VCHardwareSettingsEmbedded *)self chipId];
             _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Unknown chipID 0x%llx", &v7, 0x26u);
           }
         }
@@ -1770,13 +1770,13 @@ LABEL_16:
     return 1;
   }
 
-  v4 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 0;
-  if (v4 > 32788)
+  if (chipId > 32788)
   {
-    if (v4 <= 32815)
+    if (chipId <= 32815)
     {
-      if (v4 == 32800)
+      if (chipId == 32800)
       {
         return +[VCHardwareSettingsEmbedded deviceClass]!= 3;
       }
@@ -1784,17 +1784,17 @@ LABEL_16:
       return 1;
     }
 
-    if ((v4 - 35152) > 0x10 || ((1 << (v4 - 80)) & 0x10021) == 0)
+    if ((chipId - 35152) > 0x10 || ((1 << (chipId - 80)) & 0x10021) == 0)
     {
       return 1;
     }
   }
 
-  else if (v4 > 32770)
+  else if (chipId > 32770)
   {
-    if (v4 != 32771)
+    if (chipId != 32771)
     {
-      if (v4 == 32784)
+      if (chipId == 32784)
       {
         return +[VCHardwareSettingsEmbedded deviceClass]== 1;
       }
@@ -1803,7 +1803,7 @@ LABEL_16:
     }
   }
 
-  else if ((v4 - 28672) >= 2 && (v4 - 0x8000) >= 2)
+  else if ((chipId - 28672) >= 2 && (chipId - 0x8000) >= 2)
   {
     return 1;
   }
@@ -1818,11 +1818,11 @@ LABEL_16:
     return 32;
   }
 
-  v4 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 4;
-  if (((v4 - 0x8000) > 0x15 || ((1 << v4) & 0x23000B) == 0) && ((v4 - 35152) > 0x10 || ((1 << (v4 - 80)) & 0x10021) == 0))
+  if (((chipId - 0x8000) > 0x15 || ((1 << chipId) & 0x23000B) == 0) && ((chipId - 35152) > 0x10 || ((1 << (chipId - 80)) & 0x10021) == 0))
   {
-    if ((v4 - 28672) >= 2)
+    if ((chipId - 28672) >= 2)
     {
       return 32;
     }
@@ -1885,32 +1885,32 @@ LABEL_12:
 
 - (NSArray)supportedVideoPayloads
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(VCHardwareSettingsEmbedded *)self deviceClass];
-  if ((v4 - 1) >= 4)
+  array = [MEMORY[0x1E695DF70] array];
+  deviceClass = [(VCHardwareSettingsEmbedded *)self deviceClass];
+  if ((deviceClass - 1) >= 4)
   {
-    if (v4 == 6)
+    if (deviceClass == 6)
     {
       v5 = &unk_1F579A5A8;
       goto LABEL_8;
     }
 
-    if (v4 != 8)
+    if (deviceClass != 8)
     {
-      return v3;
+      return array;
     }
   }
 
-  [(NSArray *)v3 addObject:&unk_1F579A590];
-  [(NSArray *)v3 addObject:&unk_1F579A5A8];
+  [(NSArray *)array addObject:&unk_1F579A590];
+  [(NSArray *)array addObject:&unk_1F579A5A8];
   if ([(VCHardwareSettings *)self supportHEVC])
   {
     v5 = &unk_1F579A5C0;
 LABEL_8:
-    [(NSArray *)v3 addObject:v5];
+    [(NSArray *)array addObject:v5];
   }
 
-  return v3;
+  return array;
 }
 
 - (BOOL)limitCameraDownlinkBitrateDuringSharing
@@ -1920,17 +1920,17 @@ LABEL_8:
     return 1;
   }
 
-  v4 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 1;
-  if (v4 > 33024)
+  if (chipId > 33024)
   {
-    if (((v4 - 35152) > 0x10 || ((1 << (v4 - 80)) & 0x10021) == 0) && v4 != 33025)
+    if (((chipId - 35152) > 0x10 || ((1 << (chipId - 80)) & 0x10021) == 0) && chipId != 33025)
     {
       return +[VCHardwareSettingsEmbedded deviceClass]!= 3;
     }
   }
 
-  else if (((v4 - 0x8000) > 0x30 || ((1 << v4) & 0x100810023000BLL) == 0) && (v4 - 28672) >= 2)
+  else if (((chipId - 0x8000) > 0x30 || ((1 << chipId) & 0x100810023000BLL) == 0) && (chipId - 28672) >= 2)
   {
     return +[VCHardwareSettingsEmbedded deviceClass]!= 3;
   }
@@ -1950,21 +1950,21 @@ LABEL_8:
     return 1;
   }
 
-  v4 = [(VCHardwareSettingsEmbedded *)self chipId];
-  if ((v4 - 0x8000) <= 0x20 && ((1 << v4) & 0x10023000BLL) != 0)
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
+  if ((chipId - 0x8000) <= 0x20 && ((1 << chipId) & 0x10023000BLL) != 0)
   {
     return 0;
   }
 
-  if ((v4 - 35152) > 0x10)
+  if ((chipId - 35152) > 0x10)
   {
-    return (v4 - 28672) >= 2;
+    return (chipId - 28672) >= 2;
   }
 
   v3 = 0;
-  if (((1 << (v4 - 80)) & 0x10021) == 0)
+  if (((1 << (chipId - 80)) & 0x10021) == 0)
   {
-    return (v4 - 28672) >= 2;
+    return (chipId - 28672) >= 2;
   }
 
   return v3;
@@ -2022,17 +2022,17 @@ LABEL_8:
 
 - (int64_t)screenShareCapabilitiesIPhone
 {
-  v2 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 1;
-  if (v2 > 35151)
+  if (chipId > 35151)
   {
-    if (v2 != 35152 && v2 != 35168)
+    if (chipId != 35152 && chipId != 35168)
     {
       return 2;
     }
   }
 
-  else if (((v2 - 0x8000) > 0x30 || ((1 << v2) & 0x1000100210009) == 0) && v2 != 28672)
+  else if (((chipId - 0x8000) > 0x30 || ((1 << chipId) & 0x1000100210009) == 0) && chipId != 28672)
   {
     return 2;
   }
@@ -2042,13 +2042,13 @@ LABEL_8:
 
 - (int64_t)screenShareCapabilitiesIPad
 {
-  v2 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 0;
-  if (v2 < 0x8000)
+  if (chipId < 0x8000)
   {
-    if (v2 != 28672)
+    if (chipId != 28672)
     {
-      if (v2 == 28673)
+      if (chipId == 28673)
       {
         return 1;
       }
@@ -2059,12 +2059,12 @@ LABEL_8:
 
   else
   {
-    if ((v2 - 0x8000) <= 0x20 && ((1 << v2) & 0x10003000BLL) != 0)
+    if ((chipId - 0x8000) <= 0x20 && ((1 << chipId) & 0x10003000BLL) != 0)
     {
       return 1;
     }
 
-    if (v2 != 35157 && v2 != 35168)
+    if (chipId != 35157 && chipId != 35168)
     {
       return 2;
     }
@@ -2180,9 +2180,9 @@ LABEL_17:
     goto LABEL_12;
   }
 
-  v5 = [(VCHardwareSettingsEmbedded *)self productType];
+  productType = [(VCHardwareSettingsEmbedded *)self productType];
   v6 = [MEMORY[0x1E695DFD8] setWithObjects:{&unk_1F579A5D8, &unk_1F579A5F0, &unk_1F579A608, &unk_1F579A620, &unk_1F579A638, &unk_1F579A650, &unk_1F579A668, &unk_1F579A680, &unk_1F579A698, &unk_1F579A6B0, &unk_1F579A6C8, &unk_1F579A6E0, &unk_1F579A6F8, &unk_1F579A710, &unk_1F579A728, &unk_1F579A740, &unk_1F579A758, &unk_1F579A770, &unk_1F579A788, &unk_1F579A7A0, &unk_1F579A7B8, &unk_1F579A7D0, &unk_1F579A7E8, &unk_1F579A800, &unk_1F579A818, &unk_1F579A830, &unk_1F579A848, &unk_1F579A860, &unk_1F579A878, &unk_1F579A890, &unk_1F579A8A8, &unk_1F579A8C0, &unk_1F579A8D8, &unk_1F579A8F0, &unk_1F579A908, &unk_1F579A920, &unk_1F579A938, &unk_1F579A950, 0}];
-  if (![v6 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithLong:", v5)}])
+  if (![v6 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithLong:", productType)}])
   {
     LOBYTE(v3) = 1;
     return v3;
@@ -2206,7 +2206,7 @@ LABEL_17:
     v23 = 1024;
     v24 = 1610;
     v25 = 2048;
-    v26 = v5;
+    v26 = productType;
     v27 = 2112;
     v28 = deviceName;
     v10 = " [%s] %s:%d iPad productType=0x%lx, model=%@ is not supported.";
@@ -2245,12 +2245,12 @@ uint64_t __60__VCHardwareSettingsEmbedded_isViewPointCorrectionSupported__block_
 
 - (BOOL)isSmartBrakeSupportedIPhone
 {
-  v2 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 0;
-  v4 = (v2 - 0x8000) > 0x27 || ((1 << v2) & 0x810023000BLL) == 0;
-  if (v4 && ((v2 - 35152) > 0x10 || ((1 << (v2 - 80)) & 0x10021) == 0))
+  v4 = (chipId - 0x8000) > 0x27 || ((1 << chipId) & 0x810023000BLL) == 0;
+  if (v4 && ((chipId - 35152) > 0x10 || ((1 << (chipId - 80)) & 0x10021) == 0))
   {
-    return (v2 - 28672) >= 2;
+    return (chipId - 28672) >= 2;
   }
 
   return result;
@@ -2258,17 +2258,17 @@ uint64_t __60__VCHardwareSettingsEmbedded_isViewPointCorrectionSupported__block_
 
 - (BOOL)isSmartBrakeSupportedIPad
 {
-  v2 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 0;
-  if (v2 > 35156)
+  if (chipId > 35156)
   {
-    if (v2 != 35157 && v2 != 35168)
+    if (chipId != 35157 && chipId != 35168)
     {
       return 1;
     }
   }
 
-  else if (((v2 - 0x8000) > 0x20 || ((1 << v2) & 0x10003000BLL) == 0) && (v2 - 28672) >= 2)
+  else if (((chipId - 0x8000) > 0x20 || ((1 << chipId) & 0x10003000BLL) == 0) && (chipId - 28672) >= 2)
   {
     return 1;
   }
@@ -2278,14 +2278,14 @@ uint64_t __60__VCHardwareSettingsEmbedded_isViewPointCorrectionSupported__block_
 
 - (BOOL)isSmartBrakeSupportedATV
 {
-  v2 = [(VCHardwareSettingsEmbedded *)self chipId];
-  if (v2 > 32799)
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
+  if (chipId > 32799)
   {
     return 1;
   }
 
   v3 = 0;
-  if (v2 != 28672 && v2 != 32785)
+  if (chipId != 28672 && chipId != 32785)
   {
     return 1;
   }
@@ -2295,8 +2295,8 @@ uint64_t __60__VCHardwareSettingsEmbedded_isViewPointCorrectionSupported__block_
 
 - (BOOL)isSmartBrakeSupported
 {
-  v3 = [(VCHardwareSettingsEmbedded *)self deviceClass];
-  switch(v3)
+  deviceClass = [(VCHardwareSettingsEmbedded *)self deviceClass];
+  switch(deviceClass)
   {
     case 4:
 
@@ -2329,17 +2329,17 @@ uint64_t __60__VCHardwareSettingsEmbedded_isViewPointCorrectionSupported__block_
     return 0;
   }
 
-  v3 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 0;
-  if (v3 > 33024)
+  if (chipId > 33024)
   {
-    if (((v3 - 35152) > 0x10 || ((1 << (v3 - 80)) & 0x10021) == 0) && v3 != 33025 && v3 != 33040)
+    if (((chipId - 35152) > 0x10 || ((1 << (chipId - 80)) & 0x10021) == 0) && chipId != 33025 && chipId != 33040)
     {
       return 1;
     }
   }
 
-  else if (((v3 - 0x8000) > 0x30 || ((1 << v3) & 0x100810023000BLL) == 0) && (v3 - 28672) >= 2)
+  else if (((chipId - 0x8000) > 0x30 || ((1 << chipId) & 0x100810023000BLL) == 0) && (chipId - 28672) >= 2)
   {
     return 1;
   }
@@ -2349,19 +2349,19 @@ uint64_t __60__VCHardwareSettingsEmbedded_isViewPointCorrectionSupported__block_
 
 - (unsigned)maxHighTierMLEnhanceParticipants
 {
-  v3 = [(VCHardwareSettingsEmbedded *)self deviceClass];
-  if (v3 != 1)
+  deviceClass = [(VCHardwareSettingsEmbedded *)self deviceClass];
+  if (deviceClass != 1)
   {
-    if (v3 != 4)
+    if (deviceClass != 4)
     {
       return 2;
     }
 
-    v4 = [(VCHardwareSettingsEmbedded *)self chipId];
+    chipId = [(VCHardwareSettingsEmbedded *)self chipId];
     result = 1;
-    if (((v4 - 0x8000) > 0x20 || ((1 << v4) & 0x10023000BLL) == 0) && ((v4 - 35152) > 0x10 || ((1 << (v4 - 80)) & 0x10021) == 0))
+    if (((chipId - 0x8000) > 0x20 || ((1 << chipId) & 0x10023000BLL) == 0) && ((chipId - 35152) > 0x10 || ((1 << (chipId - 80)) & 0x10021) == 0))
     {
-      if ((v4 - 28672) >= 2)
+      if ((chipId - 28672) >= 2)
       {
         return 2;
       }
@@ -2375,11 +2375,11 @@ uint64_t __60__VCHardwareSettingsEmbedded_isViewPointCorrectionSupported__block_
     return result;
   }
 
-  v6 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId2 = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 0;
-  if (v6 <= 33024)
+  if (chipId2 <= 33024)
   {
-    if ((v6 - 0x8000) <= 0x30 && ((1 << v6) & 0x1000100210009) != 0 || v6 == 28672)
+    if ((chipId2 - 0x8000) <= 0x30 && ((1 << chipId2) & 0x1000100210009) != 0 || chipId2 == 28672)
     {
       return result;
     }
@@ -2387,9 +2387,9 @@ uint64_t __60__VCHardwareSettingsEmbedded_isViewPointCorrectionSupported__block_
     return 1;
   }
 
-  if (v6 > 35151)
+  if (chipId2 > 35151)
   {
-    if (v6 == 35152)
+    if (chipId2 == 35152)
     {
       return result;
     }
@@ -2399,7 +2399,7 @@ uint64_t __60__VCHardwareSettingsEmbedded_isViewPointCorrectionSupported__block_
 
   else
   {
-    if (v6 == 33025)
+    if (chipId2 == 33025)
     {
       return result;
     }
@@ -2407,7 +2407,7 @@ uint64_t __60__VCHardwareSettingsEmbedded_isViewPointCorrectionSupported__block_
     v7 = 33040;
   }
 
-  if (v6 != v7)
+  if (chipId2 != v7)
   {
     return 1;
   }
@@ -2417,11 +2417,11 @@ uint64_t __60__VCHardwareSettingsEmbedded_isViewPointCorrectionSupported__block_
 
 - (BOOL)supportsOutOfProcessDecoding
 {
-  v3 = [(VCHardwareSettingsEmbedded *)self deviceClass];
+  deviceClass = [(VCHardwareSettingsEmbedded *)self deviceClass];
   LOBYTE(v4) = 1;
-  if (v3 <= 1)
+  if (deviceClass <= 1)
   {
-    if (v3 == -1)
+    if (deviceClass == -1)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
@@ -2438,9 +2438,9 @@ uint64_t __60__VCHardwareSettingsEmbedded_isViewPointCorrectionSupported__block_
       goto LABEL_22;
     }
 
-    if (v3)
+    if (deviceClass)
     {
-      if (v3 == 1)
+      if (deviceClass == 1)
       {
 
         LOBYTE(v4) = [(VCHardwareSettingsEmbedded *)self iPhoneSupportsOutOfProcessDecoding];
@@ -2464,11 +2464,11 @@ uint64_t __60__VCHardwareSettingsEmbedded_isViewPointCorrectionSupported__block_
 
   else
   {
-    if (v3 <= 4)
+    if (deviceClass <= 4)
     {
-      if (v3 != 2)
+      if (deviceClass != 2)
       {
-        if (v3 == 3)
+        if (deviceClass == 3)
         {
 
           LOBYTE(v4) = [(VCHardwareSettingsEmbedded *)self iPadSupportsOutOfProcessDecoding];
@@ -2482,12 +2482,12 @@ LABEL_22:
       return v4;
     }
 
-    if (v3 == 5)
+    if (deviceClass == 5)
     {
       goto LABEL_22;
     }
 
-    if (v3 == 8)
+    if (deviceClass == 8)
     {
 
       LOBYTE(v4) = [(VCHardwareSettingsEmbedded *)self visionSupportsOutOfProcessDecoding];
@@ -2499,17 +2499,17 @@ LABEL_22:
 
 - (BOOL)iPhoneSupportsOutOfProcessDecoding
 {
-  v2 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 0;
-  if (v2 > 33024)
+  if (chipId > 33024)
   {
-    if (((v2 - 35152) > 0x10 || ((1 << (v2 - 80)) & 0x10021) == 0) && v2 != 33025 && v2 != 33027)
+    if (((chipId - 35152) > 0x10 || ((1 << (chipId - 80)) & 0x10021) == 0) && chipId != 33025 && chipId != 33027)
     {
       return 1;
     }
   }
 
-  else if (((v2 - 0x8000) > 0x30 || ((1 << v2) & 0x100810023000BLL) == 0) && (v2 - 28672) >= 2)
+  else if (((chipId - 0x8000) > 0x30 || ((1 << chipId) & 0x100810023000BLL) == 0) && (chipId - 28672) >= 2)
   {
     return 1;
   }
@@ -2519,17 +2519,17 @@ LABEL_22:
 
 - (BOOL)iPadSupportsOutOfProcessDecoding
 {
-  v2 = [(VCHardwareSettingsEmbedded *)self chipId];
+  chipId = [(VCHardwareSettingsEmbedded *)self chipId];
   result = 0;
-  if (v2 > 35156)
+  if (chipId > 35156)
   {
-    if (v2 != 35157 && v2 != 35168)
+    if (chipId != 35157 && chipId != 35168)
     {
       return 1;
     }
   }
 
-  else if (((v2 - 0x8000) > 0x10 || ((1 << v2) & 0x1000B) == 0) && (v2 - 28672) >= 2)
+  else if (((chipId - 0x8000) > 0x10 || ((1 << chipId) & 0x1000B) == 0) && (chipId - 28672) >= 2)
   {
     return 1;
   }
@@ -2569,8 +2569,8 @@ LABEL_22:
     return 0;
   }
 
-  v3 = [(VCHardwareSettingsEmbedded *)self screenHeight];
-  return v3 - [(VCHardwareSettingsEmbedded *)self screenWidth]> 0x13;
+  screenHeight = [(VCHardwareSettingsEmbedded *)self screenHeight];
+  return screenHeight - [(VCHardwareSettingsEmbedded *)self screenWidth]> 0x13;
 }
 
 - (BOOL)supportsVideoStabilization
@@ -2671,7 +2671,7 @@ LABEL_6:
 {
   v5 = *MEMORY[0x1E69E9840];
   v2 = 136315650;
-  v3 = a1;
+  selfCopy = self;
   OUTLINED_FUNCTION_0();
   v4 = 1810;
   _os_log_error_impl(&dword_1DB56E000, v1, OS_LOG_TYPE_ERROR, " [%s] %s:%d deviceClass kVCDeviceClassTypeInvalid is invalid", &v2, 0x1Cu);

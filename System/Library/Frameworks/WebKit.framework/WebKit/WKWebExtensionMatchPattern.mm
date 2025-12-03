@@ -6,10 +6,10 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    MEMORY[0x1EEE667A8](a1);
+    MEMORY[0x1EEE667A8](self);
   }
 }
 

@@ -1,28 +1,28 @@
 @interface SUINSStringProxy
-- (SUINSStringProxy)initWithImplementation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUINSStringProxy)initWithImplementation:(id)implementation;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SUINSStringProxy
 
-- (SUINSStringProxy)initWithImplementation:(id)a3
+- (SUINSStringProxy)initWithImplementation:(id)implementation
 {
-  v5 = a3;
+  implementationCopy = implementation;
   v9.receiver = self;
   v9.super_class = SUINSStringProxy;
   v6 = [(SUINSStringProxy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->base, a3);
+    objc_storeStrong(&v6->base, implementation);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [SUINSStringProxy allocWithZone:a3];
+  v4 = [SUINSStringProxy allocWithZone:zone];
   v5 = [(SUINSStringImplementation *)self->base copy];
   v6 = [(SUINSStringProxy *)v4 initWithImplementation:v5];
 

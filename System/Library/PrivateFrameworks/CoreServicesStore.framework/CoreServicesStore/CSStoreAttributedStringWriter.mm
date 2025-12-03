@@ -1,25 +1,25 @@
 @interface CSStoreAttributedStringWriter
 + (id)new;
-+ (id)newWithBuffer:(id)a3;
-+ (id)newWithStore:(__CSStore *)a3 buffer:(id)a4;
++ (id)newWithBuffer:(id)buffer;
++ (id)newWithStore:(__CSStore *)store buffer:(id)buffer;
 - (NSAttributedString)attributedString;
 - (id).cxx_construct;
-- (id)init:(__CSStore *)a3 outBuffer:(id)a4;
-- (id)linkURL:(id)a3;
-- (id)linkURL:(id)a3 linkedAttributedText:(id)a4;
-- (id)linkURL:(id)a3 linkedText:(id)a4;
-- (void)beginBitfieldFlags:(id)a3;
-- (void)beginFlags:(id)a3 flags:(unint64_t)a4;
+- (id)init:(__CSStore *)init outBuffer:(id)buffer;
+- (id)linkURL:(id)l;
+- (id)linkURL:(id)l linkedAttributedText:(id)text;
+- (id)linkURL:(id)l linkedText:(id)text;
+- (void)beginBitfieldFlags:(id)flags;
+- (void)beginFlags:(id)flags flags:(unint64_t)a4;
 - (void)endFlags;
-- (void)flag:(unint64_t)a3 name:(id)a4;
-- (void)flag:(unint64_t)a3 name:(id)a4 color:(unsigned int)a5;
-- (void)missingFlag:(unint64_t)a3 name:(id)a4;
-- (void)missingFlag:(unint64_t)a3 name:(id)a4 color:(unsigned int)a5;
-- (void)setLocale:(id)a3;
-- (void)setVisualizer:(id)a3;
-- (void)write:(id)a3 BOOL:(BOOL)a4;
-- (void)write:(id)a3 interval:(double)a4;
-- (void)writeNumber:(id)a3;
+- (void)flag:(unint64_t)flag name:(id)name;
+- (void)flag:(unint64_t)flag name:(id)name color:(unsigned int)color;
+- (void)missingFlag:(unint64_t)flag name:(id)name;
+- (void)missingFlag:(unint64_t)flag name:(id)name color:(unsigned int)color;
+- (void)setLocale:(id)locale;
+- (void)setVisualizer:(id)visualizer;
+- (void)write:(id)write BOOL:(BOOL)l;
+- (void)write:(id)write interval:(double)interval;
+- (void)writeNumber:(id)number;
 @end
 
 @implementation CSStoreAttributedStringWriter
@@ -31,9 +31,9 @@
   return self;
 }
 
-- (void)write:(id)a3 BOOL:(BOOL)a4
+- (void)write:(id)write BOOL:(BOOL)l
 {
-  if (a4)
+  if (l)
   {
     v5 = @"true ";
   }
@@ -43,24 +43,24 @@
     v5 = @"false";
   }
 
-  CSStore2::AttributedStringWriter::string(&self->_writer, a3, &v5->isa);
+  CSStore2::AttributedStringWriter::string(&self->_writer, write, &v5->isa);
 }
 
-- (id)linkURL:(id)a3 linkedText:(id)a4
+- (id)linkURL:(id)l linkedText:(id)text
 {
-  v4 = CSStore2::AttributedStringWriter::link(&self->_writer, a3, a4);
+  v4 = CSStore2::AttributedStringWriter::link(&self->_writer, l, text);
 
   return v4;
 }
 
-- (id)linkURL:(id)a3
+- (id)linkURL:(id)l
 {
-  v3 = CSStore2::AttributedStringWriter::link(&self->_writer, a3, 0);
+  v3 = CSStore2::AttributedStringWriter::link(&self->_writer, l, 0);
 
   return v3;
 }
 
-- (void)write:(id)a3 interval:(double)a4
+- (void)write:(id)write interval:(double)interval
 {
   v7 = objc_autoreleasePoolPush();
   impl = self->_writer.var0.__val_._impl;
@@ -84,7 +84,7 @@
     v9 = CSStore2::AttributedStringWriter::Impl::getDateFormatter(void)const::df;
   }
 
-  v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:a4];
+  v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:interval];
   v11 = [v9 stringFromDate:v10];
   [v10 timeIntervalSinceNow];
   v13 = v12;
@@ -101,8 +101,8 @@
       [v17 setUnitsStyle:5];
       [v17 setCollapsesLargestUnit:1];
       v18 = MEMORY[0x1E695DEE8];
-      v19 = [*(v16 + 3) calendarIdentifier];
-      v20 = [v18 calendarWithIdentifier:v19];
+      calendarIdentifier = [*(v16 + 3) calendarIdentifier];
+      v20 = [v18 calendarWithIdentifier:calendarIdentifier];
 
       if (v20)
       {
@@ -140,10 +140,10 @@
   v30 = ___ZN8CSStore222AttributedStringWriter9timestampEP8NSStringd_block_invoke;
   v31 = &unk_1E7ED34C0;
   v36 = &self->_writer;
-  v37 = a4;
+  intervalCopy = interval;
   v24 = v10;
   v32 = v24;
-  v33 = a3;
+  writeCopy = write;
   v25 = v11;
   v34 = v25;
   v26 = v14;
@@ -154,17 +154,17 @@
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)beginBitfieldFlags:(id)a3
+- (void)beginBitfieldFlags:(id)flags
 {
   impl = self->_writer.var0.__val_._impl;
   if (*(impl + 152) == 1)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void CSStore2::AttributedStringWriter::beginBitfieldFlags(NSString *const __strong _Nonnull)"];
-    [v8 handleFailureInFunction:v9 file:@"CSAttributedStringWriter.mm" lineNumber:840 description:@"Nesting flag lists is not supported. Possible missing call to endFlags()?"];
+    [currentHandler handleFailureInFunction:v9 file:@"CSAttributedStringWriter.mm" lineNumber:840 description:@"Nesting flag lists is not supported. Possible missing call to endFlags()?"];
   }
 
-  v5 = [a3 copy];
+  v5 = [flags copy];
   v6 = v5;
   if (v5)
   {
@@ -181,45 +181,45 @@
   *(impl + 76) = 257;
 }
 
-- (void)writeNumber:(id)a3
+- (void)writeNumber:(id)number
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", a3];
-  CSStore2::AttributedStringWriter::string(&self->_writer, v4);
+  number = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", number];
+  CSStore2::AttributedStringWriter::string(&self->_writer, number);
 }
 
-- (id)linkURL:(id)a3 linkedAttributedText:(id)a4
+- (id)linkURL:(id)l linkedAttributedText:(id)text
 {
-  v4 = CSStore2::AttributedStringWriter::link(&self->_writer, a3, a4);
+  v4 = CSStore2::AttributedStringWriter::link(&self->_writer, l, text);
 
   return v4;
 }
 
-- (void)missingFlag:(unint64_t)a3 name:(id)a4 color:(unsigned int)a5
+- (void)missingFlag:(unint64_t)flag name:(id)name color:(unsigned int)color
 {
-  v5 = a5;
+  colorCopy = color;
   v6 = 1;
-  CSStore2::AttributedStringWriter::missingFlag(self->_writer.var0.__val_._impl, a3, a4, &v5);
+  CSStore2::AttributedStringWriter::missingFlag(self->_writer.var0.__val_._impl, flag, name, &colorCopy);
 }
 
-- (void)missingFlag:(unint64_t)a3 name:(id)a4
+- (void)missingFlag:(unint64_t)flag name:(id)name
 {
   LOBYTE(v4) = 0;
   v5 = 0;
-  CSStore2::AttributedStringWriter::missingFlag(self->_writer.var0.__val_._impl, a3, a4, &v4);
+  CSStore2::AttributedStringWriter::missingFlag(self->_writer.var0.__val_._impl, flag, name, &v4);
 }
 
-- (void)flag:(unint64_t)a3 name:(id)a4 color:(unsigned int)a5
+- (void)flag:(unint64_t)flag name:(id)name color:(unsigned int)color
 {
-  v5 = a5;
+  colorCopy = color;
   v6 = 1;
-  CSStore2::AttributedStringWriter::flag(self->_writer.var0.__val_._impl, a3, a4, &v5);
+  CSStore2::AttributedStringWriter::flag(self->_writer.var0.__val_._impl, flag, name, &colorCopy);
 }
 
-- (void)flag:(unint64_t)a3 name:(id)a4
+- (void)flag:(unint64_t)flag name:(id)name
 {
   LOBYTE(v4) = 0;
   v5 = 0;
-  CSStore2::AttributedStringWriter::flag(self->_writer.var0.__val_._impl, a3, a4, &v4);
+  CSStore2::AttributedStringWriter::flag(self->_writer.var0.__val_._impl, flag, name, &v4);
 }
 
 - (void)endFlags
@@ -228,9 +228,9 @@
   impl = self->_writer.var0.__val_._impl;
   if ((*(impl + 152) & 1) == 0)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v31 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void CSStore2::AttributedStringWriter::endFlags()"];
-    [v30 handleFailureInFunction:v31 file:@"CSAttributedStringWriter.mm" lineNumber:925 description:@"Called endFlags() without calling beginFlags() first."];
+    [currentHandler handleFailureInFunction:v31 file:@"CSAttributedStringWriter.mm" lineNumber:925 description:@"Called endFlags() without calling beginFlags() first."];
   }
 
   v3 = objc_autoreleasePoolPush();
@@ -318,8 +318,8 @@
       }
 
       v14 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@" (%016llx)", *(impl + 8), context];
-      v16 = [v14 initWithString:v15];
+      context = [MEMORY[0x1E696AEC0] stringWithFormat:@" (%016llx)", *(impl + 8), context];
+      v16 = [v14 initWithString:context];
       [(NSAttributedString *)v6 appendAttributedString:v16];
 
 LABEL_32:
@@ -339,15 +339,15 @@ LABEL_26:
 
   if (*(self->_writer.var0.__val_._impl + 168) == 1)
   {
-    v15 = CSStore2::getLog(v3);
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
+    context = CSStore2::getLog(v3);
+    if (os_log_type_enabled(context, OS_LOG_TYPE_DEBUG))
     {
       v29 = *(impl + 8);
       *buf = 134218242;
       v47 = v29;
       v48 = 2114;
       v49 = v34;
-      _os_log_debug_impl(&dword_1B9D5B000, v15, OS_LOG_TYPE_DEBUG, "Eliding empty flags value (%016llx) for title %{public}@", buf, 0x16u);
+      _os_log_debug_impl(&dword_1B9D5B000, context, OS_LOG_TYPE_DEBUG, "Eliding empty flags value (%016llx) for title %{public}@", buf, 0x16u);
     }
 
     v6 = 0;
@@ -462,17 +462,17 @@ LABEL_35:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)beginFlags:(id)a3 flags:(unint64_t)a4
+- (void)beginFlags:(id)flags flags:(unint64_t)a4
 {
   impl = self->_writer.var0.__val_._impl;
   if (*(impl + 152) == 1)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void CSStore2::AttributedStringWriter::beginFlags(NSString *const __strong _Nonnull, uintmax_t)"}];
-    [v10 handleFailureInFunction:v11 file:@"CSAttributedStringWriter.mm" lineNumber:828 description:@"Nesting flag lists is not supported. Possible missing call to endFlags()?"];
+    [currentHandler handleFailureInFunction:v11 file:@"CSAttributedStringWriter.mm" lineNumber:828 description:@"Nesting flag lists is not supported. Possible missing call to endFlags()?"];
   }
 
-  v7 = [a3 copy];
+  v7 = [flags copy];
   v8 = v7;
   if (v7)
   {
@@ -490,18 +490,18 @@ LABEL_35:
   *(impl + 76) = 1;
 }
 
-- (void)setVisualizer:(id)a3
+- (void)setVisualizer:(id)visualizer
 {
-  objc_storeStrong(self->_writer.var0.__val_._impl + 20, a3);
-  v6 = [a3 userInfo];
-  v5 = [v6 objectForKeyedSubscript:@"_CSAttributedStringWriterIsChildUnitWithTitle"];
+  objc_storeStrong(self->_writer.var0.__val_._impl + 20, visualizer);
+  userInfo = [visualizer userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"_CSAttributedStringWriterIsChildUnitWithTitle"];
   *(self->_writer.var0.__val_._impl + 170) = [v5 BOOLValue];
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
-  v7 = a3;
-  v4 = [v7 copy];
+  localeCopy = locale;
+  v4 = [localeCopy copy];
   impl = self->_writer.var0.__val_._impl;
   v6 = *(impl + 3);
   *(impl + 3) = v4;
@@ -514,9 +514,9 @@ LABEL_35:
   return v2;
 }
 
-- (id)init:(__CSStore *)a3 outBuffer:(id)a4
+- (id)init:(__CSStore *)init outBuffer:(id)buffer
 {
-  v7 = a4;
+  bufferCopy = buffer;
   v12.receiver = self;
   v12.super_class = CSStoreAttributedStringWriter;
   v8 = [(CSStoreAttributedStringWriter *)&v12 init];
@@ -546,7 +546,7 @@ LABEL_35:
     *&v9->_writer.var0.__val_._reserved[24] = 0u;
     *&v9->_writer.var0.__val_._reserved[26] = 0u;
     *&v9->_writer.var0.__val_._reserved[28] = 0u;
-    v9->_writer.var0.__val_._reserved[1] = v7;
+    v9->_writer.var0.__val_._reserved[1] = bufferCopy;
     *&v9->_writer.var0.__val_._reserved[2] = 0u;
     *&v9->_writer.var0.__val_._reserved[4] = 0u;
     *&v9->_writer.var0.__val_._reserved[6] = 0u;
@@ -561,23 +561,23 @@ LABEL_35:
     v9->_writer.var0.__val_._reserved[20] = 0;
     LOWORD(v9->_writer.var0.__val_._reserved[21]) = 257;
     BYTE2(v9->_writer.var0.__val_._reserved[21]) = 0;
-    if (a3)
+    if (init)
     {
-      objc_storeStrong(v9->_writer.var0.__val_._reserved, a3);
+      objc_storeStrong(v9->_writer.var0.__val_._reserved, init);
     }
 
     v9->_writer.var0.__val_._impl = v9->_writer.var0.__val_._reserved;
     v9->_writer.__engaged_ = 1;
-    objc_storeStrong(&v9->_attributedString, a4);
+    objc_storeStrong(&v9->_attributedString, buffer);
   }
 
   return v9;
 }
 
-+ (id)newWithBuffer:(id)a3
++ (id)newWithBuffer:(id)buffer
 {
-  v3 = a3;
-  v4 = [[CSStoreAttributedStringWriter alloc] init:0 outBuffer:v3];
+  bufferCopy = buffer;
+  v4 = [[CSStoreAttributedStringWriter alloc] init:0 outBuffer:bufferCopy];
 
   return v4;
 }
@@ -591,10 +591,10 @@ LABEL_35:
   return v4;
 }
 
-+ (id)newWithStore:(__CSStore *)a3 buffer:(id)a4
++ (id)newWithStore:(__CSStore *)store buffer:(id)buffer
 {
-  v5 = a4;
-  v6 = [[CSStoreAttributedStringWriter alloc] init:a3 outBuffer:v5];
+  bufferCopy = buffer;
+  v6 = [[CSStoreAttributedStringWriter alloc] init:store outBuffer:bufferCopy];
 
   return v6;
 }

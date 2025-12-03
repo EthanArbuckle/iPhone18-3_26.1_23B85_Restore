@@ -1,21 +1,21 @@
 @interface CKFeatureSet
-- (BOOL)hasValue:(id)a3 forName:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (CKFeatureSet)initWithCoder:(id)a3;
-- (CKFeatureSet)initWithFeatures:(id)a3;
+- (BOOL)hasValue:(id)value forName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (CKFeatureSet)initWithCoder:(id)coder;
+- (CKFeatureSet)initWithFeatures:(id)features;
 - (NSArray)features;
 - (id)description;
-- (id)valuesForName:(id)a3;
+- (id)valuesForName:(id)name;
 - (unint64_t)hash;
-- (void)addFeatures:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addFeatures:(id)features;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKFeatureSet
 
-- (CKFeatureSet)initWithFeatures:(id)a3
+- (CKFeatureSet)initWithFeatures:(id)features
 {
-  v4 = a3;
+  featuresCopy = features;
   v10.receiver = self;
   v10.super_class = CKFeatureSet;
   v5 = [(CKFeatureSet *)&v10 init];
@@ -25,21 +25,21 @@
     featureMap = v5->_featureMap;
     v5->_featureMap = v6;
 
-    objc_msgSend_addFeatures_(v5, v8, v4);
+    objc_msgSend_addFeatures_(v5, v8, featuresCopy);
   }
 
   return v5;
 }
 
-- (void)addFeatures:(id)a3
+- (void)addFeatures:(id)features
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  featuresCopy = features;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v27, v31, 16);
+  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(featuresCopy, v5, &v27, v31, 16);
   if (v6)
   {
     v9 = v6;
@@ -50,7 +50,7 @@
       {
         if (*v28 != v10)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(featuresCopy);
         }
 
         v12 = *(*(&v27 + 1) + 8 * i);
@@ -71,7 +71,7 @@
         objc_msgSend_setObject_forKeyedSubscript_(v21, v25, v16, v24);
       }
 
-      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v7, &v27, v31, 16);
+      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(featuresCopy, v7, &v27, v31, 16);
     }
 
     while (v9);
@@ -83,16 +83,16 @@
 - (NSArray)features
 {
   v45 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_features)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_features)
   {
     v3 = objc_opt_new();
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v6 = objc_msgSend_allValues(v2->_featureMap, v4, v5);
+    v6 = objc_msgSend_allValues(selfCopy->_featureMap, v4, v5);
     v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v38, v44, 16);
     if (v10)
     {
@@ -155,32 +155,32 @@
     v42[1] = v25;
     v27 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v26, v42, 2);
     v29 = objc_msgSend_sortedArrayUsingDescriptors_(v3, v28, v27);
-    features = v2->_features;
-    v2->_features = v29;
+    features = selfCopy->_features;
+    selfCopy->_features = v29;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v31 = v2->_features;
+  v31 = selfCopy->_features;
   v32 = *MEMORY[0x1E69E9840];
 
   return v31;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_features(self, v5, v6);
   v8 = NSStringFromSelector(sel_features);
-  objc_msgSend_encodeObject_forKey_(v10, v9, v7, v8);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, v7, v8);
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKFeatureSet)initWithCoder:(id)a3
+- (CKFeatureSet)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = CKFeatureSet;
   v5 = [(CKFeatureSet *)&v22 init];
@@ -194,7 +194,7 @@
     v11 = objc_opt_class();
     v13 = objc_msgSend_setWithObjects_(v6, v12, v7, v8, v9, v10, v11, 0);
     v14 = NSStringFromSelector(sel_features);
-    v16 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v15, v13, v14);
+    v16 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v15, v13, v14);
     v17 = *(v5 + 1);
     *(v5 + 1) = v16;
 
@@ -208,11 +208,11 @@
   return v5;
 }
 
-- (id)valuesForName:(id)a3
+- (id)valuesForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v7 = objc_msgSend_featureMap(self, v5, v6);
-  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, v4);
+  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, nameCopy);
 
   v12 = objc_msgSend_allKeys(v9, v10, v11);
   v13 = v12;
@@ -231,26 +231,26 @@
   return v14;
 }
 
-- (BOOL)hasValue:(id)a3 forName:(id)a4
+- (BOOL)hasValue:(id)value forName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  valueCopy = value;
   v10 = objc_msgSend_featureMap(self, v8, v9);
-  v12 = objc_msgSend_objectForKeyedSubscript_(v10, v11, v6);
+  v12 = objc_msgSend_objectForKeyedSubscript_(v10, v11, nameCopy);
 
-  v14 = objc_msgSend_valueForKey_(v12, v13, v7);
+  v14 = objc_msgSend_valueForKey_(v12, v13, valueCopy);
 
   return v14 != 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     v9 = objc_msgSend_features(self, v7, v8);
-    v12 = objc_msgSend_features(v4, v10, v11);
+    v12 = objc_msgSend_features(equalCopy, v10, v11);
     isEqual = objc_msgSend_isEqual_(v9, v13, v12);
   }
 

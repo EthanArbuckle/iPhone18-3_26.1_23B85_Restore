@@ -1,6 +1,6 @@
 @interface CommandHandler
 - (BOOL)isPreviouslyHandledCommand;
-- (CommandHandler)initWithParams:(id)a3 provider:(id)a4;
+- (CommandHandler)initWithParams:(id)params provider:(id)provider;
 - (FindBaseServiceProvider)provider;
 - (NSDictionary)ackDataForCommand;
 - (NSString)commandID;
@@ -9,25 +9,25 @@
 - (void)_beginXPCTransaction;
 - (void)_endXPCTransaction;
 - (void)dealloc;
-- (void)didHandleCommandWithAckData:(id)a3;
+- (void)didHandleCommandWithAckData:(id)data;
 - (void)executeCommand;
-- (void)sendAckWithCompletion:(id)a3;
+- (void)sendAckWithCompletion:(id)completion;
 @end
 
 @implementation CommandHandler
 
-- (CommandHandler)initWithParams:(id)a3 provider:(id)a4
+- (CommandHandler)initWithParams:(id)params provider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  paramsCopy = params;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = CommandHandler;
   v8 = [(CommandHandler *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(CommandHandler *)v8 setCommandParams:v6];
-    [(CommandHandler *)v9 setProvider:v7];
+    [(CommandHandler *)v8 setCommandParams:paramsCopy];
+    [(CommandHandler *)v9 setProvider:providerCopy];
   }
 
   return v9;
@@ -73,30 +73,30 @@
 
 - (NSString)commandName
 {
-  v2 = [(CommandHandler *)self commandParams];
-  v3 = [v2 objectForKeyedSubscript:@"cmd"];
+  commandParams = [(CommandHandler *)self commandParams];
+  v3 = [commandParams objectForKeyedSubscript:@"cmd"];
 
   return v3;
 }
 
 - (NSString)commandID
 {
-  v2 = [(CommandHandler *)self commandParams];
-  v3 = [v2 objectForKeyedSubscript:@"id"];
+  commandParams = [(CommandHandler *)self commandParams];
+  v3 = [commandParams objectForKeyedSubscript:@"id"];
 
   return v3;
 }
 
 - (BOOL)isPreviouslyHandledCommand
 {
-  v3 = [(CommandHandler *)self commandName];
-  v4 = [NSString stringWithFormat:@"command-%@-id", v3];
+  commandName = [(CommandHandler *)self commandName];
+  v4 = [NSString stringWithFormat:@"command-%@-id", commandName];
 
   v5 = [FMPreferencesUtil stringForKey:v4 inDomain:@"com.apple.icloud.fmflocatord"];
   if (v5)
   {
-    v6 = [(CommandHandler *)self commandID];
-    v7 = [v6 isEqualToString:v5];
+    commandID = [(CommandHandler *)self commandID];
+    v7 = [commandID isEqualToString:v5];
   }
 
   else
@@ -109,30 +109,30 @@
 
 - (NSDictionary)ackDataForCommand
 {
-  v2 = [(CommandHandler *)self commandName];
-  v3 = [NSString stringWithFormat:@"command-%@-ackData", v2];
+  commandName = [(CommandHandler *)self commandName];
+  v3 = [NSString stringWithFormat:@"command-%@-ackData", commandName];
 
   v4 = [FMPreferencesUtil dictionaryForKey:v3 inDomain:@"com.apple.icloud.fmflocatord"];
 
   return v4;
 }
 
-- (void)didHandleCommandWithAckData:(id)a3
+- (void)didHandleCommandWithAckData:(id)data
 {
-  v4 = a3;
-  v5 = [(CommandHandler *)self commandName];
-  v11 = [NSString stringWithFormat:@"command-%@-id", v5];
+  dataCopy = data;
+  commandName = [(CommandHandler *)self commandName];
+  v11 = [NSString stringWithFormat:@"command-%@-id", commandName];
 
-  v6 = [(CommandHandler *)self commandName];
-  v7 = [NSString stringWithFormat:@"command-%@-ackData", v6];
+  commandName2 = [(CommandHandler *)self commandName];
+  v7 = [NSString stringWithFormat:@"command-%@-ackData", commandName2];
 
-  v8 = [(CommandHandler *)self commandID];
-  [FMPreferencesUtil setString:v8 forKey:v11 inDomain:@"com.apple.icloud.fmflocatord"];
+  commandID = [(CommandHandler *)self commandID];
+  [FMPreferencesUtil setString:commandID forKey:v11 inDomain:@"com.apple.icloud.fmflocatord"];
 
-  v9 = [(CommandHandler *)self commandID];
-  if (v9)
+  commandID2 = [(CommandHandler *)self commandID];
+  if (commandID2)
   {
-    v10 = v4;
+    v10 = dataCopy;
   }
 
   else
@@ -143,18 +143,18 @@
   [FMPreferencesUtil setDictionary:v10 forKey:v7 inDomain:@"com.apple.icloud.fmflocatord"];
 }
 
-- (void)sendAckWithCompletion:(id)a3
+- (void)sendAckWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 1);
+    (*(completion + 2))(completion, 1);
   }
 }
 
 - (id)loggingID
 {
-  v3 = [(CommandHandler *)self commandName];
-  v4 = [NSString stringWithFormat:@"Command-%@(0x%X)", v3, self];
+  commandName = [(CommandHandler *)self commandName];
+  v4 = [NSString stringWithFormat:@"Command-%@(0x%X)", commandName, self];
 
   return v4;
 }

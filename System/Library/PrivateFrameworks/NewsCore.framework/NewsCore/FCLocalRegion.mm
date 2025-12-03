@@ -1,39 +1,39 @@
 @interface FCLocalRegion
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)rect;
 - (CGRect)rectForEntireRegion;
 - (CLLocationCoordinate2D)centerLocationCoordinateForEntireRegion;
 - (FCLocalRegion)init;
-- (FCLocalRegion)initWithDictionary:(id)a3;
+- (FCLocalRegion)initWithDictionary:(id)dictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)addLocalArea:(id)a3;
+- (void)addLocalArea:(id)area;
 @end
 
 @implementation FCLocalRegion
 
-- (FCLocalRegion)initWithDictionary:(id)a3
+- (FCLocalRegion)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = FCLocalRegion;
   v5 = [(FCLocalRegion *)&v23 init];
   if (v5)
   {
-    v6 = FCAppConfigurationStringValue(v4, @"id", 0);
+    v6 = FCAppConfigurationStringValue(dictionaryCopy, @"id", 0);
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = FCAppConfigurationStringValue(v4, @"name", 0);
+    v8 = FCAppConfigurationStringValue(dictionaryCopy, @"name", 0);
     name = v5->_name;
     v5->_name = v8;
 
-    v10 = FCAppConfigurationArrayValueWithDefaultValue(v4, @"tagIds", 0);
+    v10 = FCAppConfigurationArrayValueWithDefaultValue(dictionaryCopy, @"tagIds", 0);
     autoFavoriteTagIDs = v5->_autoFavoriteTagIDs;
     v5->_autoFavoriteTagIDs = v10;
 
     v12 = +[FCRestrictions sharedInstance];
-    v13 = FCAppConfigurationArrayValueWithDefaultValue(v4, @"localVersionedTags", 0);
+    v13 = FCAppConfigurationArrayValueWithDefaultValue(dictionaryCopy, @"localVersionedTags", 0);
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __36__FCLocalRegion_initWithDictionary___block_invoke;
@@ -109,15 +109,15 @@ id __36__FCLocalRegion_initWithDictionary___block_invoke(uint64_t a1, void *a2)
   return [v3 stringWithFormat:@"%@: id: %@, name: %@, autoFavoriteTagIDs: %@, localVersionTagIDs: %@", v4, identifier, self->_name, autoFavoriteTagIDs, self->_localVersionedTagIDs];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -135,9 +135,9 @@ id __36__FCLocalRegion_initWithDictionary___block_invoke(uint64_t a1, void *a2)
 
   if (v6)
   {
-    v7 = [(FCLocalRegion *)self identifier];
-    v8 = [v6 identifier];
-    v9 = [v7 isEqual:v8];
+    identifier = [(FCLocalRegion *)self identifier];
+    identifier2 = [v6 identifier];
+    v9 = [identifier isEqual:identifier2];
   }
 
   else
@@ -150,24 +150,24 @@ id __36__FCLocalRegion_initWithDictionary___block_invoke(uint64_t a1, void *a2)
 
 - (unint64_t)hash
 {
-  v2 = [(FCLocalRegion *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(FCLocalRegion *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (void)addLocalArea:(id)a3
+- (void)addLocalArea:(id)area
 {
-  v4 = a3;
-  v5 = [(FCLocalRegion *)self areas];
-  [v5 addObject:v4];
+  areaCopy = area;
+  areas = [(FCLocalRegion *)self areas];
+  [areas addObject:areaCopy];
 }
 
 - (CGRect)rectForEntireRegion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [(FCLocalRegion *)self areas];
-  if (![v3 count])
+  areas = [(FCLocalRegion *)self areas];
+  if (![areas count])
   {
 
     goto LABEL_21;
@@ -183,7 +183,7 @@ LABEL_21:
     v33 = 3221225472;
     v34 = __36__FCLocalRegion_rectForEntireRegion__block_invoke;
     v35 = &unk_1E7C37350;
-    v36 = self;
+    selfCopy = self;
     goto LABEL_24;
   }
 
@@ -191,8 +191,8 @@ LABEL_21:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [(FCLocalRegion *)self areas];
-  v6 = [v5 countByEnumeratingWithState:&v28 objects:v37 count:16];
+  areas2 = [(FCLocalRegion *)self areas];
+  v6 = [areas2 countByEnumeratingWithState:&v28 objects:v37 count:16];
   if (v6)
   {
     v7 = v6;
@@ -207,7 +207,7 @@ LABEL_21:
       {
         if (*v29 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(areas2);
         }
 
         v14 = *(*(&v28 + 1) + 8 * i);
@@ -243,7 +243,7 @@ LABEL_21:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v28 objects:v37 count:16];
+      v7 = [areas2 countByEnumeratingWithState:&v28 objects:v37 count:16];
     }
 
     while (v7);

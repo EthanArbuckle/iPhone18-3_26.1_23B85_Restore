@@ -1,23 +1,23 @@
 @interface TVRPasscodeField
 - (CGSize)_contentSize;
 - (NSString)text;
-- (TVRPasscodeField)initWithFrame:(CGRect)a3;
-- (double)_contentWidthWithDotSize:(double)a3 entrySpacing:(double)a4 groupSpacing:(double)a5;
+- (TVRPasscodeField)initWithFrame:(CGRect)frame;
+- (double)_contentWidthWithDotSize:(double)size entrySpacing:(double)spacing groupSpacing:(double)groupSpacing;
 - (void)clear;
 - (void)deleteBackward;
-- (void)drawRect:(CGRect)a3;
-- (void)insertText:(id)a3;
-- (void)setPINEntryattributes:(id)a3;
-- (void)setText:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)insertText:(id)text;
+- (void)setPINEntryattributes:(id)entryattributes;
+- (void)setText:(id)text;
 @end
 
 @implementation TVRPasscodeField
 
-- (TVRPasscodeField)initWithFrame:(CGRect)a3
+- (TVRPasscodeField)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = TVRPasscodeField;
-  v3 = [(TVRPasscodeField *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TVRPasscodeField *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277D6C510]) initWithDigitCount:4];
@@ -28,8 +28,8 @@
     mutablePasscode = v3->_mutablePasscode;
     v3->_mutablePasscode = v6;
 
-    v8 = [MEMORY[0x277D75348] clearColor];
-    [(TVRPasscodeField *)v3 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(TVRPasscodeField *)v3 setBackgroundColor:clearColor];
 
     [(TVRPasscodeField *)v3 setContentMode:3];
   }
@@ -37,9 +37,9 @@
   return v3;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(TVRPasscodeField *)self bounds:a3.origin.x];
+  [(TVRPasscodeField *)self bounds:rect.origin.x];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -96,8 +96,8 @@
   v22 = ;
   CGContextSetFillColorWithColor(CurrentContext, [v22 CGColor]);
 
-  v40 = [(TVRCPINEntryAttributes *)self->_PINEntryattributes numberOfDigitGroups];
-  if (v40)
+  numberOfDigitGroups = [(TVRCPINEntryAttributes *)self->_PINEntryattributes numberOfDigitGroups];
+  if (numberOfDigitGroups)
   {
     v23 = 0;
     v24 = 0;
@@ -147,7 +147,7 @@
       ++v23;
     }
 
-    while (v23 != v40);
+    while (v23 != numberOfDigitGroups);
   }
 }
 
@@ -158,15 +158,15 @@
   return v2;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v4 = &stru_287E6AEF8;
-  if (a3)
+  textCopy = &stru_287E6AEF8;
+  if (text)
   {
-    v4 = a3;
+    textCopy = text;
   }
 
-  v8 = v4;
+  v8 = textCopy;
   if ([(TVRCPINEntryAttributes *)self->_PINEntryattributes totalDigitCount]&& (v5 = [(__CFString *)v8 length], v5 > [(TVRCPINEntryAttributes *)self->_PINEntryattributes totalDigitCount]))
   {
     v6 = [(__CFString *)v8 substringToIndex:[(TVRCPINEntryAttributes *)self->_PINEntryattributes totalDigitCount]- 1];
@@ -194,15 +194,15 @@
   [(TVRPasscodeField *)self setNeedsDisplay];
 }
 
-- (void)setPINEntryattributes:(id)a3
+- (void)setPINEntryattributes:(id)entryattributes
 {
-  v4 = a3;
-  if (self->_PINEntryattributes != v4)
+  entryattributesCopy = entryattributes;
+  if (self->_PINEntryattributes != entryattributesCopy)
   {
-    v7 = v4;
-    if (v4)
+    v7 = entryattributesCopy;
+    if (entryattributesCopy)
     {
-      v5 = v4;
+      v5 = entryattributesCopy;
     }
 
     else
@@ -214,7 +214,7 @@
     self->_PINEntryattributes = v5;
 
     [(TVRPasscodeField *)self setNeedsDisplay];
-    v4 = v7;
+    entryattributesCopy = v7;
   }
 }
 
@@ -227,21 +227,21 @@
   return result;
 }
 
-- (double)_contentWidthWithDotSize:(double)a3 entrySpacing:(double)a4 groupSpacing:(double)a5
+- (double)_contentWidthWithDotSize:(double)size entrySpacing:(double)spacing groupSpacing:(double)groupSpacing
 {
-  v9 = [(TVRCPINEntryAttributes *)self->_PINEntryattributes totalDigitCount];
-  v10 = [(TVRCPINEntryAttributes *)self->_PINEntryattributes numberOfDigitGroups];
-  return (v9 - v10) * a4 + v9 * a3 + (v10 - 1) * a5;
+  totalDigitCount = [(TVRCPINEntryAttributes *)self->_PINEntryattributes totalDigitCount];
+  numberOfDigitGroups = [(TVRCPINEntryAttributes *)self->_PINEntryattributes numberOfDigitGroups];
+  return (totalDigitCount - numberOfDigitGroups) * spacing + totalDigitCount * size + (numberOfDigitGroups - 1) * groupSpacing;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   v4 = [(NSMutableString *)self->_mutablePasscode length];
-  v5 = [v6 length];
-  if (-[TVRPasscodeField isEnabled](self, "isEnabled") && [v6 length] && v5 + v4 <= -[TVRCPINEntryAttributes totalDigitCount](self->_PINEntryattributes, "totalDigitCount"))
+  v5 = [textCopy length];
+  if (-[TVRPasscodeField isEnabled](self, "isEnabled") && [textCopy length] && v5 + v4 <= -[TVRCPINEntryAttributes totalDigitCount](self->_PINEntryattributes, "totalDigitCount"))
   {
-    [(NSMutableString *)self->_mutablePasscode appendString:v6];
+    [(NSMutableString *)self->_mutablePasscode appendString:textCopy];
     [(TVRPasscodeField *)self setNeedsDisplay];
     [(TVRPasscodeField *)self sendActionsForControlEvents:0x20000];
   }

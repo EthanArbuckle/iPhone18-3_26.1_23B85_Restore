@@ -1,47 +1,47 @@
 @interface MUILastSeenBucketHelper
-- (id)lastSeenDatesForBucket:(int64_t)a3;
-- (void)categoryCloudStorage:(id)a3 didChangeLastSeenDate:(id)a4 lastSeenDisplayDate:(id)a5 forCategoryType:(id)a6 inMailboxWithExternalURL:(id)a7 originator:(unint64_t)a8;
+- (id)lastSeenDatesForBucket:(int64_t)bucket;
+- (void)categoryCloudStorage:(id)storage didChangeLastSeenDate:(id)date lastSeenDisplayDate:(id)displayDate forCategoryType:(id)type inMailboxWithExternalURL:(id)l originator:(unint64_t)originator;
 - (void)clearSessionState;
-- (void)messageRepository:(id)a3 query:(id)a4 countDidChange:(int64_t)a5;
-- (void)setlastSeenDates:(id)a3 forBucket:(int64_t)a4;
-- (void)updateLastSeenDates:(id)a3 forMailboxes:(id)a4 bucket:(int64_t)a5;
-- (void)updateWithMailboxes:(id)a3;
+- (void)messageRepository:(id)repository query:(id)query countDidChange:(int64_t)change;
+- (void)setlastSeenDates:(id)dates forBucket:(int64_t)bucket;
+- (void)updateLastSeenDates:(id)dates forMailboxes:(id)mailboxes bucket:(int64_t)bucket;
+- (void)updateWithMailboxes:(id)mailboxes;
 @end
 
 @implementation MUILastSeenBucketHelper
 
-- (void)updateWithMailboxes:(id)a3
+- (void)updateWithMailboxes:(id)mailboxes
 {
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](mailboxes);
   MEMORY[0x277D82BE0](self);
   sub_214A63684();
   v4 = sub_214CCF7E4();
   MUILastSeenBucketHelper.update(mailboxes:)(v4);
 
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](mailboxes);
   MEMORY[0x277D82BD8](self);
 }
 
-- (void)messageRepository:(id)a3 query:(id)a4 countDidChange:(int64_t)a5
+- (void)messageRepository:(id)repository query:(id)query countDidChange:(int64_t)change
 {
-  MEMORY[0x277D82BE0](a3);
-  MEMORY[0x277D82BE0](a4);
+  MEMORY[0x277D82BE0](repository);
+  MEMORY[0x277D82BE0](query);
   MEMORY[0x277D82BE0](self);
-  MUILastSeenBucketHelper.messageRepository(_:query:countDidChange:)(a3, a4, a5);
+  MUILastSeenBucketHelper.messageRepository(_:query:countDidChange:)(repository, query, change);
   MEMORY[0x277D82BD8](self);
-  MEMORY[0x277D82BD8](a4);
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](query);
+  MEMORY[0x277D82BD8](repository);
 }
 
-- (void)categoryCloudStorage:(id)a3 didChangeLastSeenDate:(id)a4 lastSeenDisplayDate:(id)a5 forCategoryType:(id)a6 inMailboxWithExternalURL:(id)a7 originator:(unint64_t)a8
+- (void)categoryCloudStorage:(id)storage didChangeLastSeenDate:(id)date lastSeenDisplayDate:(id)displayDate forCategoryType:(id)type inMailboxWithExternalURL:(id)l originator:(unint64_t)originator
 {
-  v41 = self;
-  v33 = a3;
-  v42 = a4;
-  v38 = a5;
-  v39 = a6;
-  v40 = a7;
-  v19 = a8;
+  selfCopy = self;
+  storageCopy = storage;
+  dateCopy = date;
+  displayDateCopy = displayDate;
+  typeCopy = type;
+  lCopy = l;
+  originatorCopy = originator;
   v25 = 0;
   v20 = sub_214CCD154();
   v21 = *(v20 - 8);
@@ -59,21 +59,21 @@
   MEMORY[0x28223BE20](v28);
   v32 = v14 - v31;
   v34 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CA35560) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
-  MEMORY[0x28223BE20](v33);
+  MEMORY[0x28223BE20](storageCopy);
   v35 = v14 - v34;
   v36 = (v8 + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20](v9);
   v37 = v14 - v36;
   MEMORY[0x277D82BE0](v10);
-  MEMORY[0x277D82BE0](v42);
-  MEMORY[0x277D82BE0](v38);
-  MEMORY[0x277D82BE0](v39);
-  MEMORY[0x277D82BE0](v40);
-  v11 = MEMORY[0x277D82BE0](v41);
-  if (v42)
+  MEMORY[0x277D82BE0](dateCopy);
+  MEMORY[0x277D82BE0](displayDateCopy);
+  MEMORY[0x277D82BE0](typeCopy);
+  MEMORY[0x277D82BE0](lCopy);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
+  if (dateCopy)
   {
-    v18 = v42;
-    v17 = v42;
+    v18 = dateCopy;
+    v17 = dateCopy;
     sub_214CCD224();
     (*(v29 + 32))(v37, v32, v28);
     (*(v29 + 56))(v37, 0, 1, v28);
@@ -85,10 +85,10 @@
     (*(v29 + 56))(v37, 1, 1, v28, v11);
   }
 
-  if (v38)
+  if (displayDateCopy)
   {
-    v16 = v38;
-    v15 = v38;
+    v16 = displayDateCopy;
+    v15 = displayDateCopy;
     sub_214CCD224();
     (*(v29 + 32))(v35, v32, v28);
     (*(v29 + 56))(v35, 0, 1, v28);
@@ -100,10 +100,10 @@
     (*(v29 + 56))(v35, 1, 1, v28, v12);
   }
 
-  if (v40)
+  if (lCopy)
   {
-    v14[1] = v40;
-    v14[0] = v40;
+    v14[1] = lCopy;
+    v14[0] = lCopy;
     sub_214CCD124();
     (*(v21 + 32))(v27, v24, v20);
     (*(v21 + 56))(v27, 0, 1, v20);
@@ -115,13 +115,13 @@
     (*(v21 + 56))(v27, 1, 1, v20, v13);
   }
 
-  MUILastSeenBucketHelper.categoryCloudStorage(_:didChangeLastSeenDate:lastSeenDisplay:forCategoryType:inMailboxWithExternalURL:originator:)(v33, v37, v35, v39, v27, v19);
+  MUILastSeenBucketHelper.categoryCloudStorage(_:didChangeLastSeenDate:lastSeenDisplay:forCategoryType:inMailboxWithExternalURL:originator:)(storageCopy, v37, v35, typeCopy, v27, originatorCopy);
   sub_214B6807C(v27);
   sub_214A871C0(v35);
   sub_214A871C0(v37);
-  MEMORY[0x277D82BD8](v41);
-  MEMORY[0x277D82BD8](v39);
-  MEMORY[0x277D82BD8](v33);
+  MEMORY[0x277D82BD8](selfCopy);
+  MEMORY[0x277D82BD8](typeCopy);
+  MEMORY[0x277D82BD8](storageCopy);
 }
 
 - (void)clearSessionState
@@ -131,36 +131,36 @@
   MEMORY[0x277D82BD8](self);
 }
 
-- (id)lastSeenDatesForBucket:(int64_t)a3
+- (id)lastSeenDatesForBucket:(int64_t)bucket
 {
   MEMORY[0x277D82BE0](self);
-  v6 = MUILastSeenBucketHelper.lastSeenDates(for:)(a3);
+  v6 = MUILastSeenBucketHelper.lastSeenDates(for:)(bucket);
   MEMORY[0x277D82BD8](self);
 
   return v6;
 }
 
-- (void)setlastSeenDates:(id)a3 forBucket:(int64_t)a4
+- (void)setlastSeenDates:(id)dates forBucket:(int64_t)bucket
 {
-  MEMORY[0x277D82BE0](a3);
+  MEMORY[0x277D82BE0](dates);
   MEMORY[0x277D82BE0](self);
-  MUILastSeenBucketHelper.setlastSeenDates(_:for:)(a3, a4);
+  MUILastSeenBucketHelper.setlastSeenDates(_:for:)(dates, bucket);
   MEMORY[0x277D82BD8](self);
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](dates);
 }
 
-- (void)updateLastSeenDates:(id)a3 forMailboxes:(id)a4 bucket:(int64_t)a5
+- (void)updateLastSeenDates:(id)dates forMailboxes:(id)mailboxes bucket:(int64_t)bucket
 {
-  MEMORY[0x277D82BE0](a3);
-  MEMORY[0x277D82BE0](a4);
+  MEMORY[0x277D82BE0](dates);
+  MEMORY[0x277D82BE0](mailboxes);
   MEMORY[0x277D82BE0](self);
   sub_214A63684();
   v7 = sub_214CCF7E4();
-  MUILastSeenBucketHelper.updateLastSeenDates(_:forMailboxes:bucket:)(a3, v7, a5);
+  MUILastSeenBucketHelper.updateLastSeenDates(_:forMailboxes:bucket:)(dates, v7, bucket);
 
-  MEMORY[0x277D82BD8](a4);
+  MEMORY[0x277D82BD8](mailboxes);
   MEMORY[0x277D82BD8](self);
-  MEMORY[0x277D82BD8](a3);
+  MEMORY[0x277D82BD8](dates);
 }
 
 @end

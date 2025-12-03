@@ -2,25 +2,25 @@
 - (BOOL)isKeyboardDockDisabled;
 - (BOOL)suppressKeyboardFocusRequests;
 - (UIEdgeInsets)minimumKeyboardPadding;
-- (void)scene:(id)a3 didUpdateSettings:(id)a4;
+- (void)scene:(id)scene didUpdateSettings:(id)settings;
 @end
 
 @implementation _UIApplicationSceneKeyboardClientComponent
 
 - (BOOL)suppressKeyboardFocusRequests
 {
-  v2 = [(FBSSceneComponent *)self clientScene];
-  v3 = [v2 settings];
-  v4 = [v3 suppressKeyboardFocusRequests];
+  clientScene = [(FBSSceneComponent *)self clientScene];
+  settings = [clientScene settings];
+  suppressKeyboardFocusRequests = [settings suppressKeyboardFocusRequests];
 
-  return v4;
+  return suppressKeyboardFocusRequests;
 }
 
 - (UIEdgeInsets)minimumKeyboardPadding
 {
-  v2 = [(FBSSceneComponent *)self clientScene];
-  v3 = [v2 settings];
-  [v3 minimumKeyboardPadding];
+  clientScene = [(FBSSceneComponent *)self clientScene];
+  settings = [clientScene settings];
+  [settings minimumKeyboardPadding];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -39,29 +39,29 @@
 
 - (BOOL)isKeyboardDockDisabled
 {
-  v2 = [(FBSSceneComponent *)self clientScene];
-  v3 = [v2 settings];
-  v4 = [v3 keyboardDockDisabled];
+  clientScene = [(FBSSceneComponent *)self clientScene];
+  settings = [clientScene settings];
+  keyboardDockDisabled = [settings keyboardDockDisabled];
 
-  return v4;
+  return keyboardDockDisabled;
 }
 
-- (void)scene:(id)a3 didUpdateSettings:(id)a4
+- (void)scene:(id)scene didUpdateSettings:(id)settings
 {
-  v12 = a4;
-  v5 = [v12 settingsDiff];
-  v6 = [v5 containsProperty:sel_hardwareKeyboardExclusivityIdentifier];
+  settingsCopy = settings;
+  settingsDiff = [settingsCopy settingsDiff];
+  v6 = [settingsDiff containsProperty:sel_hardwareKeyboardExclusivityIdentifier];
 
   if (v6)
   {
-    v7 = [v12 settings];
-    v8 = [v7 hardwareKeyboardExclusivityIdentifier];
+    settings = [settingsCopy settings];
+    hardwareKeyboardExclusivityIdentifier = [settings hardwareKeyboardExclusivityIdentifier];
 
-    v9 = [(FBSSceneComponent *)self clientScene];
-    v10 = [(UIScene *)UIWindowScene _sceneForFBSScene:v9];
+    clientScene = [(FBSSceneComponent *)self clientScene];
+    v10 = [(UIScene *)UIWindowScene _sceneForFBSScene:clientScene];
 
-    v11 = [v10 keyboardSceneDelegate];
-    [v11 setHardwareKeyboardExclusivityIdentifier:v8];
+    keyboardSceneDelegate = [v10 keyboardSceneDelegate];
+    [keyboardSceneDelegate setHardwareKeyboardExclusivityIdentifier:hardwareKeyboardExclusivityIdentifier];
   }
 }
 

@@ -1,8 +1,8 @@
 @interface PXScrollInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)pagingOrigin;
 - (CGSize)interpageSpacing;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -26,9 +26,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 2) = self->_axis;
   *(result + 8) = self->_pagingEnabled;
   *(result + 24) = self->_interpageSpacing;
@@ -36,15 +36,15 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PXScrollInfo *)self axis];
-    if (v6 == [v5 axis] && (v7 = -[PXScrollInfo isPagingEnabled](self, "isPagingEnabled"), v7 == objc_msgSend(v5, "isPagingEnabled")))
+    v5 = equalCopy;
+    axis = [(PXScrollInfo *)self axis];
+    if (axis == [v5 axis] && (v7 = -[PXScrollInfo isPagingEnabled](self, "isPagingEnabled"), v7 == objc_msgSend(v5, "isPagingEnabled")))
     {
       [(PXScrollInfo *)self interpageSpacing];
       v11 = v10;
@@ -77,15 +77,15 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PXScrollInfo *)self axis];
-  v4 = [(PXScrollInfo *)self isPagingEnabled];
+  axis = [(PXScrollInfo *)self axis];
+  isPagingEnabled = [(PXScrollInfo *)self isPagingEnabled];
   v5 = 4;
-  if (!v4)
+  if (!isPagingEnabled)
   {
     v5 = 0;
   }
 
-  return v5 ^ v3;
+  return v5 ^ axis;
 }
 
 @end

@@ -1,66 +1,66 @@
 @interface PXGLoadingStatusComponent
 - ($A5A652246548B43F8BC05201A1C72A70)mutableStates;
-- (PXGLoadingStatusComponent)initWithDataStore:(id)a3;
+- (PXGLoadingStatusComponent)initWithDataStore:(id)store;
 - (const)states;
-- (id)errorForEntity:(id)a3;
-- (void)performChanges:(id)a3;
-- (void)setError:(id)a3 forEntity:(id)a4;
-- (void)setState:(id)a3 forEntities:(id *)a4 count:(unint64_t)a5;
-- (void)willDestroyEntities:(id *)a3 count:(int64_t)a4;
+- (id)errorForEntity:(id)entity;
+- (void)performChanges:(id)changes;
+- (void)setError:(id)error forEntity:(id)entity;
+- (void)setState:(id)state forEntities:(id *)entities count:(unint64_t)count;
+- (void)willDestroyEntities:(id *)entities count:(int64_t)count;
 @end
 
 @implementation PXGLoadingStatusComponent
 
 - ($A5A652246548B43F8BC05201A1C72A70)mutableStates
 {
-  v2 = [(PXGComponent *)self mutableDataStore];
-  v3 = [v2 mutableContents];
+  mutableDataStore = [(PXGComponent *)self mutableDataStore];
+  mutableContents = [mutableDataStore mutableContents];
 
-  return v3;
+  return mutableContents;
 }
 
-- (void)setState:(id)a3 forEntities:(id *)a4 count:(unint64_t)a5
+- (void)setState:(id)state forEntities:(id *)entities count:(unint64_t)count
 {
-  for (i = [(PXGLoadingStatusComponent *)self mutableStates]; a5; --a5)
+  for (i = [(PXGLoadingStatusComponent *)self mutableStates]; count; --count)
   {
-    var0 = a4->var0;
-    ++a4;
-    i[var0] = a3;
+    var0 = entities->var0;
+    ++entities;
+    i[var0] = state;
   }
 }
 
 - (const)states
 {
-  v2 = [(PXGComponent *)self dataStore];
-  v3 = [v2 contents];
+  dataStore = [(PXGComponent *)self dataStore];
+  contents = [dataStore contents];
 
-  return v3;
+  return contents;
 }
 
-- (void)setError:(id)a3 forEntity:(id)a4
+- (void)setError:(id)error forEntity:(id)entity
 {
-  v4 = *&a4.var0;
+  v4 = *&entity.var0;
   errorByEntity = self->_errorByEntity;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
+  errorCopy = error;
   v8 = [v6 numberWithUnsignedInt:v4];
-  [(NSMutableDictionary *)errorByEntity setObject:v7 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)errorByEntity setObject:errorCopy forKeyedSubscript:v8];
 }
 
-- (id)errorForEntity:(id)a3
+- (id)errorForEntity:(id)entity
 {
   errorByEntity = self->_errorByEntity;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&a3.var0];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:*&entity.var0];
   v5 = [(NSMutableDictionary *)errorByEntity objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)willDestroyEntities:(id *)a3 count:(int64_t)a4
+- (void)willDestroyEntities:(id *)entities count:(int64_t)count
 {
   if ([(NSMutableDictionary *)self->_errorByEntity count])
   {
-    v7 = a4 < 1;
+    v7 = count < 1;
   }
 
   else
@@ -70,38 +70,38 @@
 
   if (!v7)
   {
-    v8 = a4;
+    countCopy = count;
     do
     {
       errorByEntity = self->_errorByEntity;
-      var0 = a3->var0;
-      ++a3;
+      var0 = entities->var0;
+      ++entities;
       v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:var0];
       [(NSMutableDictionary *)errorByEntity removeObjectForKey:v11];
 
-      --v8;
+      --countCopy;
     }
 
-    while (v8);
+    while (countCopy);
   }
 
   v12.receiver = self;
   v12.super_class = PXGLoadingStatusComponent;
-  [(PXGComponent *)&v12 willDestroyEntities:a3 count:a4];
+  [(PXGComponent *)&v12 willDestroyEntities:entities count:count];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXGLoadingStatusComponent;
-  [(PXGComponent *)&v3 performChanges:a3];
+  [(PXGComponent *)&v3 performChanges:changes];
 }
 
-- (PXGLoadingStatusComponent)initWithDataStore:(id)a3
+- (PXGLoadingStatusComponent)initWithDataStore:(id)store
 {
   v7.receiver = self;
   v7.super_class = PXGLoadingStatusComponent;
-  v3 = [(PXGComponent *)&v7 initWithDataStore:a3];
+  v3 = [(PXGComponent *)&v7 initWithDataStore:store];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);

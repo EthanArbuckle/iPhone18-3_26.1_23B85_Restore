@@ -1,104 +1,104 @@
 @interface SBFluidSwitcherGestureWorkspaceTransaction
 - (BOOL)_isDeferringCompletionForAnyReason;
-- (BOOL)_isDeferringCompletionForReason:(id)a3;
-- (BOOL)_safeAreasChangingFromSettings:(id)a3 toSettings:(id)a4;
-- (BOOL)_sceneUpdateTransactionIsForLiveResize:(id)a3;
+- (BOOL)_isDeferringCompletionForReason:(id)reason;
+- (BOOL)_safeAreasChangingFromSettings:(id)settings toSettings:(id)toSettings;
+- (BOOL)_sceneUpdateTransactionIsForLiveResize:(id)resize;
 - (BOOL)_shouldComplete;
-- (BOOL)canInterruptForTransitionRequest:(id)a3;
-- (BOOL)transaction:(id)a3 shouldKeepSceneForeground:(id)a4 withReason:(id *)a5;
-- (CGRect)applicationTransitionContext:(id)a3 frameForApplicationSceneEntity:(id)a4;
-- (SBFluidSwitcherGestureWorkspaceTransaction)initWithTransitionRequest:(id)a3 switcherController:(id)a4 delegate:(id)a5;
+- (BOOL)canInterruptForTransitionRequest:(id)request;
+- (BOOL)transaction:(id)transaction shouldKeepSceneForeground:(id)foreground withReason:(id *)reason;
+- (CGRect)applicationTransitionContext:(id)context frameForApplicationSceneEntity:(id)entity;
+- (SBFluidSwitcherGestureWorkspaceTransaction)initWithTransitionRequest:(id)request switcherController:(id)controller delegate:(id)delegate;
 - (SBFluidSwitcherGestureWorkspaceTransactionDelegate)delegate;
 - (SBFluidSwitcherViewController)switcherViewController;
 - (SBSwitcherController)switcherController;
-- (id)_copiedTransitionRequestFromTransitionRequest:(id)a3;
-- (id)_createWorkspaceTransientOverlayForAppLayout:(id)a3;
-- (id)_currentGestureEventForGesture:(id)a3;
-- (id)_switcherControllerForWorkspaceTransitionRequest:(id)a3;
-- (id)_transitionRequestForApplicationTransitionContext:(id)a3 eventLabel:(id)a4;
-- (id)_windowSceneForWorkspaceTransitionRequest:(id)a3;
-- (id)_workspaceTransitionRequestForSwitcherTransitionRequest:(id)a3 fromGestureManager:(id)a4 withEventLabel:(id)a5;
-- (id)createSceneEntityForHandle:(id)a3;
-- (id)layoutStateForApplicationTransitionContext:(id)a3;
-- (id)previousLayoutStateForApplicationTransitionContext:(id)a3;
+- (id)_copiedTransitionRequestFromTransitionRequest:(id)request;
+- (id)_createWorkspaceTransientOverlayForAppLayout:(id)layout;
+- (id)_currentGestureEventForGesture:(id)gesture;
+- (id)_switcherControllerForWorkspaceTransitionRequest:(id)request;
+- (id)_transitionRequestForApplicationTransitionContext:(id)context eventLabel:(id)label;
+- (id)_windowSceneForWorkspaceTransitionRequest:(id)request;
+- (id)_workspaceTransitionRequestForSwitcherTransitionRequest:(id)request fromGestureManager:(id)manager withEventLabel:(id)label;
+- (id)createSceneEntityForHandle:(id)handle;
+- (id)layoutStateForApplicationTransitionContext:(id)context;
+- (id)previousLayoutStateForApplicationTransitionContext:(id)context;
 - (int64_t)_gestureType;
-- (void)_acquireBackgroundingScenesDeactivationAssertionForTransitionRequest:(id)a3;
-- (void)_addChildWorkspaceTransaction:(id)a3;
-- (void)_addWaitForSceneLayoutTransitionTransaction:(id)a3 forLeafAnimationControllers:(id)a4;
+- (void)_acquireBackgroundingScenesDeactivationAssertionForTransitionRequest:(id)request;
+- (void)_addChildWorkspaceTransaction:(id)transaction;
+- (void)_addWaitForSceneLayoutTransitionTransaction:(id)transaction forLeafAnimationControllers:(id)controllers;
 - (void)_begin;
-- (void)_beginDeferringCompletionForReason:(id)a3;
-- (void)_beginWithGesture:(id)a3;
-- (void)_childTransactionDidComplete:(id)a3;
+- (void)_beginDeferringCompletionForReason:(id)reason;
+- (void)_beginWithGesture:(id)gesture;
+- (void)_childTransactionDidComplete:(id)complete;
 - (void)_didComplete;
-- (void)_didInterruptWithReason:(id)a3;
-- (void)_endDeferringCompletionForReason:(id)a3;
+- (void)_didInterruptWithReason:(id)reason;
+- (void)_endDeferringCompletionForReason:(id)reason;
 - (void)_failRunningLayoutStateTransition;
-- (void)_finishWithCompletionType:(int64_t)a3;
-- (void)_finishWithGesture:(id)a3;
-- (void)_runSceneLayoutTransactionForTransitionRequest:(id)a3 updateScenes:(BOOL)a4;
-- (void)_startSceneUpdateTransaction:(id)a3 forSceneIdentifier:(id)a4;
-- (void)_switcherGestureDidUpdate:(id)a3;
+- (void)_finishWithCompletionType:(int64_t)type;
+- (void)_finishWithGesture:(id)gesture;
+- (void)_runSceneLayoutTransactionForTransitionRequest:(id)request updateScenes:(BOOL)scenes;
+- (void)_startSceneUpdateTransaction:(id)transaction forSceneIdentifier:(id)identifier;
+- (void)_switcherGestureDidUpdate:(id)update;
 - (void)_updateDigitizerSurfaceDimensions;
-- (void)_updateMainDisplayIfNecessaryForWorkspaceTransitionRequests:(id)a3;
-- (void)_updatePPTsForAnimationEndedWithFinalLayoutState:(id)a3;
+- (void)_updateMainDisplayIfNecessaryForWorkspaceTransitionRequests:(id)requests;
+- (void)_updatePPTsForAnimationEndedWithFinalLayoutState:(id)state;
 - (void)_updatePPTsForGestureEnded;
 - (void)_updatePPTsForGestureTransactionBegan;
-- (void)_updateWithGesture:(id)a3;
-- (void)_willBeginWithGesture:(id)a3;
-- (void)_willInterruptWithReason:(id)a3;
+- (void)_updateWithGesture:(id)gesture;
+- (void)_willBeginWithGesture:(id)gesture;
+- (void)_willInterruptWithReason:(id)reason;
 - (void)dealloc;
 - (void)didEndAllAnimations;
-- (void)handleTransitionRequestForGestureComplete:(id)a3 fromGestureManager:(id)a4;
-- (void)handleTransitionRequestForGestureUpdate:(id)a3 fromGestureManager:(id)a4;
-- (void)interceptTransitionRequest:(id)a3;
-- (void)setSelectedAppLayout:(id)a3;
-- (void)systemGestureStateChanged:(id)a3;
-- (void)transaction:(id)a3 didEndLayoutTransitionWithContinuation:(id)a4;
-- (void)transaction:(id)a3 performTransitionWithCompletion:(id)a4;
-- (void)transactionDidComplete:(id)a3;
+- (void)handleTransitionRequestForGestureComplete:(id)complete fromGestureManager:(id)manager;
+- (void)handleTransitionRequestForGestureUpdate:(id)update fromGestureManager:(id)manager;
+- (void)interceptTransitionRequest:(id)request;
+- (void)setSelectedAppLayout:(id)layout;
+- (void)systemGestureStateChanged:(id)changed;
+- (void)transaction:(id)transaction didEndLayoutTransitionWithContinuation:(id)continuation;
+- (void)transaction:(id)transaction performTransitionWithCompletion:(id)completion;
+- (void)transactionDidComplete:(id)complete;
 @end
 
 @implementation SBFluidSwitcherGestureWorkspaceTransaction
 
-- (SBFluidSwitcherGestureWorkspaceTransaction)initWithTransitionRequest:(id)a3 switcherController:(id)a4 delegate:(id)a5
+- (SBFluidSwitcherGestureWorkspaceTransaction)initWithTransitionRequest:(id)request switcherController:(id)controller delegate:(id)delegate
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  controllerCopy = controller;
+  delegateCopy = delegate;
   v47.receiver = self;
   v47.super_class = SBFluidSwitcherGestureWorkspaceTransaction;
-  v10 = [(SBSystemGestureWorkspaceTransaction *)&v47 initWithTransitionRequest:a3];
+  v10 = [(SBSystemGestureWorkspaceTransaction *)&v47 initWithTransitionRequest:request];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_switcherController, v8);
-    v12 = [v8 contentViewController];
-    objc_storeWeak(&v11->_switcherViewController, v12);
+    objc_storeWeak(&v10->_switcherController, controllerCopy);
+    contentViewController = [controllerCopy contentViewController];
+    objc_storeWeak(&v11->_switcherViewController, contentViewController);
 
-    v42 = v9;
-    objc_storeWeak(&v11->_delegate, v9);
+    v42 = delegateCopy;
+    objc_storeWeak(&v11->_delegate, delegateCopy);
     v13 = +[SBSceneManagerCoordinator sharedInstance];
-    v14 = [v13 sceneDeactivationManager];
-    v15 = [v14 newAssertionWithReason:0];
+    sceneDeactivationManager = [v13 sceneDeactivationManager];
+    v15 = [sceneDeactivationManager newAssertionWithReason:0];
     backgroundingScenesDeactivationAssertion = v11->_backgroundingScenesDeactivationAssertion;
     v11->_backgroundingScenesDeactivationAssertion = v15;
 
-    v17 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     originalLayoutStatesBySwitcherController = v11->_originalLayoutStatesBySwitcherController;
-    v11->_originalLayoutStatesBySwitcherController = v17;
+    v11->_originalLayoutStatesBySwitcherController = weakToStrongObjectsMapTable;
 
-    v19 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     activeLayoutStatesBySwitcherController = v11->_activeLayoutStatesBySwitcherController;
-    v11->_activeLayoutStatesBySwitcherController = v19;
+    v11->_activeLayoutStatesBySwitcherController = weakToStrongObjectsMapTable2;
 
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v21 = [SBApp windowSceneManager];
-    v22 = [v21 connectedWindowScenes];
+    windowSceneManager = [SBApp windowSceneManager];
+    connectedWindowScenes = [windowSceneManager connectedWindowScenes];
 
-    v23 = [v22 countByEnumeratingWithState:&v43 objects:v48 count:16];
+    v23 = [connectedWindowScenes countByEnumeratingWithState:&v43 objects:v48 count:16];
     if (v23)
     {
       v24 = v23;
@@ -110,19 +110,19 @@
         {
           if (*v44 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(connectedWindowScenes);
           }
 
-          v27 = [*(*(&v43 + 1) + 8 * v26) switcherController];
-          v28 = [v27 layoutState];
-          [(NSMapTable *)v11->_originalLayoutStatesBySwitcherController setObject:v28 forKey:v27];
-          [(NSMapTable *)v11->_activeLayoutStatesBySwitcherController setObject:v28 forKey:v27];
+          switcherController = [*(*(&v43 + 1) + 8 * v26) switcherController];
+          layoutState = [switcherController layoutState];
+          [(NSMapTable *)v11->_originalLayoutStatesBySwitcherController setObject:layoutState forKey:switcherController];
+          [(NSMapTable *)v11->_activeLayoutStatesBySwitcherController setObject:layoutState forKey:switcherController];
 
           ++v26;
         }
 
         while (v24 != v26);
-        v24 = [v22 countByEnumeratingWithState:&v43 objects:v48 count:16];
+        v24 = [connectedWindowScenes countByEnumeratingWithState:&v43 objects:v48 count:16];
       }
 
       while (v24);
@@ -137,10 +137,10 @@
     v11->_layoutTransitionCompletions = v31;
 
     v33 = +[SBAppSwitcherDomain rootSettings];
-    v34 = [v33 animationSettings];
+    animationSettings = [v33 animationSettings];
 
-    v35 = [v34 arcSwipeSettings];
-    [v35 settlingDuration];
+    arcSwipeSettings = [animationSettings arcSwipeSettings];
+    [arcSwipeSettings settlingDuration];
     *&SBFluidSwitcherMaximumActivationDelayForArcSwipes = v36 * 0.9;
 
     v11->_shouldCancelGestureUponInterruption = 1;
@@ -152,7 +152,7 @@
     pendingSceneUpdateTransactionsBySceneIdentifier = v11->_pendingSceneUpdateTransactionsBySceneIdentifier;
     v11->_pendingSceneUpdateTransactionsBySceneIdentifier = v39;
 
-    v9 = v42;
+    delegateCopy = v42;
   }
 
   return v11;
@@ -166,25 +166,25 @@
   [(SBFluidSwitcherGestureWorkspaceTransaction *)&v3 dealloc];
 }
 
-- (id)_currentGestureEventForGesture:(id)a3
+- (id)_currentGestureEventForGesture:(id)gesture
 {
-  v5 = a3;
-  v6 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _gestureType];
-  v7 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedAppLayout];
-  v8 = [v5 state];
+  gestureCopy = gesture;
+  _gestureType = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _gestureType];
+  selectedAppLayout = [(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedAppLayout];
+  state = [gestureCopy state];
 
-  v9 = SBGestureModifierPhaseForGestureState(v8);
-  v10 = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
-  v11 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
-  v12 = [v11 view];
+  v9 = SBGestureModifierPhaseForGestureState(state);
+  gestureRecognizer = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
+  switcherViewController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
+  view = [switcherViewController view];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = v10;
-    v14 = [v13 recognizedTouchType];
-    v15 = [(SBGestureSwitcherModifierEvent *)[SBScrunchGestureSwitcherModifierEvent alloc] initWithGestureID:self->_gestureID selectedAppLayout:v7 gestureType:v6 phase:v9];
-    [v13 velocityInView:v12];
+    v13 = gestureRecognizer;
+    recognizedTouchType = [v13 recognizedTouchType];
+    v15 = [(SBGestureSwitcherModifierEvent *)[SBScrunchGestureSwitcherModifierEvent alloc] initWithGestureID:self->_gestureID selectedAppLayout:selectedAppLayout gestureType:_gestureType phase:v9];
+    [v13 velocityInView:view];
     [(SBGestureSwitcherModifierEvent *)v15 setVelocityInContainerView:?];
     [v13 initialCentroid];
     v17 = v16;
@@ -194,15 +194,15 @@
     v23 = v22;
     [v13 absoluteScale];
     [(SBScrunchGestureSwitcherModifierEvent *)v15 setAbsoluteScale:?];
-    [v13 locationInView:v12];
+    [v13 locationInView:view];
     [(SBGestureSwitcherModifierEvent *)v15 setLocationInContainerView:?];
-    [v13 translationInView:v12];
+    [v13 translationInView:view];
     v25 = v24;
     v27 = v26;
-    [v13 translationWithoutConsideringScaleInView:v12];
+    [v13 translationWithoutConsideringScaleInView:view];
     v29 = v28;
     v31 = v30;
-    if (v14 == 1)
+    if (recognizedTouchType == 1)
     {
       v46 = v28;
       v47 = v25;
@@ -219,7 +219,7 @@
       v36 = digitizerSurfaceHeightForLastGestureEvent / v34;
       [v32 minimumDistanceThresholdToScaleMultiplier];
       v38 = v37;
-      [v12 bounds];
+      [view bounds];
       v40 = digitizerSurfaceHeightForLastGestureEvent * (v19 / v39);
       if (v40 < v38 && BSFloatGreaterThanFloat())
       {
@@ -247,11 +247,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v41 = v10;
+      v41 = gestureRecognizer;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = -[SBGestureSwitcherModifierEvent initWithGestureID:selectedAppLayout:gestureType:phase:modifierFlags:]([SBItemResizeGestureSwitcherModifierEvent alloc], "initWithGestureID:selectedAppLayout:gestureType:phase:modifierFlags:", self->_gestureID, v7, v6, v9, [v41 modifierFlags]);
+        v15 = -[SBGestureSwitcherModifierEvent initWithGestureID:selectedAppLayout:gestureType:phase:modifierFlags:]([SBItemResizeGestureSwitcherModifierEvent alloc], "initWithGestureID:selectedAppLayout:gestureType:phase:modifierFlags:", self->_gestureID, selectedAppLayout, _gestureType, v9, [v41 modifierFlags]);
         [(SBScrunchGestureSwitcherModifierEvent *)v15 setSelectedLayoutRole:[(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedLayoutRole]];
         [(SBScrunchGestureSwitcherModifierEvent *)v15 setSelectedEdge:[(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedEdge]];
       }
@@ -261,7 +261,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [(SBGestureSwitcherModifierEvent *)[SBWindowDragSwitcherModifierEvent alloc] initWithGestureID:self->_gestureID selectedAppLayout:v7 gestureType:v6 phase:v9];
+          v15 = [(SBGestureSwitcherModifierEvent *)[SBWindowDragSwitcherModifierEvent alloc] initWithGestureID:self->_gestureID selectedAppLayout:selectedAppLayout gestureType:_gestureType phase:v9];
           [(SBScrunchGestureSwitcherModifierEvent *)v15 setDraggingFromContinuousExposeStrips:[(SBFluidSwitcherGestureWorkspaceTransaction *)self isDraggingFromContinuousExposeStrips]];
           [(SBFluidSwitcherGestureWorkspaceTransaction *)self locationInSelectedDisplayItem];
           [(SBScrunchGestureSwitcherModifierEvent *)v15 setLocationInSelectedDisplayItem:?];
@@ -273,20 +273,20 @@
 
         else
         {
-          v15 = [[SBGestureSwitcherModifierEvent alloc] initWithGestureID:self->_gestureID selectedAppLayout:v7 gestureType:v6 phase:v9];
+          v15 = [[SBGestureSwitcherModifierEvent alloc] initWithGestureID:self->_gestureID selectedAppLayout:selectedAppLayout gestureType:_gestureType phase:v9];
         }
       }
 
-      [v41 velocityInView:v12];
+      [v41 velocityInView:view];
       [(SBGestureSwitcherModifierEvent *)v15 setVelocityInContainerView:?];
-      [v41 translationInView:v12];
+      [v41 translationInView:view];
       [(SBGestureSwitcherModifierEvent *)v15 setTranslationInContainerView:?];
       [v41 _hysteresis];
       [(SBGestureSwitcherModifierEvent *)v15 setHysteresis:?];
-      [v41 locationInView:v12];
+      [v41 locationInView:view];
       [(SBGestureSwitcherModifierEvent *)v15 setLocationInContainerView:?];
 
-      v14 = 0;
+      recognizedTouchType = 0;
     }
 
     else
@@ -294,28 +294,28 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v42 = v10;
-        v15 = [(SBGestureSwitcherModifierEvent *)[SBIndirectPanGestureSwitcherModifierEvent alloc] initWithGestureID:self->_gestureID selectedAppLayout:v7 gestureType:v6 phase:v9];
+        v42 = gestureRecognizer;
+        v15 = [(SBGestureSwitcherModifierEvent *)[SBIndirectPanGestureSwitcherModifierEvent alloc] initWithGestureID:self->_gestureID selectedAppLayout:selectedAppLayout gestureType:_gestureType phase:v9];
         -[SBGestureSwitcherModifierEvent setMouseEvent:](v15, "setMouseEvent:", [v42 currentInputType] == 1);
-        [v42 velocityInView:v12];
+        [v42 velocityInView:view];
         [(SBGestureSwitcherModifierEvent *)v15 setVelocityInContainerView:?];
-        [v42 translationInView:v12];
+        [v42 translationInView:view];
         [(SBGestureSwitcherModifierEvent *)v15 setTranslationInContainerView:?];
         [(SBGestureSwitcherModifierEvent *)v15 setHysteresis:10.0];
-        [v42 locationInView:v12];
+        [v42 locationInView:view];
         [(SBGestureSwitcherModifierEvent *)v15 setLocationInContainerView:?];
-        v43 = [v42 endReason];
+        endReason = [v42 endReason];
 
-        [(SBScrunchGestureSwitcherModifierEvent *)v15 setIndirectPanEndReason:v43];
-        v14 = 1;
+        [(SBScrunchGestureSwitcherModifierEvent *)v15 setIndirectPanEndReason:endReason];
+        recognizedTouchType = 1;
       }
 
       else
       {
-        v44 = [MEMORY[0x277CCA890] currentHandler];
-        [v44 handleFailureInMethod:a2 object:self file:@"SBFluidSwitcherGestureWorkspaceTransaction.m" lineNumber:302 description:{@"Unknown gesture recognizer: %@", v10}];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"SBFluidSwitcherGestureWorkspaceTransaction.m" lineNumber:302 description:{@"Unknown gesture recognizer: %@", gestureRecognizer}];
 
-        v14 = 0;
+        recognizedTouchType = 0;
         v15 = 0;
       }
     }
@@ -323,24 +323,24 @@
 
   if (objc_opt_respondsToSelector())
   {
-    [(SBGestureSwitcherModifierEvent *)v15 setTouchHistoryProvider:v10];
+    [(SBGestureSwitcherModifierEvent *)v15 setTouchHistoryProvider:gestureRecognizer];
   }
 
-  [(SBGestureSwitcherModifierEvent *)v15 setTouchType:v14];
+  [(SBGestureSwitcherModifierEvent *)v15 setTouchType:recognizedTouchType];
   [(SBGestureSwitcherModifierEvent *)v15 setPointerTouch:self->_isPointerTouch];
   [(SBGestureSwitcherModifierEvent *)v15 setHidEventSenderID:self->_hidEventSenderID];
-  [v10 lastTouchTimestamp];
+  [gestureRecognizer lastTouchTimestamp];
   [(SBGestureSwitcherModifierEvent *)v15 setLastTouchTimestamp:?];
-  -[SBGestureSwitcherModifierEvent setCanceled:](v15, "setCanceled:", [v10 state] == 4);
+  -[SBGestureSwitcherModifierEvent setCanceled:](v15, "setCanceled:", [gestureRecognizer state] == 4);
 
   return v15;
 }
 
-- (void)_willInterruptWithReason:(id)a3
+- (void)_willInterruptWithReason:(id)reason
 {
   v5.receiver = self;
   v5.super_class = SBFluidSwitcherGestureWorkspaceTransaction;
-  [(SBFluidSwitcherGestureWorkspaceTransaction *)&v5 _willInterruptWithReason:a3];
+  [(SBFluidSwitcherGestureWorkspaceTransaction *)&v5 _willInterruptWithReason:reason];
   [(NSMutableSet *)self->_layoutTransitionCompletions removeAllObjects];
   [(NSTimer *)self->_activateScenesTimer invalidate];
   activateScenesTimer = self->_activateScenesTimer;
@@ -350,27 +350,27 @@
   [(NSMutableDictionary *)self->_pendingSceneUpdateTransactionsBySceneIdentifier removeAllObjects];
 }
 
-- (void)_didInterruptWithReason:(id)a3
+- (void)_didInterruptWithReason:(id)reason
 {
   v8.receiver = self;
   v8.super_class = SBFluidSwitcherGestureWorkspaceTransaction;
-  [(SBFluidSwitcherGestureWorkspaceTransaction *)&v8 _didInterruptWithReason:a3];
+  [(SBFluidSwitcherGestureWorkspaceTransaction *)&v8 _didInterruptWithReason:reason];
   if (self->_shouldCancelGestureUponInterruption)
   {
-    v4 = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
-    v5 = [v4 state];
+    gestureRecognizer = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
+    state = [gestureRecognizer state];
 
-    if ((v5 - 1) <= 1)
+    if ((state - 1) <= 1)
     {
       [(SBFluidSwitcherGestureWorkspaceTransaction *)self _beginDeferringCompletionForReason:@"SBFluidSwitcherGestureWorkspaceTransactionCompletionDeferralReasonAwaitingGestureCancellation"];
     }
 
     [(SBSystemGestureWorkspaceTransaction *)self finishWithCompletionType:1];
-    v6 = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
-    [v6 setEnabled:0];
+    gestureRecognizer2 = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
+    [gestureRecognizer2 setEnabled:0];
 
-    v7 = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
-    [v7 setEnabled:1];
+    gestureRecognizer3 = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
+    [gestureRecognizer3 setEnabled:1];
   }
 
   else
@@ -379,39 +379,39 @@
   }
 }
 
-- (BOOL)canInterruptForTransitionRequest:(id)a3
+- (BOOL)canInterruptForTransitionRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self finalRootTransaction];
+  requestCopy = request;
+  finalRootTransaction = [(SBFluidSwitcherGestureWorkspaceTransaction *)self finalRootTransaction];
 
-  if (v5)
+  if (finalRootTransaction)
   {
-    v6 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self finalRootTransaction];
-    v7 = [v6 canInterruptForTransitionRequest:v4];
+    finalRootTransaction2 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self finalRootTransaction];
+    v7 = [finalRootTransaction2 canInterruptForTransitionRequest:requestCopy];
   }
 
   else
   {
-    v7 = [SBToAppsWorkspaceTransaction canInterruptTransaction:0 forTransitionRequest:v4];
+    v7 = [SBToAppsWorkspaceTransaction canInterruptTransaction:0 forTransitionRequest:requestCopy];
   }
 
   return v7;
 }
 
-- (void)interceptTransitionRequest:(id)a3
+- (void)interceptTransitionRequest:(id)request
 {
-  v4 = a3;
-  [v4 finalize];
-  [(SBFluidSwitcherGestureWorkspaceTransaction *)self _runSceneLayoutTransactionForTransitionRequest:v4 updateScenes:1];
-  v6 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherController];
-  v5 = [v4 applicationContext];
+  requestCopy = request;
+  [requestCopy finalize];
+  [(SBFluidSwitcherGestureWorkspaceTransaction *)self _runSceneLayoutTransactionForTransitionRequest:requestCopy updateScenes:1];
+  switcherController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherController];
+  applicationContext = [requestCopy applicationContext];
 
-  [v6 performTransitionWithContext:v5 animated:1 completion:0];
+  [switcherController performTransitionWithContext:applicationContext animated:1 completion:0];
 }
 
 - (void)_begin
 {
-  v1 = SBStringForFluidSwitcherGestureType([a1 _gestureType]);
+  v1 = SBStringForFluidSwitcherGestureType([self _gestureType]);
   OUTLINED_FUNCTION_0_13(&dword_21ED4E000, v2, v3, "Began fluid switcher gesture transaction of type: %@.", v4, v5, v6, v7, 2u);
 }
 
@@ -470,29 +470,29 @@ void __52__SBFluidSwitcherGestureWorkspaceTransaction__begin__block_invoke_2(uin
   }
 }
 
-- (void)_childTransactionDidComplete:(id)a3
+- (void)_childTransactionDidComplete:(id)complete
 {
   v11.receiver = self;
   v11.super_class = SBFluidSwitcherGestureWorkspaceTransaction;
-  v4 = a3;
-  [(SBFluidSwitcherGestureWorkspaceTransaction *)&v11 _childTransactionDidComplete:v4];
+  completeCopy = complete;
+  [(SBFluidSwitcherGestureWorkspaceTransaction *)&v11 _childTransactionDidComplete:completeCopy];
   v5 = objc_opt_class();
-  v6 = SBSafeCast(v5, v4);
+  v6 = SBSafeCast(v5, completeCopy);
 
   if (v6)
   {
-    v7 = [v6 applicationSceneEntity];
-    v8 = [v7 sceneHandle];
-    v9 = [v8 sceneIdentifier];
+    applicationSceneEntity = [v6 applicationSceneEntity];
+    sceneHandle = [applicationSceneEntity sceneHandle];
+    sceneIdentifier = [sceneHandle sceneIdentifier];
 
-    [(NSMutableSet *)self->_sceneIdentifiersWithSceneUpdateTransactionsInProgress removeObject:v9];
-    v10 = [(NSMutableDictionary *)self->_pendingSceneUpdateTransactionsBySceneIdentifier objectForKey:v9];
+    [(NSMutableSet *)self->_sceneIdentifiersWithSceneUpdateTransactionsInProgress removeObject:sceneIdentifier];
+    v10 = [(NSMutableDictionary *)self->_pendingSceneUpdateTransactionsBySceneIdentifier objectForKey:sceneIdentifier];
     if (v10)
     {
-      [(NSMutableDictionary *)self->_pendingSceneUpdateTransactionsBySceneIdentifier removeObjectForKey:v9];
+      [(NSMutableDictionary *)self->_pendingSceneUpdateTransactionsBySceneIdentifier removeObjectForKey:sceneIdentifier];
       if (([(SBFluidSwitcherGestureWorkspaceTransaction *)self isInterrupted]& 1) == 0)
       {
-        [(SBFluidSwitcherGestureWorkspaceTransaction *)self _startSceneUpdateTransaction:v10 forSceneIdentifier:v9];
+        [(SBFluidSwitcherGestureWorkspaceTransaction *)self _startSceneUpdateTransaction:v10 forSceneIdentifier:sceneIdentifier];
       }
     }
   }
@@ -502,28 +502,28 @@ void __52__SBFluidSwitcherGestureWorkspaceTransaction__begin__block_invoke_2(uin
 {
   v5.receiver = self;
   v5.super_class = SBFluidSwitcherGestureWorkspaceTransaction;
-  v3 = [(SBFluidSwitcherGestureWorkspaceTransaction *)&v5 _shouldComplete];
-  if (v3)
+  _shouldComplete = [(SBFluidSwitcherGestureWorkspaceTransaction *)&v5 _shouldComplete];
+  if (_shouldComplete)
   {
-    LOBYTE(v3) = ![(SBFluidSwitcherGestureWorkspaceTransaction *)self _isDeferringCompletionForAnyReason];
+    LOBYTE(_shouldComplete) = ![(SBFluidSwitcherGestureWorkspaceTransaction *)self _isDeferringCompletionForAnyReason];
   }
 
-  return v3;
+  return _shouldComplete;
 }
 
 - (void)_didComplete
 {
-  v1 = SBStringForFluidSwitcherGestureType([a1 _gestureType]);
+  v1 = SBStringForFluidSwitcherGestureType([self _gestureType]);
   OUTLINED_FUNCTION_0_13(&dword_21ED4E000, v2, v3, "Completed fluid switcher gesture transaction of type: %@.", v4, v5, v6, v7, 2u);
 }
 
-- (void)systemGestureStateChanged:(id)a3
+- (void)systemGestureStateChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if ([(SBFluidSwitcherGestureWorkspaceTransaction *)self isRunning])
   {
-    [(SBFluidSwitcherGestureWorkspaceTransaction *)self _switcherGestureDidUpdate:v4];
-    if ([v4 state] == 4 && -[SBFluidSwitcherGestureWorkspaceTransaction isInterrupted](self, "isInterrupted") && -[SBFluidSwitcherGestureWorkspaceTransaction _isDeferringCompletionForReason:](self, "_isDeferringCompletionForReason:", @"SBFluidSwitcherGestureWorkspaceTransactionCompletionDeferralReasonAwaitingGestureCancellation"))
+    [(SBFluidSwitcherGestureWorkspaceTransaction *)self _switcherGestureDidUpdate:changedCopy];
+    if ([changedCopy state] == 4 && -[SBFluidSwitcherGestureWorkspaceTransaction isInterrupted](self, "isInterrupted") && -[SBFluidSwitcherGestureWorkspaceTransaction _isDeferringCompletionForReason:](self, "_isDeferringCompletionForReason:", @"SBFluidSwitcherGestureWorkspaceTransactionCompletionDeferralReasonAwaitingGestureCancellation"))
     {
       [(SBFluidSwitcherGestureWorkspaceTransaction *)self _endDeferringCompletionForReason:@"SBFluidSwitcherGestureWorkspaceTransactionCompletionDeferralReasonAwaitingGestureCancellation"];
     }
@@ -534,39 +534,39 @@ void __52__SBFluidSwitcherGestureWorkspaceTransaction__begin__block_invoke_2(uin
     v5 = SBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(SBFluidSwitcherGestureWorkspaceTransaction *)self systemGestureStateChanged:v4, v5];
+      [(SBFluidSwitcherGestureWorkspaceTransaction *)self systemGestureStateChanged:changedCopy, v5];
     }
   }
 }
 
-- (void)_finishWithCompletionType:(int64_t)a3
+- (void)_finishWithCompletionType:(int64_t)type
 {
   v4.receiver = self;
   v4.super_class = SBFluidSwitcherGestureWorkspaceTransaction;
-  [(SBSystemGestureWorkspaceTransaction *)&v4 _finishWithCompletionType:a3];
+  [(SBSystemGestureWorkspaceTransaction *)&v4 _finishWithCompletionType:type];
   [(SBFluidSwitcherGestureWorkspaceTransaction *)self removeMilestone:@"trackingGesture"];
 }
 
 - (void)didEndAllAnimations
 {
-  v3 = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
-  [(SBFluidSwitcherGestureWorkspaceTransaction *)self _switcherGestureDidUpdate:v3];
+  gestureRecognizer = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
+  [(SBFluidSwitcherGestureWorkspaceTransaction *)self _switcherGestureDidUpdate:gestureRecognizer];
 }
 
-- (void)_switcherGestureDidUpdate:(id)a3
+- (void)_switcherGestureDidUpdate:(id)update
 {
-  v8 = a3;
+  updateCopy = update;
   if (self->_calledBeginWithGesture || ([(SBFluidSwitcherGestureWorkspaceTransaction *)self isInterrupted]& 1) == 0)
   {
     animationController = self->_animationController;
     if (!animationController || [(SBUISwitcherAnimationController *)animationController isInterruptible])
     {
-      v5 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
-      v6 = [v5 pipViewMorphAnimator];
-      v7 = v6;
-      if (v6)
+      switcherViewController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
+      pipViewMorphAnimator = [switcherViewController pipViewMorphAnimator];
+      v7 = pipViewMorphAnimator;
+      if (pipViewMorphAnimator)
       {
-        [v6 addObserver:self];
+        [pipViewMorphAnimator addObserver:self];
       }
 
       else
@@ -574,20 +574,20 @@ void __52__SBFluidSwitcherGestureWorkspaceTransaction__begin__block_invoke_2(uin
         if (!self->_calledBeginWithGesture)
         {
           self->_calledBeginWithGesture = 1;
-          [(SBFluidSwitcherGestureWorkspaceTransaction *)self _willBeginWithGesture:v8];
-          [(SBFluidSwitcherGestureWorkspaceTransaction *)self _beginWithGesture:v8];
+          [(SBFluidSwitcherGestureWorkspaceTransaction *)self _willBeginWithGesture:updateCopy];
+          [(SBFluidSwitcherGestureWorkspaceTransaction *)self _beginWithGesture:updateCopy];
         }
 
-        if ([v8 state] != 1)
+        if ([updateCopy state] != 1)
         {
-          if ([v8 state] == 2)
+          if ([updateCopy state] == 2)
           {
-            [(SBFluidSwitcherGestureWorkspaceTransaction *)self _updateWithGesture:v8];
+            [(SBFluidSwitcherGestureWorkspaceTransaction *)self _updateWithGesture:updateCopy];
           }
 
           else
           {
-            [(SBFluidSwitcherGestureWorkspaceTransaction *)self _finishWithGesture:v8];
+            [(SBFluidSwitcherGestureWorkspaceTransaction *)self _finishWithGesture:updateCopy];
             self->_calledBeginWithGesture = 0;
           }
         }
@@ -596,20 +596,20 @@ void __52__SBFluidSwitcherGestureWorkspaceTransaction__begin__block_invoke_2(uin
   }
 }
 
-- (void)_willBeginWithGesture:(id)a3
+- (void)_willBeginWithGesture:(id)gesture
 {
-  v4 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   gestureID = self->_gestureID;
-  self->_gestureID = v4;
+  self->_gestureID = uUID;
 
-  v6 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
-  [v6 willBeginGestureWithType:-[SBFluidSwitcherGestureWorkspaceTransaction _gestureType](self identifier:{"_gestureType"), self->_gestureID}];
+  switcherViewController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
+  [switcherViewController willBeginGestureWithType:-[SBFluidSwitcherGestureWorkspaceTransaction _gestureType](self identifier:{"_gestureType"), self->_gestureID}];
 }
 
-- (void)_beginWithGesture:(id)a3
+- (void)_beginWithGesture:(id)gesture
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  gestureCopy = gesture;
   v5 = SBLogSystemGestureAppSwitcher();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -617,15 +617,15 @@ void __52__SBFluidSwitcherGestureWorkspaceTransaction__begin__block_invoke_2(uin
     v7 = NSStringFromClass(v6);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = SBSystemGestureRecognizerStateDescription([v4 state]);
+    v10 = SBSystemGestureRecognizerStateDescription([gestureCopy state]);
     *buf = 138544386;
     v41 = v7;
     v42 = 2050;
-    v43 = self;
+    selfCopy = self;
     v44 = 2114;
     v45 = v9;
     v46 = 2050;
-    v47 = v4;
+    v47 = gestureCopy;
     v48 = 2114;
     v49 = v10;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "<%{public}@:%{public}p> Begin with gesture recognizer: <%{public}@:%{public}p> (%{public}@)", buf, 0x34u);
@@ -695,10 +695,10 @@ void __52__SBFluidSwitcherGestureWorkspaceTransaction__begin__block_invoke_2(uin
   self->_activateScenesTimer = 0;
 
   [(SBFluidSwitcherGestureWorkspaceTransaction *)self _updateDigitizerSurfaceDimensions];
-  v23 = [v4 _activeEventOfType:0];
-  v24 = [v4 _activeTouchesForEvent:v23];
-  v25 = [v24 anyObject];
-  self->_isPointerTouch = [v25 _isPointerTouch];
+  v23 = [gestureCopy _activeEventOfType:0];
+  v24 = [gestureCopy _activeTouchesForEvent:v23];
+  anyObject = [v24 anyObject];
+  self->_isPointerTouch = [anyObject _isPointerTouch];
 
   SenderID = [v23 _hidEvent];
   if (SenderID)
@@ -716,17 +716,17 @@ void __52__SBFluidSwitcherGestureWorkspaceTransaction__begin__block_invoke_2(uin
   v27 = MEMORY[0x223D6F7F0](v33);
   v28 = [[SBFluidSwitcherGesture alloc] initWithType:[(SBFluidSwitcherGestureWorkspaceTransaction *)self _gestureType] eventProvider:v27];
   [(SBFluidSwitcherGesture *)v28 _setState:1];
-  v29 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedAppLayout];
-  [(SBFluidSwitcherGesture *)v28 _setSelectedAppLayout:v29];
+  selectedAppLayout = [(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedAppLayout];
+  [(SBFluidSwitcherGesture *)v28 _setSelectedAppLayout:selectedAppLayout];
 
-  v30 = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
-  [(SBFluidSwitcherGesture *)v28 _setGestureRecognizerForStudyLog:v30];
+  gestureRecognizer = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
+  [(SBFluidSwitcherGesture *)v28 _setGestureRecognizerForStudyLog:gestureRecognizer];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained fluidSwitcherGestureTransaction:self didBeginGesture:v28];
 
-  v32 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self backgroundingScenesDeactivationAssertion];
-  [v32 relinquish];
+  backgroundingScenesDeactivationAssertion = [(SBFluidSwitcherGestureWorkspaceTransaction *)self backgroundingScenesDeactivationAssertion];
+  [backgroundingScenesDeactivationAssertion relinquish];
 
   objc_destroyWeak(&v34);
   objc_destroyWeak(buf);
@@ -741,22 +741,22 @@ id __64__SBFluidSwitcherGestureWorkspaceTransaction__beginWithGesture___block_in
   return v5;
 }
 
-- (void)_updateWithGesture:(id)a3
+- (void)_updateWithGesture:(id)gesture
 {
   [(SBFluidSwitcherGestureWorkspaceTransaction *)self _updateDigitizerSurfaceDimensions];
-  v7 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
-  v4 = [v7 layoutContext];
-  v5 = [v4 activeGesture];
+  switcherViewController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
+  layoutContext = [switcherViewController layoutContext];
+  activeGesture = [layoutContext activeGesture];
 
-  [v5 _setState:2];
+  [activeGesture _setState:2];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained fluidSwitcherGestureTransaction:self didUpdateGesture:v5];
+  [WeakRetained fluidSwitcherGestureTransaction:self didUpdateGesture:activeGesture];
 }
 
-- (void)_finishWithGesture:(id)a3
+- (void)_finishWithGesture:(id)gesture
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  gestureCopy = gesture;
   v5 = SBLogSystemGestureAppSwitcher();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -764,15 +764,15 @@ id __64__SBFluidSwitcherGestureWorkspaceTransaction__beginWithGesture___block_in
     v7 = NSStringFromClass(v6);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = SBSystemGestureRecognizerStateDescription([v4 state]);
+    v10 = SBSystemGestureRecognizerStateDescription([gestureCopy state]);
     v15 = 138544386;
     v16 = v7;
     v17 = 2050;
-    v18 = self;
+    selfCopy = self;
     v19 = 2114;
     v20 = v9;
     v21 = 2050;
-    v22 = v4;
+    v22 = gestureCopy;
     v23 = 2114;
     v24 = v10;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "<%{public}@:%{public}p> Finish with gesture recognizer: <%{public}@:%{public}p> (%{public}@)", &v15, 0x34u);
@@ -781,59 +781,59 @@ id __64__SBFluidSwitcherGestureWorkspaceTransaction__beginWithGesture___block_in
   [(SBFluidSwitcherGestureWorkspaceTransaction *)self _updatePPTsForGestureEnded];
   self->_hasCompletedAtLeastOneGesture = 1;
   [(SBFluidSwitcherGestureWorkspaceTransaction *)self _updateDigitizerSurfaceDimensions];
-  v11 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
-  v12 = [v11 layoutContext];
-  v13 = [v12 activeGesture];
+  switcherViewController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
+  layoutContext = [switcherViewController layoutContext];
+  activeGesture = [layoutContext activeGesture];
 
-  [v13 _setState:3];
+  [activeGesture _setState:3];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained fluidSwitcherGestureTransaction:self didEndGesture:v13];
+  [WeakRetained fluidSwitcherGestureTransaction:self didEndGesture:activeGesture];
 }
 
-- (void)setSelectedAppLayout:(id)a3
+- (void)setSelectedAppLayout:(id)layout
 {
-  v5 = a3;
-  if (self->_selectedAppLayout != v5)
+  layoutCopy = layout;
+  if (self->_selectedAppLayout != layoutCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_selectedAppLayout, a3);
+    v9 = layoutCopy;
+    objc_storeStrong(&self->_selectedAppLayout, layout);
     WeakRetained = objc_loadWeakRetained(&self->_switcherViewController);
-    v7 = [WeakRetained layoutContext];
-    v8 = [v7 activeGesture];
-    [v8 _setSelectedAppLayout:v9];
+    layoutContext = [WeakRetained layoutContext];
+    activeGesture = [layoutContext activeGesture];
+    [activeGesture _setSelectedAppLayout:v9];
 
-    v5 = v9;
+    layoutCopy = v9;
   }
 }
 
-- (id)layoutStateForApplicationTransitionContext:(id)a3
+- (id)layoutStateForApplicationTransitionContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 request];
-  v6 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _windowSceneForWorkspaceTransitionRequest:v5];
+  contextCopy = context;
+  request = [contextCopy request];
+  v6 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _windowSceneForWorkspaceTransitionRequest:request];
 
-  v7 = [v6 layoutStateTransitionCoordinator];
-  v8 = [v7 layoutStateForApplicationTransitionContext:v4];
+  layoutStateTransitionCoordinator = [v6 layoutStateTransitionCoordinator];
+  v8 = [layoutStateTransitionCoordinator layoutStateForApplicationTransitionContext:contextCopy];
 
   return v8;
 }
 
-- (id)previousLayoutStateForApplicationTransitionContext:(id)a3
+- (id)previousLayoutStateForApplicationTransitionContext:(id)context
 {
-  v4 = [a3 request];
-  v5 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _switcherControllerForWorkspaceTransitionRequest:v4];
+  request = [context request];
+  v5 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _switcherControllerForWorkspaceTransitionRequest:request];
 
   v6 = [(NSMapTable *)self->_activeLayoutStatesBySwitcherController objectForKey:v5];
 
   return v6;
 }
 
-- (CGRect)applicationTransitionContext:(id)a3 frameForApplicationSceneEntity:(id)a4
+- (CGRect)applicationTransitionContext:(id)context frameForApplicationSceneEntity:(id)entity
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 request];
-  [v7 applicationTransitionContext:v6 frameForApplicationSceneEntity:v5];
+  entityCopy = entity;
+  contextCopy = context;
+  request = [contextCopy request];
+  [request applicationTransitionContext:contextCopy frameForApplicationSceneEntity:entityCopy];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -850,10 +850,10 @@ id __64__SBFluidSwitcherGestureWorkspaceTransaction__beginWithGesture___block_in
   return result;
 }
 
-- (void)transactionDidComplete:(id)a3
+- (void)transactionDidComplete:(id)complete
 {
   v74 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completeCopy = complete;
   v5 = SBLogSystemGestureAppSwitcher();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -864,26 +864,26 @@ id __64__SBFluidSwitcherGestureWorkspaceTransaction__beginWithGesture___block_in
     *buf = 138544130;
     v63 = v7;
     v64 = 2050;
-    v65 = self;
+    selfCopy2 = self;
     v66 = 2114;
     v67 = v9;
     v68 = 2050;
-    v69 = v4;
+    v69 = completeCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_INFO, "<%{public}@:%{public}p> Transaction did complete: <%{public}@:%{public}p>", buf, 0x2Au);
   }
 
-  v10 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self animationController];
-  v11 = v10 == v4;
+  animationController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self animationController];
+  v11 = animationController == completeCopy;
 
   if (v11)
   {
-    v49 = [(SBUIWorkspaceAnimationController *)self->_animationController workspaceTransitionRequest];
-    v12 = [v49 completionBlock];
+    workspaceTransitionRequest = [(SBUIWorkspaceAnimationController *)self->_animationController workspaceTransitionRequest];
+    completionBlock = [workspaceTransitionRequest completionBlock];
 
-    if (v12)
+    if (completionBlock)
     {
-      v13 = [v49 completionBlock];
-      v13[2](v13, 1);
+      completionBlock2 = [workspaceTransitionRequest completionBlock];
+      completionBlock2[2](completionBlock2, 1);
     }
 
     animationController = self->_animationController;
@@ -892,20 +892,20 @@ id __64__SBFluidSwitcherGestureWorkspaceTransaction__beginWithGesture___block_in
     autoPIPWorkspaceTransaction = self->_autoPIPWorkspaceTransaction;
     self->_autoPIPWorkspaceTransaction = 0;
 
-    if (([(SBSceneLayoutWorkspaceTransaction *)v4 isInterrupted]& 1) == 0)
+    if (([(SBSceneLayoutWorkspaceTransaction *)completeCopy isInterrupted]& 1) == 0)
     {
-      v16 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _copiedTransitionRequestFromTransitionRequest:v49];
-      v17 = [v16 applicationContext];
-      [v17 setAnimationDisabled:1];
+      v16 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _copiedTransitionRequestFromTransitionRequest:workspaceTransitionRequest];
+      applicationContext = [v16 applicationContext];
+      [applicationContext setAnimationDisabled:1];
 
-      v18 = [v16 transientOverlayContext];
-      [v18 setAnimated:0];
+      transientOverlayContext = [v16 transientOverlayContext];
+      [transientOverlayContext setAnimated:0];
 
       [v16 finalize];
-      v19 = [v16 applicationContext];
-      v47 = [v19 layoutState];
+      applicationContext2 = [v16 applicationContext];
+      layoutState = [applicationContext2 layoutState];
 
-      [(SBFluidSwitcherGestureWorkspaceTransaction *)self _updatePPTsForAnimationEndedWithFinalLayoutState:v47];
+      [(SBFluidSwitcherGestureWorkspaceTransaction *)self _updatePPTsForAnimationEndedWithFinalLayoutState:layoutState];
       [(SBFluidSwitcherGestureWorkspaceTransaction *)self setSelectedAppLayout:0];
       [(NSTimer *)self->_activateScenesTimer invalidate];
       activateScenesTimer = self->_activateScenesTimer;
@@ -997,9 +997,9 @@ id __64__SBFluidSwitcherGestureWorkspaceTransaction__beginWithGesture___block_in
         [SBApp updateNativeOrientationWithOrientation:objc_msgSend(SBApp updateMirroredDisplays:"interfaceOrientationForCurrentDeviceOrientation:" animated:0) logMessage:{1, 1, @"SBFluidSwitcherGestureWorkspaceTransaction completed transition to home screen"}];
       }
 
-      v34 = [(SBWorkspaceTransaction *)self transitionRequest];
-      v35 = [v34 workspace];
-      v36 = [v35 transactionForTransitionRequest:v16];
+      transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+      workspace = [transitionRequest workspace];
+      v36 = [workspace transactionForTransitionRequest:v16];
 
       objc_storeStrong(&self->_finalRootTransaction, v36);
       v37 = objc_opt_class();
@@ -1032,7 +1032,7 @@ id __64__SBFluidSwitcherGestureWorkspaceTransaction__beginWithGesture___block_in
         *buf = 138544386;
         v63 = v44;
         v64 = 2050;
-        v65 = self;
+        selfCopy2 = self;
         v66 = 2114;
         v67 = v46;
         v68 = 2050;
@@ -1048,18 +1048,18 @@ id __64__SBFluidSwitcherGestureWorkspaceTransaction__beginWithGesture___block_in
     }
   }
 
-  else if (self->_layoutTransaction == v4)
+  else if (self->_layoutTransaction == completeCopy)
   {
-    v26 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self backgroundingScenesDeactivationAssertion];
-    [v26 relinquish];
+    backgroundingScenesDeactivationAssertion = [(SBFluidSwitcherGestureWorkspaceTransaction *)self backgroundingScenesDeactivationAssertion];
+    [backgroundingScenesDeactivationAssertion relinquish];
 
     v27 = self->_layoutTransaction;
     self->_layoutTransaction = 0;
   }
 
-  else if ([(NSMutableSet *)self->_ancillaryLayoutTransactions containsObject:v4])
+  else if ([(NSMutableSet *)self->_ancillaryLayoutTransactions containsObject:completeCopy])
   {
-    [(NSMutableSet *)self->_ancillaryLayoutTransactions removeObject:v4];
+    [(NSMutableSet *)self->_ancillaryLayoutTransactions removeObject:completeCopy];
   }
 }
 
@@ -1108,56 +1108,56 @@ void __69__SBFluidSwitcherGestureWorkspaceTransaction_transactionDidComplete___b
   }
 }
 
-- (id)createSceneEntityForHandle:(id)a3
+- (id)createSceneEntityForHandle:(id)handle
 {
-  v3 = a3;
-  v4 = [[SBDeviceApplicationSceneEntity alloc] initWithApplicationSceneHandle:v3];
+  handleCopy = handle;
+  v4 = [[SBDeviceApplicationSceneEntity alloc] initWithApplicationSceneHandle:handleCopy];
 
   return v4;
 }
 
-- (void)transaction:(id)a3 performTransitionWithCompletion:(id)a4
+- (void)transaction:(id)transaction performTransitionWithCompletion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  transactionCopy = transaction;
+  completionCopy = completion;
+  v8 = completionCopy;
   if (self->_animationController)
   {
     layoutTransitionCompletions = self->_layoutTransitionCompletions;
-    v10 = [v7 copy];
+    v10 = [completionCopy copy];
     v11 = MEMORY[0x223D6F7F0]();
     [(NSMutableSet *)layoutTransitionCompletions addObject:v11];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
-  if (self->_layoutTransaction == v6 && [(NSMutableSet *)self->_ancillaryLayoutTransactions count])
+  if (self->_layoutTransaction == transactionCopy && [(NSMutableSet *)self->_ancillaryLayoutTransactions count])
   {
     v30 = v8;
-    v12 = [(SBWorkspaceTransaction *)v6 displayIdentity];
-    v13 = [SBApp windowSceneManager];
-    v29 = v12;
-    v14 = [v13 windowSceneForDisplayIdentity:v12];
+    displayIdentity = [(SBWorkspaceTransaction *)transactionCopy displayIdentity];
+    windowSceneManager = [SBApp windowSceneManager];
+    v29 = displayIdentity;
+    v14 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
-    v28 = [v14 switcherController];
-    v15 = [v28 windowManagementContext];
-    v16 = [v15 isChamoisOrFlexibleWindowing];
+    switcherController = [v14 switcherController];
+    windowManagementContext = [switcherController windowManagementContext];
+    isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-    v17 = [v14 sceneManager];
-    v18 = [(SBWorkspaceTransaction *)v6 transitionRequest];
-    v19 = [v18 applicationContext];
-    v20 = [v19 layoutState];
-    v21 = [v20 elements];
+    sceneManager = [v14 sceneManager];
+    transitionRequest = [(SBWorkspaceTransaction *)transactionCopy transitionRequest];
+    applicationContext = [transitionRequest applicationContext];
+    layoutState = [applicationContext layoutState];
+    elements = [layoutState elements];
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    obj = v21;
+    obj = elements;
     v22 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
     if (v22)
     {
@@ -1178,9 +1178,9 @@ void __69__SBFluidSwitcherGestureWorkspaceTransaction_transactionDidComplete___b
           v32[1] = 3221225472;
           v32[2] = __90__SBFluidSwitcherGestureWorkspaceTransaction_transaction_performTransitionWithCompletion___block_invoke;
           v32[3] = &unk_2783B02B8;
-          v33 = v17;
+          v33 = sceneManager;
           v34 = v26;
-          v35 = v16;
+          v35 = isChamoisOrFlexibleWindowing;
           [v27 enumerateSceneManagersWithBlock:v32];
         }
 
@@ -1272,58 +1272,58 @@ LABEL_17:
   }
 }
 
-- (void)transaction:(id)a3 didEndLayoutTransitionWithContinuation:(id)a4
+- (void)transaction:(id)transaction didEndLayoutTransitionWithContinuation:(id)continuation
 {
-  if (a4)
+  if (continuation)
   {
-    (*(a4 + 2))(a4, 0, 0);
+    (*(continuation + 2))(continuation, 0, 0);
   }
 }
 
-- (BOOL)transaction:(id)a3 shouldKeepSceneForeground:(id)a4 withReason:(id *)a5
+- (BOOL)transaction:(id)transaction shouldKeepSceneForeground:(id)foreground withReason:(id *)reason
 {
-  v6 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _gestureType:a3];
-  if (a5 && v6 == 8)
+  v6 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _gestureType:transaction];
+  if (reason && v6 == 8)
   {
-    *a5 = @"window drag";
+    *reason = @"window drag";
   }
 
   return v6 == 8;
 }
 
-- (void)handleTransitionRequestForGestureUpdate:(id)a3 fromGestureManager:(id)a4
+- (void)handleTransitionRequestForGestureUpdate:(id)update fromGestureManager:(id)manager
 {
   v100 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v84 = self;
-  v75 = a4;
-  v81 = [SBFluidSwitcherGestureWorkspaceTransaction _workspaceTransitionRequestForSwitcherTransitionRequest:"_workspaceTransitionRequestForSwitcherTransitionRequest:fromGestureManager:withEventLabel:" fromGestureManager:v6 withEventLabel:?];
-  v7 = [v75 switcherController];
-  v78 = [v81 applicationContext];
+  updateCopy = update;
+  selfCopy = self;
+  managerCopy = manager;
+  v81 = [SBFluidSwitcherGestureWorkspaceTransaction _workspaceTransitionRequestForSwitcherTransitionRequest:"_workspaceTransitionRequestForSwitcherTransitionRequest:fromGestureManager:withEventLabel:" fromGestureManager:updateCopy withEventLabel:?];
+  switcherController = [managerCopy switcherController];
+  applicationContext = [v81 applicationContext];
   v95 = 0;
   v96 = &v95;
   v97 = 0x2020000000;
   v98 = 0;
-  v8 = [v7 switcherCoordinator];
+  switcherCoordinator = [switcherController switcherCoordinator];
   v90[0] = MEMORY[0x277D85DD0];
   v90[1] = 3221225472;
   v90[2] = __105__SBFluidSwitcherGestureWorkspaceTransaction_handleTransitionRequestForGestureUpdate_fromGestureManager___block_invoke;
   v90[3] = &unk_2783B02E0;
-  v73 = v6;
+  v73 = updateCopy;
   v91 = v73;
-  v92 = v84;
+  v92 = selfCopy;
   v94 = &v95;
-  v74 = v7;
+  v74 = switcherController;
   v93 = v74;
-  [v8 enumerateSwitcherControllersWithBlock:v90];
+  [switcherCoordinator enumerateSwitcherControllersWithBlock:v90];
 
   [v81 setCrossingDisplays:*(v96 + 24)];
-  v9 = [v74 windowManagementContext];
-  LOBYTE(v6) = [v9 isChamoisOrFlexibleWindowing];
+  windowManagementContext = [v74 windowManagementContext];
+  LOBYTE(updateCopy) = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-  v10 = [v78 isInLiveResize];
-  v11 = *(v96 + 24) | v6;
-  v12 = v10 ^ 1;
+  isInLiveResize = [applicationContext isInLiveResize];
+  v11 = *(v96 + 24) | updateCopy;
+  v12 = isInLiveResize ^ 1;
   if ((v11 & 1) == 0 || !v12)
   {
     [v81 finalize];
@@ -1332,15 +1332,15 @@ LABEL_17:
     v89 = 0u;
     v86 = 0u;
     v87 = 0u;
-    v13 = [v78 entities];
-    v14 = [v13 countByEnumeratingWithState:&v86 objects:v99 count:16];
+    entities = [applicationContext entities];
+    v14 = [entities countByEnumeratingWithState:&v86 objects:v99 count:16];
     if (!v14)
     {
       goto LABEL_47;
     }
 
     v79 = *v87;
-    obj = v13;
+    obj = entities;
     while (1)
     {
       v80 = v14;
@@ -1356,24 +1356,24 @@ LABEL_17:
         {
           v17 = v16;
           v18 = [[SBApplicationSceneUpdateTransaction alloc] initWithApplicationSceneEntity:v17 transitionRequest:v81];
-          v82 = [v17 sceneHandle];
-          v19 = [v82 sceneIfExists];
-          v20 = [v19 identifier];
-          v21 = v20;
-          if (v20)
+          sceneHandle = [v17 sceneHandle];
+          sceneIfExists = [sceneHandle sceneIfExists];
+          identifier = [sceneIfExists identifier];
+          v21 = identifier;
+          if (identifier)
           {
-            v83 = v20;
+            sceneIdentifier = identifier;
           }
 
           else
           {
-            v83 = [v82 sceneIdentifier];
+            sceneIdentifier = [sceneHandle sceneIdentifier];
           }
 
-          v22 = [(SBFluidSwitcherGestureWorkspaceTransaction *)v84 _sceneUpdateTransactionIsForLiveResize:v18];
-          v23 = [v19 settings];
+          v22 = [(SBFluidSwitcherGestureWorkspaceTransaction *)selfCopy _sceneUpdateTransactionIsForLiveResize:v18];
+          settings = [sceneIfExists settings];
           v24 = objc_opt_class();
-          v25 = v23;
+          v25 = settings;
           if (v24)
           {
             if (objc_opt_isKindOfClass())
@@ -1394,9 +1394,9 @@ LABEL_17:
 
           v85 = v26;
 
-          v27 = [(SBApplicationSceneUpdateTransaction *)v18 sceneSettings];
+          sceneSettings = [(SBApplicationSceneUpdateTransaction *)v18 sceneSettings];
           v28 = objc_opt_class();
-          v29 = v27;
+          v29 = sceneSettings;
           if (v28)
           {
             if (objc_opt_isKindOfClass())
@@ -1417,9 +1417,9 @@ LABEL_17:
 
           v31 = v30;
 
-          v32 = [(SBFluidSwitcherGestureWorkspaceTransaction *)v84 _safeAreasChangingFromSettings:v85 toSettings:v31];
-          v33 = [v19 settings];
-          [v33 frame];
+          v32 = [(SBFluidSwitcherGestureWorkspaceTransaction *)selfCopy _safeAreasChangingFromSettings:v85 toSettings:v31];
+          settings2 = [sceneIfExists settings];
+          [settings2 frame];
           v35 = v34;
           v37 = v36;
           v39 = v38;
@@ -1427,7 +1427,7 @@ LABEL_17:
 
           if ([v17 supportsPresentationAtAnySize])
           {
-            [v78 frameForApplicationSceneEntity:v17];
+            [applicationContext frameForApplicationSceneEntity:v17];
             v43 = v42;
             v45 = v44;
             v47 = v46;
@@ -1436,8 +1436,8 @@ LABEL_17:
 
           else
           {
-            v50 = [(SBApplicationSceneUpdateTransaction *)v18 sceneSettings];
-            [v50 frame];
+            sceneSettings2 = [(SBApplicationSceneUpdateTransaction *)v18 sceneSettings];
+            [sceneSettings2 frame];
             v43 = v51;
             v45 = v52;
             v47 = v53;
@@ -1446,9 +1446,9 @@ LABEL_17:
 
           if (v32)
           {
-            v55 = [v81 applicationContext];
-            v56 = [v55 animationSettings];
-            v57 = v56 == 0;
+            applicationContext2 = [v81 applicationContext];
+            animationSettings = [applicationContext2 animationSettings];
+            v57 = animationSettings == 0;
 
             if (!v57)
             {
@@ -1462,27 +1462,27 @@ LABEL_17:
               v103.size.height = v49;
               if (!CGRectEqualToRect(v101, v103))
               {
-                [(NSMutableDictionary *)v84->_pendingSceneUpdateTransactionsBySceneIdentifier removeObjectForKey:v83];
-                v65 = [v17 deviceApplicationSceneEntity];
-                v64 = [v65 sceneHandle];
+                [(NSMutableDictionary *)selfCopy->_pendingSceneUpdateTransactionsBySceneIdentifier removeObjectForKey:sceneIdentifier];
+                deviceApplicationSceneEntity = [v17 deviceApplicationSceneEntity];
+                sceneHandle2 = [deviceApplicationSceneEntity sceneHandle];
 
-                v66 = [v85 ui_safeAreaSettings];
-                [v64 setPreferredSafeAreaSettings:v66];
+                ui_safeAreaSettings = [v85 ui_safeAreaSettings];
+                [sceneHandle2 setPreferredSafeAreaSettings:ui_safeAreaSettings];
 
-                v67 = [v81 applicationContext];
-                v68 = [v67 animationSettings];
+                applicationContext3 = [v81 applicationContext];
+                animationSettings2 = [applicationContext3 animationSettings];
 
-                v69 = [v81 applicationContext];
-                [v69 setAnimationSettings:0];
+                applicationContext4 = [v81 applicationContext];
+                [applicationContext4 setAnimationSettings:0];
 
                 v70 = [[SBApplicationSceneUpdateTransaction alloc] initWithApplicationSceneEntity:v17 transitionRequest:v81];
-                [(SBFluidSwitcherGestureWorkspaceTransaction *)v84 _startSceneUpdateTransaction:v70 forSceneIdentifier:v83];
-                [v64 setPreferredSafeAreaSettings:0];
-                v71 = [v81 applicationContext];
-                [v71 setAnimationSettings:v68];
+                [(SBFluidSwitcherGestureWorkspaceTransaction *)selfCopy _startSceneUpdateTransaction:v70 forSceneIdentifier:sceneIdentifier];
+                [sceneHandle2 setPreferredSafeAreaSettings:0];
+                applicationContext5 = [v81 applicationContext];
+                [applicationContext5 setAnimationSettings:animationSettings2];
 
                 v72 = [[SBApplicationSceneUpdateTransaction alloc] initWithApplicationSceneEntity:v17 transitionRequest:v81];
-                [(SBFluidSwitcherGestureWorkspaceTransaction *)v84 _startSceneUpdateTransaction:v72 forSceneIdentifier:v83];
+                [(SBFluidSwitcherGestureWorkspaceTransaction *)selfCopy _startSceneUpdateTransaction:v72 forSceneIdentifier:sceneIdentifier];
 
                 v18 = v72;
                 goto LABEL_43;
@@ -1490,12 +1490,12 @@ LABEL_17:
             }
           }
 
-          v58 = [v85 interfaceOrientation];
-          v59 = [v78 layoutState];
-          v60 = [v17 uniqueIdentifier];
-          v61 = [v59 interfaceOrientationForElementIdentifier:v60];
+          interfaceOrientation = [v85 interfaceOrientation];
+          layoutState = [applicationContext layoutState];
+          uniqueIdentifier = [v17 uniqueIdentifier];
+          v61 = [layoutState interfaceOrientationForElementIdentifier:uniqueIdentifier];
 
-          if (!v19)
+          if (!sceneIfExists)
           {
             goto LABEL_41;
           }
@@ -1511,28 +1511,28 @@ LABEL_17:
             v104.size.width = v47;
             v104.size.height = v49;
             v62 = CGRectEqualToRect(v102, v104);
-            if (v58 == v61 && v62)
+            if (interfaceOrientation == v61 && v62)
             {
               goto LABEL_44;
             }
           }
 
-          if (v22 && SBSceneLiveResizeTransactionThrottlingEnabled() && [(NSMutableSet *)v84->_sceneIdentifiersWithSceneUpdateTransactionsInProgress containsObject:v83])
+          if (v22 && SBSceneLiveResizeTransactionThrottlingEnabled() && [(NSMutableSet *)selfCopy->_sceneIdentifiersWithSceneUpdateTransactionsInProgress containsObject:sceneIdentifier])
           {
-            v64 = [(NSMutableDictionary *)v84->_pendingSceneUpdateTransactionsBySceneIdentifier objectForKey:v83];
-            if (v64)
+            sceneHandle2 = [(NSMutableDictionary *)selfCopy->_pendingSceneUpdateTransactionsBySceneIdentifier objectForKey:sceneIdentifier];
+            if (sceneHandle2)
             {
-              [(NSMutableDictionary *)v84->_pendingSceneUpdateTransactionsBySceneIdentifier removeObjectForKey:v83];
+              [(NSMutableDictionary *)selfCopy->_pendingSceneUpdateTransactionsBySceneIdentifier removeObjectForKey:sceneIdentifier];
             }
 
-            [(NSMutableDictionary *)v84->_pendingSceneUpdateTransactionsBySceneIdentifier setObject:v18 forKey:v83];
+            [(NSMutableDictionary *)selfCopy->_pendingSceneUpdateTransactionsBySceneIdentifier setObject:v18 forKey:sceneIdentifier];
 LABEL_43:
           }
 
           else
           {
 LABEL_41:
-            [(SBFluidSwitcherGestureWorkspaceTransaction *)v84 _startSceneUpdateTransaction:v18 forSceneIdentifier:v83];
+            [(SBFluidSwitcherGestureWorkspaceTransaction *)selfCopy _startSceneUpdateTransaction:v18 forSceneIdentifier:sceneIdentifier];
           }
 
 LABEL_44:
@@ -1541,7 +1541,7 @@ LABEL_44:
         }
       }
 
-      v13 = obj;
+      entities = obj;
       v14 = [obj countByEnumeratingWithState:&v86 objects:v99 count:16];
       if (!v14)
       {
@@ -1554,7 +1554,7 @@ LABEL_47:
 
   [v81 modifyApplicationContext:&__block_literal_global_71];
   [v81 finalize];
-  [(SBFluidSwitcherGestureWorkspaceTransaction *)v84 _runSceneLayoutTransactionForTransitionRequest:v81 updateScenes:1];
+  [(SBFluidSwitcherGestureWorkspaceTransaction *)selfCopy _runSceneLayoutTransactionForTransitionRequest:v81 updateScenes:1];
 LABEL_48:
 
   _Block_object_dispose(&v95, 8);
@@ -1595,68 +1595,68 @@ void __105__SBFluidSwitcherGestureWorkspaceTransaction_handleTransitionRequestFo
   [v2 bs_each:&__block_literal_global_80];
 }
 
-- (BOOL)_safeAreasChangingFromSettings:(id)a3 toSettings:(id)a4
+- (BOOL)_safeAreasChangingFromSettings:(id)settings toSettings:(id)toSettings
 {
-  v5 = a4;
-  v6 = [a3 ui_safeAreaSettings];
-  v7 = [v5 ui_safeAreaSettings];
+  toSettingsCopy = toSettings;
+  ui_safeAreaSettings = [settings ui_safeAreaSettings];
+  ui_safeAreaSettings2 = [toSettingsCopy ui_safeAreaSettings];
 
   v8 = 0;
-  if (v6 && v7)
+  if (ui_safeAreaSettings && ui_safeAreaSettings2)
   {
-    v9 = [v6 safeAreaCornerInsetResolver];
-    v10 = [v7 safeAreaCornerInsetResolver];
-    v11 = [v6 safeAreaEdgeInsetResolver];
-    v12 = [v7 safeAreaEdgeInsetResolver];
+    safeAreaCornerInsetResolver = [ui_safeAreaSettings safeAreaCornerInsetResolver];
+    safeAreaCornerInsetResolver2 = [ui_safeAreaSettings2 safeAreaCornerInsetResolver];
+    safeAreaEdgeInsetResolver = [ui_safeAreaSettings safeAreaEdgeInsetResolver];
+    safeAreaEdgeInsetResolver2 = [ui_safeAreaSettings2 safeAreaEdgeInsetResolver];
     v8 = !BSEqualObjects() || (BSEqualObjects() & 1) == 0;
   }
 
   return v8;
 }
 
-- (BOOL)_sceneUpdateTransactionIsForLiveResize:(id)a3
+- (BOOL)_sceneUpdateTransactionIsForLiveResize:(id)resize
 {
-  v3 = a3;
+  resizeCopy = resize;
   v4 = objc_opt_class();
-  v5 = [v3 applicationSceneEntity];
+  applicationSceneEntity = [resizeCopy applicationSceneEntity];
 
-  v6 = [v5 sceneHandle];
-  v7 = [v6 sceneIfExists];
-  v8 = [v7 settings];
-  v9 = SBSafeCast(v4, v8);
+  sceneHandle = [applicationSceneEntity sceneHandle];
+  sceneIfExists = [sceneHandle sceneIfExists];
+  settings = [sceneIfExists settings];
+  v9 = SBSafeCast(v4, settings);
 
-  LOBYTE(v6) = [v9 inLiveResize];
-  return v6;
+  LOBYTE(sceneHandle) = [v9 inLiveResize];
+  return sceneHandle;
 }
 
-- (void)_startSceneUpdateTransaction:(id)a3 forSceneIdentifier:(id)a4
+- (void)_startSceneUpdateTransaction:(id)transaction forSceneIdentifier:(id)identifier
 {
   v70 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 applicationSceneEntity];
-  v9 = [v8 sceneHandle];
-  v10 = [v9 sceneIfExists];
+  transactionCopy = transaction;
+  identifierCopy = identifier;
+  applicationSceneEntity = [transactionCopy applicationSceneEntity];
+  sceneHandle = [applicationSceneEntity sceneHandle];
+  sceneIfExists = [sceneHandle sceneIfExists];
 
-  if (v10)
+  if (sceneIfExists)
   {
-    v11 = [v10 settings];
-    [v11 frame];
+    settings = [sceneIfExists settings];
+    [settings frame];
     v13 = v12;
     v15 = v14;
     v17 = v16;
     v19 = v18;
 
-    v20 = [v6 sceneSettings];
-    [v20 frame];
+    sceneSettings = [transactionCopy sceneSettings];
+    [sceneSettings frame];
     v22 = v21;
     v24 = v23;
     v26 = v25;
     v28 = v27;
 
-    v29 = [v10 settings];
+    settings2 = [sceneIfExists settings];
     v30 = objc_opt_class();
-    v31 = v29;
+    v31 = settings2;
     if (v30)
     {
       if (objc_opt_isKindOfClass())
@@ -1677,9 +1677,9 @@ void __105__SBFluidSwitcherGestureWorkspaceTransaction_handleTransitionRequestFo
 
     v33 = v32;
 
-    v34 = [v6 sceneSettings];
+    sceneSettings2 = [transactionCopy sceneSettings];
     v35 = objc_opt_class();
-    v36 = v34;
+    v36 = sceneSettings2;
     if (v35)
     {
       if (objc_opt_isKindOfClass())
@@ -1701,13 +1701,13 @@ void __105__SBFluidSwitcherGestureWorkspaceTransaction_handleTransitionRequestFo
     v38 = v37;
 
     v39 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _safeAreasChangingFromSettings:v33 toSettings:v38];
-    v40 = [v10 settings];
-    v41 = [v40 interfaceOrientation];
+    settings3 = [sceneIfExists settings];
+    interfaceOrientation = [settings3 interfaceOrientation];
 
-    v42 = [v6 sceneSettings];
-    v43 = [v42 interfaceOrientation];
+    sceneSettings3 = [transactionCopy sceneSettings];
+    interfaceOrientation2 = [sceneSettings3 interfaceOrientation];
 
-    if ([(SBFluidSwitcherGestureWorkspaceTransaction *)self _sceneUpdateTransactionIsForLiveResize:v6])
+    if ([(SBFluidSwitcherGestureWorkspaceTransaction *)self _sceneUpdateTransactionIsForLiveResize:transactionCopy])
     {
       v71.origin.x = v13;
       v71.origin.y = v15;
@@ -1717,7 +1717,7 @@ void __105__SBFluidSwitcherGestureWorkspaceTransaction_handleTransitionRequestFo
       v72.origin.y = v24;
       v72.size.width = v26;
       v72.size.height = v28;
-      if (!((v41 != v43) | !CGRectEqualToRect(v71, v72) | v39))
+      if (!((interfaceOrientation != interfaceOrientation2) | !CGRectEqualToRect(v71, v72) | v39))
       {
 
         goto LABEL_29;
@@ -1725,17 +1725,17 @@ void __105__SBFluidSwitcherGestureWorkspaceTransaction_handleTransitionRequestFo
     }
   }
 
-  v62 = v10;
-  [(NSMutableSet *)self->_sceneIdentifiersWithSceneUpdateTransactionsInProgress addObject:v7];
-  v63 = v6;
-  [(SBFluidSwitcherGestureWorkspaceTransaction *)self addChildTransaction:v6 withSchedulingPolicy:0];
+  v62 = sceneIfExists;
+  [(NSMutableSet *)self->_sceneIdentifiersWithSceneUpdateTransactionsInProgress addObject:identifierCopy];
+  v63 = transactionCopy;
+  [(SBFluidSwitcherGestureWorkspaceTransaction *)self addChildTransaction:transactionCopy withSchedulingPolicy:0];
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   WeakRetained = objc_loadWeakRetained(&self->_switcherViewController);
-  v44 = [WeakRetained liveContentOverlays];
-  v45 = [v44 countByEnumeratingWithState:&v65 objects:v69 count:16];
+  liveContentOverlays = [WeakRetained liveContentOverlays];
+  v45 = [liveContentOverlays countByEnumeratingWithState:&v65 objects:v69 count:16];
   if (v45)
   {
     v46 = v45;
@@ -1746,32 +1746,32 @@ void __105__SBFluidSwitcherGestureWorkspaceTransaction_handleTransitionRequestFo
       {
         if (*v66 != v47)
         {
-          objc_enumerationMutation(v44);
+          objc_enumerationMutation(liveContentOverlays);
         }
 
         v49 = *(*(&v65 + 1) + 8 * i);
         if (![v49 type])
         {
           v50 = [v49 itemForLayoutRole:1];
-          v51 = [v50 uniqueIdentifier];
-          v52 = [v51 isEqual:v7];
+          uniqueIdentifier = [v50 uniqueIdentifier];
+          v52 = [uniqueIdentifier isEqual:identifierCopy];
 
           if (v52)
           {
-            v53 = [WeakRetained liveContentOverlays];
-            v54 = [v53 objectForKey:v49];
+            liveContentOverlays2 = [WeakRetained liveContentOverlays];
+            v54 = [liveContentOverlays2 objectForKey:v49];
 
             if (objc_opt_respondsToSelector())
             {
-              v55 = [v63 sceneSettings];
-              [v55 frame];
+              sceneSettings4 = [v63 sceneSettings];
+              [sceneSettings4 frame];
               v57 = v56;
               v59 = v58;
 
-              v60 = [v63 sceneSettings];
-              v61 = [v60 interfaceOrientation];
+              sceneSettings5 = [v63 sceneSettings];
+              interfaceOrientation3 = [sceneSettings5 interfaceOrientation];
 
-              [v54 setContentReferenceSize:v61 interfaceOrientation:{v57, v59}];
+              [v54 setContentReferenceSize:interfaceOrientation3 interfaceOrientation:{v57, v59}];
             }
 
             goto LABEL_28;
@@ -1779,7 +1779,7 @@ void __105__SBFluidSwitcherGestureWorkspaceTransaction_handleTransitionRequestFo
         }
       }
 
-      v46 = [v44 countByEnumeratingWithState:&v65 objects:v69 count:16];
+      v46 = [liveContentOverlays countByEnumeratingWithState:&v65 objects:v69 count:16];
       if (v46)
       {
         continue;
@@ -1791,39 +1791,39 @@ void __105__SBFluidSwitcherGestureWorkspaceTransaction_handleTransitionRequestFo
 
 LABEL_28:
 
-  v10 = v62;
-  v6 = v63;
+  sceneIfExists = v62;
+  transactionCopy = v63;
 LABEL_29:
 }
 
-- (void)handleTransitionRequestForGestureComplete:(id)a3 fromGestureManager:(id)a4
+- (void)handleTransitionRequestForGestureComplete:(id)complete fromGestureManager:(id)manager
 {
   v94 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v75 = a4;
-  v76 = [v7 appLayout];
-  v8 = [v7 unlockedEnvironmentMode];
-  v72 = [v7 floatingConfiguration];
-  [v7 floatingSwitcherVisible];
+  completeCopy = complete;
+  managerCopy = manager;
+  appLayout = [completeCopy appLayout];
+  unlockedEnvironmentMode = [completeCopy unlockedEnvironmentMode];
+  floatingConfiguration = [completeCopy floatingConfiguration];
+  [completeCopy floatingSwitcherVisible];
   [(NSMutableDictionary *)self->_pendingSceneUpdateTransactionsBySceneIdentifier removeAllObjects];
-  LODWORD(a4) = [(SBFluidSwitcherGestureWorkspaceTransaction *)self isInterrupted];
+  LODWORD(manager) = [(SBFluidSwitcherGestureWorkspaceTransaction *)self isInterrupted];
   v9 = SBLogSystemGestureAppSwitcher();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
-  if (a4)
+  if (manager)
   {
     if (v10)
     {
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
-      v13 = SBStringForUnlockedEnvironmentMode(v8);
-      v14 = SBStringForFloatingConfiguration(v72);
+      v13 = SBStringForUnlockedEnvironmentMode(unlockedEnvironmentMode);
+      v14 = SBStringForFloatingConfiguration(floatingConfiguration);
       v15 = BSSettingFlagDescription();
       *buf = 138544642;
       *&buf[4] = v12;
       v84 = 2050;
-      v85 = self;
+      selfCopy2 = self;
       v86 = 2114;
-      v87 = v76;
+      v87 = appLayout;
       v88 = 2114;
       v89 = v13;
       v90 = 2114;
@@ -1840,15 +1840,15 @@ LABEL_29:
   {
     v16 = objc_opt_class();
     v17 = NSStringFromClass(v16);
-    v18 = SBStringForUnlockedEnvironmentMode(v8);
-    v19 = SBStringForFloatingConfiguration(v72);
+    v18 = SBStringForUnlockedEnvironmentMode(unlockedEnvironmentMode);
+    v19 = SBStringForFloatingConfiguration(floatingConfiguration);
     v20 = BSSettingFlagDescription();
     *buf = 138544642;
     *&buf[4] = v17;
     v84 = 2050;
-    v85 = self;
+    selfCopy2 = self;
     v86 = 2114;
-    v87 = v76;
+    v87 = appLayout;
     v88 = 2114;
     v89 = v18;
     v90 = 2114;
@@ -1858,16 +1858,16 @@ LABEL_29:
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_INFO, "<%{public}@:%{public}p> Adding child transaction to activate appLayout: %{public}@, unlockedEnvironmentMode: %{public}@, floatingConfiguration: %{public}@, floatingSwitcherVisible: %{public}@", buf, 0x3Eu);
   }
 
-  v9 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _workspaceTransitionRequestForSwitcherTransitionRequest:v7 fromGestureManager:v75 withEventLabel:@"FinalFluidSwitcherGestureAction"];
+  v9 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _workspaceTransitionRequestForSwitcherTransitionRequest:completeCopy fromGestureManager:managerCopy withEventLabel:@"FinalFluidSwitcherGestureAction"];
   [v9 finalize];
-  v74 = [v75 switcherController];
-  v69 = [v74 switcherCoordinator];
+  switcherController = [managerCopy switcherController];
+  switcherCoordinator = [switcherController switcherCoordinator];
   [(SBUISwitcherAnimationController *)self->_animationController interruptWithReason:@"GestureCompleting"];
   animationController = self->_animationController;
   self->_animationController = 0;
 
   v22 = objc_opt_class();
-  v23 = [v69 animationControllerForTransitionRequest:v9];
+  v23 = [switcherCoordinator animationControllerForTransitionRequest:v9];
   v24 = SBSafeCast(v22, v23);
   v25 = self->_animationController;
   self->_animationController = v24;
@@ -1881,18 +1881,18 @@ LABEL_29:
 
   [(SBUIAnimationController *)v26 addObserver:self];
   [(SBFluidSwitcherGestureWorkspaceTransaction *)self addChildTransaction:self->_animationController];
-  v27 = [v9 applicationContext];
-  v70 = [v27 layoutState];
+  applicationContext = [v9 applicationContext];
+  layoutState = [applicationContext layoutState];
 
-  v28 = [v9 applicationContext];
-  v71 = [v28 previousLayoutState];
+  applicationContext2 = [v9 applicationContext];
+  previousLayoutState = [applicationContext2 previousLayoutState];
 
-  v29 = [v71 unlockedEnvironmentMode];
-  v30 = [v70 unlockedEnvironmentMode];
-  v31 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _gestureType];
-  if (v31 == 1)
+  unlockedEnvironmentMode2 = [previousLayoutState unlockedEnvironmentMode];
+  unlockedEnvironmentMode3 = [layoutState unlockedEnvironmentMode];
+  _gestureType = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _gestureType];
+  if (_gestureType == 1)
   {
-    if (v29 == 3 && v30 == 1)
+    if (unlockedEnvironmentMode2 == 3 && unlockedEnvironmentMode3 == 1)
     {
       [MEMORY[0x277CD9FF0] flush];
       kdebug_trace();
@@ -1904,9 +1904,9 @@ LABEL_29:
     }
   }
 
-  else if (v31 == 8)
+  else if (_gestureType == 8)
   {
-    if ((-[NSObject applicationContext](v9, "applicationContext"), v32 = objc_claimAutoreleasedReturnValue(), [v32 minimizingDisplayItem], v33 = objc_claimAutoreleasedReturnValue(), v34 = v33 == 0, v33, v32, !v34) || v29 == 3 && v30 == 1 || (objc_msgSend(v74, "_slideOverDisplayItem"), (v66 = objc_claimAutoreleasedReturnValue()) != 0) && (-[SBFluidSwitcherGestureWorkspaceTransaction selectedAppLayout](self, "selectedAppLayout"), v67 = objc_claimAutoreleasedReturnValue(), v68 = objc_msgSend(v67, "containsItem:", v66), v67, v66, v68))
+    if ((-[NSObject applicationContext](v9, "applicationContext"), v32 = objc_claimAutoreleasedReturnValue(), [v32 minimizingDisplayItem], v33 = objc_claimAutoreleasedReturnValue(), v34 = v33 == 0, v33, v32, !v34) || unlockedEnvironmentMode2 == 3 && unlockedEnvironmentMode3 == 1 || (objc_msgSend(switcherController, "_slideOverDisplayItem"), (v66 = objc_claimAutoreleasedReturnValue()) != 0) && (-[SBFluidSwitcherGestureWorkspaceTransaction selectedAppLayout](self, "selectedAppLayout"), v67 = objc_claimAutoreleasedReturnValue(), v68 = objc_msgSend(v67, "containsItem:", v66), v67, v66, v68))
     {
       [MEMORY[0x277CD9FF0] flush];
     }
@@ -1915,22 +1915,22 @@ LABEL_29:
   v35 = [MEMORY[0x277CBEB98] setWithObject:v9];
   [(SBFluidSwitcherGestureWorkspaceTransaction *)self _updateMainDisplayIfNecessaryForWorkspaceTransitionRequests:v35];
 
-  if (v8 == 2)
+  if (unlockedEnvironmentMode == 2)
   {
     IsYes = 1;
 LABEL_22:
-    v38 = [v76 allItems];
-    v37 = [v38 count] == 0;
+    allItems = [appLayout allItems];
+    v37 = [allItems count] == 0;
 
-    if ((IsYes | SBFloatingConfigurationIsStashed(v72) | v37))
+    if ((IsYes | SBFloatingConfigurationIsStashed(floatingConfiguration) | v37))
     {
       v39 = 1;
     }
 
     else
     {
-      v40 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedAppLayout];
-      LOBYTE(v37) = ([v76 isOrContainsAppLayout:v40] & 1) == 0 && -[SBFluidSwitcherGestureWorkspaceTransaction _gestureType](self, "_gestureType") != 8;
+      selectedAppLayout = [(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedAppLayout];
+      LOBYTE(v37) = ([appLayout isOrContainsAppLayout:selectedAppLayout] & 1) == 0 && -[SBFluidSwitcherGestureWorkspaceTransaction _gestureType](self, "_gestureType") != 8;
 
       v39 = !v37;
     }
@@ -1940,18 +1940,18 @@ LABEL_22:
   }
 
   IsYes = BSSettingFlagIsYes();
-  if (v8 != 1)
+  if (unlockedEnvironmentMode != 1)
   {
     goto LABEL_22;
   }
 
-  SBFloatingConfigurationIsStashed(v72);
+  SBFloatingConfigurationIsStashed(floatingConfiguration);
   v73 = 1;
   LOBYTE(v37) = 1;
 LABEL_29:
-  if (SBPeekConfigurationIsValid([v71 peekConfiguration]) && !SBPeekConfigurationIsValid(objc_msgSend(v70, "peekConfiguration")))
+  if (SBPeekConfigurationIsValid([previousLayoutState peekConfiguration]) && !SBPeekConfigurationIsValid(objc_msgSend(layoutState, "peekConfiguration")))
   {
-    [v74 _dismissMedusaBanner];
+    [switcherController _dismissMedusaBanner];
   }
 
   v41 = self->_animationController;
@@ -1960,9 +1960,9 @@ LABEL_29:
     goto LABEL_45;
   }
 
-  v42 = [v74 contentViewController];
+  contentViewController = [switcherController contentViewController];
   v43 = objc_opt_class();
-  v44 = v42;
+  v44 = contentViewController;
   if (v43)
   {
     if (objc_opt_isKindOfClass())
@@ -1983,8 +1983,8 @@ LABEL_29:
 
   v46 = v45;
 
-  v47 = [v9 applicationContext];
-  v48 = [v46 shouldMorphToPIPForTransitionContext:v47];
+  applicationContext3 = [v9 applicationContext];
+  v48 = [v46 shouldMorphToPIPForTransitionContext:applicationContext3];
 
   if (v48)
   {
@@ -1992,18 +1992,18 @@ LABEL_29:
     autoPIPWorkspaceTransaction = self->_autoPIPWorkspaceTransaction;
     self->_autoPIPWorkspaceTransaction = v49;
 
-    v51 = [v9 transientOverlayContext];
-    v52 = [v51 transientOverlay];
-    v53 = [v52 viewController];
-    v54 = v53;
-    if (v53)
+    transientOverlayContext = [v9 transientOverlayContext];
+    transientOverlay = [transientOverlayContext transientOverlay];
+    viewController = [transientOverlay viewController];
+    v54 = viewController;
+    if (viewController)
     {
       v55 = self->_autoPIPWorkspaceTransaction;
       v81[0] = MEMORY[0x277D85DD0];
       v81[1] = 3221225472;
       v81[2] = __107__SBFluidSwitcherGestureWorkspaceTransaction_handleTransitionRequestForGestureComplete_fromGestureManager___block_invoke_2;
       v81[3] = &unk_2783A9398;
-      v82 = v53;
+      v82 = viewController;
       [(SBAutoPIPWorkspaceTransaction *)v55 setCompletionBlock:v81];
     }
 
@@ -2023,14 +2023,14 @@ LABEL_45:
   }
 
   [(SBFluidSwitcherGestureWorkspaceTransaction *)self _acquireBackgroundingScenesDeactivationAssertionForTransitionRequest:v9];
-  v57 = [(NSMapTable *)self->_originalLayoutStatesBySwitcherController objectForKey:v74];
-  v58 = [(NSMapTable *)self->_activeLayoutStatesBySwitcherController objectForKey:v74];
-  if ([v58 unlockedEnvironmentMode] == 3 && !((v41 == 0) | (objc_msgSend(v76, "type") != 0) | v73 & 1))
+  v57 = [(NSMapTable *)self->_originalLayoutStatesBySwitcherController objectForKey:switcherController];
+  v58 = [(NSMapTable *)self->_activeLayoutStatesBySwitcherController objectForKey:switcherController];
+  if ([v58 unlockedEnvironmentMode] == 3 && !((v41 == 0) | (objc_msgSend(appLayout, "type") != 0) | v73 & 1))
   {
     [(SBFluidSwitcherGestureWorkspaceTransaction *)self _runSceneLayoutTransactionForTransitionRequest:v9 updateScenes:0];
     ++self->_numberOfAppLayoutsTraveledWithArcSwipe;
-    v59 = [v57 appLayout];
-    v60 = [v76 isEqual:v59];
+    appLayout2 = [v57 appLayout];
+    v60 = [appLayout isEqual:appLayout2];
 
     if (v60)
     {
@@ -2119,26 +2119,26 @@ void __107__SBFluidSwitcherGestureWorkspaceTransaction_handleTransitionRequestFo
   }
 }
 
-- (void)_updateMainDisplayIfNecessaryForWorkspaceTransitionRequests:(id)a3
+- (void)_updateMainDisplayIfNecessaryForWorkspaceTransitionRequests:(id)requests
 {
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __106__SBFluidSwitcherGestureWorkspaceTransaction__updateMainDisplayIfNecessaryForWorkspaceTransitionRequests___block_invoke;
   v22[3] = &unk_2783B0350;
   v22[4] = self;
-  v4 = [a3 bs_firstObjectPassingTest:v22];
+  v4 = [requests bs_firstObjectPassingTest:v22];
   if (v4)
   {
-    v5 = [(SBWorkspaceTransaction *)self windowScene];
-    v6 = [v5 homeScreenController];
-    v7 = [v4 applicationContext];
-    v8 = [v7 layoutState];
+    windowScene = [(SBWorkspaceTransaction *)self windowScene];
+    homeScreenController = [windowScene homeScreenController];
+    applicationContext = [v4 applicationContext];
+    layoutState = [applicationContext layoutState];
 
-    v9 = [v8 appLayout];
-    v10 = [v8 unlockedEnvironmentMode];
-    v11 = [v8 floatingConfiguration];
-    [v8 isFloatingSwitcherVisible];
-    if (v10 == 2)
+    appLayout = [layoutState appLayout];
+    unlockedEnvironmentMode = [layoutState unlockedEnvironmentMode];
+    floatingConfiguration = [layoutState floatingConfiguration];
+    [layoutState isFloatingSwitcherVisible];
+    if (unlockedEnvironmentMode == 2)
     {
       v12 = 1;
     }
@@ -2146,19 +2146,19 @@ void __107__SBFluidSwitcherGestureWorkspaceTransaction_handleTransitionRequestFo
     else
     {
       IsYes = BSSettingFlagIsYes();
-      if (v10 == 1)
+      if (unlockedEnvironmentMode == 1)
       {
-        SBFloatingConfigurationIsStashed(v11);
+        SBFloatingConfigurationIsStashed(floatingConfiguration);
         goto LABEL_18;
       }
 
       v12 = IsYes;
     }
 
-    v14 = [v9 allItems];
-    v15 = [v14 count];
+    allItems = [appLayout allItems];
+    v15 = [allItems count];
 
-    IsStashed = SBFloatingConfigurationIsStashed(v11);
+    IsStashed = SBFloatingConfigurationIsStashed(floatingConfiguration);
     if (v15)
     {
       v17 = v12;
@@ -2171,17 +2171,17 @@ void __107__SBFluidSwitcherGestureWorkspaceTransaction_handleTransitionRequestFo
 
     if ((v17 & 1) == 0 && !IsStashed)
     {
-      v18 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedAppLayout];
-      if ([v9 isOrContainsAppLayout:v18])
+      selectedAppLayout = [(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedAppLayout];
+      if ([appLayout isOrContainsAppLayout:selectedAppLayout])
       {
 LABEL_26:
 
         goto LABEL_27;
       }
 
-      v19 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _gestureType];
+      _gestureType = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _gestureType];
 
-      if (v19 == 8)
+      if (_gestureType == 8)
       {
         goto LABEL_27;
       }
@@ -2204,33 +2204,33 @@ LABEL_17:
     }
 
 LABEL_18:
-    v21 = [v8 interfaceOrientation];
-    [SBApp noteInterfaceOrientationChanged:v21 logMessage:@"SBFluidSwitcherGestureWorkspaceTransaction running animation to home screen"];
-    [v6 beginRequiringContentForReason:@"SBUIHomeScreenActiveContentRequirementReason"];
+    interfaceOrientation = [layoutState interfaceOrientation];
+    [SBApp noteInterfaceOrientationChanged:interfaceOrientation logMessage:@"SBFluidSwitcherGestureWorkspaceTransaction running animation to home screen"];
+    [homeScreenController beginRequiringContentForReason:@"SBUIHomeScreenActiveContentRequirementReason"];
     v20 = 1;
 LABEL_19:
-    v18 = [v6 iconManager];
-    if ([v18 isFolderPageManagementUIVisible])
+    selectedAppLayout = [homeScreenController iconManager];
+    if ([selectedAppLayout isFolderPageManagementUIVisible])
     {
-      [v18 dismissFolderPageManagementUI];
+      [selectedAppLayout dismissFolderPageManagementUI];
     }
 
-    else if ([v18 isShowingModalInteraction])
+    else if ([selectedAppLayout isShowingModalInteraction])
     {
       if (v20)
       {
-        [v18 popModalInteraction];
+        [selectedAppLayout popModalInteraction];
       }
 
       else
       {
-        [v18 dismissModalInteractions];
+        [selectedAppLayout dismissModalInteractions];
       }
     }
 
     else
     {
-      [v18 setEditing:0];
+      [selectedAppLayout setEditing:0];
     }
 
     goto LABEL_26;
@@ -2255,32 +2255,32 @@ uint64_t __106__SBFluidSwitcherGestureWorkspaceTransaction__updateMainDisplayIfN
   return v3;
 }
 
-- (void)_acquireBackgroundingScenesDeactivationAssertionForTransitionRequest:(id)a3
+- (void)_acquireBackgroundingScenesDeactivationAssertionForTransitionRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _switcherControllerForWorkspaceTransitionRequest:v4];
+  requestCopy = request;
+  v5 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _switcherControllerForWorkspaceTransitionRequest:requestCopy];
   v6 = [(NSMapTable *)self->_activeLayoutStatesBySwitcherController objectForKey:v5];
-  v7 = [v6 elements];
-  v8 = [v7 mutableCopy];
+  elements = [v6 elements];
+  v8 = [elements mutableCopy];
 
-  v9 = [v4 applicationContext];
+  applicationContext = [requestCopy applicationContext];
 
-  v10 = [v9 layoutState];
-  v11 = [v10 elements];
-  [v8 minusSet:v11];
+  layoutState = [applicationContext layoutState];
+  elements2 = [layoutState elements];
+  [v8 minusSet:elements2];
 
   if ([v8 count])
   {
-    v12 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self backgroundingScenesDeactivationAssertion];
-    [v12 relinquish];
+    backgroundingScenesDeactivationAssertion = [(SBFluidSwitcherGestureWorkspaceTransaction *)self backgroundingScenesDeactivationAssertion];
+    [backgroundingScenesDeactivationAssertion relinquish];
 
-    v13 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self backgroundingScenesDeactivationAssertion];
+    backgroundingScenesDeactivationAssertion2 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self backgroundingScenesDeactivationAssertion];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __115__SBFluidSwitcherGestureWorkspaceTransaction__acquireBackgroundingScenesDeactivationAssertionForTransitionRequest___block_invoke;
     v14[3] = &unk_2783ADD00;
     v15 = v8;
-    [v13 acquireWithPredicate:v14 transitionContext:0];
+    [backgroundingScenesDeactivationAssertion2 acquireWithPredicate:v14 transitionContext:0];
   }
 }
 
@@ -2337,15 +2337,15 @@ LABEL_11:
   return v5;
 }
 
-- (void)_runSceneLayoutTransactionForTransitionRequest:(id)a3 updateScenes:(BOOL)a4
+- (void)_runSceneLayoutTransactionForTransitionRequest:(id)request updateScenes:(BOOL)scenes
 {
-  v4 = a4;
+  scenesCopy = scenes;
   v88 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  requestCopy = request;
   layoutTransaction = self->_layoutTransaction;
   if (layoutTransaction)
   {
-    [(SBWorkspaceTransaction *)layoutTransaction interruptForTransitionRequest:v7];
+    [(SBWorkspaceTransaction *)layoutTransaction interruptForTransitionRequest:requestCopy];
     v9 = self->_layoutTransaction;
     self->_layoutTransaction = 0;
   }
@@ -2371,7 +2371,7 @@ LABEL_11:
             objc_enumerationMutation(v10);
           }
 
-          [*(*(&v79 + 1) + 8 * i) interruptForTransitionRequest:v7];
+          [*(*(&v79 + 1) + 8 * i) interruptForTransitionRequest:requestCopy];
         }
 
         v12 = [(NSMutableSet *)v10 countByEnumeratingWithState:&v79 objects:v87 count:16];
@@ -2384,23 +2384,23 @@ LABEL_11:
   }
 
   [(SBFluidSwitcherGestureWorkspaceTransaction *)self _failRunningLayoutStateTransition];
-  v15 = !v4;
-  v16 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherController];
-  v17 = [v16 switcherCoordinator];
+  v15 = !scenesCopy;
+  switcherController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherController];
+  switcherCoordinator = [switcherController switcherCoordinator];
 
-  [v17 setLiveContentOverlayUpdatesSuspended:v15];
+  [switcherCoordinator setLiveContentOverlayUpdatesSuspended:v15];
   if (v15)
   {
-    objc_storeStrong(&self->super.super.super._transitionRequest, a3);
+    objc_storeStrong(&self->super.super.super._transitionRequest, request);
     if (!self->_hasActiveLayoutStateTransitionCoordinatorTransition)
     {
       self->_hasActiveLayoutStateTransitionCoordinatorTransition = 1;
-      v43 = [(SBWorkspaceTransaction *)self layoutStateTransitionCoordinator];
-      [v43 beginTransitionForWorkspaceTransaction:self];
+      layoutStateTransitionCoordinator = [(SBWorkspaceTransaction *)self layoutStateTransitionCoordinator];
+      [layoutStateTransitionCoordinator beginTransitionForWorkspaceTransaction:self];
     }
 
-    v44 = [SBMainWorkspaceTransitionRequest ancillaryTransitionRequestsForTransitionRequest:v7];
-    v45 = [MEMORY[0x277CBEB98] setWithObject:v7];
+    v44 = [SBMainWorkspaceTransitionRequest ancillaryTransitionRequestsForTransitionRequest:requestCopy];
+    v45 = [MEMORY[0x277CBEB98] setWithObject:requestCopy];
     v46 = [v45 setByAddingObjectsFromSet:v44];
 
     v61 = 0u;
@@ -2417,7 +2417,7 @@ LABEL_11:
 
     v48 = v47;
     v56 = v44;
-    v58 = v17;
+    v58 = switcherCoordinator;
     v49 = *v60;
     do
     {
@@ -2430,10 +2430,10 @@ LABEL_11:
 
         v51 = *(*(&v59 + 1) + 8 * j);
         v52 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _switcherControllerForWorkspaceTransitionRequest:v51];
-        v53 = [v51 applicationContext];
-        v54 = [v53 layoutState];
+        applicationContext = [v51 applicationContext];
+        layoutState = [applicationContext layoutState];
 
-        [(NSMapTable *)self->_activeLayoutStatesBySwitcherController setObject:v54 forKey:v52];
+        [(NSMapTable *)self->_activeLayoutStatesBySwitcherController setObject:layoutState forKey:v52];
       }
 
       v48 = [v33 countByEnumeratingWithState:&v59 objects:v83 count:16];
@@ -2441,19 +2441,19 @@ LABEL_11:
 
     while (v48);
     v42 = v33;
-    v17 = v58;
+    switcherCoordinator = v58;
   }
 
   else
   {
-    v57 = v17;
-    v18 = [[SBSceneLayoutWorkspaceTransaction alloc] initWithTransitionRequest:v7 delegate:self];
+    v57 = switcherCoordinator;
+    v18 = [[SBSceneLayoutWorkspaceTransaction alloc] initWithTransitionRequest:requestCopy delegate:self];
     v19 = self->_layoutTransaction;
     self->_layoutTransaction = v18;
 
     [(SBSceneLayoutWorkspaceTransaction *)self->_layoutTransaction addObserver:self];
     [(SBSceneLayoutWorkspaceTransaction *)self->_layoutTransaction setOptions:6];
-    v20 = [SBMainWorkspaceTransitionRequest ancillaryTransitionRequestsForTransitionRequest:v7];
+    v20 = [SBMainWorkspaceTransitionRequest ancillaryTransitionRequestsForTransitionRequest:requestCopy];
     v75 = 0u;
     v76 = 0u;
     v77 = 0u;
@@ -2514,7 +2514,7 @@ LABEL_11:
     }
 
     v55 = [(NSMapTable *)self->_activeLayoutStatesBySwitcherController copy];
-    v31 = [MEMORY[0x277CBEB98] setWithObject:v7];
+    v31 = [MEMORY[0x277CBEB98] setWithObject:requestCopy];
     v56 = v20;
     v32 = [v31 setByAddingObjectsFromSet:v20];
 
@@ -2539,10 +2539,10 @@ LABEL_11:
 
           v38 = *(*(&v67 + 1) + 8 * n);
           v39 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _switcherControllerForWorkspaceTransitionRequest:v38];
-          v40 = [v38 applicationContext];
-          v41 = [v40 layoutState];
+          applicationContext2 = [v38 applicationContext];
+          layoutState2 = [applicationContext2 layoutState];
 
-          [(NSMapTable *)self->_activeLayoutStatesBySwitcherController setObject:v41 forKey:v39];
+          [(NSMapTable *)self->_activeLayoutStatesBySwitcherController setObject:layoutState2 forKey:v39];
         }
 
         v35 = [v33 countByEnumeratingWithState:&v67 objects:v84 count:16];
@@ -2554,7 +2554,7 @@ LABEL_11:
     if ([v33 count] < 2)
     {
       v44 = v56;
-      v17 = v57;
+      switcherCoordinator = v57;
       v42 = v55;
       goto LABEL_49;
     }
@@ -2563,11 +2563,11 @@ LABEL_11:
     v63[1] = 3221225472;
     v63[2] = __106__SBFluidSwitcherGestureWorkspaceTransaction__runSceneLayoutTransactionForTransitionRequest_updateScenes___block_invoke;
     v63[3] = &unk_2783B03A0;
-    v17 = v57;
+    switcherCoordinator = v57;
     v64 = v57;
     v42 = v55;
     v65 = v42;
-    v66 = self;
+    selfCopy = self;
     [v64 enumerateSwitcherControllersWithBlock:v63];
   }
 
@@ -2654,23 +2654,23 @@ void __106__SBFluidSwitcherGestureWorkspaceTransaction__runSceneLayoutTransactio
 
 - (void)_failRunningLayoutStateTransition
 {
-  v6 = [(SBWorkspaceTransaction *)self layoutStateTransitionCoordinator];
-  if (self->_hasActiveLayoutStateTransitionCoordinatorTransition && [v6 isTransitioning])
+  layoutStateTransitionCoordinator = [(SBWorkspaceTransaction *)self layoutStateTransitionCoordinator];
+  if (self->_hasActiveLayoutStateTransitionCoordinatorTransition && [layoutStateTransitionCoordinator isTransitioning])
   {
     self->_hasActiveLayoutStateTransitionCoordinatorTransition = 0;
-    [v6 willEndTransition];
+    [layoutStateTransitionCoordinator willEndTransition];
     v3 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.springboard.fluidSwitcherGestureTransaction" code:0 userInfo:0];
-    [v6 endTransitionWithError:v3];
+    [layoutStateTransitionCoordinator endTransitionWithError:v3];
   }
 
-  v4 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherController];
-  v5 = [v4 switcherCoordinator];
-  [v5 setLiveContentOverlayUpdatesSuspended:0];
+  switcherController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherController];
+  switcherCoordinator = [switcherController switcherCoordinator];
+  [switcherCoordinator setLiveContentOverlayUpdatesSuspended:0];
 }
 
-- (void)_addChildWorkspaceTransaction:(id)a3
+- (void)_addChildWorkspaceTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -2680,52 +2680,52 @@ void __106__SBFluidSwitcherGestureWorkspaceTransaction__runSceneLayoutTransactio
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        [(SBFluidSwitcherGestureWorkspaceTransaction *)a2 _addChildWorkspaceTransaction:v5];
+        [(SBFluidSwitcherGestureWorkspaceTransaction *)a2 _addChildWorkspaceTransaction:transactionCopy];
       }
     }
   }
 
-  v6 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self finalRootTransaction];
-  if (v6)
+  finalRootTransaction = [(SBFluidSwitcherGestureWorkspaceTransaction *)self finalRootTransaction];
+  if (finalRootTransaction)
   {
-    v7 = [v5 transitionRequest];
-    [v6 interruptForTransitionRequest:v7];
+    transitionRequest = [transactionCopy transitionRequest];
+    [finalRootTransaction interruptForTransitionRequest:transitionRequest];
   }
 
   v8 = SBLogSystemGestureAppSwitcher();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [(SBFluidSwitcherGestureWorkspaceTransaction *)v5 _addChildWorkspaceTransaction:v8];
+    [(SBFluidSwitcherGestureWorkspaceTransaction *)transactionCopy _addChildWorkspaceTransaction:v8];
   }
 
-  [(SBFluidSwitcherGestureWorkspaceTransaction *)self setFinalRootTransaction:v5];
-  [(SBFluidSwitcherGestureWorkspaceTransaction *)self addChildTransaction:v5];
+  [(SBFluidSwitcherGestureWorkspaceTransaction *)self setFinalRootTransaction:transactionCopy];
+  [(SBFluidSwitcherGestureWorkspaceTransaction *)self addChildTransaction:transactionCopy];
 }
 
-- (id)_workspaceTransitionRequestForSwitcherTransitionRequest:(id)a3 fromGestureManager:(id)a4 withEventLabel:(id)a5
+- (id)_workspaceTransitionRequestForSwitcherTransitionRequest:(id)request fromGestureManager:(id)manager withEventLabel:(id)label
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 appLayout];
-  v12 = [v10 switcherController];
+  requestCopy = request;
+  labelCopy = label;
+  managerCopy = manager;
+  appLayout = [requestCopy appLayout];
+  switcherController = [managerCopy switcherController];
 
-  v33 = [v12 windowScene];
-  v13 = [v33 _fbsDisplayConfiguration];
-  v14 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v15 = [v14 workspace];
+  windowScene = [switcherController windowScene];
+  _fbsDisplayConfiguration = [windowScene _fbsDisplayConfiguration];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  workspace = [transitionRequest workspace];
 
-  v32 = v13;
-  v16 = [v15 createRequestWithOptions:0 displayConfiguration:v13];
-  [v12 configureRequest:v16 forSwitcherTransitionRequest:v8 withEventLabel:v9];
+  v32 = _fbsDisplayConfiguration;
+  v16 = [workspace createRequestWithOptions:0 displayConfiguration:_fbsDisplayConfiguration];
+  [switcherController configureRequest:v16 forSwitcherTransitionRequest:requestCopy withEventLabel:labelCopy];
 
-  v17 = [(SBWorkspaceTransaction *)self transitionRequest];
-  [v16 setSource:{objc_msgSend(v17, "source")}];
+  transitionRequest2 = [(SBWorkspaceTransaction *)self transitionRequest];
+  [v16 setSource:{objc_msgSend(transitionRequest2, "source")}];
 
-  v35 = [(NSMapTable *)self->_originalLayoutStatesBySwitcherController objectForKey:v12];
-  v18 = [v8 unlockedEnvironmentMode];
-  v34 = v11;
-  if (v18 == 1)
+  v35 = [(NSMapTable *)self->_originalLayoutStatesBySwitcherController objectForKey:switcherController];
+  unlockedEnvironmentMode = [requestCopy unlockedEnvironmentMode];
+  v34 = appLayout;
+  if (unlockedEnvironmentMode == 1)
   {
     v19 = 1;
   }
@@ -2733,26 +2733,26 @@ void __106__SBFluidSwitcherGestureWorkspaceTransaction__runSceneLayoutTransactio
   else
   {
     v20 = +[SBAppLayout homeScreenAppLayout];
-    v19 = [v11 isEqual:v20];
+    v19 = [appLayout isEqual:v20];
   }
 
-  v21 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedAppLayout];
-  v22 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v23 = [v22 transientOverlayContext];
+  selectedAppLayout = [(SBFluidSwitcherGestureWorkspaceTransaction *)self selectedAppLayout];
+  transitionRequest3 = [(SBWorkspaceTransaction *)self transitionRequest];
+  transientOverlayContext = [transitionRequest3 transientOverlayContext];
 
-  if (v18 == 2 || v19)
+  if (unlockedEnvironmentMode == 2 || v19)
   {
-    if (v23)
+    if (transientOverlayContext)
     {
-      v24 = [v23 transientOverlay];
+      transientOverlay = [transientOverlayContext transientOverlay];
 
-      if (v24)
+      if (transientOverlay)
       {
         v38[0] = MEMORY[0x277D85DD0];
         v38[1] = 3221225472;
         v38[2] = __136__SBFluidSwitcherGestureWorkspaceTransaction__workspaceTransitionRequestForSwitcherTransitionRequest_fromGestureManager_withEventLabel___block_invoke;
         v38[3] = &unk_2783AC2E0;
-        v39 = v23;
+        v39 = transientOverlayContext;
         [v16 modifyTransientOverlayContext:v38];
         v25 = v39;
 LABEL_14:
@@ -2761,9 +2761,9 @@ LABEL_14:
       }
     }
 
-    if ([v21 type] == 2 && ((v19 & 1) != 0 || objc_msgSend(v35, "unlockedEnvironmentMode") != 2))
+    if ([selectedAppLayout type] == 2 && ((v19 & 1) != 0 || objc_msgSend(v35, "unlockedEnvironmentMode") != 2))
     {
-      v26 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _createWorkspaceTransientOverlayForAppLayout:v21];
+      v26 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _createWorkspaceTransientOverlayForAppLayout:selectedAppLayout];
       v25 = v26;
       if (v26)
       {
@@ -2781,15 +2781,15 @@ LABEL_14:
   }
 
 LABEL_15:
-  v27 = [v16 applicationContext];
-  [v27 setInLiveResize:{-[SBFluidSwitcherGestureWorkspaceTransaction isLiveResize](self, "isLiveResize")}];
-  [v27 setPreventSwitcherRecencyModelUpdates:{objc_msgSend(v8, "preventSwitcherRecencyModelUpdates")}];
-  v28 = [v16 applicationContext];
-  v29 = [v28 applicationSceneEntities];
-  [v29 bs_each:&__block_literal_global_122];
+  applicationContext = [v16 applicationContext];
+  [applicationContext setInLiveResize:{-[SBFluidSwitcherGestureWorkspaceTransaction isLiveResize](self, "isLiveResize")}];
+  [applicationContext setPreventSwitcherRecencyModelUpdates:{objc_msgSend(requestCopy, "preventSwitcherRecencyModelUpdates")}];
+  applicationContext2 = [v16 applicationContext];
+  applicationSceneEntities = [applicationContext2 applicationSceneEntities];
+  [applicationSceneEntities bs_each:&__block_literal_global_122];
 
-  v30 = [v16 applicationContext];
-  [v30 setDelegate:self];
+  applicationContext3 = [v16 applicationContext];
+  [applicationContext3 setDelegate:self];
 
   return v16;
 }
@@ -2813,12 +2813,12 @@ void __136__SBFluidSwitcherGestureWorkspaceTransaction__workspaceTransitionReque
   [v3 setTransitionType:1];
 }
 
-- (id)_copiedTransitionRequestFromTransitionRequest:(id)a3
+- (id)_copiedTransitionRequestFromTransitionRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 copyMainWorkspaceTransitionRequest];
+  requestCopy = request;
+  copyMainWorkspaceTransitionRequest = [requestCopy copyMainWorkspaceTransitionRequest];
   v17 = 0;
-  v6 = [SBAutoPIPWorkspaceTransaction shouldAutoPIPEnteringBackgroundForRequest:v4 foundEntity:&v17];
+  v6 = [SBAutoPIPWorkspaceTransaction shouldAutoPIPEnteringBackgroundForRequest:requestCopy foundEntity:&v17];
   v7 = v17;
   v8 = v7;
   if (v6 && v7 != 0)
@@ -2828,19 +2828,19 @@ void __136__SBFluidSwitcherGestureWorkspaceTransaction__workspaceTransitionReque
     v15[2] = __92__SBFluidSwitcherGestureWorkspaceTransaction__copiedTransitionRequestFromTransitionRequest___block_invoke;
     v15[3] = &unk_2783A98C8;
     v16 = v7;
-    [v5 modifyApplicationContext:v15];
+    [copyMainWorkspaceTransitionRequest modifyApplicationContext:v15];
   }
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __92__SBFluidSwitcherGestureWorkspaceTransaction__copiedTransitionRequestFromTransitionRequest___block_invoke_2;
   v12[3] = &unk_2783A96A0;
-  v13 = v4;
-  v14 = self;
-  v10 = v4;
-  [v5 modifyApplicationContext:v12];
+  v13 = requestCopy;
+  selfCopy = self;
+  v10 = requestCopy;
+  [copyMainWorkspaceTransitionRequest modifyApplicationContext:v12];
 
-  return v5;
+  return copyMainWorkspaceTransitionRequest;
 }
 
 void __92__SBFluidSwitcherGestureWorkspaceTransaction__copiedTransitionRequestFromTransitionRequest___block_invoke_2(uint64_t a1, void *a2)
@@ -2958,55 +2958,55 @@ void __92__SBFluidSwitcherGestureWorkspaceTransaction__copiedTransitionRequestFr
   [v3 setItemsCrossingToOtherDisplay:v31];
 }
 
-- (id)_createWorkspaceTransientOverlayForAppLayout:(id)a3
+- (id)_createWorkspaceTransientOverlayForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   WeakRetained = objc_loadWeakRetained(&self->_switcherViewController);
-  v6 = [WeakRetained _createWorkspaceTransientOverlayForAppLayout:v4];
+  v6 = [WeakRetained _createWorkspaceTransientOverlayForAppLayout:layoutCopy];
 
   return v6;
 }
 
-- (id)_transitionRequestForApplicationTransitionContext:(id)a3 eventLabel:(id)a4
+- (id)_transitionRequestForApplicationTransitionContext:(id)context eventLabel:(id)label
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBWorkspaceTransaction *)self windowScene];
-  v9 = [v8 _fbsDisplayConfiguration];
-  v10 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v11 = [v10 workspace];
+  labelCopy = label;
+  contextCopy = context;
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  _fbsDisplayConfiguration = [windowScene _fbsDisplayConfiguration];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  workspace = [transitionRequest workspace];
 
-  v12 = [v11 createRequestWithOptions:0 displayConfiguration:v9];
-  v13 = [(SBWorkspaceTransaction *)self transitionRequest];
-  [v12 setSource:{objc_msgSend(v13, "source")}];
+  v12 = [workspace createRequestWithOptions:0 displayConfiguration:_fbsDisplayConfiguration];
+  transitionRequest2 = [(SBWorkspaceTransaction *)self transitionRequest];
+  [v12 setSource:{objc_msgSend(transitionRequest2, "source")}];
 
-  [v12 setApplicationContext:v7];
-  if (v6)
+  [v12 setApplicationContext:contextCopy];
+  if (labelCopy)
   {
-    [v12 setEventLabel:v6];
+    [v12 setEventLabel:labelCopy];
   }
 
   return v12;
 }
 
-- (void)_addWaitForSceneLayoutTransitionTransaction:(id)a3 forLeafAnimationControllers:(id)a4
+- (void)_addWaitForSceneLayoutTransitionTransaction:(id)transaction forLeafAnimationControllers:(id)controllers
 {
-  v6 = a3;
+  transactionCopy = transaction;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __118__SBFluidSwitcherGestureWorkspaceTransaction__addWaitForSceneLayoutTransitionTransaction_forLeafAnimationControllers___block_invoke;
   v8[3] = &unk_2783B03C8;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a4 _enumerateCoordinatingAnimationsWithBlock:v8];
+  v9 = transactionCopy;
+  v7 = transactionCopy;
+  [controllers _enumerateCoordinatingAnimationsWithBlock:v8];
 }
 
 - (void)_updateDigitizerSurfaceDimensions
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
-  v4 = [v3 _activeEventOfType:0];
+  gestureRecognizer = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
+  v4 = [gestureRecognizer _activeEventOfType:0];
 
   if ([v4 _hidEvent])
   {
@@ -3070,26 +3070,26 @@ LABEL_5:
 LABEL_15:
 }
 
-- (void)_beginDeferringCompletionForReason:(id)a3
+- (void)_beginDeferringCompletionForReason:(id)reason
 {
-  v5 = a3;
-  v4 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self completionDeferralReasons];
-  if (!v4)
+  reasonCopy = reason;
+  completionDeferralReasons = [(SBFluidSwitcherGestureWorkspaceTransaction *)self completionDeferralReasons];
+  if (!completionDeferralReasons)
   {
-    v4 = objc_alloc_init(MEMORY[0x277CCA940]);
-    [(SBFluidSwitcherGestureWorkspaceTransaction *)self setCompletionDeferralReasons:v4];
+    completionDeferralReasons = objc_alloc_init(MEMORY[0x277CCA940]);
+    [(SBFluidSwitcherGestureWorkspaceTransaction *)self setCompletionDeferralReasons:completionDeferralReasons];
   }
 
-  [v4 addObject:v5];
+  [completionDeferralReasons addObject:reasonCopy];
 }
 
-- (void)_endDeferringCompletionForReason:(id)a3
+- (void)_endDeferringCompletionForReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self completionDeferralReasons];
-  [v5 removeObject:v4];
+  reasonCopy = reason;
+  completionDeferralReasons = [(SBFluidSwitcherGestureWorkspaceTransaction *)self completionDeferralReasons];
+  [completionDeferralReasons removeObject:reasonCopy];
 
-  if (![v5 count])
+  if (![completionDeferralReasons count])
   {
     [(SBFluidSwitcherGestureWorkspaceTransaction *)self setCompletionDeferralReasons:0];
   }
@@ -3099,11 +3099,11 @@ LABEL_15:
 
 - (BOOL)_isDeferringCompletionForAnyReason
 {
-  v2 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self completionDeferralReasons];
-  v3 = v2;
-  if (v2)
+  completionDeferralReasons = [(SBFluidSwitcherGestureWorkspaceTransaction *)self completionDeferralReasons];
+  v3 = completionDeferralReasons;
+  if (completionDeferralReasons)
   {
-    v4 = [v2 count] != 0;
+    v4 = [completionDeferralReasons count] != 0;
   }
 
   else
@@ -3114,14 +3114,14 @@ LABEL_15:
   return v4;
 }
 
-- (BOOL)_isDeferringCompletionForReason:(id)a3
+- (BOOL)_isDeferringCompletionForReason:(id)reason
 {
-  v4 = a3;
-  v5 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self completionDeferralReasons];
-  v6 = v5;
-  if (v5)
+  reasonCopy = reason;
+  completionDeferralReasons = [(SBFluidSwitcherGestureWorkspaceTransaction *)self completionDeferralReasons];
+  v6 = completionDeferralReasons;
+  if (completionDeferralReasons)
   {
-    v7 = [v5 countForObject:v4] != 0;
+    v7 = [completionDeferralReasons countForObject:reasonCopy] != 0;
   }
 
   else
@@ -3132,24 +3132,24 @@ LABEL_15:
   return v7;
 }
 
-- (id)_windowSceneForWorkspaceTransitionRequest:(id)a3
+- (id)_windowSceneForWorkspaceTransitionRequest:(id)request
 {
   v3 = SBApp;
-  v4 = a3;
-  v5 = [v3 windowSceneManager];
-  v6 = [v4 displayIdentity];
+  requestCopy = request;
+  windowSceneManager = [v3 windowSceneManager];
+  displayIdentity = [requestCopy displayIdentity];
 
-  v7 = [v5 windowSceneForDisplayIdentity:v6];
+  v7 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
   return v7;
 }
 
-- (id)_switcherControllerForWorkspaceTransitionRequest:(id)a3
+- (id)_switcherControllerForWorkspaceTransitionRequest:(id)request
 {
-  v3 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _windowSceneForWorkspaceTransitionRequest:a3];
-  v4 = [v3 switcherController];
+  v3 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self _windowSceneForWorkspaceTransitionRequest:request];
+  switcherController = [v3 switcherController];
 
-  return v4;
+  return switcherController;
 }
 
 - (void)_updatePPTsForGestureTransactionBegan
@@ -3157,18 +3157,18 @@ LABEL_15:
   if (__PPTIsRunningSwitcherGestureTest())
   {
     v3 = +[SBApplicationTestingManager sharedInstance];
-    v4 = [v3 currentTestName];
+    currentTestName = [v3 currentTestName];
 
     v5 = MEMORY[0x277D76620];
-    [*MEMORY[0x277D76620] startedSubTest:@"delay" forTest:v4];
+    [*MEMORY[0x277D76620] startedSubTest:@"delay" forTest:currentTestName];
     v6 = *v5;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __83__SBFluidSwitcherGestureWorkspaceTransaction__updatePPTsForGestureTransactionBegan__block_invoke;
     v8[3] = &unk_2783A92D8;
-    v9 = v4;
-    v10 = self;
-    v7 = v4;
+    v9 = currentTestName;
+    selfCopy = self;
+    v7 = currentTestName;
     [v6 installCACommitCompletionBlock:v8];
   }
 }
@@ -3195,36 +3195,36 @@ void __83__SBFluidSwitcherGestureWorkspaceTransaction__updatePPTsForGestureTrans
   if (__PPTIsRunningSwitcherGestureTest() && self->_hasCompletedFirstCACommitSinceTransactionBeganForPPT)
   {
     v3 = +[SBApplicationTestingManager sharedInstance];
-    v5 = [v3 currentTestName];
+    currentTestName = [v3 currentTestName];
 
     v4 = MEMORY[0x277D76620];
-    [*MEMORY[0x277D76620] finishedSubTest:@"gesture" forTest:v5];
-    [*v4 startedSubTest:@"animation" forTest:v5];
+    [*MEMORY[0x277D76620] finishedSubTest:@"gesture" forTest:currentTestName];
+    [*v4 startedSubTest:@"animation" forTest:currentTestName];
   }
 }
 
-- (void)_updatePPTsForAnimationEndedWithFinalLayoutState:(id)a3
+- (void)_updatePPTsForAnimationEndedWithFinalLayoutState:(id)state
 {
-  v13 = a3;
+  stateCopy = state;
   if (__PPTIsRunningSwitcherGestureTest())
   {
     v3 = +[SBApplicationTestingManager sharedInstance];
-    v4 = [v3 currentTestName];
+    currentTestName = [v3 currentTestName];
 
     v5 = __PPTIsRunningSwitcherGestureToAutoPIPTest();
     v6 = MEMORY[0x277D76620];
     if (!v5)
     {
-      [*MEMORY[0x277D76620] finishedSubTest:@"animation" forTest:v4];
-      [*v6 finishedSubTest:@"overall" forTest:v4];
+      [*MEMORY[0x277D76620] finishedSubTest:@"animation" forTest:currentTestName];
+      [*v6 finishedSubTest:@"overall" forTest:currentTestName];
     }
 
     v7 = __PPTExpectedFinalUnlockedEnvironmentModeForCurrentTest();
-    if (v7 == [v13 unlockedEnvironmentMode])
+    if (v7 == [stateCopy unlockedEnvironmentMode])
     {
       if (!__PPTIsRunningSwitcherGestureToAutoPIPTest())
       {
-        [*v6 finishedTest:v4];
+        [*v6 finishedTest:currentTestName];
       }
     }
 
@@ -3233,9 +3233,9 @@ void __83__SBFluidSwitcherGestureWorkspaceTransaction__updatePPTsForGestureTrans
       v8 = *v6;
       v9 = MEMORY[0x277CCACA8];
       v10 = SBStringForUnlockedEnvironmentMode(v7);
-      v11 = SBStringForUnlockedEnvironmentMode([v13 unlockedEnvironmentMode]);
-      v12 = [v9 stringWithFormat:@"%@ - expected end state is %@, but ended up in %@ instead", v4, v10, v11];
-      [v8 failedTest:v4 withFailure:v12];
+      v11 = SBStringForUnlockedEnvironmentMode([stateCopy unlockedEnvironmentMode]);
+      v12 = [v9 stringWithFormat:@"%@ - expected end state is %@, but ended up in %@ instead", currentTestName, v10, v11];
+      [v8 failedTest:currentTestName withFailure:v12];
     }
   }
 }

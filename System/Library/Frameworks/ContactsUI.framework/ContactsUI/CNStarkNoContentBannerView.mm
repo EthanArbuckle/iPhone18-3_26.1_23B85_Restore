@@ -1,19 +1,19 @@
 @interface CNStarkNoContentBannerView
-- (CNStarkNoContentBannerView)initWithFrame:(CGRect)a3;
+- (CNStarkNoContentBannerView)initWithFrame:(CGRect)frame;
 - (NSString)titleString;
 - (void)choose;
-- (void)clickGestureDidUpdate:(id)a3;
+- (void)clickGestureDidUpdate:(id)update;
 - (void)deselect;
 - (void)select;
-- (void)setSiriButtonEnabled:(BOOL)a3;
-- (void)setTitleString:(id)a3;
+- (void)setSiriButtonEnabled:(BOOL)enabled;
+- (void)setTitleString:(id)string;
 - (void)setupClickGestureRecognizer;
 - (void)setupConstraintsForTitleLabelAndSiriButton;
 - (void)setupConstraintsforTitleLabel;
 - (void)setupSiriButton;
 - (void)setupTitleLabel;
 - (void)stateUpdated;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraints;
 @end
 
@@ -23,53 +23,53 @@
 {
   if ([(CNStarkNoContentBannerView *)self siriButtonSelected]|| [(CNStarkNoContentBannerView *)self isFocused])
   {
-    v3 = [(CNStarkNoContentBannerView *)self siriButton];
+    siriButton = [(CNStarkNoContentBannerView *)self siriButton];
     v4 = +[CNUIColorRepository carPlaySiriButtonTextHighlightedColor];
-    [v3 setTitleColor:v4 forState:0];
+    [siriButton setTitleColor:v4 forState:0];
 
     v5 = +[CNUIColorRepository carPlaySiriButtonBackgroundHighlightedColor];
   }
 
   else
   {
-    v6 = [(CNStarkNoContentBannerView *)self siriButton];
+    siriButton2 = [(CNStarkNoContentBannerView *)self siriButton];
     v7 = +[CNUIColorRepository carPlaySiriButtonTextColor];
-    [v6 setTitleColor:v7 forState:0];
+    [siriButton2 setTitleColor:v7 forState:0];
 
     v5 = +[CNUIColorRepository carPlaySiriButtonBackgroundColor];
   }
 
   v9 = v5;
-  v8 = [(CNStarkNoContentBannerView *)self siriButton];
-  [v8 setBackgroundColor:v9];
+  siriButton3 = [(CNStarkNoContentBannerView *)self siriButton];
+  [siriButton3 setBackgroundColor:v9];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v15.receiver = self;
   v15.super_class = CNStarkNoContentBannerView;
-  [(CNStarkNoContentBannerView *)&v15 traitCollectionDidChange:a3];
+  [(CNStarkNoContentBannerView *)&v15 traitCollectionDidChange:change];
   v4 = +[CNUIFontRepository carPlayNoContentViewTitleFont];
-  v5 = [(CNStarkNoContentBannerView *)self titleLabel];
-  [v5 setFont:v4];
+  titleLabel = [(CNStarkNoContentBannerView *)self titleLabel];
+  [titleLabel setFont:v4];
 
   v6 = +[CNUIFontRepository carPlayNoContentViewSiriButtonFont];
-  v7 = [(CNStarkNoContentBannerView *)self siriButton];
-  v8 = [v7 titleLabel];
-  [v8 setFont:v6];
+  siriButton = [(CNStarkNoContentBannerView *)self siriButton];
+  titleLabel2 = [siriButton titleLabel];
+  [titleLabel2 setFont:v6];
 
-  v9 = [(CNStarkNoContentBannerView *)self traitCollection];
-  v10 = [v9 userInterfaceStyle];
+  traitCollection = [(CNStarkNoContentBannerView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
   v11 = MEMORY[0x1E6979CF8];
-  if (v10 != 2)
+  if (userInterfaceStyle != 2)
   {
     v11 = MEMORY[0x1E6979CE8];
   }
 
   v12 = [MEMORY[0x1E6979378] filterWithType:*v11];
-  v13 = [(CNStarkNoContentBannerView *)self siriButton];
-  v14 = [v13 layer];
-  [v14 setCompositingFilter:v12];
+  siriButton2 = [(CNStarkNoContentBannerView *)self siriButton];
+  layer = [siriButton2 layer];
+  [layer setCompositingFilter:v12];
 
   [(CNStarkNoContentBannerView *)self stateUpdated];
 }
@@ -96,9 +96,9 @@
   _Block_object_dispose(&v19, 8);
   if (!v2)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkAssistantDirectActionEventKey(void)"];
-    [v12 handleFailureInFunction:v13 file:@"CNSiriSoftLink.h" lineNumber:23 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v13 file:@"CNSiriSoftLink.h" lineNumber:23 description:{@"%s", dlerror()}];
 
     __break(1u);
   }
@@ -167,15 +167,15 @@
   }
 }
 
-- (void)clickGestureDidUpdate:(id)a3
+- (void)clickGestureDidUpdate:(id)update
 {
-  v4 = a3;
-  if ([v4 state] == 3)
+  updateCopy = update;
+  if ([updateCopy state] == 3)
   {
     [(CNStarkNoContentBannerView *)self choose];
   }
 
-  else if ([v4 state] == 4 || objc_msgSend(v4, "state") == 5)
+  else if ([updateCopy state] == 4 || objc_msgSend(updateCopy, "state") == 5)
   {
     [(CNStarkNoContentBannerView *)self deselect];
   }
@@ -183,24 +183,24 @@
 
 - (NSString)titleString
 {
-  v2 = [(CNStarkNoContentBannerView *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(CNStarkNoContentBannerView *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setTitleString:(id)a3
+- (void)setTitleString:(id)string
 {
-  v4 = a3;
-  v5 = [(CNStarkNoContentBannerView *)self titleLabel];
-  [v5 setText:v4];
+  stringCopy = string;
+  titleLabel = [(CNStarkNoContentBannerView *)self titleLabel];
+  [titleLabel setText:stringCopy];
 }
 
-- (void)setSiriButtonEnabled:(BOOL)a3
+- (void)setSiriButtonEnabled:(BOOL)enabled
 {
-  if (self->_siriButtonEnabled != a3)
+  if (self->_siriButtonEnabled != enabled)
   {
-    self->_siriButtonEnabled = a3;
+    self->_siriButtonEnabled = enabled;
     [(CNStarkNoContentBannerView *)self setNeedsUpdateConstraints];
   }
 }
@@ -218,16 +218,16 @@
   v12.receiver = self;
   v12.super_class = CNStarkNoContentBannerView;
   [(CNStarkNoContentBannerView *)&v12 updateConstraints];
-  v3 = [(CNStarkNoContentBannerView *)self siriButtonEnabled];
-  v4 = [(CNStarkNoContentBannerView *)self siriButton];
-  v5 = v4;
-  if (v3)
+  siriButtonEnabled = [(CNStarkNoContentBannerView *)self siriButtonEnabled];
+  siriButton = [(CNStarkNoContentBannerView *)self siriButton];
+  v5 = siriButton;
+  if (siriButtonEnabled)
   {
-    [(CNStarkNoContentBannerView *)self addSubview:v4];
+    [(CNStarkNoContentBannerView *)self addSubview:siriButton];
 
     v6 = MEMORY[0x1E696ACD8];
-    v7 = [(CNStarkNoContentBannerView *)self constraintsForTitleLabel];
-    [v6 deactivateConstraints:v7];
+    constraintsForTitleLabel = [(CNStarkNoContentBannerView *)self constraintsForTitleLabel];
+    [v6 deactivateConstraints:constraintsForTitleLabel];
 
     v8 = MEMORY[0x1E696ACD8];
     [(CNStarkNoContentBannerView *)self constraintsForTitleLabelAndSiriButton];
@@ -235,11 +235,11 @@
 
   else
   {
-    [v4 removeFromSuperview];
+    [siriButton removeFromSuperview];
 
     v9 = MEMORY[0x1E696ACD8];
-    v10 = [(CNStarkNoContentBannerView *)self constraintsForTitleLabelAndSiriButton];
-    [v9 deactivateConstraints:v10];
+    constraintsForTitleLabelAndSiriButton = [(CNStarkNoContentBannerView *)self constraintsForTitleLabelAndSiriButton];
+    [v9 deactivateConstraints:constraintsForTitleLabelAndSiriButton];
 
     v8 = MEMORY[0x1E696ACD8];
     [(CNStarkNoContentBannerView *)self constraintsForTitleLabel];
@@ -251,77 +251,77 @@
 - (void)setupConstraintsForTitleLabelAndSiriButton
 {
   v38[2] = *MEMORY[0x1E69E9840];
-  v35 = [MEMORY[0x1E695DF70] array];
-  v3 = [(UILabel *)self->_titleLabel widthAnchor];
-  v4 = [v3 constraintEqualToConstant:241.0];
+  array = [MEMORY[0x1E695DF70] array];
+  widthAnchor = [(UILabel *)self->_titleLabel widthAnchor];
+  v4 = [widthAnchor constraintEqualToConstant:241.0];
   v38[0] = v4;
-  v5 = [(UILabel *)self->_titleLabel centerXAnchor];
-  v6 = [(CNStarkNoContentBannerView *)self safeAreaLayoutGuide];
-  v7 = [v6 centerXAnchor];
-  v8 = [v5 constraintEqualToAnchor:v7];
+  centerXAnchor = [(UILabel *)self->_titleLabel centerXAnchor];
+  safeAreaLayoutGuide = [(CNStarkNoContentBannerView *)self safeAreaLayoutGuide];
+  centerXAnchor2 = [safeAreaLayoutGuide centerXAnchor];
+  v8 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v38[1] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:2];
-  [v35 addObjectsFromArray:v9];
+  [array addObjectsFromArray:v9];
 
-  v10 = [(UIButton *)self->_siriButton widthAnchor];
-  v11 = [v10 constraintEqualToConstant:241.0];
+  widthAnchor2 = [(UIButton *)self->_siriButton widthAnchor];
+  v11 = [widthAnchor2 constraintEqualToConstant:241.0];
   v37[0] = v11;
-  v12 = [(UIButton *)self->_siriButton centerXAnchor];
-  v13 = [(CNStarkNoContentBannerView *)self safeAreaLayoutGuide];
-  v14 = [v13 centerXAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  centerXAnchor3 = [(UIButton *)self->_siriButton centerXAnchor];
+  safeAreaLayoutGuide2 = [(CNStarkNoContentBannerView *)self safeAreaLayoutGuide];
+  centerXAnchor4 = [safeAreaLayoutGuide2 centerXAnchor];
+  v15 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v37[1] = v15;
-  v16 = [(UIButton *)self->_siriButton heightAnchor];
-  v17 = [v16 constraintEqualToConstant:40.0];
+  heightAnchor = [(UIButton *)self->_siriButton heightAnchor];
+  v17 = [heightAnchor constraintEqualToConstant:40.0];
   v37[2] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:3];
-  [v35 addObjectsFromArray:v18];
+  [array addObjectsFromArray:v18];
 
-  v34 = [(CNStarkNoContentBannerView *)self safeAreaLayoutGuide];
-  v32 = [v34 topAnchor];
-  v33 = [(CNStarkNoContentBannerView *)self titleLabel];
-  v31 = [v33 topAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  safeAreaLayoutGuide3 = [(CNStarkNoContentBannerView *)self safeAreaLayoutGuide];
+  topAnchor = [safeAreaLayoutGuide3 topAnchor];
+  titleLabel = [(CNStarkNoContentBannerView *)self titleLabel];
+  topAnchor2 = [titleLabel topAnchor];
+  v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v36[0] = v30;
-  v29 = [(CNStarkNoContentBannerView *)self titleLabel];
-  v27 = [v29 bottomAnchor];
-  v28 = [(CNStarkNoContentBannerView *)self siriButton];
-  v19 = [v28 topAnchor];
-  v20 = [v27 constraintEqualToAnchor:v19];
+  titleLabel2 = [(CNStarkNoContentBannerView *)self titleLabel];
+  bottomAnchor = [titleLabel2 bottomAnchor];
+  siriButton = [(CNStarkNoContentBannerView *)self siriButton];
+  topAnchor3 = [siriButton topAnchor];
+  v20 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
   v36[1] = v20;
-  v21 = [(CNStarkNoContentBannerView *)self safeAreaLayoutGuide];
-  v22 = [v21 bottomAnchor];
-  v23 = [(CNStarkNoContentBannerView *)self siriButton];
-  v24 = [v23 bottomAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24 constant:24.0];
+  safeAreaLayoutGuide4 = [(CNStarkNoContentBannerView *)self safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide4 bottomAnchor];
+  siriButton2 = [(CNStarkNoContentBannerView *)self siriButton];
+  bottomAnchor3 = [siriButton2 bottomAnchor];
+  v25 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:24.0];
   v36[2] = v25;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:3];
-  [v35 addObjectsFromArray:v26];
+  [array addObjectsFromArray:v26];
 
-  [(CNStarkNoContentBannerView *)self setConstraintsForTitleLabelAndSiriButton:v35];
+  [(CNStarkNoContentBannerView *)self setConstraintsForTitleLabelAndSiriButton:array];
 }
 
 - (void)setupConstraintsforTitleLabel
 {
   v15[3] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v14 = [(UILabel *)self->_titleLabel widthAnchor];
-  v13 = [v14 constraintEqualToConstant:241.0];
+  array = [MEMORY[0x1E695DF70] array];
+  widthAnchor = [(UILabel *)self->_titleLabel widthAnchor];
+  v13 = [widthAnchor constraintEqualToConstant:241.0];
   v15[0] = v13;
-  v12 = [(UILabel *)self->_titleLabel centerXAnchor];
-  v4 = [(CNStarkNoContentBannerView *)self safeAreaLayoutGuide];
-  v5 = [v4 centerXAnchor];
-  v6 = [v12 constraintEqualToAnchor:v5];
+  centerXAnchor = [(UILabel *)self->_titleLabel centerXAnchor];
+  safeAreaLayoutGuide = [(CNStarkNoContentBannerView *)self safeAreaLayoutGuide];
+  centerXAnchor2 = [safeAreaLayoutGuide centerXAnchor];
+  v6 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v15[1] = v6;
-  v7 = [(UILabel *)self->_titleLabel firstBaselineAnchor];
-  v8 = [(CNStarkNoContentBannerView *)self safeAreaLayoutGuide];
-  v9 = [v8 centerYAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  firstBaselineAnchor = [(UILabel *)self->_titleLabel firstBaselineAnchor];
+  safeAreaLayoutGuide2 = [(CNStarkNoContentBannerView *)self safeAreaLayoutGuide];
+  centerYAnchor = [safeAreaLayoutGuide2 centerYAnchor];
+  v10 = [firstBaselineAnchor constraintEqualToAnchor:centerYAnchor];
   v15[2] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:3];
-  [v3 addObjectsFromArray:v11];
+  [array addObjectsFromArray:v11];
 
-  [(CNStarkNoContentBannerView *)self setConstraintsForTitleLabel:v3];
+  [(CNStarkNoContentBannerView *)self setConstraintsForTitleLabel:array];
 }
 
 - (void)setupSiriButton
@@ -341,24 +341,24 @@
     v5 = 8.0;
   }
 
-  v6 = [(UIButton *)self->_siriButton layer];
-  [v6 setCornerRadius:v5];
+  layer = [(UIButton *)self->_siriButton layer];
+  [layer setCornerRadius:v5];
 
-  v7 = [(UIButton *)self->_siriButton layer];
-  [v7 setAllowsGroupBlending:0];
+  layer2 = [(UIButton *)self->_siriButton layer];
+  [layer2 setAllowsGroupBlending:0];
 
-  v8 = [(UIButton *)self->_siriButton titleLabel];
-  [v8 setTextAlignment:1];
+  titleLabel = [(UIButton *)self->_siriButton titleLabel];
+  [titleLabel setTextAlignment:1];
 
   v9 = +[CNUIFontRepository carPlayNoContentViewSiriButtonFont];
-  v10 = [(UIButton *)self->_siriButton titleLabel];
-  [v10 setFont:v9];
+  titleLabel2 = [(UIButton *)self->_siriButton titleLabel];
+  [titleLabel2 setFont:v9];
 
-  v11 = [(UIButton *)self->_siriButton titleLabel];
-  [v11 setNumberOfLines:1];
+  titleLabel3 = [(UIButton *)self->_siriButton titleLabel];
+  [titleLabel3 setNumberOfLines:1];
 
-  v12 = [(UIButton *)self->_siriButton titleLabel];
-  [v12 setAdjustsFontSizeToFitWidth:1];
+  titleLabel4 = [(UIButton *)self->_siriButton titleLabel];
+  [titleLabel4 setAdjustsFontSizeToFitWidth:1];
 
   v13 = self->_siriButton;
   v14 = CNContactsUIBundle();
@@ -393,11 +393,11 @@
   [(CNStarkNoContentBannerView *)self addSubview:v7];
 }
 
-- (CNStarkNoContentBannerView)initWithFrame:(CGRect)a3
+- (CNStarkNoContentBannerView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = CNStarkNoContentBannerView;
-  v3 = [(CNStarkNoContentBannerView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNStarkNoContentBannerView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -405,8 +405,8 @@
     v5 = +[CNUIColorRepository carPlayTableViewBackgroundColor];
     [(CNStarkNoContentBannerView *)v4 setBackgroundColor:v5];
 
-    v6 = [(CNStarkNoContentBannerView *)v4 layer];
-    [v6 setAllowsGroupBlending:0];
+    layer = [(CNStarkNoContentBannerView *)v4 layer];
+    [layer setAllowsGroupBlending:0];
 
     v4->_siriButtonEnabled = 1;
     [(CNStarkNoContentBannerView *)v4 setupTitleLabel];

@@ -1,16 +1,16 @@
 @interface ProsodyTransferData
 - (AudioStreamBasicDescription)asbd;
 - (ProsodyTransferData)init;
-- (void)setAsbd:(AudioStreamBasicDescription *)a3;
+- (void)setAsbd:(AudioStreamBasicDescription *)asbd;
 @end
 
 @implementation ProsodyTransferData
 
-- (void)setAsbd:(AudioStreamBasicDescription *)a3
+- (void)setAsbd:(AudioStreamBasicDescription *)asbd
 {
-  v3 = *&a3->mSampleRate;
-  v4 = *&a3->mBytesPerPacket;
-  *&self->_asbd.mBitsPerChannel = *&a3->mBitsPerChannel;
+  v3 = *&asbd->mSampleRate;
+  v4 = *&asbd->mBytesPerPacket;
+  *&self->_asbd.mBitsPerChannel = *&asbd->mBitsPerChannel;
   *&self->_asbd.mSampleRate = v3;
   *&self->_asbd.mBytesPerPacket = v4;
 }

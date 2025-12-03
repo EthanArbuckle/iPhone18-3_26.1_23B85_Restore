@@ -1,20 +1,20 @@
 @interface BSObjCProtocol
-+ (id)_gatherPropertyMetadataForProtocol:(_BOOL4)a3 required:;
-+ (id)protocolForProtocol:(id)a3;
-+ (id)protocolForProtocol:(id)a3 interpreter:(id)a4;
-+ (void)_gatherMethodMetadataForRequired:(void *)a3 onProtocol:(void *)a4 toMethods:(void *)a5 andErrors:;
-- (BOOL)isEqual:(id)a3;
++ (id)_gatherPropertyMetadataForProtocol:(_BOOL4)protocol required:;
++ (id)protocolForProtocol:(id)protocol;
++ (id)protocolForProtocol:(id)protocol interpreter:(id)interpreter;
++ (void)_gatherMethodMetadataForRequired:(void *)required onProtocol:(void *)protocol toMethods:(void *)methods andErrors:;
+- (BOOL)isEqual:(id)equal;
 - (BSObjCProtocol)init;
 - (NSArray)inheritedProtocols;
-- (id)_initWithName:(void *)a3 protocol:(void *)a4 parsingErrors:(void *)a5 inherited:(void *)a6 methods:(void *)a7 properties:(char)a8 virtual:;
-- (id)_unionMethodsIgnoringObjCProtocols:(void *)a1;
-- (id)_unionPropertiesIgnoringObjCProtocols:(void *)a1;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)flattenWithIgnoredInheritedProtocols:(id)a3;
-- (id)inheritedProtocolForProtocol:(id)a3;
-- (id)methodForSelector:(SEL)a3;
-- (id)propertyWithName:(id)a3;
+- (id)_initWithName:(void *)name protocol:(void *)protocol parsingErrors:(void *)errors inherited:(void *)inherited methods:(void *)methods properties:(char)properties virtual:;
+- (id)_unionMethodsIgnoringObjCProtocols:(void *)protocols;
+- (id)_unionPropertiesIgnoringObjCProtocols:(void *)protocols;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)flattenWithIgnoredInheritedProtocols:(id)protocols;
+- (id)inheritedProtocolForProtocol:(id)protocol;
+- (id)methodForSelector:(SEL)selector;
+- (id)propertyWithName:(id)name;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
@@ -37,28 +37,28 @@
 
 - (BSObjCProtocol)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"BSObjCRuntime.m" lineNumber:1127 description:@"init is not allowed on BSObjCProtocol"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"BSObjCRuntime.m" lineNumber:1127 description:@"init is not allowed on BSObjCProtocol"];
 
   return 0;
 }
 
-- (id)_initWithName:(void *)a3 protocol:(void *)a4 parsingErrors:(void *)a5 inherited:(void *)a6 methods:(void *)a7 properties:(char)a8 virtual:
+- (id)_initWithName:(void *)name protocol:(void *)protocol parsingErrors:(void *)errors inherited:(void *)inherited methods:(void *)methods properties:(char)properties virtual:
 {
   v58 = *MEMORY[0x1E69E9840];
   v48 = a2;
-  v47 = a3;
-  v49 = a4;
-  v50 = a5;
-  v51 = a6;
-  v15 = a7;
-  if (!a1)
+  nameCopy = name;
+  protocolCopy = protocol;
+  errorsCopy = errors;
+  inheritedCopy = inherited;
+  methodsCopy = methods;
+  if (!self)
   {
     v16 = 0;
     goto LABEL_22;
   }
 
-  v56.receiver = a1;
+  v56.receiver = self;
   v56.super_class = BSObjCProtocol;
   v16 = objc_msgSendSuper2(&v56, sel_init);
   if (v16)
@@ -67,24 +67,24 @@
     v18 = *(v16 + 4);
     *(v16 + 4) = v17;
 
-    objc_storeStrong(v16 + 5, a3);
-    v19 = [v49 copy];
+    objc_storeStrong(v16 + 5, name);
+    v19 = [protocolCopy copy];
     v20 = *(v16 + 1);
     *(v16 + 1) = v19;
 
-    v21 = [v50 copy];
+    v21 = [errorsCopy copy];
     v22 = *(v16 + 2);
     *(v16 + 2) = v21;
 
-    v23 = [v51 copy];
+    v23 = [inheritedCopy copy];
     v24 = *(v16 + 6);
     *(v16 + 6) = v23;
 
-    v25 = [v15 copy];
+    v25 = [methodsCopy copy];
     v26 = *(v16 + 7);
     *(v16 + 7) = v25;
 
-    *(v16 + 24) = a8;
+    *(v16 + 24) = properties;
     v54 = 0u;
     v55 = 0u;
     v52 = 0u;
@@ -117,8 +117,8 @@
           if (!*(v31 + 16))
           {
             v38 = *(v31 + 8);
-            v39 = [(BSObjCProperty *)v31 _getSelector];
-            v40 = [BSObjCMethod _propertyGetterForValue:v38 withSelector:v39];
+            _getSelector = [(BSObjCProperty *)v31 _getSelector];
+            v40 = [BSObjCMethod _propertyGetterForValue:v38 withSelector:_getSelector];
             v37 = *(v31 + 16);
             *(v31 + 16) = v40;
             goto LABEL_14;
@@ -126,31 +126,31 @@
 
           if ([*(v31 + 8) isBlock])
           {
-            v34 = [*(v31 + 8) blockReturnValue];
-            v35 = v34 == 0;
+            blockReturnValue = [*(v31 + 8) blockReturnValue];
+            v35 = blockReturnValue == 0;
 
             if (v35)
             {
-              v36 = [*(v31 + 16) returnValue];
+              returnValue = [*(v31 + 16) returnValue];
               v37 = *(v31 + 8);
-              *(v31 + 8) = v36;
+              *(v31 + 8) = returnValue;
 LABEL_14:
             }
           }
         }
 
-        v41 = [(BSObjCProperty *)v31 _setSelector];
-        if (v41)
+        _setSelector = [(BSObjCProperty *)v31 _setSelector];
+        if (_setSelector)
         {
           if (!*(v31 + 24))
           {
-            v42 = [v16 methodForSelector:v41];
+            v42 = [v16 methodForSelector:_setSelector];
             v43 = *(v31 + 24);
             *(v31 + 24) = v42;
 
             if (!*(v31 + 24))
             {
-              v44 = [BSObjCMethod _propertySetterForValue:v41 withSelector:?];
+              v44 = [BSObjCMethod _propertySetterForValue:_setSelector withSelector:?];
               v45 = *(v31 + 24);
               *(v31 + 24) = v44;
             }
@@ -176,20 +176,20 @@ LABEL_22:
   return v16;
 }
 
-+ (id)protocolForProtocol:(id)a3
++ (id)protocolForProtocol:(id)protocol
 {
-  v3 = [a1 protocolForProtocol:a3 interpreter:0];
+  v3 = [self protocolForProtocol:protocol interpreter:0];
 
   return v3;
 }
 
-+ (id)protocolForProtocol:(id)a3 interpreter:(id)a4
++ (id)protocolForProtocol:(id)protocol interpreter:(id)interpreter
 {
   v101 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v73 = a4;
-  v71 = v6;
-  if (!v6)
+  protocolCopy = protocol;
+  interpreterCopy = interpreter;
+  v71 = protocolCopy;
+  if (!protocolCopy)
   {
     v65 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"protocol != ((void *)0)"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -202,7 +202,7 @@ LABEL_22:
       v91 = 2114;
       v92 = v68;
       v93 = 2048;
-      v94 = a1;
+      selfCopy3 = self;
       v95 = 2114;
       v96 = @"BSObjCRuntime.m";
       v97 = 1024;
@@ -218,19 +218,19 @@ LABEL_22:
     JUMPOUT(0x18FF3FA20);
   }
 
-  v72 = NSStringFromProtocol(v6);
-  v7 = [MEMORY[0x1E695DF70] array];
-  v74 = [MEMORY[0x1E695DF70] array];
-  [BSObjCProtocol _gatherMethodMetadataForRequired:v71 onProtocol:v7 toMethods:v74 andErrors:?];
-  [BSObjCProtocol _gatherMethodMetadataForRequired:v71 onProtocol:v7 toMethods:v74 andErrors:?];
-  if (v73)
+  v72 = NSStringFromProtocol(protocolCopy);
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  [BSObjCProtocol _gatherMethodMetadataForRequired:v71 onProtocol:array toMethods:array2 andErrors:?];
+  [BSObjCProtocol _gatherMethodMetadataForRequired:v71 onProtocol:array toMethods:array2 andErrors:?];
+  if (interpreterCopy)
   {
-    v8 = [v7 mutableCopy];
+    v8 = [array mutableCopy];
     v85 = 0u;
     v86 = 0u;
     v83 = 0u;
     v84 = 0u;
-    v9 = v7;
+    v9 = array;
     obj = v9;
     v10 = [v9 countByEnumeratingWithState:&v83 objects:v88 count:16];
     v70 = v10 != 0;
@@ -248,7 +248,7 @@ LABEL_22:
           }
 
           v14 = *(*(&v83 + 1) + 8 * i);
-          v15 = v73[2](v73, v14);
+          v15 = interpreterCopy[2](interpreterCopy, v14);
           if (!v15)
           {
             v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"newMethod != nil"];
@@ -262,7 +262,7 @@ LABEL_22:
               v91 = 2114;
               v92 = v20;
               v93 = 2048;
-              v94 = a1;
+              selfCopy3 = self;
               v95 = 2114;
               v96 = @"BSObjCRuntime.m";
               v97 = 1024;
@@ -278,8 +278,8 @@ LABEL_22:
             JUMPOUT(0x18FF3F2D0);
           }
 
-          v16 = [v14 selector];
-          if (v16 != [v15 selector])
+          selector = [v14 selector];
+          if (selector != [v15 selector])
           {
             v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"[method selector] == [newMethod selector]"];
             if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -292,7 +292,7 @@ LABEL_22:
               v91 = 2114;
               v92 = v25;
               v93 = 2048;
-              v94 = a1;
+              selfCopy3 = self;
               v95 = 2114;
               v96 = @"BSObjCRuntime.m";
               v97 = 1024;
@@ -332,7 +332,7 @@ LABEL_22:
     obj = v9;
 LABEL_25:
 
-    v7 = obj;
+    array = obj;
     goto LABEL_26;
   }
 
@@ -343,7 +343,7 @@ LABEL_26:
   v82 = 0u;
   v79 = 0u;
   v80 = 0u;
-  v27 = v7;
+  v27 = array;
   obja = v27;
   v28 = [v27 countByEnumeratingWithState:&v79 objects:v87 count:16];
   if (!v28)
@@ -425,7 +425,7 @@ LABEL_56:
           v91 = 2114;
           v92 = v31;
           v93 = 2114;
-          v94 = v34;
+          selfCopy3 = v34;
           _os_log_debug_impl(&dword_18FEF6000, v48, OS_LOG_TYPE_DEBUG, "BSObjCProtocol '%{public}@' : dropping duplicated method : method=%{public}@ existing=%{public}@", buf, 0x20u);
         }
 
@@ -441,12 +441,12 @@ LABEL_57:
         v91 = 2114;
         v92 = v31;
         v93 = 2114;
-        v94 = v34;
+        selfCopy3 = v34;
         _os_log_fault_impl(&dword_18FEF6000, v47, OS_LOG_TYPE_FAULT, "BSObjCProtocol '%{public}@' : dropping distinguishable method due to selector collision : method=%{public}@ existing=%{public}@", buf, 0x20u);
       }
 
       v48 = [MEMORY[0x1E696AEC0] stringWithFormat:@"dropping distinguishable method due to selector collision : method=%@ existing=%@", v31, v34];
-      [v74 addObject:v48];
+      [array2 addObject:v48];
 LABEL_60:
 
 LABEL_61:
@@ -465,7 +465,7 @@ LABEL_67:
   v51 = [BSObjCProtocol alloc];
   v52 = v71;
   objc_opt_self();
-  v53 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   *buf = 0;
   v54 = protocol_copyProtocolList(v52, buf);
   if (v54)
@@ -484,7 +484,7 @@ LABEL_67:
         if (v56 != qword_1ED44FDF0)
         {
           v57 = [BSObjCProtocol protocolForProtocol:v56];
-          [v53 addObject:v57];
+          [array3 addObject:v57];
         }
 
         ++v55;
@@ -496,30 +496,30 @@ LABEL_67:
     free(v54);
   }
 
-  v58 = [v78 allObjects];
+  allObjects = [v78 allObjects];
   v59 = v52;
   objc_opt_self();
-  v60 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
   v61 = [BSObjCProtocol _gatherPropertyMetadataForProtocol:v59 required:1];
-  [v60 addObjectsFromArray:v61];
+  [array4 addObjectsFromArray:v61];
 
   v62 = [BSObjCProtocol _gatherPropertyMetadataForProtocol:v59 required:0];
-  [v60 addObjectsFromArray:v62];
+  [array4 addObjectsFromArray:v62];
 
-  v63 = [(BSObjCProtocol *)v51 _initWithName:v72 protocol:v59 parsingErrors:v74 inherited:v53 methods:v58 properties:v60 virtual:v70];
+  v63 = [(BSObjCProtocol *)v51 _initWithName:v72 protocol:v59 parsingErrors:array2 inherited:array3 methods:allObjects properties:array4 virtual:v70];
 
   return v63;
 }
 
-+ (void)_gatherMethodMetadataForRequired:(void *)a3 onProtocol:(void *)a4 toMethods:(void *)a5 andErrors:
++ (void)_gatherMethodMetadataForRequired:(void *)required onProtocol:(void *)protocol toMethods:(void *)methods andErrors:
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v18 = a4;
-  v19 = a5;
+  requiredCopy = required;
+  protocolCopy = protocol;
+  methodsCopy = methods;
   objc_opt_self();
   outCount = 0;
-  v9 = protocol_copyMethodDescriptionList(v8, a2, 1, &outCount);
+  v9 = protocol_copyMethodDescriptionList(requiredCopy, a2, 1, &outCount);
   if (v9)
   {
     v17 = v9;
@@ -534,7 +534,7 @@ LABEL_67:
         MethodTypeEncoding = _protocol_getMethodTypeEncoding();
         if (!MethodTypeEncoding)
         {
-          MethodTypeEncoding = protocol_getMethodDescription(v8, v13, a2, 1).types;
+          MethodTypeEncoding = protocol_getMethodDescription(requiredCopy, v13, a2, 1).types;
         }
 
         v20 = 0;
@@ -543,12 +543,12 @@ LABEL_67:
         if (v15)
         {
           v15[1] = a2;
-          [v18 addObject:v15];
+          [protocolCopy addObject:v15];
         }
 
         if (v16)
         {
-          [v19 addObject:v16];
+          [methodsCopy addObject:v16];
         }
 
         objc_autoreleasePoolPop(v12);
@@ -563,10 +563,10 @@ LABEL_67:
   }
 }
 
-- (id)methodForSelector:(SEL)a3
+- (id)methodForSelector:(SEL)selector
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = NSStringFromSelector(a3);
+  v4 = NSStringFromSelector(selector);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -586,8 +586,8 @@ LABEL_67:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 isEqualToString:v4];
+        name = [v9 name];
+        v11 = [name isEqualToString:v4];
 
         if (v11)
         {
@@ -611,10 +611,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)propertyWithName:(id)a3
+- (id)propertyWithName:(id)name
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -634,8 +634,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 isEqualToString:v4];
+        name = [v9 name];
+        v11 = [name isEqualToString:nameCopy];
 
         if (v11)
         {
@@ -659,10 +659,10 @@ LABEL_11:
   return v6;
 }
 
-- (id)inheritedProtocolForProtocol:(id)a3
+- (id)inheritedProtocolForProtocol:(id)protocol
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = NSStringFromProtocol(a3);
+  v4 = NSStringFromProtocol(protocol);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
@@ -682,8 +682,8 @@ LABEL_11:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 isEqualToString:v4];
+        name = [v9 name];
+        v11 = [name isEqualToString:v4];
 
         if (v11)
         {
@@ -707,43 +707,43 @@ LABEL_11:
   return v6;
 }
 
-- (id)flattenWithIgnoredInheritedProtocols:(id)a3
+- (id)flattenWithIgnoredInheritedProtocols:(id)protocols
 {
-  v4 = a3;
+  protocolsCopy = protocols;
   if ([(NSArray *)self->_inheritedProtocols count])
   {
     v5 = [BSObjCProtocol alloc];
     name = self->_name;
     protocol = self->_protocol;
     parsingErrors = self->_parsingErrors;
-    v9 = [(BSObjCProtocol *)self _unionMethodsIgnoringObjCProtocols:v4];
-    v10 = [v9 allObjects];
-    v11 = [(BSObjCProtocol *)self _unionPropertiesIgnoringObjCProtocols:v4];
-    v12 = [v11 allObjects];
-    v13 = [(BSObjCProtocol *)v5 _initWithName:protocol protocol:parsingErrors parsingErrors:0 inherited:v10 methods:v12 properties:self->_virtual virtual:?];
+    v9 = [(BSObjCProtocol *)self _unionMethodsIgnoringObjCProtocols:protocolsCopy];
+    allObjects = [v9 allObjects];
+    v11 = [(BSObjCProtocol *)self _unionPropertiesIgnoringObjCProtocols:protocolsCopy];
+    allObjects2 = [v11 allObjects];
+    selfCopy = [(BSObjCProtocol *)v5 _initWithName:protocol protocol:parsingErrors parsingErrors:0 inherited:allObjects methods:allObjects2 properties:self->_virtual virtual:?];
   }
 
   else
   {
-    v13 = self;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (id)_unionMethodsIgnoringObjCProtocols:(void *)a1
+- (id)_unionMethodsIgnoringObjCProtocols:(void *)protocols
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (protocols)
   {
     v4 = [MEMORY[0x1E695DFA8] set];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [a1 inheritedProtocols];
-    v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    inheritedProtocols = [protocols inheritedProtocols];
+    v6 = [inheritedProtocols countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
       v7 = *v18;
@@ -753,12 +753,12 @@ LABEL_11:
         {
           if (*v18 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(inheritedProtocols);
           }
 
           v9 = *(*(&v17 + 1) + 8 * i);
-          v10 = [v9 protocol];
-          v11 = [v3 containsObject:v10];
+          protocol = [v9 protocol];
+          v11 = [v3 containsObject:protocol];
 
           if ((v11 & 1) == 0)
           {
@@ -767,15 +767,15 @@ LABEL_11:
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v6 = [inheritedProtocols countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v6);
     }
 
     v13 = MEMORY[0x1E695DFD8];
-    v14 = [a1 methods];
-    v15 = [v13 setWithArray:v14];
+    methods = [protocols methods];
+    v15 = [v13 setWithArray:methods];
 
     [v4 minusSet:v15];
     [v4 unionSet:v15];
@@ -789,19 +789,19 @@ LABEL_11:
   return v4;
 }
 
-- (id)_unionPropertiesIgnoringObjCProtocols:(void *)a1
+- (id)_unionPropertiesIgnoringObjCProtocols:(void *)protocols
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (protocols)
   {
     v4 = [MEMORY[0x1E695DFA8] set];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [a1 inheritedProtocols];
-    v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    inheritedProtocols = [protocols inheritedProtocols];
+    v6 = [inheritedProtocols countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
       v7 = *v18;
@@ -811,12 +811,12 @@ LABEL_11:
         {
           if (*v18 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(inheritedProtocols);
           }
 
           v9 = *(*(&v17 + 1) + 8 * i);
-          v10 = [v9 protocol];
-          v11 = [v3 containsObject:v10];
+          protocol = [v9 protocol];
+          v11 = [v3 containsObject:protocol];
 
           if ((v11 & 1) == 0)
           {
@@ -825,15 +825,15 @@ LABEL_11:
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v6 = [inheritedProtocols countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v6);
     }
 
     v13 = MEMORY[0x1E695DFD8];
-    v14 = [a1 properties];
-    v15 = [v13 setWithArray:v14];
+    properties = [protocols properties];
+    v15 = [v13 setWithArray:properties];
 
     [v4 minusSet:v15];
     [v4 unionSet:v15];
@@ -854,22 +854,22 @@ void __53__BSObjCProtocol__gatherAdoptedProtocolsForProtocol___block_invoke()
   qword_1ED44FDF0 = v0;
 }
 
-+ (id)_gatherPropertyMetadataForProtocol:(_BOOL4)a3 required:
++ (id)_gatherPropertyMetadataForProtocol:(_BOOL4)protocol required:
 {
   v46 = *MEMORY[0x1E69E9840];
   proto = a2;
   objc_opt_self();
-  v30 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   outCount = 0;
-  v32 = protocol_copyPropertyList2(proto, &outCount, a3, 1);
+  v32 = protocol_copyPropertyList2(proto, &outCount, protocol, 1);
   if (v32)
   {
     if (outCount)
     {
       v4 = 0;
       v5 = @"optional --> required";
-      isRequiredMethod = !a3;
-      if (a3)
+      isRequiredMethod = !protocol;
+      if (protocol)
       {
         v5 = @"required --> optional";
       }
@@ -913,7 +913,7 @@ void __53__BSObjCProtocol__gatherAdoptedProtocolsForProtocol___block_invoke()
         v9 = [MEMORY[0x1E696AEC0] bs_stringWithUTF8String:property_getName(v7)];
         v10 = [MEMORY[0x1E695DF90] bsobjc_attributesForProperty:v7];
         v11 = v10;
-        if (!a3)
+        if (!protocol)
         {
           [v10 setObject:&stru_1F03A1A98 forKey:@"?"];
         }
@@ -943,23 +943,23 @@ void __53__BSObjCProtocol__gatherAdoptedProtocolsForProtocol___block_invoke()
 
         if (v17)
         {
-          v18 = [(BSObjCProperty *)v17 _getSelector];
-          if (!protocol_getMethodDescription(proto, v18, a3, 1).name && protocol_getMethodDescription(proto, v18, isRequiredMethod, 1).name)
+          _getSelector = [(BSObjCProperty *)v17 _getSelector];
+          if (!protocol_getMethodDescription(proto, _getSelector, protocol, 1).name && protocol_getMethodDescription(proto, _getSelector, isRequiredMethod, 1).name)
           {
             v17[32] = isRequiredMethod;
             v19 = BSLogCommon();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
             {
-              v20 = [v17 name];
+              name = [v17 name];
               *buf = 138412546;
-              v35 = v20;
+              v35 = name;
               v36 = 2112;
               v37 = v28;
               _os_log_debug_impl(&dword_18FEF6000, v19, OS_LOG_TYPE_DEBUG, "[rdar://100354962] Fixing incorrect property returned by protocol_copyPropertyList2() for %@: %@", buf, 0x16u);
             }
           }
 
-          [v30 addObject:v17];
+          [array addObject:v17];
         }
 
         objc_autoreleasePoolPop(v6);
@@ -972,7 +972,7 @@ void __53__BSObjCProtocol__gatherAdoptedProtocolsForProtocol___block_invoke()
     free(v32);
   }
 
-  return v30;
+  return array;
 }
 
 - (unint64_t)hash
@@ -992,22 +992,22 @@ void __53__BSObjCProtocol__gatherAdoptedProtocolsForProtocol___block_invoke()
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_18;
   }
 
   v5 = objc_opt_class();
-  if (v5 != objc_opt_class() || self->_virtual || v4->_virtual)
+  if (v5 != objc_opt_class() || self->_virtual || equalCopy->_virtual)
   {
     goto LABEL_5;
   }
 
   name = self->_name;
-  v8 = v4->_name;
+  v8 = equalCopy->_name;
   if (name != v8)
   {
     v6 = 0;
@@ -1023,7 +1023,7 @@ void __53__BSObjCProtocol__gatherAdoptedProtocolsForProtocol___block_invoke()
   }
 
   inheritedProtocols = self->_inheritedProtocols;
-  v10 = v4->_inheritedProtocols;
+  v10 = equalCopy->_inheritedProtocols;
   if (inheritedProtocols != v10)
   {
     v6 = 0;
@@ -1041,7 +1041,7 @@ LABEL_5:
   }
 
   methods = self->_methods;
-  v12 = v4->_methods;
+  v12 = equalCopy->_methods;
   if (methods == v12)
   {
 LABEL_18:
@@ -1062,10 +1062,10 @@ LABEL_19:
 
 - (id)succinctDescription
 {
-  v2 = [(BSObjCProtocol *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BSObjCProtocol *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -1080,26 +1080,26 @@ LABEL_19:
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSObjCProtocol *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSObjCProtocol *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(BSObjCProtocol *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(BSObjCProtocol *)self succinctDescriptionBuilder];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __56__BSObjCProtocol_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_1E72CACC0;
   v10[4] = self;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v11 = v6;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v10];
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
   v7 = v11;
   v8 = v6;
 

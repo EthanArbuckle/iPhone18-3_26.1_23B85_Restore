@@ -1,9 +1,9 @@
 @interface DockPersistenceSerialization
-+ (id)_loadFromLegacyData:(id)a3;
-+ (id)_loadFromV1Data:(id)a3;
-+ (id)_loadFromV2Data:(id)a3;
-+ (id)dictionaryFromDockedStates:(id)a3;
-+ (id)dockedStatesFromDictionary:(id)a3;
++ (id)_loadFromLegacyData:(id)data;
++ (id)_loadFromV1Data:(id)data;
++ (id)_loadFromV2Data:(id)data;
++ (id)dictionaryFromDockedStates:(id)states;
++ (id)dockedStatesFromDictionary:(id)dictionary;
 + (id)log;
 @end
 
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000A1BD8;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DCE98 != -1)
   {
     dispatch_once(&qword_1006DCE98, block);
@@ -26,10 +26,10 @@
   return v2;
 }
 
-+ (id)dockedStatesFromDictionary:(id)a3
++ (id)dockedStatesFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (!v4)
+  dictionaryCopy = dictionary;
+  if (!dictionaryCopy)
   {
     v5 = &__NSArray0__struct;
     goto LABEL_25;
@@ -42,53 +42,53 @@
     goto LABEL_25;
   }
 
-  v6 = [v4 ef_objectOfClass:objc_opt_class() forKey:@"RestorationCompatabilityVersion"];
+  v6 = [dictionaryCopy ef_objectOfClass:objc_opt_class() forKey:@"RestorationCompatabilityVersion"];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
   v9 = +[DockPersistenceSerialization log];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 134218240;
-    v19 = v8;
+    v19 = integerValue;
     v20 = 2048;
     v21 = 2;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Deserializing docked states from version %ld to version %ld.", &v18, 0x16u);
   }
 
-  if (v8 == 2)
+  if (integerValue == 2)
   {
-    v10 = [a1 _loadFromV2Data:v4];
+    v10 = [self _loadFromV2Data:dictionaryCopy];
   }
 
-  else if (v8 == 1)
+  else if (integerValue == 1)
   {
-    v10 = [a1 _loadFromV1Data:v4];
+    v10 = [self _loadFromV1Data:dictionaryCopy];
   }
 
   else
   {
-    if (v8)
+    if (integerValue)
     {
       v12 = +[DockPersistenceSerialization log];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        sub_100485D34(v8, v12, v13);
+        sub_100485D34(integerValue, v12, v13);
       }
 
       v11 = 0;
       goto LABEL_19;
     }
 
-    v10 = [a1 _loadFromLegacyData:v4];
+    v10 = [self _loadFromLegacyData:dictionaryCopy];
   }
 
   v11 = v10;
@@ -119,14 +119,14 @@ LABEL_25:
   return v5;
 }
 
-+ (id)dictionaryFromDockedStates:(id)a3
++ (id)dictionaryFromDockedStates:(id)states
 {
-  v3 = a3;
+  statesCopy = states;
   v4 = +[DockPersistenceSerialization log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v14 = [v3 count];
+    v14 = [statesCopy count];
     v15 = 2048;
     v16 = 2;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Serializing %lu docked states with version %ld.", buf, 0x16u);
@@ -135,15 +135,15 @@ LABEL_25:
   v5 = objc_alloc_init(NSMutableDictionary);
   [v5 setObject:&off_100673F40 forKey:@"RestorationCompatabilityVersion"];
   v12 = 0;
-  v6 = [NSKeyedArchiver archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v12];
+  v6 = [NSKeyedArchiver archivedDataWithRootObject:statesCopy requiringSecureCoding:1 error:&v12];
   v7 = v12;
   if (v7)
   {
     v8 = +[DockPersistenceSerialization log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v7 ef_publicDescription];
-      sub_100485DA4(v9, buf, v8);
+      ef_publicDescription = [v7 ef_publicDescription];
+      sub_100485DA4(ef_publicDescription, buf, v8);
     }
   }
 
@@ -157,11 +157,11 @@ LABEL_25:
   return v10;
 }
 
-+ (id)_loadFromLegacyData:(id)a3
++ (id)_loadFromLegacyData:(id)data
 {
-  v17 = a3;
+  dataCopy = data;
   v20 = objc_alloc_init(NSMutableArray);
-  v18 = [v17 objectForKey:@"actorItems"];
+  v18 = [dataCopy objectForKey:@"actorItems"];
   v3 = +[DockPersistenceSerialization log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
@@ -189,7 +189,7 @@ LABEL_25:
         }
 
         v7 = *(*(&v21 + 1) + 8 * i);
-        v8 = [v7 objectForKey:{@"identificationString", v17}];
+        v8 = [v7 objectForKey:{@"identificationString", dataCopy}];
         v9 = [v7 objectForKey:@"resurrectionIdentifier"];
         if ([v9 length])
         {
@@ -202,8 +202,8 @@ LABEL_25:
             v13 = +[DockPersistenceSerialization log];
             if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
             {
-              v14 = [v12 ef_publicDescription];
-              sub_100485DF4(v14, buf, &v30, v13);
+              ef_publicDescription = [v12 ef_publicDescription];
+              sub_100485DF4(ef_publicDescription, buf, &v30, v13);
             }
           }
         }
@@ -232,13 +232,13 @@ LABEL_25:
   return v20;
 }
 
-+ (id)_loadFromV1Data:(id)a3
++ (id)_loadFromV1Data:(id)data
 {
-  v4 = a3;
-  v5 = [a1 _loadFromV2Data:v4];
+  dataCopy = data;
+  v5 = [self _loadFromV2Data:dataCopy];
   v6 = [v5 mutableCopy];
 
-  v7 = [v4 objectForKey:@"PresentedState"];
+  v7 = [dataCopy objectForKey:@"PresentedState"];
   if ([v7 length])
   {
     v8 = +[DockPersistenceSerialization log];
@@ -267,8 +267,8 @@ LABEL_25:
       v12 = +[DockPersistenceSerialization log];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = [v10 ef_publicDescription];
-        sub_100485E88(v13, buf, v12);
+        ef_publicDescription = [v10 ef_publicDescription];
+        sub_100485E88(ef_publicDescription, buf, v12);
       }
     }
   }
@@ -287,10 +287,10 @@ LABEL_25:
   return v16;
 }
 
-+ (id)_loadFromV2Data:(id)a3
++ (id)_loadFromV2Data:(id)data
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"DockedStates"];
+  dataCopy = data;
+  v4 = [dataCopy objectForKey:@"DockedStates"];
   if ([v4 length])
   {
     v5 = [NSSet alloc];

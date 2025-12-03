@@ -1,13 +1,13 @@
 @interface NetworkDomainsUtility
-+ (BOOL)isValidDomain:(id)a3;
++ (BOOL)isValidDomain:(id)domain;
 @end
 
 @implementation NetworkDomainsUtility
 
-+ (BOOL)isValidDomain:(id)a3
++ (BOOL)isValidDomain:(id)domain
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  domainCopy = domain;
   if (isValidDomain__onceToken != -1)
   {
     +[NetworkDomainsUtility isValidDomain:];
@@ -16,14 +16,14 @@
   v4 = isValidDomain__domainRegex;
   if (isValidDomain__domainRegex)
   {
-    v5 = [isValidDomain__domainRegex numberOfMatchesInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+    v5 = [isValidDomain__domainRegex numberOfMatchesInString:domainCopy options:0 range:{0, objc_msgSend(domainCopy, "length")}];
     v6 = domainTrackingLogHandle;
     if (v5 == 1)
     {
       if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEBUG))
       {
         v9 = 138477827;
-        v10 = v3;
+        v10 = domainCopy;
         _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEBUG, "(%{private}@) is a valid domain", &v9, 0xCu);
       }
 
@@ -35,7 +35,7 @@
       if (os_log_type_enabled(domainTrackingLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 138477827;
-        v10 = v3;
+        v10 = domainCopy;
         _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEFAULT, "(%{private}@) is not a valid domain", &v9, 0xCu);
       }
 

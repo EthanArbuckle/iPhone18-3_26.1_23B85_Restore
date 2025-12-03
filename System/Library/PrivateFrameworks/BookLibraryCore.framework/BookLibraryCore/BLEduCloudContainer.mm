@@ -1,21 +1,21 @@
 @interface BLEduCloudContainer
 + (id)sharedEduCloudContainer;
 - (BLEduCloudContainer)init;
-- (BOOL)_addOrUpdateCloudEntryWithDictionary:(id)a3 error:(id *)a4;
-- (BOOL)_coordinatedReadOfPromisesWithError:(id *)a3;
-- (BOOL)_writePlist:(id)a3 toURL:(id)a4 error:(id *)a5;
-- (BOOL)addBookItem:(id)a3 error:(id *)a4;
-- (BOOL)removeBookItem:(id)a3 error:(id *)a4;
-- (BOOL)updateBookItem:(id)a3 error:(id *)a4;
+- (BOOL)_addOrUpdateCloudEntryWithDictionary:(id)dictionary error:(id *)error;
+- (BOOL)_coordinatedReadOfPromisesWithError:(id *)error;
+- (BOOL)_writePlist:(id)plist toURL:(id)l error:(id *)error;
+- (BOOL)addBookItem:(id)item error:(id *)error;
+- (BOOL)removeBookItem:(id)item error:(id *)error;
+- (BOOL)updateBookItem:(id)item error:(id *)error;
 - (NSURL)documentsURL;
 - (id)allBookItems;
-- (id)bookItemForPermlink:(id)a3;
-- (id)bookItemForURL:(id)a3;
-- (id)bookItemsForPermlinks:(id)a3;
-- (id)cloudUrlForPermlink:(id)a3;
-- (id)dictionaryAsBookItem:(id)a3 path:(id)a4;
-- (id)fileNameForPermlink:(id)a3;
-- (id)performMetadataActionOnCloudURL:(id)a3 action:(id)a4;
+- (id)bookItemForPermlink:(id)permlink;
+- (id)bookItemForURL:(id)l;
+- (id)bookItemsForPermlinks:(id)permlinks;
+- (id)cloudUrlForPermlink:(id)permlink;
+- (id)dictionaryAsBookItem:(id)item path:(id)path;
+- (id)fileNameForPermlink:(id)permlink;
+- (id)performMetadataActionOnCloudURL:(id)l action:(id)action;
 @end
 
 @implementation BLEduCloudContainer
@@ -47,10 +47,10 @@
   containerQueue = v3->_containerQueue;
   v3->_containerQueue = v4;
 
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 ubiquityIdentityToken];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  ubiquityIdentityToken = [defaultManager ubiquityIdentityToken];
   cloudToken = v3->_cloudToken;
-  v3->_cloudToken = v7;
+  v3->_cloudToken = ubiquityIdentityToken;
 
   v9 = v3->_cloudToken;
   v10 = BLDefaultLog();
@@ -70,7 +70,7 @@
     v15[3] = &unk_278D17380;
     v13 = v3;
     v16 = v13;
-    v17 = v6;
+    v17 = defaultManager;
     dispatch_async(v12, v15);
 
     v3 = v16;
@@ -95,13 +95,13 @@
   documentsURL = self->_documentsURL;
   if (!documentsURL)
   {
-    v4 = [(BLEduCloudContainer *)self containerQueue];
+    containerQueue = [(BLEduCloudContainer *)self containerQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = sub_241D2D2D8;
     block[3] = &unk_278D173A8;
     block[4] = self;
-    dispatch_sync(v4, block);
+    dispatch_sync(containerQueue, block);
 
     documentsURL = self->_documentsURL;
   }
@@ -109,31 +109,31 @@
   return documentsURL;
 }
 
-- (id)dictionaryAsBookItem:(id)a3 path:(id)a4
+- (id)dictionaryAsBookItem:(id)item path:(id)path
 {
-  v4 = a3;
-  if (a3)
+  itemCopy = item;
+  if (item)
   {
-    v5 = a4;
-    v6 = v4;
-    v4 = [[BLBookItem alloc] initWithEduCloudData:v6 path:v5];
+    pathCopy = path;
+    v6 = itemCopy;
+    itemCopy = [[BLBookItem alloc] initWithEduCloudData:v6 path:pathCopy];
   }
 
-  return v4;
+  return itemCopy;
 }
 
-- (id)fileNameForPermlink:(id)a3
+- (id)fileNameForPermlink:(id)permlink
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 pathExtension];
+  permlinkCopy = permlink;
+  pathExtension = [permlinkCopy pathExtension];
   v5 = MEMORY[0x277CCACA8];
-  v6 = [v3 identifierFromPermlink];
-  v7 = [v5 stringWithFormat:@"%@", v6];
+  identifierFromPermlink = [permlinkCopy identifierFromPermlink];
+  v7 = [v5 stringWithFormat:@"%@", identifierFromPermlink];
 
-  if (v4)
+  if (pathExtension)
   {
-    v8 = [v7 stringByAppendingPathExtension:v4];
+    v8 = [v7 stringByAppendingPathExtension:pathExtension];
 
     v7 = v8;
   }
@@ -144,7 +144,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v14 = v3;
+      v14 = permlinkCopy;
       _os_log_impl(&dword_241D1F000, v9, OS_LOG_TYPE_ERROR, "Warning. Unable to determine path extension from permlink {%@}", buf, 0xCu);
     }
   }
@@ -156,25 +156,25 @@
   return v10;
 }
 
-- (id)cloudUrlForPermlink:(id)a3
+- (id)cloudUrlForPermlink:(id)permlink
 {
-  v4 = a3;
-  v5 = [(BLEduCloudContainer *)self documentsURL];
-  v6 = [(BLEduCloudContainer *)self fileNameForPermlink:v4];
+  permlinkCopy = permlink;
+  documentsURL = [(BLEduCloudContainer *)self documentsURL];
+  v6 = [(BLEduCloudContainer *)self fileNameForPermlink:permlinkCopy];
 
-  v7 = [v5 URLByAppendingPathComponent:v6];
+  v7 = [documentsURL URLByAppendingPathComponent:v6];
 
   return v7;
 }
 
-- (BOOL)_writePlist:(id)a3 toURL:(id)a4 error:(id *)a5
+- (BOOL)_writePlist:(id)plist toURL:(id)l error:(id *)error
 {
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAC58] dataWithPropertyList:a3 format:200 options:0 error:a5];
+  lCopy = l;
+  v8 = [MEMORY[0x277CCAC58] dataWithPropertyList:plist format:200 options:0 error:error];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 writeToURL:v7 options:1 error:a5];
+    v10 = [v8 writeToURL:lCopy options:1 error:error];
   }
 
   else
@@ -185,10 +185,10 @@
   return v10;
 }
 
-- (BOOL)_addOrUpdateCloudEntryWithDictionary:(id)a3 error:(id *)a4
+- (BOOL)_addOrUpdateCloudEntryWithDictionary:(id)dictionary error:(id *)error
 {
   v65 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v55 = 0;
   v56 = &v55;
   v57 = 0x2020000000;
@@ -199,7 +199,7 @@
   v52 = sub_241D2DC2C;
   v53 = sub_241D2DC3C;
   v54 = 0;
-  v7 = [v6 objectForKeyedSubscript:@"permlink"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"permlink"];
   if (v7)
   {
     v8 = [MEMORY[0x277CBEBC0] URLWithString:v7];
@@ -210,18 +210,18 @@
     v8 = 0;
   }
 
-  v9 = [(BLEduCloudContainer *)self cloudToken];
-  if (!v9 || (([(BLEduCloudContainer *)self documentsURL], (v10 = objc_claimAutoreleasedReturnValue()) != 0) ? (v11 = v8 == 0) : (v11 = 1), v11 ? (v12 = 0) : (v12 = 1), v10, v9, !v12))
+  cloudToken = [(BLEduCloudContainer *)self cloudToken];
+  if (!cloudToken || (([(BLEduCloudContainer *)self documentsURL], (v10 = objc_claimAutoreleasedReturnValue()) != 0) ? (v11 = v8 == 0) : (v11 = 1), v11 ? (v12 = 0) : (v12 = 1), v10, cloudToken, !v12))
   {
     v20 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:4 userInfo:0];
-    v13 = v50[5];
+    defaultManager = v50[5];
     v50[5] = v20;
     goto LABEL_31;
   }
 
-  v13 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v14 = [(BLEduCloudContainer *)self cloudUrlForPermlink:v8];
-  if ([v13 isUbiquitousItemAtURL:v14])
+  if ([defaultManager isUbiquitousItemAtURL:v14])
   {
     v15 = [objc_alloc(MEMORY[0x277CCA9E8]) initWithFilePresenter:0];
     v48 = 0;
@@ -230,7 +230,7 @@
     v44[2] = sub_241D2DC44;
     v44[3] = &unk_278D173D0;
     v46 = &v55;
-    v45 = v6;
+    v45 = dictionaryCopy;
     v47 = &v49;
     v41 = v15;
     [v15 coordinateWritingItemAtURL:v14 options:0 error:&v48 byAccessor:v44];
@@ -257,11 +257,11 @@
   v21 = NSTemporaryDirectory();
   v16 = [v21 stringByAppendingPathComponent:v41];
 
-  [v13 removeItemAtPath:v16 error:0];
+  [defaultManager removeItemAtPath:v16 error:0];
   v22 = [MEMORY[0x277CBEBC0] fileURLWithPath:v16];
   v23 = (v50 + 5);
   obj = v50[5];
-  v24 = [(BLEduCloudContainer *)self _writePlist:v6 toURL:v22 error:&obj];
+  v24 = [(BLEduCloudContainer *)self _writePlist:dictionaryCopy toURL:v22 error:&obj];
   objc_storeStrong(v23, obj);
 
   if (v24)
@@ -269,7 +269,7 @@
     v25 = [MEMORY[0x277CBEBC0] fileURLWithPath:v16];
     v26 = (v50 + 5);
     v42 = v50[5];
-    v27 = [v13 setUbiquitous:1 itemAtURL:v25 destinationURL:v14 error:&v42];
+    v27 = [defaultManager setUbiquitous:1 itemAtURL:v25 destinationURL:v14 error:&v42];
     objc_storeStrong(v26, v42);
     *(v56 + 24) = v27;
 
@@ -310,13 +310,13 @@ LABEL_25:
 LABEL_26:
 
 LABEL_27:
-  v31 = [v14 path];
-  v32 = [v13 attributesOfItemAtPath:v31 error:0];
+  path = [v14 path];
+  v32 = [defaultManager attributesOfItemAtPath:path error:0];
 
   if (v32)
   {
-    v33 = [v32 fileOwnerAccountName];
-    v34 = [v33 isEqualToString:@"mobile"];
+    fileOwnerAccountName = [v32 fileOwnerAccountName];
+    v34 = [fileOwnerAccountName isEqualToString:@"mobile"];
 
     if ((v34 & 1) == 0)
     {
@@ -326,15 +326,15 @@ LABEL_27:
       v60[0] = @"mobile";
       v60[1] = @"mobile";
       v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:v59 count:2];
-      v37 = [v14 path];
-      [v13 setAttributes:v36 ofItemAtPath:v37 error:0];
+      path2 = [v14 path];
+      [defaultManager setAttributes:v36 ofItemAtPath:path2 error:0];
     }
   }
 
 LABEL_31:
-  if (a4)
+  if (error)
   {
-    *a4 = v50[5];
+    *error = v50[5];
   }
 
   v38 = *(v56 + 24);
@@ -346,14 +346,14 @@ LABEL_31:
   return v38 & 1;
 }
 
-- (BOOL)_coordinatedReadOfPromisesWithError:(id *)a3
+- (BOOL)_coordinatedReadOfPromisesWithError:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [(BLEduCloudContainer *)self documentsURL];
-  v7 = [v6 path];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  documentsURL = [(BLEduCloudContainer *)self documentsURL];
+  path = [documentsURL path];
   v49 = 0;
-  v8 = [v5 contentsOfDirectoryAtPath:v7 error:&v49];
+  v8 = [defaultManager contentsOfDirectoryAtPath:path error:&v49];
   v9 = v49;
 
   if (v8)
@@ -371,9 +371,9 @@ LABEL_31:
   {
     v35 = v11;
     v37 = v9;
-    v38 = v5;
-    v39 = a3;
-    v12 = [MEMORY[0x277CBEB18] array];
+    v38 = defaultManager;
+    errorCopy = error;
+    array = [MEMORY[0x277CBEB18] array];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
@@ -395,15 +395,15 @@ LABEL_31:
           }
 
           v18 = *(*(&v45 + 1) + 8 * i);
-          v19 = [v18 pathExtension];
-          v20 = [v19 isEqualToString:@"cloudItem"];
+          pathExtension = [v18 pathExtension];
+          v20 = [pathExtension isEqualToString:@"cloudItem"];
 
           if (v20)
           {
-            v21 = [(BLEduCloudContainer *)self documentsURL];
-            v22 = [v21 URLByAppendingPathComponent:v18];
+            documentsURL2 = [(BLEduCloudContainer *)self documentsURL];
+            v22 = [documentsURL2 URLByAppendingPathComponent:v18];
 
-            [v12 addObject:v22];
+            [array addObject:v22];
           }
         }
 
@@ -413,14 +413,14 @@ LABEL_31:
       while (v15);
     }
 
-    if ([v12 count])
+    if ([array count])
     {
       v23 = [objc_alloc(MEMORY[0x277CCA9E8]) initWithFilePresenter:0];
       v41 = 0u;
       v42 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v24 = v12;
+      v24 = array;
       v25 = [v24 countByEnumeratingWithState:&v41 objects:v54 count:16];
       if (v25)
       {
@@ -460,42 +460,42 @@ LABEL_31:
       }
     }
 
-    v5 = v38;
-    a3 = v39;
+    defaultManager = v38;
+    error = errorCopy;
     v8 = v36;
     v9 = v37;
     v11 = v35;
   }
 
-  if (a3)
+  if (error)
   {
     v32 = v9;
-    *a3 = v9;
+    *error = v9;
   }
 
   v33 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (BOOL)removeBookItem:(id)a3 error:(id *)a4
+- (BOOL)removeBookItem:(id)item error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 fileURL];
+  itemCopy = item;
+  fileURL = [itemCopy fileURL];
 
-  if (v7)
+  if (fileURL)
   {
-    v8 = [v6 fileURL];
-    v9 = deleteItemAtURLCoordinated(v8);
+    fileURL2 = [itemCopy fileURL];
+    v9 = deleteItemAtURLCoordinated(fileURL2);
   }
 
   else
   {
-    v10 = [v6 permlink];
+    permlink = [itemCopy permlink];
 
-    if (v10)
+    if (permlink)
     {
-      v11 = [v6 permlink];
-      v12 = [(BLEduCloudContainer *)self cloudUrlForPermlink:v11];
+      permlink2 = [itemCopy permlink];
+      v12 = [(BLEduCloudContainer *)self cloudUrlForPermlink:permlink2];
 
       v9 = deleteItemAtURLCoordinated(v12);
     }
@@ -506,42 +506,42 @@ LABEL_31:
     }
   }
 
-  [v6 _setCloudCoverImageData:0];
-  if (a4)
+  [itemCopy _setCloudCoverImageData:0];
+  if (error)
   {
     v13 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
   return v9 == 0;
 }
 
-- (BOOL)addBookItem:(id)a3 error:(id *)a4
+- (BOOL)addBookItem:(id)item error:(id *)error
 {
-  v6 = [a3 _cloudDictionaryRepresentation];
-  LOBYTE(a4) = [(BLEduCloudContainer *)self _addOrUpdateCloudEntryWithDictionary:v6 error:a4];
+  _cloudDictionaryRepresentation = [item _cloudDictionaryRepresentation];
+  LOBYTE(error) = [(BLEduCloudContainer *)self _addOrUpdateCloudEntryWithDictionary:_cloudDictionaryRepresentation error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)updateBookItem:(id)a3 error:(id *)a4
+- (BOOL)updateBookItem:(id)item error:(id *)error
 {
-  v6 = a3;
+  itemCopy = item;
   [(BLEduCloudContainer *)self _coordinatedReadOfPromisesWithError:0];
-  v7 = [v6 _cloudDictionaryRepresentation];
+  _cloudDictionaryRepresentation = [itemCopy _cloudDictionaryRepresentation];
 
-  LOBYTE(a4) = [(BLEduCloudContainer *)self _addOrUpdateCloudEntryWithDictionary:v7 error:a4];
-  return a4;
+  LOBYTE(error) = [(BLEduCloudContainer *)self _addOrUpdateCloudEntryWithDictionary:_cloudDictionaryRepresentation error:error];
+  return error;
 }
 
 - (id)allBookItems
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v28 = [MEMORY[0x277CBEB18] array];
-  v4 = [(BLEduCloudContainer *)self cloudToken];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  array = [MEMORY[0x277CBEB18] array];
+  cloudToken = [(BLEduCloudContainer *)self cloudToken];
 
-  if (v4)
+  if (cloudToken)
   {
     v34 = 0;
     v5 = [(BLEduCloudContainer *)self _coordinatedReadOfPromisesWithError:&v34];
@@ -564,10 +564,10 @@ LABEL_31:
 
     else
     {
-      v9 = [(BLEduCloudContainer *)self documentsURL];
-      v10 = [v9 path];
+      documentsURL = [(BLEduCloudContainer *)self documentsURL];
+      path = [documentsURL path];
       v33 = 0;
-      v8 = [v3 contentsOfDirectoryAtPath:v10 error:&v33];
+      v8 = [defaultManager contentsOfDirectoryAtPath:path error:&v33];
       v6 = v33;
 
       if (!v6)
@@ -586,7 +586,7 @@ LABEL_31:
         if (v15)
         {
           v16 = v15;
-          v27 = v3;
+          v27 = defaultManager;
           v17 = *v30;
           do
           {
@@ -600,19 +600,19 @@ LABEL_31:
               v19 = *(*(&v29 + 1) + 8 * i);
               if ([v19 hasSuffix:@"cloudItem"])
               {
-                v20 = [(BLEduCloudContainer *)self documentsURL];
-                v21 = [v20 URLByAppendingPathComponent:v19];
+                documentsURL2 = [(BLEduCloudContainer *)self documentsURL];
+                v21 = [documentsURL2 URLByAppendingPathComponent:v19];
 
                 v22 = MEMORY[0x277CBEAC0];
-                v23 = [v21 path];
-                v24 = [v22 dictionaryWithContentsOfFile:v23];
+                path2 = [v21 path];
+                v24 = [v22 dictionaryWithContentsOfFile:path2];
 
-                v25 = [v21 path];
-                v26 = [(BLEduCloudContainer *)self dictionaryAsBookItem:v24 path:v25];
+                path3 = [v21 path];
+                v26 = [(BLEduCloudContainer *)self dictionaryAsBookItem:v24 path:path3];
 
                 if (v26)
                 {
-                  [v28 addObject:v26];
+                  [array addObject:v26];
                 }
               }
             }
@@ -623,7 +623,7 @@ LABEL_31:
           while (v16);
           v8 = v11;
           v6 = 0;
-          v3 = v27;
+          defaultManager = v27;
         }
 
         else
@@ -650,30 +650,30 @@ LABEL_12:
   }
 
 LABEL_13:
-  v12 = [MEMORY[0x277CBEA60] arrayWithArray:v28];
+  v12 = [MEMORY[0x277CBEA60] arrayWithArray:array];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-- (id)performMetadataActionOnCloudURL:(id)a3 action:(id)a4
+- (id)performMetadataActionOnCloudURL:(id)l action:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v6 path];
-  v10 = [v8 fileExistsAtPath:v9];
+  lCopy = l;
+  actionCopy = action;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [lCopy path];
+  v10 = [defaultManager fileExistsAtPath:path];
 
   if (v10)
   {
     v11 = MEMORY[0x277CBEAC0];
-    v12 = [v6 path];
-    v13 = [v11 dictionaryWithContentsOfFile:v12];
+    path2 = [lCopy path];
+    v13 = [v11 dictionaryWithContentsOfFile:path2];
 
     v14 = [v13 mutableCopy];
     v15 = [v14 hash];
-    v7[2](v7, v14);
+    actionCopy[2](actionCopy, v14);
     if ([v14 hash] == v15)
     {
       v16 = 0;
@@ -695,10 +695,10 @@ LABEL_13:
   return v16;
 }
 
-- (id)bookItemForURL:(id)a3
+- (id)bookItemForURL:(id)l
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -709,7 +709,7 @@ LABEL_13:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v24 = v4;
+    v24 = lCopy;
     _os_log_impl(&dword_241D1F000, v5, OS_LOG_TYPE_DEBUG, "bookItemForURL: %@", buf, 0xCu);
   }
 
@@ -720,7 +720,7 @@ LABEL_13:
   v16[4] = self;
   v16[5] = &v17;
   v6 = MEMORY[0x245CFF560](v16);
-  if ([v4 isUbiquitous])
+  if ([lCopy isUbiquitous])
   {
     v7 = [objc_alloc(MEMORY[0x277CCA9E8]) initWithFilePresenter:0];
     v15 = 0;
@@ -730,7 +730,7 @@ LABEL_13:
     v12[3] = &unk_278D17490;
     v13 = 0;
     v14 = v6;
-    [v7 coordinateReadingItemAtURL:v4 options:1 error:&v15 byAccessor:v12];
+    [v7 coordinateReadingItemAtURL:lCopy options:1 error:&v15 byAccessor:v12];
     v8 = v15;
   }
 
@@ -740,7 +740,7 @@ LABEL_13:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v24 = v4;
+      v24 = lCopy;
       _os_log_impl(&dword_241D1F000, v7, OS_LOG_TYPE_ERROR, "Expected to have a ubiquitous URL but instead got %@", buf, 0xCu);
     }
   }
@@ -753,16 +753,16 @@ LABEL_13:
   return v9;
 }
 
-- (id)bookItemForPermlink:(id)a3
+- (id)bookItemForPermlink:(id)permlink
 {
-  v4 = a3;
+  permlinkCopy = permlink;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = sub_241D2DC2C;
   v21 = sub_241D2DC3C;
   v22 = 0;
-  v5 = [(BLEduCloudContainer *)self cloudUrlForPermlink:v4];
+  v5 = [(BLEduCloudContainer *)self cloudUrlForPermlink:permlinkCopy];
   v6 = [objc_alloc(MEMORY[0x277CCA9E8]) initWithFilePresenter:0];
   v16 = 0;
   v11[0] = MEMORY[0x277D85DD0];
@@ -770,7 +770,7 @@ LABEL_13:
   v11[2] = sub_241D2EFF0;
   v11[3] = &unk_278D174B8;
   v12 = 0;
-  v13 = self;
+  selfCopy = self;
   v7 = v5;
   v14 = v7;
   v15 = &v17;
@@ -783,17 +783,17 @@ LABEL_13:
   return v9;
 }
 
-- (id)bookItemsForPermlinks:(id)a3
+- (id)bookItemsForPermlinks:(id)permlinks
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [(BLEduCloudContainer *)self allBookItems];
+  permlinksCopy = permlinks;
+  array = [MEMORY[0x277CBEB18] array];
+  allBookItems = [(BLEduCloudContainer *)self allBookItems];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [allBookItems countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -804,18 +804,18 @@ LABEL_13:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allBookItems);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 permlink];
-        if ([v4 containsObject:v12])
+        permlink = [v11 permlink];
+        if ([permlinksCopy containsObject:permlink])
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [allBookItems countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -823,7 +823,7 @@ LABEL_13:
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
 @end

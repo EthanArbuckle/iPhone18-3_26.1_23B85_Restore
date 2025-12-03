@@ -18,7 +18,7 @@
     v4 = 0;
   }
 
-  [a1 setImage:v4];
+  [self setImage:v4];
 }
 
 @end

@@ -20,17 +20,17 @@
   v60 = __Block_byref_object_copy__15;
   v61 = __Block_byref_object_dispose__15;
   v62 = 0;
-  v46 = a1;
-  v5 = [a1 attachment];
-  v6 = [v5 managedObjectContext];
+  selfCopy = self;
+  attachment = [self attachment];
+  managedObjectContext = [attachment managedObjectContext];
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
   v56[2] = __71__ICAttachmentPDFModel_PreviewGeneration__generatePreviewsInOperation___block_invoke;
   v56[3] = &unk_1E8468FF8;
   v56[5] = &v63;
-  v56[4] = v46;
+  v56[4] = selfCopy;
   v56[6] = &v57;
-  [v6 performBlockAndWait:v56];
+  [managedObjectContext performBlockAndWait:v56];
 
   v7 = v58[5];
   if (!v7)
@@ -94,18 +94,18 @@ LABEL_26:
     v16 = BoxRect.size.height / BoxRect.size.width;
   }
 
-  v17 = [v46 attachment];
-  v18 = [v17 managedObjectContext];
+  attachment2 = [selfCopy attachment];
+  managedObjectContext2 = [attachment2 managedObjectContext];
   v55[0] = MEMORY[0x1E69E9820];
   v55[1] = 3221225472;
   v55[2] = __71__ICAttachmentPDFModel_PreviewGeneration__generatePreviewsInOperation___block_invoke_10;
   v55[3] = &unk_1E8469FA8;
-  v55[4] = v46;
+  v55[4] = selfCopy;
   *&v55[5] = x;
   *&v55[6] = y;
   *&v55[7] = width;
   *&v55[8] = height;
-  [v18 performBlockAndWait:v55];
+  [managedObjectContext2 performBlockAndWait:v55];
 
   v53 = 0u;
   v54 = 0u;
@@ -132,12 +132,12 @@ LABEL_26:
         v25 = v24;
         [v23 imageSize];
         v27 = v26;
-        v28 = [MEMORY[0x1E69DCA80] defaultFormat];
+        defaultFormat = [MEMORY[0x1E69DCA80] defaultFormat];
         [v23 scale];
-        [v28 setScale:?];
+        [defaultFormat setScale:?];
         v29 = v15 * v25;
         v30 = v16 * v27;
-        v31 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v28 format:{v29, v30}];
+        v31 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:defaultFormat format:{v29, v30}];
         v50[0] = MEMORY[0x1E69E9820];
         v50[1] = 3221225472;
         v50[2] = __71__ICAttachmentPDFModel_PreviewGeneration__generatePreviewsInOperation___block_invoke_2;
@@ -152,16 +152,16 @@ LABEL_26:
         v32 = [v31 imageWithActions:v50];
         if (v32)
         {
-          v33 = [v46 attachment];
-          v34 = [v33 managedObjectContext];
+          attachment3 = [selfCopy attachment];
+          managedObjectContext3 = [attachment3 managedObjectContext];
           v47[0] = MEMORY[0x1E69E9820];
           v47[1] = 3221225472;
           v47[2] = __71__ICAttachmentPDFModel_PreviewGeneration__generatePreviewsInOperation___block_invoke_3;
           v47[3] = &unk_1E8468D98;
-          v47[4] = v46;
+          v47[4] = selfCopy;
           v48 = v32;
           v49 = v23;
-          [v34 performBlockAndWait:v47];
+          [managedObjectContext3 performBlockAndWait:v47];
         }
       }
 

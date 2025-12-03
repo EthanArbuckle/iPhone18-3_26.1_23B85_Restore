@@ -1,7 +1,7 @@
 @interface MOSuggestionInterstitialListAssetView
 - (_TtC16MomentsUIService37MOSuggestionInterstitialListAssetView)init;
-- (_TtC16MomentsUIService37MOSuggestionInterstitialListAssetView)initWithCoder:(id)a3;
-- (_TtC16MomentsUIService37MOSuggestionInterstitialListAssetView)initWithFrame:(CGRect)a3;
+- (_TtC16MomentsUIService37MOSuggestionInterstitialListAssetView)initWithCoder:(id)coder;
+- (_TtC16MomentsUIService37MOSuggestionInterstitialListAssetView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MOSuggestionInterstitialListAssetView
@@ -18,7 +18,7 @@
   return v2;
 }
 
-- (_TtC16MomentsUIService37MOSuggestionInterstitialListAssetView)initWithCoder:(id)a3
+- (_TtC16MomentsUIService37MOSuggestionInterstitialListAssetView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MomentsUIService37MOSuggestionInterstitialListAssetView_shouldBeRounded) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -26,7 +26,7 @@
   return result;
 }
 
-- (_TtC16MomentsUIService37MOSuggestionInterstitialListAssetView)initWithFrame:(CGRect)a3
+- (_TtC16MomentsUIService37MOSuggestionInterstitialListAssetView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,19 +1,19 @@
 @interface DBBannerAuthority
 - (BNConsideringDelegate)delegate;
-- (int64_t)shouldPresentPresentable:(id)a3 withPresentedPresentables:(id)a4 responsiblePresentable:(id *)a5;
-- (void)setSuspendedForAssistant:(BOOL)a3;
+- (int64_t)shouldPresentPresentable:(id)presentable withPresentedPresentables:(id)presentables responsiblePresentable:(id *)responsiblePresentable;
+- (void)setSuspendedForAssistant:(BOOL)assistant;
 @end
 
 @implementation DBBannerAuthority
 
-- (void)setSuspendedForAssistant:(BOOL)a3
+- (void)setSuspendedForAssistant:(BOOL)assistant
 {
-  v3 = a3;
-  v5 = [(DBBannerAuthority *)self assistantPseudoPresentable];
+  assistantCopy = assistant;
+  assistantPseudoPresentable = [(DBBannerAuthority *)self assistantPseudoPresentable];
 
-  if (v3)
+  if (assistantCopy)
   {
-    if (v5)
+    if (assistantPseudoPresentable)
     {
       return;
     }
@@ -25,13 +25,13 @@
       _os_log_impl(&dword_248146000, v6, OS_LOG_TYPE_DEFAULT, "[Notifications] Suspending notifications for Siri", buf, 2u);
     }
 
-    v7 = objc_alloc_init(_DBAssistantPresentable);
-    [(DBBannerAuthority *)self setAssistantPseudoPresentable:v7];
+    assistantPseudoPresentable2 = objc_alloc_init(_DBAssistantPresentable);
+    [(DBBannerAuthority *)self setAssistantPseudoPresentable:assistantPseudoPresentable2];
   }
 
   else
   {
-    if (!v5)
+    if (!assistantPseudoPresentable)
     {
       return;
     }
@@ -43,20 +43,20 @@
       _os_log_impl(&dword_248146000, v8, OS_LOG_TYPE_DEFAULT, "[Notifications] Un-suspending notifications for Siri", v10, 2u);
     }
 
-    v7 = [(DBBannerAuthority *)self assistantPseudoPresentable];
+    assistantPseudoPresentable2 = [(DBBannerAuthority *)self assistantPseudoPresentable];
     [(DBBannerAuthority *)self setAssistantPseudoPresentable:0];
-    v9 = [(DBBannerAuthority *)self delegate];
-    [v9 bannerAuthority:self mayChangeDecisionForResponsiblePresentable:v7];
+    delegate = [(DBBannerAuthority *)self delegate];
+    [delegate bannerAuthority:self mayChangeDecisionForResponsiblePresentable:assistantPseudoPresentable2];
   }
 }
 
-- (int64_t)shouldPresentPresentable:(id)a3 withPresentedPresentables:(id)a4 responsiblePresentable:(id *)a5
+- (int64_t)shouldPresentPresentable:(id)presentable withPresentedPresentables:(id)presentables responsiblePresentable:(id *)responsiblePresentable
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 requesterIdentifier];
-  v11 = [v10 isEqual:@"com.apple.InCallService"];
+  presentableCopy = presentable;
+  presentablesCopy = presentables;
+  requesterIdentifier = [presentableCopy requesterIdentifier];
+  v11 = [requesterIdentifier isEqual:@"com.apple.InCallService"];
 
   if (v11)
   {
@@ -64,7 +64,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v8;
+      v18 = presentableCopy;
       _os_log_impl(&dword_248146000, v12, OS_LOG_TYPE_DEFAULT, "[Notifications] Allowing InCallService presentable %@", &v17, 0xCu);
     }
 
@@ -73,23 +73,23 @@
 
   else
   {
-    v14 = [(DBBannerAuthority *)self assistantPseudoPresentable];
+    assistantPseudoPresentable = [(DBBannerAuthority *)self assistantPseudoPresentable];
 
-    if (v14)
+    if (assistantPseudoPresentable)
     {
       v15 = DBLogForCategory(0x14uLL);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v17 = 138412290;
-        v18 = v8;
+        v18 = presentableCopy;
         _os_log_impl(&dword_248146000, v15, OS_LOG_TYPE_DEFAULT, "[Notifications] Presentable pended due to Siri: %@", &v17, 0xCu);
       }
 
-      *a5 = [(DBBannerAuthority *)self assistantPseudoPresentable];
+      *responsiblePresentable = [(DBBannerAuthority *)self assistantPseudoPresentable];
       v13 = -1;
     }
 
-    else if ([v9 count])
+    else if ([presentablesCopy count])
     {
       v13 = -1;
     }

@@ -1,24 +1,24 @@
 @interface VMVoicemailMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasFlags:(BOOL)a3;
-- (void)setHasIdentifier:(BOOL)a3;
-- (void)setHasProtocolVersion:(BOOL)a3;
-- (void)setHasRemoteUID:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasFlags:(BOOL)flags;
+- (void)setHasIdentifier:(BOOL)identifier;
+- (void)setHasProtocolVersion:(BOOL)version;
+- (void)setHasRemoteUID:(BOOL)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VMVoicemailMessage
 
-- (void)setHasRemoteUID:(BOOL)a3
+- (void)setHasRemoteUID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 32;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasIdentifier:(BOOL)a3
+- (void)setHasIdentifier:(BOOL)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = 8;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -61,9 +61,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasFlags:(BOOL)a3
+- (void)setHasFlags:(BOOL)flags
 {
-  if (a3)
+  if (flags)
   {
     v3 = 4;
   }
@@ -76,9 +76,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasProtocolVersion:(BOOL)a3
+- (void)setHasProtocolVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 16;
   }
@@ -97,20 +97,20 @@
   v8.receiver = self;
   v8.super_class = VMVoicemailMessage;
   v4 = [(VMVoicemailMessage *)&v8 description];
-  v5 = [(VMVoicemailMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VMVoicemailMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 0x20) != 0)
   {
     v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_remoteUID];
-    [v3 setObject:v21 forKey:@"remoteUID"];
+    [dictionary setObject:v21 forKey:@"remoteUID"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -131,103 +131,103 @@ LABEL_3:
   }
 
   v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_identifier];
-  [v3 setObject:v22 forKey:@"identifier"];
+  [dictionary setObject:v22 forKey:@"identifier"];
 
   if (*&self->_has)
   {
 LABEL_4:
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_date];
-    [v3 setObject:v5 forKey:@"date"];
+    [dictionary setObject:v5 forKey:@"date"];
   }
 
 LABEL_5:
   senderDestinationID = self->_senderDestinationID;
   if (senderDestinationID)
   {
-    [v3 setObject:senderDestinationID forKey:@"senderDestinationID"];
+    [dictionary setObject:senderDestinationID forKey:@"senderDestinationID"];
   }
 
   callbackDestinationID = self->_callbackDestinationID;
   if (callbackDestinationID)
   {
-    [v3 setObject:callbackDestinationID forKey:@"callbackDestinationID"];
+    [dictionary setObject:callbackDestinationID forKey:@"callbackDestinationID"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_duration];
-    [v3 setObject:v8 forKey:@"duration"];
+    [dictionary setObject:v8 forKey:@"duration"];
   }
 
   dataURL = self->_dataURL;
   if (dataURL)
   {
-    [v3 setObject:dataURL forKey:@"dataURL"];
+    [dictionary setObject:dataURL forKey:@"dataURL"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_flags];
-    [v3 setObject:v10 forKey:@"flags"];
+    [dictionary setObject:v10 forKey:@"flags"];
   }
 
   transcriptionURL = self->_transcriptionURL;
   if (transcriptionURL)
   {
-    [v3 setObject:transcriptionURL forKey:@"transcriptionURL"];
+    [dictionary setObject:transcriptionURL forKey:@"transcriptionURL"];
   }
 
   transcript = self->_transcript;
   if (transcript)
   {
-    v13 = [(VMTranscriptMessage *)transcript dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"transcript"];
+    dictionaryRepresentation = [(VMTranscriptMessage *)transcript dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"transcript"];
   }
 
   audio = self->_audio;
   if (audio)
   {
-    v15 = [(VMAudioMessage *)audio dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"audio"];
+    dictionaryRepresentation2 = [(VMAudioMessage *)audio dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"audio"];
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
     v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_protocolVersion];
-    [v3 setObject:v16 forKey:@"protocolVersion"];
+    [dictionary setObject:v16 forKey:@"protocolVersion"];
   }
 
   receiverDestinationID = self->_receiverDestinationID;
   if (receiverDestinationID)
   {
-    [v3 setObject:receiverDestinationID forKey:@"receiverDestinationID"];
+    [dictionary setObject:receiverDestinationID forKey:@"receiverDestinationID"];
   }
 
   receiverLabelID = self->_receiverLabelID;
   if (receiverLabelID)
   {
-    [v3 setObject:receiverLabelID forKey:@"receiverLabelID"];
+    [dictionary setObject:receiverLabelID forKey:@"receiverLabelID"];
   }
 
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v12 = v4;
+  v12 = toCopy;
   if ((has & 0x20) != 0)
   {
     remoteUID = self->_remoteUID;
     PBDataWriterWriteUint32Field();
-    v4 = v12;
+    toCopy = v12;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -248,100 +248,100 @@ LABEL_3:
 
   identifier = self->_identifier;
   PBDataWriterWriteUint32Field();
-  v4 = v12;
+  toCopy = v12;
   if (*&self->_has)
   {
 LABEL_4:
     date = self->_date;
     PBDataWriterWriteDoubleField();
-    v4 = v12;
+    toCopy = v12;
   }
 
 LABEL_5:
   if (self->_senderDestinationID)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_callbackDestinationID)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     duration = self->_duration;
     PBDataWriterWriteDoubleField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_dataURL)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     flags = self->_flags;
     PBDataWriterWriteUint32Field();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_transcriptionURL)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_transcript)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_audio)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
     protocolVersion = self->_protocolVersion;
     PBDataWriterWriteUint32Field();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_receiverDestinationID)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_receiverLabelID)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_uuid)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x20) != 0)
   {
-    v4[20] = self->_remoteUID;
-    *(v4 + 120) |= 0x20u;
+    toCopy[20] = self->_remoteUID;
+    *(toCopy + 120) |= 0x20u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -360,93 +360,93 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[13] = self->_identifier;
-  *(v4 + 120) |= 8u;
+  toCopy[13] = self->_identifier;
+  *(toCopy + 120) |= 8u;
   if (*&self->_has)
   {
 LABEL_4:
-    *(v4 + 1) = *&self->_date;
-    *(v4 + 120) |= 1u;
+    *(toCopy + 1) = *&self->_date;
+    *(toCopy + 120) |= 1u;
   }
 
 LABEL_5:
-  v6 = v4;
+  v6 = toCopy;
   if (self->_senderDestinationID)
   {
-    [v4 setSenderDestinationID:?];
-    v4 = v6;
+    [toCopy setSenderDestinationID:?];
+    toCopy = v6;
   }
 
   if (self->_callbackDestinationID)
   {
     [v6 setCallbackDestinationID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_duration;
-    *(v4 + 120) |= 2u;
+    *(toCopy + 2) = *&self->_duration;
+    *(toCopy + 120) |= 2u;
   }
 
   if (self->_dataURL)
   {
     [v6 setDataURL:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    v4[12] = self->_flags;
-    *(v4 + 120) |= 4u;
+    toCopy[12] = self->_flags;
+    *(toCopy + 120) |= 4u;
   }
 
   if (self->_transcriptionURL)
   {
     [v6 setTranscriptionURL:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_transcript)
   {
     [v6 setTranscript:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_audio)
   {
     [v6 setAudio:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    v4[14] = self->_protocolVersion;
-    *(v4 + 120) |= 0x10u;
+    toCopy[14] = self->_protocolVersion;
+    *(toCopy + 120) |= 0x10u;
   }
 
   if (self->_receiverDestinationID)
   {
     [v6 setReceiverDestinationID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_receiverLabelID)
   {
     [v6 setReceiverLabelID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_uuid)
   {
     [v6 setUuid:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x20) != 0)
@@ -481,11 +481,11 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_senderDestinationID copyWithZone:a3];
+  v8 = [(NSString *)self->_senderDestinationID copyWithZone:zone];
   v9 = *(v6 + 88);
   *(v6 + 88) = v8;
 
-  v10 = [(NSString *)self->_callbackDestinationID copyWithZone:a3];
+  v10 = [(NSString *)self->_callbackDestinationID copyWithZone:zone];
   v11 = *(v6 + 32);
   *(v6 + 32) = v10;
 
@@ -495,7 +495,7 @@ LABEL_5:
     *(v6 + 120) |= 2u;
   }
 
-  v12 = [(NSString *)self->_dataURL copyWithZone:a3];
+  v12 = [(NSString *)self->_dataURL copyWithZone:zone];
   v13 = *(v6 + 40);
   *(v6 + 40) = v12;
 
@@ -505,15 +505,15 @@ LABEL_5:
     *(v6 + 120) |= 4u;
   }
 
-  v14 = [(NSString *)self->_transcriptionURL copyWithZone:a3];
+  v14 = [(NSString *)self->_transcriptionURL copyWithZone:zone];
   v15 = *(v6 + 104);
   *(v6 + 104) = v14;
 
-  v16 = [(VMTranscriptMessage *)self->_transcript copyWithZone:a3];
+  v16 = [(VMTranscriptMessage *)self->_transcript copyWithZone:zone];
   v17 = *(v6 + 96);
   *(v6 + 96) = v16;
 
-  v18 = [(VMAudioMessage *)self->_audio copyWithZone:a3];
+  v18 = [(VMAudioMessage *)self->_audio copyWithZone:zone];
   v19 = *(v6 + 24);
   *(v6 + 24) = v18;
 
@@ -523,77 +523,77 @@ LABEL_5:
     *(v6 + 120) |= 0x10u;
   }
 
-  v20 = [(NSString *)self->_receiverDestinationID copyWithZone:a3];
+  v20 = [(NSString *)self->_receiverDestinationID copyWithZone:zone];
   v21 = *(v6 + 72);
   *(v6 + 72) = v20;
 
-  v22 = [(NSString *)self->_receiverLabelID copyWithZone:a3];
+  v22 = [(NSString *)self->_receiverLabelID copyWithZone:zone];
   v23 = *(v6 + 64);
   *(v6 + 64) = v22;
 
-  v24 = [(NSString *)self->_uuid copyWithZone:a3];
+  v24 = [(NSString *)self->_uuid copyWithZone:zone];
   v25 = *(v6 + 112);
   *(v6 + 112) = v24;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_51;
   }
 
-  v5 = *(v4 + 120);
+  v5 = *(equalCopy + 120);
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 120) & 0x20) == 0 || self->_remoteUID != *(v4 + 20))
+    if ((*(equalCopy + 120) & 0x20) == 0 || self->_remoteUID != *(equalCopy + 20))
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 120) & 0x20) != 0)
+  else if ((*(equalCopy + 120) & 0x20) != 0)
   {
     goto LABEL_51;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 120) & 8) == 0 || self->_identifier != *(v4 + 13))
+    if ((*(equalCopy + 120) & 8) == 0 || self->_identifier != *(equalCopy + 13))
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 120) & 8) != 0)
+  else if ((*(equalCopy + 120) & 8) != 0)
   {
     goto LABEL_51;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 120) & 1) == 0 || self->_date != *(v4 + 1))
+    if ((*(equalCopy + 120) & 1) == 0 || self->_date != *(equalCopy + 1))
     {
       goto LABEL_51;
     }
   }
 
-  else if (*(v4 + 120))
+  else if (*(equalCopy + 120))
   {
     goto LABEL_51;
   }
 
   senderDestinationID = self->_senderDestinationID;
-  if (senderDestinationID | *(v4 + 11) && ![(NSString *)senderDestinationID isEqual:?])
+  if (senderDestinationID | *(equalCopy + 11) && ![(NSString *)senderDestinationID isEqual:?])
   {
     goto LABEL_51;
   }
 
   callbackDestinationID = self->_callbackDestinationID;
-  if (callbackDestinationID | *(v4 + 4))
+  if (callbackDestinationID | *(equalCopy + 4))
   {
     if (![(NSString *)callbackDestinationID isEqual:?])
     {
@@ -602,22 +602,22 @@ LABEL_5:
   }
 
   has = self->_has;
-  v9 = *(v4 + 120);
+  v9 = *(equalCopy + 120);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 120) & 2) == 0 || self->_duration != *(v4 + 2))
+    if ((*(equalCopy + 120) & 2) == 0 || self->_duration != *(equalCopy + 2))
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 120) & 2) != 0)
+  else if ((*(equalCopy + 120) & 2) != 0)
   {
     goto LABEL_51;
   }
 
   dataURL = self->_dataURL;
-  if (dataURL | *(v4 + 5))
+  if (dataURL | *(equalCopy + 5))
   {
     if (![(NSString *)dataURL isEqual:?])
     {
@@ -629,28 +629,28 @@ LABEL_51:
     has = self->_has;
   }
 
-  v11 = *(v4 + 120);
+  v11 = *(equalCopy + 120);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 120) & 4) == 0 || self->_flags != *(v4 + 12))
+    if ((*(equalCopy + 120) & 4) == 0 || self->_flags != *(equalCopy + 12))
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 120) & 4) != 0)
+  else if ((*(equalCopy + 120) & 4) != 0)
   {
     goto LABEL_51;
   }
 
   transcriptionURL = self->_transcriptionURL;
-  if (transcriptionURL | *(v4 + 13) && ![(NSString *)transcriptionURL isEqual:?])
+  if (transcriptionURL | *(equalCopy + 13) && ![(NSString *)transcriptionURL isEqual:?])
   {
     goto LABEL_51;
   }
 
   transcript = self->_transcript;
-  if (transcript | *(v4 + 12))
+  if (transcript | *(equalCopy + 12))
   {
     if (![(VMTranscriptMessage *)transcript isEqual:?])
     {
@@ -659,7 +659,7 @@ LABEL_51:
   }
 
   audio = self->_audio;
-  if (audio | *(v4 + 3))
+  if (audio | *(equalCopy + 3))
   {
     if (![(VMAudioMessage *)audio isEqual:?])
     {
@@ -667,28 +667,28 @@ LABEL_51:
     }
   }
 
-  v15 = *(v4 + 120);
+  v15 = *(equalCopy + 120);
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 120) & 0x10) == 0 || self->_protocolVersion != *(v4 + 14))
+    if ((*(equalCopy + 120) & 0x10) == 0 || self->_protocolVersion != *(equalCopy + 14))
     {
       goto LABEL_51;
     }
   }
 
-  else if ((*(v4 + 120) & 0x10) != 0)
+  else if ((*(equalCopy + 120) & 0x10) != 0)
   {
     goto LABEL_51;
   }
 
   receiverDestinationID = self->_receiverDestinationID;
-  if (receiverDestinationID | *(v4 + 9) && ![(NSString *)receiverDestinationID isEqual:?])
+  if (receiverDestinationID | *(equalCopy + 9) && ![(NSString *)receiverDestinationID isEqual:?])
   {
     goto LABEL_51;
   }
 
   receiverLabelID = self->_receiverLabelID;
-  if (receiverLabelID | *(v4 + 8))
+  if (receiverLabelID | *(equalCopy + 8))
   {
     if (![(NSString *)receiverLabelID isEqual:?])
     {
@@ -697,7 +697,7 @@ LABEL_51:
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 14))
+  if (uuid | *(equalCopy + 14))
   {
     v19 = [(NSString *)uuid isEqual:?];
   }
@@ -838,16 +838,16 @@ LABEL_11:
   return v22 ^ v23 ^ [(NSString *)self->_uuid hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 120);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 120);
   if ((v6 & 0x20) != 0)
   {
-    self->_remoteUID = *(v4 + 20);
+    self->_remoteUID = *(fromCopy + 20);
     *&self->_has |= 0x20u;
-    v6 = *(v4 + 120);
+    v6 = *(fromCopy + 120);
     if ((v6 & 8) == 0)
     {
 LABEL_3:
@@ -860,23 +860,23 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 120) & 8) == 0)
+  else if ((*(fromCopy + 120) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_identifier = *(v4 + 13);
+  self->_identifier = *(fromCopy + 13);
   *&self->_has |= 8u;
-  if (*(v4 + 120))
+  if (*(fromCopy + 120))
   {
 LABEL_4:
-    self->_date = *(v4 + 1);
+    self->_date = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
 LABEL_5:
-  v11 = v4;
-  if (*(v4 + 11))
+  v11 = fromCopy;
+  if (*(fromCopy + 11))
   {
     [(VMVoicemailMessage *)self setSenderDestinationID:?];
     v5 = v11;

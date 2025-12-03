@@ -1,9 +1,9 @@
 @interface CTXPCFactory
-- (id)createCTXPCClientBehaviorTracker:(const queue *)a3;
+- (id)createCTXPCClientBehaviorTracker:(const queue *)tracker;
 - (id)createEntitlementProvider;
-- (id)createListener:(const queue *)a3 name:(const char *)a4 logContext:(OsLogContext)a5;
+- (id)createListener:(const queue *)listener name:(const char *)name logContext:(OsLogContext)context;
 - (id)createSensitiveObjectClassifier;
-- (shared_ptr<CCXpcServerEntitlementChecker>)createEntitlementChecker:(shared_ptr<const Registry>)a3 forConnection:(const connection *)a4;
+- (shared_ptr<CCXpcServerEntitlementChecker>)createEntitlementChecker:(shared_ptr<const Registry>)checker forConnection:(const connection *)connection;
 @end
 
 @implementation CTXPCFactory
@@ -15,12 +15,12 @@
   return v2;
 }
 
-- (id)createListener:(const queue *)a3 name:(const char *)a4 logContext:(OsLogContext)a5
+- (id)createListener:(const queue *)listener name:(const char *)name logContext:(OsLogContext)context
 {
-  var0 = a5.var0;
+  var0 = context.var0;
   v8 = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.commcenter.coretelephony.xpc"];
   v9 = [CTXPCListener alloc];
-  fObj = a3->fObj.fObj;
+  fObj = listener->fObj.fObj;
   object = fObj;
   if (fObj)
   {
@@ -28,7 +28,7 @@
   }
 
   ctu::OsLogContext::OsLogContext(v13, var0);
-  v11 = [(CTXPCListener *)v9 initWithListener:v8 queue:&object name:a4 logContext:v13];
+  v11 = [(CTXPCListener *)v9 initWithListener:v8 queue:&object name:name logContext:v13];
   ctu::OsLogContext::~OsLogContext(v13);
   if (object)
   {
@@ -45,10 +45,10 @@
   return v2;
 }
 
-- (shared_ptr<CCXpcServerEntitlementChecker>)createEntitlementChecker:(shared_ptr<const Registry>)a3 forConnection:(const connection *)a4
+- (shared_ptr<CCXpcServerEntitlementChecker>)createEntitlementChecker:(shared_ptr<const Registry>)checker forConnection:(const connection *)connection
 {
-  v4 = *(a3.__ptr_ + 1);
-  v5[0] = *a3.__ptr_;
+  v4 = *(checker.__ptr_ + 1);
+  v5[0] = *checker.__ptr_;
   v5[1] = v4;
   if (v4)
   {
@@ -58,9 +58,9 @@
   sub_1000155C8(v5);
 }
 
-- (id)createCTXPCClientBehaviorTracker:(const queue *)a3
+- (id)createCTXPCClientBehaviorTracker:(const queue *)tracker
 {
-  v3 = [[CTXPCClientBehaviorTracker alloc] initWithQueue:a3];
+  v3 = [[CTXPCClientBehaviorTracker alloc] initWithQueue:tracker];
 
   return v3;
 }

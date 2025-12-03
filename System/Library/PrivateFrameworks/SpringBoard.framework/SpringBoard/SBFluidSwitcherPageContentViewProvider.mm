@@ -1,23 +1,23 @@
 @interface SBFluidSwitcherPageContentViewProvider
-- (CGSize)_pageViewSizeForAppLayout:(id)a3;
+- (CGSize)_pageViewSizeForAppLayout:(id)layout;
 - (SBFluidSwitcherPageContentViewProvider)init;
-- (SBFluidSwitcherPageContentViewProvider)initWithDelegate:(id)a3 snapshotCache:(id)a4 lockoutViewProvider:(id)a5;
+- (SBFluidSwitcherPageContentViewProvider)initWithDelegate:(id)delegate snapshotCache:(id)cache lockoutViewProvider:(id)provider;
 - (SBFluidSwitcherPageContentViewProviderDelegate)delegate;
 - (id)_containerViewController;
 - (id)_snapshotViewDelegate;
-- (id)_snapshotViewForAppLayout:(id)a3 setActive:(BOOL)a4;
-- (id)_viewForService:(id)a3 appLayout:(id)a4;
-- (id)existingTransientOverlayViewControllerForAppLayout:(id)a3;
-- (id)pageContentViewForAppLayout:(id)a3 setActive:(BOOL)a4;
+- (id)_snapshotViewForAppLayout:(id)layout setActive:(BOOL)active;
+- (id)_viewForService:(id)service appLayout:(id)layout;
+- (id)existingTransientOverlayViewControllerForAppLayout:(id)layout;
+- (id)pageContentViewForAppLayout:(id)layout setActive:(BOOL)active;
 - (int64_t)_interfaceOrientation;
-- (int64_t)_preferredContentInterfaceOrientationForViewController:(id)a3 preferredInterfaceOrientation:(int64_t)a4;
-- (void)_applyTransientOverlayViewController:(id)a3 toPageContentView:(id)a4;
-- (void)_relinquishTransientOverlayViewController:(id)a3 forPageContentView:(id)a4;
-- (void)acquiredViewController:(id)a3 forTransientOverlayAppLayout:(id)a4;
-- (void)appSwitcherTransientOverlayPageContentViewDidChangeActive:(id)a3;
-- (void)appSwitcherTransientOverlayPageContentViewDidChangeContainerOrientation:(id)a3;
-- (void)purgePageContentViewForAppLayout:(id)a3;
-- (void)relinquishTransientOverlayViewController:(id)a3;
+- (int64_t)_preferredContentInterfaceOrientationForViewController:(id)controller preferredInterfaceOrientation:(int64_t)orientation;
+- (void)_applyTransientOverlayViewController:(id)controller toPageContentView:(id)view;
+- (void)_relinquishTransientOverlayViewController:(id)controller forPageContentView:(id)view;
+- (void)acquiredViewController:(id)controller forTransientOverlayAppLayout:(id)layout;
+- (void)appSwitcherTransientOverlayPageContentViewDidChangeActive:(id)active;
+- (void)appSwitcherTransientOverlayPageContentViewDidChangeContainerOrientation:(id)orientation;
+- (void)purgePageContentViewForAppLayout:(id)layout;
+- (void)relinquishTransientOverlayViewController:(id)controller;
 @end
 
 @implementation SBFluidSwitcherPageContentViewProvider
@@ -38,24 +38,24 @@
   return v4;
 }
 
-- (SBFluidSwitcherPageContentViewProvider)initWithDelegate:(id)a3 snapshotCache:(id)a4 lockoutViewProvider:(id)a5
+- (SBFluidSwitcherPageContentViewProvider)initWithDelegate:(id)delegate snapshotCache:(id)cache lockoutViewProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  delegateCopy = delegate;
+  cacheCopy = cache;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = SBFluidSwitcherPageContentViewProvider;
   v12 = [(SBFluidSwitcherPageContentViewProvider *)&v14 init];
   if (v12)
   {
-    if (v9)
+    if (delegateCopy)
     {
-      if (v10)
+      if (cacheCopy)
       {
 LABEL_4:
-        objc_storeWeak(&v12->_delegate, v9);
-        objc_storeStrong(&v12->_snapshotCache, a4);
-        objc_storeStrong(&v12->_lockoutVCProvider, a5);
+        objc_storeWeak(&v12->_delegate, delegateCopy);
+        objc_storeStrong(&v12->_snapshotCache, cache);
+        objc_storeStrong(&v12->_lockoutVCProvider, provider);
         goto LABEL_5;
       }
     }
@@ -63,7 +63,7 @@ LABEL_4:
     else
     {
       [SBFluidSwitcherPageContentViewProvider initWithDelegate:a2 snapshotCache:v12 lockoutViewProvider:?];
-      if (v10)
+      if (cacheCopy)
       {
         goto LABEL_4;
       }
@@ -80,19 +80,19 @@ LABEL_5:
 
 - (SBFluidSwitcherPageContentViewProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBFluidSwitcherPageContentViewProvider.m" lineNumber:68 description:@"use initWithDelegate:snapshotCache:"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBFluidSwitcherPageContentViewProvider.m" lineNumber:68 description:@"use initWithDelegate:snapshotCache:"];
 
   return 0;
 }
 
-- (void)acquiredViewController:(id)a3 forTransientOverlayAppLayout:(id)a4
+- (void)acquiredViewController:(id)controller forTransientOverlayAppLayout:(id)layout
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(NSMapTable *)self->_pageContentViewToTransientOverlayViewController objectEnumerator];
-  v7 = [v6 allObjects];
-  v8 = [v7 containsObject:v5];
+  controllerCopy = controller;
+  objectEnumerator = [(NSMapTable *)self->_pageContentViewToTransientOverlayViewController objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
+  v8 = [allObjects containsObject:controllerCopy];
 
   if ((v8 & 1) == 0)
   {
@@ -119,7 +119,7 @@ LABEL_5:
           v15 = [(NSMapTable *)self->_pageContentViewToTransientOverlayViewController objectForKey:v14, v16];
           if (!v15 && [v14 isActive])
           {
-            [(SBFluidSwitcherPageContentViewProvider *)self _applyTransientOverlayViewController:v5 toPageContentView:v14];
+            [(SBFluidSwitcherPageContentViewProvider *)self _applyTransientOverlayViewController:controllerCopy toPageContentView:v14];
             goto LABEL_13;
           }
         }
@@ -138,11 +138,11 @@ LABEL_13:
   }
 }
 
-- (id)existingTransientOverlayViewControllerForAppLayout:(id)a3
+- (id)existingTransientOverlayViewControllerForAppLayout:(id)layout
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 type] == 2)
+  layoutCopy = layout;
+  if ([layoutCopy type] == 2)
   {
     v17 = 0u;
     v18 = 0u;
@@ -164,8 +164,8 @@ LABEL_13:
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v10 appLayout];
-          v12 = [v11 isEqual:v4];
+          appLayout = [v10 appLayout];
+          v12 = [appLayout isEqual:layoutCopy];
 
           if (v12)
           {
@@ -196,30 +196,30 @@ LABEL_13:
   return v13;
 }
 
-- (id)pageContentViewForAppLayout:(id)a3 setActive:(BOOL)a4
+- (id)pageContentViewForAppLayout:(id)layout setActive:(BOOL)active
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 type] == 3)
+  activeCopy = active;
+  layoutCopy = layout;
+  if ([layoutCopy type] == 3)
   {
     v7 = +[SBAppSwitcherServiceManager sharedInstance];
-    v8 = [v7 registeredServicesSnapshot];
+    registeredServicesSnapshot = [v7 registeredServicesSnapshot];
 
-    v9 = [v6 itemForLayoutRole:1];
-    v10 = [v9 bundleIdentifier];
-    v11 = [v8 serviceForBundleIdentifier:v10];
-    v12 = [(SBFluidSwitcherPageContentViewProvider *)self _viewForService:v11 appLayout:v6];
-    [(SBAppSwitcherTransientOverlayPageContentView *)v12 setActive:v4];
+    v9 = [layoutCopy itemForLayoutRole:1];
+    bundleIdentifier = [v9 bundleIdentifier];
+    v11 = [registeredServicesSnapshot serviceForBundleIdentifier:bundleIdentifier];
+    v12 = [(SBFluidSwitcherPageContentViewProvider *)self _viewForService:v11 appLayout:layoutCopy];
+    [(SBAppSwitcherTransientOverlayPageContentView *)v12 setActive:activeCopy];
     [(SBAppSwitcherTransientOverlayPageContentView *)v12 setOrientation:[(SBFluidSwitcherPageContentViewProvider *)self _interfaceOrientation]];
 
     goto LABEL_13;
   }
 
-  if ([v6 type] != 2)
+  if ([layoutCopy type] != 2)
   {
-    if ([v6 type])
+    if ([layoutCopy type])
     {
-      if ([v6 type] != 5)
+      if ([layoutCopy type] != 5)
       {
         v12 = 0;
         goto LABEL_13;
@@ -231,7 +231,7 @@ LABEL_13:
 
     else
     {
-      v18 = [(SBFluidSwitcherPageContentViewProvider *)self _snapshotViewForAppLayout:v6 setActive:v4];
+      v18 = [(SBFluidSwitcherPageContentViewProvider *)self _snapshotViewForAppLayout:layoutCopy setActive:activeCopy];
     }
 
     v12 = v18;
@@ -239,11 +239,11 @@ LABEL_13:
   }
 
   v13 = [SBAppSwitcherTransientOverlayPageContentView alloc];
-  [(SBFluidSwitcherPageContentViewProvider *)self _pageViewSizeForAppLayout:v6];
+  [(SBFluidSwitcherPageContentViewProvider *)self _pageViewSizeForAppLayout:layoutCopy];
   SBRectWithSize();
-  v12 = [(SBAppSwitcherTransientOverlayPageContentView *)v13 initWithFrame:v6 appLayout:?];
+  v12 = [(SBAppSwitcherTransientOverlayPageContentView *)v13 initWithFrame:layoutCopy appLayout:?];
   [(SBAppSwitcherTransientOverlayPageContentView *)v12 setDelegate:self];
-  [(SBAppSwitcherTransientOverlayPageContentView *)v12 setActive:v4];
+  [(SBAppSwitcherTransientOverlayPageContentView *)v12 setActive:activeCopy];
   [(SBAppSwitcherTransientOverlayPageContentView *)v12 setOrientation:[(SBFluidSwitcherPageContentViewProvider *)self _interfaceOrientation]];
   transientOverlayPageContentViews = self->_transientOverlayPageContentViews;
   if (!transientOverlayPageContentViews)
@@ -261,22 +261,22 @@ LABEL_13:
   return v12;
 }
 
-- (void)purgePageContentViewForAppLayout:(id)a3
+- (void)purgePageContentViewForAppLayout:(id)layout
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 type] == 3)
+  layoutCopy = layout;
+  if ([layoutCopy type] == 3)
   {
-    v5 = [v4 itemForLayoutRole:1];
+    v5 = [layoutCopy itemForLayoutRole:1];
     switcherServiceViewControllerMap = self->_switcherServiceViewControllerMap;
-    v7 = [v5 bundleIdentifier];
-    [(NSMutableDictionary *)switcherServiceViewControllerMap removeObjectForKey:v7];
+    bundleIdentifier = [v5 bundleIdentifier];
+    [(NSMutableDictionary *)switcherServiceViewControllerMap removeObjectForKey:bundleIdentifier];
 LABEL_3:
 
     goto LABEL_4;
   }
 
-  if ([v4 type] != 2)
+  if ([layoutCopy type] != 2)
   {
     goto LABEL_18;
   }
@@ -302,8 +302,8 @@ LABEL_3:
         }
 
         v13 = *(*(&v27 + 1) + 8 * i);
-        v14 = [v13 appLayout];
-        v15 = [v14 isEqual:v4];
+        appLayout = [v13 appLayout];
+        v15 = [appLayout isEqual:layoutCopy];
 
         if (v15)
         {
@@ -340,8 +340,8 @@ LABEL_3:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v7 = v5;
-    v17 = [v7 countByEnumeratingWithState:&v23 objects:v31 count:16];
+    bundleIdentifier = v5;
+    v17 = [bundleIdentifier countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v17)
     {
       v18 = v17;
@@ -352,7 +352,7 @@ LABEL_3:
         {
           if (*v24 != v19)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(bundleIdentifier);
           }
 
           v21 = *(*(&v23 + 1) + 8 * j);
@@ -363,7 +363,7 @@ LABEL_3:
           }
         }
 
-        v18 = [v7 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        v18 = [bundleIdentifier countByEnumeratingWithState:&v23 objects:v31 count:16];
       }
 
       while (v18);
@@ -377,10 +377,10 @@ LABEL_4:
 LABEL_18:
 }
 
-- (void)relinquishTransientOverlayViewController:(id)a3
+- (void)relinquishTransientOverlayViewController:(id)controller
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(NSMapTable *)self->_pageContentViewToTransientOverlayViewController copy];
   v13 = 0u;
   v14 = 0u;
@@ -403,7 +403,7 @@ LABEL_18:
 
         v11 = *(*(&v13 + 1) + 8 * i);
         v12 = [v6 objectForKey:{v11, v13}];
-        if (v12 == v4)
+        if (v12 == controllerCopy)
         {
           [(SBFluidSwitcherPageContentViewProvider *)self _relinquishTransientOverlayViewController:v12 forPageContentView:v11];
         }
@@ -416,59 +416,59 @@ LABEL_18:
   }
 }
 
-- (void)appSwitcherTransientOverlayPageContentViewDidChangeActive:(id)a3
+- (void)appSwitcherTransientOverlayPageContentViewDidChangeActive:(id)active
 {
-  v9 = a3;
-  v4 = [v9 isActive];
-  v5 = [(NSMapTable *)self->_pageContentViewToTransientOverlayViewController objectForKey:v9];
-  v6 = v5;
-  if (v4)
+  activeCopy = active;
+  isActive = [activeCopy isActive];
+  v5 = [(NSMapTable *)self->_pageContentViewToTransientOverlayViewController objectForKey:activeCopy];
+  appLayout = v5;
+  if (isActive)
   {
 
-    if (v6)
+    if (appLayout)
     {
       goto LABEL_10;
     }
 
-    v6 = [v9 appLayout];
+    appLayout = [activeCopy appLayout];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v8 = [WeakRetained viewControllerForTransientOverlayAppLayout:v6 fromProvider:self];
+    v8 = [WeakRetained viewControllerForTransientOverlayAppLayout:appLayout fromProvider:self];
 
     if (v8)
     {
-      [(SBFluidSwitcherPageContentViewProvider *)self _applyTransientOverlayViewController:v8 toPageContentView:v9];
+      [(SBFluidSwitcherPageContentViewProvider *)self _applyTransientOverlayViewController:v8 toPageContentView:activeCopy];
     }
 
     else
     {
-      [v9 setContentView:0];
+      [activeCopy setContentView:0];
     }
   }
 
   else if (v5)
   {
-    [(SBFluidSwitcherPageContentViewProvider *)self _relinquishTransientOverlayViewController:v5 forPageContentView:v9];
+    [(SBFluidSwitcherPageContentViewProvider *)self _relinquishTransientOverlayViewController:v5 forPageContentView:activeCopy];
   }
 
 LABEL_10:
 }
 
-- (void)appSwitcherTransientOverlayPageContentViewDidChangeContainerOrientation:(id)a3
+- (void)appSwitcherTransientOverlayPageContentViewDidChangeContainerOrientation:(id)orientation
 {
   pageContentViewToTransientOverlayViewController = self->_pageContentViewToTransientOverlayViewController;
-  v5 = a3;
-  v7 = [(NSMapTable *)pageContentViewToTransientOverlayViewController objectForKey:v5];
-  v6 = -[SBFluidSwitcherPageContentViewProvider _preferredContentInterfaceOrientationForViewController:preferredInterfaceOrientation:](self, "_preferredContentInterfaceOrientationForViewController:preferredInterfaceOrientation:", v7, [v5 orientation]);
+  orientationCopy = orientation;
+  v7 = [(NSMapTable *)pageContentViewToTransientOverlayViewController objectForKey:orientationCopy];
+  v6 = -[SBFluidSwitcherPageContentViewProvider _preferredContentInterfaceOrientationForViewController:preferredInterfaceOrientation:](self, "_preferredContentInterfaceOrientationForViewController:preferredInterfaceOrientation:", v7, [orientationCopy orientation]);
   [v7 setContainerOrientation:v6];
-  [v5 setContentOrientation:v6];
+  [orientationCopy setContentOrientation:v6];
 }
 
-- (int64_t)_preferredContentInterfaceOrientationForViewController:(id)a3 preferredInterfaceOrientation:(int64_t)a4
+- (int64_t)_preferredContentInterfaceOrientationForViewController:(id)controller preferredInterfaceOrientation:(int64_t)orientation
 {
-  v5 = [a3 supportedInterfaceOrientations];
-  if (v5)
+  supportedInterfaceOrientations = [controller supportedInterfaceOrientations];
+  if (supportedInterfaceOrientations)
   {
-    v6 = v5;
+    v6 = supportedInterfaceOrientations;
   }
 
   else
@@ -497,7 +497,7 @@ LABEL_10:
 
   if ((v6 & v7) != 0)
   {
-    return a4;
+    return orientation;
   }
 
   else
@@ -514,11 +514,11 @@ LABEL_10:
   return v4;
 }
 
-- (CGSize)_pageViewSizeForAppLayout:(id)a3
+- (CGSize)_pageViewSizeForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained sizeForAppLayout:v4 fromProvider:self];
+  [WeakRetained sizeForAppLayout:layoutCopy fromProvider:self];
   v7 = v6;
   v9 = v8;
 
@@ -529,21 +529,21 @@ LABEL_10:
   return result;
 }
 
-- (id)_snapshotViewForAppLayout:(id)a3 setActive:(BOOL)a4
+- (id)_snapshotViewForAppLayout:(id)layout setActive:(BOOL)active
 {
-  v4 = a4;
-  v6 = a3;
+  activeCopy = active;
+  layoutCopy = layout;
   v7 = [SBAppSwitcherReusableSnapshotView alloc];
-  v8 = [(SBFluidSwitcherPageContentViewProvider *)self _snapshotViewDelegate];
+  _snapshotViewDelegate = [(SBFluidSwitcherPageContentViewProvider *)self _snapshotViewDelegate];
   snapshotCache = self->_snapshotCache;
   lockoutVCProvider = self->_lockoutVCProvider;
-  v11 = [SBApp appClipOverlayCoordinator];
-  v12 = [(SBFluidSwitcherPageContentViewProvider *)self _containerViewController];
-  v13 = [(SBAppSwitcherReusableSnapshotView *)v7 initWithDelegate:v8 snapshotCache:snapshotCache lockoutVCProvider:lockoutVCProvider appClipOverlayCoordinator:v11 containerViewController:v12];
+  appClipOverlayCoordinator = [SBApp appClipOverlayCoordinator];
+  _containerViewController = [(SBFluidSwitcherPageContentViewProvider *)self _containerViewController];
+  v13 = [(SBAppSwitcherReusableSnapshotView *)v7 initWithDelegate:_snapshotViewDelegate snapshotCache:snapshotCache lockoutVCProvider:lockoutVCProvider appClipOverlayCoordinator:appClipOverlayCoordinator containerViewController:_containerViewController];
 
-  [(SBAppSwitcherReusableSnapshotView *)v13 setActive:v4];
-  [(SBAppSwitcherReusableSnapshotView *)v13 setAppLayout:v6];
-  [(SBFluidSwitcherPageContentViewProvider *)self _pageViewSizeForAppLayout:v6];
+  [(SBAppSwitcherReusableSnapshotView *)v13 setActive:activeCopy];
+  [(SBAppSwitcherReusableSnapshotView *)v13 setAppLayout:layoutCopy];
+  [(SBFluidSwitcherPageContentViewProvider *)self _pageViewSizeForAppLayout:layoutCopy];
 
   SBRectWithSize();
   [(SBAppSwitcherReusableSnapshotView *)v13 setFrame:?];
@@ -551,12 +551,12 @@ LABEL_10:
   return v13;
 }
 
-- (id)_viewForService:(id)a3 appLayout:(id)a4
+- (id)_viewForService:(id)service appLayout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  layoutCopy = layout;
   v8 = [SBAppSwitcherServicePageContentView alloc];
-  [(SBFluidSwitcherPageContentViewProvider *)self _pageViewSizeForAppLayout:v7];
+  [(SBFluidSwitcherPageContentViewProvider *)self _pageViewSizeForAppLayout:layoutCopy];
 
   SBRectWithSize();
   v9 = [(SBAppSwitcherServicePageContentView *)v8 initWithFrame:?];
@@ -567,34 +567,34 @@ LABEL_10:
     self->_switcherServiceViewControllerMap = v10;
   }
 
-  v12 = [v6 bundleIdentifier];
-  v13 = [(NSMutableDictionary *)self->_switcherServiceViewControllerMap objectForKey:v12];
+  bundleIdentifier = [serviceCopy bundleIdentifier];
+  v13 = [(NSMutableDictionary *)self->_switcherServiceViewControllerMap objectForKey:bundleIdentifier];
   if (v13)
   {
-    v14 = [(SBFluidSwitcherPageContentViewProvider *)self _containerViewController];
+    _containerViewController = [(SBFluidSwitcherPageContentViewProvider *)self _containerViewController];
     [v13 beginAppearanceTransition:1 animated:0];
-    [v14 addChildViewController:v13];
-    v15 = [v13 view];
+    [_containerViewController addChildViewController:v13];
+    view = [v13 view];
     [(SBAppSwitcherServicePageContentView *)v9 bounds];
-    [v15 setFrame:?];
-    [v15 setAutoresizingMask:18];
-    [(SBAppSwitcherServicePageContentView *)v9 addSubview:v15];
-    [v13 didMoveToParentViewController:v14];
+    [view setFrame:?];
+    [view setAutoresizingMask:18];
+    [(SBAppSwitcherServicePageContentView *)v9 addSubview:view];
+    [v13 didMoveToParentViewController:_containerViewController];
     [v13 bs_endAppearanceTransition];
   }
 
   else
   {
-    v16 = [v6 viewServiceClassName];
-    v17 = [v6 bundleIdentifier];
+    viewServiceClassName = [serviceCopy viewServiceClassName];
+    bundleIdentifier2 = [serviceCopy bundleIdentifier];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __68__SBFluidSwitcherPageContentViewProvider__viewForService_appLayout___block_invoke;
     v20[3] = &unk_2783C03B0;
     v20[4] = self;
     v21 = v9;
-    v22 = v12;
-    v18 = [SBAppSwitcherPageServiceRemoteViewController requestViewController:v16 fromServiceWithBundleIdentifier:v17 connectionHandler:v20];
+    v22 = bundleIdentifier;
+    v18 = [SBAppSwitcherPageServiceRemoteViewController requestViewController:viewServiceClassName fromServiceWithBundleIdentifier:bundleIdentifier2 connectionHandler:v20];
   }
 
   return v9;
@@ -643,10 +643,10 @@ void __68__SBFluidSwitcherPageContentViewProvider__viewForService_appLayout___bl
 LABEL_4:
 }
 
-- (void)_applyTransientOverlayViewController:(id)a3 toPageContentView:(id)a4
+- (void)_applyTransientOverlayViewController:(id)controller toPageContentView:(id)view
 {
-  v13 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  viewCopy = view;
   pageContentViewToTransientOverlayViewController = self->_pageContentViewToTransientOverlayViewController;
   if (!pageContentViewToTransientOverlayViewController)
   {
@@ -657,33 +657,33 @@ LABEL_4:
     pageContentViewToTransientOverlayViewController = self->_pageContentViewToTransientOverlayViewController;
   }
 
-  [(NSMapTable *)pageContentViewToTransientOverlayViewController setObject:v13 forKey:v6];
-  v10 = [(SBFluidSwitcherPageContentViewProvider *)self _containerViewController];
-  [v10 addChildViewController:v13];
-  [v13 didMoveToParentViewController:v10];
-  [v13 bs_beginAppearanceTransition:1 animated:0];
-  [v6 setOrientation:{-[SBFluidSwitcherPageContentViewProvider _interfaceOrientation](self, "_interfaceOrientation")}];
-  v11 = -[SBFluidSwitcherPageContentViewProvider _preferredContentInterfaceOrientationForViewController:preferredInterfaceOrientation:](self, "_preferredContentInterfaceOrientationForViewController:preferredInterfaceOrientation:", v13, [v6 orientation]);
-  [v13 setContainerOrientation:v11];
-  [v6 setContentOrientation:v11];
-  v12 = [v13 view];
-  [v6 setContentView:v12];
+  [(NSMapTable *)pageContentViewToTransientOverlayViewController setObject:controllerCopy forKey:viewCopy];
+  _containerViewController = [(SBFluidSwitcherPageContentViewProvider *)self _containerViewController];
+  [_containerViewController addChildViewController:controllerCopy];
+  [controllerCopy didMoveToParentViewController:_containerViewController];
+  [controllerCopy bs_beginAppearanceTransition:1 animated:0];
+  [viewCopy setOrientation:{-[SBFluidSwitcherPageContentViewProvider _interfaceOrientation](self, "_interfaceOrientation")}];
+  v11 = -[SBFluidSwitcherPageContentViewProvider _preferredContentInterfaceOrientationForViewController:preferredInterfaceOrientation:](self, "_preferredContentInterfaceOrientationForViewController:preferredInterfaceOrientation:", controllerCopy, [viewCopy orientation]);
+  [controllerCopy setContainerOrientation:v11];
+  [viewCopy setContentOrientation:v11];
+  view = [controllerCopy view];
+  [viewCopy setContentView:view];
 
-  [v13 bs_endAppearanceTransition:1];
+  [controllerCopy bs_endAppearanceTransition:1];
 }
 
-- (void)_relinquishTransientOverlayViewController:(id)a3 forPageContentView:(id)a4
+- (void)_relinquishTransientOverlayViewController:(id)controller forPageContentView:(id)view
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8)
+  controllerCopy = controller;
+  viewCopy = view;
+  if (controllerCopy)
   {
-    [v8 bs_beginAppearanceTransition:0 animated:0];
-    [v6 setContentView:0];
-    [v8 bs_endAppearanceTransition:0];
-    [v8 willMoveToParentViewController:0];
-    [v8 removeFromParentViewController];
-    [(NSMapTable *)self->_pageContentViewToTransientOverlayViewController removeObjectForKey:v6];
+    [controllerCopy bs_beginAppearanceTransition:0 animated:0];
+    [viewCopy setContentView:0];
+    [controllerCopy bs_endAppearanceTransition:0];
+    [controllerCopy willMoveToParentViewController:0];
+    [controllerCopy removeFromParentViewController];
+    [(NSMapTable *)self->_pageContentViewToTransientOverlayViewController removeObjectForKey:viewCopy];
     if (![(NSMapTable *)self->_pageContentViewToTransientOverlayViewController count])
     {
       pageContentViewToTransientOverlayViewController = self->_pageContentViewToTransientOverlayViewController;

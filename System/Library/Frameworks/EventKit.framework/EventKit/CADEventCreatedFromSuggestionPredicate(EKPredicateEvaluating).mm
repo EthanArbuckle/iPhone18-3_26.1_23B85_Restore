@@ -10,11 +10,11 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 suggestionInfo];
-    v6 = [v5 opaqueKey];
+    suggestionInfo = [v4 suggestionInfo];
+    opaqueKey = [suggestionInfo opaqueKey];
 
-    v7 = [a1 opaqueKey];
-    v8 = [v6 isEqualToString:v7];
+    opaqueKey2 = [self opaqueKey];
+    v8 = [opaqueKey isEqualToString:opaqueKey2];
   }
 
   else

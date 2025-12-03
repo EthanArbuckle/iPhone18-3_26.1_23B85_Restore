@@ -1,22 +1,22 @@
 @interface MIReferenceAwareLSDatabaseGatherer
-- (BOOL)performGatherWithError:(id *)a3;
-- (BOOL)scanExecutableBundle:(id)a3 inContainer:(id)a4 forPersona:(id)a5 withError:(id *)a6;
-- (void)_generateSerializedPlacholderIfNeededForContainer:(id)a3;
+- (BOOL)performGatherWithError:(id *)error;
+- (BOOL)scanExecutableBundle:(id)bundle inContainer:(id)container forPersona:(id)persona withError:(id *)error;
+- (void)_generateSerializedPlacholderIfNeededForContainer:(id)container;
 @end
 
 @implementation MIReferenceAwareLSDatabaseGatherer
 
-- (void)_generateSerializedPlacholderIfNeededForContainer:(id)a3
+- (void)_generateSerializedPlacholderIfNeededForContainer:(id)container
 {
-  v3 = a3;
-  if (_os_feature_enabled_impl() && ([v3 hasSerializedPlaceholder] & 1) == 0)
+  containerCopy = container;
+  if (_os_feature_enabled_impl() && ([containerCopy hasSerializedPlaceholder] & 1) == 0)
   {
     v7 = 0;
-    v5 = [MIPlaceholderSerializer materializeForInstalledAppWithBundleContainer:v3 withError:&v7];
+    v5 = [MIPlaceholderSerializer materializeForInstalledAppWithBundleContainer:containerCopy withError:&v7];
     v4 = v7;
     if ((v5 & 1) == 0 && (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3))
     {
-      v6 = [v3 identifier];
+      identifier = [containerCopy identifier];
       MOLogWrite();
     }
   }
@@ -27,18 +27,18 @@
   }
 }
 
-- (BOOL)scanExecutableBundle:(id)a3 inContainer:(id)a4 forPersona:(id)a5 withError:(id *)a6
+- (BOOL)scanExecutableBundle:(id)bundle inContainer:(id)container forPersona:(id)persona withError:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  bundleCopy = bundle;
+  containerCopy = container;
+  personaCopy = persona;
   if (+[ICLFeatureFlags appReferencesEnabled])
   {
-    if (!-[MIReferenceAwareLSDatabaseGatherer targetUID](self, "targetUID") && [v11 containerClass] == 14)
+    if (!-[MIReferenceAwareLSDatabaseGatherer targetUID](self, "targetUID") && [containerCopy containerClass] == 14)
     {
       if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 5)
       {
-        v21 = [v10 identifier];
+        identifier = [bundleCopy identifier];
         MOLogWrite();
       }
 
@@ -46,9 +46,9 @@
       goto LABEL_19;
     }
 
-    if (([v10 isRemovableSystemApp] & 1) == 0 && -[MIReferenceAwareLSDatabaseGatherer targetUID](self, "targetUID"))
+    if (([bundleCopy isRemovableSystemApp] & 1) == 0 && -[MIReferenceAwareLSDatabaseGatherer targetUID](self, "targetUID"))
     {
-      if ([v11 containerClass] == 14)
+      if ([containerCopy containerClass] == 14)
       {
         v14 = 3;
       }
@@ -59,9 +59,9 @@
       }
 
       v15 = +[MIAppReferenceManager defaultManager];
-      v16 = [v10 identifier];
+      identifier2 = [bundleCopy identifier];
       v25 = 0;
-      v17 = [v15 personaUniqueStringsForAppWithBundleID:v16 domain:v14 forUserWithID:-[MIReferenceAwareLSDatabaseGatherer targetUID](self error:{"targetUID"), &v25}];
+      v17 = [v15 personaUniqueStringsForAppWithBundleID:identifier2 domain:v14 forUserWithID:-[MIReferenceAwareLSDatabaseGatherer targetUID](self error:{"targetUID"), &v25}];
       v18 = v25;
 
       v13 = v17 != 0;
@@ -75,7 +75,7 @@
 
         if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 5)
         {
-          v23 = [v10 identifier];
+          identifier3 = [bundleCopy identifier];
           [(MIReferenceAwareLSDatabaseGatherer *)self targetUID];
           MOLogWrite();
         }
@@ -85,14 +85,14 @@
       {
         if (!qword_1000A9720 || *(qword_1000A9720 + 44) >= 3)
         {
-          v22 = [v10 identifier];
+          identifier4 = [bundleCopy identifier];
           MOLogWrite();
         }
 
-        if (a6)
+        if (error)
         {
           v20 = v18;
-          *a6 = v18;
+          *error = v18;
         }
       }
 
@@ -101,28 +101,28 @@
   }
 
 LABEL_16:
-  if (v11)
+  if (containerCopy)
   {
-    [(MIReferenceAwareLSDatabaseGatherer *)self _generateSerializedPlacholderIfNeededForContainer:v11];
+    [(MIReferenceAwareLSDatabaseGatherer *)self _generateSerializedPlacholderIfNeededForContainer:containerCopy];
   }
 
   v24.receiver = self;
   v24.super_class = MIReferenceAwareLSDatabaseGatherer;
-  v13 = [(MIReferenceAwareLSDatabaseGatherer *)&v24 scanExecutableBundle:v10 inContainer:v11 forPersona:v12 withError:a6];
+  v13 = [(MIReferenceAwareLSDatabaseGatherer *)&v24 scanExecutableBundle:bundleCopy inContainer:containerCopy forPersona:personaCopy withError:error];
 LABEL_19:
 
   return v13;
 }
 
-- (BOOL)performGatherWithError:(id *)a3
+- (BOOL)performGatherWithError:(id *)error
 {
   v5 = +[MILaunchServicesOperationManager instanceForCurrentUser];
   [v5 purge];
 
   v6 = +[MIGlobalConfiguration sharedInstance];
-  v7 = [v6 isSharediPad];
+  isSharediPad = [v6 isSharediPad];
 
-  if ((v7 & 1) == 0)
+  if ((isSharediPad & 1) == 0)
   {
     v8 = +[MILaunchServicesOperationManager instanceForSystemSharedContent];
     [v8 purge];
@@ -130,7 +130,7 @@ LABEL_19:
 
   v10.receiver = self;
   v10.super_class = MIReferenceAwareLSDatabaseGatherer;
-  return [(MIReferenceAwareLSDatabaseGatherer *)&v10 performGatherWithError:a3];
+  return [(MIReferenceAwareLSDatabaseGatherer *)&v10 performGatherWithError:error];
 }
 
 @end

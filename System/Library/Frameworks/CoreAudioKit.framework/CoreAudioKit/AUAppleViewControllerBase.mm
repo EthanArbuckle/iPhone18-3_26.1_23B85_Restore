@@ -1,16 +1,16 @@
 @interface AUAppleViewControllerBase
 + (id)customViewLogger;
-+ (id)getLocalizedString:(id)a3;
-- (AudioUnitParameterInfo)getParameterInfo:(SEL)a3 scope:(unsigned int)a4;
-- (_TtC12CoreAudioKit25AUAppleViewControllerBase)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)postBeginGestureNotificationForParameter:(unsigned int)a3;
-- (void)postEndGestureNotificationForParameter:(unsigned int)a3;
-- (void)priv_addListenerForParameter:(unsigned int)a3 scope:(unsigned int)a4 element:(unsigned int)a5;
-- (void)priv_eventListener:(void *)a3 event:(const AudioUnitEvent *)a4 value:(float)a5;
-- (void)priv_removeListenerForParameter:(unsigned int)a3 scope:(unsigned int)a4 element:(unsigned int)a5;
++ (id)getLocalizedString:(id)string;
+- (AudioUnitParameterInfo)getParameterInfo:(SEL)info scope:(unsigned int)scope;
+- (_TtC12CoreAudioKit25AUAppleViewControllerBase)initWithNibName:(id)name bundle:(id)bundle;
+- (void)postBeginGestureNotificationForParameter:(unsigned int)parameter;
+- (void)postEndGestureNotificationForParameter:(unsigned int)parameter;
+- (void)priv_addListenerForParameter:(unsigned int)parameter scope:(unsigned int)scope element:(unsigned int)element;
+- (void)priv_eventListener:(void *)listener event:(const AudioUnitEvent *)event value:(float)value;
+- (void)priv_removeListenerForParameter:(unsigned int)parameter scope:(unsigned int)scope element:(unsigned int)element;
 - (void)priv_removeListeners;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation AUAppleViewControllerBase
@@ -66,7 +66,7 @@
   self->eventListener = 0;
 }
 
-- (void)priv_addListenerForParameter:(unsigned int)a3 scope:(unsigned int)a4 element:(unsigned int)a5
+- (void)priv_addListenerForParameter:(unsigned int)parameter scope:(unsigned int)scope element:(unsigned int)element
 {
   v28 = *MEMORY[0x277D85DE8];
   AU = self->AU;
@@ -91,7 +91,7 @@ LABEL_10:
         v21 = objc_opt_class();
         v15 = NSStringFromClass(v21);
         buf.mEventType = 67109634;
-        *(&buf.mEventType + 1) = a3;
+        *(&buf.mEventType + 1) = parameter;
         LOWORD(buf.mArgument.mParameter.mAudioUnit) = 1024;
         *(&buf.mArgument.mProperty.mAudioUnit + 2) = v20;
         HIWORD(buf.mArgument.mProperty.mAudioUnit) = 2112;
@@ -110,8 +110,8 @@ LABEL_9:
 
     *&buf.mEventType = 0;
     buf.mArgument.mParameter.mAudioUnit = AU;
-    *&buf.mArgument.mProperty.mPropertyID = __PAIR64__(a4, a3);
-    *&buf.mArgument.mProperty.mElement = a5;
+    *&buf.mArgument.mProperty.mPropertyID = __PAIR64__(scope, parameter);
+    *&buf.mArgument.mProperty.mElement = element;
     v11 = addParamListener(eventListener, self, &buf);
     if (!v11)
     {
@@ -128,7 +128,7 @@ LABEL_9:
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
     v22[0] = 67109634;
-    v22[1] = a3;
+    v22[1] = parameter;
     v23 = 1024;
     v24 = v12;
     v25 = 2112;
@@ -139,7 +139,7 @@ LABEL_9:
   }
 }
 
-- (void)priv_removeListenerForParameter:(unsigned int)a3 scope:(unsigned int)a4 element:(unsigned int)a5
+- (void)priv_removeListenerForParameter:(unsigned int)parameter scope:(unsigned int)scope element:(unsigned int)element
 {
   v16 = *MEMORY[0x277D85DE8];
   if (self->AU)
@@ -154,7 +154,7 @@ LABEL_9:
         v9 = objc_opt_class();
         v10 = NSStringFromClass(v9);
         v11[0] = 67109634;
-        v11[1] = a3;
+        v11[1] = parameter;
         v12 = 1024;
         v13 = v7;
         v14 = 2112;
@@ -165,7 +165,7 @@ LABEL_9:
   }
 }
 
-- (AudioUnitParameterInfo)getParameterInfo:(SEL)a3 scope:(unsigned int)a4
+- (AudioUnitParameterInfo)getParameterInfo:(SEL)info scope:(unsigned int)scope
 {
   v19 = *MEMORY[0x277D85DE8];
   ioDataSize = 104;
@@ -176,7 +176,7 @@ LABEL_9:
   *&retstr->clumpID = 0u;
   *&retstr->unit = 0u;
   *&retstr->flags = 0;
-  result = AudioUnitGetProperty(self->AU, 4u, 0, a4, retstr, &ioDataSize);
+  result = AudioUnitGetProperty(self->AU, 4u, 0, scope, retstr, &ioDataSize);
   if (result)
   {
     v8 = result;
@@ -186,7 +186,7 @@ LABEL_9:
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
       *buf = 67109634;
-      v14 = a4;
+      scopeCopy = scope;
       v15 = 1024;
       v16 = v8;
       v17 = 2112;
@@ -206,38 +206,38 @@ LABEL_9:
   return result;
 }
 
-- (void)postBeginGestureNotificationForParameter:(unsigned int)a3
+- (void)postBeginGestureNotificationForParameter:(unsigned int)parameter
 {
   v3.mArgument.mParameter.mAudioUnit = self->AU;
-  *&v3.mArgument.mProperty.mPropertyID = a3;
+  *&v3.mArgument.mProperty.mPropertyID = parameter;
   *&v3.mEventType = 1;
   AUEventListenerNotify(self->eventListener, self, &v3);
 }
 
-- (void)postEndGestureNotificationForParameter:(unsigned int)a3
+- (void)postEndGestureNotificationForParameter:(unsigned int)parameter
 {
   v3.mArgument.mParameter.mAudioUnit = self->AU;
-  *&v3.mArgument.mProperty.mPropertyID = a3;
+  *&v3.mArgument.mProperty.mPropertyID = parameter;
   *&v3.mEventType = 2;
   AUEventListenerNotify(self->eventListener, self, &v3);
 }
 
-- (void)priv_eventListener:(void *)a3 event:(const AudioUnitEvent *)a4 value:(float)a5
+- (void)priv_eventListener:(void *)listener event:(const AudioUnitEvent *)event value:(float)value
 {
-  mEventType = a4->mEventType;
-  if (a4->mEventType == kAudioUnitEvent_BeginParameterChangeGesture)
+  mEventType = event->mEventType;
+  if (event->mEventType == kAudioUnitEvent_BeginParameterChangeGesture)
   {
-    [(AUAppleViewControllerBase *)self handleBeginGesture:a4->mArgument.mParameter.mParameterID];
+    [(AUAppleViewControllerBase *)self handleBeginGesture:event->mArgument.mParameter.mParameterID];
   }
 
   else if (mEventType == kAudioUnitEvent_EndParameterChangeGesture)
   {
-    [(AUAppleViewControllerBase *)self handleEndGesture:a4->mArgument.mParameter.mParameterID];
+    [(AUAppleViewControllerBase *)self handleEndGesture:event->mArgument.mParameter.mParameterID];
   }
 
   else if (mEventType == kAudioUnitEvent_PropertyChange)
   {
-    mParameterID = a4->mArgument.mParameter.mParameterID;
+    mParameterID = event->mArgument.mParameter.mParameterID;
     if (mParameterID == 8 || mParameterID == 3)
     {
       [(AUAppleViewControllerBase *)self handleParameterListChanged];
@@ -245,15 +245,15 @@ LABEL_9:
   }
 }
 
-+ (id)getLocalizedString:(id)a3
++ (id)getLocalizedString:(id)string
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringCopy = string;
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = v4;
-  if (!v4 || ([v4 localizedStringForKey:v3 value:&stru_284A3B338 table:@"AudioUnits"], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!v4 || ([v4 localizedStringForKey:stringCopy value:&stru_284A3B338 table:@"AudioUnits"], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v6 = v3;
+    v6 = stringCopy;
     v7 = +[AUAppleViewControllerBase customViewLogger];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -270,18 +270,18 @@ LABEL_9:
   return v6;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v4 = *((*MEMORY[0x277D85000] & self->super.super.super.isa) + 0x1D0);
-  v5 = self;
+  selfCopy = self;
   v4();
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for AUAppleViewControllerBase();
-  [(AUAppleViewControllerBase *)&v6 viewWillDisappear:v3];
+  [(AUAppleViewControllerBase *)&v6 viewWillDisappear:disappearCopy];
 }
 
-- (_TtC12CoreAudioKit25AUAppleViewControllerBase)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12CoreAudioKit25AUAppleViewControllerBase)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

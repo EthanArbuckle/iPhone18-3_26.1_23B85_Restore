@@ -1,26 +1,26 @@
 @interface SPDaemonConnection
 + (id)sharedBackgroundConnection;
 + (id)sharedConnection;
-- (SPDaemonConnection)initWithDaemonName:(id)a3 qos:(unsigned int)a4;
+- (SPDaemonConnection)initWithDaemonName:(id)name qos:(unsigned int)qos;
 - (id)_connection;
-- (id)startQuery:(id)a3 queue:(id)a4 delegate:(id)a5;
+- (id)startQuery:(id)query queue:(id)queue delegate:(id)delegate;
 - (void)_resetConnection;
-- (void)_sendFeedbackMessage:(id)a3 object:(id)a4 info:(id)a5 reply:(id)a6;
-- (void)_sendInteractiveMessage:(id)a3 object:(id)a4 info:(id)a5 reply:(id)a6;
-- (void)_sendMessage:(id)a3 object:(id)a4 info:(id)a5 reply:(id)a6;
+- (void)_sendFeedbackMessage:(id)message object:(id)object info:(id)info reply:(id)reply;
+- (void)_sendInteractiveMessage:(id)message object:(id)object info:(id)info reply:(id)reply;
+- (void)_sendMessage:(id)message object:(id)object info:(id)info reply:(id)reply;
 - (void)activate;
-- (void)activate:(id)a3;
-- (void)barrierOnXPC:(id)a3;
-- (void)cancelQuery:(id)a3;
-- (void)clearInput:(id)a3;
+- (void)activate:(id)activate;
+- (void)barrierOnXPC:(id)c;
+- (void)cancelQuery:(id)query;
+- (void)clearInput:(id)input;
 - (void)deactivate;
 - (void)dealloc;
 - (void)preheat;
-- (void)requestParsecParametersWithReply:(id)a3;
-- (void)retrieveFirstTimeExperienceTextWithReply:(id)a3;
-- (void)sendApps:(id)a3;
-- (void)sendMessageForToken:(id)a3;
-- (void)sendSFFeedback:(id)a3 type:(int64_t)a4 queryId:(unint64_t)a5;
+- (void)requestParsecParametersWithReply:(id)reply;
+- (void)retrieveFirstTimeExperienceTextWithReply:(id)reply;
+- (void)sendApps:(id)apps;
+- (void)sendMessageForToken:(id)token;
+- (void)sendSFFeedback:(id)feedback type:(int64_t)type queryId:(unint64_t)id;
 @end
 
 @implementation SPDaemonConnection
@@ -128,15 +128,15 @@ void __33__SPDaemonConnection__connection__block_invoke_2(uint64_t a1, void *a2)
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendFeedbackMessage:(id)a3 object:(id)a4 info:(id)a5 reply:(id)a6
+- (void)_sendFeedbackMessage:(id)message object:(id)object info:(id)info reply:(id)reply
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[SPXPCMessage alloc] initWithName:v11];
+  infoCopy = info;
+  objectCopy = object;
+  messageCopy = message;
+  v12 = [[SPXPCMessage alloc] initWithName:messageCopy];
 
-  [(SPXPCMessage *)v12 setRootObjectForFeedback:v10];
-  [(SPXPCMessage *)v12 setInfo:v9];
+  [(SPXPCMessage *)v12 setRootObjectForFeedback:objectCopy];
+  [(SPXPCMessage *)v12 setInfo:infoCopy];
 
   connectionQueue = self->_connectionQueue;
   v15[0] = MEMORY[0x1E69E9820];
@@ -177,17 +177,17 @@ void __61__SPDaemonConnection__sendFeedbackMessage_object_info_reply___block_inv
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendMessage:(id)a3 object:(id)a4 info:(id)a5 reply:(id)a6
+- (void)_sendMessage:(id)message object:(id)object info:(id)info reply:(id)reply
 {
   v28 = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[SPXPCMessage alloc] initWithName:v13];
+  replyCopy = reply;
+  infoCopy = info;
+  objectCopy = object;
+  messageCopy = message;
+  v14 = [[SPXPCMessage alloc] initWithName:messageCopy];
 
-  [(SPXPCMessage *)v14 setRootObject:v12];
-  [(SPXPCMessage *)v14 setInfo:v11];
+  [(SPXPCMessage *)v14 setRootObject:objectCopy];
+  [(SPXPCMessage *)v14 setInfo:infoCopy];
 
   v15 = SPLogForSPLogCategoryDefault();
   v16 = v15;
@@ -214,10 +214,10 @@ void __61__SPDaemonConnection__sendFeedbackMessage_object_info_reply___block_inv
   block[2] = __53__SPDaemonConnection__sendMessage_object_info_reply___block_invoke;
   block[3] = &unk_1E82F8EB8;
   v24 = v14;
-  v25 = v10;
+  v25 = replyCopy;
   block[4] = self;
   v19 = v14;
-  v20 = v10;
+  v20 = replyCopy;
   v21 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(connectionQueue, v21);
 
@@ -300,17 +300,17 @@ void __53__SPDaemonConnection__sendMessage_object_info_reply___block_invoke_19(u
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sendInteractiveMessage:(id)a3 object:(id)a4 info:(id)a5 reply:(id)a6
+- (void)_sendInteractiveMessage:(id)message object:(id)object info:(id)info reply:(id)reply
 {
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[SPXPCMessage alloc] initWithName:v13];
+  replyCopy = reply;
+  infoCopy = info;
+  objectCopy = object;
+  messageCopy = message;
+  v14 = [[SPXPCMessage alloc] initWithName:messageCopy];
 
-  [(SPXPCMessage *)v14 setRootObject:v12];
-  [(SPXPCMessage *)v14 setInfo:v11];
+  [(SPXPCMessage *)v14 setRootObject:objectCopy];
+  [(SPXPCMessage *)v14 setInfo:infoCopy];
 
   v15 = SPLogForSPLogCategoryDefault();
   v16 = v15;
@@ -337,11 +337,11 @@ void __53__SPDaemonConnection__sendMessage_object_info_reply___block_invoke_19(u
   block[2] = __64__SPDaemonConnection__sendInteractiveMessage_object_info_reply___block_invoke;
   block[3] = &unk_1E82F8EB8;
   v27 = v14;
-  v28 = v10;
+  v28 = replyCopy;
   block[4] = self;
   v19 = connectionQueue;
   v20 = v14;
-  v21 = v10;
+  v21 = replyCopy;
   v22 = qos_class_self();
   if (v22 < 0x1A)
   {
@@ -435,10 +435,10 @@ void __64__SPDaemonConnection__sendInteractiveMessage_object_info_reply___block_
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendMessageForToken:(id)a3
+- (void)sendMessageForToken:(id)token
 {
   v77 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  tokenCopy = token;
   v4 = SPLogForSPLogCategoryDefault();
   v5 = v4;
   if (gSPLogDebugAsDefault)
@@ -458,36 +458,36 @@ void __64__SPDaemonConnection__sendInteractiveMessage_object_info_reply___block_
     _os_log_impl(&dword_1C81BF000, v5, v6, "SPDC sendMessageForToken QOS: %d", buf, 8u);
   }
 
-  v7 = [v3 query];
-  v8 = [v7 queryContext];
-  v9 = [v8 searchEntities];
-  v10 = [v9 count];
+  query = [tokenCopy query];
+  queryContext = [query queryContext];
+  searchEntities = [queryContext searchEntities];
+  v10 = [searchEntities count];
 
   if (v10)
   {
     v11 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
-    v12 = [v8 searchEntities];
-    v13 = v12;
-    if (v12 && [v12 count])
+    searchEntities2 = [queryContext searchEntities];
+    v13 = searchEntities2;
+    if (searchEntities2 && [searchEntities2 count])
     {
       [v11 encodeObject:v13 forKey:@"entities"];
     }
 
-    v14 = [v11 encodedData];
+    encodedData = [v11 encodedData];
   }
 
   else
   {
-    v14 = [MEMORY[0x1E695DEF0] data];
+    encodedData = [MEMORY[0x1E695DEF0] data];
   }
 
   v73[0] = @"BA";
-  v15 = [v7 disabledBundles];
+  disabledBundles = [query disabledBundles];
   v16 = MEMORY[0x1E695E0F0];
-  v68 = v15;
-  if (v15)
+  v68 = disabledBundles;
+  if (disabledBundles)
   {
-    v17 = v15;
+    v17 = disabledBundles;
   }
 
   else
@@ -497,11 +497,11 @@ void __64__SPDaemonConnection__sendInteractiveMessage_object_info_reply___block_
 
   v74[0] = v17;
   v73[1] = @"AA";
-  v18 = [v7 disabledApps];
-  v67 = v18;
-  if (v18)
+  disabledApps = [query disabledApps];
+  v67 = disabledApps;
+  if (disabledApps)
   {
-    v19 = v18;
+    v19 = disabledApps;
   }
 
   else
@@ -511,11 +511,11 @@ void __64__SPDaemonConnection__sendInteractiveMessage_object_info_reply___block_
 
   v74[1] = v19;
   v73[2] = @"DA";
-  v20 = [v8 searchDomains];
-  v66 = v20;
-  if (v20)
+  searchDomains = [queryContext searchDomains];
+  v66 = searchDomains;
+  if (searchDomains)
   {
-    v21 = v20;
+    v21 = searchDomains;
   }
 
   else
@@ -525,23 +525,23 @@ void __64__SPDaemonConnection__sendInteractiveMessage_object_info_reply___block_
 
   v74[2] = v21;
   v73[3] = @"IP";
-  v65 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v7, "infinitePatience")}];
+  v65 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(query, "infinitePatience")}];
   v74[3] = v65;
   v73[4] = @"DAS";
-  v64 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "deviceAuthenticationState")}];
+  v64 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(queryContext, "deviceAuthenticationState")}];
   v74[4] = v64;
   v73[5] = @"WS";
-  v63 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v7, "isWideScreen")}];
+  v63 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(query, "isWideScreen")}];
   v74[5] = v63;
   v73[6] = @"FC";
-  v62 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v7, "contentFilters")}];
+  v62 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(query, "contentFilters")}];
   v74[6] = v62;
   v73[7] = @"KL";
-  v22 = [v8 keyboardLanguage];
-  v61 = v22;
-  if (v22)
+  keyboardLanguage = [queryContext keyboardLanguage];
+  v61 = keyboardLanguage;
+  if (keyboardLanguage)
   {
-    v23 = v22;
+    v23 = keyboardLanguage;
   }
 
   else
@@ -551,11 +551,11 @@ void __64__SPDaemonConnection__sendInteractiveMessage_object_info_reply___block_
 
   v74[7] = v23;
   v73[8] = @"KPL";
-  v24 = [v8 keyboardPrimaryLanguage];
-  v60 = v24;
-  if (v24)
+  keyboardPrimaryLanguage = [queryContext keyboardPrimaryLanguage];
+  v60 = keyboardPrimaryLanguage;
+  if (keyboardPrimaryLanguage)
   {
-    v25 = v24;
+    v25 = keyboardPrimaryLanguage;
   }
 
   else
@@ -566,25 +566,25 @@ void __64__SPDaemonConnection__sendInteractiveMessage_object_info_reply___block_
   v74[8] = v25;
   v73[9] = @"SCF";
   v26 = MEMORY[0x1E696AD98];
-  [v8 scaleFactor];
+  [queryContext scaleFactor];
   v59 = [v26 numberWithDouble:?];
   v74[9] = v59;
   v73[10] = @"QC";
-  v58 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(v7, "maxCount")}];
+  v58 = [MEMORY[0x1E696AD98] numberWithLong:{objc_msgSend(query, "maxCount")}];
   v74[10] = v58;
   v73[11] = @"QI";
-  v57 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v7, "queryIdent")}];
+  v57 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(query, "queryIdent")}];
   v74[11] = v57;
   v73[12] = @"QID";
-  v69 = v3;
-  v56 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v3, "queryID")}];
+  v69 = tokenCopy;
+  v56 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(tokenCopy, "queryID")}];
   v74[12] = v56;
   v73[13] = @"QS";
-  v27 = [v8 searchString];
-  v55 = v27;
-  if (v27)
+  searchString = [queryContext searchString];
+  v55 = searchString;
+  if (searchString)
   {
-    v28 = v27;
+    v28 = searchString;
   }
 
   else
@@ -594,11 +594,11 @@ void __64__SPDaemonConnection__sendInteractiveMessage_object_info_reply___block_
 
   v74[13] = v28;
   v73[14] = @"DDA";
-  v29 = [v8 disabledDomains];
-  v54 = v29;
-  if (v29)
+  disabledDomains = [queryContext disabledDomains];
+  v54 = disabledDomains;
+  if (disabledDomains)
   {
-    v30 = v29;
+    v30 = disabledDomains;
   }
 
   else
@@ -608,12 +608,12 @@ void __64__SPDaemonConnection__sendInteractiveMessage_object_info_reply___block_
 
   v74[14] = v30;
   v73[15] = @"QSMRA";
-  v31 = [v8 markedTextArray];
-  v52 = v14;
-  v53 = v31;
-  if (v31)
+  markedTextArray = [queryContext markedTextArray];
+  v52 = encodedData;
+  v53 = markedTextArray;
+  if (markedTextArray)
   {
-    v32 = v31;
+    v32 = markedTextArray;
   }
 
   else
@@ -623,53 +623,53 @@ void __64__SPDaemonConnection__sendInteractiveMessage_object_info_reply___block_
 
   v74[15] = v32;
   v73[16] = @"EA";
-  v33 = v14;
-  if (!v14)
+  data = encodedData;
+  if (!encodedData)
   {
-    v33 = [MEMORY[0x1E695DEF0] data];
+    data = [MEMORY[0x1E695DEF0] data];
   }
 
-  v47 = v33;
-  v74[16] = v33;
+  v47 = data;
+  v74[16] = data;
   v73[17] = @"WHY";
-  v51 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "whyQuery")}];
+  v51 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(queryContext, "whyQuery")}];
   v74[17] = v51;
   v73[18] = @"QK";
-  v50 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "queryKind")}];
+  v50 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(queryContext, "queryKind")}];
   v74[18] = v50;
   v73[19] = @"NT";
-  v49 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v7, "noTokenize")}];
+  v49 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(query, "noTokenize")}];
   v74[19] = v49;
   v73[20] = @"RPP";
-  v34 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v7, "promoteParsecResults")}];
+  v34 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(query, "promoteParsecResults")}];
   v74[20] = v34;
   v73[21] = @"RPL";
-  v35 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v7, "promoteLocalResults")}];
+  v35 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(query, "promoteLocalResults")}];
   v74[21] = v35;
   v73[22] = @"InternalValidation";
-  v36 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v7, "internalValidation")}];
+  v36 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(query, "internalValidation")}];
   v74[22] = v36;
   v73[23] = @"InternalDebug";
-  v37 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v7, "internalDebug")}];
+  v37 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(query, "internalDebug")}];
   v74[23] = v37;
   v73[24] = @"CT";
   v38 = MEMORY[0x1E696AD98];
-  [v7 currentTime];
+  [query currentTime];
   v39 = [v38 numberWithDouble:?];
   v74[24] = v39;
   v73[25] = @"DOCR";
-  v40 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "disableOCR")}];
+  v40 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(queryContext, "disableOCR")}];
   v74[25] = v40;
   v73[26] = @"FL2S";
-  v41 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "fetchL2Signals")}];
+  v41 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(queryContext, "fetchL2Signals")}];
   v74[26] = v41;
   v73[27] = @"QU";
-  v42 = [v8 queryUnderstandingOutput];
-  v43 = v42;
+  queryUnderstandingOutput = [queryContext queryUnderstandingOutput];
+  v43 = queryUnderstandingOutput;
   v44 = MEMORY[0x1E695E0F8];
-  if (v42)
+  if (queryUnderstandingOutput)
   {
-    v44 = v42;
+    v44 = queryUnderstandingOutput;
   }
 
   v74[27] = v44;
@@ -717,12 +717,12 @@ uint64_t __42__SPDaemonConnection_sendMessageForToken___block_invoke(uint64_t a1
   return result;
 }
 
-- (id)startQuery:(id)a3 queue:(id)a4 delegate:(id)a5
+- (id)startQuery:(id)query queue:(id)queue delegate:(id)delegate
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[SPDaemonQueryToken alloc] initWithQuery:v10 queue:v9 delegate:v8];
+  delegateCopy = delegate;
+  queueCopy = queue;
+  queryCopy = query;
+  v11 = [[SPDaemonQueryToken alloc] initWithQuery:queryCopy queue:queueCopy delegate:delegateCopy];
   CFDictionarySetValue(self->_runningQueries, [(SPDaemonQueryToken *)v11 queryID], v11);
 
   v12 = _os_activity_create(&dword_1C81BF000, "query", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -740,16 +740,16 @@ uint64_t __42__SPDaemonConnection_sendMessageForToken___block_invoke(uint64_t a1
   return v13;
 }
 
-- (void)cancelQuery:(id)a3
+- (void)cancelQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __34__SPDaemonConnection_cancelQuery___block_invoke;
   block[3] = &unk_1E82F8E68;
   block[4] = self;
-  v6 = v4;
+  v6 = queryCopy;
   v12 = v6;
   dispatch_sync(connectionQueue, block);
   v7 = _os_activity_create(&dword_1C81BF000, "queryCancel", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
@@ -836,17 +836,17 @@ void __30__SPDaemonConnection_activate__block_invoke(uint64_t a1)
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)activate:(id)a3
+- (void)activate:(id)activate
 {
-  v4 = a3;
+  activateCopy = activate;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__SPDaemonConnection_activate___block_invoke;
   v7[3] = &unk_1E82F8F50;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = activateCopy;
+  v6 = activateCopy;
   dispatch_async(queue, v7);
 }
 
@@ -891,17 +891,17 @@ void __31__SPDaemonConnection_activate___block_invoke_126(uint64_t a1)
   [*(a1 + 32) _sendInteractiveMessage:@"Activate" object:v2 info:0 reply:&__block_literal_global_128];
 }
 
-- (void)sendApps:(id)a3
+- (void)sendApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   v5 = _os_activity_create(&dword_1C81BF000, "apps", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__SPDaemonConnection_sendApps___block_invoke;
   v7[3] = &unk_1E82F8E68;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = appsCopy;
+  v6 = appsCopy;
   os_activity_apply(v5, v7);
 }
 
@@ -971,7 +971,7 @@ void __29__SPDaemonConnection_preheat__block_invoke(uint64_t a1)
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clearInput:(id)a3
+- (void)clearInput:(id)input
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -993,17 +993,17 @@ void __33__SPDaemonConnection_clearInput___block_invoke(uint64_t a1)
   os_activity_apply(v2, block);
 }
 
-- (void)retrieveFirstTimeExperienceTextWithReply:(id)a3
+- (void)retrieveFirstTimeExperienceTextWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__SPDaemonConnection_retrieveFirstTimeExperienceTextWithReply___block_invoke;
   v7[3] = &unk_1E82F8FA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1037,17 +1037,17 @@ void __63__SPDaemonConnection_retrieveFirstTimeExperienceTextWithReply___block_i
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)requestParsecParametersWithReply:(id)a3
+- (void)requestParsecParametersWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__SPDaemonConnection_requestParsecParametersWithReply___block_invoke;
   v7[3] = &unk_1E82F8FA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(queue, v7);
 }
 
@@ -1081,18 +1081,18 @@ void __55__SPDaemonConnection_requestParsecParametersWithReply___block_invoke_3(
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)sendSFFeedback:(id)a3 type:(int64_t)a4 queryId:(unint64_t)a5
+- (void)sendSFFeedback:(id)feedback type:(int64_t)type queryId:(unint64_t)id
 {
-  v8 = a3;
+  feedbackCopy = feedback;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __50__SPDaemonConnection_sendSFFeedback_type_queryId___block_invoke;
   v11[3] = &unk_1E82F8FC8;
-  v13 = a5;
-  v14 = a4;
+  idCopy = id;
+  typeCopy = type;
   v11[4] = self;
-  v12 = v8;
-  v9 = v8;
+  v12 = feedbackCopy;
+  v9 = feedbackCopy;
   v10 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_BACKGROUND, 0, v11);
   dispatch_async(self->_queue, v10);
 }
@@ -1137,26 +1137,26 @@ void __50__SPDaemonConnection_sendSFFeedback_type_queryId___block_invoke_2(uint6
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (SPDaemonConnection)initWithDaemonName:(id)a3 qos:(unsigned int)a4
+- (SPDaemonConnection)initWithDaemonName:(id)name qos:(unsigned int)qos
 {
-  v6 = a3;
+  nameCopy = name;
   v19.receiver = self;
   v19.super_class = SPDaemonConnection;
   v7 = [(SPDaemonConnection *)&v19 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [nameCopy copy];
     v9 = *(v7 + 4);
     *(v7 + 4) = v8;
 
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v11 = dispatch_queue_attr_make_with_qos_class(v10, a4, 0);
+    v11 = dispatch_queue_attr_make_with_qos_class(v10, qos, 0);
     v12 = dispatch_queue_create("com.apple.search.daemonQueue", v11);
     v13 = *(v7 + 2);
     *(v7 + 2) = v12;
 
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v15 = dispatch_queue_attr_make_with_qos_class(v14, a4, 0);
+    v15 = dispatch_queue_attr_make_with_qos_class(v14, qos, 0);
     v16 = dispatch_queue_create("com.apple.search.XPCQueue", v15);
     v17 = *(v7 + 3);
     *(v7 + 3) = v16;
@@ -1210,17 +1210,17 @@ uint64_t __48__SPDaemonConnection_sharedBackgroundConnection__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)barrierOnXPC:(id)a3
+- (void)barrierOnXPC:(id)c
 {
   connection = self->_connection;
   if (connection)
   {
-    [(SPXPCConnection *)connection barrier:a3];
+    [(SPXPCConnection *)connection barrier:c];
   }
 
   else
   {
-    (*(a3 + 2))(a3);
+    (*(c + 2))(c);
   }
 }
 

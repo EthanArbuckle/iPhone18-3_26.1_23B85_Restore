@@ -2,68 +2,68 @@
 - (BOOL)beginsOnSameLineAsPreviousRun;
 - (BOOL)combinedPaths;
 - (BOOL)isLastRun;
-- (BOOL)textRangeIsInSameLine:(id)a3;
-- (CGPath)_createUnionedPathFromArray:(id)a3;
+- (BOOL)textRangeIsInSameLine:(id)line;
+- (CGPath)_createUnionedPathFromArray:(id)array;
 - (double)cornerOutset;
 - (double)cornerRadius;
 - (id)description;
 - (id)firstSegment;
-- (id)initWithTextRange:(void *)a3 withCluster:;
+- (id)initWithTextRange:(void *)range withCluster:;
 - (id)lastSegment;
 - (id)secondLastSegment;
 - (id)secondSegment;
-- (uint64_t)drawRunUsingBlock:(void *)a1;
-- (void)enumerateRunSegmentsUsingBlock:(id)a3;
-- (void)getMetricsForTextSize:(double *)a3 cornerRadius:(double)a4 cornerOutset:(double)a5;
+- (uint64_t)drawRunUsingBlock:(void *)block;
+- (void)enumerateRunSegmentsUsingBlock:(id)block;
+- (void)getMetricsForTextSize:(double *)size cornerRadius:(double)radius cornerOutset:(double)outset;
 - (void)prevRun;
 @end
 
 @implementation _NSTextHighlightRun
 
-- (id)initWithTextRange:(void *)a3 withCluster:
+- (id)initWithTextRange:(void *)range withCluster:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  rangeCopy = range;
+  if (self)
   {
-    v27.receiver = a1;
+    v27.receiver = self;
     v27.super_class = _NSTextHighlightRun;
     v7 = objc_msgSendSuper2(&v27, sel_init);
-    a1 = v7;
+    self = v7;
     if (v7)
     {
-      [(_NSTextHighlightRun *)v7 initWithTextRange:v5 withCluster:v6, v25];
+      [(_NSTextHighlightRun *)v7 initWithTextRange:v5 withCluster:rangeCopy, v25];
       v9 = v25[0];
       v25[0] = 0;
       v25[1] = v25;
       v25[2] = 0x3042000000;
       v25[3] = __Block_byref_object_copy__7;
       v25[4] = __Block_byref_object_dispose__7;
-      objc_initWeak(&v26, a1);
+      objc_initWeak(&v26, self);
       v19 = MEMORY[0x1E69E9820];
       v20 = 3221225472;
       v21 = __53___NSTextHighlightRun_initWithTextRange_withCluster___block_invoke;
       v22 = &unk_1E7267168;
       v24 = v25;
-      a1 = a1;
-      v23 = a1;
-      [a1 enumerateRunSegmentsUsingBlock:&v19];
-      v10 = [(_NSTextHighlightRun *)a1 prevRun];
-      v11 = [(_NSTextHighlightRun *)v10 lastSegment];
+      self = self;
+      selfCopy = self;
+      [self enumerateRunSegmentsUsingBlock:&v19];
+      prevRun = [(_NSTextHighlightRun *)self prevRun];
+      lastSegment = [(_NSTextHighlightRun *)prevRun lastSegment];
 
-      if (v11 && *(v11 + 8) == 1)
+      if (lastSegment && *(lastSegment + 8) == 1)
       {
-        v12 = *(v11 + 96);
-        v13 = [(_NSTextHighlightRun *)a1 firstSegment];
-        v14 = v13 ? v13[12] : 0.0;
+        v12 = *(lastSegment + 96);
+        firstSegment = [(_NSTextHighlightRun *)self firstSegment];
+        v14 = firstSegment ? firstSegment[12] : 0.0;
 
         if (v12 == v14)
         {
-          v15 = [(_NSTextHighlightRun *)a1 prevRun];
-          v16 = v15;
-          if (v15)
+          prevRun2 = [(_NSTextHighlightRun *)self prevRun];
+          v16 = prevRun2;
+          if (prevRun2)
           {
-            v17 = *(v15 + 56);
+            v17 = *(prevRun2 + 56);
           }
 
           else
@@ -83,16 +83,16 @@
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)textRangeIsInSameLine:(id)a3
+- (BOOL)textRangeIsInSameLine:(id)line
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  lineCopy = line;
+  v5 = lineCopy;
+  if (lineCopy)
   {
-    v6 = [v4 location];
+    location = [lineCopy location];
     if (self)
     {
       WeakRetained = objc_loadWeakRetained(&self->_cluster);
@@ -111,46 +111,46 @@
 
     v9 = 0;
 LABEL_5:
-    v10 = [v9 textLayoutManager];
+    textLayoutManager = [v9 textLayoutManager];
 
-    v11 = [v10 textContentManager];
-    v12 = [v10 textLayoutFragmentForLocation:v6];
-    v13 = [v12 textParagraph];
-    v14 = v13;
-    if (v13)
+    textContentManager = [textLayoutManager textContentManager];
+    v12 = [textLayoutManager textLayoutFragmentForLocation:location];
+    textParagraph = [v12 textParagraph];
+    v14 = textParagraph;
+    if (textParagraph)
     {
-      v15 = [v13 paragraphContentRange];
-      v16 = [v15 containsLocation:v6];
+      paragraphContentRange = [textParagraph paragraphContentRange];
+      v16 = [paragraphContentRange containsLocation:location];
 
       if ((v16 & 1) == 0)
       {
-        v17 = [v14 paragraphSeparatorRange];
-        v18 = [v17 endLocation];
+        paragraphSeparatorRange = [v14 paragraphSeparatorRange];
+        endLocation = [paragraphSeparatorRange endLocation];
 
-        v19 = [v5 endLocation];
-        v20 = [v18 compare:v19];
+        endLocation2 = [v5 endLocation];
+        v20 = [endLocation compare:endLocation2];
 
         if (v20 != -1)
         {
           v21 = 0;
-          v6 = v18;
+          location = endLocation;
 LABEL_13:
 
           goto LABEL_14;
         }
 
-        v6 = v18;
+        location = endLocation;
       }
 
-      v22 = [v12 textLineFragmentForTextLocation:v6 isUpstreamAffinity:0];
+      v22 = [v12 textLineFragmentForTextLocation:location isUpstreamAffinity:0];
       v35 = 0;
       v36 = &v35;
       v37 = 0x3032000000;
       v38 = __Block_byref_object_copy__56;
       v39 = __Block_byref_object_dispose__57;
       v40 = 0;
-      v23 = [v11 documentRange];
-      v24 = [v23 endLocation];
+      documentRange = [textContentManager documentRange];
+      endLocation3 = [documentRange endLocation];
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __45___NSTextHighlightRun_textRangeIsInSameLine___block_invoke;
@@ -159,11 +159,11 @@ LABEL_13:
       v25 = v5;
       v33 = v25;
       v34 = &v35;
-      v26 = [v10 enumerateTextLayoutFragmentsFromLocation:v24 options:1 usingBlock:v31];
+      v26 = [textLayoutManager enumerateTextLayoutFragmentsFromLocation:endLocation3 options:1 usingBlock:v31];
 
       v27 = v36[5];
-      v28 = [v25 endLocation];
-      v29 = [v27 textLineFragmentForTextLocation:v28 isUpstreamAffinity:1];
+      endLocation4 = [v25 endLocation];
+      v29 = [v27 textLineFragmentForTextLocation:endLocation4 isUpstreamAffinity:1];
 
       v21 = v22 == v29;
       _Block_object_dispose(&v35, 8);
@@ -181,28 +181,28 @@ LABEL_14:
   return v21;
 }
 
-- (uint64_t)drawRunUsingBlock:(void *)a1
+- (uint64_t)drawRunUsingBlock:(void *)block
 {
   v3 = a2;
-  if (a1)
+  if (block)
   {
-    v4 = a1[7];
+    v4 = block[7];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __41___NSTextHighlightRun_drawRunUsingBlock___block_invoke;
     v16[3] = &unk_1E72671E0;
-    v16[4] = a1;
+    v16[4] = block;
     [v4 enumerateObjectsUsingBlock:v16];
     v12 = 0;
     v13 = &v12;
     v14 = 0x2020000000;
     v15 = 0;
-    v5 = [(_NSTextHighlightRun *)a1 combinedPaths];
-    v6 = a1[1];
-    if (v5)
+    combinedPaths = [(_NSTextHighlightRun *)block combinedPaths];
+    v6 = block[1];
+    if (combinedPaths)
     {
-      v7 = [a1 _createUnionedPathFromArray:a1[1]];
-      v3[2](v3, v7, v7, a1[2], (v13 + 3));
+      v7 = [block _createUnionedPathFromArray:block[1]];
+      v3[2](v3, v7, v7, block[2], (v13 + 3));
       CFRelease(v7);
     }
 
@@ -212,28 +212,28 @@ LABEL_14:
       v9[1] = 3221225472;
       v9[2] = __41___NSTextHighlightRun_drawRunUsingBlock___block_invoke_2;
       v9[3] = &unk_1E7267208;
-      v9[4] = a1;
+      v9[4] = block;
       v10 = v3;
       v11 = &v12;
       [v6 enumerateObjectsUsingBlock:v9];
     }
 
-    LOBYTE(a1) = *(v13 + 24);
+    LOBYTE(block) = *(v13 + 24);
     _Block_object_dispose(&v12, 8);
   }
 
-  return a1 & 1;
+  return block & 1;
 }
 
-- (CGPath)_createUnionedPathFromArray:(id)a3
+- (CGPath)_createUnionedPathFromArray:(id)array
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  arrayCopy = array;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [arrayCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -245,7 +245,7 @@ LABEL_14:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrayCopy);
         }
 
         if (v6)
@@ -261,7 +261,7 @@ LABEL_14:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [arrayCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -277,20 +277,20 @@ LABEL_14:
 
 - (double)cornerRadius
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = (a1 + 64);
-  if (*(a1 + 64) < 0.0 && [*(a1 + 56) count])
+  v2 = (self + 64);
+  if (*(self + 64) < 0.0 && [*(self + 56) count])
   {
-    v6 = [*(a1 + 56) firstObject];
-    v7 = v6;
-    if (v6)
+    firstObject = [*(self + 56) firstObject];
+    v7 = firstObject;
+    if (firstObject)
     {
-      v8 = *(v6 + 144);
-      v9 = *(v6 + 152);
+      v8 = *(firstObject + 144);
+      v9 = *(firstObject + 152);
     }
 
     else
@@ -299,32 +299,32 @@ LABEL_14:
       v9 = 0.0;
     }
 
-    [(_NSTextHighlightRun *)a1 getMetricsForTextSize:v2 cornerRadius:(a1 + 72) cornerOutset:v8, v9];
+    [(_NSTextHighlightRun *)self getMetricsForTextSize:v2 cornerRadius:(self + 72) cornerOutset:v8, v9];
   }
 
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  _UIFoundationAssert(a1, v4, *(a1 + 64) >= 0.0, &__block_literal_global_13);
+  _UIFoundationAssert(self, v4, *(self + 64) >= 0.0, &__block_literal_global_13);
 
-  return *(a1 + 64);
+  return *(self + 64);
 }
 
 - (double)cornerOutset
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = (a1 + 72);
-  if (*(a1 + 72) < 0.0 && [*(a1 + 56) count])
+  v2 = (self + 72);
+  if (*(self + 72) < 0.0 && [*(self + 56) count])
   {
-    v4 = [*(a1 + 56) firstObject];
-    v5 = v4;
-    if (v4)
+    firstObject = [*(self + 56) firstObject];
+    v5 = firstObject;
+    if (firstObject)
     {
-      v6 = *(v4 + 144);
-      v7 = *(v4 + 152);
+      v6 = *(firstObject + 144);
+      v7 = *(firstObject + 152);
     }
 
     else
@@ -333,24 +333,24 @@ LABEL_14:
       v7 = 0.0;
     }
 
-    [(_NSTextHighlightRun *)a1 getMetricsForTextSize:v2 cornerRadius:v6 cornerOutset:v7];
+    [(_NSTextHighlightRun *)self getMetricsForTextSize:v2 cornerRadius:v6 cornerOutset:v7];
   }
 
   return *v2;
 }
 
-- (void)getMetricsForTextSize:(double *)a3 cornerRadius:(double)a4 cornerOutset:(double)a5
+- (void)getMetricsForTextSize:(double *)size cornerRadius:(double)radius cornerOutset:(double)outset
 {
-  if (a1)
+  if (self)
   {
     if (_MergedGlobals_2 != -1)
     {
       dispatch_once(&_MergedGlobals_2, &__block_literal_global_67);
     }
 
-    if (a5 >= 28.0)
+    if (outset >= 28.0)
     {
-      v11 = vcvtmd_u64_f64(a5 + -28.0) / 0xA;
+      v11 = vcvtmd_u64_f64(outset + -28.0) / 0xA;
       v10 = (v11 + 1) * 2.0 + 4.0;
       if (*&qword_1ED4DF308 <= 0.0)
       {
@@ -369,74 +369,74 @@ LABEL_14:
       v10 = 4.0;
     }
 
-    *(a1 + 64) = v10;
+    *(self + 64) = v10;
     *a2 = v10;
-    *(a1 + 72) = v9;
-    *a3 = v9;
+    *(self + 72) = v9;
+    *size = v9;
   }
 }
 
 - (void)prevRun
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if (a1[2])
+    if (self[2])
     {
-      WeakRetained = objc_loadWeakRetained(a1 + 5);
+      WeakRetained = objc_loadWeakRetained(self + 5);
       v3 = WeakRetained;
       if (WeakRetained)
       {
         WeakRetained = WeakRetained[4];
       }
 
-      v1 = [WeakRetained objectAtIndex:v1[2] - 1];
+      selfCopy = [WeakRetained objectAtIndex:selfCopy[2] - 1];
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)lastSegment
 {
-  if (a1)
+  if (self)
   {
-    a1 = OUTLINED_FUNCTION_14_0(a1);
-    if (a1)
+    self = OUTLINED_FUNCTION_14_0(self);
+    if (self)
     {
-      a1 = [*(v1 + 56) objectAtIndex:{objc_msgSend(*(v1 + 56), "count") - 1}];
+      self = [*(v1 + 56) objectAtIndex:{objc_msgSend(*(v1 + 56), "count") - 1}];
     }
 
     v2 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)firstSegment
 {
-  if (a1)
+  if (self)
   {
-    a1 = OUTLINED_FUNCTION_14_0(a1);
-    if (a1)
+    self = OUTLINED_FUNCTION_14_0(self);
+    if (self)
     {
-      a1 = [*(v1 + 56) objectAtIndex:0];
+      self = [*(v1 + 56) objectAtIndex:0];
     }
 
     v2 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)enumerateRunSegmentsUsingBlock:(id)a3
+- (void)enumerateRunSegmentsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_cluster);
   v6 = WeakRetained;
   if (WeakRetained)
@@ -449,13 +449,13 @@ LABEL_14:
     v7 = 0;
   }
 
-  v8 = [v7 textLayoutManager];
+  textLayoutManager = [v7 textLayoutManager];
 
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x2020000000;
   v26 = 0;
-  if (v8)
+  if (textLayoutManager)
   {
     if (self)
     {
@@ -468,22 +468,22 @@ LABEL_14:
     }
 
     v10 = textRange;
-    v11 = [v8 textContentManager];
-    v12 = [v11 documentRange];
-    v13 = [v12 endLocation];
+    textContentManager = [textLayoutManager textContentManager];
+    documentRange = [textContentManager documentRange];
+    endLocation = [documentRange endLocation];
 
-    __NSTextHighlightShapeProviderHasTypingAttributesOverride(v8, v10);
+    __NSTextHighlightShapeProviderHasTypingAttributesOverride(textLayoutManager, v10);
     OUTLINED_FUNCTION_0_2();
     v17 = 3221225472;
     v18 = __54___NSTextHighlightRun_enumerateRunSegmentsUsingBlock___block_invoke;
     v19 = &unk_1E7267190;
-    v20 = self;
+    selfCopy = self;
     v24 = v14;
-    v15 = v13;
+    v15 = endLocation;
     v21 = v15;
-    v22 = v4;
+    v22 = blockCopy;
     v23 = v25;
-    [v8 enumerateTextSegmentsInRange:v10 type:0 options:0 usingBlock:v16];
+    [textLayoutManager enumerateTextSegmentsInRange:v10 type:0 options:0 usingBlock:v16];
   }
 
   _Block_object_dispose(v25, 8);
@@ -491,16 +491,16 @@ LABEL_14:
 
 - (BOOL)beginsOnSameLineAsPreviousRun
 {
-  v3 = [(_NSTextHighlightRun *)&self->super.isa prevRun];
-  if (v3)
+  prevRun = [(_NSTextHighlightRun *)&self->super.isa prevRun];
+  if (prevRun)
   {
-    v6 = v3;
-    v7 = [(_NSTextHighlightRun *)&self->super.isa prevRun];
-    v8 = [(_NSTextHighlightRun *)v7 lastSegment];
-    v9 = v8;
-    if (v8)
+    v6 = prevRun;
+    prevRun2 = [(_NSTextHighlightRun *)&self->super.isa prevRun];
+    lastSegment = [(_NSTextHighlightRun *)prevRun2 lastSegment];
+    v9 = lastSegment;
+    if (lastSegment)
     {
-      v10 = *(v8 + 88);
+      v10 = *(lastSegment + 88);
     }
 
     else
@@ -509,10 +509,10 @@ LABEL_14:
     }
 
     v11 = v10;
-    v12 = [v11 location];
-    if (v12)
+    location = [v11 location];
+    if (location)
     {
-      v13 = v12;
+      v13 = location;
       if (self)
       {
         textRange = self->_textRange;
@@ -523,20 +523,20 @@ LABEL_14:
         textRange = 0;
       }
 
-      v15 = [(NSTextRange *)textRange location];
+      location2 = [(NSTextRange *)textRange location];
 
-      if (!v15)
+      if (!location2)
       {
         return 0;
       }
 
       v16 = [NSTextRange alloc];
-      v17 = [(_NSTextHighlightRun *)&self->super.isa prevRun];
-      v18 = [(_NSTextHighlightRun *)v17 lastSegment];
-      v19 = v18;
-      if (v18)
+      prevRun3 = [(_NSTextHighlightRun *)&self->super.isa prevRun];
+      lastSegment2 = [(_NSTextHighlightRun *)prevRun3 lastSegment];
+      v19 = lastSegment2;
+      if (lastSegment2)
       {
-        v20 = *(v18 + 88);
+        v20 = *(lastSegment2 + 88);
       }
 
       else
@@ -545,7 +545,7 @@ LABEL_14:
       }
 
       v21 = v20;
-      v22 = [v21 location];
+      location3 = [v21 location];
       if (self)
       {
         v23 = self->_textRange;
@@ -556,8 +556,8 @@ LABEL_14:
         v23 = 0;
       }
 
-      v24 = [(NSTextRange *)v23 location];
-      v6 = [(NSTextRange *)v16 initWithLocation:v22 endLocation:v24];
+      location4 = [(NSTextRange *)v23 location];
+      v6 = [(NSTextRange *)v16 initWithLocation:location3 endLocation:location4];
 
       v4 = [(_NSTextHighlightRun *)self textRangeIsInSameLine:v6];
     }
@@ -580,7 +580,7 @@ LABEL_14:
   {
     runIndex = self->_runIndex;
     self = objc_loadWeakRetained(&self->_cluster);
-    v3 = self;
+    selfCopy = self;
     if (self)
     {
       self = *&self->_leadingRun;
@@ -589,7 +589,7 @@ LABEL_14:
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
     runIndex = 0;
   }
 
@@ -653,42 +653,42 @@ LABEL_14:
 
 - (id)secondSegment
 {
-  if (a1)
+  if (self)
   {
-    if (OUTLINED_FUNCTION_14_0(a1) < 2)
+    if (OUTLINED_FUNCTION_14_0(self) < 2)
     {
-      a1 = 0;
+      self = 0;
     }
 
     else
     {
-      a1 = [*(v1 + 56) objectAtIndex:1];
+      self = [*(v1 + 56) objectAtIndex:1];
     }
 
     v2 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)secondLastSegment
 {
-  if (a1)
+  if (self)
   {
-    if (OUTLINED_FUNCTION_14_0(a1) < 2)
+    if (OUTLINED_FUNCTION_14_0(self) < 2)
     {
-      a1 = 0;
+      self = 0;
     }
 
     else
     {
-      a1 = [*(v1 + 56) objectAtIndex:{objc_msgSend(*(v1 + 56), "count") - 2}];
+      self = [*(v1 + 56) objectAtIndex:{objc_msgSend(*(v1 + 56), "count") - 2}];
     }
 
     v2 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)description
@@ -729,16 +729,16 @@ LABEL_14:
 
   v11 = 0;
 LABEL_6:
-  v12 = [v11 textLayoutManager];
-  v13 = [v12 textContentManager];
+  textLayoutManager = [v11 textLayoutManager];
+  textContentManager = [textLayoutManager textContentManager];
 
   if (objc_opt_respondsToSelector())
   {
-    v14 = [v13 attributedString];
-    v15 = [v14 string];
+    attributedString = [textContentManager attributedString];
+    string = [attributedString string];
 
-    v16 = [v13 documentRange];
-    v17 = [v16 location];
+    documentRange = [textContentManager documentRange];
+    location = [documentRange location];
     if (self)
     {
       textRange = self->_textRange;
@@ -749,11 +749,11 @@ LABEL_6:
       textRange = 0;
     }
 
-    v19 = [(NSTextRange *)textRange location];
-    v20 = [v13 offsetFromLocation:v17 toLocation:v19];
+    location2 = [(NSTextRange *)textRange location];
+    v20 = [textContentManager offsetFromLocation:location toLocation:location2];
 
-    v21 = [v13 documentRange];
-    v22 = [v21 location];
+    documentRange2 = [textContentManager documentRange];
+    location3 = [documentRange2 location];
     if (self)
     {
       v23 = self->_textRange;
@@ -764,10 +764,10 @@ LABEL_6:
       v23 = 0;
     }
 
-    v24 = [(NSTextRange *)v23 endLocation];
-    v25 = [v13 offsetFromLocation:v22 toLocation:v24];
+    endLocation = [(NSTextRange *)v23 endLocation];
+    v25 = [textContentManager offsetFromLocation:location3 toLocation:endLocation];
 
-    v26 = [v15 substringWithRange:{v20, v25 - v20}];
+    v26 = [string substringWithRange:{v20, v25 - v20}];
     [v8 appendFormat:@"\n\tText:%@", v26];
   }
 

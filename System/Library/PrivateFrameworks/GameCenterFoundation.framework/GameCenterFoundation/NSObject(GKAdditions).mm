@@ -18,7 +18,7 @@
     [v7 setArgument:&v8 atIndex:2];
   }
 
-  [v7 setTarget:a1];
+  [v7 setTarget:self];
   [v7 retainArguments];
   [v7 invoke];
 }
@@ -46,7 +46,7 @@
     }
   }
 
-  [v10 setTarget:{a1, v11}];
+  [v10 setTarget:{self, v11}];
   [v10 retainArguments];
   [v10 invoke];
 }
@@ -75,7 +75,7 @@
     while (v10 > v11);
   }
 
-  [v8 setTarget:a1];
+  [v8 setTarget:self];
   [v8 retainArguments];
   [v8 invoke];
 }
@@ -91,7 +91,7 @@
     [v7 setArgument:&v11 atIndex:2];
   }
 
-  [v7 setTarget:a1];
+  [v7 setTarget:self];
   [v7 retainArguments];
   [v7 invoke];
   v10 = 0;

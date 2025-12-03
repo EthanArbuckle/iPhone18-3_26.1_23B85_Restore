@@ -1,13 +1,13 @@
 @interface _UIFocusBehavior_IOS
 + (id)sharedInstance;
-- (BOOL)_shouldOverrideFocusSystemEnabledForScene:(id)a3;
+- (BOOL)_shouldOverrideFocusSystemEnabledForScene:(id)scene;
 - (BOOL)constrainGameControllersToFocusGroups;
-- (BOOL)controlCanBecomeFocused:(id)a3;
-- (BOOL)defaultValueForSelectionFollowsFocusInCollectionView:(id)a3;
-- (BOOL)defaultValueForSelectionFollowsFocusInTableView:(id)a3;
+- (BOOL)controlCanBecomeFocused:(id)focused;
+- (BOOL)defaultValueForSelectionFollowsFocusInCollectionView:(id)view;
+- (BOOL)defaultValueForSelectionFollowsFocusInTableView:(id)view;
 - (BOOL)supportsGameControllers;
 - (BOOL)supportsLinearMovementDebugOverlay;
-- (BOOL)wantsFocusSystemForScene:(id)a3;
+- (BOOL)wantsFocusSystemForScene:(id)scene;
 - (int64_t)cellFocusability;
 - (int64_t)focusRingVisibility;
 - (int64_t)requiredInputDevices;
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __38___UIFocusBehavior_IOS_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED4A2388 != -1)
   {
     dispatch_once(&qword_1ED4A2388, block);
@@ -35,9 +35,9 @@
 - (int64_t)focusRingVisibility
 {
   v2 = +[_UIApplicationInfoParser mainBundleInfoParser];
-  v3 = [v2 forcesDefaultFocusAppearance];
+  forcesDefaultFocusAppearance = [v2 forcesDefaultFocusAppearance];
 
-  if (v3)
+  if (forcesDefaultFocusAppearance)
   {
     return 2;
   }
@@ -74,24 +74,24 @@
   }
 
   v3 = +[_UIApplicationInfoParser mainBundleInfoParser];
-  v4 = [v3 requiresGameControllerBasedFocus];
+  requiresGameControllerBasedFocus = [v3 requiresGameControllerBasedFocus];
 
-  return v4;
+  return requiresGameControllerBasedFocus;
 }
 
-- (BOOL)_shouldOverrideFocusSystemEnabledForScene:(id)a3
+- (BOOL)_shouldOverrideFocusSystemEnabledForScene:(id)scene
 {
-  v3 = [a3 _focusSystemSceneComponent];
-  v4 = [v3 isOverrideFocusSystemEnabled];
+  _focusSystemSceneComponent = [scene _focusSystemSceneComponent];
+  isOverrideFocusSystemEnabled = [_focusSystemSceneComponent isOverrideFocusSystemEnabled];
 
-  return v4;
+  return isOverrideFocusSystemEnabled;
 }
 
-- (BOOL)wantsFocusSystemForScene:(id)a3
+- (BOOL)wantsFocusSystemForScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = sceneCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -113,10 +113,10 @@
   v8 = v7;
 
   v9 = v8;
-  v10 = [v9 traitCollection];
-  v11 = [v10 userInterfaceIdiom];
+  traitCollection = [v9 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v11 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v14 = dyld_program_sdk_at_least();
 
@@ -130,20 +130,20 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (v11)
+  if (userInterfaceIdiom)
   {
     v16 = MEMORY[0x1E695DF30];
     v17 = *MEMORY[0x1E695D930];
-    v18 = [v9 traitCollection];
-    [v16 raise:v17 format:{@"Unknown idiom for iOS focus behavior: %d", objc_msgSend(v18, "userInterfaceIdiom")}];
+    traitCollection2 = [v9 traitCollection];
+    [v16 raise:v17 format:{@"Unknown idiom for iOS focus behavior: %d", objc_msgSend(traitCollection2, "userInterfaceIdiom")}];
 
     goto LABEL_13;
   }
 
   v12 = +[_UIApplicationInfoParser mainBundleInfoParser];
-  v13 = [v12 requiresGameControllerBasedFocus];
+  requiresGameControllerBasedFocus = [v12 requiresGameControllerBasedFocus];
 
-  if ((v13 & 1) == 0)
+  if ((requiresGameControllerBasedFocus & 1) == 0)
   {
     goto LABEL_13;
   }
@@ -155,15 +155,15 @@ LABEL_14:
   return v15;
 }
 
-- (BOOL)controlCanBecomeFocused:(id)a3
+- (BOOL)controlCanBecomeFocused:(id)focused
 {
-  v3 = a3;
+  focusedCopy = focused;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = +[_UIApplicationInfoParser mainBundleInfoParser];
-  v6 = [v5 focusEnabledInLimitedControls];
+  focusEnabledInLimitedControls = [v5 focusEnabledInLimitedControls];
 
-  if (v6)
+  if (focusEnabledInLimitedControls)
   {
     objc_opt_class();
     v7 = objc_opt_isKindOfClass();
@@ -192,30 +192,30 @@ LABEL_14:
   }
 }
 
-- (BOOL)defaultValueForSelectionFollowsFocusInCollectionView:(id)a3
+- (BOOL)defaultValueForSelectionFollowsFocusInCollectionView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   if (!dyld_program_sdk_at_least())
   {
     goto LABEL_16;
   }
 
-  v4 = [v3 traitCollection];
-  v5 = [v4 _hasSplitViewControllerContextSidebarColumn];
+  traitCollection = [viewCopy traitCollection];
+  _hasSplitViewControllerContextSidebarColumn = [traitCollection _hasSplitViewControllerContextSidebarColumn];
 
-  if (v5)
+  if (_hasSplitViewControllerContextSidebarColumn)
   {
-    if (([v3 _delegateSupportsPrimaryAction] & 1) == 0)
+    if (([viewCopy _delegateSupportsPrimaryAction] & 1) == 0)
     {
-      v6 = [v3 _viewControllerForAncestor];
-      v7 = [v6 splitViewController];
+      _viewControllerForAncestor = [viewCopy _viewControllerForAncestor];
+      splitViewController = [_viewControllerForAncestor splitViewController];
 
-      if (v7)
+      if (splitViewController)
       {
-        v8 = [v7 displayMode];
-        if (v8 <= 6 && ((1 << v8) & 0x68) != 0)
+        displayMode = [splitViewController displayMode];
+        if (displayMode <= 6 && ((1 << displayMode) & 0x68) != 0)
         {
-          LOBYTE(v5) = 0;
+          LOBYTE(_hasSplitViewControllerContextSidebarColumn) = 0;
 LABEL_15:
 
           goto LABEL_17;
@@ -223,64 +223,64 @@ LABEL_15:
       }
     }
 
-    if ((dyld_program_sdk_at_least() & 1) != 0 || ([v3 isEditing] & 1) == 0)
+    if ((dyld_program_sdk_at_least() & 1) != 0 || ([viewCopy isEditing] & 1) == 0)
     {
-      v9 = [v3 _viewControllerForAncestor];
-      if (v9)
+      _viewControllerForAncestor2 = [viewCopy _viewControllerForAncestor];
+      if (_viewControllerForAncestor2)
       {
-        v7 = v9;
+        splitViewController = _viewControllerForAncestor2;
         do
         {
           objc_opt_class();
-          LOBYTE(v5) = objc_opt_isKindOfClass();
-          if (v5)
+          LOBYTE(_hasSplitViewControllerContextSidebarColumn) = objc_opt_isKindOfClass();
+          if (_hasSplitViewControllerContextSidebarColumn)
           {
             break;
           }
 
-          v10 = [v7 parentViewController];
+          parentViewController = [splitViewController parentViewController];
 
-          v7 = v10;
+          splitViewController = parentViewController;
         }
 
-        while (v10);
+        while (parentViewController);
         goto LABEL_15;
       }
     }
 
 LABEL_16:
-    LOBYTE(v5) = 0;
+    LOBYTE(_hasSplitViewControllerContextSidebarColumn) = 0;
   }
 
 LABEL_17:
 
-  return v5 & 1;
+  return _hasSplitViewControllerContextSidebarColumn & 1;
 }
 
-- (BOOL)defaultValueForSelectionFollowsFocusInTableView:(id)a3
+- (BOOL)defaultValueForSelectionFollowsFocusInTableView:(id)view
 {
-  v3 = a3;
+  viewCopy = view;
   if (!dyld_program_sdk_at_least())
   {
     goto LABEL_16;
   }
 
-  v4 = [v3 traitCollection];
-  v5 = [v4 _hasSplitViewControllerContextSidebarColumn];
+  traitCollection = [viewCopy traitCollection];
+  _hasSplitViewControllerContextSidebarColumn = [traitCollection _hasSplitViewControllerContextSidebarColumn];
 
-  if (v5)
+  if (_hasSplitViewControllerContextSidebarColumn)
   {
-    if (([v3 _delegateSupportsPrimaryAction] & 1) == 0)
+    if (([viewCopy _delegateSupportsPrimaryAction] & 1) == 0)
     {
-      v6 = [v3 _viewControllerForAncestor];
-      v7 = [v6 splitViewController];
+      _viewControllerForAncestor = [viewCopy _viewControllerForAncestor];
+      splitViewController = [_viewControllerForAncestor splitViewController];
 
-      if (v7)
+      if (splitViewController)
       {
-        v8 = [v7 displayMode];
-        if (v8 <= 6 && ((1 << v8) & 0x68) != 0)
+        displayMode = [splitViewController displayMode];
+        if (displayMode <= 6 && ((1 << displayMode) & 0x68) != 0)
         {
-          LOBYTE(v5) = 0;
+          LOBYTE(_hasSplitViewControllerContextSidebarColumn) = 0;
 LABEL_15:
 
           goto LABEL_17;
@@ -288,46 +288,46 @@ LABEL_15:
       }
     }
 
-    if ((dyld_program_sdk_at_least() & 1) != 0 || ([v3 isEditing] & 1) == 0)
+    if ((dyld_program_sdk_at_least() & 1) != 0 || ([viewCopy isEditing] & 1) == 0)
     {
-      v9 = [v3 _viewControllerForAncestor];
-      if (v9)
+      _viewControllerForAncestor2 = [viewCopy _viewControllerForAncestor];
+      if (_viewControllerForAncestor2)
       {
-        v7 = v9;
+        splitViewController = _viewControllerForAncestor2;
         do
         {
           objc_opt_class();
-          LOBYTE(v5) = objc_opt_isKindOfClass();
-          if (v5)
+          LOBYTE(_hasSplitViewControllerContextSidebarColumn) = objc_opt_isKindOfClass();
+          if (_hasSplitViewControllerContextSidebarColumn)
           {
             break;
           }
 
-          v10 = [v7 parentViewController];
+          parentViewController = [splitViewController parentViewController];
 
-          v7 = v10;
+          splitViewController = parentViewController;
         }
 
-        while (v10);
+        while (parentViewController);
         goto LABEL_15;
       }
     }
 
 LABEL_16:
-    LOBYTE(v5) = 0;
+    LOBYTE(_hasSplitViewControllerContextSidebarColumn) = 0;
   }
 
 LABEL_17:
 
-  return v5 & 1;
+  return _hasSplitViewControllerContextSidebarColumn & 1;
 }
 
 - (BOOL)constrainGameControllersToFocusGroups
 {
   v2 = +[_UIApplicationInfoParser mainBundleInfoParser];
-  v3 = [v2 requestsFlattenedGameControllerFocusMovement];
+  requestsFlattenedGameControllerFocusMovement = [v2 requestsFlattenedGameControllerFocusMovement];
 
-  return v3 ^ 1;
+  return requestsFlattenedGameControllerFocusMovement ^ 1;
 }
 
 - (BOOL)supportsLinearMovementDebugOverlay

@@ -1,35 +1,35 @@
 @interface ICInkPaletteController
-+ (id)sharedToolPickerForWindow:(id)a3;
++ (id)sharedToolPickerForWindow:(id)window;
 - (BOOL)isCanvasGenerationToolSelected;
 - (BOOL)isHandwritingToolSelected;
 - (BOOL)isInkPaletteShowing;
 - (BOOL)isToolPickerVisible;
-- (CGRect)_colorPickerPopoverPresentationSourceRect:(id)a3;
+- (CGRect)_colorPickerPopoverPresentationSourceRect:(id)rect;
 - (ICInkPaletteController)init;
-- (ICInkPaletteController)initWithParentView:(id)a3 responder:(id)a4 delegate:(id)a5 isSystemPaperUI:(BOOL)a6;
+- (ICInkPaletteController)initWithParentView:(id)view responder:(id)responder delegate:(id)delegate isSystemPaperUI:(BOOL)i;
 - (ICInkPaletteControllerDelegate)delegate;
 - (ICInkToolPickerResponder)responder;
 - (PKTool)colorCorrectedTool;
 - (PKTool)selectedTool;
 - (UIView)parentView;
-- (id)_colorPickerPopoverPresentationSourceView:(id)a3;
-- (id)_toolPickerUndoManager:(id)a3;
+- (id)_colorPickerPopoverPresentationSourceView:(id)view;
+- (id)_toolPickerUndoManager:(id)manager;
 - (int64_t)colorUserInterfaceStyle;
-- (void)_toolPicker:(id)a3 didChangeColor:(id)a4;
-- (void)_toolPicker:(id)a3 shouldSetVisible:(BOOL)a4;
-- (void)_toolPickerDidChangePosition:(id)a3;
-- (void)_toolPickerVisibilityDidChange:(id)a3 isAnimationFinished:(BOOL)a4;
+- (void)_toolPicker:(id)picker didChangeColor:(id)color;
+- (void)_toolPicker:(id)picker shouldSetVisible:(BOOL)visible;
+- (void)_toolPickerDidChangePosition:(id)position;
+- (void)_toolPickerVisibilityDidChange:(id)change isAnimationFinished:(BOOL)finished;
 - (void)dealloc;
-- (void)hideInkPaletteAnimated:(BOOL)a3;
+- (void)hideInkPaletteAnimated:(BOOL)animated;
 - (void)resetToPencilKitCompatibleInk;
-- (void)setColorUserInterfaceStyle:(int64_t)a3;
-- (void)setSelectedTool:(id)a3;
-- (void)setToolPickerVisible:(BOOL)a3;
-- (void)showInkPalette:(BOOL)a3 animated:(BOOL)a4;
-- (void)showInkPaletteAnimated:(BOOL)a3;
-- (void)toolPickerIsRulerActiveDidChange:(id)a3;
-- (void)toolPickerSelectedToolDidChange:(id)a3;
-- (void)updateUserInterfaceStyle:(int64_t)a3;
+- (void)setColorUserInterfaceStyle:(int64_t)style;
+- (void)setSelectedTool:(id)tool;
+- (void)setToolPickerVisible:(BOOL)visible;
+- (void)showInkPalette:(BOOL)palette animated:(BOOL)animated;
+- (void)showInkPaletteAnimated:(BOOL)animated;
+- (void)toolPickerIsRulerActiveDidChange:(id)change;
+- (void)toolPickerSelectedToolDidChange:(id)change;
+- (void)updateUserInterfaceStyle:(int64_t)style;
 @end
 
 @implementation ICInkPaletteController
@@ -41,11 +41,11 @@
   return 0;
 }
 
-- (ICInkPaletteController)initWithParentView:(id)a3 responder:(id)a4 delegate:(id)a5 isSystemPaperUI:(BOOL)a6
+- (ICInkPaletteController)initWithParentView:(id)view responder:(id)responder delegate:(id)delegate isSystemPaperUI:(BOOL)i
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  viewCopy = view;
+  responderCopy = responder;
+  delegateCopy = delegate;
   v36.receiver = self;
   v36.super_class = ICInkPaletteController;
   v13 = [(ICInkPaletteController *)&v36 init];
@@ -57,13 +57,13 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  objc_storeWeak(&v13->_parentView, v10);
-  objc_storeWeak(&v14->_responder, v11);
-  objc_storeWeak(&v14->_delegate, v12);
-  if (a6)
+  objc_storeWeak(&v13->_parentView, viewCopy);
+  objc_storeWeak(&v14->_responder, responderCopy);
+  objc_storeWeak(&v14->_delegate, delegateCopy);
+  if (i)
   {
-    v15 = [v10 traitCollection];
-    v14->_isSystemPaperUI = [v15 userInterfaceIdiom] == 1;
+    traitCollection = [viewCopy traitCollection];
+    v14->_isSystemPaperUI = [traitCollection userInterfaceIdiom] == 1;
   }
 
   else
@@ -72,15 +72,15 @@ LABEL_39:
   }
 
   v16 = objc_opt_class();
-  v17 = [(ICInkPaletteController *)v14 parentView];
-  v18 = [v17 window];
-  v19 = [v16 sharedToolPickerForWindow:v18];
+  parentView = [(ICInkPaletteController *)v14 parentView];
+  window = [parentView window];
+  v19 = [v16 sharedToolPickerForWindow:window];
 
   if (v19)
   {
-    v20 = [(ICInkPaletteController *)v14 parentView];
-    v21 = [v20 window];
-    [(ICInkPaletteController *)v19 _enableTapInteractionForWindow:v21];
+    parentView2 = [(ICInkPaletteController *)v14 parentView];
+    window2 = [parentView2 window];
+    [(ICInkPaletteController *)v19 _enableTapInteractionForWindow:window2];
 
     v22 = 1;
     [(ICInkPaletteController *)v19 _setShowsHandwritingTool:1];
@@ -118,15 +118,15 @@ LABEL_39:
     {
       if (_UISolariumEnabled())
       {
-        v27 = [(ICInkPaletteController *)v14 isSystemPaperUI];
+        isSystemPaperUI = [(ICInkPaletteController *)v14 isSystemPaperUI];
       }
 
       else
       {
-        v27 = 0;
+        isSystemPaperUI = 0;
       }
 
-      [(ICInkPaletteController *)v19 _setCloseButtonVisible:v27];
+      [(ICInkPaletteController *)v19 _setCloseButtonVisible:isSystemPaperUI];
     }
 
     if ([MEMORY[0x1E69DC938] ic_isVision])
@@ -138,15 +138,15 @@ LABEL_39:
     [(ICInkPaletteController *)v19 _setWantsClearBackgroundColorInCompactSize:v28];
     [(ICInkPaletteController *)v19 set_delegate:v14];
     [(ICInkPaletteController *)v19 addObserver:v14];
-    v29 = [(ICInkPaletteController *)v14 responder];
-    [(ICInkPaletteController *)v19 setVisible:1 forFirstResponder:v29];
+    responder = [(ICInkPaletteController *)v14 responder];
+    [(ICInkPaletteController *)v19 setVisible:1 forFirstResponder:responder];
 
-    v30 = [(ICInkPaletteController *)v14 storedSelectedTool];
+    storedSelectedTool = [(ICInkPaletteController *)v14 storedSelectedTool];
 
-    if (v30)
+    if (storedSelectedTool)
     {
-      v31 = [(ICInkPaletteController *)v14 storedSelectedTool];
-      [(ICInkPaletteController *)v14 setSelectedTool:v31];
+      storedSelectedTool2 = [(ICInkPaletteController *)v14 storedSelectedTool];
+      [(ICInkPaletteController *)v14 setSelectedTool:storedSelectedTool2];
 
       [(ICInkPaletteController *)v14 setStoredSelectedTool:0];
     }
@@ -156,12 +156,12 @@ LABEL_39:
       [(ICInkPaletteController *)v14 setColorUserInterfaceStyle:[(ICInkPaletteController *)v14 storedColorUserInterfaceStyle]];
     }
 
-    v32 = [(ICInkPaletteController *)v19 _paletteHostView];
-    v33 = [v32 paletteView];
-    -[ICInkPaletteController setPalettePosition:](v14, "setPalettePosition:", [v33 palettePosition]);
+    _paletteHostView = [(ICInkPaletteController *)v19 _paletteHostView];
+    paletteView = [_paletteHostView paletteView];
+    -[ICInkPaletteController setPalettePosition:](v14, "setPalettePosition:", [paletteView palettePosition]);
 
-    v34 = [(ICInkPaletteController *)v14 colorCorrectedTool];
-    [(ICInkPaletteController *)v19 setSelectedTool:v34];
+    colorCorrectedTool = [(ICInkPaletteController *)v14 colorCorrectedTool];
+    [(ICInkPaletteController *)v19 setSelectedTool:colorCorrectedTool];
 
     [(ICInkPaletteController *)v14 setToolPicker:v19];
     goto LABEL_39;
@@ -174,27 +174,27 @@ LABEL_40:
 
 - (void)dealloc
 {
-  v3 = [(ICInkPaletteController *)self toolPicker];
-  [v3 removeObserver:self];
+  toolPicker = [(ICInkPaletteController *)self toolPicker];
+  [toolPicker removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICInkPaletteController;
   [(ICInkPaletteController *)&v4 dealloc];
 }
 
-+ (id)sharedToolPickerForWindow:(id)a3
++ (id)sharedToolPickerForWindow:(id)window
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  windowCopy = window;
   if (!_UIApplicationIsExtension())
   {
-    v5 = [v3 windowScene];
-    if (!v5)
+    windowScene = [windowCopy windowScene];
+    if (!windowScene)
     {
       v6 = os_log_create("com.apple.notes", "PencilKit");
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        [(ICInkPaletteController *)v3 sharedToolPickerForWindow:v6];
+        [(ICInkPaletteController *)windowCopy sharedToolPickerForWindow:v6];
       }
 
       v4 = 0;
@@ -203,21 +203,21 @@ LABEL_40:
 
     objc_opt_class();
     v6 = ICCheckedDynamicCast();
-    v7 = [v6 toolPickerIdentifier];
-    if (v7 || ([v6 windowIdentifier], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+    toolPickerIdentifier = [v6 toolPickerIdentifier];
+    if (toolPickerIdentifier || ([v6 windowIdentifier], (toolPickerIdentifier = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = v7;
+      v8 = toolPickerIdentifier;
       v9 = sharedToolPickerForWindow___perCanvasToolPickers;
       if (!sharedToolPickerForWindow___perCanvasToolPickers)
       {
-        v10 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+        weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
         v11 = sharedToolPickerForWindow___perCanvasToolPickers;
-        sharedToolPickerForWindow___perCanvasToolPickers = v10;
+        sharedToolPickerForWindow___perCanvasToolPickers = weakToStrongObjectsMapTable;
 
         v9 = sharedToolPickerForWindow___perCanvasToolPickers;
       }
 
-      v12 = [v9 objectForKey:v5];
+      v12 = [v9 objectForKey:windowScene];
       if (v12)
       {
         v4 = v12;
@@ -229,7 +229,7 @@ LABEL_22:
 
       v4 = objc_alloc_init(MEMORY[0x1E6978530]);
       [v4 setStateAutosaveName:v8];
-      [sharedToolPickerForWindow___perCanvasToolPickers setObject:v4 forKey:v5];
+      [sharedToolPickerForWindow___perCanvasToolPickers setObject:v4 forKey:windowScene];
       v13 = os_log_create("com.apple.notes", "PencilKit");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
@@ -240,7 +240,7 @@ LABEL_22:
         v19 = 2112;
         v20 = v6;
         v21 = 2112;
-        v22 = v5;
+        v22 = windowScene;
         _os_log_debug_impl(&dword_1D4171000, v13, OS_LOG_TYPE_DEBUG, "created toolPicker: %@, with stateAutosaveName: %@, for window: %@, scene: %@", &v15, 0x2Au);
       }
     }
@@ -284,15 +284,15 @@ void __52__ICInkPaletteController_sharedToolPickerForWindow___block_invoke()
 
 - (BOOL)isHandwritingToolSelected
 {
-  v2 = [(ICInkPaletteController *)self toolPicker];
-  v3 = [v2 _isHandwritingToolSelected];
+  toolPicker = [(ICInkPaletteController *)self toolPicker];
+  _isHandwritingToolSelected = [toolPicker _isHandwritingToolSelected];
 
-  return v3;
+  return _isHandwritingToolSelected;
 }
 
 - (BOOL)isCanvasGenerationToolSelected
 {
-  v3 = [(ICInkPaletteController *)self toolPicker];
+  toolPicker = [(ICInkPaletteController *)self toolPicker];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -300,44 +300,44 @@ void __52__ICInkPaletteController_sharedToolPickerForWindow___block_invoke()
     return 0;
   }
 
-  v5 = [(ICInkPaletteController *)self toolPicker];
-  v6 = [v5 _isCanvasGenerationToolSelected];
+  toolPicker2 = [(ICInkPaletteController *)self toolPicker];
+  _isCanvasGenerationToolSelected = [toolPicker2 _isCanvasGenerationToolSelected];
 
-  return v6;
+  return _isCanvasGenerationToolSelected;
 }
 
 - (BOOL)isInkPaletteShowing
 {
-  v2 = [(ICInkPaletteController *)self toolPicker];
-  v3 = [v2 isVisible];
+  toolPicker = [(ICInkPaletteController *)self toolPicker];
+  isVisible = [toolPicker isVisible];
 
-  return v3;
+  return isVisible;
 }
 
-- (void)showInkPalette:(BOOL)a3 animated:(BOOL)a4
+- (void)showInkPalette:(BOOL)palette animated:(BOOL)animated
 {
-  if (a3)
+  if (palette)
   {
-    [(ICInkPaletteController *)self showInkPaletteAnimated:a4];
+    [(ICInkPaletteController *)self showInkPaletteAnimated:animated];
   }
 
   else
   {
-    [(ICInkPaletteController *)self hideInkPaletteAnimated:a4];
+    [(ICInkPaletteController *)self hideInkPaletteAnimated:animated];
   }
 }
 
-- (void)showInkPaletteAnimated:(BOOL)a3
+- (void)showInkPaletteAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = os_log_create("com.apple.notes", "PencilKit");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [(ICInkPaletteController *)v5 showInkPaletteAnimated:v6, v7, v8, v9, v10, v11, v12];
   }
 
-  v13 = [(ICInkPaletteController *)self responder];
-  [v13 setPreventFirstResponder:0];
+  responder = [(ICInkPaletteController *)self responder];
+  [responder setPreventFirstResponder:0];
 
   v14 = os_log_create("com.apple.notes", "PencilKit");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -345,100 +345,100 @@ void __52__ICInkPaletteController_sharedToolPickerForWindow___block_invoke()
     [(ICInkPaletteController *)v14 showInkPaletteAnimated:v15, v16, v17, v18, v19, v20, v21];
   }
 
-  v22 = [(ICInkPaletteController *)self delegate];
+  delegate = [(ICInkPaletteController *)self delegate];
   v23 = objc_opt_respondsToSelector();
 
   if (v23)
   {
-    v24 = [(ICInkPaletteController *)self delegate];
-    [v24 inkPalette:self willShowAnimated:v3];
+    delegate2 = [(ICInkPaletteController *)self delegate];
+    [delegate2 inkPalette:self willShowAnimated:animatedCopy];
   }
 
-  v25 = [(ICInkPaletteController *)self responder];
-  [v25 becomeFirstResponder];
+  responder2 = [(ICInkPaletteController *)self responder];
+  [responder2 becomeFirstResponder];
 
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
-    v26 = [(ICInkPaletteController *)self parentView];
-    [v26 layoutIfNeeded];
+    parentView = [(ICInkPaletteController *)self parentView];
+    [parentView layoutIfNeeded];
   }
 
-  v27 = [(ICInkPaletteController *)self delegate];
+  delegate3 = [(ICInkPaletteController *)self delegate];
   v28 = objc_opt_respondsToSelector();
 
   if (v28)
   {
-    v29 = [(ICInkPaletteController *)self delegate];
-    [v29 inkPalette:self didShowAnimated:v3];
+    delegate4 = [(ICInkPaletteController *)self delegate];
+    [delegate4 inkPalette:self didShowAnimated:animatedCopy];
   }
 }
 
-- (void)hideInkPaletteAnimated:(BOOL)a3
+- (void)hideInkPaletteAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = os_log_create("com.apple.notes", "PencilKit");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [(ICInkPaletteController *)v5 hideInkPaletteAnimated:v6, v7, v8, v9, v10, v11, v12];
   }
 
-  v13 = [(ICInkPaletteController *)self delegate];
+  delegate = [(ICInkPaletteController *)self delegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(ICInkPaletteController *)self delegate];
-    [v15 inkPalette:self willHideAnimated:v3];
+    delegate2 = [(ICInkPaletteController *)self delegate];
+    [delegate2 inkPalette:self willHideAnimated:animatedCopy];
   }
 
-  v16 = [(ICInkPaletteController *)self responder];
-  v17 = [v16 isFirstResponder];
+  responder = [(ICInkPaletteController *)self responder];
+  isFirstResponder = [responder isFirstResponder];
 
-  if (v17)
+  if (isFirstResponder)
   {
-    v18 = [(ICInkPaletteController *)self responder];
-    [v18 resignFirstResponder];
+    responder2 = [(ICInkPaletteController *)self responder];
+    [responder2 resignFirstResponder];
   }
 
   else
   {
-    v19 = [(ICInkPaletteController *)self toolPicker];
-    v20 = [v19 isVisible];
+    toolPicker = [(ICInkPaletteController *)self toolPicker];
+    isVisible = [toolPicker isVisible];
 
-    if (!v20)
+    if (!isVisible)
     {
       goto LABEL_19;
     }
 
-    v18 = 0;
+    responder2 = 0;
     while (1)
     {
-      v21 = v18;
-      v22 = [(ICInkPaletteController *)self parentView];
-      v18 = [v22 firstResponder];
+      v21 = responder2;
+      parentView = [(ICInkPaletteController *)self parentView];
+      responder2 = [parentView firstResponder];
 
-      if (!v18)
+      if (!responder2)
       {
         break;
       }
 
-      v23 = [(ICInkPaletteController *)self toolPicker];
-      if (![v23 isVisible])
+      toolPicker2 = [(ICInkPaletteController *)self toolPicker];
+      if (![toolPicker2 isVisible])
       {
         goto LABEL_16;
       }
 
-      v24 = [(ICInkPaletteController *)self delegate];
-      if (([v24 inkPalette:self shouldResignFirstResponder:v18] & 1) == 0)
+      delegate3 = [(ICInkPaletteController *)self delegate];
+      if (([delegate3 inkPalette:self shouldResignFirstResponder:responder2] & 1) == 0)
       {
 
 LABEL_16:
         break;
       }
 
-      v25 = [v18 canResignFirstResponder];
+      canResignFirstResponder = [responder2 canResignFirstResponder];
 
-      if (!v25 || ([v18 resignFirstResponder] & 1) == 0)
+      if (!canResignFirstResponder || ([responder2 resignFirstResponder] & 1) == 0)
       {
         goto LABEL_18;
       }
@@ -450,109 +450,109 @@ LABEL_18:
 LABEL_19:
   if ((ICInternalSettingsIsTextKit2Enabled() & 1) == 0)
   {
-    v26 = [(ICInkPaletteController *)self parentView];
-    [v26 layoutIfNeeded];
+    parentView2 = [(ICInkPaletteController *)self parentView];
+    [parentView2 layoutIfNeeded];
   }
 
-  v27 = [(ICInkPaletteController *)self delegate];
+  delegate4 = [(ICInkPaletteController *)self delegate];
   v28 = objc_opt_respondsToSelector();
 
   if (v28)
   {
-    v29 = [(ICInkPaletteController *)self delegate];
-    [v29 inkPalette:self didHideAnimated:v3];
+    delegate5 = [(ICInkPaletteController *)self delegate];
+    [delegate5 inkPalette:self didHideAnimated:animatedCopy];
   }
 }
 
 - (BOOL)isToolPickerVisible
 {
-  v2 = [(ICInkPaletteController *)self toolPicker];
-  v3 = [v2 isVisible];
+  toolPicker = [(ICInkPaletteController *)self toolPicker];
+  isVisible = [toolPicker isVisible];
 
-  return v3;
+  return isVisible;
 }
 
-- (void)setToolPickerVisible:(BOOL)a3
+- (void)setToolPickerVisible:(BOOL)visible
 {
-  v3 = a3;
-  v6 = [(ICInkPaletteController *)self toolPicker];
-  v5 = [(ICInkPaletteController *)self responder];
-  [v6 setVisible:v3 forFirstResponder:v5];
+  visibleCopy = visible;
+  toolPicker = [(ICInkPaletteController *)self toolPicker];
+  responder = [(ICInkPaletteController *)self responder];
+  [toolPicker setVisible:visibleCopy forFirstResponder:responder];
 }
 
-- (void)updateUserInterfaceStyle:(int64_t)a3
+- (void)updateUserInterfaceStyle:(int64_t)style
 {
-  v4 = [(ICInkPaletteController *)self toolPicker];
-  [v4 _updatePaletteUserInterfaceStyle:a3];
+  toolPicker = [(ICInkPaletteController *)self toolPicker];
+  [toolPicker _updatePaletteUserInterfaceStyle:style];
 }
 
-- (void)setSelectedTool:(id)a3
+- (void)setSelectedTool:(id)tool
 {
-  v4 = a3;
+  toolCopy = tool;
   v5 = os_log_create("com.apple.notes", "PencilKit");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(ICInkPaletteController *)v4 setSelectedTool:?];
+    [(ICInkPaletteController *)toolCopy setSelectedTool:?];
   }
 
-  v6 = [(ICInkPaletteController *)self toolPicker];
+  toolPicker = [(ICInkPaletteController *)self toolPicker];
 
-  if (v6)
+  if (toolPicker)
   {
-    v7 = [(ICInkPaletteController *)self toolPicker];
-    [v7 setSelectedTool:v4];
+    toolPicker2 = [(ICInkPaletteController *)self toolPicker];
+    [toolPicker2 setSelectedTool:toolCopy];
   }
 
   else
   {
-    [(ICInkPaletteController *)self setStoredSelectedTool:v4];
+    [(ICInkPaletteController *)self setStoredSelectedTool:toolCopy];
   }
 }
 
 - (PKTool)selectedTool
 {
-  v3 = [(ICInkPaletteController *)self toolPicker];
-  if (v3)
+  toolPicker = [(ICInkPaletteController *)self toolPicker];
+  if (toolPicker)
   {
-    v4 = [(ICInkPaletteController *)self toolPicker];
-    v5 = [v4 selectedTool];
+    toolPicker2 = [(ICInkPaletteController *)self toolPicker];
+    selectedTool = [toolPicker2 selectedTool];
   }
 
   else
   {
-    v5 = [(ICInkPaletteController *)self storedSelectedTool];
+    selectedTool = [(ICInkPaletteController *)self storedSelectedTool];
   }
 
-  return v5;
+  return selectedTool;
 }
 
 - (PKTool)colorCorrectedTool
 {
-  v2 = [(ICInkPaletteController *)self selectedTool];
+  selectedTool = [(ICInkPaletteController *)self selectedTool];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     v3 = ICDynamicCast();
-    v4 = [v3 color];
-    v5 = [v4 ic_isWhite];
+    color = [v3 color];
+    ic_isWhite = [color ic_isWhite];
 
-    if (v5)
+    if (ic_isWhite)
     {
       v6 = objc_alloc(MEMORY[0x1E6978460]);
-      v7 = [v3 inkType];
-      v8 = [MEMORY[0x1E69DC888] blackColor];
+      inkType = [v3 inkType];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
       [v3 width];
-      v9 = [v6 initWithInkType:v7 color:v8 width:?];
+      v9 = [v6 initWithInkType:inkType color:blackColor width:?];
 
-      v2 = v9;
+      selectedTool = v9;
     }
   }
 
-  return v2;
+  return selectedTool;
 }
 
-- (void)setColorUserInterfaceStyle:(int64_t)a3
+- (void)setColorUserInterfaceStyle:(int64_t)style
 {
   v5 = os_log_create("com.apple.notes", "PencilKit");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -560,55 +560,55 @@ LABEL_19:
     [ICInkPaletteController setColorUserInterfaceStyle:?];
   }
 
-  v6 = [(ICInkPaletteController *)self toolPicker];
+  toolPicker = [(ICInkPaletteController *)self toolPicker];
 
-  if (v6)
+  if (toolPicker)
   {
-    v7 = [(ICInkPaletteController *)self toolPicker];
-    [v7 setColorUserInterfaceStyle:a3];
+    toolPicker2 = [(ICInkPaletteController *)self toolPicker];
+    [toolPicker2 setColorUserInterfaceStyle:style];
 
-    a3 = 0;
+    style = 0;
   }
 
-  [(ICInkPaletteController *)self setStoredColorUserInterfaceStyle:a3];
+  [(ICInkPaletteController *)self setStoredColorUserInterfaceStyle:style];
 }
 
 - (int64_t)colorUserInterfaceStyle
 {
-  v3 = [(ICInkPaletteController *)self toolPicker];
-  if (v3)
+  toolPicker = [(ICInkPaletteController *)self toolPicker];
+  if (toolPicker)
   {
-    v4 = [(ICInkPaletteController *)self toolPicker];
-    v5 = [v4 colorUserInterfaceStyle];
+    toolPicker2 = [(ICInkPaletteController *)self toolPicker];
+    colorUserInterfaceStyle = [toolPicker2 colorUserInterfaceStyle];
   }
 
   else
   {
-    v5 = [(ICInkPaletteController *)self storedColorUserInterfaceStyle];
+    colorUserInterfaceStyle = [(ICInkPaletteController *)self storedColorUserInterfaceStyle];
   }
 
-  return v5;
+  return colorUserInterfaceStyle;
 }
 
 - (void)resetToPencilKitCompatibleInk
 {
   v23 = *MEMORY[0x1E69E9840];
   objc_opt_class();
-  v3 = [(ICInkPaletteController *)self selectedTool];
+  selectedTool = [(ICInkPaletteController *)self selectedTool];
   v4 = ICDynamicCast();
 
   v5 = [v4 ink];
-  v6 = [v5 inkFormatVersion];
+  inkFormatVersion = [v5 inkFormatVersion];
 
-  if (v6 == 1)
+  if (inkFormatVersion == 1)
   {
     v20 = 0u;
     v21 = 0u;
     v19 = 0u;
     v7 = [(ICInkPaletteController *)self toolPicker:0];
-    v8 = [v7 _tools];
+    _tools = [v7 _tools];
 
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    v9 = [_tools countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
       v10 = v9;
@@ -622,7 +622,7 @@ LABEL_19:
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(_tools);
           }
 
           objc_opt_class();
@@ -635,13 +635,13 @@ LABEL_19:
 
           else
           {
-            v16 = [v4 inkType];
+            inkType = [v4 inkType];
 
-            if (v16 == v12)
+            if (inkType == v12)
             {
               [(ICInkPaletteController *)self setSelectedTool:v4];
-              v17 = [(ICInkPaletteController *)self toolPicker];
-              [v17 setSelectedTool:v4];
+              toolPicker = [(ICInkPaletteController *)self toolPicker];
+              [toolPicker setSelectedTool:v4];
 
               goto LABEL_14;
             }
@@ -652,7 +652,7 @@ LABEL_19:
         }
 
         while (v10 != v13);
-        v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v10 = [_tools countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v10)
         {
           continue;
@@ -666,67 +666,67 @@ LABEL_14:
   }
 }
 
-- (void)toolPickerSelectedToolDidChange:(id)a3
+- (void)toolPickerSelectedToolDidChange:(id)change
 {
-  v4 = a3;
-  v6 = [(ICInkPaletteController *)self delegate];
-  v5 = [v4 selectedTool];
+  changeCopy = change;
+  delegate = [(ICInkPaletteController *)self delegate];
+  selectedTool = [changeCopy selectedTool];
 
-  [v6 inkPalette:self didPickTool:v5];
+  [delegate inkPalette:self didPickTool:selectedTool];
 }
 
-- (void)toolPickerIsRulerActiveDidChange:(id)a3
+- (void)toolPickerIsRulerActiveDidChange:(id)change
 {
-  v4 = a3;
-  v6 = [(ICInkPaletteController *)self delegate];
-  v5 = [v4 isRulerActive];
+  changeCopy = change;
+  delegate = [(ICInkPaletteController *)self delegate];
+  isRulerActive = [changeCopy isRulerActive];
 
-  [v6 inkPaletteDidToggleRuler:self isRulerActive:v5];
+  [delegate inkPaletteDidToggleRuler:self isRulerActive:isRulerActive];
 }
 
-- (void)_toolPickerVisibilityDidChange:(id)a3 isAnimationFinished:(BOOL)a4
+- (void)_toolPickerVisibilityDidChange:(id)change isAnimationFinished:(BOOL)finished
 {
-  if (([a3 isVisible] & 1) == 0 && -[ICInkPaletteController didTapDoneButton](self, "didTapDoneButton"))
+  if (([change isVisible] & 1) == 0 && -[ICInkPaletteController didTapDoneButton](self, "didTapDoneButton"))
   {
-    v5 = [(ICInkPaletteController *)self delegate];
+    delegate = [(ICInkPaletteController *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(ICInkPaletteController *)self delegate];
-      [v7 inkPaletteDidHideWithDoneButton:self];
+      delegate2 = [(ICInkPaletteController *)self delegate];
+      [delegate2 inkPaletteDidHideWithDoneButton:self];
     }
 
     [(ICInkPaletteController *)self setDidTapDoneButton:0];
   }
 }
 
-- (void)_toolPicker:(id)a3 didChangeColor:(id)a4
+- (void)_toolPicker:(id)picker didChangeColor:(id)color
 {
-  v5 = a4;
-  v6 = [(ICInkPaletteController *)self delegate];
-  [v6 inkPalette:self didChangeColor:v5];
+  colorCopy = color;
+  delegate = [(ICInkPaletteController *)self delegate];
+  [delegate inkPalette:self didChangeColor:colorCopy];
 }
 
-- (void)_toolPickerDidChangePosition:(id)a3
+- (void)_toolPickerDidChangePosition:(id)position
 {
-  v4 = [a3 _paletteHostView];
-  v5 = [v4 paletteView];
-  v6 = [v5 palettePosition];
+  _paletteHostView = [position _paletteHostView];
+  paletteView = [_paletteHostView paletteView];
+  palettePosition = [paletteView palettePosition];
 
-  if (v6 && [(ICInkPaletteController *)self palettePosition]!= v6)
+  if (palettePosition && [(ICInkPaletteController *)self palettePosition]!= palettePosition)
   {
-    v7 = [(ICInkPaletteController *)self palettePosition];
-    [(ICInkPaletteController *)self setPalettePosition:v6];
-    v8 = [(ICInkPaletteController *)self delegate];
-    [v8 inkPalette:self didChangePalettePositionStart:v7 end:v6];
+    palettePosition2 = [(ICInkPaletteController *)self palettePosition];
+    [(ICInkPaletteController *)self setPalettePosition:palettePosition];
+    delegate = [(ICInkPaletteController *)self delegate];
+    [delegate inkPalette:self didChangePalettePositionStart:palettePosition2 end:palettePosition];
   }
 }
 
-- (CGRect)_colorPickerPopoverPresentationSourceRect:(id)a3
+- (CGRect)_colorPickerPopoverPresentationSourceRect:(id)rect
 {
-  v4 = [(ICInkPaletteController *)self delegate];
-  v5 = [v4 inkPaletteButtonView:self];
+  delegate = [(ICInkPaletteController *)self delegate];
+  v5 = [delegate inkPaletteButtonView:self];
 
   [v5 frame];
   v15 = CGRectOffset(v14, -0.1, 0.0);
@@ -746,32 +746,32 @@ LABEL_14:
   return result;
 }
 
-- (id)_colorPickerPopoverPresentationSourceView:(id)a3
+- (id)_colorPickerPopoverPresentationSourceView:(id)view
 {
-  v4 = [(ICInkPaletteController *)self delegate];
-  v5 = [v4 inkPaletteButtonView:self];
+  delegate = [(ICInkPaletteController *)self delegate];
+  v5 = [delegate inkPaletteButtonView:self];
 
-  v6 = [v5 superview];
+  superview = [v5 superview];
 
-  return v6;
+  return superview;
 }
 
-- (void)_toolPicker:(id)a3 shouldSetVisible:(BOOL)a4
+- (void)_toolPicker:(id)picker shouldSetVisible:(BOOL)visible
 {
-  v4 = a4;
-  v6 = a3;
+  visibleCopy = visible;
+  pickerCopy = picker;
   v7 = os_log_create("com.apple.notes", "PencilKit");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [(ICInkPaletteController *)v6 _toolPicker:v4 shouldSetVisible:v7];
+    [(ICInkPaletteController *)pickerCopy _toolPicker:visibleCopy shouldSetVisible:v7];
   }
 
-  v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v9 = [v8 BOOLForKey:*MEMORY[0x1E69B7B38]];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v9 = [standardUserDefaults BOOLForKey:*MEMORY[0x1E69B7B38]];
 
   if (v9)
   {
-    v10 = !v4;
+    v10 = !visibleCopy;
   }
 
   else
@@ -781,30 +781,30 @@ LABEL_14:
 
   if (!v10)
   {
-    [(ICInkPaletteController *)self showInkPalette:v4 animated:1];
+    [(ICInkPaletteController *)self showInkPalette:visibleCopy animated:1];
   }
 }
 
-- (id)_toolPickerUndoManager:(id)a3
+- (id)_toolPickerUndoManager:(id)manager
 {
-  v4 = [(ICInkPaletteController *)self delegate];
+  delegate = [(ICInkPaletteController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICInkPaletteController *)self delegate];
-    v7 = [v6 inkPaletteUndoManager:self];
+    delegate2 = [(ICInkPaletteController *)self delegate];
+    undoManager = [delegate2 inkPaletteUndoManager:self];
   }
 
   else
   {
-    v6 = [(ICInkPaletteController *)self responder];
-    v8 = [v6 window];
-    v9 = [v8 firstResponder];
-    v7 = [v9 undoManager];
+    delegate2 = [(ICInkPaletteController *)self responder];
+    window = [delegate2 window];
+    firstResponder = [window firstResponder];
+    undoManager = [firstResponder undoManager];
   }
 
-  return v7;
+  return undoManager;
 }
 
 - (UIView)parentView

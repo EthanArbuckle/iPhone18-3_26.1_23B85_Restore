@@ -15,28 +15,28 @@
 - (BOOL)hasContextMenuVisible;
 - (CGAffineTransform)_buttonTransform;
 - (CGSize)intrinsicContentSize;
-- (PKPaletteButton)initWithFrame:(CGRect)a3;
-- (PKPaletteButton)initWithImage:(id)a3;
+- (PKPaletteButton)initWithFrame:(CGRect)frame;
+- (PKPaletteButton)initWithImage:(id)image;
 - (PKPaletteButtonDelegate)delegate;
 - (UIColor)_backgroundColor;
 - (UIColor)_tintColorForCurrentState;
 - (id)_uiButtonInstance;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)_notifyIntrinsicContentSizeDidChange;
 - (void)_updateUI;
-- (void)addIntrinsicContentSizeObserver:(id)a3;
+- (void)addIntrinsicContentSizeObserver:(id)observer;
 - (void)layoutSubviews;
-- (void)removeIntrinsicContentSizeObserver:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setMenu:(id)a3;
-- (void)setScalingFactor:(double)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setUseCompactLayout:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)removeIntrinsicContentSizeObserver:(id)observer;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHidden:(BOOL)hidden;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setMenu:(id)menu;
+- (void)setScalingFactor:(double)factor;
+- (void)setSelected:(BOOL)selected;
+- (void)setUseCompactLayout:(BOOL)layout;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PKPaletteButton
@@ -156,7 +156,7 @@
   return v4;
 }
 
-- (PKPaletteButton)initWithFrame:(CGRect)a3
+- (PKPaletteButton)initWithFrame:(CGRect)frame
 {
   v4 = objc_alloc_init(MEMORY[0x1E69DCAB8]);
   v5 = [(PKPaletteButton *)self initWithImage:v4];
@@ -164,9 +164,9 @@
   return v5;
 }
 
-- (PKPaletteButton)initWithImage:(id)a3
+- (PKPaletteButton)initWithImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v16.receiver = self;
   v16.super_class = PKPaletteButton;
   v5 = [(PKPaletteButton *)&v16 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -174,9 +174,9 @@
   if (v5)
   {
     v5->_scalingFactor = 1.0;
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v6->_observers;
-    v6->_observers = v7;
+    v6->_observers = weakObjectsHashTable;
 
     if (!PKIsVisionDevice())
     {
@@ -185,7 +185,7 @@
       v6->_button = v9;
 
       [(UIButton *)v6->_button setUserInteractionEnabled:0];
-      [(UIButton *)v6->_button setImage:v4 forState:0];
+      [(UIButton *)v6->_button setImage:imageCopy forState:0];
       [(PKPaletteButton *)v6 addSubview:v6->_button];
     }
 
@@ -194,8 +194,8 @@
     v6->_pointerInteraction = v11;
 
     [(PKPaletteButton *)v6 addInteraction:v6->_pointerInteraction];
-    v13 = [(PKPaletteButton *)v6 _uiButtonInstance];
-    [v13 setShowsLargeContentViewer:1];
+    _uiButtonInstance = [(PKPaletteButton *)v6 _uiButtonInstance];
+    [_uiButtonInstance setShowsLargeContentViewer:1];
 
     v14 = objc_alloc_init(MEMORY[0x1E69DCC18]);
     [(PKPaletteButton *)v6 addInteraction:v14];
@@ -207,40 +207,40 @@
   return v6;
 }
 
-- (void)setMenu:(id)a3
+- (void)setMenu:(id)menu
 {
-  v6 = a3;
-  v5 = [(PKPaletteButton *)self menu];
+  menuCopy = menu;
+  menu = [(PKPaletteButton *)self menu];
 
-  if (v5 != v6)
+  if (menu != menuCopy)
   {
-    objc_storeStrong(&self->_menu, a3);
-    [(PKPaletteButton *)self setContextMenuInteractionEnabled:v6 != 0];
-    [(PKPaletteButton *)self setShowsMenuAsPrimaryAction:v6 != 0];
+    objc_storeStrong(&self->_menu, menu);
+    [(PKPaletteButton *)self setContextMenuInteractionEnabled:menuCopy != 0];
+    [(PKPaletteButton *)self setShowsMenuAsPrimaryAction:menuCopy != 0];
   }
 }
 
 - (BOOL)hasContextMenuVisible
 {
-  v2 = [(PKPaletteButton *)self _uiButtonInstance];
-  if ([v2 isHeld])
+  _uiButtonInstance = [(PKPaletteButton *)self _uiButtonInstance];
+  if ([_uiButtonInstance isHeld])
   {
-    v3 = 1;
+    isHighlighted = 1;
   }
 
   else
   {
-    v3 = [v2 isHighlighted];
+    isHighlighted = [_uiButtonInstance isHighlighted];
   }
 
-  return v3;
+  return isHighlighted;
 }
 
-- (void)setUseCompactLayout:(BOOL)a3
+- (void)setUseCompactLayout:(BOOL)layout
 {
-  if (self->_useCompactLayout != a3)
+  if (self->_useCompactLayout != layout)
   {
-    self->_useCompactLayout = a3;
+    self->_useCompactLayout = layout;
     [(PKPaletteButton *)self _updateUI];
   }
 }
@@ -249,29 +249,29 @@
 {
   if (PKIsVisionDevice())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [(PKPaletteButton *)self button];
+    selfCopy = [(PKPaletteButton *)self button];
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)addIntrinsicContentSizeObserver:(id)a3
+- (void)addIntrinsicContentSizeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PKPaletteButton *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(PKPaletteButton *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeIntrinsicContentSizeObserver:(id)a3
+- (void)removeIntrinsicContentSizeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PKPaletteButton *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(PKPaletteButton *)self observers];
+  [observers removeObject:observerCopy];
 }
 
 - (void)_notifyIntrinsicContentSizeDidChange
@@ -281,8 +281,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(PKPaletteButton *)self observers];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  observers = [(PKPaletteButton *)self observers];
+  v4 = [observers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -294,14 +294,14 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observers);
         }
 
         [*(*(&v8 + 1) + 8 * v7++) buttonDidChangeIntrinsicContentSize:self];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [observers countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -310,10 +310,10 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(PKPaletteButton *)self traitCollection];
-  v4 = [(PKPaletteButton *)self window];
-  v5 = [v4 windowScene];
-  v6 = PKUseCompactSize(v3, v5);
+  traitCollection = [(PKPaletteButton *)self traitCollection];
+  window = [(PKPaletteButton *)self window];
+  windowScene = [window windowScene];
+  v6 = PKUseCompactSize(traitCollection, windowScene);
   v7 = PKPaletteButtonSize(v6);
   v9 = v8;
 
@@ -334,16 +334,16 @@
   {
     [(PKPaletteButton *)self bounds];
     MidX = CGRectGetMidX(v15);
-    v4 = [(PKPaletteButton *)self layer];
-    [v4 setCornerRadius:MidX];
+    layer = [(PKPaletteButton *)self layer];
+    [layer setCornerRadius:MidX];
 
     [(PKPaletteButton *)self bounds];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(PKPaletteButton *)self button];
-    [v13 setFrame:{v6, v8, v10, v12}];
+    button = [(PKPaletteButton *)self button];
+    [button setFrame:{v6, v8, v10, v12}];
   }
 }
 
@@ -351,8 +351,8 @@
 {
   if ([(PKPaletteButton *)self _wantsCustomTintColor])
   {
-    v3 = [(PKPaletteButton *)self delegate];
-    v4 = [v3 paletteButton:self tintColorForState:{-[PKPaletteButton state](self, "state")}];
+    delegate = [(PKPaletteButton *)self delegate];
+    v4 = [delegate paletteButton:self tintColorForState:{-[PKPaletteButton state](self, "state")}];
 LABEL_5:
     v5 = v4;
 
@@ -361,8 +361,8 @@ LABEL_5:
 
   if ([(PKPaletteButton *)self isHighlighted])
   {
-    v3 = [MEMORY[0x1E69DC888] labelColor];
-    v4 = [v3 colorWithAlphaComponent:0.5];
+    delegate = [MEMORY[0x1E69DC888] labelColor];
+    v4 = [delegate colorWithAlphaComponent:0.5];
     goto LABEL_5;
   }
 
@@ -377,15 +377,15 @@ LABEL_5:
     {
       [MEMORY[0x1E69DC888] labelColor];
     }
-    v6 = ;
+    tertiaryLabelColor = ;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+    tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
   }
 
-  v5 = v6;
+  v5 = tertiaryLabelColor;
 LABEL_13:
 
   return v5;
@@ -393,11 +393,11 @@ LABEL_13:
 
 - (BOOL)_wantsCustomTintColor
 {
-  v3 = [(PKPaletteButton *)self delegate];
-  if (v3)
+  delegate = [(PKPaletteButton *)self delegate];
+  if (delegate)
   {
-    v4 = [(PKPaletteButton *)self delegate];
-    v5 = [v4 paletteButton:self wantsCustomTintColorForState:{-[PKPaletteButton state](self, "state")}];
+    delegate2 = [(PKPaletteButton *)self delegate];
+    v5 = [delegate2 paletteButton:self wantsCustomTintColorForState:{-[PKPaletteButton state](self, "state")}];
   }
 
   else
@@ -412,8 +412,8 @@ LABEL_13:
 {
   if ([(PKPaletteButton *)self _wantsCustomBackgroundColor])
   {
-    v3 = [(PKPaletteButton *)self delegate];
-    v4 = [v3 paletteButton:self backgroundColorForState:{-[PKPaletteButton state](self, "state")}];
+    delegate = [(PKPaletteButton *)self delegate];
+    v4 = [delegate paletteButton:self backgroundColorForState:{-[PKPaletteButton state](self, "state")}];
 LABEL_3:
     v5 = v4;
 
@@ -422,15 +422,15 @@ LABEL_3:
 
   if ([(PKPaletteButton *)self useCompactLayout])
   {
-    v6 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
   }
 
   else
   {
     if ([(PKPaletteButton *)self isHighlighted])
     {
-      v3 = [MEMORY[0x1E69DC888] pk_paletteButtonBackgroundColor];
-      v4 = [v3 colorWithAlphaComponent:0.5];
+      delegate = [MEMORY[0x1E69DC888] pk_paletteButtonBackgroundColor];
+      v4 = [delegate colorWithAlphaComponent:0.5];
       goto LABEL_3;
     }
 
@@ -440,10 +440,10 @@ LABEL_3:
       goto LABEL_13;
     }
 
-    v6 = [MEMORY[0x1E69DC888] pk_paletteButtonBackgroundColor];
+    clearColor = [MEMORY[0x1E69DC888] pk_paletteButtonBackgroundColor];
   }
 
-  v5 = v6;
+  v5 = clearColor;
 LABEL_13:
 
   return v5;
@@ -451,11 +451,11 @@ LABEL_13:
 
 - (BOOL)_wantsCustomBackgroundColor
 {
-  v3 = [(PKPaletteButton *)self delegate];
-  if (v3)
+  delegate = [(PKPaletteButton *)self delegate];
+  if (delegate)
   {
-    v4 = [(PKPaletteButton *)self delegate];
-    v5 = [v4 paletteButton:self wantsCustomBackgroundColorForState:{-[PKPaletteButton state](self, "state")}];
+    delegate2 = [(PKPaletteButton *)self delegate];
+    v5 = [delegate2 paletteButton:self wantsCustomBackgroundColorForState:{-[PKPaletteButton state](self, "state")}];
   }
 
   else
@@ -466,50 +466,50 @@ LABEL_13:
   return v5;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  if ([(PKPaletteButton *)self isHidden]!= a3)
+  hiddenCopy = hidden;
+  if ([(PKPaletteButton *)self isHidden]!= hidden)
   {
     v5.receiver = self;
     v5.super_class = PKPaletteButton;
-    [(PKPaletteButton *)&v5 setHidden:v3];
+    [(PKPaletteButton *)&v5 setHidden:hiddenCopy];
     [(PKPaletteButton *)self _notifyIntrinsicContentSizeDidChange];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(PKPaletteButton *)self isEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(PKPaletteButton *)self isEnabled]!= enabled)
   {
     v5.receiver = self;
     v5.super_class = PKPaletteButton;
-    [(PKPaletteButton *)&v5 setEnabled:v3];
+    [(PKPaletteButton *)&v5 setEnabled:enabledCopy];
     [(PKPaletteButton *)self _updateUI];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  if ([(PKPaletteButton *)self isHighlighted]!= a3)
+  highlightedCopy = highlighted;
+  if ([(PKPaletteButton *)self isHighlighted]!= highlighted)
   {
     v5.receiver = self;
     v5.super_class = PKPaletteButton;
-    [(PKPaletteButton *)&v5 setHighlighted:v3];
+    [(PKPaletteButton *)&v5 setHighlighted:highlightedCopy];
     [(PKPaletteButton *)self _updateUI];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  if ([(PKPaletteButton *)self isSelected]!= a3)
+  selectedCopy = selected;
+  if ([(PKPaletteButton *)self isSelected]!= selected)
   {
     v5.receiver = self;
     v5.super_class = PKPaletteButton;
-    [(PKPaletteButton *)&v5 setSelected:v3];
+    [(PKPaletteButton *)&v5 setSelected:selectedCopy];
     [(PKPaletteButton *)self _updateUI];
   }
 }
@@ -518,30 +518,30 @@ LABEL_13:
 {
   if (!PKIsVisionDevice())
   {
-    v3 = [(PKPaletteButton *)self isEnabled];
-    v4 = [(PKPaletteButton *)self button];
-    [v4 setEnabled:v3];
+    isEnabled = [(PKPaletteButton *)self isEnabled];
+    button = [(PKPaletteButton *)self button];
+    [button setEnabled:isEnabled];
 
-    v5 = [(PKPaletteButton *)self isSelected];
-    v6 = [(PKPaletteButton *)self button];
-    [v6 setSelected:v5];
+    isSelected = [(PKPaletteButton *)self isSelected];
+    button2 = [(PKPaletteButton *)self button];
+    [button2 setSelected:isSelected];
 
-    v7 = [(PKPaletteButton *)self isHighlighted];
-    v8 = [(PKPaletteButton *)self button];
-    [v8 setHighlighted:v7];
+    isHighlighted = [(PKPaletteButton *)self isHighlighted];
+    button3 = [(PKPaletteButton *)self button];
+    [button3 setHighlighted:isHighlighted];
 
     [(PKPaletteButton *)self _buttonTransform];
-    v9 = [(PKPaletteButton *)self button];
+    button4 = [(PKPaletteButton *)self button];
     v12[0] = v12[3];
     v12[1] = v12[4];
     v12[2] = v12[5];
-    [v9 setTransform:v12];
+    [button4 setTransform:v12];
 
-    v10 = [(PKPaletteButton *)self _backgroundColor];
-    [(PKPaletteButton *)self setBackgroundColor:v10];
+    _backgroundColor = [(PKPaletteButton *)self _backgroundColor];
+    [(PKPaletteButton *)self setBackgroundColor:_backgroundColor];
 
-    v11 = [(PKPaletteButton *)self _tintColorForCurrentState];
-    [(PKPaletteButton *)self setTintColor:v11];
+    _tintColorForCurrentState = [(PKPaletteButton *)self _tintColorForCurrentState];
+    [(PKPaletteButton *)self setTintColor:_tintColorForCurrentState];
   }
 }
 
@@ -552,10 +552,10 @@ LABEL_13:
   *&retstr->a = *MEMORY[0x1E695EFD0];
   *&retstr->c = v6;
   *&retstr->tx = *(v5 + 32);
-  v7 = [(PKPaletteButton *)self useCompactLayout];
+  useCompactLayout = [(PKPaletteButton *)self useCompactLayout];
   [(PKPaletteButton *)self scalingFactor];
   v9 = v8;
-  if (v7)
+  if (useCompactLayout)
   {
     v9 = v8 * 0.75;
     [(PKPaletteButton *)self scalingFactor];
@@ -571,11 +571,11 @@ LABEL_13:
   return CGAffineTransformMakeScale(retstr, v9, v11);
 }
 
-- (void)setScalingFactor:(double)a3
+- (void)setScalingFactor:(double)factor
 {
-  if (self->_scalingFactor != a3)
+  if (self->_scalingFactor != factor)
   {
-    self->_scalingFactor = a3;
+    self->_scalingFactor = factor;
     [(PKPaletteButton *)self _updateUI];
     [(PKPaletteButton *)self invalidateIntrinsicContentSize];
 
@@ -583,21 +583,21 @@ LABEL_13:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = PKPaletteButton;
-  [(PKPaletteButton *)&v10 traitCollectionDidChange:v4];
-  v5 = [(PKPaletteButton *)self traitCollection];
-  v6 = [v5 verticalSizeClass];
-  if (v6 == [v4 verticalSizeClass])
+  [(PKPaletteButton *)&v10 traitCollectionDidChange:changeCopy];
+  traitCollection = [(PKPaletteButton *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
+  if (verticalSizeClass == [changeCopy verticalSizeClass])
   {
-    v7 = [(PKPaletteButton *)self traitCollection];
-    v8 = [v7 horizontalSizeClass];
-    v9 = [v4 horizontalSizeClass];
+    traitCollection2 = [(PKPaletteButton *)self traitCollection];
+    horizontalSizeClass = [traitCollection2 horizontalSizeClass];
+    horizontalSizeClass2 = [changeCopy horizontalSizeClass];
 
-    if (v8 == v9)
+    if (horizontalSizeClass == horizontalSizeClass2)
     {
       goto LABEL_6;
     }
@@ -613,9 +613,9 @@ LABEL_13:
 LABEL_6:
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
+  interactionCopy = interaction;
   objc_initWeak(&location, self);
   v6 = MEMORY[0x1E69DC8D8];
   v9[0] = MEMORY[0x1E69E9820];
@@ -638,23 +638,23 @@ id __73__PKPaletteButton_contextMenuInteraction_configurationForMenuAtLocation__
   return v2;
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  [a5 rect];
+  [region rect];
   v9 = CGRectInset(v8, -8.0, -8.0);
   v5 = MEMORY[0x1E69DCDC0];
 
   return [v5 regionWithRect:0 identifier:{v9.origin.x, v9.origin.y, v9.size.width, v9.size.height}];
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v4 = MEMORY[0x1E69DD070];
-  v5 = a3;
+  interactionCopy = interaction;
   v6 = [v4 alloc];
-  v7 = [v5 view];
+  view = [interactionCopy view];
 
-  v8 = [v6 initWithView:v7];
+  v8 = [v6 initWithView:view];
   v9 = [MEMORY[0x1E69DCDB8] effectWithPreview:v8];
   v10 = [MEMORY[0x1E69DCDD0] styleWithEffect:v9 shape:0];
 

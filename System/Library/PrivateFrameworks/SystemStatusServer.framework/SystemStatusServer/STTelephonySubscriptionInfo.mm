@@ -1,94 +1,94 @@
 @interface STTelephonySubscriptionInfo
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)initWithSubscriptionInfo:(id)a1;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)initWithSubscriptionInfo:(id)info;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation STTelephonySubscriptionInfo
 
-- (id)initWithSubscriptionInfo:(id)a1
+- (id)initWithSubscriptionInfo:(id)info
 {
   v3 = a2;
-  if (a1)
+  if (info)
   {
-    v23.receiver = a1;
+    v23.receiver = info;
     v23.super_class = STTelephonySubscriptionInfo;
-    a1 = objc_msgSendSuper2(&v23, sel_init);
-    if (a1)
+    info = objc_msgSendSuper2(&v23, sel_init);
+    if (info)
     {
-      v4 = [v3 identifier];
-      v5 = [v4 copy];
-      v6 = *(a1 + 1);
-      *(a1 + 1) = v5;
+      identifier = [v3 identifier];
+      v5 = [identifier copy];
+      v6 = *(info + 1);
+      *(info + 1) = v5;
 
-      v7 = [v3 SIMLabel];
-      v8 = [v7 copy];
-      v9 = *(a1 + 2);
-      *(a1 + 2) = v8;
+      sIMLabel = [v3 SIMLabel];
+      v8 = [sIMLabel copy];
+      v9 = *(info + 2);
+      *(info + 2) = v8;
 
-      v10 = [v3 shortSIMLabel];
-      v11 = [v10 copy];
-      v12 = *(a1 + 3);
-      *(a1 + 3) = v11;
+      shortSIMLabel = [v3 shortSIMLabel];
+      v11 = [shortSIMLabel copy];
+      v12 = *(info + 3);
+      *(info + 3) = v11;
 
-      v13 = [v3 SIMStatus];
-      v14 = [v13 copy];
-      v15 = *(a1 + 4);
-      *(a1 + 4) = v14;
+      sIMStatus = [v3 SIMStatus];
+      v14 = [sIMStatus copy];
+      v15 = *(info + 4);
+      *(info + 4) = v14;
 
-      *(a1 + 40) = [v3 isHiddenSIM];
-      *(a1 + 6) = [v3 registrationStatus];
-      *(a1 + 7) = [v3 cellularRegistrationStatus];
-      *(a1 + 8) = [v3 dataConnectionType];
-      *(a1 + 72) = [v3 isPreferredForDataConnections];
-      *(a1 + 73) = [v3 isProvidingDataConnection];
-      *(a1 + 74) = [v3 isBootstrap];
-      *(a1 + 75) = [v3 isRegisteredWithoutCellular];
-      *(a1 + 10) = [v3 signalStrengthBars];
-      *(a1 + 11) = [v3 maxSignalStrengthBars];
-      v16 = [v3 operatorName];
-      v17 = [v16 copy];
-      v18 = *(a1 + 12);
-      *(a1 + 12) = v17;
+      *(info + 40) = [v3 isHiddenSIM];
+      *(info + 6) = [v3 registrationStatus];
+      *(info + 7) = [v3 cellularRegistrationStatus];
+      *(info + 8) = [v3 dataConnectionType];
+      *(info + 72) = [v3 isPreferredForDataConnections];
+      *(info + 73) = [v3 isProvidingDataConnection];
+      *(info + 74) = [v3 isBootstrap];
+      *(info + 75) = [v3 isRegisteredWithoutCellular];
+      *(info + 10) = [v3 signalStrengthBars];
+      *(info + 11) = [v3 maxSignalStrengthBars];
+      operatorName = [v3 operatorName];
+      v17 = [operatorName copy];
+      v18 = *(info + 12);
+      *(info + 12) = v17;
 
-      v19 = [v3 lastKnownNetworkCountryCode];
-      v20 = [v19 copy];
-      v21 = *(a1 + 13);
-      *(a1 + 13) = v20;
+      lastKnownNetworkCountryCode = [v3 lastKnownNetworkCountryCode];
+      v20 = [lastKnownNetworkCountryCode copy];
+      v21 = *(info + 13);
+      *(info + 13) = v20;
 
-      *(a1 + 14) = [v3 callForwardingIndicator];
-      *(a1 + 120) = [v3 isNetworkReselectionNeeded];
-      *(a1 + 16) = [v3 registrationRejectionCauseCode];
+      *(info + 14) = [v3 callForwardingIndicator];
+      *(info + 120) = [v3 isNetworkReselectionNeeded];
+      *(info + 16) = [v3 registrationRejectionCauseCode];
     }
   }
 
-  return a1;
+  return info;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [STMutableTelephonySubscriptionInfo allocWithZone:a3];
+  v4 = [STMutableTelephonySubscriptionInfo allocWithZone:zone];
 
   return [(STTelephonySubscriptionInfo *)v4 initWithSubscriptionInfo:?];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STTelephonySubscriptionInfo *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STTelephonySubscriptionInfo *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(STTelephonySubscriptionInfo *)self SIMStatus];
-  [v3 appendString:v4 withName:@"SIMStatus"];
+  sIMStatus = [(STTelephonySubscriptionInfo *)self SIMStatus];
+  [v3 appendString:sIMStatus withName:@"SIMStatus"];
 
   v5 = [v3 appendBool:-[STTelephonySubscriptionInfo isHiddenSIM](self withName:"isHiddenSIM") ifEqualTo:{@"hiddenSIM", 1}];
   v6 = STTelephonyRegistrationStatusDebugName([(STTelephonySubscriptionInfo *)self registrationStatus]);
@@ -103,24 +103,24 @@
   v9 = [v3 appendUnsignedInteger:-[STTelephonySubscriptionInfo signalStrengthBars](self withName:{"signalStrengthBars"), @"signalStrengthBars"}];
   v10 = [v3 appendBool:-[STTelephonySubscriptionInfo isPreferredForDataConnections](self withName:{"isPreferredForDataConnections"), @"isPreferredForDataConnections"}];
   v11 = [v3 appendBool:-[STTelephonySubscriptionInfo isProvidingDataConnection](self withName:{"isProvidingDataConnection"), @"isProvidingDataConnection"}];
-  v12 = [(STTelephonySubscriptionInfo *)self operatorName];
-  [v3 appendString:v12 withName:@"operatorName"];
+  operatorName = [(STTelephonySubscriptionInfo *)self operatorName];
+  [v3 appendString:operatorName withName:@"operatorName"];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STTelephonySubscriptionInfo *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STTelephonySubscriptionInfo *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
+  prefixCopy = prefix;
   v6 = [v4 builderWithObject:self];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -128,8 +128,8 @@
   v10[3] = &unk_279D34B18;
   v7 = v6;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;
@@ -162,14 +162,14 @@ void __69__STTelephonySubscriptionInfo_descriptionBuilderWithMultilinePrefix___b
   [v14 appendString:v15 withName:@"operatorName"];
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = self;
+  selfCopy = self;
   if (self)
   {
     v4 = MEMORY[0x277CF0C00];
-    v5 = a3;
-    v6 = [v4 builderWithObject:v3];
+    prefixCopy = prefix;
+    v6 = [v4 builderWithObject:selfCopy];
     [v6 setUseDebugDescription:1];
     v10 = MEMORY[0x277D85DD0];
     v11 = 3221225472;
@@ -177,13 +177,13 @@ void __69__STTelephonySubscriptionInfo_descriptionBuilderWithMultilinePrefix___b
     v13 = &unk_279D34B18;
     v7 = v6;
     v14 = v7;
-    v15 = v3;
-    [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:&v10];
+    v15 = selfCopy;
+    [v7 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:&v10];
 
-    v3 = v7;
+    selfCopy = v7;
   }
 
-  v8 = [(STTelephonySubscriptionInfo *)v3 build:a3];
+  v8 = [(STTelephonySubscriptionInfo *)selfCopy build:prefix];
 
   return v8;
 }

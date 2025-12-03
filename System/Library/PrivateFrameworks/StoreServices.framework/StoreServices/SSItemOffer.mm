@@ -11,35 +11,35 @@
 - (SSDialog)confirmationDialog;
 - (SSDialog)successDialog;
 - (SSItemMedia)offerMedia;
-- (SSItemOffer)initWithOfferIdentifier:(id)a3 dictionary:(id)a4;
+- (SSItemOffer)initWithOfferIdentifier:(id)identifier dictionary:(id)dictionary;
 - (SSNetworkConstraints)networkConstraints;
 - (id)allowedToneStyles;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)documentCannotOpenDialog;
 - (id)documentRequiredHandlers;
 - (id)documentUTI;
 - (id)requiredSoftwareCapabilities;
-- (id)valueForProperty:(id)a3;
+- (id)valueForProperty:(id)property;
 - (int64_t)estimatedDiskSpaceNeeded;
 - (void)dealloc;
-- (void)setActionDisplayName:(id)a3;
-- (void)setBuyParameters:(id)a3;
-- (void)setOneTapOffer:(BOOL)a3;
-- (void)setPriceDisplay:(id)a3;
+- (void)setActionDisplayName:(id)name;
+- (void)setBuyParameters:(id)parameters;
+- (void)setOneTapOffer:(BOOL)offer;
+- (void)setPriceDisplay:(id)display;
 @end
 
 @implementation SSItemOffer
 
-- (SSItemOffer)initWithOfferIdentifier:(id)a3 dictionary:(id)a4
+- (SSItemOffer)initWithOfferIdentifier:(id)identifier dictionary:(id)dictionary
 {
   v8.receiver = self;
   v8.super_class = SSItemOffer;
   v6 = [(SSItemOffer *)&v8 init];
   if (v6)
   {
-    v6->_offerDictionary = [a4 mutableCopy];
-    v6->_offerIdentifier = [a3 copy];
+    v6->_offerDictionary = [dictionary mutableCopy];
+    v6->_offerIdentifier = [identifier copy];
   }
 
   return v6;
@@ -52,12 +52,12 @@
   [(SSItemOffer *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v5[2] = [(NSMutableDictionary *)self->_offerDictionary mutableCopyWithZone:a3];
-  v5[3] = [(NSString *)self->_offerIdentifier copyWithZone:a3];
-  v5[4] = [(NSArray *)self->_supportedDevices copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v5[2] = [(NSMutableDictionary *)self->_offerDictionary mutableCopyWithZone:zone];
+  v5[3] = [(NSString *)self->_offerIdentifier copyWithZone:zone];
+  v5[4] = [(NSArray *)self->_supportedDevices copyWithZone:zone];
   return v5;
 }
 
@@ -92,9 +92,9 @@
     return v3;
   }
 
-  v5 = [(SSItemMedia *)[(SSItemOffer *)self offerMedia] isProtectedMedia];
+  isProtectedMedia = [(SSItemMedia *)[(SSItemOffer *)self offerMedia] isProtectedMedia];
   v6 = MEMORY[0x1E695DEC8];
-  if (!v5)
+  if (!isProtectedMedia)
   {
     return [MEMORY[0x1E695DEC8] arrayWithObjects:{@"ringtone", @"texttone", 0}];
   }
@@ -223,9 +223,9 @@
   item = self->_item;
   if (item)
   {
-    v5 = [(SSItem *)item mediaKind];
+    mediaKind = [(SSItem *)item mediaKind];
 LABEL_13:
-    [(SSItemMedia *)v3 setMediaKind:v5];
+    [(SSItemMedia *)v3 setMediaKind:mediaKind];
     goto LABEL_14;
   }
 
@@ -258,7 +258,7 @@ LABEL_13:
   {
     v9 = SSItemMediaKindDocument;
 LABEL_12:
-    v5 = *v9;
+    mediaKind = *v9;
     goto LABEL_13;
   }
 
@@ -358,9 +358,9 @@ LABEL_14:
   return result;
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
-  v3 = [(NSMutableDictionary *)self->_offerDictionary objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_offerDictionary objectForKey:property];
 
   return v3;
 }
@@ -396,20 +396,20 @@ LABEL_14:
 
 - (int64_t)estimatedDiskSpaceNeeded
 {
-  v2 = [(SSItemOffer *)self offerMedia];
-  if (!v2)
+  offerMedia = [(SSItemOffer *)self offerMedia];
+  if (!offerMedia)
   {
     return 0;
   }
 
-  v3 = v2;
-  v4 = [(SSItemMedia *)v2 mediaFileSize];
+  v3 = offerMedia;
+  mediaFileSize = [(SSItemMedia *)offerMedia mediaFileSize];
   if ([(NSString *)[(SSItemMedia *)v3 mediaKind] isEqualToString:@"software"])
   {
-    return (v4 * 2.5);
+    return (mediaFileSize * 2.5);
   }
 
-  return v4;
+  return mediaFileSize;
 }
 
 - (id)requiredSoftwareCapabilities
@@ -428,12 +428,12 @@ LABEL_14:
   return v2;
 }
 
-- (void)setActionDisplayName:(id)a3
+- (void)setActionDisplayName:(id)name
 {
   offerDictionary = self->_offerDictionary;
-  if (a3)
+  if (name)
   {
-    [(NSMutableDictionary *)offerDictionary setObject:a3 forKey:@"action-display-name"];
+    [(NSMutableDictionary *)offerDictionary setObject:name forKey:@"action-display-name"];
   }
 
   else
@@ -442,10 +442,10 @@ LABEL_14:
   }
 }
 
-- (void)setBuyParameters:(id)a3
+- (void)setBuyParameters:(id)parameters
 {
   offerDictionary = self->_offerDictionary;
-  if (a3)
+  if (parameters)
   {
 
     [NSMutableDictionary setObject:"setObject:forKey:" forKey:?];
@@ -460,20 +460,20 @@ LABEL_14:
   }
 }
 
-- (void)setOneTapOffer:(BOOL)a3
+- (void)setOneTapOffer:(BOOL)offer
 {
   offerDictionary = self->_offerDictionary;
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:!a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:!offer];
 
   [(NSMutableDictionary *)offerDictionary setObject:v4 forKey:@"should-show-confirmation"];
 }
 
-- (void)setPriceDisplay:(id)a3
+- (void)setPriceDisplay:(id)display
 {
   offerDictionary = self->_offerDictionary;
-  if (a3)
+  if (display)
   {
-    [(NSMutableDictionary *)offerDictionary setObject:a3 forKey:@"price-display"];
+    [(NSMutableDictionary *)offerDictionary setObject:display forKey:@"price-display"];
   }
 
   else

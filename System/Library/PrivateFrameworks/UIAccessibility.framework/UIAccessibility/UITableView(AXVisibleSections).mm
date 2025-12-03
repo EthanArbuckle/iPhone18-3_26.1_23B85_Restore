@@ -6,33 +6,33 @@
 
 - (id)_accessibilityIndicesOfVisibleHeadersAndFooters
 {
-  v2 = [a1 numberOfSections];
-  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:v2];
-  if (v2 >= 1)
+  numberOfSections = [self numberOfSections];
+  v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:numberOfSections];
+  if (numberOfSections >= 1)
   {
-    for (i = 0; i != v2; ++i)
+    for (i = 0; i != numberOfSections; ++i)
     {
-      if ([a1 style])
+      if ([self style])
       {
-        [a1 rectForHeaderInSection:i];
+        [self rectForHeaderInSection:i];
       }
 
       else
       {
-        [a1 rectForSection:i];
+        [self rectForSection:i];
       }
 
       v9 = v5;
       v10 = v6;
       v11 = v7;
       v12 = v8;
-      [a1 contentOffset];
+      [self contentOffset];
       v14 = v13;
-      [a1 contentOffset];
+      [self contentOffset];
       v16 = v15;
-      [a1 bounds];
+      [self bounds];
       v18 = v17;
-      [a1 bounds];
+      [self bounds];
       v22.origin.x = v14;
       v22.origin.y = v16;
       v22.size.width = v18;

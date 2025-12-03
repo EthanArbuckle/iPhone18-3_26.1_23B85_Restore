@@ -1,51 +1,51 @@
 @interface NPKProtoHandleRemoveTransactionsRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addIdentifiers:(id)a3;
-- (void)addPassIDs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addIdentifiers:(id)identifiers;
+- (void)addPassIDs:(id)ds;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoHandleRemoveTransactionsRequest
 
-- (void)addIdentifiers:(id)a3
+- (void)addIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   identifiers = self->_identifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!identifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_identifiers;
     self->_identifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     identifiers = self->_identifiers;
   }
 
-  [(NSMutableArray *)identifiers addObject:v4];
+  [(NSMutableArray *)identifiers addObject:identifiersCopy];
 }
 
-- (void)addPassIDs:(id)a3
+- (void)addPassIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   passIDs = self->_passIDs;
-  v8 = v4;
+  v8 = dsCopy;
   if (!passIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_passIDs;
     self->_passIDs = v6;
 
-    v4 = v8;
+    dsCopy = v8;
     passIDs = self->_passIDs;
   }
 
-  [(NSMutableArray *)passIDs addObject:v4];
+  [(NSMutableArray *)passIDs addObject:dsCopy];
 }
 
 - (id)description
@@ -54,20 +54,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoHandleRemoveTransactionsRequest;
   v4 = [(NPKProtoHandleRemoveTransactionsRequest *)&v8 description];
-  v5 = [(NPKProtoHandleRemoveTransactionsRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoHandleRemoveTransactionsRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   identifiers = self->_identifiers;
   if (identifiers)
   {
-    [v3 setObject:identifiers forKey:@"identifiers"];
+    [dictionary setObject:identifiers forKey:@"identifiers"];
   }
 
   passIDs = self->_passIDs;
@@ -79,10 +79,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -150,44 +150,44 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if ([(NPKProtoHandleRemoveTransactionsRequest *)self identifiersCount])
   {
-    [v12 clearIdentifiers];
-    v4 = [(NPKProtoHandleRemoveTransactionsRequest *)self identifiersCount];
-    if (v4)
+    [toCopy clearIdentifiers];
+    identifiersCount = [(NPKProtoHandleRemoveTransactionsRequest *)self identifiersCount];
+    if (identifiersCount)
     {
-      v5 = v4;
+      v5 = identifiersCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoHandleRemoveTransactionsRequest *)self identifiersAtIndex:i];
-        [v12 addIdentifiers:v7];
+        [toCopy addIdentifiers:v7];
       }
     }
   }
 
   if ([(NPKProtoHandleRemoveTransactionsRequest *)self passIDsCount])
   {
-    [v12 clearPassIDs];
-    v8 = [(NPKProtoHandleRemoveTransactionsRequest *)self passIDsCount];
-    if (v8)
+    [toCopy clearPassIDs];
+    passIDsCount = [(NPKProtoHandleRemoveTransactionsRequest *)self passIDsCount];
+    if (passIDsCount)
     {
-      v9 = v8;
+      v9 = passIDsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(NPKProtoHandleRemoveTransactionsRequest *)self passIDsAtIndex:j];
-        [v12 addPassIDs:v11];
+        [toCopy addPassIDs:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -208,7 +208,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v24 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addIdentifiers:v11];
 
         ++v10;
@@ -241,7 +241,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * v16) copyWithZone:{zone, v20}];
         [v5 addPassIDs:v17];
 
         ++v16;
@@ -258,13 +258,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((identifiers = self->_identifiers, !(identifiers | v4[1])) || -[NSMutableArray isEqual:](identifiers, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((identifiers = self->_identifiers, !(identifiers | equalCopy[1])) || -[NSMutableArray isEqual:](identifiers, "isEqual:")))
   {
     passIDs = self->_passIDs;
-    if (passIDs | v4[2])
+    if (passIDs | equalCopy[2])
     {
       v7 = [(NSMutableArray *)passIDs isEqual:?];
     }
@@ -283,15 +283,15 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v4[1];
+  v5 = fromCopy[1];
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
@@ -321,7 +321,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = v4[2];
+  v10 = fromCopy[2];
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v11)
   {

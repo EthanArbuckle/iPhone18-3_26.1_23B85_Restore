@@ -1,42 +1,42 @@
 @interface HUAccessoryServicesItemModule
 + (id)supportedServiceTypes;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 @end
 
 @implementation HUAccessoryServicesItemModule
 
 + (id)supportedServiceTypes
 {
-  v2 = [MEMORY[0x277CD1D90] hf_standardServiceTypes];
-  v3 = [v2 allObjects];
+  hf_standardServiceTypes = [MEMORY[0x277CD1D90] hf_standardServiceTypes];
+  allObjects = [hf_standardServiceTypes allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [(HUChildServiceEditorItemModule *)self childServiceItemProvider];
-  v7 = [v6 items];
+  itemsCopy = items;
+  array = [MEMORY[0x277CBEB18] array];
+  childServiceItemProvider = [(HUChildServiceEditorItemModule *)self childServiceItemProvider];
+  items = [childServiceItemProvider items];
 
-  if ([v7 intersectsSet:v4])
+  if ([items intersectsSet:itemsCopy])
   {
-    v37 = v4;
-    v8 = [v7 allObjects];
-    v9 = [v8 firstObject];
-    v10 = [v9 service];
-    v11 = [v10 accessory];
+    v37 = itemsCopy;
+    allObjects = [items allObjects];
+    firstObject = [allObjects firstObject];
+    service = [firstObject service];
+    accessory = [service accessory];
 
-    v12 = v11;
-    v13 = [v11 hf_primaryService];
+    v12 = accessory;
+    hf_primaryService = [accessory hf_primaryService];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v36 = v7;
-    v14 = v7;
+    v36 = items;
+    v14 = items;
     v40 = [v14 countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v40)
     {
@@ -52,15 +52,15 @@
           }
 
           v16 = *(*(&v41 + 1) + 8 * i);
-          v17 = [v16 service];
-          v18 = [v17 uniqueIdentifier];
-          v19 = [v13 uniqueIdentifier];
-          v20 = [v18 hmf_isEqualToUUID:v19];
+          service2 = [v16 service];
+          uniqueIdentifier = [service2 uniqueIdentifier];
+          uniqueIdentifier2 = [hf_primaryService uniqueIdentifier];
+          v20 = [uniqueIdentifier hmf_isEqualToUUID:uniqueIdentifier2];
 
-          v21 = [v12 hf_shouldSeparateAccessoryName];
+          hf_shouldSeparateAccessoryName = [v12 hf_shouldSeparateAccessoryName];
           if (v20)
           {
-            v22 = v21 == 0;
+            v22 = hf_shouldSeparateAccessoryName == 0;
           }
 
           else
@@ -70,30 +70,30 @@
 
           if (!v22)
           {
-            v23 = [v16 service];
-            v24 = [v23 hf_isVisible];
+            service3 = [v16 service];
+            hf_isVisible = [service3 hf_isVisible];
 
-            if (v24)
+            if (hf_isVisible)
             {
               v25 = objc_alloc(MEMORY[0x277D14850]);
-              v26 = [v16 service];
-              v27 = [v26 uniqueIdentifier];
-              v28 = [v27 UUIDString];
-              [@"HUAccessoryServicesItemSectionIdentifier" stringByAppendingString:v28];
-              v29 = v13;
+              service4 = [v16 service];
+              uniqueIdentifier3 = [service4 uniqueIdentifier];
+              uUIDString = [uniqueIdentifier3 UUIDString];
+              [@"HUAccessoryServicesItemSectionIdentifier" stringByAppendingString:uUIDString];
+              v29 = hf_primaryService;
               v30 = v12;
-              v32 = v31 = v5;
+              v32 = v31 = array;
               v33 = [v25 initWithIdentifier:v32];
 
               v45 = v16;
               v34 = [MEMORY[0x277CBEA60] arrayWithObjects:&v45 count:1];
               [v33 setItems:v34];
 
-              v5 = v31;
+              array = v31;
               v12 = v30;
-              v13 = v29;
+              hf_primaryService = v29;
               v14 = v38;
-              [v5 addObject:v33];
+              [array addObject:v33];
             }
           }
         }
@@ -104,13 +104,13 @@
       while (v40);
     }
 
-    v7 = v36;
-    v4 = v37;
+    items = v36;
+    itemsCopy = v37;
   }
 
-  [v5 sortUsingComparator:&__block_literal_global_303];
+  [array sortUsingComparator:&__block_literal_global_303];
 
-  return v5;
+  return array;
 }
 
 uint64_t __65__HUAccessoryServicesItemModule_buildSectionsWithDisplayedItems___block_invoke(uint64_t a1, void *a2, void *a3)

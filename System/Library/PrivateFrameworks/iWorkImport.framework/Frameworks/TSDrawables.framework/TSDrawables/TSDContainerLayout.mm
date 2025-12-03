@@ -1,16 +1,16 @@
 @interface TSDContainerLayout
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3;
-- (TSDContainerLayout)initWithInfo:(id)a3;
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform;
+- (TSDContainerLayout)initWithInfo:(id)info;
 - (id)childInfosForChildLayouts;
-- (void)processChangedProperty:(int)a3;
+- (void)processChangedProperty:(int)property;
 @end
 
 @implementation TSDContainerLayout
 
-- (TSDContainerLayout)initWithInfo:(id)a3
+- (TSDContainerLayout)initWithInfo:(id)info
 {
-  v4 = a3;
-  if ((objc_msgSend_conformsToProtocol_(v4, v5, &unk_2885A1758) & 1) == 0)
+  infoCopy = info;
+  if ((objc_msgSend_conformsToProtocol_(infoCopy, v5, &unk_2885A1758) & 1) == 0)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSDContainerLayout initWithInfo:]");
@@ -22,17 +22,17 @@
 
   v16.receiver = self;
   v16.super_class = TSDContainerLayout;
-  v14 = [(TSDLayout *)&v16 initWithInfo:v4];
+  v14 = [(TSDLayout *)&v16 initWithInfo:infoCopy];
 
   return v14;
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
-  v3 = *&a3;
-  if (a3 == 514)
+  v3 = *&property;
+  if (property == 514)
   {
-    v5 = objc_msgSend_layoutController(self, a2, *&a3);
+    v5 = objc_msgSend_layoutController(self, a2, *&property);
     objc_msgSend_invalidateChildrenOfLayout_(v5, v6, self);
   }
 
@@ -45,28 +45,28 @@
 {
   v15.receiver = self;
   v15.super_class = TSDContainerLayout;
-  v3 = [(TSDLayout *)&v15 childInfosForChildLayouts];
+  childInfosForChildLayouts = [(TSDLayout *)&v15 childInfosForChildLayouts];
   v6 = objc_msgSend_containerInfo(self, v4, v5);
   v9 = objc_msgSend_childInfos(v6, v7, v8);
 
   if (objc_msgSend_count(v9, v10, v11))
   {
-    v13 = objc_msgSend_arrayByAddingObjectsFromArray_(v9, v12, v3);
+    v13 = objc_msgSend_arrayByAddingObjectsFromArray_(v9, v12, childInfosForChildLayouts);
 
-    v3 = v13;
+    childInfosForChildLayouts = v13;
   }
 
-  return v3;
+  return childInfosForChildLayouts;
 }
 
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform
 {
-  v4 = objc_msgSend_pureGeometry(self, a2, a3);
+  v4 = objc_msgSend_pureGeometry(self, a2, transform);
   objc_msgSend_frame(v4, v5, v6);
-  v7 = *&a3->c;
-  *&v16.a = *&a3->a;
+  v7 = *&transform->c;
+  *&v16.a = *&transform->a;
   *&v16.c = v7;
-  *&v16.tx = *&a3->tx;
+  *&v16.tx = *&transform->tx;
   v18 = CGRectApplyAffineTransform(v17, &v16);
   x = v18.origin.x;
   y = v18.origin.y;

@@ -1,5 +1,5 @@
 @interface PXRetailExperienceManager
-+ (__CFData)generateSVGDataFromURL:(__CFURL *)a3;
++ (__CFData)generateSVGDataFromURL:(__CFURL *)l;
 - (void)dismissRetailExperienceView;
 - (void)presentRetailExperienceView;
 - (void)showRetailExperienceCard;
@@ -7,10 +7,10 @@
 
 @implementation PXRetailExperienceManager
 
-+ (__CFData)generateSVGDataFromURL:(__CFURL *)a3
++ (__CFData)generateSVGDataFromURL:(__CFURL *)l
 {
-  v4 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-  v5 = [v4 userInterfaceStyle];
+  currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+  userInterfaceStyle = [currentTraitCollection userInterfaceStyle];
 
   v20 = 0;
   v21 = &v20;
@@ -56,19 +56,19 @@
     _Block_object_dispose(&v20, 8);
     if (v8)
     {
-      return v8(a3, v5 == 2, &v14, &v13);
+      return v8(l, userInterfaceStyle == 2, &v14, &v13);
     }
 
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"CFDataRef softlink_ACCBakerCreate(CFURLRef _Nonnull, const size_t, ACCBakerDataVersion * _Nullable, CFErrorRef  _Nullable * _Nullable)"}];
-    [v11 handleFailureInFunction:v12 file:@"PXRetailExperienceManager.m" lineNumber:26 description:{@"%s", dlerror(), v13}];
+    [currentHandler handleFailureInFunction:v12 file:@"PXRetailExperienceManager.m" lineNumber:26 description:{@"%s", dlerror(), v13}];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"ACCBakerDataVersion getACCBakerDataVersion2(void)"];
-    [v11 handleFailureInFunction:v12 file:@"PXRetailExperienceManager.m" lineNumber:27 description:{@"%s", dlerror(), v13}];
+    [currentHandler handleFailureInFunction:v12 file:@"PXRetailExperienceManager.m" lineNumber:27 description:{@"%s", dlerror(), v13}];
   }
 
   __break(1u);
@@ -77,8 +77,8 @@
 
 - (void)dismissRetailExperienceView
 {
-  v2 = [(PXRetailExperienceManager *)self retailViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  retailViewController = [(PXRetailExperienceManager *)self retailViewController];
+  [retailViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)presentRetailExperienceView
@@ -90,9 +90,9 @@
   v6[4] = self;
   v3 = [_TtC12PhotosUICore27PXRetailExperienceInterface createRetailExperienceViewController:v6];
   [(PXRetailExperienceManager *)self setRetailViewController:v3];
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  v5 = [v4 px_firstKeyWindow];
-  [v5 pl_presentViewController:v3 animated:1];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  px_firstKeyWindow = [mEMORY[0x1E69DC668] px_firstKeyWindow];
+  [px_firstKeyWindow pl_presentViewController:v3 animated:1];
 }
 
 - (void)showRetailExperienceCard

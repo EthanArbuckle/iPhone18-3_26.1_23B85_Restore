@@ -1,31 +1,31 @@
 @interface ReadAnnouncementIntentHandler
 - (_TtC23AnnounceIntentExtension29ReadAnnouncementIntentHandler)init;
-- (void)confirmReadAnnouncement:(INReadAnnouncementIntent *)a3 completion:(id)a4;
+- (void)confirmReadAnnouncement:(INReadAnnouncementIntent *)announcement completion:(id)completion;
 - (void)connectionInvalidated;
 - (void)dealloc;
-- (void)handleReadAnnouncement:(INReadAnnouncementIntent *)a3 completion:(id)a4;
+- (void)handleReadAnnouncement:(INReadAnnouncementIntent *)announcement completion:(id)completion;
 @end
 
 @implementation ReadAnnouncementIntentHandler
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000065E4();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for ReadAnnouncementIntentHandler();
   [(ReadAnnouncementIntentHandler *)&v3 dealloc];
 }
 
-- (void)confirmReadAnnouncement:(INReadAnnouncementIntent *)a3 completion:(id)a4
+- (void)confirmReadAnnouncement:(INReadAnnouncementIntent *)announcement completion:(id)completion
 {
   v7 = sub_1000029F0(&unk_100021660, &qword_1000176F0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = announcement;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1000164C4();
@@ -40,20 +40,20 @@
   v15[3] = 0;
   v15[4] = &unk_1000175E0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  announcementCopy = announcement;
+  selfCopy = self;
   sub_100014D80(0, 0, v10, &unk_1000175E8, v15);
 }
 
-- (void)handleReadAnnouncement:(INReadAnnouncementIntent *)a3 completion:(id)a4
+- (void)handleReadAnnouncement:(INReadAnnouncementIntent *)announcement completion:(id)completion
 {
   v7 = sub_1000029F0(&unk_100021660, &qword_1000176F0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = announcement;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1000164C4();
@@ -68,8 +68,8 @@
   v15[3] = 0;
   v15[4] = &unk_1000175C0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  announcementCopy = announcement;
+  selfCopy = self;
   sub_100014D80(0, 0, v10, &unk_100017710, v15);
 }
 
@@ -91,7 +91,7 @@
 
 - (void)connectionInvalidated
 {
-  v1 = a1;
+  selfCopy = self;
   sub_1000065E4();
 }
 

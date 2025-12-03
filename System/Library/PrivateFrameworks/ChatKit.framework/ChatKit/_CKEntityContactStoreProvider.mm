@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __47___CKEntityContactStoreProvider_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_5 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_5, block);
@@ -24,10 +24,10 @@
 
 - (id)contactStore
 {
-  v2 = [MEMORY[0x1E69A7FD0] sharedInstance];
-  v3 = [v2 getContactStore];
+  mEMORY[0x1E69A7FD0] = [MEMORY[0x1E69A7FD0] sharedInstance];
+  getContactStore = [mEMORY[0x1E69A7FD0] getContactStore];
 
-  return v3;
+  return getContactStore;
 }
 
 @end

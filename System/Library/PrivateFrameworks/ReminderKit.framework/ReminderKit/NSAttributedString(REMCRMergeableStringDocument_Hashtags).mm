@@ -8,24 +8,24 @@
 
 - (uint64_t)rem_hashtagAtIndex:()REMCRMergeableStringDocument_Hashtags effectiveRange:
 {
-  v7 = [a1 string];
-  v8 = [v7 length];
+  string = [self string];
+  v8 = [string length];
 
-  return [a1 rem_hashtagAtIndex:a3 effectiveRange:a4 wantsLongestEffectiveRange:0 inRange:{0, v8}];
+  return [self rem_hashtagAtIndex:a3 effectiveRange:a4 wantsLongestEffectiveRange:0 inRange:{0, v8}];
 }
 
 - (REMTTHashtag)rem_hashtagAtIndex:()REMCRMergeableStringDocument_Hashtags effectiveRange:wantsLongestEffectiveRange:inRange:
 {
-  if ([a1 length])
+  if ([self length])
   {
     if (a5)
     {
-      [a1 attribute:@"_TTREMHashtag" atIndex:a3 longestEffectiveRange:a4 inRange:{a6, a7}];
+      [self attribute:@"_TTREMHashtag" atIndex:a3 longestEffectiveRange:a4 inRange:{a6, a7}];
     }
 
     else
     {
-      [a1 attribute:@"_TTREMHashtag" atIndex:a3 effectiveRange:a4];
+      [self attribute:@"_TTREMHashtag" atIndex:a3 effectiveRange:a4];
     }
     v14 = ;
     v15 = objc_opt_class();
@@ -33,8 +33,8 @@
     if (v16)
     {
       v17 = [REMTTHashtag alloc];
-      v18 = [v16 objectIdentifier];
-      v19 = [(REMTTHashtag *)v17 initWithObjectIdentifier:v18];
+      objectIdentifier = [v16 objectIdentifier];
+      v19 = [(REMTTHashtag *)v17 initWithObjectIdentifier:objectIdentifier];
     }
 
     else
@@ -71,7 +71,7 @@
   v12[3] = &unk_1E75085E0;
   v13 = v10;
   v11 = v10;
-  [a1 enumerateAttribute:@"_TTREMHashtag" inRange:a3 options:a4 usingBlock:{a5, v12}];
+  [self enumerateAttribute:@"_TTREMHashtag" inRange:a3 options:a4 usingBlock:{a5, v12}];
 }
 
 - (void)rem_hashtagAtIndex:()REMCRMergeableStringDocument_Hashtags effectiveRange:wantsLongestEffectiveRange:inRange:.cold.1(uint64_t a1, NSRange *a2)

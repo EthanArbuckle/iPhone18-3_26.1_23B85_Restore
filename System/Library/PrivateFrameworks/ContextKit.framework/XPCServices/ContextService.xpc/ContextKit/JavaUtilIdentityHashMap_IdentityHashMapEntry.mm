@@ -1,17 +1,17 @@
 @interface JavaUtilIdentityHashMap_IdentityHashMapEntry
-- (BOOL)isEqual:(id)a3;
-- (JavaUtilIdentityHashMap_IdentityHashMapEntry)initWithJavaUtilIdentityHashMap:(id)a3 withId:(id)a4 withId:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (JavaUtilIdentityHashMap_IdentityHashMapEntry)initWithJavaUtilIdentityHashMap:(id)map withId:(id)id withId:(id)withId;
 - (id)clone;
-- (id)setValueWithId:(id)a3;
+- (id)setValueWithId:(id)id;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilIdentityHashMap_IdentityHashMapEntry
 
-- (JavaUtilIdentityHashMap_IdentityHashMapEntry)initWithJavaUtilIdentityHashMap:(id)a3 withId:(id)a4 withId:(id)a5
+- (JavaUtilIdentityHashMap_IdentityHashMapEntry)initWithJavaUtilIdentityHashMap:(id)map withId:(id)id withId:(id)withId
 {
-  JavaUtilMapEntry_initWithId_withId_(self, a4, a5);
-  JreStrongAssign(&self->map_, a3);
+  JavaUtilMapEntry_initWithId_withId_(self, id, withId);
+  JreStrongAssign(&self->map_, map);
   return self;
 }
 
@@ -22,34 +22,34 @@
   return [(JavaUtilMapEntry *)&v3 clone];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v5) = 1;
   }
 
   else
   {
-    v5 = [JavaUtilMap_Entry_class_() isInstance:a3];
+    v5 = [JavaUtilMap_Entry_class_() isInstance:equal];
     if (v5)
     {
       v6 = JavaUtilMap_Entry_class_();
-      if (!a3)
+      if (!equal)
       {
         JreThrowNullPointerException();
       }
 
-      if (([v6 isInstance:a3] & 1) == 0)
+      if (([v6 isInstance:equal] & 1) == 0)
       {
         JreThrowClassCastException();
       }
 
       key = self->super.key_;
-      if (key == [a3 getKey])
+      if (key == [equal getKey])
       {
         value = self->super.value_;
-        LOBYTE(v5) = value == [a3 getValue];
+        LOBYTE(v5) = value == [equal getValue];
       }
 
       else
@@ -62,7 +62,7 @@
   return v5;
 }
 
-- (id)setValueWithId:(id)a3
+- (id)setValueWithId:(id)id
 {
   v8.receiver = self;
   v8.super_class = JavaUtilIdentityHashMap_IdentityHashMapEntry;
@@ -73,7 +73,7 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilIdentityHashMap *)map putWithId:self->super.key_ withId:a3];
+  [(JavaUtilIdentityHashMap *)map putWithId:self->super.key_ withId:id];
   return v5;
 }
 

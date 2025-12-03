@@ -1,30 +1,30 @@
 @interface CNPhotoPickerHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)didMoveToWindow;
 - (void)didTapClearAvatarImageButton;
-- (void)setClearAvatarImageButtonHidden:(BOOL)a3;
+- (void)setClearAvatarImageButtonHidden:(BOOL)hidden;
 @end
 
 @implementation CNPhotoPickerHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNPhotoPickerHeaderView" hasInstanceMethod:@"clearAvatarImageButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNPhotoPickerHeaderView" hasInstanceMethod:@"didMoveToWindow" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CNPhotoPickerHeaderView" hasInstanceMethod:@"didTapClearAvatarImageButton" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CNPhotoPickerHeaderView" hasInstanceMethod:@"identityNameTextField" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNVisualIdentity"];
-  [v3 validateClass:@"CNPhotoPickerHeaderView" hasInstanceMethod:@"visualIdentity" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNVisualIdentity" hasInstanceMethod:@"canUpdateGroupName" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CNVisualIdentity" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNVisualIdentityAvatarViewController"];
-  [v3 validateClass:@"CNPhotoPickerHeaderView" hasInstanceMethod:@"avatarViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNPhotoPickerHeaderView" hasInstanceMethod:@"setClearAvatarImageButtonHidden:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"CNVisualIdentityAvatarViewController"];
-  [v3 validateClass:@"CNVisualIdentityAvatarViewController" hasInstanceMethod:@"badgeImageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNVisualIdentityAvatarViewController" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNPhotoPickerHeaderView" hasInstanceMethod:@"clearAvatarImageButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNPhotoPickerHeaderView" hasInstanceMethod:@"didMoveToWindow" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CNPhotoPickerHeaderView" hasInstanceMethod:@"didTapClearAvatarImageButton" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CNPhotoPickerHeaderView" hasInstanceMethod:@"identityNameTextField" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNVisualIdentity"];
+  [validationsCopy validateClass:@"CNPhotoPickerHeaderView" hasInstanceMethod:@"visualIdentity" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNVisualIdentity" hasInstanceMethod:@"canUpdateGroupName" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CNVisualIdentity" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNVisualIdentityAvatarViewController"];
+  [validationsCopy validateClass:@"CNPhotoPickerHeaderView" hasInstanceMethod:@"avatarViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNPhotoPickerHeaderView" hasInstanceMethod:@"setClearAvatarImageButtonHidden:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"CNVisualIdentityAvatarViewController"];
+  [validationsCopy validateClass:@"CNVisualIdentityAvatarViewController" hasInstanceMethod:@"badgeImageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNVisualIdentityAvatarViewController" hasInstanceMethod:@"contentView" withFullSignature:{"@", 0}];
 }
 
 - (void)didMoveToWindow
@@ -81,8 +81,8 @@
     v14 = [v8 safeValueForKey:@"badgeImageView"];
     v15 = __UIAccessibilityCastAsClass();
 
-    v16 = [v15 image];
-    v17 = [v16 safeValueForKey:@"_imageAsset"];
+    image = [v15 image];
+    v17 = [image safeValueForKey:@"_imageAsset"];
     v18 = [v17 safeStringForKey:@"assetName"];
 
     v26[0] = MEMORY[0x29EDCA5F8];
@@ -144,11 +144,11 @@ uint64_t __82__CNPhotoPickerHeaderViewAccessibility__accessibilityLoadAccessibil
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 
-- (void)setClearAvatarImageButtonHidden:(BOOL)a3
+- (void)setClearAvatarImageButtonHidden:(BOOL)hidden
 {
   v4.receiver = self;
   v4.super_class = CNPhotoPickerHeaderViewAccessibility;
-  [(CNPhotoPickerHeaderViewAccessibility *)&v4 setClearAvatarImageButtonHidden:a3];
+  [(CNPhotoPickerHeaderViewAccessibility *)&v4 setClearAvatarImageButtonHidden:hidden];
   [(CNPhotoPickerHeaderViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

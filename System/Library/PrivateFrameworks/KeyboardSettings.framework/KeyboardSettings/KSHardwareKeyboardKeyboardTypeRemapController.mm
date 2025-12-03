@@ -3,11 +3,11 @@
 - (id)keyboardsSectionSpecifiers;
 - (id)newSpecifiers;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)loadKeyboards;
 - (void)reloadSpecifiersWithAnimation;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -19,9 +19,9 @@
   v4 = *(&self->super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [(KSHardwareKeyboardKeyboardTypeRemapController *)self newSpecifiers];
+    newSpecifiers = [(KSHardwareKeyboardKeyboardTypeRemapController *)self newSpecifiers];
     v6 = *(&self->super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.isa + v3) = v5;
+    *(&self->super.super.super.super.super.isa + v3) = newSpecifiers;
 
     v4 = *(&self->super.super.super.super.super.isa + v3);
   }
@@ -51,16 +51,16 @@
 
 - (void)reloadSpecifiersWithAnimation
 {
-  v4 = [(KSHardwareKeyboardKeyboardTypeRemapController *)self specifiers];
-  v3 = [(KSHardwareKeyboardKeyboardTypeRemapController *)self newSpecifiers];
-  -[KSHardwareKeyboardKeyboardTypeRemapController updateSpecifiersInRange:withSpecifiers:](self, "updateSpecifiersInRange:withSpecifiers:", 0, [v4 count], v3);
+  specifiers = [(KSHardwareKeyboardKeyboardTypeRemapController *)self specifiers];
+  newSpecifiers = [(KSHardwareKeyboardKeyboardTypeRemapController *)self newSpecifiers];
+  -[KSHardwareKeyboardKeyboardTypeRemapController updateSpecifiersInRange:withSpecifiers:](self, "updateSpecifiersInRange:withSpecifiers:", 0, [specifiers count], newSpecifiers);
 }
 
 - (void)loadKeyboards
 {
   v71[2] = *MEMORY[0x277D85DE8];
   objc_initWeak(&location, self);
-  v2 = self;
+  selfCopy2 = self;
   if (!self->_eventSystemClient)
   {
     v3 = *MEMORY[0x277CBECE8];
@@ -87,12 +87,12 @@
       IOHIDEventSystemClientRegisterDeviceMatchingBlock();
       objc_destroyWeak(&v65);
 
-      v2 = self;
+      selfCopy2 = self;
     }
   }
 
-  v36 = [MEMORY[0x277CBEB18] array];
-  v9 = IOHIDEventSystemClientCopyServices(v2->_eventSystemClient);
+  array = [MEMORY[0x277CBEB18] array];
+  v9 = IOHIDEventSystemClientCopyServices(selfCopy2->_eventSystemClient);
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
@@ -146,7 +146,7 @@
                     [v17 unsignedLongLongValue];
                     if ((BKSHIDKeyboardWantsStandardTypeOverride() & 1) != 0 || CFPreferencesGetAppBooleanValue(@"KeyboardTypeCustomization", @"com.apple.keyboard.preferences", 0))
                     {
-                      [(NSMutableArray *)v36 addObject:service];
+                      [(NSMutableArray *)array addObject:service];
                     }
 
                     v48 = MEMORY[0x277D85DD0];
@@ -182,17 +182,17 @@ LABEL_26:
     while (v39);
   }
 
-  v18 = self;
-  if ([(NSMutableArray *)v36 count])
+  selfCopy5 = self;
+  if ([(NSMutableArray *)array count])
   {
-    if (!self->_currentKeyboard || ([(NSMutableArray *)v36 containsObject:?]& 1) == 0)
+    if (!self->_currentKeyboard || ([(NSMutableArray *)array containsObject:?]& 1) == 0)
     {
       v43 = BKSHIDKeyboardGetDeviceProperties();
       v46 = 0u;
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v19 = v36;
+      v19 = array;
       v20 = [(NSMutableArray *)v19 countByEnumeratingWithState:&v44 objects:v67 count:16];
       if (v20)
       {
@@ -211,8 +211,8 @@ LABEL_26:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v25 = [v43 standardType];
-              if (v25 == [v24 intValue])
+              standardType = [v43 standardType];
+              if (standardType == [v24 intValue])
               {
                 self->_currentKeyboard = v23;
 
@@ -238,37 +238,37 @@ LABEL_46:
         goto LABEL_49;
       }
 
-      v31 = [(NSMutableArray *)v19 firstObject];
-      self->_currentKeyboard = v31;
+      firstObject = [(NSMutableArray *)v19 firstObject];
+      self->_currentKeyboard = firstObject;
 LABEL_48:
 
 LABEL_49:
-      v18 = self;
+      selfCopy5 = self;
     }
   }
 
   else
   {
     self->_currentKeyboard = 0;
-    v26 = [(KSHardwareKeyboardKeyboardTypeRemapController *)self navigationController];
-    v27 = [v26 viewControllers];
-    v28 = [v27 indexOfObject:self];
+    navigationController = [(KSHardwareKeyboardKeyboardTypeRemapController *)self navigationController];
+    viewControllers = [navigationController viewControllers];
+    v28 = [viewControllers indexOfObject:self];
 
-    v18 = self;
+    selfCopy5 = self;
     if (v28 && v28 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v29 = [(KSHardwareKeyboardKeyboardTypeRemapController *)self navigationController];
-      v30 = [v29 viewControllers];
-      v43 = [v30 objectAtIndex:v28 - 1];
+      navigationController2 = [(KSHardwareKeyboardKeyboardTypeRemapController *)self navigationController];
+      viewControllers2 = [navigationController2 viewControllers];
+      v43 = [viewControllers2 objectAtIndex:v28 - 1];
 
-      v31 = [(KSHardwareKeyboardKeyboardTypeRemapController *)self navigationController];
-      v32 = [(__IOHIDServiceClient *)v31 popToViewController:v43 animated:1];
+      firstObject = [(KSHardwareKeyboardKeyboardTypeRemapController *)self navigationController];
+      v32 = [(__IOHIDServiceClient *)firstObject popToViewController:v43 animated:1];
       goto LABEL_48;
     }
   }
 
-  keyboards = v18->_keyboards;
-  v18->_keyboards = v36;
+  keyboards = selfCopy5->_keyboards;
+  selfCopy5->_keyboards = array;
 
   objc_destroyWeak(&location);
   v34 = *MEMORY[0x277D85DE8];
@@ -316,11 +316,11 @@ void __62__KSHardwareKeyboardKeyboardTypeRemapController_loadKeyboards__block_in
 
   if ([(NSMutableArray *)keyboards count])
   {
-    v5 = [(KSHardwareKeyboardKeyboardTypeRemapController *)self keyboardsSectionSpecifiers];
-    [v3 addObjectsFromArray:v5];
+    keyboardsSectionSpecifiers = [(KSHardwareKeyboardKeyboardTypeRemapController *)self keyboardsSectionSpecifiers];
+    [v3 addObjectsFromArray:keyboardsSectionSpecifiers];
 
-    v6 = [(KSHardwareKeyboardKeyboardTypeRemapController *)self keyboardTypeSectionSpecifiers];
-    [v3 addObjectsFromArray:v6];
+    keyboardTypeSectionSpecifiers = [(KSHardwareKeyboardKeyboardTypeRemapController *)self keyboardTypeSectionSpecifiers];
+    [v3 addObjectsFromArray:keyboardTypeSectionSpecifiers];
   }
 
   return v3;
@@ -371,9 +371,9 @@ void __62__KSHardwareKeyboardKeyboardTypeRemapController_loadKeyboards__block_in
           if (objc_opt_isKindOfClass())
           {
             v14 = [v42 objectForKey:v13];
-            v15 = [v14 integerValue];
+            integerValue = [v14 integerValue];
 
-            v16 = [MEMORY[0x277CCABB0] numberWithInteger:v15 + 1];
+            v16 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue + 1];
             [v42 setObject:v16 forKey:v13];
           }
         }
@@ -416,10 +416,10 @@ void __62__KSHardwareKeyboardKeyboardTypeRemapController_loadKeyboards__block_in
           if (objc_opt_isKindOfClass())
           {
             v28 = [v42 objectForKey:v26];
-            v29 = [v28 integerValue];
+            integerValue2 = [v28 integerValue];
 
             v27 = v26;
-            if (v29 >= 2)
+            if (integerValue2 >= 2)
             {
               v30 = @"%@ (Smart Connector)";
               if ([v25 isEqual:@"AID"] & 1) != 0 || (v30 = @"%@ (Bluetooth)", (objc_msgSend(v25, "isEqual:", @"Bluetooth")) || (v30 = @"%@ (USB)", v27 = v26, objc_msgSend(v25, "isEqual:", @"USB")))
@@ -513,53 +513,53 @@ void __62__KSHardwareKeyboardKeyboardTypeRemapController_loadKeyboards__block_in
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = KSHardwareKeyboardKeyboardTypeRemapController;
-  v7 = [(KSHardwareKeyboardKeyboardTypeRemapController *)&v12 tableView:a3 cellForRowAtIndexPath:v6];
-  if ([v6 section] == self->_keysSectionStart - 1)
+  v7 = [(KSHardwareKeyboardKeyboardTypeRemapController *)&v12 tableView:view cellForRowAtIndexPath:pathCopy];
+  if ([pathCopy section] == self->_keysSectionStart - 1)
   {
     if (self->_currentKeyboard)
     {
-      [v7 setChecked:{-[NSMutableArray indexOfObject:](self->_keyboards, "indexOfObject:") == objc_msgSend(v6, "row")}];
+      [v7 setChecked:{-[NSMutableArray indexOfObject:](self->_keyboards, "indexOfObject:") == objc_msgSend(pathCopy, "row")}];
     }
   }
 
-  else if ([v6 section] == self->_keysSectionStart)
+  else if ([pathCopy section] == self->_keysSectionStart)
   {
     v8 = IOHIDServiceClientGetRegistryID(self->_currentKeyboard);
     [v8 unsignedLongLongValue];
     v9 = BKSHIDKeyboardGetDeviceProperties();
-    v10 = [v9 standardType];
-    if (v10 == -1)
+    standardType = [v9 standardType];
+    if (standardType == -1)
     {
-      v10 = 2 * ([v9 countryCode] == 15);
+      standardType = 2 * ([v9 countryCode] == 15);
     }
 
-    [v7 setChecked:{objc_msgSend(v6, "row") == v10}];
+    [v7 setChecked:{objc_msgSend(pathCopy, "row") == standardType}];
   }
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [v6 section];
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
   v8 = self->_keysSectionStart - 1;
-  v9 = [v6 row];
-  if (v7 == v8)
+  v9 = [pathCopy row];
+  if (section == v8)
   {
     if (v9 < [(NSMutableArray *)self->_keyboards count])
     {
-      v10 = -[NSMutableArray objectAtIndexedSubscript:](self->_keyboards, "objectAtIndexedSubscript:", [v6 row]);
+      v10 = -[NSMutableArray objectAtIndexedSubscript:](self->_keyboards, "objectAtIndexedSubscript:", [pathCopy row]);
       self->_currentKeyboard = v10;
 
       [(KSHardwareKeyboardKeyboardTypeRemapController *)self reloadSpecifiers];
-      [v12 deselectRowAtIndexPath:v6 animated:1];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     }
   }
 
@@ -569,7 +569,7 @@ void __62__KSHardwareKeyboardKeyboardTypeRemapController_loadKeyboards__block_in
     [v11 unsignedLongLongValue];
     BKSHIDServicesSetStandardType();
     [(KSHardwareKeyboardKeyboardTypeRemapController *)self reloadSpecifiers];
-    [v12 deselectRowAtIndexPath:v6 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   }
 }
 

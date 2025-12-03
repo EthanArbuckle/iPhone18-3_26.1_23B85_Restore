@@ -1,15 +1,15 @@
 @interface NUSingleSourceDefinition
 - (NUSingleSourceDefinition)init;
-- (id)generateSourceNodeWithIdentifier:(id)a3 error:(id *)a4;
-- (id)sourceContainerNodeWithIdentifier:(id)a3 error:(id *)a4;
+- (id)generateSourceNodeWithIdentifier:(id)identifier error:(id *)error;
+- (id)sourceContainerNodeWithIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation NUSingleSourceDefinition
 
-- (id)generateSourceNodeWithIdentifier:(id)a3 error:(id *)a4
+- (id)generateSourceNodeWithIdentifier:(id)identifier error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   if (_NULogOnceToken != -1)
   {
     dispatch_once(&_NULogOnceToken, &__block_literal_global_317_8646);
@@ -52,8 +52,8 @@ LABEL_8:
     {
       v13 = MEMORY[0x1E696AF00];
       v14 = v12;
-      v15 = [v13 callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v13 callStackSymbols];
+      v16 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v31 = v16;
       _os_log_error_impl(&dword_1C0184000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -69,8 +69,8 @@ LABEL_8:
     v19 = MEMORY[0x1E696AF00];
     v20 = specific;
     v21 = v17;
-    v22 = [v19 callStackSymbols];
-    v23 = [v22 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v19 callStackSymbols];
+    v23 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v31 = specific;
     v32 = 2114;
@@ -84,11 +84,11 @@ LABEL_14:
   _NUAssertFailHandler("[NUSingleSourceDefinition(NodeProvider) generateSourceNodeWithIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode.m", 466, @"This is an abstract method! Subclass '%@' should provide concrete implementation", v26, v27, v28, v29, v25);
 }
 
-- (id)sourceContainerNodeWithIdentifier:(id)a3 error:(id *)a4
+- (id)sourceContainerNodeWithIdentifier:(id)identifier error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!a4)
+  identifierCopy = identifier;
+  if (!error)
   {
     v12 = NUAssertLogger_8665();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -109,8 +109,8 @@ LABEL_14:
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v30 = v19;
         v31 = 2114;
@@ -121,8 +121,8 @@ LABEL_14:
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -131,9 +131,9 @@ LABEL_14:
     _NUAssertFailHandler("[NUSingleSourceDefinition(NodeProvider) sourceContainerNodeWithIdentifier:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode.m", 451, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "error != NULL");
   }
 
-  v7 = v6;
+  v7 = identifierCopy;
   v28 = 0;
-  v8 = [(NUSingleSourceDefinition *)self generateSourceNodeWithIdentifier:v6 error:&v28];
+  v8 = [(NUSingleSourceDefinition *)self generateSourceNodeWithIdentifier:identifierCopy error:&v28];
   v9 = v28;
   if (v8)
   {
@@ -143,7 +143,7 @@ LABEL_14:
   else
   {
     [NUError errorWithCode:1 reason:@"Failed to generate source node" object:v7 underlyingError:v9];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
   return v10;

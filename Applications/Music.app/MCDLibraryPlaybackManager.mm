@@ -1,52 +1,52 @@
 @interface MCDLibraryPlaybackManager
-- (id)playbackRequestForAlbum:(id)a3;
-- (id)playbackRequestForPlaylist:(id)a3;
-- (void)_initiatePlaybackAndPushNPViewControllerForPlaybackRequest:(id)a3 startItemIdentifiers:(id)a4 shuffle:(BOOL)a5 playActivityFeatureName:(id)a6;
-- (void)_initiatePlaybackForItemKind:(id)a3 sectionKind:(id)a4 object:(id)a5 lastResponse:(id)a6 shuffled:(BOOL)a7 forceScopingToResponseResults:(BOOL)a8 playActivityFeatureName:(id)a9;
-- (void)initiatePlaybackForAlbum:(id)a3 lastResponse:(id)a4 shuffled:(BOOL)a5 playActivityFeatureName:(id)a6;
-- (void)initiatePlaybackForGenre:(id)a3 lastResponse:(id)a4 shuffled:(BOOL)a5 playActivityFeatureName:(id)a6;
-- (void)initiatePlaybackForPerson:(id)a3 lastResponse:(id)a4 shuffled:(BOOL)a5 playActivityFeatureName:(id)a6;
-- (void)initiatePlaybackForPlaylist:(id)a3 lastResponse:(id)a4 shuffled:(BOOL)a5 playActivityFeatureName:(id)a6;
-- (void)initiatePlaybackForPlaylistEntry:(id)a3 lastResponse:(id)a4 shuffled:(BOOL)a5 forceScopingToResponseResults:(BOOL)a6 playActivityFeatureName:(id)a7;
-- (void)initiatePlaybackForSong:(id)a3 sectionKind:(id)a4 lastResponse:(id)a5 shuffled:(BOOL)a6 forceScopingToResponseResults:(BOOL)a7 playActivityFeatureName:(id)a8;
-- (void)initiateRadioPlaybackForArtist:(id)a3 playActivityFeatureName:(id)a4;
+- (id)playbackRequestForAlbum:(id)album;
+- (id)playbackRequestForPlaylist:(id)playlist;
+- (void)_initiatePlaybackAndPushNPViewControllerForPlaybackRequest:(id)request startItemIdentifiers:(id)identifiers shuffle:(BOOL)shuffle playActivityFeatureName:(id)name;
+- (void)_initiatePlaybackForItemKind:(id)kind sectionKind:(id)sectionKind object:(id)object lastResponse:(id)response shuffled:(BOOL)shuffled forceScopingToResponseResults:(BOOL)results playActivityFeatureName:(id)name;
+- (void)initiatePlaybackForAlbum:(id)album lastResponse:(id)response shuffled:(BOOL)shuffled playActivityFeatureName:(id)name;
+- (void)initiatePlaybackForGenre:(id)genre lastResponse:(id)response shuffled:(BOOL)shuffled playActivityFeatureName:(id)name;
+- (void)initiatePlaybackForPerson:(id)person lastResponse:(id)response shuffled:(BOOL)shuffled playActivityFeatureName:(id)name;
+- (void)initiatePlaybackForPlaylist:(id)playlist lastResponse:(id)response shuffled:(BOOL)shuffled playActivityFeatureName:(id)name;
+- (void)initiatePlaybackForPlaylistEntry:(id)entry lastResponse:(id)response shuffled:(BOOL)shuffled forceScopingToResponseResults:(BOOL)results playActivityFeatureName:(id)name;
+- (void)initiatePlaybackForSong:(id)song sectionKind:(id)kind lastResponse:(id)response shuffled:(BOOL)shuffled forceScopingToResponseResults:(BOOL)results playActivityFeatureName:(id)name;
+- (void)initiateRadioPlaybackForArtist:(id)artist playActivityFeatureName:(id)name;
 @end
 
 @implementation MCDLibraryPlaybackManager
 
-- (void)_initiatePlaybackForItemKind:(id)a3 sectionKind:(id)a4 object:(id)a5 lastResponse:(id)a6 shuffled:(BOOL)a7 forceScopingToResponseResults:(BOOL)a8 playActivityFeatureName:(id)a9
+- (void)_initiatePlaybackForItemKind:(id)kind sectionKind:(id)sectionKind object:(id)object lastResponse:(id)response shuffled:(BOOL)shuffled forceScopingToResponseResults:(BOOL)results playActivityFeatureName:(id)name
 {
-  v9 = a8;
-  v10 = a7;
-  v14 = a3;
-  v15 = a6;
-  v16 = a9;
-  v17 = a5;
-  v18 = a4;
+  resultsCopy = results;
+  shuffledCopy = shuffled;
+  kindCopy = kind;
+  responseCopy = response;
+  nameCopy = name;
+  objectCopy = object;
+  sectionKindCopy = sectionKind;
   v19 = objc_alloc_init(MPModelLibraryRequest);
-  [v19 setItemKind:v14];
-  [v19 setSectionKind:v18];
+  [v19 setItemKind:kindCopy];
+  [v19 setSectionKind:sectionKindCopy];
 
-  if (!v15)
+  if (!responseCopy)
   {
-    v20 = [v17 identifiers];
-    v38 = v20;
-    v28 = [NSArray arrayWithObjects:&v38 count:1];
-    [v19 setAllowedItemIdentifiers:v28];
+    identifiers = [objectCopy identifiers];
+    v38 = identifiers;
+    scopedContainers2 = [NSArray arrayWithObjects:&v38 count:1];
+    [v19 setAllowedItemIdentifiers:scopedContainers2];
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v34 = v10;
-  v20 = [v15 request];
-  v21 = [v20 scopedContainers];
-  v22 = [v21 firstObject];
+  v34 = shuffledCopy;
+  identifiers = [responseCopy request];
+  scopedContainers = [identifiers scopedContainers];
+  firstObject = [scopedContainers firstObject];
 
-  if (v22)
+  if (firstObject)
   {
-    v23 = [v20 itemSortDescriptors];
-    [v19 setItemSortDescriptors:v23];
+    itemSortDescriptors = [identifiers itemSortDescriptors];
+    [v19 setItemSortDescriptors:itemSortDescriptors];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -61,115 +61,115 @@ LABEL_10:
 
     else
     {
-      v32 = [v20 sectionKind];
-      [v19 setSectionKind:v32];
+      sectionKind = [identifiers sectionKind];
+      [v19 setSectionKind:sectionKind];
     }
 
-    v10 = v34;
-    v28 = [v20 scopedContainers];
-    [v19 setScopedContainers:v28];
+    shuffledCopy = v34;
+    scopedContainers2 = [identifiers scopedContainers];
+    [v19 setScopedContainers:scopedContainers2];
     goto LABEL_10;
   }
 
-  if (!v9)
+  if (!resultsCopy)
   {
-    v10 = v34;
+    shuffledCopy = v34;
     if (v34)
     {
       goto LABEL_11;
     }
 
-    v28 = [v20 itemSortDescriptors];
-    [v19 setItemSortDescriptors:v28];
+    scopedContainers2 = [identifiers itemSortDescriptors];
+    [v19 setItemSortDescriptors:scopedContainers2];
     goto LABEL_10;
   }
 
   v29 = +[NSMutableArray array];
-  v30 = [v15 results];
+  results = [responseCopy results];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_1001026A4;
   v36[3] = &unk_101098778;
   v37 = v29;
   v31 = v29;
-  [v30 enumerateItemIdentifiersUsingBlock:v36];
+  [results enumerateItemIdentifiersUsingBlock:v36];
 
   [v19 setScopedContainers:v31];
-  v10 = v34;
+  shuffledCopy = v34;
 LABEL_11:
 
-  v33 = [v17 identifiers];
+  identifiers2 = [objectCopy identifiers];
 
-  [(MCDLibraryPlaybackManager *)self _initiatePlaybackAndPushNPViewControllerForPlaybackRequest:v19 startItemIdentifiers:v33 shuffle:v10 playActivityFeatureName:v16];
+  [(MCDLibraryPlaybackManager *)self _initiatePlaybackAndPushNPViewControllerForPlaybackRequest:v19 startItemIdentifiers:identifiers2 shuffle:shuffledCopy playActivityFeatureName:nameCopy];
 }
 
-- (void)initiatePlaybackForSong:(id)a3 sectionKind:(id)a4 lastResponse:(id)a5 shuffled:(BOOL)a6 forceScopingToResponseResults:(BOOL)a7 playActivityFeatureName:(id)a8
+- (void)initiatePlaybackForSong:(id)song sectionKind:(id)kind lastResponse:(id)response shuffled:(BOOL)shuffled forceScopingToResponseResults:(BOOL)results playActivityFeatureName:(id)name
 {
-  v8 = a7;
-  v9 = a6;
-  v14 = a8;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  resultsCopy = results;
+  shuffledCopy = shuffled;
+  nameCopy = name;
+  responseCopy = response;
+  kindCopy = kind;
+  songCopy = song;
   v18 = [MPModelSong kindWithVariants:3];
-  [(MCDLibraryPlaybackManager *)self _initiatePlaybackForItemKind:v18 sectionKind:v16 object:v17 lastResponse:v15 shuffled:v9 forceScopingToResponseResults:v8 playActivityFeatureName:v14];
+  [(MCDLibraryPlaybackManager *)self _initiatePlaybackForItemKind:v18 sectionKind:kindCopy object:songCopy lastResponse:responseCopy shuffled:shuffledCopy forceScopingToResponseResults:resultsCopy playActivityFeatureName:nameCopy];
 }
 
-- (void)initiatePlaybackForPlaylistEntry:(id)a3 lastResponse:(id)a4 shuffled:(BOOL)a5 forceScopingToResponseResults:(BOOL)a6 playActivityFeatureName:(id)a7
+- (void)initiatePlaybackForPlaylistEntry:(id)entry lastResponse:(id)response shuffled:(BOOL)shuffled forceScopingToResponseResults:(BOOL)results playActivityFeatureName:(id)name
 {
-  v7 = a6;
-  v8 = a5;
-  v12 = a7;
-  v13 = a4;
-  v14 = a3;
+  resultsCopy = results;
+  shuffledCopy = shuffled;
+  nameCopy = name;
+  responseCopy = response;
+  entryCopy = entry;
   v15 = [MPModelSong kindWithVariants:3];
   v18 = v15;
   v16 = [NSArray arrayWithObjects:&v18 count:1];
   v17 = [MPModelPlaylistEntry kindWithKinds:v16];
 
-  [(MCDLibraryPlaybackManager *)self _initiatePlaybackForItemKind:v17 object:v14 lastResponse:v13 shuffled:v8 forceScopingToResponseResults:v7 playActivityFeatureName:v12];
+  [(MCDLibraryPlaybackManager *)self _initiatePlaybackForItemKind:v17 object:entryCopy lastResponse:responseCopy shuffled:shuffledCopy forceScopingToResponseResults:resultsCopy playActivityFeatureName:nameCopy];
 }
 
-- (void)initiatePlaybackForPerson:(id)a3 lastResponse:(id)a4 shuffled:(BOOL)a5 playActivityFeatureName:(id)a6
+- (void)initiatePlaybackForPerson:(id)person lastResponse:(id)response shuffled:(BOOL)shuffled playActivityFeatureName:(id)name
 {
-  v6 = a5;
-  v9 = a6;
-  v10 = a3;
+  shuffledCopy = shuffled;
+  nameCopy = name;
+  personCopy = person;
   v11 = objc_alloc_init(MPModelLibraryRequest);
   v12 = [MPModelSong kindWithVariants:1];
   [v11 setItemKind:v12];
 
-  v14 = v10;
+  v14 = personCopy;
   v13 = [NSArray arrayWithObjects:&v14 count:1];
 
   [v11 setScopedContainers:v13];
-  [(MCDLibraryPlaybackManager *)self _initiatePlaybackAndPushNPViewControllerForPlaybackRequest:v11 startItemIdentifiers:0 shuffle:v6 playActivityFeatureName:v9];
+  [(MCDLibraryPlaybackManager *)self _initiatePlaybackAndPushNPViewControllerForPlaybackRequest:v11 startItemIdentifiers:0 shuffle:shuffledCopy playActivityFeatureName:nameCopy];
 }
 
-- (void)initiatePlaybackForGenre:(id)a3 lastResponse:(id)a4 shuffled:(BOOL)a5 playActivityFeatureName:(id)a6
+- (void)initiatePlaybackForGenre:(id)genre lastResponse:(id)response shuffled:(BOOL)shuffled playActivityFeatureName:(id)name
 {
-  v6 = a5;
-  v9 = a6;
-  v10 = a3;
+  shuffledCopy = shuffled;
+  nameCopy = name;
+  genreCopy = genre;
   v11 = objc_alloc_init(MPModelLibraryRequest);
   v12 = [MPModelSong kindWithVariants:1];
   [v11 setItemKind:v12];
 
-  v14 = v10;
+  v14 = genreCopy;
   v13 = [NSArray arrayWithObjects:&v14 count:1];
 
   [v11 setScopedContainers:v13];
-  [(MCDLibraryPlaybackManager *)self _initiatePlaybackAndPushNPViewControllerForPlaybackRequest:v11 startItemIdentifiers:0 shuffle:v6 playActivityFeatureName:v9];
+  [(MCDLibraryPlaybackManager *)self _initiatePlaybackAndPushNPViewControllerForPlaybackRequest:v11 startItemIdentifiers:0 shuffle:shuffledCopy playActivityFeatureName:nameCopy];
 }
 
-- (id)playbackRequestForAlbum:(id)a3
+- (id)playbackRequestForAlbum:(id)album
 {
-  v3 = a3;
+  albumCopy = album;
   v4 = objc_alloc_init(MPModelLibraryRequest);
   v5 = [MPModelSong kindWithVariants:3];
   [v4 setItemKind:v5];
 
-  v13 = v3;
+  v13 = albumCopy;
   v6 = [NSArray arrayWithObjects:&v13 count:1];
   [v4 setScopedContainers:v6];
 
@@ -186,17 +186,17 @@ LABEL_11:
   return v4;
 }
 
-- (void)initiatePlaybackForAlbum:(id)a3 lastResponse:(id)a4 shuffled:(BOOL)a5 playActivityFeatureName:(id)a6
+- (void)initiatePlaybackForAlbum:(id)album lastResponse:(id)response shuffled:(BOOL)shuffled playActivityFeatureName:(id)name
 {
-  v6 = a5;
-  v9 = a6;
-  v10 = [(MCDLibraryPlaybackManager *)self playbackRequestForAlbum:a3];
-  [(MCDLibraryPlaybackManager *)self _initiatePlaybackAndPushNPViewControllerForPlaybackRequest:v10 startItemIdentifiers:0 shuffle:v6 playActivityFeatureName:v9];
+  shuffledCopy = shuffled;
+  nameCopy = name;
+  v10 = [(MCDLibraryPlaybackManager *)self playbackRequestForAlbum:album];
+  [(MCDLibraryPlaybackManager *)self _initiatePlaybackAndPushNPViewControllerForPlaybackRequest:v10 startItemIdentifiers:0 shuffle:shuffledCopy playActivityFeatureName:nameCopy];
 }
 
-- (id)playbackRequestForPlaylist:(id)a3
+- (id)playbackRequestForPlaylist:(id)playlist
 {
-  v3 = a3;
+  playlistCopy = playlist;
   v4 = objc_alloc_init(MPModelLibraryRequest);
   v5 = [MPModelSong kindWithVariants:3];
   v6 = [MPModelTVEpisode kindWithVariants:3];
@@ -208,38 +208,38 @@ LABEL_11:
   v9 = [MPModelPlaylist kindWithVariants:215 playlistEntryKind:v8 options:0];
   [v4 setSectionKind:v9];
   [v4 setItemKind:v8];
-  v13 = v3;
+  v13 = playlistCopy;
   v10 = [NSArray arrayWithObjects:&v13 count:1];
   [v4 setScopedContainers:v10];
 
-  v11 = [v3 preferredTracklistSortDescriptors];
+  preferredTracklistSortDescriptors = [playlistCopy preferredTracklistSortDescriptors];
 
-  [v4 setItemSortDescriptors:v11];
+  [v4 setItemSortDescriptors:preferredTracklistSortDescriptors];
 
   return v4;
 }
 
-- (void)initiatePlaybackForPlaylist:(id)a3 lastResponse:(id)a4 shuffled:(BOOL)a5 playActivityFeatureName:(id)a6
+- (void)initiatePlaybackForPlaylist:(id)playlist lastResponse:(id)response shuffled:(BOOL)shuffled playActivityFeatureName:(id)name
 {
-  v6 = a5;
-  v9 = a6;
-  v10 = [(MCDLibraryPlaybackManager *)self playbackRequestForPlaylist:a3];
-  [(MCDLibraryPlaybackManager *)self _initiatePlaybackAndPushNPViewControllerForPlaybackRequest:v10 startItemIdentifiers:0 shuffle:v6 playActivityFeatureName:v9];
+  shuffledCopy = shuffled;
+  nameCopy = name;
+  v10 = [(MCDLibraryPlaybackManager *)self playbackRequestForPlaylist:playlist];
+  [(MCDLibraryPlaybackManager *)self _initiatePlaybackAndPushNPViewControllerForPlaybackRequest:v10 startItemIdentifiers:0 shuffle:shuffledCopy playActivityFeatureName:nameCopy];
 }
 
-- (void)initiateRadioPlaybackForArtist:(id)a3 playActivityFeatureName:(id)a4
+- (void)initiateRadioPlaybackForArtist:(id)artist playActivityFeatureName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MPCPlaybackIntent radioPlaybackIntentFromArtist:v6];
-  [v8 setPlayActivityFeatureName:v7];
+  artistCopy = artist;
+  nameCopy = name;
+  v8 = [MPCPlaybackIntent radioPlaybackIntentFromArtist:artistCopy];
+  [v8 setPlayActivityFeatureName:nameCopy];
 
   v9 = MCDMusicGeneralLogging();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 name];
+    name = [artistCopy name];
     *buf = 138543362;
-    v15 = v10;
+    v15 = name;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Initiating radio playback for artist: %{public}@", buf, 0xCu);
   }
 
@@ -253,25 +253,25 @@ LABEL_11:
   [(MCDPlaybackManager *)self setupPlaybackRequestWithCompletion:v12];
 }
 
-- (void)_initiatePlaybackAndPushNPViewControllerForPlaybackRequest:(id)a3 startItemIdentifiers:(id)a4 shuffle:(BOOL)a5 playActivityFeatureName:(id)a6
+- (void)_initiatePlaybackAndPushNPViewControllerForPlaybackRequest:(id)request startItemIdentifiers:(id)identifiers shuffle:(BOOL)shuffle playActivityFeatureName:(id)name
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  shuffleCopy = shuffle;
+  requestCopy = request;
+  identifiersCopy = identifiers;
+  nameCopy = name;
   if ([(MCDPlaybackManager *)self localContentOnly])
   {
-    [v10 setFilteringOptions:{objc_msgSend(v10, "filteringOptions") | 2}];
+    [requestCopy setFilteringOptions:{objc_msgSend(requestCopy, "filteringOptions") | 2}];
   }
 
   if ([(MCDPlaybackManager *)self favoriteContentOnly])
   {
-    [v10 setFilteringOptions:{objc_msgSend(v10, "filteringOptions") | 0x200000}];
+    [requestCopy setFilteringOptions:{objc_msgSend(requestCopy, "filteringOptions") | 0x200000}];
   }
 
-  v13 = [v10 playbackIntentWithStartItemIdentifiers:v11];
+  v13 = [requestCopy playbackIntentWithStartItemIdentifiers:identifiersCopy];
   v14 = v13;
-  if (v7)
+  if (shuffleCopy)
   {
     v15 = 1;
   }
@@ -282,7 +282,7 @@ LABEL_11:
   }
 
   [v13 setShuffleMode:v15];
-  [v14 setPlayActivityFeatureName:v12];
+  [v14 setPlayActivityFeatureName:nameCopy];
 
   v16 = MCDMusicGeneralLogging();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))

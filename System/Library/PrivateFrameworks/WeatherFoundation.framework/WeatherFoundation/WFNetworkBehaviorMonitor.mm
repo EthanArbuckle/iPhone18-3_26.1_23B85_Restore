@@ -1,9 +1,9 @@
 @interface WFNetworkBehaviorMonitor
 + (id)sharedInstance;
 - (WFNetworkBehaviorMonitor)init;
-- (void)addObserver:(id)a3;
-- (void)logNetworkEvent:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)logNetworkEvent:(id)event;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation WFNetworkBehaviorMonitor
@@ -42,16 +42,16 @@ uint64_t __42__WFNetworkBehaviorMonitor_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)logNetworkEvent:(id)a3
+- (void)logNetworkEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__WFNetworkBehaviorMonitor_logNetworkEvent___block_invoke;
   v6[3] = &unk_279E6EA40;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = eventCopy;
+  v5 = eventCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -89,18 +89,18 @@ void __44__WFNetworkBehaviorMonitor_logNetworkEvent___block_invoke(uint64_t a1)
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(WFNetworkBehaviorMonitor *)self observers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  observers = [(WFNetworkBehaviorMonitor *)self observers];
+  [observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(WFNetworkBehaviorMonitor *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(WFNetworkBehaviorMonitor *)self observers];
+  [observers removeObject:observerCopy];
 }
 
 @end

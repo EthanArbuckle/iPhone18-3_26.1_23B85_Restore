@@ -1,11 +1,11 @@
 @interface DOCTagsCollectionViewData
 - (_TtC26DocumentManagerExecutables25DOCTagsCollectionViewData)init;
 - (_TtP26DocumentManagerExecutables33DOCTagsCollectionViewDataDelegate_)delegate;
-- (id)tagAtIndex:(int64_t)a3;
-- (int64_t)indexOfTag:(id)a3;
-- (int64_t)presenceOf:(id)a3;
-- (void)applyPendingExternalChange:(id)a3 timeout:(double)a4;
-- (void)applyTagsFromNodes:(id)a3;
+- (id)tagAtIndex:(int64_t)index;
+- (int64_t)indexOfTag:(id)tag;
+- (int64_t)presenceOf:(id)of;
+- (void)applyPendingExternalChange:(id)change timeout:(double)timeout;
+- (void)applyTagsFromNodes:(id)nodes;
 @end
 
 @implementation DOCTagsCollectionViewData
@@ -18,43 +18,43 @@
   return Strong;
 }
 
-- (void)applyTagsFromNodes:(id)a3
+- (void)applyTagsFromNodes:(id)nodes
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&_sSo7DOCNode_pMd);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   DOCTagsCollectionViewData.applyTagsFromNodes(_:)(v4);
 }
 
-- (void)applyPendingExternalChange:(id)a3 timeout:(double)a4
+- (void)applyPendingExternalChange:(id)change timeout:(double)timeout
 {
-  v5 = a3;
-  v6 = self;
-  DOCTagsCollectionViewData.applyPendingExternalChange(_:timeout:)(v5);
+  changeCopy = change;
+  selfCopy = self;
+  DOCTagsCollectionViewData.applyPendingExternalChange(_:timeout:)(changeCopy);
 }
 
-- (id)tagAtIndex:(int64_t)a3
+- (id)tagAtIndex:(int64_t)index
 {
-  v4 = self;
-  v5 = DOCTagsCollectionViewData.tag(atIndex:)(a3);
+  selfCopy = self;
+  v5 = DOCTagsCollectionViewData.tag(atIndex:)(index);
 
   return v5;
 }
 
-- (int64_t)indexOfTag:(id)a3
+- (int64_t)indexOfTag:(id)tag
 {
-  v4 = a3;
-  v5 = self;
-  v6 = DOCTagsCollectionViewData.index(ofTag:)(v4);
+  tagCopy = tag;
+  selfCopy = self;
+  v6 = DOCTagsCollectionViewData.index(ofTag:)(tagCopy);
 
   return v6;
 }
 
-- (int64_t)presenceOf:(id)a3
+- (int64_t)presenceOf:(id)of
 {
-  v4 = a3;
-  v5 = self;
-  v6 = DOCTagsCollectionViewData.presence(of:)(v4);
+  ofCopy = of;
+  selfCopy = self;
+  v6 = DOCTagsCollectionViewData.presence(of:)(ofCopy);
 
   return v6;
 }

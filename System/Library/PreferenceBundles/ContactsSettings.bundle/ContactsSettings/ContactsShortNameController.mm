@@ -4,10 +4,10 @@
 - (id)shortNameFormat;
 - (id)specifiers;
 - (void)provideSettingsNavigationDonation;
-- (void)setPreferNicknames:(id)a3;
-- (void)setShortNameEnabled:(id)a3;
-- (void)setShortNameFormat:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setPreferNicknames:(id)nicknames;
+- (void)setShortNameEnabled:(id)enabled;
+- (void)setShortNameFormat:(id)format;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -23,12 +23,12 @@
   [(ContactsShortNameController *)self setTitle:v4];
 }
 
-- (void)setShortNameEnabled:(id)a3
+- (void)setShortNameEnabled:(id)enabled
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   ABPersonSetShortNameFormatEnabled();
   shortNameFormatsSpecifiers = self->_shortNameFormatsSpecifiers;
-  if (v4)
+  if (bOOLValue)
   {
     shortNameEnabledSpecifier = self->_shortNameEnabledSpecifier;
 
@@ -49,11 +49,11 @@
   return [NSNumber numberWithBool:ShortNameFormatEnabled];
 }
 
-- (void)setShortNameFormat:(id)a3
+- (void)setShortNameFormat:(id)format
 {
-  v3 = [a3 intValue];
+  intValue = [format intValue];
 
-  _ABPersonSetShortNameFormat(v3);
+  _ABPersonSetShortNameFormat(intValue);
 }
 
 - (id)shortNameFormat
@@ -63,11 +63,11 @@
   return [NSNumber numberWithInt:ShortNameFormat];
 }
 
-- (void)setPreferNicknames:(id)a3
+- (void)setPreferNicknames:(id)nicknames
 {
-  v3 = [a3 BOOLValue];
+  bOOLValue = [nicknames BOOLValue];
 
-  _ABPersonSetShortNamePreferNicknames(v3);
+  _ABPersonSetShortNamePreferNicknames(bOOLValue);
 }
 
 - (id)preferNicknames
@@ -168,10 +168,10 @@
     }
 
     [(NSMutableArray *)self->_shortNameFormatsSpecifiers addObject:v34];
-    v36 = [(ContactsShortNameController *)self shortNameEnabled];
-    v37 = [v36 BOOLValue];
+    shortNameEnabled = [(ContactsShortNameController *)self shortNameEnabled];
+    bOOLValue = [shortNameEnabled BOOLValue];
 
-    if (v37)
+    if (bOOLValue)
     {
       [v50 addObjectsFromArray:self->_shortNameFormatsSpecifiers];
     }
@@ -200,21 +200,21 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = ContactsShortNameController;
-  [(ContactsShortNameController *)&v12 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [v6 section];
+  [(ContactsShortNameController *)&v12 tableView:view didSelectRowAtIndexPath:pathCopy];
+  section = [pathCopy section];
   v8 = [(ContactsShortNameController *)self indexPathForIndex:[(ContactsShortNameController *)self indexOfSpecifier:self->_shortNameFormatsGroup]];
-  v9 = [v8 section];
+  section2 = [v8 section];
 
-  if (v7 == v9)
+  if (section == section2)
   {
-    v10 = [(ContactsShortNameController *)self specifierAtIndex:[(ContactsShortNameController *)self indexForIndexPath:v6]];
-    v11 = [v10 userInfo];
-    [(ContactsShortNameController *)self setShortNameFormat:v11];
+    v10 = [(ContactsShortNameController *)self specifierAtIndex:[(ContactsShortNameController *)self indexForIndexPath:pathCopy]];
+    userInfo = [v10 userInfo];
+    [(ContactsShortNameController *)self setShortNameFormat:userInfo];
 
     [(PSSpecifier *)self->_shortNameFormatsGroup setProperty:v10 forKey:PSRadioGroupCheckedSpecifierKey];
   }
@@ -226,20 +226,20 @@
   v3 = [_NSLocalizedStringResource alloc];
   v4 = +[NSLocale currentLocale];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [v5 bundleURL];
-  v7 = [v3 initWithKey:@"Short Name" table:@"Contacts" locale:v4 bundleURL:v6];
+  bundleURL = [v5 bundleURL];
+  v7 = [v3 initWithKey:@"Short Name" table:@"Contacts" locale:v4 bundleURL:bundleURL];
 
   v8 = [_NSLocalizedStringResource alloc];
   v9 = +[NSLocale currentLocale];
   v10 = [NSBundle bundleForClass:objc_opt_class()];
-  v11 = [v10 bundleURL];
-  v12 = [v8 initWithKey:@"CONTACTS" table:@"Contacts" locale:v9 bundleURL:v11];
+  bundleURL2 = [v10 bundleURL];
+  v12 = [v8 initWithKey:@"CONTACTS" table:@"Contacts" locale:v9 bundleURL:bundleURL2];
 
   v13 = [_NSLocalizedStringResource alloc];
   v14 = +[NSLocale currentLocale];
   v15 = [NSBundle bundleForClass:objc_opt_class()];
-  v16 = [v15 bundleURL];
-  v17 = [v13 initWithKey:@"Short Name" table:@"Contacts" locale:v14 bundleURL:v16];
+  bundleURL3 = [v15 bundleURL];
+  v17 = [v13 initWithKey:@"Short Name" table:@"Contacts" locale:v14 bundleURL:bundleURL3];
 
   v20[0] = v12;
   v20[1] = v17;

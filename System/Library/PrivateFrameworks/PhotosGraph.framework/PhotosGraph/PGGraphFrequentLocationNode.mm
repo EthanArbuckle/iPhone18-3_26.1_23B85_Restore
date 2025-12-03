@@ -2,14 +2,14 @@
 + (id)addressOfFrequentLocation;
 + (id)filter;
 + (id)momentOfFrequentLocation;
-- (BOOL)hasProperties:(id)a3;
+- (BOOL)hasProperties:(id)properties;
 - (NSDate)universalEndDate;
 - (NSDate)universalStartDate;
 - (NSString)description;
 - (NSString)featureIdentifier;
 - (PGGraphAddressNode)addressNode;
-- (PGGraphFrequentLocationNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
-- (PGGraphFrequentLocationNode)initWithUniversalDateInterval:(id)a3;
+- (PGGraphFrequentLocationNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
+- (PGGraphFrequentLocationNode)initWithUniversalDateInterval:(id)interval;
 - (PGGraphFrequentLocationNodeCollection)collection;
 - (id)propertyDictionary;
 - (unint64_t)numberOfMomentNodes;
@@ -22,9 +22,9 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PGGraphFrequentLocationNode *)self universalStartDate];
-  v7 = [(PGGraphFrequentLocationNode *)self universalEndDate];
-  v8 = [v3 stringWithFormat:@"%@|%@|%@", v5, v6, v7];
+  universalStartDate = [(PGGraphFrequentLocationNode *)self universalStartDate];
+  universalEndDate = [(PGGraphFrequentLocationNode *)self universalEndDate];
+  v8 = [v3 stringWithFormat:@"%@|%@|%@", v5, universalStartDate, universalEndDate];
 
   return v8;
 }
@@ -38,54 +38,54 @@
 
 - (NSString)description
 {
-  v3 = [(PGGraphFrequentLocationNode *)self addressNode];
-  [v3 coordinate];
+  addressNode = [(PGGraphFrequentLocationNode *)self addressNode];
+  [addressNode coordinate];
   v5 = v4;
   v7 = v6;
-  v8 = [(PGGraphFrequentLocationNode *)self universalDateInterval];
-  v9 = [v3 keywordDescription];
+  universalDateInterval = [(PGGraphFrequentLocationNode *)self universalDateInterval];
+  keywordDescription = [addressNode keywordDescription];
   v10 = MEMORY[0x277CCACA8];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
-  v13 = [v8 startDate];
-  v14 = [v8 endDate];
-  v15 = [v10 stringWithFormat:@"%@ ([%@ - %@] %@ <%f, %f> %zu moments)", v12, v13, v14, v9, v5, v7, -[PGGraphFrequentLocationNode numberOfMomentNodes](self, "numberOfMomentNodes")];
+  startDate = [universalDateInterval startDate];
+  endDate = [universalDateInterval endDate];
+  v15 = [v10 stringWithFormat:@"%@ ([%@ - %@] %@ <%f, %f> %zu moments)", v12, startDate, endDate, keywordDescription, v5, v7, -[PGGraphFrequentLocationNode numberOfMomentNodes](self, "numberOfMomentNodes")];
 
   return v15;
 }
 
 - (unint64_t)numberOfMomentNodes
 {
-  v2 = [(PGGraphFrequentLocationNode *)self collection];
-  v3 = [v2 momentNodes];
-  v4 = [v3 count];
+  collection = [(PGGraphFrequentLocationNode *)self collection];
+  momentNodes = [collection momentNodes];
+  v4 = [momentNodes count];
 
   return v4;
 }
 
 - (PGGraphAddressNode)addressNode
 {
-  v2 = [(PGGraphFrequentLocationNode *)self collection];
-  v3 = [v2 addressNodes];
-  v4 = [v3 anyNode];
+  collection = [(PGGraphFrequentLocationNode *)self collection];
+  addressNodes = [collection addressNodes];
+  anyNode = [addressNodes anyNode];
 
-  return v4;
+  return anyNode;
 }
 
 - (NSDate)universalEndDate
 {
-  v2 = [(PGGraphFrequentLocationNode *)self universalDateInterval];
-  v3 = [v2 endDate];
+  universalDateInterval = [(PGGraphFrequentLocationNode *)self universalDateInterval];
+  endDate = [universalDateInterval endDate];
 
-  return v3;
+  return endDate;
 }
 
 - (NSDate)universalStartDate
 {
-  v2 = [(PGGraphFrequentLocationNode *)self universalDateInterval];
-  v3 = [v2 startDate];
+  universalDateInterval = [(PGGraphFrequentLocationNode *)self universalDateInterval];
+  startDate = [universalDateInterval startDate];
 
-  return v3;
+  return startDate;
 }
 
 - (id)propertyDictionary
@@ -93,14 +93,14 @@
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"universalStartDate";
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(NSDateInterval *)self->_universalDateInterval startDate];
-  [v4 timeIntervalSinceReferenceDate];
+  startDate = [(NSDateInterval *)self->_universalDateInterval startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v5 = [v3 numberWithDouble:?];
   v12[1] = @"universalEndDate";
   v13[0] = v5;
   v6 = MEMORY[0x277CCABB0];
-  v7 = [(NSDateInterval *)self->_universalDateInterval endDate];
-  [v7 timeIntervalSinceReferenceDate];
+  endDate = [(NSDateInterval *)self->_universalDateInterval endDate];
+  [endDate timeIntervalSinceReferenceDate];
   v8 = [v6 numberWithDouble:?];
   v13[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
@@ -110,11 +110,11 @@
   return v9;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ![v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (!propertiesCopy || ![propertiesCopy count])
   {
     goto LABEL_8;
   }
@@ -128,8 +128,8 @@
   v7 = v6;
   [v6 doubleValue];
   v9 = v8;
-  v10 = [(NSDateInterval *)self->_universalDateInterval startDate];
-  [v10 timeIntervalSinceReferenceDate];
+  startDate = [(NSDateInterval *)self->_universalDateInterval startDate];
+  [startDate timeIntervalSinceReferenceDate];
   v12 = v11;
 
   if (v9 == v12)
@@ -141,8 +141,8 @@ LABEL_6:
       v15 = v14;
       [v14 doubleValue];
       v17 = v16;
-      v18 = [(NSDateInterval *)self->_universalDateInterval endDate];
-      [v18 timeIntervalSinceReferenceDate];
+      endDate = [(NSDateInterval *)self->_universalDateInterval endDate];
+      [endDate timeIntervalSinceReferenceDate];
       v13 = v17 == v19;
 
       goto LABEL_9;
@@ -159,14 +159,14 @@ LABEL_9:
   return v13;
 }
 
-- (PGGraphFrequentLocationNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (PGGraphFrequentLocationNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v6 = a5;
-  v7 = [v6 objectForKeyedSubscript:@"universalStartDate"];
+  propertiesCopy = properties;
+  v7 = [propertiesCopy objectForKeyedSubscript:@"universalStartDate"];
   [v7 doubleValue];
   v9 = v8;
 
-  v10 = [v6 objectForKeyedSubscript:@"universalEndDate"];
+  v10 = [propertiesCopy objectForKeyedSubscript:@"universalEndDate"];
 
   [v10 doubleValue];
   v12 = v11;
@@ -179,16 +179,16 @@ LABEL_9:
   return v16;
 }
 
-- (PGGraphFrequentLocationNode)initWithUniversalDateInterval:(id)a3
+- (PGGraphFrequentLocationNode)initWithUniversalDateInterval:(id)interval
 {
-  v5 = a3;
+  intervalCopy = interval;
   v9.receiver = self;
   v9.super_class = PGGraphFrequentLocationNode;
   v6 = [(PGGraphNode *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_universalDateInterval, a3);
+    objc_storeStrong(&v6->_universalDateInterval, interval);
   }
 
   return v7;
@@ -197,17 +197,17 @@ LABEL_9:
 + (id)momentOfFrequentLocation
 {
   v2 = +[PGGraphFrequentLocationInEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
 + (id)addressOfFrequentLocation
 {
   v2 = +[PGGraphFrequentLocationAtEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (id)filter

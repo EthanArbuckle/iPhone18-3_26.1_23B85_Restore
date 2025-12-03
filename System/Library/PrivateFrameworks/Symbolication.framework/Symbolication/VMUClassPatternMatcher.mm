@@ -1,20 +1,20 @@
 @interface VMUClassPatternMatcher
-- (BOOL)_matchesClassInfo:(id)a3;
-- (BOOL)_parseMallocSizePattern:(id)a3 error:(id *)a4;
-- (BOOL)_regex:(id *)a3 matchesName:(id)a4;
-- (BOOL)matchesNodeDetails:(id)a3 orNodeDescription:(id)a4;
-- (VMUClassPatternMatcher)initWithPattern:(id)a3 forArgument:(id)a4 error:(id *)a5;
+- (BOOL)_matchesClassInfo:(id)info;
+- (BOOL)_parseMallocSizePattern:(id)pattern error:(id *)error;
+- (BOOL)_regex:(id *)_regex matchesName:(id)name;
+- (BOOL)matchesNodeDetails:(id)details orNodeDescription:(id)description;
+- (VMUClassPatternMatcher)initWithPattern:(id)pattern forArgument:(id)argument error:(id *)error;
 - (void)dealloc;
-- (void)setMatchingKindOfClass:(BOOL)a3;
+- (void)setMatchingKindOfClass:(BOOL)class;
 @end
 
 @implementation VMUClassPatternMatcher
 
-- (void)setMatchingKindOfClass:(BOOL)a3
+- (void)setMatchingKindOfClass:(BOOL)class
 {
-  if (self->_matchingKindOfClass != a3)
+  if (self->_matchingKindOfClass != class)
   {
-    self->_matchingKindOfClass = a3;
+    self->_matchingKindOfClass = class;
     memoizedRegexResult = self->_memoizedRegexResult;
     if (memoizedRegexResult)
     {
@@ -23,61 +23,61 @@
   }
 }
 
-- (VMUClassPatternMatcher)initWithPattern:(id)a3 forArgument:(id)a4 error:(id *)a5
+- (VMUClassPatternMatcher)initWithPattern:(id)pattern forArgument:(id)argument error:(id *)error
 {
   v52 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  patternCopy = pattern;
+  argumentCopy = argument;
+  if (patternCopy)
   {
     v50.receiver = self;
     v50.super_class = VMUClassPatternMatcher;
     self = [(VMUClassPatternMatcher *)&v50 init];
     if (self)
     {
-      if (!v9)
+      if (!argumentCopy)
       {
-        v9 = &stru_1F461F9C8;
+        argumentCopy = &stru_1F461F9C8;
       }
 
-      v10 = [MEMORY[0x1E696AD48] letterCharacterSet];
-      objc_msgSend(v10, "addCharactersInString:", @"_.([@");
-      if ([(__CFString *)v8 rangeOfCharacterFromSet:v10])
+      letterCharacterSet = [MEMORY[0x1E696AD48] letterCharacterSet];
+      objc_msgSend(letterCharacterSet, "addCharactersInString:", @"_.([@");
+      if ([(__CFString *)patternCopy rangeOfCharacterFromSet:letterCharacterSet])
       {
-        if (!a5)
+        if (!error)
         {
 LABEL_9:
 
-          v17 = 0;
+          selfCopy = 0;
 LABEL_24:
 
           goto LABEL_25;
         }
 
-        VMUOptionParserError(-1, @"error in %@ <classes> pattern '%@' - cannot match the start of a class name", v11, v12, v13, v14, v15, v16, v9);
-        *a5 = LABEL_8:;
+        VMUOptionParserError(-1, @"error in %@ <classes> pattern '%@' - cannot match the start of a class name", v11, v12, v13, v14, v15, v16, argumentCopy);
+        *error = LABEL_8:;
         goto LABEL_9;
       }
 
-      if ([(__CFString *)v8 hasSuffix:@"]"])
+      if ([(__CFString *)patternCopy hasSuffix:@"]"])
       {
-        v18 = [(__CFString *)v8 rangeOfString:@"[" options:4];
+        v18 = [(__CFString *)patternCopy rangeOfString:@"[" options:4];
         if (!v25)
         {
-          if (!a5)
+          if (!error)
           {
             goto LABEL_9;
           }
 
-          VMUOptionParserError(-1, @"error in %@ <classes> pattern '%@' - no starting bracket [: %s", v19, v20, v21, v22, v23, v24, v9);
+          VMUOptionParserError(-1, @"error in %@ <classes> pattern '%@' - no starting bracket [: %s", v19, v20, v21, v22, v23, v24, argumentCopy);
           goto LABEL_8;
         }
 
         v26 = v18;
-        v27 = [(__CFString *)v8 substringFromIndex:v18];
-        v28 = [(__CFString *)v8 substringToIndex:v26];
+        v27 = [(__CFString *)patternCopy substringFromIndex:v18];
+        v28 = [(__CFString *)patternCopy substringToIndex:v26];
 
-        v29 = [(VMUClassPatternMatcher *)self _parseMallocSizePattern:v27 error:a5];
+        v29 = [(VMUClassPatternMatcher *)self _parseMallocSizePattern:v27 error:error];
         v30 = v29;
         if (!v26 && v29)
         {
@@ -85,7 +85,7 @@ LABEL_24:
           v28 = @".*";
         }
 
-        v8 = v28;
+        patternCopy = v28;
         if (!v30)
         {
           goto LABEL_9;
@@ -94,7 +94,7 @@ LABEL_24:
 
       else
       {
-        v28 = v8;
+        v28 = patternCopy;
       }
 
       if (([(__CFString *)v28 isEqualToString:@"malloc"]& 1) != 0 || [(__CFString *)v28 isEqualToString:@"non-object"])
@@ -109,50 +109,50 @@ LABEL_24:
         v34 = regcomp(v33, [(__CFString *)v28 UTF8String], 1);
         if (v34)
         {
-          if (a5)
+          if (error)
           {
             regerror(v34, self->_classesRegex, v51, 0x800uLL);
-            *a5 = VMUOptionParserError(-1, @"error in %@ <classes> pattern '%@': %s", v38, v39, v40, v41, v42, v43, v9);
+            *error = VMUOptionParserError(-1, @"error in %@ <classes> pattern '%@': %s", v38, v39, v40, v41, v42, v43, argumentCopy);
           }
 
-          v8 = v28;
+          patternCopy = v28;
           goto LABEL_9;
         }
 
         self->_vmRegionsRegex = malloc_type_malloc(0x20uLL, 0x10700404B019E81uLL);
-        v8 = v28;
-        v35 = v8;
-        if (([(__CFString *)v8 hasPrefix:@"VM:"]& 1) == 0)
+        patternCopy = v28;
+        patternCopy = patternCopy;
+        if (([(__CFString *)patternCopy hasPrefix:@"VM:"]& 1) == 0)
         {
-          v35 = v8;
-          if (([(__CFString *)v8 hasPrefix:@"Region"]& 1) == 0)
+          patternCopy = patternCopy;
+          if (([(__CFString *)patternCopy hasPrefix:@"Region"]& 1) == 0)
           {
-            v35 = v8;
-            if (([(__CFString *)v8 hasPrefix:@"Thread"]& 1) == 0)
+            patternCopy = patternCopy;
+            if (([(__CFString *)patternCopy hasPrefix:@"Thread"]& 1) == 0)
             {
-              v35 = v8;
-              if (([(__CFString *)v8 hasPrefix:@".*"]& 1) == 0)
+              patternCopy = patternCopy;
+              if (([(__CFString *)patternCopy hasPrefix:@".*"]& 1) == 0)
               {
-                v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@".*%@", v8];
+                patternCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@".*%@", patternCopy];
               }
             }
           }
         }
 
-        if (([v35 hasSuffix:@".*"] & 1) == 0)
+        if (([patternCopy hasSuffix:@".*"] & 1) == 0)
         {
-          v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.*", v35];
+          v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.*", patternCopy];
 
-          v35 = v36;
+          patternCopy = v36;
         }
 
-        v37 = regcomp(self->_vmRegionsRegex, [v35 UTF8String], 1);
+        v37 = regcomp(self->_vmRegionsRegex, [patternCopy UTF8String], 1);
         if (v37)
         {
-          if (a5)
+          if (error)
           {
             regerror(v37, self->_vmRegionsRegex, v51, 0x800uLL);
-            *a5 = VMUOptionParserError(-1, @"error in % <region-description> pattern '%@': %s", v44, v45, v46, v47, v48, v49, v9);
+            *error = VMUOptionParserError(-1, @"error in % <region-description> pattern '%@': %s", v44, v45, v46, v47, v48, v49, argumentCopy);
           }
 
           goto LABEL_9;
@@ -161,18 +161,18 @@ LABEL_24:
         self->_memoizedRegexResult = CFDictionaryCreateMutable(0, 0, 0, 0);
       }
 
-      v8 = v28;
+      patternCopy = v28;
     }
 
-    v17 = self;
+    selfCopy = self;
     goto LABEL_24;
   }
 
-  v17 = 0;
+  selfCopy = 0;
 LABEL_25:
 
   v31 = *MEMORY[0x1E69E9840];
-  return v17;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -200,13 +200,13 @@ LABEL_25:
   [(VMUClassPatternMatcher *)&v6 dealloc];
 }
 
-- (BOOL)_parseMallocSizePattern:(id)a3 error:(id *)a4
+- (BOOL)_parseMallocSizePattern:(id)pattern error:(id *)error
 {
-  v6 = a3;
-  v13 = VMUOptionParserError(-1, @"malloc size pattern '%@' was not of expected format '[size]' or '[lowerSizeBound-upperSizeBound]'", v7, v8, v9, v10, v11, v12, v6);
-  v14 = [v6 UTF8String];
-  __endptr = v14;
-  if (*v14 != 91)
+  patternCopy = pattern;
+  v13 = VMUOptionParserError(-1, @"malloc size pattern '%@' was not of expected format '[size]' or '[lowerSizeBound-upperSizeBound]'", v7, v8, v9, v10, v11, v12, patternCopy);
+  uTF8String = [patternCopy UTF8String];
+  __endptr = uTF8String;
+  if (*uTF8String != 91)
   {
     v25 = v13;
     v24 = 0;
@@ -215,8 +215,8 @@ LABEL_25:
     goto LABEL_20;
   }
 
-  v23 = v14[1];
-  v21 = v14 + 1;
+  v23 = uTF8String[1];
+  v21 = uTF8String + 1;
   LOBYTE(v22) = v23;
   __endptr = v21;
   v24 = (v23 - 48) < 0xA;
@@ -255,12 +255,12 @@ LABEL_25:
       }
 
       allocationSizeLowerBound = self->_allocationSizeLowerBound;
-      VMUOptionParserError(-1, @"error in malloc size pattern '%@': lower bound of size (%llu) should be <= upper bound of size (%llu)", v15, v16, v17, v18, v19, v20, v6);
+      VMUOptionParserError(-1, @"error in malloc size pattern '%@': lower bound of size (%llu) should be <= upper bound of size (%llu)", v15, v16, v17, v18, v19, v20, patternCopy);
     }
 
     else
     {
-      VMUOptionParserError(-1, @"error in malloc size pattern '%@':  if upper bound of size is given, it must be %llu or more", v15, v16, v17, v18, v19, v20, v6);
+      VMUOptionParserError(-1, @"error in malloc size pattern '%@':  if upper bound of size is given, it must be %llu or more", v15, v16, v17, v18, v19, v20, patternCopy);
     }
     v25 = ;
 LABEL_19:
@@ -307,43 +307,43 @@ LABEL_31:
     v31 = self->_allocationSizeLowerBound;
     if (v31 <= 0xF)
     {
-      VMUOptionParserError(-1, @"error in malloc size pattern '%@':  size must be %llu or more", v15, v16, v17, v18, v19, v20, v6);
+      VMUOptionParserError(-1, @"error in malloc size pattern '%@':  size must be %llu or more", v15, v16, v17, v18, v19, v20, patternCopy);
       v32 = LABEL_30:;
       goto LABEL_31;
     }
 
     if ((v31 & 0xF) != 0)
     {
-      VMUOptionParserError(-1, @"error in malloc size pattern '%@':  size must be a multiple of %llu, or a range like '[lowerSizeBound-upperSizeBound]'", v15, v16, v17, v18, v19, v20, v6);
+      VMUOptionParserError(-1, @"error in malloc size pattern '%@':  size must be a multiple of %llu, or a range like '[lowerSizeBound-upperSizeBound]'", v15, v16, v17, v18, v19, v20, patternCopy);
       goto LABEL_30;
     }
   }
 
 LABEL_32:
-  if (a4 && v25)
+  if (error && v25)
   {
     v34 = v25;
-    *a4 = v25;
+    *error = v25;
   }
 
   return v25 == 0;
 }
 
-- (BOOL)_regex:(id *)a3 matchesName:(id)a4
+- (BOOL)_regex:(id *)_regex matchesName:(id)name
 {
-  if (!a3)
+  if (!_regex)
   {
     return 0;
   }
 
   v9.rm_so = 0;
   v9.rm_eo = 0;
-  v5 = [a4 UTF8String];
-  v6 = regexec(a3, v5, 1uLL, &v9, 0);
+  uTF8String = [name UTF8String];
+  v6 = regexec(_regex, uTF8String, 1uLL, &v9, 0);
   v7 = v6;
   if (v6 >= 2)
   {
-    [VMUClassPatternMatcher _regex:v6 matchesName:a3];
+    [VMUClassPatternMatcher _regex:v6 matchesName:_regex];
     return 0;
   }
 
@@ -352,39 +352,39 @@ LABEL_32:
     result = 0;
     if (!v7 && !v9.rm_so)
     {
-      return v9.rm_eo == strlen(v5);
+      return v9.rm_eo == strlen(uTF8String);
     }
   }
 
   return result;
 }
 
-- (BOOL)_matchesClassInfo:(id)a3
+- (BOOL)_matchesClassInfo:(id)info
 {
-  v4 = a3;
-  if (v4 && (memoizedRegexResult = self->_memoizedRegexResult) != 0)
+  infoCopy = info;
+  if (infoCopy && (memoizedRegexResult = self->_memoizedRegexResult) != 0)
   {
     value = 0;
-    if (!CFDictionaryGetValueIfPresent(memoizedRegexResult, v4, &value))
+    if (!CFDictionaryGetValueIfPresent(memoizedRegexResult, infoCopy, &value))
     {
       classesRegex = self->_classesRegex;
-      v7 = [v4 className];
-      LOBYTE(classesRegex) = [(VMUClassPatternMatcher *)self _regex:classesRegex matchesName:v7];
+      className = [infoCopy className];
+      LOBYTE(classesRegex) = [(VMUClassPatternMatcher *)self _regex:classesRegex matchesName:className];
 
       if (classesRegex)
       {
         goto LABEL_5;
       }
 
-      v10 = [v4 className];
-      v11 = [v4 displayName];
-      v12 = [v10 isEqualToString:v11];
+      className2 = [infoCopy className];
+      displayName = [infoCopy displayName];
+      v12 = [className2 isEqualToString:displayName];
 
       if ((v12 & 1) == 0)
       {
         v13 = self->_classesRegex;
-        v14 = [v4 displayName];
-        LOBYTE(v13) = [(VMUClassPatternMatcher *)self _regex:v13 matchesName:v14];
+        displayName2 = [infoCopy displayName];
+        LOBYTE(v13) = [(VMUClassPatternMatcher *)self _regex:v13 matchesName:displayName2];
 
         if (v13)
         {
@@ -392,7 +392,7 @@ LABEL_32:
         }
       }
 
-      if (self->_matchingKindOfClass && ([v4 superclassInfo], v15 = objc_claimAutoreleasedReturnValue(), v16 = -[VMUClassPatternMatcher _matchesClassInfo:](self, "_matchesClassInfo:", v15), v15, v16))
+      if (self->_matchingKindOfClass && ([infoCopy superclassInfo], v15 = objc_claimAutoreleasedReturnValue(), v16 = -[VMUClassPatternMatcher _matchesClassInfo:](self, "_matchesClassInfo:", v15), v15, v16))
       {
 LABEL_5:
         v8 = 1;
@@ -404,7 +404,7 @@ LABEL_5:
       }
 
       value = v8;
-      CFDictionarySetValue(self->_memoizedRegexResult, v4, v8);
+      CFDictionarySetValue(self->_memoizedRegexResult, infoCopy, v8);
     }
 
     v9 = value != 0;
@@ -418,17 +418,17 @@ LABEL_5:
   return v9;
 }
 
-- (BOOL)matchesNodeDetails:(id)a3 orNodeDescription:(id)a4
+- (BOOL)matchesNodeDetails:(id)details orNodeDescription:(id)description
 {
-  v6 = a4;
+  descriptionCopy = description;
   if (matchesNodeDetails_orNodeDescription__onceToken != -1)
   {
     [VMUClassPatternMatcher matchesNodeDetails:orNodeDescription:];
   }
 
-  if (*(a3.var0 + 8) >> 60 == 1)
+  if (*(details.var0 + 8) >> 60 == 1)
   {
-    v7 = *(a3.var0 + 16);
+    v7 = *(details.var0 + 16);
     if (v7)
     {
       goto LABEL_7;
@@ -445,13 +445,13 @@ LABEL_7:
     }
   }
 
-  else if (!v6 || ![(VMUClassPatternMatcher *)self _regex:self->_vmRegionsRegex matchesName:v6])
+  else if (!descriptionCopy || ![(VMUClassPatternMatcher *)self _regex:self->_vmRegionsRegex matchesName:descriptionCopy])
   {
     goto LABEL_15;
   }
 
   allocationSizeLowerBound = self->_allocationSizeLowerBound;
-  if (!allocationSizeLowerBound && !self->_allocationSizeUpperBound || (v9 = *(a3.var0 + 8) & 0xFFFFFFFFFFFFFFFLL, allocationSizeLowerBound <= v9) && v9 <= self->_allocationSizeUpperBound)
+  if (!allocationSizeLowerBound && !self->_allocationSizeUpperBound || (v9 = *(details.var0 + 8) & 0xFFFFFFFFFFFFFFFLL, allocationSizeLowerBound <= v9) && v9 <= self->_allocationSizeUpperBound)
   {
     v10 = 1;
     goto LABEL_16;

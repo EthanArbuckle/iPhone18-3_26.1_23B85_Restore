@@ -1,20 +1,20 @@
 @interface AAiCloudTermsDisagreeRequest
-- (AAiCloudTermsDisagreeRequest)initWithURLString:(id)a3 account:(id)a4;
+- (AAiCloudTermsDisagreeRequest)initWithURLString:(id)string account:(id)account;
 - (id)urlRequest;
 @end
 
 @implementation AAiCloudTermsDisagreeRequest
 
-- (AAiCloudTermsDisagreeRequest)initWithURLString:(id)a3 account:(id)a4
+- (AAiCloudTermsDisagreeRequest)initWithURLString:(id)string account:(id)account
 {
-  v7 = a4;
+  accountCopy = account;
   v11.receiver = self;
   v11.super_class = AAiCloudTermsDisagreeRequest;
-  v8 = [(AARequest *)&v11 initWithURLString:a3];
+  v8 = [(AARequest *)&v11 initWithURLString:string];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_account, a4);
+    objc_storeStrong(&v8->_account, account);
     v9->_preferPassword = 1;
   }
 
@@ -26,24 +26,24 @@
   v26 = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = AAiCloudTermsDisagreeRequest;
-  v3 = [(AARequest *)&v23 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v23 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [v4 setHTTPMethod:@"POST"];
   [v4 addValue:@"application/xml" forHTTPHeaderField:@"Content-Type"];
   [v4 aa_addAuthTokenOrBasicAuthHeaderWithAccount:self->_account preferUsingPassword:self->_preferPassword];
   if (self->_account)
   {
-    v5 = [MEMORY[0x1E6959A48] defaultStore];
-    v6 = [(ACAccount *)self->_account aa_altDSID];
-    v7 = [v5 aida_accountForAltDSID:v6];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+    aa_altDSID = [(ACAccount *)self->_account aa_altDSID];
+    v7 = [defaultStore aida_accountForAltDSID:aa_altDSID];
 
-    v8 = [MEMORY[0x1E6959A48] defaultStore];
-    v9 = [v8 credentialForAccount:v7 serviceID:@"com.apple.gs.icloud.family.auth"];
+    defaultStore2 = [MEMORY[0x1E6959A48] defaultStore];
+    v9 = [defaultStore2 credentialForAccount:v7 serviceID:@"com.apple.gs.icloud.family.auth"];
 
-    v10 = [v9 token];
-    v11 = [v7 aida_alternateDSID];
-    [v4 aa_addGrandslamAuthorizationHeaderWithAltDSID:v11 grandslamToken:v10];
+    token = [v9 token];
+    aida_alternateDSID = [v7 aida_alternateDSID];
+    [v4 aa_addGrandslamAuthorizationHeaderWithAltDSID:aida_alternateDSID grandslamToken:token];
   }
 
   else
@@ -55,17 +55,17 @@
     }
   }
 
-  v12 = [(AAiCloudTermsDisagreeRequest *)self additionalHeaders];
+  additionalHeaders = [(AAiCloudTermsDisagreeRequest *)self additionalHeaders];
 
-  if (v12)
+  if (additionalHeaders)
   {
-    v13 = [(AAiCloudTermsDisagreeRequest *)self additionalHeaders];
+    additionalHeaders2 = [(AAiCloudTermsDisagreeRequest *)self additionalHeaders];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __42__AAiCloudTermsDisagreeRequest_urlRequest__block_invoke;
     v21[3] = &unk_1E7C9C428;
     v22 = v4;
-    [v13 enumerateKeysAndObjectsUsingBlock:v21];
+    [additionalHeaders2 enumerateKeysAndObjectsUsingBlock:v21];
   }
 
   v14 = objc_opt_new();

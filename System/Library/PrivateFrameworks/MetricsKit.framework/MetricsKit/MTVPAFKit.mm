@@ -1,14 +1,14 @@
 @interface MTVPAFKit
-- (id)trackerWithPlayList:(id)a3 eventData:(id)a4;
+- (id)trackerWithPlayList:(id)list eventData:(id)data;
 @end
 
 @implementation MTVPAFKit
 
-- (id)trackerWithPlayList:(id)a3 eventData:(id)a4
+- (id)trackerWithPlayList:(id)list eventData:(id)data
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[MTMediaActivityTracker alloc] initWithVPAFKit:self playlist:v7 eventData:v6];
+  dataCopy = data;
+  listCopy = list;
+  v8 = [[MTMediaActivityTracker alloc] initWithVPAFKit:self playlist:listCopy eventData:dataCopy];
 
   return v8;
 }

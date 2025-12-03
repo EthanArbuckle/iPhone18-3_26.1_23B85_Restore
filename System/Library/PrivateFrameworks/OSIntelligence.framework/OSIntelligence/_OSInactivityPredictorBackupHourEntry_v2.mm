@@ -1,43 +1,43 @@
 @interface _OSInactivityPredictorBackupHourEntry_v2
-- (BOOL)isEqual:(id)a3;
-- (_OSInactivityPredictorBackupHourEntry_v2)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_OSInactivityPredictorBackupHourEntry_v2)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _OSInactivityPredictorBackupHourEntry_v2
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(_OSInactivityPredictorBackupHourEntry_v2 *)self pctLong];
-  [v4 encodeDouble:@"pct" forKey:?];
+  [coderCopy encodeDouble:@"pct" forKey:?];
   [(_OSInactivityPredictorBackupHourEntry *)self stdDev];
-  [v4 encodeDouble:@"stdDev" forKey:?];
+  [coderCopy encodeDouble:@"stdDev" forKey:?];
   [(_OSInactivityPredictorBackupHourEntry *)self averageDuration];
-  [v4 encodeDouble:@"avg" forKey:?];
+  [coderCopy encodeDouble:@"avg" forKey:?];
 }
 
-- (_OSInactivityPredictorBackupHourEntry_v2)initWithCoder:(id)a3
+- (_OSInactivityPredictorBackupHourEntry_v2)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(objc_opt_class());
 
-  [v4 decodeDoubleForKey:@"pct"];
+  [coderCopy decodeDoubleForKey:@"pct"];
   [(_OSInactivityPredictorBackupHourEntry_v2 *)v5 setPctLong:?];
-  [v4 decodeDoubleForKey:@"stdDev"];
+  [coderCopy decodeDoubleForKey:@"stdDev"];
   [(_OSInactivityPredictorBackupHourEntry *)v5 setStdDev:?];
-  [v4 decodeDoubleForKey:@"avg"];
+  [coderCopy decodeDoubleForKey:@"avg"];
   v7 = v6;
 
   [(_OSInactivityPredictorBackupHourEntry *)v5 setAverageDuration:v7];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -47,7 +47,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(_OSInactivityPredictorBackupHourEntry *)self averageDuration];
       v7 = v6;
       [(_OSInactivityPredictorBackupHourEntry *)v5 averageDuration];

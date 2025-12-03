@@ -1,8 +1,8 @@
 @interface HDUnresolvedReferenceSet
 - (HDUnresolvedReferenceSet)init;
-- (HDUnresolvedReferenceSet)initWithCoder:(id)a3;
-- (HDUnresolvedReferenceSet)initWithReferences:(id)a3 resource:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (HDUnresolvedReferenceSet)initWithCoder:(id)coder;
+- (HDUnresolvedReferenceSet)initWithReferences:(id)references resource:(id)resource;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDUnresolvedReferenceSet
@@ -17,43 +17,43 @@
   return 0;
 }
 
-- (HDUnresolvedReferenceSet)initWithReferences:(id)a3 resource:(id)a4
+- (HDUnresolvedReferenceSet)initWithReferences:(id)references resource:(id)resource
 {
-  v6 = a3;
-  v7 = a4;
+  referencesCopy = references;
+  resourceCopy = resource;
   v12.receiver = self;
   v12.super_class = HDUnresolvedReferenceSet;
   v8 = [(HDUnresolvedReferenceSet *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [referencesCopy copy];
     references = v8->_references;
     v8->_references = v9;
 
-    objc_storeStrong(&v8->_resource, a4);
+    objc_storeStrong(&v8->_resource, resource);
   }
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HDUnresolvedReferenceSet *)self references];
-  [v4 encodeObject:v5 forKey:@"References"];
+  coderCopy = coder;
+  references = [(HDUnresolvedReferenceSet *)self references];
+  [coderCopy encodeObject:references forKey:@"References"];
 
-  v6 = [(HDUnresolvedReferenceSet *)self resource];
-  [v4 encodeObject:v6 forKey:@"Resource"];
+  resource = [(HDUnresolvedReferenceSet *)self resource];
+  [coderCopy encodeObject:resource forKey:@"Resource"];
 }
 
-- (HDUnresolvedReferenceSet)initWithCoder:(id)a3
+- (HDUnresolvedReferenceSet)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277CBEB98];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"References"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Resource"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"References"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Resource"];
   v10 = v9;
   if (v8)
   {
@@ -67,17 +67,17 @@
 
   if (v11)
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v12 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
   else
   {
     self = [(HDUnresolvedReferenceSet *)self initWithReferences:v8 resource:v9];
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

@@ -1,47 +1,47 @@
 @interface SVXActivationContext
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SVXActivationContext)initWithCoder:(id)a3;
-- (SVXActivationContext)initWithSource:(int64_t)a3 timestamp:(unint64_t)a4 buttonEvent:(id)a5 systemEvent:(id)a6 clientInfo:(id)a7 requestInfo:(id)a8 userInfo:(id)a9;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SVXActivationContext)initWithCoder:(id)coder;
+- (SVXActivationContext)initWithSource:(int64_t)source timestamp:(unint64_t)timestamp buttonEvent:(id)event systemEvent:(id)systemEvent clientInfo:(id)info requestInfo:(id)requestInfo userInfo:(id)userInfo;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SVXActivationContext
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   source = self->_source;
-  v8 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithInteger:source];
-  [v8 encodeObject:v6 forKey:@"SVXActivationContext::source"];
+  [coderCopy encodeObject:v6 forKey:@"SVXActivationContext::source"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-  [v8 encodeObject:v7 forKey:@"SVXActivationContext::timestamp"];
+  [coderCopy encodeObject:v7 forKey:@"SVXActivationContext::timestamp"];
 
-  [v8 encodeObject:self->_buttonEvent forKey:@"SVXActivationContext::buttonEvent"];
-  [v8 encodeObject:self->_systemEvent forKey:@"SVXActivationContext::systemEvent"];
-  [v8 encodeObject:self->_clientInfo forKey:@"SVXActivationContext::clientInfo"];
-  [v8 encodeObject:self->_requestInfo forKey:@"SVXActivationContext::requestInfo"];
-  [v8 encodeObject:self->_userInfo forKey:@"SVXActivationContext::userInfo"];
+  [coderCopy encodeObject:self->_buttonEvent forKey:@"SVXActivationContext::buttonEvent"];
+  [coderCopy encodeObject:self->_systemEvent forKey:@"SVXActivationContext::systemEvent"];
+  [coderCopy encodeObject:self->_clientInfo forKey:@"SVXActivationContext::clientInfo"];
+  [coderCopy encodeObject:self->_requestInfo forKey:@"SVXActivationContext::requestInfo"];
+  [coderCopy encodeObject:self->_userInfo forKey:@"SVXActivationContext::userInfo"];
 }
 
-- (SVXActivationContext)initWithCoder:(id)a3
+- (SVXActivationContext)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SVXActivationContext::source"];
-  v25 = [v4 integerValue];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXActivationContext::source"];
+  integerValue = [v4 integerValue];
 
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SVXActivationContext::timestamp"];
-  v24 = [v5 unsignedLongLongValue];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXActivationContext::timestamp"];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SVXActivationContext::buttonEvent"];
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SVXActivationContext::systemEvent"];
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SVXActivationContext::clientInfo"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"SVXActivationContext::requestInfo"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXActivationContext::buttonEvent"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXActivationContext::systemEvent"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXActivationContext::clientInfo"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXActivationContext::requestInfo"];
   v20 = MEMORY[0x277CBEB98];
   v19 = objc_opt_class();
   v7 = objc_opt_class();
@@ -53,16 +53,16 @@
   v13 = objc_opt_class();
   v14 = objc_opt_class();
   v15 = [v20 setWithObjects:{v19, v7, v8, v9, v10, v11, v12, v13, v14, objc_opt_class(), 0}];
-  v16 = [v3 decodeObjectOfClasses:v15 forKey:@"SVXActivationContext::userInfo"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"SVXActivationContext::userInfo"];
 
-  v17 = [(SVXActivationContext *)self initWithSource:v25 timestamp:v24 buttonEvent:v23 systemEvent:v22 clientInfo:v21 requestInfo:v6 userInfo:v16];
+  v17 = [(SVXActivationContext *)self initWithSource:integerValue timestamp:unsignedLongLongValue buttonEvent:v23 systemEvent:v22 clientInfo:v21 requestInfo:v6 userInfo:v16];
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v18 = 1;
   }
@@ -72,29 +72,29 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       source = self->_source;
       if (source == [(SVXActivationContext *)v5 source]&& (timestamp = self->_timestamp, timestamp == [(SVXActivationContext *)v5 timestamp]))
       {
-        v8 = [(SVXActivationContext *)v5 buttonEvent];
+        buttonEvent = [(SVXActivationContext *)v5 buttonEvent];
         buttonEvent = self->_buttonEvent;
-        if (buttonEvent == v8 || [(SVXButtonEvent *)buttonEvent isEqual:v8])
+        if (buttonEvent == buttonEvent || [(SVXButtonEvent *)buttonEvent isEqual:buttonEvent])
         {
-          v10 = [(SVXActivationContext *)v5 systemEvent];
+          systemEvent = [(SVXActivationContext *)v5 systemEvent];
           systemEvent = self->_systemEvent;
-          if (systemEvent == v10 || [(SVXSystemEvent *)systemEvent isEqual:v10])
+          if (systemEvent == systemEvent || [(SVXSystemEvent *)systemEvent isEqual:systemEvent])
           {
-            v12 = [(SVXActivationContext *)v5 clientInfo];
+            clientInfo = [(SVXActivationContext *)v5 clientInfo];
             clientInfo = self->_clientInfo;
-            if (clientInfo == v12 || [(SVXClientInfo *)clientInfo isEqual:v12])
+            if (clientInfo == clientInfo || [(SVXClientInfo *)clientInfo isEqual:clientInfo])
             {
-              v14 = [(SVXActivationContext *)v5 requestInfo];
+              requestInfo = [(SVXActivationContext *)v5 requestInfo];
               requestInfo = self->_requestInfo;
-              if (requestInfo == v14 || [(AFRequestInfo *)requestInfo isEqual:v14])
+              if (requestInfo == requestInfo || [(AFRequestInfo *)requestInfo isEqual:requestInfo])
               {
-                v16 = [(SVXActivationContext *)v5 userInfo];
+                userInfo = [(SVXActivationContext *)v5 userInfo];
                 userInfo = self->_userInfo;
-                v18 = userInfo == v16 || [(NSDictionary *)userInfo isEqual:v16];
+                v18 = userInfo == userInfo || [(NSDictionary *)userInfo isEqual:userInfo];
               }
 
               else
@@ -151,7 +151,7 @@
   return v10 ^ v11;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v11.receiver = self;
@@ -174,38 +174,38 @@
   return v9;
 }
 
-- (SVXActivationContext)initWithSource:(int64_t)a3 timestamp:(unint64_t)a4 buttonEvent:(id)a5 systemEvent:(id)a6 clientInfo:(id)a7 requestInfo:(id)a8 userInfo:(id)a9
+- (SVXActivationContext)initWithSource:(int64_t)source timestamp:(unint64_t)timestamp buttonEvent:(id)event systemEvent:(id)systemEvent clientInfo:(id)info requestInfo:(id)requestInfo userInfo:(id)userInfo
 {
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  eventCopy = event;
+  systemEventCopy = systemEvent;
+  infoCopy = info;
+  requestInfoCopy = requestInfo;
+  userInfoCopy = userInfo;
   v33.receiver = self;
   v33.super_class = SVXActivationContext;
   v20 = [(SVXActivationContext *)&v33 init];
   v21 = v20;
   if (v20)
   {
-    v20->_source = a3;
-    v20->_timestamp = a4;
-    v22 = [v15 copy];
+    v20->_source = source;
+    v20->_timestamp = timestamp;
+    v22 = [eventCopy copy];
     buttonEvent = v21->_buttonEvent;
     v21->_buttonEvent = v22;
 
-    v24 = [v16 copy];
+    v24 = [systemEventCopy copy];
     systemEvent = v21->_systemEvent;
     v21->_systemEvent = v24;
 
-    v26 = [v17 copy];
+    v26 = [infoCopy copy];
     clientInfo = v21->_clientInfo;
     v21->_clientInfo = v26;
 
-    v28 = [v18 copy];
+    v28 = [requestInfoCopy copy];
     requestInfo = v21->_requestInfo;
     v21->_requestInfo = v28;
 
-    v30 = [v19 copy];
+    v30 = [userInfoCopy copy];
     userInfo = v21->_userInfo;
     v21->_userInfo = v30;
   }
@@ -213,36 +213,36 @@
   return v21;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SVXActivationContextMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SVXActivationContextMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SVXActivationContextMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SVXActivationContext *)self copy];
+    generate = [(SVXActivationContext *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SVXActivationContextMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SVXActivationContextMutation *)v4 generate];
+  generate = [(_SVXActivationContextMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
 @end

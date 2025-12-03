@@ -1,10 +1,10 @@
 @interface MessageContentRequestRetryMiddleware
 + (id)log;
 - (BOOL)_shouldRetry;
-- (MessageContentRequestRetryMiddleware)initWithMessageContentRequest:(id)a3 handler:(id)a4;
-- (MessageContentRequestRetryMiddleware)initWithMessageContentRequest:(id)a3 registry:(id)a4 handler:(id)a5;
+- (MessageContentRequestRetryMiddleware)initWithMessageContentRequest:(id)request handler:(id)handler;
+- (MessageContentRequestRetryMiddleware)initWithMessageContentRequest:(id)request registry:(id)registry handler:(id)handler;
 - (void)_retry;
-- (void)contentRequestDidReceiveContentRepresentation:(id)a3 error:(id)a4;
+- (void)contentRequestDidReceiveContentRepresentation:(id)representation error:(id)error;
 - (void)dealloc;
 @end
 
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_100147640;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD288 != -1)
   {
     dispatch_once(&qword_1006DD288, block);
@@ -35,24 +35,24 @@
   [(MessageContentRequestRetryMiddleware *)&v3 dealloc];
 }
 
-- (MessageContentRequestRetryMiddleware)initWithMessageContentRequest:(id)a3 handler:(id)a4
+- (MessageContentRequestRetryMiddleware)initWithMessageContentRequest:(id)request handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = +[_MFMessageContentRequestRetryRegistry sharedRegistry];
-  v9 = [(MessageContentRequestRetryMiddleware *)self initWithMessageContentRequest:v6 registry:v8 handler:v7];
+  v9 = [(MessageContentRequestRetryMiddleware *)self initWithMessageContentRequest:requestCopy registry:v8 handler:handlerCopy];
 
   return v9;
 }
 
-- (MessageContentRequestRetryMiddleware)initWithMessageContentRequest:(id)a3 registry:(id)a4 handler:(id)a5
+- (MessageContentRequestRetryMiddleware)initWithMessageContentRequest:(id)request registry:(id)registry handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  requestCopy = request;
+  registryCopy = registry;
+  handlerCopy = handler;
+  if (requestCopy)
   {
-    if (v11)
+    if (registryCopy)
     {
       goto LABEL_3;
     }
@@ -63,7 +63,7 @@
     v34 = +[NSAssertionHandler currentHandler];
     [v34 handleFailureInMethod:a2 object:self file:@"MessageContentRequestRetryMiddleware.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"contentRequest"}];
 
-    if (v11)
+    if (registryCopy)
     {
       goto LABEL_3;
     }
@@ -79,9 +79,9 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_contentRequest, a3);
-    objc_storeStrong(&v14->_registry, a4);
-    v15 = objc_retainBlock(v12);
+    objc_storeStrong(&v13->_contentRequest, request);
+    objc_storeStrong(&v14->_registry, registry);
+    v15 = objc_retainBlock(handlerCopy);
     handler = v14->_handler;
     v14->_handler = v15;
 
@@ -107,8 +107,8 @@ LABEL_3:
     [(EFManualCancelationToken *)v22 addCancelable:v24];
 
     v25 = +[MFNetworkController sharedInstance];
-    v26 = [v25 networkObservable];
-    v27 = [v26 observeOn:v14->_retryScheduler];
+    networkObservable = [v25 networkObservable];
+    v27 = [networkObservable observeOn:v14->_retryScheduler];
 
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
@@ -131,8 +131,8 @@ LABEL_3:
     v36[1] = 3221225472;
     v36[2] = sub_100147EE8;
     v36[3] = &unk_10064C660;
-    v37 = v11;
-    v38 = v10;
+    v37 = registryCopy;
+    v38 = requestCopy;
     [(EFManualCancelationToken *)v32 addCancelationBlock:v36];
 
     objc_destroyWeak(&v40);
@@ -145,15 +145,15 @@ LABEL_3:
   return v14;
 }
 
-- (void)contentRequestDidReceiveContentRepresentation:(id)a3 error:(id)a4
+- (void)contentRequestDidReceiveContentRepresentation:(id)representation error:(id)error
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  representationCopy = representation;
+  errorCopy = error;
+  v7 = errorCopy;
+  if (errorCopy)
   {
-    v8 = [v6 ef_match];
-    if (v8[2](v8, MFMIMEErrorDomain, 2000000) & 1) != 0 || (v9 = EMErrorDomain, (v8[2](v8, EMErrorDomain, 2048)) || (v8[2](v8, v9, 2050) & 1) != 0 || (v8[2](v8, v9, 2049) & 1) != 0 || v8[2](v8, v9, 1024))
+    ef_match = [errorCopy ef_match];
+    if (ef_match[2](ef_match, MFMIMEErrorDomain, 2000000) & 1) != 0 || (v9 = EMErrorDomain, (ef_match[2](ef_match, EMErrorDomain, 2048)) || (ef_match[2](ef_match, v9, 2050) & 1) != 0 || (ef_match[2](ef_match, v9, 2049) & 1) != 0 || ef_match[2](ef_match, v9, 1024))
     {
       [(MessageContentRequestRetryMiddleware *)self setShouldRetryOnNetworkChange:1];
       [(MessageContentRequestRetryMiddleware *)self _retry];
@@ -162,23 +162,23 @@ LABEL_3:
     goto LABEL_8;
   }
 
-  if (v15)
+  if (representationCopy)
   {
-    v10 = [(MessageContentRequestRetryMiddleware *)self registry];
-    v11 = [(MessageContentRequestRetryMiddleware *)self contentRequest];
-    v12 = [v10 numberOfRetryForContentRepresentation:v11];
+    registry = [(MessageContentRequestRetryMiddleware *)self registry];
+    contentRequest = [(MessageContentRequestRetryMiddleware *)self contentRequest];
+    v12 = [registry numberOfRetryForContentRepresentation:contentRequest];
 
-    v13 = [(MessageContentRequestRetryMiddleware *)self cancellationToken];
-    [v13 cancel];
+    cancellationToken = [(MessageContentRequestRetryMiddleware *)self cancellationToken];
+    [cancellationToken cancel];
 
     if (v12)
     {
-      v14 = [(MessageContentRequestRetryMiddleware *)self handler];
+      handler = [(MessageContentRequestRetryMiddleware *)self handler];
 
-      if (v14)
+      if (handler)
       {
-        v8 = [(MessageContentRequestRetryMiddleware *)self handler];
-        (v8[2])();
+        ef_match = [(MessageContentRequestRetryMiddleware *)self handler];
+        (ef_match[2])();
 LABEL_8:
       }
     }
@@ -192,32 +192,32 @@ LABEL_8:
     v3 = +[MessageContentRequestRetryMiddleware log];
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(MessageContentRequestRetryMiddleware *)self contentRequest];
-      v5 = [v4 message];
+      contentRequest = [(MessageContentRequestRetryMiddleware *)self contentRequest];
+      message = [contentRequest message];
       v9 = 138543362;
-      v10 = v5;
+      v10 = message;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Retrying load of content request for message: %{public}@", &v9, 0xCu);
     }
 
-    v6 = [(MessageContentRequestRetryMiddleware *)self registry];
-    v7 = [(MessageContentRequestRetryMiddleware *)self contentRequest];
-    [v6 logRetryForContentRequest:v7];
+    registry = [(MessageContentRequestRetryMiddleware *)self registry];
+    contentRequest2 = [(MessageContentRequestRetryMiddleware *)self contentRequest];
+    [registry logRetryForContentRequest:contentRequest2];
 
-    v8 = [(MessageContentRequestRetryMiddleware *)self contentRequest];
-    [v8 retry];
+    contentRequest3 = [(MessageContentRequestRetryMiddleware *)self contentRequest];
+    [contentRequest3 retry];
   }
 }
 
 - (BOOL)_shouldRetry
 {
-  v3 = [(MessageContentRequestRetryMiddleware *)self registry];
-  v4 = [(MessageContentRequestRetryMiddleware *)self contentRequest];
-  v5 = [v3 numberOfRetryForContentRepresentation:v4];
+  registry = [(MessageContentRequestRetryMiddleware *)self registry];
+  contentRequest = [(MessageContentRequestRetryMiddleware *)self contentRequest];
+  v5 = [registry numberOfRetryForContentRepresentation:contentRequest];
 
   v6 = +[MFNetworkController sharedInstance];
-  LOBYTE(v4) = [v6 isNetworkUp];
+  LOBYTE(contentRequest) = [v6 isNetworkUp];
 
-  return (v5 < 3) & v4;
+  return (v5 < 3) & contentRequest;
 }
 
 @end

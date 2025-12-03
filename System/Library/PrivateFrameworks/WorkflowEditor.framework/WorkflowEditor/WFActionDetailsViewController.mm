@@ -1,7 +1,7 @@
 @interface WFActionDetailsViewController
-- (_TtC14WorkflowEditor29WFActionDetailsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)handleTapOnDescriptionTextView:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
+- (_TtC14WorkflowEditor29WFActionDetailsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)handleTapOnDescriptionTextView:(id)view;
+- (void)scrollViewDidScroll:(id)scroll;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -9,33 +9,33 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_27455966C();
 }
 
-- (void)handleTapOnDescriptionTextView:(id)a3
+- (void)handleTapOnDescriptionTextView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_27455A1A4(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_27455A1A4(viewCopy);
 }
 
-- (_TtC14WorkflowEditor29WFActionDetailsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14WorkflowEditor29WFActionDetailsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_27463B6AC();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   WFActionDetailsViewController.init(nibName:bundle:)();
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
-  WFActionDetailsViewController.scrollViewDidScroll(_:)(v5);
+  scrollCopy = scroll;
+  selfCopy = self;
+  WFActionDetailsViewController.scrollViewDidScroll(_:)(selfCopy);
 }
 
 @end

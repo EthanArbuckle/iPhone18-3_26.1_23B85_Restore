@@ -1,5 +1,5 @@
 @interface AVRoutingSession
-- (AVRoutingSession)initWithFigRoutingSession:(OpaqueFigRoutingSession *)a3;
+- (AVRoutingSession)initWithFigRoutingSession:(OpaqueFigRoutingSession *)session;
 - (AVRoutingSessionDestination)destination;
 - (BOOL)establishedAutomaticallyFromLikelyDestination;
 - (id)description;
@@ -73,12 +73,12 @@
   return v8 == v9 && v7;
 }
 
-- (AVRoutingSession)initWithFigRoutingSession:(OpaqueFigRoutingSession *)a3
+- (AVRoutingSession)initWithFigRoutingSession:(OpaqueFigRoutingSession *)session
 {
   v9.receiver = self;
   v9.super_class = AVRoutingSession;
   v4 = [(AVRoutingSession *)&v9 init];
-  if (v4 && (ivars = objc_alloc_init(AVRoutingSessionInternal), (v4->_ivars = ivars) != 0) && (!a3 ? (v6 = 0) : (v6 = CFRetain(a3), ivars = v4->_ivars), ivars->figRoutingSession = v6, v4->_ivars->figRoutingSession))
+  if (v4 && (ivars = objc_alloc_init(AVRoutingSessionInternal), (v4->_ivars = ivars) != 0) && (!session ? (v6 = 0) : (v6 = CFRetain(session), ivars = v4->_ivars), ivars->figRoutingSession = v6, v4->_ivars->figRoutingSession))
   {
     v7 = v4;
   }

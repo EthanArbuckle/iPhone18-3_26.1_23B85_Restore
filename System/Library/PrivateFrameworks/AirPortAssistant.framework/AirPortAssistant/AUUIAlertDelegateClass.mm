@@ -1,6 +1,6 @@
 @interface AUUIAlertDelegateClass
-- (BOOL)auUIAlertCancelAction:(id)a3;
-- (BOOL)auUIAlertOKAction:(id)a3;
+- (BOOL)auUIAlertCancelAction:(id)action;
+- (BOOL)auUIAlertOKAction:(id)action;
 - (void)dealloc;
 @end
 
@@ -14,19 +14,19 @@
   [(AUUIAlertDelegateClass *)&v3 dealloc];
 }
 
-- (BOOL)auUIAlertOKAction:(id)a3
+- (BOOL)auUIAlertOKAction:(id)action
 {
-  objc_msgSend_setDelegate_(a3, a2, 0);
-  v4 = self;
+  objc_msgSend_setDelegate_(action, a2, 0);
+  selfCopy = self;
   qword_27E3833B0 = 0;
-  sub_23EC18918(v4, v5, v6);
+  sub_23EC18918(selfCopy, v5, v6);
   return 1;
 }
 
-- (BOOL)auUIAlertCancelAction:(id)a3
+- (BOOL)auUIAlertCancelAction:(id)action
 {
-  objc_msgSend_setDelegate_(a3, a2, 0);
-  v4 = self;
+  objc_msgSend_setDelegate_(action, a2, 0);
+  selfCopy = self;
   qword_27E3833B0 = 0;
   return 1;
 }

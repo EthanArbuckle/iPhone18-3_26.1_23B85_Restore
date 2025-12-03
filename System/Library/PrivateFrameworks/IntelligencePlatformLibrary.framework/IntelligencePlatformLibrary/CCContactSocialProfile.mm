@@ -1,32 +1,32 @@
 @interface CCContactSocialProfile
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCContactSocialProfile)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCContactSocialProfile)initWithLabel:(id)a3 urlString:(id)a4 username:(id)a5 userIdentifier:(id)a6 serviceName:(id)a7 error:(id *)a8;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCContactSocialProfile)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCContactSocialProfile)initWithLabel:(id)label urlString:(id)string username:(id)username userIdentifier:(id)identifier serviceName:(id)name error:(id *)error;
 - (NSString)label;
 - (NSString)serviceName;
 - (NSString)urlString;
 - (NSString)userIdentifier;
 - (NSString)username;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCContactSocialProfile
 
-- (CCContactSocialProfile)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCContactSocialProfile)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"label"];
-    v10 = [v6 objectForKeyedSubscript:@"urlString"];
-    v11 = [v6 objectForKeyedSubscript:@"username"];
-    v12 = [v6 objectForKeyedSubscript:@"userIdentifier"];
-    v13 = [v6 objectForKeyedSubscript:@"serviceName"];
-    v14 = [[CCContactSocialProfile alloc] initWithLabel:v9 urlString:v10 username:v11 userIdentifier:v12 serviceName:v13 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"label"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"urlString"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"username"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"userIdentifier"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"serviceName"];
+    v14 = [[CCContactSocialProfile alloc] initWithLabel:v9 urlString:v10 username:v11 userIdentifier:v12 serviceName:v13 error:error];
   }
 
   else
@@ -43,32 +43,32 @@
   v3 = objc_opt_new();
   if (self->_label)
   {
-    v4 = [(CCContactSocialProfile *)self label];
-    [v3 setObject:v4 forKeyedSubscript:@"label"];
+    label = [(CCContactSocialProfile *)self label];
+    [v3 setObject:label forKeyedSubscript:@"label"];
   }
 
   if (self->_urlString)
   {
-    v5 = [(CCContactSocialProfile *)self urlString];
-    [v3 setObject:v5 forKeyedSubscript:@"urlString"];
+    urlString = [(CCContactSocialProfile *)self urlString];
+    [v3 setObject:urlString forKeyedSubscript:@"urlString"];
   }
 
   if (self->_username)
   {
-    v6 = [(CCContactSocialProfile *)self username];
-    [v3 setObject:v6 forKeyedSubscript:@"username"];
+    username = [(CCContactSocialProfile *)self username];
+    [v3 setObject:username forKeyedSubscript:@"username"];
   }
 
   if (self->_userIdentifier)
   {
-    v7 = [(CCContactSocialProfile *)self userIdentifier];
-    [v3 setObject:v7 forKeyedSubscript:@"userIdentifier"];
+    userIdentifier = [(CCContactSocialProfile *)self userIdentifier];
+    [v3 setObject:userIdentifier forKeyedSubscript:@"userIdentifier"];
   }
 
   if (self->_serviceName)
   {
-    v8 = [(CCContactSocialProfile *)self serviceName];
-    [v3 setObject:v8 forKeyedSubscript:@"serviceName"];
+    serviceName = [(CCContactSocialProfile *)self serviceName];
+    [v3 setObject:serviceName forKeyedSubscript:@"serviceName"];
   }
 
   v9 = [v3 copy];
@@ -76,40 +76,40 @@
   return v9;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v11 = a3;
+  blockCopy = block;
   if (self->_label)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19760 stringValue:self->_label];
-    v11[2](v11, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_urlString)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19761 stringValue:self->_urlString];
-    v11[2](v11, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_username)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19762 stringValue:self->_username];
-    v11[2](v11, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_userIdentifier)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19763 stringValue:self->_userIdentifier];
-    v11[2](v11, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
-  v9 = v11;
+  v9 = blockCopy;
   if (self->_serviceName)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:19764 stringValue:self->_serviceName];
-    v11[2](v11, v10);
+    blockCopy[2](blockCopy, v10);
 
-    v9 = v11;
+    v9 = blockCopy;
   }
 }
 
@@ -148,10 +148,10 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -324,20 +324,20 @@ LABEL_45:
   return v31;
 }
 
-- (CCContactSocialProfile)initWithLabel:(id)a3 urlString:(id)a4 username:(id)a5 userIdentifier:(id)a6 serviceName:(id)a7 error:(id *)a8
+- (CCContactSocialProfile)initWithLabel:(id)label urlString:(id)string username:(id)username userIdentifier:(id)identifier serviceName:(id)name error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  labelCopy = label;
+  stringCopy = string;
+  usernameCopy = username;
+  identifierCopy = identifier;
+  nameCopy = name;
   v18 = objc_opt_new();
-  if (!v13)
+  if (!labelCopy)
   {
     v20 = 0;
 LABEL_5:
-    v29 = self;
-    if (v14)
+    selfCopy = self;
+    if (stringCopy)
     {
       objc_opt_class();
       IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -349,11 +349,11 @@ LABEL_5:
       }
 
       CCPBDataWriterWriteStringField();
-      if (!v15)
+      if (!usernameCopy)
       {
 LABEL_8:
         v20 = v22;
-        if (v16)
+        if (identifierCopy)
         {
           goto LABEL_9;
         }
@@ -365,7 +365,7 @@ LABEL_8:
     else
     {
       v22 = v20;
-      if (!v15)
+      if (!usernameCopy)
       {
         goto LABEL_8;
       }
@@ -384,7 +384,7 @@ LABEL_21:
     }
 
     CCPBDataWriterWriteStringField();
-    if (v16)
+    if (identifierCopy)
     {
 LABEL_9:
       objc_opt_class();
@@ -394,13 +394,13 @@ LABEL_9:
       if (v23)
       {
         CCPBDataWriterWriteStringField();
-        if (!v17)
+        if (!nameCopy)
         {
 LABEL_11:
           v20 = v22;
 LABEL_20:
-          v27 = [v18 immutableData];
-          v24 = [(CCItemMessage *)v29 initWithData:v27 error:a8];
+          immutableData = [v18 immutableData];
+          v24 = [(CCItemMessage *)selfCopy initWithData:immutableData error:error];
 
           self = v24;
           goto LABEL_23;
@@ -414,13 +414,13 @@ LABEL_12:
       v24 = 0;
       v20 = v22;
 LABEL_22:
-      self = v29;
+      self = selfCopy;
       goto LABEL_23;
     }
 
 LABEL_17:
     v22 = v20;
-    if (!v17)
+    if (!nameCopy)
     {
       goto LABEL_11;
     }

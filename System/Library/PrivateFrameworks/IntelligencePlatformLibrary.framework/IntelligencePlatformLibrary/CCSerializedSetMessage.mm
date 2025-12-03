@@ -1,33 +1,33 @@
 @interface CCSerializedSetMessage
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
 - (CCSerializedSetDevice)localDevice;
-- (CCSerializedSetMessage)initWithItemType:(id)a3 setIdentifier:(id)a4 personaIdentifier:(id)a5 descriptors:(id)a6 sharedItemCount:(id)a7 localItemInstanceCount:(id)a8 localDevice:(id)a9 remoteDevices:(id)a10 items:(id)a11 options:(id)a12 error:(id *)a13;
-- (CCSerializedSetMessage)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (CCSerializedSetMessage)initWithItemType:(id)type setIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier descriptors:(id)descriptors sharedItemCount:(id)count localItemInstanceCount:(id)instanceCount localDevice:(id)device remoteDevices:(id)self0 items:(id)self1 options:(id)self2 error:(id *)self3;
+- (CCSerializedSetMessage)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (NSArray)descriptors;
 - (NSArray)items;
 - (NSArray)remoteDevices;
 - (NSString)personaIdentifier;
 - (NSString)setIdentifier;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCSerializedSetMessage
 
-- (CCSerializedSetMessage)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCSerializedSetMessage)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v110 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v106 = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"itemType"];
-    v10 = [v6 objectForKeyedSubscript:@"setIdentifier"];
-    v11 = [v6 objectForKeyedSubscript:@"personaIdentifier"];
-    v12 = [v6 objectForKeyedSubscript:@"descriptors"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"itemType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"setIdentifier"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"personaIdentifier"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"descriptors"];
     v85 = v9;
     if (v12)
     {
@@ -48,8 +48,8 @@ LABEL_65:
         goto LABEL_66;
       }
 
-      v74 = a4;
-      v78 = self;
+      errorCopy = error;
+      selfCopy = self;
       v81 = v11;
       v75 = v10;
       v16 = objc_opt_new();
@@ -95,7 +95,7 @@ LABEL_65:
               v34 = 0;
               v16 = v17;
               v10 = v75;
-              self = v78;
+              self = selfCopy;
               v11 = v81;
               v8 = v15;
               goto LABEL_65;
@@ -113,7 +113,7 @@ LABEL_65:
       v10 = v75;
       v11 = v81;
       v8 = v15;
-      a4 = v74;
+      error = errorCopy;
     }
 
     else
@@ -121,9 +121,9 @@ LABEL_65:
       v16 = 0;
     }
 
-    v27 = [v6 objectForKeyedSubscript:@"sharedItemCount"];
-    v28 = [v6 objectForKeyedSubscript:@"localItemInstanceCount"];
-    v29 = [v6 objectForKeyedSubscript:@"localDevice"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"sharedItemCount"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"localItemInstanceCount"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"localDevice"];
     if (v29)
     {
       v30 = v8;
@@ -156,7 +156,7 @@ LABEL_64:
       v84 = 0;
     }
 
-    v35 = [v6 objectForKeyedSubscript:@"remoteDevices"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"remoteDevices"];
     v70 = v28;
     if (v35)
     {
@@ -179,7 +179,7 @@ LABEL_58:
       }
 
       v72 = v38;
-      v79 = self;
+      selfCopy2 = self;
       v82 = v11;
       v76 = v10;
       v86 = objc_opt_new();
@@ -226,7 +226,7 @@ LABEL_58:
               v65 = v39;
               v8 = v72;
               v10 = v76;
-              self = v79;
+              self = selfCopy2;
               v11 = v82;
               goto LABEL_58;
             }
@@ -251,7 +251,7 @@ LABEL_58:
       v86 = 0;
     }
 
-    v50 = [v6 objectForKeyedSubscript:@"items"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"items"];
     if (v50)
     {
       v51 = v50;
@@ -271,7 +271,7 @@ LABEL_62:
       }
 
       v73 = v8;
-      v80 = self;
+      selfCopy3 = self;
       v83 = v11;
       v77 = v10;
       v54 = objc_opt_new();
@@ -316,7 +316,7 @@ LABEL_62:
 
               v34 = 0;
               v10 = v77;
-              self = v80;
+              self = selfCopy3;
               v11 = v83;
               v8 = v73;
               goto LABEL_62;
@@ -332,7 +332,7 @@ LABEL_62:
       }
 
       v10 = v77;
-      self = v80;
+      self = selfCopy3;
       v28 = v70;
     }
 
@@ -343,8 +343,8 @@ LABEL_62:
       v73 = v8;
     }
 
-    v66 = [v6 objectForKeyedSubscript:@"options"];
-    v34 = [[CCSerializedSetMessage alloc] initWithItemType:v85 setIdentifier:v10 personaIdentifier:v83 descriptors:v16 sharedItemCount:v71 localItemInstanceCount:v28 localDevice:v84 remoteDevices:v86 items:v54 options:v66 error:a4];
+    v66 = [dictionaryCopy objectForKeyedSubscript:@"options"];
+    v34 = [[CCSerializedSetMessage alloc] initWithItemType:v85 setIdentifier:v10 personaIdentifier:v83 descriptors:v16 sharedItemCount:v71 localItemInstanceCount:v28 localDevice:v84 remoteDevices:v86 items:v54 options:v66 error:error];
 
     v51 = v54;
     v11 = v83;
@@ -376,14 +376,14 @@ LABEL_66:
 
   if (self->_setIdentifier)
   {
-    v5 = [(CCSerializedSetMessage *)self setIdentifier];
-    [v3 setObject:v5 forKeyedSubscript:@"setIdentifier"];
+    setIdentifier = [(CCSerializedSetMessage *)self setIdentifier];
+    [v3 setObject:setIdentifier forKeyedSubscript:@"setIdentifier"];
   }
 
   if (self->_personaIdentifier)
   {
-    v6 = [(CCSerializedSetMessage *)self personaIdentifier];
-    [v3 setObject:v6 forKeyedSubscript:@"personaIdentifier"];
+    personaIdentifier = [(CCSerializedSetMessage *)self personaIdentifier];
+    [v3 setObject:personaIdentifier forKeyedSubscript:@"personaIdentifier"];
   }
 
   if (self->_descriptors)
@@ -393,8 +393,8 @@ LABEL_66:
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v8 = [(CCSerializedSetMessage *)self descriptors];
-    v9 = [v8 countByEnumeratingWithState:&v44 objects:v50 count:16];
+    descriptors = [(CCSerializedSetMessage *)self descriptors];
+    v9 = [descriptors countByEnumeratingWithState:&v44 objects:v50 count:16];
     if (v9)
     {
       v10 = v9;
@@ -405,14 +405,14 @@ LABEL_66:
         {
           if (*v45 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(descriptors);
           }
 
-          v13 = [*(*(&v44 + 1) + 8 * i) jsonDictionary];
-          [v7 addObject:v13];
+          jsonDictionary = [*(*(&v44 + 1) + 8 * i) jsonDictionary];
+          [v7 addObject:jsonDictionary];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v44 objects:v50 count:16];
+        v10 = [descriptors countByEnumeratingWithState:&v44 objects:v50 count:16];
       }
 
       while (v10);
@@ -435,9 +435,9 @@ LABEL_66:
 
   if (self->_localDevice)
   {
-    v16 = [(CCSerializedSetMessage *)self localDevice];
-    v17 = [v16 jsonDictionary];
-    [v3 setObject:v17 forKeyedSubscript:@"localDevice"];
+    localDevice = [(CCSerializedSetMessage *)self localDevice];
+    jsonDictionary2 = [localDevice jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"localDevice"];
   }
 
   if (self->_remoteDevices)
@@ -447,8 +447,8 @@ LABEL_66:
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v19 = [(CCSerializedSetMessage *)self remoteDevices];
-    v20 = [v19 countByEnumeratingWithState:&v40 objects:v49 count:16];
+    remoteDevices = [(CCSerializedSetMessage *)self remoteDevices];
+    v20 = [remoteDevices countByEnumeratingWithState:&v40 objects:v49 count:16];
     if (v20)
     {
       v21 = v20;
@@ -459,14 +459,14 @@ LABEL_66:
         {
           if (*v41 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(remoteDevices);
           }
 
-          v24 = [*(*(&v40 + 1) + 8 * j) jsonDictionary];
-          [v18 addObject:v24];
+          jsonDictionary3 = [*(*(&v40 + 1) + 8 * j) jsonDictionary];
+          [v18 addObject:jsonDictionary3];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v40 objects:v49 count:16];
+        v21 = [remoteDevices countByEnumeratingWithState:&v40 objects:v49 count:16];
       }
 
       while (v21);
@@ -482,8 +482,8 @@ LABEL_66:
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v26 = [(CCSerializedSetMessage *)self items];
-    v27 = [v26 countByEnumeratingWithState:&v36 objects:v48 count:16];
+    items = [(CCSerializedSetMessage *)self items];
+    v27 = [items countByEnumeratingWithState:&v36 objects:v48 count:16];
     if (v27)
     {
       v28 = v27;
@@ -494,14 +494,14 @@ LABEL_66:
         {
           if (*v37 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(items);
           }
 
-          v31 = [*(*(&v36 + 1) + 8 * k) jsonDictionary];
-          [v25 addObject:v31];
+          jsonDictionary4 = [*(*(&v36 + 1) + 8 * k) jsonDictionary];
+          [v25 addObject:jsonDictionary4];
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v36 objects:v48 count:16];
+        v28 = [items countByEnumeratingWithState:&v36 objects:v48 count:16];
       }
 
       while (v28);
@@ -523,68 +523,68 @@ LABEL_66:
   return v33;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v16 = a3;
+  blockCopy = block;
   v5 = MEMORY[0x1E69939A8];
   if (self->_hasItemType)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] uint32Value:self->_itemType];
-    v16[2](v16, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   if (self->_setIdentifier)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 stringValue:self->_setIdentifier];
-    v16[2](v16, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   if (self->_personaIdentifier)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 stringValue:self->_personaIdentifier];
-    v16[2](v16, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_descriptors)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 repeatedSubMessageValue:self->_descriptors];
-    v16[2](v16, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_hasSharedItemCount)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 uint32Value:self->_sharedItemCount];
-    v16[2](v16, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   if (self->_hasLocalItemInstanceCount)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 uint32Value:self->_localItemInstanceCount];
-    v16[2](v16, v11);
+    blockCopy[2](blockCopy, v11);
   }
 
   if (self->_localDevice)
   {
     v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 subMessageValue:self->_localDevice];
-    v16[2](v16, v12);
+    blockCopy[2](blockCopy, v12);
   }
 
   if (self->_remoteDevices)
   {
     v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 repeatedSubMessageValue:self->_remoteDevices];
-    v16[2](v16, v13);
+    blockCopy[2](blockCopy, v13);
   }
 
   if (self->_items)
   {
     v14 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 repeatedSubMessageValue:self->_items];
-    v16[2](v16, v14);
+    blockCopy[2](blockCopy, v14);
   }
 
   if (self->_hasOptions)
   {
     v15 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*v5 uint32Value:self->_options];
-    v16[2](v16, v15);
+    blockCopy[2](blockCopy, v15);
   }
 }
 
@@ -630,11 +630,11 @@ LABEL_66:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v76 = a4;
-  v77 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v77];
+  errorCopy = error;
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   if (*&v5[*MEMORY[0x1E6993AB8]] < *&v5[*MEMORY[0x1E6993AB0]])
@@ -1029,7 +1029,7 @@ LABEL_102:
     }
 
 LABEL_82:
-    [v56 addObject:{v55, v76}];
+    [v56 addObject:{v55, errorCopy}];
 LABEL_83:
 
     goto LABEL_84;
@@ -1057,13 +1057,13 @@ LABEL_108:
   {
     CCSetError();
     v68 = 0;
-    v69 = v77;
+    v69 = dataCopy;
   }
 
   else
   {
     v70 = MEMORY[0x1E6993AA8];
-    v69 = v77;
+    v69 = dataCopy;
     if (*&v5[*MEMORY[0x1E6993AA8]])
     {
       v71 = objc_opt_class();
@@ -1084,23 +1084,23 @@ LABEL_108:
   return v68;
 }
 
-- (CCSerializedSetMessage)initWithItemType:(id)a3 setIdentifier:(id)a4 personaIdentifier:(id)a5 descriptors:(id)a6 sharedItemCount:(id)a7 localItemInstanceCount:(id)a8 localDevice:(id)a9 remoteDevices:(id)a10 items:(id)a11 options:(id)a12 error:(id *)a13
+- (CCSerializedSetMessage)initWithItemType:(id)type setIdentifier:(id)identifier personaIdentifier:(id)personaIdentifier descriptors:(id)descriptors sharedItemCount:(id)count localItemInstanceCount:(id)instanceCount localDevice:(id)device remoteDevices:(id)self0 items:(id)self1 options:(id)self2 error:(id *)self3
 {
   v105 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v79 = a8;
-  v80 = a9;
-  v77 = a10;
-  v78 = a11;
-  v76 = a12;
+  typeCopy = type;
+  identifierCopy = identifier;
+  personaIdentifierCopy = personaIdentifier;
+  descriptorsCopy = descriptors;
+  countCopy = count;
+  instanceCountCopy = instanceCount;
+  deviceCopy = device;
+  devicesCopy = devices;
+  itemsCopy = items;
+  optionsCopy = options;
   v23 = objc_opt_new();
-  v73 = v18;
-  v74 = v21;
-  if (v18)
+  v73 = typeCopy;
+  v74 = descriptorsCopy;
+  if (typeCopy)
   {
     objc_opt_class();
     v101 = 0;
@@ -1111,18 +1111,18 @@ LABEL_108:
       goto LABEL_61;
     }
 
-    v26 = v22;
-    [v18 unsignedIntValue];
+    v26 = countCopy;
+    [typeCopy unsignedIntValue];
     CCPBDataWriterWriteUint32Field();
   }
 
   else
   {
-    v26 = v22;
+    v26 = countCopy;
     v25 = 0;
   }
 
-  if (v19)
+  if (identifierCopy)
   {
     objc_opt_class();
     v100 = v25;
@@ -1131,21 +1131,21 @@ LABEL_108:
 
     if (!v27)
     {
-      v38 = v19;
-      v39 = v20;
+      v38 = identifierCopy;
+      v39 = personaIdentifierCopy;
       CCSetError();
       v40 = 0;
       v25 = v28;
 LABEL_25:
-      v41 = self;
-      v22 = v26;
+      selfCopy4 = self;
+      countCopy = v26;
 LABEL_63:
-      v44 = v79;
+      v44 = instanceCountCopy;
       goto LABEL_64;
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v20)
+    if (!personaIdentifierCopy)
     {
 LABEL_8:
       v25 = v28;
@@ -1156,7 +1156,7 @@ LABEL_8:
   else
   {
     v28 = v25;
-    if (!v20)
+    if (!personaIdentifierCopy)
     {
       goto LABEL_8;
     }
@@ -1169,8 +1169,8 @@ LABEL_8:
 
   if (!v29)
   {
-    v38 = v19;
-    v39 = v20;
+    v38 = identifierCopy;
+    v39 = personaIdentifierCopy;
     CCSetError();
     v40 = 0;
     goto LABEL_25;
@@ -1178,8 +1178,8 @@ LABEL_8:
 
   CCPBDataWriterWriteStringField();
 LABEL_12:
-  v22 = v26;
-  if (v21)
+  countCopy = v26;
+  if (descriptorsCopy)
   {
     objc_opt_class();
     v98 = v25;
@@ -1188,14 +1188,14 @@ LABEL_12:
 
     if (!v30)
     {
-      v38 = v19;
+      v38 = identifierCopy;
 LABEL_33:
-      v39 = v20;
+      v39 = personaIdentifierCopy;
       CCSetError();
       v40 = 0;
       v25 = v31;
 LABEL_62:
-      v41 = self;
+      selfCopy4 = self;
       goto LABEL_63;
     }
 
@@ -1204,7 +1204,7 @@ LABEL_62:
     v97 = 0u;
     v94 = 0u;
     v95 = 0u;
-    v32 = v21;
+    v32 = descriptorsCopy;
     v33 = [v32 countByEnumeratingWithState:&v94 objects:v104 count:16];
     if (v33)
     {
@@ -1219,7 +1219,7 @@ LABEL_62:
             objc_enumerationMutation(v32);
           }
 
-          v37 = [*(*(&v94 + 1) + 8 * i) data];
+          data = [*(*(&v94 + 1) + 8 * i) data];
           CCPBDataWriterWriteDataField();
         }
 
@@ -1229,7 +1229,7 @@ LABEL_62:
       while (v34);
     }
 
-    v22 = v70;
+    countCopy = v70;
     if (!v70)
     {
       goto LABEL_22;
@@ -1257,31 +1257,31 @@ LABEL_22:
     goto LABEL_61;
   }
 
-  [v22 unsignedIntValue];
+  [countCopy unsignedIntValue];
   CCPBDataWriterWriteUint32Field();
 LABEL_29:
-  if (!v79)
+  if (!instanceCountCopy)
   {
     v45 = v25;
     goto LABEL_35;
   }
 
-  v38 = v19;
-  v39 = v20;
+  v38 = identifierCopy;
+  v39 = personaIdentifierCopy;
   objc_opt_class();
   v92 = v25;
   v43 = CCValidateIsInstanceOfExpectedClass();
-  v44 = v79;
+  v44 = instanceCountCopy;
   v45 = v25;
 
   if (v43)
   {
-    [v79 unsignedIntValue];
+    [instanceCountCopy unsignedIntValue];
     CCPBDataWriterWriteUint32Field();
-    v20 = v39;
-    v19 = v38;
+    personaIdentifierCopy = v39;
+    identifierCopy = v38;
 LABEL_35:
-    if (v80)
+    if (deviceCopy)
     {
       objc_opt_class();
       v91 = v45;
@@ -1293,7 +1293,7 @@ LABEL_35:
         goto LABEL_61;
       }
 
-      v47 = [v80 data];
+      data2 = [deviceCopy data];
       CCPBDataWriterWriteDataField();
     }
 
@@ -1302,8 +1302,8 @@ LABEL_35:
       v25 = v45;
     }
 
-    v48 = v77;
-    if (v77)
+    v48 = devicesCopy;
+    if (devicesCopy)
     {
       objc_opt_class();
       v90 = v25;
@@ -1312,23 +1312,23 @@ LABEL_35:
 
       if (!v49)
       {
-        v38 = v19;
-        v39 = v20;
+        v38 = identifierCopy;
+        v39 = personaIdentifierCopy;
         CCSetError();
         v40 = 0;
         v25 = v50;
-        v41 = self;
-        v44 = v79;
+        selfCopy4 = self;
+        v44 = instanceCountCopy;
         goto LABEL_65;
       }
 
       v69 = v50;
-      v71 = v22;
+      v71 = countCopy;
       v89 = 0u;
       v87 = 0u;
       v88 = 0u;
       v86 = 0u;
-      v51 = v77;
+      v51 = devicesCopy;
       v52 = [v51 countByEnumeratingWithState:&v86 objects:v103 count:16];
       if (v52)
       {
@@ -1343,7 +1343,7 @@ LABEL_35:
               objc_enumerationMutation(v51);
             }
 
-            v56 = [*(*(&v86 + 1) + 8 * j) data];
+            data3 = [*(*(&v86 + 1) + 8 * j) data];
             CCPBDataWriterWriteDataField();
           }
 
@@ -1354,7 +1354,7 @@ LABEL_35:
       }
 
       v57 = v69;
-      v22 = v71;
+      countCopy = v71;
     }
 
     else
@@ -1362,33 +1362,33 @@ LABEL_35:
       v57 = v25;
     }
 
-    if (!v78)
+    if (!itemsCopy)
     {
       v25 = v57;
 LABEL_68:
-      if (!v76)
+      if (!optionsCopy)
       {
-        v38 = v19;
-        v39 = v20;
+        v38 = identifierCopy;
+        v39 = personaIdentifierCopy;
         goto LABEL_72;
       }
 
-      v38 = v19;
+      v38 = identifierCopy;
       objc_opt_class();
       v67 = CCValidateIsInstanceOfExpectedClass();
       v31 = v25;
 
       if (v67)
       {
-        v39 = v20;
-        [v76 unsignedIntValue];
+        v39 = personaIdentifierCopy;
+        [optionsCopy unsignedIntValue];
         CCPBDataWriterWriteUint32Field();
         v25 = v31;
 LABEL_72:
-        v68 = [v23 immutableData];
-        v41 = [(CCItemMessage *)self initWithData:v68 error:a13];
+        immutableData = [v23 immutableData];
+        selfCopy4 = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-        v40 = v41;
+        v40 = selfCopy4;
         goto LABEL_63;
       }
 
@@ -1402,12 +1402,12 @@ LABEL_72:
 
     if (v58)
     {
-      v72 = v22;
+      v72 = countCopy;
       v83 = 0u;
       v84 = 0u;
       v81 = 0u;
       v82 = 0u;
-      v59 = v78;
+      v59 = itemsCopy;
       v60 = [v59 countByEnumeratingWithState:&v81 objects:v102 count:16];
       if (v60)
       {
@@ -1422,7 +1422,7 @@ LABEL_72:
               objc_enumerationMutation(v59);
             }
 
-            v64 = [*(*(&v81 + 1) + 8 * k) data];
+            data4 = [*(*(&v81 + 1) + 8 * k) data];
             CCPBDataWriterWriteDataField();
           }
 
@@ -1432,13 +1432,13 @@ LABEL_72:
         while (v61);
       }
 
-      v22 = v72;
+      countCopy = v72;
       goto LABEL_68;
     }
 
 LABEL_61:
-    v38 = v19;
-    v39 = v20;
+    v38 = identifierCopy;
+    v39 = personaIdentifierCopy;
     CCSetError();
     v40 = 0;
     goto LABEL_62;
@@ -1447,9 +1447,9 @@ LABEL_61:
   CCSetError();
   v40 = 0;
   v25 = v45;
-  v41 = self;
+  selfCopy4 = self;
 LABEL_64:
-  v48 = v77;
+  v48 = devicesCopy;
 LABEL_65:
 
   v65 = *MEMORY[0x1E69E9840];

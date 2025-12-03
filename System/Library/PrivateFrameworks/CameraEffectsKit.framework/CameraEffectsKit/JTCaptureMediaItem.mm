@@ -1,7 +1,7 @@
 @interface JTCaptureMediaItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (JTCaptureMediaItem)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -21,18 +21,18 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = JTCaptureMediaItem;
-  return [(JFXMediaItem *)&v4 copyWithZone:a3];
+  return [(JFXMediaItem *)&v4 copyWithZone:zone];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v4.receiver = self;
   v4.super_class = JTCaptureMediaItem;
-  return [(JFXMediaItem *)&v4 isEqual:a3];
+  return [(JFXMediaItem *)&v4 isEqual:equal];
 }
 
 - (unint64_t)hash

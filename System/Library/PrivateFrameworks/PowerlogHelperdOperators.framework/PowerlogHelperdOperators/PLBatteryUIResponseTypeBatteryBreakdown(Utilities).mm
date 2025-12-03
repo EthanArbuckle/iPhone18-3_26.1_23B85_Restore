@@ -30,9 +30,9 @@
 
 - (void)getBundleIDToDisplayNameMap
 {
-  v5 = [a2 bundleIdentifier];
-  *a1 = 138412290;
-  *a3 = v5;
+  bundleIdentifier = [a2 bundleIdentifier];
+  *self = 138412290;
+  *a3 = bundleIdentifier;
   OUTLINED_FUNCTION_9(&dword_25EE51000, v6, v7, "LSApplicationRecord Skipping non system / non user bundleID=%@");
 }
 

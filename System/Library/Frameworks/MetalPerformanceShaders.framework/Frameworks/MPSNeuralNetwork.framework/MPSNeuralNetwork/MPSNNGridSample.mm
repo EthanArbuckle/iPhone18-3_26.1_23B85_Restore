@@ -1,9 +1,9 @@
 @interface MPSNNGridSample
 - (MPSNNGridSample)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSNNGridSample)initWithDevice:(id)device;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNNGridSample
@@ -56,20 +56,20 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v10.receiver = self;
   v10.super_class = MPSNNGridSample;
   [(MPSCNNBinaryKernel *)&v10 encodeWithCoder:?];
-  objc_msgSend_encodeBool_forKey_(a3, v5, self->_useGridValueAsInputCoordinate, @"MPSNNGridSample.useGridValueAsInputCoordinate", v6, v7, v8, v9);
+  objc_msgSend_encodeBool_forKey_(coder, v5, self->_useGridValueAsInputCoordinate, @"MPSNNGridSample.useGridValueAsInputCoordinate", v6, v7, v8, v9);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSNNGridSample;
-  result = [(MPSCNNBinaryKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSCNNBinaryKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 416) = self->_useGridValueAsInputCoordinate;

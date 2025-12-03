@@ -1,21 +1,21 @@
 @interface SHServerResponseContext
 - (SHServerResponseContext)init;
-- (void)sh_setCampaignTokenForClientIdentifier:(id)a3 completion:(id)a4;
-- (void)sh_setDefaultValuesWithCompletion:(id)a3;
+- (void)sh_setCampaignTokenForClientIdentifier:(id)identifier completion:(id)completion;
+- (void)sh_setDefaultValuesWithCompletion:(id)completion;
 @end
 
 @implementation SHServerResponseContext
 
-- (void)sh_setDefaultValuesWithCompletion:(id)a3
+- (void)sh_setDefaultValuesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = +[SHRemoteConfiguration sharedInstance];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100007048;
   v7[3] = &unk_10007CF28;
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   objc_copyWeak(&v9, &location);
   [v5 defaultValuesWithCompletion:v7];
@@ -24,20 +24,20 @@
   objc_destroyWeak(&location);
 }
 
-- (void)sh_setCampaignTokenForClientIdentifier:(id)a3 completion:(id)a4
+- (void)sh_setCampaignTokenForClientIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v8 = +[SHRemoteConfiguration sharedInstance];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000071E4;
   v11[3] = &unk_10007CF50;
-  v9 = v7;
+  v9 = completionCopy;
   v13 = v9;
   objc_copyWeak(&v14, &location);
-  v10 = v6;
+  v10 = identifierCopy;
   v12 = v10;
   [v8 campaignTokenWithCompletion:v11];
 

@@ -2,8 +2,8 @@
 - (SBFSpringLoadedInteractionEffect)init;
 - (SBFSpringLoadedInteractionEffectDelegate)delegate;
 - (id)fastBlinkAnimation;
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4;
-- (void)setUseFastBlinkAnimation:(BOOL)a3;
+- (void)interaction:(id)interaction didChangeWithContext:(id)context;
+- (void)setUseFastBlinkAnimation:(BOOL)animation;
 @end
 
 @implementation SBFSpringLoadedInteractionEffect
@@ -17,72 +17,72 @@
   if (v2)
   {
     v2->_useFastBlinkAnimation = 0;
-    v4 = [MEMORY[0x1E69DCF80] _blinkEffect];
+    _blinkEffect = [MEMORY[0x1E69DCF80] _blinkEffect];
     blinkEffect = v3->_blinkEffect;
-    v3->_blinkEffect = v4;
+    v3->_blinkEffect = _blinkEffect;
   }
 
   return v3;
 }
 
-- (void)setUseFastBlinkAnimation:(BOOL)a3
+- (void)setUseFastBlinkAnimation:(BOOL)animation
 {
-  self->_useFastBlinkAnimation = a3;
-  if (a3)
+  self->_useFastBlinkAnimation = animation;
+  if (animation)
   {
-    v4 = 0;
+    _blinkEffect = 0;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DCF80] _blinkEffect];
+    _blinkEffect = [MEMORY[0x1E69DCF80] _blinkEffect];
   }
 
-  self->_blinkEffect = v4;
+  self->_blinkEffect = _blinkEffect;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4
+- (void)interaction:(id)interaction didChangeWithContext:(id)context
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [v6 targetItem];
-  if (v7)
+  interactionCopy = interaction;
+  contextCopy = context;
+  targetItem = [contextCopy targetItem];
+  if (targetItem)
   {
-    [v6 targetItem];
+    [contextCopy targetItem];
   }
 
   else
   {
-    [v14 view];
+    [interactionCopy view];
   }
   v8 = ;
 
-  v9 = [(SBFSpringLoadedInteractionEffect *)self delegate];
-  v10 = [v9 targetViewForSpringLoadingEffectForView:v8];
+  delegate = [(SBFSpringLoadedInteractionEffect *)self delegate];
+  v10 = [delegate targetViewForSpringLoadingEffectForView:v8];
 
-  [v6 setTargetView:v10];
+  [contextCopy setTargetView:v10];
   if (![(SBFSpringLoadedInteractionEffect *)self useFastBlinkAnimation])
   {
-    [(UISpringLoadedInteractionEffect *)self->_blinkEffect interaction:v14 didChangeWithContext:v6];
+    [(UISpringLoadedInteractionEffect *)self->_blinkEffect interaction:interactionCopy didChangeWithContext:contextCopy];
     goto LABEL_12;
   }
 
-  v11 = [v10 layer];
-  v12 = [v6 state];
-  switch(v12)
+  layer = [v10 layer];
+  state = [contextCopy state];
+  switch(state)
   {
     case 3:
       goto LABEL_8;
     case 2:
-      v13 = [(SBFSpringLoadedInteractionEffect *)self fastBlinkAnimation];
-      [v11 addAnimation:v13 forKey:@"fastBlinkingAnimation"];
+      fastBlinkAnimation = [(SBFSpringLoadedInteractionEffect *)self fastBlinkAnimation];
+      [layer addAnimation:fastBlinkAnimation forKey:@"fastBlinkingAnimation"];
 
       break;
     case 0:
 LABEL_8:
-      [v11 removeAnimationForKey:@"fastBlinkingAnimation"];
+      [layer removeAnimationForKey:@"fastBlinkingAnimation"];
       break;
   }
 

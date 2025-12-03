@@ -1,23 +1,23 @@
 @interface JavaUtilCollections_CheckedList
-- (BOOL)isEqual:(id)a3;
-- (JavaUtilCollections_CheckedList)initWithJavaUtilList:(id)a3 withIOSClass:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (JavaUtilCollections_CheckedList)initWithJavaUtilList:(id)list withIOSClass:(id)class;
 - (id)listIterator;
-- (int)indexOfWithId:(id)a3;
-- (int)lastIndexOfWithId:(id)a3;
+- (int)indexOfWithId:(id)id;
+- (int)lastIndexOfWithId:(id)id;
 - (unint64_t)hash;
 - (void)dealloc;
 @end
 
 @implementation JavaUtilCollections_CheckedList
 
-- (JavaUtilCollections_CheckedList)initWithJavaUtilList:(id)a3 withIOSClass:(id)a4
+- (JavaUtilCollections_CheckedList)initWithJavaUtilList:(id)list withIOSClass:(id)class
 {
-  sub_1001C7CC4(self, a3, a4);
-  JreStrongAssign(&self->l_, a3);
+  sub_1001C7CC4(self, list, class);
+  JreStrongAssign(&self->l_, list);
   return self;
 }
 
-- (int)indexOfWithId:(id)a3
+- (int)indexOfWithId:(id)id
 {
   l = self->l_;
   if (!l)
@@ -25,10 +25,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilList *)l indexOfWithId:a3];
+  return [(JavaUtilList *)l indexOfWithId:id];
 }
 
-- (int)lastIndexOfWithId:(id)a3
+- (int)lastIndexOfWithId:(id)id
 {
   l = self->l_;
   if (!l)
@@ -36,7 +36,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilList *)l lastIndexOfWithId:a3];
+  return [(JavaUtilList *)l lastIndexOfWithId:id];
 }
 
 - (id)listIterator
@@ -52,7 +52,7 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   l = self->l_;
   if (!l)
@@ -60,7 +60,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilList *)l isEqual:a3];
+  return [(JavaUtilList *)l isEqual:equal];
 }
 
 - (unint64_t)hash

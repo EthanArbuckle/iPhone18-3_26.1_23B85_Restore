@@ -1,49 +1,49 @@
 @interface ARRecordingTechniquePublic
 - (ARRecordingTechniqueDelegate)recordingTechniqueDelegate;
-- (ARRecordingTechniquePublic)initWithFileURL:(id)a3 recordingSensorDataTypes:(unint64_t)a4 startImmediately:(BOOL)a5 recordCollaborationData:(BOOL)a6;
+- (ARRecordingTechniquePublic)initWithFileURL:(id)l recordingSensorDataTypes:(unint64_t)types startImmediately:(BOOL)immediately recordCollaborationData:(BOOL)data;
 - (id)createFileMetadata;
-- (id)processData:(id)a3;
-- (void)_fail:(id)a3;
-- (void)_finish:(id)a3;
+- (id)processData:(id)data;
+- (void)_fail:(id)_fail;
+- (void)_finish:(id)_finish;
 - (void)_finishRecording;
 - (void)_startRecording;
 - (void)dealloc;
-- (void)didFailWithError:(id)a3;
+- (void)didFailWithError:(id)error;
 - (void)didFinishRecording;
 - (void)finishRecording;
 - (void)isReadyToRecord;
-- (void)processTimeSensitiveNSCoderObject:(id)a3 withTimestamp:(double)a4 metadataID:(id)a5;
-- (void)recordAddedAnchor:(id)a3;
-- (void)recordCollaborationData:(id)a3 localSession:(BOOL)a4;
-- (void)recordCustomData:(id)a3 forTimestamp:(double)a4;
-- (void)recordRemovedAnchor:(id)a3;
+- (void)processTimeSensitiveNSCoderObject:(id)object withTimestamp:(double)timestamp metadataID:(id)d;
+- (void)recordAddedAnchor:(id)anchor;
+- (void)recordCollaborationData:(id)data localSession:(BOOL)session;
+- (void)recordCustomData:(id)data forTimestamp:(double)timestamp;
+- (void)recordRemovedAnchor:(id)anchor;
 - (void)removeTemporaryVideoFile;
-- (void)setParentImageSensorSettings:(id)a3;
+- (void)setParentImageSensorSettings:(id)settings;
 - (void)setupCustomTrack;
 - (void)setupSensorTracks;
 - (void)startRecording;
-- (void)writeAudioData:(id)a3;
-- (void)writeImageData:(id)a3;
-- (void)writePearlDepthData:(id)a3 withTimestamp:(double)a4 fromCaptureDevice:(id)a5;
-- (void)writeResultData:(id)a3 withTimestamp:(double)a4;
-- (void)writeSensorData:(id)a3;
-- (void)writeTimeOfFlightData:(id)a3;
+- (void)writeAudioData:(id)data;
+- (void)writeImageData:(id)data;
+- (void)writePearlDepthData:(id)data withTimestamp:(double)timestamp fromCaptureDevice:(id)device;
+- (void)writeResultData:(id)data withTimestamp:(double)timestamp;
+- (void)writeSensorData:(id)data;
+- (void)writeTimeOfFlightData:(id)data;
 @end
 
 @implementation ARRecordingTechniquePublic
 
-- (ARRecordingTechniquePublic)initWithFileURL:(id)a3 recordingSensorDataTypes:(unint64_t)a4 startImmediately:(BOOL)a5 recordCollaborationData:(BOOL)a6
+- (ARRecordingTechniquePublic)initWithFileURL:(id)l recordingSensorDataTypes:(unint64_t)types startImmediately:(BOOL)immediately recordCollaborationData:(BOOL)data
 {
-  v7 = a5;
+  immediatelyCopy = immediately;
   v71 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  lCopy = l;
   v63.receiver = self;
   v63.super_class = ARRecordingTechniquePublic;
   v11 = [(ARTechnique *)&v63 init];
   v12 = v11;
   if (v11)
   {
-    v11->_recordCollaborationData = a6;
+    v11->_recordCollaborationData = data;
     v11->_recordPearlDepthData = [ARKitUserDefaults BOOLForKey:@"com.apple.arkit.recordingTechnique.recordPearlDepthData"];
     v13 = [ARKitUserDefaults stringForKey:@"com.apple.arkit.session.record.filepath"];
     v14 = v13;
@@ -57,13 +57,13 @@
       else
       {
         v17 = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, 1uLL, 1);
-        v18 = [v17 lastObject];
+        lastObject = [v17 lastObject];
 
         v19 = MEMORY[0x1E695DFF8];
-        v20 = [v18 stringByAppendingPathComponent:v14];
+        v20 = [lastObject stringByAppendingPathComponent:v14];
         v15 = [v19 fileURLWithPath:v20];
 
-        v10 = v18;
+        lCopy = lastObject;
       }
 
       if (_ARLogSession_onceToken_0 != -1)
@@ -77,23 +77,23 @@
         v22 = v21;
         v23 = objc_opt_class();
         v24 = NSStringFromClass(v23);
-        v25 = [v15 absoluteString];
+        absoluteString = [v15 absoluteString];
         *buf = 138543874;
         v66 = v24;
         v67 = 2048;
         v68 = v12;
         v69 = 2112;
-        v70 = v25;
+        v70 = absoluteString;
         _os_log_impl(&dword_1C241C000, v22, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Setting recording URL to %@", buf, 0x20u);
       }
 
       v16 = 0;
     }
 
-    else if (v10)
+    else if (lCopy)
     {
       v16 = 0;
-      v15 = v10;
+      v15 = lCopy;
     }
 
     else
@@ -108,26 +108,26 @@
 
     if ([v15 isFileURL])
     {
-      v62 = [v15 URLByDeletingLastPathComponent];
+      uRLByDeletingLastPathComponent = [v15 URLByDeletingLastPathComponent];
       v64 = *MEMORY[0x1E695DBF0];
       v26 = v64;
       v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v64 count:1];
-      [v62 resourceValuesForKeys:v27 error:0];
+      [uRLByDeletingLastPathComponent resourceValuesForKeys:v27 error:0];
       v28 = v15;
       v29 = v14;
       v30 = v16;
-      v31 = a4;
-      v33 = v32 = v7;
+      typesCopy = types;
+      v33 = v32 = immediatelyCopy;
       v34 = [v33 objectForKeyedSubscript:v26];
-      v35 = [v34 BOOLValue];
+      bOOLValue = [v34 BOOLValue];
 
       v36 = v32;
-      v37 = v31;
+      v37 = typesCopy;
       v38 = v30;
       v14 = v29;
       v15 = v28;
 
-      if (v35)
+      if (bOOLValue)
       {
         objc_storeStrong(&v12->_outputFileURL, v28);
         v12->_sensorDataTypes = v37;
@@ -214,7 +214,7 @@ LABEL_29:
     goto LABEL_31;
   }
 
-  v15 = v10;
+  v15 = lCopy;
 LABEL_21:
   v48 = v12;
 LABEL_31:
@@ -237,18 +237,18 @@ LABEL_31:
   [(ARRecordingTechniquePublic *)&v4 dealloc];
 }
 
-- (void)setParentImageSensorSettings:(id)a3
+- (void)setParentImageSensorSettings:(id)settings
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_parentImageSensorSettings, a3);
+  settingsCopy = settings;
+  objc_storeStrong(&self->_parentImageSensorSettings, settings);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v17 = v5;
-  v6 = [v5 settings];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v17 = settingsCopy;
+  settings = [settingsCopy settings];
+  v7 = [settings countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -259,19 +259,19 @@ LABEL_31:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(settings);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 videoFormat];
-        v13 = [v12 captureDevicePosition];
+        videoFormat = [v11 videoFormat];
+        captureDevicePosition = [videoFormat captureDevicePosition];
 
-        if (v13 == 2)
+        if (captureDevicePosition == 2)
         {
-          v14 = [v11 metaData];
+          metaData = [v11 metaData];
 
           sensorDataTypes = self->_sensorDataTypes;
-          if (v14)
+          if (metaData)
           {
             sensorDataTypes |= 0x10uLL;
             self->_sensorDataTypes = sensorDataTypes;
@@ -288,7 +288,7 @@ LABEL_31:
         self->_sensorDataTypes = v16;
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [settings countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
@@ -315,9 +315,9 @@ void __44__ARRecordingTechniquePublic_startRecording__block_invoke(uint64_t a1)
   [WeakRetained _startRecording];
 }
 
-- (void)recordCustomData:(id)a3 forTimestamp:(double)a4
+- (void)recordCustomData:(id)data forTimestamp:(double)timestamp
 {
-  v6 = a3;
+  dataCopy = data;
   if (self->_expectCustomData)
   {
     objc_initWeak(&location, self);
@@ -327,8 +327,8 @@ void __44__ARRecordingTechniquePublic_startRecording__block_invoke(uint64_t a1)
     v8[2] = __60__ARRecordingTechniquePublic_recordCustomData_forTimestamp___block_invoke;
     v8[3] = &unk_1E817C740;
     objc_copyWeak(v10, &location);
-    v9 = v6;
-    v10[1] = *&a4;
+    v9 = dataCopy;
+    v10[1] = *&timestamp;
     dispatch_async(timeSensitiveQueue, v8);
 
     objc_destroyWeak(v10);
@@ -365,12 +365,12 @@ void __45__ARRecordingTechniquePublic_finishRecording__block_invoke(uint64_t a1)
 - (void)removeTemporaryVideoFile
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   if ([(NSURL *)self->_outputFileURL checkResourceIsReachableAndReturnError:0])
   {
     outputFileURL = self->_outputFileURL;
     v19 = 0;
-    [v3 removeItemAtURL:outputFileURL error:&v19];
+    [defaultManager removeItemAtURL:outputFileURL error:&v19];
     v5 = v19;
     if (v5)
     {
@@ -390,15 +390,15 @@ void __45__ARRecordingTechniquePublic_finishRecording__block_invoke(uint64_t a1)
           v10 = objc_opt_class();
           v11 = NSStringFromClass(v10);
           v12 = self->_outputFileURL;
-          v13 = [v6 localizedDescription];
+          localizedDescription = [v6 localizedDescription];
           *buf = 138544130;
           v21 = v11;
           v22 = 2048;
-          v23 = self;
+          selfCopy2 = self;
           v24 = 2112;
           v25 = v12;
           v26 = 2112;
-          v27 = v13;
+          v27 = localizedDescription;
           v14 = "%{public}@ <%p>: Could not remove temporary file at %@: %@";
           v15 = v9;
           v16 = OS_LOG_TYPE_ERROR;
@@ -412,15 +412,15 @@ LABEL_10:
         v17 = objc_opt_class();
         v11 = NSStringFromClass(v17);
         v18 = self->_outputFileURL;
-        v13 = [v6 localizedDescription];
+        localizedDescription = [v6 localizedDescription];
         *buf = 138544130;
         v21 = v11;
         v22 = 2048;
-        v23 = self;
+        selfCopy2 = self;
         v24 = 2112;
         v25 = v18;
         v26 = 2112;
-        v27 = v13;
+        v27 = localizedDescription;
         v14 = "Error: %{public}@ <%p>: Could not remove temporary file at %@: %@";
         v15 = v9;
         v16 = OS_LOG_TYPE_INFO;
@@ -430,55 +430,55 @@ LABEL_10:
   }
 }
 
-- (void)_fail:(id)a3
+- (void)_fail:(id)_fail
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  _failCopy = _fail;
   v5 = _ARLogTechnique_11();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v4 description];
+    v8 = [_failCopy description];
     v15 = 138543874;
     v16 = v7;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = v8;
     _os_log_impl(&dword_1C241C000, v5, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Recording failed: %@", &v15, 0x20u);
   }
 
   [(ARRecordingTechniquePublic *)self setState:4];
-  v9 = [(ARTechnique *)self delegate];
+  delegate = [(ARTechnique *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(ARTechnique *)self delegate];
-    [v11 technique:self didFailWithError:v4];
+    delegate2 = [(ARTechnique *)self delegate];
+    [delegate2 technique:self didFailWithError:_failCopy];
   }
 
-  v12 = [(ARRecordingTechniquePublic *)self recordingTechniqueDelegate];
+  recordingTechniqueDelegate = [(ARRecordingTechniquePublic *)self recordingTechniqueDelegate];
   v13 = objc_opt_respondsToSelector();
 
   if (v13)
   {
-    v14 = [(ARRecordingTechniquePublic *)self recordingTechniqueDelegate];
-    [v14 technique:self didFinishWithResult:v4];
+    recordingTechniqueDelegate2 = [(ARRecordingTechniquePublic *)self recordingTechniqueDelegate];
+    [recordingTechniqueDelegate2 technique:self didFinishWithResult:_failCopy];
   }
 
   dispatch_activate(self->_timeSensitiveQueue);
 }
 
-- (void)_finish:(id)a3
+- (void)_finish:(id)_finish
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_finishedError, a3);
-  if (v5)
+  _finishCopy = _finish;
+  objc_storeStrong(&self->_finishedError, _finish);
+  if (_finishCopy)
   {
-    [(ARRecordingTechniquePublic *)self _fail:v5];
+    [(ARRecordingTechniquePublic *)self _fail:_finishCopy];
   }
 
   else
@@ -491,28 +491,28 @@ LABEL_10:
       v12 = 138543618;
       v13 = v8;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1C241C000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Recording successful", &v12, 0x16u);
     }
 
     [(ARRecordingTechniquePublic *)self setState:4];
-    v9 = [(ARRecordingTechniquePublic *)self recordingTechniqueDelegate];
+    recordingTechniqueDelegate = [(ARRecordingTechniquePublic *)self recordingTechniqueDelegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(ARRecordingTechniquePublic *)self recordingTechniqueDelegate];
-      [v11 technique:self didFinishWithResult:0];
+      recordingTechniqueDelegate2 = [(ARRecordingTechniquePublic *)self recordingTechniqueDelegate];
+      [recordingTechniqueDelegate2 technique:self didFinishWithResult:0];
     }
   }
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (![(ARRecordingTechniquePublic *)self finished])
   {
-    v5 = v4;
+    v5 = dataCopy;
     v6 = v5;
     if ([v5 conformsToProtocol:&unk_1F426CEB8])
     {
@@ -524,8 +524,8 @@ LABEL_10:
     if (objc_opt_isKindOfClass())
     {
       v7 = v6;
-      v8 = [v7 originalImage];
-      v9 = [v8 copy];
+      originalImage = [v7 originalImage];
+      v9 = [originalImage copy];
 
       recordingQueue = self->_recordingQueue;
       block[0] = MEMORY[0x1E69E9820];
@@ -605,7 +605,7 @@ LABEL_11:
 
 LABEL_13:
 
-  return v4;
+  return dataCopy;
 }
 
 void __42__ARRecordingTechniquePublic_processData___block_invoke(uint64_t a1)
@@ -632,11 +632,11 @@ void __42__ARRecordingTechniquePublic_processData___block_invoke_4(uint64_t a1)
   [WeakRetained writeSensorData:*(a1 + 32)];
 }
 
-- (void)recordCollaborationData:(id)a3 localSession:(BOOL)a4
+- (void)recordCollaborationData:(id)data localSession:(BOOL)session
 {
-  v4 = a4;
+  sessionCopy = session;
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dataCopy = data;
   if (ARInternalOSBuild() && self->_recordCollaborationData)
   {
     if (![(ARRecordingTechniquePublic *)self allowedToWrite])
@@ -654,14 +654,14 @@ LABEL_27:
       *buf = 138543618;
       v31 = v10;
       v32 = 2048;
-      v33 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Dropping collaboration data which arrives while recording isn't running.", buf, 0x16u);
 LABEL_26:
 
       goto LABEL_27;
     }
 
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llX", objc_msgSend(v6, "vioSessionID")];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llX", objc_msgSend(dataCopy, "vioSessionID")];
     v8 = [v7 length];
     if (v8 >= 8)
     {
@@ -674,9 +674,9 @@ LABEL_26:
     }
 
     v10 = [v7 substringToIndex:v9];
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{objc_msgSend(v6, "vioSessionID")}];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{objc_msgSend(dataCopy, "vioSessionID")}];
     v12 = [(NSMutableSet *)self->_knownVIOSessionIDs containsObject:v11];
-    if (v4)
+    if (sessionCopy)
     {
       if ((v12 & 1) == 0)
       {
@@ -703,7 +703,7 @@ LABEL_26:
     }
 
     v29 = 0;
-    v17 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v29];
+    v17 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:dataCopy requiringSecureCoding:1 error:&v29];
     v18 = v29;
     if (v18)
     {
@@ -724,7 +724,7 @@ LABEL_26:
           *buf = 138543874;
           v31 = v23;
           v32 = 2048;
-          v33 = self;
+          selfCopy3 = self;
           v34 = 2112;
           v35 = v18;
           v24 = "%{public}@ <%p>: Error encoding collaboration data during recording: %@";
@@ -742,7 +742,7 @@ LABEL_23:
         *buf = 138543874;
         v31 = v23;
         v32 = 2048;
-        v33 = self;
+        selfCopy3 = self;
         v34 = 2112;
         v35 = v18;
         v24 = "Error: %{public}@ <%p>: Error encoding collaboration data during recording: %@";
@@ -755,13 +755,13 @@ LABEL_23:
     else
     {
       v21 = objc_opt_new();
-      v27 = [v6 vioData];
-      [v21 setData:v27];
+      vioData = [dataCopy vioData];
+      [v21 setData:vioData];
 
       [v21 setAdditionalData:v17];
       [v21 setTimestamp:CACurrentMediaTime()];
       [v21 setIsSent:0];
-      -[NSObject setType:](v21, "setType:", [v6 vioDataType]);
+      -[NSObject setType:](v21, "setType:", [dataCopy vioDataType]);
       [v21 setSourcePeerDisplayName:v10];
       [(MOVWriterInterface *)self->_writer processCMData:v21];
     }
@@ -773,10 +773,10 @@ LABEL_25:
 LABEL_28:
 }
 
-- (void)recordAddedAnchor:(id)a3
+- (void)recordAddedAnchor:(id)anchor
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  anchorCopy = anchor;
   if (ARInternalOSBuild())
   {
     if (![(ARRecordingTechniquePublic *)self allowedToWrite])
@@ -794,7 +794,7 @@ LABEL_17:
       *buf = 138543618;
       v20 = v5;
       v21 = 2048;
-      v22 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1C241C000, v6, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Dropping added anchor data which arrives while recording isn't running.", buf, 0x16u);
 LABEL_16:
 
@@ -802,7 +802,7 @@ LABEL_16:
     }
 
     v18 = 0;
-    v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v18];
+    v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:anchorCopy requiringSecureCoding:1 error:&v18];
     v6 = v18;
     if (v6)
     {
@@ -823,7 +823,7 @@ LABEL_16:
           *buf = 138543874;
           v20 = v11;
           v21 = 2048;
-          v22 = self;
+          selfCopy3 = self;
           v23 = 2112;
           v24 = v6;
           v12 = "%{public}@ <%p>: Error encoding anchor data during recording: %@";
@@ -841,7 +841,7 @@ LABEL_14:
         *buf = 138543874;
         v20 = v11;
         v21 = 2048;
-        v22 = self;
+        selfCopy3 = self;
         v23 = 2112;
         v24 = v6;
         v12 = "Error: %{public}@ <%p>: Error encoding anchor data during recording: %@";
@@ -856,8 +856,8 @@ LABEL_14:
       v9 = objc_opt_new();
       [v9 setAnchorData:v5];
       [v9 setEventType:4];
-      v16 = [v4 identifier];
-      [v9 setUuid:v16];
+      identifier = [anchorCopy identifier];
+      [v9 setUuid:identifier];
 
       [v9 setTimestamp:CACurrentMediaTime()];
       [(MOVWriterInterface *)self->_writer processCVAUserEvent:v9];
@@ -869,10 +869,10 @@ LABEL_14:
 LABEL_18:
 }
 
-- (void)recordRemovedAnchor:(id)a3
+- (void)recordRemovedAnchor:(id)anchor
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  anchorCopy = anchor;
   if (ARInternalOSBuild())
   {
     if (![(ARRecordingTechniquePublic *)self allowedToWrite])
@@ -890,7 +890,7 @@ LABEL_17:
       *buf = 138543618;
       v20 = v5;
       v21 = 2048;
-      v22 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1C241C000, v6, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Dropping removed anchor data which arrives while recording isn't running.", buf, 0x16u);
 LABEL_16:
 
@@ -898,7 +898,7 @@ LABEL_16:
     }
 
     v18 = 0;
-    v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v18];
+    v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:anchorCopy requiringSecureCoding:1 error:&v18];
     v6 = v18;
     if (v6)
     {
@@ -919,7 +919,7 @@ LABEL_16:
           *buf = 138543874;
           v20 = v11;
           v21 = 2048;
-          v22 = self;
+          selfCopy3 = self;
           v23 = 2112;
           v24 = v6;
           v12 = "%{public}@ <%p>: Error encoding anchor data during recording: %@";
@@ -937,7 +937,7 @@ LABEL_14:
         *buf = 138543874;
         v20 = v11;
         v21 = 2048;
-        v22 = self;
+        selfCopy3 = self;
         v23 = 2112;
         v24 = v6;
         v12 = "Error: %{public}@ <%p>: Error encoding anchor data during recording: %@";
@@ -952,8 +952,8 @@ LABEL_14:
       v9 = objc_opt_new();
       [v9 setAnchorData:v5];
       [v9 setEventType:13];
-      v16 = [v4 identifier];
-      [v9 setUuid:v16];
+      identifier = [anchorCopy identifier];
+      [v9 setUuid:identifier];
 
       [v9 setTimestamp:CACurrentMediaTime()];
       [(MOVWriterInterface *)self->_writer processCVAUserEvent:v9];
@@ -994,14 +994,14 @@ LABEL_18:
     [(ARRecordingTechniquePublic *)self removeTemporaryVideoFile];
     v8 = objc_alloc(MEMORY[0x1E698BEC8]);
     outputFileURL = self->_outputFileURL;
-    v10 = [(ARRecordingTechniquePublic *)self createFileMetadata];
-    v11 = [v8 initWithFileURL:outputFileURL expectedFrameRate:v10 fileSummary:self->_recordingQueue callbackQueue:60.0];
+    createFileMetadata = [(ARRecordingTechniquePublic *)self createFileMetadata];
+    v11 = [v8 initWithFileURL:outputFileURL expectedFrameRate:createFileMetadata fileSummary:self->_recordingQueue callbackQueue:60.0];
     writer = self->_writer;
     self->_writer = v11;
 
     [(MOVWriterInterface *)self->_writer setInterface_delegate:self];
-    v13 = [MEMORY[0x1E698BEC8] makeDeviceString];
-    [(MOVWriterInterface *)self->_writer setDeviceString:v13];
+    makeDeviceString = [MEMORY[0x1E698BEC8] makeDeviceString];
+    [(MOVWriterInterface *)self->_writer setDeviceString:makeDeviceString];
 
     CMTimeMake(&v15, 5, 1);
     v14 = self->_writer;
@@ -1017,12 +1017,12 @@ LABEL_18:
 {
   v66 = *MEMORY[0x1E69E9840];
   v3 = +[ARBKSAccelerometer sharedWeakAccelerometerHandle];
-  v4 = [v3 currentOrientation];
+  currentOrientation = [v3 currentOrientation];
 
   v60 = 0u;
   v61 = 0u;
   v59 = 0u;
-  ARVideoTransformForDeviceOrientation(v4, &v59);
+  ARVideoTransformForDeviceOrientation(currentOrientation, &v59);
   writer = self->_writer;
   *asbd = v59;
   *&asbd[16] = v60;
@@ -1031,58 +1031,58 @@ LABEL_18:
   parentImageSensorSettings = self->_parentImageSensorSettings;
   if (parentImageSensorSettings)
   {
-    v51 = self;
+    selfCopy = self;
     v57 = 0u;
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v7 = [(ARParentImageSensorSettings *)parentImageSensorSettings settings];
-    v8 = [v7 countByEnumeratingWithState:&v55 objects:v64 count:16];
+    settings = [(ARParentImageSensorSettings *)parentImageSensorSettings settings];
+    v8 = [settings countByEnumeratingWithState:&v55 objects:v64 count:16];
     if (v8)
     {
       v9 = v8;
       v10 = 0;
       v11 = *v56;
       v12 = *MEMORY[0x1E6986930];
-      v52 = -1;
+      framesPerSecond = -1;
       do
       {
         for (i = 0; i != v9; ++i)
         {
           if (*v56 != v11)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(settings);
           }
 
           v14 = *(*(&v55 + 1) + 8 * i);
-          v15 = [v14 videoFormat];
-          v16 = v15;
-          if (v15)
+          videoFormat = [v14 videoFormat];
+          v16 = videoFormat;
+          if (videoFormat)
           {
-            v17 = [v15 deviceFormat];
-            v18 = [v17 isVisionDataDeliverySupported];
+            deviceFormat = [videoFormat deviceFormat];
+            isVisionDataDeliverySupported = [deviceFormat isVisionDataDeliverySupported];
 
-            v10 |= v18;
-            v19 = [v16 captureDeviceType];
-            v20 = [v19 isEqualToString:v12];
+            v10 |= isVisionDataDeliverySupported;
+            captureDeviceType = [v16 captureDeviceType];
+            v20 = [captureDeviceType isEqualToString:v12];
 
             if (v20)
             {
-              v52 = [v16 framesPerSecond];
+              framesPerSecond = [v16 framesPerSecond];
             }
 
             else if ([v14 isEnabled])
             {
-              v21 = [v16 captureDeviceType];
-              v22 = ARStreamIdentifierForDeviceTypeAndPosition(v21, [v16 captureDevicePosition]);
+              captureDeviceType2 = [v16 captureDeviceType];
+              v22 = ARStreamIdentifierForDeviceTypeAndPosition(captureDeviceType2, [v16 captureDevicePosition]);
 
-              [(MOVWriterInterface *)v51->_writer registerStreamID:v22 withConfigObject:0];
-              [(MOVWriterInterface *)v51->_writer registerMetadataID:v22];
+              [(MOVWriterInterface *)selfCopy->_writer registerStreamID:v22 withConfigObject:0];
+              [(MOVWriterInterface *)selfCopy->_writer registerMetadataID:v22];
             }
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v55 objects:v64 count:16];
+        v9 = [settings countByEnumeratingWithState:&v55 objects:v64 count:16];
       }
 
       while (v9);
@@ -1091,10 +1091,10 @@ LABEL_18:
     else
     {
       v10 = 0;
-      v52 = -1;
+      framesPerSecond = -1;
     }
 
-    self = v51;
+    self = selfCopy;
   }
 
   else
@@ -1102,7 +1102,7 @@ LABEL_18:
     [(MOVWriterInterface *)self->_writer registerStreamID:@"mdta/com.apple.arkit.stream.arimagedata" withConfigObject:0];
     [(MOVWriterInterface *)self->_writer registerMetadataID:@"mdta/com.apple.arkit.arimagedata"];
     v10 = 0;
-    v52 = -1;
+    framesPerSecond = -1;
   }
 
   if (self->_recordPearlDepthData && (self->_sensorDataTypes & 0x20) != 0)
@@ -1168,7 +1168,7 @@ LABEL_18:
   {
     [(MOVWriterInterface *)self->_writer setDepthTOFTrackName:*MEMORY[0x1E698BF28]];
     [(MOVWriterInterface *)self->_writer registerCVADepthTOF];
-    if (v52 >= 1)
+    if (framesPerSecond >= 1)
     {
       v30 = self->_writer;
       v62 = *MEMORY[0x1E698BF20];
@@ -1313,17 +1313,17 @@ LABEL_54:
   return v3;
 }
 
-- (void)writeTimeOfFlightData:(id)a3
+- (void)writeTimeOfFlightData:(id)data
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dataCopy = data;
   if (![(ARRecordingTechniquePublic *)self finished])
   {
     if (![(ARRecordingTechniquePublic *)self allowedToWrite])
     {
-      Class = object_getClass(v5);
+      Class = object_getClass(dataCopy);
       v11 = NSStringFromClass(Class);
-      [v5 timestamp];
+      [dataCopy timestamp];
       *buf = 0;
       v6 = v11;
       [v6 getBytes:buf maxLength:8 usedLength:0 encoding:1 options:0 range:0 remainingRange:{objc_msgSend(v6, "length"), 0}];
@@ -1352,7 +1352,7 @@ LABEL_54:
         *buf = 138544130;
         *&buf[4] = v15;
         v31 = 2048;
-        v32 = self;
+        selfCopy4 = self;
         v33 = 2112;
         v34 = v16;
         v35 = 2112;
@@ -1375,7 +1375,7 @@ LABEL_54:
         *buf = 138544130;
         *&buf[4] = v15;
         v31 = 2048;
-        v32 = self;
+        selfCopy4 = self;
         v33 = 2112;
         v34 = v16;
         v35 = 2112;
@@ -1390,11 +1390,11 @@ LABEL_54:
       goto LABEL_22;
     }
 
-    v6 = v5;
+    v6 = dataCopy;
     v7 = objc_alloc(MEMORY[0x1E698BEA0]);
-    v8 = [v6 pointCloudData];
+    pointCloudData = [v6 pointCloudData];
     [v6 timestamp];
-    v9 = [v7 initWithAVPointCloudData:v8 timestamp:?];
+    v9 = [v7 initWithAVPointCloudData:pointCloudData timestamp:?];
 
     if (v9)
     {
@@ -1421,7 +1421,7 @@ LABEL_22:
         *buf = 138543618;
         *&buf[4] = v25;
         v31 = 2048;
-        v32 = self;
+        selfCopy4 = self;
         v26 = "%{public}@ <%p>: Failed to make CVADepthTOF for pointCloudData";
         v27 = v23;
         v28 = OS_LOG_TYPE_ERROR;
@@ -1437,7 +1437,7 @@ LABEL_20:
       *buf = 138543618;
       *&buf[4] = v25;
       v31 = 2048;
-      v32 = self;
+      selfCopy4 = self;
       v26 = "Error: %{public}@ <%p>: Failed to make CVADepthTOF for pointCloudData";
       v27 = v23;
       v28 = OS_LOG_TYPE_INFO;
@@ -1450,10 +1450,10 @@ LABEL_20:
 LABEL_23:
 }
 
-- (void)writeSensorData:(id)a3
+- (void)writeSensorData:(id)data
 {
   v38 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dataCopy = data;
   if (![(ARRecordingTechniquePublic *)self finished])
   {
     if ([(ARRecordingTechniquePublic *)self allowedToWrite])
@@ -1462,15 +1462,15 @@ LABEL_23:
       v7 = ARMetadataIdentifierForARSensorDataClass(v6, 1);
       if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [v5 appendToWriter:self->_writer];
+        [dataCopy appendToWriter:self->_writer];
 LABEL_24:
 
         goto LABEL_25;
       }
 
-      Class = object_getClass(v5);
+      Class = object_getClass(dataCopy);
       v20 = NSStringFromClass(Class);
-      [v5 timestamp];
+      [dataCopy timestamp];
       *buf = 0;
       v12 = v20;
       [v12 getBytes:buf maxLength:8 usedLength:0 encoding:1 options:0 range:0 remainingRange:[v12 length], 0];
@@ -1496,7 +1496,7 @@ LABEL_24:
           *buf = 138544130;
           *&buf[4] = v24;
           v32 = 2048;
-          v33 = self;
+          selfCopy4 = self;
           v34 = 2112;
           v35 = v25;
           v36 = 2112;
@@ -1517,7 +1517,7 @@ LABEL_21:
         *buf = 138544130;
         *&buf[4] = v24;
         v32 = 2048;
-        v33 = self;
+        selfCopy4 = self;
         v34 = 2112;
         v35 = v25;
         v36 = 2112;
@@ -1533,9 +1533,9 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v8 = object_getClass(v5);
+    v8 = object_getClass(dataCopy);
     v9 = NSStringFromClass(v8);
-    [v5 timestamp];
+    [dataCopy timestamp];
     *buf = 0;
     v7 = v9;
     [v7 getBytes:buf maxLength:8 usedLength:0 encoding:1 options:0 range:0 remainingRange:[v7 length], 0];
@@ -1561,7 +1561,7 @@ LABEL_22:
         *buf = 138544130;
         *&buf[4] = v14;
         v32 = 2048;
-        v33 = self;
+        selfCopy4 = self;
         v34 = 2112;
         v35 = v15;
         v36 = 2112;
@@ -1584,7 +1584,7 @@ LABEL_18:
       *buf = 138544130;
       *&buf[4] = v14;
       v32 = 2048;
-      v33 = self;
+      selfCopy4 = self;
       v34 = 2112;
       v35 = v15;
       v36 = 2112;
@@ -1603,20 +1603,20 @@ LABEL_23:
 LABEL_25:
 }
 
-- (void)writeImageData:(id)a3
+- (void)writeImageData:(id)data
 {
   v56 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dataCopy = data;
   if (![(ARRecordingTechniquePublic *)self finished])
   {
-    v6 = [(ARRecordingTechniquePublic *)self allowedToWrite];
-    [v5 timestamp];
-    if (v6)
+    allowedToWrite = [(ARRecordingTechniquePublic *)self allowedToWrite];
+    [dataCopy timestamp];
+    if (allowedToWrite)
     {
       kdebug_trace();
       if ([(ARRecordingTechniquePublic *)self state]== 1 && self->_writerReady)
       {
-        [v5 timestamp];
+        [dataCopy timestamp];
         self->_sessionSourceTime = v7;
         [(ARRecordingTechniquePublic *)self setState:2];
         dispatch_activate(self->_timeSensitiveQueue);
@@ -1633,8 +1633,8 @@ LABEL_25:
         }
       }
 
-      v11 = [v5 cameraType];
-      v12 = ARStreamIdentifierForDeviceTypeAndPosition(v11, [v5 cameraPosition]);
+      cameraType = [dataCopy cameraType];
+      v12 = ARStreamIdentifierForDeviceTypeAndPosition(cameraType, [dataCopy cameraPosition]);
 
       v13 = v12;
       v14 = v13;
@@ -1651,24 +1651,24 @@ LABEL_25:
         v14 = v28;
       }
 
-      [(MOVWriterInterface *)self->_writer processNSCoderObject:v5 metadataID:v14];
-      if ([v5 visionData])
+      [(MOVWriterInterface *)self->_writer processNSCoderObject:dataCopy metadataID:v14];
+      if ([dataCopy visionData])
       {
         v29 = objc_alloc(MEMORY[0x1E698BEA8]);
-        v30 = [v5 visionData];
-        [v5 timestamp];
-        v31 = [v29 initWithPixelBufferRef:v30 timestamp:v15 streamID:?];
+        visionData = [dataCopy visionData];
+        [dataCopy timestamp];
+        v31 = [v29 initWithPixelBufferRef:visionData timestamp:v15 streamID:?];
         [(MOVWriterInterface *)self->_writer processCVAFeatureBuffer:v31];
       }
 
       v52 = 0uLL;
       v53 = 0;
       v32 = MEMORY[0x1E698BEC8];
-      [v5 timestamp];
+      [dataCopy timestamp];
       [v32 cmTimeFromTimestamp:?];
       v55 = 0u;
       memset(buf, 0, sizeof(buf));
-      [v5 cameraIntrinsics];
+      [dataCopy cameraIntrinsics];
       *&buf[8] = v33;
       *&buf[24] = v34;
       *buf = v35;
@@ -1676,38 +1676,38 @@ LABEL_25:
       DWORD2(v55) = v37;
       *&v55 = v38;
       writer = self->_writer;
-      v40 = [v5 pixelBuffer];
-      [v5 exposureDuration];
+      pixelBuffer = [dataCopy pixelBuffer];
+      [dataCopy exposureDuration];
       v50 = v52;
       v51 = v53;
-      [(MOVWriterInterface *)writer processPixelBuffer:v40 withTimeStamp:&v50 intrinsics:buf exposureTime:v15 streamID:?];
+      [(MOVWriterInterface *)writer processPixelBuffer:pixelBuffer withTimeStamp:&v50 intrinsics:buf exposureTime:v15 streamID:?];
       if (self->_recordPearlDepthData)
       {
-        v41 = [v5 depthData];
+        depthData = [dataCopy depthData];
 
-        if (v41)
+        if (depthData)
         {
-          v42 = [v5 depthData];
-          [v5 depthDataTimestamp];
+          depthData2 = [dataCopy depthData];
+          [dataCopy depthDataTimestamp];
           v44 = v43;
-          v45 = [v5 captureDevice];
-          [(ARRecordingTechniquePublic *)self writePearlDepthData:v42 withTimestamp:v45 fromCaptureDevice:v44];
+          captureDevice = [dataCopy captureDevice];
+          [(ARRecordingTechniquePublic *)self writePearlDepthData:depthData2 withTimestamp:captureDevice fromCaptureDevice:v44];
         }
       }
 
-      v46 = [v5 calibrationData];
+      calibrationData = [dataCopy calibrationData];
 
-      if (v46)
+      if (calibrationData)
       {
         v47 = objc_alloc(MEMORY[0x1E698BE90]);
-        v48 = [v5 calibrationData];
-        [v5 timestamp];
-        v49 = [v47 initWithAVCameraCalibrationData:v48 timestamp:v15 streamID:?];
+        calibrationData2 = [dataCopy calibrationData];
+        [dataCopy timestamp];
+        v49 = [v47 initWithAVCameraCalibrationData:calibrationData2 timestamp:v15 streamID:?];
 
         [(MOVWriterInterface *)self->_writer processCVACameraCalibrationData:v49];
       }
 
-      [v5 timestamp];
+      [dataCopy timestamp];
       kdebug_trace();
 
       goto LABEL_27;
@@ -1733,7 +1733,7 @@ LABEL_25:
         v18 = objc_opt_class();
         v19 = NSStringFromClass(v18);
         v20 = NSStringFromSelector(a2);
-        Class = object_getClass(v5);
+        Class = object_getClass(dataCopy);
         v22 = NSStringFromClass(Class);
         *buf = 138544130;
         *&buf[4] = v19;
@@ -1756,7 +1756,7 @@ LABEL_17:
       v26 = objc_opt_class();
       v19 = NSStringFromClass(v26);
       v20 = NSStringFromSelector(a2);
-      v27 = object_getClass(v5);
+      v27 = object_getClass(dataCopy);
       v22 = NSStringFromClass(v27);
       *buf = 138544130;
       *&buf[4] = v19;
@@ -1776,13 +1776,13 @@ LABEL_27:
   }
 }
 
-- (void)writePearlDepthData:(id)a3 withTimestamp:(double)a4 fromCaptureDevice:(id)a5
+- (void)writePearlDepthData:(id)data withTimestamp:(double)timestamp fromCaptureDevice:(id)device
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  dataCopy = data;
   dispatch_assert_queue_V2(self->_recordingQueue);
-  v8 = [v7 depthDataMap];
-  if (!v8)
+  depthDataMap = [dataCopy depthDataMap];
+  if (!depthDataMap)
   {
     v14 = _ARLogTechnique_11();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -1792,7 +1792,7 @@ LABEL_27:
       v42 = 138543618;
       v43 = v17;
       v44 = 2048;
-      v45 = self;
+      selfCopy7 = self;
       _os_log_impl(&dword_1C241C000, v14, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Depth data has NULL depthDataMap, not writing Pearl frame", &v42, 0x16u);
       goto LABEL_35;
     }
@@ -1800,12 +1800,12 @@ LABEL_27:
     goto LABEL_36;
   }
 
-  v9 = v8;
+  v9 = depthDataMap;
   pearlFixedPointUnsigned13_3PixelBuffer = self->_pearlFixedPointUnsigned13_3PixelBuffer;
   if (!pearlFixedPointUnsigned13_3PixelBuffer)
   {
     v22 = *MEMORY[0x1E695E480];
-    Width = CVPixelBufferGetWidth(v8);
+    Width = CVPixelBufferGetWidth(depthDataMap);
     Height = CVPixelBufferGetHeight(v9);
     v48 = *MEMORY[0x1E69660D8];
     v49[0] = MEMORY[0x1E695E0F8];
@@ -1833,7 +1833,7 @@ LABEL_27:
         v42 = 138543874;
         v43 = v30;
         v44 = 2048;
-        v45 = self;
+        selfCopy7 = self;
         v46 = 1024;
         v47 = v26;
         v31 = "%{public}@ <%p>: Failed to create 13_3 pixel buffer for transcoding Pearl data, CVReturn=%d";
@@ -1853,7 +1853,7 @@ LABEL_27:
         v42 = 138543874;
         v43 = v30;
         v44 = 2048;
-        v45 = self;
+        selfCopy7 = self;
         v46 = 1024;
         v47 = v26;
         v31 = "Error: %{public}@ <%p>: Failed to create 13_3 pixel buffer for transcoding Pearl data, CVReturn=%d";
@@ -1873,9 +1873,9 @@ LABEL_27:
   {
     v11 = self->_pearlFixedPointUnsigned13_3PixelBuffer;
     v12 = *MEMORY[0x1E69914F0];
-    v13 = ARDepthRepresentationDictionary(v7);
+    v13 = ARDepthRepresentationDictionary(dataCopy);
     CVBufferSetAttachment(v11, v12, v13, kCVAttachmentMode_ShouldPropagate);
-    v14 = [objc_alloc(MEMORY[0x1E698BE98]) initWithPixelBufferRef:self->_pearlFixedPointUnsigned13_3PixelBuffer timestamp:a4];
+    v14 = [objc_alloc(MEMORY[0x1E698BE98]) initWithPixelBufferRef:self->_pearlFixedPointUnsigned13_3PixelBuffer timestamp:timestamp];
     if (!v14)
     {
       if (ARShouldUseLogTypeError_onceToken_15 != -1)
@@ -1895,7 +1895,7 @@ LABEL_27:
           v42 = 138543618;
           v43 = v19;
           v44 = 2048;
-          v45 = self;
+          selfCopy7 = self;
           v20 = "%{public}@ <%p>: Failed to create CVADepthIR wrapper for writing depth data";
           goto LABEL_24;
         }
@@ -1915,7 +1915,7 @@ LABEL_35:
       v42 = 138543618;
       v43 = v19;
       v44 = 2048;
-      v45 = self;
+      selfCopy7 = self;
       v20 = "Error: %{public}@ <%p>: Failed to create CVADepthIR wrapper for writing depth data";
 LABEL_33:
       v37 = v17;
@@ -1942,7 +1942,7 @@ LABEL_33:
           v42 = 138543618;
           v43 = v19;
           v44 = 2048;
-          v45 = self;
+          selfCopy7 = self;
           v20 = "%{public}@ <%p>: Failed to write a CVADepthIR instance";
 LABEL_24:
           v37 = v17;
@@ -1966,7 +1966,7 @@ LABEL_34:
       v42 = 138543618;
       v43 = v19;
       v44 = 2048;
-      v45 = self;
+      selfCopy7 = self;
       v20 = "Error: %{public}@ <%p>: Failed to write a CVADepthIR instance";
       goto LABEL_33;
     }
@@ -1975,12 +1975,12 @@ LABEL_36:
   }
 }
 
-- (void)writeAudioData:(id)a3
+- (void)writeAudioData:(id)data
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dataCopy = data;
   dispatch_assert_queue_V2(self->_timeSensitiveQueue);
-  [v5 timestamp];
+  [dataCopy timestamp];
   v7 = v6;
   if ([(ARRecordingTechniquePublic *)self finished])
   {
@@ -2009,12 +2009,12 @@ LABEL_36:
         v21 = objc_opt_class();
         v10 = NSStringFromClass(v21);
         v11 = NSStringFromSelector(a2);
-        Class = object_getClass(v5);
+        Class = object_getClass(dataCopy);
         v13 = NSStringFromClass(Class);
         *buf = 138544130;
         *&buf[4] = v10;
         v27 = 2048;
-        v28 = self;
+        selfCopy3 = self;
         v29 = 2112;
         v30 = v11;
         v31 = 2112;
@@ -2034,12 +2034,12 @@ LABEL_17:
       v23 = objc_opt_class();
       v10 = NSStringFromClass(v23);
       v11 = NSStringFromSelector(a2);
-      v24 = object_getClass(v5);
+      v24 = object_getClass(dataCopy);
       v13 = NSStringFromClass(v24);
       *buf = 138544130;
       *&buf[4] = v10;
       v27 = 2048;
-      v28 = self;
+      selfCopy3 = self;
       v29 = 2112;
       v30 = v11;
       v31 = 2112;
@@ -2059,7 +2059,7 @@ LABEL_18:
   {
     if (v7 >= self->_sessionSourceTime)
     {
-      -[MOVWriterInterface appendAudioBuffer:forStream:](self->_writer, "appendAudioBuffer:forStream:", [v5 sampleBuffer], @"mdta/com.apple.arkit.stream.araudio");
+      -[MOVWriterInterface appendAudioBuffer:forStream:](self->_writer, "appendAudioBuffer:forStream:", [dataCopy sampleBuffer], @"mdta/com.apple.arkit.stream.araudio");
       goto LABEL_19;
     }
 
@@ -2077,13 +2077,13 @@ LABEL_18:
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
     v11 = NSStringFromSelector(a2);
-    v12 = object_getClass(v5);
+    v12 = object_getClass(dataCopy);
     v13 = NSStringFromClass(v12);
     sessionSourceTime = self->_sessionSourceTime;
     *buf = 138544642;
     *&buf[4] = v10;
     v27 = 2048;
-    v28 = self;
+    selfCopy3 = self;
     v29 = 2112;
     v30 = v11;
     v31 = 2112;
@@ -2163,15 +2163,15 @@ LABEL_8:
   }
 }
 
-- (void)writeResultData:(id)a3 withTimestamp:(double)a4
+- (void)writeResultData:(id)data withTimestamp:(double)timestamp
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dataCopy = data;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [dataCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2183,36 +2183,36 @@ LABEL_8:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(dataCopy);
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
         v12 = objc_opt_class();
         v13 = ARMetadataIdentifierForARRecordableResultsClass(v12);
-        [(ARRecordingTechniquePublic *)self processTimeSensitiveNSCoderObject:v11 withTimestamp:v13 metadataID:a4];
+        [(ARRecordingTechniquePublic *)self processTimeSensitiveNSCoderObject:v11 withTimestamp:v13 metadataID:timestamp];
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [dataCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)processTimeSensitiveNSCoderObject:(id)a3 withTimestamp:(double)a4 metadataID:(id)a5
+- (void)processTimeSensitiveNSCoderObject:(id)object withTimestamp:(double)timestamp metadataID:(id)d
 {
   v63 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  objectCopy = object;
+  dCopy = d;
   dispatch_assert_queue_V2(self->_timeSensitiveQueue);
   if (![(ARRecordingTechniquePublic *)self finished])
   {
     if ([(ARRecordingTechniquePublic *)self state]!= 2)
     {
-      Class = object_getClass(v9);
+      Class = object_getClass(objectCopy);
       v12 = NSStringFromClass(Class);
       *buf = 0;
       [v12 getBytes:buf maxLength:8 usedLength:0 encoding:1 options:0 range:0 remainingRange:{objc_msgSend(v12, "length"), 0}];
@@ -2237,7 +2237,7 @@ LABEL_8:
         v26 = objc_opt_class();
         v15 = NSStringFromClass(v26);
         v16 = NSStringFromSelector(a2);
-        v27 = object_getClass(v9);
+        v27 = object_getClass(objectCopy);
         v18 = NSStringFromClass(v27);
         *buf = 138544130;
         *&buf[4] = v15;
@@ -2262,7 +2262,7 @@ LABEL_8:
         v33 = objc_opt_class();
         v15 = NSStringFromClass(v33);
         v16 = NSStringFromSelector(a2);
-        v34 = object_getClass(v9);
+        v34 = object_getClass(objectCopy);
         v18 = NSStringFromClass(v34);
         *buf = 138544130;
         *&buf[4] = v15;
@@ -2285,9 +2285,9 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    if (self->_sessionSourceTime > a4)
+    if (self->_sessionSourceTime > timestamp)
     {
-      v11 = object_getClass(v9);
+      v11 = object_getClass(objectCopy);
       v12 = NSStringFromClass(v11);
       *buf = 0;
       [v12 getBytes:buf maxLength:8 usedLength:0 encoding:1 options:0 range:0 remainingRange:{objc_msgSend(v12, "length"), 0}];
@@ -2300,7 +2300,7 @@ LABEL_21:
         v14 = objc_opt_class();
         v15 = NSStringFromClass(v14);
         v16 = NSStringFromSelector(a2);
-        v17 = object_getClass(v9);
+        v17 = object_getClass(objectCopy);
         v18 = NSStringFromClass(v17);
         sessionSourceTime = self->_sessionSourceTime;
         *buf = 138544642;
@@ -2312,7 +2312,7 @@ LABEL_21:
         v57 = 2112;
         v58 = v18;
         v59 = 2048;
-        v60 = a4;
+        timestampCopy2 = timestamp;
         v61 = 2048;
         v62 = sessionSourceTime;
         v20 = "%{public}@ <%p>: %@ for %@ metadata with timestamp %f < _sessionSourceTime %f, dropping";
@@ -2326,13 +2326,13 @@ LABEL_19:
       goto LABEL_22;
     }
 
-    v28 = [(NSMutableDictionary *)self->_lastRecordedTimestamps objectForKeyedSubscript:v10];
+    v28 = [(NSMutableDictionary *)self->_lastRecordedTimestamps objectForKeyedSubscript:dCopy];
     [v28 doubleValue];
     v30 = v29;
 
-    if (v30 + 2.22044605e-16 >= a4)
+    if (v30 + 2.22044605e-16 >= timestamp)
     {
-      v36 = object_getClass(v9);
+      v36 = object_getClass(objectCopy);
       v12 = NSStringFromClass(v36);
       *buf = 0;
       [v12 getBytes:buf maxLength:8 usedLength:0 encoding:1 options:0 range:0 remainingRange:{objc_msgSend(v12, "length"), 0}];
@@ -2345,7 +2345,7 @@ LABEL_19:
         v37 = objc_opt_class();
         v15 = NSStringFromClass(v37);
         v16 = NSStringFromSelector(a2);
-        v38 = object_getClass(v9);
+        v38 = object_getClass(objectCopy);
         v18 = NSStringFromClass(v38);
         *buf = 138544642;
         *&buf[4] = v15;
@@ -2356,7 +2356,7 @@ LABEL_19:
         v57 = 2112;
         v58 = v18;
         v59 = 2048;
-        v60 = a4;
+        timestampCopy2 = timestamp;
         v61 = 2048;
         v62 = v30;
         v20 = "%{public}@ <%p>: %@ for %@ metadata with timestamp %f <= lastTimestamp %f, dropping";
@@ -2371,19 +2371,19 @@ LABEL_22:
     }
 
     v12 = objc_opt_new();
-    v13 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v9 requiringSecureCoding:1 error:0];
+    v13 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:objectCopy requiringSecureCoding:1 error:0];
     if (v13)
     {
       [v12 addObject:v13];
       memset(buf, 0, sizeof(buf));
-      [MEMORY[0x1E698BEC8] cmTimeFromTimestamp:a4];
-      v31 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
-      [(NSMutableDictionary *)self->_lastRecordedTimestamps setObject:v31 forKeyedSubscript:v10];
+      [MEMORY[0x1E698BEC8] cmTimeFromTimestamp:timestamp];
+      v31 = [MEMORY[0x1E696AD98] numberWithDouble:timestamp];
+      [(NSMutableDictionary *)self->_lastRecordedTimestamps setObject:v31 forKeyedSubscript:dCopy];
 
       writer = self->_writer;
       v53 = *buf;
       v54 = *&buf[16];
-      [(MOVWriterInterface *)writer appendMetadata:v12 withTimeStamp:&v53 toStream:v10];
+      [(MOVWriterInterface *)writer appendMetadata:v12 withTimeStamp:&v53 toStream:dCopy];
       goto LABEL_22;
     }
 
@@ -2458,10 +2458,10 @@ LABEL_23:
 {
   v25[1] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_timeSensitiveQueue);
-  v3 = [(ARRecordingTechniquePublic *)self state];
-  if (v3 <= 2)
+  state = [(ARRecordingTechniquePublic *)self state];
+  if (state <= 2)
   {
-    if (!v3)
+    if (!state)
     {
       v24 = *MEMORY[0x1E696A578];
       v25[0] = @"Attempted to finish without starting";
@@ -2472,7 +2472,7 @@ LABEL_23:
       return;
     }
 
-    if (v3 == 1)
+    if (state == 1)
     {
       return;
     }
@@ -2480,12 +2480,12 @@ LABEL_23:
     goto LABEL_11;
   }
 
-  if (v3 == 3)
+  if (state == 3)
   {
     return;
   }
 
-  if (v3 != 4)
+  if (state != 4)
   {
 LABEL_11:
     [(ARRecordingTechniquePublic *)self setState:3];
@@ -2497,7 +2497,7 @@ LABEL_11:
       *buf = 138543618;
       v21 = v8;
       v22 = 2048;
-      v23 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1C241C000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Finish requested", buf, 0x16u);
     }
 
@@ -2518,13 +2518,13 @@ LABEL_11:
     return;
   }
 
-  v4 = [(ARRecordingTechniquePublic *)self recordingTechniqueDelegate];
+  recordingTechniqueDelegate = [(ARRecordingTechniquePublic *)self recordingTechniqueDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v16 = [(ARRecordingTechniquePublic *)self recordingTechniqueDelegate];
-    [v16 technique:self didFinishWithResult:self->_finishedError];
+    recordingTechniqueDelegate2 = [(ARRecordingTechniquePublic *)self recordingTechniqueDelegate];
+    [recordingTechniqueDelegate2 technique:self didFinishWithResult:self->_finishedError];
   }
 }
 
@@ -2541,28 +2541,28 @@ LABEL_11:
     v9 = 138543618;
     v10 = v5;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Writer ready for recording", &v9, 0x16u);
   }
 
-  v6 = [(ARRecordingTechniquePublic *)self recordingTechniqueDelegate];
+  recordingTechniqueDelegate = [(ARRecordingTechniquePublic *)self recordingTechniqueDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(ARRecordingTechniquePublic *)self recordingTechniqueDelegate];
-    [v8 recordingTechniqueDidBecomeReady:self];
+    recordingTechniqueDelegate2 = [(ARRecordingTechniquePublic *)self recordingTechniqueDelegate];
+    [recordingTechniqueDelegate2 recordingTechniqueDidBecomeReady:self];
   }
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
   v9[1] = *MEMORY[0x1E69E9840];
   recordingQueue = self->_recordingQueue;
-  v5 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(recordingQueue);
   v8 = *MEMORY[0x1E696AA08];
-  v9[0] = v5;
+  v9[0] = errorCopy;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
   v7 = ARErrorWithCodeAndUserInfo(1001, v6);
@@ -2594,7 +2594,7 @@ LABEL_11:
       v8 = 138543874;
       v9 = v6;
       v10 = 2048;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
       v13 = v7;
       _os_log_impl(&dword_1C241C000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Saved video to file at %@.", &v8, 0x20u);

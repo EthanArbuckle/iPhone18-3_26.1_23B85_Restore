@@ -1,27 +1,27 @@
 @interface CRLWPTextSelectionManager_x
-- (BOOL)isSelectingCaret:(CGPoint)a3;
-- (CGRect)caretRectFor:(id)a3;
-- (CGRect)firstRectFor:(id)a3;
-- (CGRect)firstRectForCharacterRange:(_NSRange)a3 actualRange:(_NSRange *)a4;
-- (id)selectionRectsFor:(id)a3;
+- (BOOL)isSelectingCaret:(CGPoint)caret;
+- (CGRect)caretRectFor:(id)for;
+- (CGRect)firstRectFor:(id)for;
+- (CGRect)firstRectForCharacterRange:(_NSRange)range actualRange:(_NSRange *)actualRange;
+- (id)selectionRectsFor:(id)for;
 @end
 
 @implementation CRLWPTextSelectionManager_x
 
-- (id)selectionRectsFor:(id)a3
+- (id)selectionRectsFor:(id)for
 {
   v4 = qword_1019F1570;
-  v5 = a3;
-  v6 = self;
+  forCopy = for;
+  selfCopy = self;
   if (v4 != -1)
   {
     swift_once();
   }
 
   v11[3] = type metadata accessor for CRLTextRange();
-  v11[0] = v5;
-  v7 = v5;
-  sub_100C6891C(v6, v7, &v10);
+  v11[0] = forCopy;
+  v7 = forCopy;
+  sub_100C6891C(selfCopy, v7, &v10);
   sub_100005070(v11);
 
   sub_100C69B0C();
@@ -30,19 +30,19 @@
   return v8.super.isa;
 }
 
-- (BOOL)isSelectingCaret:(CGPoint)a3
+- (BOOL)isSelectingCaret:(CGPoint)caret
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = caret.y;
+  x = caret.x;
+  selfCopy = self;
   v6 = sub_100C68D98(x, y);
 
   return v6 & 1;
 }
 
-- (CGRect)firstRectFor:(id)a3
+- (CGRect)firstRectFor:(id)for
 {
-  v3 = sub_100C69A34(self, a2, a3, sub_100C69024);
+  v3 = sub_100C69A34(self, a2, for, sub_100C69024);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -50,12 +50,12 @@
   return result;
 }
 
-- (CGRect)firstRectForCharacterRange:(_NSRange)a3 actualRange:(_NSRange *)a4
+- (CGRect)firstRectForCharacterRange:(_NSRange)range actualRange:(_NSRange *)actualRange
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = self;
-  sub_100C691B8(location, length, a4);
+  length = range.length;
+  location = range.location;
+  selfCopy = self;
+  sub_100C691B8(location, length, actualRange);
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -72,9 +72,9 @@
   return result;
 }
 
-- (CGRect)caretRectFor:(id)a3
+- (CGRect)caretRectFor:(id)for
 {
-  v3 = sub_100C69A34(self, a2, a3, sub_100C69908);
+  v3 = sub_100C69A34(self, a2, for, sub_100C69908);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;

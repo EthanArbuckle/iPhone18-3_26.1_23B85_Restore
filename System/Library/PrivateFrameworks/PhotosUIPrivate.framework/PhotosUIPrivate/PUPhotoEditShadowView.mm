@@ -1,9 +1,9 @@
 @interface PUPhotoEditShadowView
 - (CGImage)softEdgeMaskImage;
-- (PUPhotoEditShadowView)initWithType:(unint64_t)a3;
-- (void)_updateForTransparentSide:(unint64_t)a3;
+- (PUPhotoEditShadowView)initWithType:(unint64_t)type;
+- (void)_updateForTransparentSide:(unint64_t)side;
 - (void)layoutSubviews;
-- (void)setTransparentSide:(unint64_t)a3;
+- (void)setTransparentSide:(unint64_t)side;
 - (void)updateGradient;
 @end
 
@@ -32,12 +32,12 @@ void __42__PUPhotoEditShadowView_softEdgeMaskImage__block_invoke()
   softEdgeMaskImage_maskImage = [v4 createCGImage:v3 fromRect:?];
 }
 
-- (void)_updateForTransparentSide:(unint64_t)a3
+- (void)_updateForTransparentSide:(unint64_t)side
 {
   if (!self->_useVisualEffectView)
   {
-    v4 = [(PUPhotoEditShadowView *)self gradientLayer];
-    if (a3)
+    gradientLayer = [(PUPhotoEditShadowView *)self gradientLayer];
+    if (side)
     {
       goto LABEL_3;
     }
@@ -50,14 +50,14 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  v4 = self->_gradientMaskLayer;
-  if (!a3)
+  gradientLayer = self->_gradientMaskLayer;
+  if (!side)
   {
     goto LABEL_7;
   }
 
 LABEL_3:
-  if (a3 == 2)
+  if (side == 2)
   {
     v5 = 0.5;
     v6 = 1.0;
@@ -66,7 +66,7 @@ LABEL_3:
 
   else
   {
-    if (a3 != 1)
+    if (side != 1)
     {
       goto LABEL_11;
     }
@@ -78,26 +78,26 @@ LABEL_3:
 
   v8 = 0.5;
 LABEL_10:
-  v9 = v4;
-  [(CAGradientLayer *)v4 setStartPoint:v7, v5];
+  v9 = gradientLayer;
+  [(CAGradientLayer *)gradientLayer setStartPoint:v7, v5];
   [(CAGradientLayer *)v9 setEndPoint:v6, v8];
-  v4 = v9;
+  gradientLayer = v9;
 LABEL_11:
 }
 
-- (void)setTransparentSide:(unint64_t)a3
+- (void)setTransparentSide:(unint64_t)side
 {
-  if (self->_transparentSide != a3)
+  if (self->_transparentSide != side)
   {
-    self->_transparentSide = a3;
+    self->_transparentSide = side;
     [(PUPhotoEditShadowView *)self _updateForTransparentSide:?];
   }
 }
 
 - (void)updateGradient
 {
-  v3 = [(PUPhotoEditShadowView *)self traitCollection];
-  if ([v3 userInterfaceStyle] == 1)
+  traitCollection = [(PUPhotoEditShadowView *)self traitCollection];
+  if ([traitCollection userInterfaceStyle] == 1)
   {
     v4 = 1.0;
   }
@@ -120,9 +120,9 @@ LABEL_11:
 
   else
   {
-    v11 = [MEMORY[0x1E69C4510] stopLocationsForSmoothDescendingGradient];
-    v12 = [(PUPhotoEditShadowView *)self gradientLayer];
-    [v12 setLocations:v11];
+    stopLocationsForSmoothDescendingGradient = [MEMORY[0x1E69C4510] stopLocationsForSmoothDescendingGradient];
+    gradientLayer = [(PUPhotoEditShadowView *)self gradientLayer];
+    [gradientLayer setLocations:stopLocationsForSmoothDescendingGradient];
 
     v13 = MEMORY[0x1E69C4510];
     v14 = [MEMORY[0x1E69DC888] colorWithWhite:v4 alpha:1.0];
@@ -146,7 +146,7 @@ LABEL_11:
   [(CALayer *)self->_maskLayer setBounds:?];
 }
 
-- (PUPhotoEditShadowView)initWithType:(unint64_t)a3
+- (PUPhotoEditShadowView)initWithType:(unint64_t)type
 {
   v23[1] = *MEMORY[0x1E69E9840];
   v22.receiver = self;
@@ -160,7 +160,7 @@ LABEL_11:
     v5->_useVisualEffectView = [v6 blurToolBackgrounds];
 
     v5->_transparentSide = 0;
-    v5->_type = a3;
+    v5->_type = type;
     v7 = [MEMORY[0x1E69DC730] effectWithStyle:17];
     v8 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v7];
     backgroundView = v5->_backgroundView;
@@ -170,22 +170,22 @@ LABEL_11:
     [(PUPhotoEditShadowView *)v5 bounds];
     [(UIVisualEffectView *)v5->_backgroundView setFrame:?];
     [(PUPhotoEditShadowView *)v5 addSubview:v5->_backgroundView];
-    v10 = [MEMORY[0x1E6979380] layer];
+    layer = [MEMORY[0x1E6979380] layer];
     gradientMaskLayer = v5->_gradientMaskLayer;
-    v5->_gradientMaskLayer = v10;
+    v5->_gradientMaskLayer = layer;
 
     v12 = MEMORY[0x1E695DEC8];
-    v13 = [MEMORY[0x1E69DC888] whiteColor];
-    v14 = [v13 CGColor];
-    v15 = [MEMORY[0x1E69DC888] clearColor];
-    v16 = [v12 arrayWithObjects:{v14, objc_msgSend(v15, "CGColor"), 0}];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    cGColor = [whiteColor CGColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    v16 = [v12 arrayWithObjects:{cGColor, objc_msgSend(clearColor, "CGColor"), 0}];
     [(CAGradientLayer *)v5->_gradientMaskLayer setColors:v16];
 
     [(CAGradientLayer *)v5->_gradientMaskLayer setStartPoint:0.0, 0.200000003];
     [(CAGradientLayer *)v5->_gradientMaskLayer setEndPoint:0.0, 1.0];
     v17 = v5->_gradientMaskLayer;
-    v18 = [(UIVisualEffectView *)v5->_backgroundView layer];
-    [v18 setMask:v17];
+    layer2 = [(UIVisualEffectView *)v5->_backgroundView layer];
+    [layer2 setMask:v17];
 
     v23[0] = objc_opt_class();
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];

@@ -1,24 +1,24 @@
 @interface CBMutableService
-- (CBMutableService)initWithDictionary:(id)a3;
+- (CBMutableService)initWithDictionary:(id)dictionary;
 - (id)description;
 - (void)dealloc;
 - (void)handlePowerNotOn;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation CBMutableService
 
-- (CBMutableService)initWithDictionary:(id)a3
+- (CBMutableService)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"kCBMsgArgUUID"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgUUID"];
   v6 = [CBUUID UUIDWithData:v5];
-  v7 = [v4 objectForKeyedSubscript:@"kCBMsgArgType"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgType"];
   v8 = -[CBMutableService initWithType:primary:](self, "initWithType:primary:", v6, [v7 BOOLValue]);
 
   if (v8)
   {
-    v9 = [v4 objectForKeyedSubscript:@"kCBMsgArgAttributeID"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"kCBMsgArgAttributeID"];
     ID = v8->_ID;
     v8->_ID = v9;
   }
@@ -34,17 +34,17 @@
   [(CBMutableService *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v18 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:{@"characteristics", a4, a5, a6}])
+  if ([path isEqualToString:{@"characteristics", object, change, context}])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [(CBService *)self characteristics];
-    v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    characteristics = [(CBService *)self characteristics];
+    v8 = [characteristics countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v8)
     {
       v9 = v8;
@@ -56,14 +56,14 @@
         {
           if (*v14 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(characteristics);
           }
 
           [*(*(&v13 + 1) + 8 * v11++) setService:self];
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v9 = [characteristics countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v9);
@@ -80,8 +80,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(CBService *)self characteristics];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  characteristics = [(CBService *)self characteristics];
+  v3 = [characteristics countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -93,14 +93,14 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(characteristics);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) handlePowerNotOn];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [characteristics countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -123,10 +123,10 @@
     v5 = "NO";
   }
 
-  v6 = [(CBAttribute *)self UUID];
-  v7 = [(CBService *)self includedServices];
-  v8 = [(CBService *)self characteristics];
-  v9 = [v3 stringWithFormat:@"<%@: %p Primary = %s, UUID = %@, Included Services = %@, Characteristics = %@>", v4, self, v5, v6, v7, v8];
+  uUID = [(CBAttribute *)self UUID];
+  includedServices = [(CBService *)self includedServices];
+  characteristics = [(CBService *)self characteristics];
+  v9 = [v3 stringWithFormat:@"<%@: %p Primary = %s, UUID = %@, Included Services = %@, Characteristics = %@>", v4, self, v5, uUID, includedServices, characteristics];
 
   return v9;
 }

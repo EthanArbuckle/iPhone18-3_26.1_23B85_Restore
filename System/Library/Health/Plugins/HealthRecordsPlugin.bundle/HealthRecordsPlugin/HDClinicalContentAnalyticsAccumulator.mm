@@ -1,26 +1,26 @@
 @interface HDClinicalContentAnalyticsAccumulator
-- (HDClinicalContentAnalyticsAccumulator)initWithProfileExtension:(id)a3;
+- (HDClinicalContentAnalyticsAccumulator)initWithProfileExtension:(id)extension;
 - (HDHealthRecordsProfileExtension)profileExtension;
 - (id)_fetchDeviceContextAnalytics;
 - (id)analyticsString;
 - (id)debugDescription;
-- (void)accumulateMetricsForItem:(id)a3;
+- (void)accumulateMetricsForItem:(id)item;
 - (void)resetMetrics;
-- (void)submitMetricsWithCoordinator:(id)a3;
+- (void)submitMetricsWithCoordinator:(id)coordinator;
 @end
 
 @implementation HDClinicalContentAnalyticsAccumulator
 
-- (HDClinicalContentAnalyticsAccumulator)initWithProfileExtension:(id)a3
+- (HDClinicalContentAnalyticsAccumulator)initWithProfileExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v10.receiver = self;
   v10.super_class = HDClinicalContentAnalyticsAccumulator;
   v5 = [(HDClinicalContentAnalyticsAccumulator *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profileExtension, v4);
+    objc_storeWeak(&v5->_profileExtension, extensionCopy);
     v7 = objc_alloc_init(HDClinicalContentAnalyticsUnknownRecordsMetric);
     unknownRecordsMetric = v6->_unknownRecordsMetric;
     v6->_unknownRecordsMetric = v7;
@@ -31,17 +31,17 @@
   return v6;
 }
 
-- (void)accumulateMetricsForItem:(id)a3
+- (void)accumulateMetricsForItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 medicalRecord];
+  itemCopy = item;
+  medicalRecord = [itemCopy medicalRecord];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(HDClinicalContentAnalyticsAccumulator *)self unknownRecordsMetric];
-    [v7 accumulateMetricForItem:v4];
+    unknownRecordsMetric = [(HDClinicalContentAnalyticsAccumulator *)self unknownRecordsMetric];
+    [unknownRecordsMetric accumulateMetricForItem:itemCopy];
 LABEL_5:
 
     goto LABEL_6;
@@ -51,16 +51,16 @@ LABEL_5:
   v8 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = v8;
+    unknownRecordsMetric = v8;
     v9 = objc_opt_class();
     v10 = v9;
-    v11 = [v4 medicalRecord];
+    medicalRecord2 = [itemCopy medicalRecord];
     v13 = 138412546;
     v14 = v9;
     v15 = 2112;
     v16 = objc_opt_class();
     v12 = v16;
-    _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%@ attempting to accumulate metric for record type %@ which we don't support", &v13, 0x16u);
+    _os_log_impl(&dword_0, unknownRecordsMetric, OS_LOG_TYPE_DEFAULT, "%@ attempting to accumulate metric for record type %@ which we don't support", &v13, 0x16u);
 
     goto LABEL_5;
   }
@@ -68,10 +68,10 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)submitMetricsWithCoordinator:(id)a3
+- (void)submitMetricsWithCoordinator:(id)coordinator
 {
-  v5 = a3;
-  if (!v5)
+  coordinatorCopy = coordinator;
+  if (!coordinatorCopy)
   {
     sub_A5914(a2, self);
   }
@@ -90,8 +90,8 @@ LABEL_6:
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ ingestion analytics collection %{public}@", buf, 0x16u);
   }
 
-  v10 = [(HDClinicalContentAnalyticsAccumulator *)self unknownRecordsMetric];
-  v11 = [v10 count];
+  unknownRecordsMetric = [(HDClinicalContentAnalyticsAccumulator *)self unknownRecordsMetric];
+  v11 = [unknownRecordsMetric count];
 
   if (v11)
   {
@@ -108,23 +108,23 @@ LABEL_6:
       }
     }
 
-    v15 = [(HDClinicalContentAnalyticsAccumulator *)self unknownRecordsMetric];
-    v16 = [(HDClinicalContentAnalyticsAccumulator *)self _fetchDeviceContextAnalytics];
+    unknownRecordsMetric2 = [(HDClinicalContentAnalyticsAccumulator *)self unknownRecordsMetric];
+    _fetchDeviceContextAnalytics = [(HDClinicalContentAnalyticsAccumulator *)self _fetchDeviceContextAnalytics];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_699E4;
     v17[3] = &unk_108100;
-    v18 = v5;
-    [v15 enumerateElementsAsCoreAnalyticsPayloadWithDeviceContext:v16 block:v17];
+    v18 = coordinatorCopy;
+    [unknownRecordsMetric2 enumerateElementsAsCoreAnalyticsPayloadWithDeviceContext:_fetchDeviceContextAnalytics block:v17];
   }
 }
 
 - (id)_fetchDeviceContextAnalytics
 {
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v3 = [WeakRetained profile];
-  v4 = [v3 deviceContextManager];
-  v5 = [v4 numberOfDeviceContextsPerDeviceType:0];
+  profile = [WeakRetained profile];
+  deviceContextManager = [profile deviceContextManager];
+  v5 = [deviceContextManager numberOfDeviceContextsPerDeviceType:0];
 
   if (v5)
   {
@@ -213,16 +213,16 @@ LABEL_6:
 
 - (void)resetMetrics
 {
-  v2 = [(HDClinicalContentAnalyticsAccumulator *)self unknownRecordsMetric];
-  [v2 resetMetric];
+  unknownRecordsMetric = [(HDClinicalContentAnalyticsAccumulator *)self unknownRecordsMetric];
+  [unknownRecordsMetric resetMetric];
 }
 
 - (id)debugDescription
 {
   v3 = objc_opt_class();
-  v4 = [(HDClinicalContentAnalyticsAccumulator *)self batchCount];
-  v5 = [(HDClinicalContentAnalyticsAccumulator *)self unknownRecordsMetric];
-  v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@ %p> %lu batches: {%@: %lu}", v3, self, v4, @"unknownRecordsMetric", [v5 count]);
+  batchCount = [(HDClinicalContentAnalyticsAccumulator *)self batchCount];
+  unknownRecordsMetric = [(HDClinicalContentAnalyticsAccumulator *)self unknownRecordsMetric];
+  v6 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@ %p> %lu batches: {%@: %lu}", v3, self, batchCount, @"unknownRecordsMetric", [unknownRecordsMetric count]);
 
   return v6;
 }
@@ -230,10 +230,10 @@ LABEL_6:
 - (id)analyticsString
 {
   v3 = objc_opt_class();
-  v4 = [(HDClinicalContentAnalyticsAccumulator *)self batchCount];
-  v5 = [(HDClinicalContentAnalyticsAccumulator *)self unknownRecordsMetric];
-  v6 = [v5 analyticsString];
-  v7 = [NSString stringWithFormat:@"%@ %lu batches:\n\n %@\n\n", v3, v4, v6];
+  batchCount = [(HDClinicalContentAnalyticsAccumulator *)self batchCount];
+  unknownRecordsMetric = [(HDClinicalContentAnalyticsAccumulator *)self unknownRecordsMetric];
+  analyticsString = [unknownRecordsMetric analyticsString];
+  v7 = [NSString stringWithFormat:@"%@ %lu batches:\n\n %@\n\n", v3, batchCount, analyticsString];
 
   return v7;
 }

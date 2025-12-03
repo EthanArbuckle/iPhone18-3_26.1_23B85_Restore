@@ -1,6 +1,6 @@
 @interface SingleDataRecord
-+ (id)parseFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)parseFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (SingleDataRecord)init;
 - (id)data;
 - (id)debugDescription;
@@ -33,8 +33,8 @@
     goto LABEL_10;
   }
 
-  v4 = [(SingleDataRecord *)self clientDataHash];
-  v5 = [(TLSMessageClass *)self encodeHashValue:v4 buffer:v3];
+  clientDataHash = [(SingleDataRecord *)self clientDataHash];
+  v5 = [(TLSMessageClass *)self encodeHashValue:clientDataHash buffer:v3];
 
   if (!v5)
   {
@@ -55,71 +55,71 @@ LABEL_10:
   return v8;
 }
 
-+ (id)parseFromData:(id)a3 error:(id *)a4
++ (id)parseFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 bytes];
-  v7 = [v5 bytes];
-  v8 = [v5 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  bytes2 = [dataCopy bytes];
+  v8 = [dataCopy length];
   v9 = objc_alloc_init(SingleDataRecord);
   v39 = 0;
-  v10 = [(TLSMessageClass *)v9 parseUint64:v6 end:&v8[v7] result:&v39];
+  v10 = [(TLSMessageClass *)v9 parseUint64:bytes end:&v8[bytes2] result:&v39];
   if (v10)
   {
     v11 = v10;
     [(SingleDataRecord *)v9 setAppVersion:v39];
     v38 = 0;
-    v12 = [(TLSMessageClass *)v9 parseHashValue:v11 end:&v8[v7] result:&v38];
+    v12 = [(TLSMessageClass *)v9 parseHashValue:v11 end:&v8[bytes2] result:&v38];
     v13 = v38;
     if (v12)
     {
       [(SingleDataRecord *)v9 setClientDataHash:v13];
       v37 = 0;
-      v14 = [(TLSMessageClass *)v9 parseUint64:v12 end:&v8[v7] result:&v37];
+      v14 = [(TLSMessageClass *)v9 parseUint64:v12 end:&v8[bytes2] result:&v37];
       if (v14)
       {
         v15 = v14;
         [(SingleDataRecord *)v9 setMarkedForDeletionMs:v37];
         v36 = 0;
-        v16 = [(TLSMessageClass *)v9 parseUint64:v15 end:&v8[v7] result:&v36];
+        v16 = [(TLSMessageClass *)v9 parseUint64:v15 end:&v8[bytes2] result:&v36];
         if (v16)
         {
           v17 = v16;
           [(SingleDataRecord *)v9 setAddedMs:v36];
           v35 = 0;
-          v18 = [(TLSMessageClass *)v9 parseBool:v17 end:&v8[v7] result:&v35];
+          v18 = [(TLSMessageClass *)v9 parseBool:v17 end:&v8[bytes2] result:&v35];
           if (v18)
           {
             v19 = v18;
             [(SingleDataRecord *)v9 setAccountMismatch:v35];
             v34 = 0;
-            v20 = [(TLSMessageClass *)v9 parseUint64:v19 end:&v8[v7] result:&v34];
+            v20 = [(TLSMessageClass *)v9 parseUint64:v19 end:&v8[bytes2] result:&v34];
             if (v20)
             {
               v21 = v20;
               [(SingleDataRecord *)v9 setExpiryMs:v34];
               v33 = 0;
-              v22 = [(TLSMessageClass *)v9 parseUint64:v21 end:&v8[v7] result:&v33];
+              v22 = [(TLSMessageClass *)v9 parseUint64:v21 end:&v8[bytes2] result:&v33];
               if (v22)
               {
                 v23 = v22;
                 [(SingleDataRecord *)v9 setEscrowExpiryMs:v33];
                 v32 = 0;
-                v24 = [(TLSMessageClass *)v9 parseExtensions:v23 end:&v8[v7] result:&v32];
+                v24 = [(TLSMessageClass *)v9 parseExtensions:v23 end:&v8[bytes2] result:&v32];
                 v25 = v32;
                 if (v24)
                 {
                   v26 = [NSMutableArray arrayWithArray:v25];
                   [(SingleDataRecord *)v9 setExtensions:v26];
 
-                  -[SingleDataRecord setParsedLength:](v9, "setParsedLength:", v24 - [v5 bytes]);
+                  -[SingleDataRecord setParsedLength:](v9, "setParsedLength:", v24 - [dataCopy bytes]);
                   v27 = v9;
                 }
 
-                else if (a4)
+                else if (error)
                 {
                   [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-256 description:@"failed to parse extensions from SingleDataRecord"];
-                  *a4 = v27 = 0;
+                  *error = v27 = 0;
                 }
 
                 else
@@ -130,7 +130,7 @@ LABEL_10:
                 goto LABEL_27;
               }
 
-              if (a4)
+              if (error)
               {
                 v28 = kTransparencyErrorDecode;
                 v29 = @"failed to parse escrow expiry timestamp from SingleDataRecord";
@@ -143,7 +143,7 @@ LABEL_26:
               goto LABEL_27;
             }
 
-            if (!a4)
+            if (!error)
             {
               goto LABEL_26;
             }
@@ -155,7 +155,7 @@ LABEL_26:
 
           else
           {
-            if (!a4)
+            if (!error)
             {
               goto LABEL_26;
             }
@@ -168,7 +168,7 @@ LABEL_26:
 
         else
         {
-          if (!a4)
+          if (!error)
           {
             goto LABEL_26;
           }
@@ -181,7 +181,7 @@ LABEL_26:
 
       else
       {
-        if (!a4)
+        if (!error)
         {
           goto LABEL_26;
         }
@@ -194,7 +194,7 @@ LABEL_26:
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_26;
       }
@@ -206,16 +206,16 @@ LABEL_26:
 
 LABEL_25:
     [TransparencyError errorWithDomain:v28 code:v30 description:v29];
-    *a4 = v27 = 0;
+    *error = v27 = 0;
 LABEL_27:
 
     goto LABEL_28;
   }
 
-  if (a4)
+  if (error)
   {
     [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-249 description:@"failed to parse app version from SingleDataRecord"];
-    *a4 = v27 = 0;
+    *error = v27 = 0;
   }
 
   else
@@ -231,9 +231,9 @@ LABEL_28:
 - (id)debugDescription
 {
   appVersion = self->_appVersion;
-  v4 = [(NSData *)self->_clientDataHash kt_hexString];
+  kt_hexString = [(NSData *)self->_clientDataHash kt_hexString];
   expiryMs = self->_expiryMs;
-  v6 = [NSString stringWithFormat:@"{\tapplicationVersion:%llu\n\tclientDataHash:%@\n\taccountMismatch:%d\n\tmarkedMs:%llu\n\taddedMs:%llu\n\texpiryMs:%llu\n\tescrowExpiryMs:%llu\n}", appVersion, v4, self->_accountMismatch, self->_markedForDeletionMs, self->_addedMs, expiryMs, self->_escrowExpiryMs];
+  v6 = [NSString stringWithFormat:@"{\tapplicationVersion:%llu\n\tclientDataHash:%@\n\taccountMismatch:%d\n\tmarkedMs:%llu\n\taddedMs:%llu\n\texpiryMs:%llu\n\tescrowExpiryMs:%llu\n}", appVersion, kt_hexString, self->_accountMismatch, self->_markedForDeletionMs, self->_addedMs, expiryMs, self->_escrowExpiryMs];
 
   return v6;
 }
@@ -241,17 +241,17 @@ LABEL_28:
 - (id)description
 {
   appVersion = self->_appVersion;
-  v4 = [(NSData *)self->_clientDataHash kt_hexString];
+  kt_hexString = [(NSData *)self->_clientDataHash kt_hexString];
   expiryMs = self->_expiryMs;
-  v6 = [NSString stringWithFormat:@"applicationVersion:%llu clientDataHash:%@; accountMismatch:%d; markedMs:%llu; addedMs:%llu; expiryMs:%llu; escrowExpiryMs:%llu;", appVersion, v4, self->_accountMismatch, self->_markedForDeletionMs, self->_addedMs, expiryMs, self->_escrowExpiryMs];;
+  v6 = [NSString stringWithFormat:@"applicationVersion:%llu clientDataHash:%@; accountMismatch:%d; markedMs:%llu; addedMs:%llu; expiryMs:%llu; escrowExpiryMs:%llu;", appVersion, kt_hexString, self->_accountMismatch, self->_markedForDeletionMs, self->_addedMs, expiryMs, self->_escrowExpiryMs];;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -261,11 +261,11 @@ LABEL_28:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SingleDataRecord *)self data];
-      v7 = [(SingleDataRecord *)v5 data];
+      v5 = equalCopy;
+      data = [(SingleDataRecord *)self data];
+      data2 = [(SingleDataRecord *)v5 data];
 
-      v8 = [v6 isEqualToData:v7];
+      v8 = [data isEqualToData:data2];
     }
 
     else
@@ -283,16 +283,16 @@ LABEL_28:
   v4 = [NSNumber numberWithUnsignedLongLong:[(SingleDataRecord *)self appVersion]];
   [v3 setObject:v4 forKeyedSubscript:@"appVersion"];
 
-  v5 = [(SingleDataRecord *)self clientDataHash];
-  v6 = [v5 kt_hexString];
-  [v3 setObject:v6 forKeyedSubscript:@"clientDataHash"];
+  clientDataHash = [(SingleDataRecord *)self clientDataHash];
+  kt_hexString = [clientDataHash kt_hexString];
+  [v3 setObject:kt_hexString forKeyedSubscript:@"clientDataHash"];
 
   v7 = [NSNumber numberWithUnsignedLongLong:[(SingleDataRecord *)self addedMs]];
   [v3 setObject:v7 forKeyedSubscript:@"addedMs"];
 
   v8 = [NSDate dateWithTimeIntervalSince1970:([(SingleDataRecord *)self addedMs]/ 0x3E8)];
-  v9 = [v8 kt_toISO_8601_UTCString];
-  [v3 setObject:v9 forKeyedSubscript:@"addedDateReadable"];
+  kt_toISO_8601_UTCString = [v8 kt_toISO_8601_UTCString];
+  [v3 setObject:kt_toISO_8601_UTCString forKeyedSubscript:@"addedDateReadable"];
 
   if ([(SingleDataRecord *)self markedForDeletionMs])
   {
@@ -300,8 +300,8 @@ LABEL_28:
     [v3 setObject:v10 forKeyedSubscript:@"markedForDeltionMs"];
 
     v11 = [NSDate dateWithTimeIntervalSince1970:([(SingleDataRecord *)self markedForDeletionMs]/ 0x3E8)];
-    v12 = [v11 kt_toISO_8601_UTCString];
-    [v3 setObject:v12 forKeyedSubscript:@"markedDateReadable"];
+    kt_toISO_8601_UTCString2 = [v11 kt_toISO_8601_UTCString];
+    [v3 setObject:kt_toISO_8601_UTCString2 forKeyedSubscript:@"markedDateReadable"];
   }
 
   if ([(SingleDataRecord *)self expiryMs])
@@ -310,8 +310,8 @@ LABEL_28:
     [v3 setObject:v13 forKeyedSubscript:@"expiryMs"];
 
     v14 = [NSDate dateWithTimeIntervalSince1970:([(SingleDataRecord *)self expiryMs]/ 0x3E8)];
-    v15 = [v14 kt_toISO_8601_UTCString];
-    [v3 setObject:v15 forKeyedSubscript:@"expiryDateReadable"];
+    kt_toISO_8601_UTCString3 = [v14 kt_toISO_8601_UTCString];
+    [v3 setObject:kt_toISO_8601_UTCString3 forKeyedSubscript:@"expiryDateReadable"];
   }
 
   if ([(SingleDataRecord *)self escrowExpiryMs])
@@ -320,8 +320,8 @@ LABEL_28:
     [v3 setObject:v16 forKeyedSubscript:@"escrowExpiryMs"];
 
     v17 = [NSDate dateWithTimeIntervalSince1970:([(SingleDataRecord *)self escrowExpiryMs]/ 0x3E8)];
-    v18 = [v17 kt_toISO_8601_UTCString];
-    [v3 setObject:v18 forKeyedSubscript:@"escrowExpiryDateReadable"];
+    kt_toISO_8601_UTCString4 = [v17 kt_toISO_8601_UTCString];
+    [v3 setObject:kt_toISO_8601_UTCString4 forKeyedSubscript:@"escrowExpiryDateReadable"];
   }
 
   return v3;

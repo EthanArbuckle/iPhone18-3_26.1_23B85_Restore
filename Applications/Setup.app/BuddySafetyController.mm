@@ -1,5 +1,5 @@
 @interface BuddySafetyController
-+ (void)skippedByCloudConfigWithEnvironment:(id)a3;
++ (void)skippedByCloudConfigWithEnvironment:(id)environment;
 - (BOOL)controllerNeedsToRun;
 - (BuddySafetyController)init;
 - (void)_continueTapped;
@@ -37,12 +37,12 @@
 
 - (void)viewDidLoad
 {
-  v41 = self;
+  selfCopy = self;
   v40 = a2;
   v39.receiver = self;
   v39.super_class = BuddySafetyController;
   [(BuddySafetyController *)&v39 viewDidLoad];
-  v2 = v41;
+  v2 = selfCopy;
   v3 = +[NSBundle mainBundle];
   v4 = [(NSBundle *)v3 localizedStringForKey:@"CONTINUE" value:&stru_10032F900 table:@"Localizable"];
   [(BuddyWelcomeController *)v2 addBoldButton:v4 action:"_continueTapped"];
@@ -55,19 +55,19 @@
     v38 = v5;
   }
 
-  v7 = v41;
+  v7 = selfCopy;
   v8 = +[NSBundle mainBundle];
   v9 = [(NSBundle *)v8 localizedStringForKey:@"PRESS_HOLD_TO_CALL_TITLE" value:&stru_10032F900 table:@"Localizable"];
   v10 = +[NSBundle mainBundle];
   v11 = [(NSBundle *)v10 localizedStringForKey:@"PRESS_HOLD_TO_CALL_DESCRIPTION" value:&stru_10032F900 table:@"Localizable"];
   [(BuddySafetyController *)v7 addBulletedListItemWithTitle:v9 description:v11 image:v38];
 
-  v12 = [(BuddySafetyController *)v41 capabilities];
-  LOBYTE(v7) = [(BYCapabilities *)v12 supportsKappaDetection];
+  capabilities = [(BuddySafetyController *)selfCopy capabilities];
+  LOBYTE(v7) = [(BYCapabilities *)capabilities supportsKappaDetection];
 
   if (v7)
   {
-    v13 = v41;
+    v13 = selfCopy;
     v14 = +[NSBundle mainBundle];
     v15 = [(NSBundle *)v14 localizedStringForKey:@"CAR_CRASH_DETECTION_TITLE" value:&stru_10032F900 table:@"Localizable"];
     v16 = +[NSBundle mainBundle];
@@ -77,9 +77,9 @@
   }
 
   location = 0;
-  v19 = [(BuddySafetyController *)v41 coreTelephonyClient];
+  coreTelephonyClient = [(BuddySafetyController *)selfCopy coreTelephonyClient];
   obj = 0;
-  v20 = [(CoreTelephonyClient *)v19 getStewieSupport:&obj];
+  v20 = [(CoreTelephonyClient *)coreTelephonyClient getStewieSupport:&obj];
   objc_storeStrong(&location, obj);
   v21 = 0;
   if ([v20 hwSupport])
@@ -89,7 +89,7 @@
 
   if (v21)
   {
-    v22 = v41;
+    v22 = selfCopy;
     v23 = +[NSBundle mainBundle];
     v24 = [(NSBundle *)v23 localizedStringForKey:@"SATELLITE_TITLE" value:&stru_10032F900 table:@"Localizable"];
     v25 = +[NSBundle mainBundle];
@@ -112,9 +112,9 @@
 
       else if (location)
       {
-        v34 = [location domain];
+        domain = [location domain];
         v33 = 1;
-        v28 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v34, [location code]);
+        v28 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [location code]);
         v32 = v28;
         v31 = 1;
       }
@@ -138,10 +138,10 @@
     objc_storeStrong(&oslog, 0);
   }
 
-  v29 = [(BuddySafetyController *)v41 buttonTray];
+  buttonTray = [(BuddySafetyController *)selfCopy buttonTray];
   v42 = BYPrivacySafetyFeaturesIdentifier;
   v30 = [NSArray arrayWithObjects:&v42 count:1];
-  [v29 setPrivacyLinkForBundles:v30];
+  [buttonTray setPrivacyLinkForBundles:v30];
 
   objc_storeStrong(&location, 0);
   objc_storeStrong(&v38, 0);
@@ -149,26 +149,26 @@
 
 - (void)_continueTapped
 {
-  v2 = [(BuddySafetyController *)self buddyPreferences];
-  [(BYPreferencesController *)v2 setObject:&__kCFBooleanTrue forKey:@"SafetyPresented"];
+  buddyPreferences = [(BuddySafetyController *)self buddyPreferences];
+  [(BYPreferencesController *)buddyPreferences setObject:&__kCFBooleanTrue forKey:@"SafetyPresented"];
 
-  v3 = [(BuddyWelcomeController *)self delegate];
-  [(BFFFlowItemDelegate *)v3 flowItemDone:self];
+  delegate = [(BuddyWelcomeController *)self delegate];
+  [(BFFFlowItemDelegate *)delegate flowItemDone:self];
 }
 
-+ (void)skippedByCloudConfigWithEnvironment:(id)a3
++ (void)skippedByCloudConfigWithEnvironment:(id)environment
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [location[0] runState];
-  v4 = [v3 hasCompletedInitialRun];
+  objc_storeStrong(location, environment);
+  runState = [location[0] runState];
+  hasCompletedInitialRun = [runState hasCompletedInitialRun];
 
-  if ((v4 & 1) == 0)
+  if ((hasCompletedInitialRun & 1) == 0)
   {
-    v5 = [location[0] emergencyExecutor];
-    [v5 setKappaTriggersEmergencySOS:0];
+    emergencyExecutor = [location[0] emergencyExecutor];
+    [emergencyExecutor setKappaTriggersEmergencySOS:0];
   }
 
   objc_storeStrong(location, 0);
@@ -176,15 +176,15 @@
 
 - (BOOL)controllerNeedsToRun
 {
-  v2 = [(BuddySafetyController *)self capabilities];
-  v3 = [(BYCapabilities *)v2 supportsKappaDetection];
+  capabilities = [(BuddySafetyController *)self capabilities];
+  supportsKappaDetection = [(BYCapabilities *)capabilities supportsKappaDetection];
   v6 = 0;
   v4 = 0;
-  if (v3)
+  if (supportsKappaDetection)
   {
-    v7 = [(BuddySafetyController *)self buddyPreferences];
+    buddyPreferences = [(BuddySafetyController *)self buddyPreferences];
     v6 = 1;
-    v4 = [(BYPreferencesController *)v7 BOOLForKey:@"SafetyPresented"]^ 1;
+    v4 = [(BYPreferencesController *)buddyPreferences BOOLForKey:@"SafetyPresented"]^ 1;
   }
 
   v9 = v4 & 1;

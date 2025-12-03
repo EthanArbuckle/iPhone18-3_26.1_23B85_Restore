@@ -1,10 +1,10 @@
 @interface HMDVendorModelEntry
-- (BOOL)isEqual:(id)a3;
-- (HMDVendorModelEntry)initWithEncodedData:(id)a3;
-- (HMDVendorModelEntry)initWithManufacturer:(id)a3 model:(id)a4 appBundleID:(id)a5 appStoreID:(id)a6 firmwareVersion:(id)a7 productData:(id)a8 productDataAlternates:(id)a9;
+- (BOOL)isEqual:(id)equal;
+- (HMDVendorModelEntry)initWithEncodedData:(id)data;
+- (HMDVendorModelEntry)initWithManufacturer:(id)manufacturer model:(id)model appBundleID:(id)d appStoreID:(id)iD firmwareVersion:(id)version productData:(id)data productDataAlternates:(id)alternates;
 - (id)asEncodedData;
 - (id)attributeDescriptions;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 @end
 
@@ -15,41 +15,41 @@
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
-  v3 = [(HMDVendorModelEntry *)self manufacturer];
-  v4 = [v3 hash];
+  manufacturer = [(HMDVendorModelEntry *)self manufacturer];
+  v4 = [manufacturer hash];
 
   v24 = v4;
-  v5 = [(HMDVendorModelEntry *)self model];
-  v6 = [v5 hash];
+  model = [(HMDVendorModelEntry *)self model];
+  v6 = [model hash];
   v22[3] ^= v6;
 
-  v7 = [(HMDVendorModelEntry *)self appBundleID];
-  v8 = [v7 hash];
+  appBundleID = [(HMDVendorModelEntry *)self appBundleID];
+  v8 = [appBundleID hash];
   v22[3] ^= v8;
 
-  v9 = [(HMDVendorModelEntry *)self appBundleID];
-  v10 = [v9 hash];
+  appBundleID2 = [(HMDVendorModelEntry *)self appBundleID];
+  v10 = [appBundleID2 hash];
   v22[3] ^= v10;
 
-  v11 = [(HMDVendorModelEntry *)self appStoreID];
-  v12 = [v11 hash];
+  appStoreID = [(HMDVendorModelEntry *)self appStoreID];
+  v12 = [appStoreID hash];
   v22[3] ^= v12;
 
-  v13 = [(HMDVendorModelEntry *)self firmwareVersion];
-  v14 = [v13 hash];
+  firmwareVersion = [(HMDVendorModelEntry *)self firmwareVersion];
+  v14 = [firmwareVersion hash];
   v22[3] ^= v14;
 
-  v15 = [(HMDVendorModelEntry *)self productData];
-  v16 = [v15 hash];
+  productData = [(HMDVendorModelEntry *)self productData];
+  v16 = [productData hash];
   v22[3] ^= v16;
 
-  v17 = [(HMDVendorModelEntry *)self productDataAlternates];
+  productDataAlternates = [(HMDVendorModelEntry *)self productDataAlternates];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __27__HMDVendorModelEntry_hash__block_invoke;
   v20[3] = &unk_278686E68;
   v20[4] = &v21;
-  [v17 hmf_enumerateWithAutoreleasePoolUsingBlock:v20];
+  [productDataAlternates hmf_enumerateWithAutoreleasePoolUsingBlock:v20];
 
   v18 = v22[3];
   _Block_object_dispose(&v21, 8);
@@ -63,27 +63,27 @@ uint64_t __27__HMDVendorModelEntry_hash__block_invoke(uint64_t a1, void *a2)
   return result;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(HMDVendorModelEntry *)self manufacturer];
-  v6 = [v4 manufacturer];
-  v7 = [v5 compare:v6];
+  compareCopy = compare;
+  manufacturer = [(HMDVendorModelEntry *)self manufacturer];
+  manufacturer2 = [compareCopy manufacturer];
+  v7 = [manufacturer compare:manufacturer2];
 
   if (!v7)
   {
-    v8 = [(HMDVendorModelEntry *)self model];
-    v9 = [v4 model];
-    v7 = [v8 compare:v9];
+    model = [(HMDVendorModelEntry *)self model];
+    model2 = [compareCopy model];
+    v7 = [model compare:model2];
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v17 = 1;
   }
@@ -93,7 +93,7 @@ uint64_t __27__HMDVendorModelEntry_hash__block_invoke(uint64_t a1, void *a2)
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -104,35 +104,35 @@ uint64_t __27__HMDVendorModelEntry_hash__block_invoke(uint64_t a1, void *a2)
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDVendorModelEntry *)self manufacturer];
-      v8 = [(HMDVendorModelEntry *)v6 manufacturer];
-      if ([v7 isEqualToString:v8])
+      manufacturer = [(HMDVendorModelEntry *)self manufacturer];
+      manufacturer2 = [(HMDVendorModelEntry *)v6 manufacturer];
+      if ([manufacturer isEqualToString:manufacturer2])
       {
-        v9 = [(HMDVendorModelEntry *)self model];
-        v10 = [(HMDVendorModelEntry *)v6 model];
-        if ([v9 isEqualToString:v10])
+        model = [(HMDVendorModelEntry *)self model];
+        model2 = [(HMDVendorModelEntry *)v6 model];
+        if ([model isEqualToString:model2])
         {
-          v11 = [(HMDVendorModelEntry *)self appBundleID];
-          v12 = [(HMDVendorModelEntry *)v6 appBundleID];
+          appBundleID = [(HMDVendorModelEntry *)self appBundleID];
+          appBundleID2 = [(HMDVendorModelEntry *)v6 appBundleID];
           if (HMFEqualObjects())
           {
-            v13 = [(HMDVendorModelEntry *)self appStoreID];
-            v24 = [(HMDVendorModelEntry *)v6 appStoreID];
-            v25 = v13;
+            appStoreID = [(HMDVendorModelEntry *)self appStoreID];
+            appStoreID2 = [(HMDVendorModelEntry *)v6 appStoreID];
+            v25 = appStoreID;
             if (HMFEqualObjects())
             {
-              v14 = [(HMDVendorModelEntry *)self firmwareVersion];
-              v22 = [(HMDVendorModelEntry *)v6 firmwareVersion];
-              v23 = v14;
+              firmwareVersion = [(HMDVendorModelEntry *)self firmwareVersion];
+              firmwareVersion2 = [(HMDVendorModelEntry *)v6 firmwareVersion];
+              v23 = firmwareVersion;
               if (HMFEqualObjects())
               {
-                v15 = [(HMDVendorModelEntry *)self productData];
+                productData = [(HMDVendorModelEntry *)self productData];
                 [(HMDVendorModelEntry *)v6 productData];
-                v16 = v21 = v15;
+                v16 = v21 = productData;
                 if (HMFEqualObjects())
                 {
-                  v20 = [(HMDVendorModelEntry *)self productDataAlternates];
-                  v19 = [(HMDVendorModelEntry *)v6 productDataAlternates];
+                  productDataAlternates = [(HMDVendorModelEntry *)self productDataAlternates];
+                  productDataAlternates2 = [(HMDVendorModelEntry *)v6 productDataAlternates];
                   v17 = HMFEqualObjects();
                 }
 
@@ -185,32 +185,32 @@ uint64_t __27__HMDVendorModelEntry_hash__block_invoke(uint64_t a1, void *a2)
 {
   v27[7] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v26 = [(HMDVendorModelEntry *)self manufacturer];
-  v25 = [v3 initWithName:@"Manufacturer" value:v26];
+  manufacturer = [(HMDVendorModelEntry *)self manufacturer];
+  v25 = [v3 initWithName:@"Manufacturer" value:manufacturer];
   v27[0] = v25;
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v24 = [(HMDVendorModelEntry *)self model];
-  v23 = [v4 initWithName:@"Model" value:v24];
+  model = [(HMDVendorModelEntry *)self model];
+  v23 = [v4 initWithName:@"Model" value:model];
   v27[1] = v23;
   v5 = objc_alloc(MEMORY[0x277D0F778]);
-  v22 = [(HMDVendorModelEntry *)self appBundleID];
-  v6 = [v5 initWithName:@"AppBundleID" value:v22];
+  appBundleID = [(HMDVendorModelEntry *)self appBundleID];
+  v6 = [v5 initWithName:@"AppBundleID" value:appBundleID];
   v27[2] = v6;
   v7 = objc_alloc(MEMORY[0x277D0F778]);
-  v8 = [(HMDVendorModelEntry *)self appStoreID];
-  v9 = [v7 initWithName:@"AppStoreID" value:v8];
+  appStoreID = [(HMDVendorModelEntry *)self appStoreID];
+  v9 = [v7 initWithName:@"AppStoreID" value:appStoreID];
   v27[3] = v9;
   v10 = objc_alloc(MEMORY[0x277D0F778]);
-  v11 = [(HMDVendorModelEntry *)self firmwareVersion];
-  v12 = [v10 initWithName:@"FirmwareVersion" value:v11];
+  firmwareVersion = [(HMDVendorModelEntry *)self firmwareVersion];
+  v12 = [v10 initWithName:@"FirmwareVersion" value:firmwareVersion];
   v27[4] = v12;
   v13 = objc_alloc(MEMORY[0x277D0F778]);
-  v14 = [(HMDVendorModelEntry *)self productData];
-  v15 = [v13 initWithName:@"ProductData" value:v14];
+  productData = [(HMDVendorModelEntry *)self productData];
+  v15 = [v13 initWithName:@"ProductData" value:productData];
   v27[5] = v15;
   v16 = objc_alloc(MEMORY[0x277D0F778]);
-  v17 = [(HMDVendorModelEntry *)self productDataAlternates];
-  v18 = [v16 initWithName:@"ProductDataAlternates" value:v17];
+  productDataAlternates = [(HMDVendorModelEntry *)self productDataAlternates];
+  v18 = [v16 initWithName:@"ProductDataAlternates" value:productDataAlternates];
   v27[6] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:7];
 
@@ -226,8 +226,8 @@ uint64_t __27__HMDVendorModelEntry_hash__block_invoke(uint64_t a1, void *a2)
   [v3 hmf_appendObject:self->_manufacturer];
   [v3 hmf_appendObject:self->_appBundleID];
   [v3 hmf_appendObject:self->_appStoreID];
-  v4 = [(HMDAccessoryVersion *)self->_firmwareVersion versionString];
-  [v3 hmf_appendObject:v4];
+  versionString = [(HMDAccessoryVersion *)self->_firmwareVersion versionString];
+  [v3 hmf_appendObject:versionString];
 
   [v3 hmf_appendObject:self->_productData];
   [v3 hmf_appendObject:self->_productDataAlternates];
@@ -236,11 +236,11 @@ uint64_t __27__HMDVendorModelEntry_hash__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (HMDVendorModelEntry)initWithEncodedData:(id)a3
+- (HMDVendorModelEntry)initWithEncodedData:(id)data
 {
   v28 = 0;
-  v4 = a3;
-  v5 = [v4 hmf_readObjectAtOffset:&v28];
+  dataCopy = data;
+  v5 = [dataCopy hmf_readObjectAtOffset:&v28];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -254,7 +254,7 @@ uint64_t __27__HMDVendorModelEntry_hash__block_invoke(uint64_t a1, void *a2)
 
   v7 = v6;
 
-  v8 = [v4 hmf_readObjectAtOffset:&v28];
+  v8 = [dataCopy hmf_readObjectAtOffset:&v28];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -268,7 +268,7 @@ uint64_t __27__HMDVendorModelEntry_hash__block_invoke(uint64_t a1, void *a2)
 
   v10 = v9;
 
-  v11 = [v4 hmf_readObjectAtOffset:&v28];
+  v11 = [dataCopy hmf_readObjectAtOffset:&v28];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -282,7 +282,7 @@ uint64_t __27__HMDVendorModelEntry_hash__block_invoke(uint64_t a1, void *a2)
 
   v13 = v12;
 
-  v14 = [v4 hmf_readObjectAtOffset:&v28];
+  v14 = [dataCopy hmf_readObjectAtOffset:&v28];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -296,7 +296,7 @@ uint64_t __27__HMDVendorModelEntry_hash__block_invoke(uint64_t a1, void *a2)
 
   v16 = v15;
 
-  v17 = [v4 hmf_readObjectAtOffset:&v28];
+  v17 = [dataCopy hmf_readObjectAtOffset:&v28];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -310,7 +310,7 @@ uint64_t __27__HMDVendorModelEntry_hash__block_invoke(uint64_t a1, void *a2)
 
   v19 = v18;
 
-  v20 = [v4 hmf_readObjectAtOffset:&v28];
+  v20 = [dataCopy hmf_readObjectAtOffset:&v28];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -324,7 +324,7 @@ uint64_t __27__HMDVendorModelEntry_hash__block_invoke(uint64_t a1, void *a2)
 
   v22 = v21;
 
-  v23 = [v4 hmf_readObjectAtOffset:&v28];
+  v23 = [dataCopy hmf_readObjectAtOffset:&v28];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -343,48 +343,48 @@ uint64_t __27__HMDVendorModelEntry_hash__block_invoke(uint64_t a1, void *a2)
   return v26;
 }
 
-- (HMDVendorModelEntry)initWithManufacturer:(id)a3 model:(id)a4 appBundleID:(id)a5 appStoreID:(id)a6 firmwareVersion:(id)a7 productData:(id)a8 productDataAlternates:(id)a9
+- (HMDVendorModelEntry)initWithManufacturer:(id)manufacturer model:(id)model appBundleID:(id)d appStoreID:(id)iD firmwareVersion:(id)version productData:(id)data productDataAlternates:(id)alternates
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  manufacturerCopy = manufacturer;
+  modelCopy = model;
+  dCopy = d;
+  iDCopy = iD;
+  versionCopy = version;
+  dataCopy = data;
+  alternatesCopy = alternates;
   v38.receiver = self;
   v38.super_class = HMDVendorModelEntry;
   v22 = [(HMDVendorModelEntry *)&v38 init];
   if (v22)
   {
-    v23 = [v15 copy];
+    v23 = [manufacturerCopy copy];
     manufacturer = v22->_manufacturer;
     v22->_manufacturer = v23;
 
-    v25 = [v16 copy];
+    v25 = [modelCopy copy];
     model = v22->_model;
     v22->_model = v25;
 
-    v27 = [v17 copy];
+    v27 = [dCopy copy];
     appBundleID = v22->_appBundleID;
     v22->_appBundleID = v27;
 
-    v29 = [v18 copy];
+    v29 = [iDCopy copy];
     appStoreID = v22->_appStoreID;
     v22->_appStoreID = v29;
 
-    if (v19)
+    if (versionCopy)
     {
-      v31 = [[HMDAccessoryVersion alloc] initWithString:v19];
+      v31 = [[HMDAccessoryVersion alloc] initWithString:versionCopy];
       firmwareVersion = v22->_firmwareVersion;
       v22->_firmwareVersion = v31;
     }
 
-    v33 = [v20 copy];
+    v33 = [dataCopy copy];
     productData = v22->_productData;
     v22->_productData = v33;
 
-    v35 = [v21 copy];
+    v35 = [alternatesCopy copy];
     productDataAlternates = v22->_productDataAlternates;
     v22->_productDataAlternates = v35;
   }

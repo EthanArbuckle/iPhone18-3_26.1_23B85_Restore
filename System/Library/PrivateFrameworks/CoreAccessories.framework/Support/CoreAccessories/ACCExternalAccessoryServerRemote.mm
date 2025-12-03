@@ -1,39 +1,39 @@
 @interface ACCExternalAccessoryServerRemote
 - (ACCExternalAccessoryClientInfo)clientInfo;
-- (ACCExternalAccessoryServerRemote)initWithClientInfo:(id)a3;
-- (void)activateLocationForUUID:(id)a3;
-- (void)clientCloseExternalAccessorySession:(id)a3;
-- (void)createExternalAccessorySessionForProtocol:(id)a3 accessoryUUID:(id)a4 withReply:(id)a5;
-- (void)destinationInformation:(id)a3 forUUID:(id)a4;
-- (void)initConnectionToServer:(id)a3;
-- (void)openSocketFromAccessoryToApp:(id)a3;
-- (void)openSocketFromAppToAccessory:(id)a3;
-- (void)processOutgoingExternalAccessoryData:(id)a3 forEASessionIdentifier:(id)a4 withReply:(id)a5;
-- (void)registerClientInformation:(id)a3 onInstantiation:(BOOL)a4 withReply:(id)a5;
-- (void)requestAccessoryWiFiCredentials:(id)a3;
-- (void)sendDeviceIdentifierNotification:(id)a3 usbIdentifier:(id)a4 forUUID:(id)a5;
-- (void)sendNMEAFilterList:(id)a3 forUUID:(id)a4;
-- (void)sendWiredCarPlayAvailable:(id)a3 usbIdentifier:(id)a4 wirelessAvailable:(id)a5 bluetoothIdentifier:(id)a6 forUUID:(id)a7;
-- (void)sendWiredCarPlayAvailable:(id)a3 usbIdentifier:(id)a4 wirelessAvailable:(id)a5 bluetoothIdentifier:(id)a6 themeAssetsAvailable:(id)a7 forUUID:(id)a8;
-- (void)stopLocationForUUID:(id)a3;
-- (void)vehicleInformationForUUID:(id)a3 withReply:(id)a4;
-- (void)verifyAccessoryConnectionStatus:(id)a3 legacyConnectionID:(id)a4 withReply:(id)a5;
+- (ACCExternalAccessoryServerRemote)initWithClientInfo:(id)info;
+- (void)activateLocationForUUID:(id)d;
+- (void)clientCloseExternalAccessorySession:(id)session;
+- (void)createExternalAccessorySessionForProtocol:(id)protocol accessoryUUID:(id)d withReply:(id)reply;
+- (void)destinationInformation:(id)information forUUID:(id)d;
+- (void)initConnectionToServer:(id)server;
+- (void)openSocketFromAccessoryToApp:(id)app;
+- (void)openSocketFromAppToAccessory:(id)accessory;
+- (void)processOutgoingExternalAccessoryData:(id)data forEASessionIdentifier:(id)identifier withReply:(id)reply;
+- (void)registerClientInformation:(id)information onInstantiation:(BOOL)instantiation withReply:(id)reply;
+- (void)requestAccessoryWiFiCredentials:(id)credentials;
+- (void)sendDeviceIdentifierNotification:(id)notification usbIdentifier:(id)identifier forUUID:(id)d;
+- (void)sendNMEAFilterList:(id)list forUUID:(id)d;
+- (void)sendWiredCarPlayAvailable:(id)available usbIdentifier:(id)identifier wirelessAvailable:(id)wirelessAvailable bluetoothIdentifier:(id)bluetoothIdentifier forUUID:(id)d;
+- (void)sendWiredCarPlayAvailable:(id)available usbIdentifier:(id)identifier wirelessAvailable:(id)wirelessAvailable bluetoothIdentifier:(id)bluetoothIdentifier themeAssetsAvailable:(id)assetsAvailable forUUID:(id)d;
+- (void)stopLocationForUUID:(id)d;
+- (void)vehicleInformationForUUID:(id)d withReply:(id)reply;
+- (void)verifyAccessoryConnectionStatus:(id)status legacyConnectionID:(id)d withReply:(id)reply;
 @end
 
 @implementation ACCExternalAccessoryServerRemote
 
-- (ACCExternalAccessoryServerRemote)initWithClientInfo:(id)a3
+- (ACCExternalAccessoryServerRemote)initWithClientInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v10.receiver = self;
   v10.super_class = ACCExternalAccessoryServerRemote;
   v5 = [(ACCExternalAccessoryServerRemote *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (infoCopy)
     {
-      objc_storeWeak(&v5->_clientInfo, v4);
+      objc_storeWeak(&v5->_clientInfo, infoCopy);
       v7 = objc_alloc_init(NSLock);
       remoteExternalAccessoryServerLock = v6->_remoteExternalAccessoryServerLock;
       v6->_remoteExternalAccessoryServerLock = v7;
@@ -49,15 +49,15 @@
   return v6;
 }
 
-- (void)initConnectionToServer:(id)a3
+- (void)initConnectionToServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v5 = +[ACCExternalAccessoryServer sharedServer];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
-    v7 = [v6 XPCConnection];
-    v8 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:v7] != 0;
+    clientInfo = [(ACCExternalAccessoryServerRemote *)self clientInfo];
+    xPCConnection = [clientInfo XPCConnection];
+    v8 = [v5 performSelector:"shouldAcceptXPCConnection:" withObject:xPCConnection] != 0;
   }
 
   else
@@ -120,14 +120,14 @@
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "shouldStayConnected: %d", v14, 8u);
   }
 
-  v4[2](v4, v8);
+  serverCopy[2](serverCopy, v8);
 }
 
-- (void)registerClientInformation:(id)a3 onInstantiation:(BOOL)a4 withReply:(id)a5
+- (void)registerClientInformation:(id)information onInstantiation:(BOOL)instantiation withReply:(id)reply
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  instantiationCopy = instantiation;
+  informationCopy = information;
+  replyCopy = reply;
   v10 = &audioProductCerts_endpoint_publish_onceToken;
   if (gLogObjects)
   {
@@ -158,23 +158,23 @@
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v55 = v8;
+    v55 = informationCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[#ExternalAccessory] EA client %@ registering", buf, 0xCu);
   }
 
-  v14 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
-  [v14 addClientRegistrationInformation:v8];
+  clientInfo = [(ACCExternalAccessoryServerRemote *)self clientInfo];
+  [clientInfo addClientRegistrationInformation:informationCopy];
 
   v15 = +[ACCExternalAccessoryServer sharedServer];
   v16 = +[NSMutableArray array];
-  if (v6)
+  if (instantiationCopy)
   {
-    v45 = v9;
-    v46 = v8;
-    v47 = self;
-    v17 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
+    v45 = replyCopy;
+    v46 = informationCopy;
+    selfCopy = self;
+    clientInfo2 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
     v44 = v15;
-    v18 = [v15 externalAccessoryClientConnected:v17];
+    v18 = [v15 externalAccessoryClientConnected:clientInfo2];
 
     v52 = 0u;
     v53 = 0u;
@@ -198,7 +198,7 @@
             objc_enumerationMutation(obj);
           }
 
-          v24 = [*(*(&v50 + 1) + 8 * v23) EAAccessoryDictionary];
+          eAAccessoryDictionary = [*(*(&v50 + 1) + 8 * v23) EAAccessoryDictionary];
           v25 = v10[491];
           v26 = gNumLogObjects;
           if (v25)
@@ -233,17 +233,17 @@
 
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
-            [ACCExternalAccessory accessoryDictionaryForLogging:v24];
+            [ACCExternalAccessory accessoryDictionaryForLogging:eAAccessoryDictionary];
             v30 = v21;
             v31 = v22;
             v32 = v16;
             v34 = v33 = v10;
-            v35 = [(ACCExternalAccessoryServerRemote *)v47 clientInfo];
-            v36 = [v35 bundleID];
+            clientInfo3 = [(ACCExternalAccessoryServerRemote *)selfCopy clientInfo];
+            bundleID = [clientInfo3 bundleID];
             *buf = 138412546;
             v55 = v34;
             v56 = 2112;
-            v57 = v36;
+            v57 = bundleID;
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "[#ExternalAccessory] initial accEADict %@ connected for EA client %@!", buf, 0x16u);
 
             v10 = v33;
@@ -253,7 +253,7 @@
             v20 = v48;
           }
 
-          [v16 addObject:v24];
+          [v16 addObject:eAAccessoryDictionary];
           v23 = v23 + 1;
         }
 
@@ -264,16 +264,16 @@
       while (v20);
     }
 
-    v9 = v45;
+    replyCopy = v45;
     v45[2](v45, 1, v16);
-    v8 = v46;
-    self = v47;
+    informationCopy = v46;
+    self = selfCopy;
     v15 = v44;
   }
 
   else
   {
-    v9[2](v9, 1, v16);
+    replyCopy[2](replyCopy, 1, v16);
     if (gLogObjects && gNumLogObjects >= 10)
     {
       v37 = *(gLogObjects + 72);
@@ -292,29 +292,29 @@
 
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
-      v39 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
-      v40 = [v39 bundleID];
+      clientInfo4 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
+      bundleID2 = [clientInfo4 bundleID];
       *buf = 138412290;
-      v55 = v40;
+      v55 = bundleID2;
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "[#ExternalAccessory] client %@ connected to EA XPC Server, sending notification of any EAAccessories", buf, 0xCu);
     }
 
-    v41 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
-    [v15 notifyClientOfConnectedAccessories:v41];
+    clientInfo5 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
+    [v15 notifyClientOfConnectedAccessories:clientInfo5];
   }
 
-  v42 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
-  [v15 notifyClientOfConnectedDestinationSharingAccessories:v42];
+  clientInfo6 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
+  [v15 notifyClientOfConnectedDestinationSharingAccessories:clientInfo6];
 
-  v43 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
-  [v15 notifyClientOfConnectedVehicleStatus:v43];
+  clientInfo7 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
+  [v15 notifyClientOfConnectedVehicleStatus:clientInfo7];
 }
 
-- (void)verifyAccessoryConnectionStatus:(id)a3 legacyConnectionID:(id)a4 withReply:(id)a5
+- (void)verifyAccessoryConnectionStatus:(id)status legacyConnectionID:(id)d withReply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  statusCopy = status;
+  dCopy = d;
+  replyCopy = reply;
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 10;
@@ -344,13 +344,13 @@
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412546;
-    v17 = v7;
+    v17 = statusCopy;
     v18 = 2112;
-    v19 = v8;
+    v19 = dCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[#ExternalAccessory] verifyAccessoryConnectionStatus: %@ legacyConnectionID: %@", &v16, 0x16u);
   }
 
-  v13 = platform_externalAccessory_verifyPrimaryEndpointConnected(v7, v8);
+  v13 = platform_externalAccessory_verifyPrimaryEndpointConnected(statusCopy, dCopy);
   if (gLogObjects && gNumLogObjects >= 10)
   {
     v14 = *(gLogObjects + 72);
@@ -370,22 +370,22 @@
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412802;
-    v17 = v7;
+    v17 = statusCopy;
     v18 = 2112;
-    v19 = v8;
+    v19 = dCopy;
     v20 = 1024;
     v21 = v13;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[#ExternalAccessory] verifyAccessoryConnectionStatus: %@ legacyConnectionID: %@... accessoryConnected %d", &v16, 0x1Cu);
   }
 
-  v9[2](v9, v13);
+  replyCopy[2](replyCopy, v13);
 }
 
-- (void)createExternalAccessorySessionForProtocol:(id)a3 accessoryUUID:(id)a4 withReply:(id)a5
+- (void)createExternalAccessorySessionForProtocol:(id)protocol accessoryUUID:(id)d withReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  protocolCopy = protocol;
+  dCopy = d;
+  replyCopy = reply;
   if (gLogObjects)
   {
     v11 = gNumLogObjects < 10;
@@ -414,29 +414,29 @@
 
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
-    v15 = [v14 bundleID];
+    clientInfo = [(ACCExternalAccessoryServerRemote *)self clientInfo];
+    bundleID = [clientInfo bundleID];
     *buf = 138412802;
-    v36 = v15;
+    v36 = bundleID;
     v37 = 2112;
-    v38 = v8;
+    v38 = protocolCopy;
     v39 = 2112;
-    v40 = v9;
+    v40 = dCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "App %@ wants to create EA session for protocol %@, primary accessory UUID %@", buf, 0x20u);
   }
 
   v34 = 0;
   v16 = +[ACCExternalAccessorySessionManager sharedManager];
-  v17 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
-  v18 = [v16 createSessionForProtocol:v8 fromPrimaryAccessoryUUID:v9 fromClient:v17 result:&v34];
+  clientInfo2 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
+  v18 = [v16 createSessionForProtocol:protocolCopy fromPrimaryAccessoryUUID:dCopy fromClient:clientInfo2 result:&v34];
 
   if (v34)
   {
-    v19 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
-    v20 = [v19 eaSessionUUIDs];
+    clientInfo3 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
+    eaSessionUUIDs = [clientInfo3 eaSessionUUIDs];
     v21 = kACCExternalAccessorySessionUUIDKey;
     v22 = [v18 objectForKey:kACCExternalAccessorySessionUUIDKey];
-    [v20 addObject:v22];
+    [eaSessionUUIDs addObject:v22];
 
     v23 = [v18 objectForKey:kACCExternalAccessoryProtocolEndpointUUIDKey];
     platform_externalAccessory_openExternalAccessorySession(v23, v18);
@@ -445,17 +445,17 @@
     v26 = v25;
     if (v25)
     {
-      v27 = [v25 BOOLValue];
+      bOOLValue = [v25 BOOLValue];
     }
 
     else
     {
-      v27 = 0;
+      bOOLValue = 0;
     }
 
-    v29 = [v24 unsignedLongValue];
+    unsignedLongValue = [v24 unsignedLongValue];
     v30 = [v18 objectForKey:v21];
-    v10[2](v10, 1, v27, v29, v30);
+    replyCopy[2](replyCopy, 1, bOOLValue, unsignedLongValue, v30);
   }
 
   else
@@ -478,38 +478,38 @@
 
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
-      v33 = [v32 bundleID];
+      clientInfo4 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
+      bundleID2 = [clientInfo4 bundleID];
       *buf = 138412802;
-      v36 = v33;
+      v36 = bundleID2;
       v37 = 2112;
-      v38 = v8;
+      v38 = protocolCopy;
       v39 = 2112;
-      v40 = v9;
+      v40 = dCopy;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "App %@ could not create ea session for eaProtocol %@ and accessoryUUID %@", buf, 0x20u);
     }
 
-    v10[2](v10, 0, 0, 0, &stru_10022D360);
+    replyCopy[2](replyCopy, 0, 0, 0, &stru_10022D360);
   }
 }
 
-- (void)openSocketFromAccessoryToApp:(id)a3
+- (void)openSocketFromAccessoryToApp:(id)app
 {
-  v3 = a3;
+  appCopy = app;
   v4 = +[ACCExternalAccessorySessionManager sharedManager];
-  [v4 openSocketFromAccessoryToApp:v3];
+  [v4 openSocketFromAccessoryToApp:appCopy];
 }
 
-- (void)openSocketFromAppToAccessory:(id)a3
+- (void)openSocketFromAppToAccessory:(id)accessory
 {
-  v3 = a3;
+  accessoryCopy = accessory;
   v4 = +[ACCExternalAccessorySessionManager sharedManager];
-  [v4 openSocketFromAppToAccessory:v3];
+  [v4 openSocketFromAppToAccessory:accessoryCopy];
 }
 
-- (void)clientCloseExternalAccessorySession:(id)a3
+- (void)clientCloseExternalAccessorySession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 10;
@@ -538,30 +538,30 @@
 
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
-    v9 = [v8 bundleID];
+    clientInfo = [(ACCExternalAccessoryServerRemote *)self clientInfo];
+    bundleID = [clientInfo bundleID];
     v15 = 138412546;
-    v16 = v9;
+    v16 = bundleID;
     v17 = 2112;
-    v18 = v4;
+    v18 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Client app %@ is closing EA session for eaSessionUUID %@", &v15, 0x16u);
   }
 
   v10 = +[ACCExternalAccessorySessionManager sharedManager];
-  v11 = [v10 closeSessionForEASessionUUID:v4];
+  v11 = [v10 closeSessionForEASessionUUID:sessionCopy];
 
   if (v11)
   {
-    v12 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
-    v13 = [v12 eaSessionUUIDs];
-    [v13 removeObject:v4];
+    clientInfo2 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
+    eaSessionUUIDs = [clientInfo2 eaSessionUUIDs];
+    [eaSessionUUIDs removeObject:sessionCopy];
   }
 
   else
   {
     if (gLogObjects && gNumLogObjects >= 10)
     {
-      v12 = *(gLogObjects + 72);
+      clientInfo2 = *(gLogObjects + 72);
     }
 
     else
@@ -571,38 +571,38 @@
         platform_connectionInfo_configStreamGetCategories_cold_2();
       }
 
-      v12 = &_os_log_default;
+      clientInfo2 = &_os_log_default;
       v14 = &_os_log_default;
     }
 
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(clientInfo2, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = v4;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Session could not be closed or already closed for eaSessionUUID %@", &v15, 0xCu);
+      v16 = sessionCopy;
+      _os_log_impl(&_mh_execute_header, clientInfo2, OS_LOG_TYPE_DEFAULT, "Session could not be closed or already closed for eaSessionUUID %@", &v15, 0xCu);
     }
   }
 }
 
-- (void)processOutgoingExternalAccessoryData:(id)a3 forEASessionIdentifier:(id)a4 withReply:(id)a5
+- (void)processOutgoingExternalAccessoryData:(id)data forEASessionIdentifier:(id)identifier withReply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v10 = +[ACCExternalAccessorySessionManager sharedManager];
-  v11 = [v10 sessionInfoDictionaryForSessionUUID:v8];
+  v11 = [v10 sessionInfoDictionaryForSessionUUID:identifierCopy];
   v12 = [NSMutableDictionary dictionaryWithDictionary:v11];
 
   if (v12)
   {
     v13 = [v12 objectForKey:kACCExternalAccessoryProtocolEndpointUUIDKey];
-    [v12 setObject:v7 forKey:kACCExternalAccessorySessionDataKey];
+    [v12 setObject:dataCopy forKey:kACCExternalAccessorySessionDataKey];
     v14 = platform_externalAccessory_sendOutgoingEADataFromClient(v13, v12);
 
-    if (v9)
+    if (replyCopy)
     {
 LABEL_3:
-      v9[2](v9, v14);
+      replyCopy[2](replyCopy, v14);
     }
   }
 
@@ -627,21 +627,21 @@ LABEL_3:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 138412290;
-      v18 = v8;
+      v18 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "No session for %@ to send outgoing data", &v17, 0xCu);
     }
 
     v14 = 0;
-    if (v9)
+    if (replyCopy)
     {
       goto LABEL_3;
     }
   }
 }
 
-- (void)requestAccessoryWiFiCredentials:(id)a3
+- (void)requestAccessoryWiFiCredentials:(id)credentials
 {
-  v3 = a3;
+  credentialsCopy = credentials;
   if (gLogObjects)
   {
     v4 = gNumLogObjects < 10;
@@ -671,18 +671,18 @@ LABEL_3:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v3;
+    v8 = credentialsCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received request for accessory wifi Info for endpointUUID %@", &v7, 0xCu);
   }
 
-  platform_wifisharing_request_accessory_wifi_information(v3);
+  platform_wifisharing_request_accessory_wifi_information(credentialsCopy);
 }
 
-- (void)sendDeviceIdentifierNotification:(id)a3 usbIdentifier:(id)a4 forUUID:(id)a5
+- (void)sendDeviceIdentifierNotification:(id)notification usbIdentifier:(id)identifier forUUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  notificationCopy = notification;
+  identifierCopy = identifier;
+  dCopy = d;
   if (gLogObjects)
   {
     v10 = gNumLogObjects < 10;
@@ -712,18 +712,18 @@ LABEL_3:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v9;
+    v14 = dCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Received sendDeviceIdentifierNotification for endpointUUID %@", &v13, 0xCu);
   }
 }
 
-- (void)sendWiredCarPlayAvailable:(id)a3 usbIdentifier:(id)a4 wirelessAvailable:(id)a5 bluetoothIdentifier:(id)a6 forUUID:(id)a7
+- (void)sendWiredCarPlayAvailable:(id)available usbIdentifier:(id)identifier wirelessAvailable:(id)wirelessAvailable bluetoothIdentifier:(id)bluetoothIdentifier forUUID:(id)d
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  availableCopy = available;
+  identifierCopy = identifier;
+  wirelessAvailableCopy = wirelessAvailable;
+  bluetoothIdentifierCopy = bluetoothIdentifier;
+  dCopy = d;
   if (gLogObjects)
   {
     v16 = gNumLogObjects < 10;
@@ -753,15 +753,15 @@ LABEL_3:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     v28 = 138413314;
-    v29 = v15;
+    v29 = dCopy;
     v30 = 2112;
-    v31 = v11;
+    v31 = availableCopy;
     v32 = 2112;
-    v33 = v12;
+    v33 = identifierCopy;
     v34 = 2112;
-    v35 = v13;
+    v35 = wirelessAvailableCopy;
     v36 = 2112;
-    v37 = v14;
+    v37 = bluetoothIdentifierCopy;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "[#CarPlay] Received CarPlayAvailability for accessory UUID %@, wiredAvailable %@, usbIdentifier %@, wirelessAvailable %@, bluetoothIdentifier %@", &v28, 0x34u);
   }
 
@@ -818,38 +818,38 @@ LABEL_3:
 
     v25 = +[NSMutableDictionary dictionary];
     v26 = v25;
-    if (v11)
+    if (availableCopy)
     {
-      [v25 setObject:v11 forKey:@"wiredAvailable"];
+      [v25 setObject:availableCopy forKey:@"wiredAvailable"];
     }
 
-    if (v12)
+    if (identifierCopy)
     {
-      [v26 setObject:v12 forKey:@"usbIdentifier"];
+      [v26 setObject:identifierCopy forKey:@"usbIdentifier"];
     }
 
-    if (v13)
+    if (wirelessAvailableCopy)
     {
-      [v26 setObject:v13 forKey:@"wirelessAvailable"];
+      [v26 setObject:wirelessAvailableCopy forKey:@"wirelessAvailable"];
     }
 
-    if (v14)
+    if (bluetoothIdentifierCopy)
     {
-      [v26 setObject:v14 forKey:@"bluetoothIdentifier"];
+      [v26 setObject:bluetoothIdentifierCopy forKey:@"bluetoothIdentifier"];
     }
 
-    platform_CarPlay_availability(v15, v26);
+    platform_CarPlay_availability(dCopy, v26);
   }
 }
 
-- (void)sendWiredCarPlayAvailable:(id)a3 usbIdentifier:(id)a4 wirelessAvailable:(id)a5 bluetoothIdentifier:(id)a6 themeAssetsAvailable:(id)a7 forUUID:(id)a8
+- (void)sendWiredCarPlayAvailable:(id)available usbIdentifier:(id)identifier wirelessAvailable:(id)wirelessAvailable bluetoothIdentifier:(id)bluetoothIdentifier themeAssetsAvailable:(id)assetsAvailable forUUID:(id)d
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  availableCopy = available;
+  identifierCopy = identifier;
+  wirelessAvailableCopy = wirelessAvailable;
+  bluetoothIdentifierCopy = bluetoothIdentifier;
+  assetsAvailableCopy = assetsAvailable;
+  dCopy = d;
   if (gLogObjects)
   {
     v19 = gNumLogObjects < 10;
@@ -879,54 +879,54 @@ LABEL_3:
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
     v24 = 138413570;
-    v25 = v18;
+    v25 = dCopy;
     v26 = 2112;
-    v27 = v13;
+    v27 = availableCopy;
     v28 = 2112;
-    v29 = v14;
+    v29 = identifierCopy;
     v30 = 2112;
-    v31 = v15;
+    v31 = wirelessAvailableCopy;
     v32 = 2112;
-    v33 = v16;
+    v33 = bluetoothIdentifierCopy;
     v34 = 2112;
-    v35 = v17;
+    v35 = assetsAvailableCopy;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "[#CarPlay] Received CarPlayAvailability for accessory UUID %@, wiredAvailable %@, usbIdentifier %@, wirelessAvailable %@, bluetoothIdentifier %@ themeAssetsAvailable %@", &v24, 0x3Eu);
   }
 
   v22 = +[NSMutableDictionary dictionary];
   v23 = v22;
-  if (v13)
+  if (availableCopy)
   {
-    [v22 setObject:v13 forKey:@"wiredAvailable"];
+    [v22 setObject:availableCopy forKey:@"wiredAvailable"];
   }
 
-  if (v14)
+  if (identifierCopy)
   {
-    [v23 setObject:v14 forKey:@"usbIdentifier"];
+    [v23 setObject:identifierCopy forKey:@"usbIdentifier"];
   }
 
-  if (v15)
+  if (wirelessAvailableCopy)
   {
-    [v23 setObject:v15 forKey:@"wirelessAvailable"];
+    [v23 setObject:wirelessAvailableCopy forKey:@"wirelessAvailable"];
   }
 
-  if (v16)
+  if (bluetoothIdentifierCopy)
   {
-    [v23 setObject:v16 forKey:@"bluetoothIdentifier"];
+    [v23 setObject:bluetoothIdentifierCopy forKey:@"bluetoothIdentifier"];
   }
 
-  if (v17)
+  if (assetsAvailableCopy)
   {
-    [v23 setObject:v17 forKey:@"themeAssetsAvailable"];
+    [v23 setObject:assetsAvailableCopy forKey:@"themeAssetsAvailable"];
   }
 
-  platform_CarPlay_availability(v18, v23);
+  platform_CarPlay_availability(dCopy, v23);
 }
 
-- (void)destinationInformation:(id)a3 forUUID:(id)a4
+- (void)destinationInformation:(id)information forUUID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  informationCopy = information;
+  dCopy = d;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 10;
@@ -955,15 +955,15 @@ LABEL_3:
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [(ACCExternalAccessoryServerRemote *)v5 destinationInformation:v6 forUUID:v9];
+    [(ACCExternalAccessoryServerRemote *)informationCopy destinationInformation:dCopy forUUID:v9];
   }
 
-  platform_destinationSharing_destinationInformation(v6, v5);
+  platform_destinationSharing_destinationInformation(dCopy, informationCopy);
 }
 
-- (void)activateLocationForUUID:(id)a3
+- (void)activateLocationForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 10;
@@ -993,23 +993,23 @@ LABEL_3:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[#Location] Starting location for endpoint UUID %@", &v10, 0xCu);
   }
 
-  v8 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
-  [v8 setClientLocationEnabled:1];
+  clientInfo = [(ACCExternalAccessoryServerRemote *)self clientInfo];
+  [clientInfo setClientLocationEnabled:1];
 
-  v9 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
-  [v9 addLocationAccessoryUUID:v4];
+  clientInfo2 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
+  [clientInfo2 addLocationAccessoryUUID:dCopy];
 
-  platform_location_start(v4);
+  platform_location_start(dCopy);
 }
 
-- (void)sendNMEAFilterList:(id)a3 forUUID:(id)a4
+- (void)sendNMEAFilterList:(id)list forUUID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  listCopy = list;
+  dCopy = d;
   if (gLogObjects)
   {
     v7 = gNumLogObjects < 10;
@@ -1039,16 +1039,16 @@ LABEL_3:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = dCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[#Location] Sending NMEA filter list to endpoint UUID %@", &v10, 0xCu);
   }
 
-  platform_location_sendNMEAFilterList(v6, v5);
+  platform_location_sendNMEAFilterList(dCopy, listCopy);
 }
 
-- (void)stopLocationForUUID:(id)a3
+- (void)stopLocationForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (gLogObjects)
   {
     v5 = gNumLogObjects < 10;
@@ -1078,20 +1078,20 @@ LABEL_3:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[#Location] Stopping location for endpoint UUID %@", &v9, 0xCu);
   }
 
-  v8 = [(ACCExternalAccessoryServerRemote *)self clientInfo];
-  [v8 removeLocationAccessoryUUID:v4];
+  clientInfo = [(ACCExternalAccessoryServerRemote *)self clientInfo];
+  [clientInfo removeLocationAccessoryUUID:dCopy];
 
-  platform_location_stop(v4);
+  platform_location_stop(dCopy);
 }
 
-- (void)vehicleInformationForUUID:(id)a3 withReply:(id)a4
+- (void)vehicleInformationForUUID:(id)d withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   if (gLogObjects)
   {
     v8 = gNumLogObjects < 10;
@@ -1121,21 +1121,21 @@ LABEL_3:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v6;
+    v15 = dCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[#VehicleInfoStatus] Requesting vehicle information for endpoint UUID %@", &v14, 0xCu);
   }
 
-  v11 = [(ACCExternalAccessoryServerRemote *)self remoteExternalAccessoryServerLock];
-  [v11 lock];
+  remoteExternalAccessoryServerLock = [(ACCExternalAccessoryServerRemote *)self remoteExternalAccessoryServerLock];
+  [remoteExternalAccessoryServerLock lock];
 
-  v12 = platform_externalAccessory_copyVehicleInformationForEndpointUUID(v6);
-  if (v7)
+  v12 = platform_externalAccessory_copyVehicleInformationForEndpointUUID(dCopy);
+  if (replyCopy)
   {
-    v7[2](v7, v12);
+    replyCopy[2](replyCopy, v12);
   }
 
-  v13 = [(ACCExternalAccessoryServerRemote *)self remoteExternalAccessoryServerLock];
-  [v13 unlock];
+  remoteExternalAccessoryServerLock2 = [(ACCExternalAccessoryServerRemote *)self remoteExternalAccessoryServerLock];
+  [remoteExternalAccessoryServerLock2 unlock];
 }
 
 - (ACCExternalAccessoryClientInfo)clientInfo

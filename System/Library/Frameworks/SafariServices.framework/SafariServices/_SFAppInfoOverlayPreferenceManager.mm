@@ -1,24 +1,24 @@
 @interface _SFAppInfoOverlayPreferenceManager
-- (_SFAppInfoOverlayPreferenceManager)initWithPerSitePreferencesStore:(id)a3;
-- (id)defaultPreferenceValueForPreferenceIfNotCustomized:(id)a3;
-- (id)localizedStringForValue:(id)a3 inPreference:(id)a4;
+- (_SFAppInfoOverlayPreferenceManager)initWithPerSitePreferencesStore:(id)store;
+- (id)defaultPreferenceValueForPreferenceIfNotCustomized:(id)customized;
+- (id)localizedStringForValue:(id)value inPreference:(id)preference;
 - (id)preferences;
-- (void)getAppInfoOverlayPreferenceForDomain:(id)a3 completionHandler:(id)a4;
-- (void)setAppInfoOverlayPreferenceForDomain:(id)a3 settings:(int64_t)a4 completionHandler:(id)a5;
+- (void)getAppInfoOverlayPreferenceForDomain:(id)domain completionHandler:(id)handler;
+- (void)setAppInfoOverlayPreferenceForDomain:(id)domain settings:(int64_t)settings completionHandler:(id)handler;
 @end
 
 @implementation _SFAppInfoOverlayPreferenceManager
 
-- (_SFAppInfoOverlayPreferenceManager)initWithPerSitePreferencesStore:(id)a3
+- (_SFAppInfoOverlayPreferenceManager)initWithPerSitePreferencesStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = _SFAppInfoOverlayPreferenceManager;
   v6 = [(_SFAppInfoOverlayPreferenceManager *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_perSitePreferencesStore, a3);
+    objc_storeStrong(&v6->_perSitePreferencesStore, store);
     v8 = [objc_alloc(MEMORY[0x1E69C8FB8]) initWithIdentifier:@"AppInfoOverlayPreference"];
     appInfoOverlayPreference = v7->_appInfoOverlayPreference;
     v7->_appInfoOverlayPreference = v8;
@@ -31,11 +31,11 @@
   return v7;
 }
 
-- (void)getAppInfoOverlayPreferenceForDomain:(id)a3 completionHandler:(id)a4
+- (void)getAppInfoOverlayPreferenceForDomain:(id)domain completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  domainCopy = domain;
+  handlerCopy = handler;
+  if ([domainCopy length])
   {
     v8 = [MEMORY[0x1E69C8FC0] timeoutWithInterval:&unk_1F50230B0 fallbackValue:0.5];
     appInfoOverlayPreference = self->_appInfoOverlayPreference;
@@ -43,23 +43,23 @@
     v10[1] = 3221225472;
     v10[2] = __93___SFAppInfoOverlayPreferenceManager_getAppInfoOverlayPreferenceForDomain_completionHandler___block_invoke;
     v10[3] = &unk_1E8491CA0;
-    v11 = v7;
-    [(WBSPerSitePreferenceManager *)self getValueOfPreference:appInfoOverlayPreference forDomain:v6 withTimeout:v8 usingBlock:v10];
+    v11 = handlerCopy;
+    [(WBSPerSitePreferenceManager *)self getValueOfPreference:appInfoOverlayPreference forDomain:domainCopy withTimeout:v8 usingBlock:v10];
   }
 
   else
   {
-    (*(v7 + 2))(v7, [(_SFAppInfoOverlayPreferenceManager *)self _defaultPreferenceValue], 1);
+    (*(handlerCopy + 2))(handlerCopy, [(_SFAppInfoOverlayPreferenceManager *)self _defaultPreferenceValue], 1);
   }
 }
 
-- (void)setAppInfoOverlayPreferenceForDomain:(id)a3 settings:(int64_t)a4 completionHandler:(id)a5
+- (void)setAppInfoOverlayPreferenceForDomain:(id)domain settings:(int64_t)settings completionHandler:(id)handler
 {
   v8 = MEMORY[0x1E696AD98];
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 numberWithInteger:a4];
-  [(WBSPerSitePreferenceManager *)self setValue:v11 ofPreference:self->_appInfoOverlayPreference forDomain:v10 completionHandler:v9];
+  handlerCopy = handler;
+  domainCopy = domain;
+  v11 = [v8 numberWithInteger:settings];
+  [(WBSPerSitePreferenceManager *)self setValue:v11 ofPreference:self->_appInfoOverlayPreference forDomain:domainCopy completionHandler:handlerCopy];
 }
 
 - (id)preferences
@@ -71,12 +71,12 @@
   return v2;
 }
 
-- (id)localizedStringForValue:(id)a3 inPreference:(id)a4
+- (id)localizedStringForValue:(id)value inPreference:(id)preference
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a3;
-  v8 = [(_SFAppInfoOverlayPreferenceManager *)self onValueForPreference:a4];
-  v9 = [v7 isEqual:v8];
+  valueCopy = value;
+  v8 = [(_SFAppInfoOverlayPreferenceManager *)self onValueForPreference:preference];
+  v9 = [valueCopy isEqual:v8];
 
   v10 = [v6 numberWithBool:v9];
 
@@ -85,12 +85,12 @@
   return v11;
 }
 
-- (id)defaultPreferenceValueForPreferenceIfNotCustomized:(id)a3
+- (id)defaultPreferenceValueForPreferenceIfNotCustomized:(id)customized
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = [(_SFAppInfoOverlayPreferenceManager *)self _defaultPreferenceValue];
+  _defaultPreferenceValue = [(_SFAppInfoOverlayPreferenceManager *)self _defaultPreferenceValue];
 
-  return [v3 numberWithInteger:v4];
+  return [v3 numberWithInteger:_defaultPreferenceValue];
 }
 
 @end

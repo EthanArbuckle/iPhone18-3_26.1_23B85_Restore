@@ -1,33 +1,33 @@
 @interface _SFPBAbstractCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBAbstractCommand)initWithDictionary:(id)a3;
-- (_SFPBAbstractCommand)initWithFacade:(id)a3;
-- (_SFPBAbstractCommand)initWithJSON:(id)a3;
+- (_SFPBAbstractCommand)initWithDictionary:(id)dictionary;
+- (_SFPBAbstractCommand)initWithFacade:(id)facade;
+- (_SFPBAbstractCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBAbstractCommand
 
-- (_SFPBAbstractCommand)initWithFacade:(id)a3
+- (_SFPBAbstractCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBAbstractCommand *)self init];
   if (v5)
   {
-    if ([v4 hasType])
+    if ([facadeCopy hasType])
     {
-      -[_SFPBAbstractCommand setType:](v5, "setType:", [v4 type]);
+      -[_SFPBAbstractCommand setType:](v5, "setType:", [facadeCopy type]);
     }
 
-    v6 = [v4 value];
+    value = [facadeCopy value];
 
-    if (v6)
+    if (value)
     {
       v7 = [_SFPBCommandValue alloc];
-      v8 = [v4 value];
-      v9 = [(_SFPBCommandValue *)v7 initWithFacade:v8];
+      value2 = [facadeCopy value];
+      v9 = [(_SFPBCommandValue *)v7 initWithFacade:value2];
       [(_SFPBAbstractCommand *)v5 setValue:v9];
     }
 
@@ -37,22 +37,22 @@
   return v5;
 }
 
-- (_SFPBAbstractCommand)initWithDictionary:(id)a3
+- (_SFPBAbstractCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = _SFPBAbstractCommand;
   v5 = [(_SFPBAbstractCommand *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"type"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBAbstractCommand setType:](v5, "setType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"value"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"value"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,30 +66,30 @@
   return v5;
 }
 
-- (_SFPBAbstractCommand)initWithJSON:(id)a3
+- (_SFPBAbstractCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBAbstractCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBAbstractCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBAbstractCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -102,20 +102,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_type)
   {
-    v4 = [(_SFPBAbstractCommand *)self type];
-    if (v4)
+    type = [(_SFPBAbstractCommand *)self type];
+    if (type)
     {
-      if (v4 == 1)
+      if (type == 1)
       {
         v5 = @"1";
       }
 
       else
       {
-        v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+        v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", type];
       }
     }
 
@@ -124,43 +124,43 @@
       v5 = @"0";
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"type"];
+    [dictionary setObject:v5 forKeyedSubscript:@"type"];
   }
 
   if (self->_value)
   {
-    v6 = [(_SFPBAbstractCommand *)self value];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    value = [(_SFPBAbstractCommand *)self value];
+    dictionaryRepresentation = [value dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"value"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"value"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"value"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"value"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     type = self->_type;
-    if (type == [v4 type])
+    if (type == [equalCopy type])
     {
-      v6 = [(_SFPBAbstractCommand *)self value];
-      v7 = [v4 value];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      value = [(_SFPBAbstractCommand *)self value];
+      value2 = [equalCopy value];
+      v8 = value2;
+      if ((value != 0) != (value2 == 0))
       {
-        v9 = [(_SFPBAbstractCommand *)self value];
-        if (!v9)
+        value3 = [(_SFPBAbstractCommand *)self value];
+        if (!value3)
         {
 
 LABEL_11:
@@ -168,10 +168,10 @@ LABEL_11:
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(_SFPBAbstractCommand *)self value];
-        v12 = [v4 value];
-        v13 = [v11 isEqual:v12];
+        v10 = value3;
+        value4 = [(_SFPBAbstractCommand *)self value];
+        value5 = [equalCopy value];
+        v13 = [value4 isEqual:value5];
 
         if (v13)
         {
@@ -191,16 +191,16 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if ([(_SFPBAbstractCommand *)self type])
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(_SFPBAbstractCommand *)self value];
-  if (v4)
+  value = [(_SFPBAbstractCommand *)self value];
+  if (value)
   {
     PBDataWriterWriteSubmessage();
   }

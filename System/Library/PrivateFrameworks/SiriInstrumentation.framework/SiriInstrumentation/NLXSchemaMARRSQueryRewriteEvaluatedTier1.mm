@@ -1,27 +1,27 @@
 @interface NLXSchemaMARRSQueryRewriteEvaluatedTier1
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaMARRSQueryRewriteEvaluatedTier1)initWithDictionary:(id)a3;
-- (NLXSchemaMARRSQueryRewriteEvaluatedTier1)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaMARRSQueryRewriteEvaluatedTier1)initWithDictionary:(id)dictionary;
+- (NLXSchemaMARRSQueryRewriteEvaluatedTier1)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addRewrittenUserUtterances:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addRewrittenUserUtterances:(id)utterances;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaMARRSQueryRewriteEvaluatedTier1
 
-- (NLXSchemaMARRSQueryRewriteEvaluatedTier1)initWithDictionary:(id)a3
+- (NLXSchemaMARRSQueryRewriteEvaluatedTier1)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = NLXSchemaMARRSQueryRewriteEvaluatedTier1;
   v5 = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)v5 setLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"rewrittenUserUtterances"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"rewrittenUserUtterances"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,30 +78,30 @@
   return v5;
 }
 
-- (NLXSchemaMARRSQueryRewriteEvaluatedTier1)initWithJSON:(id)a3
+- (NLXSchemaMARRSQueryRewriteEvaluatedTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -114,57 +114,57 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_linkId)
   {
-    v4 = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self linkId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    linkId = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
   if (self->_rewrittenUserUtterances)
   {
-    v7 = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self rewrittenUserUtterances];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"rewrittenUserUtterances"];
+    rewrittenUserUtterances = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self rewrittenUserUtterances];
+    v8 = [rewrittenUserUtterances copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"rewrittenUserUtterances"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self linkId];
+  linkId2 = [equalCopy linkId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self linkId];
-  if (v7)
+  linkId3 = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self linkId];
+  if (linkId3)
   {
-    v8 = v7;
-    v9 = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self linkId];
-    v10 = [v4 linkId];
-    v11 = [v9 isEqual:v10];
+    v8 = linkId3;
+    linkId4 = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v11 = [linkId4 isEqual:linkId5];
 
     if (!v11)
     {
@@ -176,12 +176,12 @@
   {
   }
 
-  v5 = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self rewrittenUserUtterances];
-  v6 = [v4 rewrittenUserUtterances];
-  if ((v5 != 0) != (v6 == 0))
+  linkId = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self rewrittenUserUtterances];
+  linkId2 = [equalCopy rewrittenUserUtterances];
+  if ((linkId != 0) != (linkId2 == 0))
   {
-    v12 = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self rewrittenUserUtterances];
-    if (!v12)
+    rewrittenUserUtterances = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self rewrittenUserUtterances];
+    if (!rewrittenUserUtterances)
     {
 
 LABEL_15:
@@ -189,10 +189,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self rewrittenUserUtterances];
-    v15 = [v4 rewrittenUserUtterances];
-    v16 = [v14 isEqual:v15];
+    v13 = rewrittenUserUtterances;
+    rewrittenUserUtterances2 = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self rewrittenUserUtterances];
+    rewrittenUserUtterances3 = [equalCopy rewrittenUserUtterances];
+    v16 = [rewrittenUserUtterances2 isEqual:rewrittenUserUtterances3];
 
     if (v16)
     {
@@ -212,15 +212,15 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self linkId];
+  toCopy = to;
+  linkId = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self linkId];
 
-  if (v5)
+  if (linkId)
   {
-    v6 = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self linkId];
+    linkId2 = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -256,60 +256,60 @@ LABEL_13:
   }
 }
 
-- (void)addRewrittenUserUtterances:(id)a3
+- (void)addRewrittenUserUtterances:(id)utterances
 {
-  v4 = a3;
+  utterancesCopy = utterances;
   rewrittenUserUtterances = self->_rewrittenUserUtterances;
-  v8 = v4;
+  v8 = utterancesCopy;
   if (!rewrittenUserUtterances)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_rewrittenUserUtterances;
-    self->_rewrittenUserUtterances = v6;
+    self->_rewrittenUserUtterances = array;
 
-    v4 = v8;
+    utterancesCopy = v8;
     rewrittenUserUtterances = self->_rewrittenUserUtterances;
   }
 
-  [(NSArray *)rewrittenUserUtterances addObject:v4];
+  [(NSArray *)rewrittenUserUtterances addObject:utterancesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v10.receiver = self;
   v10.super_class = NLXSchemaMARRSQueryRewriteEvaluatedTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v10 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self deleteRewrittenUserUtterances];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self deleteRewrittenUserUtterances];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self deleteRewrittenUserUtterances];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self deleteRewrittenUserUtterances];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self deleteRewrittenUserUtterances];
   }
 
-  v6 = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  linkId = [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(NLXSchemaMARRSQueryRewriteEvaluatedTier1 *)self deleteLinkId];
   }

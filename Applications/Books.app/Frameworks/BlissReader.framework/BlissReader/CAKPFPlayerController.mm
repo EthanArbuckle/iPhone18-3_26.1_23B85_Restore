@@ -1,10 +1,10 @@
 @interface CAKPFPlayerController
-- (BOOL)handleTouchAtLocation:(CGPoint)a3;
+- (BOOL)handleTouchAtLocation:(CGPoint)location;
 - (BOOL)isAnimating;
 - (BOOL)isTransitioningToStop;
 - (BOOL)transportControlCloneCanGotoFirst;
 - (BOOL)transportControlCloneCanGotoPrev;
-- (CAKPFPlayerController)initWithKPFDocument:(id)a3 showLayer:(id)a4;
+- (CAKPFPlayerController)initWithKPFDocument:(id)document showLayer:(id)layer;
 - (id)accessibilityRegionsForCurrentEvent;
 - (id)hyperlinksRectArray;
 - (unint64_t)transportControlCloneCount;
@@ -16,25 +16,25 @@
 - (void)gotoNextEvent;
 - (void)gotoPreviousEvent;
 - (void)gotoPreviousSlide;
-- (void)gotoSlideIndex:(unint64_t)a3;
+- (void)gotoSlideIndex:(unint64_t)index;
 - (void)p_animationEnded;
 - (void)p_announceStateUpdate;
-- (void)p_gotoEventIndex:(unint64_t)a3 skipBreadCrumb:(BOOL)a4 shouldAutoPlay:(BOOL)a5;
-- (void)p_handleURL:(id)a3;
+- (void)p_gotoEventIndex:(unint64_t)index skipBreadCrumb:(BOOL)crumb shouldAutoPlay:(BOOL)play;
+- (void)p_handleURL:(id)l;
 - (void)p_playSoundtrack;
 - (void)p_triggerNextEvent;
 - (void)pauseBackgroundSoundtrack;
 - (void)pauseMediaPlayback;
 - (void)playPreparedShow;
-- (void)prepareWithEndShowHandler:(id)a3;
-- (void)resetToFirstEventAndShouldAutoPlay:(BOOL)a3;
+- (void)prepareWithEndShowHandler:(id)handler;
+- (void)resetToFirstEventAndShouldAutoPlay:(BOOL)play;
 - (void)retreatToPreviousSlide;
 - (void)showThumbnail;
 - (void)stopAllAnimations;
 - (void)tearDownShow;
-- (void)transportControlCloneEnableSound:(BOOL)a3;
+- (void)transportControlCloneEnableSound:(BOOL)sound;
 - (void)transportControlCloneGotoFirst;
-- (void)transportControlCloneGotoIndex:(unint64_t)a3;
+- (void)transportControlCloneGotoIndex:(unint64_t)index;
 - (void)transportControlCloneGotoLast;
 - (void)transportControlCloneGotoNext;
 - (void)transportControlCloneGotoPrev;
@@ -43,14 +43,14 @@
 
 @implementation CAKPFPlayerController
 
-- (CAKPFPlayerController)initWithKPFDocument:(id)a3 showLayer:(id)a4
+- (CAKPFPlayerController)initWithKPFDocument:(id)document showLayer:(id)layer
 {
   v8.receiver = self;
   v8.super_class = CAKPFPlayerController;
   v6 = [(CAKPFPlayerController *)&v8 init];
   if (v6)
   {
-    v6->mSession = [[CAKPFSession alloc] initWithKPFDocument:a3 showLayer:a4];
+    v6->mSession = [[CAKPFSession alloc] initWithKPFDocument:document showLayer:layer];
   }
 
   return v6;
@@ -63,11 +63,11 @@
   [(CAKPFPlayerController *)&v3 dealloc];
 }
 
-- (void)prepareWithEndShowHandler:(id)a3
+- (void)prepareWithEndShowHandler:(id)handler
 {
   if ([(CAKPFSession *)self->mSession playbackState]== 1)
   {
-    self->mEndShowHandler = [a3 copy];
+    self->mEndShowHandler = [handler copy];
     [(CALayer *)[(CAKPFSession *)self->mSession showLayer] setSublayers:0];
     [(CAKPFSession *)self->mSession setPlaybackStatus:2];
     [(KPFEvent *)[(CAKPFSession *)self->mSession currentEvent] renderEventWithSession:self->mSession];
@@ -80,13 +80,13 @@
 
 - (BOOL)isTransitioningToStop
 {
-  v3 = [(CAKPFSession *)self->mSession playbackState];
-  if (v3 != 1)
+  playbackState = [(CAKPFSession *)self->mSession playbackState];
+  if (playbackState != 1)
   {
-    LOBYTE(v3) = [(CAKPFSession *)self->mSession playbackState]== 4;
+    LOBYTE(playbackState) = [(CAKPFSession *)self->mSession playbackState]== 4;
   }
 
-  return v3;
+  return playbackState;
 }
 
 - (void)playPreparedShow
@@ -153,16 +153,16 @@
   }
 }
 
-- (void)p_gotoEventIndex:(unint64_t)a3 skipBreadCrumb:(BOOL)a4 shouldAutoPlay:(BOOL)a5
+- (void)p_gotoEventIndex:(unint64_t)index skipBreadCrumb:(BOOL)crumb shouldAutoPlay:(BOOL)play
 {
   activity_block[0] = _NSConcreteStackBlock;
   activity_block[1] = 3221225472;
   activity_block[2] = sub_7628C;
   activity_block[3] = &unk_45C270;
   activity_block[4] = self;
-  activity_block[5] = a3;
-  v6 = a4;
-  v7 = a5;
+  activity_block[5] = index;
+  crumbCopy = crumb;
+  playCopy = play;
   _os_activity_initiate(&dword_0, "KPFPlayer Goto Event Index", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
@@ -183,14 +183,14 @@
   _os_activity_initiate(&dword_0, "KPFPlayer First Event", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)resetToFirstEventAndShouldAutoPlay:(BOOL)a3
+- (void)resetToFirstEventAndShouldAutoPlay:(BOOL)play
 {
-  v3 = a3;
+  playCopy = play;
   [NSObject cancelPreviousPerformRequestsWithTarget:self];
   [(CAKPFSession *)self->mSession resetBreadCrumbs];
   [(CAKPFSession *)self->mSession setPlaybackState:2];
 
-  [(CAKPFPlayerController *)self p_gotoEventIndex:0 skipBreadCrumb:0 shouldAutoPlay:v3];
+  [(CAKPFPlayerController *)self p_gotoEventIndex:0 skipBreadCrumb:0 shouldAutoPlay:playCopy];
 }
 
 - (void)gotoLastEvent
@@ -203,14 +203,14 @@
   _os_activity_initiate(&dword_0, "KPFPlayer Last Event", OS_ACTIVITY_FLAG_DEFAULT, activity_block);
 }
 
-- (void)gotoSlideIndex:(unint64_t)a3
+- (void)gotoSlideIndex:(unint64_t)index
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_765E0;
   v3[3] = &unk_45B298;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = index;
   _os_activity_initiate(&dword_0, "KPFPlayer Goto Slide", OS_ACTIVITY_FLAG_DEFAULT, v3);
 }
 
@@ -229,9 +229,9 @@
 
 - (BOOL)isAnimating
 {
-  v2 = [(CAKPFSession *)self->mSession currentEvent];
+  currentEvent = [(CAKPFSession *)self->mSession currentEvent];
 
-  return [(KPFEvent *)v2 isAnimating];
+  return [(KPFEvent *)currentEvent isAnimating];
 }
 
 - (void)stopAllAnimations
@@ -292,7 +292,7 @@
   return result;
 }
 
-- (BOOL)handleTouchAtLocation:(CGPoint)a3
+- (BOOL)handleTouchAtLocation:(CGPoint)location
 {
   v7 = 0;
   v8 = &v7;
@@ -302,7 +302,7 @@
   v5[1] = 3221225472;
   v5[2] = sub_76AA8;
   v5[3] = &unk_45C298;
-  v6 = a3;
+  locationCopy = location;
   v5[4] = self;
   v5[5] = &v7;
   _os_activity_initiate(&dword_0, "KPF Player Handle Touch", OS_ACTIVITY_FLAG_DEFAULT, v5);
@@ -313,9 +313,9 @@
 
 - (id)accessibilityRegionsForCurrentEvent
 {
-  v2 = [(CAKPFSession *)self->mSession currentEvent];
+  currentEvent = [(CAKPFSession *)self->mSession currentEvent];
 
-  return [(KPFEvent *)v2 accessibilityArray];
+  return [(KPFEvent *)currentEvent accessibilityArray];
 }
 
 - (void)transportControlCloneGotoPrev
@@ -365,21 +365,21 @@
   [(CAKPFPlayerController *)self p_announceStateUpdate];
 }
 
-- (void)transportControlCloneEnableSound:(BOOL)a3
+- (void)transportControlCloneEnableSound:(BOOL)sound
 {
-  NSLog(@"sound enable/disable not implemented", a2, a3);
+  NSLog(@"sound enable/disable not implemented", a2, sound);
 
   [(CAKPFPlayerController *)self p_announceStateUpdate];
 }
 
-- (void)transportControlCloneGotoIndex:(unint64_t)a3
+- (void)transportControlCloneGotoIndex:(unint64_t)index
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_77108;
   v3[3] = &unk_45B298;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = index;
   _os_activity_initiate(&dword_0, "KPFPlayer Transport Goto Index", OS_ACTIVITY_FLAG_DEFAULT, v3);
 }
 
@@ -392,47 +392,47 @@
 
 - (BOOL)transportControlCloneCanGotoPrev
 {
-  v3 = [(CAKPFSession *)[(CAKPFPlayerController *)self session] visibleEventIndex];
-  if (v3)
+  visibleEventIndex = [(CAKPFSession *)[(CAKPFPlayerController *)self session] visibleEventIndex];
+  if (visibleEventIndex)
   {
-    LOBYTE(v3) = [[(CAKPFSession *)[(CAKPFPlayerController *)self session] KPFDocument] showMode]!= 2;
+    LOBYTE(visibleEventIndex) = [[(CAKPFSession *)[(CAKPFPlayerController *)self session] KPFDocument] showMode]!= 2;
   }
 
-  return v3;
+  return visibleEventIndex;
 }
 
 - (BOOL)transportControlCloneCanGotoFirst
 {
-  v3 = [(CAKPFSession *)[(CAKPFPlayerController *)self session] visibleEventIndex];
-  if (v3)
+  visibleEventIndex = [(CAKPFSession *)[(CAKPFPlayerController *)self session] visibleEventIndex];
+  if (visibleEventIndex)
   {
-    LOBYTE(v3) = [[(CAKPFSession *)[(CAKPFPlayerController *)self session] KPFDocument] showMode]!= 2;
+    LOBYTE(visibleEventIndex) = [[(CAKPFSession *)[(CAKPFPlayerController *)self session] KPFDocument] showMode]!= 2;
   }
 
-  return v3;
+  return visibleEventIndex;
 }
 
 - (unint64_t)transportControlCloneIndex
 {
-  v3 = [(CAKPFSession *)[(CAKPFPlayerController *)self session] KPFDocument];
-  v4 = [(CAKPFSession *)[(CAKPFPlayerController *)self session] visibleEventIndex];
+  kPFDocument = [(CAKPFSession *)[(CAKPFPlayerController *)self session] KPFDocument];
+  visibleEventIndex = [(CAKPFSession *)[(CAKPFPlayerController *)self session] visibleEventIndex];
 
-  return [(KPFDocument *)v3 slideIndexForEventIndex:v4];
+  return [(KPFDocument *)kPFDocument slideIndexForEventIndex:visibleEventIndex];
 }
 
 - (unint64_t)transportControlCloneCount
 {
-  v2 = [(CAKPFSession *)[(CAKPFPlayerController *)self session] KPFDocument];
+  kPFDocument = [(CAKPFSession *)[(CAKPFPlayerController *)self session] KPFDocument];
 
-  return [(KPFDocument *)v2 slideCount];
+  return [(KPFDocument *)kPFDocument slideCount];
 }
 
-- (void)p_handleURL:(id)a3
+- (void)p_handleURL:(id)l
 {
-  v4 = [NSURL URLWithString:a3];
-  v5 = [(CAKPFPlayerController *)self kpfPlayerControllerDelegate];
+  v4 = [NSURL URLWithString:l];
+  kpfPlayerControllerDelegate = [(CAKPFPlayerController *)self kpfPlayerControllerDelegate];
 
-  [(KPFPlayerControllerDelegateProtocol *)v5 kpfPlayer:self handleURL:v4];
+  [(KPFPlayerControllerDelegateProtocol *)kpfPlayerControllerDelegate kpfPlayer:self handleURL:v4];
 }
 
 - (void)p_playSoundtrack
@@ -447,19 +447,19 @@
       self->mSoundtrack = 0;
     }
 
-    v4 = [[(CAKPFSession *)self->mSession KPFDocument] newSoundtrack];
-    self->mSoundtrack = v4;
+    newSoundtrack = [[(CAKPFSession *)self->mSession KPFDocument] newSoundtrack];
+    self->mSoundtrack = newSoundtrack;
 
-    [(KPFMovie *)v4 playAfterDelay:0.0];
+    [(KPFMovie *)newSoundtrack playAfterDelay:0.0];
   }
 }
 
 - (void)p_animationEnded
 {
-  v3 = [(CAKPFSession *)self->mSession nextEvent];
-  if (v3)
+  nextEvent = [(CAKPFSession *)self->mSession nextEvent];
+  if (nextEvent)
   {
-    v4 = v3;
+    v4 = nextEvent;
     [(CAKPFSession *)self->mSession setPlaybackStatus:4];
     if (self->mQueuedTrigger || [(KPFEvent *)v4 isAutomatic])
     {

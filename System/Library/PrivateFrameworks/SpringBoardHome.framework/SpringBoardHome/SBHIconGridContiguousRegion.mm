@@ -1,47 +1,47 @@
 @interface SBHIconGridContiguousRegion
-- (BOOL)containsGridCellIndex:(unint64_t)a3;
+- (BOOL)containsGridCellIndex:(unint64_t)index;
 - (BOOL)hasEmptyGridCells;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isGridCellIndexInternal:(unint64_t)a3 directions:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isGridCellIndexInternal:(unint64_t)internal directions:(unint64_t)directions;
 - (NSString)description;
 - (SBHIconGridContiguousRegion)init;
-- (SBHIconGridContiguousRegion)initWithGridCellIndexes:(id)a3 inGridRange:(SBHIconGridRange)a4 gridSize:(SBHIconGridSize)a5;
+- (SBHIconGridContiguousRegion)initWithGridCellIndexes:(id)indexes inGridRange:(SBHIconGridRange)range gridSize:(SBHIconGridSize)size;
 - (SBHIconGridRange)gridRange;
-- (id)contiguousRegionByAddingGridCellIndexes:(id)a3;
-- (id)contiguousRegionByRemovingGridCellIndexes:(id)a3;
-- (id)gridCellIndexesNotContainedInGridRange:(SBHIconGridRange)a3;
+- (id)contiguousRegionByAddingGridCellIndexes:(id)indexes;
+- (id)contiguousRegionByRemovingGridCellIndexes:(id)indexes;
+- (id)gridCellIndexesNotContainedInGridRange:(SBHIconGridRange)range;
 - (id)layoutDescription;
-- (id)subcontiguousRegionWithGridRange:(SBHIconGridRange)a3;
+- (id)subcontiguousRegionWithGridRange:(SBHIconGridRange)range;
 - (unint64_t)count;
 - (unint64_t)endGridCellIndex;
 - (unint64_t)hash;
 - (unint64_t)startGridCellIndex;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)enumerateEmptyGridCellIndexesUsingBlock:(id)a3;
-- (void)enumerateGridCellIndexesNotContainedInGridRange:(SBHIconGridRange)a3 usingBlock:(id)a4;
-- (void)enumerateGridCellIndexesUsingBlock:(id)a3;
-- (void)enumerateGridCellIndexesWithOptions:(unint64_t)a3 usingBlock:(id)a4;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)enumerateEmptyGridCellIndexesUsingBlock:(id)block;
+- (void)enumerateGridCellIndexesNotContainedInGridRange:(SBHIconGridRange)range usingBlock:(id)block;
+- (void)enumerateGridCellIndexesUsingBlock:(id)block;
+- (void)enumerateGridCellIndexesWithOptions:(unint64_t)options usingBlock:(id)block;
 @end
 
 @implementation SBHIconGridContiguousRegion
 
-- (SBHIconGridContiguousRegion)initWithGridCellIndexes:(id)a3 inGridRange:(SBHIconGridRange)a4 gridSize:(SBHIconGridSize)a5
+- (SBHIconGridContiguousRegion)initWithGridCellIndexes:(id)indexes inGridRange:(SBHIconGridRange)range gridSize:(SBHIconGridSize)size
 {
-  v6 = *&a4.size.columns;
-  cellIndex = a4.cellIndex;
-  v9 = a3;
+  v6 = *&range.size.columns;
+  cellIndex = range.cellIndex;
+  indexesCopy = indexes;
   v14.receiver = self;
   v14.super_class = SBHIconGridContiguousRegion;
   v10 = [(SBHIconGridContiguousRegion *)&v14 init];
   if (v10)
   {
-    v11 = [v9 copy];
+    v11 = [indexesCopy copy];
     gridCellIndexes = v10->_gridCellIndexes;
     v10->_gridCellIndexes = v11;
 
     v10->_gridRange.cellIndex = cellIndex;
     *&v10->_gridRange.size.columns = v6;
-    v10->_gridSize = a5;
+    v10->_gridSize = size;
   }
 
   return v10;
@@ -57,13 +57,13 @@
 
 - (BOOL)hasEmptyGridCells
 {
-  v3 = [(SBHIconGridContiguousRegion *)self startGridCellIndex];
-  v4 = [(SBHIconGridContiguousRegion *)self endGridCellIndex];
-  v5 = v3 + 1;
+  startGridCellIndex = [(SBHIconGridContiguousRegion *)self startGridCellIndex];
+  endGridCellIndex = [(SBHIconGridContiguousRegion *)self endGridCellIndex];
+  v5 = startGridCellIndex + 1;
   do
   {
     v6 = v5;
-    if (v5 >= v4)
+    if (v5 >= endGridCellIndex)
     {
       break;
     }
@@ -73,18 +73,18 @@
   }
 
   while (v7);
-  return v6 < v4;
+  return v6 < endGridCellIndex;
 }
 
-- (BOOL)isGridCellIndexInternal:(unint64_t)a3 directions:(unint64_t)a4
+- (BOOL)isGridCellIndexInternal:(unint64_t)internal directions:(unint64_t)directions
 {
   v8 = 0;
   v9 = 0;
-  v10 = [(SBHIconGridContiguousRegion *)self gridSize];
+  gridSize = [(SBHIconGridContiguousRegion *)self gridSize];
   while (1)
   {
     v11 = qword_1BEE87CB8[v9];
-    if ((a4 >> v11))
+    if ((directions >> v11))
     {
       break;
     }
@@ -97,9 +97,9 @@ LABEL_7:
     }
   }
 
-  v16[0] = a3;
+  v16[0] = internal;
   v16[1] = 65537;
-  v5 = v5 & 0xFFFFFFFF00000000 | v10;
+  v5 = v5 & 0xFFFFFFFF00000000 | gridSize;
   v12 = v11;
   for (i = v5; SBHIconGridRangeOffset(v16, v12, 1, i); i = v4)
   {
@@ -108,7 +108,7 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v4 = v4 & 0xFFFFFFFF00000000 | v10;
+    v4 = v4 & 0xFFFFFFFF00000000 | gridSize;
     v12 = v11;
   }
 
@@ -135,21 +135,21 @@ uint64_t __71__SBHIconGridContiguousRegion_enumerateEmptyGridCellIndexesUsingBlo
   return result;
 }
 
-- (void)enumerateGridCellIndexesNotContainedInGridRange:(SBHIconGridRange)a3 usingBlock:(id)a4
+- (void)enumerateGridCellIndexesNotContainedInGridRange:(SBHIconGridRange)range usingBlock:(id)block
 {
-  v4 = *&a3.size.columns;
-  cellIndex = a3.cellIndex;
-  v7 = a4;
-  v8 = [(SBHIconGridContiguousRegion *)self gridSize];
+  v4 = *&range.size.columns;
+  cellIndex = range.cellIndex;
+  blockCopy = block;
+  gridSize = [(SBHIconGridContiguousRegion *)self gridSize];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __90__SBHIconGridContiguousRegion_enumerateGridCellIndexesNotContainedInGridRange_usingBlock___block_invoke;
   v10[3] = &unk_1E808EB80;
   v12 = cellIndex;
   v13 = v4;
-  v14 = v8;
-  v11 = v7;
-  v9 = v7;
+  v14 = gridSize;
+  v11 = blockCopy;
+  v9 = blockCopy;
   [(SBHIconGridContiguousRegion *)self enumerateGridCellIndexesUsingBlock:v10];
 }
 
@@ -166,10 +166,10 @@ uint64_t __90__SBHIconGridContiguousRegion_enumerateGridCellIndexesNotContainedI
   return result;
 }
 
-- (id)gridCellIndexesNotContainedInGridRange:(SBHIconGridRange)a3
+- (id)gridCellIndexesNotContainedInGridRange:(SBHIconGridRange)range
 {
-  v3 = *&a3.size.columns;
-  cellIndex = a3.cellIndex;
+  v3 = *&range.size.columns;
+  cellIndex = range.cellIndex;
   v6 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -182,17 +182,17 @@ uint64_t __90__SBHIconGridContiguousRegion_enumerateGridCellIndexesNotContainedI
   return v7;
 }
 
-- (id)subcontiguousRegionWithGridRange:(SBHIconGridRange)a3
+- (id)subcontiguousRegionWithGridRange:(SBHIconGridRange)range
 {
-  v3 = *&a3.size.columns;
-  cellIndex = a3.cellIndex;
-  v6 = [(SBHIconGridContiguousRegion *)self gridSize];
-  v7 = [(SBHIconGridContiguousRegion *)self gridRange];
+  v3 = *&range.size.columns;
+  cellIndex = range.cellIndex;
+  gridSize = [(SBHIconGridContiguousRegion *)self gridSize];
+  gridRange = [(SBHIconGridContiguousRegion *)self gridRange];
   v9 = v8;
-  v10 = v6;
-  if (!SBHIconGridRangeContainsIconGridRange(cellIndex, v3, v7, v8, v6.columns))
+  v10 = gridSize;
+  if (!SBHIconGridRangeContainsIconGridRange(cellIndex, v3, gridRange, v8, gridSize.columns))
   {
-    cellIndex = SBHIconGridRangeIntersection(v7, v9, cellIndex, v3, v6.columns);
+    cellIndex = SBHIconGridRangeIntersection(gridRange, v9, cellIndex, v3, gridSize.columns);
     v3 = v11;
   }
 
@@ -203,7 +203,7 @@ uint64_t __90__SBHIconGridContiguousRegion_enumerateGridCellIndexesNotContainedI
   v20 = &unk_1E808EBA8;
   v22 = cellIndex;
   v23 = v3;
-  v24 = v6;
+  v24 = gridSize;
   v21 = v12;
   v13 = v12;
   [(SBHIconGridContiguousRegion *)self enumerateGridCellIndexesUsingBlock:&v17];
@@ -226,54 +226,54 @@ uint64_t __64__SBHIconGridContiguousRegion_subcontiguousRegionWithGridRange___bl
   return result;
 }
 
-- (id)contiguousRegionByRemovingGridCellIndexes:(id)a3
+- (id)contiguousRegionByRemovingGridCellIndexes:(id)indexes
 {
-  v4 = a3;
-  if ([v4 count])
+  indexesCopy = indexes;
+  if ([indexesCopy count])
   {
-    [(SBHIconGridContiguousRegion *)self contiguousRegionByRemovingGridCellIndexes:v4, &v7];
-    v5 = v7;
+    [(SBHIconGridContiguousRegion *)self contiguousRegionByRemovingGridCellIndexes:indexesCopy, &v7];
+    selfCopy = v7;
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)contiguousRegionByAddingGridCellIndexes:(id)a3
+- (id)contiguousRegionByAddingGridCellIndexes:(id)indexes
 {
-  v4 = a3;
-  if ([v4 count])
+  indexesCopy = indexes;
+  if ([indexesCopy count])
   {
-    [(SBHIconGridContiguousRegion *)self contiguousRegionByAddingGridCellIndexes:v4, &v7];
-    v5 = v7;
+    [(SBHIconGridContiguousRegion *)self contiguousRegionByAddingGridCellIndexes:indexesCopy, &v7];
+    selfCopy = v7;
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)layoutDescription
 {
-  v4 = [MEMORY[0x1E696AD60] string];
-  v15 = [(SBHIconGridContiguousRegion *)self gridRange];
+  string = [MEMORY[0x1E696AD60] string];
+  gridRange = [(SBHIconGridContiguousRegion *)self gridRange];
   v6 = v5;
-  v7 = [(SBHIconGridContiguousRegion *)self gridSize];
+  gridSize = [(SBHIconGridContiguousRegion *)self gridSize];
   if (v6 >= 0x10000)
   {
     v8 = 0;
-    v9 = v7;
+    v9 = gridSize;
     do
     {
       v2 = v2 & 0xFFFFFFFF00000000 | v9;
-      v10 = SBHIconGridRangeMinCellIndexOnRow(v15, v6, v2, v8);
+      v10 = SBHIconGridRangeMinCellIndexOnRow(gridRange, v6, v2, v8);
       if (v6)
       {
         v11 = v10;
@@ -290,7 +290,7 @@ uint64_t __64__SBHIconGridContiguousRegion_subcontiguousRegionWithGridRange___bl
             v13 = @"-\t";
           }
 
-          [v4 appendString:v13];
+          [string appendString:v13];
           ++v11;
           --v12;
         }
@@ -298,20 +298,20 @@ uint64_t __64__SBHIconGridContiguousRegion_subcontiguousRegionWithGridRange___bl
         while (v12);
       }
 
-      [v4 appendString:@"\n"];
+      [string appendString:@"\n"];
       ++v8;
     }
 
     while (v8 != WORD1(v6));
   }
 
-  return v4;
+  return string;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -323,7 +323,7 @@ uint64_t __64__SBHIconGridContiguousRegion_subcontiguousRegionWithGridRange___bl
 
     if (isKindOfClass)
     {
-      [(SBHIconGridContiguousRegion *)v4 isEqual:&v9];
+      [(SBHIconGridContiguousRegion *)equalCopy isEqual:&v9];
       v7 = v9;
     }
 
@@ -384,39 +384,39 @@ uint64_t __64__SBHIconGridContiguousRegion_subcontiguousRegionWithGridRange___bl
   return [(SBHIconGridContiguousRegion *)self lastIndex];
 }
 
-- (BOOL)containsGridCellIndex:(unint64_t)a3
+- (BOOL)containsGridCellIndex:(unint64_t)index
 {
   if (self)
   {
     self = self->_gridCellIndexes;
   }
 
-  return [(SBHIconGridContiguousRegion *)self containsIndex:a3];
+  return [(SBHIconGridContiguousRegion *)self containsIndex:index];
 }
 
-- (void)enumerateGridCellIndexesUsingBlock:(id)a3
+- (void)enumerateGridCellIndexesUsingBlock:(id)block
 {
   if (self)
   {
     self = self->_gridCellIndexes;
   }
 
-  [(SBHIconGridContiguousRegion *)self enumerateIndexesUsingBlock:a3];
+  [(SBHIconGridContiguousRegion *)self enumerateIndexesUsingBlock:block];
 }
 
-- (void)enumerateGridCellIndexesWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)enumerateGridCellIndexesWithOptions:(unint64_t)options usingBlock:(id)block
 {
   if (self)
   {
     self = self->_gridCellIndexes;
   }
 
-  [(SBHIconGridContiguousRegion *)self enumerateIndexesWithOptions:a3 usingBlock:a4];
+  [(SBHIconGridContiguousRegion *)self enumerateIndexesWithOptions:options usingBlock:block];
 }
 
-- (void)enumerateEmptyGridCellIndexesUsingBlock:(id)a3
+- (void)enumerateEmptyGridCellIndexesUsingBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   if (self)
   {
     gridCellIndexes = self->_gridCellIndexes;
@@ -429,20 +429,20 @@ uint64_t __64__SBHIconGridContiguousRegion_subcontiguousRegionWithGridRange___bl
 
   v8 = gridCellIndexes;
   [(SBHIconGridContiguousRegion *)self gridRange];
-  v9 = [OUTLINED_FUNCTION_0_11() gridSize];
-  v10 = [(SBHIconGridContiguousRegion *)self startGridCellIndex];
-  v11 = [(SBHIconGridContiguousRegion *)self endGridCellIndex];
+  gridSize = [OUTLINED_FUNCTION_0_11() gridSize];
+  startGridCellIndex = [(SBHIconGridContiguousRegion *)self startGridCellIndex];
+  endGridCellIndex = [(SBHIconGridContiguousRegion *)self endGridCellIndex];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __71__SBHIconGridContiguousRegion_enumerateEmptyGridCellIndexesUsingBlock___block_invoke;
   v14[3] = &unk_1E808EB58;
-  v17 = v10;
-  v18 = v11;
+  v17 = startGridCellIndex;
+  v18 = endGridCellIndex;
   v15 = v8;
-  v16 = v6;
-  v12 = v6;
+  v16 = blockCopy;
+  v12 = blockCopy;
   v13 = v8;
-  SBHIconGridRangeEnumerateCellIndexes(v3, v4, v9, v14);
+  SBHIconGridRangeEnumerateCellIndexes(v3, v4, gridSize, v14);
 }
 
 - (unint64_t)hash
@@ -455,9 +455,9 @@ uint64_t __64__SBHIconGridContiguousRegion_subcontiguousRegionWithGridRange___bl
   return [(SBHIconGridContiguousRegion *)self hash];
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   if (self)
   {
     gridCellIndexes = self->_gridCellIndexes;
@@ -468,10 +468,10 @@ uint64_t __64__SBHIconGridContiguousRegion_subcontiguousRegionWithGridRange___bl
     gridCellIndexes = 0;
   }
 
-  v11 = v4;
-  v6 = [v4 appendObject:gridCellIndexes withName:@"gridCellIndexes"];
-  v7 = [(SBHIconGridContiguousRegion *)self gridRange];
-  v9 = SBHStringForIconGridRange(v7, v8);
+  v11 = formatterCopy;
+  v6 = [formatterCopy appendObject:gridCellIndexes withName:@"gridCellIndexes"];
+  gridRange = [(SBHIconGridContiguousRegion *)self gridRange];
+  v9 = SBHStringForIconGridRange(gridRange, v8);
   v10 = [v11 appendObject:v9 withName:@"gridRange"];
 }
 

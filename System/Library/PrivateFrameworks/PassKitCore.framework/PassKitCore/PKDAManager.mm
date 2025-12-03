@@ -1,73 +1,73 @@
 @interface PKDAManager
-+ (BOOL)isCarKeySupportedForManufacturerIdentifier:(id)a3 issuerIdentifier:(id)a4 productPlanIdentifier:(id)a5;
-+ (BOOL)isSharingEnabledForManufacturerIdentifier:(id)a3 issuerIdentifier:(id)a4 productPlanIdentifier:(id)a5;
-+ (void)aliroCompatibilityManifestWithCompletion:(id)a3;
-- (BOOL)deletePrivacyKey:(id)a3 outError:(id *)a4;
-- (BOOL)hasLongTermPrivacyKeyForGroupIdentifier:(id)a3;
++ (BOOL)isCarKeySupportedForManufacturerIdentifier:(id)identifier issuerIdentifier:(id)issuerIdentifier productPlanIdentifier:(id)planIdentifier;
++ (BOOL)isSharingEnabledForManufacturerIdentifier:(id)identifier issuerIdentifier:(id)issuerIdentifier productPlanIdentifier:(id)planIdentifier;
++ (void)aliroCompatibilityManifestWithCompletion:(id)completion;
+- (BOOL)deletePrivacyKey:(id)key outError:(id *)error;
+- (BOOL)hasLongTermPrivacyKeyForGroupIdentifier:(id)identifier;
 - (PKDAManager)init;
-- (id)createPrivacyKeyForGroupIdentifier:(id)a3 outError:(id *)a4;
-- (id)decryptData:(id)a3 withCredential:(id)a4 ephemeralPublicKey:(id)a5;
-- (id)decryptPayload:(id)a3 groupIdentifier:(id)a4 outError:(id *)a5;
-- (id)privacyKeysForGroupIdentifier:(id)a3 privacyKeyIdentifier:(id)a4 outError:(id *)a5;
-- (id)storeSEBlobForSubcredentialIdentifier:(id)a3 seBlob:(id)a4;
-- (id)updateAliroCredentialDocumentStatusWithSession:(id)a3 seid:(id)a4 subcredentialIdentifier:(id)a5 isAccessDocumentPresent:(BOOL)a6 accessDocumentSignedDate:(id)a7 isRevocationDocumentPresent:(BOOL)a8 revocationDocumentSignedDate:(id)a9;
-- (int64_t)_DAKeySharingAnalyticsFlowFromPKSharingInvitationFlow:(unint64_t)a3;
-- (void)acceptCrossPlatformInvitationWithIdentifier:(id)a3 transportChannelIdentifier:(id)a4 activationCode:(id)a5 encryptedProductPlanIdentifierContainer:(id)a6 completion:(id)a7;
-- (void)acceptInvitationWithIdentifier:(id)a3 activationCode:(id)a4 analyticsUpdateConfig:(id)a5 completion:(id)a6;
-- (void)acceptInvitationWithIdentifier:(id)a3 activationCode:(id)a4 completion:(id)a5;
-- (void)accountAttestationRequestForManufacturer:(id)a3 completion:(id)a4;
-- (void)accountAttestionRequestForCredential:(id)a3 withCompletion:(id)a4;
-- (void)commitUpgradeForKeyWithCredential:(id)a3 versionType:(unint64_t)a4 version:(unint64_t)a5 completion:(id)a6;
-- (void)createAliroHomeKey:(id)a3 seid:(id)a4 readerIdentifier:(id)a5 readerPublicKey:(id)a6 homeIdentifier:(id)a7 withCompletion:(id)a8;
-- (void)createAliroHydraKey:(id)a3 seid:(id)a4 serverParameters:(id)a5 withCompletion:(id)a6;
-- (void)createInviteForShare:(id)a3 forCredential:(id)a4 analyticsUpdateConfig:(id)a5 authorization:(id)a6 completion:(id)a7;
-- (void)createSilentInviteForSharingSessionIdentifier:(id)a3 completion:(id)a4;
-- (void)credentialDidActivateWithCredential:(id)a3 completion:(id)a4;
-- (void)declineSharingInvitation:(id)a3 completion:(id)a4;
-- (void)declineSharingInvitationWithIdentifier:(id)a3 completion:(id)a4;
-- (void)deleteCredential:(id)a3 completion:(id)a4;
-- (void)deleteCredentials:(id)a3 completion:(id)a4;
-- (void)deleteCredentialsForIdentifiers:(id)a3 completion:(id)a4;
-- (void)deleteCredentialsForReaderIdentifiers:(id)a3 completion:(id)a4;
-- (void)deviceCredentialForIdentifier:(id)a3 completion:(id)a4;
-- (void)generateSEEncryptionCertificateForSubCredentialId:(id)a3 completion:(id)a4;
-- (void)generateTransactionKeyWithParameters:(id)a3 withCompletion:(id)a4;
-- (void)generateTransactionKeyWithSession:(id)a3 seid:(id)a4 readerIdentifier:(id)a5 readerPublicKey:(id)a6 completion:(id)a7;
-- (void)getPretrackRequestForKeyWithIdentifier:(id)a3 withCompletion:(id)a4;
-- (void)getPretrackShareDataForShare:(id)a3 withCompletion:(id)a4;
-- (void)getProductPlanIdentifierRequestForInvitationWithIdentifier:(id)a3 fromMailboxIdentifier:(id)a4 completion:(id)a5;
-- (void)handleOutstandingMessage:(id)a3 subcredentialIdentifier:(id)a4 credentialShareIdentifier:(id)a5 transportIdentifier:(id)a6 completion:(id)a7;
-- (void)handleRecipientMessage:(id)a3 forInvitationIdentifier:(id)a4 completion:(id)a5;
-- (void)hasUpgradeAvailableForKeyWithCredential:(id)a3 versionType:(unint64_t)a4 versions:(id)a5 completion:(id)a6;
-- (void)immobilizerTokensCountForCredential:(id)a3 completion:(id)a4;
-- (void)listCredentialsWithCompletion:(id)a3;
-- (void)listCredentialsWithSession:(id)a3 seid:(id)a4 completion:(id)a5;
-- (void)listDACredentialsWithSession:(id)a3 seid:(id)a4 completion:(id)a5;
-- (void)outstandingInvitesForCredential:(id)a3 completion:(id)a4;
-- (void)preWarmForManufacturer:(id)a3 completion:(id)a4;
-- (void)prewarmWithManufacturerIdentifier:(id)a3 completion:(id)a4;
-- (void)probeTerminalForPairingStatusWithCompletion:(id)a3;
-- (void)rejectInvitation:(id)a3 completion:(id)a4;
-- (void)removeSharedCredentialsWithIdentifiers:(id)a3 credential:(id)a4 completion:(id)a5;
-- (void)rescindInvitations:(id)a3 onCredential:(id)a4 withCompletion:(id)a5;
-- (void)retryActivationCode:(id)a3 forInvitationIdentifier:(id)a4 completion:(id)a5;
-- (void)retryActivationCodeForCredentialIdentifier:(id)a3 activationCode:(id)a4 completion:(id)a5;
-- (void)retryActivationCodeWithInvitationIdentifier:(id)a3 activationCode:(id)a4 completion:(id)a5;
-- (void)revertUpgradeForKeyWithCredential:(id)a3 versionType:(unint64_t)a4 version:(unint64_t)a5 completion:(id)a6;
-- (void)revokeSharedCredentials:(id)a3 onCredential:(id)a4 withCompletion:(id)a5;
-- (void)revokeSharesWithGroupIdentifiers:(id)a3 shouldCascade:(BOOL)a4 credential:(id)a5 completion:(id)a6;
-- (void)routingInformationForInvitationWithIdentifier:(id)a3 fromMailboxIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)setAccountAttestation:(id)a3 forCredential:(id)a4 withCompletion:(id)a5;
-- (void)setAccountAttestation:(id)a3 forUpgradeCredential:(id)a4 withCompletion:(id)a5;
-- (void)setEncryptedProductPlanIdentifierContainer:(id)a3 forInvitationIdentifier:(id)a4 completion:(id)a5;
-- (void)setTransportChannelIdentifier:(id)a3 forCredential:(id)a4 forCredentialShare:(id)a5 completion:(id)a6;
-- (void)signData:(id)a3 auth:(id)a4 bundleIdentifier:(id)a5 nonce:(id)a6 credential:(id)a7 completion:(id)a8;
-- (void)startShareAcceptanceFlowWithInvitation:(id)a3 fromMailboxIdentifier:(id)a4 completion:(id)a5;
-- (void)statusForReceivedSharingInvitationWithIdentifier:(id)a3 completion:(id)a4;
-- (void)statusForSentSharingInvitationWithIdentifier:(id)a3 completion:(id)a4;
-- (void)updateCredentialConfigurationForCredential:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)updateTrackingAttestation:(id)a3 forCredential:(id)a4 encryptedContainer:(id)a5 completion:(id)a6;
-- (void)upgradeKeyWithCredential:(id)a3 versionType:(unint64_t)a4 version:(unint64_t)a5 upgradeInformation:(id)a6 completion:(id)a7;
+- (id)createPrivacyKeyForGroupIdentifier:(id)identifier outError:(id *)error;
+- (id)decryptData:(id)data withCredential:(id)credential ephemeralPublicKey:(id)key;
+- (id)decryptPayload:(id)payload groupIdentifier:(id)identifier outError:(id *)error;
+- (id)privacyKeysForGroupIdentifier:(id)identifier privacyKeyIdentifier:(id)keyIdentifier outError:(id *)error;
+- (id)storeSEBlobForSubcredentialIdentifier:(id)identifier seBlob:(id)blob;
+- (id)updateAliroCredentialDocumentStatusWithSession:(id)session seid:(id)seid subcredentialIdentifier:(id)identifier isAccessDocumentPresent:(BOOL)present accessDocumentSignedDate:(id)date isRevocationDocumentPresent:(BOOL)documentPresent revocationDocumentSignedDate:(id)signedDate;
+- (int64_t)_DAKeySharingAnalyticsFlowFromPKSharingInvitationFlow:(unint64_t)flow;
+- (void)acceptCrossPlatformInvitationWithIdentifier:(id)identifier transportChannelIdentifier:(id)channelIdentifier activationCode:(id)code encryptedProductPlanIdentifierContainer:(id)container completion:(id)completion;
+- (void)acceptInvitationWithIdentifier:(id)identifier activationCode:(id)code analyticsUpdateConfig:(id)config completion:(id)completion;
+- (void)acceptInvitationWithIdentifier:(id)identifier activationCode:(id)code completion:(id)completion;
+- (void)accountAttestationRequestForManufacturer:(id)manufacturer completion:(id)completion;
+- (void)accountAttestionRequestForCredential:(id)credential withCompletion:(id)completion;
+- (void)commitUpgradeForKeyWithCredential:(id)credential versionType:(unint64_t)type version:(unint64_t)version completion:(id)completion;
+- (void)createAliroHomeKey:(id)key seid:(id)seid readerIdentifier:(id)identifier readerPublicKey:(id)publicKey homeIdentifier:(id)homeIdentifier withCompletion:(id)completion;
+- (void)createAliroHydraKey:(id)key seid:(id)seid serverParameters:(id)parameters withCompletion:(id)completion;
+- (void)createInviteForShare:(id)share forCredential:(id)credential analyticsUpdateConfig:(id)config authorization:(id)authorization completion:(id)completion;
+- (void)createSilentInviteForSharingSessionIdentifier:(id)identifier completion:(id)completion;
+- (void)credentialDidActivateWithCredential:(id)credential completion:(id)completion;
+- (void)declineSharingInvitation:(id)invitation completion:(id)completion;
+- (void)declineSharingInvitationWithIdentifier:(id)identifier completion:(id)completion;
+- (void)deleteCredential:(id)credential completion:(id)completion;
+- (void)deleteCredentials:(id)credentials completion:(id)completion;
+- (void)deleteCredentialsForIdentifiers:(id)identifiers completion:(id)completion;
+- (void)deleteCredentialsForReaderIdentifiers:(id)identifiers completion:(id)completion;
+- (void)deviceCredentialForIdentifier:(id)identifier completion:(id)completion;
+- (void)generateSEEncryptionCertificateForSubCredentialId:(id)id completion:(id)completion;
+- (void)generateTransactionKeyWithParameters:(id)parameters withCompletion:(id)completion;
+- (void)generateTransactionKeyWithSession:(id)session seid:(id)seid readerIdentifier:(id)identifier readerPublicKey:(id)key completion:(id)completion;
+- (void)getPretrackRequestForKeyWithIdentifier:(id)identifier withCompletion:(id)completion;
+- (void)getPretrackShareDataForShare:(id)share withCompletion:(id)completion;
+- (void)getProductPlanIdentifierRequestForInvitationWithIdentifier:(id)identifier fromMailboxIdentifier:(id)mailboxIdentifier completion:(id)completion;
+- (void)handleOutstandingMessage:(id)message subcredentialIdentifier:(id)identifier credentialShareIdentifier:(id)shareIdentifier transportIdentifier:(id)transportIdentifier completion:(id)completion;
+- (void)handleRecipientMessage:(id)message forInvitationIdentifier:(id)identifier completion:(id)completion;
+- (void)hasUpgradeAvailableForKeyWithCredential:(id)credential versionType:(unint64_t)type versions:(id)versions completion:(id)completion;
+- (void)immobilizerTokensCountForCredential:(id)credential completion:(id)completion;
+- (void)listCredentialsWithCompletion:(id)completion;
+- (void)listCredentialsWithSession:(id)session seid:(id)seid completion:(id)completion;
+- (void)listDACredentialsWithSession:(id)session seid:(id)seid completion:(id)completion;
+- (void)outstandingInvitesForCredential:(id)credential completion:(id)completion;
+- (void)preWarmForManufacturer:(id)manufacturer completion:(id)completion;
+- (void)prewarmWithManufacturerIdentifier:(id)identifier completion:(id)completion;
+- (void)probeTerminalForPairingStatusWithCompletion:(id)completion;
+- (void)rejectInvitation:(id)invitation completion:(id)completion;
+- (void)removeSharedCredentialsWithIdentifiers:(id)identifiers credential:(id)credential completion:(id)completion;
+- (void)rescindInvitations:(id)invitations onCredential:(id)credential withCompletion:(id)completion;
+- (void)retryActivationCode:(id)code forInvitationIdentifier:(id)identifier completion:(id)completion;
+- (void)retryActivationCodeForCredentialIdentifier:(id)identifier activationCode:(id)code completion:(id)completion;
+- (void)retryActivationCodeWithInvitationIdentifier:(id)identifier activationCode:(id)code completion:(id)completion;
+- (void)revertUpgradeForKeyWithCredential:(id)credential versionType:(unint64_t)type version:(unint64_t)version completion:(id)completion;
+- (void)revokeSharedCredentials:(id)credentials onCredential:(id)credential withCompletion:(id)completion;
+- (void)revokeSharesWithGroupIdentifiers:(id)identifiers shouldCascade:(BOOL)cascade credential:(id)credential completion:(id)completion;
+- (void)routingInformationForInvitationWithIdentifier:(id)identifier fromMailboxIdentifier:(id)mailboxIdentifier completionHandler:(id)handler;
+- (void)setAccountAttestation:(id)attestation forCredential:(id)credential withCompletion:(id)completion;
+- (void)setAccountAttestation:(id)attestation forUpgradeCredential:(id)credential withCompletion:(id)completion;
+- (void)setEncryptedProductPlanIdentifierContainer:(id)container forInvitationIdentifier:(id)identifier completion:(id)completion;
+- (void)setTransportChannelIdentifier:(id)identifier forCredential:(id)credential forCredentialShare:(id)share completion:(id)completion;
+- (void)signData:(id)data auth:(id)auth bundleIdentifier:(id)identifier nonce:(id)nonce credential:(id)credential completion:(id)completion;
+- (void)startShareAcceptanceFlowWithInvitation:(id)invitation fromMailboxIdentifier:(id)identifier completion:(id)completion;
+- (void)statusForReceivedSharingInvitationWithIdentifier:(id)identifier completion:(id)completion;
+- (void)statusForSentSharingInvitationWithIdentifier:(id)identifier completion:(id)completion;
+- (void)updateCredentialConfigurationForCredential:(id)credential configuration:(id)configuration completion:(id)completion;
+- (void)updateTrackingAttestation:(id)attestation forCredential:(id)credential encryptedContainer:(id)container completion:(id)completion;
+- (void)upgradeKeyWithCredential:(id)credential versionType:(unint64_t)type version:(unint64_t)version upgradeInformation:(id)information completion:(id)completion;
 @end
 
 @implementation PKDAManager
@@ -99,11 +99,11 @@
   return v2;
 }
 
-+ (BOOL)isCarKeySupportedForManufacturerIdentifier:(id)a3 issuerIdentifier:(id)a4 productPlanIdentifier:(id)a5
++ (BOOL)isCarKeySupportedForManufacturerIdentifier:(id)identifier issuerIdentifier:(id)issuerIdentifier productPlanIdentifier:(id)planIdentifier
 {
   v12 = *MEMORY[0x1E69E9840];
   v9 = 0;
-  v5 = [MEMORY[0x1E699A138] isCarKeySupportedForManufacturer:a3 brand:a4 ppid:a5 error:&v9];
+  v5 = [MEMORY[0x1E699A138] isCarKeySupportedForManufacturer:identifier brand:issuerIdentifier ppid:planIdentifier error:&v9];
   v6 = v9;
   if (v6)
   {
@@ -119,10 +119,10 @@
   return v5;
 }
 
-- (void)listCredentialsWithCompletion:(id)a3
+- (void)listCredentialsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = self->_managementSessionManager;
     managementSessionManager = self->_managementSessionManager;
@@ -131,7 +131,7 @@
     v8[2] = __45__PKDAManager_listCredentialsWithCompletion___block_invoke;
     v8[3] = &unk_1E79CD108;
     v9 = v5;
-    v10 = v4;
+    v10 = completionCopy;
     v7 = v5;
     [(PKDASessionManager *)managementSessionManager performBlockWithSession:v8];
   }
@@ -176,20 +176,20 @@ uint64_t __45__PKDAManager_listCredentialsWithCompletion___block_invoke_2(uint64
   return result;
 }
 
-- (void)listCredentialsWithSession:(id)a3 seid:(id)a4 completion:(id)a5
+- (void)listCredentialsWithSession:(id)session seid:(id)seid completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  if (v8)
+  seidCopy = seid;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v9 = MEMORY[0x1E699A138];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __58__PKDAManager_listCredentialsWithSession_seid_completion___block_invoke;
     v10[3] = &unk_1E79C4BD0;
-    v11 = v7;
-    v12 = v8;
-    [v9 listKeysWithSession:a3 seid:v11 callback:v10];
+    v11 = seidCopy;
+    v12 = completionCopy;
+    [v9 listKeysWithSession:session seid:v11 callback:v10];
   }
 }
 
@@ -258,20 +258,20 @@ void __58__PKDAManager_listCredentialsWithSession_seid_completion___block_invoke
   }
 }
 
-- (void)listDACredentialsWithSession:(id)a3 seid:(id)a4 completion:(id)a5
+- (void)listDACredentialsWithSession:(id)session seid:(id)seid completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  if (v8)
+  seidCopy = seid;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v9 = MEMORY[0x1E699A138];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __60__PKDAManager_listDACredentialsWithSession_seid_completion___block_invoke;
     v10[3] = &unk_1E79C4BD0;
-    v11 = v7;
-    v12 = v8;
-    [v9 listKeysWithSession:a3 seid:v11 callback:v10];
+    v11 = seidCopy;
+    v12 = completionCopy;
+    [v9 listKeysWithSession:session seid:v11 callback:v10];
   }
 }
 
@@ -305,23 +305,23 @@ void __60__PKDAManager_listDACredentialsWithSession_seid_completion___block_invo
   v8();
 }
 
-- (void)revokeSharedCredentials:(id)a3 onCredential:(id)a4 withCompletion:(id)a5
+- (void)revokeSharedCredentials:(id)credentials onCredential:(id)credential withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  credentialsCopy = credentials;
+  credentialCopy = credential;
+  completionCopy = completion;
   v11 = self->_managementSessionManager;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __67__PKDAManager_revokeSharedCredentials_onCredential_withCompletion___block_invoke;
   v16[3] = &unk_1E79CCF28;
   v17 = v11;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v18 = credentialsCopy;
+  v19 = credentialCopy;
+  v20 = completionCopy;
+  v12 = credentialCopy;
+  v13 = credentialsCopy;
+  v14 = completionCopy;
   v15 = v11;
   [(PKDASessionManager *)v15 performBlockWithSession:v16];
 }
@@ -375,24 +375,24 @@ void __67__PKDAManager_revokeSharedCredentials_onCredential_withCompletion___blo
   }
 }
 
-- (void)revokeSharesWithGroupIdentifiers:(id)a3 shouldCascade:(BOOL)a4 credential:(id)a5 completion:(id)a6
+- (void)revokeSharesWithGroupIdentifiers:(id)identifiers shouldCascade:(BOOL)cascade credential:(id)credential completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  identifiersCopy = identifiers;
+  credentialCopy = credential;
+  completionCopy = completion;
   v13 = self->_managementSessionManager;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __84__PKDAManager_revokeSharesWithGroupIdentifiers_shouldCascade_credential_completion___block_invoke;
   v18[3] = &unk_1E79CCF50;
   v19 = v13;
-  v20 = v10;
-  v23 = a4;
-  v21 = v11;
-  v22 = v12;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
+  v20 = identifiersCopy;
+  cascadeCopy = cascade;
+  v21 = credentialCopy;
+  v22 = completionCopy;
+  v14 = credentialCopy;
+  v15 = identifiersCopy;
+  v16 = completionCopy;
   v17 = v13;
   [(PKDASessionManager *)v17 performBlockWithSession:v18];
 }
@@ -446,23 +446,23 @@ void __84__PKDAManager_revokeSharesWithGroupIdentifiers_shouldCascade_credential
   }
 }
 
-- (void)rescindInvitations:(id)a3 onCredential:(id)a4 withCompletion:(id)a5
+- (void)rescindInvitations:(id)invitations onCredential:(id)credential withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  invitationsCopy = invitations;
+  credentialCopy = credential;
+  completionCopy = completion;
   v11 = self->_managementSessionManager;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __62__PKDAManager_rescindInvitations_onCredential_withCompletion___block_invoke;
   v16[3] = &unk_1E79CCF28;
   v17 = v11;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v18 = invitationsCopy;
+  v19 = credentialCopy;
+  v20 = completionCopy;
+  v12 = credentialCopy;
+  v13 = invitationsCopy;
+  v14 = completionCopy;
   v15 = v11;
   [(PKDASessionManager *)v15 performBlockWithSession:v16];
 }
@@ -518,22 +518,22 @@ void __62__PKDAManager_rescindInvitations_onCredential_withCompletion___block_in
   }
 }
 
-- (void)updateTrackingAttestation:(id)a3 forCredential:(id)a4 encryptedContainer:(id)a5 completion:(id)a6
+- (void)updateTrackingAttestation:(id)attestation forCredential:(id)credential encryptedContainer:(id)container completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v12)
+  attestationCopy = attestation;
+  credentialCopy = credential;
+  containerCopy = container;
+  completionCopy = completion;
+  if (!containerCopy)
   {
     v16 = 0;
     goto LABEL_7;
   }
 
-  v14 = [v12 data];
-  v15 = [v12 rawEphemeralPublicKey];
-  v16 = [(PKDAManager *)self decryptData:v14 withCredential:v11 ephemeralPublicKey:v15];
+  data = [containerCopy data];
+  rawEphemeralPublicKey = [containerCopy rawEphemeralPublicKey];
+  v16 = [(PKDAManager *)self decryptData:data withCredential:credentialCopy ephemeralPublicKey:rawEphemeralPublicKey];
 
   if (v16)
   {
@@ -545,10 +545,10 @@ LABEL_7:
     v22[2] = __85__PKDAManager_updateTrackingAttestation_forCredential_encryptedContainer_completion___block_invoke;
     v22[3] = &unk_1E79CCFA0;
     v23 = v18;
-    v24 = v11;
+    v24 = credentialCopy;
     v25 = v16;
-    v26 = v10;
-    v27 = v13;
+    v26 = attestationCopy;
+    v27 = completionCopy;
     v20 = v16;
     v21 = v18;
     [(PKDASessionManager *)managementSessionManager performBlockWithSession:v22];
@@ -560,11 +560,11 @@ LABEL_7:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v29 = v11;
+    v29 = credentialCopy;
     _os_log_impl(&dword_1AD337000, v17, OS_LOG_TYPE_DEFAULT, "Failed to decrypt data to track credential %@", buf, 0xCu);
   }
 
-  (*(v13 + 2))(v13, 0);
+  (*(completionCopy + 2))(completionCopy, 0);
 LABEL_8:
 }
 
@@ -609,18 +609,18 @@ void __85__PKDAManager_updateTrackingAttestation_forCredential_encryptedContaine
   }
 }
 
-- (void)declineSharingInvitation:(id)a3 completion:(id)a4
+- (void)declineSharingInvitation:(id)invitation completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 identifier];
-  [(PKDAManager *)self declineSharingInvitationWithIdentifier:v7 completion:v6];
+  completionCopy = completion;
+  identifier = [invitation identifier];
+  [(PKDAManager *)self declineSharingInvitationWithIdentifier:identifier completion:completionCopy];
 }
 
-- (void)declineSharingInvitationWithIdentifier:(id)a3 completion:(id)a4
+- (void)declineSharingInvitationWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = self->_sharingSessionManager;
     sharingSessionManager = self->_sharingSessionManager;
@@ -629,8 +629,8 @@ void __85__PKDAManager_updateTrackingAttestation_forCredential_encryptedContaine
     v11[2] = __65__PKDAManager_declineSharingInvitationWithIdentifier_completion___block_invoke;
     v11[3] = &unk_1E79CD4A0;
     v12 = v8;
-    v13 = v6;
-    v14 = v7;
+    v13 = identifierCopy;
+    v14 = completionCopy;
     v10 = v8;
     [(PKDASessionManager *)sharingSessionManager performBlockWithSession:v11];
   }
@@ -663,10 +663,10 @@ uint64_t __65__PKDAManager_declineSharingInvitationWithIdentifier_completion___b
   return v3();
 }
 
-- (void)probeTerminalForPairingStatusWithCompletion:(id)a3
+- (void)probeTerminalForPairingStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = self->_pairingSessionManager;
     v7[0] = MEMORY[0x1E69E9820];
@@ -674,7 +674,7 @@ uint64_t __65__PKDAManager_declineSharingInvitationWithIdentifier_completion___b
     v7[2] = __59__PKDAManager_probeTerminalForPairingStatusWithCompletion___block_invoke;
     v7[3] = &unk_1E79CD018;
     v8 = v5;
-    v9 = v4;
+    v9 = completionCopy;
     v6 = v5;
     [(PKDASessionManager *)v6 performBlockWithSession:v7];
   }
@@ -741,20 +741,20 @@ uint64_t __59__PKDAManager_probeTerminalForPairingStatusWithCompletion___block_i
   return result;
 }
 
-- (void)prewarmWithManufacturerIdentifier:(id)a3 completion:(id)a4
+- (void)prewarmWithManufacturerIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = self->_pairingSessionManager;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __60__PKDAManager_prewarmWithManufacturerIdentifier_completion___block_invoke;
   v12[3] = &unk_1E79CD068;
-  v14 = v6;
-  v15 = v7;
+  v14 = identifierCopy;
+  v15 = completionCopy;
   v13 = v8;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = completionCopy;
   v11 = v8;
   [(PKDASessionManager *)v11 performBlockWithSession:v12];
 }
@@ -826,13 +826,13 @@ void __60__PKDAManager_prewarmWithManufacturerIdentifier_completion___block_invo
   }
 }
 
-- (id)decryptData:(id)a3 withCredential:(id)a4 ephemeralPublicKey:(id)a5
+- (id)decryptData:(id)data withCredential:(id)credential ephemeralPublicKey:(id)key
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v7 identifier];
+  credentialCopy = credential;
+  keyCopy = key;
+  dataCopy = data;
+  identifier = [credentialCopy identifier];
   v11 = SESEndPointPrivacyDecryption();
 
   v12 = 0;
@@ -842,9 +842,9 @@ void __60__PKDAManager_prewarmWithManufacturerIdentifier_completion___block_invo
     v14 = PKLogFacilityTypeGetObject(0x17uLL);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v7 identifier];
+      identifier2 = [credentialCopy identifier];
       *buf = 138412546;
-      v19 = v15;
+      v19 = identifier2;
       v20 = 2112;
       v21 = v12;
       _os_log_impl(&dword_1AD337000, v14, OS_LOG_TYPE_DEFAULT, "Failed to decrypt data for credential '%@' with error: %@", buf, 0x16u);
@@ -858,27 +858,27 @@ void __60__PKDAManager_prewarmWithManufacturerIdentifier_completion___block_invo
   return v13;
 }
 
-- (void)signData:(id)a3 auth:(id)a4 bundleIdentifier:(id)a5 nonce:(id)a6 credential:(id)a7 completion:(id)a8
+- (void)signData:(id)data auth:(id)auth bundleIdentifier:(id)identifier nonce:(id)nonce credential:(id)credential completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v19)
+  dataCopy = data;
+  authCopy = auth;
+  identifierCopy = identifier;
+  nonceCopy = nonce;
+  credentialCopy = credential;
+  completionCopy = completion;
+  if (completionCopy)
   {
     managementSessionManager = self->_managementSessionManager;
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __74__PKDAManager_signData_auth_bundleIdentifier_nonce_credential_completion___block_invoke;
     v22[3] = &unk_1E79CD0B8;
-    v23 = v14;
-    v24 = v15;
-    v25 = v16;
-    v26 = v17;
-    v27 = v18;
-    v28 = v19;
+    v23 = dataCopy;
+    v24 = authCopy;
+    v25 = identifierCopy;
+    v26 = nonceCopy;
+    v27 = credentialCopy;
+    v28 = completionCopy;
     v21 = managementSessionManager;
     [(PKDASessionManager *)v21 performBlockWithSession:v22];
   }
@@ -935,20 +935,20 @@ uint64_t __74__PKDAManager_signData_auth_bundleIdentifier_nonce_credential_compl
   return result;
 }
 
-- (void)immobilizerTokensCountForCredential:(id)a3 completion:(id)a4
+- (void)immobilizerTokensCountForCredential:(id)credential completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  credentialCopy = credential;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     managementSessionManager = self->_managementSessionManager;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __62__PKDAManager_immobilizerTokensCountForCredential_completion___block_invoke;
     v11[3] = &unk_1E79CD108;
-    v13 = v7;
-    v12 = v6;
+    v13 = completionCopy;
+    v12 = credentialCopy;
     v10 = managementSessionManager;
     [(PKDASessionManager *)v10 performBlockWithSession:v11];
   }
@@ -1002,22 +1002,22 @@ uint64_t __62__PKDAManager_immobilizerTokensCountForCredential_completion___bloc
   return v3();
 }
 
-- (void)removeSharedCredentialsWithIdentifiers:(id)a3 credential:(id)a4 completion:(id)a5
+- (void)removeSharedCredentialsWithIdentifiers:(id)identifiers credential:(id)credential completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  credentialCopy = credential;
+  completionCopy = completion;
   managementSessionManager = self->_managementSessionManager;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __76__PKDAManager_removeSharedCredentialsWithIdentifiers_credential_completion___block_invoke;
   v16[3] = &unk_1E79CD288;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v17 = identifiersCopy;
+  v18 = credentialCopy;
+  v19 = completionCopy;
+  v12 = completionCopy;
+  v13 = credentialCopy;
+  v14 = identifiersCopy;
   v15 = managementSessionManager;
   [(PKDASessionManager *)v15 performBlockWithSession:v16];
 }
@@ -1081,10 +1081,10 @@ void __76__PKDAManager_removeSharedCredentialsWithIdentifiers_credential_complet
   }
 }
 
-- (void)statusForSentSharingInvitationWithIdentifier:(id)a3 completion:(id)a4
+- (void)statusForSentSharingInvitationWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = self->_managementSessionManager;
   v15[0] = 0;
   v15[1] = v15;
@@ -1094,9 +1094,9 @@ void __76__PKDAManager_removeSharedCredentialsWithIdentifiers_credential_complet
   v11[1] = 3221225472;
   v11[2] = __71__PKDAManager_statusForSentSharingInvitationWithIdentifier_completion___block_invoke;
   v11[3] = &unk_1E79CD1A8;
-  v9 = v7;
+  v9 = completionCopy;
   v13 = v9;
-  v10 = v6;
+  v10 = identifierCopy;
   v12 = v10;
   v14 = v15;
   [(PKDASessionManager *)v8 performBlockWithSession:v11];
@@ -1338,19 +1338,19 @@ void __71__PKDAManager_statusForSentSharingInvitationWithIdentifier_completion__
 LABEL_20:
 }
 
-- (void)outstandingInvitesForCredential:(id)a3 completion:(id)a4
+- (void)outstandingInvitesForCredential:(id)credential completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  credentialCopy = credential;
+  completionCopy = completion;
   managementSessionManager = self->_managementSessionManager;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __58__PKDAManager_outstandingInvitesForCredential_completion___block_invoke;
   v12[3] = &unk_1E79CD108;
-  v13 = v6;
-  v14 = v7;
-  v9 = v6;
-  v10 = v7;
+  v13 = credentialCopy;
+  v14 = completionCopy;
+  v9 = credentialCopy;
+  v10 = completionCopy;
   v11 = managementSessionManager;
   [(PKDASessionManager *)v11 performBlockWithSession:v12];
 }
@@ -1396,10 +1396,10 @@ void __58__PKDAManager_outstandingInvitesForCredential_completion___block_invoke
   }
 }
 
-- (void)statusForReceivedSharingInvitationWithIdentifier:(id)a3 completion:(id)a4
+- (void)statusForReceivedSharingInvitationWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = self->_managementSessionManager;
   v15[0] = 0;
   v15[1] = v15;
@@ -1409,9 +1409,9 @@ void __58__PKDAManager_outstandingInvitesForCredential_completion___block_invoke
   v11[1] = 3221225472;
   v11[2] = __75__PKDAManager_statusForReceivedSharingInvitationWithIdentifier_completion___block_invoke;
   v11[3] = &unk_1E79CD1A8;
-  v9 = v7;
+  v9 = completionCopy;
   v13 = v9;
-  v10 = v6;
+  v10 = identifierCopy;
   v12 = v10;
   v14 = v15;
   [(PKDASessionManager *)v8 performBlockWithSession:v11];
@@ -1652,18 +1652,18 @@ void __75__PKDAManager_statusForReceivedSharingInvitationWithIdentifier_completi
 LABEL_17:
 }
 
-- (void)generateTransactionKeyWithSession:(id)a3 seid:(id)a4 readerIdentifier:(id)a5 readerPublicKey:(id)a6 completion:(id)a7
+- (void)generateTransactionKeyWithSession:(id)session seid:(id)seid readerIdentifier:(id)identifier readerPublicKey:(id)key completion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v13 && v14)
+  sessionCopy = session;
+  seidCopy = seid;
+  identifierCopy = identifier;
+  keyCopy = key;
+  completionCopy = completion;
+  if (identifierCopy && keyCopy)
   {
     v20 = 0;
-    v16 = [MEMORY[0x1E699A138] createHomeKey:v11 seid:v12 readerIdentifier:v13 readerPublicKey:v14 outError:&v20];
+    v16 = [MEMORY[0x1E699A138] createHomeKey:sessionCopy seid:seidCopy readerIdentifier:identifierCopy readerPublicKey:keyCopy outError:&v20];
     v17 = v20;
     v18 = PKLogFacilityTypeGetObject(0x17uLL);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -1675,7 +1675,7 @@ LABEL_17:
       _os_log_impl(&dword_1AD337000, v18, OS_LOG_TYPE_DEFAULT, "PKDAManager GenerateTransactionKeyWithReaderIdentifier returned %{private}@ error: %@", buf, 0x16u);
     }
 
-    v15[2](v15, v16, v17);
+    completionCopy[2](completionCopy, v16, v17);
   }
 
   else
@@ -1687,23 +1687,23 @@ LABEL_17:
       _os_log_impl(&dword_1AD337000, v19, OS_LOG_TYPE_DEFAULT, "PKDAManager GenerateTransactionKeyWithReaderIdentifier missing readerIdentifier or readerPublicKey", buf, 2u);
     }
 
-    v15[2](v15, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 }
 
-- (void)createAliroHomeKey:(id)a3 seid:(id)a4 readerIdentifier:(id)a5 readerPublicKey:(id)a6 homeIdentifier:(id)a7 withCompletion:(id)a8
+- (void)createAliroHomeKey:(id)key seid:(id)seid readerIdentifier:(id)identifier readerPublicKey:(id)publicKey homeIdentifier:(id)homeIdentifier withCompletion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (v15 && v16)
+  keyCopy = key;
+  seidCopy = seid;
+  identifierCopy = identifier;
+  publicKeyCopy = publicKey;
+  homeIdentifierCopy = homeIdentifier;
+  completionCopy = completion;
+  if (identifierCopy && publicKeyCopy)
   {
     v23 = 0;
-    v19 = [MEMORY[0x1E699A138] createAliroHomeKey:v13 seid:v14 readerIdentifier:v15 readerPublicKey:v16 homeUUID:v17 outError:&v23];
+    v19 = [MEMORY[0x1E699A138] createAliroHomeKey:keyCopy seid:seidCopy readerIdentifier:identifierCopy readerPublicKey:publicKeyCopy homeUUID:homeIdentifierCopy outError:&v23];
     v20 = v23;
     v21 = PKLogFacilityTypeGetObject(0x17uLL);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -1715,7 +1715,7 @@ LABEL_17:
       _os_log_impl(&dword_1AD337000, v21, OS_LOG_TYPE_DEFAULT, "PKDAManager createAliroHomeKey returned %{private}@ error: %@", buf, 0x16u);
     }
 
-    v18[2](v18, v19, v20);
+    completionCopy[2](completionCopy, v19, v20);
   }
 
   else
@@ -1727,19 +1727,19 @@ LABEL_17:
       _os_log_impl(&dword_1AD337000, v22, OS_LOG_TYPE_DEFAULT, "PKDAManager createAliroHomeKey missing readerIdentifier or readerPublicKey", buf, 2u);
     }
 
-    v18[2](v18, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 }
 
-- (void)generateTransactionKeyWithParameters:(id)a3 withCompletion:(id)a4
+- (void)generateTransactionKeyWithParameters:(id)parameters withCompletion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  parametersCopy = parameters;
+  completionCopy = completion;
+  if (parametersCopy)
   {
     v11 = 0;
-    v7 = [MEMORY[0x1E699A138] createHydraKey:0 seid:0 serverParameters:v5 outError:&v11];
+    v7 = [MEMORY[0x1E699A138] createHydraKey:0 seid:0 serverParameters:parametersCopy outError:&v11];
     v8 = v11;
     v9 = PKLogFacilityTypeGetObject(0x17uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1751,7 +1751,7 @@ LABEL_17:
       _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "PKDAManager GenerateTransactionKeyWithParameters returned %{private}@ error: %@", buf, 0x16u);
     }
 
-    v6[2](v6, v7, v8);
+    completionCopy[2](completionCopy, v7, v8);
   }
 
   else
@@ -1763,21 +1763,21 @@ LABEL_17:
       _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "PKDAManager GenerateTransactionKeyWithParameters missing parameters", buf, 2u);
     }
 
-    v6[2](v6, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 }
 
-- (void)createAliroHydraKey:(id)a3 seid:(id)a4 serverParameters:(id)a5 withCompletion:(id)a6
+- (void)createAliroHydraKey:(id)key seid:(id)seid serverParameters:(id)parameters withCompletion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (v10 && v11)
+  keyCopy = key;
+  seidCopy = seid;
+  parametersCopy = parameters;
+  completionCopy = completion;
+  if (seidCopy && parametersCopy)
   {
     v17 = 0;
-    v13 = [MEMORY[0x1E699A138] createAliroHydraKey:v9 seid:v10 serverParameters:v11 outError:&v17];
+    v13 = [MEMORY[0x1E699A138] createAliroHydraKey:keyCopy seid:seidCopy serverParameters:parametersCopy outError:&v17];
     v14 = v17;
     v15 = PKLogFacilityTypeGetObject(0x17uLL);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -1789,7 +1789,7 @@ LABEL_17:
       _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "PKDAManager createAliroHydraKey returned %{private}@ error: %@", buf, 0x16u);
     }
 
-    v12[2](v12, v13, v14);
+    completionCopy[2](completionCopy, v13, v14);
   }
 
   else
@@ -1801,55 +1801,55 @@ LABEL_17:
       _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "PKDAManager createAliroHomeKey missing seid or serverParameters", buf, 2u);
     }
 
-    v12[2](v12, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 }
 
-- (id)updateAliroCredentialDocumentStatusWithSession:(id)a3 seid:(id)a4 subcredentialIdentifier:(id)a5 isAccessDocumentPresent:(BOOL)a6 accessDocumentSignedDate:(id)a7 isRevocationDocumentPresent:(BOOL)a8 revocationDocumentSignedDate:(id)a9
+- (id)updateAliroCredentialDocumentStatusWithSession:(id)session seid:(id)seid subcredentialIdentifier:(id)identifier isAccessDocumentPresent:(BOOL)present accessDocumentSignedDate:(id)date isRevocationDocumentPresent:(BOOL)documentPresent revocationDocumentSignedDate:(id)signedDate
 {
-  v9 = a8;
-  v11 = a6;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a9;
-  if (v16)
+  documentPresentCopy = documentPresent;
+  presentCopy = present;
+  sessionCopy = session;
+  seidCopy = seid;
+  identifierCopy = identifier;
+  dateCopy = date;
+  signedDateCopy = signedDate;
+  if (identifierCopy)
   {
     v19 = objc_alloc_init(MEMORY[0x1E696AC80]);
     v20 = v19;
-    if (v17)
+    if (dateCopy)
     {
-      v21 = [v19 stringFromDate:v17];
+      v21 = [v19 stringFromDate:dateCopy];
       v22 = [v21 dataUsingEncoding:1];
-      v37 = [v22 hexEncoding];
+      hexEncoding = [v22 hexEncoding];
 
-      if (v18)
+      if (signedDateCopy)
       {
 LABEL_4:
-        v23 = [v20 stringFromDate:v18];
+        v23 = [v20 stringFromDate:signedDateCopy];
         [v23 dataUsingEncoding:1];
         v36 = v20;
-        v24 = v16;
-        v25 = v11;
-        v26 = v18;
-        v27 = v17;
-        v28 = v15;
-        v29 = v14;
-        v31 = v30 = v9;
-        v32 = [v31 hexEncoding];
+        v24 = identifierCopy;
+        v25 = presentCopy;
+        v26 = signedDateCopy;
+        v27 = dateCopy;
+        v28 = seidCopy;
+        v29 = sessionCopy;
+        v31 = v30 = documentPresentCopy;
+        hexEncoding2 = [v31 hexEncoding];
 
-        v9 = v30;
-        v14 = v29;
-        v15 = v28;
-        v17 = v27;
-        v18 = v26;
-        v11 = v25;
-        v16 = v24;
+        documentPresentCopy = v30;
+        sessionCopy = v29;
+        seidCopy = v28;
+        dateCopy = v27;
+        signedDateCopy = v26;
+        presentCopy = v25;
+        identifierCopy = v24;
         v20 = v36;
 
 LABEL_10:
-        v34 = [MEMORY[0x1E699A138] updateAliroCredentialDocumentStatus:v14 seid:v15 keyIdentifier:v16 accessDocumentPresent:v11 accessDocumentSignedTimestamp:v37 revocationDocumentPresent:v9 revocationDocumentSignedTimestamp:v32];
+        v34 = [MEMORY[0x1E699A138] updateAliroCredentialDocumentStatus:sessionCopy seid:seidCopy keyIdentifier:identifierCopy accessDocumentPresent:presentCopy accessDocumentSignedTimestamp:hexEncoding revocationDocumentPresent:documentPresentCopy revocationDocumentSignedTimestamp:hexEncoding2];
 
         goto LABEL_11;
       }
@@ -1857,14 +1857,14 @@ LABEL_10:
 
     else
     {
-      v37 = 0;
-      if (v18)
+      hexEncoding = 0;
+      if (signedDateCopy)
       {
         goto LABEL_4;
       }
     }
 
-    v32 = 0;
+    hexEncoding2 = 0;
     goto LABEL_10;
   }
 
@@ -1881,17 +1881,17 @@ LABEL_11:
   return v34;
 }
 
-- (void)generateSEEncryptionCertificateForSubCredentialId:(id)a3 completion:(id)a4
+- (void)generateSEEncryptionCertificateForSubCredentialId:(id)id completion:(id)completion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  idCopy = id;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v5)
+    if (idCopy)
     {
       v12 = 0;
-      v7 = [MEMORY[0x1E699A138] getHydraEncryptionCert:v5 session:0 seid:0 outError:&v12];
+      v7 = [MEMORY[0x1E699A138] getHydraEncryptionCert:idCopy session:0 seid:0 outError:&v12];
       v8 = v12;
       v9 = PKLogFacilityTypeGetObject(0x17uLL);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1911,7 +1911,7 @@ LABEL_11:
         v10 = v7;
       }
 
-      (v6)[2](v6, v10, v8);
+      (completionCopy)[2](completionCopy, v10, v8);
     }
 
     else
@@ -1924,21 +1924,21 @@ LABEL_11:
       }
 
       v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKSubcredentialProvisioningErrorDomain" code:1 userInfo:0];
-      v6[2](v6, 0, v8);
+      completionCopy[2](completionCopy, 0, v8);
     }
   }
 }
 
-- (id)storeSEBlobForSubcredentialIdentifier:(id)a3 seBlob:(id)a4
+- (id)storeSEBlobForSubcredentialIdentifier:(id)identifier seBlob:(id)blob
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  identifierCopy = identifier;
+  blobCopy = blob;
+  v7 = blobCopy;
+  if (identifierCopy && blobCopy)
   {
     v14 = 0;
-    v8 = [MEMORY[0x1E699A138] updateHydraKey:v5 session:0 seid:0 encryptedSEData:v6 outError:&v14];
+    v8 = [MEMORY[0x1E699A138] updateHydraKey:identifierCopy session:0 seid:0 encryptedSEData:blobCopy outError:&v14];
     v9 = v14;
     v10 = PKLogFacilityTypeGetObject(0x17uLL);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1972,15 +1972,15 @@ LABEL_11:
   return v9;
 }
 
-- (id)privacyKeysForGroupIdentifier:(id)a3 privacyKeyIdentifier:(id)a4 outError:(id *)a5
+- (id)privacyKeysForGroupIdentifier:(id)identifier privacyKeyIdentifier:(id)keyIdentifier outError:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E69C86E0];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 sharedManager];
+  keyIdentifierCopy = keyIdentifier;
+  identifierCopy = identifier;
+  sharedManager = [v7 sharedManager];
   v18 = 0;
-  v11 = [v10 privacyKeysForGroupIdentifier:v9 privacyKeyIdentifier:v8 outError:&v18];
+  v11 = [sharedManager privacyKeysForGroupIdentifier:identifierCopy privacyKeyIdentifier:keyIdentifierCopy outError:&v18];
 
   v12 = v18;
   if (v12)
@@ -1993,11 +1993,11 @@ LABEL_11:
       _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "Failed to get privacy keys: %@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v14 = v12;
       v15 = 0;
-      *a5 = v12;
+      *error = v12;
     }
 
     else
@@ -2033,25 +2033,25 @@ uint64_t __75__PKDAManager_privacyKeysForGroupIdentifier_privacyKeyIdentifier_ou
   return v7;
 }
 
-- (id)createPrivacyKeyForGroupIdentifier:(id)a3 outError:(id *)a4
+- (id)createPrivacyKeyForGroupIdentifier:(id)identifier outError:(id *)error
 {
   v5 = MEMORY[0x1E69C86E0];
-  v6 = a3;
-  v7 = [v5 sharedManager];
-  v8 = [v7 createPrivacyKeyForGroupIdentifier:v6 withOptions:0 outError:a4];
+  identifierCopy = identifier;
+  sharedManager = [v5 sharedManager];
+  v8 = [sharedManager createPrivacyKeyForGroupIdentifier:identifierCopy withOptions:0 outError:error];
 
   v9 = [[PKLongTermPrivacyKey alloc] initWithSESPrivacyKey:v8];
 
   return v9;
 }
 
-- (BOOL)hasLongTermPrivacyKeyForGroupIdentifier:(id)a3
+- (BOOL)hasLongTermPrivacyKeyForGroupIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E69C86E0];
-  v4 = a3;
-  v5 = [v3 sharedManager];
+  identifierCopy = identifier;
+  sharedManager = [v3 sharedManager];
   v11 = 0;
-  v6 = [v5 privacyKeysForGroupIdentifier:v4 privacyKeyIdentifier:0 outError:&v11];
+  v6 = [sharedManager privacyKeysForGroupIdentifier:identifierCopy privacyKeyIdentifier:0 outError:&v11];
 
   v7 = v11;
   if ([v6 count])
@@ -2069,34 +2069,34 @@ uint64_t __75__PKDAManager_privacyKeysForGroupIdentifier_privacyKeyIdentifier_ou
   return v9;
 }
 
-- (BOOL)deletePrivacyKey:(id)a3 outError:(id *)a4
+- (BOOL)deletePrivacyKey:(id)key outError:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E69C86E0] sharedManager];
-  v7 = [v5 groupIdentifier];
-  v8 = [v5 keyIdentifier];
+  keyCopy = key;
+  mEMORY[0x1E69C86E0] = [MEMORY[0x1E69C86E0] sharedManager];
+  groupIdentifier = [keyCopy groupIdentifier];
+  keyIdentifier = [keyCopy keyIdentifier];
   v21 = 0;
-  v9 = [v6 privacyKeysForGroupIdentifier:v7 privacyKeyIdentifier:v8 outError:&v21];
+  v9 = [mEMORY[0x1E69C86E0] privacyKeysForGroupIdentifier:groupIdentifier privacyKeyIdentifier:keyIdentifier outError:&v21];
   v10 = v21;
 
   if (v10)
   {
-    if (a4)
+    if (error)
     {
       v11 = v10;
-      *a4 = v10;
+      *error = v10;
     }
 
-    v12 = PKLogFacilityTypeGetObject(0x17uLL);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    firstObject = PKLogFacilityTypeGetObject(0x17uLL);
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v5 keyIdentifier];
+      keyIdentifier2 = [keyCopy keyIdentifier];
       *buf = 138412546;
-      v23 = v13;
+      v23 = keyIdentifier2;
       v24 = 2112;
       v25 = v10;
-      _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "Failed to find privacy key with identifier %@: %@", buf, 0x16u);
+      _os_log_impl(&dword_1AD337000, firstObject, OS_LOG_TYPE_DEFAULT, "Failed to find privacy key with identifier %@: %@", buf, 0x16u);
     }
 
     v14 = 0;
@@ -2104,25 +2104,25 @@ uint64_t __75__PKDAManager_privacyKeysForGroupIdentifier_privacyKeyIdentifier_ou
 
   else
   {
-    v12 = [v9 firstObject];
+    firstObject = [v9 firstObject];
     v20 = 0;
-    v14 = [v6 deletePrivacyKey:v12 outError:&v20];
+    v14 = [mEMORY[0x1E69C86E0] deletePrivacyKey:firstObject outError:&v20];
     v15 = v20;
     v10 = v15;
-    if (a4 || (v14 & 1) == 0)
+    if (error || (v14 & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v16 = v15;
-        *a4 = v10;
+        *error = v10;
       }
 
       v17 = PKLogFacilityTypeGetObject(0x17uLL);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v5 keyIdentifier];
+        keyIdentifier3 = [keyCopy keyIdentifier];
         *buf = 138412546;
-        v23 = v18;
+        v23 = keyIdentifier3;
         v24 = 2112;
         v25 = v10;
         _os_log_impl(&dword_1AD337000, v17, OS_LOG_TYPE_DEFAULT, "Failed to delete privacy key with identifier %@: %@", buf, 0x16u);
@@ -2138,30 +2138,30 @@ uint64_t __75__PKDAManager_privacyKeysForGroupIdentifier_privacyKeyIdentifier_ou
   return v14;
 }
 
-- (id)decryptPayload:(id)a3 groupIdentifier:(id)a4 outError:(id *)a5
+- (id)decryptPayload:(id)payload groupIdentifier:(id)identifier outError:(id *)error
 {
   v7 = MEMORY[0x1E69C86E0];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 sharedManager];
-  v11 = [v10 decryptPayload:v9 withGroupIdentifier:v8 outError:a5];
+  identifierCopy = identifier;
+  payloadCopy = payload;
+  sharedManager = [v7 sharedManager];
+  v11 = [sharedManager decryptPayload:payloadCopy withGroupIdentifier:identifierCopy outError:error];
 
   return v11;
 }
 
-- (void)credentialDidActivateWithCredential:(id)a3 completion:(id)a4
+- (void)credentialDidActivateWithCredential:(id)credential completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  credentialCopy = credential;
+  completionCopy = completion;
   managementSessionManager = self->_managementSessionManager;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __62__PKDAManager_credentialDidActivateWithCredential_completion___block_invoke;
   v12[3] = &unk_1E79CD108;
-  v13 = v6;
-  v14 = v7;
-  v9 = v6;
-  v10 = v7;
+  v13 = credentialCopy;
+  v14 = completionCopy;
+  v9 = credentialCopy;
+  v10 = completionCopy;
   v11 = managementSessionManager;
   [(PKDASessionManager *)v11 performBlockWithSession:v12];
 }
@@ -2201,22 +2201,22 @@ void __62__PKDAManager_credentialDidActivateWithCredential_completion___block_in
   }
 }
 
-- (void)updateCredentialConfigurationForCredential:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)updateCredentialConfigurationForCredential:(id)credential configuration:(id)configuration completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  credentialCopy = credential;
+  configurationCopy = configuration;
+  completionCopy = completion;
   managementSessionManager = self->_managementSessionManager;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __83__PKDAManager_updateCredentialConfigurationForCredential_configuration_completion___block_invoke;
   v16[3] = &unk_1E79CD288;
-  v18 = v9;
-  v19 = v10;
-  v17 = v8;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v18 = configurationCopy;
+  v19 = completionCopy;
+  v17 = credentialCopy;
+  v12 = configurationCopy;
+  v13 = credentialCopy;
+  v14 = completionCopy;
   v15 = managementSessionManager;
   [(PKDASessionManager *)v15 performBlockWithSession:v16];
 }
@@ -2257,9 +2257,9 @@ void __83__PKDAManager_updateCredentialConfigurationForCredential_configuration_
   }
 }
 
-+ (void)aliroCompatibilityManifestWithCompletion:(id)a3
++ (void)aliroCompatibilityManifestWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v13 = 0;
   v4 = [MEMORY[0x1E699A138] getAliroSupportedProtocolVersions:&v13];
   v5 = v13;
@@ -2277,40 +2277,40 @@ void __83__PKDAManager_updateCredentialConfigurationForCredential_configuration_
   if (v7)
   {
     v8 = [PKAliroCompatibilityManifest alloc];
-    v9 = [v4 bleAdvertisingVersions];
-    v10 = [v4 supportedBLEUWBProtocolVersions];
-    v11 = [v4 expeditedTransactionSupportedProtocolVersions];
-    v12 = [(PKAliroCompatibilityManifest *)v8 initWithSupportedBLEAdvertisingVersions:v9 supportedBLEUWBProtocolVersions:v10 supportedExpeditedTransactionProtocolVersions:v11];
+    bleAdvertisingVersions = [v4 bleAdvertisingVersions];
+    supportedBLEUWBProtocolVersions = [v4 supportedBLEUWBProtocolVersions];
+    expeditedTransactionSupportedProtocolVersions = [v4 expeditedTransactionSupportedProtocolVersions];
+    v12 = [(PKAliroCompatibilityManifest *)v8 initWithSupportedBLEAdvertisingVersions:bleAdvertisingVersions supportedBLEUWBProtocolVersions:supportedBLEUWBProtocolVersions supportedExpeditedTransactionProtocolVersions:expeditedTransactionSupportedProtocolVersions];
 
-    v3[2](v3, v12, 0);
+    completionCopy[2](completionCopy, v12, 0);
   }
 
   else
   {
-    (v3)[2](v3, 0, v5);
+    (completionCopy)[2](completionCopy, 0, v5);
   }
 }
 
-- (void)deleteCredentials:(id)a3 completion:(id)a4
+- (void)deleteCredentials:(id)credentials completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 pk_createArrayByApplyingBlock:&__block_literal_global_177];
-  [(PKDAManager *)self deleteCredentialsForIdentifiers:v7 completion:v6];
+  completionCopy = completion;
+  v7 = [credentials pk_createArrayByApplyingBlock:&__block_literal_global_177];
+  [(PKDAManager *)self deleteCredentialsForIdentifiers:v7 completion:completionCopy];
 }
 
-- (void)deleteCredentialsForIdentifiers:(id)a3 completion:(id)a4
+- (void)deleteCredentialsForIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   managementSessionManager = self->_managementSessionManager;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __58__PKDAManager_deleteCredentialsForIdentifiers_completion___block_invoke;
   v12[3] = &unk_1E79CD108;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = identifiersCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifiersCopy;
   v11 = managementSessionManager;
   [(PKDASessionManager *)v11 performBlockWithSession:v12];
 }
@@ -2463,19 +2463,19 @@ uint64_t __58__PKDAManager_deleteCredentialsForIdentifiers_completion___block_in
   return v4();
 }
 
-- (void)deleteCredentialsForReaderIdentifiers:(id)a3 completion:(id)a4
+- (void)deleteCredentialsForReaderIdentifiers:(id)identifiers completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   managementSessionManager = self->_managementSessionManager;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __64__PKDAManager_deleteCredentialsForReaderIdentifiers_completion___block_invoke;
   v12[3] = &unk_1E79CD108;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = identifiersCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifiersCopy;
   v11 = managementSessionManager;
   [(PKDASessionManager *)v11 performBlockWithSession:v12];
 }
@@ -2646,19 +2646,19 @@ uint64_t __64__PKDAManager_deleteCredentialsForReaderIdentifiers_completion___bl
   return result;
 }
 
-- (void)deleteCredential:(id)a3 completion:(id)a4
+- (void)deleteCredential:(id)credential completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  credentialCopy = credential;
+  completionCopy = completion;
   managementSessionManager = self->_managementSessionManager;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __43__PKDAManager_deleteCredential_completion___block_invoke;
   v12[3] = &unk_1E79CD108;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = credentialCopy;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = credentialCopy;
   v11 = managementSessionManager;
   [(PKDASessionManager *)v11 performBlockWithSession:v12];
 }
@@ -2721,27 +2721,27 @@ void __43__PKDAManager_deleteCredential_completion___block_invoke_2(uint64_t a1,
   }
 }
 
-- (void)createInviteForShare:(id)a3 forCredential:(id)a4 analyticsUpdateConfig:(id)a5 authorization:(id)a6 completion:(id)a7
+- (void)createInviteForShare:(id)share forCredential:(id)credential analyticsUpdateConfig:(id)config authorization:(id)authorization completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (v16)
+  shareCopy = share;
+  credentialCopy = credential;
+  configCopy = config;
+  authorizationCopy = authorization;
+  completionCopy = completion;
+  v17 = completionCopy;
+  if (completionCopy)
   {
     sharingSessionManager = self->_sharingSessionManager;
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __97__PKDAManager_createInviteForShare_forCredential_analyticsUpdateConfig_authorization_completion___block_invoke;
     v20[3] = &unk_1E79CD428;
-    v26 = v16;
-    v21 = v12;
-    v22 = v13;
-    v23 = v15;
-    v24 = self;
-    v25 = v14;
+    v26 = completionCopy;
+    v21 = shareCopy;
+    v22 = credentialCopy;
+    v23 = authorizationCopy;
+    selfCopy = self;
+    v25 = configCopy;
     v19 = sharingSessionManager;
     [(PKDASessionManager *)v19 performBlockWithSession:v20];
   }
@@ -2954,37 +2954,37 @@ void __97__PKDAManager_createInviteForShare_forCredential_analyticsUpdateConfig_
   (*(*(a1 + 48) + 16))();
 }
 
-- (int64_t)_DAKeySharingAnalyticsFlowFromPKSharingInvitationFlow:(unint64_t)a3
+- (int64_t)_DAKeySharingAnalyticsFlowFromPKSharingInvitationFlow:(unint64_t)flow
 {
-  if (a3 - 1 >= 6)
+  if (flow - 1 >= 6)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return flow;
   }
 }
 
-- (void)setTransportChannelIdentifier:(id)a3 forCredential:(id)a4 forCredentialShare:(id)a5 completion:(id)a6
+- (void)setTransportChannelIdentifier:(id)identifier forCredential:(id)credential forCredentialShare:(id)share completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v13)
+  identifierCopy = identifier;
+  credentialCopy = credential;
+  shareCopy = share;
+  completionCopy = completion;
+  v14 = completionCopy;
+  if (completionCopy)
   {
     sharingSessionManager = self->_sharingSessionManager;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __89__PKDAManager_setTransportChannelIdentifier_forCredential_forCredentialShare_completion___block_invoke;
     v17[3] = &unk_1E79CD450;
-    v21 = v13;
-    v18 = v10;
-    v19 = v11;
-    v20 = v12;
+    v21 = completionCopy;
+    v18 = identifierCopy;
+    v19 = credentialCopy;
+    v20 = shareCopy;
     v16 = sharingSessionManager;
     [(PKDASessionManager *)v16 performBlockWithSession:v17];
   }
@@ -3023,14 +3023,14 @@ void __89__PKDAManager_setTransportChannelIdentifier_forCredential_forCredential
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)handleOutstandingMessage:(id)a3 subcredentialIdentifier:(id)a4 credentialShareIdentifier:(id)a5 transportIdentifier:(id)a6 completion:(id)a7
+- (void)handleOutstandingMessage:(id)message subcredentialIdentifier:(id)identifier credentialShareIdentifier:(id)shareIdentifier transportIdentifier:(id)transportIdentifier completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a7;
-  if (v12)
+  shareIdentifierCopy = shareIdentifier;
+  transportIdentifierCopy = transportIdentifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v13 = PKDACarKeySharingMessageFromMessage(a3);
+    v13 = PKDACarKeySharingMessageFromMessage(message);
     if (v13)
     {
       v14 = MEMORY[0x1E699A138];
@@ -3038,8 +3038,8 @@ void __89__PKDAManager_setTransportChannelIdentifier_forCredential_forCredential
       v16[1] = 3221225472;
       v16[2] = __121__PKDAManager_handleOutstandingMessage_subcredentialIdentifier_credentialShareIdentifier_transportIdentifier_completion___block_invoke;
       v16[3] = &unk_1E79C4450;
-      v17 = v12;
-      [v14 handleSharingMessage:v13 forInvitationIdentifier:v10 fromMailboxIdentifier:v11 completionHandler:v16];
+      v17 = completionCopy;
+      [v14 handleSharingMessage:v13 forInvitationIdentifier:shareIdentifierCopy fromMailboxIdentifier:transportIdentifierCopy completionHandler:v16];
     }
 
     else
@@ -3051,27 +3051,27 @@ void __89__PKDAManager_setTransportChannelIdentifier_forCredential_forCredential
         _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "PKDAManager: Error: unable to create DACarKeySharingMessage", buf, 2u);
       }
 
-      (*(v12 + 2))(v12, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (void)routingInformationForInvitationWithIdentifier:(id)a3 fromMailboxIdentifier:(id)a4 completionHandler:(id)a5
+- (void)routingInformationForInvitationWithIdentifier:(id)identifier fromMailboxIdentifier:(id)mailboxIdentifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  identifierCopy = identifier;
+  mailboxIdentifierCopy = mailboxIdentifier;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (handlerCopy)
   {
     sharingSessionManager = self->_sharingSessionManager;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __101__PKDAManager_routingInformationForInvitationWithIdentifier_fromMailboxIdentifier_completionHandler___block_invoke;
     v14[3] = &unk_1E79CD4A0;
-    v17 = v10;
-    v15 = v8;
-    v16 = v9;
+    v17 = handlerCopy;
+    v15 = identifierCopy;
+    v16 = mailboxIdentifierCopy;
     v13 = sharingSessionManager;
     [(PKDASessionManager *)v13 performBlockWithSession:v14];
   }
@@ -3110,22 +3110,22 @@ void __101__PKDAManager_routingInformationForInvitationWithIdentifier_fromMailbo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getProductPlanIdentifierRequestForInvitationWithIdentifier:(id)a3 fromMailboxIdentifier:(id)a4 completion:(id)a5
+- (void)getProductPlanIdentifierRequestForInvitationWithIdentifier:(id)identifier fromMailboxIdentifier:(id)mailboxIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  identifierCopy = identifier;
+  mailboxIdentifierCopy = mailboxIdentifier;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
     sharingSessionManager = self->_sharingSessionManager;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __107__PKDAManager_getProductPlanIdentifierRequestForInvitationWithIdentifier_fromMailboxIdentifier_completion___block_invoke;
     v14[3] = &unk_1E79CD4A0;
-    v17 = v10;
-    v15 = v8;
-    v16 = v9;
+    v17 = completionCopy;
+    v15 = identifierCopy;
+    v16 = mailboxIdentifierCopy;
     v13 = sharingSessionManager;
     [(PKDASessionManager *)v13 performBlockWithSession:v14];
   }
@@ -3164,20 +3164,20 @@ void __107__PKDAManager_getProductPlanIdentifierRequestForInvitationWithIdentifi
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)getPretrackShareDataForShare:(id)a3 withCompletion:(id)a4
+- (void)getPretrackShareDataForShare:(id)share withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  shareCopy = share;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     sharingSessionManager = self->_sharingSessionManager;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __59__PKDAManager_getPretrackShareDataForShare_withCompletion___block_invoke;
     v11[3] = &unk_1E79CD540;
-    v13 = v7;
-    v12 = v6;
+    v13 = completionCopy;
+    v12 = shareCopy;
     v10 = sharingSessionManager;
     [(PKDASessionManager *)v10 performBlockWithSession:v11];
   }
@@ -3270,20 +3270,20 @@ void __59__PKDAManager_getPretrackShareDataForShare_withCompletion___block_invok
   (*(v9 + 16))(v9, v10, v7);
 }
 
-- (void)getPretrackRequestForKeyWithIdentifier:(id)a3 withCompletion:(id)a4
+- (void)getPretrackRequestForKeyWithIdentifier:(id)identifier withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     sharingSessionManager = self->_sharingSessionManager;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __69__PKDAManager_getPretrackRequestForKeyWithIdentifier_withCompletion___block_invoke;
     v11[3] = &unk_1E79CD540;
-    v13 = v7;
-    v12 = v6;
+    v13 = completionCopy;
+    v12 = identifierCopy;
     v10 = sharingSessionManager;
     [(PKDASessionManager *)v10 performBlockWithSession:v11];
   }
@@ -3321,22 +3321,22 @@ void __69__PKDAManager_getPretrackRequestForKeyWithIdentifier_withCompletion___b
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)startShareAcceptanceFlowWithInvitation:(id)a3 fromMailboxIdentifier:(id)a4 completion:(id)a5
+- (void)startShareAcceptanceFlowWithInvitation:(id)invitation fromMailboxIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  invitationCopy = invitation;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
     sharingSessionManager = self->_sharingSessionManager;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __87__PKDAManager_startShareAcceptanceFlowWithInvitation_fromMailboxIdentifier_completion___block_invoke;
     v14[3] = &unk_1E79CD4A0;
-    v17 = v10;
-    v15 = v8;
-    v16 = v9;
+    v17 = completionCopy;
+    v15 = invitationCopy;
+    v16 = identifierCopy;
     v13 = sharingSessionManager;
     [(PKDASessionManager *)v13 performBlockWithSession:v14];
   }
@@ -3389,27 +3389,27 @@ void __87__PKDAManager_startShareAcceptanceFlowWithInvitation_fromMailboxIdentif
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)acceptCrossPlatformInvitationWithIdentifier:(id)a3 transportChannelIdentifier:(id)a4 activationCode:(id)a5 encryptedProductPlanIdentifierContainer:(id)a6 completion:(id)a7
+- (void)acceptCrossPlatformInvitationWithIdentifier:(id)identifier transportChannelIdentifier:(id)channelIdentifier activationCode:(id)code encryptedProductPlanIdentifierContainer:(id)container completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (v16)
+  identifierCopy = identifier;
+  channelIdentifierCopy = channelIdentifier;
+  codeCopy = code;
+  containerCopy = container;
+  completionCopy = completion;
+  v17 = completionCopy;
+  if (completionCopy)
   {
     sharingSessionManager = self->_sharingSessionManager;
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __152__PKDAManager_acceptCrossPlatformInvitationWithIdentifier_transportChannelIdentifier_activationCode_encryptedProductPlanIdentifierContainer_completion___block_invoke;
     v20[3] = &unk_1E79CD428;
-    v26 = v16;
-    v21 = v12;
-    v22 = v13;
-    v23 = v14;
-    v24 = v15;
-    v25 = self;
+    v26 = completionCopy;
+    v21 = identifierCopy;
+    v22 = channelIdentifierCopy;
+    v23 = codeCopy;
+    v24 = containerCopy;
+    selfCopy = self;
     v19 = sharingSessionManager;
     [(PKDASessionManager *)v19 performBlockWithSession:v20];
   }
@@ -3476,19 +3476,19 @@ void __152__PKDAManager_acceptCrossPlatformInvitationWithIdentifier_transportCha
   }
 }
 
-- (void)deviceCredentialForIdentifier:(id)a3 completion:(id)a4
+- (void)deviceCredentialForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   managementSessionManager = self->_managementSessionManager;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __56__PKDAManager_deviceCredentialForIdentifier_completion___block_invoke;
   v11[3] = &unk_1E79CD108;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   [(PKDASessionManager *)managementSessionManager performBlockWithSession:v11];
 }
 
@@ -3560,19 +3560,19 @@ uint64_t __56__PKDAManager_deviceCredentialForIdentifier_completion___block_invo
   return v8;
 }
 
-- (void)accountAttestionRequestForCredential:(id)a3 withCompletion:(id)a4
+- (void)accountAttestionRequestForCredential:(id)credential withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  credentialCopy = credential;
+  completionCopy = completion;
   managementSessionManager = self->_managementSessionManager;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __67__PKDAManager_accountAttestionRequestForCredential_withCompletion___block_invoke;
   v12[3] = &unk_1E79CD108;
-  v13 = v6;
-  v14 = v7;
-  v9 = v6;
-  v10 = v7;
+  v13 = credentialCopy;
+  v14 = completionCopy;
+  v9 = credentialCopy;
+  v10 = completionCopy;
   v11 = managementSessionManager;
   [(PKDASessionManager *)v11 performBlockWithSession:v12];
 }
@@ -3609,22 +3609,22 @@ void __67__PKDAManager_accountAttestionRequestForCredential_withCompletion___blo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)setAccountAttestation:(id)a3 forCredential:(id)a4 withCompletion:(id)a5
+- (void)setAccountAttestation:(id)attestation forCredential:(id)credential withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  attestationCopy = attestation;
+  credentialCopy = credential;
+  completionCopy = completion;
   sharingSessionManager = self->_sharingSessionManager;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __66__PKDAManager_setAccountAttestation_forCredential_withCompletion___block_invoke;
   v16[3] = &unk_1E79CD4A0;
-  v18 = v9;
-  v19 = v10;
-  v17 = v8;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v18 = credentialCopy;
+  v19 = completionCopy;
+  v17 = attestationCopy;
+  v12 = credentialCopy;
+  v13 = attestationCopy;
+  v14 = completionCopy;
   v15 = sharingSessionManager;
   [(PKDASessionManager *)v15 performBlockWithSession:v16];
 }
@@ -3661,22 +3661,22 @@ void __66__PKDAManager_setAccountAttestation_forCredential_withCompletion___bloc
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)setAccountAttestation:(id)a3 forUpgradeCredential:(id)a4 withCompletion:(id)a5
+- (void)setAccountAttestation:(id)attestation forUpgradeCredential:(id)credential withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  attestationCopy = attestation;
+  credentialCopy = credential;
+  completionCopy = completion;
   managementSessionManager = self->_managementSessionManager;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __73__PKDAManager_setAccountAttestation_forUpgradeCredential_withCompletion___block_invoke;
   v16[3] = &unk_1E79CD288;
-  v18 = v9;
-  v19 = v10;
-  v17 = v8;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v18 = credentialCopy;
+  v19 = completionCopy;
+  v17 = attestationCopy;
+  v12 = credentialCopy;
+  v13 = attestationCopy;
+  v14 = completionCopy;
   v15 = managementSessionManager;
   [(PKDASessionManager *)v15 performBlockWithSession:v16];
 }
@@ -3713,22 +3713,22 @@ void __73__PKDAManager_setAccountAttestation_forUpgradeCredential_withCompletion
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)retryActivationCodeForCredentialIdentifier:(id)a3 activationCode:(id)a4 completion:(id)a5
+- (void)retryActivationCodeForCredentialIdentifier:(id)identifier activationCode:(id)code completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  codeCopy = code;
+  completionCopy = completion;
   sharingSessionManager = self->_sharingSessionManager;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __84__PKDAManager_retryActivationCodeForCredentialIdentifier_activationCode_completion___block_invoke;
   v16[3] = &unk_1E79CD4A0;
-  v18 = v9;
-  v19 = v10;
-  v17 = v8;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v18 = codeCopy;
+  v19 = completionCopy;
+  v17 = identifierCopy;
+  v12 = codeCopy;
+  v13 = identifierCopy;
+  v14 = completionCopy;
   v15 = sharingSessionManager;
   [(PKDASessionManager *)v15 performBlockWithSession:v16];
 }
@@ -3806,17 +3806,17 @@ LABEL_14:
   v11();
 }
 
-- (void)rejectInvitation:(id)a3 completion:(id)a4
+- (void)rejectInvitation:(id)invitation completion:(id)completion
 {
-  v5 = a4;
-  v6 = PKDACarKeySharingMessageFromMessage(a3);
+  completionCopy = completion;
+  v6 = PKDACarKeySharingMessageFromMessage(invitation);
   v7 = MEMORY[0x1E699A138];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __43__PKDAManager_rejectInvitation_completion___block_invoke;
   v9[3] = &unk_1E79CD608;
-  v10 = v5;
-  v8 = v5;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [v7 rejectSharingInvitation:v6 completionHandler:v9];
 }
 
@@ -3838,34 +3838,34 @@ void __43__PKDAManager_rejectInvitation_completion___block_invoke(uint64_t a1, v
   }
 }
 
-- (void)acceptInvitationWithIdentifier:(id)a3 activationCode:(id)a4 completion:(id)a5
+- (void)acceptInvitationWithIdentifier:(id)identifier activationCode:(id)code completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  codeCopy = code;
+  identifierCopy = identifier;
   v11 = objc_alloc_init(PKSubcredentialSharingAnalyticsData);
-  [(PKDAManager *)self acceptInvitationWithIdentifier:v10 activationCode:v9 analyticsUpdateConfig:v11 completion:v8];
+  [(PKDAManager *)self acceptInvitationWithIdentifier:identifierCopy activationCode:codeCopy analyticsUpdateConfig:v11 completion:completionCopy];
 }
 
-- (void)acceptInvitationWithIdentifier:(id)a3 activationCode:(id)a4 analyticsUpdateConfig:(id)a5 completion:(id)a6
+- (void)acceptInvitationWithIdentifier:(id)identifier activationCode:(id)code analyticsUpdateConfig:(id)config completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (v13)
+  identifierCopy = identifier;
+  codeCopy = code;
+  configCopy = config;
+  completionCopy = completion;
+  v14 = completionCopy;
+  if (completionCopy)
   {
     sharingSessionManager = self->_sharingSessionManager;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __94__PKDAManager_acceptInvitationWithIdentifier_activationCode_analyticsUpdateConfig_completion___block_invoke;
     v17[3] = &unk_1E79CD658;
-    v22 = v13;
-    v18 = v10;
-    v19 = v11;
-    v20 = self;
-    v21 = v12;
+    v22 = completionCopy;
+    v18 = identifierCopy;
+    v19 = codeCopy;
+    selfCopy = self;
+    v21 = configCopy;
     v16 = sharingSessionManager;
     [(PKDASessionManager *)v16 performBlockWithSession:v17];
   }
@@ -3916,22 +3916,22 @@ void __94__PKDAManager_acceptInvitationWithIdentifier_activationCode_analyticsUp
   (*(*(a1 + 72) + 16))();
 }
 
-- (void)retryActivationCode:(id)a3 forInvitationIdentifier:(id)a4 completion:(id)a5
+- (void)retryActivationCode:(id)code forInvitationIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  codeCopy = code;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
     sharingSessionManager = self->_sharingSessionManager;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __70__PKDAManager_retryActivationCode_forInvitationIdentifier_completion___block_invoke;
     v14[3] = &unk_1E79CD4A0;
-    v17 = v10;
-    v15 = v8;
-    v16 = v9;
+    v17 = completionCopy;
+    v15 = codeCopy;
+    v16 = identifierCopy;
     v13 = sharingSessionManager;
     [(PKDASessionManager *)v13 performBlockWithSession:v14];
   }
@@ -3969,22 +3969,22 @@ void __70__PKDAManager_retryActivationCode_forInvitationIdentifier_completion___
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)handleRecipientMessage:(id)a3 forInvitationIdentifier:(id)a4 completion:(id)a5
+- (void)handleRecipientMessage:(id)message forInvitationIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  messageCopy = message;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
     sharingSessionManager = self->_sharingSessionManager;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __73__PKDAManager_handleRecipientMessage_forInvitationIdentifier_completion___block_invoke;
     v14[3] = &unk_1E79CD4A0;
-    v17 = v10;
-    v15 = v8;
-    v16 = v9;
+    v17 = completionCopy;
+    v15 = messageCopy;
+    v16 = identifierCopy;
     v13 = sharingSessionManager;
     [(PKDASessionManager *)v13 performBlockWithSession:v14];
   }
@@ -4037,22 +4037,22 @@ void __73__PKDAManager_handleRecipientMessage_forInvitationIdentifier_completion
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)retryActivationCodeWithInvitationIdentifier:(id)a3 activationCode:(id)a4 completion:(id)a5
+- (void)retryActivationCodeWithInvitationIdentifier:(id)identifier activationCode:(id)code completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  identifierCopy = identifier;
+  codeCopy = code;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
     sharingSessionManager = self->_sharingSessionManager;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __85__PKDAManager_retryActivationCodeWithInvitationIdentifier_activationCode_completion___block_invoke;
     v14[3] = &unk_1E79CD4A0;
-    v17 = v10;
-    v15 = v9;
-    v16 = v8;
+    v17 = completionCopy;
+    v15 = codeCopy;
+    v16 = identifierCopy;
     v13 = sharingSessionManager;
     [(PKDASessionManager *)v13 performBlockWithSession:v14];
   }
@@ -4090,22 +4090,22 @@ void __85__PKDAManager_retryActivationCodeWithInvitationIdentifier_activationCod
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)setEncryptedProductPlanIdentifierContainer:(id)a3 forInvitationIdentifier:(id)a4 completion:(id)a5
+- (void)setEncryptedProductPlanIdentifierContainer:(id)container forInvitationIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  containerCopy = container;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
     sharingSessionManager = self->_sharingSessionManager;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __93__PKDAManager_setEncryptedProductPlanIdentifierContainer_forInvitationIdentifier_completion___block_invoke;
     v14[3] = &unk_1E79CD4A0;
-    v17 = v10;
-    v15 = v8;
-    v16 = v9;
+    v17 = completionCopy;
+    v15 = containerCopy;
+    v16 = identifierCopy;
     v13 = sharingSessionManager;
     [(PKDASessionManager *)v13 performBlockWithSession:v14];
   }
@@ -4143,20 +4143,20 @@ void __93__PKDAManager_setEncryptedProductPlanIdentifierContainer_forInvitationI
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)createSilentInviteForSharingSessionIdentifier:(id)a3 completion:(id)a4
+- (void)createSilentInviteForSharingSessionIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     sharingSessionManager = self->_sharingSessionManager;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __72__PKDAManager_createSilentInviteForSharingSessionIdentifier_completion___block_invoke;
     v11[3] = &unk_1E79CD540;
-    v13 = v7;
-    v12 = v6;
+    v13 = completionCopy;
+    v12 = identifierCopy;
     v10 = sharingSessionManager;
     [(PKDASessionManager *)v10 performBlockWithSession:v11];
   }
@@ -4204,20 +4204,20 @@ void __72__PKDAManager_createSilentInviteForSharingSessionIdentifier_completion_
   }
 }
 
-- (void)accountAttestationRequestForManufacturer:(id)a3 completion:(id)a4
+- (void)accountAttestationRequestForManufacturer:(id)manufacturer completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  manufacturerCopy = manufacturer;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     managementSessionManager = self->_managementSessionManager;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __67__PKDAManager_accountAttestationRequestForManufacturer_completion___block_invoke;
     v11[3] = &unk_1E79CD108;
-    v13 = v7;
-    v12 = v6;
+    v13 = completionCopy;
+    v12 = manufacturerCopy;
     v10 = managementSessionManager;
     [(PKDASessionManager *)v10 performBlockWithSession:v11];
   }
@@ -4257,20 +4257,20 @@ void __67__PKDAManager_accountAttestationRequestForManufacturer_completion___blo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)preWarmForManufacturer:(id)a3 completion:(id)a4
+- (void)preWarmForManufacturer:(id)manufacturer completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  manufacturerCopy = manufacturer;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     managementSessionManager = self->_managementSessionManager;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __49__PKDAManager_preWarmForManufacturer_completion___block_invoke;
     v11[3] = &unk_1E79CD108;
-    v13 = v7;
-    v12 = v6;
+    v13 = completionCopy;
+    v12 = manufacturerCopy;
     v10 = managementSessionManager;
     [(PKDASessionManager *)v10 performBlockWithSession:v11];
   }
@@ -4309,16 +4309,16 @@ void __49__PKDAManager_preWarmForManufacturer_completion___block_invoke_2(uint64
   (*(*(a1 + 40) + 16))();
 }
 
-+ (BOOL)isSharingEnabledForManufacturerIdentifier:(id)a3 issuerIdentifier:(id)a4 productPlanIdentifier:(id)a5
++ (BOOL)isSharingEnabledForManufacturerIdentifier:(id)identifier issuerIdentifier:(id)issuerIdentifier productPlanIdentifier:(id)planIdentifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  identifierCopy = identifier;
+  issuerIdentifierCopy = issuerIdentifier;
+  planIdentifierCopy = planIdentifier;
+  if (identifierCopy)
   {
     v16 = 0;
-    v10 = [MEMORY[0x1E699A138] isSharingEnabledForManufacturer:v7 brand:v8 ppid:v9 error:&v16];
+    v10 = [MEMORY[0x1E699A138] isSharingEnabledForManufacturer:identifierCopy brand:issuerIdentifierCopy ppid:planIdentifierCopy error:&v16];
     v11 = v16;
     v12 = PKLogFacilityTypeGetObject(0x17uLL);
     v13 = v12;
@@ -4336,11 +4336,11 @@ void __49__PKDAManager_preWarmForManufacturer_completion___block_invoke_2(uint64
     {
       v15 = NSStringFromBOOL();
       *buf = 138413058;
-      v18 = v9;
+      v18 = planIdentifierCopy;
       v19 = 2112;
-      v20 = v8;
+      v20 = issuerIdentifierCopy;
       v21 = 2112;
-      v22 = v9;
+      v22 = planIdentifierCopy;
       v23 = 2112;
       v24 = v15;
       _os_log_debug_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEBUG, "PKDAManager: isSharingEnabledForManufacturerIdentifier: %@, issuerIdentifier: %@, productPlanIdentifier: %@, returned result: %@", buf, 0x2Au);
@@ -4362,23 +4362,23 @@ void __49__PKDAManager_preWarmForManufacturer_completion___block_invoke_2(uint64
   return v10;
 }
 
-- (void)hasUpgradeAvailableForKeyWithCredential:(id)a3 versionType:(unint64_t)a4 versions:(id)a5 completion:(id)a6
+- (void)hasUpgradeAvailableForKeyWithCredential:(id)credential versionType:(unint64_t)type versions:(id)versions completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v12)
+  credentialCopy = credential;
+  versionsCopy = versions;
+  completionCopy = completion;
+  v13 = completionCopy;
+  if (completionCopy)
   {
     managementSessionManager = self->_managementSessionManager;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __87__PKDAManager_hasUpgradeAvailableForKeyWithCredential_versionType_versions_completion___block_invoke;
     v16[3] = &unk_1E79CD6F8;
-    v19 = v12;
-    v20 = a4;
-    v17 = v10;
-    v18 = v11;
+    v19 = completionCopy;
+    typeCopy = type;
+    v17 = credentialCopy;
+    v18 = versionsCopy;
     v15 = managementSessionManager;
     [(PKDASessionManager *)v15 performBlockWithSession:v16];
   }
@@ -4430,24 +4430,24 @@ void __87__PKDAManager_hasUpgradeAvailableForKeyWithCredential_versionType_versi
   v9(v8, v12, v7, v11);
 }
 
-- (void)upgradeKeyWithCredential:(id)a3 versionType:(unint64_t)a4 version:(unint64_t)a5 upgradeInformation:(id)a6 completion:(id)a7
+- (void)upgradeKeyWithCredential:(id)credential versionType:(unint64_t)type version:(unint64_t)version upgradeInformation:(id)information completion:(id)completion
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  credentialCopy = credential;
+  informationCopy = information;
+  completionCopy = completion;
   managementSessionManager = self->_managementSessionManager;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __90__PKDAManager_upgradeKeyWithCredential_versionType_version_upgradeInformation_completion___block_invoke;
   v20[3] = &unk_1E79CD720;
-  v23 = v14;
-  v24 = a4;
-  v25 = a5;
-  v21 = v12;
-  v22 = v13;
-  v16 = v13;
-  v17 = v12;
-  v18 = v14;
+  v23 = completionCopy;
+  typeCopy = type;
+  versionCopy = version;
+  v21 = credentialCopy;
+  v22 = informationCopy;
+  v16 = informationCopy;
+  v17 = credentialCopy;
+  v18 = completionCopy;
   v19 = managementSessionManager;
   [(PKDASessionManager *)v19 performBlockWithSession:v20];
 }
@@ -4494,21 +4494,21 @@ void __90__PKDAManager_upgradeKeyWithCredential_versionType_version_upgradeInfor
   }
 }
 
-- (void)commitUpgradeForKeyWithCredential:(id)a3 versionType:(unint64_t)a4 version:(unint64_t)a5 completion:(id)a6
+- (void)commitUpgradeForKeyWithCredential:(id)credential versionType:(unint64_t)type version:(unint64_t)version completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  credentialCopy = credential;
+  completionCopy = completion;
   managementSessionManager = self->_managementSessionManager;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __80__PKDAManager_commitUpgradeForKeyWithCredential_versionType_version_completion___block_invoke;
   v16[3] = &unk_1E79CD748;
-  v17 = v10;
-  v18 = v11;
-  v19 = a4;
-  v20 = a5;
-  v13 = v10;
-  v14 = v11;
+  v17 = credentialCopy;
+  v18 = completionCopy;
+  typeCopy = type;
+  versionCopy = version;
+  v13 = credentialCopy;
+  v14 = completionCopy;
   v15 = managementSessionManager;
   [(PKDASessionManager *)v15 performBlockWithSession:v16];
 }
@@ -4554,21 +4554,21 @@ void __80__PKDAManager_commitUpgradeForKeyWithCredential_versionType_version_com
   }
 }
 
-- (void)revertUpgradeForKeyWithCredential:(id)a3 versionType:(unint64_t)a4 version:(unint64_t)a5 completion:(id)a6
+- (void)revertUpgradeForKeyWithCredential:(id)credential versionType:(unint64_t)type version:(unint64_t)version completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  credentialCopy = credential;
+  completionCopy = completion;
   managementSessionManager = self->_managementSessionManager;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __80__PKDAManager_revertUpgradeForKeyWithCredential_versionType_version_completion___block_invoke;
   v16[3] = &unk_1E79CD748;
-  v17 = v10;
-  v18 = v11;
-  v19 = a4;
-  v20 = a5;
-  v13 = v10;
-  v14 = v11;
+  v17 = credentialCopy;
+  v18 = completionCopy;
+  typeCopy = type;
+  versionCopy = version;
+  v13 = credentialCopy;
+  v14 = completionCopy;
   v15 = managementSessionManager;
   [(PKDASessionManager *)v15 performBlockWithSession:v16];
 }

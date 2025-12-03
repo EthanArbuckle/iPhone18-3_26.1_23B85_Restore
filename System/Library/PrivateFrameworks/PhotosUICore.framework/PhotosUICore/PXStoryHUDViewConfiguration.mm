@@ -1,9 +1,9 @@
 @interface PXStoryHUDViewConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)textInsets;
 - (CGPoint)textRelativePosition;
 - (PXStoryHUDViewConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -29,18 +29,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PXStoryHUDViewConfiguration *)self text];
-  v4 = [v3 hash];
-  v5 = [(PXStoryHUDViewConfiguration *)self title];
-  v6 = [v5 hash];
+  text = [(PXStoryHUDViewConfiguration *)self text];
+  v4 = [text hash];
+  title = [(PXStoryHUDViewConfiguration *)self title];
+  v6 = [title hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v13 = 1;
   }
@@ -50,10 +50,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXStoryHUDViewConfiguration *)self text];
-      v7 = [(PXStoryHUDViewConfiguration *)v5 text];
-      if (v6 == v7 || [v6 isEqualToString:v7])
+      v5 = equalCopy;
+      text = [(PXStoryHUDViewConfiguration *)self text];
+      text2 = [(PXStoryHUDViewConfiguration *)v5 text];
+      if (text == text2 || [text isEqualToString:text2])
       {
         [(PXStoryHUDViewConfiguration *)self textRelativePosition];
         v9 = v8;
@@ -85,20 +85,20 @@
         [(PXStoryHUDViewConfiguration *)v5 fontSize];
         if (v22 == v23)
         {
-          v24 = [(PXStoryHUDViewConfiguration *)self tintColor];
-          v25 = [(PXStoryHUDViewConfiguration *)v5 tintColor];
-          if ((v24 == v25 || [v24 isEqual:v25]) && (-[PXStoryHUDViewConfiguration borderWidth](self, "borderWidth"), v27 = v26, -[PXStoryHUDViewConfiguration borderWidth](v5, "borderWidth"), v27 == v28))
+          tintColor = [(PXStoryHUDViewConfiguration *)self tintColor];
+          tintColor2 = [(PXStoryHUDViewConfiguration *)v5 tintColor];
+          if ((tintColor == tintColor2 || [tintColor isEqual:tintColor2]) && (-[PXStoryHUDViewConfiguration borderWidth](self, "borderWidth"), v27 = v26, -[PXStoryHUDViewConfiguration borderWidth](v5, "borderWidth"), v27 == v28))
           {
-            v29 = [(PXStoryHUDViewConfiguration *)self title];
-            v30 = [(PXStoryHUDViewConfiguration *)v5 title];
-            if (v29 == v30)
+            title = [(PXStoryHUDViewConfiguration *)self title];
+            title2 = [(PXStoryHUDViewConfiguration *)v5 title];
+            if (title == title2)
             {
               v13 = 1;
             }
 
             else
             {
-              v13 = [v29 isEqualToString:v30];
+              v13 = [title isEqualToString:title2];
             }
           }
 
@@ -125,7 +125,7 @@ LABEL_23:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   objc_storeStrong(v4 + 1, self->_text);

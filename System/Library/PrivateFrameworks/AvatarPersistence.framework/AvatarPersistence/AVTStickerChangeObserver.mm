@@ -1,52 +1,52 @@
 @interface AVTStickerChangeObserver
 - (AVTPBackendImageHandlingDelegate)imageHandlingDelegate;
-- (AVTStickerChangeObserver)initWithStickerBackend:(id)a3 environment:(id)a4;
-- (void)processChangesForChangeTracker:(id)a3 completionHandler:(id)a4;
+- (AVTStickerChangeObserver)initWithStickerBackend:(id)backend environment:(id)environment;
+- (void)processChangesForChangeTracker:(id)tracker completionHandler:(id)handler;
 @end
 
 @implementation AVTStickerChangeObserver
 
-- (AVTStickerChangeObserver)initWithStickerBackend:(id)a3 environment:(id)a4
+- (AVTStickerChangeObserver)initWithStickerBackend:(id)backend environment:(id)environment
 {
-  v7 = a3;
-  v8 = a4;
+  backendCopy = backend;
+  environmentCopy = environment;
   v12.receiver = self;
   v12.super_class = AVTStickerChangeObserver;
   v9 = [(AVTStickerChangeObserver *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_environment, a4);
-    objc_storeStrong(&v10->_stickerBackend, a3);
+    objc_storeStrong(&v9->_environment, environment);
+    objc_storeStrong(&v10->_stickerBackend, backend);
   }
 
   return v10;
 }
 
-- (void)processChangesForChangeTracker:(id)a3 completionHandler:(id)a4
+- (void)processChangesForChangeTracker:(id)tracker completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  trackerCopy = tracker;
+  handlerCopy = handler;
   v8 = self->_environment;
-  v9 = [(AVTCoreEnvironment *)v8 stickerImageStoreLocation];
+  stickerImageStoreLocation = [(AVTCoreEnvironment *)v8 stickerImageStoreLocation];
   v10 = self->_stickerBackend;
   WeakRetained = objc_loadWeakRetained(&self->_imageHandlingDelegate);
   objc_initWeak(&location, v10);
   objc_initWeak(&from, WeakRetained);
-  v12 = [(AVTCoreEnvironment *)self->_environment logger];
+  logger = [(AVTCoreEnvironment *)self->_environment logger];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __77__AVTStickerChangeObserver_processChangesForChangeTracker_completionHandler___block_invoke;
   v16[3] = &unk_278CFAFF0;
   objc_copyWeak(&v20, &location);
   objc_copyWeak(&v21, &from);
-  v13 = v6;
+  v13 = trackerCopy;
   v17 = v13;
-  v14 = v9;
+  v14 = stickerImageStoreLocation;
   v18 = v14;
-  v15 = v7;
+  v15 = handlerCopy;
   v19 = v15;
-  [v12 deletingStickerRecentsForRemoteChanges:v16];
+  [logger deletingStickerRecentsForRemoteChanges:v16];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&v20);

@@ -3,62 +3,62 @@
 + (NFCNDEFPayload)wellKnownTypeTextPayloadWithString:(NSString *)text locale:(NSLocale *)locale;
 + (NFCNDEFPayload)wellKnownTypeURIPayloadWithString:(NSString *)uri;
 + (NFCNDEFPayload)wellKnownTypeURIPayloadWithURL:(NSURL *)url;
-- (NFCNDEFPayload)initWithCoder:(id)a3;
-- (NFCNDEFPayload)initWithFormatType:(unsigned __int8)a3 type:(id)a4 identifier:(id)a5 payload:(id)a6 chunkSize:(unint64_t)a7;
+- (NFCNDEFPayload)initWithCoder:(id)coder;
+- (NFCNDEFPayload)initWithFormatType:(unsigned __int8)type type:(id)a4 identifier:(id)identifier payload:(id)payload chunkSize:(unint64_t)size;
 - (NSString)wellKnownTypeTextPayloadWithLocale:(NSLocale *)locale;
 - (NSURL)wellKnownTypeURIPayload;
 - (id)asData;
 - (id)description;
-- (id)resolveURIString:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)resolveURIString:(id)string;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFCNDEFPayload
 
-- (NFCNDEFPayload)initWithCoder:(id)a3
+- (NFCNDEFPayload)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = NFCNDEFPayload;
   v5 = [(NFCNDEFPayload *)&v13 init];
   if (v5)
   {
-    v5->_typeNameFormat = [v4 decodeIntegerForKey:@"typeNameFormat"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v5->_typeNameFormat = [coderCopy decodeIntegerForKey:@"typeNameFormat"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     type = v5->_type;
     v5->_type = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"payload"];
     payload = v5->_payload;
     v5->_payload = v10;
 
-    v5->_chunkSize = [v4 decodeIntegerForKey:@"chunkSize"];
+    v5->_chunkSize = [coderCopy decodeIntegerForKey:@"chunkSize"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   typeNameFormat = self->_typeNameFormat;
-  v5 = a3;
-  [v5 encodeInteger:typeNameFormat forKey:@"typeNameFormat"];
-  [v5 encodeObject:self->_type forKey:@"type"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_payload forKey:@"payload"];
-  [v5 encodeInteger:self->_chunkSize forKey:@"chunkSize"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:typeNameFormat forKey:@"typeNameFormat"];
+  [coderCopy encodeObject:self->_type forKey:@"type"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_payload forKey:@"payload"];
+  [coderCopy encodeInteger:self->_chunkSize forKey:@"chunkSize"];
 }
 
-- (NFCNDEFPayload)initWithFormatType:(unsigned __int8)a3 type:(id)a4 identifier:(id)a5 payload:(id)a6 chunkSize:(unint64_t)a7
+- (NFCNDEFPayload)initWithFormatType:(unsigned __int8)type type:(id)a4 identifier:(id)identifier payload:(id)payload chunkSize:(unint64_t)size
 {
   v50 = *MEMORY[0x277D85DE8];
   v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  identifierCopy = identifier;
+  payloadCopy = payload;
   v41.receiver = self;
   v41.super_class = NFCNDEFPayload;
   v16 = [(NFCNDEFPayload *)&v41 init];
@@ -70,10 +70,10 @@ LABEL_25:
   }
 
   v17 = [v13 length];
-  v18 = [v14 length] + v17;
-  if ((v18 + [v15 length]) <= 0x20000)
+  v18 = [identifierCopy length] + v17;
+  if ((v18 + [payloadCopy length]) <= 0x20000)
   {
-    v16->_typeNameFormat = a3;
+    v16->_typeNameFormat = type;
     if (v13)
     {
       v31 = [v13 copy];
@@ -87,9 +87,9 @@ LABEL_25:
     type = v16->_type;
     v16->_type = v31;
 
-    if (v14)
+    if (identifierCopy)
     {
-      v33 = [v14 copy];
+      v33 = [identifierCopy copy];
     }
 
     else
@@ -100,9 +100,9 @@ LABEL_25:
     identifier = v16->_identifier;
     v16->_identifier = v33;
 
-    if (v15)
+    if (payloadCopy)
     {
-      v35 = [v15 copy];
+      v35 = [payloadCopy copy];
     }
 
     else
@@ -113,13 +113,13 @@ LABEL_25:
     payload = v16->_payload;
     v16->_payload = v35;
 
-    v37 = 0xFFFFFFFFLL;
-    if (a7 - 0x100000000 >= 0xFFFFFFFF00000001)
+    sizeCopy = 0xFFFFFFFFLL;
+    if (size - 0x100000000 >= 0xFFFFFFFF00000001)
     {
-      v37 = a7;
+      sizeCopy = size;
     }
 
-    v16->_chunkSize = v37;
+    v16->_chunkSize = sizeCopy;
     goto LABEL_25;
   }
 
@@ -215,8 +215,8 @@ LABEL_26:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v28 + 1) + 8 * i) asData];
-          if (!v12)
+          asData = [*(*(&v28 + 1) + 8 * i) asData];
+          if (!asData)
           {
             Logger = NFLogGetLogger();
             if (Logger)
@@ -266,8 +266,8 @@ LABEL_26:
             goto LABEL_22;
           }
 
-          v13 = v12;
-          [v6 appendData:v12];
+          v13 = asData;
+          [v6 appendData:asData];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v28 objects:v41 count:16];
@@ -326,9 +326,9 @@ LABEL_7:
     if (Logger)
     {
       v20 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v24 = 45;
       if (isMetaClass)
@@ -345,7 +345,7 @@ LABEL_7:
       goto LABEL_29;
     }
 
-    v25 = object_getClass(a1);
+    v25 = object_getClass(self);
     if (class_isMetaClass(v25))
     {
       v26 = 43;
@@ -356,7 +356,7 @@ LABEL_7:
       v26 = 45;
     }
 
-    v27 = object_getClassName(a1);
+    v27 = object_getClassName(self);
     v28 = sel_getName(a2);
     *buf = 67109890;
     v46 = v26;
@@ -388,9 +388,9 @@ LABEL_7:
   if (v30)
   {
     v31 = v30;
-    v32 = object_getClass(a1);
+    v32 = object_getClass(self);
     v33 = class_isMetaClass(v32);
-    v34 = object_getClassName(a1);
+    v34 = object_getClassName(self);
     v43 = sel_getName(a2);
     v35 = 45;
     if (v33)
@@ -404,7 +404,7 @@ LABEL_7:
   v16 = NFSharedLogGetLogger();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
-    v36 = object_getClass(a1);
+    v36 = object_getClass(self);
     if (class_isMetaClass(v36))
     {
       v37 = 43;
@@ -415,7 +415,7 @@ LABEL_7:
       v37 = 45;
     }
 
-    v38 = object_getClassName(a1);
+    v38 = object_getClassName(self);
     v39 = sel_getName(a2);
     *buf = 67109890;
     v46 = v37;
@@ -441,16 +441,16 @@ LABEL_30:
 
 + (NFCNDEFPayload)wellKnownTypeURIPayloadWithURL:(NSURL *)url
 {
-  v4 = [(NSURL *)url absoluteString];
-  v5 = [a1 wellKnownTypeURIPayloadWithString:v4];
+  absoluteString = [(NSURL *)url absoluteString];
+  v5 = [self wellKnownTypeURIPayloadWithString:absoluteString];
 
   return v5;
 }
 
 + (NFCNDEFPayload)wellKnowTypeTextPayloadWithString:(NSString *)text locale:(NSLocale *)locale
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:a1 file:@"NFCNDEFPayload.m" lineNumber:178 description:@"Please use -wellKnownTypeTextPayloadWithString:locale: replacement"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"NFCNDEFPayload.m" lineNumber:178 description:@"Please use -wellKnownTypeTextPayloadWithString:locale: replacement"];
 
   return 0;
 }
@@ -458,10 +458,10 @@ LABEL_30:
 + (NFCNDEFPayload)wellKnownTypeTextPayloadWithString:(NSString *)text locale:(NSLocale *)locale
 {
   v5 = text;
-  v6 = [(NSLocale *)locale languageCode];
-  v15 = [v6 length] & 0x3F | 0x80;
+  languageCode = [(NSLocale *)locale languageCode];
+  v15 = [languageCode length] & 0x3F | 0x80;
   v7 = [objc_alloc(MEMORY[0x277CBEB28]) initWithBytes:&v15 length:1];
-  v8 = [v6 dataUsingEncoding:1];
+  v8 = [languageCode dataUsingEncoding:1];
   [v7 appendData:v8];
 
   if ([(NSString *)v5 length])
@@ -680,11 +680,11 @@ LABEL_18:
   return v20;
 }
 
-- (id)resolveURIString:(id)a3
+- (id)resolveURIString:(id)string
 {
   v3 = MEMORY[0x277CBEBC0];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithString:v4 encodingInvalidCharacters:1];
+  stringCopy = string;
+  v5 = [[v3 alloc] initWithString:stringCopy encodingInvalidCharacters:1];
 
   return v5;
 }

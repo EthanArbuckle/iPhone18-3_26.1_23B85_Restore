@@ -5,11 +5,11 @@
 - (SSAuthenticationContext)authenticationContext;
 - (id)responseBlock;
 - (void)run;
-- (void)setAuthenticationContext:(id)a3;
-- (void)setClientToken:(id)a3;
-- (void)setRequestingBundleID:(id)a3;
-- (void)setRequestingBundleVersion:(id)a3;
-- (void)setResponseBlock:(id)a3;
+- (void)setAuthenticationContext:(id)context;
+- (void)setClientToken:(id)token;
+- (void)setRequestingBundleID:(id)d;
+- (void)setRequestingBundleVersion:(id)version;
+- (void)setResponseBlock:(id)block;
 @end
 
 @implementation CloudServiceAPITokenOperation
@@ -23,11 +23,11 @@
   return v3;
 }
 
-- (void)setClientToken:(id)a3
+- (void)setClientToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   [(CloudServiceAPITokenOperation *)self lock];
-  v5 = [v4 copy];
+  v5 = [tokenCopy copy];
 
   clientToken = self->_clientToken;
   self->_clientToken = v5;
@@ -44,11 +44,11 @@
   return v3;
 }
 
-- (void)setRequestingBundleID:(id)a3
+- (void)setRequestingBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(CloudServiceAPITokenOperation *)self lock];
-  v5 = [v4 copy];
+  v5 = [dCopy copy];
 
   requestingBundleID = self->_requestingBundleID;
   self->_requestingBundleID = v5;
@@ -65,11 +65,11 @@
   return v3;
 }
 
-- (void)setRequestingBundleVersion:(id)a3
+- (void)setRequestingBundleVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   [(CloudServiceAPITokenOperation *)self lock];
-  v5 = [v4 copy];
+  v5 = [versionCopy copy];
 
   requestingBundleVersion = self->_requestingBundleVersion;
   self->_requestingBundleVersion = v5;
@@ -86,11 +86,11 @@
   return v3;
 }
 
-- (void)setAuthenticationContext:(id)a3
+- (void)setAuthenticationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   [(CloudServiceAPITokenOperation *)self lock];
-  v5 = [v4 copy];
+  v5 = [contextCopy copy];
 
   authenticationContext = self->_authenticationContext;
   self->_authenticationContext = v5;
@@ -98,13 +98,13 @@
   [(CloudServiceAPITokenOperation *)self unlock];
 }
 
-- (void)setResponseBlock:(id)a3
+- (void)setResponseBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(CloudServiceAPITokenOperation *)self lock];
-  if (self->_responseBlock != v6)
+  if (self->_responseBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     responseBlock = self->_responseBlock;
     self->_responseBlock = v4;
   }
@@ -144,7 +144,7 @@
     v9 = +[DaemonProtocolDataProvider provider];
     [v8 setDataProvider:v9];
 
-    v71 = [(CloudServiceAPITokenOperation *)self authenticationContext];
+    authenticationContext = [(CloudServiceAPITokenOperation *)self authenticationContext];
     [v8 setAuthenticationContext:?];
     v10 = objc_alloc_init(SSMutableURLRequestProperties);
     v85[0] = SSHTTPHeaderXAppleRequestingBundleID;
@@ -187,11 +187,11 @@
 
     v69 = v19;
     v20 = +[SSDevice currentDevice];
-    v21 = [v20 uniqueDeviceIdentifier];
+    uniqueDeviceIdentifier = [v20 uniqueDeviceIdentifier];
 
-    if ([v21 length])
+    if ([uniqueDeviceIdentifier length])
     {
-      [v18 setObject:v21 forKey:@"guid"];
+      [v18 setObject:uniqueDeviceIdentifier forKey:@"guid"];
     }
 
     if (!self->_requestingBundleID || (-[objc_class standardDefaults](off_1003834E0(), "standardDefaults"), v22 = objc_claimAutoreleasedReturnValue(), [v22 mediaLibraryAccessApplicationIdentifiersWithTCCAcceptanceDates], v23 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v23, "objectForKey:", self->_requestingBundleID), v24 = objc_claimAutoreleasedReturnValue(), v23, v22, (v25 = v24) == 0))
@@ -215,20 +215,20 @@
     LODWORD(v28) = [(CloudServiceAPITokenOperation *)self runSubOperation:v8 returningError:&v73];
     v29 = v73;
     v70 = v18;
-    v68 = v21;
+    v68 = uniqueDeviceIdentifier;
     v72 = v29;
     if (!v28)
     {
       if (v29)
       {
-        v41 = [v29 userInfo];
-        v42 = [v41 objectForKeyedSubscript:SSErrorHTTPStatusCodeKey];
+        userInfo = [v29 userInfo];
+        v42 = [userInfo objectForKeyedSubscript:SSErrorHTTPStatusCodeKey];
 
         if (objc_opt_respondsToSelector())
         {
-          v43 = [v42 integerValue];
-          v44 = v43 == 403;
-          if (v43 == 403)
+          integerValue = [v42 integerValue];
+          v44 = integerValue == 403;
+          if (integerValue == 403)
           {
             v45 = 107;
           }
@@ -268,22 +268,22 @@
       goto LABEL_45;
     }
 
-    v30 = [v8 response];
-    v31 = [v8 dataProvider];
-    v32 = [v31 output];
+    response = [v8 response];
+    dataProvider = [v8 dataProvider];
+    output = [dataProvider output];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
 
-      v32 = 0;
+      output = 0;
     }
 
-    v33 = [v30 statusCode];
+    statusCode = [response statusCode];
     v65 = v5;
-    if (v33 == 403)
+    if (statusCode == 403)
     {
-      v34 = [v32 objectForKey:@"error_description"];
+      v34 = [output objectForKey:@"error_description"];
       v35 = v34;
       v36 = &stru_10033CC30;
       if (v34)
@@ -302,9 +302,9 @@
 
     else
     {
-      if ([v30 statusCode] == 200)
+      if ([response statusCode] == 200)
       {
-        v46 = [v32 objectForKey:@"music_token"];
+        v46 = [output objectForKey:@"music_token"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -322,7 +322,7 @@ LABEL_44:
         v7 = [[SSVCloudServiceAPITokenResponse alloc] initWithToken:v47 error:v40];
 
         v5 = v65;
-        if (v33 != 403)
+        if (statusCode != 403)
         {
 LABEL_58:
 
@@ -337,19 +337,19 @@ LABEL_45:
           v51 = +[SSLogConfig sharedConfig];
         }
 
-        v52 = [v51 shouldLog];
+        shouldLog = [v51 shouldLog];
         if ([v51 shouldLogToDisk])
         {
-          v52 |= 2u;
+          shouldLog |= 2u;
         }
 
-        v53 = [v51 OSLogObject];
-        if (!os_log_type_enabled(v53, OS_LOG_TYPE_INFO))
+        oSLogObject = [v51 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
         {
-          v52 &= 2u;
+          shouldLog &= 2u;
         }
 
-        if (v52)
+        if (shouldLog)
         {
           v54 = objc_opt_class();
           requestingBundleID = self->_requestingBundleID;
@@ -375,9 +375,9 @@ LABEL_45:
             goto LABEL_57;
           }
 
-          v53 = [NSString stringWithCString:v58 encoding:4, &v75, v64];
+          oSLogObject = [NSString stringWithCString:v58 encoding:4, &v75, v64];
           free(v58);
-          v63 = v53;
+          v63 = oSLogObject;
           SSFileLog();
         }
 
@@ -403,11 +403,11 @@ LABEL_59:
 
   [(CloudServiceAPITokenOperation *)self unlock];
   v59[2](v59, v7);
-  v61 = [v7 error];
-  [(CloudServiceAPITokenOperation *)self setError:v61];
+  error = [v7 error];
+  [(CloudServiceAPITokenOperation *)self setError:error];
 
-  v62 = [v7 error];
-  [(CloudServiceAPITokenOperation *)self setSuccess:v62 != 0, v63];
+  error2 = [v7 error];
+  [(CloudServiceAPITokenOperation *)self setSuccess:error2 != 0, v63];
 }
 
 @end

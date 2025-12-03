@@ -1,21 +1,21 @@
 @interface PKImageDescriptorBitmap
-+ (id)createForImage:(id)a3 withTintColor:(int64_t)a4 hasBackground:(BOOL)a5;
-- (PKImageDescriptorBitmap)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)createForImage:(id)image withTintColor:(int64_t)color hasBackground:(BOOL)background;
+- (PKImageDescriptorBitmap)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKImageDescriptorBitmap
 
-+ (id)createForImage:(id)a3 withTintColor:(int64_t)a4 hasBackground:(BOOL)a5
++ (id)createForImage:(id)image withTintColor:(int64_t)color hasBackground:(BOOL)background
 {
-  v8 = a3;
-  if (v8)
+  imageCopy = image;
+  if (imageCopy)
   {
-    v9 = [PKImageDescriptor _createForType:a4 withTintColor:a5 hasBackground:?];
-    objc_storeStrong(v9 + 5, a3);
-    v10 = [v8 imageHash];
+    v9 = [PKImageDescriptor _createForType:color withTintColor:background hasBackground:?];
+    objc_storeStrong(v9 + 5, image);
+    imageHash = [imageCopy imageHash];
     v11 = v9[4];
-    v9[4] = v10;
+    v9[4] = imageHash;
   }
 
   else
@@ -26,19 +26,19 @@
   return v9;
 }
 
-- (PKImageDescriptorBitmap)initWithCoder:(id)a3
+- (PKImageDescriptorBitmap)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKImageDescriptorBitmap;
-  v5 = [(PKImageDescriptor *)&v11 initWithCoder:v4];
+  v5 = [(PKImageDescriptor *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
     image = v5->_image;
     v5->_image = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageHash"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageHash"];
     imageHash = v5->_imageHash;
     v5->_imageHash = v8;
   }
@@ -46,14 +46,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKImageDescriptorBitmap;
-  v4 = a3;
-  [(PKImageDescriptor *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_image forKey:{@"image", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_imageHash forKey:@"imageHash"];
+  coderCopy = coder;
+  [(PKImageDescriptor *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_image forKey:{@"image", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_imageHash forKey:@"imageHash"];
 }
 
 @end

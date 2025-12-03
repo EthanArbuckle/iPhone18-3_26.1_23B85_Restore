@@ -9,12 +9,12 @@
 {
   v10.receiver = self;
   v10.super_class = AAProximityPairingStatusPayloadB444;
-  v9 = [(AAProximityPairingStatusPayloadBeatsUntethered *)&v10 describeProperties];
-  v7 = [(AAProximityPairingStatusPayloadB444 *)self leftColor];
+  describeProperties = [(AAProximityPairingStatusPayloadBeatsUntethered *)&v10 describeProperties];
+  leftColor = [(AAProximityPairingStatusPayloadB444 *)self leftColor];
   NSAppendPrintF_safe();
-  v3 = v9;
+  v3 = describeProperties;
 
-  v8 = [(AAProximityPairingStatusPayloadB444 *)self rightColor];
+  rightColor = [(AAProximityPairingStatusPayloadB444 *)self rightColor];
   NSAppendPrintF_safe();
   v4 = v3;
 

@@ -1,12 +1,12 @@
 @interface RMConfigurationSubscriberEventStream
-+ (id)_configuredConfigurationTypesWithScope:(int64_t)a3;
-+ (id)_eventDescriptorByNameForEventStreamNamed:(id)a3;
-+ (id)newConfigurationSubscriberEventStreamWithScope:(int64_t)a3 applicators:(id)a4 publisherClass:(Class)a5;
-+ (void)_setupEventHandlerWithScope:(int64_t)a3;
++ (id)_configuredConfigurationTypesWithScope:(int64_t)scope;
++ (id)_eventDescriptorByNameForEventStreamNamed:(id)named;
++ (id)newConfigurationSubscriberEventStreamWithScope:(int64_t)scope applicators:(id)applicators publisherClass:(Class)class;
++ (void)_setupEventHandlerWithScope:(int64_t)scope;
 - (NSArray)configurationTypes;
-- (RMConfigurationSubscriberEventStream)initWithScope:(int64_t)a3;
-- (void)_fetchConfigurations:(id)a3;
-- (void)_handleEvent:(id)a3;
+- (RMConfigurationSubscriberEventStream)initWithScope:(int64_t)scope;
+- (void)_fetchConfigurations:(id)configurations;
+- (void)_handleEvent:(id)event;
 - (void)_setupEventHandler;
 - (void)dealloc;
 - (void)start;
@@ -14,41 +14,41 @@
 
 @implementation RMConfigurationSubscriberEventStream
 
-+ (id)newConfigurationSubscriberEventStreamWithScope:(int64_t)a3 applicators:(id)a4 publisherClass:(Class)a5
++ (id)newConfigurationSubscriberEventStreamWithScope:(int64_t)scope applicators:(id)applicators publisherClass:(Class)class
 {
-  v7 = a4;
-  v8 = [[RMConfigurationSubscriberEventStream alloc] initWithScope:a3];
-  if (v7)
+  applicatorsCopy = applicators;
+  v8 = [[RMConfigurationSubscriberEventStream alloc] initWithScope:scope];
+  if (applicatorsCopy)
   {
-    v9 = [RMConfigurationSubscriberDelegate sharedDelegateWithApplicators:v7];
+    v9 = [RMConfigurationSubscriberDelegate sharedDelegateWithApplicators:applicatorsCopy];
     [(RMConfigurationSubscriberClient *)v8 setSubscriberDelegate:v9];
   }
 
-  if (a5)
+  if (class)
   {
-    v10 = [RMStatusPublisherDelegate sharedDelegateWithPublisherClass:a5];
+    v10 = [RMStatusPublisherDelegate sharedDelegateWithPublisherClass:class];
     [(RMConfigurationSubscriberClient *)v8 setPublisherDelegate:v10];
   }
 
   return v8;
 }
 
-- (RMConfigurationSubscriberEventStream)initWithScope:(int64_t)a3
+- (RMConfigurationSubscriberEventStream)initWithScope:(int64_t)scope
 {
   v5.receiver = self;
   v5.super_class = RMConfigurationSubscriberEventStream;
   result = [(RMConfigurationSubscriberEventStream *)&v5 init];
   if (result)
   {
-    result->_scope = a3;
+    result->_scope = scope;
   }
 
   return result;
 }
 
-+ (id)_configuredConfigurationTypesWithScope:(int64_t)a3
++ (id)_configuredConfigurationTypesWithScope:(int64_t)scope
 {
-  if (a3 == 1)
+  if (scope == 1)
   {
     v3 = @"com.apple.remotemanagement.configs.daemon";
   }
@@ -58,7 +58,7 @@
     v3 = @"com.apple.remotemanagement.configs.agent";
   }
 
-  v4 = [a1 _eventDescriptorByNameForEventStreamNamed:v3];
+  v4 = [self _eventDescriptorByNameForEventStreamNamed:v3];
   if (MEMORY[0x266720A60]() == MEMORY[0x277D86468])
   {
     v6 = objc_opt_new();
@@ -69,8 +69,8 @@
     v11 = v6;
     v7 = v6;
     xpc_dictionary_apply(v4, applier);
-    v8 = [v7 allObjects];
-    v5 = [v8 sortedArrayUsingSelector:sel_compare_];
+    allObjects = [v7 allObjects];
+    v5 = [allObjects sortedArrayUsingSelector:sel_compare_];
   }
 
   else
@@ -115,9 +115,9 @@ uint64_t __79__RMConfigurationSubscriberEventStream__configuredConfigurationType
   return v6;
 }
 
-+ (id)_eventDescriptorByNameForEventStreamNamed:(id)a3
++ (id)_eventDescriptorByNameForEventStreamNamed:(id)named
 {
-  [a3 UTF8String];
+  [named UTF8String];
   v3 = xpc_copy_event();
 
   return v3;
@@ -127,8 +127,8 @@ uint64_t __79__RMConfigurationSubscriberEventStream__configuredConfigurationType
 {
   if (self->_eventStreamObserver)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_eventStreamObserver];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_eventStreamObserver];
 
     eventStreamObserver = self->_eventStreamObserver;
     self->_eventStreamObserver = 0;
@@ -142,7 +142,7 @@ uint64_t __79__RMConfigurationSubscriberEventStream__configuredConfigurationType
 - (void)start
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 configurationTypes];
+  configurationTypes = [self configurationTypes];
   OUTLINED_FUNCTION_5();
   OUTLINED_FUNCTION_2_0();
   _os_log_debug_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -153,10 +153,10 @@ uint64_t __79__RMConfigurationSubscriberEventStream__configuredConfigurationType
 - (void)_setupEventHandler
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = [(RMConfigurationSubscriberEventStream *)self scope];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  scope = [(RMConfigurationSubscriberEventStream *)self scope];
   v5 = @"com.apple.remotemanagement.configs.agent";
-  if (v4 == 1)
+  if (scope == 1)
   {
     v5 = @"com.apple.remotemanagement.configs.daemon";
   }
@@ -167,7 +167,7 @@ uint64_t __79__RMConfigurationSubscriberEventStream__configuredConfigurationType
   v10 = __58__RMConfigurationSubscriberEventStream__setupEventHandler__block_invoke;
   v11 = &unk_279B05AD0;
   objc_copyWeak(&v12, &location);
-  v7 = [v3 addObserverForName:v6 object:0 queue:0 usingBlock:&v8];
+  v7 = [defaultCenter addObserverForName:v6 object:0 queue:0 usingBlock:&v8];
   [(RMConfigurationSubscriberEventStream *)self setEventStreamObserver:v7, v8, v9, v10, v11];
 
   [objc_opt_class() _setupEventHandlerWithScope:{-[RMConfigurationSubscriberEventStream scope](self, "scope")}];
@@ -184,27 +184,27 @@ void __58__RMConfigurationSubscriberEventStream__setupEventHandler__block_invoke
   [WeakRetained _handleEvent:v5];
 }
 
-- (void)_handleEvent:(id)a3
+- (void)_handleEvent:(id)event
 {
   v21 = *MEMORY[0x277D85DE8];
   v4 = _CFXPCCreateCFObjectFromXPCObject();
-  v5 = [MEMORY[0x277D45F58] configurationSubscriberEventStream];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  configurationSubscriberEventStream = [MEMORY[0x277D45F58] configurationSubscriberEventStream];
+  if (os_log_type_enabled(configurationSubscriberEventStream, OS_LOG_TYPE_INFO))
   {
     v19 = 138543362;
     v20 = v4;
-    _os_log_impl(&dword_261E36000, v5, OS_LOG_TYPE_INFO, "Received event stream message: %{public}@", &v19, 0xCu);
+    _os_log_impl(&dword_261E36000, configurationSubscriberEventStream, OS_LOG_TYPE_INFO, "Received event stream message: %{public}@", &v19, 0xCu);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 objectForKeyedSubscript:@"ConfigurationTypes"];
+    configurationSubscriberEventStream5 = [v4 objectForKeyedSubscript:@"ConfigurationTypes"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v7 = [MEMORY[0x277D45F58] configurationSubscriberEventStream];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      configurationSubscriberEventStream2 = [MEMORY[0x277D45F58] configurationSubscriberEventStream];
+      if (os_log_type_enabled(configurationSubscriberEventStream2, OS_LOG_TYPE_ERROR))
       {
         [RMConfigurationSubscriberEventStream _handleEvent:];
       }
@@ -212,20 +212,20 @@ void __58__RMConfigurationSubscriberEventStream__setupEventHandler__block_invoke
       goto LABEL_21;
     }
 
-    v7 = [MEMORY[0x277CBEB58] setWithArray:v6];
+    configurationSubscriberEventStream2 = [MEMORY[0x277CBEB58] setWithArray:configurationSubscriberEventStream5];
     v8 = MEMORY[0x277CBEB58];
-    v9 = [(RMConfigurationSubscriberEventStream *)self configurationTypes];
-    v10 = [v8 setWithArray:v9];
+    configurationTypes = [(RMConfigurationSubscriberEventStream *)self configurationTypes];
+    v10 = [v8 setWithArray:configurationTypes];
 
-    [v7 minusSet:v10];
-    v11 = [MEMORY[0x277CBEB98] setWithArray:v6];
+    [configurationSubscriberEventStream2 minusSet:v10];
+    v11 = [MEMORY[0x277CBEB98] setWithArray:configurationSubscriberEventStream5];
     [v10 intersectSet:v11];
 
-    if ([v7 count])
+    if ([configurationSubscriberEventStream2 count])
     {
       v12 = [v10 count];
-      v13 = [MEMORY[0x277D45F58] configurationSubscriberEventStream];
-      v14 = os_log_type_enabled(v13, OS_LOG_TYPE_ERROR);
+      configurationSubscriberEventStream3 = [MEMORY[0x277D45F58] configurationSubscriberEventStream];
+      v14 = os_log_type_enabled(configurationSubscriberEventStream3, OS_LOG_TYPE_ERROR);
       if (!v12)
       {
         if (v14)
@@ -242,25 +242,25 @@ void __58__RMConfigurationSubscriberEventStream__setupEventHandler__block_invoke
       }
     }
 
-    v15 = [v10 allObjects];
-    v16 = [v15 sortedArrayUsingSelector:sel_compare_];
+    allObjects = [v10 allObjects];
+    v16 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
-    v17 = [MEMORY[0x277D45F58] configurationSubscriberEventStream];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+    configurationSubscriberEventStream4 = [MEMORY[0x277D45F58] configurationSubscriberEventStream];
+    if (os_log_type_enabled(configurationSubscriberEventStream4, OS_LOG_TYPE_DEBUG))
     {
       [RMConfigurationSubscriberEventStream _handleEvent:];
     }
 
     [(RMConfigurationSubscriberEventStream *)self _fetchConfigurations:v16];
-    v6 = v16;
+    configurationSubscriberEventStream5 = v16;
 LABEL_20:
 
 LABEL_21:
     goto LABEL_22;
   }
 
-  v6 = [MEMORY[0x277D45F58] configurationSubscriberEventStream];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  configurationSubscriberEventStream5 = [MEMORY[0x277D45F58] configurationSubscriberEventStream];
+  if (os_log_type_enabled(configurationSubscriberEventStream5, OS_LOG_TYPE_ERROR))
   {
     [RMConfigurationSubscriberEventStream _handleEvent:];
   }
@@ -270,25 +270,25 @@ LABEL_22:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchConfigurations:(id)a3
+- (void)_fetchConfigurations:(id)configurations
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D45F58] configurationSubscriberEventStream];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
+  configurationsCopy = configurations;
+  configurationSubscriberEventStream = [MEMORY[0x277D45F58] configurationSubscriberEventStream];
+  if (os_log_type_enabled(configurationSubscriberEventStream, OS_LOG_TYPE_DEBUG))
   {
     [RMConfigurationSubscriberEventStream _fetchConfigurations:?];
   }
 
-  v6 = [MEMORY[0x277CBEB98] setWithArray:v4];
-  v7 = [(RMConfigurationSubscriberEventStream *)self scope];
+  v6 = [MEMORY[0x277CBEB98] setWithArray:configurationsCopy];
+  scope = [(RMConfigurationSubscriberEventStream *)self scope];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__RMConfigurationSubscriberEventStream__fetchConfigurations___block_invoke;
   v9[3] = &unk_279B05AF8;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
-  [(RMConfigurationSubscriberClient *)self fetchConfigurationsWithTypes:v6 scope:v7 completionHandler:v9];
+  v10 = configurationsCopy;
+  v8 = configurationsCopy;
+  [(RMConfigurationSubscriberClient *)self fetchConfigurationsWithTypes:v6 scope:scope completionHandler:v9];
 }
 
 void __61__RMConfigurationSubscriberEventStream__fetchConfigurations___block_invoke(uint64_t a1)
@@ -300,13 +300,13 @@ void __61__RMConfigurationSubscriberEventStream__fetchConfigurations___block_inv
   }
 }
 
-+ (void)_setupEventHandlerWithScope:(int64_t)a3
++ (void)_setupEventHandlerWithScope:(int64_t)scope
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __68__RMConfigurationSubscriberEventStream__setupEventHandlerWithScope___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a3;
+  block[4] = scope;
   if (_setupEventHandlerWithScope__onceToken != -1)
   {
     dispatch_once(&_setupEventHandlerWithScope__onceToken, block);

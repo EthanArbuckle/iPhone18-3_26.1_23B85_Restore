@@ -1,24 +1,24 @@
 @interface PasscodeActiveViewFactory
-- (id)passcodeViewForPasscode:(id)a3 style:(id)a4;
-- (int)_lockStyleForPasscodeType:(int64_t)a3;
+- (id)passcodeViewForPasscode:(id)passcode style:(id)style;
+- (int)_lockStyleForPasscodeType:(int64_t)type;
 @end
 
 @implementation PasscodeActiveViewFactory
 
-- (id)passcodeViewForPasscode:(id)a3 style:(id)a4
+- (id)passcodeViewForPasscode:(id)passcode style:(id)style
 {
-  v6 = a3;
-  v7 = a4;
+  passcodeCopy = passcode;
+  styleCopy = style;
   v8 = +[NSDate date];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __59__PasscodeActiveViewFactory_passcodeViewForPasscode_style___block_invoke;
   v15[3] = &unk_1000AB0D8;
   v15[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v9 = v7;
-  v10 = v6;
+  v16 = passcodeCopy;
+  v17 = styleCopy;
+  v9 = styleCopy;
+  v10 = passcodeCopy;
   v11 = __59__PasscodeActiveViewFactory_passcodeViewForPasscode_style___block_invoke(v15);
   [v11 setShowsEmergencyCallButton:0];
   [v11 setBiometricAuthenticationAllowed:0];
@@ -51,11 +51,11 @@ id __59__PasscodeActiveViewFactory_passcodeViewForPasscode_style___block_invoke(
   return v3;
 }
 
-- (int)_lockStyleForPasscodeType:(int64_t)a3
+- (int)_lockStyleForPasscodeType:(int64_t)type
 {
-  if ((a3 - 2) < 3)
+  if ((type - 2) < 3)
   {
-    return a3 - 1;
+    return type - 1;
   }
 
   else

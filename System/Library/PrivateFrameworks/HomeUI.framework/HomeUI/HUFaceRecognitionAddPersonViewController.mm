@@ -1,30 +1,30 @@
 @interface HUFaceRecognitionAddPersonViewController
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
-- (HUFaceRecognitionAddPersonViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4 searchBar:(id)a5 searchBarPosition:(unint64_t)a6;
-- (HUFaceRecognitionAddPersonViewController)initWithSignificantEvent:(id)a3 home:(id)a4;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
+- (HUFaceRecognitionAddPersonViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style searchBar:(id)bar searchBarPosition:(unint64_t)position;
+- (HUFaceRecognitionAddPersonViewController)initWithSignificantEvent:(id)event home:(id)home;
 - (HUFaceRecognitionAddPersonViewControllerDelegate)delegate;
-- (void)_donePressed:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_donePressed:(id)pressed;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateForSearch;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation HUFaceRecognitionAddPersonViewController
 
-- (HUFaceRecognitionAddPersonViewController)initWithSignificantEvent:(id)a3 home:(id)a4
+- (HUFaceRecognitionAddPersonViewController)initWithSignificantEvent:(id)event home:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 faceClassification];
+  eventCopy = event;
+  homeCopy = home;
+  faceClassification = [eventCopy faceClassification];
 
-  if (!v8)
+  if (!faceClassification)
   {
-    NSLog(&cfstr_FaceClassifica.isa, v6);
+    NSLog(&cfstr_FaceClassifica.isa, eventCopy);
   }
 
-  v9 = [[HUFaceRecognitionAddPersonItemManager alloc] initWithSignificantEvent:v6 home:v7 delegate:0];
+  v9 = [[HUFaceRecognitionAddPersonItemManager alloc] initWithSignificantEvent:eventCopy home:homeCopy delegate:0];
 
   addPersonItemManager = self->_addPersonItemManager;
   self->_addPersonItemManager = v9;
@@ -43,14 +43,14 @@
     v16 = _HULocalizedStringWithDefaultValue(@"HUFaceRecognitionAddPersonViewControllerTitle", @"HUFaceRecognitionAddPersonViewControllerTitle", 1);
     [(HUFaceRecognitionAddPersonViewController *)v13 setTitle:v16];
 
-    v17 = [(HUFaceRecognitionAddPersonViewController *)v13 addPersonItemManager];
-    v18 = [v17 faceCropImageFuture];
+    addPersonItemManager = [(HUFaceRecognitionAddPersonViewController *)v13 addPersonItemManager];
+    faceCropImageFuture = [addPersonItemManager faceCropImageFuture];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __74__HUFaceRecognitionAddPersonViewController_initWithSignificantEvent_home___block_invoke;
     v21[3] = &unk_277DB7E18;
     v22 = v11;
-    v19 = [v18 addSuccessBlock:v21];
+    v19 = [faceCropImageFuture addSuccessBlock:v21];
   }
 
   return v13;
@@ -64,11 +64,11 @@ void __74__HUFaceRecognitionAddPersonViewController_initWithSignificantEvent_hom
   [v4 setImage:v3];
 }
 
-- (HUFaceRecognitionAddPersonViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4 searchBar:(id)a5 searchBarPosition:(unint64_t)a6
+- (HUFaceRecognitionAddPersonViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style searchBar:(id)bar searchBarPosition:(unint64_t)position
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v9 = NSStringFromSelector(sel_initWithSignificantEvent_home_);
-  [v8 handleFailureInMethod:a2 object:self file:@"HUFaceRecognitionAddPersonViewController.m" lineNumber:51 description:{@"%s is unavailable; use %@ instead", "-[HUFaceRecognitionAddPersonViewController initWithItemManager:tableViewStyle:searchBar:searchBarPosition:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUFaceRecognitionAddPersonViewController.m" lineNumber:51 description:{@"%s is unavailable; use %@ instead", "-[HUFaceRecognitionAddPersonViewController initWithItemManager:tableViewStyle:searchBar:searchBarPosition:]", v9}];
 
   return 0;
 }
@@ -78,48 +78,48 @@ void __74__HUFaceRecognitionAddPersonViewController_initWithSignificantEvent_hom
   v8.receiver = self;
   v8.super_class = HUFaceRecognitionAddPersonViewController;
   [(HUSearchableItemTableViewController *)&v8 updateForSearch];
-  v3 = [(HUSearchableItemTableViewController *)self searchBar];
-  v4 = [v3 searchTextField];
-  v5 = [v4 text];
-  v6 = [v5 length] != 0;
-  v7 = [(HUFaceRecognitionAddPersonViewController *)self doneButton];
-  [v7 setEnabled:v6];
+  searchBar = [(HUSearchableItemTableViewController *)self searchBar];
+  searchTextField = [searchBar searchTextField];
+  text = [searchTextField text];
+  v6 = [text length] != 0;
+  doneButton = [(HUFaceRecognitionAddPersonViewController *)self doneButton];
+  [doneButton setEnabled:v6];
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v4 = [a3 latestResults];
-  [v4 objectForKeyedSubscript:*MEMORY[0x277D13CF0]];
+  latestResults = [item latestResults];
+  [latestResults objectForKeyedSubscript:*MEMORY[0x277D13CF0]];
 
   v5 = objc_opt_class();
 
   return v5;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v6 = a3;
+  cellCopy = cell;
   v7 = MEMORY[0x277D756E0];
-  v8 = a4;
-  v9 = [v7 cellConfiguration];
-  v10 = [v8 latestResults];
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-  [v9 setText:v11];
+  itemCopy = item;
+  cellConfiguration = [v7 cellConfiguration];
+  latestResults = [itemCopy latestResults];
+  v11 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  [cellConfiguration setText:v11];
 
-  v12 = [v8 latestResults];
+  latestResults2 = [itemCopy latestResults];
 
-  v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277D13CF0]];
-  [v9 setImage:v13];
+  v13 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13CF0]];
+  [cellConfiguration setImage:v13];
 
-  v14 = [v9 imageProperties];
-  [v14 setMaximumSize:{44.0, 44.0}];
+  imageProperties = [cellConfiguration imageProperties];
+  [imageProperties setMaximumSize:{44.0, 44.0}];
 
-  v15 = [v9 imageProperties];
-  [v15 setCornerRadius:22.0];
+  imageProperties2 = [cellConfiguration imageProperties];
+  [imageProperties2 setCornerRadius:22.0];
 
-  [v6 setContentConfiguration:v9];
+  [cellCopy setContentConfiguration:cellConfiguration];
   objc_opt_class();
-  v18 = v6;
+  v18 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v16 = v18;
@@ -136,16 +136,16 @@ void __74__HUFaceRecognitionAddPersonViewController_initWithSignificantEvent_hom
   [v18 setAccessoryType:0];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v21.receiver = self;
   v21.super_class = HUFaceRecognitionAddPersonViewController;
-  [(HUItemTableViewController *)&v21 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(HUItemTableViewController *)&v21 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   objc_opt_class();
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 displayedItemAtIndexPath:v7];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v9 = [itemManager displayedItemAtIndexPath:pathCopy];
   if (objc_opt_isKindOfClass())
   {
     v10 = v9;
@@ -158,19 +158,19 @@ void __74__HUFaceRecognitionAddPersonViewController_initWithSignificantEvent_hom
 
   v11 = v10;
 
-  v12 = [v11 person];
+  person = [v11 person];
 
-  if (v12)
+  if (person)
   {
-    v13 = [(HUFaceRecognitionAddPersonViewController *)self addPersonItemManager];
-    v14 = [v13 associateFaceClassificationWithExistingPerson:v11];
+    addPersonItemManager = [(HUFaceRecognitionAddPersonViewController *)self addPersonItemManager];
+    v14 = [addPersonItemManager associateFaceClassificationWithExistingPerson:v11];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __78__HUFaceRecognitionAddPersonViewController_tableView_didSelectRowAtIndexPath___block_invoke;
     v16[3] = &unk_277DB7E40;
-    v17 = v6;
-    v18 = v7;
-    v19 = self;
+    v17 = viewCopy;
+    v18 = pathCopy;
+    selfCopy = self;
     v20 = v11;
     v15 = [v14 addCompletionBlock:v16];
   }
@@ -216,55 +216,55 @@ void __78__HUFaceRecognitionAddPersonViewController_tableView_didSelectRowAtInde
   v8.super_class = HUFaceRecognitionAddPersonViewController;
   [(HUSearchableItemTableViewController *)&v8 viewDidLoad];
   [(HUTableViewController *)self setSectionContentInsetFollowsLayoutMargins:0];
-  v3 = [(HUFaceRecognitionAddPersonViewController *)self navigationController];
-  v4 = [v3 navigationBar];
-  [v4 setTranslucent:0];
+  navigationController = [(HUFaceRecognitionAddPersonViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setTranslucent:0];
 
-  v5 = [(HUFaceRecognitionAddPersonViewController *)self doneButton];
-  v6 = [(HUFaceRecognitionAddPersonViewController *)self navigationItem];
-  [v6 setRightBarButtonItem:v5];
+  doneButton = [(HUFaceRecognitionAddPersonViewController *)self doneButton];
+  navigationItem = [(HUFaceRecognitionAddPersonViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:doneButton];
 
-  v7 = [(HUFaceRecognitionAddPersonViewController *)self doneButton];
-  [v7 setEnabled:0];
+  doneButton2 = [(HUFaceRecognitionAddPersonViewController *)self doneButton];
+  [doneButton2 setEnabled:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = HUFaceRecognitionAddPersonViewController;
-  [(HUItemTableViewController *)&v6 viewDidAppear:a3];
-  v4 = [(HUSearchableItemTableViewController *)self searchBar];
-  v5 = [v4 searchTextField];
-  [v5 becomeFirstResponder];
+  [(HUItemTableViewController *)&v6 viewDidAppear:appear];
+  searchBar = [(HUSearchableItemTableViewController *)self searchBar];
+  searchTextField = [searchBar searchTextField];
+  [searchTextField becomeFirstResponder];
 }
 
-- (void)_donePressed:(id)a3
+- (void)_donePressed:(id)pressed
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = HFLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = self;
+    selfCopy = self;
     _os_log_impl(&dword_20CEB6000, v4, OS_LOG_TYPE_DEFAULT, "%@: Done pressed", buf, 0xCu);
   }
 
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v5 na_safeSetObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D13650]];
-  v6 = [(HUFaceRecognitionAddPersonViewController *)self addPersonItemManager];
-  v7 = [v6 faceClassification];
-  v8 = [v7 person];
+  addPersonItemManager = [(HUFaceRecognitionAddPersonViewController *)self addPersonItemManager];
+  faceClassification = [addPersonItemManager faceClassification];
+  person = [faceClassification person];
 
-  [v5 na_safeSetObject:v8 forKey:*MEMORY[0x277D13658]];
-  v9 = [(HUSearchableItemTableViewController *)self searchBar];
-  v10 = [v9 searchTextField];
-  v11 = [v10 text];
+  [v5 na_safeSetObject:person forKey:*MEMORY[0x277D13658]];
+  searchBar = [(HUSearchableItemTableViewController *)self searchBar];
+  searchTextField = [searchBar searchTextField];
+  text = [searchTextField text];
 
-  v12 = [(HUFaceRecognitionAddPersonViewController *)self doneButton];
-  [v12 setEnabled:0];
+  doneButton = [(HUFaceRecognitionAddPersonViewController *)self doneButton];
+  [doneButton setEnabled:0];
 
-  v13 = [(HUFaceRecognitionAddPersonViewController *)self addPersonItemManager];
-  v14 = [v13 associateFaceClassificationWithNewPersonNamed:v11];
+  addPersonItemManager2 = [(HUFaceRecognitionAddPersonViewController *)self addPersonItemManager];
+  v14 = [addPersonItemManager2 associateFaceClassificationWithNewPersonNamed:text];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __57__HUFaceRecognitionAddPersonViewController__donePressed___block_invoke;

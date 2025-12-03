@@ -1,11 +1,11 @@
 @interface TSUSafeSaveAssistant
-+ (BOOL)finishWritingToURL:(id)a3 byMovingItemAtURL:(id)a4 addingAttributes:(id)a5 error:(id *)a6;
-+ (id)temporaryDirectoryURLForWritingToURL:(id)a3 error:(id *)a4;
-+ (void)removeTemporaryDirectoryAtURL:(id)a3;
-+ (void)writeAttributes:(id)a3 toURL:(id)a4;
-- (BOOL)endSaveWithSuccess:(BOOL)a3 toURL:(id)a4 addingAttributes:(id)a5 error:(id *)a6;
++ (BOOL)finishWritingToURL:(id)l byMovingItemAtURL:(id)rL addingAttributes:(id)attributes error:(id *)error;
++ (id)temporaryDirectoryURLForWritingToURL:(id)l error:(id *)error;
++ (void)removeTemporaryDirectoryAtURL:(id)l;
++ (void)writeAttributes:(id)attributes toURL:(id)l;
+- (BOOL)endSaveWithSuccess:(BOOL)success toURL:(id)l addingAttributes:(id)attributes error:(id *)error;
 - (TSUSafeSaveAssistant)init;
-- (id)initForSavingToURL:(id)a3 error:(id *)a4;
+- (id)initForSavingToURL:(id)l error:(id *)error;
 - (void)dealloc;
 - (void)removeTemporaryDirectory;
 @end
@@ -28,21 +28,21 @@
   objc_exception_throw(v8);
 }
 
-- (id)initForSavingToURL:(id)a3 error:(id *)a4
+- (id)initForSavingToURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  lCopy = l;
+  if (lCopy)
   {
     v24.receiver = self;
     v24.super_class = TSUSafeSaveAssistant;
     v7 = [(TSUSafeSaveAssistant *)&v24 init];
     if (v7)
     {
-      v8 = [v6 copy];
+      v8 = [lCopy copy];
       saveURL = v7->_saveURL;
       v7->_saveURL = v8;
 
-      v10 = [objc_opt_class() temporaryDirectoryURLForWritingToURL:v6 error:a4];
+      v10 = [objc_opt_class() temporaryDirectoryURLForWritingToURL:lCopy error:error];
       temporaryDirectoryURL = v7->_temporaryDirectoryURL;
       v7->_temporaryDirectoryURL = v10;
 
@@ -78,15 +78,15 @@
     }
 
     self = v7;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -97,11 +97,11 @@
   [(TSUSafeSaveAssistant *)&v3 dealloc];
 }
 
-- (BOOL)endSaveWithSuccess:(BOOL)a3 toURL:(id)a4 addingAttributes:(id)a5 error:(id *)a6
+- (BOOL)endSaveWithSuccess:(BOOL)success toURL:(id)l addingAttributes:(id)attributes error:(id *)error
 {
-  v8 = a3;
-  v11 = a4;
-  v12 = a5;
+  successCopy = success;
+  lCopy = l;
+  attributesCopy = attributes;
   if (!self->_temporaryDirectoryURL)
   {
     v14 = +[TSUAssertionHandler currentHandler];
@@ -113,14 +113,14 @@
     goto LABEL_5;
   }
 
-  if (!v8)
+  if (!successCopy)
   {
 LABEL_5:
     v13 = 0;
     goto LABEL_6;
   }
 
-  v13 = [objc_opt_class() finishWritingToURL:v11 byMovingItemAtURL:self->_writeURL addingAttributes:v12 error:a6];
+  v13 = [objc_opt_class() finishWritingToURL:lCopy byMovingItemAtURL:self->_writeURL addingAttributes:attributesCopy error:error];
 LABEL_6:
   [(TSUSafeSaveAssistant *)self removeTemporaryDirectory];
 
@@ -137,62 +137,62 @@ LABEL_6:
   }
 }
 
-+ (id)temporaryDirectoryURLForWritingToURL:(id)a3 error:(id *)a4
++ (id)temporaryDirectoryURLForWritingToURL:(id)l error:(id *)error
 {
   v5 = MEMORY[0x277CCAA00];
-  v6 = a3;
-  v7 = [v5 defaultManager];
-  v8 = [v7 URLForDirectory:99 inDomain:1 appropriateForURL:v6 create:1 error:a4];
+  lCopy = l;
+  defaultManager = [v5 defaultManager];
+  v8 = [defaultManager URLForDirectory:99 inDomain:1 appropriateForURL:lCopy create:1 error:error];
 
   return v8;
 }
 
-+ (void)writeAttributes:(id)a3 toURL:(id)a4
++ (void)writeAttributes:(id)attributes toURL:(id)l
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [v9 objectForKey:*MEMORY[0x277CCA110]];
-  if ([v9 count] != (v6 != 0) || objc_msgSend(v6, "BOOLValue"))
+  attributesCopy = attributes;
+  lCopy = l;
+  v6 = [attributesCopy objectForKey:*MEMORY[0x277CCA110]];
+  if ([attributesCopy count] != (v6 != 0) || objc_msgSend(v6, "BOOLValue"))
   {
-    v7 = [v5 path];
-    if (v7)
+    path = [lCopy path];
+    if (path)
     {
-      v8 = [MEMORY[0x277CCAA00] defaultManager];
-      [v8 setAttributes:v9 ofItemAtPath:v7 error:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager setAttributes:attributesCopy ofItemAtPath:path error:0];
     }
   }
 }
 
-+ (BOOL)finishWritingToURL:(id)a3 byMovingItemAtURL:(id)a4 addingAttributes:(id)a5 error:(id *)a6
++ (BOOL)finishWritingToURL:(id)l byMovingItemAtURL:(id)rL addingAttributes:(id)attributes error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  rLCopy = rL;
+  attributesCopy = attributes;
   v12 = MEMORY[0x277CCAA00];
-  v13 = a3;
-  v14 = [v12 defaultManager];
-  v15 = [v13 path];
+  lCopy = l;
+  defaultManager = [v12 defaultManager];
+  path = [lCopy path];
 
-  if ([v14 fileExistsAtPath:v15] && !objc_msgSend(v14, "removeItemAtPath:error:", v15, a6))
+  if ([defaultManager fileExistsAtPath:path] && !objc_msgSend(defaultManager, "removeItemAtPath:error:", path, error))
   {
     v17 = 0;
   }
 
   else
   {
-    [a1 writeAttributes:v11 toURL:v10];
-    v16 = [v10 path];
-    v17 = [v14 moveItemAtPath:v16 toPath:v15 error:a6];
+    [self writeAttributes:attributesCopy toURL:rLCopy];
+    path2 = [rLCopy path];
+    v17 = [defaultManager moveItemAtPath:path2 toPath:path error:error];
   }
 
   return v17;
 }
 
-+ (void)removeTemporaryDirectoryAtURL:(id)a3
++ (void)removeTemporaryDirectoryAtURL:(id)l
 {
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  [v5 removeItemAtURL:v4 error:0];
+  lCopy = l;
+  defaultManager = [v3 defaultManager];
+  [defaultManager removeItemAtURL:lCopy error:0];
 }
 
 @end

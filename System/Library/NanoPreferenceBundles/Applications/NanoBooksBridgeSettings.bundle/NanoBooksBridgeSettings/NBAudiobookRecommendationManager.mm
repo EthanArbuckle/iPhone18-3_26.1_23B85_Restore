@@ -1,16 +1,16 @@
 @interface NBAudiobookRecommendationManager
 + (id)sharedManager;
 - (NBAudiobookRecommendationManager)init;
-- (void)_BCCloudCollectionMemberManagerChanged:(id)a3;
-- (void)_BCCloudReadingNowDetailManagerChanged:(id)a3;
+- (void)_BCCloudCollectionMemberManagerChanged:(id)changed;
+- (void)_BCCloudReadingNowDetailManagerChanged:(id)changed;
 - (void)_notifyAudiobookRecommendationsDidUpdateNotification;
-- (void)_pinningManager:(id)a3 updateWantToRead:(BOOL)a4 updateReadingNow:(BOOL)a5 completion:(id)a6;
-- (void)_reloadRecommendationsFromDefaultsWithCompletion:(id)a3;
+- (void)_pinningManager:(id)manager updateWantToRead:(BOOL)read updateReadingNow:(BOOL)now completion:(id)completion;
+- (void)_reloadRecommendationsFromDefaultsWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)fetchRecommendationsWithQueue:(id)a3 completion:(id)a4;
-- (void)persistRecommendationsSelections:(id)a3;
-- (void)reloadRecommendationsIfNeeded:(id)a3;
-- (void)updateBitRateForAdamID:(id)a3;
+- (void)fetchRecommendationsWithQueue:(id)queue completion:(id)completion;
+- (void)persistRecommendationsSelections:(id)selections;
+- (void)reloadRecommendationsIfNeeded:(id)needed;
+- (void)updateBitRateForAdamID:(id)d;
 @end
 
 @implementation NBAudiobookRecommendationManager
@@ -69,42 +69,42 @@
   [(NBAudiobookRecommendationManager *)&v5 dealloc];
 }
 
-- (void)_pinningManager:(id)a3 updateWantToRead:(BOOL)a4 updateReadingNow:(BOOL)a5 completion:(id)a6
+- (void)_pinningManager:(id)manager updateWantToRead:(BOOL)read updateReadingNow:(BOOL)now completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v13 = a3;
-  v9 = a6;
-  if (v8 && v7)
+  nowCopy = now;
+  readCopy = read;
+  managerCopy = manager;
+  completionCopy = completion;
+  if (readCopy && nowCopy)
   {
-    v10 = [v13 updateWantToReadAndReadingNowWithJaliscoUpdateSuccessful:1 completion:v9];
+    v10 = [managerCopy updateWantToReadAndReadingNowWithJaliscoUpdateSuccessful:1 completion:completionCopy];
   }
 
-  else if (v8)
+  else if (readCopy)
   {
-    v11 = [v13 updateWantToReadWithCompletion:v9];
+    v11 = [managerCopy updateWantToReadWithCompletion:completionCopy];
   }
 
-  else if (v7)
+  else if (nowCopy)
   {
-    v12 = [v13 updateReadingNowWithCompletion:v9];
+    v12 = [managerCopy updateReadingNowWithCompletion:completionCopy];
   }
 }
 
-- (void)reloadRecommendationsIfNeeded:(id)a3
+- (void)reloadRecommendationsIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(NBAudiobookRecommendationManager *)self queue];
+  neededCopy = needed;
+  queue = [(NBAudiobookRecommendationManager *)self queue];
   objc_initWeak(&location, self);
-  if (v5)
+  if (queue)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_FAD8;
     block[3] = &unk_20CC8;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
-    dispatch_async(v5, block);
+    v7 = neededCopy;
+    dispatch_async(queue, block);
 
     objc_destroyWeak(&v8);
   }
@@ -112,32 +112,32 @@
   objc_destroyWeak(&location);
 }
 
-- (void)updateBitRateForAdamID:(id)a3
+- (void)updateBitRateForAdamID:(id)d
 {
-  v4 = a3;
-  v5 = [(NBAudiobookRecommendationManager *)self pinningManager];
+  dCopy = d;
+  pinningManager = [(NBAudiobookRecommendationManager *)self pinningManager];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_FCD0;
   v7[3] = &unk_20CF0;
-  v8 = v4;
-  v6 = v4;
-  [v5 updateBitrateForItemWithAdamID:v6 completion:v7];
+  v8 = dCopy;
+  v6 = dCopy;
+  [pinningManager updateBitrateForItemWithAdamID:v6 completion:v7];
 }
 
-- (void)fetchRecommendationsWithQueue:(id)a3 completion:(id)a4
+- (void)fetchRecommendationsWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v8 = +[NSUUID UUID];
   v9 = NBRecommendationsLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = objc_retainBlock(v7);
+    v10 = objc_retainBlock(completionCopy);
     *buf = 138412802;
     v21 = v8;
     v22 = 2112;
-    v23 = v6;
+    v23 = queueCopy;
     v24 = 2112;
     v25 = v10;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "Will fetch recommendations for request: %@, on queue: %@, completion: %@", buf, 0x20u);
@@ -148,24 +148,24 @@
   v15[1] = 3221225472;
   v15[2] = sub_FED0;
   v15[3] = &unk_20D68;
-  v16 = v6;
-  v17 = self;
+  v16 = queueCopy;
+  selfCopy = self;
   v18 = v8;
-  v19 = v7;
-  v12 = v7;
+  v19 = completionCopy;
+  v12 = completionCopy;
   v13 = v8;
-  v14 = v6;
+  v14 = queueCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)persistRecommendationsSelections:(id)a3
+- (void)persistRecommendationsSelections:(id)selections
 {
-  v3 = a3;
+  selectionsCopy = selections;
   v4 = NBRecommendationsLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v23 = v3;
+    v23 = selectionsCopy;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_INFO, "Saving recommendations for %@", buf, 0xCu);
   }
 
@@ -174,7 +174,7 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v3;
+  v6 = selectionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v7)
   {
@@ -192,23 +192,23 @@
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 type];
-        if (v13 == &dword_0 + 1)
+        type = [v12 type];
+        if (type == &dword_0 + 1)
         {
           [v5 setWantToReadEnabled:{objc_msgSend(v12, "isSelected")}];
         }
 
-        else if (v13)
+        else if (type)
         {
           v14 = NBRecommendationsLog();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
-            v15 = [v12 type];
-            v16 = [v12 title];
+            type2 = [v12 type];
+            title = [v12 title];
             *buf = v17;
-            v23 = v15;
+            v23 = type2;
             v24 = 2112;
-            v25 = v16;
+            v25 = title;
             _os_log_error_impl(&dword_0, v14, OS_LOG_TYPE_ERROR, "Attempt to save Recommendation of unknown type %ld (%@)", buf, 0x16u);
           }
         }
@@ -226,23 +226,23 @@
   }
 }
 
-- (void)_reloadRecommendationsFromDefaultsWithCompletion:(id)a3
+- (void)_reloadRecommendationsFromDefaultsWithCompletion:(id)completion
 {
   queue = self->_queue;
-  v5 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(queue);
   v6 = objc_opt_new();
   v7 = +[NMSMediaPinningManager sharedManager];
-  v8 = [v7 readingNowAudiobooks];
-  v9 = [v8 array];
+  readingNowAudiobooks = [v7 readingNowAudiobooks];
+  array = [readingNowAudiobooks array];
 
-  v10 = [[NBAudiobookRecommendation alloc] initWithAdamIDs:v9 type:0];
+  v10 = [[NBAudiobookRecommendation alloc] initWithAdamIDs:array type:0];
   -[NBAudiobookRecommendation setSelected:](v10, "setSelected:", [v7 isReadingNowEnabled]);
   [v6 addObject:v10];
-  v11 = [v7 wantToReadAudiobooks];
-  v12 = [v11 array];
+  wantToReadAudiobooks = [v7 wantToReadAudiobooks];
+  array2 = [wantToReadAudiobooks array];
 
-  v13 = [[NBAudiobookRecommendation alloc] initWithAdamIDs:v12 type:1];
+  v13 = [[NBAudiobookRecommendation alloc] initWithAdamIDs:array2 type:1];
   -[NBAudiobookRecommendation setSelected:](v13, "setSelected:", [v7 isWantToReadEnabled]);
   [v6 addObject:v13];
   v14 = [(NSArray *)self->_recommendations isEqualToArray:v6];
@@ -280,7 +280,7 @@
   _os_log_impl(&dword_0, v17, OS_LOG_TYPE_INFO, v16, &v21, v18);
 LABEL_7:
 
-  v20 = objc_retainBlock(v5);
+  v20 = objc_retainBlock(completionCopy);
   if (v20)
   {
     v20[2](v20, v14 ^ 1);
@@ -300,7 +300,7 @@ LABEL_7:
   [v4 postNotificationName:@"NBAudiobookRecommendationsDidUpdateNotification" object:self];
 }
 
-- (void)_BCCloudReadingNowDetailManagerChanged:(id)a3
+- (void)_BCCloudReadingNowDetailManagerChanged:(id)changed
 {
   v4 = NBRecommendationsLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -316,7 +316,7 @@ LABEL_7:
   }
 }
 
-- (void)_BCCloudCollectionMemberManagerChanged:(id)a3
+- (void)_BCCloudCollectionMemberManagerChanged:(id)changed
 {
   v4 = NBRecommendationsLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

@@ -1,23 +1,23 @@
 @interface _NBSearchOperation
 - (NBSearchDataSource)dataSource;
-- (_NBSearchOperation)initWithSearchDataSource:(id)a3 searchString:(id)a4;
+- (_NBSearchOperation)initWithSearchDataSource:(id)source searchString:(id)string;
 - (void)main;
 @end
 
 @implementation _NBSearchOperation
 
-- (_NBSearchOperation)initWithSearchDataSource:(id)a3 searchString:(id)a4
+- (_NBSearchOperation)initWithSearchDataSource:(id)source searchString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  stringCopy = string;
   v13.receiver = self;
   v13.super_class = _NBSearchOperation;
   v8 = [(_NBSearchOperation *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_dataSource, v6);
-    v10 = [v7 copy];
+    objc_storeWeak(&v8->_dataSource, sourceCopy);
+    v10 = [stringCopy copy];
     searchString = v9->_searchString;
     v9->_searchString = v10;
   }

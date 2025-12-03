@@ -1,30 +1,30 @@
 @interface ICDocCamImageFilters
-+ (id)bradleyAdaptiveThreshold:(id)a3;
-+ (id)bradleyAdaptiveThreshold:(id)a3 orientation:(int64_t)a4;
-+ (id)bradleyAdaptiveThresholdWithBlur:(id)a3 orientation:(int64_t)a4;
-+ (id)colorDocument:(id)a3 orientation:(int64_t)a4 constantColor:(BOOL)a5;
-+ (id)colorDocument:(id)a3 orientation:(int64_t)a4 filterName:(id)a5 filterAmount:(float)a6 filterKey:(id)a7;
-+ (id)convertImageToGrayScale:(id)a3;
-+ (id)filteredImage:(id)a3 imageFilterType:(signed __int16)a4;
-+ (id)filteredImage:(id)a3 imageFilterType:(signed __int16)a4 constantColor:(BOOL)a5;
-+ (id)filteredImage:(id)a3 orientation:(int64_t)a4 imageFilterType:(signed __int16)a5;
-+ (id)filteredImage:(id)a3 orientation:(int64_t)a4 imageFilterType:(signed __int16)a5 constantColor:(BOOL)a6;
-+ (id)grayscale:(id)a3 orientation:(int64_t)a4;
-+ (id)grayscaleDocument:(id)a3 orientation:(int64_t)a4;
++ (id)bradleyAdaptiveThreshold:(id)threshold;
++ (id)bradleyAdaptiveThreshold:(id)threshold orientation:(int64_t)orientation;
++ (id)bradleyAdaptiveThresholdWithBlur:(id)blur orientation:(int64_t)orientation;
++ (id)colorDocument:(id)document orientation:(int64_t)orientation constantColor:(BOOL)color;
++ (id)colorDocument:(id)document orientation:(int64_t)orientation filterName:(id)name filterAmount:(float)amount filterKey:(id)key;
++ (id)convertImageToGrayScale:(id)scale;
++ (id)filteredImage:(id)image imageFilterType:(signed __int16)type;
++ (id)filteredImage:(id)image imageFilterType:(signed __int16)type constantColor:(BOOL)color;
++ (id)filteredImage:(id)image orientation:(int64_t)orientation imageFilterType:(signed __int16)type;
++ (id)filteredImage:(id)image orientation:(int64_t)orientation imageFilterType:(signed __int16)type constantColor:(BOOL)color;
++ (id)grayscale:(id)grayscale orientation:(int64_t)orientation;
++ (id)grayscaleDocument:(id)document orientation:(int64_t)orientation;
 + (id)imageFilterNames;
-+ (id)imageWithRGBColorspaceFromImage:(id)a3;
-+ (id)localizedImageFilterNameForName:(id)a3;
-+ (id)localizedImageFilterNameForType:(signed __int16)a3;
-+ (id)nonLocalizedImageFilterNameForType:(signed __int16)a3;
++ (id)imageWithRGBColorspaceFromImage:(id)image;
++ (id)localizedImageFilterNameForName:(id)name;
++ (id)localizedImageFilterNameForType:(signed __int16)type;
++ (id)nonLocalizedImageFilterNameForType:(signed __int16)type;
 + (id)nonLocalizedImageFilterNames;
-+ (id)perspectiveCorrectedCIImageFromCIImage:(id)a3 imageQuad:(id)a4;
-+ (id)perspectiveCorrectedImageFromImage:(id)a3 imageQuad:(id)a4;
-+ (id)perspectiveCorrectedImageFromImage:(id)a3 normalizedImageQuad:(id)a4;
++ (id)perspectiveCorrectedCIImageFromCIImage:(id)image imageQuad:(id)quad;
++ (id)perspectiveCorrectedImageFromImage:(id)image imageQuad:(id)quad;
++ (id)perspectiveCorrectedImageFromImage:(id)image normalizedImageQuad:(id)quad;
 + (id)sharedCoreImageContext;
-+ (id)whiteboardAndSaturation:(id)a3 orientation:(int64_t)a4;
-+ (id)whiteboardFilter:(id)a3 orientation:(int64_t)a4;
-+ (signed)imageFilterTypeFromName:(id)a3;
-+ (signed)imageFilterTypeFromNonLocalizedName:(id)a3;
++ (id)whiteboardAndSaturation:(id)saturation orientation:(int64_t)orientation;
++ (id)whiteboardFilter:(id)filter orientation:(int64_t)orientation;
++ (signed)imageFilterTypeFromName:(id)name;
++ (signed)imageFilterTypeFromNonLocalizedName:(id)name;
 @end
 
 @implementation ICDocCamImageFilters
@@ -87,11 +87,11 @@ void __52__ICDocCamImageFilters_nonLocalizedImageFilterNames__block_invoke()
   nonLocalizedImageFilterNames_sImageFilterNames = v5;
 }
 
-+ (signed)imageFilterTypeFromName:(id)a3
++ (signed)imageFilterTypeFromName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 imageFilterNames];
-  v6 = [v5 indexOfObject:v4];
+  nameCopy = name;
+  imageFilterNames = [self imageFilterNames];
+  v6 = [imageFilterNames indexOfObject:nameCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -104,11 +104,11 @@ void __52__ICDocCamImageFilters_nonLocalizedImageFilterNames__block_invoke()
   }
 }
 
-+ (signed)imageFilterTypeFromNonLocalizedName:(id)a3
++ (signed)imageFilterTypeFromNonLocalizedName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 nonLocalizedImageFilterNames];
-  v6 = [v5 indexOfObject:v4];
+  nameCopy = name;
+  nonLocalizedImageFilterNames = [self nonLocalizedImageFilterNames];
+  v6 = [nonLocalizedImageFilterNames indexOfObject:nameCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -121,21 +121,21 @@ void __52__ICDocCamImageFilters_nonLocalizedImageFilterNames__block_invoke()
   }
 }
 
-+ (id)localizedImageFilterNameForName:(id)a3
++ (id)localizedImageFilterNameForName:(id)name
 {
-  v4 = [a1 imageFilterTypeFromName:a3];
+  v4 = [self imageFilterTypeFromName:name];
 
-  return [a1 localizedImageFilterNameForType:v4];
+  return [self localizedImageFilterNameForType:v4];
 }
 
-+ (id)localizedImageFilterNameForType:(signed __int16)a3
++ (id)localizedImageFilterNameForType:(signed __int16)type
 {
   v3 = 0;
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_13;
       }
@@ -151,7 +151,7 @@ void __52__ICDocCamImageFilters_nonLocalizedImageFilterNames__block_invoke()
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 2:
         v4 = @"Grayscale";
@@ -173,23 +173,23 @@ LABEL_13:
   return v3;
 }
 
-+ (id)nonLocalizedImageFilterNameForType:(signed __int16)a3
++ (id)nonLocalizedImageFilterNameForType:(signed __int16)type
 {
-  if (a3 > 4)
+  if (type > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_278F93840[a3];
+    return off_278F93840[type];
   }
 }
 
 + (id)sharedCoreImageContext
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!sharedCoreImageContext_context)
   {
     v3 = [MEMORY[0x277CBF740] contextWithOptions:0];
@@ -197,22 +197,22 @@ LABEL_13:
     sharedCoreImageContext_context = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v5 = sharedCoreImageContext_context;
 
   return v5;
 }
 
-+ (id)bradleyAdaptiveThreshold:(id)a3
++ (id)bradleyAdaptiveThreshold:(id)threshold
 {
-  v3 = a3;
-  v4 = [v3 dc_CGImage];
-  Width = CGImageGetWidth(v4);
-  Height = CGImageGetHeight(v4);
-  DataProvider = CGImageGetDataProvider(v4);
+  thresholdCopy = threshold;
+  dc_CGImage = [thresholdCopy dc_CGImage];
+  Width = CGImageGetWidth(dc_CGImage);
+  Height = CGImageGetHeight(dc_CGImage);
+  DataProvider = CGImageGetDataProvider(dc_CGImage);
   v8 = CGDataProviderCopyData(DataProvider);
-  v9 = [(__CFData *)v8 bytes];
+  bytes = [(__CFData *)v8 bytes];
 
   DeviceGray = CGColorSpaceCreateDeviceGray();
   v11 = CGBitmapContextCreate(0, Width, Height, 8uLL, Width, DeviceGray, 0);
@@ -245,7 +245,7 @@ LABEL_13:
     }
 
     CGContextRelease(v11);
-    v47 = v3;
+    v47 = thresholdCopy;
   }
 
   else
@@ -272,7 +272,7 @@ LABEL_13:
         {
           v23 = 0;
           v24 = &v20[v21];
-          v25 = (v9 + v21);
+          v25 = (bytes + v21);
           v21 += Width;
           v26 = Width;
           do
@@ -327,7 +327,7 @@ LABEL_13:
           v35 = v34 - v33;
           v36 = v34 * Width;
           v37 = v33 * Width;
-          v38 = v9;
+          v38 = bytes;
           v39 = v18;
           v40 = v32;
           v41 = v31;
@@ -366,7 +366,7 @@ LABEL_13:
 
         ++v29;
         v18 += Width;
-        v9 += Width;
+        bytes += Width;
       }
 
       while (v29 != (Height & 0x7FFFFFFF));
@@ -384,18 +384,18 @@ LABEL_13:
   return v47;
 }
 
-+ (id)convertImageToGrayScale:(id)a3
++ (id)convertImageToGrayScale:(id)scale
 {
-  v3 = [a3 dc_CGImage];
-  Width = CGImageGetWidth(v3);
-  Height = CGImageGetHeight(v3);
+  dc_CGImage = [scale dc_CGImage];
+  Width = CGImageGetWidth(dc_CGImage);
+  Height = CGImageGetHeight(dc_CGImage);
   DeviceGray = CGColorSpaceCreateDeviceGray();
   v7 = CGBitmapContextCreate(0, Width, Height, 8uLL, Width, DeviceGray, 0);
   v12.origin.x = 0.0;
   v12.origin.y = 0.0;
   v12.size.width = Width;
   v12.size.height = Height;
-  CGContextDrawImage(v7, v12, v3);
+  CGContextDrawImage(v7, v12, dc_CGImage);
   Image = CGBitmapContextCreateImage(v7);
   v9 = [MEMORY[0x277D755B8] dc_imageWithCGImage:Image];
   CGColorSpaceRelease(DeviceGray);
@@ -405,33 +405,33 @@ LABEL_13:
   return v9;
 }
 
-+ (id)whiteboardFilter:(id)a3 orientation:(int64_t)a4
++ (id)whiteboardFilter:(id)filter orientation:(int64_t)orientation
 {
-  v5 = [MEMORY[0x277CBF758] imageWithCGImage:{objc_msgSend(a3, "dc_CGImage")}];
+  v5 = [MEMORY[0x277CBF758] imageWithCGImage:{objc_msgSend(filter, "dc_CGImage")}];
   v6 = objc_alloc_init(WhiteboardFilter);
   [(WhiteboardFilter *)v6 setInputImage:v5];
   [(WhiteboardFilter *)v6 setStride:&unk_285C6D3F0];
-  v7 = [(WhiteboardFilter *)v6 outputImage];
+  outputImage = [(WhiteboardFilter *)v6 outputImage];
   v8 = +[ICDocCamImageFilters sharedCoreImageContext];
-  [v7 extent];
-  v9 = [v8 createCGImage:v7 fromRect:?];
-  v10 = [MEMORY[0x277D755B8] dc_imageWithCGImage:v9 scale:a4 orientation:1.0];
+  [outputImage extent];
+  v9 = [v8 createCGImage:outputImage fromRect:?];
+  v10 = [MEMORY[0x277D755B8] dc_imageWithCGImage:v9 scale:orientation orientation:1.0];
   CGImageRelease(v9);
 
   return v10;
 }
 
-+ (id)whiteboardAndSaturation:(id)a3 orientation:(int64_t)a4
++ (id)whiteboardAndSaturation:(id)saturation orientation:(int64_t)orientation
 {
-  v5 = [MEMORY[0x277CBF758] imageWithCGImage:{objc_msgSend(a3, "dc_CGImage")}];
+  v5 = [MEMORY[0x277CBF758] imageWithCGImage:{objc_msgSend(saturation, "dc_CGImage")}];
   v6 = objc_alloc_init(WhiteboardFilter);
   [(WhiteboardFilter *)v6 setInputImage:v5];
   [(WhiteboardFilter *)v6 setStride:&unk_285C6D3F0];
-  v7 = [(WhiteboardFilter *)v6 outputImage];
+  outputImage = [(WhiteboardFilter *)v6 outputImage];
   v8 = +[ICDocCamImageFilters sharedCoreImageContext];
-  [v7 extent];
-  v9 = [v8 createCGImage:v7 fromRect:?];
-  v10 = [MEMORY[0x277D755B8] dc_imageWithCGImage:v9 scale:a4 orientation:1.0];
+  [outputImage extent];
+  v9 = [v8 createCGImage:outputImage fromRect:?];
+  v10 = [MEMORY[0x277D755B8] dc_imageWithCGImage:v9 scale:orientation orientation:1.0];
   v11 = [MEMORY[0x277CBF750] filterWithName:@"CIColorControls"];
   [v11 setDefaults];
   [v11 setValue:&unk_285C6D408 forKey:@"inputSaturation"];
@@ -441,51 +441,51 @@ LABEL_13:
   v13 = [v11 valueForKey:@"outputImage"];
   [v13 extent];
   v14 = [v8 createCGImage:v13 fromRect:?];
-  v15 = [MEMORY[0x277D755B8] dc_imageWithCGImage:v14 scale:a4 orientation:1.0];
+  v15 = [MEMORY[0x277D755B8] dc_imageWithCGImage:v14 scale:orientation orientation:1.0];
   CGImageRelease(v14);
   CGImageRelease(v9);
 
   return v15;
 }
 
-+ (id)grayscale:(id)a3 orientation:(int64_t)a4
++ (id)grayscale:(id)grayscale orientation:(int64_t)orientation
 {
-  v5 = [ICDocCamImageFilters convertImageToGrayScale:a3];
-  v6 = [MEMORY[0x277D755B8] dc_imageWithCGImage:objc_msgSend(v5 scale:"dc_CGImage") orientation:{a4, 1.0}];
+  v5 = [ICDocCamImageFilters convertImageToGrayScale:grayscale];
+  v6 = [MEMORY[0x277D755B8] dc_imageWithCGImage:objc_msgSend(v5 scale:"dc_CGImage") orientation:{orientation, 1.0}];
 
   return v6;
 }
 
-+ (id)bradleyAdaptiveThreshold:(id)a3 orientation:(int64_t)a4
++ (id)bradleyAdaptiveThreshold:(id)threshold orientation:(int64_t)orientation
 {
-  v5 = [ICDocCamImageFilters convertImageToGrayScale:a3];
+  v5 = [ICDocCamImageFilters convertImageToGrayScale:threshold];
   v6 = [ICDocCamImageFilters bradleyAdaptiveThreshold:v5];
-  v7 = [MEMORY[0x277D755B8] dc_imageWithCGImage:objc_msgSend(v6 scale:"dc_CGImage") orientation:{a4, 1.0}];
+  v7 = [MEMORY[0x277D755B8] dc_imageWithCGImage:objc_msgSend(v6 scale:"dc_CGImage") orientation:{orientation, 1.0}];
 
   return v7;
 }
 
-+ (id)bradleyAdaptiveThresholdWithBlur:(id)a3 orientation:(int64_t)a4
++ (id)bradleyAdaptiveThresholdWithBlur:(id)blur orientation:(int64_t)orientation
 {
-  v5 = [ICDocCamImageFilters convertImageToGrayScale:a3];
+  v5 = [ICDocCamImageFilters convertImageToGrayScale:blur];
   v6 = [ICDocCamImageFilters bradleyAdaptiveThreshold:v5];
-  v7 = [MEMORY[0x277D755B8] dc_imageWithCGImage:objc_msgSend(v6 scale:"dc_CGImage") orientation:{a4, 1.0}];
+  v7 = [MEMORY[0x277D755B8] dc_imageWithCGImage:objc_msgSend(v6 scale:"dc_CGImage") orientation:{orientation, 1.0}];
 
   v8 = [MEMORY[0x277CBF758] imageWithCGImage:{objc_msgSend(v7, "dc_CGImage")}];
   v9 = [MEMORY[0x277CBF750] filterWithName:@"CIGaussianBlur" keysAndValues:{*MEMORY[0x277CBFAF0], v8, @"inputRadius", &unk_285C6D420, 0}];
-  v10 = [v9 outputImage];
+  outputImage = [v9 outputImage];
   v11 = +[ICDocCamImageFilters sharedCoreImageContext];
-  [v10 extent];
-  v12 = [v11 createCGImage:v10 fromRect:?];
-  v13 = [MEMORY[0x277D755B8] dc_imageWithCGImage:v12 scale:a4 orientation:1.0];
+  [outputImage extent];
+  v12 = [v11 createCGImage:outputImage fromRect:?];
+  v13 = [MEMORY[0x277D755B8] dc_imageWithCGImage:v12 scale:orientation orientation:1.0];
   CGImageRelease(v12);
 
   return v13;
 }
 
-+ (id)colorDocument:(id)a3 orientation:(int64_t)a4 constantColor:(BOOL)a5
++ (id)colorDocument:(id)document orientation:(int64_t)orientation constantColor:(BOOL)color
 {
-  if (a5)
+  if (color)
   {
     v8 = @"CIDocumentEnhancer";
   }
@@ -495,7 +495,7 @@ LABEL_13:
     v8 = @"CIPaperWash";
   }
 
-  if (a5)
+  if (color)
   {
     v9 = *"333?";
   }
@@ -506,112 +506,112 @@ LABEL_13:
   }
 
   v10 = MEMORY[0x277CBFAA0];
-  if (!a5)
+  if (!color)
   {
     v10 = MEMORY[0x277CBFB10];
   }
 
   v11 = *v10;
   *&v12 = v9;
-  v13 = [a1 colorDocument:a3 orientation:a4 filterName:v8 filterAmount:v11 filterKey:v12];
+  v13 = [self colorDocument:document orientation:orientation filterName:v8 filterAmount:v11 filterKey:v12];
 
   return v13;
 }
 
-+ (id)colorDocument:(id)a3 orientation:(int64_t)a4 filterName:(id)a5 filterAmount:(float)a6 filterKey:(id)a7
++ (id)colorDocument:(id)document orientation:(int64_t)orientation filterName:(id)name filterAmount:(float)amount filterKey:(id)key
 {
   v11 = MEMORY[0x277CBF758];
-  v12 = a7;
-  v13 = a5;
-  v14 = [v11 imageWithCGImage:{objc_msgSend(a3, "dc_CGImage")}];
-  v15 = [MEMORY[0x277CBF750] filterWithName:v13];
+  keyCopy = key;
+  nameCopy = name;
+  v14 = [v11 imageWithCGImage:{objc_msgSend(document, "dc_CGImage")}];
+  v15 = [MEMORY[0x277CBF750] filterWithName:nameCopy];
 
-  *&v16 = a6;
+  *&v16 = amount;
   v17 = [MEMORY[0x277CCABB0] numberWithFloat:v16];
-  [v15 setValue:v17 forKey:v12];
+  [v15 setValue:v17 forKey:keyCopy];
 
   [v15 setValue:v14 forKey:*MEMORY[0x277CBFAF0]];
-  v18 = [v15 outputImage];
+  outputImage = [v15 outputImage];
   v19 = +[ICDocCamImageFilters sharedCoreImageContext];
-  [v18 extent];
-  v20 = [v19 createCGImage:v18 fromRect:?];
-  v21 = [MEMORY[0x277D755B8] dc_imageWithCGImage:v20 scale:a4 orientation:1.0];
+  [outputImage extent];
+  v20 = [v19 createCGImage:outputImage fromRect:?];
+  v21 = [MEMORY[0x277D755B8] dc_imageWithCGImage:v20 scale:orientation orientation:1.0];
   CGImageRelease(v20);
 
   return v21;
 }
 
-+ (id)grayscaleDocument:(id)a3 orientation:(int64_t)a4
++ (id)grayscaleDocument:(id)document orientation:(int64_t)orientation
 {
-  v5 = [MEMORY[0x277CBF758] imageWithCGImage:{objc_msgSend(a3, "dc_CGImage")}];
+  v5 = [MEMORY[0x277CBF758] imageWithCGImage:{objc_msgSend(document, "dc_CGImage")}];
   v6 = [MEMORY[0x277CBF750] filterWithName:@"CIPaperWash"];
   [v6 setValue:v5 forKey:*MEMORY[0x277CBFAF0]];
   [v6 setValue:&unk_285C6D438 forKey:*MEMORY[0x277CBFB10]];
-  v7 = [v6 outputImage];
+  outputImage = [v6 outputImage];
   v8 = +[ICDocCamImageFilters sharedCoreImageContext];
-  [v7 extent];
-  v9 = [v8 createCGImage:v7 fromRect:?];
-  v10 = [MEMORY[0x277D755B8] dc_imageWithCGImage:v9 scale:a4 orientation:1.0];
+  [outputImage extent];
+  v9 = [v8 createCGImage:outputImage fromRect:?];
+  v10 = [MEMORY[0x277D755B8] dc_imageWithCGImage:v9 scale:orientation orientation:1.0];
   CGImageRelease(v9);
 
   return v10;
 }
 
-+ (id)filteredImage:(id)a3 imageFilterType:(signed __int16)a4
++ (id)filteredImage:(id)image imageFilterType:(signed __int16)type
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [a1 filteredImage:v6 orientation:objc_msgSend(v6 imageFilterType:{"dc_imageOrientation"), v4}];
+  typeCopy = type;
+  imageCopy = image;
+  v7 = [self filteredImage:imageCopy orientation:objc_msgSend(imageCopy imageFilterType:{"dc_imageOrientation"), typeCopy}];
 
   return v7;
 }
 
-+ (id)filteredImage:(id)a3 imageFilterType:(signed __int16)a4 constantColor:(BOOL)a5
++ (id)filteredImage:(id)image imageFilterType:(signed __int16)type constantColor:(BOOL)color
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = [a1 filteredImage:v8 orientation:objc_msgSend(v8 imageFilterType:"dc_imageOrientation") constantColor:{v6, v5}];
+  colorCopy = color;
+  typeCopy = type;
+  imageCopy = image;
+  v9 = [self filteredImage:imageCopy orientation:objc_msgSend(imageCopy imageFilterType:"dc_imageOrientation") constantColor:{typeCopy, colorCopy}];
 
   return v9;
 }
 
-+ (id)filteredImage:(id)a3 orientation:(int64_t)a4 imageFilterType:(signed __int16)a5
++ (id)filteredImage:(id)image orientation:(int64_t)orientation imageFilterType:(signed __int16)type
 {
-  v5 = a5;
-  v8 = a3;
+  typeCopy = type;
+  imageCopy = image;
   v9 = objc_autoreleasePoolPush();
   v10 = 0;
-  if (v5 <= 1)
+  if (typeCopy <= 1)
   {
-    if (v5)
+    if (typeCopy)
     {
-      if (v5 != 1)
+      if (typeCopy != 1)
       {
         goto LABEL_13;
       }
 
-      v11 = [a1 colorDocument:v8 orientation:a4];
+      v11 = [self colorDocument:imageCopy orientation:orientation];
     }
 
     else
     {
-      v11 = [MEMORY[0x277D755B8] dc_imageWithCGImage:objc_msgSend(v8 scale:"dc_CGImage") orientation:{a4, 1.0}];
+      v11 = [MEMORY[0x277D755B8] dc_imageWithCGImage:objc_msgSend(imageCopy scale:"dc_CGImage") orientation:{orientation, 1.0}];
     }
   }
 
   else
   {
-    switch(v5)
+    switch(typeCopy)
     {
       case 2:
-        v11 = [a1 grayscaleDocument:v8 orientation:a4];
+        v11 = [self grayscaleDocument:imageCopy orientation:orientation];
         break;
       case 3:
-        v11 = [a1 bradleyAdaptiveThreshold:v8 orientation:a4];
+        v11 = [self bradleyAdaptiveThreshold:imageCopy orientation:orientation];
         break;
       case 4:
-        v11 = [a1 whiteboardFilter:v8 orientation:a4];
+        v11 = [self whiteboardFilter:imageCopy orientation:orientation];
         break;
       default:
         goto LABEL_13;
@@ -625,43 +625,43 @@ LABEL_13:
   return v10;
 }
 
-+ (id)filteredImage:(id)a3 orientation:(int64_t)a4 imageFilterType:(signed __int16)a5 constantColor:(BOOL)a6
++ (id)filteredImage:(id)image orientation:(int64_t)orientation imageFilterType:(signed __int16)type constantColor:(BOOL)color
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
+  colorCopy = color;
+  typeCopy = type;
+  imageCopy = image;
   v11 = objc_autoreleasePoolPush();
   v12 = 0;
-  if (v7 <= 1)
+  if (typeCopy <= 1)
   {
-    if (v7)
+    if (typeCopy)
     {
-      if (v7 != 1)
+      if (typeCopy != 1)
       {
         goto LABEL_13;
       }
 
-      v13 = [a1 colorDocument:v10 orientation:a4 constantColor:v6];
+      v13 = [self colorDocument:imageCopy orientation:orientation constantColor:colorCopy];
     }
 
     else
     {
-      v13 = [MEMORY[0x277D755B8] dc_imageWithCGImage:objc_msgSend(v10 scale:"dc_CGImage") orientation:{a4, 1.0}];
+      v13 = [MEMORY[0x277D755B8] dc_imageWithCGImage:objc_msgSend(imageCopy scale:"dc_CGImage") orientation:{orientation, 1.0}];
     }
   }
 
   else
   {
-    switch(v7)
+    switch(typeCopy)
     {
       case 2:
-        v13 = [a1 grayscaleDocument:v10 orientation:a4];
+        v13 = [self grayscaleDocument:imageCopy orientation:orientation];
         break;
       case 3:
-        v13 = [a1 bradleyAdaptiveThreshold:v10 orientation:a4];
+        v13 = [self bradleyAdaptiveThreshold:imageCopy orientation:orientation];
         break;
       case 4:
-        v13 = [a1 whiteboardFilter:v10 orientation:a4];
+        v13 = [self whiteboardFilter:imageCopy orientation:orientation];
         break;
       default:
         goto LABEL_13;
@@ -675,15 +675,15 @@ LABEL_13:
   return v12;
 }
 
-+ (id)imageWithRGBColorspaceFromImage:(id)a3
++ (id)imageWithRGBColorspaceFromImage:(id)image
 {
-  v3 = a3;
-  v4 = [v3 dc_CGImage];
-  ColorSpace = CGImageGetColorSpace(v4);
+  imageCopy = image;
+  dc_CGImage = [imageCopy dc_CGImage];
+  ColorSpace = CGImageGetColorSpace(dc_CGImage);
   if (CGColorSpaceGetModel(ColorSpace) != kCGColorSpaceModelRGB)
   {
-    Width = CGImageGetWidth(v4);
-    Height = CGImageGetHeight(v4);
+    Width = CGImageGetWidth(dc_CGImage);
+    Height = CGImageGetHeight(dc_CGImage);
     v8 = DCTSUCreateRGBABitmapContext(0, Width, Height, 1.0);
     if (v8)
     {
@@ -692,56 +692,56 @@ LABEL_13:
       v15.origin.y = 0.0;
       v15.size.width = Width;
       v15.size.height = Height;
-      CGContextDrawImage(v8, v15, v4);
+      CGContextDrawImage(v8, v15, dc_CGImage);
       Image = CGBitmapContextCreateImage(v9);
       if (Image)
       {
         v11 = Image;
-        v12 = [MEMORY[0x277D755B8] dc_imageWithCGImage:Image scale:objc_msgSend(v3 orientation:{"dc_imageOrientation"), 1.0}];
+        v12 = [MEMORY[0x277D755B8] dc_imageWithCGImage:Image scale:objc_msgSend(imageCopy orientation:{"dc_imageOrientation"), 1.0}];
 
         CFRelease(v11);
-        v3 = v12;
+        imageCopy = v12;
       }
 
       CGContextRelease(v9);
     }
   }
 
-  v13 = v3;
+  v13 = imageCopy;
 
-  return v3;
+  return imageCopy;
 }
 
-+ (id)perspectiveCorrectedCIImageFromCIImage:(id)a3 imageQuad:(id)a4
++ (id)perspectiveCorrectedCIImageFromCIImage:(id)image imageQuad:(id)quad
 {
   v5 = MEMORY[0x277CBF750];
-  v6 = a4;
-  v7 = a3;
+  quadCopy = quad;
+  imageCopy = image;
   v8 = [v5 filterWithName:@"CIPerspectiveCorrection"];
   v9 = MEMORY[0x277CBF788];
-  [v6 topLeft];
+  [quadCopy topLeft];
   v10 = [v9 vectorWithCGPoint:?];
   [v8 setValue:v10 forKey:@"inputTopLeft"];
 
   v11 = MEMORY[0x277CBF788];
-  [v6 topRight];
+  [quadCopy topRight];
   v12 = [v11 vectorWithCGPoint:?];
   [v8 setValue:v12 forKey:@"inputTopRight"];
 
   v13 = MEMORY[0x277CBF788];
-  [v6 bottomLeft];
+  [quadCopy bottomLeft];
   v14 = [v13 vectorWithCGPoint:?];
   [v8 setValue:v14 forKey:@"inputBottomLeft"];
 
   v15 = MEMORY[0x277CBF788];
-  [v6 bottomRight];
+  [quadCopy bottomRight];
   v17 = v16;
   v19 = v18;
 
   v20 = [v15 vectorWithCGPoint:{v17, v19}];
   [v8 setValue:v20 forKey:@"inputBottomRight"];
 
-  [v8 setValue:v7 forKey:*MEMORY[0x277CBFAF0]];
+  [v8 setValue:imageCopy forKey:*MEMORY[0x277CBFAF0]];
   v21 = [v8 valueForKey:*MEMORY[0x277CBFB50]];
   [v21 extent];
   v26 = CGRectInset(v25, 1.0, 1.0);
@@ -750,37 +750,37 @@ LABEL_13:
   return v22;
 }
 
-+ (id)perspectiveCorrectedImageFromImage:(id)a3 imageQuad:(id)a4
++ (id)perspectiveCorrectedImageFromImage:(id)image imageQuad:(id)quad
 {
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  quadCopy = quad;
   v8 = +[ICDocCamImageFilters sharedCoreImageContext];
-  v9 = [MEMORY[0x277CBF758] imageWithCGImage:{objc_msgSend(v6, "dc_CGImage")}];
-  v10 = [a1 perspectiveCorrectedCIImageFromCIImage:v9 imageQuad:v7];
+  v9 = [MEMORY[0x277CBF758] imageWithCGImage:{objc_msgSend(imageCopy, "dc_CGImage")}];
+  v10 = [self perspectiveCorrectedCIImageFromCIImage:v9 imageQuad:quadCopy];
 
   [v10 extent];
   v11 = [v8 createCGImage:v10 fromRect:?];
   if (v11)
   {
     v12 = v11;
-    v13 = [MEMORY[0x277D755B8] dc_imageWithCGImage:v11 scale:objc_msgSend(v6 orientation:{"dc_imageOrientation"), 1.0}];
+    v13 = [MEMORY[0x277D755B8] dc_imageWithCGImage:v11 scale:objc_msgSend(imageCopy orientation:{"dc_imageOrientation"), 1.0}];
 
     CGImageRelease(v12);
-    v6 = v13;
+    imageCopy = v13;
   }
 
-  return v6;
+  return imageCopy;
 }
 
-+ (id)perspectiveCorrectedImageFromImage:(id)a3 normalizedImageQuad:(id)a4
++ (id)perspectiveCorrectedImageFromImage:(id)image normalizedImageQuad:(id)quad
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 dc_CGImage];
-  Width = CGImageGetWidth(v8);
-  v10 = [v6 imageQuadByScalingBy:{Width, CGImageGetHeight(v8)}];
+  quadCopy = quad;
+  imageCopy = image;
+  dc_CGImage = [imageCopy dc_CGImage];
+  Width = CGImageGetWidth(dc_CGImage);
+  v10 = [quadCopy imageQuadByScalingBy:{Width, CGImageGetHeight(dc_CGImage)}];
 
-  v11 = [a1 perspectiveCorrectedImageFromImage:v7 imageQuad:v10];
+  v11 = [self perspectiveCorrectedImageFromImage:imageCopy imageQuad:v10];
 
   return v11;
 }

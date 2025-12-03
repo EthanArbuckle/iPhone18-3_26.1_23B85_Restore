@@ -1,6 +1,6 @@
 @interface NLXSchemaNLXClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NLXSchemaCDMAllServicesSetupContext)cdmAllServicesSetupContext;
 - (NLXSchemaCDMAllServicesWarmupContext)cdmAllServicesWarmupContext;
 - (NLXSchemaCDMAssetSetupContext)cdmAssetSetupContext;
@@ -37,8 +37,8 @@
 - (NLXSchemaMARRSQueryRewriteEvaluatedTier1)marrsQueryRewriteEvaluatedTier1;
 - (NLXSchemaMARRSRepetitionDetectionContext)marrsRepetitionDetectionContext;
 - (NLXSchemaMILAssetAcquisitionContext)milAssetAcquisitionContext;
-- (NLXSchemaNLXClientEvent)initWithDictionary:(id)a3;
-- (NLXSchemaNLXClientEvent)initWithJSON:(id)a3;
+- (NLXSchemaNLXClientEvent)initWithDictionary:(id)dictionary;
+- (NLXSchemaNLXClientEvent)initWithJSON:(id)n;
 - (NLXSchemaNLXCurareContext)nlxCurareContext;
 - (NLXSchemaNLXDeviceFixedContext)nlxDeviceFixedContext;
 - (NLXSchemaNLXLegacyNLContextTier1)nlxLegacyNLContextTier1;
@@ -46,7 +46,7 @@
 - (NLXSchemaSSUUserRequestContext)ssuUserRequestContext;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -94,48 +94,48 @@
 - (void)deleteNlxLegacyNLContextTier1;
 - (void)deleteSsuBackgroundRequestContext;
 - (void)deleteSsuUserRequestContext;
-- (void)setCdmAllServicesSetupContext:(id)a3;
-- (void)setCdmAllServicesWarmupContext:(id)a3;
-- (void)setCdmAssetSetupContext:(id)a3;
-- (void)setCdmAssetsReported:(id)a3;
-- (void)setCdmClientSetupContext:(id)a3;
-- (void)setCdmClientWarmupContext:(id)a3;
-- (void)setCdmContextUpdateEnded:(id)a3;
-- (void)setCdmDelegatedUserDialogActTier1:(id)a3;
-- (void)setCdmMatchingSpanEnded:(id)a3;
-- (void)setCdmMatchingSpanEndedTier1:(id)a3;
-- (void)setCdmMatchingSpanTier1:(id)a3;
-- (void)setCdmRequestContext:(id)a3;
-- (void)setCdmServiceContext:(id)a3;
-- (void)setCdmServiceHandleMetricsReported:(id)a3;
-- (void)setCdmServiceSetupMetricsReported:(id)a3;
-- (void)setCdmSetupLink:(id)a3;
-- (void)setCdmSetupMissingAssetsDetected:(id)a3;
-- (void)setCdmSingleServiceSetupAttemptContext:(id)a3;
-- (void)setCdmSingleServiceSetupAttemptFailed:(id)a3;
-- (void)setCdmSingleServiceWarmupAttemptContext:(id)a3;
-- (void)setCdmSingleServiceWarmupAttemptFailed:(id)a3;
-- (void)setCdmSpanMatcherContext:(id)a3;
-- (void)setCdmSystemDialogActTier1:(id)a3;
-- (void)setCdmTokenizationEnded:(id)a3;
-- (void)setCdmUsoGraphTier1:(id)a3;
-- (void)setCdmXpcEventProcessingContext:(id)a3;
-- (void)setMarrsContextualSpanMatcherEnded:(id)a3;
-- (void)setMarrsContextualSpanMatcherEndedTier1:(id)a3;
-- (void)setMarrsMentionDetectorEnded:(id)a3;
-- (void)setMarrsMentionDetectorEndedTier1:(id)a3;
-- (void)setMarrsMentionResolverEnded:(id)a3;
-- (void)setMarrsMentionResolverEndedTier1:(id)a3;
-- (void)setMarrsQueryRewriteContext:(id)a3;
-- (void)setMarrsQueryRewriteEvaluatedTier1:(id)a3;
-- (void)setMarrsRepetitionDetectionContext:(id)a3;
-- (void)setMilAssetAcquisitionContext:(id)a3;
-- (void)setNlxCurareContext:(id)a3;
-- (void)setNlxDeviceFixedContext:(id)a3;
-- (void)setNlxLegacyNLContextTier1:(id)a3;
-- (void)setSsuBackgroundRequestContext:(id)a3;
-- (void)setSsuUserRequestContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCdmAllServicesSetupContext:(id)context;
+- (void)setCdmAllServicesWarmupContext:(id)context;
+- (void)setCdmAssetSetupContext:(id)context;
+- (void)setCdmAssetsReported:(id)reported;
+- (void)setCdmClientSetupContext:(id)context;
+- (void)setCdmClientWarmupContext:(id)context;
+- (void)setCdmContextUpdateEnded:(id)ended;
+- (void)setCdmDelegatedUserDialogActTier1:(id)tier1;
+- (void)setCdmMatchingSpanEnded:(id)ended;
+- (void)setCdmMatchingSpanEndedTier1:(id)tier1;
+- (void)setCdmMatchingSpanTier1:(id)tier1;
+- (void)setCdmRequestContext:(id)context;
+- (void)setCdmServiceContext:(id)context;
+- (void)setCdmServiceHandleMetricsReported:(id)reported;
+- (void)setCdmServiceSetupMetricsReported:(id)reported;
+- (void)setCdmSetupLink:(id)link;
+- (void)setCdmSetupMissingAssetsDetected:(id)detected;
+- (void)setCdmSingleServiceSetupAttemptContext:(id)context;
+- (void)setCdmSingleServiceSetupAttemptFailed:(id)failed;
+- (void)setCdmSingleServiceWarmupAttemptContext:(id)context;
+- (void)setCdmSingleServiceWarmupAttemptFailed:(id)failed;
+- (void)setCdmSpanMatcherContext:(id)context;
+- (void)setCdmSystemDialogActTier1:(id)tier1;
+- (void)setCdmTokenizationEnded:(id)ended;
+- (void)setCdmUsoGraphTier1:(id)tier1;
+- (void)setCdmXpcEventProcessingContext:(id)context;
+- (void)setMarrsContextualSpanMatcherEnded:(id)ended;
+- (void)setMarrsContextualSpanMatcherEndedTier1:(id)tier1;
+- (void)setMarrsMentionDetectorEnded:(id)ended;
+- (void)setMarrsMentionDetectorEndedTier1:(id)tier1;
+- (void)setMarrsMentionResolverEnded:(id)ended;
+- (void)setMarrsMentionResolverEndedTier1:(id)tier1;
+- (void)setMarrsQueryRewriteContext:(id)context;
+- (void)setMarrsQueryRewriteEvaluatedTier1:(id)tier1;
+- (void)setMarrsRepetitionDetectionContext:(id)context;
+- (void)setMilAssetAcquisitionContext:(id)context;
+- (void)setNlxCurareContext:(id)context;
+- (void)setNlxDeviceFixedContext:(id)context;
+- (void)setNlxLegacyNLContextTier1:(id)tier1;
+- (void)setSsuBackgroundRequestContext:(id)context;
+- (void)setSsuUserRequestContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaNLXClientEvent
@@ -157,15 +157,15 @@
 
 - (id)qualifiedMessageName
 {
-  v2 = [(NLXSchemaNLXClientEvent *)self whichEvent_Type];
-  if (v2 - 101 > 0x28)
+  whichEvent_Type = [(NLXSchemaNLXClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 0x28)
   {
     return @"com.apple.aiml.siri.nlx.NLXClientEvent";
   }
 
   else
   {
-    return off_1E78DC6B8[v2 - 101];
+    return off_1E78DC6B8[whichEvent_Type - 101];
   }
 }
 
@@ -769,16 +769,16 @@
   return v3;
 }
 
-- (NLXSchemaNLXClientEvent)initWithDictionary:(id)a3
+- (NLXSchemaNLXClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v127.receiver = self;
   v127.super_class = NLXSchemaNLXClientEvent;
   v5 = [(NLXSchemaNLXClientEvent *)&v127 init];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -786,7 +786,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"cdmServiceContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"cdmServiceContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -794,7 +794,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setCdmServiceContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"cdmRequestContext"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"cdmRequestContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -802,7 +802,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setCdmRequestContext:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"nlxDeviceFixedContext"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"nlxDeviceFixedContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -810,7 +810,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setNlxDeviceFixedContext:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"cdmMatchingSpanEnded"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"cdmMatchingSpanEnded"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -818,7 +818,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setCdmMatchingSpanEnded:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"cdmUsoGraphTier1"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"cdmUsoGraphTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -826,7 +826,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setCdmUsoGraphTier1:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"cdmMatchingSpanTier1"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"cdmMatchingSpanTier1"];
     objc_opt_class();
     v126 = v18;
     if (objc_opt_isKindOfClass())
@@ -835,7 +835,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setCdmMatchingSpanTier1:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"nlxLegacyNLContextTier1"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"nlxLegacyNLContextTier1"];
     objc_opt_class();
     v125 = v20;
     if (objc_opt_isKindOfClass())
@@ -844,7 +844,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setNlxLegacyNLContextTier1:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"cdmDelegatedUserDialogActTier1"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"cdmDelegatedUserDialogActTier1"];
     objc_opt_class();
     v124 = v22;
     if (objc_opt_isKindOfClass())
@@ -853,7 +853,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setCdmDelegatedUserDialogActTier1:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"cdmSystemDialogActTier1"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"cdmSystemDialogActTier1"];
     objc_opt_class();
     v123 = v24;
     if (objc_opt_isKindOfClass())
@@ -862,7 +862,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setCdmSystemDialogActTier1:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"cdmTokenizationEnded"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"cdmTokenizationEnded"];
     objc_opt_class();
     v122 = v26;
     if (objc_opt_isKindOfClass())
@@ -871,7 +871,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setCdmTokenizationEnded:v27];
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"cdmContextUpdateEnded"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"cdmContextUpdateEnded"];
     objc_opt_class();
     v121 = v28;
     if (objc_opt_isKindOfClass())
@@ -880,7 +880,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setCdmContextUpdateEnded:v29];
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"marrsRepetitionDetectionContext"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"marrsRepetitionDetectionContext"];
     objc_opt_class();
     v120 = v30;
     if (objc_opt_isKindOfClass())
@@ -889,7 +889,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setMarrsRepetitionDetectionContext:v31];
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"marrsQueryRewriteContext"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"marrsQueryRewriteContext"];
     objc_opt_class();
     v119 = v32;
     if (objc_opt_isKindOfClass())
@@ -898,7 +898,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setMarrsQueryRewriteContext:v33];
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"marrsQueryRewriteEvaluatedTier1"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"marrsQueryRewriteEvaluatedTier1"];
     objc_opt_class();
     v118 = v34;
     if (objc_opt_isKindOfClass())
@@ -907,7 +907,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setMarrsQueryRewriteEvaluatedTier1:v35];
     }
 
-    v36 = [v4 objectForKeyedSubscript:@"cdmMatchingSpanEndedTier1"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"cdmMatchingSpanEndedTier1"];
     objc_opt_class();
     v117 = v36;
     if (objc_opt_isKindOfClass())
@@ -916,7 +916,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setCdmMatchingSpanEndedTier1:v37];
     }
 
-    v38 = [v4 objectForKeyedSubscript:@"nlxCurareContext"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"nlxCurareContext"];
     objc_opt_class();
     v116 = v38;
     if (objc_opt_isKindOfClass())
@@ -925,7 +925,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setNlxCurareContext:v39];
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"marrsMentionDetectorEnded"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"marrsMentionDetectorEnded"];
     objc_opt_class();
     v115 = v40;
     if (objc_opt_isKindOfClass())
@@ -934,7 +934,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setMarrsMentionDetectorEnded:v41];
     }
 
-    v42 = [v4 objectForKeyedSubscript:@"marrsMentionDetectorEndedTier1"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"marrsMentionDetectorEndedTier1"];
     objc_opt_class();
     v114 = v42;
     if (objc_opt_isKindOfClass())
@@ -943,7 +943,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setMarrsMentionDetectorEndedTier1:v43];
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"marrsMentionResolverEnded"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"marrsMentionResolverEnded"];
     objc_opt_class();
     v113 = v44;
     if (objc_opt_isKindOfClass())
@@ -952,7 +952,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setMarrsMentionResolverEnded:v45];
     }
 
-    v46 = [v4 objectForKeyedSubscript:@"marrsMentionResolverEndedTier1"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"marrsMentionResolverEndedTier1"];
     objc_opt_class();
     v112 = v46;
     if (objc_opt_isKindOfClass())
@@ -961,7 +961,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setMarrsMentionResolverEndedTier1:v47];
     }
 
-    v48 = [v4 objectForKeyedSubscript:@"cdmClientSetupContext"];
+    v48 = [dictionaryCopy objectForKeyedSubscript:@"cdmClientSetupContext"];
     objc_opt_class();
     v111 = v48;
     if (objc_opt_isKindOfClass())
@@ -970,7 +970,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setCdmClientSetupContext:v49];
     }
 
-    v50 = [v4 objectForKeyedSubscript:@"cdmAllServicesSetupContext"];
+    v50 = [dictionaryCopy objectForKeyedSubscript:@"cdmAllServicesSetupContext"];
     objc_opt_class();
     v110 = v50;
     if (objc_opt_isKindOfClass())
@@ -979,7 +979,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setCdmAllServicesSetupContext:v51];
     }
 
-    v52 = [v4 objectForKeyedSubscript:@"cdmSingleServiceSetupAttemptContext"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"cdmSingleServiceSetupAttemptContext"];
     objc_opt_class();
     v109 = v52;
     if (objc_opt_isKindOfClass())
@@ -988,7 +988,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setCdmSingleServiceSetupAttemptContext:v53];
     }
 
-    v54 = [v4 objectForKeyedSubscript:@"cdmSingleServiceSetupAttemptFailed"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"cdmSingleServiceSetupAttemptFailed"];
     objc_opt_class();
     v108 = v54;
     if (objc_opt_isKindOfClass())
@@ -997,7 +997,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setCdmSingleServiceSetupAttemptFailed:v55];
     }
 
-    v56 = [v4 objectForKeyedSubscript:@"cdmSpanMatcherContext"];
+    v56 = [dictionaryCopy objectForKeyedSubscript:@"cdmSpanMatcherContext"];
     objc_opt_class();
     v107 = v56;
     if (objc_opt_isKindOfClass())
@@ -1006,7 +1006,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setCdmSpanMatcherContext:v57];
     }
 
-    v58 = [v4 objectForKeyedSubscript:@"marrsContextualSpanMatcherEnded"];
+    v58 = [dictionaryCopy objectForKeyedSubscript:@"marrsContextualSpanMatcherEnded"];
     objc_opt_class();
     v106 = v58;
     if (objc_opt_isKindOfClass())
@@ -1015,7 +1015,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setMarrsContextualSpanMatcherEnded:v59];
     }
 
-    v60 = [v4 objectForKeyedSubscript:@"marrsContextualSpanMatcherEndedTier1"];
+    v60 = [dictionaryCopy objectForKeyedSubscript:@"marrsContextualSpanMatcherEndedTier1"];
     objc_opt_class();
     v105 = v60;
     if (objc_opt_isKindOfClass())
@@ -1024,7 +1024,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setMarrsContextualSpanMatcherEndedTier1:v61];
     }
 
-    v62 = [v4 objectForKeyedSubscript:@"cdmXpcEventProcessingContext"];
+    v62 = [dictionaryCopy objectForKeyedSubscript:@"cdmXpcEventProcessingContext"];
     objc_opt_class();
     v104 = v62;
     if (objc_opt_isKindOfClass())
@@ -1033,7 +1033,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setCdmXpcEventProcessingContext:v63];
     }
 
-    v64 = [v4 objectForKeyedSubscript:@"cdmAssetSetupContext"];
+    v64 = [dictionaryCopy objectForKeyedSubscript:@"cdmAssetSetupContext"];
     objc_opt_class();
     v103 = v64;
     if (objc_opt_isKindOfClass())
@@ -1042,7 +1042,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setCdmAssetSetupContext:v65];
     }
 
-    v66 = [v4 objectForKeyedSubscript:@"cdmSetupMissingAssetsDetected"];
+    v66 = [dictionaryCopy objectForKeyedSubscript:@"cdmSetupMissingAssetsDetected"];
     objc_opt_class();
     v102 = v66;
     if (objc_opt_isKindOfClass())
@@ -1051,7 +1051,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setCdmSetupMissingAssetsDetected:v67];
     }
 
-    v68 = [v4 objectForKeyedSubscript:@"cdmClientWarmupContext"];
+    v68 = [dictionaryCopy objectForKeyedSubscript:@"cdmClientWarmupContext"];
     objc_opt_class();
     v101 = v68;
     if (objc_opt_isKindOfClass())
@@ -1060,7 +1060,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setCdmClientWarmupContext:v69];
     }
 
-    v70 = [v4 objectForKeyedSubscript:@"cdmAllServicesWarmupContext"];
+    v70 = [dictionaryCopy objectForKeyedSubscript:@"cdmAllServicesWarmupContext"];
     objc_opt_class();
     v100 = v70;
     if (objc_opt_isKindOfClass())
@@ -1069,7 +1069,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setCdmAllServicesWarmupContext:v71];
     }
 
-    v72 = [v4 objectForKeyedSubscript:@"cdmSingleServiceWarmupAttemptContext"];
+    v72 = [dictionaryCopy objectForKeyedSubscript:@"cdmSingleServiceWarmupAttemptContext"];
     objc_opt_class();
     v99 = v72;
     if (objc_opt_isKindOfClass())
@@ -1079,7 +1079,7 @@
     }
 
     v97 = v8;
-    v74 = [v4 objectForKeyedSubscript:@"cdmSingleServiceWarmupAttemptFailed"];
+    v74 = [dictionaryCopy objectForKeyedSubscript:@"cdmSingleServiceWarmupAttemptFailed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1088,7 +1088,7 @@
     }
 
     v96 = v10;
-    v76 = [v4 objectForKeyedSubscript:{@"cdmAssetsReported", v74}];
+    v76 = [dictionaryCopy objectForKeyedSubscript:{@"cdmAssetsReported", v74}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1097,7 +1097,7 @@
     }
 
     v95 = v12;
-    v78 = [v4 objectForKeyedSubscript:@"ssuUserRequestContext"];
+    v78 = [dictionaryCopy objectForKeyedSubscript:@"ssuUserRequestContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1106,7 +1106,7 @@
     }
 
     v94 = v14;
-    v80 = [v4 objectForKeyedSubscript:@"ssuBackgroundRequestContext"];
+    v80 = [dictionaryCopy objectForKeyedSubscript:@"ssuBackgroundRequestContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1115,7 +1115,7 @@
     }
 
     v93 = v16;
-    v82 = [v4 objectForKeyedSubscript:@"cdmServiceHandleMetricsReported"];
+    v82 = [dictionaryCopy objectForKeyedSubscript:@"cdmServiceHandleMetricsReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1124,7 +1124,7 @@
     }
 
     v98 = v6;
-    v84 = [v4 objectForKeyedSubscript:@"cdmServiceSetupMetricsReported"];
+    v84 = [dictionaryCopy objectForKeyedSubscript:@"cdmServiceSetupMetricsReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1132,7 +1132,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setCdmServiceSetupMetricsReported:v85];
     }
 
-    v86 = [v4 objectForKeyedSubscript:@"milAssetAcquisitionContext"];
+    v86 = [dictionaryCopy objectForKeyedSubscript:@"milAssetAcquisitionContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1140,7 +1140,7 @@
       [(NLXSchemaNLXClientEvent *)v5 setMilAssetAcquisitionContext:v87];
     }
 
-    v88 = [v4 objectForKeyedSubscript:@"cdmSetupLink"];
+    v88 = [dictionaryCopy objectForKeyedSubscript:@"cdmSetupLink"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1154,30 +1154,30 @@
   return v5;
 }
 
-- (NLXSchemaNLXClientEvent)initWithJSON:(id)a3
+- (NLXSchemaNLXClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaNLXClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaNLXClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaNLXClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -1190,683 +1190,683 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_cdmAllServicesSetupContext)
   {
-    v4 = [(NLXSchemaNLXClientEvent *)self cdmAllServicesSetupContext];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    cdmAllServicesSetupContext = [(NLXSchemaNLXClientEvent *)self cdmAllServicesSetupContext];
+    dictionaryRepresentation = [cdmAllServicesSetupContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"cdmAllServicesSetupContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"cdmAllServicesSetupContext"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"cdmAllServicesSetupContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"cdmAllServicesSetupContext"];
     }
   }
 
   if (self->_cdmAllServicesWarmupContext)
   {
-    v7 = [(NLXSchemaNLXClientEvent *)self cdmAllServicesWarmupContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    cdmAllServicesWarmupContext = [(NLXSchemaNLXClientEvent *)self cdmAllServicesWarmupContext];
+    dictionaryRepresentation2 = [cdmAllServicesWarmupContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"cdmAllServicesWarmupContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"cdmAllServicesWarmupContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"cdmAllServicesWarmupContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"cdmAllServicesWarmupContext"];
     }
   }
 
   if (self->_cdmAssetSetupContext)
   {
-    v10 = [(NLXSchemaNLXClientEvent *)self cdmAssetSetupContext];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    cdmAssetSetupContext = [(NLXSchemaNLXClientEvent *)self cdmAssetSetupContext];
+    dictionaryRepresentation3 = [cdmAssetSetupContext dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"cdmAssetSetupContext"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"cdmAssetSetupContext"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"cdmAssetSetupContext"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"cdmAssetSetupContext"];
     }
   }
 
   if (self->_cdmAssetsReported)
   {
-    v13 = [(NLXSchemaNLXClientEvent *)self cdmAssetsReported];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    cdmAssetsReported = [(NLXSchemaNLXClientEvent *)self cdmAssetsReported];
+    dictionaryRepresentation4 = [cdmAssetsReported dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"cdmAssetsReported"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"cdmAssetsReported"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"cdmAssetsReported"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"cdmAssetsReported"];
     }
   }
 
   if (self->_cdmClientSetupContext)
   {
-    v16 = [(NLXSchemaNLXClientEvent *)self cdmClientSetupContext];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    cdmClientSetupContext = [(NLXSchemaNLXClientEvent *)self cdmClientSetupContext];
+    dictionaryRepresentation5 = [cdmClientSetupContext dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"cdmClientSetupContext"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"cdmClientSetupContext"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"cdmClientSetupContext"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"cdmClientSetupContext"];
     }
   }
 
   if (self->_cdmClientWarmupContext)
   {
-    v19 = [(NLXSchemaNLXClientEvent *)self cdmClientWarmupContext];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    cdmClientWarmupContext = [(NLXSchemaNLXClientEvent *)self cdmClientWarmupContext];
+    dictionaryRepresentation6 = [cdmClientWarmupContext dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"cdmClientWarmupContext"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"cdmClientWarmupContext"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"cdmClientWarmupContext"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"cdmClientWarmupContext"];
     }
   }
 
   if (self->_cdmContextUpdateEnded)
   {
-    v22 = [(NLXSchemaNLXClientEvent *)self cdmContextUpdateEnded];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    cdmContextUpdateEnded = [(NLXSchemaNLXClientEvent *)self cdmContextUpdateEnded];
+    dictionaryRepresentation7 = [cdmContextUpdateEnded dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"cdmContextUpdateEnded"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"cdmContextUpdateEnded"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"cdmContextUpdateEnded"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"cdmContextUpdateEnded"];
     }
   }
 
   if (self->_cdmDelegatedUserDialogActTier1)
   {
-    v25 = [(NLXSchemaNLXClientEvent *)self cdmDelegatedUserDialogActTier1];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    cdmDelegatedUserDialogActTier1 = [(NLXSchemaNLXClientEvent *)self cdmDelegatedUserDialogActTier1];
+    dictionaryRepresentation8 = [cdmDelegatedUserDialogActTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"cdmDelegatedUserDialogActTier1"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"cdmDelegatedUserDialogActTier1"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"cdmDelegatedUserDialogActTier1"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"cdmDelegatedUserDialogActTier1"];
     }
   }
 
   if (self->_cdmMatchingSpanEnded)
   {
-    v28 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEnded];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    cdmMatchingSpanEnded = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEnded];
+    dictionaryRepresentation9 = [cdmMatchingSpanEnded dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"cdmMatchingSpanEnded"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"cdmMatchingSpanEnded"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"cdmMatchingSpanEnded"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"cdmMatchingSpanEnded"];
     }
   }
 
   if (self->_cdmMatchingSpanEndedTier1)
   {
-    v31 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEndedTier1];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    cdmMatchingSpanEndedTier1 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEndedTier1];
+    dictionaryRepresentation10 = [cdmMatchingSpanEndedTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"cdmMatchingSpanEndedTier1"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"cdmMatchingSpanEndedTier1"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"cdmMatchingSpanEndedTier1"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"cdmMatchingSpanEndedTier1"];
     }
   }
 
   if (self->_cdmMatchingSpanTier1)
   {
-    v34 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanTier1];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    cdmMatchingSpanTier1 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanTier1];
+    dictionaryRepresentation11 = [cdmMatchingSpanTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"cdmMatchingSpanTier1"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"cdmMatchingSpanTier1"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"cdmMatchingSpanTier1"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"cdmMatchingSpanTier1"];
     }
   }
 
   if (self->_cdmRequestContext)
   {
-    v37 = [(NLXSchemaNLXClientEvent *)self cdmRequestContext];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    cdmRequestContext = [(NLXSchemaNLXClientEvent *)self cdmRequestContext];
+    dictionaryRepresentation12 = [cdmRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"cdmRequestContext"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"cdmRequestContext"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"cdmRequestContext"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"cdmRequestContext"];
     }
   }
 
   if (self->_cdmServiceContext)
   {
-    v40 = [(NLXSchemaNLXClientEvent *)self cdmServiceContext];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    cdmServiceContext = [(NLXSchemaNLXClientEvent *)self cdmServiceContext];
+    dictionaryRepresentation13 = [cdmServiceContext dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"cdmServiceContext"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"cdmServiceContext"];
     }
 
     else
     {
-      v42 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v42 forKeyedSubscript:@"cdmServiceContext"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"cdmServiceContext"];
     }
   }
 
   if (self->_cdmServiceHandleMetricsReported)
   {
-    v43 = [(NLXSchemaNLXClientEvent *)self cdmServiceHandleMetricsReported];
-    v44 = [v43 dictionaryRepresentation];
-    if (v44)
+    cdmServiceHandleMetricsReported = [(NLXSchemaNLXClientEvent *)self cdmServiceHandleMetricsReported];
+    dictionaryRepresentation14 = [cdmServiceHandleMetricsReported dictionaryRepresentation];
+    if (dictionaryRepresentation14)
     {
-      [v3 setObject:v44 forKeyedSubscript:@"cdmServiceHandleMetricsReported"];
+      [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"cdmServiceHandleMetricsReported"];
     }
 
     else
     {
-      v45 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v45 forKeyedSubscript:@"cdmServiceHandleMetricsReported"];
+      null14 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null14 forKeyedSubscript:@"cdmServiceHandleMetricsReported"];
     }
   }
 
   if (self->_cdmServiceSetupMetricsReported)
   {
-    v46 = [(NLXSchemaNLXClientEvent *)self cdmServiceSetupMetricsReported];
-    v47 = [v46 dictionaryRepresentation];
-    if (v47)
+    cdmServiceSetupMetricsReported = [(NLXSchemaNLXClientEvent *)self cdmServiceSetupMetricsReported];
+    dictionaryRepresentation15 = [cdmServiceSetupMetricsReported dictionaryRepresentation];
+    if (dictionaryRepresentation15)
     {
-      [v3 setObject:v47 forKeyedSubscript:@"cdmServiceSetupMetricsReported"];
+      [dictionary setObject:dictionaryRepresentation15 forKeyedSubscript:@"cdmServiceSetupMetricsReported"];
     }
 
     else
     {
-      v48 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v48 forKeyedSubscript:@"cdmServiceSetupMetricsReported"];
+      null15 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null15 forKeyedSubscript:@"cdmServiceSetupMetricsReported"];
     }
   }
 
   if (self->_cdmSetupLink)
   {
-    v49 = [(NLXSchemaNLXClientEvent *)self cdmSetupLink];
-    v50 = [v49 dictionaryRepresentation];
-    if (v50)
+    cdmSetupLink = [(NLXSchemaNLXClientEvent *)self cdmSetupLink];
+    dictionaryRepresentation16 = [cdmSetupLink dictionaryRepresentation];
+    if (dictionaryRepresentation16)
     {
-      [v3 setObject:v50 forKeyedSubscript:@"cdmSetupLink"];
+      [dictionary setObject:dictionaryRepresentation16 forKeyedSubscript:@"cdmSetupLink"];
     }
 
     else
     {
-      v51 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v51 forKeyedSubscript:@"cdmSetupLink"];
+      null16 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null16 forKeyedSubscript:@"cdmSetupLink"];
     }
   }
 
   if (self->_cdmSetupMissingAssetsDetected)
   {
-    v52 = [(NLXSchemaNLXClientEvent *)self cdmSetupMissingAssetsDetected];
-    v53 = [v52 dictionaryRepresentation];
-    if (v53)
+    cdmSetupMissingAssetsDetected = [(NLXSchemaNLXClientEvent *)self cdmSetupMissingAssetsDetected];
+    dictionaryRepresentation17 = [cdmSetupMissingAssetsDetected dictionaryRepresentation];
+    if (dictionaryRepresentation17)
     {
-      [v3 setObject:v53 forKeyedSubscript:@"cdmSetupMissingAssetsDetected"];
+      [dictionary setObject:dictionaryRepresentation17 forKeyedSubscript:@"cdmSetupMissingAssetsDetected"];
     }
 
     else
     {
-      v54 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v54 forKeyedSubscript:@"cdmSetupMissingAssetsDetected"];
+      null17 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null17 forKeyedSubscript:@"cdmSetupMissingAssetsDetected"];
     }
   }
 
   if (self->_cdmSingleServiceSetupAttemptContext)
   {
-    v55 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptContext];
-    v56 = [v55 dictionaryRepresentation];
-    if (v56)
+    cdmSingleServiceSetupAttemptContext = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptContext];
+    dictionaryRepresentation18 = [cdmSingleServiceSetupAttemptContext dictionaryRepresentation];
+    if (dictionaryRepresentation18)
     {
-      [v3 setObject:v56 forKeyedSubscript:@"cdmSingleServiceSetupAttemptContext"];
+      [dictionary setObject:dictionaryRepresentation18 forKeyedSubscript:@"cdmSingleServiceSetupAttemptContext"];
     }
 
     else
     {
-      v57 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v57 forKeyedSubscript:@"cdmSingleServiceSetupAttemptContext"];
+      null18 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null18 forKeyedSubscript:@"cdmSingleServiceSetupAttemptContext"];
     }
   }
 
   if (self->_cdmSingleServiceSetupAttemptFailed)
   {
-    v58 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptFailed];
-    v59 = [v58 dictionaryRepresentation];
-    if (v59)
+    cdmSingleServiceSetupAttemptFailed = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptFailed];
+    dictionaryRepresentation19 = [cdmSingleServiceSetupAttemptFailed dictionaryRepresentation];
+    if (dictionaryRepresentation19)
     {
-      [v3 setObject:v59 forKeyedSubscript:@"cdmSingleServiceSetupAttemptFailed"];
+      [dictionary setObject:dictionaryRepresentation19 forKeyedSubscript:@"cdmSingleServiceSetupAttemptFailed"];
     }
 
     else
     {
-      v60 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v60 forKeyedSubscript:@"cdmSingleServiceSetupAttemptFailed"];
+      null19 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null19 forKeyedSubscript:@"cdmSingleServiceSetupAttemptFailed"];
     }
   }
 
   if (self->_cdmSingleServiceWarmupAttemptContext)
   {
-    v61 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptContext];
-    v62 = [v61 dictionaryRepresentation];
-    if (v62)
+    cdmSingleServiceWarmupAttemptContext = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptContext];
+    dictionaryRepresentation20 = [cdmSingleServiceWarmupAttemptContext dictionaryRepresentation];
+    if (dictionaryRepresentation20)
     {
-      [v3 setObject:v62 forKeyedSubscript:@"cdmSingleServiceWarmupAttemptContext"];
+      [dictionary setObject:dictionaryRepresentation20 forKeyedSubscript:@"cdmSingleServiceWarmupAttemptContext"];
     }
 
     else
     {
-      v63 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v63 forKeyedSubscript:@"cdmSingleServiceWarmupAttemptContext"];
+      null20 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null20 forKeyedSubscript:@"cdmSingleServiceWarmupAttemptContext"];
     }
   }
 
   if (self->_cdmSingleServiceWarmupAttemptFailed)
   {
-    v64 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptFailed];
-    v65 = [v64 dictionaryRepresentation];
-    if (v65)
+    cdmSingleServiceWarmupAttemptFailed = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptFailed];
+    dictionaryRepresentation21 = [cdmSingleServiceWarmupAttemptFailed dictionaryRepresentation];
+    if (dictionaryRepresentation21)
     {
-      [v3 setObject:v65 forKeyedSubscript:@"cdmSingleServiceWarmupAttemptFailed"];
+      [dictionary setObject:dictionaryRepresentation21 forKeyedSubscript:@"cdmSingleServiceWarmupAttemptFailed"];
     }
 
     else
     {
-      v66 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v66 forKeyedSubscript:@"cdmSingleServiceWarmupAttemptFailed"];
+      null21 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null21 forKeyedSubscript:@"cdmSingleServiceWarmupAttemptFailed"];
     }
   }
 
   if (self->_cdmSpanMatcherContext)
   {
-    v67 = [(NLXSchemaNLXClientEvent *)self cdmSpanMatcherContext];
-    v68 = [v67 dictionaryRepresentation];
-    if (v68)
+    cdmSpanMatcherContext = [(NLXSchemaNLXClientEvent *)self cdmSpanMatcherContext];
+    dictionaryRepresentation22 = [cdmSpanMatcherContext dictionaryRepresentation];
+    if (dictionaryRepresentation22)
     {
-      [v3 setObject:v68 forKeyedSubscript:@"cdmSpanMatcherContext"];
+      [dictionary setObject:dictionaryRepresentation22 forKeyedSubscript:@"cdmSpanMatcherContext"];
     }
 
     else
     {
-      v69 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v69 forKeyedSubscript:@"cdmSpanMatcherContext"];
+      null22 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null22 forKeyedSubscript:@"cdmSpanMatcherContext"];
     }
   }
 
   if (self->_cdmSystemDialogActTier1)
   {
-    v70 = [(NLXSchemaNLXClientEvent *)self cdmSystemDialogActTier1];
-    v71 = [v70 dictionaryRepresentation];
-    if (v71)
+    cdmSystemDialogActTier1 = [(NLXSchemaNLXClientEvent *)self cdmSystemDialogActTier1];
+    dictionaryRepresentation23 = [cdmSystemDialogActTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation23)
     {
-      [v3 setObject:v71 forKeyedSubscript:@"cdmSystemDialogActTier1"];
+      [dictionary setObject:dictionaryRepresentation23 forKeyedSubscript:@"cdmSystemDialogActTier1"];
     }
 
     else
     {
-      v72 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v72 forKeyedSubscript:@"cdmSystemDialogActTier1"];
+      null23 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null23 forKeyedSubscript:@"cdmSystemDialogActTier1"];
     }
   }
 
   if (self->_cdmTokenizationEnded)
   {
-    v73 = [(NLXSchemaNLXClientEvent *)self cdmTokenizationEnded];
-    v74 = [v73 dictionaryRepresentation];
-    if (v74)
+    cdmTokenizationEnded = [(NLXSchemaNLXClientEvent *)self cdmTokenizationEnded];
+    dictionaryRepresentation24 = [cdmTokenizationEnded dictionaryRepresentation];
+    if (dictionaryRepresentation24)
     {
-      [v3 setObject:v74 forKeyedSubscript:@"cdmTokenizationEnded"];
+      [dictionary setObject:dictionaryRepresentation24 forKeyedSubscript:@"cdmTokenizationEnded"];
     }
 
     else
     {
-      v75 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v75 forKeyedSubscript:@"cdmTokenizationEnded"];
+      null24 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null24 forKeyedSubscript:@"cdmTokenizationEnded"];
     }
   }
 
   if (self->_cdmUsoGraphTier1)
   {
-    v76 = [(NLXSchemaNLXClientEvent *)self cdmUsoGraphTier1];
-    v77 = [v76 dictionaryRepresentation];
-    if (v77)
+    cdmUsoGraphTier1 = [(NLXSchemaNLXClientEvent *)self cdmUsoGraphTier1];
+    dictionaryRepresentation25 = [cdmUsoGraphTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation25)
     {
-      [v3 setObject:v77 forKeyedSubscript:@"cdmUsoGraphTier1"];
+      [dictionary setObject:dictionaryRepresentation25 forKeyedSubscript:@"cdmUsoGraphTier1"];
     }
 
     else
     {
-      v78 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v78 forKeyedSubscript:@"cdmUsoGraphTier1"];
+      null25 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null25 forKeyedSubscript:@"cdmUsoGraphTier1"];
     }
   }
 
   if (self->_cdmXpcEventProcessingContext)
   {
-    v79 = [(NLXSchemaNLXClientEvent *)self cdmXpcEventProcessingContext];
-    v80 = [v79 dictionaryRepresentation];
-    if (v80)
+    cdmXpcEventProcessingContext = [(NLXSchemaNLXClientEvent *)self cdmXpcEventProcessingContext];
+    dictionaryRepresentation26 = [cdmXpcEventProcessingContext dictionaryRepresentation];
+    if (dictionaryRepresentation26)
     {
-      [v3 setObject:v80 forKeyedSubscript:@"cdmXpcEventProcessingContext"];
+      [dictionary setObject:dictionaryRepresentation26 forKeyedSubscript:@"cdmXpcEventProcessingContext"];
     }
 
     else
     {
-      v81 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v81 forKeyedSubscript:@"cdmXpcEventProcessingContext"];
+      null26 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null26 forKeyedSubscript:@"cdmXpcEventProcessingContext"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v82 = [(NLXSchemaNLXClientEvent *)self eventMetadata];
-    v83 = [v82 dictionaryRepresentation];
-    if (v83)
+    eventMetadata = [(NLXSchemaNLXClientEvent *)self eventMetadata];
+    dictionaryRepresentation27 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation27)
     {
-      [v3 setObject:v83 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation27 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v84 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v84 forKeyedSubscript:@"eventMetadata"];
+      null27 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null27 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_marrsContextualSpanMatcherEnded)
   {
-    v85 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEnded];
-    v86 = [v85 dictionaryRepresentation];
-    if (v86)
+    marrsContextualSpanMatcherEnded = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEnded];
+    dictionaryRepresentation28 = [marrsContextualSpanMatcherEnded dictionaryRepresentation];
+    if (dictionaryRepresentation28)
     {
-      [v3 setObject:v86 forKeyedSubscript:@"marrsContextualSpanMatcherEnded"];
+      [dictionary setObject:dictionaryRepresentation28 forKeyedSubscript:@"marrsContextualSpanMatcherEnded"];
     }
 
     else
     {
-      v87 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v87 forKeyedSubscript:@"marrsContextualSpanMatcherEnded"];
+      null28 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null28 forKeyedSubscript:@"marrsContextualSpanMatcherEnded"];
     }
   }
 
   if (self->_marrsContextualSpanMatcherEndedTier1)
   {
-    v88 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEndedTier1];
-    v89 = [v88 dictionaryRepresentation];
-    if (v89)
+    marrsContextualSpanMatcherEndedTier1 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEndedTier1];
+    dictionaryRepresentation29 = [marrsContextualSpanMatcherEndedTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation29)
     {
-      [v3 setObject:v89 forKeyedSubscript:@"marrsContextualSpanMatcherEndedTier1"];
+      [dictionary setObject:dictionaryRepresentation29 forKeyedSubscript:@"marrsContextualSpanMatcherEndedTier1"];
     }
 
     else
     {
-      v90 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v90 forKeyedSubscript:@"marrsContextualSpanMatcherEndedTier1"];
+      null29 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null29 forKeyedSubscript:@"marrsContextualSpanMatcherEndedTier1"];
     }
   }
 
   if (self->_marrsMentionDetectorEnded)
   {
-    v91 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEnded];
-    v92 = [v91 dictionaryRepresentation];
-    if (v92)
+    marrsMentionDetectorEnded = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEnded];
+    dictionaryRepresentation30 = [marrsMentionDetectorEnded dictionaryRepresentation];
+    if (dictionaryRepresentation30)
     {
-      [v3 setObject:v92 forKeyedSubscript:@"marrsMentionDetectorEnded"];
+      [dictionary setObject:dictionaryRepresentation30 forKeyedSubscript:@"marrsMentionDetectorEnded"];
     }
 
     else
     {
-      v93 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v93 forKeyedSubscript:@"marrsMentionDetectorEnded"];
+      null30 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null30 forKeyedSubscript:@"marrsMentionDetectorEnded"];
     }
   }
 
   if (self->_marrsMentionDetectorEndedTier1)
   {
-    v94 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEndedTier1];
-    v95 = [v94 dictionaryRepresentation];
-    if (v95)
+    marrsMentionDetectorEndedTier1 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEndedTier1];
+    dictionaryRepresentation31 = [marrsMentionDetectorEndedTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation31)
     {
-      [v3 setObject:v95 forKeyedSubscript:@"marrsMentionDetectorEndedTier1"];
+      [dictionary setObject:dictionaryRepresentation31 forKeyedSubscript:@"marrsMentionDetectorEndedTier1"];
     }
 
     else
     {
-      v96 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v96 forKeyedSubscript:@"marrsMentionDetectorEndedTier1"];
+      null31 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null31 forKeyedSubscript:@"marrsMentionDetectorEndedTier1"];
     }
   }
 
   if (self->_marrsMentionResolverEnded)
   {
-    v97 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEnded];
-    v98 = [v97 dictionaryRepresentation];
-    if (v98)
+    marrsMentionResolverEnded = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEnded];
+    dictionaryRepresentation32 = [marrsMentionResolverEnded dictionaryRepresentation];
+    if (dictionaryRepresentation32)
     {
-      [v3 setObject:v98 forKeyedSubscript:@"marrsMentionResolverEnded"];
+      [dictionary setObject:dictionaryRepresentation32 forKeyedSubscript:@"marrsMentionResolverEnded"];
     }
 
     else
     {
-      v99 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v99 forKeyedSubscript:@"marrsMentionResolverEnded"];
+      null32 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null32 forKeyedSubscript:@"marrsMentionResolverEnded"];
     }
   }
 
   if (self->_marrsMentionResolverEndedTier1)
   {
-    v100 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEndedTier1];
-    v101 = [v100 dictionaryRepresentation];
-    if (v101)
+    marrsMentionResolverEndedTier1 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEndedTier1];
+    dictionaryRepresentation33 = [marrsMentionResolverEndedTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation33)
     {
-      [v3 setObject:v101 forKeyedSubscript:@"marrsMentionResolverEndedTier1"];
+      [dictionary setObject:dictionaryRepresentation33 forKeyedSubscript:@"marrsMentionResolverEndedTier1"];
     }
 
     else
     {
-      v102 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v102 forKeyedSubscript:@"marrsMentionResolverEndedTier1"];
+      null33 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null33 forKeyedSubscript:@"marrsMentionResolverEndedTier1"];
     }
   }
 
   if (self->_marrsQueryRewriteContext)
   {
-    v103 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteContext];
-    v104 = [v103 dictionaryRepresentation];
-    if (v104)
+    marrsQueryRewriteContext = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteContext];
+    dictionaryRepresentation34 = [marrsQueryRewriteContext dictionaryRepresentation];
+    if (dictionaryRepresentation34)
     {
-      [v3 setObject:v104 forKeyedSubscript:@"marrsQueryRewriteContext"];
+      [dictionary setObject:dictionaryRepresentation34 forKeyedSubscript:@"marrsQueryRewriteContext"];
     }
 
     else
     {
-      v105 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v105 forKeyedSubscript:@"marrsQueryRewriteContext"];
+      null34 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null34 forKeyedSubscript:@"marrsQueryRewriteContext"];
     }
   }
 
   if (self->_marrsQueryRewriteEvaluatedTier1)
   {
-    v106 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteEvaluatedTier1];
-    v107 = [v106 dictionaryRepresentation];
-    if (v107)
+    marrsQueryRewriteEvaluatedTier1 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteEvaluatedTier1];
+    dictionaryRepresentation35 = [marrsQueryRewriteEvaluatedTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation35)
     {
-      [v3 setObject:v107 forKeyedSubscript:@"marrsQueryRewriteEvaluatedTier1"];
+      [dictionary setObject:dictionaryRepresentation35 forKeyedSubscript:@"marrsQueryRewriteEvaluatedTier1"];
     }
 
     else
     {
-      v108 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v108 forKeyedSubscript:@"marrsQueryRewriteEvaluatedTier1"];
+      null35 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null35 forKeyedSubscript:@"marrsQueryRewriteEvaluatedTier1"];
     }
   }
 
   if (self->_marrsRepetitionDetectionContext)
   {
-    v109 = [(NLXSchemaNLXClientEvent *)self marrsRepetitionDetectionContext];
-    v110 = [v109 dictionaryRepresentation];
-    if (v110)
+    marrsRepetitionDetectionContext = [(NLXSchemaNLXClientEvent *)self marrsRepetitionDetectionContext];
+    dictionaryRepresentation36 = [marrsRepetitionDetectionContext dictionaryRepresentation];
+    if (dictionaryRepresentation36)
     {
-      [v3 setObject:v110 forKeyedSubscript:@"marrsRepetitionDetectionContext"];
+      [dictionary setObject:dictionaryRepresentation36 forKeyedSubscript:@"marrsRepetitionDetectionContext"];
     }
 
     else
     {
-      v111 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v111 forKeyedSubscript:@"marrsRepetitionDetectionContext"];
+      null36 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null36 forKeyedSubscript:@"marrsRepetitionDetectionContext"];
     }
   }
 
   if (self->_milAssetAcquisitionContext)
   {
-    v112 = [(NLXSchemaNLXClientEvent *)self milAssetAcquisitionContext];
-    v113 = [v112 dictionaryRepresentation];
-    if (v113)
+    milAssetAcquisitionContext = [(NLXSchemaNLXClientEvent *)self milAssetAcquisitionContext];
+    dictionaryRepresentation37 = [milAssetAcquisitionContext dictionaryRepresentation];
+    if (dictionaryRepresentation37)
     {
-      [v3 setObject:v113 forKeyedSubscript:@"milAssetAcquisitionContext"];
+      [dictionary setObject:dictionaryRepresentation37 forKeyedSubscript:@"milAssetAcquisitionContext"];
     }
 
     else
     {
-      v114 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v114 forKeyedSubscript:@"milAssetAcquisitionContext"];
+      null37 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null37 forKeyedSubscript:@"milAssetAcquisitionContext"];
     }
   }
 
   if (self->_nlxCurareContext)
   {
-    v115 = [(NLXSchemaNLXClientEvent *)self nlxCurareContext];
-    v116 = [v115 dictionaryRepresentation];
-    if (v116)
+    nlxCurareContext = [(NLXSchemaNLXClientEvent *)self nlxCurareContext];
+    dictionaryRepresentation38 = [nlxCurareContext dictionaryRepresentation];
+    if (dictionaryRepresentation38)
     {
-      [v3 setObject:v116 forKeyedSubscript:@"nlxCurareContext"];
+      [dictionary setObject:dictionaryRepresentation38 forKeyedSubscript:@"nlxCurareContext"];
     }
 
     else
     {
-      v117 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v117 forKeyedSubscript:@"nlxCurareContext"];
+      null38 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null38 forKeyedSubscript:@"nlxCurareContext"];
     }
   }
 
   if (self->_nlxDeviceFixedContext)
   {
-    v118 = [(NLXSchemaNLXClientEvent *)self nlxDeviceFixedContext];
-    v119 = [v118 dictionaryRepresentation];
-    if (v119)
+    nlxDeviceFixedContext = [(NLXSchemaNLXClientEvent *)self nlxDeviceFixedContext];
+    dictionaryRepresentation39 = [nlxDeviceFixedContext dictionaryRepresentation];
+    if (dictionaryRepresentation39)
     {
-      [v3 setObject:v119 forKeyedSubscript:@"nlxDeviceFixedContext"];
+      [dictionary setObject:dictionaryRepresentation39 forKeyedSubscript:@"nlxDeviceFixedContext"];
     }
 
     else
     {
-      v120 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v120 forKeyedSubscript:@"nlxDeviceFixedContext"];
+      null39 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null39 forKeyedSubscript:@"nlxDeviceFixedContext"];
     }
   }
 
   if (self->_nlxLegacyNLContextTier1)
   {
-    v121 = [(NLXSchemaNLXClientEvent *)self nlxLegacyNLContextTier1];
-    v122 = [v121 dictionaryRepresentation];
-    if (v122)
+    nlxLegacyNLContextTier1 = [(NLXSchemaNLXClientEvent *)self nlxLegacyNLContextTier1];
+    dictionaryRepresentation40 = [nlxLegacyNLContextTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation40)
     {
-      [v3 setObject:v122 forKeyedSubscript:@"nlxLegacyNLContextTier1"];
+      [dictionary setObject:dictionaryRepresentation40 forKeyedSubscript:@"nlxLegacyNLContextTier1"];
     }
 
     else
     {
-      v123 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v123 forKeyedSubscript:@"nlxLegacyNLContextTier1"];
+      null40 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null40 forKeyedSubscript:@"nlxLegacyNLContextTier1"];
     }
   }
 
   if (self->_ssuBackgroundRequestContext)
   {
-    v124 = [(NLXSchemaNLXClientEvent *)self ssuBackgroundRequestContext];
-    v125 = [v124 dictionaryRepresentation];
-    if (v125)
+    ssuBackgroundRequestContext = [(NLXSchemaNLXClientEvent *)self ssuBackgroundRequestContext];
+    dictionaryRepresentation41 = [ssuBackgroundRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation41)
     {
-      [v3 setObject:v125 forKeyedSubscript:@"ssuBackgroundRequestContext"];
+      [dictionary setObject:dictionaryRepresentation41 forKeyedSubscript:@"ssuBackgroundRequestContext"];
     }
 
     else
     {
-      v126 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v126 forKeyedSubscript:@"ssuBackgroundRequestContext"];
+      null41 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null41 forKeyedSubscript:@"ssuBackgroundRequestContext"];
     }
   }
 
   if (self->_ssuUserRequestContext)
   {
-    v127 = [(NLXSchemaNLXClientEvent *)self ssuUserRequestContext];
-    v128 = [v127 dictionaryRepresentation];
-    if (v128)
+    ssuUserRequestContext = [(NLXSchemaNLXClientEvent *)self ssuUserRequestContext];
+    dictionaryRepresentation42 = [ssuUserRequestContext dictionaryRepresentation];
+    if (dictionaryRepresentation42)
     {
-      [v3 setObject:v128 forKeyedSubscript:@"ssuUserRequestContext"];
+      [dictionary setObject:dictionaryRepresentation42 forKeyedSubscript:@"ssuUserRequestContext"];
     }
 
     else
     {
-      v129 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v129 forKeyedSubscript:@"ssuUserRequestContext"];
+      null42 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null42 forKeyedSubscript:@"ssuUserRequestContext"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v130 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v130 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -1915,34 +1915,34 @@
   return v39 ^ v43 ^ [(NLXSchemaCDMSetupLink *)self->_cdmSetupLink hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_213;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_213;
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v8 = [(NLXSchemaNLXClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(NLXSchemaNLXClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(NLXSchemaNLXClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(NLXSchemaNLXClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -1954,20 +1954,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmServiceContext];
-  v7 = [v4 cdmServiceContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmServiceContext];
+  eventMetadata2 = [equalCopy cdmServiceContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v13 = [(NLXSchemaNLXClientEvent *)self cdmServiceContext];
-  if (v13)
+  cdmServiceContext = [(NLXSchemaNLXClientEvent *)self cdmServiceContext];
+  if (cdmServiceContext)
   {
-    v14 = v13;
-    v15 = [(NLXSchemaNLXClientEvent *)self cdmServiceContext];
-    v16 = [v4 cdmServiceContext];
-    v17 = [v15 isEqual:v16];
+    v14 = cdmServiceContext;
+    cdmServiceContext2 = [(NLXSchemaNLXClientEvent *)self cdmServiceContext];
+    cdmServiceContext3 = [equalCopy cdmServiceContext];
+    v17 = [cdmServiceContext2 isEqual:cdmServiceContext3];
 
     if (!v17)
     {
@@ -1979,20 +1979,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmRequestContext];
-  v7 = [v4 cdmRequestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmRequestContext];
+  eventMetadata2 = [equalCopy cdmRequestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v18 = [(NLXSchemaNLXClientEvent *)self cdmRequestContext];
-  if (v18)
+  cdmRequestContext = [(NLXSchemaNLXClientEvent *)self cdmRequestContext];
+  if (cdmRequestContext)
   {
-    v19 = v18;
-    v20 = [(NLXSchemaNLXClientEvent *)self cdmRequestContext];
-    v21 = [v4 cdmRequestContext];
-    v22 = [v20 isEqual:v21];
+    v19 = cdmRequestContext;
+    cdmRequestContext2 = [(NLXSchemaNLXClientEvent *)self cdmRequestContext];
+    cdmRequestContext3 = [equalCopy cdmRequestContext];
+    v22 = [cdmRequestContext2 isEqual:cdmRequestContext3];
 
     if (!v22)
     {
@@ -2004,20 +2004,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self nlxDeviceFixedContext];
-  v7 = [v4 nlxDeviceFixedContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self nlxDeviceFixedContext];
+  eventMetadata2 = [equalCopy nlxDeviceFixedContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v23 = [(NLXSchemaNLXClientEvent *)self nlxDeviceFixedContext];
-  if (v23)
+  nlxDeviceFixedContext = [(NLXSchemaNLXClientEvent *)self nlxDeviceFixedContext];
+  if (nlxDeviceFixedContext)
   {
-    v24 = v23;
-    v25 = [(NLXSchemaNLXClientEvent *)self nlxDeviceFixedContext];
-    v26 = [v4 nlxDeviceFixedContext];
-    v27 = [v25 isEqual:v26];
+    v24 = nlxDeviceFixedContext;
+    nlxDeviceFixedContext2 = [(NLXSchemaNLXClientEvent *)self nlxDeviceFixedContext];
+    nlxDeviceFixedContext3 = [equalCopy nlxDeviceFixedContext];
+    v27 = [nlxDeviceFixedContext2 isEqual:nlxDeviceFixedContext3];
 
     if (!v27)
     {
@@ -2029,20 +2029,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEnded];
-  v7 = [v4 cdmMatchingSpanEnded];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEnded];
+  eventMetadata2 = [equalCopy cdmMatchingSpanEnded];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v28 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEnded];
-  if (v28)
+  cdmMatchingSpanEnded = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEnded];
+  if (cdmMatchingSpanEnded)
   {
-    v29 = v28;
-    v30 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEnded];
-    v31 = [v4 cdmMatchingSpanEnded];
-    v32 = [v30 isEqual:v31];
+    v29 = cdmMatchingSpanEnded;
+    cdmMatchingSpanEnded2 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEnded];
+    cdmMatchingSpanEnded3 = [equalCopy cdmMatchingSpanEnded];
+    v32 = [cdmMatchingSpanEnded2 isEqual:cdmMatchingSpanEnded3];
 
     if (!v32)
     {
@@ -2054,20 +2054,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmUsoGraphTier1];
-  v7 = [v4 cdmUsoGraphTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmUsoGraphTier1];
+  eventMetadata2 = [equalCopy cdmUsoGraphTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v33 = [(NLXSchemaNLXClientEvent *)self cdmUsoGraphTier1];
-  if (v33)
+  cdmUsoGraphTier1 = [(NLXSchemaNLXClientEvent *)self cdmUsoGraphTier1];
+  if (cdmUsoGraphTier1)
   {
-    v34 = v33;
-    v35 = [(NLXSchemaNLXClientEvent *)self cdmUsoGraphTier1];
-    v36 = [v4 cdmUsoGraphTier1];
-    v37 = [v35 isEqual:v36];
+    v34 = cdmUsoGraphTier1;
+    cdmUsoGraphTier12 = [(NLXSchemaNLXClientEvent *)self cdmUsoGraphTier1];
+    cdmUsoGraphTier13 = [equalCopy cdmUsoGraphTier1];
+    v37 = [cdmUsoGraphTier12 isEqual:cdmUsoGraphTier13];
 
     if (!v37)
     {
@@ -2079,20 +2079,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanTier1];
-  v7 = [v4 cdmMatchingSpanTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanTier1];
+  eventMetadata2 = [equalCopy cdmMatchingSpanTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v38 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanTier1];
-  if (v38)
+  cdmMatchingSpanTier1 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanTier1];
+  if (cdmMatchingSpanTier1)
   {
-    v39 = v38;
-    v40 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanTier1];
-    v41 = [v4 cdmMatchingSpanTier1];
-    v42 = [v40 isEqual:v41];
+    v39 = cdmMatchingSpanTier1;
+    cdmMatchingSpanTier12 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanTier1];
+    cdmMatchingSpanTier13 = [equalCopy cdmMatchingSpanTier1];
+    v42 = [cdmMatchingSpanTier12 isEqual:cdmMatchingSpanTier13];
 
     if (!v42)
     {
@@ -2104,20 +2104,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self nlxLegacyNLContextTier1];
-  v7 = [v4 nlxLegacyNLContextTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self nlxLegacyNLContextTier1];
+  eventMetadata2 = [equalCopy nlxLegacyNLContextTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v43 = [(NLXSchemaNLXClientEvent *)self nlxLegacyNLContextTier1];
-  if (v43)
+  nlxLegacyNLContextTier1 = [(NLXSchemaNLXClientEvent *)self nlxLegacyNLContextTier1];
+  if (nlxLegacyNLContextTier1)
   {
-    v44 = v43;
-    v45 = [(NLXSchemaNLXClientEvent *)self nlxLegacyNLContextTier1];
-    v46 = [v4 nlxLegacyNLContextTier1];
-    v47 = [v45 isEqual:v46];
+    v44 = nlxLegacyNLContextTier1;
+    nlxLegacyNLContextTier12 = [(NLXSchemaNLXClientEvent *)self nlxLegacyNLContextTier1];
+    nlxLegacyNLContextTier13 = [equalCopy nlxLegacyNLContextTier1];
+    v47 = [nlxLegacyNLContextTier12 isEqual:nlxLegacyNLContextTier13];
 
     if (!v47)
     {
@@ -2129,20 +2129,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmDelegatedUserDialogActTier1];
-  v7 = [v4 cdmDelegatedUserDialogActTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmDelegatedUserDialogActTier1];
+  eventMetadata2 = [equalCopy cdmDelegatedUserDialogActTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v48 = [(NLXSchemaNLXClientEvent *)self cdmDelegatedUserDialogActTier1];
-  if (v48)
+  cdmDelegatedUserDialogActTier1 = [(NLXSchemaNLXClientEvent *)self cdmDelegatedUserDialogActTier1];
+  if (cdmDelegatedUserDialogActTier1)
   {
-    v49 = v48;
-    v50 = [(NLXSchemaNLXClientEvent *)self cdmDelegatedUserDialogActTier1];
-    v51 = [v4 cdmDelegatedUserDialogActTier1];
-    v52 = [v50 isEqual:v51];
+    v49 = cdmDelegatedUserDialogActTier1;
+    cdmDelegatedUserDialogActTier12 = [(NLXSchemaNLXClientEvent *)self cdmDelegatedUserDialogActTier1];
+    cdmDelegatedUserDialogActTier13 = [equalCopy cdmDelegatedUserDialogActTier1];
+    v52 = [cdmDelegatedUserDialogActTier12 isEqual:cdmDelegatedUserDialogActTier13];
 
     if (!v52)
     {
@@ -2154,20 +2154,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmSystemDialogActTier1];
-  v7 = [v4 cdmSystemDialogActTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmSystemDialogActTier1];
+  eventMetadata2 = [equalCopy cdmSystemDialogActTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v53 = [(NLXSchemaNLXClientEvent *)self cdmSystemDialogActTier1];
-  if (v53)
+  cdmSystemDialogActTier1 = [(NLXSchemaNLXClientEvent *)self cdmSystemDialogActTier1];
+  if (cdmSystemDialogActTier1)
   {
-    v54 = v53;
-    v55 = [(NLXSchemaNLXClientEvent *)self cdmSystemDialogActTier1];
-    v56 = [v4 cdmSystemDialogActTier1];
-    v57 = [v55 isEqual:v56];
+    v54 = cdmSystemDialogActTier1;
+    cdmSystemDialogActTier12 = [(NLXSchemaNLXClientEvent *)self cdmSystemDialogActTier1];
+    cdmSystemDialogActTier13 = [equalCopy cdmSystemDialogActTier1];
+    v57 = [cdmSystemDialogActTier12 isEqual:cdmSystemDialogActTier13];
 
     if (!v57)
     {
@@ -2179,20 +2179,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmTokenizationEnded];
-  v7 = [v4 cdmTokenizationEnded];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmTokenizationEnded];
+  eventMetadata2 = [equalCopy cdmTokenizationEnded];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v58 = [(NLXSchemaNLXClientEvent *)self cdmTokenizationEnded];
-  if (v58)
+  cdmTokenizationEnded = [(NLXSchemaNLXClientEvent *)self cdmTokenizationEnded];
+  if (cdmTokenizationEnded)
   {
-    v59 = v58;
-    v60 = [(NLXSchemaNLXClientEvent *)self cdmTokenizationEnded];
-    v61 = [v4 cdmTokenizationEnded];
-    v62 = [v60 isEqual:v61];
+    v59 = cdmTokenizationEnded;
+    cdmTokenizationEnded2 = [(NLXSchemaNLXClientEvent *)self cdmTokenizationEnded];
+    cdmTokenizationEnded3 = [equalCopy cdmTokenizationEnded];
+    v62 = [cdmTokenizationEnded2 isEqual:cdmTokenizationEnded3];
 
     if (!v62)
     {
@@ -2204,20 +2204,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmContextUpdateEnded];
-  v7 = [v4 cdmContextUpdateEnded];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmContextUpdateEnded];
+  eventMetadata2 = [equalCopy cdmContextUpdateEnded];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v63 = [(NLXSchemaNLXClientEvent *)self cdmContextUpdateEnded];
-  if (v63)
+  cdmContextUpdateEnded = [(NLXSchemaNLXClientEvent *)self cdmContextUpdateEnded];
+  if (cdmContextUpdateEnded)
   {
-    v64 = v63;
-    v65 = [(NLXSchemaNLXClientEvent *)self cdmContextUpdateEnded];
-    v66 = [v4 cdmContextUpdateEnded];
-    v67 = [v65 isEqual:v66];
+    v64 = cdmContextUpdateEnded;
+    cdmContextUpdateEnded2 = [(NLXSchemaNLXClientEvent *)self cdmContextUpdateEnded];
+    cdmContextUpdateEnded3 = [equalCopy cdmContextUpdateEnded];
+    v67 = [cdmContextUpdateEnded2 isEqual:cdmContextUpdateEnded3];
 
     if (!v67)
     {
@@ -2229,20 +2229,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self marrsRepetitionDetectionContext];
-  v7 = [v4 marrsRepetitionDetectionContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self marrsRepetitionDetectionContext];
+  eventMetadata2 = [equalCopy marrsRepetitionDetectionContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v68 = [(NLXSchemaNLXClientEvent *)self marrsRepetitionDetectionContext];
-  if (v68)
+  marrsRepetitionDetectionContext = [(NLXSchemaNLXClientEvent *)self marrsRepetitionDetectionContext];
+  if (marrsRepetitionDetectionContext)
   {
-    v69 = v68;
-    v70 = [(NLXSchemaNLXClientEvent *)self marrsRepetitionDetectionContext];
-    v71 = [v4 marrsRepetitionDetectionContext];
-    v72 = [v70 isEqual:v71];
+    v69 = marrsRepetitionDetectionContext;
+    marrsRepetitionDetectionContext2 = [(NLXSchemaNLXClientEvent *)self marrsRepetitionDetectionContext];
+    marrsRepetitionDetectionContext3 = [equalCopy marrsRepetitionDetectionContext];
+    v72 = [marrsRepetitionDetectionContext2 isEqual:marrsRepetitionDetectionContext3];
 
     if (!v72)
     {
@@ -2254,20 +2254,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteContext];
-  v7 = [v4 marrsQueryRewriteContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteContext];
+  eventMetadata2 = [equalCopy marrsQueryRewriteContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v73 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteContext];
-  if (v73)
+  marrsQueryRewriteContext = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteContext];
+  if (marrsQueryRewriteContext)
   {
-    v74 = v73;
-    v75 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteContext];
-    v76 = [v4 marrsQueryRewriteContext];
-    v77 = [v75 isEqual:v76];
+    v74 = marrsQueryRewriteContext;
+    marrsQueryRewriteContext2 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteContext];
+    marrsQueryRewriteContext3 = [equalCopy marrsQueryRewriteContext];
+    v77 = [marrsQueryRewriteContext2 isEqual:marrsQueryRewriteContext3];
 
     if (!v77)
     {
@@ -2279,20 +2279,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteEvaluatedTier1];
-  v7 = [v4 marrsQueryRewriteEvaluatedTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteEvaluatedTier1];
+  eventMetadata2 = [equalCopy marrsQueryRewriteEvaluatedTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v78 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteEvaluatedTier1];
-  if (v78)
+  marrsQueryRewriteEvaluatedTier1 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteEvaluatedTier1];
+  if (marrsQueryRewriteEvaluatedTier1)
   {
-    v79 = v78;
-    v80 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteEvaluatedTier1];
-    v81 = [v4 marrsQueryRewriteEvaluatedTier1];
-    v82 = [v80 isEqual:v81];
+    v79 = marrsQueryRewriteEvaluatedTier1;
+    marrsQueryRewriteEvaluatedTier12 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteEvaluatedTier1];
+    marrsQueryRewriteEvaluatedTier13 = [equalCopy marrsQueryRewriteEvaluatedTier1];
+    v82 = [marrsQueryRewriteEvaluatedTier12 isEqual:marrsQueryRewriteEvaluatedTier13];
 
     if (!v82)
     {
@@ -2304,20 +2304,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEndedTier1];
-  v7 = [v4 cdmMatchingSpanEndedTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEndedTier1];
+  eventMetadata2 = [equalCopy cdmMatchingSpanEndedTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v83 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEndedTier1];
-  if (v83)
+  cdmMatchingSpanEndedTier1 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEndedTier1];
+  if (cdmMatchingSpanEndedTier1)
   {
-    v84 = v83;
-    v85 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEndedTier1];
-    v86 = [v4 cdmMatchingSpanEndedTier1];
-    v87 = [v85 isEqual:v86];
+    v84 = cdmMatchingSpanEndedTier1;
+    cdmMatchingSpanEndedTier12 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEndedTier1];
+    cdmMatchingSpanEndedTier13 = [equalCopy cdmMatchingSpanEndedTier1];
+    v87 = [cdmMatchingSpanEndedTier12 isEqual:cdmMatchingSpanEndedTier13];
 
     if (!v87)
     {
@@ -2329,20 +2329,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self nlxCurareContext];
-  v7 = [v4 nlxCurareContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self nlxCurareContext];
+  eventMetadata2 = [equalCopy nlxCurareContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v88 = [(NLXSchemaNLXClientEvent *)self nlxCurareContext];
-  if (v88)
+  nlxCurareContext = [(NLXSchemaNLXClientEvent *)self nlxCurareContext];
+  if (nlxCurareContext)
   {
-    v89 = v88;
-    v90 = [(NLXSchemaNLXClientEvent *)self nlxCurareContext];
-    v91 = [v4 nlxCurareContext];
-    v92 = [v90 isEqual:v91];
+    v89 = nlxCurareContext;
+    nlxCurareContext2 = [(NLXSchemaNLXClientEvent *)self nlxCurareContext];
+    nlxCurareContext3 = [equalCopy nlxCurareContext];
+    v92 = [nlxCurareContext2 isEqual:nlxCurareContext3];
 
     if (!v92)
     {
@@ -2354,20 +2354,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEnded];
-  v7 = [v4 marrsMentionDetectorEnded];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEnded];
+  eventMetadata2 = [equalCopy marrsMentionDetectorEnded];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v93 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEnded];
-  if (v93)
+  marrsMentionDetectorEnded = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEnded];
+  if (marrsMentionDetectorEnded)
   {
-    v94 = v93;
-    v95 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEnded];
-    v96 = [v4 marrsMentionDetectorEnded];
-    v97 = [v95 isEqual:v96];
+    v94 = marrsMentionDetectorEnded;
+    marrsMentionDetectorEnded2 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEnded];
+    marrsMentionDetectorEnded3 = [equalCopy marrsMentionDetectorEnded];
+    v97 = [marrsMentionDetectorEnded2 isEqual:marrsMentionDetectorEnded3];
 
     if (!v97)
     {
@@ -2379,20 +2379,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEndedTier1];
-  v7 = [v4 marrsMentionDetectorEndedTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEndedTier1];
+  eventMetadata2 = [equalCopy marrsMentionDetectorEndedTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v98 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEndedTier1];
-  if (v98)
+  marrsMentionDetectorEndedTier1 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEndedTier1];
+  if (marrsMentionDetectorEndedTier1)
   {
-    v99 = v98;
-    v100 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEndedTier1];
-    v101 = [v4 marrsMentionDetectorEndedTier1];
-    v102 = [v100 isEqual:v101];
+    v99 = marrsMentionDetectorEndedTier1;
+    marrsMentionDetectorEndedTier12 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEndedTier1];
+    marrsMentionDetectorEndedTier13 = [equalCopy marrsMentionDetectorEndedTier1];
+    v102 = [marrsMentionDetectorEndedTier12 isEqual:marrsMentionDetectorEndedTier13];
 
     if (!v102)
     {
@@ -2404,20 +2404,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEnded];
-  v7 = [v4 marrsMentionResolverEnded];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEnded];
+  eventMetadata2 = [equalCopy marrsMentionResolverEnded];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v103 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEnded];
-  if (v103)
+  marrsMentionResolverEnded = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEnded];
+  if (marrsMentionResolverEnded)
   {
-    v104 = v103;
-    v105 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEnded];
-    v106 = [v4 marrsMentionResolverEnded];
-    v107 = [v105 isEqual:v106];
+    v104 = marrsMentionResolverEnded;
+    marrsMentionResolverEnded2 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEnded];
+    marrsMentionResolverEnded3 = [equalCopy marrsMentionResolverEnded];
+    v107 = [marrsMentionResolverEnded2 isEqual:marrsMentionResolverEnded3];
 
     if (!v107)
     {
@@ -2429,20 +2429,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEndedTier1];
-  v7 = [v4 marrsMentionResolverEndedTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEndedTier1];
+  eventMetadata2 = [equalCopy marrsMentionResolverEndedTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v108 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEndedTier1];
-  if (v108)
+  marrsMentionResolverEndedTier1 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEndedTier1];
+  if (marrsMentionResolverEndedTier1)
   {
-    v109 = v108;
-    v110 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEndedTier1];
-    v111 = [v4 marrsMentionResolverEndedTier1];
-    v112 = [v110 isEqual:v111];
+    v109 = marrsMentionResolverEndedTier1;
+    marrsMentionResolverEndedTier12 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEndedTier1];
+    marrsMentionResolverEndedTier13 = [equalCopy marrsMentionResolverEndedTier1];
+    v112 = [marrsMentionResolverEndedTier12 isEqual:marrsMentionResolverEndedTier13];
 
     if (!v112)
     {
@@ -2454,20 +2454,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmClientSetupContext];
-  v7 = [v4 cdmClientSetupContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmClientSetupContext];
+  eventMetadata2 = [equalCopy cdmClientSetupContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v113 = [(NLXSchemaNLXClientEvent *)self cdmClientSetupContext];
-  if (v113)
+  cdmClientSetupContext = [(NLXSchemaNLXClientEvent *)self cdmClientSetupContext];
+  if (cdmClientSetupContext)
   {
-    v114 = v113;
-    v115 = [(NLXSchemaNLXClientEvent *)self cdmClientSetupContext];
-    v116 = [v4 cdmClientSetupContext];
-    v117 = [v115 isEqual:v116];
+    v114 = cdmClientSetupContext;
+    cdmClientSetupContext2 = [(NLXSchemaNLXClientEvent *)self cdmClientSetupContext];
+    cdmClientSetupContext3 = [equalCopy cdmClientSetupContext];
+    v117 = [cdmClientSetupContext2 isEqual:cdmClientSetupContext3];
 
     if (!v117)
     {
@@ -2479,20 +2479,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmAllServicesSetupContext];
-  v7 = [v4 cdmAllServicesSetupContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmAllServicesSetupContext];
+  eventMetadata2 = [equalCopy cdmAllServicesSetupContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v118 = [(NLXSchemaNLXClientEvent *)self cdmAllServicesSetupContext];
-  if (v118)
+  cdmAllServicesSetupContext = [(NLXSchemaNLXClientEvent *)self cdmAllServicesSetupContext];
+  if (cdmAllServicesSetupContext)
   {
-    v119 = v118;
-    v120 = [(NLXSchemaNLXClientEvent *)self cdmAllServicesSetupContext];
-    v121 = [v4 cdmAllServicesSetupContext];
-    v122 = [v120 isEqual:v121];
+    v119 = cdmAllServicesSetupContext;
+    cdmAllServicesSetupContext2 = [(NLXSchemaNLXClientEvent *)self cdmAllServicesSetupContext];
+    cdmAllServicesSetupContext3 = [equalCopy cdmAllServicesSetupContext];
+    v122 = [cdmAllServicesSetupContext2 isEqual:cdmAllServicesSetupContext3];
 
     if (!v122)
     {
@@ -2504,20 +2504,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptContext];
-  v7 = [v4 cdmSingleServiceSetupAttemptContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptContext];
+  eventMetadata2 = [equalCopy cdmSingleServiceSetupAttemptContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v123 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptContext];
-  if (v123)
+  cdmSingleServiceSetupAttemptContext = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptContext];
+  if (cdmSingleServiceSetupAttemptContext)
   {
-    v124 = v123;
-    v125 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptContext];
-    v126 = [v4 cdmSingleServiceSetupAttemptContext];
-    v127 = [v125 isEqual:v126];
+    v124 = cdmSingleServiceSetupAttemptContext;
+    cdmSingleServiceSetupAttemptContext2 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptContext];
+    cdmSingleServiceSetupAttemptContext3 = [equalCopy cdmSingleServiceSetupAttemptContext];
+    v127 = [cdmSingleServiceSetupAttemptContext2 isEqual:cdmSingleServiceSetupAttemptContext3];
 
     if (!v127)
     {
@@ -2529,20 +2529,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptFailed];
-  v7 = [v4 cdmSingleServiceSetupAttemptFailed];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptFailed];
+  eventMetadata2 = [equalCopy cdmSingleServiceSetupAttemptFailed];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v128 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptFailed];
-  if (v128)
+  cdmSingleServiceSetupAttemptFailed = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptFailed];
+  if (cdmSingleServiceSetupAttemptFailed)
   {
-    v129 = v128;
-    v130 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptFailed];
-    v131 = [v4 cdmSingleServiceSetupAttemptFailed];
-    v132 = [v130 isEqual:v131];
+    v129 = cdmSingleServiceSetupAttemptFailed;
+    cdmSingleServiceSetupAttemptFailed2 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptFailed];
+    cdmSingleServiceSetupAttemptFailed3 = [equalCopy cdmSingleServiceSetupAttemptFailed];
+    v132 = [cdmSingleServiceSetupAttemptFailed2 isEqual:cdmSingleServiceSetupAttemptFailed3];
 
     if (!v132)
     {
@@ -2554,20 +2554,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmSpanMatcherContext];
-  v7 = [v4 cdmSpanMatcherContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmSpanMatcherContext];
+  eventMetadata2 = [equalCopy cdmSpanMatcherContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v133 = [(NLXSchemaNLXClientEvent *)self cdmSpanMatcherContext];
-  if (v133)
+  cdmSpanMatcherContext = [(NLXSchemaNLXClientEvent *)self cdmSpanMatcherContext];
+  if (cdmSpanMatcherContext)
   {
-    v134 = v133;
-    v135 = [(NLXSchemaNLXClientEvent *)self cdmSpanMatcherContext];
-    v136 = [v4 cdmSpanMatcherContext];
-    v137 = [v135 isEqual:v136];
+    v134 = cdmSpanMatcherContext;
+    cdmSpanMatcherContext2 = [(NLXSchemaNLXClientEvent *)self cdmSpanMatcherContext];
+    cdmSpanMatcherContext3 = [equalCopy cdmSpanMatcherContext];
+    v137 = [cdmSpanMatcherContext2 isEqual:cdmSpanMatcherContext3];
 
     if (!v137)
     {
@@ -2579,20 +2579,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEnded];
-  v7 = [v4 marrsContextualSpanMatcherEnded];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEnded];
+  eventMetadata2 = [equalCopy marrsContextualSpanMatcherEnded];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v138 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEnded];
-  if (v138)
+  marrsContextualSpanMatcherEnded = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEnded];
+  if (marrsContextualSpanMatcherEnded)
   {
-    v139 = v138;
-    v140 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEnded];
-    v141 = [v4 marrsContextualSpanMatcherEnded];
-    v142 = [v140 isEqual:v141];
+    v139 = marrsContextualSpanMatcherEnded;
+    marrsContextualSpanMatcherEnded2 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEnded];
+    marrsContextualSpanMatcherEnded3 = [equalCopy marrsContextualSpanMatcherEnded];
+    v142 = [marrsContextualSpanMatcherEnded2 isEqual:marrsContextualSpanMatcherEnded3];
 
     if (!v142)
     {
@@ -2604,20 +2604,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEndedTier1];
-  v7 = [v4 marrsContextualSpanMatcherEndedTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEndedTier1];
+  eventMetadata2 = [equalCopy marrsContextualSpanMatcherEndedTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v143 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEndedTier1];
-  if (v143)
+  marrsContextualSpanMatcherEndedTier1 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEndedTier1];
+  if (marrsContextualSpanMatcherEndedTier1)
   {
-    v144 = v143;
-    v145 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEndedTier1];
-    v146 = [v4 marrsContextualSpanMatcherEndedTier1];
-    v147 = [v145 isEqual:v146];
+    v144 = marrsContextualSpanMatcherEndedTier1;
+    marrsContextualSpanMatcherEndedTier12 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEndedTier1];
+    marrsContextualSpanMatcherEndedTier13 = [equalCopy marrsContextualSpanMatcherEndedTier1];
+    v147 = [marrsContextualSpanMatcherEndedTier12 isEqual:marrsContextualSpanMatcherEndedTier13];
 
     if (!v147)
     {
@@ -2629,20 +2629,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmXpcEventProcessingContext];
-  v7 = [v4 cdmXpcEventProcessingContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmXpcEventProcessingContext];
+  eventMetadata2 = [equalCopy cdmXpcEventProcessingContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v148 = [(NLXSchemaNLXClientEvent *)self cdmXpcEventProcessingContext];
-  if (v148)
+  cdmXpcEventProcessingContext = [(NLXSchemaNLXClientEvent *)self cdmXpcEventProcessingContext];
+  if (cdmXpcEventProcessingContext)
   {
-    v149 = v148;
-    v150 = [(NLXSchemaNLXClientEvent *)self cdmXpcEventProcessingContext];
-    v151 = [v4 cdmXpcEventProcessingContext];
-    v152 = [v150 isEqual:v151];
+    v149 = cdmXpcEventProcessingContext;
+    cdmXpcEventProcessingContext2 = [(NLXSchemaNLXClientEvent *)self cdmXpcEventProcessingContext];
+    cdmXpcEventProcessingContext3 = [equalCopy cdmXpcEventProcessingContext];
+    v152 = [cdmXpcEventProcessingContext2 isEqual:cdmXpcEventProcessingContext3];
 
     if (!v152)
     {
@@ -2654,20 +2654,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmAssetSetupContext];
-  v7 = [v4 cdmAssetSetupContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmAssetSetupContext];
+  eventMetadata2 = [equalCopy cdmAssetSetupContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v153 = [(NLXSchemaNLXClientEvent *)self cdmAssetSetupContext];
-  if (v153)
+  cdmAssetSetupContext = [(NLXSchemaNLXClientEvent *)self cdmAssetSetupContext];
+  if (cdmAssetSetupContext)
   {
-    v154 = v153;
-    v155 = [(NLXSchemaNLXClientEvent *)self cdmAssetSetupContext];
-    v156 = [v4 cdmAssetSetupContext];
-    v157 = [v155 isEqual:v156];
+    v154 = cdmAssetSetupContext;
+    cdmAssetSetupContext2 = [(NLXSchemaNLXClientEvent *)self cdmAssetSetupContext];
+    cdmAssetSetupContext3 = [equalCopy cdmAssetSetupContext];
+    v157 = [cdmAssetSetupContext2 isEqual:cdmAssetSetupContext3];
 
     if (!v157)
     {
@@ -2679,20 +2679,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmSetupMissingAssetsDetected];
-  v7 = [v4 cdmSetupMissingAssetsDetected];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmSetupMissingAssetsDetected];
+  eventMetadata2 = [equalCopy cdmSetupMissingAssetsDetected];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v158 = [(NLXSchemaNLXClientEvent *)self cdmSetupMissingAssetsDetected];
-  if (v158)
+  cdmSetupMissingAssetsDetected = [(NLXSchemaNLXClientEvent *)self cdmSetupMissingAssetsDetected];
+  if (cdmSetupMissingAssetsDetected)
   {
-    v159 = v158;
-    v160 = [(NLXSchemaNLXClientEvent *)self cdmSetupMissingAssetsDetected];
-    v161 = [v4 cdmSetupMissingAssetsDetected];
-    v162 = [v160 isEqual:v161];
+    v159 = cdmSetupMissingAssetsDetected;
+    cdmSetupMissingAssetsDetected2 = [(NLXSchemaNLXClientEvent *)self cdmSetupMissingAssetsDetected];
+    cdmSetupMissingAssetsDetected3 = [equalCopy cdmSetupMissingAssetsDetected];
+    v162 = [cdmSetupMissingAssetsDetected2 isEqual:cdmSetupMissingAssetsDetected3];
 
     if (!v162)
     {
@@ -2704,20 +2704,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmClientWarmupContext];
-  v7 = [v4 cdmClientWarmupContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmClientWarmupContext];
+  eventMetadata2 = [equalCopy cdmClientWarmupContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v163 = [(NLXSchemaNLXClientEvent *)self cdmClientWarmupContext];
-  if (v163)
+  cdmClientWarmupContext = [(NLXSchemaNLXClientEvent *)self cdmClientWarmupContext];
+  if (cdmClientWarmupContext)
   {
-    v164 = v163;
-    v165 = [(NLXSchemaNLXClientEvent *)self cdmClientWarmupContext];
-    v166 = [v4 cdmClientWarmupContext];
-    v167 = [v165 isEqual:v166];
+    v164 = cdmClientWarmupContext;
+    cdmClientWarmupContext2 = [(NLXSchemaNLXClientEvent *)self cdmClientWarmupContext];
+    cdmClientWarmupContext3 = [equalCopy cdmClientWarmupContext];
+    v167 = [cdmClientWarmupContext2 isEqual:cdmClientWarmupContext3];
 
     if (!v167)
     {
@@ -2729,20 +2729,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmAllServicesWarmupContext];
-  v7 = [v4 cdmAllServicesWarmupContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmAllServicesWarmupContext];
+  eventMetadata2 = [equalCopy cdmAllServicesWarmupContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v168 = [(NLXSchemaNLXClientEvent *)self cdmAllServicesWarmupContext];
-  if (v168)
+  cdmAllServicesWarmupContext = [(NLXSchemaNLXClientEvent *)self cdmAllServicesWarmupContext];
+  if (cdmAllServicesWarmupContext)
   {
-    v169 = v168;
-    v170 = [(NLXSchemaNLXClientEvent *)self cdmAllServicesWarmupContext];
-    v171 = [v4 cdmAllServicesWarmupContext];
-    v172 = [v170 isEqual:v171];
+    v169 = cdmAllServicesWarmupContext;
+    cdmAllServicesWarmupContext2 = [(NLXSchemaNLXClientEvent *)self cdmAllServicesWarmupContext];
+    cdmAllServicesWarmupContext3 = [equalCopy cdmAllServicesWarmupContext];
+    v172 = [cdmAllServicesWarmupContext2 isEqual:cdmAllServicesWarmupContext3];
 
     if (!v172)
     {
@@ -2754,20 +2754,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptContext];
-  v7 = [v4 cdmSingleServiceWarmupAttemptContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptContext];
+  eventMetadata2 = [equalCopy cdmSingleServiceWarmupAttemptContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v173 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptContext];
-  if (v173)
+  cdmSingleServiceWarmupAttemptContext = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptContext];
+  if (cdmSingleServiceWarmupAttemptContext)
   {
-    v174 = v173;
-    v175 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptContext];
-    v176 = [v4 cdmSingleServiceWarmupAttemptContext];
-    v177 = [v175 isEqual:v176];
+    v174 = cdmSingleServiceWarmupAttemptContext;
+    cdmSingleServiceWarmupAttemptContext2 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptContext];
+    cdmSingleServiceWarmupAttemptContext3 = [equalCopy cdmSingleServiceWarmupAttemptContext];
+    v177 = [cdmSingleServiceWarmupAttemptContext2 isEqual:cdmSingleServiceWarmupAttemptContext3];
 
     if (!v177)
     {
@@ -2779,20 +2779,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptFailed];
-  v7 = [v4 cdmSingleServiceWarmupAttemptFailed];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptFailed];
+  eventMetadata2 = [equalCopy cdmSingleServiceWarmupAttemptFailed];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v178 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptFailed];
-  if (v178)
+  cdmSingleServiceWarmupAttemptFailed = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptFailed];
+  if (cdmSingleServiceWarmupAttemptFailed)
   {
-    v179 = v178;
-    v180 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptFailed];
-    v181 = [v4 cdmSingleServiceWarmupAttemptFailed];
-    v182 = [v180 isEqual:v181];
+    v179 = cdmSingleServiceWarmupAttemptFailed;
+    cdmSingleServiceWarmupAttemptFailed2 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptFailed];
+    cdmSingleServiceWarmupAttemptFailed3 = [equalCopy cdmSingleServiceWarmupAttemptFailed];
+    v182 = [cdmSingleServiceWarmupAttemptFailed2 isEqual:cdmSingleServiceWarmupAttemptFailed3];
 
     if (!v182)
     {
@@ -2804,20 +2804,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmAssetsReported];
-  v7 = [v4 cdmAssetsReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmAssetsReported];
+  eventMetadata2 = [equalCopy cdmAssetsReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v183 = [(NLXSchemaNLXClientEvent *)self cdmAssetsReported];
-  if (v183)
+  cdmAssetsReported = [(NLXSchemaNLXClientEvent *)self cdmAssetsReported];
+  if (cdmAssetsReported)
   {
-    v184 = v183;
-    v185 = [(NLXSchemaNLXClientEvent *)self cdmAssetsReported];
-    v186 = [v4 cdmAssetsReported];
-    v187 = [v185 isEqual:v186];
+    v184 = cdmAssetsReported;
+    cdmAssetsReported2 = [(NLXSchemaNLXClientEvent *)self cdmAssetsReported];
+    cdmAssetsReported3 = [equalCopy cdmAssetsReported];
+    v187 = [cdmAssetsReported2 isEqual:cdmAssetsReported3];
 
     if (!v187)
     {
@@ -2829,20 +2829,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self ssuUserRequestContext];
-  v7 = [v4 ssuUserRequestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self ssuUserRequestContext];
+  eventMetadata2 = [equalCopy ssuUserRequestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v188 = [(NLXSchemaNLXClientEvent *)self ssuUserRequestContext];
-  if (v188)
+  ssuUserRequestContext = [(NLXSchemaNLXClientEvent *)self ssuUserRequestContext];
+  if (ssuUserRequestContext)
   {
-    v189 = v188;
-    v190 = [(NLXSchemaNLXClientEvent *)self ssuUserRequestContext];
-    v191 = [v4 ssuUserRequestContext];
-    v192 = [v190 isEqual:v191];
+    v189 = ssuUserRequestContext;
+    ssuUserRequestContext2 = [(NLXSchemaNLXClientEvent *)self ssuUserRequestContext];
+    ssuUserRequestContext3 = [equalCopy ssuUserRequestContext];
+    v192 = [ssuUserRequestContext2 isEqual:ssuUserRequestContext3];
 
     if (!v192)
     {
@@ -2854,20 +2854,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self ssuBackgroundRequestContext];
-  v7 = [v4 ssuBackgroundRequestContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self ssuBackgroundRequestContext];
+  eventMetadata2 = [equalCopy ssuBackgroundRequestContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v193 = [(NLXSchemaNLXClientEvent *)self ssuBackgroundRequestContext];
-  if (v193)
+  ssuBackgroundRequestContext = [(NLXSchemaNLXClientEvent *)self ssuBackgroundRequestContext];
+  if (ssuBackgroundRequestContext)
   {
-    v194 = v193;
-    v195 = [(NLXSchemaNLXClientEvent *)self ssuBackgroundRequestContext];
-    v196 = [v4 ssuBackgroundRequestContext];
-    v197 = [v195 isEqual:v196];
+    v194 = ssuBackgroundRequestContext;
+    ssuBackgroundRequestContext2 = [(NLXSchemaNLXClientEvent *)self ssuBackgroundRequestContext];
+    ssuBackgroundRequestContext3 = [equalCopy ssuBackgroundRequestContext];
+    v197 = [ssuBackgroundRequestContext2 isEqual:ssuBackgroundRequestContext3];
 
     if (!v197)
     {
@@ -2879,20 +2879,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmServiceHandleMetricsReported];
-  v7 = [v4 cdmServiceHandleMetricsReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmServiceHandleMetricsReported];
+  eventMetadata2 = [equalCopy cdmServiceHandleMetricsReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v198 = [(NLXSchemaNLXClientEvent *)self cdmServiceHandleMetricsReported];
-  if (v198)
+  cdmServiceHandleMetricsReported = [(NLXSchemaNLXClientEvent *)self cdmServiceHandleMetricsReported];
+  if (cdmServiceHandleMetricsReported)
   {
-    v199 = v198;
-    v200 = [(NLXSchemaNLXClientEvent *)self cdmServiceHandleMetricsReported];
-    v201 = [v4 cdmServiceHandleMetricsReported];
-    v202 = [v200 isEqual:v201];
+    v199 = cdmServiceHandleMetricsReported;
+    cdmServiceHandleMetricsReported2 = [(NLXSchemaNLXClientEvent *)self cdmServiceHandleMetricsReported];
+    cdmServiceHandleMetricsReported3 = [equalCopy cdmServiceHandleMetricsReported];
+    v202 = [cdmServiceHandleMetricsReported2 isEqual:cdmServiceHandleMetricsReported3];
 
     if (!v202)
     {
@@ -2904,20 +2904,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmServiceSetupMetricsReported];
-  v7 = [v4 cdmServiceSetupMetricsReported];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmServiceSetupMetricsReported];
+  eventMetadata2 = [equalCopy cdmServiceSetupMetricsReported];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v203 = [(NLXSchemaNLXClientEvent *)self cdmServiceSetupMetricsReported];
-  if (v203)
+  cdmServiceSetupMetricsReported = [(NLXSchemaNLXClientEvent *)self cdmServiceSetupMetricsReported];
+  if (cdmServiceSetupMetricsReported)
   {
-    v204 = v203;
-    v205 = [(NLXSchemaNLXClientEvent *)self cdmServiceSetupMetricsReported];
-    v206 = [v4 cdmServiceSetupMetricsReported];
-    v207 = [v205 isEqual:v206];
+    v204 = cdmServiceSetupMetricsReported;
+    cdmServiceSetupMetricsReported2 = [(NLXSchemaNLXClientEvent *)self cdmServiceSetupMetricsReported];
+    cdmServiceSetupMetricsReported3 = [equalCopy cdmServiceSetupMetricsReported];
+    v207 = [cdmServiceSetupMetricsReported2 isEqual:cdmServiceSetupMetricsReported3];
 
     if (!v207)
     {
@@ -2929,20 +2929,20 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self milAssetAcquisitionContext];
-  v7 = [v4 milAssetAcquisitionContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self milAssetAcquisitionContext];
+  eventMetadata2 = [equalCopy milAssetAcquisitionContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_212;
   }
 
-  v208 = [(NLXSchemaNLXClientEvent *)self milAssetAcquisitionContext];
-  if (v208)
+  milAssetAcquisitionContext = [(NLXSchemaNLXClientEvent *)self milAssetAcquisitionContext];
+  if (milAssetAcquisitionContext)
   {
-    v209 = v208;
-    v210 = [(NLXSchemaNLXClientEvent *)self milAssetAcquisitionContext];
-    v211 = [v4 milAssetAcquisitionContext];
-    v212 = [v210 isEqual:v211];
+    v209 = milAssetAcquisitionContext;
+    milAssetAcquisitionContext2 = [(NLXSchemaNLXClientEvent *)self milAssetAcquisitionContext];
+    milAssetAcquisitionContext3 = [equalCopy milAssetAcquisitionContext];
+    v212 = [milAssetAcquisitionContext2 isEqual:milAssetAcquisitionContext3];
 
     if (!v212)
     {
@@ -2954,12 +2954,12 @@
   {
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmSetupLink];
-  v7 = [v4 cdmSetupLink];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self cdmSetupLink];
+  eventMetadata2 = [equalCopy cdmSetupLink];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v213 = [(NLXSchemaNLXClientEvent *)self cdmSetupLink];
-    if (!v213)
+    cdmSetupLink = [(NLXSchemaNLXClientEvent *)self cdmSetupLink];
+    if (!cdmSetupLink)
     {
 
 LABEL_216:
@@ -2967,10 +2967,10 @@ LABEL_216:
       goto LABEL_214;
     }
 
-    v214 = v213;
-    v215 = [(NLXSchemaNLXClientEvent *)self cdmSetupLink];
-    v216 = [v4 cdmSetupLink];
-    v217 = [v215 isEqual:v216];
+    v214 = cdmSetupLink;
+    cdmSetupLink2 = [(NLXSchemaNLXClientEvent *)self cdmSetupLink];
+    cdmSetupLink3 = [equalCopy cdmSetupLink];
+    v217 = [cdmSetupLink2 isEqual:cdmSetupLink3];
 
     if (v217)
     {
@@ -2990,346 +2990,346 @@ LABEL_214:
   return v218;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v89 = a3;
-  v4 = [(NLXSchemaNLXClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(NLXSchemaNLXClientEvent *)self eventMetadata];
+    eventMetadata2 = [(NLXSchemaNLXClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self cdmServiceContext];
+  cdmServiceContext = [(NLXSchemaNLXClientEvent *)self cdmServiceContext];
 
-  if (v6)
+  if (cdmServiceContext)
   {
-    v7 = [(NLXSchemaNLXClientEvent *)self cdmServiceContext];
+    cdmServiceContext2 = [(NLXSchemaNLXClientEvent *)self cdmServiceContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(NLXSchemaNLXClientEvent *)self cdmRequestContext];
+  cdmRequestContext = [(NLXSchemaNLXClientEvent *)self cdmRequestContext];
 
-  if (v8)
+  if (cdmRequestContext)
   {
-    v9 = [(NLXSchemaNLXClientEvent *)self cdmRequestContext];
+    cdmRequestContext2 = [(NLXSchemaNLXClientEvent *)self cdmRequestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(NLXSchemaNLXClientEvent *)self nlxDeviceFixedContext];
+  nlxDeviceFixedContext = [(NLXSchemaNLXClientEvent *)self nlxDeviceFixedContext];
 
-  if (v10)
+  if (nlxDeviceFixedContext)
   {
-    v11 = [(NLXSchemaNLXClientEvent *)self nlxDeviceFixedContext];
+    nlxDeviceFixedContext2 = [(NLXSchemaNLXClientEvent *)self nlxDeviceFixedContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEnded];
+  cdmMatchingSpanEnded = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEnded];
 
-  if (v12)
+  if (cdmMatchingSpanEnded)
   {
-    v13 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEnded];
+    cdmMatchingSpanEnded2 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEnded];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(NLXSchemaNLXClientEvent *)self cdmUsoGraphTier1];
+  cdmUsoGraphTier1 = [(NLXSchemaNLXClientEvent *)self cdmUsoGraphTier1];
 
-  if (v14)
+  if (cdmUsoGraphTier1)
   {
-    v15 = [(NLXSchemaNLXClientEvent *)self cdmUsoGraphTier1];
+    cdmUsoGraphTier12 = [(NLXSchemaNLXClientEvent *)self cdmUsoGraphTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanTier1];
+  cdmMatchingSpanTier1 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanTier1];
 
-  if (v16)
+  if (cdmMatchingSpanTier1)
   {
-    v17 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanTier1];
+    cdmMatchingSpanTier12 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(NLXSchemaNLXClientEvent *)self nlxLegacyNLContextTier1];
+  nlxLegacyNLContextTier1 = [(NLXSchemaNLXClientEvent *)self nlxLegacyNLContextTier1];
 
-  if (v18)
+  if (nlxLegacyNLContextTier1)
   {
-    v19 = [(NLXSchemaNLXClientEvent *)self nlxLegacyNLContextTier1];
+    nlxLegacyNLContextTier12 = [(NLXSchemaNLXClientEvent *)self nlxLegacyNLContextTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(NLXSchemaNLXClientEvent *)self cdmDelegatedUserDialogActTier1];
+  cdmDelegatedUserDialogActTier1 = [(NLXSchemaNLXClientEvent *)self cdmDelegatedUserDialogActTier1];
 
-  if (v20)
+  if (cdmDelegatedUserDialogActTier1)
   {
-    v21 = [(NLXSchemaNLXClientEvent *)self cdmDelegatedUserDialogActTier1];
+    cdmDelegatedUserDialogActTier12 = [(NLXSchemaNLXClientEvent *)self cdmDelegatedUserDialogActTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(NLXSchemaNLXClientEvent *)self cdmSystemDialogActTier1];
+  cdmSystemDialogActTier1 = [(NLXSchemaNLXClientEvent *)self cdmSystemDialogActTier1];
 
-  if (v22)
+  if (cdmSystemDialogActTier1)
   {
-    v23 = [(NLXSchemaNLXClientEvent *)self cdmSystemDialogActTier1];
+    cdmSystemDialogActTier12 = [(NLXSchemaNLXClientEvent *)self cdmSystemDialogActTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(NLXSchemaNLXClientEvent *)self cdmTokenizationEnded];
+  cdmTokenizationEnded = [(NLXSchemaNLXClientEvent *)self cdmTokenizationEnded];
 
-  if (v24)
+  if (cdmTokenizationEnded)
   {
-    v25 = [(NLXSchemaNLXClientEvent *)self cdmTokenizationEnded];
+    cdmTokenizationEnded2 = [(NLXSchemaNLXClientEvent *)self cdmTokenizationEnded];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(NLXSchemaNLXClientEvent *)self cdmContextUpdateEnded];
+  cdmContextUpdateEnded = [(NLXSchemaNLXClientEvent *)self cdmContextUpdateEnded];
 
-  if (v26)
+  if (cdmContextUpdateEnded)
   {
-    v27 = [(NLXSchemaNLXClientEvent *)self cdmContextUpdateEnded];
+    cdmContextUpdateEnded2 = [(NLXSchemaNLXClientEvent *)self cdmContextUpdateEnded];
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(NLXSchemaNLXClientEvent *)self marrsRepetitionDetectionContext];
+  marrsRepetitionDetectionContext = [(NLXSchemaNLXClientEvent *)self marrsRepetitionDetectionContext];
 
-  if (v28)
+  if (marrsRepetitionDetectionContext)
   {
-    v29 = [(NLXSchemaNLXClientEvent *)self marrsRepetitionDetectionContext];
+    marrsRepetitionDetectionContext2 = [(NLXSchemaNLXClientEvent *)self marrsRepetitionDetectionContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteContext];
+  marrsQueryRewriteContext = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteContext];
 
-  if (v30)
+  if (marrsQueryRewriteContext)
   {
-    v31 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteContext];
+    marrsQueryRewriteContext2 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v32 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteEvaluatedTier1];
+  marrsQueryRewriteEvaluatedTier1 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteEvaluatedTier1];
 
-  if (v32)
+  if (marrsQueryRewriteEvaluatedTier1)
   {
-    v33 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteEvaluatedTier1];
+    marrsQueryRewriteEvaluatedTier12 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteEvaluatedTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v34 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEndedTier1];
+  cdmMatchingSpanEndedTier1 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEndedTier1];
 
-  if (v34)
+  if (cdmMatchingSpanEndedTier1)
   {
-    v35 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEndedTier1];
+    cdmMatchingSpanEndedTier12 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEndedTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v36 = [(NLXSchemaNLXClientEvent *)self nlxCurareContext];
+  nlxCurareContext = [(NLXSchemaNLXClientEvent *)self nlxCurareContext];
 
-  if (v36)
+  if (nlxCurareContext)
   {
-    v37 = [(NLXSchemaNLXClientEvent *)self nlxCurareContext];
+    nlxCurareContext2 = [(NLXSchemaNLXClientEvent *)self nlxCurareContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v38 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEnded];
+  marrsMentionDetectorEnded = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEnded];
 
-  if (v38)
+  if (marrsMentionDetectorEnded)
   {
-    v39 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEnded];
+    marrsMentionDetectorEnded2 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEnded];
     PBDataWriterWriteSubmessage();
   }
 
-  v40 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEndedTier1];
+  marrsMentionDetectorEndedTier1 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEndedTier1];
 
-  if (v40)
+  if (marrsMentionDetectorEndedTier1)
   {
-    v41 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEndedTier1];
+    marrsMentionDetectorEndedTier12 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEndedTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v42 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEnded];
+  marrsMentionResolverEnded = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEnded];
 
-  if (v42)
+  if (marrsMentionResolverEnded)
   {
-    v43 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEnded];
+    marrsMentionResolverEnded2 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEnded];
     PBDataWriterWriteSubmessage();
   }
 
-  v44 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEndedTier1];
+  marrsMentionResolverEndedTier1 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEndedTier1];
 
-  if (v44)
+  if (marrsMentionResolverEndedTier1)
   {
-    v45 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEndedTier1];
+    marrsMentionResolverEndedTier12 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEndedTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v46 = [(NLXSchemaNLXClientEvent *)self cdmClientSetupContext];
+  cdmClientSetupContext = [(NLXSchemaNLXClientEvent *)self cdmClientSetupContext];
 
-  if (v46)
+  if (cdmClientSetupContext)
   {
-    v47 = [(NLXSchemaNLXClientEvent *)self cdmClientSetupContext];
+    cdmClientSetupContext2 = [(NLXSchemaNLXClientEvent *)self cdmClientSetupContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v48 = [(NLXSchemaNLXClientEvent *)self cdmAllServicesSetupContext];
+  cdmAllServicesSetupContext = [(NLXSchemaNLXClientEvent *)self cdmAllServicesSetupContext];
 
-  if (v48)
+  if (cdmAllServicesSetupContext)
   {
-    v49 = [(NLXSchemaNLXClientEvent *)self cdmAllServicesSetupContext];
+    cdmAllServicesSetupContext2 = [(NLXSchemaNLXClientEvent *)self cdmAllServicesSetupContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v50 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptContext];
+  cdmSingleServiceSetupAttemptContext = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptContext];
 
-  if (v50)
+  if (cdmSingleServiceSetupAttemptContext)
   {
-    v51 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptContext];
+    cdmSingleServiceSetupAttemptContext2 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v52 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptFailed];
+  cdmSingleServiceSetupAttemptFailed = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptFailed];
 
-  if (v52)
+  if (cdmSingleServiceSetupAttemptFailed)
   {
-    v53 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptFailed];
+    cdmSingleServiceSetupAttemptFailed2 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptFailed];
     PBDataWriterWriteSubmessage();
   }
 
-  v54 = [(NLXSchemaNLXClientEvent *)self cdmSpanMatcherContext];
+  cdmSpanMatcherContext = [(NLXSchemaNLXClientEvent *)self cdmSpanMatcherContext];
 
-  if (v54)
+  if (cdmSpanMatcherContext)
   {
-    v55 = [(NLXSchemaNLXClientEvent *)self cdmSpanMatcherContext];
+    cdmSpanMatcherContext2 = [(NLXSchemaNLXClientEvent *)self cdmSpanMatcherContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v56 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEnded];
+  marrsContextualSpanMatcherEnded = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEnded];
 
-  if (v56)
+  if (marrsContextualSpanMatcherEnded)
   {
-    v57 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEnded];
+    marrsContextualSpanMatcherEnded2 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEnded];
     PBDataWriterWriteSubmessage();
   }
 
-  v58 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEndedTier1];
+  marrsContextualSpanMatcherEndedTier1 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEndedTier1];
 
-  if (v58)
+  if (marrsContextualSpanMatcherEndedTier1)
   {
-    v59 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEndedTier1];
+    marrsContextualSpanMatcherEndedTier12 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEndedTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v60 = [(NLXSchemaNLXClientEvent *)self cdmXpcEventProcessingContext];
+  cdmXpcEventProcessingContext = [(NLXSchemaNLXClientEvent *)self cdmXpcEventProcessingContext];
 
-  if (v60)
+  if (cdmXpcEventProcessingContext)
   {
-    v61 = [(NLXSchemaNLXClientEvent *)self cdmXpcEventProcessingContext];
+    cdmXpcEventProcessingContext2 = [(NLXSchemaNLXClientEvent *)self cdmXpcEventProcessingContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v62 = [(NLXSchemaNLXClientEvent *)self cdmAssetSetupContext];
+  cdmAssetSetupContext = [(NLXSchemaNLXClientEvent *)self cdmAssetSetupContext];
 
-  if (v62)
+  if (cdmAssetSetupContext)
   {
-    v63 = [(NLXSchemaNLXClientEvent *)self cdmAssetSetupContext];
+    cdmAssetSetupContext2 = [(NLXSchemaNLXClientEvent *)self cdmAssetSetupContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v64 = [(NLXSchemaNLXClientEvent *)self cdmSetupMissingAssetsDetected];
+  cdmSetupMissingAssetsDetected = [(NLXSchemaNLXClientEvent *)self cdmSetupMissingAssetsDetected];
 
-  if (v64)
+  if (cdmSetupMissingAssetsDetected)
   {
-    v65 = [(NLXSchemaNLXClientEvent *)self cdmSetupMissingAssetsDetected];
+    cdmSetupMissingAssetsDetected2 = [(NLXSchemaNLXClientEvent *)self cdmSetupMissingAssetsDetected];
     PBDataWriterWriteSubmessage();
   }
 
-  v66 = [(NLXSchemaNLXClientEvent *)self cdmClientWarmupContext];
+  cdmClientWarmupContext = [(NLXSchemaNLXClientEvent *)self cdmClientWarmupContext];
 
-  if (v66)
+  if (cdmClientWarmupContext)
   {
-    v67 = [(NLXSchemaNLXClientEvent *)self cdmClientWarmupContext];
+    cdmClientWarmupContext2 = [(NLXSchemaNLXClientEvent *)self cdmClientWarmupContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v68 = [(NLXSchemaNLXClientEvent *)self cdmAllServicesWarmupContext];
+  cdmAllServicesWarmupContext = [(NLXSchemaNLXClientEvent *)self cdmAllServicesWarmupContext];
 
-  if (v68)
+  if (cdmAllServicesWarmupContext)
   {
-    v69 = [(NLXSchemaNLXClientEvent *)self cdmAllServicesWarmupContext];
+    cdmAllServicesWarmupContext2 = [(NLXSchemaNLXClientEvent *)self cdmAllServicesWarmupContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v70 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptContext];
+  cdmSingleServiceWarmupAttemptContext = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptContext];
 
-  if (v70)
+  if (cdmSingleServiceWarmupAttemptContext)
   {
-    v71 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptContext];
+    cdmSingleServiceWarmupAttemptContext2 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v72 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptFailed];
+  cdmSingleServiceWarmupAttemptFailed = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptFailed];
 
-  if (v72)
+  if (cdmSingleServiceWarmupAttemptFailed)
   {
-    v73 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptFailed];
+    cdmSingleServiceWarmupAttemptFailed2 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptFailed];
     PBDataWriterWriteSubmessage();
   }
 
-  v74 = [(NLXSchemaNLXClientEvent *)self cdmAssetsReported];
+  cdmAssetsReported = [(NLXSchemaNLXClientEvent *)self cdmAssetsReported];
 
-  if (v74)
+  if (cdmAssetsReported)
   {
-    v75 = [(NLXSchemaNLXClientEvent *)self cdmAssetsReported];
+    cdmAssetsReported2 = [(NLXSchemaNLXClientEvent *)self cdmAssetsReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v76 = [(NLXSchemaNLXClientEvent *)self ssuUserRequestContext];
+  ssuUserRequestContext = [(NLXSchemaNLXClientEvent *)self ssuUserRequestContext];
 
-  if (v76)
+  if (ssuUserRequestContext)
   {
-    v77 = [(NLXSchemaNLXClientEvent *)self ssuUserRequestContext];
+    ssuUserRequestContext2 = [(NLXSchemaNLXClientEvent *)self ssuUserRequestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v78 = [(NLXSchemaNLXClientEvent *)self ssuBackgroundRequestContext];
+  ssuBackgroundRequestContext = [(NLXSchemaNLXClientEvent *)self ssuBackgroundRequestContext];
 
-  if (v78)
+  if (ssuBackgroundRequestContext)
   {
-    v79 = [(NLXSchemaNLXClientEvent *)self ssuBackgroundRequestContext];
+    ssuBackgroundRequestContext2 = [(NLXSchemaNLXClientEvent *)self ssuBackgroundRequestContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v80 = [(NLXSchemaNLXClientEvent *)self cdmServiceHandleMetricsReported];
+  cdmServiceHandleMetricsReported = [(NLXSchemaNLXClientEvent *)self cdmServiceHandleMetricsReported];
 
-  if (v80)
+  if (cdmServiceHandleMetricsReported)
   {
-    v81 = [(NLXSchemaNLXClientEvent *)self cdmServiceHandleMetricsReported];
+    cdmServiceHandleMetricsReported2 = [(NLXSchemaNLXClientEvent *)self cdmServiceHandleMetricsReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v82 = [(NLXSchemaNLXClientEvent *)self cdmServiceSetupMetricsReported];
+  cdmServiceSetupMetricsReported = [(NLXSchemaNLXClientEvent *)self cdmServiceSetupMetricsReported];
 
-  if (v82)
+  if (cdmServiceSetupMetricsReported)
   {
-    v83 = [(NLXSchemaNLXClientEvent *)self cdmServiceSetupMetricsReported];
+    cdmServiceSetupMetricsReported2 = [(NLXSchemaNLXClientEvent *)self cdmServiceSetupMetricsReported];
     PBDataWriterWriteSubmessage();
   }
 
-  v84 = [(NLXSchemaNLXClientEvent *)self milAssetAcquisitionContext];
+  milAssetAcquisitionContext = [(NLXSchemaNLXClientEvent *)self milAssetAcquisitionContext];
 
-  if (v84)
+  if (milAssetAcquisitionContext)
   {
-    v85 = [(NLXSchemaNLXClientEvent *)self milAssetAcquisitionContext];
+    milAssetAcquisitionContext2 = [(NLXSchemaNLXClientEvent *)self milAssetAcquisitionContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v86 = [(NLXSchemaNLXClientEvent *)self cdmSetupLink];
+  cdmSetupLink = [(NLXSchemaNLXClientEvent *)self cdmSetupLink];
 
-  v87 = v89;
-  if (v86)
+  v87 = toCopy;
+  if (cdmSetupLink)
   {
-    v88 = [(NLXSchemaNLXClientEvent *)self cdmSetupLink];
+    cdmSetupLink2 = [(NLXSchemaNLXClientEvent *)self cdmSetupLink];
     PBDataWriterWriteSubmessage();
 
-    v87 = v89;
+    v87 = toCopy;
   }
 }
 
@@ -3343,9 +3343,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmSetupLink:(id)a3
+- (void)setCdmSetupLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -3467,14 +3467,14 @@ LABEL_214:
   self->_milAssetAcquisitionContext = 0;
 
   v45 = 141;
-  if (!v4)
+  if (!linkCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmSetupLink = self->_cdmSetupLink;
-  self->_cdmSetupLink = v4;
+  self->_cdmSetupLink = linkCopy;
 }
 
 - (void)deleteMilAssetAcquisitionContext
@@ -3487,9 +3487,9 @@ LABEL_214:
   }
 }
 
-- (void)setMilAssetAcquisitionContext:(id)a3
+- (void)setMilAssetAcquisitionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -3611,14 +3611,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 140;
-  if (!v4)
+  if (!contextCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   milAssetAcquisitionContext = self->_milAssetAcquisitionContext;
-  self->_milAssetAcquisitionContext = v4;
+  self->_milAssetAcquisitionContext = contextCopy;
 }
 
 - (void)deleteCdmServiceSetupMetricsReported
@@ -3631,9 +3631,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmServiceSetupMetricsReported:(id)a3
+- (void)setCdmServiceSetupMetricsReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -3755,14 +3755,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 139;
-  if (!v4)
+  if (!reportedCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmServiceSetupMetricsReported = self->_cdmServiceSetupMetricsReported;
-  self->_cdmServiceSetupMetricsReported = v4;
+  self->_cdmServiceSetupMetricsReported = reportedCopy;
 }
 
 - (void)deleteCdmServiceHandleMetricsReported
@@ -3775,9 +3775,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmServiceHandleMetricsReported:(id)a3
+- (void)setCdmServiceHandleMetricsReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -3899,14 +3899,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 138;
-  if (!v4)
+  if (!reportedCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmServiceHandleMetricsReported = self->_cdmServiceHandleMetricsReported;
-  self->_cdmServiceHandleMetricsReported = v4;
+  self->_cdmServiceHandleMetricsReported = reportedCopy;
 }
 
 - (void)deleteSsuBackgroundRequestContext
@@ -3919,9 +3919,9 @@ LABEL_214:
   }
 }
 
-- (void)setSsuBackgroundRequestContext:(id)a3
+- (void)setSsuBackgroundRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -4043,14 +4043,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 137;
-  if (!v4)
+  if (!contextCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   ssuBackgroundRequestContext = self->_ssuBackgroundRequestContext;
-  self->_ssuBackgroundRequestContext = v4;
+  self->_ssuBackgroundRequestContext = contextCopy;
 }
 
 - (void)deleteSsuUserRequestContext
@@ -4063,9 +4063,9 @@ LABEL_214:
   }
 }
 
-- (void)setSsuUserRequestContext:(id)a3
+- (void)setSsuUserRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -4187,14 +4187,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 136;
-  if (!v4)
+  if (!contextCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   ssuUserRequestContext = self->_ssuUserRequestContext;
-  self->_ssuUserRequestContext = v4;
+  self->_ssuUserRequestContext = contextCopy;
 }
 
 - (void)deleteCdmAssetsReported
@@ -4207,9 +4207,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmAssetsReported:(id)a3
+- (void)setCdmAssetsReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -4331,14 +4331,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 135;
-  if (!v4)
+  if (!reportedCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmAssetsReported = self->_cdmAssetsReported;
-  self->_cdmAssetsReported = v4;
+  self->_cdmAssetsReported = reportedCopy;
 }
 
 - (void)deleteCdmSingleServiceWarmupAttemptFailed
@@ -4351,9 +4351,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmSingleServiceWarmupAttemptFailed:(id)a3
+- (void)setCdmSingleServiceWarmupAttemptFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -4475,14 +4475,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 134;
-  if (!v4)
+  if (!failedCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmSingleServiceWarmupAttemptFailed = self->_cdmSingleServiceWarmupAttemptFailed;
-  self->_cdmSingleServiceWarmupAttemptFailed = v4;
+  self->_cdmSingleServiceWarmupAttemptFailed = failedCopy;
 }
 
 - (void)deleteCdmSingleServiceWarmupAttemptContext
@@ -4495,9 +4495,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmSingleServiceWarmupAttemptContext:(id)a3
+- (void)setCdmSingleServiceWarmupAttemptContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -4619,14 +4619,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 133;
-  if (!v4)
+  if (!contextCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmSingleServiceWarmupAttemptContext = self->_cdmSingleServiceWarmupAttemptContext;
-  self->_cdmSingleServiceWarmupAttemptContext = v4;
+  self->_cdmSingleServiceWarmupAttemptContext = contextCopy;
 }
 
 - (void)deleteCdmAllServicesWarmupContext
@@ -4639,9 +4639,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmAllServicesWarmupContext:(id)a3
+- (void)setCdmAllServicesWarmupContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -4763,14 +4763,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 132;
-  if (!v4)
+  if (!contextCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmAllServicesWarmupContext = self->_cdmAllServicesWarmupContext;
-  self->_cdmAllServicesWarmupContext = v4;
+  self->_cdmAllServicesWarmupContext = contextCopy;
 }
 
 - (void)deleteCdmClientWarmupContext
@@ -4783,9 +4783,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmClientWarmupContext:(id)a3
+- (void)setCdmClientWarmupContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -4907,14 +4907,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 131;
-  if (!v4)
+  if (!contextCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmClientWarmupContext = self->_cdmClientWarmupContext;
-  self->_cdmClientWarmupContext = v4;
+  self->_cdmClientWarmupContext = contextCopy;
 }
 
 - (void)deleteCdmSetupMissingAssetsDetected
@@ -4927,9 +4927,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmSetupMissingAssetsDetected:(id)a3
+- (void)setCdmSetupMissingAssetsDetected:(id)detected
 {
-  v4 = a3;
+  detectedCopy = detected;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -5051,14 +5051,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 130;
-  if (!v4)
+  if (!detectedCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmSetupMissingAssetsDetected = self->_cdmSetupMissingAssetsDetected;
-  self->_cdmSetupMissingAssetsDetected = v4;
+  self->_cdmSetupMissingAssetsDetected = detectedCopy;
 }
 
 - (void)deleteCdmAssetSetupContext
@@ -5071,9 +5071,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmAssetSetupContext:(id)a3
+- (void)setCdmAssetSetupContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -5195,14 +5195,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 129;
-  if (!v4)
+  if (!contextCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmAssetSetupContext = self->_cdmAssetSetupContext;
-  self->_cdmAssetSetupContext = v4;
+  self->_cdmAssetSetupContext = contextCopy;
 }
 
 - (void)deleteCdmXpcEventProcessingContext
@@ -5215,9 +5215,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmXpcEventProcessingContext:(id)a3
+- (void)setCdmXpcEventProcessingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -5338,9 +5338,9 @@ LABEL_214:
   cdmSetupLink = self->_cdmSetupLink;
   self->_cdmSetupLink = 0;
 
-  self->_whichEvent_Type = (v4 != 0) << 7;
+  self->_whichEvent_Type = (contextCopy != 0) << 7;
   cdmXpcEventProcessingContext = self->_cdmXpcEventProcessingContext;
-  self->_cdmXpcEventProcessingContext = v4;
+  self->_cdmXpcEventProcessingContext = contextCopy;
 }
 
 - (void)deleteMarrsContextualSpanMatcherEndedTier1
@@ -5353,9 +5353,9 @@ LABEL_214:
   }
 }
 
-- (void)setMarrsContextualSpanMatcherEndedTier1:(id)a3
+- (void)setMarrsContextualSpanMatcherEndedTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -5477,14 +5477,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 127;
-  if (!v4)
+  if (!tier1Copy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   marrsContextualSpanMatcherEndedTier1 = self->_marrsContextualSpanMatcherEndedTier1;
-  self->_marrsContextualSpanMatcherEndedTier1 = v4;
+  self->_marrsContextualSpanMatcherEndedTier1 = tier1Copy;
 }
 
 - (void)deleteMarrsContextualSpanMatcherEnded
@@ -5497,9 +5497,9 @@ LABEL_214:
   }
 }
 
-- (void)setMarrsContextualSpanMatcherEnded:(id)a3
+- (void)setMarrsContextualSpanMatcherEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -5621,14 +5621,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 126;
-  if (!v4)
+  if (!endedCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   marrsContextualSpanMatcherEnded = self->_marrsContextualSpanMatcherEnded;
-  self->_marrsContextualSpanMatcherEnded = v4;
+  self->_marrsContextualSpanMatcherEnded = endedCopy;
 }
 
 - (void)deleteCdmSpanMatcherContext
@@ -5641,9 +5641,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmSpanMatcherContext:(id)a3
+- (void)setCdmSpanMatcherContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -5765,14 +5765,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 125;
-  if (!v4)
+  if (!contextCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmSpanMatcherContext = self->_cdmSpanMatcherContext;
-  self->_cdmSpanMatcherContext = v4;
+  self->_cdmSpanMatcherContext = contextCopy;
 }
 
 - (void)deleteCdmSingleServiceSetupAttemptFailed
@@ -5785,9 +5785,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmSingleServiceSetupAttemptFailed:(id)a3
+- (void)setCdmSingleServiceSetupAttemptFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -5909,14 +5909,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 124;
-  if (!v4)
+  if (!failedCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmSingleServiceSetupAttemptFailed = self->_cdmSingleServiceSetupAttemptFailed;
-  self->_cdmSingleServiceSetupAttemptFailed = v4;
+  self->_cdmSingleServiceSetupAttemptFailed = failedCopy;
 }
 
 - (void)deleteCdmSingleServiceSetupAttemptContext
@@ -5929,9 +5929,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmSingleServiceSetupAttemptContext:(id)a3
+- (void)setCdmSingleServiceSetupAttemptContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -6053,14 +6053,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 123;
-  if (!v4)
+  if (!contextCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmSingleServiceSetupAttemptContext = self->_cdmSingleServiceSetupAttemptContext;
-  self->_cdmSingleServiceSetupAttemptContext = v4;
+  self->_cdmSingleServiceSetupAttemptContext = contextCopy;
 }
 
 - (void)deleteCdmAllServicesSetupContext
@@ -6073,9 +6073,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmAllServicesSetupContext:(id)a3
+- (void)setCdmAllServicesSetupContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -6197,14 +6197,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 122;
-  if (!v4)
+  if (!contextCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmAllServicesSetupContext = self->_cdmAllServicesSetupContext;
-  self->_cdmAllServicesSetupContext = v4;
+  self->_cdmAllServicesSetupContext = contextCopy;
 }
 
 - (void)deleteCdmClientSetupContext
@@ -6217,9 +6217,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmClientSetupContext:(id)a3
+- (void)setCdmClientSetupContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -6341,14 +6341,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 121;
-  if (!v4)
+  if (!contextCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmClientSetupContext = self->_cdmClientSetupContext;
-  self->_cdmClientSetupContext = v4;
+  self->_cdmClientSetupContext = contextCopy;
 }
 
 - (void)deleteMarrsMentionResolverEndedTier1
@@ -6361,9 +6361,9 @@ LABEL_214:
   }
 }
 
-- (void)setMarrsMentionResolverEndedTier1:(id)a3
+- (void)setMarrsMentionResolverEndedTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -6485,14 +6485,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 120;
-  if (!v4)
+  if (!tier1Copy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   marrsMentionResolverEndedTier1 = self->_marrsMentionResolverEndedTier1;
-  self->_marrsMentionResolverEndedTier1 = v4;
+  self->_marrsMentionResolverEndedTier1 = tier1Copy;
 }
 
 - (void)deleteMarrsMentionResolverEnded
@@ -6505,9 +6505,9 @@ LABEL_214:
   }
 }
 
-- (void)setMarrsMentionResolverEnded:(id)a3
+- (void)setMarrsMentionResolverEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -6629,14 +6629,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 119;
-  if (!v4)
+  if (!endedCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   marrsMentionResolverEnded = self->_marrsMentionResolverEnded;
-  self->_marrsMentionResolverEnded = v4;
+  self->_marrsMentionResolverEnded = endedCopy;
 }
 
 - (void)deleteMarrsMentionDetectorEndedTier1
@@ -6649,9 +6649,9 @@ LABEL_214:
   }
 }
 
-- (void)setMarrsMentionDetectorEndedTier1:(id)a3
+- (void)setMarrsMentionDetectorEndedTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -6773,14 +6773,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 118;
-  if (!v4)
+  if (!tier1Copy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   marrsMentionDetectorEndedTier1 = self->_marrsMentionDetectorEndedTier1;
-  self->_marrsMentionDetectorEndedTier1 = v4;
+  self->_marrsMentionDetectorEndedTier1 = tier1Copy;
 }
 
 - (void)deleteMarrsMentionDetectorEnded
@@ -6793,9 +6793,9 @@ LABEL_214:
   }
 }
 
-- (void)setMarrsMentionDetectorEnded:(id)a3
+- (void)setMarrsMentionDetectorEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -6917,14 +6917,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 117;
-  if (!v4)
+  if (!endedCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   marrsMentionDetectorEnded = self->_marrsMentionDetectorEnded;
-  self->_marrsMentionDetectorEnded = v4;
+  self->_marrsMentionDetectorEnded = endedCopy;
 }
 
 - (void)deleteNlxCurareContext
@@ -6937,9 +6937,9 @@ LABEL_214:
   }
 }
 
-- (void)setNlxCurareContext:(id)a3
+- (void)setNlxCurareContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -7061,14 +7061,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 116;
-  if (!v4)
+  if (!contextCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   nlxCurareContext = self->_nlxCurareContext;
-  self->_nlxCurareContext = v4;
+  self->_nlxCurareContext = contextCopy;
 }
 
 - (void)deleteCdmMatchingSpanEndedTier1
@@ -7081,9 +7081,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmMatchingSpanEndedTier1:(id)a3
+- (void)setCdmMatchingSpanEndedTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -7205,14 +7205,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 115;
-  if (!v4)
+  if (!tier1Copy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmMatchingSpanEndedTier1 = self->_cdmMatchingSpanEndedTier1;
-  self->_cdmMatchingSpanEndedTier1 = v4;
+  self->_cdmMatchingSpanEndedTier1 = tier1Copy;
 }
 
 - (void)deleteMarrsQueryRewriteEvaluatedTier1
@@ -7225,9 +7225,9 @@ LABEL_214:
   }
 }
 
-- (void)setMarrsQueryRewriteEvaluatedTier1:(id)a3
+- (void)setMarrsQueryRewriteEvaluatedTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -7349,14 +7349,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 114;
-  if (!v4)
+  if (!tier1Copy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   marrsQueryRewriteEvaluatedTier1 = self->_marrsQueryRewriteEvaluatedTier1;
-  self->_marrsQueryRewriteEvaluatedTier1 = v4;
+  self->_marrsQueryRewriteEvaluatedTier1 = tier1Copy;
 }
 
 - (void)deleteMarrsQueryRewriteContext
@@ -7369,9 +7369,9 @@ LABEL_214:
   }
 }
 
-- (void)setMarrsQueryRewriteContext:(id)a3
+- (void)setMarrsQueryRewriteContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -7493,14 +7493,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 113;
-  if (!v4)
+  if (!contextCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   marrsQueryRewriteContext = self->_marrsQueryRewriteContext;
-  self->_marrsQueryRewriteContext = v4;
+  self->_marrsQueryRewriteContext = contextCopy;
 }
 
 - (void)deleteMarrsRepetitionDetectionContext
@@ -7513,9 +7513,9 @@ LABEL_214:
   }
 }
 
-- (void)setMarrsRepetitionDetectionContext:(id)a3
+- (void)setMarrsRepetitionDetectionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -7637,14 +7637,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 112;
-  if (!v4)
+  if (!contextCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   marrsRepetitionDetectionContext = self->_marrsRepetitionDetectionContext;
-  self->_marrsRepetitionDetectionContext = v4;
+  self->_marrsRepetitionDetectionContext = contextCopy;
 }
 
 - (void)deleteCdmContextUpdateEnded
@@ -7657,9 +7657,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmContextUpdateEnded:(id)a3
+- (void)setCdmContextUpdateEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -7781,14 +7781,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 111;
-  if (!v4)
+  if (!endedCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmContextUpdateEnded = self->_cdmContextUpdateEnded;
-  self->_cdmContextUpdateEnded = v4;
+  self->_cdmContextUpdateEnded = endedCopy;
 }
 
 - (void)deleteCdmTokenizationEnded
@@ -7801,9 +7801,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmTokenizationEnded:(id)a3
+- (void)setCdmTokenizationEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -7925,14 +7925,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 110;
-  if (!v4)
+  if (!endedCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmTokenizationEnded = self->_cdmTokenizationEnded;
-  self->_cdmTokenizationEnded = v4;
+  self->_cdmTokenizationEnded = endedCopy;
 }
 
 - (void)deleteCdmSystemDialogActTier1
@@ -7945,9 +7945,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmSystemDialogActTier1:(id)a3
+- (void)setCdmSystemDialogActTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -8069,14 +8069,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 109;
-  if (!v4)
+  if (!tier1Copy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmSystemDialogActTier1 = self->_cdmSystemDialogActTier1;
-  self->_cdmSystemDialogActTier1 = v4;
+  self->_cdmSystemDialogActTier1 = tier1Copy;
 }
 
 - (void)deleteCdmDelegatedUserDialogActTier1
@@ -8089,9 +8089,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmDelegatedUserDialogActTier1:(id)a3
+- (void)setCdmDelegatedUserDialogActTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -8213,14 +8213,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 108;
-  if (!v4)
+  if (!tier1Copy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmDelegatedUserDialogActTier1 = self->_cdmDelegatedUserDialogActTier1;
-  self->_cdmDelegatedUserDialogActTier1 = v4;
+  self->_cdmDelegatedUserDialogActTier1 = tier1Copy;
 }
 
 - (void)deleteNlxLegacyNLContextTier1
@@ -8233,9 +8233,9 @@ LABEL_214:
   }
 }
 
-- (void)setNlxLegacyNLContextTier1:(id)a3
+- (void)setNlxLegacyNLContextTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -8357,14 +8357,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 107;
-  if (!v4)
+  if (!tier1Copy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   nlxLegacyNLContextTier1 = self->_nlxLegacyNLContextTier1;
-  self->_nlxLegacyNLContextTier1 = v4;
+  self->_nlxLegacyNLContextTier1 = tier1Copy;
 }
 
 - (void)deleteCdmMatchingSpanTier1
@@ -8377,9 +8377,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmMatchingSpanTier1:(id)a3
+- (void)setCdmMatchingSpanTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -8501,14 +8501,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 106;
-  if (!v4)
+  if (!tier1Copy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmMatchingSpanTier1 = self->_cdmMatchingSpanTier1;
-  self->_cdmMatchingSpanTier1 = v4;
+  self->_cdmMatchingSpanTier1 = tier1Copy;
 }
 
 - (void)deleteCdmUsoGraphTier1
@@ -8521,9 +8521,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmUsoGraphTier1:(id)a3
+- (void)setCdmUsoGraphTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -8645,14 +8645,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 105;
-  if (!v4)
+  if (!tier1Copy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmUsoGraphTier1 = self->_cdmUsoGraphTier1;
-  self->_cdmUsoGraphTier1 = v4;
+  self->_cdmUsoGraphTier1 = tier1Copy;
 }
 
 - (void)deleteCdmMatchingSpanEnded
@@ -8665,9 +8665,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmMatchingSpanEnded:(id)a3
+- (void)setCdmMatchingSpanEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -8789,14 +8789,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 104;
-  if (!v4)
+  if (!endedCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmMatchingSpanEnded = self->_cdmMatchingSpanEnded;
-  self->_cdmMatchingSpanEnded = v4;
+  self->_cdmMatchingSpanEnded = endedCopy;
 }
 
 - (void)deleteNlxDeviceFixedContext
@@ -8809,9 +8809,9 @@ LABEL_214:
   }
 }
 
-- (void)setNlxDeviceFixedContext:(id)a3
+- (void)setNlxDeviceFixedContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -8933,14 +8933,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 103;
-  if (!v4)
+  if (!contextCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   nlxDeviceFixedContext = self->_nlxDeviceFixedContext;
-  self->_nlxDeviceFixedContext = v4;
+  self->_nlxDeviceFixedContext = contextCopy;
 }
 
 - (void)deleteCdmRequestContext
@@ -8953,9 +8953,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmRequestContext:(id)a3
+- (void)setCdmRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   cdmServiceContext = self->_cdmServiceContext;
   self->_cdmServiceContext = 0;
 
@@ -9077,14 +9077,14 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 102;
-  if (!v4)
+  if (!contextCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmRequestContext = self->_cdmRequestContext;
-  self->_cdmRequestContext = v4;
+  self->_cdmRequestContext = contextCopy;
 }
 
 - (void)deleteCdmServiceContext
@@ -9097,9 +9097,9 @@ LABEL_214:
   }
 }
 
-- (void)setCdmServiceContext:(id)a3
+- (void)setCdmServiceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   cdmRequestContext = self->_cdmRequestContext;
   self->_cdmRequestContext = 0;
 
@@ -9221,23 +9221,23 @@ LABEL_214:
   self->_cdmSetupLink = 0;
 
   v45 = 101;
-  if (!v4)
+  if (!contextCopy)
   {
     v45 = 0;
   }
 
   self->_whichEvent_Type = v45;
   cdmServiceContext = self->_cdmServiceContext;
-  self->_cdmServiceContext = v4;
+  self->_cdmServiceContext = contextCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v134.receiver = self;
   v134.super_class = NLXSchemaNLXClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v134 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v134 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmUsoGraphTier1];
     [(NLXSchemaNLXClientEvent *)self deleteCdmMatchingSpanTier1];
@@ -9252,7 +9252,7 @@ LABEL_214:
     [(NLXSchemaNLXClientEvent *)self deleteMarrsContextualSpanMatcherEndedTier1];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmUsoGraphTier1];
     [(NLXSchemaNLXClientEvent *)self deleteCdmMatchingSpanTier1];
@@ -9267,7 +9267,7 @@ LABEL_214:
     [(NLXSchemaNLXClientEvent *)self deleteMarrsContextualSpanMatcherEndedTier1];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmUsoGraphTier1];
     [(NLXSchemaNLXClientEvent *)self deleteCdmMatchingSpanTier1];
@@ -9282,7 +9282,7 @@ LABEL_214:
     [(NLXSchemaNLXClientEvent *)self deleteMarrsContextualSpanMatcherEndedTier1];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmUsoGraphTier1];
     [(NLXSchemaNLXClientEvent *)self deleteCdmMatchingSpanTier1];
@@ -9297,7 +9297,7 @@ LABEL_214:
     [(NLXSchemaNLXClientEvent *)self deleteMarrsContextualSpanMatcherEndedTier1];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmUsoGraphTier1];
     [(NLXSchemaNLXClientEvent *)self deleteCdmMatchingSpanTier1];
@@ -9312,380 +9312,380 @@ LABEL_214:
     [(NLXSchemaNLXClientEvent *)self deleteMarrsContextualSpanMatcherEndedTier1];
   }
 
-  v6 = [(NLXSchemaNLXClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(NLXSchemaNLXClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(NLXSchemaNLXClientEvent *)self cdmServiceContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  cdmServiceContext = [(NLXSchemaNLXClientEvent *)self cdmServiceContext];
+  v10 = [cdmServiceContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmServiceContext];
   }
 
-  v12 = [(NLXSchemaNLXClientEvent *)self cdmRequestContext];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  cdmRequestContext = [(NLXSchemaNLXClientEvent *)self cdmRequestContext];
+  v13 = [cdmRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmRequestContext];
   }
 
-  v15 = [(NLXSchemaNLXClientEvent *)self nlxDeviceFixedContext];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  nlxDeviceFixedContext = [(NLXSchemaNLXClientEvent *)self nlxDeviceFixedContext];
+  v16 = [nlxDeviceFixedContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(NLXSchemaNLXClientEvent *)self deleteNlxDeviceFixedContext];
   }
 
-  v18 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEnded];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  cdmMatchingSpanEnded = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEnded];
+  v19 = [cdmMatchingSpanEnded applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmMatchingSpanEnded];
   }
 
-  v21 = [(NLXSchemaNLXClientEvent *)self cdmUsoGraphTier1];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  cdmUsoGraphTier1 = [(NLXSchemaNLXClientEvent *)self cdmUsoGraphTier1];
+  v22 = [cdmUsoGraphTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmUsoGraphTier1];
   }
 
-  v24 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanTier1];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  cdmMatchingSpanTier1 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanTier1];
+  v25 = [cdmMatchingSpanTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmMatchingSpanTier1];
   }
 
-  v27 = [(NLXSchemaNLXClientEvent *)self nlxLegacyNLContextTier1];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  nlxLegacyNLContextTier1 = [(NLXSchemaNLXClientEvent *)self nlxLegacyNLContextTier1];
+  v28 = [nlxLegacyNLContextTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(NLXSchemaNLXClientEvent *)self deleteNlxLegacyNLContextTier1];
   }
 
-  v30 = [(NLXSchemaNLXClientEvent *)self cdmDelegatedUserDialogActTier1];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  cdmDelegatedUserDialogActTier1 = [(NLXSchemaNLXClientEvent *)self cdmDelegatedUserDialogActTier1];
+  v31 = [cdmDelegatedUserDialogActTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmDelegatedUserDialogActTier1];
   }
 
-  v33 = [(NLXSchemaNLXClientEvent *)self cdmSystemDialogActTier1];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  cdmSystemDialogActTier1 = [(NLXSchemaNLXClientEvent *)self cdmSystemDialogActTier1];
+  v34 = [cdmSystemDialogActTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmSystemDialogActTier1];
   }
 
-  v36 = [(NLXSchemaNLXClientEvent *)self cdmTokenizationEnded];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  cdmTokenizationEnded = [(NLXSchemaNLXClientEvent *)self cdmTokenizationEnded];
+  v37 = [cdmTokenizationEnded applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmTokenizationEnded];
   }
 
-  v39 = [(NLXSchemaNLXClientEvent *)self cdmContextUpdateEnded];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  cdmContextUpdateEnded = [(NLXSchemaNLXClientEvent *)self cdmContextUpdateEnded];
+  v40 = [cdmContextUpdateEnded applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmContextUpdateEnded];
   }
 
-  v42 = [(NLXSchemaNLXClientEvent *)self marrsRepetitionDetectionContext];
-  v43 = [v42 applySensitiveConditionsPolicy:v4];
-  v44 = [v43 suppressMessage];
+  marrsRepetitionDetectionContext = [(NLXSchemaNLXClientEvent *)self marrsRepetitionDetectionContext];
+  v43 = [marrsRepetitionDetectionContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage13 = [v43 suppressMessage];
 
-  if (v44)
+  if (suppressMessage13)
   {
     [(NLXSchemaNLXClientEvent *)self deleteMarrsRepetitionDetectionContext];
   }
 
-  v45 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteContext];
-  v46 = [v45 applySensitiveConditionsPolicy:v4];
-  v47 = [v46 suppressMessage];
+  marrsQueryRewriteContext = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteContext];
+  v46 = [marrsQueryRewriteContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage14 = [v46 suppressMessage];
 
-  if (v47)
+  if (suppressMessage14)
   {
     [(NLXSchemaNLXClientEvent *)self deleteMarrsQueryRewriteContext];
   }
 
-  v48 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteEvaluatedTier1];
-  v49 = [v48 applySensitiveConditionsPolicy:v4];
-  v50 = [v49 suppressMessage];
+  marrsQueryRewriteEvaluatedTier1 = [(NLXSchemaNLXClientEvent *)self marrsQueryRewriteEvaluatedTier1];
+  v49 = [marrsQueryRewriteEvaluatedTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage15 = [v49 suppressMessage];
 
-  if (v50)
+  if (suppressMessage15)
   {
     [(NLXSchemaNLXClientEvent *)self deleteMarrsQueryRewriteEvaluatedTier1];
   }
 
-  v51 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEndedTier1];
-  v52 = [v51 applySensitiveConditionsPolicy:v4];
-  v53 = [v52 suppressMessage];
+  cdmMatchingSpanEndedTier1 = [(NLXSchemaNLXClientEvent *)self cdmMatchingSpanEndedTier1];
+  v52 = [cdmMatchingSpanEndedTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage16 = [v52 suppressMessage];
 
-  if (v53)
+  if (suppressMessage16)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmMatchingSpanEndedTier1];
   }
 
-  v54 = [(NLXSchemaNLXClientEvent *)self nlxCurareContext];
-  v55 = [v54 applySensitiveConditionsPolicy:v4];
-  v56 = [v55 suppressMessage];
+  nlxCurareContext = [(NLXSchemaNLXClientEvent *)self nlxCurareContext];
+  v55 = [nlxCurareContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage17 = [v55 suppressMessage];
 
-  if (v56)
+  if (suppressMessage17)
   {
     [(NLXSchemaNLXClientEvent *)self deleteNlxCurareContext];
   }
 
-  v57 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEnded];
-  v58 = [v57 applySensitiveConditionsPolicy:v4];
-  v59 = [v58 suppressMessage];
+  marrsMentionDetectorEnded = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEnded];
+  v58 = [marrsMentionDetectorEnded applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage18 = [v58 suppressMessage];
 
-  if (v59)
+  if (suppressMessage18)
   {
     [(NLXSchemaNLXClientEvent *)self deleteMarrsMentionDetectorEnded];
   }
 
-  v60 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEndedTier1];
-  v61 = [v60 applySensitiveConditionsPolicy:v4];
-  v62 = [v61 suppressMessage];
+  marrsMentionDetectorEndedTier1 = [(NLXSchemaNLXClientEvent *)self marrsMentionDetectorEndedTier1];
+  v61 = [marrsMentionDetectorEndedTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage19 = [v61 suppressMessage];
 
-  if (v62)
+  if (suppressMessage19)
   {
     [(NLXSchemaNLXClientEvent *)self deleteMarrsMentionDetectorEndedTier1];
   }
 
-  v63 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEnded];
-  v64 = [v63 applySensitiveConditionsPolicy:v4];
-  v65 = [v64 suppressMessage];
+  marrsMentionResolverEnded = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEnded];
+  v64 = [marrsMentionResolverEnded applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage20 = [v64 suppressMessage];
 
-  if (v65)
+  if (suppressMessage20)
   {
     [(NLXSchemaNLXClientEvent *)self deleteMarrsMentionResolverEnded];
   }
 
-  v66 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEndedTier1];
-  v67 = [v66 applySensitiveConditionsPolicy:v4];
-  v68 = [v67 suppressMessage];
+  marrsMentionResolverEndedTier1 = [(NLXSchemaNLXClientEvent *)self marrsMentionResolverEndedTier1];
+  v67 = [marrsMentionResolverEndedTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage21 = [v67 suppressMessage];
 
-  if (v68)
+  if (suppressMessage21)
   {
     [(NLXSchemaNLXClientEvent *)self deleteMarrsMentionResolverEndedTier1];
   }
 
-  v69 = [(NLXSchemaNLXClientEvent *)self cdmClientSetupContext];
-  v70 = [v69 applySensitiveConditionsPolicy:v4];
-  v71 = [v70 suppressMessage];
+  cdmClientSetupContext = [(NLXSchemaNLXClientEvent *)self cdmClientSetupContext];
+  v70 = [cdmClientSetupContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage22 = [v70 suppressMessage];
 
-  if (v71)
+  if (suppressMessage22)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmClientSetupContext];
   }
 
-  v72 = [(NLXSchemaNLXClientEvent *)self cdmAllServicesSetupContext];
-  v73 = [v72 applySensitiveConditionsPolicy:v4];
-  v74 = [v73 suppressMessage];
+  cdmAllServicesSetupContext = [(NLXSchemaNLXClientEvent *)self cdmAllServicesSetupContext];
+  v73 = [cdmAllServicesSetupContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage23 = [v73 suppressMessage];
 
-  if (v74)
+  if (suppressMessage23)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmAllServicesSetupContext];
   }
 
-  v75 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptContext];
-  v76 = [v75 applySensitiveConditionsPolicy:v4];
-  v77 = [v76 suppressMessage];
+  cdmSingleServiceSetupAttemptContext = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptContext];
+  v76 = [cdmSingleServiceSetupAttemptContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage24 = [v76 suppressMessage];
 
-  if (v77)
+  if (suppressMessage24)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmSingleServiceSetupAttemptContext];
   }
 
-  v78 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptFailed];
-  v79 = [v78 applySensitiveConditionsPolicy:v4];
-  v80 = [v79 suppressMessage];
+  cdmSingleServiceSetupAttemptFailed = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceSetupAttemptFailed];
+  v79 = [cdmSingleServiceSetupAttemptFailed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage25 = [v79 suppressMessage];
 
-  if (v80)
+  if (suppressMessage25)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmSingleServiceSetupAttemptFailed];
   }
 
-  v81 = [(NLXSchemaNLXClientEvent *)self cdmSpanMatcherContext];
-  v82 = [v81 applySensitiveConditionsPolicy:v4];
-  v83 = [v82 suppressMessage];
+  cdmSpanMatcherContext = [(NLXSchemaNLXClientEvent *)self cdmSpanMatcherContext];
+  v82 = [cdmSpanMatcherContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage26 = [v82 suppressMessage];
 
-  if (v83)
+  if (suppressMessage26)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmSpanMatcherContext];
   }
 
-  v84 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEnded];
-  v85 = [v84 applySensitiveConditionsPolicy:v4];
-  v86 = [v85 suppressMessage];
+  marrsContextualSpanMatcherEnded = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEnded];
+  v85 = [marrsContextualSpanMatcherEnded applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage27 = [v85 suppressMessage];
 
-  if (v86)
+  if (suppressMessage27)
   {
     [(NLXSchemaNLXClientEvent *)self deleteMarrsContextualSpanMatcherEnded];
   }
 
-  v87 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEndedTier1];
-  v88 = [v87 applySensitiveConditionsPolicy:v4];
-  v89 = [v88 suppressMessage];
+  marrsContextualSpanMatcherEndedTier1 = [(NLXSchemaNLXClientEvent *)self marrsContextualSpanMatcherEndedTier1];
+  v88 = [marrsContextualSpanMatcherEndedTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage28 = [v88 suppressMessage];
 
-  if (v89)
+  if (suppressMessage28)
   {
     [(NLXSchemaNLXClientEvent *)self deleteMarrsContextualSpanMatcherEndedTier1];
   }
 
-  v90 = [(NLXSchemaNLXClientEvent *)self cdmXpcEventProcessingContext];
-  v91 = [v90 applySensitiveConditionsPolicy:v4];
-  v92 = [v91 suppressMessage];
+  cdmXpcEventProcessingContext = [(NLXSchemaNLXClientEvent *)self cdmXpcEventProcessingContext];
+  v91 = [cdmXpcEventProcessingContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage29 = [v91 suppressMessage];
 
-  if (v92)
+  if (suppressMessage29)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmXpcEventProcessingContext];
   }
 
-  v93 = [(NLXSchemaNLXClientEvent *)self cdmAssetSetupContext];
-  v94 = [v93 applySensitiveConditionsPolicy:v4];
-  v95 = [v94 suppressMessage];
+  cdmAssetSetupContext = [(NLXSchemaNLXClientEvent *)self cdmAssetSetupContext];
+  v94 = [cdmAssetSetupContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage30 = [v94 suppressMessage];
 
-  if (v95)
+  if (suppressMessage30)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmAssetSetupContext];
   }
 
-  v96 = [(NLXSchemaNLXClientEvent *)self cdmSetupMissingAssetsDetected];
-  v97 = [v96 applySensitiveConditionsPolicy:v4];
-  v98 = [v97 suppressMessage];
+  cdmSetupMissingAssetsDetected = [(NLXSchemaNLXClientEvent *)self cdmSetupMissingAssetsDetected];
+  v97 = [cdmSetupMissingAssetsDetected applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage31 = [v97 suppressMessage];
 
-  if (v98)
+  if (suppressMessage31)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmSetupMissingAssetsDetected];
   }
 
-  v99 = [(NLXSchemaNLXClientEvent *)self cdmClientWarmupContext];
-  v100 = [v99 applySensitiveConditionsPolicy:v4];
-  v101 = [v100 suppressMessage];
+  cdmClientWarmupContext = [(NLXSchemaNLXClientEvent *)self cdmClientWarmupContext];
+  v100 = [cdmClientWarmupContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage32 = [v100 suppressMessage];
 
-  if (v101)
+  if (suppressMessage32)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmClientWarmupContext];
   }
 
-  v102 = [(NLXSchemaNLXClientEvent *)self cdmAllServicesWarmupContext];
-  v103 = [v102 applySensitiveConditionsPolicy:v4];
-  v104 = [v103 suppressMessage];
+  cdmAllServicesWarmupContext = [(NLXSchemaNLXClientEvent *)self cdmAllServicesWarmupContext];
+  v103 = [cdmAllServicesWarmupContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage33 = [v103 suppressMessage];
 
-  if (v104)
+  if (suppressMessage33)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmAllServicesWarmupContext];
   }
 
-  v105 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptContext];
-  v106 = [v105 applySensitiveConditionsPolicy:v4];
-  v107 = [v106 suppressMessage];
+  cdmSingleServiceWarmupAttemptContext = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptContext];
+  v106 = [cdmSingleServiceWarmupAttemptContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage34 = [v106 suppressMessage];
 
-  if (v107)
+  if (suppressMessage34)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmSingleServiceWarmupAttemptContext];
   }
 
-  v108 = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptFailed];
-  v109 = [v108 applySensitiveConditionsPolicy:v4];
-  v110 = [v109 suppressMessage];
+  cdmSingleServiceWarmupAttemptFailed = [(NLXSchemaNLXClientEvent *)self cdmSingleServiceWarmupAttemptFailed];
+  v109 = [cdmSingleServiceWarmupAttemptFailed applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage35 = [v109 suppressMessage];
 
-  if (v110)
+  if (suppressMessage35)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmSingleServiceWarmupAttemptFailed];
   }
 
-  v111 = [(NLXSchemaNLXClientEvent *)self cdmAssetsReported];
-  v112 = [v111 applySensitiveConditionsPolicy:v4];
-  v113 = [v112 suppressMessage];
+  cdmAssetsReported = [(NLXSchemaNLXClientEvent *)self cdmAssetsReported];
+  v112 = [cdmAssetsReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage36 = [v112 suppressMessage];
 
-  if (v113)
+  if (suppressMessage36)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmAssetsReported];
   }
 
-  v114 = [(NLXSchemaNLXClientEvent *)self ssuUserRequestContext];
-  v115 = [v114 applySensitiveConditionsPolicy:v4];
-  v116 = [v115 suppressMessage];
+  ssuUserRequestContext = [(NLXSchemaNLXClientEvent *)self ssuUserRequestContext];
+  v115 = [ssuUserRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage37 = [v115 suppressMessage];
 
-  if (v116)
+  if (suppressMessage37)
   {
     [(NLXSchemaNLXClientEvent *)self deleteSsuUserRequestContext];
   }
 
-  v117 = [(NLXSchemaNLXClientEvent *)self ssuBackgroundRequestContext];
-  v118 = [v117 applySensitiveConditionsPolicy:v4];
-  v119 = [v118 suppressMessage];
+  ssuBackgroundRequestContext = [(NLXSchemaNLXClientEvent *)self ssuBackgroundRequestContext];
+  v118 = [ssuBackgroundRequestContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage38 = [v118 suppressMessage];
 
-  if (v119)
+  if (suppressMessage38)
   {
     [(NLXSchemaNLXClientEvent *)self deleteSsuBackgroundRequestContext];
   }
 
-  v120 = [(NLXSchemaNLXClientEvent *)self cdmServiceHandleMetricsReported];
-  v121 = [v120 applySensitiveConditionsPolicy:v4];
-  v122 = [v121 suppressMessage];
+  cdmServiceHandleMetricsReported = [(NLXSchemaNLXClientEvent *)self cdmServiceHandleMetricsReported];
+  v121 = [cdmServiceHandleMetricsReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage39 = [v121 suppressMessage];
 
-  if (v122)
+  if (suppressMessage39)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmServiceHandleMetricsReported];
   }
 
-  v123 = [(NLXSchemaNLXClientEvent *)self cdmServiceSetupMetricsReported];
-  v124 = [v123 applySensitiveConditionsPolicy:v4];
-  v125 = [v124 suppressMessage];
+  cdmServiceSetupMetricsReported = [(NLXSchemaNLXClientEvent *)self cdmServiceSetupMetricsReported];
+  v124 = [cdmServiceSetupMetricsReported applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage40 = [v124 suppressMessage];
 
-  if (v125)
+  if (suppressMessage40)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmServiceSetupMetricsReported];
   }
 
-  v126 = [(NLXSchemaNLXClientEvent *)self milAssetAcquisitionContext];
-  v127 = [v126 applySensitiveConditionsPolicy:v4];
-  v128 = [v127 suppressMessage];
+  milAssetAcquisitionContext = [(NLXSchemaNLXClientEvent *)self milAssetAcquisitionContext];
+  v127 = [milAssetAcquisitionContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage41 = [v127 suppressMessage];
 
-  if (v128)
+  if (suppressMessage41)
   {
     [(NLXSchemaNLXClientEvent *)self deleteMilAssetAcquisitionContext];
   }
 
-  v129 = [(NLXSchemaNLXClientEvent *)self cdmSetupLink];
-  v130 = [v129 applySensitiveConditionsPolicy:v4];
-  v131 = [v130 suppressMessage];
+  cdmSetupLink = [(NLXSchemaNLXClientEvent *)self cdmSetupLink];
+  v130 = [cdmSetupLink applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage42 = [v130 suppressMessage];
 
-  if (v131)
+  if (suppressMessage42)
   {
     [(NLXSchemaNLXClientEvent *)self deleteCdmSetupLink];
   }
@@ -9705,73 +9705,73 @@ LABEL_214:
 
 - (int)componentName
 {
-  v3 = [(NLXSchemaNLXClientEvent *)self eventMetadata];
-  v4 = [v3 nlId];
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self eventMetadata];
+  nlId = [eventMetadata nlId];
 
-  if (v4 && ([v4 value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(v4, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
+  if (nlId && ([nlId value], (v5 = objc_claimAutoreleasedReturnValue()) != 0) && (v6 = v5, objc_msgSend(nlId, "value"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v6, v8))
   {
-    LODWORD(v9) = 7;
+    LODWORD(value) = 7;
   }
 
   else
   {
-    v10 = [(NLXSchemaNLXClientEvent *)self eventMetadata];
-    v11 = [v10 requestId];
+    eventMetadata2 = [(NLXSchemaNLXClientEvent *)self eventMetadata];
+    requestId = [eventMetadata2 requestId];
 
-    if (v11 && ([v11 value], (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, objc_msgSend(v11, "value"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v13, v15))
+    if (requestId && ([requestId value], (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, objc_msgSend(requestId, "value"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v14, v13, v15))
     {
-      LODWORD(v9) = 1;
-      v4 = v11;
+      LODWORD(value) = 1;
+      nlId = requestId;
     }
 
     else
     {
-      v16 = [(NLXSchemaNLXClientEvent *)self eventMetadata];
-      v4 = [v16 subRequestId];
+      eventMetadata3 = [(NLXSchemaNLXClientEvent *)self eventMetadata];
+      nlId = [eventMetadata3 subRequestId];
 
-      if (v4)
+      if (nlId)
       {
-        v9 = [v4 value];
-        if (v9)
+        value = [nlId value];
+        if (value)
         {
-          v17 = [v4 value];
-          v18 = [v17 length];
+          value2 = [nlId value];
+          v18 = [value2 length];
 
           if (v18)
           {
-            LODWORD(v9) = 43;
+            LODWORD(value) = 43;
           }
 
           else
           {
-            LODWORD(v9) = 0;
+            LODWORD(value) = 0;
           }
         }
       }
 
       else
       {
-        LODWORD(v9) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
-  return v9;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v3 = [(NLXSchemaNLXClientEvent *)self eventMetadata];
-  v4 = [v3 nlId];
+  eventMetadata = [(NLXSchemaNLXClientEvent *)self eventMetadata];
+  nlId = [eventMetadata nlId];
 
-  if (v4)
+  if (nlId)
   {
-    v5 = [v4 value];
-    if (v5)
+    value = [nlId value];
+    if (value)
     {
-      v6 = v5;
-      v7 = [v4 value];
-      v8 = [v7 length];
+      v6 = value;
+      value2 = [nlId value];
+      v8 = [value2 length];
 
       if (v8)
       {
@@ -9780,42 +9780,42 @@ LABEL_214:
     }
   }
 
-  v9 = [(NLXSchemaNLXClientEvent *)self eventMetadata];
-  v10 = [v9 requestId];
+  eventMetadata2 = [(NLXSchemaNLXClientEvent *)self eventMetadata];
+  requestId = [eventMetadata2 requestId];
 
-  if (v10)
+  if (requestId)
   {
-    v11 = [v10 value];
-    if (v11)
+    value3 = [requestId value];
+    if (value3)
     {
-      v12 = v11;
-      v13 = [v10 value];
-      v14 = [v13 length];
+      v12 = value3;
+      value4 = [requestId value];
+      v14 = [value4 length];
 
       if (v14)
       {
-        v4 = v10;
+        nlId = requestId;
 LABEL_11:
-        v16 = v4;
-        v4 = v16;
+        value5 = nlId;
+        nlId = value5;
         goto LABEL_13;
       }
     }
   }
 
-  v15 = [(NLXSchemaNLXClientEvent *)self eventMetadata];
-  v4 = [v15 subRequestId];
+  eventMetadata3 = [(NLXSchemaNLXClientEvent *)self eventMetadata];
+  nlId = [eventMetadata3 subRequestId];
 
-  if (v4)
+  if (nlId)
   {
-    v16 = [v4 value];
-    if (!v16)
+    value5 = [nlId value];
+    if (!value5)
     {
       goto LABEL_13;
     }
 
-    v17 = [v4 value];
-    v18 = [v17 length];
+    value6 = [nlId value];
+    v18 = [value6 length];
 
     if (v18)
     {
@@ -9823,38 +9823,38 @@ LABEL_11:
     }
   }
 
-  v16 = 0;
+  value5 = 0;
 LABEL_13:
 
-  return v16;
+  return value5;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(NLXSchemaNLXClientEvent *)self whichEvent_Type];
-  if (v3 - 101 > 0x28)
+  whichEvent_Type = [(NLXSchemaNLXClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 0x28)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78EA1D8[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78EA1D8[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 0x28)
+  if (tag - 101 > 0x28)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78EA320[a3 - 101];
+    return off_1E78EA320[tag - 101];
   }
 }
 

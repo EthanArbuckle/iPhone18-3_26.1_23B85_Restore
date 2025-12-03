@@ -1,20 +1,20 @@
 @interface EMP_TSDImageColorAnalyzer
-- (EMP_TSDImageColorAnalyzer)initWithImage:(id)a3;
+- (EMP_TSDImageColorAnalyzer)initWithImage:(id)image;
 - (NSArray)dominantColors;
 - (NSOrderedSet)interestingColors;
 - (UIColor)backgroundColor;
-- (id)textColorForBackgroundColor:(id)a3;
-- (id)textShadowColorForTextColor:(id)a3 backgroundColor:(id)a4;
+- (id)textColorForBackgroundColor:(id)color;
+- (id)textShadowColorForTextColor:(id)color backgroundColor:(id)backgroundColor;
 - (void)dealloc;
-- (void)filterInterestingColorsUsingBlock:(id)a3;
+- (void)filterInterestingColorsUsingBlock:(id)block;
 - (void)p_prepareInterestingColors;
 @end
 
 @implementation EMP_TSDImageColorAnalyzer
 
-- (EMP_TSDImageColorAnalyzer)initWithImage:(id)a3
+- (EMP_TSDImageColorAnalyzer)initWithImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v6.receiver = self;
   v6.super_class = EMP_TSDImageColorAnalyzer;
   if ([(EMP_TSDImageColorAnalyzer *)&v6 init])
@@ -63,25 +63,25 @@
 
   if ([v3 count] <= 1)
   {
-    v8 = [(EMP_TSDImageColorAnalyzer *)self backgroundColor];
+    backgroundColor = [(EMP_TSDImageColorAnalyzer *)self backgroundColor];
     v9 = MEMORY[0x277CBEB58];
-    v10 = [MEMORY[0x277D75348] blackColor];
-    v19[0] = v10;
-    v11 = [MEMORY[0x277D75348] whiteColor];
-    v19[1] = v11;
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v19[0] = blackColor;
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v19[1] = whiteColor;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
     v13 = [v9 setWithArray:v12];
 
-    v14 = [(EMP_TSDImageColorAnalyzer *)self backgroundColor];
-    v15 = v14 == 0;
+    backgroundColor2 = [(EMP_TSDImageColorAnalyzer *)self backgroundColor];
+    v15 = backgroundColor2 == 0;
 
     if (!v15)
     {
-      [v13 addObject:v8];
+      [v13 addObject:backgroundColor];
     }
 
-    v16 = [v13 allObjects];
-    [v3 addObjectsFromArray:v16];
+    allObjects = [v13 allObjects];
+    [v3 addObjectsFromArray:allObjects];
   }
 
   return v3;
@@ -112,26 +112,26 @@
   return v2;
 }
 
-- (void)filterInterestingColorsUsingBlock:(id)a3
+- (void)filterInterestingColorsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   interestingColors = self->_interestingColors;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __63__EMP_TSDImageColorAnalyzer_filterInterestingColorsUsingBlock___block_invoke;
   v11 = &unk_278FC1C60;
-  v7 = v4;
+  v7 = blockCopy;
   v12 = v5;
   v13 = v7;
   [(NSMutableOrderedSet *)interestingColors enumerateObjectsUsingBlock:&v8];
   [(NSMutableOrderedSet *)self->_interestingColors minusSet:v5, v8, v9, v10, v11];
 }
 
-- (id)textColorForBackgroundColor:(id)a3
+- (id)textColorForBackgroundColor:(id)color
 {
-  v4 = a3;
-  JCColor::JCColor(v8, [v4 CGColor]);
+  colorCopy = color;
+  JCColor::JCColor(v8, [colorCopy CGColor]);
   JCImageAnalyzer::GetTextColorForBackgroundColor(self->_imageAnalyzer, v8, v7);
   v5 = [MEMORY[0x277D75348] colorWithCGColor:v7[0]];
   JCColor::~JCColor(v7);
@@ -140,12 +140,12 @@
   return v5;
 }
 
-- (id)textShadowColorForTextColor:(id)a3 backgroundColor:(id)a4
+- (id)textShadowColorForTextColor:(id)color backgroundColor:(id)backgroundColor
 {
-  v5 = a3;
-  v6 = a4;
-  JCColor::JCColor(v11, [v5 CGColor]);
-  JCColor::JCColor(v10, [v6 CGColor]);
+  colorCopy = color;
+  backgroundColorCopy = backgroundColor;
+  JCColor::JCColor(v11, [colorCopy CGColor]);
+  JCColor::JCColor(v10, [backgroundColorCopy CGColor]);
   JCImageAnalyzer::GetTextShadowColor(v11, v10, v9);
   v7 = [MEMORY[0x277D75348] colorWithCGColor:v9[0]];
   JCColor::~JCColor(v9);
@@ -158,8 +158,8 @@
 - (void)p_prepareInterestingColors
 {
   interestingColors = self->_interestingColors;
-  v4 = [(EMP_TSDImageColorAnalyzer *)self dominantColors];
-  [(NSMutableOrderedSet *)interestingColors addObjectsFromArray:v4];
+  dominantColors = [(EMP_TSDImageColorAnalyzer *)self dominantColors];
+  [(NSMutableOrderedSet *)interestingColors addObjectsFromArray:dominantColors];
 
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);

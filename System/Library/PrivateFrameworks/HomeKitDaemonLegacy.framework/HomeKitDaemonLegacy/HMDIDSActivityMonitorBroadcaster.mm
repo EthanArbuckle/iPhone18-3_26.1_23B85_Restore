@@ -1,41 +1,41 @@
 @interface HMDIDSActivityMonitorBroadcaster
 + (id)criteria;
 + (id)logCategory;
-- (HMDIDSActivityMonitorBroadcaster)initWithActivityMonitor:(id)a3;
-- (HMDIDSActivityMonitorBroadcaster)initWithActivityMonitor:(id)a3 timer:(id)a4 xpcActivityInterface:(id)a5;
+- (HMDIDSActivityMonitorBroadcaster)initWithActivityMonitor:(id)monitor;
+- (HMDIDSActivityMonitorBroadcaster)initWithActivityMonitor:(id)monitor timer:(id)timer xpcActivityInterface:(id)interface;
 - (id)logIdentifier;
 - (void)_refreshBroadcastSubscription;
 - (void)_registerForXPCPoll;
-- (void)configureWithDataSource:(id)a3;
-- (void)configureWithQueue:(id)a3;
-- (void)dataSourceDidUpdate:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)configureWithDataSource:(id)source;
+- (void)configureWithQueue:(id)queue;
+- (void)dataSourceDidUpdate:(id)update;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDIDSActivityMonitorBroadcaster
 
 - (id)logIdentifier
 {
-  v2 = [(HMDIDSActivityMonitorBroadcaster *)self activityMonitor];
-  v3 = [v2 logIdentifier];
+  activityMonitor = [(HMDIDSActivityMonitorBroadcaster *)self activityMonitor];
+  logIdentifier = [activityMonitor logIdentifier];
 
-  return v3;
+  return logIdentifier;
 }
 
-- (void)dataSourceDidUpdate:(id)a3
+- (void)dataSourceDidUpdate:(id)update
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDIDSActivityMonitorBroadcaster *)self dataSource];
-  if (v5)
+  updateCopy = update;
+  dataSource = [(HMDIDSActivityMonitorBroadcaster *)self dataSource];
+  if (dataSource)
   {
-    v6 = v5;
-    v7 = [(HMDIDSActivityMonitorBroadcaster *)self queue];
+    v6 = dataSource;
+    queue = [(HMDIDSActivityMonitorBroadcaster *)self queue];
 
-    if (v7)
+    if (queue)
     {
       v8 = objc_autoreleasePoolPush();
-      v9 = self;
+      selfCopy = self;
       v10 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
@@ -46,22 +46,22 @@
       }
 
       objc_autoreleasePoolPop(v8);
-      [(HMFTimer *)v9->_debounceTimer resume];
+      [(HMFTimer *)selfCopy->_debounceTimer resume];
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDIDSActivityMonitorBroadcaster *)self queue];
-  dispatch_assert_queue_V2(v5);
+  fireCopy = fire;
+  queue = [(HMDIDSActivityMonitorBroadcaster *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -72,7 +72,7 @@
   }
 
   objc_autoreleasePoolPop(v6);
-  [(HMDIDSActivityMonitorBroadcaster *)v7 _refreshBroadcastSubscription];
+  [(HMDIDSActivityMonitorBroadcaster *)selfCopy _refreshBroadcastSubscription];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -81,26 +81,26 @@
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = +[HMDAppleAccountManager sharedManager];
-  v4 = [v3 account];
-  v5 = [v4 currentDevice];
+  account = [v3 account];
+  currentDevice = [account currentDevice];
 
-  if (v5)
+  if (currentDevice)
   {
-    v6 = [(HMDIDSActivityMonitorBroadcaster *)self dataSource];
+    dataSource = [(HMDIDSActivityMonitorBroadcaster *)self dataSource];
     v7 = *MEMORY[0x277D18518];
-    v8 = [(HMDIDSActivityMonitorBroadcaster *)self queue];
+    queue = [(HMDIDSActivityMonitorBroadcaster *)self queue];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __65__HMDIDSActivityMonitorBroadcaster__refreshBroadcastSubscription__block_invoke;
     v14[3] = &unk_279730038;
     v14[4] = self;
-    [v6 pushTokensForDevicesObservingSubjectDevice:v5 subActivity:v7 queue:v8 completionHandler:v14];
+    [dataSource pushTokensForDevicesObservingSubjectDevice:currentDevice subActivity:v7 queue:queue completionHandler:v14];
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
@@ -152,14 +152,14 @@ void __65__HMDIDSActivityMonitorBroadcaster__refreshBroadcastSubscription__block
 - (void)_registerForXPCPoll
 {
   objc_initWeak(&location, self);
-  v3 = [(HMDIDSActivityMonitorBroadcaster *)self xpcActivityInterface];
+  xpcActivityInterface = [(HMDIDSActivityMonitorBroadcaster *)self xpcActivityInterface];
   v4 = +[HMDIDSActivityMonitorBroadcaster criteria];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __55__HMDIDSActivityMonitorBroadcaster__registerForXPCPoll__block_invoke;
   v5[3] = &unk_27972DAB0;
   objc_copyWeak(&v6, &location);
-  [v3 registerXPCActivityWithActivityIdentifier:@"com.apple.homed.idsBroadcaster" criteria:v4 activityBlock:v5];
+  [xpcActivityInterface registerXPCActivityWithActivityIdentifier:@"com.apple.homed.idsBroadcaster" criteria:v4 activityBlock:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -200,33 +200,33 @@ void __55__HMDIDSActivityMonitorBroadcaster__registerForXPCPoll__block_invoke(ui
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithDataSource:(id)a3
+- (void)configureWithDataSource:(id)source
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  sourceCopy = source;
+  if (!sourceCopy)
   {
     _HMFPreconditionFailure();
 LABEL_9:
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
-  v6 = [(HMDIDSActivityMonitorBroadcaster *)self dataSource];
+  v5 = sourceCopy;
+  dataSource = [(HMDIDSActivityMonitorBroadcaster *)self dataSource];
 
-  if (v6)
+  if (dataSource)
   {
     goto LABEL_9;
   }
 
   [(HMDIDSActivityMonitorBroadcaster *)self setDataSource:v5];
   [v5 setDelegate:self];
-  v7 = [(HMDIDSActivityMonitorBroadcaster *)self queue];
+  queue = [(HMDIDSActivityMonitorBroadcaster *)self queue];
 
-  if (v7)
+  if (queue)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -237,39 +237,39 @@ LABEL_9:
     }
 
     objc_autoreleasePoolPop(v8);
-    [(HMFTimer *)v9->_debounceTimer resume];
+    [(HMFTimer *)selfCopy->_debounceTimer resume];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithQueue:(id)a3
+- (void)configureWithQueue:(id)queue
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     _HMFPreconditionFailure();
 LABEL_9:
     _HMFPreconditionFailure();
   }
 
-  v5 = v4;
-  v6 = [(HMDIDSActivityMonitorBroadcaster *)self queue];
+  v5 = queueCopy;
+  queue = [(HMDIDSActivityMonitorBroadcaster *)self queue];
 
-  if (v6)
+  if (queue)
   {
     goto LABEL_9;
   }
 
   [(HMFTimer *)self->_debounceTimer setDelegateQueue:v5];
   [(HMDIDSActivityMonitorBroadcaster *)self setQueue:v5];
-  v7 = [(HMDIDSActivityMonitorBroadcaster *)self dataSource];
+  dataSource = [(HMDIDSActivityMonitorBroadcaster *)self dataSource];
 
-  if (v7)
+  if (dataSource)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -286,38 +286,38 @@ LABEL_9:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDIDSActivityMonitorBroadcaster)initWithActivityMonitor:(id)a3
+- (HMDIDSActivityMonitorBroadcaster)initWithActivityMonitor:(id)monitor
 {
   v4 = MEMORY[0x277D0F8D0];
-  v5 = a3;
-  v6 = [v4 sharedPreferences];
-  v7 = [v6 preferenceForKey:@"activityMonitorBroadcastDebounceDelay"];
-  v8 = [v7 numberValue];
-  [v8 doubleValue];
+  monitorCopy = monitor;
+  sharedPreferences = [v4 sharedPreferences];
+  v7 = [sharedPreferences preferenceForKey:@"activityMonitorBroadcastDebounceDelay"];
+  numberValue = [v7 numberValue];
+  [numberValue doubleValue];
   v10 = v9;
 
   v11 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:v10];
   v12 = objc_alloc_init(MEMORY[0x277D17E08]);
-  v13 = [(HMDIDSActivityMonitorBroadcaster *)self initWithActivityMonitor:v5 timer:v11 xpcActivityInterface:v12];
+  v13 = [(HMDIDSActivityMonitorBroadcaster *)self initWithActivityMonitor:monitorCopy timer:v11 xpcActivityInterface:v12];
 
   return v13;
 }
 
-- (HMDIDSActivityMonitorBroadcaster)initWithActivityMonitor:(id)a3 timer:(id)a4 xpcActivityInterface:(id)a5
+- (HMDIDSActivityMonitorBroadcaster)initWithActivityMonitor:(id)monitor timer:(id)timer xpcActivityInterface:(id)interface
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  monitorCopy = monitor;
+  timerCopy = timer;
+  interfaceCopy = interface;
   v15.receiver = self;
   v15.super_class = HMDIDSActivityMonitorBroadcaster;
   v12 = [(HMDIDSActivityMonitorBroadcaster *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_activityMonitor, a3);
-    objc_storeStrong(&v13->_debounceTimer, a4);
+    objc_storeStrong(&v12->_activityMonitor, monitor);
+    objc_storeStrong(&v13->_debounceTimer, timer);
     [(HMFTimer *)v13->_debounceTimer setDelegate:v13];
-    objc_storeStrong(&v13->_xpcActivityInterface, a5);
+    objc_storeStrong(&v13->_xpcActivityInterface, interface);
     v13->_isBroadcasting = 0;
   }
 

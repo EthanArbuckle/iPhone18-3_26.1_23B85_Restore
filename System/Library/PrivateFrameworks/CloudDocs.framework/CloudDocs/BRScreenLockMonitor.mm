@@ -4,10 +4,10 @@
 - (BRScreenLockMonitor)init;
 - (void)_getScreenLockedStateFromToken;
 - (void)_invalidateScreenLockManager;
-- (void)_setScreenLocked:(BOOL)a3;
-- (void)addObserver:(id)a3;
+- (void)_setScreenLocked:(BOOL)locked;
+- (void)addObserver:(id)observer;
 - (void)init;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation BRScreenLockMonitor
@@ -70,7 +70,7 @@ uint64_t __46__BRScreenLockMonitor_sharedScreenLockMonitor__block_invoke()
     v2->_notificationQueue = v5;
 
     v2->_screenLockedUnlockedNotifyToken = -1;
-    v7 = [@"com.apple.springboard.lockstate" UTF8String];
+    uTF8String = [@"com.apple.springboard.lockstate" UTF8String];
     v8 = v2->_notificationQueue;
     handler[0] = MEMORY[0x1E69E9820];
     handler[1] = 3221225472;
@@ -78,7 +78,7 @@ uint64_t __46__BRScreenLockMonitor_sharedScreenLockMonitor__block_invoke()
     handler[3] = &unk_1E7A15E58;
     v9 = v2;
     v18 = v9;
-    v10 = notify_register_dispatch(v7, &v2->_screenLockedUnlockedNotifyToken, v8, handler);
+    v10 = notify_register_dispatch(uTF8String, &v2->_screenLockedUnlockedNotifyToken, v8, handler);
     if (v10)
     {
       v11 = v10;
@@ -91,9 +91,9 @@ uint64_t __46__BRScreenLockMonitor_sharedScreenLockMonitor__block_invoke()
     }
 
     v9->_screenLocked = [(BRScreenLockMonitor *)v9 _getScreenLockedStateFromToken];
-    v14 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     screenLockObservers = v9->_screenLockObservers;
-    v9->_screenLockObservers = v14;
+    v9->_screenLockObservers = weakObjectsHashTable;
   }
 
   return v2;
@@ -107,7 +107,7 @@ uint64_t __46__BRScreenLockMonitor_sharedScreenLockMonitor__block_invoke()
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
-    v9 = [@"com.apple.springboard.lockstate" UTF8String];
+    uTF8String = [@"com.apple.springboard.lockstate" UTF8String];
     v10 = 2112;
     v11 = v3;
     _os_log_impl(&dword_1AE2A9000, v4, OS_LOG_TYPE_DEFAULT, "[NOTICE] Unregister for %s%@", &v8, 0x16u);
@@ -126,14 +126,14 @@ uint64_t __46__BRScreenLockMonitor_sharedScreenLockMonitor__block_invoke()
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setScreenLocked:(BOOL)a3
+- (void)_setScreenLocked:(BOOL)locked
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __40__BRScreenLockMonitor__setScreenLocked___block_invoke;
   v5[3] = &unk_1E7A15768;
   v5[4] = self;
-  v6 = a3;
+  lockedCopy = locked;
   v4 = MEMORY[0x1B26FEA90](v5, a2);
   dispatch_assert_queue_V2(self->_notificationQueue);
   v4[2](v4);
@@ -181,17 +181,17 @@ void __40__BRScreenLockMonitor__setScreenLocked___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__BRScreenLockMonitor_addObserver___block_invoke;
   v7[3] = &unk_1E7A14A08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(notificationQueue, v7);
 }
 
@@ -204,17 +204,17 @@ uint64_t __35__BRScreenLockMonitor_addObserver___block_invoke(uint64_t a1)
   return [v2 screenLockChanged:v3];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__BRScreenLockMonitor_removeObserver___block_invoke;
   v7[3] = &unk_1E7A14A08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(notificationQueue, v7);
 }
 
@@ -224,7 +224,7 @@ uint64_t __35__BRScreenLockMonitor_addObserver___block_invoke(uint64_t a1)
   v4[0] = 67109378;
   v4[1] = a2;
   v5 = 2112;
-  v6 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1AE2A9000, log, 0x90u, "[ERROR] can't register to screen lock/unlock changes. error: %d%@", v4, 0x12u);
   v3 = *MEMORY[0x1E69E9840];
 }
@@ -233,7 +233,7 @@ uint64_t __35__BRScreenLockMonitor_addObserver___block_invoke(uint64_t a1)
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1AE2A9000, a2, 0x90u, "[ERROR] Failed to query whether screen is locked%@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

@@ -15,10 +15,10 @@
 {
   if (a3 <= 2)
   {
-    v5 = [a1 domain];
-    if ([v5 isEqualToString:*MEMORY[0x277CCA738]])
+    domain = [self domain];
+    if ([domain isEqualToString:*MEMORY[0x277CCA738]])
     {
-      if ([a1 code] == -1001 || objc_msgSend(a1, "code") == -1005)
+      if ([self code] == -1001 || objc_msgSend(self, "code") == -1005)
       {
         v3 = 1;
 LABEL_11:
@@ -26,9 +26,9 @@ LABEL_11:
         return v3;
       }
 
-      v7 = [a1 code];
+      code = [self code];
 
-      if (v7 == -1003)
+      if (code == -1003)
       {
         return 1;
       }
@@ -38,10 +38,10 @@ LABEL_11:
     {
     }
 
-    v5 = [a1 domain];
-    if ([v5 isEqualToString:*MEMORY[0x277D6A110]])
+    domain = [self domain];
+    if ([domain isEqualToString:*MEMORY[0x277D6A110]])
     {
-      v3 = [a1 code] == 110;
+      v3 = [self code] == 110;
     }
 
     else
@@ -57,26 +57,26 @@ LABEL_11:
 
 - (id)wl_encodableError
 {
-  v2 = [a1 userInfo];
-  v3 = [v2 count];
+  userInfo = [self userInfo];
+  v3 = [userInfo count];
 
   if (v3)
   {
     v4 = MEMORY[0x277CCA9B8];
-    v5 = [a1 userInfo];
-    v6 = [v4 _wl_encodableDictionaryFromDictionary:v5];
+    userInfo2 = [self userInfo];
+    v6 = [v4 _wl_encodableDictionaryFromDictionary:userInfo2];
 
     v7 = MEMORY[0x277CCA9B8];
-    v8 = [a1 domain];
-    v9 = [v7 errorWithDomain:v8 code:objc_msgSend(a1 userInfo:{"code"), v6}];
+    domain = [self domain];
+    selfCopy = [v7 errorWithDomain:domain code:objc_msgSend(self userInfo:{"code"), v6}];
   }
 
   else
   {
-    v9 = a1;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 + (id)wl_encodableErrorSupportedClasses
@@ -97,36 +97,36 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 wl_encodableError];
+    wl_encodableError = [v4 wl_encodableError];
 LABEL_11:
-    v6 = v5;
+    v6 = wl_encodableError;
     goto LABEL_12;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 _wl_encodableArrayFromArray:v4];
+    wl_encodableError = [self _wl_encodableArrayFromArray:v4];
     goto LABEL_11;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 _wl_encodableSetFromSet:v4];
+    wl_encodableError = [self _wl_encodableSetFromSet:v4];
     goto LABEL_11;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a1 _wl_encodableDictionaryFromDictionary:v4];
+    wl_encodableError = [self _wl_encodableDictionaryFromDictionary:v4];
     goto LABEL_11;
   }
 
   if ([MEMORY[0x277CCA9B8] _wl_objectIsKindOfNonCollectionPlistClass:v4])
   {
-    v5 = v4;
+    wl_encodableError = v4;
     goto LABEL_11;
   }
 
@@ -160,7 +160,7 @@ LABEL_12:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 _wl_encodableObjectFromObject:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [self _wl_encodableObjectFromObject:{*(*(&v14 + 1) + 8 * i), v14}];
         if (v11)
         {
           [v5 addObject:v11];
@@ -202,7 +202,7 @@ LABEL_12:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 _wl_encodableObjectFromObject:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [self _wl_encodableObjectFromObject:{*(*(&v14 + 1) + 8 * i), v14}];
         if (v11)
         {
           [v5 addObject:v11];
@@ -229,7 +229,7 @@ LABEL_12:
   v9[1] = 3221225472;
   v9[2] = __61__NSError_WelcomeKit___wl_encodableDictionaryFromDictionary___block_invoke;
   v9[3] = &unk_279EB6488;
-  v11 = a1;
+  selfCopy = self;
   v7 = v6;
   v10 = v7;
   [v5 enumerateKeysAndObjectsUsingBlock:v9];

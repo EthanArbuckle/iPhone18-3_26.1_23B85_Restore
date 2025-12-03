@@ -10,24 +10,24 @@
 
 - (uint64_t)pr_isEditingFocusActive
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20812];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20812];
 
   return v2;
 }
 
 - (uint64_t)pr_areContentsCoveredByModalPresentation
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20813];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20813];
 
   return v2;
 }
 
 - (void)pr_injectedEditingClientSettings
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20814];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20814];
   v3 = objc_opt_class();
   v4 = v2;
   if (v3)
@@ -50,16 +50,16 @@
 
 - (uint64_t)pr_shouldShowEditingReticles
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:20780];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:20780];
 
   return v2;
 }
 
 - (uint64_t)pr_complicationRowMode
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:20781];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:20781];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -107,15 +107,15 @@
 
     v11 = v9;
 
-    v10 = [v11 unsignedIntegerValue];
+    unsignedIntegerValue = [v11 unsignedIntegerValue];
   }
 
   else
   {
-    v10 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v10;
+  return unsignedIntegerValue;
 }
 
 @end

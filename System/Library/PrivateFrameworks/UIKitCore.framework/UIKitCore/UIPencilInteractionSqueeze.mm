@@ -1,24 +1,24 @@
 @interface UIPencilInteractionSqueeze
 - (UIPencilInteractionSqueeze)init;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (uint64_t)_initWithTimestamp:(void *)a3 eventPhase:(double)a4 normalizedForceVelocity:(double)a5 hoverPose:;
+- (uint64_t)_initWithTimestamp:(void *)timestamp eventPhase:(double)phase normalizedForceVelocity:(double)velocity hoverPose:;
 @end
 
 @implementation UIPencilInteractionSqueeze
 
-- (uint64_t)_initWithTimestamp:(void *)a3 eventPhase:(double)a4 normalizedForceVelocity:(double)a5 hoverPose:
+- (uint64_t)_initWithTimestamp:(void *)timestamp eventPhase:(double)phase normalizedForceVelocity:(double)velocity hoverPose:
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = UIPencilInteractionSqueeze;
   v9 = objc_msgSendSuper2(&v12, sel_init);
   v10 = v9;
@@ -27,12 +27,12 @@
     return v10;
   }
 
-  *(v9 + 2) = a4;
+  *(v9 + 2) = phase;
   if ((a2 - 1) < 4)
   {
     v9[3] = (a2 - 1);
-    *(v9 + 1) = a5;
-    objc_storeStrong(v9 + 4, a3);
+    *(v9 + 1) = velocity;
+    objc_storeStrong(v9 + 4, timestamp);
     return v10;
   }
 
@@ -53,18 +53,18 @@
 
 - (UIPencilInteractionSqueeze)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UIPencilInteraction.m" lineNumber:496 description:{@"%s: init is not allowed on %@", "-[UIPencilInteractionSqueeze init]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIPencilInteraction.m" lineNumber:496 description:{@"%s: init is not allowed on %@", "-[UIPencilInteractionSqueeze init]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(UIPencilInteractionSqueeze *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(UIPencilInteractionSqueeze *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -91,46 +91,46 @@
   hoverPose = self->_hoverPose;
   if (hoverPose)
   {
-    v9 = [(UIPencilHoverPose *)hoverPose succinctDescription];
+    succinctDescription = [(UIPencilHoverPose *)hoverPose succinctDescription];
   }
 
   else
   {
-    v9 = @"(nil)";
+    succinctDescription = @"(nil)";
   }
 
-  v10 = [v4 appendObject:v9 withName:@"hoverPose"];
+  v10 = [v4 appendObject:succinctDescription withName:@"hoverPose"];
 
   return v4;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UIPencilInteractionSqueeze *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UIPencilInteractionSqueeze *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UIPencilInteractionSqueeze *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UIPencilInteractionSqueeze *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
-  [v5 setActiveMultilinePrefix:a3];
+  [v5 setActiveMultilinePrefix:prefix];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __68__UIPencilInteractionSqueeze_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_1E70F35B8;
   v6 = v5;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v7 = [v6 modifyBody:v10];
   v8 = v6;
 

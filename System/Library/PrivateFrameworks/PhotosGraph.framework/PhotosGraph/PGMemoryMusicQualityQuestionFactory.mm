@@ -1,14 +1,14 @@
 @interface PGMemoryMusicQualityQuestionFactory
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4;
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block;
 @end
 
 @implementation PGMemoryMusicQualityQuestionFactory
 
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = _Block_copy(v6);
+  blockCopy = block;
+  v7 = _Block_copy(blockCopy);
   v42 = 0;
   v43 = &v42;
   v44 = 0x2020000000;
@@ -32,7 +32,7 @@
         if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
 LABEL_17:
-          v19 = MEMORY[0x277CBEBF8];
+          allObjects = MEMORY[0x277CBEBF8];
           goto LABEL_29;
         }
 
@@ -47,7 +47,7 @@ LABEL_11:
       }
     }
 
-    if (!a3)
+    if (!limit)
     {
       v11 = CFAbsoluteTimeGetCurrent();
       if (v11 - v39[3] < 0.01)
@@ -74,14 +74,14 @@ LABEL_11:
     }
   }
 
-  else if (!a3)
+  else if (!limit)
   {
     goto LABEL_17;
   }
 
   v13 = [MEMORY[0x277CBEB58] set];
-  v14 = [MEMORY[0x277D22C80] ignoreProgress];
-  v15 = [PGMusicCatalogMonitor checkMusicCatalogEligibilityWithProgressReporter:v14];
+  ignoreProgress = [MEMORY[0x277D22C80] ignoreProgress];
+  v15 = [PGMusicCatalogMonitor checkMusicCatalogEligibilityWithProgressReporter:ignoreProgress];
 
   v16 = PLStoryGetLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
@@ -93,21 +93,21 @@ LABEL_11:
 
   if (v15)
   {
-    v17 = [(PGSurveyQuestionFactory *)self workingContext];
-    v18 = [v17 photoLibrary];
+    workingContext = [(PGSurveyQuestionFactory *)self workingContext];
+    photoLibrary = [workingContext photoLibrary];
     v25 = MEMORY[0x277D85DD0];
     v26 = 3221225472;
     v27 = __80__PGMemoryMusicQualityQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke;
     v28 = &unk_2788888F8;
     v36 = v15;
-    v29 = self;
+    selfCopy = self;
     v30 = v13;
-    v34 = a3;
+    limitCopy = limit;
     v31 = v7;
     v32 = &v38;
     v35 = 0x3F847AE147AE147BLL;
     v33 = &v42;
-    [PGMemoryMusicQuestionUtils enumerateMemoryMusicSuggestionsInPhotoLibrary:v18 block:&v25];
+    [PGMemoryMusicQuestionUtils enumerateMemoryMusicSuggestionsInPhotoLibrary:photoLibrary block:&v25];
   }
 
   else
@@ -131,12 +131,12 @@ LABEL_11:
       _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
     }
 
-    v19 = MEMORY[0x277CBEBF8];
+    allObjects = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v19 = [v13 allObjects];
+    allObjects = [v13 allObjects];
   }
 
 LABEL_29:
@@ -145,7 +145,7 @@ LABEL_29:
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v19;
+  return allObjects;
 }
 
 void __80__PGMemoryMusicQualityQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)

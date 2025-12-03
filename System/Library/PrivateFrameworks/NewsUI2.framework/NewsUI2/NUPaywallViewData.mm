@@ -1,11 +1,11 @@
 @interface NUPaywallViewData
 - (NUPaywallViewData)init;
-- (NUPaywallViewData)initWithViewSessionID:(id)a3 viewType:(id)a4 viewAction:(id)a5;
+- (NUPaywallViewData)initWithViewSessionID:(id)d viewType:(id)type viewAction:(id)action;
 @end
 
 @implementation NUPaywallViewData
 
-- (NUPaywallViewData)initWithViewSessionID:(id)a3 viewType:(id)a4 viewAction:(id)a5
+- (NUPaywallViewData)initWithViewSessionID:(id)d viewType:(id)type viewAction:(id)action
 {
   v5 = sub_219BF5414();
   v7 = v6;

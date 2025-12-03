@@ -1,39 +1,39 @@
 @interface VUICollectionViewFeaturedView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (VUICollectionViewFeaturedView)initWithFrame:(CGRect)a3;
-- (void)setGradientView:(id)a3;
-- (void)setImageView:(id)a3;
-- (void)setOverlayView:(id)a3;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (VUICollectionViewFeaturedView)initWithFrame:(CGRect)frame;
+- (void)setGradientView:(id)view;
+- (void)setImageView:(id)view;
+- (void)setOverlayView:(id)view;
 @end
 
 @implementation VUICollectionViewFeaturedView
 
-- (VUICollectionViewFeaturedView)initWithFrame:(CGRect)a3
+- (VUICollectionViewFeaturedView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = VUICollectionViewFeaturedView;
-  return [(VUICollectionViewFeaturedView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(VUICollectionViewFeaturedView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (void)setImageView:(id)a3
+- (void)setImageView:(id)view
 {
-  v5 = a3;
-  [(VUICollectionViewFeaturedView *)self vui_addSubview:v5 oldView:self->_imageView];
-  if (self->_imageView != v5)
+  viewCopy = view;
+  [(VUICollectionViewFeaturedView *)self vui_addSubview:viewCopy oldView:self->_imageView];
+  if (self->_imageView != viewCopy)
   {
-    objc_storeStrong(&self->_imageView, a3);
+    objc_storeStrong(&self->_imageView, view);
   }
 
   [(VUICollectionViewFeaturedView *)self vui_setNeedsLayout];
 }
 
-- (void)setGradientView:(id)a3
+- (void)setGradientView:(id)view
 {
-  v5 = a3;
-  [(VUICollectionViewFeaturedView *)self vui_addSubview:v5 oldView:self->_gradientView];
-  if (self->_gradientView != v5)
+  viewCopy = view;
+  [(VUICollectionViewFeaturedView *)self vui_addSubview:viewCopy oldView:self->_gradientView];
+  if (self->_gradientView != viewCopy)
   {
-    objc_storeStrong(&self->_gradientView, a3);
+    objc_storeStrong(&self->_gradientView, view);
     if (self->_gradientView)
     {
       if (self->_overlayView)
@@ -46,26 +46,26 @@
   [(VUICollectionViewFeaturedView *)self vui_setNeedsLayout];
 }
 
-- (void)setOverlayView:(id)a3
+- (void)setOverlayView:(id)view
 {
-  v5 = a3;
-  [(VUICollectionViewFeaturedView *)self vui_addSubview:v5 oldView:self->_overlayView];
-  if (self->_overlayView != v5)
+  viewCopy = view;
+  [(VUICollectionViewFeaturedView *)self vui_addSubview:viewCopy oldView:self->_overlayView];
+  if (self->_overlayView != viewCopy)
   {
-    objc_storeStrong(&self->_overlayView, a3);
+    objc_storeStrong(&self->_overlayView, view);
   }
 
   [(VUICollectionViewFeaturedView *)self vui_setNeedsLayout];
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
   v21.receiver = self;
   v21.super_class = VUICollectionViewFeaturedView;
   [VUICollectionViewFeaturedView vui_layoutSubviews:sel_vui_layoutSubviews_computationOnly_ computationOnly:?];
   v7 = v6;
   v9 = v8;
-  if (!a4)
+  if (!only)
   {
     [(VUICollectionViewFeaturedView *)self bounds];
     v11 = v10;

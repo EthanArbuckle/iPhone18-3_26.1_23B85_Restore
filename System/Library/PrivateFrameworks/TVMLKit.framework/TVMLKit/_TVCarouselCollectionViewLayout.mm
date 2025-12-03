@@ -1,6 +1,6 @@
 @interface _TVCarouselCollectionViewLayout
 - (CGSize)collectionViewContentSize;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
 - (int64_t)_expectedNumberOfCells;
 - (void)prepareLayout;
 @end
@@ -9,8 +9,8 @@
 
 - (void)prepareLayout
 {
-  v3 = [(_TVCarouselCollectionViewLayout *)self collectionView];
-  v4 = [v3 numberOfItemsInSection:0];
+  collectionView = [(_TVCarouselCollectionViewLayout *)self collectionView];
+  v4 = [collectionView numberOfItemsInSection:0];
 
   v17 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v4];
   [(UICollectionViewFlowLayout *)self itemSize];
@@ -43,8 +43,8 @@
 
 - (CGSize)collectionViewContentSize
 {
-  v3 = [(_TVCarouselCollectionViewLayout *)self collectionView];
-  v4 = [v3 numberOfItemsInSection:0];
+  collectionView = [(_TVCarouselCollectionViewLayout *)self collectionView];
+  v4 = [collectionView numberOfItemsInSection:0];
 
   [(UICollectionViewFlowLayout *)self itemSize];
   v6 = v5;
@@ -73,12 +73,12 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v22 = *MEMORY[0x277D85DE8];
   v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:0];
   v24.origin.x = x;
@@ -135,8 +135,8 @@
 {
   [(UICollectionViewFlowLayout *)self itemSize];
   v4 = v3;
-  v5 = [(_TVCarouselCollectionViewLayout *)self collectionView];
-  [v5 bounds];
+  collectionView = [(_TVCarouselCollectionViewLayout *)self collectionView];
+  [collectionView bounds];
   if (CGRectGetWidth(v15) > 0.0)
   {
     [(_TVCarouselCollectionViewLayout *)self collectionView];

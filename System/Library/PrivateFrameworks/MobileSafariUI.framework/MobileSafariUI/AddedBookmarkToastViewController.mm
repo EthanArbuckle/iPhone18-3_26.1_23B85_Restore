@@ -1,7 +1,7 @@
 @interface AddedBookmarkToastViewController
-- (AddedBookmarkToastViewController)initWithBookmark:(id)a3 bookmarkCollection:(id)a4 dismissCompletionHandler:(id)a5;
-- (AddedBookmarkToastViewController)initWithCoder:(id)a3;
-- (AddedBookmarkToastViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (AddedBookmarkToastViewController)initWithBookmark:(id)bookmark bookmarkCollection:(id)collection dismissCompletionHandler:(id)handler;
+- (AddedBookmarkToastViewController)initWithCoder:(id)coder;
+- (AddedBookmarkToastViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (NSArray)suggestedFolders;
 - (TabGroupProvider)tabGroupProvider;
 - (UIEdgeInsets)toastObscuredEdgeInsets;
@@ -10,25 +10,25 @@
 - (void)cancelDismissTimer;
 - (void)loadView;
 - (void)presentEditBookmarkController;
-- (void)setDismissTimer:(id)a3;
-- (void)setSuggestedFolders:(id)a3;
-- (void)setToastObscuredEdgeInsets:(UIEdgeInsets)a3;
-- (void)setToastPlacement:(int64_t)a3;
+- (void)setDismissTimer:(id)timer;
+- (void)setSuggestedFolders:(id)folders;
+- (void)setToastObscuredEdgeInsets:(UIEdgeInsets)insets;
+- (void)setToastPlacement:(int64_t)placement;
 - (void)startDismissTimer;
 - (void)viewDidLoad;
 @end
 
 @implementation AddedBookmarkToastViewController
 
-- (AddedBookmarkToastViewController)initWithBookmark:(id)a3 bookmarkCollection:(id)a4 dismissCompletionHandler:(id)a5
+- (AddedBookmarkToastViewController)initWithBookmark:(id)bookmark bookmarkCollection:(id)collection dismissCompletionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
-  return sub_215A54FD4(a3, a4, sub_215A5769C, v8);
+  return sub_215A54FD4(bookmark, collection, sub_215A5769C, v8);
 }
 
-- (AddedBookmarkToastViewController)initWithCoder:(id)a3
+- (AddedBookmarkToastViewController)initWithCoder:(id)coder
 {
   *(self + OBJC_IVAR___AddedBookmarkToastViewController_dismissTimer) = 0;
   *(self + OBJC_IVAR___AddedBookmarkToastViewController_suggestedFolders) = MEMORY[0x277D84F90];
@@ -56,11 +56,11 @@
   return v3;
 }
 
-- (void)setDismissTimer:(id)a3
+- (void)setDismissTimer:(id)timer
 {
   v4 = *(self + OBJC_IVAR___AddedBookmarkToastViewController_dismissTimer);
-  *(self + OBJC_IVAR___AddedBookmarkToastViewController_dismissTimer) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___AddedBookmarkToastViewController_dismissTimer) = timer;
+  timerCopy = timer;
 }
 
 - (NSArray)suggestedFolders
@@ -73,7 +73,7 @@
   return v2;
 }
 
-- (void)setSuggestedFolders:(id)a3
+- (void)setSuggestedFolders:(id)folders
 {
   sub_2159F7DA8(0, &unk_2811A28A0);
   v4 = sub_215A705E0();
@@ -105,20 +105,20 @@
   return result;
 }
 
-- (void)setToastObscuredEdgeInsets:(UIEdgeInsets)a3
+- (void)setToastObscuredEdgeInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = self;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  selfCopy = self;
   AddedBookmarkToastViewController.toastObscuredEdgeInsets.setter(top, left, bottom, right);
 }
 
 - (int64_t)toastPlacement
 {
-  v2 = self;
-  result = [(AddedBookmarkToastViewController *)v2 view];
+  selfCopy = self;
+  result = [(AddedBookmarkToastViewController *)selfCopy view];
   if (result)
   {
     v4 = result;
@@ -137,15 +137,15 @@
   return result;
 }
 
-- (void)setToastPlacement:(int64_t)a3
+- (void)setToastPlacement:(int64_t)placement
 {
-  v4 = self;
-  AddedBookmarkToastViewController.toastPlacement.setter(a3);
+  selfCopy = self;
+  AddedBookmarkToastViewController.toastPlacement.setter(placement);
 }
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   AddedBookmarkToastViewController.loadView()();
 }
 
@@ -155,7 +155,7 @@
   MEMORY[0x28223BE20](v3);
   v5.receiver = self;
   v5.super_class = AddedBookmarkToastViewController;
-  v4 = self;
+  selfCopy = self;
   [(AddedBookmarkToastViewController *)&v5 viewDidLoad];
   sub_215A70970();
   sub_215A700B0();
@@ -164,26 +164,26 @@
 
 - (void)startDismissTimer
 {
-  v2 = self;
+  selfCopy = self;
   sub_215A563F8();
 }
 
 - (void)cancelDismissTimer
 {
-  v3 = self;
-  v2 = [(AddedBookmarkToastViewController *)v3 dismissTimer];
-  [(NSTimer *)v2 invalidate];
+  selfCopy = self;
+  dismissTimer = [(AddedBookmarkToastViewController *)selfCopy dismissTimer];
+  [(NSTimer *)dismissTimer invalidate];
 
-  [(AddedBookmarkToastViewController *)v3 setDismissTimer:0];
+  [(AddedBookmarkToastViewController *)selfCopy setDismissTimer:0];
 }
 
 - (void)presentEditBookmarkController
 {
-  v2 = self;
+  selfCopy = self;
   sub_215A56658();
 }
 
-- (AddedBookmarkToastViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (AddedBookmarkToastViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

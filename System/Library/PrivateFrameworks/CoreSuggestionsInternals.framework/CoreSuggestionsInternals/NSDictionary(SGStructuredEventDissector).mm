@@ -8,7 +8,7 @@
 - (uint64_t)sg_isEmptySchemaObject
 {
   v15 = *MEMORY[0x277D85DE8];
-  [a1 sg_deepCopyWithoutEmptySchemaObjects];
+  [self sg_deepCopyWithoutEmptySchemaObjects];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -61,13 +61,13 @@ LABEL_13:
 - (id)sg_deepCopyWithoutEmptySchemaObjects
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [a1 mutableCopy];
+  v2 = [self mutableCopy];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -78,11 +78,11 @@ LABEL_13:
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v3 objectForKeyedSubscript:{v8, v13}];
+        v9 = [selfCopy objectForKeyedSubscript:{v8, v13}];
         if ((objc_opt_respondsToSelector() & 1) != 0 && [v9 sg_isEmptySchemaObject])
         {
           [v2 setObject:0 forKeyedSubscript:v8];
@@ -90,12 +90,12 @@ LABEL_13:
 
         else if (objc_opt_respondsToSelector())
         {
-          v10 = [v9 sg_deepCopyWithoutEmptySchemaObjects];
-          [v2 setObject:v10 forKeyedSubscript:v8];
+          sg_deepCopyWithoutEmptySchemaObjects = [v9 sg_deepCopyWithoutEmptySchemaObjects];
+          [v2 setObject:sg_deepCopyWithoutEmptySchemaObjects forKeyedSubscript:v8];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);

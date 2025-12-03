@@ -1,12 +1,12 @@
 @interface AAFXPCSession
-- (AAFXPCSession)initWithRemoteServiceConfig:(id)a3 delegate:(id)a4;
+- (AAFXPCSession)initWithRemoteServiceConfig:(id)config delegate:(id)delegate;
 - (AAFXPCSessionDelegate)delegate;
 - (NSXPCConnection)connection;
 - (id)_unsafe_createNewConnection;
 - (id)remoteServiceProxy;
-- (id)remoteServiceProxyWithErrorHandler:(id)a3;
+- (id)remoteServiceProxyWithErrorHandler:(id)handler;
 - (id)syncRemoteServiceProxy;
-- (id)syncRemoteServiceProxyWithErrorHandler:(id)a3;
+- (id)syncRemoteServiceProxyWithErrorHandler:(id)handler;
 - (void)_unsafe_destroyXPCConnection;
 - (void)activate;
 - (void)invalidate;
@@ -41,10 +41,10 @@ id __27__AAFXPCSession_connection__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (AAFXPCSession)initWithRemoteServiceConfig:(id)a3 delegate:(id)a4
+- (AAFXPCSession)initWithRemoteServiceConfig:(id)config delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  configCopy = config;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = AAFXPCSession;
   v9 = [(AAFXPCSession *)&v13 init];
@@ -54,8 +54,8 @@ id __27__AAFXPCSession_connection__block_invoke(uint64_t a1)
     identifier = v9->_identifier;
     v9->_identifier = v10;
 
-    objc_storeStrong(&v9->_remoteServiceConfig, a3);
-    objc_storeWeak(&v9->_delegate, v8);
+    objc_storeStrong(&v9->_remoteServiceConfig, config);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     v9->_connectionLock._os_unfair_lock_opaque = 0;
   }
 
@@ -64,8 +64,8 @@ id __27__AAFXPCSession_connection__block_invoke(uint64_t a1)
 
 - (id)remoteServiceProxy
 {
-  v2 = [(AAFXPCSession *)self connection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global_2];
+  connection = [(AAFXPCSession *)self connection];
+  v3 = [connection remoteObjectProxyWithErrorHandler:&__block_literal_global_2];
 
   return v3;
 }
@@ -80,19 +80,19 @@ void __35__AAFXPCSession_remoteServiceProxy__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (id)remoteServiceProxyWithErrorHandler:(id)a3
+- (id)remoteServiceProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(AAFXPCSession *)self connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  connection = [(AAFXPCSession *)self connection];
+  v6 = [connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
 - (id)syncRemoteServiceProxy
 {
-  v2 = [(AAFXPCSession *)self connection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_2];
+  connection = [(AAFXPCSession *)self connection];
+  v3 = [connection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_2];
 
   return v3;
 }
@@ -107,11 +107,11 @@ void __39__AAFXPCSession_syncRemoteServiceProxy__block_invoke(uint64_t a1, void 
   }
 }
 
-- (id)syncRemoteServiceProxyWithErrorHandler:(id)a3
+- (id)syncRemoteServiceProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(AAFXPCSession *)self connection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  connection = [(AAFXPCSession *)self connection];
+  v6 = [connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
@@ -124,8 +124,8 @@ void __39__AAFXPCSession_syncRemoteServiceProxy__block_invoke(uint64_t a1, void 
     [(AAFXPCSession *)v3 activate];
   }
 
-  v4 = [(AAFXPCSession *)self connection];
-  [v4 activate];
+  connection = [(AAFXPCSession *)self connection];
+  [connection activate];
 }
 
 - (void)resume
@@ -136,8 +136,8 @@ void __39__AAFXPCSession_syncRemoteServiceProxy__block_invoke(uint64_t a1, void 
     [(AAFXPCSession *)v3 resume];
   }
 
-  v4 = [(AAFXPCSession *)self connection];
-  [v4 resume];
+  connection = [(AAFXPCSession *)self connection];
+  [connection resume];
 }
 
 - (void)suspend
@@ -174,20 +174,20 @@ void __39__AAFXPCSession_syncRemoteServiceProxy__block_invoke(uint64_t a1, void 
 - (id)_unsafe_createNewConnection
 {
   v3 = objc_alloc(MEMORY[0x1E696B0B8]);
-  v4 = [(AAFXPCSession *)self remoteServiceConfig];
-  v5 = [v4 serviceName];
-  v6 = [(AAFXPCSession *)self remoteServiceConfig];
-  v7 = [v3 initWithMachServiceName:v5 options:{objc_msgSend(v6, "options")}];
+  remoteServiceConfig = [(AAFXPCSession *)self remoteServiceConfig];
+  serviceName = [remoteServiceConfig serviceName];
+  remoteServiceConfig2 = [(AAFXPCSession *)self remoteServiceConfig];
+  v7 = [v3 initWithMachServiceName:serviceName options:{objc_msgSend(remoteServiceConfig2, "options")}];
   connection = self->_connection;
   self->_connection = v7;
 
-  v9 = [(AAFXPCSessionConfig *)self->_remoteServiceConfig exportedProtocol];
+  exportedProtocol = [(AAFXPCSessionConfig *)self->_remoteServiceConfig exportedProtocol];
 
-  if (v9)
+  if (exportedProtocol)
   {
     v10 = MEMORY[0x1E696B0D0];
-    v11 = [(AAFXPCSessionConfig *)self->_remoteServiceConfig exportedProtocol];
-    v12 = [v10 interfaceWithProtocol:v11];
+    exportedProtocol2 = [(AAFXPCSessionConfig *)self->_remoteServiceConfig exportedProtocol];
+    v12 = [v10 interfaceWithProtocol:exportedProtocol2];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v14 = objc_opt_respondsToSelector();
@@ -205,14 +205,14 @@ void __39__AAFXPCSession_syncRemoteServiceProxy__block_invoke(uint64_t a1, void 
     if (v17)
     {
       v18 = objc_loadWeakRetained(&self->_delegate);
-      v19 = [v18 exportedObject];
-      [(NSXPCConnection *)self->_connection setExportedObject:v19];
+      exportedObject = [v18 exportedObject];
+      [(NSXPCConnection *)self->_connection setExportedObject:exportedObject];
     }
   }
 
   v20 = MEMORY[0x1E696B0D0];
-  v21 = [(AAFXPCSessionConfig *)self->_remoteServiceConfig remoteProtocol];
-  v22 = [v20 interfaceWithProtocol:v21];
+  remoteProtocol = [(AAFXPCSessionConfig *)self->_remoteServiceConfig remoteProtocol];
+  v22 = [v20 interfaceWithProtocol:remoteProtocol];
 
   v23 = objc_loadWeakRetained(&self->_delegate);
   v24 = objc_opt_respondsToSelector();

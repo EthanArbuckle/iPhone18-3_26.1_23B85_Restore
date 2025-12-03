@@ -1,35 +1,35 @@
 @interface TPPhonePad
-+ (BOOL)launchFieldTestIfNeeded:(id)a3;
-+ (BOOL)shouldStringAutoDial:(id)a3 givenLastChar:(char)a4;
++ (BOOL)launchFieldTestIfNeeded:(id)needed;
++ (BOOL)shouldStringAutoDial:(id)dial givenLastChar:(char)char;
 + (void)_delayedDeactivate;
 - (BOOL)cancelTouchTracking;
 - (CGPoint)_keypadOrigin;
-- (CGRect)_rectForKey:(unint64_t)a3;
-- (CGRect)_updateRect:(CGRect)result withScale:(double)a4;
-- (TPPhonePad)initWithFrame:(CGRect)a3;
-- (id)_buttonForKeyAtIndex:(unint64_t)a3;
-- (id)_imageByCroppingImage:(id)a3 toRect:(CGRect)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (int)_keyForPoint:(CGPoint)a3;
-- (void)_activateSounds:(BOOL)a3;
+- (CGRect)_rectForKey:(unint64_t)key;
+- (CGRect)_updateRect:(CGRect)result withScale:(double)scale;
+- (TPPhonePad)initWithFrame:(CGRect)frame;
+- (id)_buttonForKeyAtIndex:(unint64_t)index;
+- (id)_imageByCroppingImage:(id)image toRect:(CGRect)rect;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (int)_keyForPoint:(CGPoint)point;
+- (void)_activateSounds:(BOOL)sounds;
 - (void)_appResumed;
-- (void)_handleKey:(id)a3 forUIEvent:(id)a4;
-- (void)_handleKeyPressAndHoldForKey:(int64_t)a3;
-- (void)_notifySoundCompletionIfNecessary:(unsigned int)a3;
-- (void)_playSoundForKey:(unint64_t)a3;
-- (void)_stopAllSoundsForcingCallbacks:(BOOL)a3;
-- (void)_stopSoundForKey:(unint64_t)a3;
+- (void)_handleKey:(id)key forUIEvent:(id)event;
+- (void)_handleKeyPressAndHoldForKey:(int64_t)key;
+- (void)_notifySoundCompletionIfNecessary:(unsigned int)necessary;
+- (void)_playSoundForKey:(unint64_t)key;
+- (void)_stopAllSoundsForcingCallbacks:(BOOL)callbacks;
+- (void)_stopSoundForKey:(unint64_t)key;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)highlightKeyAtIndex:(int64_t)a3;
-- (void)movedFromWindow:(id)a3;
-- (void)movedToWindow:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)highlightKeyAtIndex:(int64_t)index;
+- (void)movedFromWindow:(id)window;
+- (void)movedToWindow:(id)window;
 - (void)performTapActionCancelForHighlightedKey;
 - (void)performTapActionDownForHighlightedKey;
 - (void)performTapActionEndForHighlightedKey;
 - (void)removeFromSuperview;
-- (void)setButton:(id)a3 forKeyAtIndex:(unint64_t)a4;
-- (void)setDelegate:(id)a3;
+- (void)setButton:(id)button forKeyAtIndex:(unint64_t)index;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation TPPhonePad
@@ -113,33 +113,33 @@
   }
 }
 
-- (void)highlightKeyAtIndex:(int64_t)a3
+- (void)highlightKeyAtIndex:(int64_t)index
 {
   v9 = *MEMORY[0x1E69E9840];
   v5 = TPDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = a3;
+    indexCopy = index;
     _os_log_impl(&dword_1B4894000, v5, OS_LOG_TYPE_DEFAULT, "highlightKeyAtIndex: %ld", &v7, 0xCu);
   }
 
-  self->_highlightKey = a3;
-  [(TPPhonePad *)self setNeedsDisplayForKey:a3];
+  self->_highlightKey = index;
+  [(TPPhonePad *)self setNeedsDisplayForKey:index];
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)shouldStringAutoDial:(id)a3 givenLastChar:(char)a4
++ (BOOL)shouldStringAutoDial:(id)dial givenLastChar:(char)char
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v4 != 35)
+  charCopy = char;
+  dialCopy = dial;
+  v6 = dialCopy;
+  if (charCopy != 35)
   {
     goto LABEL_24;
   }
 
-  v7 = [v5 rangeOfString:@"**0" options:8];
+  v7 = [dialCopy rangeOfString:@"**0" options:8];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     if ([v6 isEqualToString:@"*#06#"])
@@ -198,9 +198,9 @@ LABEL_25:
   return v9;
 }
 
-+ (BOOL)launchFieldTestIfNeeded:(id)a3
++ (BOOL)launchFieldTestIfNeeded:(id)needed
 {
-  v3 = [a3 isEqualToString:@"*3001#12345#*"];
+  v3 = [needed isEqualToString:@"*3001#12345#*"];
   if (v3)
   {
     [*MEMORY[0x1E69DDA98] launchApplicationWithIdentifier:@"com.apple.fieldtest" suspended:0];
@@ -209,11 +209,11 @@ LABEL_25:
   return v3;
 }
 
-- (TPPhonePad)initWithFrame:(CGRect)a3
+- (TPPhonePad)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TPPhonePad;
-  v3 = [(TPPhonePad *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TPPhonePad *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -236,8 +236,8 @@ LABEL_25:
 - (void)dealloc
 {
   [(TPPhonePad *)self _activateSounds:0];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   keyToButtonMap = self->_keyToButtonMap;
   if (keyToButtonMap)
@@ -277,12 +277,12 @@ LABEL_25:
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_activateSounds:(BOOL)a3
+- (void)_activateSounds:(BOOL)sounds
 {
-  v3 = a3;
+  soundsCopy = sounds;
   v15 = *MEMORY[0x1E69E9840];
   v5 = (*(self + 556) >> 1) & 1;
-  if (a3 && -[TPPhonePad _isInAWindow](self, "_isInAWindow") && (v6 = MEMORY[0x1E69DDA98], ([*MEMORY[0x1E69DDA98] isSuspended] & 1) == 0))
+  if (sounds && -[TPPhonePad _isInAWindow](self, "_isInAWindow") && (v6 = MEMORY[0x1E69DDA98], ([*MEMORY[0x1E69DDA98] isSuspended] & 1) == 0))
   {
     v7 = [*v6 isSuspendedEventsOnly] ^ 1;
   }
@@ -294,7 +294,7 @@ LABEL_25:
 
   if (v7 != v5)
   {
-    if (v3)
+    if (soundsCopy)
     {
       v8 = __SystemSoundActivationCount + 1;
     }
@@ -305,7 +305,7 @@ LABEL_25:
     }
 
     __SystemSoundActivationCount = v8;
-    if (v3 && v8 == 1)
+    if (soundsCopy && v8 == 1)
     {
       if ((__PendingDeactivate & 1) == 0)
       {
@@ -321,13 +321,13 @@ LABEL_25:
       }
     }
 
-    else if (!v3 && !v8)
+    else if (!soundsCopy && !v8)
     {
       [objc_opt_class() performSelector:sel__delayedDeactivate withObject:0 afterDelay:0.0];
       __PendingDeactivate = 1;
     }
 
-    if (v3)
+    if (soundsCopy)
     {
       v10 = 2;
     }
@@ -360,32 +360,32 @@ LABEL_25:
   }
 }
 
-- (void)movedFromWindow:(id)a3
+- (void)movedFromWindow:(id)window
 {
   v4.receiver = self;
   v4.super_class = TPPhonePad;
-  [(TPPhonePad *)&v4 movedFromWindow:a3];
+  [(TPPhonePad *)&v4 movedFromWindow:window];
   [(TPPhonePad *)self _activateSounds:0];
 }
 
-- (void)movedToWindow:(id)a3
+- (void)movedToWindow:(id)window
 {
   v4.receiver = self;
   v4.super_class = TPPhonePad;
-  [(TPPhonePad *)&v4 movedToWindow:a3];
+  [(TPPhonePad *)&v4 movedToWindow:window];
   if (self->_playsSounds)
   {
     [(TPPhonePad *)self _activateSounds:1];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = a3;
-  if (self->_delegate != v5)
+  delegateCopy = delegate;
+  if (self->_delegate != delegateCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_delegate, a3);
+    v9 = delegateCopy;
+    objc_storeStrong(&self->_delegate, delegate);
     delegate = self->_delegate;
     if (objc_opt_respondsToSelector())
     {
@@ -400,40 +400,40 @@ LABEL_25:
 
     *(self + 556) = *(self + 556) & 0xFE | v8 & 1;
     self->_incompleteSounds = 0;
-    v5 = v9;
+    delegateCopy = v9;
   }
 }
 
-- (void)setButton:(id)a3 forKeyAtIndex:(unint64_t)a4
+- (void)setButton:(id)button forKeyAtIndex:(unint64_t)index
 {
-  v6 = a3;
+  buttonCopy = button;
   keyToButtonMap = self->_keyToButtonMap;
-  value = v6;
-  if (keyToButtonMap || (keyToButtonMap = CFDictionaryCreateMutable(0, 0, 0, MEMORY[0x1E695E9E8]), v6 = value, (self->_keyToButtonMap = keyToButtonMap) != 0))
+  value = buttonCopy;
+  if (keyToButtonMap || (keyToButtonMap = CFDictionaryCreateMutable(0, 0, 0, MEMORY[0x1E695E9E8]), buttonCopy = value, (self->_keyToButtonMap = keyToButtonMap) != 0))
   {
-    if (v6)
+    if (buttonCopy)
     {
-      [(TPPhonePad *)self _rectForKey:a4];
+      [(TPPhonePad *)self _rectForKey:index];
       [value setFrame:?];
       [(TPPhonePad *)self addSubview:value];
-      CFDictionarySetValue(self->_keyToButtonMap, a4, value);
+      CFDictionarySetValue(self->_keyToButtonMap, index, value);
     }
 
     else
     {
-      CFDictionaryRemoveValue(keyToButtonMap, a4);
+      CFDictionaryRemoveValue(keyToButtonMap, index);
     }
   }
 
   MEMORY[0x1EEE66BE0]();
 }
 
-- (id)_buttonForKeyAtIndex:(unint64_t)a3
+- (id)_buttonForKeyAtIndex:(unint64_t)index
 {
   keyToButtonMap = self->_keyToButtonMap;
   if (keyToButtonMap)
   {
-    keyToButtonMap = CFDictionaryGetValue(keyToButtonMap, a3);
+    keyToButtonMap = CFDictionaryGetValue(keyToButtonMap, index);
     v3 = vars8;
   }
 
@@ -442,8 +442,8 @@ LABEL_25:
 
 - (CGPoint)_keypadOrigin
 {
-  v3 = [(TPPhonePad *)self _keypadImage];
-  [v3 size];
+  _keypadImage = [(TPPhonePad *)self _keypadImage];
+  [_keypadImage size];
   v5 = v4;
   v7 = v6;
 
@@ -460,65 +460,65 @@ LABEL_25:
   return result;
 }
 
-- (CGRect)_updateRect:(CGRect)result withScale:(double)a4
+- (CGRect)_updateRect:(CGRect)result withScale:(double)scale
 {
-  if (a4 != 1.0 && a4 != 0.0)
+  if (scale != 1.0 && scale != 0.0)
   {
-    result.origin.x = result.origin.x * a4;
-    result.origin.y = result.origin.y * a4;
+    result.origin.x = result.origin.x * scale;
+    result.origin.y = result.origin.y * scale;
     if (result.size.width > 1.0)
     {
-      result.size.width = result.size.width * a4;
+      result.size.width = result.size.width * scale;
     }
 
     if (result.size.height > 1.0)
     {
-      result.size.height = result.size.height * a4;
+      result.size.height = result.size.height * scale;
     }
   }
 
   return result;
 }
 
-- (id)_imageByCroppingImage:(id)a3 toRect:(CGRect)a4
+- (id)_imageByCroppingImage:(id)image toRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  [v9 scale];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  imageCopy = image;
+  [imageCopy scale];
   [(TPPhonePad *)self _updateRect:x withScale:y, width, height, v10];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [v9 CGImage];
+  cGImage = [imageCopy CGImage];
 
   v24.origin.x = v12;
   v24.origin.y = v14;
   v24.size.width = v16;
   v24.size.height = v18;
-  v20 = CGImageCreateWithImageInRect(v19, v24);
+  v20 = CGImageCreateWithImageInRect(cGImage, v24);
   v21 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v20];
   CGImageRelease(v20);
 
   return v21;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(TPPhonePad *)self bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v41 = [(TPPhonePad *)self _keypadImage];
-  [v41 size];
+  _keypadImage = [(TPPhonePad *)self _keypadImage];
+  [_keypadImage size];
   [(TPPhonePad *)self _keypadOrigin];
   v42 = v17;
   v43 = v16;
@@ -534,7 +534,7 @@ LABEL_25:
   v19 = v18;
   if (v18)
   {
-    [v41 drawAtPoint:17 blendMode:v43 alpha:{v42, 1.0}];
+    [_keypadImage drawAtPoint:17 blendMode:v43 alpha:{v42, 1.0}];
   }
 
   if (self->_downKey < 0)
@@ -578,15 +578,15 @@ LABEL_25:
   if (!CGRectEqualToRect(v46, v48))
   {
 LABEL_9:
-    v28 = [(TPPhonePad *)self _imageByCroppingImage:v41 toRect:x - v43, y - v42, width, height];
-    [v28 drawInRect:17 blendMode:x alpha:{y, width, height, 1.0}];
+    height = [(TPPhonePad *)self _imageByCroppingImage:_keypadImage toRect:x - v43, y - v42, width, height];
+    [height drawInRect:17 blendMode:x alpha:{y, width, height, 1.0}];
   }
 
 LABEL_10:
   if ((self->_downKey & 0x8000000000000000) == 0)
   {
-    v29 = [(TPPhonePad *)self _pressedImage];
-    v30 = [(TPPhonePad *)self _imageByCroppingImage:v29 toRect:v21 - v43, v23 - v42, v25, v27];
+    _pressedImage = [(TPPhonePad *)self _pressedImage];
+    v30 = [(TPPhonePad *)self _imageByCroppingImage:_pressedImage toRect:v21 - v43, v23 - v42, v25, v27];
     [v30 drawInRect:17 blendMode:v21 alpha:{v23, v25, v27, 1.0}];
   }
 
@@ -599,26 +599,26 @@ LABEL_10:
       v36 = v32;
       v37 = v33;
       v38 = v34;
-      v39 = [(TPPhonePad *)self _highlightedImage];
-      v40 = [(TPPhonePad *)self _imageByCroppingImage:v39 toRect:v35 - v43, v36 - v42, v37, v38];
+      _highlightedImage = [(TPPhonePad *)self _highlightedImage];
+      v40 = [(TPPhonePad *)self _imageByCroppingImage:_highlightedImage toRect:v35 - v43, v36 - v42, v37, v38];
       [v40 drawInRect:17 blendMode:v35 alpha:{v36, v37, v38, 1.0}];
     }
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = TPPhonePad;
-  v5 = [(TPPhonePad *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(TPPhonePad *)&v8 hitTest:event withEvent:test.x, test.y];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = self;
+      selfCopy = self;
 
-      v5 = v6;
+      v5 = selfCopy;
     }
   }
 
@@ -648,14 +648,14 @@ LABEL_10:
   return [(TPPhonePad *)&v5 cancelTouchTracking];
 }
 
-- (void)_handleKey:(id)a3 forUIEvent:(id)a4
+- (void)_handleKey:(id)key forUIEvent:(id)event
 {
-  v12 = a3;
-  v6 = [a4 touchesForView:self];
-  v7 = [v6 anyObject];
+  keyCopy = key;
+  v6 = [event touchesForView:self];
+  anyObject = [v6 anyObject];
 
-  v8 = [v7 phase];
-  if (v8 == 3)
+  phase = [anyObject phase];
+  if (phase == 3)
   {
     downKey = self->_downKey;
     if ((downKey & 0x8000000000000000) == 0)
@@ -679,19 +679,19 @@ LABEL_10:
 
       if ((downKey - 9) <= 2)
       {
-        [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__handleKeyPressAndHoldForDownKey_ object:v12];
+        [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__handleKeyPressAndHoldForDownKey_ object:keyCopy];
       }
     }
   }
 
-  else if (!v8)
+  else if (!phase)
   {
     if ((self->_downKey & 0x8000000000000000) == 0)
     {
       [(TPPhonePad *)self setHighlighted:self->_highlightKey >= 0];
     }
 
-    [v7 locationInView:self];
+    [anyObject locationInView:self];
     v9 = [(TPPhonePad *)self _keyForPoint:?];
     self->_downKey = v9;
     if ((v9 & 0x80000000) == 0)
@@ -710,7 +710,7 @@ LABEL_10:
 
         if (self->_delegate)
         {
-          if ((self->_downKey - 9) > 2 || ([(TPPhonePad *)self performSelector:sel__handleKeyPressAndHoldForDownKey_ withObject:v12 afterDelay:1.0], self->_delegate))
+          if ((self->_downKey - 9) > 2 || ([(TPPhonePad *)self performSelector:sel__handleKeyPressAndHoldForDownKey_ withObject:keyCopy afterDelay:1.0], self->_delegate))
           {
             if (objc_opt_respondsToSelector())
             {
@@ -725,11 +725,11 @@ LABEL_10:
   }
 }
 
-- (void)_handleKeyPressAndHoldForKey:(int64_t)a3
+- (void)_handleKeyPressAndHoldForKey:(int64_t)key
 {
-  if ((a3 - 9) <= 2 && self->_delegate)
+  if ((key - 9) <= 2 && self->_delegate)
   {
-    v4 = off_1E7C0C560[a3 - 9];
+    v4 = off_1E7C0C560[key - 9];
     v5 = objc_opt_respondsToSelector();
     delegate = self->_delegate;
     if (v5)
@@ -755,12 +755,12 @@ LABEL_10:
   }
 }
 
-- (int)_keyForPoint:(CGPoint)a3
+- (int)_keyForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(TPPhonePad *)self _keypadImage];
-  [v6 size];
+  y = point.y;
+  x = point.x;
+  _keypadImage = [(TPPhonePad *)self _keypadImage];
+  [_keypadImage size];
   v8 = v7;
 
   [(TPPhonePad *)self _keypadOrigin];
@@ -813,14 +813,14 @@ LABEL_10:
   return 3 * v20 + v14;
 }
 
-- (CGRect)_rectForKey:(unint64_t)a3
+- (CGRect)_rectForKey:(unint64_t)key
 {
   [(TPPhonePad *)self _keypadOrigin];
-  v7 = a3 / 3;
-  v8 = a3 % 3;
+  v7 = key / 3;
+  v8 = key % 3;
   p_leftWidth = &self->_leftWidth;
   leftWidth = self->_leftWidth;
-  if (a3 % 3 < 2)
+  if (key % 3 < 2)
   {
     p_topHeight = &self->_topHeight;
     topHeight = self->_topHeight;
@@ -878,7 +878,7 @@ LABEL_6:
   return result;
 }
 
-- (void)_notifySoundCompletionIfNecessary:(unsigned int)a3
+- (void)_notifySoundCompletionIfNecessary:(unsigned int)necessary
 {
   incompleteSounds = self->_incompleteSounds;
   if (incompleteSounds)
@@ -887,7 +887,7 @@ LABEL_6:
     self->_incompleteSounds = v5;
     if (!v5)
     {
-      AudioServicesRemoveSystemSoundCompletion(a3);
+      AudioServicesRemoveSystemSoundCompletion(necessary);
       if (*(self + 556))
       {
         delegate = self->_delegate;
@@ -898,11 +898,11 @@ LABEL_6:
   }
 }
 
-- (void)_playSoundForKey:(unint64_t)a3
+- (void)_playSoundForKey:(unint64_t)key
 {
-  if (a3 <= 0xB)
+  if (key <= 0xB)
   {
-    v4 = kSoundIDs[a3];
+    v4 = kSoundIDs[key];
     if (v4)
     {
       if (*(self + 556))
@@ -920,31 +920,31 @@ LABEL_6:
       AudioServicesStartSystemSound();
       inflightSounds = self->_inflightSounds;
 
-      CFSetAddValue(inflightSounds, a3);
+      CFSetAddValue(inflightSounds, key);
     }
   }
 }
 
-- (void)_stopSoundForKey:(unint64_t)a3
+- (void)_stopSoundForKey:(unint64_t)key
 {
-  if (a3 <= 0xB && kSoundIDs[a3])
+  if (key <= 0xB && kSoundIDs[key])
   {
     AudioServicesStopSystemSound();
     inflightSounds = self->_inflightSounds;
 
-    CFSetRemoveValue(inflightSounds, a3);
+    CFSetRemoveValue(inflightSounds, key);
   }
 }
 
-- (void)_stopAllSoundsForcingCallbacks:(BOOL)a3
+- (void)_stopAllSoundsForcingCallbacks:(BOOL)callbacks
 {
   inflightSounds = self->_inflightSounds;
   if (inflightSounds)
   {
-    v5 = a3;
+    callbacksCopy = callbacks;
     CFSetApplyFunction(inflightSounds, __TPStopSoundForKeyCallback, self);
     CFSetRemoveAllValues(self->_inflightSounds);
-    if (v5)
+    if (callbacksCopy)
     {
       for (i = 0; i != 12; ++i)
       {

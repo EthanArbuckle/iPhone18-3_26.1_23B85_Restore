@@ -1,14 +1,14 @@
 @interface ICSParticipationStatusParameter
-+ (id)participationStatusParameterFromCode:(int)a3;
-+ (id)participationStatusParameterFromICSString:(id)a3;
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
++ (id)participationStatusParameterFromCode:(int)code;
++ (id)participationStatusParameterFromICSString:(id)string;
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string;
 @end
 
 @implementation ICSParticipationStatusParameter
 
-+ (id)participationStatusParameterFromICSString:(id)a3
++ (id)participationStatusParameterFromICSString:(id)string
 {
-  v3 = [ICSUserAddress participationStatusFromICSString:a3];
+  v3 = [ICSUserAddress participationStatusFromICSString:string];
   if (v3)
   {
     v4 = [ICSParticipationStatusParameter participationStatusParameterFromCode:v3];
@@ -22,19 +22,19 @@
   return v4;
 }
 
-+ (id)participationStatusParameterFromCode:(int)a3
++ (id)participationStatusParameterFromCode:(int)code
 {
-  v3 = [(ICSPredefinedValue *)[ICSParticipationStatusParameter alloc] initWithLong:a3];
+  v3 = [(ICSPredefinedValue *)[ICSParticipationStatusParameter alloc] initWithLong:code];
 
   return v3;
 }
 
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
-  v4 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  stringCopy = string;
   v7 = [ICSUserAddress ICSStringFromParticipationStatus:[(ICSPredefinedValue *)self longValue]];
-  iCalendarAppendStringToStringWithOptions(v7, v6, v4);
+  iCalendarAppendStringToStringWithOptions(v7, stringCopy, optionsCopy);
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface PBFDataStoreArchivalUtilities
-+ (BOOL)transformDataStoreAtURL:(id)a3 options:(id)a4 error:(id *)a5;
++ (BOOL)transformDataStoreAtURL:(id)l options:(id)options error:(id *)error;
 + (id)fileManager;
 @end
 
@@ -24,18 +24,18 @@ void __44__PBFDataStoreArchivalUtilities_fileManager__block_invoke()
   fileManager_fileManager_107 = v0;
 }
 
-+ (BOOL)transformDataStoreAtURL:(id)a3 options:(id)a4 error:(id *)a5
++ (BOOL)transformDataStoreAtURL:(id)l options:(id)options error:(id *)error
 {
   v93 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v50 = [MEMORY[0x277CBEBC0] pbf_dataStoreExtensionContainerURLForVersionDataStoreURL:a3];
-  v8 = [v7 stripScreenshots];
-  v9 = [v7 stripDescriptors];
-  v10 = [v7 stripContentsOfConfigurations];
-  v49 = v7;
-  v11 = [v7 reapNonLatestEntries];
-  v12 = [a1 fileManager];
-  if ((v8 & 1) == 0 && (v9 & 1) == 0 && (v10 & 1) == 0 && !v11)
+  optionsCopy = options;
+  v50 = [MEMORY[0x277CBEBC0] pbf_dataStoreExtensionContainerURLForVersionDataStoreURL:l];
+  stripScreenshots = [optionsCopy stripScreenshots];
+  stripDescriptors = [optionsCopy stripDescriptors];
+  stripContentsOfConfigurations = [optionsCopy stripContentsOfConfigurations];
+  v49 = optionsCopy;
+  reapNonLatestEntries = [optionsCopy reapNonLatestEntries];
+  fileManager = [self fileManager];
+  if ((stripScreenshots & 1) == 0 && (stripDescriptors & 1) == 0 && (stripContentsOfConfigurations & 1) == 0 && !reapNonLatestEntries)
   {
     goto LABEL_54;
   }
@@ -52,10 +52,10 @@ void __44__PBFDataStoreArchivalUtilities_fileManager__block_invoke()
   }
 
   v57 = *v83;
-  v52 = v9;
-  v53 = v8;
-  v56 = v10;
-  v51 = v11;
+  v52 = stripDescriptors;
+  v53 = stripScreenshots;
+  v56 = stripContentsOfConfigurations;
+  v51 = reapNonLatestEntries;
   while (2)
   {
     v13 = 0;
@@ -67,41 +67,41 @@ void __44__PBFDataStoreArchivalUtilities_fileManager__block_invoke()
       }
 
       v61 = *(*(&v82 + 1) + 8 * v13);
-      v14 = [v61 setupEnvironmentIfNecessary];
-      if (v14)
+      setupEnvironmentIfNecessary = [v61 setupEnvironmentIfNecessary];
+      if (setupEnvironmentIfNecessary)
       {
-        v41 = v14;
+        v41 = setupEnvironmentIfNecessary;
         v42 = MEMORY[0x277CCA9B8];
         v43 = *MEMORY[0x277CCA470];
         v91[0] = @"PBFPosterExtensionStoreCoordinator could not be setup; cannot archive something we cannot read.";
         v44 = *MEMORY[0x277CCA748];
         v90[0] = v43;
         v90[1] = v44;
-        v45 = [v61 containerURL];
+        containerURL = [v61 containerURL];
         v90[2] = *MEMORY[0x277CCA7E8];
-        v91[1] = v45;
+        v91[1] = containerURL;
         v91[2] = v41;
         v46 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v91 forKeys:v90 count:3];
         v38 = [v42 pbf_generalErrorWithCode:7 userInfo:v46];
 
         v39 = v38 == 0;
-        if (a5 && v38)
+        if (error && v38)
         {
           v47 = v38;
           v39 = 0;
-          *a5 = v38;
+          *error = v38;
         }
 
         goto LABEL_55;
       }
 
-      if (v11)
+      if (reapNonLatestEntries)
       {
         [v61 reapEverythingExceptLatestVersion];
-        if (!v9)
+        if (!stripDescriptors)
         {
 LABEL_13:
-          if (!v10)
+          if (!stripContentsOfConfigurations)
           {
             goto LABEL_14;
           }
@@ -110,12 +110,12 @@ LABEL_13:
         }
       }
 
-      else if (!v9)
+      else if (!stripDescriptors)
       {
         goto LABEL_13;
       }
 
-      v15 = v8;
+      v15 = stripScreenshots;
       v80 = 0u;
       v81 = 0u;
       v78 = 0u;
@@ -137,8 +137,8 @@ LABEL_13:
               objc_enumerationMutation(v17);
             }
 
-            v22 = [*(*(&v78 + 1) + 8 * i) posterUUID];
-            [v61 teardownDynamicDescriptorStoreCoordinatorForPosterUUID:v22 error:0];
+            posterUUID = [*(*(&v78 + 1) + 8 * i) posterUUID];
+            [v61 teardownDynamicDescriptorStoreCoordinatorForPosterUUID:posterUUID error:0];
           }
 
           v19 = [v17 countByEnumeratingWithState:&v78 objects:v89 count:16];
@@ -148,12 +148,12 @@ LABEL_13:
       }
 
       [v61 teardownAllStaticDescriptorStoreCoordinators];
-      v8 = v15;
-      v10 = v56;
+      stripScreenshots = v15;
+      stripContentsOfConfigurations = v56;
       if (!v56)
       {
 LABEL_14:
-        if (!v8)
+        if (!stripScreenshots)
         {
           goto LABEL_16;
         }
@@ -191,8 +191,8 @@ LABEL_27:
             v71 = 0u;
             v72 = 0u;
             v73 = 0u;
-            v64 = [v24 allPosterPaths];
-            v25 = [v64 countByEnumeratingWithState:&v70 objects:v87 count:16];
+            allPosterPaths = [v24 allPosterPaths];
+            v25 = [allPosterPaths countByEnumeratingWithState:&v70 objects:v87 count:16];
             if (v25)
             {
               v26 = v25;
@@ -203,13 +203,13 @@ LABEL_27:
                 {
                   if (*v71 != v65)
                   {
-                    objc_enumerationMutation(v64);
+                    objc_enumerationMutation(allPosterPaths);
                   }
 
                   v28 = *(*(&v70 + 1) + 8 * j);
-                  v29 = [v28 contentsURL];
+                  contentsURL = [v28 contentsURL];
                   v30 = [MEMORY[0x277D3EDE8] expectedConfigurationFilesForPath:v28];
-                  v31 = [v12 enumeratorAtURL:v29 includingPropertiesForKeys:0 options:1 errorHandler:0];
+                  v31 = [fileManager enumeratorAtURL:contentsURL includingPropertiesForKeys:0 options:1 errorHandler:0];
                   v66 = 0u;
                   v67 = 0u;
                   v68 = 0u;
@@ -231,7 +231,7 @@ LABEL_27:
                         v36 = *(*(&v66 + 1) + 8 * k);
                         if (([v30 containsObject:v36] & 1) == 0)
                         {
-                          [v12 removeItemAtURL:v36 error:0];
+                          [fileManager removeItemAtURL:v36 error:0];
                         }
                       }
 
@@ -242,7 +242,7 @@ LABEL_27:
                   }
                 }
 
-                v26 = [v64 countByEnumeratingWithState:&v70 objects:v87 count:16];
+                v26 = [allPosterPaths countByEnumeratingWithState:&v70 objects:v87 count:16];
               }
 
               while (v26);
@@ -258,10 +258,10 @@ LABEL_27:
         while (v62);
       }
 
-      v9 = v52;
-      v8 = v53;
-      v10 = v56;
-      v11 = v51;
+      stripDescriptors = v52;
+      stripScreenshots = v53;
+      stripContentsOfConfigurations = v56;
+      reapNonLatestEntries = v51;
       v13 = v55;
       if (v53)
       {

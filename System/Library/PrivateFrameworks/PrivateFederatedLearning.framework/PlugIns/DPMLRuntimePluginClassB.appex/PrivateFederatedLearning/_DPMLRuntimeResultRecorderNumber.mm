@@ -1,20 +1,20 @@
 @interface _DPMLRuntimeResultRecorderNumber
-+ (BOOL)recordMultipleKeysData:(id)a3 forBaseKey:(id)a4 minValue:(int)a5 maxValue:(int)a6 numBucket:(unsigned int)a7 metadata:(id)a8 error:(id *)a9;
-+ (unsigned)findBucketIndexForIntValue:(int)a3 minValue:(int)a4 maxValue:(int)a5 numBucket:(unsigned int)a6;
++ (BOOL)recordMultipleKeysData:(id)data forBaseKey:(id)key minValue:(int)value maxValue:(int)maxValue numBucket:(unsigned int)bucket metadata:(id)metadata error:(id *)error;
++ (unsigned)findBucketIndexForIntValue:(int)value minValue:(int)minValue maxValue:(int)maxValue numBucket:(unsigned int)bucket;
 @end
 
 @implementation _DPMLRuntimeResultRecorderNumber
 
-+ (BOOL)recordMultipleKeysData:(id)a3 forBaseKey:(id)a4 minValue:(int)a5 maxValue:(int)a6 numBucket:(unsigned int)a7 metadata:(id)a8 error:(id *)a9
++ (BOOL)recordMultipleKeysData:(id)data forBaseKey:(id)key minValue:(int)value maxValue:(int)maxValue numBucket:(unsigned int)bucket metadata:(id)metadata error:(id *)error
 {
-  v11 = a3;
-  v41 = a4;
-  v40 = a8;
+  dataCopy = data;
+  keyCopy = key;
+  metadataCopy = metadata;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v12 = v11;
+  v12 = dataCopy;
   v13 = [v12 countByEnumeratingWithState:&v46 objects:v56 count:16];
   if (v13)
   {
@@ -39,14 +39,14 @@
         v43 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v19 = [v18 allKeys];
-        v20 = [v19 countByEnumeratingWithState:&v42 objects:v55 count:16];
+        allKeys = [v18 allKeys];
+        v20 = [allKeys countByEnumeratingWithState:&v42 objects:v55 count:16];
         if (v20)
         {
           v21 = v20;
           v34 = v17;
           v22 = *v43;
-          obj = v19;
+          obj = allKeys;
           while (2)
           {
             for (i = 0; i != v21; i = i + 1)
@@ -57,12 +57,12 @@
               }
 
               v24 = *(*(&v42 + 1) + 8 * i);
-              v25 = [NSString stringWithFormat:@"%@.%@", v41, v24];
+              v25 = [NSString stringWithFormat:@"%@.%@", keyCopy, v24];
               v26 = [v18 objectForKey:v24];
               v27 = objc_opt_class();
               v54 = v26;
               v28 = [NSArray arrayWithObjects:&v54 count:1];
-              LOBYTE(v27) = [v27 recordData:v28 forKey:v25 minValue:a5 maxValue:a6 numBucket:a7 metadata:v40 error:a9];
+              LOBYTE(v27) = [v27 recordData:v28 forKey:v25 minValue:value maxValue:maxValue numBucket:bucket metadata:metadataCopy error:error];
 
               if ((v27 & 1) == 0)
               {
@@ -83,7 +83,7 @@
               }
             }
 
-            v19 = obj;
+            allKeys = obj;
             v21 = [obj countByEnumeratingWithState:&v42 objects:v55 count:16];
             if (v21)
             {
@@ -120,14 +120,14 @@ LABEL_22:
   return v15 & 1;
 }
 
-+ (unsigned)findBucketIndexForIntValue:(int)a3 minValue:(int)a4 maxValue:(int)a5 numBucket:(unsigned int)a6
++ (unsigned)findBucketIndexForIntValue:(int)value minValue:(int)minValue maxValue:(int)maxValue numBucket:(unsigned int)bucket
 {
-  if (a3 >= a4)
+  if (value >= minValue)
   {
-    v6 = a6 - 1;
-    if (a3 < a5)
+    v6 = bucket - 1;
+    if (value < maxValue)
     {
-      v6 = (floor((a3 - a4) / ((a5 - a4) / (a6 - 2))) + 1.0);
+      v6 = (floor((value - minValue) / ((maxValue - minValue) / (bucket - 2))) + 1.0);
     }
   }
 
@@ -136,9 +136,9 @@ LABEL_22:
     v6 = 0;
   }
 
-  if (v6 >= a6)
+  if (v6 >= bucket)
   {
-    return a6 - 1;
+    return bucket - 1;
   }
 
   else

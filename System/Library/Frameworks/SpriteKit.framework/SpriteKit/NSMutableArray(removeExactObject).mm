@@ -13,8 +13,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = a1;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  selfCopy = self;
+  v6 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = 0;
@@ -28,13 +28,13 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         if (*(*(&v11 + 1) + 8 * v9) == v4)
         {
 
-          [v5 removeObjectAtIndex:{v10, v11}];
+          [selfCopy removeObjectAtIndex:{v10, v11}];
           goto LABEL_11;
         }
 
@@ -43,7 +43,7 @@
       }
 
       while (v6 != v9);
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -60,12 +60,12 @@ LABEL_11:
 {
   v26 = *MEMORY[0x277D85DE8];
   v15 = a3;
-  v4 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = a1;
+  obj = self;
   v5 = [obj countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v5)
   {
@@ -104,7 +104,7 @@ LABEL_11:
 
               if (v9 == *(*(&v16 + 1) + 8 * v13))
               {
-                [v4 addIndex:v6];
+                [indexSet addIndex:v6];
               }
 
               ++v13;
@@ -128,7 +128,7 @@ LABEL_11:
     while (v5);
   }
 
-  [obj removeObjectsAtIndexes:v4];
+  [obj removeObjectsAtIndexes:indexSet];
 }
 
 @end

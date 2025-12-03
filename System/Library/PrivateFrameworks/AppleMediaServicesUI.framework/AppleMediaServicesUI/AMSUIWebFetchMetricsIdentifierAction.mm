@@ -1,25 +1,25 @@
 @interface AMSUIWebFetchMetricsIdentifierAction
-- (AMSUIWebFetchMetricsIdentifierAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebFetchMetricsIdentifierAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebFetchMetricsIdentifierAction
 
-- (AMSUIWebFetchMetricsIdentifierAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebFetchMetricsIdentifierAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v29.receiver = self;
   v29.super_class = AMSUIWebFetchMetricsIdentifierAction;
-  v8 = [(AMSUIWebAction *)&v29 initWithJSObject:v6 context:v7];
+  v8 = [(AMSUIWebAction *)&v29 initWithJSObject:objectCopy context:contextCopy];
   if (v8)
   {
-    v9 = [v6 objectForKeyedSubscript:@"account"];
-    v10 = [v7 iTunesAccountFromJSAccount:v9];
+    v9 = [objectCopy objectForKeyedSubscript:@"account"];
+    v10 = [contextCopy iTunesAccountFromJSAccount:v9];
     account = v8->_account;
     v8->_account = v10;
 
-    v12 = [v6 objectForKeyedSubscript:@"bagNamespace"];
+    v12 = [objectCopy objectForKeyedSubscript:@"bagNamespace"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -34,7 +34,7 @@
     bagNamespace = v8->_bagNamespace;
     v8->_bagNamespace = v13;
 
-    v15 = [v6 objectForKeyedSubscript:@"bagProfile"];
+    v15 = [objectCopy objectForKeyedSubscript:@"bagProfile"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,7 +49,7 @@
     bagProfile = v8->_bagProfile;
     v8->_bagProfile = v16;
 
-    v18 = [v6 objectForKeyedSubscript:@"bagProfileVersion"];
+    v18 = [objectCopy objectForKeyedSubscript:@"bagProfileVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,10 +64,10 @@
     bagProfileVersion = v8->_bagProfileVersion;
     v8->_bagProfileVersion = v19;
 
-    v21 = [v6 objectForKeyedSubscript:@"crossDeviceSync"];
+    v21 = [objectCopy objectForKeyedSubscript:@"crossDeviceSync"];
     if (objc_opt_respondsToSelector())
     {
-      v22 = [v6 objectForKeyedSubscript:@"crossDeviceSync"];
+      v22 = [objectCopy objectForKeyedSubscript:@"crossDeviceSync"];
       v8->_crossDeviceSync = [v22 BOOLValue];
     }
 
@@ -76,10 +76,10 @@
       v8->_crossDeviceSync = 0;
     }
 
-    v23 = [v6 objectForKeyedSubscript:@"generateEventFields"];
+    v23 = [objectCopy objectForKeyedSubscript:@"generateEventFields"];
     if (objc_opt_respondsToSelector())
     {
-      v24 = [v6 objectForKeyedSubscript:@"generateEventFields"];
+      v24 = [objectCopy objectForKeyedSubscript:@"generateEventFields"];
       v8->_generateEventFields = [v24 BOOLValue];
     }
 
@@ -88,7 +88,7 @@
       v8->_generateEventFields = 0;
     }
 
-    v25 = [v6 objectForKeyedSubscript:@"identifierKey"];
+    v25 = [objectCopy objectForKeyedSubscript:@"identifierKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -112,69 +112,69 @@
   v63 = *MEMORY[0x1E69E9840];
   v48.receiver = self;
   v48.super_class = AMSUIWebFetchMetricsIdentifierAction;
-  v3 = [(AMSUIWebAction *)&v48 runAction];
-  v4 = [(AMSUIWebFetchMetricsIdentifierAction *)self bagNamespace];
-  if (v4)
+  runAction = [(AMSUIWebAction *)&v48 runAction];
+  bagNamespace = [(AMSUIWebFetchMetricsIdentifierAction *)self bagNamespace];
+  if (bagNamespace)
   {
-    v5 = [(AMSUIWebFetchMetricsIdentifierAction *)self crossDeviceSync];
-    v6 = [(AMSUIWebFetchMetricsIdentifierAction *)self generateEventFields];
-    v7 = [(AMSUIWebFetchMetricsIdentifierAction *)self identifierKey];
-    if (v7)
+    crossDeviceSync = [(AMSUIWebFetchMetricsIdentifierAction *)self crossDeviceSync];
+    generateEventFields = [(AMSUIWebFetchMetricsIdentifierAction *)self generateEventFields];
+    identifierKey = [(AMSUIWebFetchMetricsIdentifierAction *)self identifierKey];
+    if (identifierKey)
     {
-      v37 = v6;
-      v40 = [(AMSUIWebAction *)self context];
-      v8 = [(AMSUIWebFetchMetricsIdentifierAction *)self account];
-      v9 = v8;
-      v38 = v5;
-      if (v8)
+      v37 = generateEventFields;
+      context = [(AMSUIWebAction *)self context];
+      account = [(AMSUIWebFetchMetricsIdentifierAction *)self account];
+      v9 = account;
+      v38 = crossDeviceSync;
+      if (account)
       {
-        v10 = v8;
+        account2 = account;
       }
 
       else
       {
-        v10 = [v40 account];
+        account2 = [context account];
       }
 
-      v14 = v10;
+      v14 = account2;
 
-      v15 = [(AMSUIWebFetchMetricsIdentifierAction *)self bagProfile];
-      v16 = [(AMSUIWebFetchMetricsIdentifierAction *)self bagProfileVersion];
-      v17 = v16;
-      if (!v15)
+      bagProfile = [(AMSUIWebFetchMetricsIdentifierAction *)self bagProfile];
+      bagProfileVersion = [(AMSUIWebFetchMetricsIdentifierAction *)self bagProfileVersion];
+      v17 = bagProfileVersion;
+      if (!bagProfile)
       {
         goto LABEL_11;
       }
 
-      if (!v16)
+      if (!bagProfileVersion)
       {
         goto LABEL_11;
       }
 
-      v18 = v16;
+      v18 = bagProfileVersion;
       v19 = MEMORY[0x1E698C7D8];
-      [v40 clientInfo];
+      [context clientInfo];
       v21 = v20 = v14;
       v22 = v19;
       v17 = v18;
-      v23 = [v22 bagForProfile:v15 profileVersion:v18 processInfo:v21];
+      v23 = [v22 bagForProfile:bagProfile profileVersion:v18 processInfo:v21];
 
       v14 = v20;
       v39 = v23;
       if (!v23)
       {
 LABEL_11:
-        v39 = [v40 bag];
+        v39 = [context bag];
       }
 
-      v24 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-      if (!v24)
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+      if (!mEMORY[0x1E698C968])
       {
-        v24 = [MEMORY[0x1E698C968] sharedConfig];
+        mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
       }
 
-      v25 = [v24 OSLogObject];
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v35 = v17;
         v26 = objc_opt_class();
@@ -198,23 +198,23 @@ LABEL_11:
         v55 = 2114;
         v56 = v29;
         v57 = 2114;
-        v58 = v4;
+        v58 = bagNamespace;
         v59 = 2114;
-        v60 = v7;
+        v60 = identifierKey;
         v17 = v35;
         v61 = 2114;
         v62 = v31;
-        _os_log_impl(&dword_1BB036000, v25, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting (account: %{public}@; bag: %{public}@; bagNamespace: %{public}@; identifierKey: %{public}@; crossDeviceSync: %{public}@)", buf, 0x48u);
+        _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Starting (account: %{public}@; bag: %{public}@; bagNamespace: %{public}@; identifierKey: %{public}@; crossDeviceSync: %{public}@)", buf, 0x48u);
 
         v14 = v36;
       }
 
-      v32 = [MEMORY[0x1E698CA20] identifierStoreWithAccount:v14 bagNamespace:v4 bag:v39];
+      v32 = [MEMORY[0x1E698CA20] identifierStoreWithAccount:v14 bagNamespace:bagNamespace bag:v39];
       v44[0] = MEMORY[0x1E69E9820];
       v44[1] = 3221225472;
       v44[2] = __49__AMSUIWebFetchMetricsIdentifierAction_runAction__block_invoke;
       v44[3] = &unk_1E7F261C8;
-      v45 = v7;
+      v45 = identifierKey;
       v46 = v38;
       v47 = v37;
       v12 = [v32 thenWithBlock:v44];
@@ -244,8 +244,8 @@ LABEL_11:
   else
   {
     v11 = MEMORY[0x1E698CAD0];
-    v7 = AMSError();
-    v12 = [v11 promiseWithError:v7];
+    identifierKey = AMSError();
+    v12 = [v11 promiseWithError:identifierKey];
   }
 
   v33 = *MEMORY[0x1E69E9840];

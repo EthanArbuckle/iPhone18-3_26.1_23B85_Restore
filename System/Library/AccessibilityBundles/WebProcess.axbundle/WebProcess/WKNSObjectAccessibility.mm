@@ -1,23 +1,23 @@
 @interface WKNSObjectAccessibility
-- (BOOL)_accessibilityMoveFocusWithHeading:(unint64_t)a3 byGroup:(BOOL)a4;
-- (BOOL)_accessibilityMoveFocusWithHeading:(unint64_t)a3 toElementMatchingQuery:(id)a4;
-- (BOOL)_iosAccessibilityPerformAction:(int)a3 withValue:(id)a4 fencePort:(unsigned int)a5;
+- (BOOL)_accessibilityMoveFocusWithHeading:(unint64_t)heading byGroup:(BOOL)group;
+- (BOOL)_accessibilityMoveFocusWithHeading:(unint64_t)heading toElementMatchingQuery:(id)query;
+- (BOOL)_iosAccessibilityPerformAction:(int)action withValue:(id)value fencePort:(unsigned int)port;
 - (id)_accessibilityFirstElementForFocusForRemoteElement;
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3;
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3 forParameter:(id)a4;
-- (id)accessibilityHitTest:(CGPoint)a3;
+- (id)_iosAccessibilityAttributeValue:(int64_t)value;
+- (id)_iosAccessibilityAttributeValue:(int64_t)value forParameter:(id)parameter;
+- (id)accessibilityHitTest:(CGPoint)test;
 @end
 
 @implementation WKNSObjectAccessibility
 
-- (id)accessibilityHitTest:(CGPoint)a3
+- (id)accessibilityHitTest:(CGPoint)test
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v19 = *MEMORY[0x29EDCA608];
   if ([(WKNSObjectAccessibility *)self isAccessibilityElement]&& ([(WKNSObjectAccessibility *)self accessibilityFrame], v21.x = x, v21.y = y, CGRectContainsPoint(v22, v21)))
   {
-    v6 = self;
+    selfCopy = self;
   }
 
   else
@@ -42,7 +42,7 @@ LABEL_6:
         }
 
         v12 = [*(*(&v14 + 1) + 8 * v11) accessibilityHitTest:{x, y, v14}];
-        v6 = v12;
+        selfCopy = v12;
         if (v12)
         {
           if (([(WKNSObjectAccessibility *)v12 isAccessibilityElement]& 1) != 0)
@@ -73,11 +73,11 @@ LABEL_6:
     else
     {
 LABEL_14:
-      v6 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)_accessibilityFirstElementForFocusForRemoteElement
@@ -85,19 +85,19 @@ LABEL_14:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(WKNSObjectAccessibility *)self _accessibilityResponderElement];
-    v4 = v3;
-    if (v3)
+    _accessibilityResponderElement = [(WKNSObjectAccessibility *)self _accessibilityResponderElement];
+    v4 = _accessibilityResponderElement;
+    if (_accessibilityResponderElement)
     {
-      v5 = v3;
+      _accessibilityFirstDescendant = _accessibilityResponderElement;
     }
 
     else
     {
-      v5 = [(WKNSObjectAccessibility *)self _accessibilityFirstDescendant];
+      _accessibilityFirstDescendant = [(WKNSObjectAccessibility *)self _accessibilityFirstDescendant];
     }
 
-    v6 = v5;
+    v6 = _accessibilityFirstDescendant;
   }
 
   else
@@ -108,42 +108,42 @@ LABEL_14:
   return v6;
 }
 
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3 forParameter:(id)a4
+- (id)_iosAccessibilityAttributeValue:(int64_t)value forParameter:(id)parameter
 {
-  v6 = a4;
+  parameterCopy = parameter;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (a3 == 95250 && (isKindOfClass & 1) != 0)
+  if (value == 95250 && (isKindOfClass & 1) != 0)
   {
-    v8 = [(WKNSObjectAccessibility *)self _accessibilityFirstElementForFocusForRemoteElement];
+    _accessibilityFirstElementForFocusForRemoteElement = [(WKNSObjectAccessibility *)self _accessibilityFirstElementForFocusForRemoteElement];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = WKNSObjectAccessibility;
-    v8 = [(WKNSObjectAccessibility *)&v11 _iosAccessibilityAttributeValue:a3 forParameter:v6];
+    _accessibilityFirstElementForFocusForRemoteElement = [(WKNSObjectAccessibility *)&v11 _iosAccessibilityAttributeValue:value forParameter:parameterCopy];
   }
 
-  v9 = v8;
+  v9 = _accessibilityFirstElementForFocusForRemoteElement;
 
   return v9;
 }
 
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3
+- (id)_iosAccessibilityAttributeValue:(int64_t)value
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [(WKNSObjectAccessibility *)&v10 _iosAccessibilityAttributeValue:a3, self, WKNSObjectAccessibility, v11.receiver, v11.super_class];
+    [(WKNSObjectAccessibility *)&v10 _iosAccessibilityAttributeValue:value, self, WKNSObjectAccessibility, v11.receiver, v11.super_class];
     goto LABEL_8;
   }
 
-  if (a3 > 3022)
+  if (value > 3022)
   {
-    if ((a3 - 3023) >= 2)
+    if ((value - 3023) >= 2)
     {
-      if (a3 != 3050)
+      if (value != 3050)
       {
         goto LABEL_6;
       }
@@ -152,59 +152,59 @@ LABEL_14:
     }
 
     v7 = [(WKNSObjectAccessibility *)self accessibilityElementAtIndex:0];
-    v8 = [v7 _accessibilityResponderElementForFocus];
+    _accessibilityResponderElementForFocus = [v7 _accessibilityResponderElementForFocus];
   }
 
   else
   {
-    if (a3 == 3000)
+    if (value == 3000)
     {
-      v5 = [(WKNSObjectAccessibility *)self _accessibilityUnignoredDescendant];
+      _accessibilityUnignoredDescendant = [(WKNSObjectAccessibility *)self _accessibilityUnignoredDescendant];
       goto LABEL_9;
     }
 
-    if (a3 != 3002)
+    if (value != 3002)
     {
-      if (a3 != 3009)
+      if (value != 3009)
       {
 LABEL_6:
-        [(WKNSObjectAccessibility *)&v11 _iosAccessibilityAttributeValue:a3, v10.receiver, v10.super_class, self, WKNSObjectAccessibility];
-        v5 = LABEL_8:;
+        [(WKNSObjectAccessibility *)&v11 _iosAccessibilityAttributeValue:value, v10.receiver, v10.super_class, self, WKNSObjectAccessibility];
+        _accessibilityUnignoredDescendant = LABEL_8:;
 LABEL_9:
-        v6 = v5;
+        v6 = _accessibilityUnignoredDescendant;
         goto LABEL_17;
       }
 
 LABEL_13:
-      v5 = [(WKNSObjectAccessibility *)self _accessibilityFirstElementForFocusForRemoteElement];
+      _accessibilityUnignoredDescendant = [(WKNSObjectAccessibility *)self _accessibilityFirstElementForFocusForRemoteElement];
       goto LABEL_9;
     }
 
     v7 = [(WKNSObjectAccessibility *)self accessibilityElementAtIndex:0];
-    v8 = [v7 _accessibilityResponderElement];
+    _accessibilityResponderElementForFocus = [v7 _accessibilityResponderElement];
   }
 
-  v6 = v8;
+  v6 = _accessibilityResponderElementForFocus;
 
 LABEL_17:
 
   return v6;
 }
 
-- (BOOL)_iosAccessibilityPerformAction:(int)a3 withValue:(id)a4 fencePort:(unsigned int)a5
+- (BOOL)_iosAccessibilityPerformAction:(int)action withValue:(id)value fencePort:(unsigned int)port
 {
-  v5 = *&a5;
-  v6 = *&a3;
-  v8 = a4;
+  v5 = *&port;
+  v6 = *&action;
+  valueCopy = value;
   if (v6 == 5300)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v8 count] == 2)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [valueCopy count] == 2)
     {
-      v12 = [(WKNSObjectAccessibility *)self accessibilityElements];
-      v13 = [v12 firstObject];
-      v14 = [v8 firstObject];
-      v17 = [v13 _accessibilityMoveFocusWithHeading:objc_msgSend(v14 toElementMatchingQuery:{"unsignedIntegerValue"), 0}];
+      accessibilityElements = [(WKNSObjectAccessibility *)self accessibilityElements];
+      firstObject = [accessibilityElements firstObject];
+      firstObject2 = [valueCopy firstObject];
+      v17 = [firstObject _accessibilityMoveFocusWithHeading:objc_msgSend(firstObject2 toElementMatchingQuery:{"unsignedIntegerValue"), 0}];
       goto LABEL_11;
     }
 
@@ -215,17 +215,17 @@ LABEL_17:
   {
     v19.receiver = self;
     v19.super_class = WKNSObjectAccessibility;
-    v17 = [(WKNSObjectAccessibility *)&v19 _iosAccessibilityPerformAction:v6 withValue:v8 fencePort:v5];
+    v17 = [(WKNSObjectAccessibility *)&v19 _iosAccessibilityPerformAction:v6 withValue:valueCopy fencePort:v5];
     goto LABEL_15;
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || [v8 count] != 2)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || [valueCopy count] != 2)
   {
     goto LABEL_14;
   }
 
-  v9 = [v8 objectAtIndex:0];
+  v9 = [valueCopy objectAtIndex:0];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -233,7 +233,7 @@ LABEL_17:
     goto LABEL_14;
   }
 
-  v10 = [v8 objectAtIndex:1];
+  v10 = [valueCopy objectAtIndex:1];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -244,12 +244,12 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v12 = [(WKNSObjectAccessibility *)self accessibilityElements];
-  v13 = [v12 firstObject];
-  v14 = [v8 firstObject];
-  v15 = [v14 unsignedIntegerValue];
-  v16 = [v8 lastObject];
-  v17 = [v13 _accessibilityMoveFocusWithHeading:v15 toElementMatchingQuery:v16];
+  accessibilityElements = [(WKNSObjectAccessibility *)self accessibilityElements];
+  firstObject = [accessibilityElements firstObject];
+  firstObject2 = [valueCopy firstObject];
+  unsignedIntegerValue = [firstObject2 unsignedIntegerValue];
+  lastObject = [valueCopy lastObject];
+  v17 = [firstObject _accessibilityMoveFocusWithHeading:unsignedIntegerValue toElementMatchingQuery:lastObject];
 
 LABEL_11:
 LABEL_15:
@@ -257,21 +257,21 @@ LABEL_15:
   return v17;
 }
 
-- (BOOL)_accessibilityMoveFocusWithHeading:(unint64_t)a3 toElementMatchingQuery:(id)a4
+- (BOOL)_accessibilityMoveFocusWithHeading:(unint64_t)heading toElementMatchingQuery:(id)query
 {
-  v6 = a4;
+  queryCopy = query;
   v7 = [(WKNSObjectAccessibility *)self accessibilityElementAtIndex:0];
-  LOBYTE(a3) = [v7 _accessibilityMoveFocusWithHeading:a3 toElementMatchingQuery:v6];
+  LOBYTE(heading) = [v7 _accessibilityMoveFocusWithHeading:heading toElementMatchingQuery:queryCopy];
 
-  return a3;
+  return heading;
 }
 
-- (BOOL)_accessibilityMoveFocusWithHeading:(unint64_t)a3 byGroup:(BOOL)a4
+- (BOOL)_accessibilityMoveFocusWithHeading:(unint64_t)heading byGroup:(BOOL)group
 {
-  v5 = [(WKNSObjectAccessibility *)self accessibilityElementAtIndex:0, a4];
-  LOBYTE(a3) = [v5 _accessibilityMoveFocusWithHeading:a3 toElementMatchingQuery:0];
+  group = [(WKNSObjectAccessibility *)self accessibilityElementAtIndex:0, group];
+  LOBYTE(heading) = [group _accessibilityMoveFocusWithHeading:heading toElementMatchingQuery:0];
 
-  return a3;
+  return heading;
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface PXActionMenu
-+ (id)menuWithTitle:(id)a3 childElements:(id)a4;
-- (PXActionMenu)initWithTitle:(id)a3 systemImageName:(id)a4 childElements:(id)a5;
++ (id)menuWithTitle:(id)title childElements:(id)elements;
+- (PXActionMenu)initWithTitle:(id)title systemImageName:(id)name childElements:(id)elements;
 @end
 
 @implementation PXActionMenu
 
-- (PXActionMenu)initWithTitle:(id)a3 systemImageName:(id)a4 childElements:(id)a5
+- (PXActionMenu)initWithTitle:(id)title systemImageName:(id)name childElements:(id)elements
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  nameCopy = name;
+  elementsCopy = elements;
   v19.receiver = self;
   v19.super_class = PXActionMenu;
   v11 = [(PXActionMenu *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [titleCopy copy];
     title = v11->_title;
     v11->_title = v12;
 
-    v14 = [v9 copy];
+    v14 = [nameCopy copy];
     systemImageName = v11->_systemImageName;
     v11->_systemImageName = v14;
 
-    v16 = [v10 copy];
+    v16 = [elementsCopy copy];
     childElements = v11->_childElements;
     v11->_childElements = v16;
   }
@@ -31,11 +31,11 @@
   return v11;
 }
 
-+ (id)menuWithTitle:(id)a3 childElements:(id)a4
++ (id)menuWithTitle:(id)title childElements:(id)elements
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithTitle:v7 systemImageName:0 childElements:v6];
+  elementsCopy = elements;
+  titleCopy = title;
+  v8 = [[self alloc] initWithTitle:titleCopy systemImageName:0 childElements:elementsCopy];
 
   return v8;
 }

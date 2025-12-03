@@ -39,8 +39,8 @@ uint64_t __63__HUQuickControlValveToggleViewController_controlItemPredicate__blo
 - (id)createInteractionCoordinator
 {
   v3 = [HUQuickControlValveToggleView alloc];
-  v4 = [(HUQuickControlSingleControlViewController *)self viewProfile];
-  v5 = [(HUQuickControlValveToggleView *)v3 initWithProfile:v4];
+  viewProfile = [(HUQuickControlSingleControlViewController *)self viewProfile];
+  v5 = [(HUQuickControlValveToggleView *)v3 initWithProfile:viewProfile];
 
   v6 = [[HUQuickControlSimpleInteractionCoordinator alloc] initWithControlView:v5 delegate:self];
 

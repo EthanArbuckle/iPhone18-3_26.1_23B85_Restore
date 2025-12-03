@@ -1,8 +1,8 @@
 @interface SBTransientOverlayDismissWorkspaceTransaction
-+ (BOOL)isValidForTransitionRequest:(id)a3;
++ (BOOL)isValidForTransitionRequest:(id)request;
 - (void)_begin;
 - (void)_didComplete;
-- (void)_sendActivationResultWithError:(id)a3;
+- (void)_sendActivationResultWithError:(id)error;
 @end
 
 @implementation SBTransientOverlayDismissWorkspaceTransaction
@@ -12,44 +12,44 @@
   v22.receiver = self;
   v22.super_class = SBTransientOverlayDismissWorkspaceTransaction;
   [(SBTransientOverlayDismissWorkspaceTransaction *)&v22 _begin];
-  v3 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v4 = [v3 transientOverlayContext];
-  v5 = [v4 transientOverlay];
-  v6 = [v5 viewController];
-  v7 = [v4 presentationManager];
-  v8 = [(SBWorkspaceTransaction *)self windowScene];
-  v9 = [v8 switcherController];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  transientOverlayContext = [transitionRequest transientOverlayContext];
+  transientOverlay = [transientOverlayContext transientOverlay];
+  viewController = [transientOverlay viewController];
+  presentationManager = [transientOverlayContext presentationManager];
+  windowScene = [(SBWorkspaceTransaction *)self windowScene];
+  switcherController = [windowScene switcherController];
 
-  v10 = [v9 appLayoutForWorkspaceTransientOverlay:v5];
+  v10 = [switcherController appLayoutForWorkspaceTransientOverlay:transientOverlay];
 
   if (v10)
   {
     [(SBTransientOverlayDismissWorkspaceTransaction *)self addMilestone:@"_SBTransientOverlayDismissWorkspaceTransactionMilestoneSwitcherTransition"];
-    v11 = [v3 applicationContext];
+    applicationContext = [transitionRequest applicationContext];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __55__SBTransientOverlayDismissWorkspaceTransaction__begin__block_invoke;
     v21[3] = &unk_2783A9398;
     v21[4] = self;
-    [v9 performTransitionWithContext:v11 animated:0 completion:v21];
+    [switcherController performTransitionWithContext:applicationContext animated:0 completion:v21];
   }
 
-  v12 = [(SBTransientOverlayDismissalRequest *)SBMutableTransientOverlayDismissalRequest dismissalRequestForViewController:v6];
-  [v12 setAnimated:{objc_msgSend(v4, "isAnimated")}];
+  v12 = [(SBTransientOverlayDismissalRequest *)SBMutableTransientOverlayDismissalRequest dismissalRequestForViewController:viewController];
+  [v12 setAnimated:{objc_msgSend(transientOverlayContext, "isAnimated")}];
   [(SBTransientOverlayDismissWorkspaceTransaction *)self addMilestone:@"_SBTransientOverlayDismissWorkspaceTransactionMilestoneDismissalAnimation"];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __55__SBTransientOverlayDismissWorkspaceTransaction__begin__block_invoke_2;
   v16[3] = &unk_2783A9BD8;
-  v17 = v9;
-  v18 = v5;
-  v19 = v6;
-  v20 = self;
-  v13 = v6;
-  v14 = v5;
-  v15 = v9;
+  v17 = switcherController;
+  v18 = transientOverlay;
+  v19 = viewController;
+  selfCopy = self;
+  v13 = viewController;
+  v14 = transientOverlay;
+  v15 = switcherController;
   [v12 setCompletionHandler:v16];
-  [v7 performDismissalRequest:v12];
+  [presentationManager performDismissalRequest:v12];
 }
 
 void __55__SBTransientOverlayDismissWorkspaceTransaction__begin__block_invoke_2(uint64_t a1)
@@ -77,47 +77,47 @@ void __55__SBTransientOverlayDismissWorkspaceTransaction__begin__block_invoke_2(
   [(SBTransientOverlayDismissWorkspaceTransaction *)self _sendActivationResultWithError:v3];
 }
 
-- (void)_sendActivationResultWithError:(id)a3
+- (void)_sendActivationResultWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v5 = [v4 applicationContext];
+  errorCopy = error;
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  applicationContext = [transitionRequest applicationContext];
 
-  if ([v5 needsToSendActivationResult])
+  if ([applicationContext needsToSendActivationResult])
   {
-    [v5 sendActivationResultError:v7];
+    [applicationContext sendActivationResultError:errorCopy];
     if ([(SBTransientOverlayDismissWorkspaceTransaction *)self isAuditHistoryEnabled])
     {
-      v6 = [v7 localizedFailureReason];
-      [(SBTransientOverlayDismissWorkspaceTransaction *)self _addAuditHistoryItem:@"Sent activation result; error = %@", v6];
+      localizedFailureReason = [errorCopy localizedFailureReason];
+      [(SBTransientOverlayDismissWorkspaceTransaction *)self _addAuditHistoryItem:@"Sent activation result; error = %@", localizedFailureReason];
     }
   }
 }
 
-+ (BOOL)isValidForTransitionRequest:(id)a3
++ (BOOL)isValidForTransitionRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 transientOverlayContext];
-  if ([v4 transitionType] == 1)
+  requestCopy = request;
+  transientOverlayContext = [requestCopy transientOverlayContext];
+  if ([transientOverlayContext transitionType] == 1)
   {
-    v5 = [v4 presentationManager];
-    v6 = [v4 transientOverlay];
-    if (v6)
+    presentationManager = [transientOverlayContext presentationManager];
+    transientOverlay = [transientOverlayContext transientOverlay];
+    if (transientOverlay)
     {
-      v7 = [SBApp windowSceneManager];
-      v8 = [v3 displayIdentity];
-      v9 = [v7 windowSceneForDisplayIdentity:v8];
+      windowSceneManager = [SBApp windowSceneManager];
+      displayIdentity = [requestCopy displayIdentity];
+      v9 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
-      v10 = [v9 switcherController];
-      v11 = [v6 viewController];
-      if ([v10 hasAppLayoutForTransientOverlayViewController:v11])
+      switcherController = [v9 switcherController];
+      viewController = [transientOverlay viewController];
+      if ([switcherController hasAppLayoutForTransientOverlayViewController:viewController])
       {
         v12 = 1;
       }
 
       else
       {
-        v12 = [v5 isPresentingViewController:v11];
+        v12 = [presentationManager isPresentingViewController:viewController];
       }
     }
 

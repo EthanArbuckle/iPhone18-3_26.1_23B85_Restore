@@ -8,13 +8,13 @@
 
 - (id)iconForInterfaceStyle:()IconAdditions
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v4 = v3;
 
   v8 = v4;
   [MEMORY[0x1E69DCAB8] _iconVariantForUIApplicationIconFormat:14 scale:&v8];
-  [a1 CGImage];
+  [self CGImage];
   v5 = LICreateIconForImage();
   v6 = [MEMORY[0x1E69DCAB8] imageWithCGImage:v5 scale:0 orientation:v8];
   CGImageRelease(v5);
@@ -58,8 +58,8 @@
     }
   }
 
-  v1 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v1 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v3 = v2;
 
   v8 = v3;

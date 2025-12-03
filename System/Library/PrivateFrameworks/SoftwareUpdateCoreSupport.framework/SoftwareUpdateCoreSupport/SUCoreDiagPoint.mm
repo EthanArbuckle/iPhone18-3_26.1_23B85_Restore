@@ -1,26 +1,26 @@
 @interface SUCoreDiagPoint
-- (SUCoreDiagPoint)initWithCoder:(id)a3;
+- (SUCoreDiagPoint)initWithCoder:(id)coder;
 - (id)_descriptionStandard;
 - (id)_descriptionStateEvent;
-- (id)_initFullySpecified:(int64_t)a3 fromLocation:(id)a4 forReason:(id)a5 withCode:(int64_t)a6 withError:(id)a7 previous:(id)a8 next:(id)a9 activity:(id)a10 param:(id)a11;
+- (id)_initFullySpecified:(int64_t)specified fromLocation:(id)location forReason:(id)reason withCode:(int64_t)code withError:(id)error previous:(id)previous next:(id)next activity:(id)self0 param:(id)self1;
 - (id)_summaryStandard;
 - (id)_summaryStateEvent;
 - (id)description;
 - (id)summary;
 - (id)typeName;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUCoreDiagPoint
 
 - (id)typeName
 {
-  v3 = [(SUCoreDiagPoint *)self trackType];
-  v4 = [(SUCoreDiagPoint *)self trackType];
-  if (v3)
+  trackType = [(SUCoreDiagPoint *)self trackType];
+  trackType2 = [(SUCoreDiagPoint *)self trackType];
+  if (trackType)
   {
     v5 = @"BEGIN";
-    if ((v4 & 2) != 0)
+    if ((trackType2 & 2) != 0)
     {
       [@"BEGIN" stringByAppendingString:@"|END"];
     }
@@ -28,7 +28,7 @@
 
   else
   {
-    if ((v4 & 2) == 0)
+    if ((trackType2 & 2) == 0)
     {
       v5 = (@"ERROR" & ([(SUCoreDiagPoint *)self trackType]<< 61 >> 63));
       goto LABEL_9;
@@ -116,75 +116,75 @@ LABEL_9:
 
 - (id)_descriptionStateEvent
 {
-  v3 = [(SUCoreDiagPoint *)self next];
+  next = [(SUCoreDiagPoint *)self next];
 
-  v4 = [(SUCoreDiagPoint *)self activity];
+  activity = [(SUCoreDiagPoint *)self activity];
 
-  if (!v3)
+  if (!next)
   {
-    if (!v4)
+    if (!activity)
     {
       v20 = MEMORY[0x1E696AEC0];
-      v7 = [(SUCoreDiagPoint *)self typeName];
-      v8 = [(SUCoreDiagPoint *)self location];
-      v9 = [(SUCoreDiagPoint *)self previous];
-      v10 = [(SUCoreDiagPoint *)self reason];
-      v15 = [v20 stringWithFormat:@"[%@(%@)] >S> %@ >E> %@", v7, v8, v9, v10];
+      typeName = [(SUCoreDiagPoint *)self typeName];
+      location = [(SUCoreDiagPoint *)self location];
+      previous = [(SUCoreDiagPoint *)self previous];
+      reason = [(SUCoreDiagPoint *)self reason];
+      v15 = [v20 stringWithFormat:@"[%@(%@)] >S> %@ >E> %@", typeName, location, previous, reason];
       goto LABEL_16;
     }
 
-    v16 = [(SUCoreDiagPoint *)self param];
+    param = [(SUCoreDiagPoint *)self param];
 
     v17 = MEMORY[0x1E696AEC0];
-    v7 = [(SUCoreDiagPoint *)self typeName];
-    v8 = [(SUCoreDiagPoint *)self location];
-    v9 = [(SUCoreDiagPoint *)self previous];
-    v10 = [(SUCoreDiagPoint *)self reason];
-    v18 = [(SUCoreDiagPoint *)self activity];
-    v11 = v18;
-    if (v16)
+    typeName = [(SUCoreDiagPoint *)self typeName];
+    location = [(SUCoreDiagPoint *)self location];
+    previous = [(SUCoreDiagPoint *)self previous];
+    reason = [(SUCoreDiagPoint *)self reason];
+    activity2 = [(SUCoreDiagPoint *)self activity];
+    next2 = activity2;
+    if (param)
     {
-      v13 = [(SUCoreDiagPoint *)self param];
-      [v17 stringWithFormat:@"[%@(%@)] >S> %@ >E> %@ >A> %@ info:%@", v7, v8, v9, v10, v11, v13];
+      param2 = [(SUCoreDiagPoint *)self param];
+      [v17 stringWithFormat:@"[%@(%@)] >S> %@ >E> %@ >A> %@ info:%@", typeName, location, previous, reason, next2, param2];
       v15 = LABEL_10:;
       goto LABEL_11;
     }
 
-    [v17 stringWithFormat:@"[%@(%@)] >S> %@ >E> %@ >A> %@", v7, v8, v9, v10, v18];
+    [v17 stringWithFormat:@"[%@(%@)] >S> %@ >E> %@ >A> %@", typeName, location, previous, reason, activity2];
     v15 = LABEL_14:;
     goto LABEL_15;
   }
 
-  if (!v4)
+  if (!activity)
   {
     v19 = MEMORY[0x1E696AEC0];
-    v7 = [(SUCoreDiagPoint *)self typeName];
-    v8 = [(SUCoreDiagPoint *)self location];
-    v9 = [(SUCoreDiagPoint *)self previous];
-    v10 = [(SUCoreDiagPoint *)self reason];
-    v11 = [(SUCoreDiagPoint *)self next];
-    [v19 stringWithFormat:@"[%@(%@)] >S> %@ >E> %@ >N> %@", v7, v8, v9, v10, v11];
+    typeName = [(SUCoreDiagPoint *)self typeName];
+    location = [(SUCoreDiagPoint *)self location];
+    previous = [(SUCoreDiagPoint *)self previous];
+    reason = [(SUCoreDiagPoint *)self reason];
+    next2 = [(SUCoreDiagPoint *)self next];
+    [v19 stringWithFormat:@"[%@(%@)] >S> %@ >E> %@ >N> %@", typeName, location, previous, reason, next2];
     goto LABEL_14;
   }
 
-  v5 = [(SUCoreDiagPoint *)self param];
+  param3 = [(SUCoreDiagPoint *)self param];
 
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(SUCoreDiagPoint *)self typeName];
-  v8 = [(SUCoreDiagPoint *)self location];
-  v9 = [(SUCoreDiagPoint *)self previous];
-  v10 = [(SUCoreDiagPoint *)self reason];
-  v11 = [(SUCoreDiagPoint *)self next];
-  v12 = [(SUCoreDiagPoint *)self activity];
-  v13 = v12;
-  if (!v5)
+  typeName = [(SUCoreDiagPoint *)self typeName];
+  location = [(SUCoreDiagPoint *)self location];
+  previous = [(SUCoreDiagPoint *)self previous];
+  reason = [(SUCoreDiagPoint *)self reason];
+  next2 = [(SUCoreDiagPoint *)self next];
+  activity3 = [(SUCoreDiagPoint *)self activity];
+  param2 = activity3;
+  if (!param3)
   {
-    [v6 stringWithFormat:@"[%@(%@)] >S> %@ >E> %@ >N> %@ >A> %@", v7, v8, v9, v10, v11, v12];
+    [v6 stringWithFormat:@"[%@(%@)] >S> %@ >E> %@ >N> %@ >A> %@", typeName, location, previous, reason, next2, activity3];
     goto LABEL_10;
   }
 
-  v14 = [(SUCoreDiagPoint *)self param];
-  v15 = [v6 stringWithFormat:@"[%@(%@)] >S> %@ >E> %@ >N> %@ >A> %@ info:%@", v7, v8, v9, v10, v11, v13, v14];
+  param4 = [(SUCoreDiagPoint *)self param];
+  v15 = [v6 stringWithFormat:@"[%@(%@)] >S> %@ >E> %@ >N> %@ >A> %@ info:%@", typeName, location, previous, reason, next2, param2, param4];
 
 LABEL_11:
 LABEL_15:
@@ -194,40 +194,40 @@ LABEL_16:
   return v15;
 }
 
-- (id)_initFullySpecified:(int64_t)a3 fromLocation:(id)a4 forReason:(id)a5 withCode:(int64_t)a6 withError:(id)a7 previous:(id)a8 next:(id)a9 activity:(id)a10 param:(id)a11
+- (id)_initFullySpecified:(int64_t)specified fromLocation:(id)location forReason:(id)reason withCode:(int64_t)code withError:(id)error previous:(id)previous next:(id)next activity:(id)self0 param:(id)self1
 {
-  v36 = a4;
-  v35 = a5;
-  v18 = a7;
-  v34 = a8;
-  v33 = a9;
-  v32 = a10;
-  v31 = a11;
+  locationCopy = location;
+  reasonCopy = reason;
+  errorCopy = error;
+  previousCopy = previous;
+  nextCopy = next;
+  activityCopy = activity;
+  paramCopy = param;
   v37.receiver = self;
   v37.super_class = SUCoreDiagPoint;
   v19 = [(SUCoreDiagPoint *)&v37 init];
   v20 = v19;
   if (v19)
   {
-    v19->_trackType = a3;
-    objc_storeStrong(&v19->_location, a4);
-    objc_storeStrong(&v20->_reason, a5);
-    v20->_code = a6;
-    if (v18)
+    v19->_trackType = specified;
+    objc_storeStrong(&v19->_location, location);
+    objc_storeStrong(&v20->_reason, reason);
+    v20->_code = code;
+    if (errorCopy)
     {
       v21 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v22 = [v18 checkedDescription];
-      v23 = [v21 initWithFormat:@"%@", v22];
+      checkedDescription = [errorCopy checkedDescription];
+      v23 = [v21 initWithFormat:@"%@", checkedDescription];
       errorDesc = v20->_errorDesc;
       v20->_errorDesc = v23;
 
-      v20->_checkedLayer = [v18 checkedLayer];
-      v20->_checkedCode = [v18 checkedCode];
-      v25 = [v18 checkedDomain];
+      v20->_checkedLayer = [errorCopy checkedLayer];
+      v20->_checkedCode = [errorCopy checkedCode];
+      checkedDomain = [errorCopy checkedDomain];
       checkedDomain = v20->_checkedDomain;
-      v20->_checkedDomain = v25;
+      v20->_checkedDomain = checkedDomain;
 
-      v27 = [v18 checkedIndications];
+      checkedIndications = [errorCopy checkedIndications];
     }
 
     else
@@ -240,61 +240,61 @@ LABEL_16:
       v29 = v20->_checkedDomain;
       v20->_checkedDomain = 0;
 
-      v27 = 0;
+      checkedIndications = 0;
     }
 
-    v20->_checkedIndications = v27;
-    objc_storeStrong(&v20->_previous, a8);
-    objc_storeStrong(&v20->_next, a9);
-    objc_storeStrong(&v20->_activity, a10);
-    objc_storeStrong(&v20->_param, a11);
+    v20->_checkedIndications = checkedIndications;
+    objc_storeStrong(&v20->_previous, previous);
+    objc_storeStrong(&v20->_next, next);
+    objc_storeStrong(&v20->_activity, activity);
+    objc_storeStrong(&v20->_param, param);
   }
 
   return v20;
 }
 
-- (SUCoreDiagPoint)initWithCoder:(id)a3
+- (SUCoreDiagPoint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = SUCoreDiagPoint;
   v5 = [(SUCoreDiagPoint *)&v23 init];
   if (v5)
   {
-    v5->_trackType = [v4 decodeInt64ForKey:@"trackType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+    v5->_trackType = [coderCopy decodeInt64ForKey:@"trackType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
     location = v5->_location;
     v5->_location = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reason"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reason"];
     reason = v5->_reason;
     v5->_reason = v8;
 
-    v5->_code = [v4 decodeInt64ForKey:@"code"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"errorDesc"];
+    v5->_code = [coderCopy decodeInt64ForKey:@"code"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"errorDesc"];
     errorDesc = v5->_errorDesc;
     v5->_errorDesc = v10;
 
-    v5->_checkedLayer = [v4 decodeInt64ForKey:@"checkedLayer"];
-    v5->_checkedCode = [v4 decodeInt64ForKey:@"checkedCode"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"checkedDomain"];
+    v5->_checkedLayer = [coderCopy decodeInt64ForKey:@"checkedLayer"];
+    v5->_checkedCode = [coderCopy decodeInt64ForKey:@"checkedCode"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"checkedDomain"];
     checkedDomain = v5->_checkedDomain;
     v5->_checkedDomain = v12;
 
-    v5->_checkedIndications = [v4 decodeInt64ForKey:@"checkedIndications"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"previous"];
+    v5->_checkedIndications = [coderCopy decodeInt64ForKey:@"checkedIndications"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"previous"];
     previous = v5->_previous;
     v5->_previous = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"next"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"next"];
     next = v5->_next;
     v5->_next = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"activity"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"activity"];
     activity = v5->_activity;
     v5->_activity = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"param"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"param"];
     param = v5->_param;
     v5->_param = v20;
   }
@@ -302,23 +302,23 @@ LABEL_16:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   trackType = self->_trackType;
-  v5 = a3;
-  [v5 encodeInt64:trackType forKey:@"trackType"];
-  [v5 encodeObject:self->_location forKey:@"location"];
-  [v5 encodeObject:self->_reason forKey:@"reason"];
-  [v5 encodeInt64:self->_code forKey:@"code"];
-  [v5 encodeObject:self->_errorDesc forKey:@"errorDesc"];
-  [v5 encodeInt64:self->_checkedLayer forKey:@"checkedLayer"];
-  [v5 encodeInt64:self->_checkedCode forKey:@"checkedCode"];
-  [v5 encodeObject:self->_checkedDomain forKey:@"checkedDomain"];
-  [v5 encodeInt64:self->_checkedIndications forKey:@"checkedIndications"];
-  [v5 encodeObject:self->_previous forKey:@"previous"];
-  [v5 encodeObject:self->_next forKey:@"next"];
-  [v5 encodeObject:self->_activity forKey:@"activity"];
-  [v5 encodeObject:self->_param forKey:@"param"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:trackType forKey:@"trackType"];
+  [coderCopy encodeObject:self->_location forKey:@"location"];
+  [coderCopy encodeObject:self->_reason forKey:@"reason"];
+  [coderCopy encodeInt64:self->_code forKey:@"code"];
+  [coderCopy encodeObject:self->_errorDesc forKey:@"errorDesc"];
+  [coderCopy encodeInt64:self->_checkedLayer forKey:@"checkedLayer"];
+  [coderCopy encodeInt64:self->_checkedCode forKey:@"checkedCode"];
+  [coderCopy encodeObject:self->_checkedDomain forKey:@"checkedDomain"];
+  [coderCopy encodeInt64:self->_checkedIndications forKey:@"checkedIndications"];
+  [coderCopy encodeObject:self->_previous forKey:@"previous"];
+  [coderCopy encodeObject:self->_next forKey:@"next"];
+  [coderCopy encodeObject:self->_activity forKey:@"activity"];
+  [coderCopy encodeObject:self->_param forKey:@"param"];
 }
 
 - (id)summary
@@ -340,115 +340,115 @@ LABEL_16:
 - (id)_summaryStateEvent
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(SUCoreDiagPoint *)self typeName];
-  v5 = [(SUCoreDiagPoint *)self location];
-  v6 = [(SUCoreDiagPoint *)self previous];
-  v7 = [(SUCoreDiagPoint *)self reason];
-  v8 = [(SUCoreDiagPoint *)self next];
-  v9 = [(SUCoreDiagPoint *)self activity];
-  v10 = [(SUCoreDiagPoint *)self param];
-  v11 = [v3 stringWithFormat:@"trackType:%@ fsmName:%@ previousState:%@ fsmEvent:%@ nextState:%@ fsmAction:%@ eventInfo:%@", v4, v5, v6, v7, v8, v9, v10];
+  typeName = [(SUCoreDiagPoint *)self typeName];
+  location = [(SUCoreDiagPoint *)self location];
+  previous = [(SUCoreDiagPoint *)self previous];
+  reason = [(SUCoreDiagPoint *)self reason];
+  next = [(SUCoreDiagPoint *)self next];
+  activity = [(SUCoreDiagPoint *)self activity];
+  param = [(SUCoreDiagPoint *)self param];
+  v11 = [v3 stringWithFormat:@"trackType:%@ fsmName:%@ previousState:%@ fsmEvent:%@ nextState:%@ fsmAction:%@ eventInfo:%@", typeName, location, previous, reason, next, activity, param];
 
   return v11;
 }
 
 - (id)_descriptionStandard
 {
-  v3 = [(SUCoreDiagPoint *)self reason];
+  reason = [(SUCoreDiagPoint *)self reason];
 
-  v4 = [(SUCoreDiagPoint *)self errorDesc];
+  errorDesc = [(SUCoreDiagPoint *)self errorDesc];
 
-  if (v3)
+  if (reason)
   {
-    if (v4)
+    if (errorDesc)
     {
       if ([(SUCoreDiagPoint *)self checkedLayer])
       {
-        v5 = [(SUCoreDiagPoint *)self checkedLayer];
+        checkedLayer = [(SUCoreDiagPoint *)self checkedLayer];
         v6 = MEMORY[0x1E696AEC0];
-        v7 = [(SUCoreDiagPoint *)self typeName];
-        v8 = [(SUCoreDiagPoint *)self location];
-        v9 = [(SUCoreDiagPoint *)self reason];
-        v10 = [(SUCoreDiagPoint *)self code];
-        v11 = [(SUCoreDiagPoint *)self errorDesc];
-        if (v5 > 10)
+        typeName = [(SUCoreDiagPoint *)self typeName];
+        location = [(SUCoreDiagPoint *)self location];
+        reason2 = [(SUCoreDiagPoint *)self reason];
+        code = [(SUCoreDiagPoint *)self code];
+        errorDesc2 = [(SUCoreDiagPoint *)self errorDesc];
+        if (checkedLayer > 10)
         {
           v34 = v6;
           v22 = [SUCoreErrorInformation nameForSUCoreLayer:[(SUCoreDiagPoint *)self checkedLayer]];
-          v23 = [(SUCoreDiagPoint *)self checkedCode];
-          v24 = [(SUCoreDiagPoint *)self checkedDomain];
+          checkedCode = [(SUCoreDiagPoint *)self checkedCode];
+          checkedDomain = [(SUCoreDiagPoint *)self checkedDomain];
           v25 = [SUCoreErrorInformation summaryOfIndications:[(SUCoreDiagPoint *)self checkedIndications]];
-          v12 = [v34 stringWithFormat:@"[%@(%@) %@] code:%ld error:%@ | checked(%@) code:%ld domain:%@ indications:%@", v7, v8, v9, v10, v11, v22, v23, v24, v25];
+          v12 = [v34 stringWithFormat:@"[%@(%@) %@] code:%ld error:%@ | checked(%@) code:%ld domain:%@ indications:%@", typeName, location, reason2, code, errorDesc2, v22, checkedCode, checkedDomain, v25];
         }
 
         else
         {
-          v12 = [v6 stringWithFormat:@"[%@(%@) %@] code:%ld error:%@ | checked(%ld)", v7, v8, v9, v10, v11, -[SUCoreDiagPoint checkedLayer](self, "checkedLayer")];
+          v12 = [v6 stringWithFormat:@"[%@(%@) %@] code:%ld error:%@ | checked(%ld)", typeName, location, reason2, code, errorDesc2, -[SUCoreDiagPoint checkedLayer](self, "checkedLayer")];
         }
 
         goto LABEL_18;
       }
 
       v18 = MEMORY[0x1E696AEC0];
-      v7 = [(SUCoreDiagPoint *)self typeName];
-      v8 = [(SUCoreDiagPoint *)self location];
-      v17 = [(SUCoreDiagPoint *)self reason];
-      v19 = [(SUCoreDiagPoint *)self code];
-      v20 = [(SUCoreDiagPoint *)self errorDesc];
-      v12 = [v18 stringWithFormat:@"[%@(%@) %@] code:%ld error:%@", v7, v8, v17, v19, v20];
+      typeName = [(SUCoreDiagPoint *)self typeName];
+      location = [(SUCoreDiagPoint *)self location];
+      reason3 = [(SUCoreDiagPoint *)self reason];
+      code2 = [(SUCoreDiagPoint *)self code];
+      errorDesc3 = [(SUCoreDiagPoint *)self errorDesc];
+      v12 = [v18 stringWithFormat:@"[%@(%@) %@] code:%ld error:%@", typeName, location, reason3, code2, errorDesc3];
     }
 
     else
     {
       v16 = MEMORY[0x1E696AEC0];
-      v7 = [(SUCoreDiagPoint *)self typeName];
-      v8 = [(SUCoreDiagPoint *)self location];
-      v17 = [(SUCoreDiagPoint *)self reason];
-      v12 = [v16 stringWithFormat:@"[%@(%@) %@] code:%ld", v7, v8, v17, -[SUCoreDiagPoint code](self, "code")];
+      typeName = [(SUCoreDiagPoint *)self typeName];
+      location = [(SUCoreDiagPoint *)self location];
+      reason3 = [(SUCoreDiagPoint *)self reason];
+      v12 = [v16 stringWithFormat:@"[%@(%@) %@] code:%ld", typeName, location, reason3, -[SUCoreDiagPoint code](self, "code")];
     }
 
     goto LABEL_19;
   }
 
-  if (!v4)
+  if (!errorDesc)
   {
     v21 = MEMORY[0x1E696AEC0];
-    v7 = [(SUCoreDiagPoint *)self typeName];
-    v8 = [(SUCoreDiagPoint *)self location];
-    v12 = [v21 stringWithFormat:@"[%@(%@)] code:%ld", v7, v8, -[SUCoreDiagPoint code](self, "code")];
+    typeName = [(SUCoreDiagPoint *)self typeName];
+    location = [(SUCoreDiagPoint *)self location];
+    v12 = [v21 stringWithFormat:@"[%@(%@)] code:%ld", typeName, location, -[SUCoreDiagPoint code](self, "code")];
     goto LABEL_19;
   }
 
   if (![(SUCoreDiagPoint *)self checkedLayer])
   {
     v26 = MEMORY[0x1E696AEC0];
-    v7 = [(SUCoreDiagPoint *)self typeName];
-    v8 = [(SUCoreDiagPoint *)self location];
-    v27 = [(SUCoreDiagPoint *)self code];
-    v28 = [(SUCoreDiagPoint *)self errorDesc];
-    v12 = [v26 stringWithFormat:@"[%@(%@)] code:%ld error:%@", v7, v8, v27, v28];
+    typeName = [(SUCoreDiagPoint *)self typeName];
+    location = [(SUCoreDiagPoint *)self location];
+    code3 = [(SUCoreDiagPoint *)self code];
+    errorDesc4 = [(SUCoreDiagPoint *)self errorDesc];
+    v12 = [v26 stringWithFormat:@"[%@(%@)] code:%ld error:%@", typeName, location, code3, errorDesc4];
 
     goto LABEL_19;
   }
 
-  v13 = [(SUCoreDiagPoint *)self checkedLayer];
+  checkedLayer2 = [(SUCoreDiagPoint *)self checkedLayer];
   v14 = MEMORY[0x1E696AEC0];
-  v7 = [(SUCoreDiagPoint *)self typeName];
-  v8 = [(SUCoreDiagPoint *)self location];
-  v15 = [(SUCoreDiagPoint *)self code];
-  v9 = [(SUCoreDiagPoint *)self errorDesc];
-  if (v13 > 10)
+  typeName = [(SUCoreDiagPoint *)self typeName];
+  location = [(SUCoreDiagPoint *)self location];
+  code4 = [(SUCoreDiagPoint *)self code];
+  reason2 = [(SUCoreDiagPoint *)self errorDesc];
+  if (checkedLayer2 > 10)
   {
     v29 = [SUCoreErrorInformation nameForSUCoreLayer:[(SUCoreDiagPoint *)self checkedLayer]];
-    v30 = [(SUCoreDiagPoint *)self checkedCode];
-    v31 = [(SUCoreDiagPoint *)self checkedDomain];
+    checkedCode2 = [(SUCoreDiagPoint *)self checkedCode];
+    checkedDomain2 = [(SUCoreDiagPoint *)self checkedDomain];
     v32 = [SUCoreErrorInformation summaryOfIndications:[(SUCoreDiagPoint *)self checkedIndications]];
-    v12 = [v14 stringWithFormat:@"[%@(%@)] code:%ld error:%@ | checked(%@) code:%ld domain:%@ indications:%@", v7, v8, v15, v9, v29, v30, v31, v32];
+    v12 = [v14 stringWithFormat:@"[%@(%@)] code:%ld error:%@ | checked(%@) code:%ld domain:%@ indications:%@", typeName, location, code4, reason2, v29, checkedCode2, checkedDomain2, v32];
   }
 
   else
   {
-    v12 = [v14 stringWithFormat:@"[%@(%@)] code:%ld error:%@ | checked(%ld)", v7, v8, v15, v9, -[SUCoreDiagPoint checkedLayer](self, "checkedLayer")];
+    v12 = [v14 stringWithFormat:@"[%@(%@)] code:%ld error:%@ | checked(%ld)", typeName, location, code4, reason2, -[SUCoreDiagPoint checkedLayer](self, "checkedLayer")];
   }
 
 LABEL_18:
@@ -460,52 +460,52 @@ LABEL_19:
 
 - (id)_summaryStandard
 {
-  v3 = [(SUCoreDiagPoint *)self errorDesc];
+  errorDesc = [(SUCoreDiagPoint *)self errorDesc];
 
-  if (v3)
+  if (errorDesc)
   {
     if ([(SUCoreDiagPoint *)self checkedLayer])
     {
-      v4 = [(SUCoreDiagPoint *)self checkedLayer];
+      checkedLayer = [(SUCoreDiagPoint *)self checkedLayer];
       v5 = MEMORY[0x1E696AEC0];
-      v6 = [(SUCoreDiagPoint *)self typeName];
-      v7 = [(SUCoreDiagPoint *)self location];
-      v8 = [(SUCoreDiagPoint *)self reason];
-      v9 = [(SUCoreDiagPoint *)self code];
-      v10 = [(SUCoreDiagPoint *)self errorDesc];
-      if (v4 > 10)
+      typeName = [(SUCoreDiagPoint *)self typeName];
+      location = [(SUCoreDiagPoint *)self location];
+      reason = [(SUCoreDiagPoint *)self reason];
+      code = [(SUCoreDiagPoint *)self code];
+      errorDesc2 = [(SUCoreDiagPoint *)self errorDesc];
+      if (checkedLayer > 10)
       {
         v16 = [SUCoreErrorInformation nameForSUCoreLayer:[(SUCoreDiagPoint *)self checkedLayer]];
-        v17 = [(SUCoreDiagPoint *)self checkedCode];
-        v18 = [(SUCoreDiagPoint *)self checkedDomain];
-        v11 = [v5 stringWithFormat:@"trackType:%@ location:%@ reason:%@ code:%ld error:%@ | checked(%@) code:%ld domain:%@", v6, v7, v8, v9, v10, v16, v17, v18];
+        checkedCode = [(SUCoreDiagPoint *)self checkedCode];
+        checkedDomain = [(SUCoreDiagPoint *)self checkedDomain];
+        v11 = [v5 stringWithFormat:@"trackType:%@ location:%@ reason:%@ code:%ld error:%@ | checked(%@) code:%ld domain:%@", typeName, location, reason, code, errorDesc2, v16, checkedCode, checkedDomain];
       }
 
       else
       {
-        v11 = [v5 stringWithFormat:@"trackType:%@ location:%@ reason:%@ code:%ld error:%@ | checked(%ld)", v6, v7, v8, v9, v10, -[SUCoreDiagPoint checkedLayer](self, "checkedLayer")];
+        v11 = [v5 stringWithFormat:@"trackType:%@ location:%@ reason:%@ code:%ld error:%@ | checked(%ld)", typeName, location, reason, code, errorDesc2, -[SUCoreDiagPoint checkedLayer](self, "checkedLayer")];
       }
     }
 
     else
     {
       v13 = MEMORY[0x1E696AEC0];
-      v6 = [(SUCoreDiagPoint *)self typeName];
-      v7 = [(SUCoreDiagPoint *)self location];
-      v8 = [(SUCoreDiagPoint *)self reason];
-      v14 = [(SUCoreDiagPoint *)self code];
-      v15 = [(SUCoreDiagPoint *)self errorDesc];
-      v11 = [v13 stringWithFormat:@"trackType:%@ location:%@ reason:%@ code:%ld error:%@", v6, v7, v8, v14, v15];
+      typeName = [(SUCoreDiagPoint *)self typeName];
+      location = [(SUCoreDiagPoint *)self location];
+      reason = [(SUCoreDiagPoint *)self reason];
+      code2 = [(SUCoreDiagPoint *)self code];
+      errorDesc3 = [(SUCoreDiagPoint *)self errorDesc];
+      v11 = [v13 stringWithFormat:@"trackType:%@ location:%@ reason:%@ code:%ld error:%@", typeName, location, reason, code2, errorDesc3];
     }
   }
 
   else
   {
     v12 = MEMORY[0x1E696AEC0];
-    v6 = [(SUCoreDiagPoint *)self typeName];
-    v7 = [(SUCoreDiagPoint *)self location];
-    v8 = [(SUCoreDiagPoint *)self reason];
-    v11 = [v12 stringWithFormat:@"trackType:%@ location:%@ reason:%@ code:%ld", v6, v7, v8, -[SUCoreDiagPoint code](self, "code")];
+    typeName = [(SUCoreDiagPoint *)self typeName];
+    location = [(SUCoreDiagPoint *)self location];
+    reason = [(SUCoreDiagPoint *)self reason];
+    v11 = [v12 stringWithFormat:@"trackType:%@ location:%@ reason:%@ code:%ld", typeName, location, reason, -[SUCoreDiagPoint code](self, "code")];
   }
 
   return v11;

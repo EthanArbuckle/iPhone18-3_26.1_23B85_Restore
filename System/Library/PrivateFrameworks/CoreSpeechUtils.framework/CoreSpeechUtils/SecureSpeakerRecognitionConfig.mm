@@ -1,7 +1,7 @@
 @interface SecureSpeakerRecognitionConfig
 - (NSArray)phraseConfig;
 - (SecureSpeakerRecognitionConfig)init;
-- (SecureSpeakerRecognitionConfig)initWithNumPruningRetentionUtt:(int64_t)a3 pruningExplicitSATThreshold:(float)a4 pruningExplicitPSRThreshold:(float)a5 pruningSATThreshold:(float)a6 pruningPSRThreshold:(float)a7 combinationWeight:(float)a8 implicitProfileThreshold:(float)a9 implicitProfileDeltaThreshold:(float)a10 implicitVTThreshold:(float)a11 maxEnrollmentUtterances:(int64_t)a12 implicitTrainingEnabled:(BOOL)a13 useTDTIEnrollment:(BOOL)a14 phraseConfig:(id)a15 satMemoryIndex:(id)a16 psrMemoryIndex:(id)a17 satConfig:(id)a18 psrConfig:(id)a19 audioDurationProcessIntervalInMillis:(int64_t)a20 minAudioDurationInMillis:(int64_t)a21 maxAudioDurationInMillis:(int64_t)a22;
+- (SecureSpeakerRecognitionConfig)initWithNumPruningRetentionUtt:(int64_t)utt pruningExplicitSATThreshold:(float)threshold pruningExplicitPSRThreshold:(float)rThreshold pruningSATThreshold:(float)tThreshold pruningPSRThreshold:(float)sRThreshold combinationWeight:(float)weight implicitProfileThreshold:(float)profileThreshold implicitProfileDeltaThreshold:(float)self0 implicitVTThreshold:(float)self1 maxEnrollmentUtterances:(int64_t)self2 implicitTrainingEnabled:(BOOL)self3 useTDTIEnrollment:(BOOL)self4 phraseConfig:(id)self5 satMemoryIndex:(id)self6 psrMemoryIndex:(id)self7 satConfig:(id)self8 psrConfig:(id)self9 audioDurationProcessIntervalInMillis:(int64_t)millis minAudioDurationInMillis:(int64_t)inMillis maxAudioDurationInMillis:(int64_t)durationInMillis;
 @end
 
 @implementation SecureSpeakerRecognitionConfig
@@ -23,9 +23,9 @@
   return v2;
 }
 
-- (SecureSpeakerRecognitionConfig)initWithNumPruningRetentionUtt:(int64_t)a3 pruningExplicitSATThreshold:(float)a4 pruningExplicitPSRThreshold:(float)a5 pruningSATThreshold:(float)a6 pruningPSRThreshold:(float)a7 combinationWeight:(float)a8 implicitProfileThreshold:(float)a9 implicitProfileDeltaThreshold:(float)a10 implicitVTThreshold:(float)a11 maxEnrollmentUtterances:(int64_t)a12 implicitTrainingEnabled:(BOOL)a13 useTDTIEnrollment:(BOOL)a14 phraseConfig:(id)a15 satMemoryIndex:(id)a16 psrMemoryIndex:(id)a17 satConfig:(id)a18 psrConfig:(id)a19 audioDurationProcessIntervalInMillis:(int64_t)a20 minAudioDurationInMillis:(int64_t)a21 maxAudioDurationInMillis:(int64_t)a22
+- (SecureSpeakerRecognitionConfig)initWithNumPruningRetentionUtt:(int64_t)utt pruningExplicitSATThreshold:(float)threshold pruningExplicitPSRThreshold:(float)rThreshold pruningSATThreshold:(float)tThreshold pruningPSRThreshold:(float)sRThreshold combinationWeight:(float)weight implicitProfileThreshold:(float)profileThreshold implicitProfileDeltaThreshold:(float)self0 implicitVTThreshold:(float)self1 maxEnrollmentUtterances:(int64_t)self2 implicitTrainingEnabled:(BOOL)self3 useTDTIEnrollment:(BOOL)self4 phraseConfig:(id)self5 satMemoryIndex:(id)self6 psrMemoryIndex:(id)self7 satConfig:(id)self8 psrConfig:(id)self9 audioDurationProcessIntervalInMillis:(int64_t)millis minAudioDurationInMillis:(int64_t)inMillis maxAudioDurationInMillis:(int64_t)durationInMillis
 {
-  if (a15)
+  if (config)
   {
     type metadata accessor for SecureSpeakerRecognitionPhraseConfig(self);
     v44 = sub_247994FB4();
@@ -36,24 +36,24 @@
     v44 = 0;
   }
 
-  v31 = a16;
-  v32 = a17;
-  if (a18)
+  indexCopy = index;
+  memoryIndexCopy = memoryIndex;
+  if (satConfig)
   {
-    v33 = a18;
-    v34 = a19;
+    satConfigCopy = satConfig;
+    psrConfigCopy = psrConfig;
     v35 = sub_247994C54();
     v37 = v36;
   }
 
   else
   {
-    v38 = a19;
+    psrConfigCopy2 = psrConfig;
     v35 = 0;
     v37 = 0xF000000000000000;
   }
 
-  if (a19)
+  if (psrConfig)
   {
     v39 = sub_247994C54();
     v41 = v40;
@@ -65,7 +65,7 @@
     v41 = 0xF000000000000000;
   }
 
-  v42 = sub_24798F464(a3, a12, a13, a14, v44, v31, v32, v35, a4, a5, a6, a7, a8, a9, a10, a11, v37, v39, v41, a20, a21, a22);
+  v42 = sub_24798F464(utt, utterances, enabled, enrollment, v44, indexCopy, memoryIndexCopy, v35, threshold, rThreshold, tThreshold, sRThreshold, weight, profileThreshold, deltaThreshold, vTThreshold, v37, v39, v41, millis, inMillis, durationInMillis);
   sub_247978BF0(v39, v41);
   sub_247978BF0(v35, v37);
 

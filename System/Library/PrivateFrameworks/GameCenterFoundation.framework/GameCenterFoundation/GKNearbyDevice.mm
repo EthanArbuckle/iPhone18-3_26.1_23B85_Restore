@@ -1,15 +1,15 @@
 @interface GKNearbyDevice
-+ (id)nearbyDeviceWithID:(id)a3;
-- (void)sendDictionary:(id)a3 withCompletionHandler:(id)a4;
++ (id)nearbyDeviceWithID:(id)d;
+- (void)sendDictionary:(id)dictionary withCompletionHandler:(id)handler;
 @end
 
 @implementation GKNearbyDevice
 
-+ (id)nearbyDeviceWithID:(id)a3
++ (id)nearbyDeviceWithID:(id)d
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setDeviceID:v4];
+  dCopy = d;
+  v5 = objc_alloc_init(self);
+  [v5 setDeviceID:dCopy];
 
   [v5 setState:0];
   [v5 setUsePeerDiscovery:0];
@@ -17,11 +17,11 @@
   return v5;
 }
 
-- (void)sendDictionary:(id)a3 withCompletionHandler:(id)a4
+- (void)sendDictionary:(id)dictionary withCompletionHandler:(id)handler
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -34,21 +34,21 @@
     _os_log_impl(&dword_227904000, v9, OS_LOG_TYPE_INFO, "GKMatchMaker+Nearby: sendDictionary:", buf, 2u);
   }
 
-  v10 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v6];
-  v11 = [MEMORY[0x277CCAD78] UUID];
-  v12 = [v11 UUIDString];
-  [v10 setObject:v12 forKeyedSubscript:@"UUID"];
+  v10 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:dictionaryCopy];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [v10 setObject:uUIDString forKeyedSubscript:@"UUID"];
 
   v13 = +[GKLocalPlayer localPlayer];
-  v14 = [v13 internal];
-  v15 = [v14 playerID];
+  internal = [v13 internal];
+  playerID = [internal playerID];
 
-  if (v15)
+  if (playerID)
   {
-    [v10 setObject:v15 forKey:@"playerID"];
+    [v10 setObject:playerID forKey:@"playerID"];
   }
 
-  v16 = [(GKNearbyDevice *)self deviceID];
+  deviceID = [(GKNearbyDevice *)self deviceID];
   v37 = 0;
   v17 = [MEMORY[0x277CCAC58] dataWithPropertyList:v10 format:200 options:0 error:&v37];
   v18 = v37;
@@ -62,19 +62,19 @@
     v30 = os_log_GKMatch;
     if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_ERROR))
     {
-      [(GKNearbyDevice *)v30 sendDictionary:v6 withCompletionHandler:v18];
-      if (!v7)
+      [(GKNearbyDevice *)v30 sendDictionary:dictionaryCopy withCompletionHandler:v18];
+      if (!handlerCopy)
       {
         goto LABEL_22;
       }
     }
 
-    else if (!v7)
+    else if (!handlerCopy)
     {
       goto LABEL_22;
     }
 
-    v7[2](v7, v18);
+    handlerCopy[2](handlerCopy, v18);
     goto LABEL_22;
   }
 
@@ -96,32 +96,32 @@
     v21 = GKOSLoggers();
   }
 
-  v22 = v7;
+  v22 = handlerCopy;
   v23 = os_log_GKMatch;
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     v24 = v23;
-    v25 = [GKMatchmaker descriptionForNearbyDictionary:v6];
+    v25 = [GKMatchmaker descriptionForNearbyDictionary:dictionaryCopy];
     *buf = 138412546;
     v39 = v25;
     v40 = 2112;
-    v41 = v16;
+    v41 = deviceID;
     _os_log_impl(&dword_227904000, v24, OS_LOG_TYPE_INFO, "Sending dictionary %@ to deviceID: %@", buf, 0x16u);
   }
 
   v26 = +[GKDaemonProxy proxyForLocalPlayer];
-  v27 = [v26 multiplayerService];
-  v28 = [(GKNearbyDevice *)self usePeerDiscovery];
+  multiplayerService = [v26 multiplayerService];
+  usePeerDiscovery = [(GKNearbyDevice *)self usePeerDiscovery];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __55__GKNearbyDevice_sendDictionary_withCompletionHandler___block_invoke;
   v33[3] = &unk_2785DDC60;
-  v34 = v6;
-  v35 = v16;
+  v34 = dictionaryCopy;
+  v35 = deviceID;
   v36 = v22;
-  [v27 sendDataToParticipant:0 deviceID:v35 data:v17 usePeerDiscovery:v28 handler:v33];
+  [multiplayerService sendDataToParticipant:0 deviceID:v35 data:v17 usePeerDiscovery:usePeerDiscovery handler:v33];
 
-  v7 = v22;
+  handlerCopy = v22;
   v18 = v32;
 LABEL_22:
 

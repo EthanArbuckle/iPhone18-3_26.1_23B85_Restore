@@ -9,13 +9,13 @@
   if (MEMORY[0x1E6913230]())
   {
 
-    return [a1 setPreferredSearchBarPlacement:2];
+    return [self setPreferredSearchBarPlacement:2];
   }
 
   else
   {
 
-    return [a1 _dci_setPreferredSearchBarPlacement:2];
+    return [self _dci_setPreferredSearchBarPlacement:2];
   }
 }
 

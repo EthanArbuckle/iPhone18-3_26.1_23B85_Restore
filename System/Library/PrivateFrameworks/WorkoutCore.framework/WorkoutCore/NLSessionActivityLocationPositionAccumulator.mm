@@ -1,17 +1,17 @@
 @interface NLSessionActivityLocationPositionAccumulator
-- (NLSessionActivityLocationPositionAccumulator)initWithBuilder:(id)a3;
+- (NLSessionActivityLocationPositionAccumulator)initWithBuilder:(id)builder;
 - (NSArray)locationPoints;
 - (NSDictionary)metadata;
 - (NSTimer)invalidationTimer;
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4;
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler;
 - (void)accumulatorDidStop;
-- (void)didUpdate:(id)a3;
-- (void)locationDidUpdateWithLocations:(id)a3 locationManager:(id)a4;
-- (void)queryForPointsWithTimestampAnchor:(double)a3 numberOfPoints:(int64_t)a4 completion:(id)a5;
-- (void)recoverLocationsFromStartDate:(id)a3 healthStore:(id)a4 workoutUUID:(id)a5;
-- (void)recoverWith:(id)a3 metadata:(id)a4;
-- (void)setInvalidationTimer:(id)a3;
-- (void)setLocationPoints:(id)a3;
+- (void)didUpdate:(id)update;
+- (void)locationDidUpdateWithLocations:(id)locations locationManager:(id)manager;
+- (void)queryForPointsWithTimestampAnchor:(double)anchor numberOfPoints:(int64_t)points completion:(id)completion;
+- (void)recoverLocationsFromStartDate:(id)date healthStore:(id)store workoutUUID:(id)d;
+- (void)recoverWith:(id)with metadata:(id)metadata;
+- (void)setInvalidationTimer:(id)timer;
+- (void)setLocationPoints:(id)points;
 @end
 
 @implementation NLSessionActivityLocationPositionAccumulator
@@ -23,13 +23,13 @@
   return *(self + v3);
 }
 
-- (void)setInvalidationTimer:(id)a3
+- (void)setInvalidationTimer:(id)timer
 {
   v5 = OBJC_IVAR___NLSessionActivityLocationPositionAccumulator_invalidationTimer;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = timer;
+  timerCopy = timer;
 }
 
 - (NSArray)locationPoints
@@ -44,7 +44,7 @@
   return v5.super.isa;
 }
 
-- (void)setLocationPoints:(id)a3
+- (void)setLocationPoints:(id)points
 {
   _sSo10CLLocationCMaTm_0(0, &lazy cache variable for type metadata for CLLocation, 0x277CE41F8);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -54,14 +54,14 @@
   *(self + v5) = v4;
 }
 
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4DateVSgMd, &_s10Foundation4DateVSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8);
   v10 = &v16 - v9;
-  v11 = _Block_copy(a4);
-  if (a3)
+  v11 = _Block_copy(handler);
+  if (date)
   {
     static Date._unconditionallyBridgeFromObjectiveC(_:)();
     v12 = type metadata accessor for Date();
@@ -86,7 +86,7 @@
     v14 = 0;
   }
 
-  v15 = self;
+  selfCopy = self;
   LocationPositionAccumulator.accumulatorDidStart(withStart:handler:)(v10, v11, v14);
   _sSaySo12CLRoutePointCGIegg_SgWOe_0(v11);
 
@@ -95,11 +95,11 @@
 
 - (void)accumulatorDidStop
 {
-  v2 = self;
+  selfCopy = self;
   LocationPositionAccumulator.accumulatorDidStop()();
 }
 
-- (void)recoverLocationsFromStartDate:(id)a3 healthStore:(id)a4 workoutUUID:(id)a5
+- (void)recoverLocationsFromStartDate:(id)date healthStore:(id)store workoutUUID:(id)d
 {
   v7 = type metadata accessor for UUID();
   v8 = *(v7 - 8);
@@ -113,40 +113,40 @@
   v16 = &v19 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Date._unconditionallyBridgeFromObjectiveC(_:)();
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v17 = a4;
-  v18 = self;
-  LocationPositionAccumulator.recoverLocations(fromStartDate:healthStore:workoutUUID:)(v18, v17);
+  storeCopy = store;
+  selfCopy = self;
+  LocationPositionAccumulator.recoverLocations(fromStartDate:healthStore:workoutUUID:)(selfCopy, storeCopy);
 
   (*(v8 + 8))(v11, v7);
   (*(v13 + 8))(v16, v12);
 }
 
-- (NLSessionActivityLocationPositionAccumulator)initWithBuilder:(id)a3
+- (NLSessionActivityLocationPositionAccumulator)initWithBuilder:(id)builder
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)locationDidUpdateWithLocations:(id)a3 locationManager:(id)a4
+- (void)locationDidUpdateWithLocations:(id)locations locationManager:(id)manager
 {
   _sSo10CLLocationCMaTm_0(0, &lazy cache variable for type metadata for CLLocation, 0x277CE41F8);
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = self;
+  selfCopy = self;
   LocationPositionAccumulator.process(locations:)(v5);
 }
 
-- (void)queryForPointsWithTimestampAnchor:(double)a3 numberOfPoints:(int64_t)a4 completion:(id)a5
+- (void)queryForPointsWithTimestampAnchor:(double)anchor numberOfPoints:(int64_t)points completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     *(swift_allocObject() + 16) = v8;
     v8 = partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned NSArray) -> ();
   }
 
-  v9 = self;
-  LocationPositionAccumulator.queryForPoints(timestampAnchor:numberOfPoints:completion:)(a4, v8, a3);
+  selfCopy = self;
+  LocationPositionAccumulator.queryForPoints(timestampAnchor:numberOfPoints:completion:)(points, v8, anchor);
   _sSaySo12CLRoutePointCGIegg_SgWOe_0(v8);
 }
 
@@ -174,18 +174,18 @@
   return v7.super.isa;
 }
 
-- (void)didUpdate:(id)a3
+- (void)didUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
-  LocationPositionAccumulator.didUpdate(_:)(v4);
+  updateCopy = update;
+  selfCopy = self;
+  LocationPositionAccumulator.didUpdate(_:)(updateCopy);
 }
 
-- (void)recoverWith:(id)a3 metadata:(id)a4
+- (void)recoverWith:(id)with metadata:(id)metadata
 {
-  v5 = a3;
-  v6 = self;
-  specialized LocationPositionAccumulator.recover(with:metadata:)(v5);
+  withCopy = with;
+  selfCopy = self;
+  specialized LocationPositionAccumulator.recover(with:metadata:)(withCopy);
 }
 
 @end

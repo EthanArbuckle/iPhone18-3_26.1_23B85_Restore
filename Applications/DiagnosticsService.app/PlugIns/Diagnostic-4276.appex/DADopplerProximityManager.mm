@@ -2,11 +2,11 @@
 + (id)sharedInstance;
 - (BOOL)activateProximitySensor;
 - (BOOL)backupDopplerState;
-- (BOOL)deviceSetDetectionModeActive:(BOOL)a3;
-- (BOOL)deviceSetStreamEnabled:(BOOL)a3;
+- (BOOL)deviceSetDetectionModeActive:(BOOL)active;
+- (BOOL)deviceSetStreamEnabled:(BOOL)enabled;
 - (BOOL)retrieveHIDDevice;
-- (BOOL)setHIDReportForDevice:(__IOHIDDevice *)a3 reportType:(int)a4 reportID:(int64_t)a5 buffer:(id)a6;
-- (BOOL)startProximitySensorUpdatesWithHandler:(id)a3;
+- (BOOL)setHIDReportForDevice:(__IOHIDDevice *)device reportType:(int)type reportID:(int64_t)d buffer:(id)buffer;
+- (BOOL)startProximitySensorUpdatesWithHandler:(id)handler;
 - (BOOL)stopProximitySensorUpdates;
 - (DADopplerProximityManager)init;
 - (void)deactivateProximitySensor;
@@ -79,35 +79,35 @@
   }
 }
 
-- (BOOL)startProximitySensorUpdatesWithHandler:(id)a3
+- (BOOL)startProximitySensorUpdatesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = ![(DADopplerProximityManager *)self isUpdating];
   if (*(v12 + 24) == 1)
   {
-    [(DADopplerProximityManager *)self setHandler:v4];
-    v5 = [(DADopplerProximityManager *)self proxQueue];
+    [(DADopplerProximityManager *)self setHandler:handlerCopy];
+    proxQueue = [(DADopplerProximityManager *)self proxQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100001AD8;
     block[3] = &unk_10000C448;
     block[4] = self;
     block[5] = &v11;
-    dispatch_sync(v5, block);
+    dispatch_sync(proxQueue, block);
 
     if (*(v12 + 24) == 1)
     {
       [(DADopplerProximityManager *)self setUpdating:1];
-      v6 = [(DADopplerProximityManager *)self proxQueue];
+      proxQueue2 = [(DADopplerProximityManager *)self proxQueue];
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_100001B0C;
       v9[3] = &unk_10000C470;
       v9[4] = self;
-      dispatch_async(v6, v9);
+      dispatch_async(proxQueue2, v9);
     }
 
     v7 = *(v12 + 24);
@@ -136,26 +136,26 @@
 
 - (BOOL)activateProximitySensor
 {
-  v3 = [(DADopplerProximityManager *)self retrieveHIDDevice];
-  if (v3)
+  retrieveHIDDevice = [(DADopplerProximityManager *)self retrieveHIDDevice];
+  if (retrieveHIDDevice)
   {
-    v3 = [(DADopplerProximityManager *)self backupDopplerState];
-    if (v3)
+    retrieveHIDDevice = [(DADopplerProximityManager *)self backupDopplerState];
+    if (retrieveHIDDevice)
     {
-      v3 = [(DADopplerProximityManager *)self deviceSetDetectionModeActive:1];
-      if (v3)
+      retrieveHIDDevice = [(DADopplerProximityManager *)self deviceSetDetectionModeActive:1];
+      if (retrieveHIDDevice)
       {
-        v3 = [(DADopplerProximityManager *)self deviceSetStreamEnabled:1];
-        if (v3)
+        retrieveHIDDevice = [(DADopplerProximityManager *)self deviceSetStreamEnabled:1];
+        if (retrieveHIDDevice)
         {
           [(DADopplerProximityManager *)self registerForCallback];
-          LOBYTE(v3) = 1;
+          LOBYTE(retrieveHIDDevice) = 1;
         }
       }
     }
   }
 
-  return v3;
+  return retrieveHIDDevice;
 }
 
 - (void)deactivateProximitySensor
@@ -225,9 +225,9 @@
   return v3;
 }
 
-- (BOOL)deviceSetStreamEnabled:(BOOL)a3
+- (BOOL)deviceSetStreamEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     value = self->_initialDopplerDataStreamEnables.value | 2;
   }
@@ -239,16 +239,16 @@
 
   v9[0] = 81;
   v9[1] = value;
-  v5 = [(DADopplerProximityManager *)self proxDeviceRef];
+  proxDeviceRef = [(DADopplerProximityManager *)self proxDeviceRef];
   v6 = [NSData dataWithBytes:v9 length:2];
-  v7 = [(DADopplerProximityManager *)self setHIDReportForDevice:v5 reportType:2 reportID:81 buffer:v6];
+  v7 = [(DADopplerProximityManager *)self setHIDReportForDevice:proxDeviceRef reportType:2 reportID:81 buffer:v6];
 
   return v7;
 }
 
-- (BOOL)deviceSetDetectionModeActive:(BOOL)a3
+- (BOOL)deviceSetDetectionModeActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     value = 15;
   }
@@ -260,52 +260,52 @@
 
   v9[0] = 80;
   v9[1] = value;
-  v5 = [(DADopplerProximityManager *)self proxDeviceRef];
+  proxDeviceRef = [(DADopplerProximityManager *)self proxDeviceRef];
   v6 = [NSData dataWithBytes:v9 length:2];
-  v7 = [(DADopplerProximityManager *)self setHIDReportForDevice:v5 reportType:2 reportID:80 buffer:v6];
+  v7 = [(DADopplerProximityManager *)self setHIDReportForDevice:proxDeviceRef reportType:2 reportID:80 buffer:v6];
 
   return v7;
 }
 
-- (BOOL)setHIDReportForDevice:(__IOHIDDevice *)a3 reportType:(int)a4 reportID:(int64_t)a5 buffer:(id)a6
+- (BOOL)setHIDReportForDevice:(__IOHIDDevice *)device reportType:(int)type reportID:(int64_t)d buffer:(id)buffer
 {
-  v9 = a6;
-  v10 = [v9 bytes];
-  v11 = [v9 length];
+  bufferCopy = buffer;
+  bytes = [bufferCopy bytes];
+  v11 = [bufferCopy length];
 
-  return IOHIDDeviceSetReport(a3, a4, a5, v10, v11) == 0;
+  return IOHIDDeviceSetReport(device, type, d, bytes, v11) == 0;
 }
 
 - (void)registerForCallback
 {
-  v3 = [(DADopplerProximityManager *)self proxDeviceRef];
-  v4 = [(DADopplerProximityManager *)self buffer];
+  proxDeviceRef = [(DADopplerProximityManager *)self proxDeviceRef];
+  buffer = [(DADopplerProximityManager *)self buffer];
 
-  IOHIDDeviceRegisterInputReportCallback(v3, v4, 512, sub_100001FFC, self);
+  IOHIDDeviceRegisterInputReportCallback(proxDeviceRef, buffer, 512, sub_100001FFC, self);
 }
 
 - (void)deregisterForCallback
 {
-  v3 = [(DADopplerProximityManager *)self proxDeviceRef];
-  v4 = [(DADopplerProximityManager *)self buffer];
+  proxDeviceRef = [(DADopplerProximityManager *)self proxDeviceRef];
+  buffer = [(DADopplerProximityManager *)self buffer];
 
-  IOHIDDeviceRegisterInputReportCallback(v3, v4, 512, 0, self);
+  IOHIDDeviceRegisterInputReportCallback(proxDeviceRef, buffer, 512, 0, self);
 }
 
 - (void)scheduleProximityUpdates
 {
-  v3 = [(DADopplerProximityManager *)self proxDeviceRef];
-  v4 = [(DADopplerProximityManager *)self proxRunLoop];
+  proxDeviceRef = [(DADopplerProximityManager *)self proxDeviceRef];
+  proxRunLoop = [(DADopplerProximityManager *)self proxRunLoop];
 
-  IOHIDDeviceScheduleWithRunLoop(v3, v4, kCFRunLoopCommonModes);
+  IOHIDDeviceScheduleWithRunLoop(proxDeviceRef, proxRunLoop, kCFRunLoopCommonModes);
 }
 
 - (void)unscheduleProximityUpdates
 {
   IOHIDDeviceUnscheduleFromRunLoop([(DADopplerProximityManager *)self proxDeviceRef], [(DADopplerProximityManager *)self proxRunLoop], kCFRunLoopCommonModes);
-  v3 = [(DADopplerProximityManager *)self proxRunLoop];
+  proxRunLoop = [(DADopplerProximityManager *)self proxRunLoop];
 
-  CFRunLoopStop(v3);
+  CFRunLoopStop(proxRunLoop);
 }
 
 @end

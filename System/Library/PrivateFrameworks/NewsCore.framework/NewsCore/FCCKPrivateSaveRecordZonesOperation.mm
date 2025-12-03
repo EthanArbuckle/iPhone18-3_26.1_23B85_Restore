@@ -1,6 +1,6 @@
 @interface FCCKPrivateSaveRecordZonesOperation
 - (BOOL)validateOperation;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -11,9 +11,9 @@
   v18 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = FCCKPrivateSaveRecordZonesOperation;
-  v3 = [(FCCKPrivateDatabaseOperation *)&v9 validateOperation];
-  v4 = [(FCCKPrivateSaveRecordZonesOperation *)self recordZonesToSave];
-  v5 = [v4 count];
+  validateOperation = [(FCCKPrivateDatabaseOperation *)&v9 validateOperation];
+  recordZonesToSave = [(FCCKPrivateSaveRecordZonesOperation *)self recordZonesToSave];
+  v5 = [recordZonesToSave count];
 
   if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -31,7 +31,7 @@
 
   if (v5)
   {
-    result = v3;
+    result = validateOperation;
   }
 
   else
@@ -46,9 +46,9 @@
 - (void)performOperation
 {
   v3 = objc_alloc_init(FCCKPrivateDatabaseCKOperationResults);
-  v4 = [(FCCKPrivateDatabaseOperation *)self skipPreflight];
-  v5 = [(FCCKPrivateDatabaseOperation *)self database];
-  v6 = [(FCCKPrivateSaveRecordZonesOperation *)self recordZonesToSave];
+  skipPreflight = [(FCCKPrivateDatabaseOperation *)self skipPreflight];
+  database = [(FCCKPrivateDatabaseOperation *)self database];
+  recordZonesToSave = [(FCCKPrivateSaveRecordZonesOperation *)self recordZonesToSave];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __55__FCCKPrivateSaveRecordZonesOperation_performOperation__block_invoke;
@@ -56,15 +56,15 @@
   v10[4] = self;
   v11 = v3;
   v7 = v3;
-  [(FCCKPrivateDatabase *)v5 enumeratePayloadsWithRecordIDs:0 records:0 zoneIDs:v6 zones:v4 options:v10 payloadHandler:?];
+  [(FCCKPrivateDatabase *)database enumeratePayloadsWithRecordIDs:0 records:0 zoneIDs:recordZonesToSave zones:skipPreflight options:v10 payloadHandler:?];
 
-  v8 = [(FCCKPrivateSaveRecordZonesOperation *)self qualityOfService];
+  qualityOfService = [(FCCKPrivateSaveRecordZonesOperation *)self qualityOfService];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__FCCKPrivateSaveRecordZonesOperation_performOperation__block_invoke_2_11;
   v9[3] = &unk_1E7C37750;
   v9[4] = self;
-  [(FCCKPrivateDatabaseCKOperationResults *)v7 notifyWhenFinishWithQoS:v8 completionHandler:v9];
+  [(FCCKPrivateDatabaseCKOperationResults *)v7 notifyWhenFinishWithQoS:qualityOfService completionHandler:v9];
 }
 
 void __55__FCCKPrivateSaveRecordZonesOperation_performOperation__block_invoke(uint64_t a1, void *a2)
@@ -147,16 +147,16 @@ void __55__FCCKPrivateSaveRecordZonesOperation_performOperation__block_invoke_2_
   [*(a1 + 32) finishedPerformingOperationWithError:v6];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(FCCKPrivateSaveRecordZonesOperation *)self saveRecordZonesCompletionBlock];
+  errorCopy = error;
+  saveRecordZonesCompletionBlock = [(FCCKPrivateSaveRecordZonesOperation *)self saveRecordZonesCompletionBlock];
 
-  if (v4)
+  if (saveRecordZonesCompletionBlock)
   {
-    v5 = [(FCCKPrivateSaveRecordZonesOperation *)self saveRecordZonesCompletionBlock];
-    v6 = [(FCCKPrivateSaveRecordZonesOperation *)self resultSavedRecordZones];
-    (v5)[2](v5, v6, v7);
+    saveRecordZonesCompletionBlock2 = [(FCCKPrivateSaveRecordZonesOperation *)self saveRecordZonesCompletionBlock];
+    resultSavedRecordZones = [(FCCKPrivateSaveRecordZonesOperation *)self resultSavedRecordZones];
+    (saveRecordZonesCompletionBlock2)[2](saveRecordZonesCompletionBlock2, resultSavedRecordZones, errorCopy);
   }
 }
 

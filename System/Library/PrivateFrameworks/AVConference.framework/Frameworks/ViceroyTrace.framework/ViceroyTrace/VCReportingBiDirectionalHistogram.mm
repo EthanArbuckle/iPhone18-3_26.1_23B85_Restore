@@ -1,7 +1,7 @@
 @interface VCReportingBiDirectionalHistogram
 - (id)description;
-- (void)addValue:(unsigned int)a3 withDelta:(int64_t)a4;
-- (void)convertHistogramIntoPercentageUsingValuesFrom:(id)a3;
+- (void)addValue:(unsigned int)value withDelta:(int64_t)delta;
+- (void)convertHistogramIntoPercentageUsingValuesFrom:(id)from;
 - (void)dealloc;
 @end
 
@@ -20,7 +20,7 @@
   [(VCHistogram *)&v4 dealloc];
 }
 
-- (void)addValue:(unsigned int)a3 withDelta:(int64_t)a4
+- (void)addValue:(unsigned int)value withDelta:(int64_t)delta
 {
   v4 = self->super._bucketCount - 1;
   if (self->super._bucketCount == 1)
@@ -31,7 +31,7 @@
   else
   {
     v5 = 0;
-    while (self->super._ranges[v5] < a3)
+    while (self->super._ranges[v5] < value)
     {
       if (v4 == ++v5)
       {
@@ -44,7 +44,7 @@ LABEL_8:
     v4 = v4;
   }
 
-  self->_signedBuckets[v4] += a4;
+  self->_signedBuckets[v4] += delta;
 }
 
 - (id)description
@@ -86,10 +86,10 @@ LABEL_8:
   return v4;
 }
 
-- (void)convertHistogramIntoPercentageUsingValuesFrom:(id)a3
+- (void)convertHistogramIntoPercentageUsingValuesFrom:(id)from
 {
   bucketCount = self->super._bucketCount;
-  if (bucketCount == [a3 bucketCount])
+  if (bucketCount == [from bucketCount])
   {
     v6 = self->super._bucketCount;
     v7 = v6 - 1;
@@ -97,7 +97,7 @@ LABEL_8:
     {
       do
       {
-        v8 = [a3 bucketValueAtIndex:v7];
+        v8 = [from bucketValueAtIndex:v7];
         signedBuckets = self->_signedBuckets;
         if (v8)
         {

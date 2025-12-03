@@ -1,45 +1,45 @@
 @interface GTReplayShaderDebugFragment
 - (GTPoint2D)maxPixelPosition;
 - (GTPoint2D)minPixelPosition;
-- (GTReplayShaderDebugFragment)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GTReplayShaderDebugFragment)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GTReplayShaderDebugFragment
 
-- (GTReplayShaderDebugFragment)initWithCoder:(id)a3
+- (GTReplayShaderDebugFragment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = GTReplayShaderDebugFragment;
-  v5 = [(GTReplayShaderDebugRequest *)&v11 initWithCoder:v4];
+  v5 = [(GTReplayShaderDebugRequest *)&v11 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
-    v5->_minPixelPosition.x = GTPoint2DDecode(v4, @"MinPixelPosition");
+    v5->_minPixelPosition.x = GTPoint2DDecode(coderCopy, @"MinPixelPosition");
     v6->_minPixelPosition.y = v7;
-    v6->_maxPixelPosition.x = GTPoint2DDecode(v4, @"MaxPixelPosition");
+    v6->_maxPixelPosition.x = GTPoint2DDecode(coderCopy, @"MaxPixelPosition");
     v6->_maxPixelPosition.y = v8;
-    v6->_minSampleID = [v4 decodeInt32ForKey:@"MinSampleID"];
-    v6->_maxSampleID = [v4 decodeInt32ForKey:@"MaxSampleID"];
-    v6->_renderTargetArrayIndex = [v4 decodeInt32ForKey:@"RenderTargetArrayIndex"];
+    v6->_minSampleID = [coderCopy decodeInt32ForKey:@"MinSampleID"];
+    v6->_maxSampleID = [coderCopy decodeInt32ForKey:@"MaxSampleID"];
+    v6->_renderTargetArrayIndex = [coderCopy decodeInt32ForKey:@"RenderTargetArrayIndex"];
     v9 = v6;
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = GTReplayShaderDebugFragment;
-  v4 = a3;
-  [(GTReplayShaderDebugRequest *)&v5 encodeWithCoder:v4];
-  GTPoint2DEncode(v4, self->_minPixelPosition.x, self->_minPixelPosition.y, @"MinPixelPosition");
-  GTPoint2DEncode(v4, self->_maxPixelPosition.x, self->_maxPixelPosition.y, @"MaxPixelPosition");
-  [v4 encodeInt32:self->_minSampleID forKey:{@"MinSampleID", v5.receiver, v5.super_class}];
-  [v4 encodeInt32:self->_maxSampleID forKey:@"MaxSampleID"];
-  [v4 encodeInt32:self->_renderTargetArrayIndex forKey:@"RenderTargetArrayIndex"];
+  coderCopy = coder;
+  [(GTReplayShaderDebugRequest *)&v5 encodeWithCoder:coderCopy];
+  GTPoint2DEncode(coderCopy, self->_minPixelPosition.x, self->_minPixelPosition.y, @"MinPixelPosition");
+  GTPoint2DEncode(coderCopy, self->_maxPixelPosition.x, self->_maxPixelPosition.y, @"MaxPixelPosition");
+  [coderCopy encodeInt32:self->_minSampleID forKey:{@"MinSampleID", v5.receiver, v5.super_class}];
+  [coderCopy encodeInt32:self->_maxSampleID forKey:@"MaxSampleID"];
+  [coderCopy encodeInt32:self->_renderTargetArrayIndex forKey:@"RenderTargetArrayIndex"];
 }
 
 - (GTPoint2D)minPixelPosition

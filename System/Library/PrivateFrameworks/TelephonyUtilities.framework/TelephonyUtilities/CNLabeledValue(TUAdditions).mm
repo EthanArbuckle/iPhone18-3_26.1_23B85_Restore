@@ -11,7 +11,7 @@
     return 0;
   }
 
-  return [a1 isSuggested];
+  return [self isSuggested];
 }
 
 @end

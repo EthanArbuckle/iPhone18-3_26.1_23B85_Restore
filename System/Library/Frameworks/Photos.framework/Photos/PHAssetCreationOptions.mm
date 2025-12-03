@@ -1,28 +1,28 @@
 @interface PHAssetCreationOptions
 - (PHAssetCreationOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setStillSourceTime:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setStillSourceTime:(id *)time;
 @end
 
 @implementation PHAssetCreationOptions
 
-- (void)setStillSourceTime:(id *)a3
+- (void)setStillSourceTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_stillSourceTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_stillSourceTime.epoch = time->var3;
   *&self->_stillSourceTime.value = v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
   [v4 setShouldDownloadOrCloudReReferenceMissingResources:{-[PHAssetCreationOptions shouldDownloadOrCloudReReferenceMissingResources](self, "shouldDownloadOrCloudReReferenceMissingResources")}];
-  v5 = [(PHAssetCreationOptions *)self adjustmentBakeInOptions];
-  [v4 setAdjustmentBakeInOptions:v5];
+  adjustmentBakeInOptions = [(PHAssetCreationOptions *)self adjustmentBakeInOptions];
+  [v4 setAdjustmentBakeInOptions:adjustmentBakeInOptions];
 
-  v6 = [(PHAssetCreationOptions *)self metadataCopyOptions];
-  [v4 setMetadataCopyOptions:v6];
+  metadataCopyOptions = [(PHAssetCreationOptions *)self metadataCopyOptions];
+  [v4 setMetadataCopyOptions:metadataCopyOptions];
 
   [(PHAssetCreationOptions *)self stillSourceTime];
   v8 = v10;

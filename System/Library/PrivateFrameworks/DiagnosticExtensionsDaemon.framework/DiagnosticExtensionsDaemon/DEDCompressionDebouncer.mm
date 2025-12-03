@@ -1,5 +1,5 @@
 @interface DEDCompressionDebouncer
-- (DEDCompressionDebouncer)initWithTrigger:(id)a3 interval:(double)a4;
+- (DEDCompressionDebouncer)initWithTrigger:(id)trigger interval:(double)interval;
 - (id)handler;
 - (void)sendTriggerIfStateChanged;
 - (void)sendTriggerIfTimeElapsed;
@@ -7,17 +7,17 @@
 
 @implementation DEDCompressionDebouncer
 
-- (DEDCompressionDebouncer)initWithTrigger:(id)a3 interval:(double)a4
+- (DEDCompressionDebouncer)initWithTrigger:(id)trigger interval:(double)interval
 {
-  v6 = a3;
+  triggerCopy = trigger;
   v10.receiver = self;
   v10.super_class = DEDCompressionDebouncer;
   v7 = [(DEDCompressionDebouncer *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(DEDCompressionDebouncer *)v7 setTrigger:v6];
-    [(DEDCompressionDebouncer *)v8 setInterval:a4];
+    [(DEDCompressionDebouncer *)v7 setTrigger:triggerCopy];
+    [(DEDCompressionDebouncer *)v8 setInterval:interval];
     [(DEDCompressionDebouncer *)v8 setLastTriggerTime:0.0];
     [(DEDCompressionDebouncer *)v8 setFinished:0];
   }
@@ -31,23 +31,23 @@
   [v3 timeIntervalSince1970];
   [(DEDCompressionDebouncer *)self setLastTriggerTime:?];
 
-  v4 = [(DEDCompressionDebouncer *)self lastSentCompressedBytes];
-  if (v4 != [(DEDCompressionDebouncer *)self lastKnownCompressedBytes]|| (v5 = [(DEDCompressionDebouncer *)self lastSentTotalBytes], v5 != [(DEDCompressionDebouncer *)self lastKnownTotalBytes]))
+  lastSentCompressedBytes = [(DEDCompressionDebouncer *)self lastSentCompressedBytes];
+  if (lastSentCompressedBytes != [(DEDCompressionDebouncer *)self lastKnownCompressedBytes]|| (v5 = [(DEDCompressionDebouncer *)self lastSentTotalBytes], v5 != [(DEDCompressionDebouncer *)self lastKnownTotalBytes]))
   {
-    v6 = [(DEDCompressionDebouncer *)self trigger];
-    v6[2](v6, [(DEDCompressionDebouncer *)self lastKnownCompressedBytes], [(DEDCompressionDebouncer *)self lastKnownTotalBytes]);
+    trigger = [(DEDCompressionDebouncer *)self trigger];
+    trigger[2](trigger, [(DEDCompressionDebouncer *)self lastKnownCompressedBytes], [(DEDCompressionDebouncer *)self lastKnownTotalBytes]);
 
     [(DEDCompressionDebouncer *)self setLastSentCompressedBytes:[(DEDCompressionDebouncer *)self lastKnownCompressedBytes]];
-    v7 = [(DEDCompressionDebouncer *)self lastKnownTotalBytes];
+    lastKnownTotalBytes = [(DEDCompressionDebouncer *)self lastKnownTotalBytes];
 
-    [(DEDCompressionDebouncer *)self setLastSentTotalBytes:v7];
+    [(DEDCompressionDebouncer *)self setLastSentTotalBytes:lastKnownTotalBytes];
   }
 }
 
 - (void)sendTriggerIfTimeElapsed
 {
-  v3 = [(DEDCompressionDebouncer *)self lastKnownCompressedBytes];
-  if (v3 < [(DEDCompressionDebouncer *)self lastKnownTotalBytes]|| ([(DEDCompressionDebouncer *)self lastKnownTotalBytes], [(DEDCompressionDebouncer *)self finished]))
+  lastKnownCompressedBytes = [(DEDCompressionDebouncer *)self lastKnownCompressedBytes];
+  if (lastKnownCompressedBytes < [(DEDCompressionDebouncer *)self lastKnownTotalBytes]|| ([(DEDCompressionDebouncer *)self lastKnownTotalBytes], [(DEDCompressionDebouncer *)self finished]))
   {
     v10 = [MEMORY[0x277CBEAA8] now];
     [v10 timeIntervalSince1970];
@@ -61,9 +61,9 @@
       return;
     }
 
-    v9 = [(DEDCompressionDebouncer *)self finished];
+    finished = [(DEDCompressionDebouncer *)self finished];
 
-    if (v9)
+    if (finished)
     {
       return;
     }

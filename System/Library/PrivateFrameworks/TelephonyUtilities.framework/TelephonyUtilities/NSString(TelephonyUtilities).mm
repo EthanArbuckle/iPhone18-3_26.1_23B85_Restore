@@ -19,11 +19,11 @@
 
 - (uint64_t)destinationIdIsEmailAddress
 {
-  result = [a1 length];
+  result = [self length];
   if (result)
   {
 
-    return MEMORY[0x1EEE10788](a1);
+    return MEMORY[0x1EEE10788](self);
   }
 
   return result;
@@ -31,17 +31,17 @@
 
 - (uint64_t)destinationIdIsPhoneNumber
 {
-  result = [a1 length];
+  result = [self length];
   if (result)
   {
-    if ([a1 destinationIdIsEmailAddress] & 1) != 0 || (objc_msgSend(a1, "destinationIdIsTemporary") & 1) != 0 || (objc_msgSend(a1, "destinationIdIsPseudonym"))
+    if ([self destinationIdIsEmailAddress] & 1) != 0 || (objc_msgSend(self, "destinationIdIsTemporary") & 1) != 0 || (objc_msgSend(self, "destinationIdIsPseudonym"))
     {
       return 0;
     }
 
     else
     {
-      return [a1 destinationIdIsHardware] ^ 1;
+      return [self destinationIdIsHardware] ^ 1;
     }
   }
 
@@ -50,20 +50,20 @@
 
 - (BOOL)destinationIdIsCallControlCode
 {
-  if ([a1 length] == 1)
+  if ([self length] == 1)
   {
-    v2 = [a1 characterAtIndex:0] - 48 >= 6;
+    v2 = [self characterAtIndex:0] - 48 >= 6;
   }
 
   else
   {
-    if ([a1 length] != 2)
+    if ([self length] != 2)
     {
       return 0;
     }
 
-    v3 = [a1 characterAtIndex:0];
-    v4 = [a1 characterAtIndex:1] - 48;
+    v3 = [self characterAtIndex:0];
+    v4 = [self characterAtIndex:1] - 48;
     v2 = (v3 - 49) >= 2 || v4 >= 0xA;
   }
 
@@ -72,8 +72,8 @@
 
 - (id)IDSFormattedDestinationID
 {
-  v2 = [MEMORY[0x1E696AB08] controlCharacterSet];
-  v3 = [a1 stringByRemovingCharactersFromSet:v2];
+  controlCharacterSet = [MEMORY[0x1E696AB08] controlCharacterSet];
+  v3 = [self stringByRemovingCharactersFromSet:controlCharacterSet];
 
   if (MEMORY[0x19A8B71F0](v3))
   {
@@ -125,20 +125,20 @@
   v0 = IDSCopyAddressDestinationForDestination();
   v1 = IDSCopyRawAddressForDestination();
 
-  v2 = [v1 _im_normalizedURIString];
+  _im_normalizedURIString = [v1 _im_normalizedURIString];
 
-  return v2;
+  return _im_normalizedURIString;
 }
 
 - (id)destinationIDWithoutControlOrPhoneNumberSeparatorCharacters
 {
-  v2 = [MEMORY[0x1E696AB08] controlCharacterSet];
-  v3 = [a1 stringByRemovingCharactersFromSet:v2];
+  controlCharacterSet = [MEMORY[0x1E696AB08] controlCharacterSet];
+  v3 = [self stringByRemovingCharactersFromSet:controlCharacterSet];
 
-  if ([a1 _appearsToBePhoneNumber])
+  if ([self _appearsToBePhoneNumber])
   {
-    v4 = [MEMORY[0x1E696AB08] phoneNumberSeparatorCharacterSet];
-    v5 = [v3 stringByRemovingCharactersFromSet:v4];
+    phoneNumberSeparatorCharacterSet = [MEMORY[0x1E696AB08] phoneNumberSeparatorCharacterSet];
+    v5 = [v3 stringByRemovingCharactersFromSet:phoneNumberSeparatorCharacterSet];
 
     v3 = v5;
   }
@@ -148,24 +148,24 @@
 
 - (id)normalizedDestinationID
 {
-  v1 = [TUHandle normalizedHandleWithDestinationID:a1];
-  v2 = [v1 value];
+  v1 = [TUHandle normalizedHandleWithDestinationID:self];
+  value = [v1 value];
 
-  return v2;
+  return value;
 }
 
 - (id)formattedDisplayID
 {
-  v2 = [MEMORY[0x1E696AEC0] stringWithString:a1];
-  if ([a1 _appearsToBePhoneNumber])
+  v2 = [MEMORY[0x1E696AEC0] stringWithString:self];
+  if ([self _appearsToBePhoneNumber])
   {
     if (!formattedDisplayID_sCountryCode)
     {
-      v3 = [MEMORY[0x1E695DF58] currentLocale];
-      v4 = [v3 objectForKey:*MEMORY[0x1E695D978]];
-      v5 = [v4 lowercaseString];
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+      v4 = [currentLocale objectForKey:*MEMORY[0x1E695D978]];
+      lowercaseString = [v4 lowercaseString];
       v6 = formattedDisplayID_sCountryCode;
-      formattedDisplayID_sCountryCode = v5;
+      formattedDisplayID_sCountryCode = lowercaseString;
     }
 
     v7 = *MEMORY[0x1E695E480];
@@ -182,9 +182,9 @@
       CFRelease(v9);
       if ([String length])
       {
-        v11 = [String LTRString];
+        lTRString = [String LTRString];
 
-        v2 = v11;
+        v2 = lTRString;
       }
     }
   }
@@ -194,14 +194,14 @@
 
 - (id)tu_stringByStrippingBase64Padding
 {
-  if (([a1 length] & 3) != 0)
+  if (([self length] & 3) != 0)
   {
-    [MEMORY[0x1E696AEC0] stringWithString:a1];
+    [MEMORY[0x1E696AEC0] stringWithString:self];
   }
 
   else
   {
-    [a1 stringByReplacingOccurrencesOfString:@"=" withString:&stru_1F098C218];
+    [self stringByReplacingOccurrencesOfString:@"=" withString:&stru_1F098C218];
   }
   v2 = ;
 
@@ -210,14 +210,14 @@
 
 - (id)tu_stringByAddingBase64Padding
 {
-  if (([a1 length] & 3) != 0)
+  if (([self length] & 3) != 0)
   {
-    [a1 stringByPaddingToLength:objc_msgSend(a1 withString:"length") - (objc_msgSend(a1 startingAtIndex:{"length") & 3) + 4, @"=", 0}];
+    [self stringByPaddingToLength:objc_msgSend(self withString:"length") - (objc_msgSend(self startingAtIndex:{"length") & 3) + 4, @"=", 0}];
   }
 
   else
   {
-    [MEMORY[0x1E696AEC0] stringWithString:a1];
+    [MEMORY[0x1E696AEC0] stringWithString:self];
   }
   v2 = ;
 
@@ -226,10 +226,10 @@
 
 - (id)tu_unsignedLongLongNumber
 {
-  v2 = [a1 length];
+  v2 = [self length];
   if (v2)
   {
-    v2 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{strtoull(objc_msgSend(a1, "UTF8String"), 0, 0)}];
+    v2 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{strtoull(objc_msgSend(self, "UTF8String"), 0, 0)}];
   }
 
   return v2;
@@ -237,12 +237,12 @@
 
 - (TUConversationHandoffEligibility)tu_handoffEligibility
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [a1 componentsSeparatedByString:@"~"];
+    v2 = [self componentsSeparatedByString:@"~"];
     if ([v2 count] < 2)
     {
-      v7 = 0;
+      tu_unsignedLongLongNumber = 0;
       v5 = 0;
       v11 = 0;
     }
@@ -254,7 +254,7 @@
       v5 = [v3 initWithUUIDString:v4];
 
       v6 = [v2 objectAtIndexedSubscript:1];
-      v7 = [v6 tu_unsignedLongLongNumber];
+      tu_unsignedLongLongNumber = [v6 tu_unsignedLongLongNumber];
 
       v8 = [v2 objectAtIndexedSubscript:2];
       if (v8)
@@ -284,7 +284,7 @@
       }
 
       v11 = 0;
-      if (v5 && v7)
+      if (v5 && tu_unsignedLongLongNumber)
       {
         v11 = objc_alloc_init(TUConversationHandoffEligibility);
         [(TUConversationHandoffEligibility *)v11 setEligible:1];
@@ -294,9 +294,9 @@
         v17 = objc_alloc_init(TUConversationParticipantAssociation);
         [(TUConversationHandoffEligibility *)v11 setAssociation:v17];
 
-        v18 = [v7 unsignedLongLongValue];
-        v19 = [(TUConversationHandoffEligibility *)v11 association];
-        [v19 setIdentifier:v18];
+        unsignedLongLongValue = [tu_unsignedLongLongNumber unsignedLongLongValue];
+        association = [(TUConversationHandoffEligibility *)v11 association];
+        [association setIdentifier:unsignedLongLongValue];
       }
     }
   }
@@ -312,8 +312,8 @@
 + (id)tu_conversationHandoffDynamicIdentifierWithGroupUUID:()TelephonyUtilities participantIdentifier:uplinkMuted:sendingVideo:
 {
   v18[4] = *MEMORY[0x1E69E9840];
-  v9 = [a3 UUIDString];
-  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", a4, v9];
+  uUIDString = [a3 UUIDString];
+  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", a4, uUIDString];
   v11 = v10;
   v12 = @"0";
   if (a5)
@@ -346,13 +346,13 @@
 + (id)tu_conversationHandoffDynamicIdentifierForEligibility:()TelephonyUtilities
 {
   v4 = a3;
-  v5 = [v4 conversationGroupUUID];
-  v6 = [v4 association];
-  v7 = [v6 identifier];
-  v8 = [v4 isUplinkMuted];
-  v9 = [v4 isSendingVideo];
+  conversationGroupUUID = [v4 conversationGroupUUID];
+  association = [v4 association];
+  identifier = [association identifier];
+  isUplinkMuted = [v4 isUplinkMuted];
+  isSendingVideo = [v4 isSendingVideo];
 
-  v10 = [a1 tu_conversationHandoffDynamicIdentifierWithGroupUUID:v5 participantIdentifier:v7 uplinkMuted:v8 sendingVideo:v9];
+  v10 = [self tu_conversationHandoffDynamicIdentifierWithGroupUUID:conversationGroupUUID participantIdentifier:identifier uplinkMuted:isUplinkMuted sendingVideo:isSendingVideo];
 
   return v10;
 }

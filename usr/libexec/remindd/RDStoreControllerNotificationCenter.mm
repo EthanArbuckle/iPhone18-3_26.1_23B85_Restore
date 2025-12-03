@@ -1,10 +1,10 @@
 @interface RDStoreControllerNotificationCenter
-- (void)handleNotification:(id)a3;
+- (void)handleNotification:(id)notification;
 @end
 
 @implementation RDStoreControllerNotificationCenter
 
-- (void)handleNotification:(id)a3
+- (void)handleNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

@@ -2,42 +2,42 @@
 + (ISWrappedAVAudioSession)sharedAmbientInstance;
 + (ISWrappedAVAudioSession)sharedVideoPlaybackInstance;
 + (id)auxiliarySession;
-+ (id)sharedInstanceWithKind:(int64_t)a3;
++ (id)sharedInstanceWithKind:(int64_t)kind;
 + (id)sharedMemoryPlaybackInstance;
 + (id)sharedPhotosOneUpInstance;
-+ (void)sharedAmbientInstanceWithLoadHandler:(id)a3;
-+ (void)sharedInstanceWithKind:(int64_t)a3 loadHandler:(id)a4;
-+ (void)sharedMemoryPlaybackInstanceWithLoadHandler:(id)a3;
-+ (void)sharedPhotosOneUpInstanceWithLoadHandler:(id)a3;
-+ (void)sharedVideoPlaybackInstanceWithLoadHandler:(id)a3;
-- (BOOL)setCategory:(id)a3 error:(id *)a4;
-- (BOOL)setCategory:(id)a3 mode:(id)a4 routeSharingPolicy:(unint64_t)a5 options:(unint64_t)a6 error:(id *)a7;
-- (BOOL)setCategory:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (ISWrappedAVAudioSession)initWithAudioSession:(id)a3;
-- (ISWrappedAVAudioSession)initWithAudioSession:(id)a3 category:(id)a4;
++ (void)sharedAmbientInstanceWithLoadHandler:(id)handler;
++ (void)sharedInstanceWithKind:(int64_t)kind loadHandler:(id)handler;
++ (void)sharedMemoryPlaybackInstanceWithLoadHandler:(id)handler;
++ (void)sharedPhotosOneUpInstanceWithLoadHandler:(id)handler;
++ (void)sharedVideoPlaybackInstanceWithLoadHandler:(id)handler;
+- (BOOL)setCategory:(id)category error:(id *)error;
+- (BOOL)setCategory:(id)category mode:(id)mode routeSharingPolicy:(unint64_t)policy options:(unint64_t)options error:(id *)error;
+- (BOOL)setCategory:(id)category options:(unint64_t)options error:(id *)error;
+- (ISWrappedAVAudioSession)initWithAudioSession:(id)session;
+- (ISWrappedAVAudioSession)initWithAudioSession:(id)session category:(id)category;
 - (void)_beginObservingOutputVolumeIfNeeded;
 - (void)_endObservingOutputVolumeIfNeeded;
-- (void)_main_informObserversOfVolumeChangeFrom:(float)a3 to:(float)a4;
+- (void)_main_informObserversOfVolumeChangeFrom:(float)from to:(float)to;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)registerVolumeObserver:(id)a3;
-- (void)unregisterVolumeObserver:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)registerVolumeObserver:(id)observer;
+- (void)unregisterVolumeObserver:(id)observer;
 @end
 
 @implementation ISWrappedAVAudioSession
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  v11 = v10;
-  if (OutputVolumeObservationContext == a6)
+  changeCopy = change;
+  v11 = changeCopy;
+  if (OutputVolumeObservationContext == context)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __74__ISWrappedAVAudioSession_observeValueForKeyPath_ofObject_change_context___block_invoke;
     v13[3] = &unk_279A2A348;
     v13[4] = self;
-    v14 = v10;
+    v14 = changeCopy;
     is_dispatch_on_main_queue(v13);
   }
 
@@ -45,7 +45,7 @@
   {
     v12.receiver = self;
     v12.super_class = ISWrappedAVAudioSession;
-    [(ISWrappedAVAudioSession *)&v12 observeValueForKeyPath:a3 ofObject:a4 change:v10 context:a6];
+    [(ISWrappedAVAudioSession *)&v12 observeValueForKeyPath:path ofObject:object change:changeCopy context:context];
   }
 }
 
@@ -62,17 +62,17 @@ void __74__ISWrappedAVAudioSession_observeValueForKeyPath_ofObject_change_contex
   [v2 _main_informObserversOfVolumeChangeFrom:v8 to:v7];
 }
 
-- (void)_main_informObserversOfVolumeChangeFrom:(float)a3 to:(float)a4
+- (void)_main_informObserversOfVolumeChangeFrom:(float)from to:(float)to
 {
-  v7 = [(NSHashTable *)self->_main_volumeObservers allObjects];
+  allObjects = [(NSHashTable *)self->_main_volumeObservers allObjects];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__ISWrappedAVAudioSession__main_informObserversOfVolumeChangeFrom_to___block_invoke;
   v8[3] = &unk_279A2A108;
   v8[4] = self;
-  v9 = a3;
-  v10 = a4;
-  [v7 enumerateObjectsUsingBlock:v8];
+  fromCopy = from;
+  toCopy = to;
+  [allObjects enumerateObjectsUsingBlock:v8];
 }
 
 uint64_t __70__ISWrappedAVAudioSession__main_informObserversOfVolumeChangeFrom_to___block_invoke(uint64_t a1, void *a2, double a3, double a4)
@@ -100,35 +100,35 @@ uint64_t __70__ISWrappedAVAudioSession__main_informObserversOfVolumeChangeFrom_t
   }
 }
 
-- (BOOL)setCategory:(id)a3 mode:(id)a4 routeSharingPolicy:(unint64_t)a5 options:(unint64_t)a6 error:(id *)a7
+- (BOOL)setCategory:(id)category mode:(id)mode routeSharingPolicy:(unint64_t)policy options:(unint64_t)options error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
+  categoryCopy = category;
+  modeCopy = mode;
   v14 = ISGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v23 = 138413314;
-    v24 = v12;
+    v24 = categoryCopy;
     v25 = 2112;
-    v26 = v13;
+    v26 = modeCopy;
     v27 = 2048;
-    v28 = a5;
+    policyCopy = policy;
     v29 = 2048;
-    v30 = a6;
+    optionsCopy = options;
     v31 = 2112;
-    v32 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E667000, v14, OS_LOG_TYPE_DEFAULT, "Setting category (%@) mode (%@) routeSharingPolicy (%lu) options (%lu) on wrapped audio session %@", &v23, 0x34u);
   }
 
-  v15 = [(AVAudioSession *)self->_audioSession setCategory:v12 mode:v13 routeSharingPolicy:a5 options:a6 error:a7];
+  v15 = [(AVAudioSession *)self->_audioSession setCategory:categoryCopy mode:modeCopy routeSharingPolicy:policy options:options error:error];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [categoryCopy copy];
     expectedCategory = self->_expectedCategory;
     self->_expectedCategory = v16;
 
-    v18 = [v13 copy];
+    v18 = [modeCopy copy];
     expectedMode = self->_expectedMode;
     self->_expectedMode = v18;
   }
@@ -138,7 +138,7 @@ uint64_t __70__ISWrappedAVAudioSession__main_informObserversOfVolumeChangeFrom_t
     expectedMode = ISGetLog();
     if (os_log_type_enabled(expectedMode, OS_LOG_TYPE_ERROR))
     {
-      v22 = *a7;
+      v22 = *error;
       v23 = 138412290;
       v24 = v22;
       _os_log_error_impl(&dword_25E667000, expectedMode, OS_LOG_TYPE_ERROR, "Failed! %@", &v23, 0xCu);
@@ -149,13 +149,13 @@ uint64_t __70__ISWrappedAVAudioSession__main_informObserversOfVolumeChangeFrom_t
   return v15;
 }
 
-- (BOOL)setCategory:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)setCategory:(id)category options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
-  v9 = [(AVAudioSession *)self->_audioSession setCategory:v8 mode:*MEMORY[0x277CB80A8] routeSharingPolicy:0 options:a4 error:a5];
+  categoryCopy = category;
+  v9 = [(AVAudioSession *)self->_audioSession setCategory:categoryCopy mode:*MEMORY[0x277CB80A8] routeSharingPolicy:0 options:options error:error];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [categoryCopy copy];
     expectedCategory = self->_expectedCategory;
     self->_expectedCategory = v10;
   }
@@ -163,16 +163,16 @@ uint64_t __70__ISWrappedAVAudioSession__main_informObserversOfVolumeChangeFrom_t
   return v9;
 }
 
-- (void)unregisterVolumeObserver:(id)a3
+- (void)unregisterVolumeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__ISWrappedAVAudioSession_unregisterVolumeObserver___block_invoke;
   v6[3] = &unk_279A2A348;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   is_dispatch_on_main_queue(v6);
 }
 
@@ -190,16 +190,16 @@ uint64_t __52__ISWrappedAVAudioSession_unregisterVolumeObserver___block_invoke(u
   return result;
 }
 
-- (void)registerVolumeObserver:(id)a3
+- (void)registerVolumeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__ISWrappedAVAudioSession_registerVolumeObserver___block_invoke;
   v6[3] = &unk_279A2A348;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = observerCopy;
+  v5 = observerCopy;
   is_dispatch_on_main_queue(v6);
 }
 
@@ -222,13 +222,13 @@ uint64_t __50__ISWrappedAVAudioSession_registerVolumeObserver___block_invoke(uin
   return [v6 _beginObservingOutputVolumeIfNeeded];
 }
 
-- (BOOL)setCategory:(id)a3 error:(id *)a4
+- (BOOL)setCategory:(id)category error:(id *)error
 {
-  v6 = a3;
-  v7 = [(AVAudioSession *)self->_audioSession setCategory:v6 error:a4];
+  categoryCopy = category;
+  v7 = [(AVAudioSession *)self->_audioSession setCategory:categoryCopy error:error];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [categoryCopy copy];
     expectedCategory = self->_expectedCategory;
     self->_expectedCategory = v8;
   }
@@ -248,28 +248,28 @@ uint64_t __50__ISWrappedAVAudioSession_registerVolumeObserver___block_invoke(uin
   [(ISWrappedAVAudioSession *)&v5 dealloc];
 }
 
-- (ISWrappedAVAudioSession)initWithAudioSession:(id)a3 category:(id)a4
+- (ISWrappedAVAudioSession)initWithAudioSession:(id)session category:(id)category
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  categoryCopy = category;
   v13.receiver = self;
   v13.super_class = ISWrappedAVAudioSession;
   v9 = [(ISWrappedAVAudioSession *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [categoryCopy copy];
     expectedCategory = v9->_expectedCategory;
     v9->_expectedCategory = v10;
 
-    objc_storeStrong(&v9->_audioSession, a3);
+    objc_storeStrong(&v9->_audioSession, session);
   }
 
   return v9;
 }
 
-- (ISWrappedAVAudioSession)initWithAudioSession:(id)a3
+- (ISWrappedAVAudioSession)initWithAudioSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = ISWrappedAVAudioSession;
   v6 = [(ISWrappedAVAudioSession *)&v9 init];
@@ -278,7 +278,7 @@ uint64_t __50__ISWrappedAVAudioSession_registerVolumeObserver___block_invoke(uin
   {
     objc_storeStrong(&v6->_expectedCategory, *MEMORY[0x277CB8020]);
     objc_storeStrong(&v7->_expectedMode, *MEMORY[0x277CB80A8]);
-    objc_storeStrong(&v7->_audioSession, a3);
+    objc_storeStrong(&v7->_audioSession, session);
   }
 
   return v7;
@@ -286,9 +286,9 @@ uint64_t __50__ISWrappedAVAudioSession_registerVolumeObserver___block_invoke(uin
 
 + (id)auxiliarySession
 {
-  v2 = [a1 alloc];
-  v3 = [MEMORY[0x277CB83F8] auxiliarySession];
-  v4 = [v2 initWithAudioSession:v3 category:*MEMORY[0x277CB8020]];
+  v2 = [self alloc];
+  auxiliarySession = [MEMORY[0x277CB83F8] auxiliarySession];
+  v4 = [v2 initWithAudioSession:auxiliarySession category:*MEMORY[0x277CB8020]];
 
   return v4;
 }
@@ -333,15 +333,15 @@ void __52__ISWrappedAVAudioSession_sharedPhotosOneUpInstance__block_invoke()
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)sharedPhotosOneUpInstanceWithLoadHandler:(id)a3
++ (void)sharedPhotosOneUpInstanceWithLoadHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (mainQueue_ISWrappedAVAudioSessionDidLoadOneUpInstance == 1)
     {
-      v5 = [a1 sharedPhotosOneUpInstance];
-      v4[2](v4, v5);
+      sharedPhotosOneUpInstance = [self sharedPhotosOneUpInstance];
+      handlerCopy[2](handlerCopy, sharedPhotosOneUpInstance);
     }
 
     else
@@ -351,8 +351,8 @@ void __52__ISWrappedAVAudioSession_sharedPhotosOneUpInstance__block_invoke()
       v7[1] = 3221225472;
       v7[2] = __68__ISWrappedAVAudioSession_sharedPhotosOneUpInstanceWithLoadHandler___block_invoke;
       v7[3] = &unk_279A2A0E0;
-      v8 = v4;
-      v9 = a1;
+      v8 = handlerCopy;
+      selfCopy = self;
       dispatch_async(v6, v7);
     }
   }
@@ -365,15 +365,15 @@ void __68__ISWrappedAVAudioSession_sharedPhotosOneUpInstanceWithLoadHandler___bl
   (*(v1 + 16))(v1, v2);
 }
 
-+ (void)sharedVideoPlaybackInstanceWithLoadHandler:(id)a3
++ (void)sharedVideoPlaybackInstanceWithLoadHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (mainQueue_ISWrappedAVAudioSessionDidLoadPlaybackInstance == 1)
     {
-      v5 = [a1 sharedVideoPlaybackInstance];
-      v4[2](v4, v5);
+      sharedVideoPlaybackInstance = [self sharedVideoPlaybackInstance];
+      handlerCopy[2](handlerCopy, sharedVideoPlaybackInstance);
     }
 
     else
@@ -383,8 +383,8 @@ void __68__ISWrappedAVAudioSession_sharedPhotosOneUpInstanceWithLoadHandler___bl
       v7[1] = 3221225472;
       v7[2] = __70__ISWrappedAVAudioSession_sharedVideoPlaybackInstanceWithLoadHandler___block_invoke;
       v7[3] = &unk_279A2A0E0;
-      v8 = v4;
-      v9 = a1;
+      v8 = handlerCopy;
+      selfCopy = self;
       dispatch_async(v6, v7);
     }
   }
@@ -437,15 +437,15 @@ void __54__ISWrappedAVAudioSession_sharedVideoPlaybackInstance__block_invoke()
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)sharedAmbientInstanceWithLoadHandler:(id)a3
++ (void)sharedAmbientInstanceWithLoadHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (mainQueue_ISWrappedAVAudioSessionDidLoadAmbientInstance == 1)
     {
-      v5 = [a1 sharedAmbientInstance];
-      v4[2](v4, v5);
+      sharedAmbientInstance = [self sharedAmbientInstance];
+      handlerCopy[2](handlerCopy, sharedAmbientInstance);
     }
 
     else
@@ -455,8 +455,8 @@ void __54__ISWrappedAVAudioSession_sharedVideoPlaybackInstance__block_invoke()
       v7[1] = 3221225472;
       v7[2] = __64__ISWrappedAVAudioSession_sharedAmbientInstanceWithLoadHandler___block_invoke;
       v7[3] = &unk_279A2A0E0;
-      v8 = v4;
-      v9 = a1;
+      v8 = handlerCopy;
+      selfCopy = self;
       dispatch_async(v6, v7);
     }
   }
@@ -509,15 +509,15 @@ void __48__ISWrappedAVAudioSession_sharedAmbientInstance__block_invoke()
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)sharedMemoryPlaybackInstanceWithLoadHandler:(id)a3
++ (void)sharedMemoryPlaybackInstanceWithLoadHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if (mainQueue_ISWrappedAVAudioSessionDidLoadAmbientInstance == 1)
     {
-      v5 = [a1 sharedMemoryPlaybackInstance];
-      v4[2](v4, v5);
+      sharedMemoryPlaybackInstance = [self sharedMemoryPlaybackInstance];
+      handlerCopy[2](handlerCopy, sharedMemoryPlaybackInstance);
     }
 
     else
@@ -527,8 +527,8 @@ void __48__ISWrappedAVAudioSession_sharedAmbientInstance__block_invoke()
       v7[1] = 3221225472;
       v7[2] = __71__ISWrappedAVAudioSession_sharedMemoryPlaybackInstanceWithLoadHandler___block_invoke;
       v7[3] = &unk_279A2A0E0;
-      v8 = v4;
-      v9 = a1;
+      v8 = handlerCopy;
+      selfCopy = self;
       dispatch_async(v6, v7);
     }
   }
@@ -564,54 +564,54 @@ void __55__ISWrappedAVAudioSession_sharedMemoryPlaybackInstance__block_invoke()
   dispatch_async(v2, &__block_literal_global_2);
 }
 
-+ (void)sharedInstanceWithKind:(int64_t)a3 loadHandler:(id)a4
++ (void)sharedInstanceWithKind:(int64_t)kind loadHandler:(id)handler
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 < 2)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (kind < 2)
   {
-    [a1 sharedAmbientInstanceWithLoadHandler:v6];
+    [self sharedAmbientInstanceWithLoadHandler:handlerCopy];
     goto LABEL_6;
   }
 
-  if (a3 == 2)
+  if (kind == 2)
   {
 LABEL_6:
-    [a1 sharedVideoPlaybackInstanceWithLoadHandler:v7];
+    [self sharedVideoPlaybackInstanceWithLoadHandler:v7];
     goto LABEL_7;
   }
 
-  if (a3 == 3)
+  if (kind == 3)
   {
 LABEL_7:
-    [a1 sharedMemoryPlaybackInstanceWithLoadHandler:v7];
-    v6 = v7;
+    [self sharedMemoryPlaybackInstanceWithLoadHandler:v7];
+    handlerCopy = v7;
   }
 }
 
-+ (id)sharedInstanceWithKind:(int64_t)a3
++ (id)sharedInstanceWithKind:(int64_t)kind
 {
-  if (a3 < 2)
+  if (kind < 2)
   {
-    v3 = [a1 sharedAmbientInstance];
+    sharedAmbientInstance = [self sharedAmbientInstance];
   }
 
-  else if (a3 == 2)
+  else if (kind == 2)
   {
-    v3 = [a1 sharedVideoPlaybackInstance];
+    sharedAmbientInstance = [self sharedVideoPlaybackInstance];
   }
 
   else
   {
-    if (a3 != 3)
+    if (kind != 3)
     {
       goto LABEL_8;
     }
 
-    v3 = [a1 sharedMemoryPlaybackInstance];
+    sharedAmbientInstance = [self sharedMemoryPlaybackInstance];
   }
 
-  a2 = v3;
+  a2 = sharedAmbientInstance;
 LABEL_8:
 
   return a2;

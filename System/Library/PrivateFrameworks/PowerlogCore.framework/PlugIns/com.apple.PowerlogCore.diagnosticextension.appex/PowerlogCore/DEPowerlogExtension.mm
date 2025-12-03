@@ -1,6 +1,6 @@
 @interface DEPowerlogExtension
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation DEPowerlogExtension
@@ -32,17 +32,17 @@
   return v13;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"clean"];
+  parametersCopy = parameters;
+  v4 = [parametersCopy objectForKey:@"clean"];
 
   if (v4)
   {
-    v5 = [v3 objectForKeyedSubscript:@"clean"];
-    v6 = [v5 intValue];
+    v5 = [parametersCopy objectForKeyedSubscript:@"clean"];
+    intValue = [v5 intValue];
 
-    if (v6 == 1)
+    if (intValue == 1)
     {
       v27[0] = @"folder";
       v7 = NSTemporaryDirectory();
@@ -61,32 +61,32 @@
   }
 
   v8 = NSTemporaryDirectory();
-  v9 = [v3 objectForKey:@"attachmentPath"];
+  v9 = [parametersCopy objectForKey:@"attachmentPath"];
 
   if (v9)
   {
-    v10 = [v3 objectForKeyedSubscript:@"attachmentPath"];
+    v10 = [parametersCopy objectForKeyedSubscript:@"attachmentPath"];
 
     v8 = v10;
   }
 
-  v11 = [v3 objectForKey:@"collect"];
+  v11 = [parametersCopy objectForKey:@"collect"];
 
-  if (v11 && ([v3 objectForKeyedSubscript:@"collect"], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "intValue"), v12, !v13))
+  if (v11 && ([parametersCopy objectForKeyedSubscript:@"collect"], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "intValue"), v12, !v13))
   {
     v20 = &__NSArray0__struct;
   }
 
   else
   {
-    v14 = [v3 objectForKey:@"user"];
+    v14 = [parametersCopy objectForKey:@"user"];
 
     if (v14)
     {
       v25[1] = @"user";
       v26[0] = v8;
       v25[0] = @"folder";
-      v15 = [v3 objectForKeyedSubscript:@"user"];
+      v15 = [parametersCopy objectForKeyedSubscript:@"user"];
       v26[1] = v15;
       v16 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:2];
 

@@ -1,20 +1,20 @@
 @interface _UIGravityWellAdaptorEffect
-+ (id)effectWithAdaptedClickEffect:(id)a3;
-- (id)previewForContinuingToEffectWithPreview:(id)a3;
-- (void)addCompletion:(id)a3;
++ (id)effectWithAdaptedClickEffect:(id)effect;
+- (id)previewForContinuingToEffectWithPreview:(id)preview;
+- (void)addCompletion:(id)completion;
 - (void)begin;
 - (void)end;
 - (void)endForHandOff;
-- (void)updateWithProgress:(double)a3;
+- (void)updateWithProgress:(double)progress;
 @end
 
 @implementation _UIGravityWellAdaptorEffect
 
-+ (id)effectWithAdaptedClickEffect:(id)a3
++ (id)effectWithAdaptedClickEffect:(id)effect
 {
-  v3 = a3;
+  effectCopy = effect;
   v4 = objc_opt_new();
-  [v4 setAdaptedEffect:v3];
+  [v4 setAdaptedEffect:effectCopy];
 
   v5 = objc_opt_new();
   [v4 setAdaptorInteraction:v5];
@@ -27,20 +27,20 @@
 - (void)begin
 {
   v5 = objc_opt_new();
-  v3 = [(_UIGravityWellAdaptorEffect *)self adaptedEffect];
-  v4 = [(_UIGravityWellAdaptorEffect *)self adaptorInteraction];
-  [v3 interaction:v4 didChangeWithContext:v5];
+  adaptedEffect = [(_UIGravityWellAdaptorEffect *)self adaptedEffect];
+  adaptorInteraction = [(_UIGravityWellAdaptorEffect *)self adaptorInteraction];
+  [adaptedEffect interaction:adaptorInteraction didChangeWithContext:v5];
 }
 
-- (void)updateWithProgress:(double)a3
+- (void)updateWithProgress:(double)progress
 {
   v7 = objc_opt_new();
-  [v7 setProgress:a3];
+  [v7 setProgress:progress];
   [(_UIGravityWellAdaptorEffect *)self maxProgress];
   [v7 setMaximumProgress:?];
-  v5 = [(_UIGravityWellAdaptorEffect *)self adaptedEffect];
-  v6 = [(_UIGravityWellAdaptorEffect *)self adaptorInteraction];
-  [v5 interaction:v6 didChangeWithContext:v7];
+  adaptedEffect = [(_UIGravityWellAdaptorEffect *)self adaptedEffect];
+  adaptorInteraction = [(_UIGravityWellAdaptorEffect *)self adaptorInteraction];
+  [adaptedEffect interaction:adaptorInteraction didChangeWithContext:v7];
 }
 
 - (void)end
@@ -48,9 +48,9 @@
   v5 = objc_opt_new();
   [v5 setProgress:0.0];
   [v5 setEnded:1];
-  v3 = [(_UIGravityWellAdaptorEffect *)self adaptedEffect];
-  v4 = [(_UIGravityWellAdaptorEffect *)self adaptorInteraction];
-  [v3 interaction:v4 didChangeWithContext:v5];
+  adaptedEffect = [(_UIGravityWellAdaptorEffect *)self adaptedEffect];
+  adaptorInteraction = [(_UIGravityWellAdaptorEffect *)self adaptorInteraction];
+  [adaptedEffect interaction:adaptorInteraction didChangeWithContext:v5];
 }
 
 - (void)endForHandOff
@@ -68,24 +68,24 @@
   [UIView performWithoutAnimation:v5];
 }
 
-- (id)previewForContinuingToEffectWithPreview:(id)a3
+- (id)previewForContinuingToEffectWithPreview:(id)preview
 {
-  v3 = [(_UIGravityWellAdaptorEffect *)self adaptedEffect];
-  v4 = [v3 targetedPreviewForEffectContinuation];
+  adaptedEffect = [(_UIGravityWellAdaptorEffect *)self adaptedEffect];
+  targetedPreviewForEffectContinuation = [adaptedEffect targetedPreviewForEffectContinuation];
 
-  return v4;
+  return targetedPreviewForEffectContinuation;
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _UIGravityWellAdaptorEffect;
-  [(_UIGravityWellEffect *)&v11 addCompletion:v4];
-  v5 = [(_UIGravityWellAdaptorEffect *)self adaptedEffect];
-  v6 = [v5 completionBlock];
+  [(_UIGravityWellEffect *)&v11 addCompletion:completionCopy];
+  adaptedEffect = [(_UIGravityWellAdaptorEffect *)self adaptedEffect];
+  completionBlock = [adaptedEffect completionBlock];
 
-  if (!v6)
+  if (!completionBlock)
   {
     objc_initWeak(&location, self);
     v8 = MEMORY[0x1E69E9820];

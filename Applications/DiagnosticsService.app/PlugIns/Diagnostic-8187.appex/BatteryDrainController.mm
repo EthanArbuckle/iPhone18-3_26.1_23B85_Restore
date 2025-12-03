@@ -1,20 +1,20 @@
 @interface BatteryDrainController
-+ (BOOL)setCode:(int64_t)a3 forError:(id *)a4;
++ (BOOL)setCode:(int64_t)code forError:(id *)error;
 - (BOOL)isDeviceConnectedToRequiredAccessory;
 - (BOOL)isDeviceConnectedToUnexpectedAccessory;
 - (void)cancel;
-- (void)checkStartingBatteryPercentage:(id)a3;
-- (void)endBatteryDrainWithStatusCode:(id)a3;
+- (void)checkStartingBatteryPercentage:(id)percentage;
+- (void)endBatteryDrainWithStatusCode:(id)code;
 - (void)ensureAnalyticsFreeEnvironment;
-- (void)failedToExecuteWithError:(id)a3;
+- (void)failedToExecuteWithError:(id)error;
 - (void)initOperations;
-- (void)receivedInterruptNotification:(id)a3;
-- (void)recievedBatteryPercentageChangedNotification:(id)a3;
-- (void)recievedConnectedToChargerNotification:(id)a3;
+- (void)receivedInterruptNotification:(id)notification;
+- (void)recievedBatteryPercentageChangedNotification:(id)notification;
+- (void)recievedConnectedToChargerNotification:(id)notification;
 - (void)recievedShutdownNotification;
 - (void)recievedThermalStateChangedNotification;
 - (void)setupNotifications;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 - (void)teardown;
 - (void)waitForSafeThermalState;
@@ -22,28 +22,28 @@
 
 @implementation BatteryDrainController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  v6 = a3;
-  v7 = a4;
-  [(BatteryDrainController *)self setInputs:v6];
-  [(BatteryDrainController *)self setResponder:v7];
+  inputsCopy = inputs;
+  responderCopy = responder;
+  [(BatteryDrainController *)self setInputs:inputsCopy];
+  [(BatteryDrainController *)self setResponder:responderCopy];
   [(BatteryDrainController *)self setIsThermalBlocked:0];
   [(BatteryDrainController *)self setOriginalPowerModeSet:0];
   v8 = [NSNumber numberWithInt:1];
   [(BatteryDrainController *)self setRunNumber:v8];
 
-  v9 = [(BatteryDrainController *)self inputs];
-  if (![v9 isAccessoryDetectorActive])
+  inputs = [(BatteryDrainController *)self inputs];
+  if (![inputs isAccessoryDetectorActive])
   {
 
 LABEL_5:
-    v12 = [(BatteryDrainController *)self inputs];
-    if ([v12 disableUSBCharging])
+    inputs2 = [(BatteryDrainController *)self inputs];
+    if ([inputs2 disableUSBCharging])
     {
-      v13 = [(BatteryDrainController *)self isDeviceConnectedToUnexpectedAccessory];
+      isDeviceConnectedToUnexpectedAccessory = [(BatteryDrainController *)self isDeviceConnectedToUnexpectedAccessory];
 
-      if (v13)
+      if (isDeviceConnectedToUnexpectedAccessory)
       {
         v43 = 0;
         [BatteryDrainController setCode:-3 forError:&v43];
@@ -58,21 +58,21 @@ LABEL_5:
     {
     }
 
-    v14 = [(BatteryDrainController *)self inputs];
-    if ([v14 drainAudio])
+    inputs3 = [(BatteryDrainController *)self inputs];
+    if ([inputs3 drainAudio])
     {
-      v15 = [(BatteryDrainController *)self inputs];
-      v16 = [v15 audioFilename];
+      inputs4 = [(BatteryDrainController *)self inputs];
+      audioFilename = [inputs4 audioFilename];
 
-      if (v16)
+      if (audioFilename)
       {
         v17 = dispatch_semaphore_create(0);
         v18 = NSTemporaryDirectory();
         v19 = [NSURL fileURLWithPath:v18 isDirectory:1];
 
         v20 = +[NSUUID UUID];
-        v21 = [v20 UUIDString];
-        v22 = [v19 URLByAppendingPathComponent:v21];
+        uUIDString = [v20 UUIDString];
+        v22 = [v19 URLByAppendingPathComponent:uUIDString];
 
         v37 = 0;
         v38 = &v37;
@@ -80,8 +80,8 @@ LABEL_5:
         v40 = sub_100003F34;
         v41 = sub_100003F44;
         v42 = 0;
-        v23 = [(BatteryDrainController *)self inputs];
-        v24 = [v23 audioFilename];
+        inputs5 = [(BatteryDrainController *)self inputs];
+        audioFilename2 = [inputs5 audioFilename];
         v34[0] = _NSConcreteStackBlock;
         v34[1] = 3221225472;
         v34[2] = sub_100003F4C;
@@ -89,7 +89,7 @@ LABEL_5:
         v36 = &v37;
         v25 = v17;
         v35 = v25;
-        [v7 getAsset:v24 completion:v34];
+        [responderCopy getAsset:audioFilename2 completion:v34];
 
         dispatch_semaphore_wait(v25, 0xFFFFFFFFFFFFFFFFLL);
         if (v38[5])
@@ -127,9 +127,9 @@ LABEL_24:
           v29 = DiagnosticLogHandleForCategory();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
-            v30 = [(BatteryDrainController *)self inputs];
-            v31 = [v30 audioFilename];
-            sub_10000B4DC(v31, buf, v29, v30);
+            inputs6 = [(BatteryDrainController *)self inputs];
+            audioFilename3 = [inputs6 audioFilename];
+            sub_10000B4DC(audioFilename3, buf, v29, inputs6);
           }
 
           v11 = 0;
@@ -151,9 +151,9 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v10 = [(BatteryDrainController *)self isDeviceConnectedToRequiredAccessory];
+  isDeviceConnectedToRequiredAccessory = [(BatteryDrainController *)self isDeviceConnectedToRequiredAccessory];
 
-  if (v10)
+  if (isDeviceConnectedToRequiredAccessory)
   {
     goto LABEL_5;
   }
@@ -175,55 +175,55 @@ LABEL_26:
   v6 = [NSNumber numberWithFloat:v5];
   [(BatteryDrainController *)self setStartingBatteryPercentage:v6];
 
-  v7 = [(BatteryDrainController *)self startingBatteryPercentage];
-  [(BatteryDrainController *)self checkStartingBatteryPercentage:v7];
+  startingBatteryPercentage = [(BatteryDrainController *)self startingBatteryPercentage];
+  [(BatteryDrainController *)self checkStartingBatteryPercentage:startingBatteryPercentage];
 
   [(BatteryDrainController *)self waitForSafeThermalState];
   [(BatteryDrainController *)self setupNotifications];
-  LOBYTE(v7) = MGGetBoolAnswer();
+  LOBYTE(startingBatteryPercentage) = MGGetBoolAnswer();
   v8 = MGGetBoolAnswer();
-  if ((v7 & 1) != 0 || v8)
+  if ((startingBatteryPercentage & 1) != 0 || v8)
   {
     [(BatteryDrainController *)self recievedConnectedToChargerNotification:0];
   }
 
-  v9 = [(BatteryDrainController *)self startingBatteryPercentage];
-  [v9 floatValue];
+  startingBatteryPercentage2 = [(BatteryDrainController *)self startingBatteryPercentage];
+  [startingBatteryPercentage2 floatValue];
   v11 = v10;
-  v12 = [(BatteryDrainController *)self inputs];
-  v13 = [v12 targetBatteryPercentage];
-  [v13 floatValue];
+  inputs = [(BatteryDrainController *)self inputs];
+  targetBatteryPercentage = [inputs targetBatteryPercentage];
+  [targetBatteryPercentage floatValue];
   v15 = llroundf((v11 - v14) * 100.0);
-  v16 = [(BatteryDrainController *)self progress];
-  [v16 setTotalUnitCount:v15];
+  progress = [(BatteryDrainController *)self progress];
+  [progress setTotalUnitCount:v15];
 
   [(BatteryDrainController *)self initOperations];
-  v17 = [(BatteryDrainController *)self inputs];
-  LODWORD(v12) = [v17 autoBrightnessOff];
+  inputs2 = [(BatteryDrainController *)self inputs];
+  LODWORD(inputs) = [inputs2 autoBrightnessOff];
 
-  if (v12)
+  if (inputs)
   {
     v18 = objc_alloc_init(BrightnessSystemClient);
     [(BatteryDrainController *)self setBrightnessSystemClient:v18];
 
-    v19 = [(BatteryDrainController *)self brightnessSystemClient];
-    v20 = [v19 copyPropertyForKey:@"DisplayAutoBrightnessActive"];
+    brightnessSystemClient = [(BatteryDrainController *)self brightnessSystemClient];
+    v20 = [brightnessSystemClient copyPropertyForKey:@"DisplayAutoBrightnessActive"];
     -[BatteryDrainController setWasAutoBrightnessEnabled:](self, "setWasAutoBrightnessEnabled:", [v20 BOOLValue]);
 
-    v21 = [(BatteryDrainController *)self brightnessSystemClient];
-    [v21 setProperty:&__kCFBooleanFalse forKey:@"DisplayAutoBrightnessActive"];
+    brightnessSystemClient2 = [(BatteryDrainController *)self brightnessSystemClient];
+    [brightnessSystemClient2 setProperty:&__kCFBooleanFalse forKey:@"DisplayAutoBrightnessActive"];
 
-    v22 = [(BatteryDrainController *)self brightnessSystemClient];
-    [v22 setProperty:&__kCFBooleanFalse forKey:@"DisplayBrightnessAuto"];
+    brightnessSystemClient3 = [(BatteryDrainController *)self brightnessSystemClient];
+    [brightnessSystemClient3 setProperty:&__kCFBooleanFalse forKey:@"DisplayBrightnessAuto"];
 
-    v23 = [(BatteryDrainController *)self brightnessSystemClient];
-    [v23 setProperty:&__kCFBooleanFalse forKey:@"ALSTurnOn"];
+    brightnessSystemClient4 = [(BatteryDrainController *)self brightnessSystemClient];
+    [brightnessSystemClient4 setProperty:&__kCFBooleanFalse forKey:@"ALSTurnOn"];
   }
 
-  v24 = [(BatteryDrainController *)self inputs];
-  v25 = [v24 lowPowerModeOff];
+  inputs3 = [(BatteryDrainController *)self inputs];
+  lowPowerModeOff = [inputs3 lowPowerModeOff];
 
-  if (v25)
+  if (lowPowerModeOff)
   {
     v26 = objc_alloc_init(_PMLowPowerMode);
     -[BatteryDrainController setOriginalPowerMode:](self, "setOriginalPowerMode:", [v26 getPowerMode]);
@@ -245,77 +245,77 @@ LABEL_26:
   v3 = objc_opt_new();
   [(BatteryDrainController *)self setDrainQueue:v3];
 
-  v4 = [(BatteryDrainController *)self drainQueue];
-  [v4 setQualityOfService:25];
+  drainQueue = [(BatteryDrainController *)self drainQueue];
+  [drainQueue setQualityOfService:25];
 
-  v5 = [(BatteryDrainController *)self drainQueue];
-  [v5 setMaxConcurrentOperationCount:10];
+  drainQueue2 = [(BatteryDrainController *)self drainQueue];
+  [drainQueue2 setMaxConcurrentOperationCount:10];
 
-  v6 = [(BatteryDrainController *)self inputs];
-  v7 = [v6 drainAudio];
+  inputs = [(BatteryDrainController *)self inputs];
+  drainAudio = [inputs drainAudio];
 
-  if (v7)
+  if (drainAudio)
   {
     v8 = [AudioDrainOperation alloc];
-    v9 = [(BatteryDrainController *)self audioFileURL];
-    v10 = [(BatteryDrainController *)self inputs];
-    v11 = [v10 audioVolume];
-    [v11 floatValue];
+    audioFileURL = [(BatteryDrainController *)self audioFileURL];
+    inputs2 = [(BatteryDrainController *)self inputs];
+    audioVolume = [inputs2 audioVolume];
+    [audioVolume floatValue];
     v13 = v12;
-    v14 = [(BatteryDrainController *)self responder];
+    responder = [(BatteryDrainController *)self responder];
     LODWORD(v15) = v13;
-    v16 = [(AudioDrainOperation *)v8 initWithAudioFileURL:v9 volume:v14 responder:v15];
+    v16 = [(AudioDrainOperation *)v8 initWithAudioFileURL:audioFileURL volume:responder responder:v15];
 
-    v17 = [(BatteryDrainController *)self drainQueue];
-    [v17 addOperation:v16];
+    drainQueue3 = [(BatteryDrainController *)self drainQueue];
+    [drainQueue3 addOperation:v16];
   }
 
-  v18 = [(BatteryDrainController *)self inputs];
-  v19 = [v18 drainDisplay];
+  inputs3 = [(BatteryDrainController *)self inputs];
+  drainDisplay = [inputs3 drainDisplay];
 
-  if (v19)
+  if (drainDisplay)
   {
     v20 = [DisplayDrainOperation alloc];
-    v21 = [(BatteryDrainController *)self inputs];
-    v22 = [v21 displayBrightness];
-    [v22 floatValue];
+    inputs4 = [(BatteryDrainController *)self inputs];
+    displayBrightness = [inputs4 displayBrightness];
+    [displayBrightness floatValue];
     v24 = v23;
-    v25 = [(BatteryDrainController *)self responder];
+    responder2 = [(BatteryDrainController *)self responder];
     LODWORD(v26) = v24;
-    v27 = [(DisplayDrainOperation *)v20 initWithBrightness:v25 responder:v26];
+    v27 = [(DisplayDrainOperation *)v20 initWithBrightness:responder2 responder:v26];
 
-    v28 = [(BatteryDrainController *)self drainQueue];
-    [v28 addOperation:v27];
+    drainQueue4 = [(BatteryDrainController *)self drainQueue];
+    [drainQueue4 addOperation:v27];
   }
 
-  v29 = [(BatteryDrainController *)self inputs];
-  v30 = [v29 drainCPU];
+  inputs5 = [(BatteryDrainController *)self inputs];
+  drainCPU = [inputs5 drainCPU];
 
-  if (v30)
+  if (drainCPU)
   {
     v31 = [CPUDrainOperation alloc];
-    v32 = [(BatteryDrainController *)self inputs];
-    v33 = [v32 cpuDrainMatrixLength];
-    v34 = [(BatteryDrainController *)self inputs];
-    v35 = [v34 cpuDrainIterationDelay];
-    v36 = [(CPUDrainOperation *)v31 initWithMatrixLength:v33 iterationDelay:v35];
+    inputs6 = [(BatteryDrainController *)self inputs];
+    cpuDrainMatrixLength = [inputs6 cpuDrainMatrixLength];
+    inputs7 = [(BatteryDrainController *)self inputs];
+    cpuDrainIterationDelay = [inputs7 cpuDrainIterationDelay];
+    v36 = [(CPUDrainOperation *)v31 initWithMatrixLength:cpuDrainMatrixLength iterationDelay:cpuDrainIterationDelay];
 
-    v37 = [(BatteryDrainController *)self drainQueue];
-    [v37 addOperation:v36];
+    drainQueue5 = [(BatteryDrainController *)self drainQueue];
+    [drainQueue5 addOperation:v36];
   }
 
-  v38 = [(BatteryDrainController *)self inputs];
-  v39 = [v38 drainGPU];
+  inputs8 = [(BatteryDrainController *)self inputs];
+  drainGPU = [inputs8 drainGPU];
 
-  if (v39)
+  if (drainGPU)
   {
     v40 = [GPUDrainOperation alloc];
-    v41 = [(BatteryDrainController *)self inputs];
-    v42 = [v41 gpuDrainIterationDelay];
-    v44 = [(GPUDrainOperation *)v40 initWithIterationDelay:v42];
+    inputs9 = [(BatteryDrainController *)self inputs];
+    gpuDrainIterationDelay = [inputs9 gpuDrainIterationDelay];
+    v44 = [(GPUDrainOperation *)v40 initWithIterationDelay:gpuDrainIterationDelay];
 
-    v43 = [(BatteryDrainController *)self drainQueue];
-    [v43 addOperation:v44];
+    drainQueue6 = [(BatteryDrainController *)self drainQueue];
+    [drainQueue6 addOperation:v44];
   }
 }
 
@@ -326,9 +326,9 @@ LABEL_26:
   v18 = 0u;
   v19 = 0u;
   v3 = +[EAAccessoryManager sharedAccessoryManager];
-  v4 = [v3 connectedAccessories];
+  connectedAccessories = [v3 connectedAccessories];
 
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [connectedAccessories countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -339,14 +339,14 @@ LABEL_26:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(connectedAccessories);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [(BatteryDrainController *)self inputs];
-        v11 = [v10 accessoryDetectorModelNumbers];
-        v12 = [v9 modelNumber];
-        v13 = [v11 containsObject:v12];
+        inputs = [(BatteryDrainController *)self inputs];
+        accessoryDetectorModelNumbers = [inputs accessoryDetectorModelNumbers];
+        modelNumber = [v9 modelNumber];
+        v13 = [accessoryDetectorModelNumbers containsObject:modelNumber];
 
         if (v13)
         {
@@ -355,7 +355,7 @@ LABEL_26:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [connectedAccessories countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v6)
       {
         continue;
@@ -378,9 +378,9 @@ LABEL_11:
   v18 = 0u;
   v19 = 0u;
   v3 = +[EAAccessoryManager sharedAccessoryManager];
-  v4 = [v3 connectedAccessories];
+  connectedAccessories = [v3 connectedAccessories];
 
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [connectedAccessories countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -391,14 +391,14 @@ LABEL_11:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(connectedAccessories);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [(BatteryDrainController *)self inputs];
-        v11 = [v10 accessoryDetectorModelNumbers];
-        v12 = [v9 modelNumber];
-        v13 = [v11 containsObject:v12];
+        inputs = [(BatteryDrainController *)self inputs];
+        accessoryDetectorModelNumbers = [inputs accessoryDetectorModelNumbers];
+        modelNumber = [v9 modelNumber];
+        v13 = [accessoryDetectorModelNumbers containsObject:modelNumber];
 
         if (!v13)
         {
@@ -407,7 +407,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [connectedAccessories countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v6)
       {
         continue;
@@ -423,22 +423,22 @@ LABEL_11:
   return v14;
 }
 
-- (void)failedToExecuteWithError:(id)a3
+- (void)failedToExecuteWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(BatteryDrainController *)self result];
-  [v5 setData:&__NSDictionary0__struct];
+  errorCopy = error;
+  result = [(BatteryDrainController *)self result];
+  [result setData:&__NSDictionary0__struct];
 
-  v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 code]);
-  v7 = [(BatteryDrainController *)self result];
-  [v7 setStatusCode:v6];
+  v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
+  result2 = [(BatteryDrainController *)self result];
+  [result2 setStatusCode:v6];
 
   [(BatteryDrainController *)self setFinished:1];
   v8 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = [v4 code];
+    code = [errorCopy code];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Failed to execute with error code: %ld", &v9, 0xCu);
   }
 }
@@ -455,19 +455,19 @@ LABEL_11:
   [(BatteryDrainController *)self setFinished:1];
 }
 
-- (void)endBatteryDrainWithStatusCode:(id)a3
+- (void)endBatteryDrainWithStatusCode:(id)code
 {
-  v4 = a3;
-  v5 = [(BatteryDrainController *)self result];
-  [v5 setStatusCode:v4];
+  codeCopy = code;
+  result = [(BatteryDrainController *)self result];
+  [result setStatusCode:codeCopy];
 }
 
 - (void)setupNotifications
 {
   +[BatteryStateNotifier registerForBatteryEvents];
-  v3 = [(BatteryDrainController *)self inputs];
-  v4 = [v3 targetBatteryPercentage];
-  [v4 floatValue];
+  inputs = [(BatteryDrainController *)self inputs];
+  targetBatteryPercentage = [inputs targetBatteryPercentage];
+  [targetBatteryPercentage floatValue];
   v6 = v5;
 
   if (v6 > 0.0)
@@ -476,40 +476,40 @@ LABEL_11:
     [v7 addObserver:self selector:"recievedBatteryPercentageChangedNotification:" name:@"com.apple.Diagnostics.BatteryLevelChangedNotification" object:0];
   }
 
-  v8 = [(BatteryDrainController *)self inputs];
-  v9 = [v8 isAccessoryDetectorActive];
+  inputs2 = [(BatteryDrainController *)self inputs];
+  isAccessoryDetectorActive = [inputs2 isAccessoryDetectorActive];
 
-  if (v9)
+  if (isAccessoryDetectorActive)
   {
     v10 = +[NSNotificationCenter defaultCenter];
     [v10 addObserver:self selector:"receivedInterruptNotification:" name:@"AccessoryDisconnectedNotification" object:0];
 
     v11 = [DAAccessoryDisconnectDetector alloc];
-    v12 = [(BatteryDrainController *)self inputs];
-    v13 = [v12 accessoryDetectorModelNumbers];
-    v14 = [(DAAccessoryDisconnectDetector *)v11 initWithModelNumbers:v13];
+    inputs3 = [(BatteryDrainController *)self inputs];
+    accessoryDetectorModelNumbers = [inputs3 accessoryDetectorModelNumbers];
+    v14 = [(DAAccessoryDisconnectDetector *)v11 initWithModelNumbers:accessoryDetectorModelNumbers];
     [(BatteryDrainController *)self setAccessoryDisconnectDetector:v14];
 
-    v15 = [(BatteryDrainController *)self accessoryDisconnectDetector];
-    [v15 start];
+    accessoryDisconnectDetector = [(BatteryDrainController *)self accessoryDisconnectDetector];
+    [accessoryDisconnectDetector start];
   }
 
-  v16 = [(BatteryDrainController *)self inputs];
-  v17 = [v16 disableUSBCharging];
+  inputs4 = [(BatteryDrainController *)self inputs];
+  disableUSBCharging = [inputs4 disableUSBCharging];
 
-  if (v17)
+  if (disableUSBCharging)
   {
     v18 = +[NSNotificationCenter defaultCenter];
     [v18 addObserver:self selector:"receivedInterruptNotification:" name:@"AccessoryConnectedNotification" object:0];
 
     v19 = [DAAccessoryConnectDetector alloc];
-    v20 = [(BatteryDrainController *)self inputs];
-    v21 = [v20 accessoryDetectorModelNumbers];
-    v22 = [(DAAccessoryConnectDetector *)v19 initWithModelNumbers:v21];
+    inputs5 = [(BatteryDrainController *)self inputs];
+    accessoryDetectorModelNumbers2 = [inputs5 accessoryDetectorModelNumbers];
+    v22 = [(DAAccessoryConnectDetector *)v19 initWithModelNumbers:accessoryDetectorModelNumbers2];
     [(BatteryDrainController *)self setAccessoryConnectDetector:v22];
 
-    v23 = [(BatteryDrainController *)self accessoryConnectDetector];
-    [v23 start];
+    accessoryConnectDetector = [(BatteryDrainController *)self accessoryConnectDetector];
+    [accessoryConnectDetector start];
   }
 
   v24 = +[NSNotificationCenter defaultCenter];
@@ -537,8 +537,8 @@ LABEL_11:
 {
   v3 = MGGetBoolAnswer();
   v4 = DiagnosticLogSubmissionEnabled();
-  v5 = [(BatteryDrainController *)self defaults];
-  v6 = [v5 objectForKey:@"SkipAnalyticsCheck"];
+  defaults = [(BatteryDrainController *)self defaults];
+  v6 = [defaults objectForKey:@"SkipAnalyticsCheck"];
 
   v7 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -578,14 +578,14 @@ LABEL_11:
   }
 }
 
-- (void)checkStartingBatteryPercentage:(id)a3
+- (void)checkStartingBatteryPercentage:(id)percentage
 {
-  v4 = a3;
-  [v4 floatValue];
+  percentageCopy = percentage;
+  [percentageCopy floatValue];
   v6 = v5;
-  v7 = [(BatteryDrainController *)self inputs];
-  v8 = [v7 targetBatteryPercentage];
-  [v8 floatValue];
+  inputs = [(BatteryDrainController *)self inputs];
+  targetBatteryPercentage = [inputs targetBatteryPercentage];
+  [targetBatteryPercentage floatValue];
   v10 = v9;
 
   if (v6 <= v10)
@@ -593,17 +593,17 @@ LABEL_11:
     v11 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(BatteryDrainController *)self inputs];
-      v13 = [v12 targetBatteryPercentage];
+      inputs2 = [(BatteryDrainController *)self inputs];
+      targetBatteryPercentage2 = [inputs2 targetBatteryPercentage];
       v15 = 138412546;
-      v16 = v4;
+      v16 = percentageCopy;
       v17 = 2112;
-      v18 = v13;
+      v18 = targetBatteryPercentage2;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Starting battery level (%@) is already at or below target battery level (%@)", &v15, 0x16u);
     }
 
-    v14 = [(BatteryDrainController *)self result];
-    [v14 setStatusCode:&off_100018ED8];
+    result = [(BatteryDrainController *)self result];
+    [result setStatusCode:&off_100018ED8];
 
     [(BatteryDrainController *)self setFinished:1];
   }
@@ -622,22 +622,22 @@ LABEL_11:
   }
 }
 
-- (void)receivedInterruptNotification:(id)a3
+- (void)receivedInterruptNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 isEqualToString:@"AccessoryDisconnectedNotification"];
+  notificationCopy = notification;
+  name = [notificationCopy name];
+  v6 = [name isEqualToString:@"AccessoryDisconnectedNotification"];
 
   if (!v6)
   {
-    v9 = [v4 name];
-    if ([v9 isEqualToString:@"AccessoryConnectedNotification"])
+    name2 = [notificationCopy name];
+    if ([name2 isEqualToString:@"AccessoryConnectedNotification"])
     {
-      v10 = [v4 userInfo];
-      v11 = [v10 valueForKey:@"accessoryModelNumberInList"];
-      v12 = [v11 BOOLValue];
+      userInfo = [notificationCopy userInfo];
+      v11 = [userInfo valueForKey:@"accessoryModelNumberInList"];
+      bOOLValue = [v11 BOOLValue];
 
-      if ((v12 & 1) == 0)
+      if ((bOOLValue & 1) == 0)
       {
         v13 = 0;
         [BatteryDrainController setCode:-3 forError:&v13];
@@ -663,22 +663,22 @@ LABEL_9:
   [(BatteryDrainController *)self failedToExecuteWithError:v8];
 }
 
-- (void)recievedBatteryPercentageChangedNotification:(id)a3
+- (void)recievedBatteryPercentageChangedNotification:(id)notification
 {
-  v4 = [a3 object];
+  object = [notification object];
   v5 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 138412290;
-    v23 = v4;
+    v23 = object;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Battery level change notification recieved: %@", &v22, 0xCu);
   }
 
-  [v4 floatValue];
+  [object floatValue];
   v7 = v6;
-  v8 = [(BatteryDrainController *)self inputs];
-  v9 = [v8 targetBatteryPercentage];
-  [v9 floatValue];
+  inputs = [(BatteryDrainController *)self inputs];
+  targetBatteryPercentage = [inputs targetBatteryPercentage];
+  [targetBatteryPercentage floatValue];
   v11 = v10;
 
   if (v7 <= v11)
@@ -686,34 +686,34 @@ LABEL_9:
     v18 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [(BatteryDrainController *)self inputs];
-      v20 = [v19 targetBatteryPercentage];
+      inputs2 = [(BatteryDrainController *)self inputs];
+      targetBatteryPercentage2 = [inputs2 targetBatteryPercentage];
       v22 = 138412546;
-      v23 = v4;
+      v23 = object;
       v24 = 2112;
-      v25 = v20;
+      v25 = targetBatteryPercentage2;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "The current battery level (%@) is at or below target battery level (%@). Ending test", &v22, 0x16u);
     }
 
-    v21 = [(BatteryDrainController *)self result];
-    [v21 setStatusCode:&off_100018ED8];
+    result = [(BatteryDrainController *)self result];
+    [result setStatusCode:&off_100018ED8];
 
     [(BatteryDrainController *)self setFinished:1];
   }
 
   else
   {
-    v12 = [(BatteryDrainController *)self startingBatteryPercentage];
-    [v12 floatValue];
+    startingBatteryPercentage = [(BatteryDrainController *)self startingBatteryPercentage];
+    [startingBatteryPercentage floatValue];
     v14 = v13;
-    [v4 floatValue];
+    [object floatValue];
     v16 = llroundf((v14 - v15) * 100.0);
-    v17 = [(BatteryDrainController *)self progress];
-    [v17 setCompletedUnitCount:v16];
+    progress = [(BatteryDrainController *)self progress];
+    [progress setCompletedUnitCount:v16];
   }
 }
 
-- (void)recievedConnectedToChargerNotification:(id)a3
+- (void)recievedConnectedToChargerNotification:(id)notification
 {
   v4 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -737,10 +737,10 @@ LABEL_7:
 
   else
   {
-    v8 = [(BatteryDrainController *)self inputs];
-    v9 = [v8 disableUSBCharging];
+    inputs = [(BatteryDrainController *)self inputs];
+    disableUSBCharging = [inputs disableUSBCharging];
 
-    if (!v9 || !+[BatteryStateNotifier disableUSBCharging])
+    if (!disableUSBCharging || !+[BatteryStateNotifier disableUSBCharging])
     {
       v10 = 0;
       [BatteryDrainController setCode:-2 forError:&v10];
@@ -777,8 +777,8 @@ LABEL_13:
 
   else
   {
-    v3 = [(BatteryDrainController *)self result];
-    [v3 setStatusCode:&off_100018ED8];
+    result = [(BatteryDrainController *)self result];
+    [result setStatusCode:&off_100018ED8];
 
     [(BatteryDrainController *)self setFinished:1];
   }
@@ -786,36 +786,36 @@ LABEL_13:
 
 - (void)teardown
 {
-  v3 = [(BatteryDrainController *)self drainQueue];
-  [v3 cancelAllOperations];
+  drainQueue = [(BatteryDrainController *)self drainQueue];
+  [drainQueue cancelAllOperations];
 
-  v4 = [(BatteryDrainController *)self inputs];
-  v5 = [v4 autoBrightnessOff];
+  inputs = [(BatteryDrainController *)self inputs];
+  autoBrightnessOff = [inputs autoBrightnessOff];
 
-  if (v5 && [(BatteryDrainController *)self wasAutoBrightnessEnabled])
+  if (autoBrightnessOff && [(BatteryDrainController *)self wasAutoBrightnessEnabled])
   {
-    v6 = [(BatteryDrainController *)self brightnessSystemClient];
-    [v6 setProperty:&__kCFBooleanTrue forKey:@"DisplayAutoBrightnessActive"];
+    brightnessSystemClient = [(BatteryDrainController *)self brightnessSystemClient];
+    [brightnessSystemClient setProperty:&__kCFBooleanTrue forKey:@"DisplayAutoBrightnessActive"];
 
-    v7 = [(BatteryDrainController *)self brightnessSystemClient];
-    [v7 setProperty:&__kCFBooleanTrue forKey:@"DisplayBrightnessAuto"];
+    brightnessSystemClient2 = [(BatteryDrainController *)self brightnessSystemClient];
+    [brightnessSystemClient2 setProperty:&__kCFBooleanTrue forKey:@"DisplayBrightnessAuto"];
 
-    v8 = [(BatteryDrainController *)self brightnessSystemClient];
-    [v8 setProperty:&__kCFBooleanTrue forKey:@"ALSTurnOn"];
+    brightnessSystemClient3 = [(BatteryDrainController *)self brightnessSystemClient];
+    [brightnessSystemClient3 setProperty:&__kCFBooleanTrue forKey:@"ALSTurnOn"];
   }
 
-  v9 = [(BatteryDrainController *)self inputs];
-  if ([v9 lowPowerModeOff])
+  inputs2 = [(BatteryDrainController *)self inputs];
+  if ([inputs2 lowPowerModeOff])
   {
-    v10 = [(BatteryDrainController *)self originalPowerModeSet];
+    originalPowerModeSet = [(BatteryDrainController *)self originalPowerModeSet];
 
-    if (!v10)
+    if (!originalPowerModeSet)
     {
       goto LABEL_11;
     }
 
-    v9 = objc_alloc_init(_PMLowPowerMode);
-    if (([v9 setPowerMode:-[BatteryDrainController originalPowerMode](self fromSource:{"originalPowerMode"), @"Diagnostics"}] & 1) == 0)
+    inputs2 = objc_alloc_init(_PMLowPowerMode);
+    if (([inputs2 setPowerMode:-[BatteryDrainController originalPowerMode](self fromSource:{"originalPowerMode"), @"Diagnostics"}] & 1) == 0)
     {
       v11 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -829,13 +829,13 @@ LABEL_13:
   }
 
 LABEL_11:
-  v13 = [(BatteryDrainController *)self inputs];
-  v14 = [v13 isAccessoryDetectorActive];
+  inputs3 = [(BatteryDrainController *)self inputs];
+  isAccessoryDetectorActive = [inputs3 isAccessoryDetectorActive];
 
-  if (v14)
+  if (isAccessoryDetectorActive)
   {
-    v15 = [(BatteryDrainController *)self accessoryDisconnectDetector];
-    [v15 stop];
+    accessoryDisconnectDetector = [(BatteryDrainController *)self accessoryDisconnectDetector];
+    [accessoryDisconnectDetector stop];
   }
 
   +[BatteryStateNotifier unregisterForBatteryEvents];
@@ -866,14 +866,14 @@ LABEL_11:
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
 }
 
-+ (BOOL)setCode:(int64_t)a3 forError:(id *)a4
++ (BOOL)setCode:(int64_t)code forError:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [NSError errorWithDomain:@"DABatteryDrainTestErrorDomain" code:a3 userInfo:0];
+    *error = [NSError errorWithDomain:@"DABatteryDrainTestErrorDomain" code:code userInfo:0];
   }
 
-  return a4 != 0;
+  return error != 0;
 }
 
 @end

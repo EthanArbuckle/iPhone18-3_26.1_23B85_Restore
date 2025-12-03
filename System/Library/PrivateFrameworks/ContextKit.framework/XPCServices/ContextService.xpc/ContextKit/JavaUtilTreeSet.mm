@@ -1,40 +1,40 @@
 @interface JavaUtilTreeSet
-- (BOOL)addAllWithJavaUtilCollection:(id)a3;
-- (BOOL)addWithId:(id)a3;
-- (BOOL)containsWithId:(id)a3;
+- (BOOL)addAllWithJavaUtilCollection:(id)collection;
+- (BOOL)addWithId:(id)id;
+- (BOOL)containsWithId:(id)id;
 - (BOOL)isEmpty;
-- (BOOL)removeWithId:(id)a3;
+- (BOOL)removeWithId:(id)id;
 - (JavaUtilTreeSet)init;
-- (JavaUtilTreeSet)initWithJavaUtilCollection:(id)a3;
-- (JavaUtilTreeSet)initWithJavaUtilNavigableMap:(id)a3;
-- (id)ceilingWithId:(id)a3;
+- (JavaUtilTreeSet)initWithJavaUtilCollection:(id)collection;
+- (JavaUtilTreeSet)initWithJavaUtilNavigableMap:(id)map;
+- (id)ceilingWithId:(id)id;
 - (id)clone;
 - (id)comparator;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descendingIterator;
 - (id)descendingSet;
 - (id)first;
-- (id)floorWithId:(id)a3;
-- (id)higherWithId:(id)a3;
+- (id)floorWithId:(id)id;
+- (id)higherWithId:(id)id;
 - (id)iterator;
 - (id)last;
-- (id)lowerWithId:(id)a3;
+- (id)lowerWithId:(id)id;
 - (id)pollFirst;
 - (id)pollLast;
 - (int)size;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)clear;
 - (void)dealloc;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaUtilTreeSet
 
-- (JavaUtilTreeSet)initWithJavaUtilNavigableMap:(id)a3
+- (JavaUtilTreeSet)initWithJavaUtilNavigableMap:(id)map
 {
   JavaUtilAbstractSet_init(self, a2);
-  JreStrongAssign(&self->backingMap_, a3);
+  JreStrongAssign(&self->backingMap_, map);
   return self;
 }
 
@@ -46,16 +46,16 @@
   return self;
 }
 
-- (JavaUtilTreeSet)initWithJavaUtilCollection:(id)a3
+- (JavaUtilTreeSet)initWithJavaUtilCollection:(id)collection
 {
   JavaUtilAbstractSet_init(self, a2);
   v5 = new_JavaUtilTreeMap_init();
   JreStrongAssignAndConsume(&self->backingMap_, v5);
-  [(JavaUtilTreeSet *)self addAllWithJavaUtilCollection:a3];
+  [(JavaUtilTreeSet *)self addAllWithJavaUtilCollection:collection];
   return self;
 }
 
-- (BOOL)addWithId:(id)a3
+- (BOOL)addWithId:(id)id
 {
   backingMap = self->backingMap_;
   if (!backingMap)
@@ -68,14 +68,14 @@
     sub_100129828();
   }
 
-  return [(JavaUtilNavigableMap *)backingMap putWithId:a3 withId:JavaLangBoolean_TRUE__]== 0;
+  return [(JavaUtilNavigableMap *)backingMap putWithId:id withId:JavaLangBoolean_TRUE__]== 0;
 }
 
-- (BOOL)addAllWithJavaUtilCollection:(id)a3
+- (BOOL)addAllWithJavaUtilCollection:(id)collection
 {
   v4.receiver = self;
   v4.super_class = JavaUtilTreeSet;
-  return [(JavaUtilAbstractCollection *)&v4 addAllWithJavaUtilCollection:a3];
+  return [(JavaUtilAbstractCollection *)&v4 addAllWithJavaUtilCollection:collection];
 }
 
 - (void)clear
@@ -93,9 +93,9 @@
 {
   v10.receiver = self;
   v10.super_class = JavaUtilTreeSet;
-  v3 = [(JavaUtilTreeSet *)&v10 clone];
+  clone = [(JavaUtilTreeSet *)&v10 clone];
   objc_opt_class();
-  if (v3 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (clone && (objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_13:
     JreThrowClassCastException();
@@ -105,18 +105,18 @@ LABEL_13:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (v3)
+    if (clone)
     {
       v8 = new_JavaUtilTreeMap_initWithJavaUtilSortedMap_(self->backingMap_);
-      JreStrongAssignAndConsume(v3 + 1, v8);
-      return v3;
+      JreStrongAssignAndConsume(clone + 1, v8);
+      return clone;
     }
 
 LABEL_14:
     JreThrowNullPointerException();
   }
 
-  if (!v3)
+  if (!clone)
   {
     goto LABEL_14;
   }
@@ -133,18 +133,18 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  v6 = [(JavaUtilNavigableMap *)v5 clone];
+  clone2 = [(JavaUtilNavigableMap *)v5 clone];
   v7 = JavaUtilNavigableMap_class_();
-  if (v6)
+  if (clone2)
   {
-    if (![v7 isInstance:v6])
+    if (![v7 isInstance:clone2])
     {
       goto LABEL_13;
     }
   }
 
-  JreStrongAssign(v3 + 1, v6);
-  return v3;
+  JreStrongAssign(clone + 1, clone2);
+  return clone;
 }
 
 - (id)comparator
@@ -158,7 +158,7 @@ LABEL_14:
   return [(JavaUtilNavigableMap *)backingMap comparator];
 }
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   backingMap = self->backingMap_;
   if (!backingMap)
@@ -166,7 +166,7 @@ LABEL_14:
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilNavigableMap *)backingMap containsKeyWithId:a3];
+  return [(JavaUtilNavigableMap *)backingMap containsKeyWithId:id];
 }
 
 - (BOOL)isEmpty
@@ -193,16 +193,16 @@ LABEL_14:
 
 - (id)descendingIterator
 {
-  v2 = [(JavaUtilTreeSet *)self descendingSet];
-  if (!v2)
+  descendingSet = [(JavaUtilTreeSet *)self descendingSet];
+  if (!descendingSet)
   {
     JreThrowNullPointerException();
   }
 
-  return [v2 iterator];
+  return [descendingSet iterator];
 }
 
-- (BOOL)removeWithId:(id)a3
+- (BOOL)removeWithId:(id)id
 {
   backingMap = self->backingMap_;
   if (!backingMap)
@@ -210,7 +210,7 @@ LABEL_14:
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilNavigableMap *)backingMap removeWithId:a3]!= 0;
+  return [(JavaUtilNavigableMap *)backingMap removeWithId:id]!= 0;
 }
 
 - (int)size
@@ -282,7 +282,7 @@ LABEL_14:
   return result;
 }
 
-- (id)higherWithId:(id)a3
+- (id)higherWithId:(id)id
 {
   backingMap = self->backingMap_;
   if (!backingMap)
@@ -290,10 +290,10 @@ LABEL_14:
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilNavigableMap *)backingMap higherKeyWithId:a3];
+  return [(JavaUtilNavigableMap *)backingMap higherKeyWithId:id];
 }
 
-- (id)lowerWithId:(id)a3
+- (id)lowerWithId:(id)id
 {
   backingMap = self->backingMap_;
   if (!backingMap)
@@ -301,10 +301,10 @@ LABEL_14:
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilNavigableMap *)backingMap lowerKeyWithId:a3];
+  return [(JavaUtilNavigableMap *)backingMap lowerKeyWithId:id];
 }
 
-- (id)ceilingWithId:(id)a3
+- (id)ceilingWithId:(id)id
 {
   backingMap = self->backingMap_;
   if (!backingMap)
@@ -312,10 +312,10 @@ LABEL_14:
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilNavigableMap *)backingMap ceilingKeyWithId:a3];
+  return [(JavaUtilNavigableMap *)backingMap ceilingKeyWithId:id];
 }
 
-- (id)floorWithId:(id)a3
+- (id)floorWithId:(id)id
 {
   backingMap = self->backingMap_;
   if (!backingMap)
@@ -323,7 +323,7 @@ LABEL_14:
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilNavigableMap *)backingMap floorKeyWithId:a3];
+  return [(JavaUtilNavigableMap *)backingMap floorKeyWithId:id];
 }
 
 - (id)descendingSet
@@ -345,30 +345,30 @@ LABEL_14:
   return result;
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     goto LABEL_9;
   }
 
-  [a3 defaultWriteObject];
+  [stream defaultWriteObject];
   backingMap = self->backingMap_;
   if (!backingMap)
   {
     goto LABEL_9;
   }
 
-  [a3 writeObjectWithId:{-[JavaUtilNavigableMap comparator](backingMap, "comparator")}];
+  [stream writeObjectWithId:{-[JavaUtilNavigableMap comparator](backingMap, "comparator")}];
   v6 = [(JavaUtilNavigableMap *)self->backingMap_ size];
-  [a3 writeIntWithInt:v6];
+  [stream writeIntWithInt:v6];
   if (v6 < 1)
   {
     return;
   }
 
-  v7 = [(JavaUtilNavigableMap *)self->backingMap_ keySet];
-  if (!v7 || (v8 = [v7 iterator]) == 0)
+  keySet = [(JavaUtilNavigableMap *)self->backingMap_ keySet];
+  if (!keySet || (v8 = [keySet iterator]) == 0)
   {
 LABEL_9:
     JreThrowNullPointerException();
@@ -379,42 +379,42 @@ LABEL_9:
   {
     do
     {
-      [a3 writeObjectWithId:{objc_msgSend(v9, "next")}];
+      [stream writeObjectWithId:{objc_msgSend(v9, "next")}];
     }
 
     while (([v9 hasNext] & 1) != 0);
   }
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultReadObject];
-  v5 = [a3 readObject];
+  [stream defaultReadObject];
+  readObject = [stream readObject];
   v6 = JavaUtilComparator_class_();
-  if (v5 && ([v6 isInstance:v5] & 1) == 0)
+  if (readObject && ([v6 isInstance:readObject] & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  v7 = new_JavaUtilTreeMap_initWithJavaUtilComparator_(v5);
-  v8 = [a3 readInt];
-  if (v8 >= 1)
+  v7 = new_JavaUtilTreeMap_initWithJavaUtilComparator_(readObject);
+  readInt = [stream readInt];
+  if (readInt >= 1)
   {
-    v9 = v8;
+    v9 = readInt;
     do
     {
-      v10 = [a3 readObject];
+      readObject2 = [stream readObject];
       if ((atomic_load_explicit(JavaLangBoolean__initialized, memory_order_acquire) & 1) == 0)
       {
         sub_100129828();
       }
 
-      [(JavaUtilTreeMap *)v7 putWithId:v10 withId:JavaLangBoolean_TRUE__];
+      [(JavaUtilTreeMap *)v7 putWithId:readObject2 withId:JavaLangBoolean_TRUE__];
       --v9;
     }
 
@@ -431,23 +431,23 @@ LABEL_9:
   [(JavaUtilTreeSet *)&v3 dealloc];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v9 = a3->var3[4];
-  if (!v9)
+  keySet = state->var3[4];
+  if (!keySet)
   {
-    v9 = [(JavaUtilNavigableMap *)self->backingMap_ keySet];
-    a3->var3[4] = v9;
+    keySet = [(JavaUtilNavigableMap *)self->backingMap_ keySet];
+    state->var3[4] = keySet;
   }
 
-  return [v9 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  return [keySet countByEnumeratingWithState:state objects:objects count:count];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(JavaUtilTreeSet *)self clone];
+  clone = [(JavaUtilTreeSet *)self clone];
 
-  return v3;
+  return clone;
 }
 
 @end

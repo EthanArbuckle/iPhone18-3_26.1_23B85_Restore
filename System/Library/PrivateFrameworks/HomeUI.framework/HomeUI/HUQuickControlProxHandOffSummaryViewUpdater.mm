@@ -1,41 +1,41 @@
 @interface HUQuickControlProxHandOffSummaryViewUpdater
 - (BOOL)_isHomePodPhoneCallStatusUpdateTimerActive;
 - (BOOL)_isHomePodTimerStatusUpdateTimerActive;
-- (HUQuickControlProxHandOffSummaryViewUpdater)initWithNavigationBarTitleView:(id)a3;
+- (HUQuickControlProxHandOffSummaryViewUpdater)initWithNavigationBarTitleView:(id)view;
 - (void)_invalidateHomePodPhoneCallStatusUpdateTimer;
 - (void)_invalidateHomePodTimerStatusUpdateTimer;
-- (void)_setupObservableActivityForActivity:(id)a3;
+- (void)_setupObservableActivityForActivity:(id)activity;
 - (void)_startHomePodPhoneCallStatusUpdateTimer;
 - (void)_startHomePodTimerStatusUpdateTimer;
-- (void)_updateSummaryViewForActivities:(id)a3 forProxControlID:(id)a4 disambiguationContext:(id)a5;
+- (void)_updateSummaryViewForActivities:(id)activities forProxControlID:(id)d disambiguationContext:(id)context;
 - (void)dealloc;
-- (void)didUpdateActivities:(id)a3 forProxControlID:(id)a4 disambiguationContext:(id)a5;
+- (void)didUpdateActivities:(id)activities forProxControlID:(id)d disambiguationContext:(id)context;
 @end
 
 @implementation HUQuickControlProxHandOffSummaryViewUpdater
 
-- (HUQuickControlProxHandOffSummaryViewUpdater)initWithNavigationBarTitleView:(id)a3
+- (HUQuickControlProxHandOffSummaryViewUpdater)initWithNavigationBarTitleView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = HUQuickControlProxHandOffSummaryViewUpdater;
   v6 = [(HUQuickControlProxHandOffSummaryViewUpdater *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_titleView, a3);
+    objc_storeStrong(&v6->_titleView, view);
     if ([MEMORY[0x277D14CE8] isProxHandOffV2Config])
     {
-      v8 = [MEMORY[0x277D14990] sharedInstance];
-      [v8 addObserver:v7];
-      v9 = [v8 lastActivities];
-      v10 = [v9 firstObject];
-      [(HUQuickControlProxHandOffSummaryViewUpdater *)v7 _setupObservableActivityForActivity:v10];
+      mEMORY[0x277D14990] = [MEMORY[0x277D14990] sharedInstance];
+      [mEMORY[0x277D14990] addObserver:v7];
+      lastActivities = [mEMORY[0x277D14990] lastActivities];
+      firstObject = [lastActivities firstObject];
+      [(HUQuickControlProxHandOffSummaryViewUpdater *)v7 _setupObservableActivityForActivity:firstObject];
 
-      v11 = [v8 lastActivities];
-      v12 = [v8 lastIdentifier];
-      v13 = [v8 lastDisambiguationContext];
-      [(HUQuickControlProxHandOffSummaryViewUpdater *)v7 _updateSummaryViewForActivities:v11 forProxControlID:v12 disambiguationContext:v13];
+      lastActivities2 = [mEMORY[0x277D14990] lastActivities];
+      lastIdentifier = [mEMORY[0x277D14990] lastIdentifier];
+      lastDisambiguationContext = [mEMORY[0x277D14990] lastDisambiguationContext];
+      [(HUQuickControlProxHandOffSummaryViewUpdater *)v7 _updateSummaryViewForActivities:lastActivities2 forProxControlID:lastIdentifier disambiguationContext:lastDisambiguationContext];
     }
   }
 
@@ -55,15 +55,15 @@
   [(HUQuickControlProxHandOffSummaryViewUpdater *)&v3 dealloc];
 }
 
-- (void)_updateSummaryViewForActivities:(id)a3 forProxControlID:(id)a4 disambiguationContext:(id)a5
+- (void)_updateSummaryViewForActivities:(id)activities forProxControlID:(id)d disambiguationContext:(id)context
 {
   v67 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v57 = v7;
-  if ([v7 count])
+  activitiesCopy = activities;
+  dCopy = d;
+  v57 = activitiesCopy;
+  if ([activitiesCopy count])
   {
-    v9 = [v7 objectAtIndexedSubscript:0];
+    v9 = [activitiesCopy objectAtIndexedSubscript:0];
     v10 = &unk_2825BD660;
     if ([v9 conformsToProtocol:v10])
     {
@@ -83,11 +83,11 @@
     v12 = 0;
   }
 
-  v13 = [(__CFString *)v12 activityString];
-  v14 = v13;
-  if (v13)
+  activityString = [(__CFString *)v12 activityString];
+  v14 = activityString;
+  if (activityString)
   {
-    v15 = v13;
+    v15 = activityString;
   }
 
   else
@@ -98,7 +98,7 @@
   v16 = v15;
 
   objc_opt_class();
-  v17 = v8;
+  v17 = dCopy;
   if (objc_opt_isKindOfClass())
   {
     v18 = v17;
@@ -135,9 +135,9 @@
     v23 = v22;
   }
 
-  v58 = [v23 assetType];
-  v24 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self lastActivity];
-  v25 = [v24 isEqual:v12];
+  assetType = [v23 assetType];
+  lastActivity = [(HUQuickControlProxHandOffSummaryViewUpdater *)self lastActivity];
+  v25 = [lastActivity isEqual:v12];
 
   v26 = HFLogForCategory();
   v27 = os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT);
@@ -162,9 +162,9 @@
       _os_log_impl(&dword_20CEB6000, v26, OS_LOG_TYPE_DEFAULT, "Updating summary view with secondary text [%@] for activity %@", buf, 0x16u);
     }
 
-    v28 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self titleView];
-    v29 = [v28 summaryView];
-    [v29 setSecondaryText:v16];
+    titleView = [(HUQuickControlProxHandOffSummaryViewUpdater *)self titleView];
+    summaryView = [titleView summaryView];
+    [summaryView setSecondaryText:v16];
 
     if ([(HUQuickControlProxHandOffSummaryViewUpdater *)self _isHomePodPhoneCallStatusUpdateTimerActive]&& ([(HUQuickControlProxHandOffSummaryViewUpdater *)self homePodPhoneCallActivity], v30 = objc_claimAutoreleasedReturnValue(), v30, !v30))
     {
@@ -173,9 +173,9 @@
 
     else if (![(HUQuickControlProxHandOffSummaryViewUpdater *)self _isHomePodPhoneCallStatusUpdateTimerActive])
     {
-      v31 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self homePodPhoneCallActivity];
+      homePodPhoneCallActivity = [(HUQuickControlProxHandOffSummaryViewUpdater *)self homePodPhoneCallActivity];
 
-      if (v31)
+      if (homePodPhoneCallActivity)
       {
         [(HUQuickControlProxHandOffSummaryViewUpdater *)self _startHomePodPhoneCallStatusUpdateTimer];
       }
@@ -188,9 +188,9 @@
 
     else if (![(HUQuickControlProxHandOffSummaryViewUpdater *)self _isHomePodTimerStatusUpdateTimerActive])
     {
-      v33 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self homePodTimerActivity];
+      homePodTimerActivity = [(HUQuickControlProxHandOffSummaryViewUpdater *)self homePodTimerActivity];
 
-      if (v33)
+      if (homePodTimerActivity)
       {
         [(HUQuickControlProxHandOffSummaryViewUpdater *)self _startHomePodTimerStatusUpdateTimer];
       }
@@ -208,12 +208,12 @@
     v34 = v22;
   }
 
-  v35 = [v34 deviceName];
+  deviceName = [v34 deviceName];
   v55 = v22;
-  v36 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self titleView];
-  v37 = [v36 summaryView];
-  v38 = [v37 primaryText];
-  v39 = [v38 isEqualToString:v35];
+  titleView2 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self titleView];
+  summaryView2 = [titleView2 summaryView];
+  primaryText = [summaryView2 primaryText];
+  v39 = [primaryText isEqualToString:deviceName];
 
   if ((v39 & 1) == 0)
   {
@@ -221,28 +221,28 @@
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v60 = v35;
+      v60 = deviceName;
       _os_log_impl(&dword_20CEB6000, v40, OS_LOG_TYPE_DEFAULT, "Updating summary view with values - Primary Text [%@]", buf, 0xCu);
     }
 
-    v41 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self titleView];
-    v42 = [v41 summaryView];
-    [v42 setPrimaryText:v35];
+    titleView3 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self titleView];
+    summaryView3 = [titleView3 summaryView];
+    [summaryView3 setPrimaryText:deviceName];
   }
 
-  v43 = v58;
-  if (v58)
+  v43 = assetType;
+  if (assetType)
   {
-    v44 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self titleView];
-    v45 = [v44 summaryView];
-    v46 = [v45 image];
-    if (v46)
+    titleView4 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self titleView];
+    summaryView4 = [titleView4 summaryView];
+    image = [summaryView4 image];
+    if (image)
     {
-      v47 = v46;
-      v48 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self lastActivity];
-      v49 = [v48 isEqual:v12];
+      v47 = image;
+      lastActivity2 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self lastActivity];
+      v49 = [lastActivity2 isEqual:v12];
 
-      v43 = v58;
+      v43 = assetType;
       if (v49)
       {
         goto LABEL_55;
@@ -278,9 +278,9 @@
       _os_log_impl(&dword_20CEB6000, v51, OS_LOG_TYPE_DEFAULT, "Updating summary view with Image = [%@] assetType = [%@] identifier = [%@] activity = [%@]", buf, 0x2Au);
     }
 
-    v53 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self titleView];
-    v54 = [v53 summaryView];
-    [v54 setImage:v50];
+    titleView5 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self titleView];
+    summaryView5 = [titleView5 summaryView];
+    [summaryView5 setImage:v50];
   }
 
 LABEL_55:
@@ -304,20 +304,20 @@ LABEL_55:
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@ Starting *HomePod* Phone Call Status Update Timer", buf, 0xCu);
   }
 
-  v8 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self phoneCallStatusUpdateTimer];
+  phoneCallStatusUpdateTimer = [(HUQuickControlProxHandOffSummaryViewUpdater *)self phoneCallStatusUpdateTimer];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __86__HUQuickControlProxHandOffSummaryViewUpdater__startHomePodPhoneCallStatusUpdateTimer__block_invoke;
   handler[3] = &unk_277DB90B8;
   objc_copyWeak(v12, &location);
   v12[1] = a2;
-  dispatch_source_set_event_handler(v8, handler);
+  dispatch_source_set_event_handler(phoneCallStatusUpdateTimer, handler);
 
-  v9 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self phoneCallStatusUpdateTimer];
-  dispatch_source_set_timer(v9, v5, 0x3B9ACA00uLL, 0);
+  phoneCallStatusUpdateTimer2 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self phoneCallStatusUpdateTimer];
+  dispatch_source_set_timer(phoneCallStatusUpdateTimer2, v5, 0x3B9ACA00uLL, 0);
 
-  v10 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self phoneCallStatusUpdateTimer];
-  dispatch_resume(v10);
+  phoneCallStatusUpdateTimer3 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self phoneCallStatusUpdateTimer];
+  dispatch_resume(phoneCallStatusUpdateTimer3);
 
   objc_destroyWeak(v12);
   objc_destroyWeak(&location);
@@ -357,8 +357,8 @@ void __86__HUQuickControlProxHandOffSummaryViewUpdater__startHomePodPhoneCallSta
 
   if ([(HUQuickControlProxHandOffSummaryViewUpdater *)self _isHomePodPhoneCallStatusUpdateTimerActive])
   {
-    v6 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self phoneCallStatusUpdateTimer];
-    dispatch_source_cancel(v6);
+    phoneCallStatusUpdateTimer = [(HUQuickControlProxHandOffSummaryViewUpdater *)self phoneCallStatusUpdateTimer];
+    dispatch_source_cancel(phoneCallStatusUpdateTimer);
   }
 
   [(HUQuickControlProxHandOffSummaryViewUpdater *)self setPhoneCallStatusUpdateTimer:0];
@@ -366,11 +366,11 @@ void __86__HUQuickControlProxHandOffSummaryViewUpdater__startHomePodPhoneCallSta
 
 - (BOOL)_isHomePodPhoneCallStatusUpdateTimerActive
 {
-  v3 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self phoneCallStatusUpdateTimer];
-  if (v3)
+  phoneCallStatusUpdateTimer = [(HUQuickControlProxHandOffSummaryViewUpdater *)self phoneCallStatusUpdateTimer];
+  if (phoneCallStatusUpdateTimer)
   {
-    v4 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self phoneCallStatusUpdateTimer];
-    v5 = dispatch_source_testcancel(v4) == 0;
+    phoneCallStatusUpdateTimer2 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self phoneCallStatusUpdateTimer];
+    v5 = dispatch_source_testcancel(phoneCallStatusUpdateTimer2) == 0;
   }
 
   else
@@ -398,20 +398,20 @@ void __86__HUQuickControlProxHandOffSummaryViewUpdater__startHomePodPhoneCallSta
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@ Starting *HomePod* MobileTimer Status Update Timer", buf, 0xCu);
   }
 
-  v8 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self timerStatusUpdateTimer];
+  timerStatusUpdateTimer = [(HUQuickControlProxHandOffSummaryViewUpdater *)self timerStatusUpdateTimer];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __82__HUQuickControlProxHandOffSummaryViewUpdater__startHomePodTimerStatusUpdateTimer__block_invoke;
   handler[3] = &unk_277DB90B8;
   objc_copyWeak(v12, &location);
   v12[1] = a2;
-  dispatch_source_set_event_handler(v8, handler);
+  dispatch_source_set_event_handler(timerStatusUpdateTimer, handler);
 
-  v9 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self timerStatusUpdateTimer];
-  dispatch_source_set_timer(v9, v5, 0x3B9ACA00uLL, 0);
+  timerStatusUpdateTimer2 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self timerStatusUpdateTimer];
+  dispatch_source_set_timer(timerStatusUpdateTimer2, v5, 0x3B9ACA00uLL, 0);
 
-  v10 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self timerStatusUpdateTimer];
-  dispatch_resume(v10);
+  timerStatusUpdateTimer3 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self timerStatusUpdateTimer];
+  dispatch_resume(timerStatusUpdateTimer3);
 
   objc_destroyWeak(v12);
   objc_destroyWeak(&location);
@@ -451,8 +451,8 @@ void __82__HUQuickControlProxHandOffSummaryViewUpdater__startHomePodTimerStatusU
 
   if ([(HUQuickControlProxHandOffSummaryViewUpdater *)self _isHomePodTimerStatusUpdateTimerActive])
   {
-    v6 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self timerStatusUpdateTimer];
-    dispatch_source_cancel(v6);
+    timerStatusUpdateTimer = [(HUQuickControlProxHandOffSummaryViewUpdater *)self timerStatusUpdateTimer];
+    dispatch_source_cancel(timerStatusUpdateTimer);
   }
 
   [(HUQuickControlProxHandOffSummaryViewUpdater *)self setTimerStatusUpdateTimer:0];
@@ -460,11 +460,11 @@ void __82__HUQuickControlProxHandOffSummaryViewUpdater__startHomePodTimerStatusU
 
 - (BOOL)_isHomePodTimerStatusUpdateTimerActive
 {
-  v3 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self timerStatusUpdateTimer];
-  if (v3)
+  timerStatusUpdateTimer = [(HUQuickControlProxHandOffSummaryViewUpdater *)self timerStatusUpdateTimer];
+  if (timerStatusUpdateTimer)
   {
-    v4 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self timerStatusUpdateTimer];
-    v5 = dispatch_source_testcancel(v4) == 0;
+    timerStatusUpdateTimer2 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self timerStatusUpdateTimer];
+    v5 = dispatch_source_testcancel(timerStatusUpdateTimer2) == 0;
   }
 
   else
@@ -475,17 +475,17 @@ void __82__HUQuickControlProxHandOffSummaryViewUpdater__startHomePodTimerStatusU
   return v5;
 }
 
-- (void)_setupObservableActivityForActivity:(id)a3
+- (void)_setupObservableActivityForActivity:(id)activity
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 activityType];
-  v7 = [v6 isEqualToString:*MEMORY[0x277D43608]];
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
+  v7 = [activityType isEqualToString:*MEMORY[0x277D43608]];
 
   if (v7)
   {
     objc_opt_class();
-    v8 = v5;
+    v8 = activityCopy;
     if (objc_opt_isKindOfClass())
     {
       v9 = v8;
@@ -506,11 +506,11 @@ void __82__HUQuickControlProxHandOffSummaryViewUpdater__startHomePodTimerStatusU
     }
 
     v12 = NSStringFromSelector(a2);
-    v13 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self homePodPhoneCallActivity];
+    homePodPhoneCallActivity = [(HUQuickControlProxHandOffSummaryViewUpdater *)self homePodPhoneCallActivity];
     v20 = 138412546;
     v21 = v12;
     v22 = 2112;
-    v23 = v13;
+    v23 = homePodPhoneCallActivity;
     v14 = "%@ Found HomePod Phone Call Activity = [%@]";
 LABEL_13:
     _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, v14, &v20, 0x16u);
@@ -519,13 +519,13 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v15 = [v5 activityType];
-  v16 = [v15 isEqualToString:*MEMORY[0x277D43610]];
+  activityType2 = [activityCopy activityType];
+  v16 = [activityType2 isEqualToString:*MEMORY[0x277D43610]];
 
   if (v16)
   {
     objc_opt_class();
-    v17 = v5;
+    v17 = activityCopy;
     if (objc_opt_isKindOfClass())
     {
       v18 = v17;
@@ -546,11 +546,11 @@ LABEL_14:
     }
 
     v12 = NSStringFromSelector(a2);
-    v13 = [(HUQuickControlProxHandOffSummaryViewUpdater *)self homePodTimerActivity];
+    homePodPhoneCallActivity = [(HUQuickControlProxHandOffSummaryViewUpdater *)self homePodTimerActivity];
     v20 = 138412546;
     v21 = v12;
     v22 = 2112;
-    v23 = v13;
+    v23 = homePodPhoneCallActivity;
     v14 = "%@ Found HomePod MobileTimer Activity = [%@]";
     goto LABEL_13;
   }
@@ -558,12 +558,12 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)didUpdateActivities:(id)a3 forProxControlID:(id)a4 disambiguationContext:(id)a5
+- (void)didUpdateActivities:(id)activities forProxControlID:(id)d disambiguationContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  activitiesCopy = activities;
+  dCopy = d;
+  contextCopy = context;
   v12 = HFLogForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -571,18 +571,18 @@ LABEL_15:
     v15 = 138413058;
     v16 = v13;
     v17 = 2112;
-    v18 = v9;
+    v18 = activitiesCopy;
     v19 = 2112;
-    v20 = v10;
+    v20 = dCopy;
     v21 = 2112;
-    v22 = v11;
+    v22 = contextCopy;
     _os_log_impl(&dword_20CEB6000, v12, OS_LOG_TYPE_DEFAULT, "%@ didUpdateActivities = %@ forProxControlID = %@ disambiguationContext = %@", &v15, 0x2Au);
   }
 
-  v14 = [v9 firstObject];
-  [(HUQuickControlProxHandOffSummaryViewUpdater *)self _setupObservableActivityForActivity:v14];
+  firstObject = [activitiesCopy firstObject];
+  [(HUQuickControlProxHandOffSummaryViewUpdater *)self _setupObservableActivityForActivity:firstObject];
 
-  [(HUQuickControlProxHandOffSummaryViewUpdater *)self _updateSummaryViewForActivities:v9 forProxControlID:v10 disambiguationContext:v11];
+  [(HUQuickControlProxHandOffSummaryViewUpdater *)self _updateSummaryViewForActivities:activitiesCopy forProxControlID:dCopy disambiguationContext:contextCopy];
 }
 
 @end

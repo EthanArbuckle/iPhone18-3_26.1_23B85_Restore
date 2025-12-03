@@ -1,11 +1,11 @@
 @interface _GCHIDEventSubjectAuditor
 - (_GCHIDEventSubjectAuditor)init;
-- (id)initWithSubject:(void *)a1;
+- (id)initWithSubject:(void *)subject;
 - (uint64_t)noteEventPublicationPausedForReasonsChanged:(uint64_t)result;
 - (void)dealloc;
-- (void)noteHIDEventPublished:(uint64_t)a1;
-- (void)noteHIDEventReceived:(uint64_t)a1;
-- (void)noteObserverAddedForService:(uint64_t)a1;
+- (void)noteHIDEventPublished:(uint64_t)published;
+- (void)noteHIDEventReceived:(uint64_t)received;
+- (void)noteObserverAddedForService:(uint64_t)service;
 @end
 
 @implementation _GCHIDEventSubjectAuditor
@@ -26,14 +26,14 @@
   [(_GCHIDEventSubjectAuditor *)&v4 dealloc];
 }
 
-- (id)initWithSubject:(void *)a1
+- (id)initWithSubject:(void *)subject
 {
-  if (!a1)
+  if (!subject)
   {
     return 0;
   }
 
-  v14.receiver = a1;
+  v14.receiver = subject;
   v14.super_class = _GCHIDEventSubjectAuditor;
   v2 = a2;
   v3 = objc_msgSendSuper2(&v14, sel_init);
@@ -78,40 +78,40 @@
   return result;
 }
 
-- (void)noteObserverAddedForService:(uint64_t)a1
+- (void)noteObserverAddedForService:(uint64_t)service
 {
   v3 = a2;
-  if (a1)
+  if (service)
   {
     v8 = v3;
-    v4 = [v3 serviceID];
-    if (v4)
+    serviceID = [v3 serviceID];
+    if (serviceID)
     {
-      os_unfair_lock_lock((a1 + 16));
-      v5 = [*(a1 + 24) objectForKey:v4];
+      os_unfair_lock_lock((service + 16));
+      v5 = [*(service + 24) objectForKey:serviceID];
 
       if (!v5)
       {
-        v6 = *(a1 + 24);
+        v6 = *(service + 24);
         v7 = [[_GCHIDServiceAuditor alloc] initWithServiceInfo:v8];
-        [v6 setObject:v7 forKey:v4];
+        [v6 setObject:v7 forKey:serviceID];
       }
 
-      os_unfair_lock_unlock((a1 + 16));
+      os_unfair_lock_unlock((service + 16));
     }
 
     v3 = v8;
   }
 }
 
-- (void)noteHIDEventReceived:(uint64_t)a1
+- (void)noteHIDEventReceived:(uint64_t)received
 {
-  if (a1)
+  if (received)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:IOHIDEventGetSenderID()];
-    os_unfair_lock_lock((a1 + 16));
-    v2 = [*(a1 + 24) objectForKey:v6];
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_lock((received + 16));
+    v2 = [*(received + 24) objectForKey:v6];
+    os_unfair_lock_unlock((received + 16));
     if (v2)
     {
       v3 = v2[1];
@@ -122,14 +122,14 @@
   }
 }
 
-- (void)noteHIDEventPublished:(uint64_t)a1
+- (void)noteHIDEventPublished:(uint64_t)published
 {
-  if (a1)
+  if (published)
   {
     v3 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:IOHIDEventGetSenderID()];
-    os_unfair_lock_lock((a1 + 16));
-    v2 = [*(a1 + 24) objectForKey:v3];
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_lock((published + 16));
+    v2 = [*(published + 24) objectForKey:v3];
+    os_unfair_lock_unlock((published + 16));
     if (v2)
     {
       ++v2[2];

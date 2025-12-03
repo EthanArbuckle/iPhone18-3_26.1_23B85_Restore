@@ -1,44 +1,44 @@
 @interface MTATimerRecentCollectionViewCell
-- (void)deleteRecent:(id)a3;
-- (void)startTimer:(id)a3;
-- (void)updateWithDuration:(id)a3;
+- (void)deleteRecent:(id)recent;
+- (void)startTimer:(id)timer;
+- (void)updateWithDuration:(id)duration;
 @end
 
 @implementation MTATimerRecentCollectionViewCell
 
-- (void)updateWithDuration:(id)a3
+- (void)updateWithDuration:(id)duration
 {
-  v10 = a3;
-  v4 = [(MTATimerBaseCollectionViewCell *)self timerControlsView];
-  [v10 duration];
+  durationCopy = duration;
+  timerControlsView = [(MTATimerBaseCollectionViewCell *)self timerControlsView];
+  [durationCopy duration];
   v6 = v5;
-  v7 = [v10 title];
-  if (v7)
+  title = [durationCopy title];
+  if (title)
   {
-    [v4 setDurationTime:v7 title:v6];
+    [timerControlsView setDurationTime:title title:v6];
   }
 
   else
   {
-    [v10 duration];
+    [durationCopy duration];
     v8 = [MTAUtilities durationStringFromInterval:?];
-    [v4 setDurationTime:v8 title:v6];
+    [timerControlsView setDurationTime:v8 title:v6];
   }
 
-  v9 = [(MTATimerBaseCollectionViewCell *)self timerControlsView];
-  [v9 setState:0];
+  timerControlsView2 = [(MTATimerBaseCollectionViewCell *)self timerControlsView];
+  [timerControlsView2 setState:0];
 }
 
-- (void)startTimer:(id)a3
+- (void)startTimer:(id)timer
 {
-  v4 = [(MTATimerBaseCollectionViewCell *)self delegate];
-  [v4 startRecentTimerForCell:self];
+  delegate = [(MTATimerBaseCollectionViewCell *)self delegate];
+  [delegate startRecentTimerForCell:self];
 }
 
-- (void)deleteRecent:(id)a3
+- (void)deleteRecent:(id)recent
 {
-  v4 = [(MTATimerBaseCollectionViewCell *)self delegate];
-  [v4 deleteRecentTimerForCell:self];
+  delegate = [(MTATimerBaseCollectionViewCell *)self delegate];
+  [delegate deleteRecentTimerForCell:self];
 }
 
 @end

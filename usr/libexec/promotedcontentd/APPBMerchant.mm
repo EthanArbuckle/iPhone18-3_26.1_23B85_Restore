@@ -1,19 +1,19 @@
 @interface APPBMerchant
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)paymentCapabilitiesAsString:(int)a3;
-- (id)supportedPaymentNetworksAsString:(int)a3;
-- (int)StringAsPaymentCapabilities:(id)a3;
-- (int)StringAsSupportedPaymentNetworks:(id)a3;
-- (int)paymentCapabilitiesAtIndex:(unint64_t)a3;
-- (int)supportedPaymentNetworksAtIndex:(unint64_t)a3;
+- (id)paymentCapabilitiesAsString:(int)string;
+- (id)supportedPaymentNetworksAsString:(int)string;
+- (int)StringAsPaymentCapabilities:(id)capabilities;
+- (int)StringAsSupportedPaymentNetworks:(id)networks;
+- (int)paymentCapabilitiesAtIndex:(unint64_t)index;
+- (int)supportedPaymentNetworksAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBMerchant
@@ -27,54 +27,54 @@
   [(APPBMerchant *)&v3 dealloc];
 }
 
-- (int)supportedPaymentNetworksAtIndex:(unint64_t)a3
+- (int)supportedPaymentNetworksAtIndex:(unint64_t)index
 {
   p_supportedPaymentNetworks = &self->_supportedPaymentNetworks;
   count = self->_supportedPaymentNetworks.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_supportedPaymentNetworks->list[a3];
+  return p_supportedPaymentNetworks->list[index];
 }
 
-- (id)supportedPaymentNetworksAsString:(int)a3
+- (id)supportedPaymentNetworksAsString:(int)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047DE80 + a3);
+    v4 = *(&off_10047DE80 + string);
   }
 
   return v4;
 }
 
-- (int)StringAsSupportedPaymentNetworks:(id)a3
+- (int)StringAsSupportedPaymentNetworks:(id)networks
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AmericanExpress"])
+  networksCopy = networks;
+  if ([networksCopy isEqualToString:@"AmericanExpress"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"MasterCard"])
+  else if ([networksCopy isEqualToString:@"MasterCard"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Visa"])
+  else if ([networksCopy isEqualToString:@"Visa"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"ChinaUnionPay"])
+  else if ([networksCopy isEqualToString:@"ChinaUnionPay"])
   {
     v4 = 3;
   }
@@ -87,32 +87,32 @@
   return v4;
 }
 
-- (int)paymentCapabilitiesAtIndex:(unint64_t)a3
+- (int)paymentCapabilitiesAtIndex:(unint64_t)index
 {
   p_paymentCapabilities = &self->_paymentCapabilities;
   count = self->_paymentCapabilities.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_paymentCapabilities->list[a3];
+  return p_paymentCapabilities->list[index];
 }
 
-- (id)paymentCapabilitiesAsString:(int)a3
+- (id)paymentCapabilitiesAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       v4 = @"EMV";
     }
 
     else
     {
-      v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+      v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
     }
   }
 
@@ -124,17 +124,17 @@
   return v4;
 }
 
-- (int)StringAsPaymentCapabilities:(id)a3
+- (int)StringAsPaymentCapabilities:(id)capabilities
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ThreeDS"])
+  capabilitiesCopy = capabilities;
+  if ([capabilitiesCopy isEqualToString:@"ThreeDS"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"EMV"];
+    v4 = [capabilitiesCopy isEqualToString:@"EMV"];
   }
 
   return v4;
@@ -145,8 +145,8 @@
   v7.receiver = self;
   v7.super_class = APPBMerchant;
   v3 = [(APPBMerchant *)&v7 description];
-  v4 = [(APPBMerchant *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBMerchant *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -264,15 +264,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_identifier)
   {
     sub_100394508();
   }
 
-  v8 = v4;
+  v8 = toCopy;
   PBDataWriterWriteStringField();
   if (!self->_countryCode)
   {
@@ -328,97 +328,97 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v11 = a3;
-  [v11 setIdentifier:self->_identifier];
-  [v11 setCountryCode:self->_countryCode];
+  toCopy = to;
+  [toCopy setIdentifier:self->_identifier];
+  [toCopy setCountryCode:self->_countryCode];
   if ([(APPBMerchant *)self supportedPaymentNetworksCount])
   {
-    [v11 clearSupportedPaymentNetworks];
-    v4 = [(APPBMerchant *)self supportedPaymentNetworksCount];
-    if (v4)
+    [toCopy clearSupportedPaymentNetworks];
+    supportedPaymentNetworksCount = [(APPBMerchant *)self supportedPaymentNetworksCount];
+    if (supportedPaymentNetworksCount)
     {
-      v5 = v4;
+      v5 = supportedPaymentNetworksCount;
       for (i = 0; i != v5; ++i)
       {
-        [v11 addSupportedPaymentNetworks:{-[APPBMerchant supportedPaymentNetworksAtIndex:](self, "supportedPaymentNetworksAtIndex:", i)}];
+        [toCopy addSupportedPaymentNetworks:{-[APPBMerchant supportedPaymentNetworksAtIndex:](self, "supportedPaymentNetworksAtIndex:", i)}];
       }
     }
   }
 
   if ([(APPBMerchant *)self paymentCapabilitiesCount])
   {
-    [v11 clearPaymentCapabilities];
-    v7 = [(APPBMerchant *)self paymentCapabilitiesCount];
-    if (v7)
+    [toCopy clearPaymentCapabilities];
+    paymentCapabilitiesCount = [(APPBMerchant *)self paymentCapabilitiesCount];
+    if (paymentCapabilitiesCount)
     {
-      v8 = v7;
+      v8 = paymentCapabilitiesCount;
       for (j = 0; j != v8; ++j)
       {
-        [v11 addPaymentCapabilities:{-[APPBMerchant paymentCapabilitiesAtIndex:](self, "paymentCapabilitiesAtIndex:", j)}];
+        [toCopy addPaymentCapabilities:{-[APPBMerchant paymentCapabilitiesAtIndex:](self, "paymentCapabilitiesAtIndex:", j)}];
       }
     }
   }
 
-  [v11 setPaymentProcessingURL:self->_paymentProcessingURL];
+  [toCopy setPaymentProcessingURL:self->_paymentProcessingURL];
   if (self->_paymentProcessingCertificate)
   {
-    [v11 setPaymentProcessingCertificate:?];
+    [toCopy setPaymentProcessingCertificate:?];
   }
 
   if (self->_shippingUpdateURL)
   {
-    [v11 setShippingUpdateURL:?];
+    [toCopy setShippingUpdateURL:?];
   }
 
-  v10 = v11;
+  v10 = toCopy;
   if (self->_shippingUpdateCertificate)
   {
-    [v11 setShippingUpdateCertificate:?];
-    v10 = v11;
+    [toCopy setShippingUpdateCertificate:?];
+    v10 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = v5[8];
   v5[8] = v6;
 
-  v8 = [(NSString *)self->_countryCode copyWithZone:a3];
+  v8 = [(NSString *)self->_countryCode copyWithZone:zone];
   v9 = v5[7];
   v5[7] = v8;
 
   PBRepeatedInt32Copy();
   PBRepeatedInt32Copy();
-  v10 = [(NSString *)self->_paymentProcessingURL copyWithZone:a3];
+  v10 = [(NSString *)self->_paymentProcessingURL copyWithZone:zone];
   v11 = v5[10];
   v5[10] = v10;
 
-  v12 = [(NSData *)self->_paymentProcessingCertificate copyWithZone:a3];
+  v12 = [(NSData *)self->_paymentProcessingCertificate copyWithZone:zone];
   v13 = v5[9];
   v5[9] = v12;
 
-  v14 = [(NSString *)self->_shippingUpdateURL copyWithZone:a3];
+  v14 = [(NSString *)self->_shippingUpdateURL copyWithZone:zone];
   v15 = v5[12];
   v5[12] = v14;
 
-  v16 = [(NSData *)self->_shippingUpdateCertificate copyWithZone:a3];
+  v16 = [(NSData *)self->_shippingUpdateCertificate copyWithZone:zone];
   v17 = v5[11];
   v5[11] = v16;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((identifier = self->_identifier, !(identifier | v4[8])) || -[NSString isEqual:](identifier, "isEqual:")) && ((countryCode = self->_countryCode, !(countryCode | v4[7])) || -[NSString isEqual:](countryCode, "isEqual:")) && PBRepeatedInt32IsEqual() && PBRepeatedInt32IsEqual() && ((paymentProcessingURL = self->_paymentProcessingURL, !(paymentProcessingURL | v4[10])) || -[NSString isEqual:](paymentProcessingURL, "isEqual:")) && ((paymentProcessingCertificate = self->_paymentProcessingCertificate, !(paymentProcessingCertificate | v4[9])) || -[NSData isEqual:](paymentProcessingCertificate, "isEqual:")) && ((shippingUpdateURL = self->_shippingUpdateURL, !(shippingUpdateURL | v4[12])) || -[NSString isEqual:](shippingUpdateURL, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((identifier = self->_identifier, !(identifier | equalCopy[8])) || -[NSString isEqual:](identifier, "isEqual:")) && ((countryCode = self->_countryCode, !(countryCode | equalCopy[7])) || -[NSString isEqual:](countryCode, "isEqual:")) && PBRepeatedInt32IsEqual() && PBRepeatedInt32IsEqual() && ((paymentProcessingURL = self->_paymentProcessingURL, !(paymentProcessingURL | equalCopy[10])) || -[NSString isEqual:](paymentProcessingURL, "isEqual:")) && ((paymentProcessingCertificate = self->_paymentProcessingCertificate, !(paymentProcessingCertificate | equalCopy[9])) || -[NSData isEqual:](paymentProcessingCertificate, "isEqual:")) && ((shippingUpdateURL = self->_shippingUpdateURL, !(shippingUpdateURL | equalCopy[12])) || -[NSString isEqual:](shippingUpdateURL, "isEqual:")))
   {
     shippingUpdateCertificate = self->_shippingUpdateCertificate;
-    if (shippingUpdateCertificate | v4[11])
+    if (shippingUpdateCertificate | equalCopy[11])
     {
       v11 = [(NSData *)shippingUpdateCertificate isEqual:?];
     }
@@ -449,36 +449,36 @@
   return v7 ^ v9 ^ [(NSData *)self->_shippingUpdateCertificate hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v12 = v4;
-  if (v4[8])
+  fromCopy = from;
+  v12 = fromCopy;
+  if (fromCopy[8])
   {
     [(APPBMerchant *)self setIdentifier:?];
-    v4 = v12;
+    fromCopy = v12;
   }
 
-  if (v4[7])
+  if (fromCopy[7])
   {
     [(APPBMerchant *)self setCountryCode:?];
-    v4 = v12;
+    fromCopy = v12;
   }
 
-  v5 = [v4 supportedPaymentNetworksCount];
-  if (v5)
+  supportedPaymentNetworksCount = [fromCopy supportedPaymentNetworksCount];
+  if (supportedPaymentNetworksCount)
   {
-    v6 = v5;
+    v6 = supportedPaymentNetworksCount;
     for (i = 0; i != v6; ++i)
     {
       -[APPBMerchant addSupportedPaymentNetworks:](self, "addSupportedPaymentNetworks:", [v12 supportedPaymentNetworksAtIndex:i]);
     }
   }
 
-  v8 = [v12 paymentCapabilitiesCount];
-  if (v8)
+  paymentCapabilitiesCount = [v12 paymentCapabilitiesCount];
+  if (paymentCapabilitiesCount)
   {
-    v9 = v8;
+    v9 = paymentCapabilitiesCount;
     for (j = 0; j != v9; ++j)
     {
       -[APPBMerchant addPaymentCapabilities:](self, "addPaymentCapabilities:", [v12 paymentCapabilitiesAtIndex:j]);

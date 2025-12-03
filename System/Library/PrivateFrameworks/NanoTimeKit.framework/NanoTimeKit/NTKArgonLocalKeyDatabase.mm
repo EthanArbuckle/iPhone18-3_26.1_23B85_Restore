@@ -1,23 +1,23 @@
 @interface NTKArgonLocalKeyDatabase
-+ (BOOL)_decodedKeyDescriptors:(id *)a3 changeTokens:(id *)a4 fromData:(id)a5 error:(id *)a6;
-+ (id)_jsonDataForKeyDescriptors:(id)a3 changeTokens:(id)a4 error:(id *)a5;
-- (BOOL)addKeyDescriptor:(id)a3 error:(id *)a4;
-- (NTKArgonLocalKeyDatabase)initWithKeyStoragePath:(id)a3;
-- (id)keyDescriptorForFileName:(id)a3;
-- (id)latestChangeTokenForServerIdentifier:(id)a3;
++ (BOOL)_decodedKeyDescriptors:(id *)descriptors changeTokens:(id *)tokens fromData:(id)data error:(id *)error;
++ (id)_jsonDataForKeyDescriptors:(id)descriptors changeTokens:(id)tokens error:(id *)error;
+- (BOOL)addKeyDescriptor:(id)descriptor error:(id *)error;
+- (NTKArgonLocalKeyDatabase)initWithKeyStoragePath:(id)path;
+- (id)keyDescriptorForFileName:(id)name;
+- (id)latestChangeTokenForServerIdentifier:(id)identifier;
 - (void)_queue_flushImmediately;
-- (void)_queue_requestDelayedFlushWithMaximumTimeInterval:(double)a3;
-- (void)enumerateKeyDescriptors:(id)a3;
-- (void)flushWithinTimeInterval:(double)a3;
-- (void)recordChangeToken:(id)a3 forServerIdentifier:(id)a4;
+- (void)_queue_requestDelayedFlushWithMaximumTimeInterval:(double)interval;
+- (void)enumerateKeyDescriptors:(id)descriptors;
+- (void)flushWithinTimeInterval:(double)interval;
+- (void)recordChangeToken:(id)token forServerIdentifier:(id)identifier;
 @end
 
 @implementation NTKArgonLocalKeyDatabase
 
-- (NTKArgonLocalKeyDatabase)initWithKeyStoragePath:(id)a3
+- (NTKArgonLocalKeyDatabase)initWithKeyStoragePath:(id)path
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v55.receiver = self;
   v55.super_class = NTKArgonLocalKeyDatabase;
   v5 = [(NTKArgonLocalKeyDatabase *)&v55 init];
@@ -26,7 +26,7 @@
     goto LABEL_29;
   }
 
-  v6 = [v4 copy];
+  v6 = [pathCopy copy];
   storagePath = v5->_storagePath;
   v5->_storagePath = v6;
 
@@ -35,8 +35,8 @@
   stateQueue = v5->_stateQueue;
   v5->_stateQueue = v9;
 
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
-  v12 = [v11 fileExistsAtPath:v5->_storagePath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v12 = [defaultManager fileExistsAtPath:v5->_storagePath];
 
   v13 = 0;
   if (!v12)
@@ -45,9 +45,9 @@
   }
 
   v14 = MEMORY[0x277CBEA90];
-  v15 = [(NTKArgonLocalKeyDatabase *)v5 storagePath];
+  storagePath = [(NTKArgonLocalKeyDatabase *)v5 storagePath];
   v54 = 0;
-  v16 = [v14 dataWithContentsOfFile:v15 options:0 error:&v54];
+  v16 = [v14 dataWithContentsOfFile:storagePath options:0 error:&v54];
   v17 = v54;
 
   if (!v16)
@@ -82,40 +82,40 @@
   if (!v19)
   {
 LABEL_13:
-    v22 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     v44 = 0;
     persistedKeyDescriptors = v5->_persistedKeyDescriptors;
     goto LABEL_14;
   }
 
-  v22 = v19;
+  orderedSet = v19;
   persistedKeyDescriptors = v5->_persistedKeyDescriptors;
-  v44 = v22;
+  v44 = orderedSet;
 LABEL_14:
-  v5->_persistedKeyDescriptors = v22;
+  v5->_persistedKeyDescriptors = orderedSet;
 
   v45 = v13;
-  v46 = v4;
+  v46 = pathCopy;
   if (v13)
   {
-    v25 = v13;
+    dictionary = v13;
   }
 
   else
   {
-    v25 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
   persistedChangeTokens = v5->_persistedChangeTokens;
-  v5->_persistedChangeTokens = v25;
+  v5->_persistedChangeTokens = dictionary;
 
-  v27 = [MEMORY[0x277CBEB40] orderedSet];
+  orderedSet2 = [MEMORY[0x277CBEB40] orderedSet];
   newlyAddedKeyDescriptors = v5->_newlyAddedKeyDescriptors;
-  v5->_newlyAddedKeyDescriptors = v27;
+  v5->_newlyAddedKeyDescriptors = orderedSet2;
 
-  v29 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   newlyAddedChangeTokens = v5->_newlyAddedChangeTokens;
-  v5->_newlyAddedChangeTokens = v29;
+  v5->_newlyAddedChangeTokens = dictionary2;
 
   v31 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSMutableOrderedSet count](v5->_persistedKeyDescriptors, "count")}];
   persistedKeyDescriptorsByFileName = v5->_persistedKeyDescriptorsByFileName;
@@ -141,15 +141,15 @@ LABEL_14:
         }
 
         v38 = *(*(&v47 + 1) + 8 * i);
-        v39 = [v38 fileName];
-        if (v39)
+        fileName = [v38 fileName];
+        if (fileName)
         {
-          [(NSMutableDictionary *)v5->_persistedKeyDescriptorsByFileName setObject:v38 forKeyedSubscript:v39];
+          [(NSMutableDictionary *)v5->_persistedKeyDescriptorsByFileName setObject:v38 forKeyedSubscript:fileName];
           v40 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
           if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v57 = v39;
+            v57 = fileName;
             _os_log_impl(&dword_22D9C5000, v40, OS_LOG_TYPE_DEFAULT, "Loaded key descriptor for file name %@", buf, 0xCu);
           }
         }
@@ -161,31 +161,31 @@ LABEL_14:
     while (v35);
   }
 
-  v41 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
   newlyAddedKeyDescriptorsByFileName = v5->_newlyAddedKeyDescriptorsByFileName;
-  v5->_newlyAddedKeyDescriptorsByFileName = v41;
+  v5->_newlyAddedKeyDescriptorsByFileName = dictionary3;
 
   v5->_nextFlushTime = 0;
-  v4 = v46;
+  pathCopy = v46;
 LABEL_29:
 
   return v5;
 }
 
-- (void)enumerateKeyDescriptors:(id)a3
+- (void)enumerateKeyDescriptors:(id)descriptors
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB40] orderedSet];
-  v6 = [(NTKArgonLocalKeyDatabase *)self stateQueue];
+  descriptorsCopy = descriptors;
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  stateQueue = [(NTKArgonLocalKeyDatabase *)self stateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__NTKArgonLocalKeyDatabase_enumerateKeyDescriptors___block_invoke;
   block[3] = &unk_27877E438;
-  v7 = v5;
+  v7 = orderedSet;
   v18 = v7;
-  v19 = self;
-  dispatch_sync(v6, block);
+  selfCopy = self;
+  dispatch_sync(stateQueue, block);
 
   v15 = 0u;
   v16 = 0u;
@@ -207,7 +207,7 @@ LABEL_29:
           objc_enumerationMutation(v8);
         }
 
-        v4[2](v4, *(*(&v13 + 1) + 8 * v12++));
+        descriptorsCopy[2](descriptorsCopy, *(*(&v13 + 1) + 8 * v12++));
       }
 
       while (v10 != v12);
@@ -229,29 +229,29 @@ void __52__NTKArgonLocalKeyDatabase_enumerateKeyDescriptors___block_invoke(uint6
   [v4 unionOrderedSet:v5];
 }
 
-- (BOOL)addKeyDescriptor:(id)a3 error:(id *)a4
+- (BOOL)addKeyDescriptor:(id)descriptor error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 fileName];
+  descriptorCopy = descriptor;
+  fileName = [descriptorCopy fileName];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__12;
   v23 = __Block_byref_object_dispose__12;
   v24 = 0;
-  v8 = [(NTKArgonLocalKeyDatabase *)self stateQueue];
+  stateQueue = [(NTKArgonLocalKeyDatabase *)self stateQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __51__NTKArgonLocalKeyDatabase_addKeyDescriptor_error___block_invoke;
   v15[3] = &unk_2787805B0;
   v15[4] = self;
-  v9 = v6;
+  v9 = descriptorCopy;
   v16 = v9;
   v18 = &v19;
-  v10 = v7;
+  v10 = fileName;
   v17 = v10;
-  dispatch_sync(v8, v15);
+  dispatch_sync(stateQueue, v15);
 
   v11 = v20;
   if (v20[5])
@@ -265,9 +265,9 @@ void __52__NTKArgonLocalKeyDatabase_enumerateKeyDescriptors___block_invoke(uint6
     }
 
     v11 = v20;
-    if (a4)
+    if (error)
     {
-      *a4 = v20[5];
+      *error = v20[5];
       v11 = v20;
     }
   }
@@ -316,10 +316,10 @@ void __51__NTKArgonLocalKeyDatabase_addKeyDescriptor_error___block_invoke(uint64
   }
 }
 
-- (id)keyDescriptorForFileName:(id)a3
+- (id)keyDescriptorForFileName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -327,15 +327,15 @@ void __51__NTKArgonLocalKeyDatabase_addKeyDescriptor_error___block_invoke(uint64
     v14 = __Block_byref_object_copy__12;
     v15 = __Block_byref_object_dispose__12;
     v16 = 0;
-    v5 = [(NTKArgonLocalKeyDatabase *)self stateQueue];
+    stateQueue = [(NTKArgonLocalKeyDatabase *)self stateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __53__NTKArgonLocalKeyDatabase_keyDescriptorForFileName___block_invoke;
     block[3] = &unk_278780498;
     v10 = &v11;
     block[4] = self;
-    v9 = v4;
-    dispatch_sync(v5, block);
+    v9 = nameCopy;
+    dispatch_sync(stateQueue, block);
 
     v6 = v12[5];
     _Block_object_dispose(&v11, 8);
@@ -366,21 +366,21 @@ void __53__NTKArgonLocalKeyDatabase_keyDescriptorForFileName___block_invoke(uint
   }
 }
 
-- (void)recordChangeToken:(id)a3 forServerIdentifier:(id)a4
+- (void)recordChangeToken:(id)token forServerIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NTKArgonLocalKeyDatabase *)self stateQueue];
+  tokenCopy = token;
+  identifierCopy = identifier;
+  stateQueue = [(NTKArgonLocalKeyDatabase *)self stateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__NTKArgonLocalKeyDatabase_recordChangeToken_forServerIdentifier___block_invoke;
   block[3] = &unk_27877E238;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_sync(v8, block);
+  v12 = identifierCopy;
+  v13 = tokenCopy;
+  v9 = tokenCopy;
+  v10 = identifierCopy;
+  dispatch_sync(stateQueue, block);
 }
 
 uint64_t __66__NTKArgonLocalKeyDatabase_recordChangeToken_forServerIdentifier___block_invoke(uint64_t a1)
@@ -394,25 +394,25 @@ uint64_t __66__NTKArgonLocalKeyDatabase_recordChangeToken_forServerIdentifier___
   return [v4 _queue_requestDelayedFlushWithMaximumTimeInterval:30.0];
 }
 
-- (id)latestChangeTokenForServerIdentifier:(id)a3
+- (id)latestChangeTokenForServerIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__12;
   v16 = __Block_byref_object_dispose__12;
   v17 = 0;
-  v5 = [(NTKArgonLocalKeyDatabase *)self stateQueue];
+  stateQueue = [(NTKArgonLocalKeyDatabase *)self stateQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__NTKArgonLocalKeyDatabase_latestChangeTokenForServerIdentifier___block_invoke;
   block[3] = &unk_278780498;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = identifierCopy;
+  dispatch_sync(stateQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -437,33 +437,33 @@ void __65__NTKArgonLocalKeyDatabase_latestChangeTokenForServerIdentifier___block
   }
 }
 
-- (void)flushWithinTimeInterval:(double)a3
+- (void)flushWithinTimeInterval:(double)interval
 {
-  v5 = [(NTKArgonLocalKeyDatabase *)self stateQueue];
+  stateQueue = [(NTKArgonLocalKeyDatabase *)self stateQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__NTKArgonLocalKeyDatabase_flushWithinTimeInterval___block_invoke;
   v6[3] = &unk_2787805D8;
   v6[4] = self;
-  *&v6[5] = a3;
-  dispatch_sync(v5, v6);
+  *&v6[5] = interval;
+  dispatch_sync(stateQueue, v6);
 }
 
-- (void)_queue_requestDelayedFlushWithMaximumTimeInterval:(double)a3
+- (void)_queue_requestDelayedFlushWithMaximumTimeInterval:(double)interval
 {
   v17 = *MEMORY[0x277D85DE8];
   if (NTKInternalBuild(self, a2))
   {
-    v5 = [(NTKArgonLocalKeyDatabase *)self stateQueue];
-    dispatch_assert_queue_V2(v5);
+    stateQueue = [(NTKArgonLocalKeyDatabase *)self stateQueue];
+    dispatch_assert_queue_V2(stateQueue);
   }
 
-  v6 = [(NTKArgonLocalKeyDatabase *)self nextFlushTime];
+  nextFlushTime = [(NTKArgonLocalKeyDatabase *)self nextFlushTime];
   v7 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW_APPROX);
-  v8 = (a3 * 1000000000.0);
+  v8 = (interval * 1000000000.0);
   v9 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
   v10 = v9;
-  if (v6 - v8 <= v7)
+  if (nextFlushTime - v8 <= v7)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
@@ -476,27 +476,27 @@ void __65__NTKArgonLocalKeyDatabase_latestChangeTokenForServerIdentifier___block
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v16 = a3;
+      intervalCopy = interval;
       _os_log_impl(&dword_22D9C5000, v10, OS_LOG_TYPE_DEFAULT, "Key Database: Enqueueing flush request within %f seconds.", buf, 0xCu);
     }
 
-    v11 = dispatch_time(0x8000000000000000, (a3 * 1000000000.0));
-    v12 = [(NTKArgonLocalKeyDatabase *)self stateQueue];
+    v11 = dispatch_time(0x8000000000000000, (interval * 1000000000.0));
+    stateQueue2 = [(NTKArgonLocalKeyDatabase *)self stateQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __78__NTKArgonLocalKeyDatabase__queue_requestDelayedFlushWithMaximumTimeInterval___block_invoke;
     block[3] = &unk_27877DB10;
     block[4] = self;
-    dispatch_after(v11, v12, block);
+    dispatch_after(v11, stateQueue2, block);
 
-    if (v6 <= v7 + v8)
+    if (nextFlushTime <= v7 + v8)
     {
       v13 = v7 + v8;
     }
 
     else
     {
-      v13 = v6;
+      v13 = nextFlushTime;
     }
 
     [(NTKArgonLocalKeyDatabase *)self setNextFlushTime:v13];
@@ -507,21 +507,21 @@ void __65__NTKArgonLocalKeyDatabase_latestChangeTokenForServerIdentifier___block
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_22D9C5000, a2, OS_LOG_TYPE_ERROR, "Key Database: Failed to serialize JSON: %@. Skipping persistence attempt.", &v2, 0xCu);
 }
 
-+ (id)_jsonDataForKeyDescriptors:(id)a3 changeTokens:(id)a4 error:(id *)a5
++ (id)_jsonDataForKeyDescriptors:(id)descriptors changeTokens:(id)tokens error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count")}];
+  descriptorsCopy = descriptors;
+  tokensCopy = tokens;
+  v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(descriptorsCopy, "count")}];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v10 = v7;
+  v10 = descriptorsCopy;
   v11 = [v10 countByEnumeratingWithState:&v40 objects:v51 count:16];
   if (v11)
   {
@@ -536,8 +536,8 @@ void __65__NTKArgonLocalKeyDatabase_latestChangeTokenForServerIdentifier___block
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v40 + 1) + 8 * i) argon_JSONRepresentation];
-        [v9 addObject:v15];
+        argon_JSONRepresentation = [*(*(&v40 + 1) + 8 * i) argon_JSONRepresentation];
+        [v9 addObject:argon_JSONRepresentation];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v40 objects:v51 count:16];
@@ -546,14 +546,14 @@ void __65__NTKArgonLocalKeyDatabase_latestChangeTokenForServerIdentifier___block
     while (v12);
   }
 
-  v34 = a5;
+  errorCopy = error;
 
-  v16 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
+  v16 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(tokensCopy, "count")}];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v17 = v8;
+  v17 = tokensCopy;
   v18 = [v17 countByEnumeratingWithState:&v36 objects:v50 count:16];
   if (v18)
   {
@@ -600,14 +600,14 @@ void __65__NTKArgonLocalKeyDatabase_latestChangeTokenForServerIdentifier___block
 
     else
     {
-      if (v34)
+      if (errorCopy)
       {
         v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"Could not encode JSON %@", v27];
         v31 = objc_opt_class();
         v44 = @"description";
         v45 = v30;
         v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v45 forKeys:&v44 count:1];
-        *v34 = [v31 _argonKeyDatabaseErrorWithCode:3 userInfo:v32];
+        *errorCopy = [v31 _argonKeyDatabaseErrorWithCode:3 userInfo:v32];
       }
 
       v28 = 0;
@@ -616,7 +616,7 @@ void __65__NTKArgonLocalKeyDatabase_latestChangeTokenForServerIdentifier___block
     goto LABEL_23;
   }
 
-  if (v34)
+  if (errorCopy)
   {
     v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"Object %@ is not valid JSON", v25];
     v29 = objc_opt_class();
@@ -624,7 +624,7 @@ void __65__NTKArgonLocalKeyDatabase_latestChangeTokenForServerIdentifier___block
     v47 = v27;
     v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
     [v29 _argonKeyDatabaseErrorWithCode:2 userInfo:v26];
-    *v34 = v28 = 0;
+    *errorCopy = v28 = 0;
 LABEL_23:
 
     goto LABEL_24;
@@ -636,26 +636,26 @@ LABEL_24:
   return v28;
 }
 
-+ (BOOL)_decodedKeyDescriptors:(id *)a3 changeTokens:(id *)a4 fromData:(id)a5 error:(id *)a6
++ (BOOL)_decodedKeyDescriptors:(id *)descriptors changeTokens:(id *)tokens fromData:(id)data error:(id *)error
 {
   v113[1] = *MEMORY[0x277D85DE8];
   v96 = 0;
-  v9 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a5 options:0 error:&v96];
+  v9 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:0 error:&v96];
   v10 = v96;
-  if (!a6 || v9)
+  if (!error || v9)
   {
-    v80 = a3;
-    v12 = [MEMORY[0x277CBEB40] orderedSet];
-    v82 = [MEMORY[0x277CBEB38] dictionary];
+    descriptorsCopy = descriptors;
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v75 = a4;
+        tokensCopy = tokens;
         v77 = v10;
-        v81 = v12;
+        v81 = orderedSet;
         v86 = 0u;
         v87 = 0u;
         v84 = 0u;
@@ -680,7 +680,7 @@ LABEL_24:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (a6)
+                if (error)
                 {
                   v61 = [MEMORY[0x277CCACA8] stringWithFormat:@"Array contains class %@, not dictionary", objc_opt_class()];
                   v62 = objc_opt_class();
@@ -690,13 +690,13 @@ LABEL_24:
                   v64 = [v62 _argonKeyDatabaseErrorWithCode:5 userInfo:v63];
 
                   v65 = v64;
-                  *a6 = v64;
+                  *error = v64;
                 }
 
                 v13 = 0;
                 v10 = v77;
                 v9 = v79;
-                v12 = v81;
+                orderedSet = v81;
                 goto LABEL_70;
               }
 
@@ -730,25 +730,25 @@ LABEL_24:
           }
         }
 
-        v12 = v81;
+        orderedSet = v81;
         v51 = v81;
-        *v80 = v81;
+        *descriptorsCopy = v81;
         [MEMORY[0x277CBEB38] dictionary];
-        *v75 = v10 = v77;
+        *tokensCopy = v10 = v77;
         v13 = 1;
         v9 = v79;
       }
 
       else
       {
-        if (a6)
+        if (error)
         {
           v58 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown format with root object of class %@", objc_opt_class()];
           v59 = objc_opt_class();
           v97 = @"description";
           v98 = v58;
           v60 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v98 forKeys:&v97 count:1];
-          *a6 = [v59 _argonKeyDatabaseErrorWithCode:5 userInfo:v60];
+          *error = [v59 _argonKeyDatabaseErrorWithCode:5 userInfo:v60];
         }
 
         v13 = 0;
@@ -767,7 +767,7 @@ LABEL_24:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v74 = a4;
+        tokensCopy2 = tokens;
         v18 = [v14 objectForKeyedSubscript:@"ct"];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
@@ -807,12 +807,12 @@ LABEL_24:
 
                   if (v27)
                   {
-                    [v12 addObject:v27];
+                    [orderedSet addObject:v27];
                   }
 
                   else
                   {
-                    v28 = v12;
+                    v28 = orderedSet;
                     v29 = _NTKLoggingObjectForDomain(39, "NTKLoggingDomainArgon");
                     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
                     {
@@ -821,7 +821,7 @@ LABEL_24:
                       _os_log_error_impl(&dword_22D9C5000, v29, OS_LOG_TYPE_ERROR, "Could not create descriptor from %@", buf, 0xCu);
                     }
 
-                    v12 = v28;
+                    orderedSet = v28;
                   }
                 }
 
@@ -882,7 +882,7 @@ LABEL_24:
                     v34 = 0x277CBE000;
                   }
 
-                  [v82 setObject:v38 forKeyedSubscript:v36];
+                  [dictionary setObject:v38 forKeyedSubscript:v36];
                 }
 
                 else
@@ -905,10 +905,10 @@ LABEL_24:
             while (v32);
           }
 
-          v40 = v12;
-          *v80 = v12;
+          v40 = orderedSet;
+          *descriptorsCopy = orderedSet;
           v10 = v76;
-          *v74 = v82;
+          *tokensCopy2 = dictionary;
           v13 = 1;
           v9 = v78;
           v14 = v72;
@@ -921,7 +921,7 @@ LABEL_24:
       {
       }
 
-      if (a6)
+      if (error)
       {
         v66 = MEMORY[0x277CCACA8];
         v67 = [v14 objectForKeyedSubscript:@"kd"];
@@ -939,7 +939,7 @@ LABEL_24:
       }
     }
 
-    else if (a6)
+    else if (error)
     {
       v52 = MEMORY[0x277CCACA8];
       v53 = [v14 objectForKeyedSubscript:@"v"];
@@ -953,7 +953,7 @@ LABEL_24:
       v57 = &v110;
 LABEL_66:
       [v55 dictionaryWithObjects:v56 forKeys:v57 count:1];
-      v30 = v70 = a6;
+      v30 = v70 = error;
       [v54 _argonKeyDatabaseErrorWithCode:5 userInfo:v30];
       *v70 = v13 = 0;
 LABEL_67:
@@ -971,9 +971,9 @@ LABEL_70:
   v11 = objc_opt_class();
   v112 = *MEMORY[0x277CCA7E8];
   v113[0] = v10;
-  v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v113 forKeys:&v112 count:1];
-  [v11 _argonKeyDatabaseErrorWithCode:4 userInfo:v12];
-  *a6 = v13 = 0;
+  orderedSet = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v113 forKeys:&v112 count:1];
+  [v11 _argonKeyDatabaseErrorWithCode:4 userInfo:orderedSet];
+  *error = v13 = 0;
 LABEL_71:
 
   return v13;

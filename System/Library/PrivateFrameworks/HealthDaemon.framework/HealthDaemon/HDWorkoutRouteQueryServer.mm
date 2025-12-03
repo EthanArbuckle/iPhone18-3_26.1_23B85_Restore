@@ -1,29 +1,29 @@
 @interface HDWorkoutRouteQueryServer
-- (HDWorkoutRouteQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDWorkoutRouteQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)_queue_start;
 @end
 
 @implementation HDWorkoutRouteQueryServer
 
-- (HDWorkoutRouteQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDWorkoutRouteQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v19.receiver = self;
   v19.super_class = HDWorkoutRouteQueryServer;
-  v11 = [(HDQueryServer *)&v19 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDQueryServer *)&v19 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
-    v12 = [v10 workoutRoute];
+    workoutRoute = [configurationCopy workoutRoute];
     locationSeries = v11->_locationSeries;
-    v11->_locationSeries = v12;
+    v11->_locationSeries = workoutRoute;
 
-    v14 = [v10 workoutUUID];
+    workoutUUID = [configurationCopy workoutUUID];
     workoutUUID = v11->_workoutUUID;
-    v11->_workoutUUID = v14;
+    v11->_workoutUUID = workoutUUID;
 
-    v16 = [v10 dateInterval];
+    dateInterval = [configurationCopy dateInterval];
     dateInterval = v11->_dateInterval;
-    v11->_dateInterval = v16;
+    v11->_dateInterval = dateInterval;
 
     v11->_batchThreshold = 100;
   }
@@ -36,16 +36,16 @@
   v30.receiver = self;
   v30.super_class = HDWorkoutRouteQueryServer;
   [(HDQueryServer *)&v30 _queue_start];
-  v3 = [(HDQueryServer *)self queryUUID];
-  v4 = [(HDQueryServer *)self clientProxy];
-  v5 = [MEMORY[0x277CCD920] workoutRouteType];
+  queryUUID = [(HDQueryServer *)self queryUUID];
+  clientProxy = [(HDQueryServer *)self clientProxy];
+  workoutRouteType = [MEMORY[0x277CCD920] workoutRouteType];
   v29 = 0;
-  v6 = [(HDQueryServer *)self authorizationStatusRecordForType:v5 error:&v29];
+  v6 = [(HDQueryServer *)self authorizationStatusRecordForType:workoutRouteType error:&v29];
   v7 = v29;
 
   if (!v6)
   {
-    [v4 client_deliverError:v7 forQuery:v3];
+    [clientProxy client_deliverError:v7 forQuery:queryUUID];
 LABEL_7:
     v13 = v7;
     goto LABEL_10;
@@ -53,7 +53,7 @@ LABEL_7:
 
   if (([v6 canRead] & 1) == 0)
   {
-    [v4 client_deliverWorkoutRouteLocations:MEMORY[0x277CBEBF8] isFinal:1 query:v3];
+    [clientProxy client_deliverWorkoutRouteLocations:MEMORY[0x277CBEBF8] isFinal:1 query:queryUUID];
     goto LABEL_7;
   }
 
@@ -63,30 +63,30 @@ LABEL_7:
   v26 = __Block_byref_object_copy__115;
   v27 = __Block_byref_object_dispose__115;
   v28 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = [(HDQueryServer *)self profile];
-  v9 = [v8 database];
+  profile = [(HDQueryServer *)self profile];
+  database = [profile database];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __41__HDWorkoutRouteQueryServer__queue_start__block_invoke;
   v17 = &unk_27861A500;
-  v18 = self;
+  selfCopy = self;
   v21 = &v23;
   v22 = v7;
-  v10 = v4;
+  v10 = clientProxy;
   v19 = v10;
-  v11 = v3;
+  v11 = queryUUID;
   v20 = v11;
-  v12 = [(HDHealthEntity *)HDLocationSeriesSampleEntity performReadTransactionWithHealthDatabase:v9 error:&v22 block:&v14];
+  v12 = [(HDHealthEntity *)HDLocationSeriesSampleEntity performReadTransactionWithHealthDatabase:database error:&v22 block:&v14];
   v13 = v22;
 
   if (v12)
   {
-    [v10 client_deliverWorkoutRouteLocations:v24[5] isFinal:1 query:{v11, v14, v15, v16, v17, v18, v19}];
+    [v10 client_deliverWorkoutRouteLocations:v24[5] isFinal:1 query:{v11, v14, v15, v16, v17, selfCopy, v19}];
   }
 
   else
   {
-    [v10 client_deliverError:v13 forQuery:{v11, v14, v15, v16, v17, v18, v19}];
+    [v10 client_deliverError:v13 forQuery:{v11, v14, v15, v16, v17, selfCopy, v19}];
   }
 
   _Block_object_dispose(&v23, 8);

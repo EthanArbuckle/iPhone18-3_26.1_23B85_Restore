@@ -1,24 +1,24 @@
 @interface CNChangeHistoryEventFactory
-- (id)addContactEventWithContact:(id)a3 containerIdentifier:(id)a4;
-- (id)addContactEventWithContactIdentifier:(id)a3 containerIdentifier:(id)a4;
-- (id)addGroupEventWithGroup:(id)a3 containerIdentifier:(id)a4;
-- (id)addMemberToGroupEventWithMember:(id)a3 group:(id)a4;
-- (id)addSubgroupToGroupEventWithSubgroup:(id)a3 group:(id)a4;
-- (id)deleteContactEventWithContactIdentifier:(id)a3;
-- (id)deleteContactEventWithContactIdentifier:(id)a3 externalURI:(id)a4 externalModificationTag:(id)a5;
-- (id)deleteGroupEventWithGroupIdentifier:(id)a3;
-- (id)deleteGroupEventWithGroupIdentifier:(id)a3 externalURI:(id)a4 externalModificationTag:(id)a5;
-- (id)differentMeCardEventWithContactIdentifier:(id)a3;
+- (id)addContactEventWithContact:(id)contact containerIdentifier:(id)identifier;
+- (id)addContactEventWithContactIdentifier:(id)identifier containerIdentifier:(id)containerIdentifier;
+- (id)addGroupEventWithGroup:(id)group containerIdentifier:(id)identifier;
+- (id)addMemberToGroupEventWithMember:(id)member group:(id)group;
+- (id)addSubgroupToGroupEventWithSubgroup:(id)subgroup group:(id)group;
+- (id)deleteContactEventWithContactIdentifier:(id)identifier;
+- (id)deleteContactEventWithContactIdentifier:(id)identifier externalURI:(id)i externalModificationTag:(id)tag;
+- (id)deleteGroupEventWithGroupIdentifier:(id)identifier;
+- (id)deleteGroupEventWithGroupIdentifier:(id)identifier externalURI:(id)i externalModificationTag:(id)tag;
+- (id)differentMeCardEventWithContactIdentifier:(id)identifier;
 - (id)dropEverythingEvent;
-- (id)linkContactsEventWithFromContact:(id)a3 toContact:(id)a4 unifiedContact:(id)a5;
-- (id)preferredContactForImageEventWithPreferredContact:(id)a3 unifiedContact:(id)a4;
-- (id)preferredContactForNameEventWithPreferredContact:(id)a3 unifiedContact:(id)a4;
-- (id)removeMemberFromGroupEventWithMember:(id)a3 group:(id)a4;
-- (id)removeSubgroupFromGroupEventWithSubgroup:(id)a3 group:(id)a4;
-- (id)unlinkContactEventWithContact:(id)a3;
-- (id)updateContactEventWithContact:(id)a3 imagesChanged:(BOOL)a4;
-- (id)updateContactEventWithContactIdentifier:(id)a3 imagesChanged:(BOOL)a4;
-- (id)updateGroupEventWithGroup:(id)a3;
+- (id)linkContactsEventWithFromContact:(id)contact toContact:(id)toContact unifiedContact:(id)unifiedContact;
+- (id)preferredContactForImageEventWithPreferredContact:(id)contact unifiedContact:(id)unifiedContact;
+- (id)preferredContactForNameEventWithPreferredContact:(id)contact unifiedContact:(id)unifiedContact;
+- (id)removeMemberFromGroupEventWithMember:(id)member group:(id)group;
+- (id)removeSubgroupFromGroupEventWithSubgroup:(id)subgroup group:(id)group;
+- (id)unlinkContactEventWithContact:(id)contact;
+- (id)updateContactEventWithContact:(id)contact imagesChanged:(BOOL)changed;
+- (id)updateContactEventWithContactIdentifier:(id)identifier imagesChanged:(BOOL)changed;
+- (id)updateGroupEventWithGroup:(id)group;
 @end
 
 @implementation CNChangeHistoryEventFactory
@@ -30,171 +30,171 @@
   return v2;
 }
 
-- (id)addContactEventWithContact:(id)a3 containerIdentifier:(id)a4
+- (id)addContactEventWithContact:(id)contact containerIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CNChangeHistoryAddContactEvent alloc] initWithContact:v6 containerIdentifier:v5];
+  identifierCopy = identifier;
+  contactCopy = contact;
+  v7 = [[CNChangeHistoryAddContactEvent alloc] initWithContact:contactCopy containerIdentifier:identifierCopy];
 
   return v7;
 }
 
-- (id)addContactEventWithContactIdentifier:(id)a3 containerIdentifier:(id)a4
+- (id)addContactEventWithContactIdentifier:(id)identifier containerIdentifier:(id)containerIdentifier
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CNChangeHistoryAddContactEvent alloc] initWithContactIdentifier:v6 containerIdentifier:v5];
+  containerIdentifierCopy = containerIdentifier;
+  identifierCopy = identifier;
+  v7 = [[CNChangeHistoryAddContactEvent alloc] initWithContactIdentifier:identifierCopy containerIdentifier:containerIdentifierCopy];
 
   return v7;
 }
 
-- (id)updateContactEventWithContact:(id)a3 imagesChanged:(BOOL)a4
+- (id)updateContactEventWithContact:(id)contact imagesChanged:(BOOL)changed
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [[CNChangeHistoryUpdateContactEvent alloc] initWithContact:v5 imagesChanged:v4];
+  changedCopy = changed;
+  contactCopy = contact;
+  v6 = [[CNChangeHistoryUpdateContactEvent alloc] initWithContact:contactCopy imagesChanged:changedCopy];
 
   return v6;
 }
 
-- (id)updateContactEventWithContactIdentifier:(id)a3 imagesChanged:(BOOL)a4
+- (id)updateContactEventWithContactIdentifier:(id)identifier imagesChanged:(BOOL)changed
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [[CNChangeHistoryUpdateContactEvent alloc] initWithContactIdentifier:v5 imagesChanged:v4];
+  changedCopy = changed;
+  identifierCopy = identifier;
+  v6 = [[CNChangeHistoryUpdateContactEvent alloc] initWithContactIdentifier:identifierCopy imagesChanged:changedCopy];
 
   return v6;
 }
 
-- (id)deleteContactEventWithContactIdentifier:(id)a3
+- (id)deleteContactEventWithContactIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[CNChangeHistoryDeleteContactEvent alloc] initWithContactIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[CNChangeHistoryDeleteContactEvent alloc] initWithContactIdentifier:identifierCopy];
 
   return v4;
 }
 
-- (id)deleteContactEventWithContactIdentifier:(id)a3 externalURI:(id)a4 externalModificationTag:(id)a5
+- (id)deleteContactEventWithContactIdentifier:(id)identifier externalURI:(id)i externalModificationTag:(id)tag
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[CNChangeHistoryDeleteContactEvent alloc] initWithContactIdentifier:v9 externalURI:v8 externalModificationTag:v7];
+  tagCopy = tag;
+  iCopy = i;
+  identifierCopy = identifier;
+  v10 = [[CNChangeHistoryDeleteContactEvent alloc] initWithContactIdentifier:identifierCopy externalURI:iCopy externalModificationTag:tagCopy];
 
   return v10;
 }
 
-- (id)addGroupEventWithGroup:(id)a3 containerIdentifier:(id)a4
+- (id)addGroupEventWithGroup:(id)group containerIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CNChangeHistoryAddGroupEvent alloc] initWithGroup:v6 containerIdentifier:v5];
+  identifierCopy = identifier;
+  groupCopy = group;
+  v7 = [[CNChangeHistoryAddGroupEvent alloc] initWithGroup:groupCopy containerIdentifier:identifierCopy];
 
   return v7;
 }
 
-- (id)updateGroupEventWithGroup:(id)a3
+- (id)updateGroupEventWithGroup:(id)group
 {
-  v3 = a3;
-  v4 = [[CNChangeHistoryUpdateGroupEvent alloc] initWithGroup:v3];
+  groupCopy = group;
+  v4 = [[CNChangeHistoryUpdateGroupEvent alloc] initWithGroup:groupCopy];
 
   return v4;
 }
 
-- (id)deleteGroupEventWithGroupIdentifier:(id)a3
+- (id)deleteGroupEventWithGroupIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[CNChangeHistoryDeleteGroupEvent alloc] initWithGroupIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[CNChangeHistoryDeleteGroupEvent alloc] initWithGroupIdentifier:identifierCopy];
 
   return v4;
 }
 
-- (id)deleteGroupEventWithGroupIdentifier:(id)a3 externalURI:(id)a4 externalModificationTag:(id)a5
+- (id)deleteGroupEventWithGroupIdentifier:(id)identifier externalURI:(id)i externalModificationTag:(id)tag
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[CNChangeHistoryDeleteGroupEvent alloc] initWithGroupIdentifier:v9 externalURI:v8 externalModificationTag:v7];
+  tagCopy = tag;
+  iCopy = i;
+  identifierCopy = identifier;
+  v10 = [[CNChangeHistoryDeleteGroupEvent alloc] initWithGroupIdentifier:identifierCopy externalURI:iCopy externalModificationTag:tagCopy];
 
   return v10;
 }
 
-- (id)addMemberToGroupEventWithMember:(id)a3 group:(id)a4
+- (id)addMemberToGroupEventWithMember:(id)member group:(id)group
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CNChangeHistoryAddMemberToGroupEvent alloc] initWithMember:v6 group:v5];
+  groupCopy = group;
+  memberCopy = member;
+  v7 = [[CNChangeHistoryAddMemberToGroupEvent alloc] initWithMember:memberCopy group:groupCopy];
 
   return v7;
 }
 
-- (id)removeMemberFromGroupEventWithMember:(id)a3 group:(id)a4
+- (id)removeMemberFromGroupEventWithMember:(id)member group:(id)group
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CNChangeHistoryRemoveMemberFromGroupEvent alloc] initWithMember:v6 group:v5];
+  groupCopy = group;
+  memberCopy = member;
+  v7 = [[CNChangeHistoryRemoveMemberFromGroupEvent alloc] initWithMember:memberCopy group:groupCopy];
 
   return v7;
 }
 
-- (id)addSubgroupToGroupEventWithSubgroup:(id)a3 group:(id)a4
+- (id)addSubgroupToGroupEventWithSubgroup:(id)subgroup group:(id)group
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CNChangeHistoryAddSubgroupToGroupEvent alloc] initWithSubgroup:v6 group:v5];
+  groupCopy = group;
+  subgroupCopy = subgroup;
+  v7 = [[CNChangeHistoryAddSubgroupToGroupEvent alloc] initWithSubgroup:subgroupCopy group:groupCopy];
 
   return v7;
 }
 
-- (id)removeSubgroupFromGroupEventWithSubgroup:(id)a3 group:(id)a4
+- (id)removeSubgroupFromGroupEventWithSubgroup:(id)subgroup group:(id)group
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CNChangeHistoryRemoveSubgroupFromGroupEvent alloc] initWithSubgroup:v6 group:v5];
+  groupCopy = group;
+  subgroupCopy = subgroup;
+  v7 = [[CNChangeHistoryRemoveSubgroupFromGroupEvent alloc] initWithSubgroup:subgroupCopy group:groupCopy];
 
   return v7;
 }
 
-- (id)linkContactsEventWithFromContact:(id)a3 toContact:(id)a4 unifiedContact:(id)a5
+- (id)linkContactsEventWithFromContact:(id)contact toContact:(id)toContact unifiedContact:(id)unifiedContact
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[CNChangeHistoryLinkContactsEvent alloc] initWithFromContact:v9 toContact:v8 unifiedContact:v7];
+  unifiedContactCopy = unifiedContact;
+  toContactCopy = toContact;
+  contactCopy = contact;
+  v10 = [[CNChangeHistoryLinkContactsEvent alloc] initWithFromContact:contactCopy toContact:toContactCopy unifiedContact:unifiedContactCopy];
 
   return v10;
 }
 
-- (id)unlinkContactEventWithContact:(id)a3
+- (id)unlinkContactEventWithContact:(id)contact
 {
-  v3 = a3;
-  v4 = [[CNChangeHistoryUnlinkContactEvent alloc] initWithContact:v3];
+  contactCopy = contact;
+  v4 = [[CNChangeHistoryUnlinkContactEvent alloc] initWithContact:contactCopy];
 
   return v4;
 }
 
-- (id)preferredContactForNameEventWithPreferredContact:(id)a3 unifiedContact:(id)a4
+- (id)preferredContactForNameEventWithPreferredContact:(id)contact unifiedContact:(id)unifiedContact
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CNChangeHistoryPreferredContactForNameEvent alloc] initWithPreferredContact:v6 unifiedContact:v5];
+  unifiedContactCopy = unifiedContact;
+  contactCopy = contact;
+  v7 = [[CNChangeHistoryPreferredContactForNameEvent alloc] initWithPreferredContact:contactCopy unifiedContact:unifiedContactCopy];
 
   return v7;
 }
 
-- (id)preferredContactForImageEventWithPreferredContact:(id)a3 unifiedContact:(id)a4
+- (id)preferredContactForImageEventWithPreferredContact:(id)contact unifiedContact:(id)unifiedContact
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CNChangeHistoryPreferredContactForImageEvent alloc] initWithPreferredContact:v6 unifiedContact:v5];
+  unifiedContactCopy = unifiedContact;
+  contactCopy = contact;
+  v7 = [[CNChangeHistoryPreferredContactForImageEvent alloc] initWithPreferredContact:contactCopy unifiedContact:unifiedContactCopy];
 
   return v7;
 }
 
-- (id)differentMeCardEventWithContactIdentifier:(id)a3
+- (id)differentMeCardEventWithContactIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[CNChangeHistoryDifferentMeCardEvent alloc] initWithContactIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[CNChangeHistoryDifferentMeCardEvent alloc] initWithContactIdentifier:identifierCopy];
 
   return v4;
 }

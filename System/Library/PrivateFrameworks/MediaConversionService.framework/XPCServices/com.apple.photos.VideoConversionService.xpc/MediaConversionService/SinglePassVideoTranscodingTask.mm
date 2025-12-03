@@ -9,26 +9,26 @@
 
 - (void)cancelTranscode
 {
-  v4 = [(SinglePassVideoTranscodingTask *)self singlePassExportItem];
+  singlePassExportItem = [(SinglePassVideoTranscodingTask *)self singlePassExportItem];
 
-  if (!v4)
+  if (!singlePassExportItem)
   {
     v6 = +[NSAssertionHandler currentHandler];
     [v6 handleFailureInMethod:a2 object:self file:@"VideoConversionService.m" lineNumber:1265 description:@"Unexpected missing single pass export session with job in running state"];
   }
 
-  v5 = [(SinglePassVideoTranscodingTask *)self singlePassExportItem];
-  v7 = [v5 progress];
+  singlePassExportItem2 = [(SinglePassVideoTranscodingTask *)self singlePassExportItem];
+  progress = [singlePassExportItem2 progress];
 
   [(VideoTranscodingTask *)self logCancellation];
-  [v7 cancel];
+  [progress cancel];
 }
 
 - (double)currentFractionCompleted
 {
-  v2 = [(SinglePassVideoTranscodingTask *)self singlePassExportItem];
-  v3 = [v2 progress];
-  [v3 fractionCompleted];
+  singlePassExportItem = [(SinglePassVideoTranscodingTask *)self singlePassExportItem];
+  progress = [singlePassExportItem progress];
+  [progress fractionCompleted];
   v5 = v4;
 
   return v5;
@@ -36,29 +36,29 @@
 
 - (BOOL)hasProgress
 {
-  v2 = [(SinglePassVideoTranscodingTask *)self singlePassExportItem];
-  v3 = v2 != 0;
+  singlePassExportItem = [(SinglePassVideoTranscodingTask *)self singlePassExportItem];
+  v3 = singlePassExportItem != 0;
 
   return v3;
 }
 
 - (void)performExport
 {
-  v3 = [(VideoConversionTask *)self options];
-  v4 = [v3 objectForKeyedSubscript:@"PAMediaConversionServiceOptionTargetFileSizeKey"];
-  v5 = [v4 unsignedLongLongValue];
+  options = [(VideoConversionTask *)self options];
+  v4 = [options objectForKeyedSubscript:@"PAMediaConversionServiceOptionTargetFileSizeKey"];
+  unsignedLongLongValue = [v4 unsignedLongLongValue];
 
-  v6 = [(VideoConversionTask *)self sourceMainResourceURL];
-  v7 = [(VideoConversionTask *)self outputMainResourceURL];
+  sourceMainResourceURL = [(VideoConversionTask *)self sourceMainResourceURL];
+  outputMainResourceURL = [(VideoConversionTask *)self outputMainResourceURL];
   v54 = 0;
-  v8 = [PFVideoExport singlePassExportItemForAssetAtFileURL:v6 destinationURL:v7 targetFileSize:v5 error:&v54];
+  v8 = [PFVideoExport singlePassExportItemForAssetAtFileURL:sourceMainResourceURL destinationURL:outputMainResourceURL targetFileSize:unsignedLongLongValue error:&v54];
   v38 = v54;
 
   if (v8)
   {
     v9 = objc_opt_class();
-    v10 = [(VideoConversionTask *)self options];
-    v11 = [v9 metadataItemsByApplyingSignatureMetadataFromOptions:v10 toMetadataItems:&__NSArray0__struct];
+    options2 = [(VideoConversionTask *)self options];
+    v11 = [v9 metadataItemsByApplyingSignatureMetadataFromOptions:options2 toMetadataItems:&__NSArray0__struct];
 
     if ([v11 count])
     {
@@ -66,27 +66,27 @@
     }
 
     v12 = objc_opt_class();
-    v13 = [(VideoConversionTask *)self options];
+    options3 = [(VideoConversionTask *)self options];
     [v8 inputAssetDuration];
     v15 = v14;
-    v16 = [(VideoConversionTask *)self identifier];
-    [v8 setMaximizePowerEfficiency:{objc_msgSend(v12, "shouldMaximizeVideoConversionPowerEfficiencyForOptions:inputAssetDuration:taskIdentifier:", v13, v16, v15)}];
+    identifier = [(VideoConversionTask *)self identifier];
+    [v8 setMaximizePowerEfficiency:{objc_msgSend(v12, "shouldMaximizeVideoConversionPowerEfficiencyForOptions:inputAssetDuration:taskIdentifier:", options3, identifier, v15)}];
 
-    v17 = [v8 identifier];
-    v18 = [v8 progress];
-    v19 = [v18 cancellationHandler];
+    identifier2 = [v8 identifier];
+    progress = [v8 progress];
+    cancellationHandler = [progress cancellationHandler];
 
     v50[0] = _NSConcreteStackBlock;
     v50[1] = 3221225472;
     v50[2] = sub_10001A19C;
     v50[3] = &unk_10003D548;
-    v20 = v17;
+    v20 = identifier2;
     v51 = v20;
-    v52 = self;
-    v21 = v19;
+    selfCopy = self;
+    v21 = cancellationHandler;
     v53 = v21;
-    v22 = [v8 progress];
-    [v22 setCancellationHandler:v50];
+    progress2 = [v8 progress];
+    [progress2 setCancellationHandler:v50];
 
     v48[0] = _NSConcreteStackBlock;
     v48[1] = 3221225472;
@@ -115,20 +115,20 @@
     v27 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
-      v28 = [(VideoConversionTask *)self identifier];
-      v29 = [(VideoConversionTask *)self sourceMainResourceURL];
-      v30 = [v29 path];
-      v31 = [(VideoConversionTask *)self outputMainResourceURL];
-      v32 = [v31 path];
+      identifier3 = [(VideoConversionTask *)self identifier];
+      sourceMainResourceURL2 = [(VideoConversionTask *)self sourceMainResourceURL];
+      path = [sourceMainResourceURL2 path];
+      outputMainResourceURL2 = [(VideoConversionTask *)self outputMainResourceURL];
+      path2 = [outputMainResourceURL2 path];
       v33 = *(v45 + 24);
       *buf = 138544386;
       v56 = v26;
       v57 = 2114;
-      v58 = v28;
+      v58 = identifier3;
       v59 = 2112;
-      v60 = v30;
+      v60 = path;
       v61 = 2112;
-      v62 = v32;
+      v62 = path2;
       v63 = 1024;
       v64 = v33;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_INFO, "Single pass video export item %{public}@ for conversion task %{public}@ exporting %@ to %@ didStart: %d", buf, 0x30u);
@@ -141,8 +141,8 @@
   {
     [(VideoConversionTask *)self setStatus:2];
     v65 = NSLocalizedDescriptionKey;
-    v34 = [(VideoConversionTask *)self sourceMainResourceURL];
-    v35 = [NSString stringWithFormat:@"Unable to create single pass export item for source %@", v34];
+    sourceMainResourceURL3 = [(VideoConversionTask *)self sourceMainResourceURL];
+    v35 = [NSString stringWithFormat:@"Unable to create single pass export item for source %@", sourceMainResourceURL3];
     v66 = v35;
     v36 = [NSDictionary dictionaryWithObjects:&v66 forKeys:&v65 count:1];
     v37 = [NSError errorWithDomain:@"PAMediaConversionServiceErrorDomain" code:3 userInfo:v36];

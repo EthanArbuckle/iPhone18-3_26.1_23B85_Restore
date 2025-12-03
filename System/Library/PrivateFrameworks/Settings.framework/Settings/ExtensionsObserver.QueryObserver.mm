@@ -1,15 +1,15 @@
 @interface ExtensionsObserver.QueryObserver
 - (_TtCC8Settings18ExtensionsObserverP33_8B62C04EFBF9C0BB57B71BCEDA4DE89713QueryObserver)init;
-- (void)observerDidUpdate:(id)a3;
+- (void)observerDidUpdate:(id)update;
 @end
 
 @implementation ExtensionsObserver.QueryObserver
 
-- (void)observerDidUpdate:(id)a3
+- (void)observerDidUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
-  sub_21CE10AD0(v4);
+  updateCopy = update;
+  selfCopy = self;
+  sub_21CE10AD0(updateCopy);
 }
 
 - (_TtCC8Settings18ExtensionsObserverP33_8B62C04EFBF9C0BB57B71BCEDA4DE89713QueryObserver)init

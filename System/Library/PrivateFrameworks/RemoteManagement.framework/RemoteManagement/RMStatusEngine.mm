@@ -1,35 +1,35 @@
 @interface RMStatusEngine
-- (RMStatusEngine)initWithManagementSourceObjectID:(id)a3 statusQuerier:(id)a4 inContext:(id)a5;
+- (RMStatusEngine)initWithManagementSourceObjectID:(id)d statusQuerier:(id)querier inContext:(id)context;
 - (RMStatusEngineDelegate)delegate;
-- (id)_queryForStatusSubscriptionsReturningOnlyUnacknowledgedOnes:(BOOL)a3;
-- (id)_queryForStatusWithLastReceivedDateByKeyPath:(id)a3 lastAcknowledgedDateByKeyPath:(id)a4;
-- (id)queryForStatusSubscriptionsWithIdentifiers:(id)a3;
-- (id)queryForStatusSubscriptionsWithKeyPaths:(id)a3;
-- (id)queryForStatusWithKeyPaths:(id)a3;
+- (id)_queryForStatusSubscriptionsReturningOnlyUnacknowledgedOnes:(BOOL)ones;
+- (id)_queryForStatusWithLastReceivedDateByKeyPath:(id)path lastAcknowledgedDateByKeyPath:(id)keyPath;
+- (id)queryForStatusSubscriptionsWithIdentifiers:(id)identifiers;
+- (id)queryForStatusSubscriptionsWithKeyPaths:(id)paths;
+- (id)queryForStatusWithKeyPaths:(id)paths;
 - (void)_notifyDelegateOfUnacknowledgedStatusSubscriptionsIfNeeded;
-- (void)_statusDidChange:(id)a3;
-- (void)_subscribeToStatusKeyPaths:(id)a3 sourceType:(signed __int16)a4;
-- (void)acknowledgeStatusSubscriptions:(id)a3;
+- (void)_statusDidChange:(id)change;
+- (void)_subscribeToStatusKeyPaths:(id)paths sourceType:(signed __int16)type;
+- (void)acknowledgeStatusSubscriptions:(id)subscriptions;
 - (void)clearAllLastAcknowledgedDate;
 - (void)start;
 @end
 
 @implementation RMStatusEngine
 
-- (RMStatusEngine)initWithManagementSourceObjectID:(id)a3 statusQuerier:(id)a4 inContext:(id)a5
+- (RMStatusEngine)initWithManagementSourceObjectID:(id)d statusQuerier:(id)querier inContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  querierCopy = querier;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = RMStatusEngine;
   v12 = [(RMStatusEngine *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_context, a5);
-    objc_storeStrong(&v13->_managementSourceObjectID, a3);
-    objc_storeStrong(&v13->_statusQuerier, a4);
+    objc_storeStrong(&v12->_context, context);
+    objc_storeStrong(&v13->_managementSourceObjectID, d);
+    objc_storeStrong(&v13->_statusQuerier, querier);
     v14 = [RMDebounceTimer debounceTimerWithMinimumInterval:v13 maximumInterval:@"RMStatusEngine" delegate:5.0 identifier:60.0];
     debouncer = v13->_debouncer;
     v13->_debouncer = v14;
@@ -58,22 +58,22 @@
   }
 }
 
-- (void)_statusDidChange:(id)a3
+- (void)_statusDidChange:(id)change
 {
-  v8 = [a3 userInfo];
-  v4 = [v8 objectForKeyedSubscript:@"RMUserInfoKeyUpdatedManagementSourceObjectIDs"];
+  userInfo = [change userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"RMUserInfoKeyUpdatedManagementSourceObjectIDs"];
   if (!v4 || (-[RMStatusEngine managementSourceObjectID](self, "managementSourceObjectID"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 containsObject:v5], v5, v6))
   {
-    v7 = [(RMStatusEngine *)self debouncer];
-    [v7 trigger];
+    debouncer = [(RMStatusEngine *)self debouncer];
+    [debouncer trigger];
   }
 }
 
 - (void)_notifyDelegateOfUnacknowledgedStatusSubscriptionsIfNeeded
 {
-  v3 = [(RMStatusEngine *)self context];
-  v4 = [(RMStatusEngine *)self managementSourceObjectID];
-  v5 = v3;
+  context = [(RMStatusEngine *)self context];
+  managementSourceObjectID = [(RMStatusEngine *)self managementSourceObjectID];
+  v5 = context;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -82,7 +82,7 @@
   v13 = 3221225472;
   v14 = sub_10006657C;
   v15 = &unk_1000D2430;
-  v6 = v4;
+  v6 = managementSourceObjectID;
   v16 = v6;
   v17 = &v18;
   [v5 performBlockAndWait:&v12];
@@ -97,7 +97,7 @@
       sub_1000666E8(v8);
     }
 
-    v9 = [(RMStatusEngine *)self delegate];
+    delegate = [(RMStatusEngine *)self delegate];
     if (objc_opt_respondsToSelector())
     {
       v10 = +[RMLog statusEngine];
@@ -107,7 +107,7 @@
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Notifying delegate of unacknowledged status subscriptions...", &v12, 2u);
       }
 
-      [v9 statusEngineHasUnacknowledgedSubscription:self];
+      [delegate statusEngineHasUnacknowledgedSubscription:self];
       v11 = +[RMLog statusEngine];
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
@@ -118,9 +118,9 @@
   }
 }
 
-- (id)queryForStatusSubscriptionsWithIdentifiers:(id)a3
+- (id)queryForStatusSubscriptionsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -133,8 +133,8 @@
   v11 = sub_100063B44;
   v5 = v12 = &unk_1000D1E80;
   v13 = v5;
-  v14 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = identifiersCopy;
   v15 = v6;
   v16 = &v17;
   [v5 performBlockAndWait:&v9];
@@ -145,9 +145,9 @@
   return v7;
 }
 
-- (id)queryForStatusWithKeyPaths:(id)a3
+- (id)queryForStatusWithKeyPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -160,8 +160,8 @@
   v21[2] = sub_1000640B8;
   v5 = v21[3] = &unk_1000D1E80;
   v22 = v5;
-  v23 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = pathsCopy;
   v24 = v6;
   v25 = &v26;
   [v5 performBlockAndWait:v21];
@@ -207,9 +207,9 @@
   return v15;
 }
 
-- (id)queryForStatusSubscriptionsWithKeyPaths:(id)a3
+- (id)queryForStatusSubscriptionsWithKeyPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -222,8 +222,8 @@
   v11 = sub_10006450C;
   v5 = v12 = &unk_1000D1E80;
   v13 = v5;
-  v14 = self;
-  v6 = v4;
+  selfCopy = self;
+  v6 = pathsCopy;
   v15 = v6;
   v16 = &v17;
   [v5 performBlockAndWait:&v9];
@@ -241,12 +241,12 @@
   v4[1] = 3221225472;
   v4[2] = sub_10006488C;
   v5 = v4[3] = &unk_1000D1270;
-  v6 = self;
+  selfCopy = self;
   v3 = v5;
   [v3 performBlockAndWait:v4];
 }
 
-- (id)_queryForStatusSubscriptionsReturningOnlyUnacknowledgedOnes:(BOOL)a3
+- (id)_queryForStatusSubscriptionsReturningOnlyUnacknowledgedOnes:(BOOL)ones
 {
   v20 = 0;
   v21 = &v20;
@@ -265,9 +265,9 @@
   v8[1] = 3221225472;
   v8[2] = sub_100064D14;
   v8[3] = &unk_1000D1E58;
-  v5 = v13 = a3;
+  v5 = v13 = ones;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v11 = &v14;
   v12 = &v20;
   [v5 performBlockAndWait:v8];
@@ -279,11 +279,11 @@
   return v6;
 }
 
-- (id)_queryForStatusWithLastReceivedDateByKeyPath:(id)a3 lastAcknowledgedDateByKeyPath:(id)a4
+- (id)_queryForStatusWithLastReceivedDateByKeyPath:(id)path lastAcknowledgedDateByKeyPath:(id)keyPath
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  pathCopy = path;
+  keyPathCopy = keyPath;
+  if ([pathCopy count])
   {
     v16 = 0;
     v17 = &v16;
@@ -299,22 +299,22 @@
     v15[4] = self;
     v15[5] = &v16;
     [(NSManagedObjectContext *)context performBlockAndWait:v15];
-    v9 = [v6 allKeys];
-    v10 = [NSSet setWithArray:v9];
+    allKeys = [pathCopy allKeys];
+    v10 = [NSSet setWithArray:allKeys];
 
-    v11 = [(RMStatusEngine *)self statusQuerier];
-    if (v7)
+    statusQuerier = [(RMStatusEngine *)self statusQuerier];
+    if (keyPathCopy)
     {
-      [v11 queryForUnacknowledgedStatusWithKeyPaths:v10 lastAcknowledgedDateByKeyPath:v7 onBehalfOfManagementChannel:v17[5]];
+      [statusQuerier queryForUnacknowledgedStatusWithKeyPaths:v10 lastAcknowledgedDateByKeyPath:keyPathCopy onBehalfOfManagementChannel:v17[5]];
     }
 
     else
     {
-      [v11 queryForStatusWithKeyPaths:v10 onBehalfOfManagementChannel:v17[5]];
+      [statusQuerier queryForStatusWithKeyPaths:v10 onBehalfOfManagementChannel:v17[5]];
     }
     v13 = ;
 
-    v12 = [[RMStatusSubscriptionQueryResult alloc] initWithQueryResult:v13 lastReceivedDateByKeyPath:v6];
+    v12 = [[RMStatusSubscriptionQueryResult alloc] initWithQueryResult:v13 lastReceivedDateByKeyPath:pathCopy];
     _Block_object_dispose(&v16, 8);
   }
 
@@ -326,12 +326,12 @@
   return v12;
 }
 
-- (void)acknowledgeStatusSubscriptions:(id)a3
+- (void)acknowledgeStatusSubscriptions:(id)subscriptions
 {
-  v4 = a3;
-  v5 = [v4 statusKeyPaths];
-  v6 = [v5 allObjects];
-  v7 = [v6 sortedArrayUsingSelector:"localizedCompare:"];
+  subscriptionsCopy = subscriptions;
+  statusKeyPaths = [subscriptionsCopy statusKeyPaths];
+  allObjects = [statusKeyPaths allObjects];
+  v7 = [allObjects sortedArrayUsingSelector:"localizedCompare:"];
 
   v8 = +[RMLog statusEngine];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -344,12 +344,12 @@
   v12[1] = 3221225472;
   v12[2] = sub_1000656F8;
   v12[3] = &unk_1000D29E0;
-  v14 = v13 = v4;
-  v15 = self;
+  v14 = v13 = subscriptionsCopy;
+  selfCopy = self;
   v16 = v7;
   v9 = v7;
   v10 = v14;
-  v11 = v4;
+  v11 = subscriptionsCopy;
   [v10 performBlockAndWait:v12];
 }
 
@@ -360,15 +360,15 @@
   return WeakRetained;
 }
 
-- (void)_subscribeToStatusKeyPaths:(id)a3 sourceType:(signed __int16)a4
+- (void)_subscribeToStatusKeyPaths:(id)paths sourceType:(signed __int16)type
 {
-  v6 = a3;
-  if ([v6 count])
+  pathsCopy = paths;
+  if ([pathsCopy count])
   {
     v7 = +[RMLog statusEngine];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000669F8(v6);
+      sub_1000669F8(pathsCopy);
     }
 
     [(RMStatusEngine *)self context];
@@ -376,9 +376,9 @@
     v9[1] = 3221225472;
     v9[2] = sub_100065DCC;
     v10 = v9[3] = &unk_1000D2A08;
-    v11 = self;
-    v13 = a4;
-    v12 = v6;
+    selfCopy = self;
+    typeCopy = type;
+    v12 = pathsCopy;
     v8 = v10;
     [v8 performBlockAndWait:v9];
   }

@@ -1,54 +1,54 @@
 @interface EMQueryingCollection
 + (OS_os_log)log;
 + (OS_os_log)signpostLog;
-- (BOOL)containsItemID:(id)a3 includeRecovery:(BOOL)a4;
+- (BOOL)containsItemID:(id)d includeRecovery:(BOOL)recovery;
 - (BOOL)isRecovering;
-- (BOOL)observerContainsObjectID:(id)a3;
+- (BOOL)observerContainsObjectID:(id)d;
 - (EFFuture)allItemIDs;
 - (EFScheduler)queryScheduler;
-- (EMQueryingCollection)initWithCoder:(id)a3;
-- (EMQueryingCollection)initWithObjectID:(id)a3 query:(id)a4;
-- (EMQueryingCollection)initWithQuery:(id)a3 repository:(id)a4;
-- (id)_itemIDsForObjectIDs:(id)a3;
-- (id)_iterateItemIDsStartingAtItemID:(id)a3 inReverse:(BOOL)a4 includeStartingItem:(BOOL)a5 withBlock:(id)a6;
-- (id)firstExistingItemIDAfterItemID:(id)a3;
-- (id)firstExistingItemIDBeforeItemID:(id)a3;
-- (id)objectIDForItemID:(id)a3;
-- (id)removeItemIDs:(id)a3;
+- (EMQueryingCollection)initWithCoder:(id)coder;
+- (EMQueryingCollection)initWithObjectID:(id)d query:(id)query;
+- (EMQueryingCollection)initWithQuery:(id)query repository:(id)repository;
+- (id)_itemIDsForObjectIDs:(id)ds;
+- (id)_iterateItemIDsStartingAtItemID:(id)d inReverse:(BOOL)reverse includeStartingItem:(BOOL)item withBlock:(id)block;
+- (id)firstExistingItemIDAfterItemID:(id)d;
+- (id)firstExistingItemIDBeforeItemID:(id)d;
+- (id)objectIDForItemID:(id)d;
+- (id)removeItemIDs:(id)ds;
 - (unint64_t)signpostID;
 - (void)_cancelQuery;
 - (void)_cancelQueryIfNeeded;
-- (void)_commonInitWithQuery:(id)a3;
-- (void)_filterAndTransformObjectIDs:(id)a3 before:(BOOL)a4 existingObjectID:(id)a5 batchBlock:(id)a6;
-- (void)_notifyNewChangeObserverAboutExistingState:(id)a3;
+- (void)_commonInitWithQuery:(id)query;
+- (void)_filterAndTransformObjectIDs:(id)ds before:(BOOL)before existingObjectID:(id)d batchBlock:(id)block;
+- (void)_notifyNewChangeObserverAboutExistingState:(id)state;
 - (void)_performQuery;
 - (void)_performQueryIfNeeded;
-- (void)beginObserving:(id)a3;
+- (void)beginObserving:(id)observing;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateObserversWithBlock:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateObserversWithBlock:(id)block;
 - (void)finishRecovery;
-- (void)insertItemIDs:(id)a3 after:(id)a4 extraInfo:(id)a5;
-- (void)insertItemIDs:(id)a3 before:(id)a4 extraInfo:(id)a5;
-- (void)notifyChangeObserversAboutAddedItemIDs:(id)a3 after:(id)a4 extraInfo:(id)a5;
-- (void)notifyChangeObserversAboutAddedItemIDs:(id)a3 before:(id)a4 extraInfo:(id)a5;
-- (void)notifyChangeObserversAboutChangedItemIDs:(id)a3 extraInfo:(id)a4;
-- (void)notifyChangeObserversAboutMovedItemIDs:(id)a3 after:(id)a4 extraInfo:(id)a5;
-- (void)notifyChangeObserversAboutMovedItemIDs:(id)a3 before:(id)a4 extraInfo:(id)a5;
-- (void)notifyNewChangeObserverAboutExistingState:(id)a3;
-- (void)queryAnticipatesDeletedObjectIDs:(id)a3;
+- (void)insertItemIDs:(id)ds after:(id)after extraInfo:(id)info;
+- (void)insertItemIDs:(id)ds before:(id)before extraInfo:(id)info;
+- (void)notifyChangeObserversAboutAddedItemIDs:(id)ds after:(id)after extraInfo:(id)info;
+- (void)notifyChangeObserversAboutAddedItemIDs:(id)ds before:(id)before extraInfo:(id)info;
+- (void)notifyChangeObserversAboutChangedItemIDs:(id)ds extraInfo:(id)info;
+- (void)notifyChangeObserversAboutMovedItemIDs:(id)ds after:(id)after extraInfo:(id)info;
+- (void)notifyChangeObserversAboutMovedItemIDs:(id)ds before:(id)before extraInfo:(id)info;
+- (void)notifyNewChangeObserverAboutExistingState:(id)state;
+- (void)queryAnticipatesDeletedObjectIDs:(id)ds;
 - (void)queryDidFinishInitialLoad;
 - (void)queryDidFinishRemoteSearch;
 - (void)queryDidStartRecovery;
-- (void)queryMatchedAddedObjectIDs:(id)a3 after:(id)a4 extraInfo:(id)a5;
-- (void)queryMatchedAddedObjectIDs:(id)a3 before:(id)a4 extraInfo:(id)a5;
-- (void)queryMatchedChangedObjectIDs:(id)a3 extraInfo:(id)a4;
-- (void)queryMatchedDeletedObjectIDs:(id)a3;
-- (void)queryMatchedMovedObjectIDs:(id)a3 after:(id)a4 extraInfo:(id)a5;
-- (void)queryMatchedMovedObjectIDs:(id)a3 before:(id)a4 extraInfo:(id)a5;
-- (void)queryReplacedObjectID:(id)a3 withNewObjectID:(id)a4;
+- (void)queryMatchedAddedObjectIDs:(id)ds after:(id)after extraInfo:(id)info;
+- (void)queryMatchedAddedObjectIDs:(id)ds before:(id)before extraInfo:(id)info;
+- (void)queryMatchedChangedObjectIDs:(id)ds extraInfo:(id)info;
+- (void)queryMatchedDeletedObjectIDs:(id)ds;
+- (void)queryMatchedMovedObjectIDs:(id)ds after:(id)after extraInfo:(id)info;
+- (void)queryMatchedMovedObjectIDs:(id)ds before:(id)before extraInfo:(id)info;
+- (void)queryReplacedObjectID:(id)d withNewObjectID:(id)iD;
 - (void)refresh;
-- (void)stopObserving:(id)a3;
+- (void)stopObserving:(id)observing;
 @end
 
 @implementation EMQueryingCollection
@@ -59,7 +59,7 @@
   block[1] = 3221225472;
   block[2] = __27__EMQueryingCollection_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_33 != -1)
   {
     dispatch_once(&log_onceToken_33, block);
@@ -84,7 +84,7 @@ void __27__EMQueryingCollection_log__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __35__EMQueryingCollection_signpostLog__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (signpostLog_onceToken_3 != -1)
   {
     dispatch_once(&signpostLog_onceToken_3, block);
@@ -117,8 +117,8 @@ void __35__EMQueryingCollection_signpostLog__block_invoke(uint64_t a1)
 
 - (void)_cancelQuery
 {
-  v3 = [(EMQueryingCollection *)self cancelationToken];
-  [v3 cancel];
+  cancelationToken = [(EMQueryingCollection *)self cancelationToken];
+  [cancelationToken cancel];
 
   [(EMQueryingCollection *)self setCancelationToken:0];
   os_unfair_lock_lock(&self->_itemIDsLock);
@@ -133,9 +133,9 @@ void __35__EMQueryingCollection_signpostLog__block_invoke(uint64_t a1)
 
 - (void)_performQuery
 {
-  v5 = [(EMRepositoryObject *)self repository];
-  v3 = [(EMQueryingCollection *)self query];
-  v4 = [v5 performQuery:v3 withObserver:self];
+  repository = [(EMRepositoryObject *)self repository];
+  query = [(EMQueryingCollection *)self query];
+  v4 = [repository performQuery:query withObserver:self];
   [(EMQueryingCollection *)self setCancelationToken:v4];
 }
 
@@ -149,8 +149,8 @@ void __35__EMQueryingCollection_signpostLog__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [(EMQueryingCollection *)self cancelationToken];
-  [v3 cancel];
+  cancelationToken = [(EMQueryingCollection *)self cancelationToken];
+  [cancelationToken cancel];
 
   v4.receiver = self;
   v4.super_class = EMQueryingCollection;
@@ -163,11 +163,11 @@ void __35__EMQueryingCollection_signpostLog__block_invoke(uint64_t a1)
   v2 = +[EMQueryingCollection log];
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [(EMObject *)self ef_publicDescription];
+    ef_publicDescription = [(EMObject *)self ef_publicDescription];
     *buf = 134218242;
-    v57 = self;
+    selfCopy3 = self;
     v58 = 2114;
-    v59 = v3;
+    v59 = ef_publicDescription;
     _os_log_impl(&dword_1C6655000, v2, OS_LOG_TYPE_DEFAULT, "<%p> Finished initial load\n%{public}@", buf, 0x16u);
   }
 
@@ -176,7 +176,7 @@ void __35__EMQueryingCollection_signpostLog__block_invoke(uint64_t a1)
     [(EMQueryingCollection *)self finishRecovery];
   }
 
-  v4 = self;
+  selfCopy5 = self;
   os_unfair_lock_lock(&self->_itemIDsLock);
   recoveringItemIDs = self->_recoveringItemIDs;
   if (!recoveringItemIDs)
@@ -187,76 +187,76 @@ void __35__EMQueryingCollection_signpostLog__block_invoke(uint64_t a1)
   }
 
   v5 = [(NSMutableOrderedSet *)self->_itemIDs differenceFromOrderedSet:?];
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v40 = v5;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __49__EMQueryingCollection_queryDidFinishInitialLoad__block_invoke;
   aBlock[3] = &unk_1E826F410;
   aBlock[4] = self;
-  v41 = v6;
+  v41 = array;
   v55 = v41;
   v7 = _Block_copy(aBlock);
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v8 = [v5 insertions];
-  v9 = [v8 countByEnumeratingWithState:&v50 objects:v68 count:16];
+  insertions = [v5 insertions];
+  v9 = [insertions countByEnumeratingWithState:&v50 objects:v68 count:16];
   v10 = 0;
   if (!v9)
   {
-    v12 = 0x7FFFFFFFFFFFFFFFLL;
+    index = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_21;
   }
 
   v11 = *v51;
-  v12 = 0x7FFFFFFFFFFFFFFFLL;
+  index = 0x7FFFFFFFFFFFFFFFLL;
   do
   {
     for (i = 0; i != v9; ++i)
     {
       if (*v51 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(insertions);
       }
 
       v14 = *(*(&v50 + 1) + 8 * i);
-      if (v12 == 0x7FFFFFFFFFFFFFFFLL)
+      if (index == 0x7FFFFFFFFFFFFFFFLL)
       {
-        v12 = [*(*(&v50 + 1) + 8 * i) index];
+        index = [*(*(&v50 + 1) + 8 * i) index];
 LABEL_14:
         ++v10;
         continue;
       }
 
-      if ([*(*(&v50 + 1) + 8 * i) index] == v12 + v10)
+      if ([*(*(&v50 + 1) + 8 * i) index] == index + v10)
       {
         goto LABEL_14;
       }
 
-      v7[2](v7, v12, v10);
-      v12 = [v14 index];
+      v7[2](v7, index, v10);
+      index = [v14 index];
       v10 = 1;
     }
 
-    v9 = [v8 countByEnumeratingWithState:&v50 objects:v68 count:16];
+    v9 = [insertions countByEnumeratingWithState:&v50 objects:v68 count:16];
   }
 
   while (v9);
 LABEL_21:
 
-  v7[2](v7, v12, v10);
+  v7[2](v7, index, v10);
   v16 = +[EMQueryingCollection log];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v17 = [(NSOrderedSet *)self->_recoveringItemIDs count];
     v18 = [(NSMutableOrderedSet *)self->_itemIDs count];
-    v19 = [v40 removals];
-    v20 = [v19 count];
+    removals = [v40 removals];
+    v20 = [removals count];
     v21 = [v41 count];
     *buf = 134219266;
-    v57 = self;
+    selfCopy3 = self;
     v58 = 2048;
     v59 = v17;
     v60 = 2048;
@@ -266,7 +266,7 @@ LABEL_21:
     v64 = 2048;
     v65 = v21;
     v66 = 2114;
-    v67 = self;
+    selfCopy4 = self;
     _os_log_impl(&dword_1C6655000, v16, OS_LOG_TYPE_DEFAULT, "<%p> Finishing recovery, number of items went from %lu to %lu (%lu removals, %lu grouped insertions)\n%{public}@", buf, 0x3Eu);
   }
 
@@ -274,14 +274,14 @@ LABEL_21:
   self->_recoveringItemIDs = 0;
 
   v15 = v40;
-  v4 = self;
+  selfCopy5 = self;
 LABEL_24:
-  v23 = [(NSMutableOrderedSet *)v4->_itemIDs count];
-  v4->_foundAllItemIDs = 1;
-  v4->_foundFirstBatch = 1;
-  v24 = v4->_allItemIDsPromise;
-  allItemIDsPromise = v4->_allItemIDsPromise;
-  v4->_allItemIDsPromise = 0;
+  v23 = [(NSMutableOrderedSet *)selfCopy5->_itemIDs count];
+  selfCopy5->_foundAllItemIDs = 1;
+  selfCopy5->_foundFirstBatch = 1;
+  v24 = selfCopy5->_allItemIDsPromise;
+  allItemIDsPromise = selfCopy5->_allItemIDsPromise;
+  selfCopy5->_allItemIDsPromise = 0;
 
   if (v24)
   {
@@ -289,18 +289,18 @@ LABEL_24:
     itemIDs = self->_itemIDs;
     if (v26)
     {
-      v28 = [(NSMutableOrderedSet *)itemIDs mutableCopy];
-      [v28 minusSet:self->_itemIDsAnticipatingDelete];
-      v29 = [v28 array];
+      array3 = [(NSMutableOrderedSet *)itemIDs mutableCopy];
+      [array3 minusSet:self->_itemIDsAnticipatingDelete];
+      array2 = [array3 array];
     }
 
     else
     {
-      v28 = [(NSMutableOrderedSet *)itemIDs array];
-      v29 = [v28 copy];
+      array3 = [(NSMutableOrderedSet *)itemIDs array];
+      array2 = [array3 copy];
     }
 
-    v30 = v29;
+    v30 = array2;
   }
 
   else
@@ -309,8 +309,8 @@ LABEL_24:
   }
 
   os_unfair_lock_unlock(&self->_itemIDsLock);
-  v31 = [v15 removals];
-  if ([v31 count])
+  removals2 = [v15 removals];
+  if ([removals2 count])
   {
 
     goto LABEL_33;
@@ -322,51 +322,51 @@ LABEL_24:
   {
     if (!v23)
     {
-      v38 = [(EMQueryingCollection *)self observerScheduler];
+      observerScheduler = [(EMQueryingCollection *)self observerScheduler];
       v45[0] = MEMORY[0x1E69E9820];
       v45[1] = 3221225472;
       v45[2] = __49__EMQueryingCollection_queryDidFinishInitialLoad__block_invoke_34;
       v45[3] = &unk_1E826C098;
       v45[4] = self;
-      [v38 performSyncBlock:v45];
+      [observerScheduler performSyncBlock:v45];
     }
   }
 
   else
   {
 LABEL_33:
-    v33 = [(EMQueryingCollection *)self observerScheduler];
+    observerScheduler2 = [(EMQueryingCollection *)self observerScheduler];
     v46[0] = MEMORY[0x1E69E9820];
     v46[1] = 3221225472;
     v46[2] = __49__EMQueryingCollection_queryDidFinishInitialLoad__block_invoke_31;
     v46[3] = &unk_1E826C230;
     v47 = v15;
-    v48 = self;
+    selfCopy6 = self;
     v49 = v41;
-    [v33 performSyncBlock:v46];
+    [observerScheduler2 performSyncBlock:v46];
   }
 
-  v34 = self;
+  selfCopy8 = self;
   if (recoveringItemIDs)
   {
-    v35 = [(EMQueryingCollection *)self observerScheduler];
+    observerScheduler3 = [(EMQueryingCollection *)self observerScheduler];
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
     v44[2] = __49__EMQueryingCollection_queryDidFinishInitialLoad__block_invoke_2_35;
     v44[3] = &unk_1E826C098;
     v44[4] = self;
-    [v35 performSyncBlock:v44];
+    [observerScheduler3 performSyncBlock:v44];
 
-    v34 = self;
+    selfCopy8 = self;
   }
 
-  v36 = [(EMQueryingCollection *)v34 observerScheduler];
+  observerScheduler4 = [(EMQueryingCollection *)selfCopy8 observerScheduler];
   v43[0] = MEMORY[0x1E69E9820];
   v43[1] = 3221225472;
   v43[2] = __49__EMQueryingCollection_queryDidFinishInitialLoad__block_invoke_4;
   v43[3] = &unk_1E826C098;
-  v43[4] = v34;
-  [v36 performSyncBlock:v43];
+  v43[4] = selfCopy8;
+  [observerScheduler4 performSyncBlock:v43];
 
   [(EMQueryingCollection *)self _cancelQueryIfNeeded];
   [(EFPromise *)v24 finishWithResult:v30];
@@ -408,13 +408,13 @@ void __49__EMQueryingCollection_queryDidFinishInitialLoad__block_invoke_5(uint64
 
 - (void)_cancelQueryIfNeeded
 {
-  v3 = [(EMQueryingCollection *)self queryScheduler];
+  queryScheduler = [(EMQueryingCollection *)self queryScheduler];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __44__EMQueryingCollection__cancelQueryIfNeeded__block_invoke;
   v4[3] = &unk_1E826C098;
   v4[4] = self;
-  [v3 performBlock:v4];
+  [queryScheduler performBlock:v4];
 }
 
 void __44__EMQueryingCollection__cancelQueryIfNeeded__block_invoke(uint64_t a1)
@@ -430,42 +430,42 @@ void __44__EMQueryingCollection__cancelQueryIfNeeded__block_invoke(uint64_t a1)
 
 - (unint64_t)signpostID
 {
-  v3 = [objc_opt_class() signpostLog];
-  v4 = os_signpost_id_make_with_pointer(v3, self);
+  signpostLog = [objc_opt_class() signpostLog];
+  v4 = os_signpost_id_make_with_pointer(signpostLog, self);
 
   return v4;
 }
 
-- (EMQueryingCollection)initWithQuery:(id)a3 repository:(id)a4
+- (EMQueryingCollection)initWithQuery:(id)query repository:(id)repository
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(EMQueryingCollection *)self initWithObjectID:0 query:v6];
-  [(EMRepositoryObject *)v8 setRepository:v7];
+  queryCopy = query;
+  repositoryCopy = repository;
+  v8 = [(EMQueryingCollection *)self initWithObjectID:0 query:queryCopy];
+  [(EMRepositoryObject *)v8 setRepository:repositoryCopy];
 
   return v8;
 }
 
-- (EMQueryingCollection)initWithObjectID:(id)a3 query:(id)a4
+- (EMQueryingCollection)initWithObjectID:(id)d query:(id)query
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  queryCopy = query;
   v11.receiver = self;
   v11.super_class = EMQueryingCollection;
-  v8 = [(EMObject *)&v11 initWithObjectID:v6];
+  v8 = [(EMObject *)&v11 initWithObjectID:dCopy];
   v9 = v8;
   if (v8)
   {
-    [(EMQueryingCollection *)v8 _commonInitWithQuery:v7];
+    [(EMQueryingCollection *)v8 _commonInitWithQuery:queryCopy];
   }
 
   return v9;
 }
 
-- (void)_commonInitWithQuery:(id)a3
+- (void)_commonInitWithQuery:(id)query
 {
-  v15 = a3;
-  objc_storeStrong(&self->_query, a3);
+  queryCopy = query;
+  objc_storeStrong(&self->_query, query);
   self->_itemIDsLock._os_unfair_lock_opaque = 0;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   itemIDs = self->_itemIDs;
@@ -475,48 +475,48 @@ void __44__EMQueryingCollection__cancelQueryIfNeeded__block_invoke(uint64_t a1)
   itemIDsAnticipatingDelete = self->_itemIDsAnticipatingDelete;
   self->_itemIDsAnticipatingDelete = v7;
 
-  v9 = [MEMORY[0x1E699B978] immediateScheduler];
+  immediateScheduler = [MEMORY[0x1E699B978] immediateScheduler];
   observerScheduler = self->_observerScheduler;
-  self->_observerScheduler = v9;
+  self->_observerScheduler = immediateScheduler;
 
   v11 = objc_alloc(MEMORY[0x1E699B7F0]);
-  v12 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-  v13 = [v11 initWithObject:v12];
+  weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+  v13 = [v11 initWithObject:weakObjectsHashTable];
   changeObservers = self->_changeObservers;
   self->_changeObservers = v13;
 }
 
-- (EMQueryingCollection)initWithCoder:(id)a3
+- (EMQueryingCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = EMQueryingCollection;
-  v5 = [(EMObject *)&v8 initWithCoder:v4];
+  v5 = [(EMObject *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_query"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_query"];
     [(EMQueryingCollection *)v5 _commonInitWithQuery:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = EMQueryingCollection;
-  [(EMObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_query forKey:@"EFPropertyKey_query"];
+  [(EMObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_query forKey:@"EFPropertyKey_query"];
 }
 
-- (id)objectIDForItemID:(id)a3
+- (id)objectIDForItemID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = dCopy;
   }
 
   else
@@ -527,37 +527,37 @@ void __44__EMQueryingCollection__cancelQueryIfNeeded__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)insertItemIDs:(id)a3 before:(id)a4 extraInfo:(id)a5
+- (void)insertItemIDs:(id)ds before:(id)before extraInfo:(id)info
 {
-  v8 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  beforeCopy = before;
   os_unfair_lock_lock(&self->_itemIDsLock);
-  [(NSMutableOrderedSet *)self->_itemIDs removeObjectsInArray:v8];
-  [(NSMutableOrderedSet *)self->_itemIDs ef_insertObjects:v8 before:v7];
+  [(NSMutableOrderedSet *)self->_itemIDs removeObjectsInArray:dsCopy];
+  [(NSMutableOrderedSet *)self->_itemIDs ef_insertObjects:dsCopy before:beforeCopy];
   os_unfair_lock_unlock(&self->_itemIDsLock);
 }
 
-- (void)insertItemIDs:(id)a3 after:(id)a4 extraInfo:(id)a5
+- (void)insertItemIDs:(id)ds after:(id)after extraInfo:(id)info
 {
-  v8 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  afterCopy = after;
   os_unfair_lock_lock(&self->_itemIDsLock);
-  [(NSMutableOrderedSet *)self->_itemIDs removeObjectsInArray:v8];
-  [(NSMutableOrderedSet *)self->_itemIDs ef_insertObjects:v8 after:v7];
+  [(NSMutableOrderedSet *)self->_itemIDs removeObjectsInArray:dsCopy];
+  [(NSMutableOrderedSet *)self->_itemIDs ef_insertObjects:dsCopy after:afterCopy];
   os_unfair_lock_unlock(&self->_itemIDsLock);
 }
 
-- (id)removeItemIDs:(id)a3
+- (id)removeItemIDs:(id)ds
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   os_unfair_lock_lock(&self->_itemIDsLock);
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -597,15 +597,15 @@ void __44__EMQueryingCollection__cancelQueryIfNeeded__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (BOOL)containsItemID:(id)a3 includeRecovery:(BOOL)a4
+- (BOOL)containsItemID:(id)d includeRecovery:(BOOL)recovery
 {
-  v4 = a4;
-  v6 = a3;
+  recoveryCopy = recovery;
+  dCopy = d;
   os_unfair_lock_lock(&self->_itemIDsLock);
-  v7 = [(NSMutableOrderedSet *)self->_itemIDs containsObject:v6];
-  if (((v7 | !v4) & 1) == 0)
+  v7 = [(NSMutableOrderedSet *)self->_itemIDs containsObject:dCopy];
+  if (((v7 | !recoveryCopy) & 1) == 0)
   {
-    LOBYTE(v7) = [(NSOrderedSet *)self->_recoveringItemIDs containsObject:v6];
+    LOBYTE(v7) = [(NSOrderedSet *)self->_recoveringItemIDs containsObject:dCopy];
   }
 
   os_unfair_lock_unlock(&self->_itemIDsLock);
@@ -613,31 +613,31 @@ void __44__EMQueryingCollection__cancelQueryIfNeeded__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)firstExistingItemIDAfterItemID:(id)a3
+- (id)firstExistingItemIDAfterItemID:(id)d
 {
-  v3 = [(EMQueryingCollection *)self _firstExistingItemIDForItemID:a3 inReverse:0];
+  v3 = [(EMQueryingCollection *)self _firstExistingItemIDForItemID:d inReverse:0];
 
   return v3;
 }
 
-- (id)firstExistingItemIDBeforeItemID:(id)a3
+- (id)firstExistingItemIDBeforeItemID:(id)d
 {
-  v3 = [(EMQueryingCollection *)self _firstExistingItemIDForItemID:a3 inReverse:1];
+  v3 = [(EMQueryingCollection *)self _firstExistingItemIDForItemID:d inReverse:1];
 
   return v3;
 }
 
-- (id)_iterateItemIDsStartingAtItemID:(id)a3 inReverse:(BOOL)a4 includeStartingItem:(BOOL)a5 withBlock:(id)a6
+- (id)_iterateItemIDsStartingAtItemID:(id)d inReverse:(BOOL)reverse includeStartingItem:(BOOL)item withBlock:(id)block
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
-  v12 = v10;
+  itemCopy = item;
+  reverseCopy = reverse;
+  dCopy = d;
+  blockCopy = block;
+  v12 = dCopy;
   os_unfair_lock_lock(&self->_itemIDsLock);
-  if (v7)
+  if (itemCopy)
   {
-    v13 = v11[2](v11, v12);
+    v13 = blockCopy[2](blockCopy, v12);
   }
 
   else
@@ -649,7 +649,7 @@ void __44__EMQueryingCollection__cancelQueryIfNeeded__block_invoke(uint64_t a1)
   while ((v13 & 1) != 0)
   {
     itemIDs = self->_itemIDs;
-    if (v8)
+    if (reverseCopy)
     {
       [(NSMutableOrderedSet *)itemIDs ef_objectBeforeObject:v14];
     }
@@ -667,7 +667,7 @@ void __44__EMQueryingCollection__cancelQueryIfNeeded__block_invoke(uint64_t a1)
     }
 
     v14 = v16;
-    v13 = v11[2](v11, v16);
+    v13 = blockCopy[2](blockCopy, v16);
   }
 
   os_unfair_lock_unlock(&self->_itemIDsLock);
@@ -675,21 +675,21 @@ void __44__EMQueryingCollection__cancelQueryIfNeeded__block_invoke(uint64_t a1)
   return v14;
 }
 
-- (void)notifyChangeObserversAboutAddedItemIDs:(id)a3 before:(id)a4 extraInfo:(id)a5
+- (void)notifyChangeObserversAboutAddedItemIDs:(id)ds before:(id)before extraInfo:(id)info
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(EMQueryingCollection *)self firstExistingItemIDAfterItemID:v8];
+  dsCopy = ds;
+  beforeCopy = before;
+  v9 = [(EMQueryingCollection *)self firstExistingItemIDAfterItemID:beforeCopy];
   v10 = +[EMQueryingCollection log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v18 = [v7 count];
+    v18 = [dsCopy count];
     v19 = 2114;
     v20 = v9;
     v21 = 2114;
-    v22 = v8;
+    v22 = beforeCopy;
     _os_log_impl(&dword_1C6655000, v10, OS_LOG_TYPE_DEFAULT, "Notifying observer %lu itemIDs were added before undeletedItemID %{public}@ (derived from existingItemID: %{public}@)", buf, 0x20u);
   }
 
@@ -698,7 +698,7 @@ void __44__EMQueryingCollection__cancelQueryIfNeeded__block_invoke(uint64_t a1)
   v14[2] = __80__EMQueryingCollection_notifyChangeObserversAboutAddedItemIDs_before_extraInfo___block_invoke;
   v14[3] = &unk_1E826DFD8;
   v14[4] = self;
-  v11 = v7;
+  v11 = dsCopy;
   v15 = v11;
   v12 = v9;
   v16 = v12;
@@ -707,21 +707,21 @@ void __44__EMQueryingCollection__cancelQueryIfNeeded__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyChangeObserversAboutAddedItemIDs:(id)a3 after:(id)a4 extraInfo:(id)a5
+- (void)notifyChangeObserversAboutAddedItemIDs:(id)ds after:(id)after extraInfo:(id)info
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(EMQueryingCollection *)self firstExistingItemIDBeforeItemID:v8];
+  dsCopy = ds;
+  afterCopy = after;
+  v9 = [(EMQueryingCollection *)self firstExistingItemIDBeforeItemID:afterCopy];
   v10 = +[EMQueryingCollection log];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v18 = [v7 count];
+    v18 = [dsCopy count];
     v19 = 2114;
     v20 = v9;
     v21 = 2114;
-    v22 = v8;
+    v22 = afterCopy;
     _os_log_impl(&dword_1C6655000, v10, OS_LOG_TYPE_DEFAULT, "Notifying observer %lu itemIDs were added after undeletedItemID %{public}@ (derived from existingItemID: %{public}@)", buf, 0x20u);
   }
 
@@ -730,7 +730,7 @@ void __44__EMQueryingCollection__cancelQueryIfNeeded__block_invoke(uint64_t a1)
   v14[2] = __79__EMQueryingCollection_notifyChangeObserversAboutAddedItemIDs_after_extraInfo___block_invoke;
   v14[3] = &unk_1E826DFD8;
   v14[4] = self;
-  v11 = v7;
+  v11 = dsCopy;
   v15 = v11;
   v12 = v9;
   v16 = v12;
@@ -739,47 +739,47 @@ void __44__EMQueryingCollection__cancelQueryIfNeeded__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyChangeObserversAboutChangedItemIDs:(id)a3 extraInfo:(id)a4
+- (void)notifyChangeObserversAboutChangedItemIDs:(id)ds extraInfo:(id)info
 {
-  v5 = a3;
+  dsCopy = ds;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __75__EMQueryingCollection_notifyChangeObserversAboutChangedItemIDs_extraInfo___block_invoke;
   v7[3] = &unk_1E826DDD0;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = dsCopy;
+  v6 = dsCopy;
   [(EMQueryingCollection *)self enumerateObserversWithBlock:v7];
 }
 
-- (void)notifyChangeObserversAboutMovedItemIDs:(id)a3 before:(id)a4 extraInfo:(id)a5
+- (void)notifyChangeObserversAboutMovedItemIDs:(id)ds before:(id)before extraInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(EMQueryingCollection *)self firstExistingItemIDAfterItemID:v8];
+  dsCopy = ds;
+  beforeCopy = before;
+  v9 = [(EMQueryingCollection *)self firstExistingItemIDAfterItemID:beforeCopy];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __80__EMQueryingCollection_notifyChangeObserversAboutMovedItemIDs_before_extraInfo___block_invoke;
   v12[3] = &unk_1E826DFD8;
   v12[4] = self;
-  v10 = v7;
+  v10 = dsCopy;
   v13 = v10;
   v14 = v9;
   v11 = v9;
   [(EMQueryingCollection *)self enumerateObserversWithBlock:v12];
 }
 
-- (void)notifyChangeObserversAboutMovedItemIDs:(id)a3 after:(id)a4 extraInfo:(id)a5
+- (void)notifyChangeObserversAboutMovedItemIDs:(id)ds after:(id)after extraInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(EMQueryingCollection *)self firstExistingItemIDBeforeItemID:v8];
+  dsCopy = ds;
+  afterCopy = after;
+  v9 = [(EMQueryingCollection *)self firstExistingItemIDBeforeItemID:afterCopy];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __79__EMQueryingCollection_notifyChangeObserversAboutMovedItemIDs_after_extraInfo___block_invoke;
   v12[3] = &unk_1E826DFD8;
   v12[4] = self;
-  v10 = v7;
+  v10 = dsCopy;
   v13 = v10;
   v14 = v9;
   v11 = v9;
@@ -795,29 +795,29 @@ void __44__EMQueryingCollection__cancelQueryIfNeeded__block_invoke(uint64_t a1)
     itemIDs = self->_itemIDs;
     if (v3)
     {
-      v5 = [(NSMutableOrderedSet *)itemIDs mutableCopy];
-      [v5 minusSet:self->_itemIDsAnticipatingDelete];
-      v6 = [v5 array];
+      array2 = [(NSMutableOrderedSet *)itemIDs mutableCopy];
+      [array2 minusSet:self->_itemIDsAnticipatingDelete];
+      array = [array2 array];
     }
 
     else
     {
-      v5 = [(NSMutableOrderedSet *)itemIDs array];
-      v6 = [v5 copy];
+      array2 = [(NSMutableOrderedSet *)itemIDs array];
+      array = [array2 copy];
     }
 
-    v11 = v6;
+    v11 = array;
 
     os_unfair_lock_unlock(&self->_itemIDsLock);
     if (v11)
     {
       v12 = [MEMORY[0x1E699B7C8] futureWithResult:v11];
 
-      v10 = v12;
+      future = v12;
       goto LABEL_12;
     }
 
-    v10 = 0;
+    future = 0;
   }
 
   else
@@ -825,40 +825,40 @@ void __44__EMQueryingCollection__cancelQueryIfNeeded__block_invoke(uint64_t a1)
     allItemIDsPromise = self->_allItemIDsPromise;
     if (!allItemIDsPromise)
     {
-      v8 = [MEMORY[0x1E699B868] promise];
+      promise = [MEMORY[0x1E699B868] promise];
       v9 = self->_allItemIDsPromise;
-      self->_allItemIDsPromise = v8;
+      self->_allItemIDsPromise = promise;
 
       allItemIDsPromise = self->_allItemIDsPromise;
     }
 
-    v10 = [(EFPromise *)allItemIDsPromise future];
+    future = [(EFPromise *)allItemIDsPromise future];
     os_unfair_lock_unlock(&self->_itemIDsLock);
   }
 
   [(EMQueryingCollection *)self _performQueryIfNeeded];
 LABEL_12:
 
-  return v10;
+  return future;
 }
 
-- (void)beginObserving:(id)a3
+- (void)beginObserving:(id)observing
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observingCopy = observing;
   v5 = +[EMQueryingCollection log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v25 = self;
+    selfCopy = self;
     v26 = 2114;
-    v27 = v4;
+    v27 = observingCopy;
     _os_log_impl(&dword_1C6655000, v5, OS_LOG_TYPE_DEFAULT, "<%p> Observer added: %{public}@", buf, 0x16u);
   }
 
   v6 = +[EMQueryingCollection signpostLog];
-  v7 = os_signpost_id_make_with_pointer(v6, v4);
-  v8 = [(EMQueryingCollection *)self query];
+  v7 = os_signpost_id_make_with_pointer(v6, observingCopy);
+  query = [(EMQueryingCollection *)self query];
   v9 = v6;
   v10 = v9;
   if (v7 - 1 > 0xFFFFFFFFFFFFFFFDLL)
@@ -871,13 +871,13 @@ LABEL_12:
   {
     if (os_signpost_enabled(v9))
     {
-      v11 = NSStringFromClass([v8 targetClass]);
-      v12 = [v8 label];
+      v11 = NSStringFromClass([query targetClass]);
+      label = [query label];
       v13 = objc_opt_class();
       *buf = 138543874;
-      v25 = v11;
+      selfCopy = v11;
       v26 = 2114;
-      v27 = v12;
+      v27 = label;
       v28 = 2114;
       v29 = v13;
       _os_signpost_emit_with_name_impl(&dword_1C6655000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v7, "EMCollectionTotal", "resultClass=%{signpost.description:attribute,public}@ label=%{signpost.description:attribute,public}@ observer=%{signpost.description:attribute,public}@ enableTelemetry=YES ", buf, 0x20u);
@@ -886,28 +886,28 @@ LABEL_12:
     v14 = v10;
     if (os_signpost_enabled(v14))
     {
-      v15 = NSStringFromClass([v8 targetClass]);
-      v16 = [v8 label];
+      v15 = NSStringFromClass([query targetClass]);
+      label2 = [query label];
       v17 = objc_opt_class();
       *buf = 138543874;
-      v25 = v15;
+      selfCopy = v15;
       v26 = 2114;
-      v27 = v16;
+      v27 = label2;
       v28 = 2114;
       v29 = v17;
       _os_signpost_emit_with_name_impl(&dword_1C6655000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v7, "EMCollectionFirstBatch", "resultClass=%{signpost.description:attribute,public}@ label=%{signpost.description:attribute,public}@ observer=%{signpost.description:attribute,public}@ enableTelemetry=YES ", buf, 0x20u);
     }
   }
 
-  v19 = [(EMQueryingCollection *)self queryScheduler];
+  queryScheduler = [(EMQueryingCollection *)self queryScheduler];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __39__EMQueryingCollection_beginObserving___block_invoke;
   v22[3] = &unk_1E826C148;
   v22[4] = self;
-  v20 = v4;
+  v20 = observingCopy;
   v23 = v20;
-  [v19 performBlock:v22];
+  [queryScheduler performBlock:v22];
 
   v21 = *MEMORY[0x1E69E9840];
 }
@@ -1001,28 +1001,28 @@ void __39__EMQueryingCollection_beginObserving___block_invoke_2_24(uint64_t a1, 
   [*(a1 + 40) _notifyNewChangeObserverAboutExistingState:*(a1 + 32)];
 }
 
-- (void)stopObserving:(id)a3
+- (void)stopObserving:(id)observing
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  observingCopy = observing;
   v5 = +[EMQueryingCollection log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v4;
+    v12 = observingCopy;
     _os_log_impl(&dword_1C6655000, v5, OS_LOG_TYPE_DEFAULT, "<%p> Observer removed: %{public}@", buf, 0x16u);
   }
 
-  v6 = [(EMQueryingCollection *)self queryScheduler];
+  queryScheduler = [(EMQueryingCollection *)self queryScheduler];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __38__EMQueryingCollection_stopObserving___block_invoke;
   v8[3] = &unk_1E826F350;
   v8[4] = self;
-  v8[5] = v4;
-  [v6 performBlock:v8];
+  v8[5] = observingCopy;
+  [queryScheduler performBlock:v8];
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -1104,13 +1104,13 @@ void __38__EMQueryingCollection_stopObserving___block_invoke_2(uint64_t a1, void
 
 - (void)refresh
 {
-  v3 = [(EMQueryingCollection *)self queryScheduler];
+  queryScheduler = [(EMQueryingCollection *)self queryScheduler];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __31__EMQueryingCollection_refresh__block_invoke;
   v4[3] = &unk_1E826C098;
   v4[4] = self;
-  [v3 performBlock:v4];
+  [queryScheduler performBlock:v4];
 }
 
 void __31__EMQueryingCollection_refresh__block_invoke(uint64_t a1)
@@ -1148,13 +1148,13 @@ void __31__EMQueryingCollection_refresh__block_invoke(uint64_t a1)
 
 - (void)_performQueryIfNeeded
 {
-  v3 = [(EMQueryingCollection *)self queryScheduler];
+  queryScheduler = [(EMQueryingCollection *)self queryScheduler];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __45__EMQueryingCollection__performQueryIfNeeded__block_invoke;
   v4[3] = &unk_1E826C098;
   v4[4] = self;
-  [v3 performBlock:v4];
+  [queryScheduler performBlock:v4];
 }
 
 void __45__EMQueryingCollection__performQueryIfNeeded__block_invoke(uint64_t a1)
@@ -1185,26 +1185,26 @@ void __44__EMQueryingCollection__cancelQueryIfNeeded__block_invoke_2(uint64_t a1
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134218242;
-    v6 = self;
+    selfCopy = self;
     v7 = 2114;
-    v8 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1C6655000, v3, OS_LOG_TYPE_DEFAULT, "<%p> Finish Recovery\n%{public}@", &v5, 0x16u);
   }
 
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateObserversWithBlock:(id)a3
+- (void)enumerateObserversWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(EMQueryingCollection *)self changeObservers];
+  blockCopy = block;
+  changeObservers = [(EMQueryingCollection *)self changeObservers];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__EMQueryingCollection_enumerateObserversWithBlock___block_invoke;
   v7[3] = &unk_1E826F378;
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
-  [v5 performWhileLocked:v7];
+  [changeObservers performWhileLocked:v7];
 }
 
 void __52__EMQueryingCollection_enumerateObserversWithBlock___block_invoke(uint64_t a1, void *a2)
@@ -1254,9 +1254,9 @@ void __52__EMQueryingCollection_enumerateObserversWithBlock___block_invoke(uint6
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134218242;
-      v10 = self;
+      selfCopy3 = self;
       v11 = 2114;
-      v12 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C6655000, v3, OS_LOG_TYPE_DEFAULT, "<%p> Restarting recovery\n%{public}@", &v9, 0x16u);
     }
   }
@@ -1268,11 +1268,11 @@ void __52__EMQueryingCollection_enumerateObserversWithBlock___block_invoke(uint6
     {
       v5 = [(NSMutableOrderedSet *)self->_itemIDs count];
       v9 = 134218498;
-      v10 = self;
+      selfCopy3 = self;
       v11 = 2048;
-      v12 = v5;
+      selfCopy2 = v5;
       v13 = 2114;
-      v14 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_1C6655000, v4, OS_LOG_TYPE_DEFAULT, "<%p> Starting recovery (%lu existing items)\n%{public}@", &v9, 0x20u);
     }
 
@@ -1288,38 +1288,38 @@ void __52__EMQueryingCollection_enumerateObserversWithBlock___block_invoke(uint6
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queryMatchedAddedObjectIDs:(id)a3 before:(id)a4 extraInfo:(id)a5
+- (void)queryMatchedAddedObjectIDs:(id)ds before:(id)before extraInfo:(id)info
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  beforeCopy = before;
+  infoCopy = info;
   v11 = +[EMQueryingCollection log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 count];
-    v13 = [(EMObject *)self ef_publicDescription];
+    v12 = [dsCopy count];
+    ef_publicDescription = [(EMObject *)self ef_publicDescription];
     *buf = 134218754;
-    v21 = self;
+    selfCopy = self;
     v22 = 2048;
     v23 = v12;
     v24 = 2114;
-    v25 = v9;
+    v25 = beforeCopy;
     v26 = 2114;
-    v27 = v13;
+    v27 = ef_publicDescription;
     _os_log_impl(&dword_1C6655000, v11, OS_LOG_TYPE_DEFAULT, "<%p> Added %lu objectIDs before %{public}@\n%{public}@", buf, 0x2Au);
   }
 
-  v14 = [(EMQueryingCollection *)self isRecovering];
+  isRecovering = [(EMQueryingCollection *)self isRecovering];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __68__EMQueryingCollection_queryMatchedAddedObjectIDs_before_extraInfo___block_invoke;
   v17[3] = &unk_1E826F3C0;
   v17[4] = self;
-  v15 = v10;
+  v15 = infoCopy;
   v18 = v15;
-  v19 = v14;
-  [(EMQueryingCollection *)self _filterAndTransformObjectIDs:v8 before:1 existingObjectID:v9 batchBlock:v17];
+  v19 = isRecovering;
+  [(EMQueryingCollection *)self _filterAndTransformObjectIDs:dsCopy before:1 existingObjectID:beforeCopy batchBlock:v17];
 
   v16 = *MEMORY[0x1E69E9840];
 }
@@ -1367,38 +1367,38 @@ void __68__EMQueryingCollection_queryMatchedAddedObjectIDs_before_extraInfo___bl
   }
 }
 
-- (void)queryMatchedAddedObjectIDs:(id)a3 after:(id)a4 extraInfo:(id)a5
+- (void)queryMatchedAddedObjectIDs:(id)ds after:(id)after extraInfo:(id)info
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  afterCopy = after;
+  infoCopy = info;
   v11 = +[EMQueryingCollection log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 count];
-    v13 = [(EMObject *)self ef_publicDescription];
+    v12 = [dsCopy count];
+    ef_publicDescription = [(EMObject *)self ef_publicDescription];
     *buf = 134218754;
-    v21 = self;
+    selfCopy = self;
     v22 = 2048;
     v23 = v12;
     v24 = 2114;
-    v25 = v9;
+    v25 = afterCopy;
     v26 = 2114;
-    v27 = v13;
+    v27 = ef_publicDescription;
     _os_log_impl(&dword_1C6655000, v11, OS_LOG_TYPE_DEFAULT, "<%p> Added %lu objectIDs after %{public}@\n%{public}@", buf, 0x2Au);
   }
 
-  v14 = [(EMQueryingCollection *)self isRecovering];
+  isRecovering = [(EMQueryingCollection *)self isRecovering];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __67__EMQueryingCollection_queryMatchedAddedObjectIDs_after_extraInfo___block_invoke;
   v17[3] = &unk_1E826F3C0;
   v17[4] = self;
-  v15 = v10;
+  v15 = infoCopy;
   v18 = v15;
-  v19 = v14;
-  [(EMQueryingCollection *)self _filterAndTransformObjectIDs:v8 before:0 existingObjectID:v9 batchBlock:v17];
+  v19 = isRecovering;
+  [(EMQueryingCollection *)self _filterAndTransformObjectIDs:dsCopy before:0 existingObjectID:afterCopy batchBlock:v17];
 
   v16 = *MEMORY[0x1E69E9840];
 }
@@ -1423,34 +1423,34 @@ void __67__EMQueryingCollection_queryMatchedAddedObjectIDs_after_extraInfo___blo
   }
 }
 
-- (void)queryMatchedMovedObjectIDs:(id)a3 before:(id)a4 extraInfo:(id)a5
+- (void)queryMatchedMovedObjectIDs:(id)ds before:(id)before extraInfo:(id)info
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  beforeCopy = before;
+  infoCopy = info;
   v11 = +[EMQueryingCollection log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 count];
-    v13 = [(EMObject *)self ef_publicDescription];
+    v12 = [dsCopy count];
+    ef_publicDescription = [(EMObject *)self ef_publicDescription];
     *buf = 134218754;
-    v23 = self;
+    selfCopy = self;
     v24 = 2048;
     v25 = v12;
     v26 = 2114;
-    v27 = v9;
+    v27 = beforeCopy;
     v28 = 2114;
-    v29 = v13;
+    v29 = ef_publicDescription;
     _os_log_impl(&dword_1C6655000, v11, OS_LOG_TYPE_DEFAULT, "<%p> Moved %lu objectIDs before %{public}@\n%{public}@", buf, 0x2Au);
   }
 
-  v14 = [(EMQueryingCollection *)self _itemIDsForObjectIDs:v8];
-  v15 = [(EMQueryingCollection *)self itemIDForObjectID:v9];
-  [(EMQueryingCollection *)self insertItemIDs:v14 before:v15 extraInfo:v10];
+  v14 = [(EMQueryingCollection *)self _itemIDsForObjectIDs:dsCopy];
+  v15 = [(EMQueryingCollection *)self itemIDForObjectID:beforeCopy];
+  [(EMQueryingCollection *)self insertItemIDs:v14 before:v15 extraInfo:infoCopy];
   if (![(EMQueryingCollection *)self isRecovering])
   {
-    v16 = [(EMQueryingCollection *)self observerScheduler];
+    observerScheduler = [(EMQueryingCollection *)self observerScheduler];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __68__EMQueryingCollection_queryMatchedMovedObjectIDs_before_extraInfo___block_invoke;
@@ -1458,46 +1458,46 @@ void __67__EMQueryingCollection_queryMatchedAddedObjectIDs_after_extraInfo___blo
     v18[4] = self;
     v19 = v14;
     v20 = v15;
-    v21 = v10;
-    [v16 performSyncBlock:v18];
+    v21 = infoCopy;
+    [observerScheduler performSyncBlock:v18];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queryMatchedMovedObjectIDs:(id)a3 after:(id)a4 extraInfo:(id)a5
+- (void)queryMatchedMovedObjectIDs:(id)ds after:(id)after extraInfo:(id)info
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  afterCopy = after;
+  infoCopy = info;
   v11 = +[EMQueryingCollection log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 count];
-    v13 = [(EMObject *)self ef_publicDescription];
+    v12 = [dsCopy count];
+    ef_publicDescription = [(EMObject *)self ef_publicDescription];
     *buf = 134218754;
     *&buf[4] = self;
     *&buf[12] = 2048;
     *&buf[14] = v12;
     *&buf[22] = 2114;
-    v22 = v9;
+    v22 = afterCopy;
     LOWORD(v23) = 2114;
-    *(&v23 + 2) = v13;
+    *(&v23 + 2) = ef_publicDescription;
     _os_log_impl(&dword_1C6655000, v11, OS_LOG_TYPE_DEFAULT, "<%p> Moved %lu objectIDs after %{public}@\n%{public}@", buf, 0x2Au);
   }
 
-  v14 = [(EMQueryingCollection *)self _itemIDsForObjectIDs:v8];
+  v14 = [(EMQueryingCollection *)self _itemIDsForObjectIDs:dsCopy];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
   v22 = __Block_byref_object_copy__11;
   *&v23 = __Block_byref_object_dispose__11;
-  *(&v23 + 1) = [(EMQueryingCollection *)self itemIDForObjectID:v9];
-  [(EMQueryingCollection *)self insertItemIDs:v14 after:*(*&buf[8] + 40) extraInfo:v10];
+  *(&v23 + 1) = [(EMQueryingCollection *)self itemIDForObjectID:afterCopy];
+  [(EMQueryingCollection *)self insertItemIDs:v14 after:*(*&buf[8] + 40) extraInfo:infoCopy];
   if (![(EMQueryingCollection *)self isRecovering])
   {
-    v15 = [(EMQueryingCollection *)self observerScheduler];
+    observerScheduler = [(EMQueryingCollection *)self observerScheduler];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __67__EMQueryingCollection_queryMatchedMovedObjectIDs_after_extraInfo___block_invoke;
@@ -1505,8 +1505,8 @@ void __67__EMQueryingCollection_queryMatchedAddedObjectIDs_after_extraInfo___blo
     v17[4] = self;
     v18 = v14;
     v20 = buf;
-    v19 = v10;
-    [v15 performSyncBlock:v17];
+    v19 = infoCopy;
+    [observerScheduler performSyncBlock:v17];
   }
 
   _Block_object_dispose(buf, 8);
@@ -1514,24 +1514,24 @@ void __67__EMQueryingCollection_queryMatchedAddedObjectIDs_after_extraInfo___blo
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queryMatchedChangedObjectIDs:(id)a3 extraInfo:(id)a4
+- (void)queryMatchedChangedObjectIDs:(id)ds extraInfo:(id)info
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  infoCopy = info;
   v8 = +[EMQueryingCollection log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v22 = self;
+    selfCopy2 = self;
     v23 = 2048;
-    v24 = [(EMQueryingCollection *)v6 count];
+    v24 = [(EMQueryingCollection *)dsCopy count];
     v25 = 2114;
-    v26 = v6;
+    selfCopy3 = dsCopy;
     _os_log_impl(&dword_1C6655000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Changed %lu objectIDs: %{public}@", buf, 0x20u);
   }
 
-  v9 = [(EMQueryingCollection *)self _itemIDsForObjectIDs:v6];
+  v9 = [(EMQueryingCollection *)self _itemIDsForObjectIDs:dsCopy];
   os_unfair_lock_lock(&self->_itemIDsLock);
   recoveringItemIDs = self->_recoveringItemIDs;
   if (recoveringItemIDs)
@@ -1548,7 +1548,7 @@ void __67__EMQueryingCollection_queryMatchedAddedObjectIDs_after_extraInfo___blo
 
   os_unfair_lock_unlock(&self->_itemIDsLock);
   v12 = [v9 count];
-  if (v12 != [(EMQueryingCollection *)v6 count])
+  if (v12 != [(EMQueryingCollection *)dsCopy count])
   {
     if (recoveringItemIDs)
     {
@@ -1557,11 +1557,11 @@ void __67__EMQueryingCollection_queryMatchedAddedObjectIDs_after_extraInfo___blo
       {
         v14 = [v9 count];
         *buf = 134218498;
-        v22 = self;
+        selfCopy2 = self;
         v23 = 2048;
         v24 = v14;
         v25 = 2114;
-        v26 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1C6655000, v13, OS_LOG_TYPE_DEFAULT, "<%p> %lu changed itemIDs while recovering\n%{public}@", buf, 0x20u);
       }
     }
@@ -1578,50 +1578,50 @@ void __67__EMQueryingCollection_queryMatchedAddedObjectIDs_after_extraInfo___blo
 
   if ([v9 count])
   {
-    v15 = [(EMQueryingCollection *)self observerScheduler];
+    observerScheduler = [(EMQueryingCollection *)self observerScheduler];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __63__EMQueryingCollection_queryMatchedChangedObjectIDs_extraInfo___block_invoke_28;
     v17[3] = &unk_1E826C230;
     v17[4] = self;
     v18 = v9;
-    v19 = v7;
-    [v15 performSyncBlock:v17];
+    v19 = infoCopy;
+    [observerScheduler performSyncBlock:v17];
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)queryAnticipatesDeletedObjectIDs:(id)a3
+- (void)queryAnticipatesDeletedObjectIDs:(id)ds
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = +[EMQueryingCollection log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
-    v14 = [v4 count];
+    v14 = [dsCopy count];
     v15 = 2114;
-    v16 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1C6655000, v5, OS_LOG_TYPE_DEFAULT, "<%p> Anticipating delete of %lu objectIDs\n%{public}@", buf, 0x20u);
   }
 
-  v6 = [(EMQueryingCollection *)self _itemIDsForObjectIDs:v4];
+  v6 = [(EMQueryingCollection *)self _itemIDsForObjectIDs:dsCopy];
   os_unfair_lock_lock(&self->_itemIDsLock);
   [(NSMutableSet *)self->_itemIDsAnticipatingDelete addObjectsFromArray:v6];
   os_unfair_lock_unlock(&self->_itemIDsLock);
   if (![(EMQueryingCollection *)self isRecovering])
   {
-    v7 = [(EMQueryingCollection *)self observerScheduler];
+    observerScheduler = [(EMQueryingCollection *)self observerScheduler];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __57__EMQueryingCollection_queryAnticipatesDeletedObjectIDs___block_invoke;
     v9[3] = &unk_1E826C148;
     v9[4] = self;
     v10 = v6;
-    [v7 performSyncBlock:v9];
+    [observerScheduler performSyncBlock:v9];
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -1639,34 +1639,34 @@ void __57__EMQueryingCollection_queryAnticipatesDeletedObjectIDs___block_invoke(
   [v1 enumerateObserversWithBlock:v2];
 }
 
-- (void)queryMatchedDeletedObjectIDs:(id)a3
+- (void)queryMatchedDeletedObjectIDs:(id)ds
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = +[EMQueryingCollection log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218498;
-    v13 = self;
+    selfCopy = self;
     v14 = 2048;
-    v15 = [v4 count];
+    v15 = [dsCopy count];
     v16 = 2114;
-    v17 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1C6655000, v5, OS_LOG_TYPE_DEFAULT, "<%p> Deleted %lu objectIDs\n%{public}@", buf, 0x20u);
   }
 
-  v6 = [(EMQueryingCollection *)self _itemIDsForObjectIDs:v4];
+  v6 = [(EMQueryingCollection *)self _itemIDsForObjectIDs:dsCopy];
   v7 = [(EMQueryingCollection *)self removeItemIDs:v6];
   if (!-[EMQueryingCollection isRecovering](self, "isRecovering") && [v7 count])
   {
-    v8 = [(EMQueryingCollection *)self observerScheduler];
+    observerScheduler = [(EMQueryingCollection *)self observerScheduler];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __53__EMQueryingCollection_queryMatchedDeletedObjectIDs___block_invoke;
     v10[3] = &unk_1E826C148;
     v10[4] = self;
     v11 = v7;
-    [v8 performSyncBlock:v10];
+    [observerScheduler performSyncBlock:v10];
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -1817,14 +1817,14 @@ void __50__EMQueryingCollection_queryDidFinishRemoteSearch__block_invoke(uint64_
   }
 }
 
-- (id)_itemIDsForObjectIDs:(id)a3
+- (id)_itemIDsForObjectIDs:(id)ds
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __45__EMQueryingCollection__itemIDsForObjectIDs___block_invoke;
   v5[3] = &unk_1E826E078;
   v5[4] = self;
-  v3 = [a3 ef_map:v5];
+  v3 = [ds ef_map:v5];
 
   return v3;
 }
@@ -1836,13 +1836,13 @@ id __45__EMQueryingCollection__itemIDsForObjectIDs___block_invoke(uint64_t a1, u
   return v2;
 }
 
-- (void)_filterAndTransformObjectIDs:(id)a3 before:(BOOL)a4 existingObjectID:(id)a5 batchBlock:(id)a6
+- (void)_filterAndTransformObjectIDs:(id)ds before:(BOOL)before existingObjectID:(id)d batchBlock:(id)block
 {
-  v8 = a4;
+  beforeCopy = before;
   v46 = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  v10 = a5;
-  v11 = a6;
+  dsCopy = ds;
+  dCopy = d;
+  blockCopy = block;
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
   os_unfair_lock_lock(&self->_itemIDsLock);
   v43[0] = 0;
@@ -1850,7 +1850,7 @@ id __45__EMQueryingCollection__itemIDsForObjectIDs___block_invoke(uint64_t a1, u
   v43[2] = 0x3032000000;
   v43[3] = __Block_byref_object_copy__11;
   v43[4] = __Block_byref_object_dispose__11;
-  v44 = [(EMQueryingCollection *)self itemIDForObjectID:v10, v12];
+  v44 = [(EMQueryingCollection *)self itemIDForObjectID:dCopy, v12];
   v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -1859,11 +1859,11 @@ id __45__EMQueryingCollection__itemIDsForObjectIDs___block_invoke(uint64_t a1, u
   v14 = v13;
   v39 = v14;
   v41 = v43;
-  v42 = v8;
+  v42 = beforeCopy;
   v15 = v12;
   v40 = v15;
   v16 = _Block_copy(aBlock);
-  if (v8)
+  if (beforeCopy)
   {
     v17 = 2;
   }
@@ -1883,8 +1883,8 @@ id __45__EMQueryingCollection__itemIDsForObjectIDs___block_invoke(uint64_t a1, u
   v19 = v16;
   v35 = v19;
   v36 = v43;
-  v37 = v8;
-  [v28 enumerateObjectsWithOptions:v17 usingBlock:v33];
+  v37 = beforeCopy;
+  [dsCopy enumerateObjectsWithOptions:v17 usingBlock:v33];
   if ([v18 count])
   {
     v19[2](v19);
@@ -1911,9 +1911,9 @@ id __45__EMQueryingCollection__itemIDsForObjectIDs___block_invoke(uint64_t a1, u
         }
 
         v24 = *(*(&v29 + 1) + 8 * i);
-        v25 = [v24 first];
-        v26 = [v24 second];
-        v11[2](v11, v25, v26);
+        first = [v24 first];
+        second = [v24 second];
+        blockCopy[2](blockCopy, first, second);
       }
 
       v21 = [v20 countByEnumeratingWithState:&v29 objects:v45 count:16];
@@ -1990,12 +1990,12 @@ void __88__EMQueryingCollection__filterAndTransformObjectIDs_before_existingObje
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)observerContainsObjectID:(id)a3
+- (BOOL)observerContainsObjectID:(id)d
 {
-  v4 = a3;
-  if ([(EMQueryingCollection *)self objectIDBelongsToCollection:v4])
+  dCopy = d;
+  if ([(EMQueryingCollection *)self objectIDBelongsToCollection:dCopy])
   {
-    v5 = [(EMQueryingCollection *)self itemIDForObjectID:v4];
+    v5 = [(EMQueryingCollection *)self itemIDForObjectID:dCopy];
     v6 = [(EMQueryingCollection *)self containsItemID:v5 includeRecovery:0];
   }
 
@@ -2007,31 +2007,31 @@ void __88__EMQueryingCollection__filterAndTransformObjectIDs_before_existingObje
   return v6;
 }
 
-- (void)queryReplacedObjectID:(id)a3 withNewObjectID:(id)a4
+- (void)queryReplacedObjectID:(id)d withNewObjectID:(id)iD
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([(EMQueryingCollection *)self objectIDBelongsToCollection:v6])
+  dCopy = d;
+  iDCopy = iD;
+  if ([(EMQueryingCollection *)self objectIDBelongsToCollection:dCopy])
   {
     v8 = +[EMQueryingCollection log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218754;
-      v19 = self;
+      selfCopy3 = self;
       v20 = 2114;
-      v21 = v6;
+      v21 = dCopy;
       v22 = 2114;
-      v23 = v7;
+      v23 = iDCopy;
       v24 = 2114;
-      v25 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C6655000, v8, OS_LOG_TYPE_DEFAULT, "<%p> Replace objectID %{public}@ with %{public}@\n%{public}@", buf, 0x2Au);
     }
 
-    v9 = [(EMQueryingCollection *)self itemIDForObjectID:v6];
+    v9 = [(EMQueryingCollection *)self itemIDForObjectID:dCopy];
     if (v9)
     {
-      v10 = [(EMQueryingCollection *)self itemIDForObjectID:v7];
+      v10 = [(EMQueryingCollection *)self itemIDForObjectID:iDCopy];
       os_unfair_lock_lock(&self->_itemIDsLock);
       v11 = [(NSMutableOrderedSet *)self->_itemIDs indexOfObject:v9];
       if (v11 != 0x7FFFFFFFFFFFFFFFLL)
@@ -2040,7 +2040,7 @@ void __88__EMQueryingCollection__filterAndTransformObjectIDs_before_existingObje
       }
 
       os_unfair_lock_unlock(&self->_itemIDsLock);
-      v12 = [(EMQueryingCollection *)self observerScheduler];
+      observerScheduler = [(EMQueryingCollection *)self observerScheduler];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __62__EMQueryingCollection_queryReplacedObjectID_withNewObjectID___block_invoke;
@@ -2049,7 +2049,7 @@ void __88__EMQueryingCollection__filterAndTransformObjectIDs_before_existingObje
       v16 = v9;
       v13 = v10;
       v17 = v13;
-      [v12 performSyncBlock:v15];
+      [observerScheduler performSyncBlock:v15];
     }
 
     else
@@ -2058,9 +2058,9 @@ void __88__EMQueryingCollection__filterAndTransformObjectIDs_before_existingObje
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v19 = self;
+        selfCopy3 = self;
         v20 = 2114;
-        v21 = v6;
+        v21 = dCopy;
         _os_log_impl(&dword_1C6655000, v13, OS_LOG_TYPE_DEFAULT, "<%p> Replace objectID %{public}@ but itemIDForObjectID is nil", buf, 0x16u);
       }
     }
@@ -2082,26 +2082,26 @@ void __62__EMQueryingCollection_queryReplacedObjectID_withNewObjectID___block_in
   [v2 enumerateObserversWithBlock:v3];
 }
 
-- (void)notifyNewChangeObserverAboutExistingState:(id)a3
+- (void)notifyNewChangeObserverAboutExistingState:(id)state
 {
-  v4 = a3;
-  v5 = [(EMQueryingCollection *)self observerScheduler];
+  stateCopy = state;
+  observerScheduler = [(EMQueryingCollection *)self observerScheduler];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__EMQueryingCollection_notifyNewChangeObserverAboutExistingState___block_invoke;
   v7[3] = &unk_1E826C148;
   v7[4] = self;
-  v6 = v4;
+  v6 = stateCopy;
   v8 = v6;
-  [v5 performBlock:v7];
+  [observerScheduler performBlock:v7];
 }
 
-- (void)_notifyNewChangeObserverAboutExistingState:(id)a3
+- (void)_notifyNewChangeObserverAboutExistingState:(id)state
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   v5 = +[EMQueryingCollection signpostLog];
-  v6 = os_signpost_id_make_with_pointer(v5, v4);
+  v6 = os_signpost_id_make_with_pointer(v5, stateCopy);
   if (self->_foundFirstBatch && ![(EMQueryingCollection *)self isRecovering])
   {
     v7 = +[EMQueryingCollection log];
@@ -2109,16 +2109,16 @@ void __62__EMQueryingCollection_queryReplacedObjectID_withNewObjectID___block_in
     {
       v8 = [(NSMutableOrderedSet *)self->_itemIDs count];
       v15 = 134218498;
-      v16 = self;
+      selfCopy = self;
       v17 = 2048;
       v18 = v8;
       v19 = 2114;
-      v20 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C6655000, v7, OS_LOG_TYPE_DEFAULT, "<%p> Added stocked %lu objectIDs\n%{public}@", &v15, 0x20u);
     }
 
-    v9 = [(NSMutableOrderedSet *)self->_itemIDs array];
-    [(EMQueryingCollection *)self notifyChangeObserver:v4 stockedItemIDs:v9];
+    array = [(NSMutableOrderedSet *)self->_itemIDs array];
+    [(EMQueryingCollection *)self notifyChangeObserver:stateCopy stockedItemIDs:array];
 
     v10 = v5;
     v11 = v10;
@@ -2131,7 +2131,7 @@ void __62__EMQueryingCollection_queryReplacedObjectID_withNewObjectID___block_in
 
   if (self->_foundAllItemIDs && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v4 collectionDidFinishInitialLoad:self];
+    [stateCopy collectionDidFinishInitialLoad:self];
     v12 = v5;
     v13 = v12;
     if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))

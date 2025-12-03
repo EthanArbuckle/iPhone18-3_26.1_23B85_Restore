@@ -7,18 +7,18 @@
 
 - (HFHomeKitObject)homeKitObject
 {
-  v2 = [(HFHomeKitTransformItem *)self sourceHomeKitItem];
-  v3 = [v2 homeKitObject];
+  sourceHomeKitItem = [(HFHomeKitTransformItem *)self sourceHomeKitItem];
+  homeKitObject = [sourceHomeKitItem homeKitObject];
 
-  return v3;
+  return homeKitObject;
 }
 
 - (id)accessories
 {
-  v2 = [(HFHomeKitTransformItem *)self sourceHomeKitItem];
-  if ([v2 conformsToProtocol:&unk_28252AAD0])
+  sourceHomeKitItem = [(HFHomeKitTransformItem *)self sourceHomeKitItem];
+  if ([sourceHomeKitItem conformsToProtocol:&unk_28252AAD0])
   {
-    v3 = v2;
+    v3 = sourceHomeKitItem;
   }
 
   else
@@ -27,11 +27,11 @@
   }
 
   v4 = v3;
-  v5 = [v4 accessories];
+  accessories = [v4 accessories];
 
-  if ([v5 count])
+  if ([accessories count])
   {
-    v6 = v5;
+    v6 = accessories;
   }
 
   else

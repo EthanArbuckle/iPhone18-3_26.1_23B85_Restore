@@ -4,7 +4,7 @@
 - (void)cancel;
 - (void)checkForSiriTips;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation SiriTipsController
@@ -28,11 +28,11 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5 = OBJC_IVAR____TtC11MobileTimer18SiriTipsController_delegate;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = delegate;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
@@ -40,22 +40,22 @@
 - (void)dealloc
 {
   v2 = *((swift_isaMask & self->super.isa) + 0xD8);
-  v3 = self;
+  selfCopy = self;
   v2();
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for SiriTipsController();
   [(SiriTipsController *)&v4 dealloc];
 }
 
 - (void)checkForSiriTips
 {
-  v2 = self;
+  selfCopy = self;
   sub_100067368();
 }
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_100069C74();
 }
 

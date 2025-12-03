@@ -1,10 +1,10 @@
 @interface MOSuggestionCollectionViewDateSectionHeaderView
-- (_TtC16MomentsUIService47MOSuggestionCollectionViewDateSectionHeaderView)initWithCoder:(id)a3;
+- (_TtC16MomentsUIService47MOSuggestionCollectionViewDateSectionHeaderView)initWithCoder:(id)coder;
 @end
 
 @implementation MOSuggestionCollectionViewDateSectionHeaderView
 
-- (_TtC16MomentsUIService47MOSuggestionCollectionViewDateSectionHeaderView)initWithCoder:(id)a3
+- (_TtC16MomentsUIService47MOSuggestionCollectionViewDateSectionHeaderView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC16MomentsUIService47MOSuggestionCollectionViewDateSectionHeaderView_dateLabel;
   *(&self->super.super.super.super.isa + v4) = closure #1 in variable initialization expression of MOSuggestionCollectionViewDateSectionHeaderView.dateLabel();

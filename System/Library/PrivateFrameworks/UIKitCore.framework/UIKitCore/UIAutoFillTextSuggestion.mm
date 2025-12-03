@@ -1,14 +1,14 @@
 @interface UIAutoFillTextSuggestion
-+ (id)autoFillSuggestionWithContents:(id)a3;
-- (UIAutoFillTextSuggestion)initWithContents:(id)a3;
++ (id)autoFillSuggestionWithContents:(id)contents;
+- (UIAutoFillTextSuggestion)initWithContents:(id)contents;
 @end
 
 @implementation UIAutoFillTextSuggestion
 
-+ (id)autoFillSuggestionWithContents:(id)a3
++ (id)autoFillSuggestionWithContents:(id)contents
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  contentsCopy = contents;
   v6 = objc_alloc_init(v4);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -16,9 +16,9 @@
   v10[3] = &unk_1E70F7970;
   v11 = v6;
   v7 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:v10];
+  [contentsCopy enumerateKeysAndObjectsUsingBlock:v10];
 
-  v8 = [[a1 alloc] initWithContents:v7];
+  v8 = [[self alloc] initWithContents:v7];
 
   return v8;
 }
@@ -38,15 +38,15 @@ void __59__UIAutoFillTextSuggestion_autoFillSuggestionWithContents___block_invok
   }
 }
 
-- (UIAutoFillTextSuggestion)initWithContents:(id)a3
+- (UIAutoFillTextSuggestion)initWithContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   v9.receiver = self;
   v9.super_class = UIAutoFillTextSuggestion;
   v5 = [(UITextSuggestion *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [contentsCopy copy];
     contents = v5->_contents;
     v5->_contents = v6;
   }

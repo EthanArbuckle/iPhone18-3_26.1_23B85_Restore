@@ -2,8 +2,8 @@
 - (NTKFoghornHealthKitDataSource)init;
 - (NTKFoghornHealthKitDataSourceDelegate)delegate;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
-- (void)setMaxDepth:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setMaxDepth:(id)depth;
 @end
 
 @implementation NTKFoghornHealthKitDataSource
@@ -15,20 +15,20 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectWeakAssign();
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_23BE7C59C();
   swift_unknownObjectRelease();
 }
 
-- (void)setMaxDepth:(id)a3
+- (void)setMaxDepth:(id)depth
 {
-  v5 = a3;
-  v6 = self;
-  sub_23BE7CB24(a3);
+  depthCopy = depth;
+  selfCopy = self;
+  sub_23BE7CB24(depth);
 }
 
 - (void)dealloc
@@ -37,11 +37,11 @@
   v4 = OBJC_IVAR___NTKFoghornHealthKitDataSource_subscriptions;
   swift_beginAccess();
   *(self + v4) = MEMORY[0x277D84FA0];
-  v5 = self;
+  selfCopy = self;
 
-  *(v5 + OBJC_IVAR___NTKFoghornHealthKitDataSource_healthKitProvider) = 0;
+  *(selfCopy + OBJC_IVAR___NTKFoghornHealthKitDataSource_healthKitProvider) = 0;
 
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(NTKFoghornHealthKitDataSource *)&v6 dealloc];
 }

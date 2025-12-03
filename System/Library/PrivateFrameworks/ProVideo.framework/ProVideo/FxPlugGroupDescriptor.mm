@@ -1,13 +1,13 @@
 @interface FxPlugGroupDescriptor
-+ (id)fxPlugGroupDescriptorWithUUID:(id)a3 andDisplayName:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (FxPlugGroupDescriptor)initWithUUID:(id)a3 andDisplayName:(id)a4;
++ (id)fxPlugGroupDescriptorWithUUID:(id)d andDisplayName:(id)name;
+- (BOOL)isEqual:(id)equal;
+- (FxPlugGroupDescriptor)initWithUUID:(id)d andDisplayName:(id)name;
 - (void)dealloc;
 @end
 
 @implementation FxPlugGroupDescriptor
 
-- (FxPlugGroupDescriptor)initWithUUID:(id)a3 andDisplayName:(id)a4
+- (FxPlugGroupDescriptor)initWithUUID:(id)d andDisplayName:(id)name
 {
   v9.receiver = self;
   v9.super_class = FxPlugGroupDescriptor;
@@ -18,7 +18,7 @@
     v6->_priv = v7;
     if (v7)
     {
-      v6->_priv->var0 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{a3, @"UUID", a4, @"DisplayName", 0}];
+      v6->_priv->var0 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{d, @"UUID", name, @"DisplayName", 0}];
     }
   }
 
@@ -45,22 +45,22 @@
   [(FxPlugGroupDescriptor *)&v10 dealloc];
 }
 
-+ (id)fxPlugGroupDescriptorWithUUID:(id)a3 andDisplayName:(id)a4
++ (id)fxPlugGroupDescriptorWithUUID:(id)d andDisplayName:(id)name
 {
-  v4 = [objc_alloc(objc_opt_class()) initWithUUID:a3 andDisplayName:a4];
+  v4 = [objc_alloc(objc_opt_class()) initWithUUID:d andDisplayName:name];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = [-[FxPlugGroupDescriptor uuid](self "uuid")];
   if (v5)
   {
-    v6 = [(FxPlugGroupDescriptor *)self displayName];
-    v7 = [a3 displayName];
+    displayName = [(FxPlugGroupDescriptor *)self displayName];
+    displayName2 = [equal displayName];
 
-    LOBYTE(v5) = [v6 isEqualToString:v7];
+    LOBYTE(v5) = [displayName isEqualToString:displayName2];
   }
 
   return v5;

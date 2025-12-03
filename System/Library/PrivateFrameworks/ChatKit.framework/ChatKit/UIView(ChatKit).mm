@@ -16,14 +16,14 @@
     v8 = a5;
     v9 = [v7 ck_springAnimationForRevealingSticker:a3];
     v10 = [MEMORY[0x1E6979300] ck_opacityAnimationForRevealingSticker:a3];
-    v11 = [MEMORY[0x1E6979308] animation];
+    animation = [MEMORY[0x1E6979308] animation];
     v18[0] = v9;
     v18[1] = v10;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
-    [v11 setAnimations:v12];
+    [animation setAnimations:v12];
 
-    [v11 setFillMode:*MEMORY[0x1E69797E0]];
-    [v11 setRemovedOnCompletion:0];
+    [animation setFillMode:*MEMORY[0x1E69797E0]];
+    [animation setRemovedOnCompletion:0];
     [MEMORY[0x1E6979518] begin];
     v13 = MEMORY[0x1E6979518];
     [v9 settlingDuration];
@@ -37,8 +37,8 @@
     [v13 setAnimationDuration:v16];
     [MEMORY[0x1E6979518] setCompletionBlock:v8];
 
-    v17 = [a1 layer];
-    [v17 addAnimation:v11 forKey:0];
+    layer = [self layer];
+    [layer addAnimation:animation forKey:0];
 
     [MEMORY[0x1E6979518] commit];
   }
@@ -46,7 +46,7 @@
   else
   {
     v9 = a5;
-    [a1 ck_performUnanimatedVisibility:a3 completion:v9];
+    [self ck_performUnanimatedVisibility:a3 completion:v9];
   }
 }
 
@@ -86,20 +86,20 @@
   [v11 setFromValue:v6];
   [v11 setFillMode:v10];
   [v11 setRemovedOnCompletion:0];
-  v12 = [MEMORY[0x1E6979308] animation];
+  animation = [MEMORY[0x1E6979308] animation];
   v15[0] = v9;
   v15[1] = v11;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
-  [v12 setAnimations:v13];
+  [animation setAnimations:v13];
 
-  [v12 setFillMode:v10];
-  [v12 setRemovedOnCompletion:0];
+  [animation setFillMode:v10];
+  [animation setRemovedOnCompletion:0];
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setAnimationDuration:0.01];
   [MEMORY[0x1E6979518] setCompletionBlock:v8];
 
-  v14 = [a1 layer];
-  [v14 addAnimation:v12 forKey:0];
+  layer = [self layer];
+  [layer addAnimation:animation forKey:0];
 
   [MEMORY[0x1E6979518] commit];
 }
@@ -107,11 +107,11 @@
 - (double)ck_identityTransformFrame
 {
   memset(&v7[1], 0, sizeof(CGAffineTransform));
-  [a1 transform];
+  [self transform];
   v7[0] = v7[1];
   if (CGAffineTransformIsIdentity(v7))
   {
-    [a1 frame];
+    [self frame];
     return v2;
   }
 
@@ -121,11 +121,11 @@
     *&v7[0].a = *MEMORY[0x1E695EFD0];
     *&v7[0].c = v4;
     *&v7[0].tx = *(MEMORY[0x1E695EFD0] + 32);
-    [a1 setTransform:v7];
-    [a1 frame];
+    [self setTransform:v7];
+    [self frame];
     v3 = v5;
     v7[0] = v7[1];
-    [a1 setTransform:v7];
+    [self setTransform:v7];
   }
 
   return v3;
@@ -134,13 +134,13 @@
 - (double)ck_identityTransformFrameInView:()ChatKit
 {
   v4 = a3;
-  [a1 ck_identityTransformFrame];
+  [self ck_identityTransformFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [a1 superview];
-  [v4 convertRect:v13 fromView:{v6, v8, v10, v12}];
+  superview = [self superview];
+  [v4 convertRect:superview fromView:{v6, v8, v10, v12}];
   v15 = v14;
 
   return v15;

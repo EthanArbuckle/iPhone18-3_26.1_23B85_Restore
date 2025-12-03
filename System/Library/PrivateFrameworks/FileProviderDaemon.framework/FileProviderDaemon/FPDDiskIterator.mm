@@ -1,17 +1,17 @@
 @interface FPDDiskIterator
-- (FPDDiskIterator)initWithURL:(id)a3 isDirectory:(BOOL)a4;
-- (id)nextWithError:(id *)a3;
+- (FPDDiskIterator)initWithURL:(id)l isDirectory:(BOOL)directory;
+- (id)nextWithError:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation FPDDiskIterator
 
-- (FPDDiskIterator)initWithURL:(id)a3 isDirectory:(BOOL)a4
+- (FPDDiskIterator)initWithURL:(id)l isDirectory:(BOOL)directory
 {
-  v4 = a4;
+  directoryCopy = directory;
   v19[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!v8)
+  lCopy = l;
+  if (!lCopy)
   {
     [FPDDiskIterator initWithURL:a2 isDirectory:self];
   }
@@ -22,12 +22,12 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_rootURL, a3);
+    objc_storeStrong(&v9->_rootURL, l);
     v10->_stopAccessingRoot = [(NSURL *)v10->_rootURL startAccessingSecurityScopedResource];
-    if (v4)
+    if (directoryCopy)
     {
-      v11 = [v8 path];
-      v19[0] = [v11 fileSystemRepresentation];
+      path = [lCopy path];
+      v19[0] = [path fileSystemRepresentation];
       v19[1] = 0;
 
       v12 = fts_open(v19, 16, 0);
@@ -60,7 +60,7 @@
   return v10;
 }
 
-- (id)nextWithError:(id *)a3
+- (id)nextWithError:(id *)error
 {
   self->_numFoldersPopped = 0;
   if (self->_isFile)
@@ -91,10 +91,10 @@ LABEL_11:
       [(FPDDiskIterator *)&self->_error nextWithError:v7];
     }
 
-    if (a3)
+    if (error)
     {
       v6 = 0;
-      *a3 = self->_error;
+      *error = self->_error;
       goto LABEL_55;
     }
 
@@ -161,8 +161,8 @@ LABEL_16:
 
         if ([v8 fp_isPackage])
         {
-          v15 = [v8 path];
-          [v15 fileSystemRepresentation];
+          path = [v8 path];
+          [path fileSystemRepresentation];
           fpfs_pkg_is_demoted_at();
 
           self->_lastItemWasPackage = 1;
@@ -212,10 +212,10 @@ LABEL_33:
       [(FPDDiskIterator *)&self->_error nextWithError:v22];
     }
 
-    if (a3)
+    if (error)
     {
       v6 = 0;
-      *a3 = self->_error;
+      *error = self->_error;
       goto LABEL_54;
     }
 

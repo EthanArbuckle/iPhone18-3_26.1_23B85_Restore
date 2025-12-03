@@ -1,10 +1,10 @@
 @interface HFGroupedItemDiff
-+ (id)diffFromGroups:(id)a3 toGroups:(id)a4 changeTest:(id)a5;
-- (HFGroupedItemDiff)initWithFromGroups:(id)a3 toGroups:(id)a4 changeTest:(id)a5;
++ (id)diffFromGroups:(id)groups toGroups:(id)toGroups changeTest:(id)test;
+- (HFGroupedItemDiff)initWithFromGroups:(id)groups toGroups:(id)toGroups changeTest:(id)test;
 - (NSArray)allOperations;
-- (id)_briefDescriptionForOperations:(id)a3 type:(id)a4;
-- (id)_operationDescriptionWithPrefix:(id)a3;
-- (id)_performItemDiffFromGroup:(id)a3 atIndex:(id)a4 toGroup:(id)a5 atIndex:(unint64_t)a6;
+- (id)_briefDescriptionForOperations:(id)operations type:(id)type;
+- (id)_operationDescriptionWithPrefix:(id)prefix;
+- (id)_performItemDiffFromGroup:(id)group atIndex:(id)index toGroup:(id)toGroup atIndex:(unint64_t)atIndex;
 - (id)debugDescription;
 - (id)description;
 - (void)_performDiff;
@@ -12,30 +12,30 @@
 
 @implementation HFGroupedItemDiff
 
-+ (id)diffFromGroups:(id)a3 toGroups:(id)a4 changeTest:(id)a5
++ (id)diffFromGroups:(id)groups toGroups:(id)toGroups changeTest:(id)test
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[HFGroupedItemDiff alloc] initWithFromGroups:v9 toGroups:v8 changeTest:v7];
+  testCopy = test;
+  toGroupsCopy = toGroups;
+  groupsCopy = groups;
+  v10 = [[HFGroupedItemDiff alloc] initWithFromGroups:groupsCopy toGroups:toGroupsCopy changeTest:testCopy];
 
   return v10;
 }
 
-- (HFGroupedItemDiff)initWithFromGroups:(id)a3 toGroups:(id)a4 changeTest:(id)a5
+- (HFGroupedItemDiff)initWithFromGroups:(id)groups toGroups:(id)toGroups changeTest:(id)test
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  groupsCopy = groups;
+  toGroupsCopy = toGroups;
+  testCopy = test;
   v14.receiver = self;
   v14.super_class = HFGroupedItemDiff;
   v11 = [(HFGroupedItemDiff *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(HFGroupedItemDiff *)v11 setFromGroups:v8];
-    [(HFGroupedItemDiff *)v12 setToGroups:v9];
-    [(HFGroupedItemDiff *)v12 setChangeTest:v10];
+    [(HFGroupedItemDiff *)v11 setFromGroups:groupsCopy];
+    [(HFGroupedItemDiff *)v12 setToGroups:toGroupsCopy];
+    [(HFGroupedItemDiff *)v12 setChangeTest:testCopy];
     [(HFGroupedItemDiff *)v12 _performDiff];
   }
 
@@ -44,9 +44,9 @@
 
 - (NSArray)allOperations
 {
-  v3 = [(HFGroupedItemDiff *)self groupOperations];
-  v4 = [(HFGroupedItemDiff *)self itemOperations];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  groupOperations = [(HFGroupedItemDiff *)self groupOperations];
+  itemOperations = [(HFGroupedItemDiff *)self itemOperations];
+  v5 = [groupOperations arrayByAddingObjectsFromArray:itemOperations];
 
   return v5;
 }
@@ -57,9 +57,9 @@
   [(HFUniqueArrayDiffOptions *)v3 setEqualComparator:&__block_literal_global_69];
   [(HFUniqueArrayDiffOptions *)v3 setHashGenerator:&__block_literal_global_72_0];
   [(HFUniqueArrayDiffOptions *)v3 setAllowMoves:0];
-  v4 = [(HFGroupedItemDiff *)self fromGroups];
-  v5 = [(HFGroupedItemDiff *)self toGroups];
-  v6 = [HFUniqueArrayDiff diffFromArray:v4 toArray:v5 options:v3];
+  fromGroups = [(HFGroupedItemDiff *)self fromGroups];
+  toGroups = [(HFGroupedItemDiff *)self toGroups];
+  v6 = [HFUniqueArrayDiff diffFromArray:fromGroups toArray:toGroups options:v3];
 
   v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "numberOfOperations")}];
   v35[0] = MEMORY[0x277D85DD0];
@@ -68,7 +68,7 @@
   v35[3] = &unk_277DF2B48;
   v8 = v7;
   v36 = v8;
-  v37 = self;
+  selfCopy = self;
   [v6 enumerateDeletesUsingBlock:v35];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
@@ -76,41 +76,41 @@
   v32[3] = &unk_277DFA998;
   v9 = v8;
   v33 = v9;
-  v34 = self;
+  selfCopy2 = self;
   [v6 enumerateMovesUsingBlock:v32];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __33__HFGroupedItemDiff__performDiff__block_invoke_5;
   v29[3] = &unk_277DF2B48;
   v30 = v9;
-  v31 = self;
+  selfCopy3 = self;
   v10 = v9;
   [v6 enumerateInsertsUsingBlock:v29];
   v11 = MEMORY[0x277CBEB38];
-  v12 = [(HFGroupedItemDiff *)self fromGroups];
-  v13 = [v11 dictionaryWithCapacity:{objc_msgSend(v12, "count")}];
+  fromGroups2 = [(HFGroupedItemDiff *)self fromGroups];
+  v13 = [v11 dictionaryWithCapacity:{objc_msgSend(fromGroups2, "count")}];
 
-  v14 = [(HFGroupedItemDiff *)self fromGroups];
+  fromGroups3 = [(HFGroupedItemDiff *)self fromGroups];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __33__HFGroupedItemDiff__performDiff__block_invoke_6;
   v27[3] = &unk_277DFA9C0;
   v15 = v13;
   v28 = v15;
-  [v14 enumerateObjectsUsingBlock:v27];
+  [fromGroups3 enumerateObjectsUsingBlock:v27];
 
-  v16 = [MEMORY[0x277CBEB18] array];
-  v17 = [(HFGroupedItemDiff *)self toGroups];
+  array = [MEMORY[0x277CBEB18] array];
+  toGroups2 = [(HFGroupedItemDiff *)self toGroups];
   v20 = MEMORY[0x277D85DD0];
   v21 = 3221225472;
   v22 = __33__HFGroupedItemDiff__performDiff__block_invoke_7;
   v23 = &unk_277DFA9E8;
   v24 = v15;
-  v25 = self;
-  v26 = v16;
-  v18 = v16;
+  selfCopy4 = self;
+  v26 = array;
+  v18 = array;
   v19 = v15;
-  [v17 enumerateObjectsUsingBlock:&v20];
+  [toGroups2 enumerateObjectsUsingBlock:&v20];
 
   [(HFGroupedItemDiff *)self setGroupOperations:v10, v20, v21, v22, v23];
   [(HFGroupedItemDiff *)self setItemOperations:v18];
@@ -196,22 +196,22 @@ void __33__HFGroupedItemDiff__performDiff__block_invoke_7(uint64_t a1, void *a2,
   [v11 addObjectsFromArray:v12];
 }
 
-- (id)_performItemDiffFromGroup:(id)a3 atIndex:(id)a4 toGroup:(id)a5 atIndex:(unint64_t)a6
+- (id)_performItemDiffFromGroup:(id)group atIndex:(id)index toGroup:(id)toGroup atIndex:(unint64_t)atIndex
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v12)
+  groupCopy = group;
+  indexCopy = index;
+  toGroupCopy = toGroup;
+  if (!toGroupCopy)
   {
-    NSLog(&cfstr_CannotPerformA.isa, v10);
+    NSLog(&cfstr_CannotPerformA.isa, groupCopy);
   }
 
-  v13 = [v10 diffableItems];
-  v14 = v13;
+  diffableItems = [groupCopy diffableItems];
+  v14 = diffableItems;
   v15 = MEMORY[0x277CBEBF8];
-  if (v13)
+  if (diffableItems)
   {
-    v16 = v13;
+    v16 = diffableItems;
   }
 
   else
@@ -221,11 +221,11 @@ void __33__HFGroupedItemDiff__performDiff__block_invoke_7(uint64_t a1, void *a2,
 
   v17 = v16;
 
-  v18 = [v12 diffableItems];
-  v19 = v18;
-  if (v18)
+  diffableItems2 = [toGroupCopy diffableItems];
+  v19 = diffableItems2;
+  if (diffableItems2)
   {
-    v20 = v18;
+    v20 = diffableItems2;
   }
 
   else
@@ -236,26 +236,26 @@ void __33__HFGroupedItemDiff__performDiff__block_invoke_7(uint64_t a1, void *a2,
   v21 = v20;
 
   v22 = objc_alloc_init(HFUniqueArrayDiffOptions);
-  v23 = [(HFGroupedItemDiff *)self changeTest];
-  [(HFUniqueArrayDiffOptions *)v22 setChangeComparator:v23];
+  changeTest = [(HFGroupedItemDiff *)self changeTest];
+  [(HFUniqueArrayDiffOptions *)v22 setChangeComparator:changeTest];
 
   v24 = [HFUniqueArrayDiff diffFromArray:v17 toArray:v21 options:v22];
   v25 = v24;
-  if (!v10)
+  if (!groupCopy)
   {
-    v26 = [v24 insertedIndexes];
-    v27 = v12;
-    v28 = a6;
-    v29 = [v26 count];
-    v30 = [v25 numberOfOperations];
+    insertedIndexes = [v24 insertedIndexes];
+    v27 = toGroupCopy;
+    atIndexCopy = atIndex;
+    v29 = [insertedIndexes count];
+    numberOfOperations = [v25 numberOfOperations];
 
-    v31 = v29 == v30;
-    a6 = v28;
-    v12 = v27;
-    v10 = 0;
+    v31 = v29 == numberOfOperations;
+    atIndex = atIndexCopy;
+    toGroupCopy = v27;
+    groupCopy = 0;
     if (!v31)
     {
-      NSLog(&cfstr_FoundNonInsert.isa, v12, v25);
+      NSLog(&cfstr_FoundNonInsert.isa, toGroupCopy, v25);
     }
   }
 
@@ -264,7 +264,7 @@ void __33__HFGroupedItemDiff__performDiff__block_invoke_7(uint64_t a1, void *a2,
   v60[1] = 3221225472;
   v60[2] = __71__HFGroupedItemDiff__performItemDiffFromGroup_atIndex_toGroup_atIndex___block_invoke;
   v60[3] = &unk_277DFAA10;
-  v33 = v11;
+  v33 = indexCopy;
   v61 = v33;
   v34 = v32;
   v62 = v34;
@@ -287,7 +287,7 @@ void __33__HFGroupedItemDiff__performDiff__block_invoke_7(uint64_t a1, void *a2,
   v51[2] = __71__HFGroupedItemDiff__performItemDiffFromGroup_atIndex_toGroup_atIndex___block_invoke_3;
   v51[3] = &unk_277DFAA38;
   v52 = v36;
-  v55 = a6;
+  atIndexCopy2 = atIndex;
   v39 = v37;
   v53 = v39;
   v40 = v21;
@@ -298,7 +298,7 @@ void __33__HFGroupedItemDiff__performDiff__block_invoke_7(uint64_t a1, void *a2,
   v47[1] = 3221225472;
   v47[2] = __71__HFGroupedItemDiff__performItemDiffFromGroup_atIndex_toGroup_atIndex___block_invoke_4;
   v47[3] = &unk_277DFAA60;
-  v50 = a6;
+  atIndexCopy3 = atIndex;
   v42 = v39;
   v48 = v42;
   v49 = v40;
@@ -347,16 +347,16 @@ void __71__HFGroupedItemDiff__performItemDiffFromGroup_atIndex_toGroup_atIndex__
   [v4 addObject:v6];
 }
 
-- (id)_briefDescriptionForOperations:(id)a3 type:(id)a4
+- (id)_briefDescriptionForOperations:(id)operations type:(id)type
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  operationsCopy = operations;
+  typeCopy = type;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = v5;
+  v7 = operationsCopy;
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -374,23 +374,23 @@ void __71__HFGroupedItemDiff__performItemDiffFromGroup_atIndex_toGroup_atIndex__
           objc_enumerationMutation(v7);
         }
 
-        v15 = [*(*(&v28 + 1) + 8 * i) type];
-        if (v15 > 1)
+        type = [*(*(&v28 + 1) + 8 * i) type];
+        if (type > 1)
         {
-          if (v15 == 2)
+          if (type == 2)
           {
             ++v10;
           }
 
-          else if (v15 == 3)
+          else if (type == 3)
           {
             ++v9;
           }
         }
 
-        else if (v15)
+        else if (type)
         {
-          if (v15 == 1)
+          if (type == 1)
           {
             ++v11;
           }
@@ -408,7 +408,7 @@ void __71__HFGroupedItemDiff__performItemDiffFromGroup_atIndex_toGroup_atIndex__
     while (v12);
   }
 
-  v16 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v27[0] = 0;
   v27[1] = v27;
   v27[2] = 0x2020000000;
@@ -417,10 +417,10 @@ void __71__HFGroupedItemDiff__performItemDiffFromGroup_atIndex_toGroup_atIndex__
   aBlock[1] = 3221225472;
   aBlock[2] = __57__HFGroupedItemDiff__briefDescriptionForOperations_type___block_invoke;
   aBlock[3] = &unk_277DFAA88;
-  v17 = v16;
+  v17 = string;
   v24 = v17;
   v26 = v27;
-  v18 = v6;
+  v18 = typeCopy;
   v25 = v18;
   v19 = _Block_copy(aBlock);
   v19[2](v19, v11, @"inserted");
@@ -462,11 +462,11 @@ void __57__HFGroupedItemDiff__briefDescriptionForOperations_type___block_invoke(
 - (id)description
 {
   v12[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HFGroupedItemDiff *)self groupOperations];
-  v4 = [(HFGroupedItemDiff *)self _briefDescriptionForOperations:v3 type:@"groups"];
+  groupOperations = [(HFGroupedItemDiff *)self groupOperations];
+  v4 = [(HFGroupedItemDiff *)self _briefDescriptionForOperations:groupOperations type:@"groups"];
   v12[0] = v4;
-  v5 = [(HFGroupedItemDiff *)self itemOperations];
-  v6 = [(HFGroupedItemDiff *)self _briefDescriptionForOperations:v5 type:@"items"];
+  itemOperations = [(HFGroupedItemDiff *)self itemOperations];
+  v6 = [(HFGroupedItemDiff *)self _briefDescriptionForOperations:itemOperations type:@"items"];
   v12[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
@@ -497,17 +497,17 @@ void __57__HFGroupedItemDiff__briefDescriptionForOperations_type___block_invoke(
   return v6;
 }
 
-- (id)_operationDescriptionWithPrefix:(id)a3
+- (id)_operationDescriptionWithPrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(HFGroupedItemDiff *)self allOperations];
+  prefixCopy = prefix;
+  allOperations = [(HFGroupedItemDiff *)self allOperations];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __53__HFGroupedItemDiff__operationDescriptionWithPrefix___block_invoke;
   v10[3] = &unk_277DFAAB0;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 na_map:v10];
+  v11 = prefixCopy;
+  v6 = prefixCopy;
+  v7 = [allOperations na_map:v10];
   v8 = [v7 componentsJoinedByString:{@", \n"}];
 
   return v8;

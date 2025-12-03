@@ -1,5 +1,5 @@
 @interface MTExtensionPlaybackController
-+ (_MRSystemAppPlaybackQueue)playbackQueueForIdentifier:(id)a3 startPlayback:(BOOL)a4 assetInfo:(id)a5;
++ (_MRSystemAppPlaybackQueue)playbackQueueForIdentifier:(id)identifier startPlayback:(BOOL)playback assetInfo:(id)info;
 @end
 
 @implementation MTExtensionPlaybackController
@@ -56,14 +56,14 @@ void __171__MTExtensionPlaybackController__setPlaybackQueueWithIdentifier_startP
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (_MRSystemAppPlaybackQueue)playbackQueueForIdentifier:(id)a3 startPlayback:(BOOL)a4 assetInfo:(id)a5
++ (_MRSystemAppPlaybackQueue)playbackQueueForIdentifier:(id)identifier startPlayback:(BOOL)playback assetInfo:(id)info
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a5;
-  v15 = a3;
+  infoCopy = info;
+  identifierCopy = identifier;
   v7 = MEMORY[0x277CBEA60];
-  v8 = a3;
-  [v7 arrayWithObjects:&v15 count:1];
+  identifierCopy2 = identifier;
+  [v7 arrayWithObjects:&identifierCopy count:1];
 
   v9 = *MEMORY[0x277CBECE8];
   v10 = MRSystemAppPlaybackQueueCreate();
@@ -71,7 +71,7 @@ void __171__MTExtensionPlaybackController__setPlaybackQueueWithIdentifier_startP
   MRSystemAppPlaybackQueueSetTracklistShuffleMode();
   MRSystemAppPlaybackQueueSetReplaceIntent();
   MRSystemAppPlaybackQueueSetIsRequestingImmediatePlayback();
-  if ([v6 length])
+  if ([infoCopy length])
   {
     MRSystemAppPlaybackQueueSetSiriAssetInfo();
     v11 = kSetPlaybackQueueSiriFeatureName;

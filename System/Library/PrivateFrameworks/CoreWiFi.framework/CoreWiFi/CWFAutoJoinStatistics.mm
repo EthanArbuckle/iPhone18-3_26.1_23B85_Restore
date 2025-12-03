@@ -1,18 +1,18 @@
 @interface CWFAutoJoinStatistics
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAutoJoinStatistics:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAutoJoinStatistics:(id)statistics;
 - (CWFAutoJoinStatistics)init;
-- (CWFAutoJoinStatistics)initWithCoder:(id)a3;
+- (CWFAutoJoinStatistics)initWithCoder:(id)coder;
 - (NSDictionary)coreAnalyticsEventPayload;
 - (NSString)description;
 - (id)JSONCompatibleKeyValueMap;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)autoJoinCount;
 - (unint64_t)autoJoinRetryCount;
 - (unint64_t)combinedScanChannelCount;
 - (unint64_t)combinedScanChannelCount6GHz;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFAutoJoinStatistics
@@ -39,10 +39,10 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(CWFAutoJoinStatistics *)self autoJoinTriggerCounts];
-  v3 = [v2 allValues];
+  autoJoinTriggerCounts = [(CWFAutoJoinStatistics *)self autoJoinTriggerCounts];
+  allValues = [autoJoinTriggerCounts allValues];
 
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v4 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -54,13 +54,13 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v6 += [*(*(&v11 + 1) + 8 * i) unsignedIntegerValue];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -81,13 +81,13 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(CWFAutoJoinStatistics *)self autoJoinTriggerCounts];
+  autoJoinTriggerCounts = [(CWFAutoJoinStatistics *)self autoJoinTriggerCounts];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = sub_1E0BCDDEC;
   v5[3] = &unk_1E86EA4D0;
   v5[4] = &v6;
-  [v2 enumerateKeysAndObjectsUsingBlock:v5];
+  [autoJoinTriggerCounts enumerateKeysAndObjectsUsingBlock:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -96,36 +96,36 @@
 
 - (unint64_t)combinedScanChannelCount
 {
-  v3 = [(CWFAutoJoinStatistics *)self scanChannelCount];
-  v4 = [(CWFAutoJoinStatistics *)self preAssocScanChannelCount]+ v3;
+  scanChannelCount = [(CWFAutoJoinStatistics *)self scanChannelCount];
+  v4 = [(CWFAutoJoinStatistics *)self preAssocScanChannelCount]+ scanChannelCount;
   return v4 + [(CWFAutoJoinStatistics *)self followup6GHzScanChannelCount];
 }
 
 - (unint64_t)combinedScanChannelCount6GHz
 {
-  v3 = [(CWFAutoJoinStatistics *)self scanChannelCount6GHz];
-  v4 = [(CWFAutoJoinStatistics *)self preAssocScanChannelCount6GHz]+ v3;
+  scanChannelCount6GHz = [(CWFAutoJoinStatistics *)self scanChannelCount6GHz];
+  v4 = [(CWFAutoJoinStatistics *)self preAssocScanChannelCount6GHz]+ scanChannelCount6GHz;
   return v4 + [(CWFAutoJoinStatistics *)self followup6GHzScanChannelCount];
 }
 
 - (id)JSONCompatibleKeyValueMap
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(CWFAutoJoinStatistics *)self coreAnalyticsEventPayload];
-  if (v4)
+  coreAnalyticsEventPayload = [(CWFAutoJoinStatistics *)self coreAnalyticsEventPayload];
+  if (coreAnalyticsEventPayload)
   {
-    [v3 addEntriesFromDictionary:v4];
+    [v3 addEntriesFromDictionary:coreAnalyticsEventPayload];
   }
 
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [(CWFAutoJoinStatistics *)self autoJoinTriggerCounts];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  autoJoinTriggerCounts = [(CWFAutoJoinStatistics *)self autoJoinTriggerCounts];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_1E0BD30A0;
   v11[3] = &unk_1E86EA4A8;
-  v7 = v5;
+  v7 = dictionary;
   v12 = v7;
-  [v6 enumerateKeysAndObjectsUsingBlock:v11];
+  [autoJoinTriggerCounts enumerateKeysAndObjectsUsingBlock:v11];
 
   [v3 setObject:v7 forKeyedSubscript:@"triggers"];
   v8 = sub_1E0BCEC64(v3, 0, 1u);
@@ -145,283 +145,283 @@
 - (NSDictionary)coreAnalyticsEventPayload
 {
   v264 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(CWFAutoJoinStatistics *)self autoJoinCount])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics autoJoinCount](self, "autoJoinCount")}];
-    [v3 setObject:v4 forKeyedSubscript:@"autoJoinCount"];
+    [dictionary setObject:v4 forKeyedSubscript:@"autoJoinCount"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"autoJoinCount"];
+    [dictionary setObject:0 forKeyedSubscript:@"autoJoinCount"];
   }
 
   if ([(CWFAutoJoinStatistics *)self autoJoinAlreadyAssociatedCount])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics autoJoinAlreadyAssociatedCount](self, "autoJoinAlreadyAssociatedCount")}];
-    [v3 setObject:v5 forKeyedSubscript:@"autoJoinAlreadyAssociatedCount"];
+    [dictionary setObject:v5 forKeyedSubscript:@"autoJoinAlreadyAssociatedCount"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"autoJoinAlreadyAssociatedCount"];
+    [dictionary setObject:0 forKeyedSubscript:@"autoJoinAlreadyAssociatedCount"];
   }
 
   if ([(CWFAutoJoinStatistics *)self autoJoinDidFindCandidateCount])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics autoJoinDidFindCandidateCount](self, "autoJoinDidFindCandidateCount")}];
-    [v3 setObject:v6 forKeyedSubscript:@"autoJoinDidFindCandidateCount"];
+    [dictionary setObject:v6 forKeyedSubscript:@"autoJoinDidFindCandidateCount"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"autoJoinDidFindCandidateCount"];
+    [dictionary setObject:0 forKeyedSubscript:@"autoJoinDidFindCandidateCount"];
   }
 
   if ([(CWFAutoJoinStatistics *)self autoJoinDidJoinCount])
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics autoJoinDidJoinCount](self, "autoJoinDidJoinCount")}];
-    [v3 setObject:v7 forKeyedSubscript:@"autoJoinDidJoinCount"];
+    [dictionary setObject:v7 forKeyedSubscript:@"autoJoinDidJoinCount"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"autoJoinDidJoinCount"];
+    [dictionary setObject:0 forKeyedSubscript:@"autoJoinDidJoinCount"];
   }
 
   if ([(CWFAutoJoinStatistics *)self autoJoinAbortedCount])
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics autoJoinAbortedCount](self, "autoJoinAbortedCount")}];
-    [v3 setObject:v8 forKeyedSubscript:@"autoJoinAbortedCount"];
+    [dictionary setObject:v8 forKeyedSubscript:@"autoJoinAbortedCount"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"autoJoinAbortedCount"];
+    [dictionary setObject:0 forKeyedSubscript:@"autoJoinAbortedCount"];
   }
 
   if ([(CWFAutoJoinStatistics *)self autoJoinRetryCount])
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics autoJoinRetryCount](self, "autoJoinRetryCount")}];
-    [v3 setObject:v9 forKeyedSubscript:@"autoJoinRetryCount"];
+    [dictionary setObject:v9 forKeyedSubscript:@"autoJoinRetryCount"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"autoJoinRetryCount"];
+    [dictionary setObject:0 forKeyedSubscript:@"autoJoinRetryCount"];
   }
 
   if ([(CWFAutoJoinStatistics *)self combinedScanChannelCount])
   {
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics combinedScanChannelCount](self, "combinedScanChannelCount")}];
-    [v3 setObject:v10 forKeyedSubscript:@"combinedScanChannelCount"];
+    [dictionary setObject:v10 forKeyedSubscript:@"combinedScanChannelCount"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"combinedScanChannelCount"];
+    [dictionary setObject:0 forKeyedSubscript:@"combinedScanChannelCount"];
   }
 
   if ([(CWFAutoJoinStatistics *)self combinedScanChannelCount2GHz])
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics combinedScanChannelCount2GHz](self, "combinedScanChannelCount2GHz")}];
-    [v3 setObject:v11 forKeyedSubscript:@"combinedScanChannelCount2GHz"];
+    [dictionary setObject:v11 forKeyedSubscript:@"combinedScanChannelCount2GHz"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"combinedScanChannelCount2GHz"];
+    [dictionary setObject:0 forKeyedSubscript:@"combinedScanChannelCount2GHz"];
   }
 
   if ([(CWFAutoJoinStatistics *)self combinedScanChannelCount5GHz])
   {
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics combinedScanChannelCount5GHz](self, "combinedScanChannelCount5GHz")}];
-    [v3 setObject:v12 forKeyedSubscript:@"combinedScanChannelCount5GHz"];
+    [dictionary setObject:v12 forKeyedSubscript:@"combinedScanChannelCount5GHz"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"combinedScanChannelCount5GHz"];
+    [dictionary setObject:0 forKeyedSubscript:@"combinedScanChannelCount5GHz"];
   }
 
   if ([(CWFAutoJoinStatistics *)self combinedScanChannelCount6GHz])
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics combinedScanChannelCount6GHz](self, "combinedScanChannelCount6GHz")}];
-    [v3 setObject:v13 forKeyedSubscript:@"combinedScanChannelCount6GHz"];
+    [dictionary setObject:v13 forKeyedSubscript:@"combinedScanChannelCount6GHz"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"combinedScanChannelCount6GHz"];
+    [dictionary setObject:0 forKeyedSubscript:@"combinedScanChannelCount6GHz"];
   }
 
   if ([(CWFAutoJoinStatistics *)self scanChannelCount])
   {
     v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics scanChannelCount](self, "scanChannelCount")}];
-    [v3 setObject:v14 forKeyedSubscript:@"scanChannelCount"];
+    [dictionary setObject:v14 forKeyedSubscript:@"scanChannelCount"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"scanChannelCount"];
+    [dictionary setObject:0 forKeyedSubscript:@"scanChannelCount"];
   }
 
   if ([(CWFAutoJoinStatistics *)self scanChannelCount2GHz])
   {
     v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics scanChannelCount2GHz](self, "scanChannelCount2GHz")}];
-    [v3 setObject:v15 forKeyedSubscript:@"scanChannelCount2GHz"];
+    [dictionary setObject:v15 forKeyedSubscript:@"scanChannelCount2GHz"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"scanChannelCount2GHz"];
+    [dictionary setObject:0 forKeyedSubscript:@"scanChannelCount2GHz"];
   }
 
   if ([(CWFAutoJoinStatistics *)self scanChannelCount5GHz])
   {
     v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics scanChannelCount5GHz](self, "scanChannelCount5GHz")}];
-    [v3 setObject:v16 forKeyedSubscript:@"scanChannelCount5GHz"];
+    [dictionary setObject:v16 forKeyedSubscript:@"scanChannelCount5GHz"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"scanChannelCount5GHz"];
+    [dictionary setObject:0 forKeyedSubscript:@"scanChannelCount5GHz"];
   }
 
   if ([(CWFAutoJoinStatistics *)self scanChannelCount6GHz])
   {
     v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics scanChannelCount6GHz](self, "scanChannelCount6GHz")}];
-    [v3 setObject:v17 forKeyedSubscript:@"scanChannelCount6GHz"];
+    [dictionary setObject:v17 forKeyedSubscript:@"scanChannelCount6GHz"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"scanChannelCount6GHz"];
+    [dictionary setObject:0 forKeyedSubscript:@"scanChannelCount6GHz"];
   }
 
   if ([(CWFAutoJoinStatistics *)self preAssocScanChannelCount])
   {
     v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics preAssocScanChannelCount](self, "preAssocScanChannelCount")}];
-    [v3 setObject:v18 forKeyedSubscript:@"preAssocScanChannelCount"];
+    [dictionary setObject:v18 forKeyedSubscript:@"preAssocScanChannelCount"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"preAssocScanChannelCount"];
+    [dictionary setObject:0 forKeyedSubscript:@"preAssocScanChannelCount"];
   }
 
   if ([(CWFAutoJoinStatistics *)self preAssocScanChannelCount2GHz])
   {
     v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics preAssocScanChannelCount2GHz](self, "preAssocScanChannelCount2GHz")}];
-    [v3 setObject:v19 forKeyedSubscript:@"preAssocScanChannelCount2GHz"];
+    [dictionary setObject:v19 forKeyedSubscript:@"preAssocScanChannelCount2GHz"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"preAssocScanChannelCount2GHz"];
+    [dictionary setObject:0 forKeyedSubscript:@"preAssocScanChannelCount2GHz"];
   }
 
   if ([(CWFAutoJoinStatistics *)self preAssocScanChannelCount5GHz])
   {
     v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics preAssocScanChannelCount5GHz](self, "preAssocScanChannelCount5GHz")}];
-    [v3 setObject:v20 forKeyedSubscript:@"preAssocScanChannelCount5GHz"];
+    [dictionary setObject:v20 forKeyedSubscript:@"preAssocScanChannelCount5GHz"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"preAssocScanChannelCount5GHz"];
+    [dictionary setObject:0 forKeyedSubscript:@"preAssocScanChannelCount5GHz"];
   }
 
   if ([(CWFAutoJoinStatistics *)self preAssocScanChannelCount6GHz])
   {
     v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics preAssocScanChannelCount6GHz](self, "preAssocScanChannelCount6GHz")}];
-    [v3 setObject:v21 forKeyedSubscript:@"preAssocScanChannelCount6GHz"];
+    [dictionary setObject:v21 forKeyedSubscript:@"preAssocScanChannelCount6GHz"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"preAssocScanChannelCount6GHz"];
+    [dictionary setObject:0 forKeyedSubscript:@"preAssocScanChannelCount6GHz"];
   }
 
   if ([(CWFAutoJoinStatistics *)self followup6GHzScanChannelCount])
   {
     v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics followup6GHzScanChannelCount](self, "followup6GHzScanChannelCount")}];
-    [v3 setObject:v22 forKeyedSubscript:@"followup6GHzScanChannelCount"];
+    [dictionary setObject:v22 forKeyedSubscript:@"followup6GHzScanChannelCount"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"followup6GHzScanChannelCount"];
+    [dictionary setObject:0 forKeyedSubscript:@"followup6GHzScanChannelCount"];
   }
 
   if ([(CWFAutoJoinStatistics *)self GASQueryCount])
   {
     v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics GASQueryCount](self, "GASQueryCount")}];
-    [v3 setObject:v23 forKeyedSubscript:@"GASQueryCount"];
+    [dictionary setObject:v23 forKeyedSubscript:@"GASQueryCount"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"GASQueryCount"];
+    [dictionary setObject:0 forKeyedSubscript:@"GASQueryCount"];
   }
 
   if ([(CWFAutoJoinStatistics *)self autoHotspotCount])
   {
     v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics autoHotspotCount](self, "autoHotspotCount")}];
-    [v3 setObject:v24 forKeyedSubscript:@"autoHotspotCount"];
+    [dictionary setObject:v24 forKeyedSubscript:@"autoHotspotCount"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"autoHotspotCount"];
+    [dictionary setObject:0 forKeyedSubscript:@"autoHotspotCount"];
   }
 
   if ([(CWFAutoJoinStatistics *)self autoHotspotDidFindCandidateCount])
   {
     v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics autoHotspotDidFindCandidateCount](self, "autoHotspotDidFindCandidateCount")}];
-    [v3 setObject:v25 forKeyedSubscript:@"autoHotspotDidFindCandidateCount"];
+    [dictionary setObject:v25 forKeyedSubscript:@"autoHotspotDidFindCandidateCount"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"autoHotspotDidFindCandidateCount"];
+    [dictionary setObject:0 forKeyedSubscript:@"autoHotspotDidFindCandidateCount"];
   }
 
   if ([(CWFAutoJoinStatistics *)self autoHotspotDidJoinCount])
   {
     v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics autoHotspotDidJoinCount](self, "autoHotspotDidJoinCount")}];
-    [v3 setObject:v26 forKeyedSubscript:@"autoHotspotDidJoinCount"];
+    [dictionary setObject:v26 forKeyedSubscript:@"autoHotspotDidJoinCount"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"autoHotspotDidJoinCount"];
+    [dictionary setObject:0 forKeyedSubscript:@"autoHotspotDidJoinCount"];
   }
 
   if ([(CWFAutoJoinStatistics *)self autoHotspotAbortedCount])
   {
     v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFAutoJoinStatistics autoHotspotAbortedCount](self, "autoHotspotAbortedCount")}];
-    [v3 setObject:v27 forKeyedSubscript:@"autoHotspotAbortedCount"];
+    [dictionary setObject:v27 forKeyedSubscript:@"autoHotspotAbortedCount"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"autoHotspotAbortedCount"];
+    [dictionary setObject:0 forKeyedSubscript:@"autoHotspotAbortedCount"];
   }
 
-  v28 = [(CWFAutoJoinStatistics *)self knownNetworks];
-  if ([v28 count])
+  knownNetworks = [(CWFAutoJoinStatistics *)self knownNetworks];
+  if ([knownNetworks count])
   {
     v29 = MEMORY[0x1E696AD98];
-    v30 = [(CWFAutoJoinStatistics *)self knownNetworks];
-    v31 = [v29 numberWithUnsignedInteger:{objc_msgSend(v30, "count")}];
-    [v3 setObject:v31 forKeyedSubscript:@"totalKnownNetworkCount"];
+    knownNetworks2 = [(CWFAutoJoinStatistics *)self knownNetworks];
+    v31 = [v29 numberWithUnsignedInteger:{objc_msgSend(knownNetworks2, "count")}];
+    [dictionary setObject:v31 forKeyedSubscript:@"totalKnownNetworkCount"];
   }
 
   else
   {
-    [v3 setObject:0 forKeyedSubscript:@"totalKnownNetworkCount"];
+    [dictionary setObject:0 forKeyedSubscript:@"totalKnownNetworkCount"];
   }
 
   v260 = 0u;
@@ -497,7 +497,7 @@
     v217 = 0;
     v179 = -63115200.0;
     v181 = *v259;
-    v182 = v3;
+    v182 = dictionary;
 LABEL_78:
     v38 = 0;
     while (2)
@@ -508,25 +508,25 @@ LABEL_78:
       }
 
       v39 = *(*(&v258 + 1) + 8 * v38);
-      v40 = [v39 isAutoJoinDisabled];
-      v223 = [v39 isPersonalHotspot];
-      v224 = [v39 isPasspoint];
+      isAutoJoinDisabled = [v39 isAutoJoinDisabled];
+      isPersonalHotspot = [v39 isPersonalHotspot];
+      isPasspoint = [v39 isPasspoint];
       v228 = v38;
       if ([v39 isCaptiveStateDetermined])
       {
         v247 += [v39 isCaptive];
       }
 
-      v225 = [v39 isCarPlay];
+      isCarPlay = [v39 isCarPlay];
       if ([v39 hiddenState] == 1)
       {
         ++v33;
       }
 
-      v41 = [v39 userPreferredNetworkNames];
+      userPreferredNetworkNames = [v39 userPreferredNetworkNames];
       v253 = v39;
       v229 = v36;
-      if ([v41 count])
+      if ([userPreferredNetworkNames count])
       {
       }
 
@@ -548,25 +548,25 @@ LABEL_78:
       ++v34;
 LABEL_89:
       v251 = v37;
-      v226 = [v39 isPublicAirPlayNetwork];
+      isPublicAirPlayNetwork = [v39 isPublicAirPlayNetwork];
       if ([v39 publicAttribute] == 1)
       {
         ++v35;
       }
 
       v246 = v35;
-      v45 = [v39 movingAttribute];
+      movingAttribute = [v39 movingAttribute];
       v46 = v250;
-      if (v45 == 1)
+      if (movingAttribute == 1)
       {
         v46 = v250 + 1;
       }
 
       v250 = v46;
-      v227 = [v39 isPrivacyProxyEnabled];
-      v47 = [v39 disable6EMode];
+      isPrivacyProxyEnabled = [v39 isPrivacyProxyEnabled];
+      disable6EMode = [v39 disable6EMode];
       v48 = v249;
-      if (v47 == 2)
+      if (disable6EMode == 2)
       {
         v48 = v249 + 1;
       }
@@ -576,12 +576,12 @@ LABEL_89:
       v255 = 0u;
       v256 = 0u;
       v257 = 0u;
-      v49 = [v39 BSSList];
-      v50 = [v49 countByEnumeratingWithState:&v254 objects:v262 count:16];
+      bSSList = [v39 BSSList];
+      v50 = [bSSList countByEnumeratingWithState:&v254 objects:v262 count:16];
       if (v50)
       {
         v51 = v50;
-        v218 = v40;
+        v218 = isAutoJoinDisabled;
         v52 = v32;
         v53 = *v255;
         while (2)
@@ -590,20 +590,20 @@ LABEL_89:
           {
             if (*v255 != v53)
             {
-              objc_enumerationMutation(v49);
+              objc_enumerationMutation(bSSList);
             }
 
-            v55 = [*(*(&v254 + 1) + 8 * i) channel];
-            v56 = [v55 is6GHz];
+            channel = [*(*(&v254 + 1) + 8 * i) channel];
+            is6GHz = [channel is6GHz];
 
-            if (v56)
+            if (is6GHz)
             {
               ++v240;
               goto LABEL_105;
             }
           }
 
-          v51 = [v49 countByEnumeratingWithState:&v254 objects:v262 count:16];
+          v51 = [bSSList countByEnumeratingWithState:&v254 objects:v262 count:16];
           if (v51)
           {
             continue;
@@ -616,7 +616,7 @@ LABEL_105:
         v32 = v52;
         v57 = v247;
         v39 = v253;
-        v40 = v218;
+        isAutoJoinDisabled = v218;
       }
 
       else
@@ -624,11 +624,11 @@ LABEL_105:
         v57 = v247;
       }
 
-      v32 += v40;
+      v32 += isAutoJoinDisabled;
 
-      v58 = [v39 isStandalone6G];
-      v59 = [v39 wasRecently6GHzOnlyOnAnyDevice];
-      v3 = v182;
+      isStandalone6G = [v39 isStandalone6G];
+      wasRecently6GHzOnlyOnAnyDevice = [v39 wasRecently6GHzOnlyOnAnyDevice];
+      dictionary = v182;
       v35 = v246;
       if (v32)
       {
@@ -641,7 +641,7 @@ LABEL_105:
         [v182 setObject:0 forKeyedSubscript:@"disableCount"];
       }
 
-      v238 += v223;
+      v238 += isPersonalHotspot;
       if (v238)
       {
         v61 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
@@ -653,7 +653,7 @@ LABEL_105:
         [v182 setObject:0 forKeyedSubscript:@"personalHotspotCount"];
       }
 
-      v237 += v224;
+      v237 += isPasspoint;
       if (v237)
       {
         v62 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
@@ -680,7 +680,7 @@ LABEL_115:
 
       [v182 setObject:0 forKeyedSubscript:@"captiveCount"];
 LABEL_118:
-      v236 += v225;
+      v236 += isCarPlay;
       if (v236)
       {
         v64 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
@@ -713,7 +713,7 @@ LABEL_121:
 LABEL_124:
           [v182 setObject:0 forKeyedSubscript:@"userJoinPrefCount"];
 LABEL_125:
-          v235 += v226;
+          v235 += isPublicAirPlayNetwork;
           if (v235)
           {
             v67 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
@@ -751,7 +751,7 @@ LABEL_130:
             [v182 setObject:0 forKeyedSubscript:@"movingAttrCount"];
           }
 
-          v234 += v227 ^ 1u;
+          v234 += isPrivacyProxyEnabled ^ 1u;
           if (v234)
           {
             v70 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
@@ -785,7 +785,7 @@ LABEL_130:
             [v182 setObject:0 forKeyedSubscript:@"has6GHzBSSCount"];
           }
 
-          v36 = v229 + v58;
+          v36 = v229 + isStandalone6G;
           if (v36)
           {
             v73 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v36];
@@ -797,7 +797,7 @@ LABEL_130:
             [v182 setObject:0 forKeyedSubscript:@"standalone6GHzCount"];
           }
 
-          v233 += v59;
+          v233 += wasRecently6GHzOnlyOnAnyDevice;
           if (v233)
           {
             v74 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
@@ -809,17 +809,17 @@ LABEL_130:
             [v182 setObject:0 forKeyedSubscript:@"wasRecently6GHzOnlyCount"];
           }
 
-          v75 = [v253 supportedSecurityTypes];
-          if (v75 <= 39)
+          supportedSecurityTypes = [v253 supportedSecurityTypes];
+          if (supportedSecurityTypes <= 39)
           {
             v76 = v239;
-            if (v75 <= 7)
+            if (supportedSecurityTypes <= 7)
             {
-              if (v75 == 1)
+              if (supportedSecurityTypes == 1)
               {
-                v77 = [v253 WEPSubtype];
+                wEPSubtype = [v253 WEPSubtype];
                 v78 = v212;
-                if (v77 != 5)
+                if (wEPSubtype != 5)
                 {
                   v78 = v212 + 1;
                 }
@@ -829,10 +829,10 @@ LABEL_130:
 
               else
               {
-                if (v75 != 2)
+                if (supportedSecurityTypes != 2)
                 {
                   v76 = v239;
-                  if (v75 == 4)
+                  if (supportedSecurityTypes == 4)
                   {
                     ++v210;
                     goto LABEL_188;
@@ -849,15 +849,15 @@ LABEL_130:
               goto LABEL_188;
             }
 
-            if (v75 > 19)
+            if (supportedSecurityTypes > 19)
             {
-              if (v75 == 20)
+              if (supportedSecurityTypes == 20)
               {
                 ++v209;
                 goto LABEL_188;
               }
 
-              if (v75 == 32)
+              if (supportedSecurityTypes == 32)
               {
                 ++v203;
                 goto LABEL_188;
@@ -866,13 +866,13 @@ LABEL_130:
 
             else
             {
-              if (v75 == 8)
+              if (supportedSecurityTypes == 8)
               {
                 ++v205;
                 goto LABEL_188;
               }
 
-              if (v75 == 16)
+              if (supportedSecurityTypes == 16)
               {
                 ++v208;
                 goto LABEL_188;
@@ -883,17 +883,17 @@ LABEL_130:
           else
           {
             v76 = v239;
-            if (v75 > 159)
+            if (supportedSecurityTypes > 159)
             {
-              if (v75 > 511)
+              if (supportedSecurityTypes > 511)
               {
-                if (v75 == 768)
+                if (supportedSecurityTypes == 768)
                 {
                   ++v214;
                   goto LABEL_188;
                 }
 
-                if (v75 == 512)
+                if (supportedSecurityTypes == 512)
                 {
                   ++v215;
                   goto LABEL_188;
@@ -902,13 +902,13 @@ LABEL_130:
 
               else
               {
-                if (v75 == 160)
+                if (supportedSecurityTypes == 160)
                 {
                   ++v202;
                   goto LABEL_188;
                 }
 
-                if (v75 == 256)
+                if (supportedSecurityTypes == 256)
                 {
                   ++v213;
                   goto LABEL_188;
@@ -916,15 +916,15 @@ LABEL_130:
               }
             }
 
-            else if (v75 > 79)
+            else if (supportedSecurityTypes > 79)
             {
-              if (v75 == 80)
+              if (supportedSecurityTypes == 80)
               {
                 ++v207;
                 goto LABEL_188;
               }
 
-              if (v75 == 128)
+              if (supportedSecurityTypes == 128)
               {
                 ++v201;
                 goto LABEL_188;
@@ -933,13 +933,13 @@ LABEL_130:
 
             else
             {
-              if (v75 == 40)
+              if (supportedSecurityTypes == 40)
               {
                 ++v204;
                 goto LABEL_188;
               }
 
-              if (v75 == 64)
+              if (supportedSecurityTypes == 64)
               {
                 ++v206;
 LABEL_188:
@@ -1380,10 +1380,10 @@ LABEL_256:
                       [v182 setObject:0 forKeyedSubscript:@"addedByUnknownReason"];
                     }
 
-                    v114 = [v253 lastJoinedAt];
+                    lastJoinedAt = [v253 lastJoinedAt];
 
                     v247 = v57;
-                    if (!v114)
+                    if (!lastJoinedAt)
                     {
                       v37 = v251;
                       v158 = v248;
@@ -1391,11 +1391,11 @@ LABEL_256:
                     }
 
                     v230 = v33;
-                    v115 = [v253 lastJoinedAt];
-                    [v115 timeIntervalSinceNow];
+                    lastJoinedAt2 = [v253 lastJoinedAt];
+                    [lastJoinedAt2 timeIntervalSinceNow];
                     v117 = v116;
-                    v118 = [v253 lastJoinedAt];
-                    [v118 timeIntervalSinceNow];
+                    lastJoinedAt3 = [v253 lastJoinedAt];
+                    [lastJoinedAt3 timeIntervalSinceNow];
                     v120 = v119;
 
                     if (v117 < 0.0)
@@ -1409,11 +1409,11 @@ LABEL_256:
                     }
 
                     v252 = v251 + v121;
-                    v122 = [v253 lastJoinedAt];
-                    [v122 timeIntervalSinceNow];
+                    lastJoinedAt4 = [v253 lastJoinedAt];
+                    [lastJoinedAt4 timeIntervalSinceNow];
                     v124 = v123;
-                    v125 = [v253 lastJoinedAt];
-                    [v125 timeIntervalSinceNow];
+                    lastJoinedAt5 = [v253 lastJoinedAt];
+                    [lastJoinedAt5 timeIntervalSinceNow];
                     if (v124 < 0.0)
                     {
                       v127 = v126 > -1209600.0;
@@ -1425,11 +1425,11 @@ LABEL_256:
                     }
 
                     v245 += v127;
-                    v128 = [v253 lastJoinedAt];
-                    [v128 timeIntervalSinceNow];
+                    lastJoinedAt6 = [v253 lastJoinedAt];
+                    [lastJoinedAt6 timeIntervalSinceNow];
                     v130 = v129;
-                    v131 = [v253 lastJoinedAt];
-                    [v131 timeIntervalSinceNow];
+                    lastJoinedAt7 = [v253 lastJoinedAt];
+                    [lastJoinedAt7 timeIntervalSinceNow];
                     if (v130 < 0.0)
                     {
                       v133 = v132 > -2629800.0;
@@ -1441,11 +1441,11 @@ LABEL_256:
                     }
 
                     v244 += v133;
-                    v134 = [v253 lastJoinedAt];
-                    [v134 timeIntervalSinceNow];
+                    lastJoinedAt8 = [v253 lastJoinedAt];
+                    [lastJoinedAt8 timeIntervalSinceNow];
                     v136 = v135;
-                    v137 = [v253 lastJoinedAt];
-                    [v137 timeIntervalSinceNow];
+                    lastJoinedAt9 = [v253 lastJoinedAt];
+                    [lastJoinedAt9 timeIntervalSinceNow];
                     if (v136 < 0.0)
                     {
                       v139 = v138 > -5259600.0;
@@ -1457,11 +1457,11 @@ LABEL_256:
                     }
 
                     v243 += v139;
-                    v140 = [v253 lastJoinedAt];
-                    [v140 timeIntervalSinceNow];
+                    lastJoinedAt10 = [v253 lastJoinedAt];
+                    [lastJoinedAt10 timeIntervalSinceNow];
                     v142 = v141;
-                    v143 = [v253 lastJoinedAt];
-                    [v143 timeIntervalSinceNow];
+                    lastJoinedAt11 = [v253 lastJoinedAt];
+                    [lastJoinedAt11 timeIntervalSinceNow];
                     if (v142 < 0.0)
                     {
                       v145 = v144 > -15778800.0;
@@ -1473,11 +1473,11 @@ LABEL_256:
                     }
 
                     v242 += v145;
-                    v146 = [v253 lastJoinedAt];
-                    [v146 timeIntervalSinceNow];
+                    lastJoinedAt12 = [v253 lastJoinedAt];
+                    [lastJoinedAt12 timeIntervalSinceNow];
                     v148 = v147;
-                    v149 = [v253 lastJoinedAt];
-                    [v149 timeIntervalSinceNow];
+                    lastJoinedAt13 = [v253 lastJoinedAt];
+                    [lastJoinedAt13 timeIntervalSinceNow];
                     if (v148 < 0.0)
                     {
                       v151 = v150 > -31557600.0;
@@ -1489,11 +1489,11 @@ LABEL_256:
                     }
 
                     v241 += v151;
-                    v152 = [v253 lastJoinedAt];
-                    [v152 timeIntervalSinceNow];
+                    lastJoinedAt14 = [v253 lastJoinedAt];
+                    [lastJoinedAt14 timeIntervalSinceNow];
                     v154 = v153;
-                    v155 = [v253 lastJoinedAt];
-                    [v155 timeIntervalSinceNow];
+                    lastJoinedAt15 = [v253 lastJoinedAt];
+                    [lastJoinedAt15 timeIntervalSinceNow];
                     v157 = v156;
 
                     if (v154 < 0.0)
@@ -1768,7 +1768,7 @@ LABEL_183:
 
 LABEL_396:
 
-  v176 = [v3 copy];
+  v176 = [dictionary copy];
   v177 = *MEMORY[0x1E69E9840];
 
   return v176;
@@ -1777,15 +1777,15 @@ LABEL_396:
 - (NSString)description
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v22 = self;
-  v4 = [(CWFAutoJoinStatistics *)self coreAnalyticsEventPayload];
+  array = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
+  coreAnalyticsEventPayload = [(CWFAutoJoinStatistics *)self coreAnalyticsEventPayload];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+  allKeys = [coreAnalyticsEventPayload allKeys];
+  v6 = [allKeys sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
 
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
@@ -1803,9 +1803,9 @@ LABEL_396:
 
         v11 = *(*(&v25 + 1) + 8 * i);
         v12 = MEMORY[0x1E696AEC0];
-        v13 = [v4 objectForKeyedSubscript:v11];
+        v13 = [coreAnalyticsEventPayload objectForKeyedSubscript:v11];
         v14 = [v12 stringWithFormat:@"%@=%@", v11, v13];
-        [v3 addObject:v14];
+        [array addObject:v14];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -1814,34 +1814,34 @@ LABEL_396:
     while (v8);
   }
 
-  v15 = [MEMORY[0x1E695DF90] dictionary];
-  v16 = [(CWFAutoJoinStatistics *)v22 autoJoinTriggerCounts];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  autoJoinTriggerCounts = [(CWFAutoJoinStatistics *)selfCopy autoJoinTriggerCounts];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = sub_1E0D666DC;
   v23[3] = &unk_1E86EA4A8;
-  v24 = v15;
-  v17 = v15;
-  [v16 enumerateKeysAndObjectsUsingBlock:v23];
+  v24 = dictionary;
+  v17 = dictionary;
+  [autoJoinTriggerCounts enumerateKeysAndObjectsUsingBlock:v23];
 
   v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"triggers=%@", v17];
-  [v3 addObject:v18];
+  [array addObject:v18];
 
-  v19 = [v3 componentsJoinedByString:{@", "}];
+  v19 = [array componentsJoinedByString:{@", "}];
 
   v20 = *MEMORY[0x1E69E9840];
 
   return v19;
 }
 
-- (BOOL)isEqualToAutoJoinStatistics:(id)a3
+- (BOOL)isEqualToAutoJoinStatistics:(id)statistics
 {
-  v5 = a3;
+  statisticsCopy = statistics;
   startedAt = self->_startedAt;
-  v7 = [v5 startedAt];
-  if (startedAt != v7)
+  startedAt = [statisticsCopy startedAt];
+  if (startedAt != startedAt)
   {
-    if (!self->_startedAt || ([v5 startedAt], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!self->_startedAt || ([statisticsCopy startedAt], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v11 = 0;
       goto LABEL_48;
@@ -1849,8 +1849,8 @@ LABEL_396:
 
     v3 = v8;
     v9 = self->_startedAt;
-    v10 = [v5 startedAt];
-    if (![(NSDate *)v9 isEqual:v10])
+    startedAt2 = [statisticsCopy startedAt];
+    if (![(NSDate *)v9 isEqual:startedAt2])
     {
       v11 = 0;
 LABEL_47:
@@ -1858,25 +1858,25 @@ LABEL_47:
       goto LABEL_48;
     }
 
-    v50 = v10;
+    v50 = startedAt2;
   }
 
   knownNetworks = self->_knownNetworks;
-  v13 = [v5 knownNetworks];
-  if (knownNetworks == v13)
+  knownNetworks = [statisticsCopy knownNetworks];
+  if (knownNetworks == knownNetworks)
   {
 LABEL_12:
     autoJoinTriggerCounts = self->_autoJoinTriggerCounts;
-    v21 = [v5 autoJoinTriggerCounts];
-    if (autoJoinTriggerCounts != v21)
+    autoJoinTriggerCounts = [statisticsCopy autoJoinTriggerCounts];
+    if (autoJoinTriggerCounts != autoJoinTriggerCounts)
     {
       if (!self->_autoJoinTriggerCounts)
       {
         goto LABEL_41;
       }
 
-      v22 = [v5 autoJoinTriggerCounts];
-      if (!v22)
+      autoJoinTriggerCounts2 = [statisticsCopy autoJoinTriggerCounts];
+      if (!autoJoinTriggerCounts2)
       {
 LABEL_40:
 
@@ -1884,12 +1884,12 @@ LABEL_40:
         goto LABEL_43;
       }
 
-      v47 = v22;
+      v47 = autoJoinTriggerCounts2;
       v23 = self->_autoJoinTriggerCounts;
-      v24 = [v5 autoJoinTriggerCounts];
+      autoJoinTriggerCounts3 = [statisticsCopy autoJoinTriggerCounts];
       v25 = v23;
-      v26 = v24;
-      if (![(NSMutableDictionary *)v25 isEqual:v24])
+      v26 = autoJoinTriggerCounts3;
+      if (![(NSMutableDictionary *)v25 isEqual:autoJoinTriggerCounts3])
       {
         v11 = 0;
         goto LABEL_52;
@@ -1899,73 +1899,73 @@ LABEL_40:
     }
 
     autoJoinDidFindCandidateCount = self->_autoJoinDidFindCandidateCount;
-    if (autoJoinDidFindCandidateCount == [v5 autoJoinDidFindCandidateCount])
+    if (autoJoinDidFindCandidateCount == [statisticsCopy autoJoinDidFindCandidateCount])
     {
       autoJoinDidJoinCount = self->_autoJoinDidJoinCount;
-      if (autoJoinDidJoinCount == [v5 autoJoinDidJoinCount])
+      if (autoJoinDidJoinCount == [statisticsCopy autoJoinDidJoinCount])
       {
         autoJoinAlreadyAssociatedCount = self->_autoJoinAlreadyAssociatedCount;
-        if (autoJoinAlreadyAssociatedCount == [v5 autoJoinAlreadyAssociatedCount])
+        if (autoJoinAlreadyAssociatedCount == [statisticsCopy autoJoinAlreadyAssociatedCount])
         {
           autoJoinAbortedCount = self->_autoJoinAbortedCount;
-          if (autoJoinAbortedCount == [v5 autoJoinAbortedCount])
+          if (autoJoinAbortedCount == [statisticsCopy autoJoinAbortedCount])
           {
             scanChannelCount = self->_scanChannelCount;
-            if (scanChannelCount == [v5 scanChannelCount])
+            if (scanChannelCount == [statisticsCopy scanChannelCount])
             {
               scanChannelCount2GHz = self->_scanChannelCount2GHz;
-              if (scanChannelCount2GHz == [v5 scanChannelCount2GHz])
+              if (scanChannelCount2GHz == [statisticsCopy scanChannelCount2GHz])
               {
                 scanChannelCount5GHz = self->_scanChannelCount5GHz;
-                if (scanChannelCount5GHz == [v5 scanChannelCount5GHz])
+                if (scanChannelCount5GHz == [statisticsCopy scanChannelCount5GHz])
                 {
                   scanChannelCount6GHz = self->_scanChannelCount6GHz;
-                  if (scanChannelCount6GHz == [v5 scanChannelCount6GHz])
+                  if (scanChannelCount6GHz == [statisticsCopy scanChannelCount6GHz])
                   {
                     preAssocScanChannelCount = self->_preAssocScanChannelCount;
-                    if (preAssocScanChannelCount == [v5 preAssocScanChannelCount])
+                    if (preAssocScanChannelCount == [statisticsCopy preAssocScanChannelCount])
                     {
                       preAssocScanChannelCount2GHz = self->_preAssocScanChannelCount2GHz;
-                      if (preAssocScanChannelCount2GHz == [v5 preAssocScanChannelCount2GHz])
+                      if (preAssocScanChannelCount2GHz == [statisticsCopy preAssocScanChannelCount2GHz])
                       {
                         preAssocScanChannelCount5GHz = self->_preAssocScanChannelCount5GHz;
-                        if (preAssocScanChannelCount5GHz == [v5 preAssocScanChannelCount5GHz])
+                        if (preAssocScanChannelCount5GHz == [statisticsCopy preAssocScanChannelCount5GHz])
                         {
                           preAssocScanChannelCount6GHz = self->_preAssocScanChannelCount6GHz;
-                          if (preAssocScanChannelCount6GHz == [v5 preAssocScanChannelCount6GHz])
+                          if (preAssocScanChannelCount6GHz == [statisticsCopy preAssocScanChannelCount6GHz])
                           {
                             followup6GHzScanChannelCount = self->_followup6GHzScanChannelCount;
-                            if (followup6GHzScanChannelCount == [v5 followup6GHzScanChannelCount])
+                            if (followup6GHzScanChannelCount == [statisticsCopy followup6GHzScanChannelCount])
                             {
                               GASQueryCount = self->_GASQueryCount;
-                              if (GASQueryCount == [v5 GASQueryCount])
+                              if (GASQueryCount == [statisticsCopy GASQueryCount])
                               {
                                 autoHotspotCount = self->_autoHotspotCount;
-                                if (autoHotspotCount == [v5 autoHotspotCount])
+                                if (autoHotspotCount == [statisticsCopy autoHotspotCount])
                                 {
                                   autoHotspotDidFindCandidateCount = self->_autoHotspotDidFindCandidateCount;
-                                  if (autoHotspotDidFindCandidateCount == [v5 autoHotspotDidFindCandidateCount])
+                                  if (autoHotspotDidFindCandidateCount == [statisticsCopy autoHotspotDidFindCandidateCount])
                                   {
                                     autoHotspotDidJoinCount = self->_autoHotspotDidJoinCount;
-                                    if (autoHotspotDidJoinCount == [v5 autoHotspotDidJoinCount])
+                                    if (autoHotspotDidJoinCount == [statisticsCopy autoHotspotDidJoinCount])
                                     {
                                       autoHotspotAbortedCount = self->_autoHotspotAbortedCount;
-                                      v11 = autoHotspotAbortedCount == [v5 autoHotspotAbortedCount];
+                                      v11 = autoHotspotAbortedCount == [statisticsCopy autoHotspotAbortedCount];
                                       v26 = v46;
-                                      if (autoJoinTriggerCounts == v21)
+                                      if (autoJoinTriggerCounts == autoJoinTriggerCounts)
                                       {
                                         goto LABEL_42;
                                       }
 
 LABEL_52:
 
-                                      if (knownNetworks != v13)
+                                      if (knownNetworks != knownNetworks)
                                       {
 
 LABEL_54:
-                                        v10 = v50;
+                                        startedAt2 = v50;
 
-                                        if (startedAt == v7)
+                                        if (startedAt == startedAt)
                                         {
                                           goto LABEL_48;
                                         }
@@ -1994,7 +1994,7 @@ LABEL_45:
       }
     }
 
-    if (autoJoinTriggerCounts != v21)
+    if (autoJoinTriggerCounts != autoJoinTriggerCounts)
     {
 
       goto LABEL_40;
@@ -2005,7 +2005,7 @@ LABEL_41:
 LABEL_42:
 
 LABEL_43:
-    if (knownNetworks != v13)
+    if (knownNetworks != knownNetworks)
     {
     }
 
@@ -2018,19 +2018,19 @@ LABEL_43:
     goto LABEL_45;
   }
 
-  v14 = [v5 knownNetworks];
-  if (!v14)
+  knownNetworks2 = [statisticsCopy knownNetworks];
+  if (!knownNetworks2)
   {
     v11 = 0;
     goto LABEL_54;
   }
 
-  v15 = v14;
+  v15 = knownNetworks2;
   v16 = self->_knownNetworks;
-  v17 = [v5 knownNetworks];
+  knownNetworks3 = [statisticsCopy knownNetworks];
   v18 = v16;
-  v19 = v17;
-  if (([(NSArray *)v18 isEqual:v17]& 1) != 0)
+  v19 = knownNetworks3;
+  if (([(NSArray *)v18 isEqual:knownNetworks3]& 1) != 0)
   {
     v48 = v19;
     v49 = v15;
@@ -2039,8 +2039,8 @@ LABEL_43:
 
   v11 = 0;
 LABEL_46:
-  v10 = v50;
-  if (startedAt != v7)
+  startedAt2 = v50;
+  if (startedAt != startedAt)
   {
     goto LABEL_47;
   }
@@ -2050,18 +2050,18 @@ LABEL_48:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFAutoJoinStatistics *)self isEqualToAutoJoinStatistics:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CWFAutoJoinStatistics *)self isEqualToAutoJoinStatistics:v5];
   }
 
   return v6;
@@ -2076,7 +2076,7 @@ LABEL_48:
   return *&veor_s8(*v6.i8, *&vextq_s8(v6, v6, 8uLL)) ^ self->_autoHotspotDidJoinCount ^ self->_autoHotspotAbortedCount ^ v5 ^ v3 ^ v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CWFAutoJoinStatistics allocWithZone:?]];
   [(CWFAutoJoinStatistics *)v4 setStartedAt:self->_startedAt];
@@ -2105,86 +2105,86 @@ LABEL_48:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startedAt = self->_startedAt;
-  v5 = a3;
-  [v5 encodeObject:startedAt forKey:@"_startedAt"];
-  [v5 encodeObject:self->_knownNetworks forKey:@"_knownNetworks"];
+  coderCopy = coder;
+  [coderCopy encodeObject:startedAt forKey:@"_startedAt"];
+  [coderCopy encodeObject:self->_knownNetworks forKey:@"_knownNetworks"];
   v6 = [(NSMutableDictionary *)self->_autoJoinTriggerCounts copy];
-  [v5 encodeObject:v6 forKey:@"_autoJoinTriggerCounts"];
+  [coderCopy encodeObject:v6 forKey:@"_autoJoinTriggerCounts"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_autoJoinDidFindCandidateCount];
-  [v5 encodeObject:v7 forKey:@"_autoJoinDidFindCandidateCount"];
+  [coderCopy encodeObject:v7 forKey:@"_autoJoinDidFindCandidateCount"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_autoJoinDidJoinCount];
-  [v5 encodeObject:v8 forKey:@"_autoJoinDidJoinCount"];
+  [coderCopy encodeObject:v8 forKey:@"_autoJoinDidJoinCount"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_autoJoinAlreadyAssociatedCount];
-  [v5 encodeObject:v9 forKey:@"_autoJoinAlreadyAssociatedCount"];
+  [coderCopy encodeObject:v9 forKey:@"_autoJoinAlreadyAssociatedCount"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_autoJoinAbortedCount];
-  [v5 encodeObject:v10 forKey:@"_autoJoinAbortedCount"];
+  [coderCopy encodeObject:v10 forKey:@"_autoJoinAbortedCount"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_scanChannelCount];
-  [v5 encodeObject:v11 forKey:@"_scanChannelCount"];
+  [coderCopy encodeObject:v11 forKey:@"_scanChannelCount"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_scanChannelCount2GHz];
-  [v5 encodeObject:v12 forKey:@"_scanChannelCount2GHz"];
+  [coderCopy encodeObject:v12 forKey:@"_scanChannelCount2GHz"];
 
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_scanChannelCount5GHz];
-  [v5 encodeObject:v13 forKey:@"_scanChannelCount5GHz"];
+  [coderCopy encodeObject:v13 forKey:@"_scanChannelCount5GHz"];
 
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_scanChannelCount6GHz];
-  [v5 encodeObject:v14 forKey:@"_scanChannelCount6GHz"];
+  [coderCopy encodeObject:v14 forKey:@"_scanChannelCount6GHz"];
 
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_preAssocScanChannelCount];
-  [v5 encodeObject:v15 forKey:@"_preAssocScanChannelCount"];
+  [coderCopy encodeObject:v15 forKey:@"_preAssocScanChannelCount"];
 
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_preAssocScanChannelCount2GHz];
-  [v5 encodeObject:v16 forKey:@"_preAssocScanChannelCount2GHz"];
+  [coderCopy encodeObject:v16 forKey:@"_preAssocScanChannelCount2GHz"];
 
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_preAssocScanChannelCount5GHz];
-  [v5 encodeObject:v17 forKey:@"_preAssocScanChannelCount5GHz"];
+  [coderCopy encodeObject:v17 forKey:@"_preAssocScanChannelCount5GHz"];
 
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_preAssocScanChannelCount6GHz];
-  [v5 encodeObject:v18 forKey:@"_preAssocScanChannelCount6GHz"];
+  [coderCopy encodeObject:v18 forKey:@"_preAssocScanChannelCount6GHz"];
 
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_followup6GHzScanChannelCount];
-  [v5 encodeObject:v19 forKey:@"_followup6GHzScanChannelCount"];
+  [coderCopy encodeObject:v19 forKey:@"_followup6GHzScanChannelCount"];
 
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_GASQueryCount];
-  [v5 encodeObject:v20 forKey:@"_GASQueryCount"];
+  [coderCopy encodeObject:v20 forKey:@"_GASQueryCount"];
 
   v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_autoHotspotCount];
-  [v5 encodeObject:v21 forKey:@"_autoHotspotCount"];
+  [coderCopy encodeObject:v21 forKey:@"_autoHotspotCount"];
 
   v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_autoHotspotDidFindCandidateCount];
-  [v5 encodeObject:v22 forKey:@"_autoHotspotDidFindCandidateCount"];
+  [coderCopy encodeObject:v22 forKey:@"_autoHotspotDidFindCandidateCount"];
 
   v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_autoHotspotDidJoinCount];
-  [v5 encodeObject:v23 forKey:@"_autoHotspotDidJoinCount"];
+  [coderCopy encodeObject:v23 forKey:@"_autoHotspotDidJoinCount"];
 
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_autoHotspotAbortedCount];
-  [v5 encodeObject:v24 forKey:@"_autoHotspotAbortedCount"];
+  [coderCopy encodeObject:v24 forKey:@"_autoHotspotAbortedCount"];
 }
 
-- (CWFAutoJoinStatistics)initWithCoder:(id)a3
+- (CWFAutoJoinStatistics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v39.receiver = self;
   v39.super_class = CWFAutoJoinStatistics;
   v5 = [(CWFAutoJoinStatistics *)&v39 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_startedAt"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_startedAt"];
     startedAt = v5->_startedAt;
     v5->_startedAt = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"_knownNetworks"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"_knownNetworks"];
     v12 = [v11 mutableCopy];
     knownNetworks = v5->_knownNetworks;
     v5->_knownNetworks = v12;
@@ -2192,63 +2192,63 @@ LABEL_48:
     v14 = MEMORY[0x1E695DFD8];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"_autoJoinTriggerCounts"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"_autoJoinTriggerCounts"];
     v18 = [v17 mutableCopy];
     autoJoinTriggerCounts = v5->_autoJoinTriggerCounts;
     v5->_autoJoinTriggerCounts = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_autoJoinDidFindCandidateCount"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_autoJoinDidFindCandidateCount"];
     v5->_autoJoinDidFindCandidateCount = [v20 unsignedIntegerValue];
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_autoJoinDidJoinCount"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_autoJoinDidJoinCount"];
     v5->_autoJoinDidJoinCount = [v21 unsignedIntegerValue];
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_autoJoinAlreadyAssociatedCount"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_autoJoinAlreadyAssociatedCount"];
     v5->_autoJoinAlreadyAssociatedCount = [v22 unsignedIntegerValue];
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_autoJoinAbortedCount"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_autoJoinAbortedCount"];
     v5->_autoJoinAbortedCount = [v23 unsignedIntegerValue];
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_scanChannelCount"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_scanChannelCount"];
     v5->_scanChannelCount = [v24 unsignedIntegerValue];
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_scanChannelCount2GHz"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_scanChannelCount2GHz"];
     v5->_scanChannelCount2GHz = [v25 unsignedIntegerValue];
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_scanChannelCount5GHz"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_scanChannelCount5GHz"];
     v5->_scanChannelCount5GHz = [v26 unsignedIntegerValue];
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_scanChannelCount6GHz"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_scanChannelCount6GHz"];
     v5->_scanChannelCount6GHz = [v27 unsignedIntegerValue];
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_preAssocScanChannelCount"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_preAssocScanChannelCount"];
     v5->_preAssocScanChannelCount = [v28 unsignedIntegerValue];
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_preAssocScanChannelCount2GHz"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_preAssocScanChannelCount2GHz"];
     v5->_preAssocScanChannelCount2GHz = [v29 unsignedIntegerValue];
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_preAssocScanChannelCount5GHz"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_preAssocScanChannelCount5GHz"];
     v5->_preAssocScanChannelCount5GHz = [v30 unsignedIntegerValue];
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_preAssocScanChannelCount6GHz"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_preAssocScanChannelCount6GHz"];
     v5->_preAssocScanChannelCount6GHz = [v31 unsignedIntegerValue];
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_followup6GHzScanChannelCount"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_followup6GHzScanChannelCount"];
     v5->_followup6GHzScanChannelCount = [v32 unsignedIntegerValue];
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_GASQueryCount"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_GASQueryCount"];
     v5->_GASQueryCount = [v33 unsignedIntegerValue];
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_autoHotspotCount"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_autoHotspotCount"];
     v5->_autoHotspotCount = [v34 unsignedIntegerValue];
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_autoHotspotDidFindCandidateCount"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_autoHotspotDidFindCandidateCount"];
     v5->_autoHotspotDidFindCandidateCount = [v35 unsignedIntegerValue];
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_autoHotspotDidJoinCount"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_autoHotspotDidJoinCount"];
     v5->_autoHotspotDidJoinCount = [v36 unsignedIntegerValue];
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_autoHotspotAbortedCount"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_autoHotspotAbortedCount"];
     v5->_autoHotspotAbortedCount = [v37 unsignedIntegerValue];
   }
 

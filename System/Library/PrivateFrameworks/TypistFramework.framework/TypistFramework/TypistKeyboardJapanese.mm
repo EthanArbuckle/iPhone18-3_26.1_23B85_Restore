@@ -4,35 +4,35 @@
 - (BOOL)isKanaKeyboard;
 - (BOOL)isTenKey;
 - (CGRect)_determineHandwritingBound;
-- (TypistKeyboardJapanese)initWithCoder:(id)a3;
-- (id)_convertKanaStringstoMultiTapNecessary:(id)a3;
-- (id)_convertKanaStringstoRomajiIfNecessary:(id)a3;
+- (TypistKeyboardJapanese)initWithCoder:(id)coder;
+- (id)_convertKanaStringstoMultiTapNecessary:(id)necessary;
+- (id)_convertKanaStringstoRomajiIfNecessary:(id)necessary;
 - (id)_flickGestureDirection;
-- (id)addAccentKeyAction:(id)a3;
-- (id)addKeyboardPopupKeys:(id)a3 inPlane:(id)a4 addTo:(id)a5 keyplaneKeycaps:(id)a6;
-- (id)changeKeyNameToGenericCharacter:(id)a3;
-- (id)generateKeyplaneSwitchTable:(id)a3;
-- (id)generateKeystrokeStream:(id)a3;
-- (id)getExpectedPlaneNameForKey:(id)a3 currentPlane:(id)a4;
-- (id)getPostfixKey:(id)a3;
-- (id)init:(id)a3 options:(id)a4;
-- (id)setupKeyboardInfo:(id)a3 options:(id)a4;
+- (id)addAccentKeyAction:(id)action;
+- (id)addKeyboardPopupKeys:(id)keys inPlane:(id)plane addTo:(id)to keyplaneKeycaps:(id)keycaps;
+- (id)changeKeyNameToGenericCharacter:(id)character;
+- (id)generateKeyplaneSwitchTable:(id)table;
+- (id)generateKeystrokeStream:(id)stream;
+- (id)getExpectedPlaneNameForKey:(id)key currentPlane:(id)plane;
+- (id)getPostfixKey:(id)key;
+- (id)init:(id)init options:(id)options;
+- (id)setupKeyboardInfo:(id)info options:(id)options;
 - (id)whiteSpaceCharSet;
-- (int64_t)commitCandidate:(id)a3;
-- (int64_t)commitCandidateAtIndex:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setup50OnFlick:(id)a3 forKey:(id)a4 keyName:(id)a5 planeName:(id)a6;
-- (void)setupExtraKeyplaneDataIfNeeded:(id)a3;
-- (void)setupTenKey:(id)a3 forKey:(id)a4 keyName:(id)a5 planeName:(id)a6;
+- (int64_t)commitCandidate:(id)candidate;
+- (int64_t)commitCandidateAtIndex:(int64_t)index;
+- (void)encodeWithCoder:(id)coder;
+- (void)setup50OnFlick:(id)flick forKey:(id)key keyName:(id)name planeName:(id)planeName;
+- (void)setupExtraKeyplaneDataIfNeeded:(id)needed;
+- (void)setupTenKey:(id)key forKey:(id)forKey keyName:(id)name planeName:(id)planeName;
 @end
 
 @implementation TypistKeyboardJapanese
 
-- (id)init:(id)a3 options:(id)a4
+- (id)init:(id)init options:(id)options
 {
   v7.receiver = self;
   v7.super_class = TypistKeyboardJapanese;
-  v4 = [(TypistKeyboard *)&v7 init:a3 options:a4 locale:@"ja_JP"];
+  v4 = [(TypistKeyboard *)&v7 init:init options:options locale:@"ja_JP"];
   v5 = v4;
   if (v4)
   {
@@ -42,21 +42,21 @@
   return v5;
 }
 
-- (id)setupKeyboardInfo:(id)a3 options:(id)a4
+- (id)setupKeyboardInfo:(id)info options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  optionsCopy = options;
   v8 = objc_opt_new();
   [(TypistKeyboardJapanese *)self setMultiTapOrbit:v8];
 
-  v9 = [v6 lowercaseString];
-  v10 = [v9 containsString:@"kana"];
+  lowercaseString = [infoCopy lowercaseString];
+  v10 = [lowercaseString containsString:@"kana"];
 
   if (v10)
   {
-    v11 = [MEMORY[0x277D75418] currentDevice];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
     v12 = @"iPhone";
-    if ([v11 userInterfaceIdiom] == 1 && !-[TypistKeyboard isFloating](self, "isFloating"))
+    if ([currentDevice userInterfaceIdiom] == 1 && !-[TypistKeyboard isFloating](self, "isFloating"))
     {
       v12 = @"iPad";
     }
@@ -68,12 +68,12 @@
 
   v36.receiver = self;
   v36.super_class = TypistKeyboardJapanese;
-  v15 = [(TypistKeyboard *)&v36 setupKeyboardInfo:v6 options:v7];
+  v15 = [(TypistKeyboard *)&v36 setupKeyboardInfo:infoCopy options:optionsCopy];
   if (!v15)
   {
     [(TypistKeyboard *)self setUsePopupKeys:1];
-    v16 = [(TypistKeyboard *)self keyboardID];
-    v17 = [v16 containsString:@"-Flick"];
+    keyboardID = [(TypistKeyboard *)self keyboardID];
+    v17 = [keyboardID containsString:@"-Flick"];
 
     if (v17)
     {
@@ -91,20 +91,20 @@
 
       if ([(TypistKeyboardJapanese *)self isTenKey])
       {
-        v20 = [(TypistKeyboard *)self keyPlanes];
-        v21 = [v20 objectForKeyedSubscript:@"alphabet-plane"];
+        keyPlanes = [(TypistKeyboard *)self keyPlanes];
+        v21 = [keyPlanes objectForKeyedSubscript:@"alphabet-plane"];
         v22 = [v21 objectForKeyedSubscript:@"↨"];
         [(TypistKeyboardJapanese *)self setUpdownKey:v22];
 
-        v23 = [(TypistKeyboard *)self keyPlanes];
-        v24 = [(TypistKeyboard *)self defaultPlaneName];
-        v25 = [v23 objectForKeyedSubscript:v24];
+        keyPlanes2 = [(TypistKeyboard *)self keyPlanes];
+        defaultPlaneName = [(TypistKeyboard *)self defaultPlaneName];
+        v25 = [keyPlanes2 objectForKeyedSubscript:defaultPlaneName];
         v26 = [v25 objectForKeyedSubscript:@"☻"];
         [(TypistKeyboardJapanese *)self setAccentKey:v26];
 
-        v27 = [(TypistKeyboard *)self keyPlanes];
-        v28 = [(TypistKeyboard *)self defaultPlaneName];
-        v29 = [v27 objectForKeyedSubscript:v28];
+        keyPlanes3 = [(TypistKeyboard *)self keyPlanes];
+        defaultPlaneName2 = [(TypistKeyboard *)self defaultPlaneName];
+        v29 = [keyPlanes3 objectForKeyedSubscript:defaultPlaneName2];
         v30 = [v29 objectForKeyedSubscript:@""];
         [(TypistKeyboardJapanese *)self setMultiTapCompleteKey:v30];
       }
@@ -112,9 +112,9 @@
       else
       {
         [(TypistKeyboardJapanese *)self setUpdownKey:0];
-        v31 = [(TypistKeyboard *)self keyPlanes];
-        v32 = [(TypistKeyboard *)self defaultPlaneName];
-        v33 = [v31 objectForKeyedSubscript:v32];
+        keyPlanes4 = [(TypistKeyboard *)self keyPlanes];
+        defaultPlaneName3 = [(TypistKeyboard *)self defaultPlaneName];
+        v33 = [keyPlanes4 objectForKeyedSubscript:defaultPlaneName3];
         v34 = [v33 objectForKeyedSubscript:@"゛"];
         [(TypistKeyboardJapanese *)self setAccentKey:v34];
 
@@ -126,37 +126,37 @@
   return v15;
 }
 
-- (void)setupExtraKeyplaneDataIfNeeded:(id)a3
+- (void)setupExtraKeyplaneDataIfNeeded:(id)needed
 {
-  v5 = a3;
+  neededCopy = needed;
   if ([(TypistKeyboardJapanese *)self isTenKey])
   {
-    v4 = [v5 objectForKeyedSubscript:@"multiTapOrbit"];
+    v4 = [neededCopy objectForKeyedSubscript:@"multiTapOrbit"];
     [(TypistKeyboardJapanese *)self setMultiTapOrbit:v4];
   }
 }
 
 - (BOOL)isHandwriting
 {
-  v2 = [(TypistKeyboard *)self keyboardID];
-  v3 = [v2 hasPrefix:@"ja_JP-HWR@"];
+  keyboardID = [(TypistKeyboard *)self keyboardID];
+  v3 = [keyboardID hasPrefix:@"ja_JP-HWR@"];
 
   return v3;
 }
 
 - (BOOL)isTenKey
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = ([v3 userInterfaceIdiom] != 1 || -[TypistKeyboard isFloating](self, "isFloating")) && -[TypistKeyboardJapanese isKanaKeyboard](self, "isKanaKeyboard");
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v4 = ([currentDevice userInterfaceIdiom] != 1 || -[TypistKeyboard isFloating](self, "isFloating")) && -[TypistKeyboardJapanese isKanaKeyboard](self, "isKanaKeyboard");
 
   return v4;
 }
 
 - (BOOL)isKanaKeyboard
 {
-  v2 = [(TypistKeyboard *)self keyboardID];
-  v3 = [v2 lowercaseString];
-  v4 = [v3 containsString:@"kana"];
+  keyboardID = [(TypistKeyboard *)self keyboardID];
+  lowercaseString = [keyboardID lowercaseString];
+  v4 = [lowercaseString containsString:@"kana"];
 
   return v4;
 }
@@ -165,9 +165,9 @@
 {
   if ([(TypistKeyboardJapanese *)self isTenKey])
   {
-    v3 = [(TypistKeyboard *)self keyboardID];
-    v4 = [v3 lowercaseString];
-    v5 = [v4 containsString:@"flick"] ^ 1;
+    keyboardID = [(TypistKeyboard *)self keyboardID];
+    lowercaseString = [keyboardID lowercaseString];
+    v5 = [lowercaseString containsString:@"flick"] ^ 1;
   }
 
   else
@@ -178,22 +178,22 @@
   return v5;
 }
 
-- (id)addKeyboardPopupKeys:(id)a3 inPlane:(id)a4 addTo:(id)a5 keyplaneKeycaps:(id)a6
+- (id)addKeyboardPopupKeys:(id)keys inPlane:(id)plane addTo:(id)to keyplaneKeycaps:(id)keycaps
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keysCopy = keys;
+  planeCopy = plane;
+  toCopy = to;
+  keycapsCopy = keycaps;
   if ([(TypistKeyboardJapanese *)self isKanaKeyboard])
   {
-    v14 = v12;
+    v14 = toCopy;
   }
 
   else
   {
     v17.receiver = self;
     v17.super_class = TypistKeyboardJapanese;
-    v14 = [(TypistKeyboard *)&v17 addKeyboardPopupKeys:v10 inPlane:v11 addTo:v12 keyplaneKeycaps:v13];
+    v14 = [(TypistKeyboard *)&v17 addKeyboardPopupKeys:keysCopy inPlane:planeCopy addTo:toCopy keyplaneKeycaps:keycapsCopy];
   }
 
   v15 = v14;
@@ -201,30 +201,30 @@
   return v15;
 }
 
-- (id)changeKeyNameToGenericCharacter:(id)a3
+- (id)changeKeyNameToGenericCharacter:(id)character
 {
-  v4 = a3;
-  if ([v4 containsString:@"TenKey-Alphabet-Keyplane-Switch"])
+  characterCopy = character;
+  if ([characterCopy containsString:@"TenKey-Alphabet-Keyplane-Switch"])
   {
     v5 = @"alphabet-plane";
   }
 
-  else if ([v4 containsString:@"FiftyOn-Alphabet-Keyplane-Switch"])
+  else if ([characterCopy containsString:@"FiftyOn-Alphabet-Keyplane-Switch"])
   {
     v5 = @"alphabet-small-letter-plane";
   }
 
-  else if ([v4 containsString:@"FiftyOn-SymbolNumber-Keyplane-Switch"])
+  else if ([characterCopy containsString:@"FiftyOn-SymbolNumber-Keyplane-Switch"])
   {
     v5 = @"symbolnumber-plane";
   }
 
-  else if ([v4 containsString:@"FiftyOn-Kana-Keyplane-Switch"])
+  else if ([characterCopy containsString:@"FiftyOn-Kana-Keyplane-Switch"])
   {
     v5 = @"kana-plane";
   }
 
-  else if (-[TypistKeyboardJapanese isKanaKeyboard](self, "isKanaKeyboard") && !-[TypistKeyboardJapanese isTenKey](self, "isTenKey") && ([v4 containsString:@"Fullwidth-Key-To-"] & 1) != 0)
+  else if (-[TypistKeyboardJapanese isKanaKeyboard](self, "isKanaKeyboard") && !-[TypistKeyboardJapanese isTenKey](self, "isTenKey") && ([characterCopy containsString:@"Fullwidth-Key-To-"] & 1) != 0)
   {
     v5 = @"全";
   }
@@ -233,22 +233,22 @@
   {
     v7.receiver = self;
     v7.super_class = TypistKeyboardJapanese;
-    v5 = [(TypistKeyboard *)&v7 changeKeyNameToGenericCharacter:v4];
+    v5 = [(TypistKeyboard *)&v7 changeKeyNameToGenericCharacter:characterCopy];
   }
 
   return v5;
 }
 
-- (id)generateKeyplaneSwitchTable:(id)a3
+- (id)generateKeyplaneSwitchTable:(id)table
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tableCopy = table;
   if ([(TypistKeyboardJapanese *)self isKanaKeyboard])
   {
     v42.receiver = self;
     v42.super_class = TypistKeyboardJapanese;
-    v24 = v4;
-    [(TypistKeyboard *)&v42 generateKeyplaneSwitchTableFor10Key:v4];
+    v24 = tableCopy;
+    [(TypistKeyboard *)&v42 generateKeyplaneSwitchTableFor10Key:tableCopy];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
@@ -282,8 +282,8 @@
         v36 = 0u;
         v37 = 0u;
         v31 = v10;
-        v30 = [v10 allKeys];
-        v11 = [v30 countByEnumeratingWithState:&v34 objects:v43 count:16];
+        allKeys = [v10 allKeys];
+        v11 = [allKeys countByEnumeratingWithState:&v34 objects:v43 count:16];
         if (v11)
         {
           v12 = v11;
@@ -295,7 +295,7 @@
             {
               if (*v35 != v13)
               {
-                objc_enumerationMutation(v30);
+                objc_enumerationMutation(allKeys);
               }
 
               v15 = *(*(&v34 + 1) + 8 * i);
@@ -327,7 +327,7 @@ LABEL_16:
               v9 = v32;
             }
 
-            v12 = [v30 countByEnumeratingWithState:&v34 objects:v43 count:16];
+            v12 = [allKeys countByEnumeratingWithState:&v34 objects:v43 count:16];
           }
 
           while (v12);
@@ -342,7 +342,7 @@ LABEL_16:
       {
 LABEL_20:
 
-        v4 = v24;
+        tableCopy = v24;
         goto LABEL_22;
       }
     }
@@ -350,7 +350,7 @@ LABEL_20:
 
   v33.receiver = self;
   v33.super_class = TypistKeyboardJapanese;
-  v27 = [(TypistKeyboard *)&v33 generateKeyplaneSwitchTable:v4];
+  v27 = [(TypistKeyboard *)&v33 generateKeyplaneSwitchTable:tableCopy];
 LABEL_22:
 
   v22 = *MEMORY[0x277D85DE8];
@@ -358,16 +358,16 @@ LABEL_22:
   return v27;
 }
 
-- (id)getPostfixKey:(id)a3
+- (id)getPostfixKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (![(TypistKeyboardJapanese *)self isKanaKeyboard])
   {
     goto LABEL_7;
   }
 
-  v5 = [(TypistKeyboardJapanese *)self baseCharacters];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  baseCharacters = [(TypistKeyboardJapanese *)self baseCharacters];
+  v6 = [baseCharacters objectForKeyedSubscript:keyCopy];
   if (!v6)
   {
 
@@ -377,63 +377,63 @@ LABEL_22:
   v7 = v6;
   if (![(TypistKeyboardJapanese *)self isTenKey])
   {
-    v8 = [(TypistKeyboard *)self flickTyping];
+    flickTyping = [(TypistKeyboard *)self flickTyping];
 
-    if (!v8)
+    if (!flickTyping)
     {
       goto LABEL_11;
     }
 
 LABEL_7:
-    v9 = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
-    v10 = [v9 characterIsMember:{objc_msgSend(v4, "characterAtIndex:", 0)}];
+    uppercaseLetterCharacterSet = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
+    v10 = [uppercaseLetterCharacterSet characterIsMember:{objc_msgSend(keyCopy, "characterAtIndex:", 0)}];
 
     if (v10)
     {
-      v11 = [v4 lowercaseString];
+      lowercaseString = [keyCopy lowercaseString];
     }
 
     else
     {
-      v11 = v4;
+      lowercaseString = keyCopy;
     }
 
-    v12 = v11;
+    v12 = lowercaseString;
     goto LABEL_12;
   }
 
 LABEL_11:
-  v13 = [(TypistKeyboardJapanese *)self baseCharacters];
-  v12 = [v13 objectForKeyedSubscript:v4];
+  baseCharacters2 = [(TypistKeyboardJapanese *)self baseCharacters];
+  v12 = [baseCharacters2 objectForKeyedSubscript:keyCopy];
 
 LABEL_12:
 
   return v12;
 }
 
-- (id)addAccentKeyAction:(id)a3
+- (id)addAccentKeyAction:(id)action
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   if ([(TypistKeyboardJapanese *)self isKanaKeyboard])
   {
-    v5 = [(TypistKeyboardJapanese *)self baseCharacters];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    baseCharacters = [(TypistKeyboardJapanese *)self baseCharacters];
+    v6 = [baseCharacters objectForKeyedSubscript:actionCopy];
 
     if (v6)
     {
       if (![(TypistKeyboard *)self flickTyping]|| [(TypistKeyboardJapanese *)self isTenKey])
       {
-        v7 = [(TypistKeyboardJapanese *)self doubleAccentCharacterSet];
-        v8 = [v7 characterIsMember:{objc_msgSend(v4, "characterAtIndex:", 0)}];
+        doubleAccentCharacterSet = [(TypistKeyboardJapanese *)self doubleAccentCharacterSet];
+        v8 = [doubleAccentCharacterSet characterIsMember:{objc_msgSend(actionCopy, "characterAtIndex:", 0)}];
 
-        v9 = [(TypistKeyboardJapanese *)self accentKey];
-        v10 = v9;
+        accentKey = [(TypistKeyboardJapanese *)self accentKey];
+        updownKey = accentKey;
         if (v8)
         {
-          v27[0] = v9;
-          v11 = [(TypistKeyboardJapanese *)self accentKey];
-          v27[1] = v11;
+          v27[0] = accentKey;
+          accentKey2 = [(TypistKeyboardJapanese *)self accentKey];
+          v27[1] = accentKey2;
           v12 = MEMORY[0x277CBEA60];
           v13 = v27;
           v14 = 2;
@@ -444,7 +444,7 @@ LABEL_13:
           goto LABEL_22;
         }
 
-        v26 = v9;
+        v26 = accentKey;
         v18 = MEMORY[0x277CBEA60];
         v19 = &v26;
 LABEL_12:
@@ -455,15 +455,15 @@ LABEL_12:
 
     else
     {
-      v16 = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
-      if ([v16 characterIsMember:{objc_msgSend(v4, "characterAtIndex:", 0)}])
+      uppercaseLetterCharacterSet = [MEMORY[0x277CCA900] uppercaseLetterCharacterSet];
+      if ([uppercaseLetterCharacterSet characterIsMember:{objc_msgSend(actionCopy, "characterAtIndex:", 0)}])
       {
-        v17 = [(TypistKeyboardJapanese *)self isTenKey];
+        isTenKey = [(TypistKeyboardJapanese *)self isTenKey];
 
-        if (v17)
+        if (isTenKey)
         {
-          v10 = [(TypistKeyboardJapanese *)self updownKey];
-          v25 = v10;
+          updownKey = [(TypistKeyboardJapanese *)self updownKey];
+          v25 = updownKey;
           v18 = MEMORY[0x277CBEA60];
           v19 = &v25;
           goto LABEL_12;
@@ -476,16 +476,16 @@ LABEL_12:
 
       if ([(TypistKeyboardJapanese *)self _canMultiTap]&& [(TypistKeyboard *)self flickTyping]&& [(TypistKeyboardJapanese *)self isTenKey])
       {
-        v10 = [(TypistKeyboard *)self findKeyOnAnyPlane:v4];
-        if (!_shouldNotTapArrowKey(v4))
+        updownKey = [(TypistKeyboard *)self findKeyOnAnyPlane:actionCopy];
+        if (!_shouldNotTapArrowKey(actionCopy))
         {
-          v20 = [v10 objectForKeyedSubscript:@"type"];
+          v20 = [updownKey objectForKeyedSubscript:@"type"];
           v21 = [v20 isEqualToString:@"gesture"];
 
           if (!v21)
           {
-            v11 = [(TypistKeyboardJapanese *)self multiTapCompleteKey];
-            v24 = v11;
+            accentKey2 = [(TypistKeyboardJapanese *)self multiTapCompleteKey];
+            v24 = accentKey2;
             v12 = MEMORY[0x277CBEA60];
             v13 = &v24;
             v14 = 1;
@@ -504,12 +504,12 @@ LABEL_22:
   return v15;
 }
 
-- (id)generateKeystrokeStream:(id)a3
+- (id)generateKeystrokeStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   if ([(TypistKeyboardJapanese *)self isKanaKeyboard])
   {
-    v5 = [(TypistKeyboardJapanese *)self _convertKanaStringstoMultiTapNecessary:v4];
+    v5 = [(TypistKeyboardJapanese *)self _convertKanaStringstoMultiTapNecessary:streamCopy];
     TYLog(@"Japanese keys to be typed (in Kana): %@", v6, v7, v8, v9, v10, v11, v12, v5);
     v48.receiver = self;
     v48.super_class = TypistKeyboardJapanese;
@@ -519,12 +519,12 @@ LABEL_22:
     goto LABEL_6;
   }
 
-  v13 = [(TypistKeyboard *)self keyboardID];
-  v14 = [v13 containsString:@"sw=QWERTY"];
+  keyboardID = [(TypistKeyboard *)self keyboardID];
+  v14 = [keyboardID containsString:@"sw=QWERTY"];
 
   if (v14)
   {
-    v5 = [(TypistKeyboardJapanese *)self _convertKanaStringstoRomajiIfNecessary:v4];
+    v5 = [(TypistKeyboardJapanese *)self _convertKanaStringstoRomajiIfNecessary:streamCopy];
     TYLog(@"Japanese keys to be typed (in Romaji): %@", v15, v16, v17, v18, v19, v20, v21, v5);
     v47.receiver = self;
     v47.super_class = TypistKeyboardJapanese;
@@ -539,8 +539,8 @@ LABEL_22:
     v34 = v33;
     v36 = v35;
     v38 = v37;
-    TYLog(@"Text to be handwritten: %@", v39, v40, v41, v42, v43, v44, v45, v4);
-    v22 = [(TypistKeyboard *)self generateHandwritingStream:v4 inFrame:0 isPencil:v32, v34, v36, v38];
+    TYLog(@"Text to be handwritten: %@", v39, v40, v41, v42, v43, v44, v45, streamCopy);
+    v22 = [(TypistKeyboard *)self generateHandwritingStream:streamCopy inFrame:0 isPencil:v32, v34, v36, v38];
   }
 
   else
@@ -582,26 +582,26 @@ void __48__TypistKeyboardJapanese__flickGestureDirection__block_invoke()
   _flickGestureDirection_flickGestureDirection_0 = &unk_28802A300;
 }
 
-- (void)setupTenKey:(id)a3 forKey:(id)a4 keyName:(id)a5 planeName:(id)a6
+- (void)setupTenKey:(id)key forKey:(id)forKey keyName:(id)name planeName:(id)planeName
 {
   v80[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v73 = a6;
-  if (-[TypistKeyboardJapanese isTenKey](self, "isTenKey") && ([v11 modifiesKeyplane] & 1) == 0)
+  keyCopy = key;
+  forKeyCopy = forKey;
+  nameCopy = name;
+  planeNameCopy = planeName;
+  if (-[TypistKeyboardJapanese isTenKey](self, "isTenKey") && ([forKeyCopy modifiesKeyplane] & 1) == 0)
   {
-    v13 = [v11 fullRepresentedString];
-    v71 = self;
-    v75 = v13;
-    if ([v13 length] >= 2)
+    fullRepresentedString = [forKeyCopy fullRepresentedString];
+    selfCopy = self;
+    v75 = fullRepresentedString;
+    if ([fullRepresentedString length] >= 2)
     {
       v14 = 1;
       do
       {
-        v15 = [v13 substringWithRange:{v14, 1}];
-        v16 = [(TypistKeyboardJapanese *)self multiTapOrbit];
-        v17 = [v16 objectForKeyedSubscript:v15];
+        v15 = [fullRepresentedString substringWithRange:{v14, 1}];
+        multiTapOrbit = [(TypistKeyboardJapanese *)self multiTapOrbit];
+        v17 = [multiTapOrbit objectForKeyedSubscript:v15];
 
         if (v17)
         {
@@ -610,42 +610,42 @@ void __48__TypistKeyboardJapanese__flickGestureDirection__block_invoke()
 
         else
         {
-          v18 = [(TypistKeyboardJapanese *)self multiTapOrbit];
+          multiTapOrbit2 = [(TypistKeyboardJapanese *)self multiTapOrbit];
           v79[1] = @"taps";
-          v80[0] = v12;
+          v80[0] = nameCopy;
           v79[0] = @"basekey";
           v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:++v14];
           v80[1] = v19;
           v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v80 forKeys:v79 count:2];
-          [v18 setObject:v20 forKey:v15];
+          [multiTapOrbit2 setObject:v20 forKey:v15];
 
-          self = v71;
+          self = selfCopy;
         }
 
-        v13 = v75;
+        fullRepresentedString = v75;
       }
 
       while (v14 < [v75 length]);
     }
 
-    v69 = v12;
-    v21 = [(TypistKeyboardJapanese *)self flickTable];
+    v69 = nameCopy;
+    flickTable = [(TypistKeyboardJapanese *)self flickTable];
     v22 = MEMORY[0x277CCACA8];
-    v23 = [v11 displayString];
-    v24 = [v22 stringWithFormat:@"Roman-Accent-%@", v23];
-    v25 = [v21 objectForKey:v24];
+    displayString = [forKeyCopy displayString];
+    v24 = [v22 stringWithFormat:@"Roman-Accent-%@", displayString];
+    v25 = [flickTable objectForKey:v24];
 
     v67 = v25;
     v26 = [v25 objectForKey:@"Strings"];
-    v27 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v28 = [v26 stringByTrimmingCharactersInSet:v27];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v28 = [v26 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-    v29 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
     v68 = v28;
-    v30 = [v28 componentsSeparatedByCharactersInSet:v29];
+    v30 = [v28 componentsSeparatedByCharactersInSet:whitespaceCharacterSet2];
 
-    v70 = v11;
-    [v11 frame];
+    v70 = forKeyCopy;
+    [forKeyCopy frame];
     UIRectGetCenter();
     v31 = *MEMORY[0x277CBF348];
     v32 = *(MEMORY[0x277CBF348] + 8);
@@ -660,9 +660,9 @@ void __48__TypistKeyboardJapanese__flickGestureDirection__block_invoke()
       while (v38)
       {
         v72 = [v74 objectAtIndexedSubscript:v37];
-        v39 = [(TypistKeyboardJapanese *)v71 _flickGestureDirection];
-        v40 = [v39 objectAtIndexedSubscript:v37 - 1];
-        v76.receiver = v71;
+        _flickGestureDirection = [(TypistKeyboardJapanese *)selfCopy _flickGestureDirection];
+        v40 = [_flickGestureDirection objectAtIndexedSubscript:v37 - 1];
+        v76.receiver = selfCopy;
         v76.super_class = TypistKeyboardJapanese;
         LODWORD(v41) = 1118175232;
         [(TypistKeyboard *)&v76 calculateCoordinatesForFlickGesture:v40 direction:v34 offset:v36, v41];
@@ -681,13 +681,13 @@ void __48__TypistKeyboardJapanese__flickGestureDirection__block_invoke()
         v77[4] = @"y";
         v47 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.2f", v45];
         v78[4] = v47;
-        v78[5] = v73;
+        v78[5] = planeNameCopy;
         v77[5] = @"plane";
         v77[6] = @"type";
         v78[6] = @"gesture";
         v77[7] = @"more-after";
-        v48 = [v70 cache];
-        v49 = [v48 objectForKey:@"more-after"];
+        cache = [v70 cache];
+        v49 = [cache objectForKey:@"more-after"];
         v50 = v49;
         v51 = &unk_28802A0D8;
         if (v49)
@@ -697,13 +697,13 @@ void __48__TypistKeyboardJapanese__flickGestureDirection__block_invoke()
 
         v78[7] = v51;
         v77[8] = @"direction";
-        [(TypistKeyboardJapanese *)v71 _flickGestureDirection];
-        v53 = v52 = v10;
+        [(TypistKeyboardJapanese *)selfCopy _flickGestureDirection];
+        v53 = v52 = keyCopy;
         v54 = [v53 objectAtIndexedSubscript:v37 - 1];
         v78[8] = v54;
         v55 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v78 forKeys:v77 count:9];
 
-        v10 = v52;
+        keyCopy = v52;
         [v52 setObject:v55 forKey:v72];
 
         ++v37;
@@ -716,43 +716,43 @@ void __48__TypistKeyboardJapanese__flickGestureDirection__block_invoke()
 
       v56 = objc_opt_class();
       v57 = NSStringFromClass(v56);
-      v66 = [v70 representedString];
+      representedString = [v70 representedString];
       TYLog(@"%@ - setupTenKey: WARNING! More than 4 flicks found for %@ - %@", v58, v59, v60, v61, v62, v63, v64, v57);
     }
 
 LABEL_17:
 
-    v12 = v69;
-    v11 = v70;
+    nameCopy = v69;
+    forKeyCopy = v70;
   }
 
   v65 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setup50OnFlick:(id)a3 forKey:(id)a4 keyName:(id)a5 planeName:(id)a6
+- (void)setup50OnFlick:(id)flick forKey:(id)key keyName:(id)name planeName:(id)planeName
 {
   v55[9] = *MEMORY[0x277D85DE8];
-  v51 = a3;
-  v10 = a4;
-  v50 = a5;
-  v49 = a6;
-  v11 = [(TypistKeyboardJapanese *)self flickTable];
+  flickCopy = flick;
+  keyCopy = key;
+  nameCopy = name;
+  planeNameCopy = planeName;
+  flickTable = [(TypistKeyboardJapanese *)self flickTable];
   v12 = MEMORY[0x277CCACA8];
-  v52 = v10;
-  v13 = [v10 displayString];
-  v14 = [v12 stringWithFormat:@"Roman-Accent-%@", v13];
-  v15 = [v11 objectForKey:v14];
+  v52 = keyCopy;
+  displayString = [keyCopy displayString];
+  v14 = [v12 stringWithFormat:@"Roman-Accent-%@", displayString];
+  v15 = [flickTable objectForKey:v14];
 
   if (v15)
   {
     v47 = v15;
     v16 = [v15 objectForKey:@"Strings"];
-    v17 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v18 = [v16 stringByTrimmingCharactersInSet:v17];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v18 = [v16 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-    v19 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    whitespaceCharacterSet2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
     v46 = v18;
-    v20 = [v18 componentsSeparatedByCharactersInSet:v19];
+    v20 = [v18 componentsSeparatedByCharactersInSet:whitespaceCharacterSet2];
 
     [v52 frame];
     UIRectGetCenter();
@@ -771,8 +771,8 @@ LABEL_17:
         v29 = v28;
         if (v28 && [v28 length])
         {
-          v30 = [(TypistKeyboardJapanese *)self _flickGestureDirection];
-          v31 = [v30 objectAtIndexedSubscript:v27 - 1];
+          _flickGestureDirection = [(TypistKeyboardJapanese *)self _flickGestureDirection];
+          v31 = [_flickGestureDirection objectAtIndexedSubscript:v27 - 1];
 
           v53.receiver = self;
           v53.super_class = TypistKeyboardJapanese;
@@ -782,7 +782,7 @@ LABEL_17:
           v54[0] = @"key";
           v54[1] = @"basekey";
           v55[0] = v29;
-          v55[1] = v50;
+          v55[1] = nameCopy;
           v55[2] = @"flick";
           v54[2] = @"action";
           v54[3] = @"x";
@@ -791,13 +791,13 @@ LABEL_17:
           v54[4] = @"y";
           v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"%.2f", v34];
           v55[4] = v37;
-          v55[5] = v49;
+          v55[5] = planeNameCopy;
           v54[5] = @"plane";
           v54[6] = @"type";
           v55[6] = @"gesture";
           v54[7] = @"more-after";
-          v38 = [v52 cache];
-          v39 = [v38 objectForKey:@"more-after"];
+          cache = [v52 cache];
+          v39 = [cache objectForKey:@"more-after"];
           v40 = v39;
           v41 = &unk_28802A0D8;
           if (v39)
@@ -811,7 +811,7 @@ LABEL_17:
           [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:v54 count:9];
           v43 = v42 = self;
           v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v29];
-          [v51 setObject:v43 forKey:v44];
+          [flickCopy setObject:v43 forKey:v44];
 
           self = v42;
           v20 = v48;
@@ -829,24 +829,24 @@ LABEL_17:
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_convertKanaStringstoMultiTapNecessary:(id)a3
+- (id)_convertKanaStringstoMultiTapNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   if (![(TypistKeyboardJapanese *)self _canMultiTap]|| [(TypistKeyboard *)self flickTyping])
   {
-    v5 = v4;
+    v5 = necessaryCopy;
     goto LABEL_4;
   }
 
   v5 = objc_opt_new();
-  if ([v4 length])
+  if ([necessaryCopy length])
   {
     v7 = 0;
-    v23 = self;
-    v24 = v4;
+    selfCopy = self;
+    v24 = necessaryCopy;
     while (1)
     {
-      v8 = [v4 substringWithRange:{v7, 1, v23}];
+      v8 = [necessaryCopy substringWithRange:{v7, 1, selfCopy}];
       v9 = [(TypistKeyboardJapanese *)self addAccentKeyAction:v8];
       if (v9)
       {
@@ -855,8 +855,8 @@ LABEL_17:
         v8 = v10;
       }
 
-      v11 = [(TypistKeyboardJapanese *)self multiTapOrbit];
-      v12 = [v11 objectForKey:v8];
+      multiTapOrbit = [(TypistKeyboardJapanese *)self multiTapOrbit];
+      v12 = [multiTapOrbit objectForKey:v8];
 
       if (!v12)
       {
@@ -864,10 +864,10 @@ LABEL_17:
       }
 
       v13 = [v12 objectForKeyedSubscript:@"taps"];
-      v14 = [v13 unsignedIntegerValue];
+      unsignedIntegerValue = [v13 unsignedIntegerValue];
 
       v15 = [v12 objectForKeyedSubscript:@"basekey"];
-      if (v14)
+      if (unsignedIntegerValue)
       {
         goto LABEL_15;
       }
@@ -888,7 +888,7 @@ LABEL_16:
         while (v16 < [v9 count]);
       }
 
-      self = v23;
+      self = selfCopy;
       if (!_shouldNotTapArrowKey(v15))
       {
         v19 = [v12 objectForKeyedSubscript:@"plane"];
@@ -896,14 +896,14 @@ LABEL_16:
 
         if ((v20 & 1) == 0)
         {
-          v21 = [(TypistKeyboardJapanese *)v23 multiTapCompleteKey];
-          v22 = [v21 objectForKeyedSubscript:@"key"];
+          multiTapCompleteKey = [(TypistKeyboardJapanese *)selfCopy multiTapCompleteKey];
+          v22 = [multiTapCompleteKey objectForKeyedSubscript:@"key"];
           [v5 appendString:v22];
         }
       }
 
       ++v7;
-      v4 = v24;
+      necessaryCopy = v24;
       if (v7 >= [v24 length])
       {
         goto LABEL_4;
@@ -911,15 +911,15 @@ LABEL_16:
     }
 
     v15 = v8;
-    v14 = 1;
+    unsignedIntegerValue = 1;
     do
     {
 LABEL_15:
       [v5 appendString:v15];
-      --v14;
+      --unsignedIntegerValue;
     }
 
-    while (v14);
+    while (unsignedIntegerValue);
     goto LABEL_16;
   }
 
@@ -928,18 +928,18 @@ LABEL_4:
   return v5;
 }
 
-- (id)_convertKanaStringstoRomajiIfNecessary:(id)a3
+- (id)_convertKanaStringstoRomajiIfNecessary:(id)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v4 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"[a-z]" options:0 error:0];
-  if ([v3 length] < 2 || objc_msgSend(v4, "numberOfMatchesInString:options:range:", v3, 0, 0, objc_msgSend(v3, "length")))
+  if ([necessaryCopy length] < 2 || objc_msgSend(v4, "numberOfMatchesInString:options:range:", necessaryCopy, 0, 0, objc_msgSend(necessaryCopy, "length")))
   {
-    v5 = v3;
+    v5 = necessaryCopy;
   }
 
   else
   {
-    v7 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:v3];
+    v7 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:necessaryCopy];
     CFStringTransform(v7, 0, *MEMORY[0x277CBF0E0], 1u);
     v8 = [MEMORY[0x277CCACA8] stringWithString:v7];
 
@@ -953,44 +953,44 @@ LABEL_4:
   return v5;
 }
 
-- (id)getExpectedPlaneNameForKey:(id)a3 currentPlane:(id)a4
+- (id)getExpectedPlaneNameForKey:(id)key currentPlane:(id)plane
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TypistKeyboardJapanese *)self whiteSpaceCharSet];
-  v9 = [v8 characterIsMember:{objc_msgSend(v6, "characterAtIndex:", 0)}];
+  keyCopy = key;
+  planeCopy = plane;
+  whiteSpaceCharSet = [(TypistKeyboardJapanese *)self whiteSpaceCharSet];
+  v9 = [whiteSpaceCharSet characterIsMember:{objc_msgSend(keyCopy, "characterAtIndex:", 0)}];
 
   if (v9)
   {
-    v10 = [(TypistKeyboard *)self hasCandidatesToCommit];
+    hasCandidatesToCommit = [(TypistKeyboard *)self hasCandidatesToCommit];
   }
 
   else
   {
-    v10 = 1;
+    hasCandidatesToCommit = 1;
   }
 
-  [(TypistKeyboard *)self setHasCandidatesToCommit:v10];
-  if (-[TypistKeyboard hasCandidatesToCommit](self, "hasCandidatesToCommit") && [v6 isEqualToString:@"⏎"])
+  [(TypistKeyboard *)self setHasCandidatesToCommit:hasCandidatesToCommit];
+  if (-[TypistKeyboard hasCandidatesToCommit](self, "hasCandidatesToCommit") && [keyCopy isEqualToString:@"⏎"])
   {
     [(TypistKeyboard *)self setHasCandidatesToCommit:0];
   }
 
   else
   {
-    v11 = [(TypistKeyboard *)self getShiftPlaneForDefaultPlane];
-    v12 = [v11 isEqualToString:v7];
+    getShiftPlaneForDefaultPlane = [(TypistKeyboard *)self getShiftPlaneForDefaultPlane];
+    v12 = [getShiftPlaneForDefaultPlane isEqualToString:planeCopy];
 
     if (v12)
     {
-      v13 = [(TypistKeyboard *)self defaultPlaneName];
+      defaultPlaneName = [(TypistKeyboard *)self defaultPlaneName];
       goto LABEL_10;
     }
   }
 
-  v13 = v7;
+  defaultPlaneName = planeCopy;
 LABEL_10:
-  v14 = v13;
+  v14 = defaultPlaneName;
 
   return v14;
 }
@@ -1014,59 +1014,59 @@ uint64_t __43__TypistKeyboardJapanese_whiteSpaceCharSet__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (int64_t)commitCandidate:(id)a3
+- (int64_t)commitCandidate:(id)candidate
 {
   v7.receiver = self;
   v7.super_class = TypistKeyboardJapanese;
-  v4 = [(TypistKeyboard *)&v7 commitCandidate:a3];
+  v4 = [(TypistKeyboard *)&v7 commitCandidate:candidate];
   v5 = v4 < 0 && [(TypistKeyboard *)self hasCandidatesToCommit];
   [(TypistKeyboard *)self setHasCandidatesToCommit:v5];
   return v4;
 }
 
-- (int64_t)commitCandidateAtIndex:(int64_t)a3
+- (int64_t)commitCandidateAtIndex:(int64_t)index
 {
   v7.receiver = self;
   v7.super_class = TypistKeyboardJapanese;
-  v4 = [(TypistKeyboard *)&v7 commitCandidateAtIndex:a3];
+  v4 = [(TypistKeyboard *)&v7 commitCandidateAtIndex:index];
   v5 = v4 < 0 && [(TypistKeyboard *)self hasCandidatesToCommit];
   [(TypistKeyboard *)self setHasCandidatesToCommit:v5];
   return v4;
 }
 
-- (TypistKeyboardJapanese)initWithCoder:(id)a3
+- (TypistKeyboardJapanese)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = TypistKeyboardJapanese;
-  v5 = [(TypistKeyboard *)&v21 initWithCoder:v4];
+  v5 = [(TypistKeyboard *)&v21 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baseCharacters"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baseCharacters"];
     baseCharacters = v5->_baseCharacters;
     v5->_baseCharacters = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accentKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accentKey"];
     accentKey = v5->_accentKey;
     v5->_accentKey = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"updownKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"updownKey"];
     updownKey = v5->_updownKey;
     v5->_updownKey = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"multiTapCompleteKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"multiTapCompleteKey"];
     multiTapCompleteKey = v5->_multiTapCompleteKey;
     v5->_multiTapCompleteKey = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"doubleAccentCharacterSet"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"doubleAccentCharacterSet"];
     doubleAccentCharacterSet = v5->_doubleAccentCharacterSet;
     v5->_doubleAccentCharacterSet = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"flickTable"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"flickTable"];
     flickTable = v5->_flickTable;
     v5->_flickTable = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"multiTapOrbit"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"multiTapOrbit"];
     multiTapOrbit = v5->_multiTapOrbit;
     v5->_multiTapOrbit = v18;
   }
@@ -1074,52 +1074,52 @@ uint64_t __43__TypistKeyboardJapanese_whiteSpaceCharSet__block_invoke()
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = TypistKeyboardJapanese;
-  [(TypistKeyboard *)&v12 encodeWithCoder:v4];
+  [(TypistKeyboard *)&v12 encodeWithCoder:coderCopy];
   baseCharacters = self->_baseCharacters;
   if (baseCharacters)
   {
-    [v4 encodeObject:baseCharacters forKey:@"baseCharacters"];
+    [coderCopy encodeObject:baseCharacters forKey:@"baseCharacters"];
   }
 
   accentKey = self->_accentKey;
   if (accentKey)
   {
-    [v4 encodeObject:accentKey forKey:@"accentKey"];
+    [coderCopy encodeObject:accentKey forKey:@"accentKey"];
   }
 
   updownKey = self->_updownKey;
   if (updownKey)
   {
-    [v4 encodeObject:updownKey forKey:@"updownKey"];
+    [coderCopy encodeObject:updownKey forKey:@"updownKey"];
   }
 
   multiTapCompleteKey = self->_multiTapCompleteKey;
   if (multiTapCompleteKey)
   {
-    [v4 encodeObject:multiTapCompleteKey forKey:@"multiTapCompleteKey"];
+    [coderCopy encodeObject:multiTapCompleteKey forKey:@"multiTapCompleteKey"];
   }
 
   doubleAccentCharacterSet = self->_doubleAccentCharacterSet;
   if (doubleAccentCharacterSet)
   {
-    [v4 encodeObject:doubleAccentCharacterSet forKey:@"doubleAccentCharacterSet"];
+    [coderCopy encodeObject:doubleAccentCharacterSet forKey:@"doubleAccentCharacterSet"];
   }
 
   flickTable = self->_flickTable;
   if (flickTable)
   {
-    [v4 encodeObject:flickTable forKey:@"flickTable"];
+    [coderCopy encodeObject:flickTable forKey:@"flickTable"];
   }
 
   multiTapOrbit = self->_multiTapOrbit;
   if (multiTapOrbit)
   {
-    [v4 encodeObject:multiTapOrbit forKey:@"multiTapOrbit"];
+    [coderCopy encodeObject:multiTapOrbit forKey:@"multiTapOrbit"];
   }
 }
 

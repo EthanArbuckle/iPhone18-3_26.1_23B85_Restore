@@ -1,16 +1,16 @@
 @interface NTKColtanResourceManager
-+ (id)sharedInstanceWithPixelFormat:(unint64_t)a3;
-+ (void)_deallocInstance:(id)a3;
++ (id)sharedInstanceWithPixelFormat:(unint64_t)format;
++ (void)_deallocInstance:(id)instance;
 - (CLKUITexture)handLightTexture;
 - (MTLComputePipelineState)blurDownsamplePipelineState;
 - (MTLComputePipelineState)blurUpsamplePipelineState;
 - (MTLComputePipelineState)scenePreparationComputePipelineState;
-- (NTKColtanResourceManager)initWithPixelFormat:(unint64_t)a3;
-- (id)_generatePipeline:(unint64_t)a3;
-- (id)_makeComputePipelineWithFunctionName:(id)a3 config:(unint64_t)a4;
-- (id)provideAtlasBacking:(id)a3;
-- (id)renderPipelineForConfig:(unint64_t)a3;
-- (id)shadowComputePipelineForConfig:(unint64_t)a3;
+- (NTKColtanResourceManager)initWithPixelFormat:(unint64_t)format;
+- (id)_generatePipeline:(unint64_t)pipeline;
+- (id)_makeComputePipelineWithFunctionName:(id)name config:(unint64_t)config;
+- (id)provideAtlasBacking:(id)backing;
+- (id)renderPipelineForConfig:(unint64_t)config;
+- (id)shadowComputePipelineForConfig:(unint64_t)config;
 - (void)_asyncDeallocInstance;
 - (void)addClient;
 - (void)dealloc;
@@ -19,21 +19,21 @@
 
 @implementation NTKColtanResourceManager
 
-+ (id)sharedInstanceWithPixelFormat:(unint64_t)a3
++ (id)sharedInstanceWithPixelFormat:(unint64_t)format
 {
-  v4 = a1;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (!qword_16B18)
   {
-    v5 = [[NTKColtanResourceManager alloc] initWithPixelFormat:a3];
+    v5 = [[NTKColtanResourceManager alloc] initWithPixelFormat:format];
     v6 = qword_16B18;
     qword_16B18 = v5;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v7 = qword_16B18;
-  if (*(qword_16B18 + 32) != a3)
+  if (*(qword_16B18 + 32) != format)
   {
     sub_6AA4();
   }
@@ -41,9 +41,9 @@
   return v7;
 }
 
-+ (void)_deallocInstance:(id)a3
++ (void)_deallocInstance:(id)instance
 {
-  obj = a1;
+  obj = self;
   objc_sync_enter(obj);
   v3 = qword_16B18;
   qword_16B18 = 0;
@@ -51,7 +51,7 @@
   objc_sync_exit(obj);
 }
 
-- (NTKColtanResourceManager)initWithPixelFormat:(unint64_t)a3
+- (NTKColtanResourceManager)initWithPixelFormat:(unint64_t)format
 {
   v32.receiver = self;
   v32.super_class = NTKColtanResourceManager;
@@ -72,7 +72,7 @@
     library = v4->_library;
     v4->_library = v11;
 
-    v4->_pixelFormat = a3;
+    v4->_pixelFormat = format;
     v13 = +[CLKDevice currentDevice];
     CLKScaledValueWithCompactLuxoDeviceMetrics();
     *&v14 = v14;
@@ -145,16 +145,16 @@
 
 - (void)removeClient
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_clients - 1;
-  v2->_clients = v3;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_clients - 1;
+  selfCopy->_clients = v3;
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
 
-    [(NTKColtanResourceManager *)v2 _asyncDeallocInstance];
+    [(NTKColtanResourceManager *)selfCopy _asyncDeallocInstance];
   }
 }
 
@@ -173,20 +173,20 @@
   return handLightTexture;
 }
 
-- (id)_makeComputePipelineWithFunctionName:(id)a3 config:(unint64_t)a4
+- (id)_makeComputePipelineWithFunctionName:(id)name config:(unint64_t)config
 {
-  v4 = a4;
-  v6 = a3;
-  v22 = (v4 & 4) != 0;
-  v21 = v4 & 1;
-  v20 = (v4 & 2) != 0;
+  configCopy = config;
+  nameCopy = name;
+  v22 = (configCopy & 4) != 0;
+  v21 = configCopy & 1;
+  v20 = (configCopy & 2) != 0;
   v7 = [(MTLFunctionConstantValues *)self->_layoutConstants copy];
   [v7 setConstantValue:&v21 type:53 atIndex:0];
   [v7 setConstantValue:&v20 type:53 atIndex:1];
   [v7 setConstantValue:&v22 type:53 atIndex:2];
   library = self->_library;
   v19 = 0;
-  v9 = [(MTLLibrary *)library newFunctionWithName:v6 constantValues:v7 error:&v19];
+  v9 = [(MTLLibrary *)library newFunctionWithName:nameCopy constantValues:v7 error:&v19];
   v10 = v19;
   if (v9)
   {
@@ -205,7 +205,7 @@
     {
       v17 = self->_device;
       *buf = 138412802;
-      v24 = v6;
+      v24 = nameCopy;
       v25 = 2112;
       v26 = v17;
       v27 = 2112;
@@ -223,7 +223,7 @@
     {
       v16 = self->_device;
       *buf = 138412802;
-      v24 = v6;
+      v24 = nameCopy;
       v25 = 2112;
       v26 = v16;
       v27 = 2112;
@@ -240,15 +240,15 @@ LABEL_10:
   return v12;
 }
 
-- (id)renderPipelineForConfig:(unint64_t)a3
+- (id)renderPipelineForConfig:(unint64_t)config
 {
   pipelineStates = self->_pipelineStates;
-  v6 = self->_pipelineStates[a3];
+  v6 = self->_pipelineStates[config];
   if (!v6)
   {
-    v7 = [(NTKColtanResourceManager *)self _generatePipeline:a3];
-    v8 = pipelineStates[a3];
-    pipelineStates[a3] = v7;
+    v7 = [(NTKColtanResourceManager *)self _generatePipeline:config];
+    v8 = pipelineStates[config];
+    pipelineStates[config] = v7;
 
     v6 = v7;
   }
@@ -256,11 +256,11 @@ LABEL_10:
   return v6;
 }
 
-- (id)_generatePipeline:(unint64_t)a3
+- (id)_generatePipeline:(unint64_t)pipeline
 {
-  v21 = (a3 & 4) != 0;
-  v20 = a3 & 1;
-  v19 = (a3 & 2) != 0;
+  v21 = (pipeline & 4) != 0;
+  v20 = pipeline & 1;
+  v19 = (pipeline & 2) != 0;
   v4 = [(MTLFunctionConstantValues *)self->_layoutConstants copy];
   [v4 setConstantValue:&v20 type:53 atIndex:0];
   [v4 setConstantValue:&v19 type:53 atIndex:1];
@@ -273,8 +273,8 @@ LABEL_10:
   v7 = [(MTLLibrary *)self->_library newFunctionWithName:@"compositeFragment" constantValues:v4 error:0];
   [v5 setFragmentFunction:v7];
 
-  v8 = [v5 colorAttachments];
-  v9 = [v8 objectAtIndexedSubscript:0];
+  colorAttachments = [v5 colorAttachments];
+  v9 = [colorAttachments objectAtIndexedSubscript:0];
 
   [v9 setPixelFormat:self->_pixelFormat];
   [v9 setBlendingEnabled:0];
@@ -298,11 +298,11 @@ LABEL_10:
     v13 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
-      v15 = [v5 fragmentFunction];
-      v16 = [v15 name];
+      fragmentFunction = [v5 fragmentFunction];
+      name = [fragmentFunction name];
       v17 = self->_device;
       *buf = 138412802;
-      v23 = v16;
+      v23 = name;
       v24 = 2112;
       v25 = v17;
       v26 = 2112;
@@ -359,15 +359,15 @@ LABEL_10:
   return v3;
 }
 
-- (id)shadowComputePipelineForConfig:(unint64_t)a3
+- (id)shadowComputePipelineForConfig:(unint64_t)config
 {
   shadowComputePipelineStates = self->_shadowComputePipelineStates;
-  v6 = self->_shadowComputePipelineStates[a3];
+  v6 = self->_shadowComputePipelineStates[config];
   if (!v6)
   {
-    v7 = [(NTKColtanResourceManager *)self _makeComputePipelineWithFunctionName:@"shadow" config:a3];
-    v8 = shadowComputePipelineStates[a3];
-    shadowComputePipelineStates[a3] = v7;
+    v7 = [(NTKColtanResourceManager *)self _makeComputePipelineWithFunctionName:@"shadow" config:config];
+    v8 = shadowComputePipelineStates[config];
+    shadowComputePipelineStates[config] = v7;
 
     v6 = v7;
   }
@@ -375,17 +375,17 @@ LABEL_10:
   return v6;
 }
 
-- (id)provideAtlasBacking:(id)a3
+- (id)provideAtlasBacking:(id)backing
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Coltan-Hand"])
+  backingCopy = backing;
+  if ([backingCopy isEqualToString:@"Coltan-Hand"])
   {
     v4 = sub_1200();
-    v5 = [v4 pathForResource:v3 ofType:@"art"];
+    v5 = [v4 pathForResource:backingCopy ofType:@"art"];
     if (v5)
     {
       v6 = v5;
-      v7 = [CLKUIAtlasBacking atlasBackingWithArt:v5 uuid:v3];
+      v7 = [CLKUIAtlasBacking atlasBackingWithArt:v5 uuid:backingCopy];
 
       goto LABEL_8;
     }
@@ -393,7 +393,7 @@ LABEL_10:
     v8 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      sub_6AE4(v3, v8);
+      sub_6AE4(backingCopy, v8);
     }
   }
 

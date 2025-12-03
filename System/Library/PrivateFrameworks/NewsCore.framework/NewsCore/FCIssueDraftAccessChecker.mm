@@ -1,10 +1,10 @@
 @interface FCIssueDraftAccessChecker
-- (BOOL)canSynchronouslyCheckAccessToItem:(id)a3;
-- (BOOL)hasAccessToItem:(id)a3 blockedReason:(unint64_t *)a4 error:(id *)a5;
+- (BOOL)canSynchronouslyCheckAccessToItem:(id)item;
+- (BOOL)hasAccessToItem:(id)item blockedReason:(unint64_t *)reason error:(id *)error;
 - (BOOL)shouldShowAllDraftContent;
 - (FCIssueDraftAccessChecker)init;
-- (FCIssueDraftAccessChecker)initWithPrivateChannelMembershipController:(id)a3;
-- (void)checkAccessToItem:(id)a3 withQualityOfService:(int64_t)a4 completion:(id)a5;
+- (FCIssueDraftAccessChecker)initWithPrivateChannelMembershipController:(id)controller;
+- (void)checkAccessToItem:(id)item withQualityOfService:(int64_t)service completion:(id)completion;
 @end
 
 @implementation FCIssueDraftAccessChecker
@@ -35,11 +35,11 @@
   objc_exception_throw(v6);
 }
 
-- (FCIssueDraftAccessChecker)initWithPrivateChannelMembershipController:(id)a3
+- (FCIssueDraftAccessChecker)initWithPrivateChannelMembershipController:(id)controller
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  controllerCopy = controller;
+  if (!controllerCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "privateChannelMembershipController != nil"];
     *buf = 136315906;
@@ -59,18 +59,18 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_privateChannelMembershipController, a3);
+    objc_storeStrong(&v6->_privateChannelMembershipController, controller);
   }
 
   v8 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (BOOL)canSynchronouslyCheckAccessToItem:(id)a3
+- (BOOL)canSynchronouslyCheckAccessToItem:(id)item
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  itemCopy = item;
+  if (!itemCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "item != nil"];
     *buf = 136315906;
@@ -84,30 +84,30 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if (![v4 isDraft] || objc_msgSend(v4, "isDraft") && (objc_msgSend(v4, "isLocalDraft") & 1) != 0)
+  if (![itemCopy isDraft] || objc_msgSend(itemCopy, "isDraft") && (objc_msgSend(itemCopy, "isLocalDraft") & 1) != 0)
   {
-    v5 = 1;
+    shouldShowAllDraftContent = 1;
   }
 
-  else if ([v4 isDraft])
+  else if ([itemCopy isDraft])
   {
-    v5 = [(FCIssueDraftAccessChecker *)self shouldShowAllDraftContent];
+    shouldShowAllDraftContent = [(FCIssueDraftAccessChecker *)self shouldShowAllDraftContent];
   }
 
   else
   {
-    v5 = 0;
+    shouldShowAllDraftContent = 0;
   }
 
   v6 = *MEMORY[0x1E69E9840];
-  return v5;
+  return shouldShowAllDraftContent;
 }
 
-- (BOOL)hasAccessToItem:(id)a3 blockedReason:(unint64_t *)a4 error:(id *)a5
+- (BOOL)hasAccessToItem:(id)item blockedReason:(unint64_t *)reason error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  itemCopy = item;
+  if (!itemCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "item != nil"];
     *buf = 136315906;
@@ -121,30 +121,30 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if (![v7 isDraft] || objc_msgSend(v7, "isDraft") && (objc_msgSend(v7, "isLocalDraft") & 1) != 0 || -[FCIssueDraftAccessChecker shouldShowAllDraftContent](self, "shouldShowAllDraftContent"))
+  if (![itemCopy isDraft] || objc_msgSend(itemCopy, "isDraft") && (objc_msgSend(itemCopy, "isLocalDraft") & 1) != 0 || -[FCIssueDraftAccessChecker shouldShowAllDraftContent](self, "shouldShowAllDraftContent"))
   {
-    LOBYTE(a5) = 1;
+    LOBYTE(error) = 1;
   }
 
-  else if (a5)
+  else if (error)
   {
     v10 = [MEMORY[0x1E696ABC0] errorWithDomain:@"FCAccessCheckerErrorDomain" code:0 userInfo:0];
-    v11 = *a5;
-    *a5 = v10;
+    v11 = *error;
+    *error = v10;
 
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return a5;
+  return error;
 }
 
-- (void)checkAccessToItem:(id)a3 withQualityOfService:(int64_t)a4 completion:(id)a5
+- (void)checkAccessToItem:(id)item withQualityOfService:(int64_t)service completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  itemCopy = item;
+  completionCopy = completion;
+  if (!itemCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "item != nil"];
     *buf = 136315906;
@@ -157,13 +157,13 @@
     v26 = v13;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v9)
+    if (completionCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
     goto LABEL_6;
   }
@@ -183,24 +183,24 @@
   }
 
 LABEL_6:
-  if ([(FCIssueDraftAccessChecker *)self canSynchronouslyCheckAccessToItem:v8])
+  if ([(FCIssueDraftAccessChecker *)self canSynchronouslyCheckAccessToItem:itemCopy])
   {
     v18.receiver = self;
     v18.super_class = FCIssueDraftAccessChecker;
-    [(FCAccessChecker *)&v18 checkAccessToItem:v8 withQualityOfService:a4 completion:v9];
+    [(FCAccessChecker *)&v18 checkAccessToItem:itemCopy withQualityOfService:service completion:completionCopy];
   }
 
   else
   {
-    v10 = [(FCIssueDraftAccessChecker *)self privateChannelMembershipController];
-    v11 = [v8 identifier];
+    privateChannelMembershipController = [(FCIssueDraftAccessChecker *)self privateChannelMembershipController];
+    identifier = [itemCopy identifier];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __79__FCIssueDraftAccessChecker_checkAccessToItem_withQualityOfService_completion___block_invoke;
     v15[3] = &unk_1E7C39930;
-    v16 = v8;
-    v17 = v9;
-    [v10 isAllowedToSeeIssueID:v11 completionBlock:v15];
+    v16 = itemCopy;
+    v17 = completionCopy;
+    [privateChannelMembershipController isAllowedToSeeIssueID:identifier completionBlock:v15];
   }
 
   v12 = *MEMORY[0x1E69E9840];

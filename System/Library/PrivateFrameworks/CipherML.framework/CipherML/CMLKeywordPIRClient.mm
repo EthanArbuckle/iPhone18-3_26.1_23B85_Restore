@@ -1,57 +1,57 @@
 @interface CMLKeywordPIRClient
-- (id)asyncResponseDataByKeyword:(id)a3 error:(id *)a4;
-- (id)asyncResponseDataByKeywords:(id)a3 error:(id *)a4;
-- (id)constructPIRBatchRequestWithKeywords:(id)a3 shardIds:(id)a4 error:(id *)a5;
-- (id)dataByKeyword:(id)a3 shardId:(id)a4 error:(id *)a5;
-- (id)dataByKeywords:(id)a3 shardIds:(id)a4 error:(id *)a5;
-- (id)dataByStringKeyword:(id)a3 shardId:(id)a4 error:(id *)a5;
-- (id)dataByStringKeywords:(id)a3 error:(id *)a4;
-- (id)dataByStringKeywords:(id)a3 shardIds:(id)a4 error:(id *)a5;
-- (id)decryptPIRBatchResponse:(id)a3 keywords:(id)a4 error:(id *)a5;
-- (id)decryptPIRResponse:(id)a3 keyword:(id)a4 shardId:(id)a5 error:(id *)a6;
-- (id)removeCachedEntriesByKeywords:(id)a3 error:(id *)a4;
-- (id)removeCachedEntriesByStringKeywords:(id)a3 error:(id *)a4;
-- (void)requestDataByKeyword:(id)a3 shardId:(id)a4 completionHandler:(id)a5;
-- (void)requestDataByKeywords:(id)a3 shardIds:(id)a4 completionHandler:(id)a5;
-- (void)requestDataByStringKeyword:(id)a3 completionHandler:(id)a4;
-- (void)requestDataByStringKeyword:(id)a3 shardId:(id)a4 completionHandler:(id)a5;
-- (void)requestDataByStringKeywords:(id)a3 completionHandler:(id)a4;
-- (void)requestDataByStringKeywords:(id)a3 shardIds:(id)a4 completionHandler:(id)a5;
+- (id)asyncResponseDataByKeyword:(id)keyword error:(id *)error;
+- (id)asyncResponseDataByKeywords:(id)keywords error:(id *)error;
+- (id)constructPIRBatchRequestWithKeywords:(id)keywords shardIds:(id)ids error:(id *)error;
+- (id)dataByKeyword:(id)keyword shardId:(id)id error:(id *)error;
+- (id)dataByKeywords:(id)keywords shardIds:(id)ids error:(id *)error;
+- (id)dataByStringKeyword:(id)keyword shardId:(id)id error:(id *)error;
+- (id)dataByStringKeywords:(id)keywords error:(id *)error;
+- (id)dataByStringKeywords:(id)keywords shardIds:(id)ids error:(id *)error;
+- (id)decryptPIRBatchResponse:(id)response keywords:(id)keywords error:(id *)error;
+- (id)decryptPIRResponse:(id)response keyword:(id)keyword shardId:(id)id error:(id *)error;
+- (id)removeCachedEntriesByKeywords:(id)keywords error:(id *)error;
+- (id)removeCachedEntriesByStringKeywords:(id)keywords error:(id *)error;
+- (void)requestDataByKeyword:(id)keyword shardId:(id)id completionHandler:(id)handler;
+- (void)requestDataByKeywords:(id)keywords shardIds:(id)ids completionHandler:(id)handler;
+- (void)requestDataByStringKeyword:(id)keyword completionHandler:(id)handler;
+- (void)requestDataByStringKeyword:(id)keyword shardId:(id)id completionHandler:(id)handler;
+- (void)requestDataByStringKeywords:(id)keywords completionHandler:(id)handler;
+- (void)requestDataByStringKeywords:(id)keywords shardIds:(id)ids completionHandler:(id)handler;
 @end
 
 @implementation CMLKeywordPIRClient
 
-- (void)requestDataByStringKeyword:(id)a3 completionHandler:(id)a4
+- (void)requestDataByStringKeyword:(id)keyword completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 dataUsingEncoding:4];
-  [(CMLKeywordPIRClient *)self requestDataByKeyword:v7 completionHandler:v6];
+  handlerCopy = handler;
+  v7 = [keyword dataUsingEncoding:4];
+  [(CMLKeywordPIRClient *)self requestDataByKeyword:v7 completionHandler:handlerCopy];
 }
 
-- (void)requestDataByStringKeyword:(id)a3 shardId:(id)a4 completionHandler:(id)a5
+- (void)requestDataByStringKeyword:(id)keyword shardId:(id)id completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 dataUsingEncoding:4];
-  [(CMLKeywordPIRClient *)self requestDataByKeyword:v10 shardId:v9 completionHandler:v8];
+  handlerCopy = handler;
+  idCopy = id;
+  v10 = [keyword dataUsingEncoding:4];
+  [(CMLKeywordPIRClient *)self requestDataByKeyword:v10 shardId:idCopy completionHandler:handlerCopy];
 }
 
-- (void)requestDataByStringKeywords:(id)a3 completionHandler:(id)a4
+- (void)requestDataByStringKeywords:(id)keywords completionHandler:(id)handler
 {
   v6 = MEMORY[0x277CBEB18];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 array];
+  handlerCopy = handler;
+  keywordsCopy = keywords;
+  array = [v6 array];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __69__CMLKeywordPIRClient_requestDataByStringKeywords_completionHandler___block_invoke;
   v12[3] = &unk_278541C30;
-  v13 = v9;
-  v10 = v9;
-  [v8 enumerateObjectsUsingBlock:v12];
+  v13 = array;
+  v10 = array;
+  [keywordsCopy enumerateObjectsUsingBlock:v12];
 
   v11 = [v10 copy];
-  [(CMLKeywordPIRClient *)self requestDataByKeywords:v11 completionHandler:v7];
+  [(CMLKeywordPIRClient *)self requestDataByKeywords:v11 completionHandler:handlerCopy];
 }
 
 void __69__CMLKeywordPIRClient_requestDataByStringKeywords_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -61,22 +61,22 @@ void __69__CMLKeywordPIRClient_requestDataByStringKeywords_completionHandler___b
   [v2 addObject:v3];
 }
 
-- (void)requestDataByStringKeywords:(id)a3 shardIds:(id)a4 completionHandler:(id)a5
+- (void)requestDataByStringKeywords:(id)keywords shardIds:(id)ids completionHandler:(id)handler
 {
   v8 = MEMORY[0x277CBEB18];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 array];
+  handlerCopy = handler;
+  idsCopy = ids;
+  keywordsCopy = keywords;
+  array = [v8 array];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __78__CMLKeywordPIRClient_requestDataByStringKeywords_shardIds_completionHandler___block_invoke;
   v14[3] = &unk_278541C30;
-  v15 = v12;
-  v13 = v12;
-  [v11 enumerateObjectsUsingBlock:v14];
+  v15 = array;
+  v13 = array;
+  [keywordsCopy enumerateObjectsUsingBlock:v14];
 
-  [(CMLKeywordPIRClient *)self requestDataByKeywords:v13 shardIds:v10 completionHandler:v9];
+  [(CMLKeywordPIRClient *)self requestDataByKeywords:v13 shardIds:idsCopy completionHandler:handlerCopy];
 }
 
 void __78__CMLKeywordPIRClient_requestDataByStringKeywords_shardIds_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -86,12 +86,12 @@ void __78__CMLKeywordPIRClient_requestDataByStringKeywords_shardIds_completionHa
   [v2 addObject:v3];
 }
 
-- (void)requestDataByKeyword:(id)a3 shardId:(id)a4 completionHandler:(id)a5
+- (void)requestDataByKeyword:(id)keyword shardId:(id)id completionHandler:(id)handler
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  keywordCopy = keyword;
+  idCopy = id;
+  handlerCopy = handler;
   v24[0] = 0;
   v24[1] = v24;
   v24[2] = 0x3032000000;
@@ -103,13 +103,13 @@ void __78__CMLKeywordPIRClient_requestDataByStringKeywords_shardIds_completionHa
   v19 = __70__CMLKeywordPIRClient_requestDataByKeyword_shardId_completionHandler___block_invoke;
   v20 = &unk_278541C58;
   v22 = v24;
-  v12 = v11;
+  v12 = handlerCopy;
   v21 = v12;
   v23 = a2;
   v13 = _Block_copy(&v17);
-  if (v10)
+  if (idCopy)
   {
-    v27[0] = v10;
+    v27[0] = idCopy;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:{1, v17, v18, v19, v20}];
   }
 
@@ -118,7 +118,7 @@ void __78__CMLKeywordPIRClient_requestDataByStringKeywords_shardIds_completionHa
     v14 = MEMORY[0x277CBEBF8];
   }
 
-  v26 = v9;
+  v26 = keywordCopy;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:{1, v17, v18, v19, v20}];
   [(CMLKeywordPIRClient *)self requestDataByKeywords:v15 shardIds:v14 completionHandler:v13];
 
@@ -181,29 +181,29 @@ void __70__CMLKeywordPIRClient_requestDataByKeyword_shardId_completionHandler___
   }
 }
 
-- (void)requestDataByKeywords:(id)a3 shardIds:(id)a4 completionHandler:(id)a5
+- (void)requestDataByKeywords:(id)keywords shardIds:(id)ids completionHandler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a5;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __72__CMLKeywordPIRClient_requestDataByKeywords_shardIds_completionHandler___block_invoke;
   aBlock[3] = &unk_2785419B0;
-  v10 = v9;
+  v10 = handlerCopy;
   v31 = v10;
-  v11 = a4;
-  v12 = a3;
+  idsCopy = ids;
+  keywordsCopy = keywords;
   v13 = _Block_copy(aBlock);
-  v14 = [(CMLPIRClient *)self connection];
-  v15 = [(CMLPIRClient *)self dispatchQueue];
-  v16 = [CMLXPC asyncProxyToConnection:v14 dispatchQueue:v15 errorHandler:v13];
+  connection = [(CMLPIRClient *)self connection];
+  dispatchQueue = [(CMLPIRClient *)self dispatchQueue];
+  v16 = [CMLXPC asyncProxyToConnection:connection dispatchQueue:dispatchQueue errorHandler:v13];
 
   v23 = MEMORY[0x277D85DD0];
   v24 = 3221225472;
   v25 = __72__CMLKeywordPIRClient_requestDataByKeywords_shardIds_completionHandler___block_invoke_2;
   v26 = &unk_278541A00;
   v29 = a2;
-  v27 = self;
+  selfCopy = self;
   v17 = v10;
   v28 = v17;
   v18 = _Block_copy(&v23);
@@ -216,8 +216,8 @@ void __70__CMLKeywordPIRClient_requestDataByKeyword_shardId_completionHandler___
     _os_log_impl(&dword_224E26000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v21 = [(CMLPIRClient *)self clientConfig];
-  [v16 requestDataByKeywords:v12 shardIds:v11 clientConfig:v21 reply:v18];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
+  [v16 requestDataByKeywords:keywordsCopy shardIds:idsCopy clientConfig:clientConfig reply:v18];
 
   v22 = *MEMORY[0x277D85DE8];
 }
@@ -286,24 +286,24 @@ LABEL_12:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dataByStringKeyword:(id)a3 shardId:(id)a4 error:(id *)a5
+- (id)dataByStringKeyword:(id)keyword shardId:(id)id error:(id *)error
 {
-  v8 = a4;
-  v9 = [a3 dataUsingEncoding:4];
-  v10 = [(CMLKeywordPIRClient *)self dataByKeyword:v9 shardId:v8 error:a5];
+  idCopy = id;
+  v9 = [keyword dataUsingEncoding:4];
+  v10 = [(CMLKeywordPIRClient *)self dataByKeyword:v9 shardId:idCopy error:error];
 
   return v10;
 }
 
-- (id)dataByKeyword:(id)a3 shardId:(id)a4 error:(id *)a5
+- (id)dataByKeyword:(id)keyword shardId:(id)id error:(id *)error
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v9)
+  keywordCopy = keyword;
+  idCopy = id;
+  v10 = idCopy;
+  if (idCopy)
   {
-    v25[0] = v9;
+    v25[0] = idCopy;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
   }
 
@@ -312,18 +312,18 @@ LABEL_12:
     v11 = MEMORY[0x277CBEBF8];
   }
 
-  v24 = v8;
+  v24 = keywordCopy;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
   v23 = 0;
   v13 = [(CMLKeywordPIRClient *)self dataByKeywords:v12 shardIds:v11 error:&v23];
   v14 = v23;
 
-  if (a5 && v14)
+  if (error && v14)
   {
-    v15 = [v14 underlyingErrors];
-    v16 = [v15 firstObject];
+    underlyingErrors = [v14 underlyingErrors];
+    firstObject = [underlyingErrors firstObject];
     v17 = [v14 description];
-    *a5 = [CMLError errorWithCode:400 underlyingError:v16 description:v17];
+    *error = [CMLError errorWithCode:400 underlyingError:firstObject description:v17];
   }
 
   if (v13 && [v13 count] && (objc_msgSend(v13, "objectAtIndexedSubscript:", 0), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277CBEB68], "null"), v19 = objc_claimAutoreleasedReturnValue(), v19, v18, v18 != v19))
@@ -341,20 +341,20 @@ LABEL_12:
   return v20;
 }
 
-- (id)dataByStringKeywords:(id)a3 error:(id *)a4
+- (id)dataByStringKeywords:(id)keywords error:(id *)error
 {
   v6 = MEMORY[0x277CBEB18];
-  v7 = a3;
-  v8 = [v6 array];
+  keywordsCopy = keywords;
+  array = [v6 array];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __50__CMLKeywordPIRClient_dataByStringKeywords_error___block_invoke;
   v12[3] = &unk_278541C30;
-  v13 = v8;
-  v9 = v8;
-  [v7 enumerateObjectsUsingBlock:v12];
+  v13 = array;
+  v9 = array;
+  [keywordsCopy enumerateObjectsUsingBlock:v12];
 
-  v10 = [(CMLKeywordPIRClient *)self dataByKeywords:v9 error:a4];
+  v10 = [(CMLKeywordPIRClient *)self dataByKeywords:v9 error:error];
 
   return v10;
 }
@@ -366,21 +366,21 @@ void __50__CMLKeywordPIRClient_dataByStringKeywords_error___block_invoke(uint64_
   [v2 addObject:v3];
 }
 
-- (id)dataByStringKeywords:(id)a3 shardIds:(id)a4 error:(id *)a5
+- (id)dataByStringKeywords:(id)keywords shardIds:(id)ids error:(id *)error
 {
   v8 = MEMORY[0x277CBEB18];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 array];
+  idsCopy = ids;
+  keywordsCopy = keywords;
+  array = [v8 array];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __59__CMLKeywordPIRClient_dataByStringKeywords_shardIds_error___block_invoke;
   v15[3] = &unk_278541C30;
-  v16 = v11;
-  v12 = v11;
-  [v10 enumerateObjectsUsingBlock:v15];
+  v16 = array;
+  v12 = array;
+  [keywordsCopy enumerateObjectsUsingBlock:v15];
 
-  v13 = [(CMLKeywordPIRClient *)self dataByKeywords:v12 shardIds:v9 error:a5];
+  v13 = [(CMLKeywordPIRClient *)self dataByKeywords:v12 shardIds:idsCopy error:error];
 
   return v13;
 }
@@ -392,14 +392,14 @@ void __59__CMLKeywordPIRClient_dataByStringKeywords_shardIds_error___block_invok
   [v2 addObject:v3];
 }
 
-- (id)dataByKeywords:(id)a3 shardIds:(id)a4 error:(id *)a5
+- (id)dataByKeywords:(id)keywords shardIds:(id)ids error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  keywordsCopy = keywords;
+  idsCopy = ids;
   v34 = 0;
-  v11 = [(CMLPIRClient *)self connection];
-  v12 = [CMLXPC syncProxyToConnection:v11 error:&v34];
+  connection = [(CMLPIRClient *)self connection];
+  v12 = [CMLXPC syncProxyToConnection:connection error:&v34];
 
   v28 = 0;
   v29 = &v28;
@@ -430,10 +430,10 @@ void __59__CMLKeywordPIRClient_dataByStringKeywords_shardIds_error___block_invok
     _os_log_impl(&dword_224E26000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v16 = [(CMLPIRClient *)self clientConfig];
-  [v12 requestDataByKeywords:v9 shardIds:v10 clientConfig:v16 reply:v13];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
+  [v12 requestDataByKeywords:keywordsCopy shardIds:idsCopy clientConfig:clientConfig reply:v13];
 
-  if (a5)
+  if (error)
   {
     v17 = v34;
     if (!v34)
@@ -441,7 +441,7 @@ void __59__CMLKeywordPIRClient_dataByStringKeywords_shardIds_error___block_invok
       v17 = v29[5];
     }
 
-    *a5 = v17;
+    *error = v17;
   }
 
   v18 = v23[5];
@@ -485,20 +485,20 @@ void __53__CMLKeywordPIRClient_dataByKeywords_shardIds_error___block_invoke(uint
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)removeCachedEntriesByStringKeywords:(id)a3 error:(id *)a4
+- (id)removeCachedEntriesByStringKeywords:(id)keywords error:(id *)error
 {
   v6 = MEMORY[0x277CBEB18];
-  v7 = a3;
-  v8 = [v6 array];
+  keywordsCopy = keywords;
+  array = [v6 array];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __65__CMLKeywordPIRClient_removeCachedEntriesByStringKeywords_error___block_invoke;
   v12[3] = &unk_278541C30;
-  v13 = v8;
-  v9 = v8;
-  [v7 enumerateObjectsUsingBlock:v12];
+  v13 = array;
+  v9 = array;
+  [keywordsCopy enumerateObjectsUsingBlock:v12];
 
-  v10 = [(CMLKeywordPIRClient *)self removeCachedEntriesByKeywords:v9 error:a4];
+  v10 = [(CMLKeywordPIRClient *)self removeCachedEntriesByKeywords:v9 error:error];
 
   return v10;
 }
@@ -510,13 +510,13 @@ void __65__CMLKeywordPIRClient_removeCachedEntriesByStringKeywords_error___block
   [v2 addObject:v3];
 }
 
-- (id)removeCachedEntriesByKeywords:(id)a3 error:(id *)a4
+- (id)removeCachedEntriesByKeywords:(id)keywords error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  keywordsCopy = keywords;
   v31 = 0;
-  v8 = [(CMLPIRClient *)self connection];
-  v9 = [CMLXPC syncProxyToConnection:v8 error:&v31];
+  connection = [(CMLPIRClient *)self connection];
+  v9 = [CMLXPC syncProxyToConnection:connection error:&v31];
 
   v25 = 0;
   v26 = &v25;
@@ -547,10 +547,10 @@ void __65__CMLKeywordPIRClient_removeCachedEntriesByStringKeywords_error___block
     _os_log_impl(&dword_224E26000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v13 = [(CMLPIRClient *)self clientConfig];
-  [v9 removeCachedEntriesByKeywords:v7 clientConfig:v13 reply:v10];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
+  [v9 removeCachedEntriesByKeywords:keywordsCopy clientConfig:clientConfig reply:v10];
 
-  if (a4)
+  if (error)
   {
     v14 = v31;
     if (!v31)
@@ -558,7 +558,7 @@ void __65__CMLKeywordPIRClient_removeCachedEntriesByStringKeywords_error___block
       v14 = v26[5];
     }
 
-    *a4 = v14;
+    *error = v14;
   }
 
   v15 = v20[5];
@@ -646,14 +646,14 @@ LABEL_7:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)constructPIRBatchRequestWithKeywords:(id)a3 shardIds:(id)a4 error:(id *)a5
+- (id)constructPIRBatchRequestWithKeywords:(id)keywords shardIds:(id)ids error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  keywordsCopy = keywords;
+  idsCopy = ids;
   v34 = 0;
-  v11 = [(CMLPIRClient *)self connection];
-  v12 = [CMLXPC syncProxyToConnection:v11 error:&v34];
+  connection = [(CMLPIRClient *)self connection];
+  v12 = [CMLXPC syncProxyToConnection:connection error:&v34];
 
   v28 = 0;
   v29 = &v28;
@@ -675,9 +675,9 @@ LABEL_7:
   v21[6] = a2;
   v21[4] = &v22;
   v13 = _Block_copy(v21);
-  if (!v10)
+  if (!idsCopy)
   {
-    v10 = MEMORY[0x277CBEBF8];
+    idsCopy = MEMORY[0x277CBEBF8];
   }
 
   v14 = +[CMLLog client];
@@ -689,10 +689,10 @@ LABEL_7:
     _os_log_impl(&dword_224E26000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v16 = [(CMLPIRClient *)self clientConfig];
-  [v12 constructPIRBatchRequestWithKeywords:v9 shardIds:v10 clientConfig:v16 reply:v13];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
+  [v12 constructPIRBatchRequestWithKeywords:keywordsCopy shardIds:idsCopy clientConfig:clientConfig reply:v13];
 
-  if (a5)
+  if (error)
   {
     v17 = v34;
     if (!v34)
@@ -700,7 +700,7 @@ LABEL_7:
       v17 = v29[5];
     }
 
-    *a5 = v17;
+    *error = v17;
   }
 
   v18 = v23[5];
@@ -755,15 +755,15 @@ LABEL_7:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)decryptPIRResponse:(id)a3 keyword:(id)a4 shardId:(id)a5 error:(id *)a6
+- (id)decryptPIRResponse:(id)response keyword:(id)keyword shardId:(id)id error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  responseCopy = response;
+  keywordCopy = keyword;
+  idCopy = id;
   v37 = 0;
-  v14 = [(CMLPIRClient *)self connection];
-  v15 = [CMLXPC syncProxyToConnection:v14 error:&v37];
+  connection = [(CMLPIRClient *)self connection];
+  v15 = [CMLXPC syncProxyToConnection:connection error:&v37];
 
   v31 = 0;
   v32 = &v31;
@@ -794,10 +794,10 @@ LABEL_7:
     _os_log_impl(&dword_224E26000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v19 = [(CMLPIRClient *)self clientConfig];
-  [v15 decryptPIRResponse:v11 keyword:v12 shardId:v13 clientConfig:v19 reply:v16];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
+  [v15 decryptPIRResponse:responseCopy keyword:keywordCopy shardId:idCopy clientConfig:clientConfig reply:v16];
 
-  if (a6)
+  if (error)
   {
     v20 = v37;
     if (!v37)
@@ -805,7 +805,7 @@ LABEL_7:
       v20 = v32[5];
     }
 
-    *a6 = v20;
+    *error = v20;
   }
 
   v21 = v26[5];
@@ -848,14 +848,14 @@ void __64__CMLKeywordPIRClient_decryptPIRResponse_keyword_shardId_error___block_
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)decryptPIRBatchResponse:(id)a3 keywords:(id)a4 error:(id *)a5
+- (id)decryptPIRBatchResponse:(id)response keywords:(id)keywords error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  responseCopy = response;
+  keywordsCopy = keywords;
   v34 = 0;
-  v11 = [(CMLPIRClient *)self connection];
-  v12 = [CMLXPC syncProxyToConnection:v11 error:&v34];
+  connection = [(CMLPIRClient *)self connection];
+  v12 = [CMLXPC syncProxyToConnection:connection error:&v34];
 
   v28 = 0;
   v29 = &v28;
@@ -886,10 +886,10 @@ void __64__CMLKeywordPIRClient_decryptPIRResponse_keyword_shardId_error___block_
     _os_log_impl(&dword_224E26000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v16 = [(CMLPIRClient *)self clientConfig];
-  [v12 decryptPIRBatchResponse:v9 keywords:v10 clientConfig:v16 reply:v13];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
+  [v12 decryptPIRBatchResponse:responseCopy keywords:keywordsCopy clientConfig:clientConfig reply:v13];
 
-  if (a5)
+  if (error)
   {
     v17 = v34;
     if (!v34)
@@ -897,7 +897,7 @@ void __64__CMLKeywordPIRClient_decryptPIRResponse_keyword_shardId_error___block_
       v17 = v29[5];
     }
 
-    *a5 = v17;
+    *error = v17;
   }
 
   v18 = v23[5];
@@ -953,22 +953,22 @@ LABEL_7:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)asyncResponseDataByKeyword:(id)a3 error:(id *)a4
+- (id)asyncResponseDataByKeyword:(id)keyword error:(id *)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v16[0] = v6;
+  keywordCopy = keyword;
+  v16[0] = keywordCopy;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
   v15 = 0;
   v8 = [(CMLKeywordPIRClient *)self asyncResponseDataByKeywords:v7 error:&v15];
   v9 = v15;
 
-  if (a4 && v9)
+  if (error && v9)
   {
-    v10 = [v9 underlyingErrors];
-    v11 = [v10 firstObject];
+    underlyingErrors = [v9 underlyingErrors];
+    firstObject = [underlyingErrors firstObject];
     v12 = [v9 description];
-    *a4 = [CMLError errorWithCode:410 underlyingError:v11 description:v12];
+    *error = [CMLError errorWithCode:410 underlyingError:firstObject description:v12];
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -976,13 +976,13 @@ LABEL_7:
   return v8;
 }
 
-- (id)asyncResponseDataByKeywords:(id)a3 error:(id *)a4
+- (id)asyncResponseDataByKeywords:(id)keywords error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  keywordsCopy = keywords;
   v31 = 0;
-  v8 = [(CMLPIRClient *)self connection];
-  v9 = [CMLXPC syncProxyToConnection:v8 error:&v31];
+  connection = [(CMLPIRClient *)self connection];
+  v9 = [CMLXPC syncProxyToConnection:connection error:&v31];
 
   v25 = 0;
   v26 = &v25;
@@ -1013,10 +1013,10 @@ LABEL_7:
     _os_log_impl(&dword_224E26000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v13 = [(CMLPIRClient *)self clientConfig];
-  [v9 asyncResponseDataByKeywords:v7 clientConfig:v13 reply:v10];
+  clientConfig = [(CMLPIRClient *)self clientConfig];
+  [v9 asyncResponseDataByKeywords:keywordsCopy clientConfig:clientConfig reply:v10];
 
-  if (a4)
+  if (error)
   {
     v14 = v31;
     if (!v31)
@@ -1024,7 +1024,7 @@ LABEL_7:
       v14 = v26[5];
     }
 
-    *a4 = v14;
+    *error = v14;
   }
 
   v15 = v20[5];

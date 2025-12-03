@@ -1,6 +1,6 @@
 @interface DefaultHeaderContentView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 - (void)layoutSubviews;
@@ -9,11 +9,11 @@
 
 @implementation DefaultHeaderContentView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_E573C(width, height);
   v8 = v7;
 
@@ -26,7 +26,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_E5BD0();
   v5 = v4;
 
@@ -39,19 +39,19 @@
 
 - (void)music_inheritedLayoutInsetsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_E5F1C();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_E60D0();
 }
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   sub_E726C();
   v4 = v3;
 
@@ -70,7 +70,7 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_E74F0();
 
   return v3;

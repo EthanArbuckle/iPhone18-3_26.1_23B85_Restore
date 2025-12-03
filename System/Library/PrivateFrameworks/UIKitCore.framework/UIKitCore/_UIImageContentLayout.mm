@@ -1,5 +1,5 @@
 @interface _UIImageContentLayout
-+ (id)layoutForSource:(id)a3 inTarget:(id)a4 withSize:(CGSize)a5;
++ (id)layoutForSource:(id)source inTarget:(id)target withSize:(CGSize)size;
 - (CGAffineTransform)contentsTransform;
 - (CGAffineTransform)symbolLayerPositionTransform;
 - (CGSize)contentsSize;
@@ -13,7 +13,7 @@
 - (id)description;
 - (unsigned)contentDrawMode;
 - (void)_materializeRenditionContents;
-- (void)drawInContext:(CGContext *)a3 withSize:(CGSize)a4;
+- (void)drawInContext:(CGContext *)context withSize:(CGSize)size;
 @end
 
 @implementation _UIImageContentLayout
@@ -58,26 +58,26 @@
 
 - (void)_materializeRenditionContents
 {
-  if (a1)
+  if (self)
   {
-    v2 = _Block_copy(*(a1 + 16));
+    v2 = _Block_copy(*(self + 16));
     if (v2)
     {
-      v3 = *(a1 + 16);
-      *(a1 + 16) = 0;
+      v3 = *(self + 16);
+      *(self + 16) = 0;
 
       v2[2](&v8, v2);
       v4 = v8;
       v8 = 0;
-      v5 = *(a1 + 24);
-      *(a1 + 24) = v4;
+      v5 = *(self + 24);
+      *(self + 24) = v4;
 
       v6 = v9;
       v9 = 0;
-      v7 = *(a1 + 32);
-      *(a1 + 32) = v6;
+      v7 = *(self + 32);
+      *(self + 32) = v6;
 
-      *(a1 + 40) = v10;
+      *(self + 40) = v10;
     }
   }
 }
@@ -119,18 +119,18 @@
   return result;
 }
 
-+ (id)layoutForSource:(id)a3 inTarget:(id)a4 withSize:(CGSize)a5
++ (id)layoutForSource:(id)source inTarget:(id)target withSize:(CGSize)size
 {
   v5 = 0;
-  if (a3 && a4)
+  if (source && target)
   {
-    height = a5.height;
-    width = a5.width;
-    v10 = a4;
-    v11 = a3;
-    v5 = [a1 alloc];
-    v12 = v11;
-    v13 = v10;
+    height = size.height;
+    width = size.width;
+    targetCopy = target;
+    sourceCopy = source;
+    v5 = [self alloc];
+    v12 = sourceCopy;
+    v13 = targetCopy;
     if (!v5 || (v143.receiver = v5, v143.super_class = _UIImageContentLayout, (v5 = objc_msgSendSuper2(&v143, sel_init)) == 0))
     {
 LABEL_59:
@@ -138,11 +138,11 @@ LABEL_59:
       goto LABEL_60;
     }
 
-    v14 = [v12 content];
+    content = [v12 content];
     objc_storeStrong(v5 + 3, 0);
     objc_storeStrong(v5 + 4, 0);
     *(v5 + 5) = 0;
-    [v14 size];
+    [content size];
     *(v5 + 11) = v15;
     *(v5 + 12) = v16;
     v17 = MEMORY[0x1E695EFD0];
@@ -152,7 +152,7 @@ LABEL_59:
     *(v5 + 216) = *(v17 + 32);
     [v13 preferredContentScaleFactor];
     *(v5 + 8) = v19;
-    [v14 vectorScale];
+    [content vectorScale];
     *(v5 + 120) = 0u;
     *(v5 + 6) = v20;
     *(v5 + 136) = 0u;
@@ -162,11 +162,11 @@ LABEL_59:
     *(v5 + 9) = 0;
     *(v5 + 10) = 0;
     v5[8] &= ~1u;
-    v21 = [v13 contentMode];
+    contentMode = [v13 contentMode];
     [v12 _fullSize];
     v117 = v23;
     v118 = v22;
-    [v14 size];
+    [content size];
     v119 = v24;
     v115 = v25;
     [v12 _contentInsets];
@@ -248,23 +248,23 @@ LABEL_20:
         *(v5 + 22) = v49;
 LABEL_21:
         v53 = v28 <= 0.0 || v26 <= 0.0;
-        if ((!v53 || v21 >= 4) && v119 > 0.0 && v115 > 0.0)
+        if ((!v53 || contentMode >= 4) && v119 > 0.0 && v115 > 0.0)
         {
-          if ([v14 canScaleImageToTargetResolution] && !objc_msgSend(v12, "_isResizable"))
+          if ([content canScaleImageToTargetResolution] && !objc_msgSend(v12, "_isResizable"))
           {
             v56 = 1;
           }
 
           else
           {
-            [v14 scale];
+            [content scale];
             *(v5 + 8) = v54;
             v26 = UISizeRoundToScale(width, height, v54);
             v28 = v55;
             v56 = 0;
           }
 
-          v113 = v14;
+          v113 = content;
           if ([v13 _layoutShouldFlipHorizontalOrientations])
           {
             v57 = v30 - 2;
@@ -288,8 +288,8 @@ LABEL_21:
           v128 = v115;
           v58 = v12;
           v124 = v58;
-          v120 = v21;
-          v129 = v21;
+          v120 = contentMode;
+          v129 = contentMode;
           v130 = 0;
           v131 = 0;
           v132 = v26;
@@ -413,7 +413,7 @@ LABEL_21:
           v96 = v138[2].f64[1];
           v97 = v58;
           v98 = v13;
-          v99 = [v97 content];
+          content2 = [v97 content];
           v100 = *(v5 + 8);
           [v98 preferredContentScaleFactor];
           v102 = v101;
@@ -430,14 +430,14 @@ LABEL_21:
               v104 = 0;
             }
 
-            [v99 size];
-            if (vabdd_f64(v96, v106) < 0.00000011920929 && vabdd_f64(v95, v105) < 0.00000011920929 && ([v99 scale], v100 == v107) && objc_msgSend(v98, "_supportsContents") && objc_msgSend(v99, "prefersProvidingNonCGImageContentsDirectlyForRendering"))
+            [content2 size];
+            if (vabdd_f64(v96, v106) < 0.00000011920929 && vabdd_f64(v95, v105) < 0.00000011920929 && ([content2 scale], v100 == v107) && objc_msgSend(v98, "_supportsContents") && objc_msgSend(content2, "prefersProvidingNonCGImageContentsDirectlyForRendering"))
             {
               *&v144.a = MEMORY[0x1E69E9820];
               *&v144.b = 3221225472;
               *&v144.c = __61___UIImageContentLayout__prepareContentOfSize_source_target___block_invoke;
               *&v144.d = &unk_1E710DAA8;
-              *&v144.tx = v99;
+              *&v144.tx = content2;
               v144.ty = v102;
               v108 = _Block_copy(&v144);
               v109 = *(v59 + 2);
@@ -452,7 +452,7 @@ LABEL_21:
               *&v144.b = 3221225472;
               *&v144.c = __61___UIImageContentLayout__prepareContentOfSize_source_target___block_invoke_2;
               *&v144.d = &unk_1E710DAD0;
-              *&v144.tx = v99;
+              *&v144.tx = content2;
               v145 = v95;
               v146 = v96;
               v147 = v100;
@@ -467,7 +467,7 @@ LABEL_21:
           }
 
           _Block_object_dispose(&v137, 8);
-          v14 = v114;
+          content = v114;
         }
 
         goto LABEL_59;
@@ -493,26 +493,26 @@ LABEL_60:
   return [(_UIImageContentRendition *)rendition rbSymbolConfiguration];
 }
 
-- (void)drawInContext:(CGContext *)a3 withSize:(CGSize)a4
+- (void)drawInContext:(CGContext *)context withSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   [(_UIImageContentLayout *)self _materializeRenditionContents];
-  CGContextSaveGState(a3);
-  CGContextScaleCTM(a3, width / self->_renderSize.width, height / self->_renderSize.height);
+  CGContextSaveGState(context);
+  CGContextScaleCTM(context, width / self->_renderSize.width, height / self->_renderSize.height);
   contentsScaleFactor = self->_contentsScaleFactor;
   if (contentsScaleFactor <= 0.0)
   {
-    v9 = [objc_opt_self() mainScreen];
-    [v9 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     contentsScaleFactor = v10;
   }
 
-  CGContextScaleCTM(a3, contentsScaleFactor / self->_contentsVectorScale, contentsScaleFactor / self->_contentsVectorScale);
-  CGContextTranslateCTM(a3, -self->_contentInsets.left, -self->_contentInsets.top);
-  CGContextScaleCTM(a3, 1.0 / self->_contentsScaleFactor, 1.0 / self->_contentsScaleFactor);
+  CGContextScaleCTM(context, contentsScaleFactor / self->_contentsVectorScale, contentsScaleFactor / self->_contentsVectorScale);
+  CGContextTranslateCTM(context, -self->_contentInsets.left, -self->_contentInsets.top);
+  CGContextScaleCTM(context, 1.0 / self->_contentsScaleFactor, 1.0 / self->_contentsScaleFactor);
   memset(&v16, 0, sizeof(v16));
-  CGContextGetCTM(&v16, a3);
+  CGContextGetCTM(&v16, context);
   var0 = self->_contentInfo.var0;
   v12 = self->_contentInsets.left * var0;
   v13 = var0 * self->_contentInsets.top;
@@ -521,7 +521,7 @@ LABEL_60:
   v16 = v15;
   CGContextSetCTM();
   [_UIImageContentRendition drawInContext:?];
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 }
 
 - (id)description

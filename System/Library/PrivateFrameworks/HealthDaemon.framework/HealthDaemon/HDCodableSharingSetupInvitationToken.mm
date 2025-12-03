@@ -1,11 +1,11 @@
 @interface HDCodableSharingSetupInvitationToken
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableSharingSetupInvitationToken
@@ -16,20 +16,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableSharingSetupInvitationToken;
   v4 = [(HDCodableSharingSetupInvitationToken *)&v8 description];
-  v5 = [(HDCodableSharingSetupInvitationToken *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableSharingSetupInvitationToken *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   shareURL = self->_shareURL;
   if (shareURL)
   {
-    [v3 setObject:shareURL forKey:@"shareURL"];
+    [dictionary setObject:shareURL forKey:@"shareURL"];
   }
 
   token = self->_token;
@@ -41,61 +41,61 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_shareURL)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_token)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_shareURL)
   {
-    [v4 setShareURL:?];
-    v4 = v5;
+    [toCopy setShareURL:?];
+    toCopy = v5;
   }
 
   if (self->_token)
   {
     [v5 setToken:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_shareURL copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_shareURL copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSData *)self->_token copyWithZone:a3];
+  v8 = [(NSData *)self->_token copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((shareURL = self->_shareURL, !(shareURL | v4[1])) || -[NSString isEqual:](shareURL, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((shareURL = self->_shareURL, !(shareURL | equalCopy[1])) || -[NSString isEqual:](shareURL, "isEqual:")))
   {
     token = self->_token;
-    if (token | v4[2])
+    if (token | equalCopy[2])
     {
       v7 = [(NSData *)token isEqual:?];
     }
@@ -114,20 +114,20 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[1])
   {
     [(HDCodableSharingSetupInvitationToken *)self setShareURL:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(HDCodableSharingSetupInvitationToken *)self setToken:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

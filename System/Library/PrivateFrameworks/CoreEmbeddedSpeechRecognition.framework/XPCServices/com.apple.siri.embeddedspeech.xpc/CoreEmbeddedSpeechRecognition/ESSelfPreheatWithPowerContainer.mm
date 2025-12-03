@@ -1,23 +1,23 @@
 @interface ESSelfPreheatWithPowerContainer
-- (ESSelfPreheatWithPowerContainer)initWithPreheatContext:(id)a3 powerSnapshot:(id)a4 powerEventContext:(id)a5;
+- (ESSelfPreheatWithPowerContainer)initWithPreheatContext:(id)context powerSnapshot:(id)snapshot powerEventContext:(id)eventContext;
 @end
 
 @implementation ESSelfPreheatWithPowerContainer
 
-- (ESSelfPreheatWithPowerContainer)initWithPreheatContext:(id)a3 powerSnapshot:(id)a4 powerEventContext:(id)a5
+- (ESSelfPreheatWithPowerContainer)initWithPreheatContext:(id)context powerSnapshot:(id)snapshot powerEventContext:(id)eventContext
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  snapshotCopy = snapshot;
+  eventContextCopy = eventContext;
   v15.receiver = self;
   v15.super_class = ESSelfPreheatWithPowerContainer;
   v12 = [(ESSelfPreheatWithPowerContainer *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_preheatContext, a3);
-    objc_storeStrong(&v13->_powerSnapshot, a4);
-    objc_storeStrong(&v13->_powerEventContext, a5);
+    objc_storeStrong(&v12->_preheatContext, context);
+    objc_storeStrong(&v13->_powerSnapshot, snapshot);
+    objc_storeStrong(&v13->_powerEventContext, eventContext);
   }
 
   return v13;

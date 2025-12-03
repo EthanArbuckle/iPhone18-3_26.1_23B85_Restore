@@ -1,7 +1,7 @@
 @interface SparksCelebration
 - (_TtC15ActivityRingsUI17SparksCelebration)init;
-- (void)apply:(id)a3 context:(id)a4;
-- (void)updateDeltaTime:(double)a3;
+- (void)apply:(id)apply context:(id)context;
+- (void)updateDeltaTime:(double)time;
 @end
 
 @implementation SparksCelebration
@@ -16,17 +16,17 @@
   return [(SparksCelebration *)&v4 init];
 }
 
-- (void)apply:(id)a3 context:(id)a4
+- (void)apply:(id)apply context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1CFD837B0(v6, v7);
+  applyCopy = apply;
+  contextCopy = context;
+  selfCopy = self;
+  sub_1CFD837B0(applyCopy, contextCopy);
 }
 
-- (void)updateDeltaTime:(double)a3
+- (void)updateDeltaTime:(double)time
 {
-  v3 = self;
+  selfCopy = self;
   sub_1CFD8CF9C();
 }
 

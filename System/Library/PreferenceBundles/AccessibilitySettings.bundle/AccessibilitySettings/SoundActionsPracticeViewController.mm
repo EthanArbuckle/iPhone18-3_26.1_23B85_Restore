@@ -1,33 +1,33 @@
 @interface SoundActionsPracticeViewController
-- (BOOL)_cellsWillTruncateAtWidth:(double)a3;
+- (BOOL)_cellsWillTruncateAtWidth:(double)width;
 - (BOOL)accessibilityPerformMagicTap;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (double)_itemHeight;
 - (double)_itemWidth;
-- (double)_itemWidthForColumnCount:(unsigned int)a3;
-- (id)_indexPathForUsage:(int64_t)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
+- (double)_itemWidthForColumnCount:(unsigned int)count;
+- (id)_indexPathForUsage:(int64_t)usage;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
 - (int)_setupLocalHeader;
-- (void)_didFinishAnnouncement:(id)a3;
-- (void)_observeScrollViewDidScroll:(id)a3;
-- (void)_pauseVisualizer:(BOOL)a3;
+- (void)_didFinishAnnouncement:(id)announcement;
+- (void)_observeScrollViewDidScroll:(id)scroll;
+- (void)_pauseVisualizer:(BOOL)visualizer;
 - (void)_setupCollectionView;
 - (void)_setupLearnMoreButton;
 - (void)_setupSounds;
 - (void)_startListening;
 - (void)_stopListening;
-- (void)_traitCollectionDidChange:(id)a3;
+- (void)_traitCollectionDidChange:(id)change;
 - (void)_updateCollectionViewHeightConstraint;
-- (void)_voiceOverStatusDidChange:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)_voiceOverStatusDidChange:(id)change;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SoundActionsPracticeViewController
@@ -40,8 +40,8 @@
   self->_itemHeight = 0.0;
   self->_lastRecognizedOrTappedSound = 0;
   self->_cachedColumnCount = 0;
-  v3 = [(SoundActionsPracticeViewController *)self scrollView];
-  [v3 _addScrollViewScrollObserver:self];
+  scrollView = [(SoundActionsPracticeViewController *)self scrollView];
+  [scrollView _addScrollViewScrollObserver:self];
 
   [(SoundActionsPracticeViewController *)self _setupSounds];
   [(SoundActionsPracticeViewController *)self _setupLearnMoreButton];
@@ -83,18 +83,18 @@ void __49__SoundActionsPracticeViewController_viewDidLoad__block_invoke(uint64_t
   [(SoundActionsPracticeViewController *)self _updateCollectionViewHeightConstraint];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = SoundActionsPracticeViewController;
-  [(SoundActionsPracticeViewController *)&v3 viewWillAppear:a3];
+  [(SoundActionsPracticeViewController *)&v3 viewWillAppear:appear];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SoundActionsPracticeViewController;
-  [(SoundActionsPracticeViewController *)&v4 viewDidAppear:a3];
+  [(SoundActionsPracticeViewController *)&v4 viewDidAppear:appear];
   [(SoundActionsPracticeViewController *)self _startListening];
   if (UIAccessibilityIsVoiceOverRunning())
   {
@@ -102,11 +102,11 @@ void __49__SoundActionsPracticeViewController_viewDidLoad__block_invoke(uint64_t
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SoundActionsPracticeViewController;
-  [(SoundActionsPracticeViewController *)&v4 viewWillDisappear:a3];
+  [(SoundActionsPracticeViewController *)&v4 viewWillDisappear:disappear];
   [(SoundActionsPracticeViewController *)self _stopListening];
 }
 
@@ -118,20 +118,20 @@ void __49__SoundActionsPracticeViewController_viewDidLoad__block_invoke(uint64_t
   v4 = +[SoundActionsPracticeAudioManager sharedInstance];
   [v4 stop];
 
-  v5 = [(SoundActionsHeader *)self->_scrollingHeader visualizerView];
-  [v5 setStyleDisabled:1];
+  visualizerView = [(SoundActionsHeader *)self->_scrollingHeader visualizerView];
+  [visualizerView setStyleDisabled:1];
 
-  v6 = [(SoundActionsHeader *)self->_staticHeader visualizerView];
-  [v6 setStyleDisabled:1];
+  visualizerView2 = [(SoundActionsHeader *)self->_staticHeader visualizerView];
+  [visualizerView2 setStyleDisabled:1];
 }
 
 - (void)_startListening
 {
-  v3 = [(SoundActionsHeader *)self->_scrollingHeader visualizerView];
-  [v3 setStyleDisabled:0];
+  visualizerView = [(SoundActionsHeader *)self->_scrollingHeader visualizerView];
+  [visualizerView setStyleDisabled:0];
 
-  v4 = [(SoundActionsHeader *)self->_staticHeader visualizerView];
-  [v4 setStyleDisabled:0];
+  visualizerView2 = [(SoundActionsHeader *)self->_staticHeader visualizerView];
+  [visualizerView2 setStyleDisabled:0];
 
   objc_initWeak(&location, self);
   v5 = +[SoundActionsPracticeAudioManager sharedInstance];
@@ -145,8 +145,8 @@ void __49__SoundActionsPracticeViewController_viewDidLoad__block_invoke(uint64_t
   v8[2] = __53__SoundActionsPracticeViewController__startListening__block_invoke_2;
   v8[3] = &unk_255E88;
   objc_copyWeak(&v9, &location);
-  v6 = [(SoundActionsHeader *)self->_staticHeader visualizerView];
-  [v5 registerListener:self forAudioLevelUpdates:v10 forDetection:v8 withBucketCount:{objc_msgSend(v6, "pipCount")}];
+  visualizerView3 = [(SoundActionsHeader *)self->_staticHeader visualizerView];
+  [v5 registerListener:self forAudioLevelUpdates:v10 forDetection:v8 withBucketCount:{objc_msgSend(visualizerView3, "pipCount")}];
 
   v7 = +[SoundActionsPracticeAudioManager sharedInstance];
   [v7 start];
@@ -220,17 +220,17 @@ LABEL_5:
   }
 }
 
-- (void)_pauseVisualizer:(BOOL)a3
+- (void)_pauseVisualizer:(BOOL)visualizer
 {
-  v3 = a3;
-  v5 = [(SoundActionsHeader *)self->_staticHeader visualizerView];
-  [v5 setStyleDisabled:v3];
+  visualizerCopy = visualizer;
+  visualizerView = [(SoundActionsHeader *)self->_staticHeader visualizerView];
+  [visualizerView setStyleDisabled:visualizerCopy];
 
-  v6 = [(SoundActionsHeader *)self->_scrollingHeader visualizerView];
-  [v6 setStyleDisabled:v3];
+  visualizerView2 = [(SoundActionsHeader *)self->_scrollingHeader visualizerView];
+  [visualizerView2 setStyleDisabled:visualizerCopy];
 }
 
-- (id)_indexPathForUsage:(int64_t)a3
+- (id)_indexPathForUsage:(int64_t)usage
 {
   if ([(NSArray *)self->_sounds count])
   {
@@ -238,7 +238,7 @@ LABEL_5:
     while (1)
     {
       v6 = [(NSArray *)self->_sounds objectAtIndexedSubscript:v5];
-      if ([v6 usage] == a3)
+      if ([v6 usage] == usage)
       {
         break;
       }
@@ -263,16 +263,16 @@ LABEL_5:
 
 - (void)_setupSounds
 {
-  v3 = [(SoundActionsPracticeViewController *)self assetURL];
+  assetURL = [(SoundActionsPracticeViewController *)self assetURL];
 
   sounds = self->_sounds;
-  if (v3)
+  if (assetURL)
   {
     if (!sounds)
     {
       v5 = +[SoundActionsPracticeUtilities sharedInstance];
-      v6 = [(SoundActionsPracticeViewController *)self assetURL];
-      v7 = [v5 allSoundsForAssetURL:v6];
+      assetURL2 = [(SoundActionsPracticeViewController *)self assetURL];
+      v7 = [v5 allSoundsForAssetURL:assetURL2];
       v8 = self->_sounds;
       self->_sounds = v7;
     }
@@ -294,12 +294,12 @@ void __50__SoundActionsPracticeViewController__setupSounds__block_invoke(uint64_
 
 - (void)_setupLearnMoreButton
 {
-  v3 = [(SoundActionsPracticeViewController *)self learnMoreButton];
+  learnMoreButton = [(SoundActionsPracticeViewController *)self learnMoreButton];
 
-  if (v3)
+  if (learnMoreButton)
   {
-    v4 = [(SoundActionsPracticeViewController *)self learnMoreButton];
-    [v4 removeFromSuperview];
+    learnMoreButton2 = [(SoundActionsPracticeViewController *)self learnMoreButton];
+    [learnMoreButton2 removeFromSuperview];
   }
 
   objc_initWeak(&location, self);
@@ -316,24 +316,24 @@ void __50__SoundActionsPracticeViewController__setupSounds__block_invoke(uint64_
   v7 = [UIButton buttonWithConfiguration:v6 primaryAction:v21];
   [(SoundActionsPracticeViewController *)self setLearnMoreButton:v7];
 
-  v8 = [(SoundActionsPracticeViewController *)self learnMoreButton];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  learnMoreButton3 = [(SoundActionsPracticeViewController *)self learnMoreButton];
+  [learnMoreButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(SoundActionsPracticeViewController *)self contentView];
-  v10 = [(SoundActionsPracticeViewController *)self learnMoreButton];
-  [v9 addSubview:v10];
+  contentView = [(SoundActionsPracticeViewController *)self contentView];
+  learnMoreButton4 = [(SoundActionsPracticeViewController *)self learnMoreButton];
+  [contentView addSubview:learnMoreButton4];
 
-  v20 = [(SoundActionsPracticeViewController *)self learnMoreButton];
-  v11 = [(SoundActionsPracticeViewController *)self contentView];
-  v12 = [NSLayoutConstraint constraintWithItem:v20 attribute:3 relatedBy:0 toItem:v11 attribute:3 multiplier:1.0 constant:0.0];
+  learnMoreButton5 = [(SoundActionsPracticeViewController *)self learnMoreButton];
+  contentView2 = [(SoundActionsPracticeViewController *)self contentView];
+  v12 = [NSLayoutConstraint constraintWithItem:learnMoreButton5 attribute:3 relatedBy:0 toItem:contentView2 attribute:3 multiplier:1.0 constant:0.0];
   v25[0] = v12;
-  v13 = [(SoundActionsPracticeViewController *)self learnMoreButton];
-  v14 = [(SoundActionsPracticeViewController *)self contentView];
-  v15 = [NSLayoutConstraint constraintWithItem:v13 attribute:5 relatedBy:0 toItem:v14 attribute:5 multiplier:1.0 constant:20.0];
+  learnMoreButton6 = [(SoundActionsPracticeViewController *)self learnMoreButton];
+  contentView3 = [(SoundActionsPracticeViewController *)self contentView];
+  v15 = [NSLayoutConstraint constraintWithItem:learnMoreButton6 attribute:5 relatedBy:0 toItem:contentView3 attribute:5 multiplier:1.0 constant:20.0];
   v25[1] = v15;
-  v16 = [(SoundActionsPracticeViewController *)self learnMoreButton];
-  v17 = [(SoundActionsPracticeViewController *)self contentView];
-  v18 = [NSLayoutConstraint constraintWithItem:v16 attribute:6 relatedBy:0 toItem:v17 attribute:6 multiplier:1.0 constant:-20.0];
+  learnMoreButton7 = [(SoundActionsPracticeViewController *)self learnMoreButton];
+  contentView4 = [(SoundActionsPracticeViewController *)self contentView];
+  v18 = [NSLayoutConstraint constraintWithItem:learnMoreButton7 attribute:6 relatedBy:0 toItem:contentView4 attribute:6 multiplier:1.0 constant:-20.0];
   v25[2] = v18;
   v19 = [NSArray arrayWithObjects:v25 count:3];
   [NSLayoutConstraint activateConstraints:v19];
@@ -368,47 +368,47 @@ void __59__SoundActionsPracticeViewController__setupLearnMoreButton__block_invok
   v3 = [[UICollectionView alloc] initWithFrame:v27 collectionViewLayout:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(SoundActionsPracticeViewController *)self setCollectionView:v3];
 
-  v4 = [(SoundActionsPracticeViewController *)self collectionView];
-  [v4 setDataSource:self];
+  collectionView = [(SoundActionsPracticeViewController *)self collectionView];
+  [collectionView setDataSource:self];
 
-  v5 = [(SoundActionsPracticeViewController *)self collectionView];
-  [v5 setDelegate:self];
+  collectionView2 = [(SoundActionsPracticeViewController *)self collectionView];
+  [collectionView2 setDelegate:self];
 
-  v6 = [(SoundActionsPracticeViewController *)self collectionView];
-  [v6 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SoundActionsCellReuseID"];
+  collectionView3 = [(SoundActionsPracticeViewController *)self collectionView];
+  [collectionView3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SoundActionsCellReuseID"];
 
-  v7 = [(SoundActionsPracticeViewController *)self collectionView];
-  [v7 registerClass:objc_opt_class() forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SoundActionsHEADERReuseID"];
+  collectionView4 = [(SoundActionsPracticeViewController *)self collectionView];
+  [collectionView4 registerClass:objc_opt_class() forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SoundActionsHEADERReuseID"];
 
-  v8 = [(SoundActionsPracticeViewController *)self collectionView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  collectionView5 = [(SoundActionsPracticeViewController *)self collectionView];
+  [collectionView5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(SoundActionsPracticeViewController *)self collectionView];
+  collectionView6 = [(SoundActionsPracticeViewController *)self collectionView];
   v10 = +[UIColor clearColor];
-  [v9 setBackgroundColor:v10];
+  [collectionView6 setBackgroundColor:v10];
 
-  v11 = [(SoundActionsPracticeViewController *)self collectionView];
-  [v11 setScrollEnabled:0];
+  collectionView7 = [(SoundActionsPracticeViewController *)self collectionView];
+  [collectionView7 setScrollEnabled:0];
 
-  v12 = [(SoundActionsPracticeViewController *)self contentView];
-  v13 = [(SoundActionsPracticeViewController *)self collectionView];
-  [v12 addSubview:v13];
+  contentView = [(SoundActionsPracticeViewController *)self contentView];
+  collectionView8 = [(SoundActionsPracticeViewController *)self collectionView];
+  [contentView addSubview:collectionView8];
 
-  v26 = [(SoundActionsPracticeViewController *)self collectionView];
-  v25 = [(SoundActionsPracticeViewController *)self learnMoreButton];
-  v24 = [NSLayoutConstraint constraintWithItem:v26 attribute:3 relatedBy:0 toItem:v25 attribute:4 multiplier:1.0 constant:0.0];
+  collectionView9 = [(SoundActionsPracticeViewController *)self collectionView];
+  learnMoreButton = [(SoundActionsPracticeViewController *)self learnMoreButton];
+  v24 = [NSLayoutConstraint constraintWithItem:collectionView9 attribute:3 relatedBy:0 toItem:learnMoreButton attribute:4 multiplier:1.0 constant:0.0];
   v28[0] = v24;
-  v23 = [(SoundActionsPracticeViewController *)self collectionView];
-  v14 = [(SoundActionsPracticeViewController *)self contentView];
-  v15 = [NSLayoutConstraint constraintWithItem:v23 attribute:4 relatedBy:0 toItem:v14 attribute:4 multiplier:1.0 constant:0.0];
+  collectionView10 = [(SoundActionsPracticeViewController *)self collectionView];
+  contentView2 = [(SoundActionsPracticeViewController *)self contentView];
+  v15 = [NSLayoutConstraint constraintWithItem:collectionView10 attribute:4 relatedBy:0 toItem:contentView2 attribute:4 multiplier:1.0 constant:0.0];
   v28[1] = v15;
-  v16 = [(SoundActionsPracticeViewController *)self collectionView];
-  v17 = [(SoundActionsPracticeViewController *)self contentView];
-  v18 = [NSLayoutConstraint constraintWithItem:v16 attribute:5 relatedBy:0 toItem:v17 attribute:5 multiplier:1.0 constant:0.0];
+  collectionView11 = [(SoundActionsPracticeViewController *)self collectionView];
+  contentView3 = [(SoundActionsPracticeViewController *)self contentView];
+  v18 = [NSLayoutConstraint constraintWithItem:collectionView11 attribute:5 relatedBy:0 toItem:contentView3 attribute:5 multiplier:1.0 constant:0.0];
   v28[2] = v18;
-  v19 = [(SoundActionsPracticeViewController *)self collectionView];
-  v20 = [(SoundActionsPracticeViewController *)self contentView];
-  v21 = [NSLayoutConstraint constraintWithItem:v19 attribute:6 relatedBy:0 toItem:v20 attribute:6 multiplier:1.0 constant:0.0];
+  collectionView12 = [(SoundActionsPracticeViewController *)self collectionView];
+  contentView4 = [(SoundActionsPracticeViewController *)self contentView];
+  v21 = [NSLayoutConstraint constraintWithItem:collectionView12 attribute:6 relatedBy:0 toItem:contentView4 attribute:6 multiplier:1.0 constant:0.0];
   v28[3] = v21;
   v22 = [NSArray arrayWithObjects:v28 count:4];
   [NSLayoutConstraint activateConstraints:v22];
@@ -425,20 +425,20 @@ void __59__SoundActionsPracticeViewController__setupLearnMoreButton__block_invok
   [(SoundActionsHeader *)self->_staticHeader setBackgroundColor:v5];
 
   [(SoundActionsHeader *)self->_staticHeader setHidden:1];
-  v6 = [(SoundActionsPracticeViewController *)self view];
-  [v6 addSubview:self->_staticHeader];
+  view = [(SoundActionsPracticeViewController *)self view];
+  [view addSubview:self->_staticHeader];
 
   v7 = self->_staticHeader;
-  v21 = [(SoundActionsPracticeViewController *)self scrollView];
-  v8 = [NSLayoutConstraint constraintWithItem:v7 attribute:3 relatedBy:0 toItem:v21 attribute:3 multiplier:1.0 constant:0.0];
+  scrollView = [(SoundActionsPracticeViewController *)self scrollView];
+  v8 = [NSLayoutConstraint constraintWithItem:v7 attribute:3 relatedBy:0 toItem:scrollView attribute:3 multiplier:1.0 constant:0.0];
   v22[0] = v8;
   v9 = self->_staticHeader;
-  v10 = [(SoundActionsPracticeViewController *)self contentView];
-  v11 = [NSLayoutConstraint constraintWithItem:v9 attribute:5 relatedBy:0 toItem:v10 attribute:5 multiplier:1.0 constant:0.0];
+  contentView = [(SoundActionsPracticeViewController *)self contentView];
+  v11 = [NSLayoutConstraint constraintWithItem:v9 attribute:5 relatedBy:0 toItem:contentView attribute:5 multiplier:1.0 constant:0.0];
   v22[1] = v11;
   v12 = self->_staticHeader;
-  v13 = [(SoundActionsPracticeViewController *)self contentView];
-  v14 = [NSLayoutConstraint constraintWithItem:v12 attribute:6 relatedBy:0 toItem:v13 attribute:6 multiplier:1.0 constant:0.0];
+  contentView2 = [(SoundActionsPracticeViewController *)self contentView];
+  v14 = [NSLayoutConstraint constraintWithItem:v12 attribute:6 relatedBy:0 toItem:contentView2 attribute:6 multiplier:1.0 constant:0.0];
   v22[2] = v14;
   v15 = self->_staticHeader;
   +[SoundActionsPracticeVisualizerView desiredHeight];
@@ -447,8 +447,8 @@ void __59__SoundActionsPracticeViewController__setupLearnMoreButton__block_invok
   v18 = [NSArray arrayWithObjects:v22 count:4];
   [NSLayoutConstraint activateConstraints:v18];
 
-  v19 = [(SoundActionsHeader *)self->_staticHeader visualizerView];
-  LODWORD(self) = [v19 pipCount];
+  visualizerView = [(SoundActionsHeader *)self->_staticHeader visualizerView];
+  LODWORD(self) = [visualizerView pipCount];
 
   return self;
 }
@@ -462,10 +462,10 @@ void __59__SoundActionsPracticeViewController__setupLearnMoreButton__block_invok
     [NSLayoutConstraint deactivateConstraints:v3];
   }
 
-  v4 = [(SoundActionsPracticeViewController *)self collectionView];
-  v5 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-  [v5 collectionViewContentSize];
-  v6 = [NSLayoutConstraint constraintWithItem:v4 attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:?];
+  collectionView = [(SoundActionsPracticeViewController *)self collectionView];
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  [collectionViewLayout collectionViewContentSize];
+  v6 = [NSLayoutConstraint constraintWithItem:collectionView attribute:8 relatedBy:0 toItem:0 attribute:0 multiplier:1.0 constant:?];
   v7 = self->_collectionViewHeightConstraint;
   self->_collectionViewHeightConstraint = v6;
 
@@ -508,21 +508,21 @@ LABEL_10:
   return result;
 }
 
-- (double)_itemWidthForColumnCount:(unsigned int)a3
+- (double)_itemWidthForColumnCount:(unsigned int)count
 {
-  if (a3 <= 1)
+  if (count <= 1)
   {
-    v3 = 1;
+    countCopy = 1;
   }
 
   else
   {
-    v3 = a3;
+    countCopy = count;
   }
 
-  v4 = [(SoundActionsPracticeViewController *)self contentView];
-  [v4 bounds];
-  v6 = (v5 + -80.0 + (v3 - 1) * -10.0) / v3;
+  contentView = [(SoundActionsPracticeViewController *)self contentView];
+  [contentView bounds];
+  v6 = (v5 + -80.0 + (countCopy - 1) * -10.0) / countCopy;
   v7 = floorf(v6);
 
   return v7;
@@ -534,7 +534,7 @@ LABEL_10:
   if (result == 0.0)
   {
     v16 = 16;
-    v17 = self;
+    selfCopy = self;
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
@@ -561,8 +561,8 @@ LABEL_10:
           v23 = v10;
           v11 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
 
-          v12 = [v9 name];
-          [v12 sizeWithAttributes:v11];
+          name = [v9 name];
+          [name sizeWithAttributes:v11];
           v14 = v13;
 
           if (v14 > v7)
@@ -584,13 +584,13 @@ LABEL_10:
 
     +[SoundActionsPracticeCollectionViewCell verticalPadding];
     result = v7 + v15 * 2.0;
-    *&v17->OBWelcomeController_opaque[v16] = result;
+    *&selfCopy->OBWelcomeController_opaque[v16] = result;
   }
 
   return result;
 }
 
-- (BOOL)_cellsWillTruncateAtWidth:(double)a3
+- (BOOL)_cellsWillTruncateAtWidth:(double)width
 {
   v11 = 0u;
   v12 = 0u;
@@ -610,8 +610,8 @@ LABEL_10:
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) name];
-        v9 = [SoundActionsPracticeCollectionViewCell willTruncateForCellWidth:v8 withText:a3];
+        name = [*(*(&v11 + 1) + 8 * i) name];
+        v9 = [SoundActionsPracticeCollectionViewCell willTruncateForCellWidth:name withText:width];
 
         if (v9)
         {
@@ -635,14 +635,14 @@ LABEL_11:
   return v5;
 }
 
-- (void)_traitCollectionDidChange:(id)a3
+- (void)_traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(SoundActionsPracticeViewController *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 preferredContentSizeCategory];
-  v8 = v7;
-  if (v6 != v7)
+  changeCopy = change;
+  traitCollection = [(SoundActionsPracticeViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+  v8 = preferredContentSizeCategory2;
+  if (preferredContentSizeCategory != preferredContentSizeCategory2)
   {
 
 LABEL_4:
@@ -650,11 +650,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v9 = [(SoundActionsPracticeViewController *)self traitCollection];
-  v10 = [v9 legibilityWeight];
-  v11 = [v4 legibilityWeight];
+  traitCollection2 = [(SoundActionsPracticeViewController *)self traitCollection];
+  legibilityWeight = [traitCollection2 legibilityWeight];
+  legibilityWeight2 = [changeCopy legibilityWeight];
 
-  if (v10 != v11)
+  if (legibilityWeight != legibilityWeight2)
   {
     goto LABEL_4;
   }
@@ -674,7 +674,7 @@ id __64__SoundActionsPracticeViewController__traitCollectionDidChange___block_in
   return [v3 _updateCollectionViewHeightConstraint];
 }
 
-- (void)_voiceOverStatusDidChange:(id)a3
+- (void)_voiceOverStatusDidChange:(id)change
 {
   if (UIAccessibilityIsVoiceOverRunning())
   {
@@ -689,10 +689,10 @@ id __64__SoundActionsPracticeViewController__traitCollectionDidChange___block_in
   }
 }
 
-- (void)_didFinishAnnouncement:(id)a3
+- (void)_didFinishAnnouncement:(id)announcement
 {
-  v4 = [a3 userInfo];
-  v7 = [v4 objectForKey:UIAccessibilityAnnouncementKeyStringValue];
+  userInfo = [announcement userInfo];
+  v7 = [userInfo objectForKey:UIAccessibilityAnnouncementKeyStringValue];
 
   v5 = settingsLocString(@"SOUND_ACTION_PRACTICE_PAGE_ANNOUNCEMENT_ON", @"Accessibility");
   v6 = [v7 isEqualToString:v5];
@@ -709,9 +709,9 @@ id __64__SoundActionsPracticeViewController__traitCollectionDidChange___block_in
   if (IsVoiceOverRunning)
   {
     v4 = +[SoundActionsPracticeAudioManager sharedInstance];
-    v5 = [v4 isListening];
+    isListening = [v4 isListening];
 
-    if (v5)
+    if (isListening)
     {
       [(SoundActionsPracticeViewController *)self _stopListening];
       v6 = @"SOUND_ACTION_PRACTICE_PAGE_ANNOUNCEMENT_OFF";
@@ -730,17 +730,17 @@ id __64__SoundActionsPracticeViewController__traitCollectionDidChange___block_in
   return IsVoiceOverRunning;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"SoundActionsCellReuseID" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"SoundActionsCellReuseID" forIndexPath:pathCopy];
   [v7 setCornerRadius:8.0];
   sounds = self->_sounds;
-  v9 = [v6 row];
+  v9 = [pathCopy row];
 
   v10 = [(NSArray *)sounds objectAtIndexedSubscript:v9];
-  v11 = [v10 name];
-  [v7 setText:v11];
+  name = [v10 name];
+  [v7 setText:name];
 
   [v7 setAccessibilityTraits:{UIAccessibilityTraitPlaysSound | UIAccessibilityTraitButton | UIAccessibilityTraitStartsMediaSession | objc_msgSend(v7, "accessibilityTraits")}];
   v12 = settingsLocString(@"SOUND_ACTION_PRACTICE_PAGE_HINT", @"Accessibility");
@@ -749,34 +749,34 @@ id __64__SoundActionsPracticeViewController__traitCollectionDidChange___block_in
   return v7;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   sounds = self->_sounds;
-  v7 = a4;
-  v8 = a3;
-  v9 = -[NSArray objectAtIndexedSubscript:](sounds, "objectAtIndexedSubscript:", [v7 row]);
-  v12 = [v9 soundURL];
+  pathCopy = path;
+  viewCopy = view;
+  v9 = -[NSArray objectAtIndexedSubscript:](sounds, "objectAtIndexedSubscript:", [pathCopy row]);
+  soundURL = [v9 soundURL];
 
   v10 = +[SoundActionsPracticeAudioManager sharedInstance];
-  [v10 playURL:v12];
+  [v10 playURL:soundURL];
 
-  [v8 deselectItemAtIndexPath:v7 animated:1];
-  v11 = [v7 item];
+  [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
+  item = [pathCopy item];
 
-  self->_lastRecognizedOrTappedSound = v11;
+  self->_lastRecognizedOrTappedSound = item;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v6 = [a3 dequeueReusableSupplementaryViewOfKind:a4 withReuseIdentifier:@"SoundActionsHEADERReuseID" forIndexPath:a5];
+  v6 = [view dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"SoundActionsHEADERReuseID" forIndexPath:path];
   objc_storeStrong(&self->_scrollingHeader, v6);
 
   return v6;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  [(SoundActionsPracticeViewController *)self _itemWidth:a3];
+  [(SoundActionsPracticeViewController *)self _itemWidth:view];
   v7 = v6;
   [(SoundActionsPracticeViewController *)self _itemHeight];
   v9 = v8;
@@ -786,7 +786,7 @@ id __64__SoundActionsPracticeViewController__traitCollectionDidChange___block_in
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
   v5 = 0.0;
   v6 = 20.0;
@@ -799,9 +799,9 @@ id __64__SoundActionsPracticeViewController__traitCollectionDidChange___block_in
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  v5 = [(SoundActionsPracticeViewController *)self contentView:a3];
+  v5 = [(SoundActionsPracticeViewController *)self contentView:view];
   [v5 bounds];
   v7 = v6 + -40.0;
   +[SoundActionsPracticeVisualizerView desiredHeight];
@@ -814,21 +814,21 @@ id __64__SoundActionsPracticeViewController__traitCollectionDidChange___block_in
   return result;
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
-  v14 = a3;
+  scrollCopy = scroll;
   scrollingHeader = self->_scrollingHeader;
   [(SoundActionsHeader *)scrollingHeader bounds];
   v6 = v5;
   v8 = v7;
-  v9 = [(SoundActionsPracticeViewController *)self scrollView];
-  [(SoundActionsHeader *)scrollingHeader convertPoint:v9 toView:v6, v8];
+  scrollView = [(SoundActionsPracticeViewController *)self scrollView];
+  [(SoundActionsHeader *)scrollingHeader convertPoint:scrollView toView:v6, v8];
   v11 = v10;
 
-  [v14 contentOffset];
+  [scrollCopy contentOffset];
   if (v12 > 0.0)
   {
-    [v14 contentOffset];
+    [scrollCopy contentOffset];
     [(SoundActionsHeader *)self->_staticHeader setHidden:v13 <= v11];
   }
 }

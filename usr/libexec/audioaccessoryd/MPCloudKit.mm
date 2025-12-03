@@ -6,43 +6,43 @@
 - (NSString)description;
 - (OS_dispatch_queue)pushDelegateQueue;
 - (id)apsEnvironmentString;
-- (id)hexStringForData:(id)a3;
-- (id)readUserPreference:(id)a3;
-- (void)_pushTimerFired:(id)a3;
-- (void)accountStatusDidChange:(id)a3;
+- (id)hexStringForData:(id)data;
+- (id)readUserPreference:(id)preference;
+- (void)_pushTimerFired:(id)fired;
+- (void)accountStatusDidChange:(id)change;
 - (void)buddySetupDone;
-- (void)checkAccountStatusWithCompletionHandler:(id)a3 withRetryCount:(unint64_t)a4;
-- (void)createSubscritionForRecordType:(id)a3;
+- (void)checkAccountStatusWithCompletionHandler:(id)handler withRetryCount:(unint64_t)count;
+- (void)createSubscritionForRecordType:(id)type;
 - (void)dealloc;
 - (void)deleteCloudKitAccessoryZone;
 - (void)deleteLegacyMasterKey;
-- (void)didReceiveWithMessage:(id)a3;
-- (void)didReceiveWithPublicToken:(id)a3;
-- (void)didReceiveWithToken:(id)a3 forTopic:(id)a4 identifier:(id)a5;
-- (void)fetchAccessoryKeyBlob:(unint64_t)a3;
-- (void)fetchAccountStatusWithCompletion:(id)a3;
-- (void)fetchKeyBlob:(unint64_t)a3;
-- (void)fetchSubscriptionForRecordType:(id)a3 andPrefKey:(id)a4;
+- (void)didReceiveWithMessage:(id)message;
+- (void)didReceiveWithPublicToken:(id)token;
+- (void)didReceiveWithToken:(id)token forTopic:(id)topic identifier:(id)identifier;
+- (void)fetchAccessoryKeyBlob:(unint64_t)blob;
+- (void)fetchAccountStatusWithCompletion:(id)completion;
+- (void)fetchKeyBlob:(unint64_t)blob;
+- (void)fetchSubscriptionForRecordType:(id)type andPrefKey:(id)key;
 - (void)forceAccountStatus;
-- (void)handleAccessoryKeyModifyError:(id)a3 forBlob:(id)a4 withRetryCount:(unint64_t)a5;
-- (void)handleModifyMasterKeyError:(id)a3 forBlob:(id)a4 withRetryCount:(unint64_t)a5;
+- (void)handleAccessoryKeyModifyError:(id)error forBlob:(id)blob withRetryCount:(unint64_t)count;
+- (void)handleModifyMasterKeyError:(id)error forBlob:(id)blob withRetryCount:(unint64_t)count;
 - (void)initializeCloudKit;
 - (void)markLegacyNonManateeContainerMigrated;
-- (void)modifyAccessoryBlob:(id)a3 withRetryCount:(unint64_t)a4;
-- (void)modifyKeyBlob:(id)a3 withRetryCount:(unint64_t)a4;
+- (void)modifyAccessoryBlob:(id)blob withRetryCount:(unint64_t)count;
+- (void)modifyKeyBlob:(id)blob withRetryCount:(unint64_t)count;
 - (void)pushDisable;
 - (void)pushEnable;
-- (void)removeSubscritionForRecordType:(id)a3;
-- (void)removeuserPreference:(id)a3 sync:(BOOL)a4;
+- (void)removeSubscritionForRecordType:(id)type;
+- (void)removeuserPreference:(id)preference sync:(BOOL)sync;
 - (void)resetOldZones;
 - (void)setupSubscriptions;
-- (void)setuserPreference:(id)a3 value:(id)a4 sync:(BOOL)a5;
-- (void)updateCloudKitAccessoryZone:(id)a3 delete:(BOOL)a4;
-- (void)updateCloudKitBlobZone:(id)a3;
+- (void)setuserPreference:(id)preference value:(id)value sync:(BOOL)sync;
+- (void)updateCloudKitAccessoryZone:(id)zone delete:(BOOL)delete;
+- (void)updateCloudKitBlobZone:(id)zone;
 - (void)upgradeLegacyNonManateeContainerToManatee;
-- (void)verifyAndCacheSubscriptionID:(id)a3;
-- (void)writeAccessoryBlob:(id)a3 withRetryCount:(unint64_t)a4;
-- (void)writeKeyBlob:(id)a3 withRetryCount:(unint64_t)a4;
+- (void)verifyAndCacheSubscriptionID:(id)d;
+- (void)writeAccessoryBlob:(id)blob withRetryCount:(unint64_t)count;
+- (void)writeKeyBlob:(id)blob withRetryCount:(unint64_t)count;
 @end
 
 @implementation MPCloudKit
@@ -71,8 +71,8 @@
 
 - (NSString)description
 {
-  v2 = [(MPCloudKit *)self cloudContainerIdentifier];
-  v3 = [NSString stringWithFormat:@"MPCloudKit: Container - %@", v2];
+  cloudContainerIdentifier = [(MPCloudKit *)self cloudContainerIdentifier];
+  v3 = [NSString stringWithFormat:@"MPCloudKit: Container - %@", cloudContainerIdentifier];
 
   return v3;
 }
@@ -200,8 +200,8 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Forcing account update to bluetoothd", v5, 2u);
   }
 
-  v4 = [(MPCloudKit *)self cloudKitContainer];
-  [v4 accountStatusWithCompletionHandler:&stru_1002B9C50];
+  cloudKitContainer = [(MPCloudKit *)self cloudKitContainer];
+  [cloudKitContainer accountStatusWithCompletionHandler:&stru_1002B9C50];
 }
 
 - (void)buddySetupDone
@@ -249,9 +249,9 @@ LABEL_12:
   cloudKitContainer = self->_cloudKitContainer;
   self->_cloudKitContainer = v4;
 
-  v6 = [(CKContainer *)self->_cloudKitContainer privateCloudDatabase];
+  privateCloudDatabase = [(CKContainer *)self->_cloudKitContainer privateCloudDatabase];
   cloudKitDatabase = self->_cloudKitDatabase;
-  self->_cloudKitDatabase = v6;
+  self->_cloudKitDatabase = privateCloudDatabase;
 
   v8 = [[CKRecordZone alloc] initWithZoneName:@"MagicCloudPairingCustomKeyBlobZone"];
   recordZoneBlob = self->_recordZoneBlob;
@@ -269,28 +269,28 @@ LABEL_12:
   [(MPCloudKit *)self accountStatusDidChange:0];
 }
 
-- (id)readUserPreference:(id)a3
+- (id)readUserPreference:(id)preference
 {
-  v3 = CFPreferencesCopyValue(a3, kCFPreferencesCurrentApplication, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+  v3 = CFPreferencesCopyValue(preference, kCFPreferencesCurrentApplication, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 
   return v3;
 }
 
-- (void)setuserPreference:(id)a3 value:(id)a4 sync:(BOOL)a5
+- (void)setuserPreference:(id)preference value:(id)value sync:(BOOL)sync
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  syncCopy = sync;
+  preferenceCopy = preference;
+  valueCopy = value;
   v9 = sub_100005C14("MagicPairing");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v7;
+    v12 = preferenceCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[setSystemPreference] prefName %@\n", &v11, 0xCu);
   }
 
-  CFPreferencesSetValue(v7, v8, kCFPreferencesCurrentApplication, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
-  if (v5 && !CFPreferencesSynchronize(@"com.apple.cloudpaird", kCFPreferencesCurrentUser, kCFPreferencesAnyHost))
+  CFPreferencesSetValue(preferenceCopy, valueCopy, kCFPreferencesCurrentApplication, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+  if (syncCopy && !CFPreferencesSynchronize(@"com.apple.cloudpaird", kCFPreferencesCurrentUser, kCFPreferencesAnyHost))
   {
     v10 = sub_100005C14("MagicPairing");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -301,11 +301,11 @@ LABEL_12:
   }
 }
 
-- (void)removeuserPreference:(id)a3 sync:(BOOL)a4
+- (void)removeuserPreference:(id)preference sync:(BOOL)sync
 {
-  v4 = a4;
-  CFPreferencesSetValue(a3, 0, @"com.apple.cloudpaird", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
-  if (v4 && !CFPreferencesSynchronize(@"com.apple.cloudpaird", kCFPreferencesCurrentUser, kCFPreferencesAnyHost))
+  syncCopy = sync;
+  CFPreferencesSetValue(preference, 0, @"com.apple.cloudpaird", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+  if (syncCopy && !CFPreferencesSynchronize(@"com.apple.cloudpaird", kCFPreferencesCurrentUser, kCFPreferencesAnyHost))
   {
     v5 = sub_100005C14("MagicPairing");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -316,13 +316,13 @@ LABEL_12:
   }
 }
 
-- (void)accountStatusDidChange:(id)a3
+- (void)accountStatusDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(MPCloudKit *)self manateeZoneUpgraded];
+  changeCopy = change;
+  manateeZoneUpgraded = [(MPCloudKit *)self manateeZoneUpgraded];
   v6 = sub_100005C14("MagicPairing");
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (manateeZoneUpgraded)
   {
     if (v7)
     {
@@ -342,9 +342,9 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "accountStatusDidChange calling accountStatusWithCompletionHandler", buf, 2u);
     }
 
-    v9 = [(MPCloudKit *)self cloudKitContainer];
+    cloudKitContainer = [(MPCloudKit *)self cloudKitContainer];
 
-    if (!v9)
+    if (!cloudKitContainer)
     {
       v10 = sub_100005C14("MagicPairing");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -357,13 +357,13 @@ LABEL_12:
     }
 
     objc_initWeak(buf, self);
-    v11 = [(MPCloudKit *)self cloudKitContainer];
+    cloudKitContainer2 = [(MPCloudKit *)self cloudKitContainer];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_10009300C;
     v12[3] = &unk_1002B9C78;
     objc_copyWeak(&v13, buf);
-    [v11 accountStatusWithCompletionHandler:v12];
+    [cloudKitContainer2 accountStatusWithCompletionHandler:v12];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(buf);
@@ -377,19 +377,19 @@ LABEL_12:
   [(MPCloudKit *)self createSubscritionForRecordType:@"EncryptedAccessoryBlob"];
 }
 
-- (void)fetchAccountStatusWithCompletion:(id)a3
+- (void)fetchAccountStatusWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MPCloudKit *)self cloudKitContainer];
+  completionCopy = completion;
+  cloudKitContainer = [(MPCloudKit *)self cloudKitContainer];
 
-  if (v5)
+  if (cloudKitContainer)
   {
     cloudKitContainer = self->_cloudKitContainer;
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000936A4;
     v9[3] = &unk_1002B9CA0;
-    v10 = v4;
+    v10 = completionCopy;
     [(CKContainer *)cloudKitContainer accountInfoWithCompletionHandler:v9];
     v7 = v10;
 LABEL_7:
@@ -404,33 +404,33 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "non-Manatee fetchAccountStatusWithCompletion cloudKitContainer is nil", buf, 2u);
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v7 = [NSError errorWithDomain:@"CloudKit Account Not Active" code:0 userInfo:0];
-    (*(v4 + 2))(v4, 0, v7);
+    (*(completionCopy + 2))(completionCopy, 0, v7);
     goto LABEL_7;
   }
 
 LABEL_8:
 }
 
-- (void)_pushTimerFired:(id)a3
+- (void)_pushTimerFired:(id)fired
 {
-  v4 = a3;
+  firedCopy = fired;
   v5 = sub_100005C14("MagicPairing");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = firedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "MP Push Timer Fired: %@", buf, 0xCu);
   }
 
-  v6 = [(MPCloudKit *)self pushTimer];
+  pushTimer = [(MPCloudKit *)self pushTimer];
 
-  if (v6)
+  if (pushTimer)
   {
-    v7 = [(MPCloudKit *)self pushTimer];
-    [v7 invalidate];
+    pushTimer2 = [(MPCloudKit *)self pushTimer];
+    [pushTimer2 invalidate];
 
     [(MPCloudKit *)self setPushTimer:0];
   }
@@ -459,13 +459,13 @@ LABEL_8:
   }
 }
 
-- (void)fetchKeyBlob:(unint64_t)a3
+- (void)fetchKeyBlob:(unint64_t)blob
 {
   v5 = sub_100005C14("MagicPairing");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v24 = a3;
+    blobCopy2 = blob;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "MP fetchKeyBlob: %lu", buf, 0xCu);
   }
 
@@ -489,12 +489,12 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v10 = [(MPCloudKit *)self masterBlob];
-  v11 = [v10 length];
+  masterBlob = [(MPCloudKit *)self masterBlob];
+  v11 = [masterBlob length];
 
   if (v11 != 33)
   {
-    if (a3 >= 5)
+    if (blob >= 5)
     {
       v6 = sub_100005C14("MagicPairing");
       if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -503,7 +503,7 @@ LABEL_8:
       }
 
       *buf = 134217984;
-      v24 = a3;
+      blobCopy2 = blob;
       v7 = "MP Exhausted all retries...: %lu";
       v8 = v6;
       v9 = 12;
@@ -524,28 +524,28 @@ LABEL_8:
 
     else
     {
-      v16 = [(MPCloudKit *)self recordZoneBlob];
+      recordZoneBlob = [(MPCloudKit *)self recordZoneBlob];
 
-      if (v16)
+      if (recordZoneBlob)
       {
         [(MPCloudKit *)self setIsFetchMasterKeyInProgress:1];
         [(MPCloudKit *)self setMasterBlob:0];
         v17 = [CKRecordID alloc];
-        v18 = [(MPCloudKit *)self recordZoneBlob];
-        v19 = [v18 zoneID];
-        v6 = [v17 initWithRecordName:@"EncryptedMasterKeyBlob" zoneID:v19];
+        recordZoneBlob2 = [(MPCloudKit *)self recordZoneBlob];
+        zoneID = [recordZoneBlob2 zoneID];
+        v6 = [v17 initWithRecordName:@"EncryptedMasterKeyBlob" zoneID:zoneID];
 
         v20 = +[CloudXPCService sharedInstance];
         [v20 beginTransaction:@"fetchKeyBlob"];
 
-        v21 = [(MPCloudKit *)self cloudKitDatabase];
+        cloudKitDatabase = [(MPCloudKit *)self cloudKitDatabase];
         v22[0] = _NSConcreteStackBlock;
         v22[1] = 3221225472;
         v22[2] = sub_100093D00;
         v22[3] = &unk_1002B9CE8;
         v22[4] = self;
-        v22[5] = a3;
-        [v21 fetchRecordWithID:v6 completionHandler:v22];
+        v22[5] = blob;
+        [cloudKitDatabase fetchRecordWithID:v6 completionHandler:v22];
 
         goto LABEL_14;
       }
@@ -571,36 +571,36 @@ LABEL_9:
   v12 = sub_100005C14("MagicPairing");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(MPCloudKit *)self masterBlob];
+    masterBlob2 = [(MPCloudKit *)self masterBlob];
     *buf = 138412290;
-    v24 = v13;
+    blobCopy2 = masterBlob2;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "MP fetchKeyBlob: already have master blob read  %@", buf, 0xCu);
   }
 
   v6 = +[CloudXPCService sharedInstance];
-  v14 = [(MPCloudKit *)self masterBlob];
-  v15 = [NSMutableDictionary dictionaryWithObjectsAndKeys:v14, @"kMasterKeyBlob", 0];
+  masterBlob3 = [(MPCloudKit *)self masterBlob];
+  v15 = [NSMutableDictionary dictionaryWithObjectsAndKeys:masterBlob3, @"kMasterKeyBlob", 0];
   [v6 sendCloudKitMsg:@"MasterKeysAvailable" args:v15];
 
 LABEL_14:
 }
 
-- (void)checkAccountStatusWithCompletionHandler:(id)a3 withRetryCount:(unint64_t)a4
+- (void)checkAccountStatusWithCompletionHandler:(id)handler withRetryCount:(unint64_t)count
 {
-  v6 = a3;
-  if (a4 < 5)
+  handlerCopy = handler;
+  if (count < 5)
   {
     objc_initWeak(buf, self);
-    v8 = [(MPCloudKit *)self cloudKitContainer];
+    cloudKitContainer = [(MPCloudKit *)self cloudKitContainer];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100094774;
     v9[3] = &unk_1002B9D38;
     objc_copyWeak(v11, buf);
     v9[4] = self;
-    v10 = v6;
-    v11[1] = a4;
-    [v8 accountStatusWithCompletionHandler:v9];
+    v10 = handlerCopy;
+    v11[1] = count;
+    [cloudKitContainer accountStatusWithCompletionHandler:v9];
 
     objc_destroyWeak(v11);
     objc_destroyWeak(buf);
@@ -618,7 +618,7 @@ LABEL_14:
   }
 }
 
-- (void)fetchAccessoryKeyBlob:(unint64_t)a3
+- (void)fetchAccessoryKeyBlob:(unint64_t)blob
 {
   if ([(MPCloudKit *)self manateeZoneUpgraded])
   {
@@ -630,7 +630,7 @@ LABEL_14:
     }
 
     v6 = +[MPCloudKit_Manatee sharedInstance];
-    [v6 fetchAccessoryKeyBlob:a3];
+    [v6 fetchAccessoryKeyBlob:blob];
 LABEL_5:
 
     return;
@@ -639,16 +639,16 @@ LABEL_5:
   if ([(MPCloudKit *)self shouldPauseFetch])
   {
     v7 = +[MPCloudKit_Manatee sharedInstance];
-    v8 = [v7 shouldPauseFetch];
+    shouldPauseFetch = [v7 shouldPauseFetch];
 
-    if (v8)
+    if (shouldPauseFetch)
     {
       v9 = sub_100005C14("MagicPairing");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(MPCloudKit *)self pauseErrorReason];
+        pauseErrorReason = [(MPCloudKit *)self pauseErrorReason];
         *buf = 138412290;
-        v23 = v10;
+        blobCopy = pauseErrorReason;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Fetch is currently paused due to: %@", buf, 0xCu);
       }
 
@@ -660,12 +660,12 @@ LABEL_19:
 
   v11 = sub_100005C14("MagicPairing");
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (a3 < 5)
+  if (blob < 5)
   {
     if (v12)
     {
       *buf = 134217984;
-      v23 = a3;
+      blobCopy = blob;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "MP fetchAccessoryKeyBlob: %lu", buf, 0xCu);
     }
 
@@ -674,18 +674,18 @@ LABEL_19:
       v9 = sub_100005C14("MagicPairing");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [(MPCloudKit *)self isFetchInProgress];
+        isFetchInProgress = [(MPCloudKit *)self isFetchInProgress];
         *buf = 67109120;
-        LODWORD(v23) = v13;
+        LODWORD(blobCopy) = isFetchInProgress;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "MP fetchAccessoryKeyBlob already in-progress: %i", buf, 8u);
       }
 
       goto LABEL_19;
     }
 
-    v14 = [(MPCloudKit *)self recordZoneAccessoryDatabase];
+    recordZoneAccessoryDatabase = [(MPCloudKit *)self recordZoneAccessoryDatabase];
 
-    if (!v14)
+    if (!recordZoneAccessoryDatabase)
     {
       v6 = sub_100005C14("MagicPairing");
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -699,21 +699,21 @@ LABEL_19:
 
     [(MPCloudKit *)self setIsFetchInProgress:1];
     v15 = [CKRecordID alloc];
-    v16 = [(MPCloudKit *)self recordZoneAccessoryDatabase];
-    v17 = [v16 zoneID];
-    v18 = [v15 initWithRecordName:@"EncryptedAccessoryBlob" zoneID:v17];
+    recordZoneAccessoryDatabase2 = [(MPCloudKit *)self recordZoneAccessoryDatabase];
+    zoneID = [recordZoneAccessoryDatabase2 zoneID];
+    v18 = [v15 initWithRecordName:@"EncryptedAccessoryBlob" zoneID:zoneID];
 
     v19 = +[CloudXPCService sharedInstance];
     [v19 beginTransaction:@"fetchAccessoryKeyBlob"];
 
-    v20 = [(MPCloudKit *)self cloudKitDatabase];
+    cloudKitDatabase = [(MPCloudKit *)self cloudKitDatabase];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_100094D7C;
     v21[3] = &unk_1002B9CE8;
     v21[4] = self;
-    v21[5] = a3;
-    [v20 fetchRecordWithID:v18 completionHandler:v21];
+    v21[5] = blob;
+    [cloudKitDatabase fetchRecordWithID:v18 completionHandler:v21];
   }
 
   else
@@ -721,7 +721,7 @@ LABEL_19:
     if (v12)
     {
       *buf = 136315138;
-      v23 = "[MPCloudKit fetchAccessoryKeyBlob:]";
+      blobCopy = "[MPCloudKit fetchAccessoryKeyBlob:]";
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "MP Exhausted all retries...: %s", buf, 0xCu);
     }
 
@@ -729,9 +729,9 @@ LABEL_19:
   }
 }
 
-- (void)updateCloudKitBlobZone:(id)a3
+- (void)updateCloudKitBlobZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   if (![(MPCloudKit *)self manateeZoneUpgraded])
   {
     v5 = [(MPCloudKit *)self readUserPreference:@"MagicCloudPairingManateeUpgradedAccount"];
@@ -748,10 +748,10 @@ LABEL_19:
 
     else
     {
-      v7 = [(MPCloudKit *)self isWriteMasterKeysInProgress];
+      isWriteMasterKeysInProgress = [(MPCloudKit *)self isWriteMasterKeysInProgress];
       v8 = sub_100005C14("MagicPairing");
       v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-      if (v7)
+      if (isWriteMasterKeysInProgress)
       {
         if (v9)
         {
@@ -769,20 +769,20 @@ LABEL_19:
         }
 
         [(MPCloudKit *)self setIsWriteMasterKeysInProgress:1];
-        [(MPCloudKit *)self modifyKeyBlob:v4 withRetryCount:0];
+        [(MPCloudKit *)self modifyKeyBlob:zoneCopy withRetryCount:0];
       }
     }
   }
 }
 
-- (void)modifyKeyBlob:(id)a3 withRetryCount:(unint64_t)a4
+- (void)modifyKeyBlob:(id)blob withRetryCount:(unint64_t)count
 {
-  v6 = a3;
+  blobCopy = blob;
   v7 = sub_100005C14("MagicPairing");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v19 = a4;
+    countCopy = count;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "modifyKeyBlob with retry count: %lu", buf, 0xCu);
   }
 
@@ -790,52 +790,52 @@ LABEL_19:
   [v8 beginTransaction:@"modifyKeyBlob"];
 
   v9 = [CKRecordID alloc];
-  v10 = [(MPCloudKit *)self recordZoneBlob];
-  v11 = [v10 zoneID];
-  v12 = [v9 initWithRecordName:@"EncryptedMasterKeyBlob" zoneID:v11];
+  recordZoneBlob = [(MPCloudKit *)self recordZoneBlob];
+  zoneID = [recordZoneBlob zoneID];
+  v12 = [v9 initWithRecordName:@"EncryptedMasterKeyBlob" zoneID:zoneID];
 
-  v13 = [(MPCloudKit *)self cloudKitDatabase];
+  cloudKitDatabase = [(MPCloudKit *)self cloudKitDatabase];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100095770;
   v15[3] = &unk_1002B9D80;
-  v16 = v6;
-  v17 = a4;
+  v16 = blobCopy;
+  countCopy2 = count;
   v15[4] = self;
-  v14 = v6;
-  [v13 fetchRecordWithID:v12 completionHandler:v15];
+  v14 = blobCopy;
+  [cloudKitDatabase fetchRecordWithID:v12 completionHandler:v15];
 }
 
-- (void)handleModifyMasterKeyError:(id)a3 forBlob:(id)a4 withRetryCount:(unint64_t)a5
+- (void)handleModifyMasterKeyError:(id)error forBlob:(id)blob withRetryCount:(unint64_t)count
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8 || a5 > 3)
+  errorCopy = error;
+  blobCopy = blob;
+  if (!errorCopy || count > 3)
   {
     goto LABEL_17;
   }
 
-  v10 = [v8 domain];
-  if ([v10 isEqualToString:CKErrorDomain] && (objc_msgSend(v8, "code") == 3 || objc_msgSend(v8, "code") == 7 || objc_msgSend(v8, "code") == 4 || objc_msgSend(v8, "code") == 9 || objc_msgSend(v8, "code") == 6))
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:CKErrorDomain] && (objc_msgSend(errorCopy, "code") == 3 || objc_msgSend(errorCopy, "code") == 7 || objc_msgSend(errorCopy, "code") == 4 || objc_msgSend(errorCopy, "code") == 9 || objc_msgSend(errorCopy, "code") == 6))
   {
 
     v11 = sub_100005C14("MagicPairing");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v26 = v8;
+      v26 = errorCopy;
       v27 = 2048;
-      v28 = a5;
+      countCopy = count;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Updating master key failed with error %@, retry count = %lu", buf, 0x16u);
     }
 
-    v12 = [v8 userInfo];
-    v13 = [v12 objectForKeyedSubscript:CKErrorRetryAfterKey];
+    userInfo = [errorCopy userInfo];
+    v13 = [userInfo objectForKeyedSubscript:CKErrorRetryAfterKey];
 
     if (v13)
     {
-      v14 = [v8 userInfo];
-      v15 = [v14 objectForKeyedSubscript:CKErrorRetryAfterKey];
+      userInfo2 = [errorCopy userInfo];
+      v15 = [userInfo2 objectForKeyedSubscript:CKErrorRetryAfterKey];
       [v15 doubleValue];
       v17 = v16;
 
@@ -845,8 +845,8 @@ LABEL_19:
       block[2] = sub_100095E48;
       block[3] = &unk_1002B86B8;
       block[4] = self;
-      v23 = v9;
-      v24 = a5;
+      v23 = blobCopy;
+      countCopy2 = count;
       dispatch_after(v18, &_dispatch_main_q, block);
 
       goto LABEL_18;
@@ -857,22 +857,22 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v19 = [v8 domain];
-  if (![v19 isEqualToString:CKErrorDomain])
+  domain2 = [errorCopy domain];
+  if (![domain2 isEqualToString:CKErrorDomain])
   {
 
     goto LABEL_17;
   }
 
-  if ([v8 code] == 26)
+  if ([errorCopy code] == 26)
   {
   }
 
   else
   {
-    v20 = [v8 code];
+    code = [errorCopy code];
 
-    if (v20 != 11)
+    if (code != 11)
     {
       goto LABEL_17;
     }
@@ -884,13 +884,13 @@ LABEL_17:
     sub_1001F2118();
   }
 
-  [(MPCloudKit *)self writeKeyBlob:v9 withRetryCount:0];
+  [(MPCloudKit *)self writeKeyBlob:blobCopy withRetryCount:0];
 LABEL_18:
 }
 
-- (void)writeKeyBlob:(id)a3 withRetryCount:(unint64_t)a4
+- (void)writeKeyBlob:(id)blob withRetryCount:(unint64_t)count
 {
-  v6 = a3;
+  blobCopy = blob;
   if (![(MPCloudKit *)self manateeZoneUpgraded])
   {
     v7 = [(MPCloudKit *)self readUserPreference:@"MagicCloudPairingManateeUpgradedAccount"];
@@ -902,18 +902,18 @@ LABEL_18:
     {
       if (v10)
       {
-        v11 = [(MPCloudKit *)self recordZoneBlob];
-        v12 = [v11 zoneID];
-        v13 = [v12 zoneName];
+        recordZoneBlob = [(MPCloudKit *)self recordZoneBlob];
+        zoneID = [recordZoneBlob zoneID];
+        zoneName = [zoneID zoneName];
         LODWORD(buf) = 138412290;
-        *(&buf + 4) = v13;
+        *(&buf + 4) = zoneName;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, " >>>writeKeyBlob  Record Zone %@", &buf, 0xCu);
       }
 
       v14 = [CKRecordID alloc];
-      v15 = [(MPCloudKit *)self recordZoneBlob];
-      v16 = [v15 zoneID];
-      v9 = [v14 initWithRecordName:@"EncryptedMasterKeyBlob" zoneID:v16];
+      recordZoneBlob2 = [(MPCloudKit *)self recordZoneBlob];
+      zoneID2 = [recordZoneBlob2 zoneID];
+      v9 = [v14 initWithRecordName:@"EncryptedMasterKeyBlob" zoneID:zoneID2];
 
       v17 = [[CKRecord alloc] initWithRecordType:@"MasterKey" recordID:v9];
       *&buf = 0;
@@ -927,36 +927,36 @@ LABEL_18:
       v40[2] = 0x2020000000;
       v41 = 0;
       v18 = dispatch_semaphore_create(0);
-      v19 = [v17 encryptedValues];
-      [v19 setObject:v6 forKeyedSubscript:@"EncryptedMasterKeyBlob"];
+      encryptedValues = [v17 encryptedValues];
+      [encryptedValues setObject:blobCopy forKeyedSubscript:@"EncryptedMasterKeyBlob"];
 
       v20 = sub_100005C14("MagicPairing");
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         *v42 = 138412290;
-        v43 = v6;
+        v43 = blobCopy;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "writeKeyBlob: kMagicCloudPairingProtectedMasterBlob fetch: encryptedBlob %@", v42, 0xCu);
       }
 
       v21 = +[CloudXPCService sharedInstance];
       [v21 beginTransaction:@"writeKeyBlob"];
 
-      v22 = [(MPCloudKit *)self cloudKitDatabase];
-      v23 = [(MPCloudKit *)self recordZoneBlob];
+      cloudKitDatabase = [(MPCloudKit *)self cloudKitDatabase];
+      recordZoneBlob3 = [(MPCloudKit *)self recordZoneBlob];
       v33[0] = _NSConcreteStackBlock;
       v33[1] = 3221225472;
       v33[2] = sub_10009636C;
       v33[3] = &unk_1002B9DD0;
       v38 = v40;
-      v39 = a4;
+      countCopy = count;
       p_buf = &buf;
       v33[4] = self;
-      v34 = v6;
+      v34 = blobCopy;
       v24 = v17;
       v35 = v24;
       v25 = v18;
       v36 = v25;
-      [v22 saveRecordZone:v23 completionHandler:v33];
+      [cloudKitDatabase saveRecordZone:recordZoneBlob3 completionHandler:v33];
 
       v26 = dispatch_time(0, 60000000000);
       dispatch_semaphore_wait(v25, v26);
@@ -969,12 +969,12 @@ LABEL_18:
         v28 = sub_100005C14("MagicPairing");
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
-          v29 = [(MPCloudKit *)self recordZoneBlob];
-          v30 = [v29 zoneID];
-          v31 = [v30 zoneName];
+          recordZoneBlob4 = [(MPCloudKit *)self recordZoneBlob];
+          zoneID3 = [recordZoneBlob4 zoneID];
+          zoneName2 = [zoneID3 zoneName];
           v32 = *(*(&buf + 1) + 40);
           *v42 = 138412546;
-          v43 = v31;
+          v43 = zoneName2;
           v44 = 2112;
           v45 = v32;
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, " >>>writeKeyBlob  Record Zone %@ failed with error %@", v42, 0x16u);
@@ -993,9 +993,9 @@ LABEL_18:
   }
 }
 
-- (void)updateCloudKitAccessoryZone:(id)a3 delete:(BOOL)a4
+- (void)updateCloudKitAccessoryZone:(id)zone delete:(BOOL)delete
 {
-  v6 = a3;
+  zoneCopy = zone;
   if (![(MPCloudKit *)self manateeZoneUpgraded])
   {
     v7 = [(MPCloudKit *)self readUserPreference:@"MagicCloudPairingManateeUpgradedAccount"];
@@ -1016,9 +1016,9 @@ LABEL_18:
       block[1] = 3221225472;
       block[2] = sub_100096C58;
       block[3] = &unk_1002B7170;
-      v12 = a4;
-      v10 = v6;
-      v11 = self;
+      deleteCopy = delete;
+      v10 = zoneCopy;
+      selfCopy = self;
       dispatch_async(&_dispatch_main_q, block);
       v8 = v10;
     }
@@ -1034,25 +1034,25 @@ LABEL_18:
   }
 }
 
-- (void)modifyAccessoryBlob:(id)a3 withRetryCount:(unint64_t)a4
+- (void)modifyAccessoryBlob:(id)blob withRetryCount:(unint64_t)count
 {
-  v6 = a3;
+  blobCopy = blob;
   v7 = sub_100005C14("MagicPairing");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v22 = a4;
+    countCopy = count;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, " >>> modifyAccessoryBlob - %lu", buf, 0xCu);
   }
 
   v8 = dispatch_semaphore_create(0);
   v9 = [CKRecordID alloc];
-  v10 = [(MPCloudKit *)self recordZoneAccessoryDatabase];
-  v11 = [v10 zoneID];
-  v12 = [v9 initWithRecordName:@"EncryptedAccessoryBlob" zoneID:v11];
+  recordZoneAccessoryDatabase = [(MPCloudKit *)self recordZoneAccessoryDatabase];
+  zoneID = [recordZoneAccessoryDatabase zoneID];
+  v12 = [v9 initWithRecordName:@"EncryptedAccessoryBlob" zoneID:zoneID];
 
   objc_initWeak(buf, self);
-  v13 = [(MPCloudKit *)self cloudKitDatabase];
+  cloudKitDatabase = [(MPCloudKit *)self cloudKitDatabase];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100097220;
@@ -1060,10 +1060,10 @@ LABEL_18:
   v14 = v8;
   v18 = v14;
   objc_copyWeak(v20, buf);
-  v15 = v6;
+  v15 = blobCopy;
   v19 = v15;
-  v20[1] = a4;
-  [v13 fetchRecordWithID:v12 completionHandler:v17];
+  v20[1] = count;
+  [cloudKitDatabase fetchRecordWithID:v12 completionHandler:v17];
 
   v16 = dispatch_time(0, 60000000000);
   dispatch_semaphore_wait(v14, v16);
@@ -1072,16 +1072,16 @@ LABEL_18:
   objc_destroyWeak(buf);
 }
 
-- (void)handleAccessoryKeyModifyError:(id)a3 forBlob:(id)a4 withRetryCount:(unint64_t)a5
+- (void)handleAccessoryKeyModifyError:(id)error forBlob:(id)blob withRetryCount:(unint64_t)count
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  errorCopy = error;
+  blobCopy = blob;
+  if (!errorCopy)
   {
     goto LABEL_37;
   }
 
-  if (a5 >= 5)
+  if (count >= 5)
   {
     v10 = sub_100005C14("MagicPairing");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1092,18 +1092,18 @@ LABEL_18:
     goto LABEL_37;
   }
 
-  v11 = [v8 domain];
-  if ([v11 isEqualToString:CKErrorDomain])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:CKErrorDomain])
   {
-    if ([v8 code] == 3 || objc_msgSend(v8, "code") == 4 || objc_msgSend(v8, "code") == 9)
+    if ([errorCopy code] == 3 || objc_msgSend(errorCopy, "code") == 4 || objc_msgSend(errorCopy, "code") == 9)
     {
 
       goto LABEL_11;
     }
 
-    v28 = [v8 code];
+    code = [errorCopy code];
 
-    if (v28 == 6)
+    if (code == 6)
     {
 LABEL_11:
       v12 = sub_100005C14("MagicPairing");
@@ -1127,17 +1127,17 @@ LABEL_13:
   {
   }
 
-  if ([v8 code] == 7)
+  if ([errorCopy code] == 7)
   {
-    v16 = [v8 userInfo];
+    userInfo = [errorCopy userInfo];
     v17 = CKErrorRetryAfterKey;
-    v18 = [v16 objectForKeyedSubscript:CKErrorRetryAfterKey];
+    v18 = [userInfo objectForKeyedSubscript:CKErrorRetryAfterKey];
     if (v18)
     {
 
 LABEL_21:
-      v20 = [v8 userInfo];
-      v21 = [v20 objectForKeyedSubscript:v17];
+      userInfo2 = [errorCopy userInfo];
+      v21 = [userInfo2 objectForKeyedSubscript:v17];
       [v21 doubleValue];
       v23 = v22;
 
@@ -1146,9 +1146,9 @@ LABEL_21:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v39 = v8;
+        v39 = errorCopy;
         v40 = 2048;
-        v41 = a5;
+        countCopy = count;
         v42 = 2048;
         v43 = v25;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "modify AccessoryBlob failed with error %@, retry count = %lu, retry time: %lu", buf, 0x20u);
@@ -1160,8 +1160,8 @@ LABEL_21:
       block[2] = sub_100097E70;
       block[3] = &unk_1002B86B8;
       block[4] = self;
-      v36 = v9;
-      v37 = a5;
+      v36 = blobCopy;
+      countCopy2 = count;
       dispatch_after(v26, &_dispatch_main_q, block);
 
       goto LABEL_37;
@@ -1181,18 +1181,18 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  v27 = [v8 domain];
-  if (![v27 isEqualToString:CKErrorDomain])
+  domain2 = [errorCopy domain];
+  if (![domain2 isEqualToString:CKErrorDomain])
   {
 
     goto LABEL_28;
   }
 
-  if ([v8 code] != 26)
+  if ([errorCopy code] != 26)
   {
-    v29 = [v8 code];
+    code2 = [errorCopy code];
 
-    if (v29 == 11)
+    if (code2 == 11)
     {
       goto LABEL_34;
     }
@@ -1215,23 +1215,23 @@ LABEL_34:
   }
 
   objc_initWeak(buf, self);
-  v31 = [(MPCloudKit *)self modifyOperationQueue];
+  modifyOperationQueue = [(MPCloudKit *)self modifyOperationQueue];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_100097FC4;
   v32[3] = &unk_1002B9E98;
   objc_copyWeak(&v34, buf);
-  v33 = v9;
-  [v31 addOperationWithBlock:v32];
+  v33 = blobCopy;
+  [modifyOperationQueue addOperationWithBlock:v32];
 
   objc_destroyWeak(&v34);
   objc_destroyWeak(buf);
 LABEL_37:
 }
 
-- (void)writeAccessoryBlob:(id)a3 withRetryCount:(unint64_t)a4
+- (void)writeAccessoryBlob:(id)blob withRetryCount:(unint64_t)count
 {
-  v6 = a3;
+  blobCopy = blob;
   if (![(MPCloudKit *)self manateeZoneUpgraded])
   {
     v7 = [(MPCloudKit *)self readUserPreference:@"MagicCloudPairingManateeUpgradedAccount"];
@@ -1251,28 +1251,28 @@ LABEL_37:
     {
       if (v9)
       {
-        v10 = [(MPCloudKit *)self recordZoneAccessoryDatabase];
-        v11 = [v10 zoneID];
-        v12 = [v11 zoneName];
+        recordZoneAccessoryDatabase = [(MPCloudKit *)self recordZoneAccessoryDatabase];
+        zoneID = [recordZoneAccessoryDatabase zoneID];
+        zoneName = [zoneID zoneName];
         *buf = 138412290;
-        v32 = v12;
+        v32 = zoneName;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, " >>> writeAccessoryBlob Record Zone %@", buf, 0xCu);
       }
 
       v13 = [CKRecordID alloc];
-      v14 = [(MPCloudKit *)self recordZoneAccessoryDatabase];
-      v15 = [v14 zoneID];
-      v8 = [v13 initWithRecordName:@"EncryptedAccessoryBlob" zoneID:v15];
+      recordZoneAccessoryDatabase2 = [(MPCloudKit *)self recordZoneAccessoryDatabase];
+      zoneID2 = [recordZoneAccessoryDatabase2 zoneID];
+      v8 = [v13 initWithRecordName:@"EncryptedAccessoryBlob" zoneID:zoneID2];
 
       v16 = [[CKRecord alloc] initWithRecordType:@"AccessoryDatabase" recordID:v8];
-      v17 = [v16 encryptedValues];
-      [v17 setObject:v6 forKeyedSubscript:@"EncryptedAccessoryBlob"];
+      encryptedValues = [v16 encryptedValues];
+      [encryptedValues setObject:blobCopy forKeyedSubscript:@"EncryptedAccessoryBlob"];
 
       v18 = sub_100005C14("MagicPairing");
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v32 = v6;
+        v32 = blobCopy;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "writeAccessoryBlob: MagicCloudPairingProtectedAccessoryBlob fetch:  encryptedBlob %@", buf, 0xCu);
       }
 
@@ -1280,20 +1280,20 @@ LABEL_37:
       [v19 beginTransaction:@"WriteAccessoryBlob"];
 
       v20 = dispatch_semaphore_create(0);
-      v21 = [(MPCloudKit *)self cloudKitDatabase];
-      v22 = [(MPCloudKit *)self recordZoneAccessoryDatabase];
+      cloudKitDatabase = [(MPCloudKit *)self cloudKitDatabase];
+      recordZoneAccessoryDatabase3 = [(MPCloudKit *)self recordZoneAccessoryDatabase];
       v26[0] = _NSConcreteStackBlock;
       v26[1] = 3221225472;
       v26[2] = sub_100098370;
       v26[3] = &unk_1002B9EE8;
       v26[4] = self;
       v27 = v16;
-      v30 = a4;
-      v28 = v6;
+      countCopy = count;
+      v28 = blobCopy;
       v29 = v20;
       v23 = v20;
       v24 = v16;
-      [v21 saveRecordZone:v22 completionHandler:v26];
+      [cloudKitDatabase saveRecordZone:recordZoneAccessoryDatabase3 completionHandler:v26];
 
       v25 = dispatch_time(0, 60000000000);
       dispatch_semaphore_wait(v23, v25);
@@ -1307,42 +1307,42 @@ LABEL_37:
   v4 = sub_100005C14("MagicPairing");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(MPCloudKit *)self recordZoneAccessoryDatabase];
-    v6 = [v5 zoneID];
-    v7 = [v6 zoneName];
+    recordZoneAccessoryDatabase = [(MPCloudKit *)self recordZoneAccessoryDatabase];
+    zoneID = [recordZoneAccessoryDatabase zoneID];
+    zoneName = [zoneID zoneName];
     *buf = 138412290;
-    v20 = v7;
+    v20 = zoneName;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, " >>> deleteCloudKitAccessoryZone %@", buf, 0xCu);
   }
 
   v8 = [CKRecordID alloc];
-  v9 = [(MPCloudKit *)self recordZoneAccessoryDatabase];
-  v10 = [v9 zoneID];
-  v11 = [v8 initWithRecordName:@"EncryptedAccessoryBlob" zoneID:v10];
+  recordZoneAccessoryDatabase2 = [(MPCloudKit *)self recordZoneAccessoryDatabase];
+  zoneID2 = [recordZoneAccessoryDatabase2 zoneID];
+  v11 = [v8 initWithRecordName:@"EncryptedAccessoryBlob" zoneID:zoneID2];
 
-  v12 = [(MPCloudKit *)self cloudKitDatabase];
+  cloudKitDatabase = [(MPCloudKit *)self cloudKitDatabase];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100098EF4;
   v17[3] = &unk_1002B9F10;
   v18 = v3;
   v13 = v3;
-  [v12 deleteRecordWithID:v11 completionHandler:v17];
+  [cloudKitDatabase deleteRecordWithID:v11 completionHandler:v17];
 
   v14 = dispatch_time(0, 60000000000);
   dispatch_semaphore_wait(v13, v14);
   v15 = +[CloudXPCService sharedInstance];
-  v16 = [v15 deviceManager];
-  [v16 deleteLegacyMagicPairingRecordsWithUserInitiated:1 completion:&stru_1002B9F30];
+  deviceManager = [v15 deviceManager];
+  [deviceManager deleteLegacyMagicPairingRecordsWithUserInitiated:1 completion:&stru_1002B9F30];
 }
 
-- (void)createSubscritionForRecordType:(id)a3
+- (void)createSubscritionForRecordType:(id)type
 {
-  v4 = a3;
-  v5 = [(MPCloudKit *)self manateeZoneUpgraded];
+  typeCopy = type;
+  manateeZoneUpgraded = [(MPCloudKit *)self manateeZoneUpgraded];
   v6 = sub_100005C14("MagicPairing");
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (manateeZoneUpgraded)
   {
     if (v7)
     {
@@ -1356,26 +1356,26 @@ LABEL_37:
   if (v7)
   {
     *buf = 138412290;
-    v30 = v4;
+    v30 = typeCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "createSubscritionForRecordType: %@", buf, 0xCu);
   }
 
-  if ([v4 isEqualToString:@"EncryptedMasterKeyBlob"])
+  if ([typeCopy isEqualToString:@"EncryptedMasterKeyBlob"])
   {
     v8 = [CKRecordZoneSubscription alloc];
-    v9 = [(MPCloudKit *)self recordZoneBlob];
-    v10 = [v9 zoneID];
-    v6 = [v8 initWithZoneID:v10];
+    recordZoneBlob = [(MPCloudKit *)self recordZoneBlob];
+    zoneID = [recordZoneBlob zoneID];
+    v6 = [v8 initWithZoneID:zoneID];
 
     v11 = [(MPCloudKit *)self readUserPreference:@"MagicCloudPairingMasterSubscriptionID"];
     if (v11)
     {
-      v12 = v11;
+      recordZoneBlob3 = v11;
       v13 = sub_100005C14("MagicPairing");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v30 = v12;
+        v30 = recordZoneBlob3;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Master subscription already exists: %@", buf, 0xCu);
       }
 
@@ -1383,16 +1383,16 @@ LABEL_37:
     }
 
     v16 = [CKRecordZoneSubscription alloc];
-    v17 = [(MPCloudKit *)self recordZoneBlob];
-    v18 = [v17 zoneID];
-    v19 = [v16 initWithZoneID:v18];
+    recordZoneBlob2 = [(MPCloudKit *)self recordZoneBlob];
+    zoneID2 = [recordZoneBlob2 zoneID];
+    v19 = [v16 initWithZoneID:zoneID2];
 
     v20 = @"MagicCloudPairingMasterSubscriptionID";
     v6 = v19;
     goto LABEL_18;
   }
 
-  if (![v4 isEqualToString:@"EncryptedAccessoryBlob"])
+  if (![typeCopy isEqualToString:@"EncryptedAccessoryBlob"])
   {
 LABEL_20:
     v6 = sub_100005C14("MagicPairing");
@@ -1401,14 +1401,14 @@ LABEL_20:
       goto LABEL_23;
     }
 
-    v12 = [(MPCloudKit *)self recordZoneBlob];
-    v23 = [v12 zoneID];
-    v24 = [(MPCloudKit *)self recordZoneAccessoryDatabase];
-    v25 = [v24 zoneID];
+    recordZoneBlob3 = [(MPCloudKit *)self recordZoneBlob];
+    zoneID3 = [recordZoneBlob3 zoneID];
+    recordZoneAccessoryDatabase = [(MPCloudKit *)self recordZoneAccessoryDatabase];
+    zoneID4 = [recordZoneAccessoryDatabase zoneID];
     *buf = 138412546;
-    v30 = v23;
+    v30 = zoneID3;
     v31 = 2112;
-    v32 = v25;
+    v32 = zoneID4;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Unable to create zone subscription key %@ or Accessory %@", buf, 0x16u);
 
 LABEL_22:
@@ -1419,22 +1419,22 @@ LABEL_22:
   if (!v14)
   {
     v21 = [CKRecordZoneSubscription alloc];
-    v17 = [(MPCloudKit *)self recordZoneAccessoryDatabase];
-    v18 = [v17 zoneID];
-    v6 = [v21 initWithZoneID:v18];
+    recordZoneBlob2 = [(MPCloudKit *)self recordZoneAccessoryDatabase];
+    zoneID2 = [recordZoneBlob2 zoneID];
+    v6 = [v21 initWithZoneID:zoneID2];
     v20 = @"MagicCloudPairingAccessorySubscriptionID";
 LABEL_18:
 
     if (v6)
     {
-      v22 = [(MPCloudKit *)self cloudKitDatabase];
+      cloudKitDatabase = [(MPCloudKit *)self cloudKitDatabase];
       v26[0] = _NSConcreteStackBlock;
       v26[1] = 3221225472;
       v26[2] = sub_1000994FC;
       v26[3] = &unk_1002B9F58;
       v27 = v20;
-      v28 = self;
-      [v22 saveSubscription:v6 completionHandler:v26];
+      selfCopy = self;
+      [cloudKitDatabase saveSubscription:v6 completionHandler:v26];
 
       goto LABEL_23;
     }
@@ -1454,18 +1454,18 @@ LABEL_18:
 LABEL_23:
 }
 
-- (void)fetchSubscriptionForRecordType:(id)a3 andPrefKey:(id)a4
+- (void)fetchSubscriptionForRecordType:(id)type andPrefKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPCloudKit *)self readUserPreference:v7];
+  typeCopy = type;
+  keyCopy = key;
+  v8 = [(MPCloudKit *)self readUserPreference:keyCopy];
   v9 = sub_100005C14("MagicPairing");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v20 = v8;
     v21 = 2112;
-    v22 = v6;
+    v22 = typeCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Verify Fetch cached Subscription ID - %@ for record - %@", buf, 0x16u);
   }
 
@@ -1480,17 +1480,17 @@ LABEL_23:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Found cached Subscription ID - %@", buf, 0xCu);
     }
 
-    v12 = [(MPCloudKit *)self cloudKitDatabase];
-    v13 = [(MPCloudKit *)self readUserPreference:v7];
+    cloudKitDatabase = [(MPCloudKit *)self cloudKitDatabase];
+    v13 = [(MPCloudKit *)self readUserPreference:keyCopy];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1000999C0;
     v14[3] = &unk_1002B9F80;
     v15 = v8;
-    v16 = self;
-    v17 = v7;
-    v18 = v6;
-    [v12 fetchSubscriptionWithID:v13 completionHandler:v14];
+    selfCopy = self;
+    v17 = keyCopy;
+    v18 = typeCopy;
+    [cloudKitDatabase fetchSubscriptionWithID:v13 completionHandler:v14];
   }
 
   else
@@ -1501,39 +1501,39 @@ LABEL_23:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Subscription cannot be Fetched, create it...", buf, 2u);
     }
 
-    [(MPCloudKit *)self createSubscritionForRecordType:v6];
+    [(MPCloudKit *)self createSubscritionForRecordType:typeCopy];
   }
 }
 
-- (void)verifyAndCacheSubscriptionID:(id)a3
+- (void)verifyAndCacheSubscriptionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = sub_100005C14("MagicPairing");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "verifyAndCacheSubscriptionID - %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v6 = [(MPCloudKit *)self cloudKitDatabase];
+  cloudKitDatabase = [(MPCloudKit *)self cloudKitDatabase];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100099D88;
   v8[3] = &unk_1002B9FA8;
   objc_copyWeak(&v10, buf);
-  v7 = v4;
+  v7 = dCopy;
   v9 = v7;
-  [v6 fetchSubscriptionWithID:v7 completionHandler:v8];
+  [cloudKitDatabase fetchSubscriptionWithID:v7 completionHandler:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
 }
 
-- (void)removeSubscritionForRecordType:(id)a3
+- (void)removeSubscritionForRecordType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v12[0] = 0;
   v12[1] = v12;
   v12[2] = 0x2020000000;
@@ -1542,21 +1542,21 @@ LABEL_23:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v4;
+    v15 = typeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Attempting to delete Subscription for record type - %@ ", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v6 = [(MPCloudKit *)self cloudKitDatabase];
+  cloudKitDatabase = [(MPCloudKit *)self cloudKitDatabase];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10009A11C;
   v8[3] = &unk_1002B9FF8;
   objc_copyWeak(&v11, buf);
-  v7 = v4;
+  v7 = typeCopy;
   v9 = v7;
   v10 = v12;
-  [v6 fetchAllSubscriptionsWithCompletionHandler:v8];
+  [cloudKitDatabase fetchAllSubscriptionsWithCompletionHandler:v8];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(buf);
@@ -1584,7 +1584,7 @@ LABEL_23:
       if (![v6 compare:CKPushEnvironmentServerPreferred options:1])
       {
         v7 = dispatch_semaphore_create(0);
-        v8 = [(MPCloudKit *)self cloudKitContainer];
+        cloudKitContainer = [(MPCloudKit *)self cloudKitContainer];
         v16[0] = _NSConcreteStackBlock;
         v16[1] = 3221225472;
         v16[2] = sub_10009A8A8;
@@ -1592,7 +1592,7 @@ LABEL_23:
         v18 = &v19;
         v9 = v7;
         v17 = v9;
-        [v8 serverPreferredPushEnvironmentWithCompletionHandler:v16];
+        [cloudKitContainer serverPreferredPushEnvironmentWithCompletionHandler:v16];
 
         v10 = dispatch_time(0, 2000000000);
         if (dispatch_semaphore_wait(v9, v10))
@@ -1628,15 +1628,15 @@ LABEL_23:
   return v13;
 }
 
-- (id)hexStringForData:(id)a3
+- (id)hexStringForData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = +[NSMutableString string];
-  v5 = [v3 length];
-  v6 = [v3 bytes];
+  v5 = [dataCopy length];
+  bytes = [dataCopy bytes];
   if (v5 >= 1)
   {
-    v7 = v6;
+    v7 = bytes;
     do
     {
       v8 = *v7++;
@@ -1655,22 +1655,22 @@ LABEL_23:
 - (void)pushEnable
 {
   v3 = +[NSBundle mainBundle];
-  v4 = [v3 bundleIdentifier];
+  bundleIdentifier = [v3 bundleIdentifier];
 
-  if (![v4 length])
+  if (![bundleIdentifier length])
   {
     v5 = +[NSBundle mainBundle];
-    v6 = [v5 executablePath];
-    v7 = [v6 lastPathComponent];
+    executablePath = [v5 executablePath];
+    lastPathComponent = [executablePath lastPathComponent];
 
-    v4 = v7;
+    bundleIdentifier = lastPathComponent;
   }
 
   v8 = sub_100005C14("MagicPairing");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Enable Push Notification Updated for bundle ID: %@", &v10, 0xCu);
   }
 
@@ -1706,24 +1706,24 @@ LABEL_23:
   v3 = sub_100005C14("MagicPairing");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MPCloudKit *)self recordZoneBlob];
-    v5 = [v4 zoneID];
-    v6 = [v5 zoneName];
+    recordZoneBlob = [(MPCloudKit *)self recordZoneBlob];
+    zoneID = [recordZoneBlob zoneID];
+    zoneName = [zoneID zoneName];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = zoneName;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, " >>>markLegacyNonManateeContainerMigrated  Record Zone %@", &buf, 0xCu);
   }
 
   v7 = self->_cloudKitDatabase;
   v8 = [CKRecordID alloc];
-  v9 = [(MPCloudKit *)self recordZoneBlob];
-  v10 = [v9 zoneID];
-  v11 = [v8 initWithRecordName:@"EncryptedMasterKeyBlob" zoneID:v10];
+  recordZoneBlob2 = [(MPCloudKit *)self recordZoneBlob];
+  zoneID2 = [recordZoneBlob2 zoneID];
+  v11 = [v8 initWithRecordName:@"EncryptedMasterKeyBlob" zoneID:zoneID2];
 
   v12 = [CKRecordID alloc];
-  v13 = [(MPCloudKit *)self recordZoneAccessoryDatabase];
-  v14 = [v13 zoneID];
-  v15 = [v12 initWithRecordName:@"EncryptedAccessoryBlob" zoneID:v14];
+  recordZoneAccessoryDatabase = [(MPCloudKit *)self recordZoneAccessoryDatabase];
+  zoneID3 = [recordZoneAccessoryDatabase zoneID];
+  v15 = [v12 initWithRecordName:@"EncryptedAccessoryBlob" zoneID:zoneID3];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -1739,13 +1739,13 @@ LABEL_23:
   v45 = [[CKRecord alloc] initWithRecordType:@"AccessoryDatabase" recordID:v15];
   v39 = -1;
   v16 = [NSData dataWithBytes:&v39 length:2];
-  v17 = [*(*(&buf + 1) + 40) encryptedValues];
-  [v17 setObject:v16 forKeyedSubscript:@"EncryptedMasterKeyBlob"];
+  encryptedValues = [*(*(&buf + 1) + 40) encryptedValues];
+  [encryptedValues setObject:v16 forKeyedSubscript:@"EncryptedMasterKeyBlob"];
 
   v38 = -1;
   v18 = [NSData dataWithBytes:&v38 length:4];
-  v19 = [v41[5] encryptedValues];
-  [v19 setObject:v18 forKeyedSubscript:@"EncryptedAccessoryBlob"];
+  encryptedValues2 = [v41[5] encryptedValues];
+  [encryptedValues2 setObject:v18 forKeyedSubscript:@"EncryptedAccessoryBlob"];
 
   v20 = [CKFetchRecordsOperation alloc];
   v46[0] = v11;
@@ -1794,12 +1794,12 @@ LABEL_11:
   }
 
   v3 = +[CloudXPCService sharedInstance];
-  v4 = [v3 networkMonitor];
-  v5 = [v4 isNetworkUp];
+  networkMonitor = [v3 networkMonitor];
+  isNetworkUp = [networkMonitor isNetworkUp];
 
   v6 = sub_100005C14("MagicPairing");
   v7 = v6;
-  if ((v5 & 1) == 0)
+  if ((isNetworkUp & 1) == 0)
   {
     sub_1001F2A8C(v6, &buf);
     goto LABEL_11;
@@ -1807,29 +1807,29 @@ LABEL_11:
 
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(MPCloudKit *)self recordZoneBlob];
-    v9 = [v8 zoneID];
-    v10 = [v9 zoneName];
+    recordZoneBlob = [(MPCloudKit *)self recordZoneBlob];
+    zoneID = [recordZoneBlob zoneID];
+    zoneName = [zoneID zoneName];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v10;
+    *(&buf + 4) = zoneName;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, " >>>upgradeLegacyNonManateeContainerToManatee Record Zone %@", &buf, 0xCu);
   }
 
   v11 = self->_cloudKitDatabase;
   v12 = +[MPCloudKit_Manatee sharedInstance];
-  v13 = [v12 cloudKitDatabase];
+  cloudKitDatabase = [v12 cloudKitDatabase];
 
-  if (v13)
+  if (cloudKitDatabase)
   {
     v14 = [CKRecordID alloc];
-    v15 = [(MPCloudKit *)self recordZoneBlob];
-    v16 = [v15 zoneID];
-    v17 = [v14 initWithRecordName:@"EncryptedMasterKeyBlob" zoneID:v16];
+    recordZoneBlob2 = [(MPCloudKit *)self recordZoneBlob];
+    zoneID2 = [recordZoneBlob2 zoneID];
+    v17 = [v14 initWithRecordName:@"EncryptedMasterKeyBlob" zoneID:zoneID2];
 
     v18 = [CKRecordID alloc];
-    v19 = [(MPCloudKit *)self recordZoneAccessoryDatabase];
-    v20 = [v19 zoneID];
-    v21 = [v18 initWithRecordName:@"EncryptedAccessoryBlob" zoneID:v20];
+    recordZoneAccessoryDatabase = [(MPCloudKit *)self recordZoneAccessoryDatabase];
+    zoneID3 = [recordZoneAccessoryDatabase zoneID];
+    v21 = [v18 initWithRecordName:@"EncryptedAccessoryBlob" zoneID:zoneID3];
 
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -1870,8 +1870,8 @@ LABEL_11:
     v33 = v27;
     v28 = v26;
     v34 = v28;
-    v35 = self;
-    v36 = v13;
+    selfCopy = self;
+    v36 = cloudKitDatabase;
     [v24 setCompletionBlock:&v29];
     [(CKDatabase *)v11 addOperation:v24, v29, v30, v31, v32];
 
@@ -1890,33 +1890,33 @@ LABEL_8:
 
 - (void)deleteLegacyMasterKey
 {
-  v3 = [(MPCloudKit *)self isAccountActive];
+  isAccountActive = [(MPCloudKit *)self isAccountActive];
   v4 = sub_100005C14("MagicPairing");
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (isAccountActive)
   {
     if (v5)
     {
-      v6 = [(MPCloudKit *)self recordZoneBlob];
-      v7 = [v6 zoneID];
-      v8 = [v7 zoneName];
+      recordZoneBlob = [(MPCloudKit *)self recordZoneBlob];
+      zoneID = [recordZoneBlob zoneID];
+      zoneName = [zoneID zoneName];
       *buf = 138412290;
-      v15 = v8;
+      v15 = zoneName;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, " >>>deleteLegacyMasterKey  Record Zone %@", buf, 0xCu);
     }
 
     v9 = [CKRecordID alloc];
-    v10 = [(MPCloudKit *)self recordZoneBlob];
-    v11 = [v10 zoneID];
-    v4 = [v9 initWithRecordName:@"KeyBlob" zoneID:v11];
+    recordZoneBlob2 = [(MPCloudKit *)self recordZoneBlob];
+    zoneID2 = [recordZoneBlob2 zoneID];
+    v4 = [v9 initWithRecordName:@"KeyBlob" zoneID:zoneID2];
 
-    v12 = [(MPCloudKit *)self cloudKitDatabase];
+    cloudKitDatabase = [(MPCloudKit *)self cloudKitDatabase];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10009D104;
     v13[3] = &unk_1002B9F10;
     v13[4] = self;
-    [v12 deleteRecordWithID:v4 completionHandler:v13];
+    [cloudKitDatabase deleteRecordWithID:v4 completionHandler:v13];
   }
 
   else if (v5)
@@ -1928,9 +1928,9 @@ LABEL_8:
 
 - (OS_dispatch_queue)pushDelegateQueue
 {
-  v3 = [(MPCloudKit *)self pushQueue];
+  pushQueue = [(MPCloudKit *)self pushQueue];
 
-  if (!v3)
+  if (!pushQueue)
   {
     v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v5 = dispatch_queue_create("com.apple.bluetooth.mpcloudkit.push", v4);
@@ -1940,9 +1940,9 @@ LABEL_8:
   return [(MPCloudKit *)self pushQueue];
 }
 
-- (void)didReceiveWithMessage:(id)a3
+- (void)didReceiveWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   if ([(MPCloudKit *)self manateeZoneUpgraded])
   {
     v5 = sub_100005C14("MagicPairing");
@@ -1957,21 +1957,21 @@ LABEL_8:
 
   else
   {
-    v6 = [v4 userInfo];
-    v7 = [CKNotification notificationFromRemoteNotificationDictionary:v6];
+    userInfo = [messageCopy userInfo];
+    v7 = [CKNotification notificationFromRemoteNotificationDictionary:userInfo];
     v8 = sub_100005C14("MagicPairing");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 topic];
+      topic = [messageCopy topic];
       *buf = 138412546;
-      v16 = v9;
+      v16 = topic;
       v17 = 2112;
       v18 = v7;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "***** APS Push received: %@ \n %@ \n", buf, 0x16u);
     }
 
-    v10 = [v7 containerIdentifier];
-    v11 = [v10 isEqualToString:@"com.apple.bluetooth"];
+    containerIdentifier = [v7 containerIdentifier];
+    v11 = [containerIdentifier isEqualToString:@"com.apple.bluetooth"];
 
     if (v11)
     {
@@ -1980,7 +1980,7 @@ LABEL_8:
       v12[2] = sub_10009D7A4;
       v12[3] = &unk_1002B6D18;
       v13 = v7;
-      v14 = self;
+      selfCopy = self;
       dispatch_async(&_dispatch_main_q, v12);
     }
   }
@@ -1991,32 +1991,32 @@ LABEL_8:
   v3 = sub_100005C14("MagicPairing");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MPCloudKit *)self recordZoneBlob];
-    v5 = [v4 zoneID];
-    v6 = [v5 zoneName];
+    recordZoneBlob = [(MPCloudKit *)self recordZoneBlob];
+    zoneID = [recordZoneBlob zoneID];
+    zoneName = [zoneID zoneName];
     sub_10008DCC4();
     sub_10009DC38(&_mh_execute_header, v7, v8, ">>> resetOldZones Key Record Zone %@", v9, v10, v11, v12, v62);
   }
 
-  v13 = [(MPCloudKit *)self cloudKitDatabase];
-  v14 = [(MPCloudKit *)self recordZoneBlob];
-  v15 = [v14 zoneID];
-  [v13 deleteRecordZoneWithID:v15 completionHandler:&stru_1002BA178];
+  cloudKitDatabase = [(MPCloudKit *)self cloudKitDatabase];
+  recordZoneBlob2 = [(MPCloudKit *)self recordZoneBlob];
+  zoneID2 = [recordZoneBlob2 zoneID];
+  [cloudKitDatabase deleteRecordZoneWithID:zoneID2 completionHandler:&stru_1002BA178];
 
   v16 = sub_100005C14("MagicPairing");
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(MPCloudKit *)self recordZoneAccessoryDatabase];
-    v18 = [v17 zoneID];
-    v19 = [v18 zoneName];
+    recordZoneAccessoryDatabase = [(MPCloudKit *)self recordZoneAccessoryDatabase];
+    zoneID3 = [recordZoneAccessoryDatabase zoneID];
+    zoneName2 = [zoneID3 zoneName];
     sub_10008DCC4();
     sub_10009DC38(&_mh_execute_header, v20, v21, ">>> resetOldZones Accessory Record Zone %@", v22, v23, v24, v25, v62);
   }
 
-  v26 = [(MPCloudKit *)self cloudKitDatabase];
-  v27 = [(MPCloudKit *)self recordZoneAccessoryDatabase];
-  v28 = [v27 zoneID];
-  [v26 deleteRecordZoneWithID:v28 completionHandler:&stru_1002BA198];
+  cloudKitDatabase2 = [(MPCloudKit *)self cloudKitDatabase];
+  recordZoneAccessoryDatabase2 = [(MPCloudKit *)self recordZoneAccessoryDatabase];
+  zoneID4 = [recordZoneAccessoryDatabase2 zoneID];
+  [cloudKitDatabase2 deleteRecordZoneWithID:zoneID4 completionHandler:&stru_1002BA198];
 
   v29 = +[MPCloudKit_Manatee sharedInstance];
 
@@ -2026,71 +2026,71 @@ LABEL_8:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       v31 = +[MPCloudKit_Manatee sharedInstance];
-      v32 = [v31 recordZoneBlob];
-      v33 = [v32 zoneID];
-      v34 = [v33 zoneName];
+      recordZoneBlob3 = [v31 recordZoneBlob];
+      zoneID5 = [recordZoneBlob3 zoneID];
+      zoneName3 = [zoneID5 zoneName];
       sub_10008DCC4();
       sub_10009DC7C(&_mh_execute_header, v35, v36, ">>> resetOldZones Key Record Zone %@", v37, v38, v39, v40, v62);
     }
 
     v41 = +[MPCloudKit_Manatee sharedInstance];
-    v42 = [v41 cloudKitDatabase];
+    cloudKitDatabase3 = [v41 cloudKitDatabase];
     v43 = +[MPCloudKit_Manatee sharedInstance];
-    v44 = [v43 recordZoneBlob];
-    v45 = [v44 zoneID];
-    [v42 deleteRecordZoneWithID:v45 completionHandler:&stru_1002BA1B8];
+    recordZoneBlob4 = [v43 recordZoneBlob];
+    zoneID6 = [recordZoneBlob4 zoneID];
+    [cloudKitDatabase3 deleteRecordZoneWithID:zoneID6 completionHandler:&stru_1002BA1B8];
 
     v46 = sub_100005C14("MagicPairing");
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
       v47 = +[MPCloudKit_Manatee sharedInstance];
-      v48 = [v47 recordZoneBlob];
-      v49 = [v48 zoneID];
-      v50 = [v49 zoneName];
+      recordZoneBlob5 = [v47 recordZoneBlob];
+      zoneID7 = [recordZoneBlob5 zoneID];
+      zoneName4 = [zoneID7 zoneName];
       sub_10008DCC4();
       sub_10009DC7C(&_mh_execute_header, v51, v52, " >>> resetOldZones Accessory Record Zone %@", v53, v54, v55, v56, v62);
     }
 
     v57 = +[MPCloudKit_Manatee sharedInstance];
-    v58 = [v57 cloudKitDatabase];
+    cloudKitDatabase4 = [v57 cloudKitDatabase];
     v59 = +[MPCloudKit_Manatee sharedInstance];
-    v60 = [v59 recordZoneAccessoryDatabase];
-    v61 = [v60 zoneID];
-    [v58 deleteRecordZoneWithID:v61 completionHandler:&stru_1002BA1D8];
+    recordZoneAccessoryDatabase3 = [v59 recordZoneAccessoryDatabase];
+    zoneID8 = [recordZoneAccessoryDatabase3 zoneID];
+    [cloudKitDatabase4 deleteRecordZoneWithID:zoneID8 completionHandler:&stru_1002BA1D8];
   }
 }
 
-- (void)didReceiveWithPublicToken:(id)a3
+- (void)didReceiveWithPublicToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   if (IsAppleInternalBuild())
   {
     v4 = sub_100005C14("MagicPairing");
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [v3 base64EncodedStringWithOptions:0];
+      v5 = [tokenCopy base64EncodedStringWithOptions:0];
       sub_10008DCC4();
       sub_10009DC38(&_mh_execute_header, v6, v7, "Received public token %@ on connection", v8, v9, v10, v11, v12);
     }
   }
 }
 
-- (void)didReceiveWithToken:(id)a3 forTopic:(id)a4 identifier:(id)a5
+- (void)didReceiveWithToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  tokenCopy = token;
+  topicCopy = topic;
+  identifierCopy = identifier;
   if (IsAppleInternalBuild())
   {
     v10 = sub_100005C14("MagicPairing");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v7 base64EncodedStringWithOptions:0];
+      v11 = [tokenCopy base64EncodedStringWithOptions:0];
       sub_10008DCC4();
       v13 = 2112;
-      v14 = v8;
+      v14 = topicCopy;
       v15 = 2112;
-      v16 = v9;
+      v16 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Received per-topic push token %@ for topic %@ identifier %@ on connection", v12, 0x20u);
     }
   }

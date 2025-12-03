@@ -1,29 +1,29 @@
 @interface AXInvertColors_PassKitUI
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_PassKitUI
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPaymentTransactionView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"PKPhoneHeroImageView"];
-  [v3 validateClass:@"PKPassView"];
-  [v3 validateClass:@"PKPeerPaymentBubbleView"];
-  [v3 validateClass:@"PKPaymentTransactionView" hasInstanceVariable:@"_primaryImageView" withType:"UIImageView"];
-  [v3 validateClass:@"PKCompactNavigationContainerController" hasClassMethod:@"dimmingColor" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPaymentTransactionView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"PKPhoneHeroImageView"];
+  [validationsCopy validateClass:@"PKPassView"];
+  [validationsCopy validateClass:@"PKPeerPaymentBubbleView"];
+  [validationsCopy validateClass:@"PKPaymentTransactionView" hasInstanceVariable:@"_primaryImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"PKCompactNavigationContainerController" hasClassMethod:@"dimmingColor" withFullSignature:{"@", 0}];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"PKPhoneHeroImageViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"PKPassViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"PKPeerPaymentBubbleViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"PKPaymentTransactionViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"PKCompactNavigationContainerControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"PKPhoneHeroImageViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"PKPassViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"PKPeerPaymentBubbleViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"PKPaymentTransactionViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"PKCompactNavigationContainerControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

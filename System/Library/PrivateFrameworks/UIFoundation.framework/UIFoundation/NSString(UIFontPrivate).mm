@@ -11,14 +11,14 @@
     [NSString(UIFontPrivate) stringByStrippingLeadingAndTrailingWhitespaceAndQuotes];
   }
 
-  v2 = [a1 rangeOfCharacterFromSet:stringByStrippingLeadingAndTrailingWhitespaceAndQuotes_nonWhitespaceCharacterSet options:0];
-  v3 = [a1 rangeOfCharacterFromSet:stringByStrippingLeadingAndTrailingWhitespaceAndQuotes_nonWhitespaceCharacterSet options:4];
+  v2 = [self rangeOfCharacterFromSet:stringByStrippingLeadingAndTrailingWhitespaceAndQuotes_nonWhitespaceCharacterSet options:0];
+  v3 = [self rangeOfCharacterFromSet:stringByStrippingLeadingAndTrailingWhitespaceAndQuotes_nonWhitespaceCharacterSet options:4];
   v5 = v3 + v4;
-  result = a1;
+  result = self;
   if (v5 >= v2)
   {
 
-    return [a1 substringWithRange:{v2, v5 - v2}];
+    return [self substringWithRange:{v2, v5 - v2}];
   }
 
   return result;

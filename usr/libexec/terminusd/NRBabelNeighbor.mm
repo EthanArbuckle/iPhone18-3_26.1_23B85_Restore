@@ -1,23 +1,23 @@
 @interface NRBabelNeighbor
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesAddress:(const in6_addr *)a3 babelInterface:(id)a4;
-- (NRBabelNeighbor)initWithAddress:(const in6_addr *)a3 babelInterface:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesAddress:(const in6_addr *)address babelInterface:(id)interface;
+- (NRBabelNeighbor)initWithAddress:(const in6_addr *)address babelInterface:(id)interface;
 - (NSString)description;
 - (id)createIHUTLV;
 - (id)createPersonalHelloTLV;
-- (id)descriptionWithNextHop:(const in6_addr *)a3;
+- (id)descriptionWithNextHop:(const in6_addr *)hop;
 - (in6_addr)address;
 - (unsigned)metric;
 - (void)dealloc;
 - (void)enqueueNextIHU;
 - (void)enqueueNextUpdate;
-- (void)handleDTLSStack:(id)a3 inboundDecryptedData:(id)a4;
-- (void)handleDTLSStack:(id)a3 outboundEncryptedData:(id)a4;
-- (void)handleIsReady:(id)a3;
+- (void)handleDTLSStack:(id)stack inboundDecryptedData:(id)data;
+- (void)handleDTLSStack:(id)stack outboundEncryptedData:(id)data;
+- (void)handleIsReady:(id)ready;
 - (void)processPendingOutgoingPackets;
-- (void)resetIncomingHelloTimer:(BOOL)a3 personal:(BOOL)a4;
-- (void)resetIncomingIHUTimerInterval:(unsigned __int16)a3;
-- (void)sendTLVs:(id)a3;
+- (void)resetIncomingHelloTimer:(BOOL)timer personal:(BOOL)personal;
+- (void)resetIncomingIHUTimerInterval:(unsigned __int16)interval;
+- (void)sendTLVs:(id)vs;
 @end
 
 @implementation NRBabelNeighbor
@@ -31,10 +31,10 @@
   return result;
 }
 
-- (void)handleDTLSStack:(id)a3 inboundDecryptedData:(id)a4
+- (void)handleDTLSStack:(id)stack inboundDecryptedData:(id)data
 {
-  v14 = a4;
-  v5 = [(NRBabelNeighbor *)self babelInterface];
+  dataCopy = data;
+  babelInterface = [(NRBabelNeighbor *)self babelInterface];
   if (qword_100229100 != -1)
   {
     dispatch_once(&qword_100229100, &stru_1001FB6C8);
@@ -48,8 +48,8 @@
     }
 
     v6 = qword_1002290F8;
-    v12 = self;
-    v13 = [v14 length];
+    selfCopy = self;
+    v13 = [dataCopy length];
     v11 = 1867;
     v9 = "";
     v10 = "[NRBabelNeighbor handleDTLSStack:inboundDecryptedData:]";
@@ -57,14 +57,14 @@
   }
 
   v7 = [(NRBabelNeighbor *)self babelInterface:v9];
-  v8 = [v7 instance];
-  [v8 handlePacket:objc_msgSend(v14 length:"bytes") remoteAddr:objc_msgSend(v14 localAddr:"length") babelInterface:&self->_address dtls:{objc_msgSend(v5, "localAddress"), v5, 1}];
+  instance = [v7 instance];
+  [instance handlePacket:objc_msgSend(dataCopy length:"bytes") remoteAddr:objc_msgSend(dataCopy localAddr:"length") babelInterface:&self->_address dtls:{objc_msgSend(babelInterface, "localAddress"), babelInterface, 1}];
 }
 
-- (void)handleDTLSStack:(id)a3 outboundEncryptedData:(id)a4
+- (void)handleDTLSStack:(id)stack outboundEncryptedData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  stackCopy = stack;
+  dataCopy = data;
   if (qword_100229100 != -1)
   {
     dispatch_once(&qword_100229100, &stru_1001FB6C8);
@@ -78,23 +78,23 @@
     }
 
     v8 = qword_1002290F8;
-    v13 = self;
-    v14 = [v7 length];
+    selfCopy = self;
+    v14 = [dataCopy length];
     v12 = 1855;
     v10 = "";
     v11 = "[NRBabelNeighbor handleDTLSStack:outboundEncryptedData:]";
     _NRLogWithArgs();
   }
 
-  v15[0] = [v7 bytes];
-  v15[1] = [v7 length];
-  v9 = [(NRBabelNeighbor *)self babelInterface];
-  [v9 sendPacket:v15 iovLen:1 toAddr:&self->_address];
+  v15[0] = [dataCopy bytes];
+  v15[1] = [dataCopy length];
+  babelInterface = [(NRBabelNeighbor *)self babelInterface];
+  [babelInterface sendPacket:v15 iovLen:1 toAddr:&self->_address];
 }
 
-- (void)handleIsReady:(id)a3
+- (void)handleIsReady:(id)ready
 {
-  v11 = a3;
+  readyCopy = ready;
   if (qword_100229100 != -1)
   {
     dispatch_once(&qword_100229100, &stru_1001FB6C8);
@@ -107,29 +107,29 @@
       dispatch_once(&qword_100229100, &stru_1001FB6C8);
     }
 
-    v9 = self;
-    v10 = v11;
+    selfCopy = self;
+    v10 = readyCopy;
     v8 = 1847;
     v6 = "";
     v7 = "[NRBabelNeighbor handleIsReady:]";
     _NRLogWithArgs();
   }
 
-  [(NRBabelNeighbor *)self setDtlsReady:1, v6, v7, v8, v9, v10];
-  v4 = [(NRBabelNeighbor *)self babelInterface];
-  v5 = [v4 instance];
-  [v5 sendImmediateRouteUpdateToNeighbor:self];
+  [(NRBabelNeighbor *)self setDtlsReady:1, v6, v7, v8, selfCopy, v10];
+  babelInterface = [(NRBabelNeighbor *)self babelInterface];
+  instance = [babelInterface instance];
+  [instance sendImmediateRouteUpdateToNeighbor:self];
 }
 
-- (void)sendTLVs:(id)a3
+- (void)sendTLVs:(id)vs
 {
-  v4 = a3;
-  if (![v4 count])
+  vsCopy = vs;
+  if (![vsCopy count])
   {
     goto LABEL_35;
   }
 
-  v5 = [v4 count];
+  v5 = [vsCopy count];
   v6 = v5 + 1;
   if (v5 == -1)
   {
@@ -198,17 +198,17 @@ LABEL_20:
   v58 = 554;
   *v7 = &v58;
   *(v7 + 1) = 4;
-  v44 = self;
-  v9 = [(NRBabelNeighbor *)self babelInterface];
-  v10 = [v9 mtu];
+  selfCopy = self;
+  babelInterface = [(NRBabelNeighbor *)self babelInterface];
+  v10 = [babelInterface mtu];
 
-  v45 = v4;
+  v45 = vsCopy;
   v46 = objc_alloc_init(NSMutableArray);
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v47 = v4;
+  v47 = vsCopy;
   v11 = [v47 countByEnumeratingWithState:&v54 objects:v60 count:16];
   if (v11)
   {
@@ -293,8 +293,8 @@ LABEL_25:
   v24 = v47;
 
   HIWORD(v58) = bswap32(v13) >> 16;
-  v25 = v44;
-  [(NRBabelNeighbor *)v44 sendFullPacket:v8 iovLen:v6];
+  v25 = selfCopy;
+  [(NRBabelNeighbor *)selfCopy sendFullPacket:v8 iovLen:v6];
   free(v8);
   v52 = 0u;
   v53 = 0u;
@@ -328,7 +328,7 @@ LABEL_25:
     [(NRBabelNeighbor *)v25 sendTLVs:v31];
   }
 
-  v4 = v45;
+  vsCopy = v45;
 LABEL_35:
 }
 
@@ -363,13 +363,13 @@ LABEL_35:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 matchesAddress:&self->_address babelInterface:self->_babelInterface];
+    v5 = [equalCopy matchesAddress:&self->_address babelInterface:self->_babelInterface];
   }
 
   else
@@ -380,23 +380,23 @@ LABEL_35:
   return v5;
 }
 
-- (id)descriptionWithNextHop:(const in6_addr *)a3
+- (id)descriptionWithNextHop:(const in6_addr *)hop
 {
   v4 = [(NRBabelNeighbor *)self matchesAddress:?];
   v5 = [NSString alloc];
   if (v4)
   {
     IPv6AddrString = [(NRBabelNeighbor *)self description];
-    v7 = [v5 initWithString:IPv6AddrString];
+    iPv6AddrString = [v5 initWithString:IPv6AddrString];
   }
 
   else
   {
     IPv6AddrString = createIPv6AddrString();
-    v7 = [v5 initWithFormat:@"%@(nh %@)", self, IPv6AddrString];
+    iPv6AddrString = [v5 initWithFormat:@"%@(nh %@)", self, IPv6AddrString];
   }
 
-  v8 = v7;
+  v8 = iPv6AddrString;
 
   return v8;
 }
@@ -406,9 +406,9 @@ LABEL_35:
   v3 = [NSString alloc];
   IPv6AddrString = createIPv6AddrString();
   babelInterface = self->_babelInterface;
-  v6 = [(NRBabelNeighbor *)self dtlsEnabled];
+  dtlsEnabled = [(NRBabelNeighbor *)self dtlsEnabled];
   v7 = "";
-  if (v6)
+  if (dtlsEnabled)
   {
     v7 = "_DTLS";
   }
@@ -418,24 +418,24 @@ LABEL_35:
   return v8;
 }
 
-- (BOOL)matchesAddress:(const in6_addr *)a3 babelInterface:(id)a4
+- (BOOL)matchesAddress:(const in6_addr *)address babelInterface:(id)interface
 {
-  v6 = [(NRBabelInterface *)self->_babelInterface isEqual:a4];
+  v6 = [(NRBabelInterface *)self->_babelInterface isEqual:interface];
   if (v6)
   {
 
-    LOBYTE(v6) = [(NRBabelNeighbor *)self matchesAddress:a3];
+    LOBYTE(v6) = [(NRBabelNeighbor *)self matchesAddress:address];
   }
 
   return v6;
 }
 
-- (NRBabelNeighbor)initWithAddress:(const in6_addr *)a3 babelInterface:(id)a4
+- (NRBabelNeighbor)initWithAddress:(const in6_addr *)address babelInterface:(id)interface
 {
-  v4 = a4;
-  v7 = a4;
-  v8 = [v7 instance];
-  if (v8)
+  interfaceCopy = interface;
+  interfaceCopy2 = interface;
+  instance = [interfaceCopy2 instance];
+  if (instance)
   {
     v56.receiver = self;
     v56.super_class = NRBabelNeighbor;
@@ -443,32 +443,32 @@ LABEL_35:
     if (v9)
     {
       self = v9;
-      v9->_address = *a3;
-      objc_storeStrong(&v9->_babelInterface, v4);
-      if (![v7 dtlsEnabled])
+      v9->_address = *address;
+      objc_storeStrong(&v9->_babelInterface, interfaceCopy);
+      if (![interfaceCopy2 dtlsEnabled])
       {
 LABEL_17:
         self->_outgoingPersonalHelloSeqno = arc4random_uniform(0x10000u);
         self->_incomingPublicHelloHistory = 0xFFFFLL;
         self->_incomingPersonalHelloHistory = 0xFFFFLL;
         *&self->_outgoingIHUInterval = -4059036496;
-        v20 = [v8 queue];
-        v21 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v20);
+        queue = [instance queue];
+        v21 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
         incomingPublicHelloTimer = self->_incomingPublicHelloTimer;
         self->_incomingPublicHelloTimer = v21;
 
-        v23 = [v8 queue];
-        v24 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v23);
+        queue2 = [instance queue];
+        v24 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue2);
         incomingPersonalHelloTimer = self->_incomingPersonalHelloTimer;
         self->_incomingPersonalHelloTimer = v24;
 
-        v26 = [v8 queue];
-        v27 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v26);
+        queue3 = [instance queue];
+        v27 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue3);
         incomingIHUTimer = self->_incomingIHUTimer;
         self->_incomingIHUTimer = v27;
 
-        v29 = [v8 queue];
-        v30 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v29);
+        queue4 = [instance queue];
+        v30 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue4);
         pendingOutgoingTimer = self->_pendingOutgoingTimer;
         self->_pendingOutgoingTimer = v30;
 
@@ -521,16 +521,16 @@ LABEL_17:
         objc_destroyWeak(&v54);
         objc_destroyWeak(&location);
 
-        v14 = self;
+        selfCopy = self;
         goto LABEL_18;
       }
 
       [(NRBabelNeighbor *)self setDtlsEnabled:1];
-      v4 = [(NRBabelNeighbor *)self babelInterface];
-      v10 = [v4 localAddress];
-      v11 = bswap64(*a3->__u6_addr8);
-      v12 = bswap64(*v10);
-      if (v11 == v12 && (v11 = bswap64(*&a3->__u6_addr32[2]), v12 = bswap64(v10[1]), v11 == v12))
+      interfaceCopy = [(NRBabelNeighbor *)self babelInterface];
+      localAddress = [interfaceCopy localAddress];
+      v11 = bswap64(*address->__u6_addr8);
+      v12 = bswap64(*localAddress);
+      if (v11 == v12 && (v11 = bswap64(*&address->__u6_addr32[2]), v12 = bswap64(localAddress[1]), v11 == v12))
       {
         v13 = 0;
       }
@@ -547,23 +547,23 @@ LABEL_17:
 
       v15 = v13 > 0;
       v16 = [NRDDTLSStack alloc];
-      v17 = [v8 queue];
-      v18 = sub_100158C54(&v16->super.isa, v17, v15, self);
+      queue5 = [instance queue];
+      v18 = sub_100158C54(&v16->super.isa, queue5, v15, self);
       [(NRBabelNeighbor *)self setDtlsStack:v18];
 
-      a3 = &qword_100229000;
+      address = &qword_100229000;
       if (qword_100229100 == -1)
       {
 LABEL_12:
         if (_NRLogIsLevelEnabled())
         {
-          if (*a3[16].__u6_addr8 != -1)
+          if (*address[16].__u6_addr8 != -1)
           {
             dispatch_once(&qword_100229100, &stru_1001FB6C8);
           }
 
           v19 = qword_1002290F8;
-          v45 = [(NRBabelNeighbor *)self dtlsStack];
+          dtlsStack = [(NRBabelNeighbor *)self dtlsStack];
           _NRLogWithArgs();
         }
 
@@ -582,8 +582,8 @@ LABEL_12:
         _NRLogWithArgs();
       }
 
-      v7 = _os_log_pack_size();
-      v8 = &v47[-1] - ((__chkstk_darwin() + 15) & 0xFFFFFFFFFFFFFFF0);
+      interfaceCopy2 = _os_log_pack_size();
+      instance = &v47[-1] - ((__chkstk_darwin() + 15) & 0xFFFFFFFFFFFFFFF0);
       v43 = *__error();
       v44 = _os_log_pack_fill();
       *v44 = 136446210;
@@ -596,31 +596,31 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v14 = 0;
+  selfCopy = 0;
 LABEL_18:
 
-  return v14;
+  return selfCopy;
 }
 
-- (void)resetIncomingIHUTimerInterval:(unsigned __int16)a3
+- (void)resetIncomingIHUTimerInterval:(unsigned __int16)interval
 {
   incomingIHUTimer = self->_incomingIHUTimer;
-  v4 = dispatch_time(0x8000000000000000, 35000000 * a3);
+  v4 = dispatch_time(0x8000000000000000, 35000000 * interval);
 
   dispatch_source_set_timer(incomingIHUTimer, v4, 0xFFFFFFFFFFFFFFFFLL, 0xF4240uLL);
 }
 
-- (void)resetIncomingHelloTimer:(BOOL)a3 personal:(BOOL)a4
+- (void)resetIncomingHelloTimer:(BOOL)timer personal:(BOOL)personal
 {
-  v4 = a3;
+  timerCopy = timer;
   v5 = 22;
-  if (a4)
+  if (personal)
   {
     v5 = 26;
   }
 
   v6 = 80;
-  if (a4)
+  if (personal)
   {
     v6 = 56;
   }
@@ -633,7 +633,7 @@ LABEL_18:
     v8 = 17500000 * v7;
   }
 
-  if (v4)
+  if (timerCopy)
   {
     v9 = v8;
   }
@@ -688,10 +688,10 @@ LABEL_18:
 
 - (void)processPendingOutgoingPackets
 {
-  v3 = [(NRBabelNeighbor *)self babelInterface];
-  v4 = [v3 instance];
+  babelInterface = [(NRBabelNeighbor *)self babelInterface];
+  instance = [babelInterface instance];
 
-  if (!v4)
+  if (!instance)
   {
     goto LABEL_107;
   }
@@ -703,7 +703,7 @@ LABEL_18:
   v116 = 0u;
   v117 = 0u;
   v118 = 0u;
-  v98 = self;
+  selfCopy = self;
   v8 = self->_pendingOutgoingPackets;
   v9 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v115 objects:v124 count:16];
   if (v9)
@@ -736,8 +736,8 @@ LABEL_18:
   v15 = &qword_100229000;
   if (![v7 count])
   {
-    v28 = v98;
-    if ([(NSMutableArray *)v98->_pendingOutgoingPackets count])
+    v28 = selfCopy;
+    if ([(NSMutableArray *)selfCopy->_pendingOutgoingPackets count])
     {
       if (qword_100229100 != -1)
       {
@@ -751,9 +751,9 @@ LABEL_18:
           dispatch_once(&qword_100229100, &stru_1001FB6C8);
         }
 
-        pendingOutgoingPackets = v98->_pendingOutgoingPackets;
+        pendingOutgoingPackets = selfCopy->_pendingOutgoingPackets;
         v30 = qword_1002290F8;
-        v90 = *&v98;
+        v90 = *&selfCopy;
         v91 = COERCE_DOUBLE([(NSMutableArray *)pendingOutgoingPackets count]);
         v89 = 1429;
         v86 = "";
@@ -766,7 +766,7 @@ LABEL_18:
       v110 = 0u;
       v107 = 0u;
       v108 = 0u;
-      v31 = v98->_pendingOutgoingPackets;
+      v31 = selfCopy->_pendingOutgoingPackets;
       v32 = [(NSMutableArray *)v31 countByEnumeratingWithState:&v107 objects:v122 count:16];
       if (v32)
       {
@@ -824,7 +824,7 @@ LABEL_18:
       }
 
       v7 = v95;
-      v28 = v98;
+      v28 = selfCopy;
     }
 
     else
@@ -842,7 +842,7 @@ LABEL_18:
         }
 
         v89 = 1436;
-        v90 = *&v98;
+        v90 = *&selfCopy;
         v86 = "";
         v87 = "[NRBabelNeighbor processPendingOutgoingPackets]";
         _NRLogWithArgs();
@@ -852,7 +852,7 @@ LABEL_18:
     goto LABEL_71;
   }
 
-  v96 = v4;
+  v96 = instance;
   v97 = objc_alloc_init(NSMutableArray);
   v111 = 0u;
   v112 = 0u;
@@ -877,19 +877,19 @@ LABEL_18:
         }
 
         v23 = *(*(&v111 + 1) + 8 * k);
-        v24 = [v23 representsIHU];
-        v25 = [v23 representsUpdate];
-        v26 = [v23 tlvs];
+        representsIHU = [v23 representsIHU];
+        representsUpdate = [v23 representsUpdate];
+        tlvs = [v23 tlvs];
 
-        if (v26)
+        if (tlvs)
         {
-          v27 = [v23 tlvs];
-          [v97 addObjectsFromArray:v27];
+          tlvs2 = [v23 tlvs];
+          [v97 addObjectsFromArray:tlvs2];
         }
 
-        v20 |= v24;
-        v19 |= v25;
-        [(NSMutableArray *)v98->_pendingOutgoingPackets removeObject:v23];
+        v20 |= representsIHU;
+        v19 |= representsUpdate;
+        [(NSMutableArray *)selfCopy->_pendingOutgoingPackets removeObject:v23];
       }
 
       v18 = [v16 countByEnumeratingWithState:&v111 objects:v123 count:16];
@@ -910,9 +910,9 @@ LABEL_18:
   }
 
   v7 = v94;
-  v4 = v96;
+  instance = v96;
   v15 = &qword_100229000;
-  v28 = v98;
+  v28 = selfCopy;
   if (!_NRLogIsLevelEnabled())
   {
     if ((v20 & 1) == 0)
@@ -924,8 +924,8 @@ LABEL_62:
     v49 = [(NRBabelNeighbor *)v28 createIHUTLV:v86];
     [v97 addObject:v49];
 
-    v50 = [(NRBabelNeighbor *)v28 createPersonalHelloTLV];
-    [v97 addObject:v50];
+    createPersonalHelloTLV = [(NRBabelNeighbor *)v28 createPersonalHelloTLV];
+    [v97 addObject:createPersonalHelloTLV];
 
     if ((v19 & 1) == 0)
     {
@@ -962,10 +962,10 @@ LABEL_62:
 
   v48 = qword_1002290F8;
   v92 = [v97 count];
-  v93 = v98;
+  v93 = selfCopy;
   v90 = *&v46;
   v91 = *&v47;
-  v28 = v98;
+  v28 = selfCopy;
   v87 = "[NRBabelNeighbor processPendingOutgoingPackets]";
   v89 = 1410;
   v86 = "";
@@ -1047,7 +1047,7 @@ LABEL_71:
     v102 = 0u;
     v99 = 0u;
     v100 = 0u;
-    v66 = v98->_pendingOutgoingPackets;
+    v66 = selfCopy->_pendingOutgoingPackets;
     v67 = [(NSMutableArray *)v66 countByEnumeratingWithState:&v99 objects:v120 count:16];
     if (v67)
     {
@@ -1081,7 +1081,7 @@ LABEL_71:
       while (v68);
     }
 
-    v75 = v98->_pendingOutgoingTimer;
+    v75 = selfCopy->_pendingOutgoingTimer;
     if (v56 >= v53)
     {
       if (qword_100229100 != -1)

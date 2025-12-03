@@ -1,14 +1,14 @@
 @interface IAPDataBuffer
 - (AccessoryIAPInterface)parentiAPInterface;
-- (IAPDataBuffer)initWithiAPInterface:(id)a3;
+- (IAPDataBuffer)initWithiAPInterface:(id)interface;
 - (void)dealloc;
 @end
 
 @implementation IAPDataBuffer
 
-- (IAPDataBuffer)initWithiAPInterface:(id)a3
+- (IAPDataBuffer)initWithiAPInterface:(id)interface
 {
-  v4 = a3;
+  interfaceCopy = interface;
   v14.receiver = self;
   v14.super_class = IAPDataBuffer;
   v5 = [(IAPDataBuffer *)&v14 init];
@@ -70,7 +70,7 @@
       _os_log_impl(&dword_2336F5000, v10, OS_LOG_TYPE_DEFAULT, "hard-code dataBufferInLen to 1024, change to calculate similarly to old project", v13, 2u);
     }
 
-    objc_storeWeak(&v6->_parentiAPInterface, v4);
+    objc_storeWeak(&v6->_parentiAPInterface, interfaceCopy);
   }
 
   return v6;

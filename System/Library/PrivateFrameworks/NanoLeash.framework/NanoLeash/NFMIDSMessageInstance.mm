@@ -1,18 +1,18 @@
 @interface NFMIDSMessageInstance
-+ (id)newMessageInstanceWithAction:(id)a3 retryCount:(int64_t)a4 retryInterval:(double)a5;
++ (id)newMessageInstanceWithAction:(id)action retryCount:(int64_t)count retryInterval:(double)interval;
 - (id)description;
 @end
 
 @implementation NFMIDSMessageInstance
 
-+ (id)newMessageInstanceWithAction:(id)a3 retryCount:(int64_t)a4 retryInterval:(double)a5
++ (id)newMessageInstanceWithAction:(id)action retryCount:(int64_t)count retryInterval:(double)interval
 {
-  v7 = a3;
+  actionCopy = action;
   v8 = objc_alloc_init(NFMIDSMessageInstance);
-  [(NFMIDSMessageInstance *)v8 setRetryAction:v7];
+  [(NFMIDSMessageInstance *)v8 setRetryAction:actionCopy];
 
-  [(NFMIDSMessageInstance *)v8 setRetryCount:a4];
-  [(NFMIDSMessageInstance *)v8 setRetryInterval:a5];
+  [(NFMIDSMessageInstance *)v8 setRetryCount:count];
+  [(NFMIDSMessageInstance *)v8 setRetryInterval:interval];
   return v8;
 }
 

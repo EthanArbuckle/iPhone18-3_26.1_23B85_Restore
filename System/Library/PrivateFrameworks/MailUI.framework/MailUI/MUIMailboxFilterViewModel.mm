@@ -1,29 +1,29 @@
 @interface MUIMailboxFilterViewModel
 - (MUIMailboxFilter)senderFilter;
-- (MUIMailboxFilterViewModel)initWithProvider:(id)a3 formatter:(id)a4 selectedFilters:(id)a5 sortedFilters:(id)a6 isFilteringAvailable:(BOOL)a7;
+- (MUIMailboxFilterViewModel)initWithProvider:(id)provider formatter:(id)formatter selectedFilters:(id)filters sortedFilters:(id)sortedFilters isFilteringAvailable:(BOOL)available;
 - (NSArray)reducedSelectedFilters;
 - (NSArray)selectedFilters;
-- (id)_compoundPredicateForFilters:(id)a3;
+- (id)_compoundPredicateForFilters:(id)filters;
 - (id)predicateForSelectedFilters;
 - (id)selectedFiltersDescription;
 - (void)_notifySelectedFiltersObserver;
 - (void)reselectFocusFilters;
-- (void)setFilterEnabled:(BOOL)a3;
-- (void)setSelectedFilters:(id)a3;
-- (void)setSenderFilter:(id)a3;
+- (void)setFilterEnabled:(BOOL)enabled;
+- (void)setSelectedFilters:(id)filters;
+- (void)setSenderFilter:(id)filter;
 @end
 
 @implementation MUIMailboxFilterViewModel
 
-- (MUIMailboxFilterViewModel)initWithProvider:(id)a3 formatter:(id)a4 selectedFilters:(id)a5 sortedFilters:(id)a6 isFilteringAvailable:(BOOL)a7
+- (MUIMailboxFilterViewModel)initWithProvider:(id)provider formatter:(id)formatter selectedFilters:(id)filters sortedFilters:(id)sortedFilters isFilteringAvailable:(BOOL)available
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  if (v14)
+  providerCopy = provider;
+  formatterCopy = formatter;
+  filtersCopy = filters;
+  sortedFiltersCopy = sortedFilters;
+  if (providerCopy)
   {
-    if (v15)
+    if (formatterCopy)
     {
       goto LABEL_3;
     }
@@ -32,7 +32,7 @@
   else
   {
     [MUIMailboxFilterViewModel initWithProvider:a2 formatter:self selectedFilters:? sortedFilters:? isFilteringAvailable:?];
-    if (v15)
+    if (formatterCopy)
     {
       goto LABEL_3;
     }
@@ -46,17 +46,17 @@ LABEL_3:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_provider, a3);
-    objc_storeStrong(&v19->_formatter, a4);
-    v20 = [v16 copy];
+    objc_storeStrong(&v18->_provider, provider);
+    objc_storeStrong(&v19->_formatter, formatter);
+    v20 = [filtersCopy copy];
     selectedFilters = v19->_selectedFilters;
     v19->_selectedFilters = v20;
 
-    v22 = [MEMORY[0x277D07180] observableObserver];
+    observableObserver = [MEMORY[0x277D07180] observableObserver];
     selectedFiltersObservable = v19->_selectedFiltersObservable;
-    v19->_selectedFiltersObservable = v22;
+    v19->_selectedFiltersObservable = observableObserver;
 
-    v19->_filterAvailable = a7;
+    v19->_filterAvailable = available;
   }
 
   return v19;
@@ -64,19 +64,19 @@ LABEL_3:
 
 - (id)selectedFiltersDescription
 {
-  v3 = [(MUIMailboxFilterViewModel *)self formatter];
-  v4 = [(MUIMailboxFilterViewModel *)self reducedSelectedFilters];
-  v5 = [v3 stringForObjectValue:v4];
+  formatter = [(MUIMailboxFilterViewModel *)self formatter];
+  reducedSelectedFilters = [(MUIMailboxFilterViewModel *)self reducedSelectedFilters];
+  v5 = [formatter stringForObjectValue:reducedSelectedFilters];
 
   return v5;
 }
 
-- (void)setFilterEnabled:(BOOL)a3
+- (void)setFilterEnabled:(BOOL)enabled
 {
-  if (self->_filterEnabled != a3)
+  if (self->_filterEnabled != enabled)
   {
-    self->_filterEnabled = a3;
-    if (!a3)
+    self->_filterEnabled = enabled;
+    if (!enabled)
     {
       [(MUIMailboxFilterViewModel *)self setSenderFilter:0];
     }
@@ -85,51 +85,51 @@ LABEL_3:
 
 - (NSArray)reducedSelectedFilters
 {
-  v3 = [(MUIMailboxFilterViewModel *)self provider];
-  v4 = [(MUIMailboxFilterViewModel *)self selectedFilters];
-  v5 = [v3 reduce:v4];
+  provider = [(MUIMailboxFilterViewModel *)self provider];
+  selectedFilters = [(MUIMailboxFilterViewModel *)self selectedFilters];
+  v5 = [provider reduce:selectedFilters];
 
   return v5;
 }
 
 - (MUIMailboxFilter)senderFilter
 {
-  v2 = [(MUIMailboxFilterViewModel *)self provider];
-  v3 = [v2 senderFilter];
+  provider = [(MUIMailboxFilterViewModel *)self provider];
+  senderFilter = [provider senderFilter];
 
-  return v3;
+  return senderFilter;
 }
 
-- (void)setSenderFilter:(id)a3
+- (void)setSenderFilter:(id)filter
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MUIMailboxFilterViewModel *)self provider];
-  v6 = [v5 senderFilter];
+  filterCopy = filter;
+  provider = [(MUIMailboxFilterViewModel *)self provider];
+  senderFilter = [provider senderFilter];
 
   if ((EFObjectsAreEqual() & 1) == 0)
   {
-    v7 = [(MUIMailboxFilterViewModel *)self provider];
-    [v7 setSenderFilter:v4];
+    provider2 = [(MUIMailboxFilterViewModel *)self provider];
+    [provider2 setSenderFilter:filterCopy];
 
-    if (v4)
+    if (filterCopy)
     {
       if ([(MUIMailboxFilterViewModel *)self isFilterEnabled])
       {
-        v8 = [(MUIMailboxFilterViewModel *)self selectedFilters];
-        v9 = [v8 arrayByAddingObject:v4];
+        selectedFilters = [(MUIMailboxFilterViewModel *)self selectedFilters];
+        v9 = [selectedFilters arrayByAddingObject:filterCopy];
         [(MUIMailboxFilterViewModel *)self setSelectedFilters:v9];
       }
 
       else
       {
-        v10[0] = v4;
-        v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-        [(MUIMailboxFilterViewModel *)self setSelectedFilters:v8];
+        v10[0] = filterCopy;
+        selectedFilters = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
+        [(MUIMailboxFilterViewModel *)self setSelectedFilters:selectedFilters];
       }
     }
 
-    else if (v6)
+    else if (senderFilter)
     {
       [(MUIMailboxFilterViewModel *)self setSelectedFilters:MEMORY[0x277CBEBF8]];
     }
@@ -140,10 +140,10 @@ LABEL_3:
 {
   if (![(NSArray *)self->_selectedFilters count])
   {
-    v3 = [(MUIMailboxFilterViewModel *)self provider];
-    v4 = [v3 defaultFilters];
+    provider = [(MUIMailboxFilterViewModel *)self provider];
+    defaultFilters = [provider defaultFilters];
     selectedFilters = self->_selectedFilters;
-    self->_selectedFilters = v4;
+    self->_selectedFilters = defaultFilters;
   }
 
   v6 = self->_selectedFilters;
@@ -151,24 +151,24 @@ LABEL_3:
   return v6;
 }
 
-- (void)setSelectedFilters:(id)a3
+- (void)setSelectedFilters:(id)filters
 {
-  if (a3)
+  if (filters)
   {
-    v4 = a3;
+    filtersCopy = filters;
   }
 
   else
   {
-    v4 = MEMORY[0x277CBEBF8];
+    filtersCopy = MEMORY[0x277CBEBF8];
   }
 
-  v5 = v4;
+  v5 = filtersCopy;
   p_selectedFilters = &self->_selectedFilters;
   if (self->_selectedFilters != v5)
   {
     v7 = v5;
-    objc_storeStrong(p_selectedFilters, v4);
+    objc_storeStrong(p_selectedFilters, filtersCopy);
     p_selectedFilters = [(MUIMailboxFilterViewModel *)self _notifySelectedFiltersObserver];
     v5 = v7;
   }
@@ -178,15 +178,15 @@ LABEL_3:
 
 - (void)reselectFocusFilters
 {
-  v3 = [(MUIMailboxFilterViewModel *)self provider];
-  v7 = [v3 focusFilters];
+  provider = [(MUIMailboxFilterViewModel *)self provider];
+  focusFilters = [provider focusFilters];
 
-  if ([v7 count])
+  if ([focusFilters count])
   {
-    v4 = [(MUIMailboxFilterViewModel *)self selectedFilters];
-    v5 = [v4 ef_filter:&__block_literal_global_26];
+    selectedFilters = [(MUIMailboxFilterViewModel *)self selectedFilters];
+    v5 = [selectedFilters ef_filter:&__block_literal_global_26];
 
-    v6 = [v5 arrayByAddingObjectsFromArray:v7];
+    v6 = [v5 arrayByAddingObjectsFromArray:focusFilters];
 
     [(MUIMailboxFilterViewModel *)self setSelectedFilters:v6];
   }
@@ -196,8 +196,8 @@ LABEL_3:
 {
   if ([(MUIMailboxFilterViewModel *)self isFilterAvailable])
   {
-    v3 = [(MUIMailboxFilterViewModel *)self selectedFilters];
-    v4 = [(MUIMailboxFilterViewModel *)self _compoundPredicateForFilters:v3];
+    selectedFilters = [(MUIMailboxFilterViewModel *)self selectedFilters];
+    v4 = [(MUIMailboxFilterViewModel *)self _compoundPredicateForFilters:selectedFilters];
   }
 
   else
@@ -208,11 +208,11 @@ LABEL_3:
   return v4;
 }
 
-- (id)_compoundPredicateForFilters:(id)a3
+- (id)_compoundPredicateForFilters:(id)filters
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  filtersCopy = filters;
+  v5 = filtersCopy;
+  if (filtersCopy && [filtersCopy count])
   {
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -220,14 +220,14 @@ LABEL_3:
     v17[3] = &unk_27818A990;
     v17[4] = self;
     v6 = [v5 ef_groupBy:v17];
-    v7 = [v6 allKeys];
+    allKeys = [v6 allKeys];
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
     v14 = __58__MUIMailboxFilterViewModel__compoundPredicateForFilters___block_invoke_2;
     v15 = &unk_27818A9D8;
     v16 = v6;
     v8 = v6;
-    v9 = [v7 ef_map:&v12];
+    v9 = [allKeys ef_map:&v12];
 
     v10 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:{v9, v12, v13, v14, v15}];
   }
@@ -274,9 +274,9 @@ id __58__MUIMailboxFilterViewModel__compoundPredicateForFilters___block_invoke_2
 
 - (void)_notifySelectedFiltersObserver
 {
-  v4 = [(MUIMailboxFilterViewModel *)self selectedFiltersObservable];
-  v3 = [(MUIMailboxFilterViewModel *)self selectedFilters];
-  [v4 observerDidReceiveResult:v3];
+  selectedFiltersObservable = [(MUIMailboxFilterViewModel *)self selectedFiltersObservable];
+  selectedFilters = [(MUIMailboxFilterViewModel *)self selectedFilters];
+  [selectedFiltersObservable observerDidReceiveResult:selectedFilters];
 }
 
 - (void)initWithProvider:(uint64_t)a1 formatter:(uint64_t)a2 selectedFilters:sortedFilters:isFilteringAvailable:.cold.1(uint64_t a1, uint64_t a2)

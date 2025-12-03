@@ -2,9 +2,9 @@
 - (BOOL)_connect;
 - (BOOL)_disconnect;
 - (CMFXPCService)init;
-- (id)sendSynchronousXPCRequest:(id)a3;
+- (id)sendSynchronousXPCRequest:(id)request;
 - (void)_disconnected;
-- (void)_sendXPCRequest:(id)a3 completionBlock:(id)a4;
+- (void)_sendXPCRequest:(id)request completionBlock:(id)block;
 - (void)dealloc;
 @end
 
@@ -40,9 +40,9 @@
   [(CMFXPCService *)&v5 dealloc];
 }
 
-- (id)sendSynchronousXPCRequest:(id)a3
+- (id)sendSynchronousXPCRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -56,7 +56,7 @@
   v8[4] = &v9;
   v5 = MEMORY[0x245D4C7E0](v8);
   self->_retries = 0;
-  [(CMFXPCService *)self _sendXPCRequest:v4 completionBlock:v5];
+  [(CMFXPCService *)self _sendXPCRequest:requestCopy completionBlock:v5];
   v6 = v10[5];
 
   _Block_object_dispose(&v9, 8);
@@ -64,20 +64,20 @@
   return v6;
 }
 
-- (void)_sendXPCRequest:(id)a3 completionBlock:(id)a4
+- (void)_sendXPCRequest:(id)request completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  blockCopy = block;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__CMFXPCService__sendXPCRequest_completionBlock___block_invoke;
   block[3] = &unk_278DE6E88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = requestCopy;
   dispatch_sync(queue, block);
 }
 

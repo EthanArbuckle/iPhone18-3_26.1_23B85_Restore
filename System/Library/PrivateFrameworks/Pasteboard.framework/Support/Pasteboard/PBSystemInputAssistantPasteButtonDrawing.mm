@@ -1,31 +1,31 @@
 @interface PBSystemInputAssistantPasteButtonDrawing
 - (CGSize)drawingSize;
-- (PBSystemInputAssistantPasteButtonDrawing)initWithStyle:(id)a3 tag:(id)a4;
+- (PBSystemInputAssistantPasteButtonDrawing)initWithStyle:(id)style tag:(id)tag;
 @end
 
 @implementation PBSystemInputAssistantPasteButtonDrawing
 
-- (PBSystemInputAssistantPasteButtonDrawing)initWithStyle:(id)a3 tag:(id)a4
+- (PBSystemInputAssistantPasteButtonDrawing)initWithStyle:(id)style tag:(id)tag
 {
-  v6 = a3;
-  v7 = a4;
+  styleCopy = style;
+  tagCopy = tag;
   v24.receiver = self;
   v24.super_class = PBSystemInputAssistantPasteButtonDrawing;
   v8 = [(PBSystemInputAssistantPasteButtonDrawing *)&v24 init];
   if (v8)
   {
     v9 = [UISPasteVariant variantForSecureName:0x10000];
-    v10 = [v9 glyph];
-    v11 = [v6 assetGlyphWithName:v10 glyphSize:2 glyphWeight:4 glyphPointSize:20.0];
+    glyph = [v9 glyph];
+    v11 = [styleCopy assetGlyphWithName:glyph glyphSize:2 glyphWeight:4 glyphPointSize:20.0];
 
-    v12 = [[UISVectorGlyphDrawing alloc] initWithVectorGlyph:v11 tintColor:{objc_msgSend(v6, "tintColor")}];
+    v12 = [[UISVectorGlyphDrawing alloc] initWithVectorGlyph:v11 tintColor:{objc_msgSend(styleCopy, "tintColor")}];
     v13 = *(v8 + 1);
     *(v8 + 1) = v12;
 
-    v14 = [v7 site];
-    if (v14)
+    site = [tagCopy site];
+    if (site)
     {
-      if (v14 != 1)
+      if (site != 1)
       {
 LABEL_7:
         [*(v8 + 1) drawingSize];

@@ -5,44 +5,44 @@
 - (BOOL)_shouldPauseInitialLooping;
 - (BOOL)_shouldPresentQuickLookOnTap;
 - (BOOL)_thermalStateAcceptableForLooping;
-- (CKAutoloopMovieBalloonView)initWithFrame:(CGRect)a3;
+- (CKAutoloopMovieBalloonView)initWithFrame:(CGRect)frame;
 - (NSString)description;
 - (void)_removeSnapshot;
-- (void)_thermalStateDidChange:(id)a3;
-- (void)avPlayer:(id)a3 itemDidPlayToEnd:(id)a4;
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5 hasInvisibleInkEffect:(BOOL)a6;
+- (void)_thermalStateDidChange:(id)change;
+- (void)avPlayer:(id)player itemDidPlayToEnd:(id)end;
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation hasInvisibleInkEffect:(BOOL)effect;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)prepareForAcknowledgementDisplay;
 - (void)prepareForDisplay;
 - (void)prepareForReuse;
-- (void)previewDidChange:(id)a3;
-- (void)setContentAlpha:(double)a3;
-- (void)setIsMuted:(BOOL)a3;
-- (void)setMediaObject:(id)a3;
+- (void)previewDidChange:(id)change;
+- (void)setContentAlpha:(double)alpha;
+- (void)setIsMuted:(BOOL)muted;
+- (void)setMediaObject:(id)object;
 - (void)startListeningToVideoPlayer;
 - (void)stopListeningToVideoPlayer;
-- (void)tapGestureRecognized:(id)a3;
+- (void)tapGestureRecognized:(id)recognized;
 @end
 
 @implementation CKAutoloopMovieBalloonView
 
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5 hasInvisibleInkEffect:(BOOL)a6
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation hasInvisibleInkEffect:(BOOL)effect
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  -[CKAutoloopMovieBalloonView setIsMultitrackMemoriesVideo:](self, "setIsMultitrackMemoriesVideo:", [v10 isMultitrackMemoriesVideo]);
+  effectCopy = effect;
+  orientationCopy = orientation;
+  objectCopy = object;
+  -[CKAutoloopMovieBalloonView setIsMultitrackMemoriesVideo:](self, "setIsMultitrackMemoriesVideo:", [objectCopy isMultitrackMemoriesVideo]);
   v12.receiver = self;
   v12.super_class = CKAutoloopMovieBalloonView;
-  [(CKImageBalloonView *)&v12 configureForMediaObject:v10 previewWidth:v7 orientation:v6 hasInvisibleInkEffect:a4];
-  [(CKAutoloopMovieBalloonView *)self setMediaObject:v10];
-  v11 = [v10 isJellyfishVideo];
+  [(CKImageBalloonView *)&v12 configureForMediaObject:objectCopy previewWidth:orientationCopy orientation:effectCopy hasInvisibleInkEffect:width];
+  [(CKAutoloopMovieBalloonView *)self setMediaObject:objectCopy];
+  isJellyfishVideo = [objectCopy isJellyfishVideo];
 
-  [(CKAutoloopMovieBalloonView *)self setIsJellyfishVideo:v11];
+  [(CKAutoloopMovieBalloonView *)self setIsJellyfishVideo:isJellyfishVideo];
 }
 
 + (BOOL)isEnabled
@@ -76,21 +76,21 @@ void __58__CKAutoloopMovieBalloonView__autoloopAVAudioSessionQueue__block_invoke
   _autoloopAVAudioSessionQueue_queue = v0;
 }
 
-- (CKAutoloopMovieBalloonView)initWithFrame:(CGRect)a3
+- (CKAutoloopMovieBalloonView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v34.receiver = self;
   v34.super_class = CKAutoloopMovieBalloonView;
   v7 = [(CKImageBalloonView *)&v34 initWithFrame:?];
   if (v7)
   {
-    v8 = [MEMORY[0x1E69C1B18] auxiliarySession];
+    auxiliarySession = [MEMORY[0x1E69C1B18] auxiliarySession];
     v9 = *MEMORY[0x1E6958038];
     v33 = 0;
-    [v8 setCategory:v9 error:&v33];
+    [auxiliarySession setCategory:v9 error:&v33];
     v10 = v33;
     if (v10 && IMOSLoggingEnabled())
     {
@@ -102,7 +102,7 @@ void __58__CKAutoloopMovieBalloonView__autoloopAVAudioSessionQueue__block_invoke
       }
     }
 
-    [(CKAutoloopMovieBalloonView *)v7 setAudioSession:v8];
+    [(CKAutoloopMovieBalloonView *)v7 setAudioSession:auxiliarySession];
     v12 = [objc_alloc(MEMORY[0x1E69C1B08]) initWithFrame:{x, y, width, height}];
     videoPlayer = v7->_videoPlayer;
     v7->_videoPlayer = v12;
@@ -115,24 +115,24 @@ void __58__CKAutoloopMovieBalloonView__autoloopAVAudioSessionQueue__block_invoke
     [(ISWrappedAVPlayer *)v7->_avPlayer setLoopingEnabled:1];
     [(ISWrappedAVPlayer *)v7->_avPlayer setPreventsSleepDuringVideoPlayback:0];
     v16 = v7->_avPlayer;
-    v17 = [(CKAutoloopMovieBalloonView *)v7 audioSession];
-    [(ISWrappedAVPlayer *)v16 setWrappedAudioSession:v17];
+    audioSession = [(CKAutoloopMovieBalloonView *)v7 audioSession];
+    [(ISWrappedAVPlayer *)v16 setWrappedAudioSession:audioSession];
 
     [(ISVideoPlayerUIView *)v7->_videoPlayer setVideoPlayer:v7->_avPlayer];
-    v18 = [(ISVideoPlayerUIView *)v7->_videoPlayer subviews];
-    v19 = [v18 firstObject];
-    v20 = [v19 layer];
+    subviews = [(ISVideoPlayerUIView *)v7->_videoPlayer subviews];
+    firstObject = [subviews firstObject];
+    layer = [firstObject layer];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v22 = [(ISVideoPlayerUIView *)v7->_videoPlayer subviews];
-      v23 = [v22 firstObject];
-      v24 = [v23 layer];
+      subviews2 = [(ISVideoPlayerUIView *)v7->_videoPlayer subviews];
+      firstObject2 = [subviews2 firstObject];
+      layer2 = [firstObject2 layer];
 
-      [v24 setPreferredDynamicRange:*MEMORY[0x1E6979298]];
-      [v24 setVideoGravity:*MEMORY[0x1E69874F0]];
+      [layer2 setPreferredDynamicRange:*MEMORY[0x1E6979298]];
+      [layer2 setVideoGravity:*MEMORY[0x1E69874F0]];
     }
 
     [(CKAutoloopMovieBalloonView *)v7 startListeningToVideoPlayer];
@@ -141,17 +141,17 @@ void __58__CKAutoloopMovieBalloonView__autoloopAVAudioSessionQueue__block_invoke
     v25 = objc_alloc(MEMORY[0x1E69DCAE0]);
     v26 = [v25 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     v27 = +[CKUIBehavior sharedBehaviors];
-    v28 = [v27 unmuteButtonImage];
-    [v26 setImage:v28];
+    unmuteButtonImage = [v27 unmuteButtonImage];
+    [v26 setImage:unmuteButtonImage];
 
     [(CKAutoloopMovieBalloonView *)v7 setMuteButton:v26];
     [(CKAutoloopMovieBalloonView *)v7 addSubview:v26];
     [(CKAutoloopMovieBalloonView *)v7 setIsMuted:1];
-    v29 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v29 addObserver:v7 selector:sel__thermalStateDidChange_ name:*MEMORY[0x1E696A7E0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__thermalStateDidChange_ name:*MEMORY[0x1E696A7E0] object:0];
 
-    v30 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v30 addObserver:v7 selector:sel_previewDidChange_ name:@"CKPreviewDidChangeNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v7 selector:sel_previewDidChange_ name:@"CKPreviewDidChangeNotification" object:0];
   }
 
   return v7;
@@ -171,8 +171,8 @@ void __58__CKAutoloopMovieBalloonView__autoloopAVAudioSessionQueue__block_invoke
   v8.receiver = self;
   v8.super_class = CKAutoloopMovieBalloonView;
   v4 = [(CKImageBalloonView *)&v8 description];
-  v5 = [(CKAutoloopMovieBalloonView *)self mediaObject];
-  v6 = [v3 stringWithFormat:@"%@ mediaObject: %@", v4, v5];
+  mediaObject = [(CKAutoloopMovieBalloonView *)self mediaObject];
+  v6 = [v3 stringWithFormat:@"%@ mediaObject: %@", v4, mediaObject];
 
   return v6;
 }
@@ -182,26 +182,26 @@ void __58__CKAutoloopMovieBalloonView__autoloopAVAudioSessionQueue__block_invoke
   v79.receiver = self;
   v79.super_class = CKAutoloopMovieBalloonView;
   [(CKImageBalloonView *)&v79 layoutSubviews];
-  v3 = [(CKAutoloopMovieBalloonView *)self videoPlayer];
+  videoPlayer = [(CKAutoloopMovieBalloonView *)self videoPlayer];
   [(CKAutoloopMovieBalloonView *)self bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
   [(CKImageBalloonView *)self imageInsets];
-  [v3 setFrame:{v5 + v15, v7 + v12, v9 - (v15 + v13), v11 - (v12 + v14)}];
+  [videoPlayer setFrame:{v5 + v15, v7 + v12, v9 - (v15 + v13), v11 - (v12 + v14)}];
 
-  v16 = [(CKAutoloopMovieBalloonView *)self videoPlayer];
+  videoPlayer2 = [(CKAutoloopMovieBalloonView *)self videoPlayer];
   if ([(CKImageBalloonView *)self isScheduled])
   {
     v17 = +[CKUIBehavior sharedBehaviors];
     [v17 scheduledImageBalloonAlpha];
-    [v16 setAlpha:?];
+    [videoPlayer2 setAlpha:?];
   }
 
   else
   {
-    [v16 setAlpha:1.0];
+    [videoPlayer2 setAlpha:1.0];
   }
 
   v77 = 0u;
@@ -242,37 +242,37 @@ void __58__CKAutoloopMovieBalloonView__autoloopAVAudioSessionQueue__block_invoke
   v66 = v74;
   [(CKBalloonMaskLayer *)videoPlayerMaskLayer updateDescriptor:&v63];
   v22 = self->_videoPlayerMaskLayer;
-  v23 = [(CKAutoloopMovieBalloonView *)self videoPlayer];
-  v24 = [v23 layer];
-  [v24 setMask:v22];
+  videoPlayer3 = [(CKAutoloopMovieBalloonView *)self videoPlayer];
+  layer = [videoPlayer3 layer];
+  [layer setMask:v22];
 
   [(CKAutoloopMovieBalloonView *)self bounds];
   [(CKBalloonMaskLayer *)self->_videoPlayerMaskLayer setFrame:?];
-  v25 = [(CKAutoloopMovieBalloonView *)self muteButton];
+  muteButton = [(CKAutoloopMovieBalloonView *)self muteButton];
 
-  if (v25)
+  if (muteButton)
   {
-    v26 = [(CKAutoloopMovieBalloonView *)self muteButton];
-    [v26 setHidden:{-[CKAutoloopMovieBalloonView isMultitrackMemoriesVideo](self, "isMultitrackMemoriesVideo")}];
+    muteButton2 = [(CKAutoloopMovieBalloonView *)self muteButton];
+    [muteButton2 setHidden:{-[CKAutoloopMovieBalloonView isMultitrackMemoriesVideo](self, "isMultitrackMemoriesVideo")}];
 
-    v27 = [(CKAutoloopMovieBalloonView *)self muteButton];
-    [v27 sizeToFit];
+    muteButton3 = [(CKAutoloopMovieBalloonView *)self muteButton];
+    [muteButton3 sizeToFit];
 
     v28 = *MEMORY[0x1E695F058];
     v29 = *(MEMORY[0x1E695F058] + 8);
-    v30 = [(CKAutoloopMovieBalloonView *)self muteButton];
-    [v30 bounds];
+    muteButton4 = [(CKAutoloopMovieBalloonView *)self muteButton];
+    [muteButton4 bounds];
     v32 = v31;
     v34 = v33;
 
     v35 = +[CKUIBehavior sharedBehaviors];
-    v36 = [v35 muteButtonImage];
-    [v36 size];
+    muteButtonImage = [v35 muteButtonImage];
+    [muteButtonImage size];
     v38 = v37;
 
     v39 = +[CKUIBehavior sharedBehaviors];
-    v40 = [v39 unmuteButtonImage];
-    [v40 size];
+    unmuteButtonImage = [v39 unmuteButtonImage];
+    [unmuteButtonImage size];
     v42 = v41;
 
     if (v38 >= v42)
@@ -286,13 +286,13 @@ void __58__CKAutoloopMovieBalloonView__autoloopAVAudioSessionQueue__block_invoke
     }
 
     v44 = +[CKUIBehavior sharedBehaviors];
-    v45 = [v44 muteButtonImage];
-    [v45 size];
+    muteButtonImage2 = [v44 muteButtonImage];
+    [muteButtonImage2 size];
     v47 = v46;
 
     v48 = +[CKUIBehavior sharedBehaviors];
-    v49 = [v48 unmuteButtonImage];
-    [v49 size];
+    unmuteButtonImage2 = [v48 unmuteButtonImage];
+    [unmuteButtonImage2 size];
     v51 = v50;
 
     if (v47 < v51)
@@ -300,8 +300,8 @@ void __58__CKAutoloopMovieBalloonView__autoloopAVAudioSessionQueue__block_invoke
       v47 = v51;
     }
 
-    v52 = [(CKAutoloopMovieBalloonView *)self muteButton];
-    [v52 setFrame:{v28, v29, v32, v34}];
+    muteButton5 = [(CKAutoloopMovieBalloonView *)self muteButton];
+    [muteButton5 setFrame:{v28, v29, v32, v34}];
 
     v53 = +[CKUIBehavior sharedBehaviors];
     [v53 verticalBalloonBadgeInset];
@@ -320,19 +320,19 @@ void __58__CKAutoloopMovieBalloonView__autoloopAVAudioSessionQueue__block_invoke
       v59 = v59 - v61;
     }
 
-    v62 = [(CKAutoloopMovieBalloonView *)self muteButton];
-    [v62 setCenter:{v59, v55}];
+    muteButton6 = [(CKAutoloopMovieBalloonView *)self muteButton];
+    [muteButton6 setCenter:{v59, v55}];
   }
 }
 
-- (void)setMediaObject:(id)a3
+- (void)setMediaObject:(id)object
 {
-  v6 = a3;
-  v5 = [(CKAutoloopMovieBalloonView *)self mediaObject];
+  objectCopy = object;
+  mediaObject = [(CKAutoloopMovieBalloonView *)self mediaObject];
 
-  if (v5 != v6)
+  if (mediaObject != objectCopy)
   {
-    objc_storeStrong(&self->_mediaObject, a3);
+    objc_storeStrong(&self->_mediaObject, object);
     [(CKBalloonView *)self setNeedsPrepareForDisplay];
   }
 }
@@ -341,20 +341,20 @@ void __58__CKAutoloopMovieBalloonView__autoloopAVAudioSessionQueue__block_invoke
 {
   if (![(CKAutoloopMovieBalloonView *)self isListeningToVideoPlayer])
   {
-    v3 = [(CKAutoloopMovieBalloonView *)self videoPlayer];
-    v4 = [v3 subviews];
-    v5 = [v4 firstObject];
-    v6 = [v5 layer];
+    videoPlayer = [(CKAutoloopMovieBalloonView *)self videoPlayer];
+    subviews = [videoPlayer subviews];
+    firstObject = [subviews firstObject];
+    layer = [firstObject layer];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v8 = [(ISVideoPlayerUIView *)self->_videoPlayer subviews];
-      v9 = [v8 firstObject];
-      v10 = [v9 layer];
+      subviews2 = [(ISVideoPlayerUIView *)self->_videoPlayer subviews];
+      firstObject2 = [subviews2 firstObject];
+      layer2 = [firstObject2 layer];
 
-      [v10 addObserver:self forKeyPath:@"readyForDisplay" options:1 context:0];
+      [layer2 addObserver:self forKeyPath:@"readyForDisplay" options:1 context:0];
     }
 
     [(CKAutoloopMovieBalloonView *)self setIsListeningToVideoPlayer:1];
@@ -365,40 +365,40 @@ void __58__CKAutoloopMovieBalloonView__autoloopAVAudioSessionQueue__block_invoke
 {
   if ([(CKAutoloopMovieBalloonView *)self isListeningToVideoPlayer])
   {
-    v3 = [(CKAutoloopMovieBalloonView *)self videoPlayer];
-    v4 = [v3 subviews];
-    v5 = [v4 firstObject];
-    v6 = [v5 layer];
+    videoPlayer = [(CKAutoloopMovieBalloonView *)self videoPlayer];
+    subviews = [videoPlayer subviews];
+    firstObject = [subviews firstObject];
+    layer = [firstObject layer];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v8 = [(CKAutoloopMovieBalloonView *)self videoPlayer];
-      v9 = [v8 subviews];
-      v10 = [v9 firstObject];
-      v11 = [v10 layer];
+      videoPlayer2 = [(CKAutoloopMovieBalloonView *)self videoPlayer];
+      subviews2 = [videoPlayer2 subviews];
+      firstObject2 = [subviews2 firstObject];
+      layer2 = [firstObject2 layer];
 
-      [v11 removeObserver:self forKeyPath:@"readyForDisplay"];
+      [layer2 removeObserver:self forKeyPath:@"readyForDisplay"];
     }
 
     [(CKAutoloopMovieBalloonView *)self setIsListeningToVideoPlayer:0];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a5;
-  v9 = a4;
+  changeCopy = change;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v11 = [v8 objectForKey:@"new"];
-    v12 = [v11 BOOLValue];
+    v11 = [changeCopy objectForKey:@"new"];
+    bOOLValue = [v11 BOOLValue];
 
-    if (v12)
+    if (bOOLValue)
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -469,24 +469,24 @@ uint64_t __77__CKAutoloopMovieBalloonView_observeValueForKeyPath_ofObject_change
   v8.receiver = self;
   v8.super_class = CKAutoloopMovieBalloonView;
   [(CKImageBalloonView *)&v8 prepareForReuse];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(CKAutoloopMovieBalloonView *)self stopListeningToVideoPlayer];
-  v4 = [(CKAutoloopMovieBalloonView *)self avPlayer];
+  avPlayer = [(CKAutoloopMovieBalloonView *)self avPlayer];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__CKAutoloopMovieBalloonView_prepareForReuse__block_invoke;
   v7[3] = &unk_1E72EBA18;
   v7[4] = self;
-  [v4 replaceCurrentItemWithPlayerItem:0 thenCall:v7];
+  [avPlayer replaceCurrentItemWithPlayerItem:0 thenCall:v7];
 
   [(CKImageBalloonView *)self setImage:0];
-  v5 = [(CKAutoloopMovieBalloonView *)self videoPlayer];
-  [v5 setMaskView:0];
+  videoPlayer = [(CKAutoloopMovieBalloonView *)self videoPlayer];
+  [videoPlayer setMaskView:0];
 
-  v6 = [(CKAutoloopMovieBalloonView *)self videoPlayer];
-  [v6 setAlpha:1.0];
+  videoPlayer2 = [(CKAutoloopMovieBalloonView *)self videoPlayer];
+  [videoPlayer2 setAlpha:1.0];
 
   [(CKAutoloopMovieBalloonView *)self setIsMuted:1];
   [(CKAutoloopMovieBalloonView *)self _removeSnapshot];
@@ -498,19 +498,19 @@ uint64_t __77__CKAutoloopMovieBalloonView_observeValueForKeyPath_ofObject_change
   v30.super_class = CKAutoloopMovieBalloonView;
   [(CKImageBalloonView *)&v30 prepareForDisplay];
   [(CKAutoloopMovieBalloonView *)self stopListeningToVideoPlayer];
-  v3 = [(CKAutoloopMovieBalloonView *)self videoPlayer];
-  [v3 removeFromSuperview];
+  videoPlayer = [(CKAutoloopMovieBalloonView *)self videoPlayer];
+  [videoPlayer removeFromSuperview];
 
-  v4 = [(CKAutoloopMovieBalloonView *)self mediaObject];
+  mediaObject = [(CKAutoloopMovieBalloonView *)self mediaObject];
 
-  if (v4)
+  if (mediaObject)
   {
-    v5 = [(CKAutoloopMovieBalloonView *)self mediaObject];
-    v6 = [v5 fileURL];
-    v7 = CKAVURLAssetForURL(v6);
+    mediaObject2 = [(CKAutoloopMovieBalloonView *)self mediaObject];
+    fileURL = [mediaObject2 fileURL];
+    v7 = CKAVURLAssetForURL(fileURL);
 
     v8 = [MEMORY[0x1E69880B0] playerItemWithAsset:v7];
-    v9 = [(CKAutoloopMovieBalloonView *)self _shouldAutoPlay];
+    _shouldAutoPlay = [(CKAutoloopMovieBalloonView *)self _shouldAutoPlay];
     v10 = 0.0;
     if (![(CKAutoloopMovieBalloonView *)self _shouldPauseInitialLooping])
     {
@@ -525,8 +525,8 @@ uint64_t __77__CKAutoloopMovieBalloonView_observeValueForKeyPath_ofObject_change
       }
     }
 
-    v11 = [(CKAutoloopMovieBalloonView *)self isMultitrackMemoriesVideo];
-    if (v11)
+    isMultitrackMemoriesVideo = [(CKAutoloopMovieBalloonView *)self isMultitrackMemoriesVideo];
+    if (isMultitrackMemoriesVideo)
     {
       if ([(CKAutoloopMovieBalloonView *)self isPlayingMultitrackMemory])
       {
@@ -538,71 +538,71 @@ uint64_t __77__CKAutoloopMovieBalloonView_observeValueForKeyPath_ofObject_change
         v10 = 0.0;
       }
 
-      v12 = [(CKAutoloopMovieBalloonView *)self videoPlayer];
-      v13 = v12;
+      videoPlayer2 = [(CKAutoloopMovieBalloonView *)self videoPlayer];
+      v13 = videoPlayer2;
       v14 = 0.0;
       if (self->_isPlayingMultitrackMemory)
       {
         v14 = 1.0;
       }
 
-      [v12 setAlpha:v14];
+      [videoPlayer2 setAlpha:v14];
     }
 
-    v15 = [(CKAutoloopMovieBalloonView *)self avPlayer];
-    [v15 setLoopingEnabled:v9];
+    avPlayer = [(CKAutoloopMovieBalloonView *)self avPlayer];
+    [avPlayer setLoopingEnabled:_shouldAutoPlay];
 
-    [(ISWrappedAVPlayer *)self->_avPlayer setSuppressesAudioRendering:!v11];
-    v16 = [(CKAutoloopMovieBalloonView *)self avPlayer];
+    [(ISWrappedAVPlayer *)self->_avPlayer setSuppressesAudioRendering:!isMultitrackMemoriesVideo];
+    avPlayer2 = [(CKAutoloopMovieBalloonView *)self avPlayer];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __47__CKAutoloopMovieBalloonView_prepareForDisplay__block_invoke;
     v28[3] = &unk_1E72F3768;
     v28[4] = self;
     v29 = v10;
-    [v16 replaceCurrentItemWithPlayerItem:v8 thenCall:v28];
+    [avPlayer2 replaceCurrentItemWithPlayerItem:v8 thenCall:v28];
 
-    v17 = [(CKBalloonView *)self invisibleInkEffectController];
-    v18 = [v17 effectView];
+    invisibleInkEffectController = [(CKBalloonView *)self invisibleInkEffectController];
+    effectView = [invisibleInkEffectController effectView];
 
-    v19 = [(CKAutoloopMovieBalloonView *)self videoPlayer];
-    if (v18)
+    videoPlayer3 = [(CKAutoloopMovieBalloonView *)self videoPlayer];
+    if (effectView)
     {
-      [(CKAutoloopMovieBalloonView *)self insertSubview:v19 belowSubview:v18];
+      [(CKAutoloopMovieBalloonView *)self insertSubview:videoPlayer3 belowSubview:effectView];
     }
 
     else
     {
-      [(CKAutoloopMovieBalloonView *)self addSubview:v19];
+      [(CKAutoloopMovieBalloonView *)self addSubview:videoPlayer3];
     }
 
     [(CKAutoloopMovieBalloonView *)self startListeningToVideoPlayer];
   }
 
-  v20 = [(CKAutoloopMovieBalloonView *)self muteButton];
+  muteButton = [(CKAutoloopMovieBalloonView *)self muteButton];
 
-  if (v20)
+  if (muteButton)
   {
-    v21 = [(CKAutoloopMovieBalloonView *)self isJellyfishVideo];
+    isJellyfishVideo = [(CKAutoloopMovieBalloonView *)self isJellyfishVideo];
     v22 = +[CKUIBehavior sharedBehaviors];
-    v23 = [v22 theme];
-    v24 = v23;
-    if (v21)
+    theme = [v22 theme];
+    v24 = theme;
+    if (isJellyfishVideo)
     {
-      [v23 jellyfishMuteButtonColor];
+      [theme jellyfishMuteButtonColor];
     }
 
     else
     {
-      [v23 autoloopMuteButtonColor];
+      [theme autoloopMuteButtonColor];
     }
     v25 = ;
 
-    v26 = [(CKAutoloopMovieBalloonView *)self muteButton];
-    [v26 setTintColor:v25];
+    muteButton2 = [(CKAutoloopMovieBalloonView *)self muteButton];
+    [muteButton2 setTintColor:v25];
 
-    v27 = [(CKAutoloopMovieBalloonView *)self muteButton];
-    [(CKAutoloopMovieBalloonView *)self bringSubviewToFront:v27];
+    muteButton3 = [(CKAutoloopMovieBalloonView *)self muteButton];
+    [(CKAutoloopMovieBalloonView *)self bringSubviewToFront:muteButton3];
   }
 }
 
@@ -627,28 +627,28 @@ void __47__CKAutoloopMovieBalloonView_prepareForDisplay__block_invoke(uint64_t a
   v5.receiver = self;
   v5.super_class = CKAutoloopMovieBalloonView;
   [(CKImageBalloonView *)&v5 didMoveToWindow];
-  v3 = [(CKAutoloopMovieBalloonView *)self window];
+  window = [(CKAutoloopMovieBalloonView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(CKAutoloopMovieBalloonView *)self prepareForDisplay];
   }
 
   else
   {
-    v4 = [(CKAutoloopMovieBalloonView *)self avPlayer];
-    [v4 replaceCurrentItemWithPlayerItem:0];
+    avPlayer = [(CKAutoloopMovieBalloonView *)self avPlayer];
+    [avPlayer replaceCurrentItemWithPlayerItem:0];
   }
 }
 
-- (void)tapGestureRecognized:(id)a3
+- (void)tapGestureRecognized:(id)recognized
 {
-  v4 = a3;
-  [v4 locationInView:self];
+  recognizedCopy = recognized;
+  [recognizedCopy locationInView:self];
   v6 = v5;
   v8 = v7;
-  v9 = [(CKAutoloopMovieBalloonView *)self muteButton];
-  [v9 frame];
+  muteButton = [(CKAutoloopMovieBalloonView *)self muteButton];
+  [muteButton frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -657,7 +657,7 @@ void __47__CKAutoloopMovieBalloonView_prepareForDisplay__block_invoke(uint64_t a
   if ([(CKAutoloopMovieBalloonView *)self isMultitrackMemoriesVideo])
   {
     v18 = +[CKUIBehavior sharedBehaviors];
-    v19 = [v18 playButtonImage];
+    playButtonImage = [v18 playButtonImage];
 
     [(CKAutoloopMovieBalloonView *)self bounds];
     [(CKAutoloopMovieBalloonView *)self alignmentRectForFrame:?];
@@ -665,7 +665,7 @@ void __47__CKAutoloopMovieBalloonView_prepareForDisplay__block_invoke(uint64_t a
     v23 = v22;
     v25 = v24;
     v27 = v26;
-    [v19 size];
+    [playButtonImage size];
     v29 = v28;
     v31 = v30;
     if (CKMainScreenScale_once_64 != -1)
@@ -689,7 +689,7 @@ void __47__CKAutoloopMovieBalloonView_prepareForDisplay__block_invoke(uint64_t a
 
       v37 = floor((v21 + (v25 - v29) * 0.5) * v36) / v36;
       v38 = floor((v23 + (v27 - v31) * 0.5) * v36) / v36;
-      [v4 locationInView:self];
+      [recognizedCopy locationInView:self];
       v48.x = v39;
       v48.y = v40;
       v51.origin.x = v37;
@@ -702,8 +702,8 @@ void __47__CKAutoloopMovieBalloonView_prepareForDisplay__block_invoke(uint64_t a
     if (self->_isPlayingMultitrackMemory || v33)
     {
       [(CKAutoloopMovieBalloonView *)self _removeSnapshot];
-      v41 = [(CKAutoloopMovieBalloonView *)self avPlayer];
-      [v41 rate];
+      avPlayer = [(CKAutoloopMovieBalloonView *)self avPlayer];
+      [avPlayer rate];
       self->_isPlayingMultitrackMemory = v42 == 0.0;
 
       [(CKBalloonImageView *)self setImageHidden:self->_isPlayingMultitrackMemory];
@@ -714,7 +714,7 @@ void __47__CKAutoloopMovieBalloonView_prepareForDisplay__block_invoke(uint64_t a
     {
       v46.receiver = self;
       v46.super_class = CKAutoloopMovieBalloonView;
-      [(CKImageBalloonView *)&v46 tapGestureRecognized:v4];
+      [(CKImageBalloonView *)&v46 tapGestureRecognized:recognizedCopy];
     }
   }
 
@@ -733,13 +733,13 @@ void __47__CKAutoloopMovieBalloonView_prepareForDisplay__block_invoke(uint64_t a
         v47.y = v8;
         if (!CGRectContainsPoint(v50, v47))
         {
-          [(CKImageBalloonView *)&v45 tapGestureRecognized:v4, v43.receiver, v43.super_class, v44.receiver, v44.super_class, self, CKAutoloopMovieBalloonView];
+          [(CKImageBalloonView *)&v45 tapGestureRecognized:recognizedCopy, v43.receiver, v43.super_class, v44.receiver, v44.super_class, self, CKAutoloopMovieBalloonView];
           goto LABEL_23;
         }
       }
 
       [(CKAutoloopMovieBalloonView *)self prepareForDisplay];
-      v34 = self;
+      selfCopy2 = self;
       v35 = 0;
     }
 
@@ -753,46 +753,46 @@ void __47__CKAutoloopMovieBalloonView_prepareForDisplay__block_invoke(uint64_t a
       v49.y = v8;
       if (!CGRectContainsPoint(v52, v49))
       {
-        [(CKImageBalloonView *)&v44 tapGestureRecognized:v4, v43.receiver, v43.super_class, self, CKAutoloopMovieBalloonView, v45.receiver, v45.super_class];
+        [(CKImageBalloonView *)&v44 tapGestureRecognized:recognizedCopy, v43.receiver, v43.super_class, self, CKAutoloopMovieBalloonView, v45.receiver, v45.super_class];
         goto LABEL_23;
       }
 
       v35 = [(CKAutoloopMovieBalloonView *)self isMuted]^ 1;
-      v34 = self;
+      selfCopy2 = self;
     }
 
-    [(CKAutoloopMovieBalloonView *)v34 setIsMuted:v35];
+    [(CKAutoloopMovieBalloonView *)selfCopy2 setIsMuted:v35];
   }
 
   else
   {
-    [(CKImageBalloonView *)&v43 tapGestureRecognized:v4, self, CKAutoloopMovieBalloonView, v44.receiver, v44.super_class, v45.receiver, v45.super_class];
+    [(CKImageBalloonView *)&v43 tapGestureRecognized:recognizedCopy, self, CKAutoloopMovieBalloonView, v44.receiver, v44.super_class, v45.receiver, v45.super_class];
   }
 
 LABEL_23:
 }
 
-- (void)setIsMuted:(BOOL)a3
+- (void)setIsMuted:(BOOL)muted
 {
-  if (self->_isMuted == a3)
+  if (self->_isMuted == muted)
   {
     return;
   }
 
-  v3 = a3;
-  self->_isMuted = a3;
-  v5 = [(CKAutoloopMovieBalloonView *)self audioSession];
-  v6 = [v5 category];
-  v7 = v6;
-  if (!v3)
+  mutedCopy = muted;
+  self->_isMuted = muted;
+  audioSession = [(CKAutoloopMovieBalloonView *)self audioSession];
+  category = [audioSession category];
+  v7 = category;
+  if (!mutedCopy)
   {
 
     v13 = *MEMORY[0x1E6958068];
     if (([v7 isEqualToString:*MEMORY[0x1E6958068]] & 1) == 0)
     {
-      v14 = [(CKAutoloopMovieBalloonView *)self audioSession];
+      audioSession2 = [(CKAutoloopMovieBalloonView *)self audioSession];
       v41 = 0;
-      [v14 setCategory:v13 error:&v41];
+      [audioSession2 setCategory:v13 error:&v41];
       v15 = v41;
 
       if (v15 && IMOSLoggingEnabled())
@@ -806,21 +806,21 @@ LABEL_23:
       }
     }
 
-    v12 = [(CKAutoloopMovieBalloonView *)self audioSession];
-    v17 = [v12 audioSession];
-    [v17 setActive:1 error:0];
+    audioSession3 = [(CKAutoloopMovieBalloonView *)self audioSession];
+    v12AudioSession = [audioSession3 audioSession];
+    [v12AudioSession setActive:1 error:0];
 
     goto LABEL_18;
   }
 
   v8 = *MEMORY[0x1E6958038];
-  v9 = [v6 isEqualToString:*MEMORY[0x1E6958038]];
+  v9 = [category isEqualToString:*MEMORY[0x1E6958038]];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [(CKAutoloopMovieBalloonView *)self audioSession];
+    audioSession4 = [(CKAutoloopMovieBalloonView *)self audioSession];
     v43 = 0;
-    [v10 setCategory:v8 error:&v43];
+    [audioSession4 setCategory:v8 error:&v43];
     v7 = v43;
 
     if (v7 && IMOSLoggingEnabled())
@@ -833,18 +833,18 @@ LABEL_23:
       }
     }
 
-    v12 = [objc_opt_class() _autoloopAVAudioSessionQueue];
+    audioSession3 = [objc_opt_class() _autoloopAVAudioSessionQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __41__CKAutoloopMovieBalloonView_setIsMuted___block_invoke;
     block[3] = &unk_1E72EBA18;
     block[4] = self;
-    dispatch_async(v12, block);
+    dispatch_async(audioSession3, block);
 LABEL_18:
   }
 
-  [(ISWrappedAVPlayer *)self->_avPlayer setSuppressesAudioRendering:v3];
-  [(ISWrappedAVPlayer *)self->_avPlayer setActionAtItemEnd:v3 ^ 1];
+  [(ISWrappedAVPlayer *)self->_avPlayer setSuppressesAudioRendering:mutedCopy];
+  [(ISWrappedAVPlayer *)self->_avPlayer setActionAtItemEnd:mutedCopy ^ 1];
   isMuted = self->_isMuted;
   v19 = +[CKUIBehavior sharedBehaviors];
   v20 = v19;
@@ -859,20 +859,20 @@ LABEL_18:
   }
   v21 = ;
 
-  v22 = [MEMORY[0x1E69DD558] transition];
-  [v22 setStyle:3];
-  v23 = [(CKAutoloopMovieBalloonView *)self muteButton];
-  [v23 _setSymbolImage:v21 withSymbolTransition:v22];
+  transition = [MEMORY[0x1E69DD558] transition];
+  [transition setStyle:3];
+  muteButton = [(CKAutoloopMovieBalloonView *)self muteButton];
+  [muteButton _setSymbolImage:v21 withSymbolTransition:transition];
 
   if (!self->_isMuted)
   {
     [(CKAutoloopMovieBalloonView *)self _removeSnapshot];
-    v24 = [(CKAutoloopMovieBalloonView *)self videoPlayer];
-    v25 = [v24 snapshotViewAfterScreenUpdates:0];
+    videoPlayer = [(CKAutoloopMovieBalloonView *)self videoPlayer];
+    v25 = [videoPlayer snapshotViewAfterScreenUpdates:0];
 
     [(CKAutoloopMovieBalloonView *)self setSnapshotView:v25];
-    v26 = [(CKAutoloopMovieBalloonView *)self videoPlayer];
-    [(CKAutoloopMovieBalloonView *)self insertSubview:v25 aboveSubview:v26];
+    videoPlayer2 = [(CKAutoloopMovieBalloonView *)self videoPlayer];
+    [(CKAutoloopMovieBalloonView *)self insertSubview:v25 aboveSubview:videoPlayer2];
 
     v27 = MEMORY[0x193AF5ED0]("kCMTimeZero", @"CoreMedia");
     v40 = *(v27 + 16);
@@ -883,7 +883,7 @@ LABEL_18:
     v36[2] = __41__CKAutoloopMovieBalloonView_setIsMuted___block_invoke_246;
     v36[3] = &unk_1E72ECCA8;
     v37 = v25;
-    v38 = self;
+    selfCopy = self;
     v34 = *buf;
     v35 = v40;
     v32 = *buf;
@@ -936,8 +936,8 @@ void __41__CKAutoloopMovieBalloonView_setIsMuted___block_invoke_2(uint64_t a1)
 - (BOOL)_thermalStateAcceptableForLooping
 {
   v10 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 thermalState];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  thermalState = [processInfo thermalState];
 
   if (IMOSLoggingEnabled())
   {
@@ -945,17 +945,17 @@ void __41__CKAutoloopMovieBalloonView_setIsMuted___block_invoke_2(uint64_t a1)
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v6 = 134218240;
-      v7 = v3;
+      v7 = thermalState;
       v8 = 1024;
-      v9 = v3 < 2;
+      v9 = thermalState < 2;
       _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_INFO, "thermalState: %ld is acceptable: %{BOOL}d.", &v6, 0x12u);
     }
   }
 
-  return v3 < 2;
+  return thermalState < 2;
 }
 
-- (void)_thermalStateDidChange:(id)a3
+- (void)_thermalStateDidChange:(id)change
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -995,8 +995,8 @@ uint64_t __53__CKAutoloopMovieBalloonView__thermalStateDidChange___block_invoke(
 
 - (void)_removeSnapshot
 {
-  v3 = [(CKAutoloopMovieBalloonView *)self snapshotView];
-  [v3 removeFromSuperview];
+  snapshotView = [(CKAutoloopMovieBalloonView *)self snapshotView];
+  [snapshotView removeFromSuperview];
 
   [(CKAutoloopMovieBalloonView *)self setSnapshotView:0];
 }
@@ -1005,11 +1005,11 @@ uint64_t __53__CKAutoloopMovieBalloonView__thermalStateDidChange___block_invoke(
 {
   if (self->_mediaObject)
   {
-    v3 = [(CKAutoloopMovieBalloonView *)self mediaObject];
-    v4 = [v3 messageContext];
-    v5 = [v4 isSenderUnknown];
+    mediaObject = [(CKAutoloopMovieBalloonView *)self mediaObject];
+    messageContext = [mediaObject messageContext];
+    isSenderUnknown = [messageContext isSenderUnknown];
 
-    if (v5)
+    if (isSenderUnknown)
     {
       v6 = IMOSLoggingEnabled();
       if (v6)
@@ -1031,9 +1031,9 @@ LABEL_17:
       return v6;
     }
 
-    v10 = [(CKAutoloopMovieBalloonView *)self window];
+    window = [(CKAutoloopMovieBalloonView *)self window];
 
-    if (!v10)
+    if (!window)
     {
       v6 = IMOSLoggingEnabled();
       if (v6)
@@ -1053,12 +1053,12 @@ LABEL_17:
       return v6;
     }
 
-    v11 = [(CKAutoloopMovieBalloonView *)self mediaObject];
-    v12 = [v11 messageContext];
-    v13 = [v12 isSenderUnauthenticated];
+    mediaObject2 = [(CKAutoloopMovieBalloonView *)self mediaObject];
+    messageContext2 = [mediaObject2 messageContext];
+    isSenderUnauthenticated = [messageContext2 isSenderUnauthenticated];
 
     v14 = IMOSLoggingEnabled();
-    if (v13)
+    if (isSenderUnauthenticated)
     {
       if (v14)
       {
@@ -1091,7 +1091,7 @@ LABEL_22:
 LABEL_23:
     }
 
-    LOBYTE(v6) = v13 ^ 1;
+    LOBYTE(v6) = isSenderUnauthenticated ^ 1;
     return v6;
   }
 
@@ -1117,14 +1117,14 @@ LABEL_18:
 
 - (BOOL)_shouldPauseInitialLooping
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v4 = [v3 stringForKey:@"DisableLoopingFilenameKey"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v4 = [standardUserDefaults stringForKey:@"DisableLoopingFilenameKey"];
 
   if (v4)
   {
-    v5 = [(CKAutoloopMovieBalloonView *)self mediaObject];
-    v6 = [v5 fileURL];
-    v7 = [v6 lastPathComponent];
+    mediaObject = [(CKAutoloopMovieBalloonView *)self mediaObject];
+    fileURL = [mediaObject fileURL];
+    lastPathComponent = [fileURL lastPathComponent];
 
     if (kInitialAutoloopWasSuppressed)
     {
@@ -1133,7 +1133,7 @@ LABEL_18:
 
     else
     {
-      v8 = [v7 isEqualToString:v4];
+      v8 = [lastPathComponent isEqualToString:v4];
     }
   }
 
@@ -1147,27 +1147,27 @@ LABEL_18:
 
 - (BOOL)_shouldPresentQuickLookOnTap
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"DisableAutoloopTapToQuicklookKey"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"DisableAutoloopTapToQuicklookKey"];
 
   return v3 ^ 1;
 }
 
-- (void)setContentAlpha:(double)a3
+- (void)setContentAlpha:(double)alpha
 {
-  v5 = [(CKAutoloopMovieBalloonView *)self videoPlayer];
-  [v5 setAlpha:a3];
+  videoPlayer = [(CKAutoloopMovieBalloonView *)self videoPlayer];
+  [videoPlayer setAlpha:alpha];
 
-  v6 = [(CKAutoloopMovieBalloonView *)self snapshotView];
-  [v6 setAlpha:a3];
+  snapshotView = [(CKAutoloopMovieBalloonView *)self snapshotView];
+  [snapshotView setAlpha:alpha];
 
-  v7 = [(CKAutoloopMovieBalloonView *)self muteButton];
-  [v7 setAlpha:a3];
+  muteButton = [(CKAutoloopMovieBalloonView *)self muteButton];
+  [muteButton setAlpha:alpha];
 }
 
-- (void)avPlayer:(id)a3 itemDidPlayToEnd:(id)a4
+- (void)avPlayer:(id)player itemDidPlayToEnd:(id)end
 {
-  if ([(CKAutoloopMovieBalloonView *)self isMultitrackMemoriesVideo:a3])
+  if ([(CKAutoloopMovieBalloonView *)self isMultitrackMemoriesVideo:player])
   {
 
     [(CKAutoloopMovieBalloonView *)self setIsPlayingMultitrackMemory:0];
@@ -1180,45 +1180,45 @@ LABEL_18:
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if ((v6 & 2) != 0 && playerObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if ((changeCopy & 2) != 0 && playerObservationContext == context)
   {
-    v19 = v8;
-    v9 = [(CKAutoloopMovieBalloonView *)self _shouldAutoPlay];
-    v8 = v19;
-    if (v9)
+    v19 = observableCopy;
+    _shouldAutoPlay = [(CKAutoloopMovieBalloonView *)self _shouldAutoPlay];
+    observableCopy = v19;
+    if (_shouldAutoPlay)
     {
-      v10 = [(CKAutoloopMovieBalloonView *)self _shouldPauseInitialLooping];
-      v8 = v19;
-      if (!v10)
+      _shouldPauseInitialLooping = [(CKAutoloopMovieBalloonView *)self _shouldPauseInitialLooping];
+      observableCopy = v19;
+      if (!_shouldPauseInitialLooping)
       {
-        v11 = [(CKAutoloopMovieBalloonView *)self _thermalStateAcceptableForLooping];
-        v8 = v19;
-        if (v11)
+        _thermalStateAcceptableForLooping = [(CKAutoloopMovieBalloonView *)self _thermalStateAcceptableForLooping];
+        observableCopy = v19;
+        if (_thermalStateAcceptableForLooping)
         {
-          v12 = [(CKAutoloopMovieBalloonView *)self _applicationStateAcceptableForLooping];
-          v8 = v19;
-          if (v12)
+          _applicationStateAcceptableForLooping = [(CKAutoloopMovieBalloonView *)self _applicationStateAcceptableForLooping];
+          observableCopy = v19;
+          if (_applicationStateAcceptableForLooping)
           {
-            v13 = [(CKAutoloopMovieBalloonView *)self isMultitrackMemoriesVideo];
-            v8 = v19;
-            if (!v13)
+            isMultitrackMemoriesVideo = [(CKAutoloopMovieBalloonView *)self isMultitrackMemoriesVideo];
+            observableCopy = v19;
+            if (!isMultitrackMemoriesVideo)
             {
-              v14 = [(CKAutoloopMovieBalloonView *)self avPlayer];
-              [v14 rate];
+              avPlayer = [(CKAutoloopMovieBalloonView *)self avPlayer];
+              [avPlayer rate];
               v16 = v15;
 
-              v8 = v19;
+              observableCopy = v19;
               if (v16 == 0.0)
               {
-                v17 = [(CKAutoloopMovieBalloonView *)self avPlayer];
+                avPlayer2 = [(CKAutoloopMovieBalloonView *)self avPlayer];
                 LODWORD(v18) = 1.0;
-                [v17 setRate:v18];
+                [avPlayer2 setRate:v18];
 
-                v8 = v19;
+                observableCopy = v19;
               }
             }
           }
@@ -1228,20 +1228,20 @@ LABEL_18:
   }
 }
 
-- (void)previewDidChange:(id)a3
+- (void)previewDidChange:(id)change
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 object];
+  changeCopy = change;
+  object = [changeCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v4 object];
-    v8 = [(CKMediaObject *)self->_mediaObject transferGUID];
-    v9 = [v7 transferGUID];
-    v10 = [v8 isEqualToString:v9];
+    object2 = [changeCopy object];
+    transferGUID = [(CKMediaObject *)self->_mediaObject transferGUID];
+    transferGUID2 = [object2 transferGUID];
+    v10 = [transferGUID isEqualToString:transferGUID2];
 
     if (v10)
     {
@@ -1250,11 +1250,11 @@ LABEL_18:
         v11 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
-          v12 = [(CKMediaObject *)self->_mediaObject transferGUID];
+          transferGUID3 = [(CKMediaObject *)self->_mediaObject transferGUID];
           v15 = 138412546;
-          v16 = v7;
+          v16 = object2;
           v17 = 2112;
-          v18 = v12;
+          v18 = transferGUID3;
           _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "Got updated preview %@ for %@", &v15, 0x16u);
         }
       }

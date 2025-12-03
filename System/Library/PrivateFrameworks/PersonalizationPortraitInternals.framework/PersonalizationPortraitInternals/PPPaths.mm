@@ -1,10 +1,10 @@
 @interface PPPaths
-+ (id)filename:(id)a3 logSubdirectory:(id)a4;
-+ (id)filename:(id)a3 subdirectory:(id)a4;
++ (id)filename:(id)filename logSubdirectory:(id)subdirectory;
++ (id)filename:(id)filename subdirectory:(id)subdirectory;
 + (id)logDirectoryCreateIfNeeded:;
-+ (id)logSubdirectory:(uint64_t)a1 createIfNeeded:(void *)a2;
++ (id)logSubdirectory:(uint64_t)subdirectory createIfNeeded:(void *)needed;
 + (id)resourcesDirectory;
-+ (id)subdirectory:(uint64_t)a1 createIfNeeded:(void *)a2;
++ (id)subdirectory:(uint64_t)subdirectory createIfNeeded:(void *)needed;
 + (id)topDirectoryCreateIfNeeded:;
 @end
 
@@ -15,51 +15,51 @@
   v4 = objc_autoreleasePoolPush();
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   objc_autoreleasePoolPop(v4);
-  v6 = [v5 resourcePath];
-  if (!v6)
+  resourcePath = [v5 resourcePath];
+  if (!resourcePath)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"PPPaths.m" lineNumber:313 description:@"Error: Unable to find resource directory"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPPaths.m" lineNumber:313 description:@"Error: Unable to find resource directory"];
   }
 
-  return v6;
+  return resourcePath;
 }
 
-+ (id)filename:(id)a3 logSubdirectory:(id)a4
++ (id)filename:(id)filename logSubdirectory:(id)subdirectory
 {
-  v5 = a3;
-  v6 = a4;
+  filenameCopy = filename;
+  subdirectoryCopy = subdirectory;
   v7 = objc_opt_self();
   v8 = objc_autoreleasePoolPush();
-  v9 = [PPPaths logSubdirectory:v7 createIfNeeded:v6];
-  v10 = [v9 stringByAppendingPathComponent:v5];
+  v9 = [PPPaths logSubdirectory:v7 createIfNeeded:subdirectoryCopy];
+  v10 = [v9 stringByAppendingPathComponent:filenameCopy];
 
   objc_autoreleasePoolPop(v8);
 
   return v10;
 }
 
-+ (id)logSubdirectory:(uint64_t)a1 createIfNeeded:(void *)a2
++ (id)logSubdirectory:(uint64_t)subdirectory createIfNeeded:(void *)needed
 {
-  v2 = a2;
+  neededCopy = needed;
   v3 = objc_opt_self();
   v4 = objc_autoreleasePoolPush();
   v5 = +[PPPaths logDirectoryCreateIfNeeded:];
-  v6 = [v5 stringByAppendingPathComponent:v2];
+  v6 = [v5 stringByAppendingPathComponent:neededCopy];
 
   objc_autoreleasePoolPop(v4);
   v7 = v3;
   objc_sync_enter(v7);
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v12 = 0;
-  [v8 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v12];
+  [defaultManager createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v12];
   v9 = v12;
 
   objc_sync_exit(v7);
   if (v9)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:sel_logSubdirectory_createIfNeeded_ object:v7 file:@"PPPaths.m" lineNumber:291 description:{@"Error creating subdirectory for Portrait logs: %@", v9}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel_logSubdirectory_createIfNeeded_ object:v7 file:@"PPPaths.m" lineNumber:291 description:{@"Error creating subdirectory for Portrait logs: %@", v9}];
   }
 
   return v6;
@@ -164,35 +164,35 @@ void __38__PPPaths_logDirectoryCreateIfNeeded___block_invoke(uint64_t a1)
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)filename:(id)a3 subdirectory:(id)a4
++ (id)filename:(id)filename subdirectory:(id)subdirectory
 {
-  v5 = a3;
-  v6 = a4;
+  filenameCopy = filename;
+  subdirectoryCopy = subdirectory;
   v7 = objc_opt_self();
   v8 = objc_autoreleasePoolPush();
-  v9 = [PPPaths subdirectory:v7 createIfNeeded:v6];
-  v10 = [v9 stringByAppendingPathComponent:v5];
+  v9 = [PPPaths subdirectory:v7 createIfNeeded:subdirectoryCopy];
+  v10 = [v9 stringByAppendingPathComponent:filenameCopy];
 
   objc_autoreleasePoolPop(v8);
 
   return v10;
 }
 
-+ (id)subdirectory:(uint64_t)a1 createIfNeeded:(void *)a2
++ (id)subdirectory:(uint64_t)subdirectory createIfNeeded:(void *)needed
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = a2;
+  neededCopy = needed;
   v3 = objc_opt_self();
   v4 = objc_autoreleasePoolPush();
   v5 = +[PPPaths topDirectoryCreateIfNeeded:];
-  v6 = [v5 stringByAppendingPathComponent:v2];
+  v6 = [v5 stringByAppendingPathComponent:neededCopy];
 
   objc_autoreleasePoolPop(v4);
   v7 = v3;
   objc_sync_enter(v7);
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v19 = 0;
-  [v8 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v19];
+  [defaultManager createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v19];
   v9 = v19;
 
   objc_sync_exit(v7);
@@ -200,8 +200,8 @@ void __38__PPPaths_logDirectoryCreateIfNeeded___block_invoke(uint64_t a1)
   {
     if ([v9 code] == 640)
     {
-      v10 = [v9 domain];
-      v11 = [v10 isEqualToString:*MEMORY[0x277CCA050]];
+      domain = [v9 domain];
+      v11 = [domain isEqualToString:*MEMORY[0x277CCA050]];
 
       if (v11)
       {
@@ -250,8 +250,8 @@ void __38__PPPaths_logDirectoryCreateIfNeeded___block_invoke(uint64_t a1)
       PPExit(2003);
     }
 
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:sel_subdirectory_createIfNeeded_ object:v7 file:@"PPPaths.m" lineNumber:201 description:{@"Error creating subdirectory for Portrait info: %@", v9}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:sel_subdirectory_createIfNeeded_ object:v7 file:@"PPPaths.m" lineNumber:201 description:{@"Error creating subdirectory for Portrait info: %@", v9}];
   }
 
   v13 = *MEMORY[0x277D85DE8];

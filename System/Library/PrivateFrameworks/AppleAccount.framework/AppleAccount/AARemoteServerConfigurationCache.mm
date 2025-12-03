@@ -1,16 +1,16 @@
 @interface AARemoteServerConfigurationCache
-+ (AARemoteServerConfigurationCache)cacheWithConfiguration:(id)a3 response:(id)a4;
++ (AARemoteServerConfigurationCache)cacheWithConfiguration:(id)configuration response:(id)response;
 - (AARemoteServerConfigurationCache)init;
-- (AARemoteServerConfigurationCache)initWithConfiguration:(id)a3 response:(id)a4;
+- (AARemoteServerConfigurationCache)initWithConfiguration:(id)configuration response:(id)response;
 @end
 
 @implementation AARemoteServerConfigurationCache
 
-+ (AARemoteServerConfigurationCache)cacheWithConfiguration:(id)a3 response:(id)a4
++ (AARemoteServerConfigurationCache)cacheWithConfiguration:(id)configuration response:(id)response
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithConfiguration:v7 response:v6];
+  responseCopy = response;
+  configurationCopy = configuration;
+  v8 = [[self alloc] initWithConfiguration:configurationCopy response:responseCopy];
 
   return v8;
 }
@@ -22,14 +22,14 @@
   return 0;
 }
 
-- (AARemoteServerConfigurationCache)initWithConfiguration:(id)a3 response:(id)a4
+- (AARemoteServerConfigurationCache)initWithConfiguration:(id)configuration response:(id)response
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  configurationCopy = configuration;
+  responseCopy = response;
+  v10 = responseCopy;
+  if (configurationCopy)
   {
-    if (v9)
+    if (responseCopy)
     {
       goto LABEL_3;
     }
@@ -51,12 +51,12 @@ LABEL_3:
   v11 = [(AARemoteServerConfigurationCache *)&v15 init];
   if (v11)
   {
-    v12 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     creationDate = v11->_creationDate;
-    v11->_creationDate = v12;
+    v11->_creationDate = date;
 
-    objc_storeStrong(&v11->_configuration, a3);
-    objc_storeStrong(&v11->_response, a4);
+    objc_storeStrong(&v11->_configuration, configuration);
+    objc_storeStrong(&v11->_response, response);
   }
 
   return v11;

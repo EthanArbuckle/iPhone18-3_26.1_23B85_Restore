@@ -6,8 +6,8 @@
 
 - (double)itk_backingScaleFactor
 {
-  v1 = [a1 screen];
-  [v1 nativeScale];
+  screen = [self screen];
+  [screen nativeScale];
   v3 = v2;
 
   return v3;

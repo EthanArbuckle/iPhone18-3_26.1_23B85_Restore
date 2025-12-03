@@ -1,14 +1,14 @@
 @interface ASDCheckQueueRequest
-- (ASDCheckQueueRequest)initWithOptions:(id)a3;
+- (ASDCheckQueueRequest)initWithOptions:(id)options;
 - (void)dealloc;
-- (void)sendRequestCompletionBlock:(id)a3;
+- (void)sendRequestCompletionBlock:(id)block;
 @end
 
 @implementation ASDCheckQueueRequest
 
-- (ASDCheckQueueRequest)initWithOptions:(id)a3
+- (ASDCheckQueueRequest)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v15.receiver = self;
   v15.super_class = ASDCheckQueueRequest;
   v5 = [(ASDCheckQueueRequest *)&v15 init];
@@ -24,7 +24,7 @@
     calloutQueue = v5->_calloutQueue;
     v5->_calloutQueue = v10;
 
-    v12 = [v4 copy];
+    v12 = [optionsCopy copy];
     options = v5->_options;
     v5->_options = v12;
   }
@@ -40,13 +40,13 @@
   [(ASDCheckQueueRequest *)&v3 dealloc];
 }
 
-- (void)sendRequestCompletionBlock:(id)a3
+- (void)sendRequestCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   if (self)
   {
-    if (!v4)
+    if (!blockCopy)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"nil block"];
     }

@@ -1,31 +1,31 @@
 @interface SearchUITableViewCell
 + (double)distanceToTopOfAppIconsForMultiResultCell;
-+ (id)cellViewForRowModel:(id)a3 feedbackDelegate:(id)a4;
-+ (id)reuseIdentifierForResult:(id)a3;
++ (id)cellViewForRowModel:(id)model feedbackDelegate:(id)delegate;
++ (id)reuseIdentifierForResult:(id)result;
 - (CGSize)_customInsetSize;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (NSArray)visibleResults;
 - (SearchUIFeedbackDelegateInternal)delegate;
-- (SearchUITableViewCell)initWithRowModel:(id)a3 feedbackDelegate:(id)a4;
+- (SearchUITableViewCell)initWithRowModel:(id)model feedbackDelegate:(id)delegate;
 - (UIEdgeInsets)customEdgeInsets;
 - (id)commandHandler;
 - (id)contextMenuActionProvider;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)keyboardCardSectionForFocus;
 - (id)keyboardResultForFocus;
-- (void)_setAnimating:(BOOL)a3 clippingAdjacentCells:(BOOL)a4;
+- (void)_setAnimating:(BOOL)animating clippingAdjacentCells:(BOOL)cells;
 - (void)didMoveToWindow;
-- (void)executeCommandWithTriggerEvent:(unint64_t)a3;
+- (void)executeCommandWithTriggerEvent:(unint64_t)event;
 - (void)layoutSubviews;
-- (void)setCustomEdgeInsets:(UIEdgeInsets)a3;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateWithResult:(id)a3;
-- (void)updateWithResults:(id)a3;
-- (void)updateWithRowModel:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setCustomEdgeInsets:(UIEdgeInsets)insets;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateWithResult:(id)result;
+- (void)updateWithResults:(id)results;
+- (void)updateWithRowModel:(id)model;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation SearchUITableViewCell
@@ -42,52 +42,52 @@
   return result;
 }
 
-+ (id)cellViewForRowModel:(id)a3 feedbackDelegate:(id)a4
++ (id)cellViewForRowModel:(id)model feedbackDelegate:(id)delegate
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_msgSend(v6 "cellViewClass"))];
+  delegateCopy = delegate;
+  modelCopy = model;
+  v7 = [objc_alloc(objc_msgSend(modelCopy "cellViewClass"))];
 
   return v7;
 }
 
-+ (id)reuseIdentifierForResult:(id)a3
++ (id)reuseIdentifierForResult:(id)result
 {
-  v3 = [SearchUITableModel tableModelWithResult:a3];
+  v3 = [SearchUITableModel tableModelWithResult:result];
   v4 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:0];
   v5 = [v3 rowModelForIndexPath:v4];
 
-  v6 = 0;
+  reuseIdentifier = 0;
   if ([v3 numberOfRowsForSection:0] == 1)
   {
-    v6 = [v5 reuseIdentifier];
+    reuseIdentifier = [v5 reuseIdentifier];
   }
 
-  return v6;
+  return reuseIdentifier;
 }
 
-- (SearchUITableViewCell)initWithRowModel:(id)a3 feedbackDelegate:(id)a4
+- (SearchUITableViewCell)initWithRowModel:(id)model feedbackDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 reuseIdentifier];
+  modelCopy = model;
+  delegateCopy = delegate;
+  reuseIdentifier = [modelCopy reuseIdentifier];
   v13.receiver = self;
   v13.super_class = SearchUITableViewCell;
-  v9 = [(SearchUITableViewCell *)&v13 initWithStyle:0 reuseIdentifier:v8];
+  v9 = [(SearchUITableViewCell *)&v13 initWithStyle:0 reuseIdentifier:reuseIdentifier];
 
   if (v9)
   {
-    [(SearchUITableViewCell *)v9 setDelegate:v7];
+    [(SearchUITableViewCell *)v9 setDelegate:delegateCopy];
     [(SearchUITableViewCell *)v9 setPreservesSuperviewLayoutMargins:0];
     [(SearchUITableViewCell *)v9 setLayoutMargins:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
     v10 = [MEMORY[0x1E69D91C8] viewWithProminence:3];
     [(SearchUITableViewCell *)v9 setSelectedBackgroundView:v10];
 
     [(SearchUITableViewCell *)v9 setBackgroundColor:0];
-    v11 = [(SearchUIDragSource *)SearchUITableViewCellDragSource dragSourceForView:v9 dragObject:v6 feedbackDelegate:v7];
+    v11 = [(SearchUIDragSource *)SearchUITableViewCellDragSource dragSourceForView:v9 dragObject:modelCopy feedbackDelegate:delegateCopy];
     [(SearchUITableViewCell *)v9 setDragSource:v11];
 
-    [(SearchUITableViewCell *)v9 updateWithRowModel:v6];
+    [(SearchUITableViewCell *)v9 updateWithRowModel:modelCopy];
   }
 
   return v9;
@@ -95,46 +95,46 @@
 
 - (id)contextMenuActionProvider
 {
-  v2 = [(SearchUITableViewCell *)self commandHandler];
-  v3 = [v2 actionProvider];
+  commandHandler = [(SearchUITableViewCell *)self commandHandler];
+  actionProvider = [commandHandler actionProvider];
 
-  return v3;
+  return actionProvider;
 }
 
-- (void)executeCommandWithTriggerEvent:(unint64_t)a3
+- (void)executeCommandWithTriggerEvent:(unint64_t)event
 {
-  v4 = [(SearchUITableViewCell *)self commandHandler];
-  [v4 executeWithTriggerEvent:a3];
+  commandHandler = [(SearchUITableViewCell *)self commandHandler];
+  [commandHandler executeWithTriggerEvent:event];
 }
 
 - (id)commandHandler
 {
   v3 = objc_opt_new();
-  v4 = [(SearchUITableViewCell *)self delegate];
-  [v3 setFeedbackDelegate:v4];
+  delegate = [(SearchUITableViewCell *)self delegate];
+  [v3 setFeedbackDelegate:delegate];
 
   [v3 setSourceView:self];
   [v3 setThreeDTouchEnabled:1];
-  v5 = [(SearchUITableViewCell *)self rowModel];
-  v6 = [SearchUICommandHandler handlerForRowModel:v5 environment:v3];
+  rowModel = [(SearchUITableViewCell *)self rowModel];
+  v6 = [SearchUICommandHandler handlerForRowModel:rowModel environment:v3];
 
   return v6;
 }
 
-- (void)updateWithResult:(id)a3
+- (void)updateWithResult:(id)result
 {
-  v6 = [SearchUITableModel tableModelWithResult:a3];
+  v6 = [SearchUITableModel tableModelWithResult:result];
   v4 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:0];
   v5 = [v6 rowModelForIndexPath:v4];
   [(SearchUITableViewCell *)self updateWithRowModel:v5];
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
-  v4 = a3;
-  [(SearchUITableViewCell *)self setRowModel:v4];
-  v5 = [(SearchUITableViewCell *)self dragSource];
-  [v5 setDragObject:v4];
+  modelCopy = model;
+  [(SearchUITableViewCell *)self setRowModel:modelCopy];
+  dragSource = [(SearchUITableViewCell *)self dragSource];
+  [dragSource setDragObject:modelCopy];
 
   [(SearchUITableViewCell *)self tlk_updateWithCurrentAppearance];
 }
@@ -142,13 +142,13 @@
 - (NSArray)visibleResults
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SearchUITableViewCell *)self rowModel];
-  v4 = [v3 identifyingResult];
-  if (v4)
+  rowModel = [(SearchUITableViewCell *)self rowModel];
+  identifyingResult = [rowModel identifyingResult];
+  if (identifyingResult)
   {
-    v5 = [(SearchUITableViewCell *)self rowModel];
-    v6 = [v5 identifyingResult];
-    v9[0] = v6;
+    rowModel2 = [(SearchUITableViewCell *)self rowModel];
+    identifyingResult2 = [rowModel2 identifyingResult];
+    v9[0] = identifyingResult2;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   }
 
@@ -160,25 +160,25 @@
   return v7;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v5.receiver = self;
   v5.super_class = SearchUITableViewCell;
   [(SearchUITableViewCell *)&v5 willMoveToWindow:?];
-  if (!a3)
+  if (!window)
   {
     [(SearchUITableViewCell *)self removeKeyboardHandler];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = SearchUITableViewCell;
-  [(SearchUITableViewCell *)&v9 traitCollectionDidChange:v4];
-  v5 = [(SearchUITableViewCell *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(SearchUITableViewCell *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(SearchUITableViewCell *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -186,11 +186,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(SearchUITableViewCell *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(SearchUITableViewCell *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -206,19 +206,19 @@ LABEL_5:
   [(SearchUITableViewCell *)self tlk_updateWithCurrentAppearance];
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
   v11.receiver = self;
   v11.super_class = SearchUITableViewCell;
-  [(SearchUITableViewCell *)&v11 tlk_updateForAppearance:a3];
-  v4 = [(SearchUITableViewCell *)self rowModel];
-  v5 = [v4 backgroundColor];
+  [(SearchUITableViewCell *)&v11 tlk_updateForAppearance:appearance];
+  rowModel = [(SearchUITableViewCell *)self rowModel];
+  backgroundColor = [rowModel backgroundColor];
 
-  if (v5)
+  if (backgroundColor)
   {
-    v6 = [(SearchUITableViewCell *)self backgroundView];
+    backgroundView = [(SearchUITableViewCell *)self backgroundView];
 
-    if (!v6)
+    if (!backgroundView)
     {
       v7 = objc_opt_new();
       [v7 setDelegate:self];
@@ -226,21 +226,21 @@ LABEL_5:
     }
   }
 
-  v8 = [(SearchUITableViewCell *)self backgroundView];
-  [v8 setColor:v5];
-  v9 = [(SearchUITableViewCell *)self rowModel];
-  v10 = [v9 backgroundImage];
-  [v8 setBackgroundImage:v10];
+  backgroundView2 = [(SearchUITableViewCell *)self backgroundView];
+  [backgroundView2 setColor:backgroundColor];
+  rowModel2 = [(SearchUITableViewCell *)self rowModel];
+  backgroundImage = [rowModel2 backgroundImage];
+  [backgroundView2 setBackgroundImage:backgroundImage];
 
-  [v8 setHidden:v5 == 0];
+  [backgroundView2 setHidden:backgroundColor == 0];
 }
 
-- (void)_setAnimating:(BOOL)a3 clippingAdjacentCells:(BOOL)a4
+- (void)_setAnimating:(BOOL)animating clippingAdjacentCells:(BOOL)cells
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(SearchUITableViewCell *)self layer];
-  v8 = [v7 allowsGroupBlending];
+  cellsCopy = cells;
+  animatingCopy = animating;
+  layer = [(SearchUITableViewCell *)self layer];
+  allowsGroupBlending = [layer allowsGroupBlending];
 
   if (_setAnimating_clippingAdjacentCells__onceToken != -1)
   {
@@ -251,11 +251,11 @@ LABEL_5:
   {
     v10.receiver = self;
     v10.super_class = SearchUITableViewCell;
-    [(SearchUITableViewCell *)&v10 _setAnimating:v5 clippingAdjacentCells:v4];
+    [(SearchUITableViewCell *)&v10 _setAnimating:animatingCopy clippingAdjacentCells:cellsCopy];
   }
 
-  v9 = [(SearchUITableViewCell *)self layer];
-  [v9 setAllowsGroupBlending:v8];
+  layer2 = [(SearchUITableViewCell *)self layer];
+  [layer2 setAllowsGroupBlending:allowsGroupBlending];
 }
 
 uint64_t __61__SearchUITableViewCell__setAnimating_clippingAdjacentCells___block_invoke()
@@ -265,33 +265,33 @@ uint64_t __61__SearchUITableViewCell__setAnimating_clippingAdjacentCells___block
   return result;
 }
 
-- (void)updateWithResults:(id)a3
+- (void)updateWithResults:(id)results
 {
-  v4 = [a3 firstObject];
-  [(SearchUITableViewCell *)self updateWithResult:v4];
+  firstObject = [results firstObject];
+  [(SearchUITableViewCell *)self updateWithResult:firstObject];
 }
 
-- (void)setCustomEdgeInsets:(UIEdgeInsets)a3
+- (void)setCustomEdgeInsets:(UIEdgeInsets)insets
 {
   p_customEdgeInsets = &self->_customEdgeInsets;
-  v4.f64[0] = a3.top;
-  v4.f64[1] = a3.left;
-  v5.f64[0] = a3.bottom;
-  v5.f64[1] = a3.right;
+  v4.f64[0] = insets.top;
+  v4.f64[1] = insets.left;
+  v5.f64[0] = insets.bottom;
+  v5.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v4, *&self->_customEdgeInsets.top), vceqq_f64(v5, *&self->_customEdgeInsets.bottom)))) & 1) == 0)
   {
-    top = a3.top;
-    left = a3.left;
-    bottom = a3.bottom;
-    right = a3.right;
-    v7 = [(SearchUITableViewCell *)self dragSource];
+    top = insets.top;
+    left = insets.left;
+    bottom = insets.bottom;
+    right = insets.right;
+    dragSource = [(SearchUITableViewCell *)self dragSource];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v9 = [(SearchUITableViewCell *)self dragSource];
-      [v9 setCustomEdgeInsets:{top, left, bottom, right}];
+      dragSource2 = [(SearchUITableViewCell *)self dragSource];
+      [dragSource2 setCustomEdgeInsets:{top, left, bottom, right}];
     }
 
     p_customEdgeInsets->top = top;
@@ -305,8 +305,8 @@ uint64_t __61__SearchUITableViewCell__setAnimating_clippingAdjacentCells___block
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(SearchUITableViewCell *)self sizingContainer];
-  if (v3)
+  sizingContainer = [(SearchUITableViewCell *)self sizingContainer];
+  if (sizingContainer)
   {
     [(SearchUITableViewCell *)self sizeThatFits:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   }
@@ -337,10 +337,10 @@ uint64_t __61__SearchUITableViewCell__setAnimating_clippingAdjacentCells___block
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(SearchUITableViewCell *)self _customInsetSize];
   v11 = width - v10;
   if (v11 >= 0.0)
@@ -353,13 +353,13 @@ uint64_t __61__SearchUITableViewCell__setAnimating_clippingAdjacentCells___block
     v12 = 0.0;
   }
 
-  v13 = [(SearchUITableViewCell *)self sizingContainer];
-  if (v13)
+  sizingContainer = [(SearchUITableViewCell *)self sizingContainer];
+  if (sizingContainer)
   {
-    v16 = [(SearchUITableViewCell *)self sizingContainer];
-    *&v17 = a4;
-    *&v18 = a5;
-    [v16 systemLayoutSizeFittingSize:v12 withHorizontalFittingPriority:height verticalFittingPriority:{v17, v18}];
+    sizingContainer2 = [(SearchUITableViewCell *)self sizingContainer];
+    *&v17 = priority;
+    *&v18 = fittingPriority;
+    [sizingContainer2 systemLayoutSizeFittingSize:v12 withHorizontalFittingPriority:height verticalFittingPriority:{v17, v18}];
     v20 = v19;
     v22 = v21;
   }
@@ -368,8 +368,8 @@ uint64_t __61__SearchUITableViewCell__setAnimating_clippingAdjacentCells___block
   {
     v30.receiver = self;
     v30.super_class = SearchUITableViewCell;
-    *&v14 = a4;
-    *&v15 = a5;
+    *&v14 = priority;
+    *&v15 = fittingPriority;
     [(SearchUITableViewCell *)&v30 systemLayoutSizeFittingSize:v12 withHorizontalFittingPriority:height verticalFittingPriority:v14, v15];
     v20 = v23;
     v22 = v24;
@@ -385,17 +385,17 @@ uint64_t __61__SearchUITableViewCell__setAnimating_clippingAdjacentCells___block
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(SearchUITableViewCell *)self _customInsetSize];
   v7 = width - v6;
-  v8 = [(SearchUITableViewCell *)self sizingContainer];
-  if (v8)
+  sizingContainer = [(SearchUITableViewCell *)self sizingContainer];
+  if (sizingContainer)
   {
-    v9 = [(SearchUITableViewCell *)self sizingContainer];
-    [v9 sizeThatFits:{v7, height}];
+    sizingContainer2 = [(SearchUITableViewCell *)self sizingContainer];
+    [sizingContainer2 sizeThatFits:{v7, height}];
     v11 = v10;
     v13 = v12;
   }
@@ -424,36 +424,36 @@ uint64_t __61__SearchUITableViewCell__setAnimating_clippingAdjacentCells___block
   v36.receiver = self;
   v36.super_class = SearchUITableViewCell;
   [(SearchUITableViewCell *)&v36 layoutSubviews];
-  v3 = [(SearchUITableViewCell *)self contentView];
-  [v3 frame];
+  contentView = [(SearchUITableViewCell *)self contentView];
+  [contentView frame];
   top = self->_customEdgeInsets.top;
   left = self->_customEdgeInsets.left;
   v7 = v6 + left;
   v9 = v8 + top;
   v11 = v10 - (left + self->_customEdgeInsets.right);
   v13 = v12 - (top + self->_customEdgeInsets.bottom);
-  v14 = [(SearchUITableViewCell *)self contentView];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  contentView2 = [(SearchUITableViewCell *)self contentView];
+  [contentView2 setFrame:{v7, v9, v11, v13}];
 
-  v15 = [(SearchUITableViewCell *)self contentView];
-  [v15 bounds];
+  contentView3 = [(SearchUITableViewCell *)self contentView];
+  [contentView3 bounds];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v24 = [(SearchUITableViewCell *)self sizingContainer];
-  [v24 setFrame:{v17, v19, v21, v23}];
+  sizingContainer = [(SearchUITableViewCell *)self sizingContainer];
+  [sizingContainer setFrame:{v17, v19, v21, v23}];
 
-  v25 = [(SearchUITableViewCell *)self sfSeparatorStyle];
-  if (v25 != 1)
+  sfSeparatorStyle = [(SearchUITableViewCell *)self sfSeparatorStyle];
+  if (sfSeparatorStyle != 1)
   {
-    v26 = v25;
-    v27 = [(SearchUITableViewCell *)self sizingContainer];
-    [v27 layoutIfNeeded];
+    v26 = sfSeparatorStyle;
+    sizingContainer2 = [(SearchUITableViewCell *)self sizingContainer];
+    [sizingContainer2 layoutIfNeeded];
 
-    v28 = [(SearchUITableViewCell *)self leadingView];
-    v29 = [(SearchUITableViewCell *)self leadingTextView];
-    [SearchUICardSectionView separatorInsetsForStyle:v26 cellView:self leadingView:v28 leadingTextView:v29];
+    leadingView = [(SearchUITableViewCell *)self leadingView];
+    leadingTextView = [(SearchUITableViewCell *)self leadingTextView];
+    [SearchUICardSectionView separatorInsetsForStyle:v26 cellView:self leadingView:leadingView leadingTextView:leadingTextView];
     v31 = v30;
     v33 = v32;
     v35 = v34;
@@ -464,26 +464,26 @@ uint64_t __61__SearchUITableViewCell__setAnimating_clippingAdjacentCells___block
 
 - (id)keyboardResultForFocus
 {
-  v2 = [(SearchUITableViewCell *)self rowModel];
-  v3 = [v2 identifyingResult];
+  rowModel = [(SearchUITableViewCell *)self rowModel];
+  identifyingResult = [rowModel identifyingResult];
 
-  return v3;
+  return identifyingResult;
 }
 
 - (id)keyboardCardSectionForFocus
 {
-  v2 = [(SearchUITableViewCell *)self rowModel];
-  v3 = [v2 cardSection];
+  rowModel = [(SearchUITableViewCell *)self rowModel];
+  cardSection = [rowModel cardSection];
 
-  return v3;
+  return cardSection;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [MEMORY[0x1E69D91A8] tappableControlViewForPoint:self inView:v7 withEvent:{x, y}];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  v8 = [MEMORY[0x1E69D91A8] tappableControlViewForPoint:self inView:eventCopy withEvent:{x, y}];
   v9 = v8;
   if (v8)
   {
@@ -494,7 +494,7 @@ uint64_t __61__SearchUITableViewCell__setAnimating_clippingAdjacentCells___block
   {
     v13.receiver = self;
     v13.super_class = SearchUITableViewCell;
-    v10 = [(SearchUITableViewCell *)&v13 hitTest:v7 withEvent:x, y];
+    v10 = [(SearchUITableViewCell *)&v13 hitTest:eventCopy withEvent:x, y];
   }
 
   v11 = v10;

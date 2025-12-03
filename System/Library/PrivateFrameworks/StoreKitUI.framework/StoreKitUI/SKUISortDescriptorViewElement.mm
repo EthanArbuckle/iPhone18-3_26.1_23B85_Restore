@@ -1,15 +1,15 @@
 @interface SKUISortDescriptorViewElement
-- (SKUISortDescriptorViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SKUISortDescriptorViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SKUISortDescriptorViewElement
 
-- (SKUISortDescriptorViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SKUISortDescriptorViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementCopy = element;
+  parentCopy = parent;
+  factoryCopy = factory;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISortDescriptorViewElement initWithDOMElement:parent:elementFactory:];
@@ -17,10 +17,10 @@
 
   v16.receiver = self;
   v16.super_class = SKUISortDescriptorViewElement;
-  v11 = [(SKUIViewElement *)&v16 initWithDOMElement:v8 parent:v9 elementFactory:v10];
+  v11 = [(SKUIViewElement *)&v16 initWithDOMElement:elementCopy parent:parentCopy elementFactory:factoryCopy];
   if (v11)
   {
-    v12 = [v8 getAttribute:@"direction"];
+    v12 = [elementCopy getAttribute:@"direction"];
     if ([v12 length])
     {
       v13 = [v12 isEqualToString:@"descending"] ^ 1;
@@ -32,7 +32,7 @@
     }
 
     v11->_ascending = v13;
-    v14 = [v8 getAttribute:@"property"];
+    v14 = [elementCopy getAttribute:@"property"];
     if ([v14 length])
     {
       objc_storeStrong(&v11->_property, v14);
@@ -42,19 +42,19 @@
   return v11;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SKUISortDescriptorViewElement;
-  v5 = [(SKUIViewElement *)&v10 applyUpdatesWithElement:v4];
+  v5 = [(SKUIViewElement *)&v10 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self && v5 == self)
+  if (elementCopy != self && v5 == self)
   {
-    self->_ascending = [(SKUISortDescriptorViewElement *)v4 isAscending];
-    v7 = [(SKUISortDescriptorViewElement *)v4 property];
+    self->_ascending = [(SKUISortDescriptorViewElement *)elementCopy isAscending];
+    property = [(SKUISortDescriptorViewElement *)elementCopy property];
     property = self->_property;
-    self->_property = v7;
+    self->_property = property;
   }
 
   return v6;

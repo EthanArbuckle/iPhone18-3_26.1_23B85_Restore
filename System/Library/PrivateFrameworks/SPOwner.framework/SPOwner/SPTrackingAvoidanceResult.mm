@@ -1,47 +1,47 @@
 @interface SPTrackingAvoidanceResult
-- (BOOL)isEqual:(id)a3;
-- (SPTrackingAvoidanceResult)initWithCoder:(id)a3;
-- (SPTrackingAvoidanceResult)initWithIdentifier:(id)a3 type:(int64_t)a4 policies:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SPTrackingAvoidanceResult)initWithCoder:(id)coder;
+- (SPTrackingAvoidanceResult)initWithIdentifier:(id)identifier type:(int64_t)type policies:(id)policies;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPTrackingAvoidanceResult
 
-- (SPTrackingAvoidanceResult)initWithIdentifier:(id)a3 type:(int64_t)a4 policies:(id)a5
+- (SPTrackingAvoidanceResult)initWithIdentifier:(id)identifier type:(int64_t)type policies:(id)policies
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  policiesCopy = policies;
   v13.receiver = self;
   v13.super_class = SPTrackingAvoidanceResult;
   v10 = [(SPTrackingAvoidanceResult *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(SPTrackingAvoidanceResult *)v10 setIdentifier:v8];
-    [(SPTrackingAvoidanceResult *)v11 setType:a4];
-    [(SPTrackingAvoidanceResult *)v11 setPolicies:v9];
+    [(SPTrackingAvoidanceResult *)v10 setIdentifier:identifierCopy];
+    [(SPTrackingAvoidanceResult *)v11 setType:type];
+    [(SPTrackingAvoidanceResult *)v11 setPolicies:policiesCopy];
   }
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPTrackingAvoidanceResult alloc];
-  v5 = [(SPTrackingAvoidanceResult *)self identifier];
-  v6 = [(SPTrackingAvoidanceResult *)self type];
-  v7 = [(SPTrackingAvoidanceResult *)self policies];
-  v8 = [(SPTrackingAvoidanceResult *)v4 initWithIdentifier:v5 type:v6 policies:v7];
+  identifier = [(SPTrackingAvoidanceResult *)self identifier];
+  type = [(SPTrackingAvoidanceResult *)self type];
+  policies = [(SPTrackingAvoidanceResult *)self policies];
+  v8 = [(SPTrackingAvoidanceResult *)v4 initWithIdentifier:identifier type:type policies:policies];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -52,8 +52,8 @@
     if (objc_opt_isKindOfClass())
     {
       identifier = self->_identifier;
-      v6 = [(SPTrackingAvoidanceResult *)v4 identifier];
-      v7 = [(NSUUID *)identifier isEqual:v6];
+      identifier = [(SPTrackingAvoidanceResult *)equalCopy identifier];
+      v7 = [(NSUUID *)identifier isEqual:identifier];
     }
 
     else
@@ -65,30 +65,30 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
-  [v5 encodeObject:self->_policies forKey:@"policies"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeObject:self->_policies forKey:@"policies"];
 }
 
-- (SPTrackingAvoidanceResult)initWithCoder:(id)a3
+- (SPTrackingAvoidanceResult)initWithCoder:(id)coder
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   identifier = self->_identifier;
   self->_identifier = v5;
 
-  self->_type = [v4 decodeIntegerForKey:@"type"];
+  self->_type = [coderCopy decodeIntegerForKey:@"type"];
   v7 = MEMORY[0x277CBEB98];
   v14[0] = objc_opt_class();
   v14[1] = objc_opt_class();
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
   v9 = [v7 setWithArray:v8];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"policies"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"policies"];
 
   policies = self->_policies;
   self->_policies = v10;

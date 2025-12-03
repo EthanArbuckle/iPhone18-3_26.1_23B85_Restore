@@ -1,8 +1,8 @@
 @interface TPFootnotePropertyStrings
-+ (id)insertStringForFootnoteKind:(int64_t)a3;
-+ (id)stringForFootnoteFormat:(int64_t)a3;
-+ (id)stringForFootnoteKind:(int64_t)a3;
-+ (id)stringForFootnoteNumbering:(int64_t)a3;
++ (id)insertStringForFootnoteKind:(int64_t)kind;
++ (id)stringForFootnoteFormat:(int64_t)format;
++ (id)stringForFootnoteKind:(int64_t)kind;
++ (id)stringForFootnoteNumbering:(int64_t)numbering;
 + (id)titleForFootnoteFormat;
 + (id)titleForFootnoteKind;
 + (id)titleForFootnoteNumbering;
@@ -10,16 +10,16 @@
 
 @implementation TPFootnotePropertyStrings
 
-+ (id)insertStringForFootnoteKind:(int64_t)a3
++ (id)insertStringForFootnoteKind:(int64_t)kind
 {
-  if (a3 > 2)
+  if (kind > 2)
   {
     v10 = &stru_288501738;
   }
 
   else
   {
-    v3 = off_27A6A8C18[a3];
+    v3 = off_27A6A8C18[kind];
     v4 = sub_275FFFC3C();
     v10 = objc_msgSend_localizedStringForKey_value_table_(v4, v5, v6, v7, v8, v9, v3, &stru_288501738, @"Pages");
   }
@@ -51,16 +51,16 @@
   return v8;
 }
 
-+ (id)stringForFootnoteKind:(int64_t)a3
++ (id)stringForFootnoteKind:(int64_t)kind
 {
-  if (a3 > 2)
+  if (kind > 2)
   {
     v10 = &stru_288501738;
   }
 
   else
   {
-    v3 = off_27A6A8C30[a3];
+    v3 = off_27A6A8C30[kind];
     v4 = sub_275FFFC3C();
     v10 = objc_msgSend_localizedStringForKey_value_table_(v4, v5, v6, v7, v8, v9, v3, &stru_288501738, @"Pages");
   }
@@ -68,11 +68,11 @@
   return v10;
 }
 
-+ (id)stringForFootnoteFormat:(int64_t)a3
++ (id)stringForFootnoteFormat:(int64_t)format
 {
-  if (a3 < 6 && ((0x27u >> a3) & 1) != 0)
+  if (format < 6 && ((0x27u >> format) & 1) != 0)
   {
-    return off_27A6A8C48[a3];
+    return off_27A6A8C48[format];
   }
 
   v30 = v3;
@@ -85,16 +85,16 @@
   return 0;
 }
 
-+ (id)stringForFootnoteNumbering:(int64_t)a3
++ (id)stringForFootnoteNumbering:(int64_t)numbering
 {
-  if (a3 > 2)
+  if (numbering > 2)
   {
     v10 = &stru_288501738;
   }
 
   else
   {
-    v3 = off_27A6A8C78[a3];
+    v3 = off_27A6A8C78[numbering];
     v4 = sub_275FFFC3C();
     v10 = objc_msgSend_localizedStringForKey_value_table_(v4, v5, v6, v7, v8, v9, v3, &stru_288501738, @"Pages");
   }

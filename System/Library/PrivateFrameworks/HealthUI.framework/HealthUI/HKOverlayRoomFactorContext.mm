@@ -1,24 +1,24 @@
 @interface HKOverlayRoomFactorContext
-+ (double)_distanceBetween:(id)a3 otherDate:(id)a4;
-+ (id)_alignDate:(id)a3 timeScope:(int64_t)a4 alignment:(int64_t)a5 calendar:(id)a6;
-+ (id)_currentGraphView:(id)a3;
-+ (id)_currentVisibleDateRange:(id)a3;
-+ (id)_dateIntervalToValueRange:(id)a3;
-+ (id)_leadingPredicateForRange:(id)a3;
++ (double)_distanceBetween:(id)between otherDate:(id)date;
++ (id)_alignDate:(id)date timeScope:(int64_t)scope alignment:(int64_t)alignment calendar:(id)calendar;
++ (id)_currentGraphView:(id)view;
++ (id)_currentVisibleDateRange:(id)range;
++ (id)_dateIntervalToValueRange:(id)range;
++ (id)_leadingPredicateForRange:(id)range;
 + (id)_leadingSortDescriptors;
-+ (id)_trailingPredicateForRange:(id)a3;
++ (id)_trailingPredicateForRange:(id)range;
 + (id)_trailingSortDescriptors;
-+ (id)factorDateIntervalsWithChartPoints:(id)a3 dateInterval:(id)a4 timeScope:(int64_t)a5 calendar:(id)a6 intersection:(BOOL)a7;
++ (id)factorDateIntervalsWithChartPoints:(id)points dateInterval:(id)interval timeScope:(int64_t)scope calendar:(id)calendar intersection:(BOOL)intersection;
 + (id)factorStackHeight;
-- (HKOverlayRoomFactorContext)initWithPrimaryDisplayType:(id)a3 factorDisplayType:(id)a4 overlayChartController:(id)a5 currentCalendarOverride:(id)a6 applicationItems:(id)a7 overlayMode:(int64_t)a8 allowsDeselection:(BOOL)a9;
-- (HKOverlayRoomFactorContext)initWithPrimaryInteractiveChartDisplayType:(id)a3 factorDisplayType:(id)a4 overlayChartController:(id)a5 currentCalendarOverride:(id)a6 applicationItems:(id)a7 overlayMode:(int64_t)a8 allowsDeselection:(BOOL)a9;
-- (HKOverlayRoomFactorContext)initWithPrimaryInteractiveChartDisplayType:(id)a3 interactiveChartFactorDisplayType:(id)a4 overlayChartController:(id)a5 currentCalendarOverride:(id)a6 applicationItems:(id)a7 overlayMode:(int64_t)a8;
-- (id)_findFirstGraphSeries:(id)a3;
+- (HKOverlayRoomFactorContext)initWithPrimaryDisplayType:(id)type factorDisplayType:(id)displayType overlayChartController:(id)controller currentCalendarOverride:(id)override applicationItems:(id)items overlayMode:(int64_t)mode allowsDeselection:(BOOL)deselection;
+- (HKOverlayRoomFactorContext)initWithPrimaryInteractiveChartDisplayType:(id)type factorDisplayType:(id)displayType overlayChartController:(id)controller currentCalendarOverride:(id)override applicationItems:(id)items overlayMode:(int64_t)mode allowsDeselection:(BOOL)deselection;
+- (HKOverlayRoomFactorContext)initWithPrimaryInteractiveChartDisplayType:(id)type interactiveChartFactorDisplayType:(id)displayType overlayChartController:(id)controller currentCalendarOverride:(id)override applicationItems:(id)items overlayMode:(int64_t)mode;
+- (id)_findFirstGraphSeries:(id)series;
 - (id)stackedContextButtonBackground;
 - (id)stackedHeight;
-- (void)_toggleSeriesLegend:(BOOL)a3 chartController:(id)a4;
-- (void)overlayStateWillChange:(BOOL)a3 contextItem:(id)a4 chartController:(id)a5;
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7;
+- (void)_toggleSeriesLegend:(BOOL)legend chartController:(id)controller;
+- (void)overlayStateWillChange:(BOOL)change contextItem:(id)item chartController:(id)controller;
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion;
 @end
 
 @implementation HKOverlayRoomFactorContext
@@ -30,17 +30,17 @@
   return v2;
 }
 
-- (HKOverlayRoomFactorContext)initWithPrimaryDisplayType:(id)a3 factorDisplayType:(id)a4 overlayChartController:(id)a5 currentCalendarOverride:(id)a6 applicationItems:(id)a7 overlayMode:(int64_t)a8 allowsDeselection:(BOOL)a9
+- (HKOverlayRoomFactorContext)initWithPrimaryDisplayType:(id)type factorDisplayType:(id)displayType overlayChartController:(id)controller currentCalendarOverride:(id)override applicationItems:(id)items overlayMode:(int64_t)mode allowsDeselection:(BOOL)deselection
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = [v17 healthStore];
-  v21 = [HKInteractiveChartInfographicFactory infographicSupportedForDisplayType:v15 factorDisplayType:v16 healthStore:v20];
+  typeCopy = type;
+  displayTypeCopy = displayType;
+  itemsCopy = items;
+  overrideCopy = override;
+  controllerCopy = controller;
+  healthStore = [itemsCopy healthStore];
+  v21 = [HKInteractiveChartInfographicFactory infographicSupportedForDisplayType:typeCopy factorDisplayType:displayTypeCopy healthStore:healthStore];
 
-  v22 = [v16 objectType];
+  objectType = [displayTypeCopy objectType];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -49,71 +49,71 @@
     [HKOverlayRoomFactorContext initWithPrimaryDisplayType:a2 factorDisplayType:self overlayChartController:? currentCalendarOverride:? applicationItems:? overlayMode:? allowsDeselection:?];
   }
 
-  v24 = [v15 sampleType];
-  v25 = [v16 sampleType];
+  sampleType = [typeCopy sampleType];
+  sampleType2 = [displayTypeCopy sampleType];
   v30.receiver = self;
   v30.super_class = HKOverlayRoomFactorContext;
-  v26 = [(HKOverlayRoomStackedContext *)&v30 initWithSampleType:v24 overlayDisplayType:0 stackedSampleType:v25 overlayChartController:v19 currentCalendarOverride:v18 applicationItems:v17 isInfoButtonHidden:!v21];
+  v26 = [(HKOverlayRoomStackedContext *)&v30 initWithSampleType:sampleType overlayDisplayType:0 stackedSampleType:sampleType2 overlayChartController:controllerCopy currentCalendarOverride:overrideCopy applicationItems:itemsCopy isInfoButtonHidden:!v21];
 
   if (v26)
   {
-    v26->_overlayMode = a8;
+    v26->_overlayMode = mode;
     v26->_directPrimaryDisplayType = 0;
     preservedLegendEntries = v26->_preservedLegendEntries;
     v26->_preservedLegendEntries = 0;
 
-    v26->_allowsDeselection = a9;
+    v26->_allowsDeselection = deselection;
   }
 
   return v26;
 }
 
-- (HKOverlayRoomFactorContext)initWithPrimaryInteractiveChartDisplayType:(id)a3 factorDisplayType:(id)a4 overlayChartController:(id)a5 currentCalendarOverride:(id)a6 applicationItems:(id)a7 overlayMode:(int64_t)a8 allowsDeselection:(BOOL)a9
+- (HKOverlayRoomFactorContext)initWithPrimaryInteractiveChartDisplayType:(id)type factorDisplayType:(id)displayType overlayChartController:(id)controller currentCalendarOverride:(id)override applicationItems:(id)items overlayMode:(int64_t)mode allowsDeselection:(BOOL)deselection
 {
-  v15 = a4;
-  v16 = a7;
-  v17 = a6;
-  v18 = a5;
-  v19 = a3;
-  v20 = [v19 baseDisplayType];
-  v21 = [v16 healthStore];
-  v22 = [HKInteractiveChartInfographicFactory infographicSupportedForDisplayType:v20 factorDisplayType:v15 healthStore:v21];
+  displayTypeCopy = displayType;
+  itemsCopy = items;
+  overrideCopy = override;
+  controllerCopy = controller;
+  typeCopy = type;
+  baseDisplayType = [typeCopy baseDisplayType];
+  healthStore = [itemsCopy healthStore];
+  v22 = [HKInteractiveChartInfographicFactory infographicSupportedForDisplayType:baseDisplayType factorDisplayType:displayTypeCopy healthStore:healthStore];
 
-  v23 = [v15 objectType];
+  objectType = [displayTypeCopy objectType];
   objc_opt_class();
-  LOBYTE(v20) = objc_opt_isKindOfClass();
+  LOBYTE(baseDisplayType) = objc_opt_isKindOfClass();
 
-  if ((v20 & 1) == 0)
+  if ((baseDisplayType & 1) == 0)
   {
     [HKOverlayRoomFactorContext initWithPrimaryInteractiveChartDisplayType:a2 factorDisplayType:self overlayChartController:? currentCalendarOverride:? applicationItems:? overlayMode:? allowsDeselection:?];
   }
 
-  v24 = [v15 sampleType];
+  sampleType = [displayTypeCopy sampleType];
   v29.receiver = self;
   v29.super_class = HKOverlayRoomFactorContext;
-  v25 = [(HKOverlayRoomStackedContext *)&v29 initWithDisplayType:v19 overlayDisplayType:0 stackedSampleType:v24 overlayChartController:v18 currentCalendarOverride:v17 applicationItems:v16 isInfoButtonHidden:!v22];
+  v25 = [(HKOverlayRoomStackedContext *)&v29 initWithDisplayType:typeCopy overlayDisplayType:0 stackedSampleType:sampleType overlayChartController:controllerCopy currentCalendarOverride:overrideCopy applicationItems:itemsCopy isInfoButtonHidden:!v22];
 
   if (v25)
   {
-    v25->_overlayMode = a8;
+    v25->_overlayMode = mode;
     v25->_directPrimaryDisplayType = 1;
     preservedLegendEntries = v25->_preservedLegendEntries;
     v25->_preservedLegendEntries = 0;
 
-    v25->_allowsDeselection = a9;
+    v25->_allowsDeselection = deselection;
   }
 
   return v25;
 }
 
-- (HKOverlayRoomFactorContext)initWithPrimaryInteractiveChartDisplayType:(id)a3 interactiveChartFactorDisplayType:(id)a4 overlayChartController:(id)a5 currentCalendarOverride:(id)a6 applicationItems:(id)a7 overlayMode:(int64_t)a8
+- (HKOverlayRoomFactorContext)initWithPrimaryInteractiveChartDisplayType:(id)type interactiveChartFactorDisplayType:(id)displayType overlayChartController:(id)controller currentCalendarOverride:(id)override applicationItems:(id)items overlayMode:(int64_t)mode
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = [v16 objectType];
+  typeCopy = type;
+  displayTypeCopy = displayType;
+  controllerCopy = controller;
+  overrideCopy = override;
+  itemsCopy = items;
+  objectType = [displayTypeCopy objectType];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -124,11 +124,11 @@
 
   v26.receiver = self;
   v26.super_class = HKOverlayRoomFactorContext;
-  v22 = [(HKOverlayRoomStackedContext *)&v26 initWithDisplayType:v15 overlayDisplayType:0 stackedDisplayType:v16 overlayChartController:v17 currentCalendarOverride:v18 applicationItems:v19 isInfoButtonHidden:1];
+  v22 = [(HKOverlayRoomStackedContext *)&v26 initWithDisplayType:typeCopy overlayDisplayType:0 stackedDisplayType:displayTypeCopy overlayChartController:controllerCopy currentCalendarOverride:overrideCopy applicationItems:itemsCopy isInfoButtonHidden:1];
   v23 = v22;
   if (v22)
   {
-    v22->_overlayMode = a8;
+    v22->_overlayMode = mode;
     v22->_directPrimaryDisplayType = 1;
     preservedLegendEntries = v22->_preservedLegendEntries;
     v22->_preservedLegendEntries = 0;
@@ -141,46 +141,46 @@
 
 - (id)stackedContextButtonBackground
 {
-  v2 = [(HKOverlayRoomFactorContext *)self overlayMode];
-  if (v2 >= 3)
+  overlayMode = [(HKOverlayRoomFactorContext *)self overlayMode];
+  if (overlayMode >= 3)
   {
-    if (v2 == 3)
+    if (overlayMode == 3)
     {
-      v2 = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
+      overlayMode = [MEMORY[0x1E69DC888] tertiarySystemBackgroundColor];
     }
   }
 
   else
   {
-    v2 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    overlayMode = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
   }
 
-  return v2;
+  return overlayMode;
 }
 
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  intervalCopy = interval;
+  controllerCopy = controller;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v25[0] = v12;
+  v25[0] = intervalCopy;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __113__HKOverlayRoomFactorContext_updateContextItemForDateInterval_overlayController_timeScope_resolution_completion___block_invoke;
   v19[3] = &unk_1E81B8FA0;
   objc_copyWeak(v23, &location);
-  v16 = v13;
+  v16 = controllerCopy;
   v20 = v16;
-  v17 = v12;
+  v17 = intervalCopy;
   v21 = v17;
-  v23[1] = a5;
-  v18 = v14;
+  v23[1] = scope;
+  v18 = completionCopy;
   v22 = v18;
-  v23[2] = a6;
-  [(HKOverlayRoomStackedContext *)self chartPointsForChartPointType:1 dateIntervals:v15 overlayChartController:v16 dateIntervalMustMatchView:1 timeScope:a5 resolution:a6 completion:v19];
+  v23[2] = resolution;
+  [(HKOverlayRoomStackedContext *)self chartPointsForChartPointType:1 dateIntervals:v15 overlayChartController:v16 dateIntervalMustMatchView:1 timeScope:scope resolution:resolution completion:v19];
 
   objc_destroyWeak(v23);
   objc_destroyWeak(&location);
@@ -275,71 +275,71 @@ void __113__HKOverlayRoomFactorContext_updateContextItemForDateInterval_overlayC
   }
 }
 
-- (void)overlayStateWillChange:(BOOL)a3 contextItem:(id)a4 chartController:(id)a5
+- (void)overlayStateWillChange:(BOOL)change contextItem:(id)item chartController:(id)controller
 {
-  v5 = a3;
-  v7 = a5;
+  changeCopy = change;
+  controllerCopy = controller;
   if ([(HKOverlayRoomFactorContext *)self directPrimaryDisplayType])
   {
-    [(HKOverlayRoomFactorContext *)self _toggleSeriesLegend:v5 chartController:v7];
+    [(HKOverlayRoomFactorContext *)self _toggleSeriesLegend:changeCopy chartController:controllerCopy];
   }
 }
 
-- (void)_toggleSeriesLegend:(BOOL)a3 chartController:(id)a4
+- (void)_toggleSeriesLegend:(BOOL)legend chartController:(id)controller
 {
-  v4 = a3;
-  v6 = [(HKOverlayRoomFactorContext *)self _findFirstGraphSeries:a4];
+  legendCopy = legend;
+  v6 = [(HKOverlayRoomFactorContext *)self _findFirstGraphSeries:controller];
   if (v6)
   {
     v12 = v6;
-    if (v4)
+    if (legendCopy)
     {
-      v7 = [v6 titleLegendEntries];
-      [(HKOverlayRoomFactorContext *)self setPreservedLegendEntries:v7];
+      titleLegendEntries = [v6 titleLegendEntries];
+      [(HKOverlayRoomFactorContext *)self setPreservedLegendEntries:titleLegendEntries];
 
-      v8 = [(HKOverlayRoomStackedContext *)self displayType];
-      v9 = [v8 baseDisplayType];
+      displayType = [(HKOverlayRoomStackedContext *)self displayType];
+      baseDisplayType = [displayType baseDisplayType];
 
-      v10 = [v9 localization];
-      v11 = [v10 shortenedDisplayName];
-      [HKOverlayContextUtilities setStackedSeriesLegend:v12 title:v11];
+      localization = [baseDisplayType localization];
+      shortenedDisplayName = [localization shortenedDisplayName];
+      [HKOverlayContextUtilities setStackedSeriesLegend:v12 title:shortenedDisplayName];
     }
 
     else
     {
-      v9 = [(HKOverlayRoomFactorContext *)self preservedLegendEntries];
-      [v12 setTitleLegendEntries:v9];
+      baseDisplayType = [(HKOverlayRoomFactorContext *)self preservedLegendEntries];
+      [v12 setTitleLegendEntries:baseDisplayType];
     }
 
     v6 = v12;
   }
 }
 
-- (id)_findFirstGraphSeries:(id)a3
+- (id)_findFirstGraphSeries:(id)series
 {
-  v3 = [a3 primaryGraphViewController];
-  v4 = [v3 graphView];
+  primaryGraphViewController = [series primaryGraphViewController];
+  graphView = [primaryGraphViewController graphView];
 
-  if (v4)
+  if (graphView)
   {
-    v5 = [v4 allSeries];
-    v6 = [v5 firstObject];
+    allSeries = [graphView allSeries];
+    firstObject = [allSeries firstObject];
   }
 
   else
   {
-    v6 = 0;
+    firstObject = 0;
   }
 
-  return v6;
+  return firstObject;
 }
 
-+ (id)factorDateIntervalsWithChartPoints:(id)a3 dateInterval:(id)a4 timeScope:(int64_t)a5 calendar:(id)a6 intersection:(BOOL)a7
++ (id)factorDateIntervalsWithChartPoints:(id)points dateInterval:(id)interval timeScope:(int64_t)scope calendar:(id)calendar intersection:(BOOL)intersection
 {
   v39 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  pointsCopy = points;
+  intervalCopy = interval;
+  calendarCopy = calendar;
   v15 = [MEMORY[0x1E695DF00] now];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
@@ -347,22 +347,22 @@ void __113__HKOverlayRoomFactorContext_updateContextItemForDateInterval_overlayC
   v31[3] = &unk_1E81B8FC8;
   v16 = v15;
   v32 = v16;
-  v37 = a7;
-  v17 = v13;
+  intersectionCopy = intersection;
+  v17 = intervalCopy;
   v33 = v17;
-  v35 = a1;
-  v36 = a5;
-  v18 = v14;
+  selfCopy = self;
+  scopeCopy = scope;
+  v18 = calendarCopy;
   v34 = v18;
-  v19 = [v12 hk_map:v31];
-  if ([v19 count] >= 2)
+  mergedIntervals = [pointsCopy hk_map:v31];
+  if ([mergedIntervals count] >= 2)
   {
     v20 = objc_alloc_init(MEMORY[0x1E696C0A8]);
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v21 = v19;
+    v21 = mergedIntervals;
     v22 = [v21 countByEnumeratingWithState:&v27 objects:v38 count:16];
     if (v22)
     {
@@ -386,10 +386,10 @@ void __113__HKOverlayRoomFactorContext_updateContextItemForDateInterval_overlayC
       while (v23);
     }
 
-    v19 = [v20 mergedIntervals];
+    mergedIntervals = [v20 mergedIntervals];
   }
 
-  return v19;
+  return mergedIntervals;
 }
 
 id __110__HKOverlayRoomFactorContext_factorDateIntervalsWithChartPoints_dateInterval_timeScope_calendar_intersection___block_invoke(uint64_t a1, void *a2)
@@ -441,41 +441,41 @@ id __110__HKOverlayRoomFactorContext_factorDateIntervalsWithChartPoints_dateInte
   return v17;
 }
 
-+ (id)_alignDate:(id)a3 timeScope:(int64_t)a4 alignment:(int64_t)a5 calendar:(id)a6
++ (id)_alignDate:(id)date timeScope:(int64_t)scope alignment:(int64_t)alignment calendar:(id)calendar
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = +[HKGraphZoomLevelConfiguration chartVisibleRangeForTimeScope:anchorDate:alignment:dataRange:calendar:firstWeekday:cadence:level:](HKGraphZoomLevelConfiguration, "chartVisibleRangeForTimeScope:anchorDate:alignment:dataRange:calendar:firstWeekday:cadence:level:", a4, v9, a5, 0, v10, [v10 firstWeekday], 0, 0);
+  dateCopy = date;
+  calendarCopy = calendar;
+  v11 = +[HKGraphZoomLevelConfiguration chartVisibleRangeForTimeScope:anchorDate:alignment:dataRange:calendar:firstWeekday:cadence:level:](HKGraphZoomLevelConfiguration, "chartVisibleRangeForTimeScope:anchorDate:alignment:dataRange:calendar:firstWeekday:cadence:level:", scope, dateCopy, alignment, 0, calendarCopy, [calendarCopy firstWeekday], 0, 0);
 
-  v12 = v9;
+  v12 = dateCopy;
   v13 = v12;
-  if (a5 == 2)
+  if (alignment == 2)
   {
-    v15 = [v11 endDate];
+    endDate = [v11 endDate];
   }
 
   else
   {
     v14 = v12;
-    if (a5)
+    if (alignment)
     {
       goto LABEL_6;
     }
 
-    v15 = [v11 startDate];
+    endDate = [v11 startDate];
   }
 
-  v14 = v15;
+  v14 = endDate;
 
 LABEL_6:
 
   return v14;
 }
 
-+ (id)_leadingPredicateForRange:(id)a3
++ (id)_leadingPredicateForRange:(id)range
 {
-  v3 = [a3 endDate];
-  v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"startDate <= %@", v3];
+  endDate = [range endDate];
+  v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"startDate <= %@", endDate];
 
   return v4;
 }
@@ -490,10 +490,10 @@ LABEL_6:
   return v3;
 }
 
-+ (id)_trailingPredicateForRange:(id)a3
++ (id)_trailingPredicateForRange:(id)range
 {
-  v3 = [a3 startDate];
-  v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"endDate >= %@", v3];
+  startDate = [range startDate];
+  v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"endDate >= %@", startDate];
 
   return v4;
 }
@@ -508,54 +508,54 @@ LABEL_6:
   return v3;
 }
 
-+ (double)_distanceBetween:(id)a3 otherDate:(id)a4
++ (double)_distanceBetween:(id)between otherDate:(id)date
 {
-  if (!a4)
+  if (!date)
   {
     return 1.79769313e308;
   }
 
-  v5 = a4;
-  [a3 timeIntervalSinceReferenceDate];
+  dateCopy = date;
+  [between timeIntervalSinceReferenceDate];
   v7 = v6;
-  [v5 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v9 = v8;
 
   return vabdd_f64(v7, v9);
 }
 
-+ (id)_dateIntervalToValueRange:(id)a3
++ (id)_dateIntervalToValueRange:(id)range
 {
-  v3 = a3;
-  v4 = [v3 startDate];
-  v5 = [v3 endDate];
+  rangeCopy = range;
+  startDate = [rangeCopy startDate];
+  endDate = [rangeCopy endDate];
 
-  v6 = [HKValueRange valueRangeWithMinValue:v4 maxValue:v5];
+  v6 = [HKValueRange valueRangeWithMinValue:startDate maxValue:endDate];
 
   return v6;
 }
 
-+ (id)_currentGraphView:(id)a3
++ (id)_currentGraphView:(id)view
 {
-  v3 = [a3 primaryGraphViewController];
-  v4 = [v3 graphView];
+  primaryGraphViewController = [view primaryGraphViewController];
+  graphView = [primaryGraphViewController graphView];
 
-  return v4;
+  return graphView;
 }
 
-+ (id)_currentVisibleDateRange:(id)a3
++ (id)_currentVisibleDateRange:(id)range
 {
-  v3 = [a1 _currentGraphView:a3];
+  v3 = [self _currentGraphView:range];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 actualVisibleRange];
-    if (v5)
+    actualVisibleRange = [v3 actualVisibleRange];
+    if (actualVisibleRange)
     {
       v6 = objc_alloc(MEMORY[0x1E696AB80]);
-      v7 = [v5 startDate];
-      v8 = [v5 endDate];
-      v9 = [v6 initWithStartDate:v7 endDate:v8];
+      startDate = [actualVisibleRange startDate];
+      endDate = [actualVisibleRange endDate];
+      v9 = [v6 initWithStartDate:startDate endDate:endDate];
     }
 
     else

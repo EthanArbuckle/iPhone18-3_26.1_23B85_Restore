@@ -1,15 +1,15 @@
 @interface DMDEventStreamDispatcher
-- (DMDEventStreamDispatcher)initWithListeners:(id)a3;
-- (void)_dispatchToListenerForKey:(id)a3 inMap:(id)a4 withBlock:(id)a5;
+- (DMDEventStreamDispatcher)initWithListeners:(id)listeners;
+- (void)_dispatchToListenerForKey:(id)key inMap:(id)map withBlock:(id)block;
 - (void)_registerEventStreamHandlers;
-- (void)_registerListener:(id)a3 forKeys:(id)a4 inMap:(id)a5;
+- (void)_registerListener:(id)listener forKeys:(id)keys inMap:(id)map;
 @end
 
 @implementation DMDEventStreamDispatcher
 
-- (DMDEventStreamDispatcher)initWithListeners:(id)a3
+- (DMDEventStreamDispatcher)initWithListeners:(id)listeners
 {
-  v22 = a3;
+  listenersCopy = listeners;
   v28.receiver = self;
   v28.super_class = DMDEventStreamDispatcher;
   v4 = [(DMDEventStreamDispatcher *)&v28 init];
@@ -35,7 +35,7 @@
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    obj = v22;
+    obj = listenersCopy;
     v13 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v13)
     {
@@ -61,20 +61,20 @@
 
           if (objc_opt_respondsToSelector())
           {
-            v18 = [v16 distributedNotificationNames];
-            [(DMDEventStreamDispatcher *)v4 _registerListener:v16 forKeys:v18 inMap:v4->_distributedNotificationNameToListenersMap];
+            distributedNotificationNames = [v16 distributedNotificationNames];
+            [(DMDEventStreamDispatcher *)v4 _registerListener:v16 forKeys:distributedNotificationNames inMap:v4->_distributedNotificationNameToListenersMap];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v19 = [v16 notifyMatchingNotifications];
-            [(DMDEventStreamDispatcher *)v4 _registerListener:v16 forKeys:v19 inMap:v4->_notifyMatchingNotificationToListenersMap];
+            notifyMatchingNotifications = [v16 notifyMatchingNotifications];
+            [(DMDEventStreamDispatcher *)v4 _registerListener:v16 forKeys:notifyMatchingNotifications inMap:v4->_notifyMatchingNotificationToListenersMap];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v20 = [v16 managedSettingsGroups];
-            [(DMDEventStreamDispatcher *)v4 _registerListener:v16 forKeys:v20 inMap:v4->_managedSettingsGroupsToListenersMap];
+            managedSettingsGroups = [v16 managedSettingsGroups];
+            [(DMDEventStreamDispatcher *)v4 _registerListener:v16 forKeys:managedSettingsGroups inMap:v4->_managedSettingsGroupsToListenersMap];
           }
 
           v15 = v15 + 1;
@@ -106,16 +106,16 @@
   }
 }
 
-- (void)_registerListener:(id)a3 forKeys:(id)a4 inMap:(id)a5
+- (void)_registerListener:(id)listener forKeys:(id)keys inMap:(id)map
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  listenerCopy = listener;
+  keysCopy = keys;
+  mapCopy = map;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = v8;
+  v10 = keysCopy;
   v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v11)
   {
@@ -131,7 +131,7 @@
         }
 
         v14 = *(*(&v17 + 1) + 8 * v13);
-        v15 = v9;
+        v15 = mapCopy;
         objc_sync_enter(v15);
         v16 = [v15 objectForKeyedSubscript:{v14, v17}];
         if (!v16)
@@ -140,7 +140,7 @@
           [v15 setObject:v16 forKeyedSubscript:v14];
         }
 
-        [v16 addPointer:v7];
+        [v16 addPointer:listenerCopy];
 
         objc_sync_exit(v15);
         v13 = v13 + 1;
@@ -154,22 +154,22 @@
   }
 }
 
-- (void)_dispatchToListenerForKey:(id)a3 inMap:(id)a4 withBlock:(id)a5
+- (void)_dispatchToListenerForKey:(id)key inMap:(id)map withBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  keyCopy = key;
+  mapCopy = map;
+  blockCopy = block;
+  if (keyCopy)
   {
-    v10 = v8;
+    v10 = mapCopy;
     objc_sync_enter(v10);
-    v11 = [v10 objectForKeyedSubscript:v7];
+    v11 = [v10 objectForKeyedSubscript:keyCopy];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v12 = [v11 allObjects];
-    v13 = [v12 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    allObjects = [v11 allObjects];
+    v13 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v13)
     {
       v14 = *v17;
@@ -180,19 +180,19 @@
         {
           if (*v17 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allObjects);
           }
 
-          if (v9)
+          if (blockCopy)
           {
-            v9[2](v9, *(*(&v16 + 1) + 8 * v15));
+            blockCopy[2](blockCopy, *(*(&v16 + 1) + 8 * v15));
           }
 
           v15 = v15 + 1;
         }
 
         while (v13 != v15);
-        v13 = [v12 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v13 = [allObjects countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v13);

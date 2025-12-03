@@ -1,10 +1,10 @@
 @interface _UIInterruptScrollDecelerationGestureRecognizer
-- (BOOL)_shouldReceiveTouch:(id)a3 forEvent:(id)a4 recognizerView:(id)a5;
-- (void)_hoverCancelled:(id)a3 withEvent:(id)a4;
-- (void)_hoverEntered:(id)a3 withEvent:(id)a4;
-- (void)_hoverExited:(id)a3 withEvent:(id)a4;
-- (void)_hoverMoved:(id)a3 withEvent:(id)a4;
-- (void)_scrollingChangedWithEvent:(id)a3;
+- (BOOL)_shouldReceiveTouch:(id)touch forEvent:(id)event recognizerView:(id)view;
+- (void)_hoverCancelled:(id)cancelled withEvent:(id)event;
+- (void)_hoverEntered:(id)entered withEvent:(id)event;
+- (void)_hoverExited:(id)exited withEvent:(id)event;
+- (void)_hoverMoved:(id)moved withEvent:(id)event;
+- (void)_scrollingChangedWithEvent:(id)event;
 - (void)reset;
 @end
 
@@ -22,20 +22,20 @@
   self->_trackpadFingerDownCount = 0;
 }
 
-- (BOOL)_shouldReceiveTouch:(id)a3 forEvent:(id)a4 recognizerView:(id)a5
+- (BOOL)_shouldReceiveTouch:(id)touch forEvent:(id)event recognizerView:(id)view
 {
-  v9 = [a4 type];
-  if (v9)
+  type = [event type];
+  if (type)
   {
     v11.receiver = self;
     v11.super_class = _UIInterruptScrollDecelerationGestureRecognizer;
-    LOBYTE(v9) = [(UIGestureRecognizer *)&v11 _shouldReceiveTouch:a3 forEvent:a4 recognizerView:a5];
+    LOBYTE(type) = [(UIGestureRecognizer *)&v11 _shouldReceiveTouch:touch forEvent:event recognizerView:view];
   }
 
-  return v9;
+  return type;
 }
 
-- (void)_hoverEntered:(id)a3 withEvent:(id)a4
+- (void)_hoverEntered:(id)entered withEvent:(id)event
 {
   v17 = *MEMORY[0x1E69E9840];
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("InterruptScrollGesture", &_MergedGlobals_1_15);
@@ -45,9 +45,9 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412546;
-      v14 = a3;
+      enteredCopy = entered;
       v15 = 2112;
-      v16 = a4;
+      eventCopy = event;
       _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_ERROR, "_hoverEntered: %@ withEvent: %@", &v13, 0x16u);
     }
   }
@@ -57,10 +57,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&self->_currentHoverEvent, a4);
-      v8 = [(UIEvent *)self->_currentHoverEvent _trackpadFingerDownCount];
-      self->_trackpadFingerDownCount = v8;
-      self->_previousTrackpadFingerDownCount = v8;
+      objc_storeStrong(&self->_currentHoverEvent, event);
+      _trackpadFingerDownCount = [(UIEvent *)self->_currentHoverEvent _trackpadFingerDownCount];
+      self->_trackpadFingerDownCount = _trackpadFingerDownCount;
+      self->_previousTrackpadFingerDownCount = _trackpadFingerDownCount;
       v9 = __UILogGetCategoryCachedImpl("InterruptScrollGesture", &qword_1ED499310);
       if (*v9)
       {
@@ -69,7 +69,7 @@
         {
           trackpadFingerDownCount = self->_trackpadFingerDownCount;
           v13 = 134217984;
-          v14 = trackpadFingerDownCount;
+          enteredCopy = trackpadFingerDownCount;
           _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "trackpadFingerDownCount (and previous) changed to %ld", &v13, 0xCu);
         }
       }
@@ -77,7 +77,7 @@
   }
 }
 
-- (void)_hoverMoved:(id)a3 withEvent:(id)a4
+- (void)_hoverMoved:(id)moved withEvent:(id)event
 {
   v20 = *MEMORY[0x1E69E9840];
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("InterruptScrollGesture", &qword_1ED499318);
@@ -87,19 +87,19 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v16 = 138412546;
-      v17 = a3;
+      selfCopy = moved;
       v18 = 2112;
-      v19 = a4;
+      eventCopy = event;
       _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "_hoverMoved: %@ withEvent: %@", &v16, 0x16u);
     }
   }
 
-  if (self->_currentHoverEvent == a4)
+  if (self->_currentHoverEvent == event)
   {
     self->_previousTrackpadFingerDownCount = self->_trackpadFingerDownCount;
-    v8 = [a4 _trackpadFingerDownCount];
-    self->_trackpadFingerDownCount = v8;
-    if (self->_previousTrackpadFingerDownCount != v8)
+    _trackpadFingerDownCount = [event _trackpadFingerDownCount];
+    self->_trackpadFingerDownCount = _trackpadFingerDownCount;
+    if (self->_previousTrackpadFingerDownCount != _trackpadFingerDownCount)
     {
       v9 = __UILogGetCategoryCachedImpl("InterruptScrollGesture", &qword_1ED499320);
       if (*v9)
@@ -110,9 +110,9 @@
           previousTrackpadFingerDownCount = self->_previousTrackpadFingerDownCount;
           trackpadFingerDownCount = self->_trackpadFingerDownCount;
           v16 = 134218240;
-          v17 = previousTrackpadFingerDownCount;
+          selfCopy = previousTrackpadFingerDownCount;
           v18 = 2048;
-          v19 = trackpadFingerDownCount;
+          eventCopy = trackpadFingerDownCount;
           _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "trackpadFingerDownCount changed from %ld to %ld", &v16, 0x16u);
         }
       }
@@ -126,7 +126,7 @@
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
           {
             v16 = 138412290;
-            v17 = self;
+            selfCopy = self;
             _os_log_impl(&dword_188A29000, v15, OS_LOG_TYPE_ERROR, "Trackpad finger down count went from 0 to 1, so recognizing: %@", &v16, 0xCu);
           }
         }
@@ -137,7 +137,7 @@
   }
 }
 
-- (void)_hoverExited:(id)a3 withEvent:(id)a4
+- (void)_hoverExited:(id)exited withEvent:(id)event
 {
   v15 = *MEMORY[0x1E69E9840];
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("InterruptScrollGesture", &qword_1ED499330);
@@ -147,14 +147,14 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v11 = 138412546;
-      v12 = a3;
+      selfCopy = exited;
       v13 = 2112;
-      v14 = a4;
+      eventCopy = event;
       _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_ERROR, "_hoverExited: %@ withEvent: %@", &v11, 0x16u);
     }
   }
 
-  if (self->_currentHoverEvent == a4)
+  if (self->_currentHoverEvent == event)
   {
     [(UIGestureRecognizer *)self setState:5];
     v8 = __UILogGetCategoryCachedImpl("InterruptScrollGesture", &qword_1ED499338);
@@ -164,14 +164,14 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v11 = 138412290;
-        v12 = self;
+        selfCopy = self;
         _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_ERROR, "Failed: %@", &v11, 0xCu);
       }
     }
   }
 }
 
-- (void)_hoverCancelled:(id)a3 withEvent:(id)a4
+- (void)_hoverCancelled:(id)cancelled withEvent:(id)event
 {
   v15 = *MEMORY[0x1E69E9840];
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("InterruptScrollGesture", &qword_1ED499340);
@@ -181,14 +181,14 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v11 = 138412546;
-      v12 = a3;
+      selfCopy = cancelled;
       v13 = 2112;
-      v14 = a4;
+      eventCopy = event;
       _os_log_impl(&dword_188A29000, v9, OS_LOG_TYPE_ERROR, "_hoverCancelled: %@ withEvent: %@", &v11, 0x16u);
     }
   }
 
-  if (self->_currentHoverEvent == a4)
+  if (self->_currentHoverEvent == event)
   {
     [(UIGestureRecognizer *)self setState:5];
     v8 = __UILogGetCategoryCachedImpl("InterruptScrollGesture", &qword_1ED499348);
@@ -198,14 +198,14 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v11 = 138412290;
-        v12 = self;
+        selfCopy = self;
         _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_ERROR, "Failed: %@", &v11, 0xCu);
       }
     }
   }
 }
 
-- (void)_scrollingChangedWithEvent:(id)a3
+- (void)_scrollingChangedWithEvent:(id)event
 {
   v11 = *MEMORY[0x1E69E9840];
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("InterruptScrollGesture", &qword_1ED499350);
@@ -215,12 +215,12 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v9 = 138412290;
-      v10 = a3;
+      selfCopy = event;
       _os_log_impl(&dword_188A29000, v7, OS_LOG_TYPE_ERROR, "_scrollingChangedWithEvent: %@", &v9, 0xCu);
     }
   }
 
-  if ([a3 phase] == 1)
+  if ([event phase] == 1)
   {
     v6 = __UILogGetCategoryCachedImpl("InterruptScrollGesture", &qword_1ED499358);
     if (*v6)
@@ -229,7 +229,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         v9 = 138412290;
-        v10 = self;
+        selfCopy = self;
         _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_ERROR, "Scroll event phase is MayBegin, so recognizing: %@", &v9, 0xCu);
       }
     }

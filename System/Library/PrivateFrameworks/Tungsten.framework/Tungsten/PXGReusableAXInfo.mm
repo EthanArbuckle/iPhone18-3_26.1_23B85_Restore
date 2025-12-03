@@ -1,18 +1,18 @@
 @interface PXGReusableAXInfo
-+ (BOOL)_assetHasContentSourceInLayout:(id)a3 atSpriteIndex:(unsigned int)a4;
-+ (Class)_viewClassInLayout:(id)a3 atSpriteIndex:(unsigned int)a4;
++ (BOOL)_assetHasContentSourceInLayout:(id)layout atSpriteIndex:(unsigned int)index;
++ (Class)_viewClassInLayout:(id)layout atSpriteIndex:(unsigned int)index;
 + (PXReusableObjectPool)sharedPool;
-+ (id)_imageAXLabelInLayout:(id)a3 atSpriteIndex:(unsigned int)a4;
-+ (id)_textInLayout:(id)a3 atSpriteIndex:(unsigned int)a4;
-+ (id)_titleSubtitleInLayout:(id)a3 atSpriteIndex:(unsigned int)a4;
++ (id)_imageAXLabelInLayout:(id)layout atSpriteIndex:(unsigned int)index;
++ (id)_textInLayout:(id)layout atSpriteIndex:(unsigned int)index;
++ (id)_titleSubtitleInLayout:(id)layout atSpriteIndex:(unsigned int)index;
 - ($105A79951CE75EB7BB90BCA93995B378)spriteStyle;
 - ($B30C796585FC215A6CA6704F8BA3D5B6)spriteStyleCornerRadius;
 - ($C4327F77E24267CF92932F349E1559A2)spriteGeometry;
-- (BOOL)_fillForKind:(int64_t)a3 withLayout:(id)a4 spriteIndex:(unsigned int)a5;
+- (BOOL)_fillForKind:(int64_t)kind withLayout:(id)layout spriteIndex:(unsigned int)index;
 - (BOOL)_isEligibleForFocusInteraction;
 - (BOOL)axIsSelected;
 - (BOOL)canBecomeFocused;
-- (BOOL)fillContentForContentKind:(int64_t)a3 inLayout:(id)a4 atIndex:(unsigned int)a5;
+- (BOOL)fillContentForContentKind:(int64_t)kind inLayout:(id)layout atIndex:(unsigned int)index;
 - (CGRect)axFrame;
 - (CGRect)frame;
 - (NSArray)preferredFocusEnvironments;
@@ -25,17 +25,17 @@
 - (PXAnonymousView)axView;
 - (PXGBasicAXGroup)axContainingGroup;
 - (PXGReusableAXInfo)init;
-- (id)_viewAtSpriteIndex:(unsigned int)a3;
+- (id)_viewAtSpriteIndex:(unsigned int)index;
 - (int64_t)focusGroupPriority;
-- (void)applyToInfo:(id)a3;
-- (void)didHintFocusMovement:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)applyToInfo:(id)info;
+- (void)didHintFocusMovement:(id)movement;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)prepareForReuse;
-- (void)setContent:(id)a3 ofContentKind:(int64_t)a4;
+- (void)setContent:(id)content ofContentKind:(int64_t)kind;
 - (void)setNeedsFocusUpdate;
-- (void)setSpriteGeometry:(id)a3;
-- (void)setSpriteStyle:(id *)a3;
-- (void)setSpriteStyleCornerRadius:(id)a3;
+- (void)setSpriteGeometry:(id)geometry;
+- (void)setSpriteStyle:(id *)style;
+- (void)setSpriteStyleCornerRadius:(id)radius;
 - (void)updateFocusIfNeeded;
 @end
 
@@ -113,17 +113,17 @@ PXGReusableAXInfo *__31__PXGReusableAXInfo_sharedPool__block_invoke_2()
   self->_axDecorations = 0;
 }
 
-- (void)didHintFocusMovement:(id)a3
+- (void)didHintFocusMovement:(id)movement
 {
-  v7 = a3;
-  v4 = [(PXGReusableAXInfo *)self axContainingGroup];
-  v5 = [v4 axInfoSource];
-  if (v5)
+  movementCopy = movement;
+  axContainingGroup = [(PXGReusableAXInfo *)self axContainingGroup];
+  axInfoSource = [axContainingGroup axInfoSource];
+  if (axInfoSource)
   {
-    v6 = [(PXGReusableAXInfo *)self spriteIndex];
-    if (v6 != -1)
+    spriteIndex = [(PXGReusableAXInfo *)self spriteIndex];
+    if (spriteIndex != -1)
     {
-      [v5 axDidReceiveFocusMovementHint:v7 forSpriteAtIndex:v6];
+      [axInfoSource axDidReceiveFocusMovementHint:movementCopy forSpriteAtIndex:spriteIndex];
     }
   }
 }
@@ -148,23 +148,23 @@ PXGReusableAXInfo *__31__PXGReusableAXInfo_sharedPool__block_invoke_2()
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PXGReusableAXInfo *)self axContainingGroup];
-  v12 = [v11 axScrollParent];
-  v13 = [v12 axGroupSource];
-  [v13 axConvertRect:v11 fromDescendantGroup:{v4, v6, v8, v10}];
+  axContainingGroup = [(PXGReusableAXInfo *)self axContainingGroup];
+  axScrollParent = [axContainingGroup axScrollParent];
+  axGroupSource = [axScrollParent axGroupSource];
+  [axGroupSource axConvertRect:axContainingGroup fromDescendantGroup:{v4, v6, v8, v10}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  v22 = [MEMORY[0x277D759A0] px_mainScreen];
-  v23 = [v22 traitCollection];
-  v24 = [v23 layoutDirection];
+  px_mainScreen = [MEMORY[0x277D759A0] px_mainScreen];
+  traitCollection = [px_mainScreen traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  if (v24 == 1)
+  if (layoutDirection == 1)
   {
-    v25 = [v12 axGroupSource];
-    [v25 axFrame];
+    axGroupSource2 = [axScrollParent axGroupSource];
+    [axGroupSource2 axFrame];
     PXRectFlippedHorizontally();
     v15 = v26;
     v17 = v27;
@@ -185,18 +185,18 @@ PXGReusableAXInfo *__31__PXGReusableAXInfo_sharedPool__block_invoke_2()
 
 - (BOOL)canBecomeFocused
 {
-  v4 = [(PXGReusableAXInfo *)self axContainingGroup];
-  v5 = [v4 axInfoSource];
-  if (v5)
+  axContainingGroup = [(PXGReusableAXInfo *)self axContainingGroup];
+  axInfoSource = [axContainingGroup axInfoSource];
+  if (axInfoSource)
   {
-    v6 = [(PXGReusableAXInfo *)self spriteIndex];
-    if (v6 == -1)
+    spriteIndex = [(PXGReusableAXInfo *)self spriteIndex];
+    if (spriteIndex == -1)
     {
-      v9 = [MEMORY[0x277CCA890] currentHandler];
-      [v9 handleFailureInMethod:a2 object:self file:@"PXGAXInfo+iOS.m" lineNumber:131 description:@"An info should not be getting focus if it has no backing sprite"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAXInfo+iOS.m" lineNumber:131 description:@"An info should not be getting focus if it has no backing sprite"];
     }
 
-    v7 = [v5 axFocusabilityForSpriteAtIndex:v6] == 2;
+    v7 = [axInfoSource axFocusabilityForSpriteAtIndex:spriteIndex] == 2;
   }
 
   else
@@ -209,24 +209,24 @@ PXGReusableAXInfo *__31__PXGReusableAXInfo_sharedPool__block_invoke_2()
 
 - (BOOL)_isEligibleForFocusInteraction
 {
-  v4 = [(PXGReusableAXInfo *)self axContainingGroup];
-  if (!v4)
+  axContainingGroup = [(PXGReusableAXInfo *)self axContainingGroup];
+  if (!axContainingGroup)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXGAXInfo+iOS.m" lineNumber:107 description:@"An info should not be getting focus if it has no containing group"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAXInfo+iOS.m" lineNumber:107 description:@"An info should not be getting focus if it has no containing group"];
   }
 
-  v5 = [v4 axInfoSource];
-  if (v5)
+  axInfoSource = [axContainingGroup axInfoSource];
+  if (axInfoSource)
   {
-    v6 = [(PXGReusableAXInfo *)self spriteIndex];
-    if (v6 == -1)
+    spriteIndex = [(PXGReusableAXInfo *)self spriteIndex];
+    if (spriteIndex == -1)
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PXGAXInfo+iOS.m" lineNumber:118 description:@"An info should not be getting focus if it has no backing sprite"];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGAXInfo+iOS.m" lineNumber:118 description:@"An info should not be getting focus if it has no backing sprite"];
     }
 
-    v7 = [v5 axFocusabilityForSpriteAtIndex:v6] != 0;
+    v7 = [axInfoSource axFocusabilityForSpriteAtIndex:spriteIndex] != 0;
   }
 
   else
@@ -237,40 +237,40 @@ PXGReusableAXInfo *__31__PXGReusableAXInfo_sharedPool__block_invoke_2()
   return v7;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v28 = a3;
-  v6 = [v28 nextFocusedItem];
+  contextCopy = context;
+  nextFocusedItem = [contextCopy nextFocusedItem];
 
-  v7 = [v28 previouslyFocusedItem];
+  previouslyFocusedItem = [contextCopy previouslyFocusedItem];
 
-  if (v6 == self || v7 == self)
+  if (nextFocusedItem == self || previouslyFocusedItem == self)
   {
-    v8 = [(PXGReusableAXInfo *)self axContainingGroup];
-    v9 = v8;
-    if (v6 == self && !v8)
+    axContainingGroup = [(PXGReusableAXInfo *)self axContainingGroup];
+    v9 = axContainingGroup;
+    if (nextFocusedItem == self && !axContainingGroup)
     {
-      v26 = [MEMORY[0x277CCA890] currentHandler];
-      [v26 handleFailureInMethod:a2 object:self file:@"PXGAXInfo+iOS.m" lineNumber:71 description:@"An info should not be getting focus if it has no containing group"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAXInfo+iOS.m" lineNumber:71 description:@"An info should not be getting focus if it has no containing group"];
     }
 
-    v10 = [(PXGReusableAXInfo *)self spriteIndex];
-    v11 = v10;
-    if (v6 == self && v10 == -1)
+    spriteIndex = [(PXGReusableAXInfo *)self spriteIndex];
+    v11 = spriteIndex;
+    if (nextFocusedItem == self && spriteIndex == -1)
     {
-      v27 = [MEMORY[0x277CCA890] currentHandler];
-      [v27 handleFailureInMethod:a2 object:self file:@"PXGAXInfo+iOS.m" lineNumber:74 description:@"An info should not be getting focus if it has no backing sprite"];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGAXInfo+iOS.m" lineNumber:74 description:@"An info should not be getting focus if it has no backing sprite"];
     }
 
-    if (v6 == self)
+    if (nextFocusedItem == self)
     {
       v12 = [v9 loadLeafAtSpriteIndexIfNeeded:v11 usingOptions:1];
     }
 
-    v13 = [v28 previouslyFocusedItem];
+    previouslyFocusedItem2 = [contextCopy previouslyFocusedItem];
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v14 = v13;
+      v14 = previouslyFocusedItem2;
     }
 
     else
@@ -278,10 +278,10 @@ PXGReusableAXInfo *__31__PXGReusableAXInfo_sharedPool__block_invoke_2()
       v14 = 0;
     }
 
-    v15 = [v28 nextFocusedItem];
+    nextFocusedItem2 = [contextCopy nextFocusedItem];
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v16 = v15;
+      v16 = nextFocusedItem2;
     }
 
     else
@@ -289,32 +289,32 @@ PXGReusableAXInfo *__31__PXGReusableAXInfo_sharedPool__block_invoke_2()
       v16 = 0;
     }
 
-    v17 = [v14 axContainingGroup];
-    v18 = [v16 axContainingGroup];
-    v19 = v18;
-    if (v17 == v18)
+    axContainingGroup2 = [v14 axContainingGroup];
+    axContainingGroup3 = [v16 axContainingGroup];
+    v19 = axContainingGroup3;
+    if (axContainingGroup2 == axContainingGroup3)
     {
-      v21 = [v18 axInfoSource];
-      v25 = [v14 spriteIndex];
-      v22 = [v16 spriteIndex];
-      v23 = v21;
-      v24 = v25;
+      axInfoSource = [axContainingGroup3 axInfoSource];
+      spriteIndex2 = [v14 spriteIndex];
+      spriteIndex3 = [v16 spriteIndex];
+      v23 = axInfoSource;
+      v24 = spriteIndex2;
     }
 
     else
     {
-      v20 = [v17 axInfoSource];
-      [v20 axDidUpdateFocusFromSpriteAtIndex:objc_msgSend(v14 toSpriteAtIndex:{"spriteIndex"), 0xFFFFFFFFLL}];
+      axInfoSource2 = [axContainingGroup2 axInfoSource];
+      [axInfoSource2 axDidUpdateFocusFromSpriteAtIndex:objc_msgSend(v14 toSpriteAtIndex:{"spriteIndex"), 0xFFFFFFFFLL}];
 
-      v21 = [v19 axInfoSource];
-      v22 = [v16 spriteIndex];
-      v23 = v21;
+      axInfoSource = [v19 axInfoSource];
+      spriteIndex3 = [v16 spriteIndex];
+      v23 = axInfoSource;
       v24 = 0xFFFFFFFFLL;
     }
 
-    [v23 axDidUpdateFocusFromSpriteAtIndex:v24 toSpriteAtIndex:v22];
+    [v23 axDidUpdateFocusFromSpriteAtIndex:v24 toSpriteAtIndex:spriteIndex3];
 
-    if (v7 == self)
+    if (previouslyFocusedItem == self)
     {
       [v9 unloadLeafAtSpriteIndex:v11 usingOptions:3];
     }
@@ -338,11 +338,11 @@ PXGReusableAXInfo *__31__PXGReusableAXInfo_sharedPool__block_invoke_2()
   v9[1] = *MEMORY[0x277D85DE8];
   if ([(PXGReusableAXInfo *)self axContentKind]== 5)
   {
-    v3 = [(PXGReusableAXInfo *)self axView];
-    v4 = v3;
-    if (v3)
+    axView = [(PXGReusableAXInfo *)self axView];
+    v4 = axView;
+    if (axView)
     {
-      v9[0] = v3;
+      v9[0] = axView;
       v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
     }
 
@@ -372,7 +372,7 @@ PXGReusableAXInfo *__31__PXGReusableAXInfo_sharedPool__block_invoke_2()
   return v6;
 }
 
-- (void)setSpriteStyleCornerRadius:(id)a3
+- (void)setSpriteStyleCornerRadius:(id)radius
 {
   self->_spriteStyleCornerRadius.var0.var0.topLeft = v3;
   self->_spriteStyleCornerRadius.var0.var0.topRight = v4;
@@ -387,22 +387,22 @@ PXGReusableAXInfo *__31__PXGReusableAXInfo_sharedPool__block_invoke_2()
   return result;
 }
 
-- (void)setSpriteStyle:(id *)a3
+- (void)setSpriteStyle:(id *)style
 {
-  v3 = *(&a3->var1 + 12);
-  *&self->_spriteStyle.alpha = *&a3->var0;
+  v3 = *(&style->var1 + 12);
+  *&self->_spriteStyle.alpha = *&style->var0;
   *&self[1]._axAccessibleWhenTransparent = v3;
-  v4 = *&a3->var5;
-  var1 = a3[1].var1;
-  v6 = *&a3[1].var6;
-  *&self[1]._content = *&a3[1].var2;
+  v4 = *&style->var5;
+  var1 = style[1].var1;
+  v6 = *&style[1].var6;
+  *&self[1]._content = *&style[1].var2;
   self[1]._spriteStyleCornerRadius = v6;
   *&self[1]._axContainingGroup = v4;
   *&self[1]._alternateUIVisibility = var1;
-  v7 = *(&a3[2].var1 + 4);
-  v8 = *&a3[2].var3;
-  v9 = *(&a3[3].var1 + 8);
-  *&self[1]._anon_70[8] = *&a3[2].var8;
+  v7 = *(&style[2].var1 + 4);
+  v8 = *&style[2].var3;
+  v9 = *(&style[3].var1 + 8);
+  *&self[1]._anon_70[8] = *&style[2].var8;
   *&self[2].super.isa = v9;
   *&self[1]._spriteGeometry.center.x = v7;
   *&self[1]._spriteGeometry.center.z = v8;
@@ -428,7 +428,7 @@ PXGReusableAXInfo *__31__PXGReusableAXInfo_sharedPool__block_invoke_2()
   return self;
 }
 
-- (void)setSpriteGeometry:(id)a3
+- (void)setSpriteGeometry:(id)geometry
 {
   v4 = *v3;
   *&self->_spriteGeometry.center.z = v3[1];
@@ -458,17 +458,17 @@ PXGReusableAXInfo *__31__PXGReusableAXInfo_sharedPool__block_invoke_2()
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   spriteIndex = self->_spriteIndex;
-  v6 = [(PXGReusableAXInfo *)self axContentKind];
-  if (v6 >= 8)
+  axContentKind = [(PXGReusableAXInfo *)self axContentKind];
+  if (axContentKind >= 8)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *_NSStringFromPXGAXInfoKind(PXGAXInfoKind)"];
-    [v11 handleFailureInFunction:v12 file:@"PXGAXInfo.m" lineNumber:46 description:@"Code which should be unreachable has been reached"];
+    [currentHandler handleFailureInFunction:v12 file:@"PXGAXInfo.m" lineNumber:46 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v7 = off_2782AB338[v6];
+  v7 = off_2782AB338[axContentKind];
   [(PXGReusableAXInfo *)self axFrame];
   v8 = NSStringFromCGRect(v14);
   v9 = [v3 stringWithFormat:@"<%@: %p index: %u, kind: %@, frame: %@>", v4, self, spriteIndex, v7, v8];
@@ -476,46 +476,46 @@ PXGReusableAXInfo *__31__PXGReusableAXInfo_sharedPool__block_invoke_2()
   return v9;
 }
 
-- (id)_viewAtSpriteIndex:(unsigned int)a3
+- (id)_viewAtSpriteIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  v4 = [(PXGReusableAXInfo *)self axContainingGroup];
-  v5 = [v4 axRootParent];
-  v6 = [v4 containingLayout];
-  v7 = [v5 containingLayout];
-  v8 = [v7 viewForSpriteIndex:{objc_msgSend(v7, "convertSpriteIndex:fromDescendantLayout:", v3, v6)}];
+  v3 = *&index;
+  axContainingGroup = [(PXGReusableAXInfo *)self axContainingGroup];
+  axRootParent = [axContainingGroup axRootParent];
+  containingLayout = [axContainingGroup containingLayout];
+  containingLayout2 = [axRootParent containingLayout];
+  v8 = [containingLayout2 viewForSpriteIndex:{objc_msgSend(containingLayout2, "convertSpriteIndex:fromDescendantLayout:", v3, containingLayout)}];
 
   return v8;
 }
 
-- (BOOL)_fillForKind:(int64_t)a3 withLayout:(id)a4 spriteIndex:(unsigned int)a5
+- (BOOL)_fillForKind:(int64_t)kind withLayout:(id)layout spriteIndex:(unsigned int)index
 {
-  v5 = *&a5;
-  v8 = a4;
+  v5 = *&index;
+  layoutCopy = layout;
   v9 = 0;
-  if (a3 > 3)
+  if (kind > 3)
   {
-    switch(a3)
+    switch(kind)
     {
       case 4:
-        v10 = [objc_opt_class() _imageAXLabelInLayout:v8 atSpriteIndex:v5];
+        v10 = [objc_opt_class() _imageAXLabelInLayout:layoutCopy atSpriteIndex:v5];
         goto LABEL_11;
       case 5:
-        v16 = [objc_opt_class() _viewClassInLayout:v8 atSpriteIndex:v5] == 0;
+        v16 = [objc_opt_class() _viewClassInLayout:layoutCopy atSpriteIndex:v5] == 0;
 LABEL_13:
         v9 = !v16;
         break;
       case 6:
-        v9 = [objc_opt_class() _assetHasContentSourceInLayout:v8 atSpriteIndex:v5];
+        v9 = [objc_opt_class() _assetHasContentSourceInLayout:layoutCopy atSpriteIndex:v5];
         break;
     }
   }
 
   else
   {
-    if ((a3 - 2) < 2)
+    if ((kind - 2) < 2)
     {
-      v10 = [objc_opt_class() _textInLayout:v8 atSpriteIndex:v5];
+      v10 = [objc_opt_class() _textInLayout:layoutCopy atSpriteIndex:v5];
 LABEL_11:
       content = self->_content;
       self->_content = v10;
@@ -524,80 +524,80 @@ LABEL_11:
       goto LABEL_13;
     }
 
-    if (a3 == 1)
+    if (kind == 1)
     {
-      v11 = [objc_opt_class() _titleSubtitleInLayout:v8 atSpriteIndex:v5];
+      v11 = [objc_opt_class() _titleSubtitleInLayout:layoutCopy atSpriteIndex:v5];
       v12 = self->_content;
       self->_content = v11;
       v13 = v11;
 
-      v14 = [v13 first];
+      first = [v13 first];
 
-      v9 = v14 != 0;
+      v9 = first != 0;
     }
   }
 
   return v9;
 }
 
-- (void)setContent:(id)a3 ofContentKind:(int64_t)a4
+- (void)setContent:(id)content ofContentKind:(int64_t)kind
 {
-  v7 = a3;
-  if (!v7 && a4 != 5)
+  contentCopy = content;
+  if (!contentCopy && kind != 5)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:164 description:@"Content can only be nil when contentKind is View"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:164 description:@"Content can only be nil when contentKind is View"];
   }
 
-  [(PXGReusableAXInfo *)self setAxContentKind:a4];
+  [(PXGReusableAXInfo *)self setAxContentKind:kind];
   content = self->_content;
-  self->_content = v7;
+  self->_content = contentCopy;
 }
 
-- (void)applyToInfo:(id)a3
+- (void)applyToInfo:(id)info
 {
-  *(a3 + 3) = self->_spriteIndex;
+  *(info + 3) = self->_spriteIndex;
   v3 = *&self->_spriteGeometry.center.x;
-  *(a3 + 104) = *&self->_spriteGeometry.center.z;
-  *(a3 + 88) = v3;
+  *(info + 104) = *&self->_spriteGeometry.center.z;
+  *(info + 88) = v3;
   spriteStyleCornerRadius = self[1]._spriteStyleCornerRadius;
   v6 = *&self[1]._axContainingGroup;
   v5 = *&self[1]._alternateUIVisibility;
-  *(a3 + 12) = *&self[1]._content;
-  *(a3 + 13) = spriteStyleCornerRadius;
-  *(a3 + 10) = v6;
-  *(a3 + 11) = v5;
+  *(info + 12) = *&self[1]._content;
+  *(info + 13) = spriteStyleCornerRadius;
+  *(info + 10) = v6;
+  *(info + 11) = v5;
   v7 = *&self[2].super.isa;
   v9 = *&self[1]._spriteGeometry.center.x;
   v8 = *&self[1]._spriteGeometry.center.z;
-  *(a3 + 16) = *&self[1]._anon_70[8];
-  *(a3 + 17) = v7;
-  *(a3 + 14) = v9;
-  *(a3 + 15) = v8;
+  *(info + 16) = *&self[1]._anon_70[8];
+  *(info + 17) = v7;
+  *(info + 14) = v9;
+  *(info + 15) = v8;
   v10 = *&self[1]._axAccessibleWhenTransparent;
-  *(a3 + 8) = *&self->_spriteStyle.alpha;
-  *(a3 + 9) = v10;
-  *(a3 + 72) = self->_spriteStyleCornerRadius;
-  *(a3 + 4) = self->_focusRingType;
-  *(a3 + 6) = self->_axContentKind;
-  *(a3 + 8) = self->_axAccessibleWhenTransparent;
-  objc_storeStrong(a3 + 7, self->_content);
+  *(info + 8) = *&self->_spriteStyle.alpha;
+  *(info + 9) = v10;
+  *(info + 72) = self->_spriteStyleCornerRadius;
+  *(info + 4) = self->_focusRingType;
+  *(info + 6) = self->_axContentKind;
+  *(info + 8) = self->_axAccessibleWhenTransparent;
+  objc_storeStrong(info + 7, self->_content);
 }
 
-- (BOOL)fillContentForContentKind:(int64_t)a3 inLayout:(id)a4 atIndex:(unsigned int)a5
+- (BOOL)fillContentForContentKind:(int64_t)kind inLayout:(id)layout atIndex:(unsigned int)index
 {
-  v7 = [(PXGReusableAXInfo *)self _fillForKind:a3 withLayout:a4 spriteIndex:*&a5];
+  v7 = [(PXGReusableAXInfo *)self _fillForKind:kind withLayout:layout spriteIndex:*&index];
   if (v7)
   {
-    v8 = a3;
+    kindCopy = kind;
   }
 
   else
   {
-    v8 = 0;
+    kindCopy = 0;
   }
 
-  [(PXGReusableAXInfo *)self setAxContentKind:v8];
+  [(PXGReusableAXInfo *)self setAxContentKind:kindCopy];
   return v7;
 }
 
@@ -622,15 +622,15 @@ LABEL_11:
 {
   if ([(PXGReusableAXInfo *)self axContentKind]!= 6)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:122 description:@"Should not request asset from element that is not asset"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:122 description:@"Should not request asset from element that is not asset"];
   }
 
-  v4 = [(PXGReusableAXInfo *)self axContainingGroup];
-  v5 = [v4 containingLayout];
+  axContainingGroup = [(PXGReusableAXInfo *)self axContainingGroup];
+  containingLayout = [axContainingGroup containingLayout];
 
-  v6 = [v5 contentSource];
-  v7 = [v6 displayAssetFetchResultForSpritesInRange:self->_spriteIndex | 0x100000000 inLayout:v5];
+  contentSource = [containingLayout contentSource];
+  v7 = [contentSource displayAssetFetchResultForSpritesInRange:self->_spriteIndex | 0x100000000 inLayout:containingLayout];
   v8 = [v7 objectAtIndex:self->_spriteIndex];
 
   return v8;
@@ -640,8 +640,8 @@ LABEL_11:
 {
   if ([(PXGReusableAXInfo *)self axContentKind]!= 4)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:116 description:@"Should not request imageName from element that is not namedImage"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:116 description:@"Should not request imageName from element that is not namedImage"];
   }
 
   v4 = self->_content;
@@ -653,19 +653,19 @@ LABEL_11:
       goto LABEL_5;
     }
 
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v10 = objc_opt_class();
     v9 = NSStringFromClass(v10);
-    v11 = [v4 px_descriptionForAssertionMessage];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:117 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"_content", v9, v11}];
+    px_descriptionForAssertionMessage = [v4 px_descriptionForAssertionMessage];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:117 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"_content", v9, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:117 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"_content", v9}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:117 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"_content", v9}];
   }
 
 LABEL_5:
@@ -677,17 +677,17 @@ LABEL_5:
 {
   if ([(PXGReusableAXInfo *)self axContentKind]!= 1)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:109 description:@"Should not request title from element that is not titlesubtitle"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:109 description:@"Should not request title from element that is not titlesubtitle"];
   }
 
   v4 = self->_content;
   if (!v4)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    [v8 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:110 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"_content", v10}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:110 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"_content", v10}];
 LABEL_13:
 
     goto LABEL_5;
@@ -696,39 +696,39 @@ LABEL_13:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v11 = objc_opt_class();
     v10 = NSStringFromClass(v11);
-    v12 = [v4 px_descriptionForAssertionMessage];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:110 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"_content", v10, v12}];
+    px_descriptionForAssertionMessage = [v4 px_descriptionForAssertionMessage];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:110 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"_content", v10, px_descriptionForAssertionMessage}];
 
     goto LABEL_13;
   }
 
 LABEL_5:
-  v5 = [v4 second];
-  if (v5)
+  second = [v4 second];
+  if (second)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v13 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
       v14 = objc_opt_class();
       v15 = NSStringFromClass(v14);
-      v16 = [v5 px_descriptionForAssertionMessage];
-      [v13 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:111 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"titleSubtitle.second", v15, v16}];
+      px_descriptionForAssertionMessage2 = [second px_descriptionForAssertionMessage];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:111 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"titleSubtitle.second", v15, px_descriptionForAssertionMessage2}];
     }
   }
 
-  return v5;
+  return second;
 }
 
 - (NSString)axTitle
 {
   if ([(PXGReusableAXInfo *)self axContentKind]!= 1)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:102 description:@"Should not request title from element that is not titlesubtitle"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:102 description:@"Should not request title from element that is not titlesubtitle"];
   }
 
   v4 = self->_content;
@@ -740,24 +740,24 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    v8 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v14 = objc_opt_class();
     v10 = NSStringFromClass(v14);
-    v15 = [v4 px_descriptionForAssertionMessage];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:103 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"_content", v10, v15}];
+    px_descriptionForAssertionMessage = [v4 px_descriptionForAssertionMessage];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:103 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"_content", v10, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    [v8 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:103 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"_content", v10}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:103 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"_content", v10}];
   }
 
 LABEL_5:
-  v5 = [v4 first];
-  if (v5)
+  first = [v4 first];
+  if (first)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -765,32 +765,32 @@ LABEL_5:
       goto LABEL_7;
     }
 
-    v11 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
     v16 = objc_opt_class();
     v13 = NSStringFromClass(v16);
-    v17 = [v5 px_descriptionForAssertionMessage];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:104 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"titleSubtitle.first", v13, v17}];
+    px_descriptionForAssertionMessage2 = [first px_descriptionForAssertionMessage];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:104 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"titleSubtitle.first", v13, px_descriptionForAssertionMessage2}];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    [v11 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:104 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"titleSubtitle.first", v13}];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:104 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"titleSubtitle.first", v13}];
   }
 
 LABEL_7:
 
-  return v5;
+  return first;
 }
 
 - (NSString)axText
 {
   if ([(PXGReusableAXInfo *)self axContentKind]!= 2 && [(PXGReusableAXInfo *)self axContentKind]!= 3)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:96 description:@"Should not request text from element that is not text/button"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:96 description:@"Should not request text from element that is not text/button"];
   }
 
   v4 = self->_content;
@@ -802,19 +802,19 @@ LABEL_7:
       goto LABEL_6;
     }
 
-    v6 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v9 = objc_opt_class();
     v8 = NSStringFromClass(v9);
-    v10 = [v4 px_descriptionForAssertionMessage];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"_content", v8, v10}];
+    px_descriptionForAssertionMessage = [v4 px_descriptionForAssertionMessage];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"_content", v8, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    [v6 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"_content", v8}];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXGAXInfo.m" lineNumber:97 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"_content", v8}];
   }
 
 LABEL_6:
@@ -824,14 +824,14 @@ LABEL_6:
 
 - (BOOL)axIsSelected
 {
-  v2 = self;
-  v3 = [(PXGReusableAXInfo *)self axContainingGroup];
-  v4 = [v3 axInfoSource];
+  selfCopy = self;
+  axContainingGroup = [(PXGReusableAXInfo *)self axContainingGroup];
+  axInfoSource = [axContainingGroup axInfoSource];
 
-  v5 = [v4 axSelectedSpriteIndexes];
-  LOBYTE(v2) = [v5 containsIndex:{-[PXGReusableAXInfo spriteIndex](v2, "spriteIndex")}];
+  axSelectedSpriteIndexes = [axInfoSource axSelectedSpriteIndexes];
+  LOBYTE(selfCopy) = [axSelectedSpriteIndexes containsIndex:{-[PXGReusableAXInfo spriteIndex](selfCopy, "spriteIndex")}];
 
-  return v2;
+  return selfCopy;
 }
 
 - (CGRect)axFrame
@@ -845,9 +845,9 @@ LABEL_6:
   return result;
 }
 
-+ (Class)_viewClassInLayout:(id)a3 atSpriteIndex:(unsigned int)a4
++ (Class)_viewClassInLayout:(id)layout atSpriteIndex:(unsigned int)index
 {
-  v5 = a3;
+  layoutCopy = layout;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2050000000;
@@ -857,8 +857,8 @@ LABEL_6:
   v8[2] = __54__PXGReusableAXInfo__viewClassInLayout_atSpriteIndex___block_invoke;
   v8[3] = &unk_2782AB318;
   v8[4] = &v10;
-  v9 = a4;
-  [v5 enumerateSpritesInRange:a4 | 0x100000000 usingBlock:v8];
+  indexCopy = index;
+  [layoutCopy enumerateSpritesInRange:index | 0x100000000 usingBlock:v8];
   v6 = v11[3];
   _Block_object_dispose(&v10, 8);
 
@@ -881,9 +881,9 @@ void __54__PXGReusableAXInfo__viewClassInLayout_atSpriteIndex___block_invoke(uin
   }
 }
 
-+ (BOOL)_assetHasContentSourceInLayout:(id)a3 atSpriteIndex:(unsigned int)a4
++ (BOOL)_assetHasContentSourceInLayout:(id)layout atSpriteIndex:(unsigned int)index
 {
-  v5 = a3;
+  layoutCopy = layout;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -893,11 +893,11 @@ void __54__PXGReusableAXInfo__viewClassInLayout_atSpriteIndex___block_invoke(uin
   v7[2] = __66__PXGReusableAXInfo__assetHasContentSourceInLayout_atSpriteIndex___block_invoke;
   v7[3] = &unk_2782AB2C8;
   v7[4] = &v8;
-  [v5 enumerateSpritesInRange:a4 | 0x100000000 usingBlock:v7];
-  LOBYTE(a4) = *(v9 + 24);
+  [layoutCopy enumerateSpritesInRange:index | 0x100000000 usingBlock:v7];
+  LOBYTE(index) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
 
-  return a4;
+  return index;
 }
 
 void __66__PXGReusableAXInfo__assetHasContentSourceInLayout_atSpriteIndex___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6, void *a7, uint64_t a8, _BYTE *a9)
@@ -910,9 +910,9 @@ void __66__PXGReusableAXInfo__assetHasContentSourceInLayout_atSpriteIndex___bloc
   }
 }
 
-+ (id)_imageAXLabelInLayout:(id)a3 atSpriteIndex:(unsigned int)a4
++ (id)_imageAXLabelInLayout:(id)layout atSpriteIndex:(unsigned int)index
 {
-  v5 = a3;
+  layoutCopy = layout;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -924,7 +924,7 @@ void __66__PXGReusableAXInfo__assetHasContentSourceInLayout_atSpriteIndex___bloc
   v8[2] = __57__PXGReusableAXInfo__imageAXLabelInLayout_atSpriteIndex___block_invoke;
   v8[3] = &unk_2782AB2C8;
   v8[4] = &v9;
-  [v5 enumerateSpritesInRange:a4 | 0x100000000 usingBlock:v8];
+  [layoutCopy enumerateSpritesInRange:index | 0x100000000 usingBlock:v8];
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
 
@@ -958,9 +958,9 @@ void __57__PXGReusableAXInfo__imageAXLabelInLayout_atSpriteIndex___block_invoke(
   }
 }
 
-+ (id)_titleSubtitleInLayout:(id)a3 atSpriteIndex:(unsigned int)a4
++ (id)_titleSubtitleInLayout:(id)layout atSpriteIndex:(unsigned int)index
 {
-  v5 = a3;
+  layoutCopy = layout;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -979,7 +979,7 @@ void __57__PXGReusableAXInfo__imageAXLabelInLayout_atSpriteIndex___block_invoke(
   v9[3] = &unk_2782AB2F0;
   v9[4] = &v16;
   v9[5] = &v10;
-  [v5 enumerateSpritesInRange:a4 | 0x100000000 usingBlock:v9];
+  [layoutCopy enumerateSpritesInRange:index | 0x100000000 usingBlock:v9];
   v6 = objc_alloc(MEMORY[0x277D3CE10]);
   v7 = [v6 initWithFirst:v17[5] second:v11[5]];
   _Block_object_dispose(&v10, 8);
@@ -1014,9 +1014,9 @@ void __58__PXGReusableAXInfo__titleSubtitleInLayout_atSpriteIndex___block_invoke
   }
 }
 
-+ (id)_textInLayout:(id)a3 atSpriteIndex:(unsigned int)a4
++ (id)_textInLayout:(id)layout atSpriteIndex:(unsigned int)index
 {
-  v5 = a3;
+  layoutCopy = layout;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -1028,7 +1028,7 @@ void __58__PXGReusableAXInfo__titleSubtitleInLayout_atSpriteIndex___block_invoke
   v8[2] = __49__PXGReusableAXInfo__textInLayout_atSpriteIndex___block_invoke;
   v8[3] = &unk_2782AB2C8;
   v8[4] = &v9;
-  [v5 enumerateSpritesInRange:a4 | 0x100000000 usingBlock:v8];
+  [layoutCopy enumerateSpritesInRange:index | 0x100000000 usingBlock:v8];
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
 

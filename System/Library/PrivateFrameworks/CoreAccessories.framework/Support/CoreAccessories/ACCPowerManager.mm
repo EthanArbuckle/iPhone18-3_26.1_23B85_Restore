@@ -43,9 +43,9 @@
   v4 = 0;
   do
   {
-    v5 = [(ACCPowerManager *)self featurePowerMode];
-    v6 = [v5 objectAtIndex:v4];
-    v7 = [v6 BOOLValue];
+    featurePowerMode = [(ACCPowerManager *)self featurePowerMode];
+    v6 = [featurePowerMode objectAtIndex:v4];
+    bOOLValue = [v6 BOOLValue];
 
     if (v3)
     {
@@ -56,8 +56,8 @@
     v4 = 1;
   }
 
-  while (!v7);
-  return v7;
+  while (!bOOLValue);
+  return bOOLValue;
 }
 
 @end

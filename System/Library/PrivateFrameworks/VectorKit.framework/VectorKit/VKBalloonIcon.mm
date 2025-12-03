@@ -6,7 +6,7 @@
 - (CGRect)balloonRect;
 - (CGRect)contentRect;
 - (CGRect)dotRect;
-- (VKBalloonIcon)initWithBalloonImage:(shared_ptr<grl:(shared_ptr<grl::IconImage>)a4 :IconImage>)a3 dotImage:;
+- (VKBalloonIcon)initWithBalloonImage:(shared_ptr<grl:(shared_ptr<grl::IconImage>)image :IconImage>)a3 dotImage:;
 - (id).cxx_construct;
 @end
 
@@ -193,7 +193,7 @@
   return v3;
 }
 
-- (VKBalloonIcon)initWithBalloonImage:(shared_ptr<grl:(shared_ptr<grl::IconImage>)a4 :IconImage>)a3 dotImage:
+- (VKBalloonIcon)initWithBalloonImage:(shared_ptr<grl:(shared_ptr<grl::IconImage>)image :IconImage>)a3 dotImage:
 {
   cntrl = a3.__cntrl_;
   ptr = a3.__ptr_;

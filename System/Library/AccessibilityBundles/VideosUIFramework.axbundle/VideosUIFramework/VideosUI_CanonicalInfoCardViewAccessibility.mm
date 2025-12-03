@@ -1,5 +1,5 @@
 @interface VideosUI_CanonicalInfoCardViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
@@ -7,14 +7,14 @@
 
 @implementation VideosUI_CanonicalInfoCardViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosUI.CanonicalInfoCardView" hasSwiftField:@"titleLabel" withSwiftType:"Optional<VUILabel>"];
-  [v3 validateClass:@"VideosUI.CanonicalInfoCardView" hasSwiftField:@"subtitleLabel" withSwiftType:"Optional<VUILabel>"];
-  [v3 validateClass:@"VideosUI.CanonicalInfoCardView" hasSwiftField:@"imageView" withSwiftType:"Optional<VUIImageView>"];
-  [v3 validateClass:@"VideosUI.CanonicalInfoCardView" hasSwiftField:@"tableView" withSwiftType:"Optional<TomatometerTableView>"];
-  [v3 validateClass:@"VideosUI.TomatometerTableView" hasSwiftField:@"itemViews" withSwiftType:"Optional<Array<ItemViewModel>>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosUI.CanonicalInfoCardView" hasSwiftField:@"titleLabel" withSwiftType:"Optional<VUILabel>"];
+  [validationsCopy validateClass:@"VideosUI.CanonicalInfoCardView" hasSwiftField:@"subtitleLabel" withSwiftType:"Optional<VUILabel>"];
+  [validationsCopy validateClass:@"VideosUI.CanonicalInfoCardView" hasSwiftField:@"imageView" withSwiftType:"Optional<VUIImageView>"];
+  [validationsCopy validateClass:@"VideosUI.CanonicalInfoCardView" hasSwiftField:@"tableView" withSwiftType:"Optional<TomatometerTableView>"];
+  [validationsCopy validateClass:@"VideosUI.TomatometerTableView" hasSwiftField:@"itemViews" withSwiftType:"Optional<Array<ItemViewModel>>"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -24,7 +24,7 @@
   v20.super_class = VideosUI_CanonicalInfoCardViewAccessibility;
   [(VideosUI_CanonicalInfoCardViewAccessibility *)&v20 _accessibilityLoadAccessibilityInformation];
   v3 = [(VideosUI_CanonicalInfoCardViewAccessibility *)self safeSwiftValueForKey:@"tableView"];
-  v4 = [MEMORY[0x29EDBA050] string];
+  string = [MEMORY[0x29EDBA050] string];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -49,7 +49,7 @@
         v10 = [v9 safeSwiftValueForKey:@"headerLabel"];
         v11 = [v9 safeSwiftValueForKey:@"textLabel"];
         v12 = __UIAXStringForVariables();
-        [v4 appendFormat:@"%@\n", v12, @"__AXStringForVariablesSentinel"];
+        [string appendFormat:@"%@\n", v12, @"__AXStringForVariablesSentinel"];
       }
 
       v6 = [obj countByEnumeratingWithState:&v16 objects:v21 count:16];
@@ -58,7 +58,7 @@
     while (v6);
   }
 
-  [v14 setAccessibilityLabel:v4];
+  [v14 setAccessibilityLabel:string];
   v13 = *MEMORY[0x29EDCA608];
 }
 
@@ -70,12 +70,12 @@
   v4 = [(VideosUI_CanonicalInfoCardViewAccessibility *)self safeSwiftValueForKey:@"tableView"];
   v5 = [(VideosUI_CanonicalInfoCardViewAccessibility *)self _accessibilityDescendantOfType:MEMORY[0x29ED3FF70](@"VUITextView")];
   v6 = MEMORY[0x29EDB8D80];
-  v7 = [v16 accessibilityLabel];
-  v8 = [v15 accessibilityLabel];
-  v9 = [v3 accessibilityLabel];
-  v10 = [v4 accessibilityLabel];
+  accessibilityLabel = [v16 accessibilityLabel];
+  accessibilityLabel2 = [v15 accessibilityLabel];
+  accessibilityLabel3 = [v3 accessibilityLabel];
+  accessibilityLabel4 = [v4 accessibilityLabel];
   v11 = [v5 safeValueForKey:@"_accessibilityGetValue"];
-  v12 = [v6 axArrayByIgnoringNilElementsWithCount:{5, v7, v8, v9, v10, v11}];
+  v12 = [v6 axArrayByIgnoringNilElementsWithCount:{5, accessibilityLabel, accessibilityLabel2, accessibilityLabel3, accessibilityLabel4, v11}];
   v13 = AXLabelForElements();
 
   return v13;

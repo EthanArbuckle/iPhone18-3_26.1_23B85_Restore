@@ -1,13 +1,13 @@
 @interface MTMetrics
 + (id)_sharedPublicMetrics;
 - (MTMetrics)init;
-- (void)logAlarmAdded:(BOOL)a3;
-- (void)logAlarmDeleted:(BOOL)a3;
-- (void)logAlarmDismissAction:(unint64_t)a3;
-- (void)logAlarmSnoozeAction:(unint64_t)a3;
-- (void)logAlarmUpdated:(BOOL)a3;
-- (void)logMultipleTimersAdded:(id)a3;
-- (void)logSyncFailedWithError:(id)a3;
+- (void)logAlarmAdded:(BOOL)added;
+- (void)logAlarmDeleted:(BOOL)deleted;
+- (void)logAlarmDismissAction:(unint64_t)action;
+- (void)logAlarmSnoozeAction:(unint64_t)action;
+- (void)logAlarmUpdated:(BOOL)updated;
+- (void)logMultipleTimersAdded:(id)added;
+- (void)logSyncFailedWithError:(id)error;
 @end
 
 @implementation MTMetrics
@@ -48,14 +48,14 @@ uint64_t __33__MTMetrics__sharedPublicMetrics__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)logAlarmAdded:(BOOL)a3
+- (void)logAlarmAdded:(BOOL)added
 {
   serializer = self->_serializer;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __27__MTMetrics_logAlarmAdded___block_invoke;
   v4[3] = &__block_descriptor_33_e5_v8__0l;
-  v5 = a3;
+  addedCopy = added;
   [(NAScheduler *)serializer performBlock:v4];
 }
 
@@ -70,14 +70,14 @@ uint64_t __27__MTMetrics_logAlarmAdded___block_invoke(uint64_t a1)
   return [MTAnalytics incrementEventCount:*v1];
 }
 
-- (void)logAlarmDeleted:(BOOL)a3
+- (void)logAlarmDeleted:(BOOL)deleted
 {
   serializer = self->_serializer;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __29__MTMetrics_logAlarmDeleted___block_invoke;
   v4[3] = &__block_descriptor_33_e5_v8__0l;
-  v5 = a3;
+  deletedCopy = deleted;
   [(NAScheduler *)serializer performBlock:v4];
 }
 
@@ -92,14 +92,14 @@ uint64_t __29__MTMetrics_logAlarmDeleted___block_invoke(uint64_t a1)
   return [MTAnalytics incrementEventCount:*v1];
 }
 
-- (void)logAlarmUpdated:(BOOL)a3
+- (void)logAlarmUpdated:(BOOL)updated
 {
   serializer = self->_serializer;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __29__MTMetrics_logAlarmUpdated___block_invoke;
   v4[3] = &__block_descriptor_33_e5_v8__0l;
-  v5 = a3;
+  updatedCopy = updated;
   [(NAScheduler *)serializer performBlock:v4];
 }
 
@@ -114,14 +114,14 @@ uint64_t __29__MTMetrics_logAlarmUpdated___block_invoke(uint64_t a1)
   return [MTAnalytics incrementEventCount:*v1];
 }
 
-- (void)logAlarmSnoozeAction:(unint64_t)a3
+- (void)logAlarmSnoozeAction:(unint64_t)action
 {
   serializer = self->_serializer;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __34__MTMetrics_logAlarmSnoozeAction___block_invoke;
   v4[3] = &__block_descriptor_40_e5_v8__0l;
-  v4[4] = a3;
+  v4[4] = action;
   [(NAScheduler *)serializer performBlock:v4];
 }
 
@@ -136,14 +136,14 @@ uint64_t __34__MTMetrics_logAlarmSnoozeAction___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)logAlarmDismissAction:(unint64_t)a3
+- (void)logAlarmDismissAction:(unint64_t)action
 {
   serializer = self->_serializer;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __35__MTMetrics_logAlarmDismissAction___block_invoke;
   v4[3] = &__block_descriptor_40_e5_v8__0l;
-  v4[4] = a3;
+  v4[4] = action;
   [(NAScheduler *)serializer performBlock:v4];
 }
 
@@ -158,16 +158,16 @@ uint64_t __35__MTMetrics_logAlarmDismissAction___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)logMultipleTimersAdded:(id)a3
+- (void)logMultipleTimersAdded:(id)added
 {
-  v4 = a3;
+  addedCopy = added;
   serializer = self->_serializer;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__MTMetrics_logMultipleTimersAdded___block_invoke;
   v7[3] = &unk_1E7B0C9D8;
-  v8 = v4;
-  v6 = v4;
+  v8 = addedCopy;
+  v6 = addedCopy;
   [(NAScheduler *)serializer performBlock:v7];
 }
 
@@ -183,16 +183,16 @@ void __36__MTMetrics_logMultipleTimersAdded___block_invoke(uint64_t a1)
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logSyncFailedWithError:(id)a3
+- (void)logSyncFailedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   serializer = self->_serializer;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__MTMetrics_logSyncFailedWithError___block_invoke;
   v7[3] = &unk_1E7B0C9D8;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   [(NAScheduler *)serializer performBlock:v7];
 }
 

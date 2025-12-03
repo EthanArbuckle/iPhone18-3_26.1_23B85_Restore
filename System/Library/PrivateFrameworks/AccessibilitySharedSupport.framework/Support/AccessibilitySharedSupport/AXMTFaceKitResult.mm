@@ -1,24 +1,24 @@
 @interface AXMTFaceKitResult
 + (CGPoint)_iOSReferenceFocalLengthFor3DPointProjection;
 + (CGPoint)_iOSReferencePrincipalPointFor3DPointProjection;
-+ (__n128)_projectZAxisVectorUsingRGBCameraDictionary:(__n128)a3 pose:(__n128)a4;
-+ (void)_logIntrinsicsForInternalBuilds:(__n128)a3 withLogPrefix:(uint64_t)a4;
-- (AXMTFaceKitResult)initWithError:(id)a3;
++ (__n128)_projectZAxisVectorUsingRGBCameraDictionary:(__n128)dictionary pose:(__n128)pose;
++ (void)_logIntrinsicsForInternalBuilds:(__n128)builds withLogPrefix:(uint64_t)prefix;
+- (AXMTFaceKitResult)initWithError:(id)error;
 - (BOOL)hasFace;
 - (CGSize)imageSize;
-- (double)_rotatePose:(__n128)a3 forCameraSensorRotation:(uint64_t)a4;
-- (void)_calculatePoseWithRotation:(void *)a3 translation:(void *)a4;
+- (double)_rotatePose:(__n128)pose forCameraSensorRotation:(uint64_t)rotation;
+- (void)_calculatePoseWithRotation:(void *)rotation translation:(void *)translation;
 @end
 
 @implementation AXMTFaceKitResult
 
-- (AXMTFaceKitResult)initWithError:(id)a3
+- (AXMTFaceKitResult)initWithError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     v5 = [NSError alloc];
-    v4 = [v5 initWithDomain:AXSSMotionTrackingErrorDomain code:0 userInfo:0];
+    errorCopy = [v5 initWithDomain:AXSSMotionTrackingErrorDomain code:0 userInfo:0];
   }
 
   v9.receiver = self;
@@ -27,7 +27,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_error, v4);
+    objc_storeStrong(&v6->_error, errorCopy);
   }
 
   return v7;
@@ -35,23 +35,23 @@
 
 - (BOOL)hasFace
 {
-  v2 = [(AXMTFaceKitResult *)self error];
-  v3 = v2 == 0;
+  error = [(AXMTFaceKitResult *)self error];
+  v3 = error == 0;
 
   return v3;
 }
 
-- (double)_rotatePose:(__n128)a3 forCameraSensorRotation:(uint64_t)a4
+- (double)_rotatePose:(__n128)pose forCameraSensorRotation:(uint64_t)rotation
 {
-  v6 = a1.n128_f64[0];
+  v6 = self.n128_f64[0];
   if (a6)
   {
-    v75 = a1.n128_u64[0];
+    v75 = self.n128_u64[0];
     if (a6 == 180 || a6 == 270)
     {
       v67 = matrix_identity_float4x4.columns[3];
       v68 = matrix_identity_float4x4.columns[2];
-      *&v8 = AXMTEulerAnglesFromMatrix(a1, a2, a3);
+      *&v8 = AXMTEulerAnglesFromMatrix(self, a2, pose);
       if (a6 == 270)
       {
         v70 = v8;
@@ -233,16 +233,16 @@
   return v6;
 }
 
-- (void)_calculatePoseWithRotation:(void *)a3 translation:(void *)a4
+- (void)_calculatePoseWithRotation:(void *)rotation translation:(void *)translation
 {
-  v5 = a4;
-  AXMTMatrix3x3FromArray(a3);
-  AXMTVector3FromArray(v5);
+  translationCopy = translation;
+  AXMTMatrix3x3FromArray(rotation);
+  AXMTVector3FromArray(translationCopy);
 
   AXMTMatrix4x4FromRotationAndTranslation();
 }
 
-+ (void)_logIntrinsicsForInternalBuilds:(__n128)a3 withLogPrefix:(uint64_t)a4
++ (void)_logIntrinsicsForInternalBuilds:(__n128)builds withLogPrefix:(uint64_t)prefix
 {
   v6 = a6;
   if (qword_100054638 != -1)
@@ -258,23 +258,23 @@
       *buf = 138414594;
       v12 = v6;
       v13 = 2048;
-      v14 = a1.n128_f32[0];
+      v14 = self.n128_f32[0];
       v15 = 2048;
       v16 = a2.n128_f32[0];
       v17 = 2048;
-      v18 = a3.n128_f32[0];
+      v18 = builds.n128_f32[0];
       v19 = 2048;
-      v20 = a1.n128_f32[1];
+      v20 = self.n128_f32[1];
       v21 = 2048;
       v22 = a2.n128_f32[1];
       v23 = 2048;
-      v24 = a3.n128_f32[1];
+      v24 = builds.n128_f32[1];
       v25 = 2048;
-      v26 = a1.n128_f32[2];
+      v26 = self.n128_f32[2];
       v27 = 2048;
       v28 = a2.n128_f32[2];
       v29 = 2048;
-      v30 = a3.n128_f32[2];
+      v30 = builds.n128_f32[2];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%@ intrinsics: ((%f, %f, %f), (%f, %f, %f), (%f, %f, %f)", buf, 0x66u);
     }
   }
@@ -308,7 +308,7 @@
   return result;
 }
 
-+ (__n128)_projectZAxisVectorUsingRGBCameraDictionary:(__n128)a3 pose:(__n128)a4
++ (__n128)_projectZAxisVectorUsingRGBCameraDictionary:(__n128)dictionary pose:(__n128)pose
 {
   v8 = a7;
   if (v8)
@@ -319,11 +319,11 @@
     v49 = *&v10;
     v45 = v12;
 
-    [a1 _logIntrinsicsForInternalBuilds:@"Original FaceKit" withLogPrefix:{v49, v47, v45}];
-    [a1 _iOSReferenceFocalLengthFor3DPointProjection];
+    [self _logIntrinsicsForInternalBuilds:@"Original FaceKit" withLogPrefix:{v49, v47, v45}];
+    [self _iOSReferenceFocalLengthFor3DPointProjection];
     v14 = v13;
     v16 = v15;
-    [a1 _iOSReferencePrincipalPointFor3DPointProjection];
+    [self _iOSReferencePrincipalPointFor3DPointProjection];
     v17 = v14;
     v18 = v17;
     v19 = v16;
@@ -337,7 +337,7 @@
 
     _Q2.i64[0] = __PAIR64__(LODWORD(v22), LODWORD(v21));
     v46 = _Q2;
-    [a1 _logIntrinsicsForInternalBuilds:@"targetIntrinsics" withLogPrefix:{COERCE_DOUBLE(LODWORD(v18)), v20}];
+    [self _logIntrinsicsForInternalBuilds:@"targetIntrinsics" withLogPrefix:{COERCE_DOUBLE(LODWORD(v18)), v20}];
     v28 = [v8 objectForKeyedSubscript:sub_100025BE8()];
     v29 = [v28 objectForKeyedSubscript:sub_100025A00()];
     AXMTMatrix3x3FromArray(v29);
@@ -349,8 +349,8 @@
     AXMTMatrix4x4FromRotationAndTranslation();
     v32 = 0;
     v56 = v33;
-    v57 = v34;
-    v58 = v35;
+    dictionaryCopy = v34;
+    poseCopy = v35;
     v59 = v36;
     v60 = 0u;
     v61 = 0u;
@@ -369,8 +369,8 @@
     v40 = v62;
     v41 = v63;
     v56 = a2;
-    v57 = a3;
-    v58 = a4;
+    dictionaryCopy = dictionary;
+    poseCopy = pose;
     v59 = a5;
     v60 = 0u;
     v61 = 0u;

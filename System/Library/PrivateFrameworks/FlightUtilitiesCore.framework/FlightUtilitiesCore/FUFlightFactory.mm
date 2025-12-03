@@ -1,17 +1,17 @@
 @interface FUFlightFactory
-+ (Class)flightFactoryClassWithProvider:(id)a3;
-+ (void)fetchUpdateForChannelId:(id)a3 completionHandler:(id)a4;
-+ (void)loadFlightWithIdentifier:(id)a3 completionHandler:(id)a4;
-+ (void)subscribeToUpdatesForFlightsWithNumber:(unint64_t)a3 airlineCode:(id)a4 date:(id)a5 completionHandler:(id)a6;
-+ (void)subscribeToUpdatesForFlightsWithNumber:(unint64_t)a3 airlineCode:(id)a4 date:(id)a5 updatesHandler:(id)a6 completionHandler:(id)a7;
++ (Class)flightFactoryClassWithProvider:(id)provider;
++ (void)fetchUpdateForChannelId:(id)id completionHandler:(id)handler;
++ (void)loadFlightWithIdentifier:(id)identifier completionHandler:(id)handler;
++ (void)subscribeToUpdatesForFlightsWithNumber:(unint64_t)number airlineCode:(id)code date:(id)date completionHandler:(id)handler;
++ (void)subscribeToUpdatesForFlightsWithNumber:(unint64_t)number airlineCode:(id)code date:(id)date updatesHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation FUFlightFactory
 
-+ (Class)flightFactoryClassWithProvider:(id)a3
++ (Class)flightFactoryClassWithProvider:(id)provider
 {
-  v3 = a3;
-  if (([v3 isEqualToString:@"FUFactoryProvider_Default"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"FUFactoryProvider_Parsec"))
+  providerCopy = provider;
+  if (([providerCopy isEqualToString:@"FUFactoryProvider_Default"] & 1) != 0 || objc_msgSend(providerCopy, "isEqualToString:", @"FUFactoryProvider_Parsec"))
   {
     v4 = objc_opt_class();
   }
@@ -24,24 +24,24 @@
   return v4;
 }
 
-+ (void)loadFlightWithIdentifier:(id)a3 completionHandler:(id)a4
++ (void)loadFlightWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (handlerCopy)
   {
-    if (!v6)
+    if (!identifierCopy)
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
 
-    v9 = [v6 componentsSeparatedByString:@"-"];
+    v9 = [identifierCopy componentsSeparatedByString:@"-"];
     if ([v9 count] == 5)
     {
       v10 = [v9 objectAtIndexedSubscript:0];
       v11 = [v9 objectAtIndexedSubscript:1];
-      v12 = [v11 integerValue];
+      integerValue = [v11 integerValue];
 
       v13 = +[FUFlight timeFormatterForIdentifier];
       v14 = [v9 objectAtIndexedSubscript:2];
@@ -53,7 +53,7 @@
       v16[3] = &unk_279012C30;
       v17 = v9;
       v18 = v8;
-      [a1 loadFlightsWithNumber:v12 airlineCode:v10 date:v15 dateType:1 completionHandler:v16];
+      [self loadFlightsWithNumber:integerValue airlineCode:v10 date:v15 dateType:1 completionHandler:v16];
     }
 
     else
@@ -197,36 +197,36 @@ LABEL_26:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)subscribeToUpdatesForFlightsWithNumber:(unint64_t)a3 airlineCode:(id)a4 date:(id)a5 updatesHandler:(id)a6 completionHandler:(id)a7
++ (void)subscribeToUpdatesForFlightsWithNumber:(unint64_t)number airlineCode:(id)code date:(id)date updatesHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a7;
+  completionHandlerCopy = completionHandler;
   NSLog(&cfstr_SubscriptionsN.isa);
-  if (v8)
+  if (completionHandlerCopy)
   {
     v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.FlightUtilities.QueryError" code:3 userInfo:0];
-    v8[2](v8, 0, v7);
+    completionHandlerCopy[2](completionHandlerCopy, 0, v7);
   }
 }
 
-+ (void)subscribeToUpdatesForFlightsWithNumber:(unint64_t)a3 airlineCode:(id)a4 date:(id)a5 completionHandler:(id)a6
++ (void)subscribeToUpdatesForFlightsWithNumber:(unint64_t)number airlineCode:(id)code date:(id)date completionHandler:(id)handler
 {
-  v7 = a6;
+  handlerCopy = handler;
   NSLog(&cfstr_SubscriptionsN.isa);
-  if (v7)
+  if (handlerCopy)
   {
     v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.FlightUtilities.QueryError" code:3 userInfo:0];
-    v7[2](v7, 0, v6);
+    handlerCopy[2](handlerCopy, 0, v6);
   }
 }
 
-+ (void)fetchUpdateForChannelId:(id)a3 completionHandler:(id)a4
++ (void)fetchUpdateForChannelId:(id)id completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   NSLog(&cfstr_FetchingUpdate.isa);
-  if (v5)
+  if (handlerCopy)
   {
     v4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.FlightUtilities.QueryError" code:3 userInfo:0];
-    v5[2](v5, 0, v4);
+    handlerCopy[2](handlerCopy, 0, v4);
   }
 }
 

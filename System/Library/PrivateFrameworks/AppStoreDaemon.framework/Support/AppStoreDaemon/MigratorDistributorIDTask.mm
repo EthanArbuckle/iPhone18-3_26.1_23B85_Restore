@@ -14,7 +14,7 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   sub_100141684();
   sub_100141C74();
 }

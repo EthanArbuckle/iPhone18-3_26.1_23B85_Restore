@@ -1,36 +1,36 @@
 @interface PGPlaybackState
-+ (id)defaultValueForKey:(id)a3;
++ (id)defaultValueForKey:(id)key;
 + (id)keysForEqualityOfNumberValues;
-- (BOOL)_BOOLForKey:(int64_t)a3;
+- (BOOL)_BOOLForKey:(int64_t)key;
 - (BOOL)hasInvalidTiming;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEquivalentToPlaybackState:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEquivalentToPlaybackState:(id)state;
 - (BOOL)supportsMicroPIP;
-- (PGPlaybackState)initWithDictionary:(id)a3;
+- (PGPlaybackState)initWithDictionary:(id)dictionary;
 - (PGPlaybackStatePrerollAttributes)prerollAttributes;
-- (double)_doubleForKey:(int64_t)a3;
+- (double)_doubleForKey:(int64_t)key;
 - (double)elapsedTime;
 - (double)normalizedProgress;
-- (id)_dictionaryForKey:(int64_t)a3;
-- (id)_numberForKey:(int64_t)a3;
-- (id)_stringForKey:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffFromPlaybackState:(id)a3;
+- (id)_dictionaryForKey:(int64_t)key;
+- (id)_numberForKey:(int64_t)key;
+- (id)_stringForKey:(int64_t)key;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffFromPlaybackState:(id)state;
 - (id)succinctDescription;
-- (int64_t)_integerForKey:(int64_t)a3;
+- (int64_t)_integerForKey:(int64_t)key;
 - (void)_ensureMutableDictionary;
-- (void)_setBool:(BOOL)a3 forKey:(int64_t)a4;
-- (void)_setDictionaryOrNotFound:(id)a3 forKey:(int64_t)a4;
-- (void)_setDouble:(double)a3 forKey:(int64_t)a4;
-- (void)_setInteger:(int64_t)a3 forKey:(int64_t)a4;
-- (void)_setStateValue:(id)a3 forKey:(int64_t)a4;
-- (void)appendDescriptionForKey:(int64_t)a3 value:(id)a4 toBuilder:(id)a5;
-- (void)setBackgroundAudioPolicy:(int64_t)a3;
-- (void)setPlaybackRate:(double)a3 elapsedTime:(double)a4 timeControlStatus:(int64_t)a5;
-- (void)setPrerollAttributes:(id)a3;
-- (void)updatePlaybackStateWithDiff:(id)a3;
+- (void)_setBool:(BOOL)bool forKey:(int64_t)key;
+- (void)_setDictionaryOrNotFound:(id)found forKey:(int64_t)key;
+- (void)_setDouble:(double)double forKey:(int64_t)key;
+- (void)_setInteger:(int64_t)integer forKey:(int64_t)key;
+- (void)_setStateValue:(id)value forKey:(int64_t)key;
+- (void)appendDescriptionForKey:(int64_t)key value:(id)value toBuilder:(id)builder;
+- (void)setBackgroundAudioPolicy:(int64_t)policy;
+- (void)setPlaybackRate:(double)rate elapsedTime:(double)time timeControlStatus:(int64_t)status;
+- (void)setPrerollAttributes:(id)attributes;
+- (void)updatePlaybackStateWithDiff:(id)diff;
 @end
 
 @implementation PGPlaybackState
@@ -86,8 +86,8 @@
 - (PGPlaybackStatePrerollAttributes)prerollAttributes
 {
   v3 = [(PGPlaybackState *)self _dictionaryForKey:9];
-  v4 = [(PGPlaybackStatePrerollAttributes *)self->_prerollAttributes dictionaryRepresentation];
-  v5 = [v3 isEqualToDictionary:v4];
+  dictionaryRepresentation = [(PGPlaybackStatePrerollAttributes *)self->_prerollAttributes dictionaryRepresentation];
+  v5 = [v3 isEqualToDictionary:dictionaryRepresentation];
 
   if ((v5 & 1) == 0)
   {
@@ -117,37 +117,37 @@ void __48__PGPlaybackState_keysForEqualityOfNumberValues__block_invoke()
   keysForEqualityOfNumberValues_keysForEquality = &unk_1F3959180;
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
-  v5 = [a3 integerValue];
-  if (v5 <= 8)
+  integerValue = [key integerValue];
+  if (integerValue <= 8)
   {
-    if (v5 > 4)
+    if (integerValue > 4)
     {
-      if ((v5 - 7) < 2)
+      if ((integerValue - 7) < 2)
       {
         return MEMORY[0x1E695E110];
       }
 
-      if (v5 == 5)
+      if (integerValue == 5)
       {
         return &unk_1F3959038;
       }
 
-      if (v5 != 6)
+      if (integerValue != 6)
       {
         goto LABEL_23;
       }
     }
 
-    else if ((v5 - 1) >= 2)
+    else if ((integerValue - 1) >= 2)
     {
-      if (v5 == 3)
+      if (integerValue == 3)
       {
         return &unk_1F3959038;
       }
 
-      if (v5 != 4)
+      if (integerValue != 4)
       {
         goto LABEL_23;
       }
@@ -156,11 +156,11 @@ void __48__PGPlaybackState_keysForEqualityOfNumberValues__block_invoke()
     return &unk_1F3959160;
   }
 
-  if (v5 > 1001)
+  if (integerValue > 1001)
   {
-    if ((v5 - 1003) >= 3)
+    if ((integerValue - 1003) >= 3)
     {
-      if (v5 == 1002 || v5 == 2001)
+      if (integerValue == 1002 || integerValue == 2001)
       {
         return MEMORY[0x1E695E118];
       }
@@ -171,18 +171,18 @@ void __48__PGPlaybackState_keysForEqualityOfNumberValues__block_invoke()
     return MEMORY[0x1E695E110];
   }
 
-  if (v5 > 10)
+  if (integerValue > 10)
   {
-    if (v5 != 11)
+    if (integerValue != 11)
     {
-      if (v5 == 1001)
+      if (integerValue == 1001)
       {
         return MEMORY[0x1E695E110];
       }
 
 LABEL_23:
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:a1 file:@"PGPlaybackState.m" lineNumber:114 description:@"No invalid key."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PGPlaybackState.m" lineNumber:114 description:@"No invalid key."];
 
       return 0;
     }
@@ -190,7 +190,7 @@ LABEL_23:
     return &unk_1F3959038;
   }
 
-  if (v5 != 9)
+  if (integerValue != 9)
   {
     return MEMORY[0x1E695E110];
   }
@@ -198,15 +198,15 @@ LABEL_23:
   return 0;
 }
 
-- (PGPlaybackState)initWithDictionary:(id)a3
+- (PGPlaybackState)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PGPlaybackState;
   v5 = [(PGPlaybackState *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mutableCopy];
+    v6 = [dictionaryCopy mutableCopy];
     mutableDictionary = v5->_mutableDictionary;
     v5->_mutableDictionary = v6;
   }
@@ -214,33 +214,33 @@ LABEL_23:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PGPlaybackState alloc];
-  v5 = [(PGPlaybackState *)self dictionaryRepresentation];
-  v6 = [(PGPlaybackState *)v4 initWithDictionary:v5];
+  dictionaryRepresentation = [(PGPlaybackState *)self dictionaryRepresentation];
+  v6 = [(PGPlaybackState *)v4 initWithDictionary:dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)updatePlaybackStateWithDiff:(id)a3
+- (void)updatePlaybackStateWithDiff:(id)diff
 {
-  if (a3)
+  if (diff)
   {
-    v4 = a3;
+    diffCopy = diff;
     [(PGPlaybackState *)self _ensureMutableDictionary];
-    v5 = [(PGPlaybackState *)self mutableDictionary];
-    [v5 addEntriesFromDictionary:v4];
+    mutableDictionary = [(PGPlaybackState *)self mutableDictionary];
+    [mutableDictionary addEntriesFromDictionary:diffCopy];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -248,21 +248,21 @@ LABEL_23:
     v5 = 0;
   }
 
-  v6 = [v5 dictionaryRepresentation];
+  dictionaryRepresentation = [v5 dictionaryRepresentation];
 
-  v7 = [(PGPlaybackState *)self dictionaryRepresentation];
-  v8 = [v6 isEqualToDictionary:v7];
+  dictionaryRepresentation2 = [(PGPlaybackState *)self dictionaryRepresentation];
+  v8 = [dictionaryRepresentation isEqualToDictionary:dictionaryRepresentation2];
 
   return v8;
 }
 
-- (BOOL)isEquivalentToPlaybackState:(id)a3
+- (BOOL)isEquivalentToPlaybackState:(id)state
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   [(PGPlaybackState *)self elapsedTime];
   v6 = v5;
-  [v4 elapsedTime];
+  [stateCopy elapsedTime];
   v8 = v6 - v7;
   v9 = -(v6 - v7);
   if (v8 >= 0.0)
@@ -281,8 +281,8 @@ LABEL_23:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v10 = +[PGPlaybackState keysForEqualityOfNumberValues];
-  v11 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  prerollAttributes = +[PGPlaybackState keysForEqualityOfNumberValues];
+  v11 = [prerollAttributes countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v11)
   {
     v12 = v11;
@@ -293,11 +293,11 @@ LABEL_23:
       {
         if (*v29 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(prerollAttributes);
         }
 
         v15 = *(*(&v28 + 1) + 8 * i);
-        v16 = [v4 _numberForKey:{objc_msgSend(v15, "integerValue")}];
+        v16 = [stateCopy _numberForKey:{objc_msgSend(v15, "integerValue")}];
         v17 = -[PGPlaybackState _numberForKey:](self, "_numberForKey:", [v15 integerValue]);
         v18 = [v16 isEqualToNumber:v17];
 
@@ -308,7 +308,7 @@ LABEL_23:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v12 = [prerollAttributes countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v12)
       {
         continue;
@@ -318,13 +318,13 @@ LABEL_23:
     }
   }
 
-  v10 = [v4 prerollAttributes];
-  v19 = [(PGPlaybackState *)self prerollAttributes];
-  v20 = v19;
-  if (v10 == v19)
+  prerollAttributes = [stateCopy prerollAttributes];
+  prerollAttributes2 = [(PGPlaybackState *)self prerollAttributes];
+  v20 = prerollAttributes2;
+  if (prerollAttributes == prerollAttributes2)
   {
     v21 = 1;
-    if (!v19)
+    if (!prerollAttributes2)
     {
       goto LABEL_27;
     }
@@ -332,7 +332,7 @@ LABEL_23:
 
   else
   {
-    v21 = [v10 isEqual:v19];
+    v21 = [prerollAttributes isEqual:prerollAttributes2];
     if (!v20)
     {
       goto LABEL_27;
@@ -370,11 +370,11 @@ LABEL_29:
   return v21;
 }
 
-- (id)diffFromPlaybackState:(id)a3
+- (id)diffFromPlaybackState:(id)state
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(PGPlaybackState *)self isEquivalentToPlaybackState:v4])
+  stateCopy = state;
+  if ([(PGPlaybackState *)self isEquivalentToPlaybackState:stateCopy])
   {
     v5 = 0;
     goto LABEL_30;
@@ -384,10 +384,10 @@ LABEL_29:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = [v4 dictionaryRepresentation];
-  v7 = [v6 allKeys];
+  dictionaryRepresentation = [stateCopy dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
 
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  v8 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (!v8)
   {
     v5 = 0;
@@ -397,7 +397,7 @@ LABEL_29:
   v9 = v8;
   v5 = 0;
   v10 = *v23;
-  v21 = v7;
+  v21 = allKeys;
   do
   {
     v11 = 0;
@@ -405,26 +405,26 @@ LABEL_29:
     {
       if (*v23 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(allKeys);
       }
 
       v12 = *(*(&v22 + 1) + 8 * v11);
-      v13 = [v12 integerValue];
-      v14 = v13;
-      if (v13 <= 0xB)
+      integerValue = [v12 integerValue];
+      v14 = integerValue;
+      if (integerValue <= 0xB)
       {
-        if (((1 << v13) & 0xDFE) != 0)
+        if (((1 << integerValue) & 0xDFE) != 0)
         {
           goto LABEL_17;
         }
 
-        if (v13 == 9)
+        if (integerValue == 9)
         {
-          v15 = [(PGPlaybackState *)self mutableDictionary];
-          v16 = [v15 objectForKeyedSubscript:v12];
+          mutableDictionary = [(PGPlaybackState *)self mutableDictionary];
+          v16 = [mutableDictionary objectForKeyedSubscript:v12];
 
-          v17 = [v4 mutableDictionary];
-          v18 = [v17 objectForKeyedSubscript:v12];
+          mutableDictionary2 = [stateCopy mutableDictionary];
+          v18 = [mutableDictionary2 objectForKeyedSubscript:v12];
 
           if (([v16 isEqual:v18] & 1) == 0)
           {
@@ -436,18 +436,18 @@ LABEL_29:
             [v5 setObject:v18 forKeyedSubscript:v12];
           }
 
-          v7 = v21;
+          allKeys = v21;
 LABEL_21:
 
           goto LABEL_22;
         }
       }
 
-      if (v13 - 1001 < 5 || v13 == 2001)
+      if (integerValue - 1001 < 5 || integerValue == 2001)
       {
 LABEL_17:
-        v16 = [(PGPlaybackState *)self _numberForKey:v13];
-        v18 = [v4 _numberForKey:v14];
+        v16 = [(PGPlaybackState *)self _numberForKey:integerValue];
+        v18 = [stateCopy _numberForKey:v14];
         if (([v16 isEqualToNumber:v18] & 1) == 0)
         {
           if (!v5)
@@ -466,7 +466,7 @@ LABEL_22:
     }
 
     while (v9 != v11);
-    v19 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v19 = [allKeys countByEnumeratingWithState:&v22 objects:v26 count:16];
     v9 = v19;
   }
 
@@ -480,13 +480,13 @@ LABEL_30:
 
 - (double)normalizedProgress
 {
-  v3 = [(PGPlaybackState *)self hasInvalidTiming];
+  hasInvalidTiming = [(PGPlaybackState *)self hasInvalidTiming];
   v4 = 1.0;
-  if (!v3)
+  if (!hasInvalidTiming)
   {
-    v5 = [(PGPlaybackState *)self contentType];
+    contentType = [(PGPlaybackState *)self contentType];
     v4 = 1.0;
-    if (v5 != 2)
+    if (contentType != 2)
     {
       [(PGPlaybackState *)self elapsedTime];
       v7 = v6;
@@ -500,13 +500,13 @@ LABEL_30:
 
 - (BOOL)hasInvalidTiming
 {
-  v3 = [(PGPlaybackState *)self contentType];
-  if (v3 > 5)
+  contentType = [(PGPlaybackState *)self contentType];
+  if (contentType > 5)
   {
     return 0;
   }
 
-  if (((1 << v3) & 0x39) != 0)
+  if (((1 << contentType) & 0x39) != 0)
   {
     return 1;
   }
@@ -522,33 +522,33 @@ LABEL_30:
   return 0;
 }
 
-- (void)setBackgroundAudioPolicy:(int64_t)a3
+- (void)setBackgroundAudioPolicy:(int64_t)policy
 {
   if (dyld_program_sdk_at_least())
   {
 
-    [(PGPlaybackState *)self _setInteger:a3 forKey:11];
+    [(PGPlaybackState *)self _setInteger:policy forKey:11];
   }
 }
 
-- (void)setPlaybackRate:(double)a3 elapsedTime:(double)a4 timeControlStatus:(int64_t)a5
+- (void)setPlaybackRate:(double)rate elapsedTime:(double)time timeControlStatus:(int64_t)status
 {
-  [(PGPlaybackState *)self _setInteger:a5 forKey:5];
-  [(PGPlaybackState *)self _setDouble:6 forKey:a3];
-  [(PGPlaybackState *)self _setDouble:1 forKey:fmax(a4, 0.0)];
+  [(PGPlaybackState *)self _setInteger:status forKey:5];
+  [(PGPlaybackState *)self _setDouble:6 forKey:rate];
+  [(PGPlaybackState *)self _setDouble:1 forKey:fmax(time, 0.0)];
   Current = CFAbsoluteTimeGetCurrent();
 
   [(PGPlaybackState *)self _setDouble:2 forKey:Current];
 }
 
-- (void)setPrerollAttributes:(id)a3
+- (void)setPrerollAttributes:(id)attributes
 {
-  v4 = [a3 dictionaryRepresentation];
-  v5 = v4;
+  dictionaryRepresentation = [attributes dictionaryRepresentation];
+  v5 = dictionaryRepresentation;
   v6 = &unk_1F3959050;
-  if (v4)
+  if (dictionaryRepresentation)
   {
-    v6 = v4;
+    v6 = dictionaryRepresentation;
   }
 
   v7 = v6;
@@ -566,11 +566,11 @@ LABEL_30:
   return _os_feature_enabled_impl();
 }
 
-- (id)_numberForKey:(int64_t)a3
+- (id)_numberForKey:(int64_t)key
 {
-  v4 = [(PGPlaybackState *)self mutableDictionary];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  mutableDictionary = [(PGPlaybackState *)self mutableDictionary];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:key];
+  v6 = [mutableDictionary objectForKeyedSubscript:v5];
   v7 = v6;
   if (v6)
   {
@@ -580,43 +580,43 @@ LABEL_30:
   else
   {
     v9 = objc_opt_class();
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:key];
     v8 = [v9 defaultValueForKey:v10];
   }
 
   return v8;
 }
 
-- (int64_t)_integerForKey:(int64_t)a3
+- (int64_t)_integerForKey:(int64_t)key
 {
-  v3 = [(PGPlaybackState *)self _numberForKey:a3];
-  v4 = [v3 integerValue];
+  v3 = [(PGPlaybackState *)self _numberForKey:key];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (double)_doubleForKey:(int64_t)a3
+- (double)_doubleForKey:(int64_t)key
 {
-  v3 = [(PGPlaybackState *)self _numberForKey:a3];
+  v3 = [(PGPlaybackState *)self _numberForKey:key];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (BOOL)_BOOLForKey:(int64_t)a3
+- (BOOL)_BOOLForKey:(int64_t)key
 {
-  v3 = [(PGPlaybackState *)self _numberForKey:a3];
-  v4 = [v3 BOOLValue];
+  v3 = [(PGPlaybackState *)self _numberForKey:key];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)_dictionaryForKey:(int64_t)a3
+- (id)_dictionaryForKey:(int64_t)key
 {
-  v4 = [(PGPlaybackState *)self mutableDictionary];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  mutableDictionary = [(PGPlaybackState *)self mutableDictionary];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:key];
+  v6 = [mutableDictionary objectForKeyedSubscript:v5];
   v7 = v6;
   if (v6)
   {
@@ -626,7 +626,7 @@ LABEL_30:
   else
   {
     v9 = objc_opt_class();
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:key];
     v8 = [v9 defaultValueForKey:v10];
   }
 
@@ -646,11 +646,11 @@ LABEL_30:
   return v11;
 }
 
-- (id)_stringForKey:(int64_t)a3
+- (id)_stringForKey:(int64_t)key
 {
-  v4 = [(PGPlaybackState *)self mutableDictionary];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  mutableDictionary = [(PGPlaybackState *)self mutableDictionary];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:key];
+  v6 = [mutableDictionary objectForKeyedSubscript:v5];
   v7 = v6;
   if (v6)
   {
@@ -660,7 +660,7 @@ LABEL_30:
   else
   {
     v9 = objc_opt_class();
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:key];
     v8 = [v9 defaultValueForKey:v10];
   }
 
@@ -680,69 +680,69 @@ LABEL_30:
   return v11;
 }
 
-- (void)_setInteger:(int64_t)a3 forKey:(int64_t)a4
+- (void)_setInteger:(int64_t)integer forKey:(int64_t)key
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [(PGPlaybackState *)self _setStateValue:v6 forKey:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:integer];
+  [(PGPlaybackState *)self _setStateValue:v6 forKey:key];
 }
 
-- (void)_setDouble:(double)a3 forKey:(int64_t)a4
+- (void)_setDouble:(double)double forKey:(int64_t)key
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [(PGPlaybackState *)self _setStateValue:v6 forKey:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:double];
+  [(PGPlaybackState *)self _setStateValue:v6 forKey:key];
 }
 
-- (void)_setBool:(BOOL)a3 forKey:(int64_t)a4
+- (void)_setBool:(BOOL)bool forKey:(int64_t)key
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-  [(PGPlaybackState *)self _setStateValue:v6 forKey:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:bool];
+  [(PGPlaybackState *)self _setStateValue:v6 forKey:key];
 }
 
-- (void)_setStateValue:(id)a3 forKey:(int64_t)a4
+- (void)_setStateValue:(id)value forKey:(int64_t)key
 {
-  v6 = a3;
+  valueCopy = value;
   [(PGPlaybackState *)self _ensureMutableDictionary];
-  v8 = [(PGPlaybackState *)self mutableDictionary];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v8 setObject:v6 forKeyedSubscript:v7];
+  mutableDictionary = [(PGPlaybackState *)self mutableDictionary];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:key];
+  [mutableDictionary setObject:valueCopy forKeyedSubscript:v7];
 }
 
-- (void)_setDictionaryOrNotFound:(id)a3 forKey:(int64_t)a4
+- (void)_setDictionaryOrNotFound:(id)found forKey:(int64_t)key
 {
-  v6 = a3;
+  foundCopy = found;
   [(PGPlaybackState *)self _ensureMutableDictionary];
-  v8 = [(PGPlaybackState *)self mutableDictionary];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v8 setObject:v6 forKeyedSubscript:v7];
+  mutableDictionary = [(PGPlaybackState *)self mutableDictionary];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:key];
+  [mutableDictionary setObject:foundCopy forKeyedSubscript:v7];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(PGPlaybackState *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(PGPlaybackState *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(PGPlaybackState *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(PGPlaybackState *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (void)appendDescriptionForKey:(int64_t)a3 value:(id)a4 toBuilder:(id)a5
+- (void)appendDescriptionForKey:(int64_t)key value:(id)value toBuilder:(id)builder
 {
-  v20 = a4;
-  v8 = a5;
-  if (a3 <= 8)
+  valueCopy = value;
+  builderCopy = builder;
+  if (key <= 8)
   {
-    if (a3 > 4)
+    if (key > 4)
     {
-      if (a3 > 6)
+      if (key > 6)
       {
-        if (a3 == 7)
+        if (key == 7)
         {
           v9 = @"Muted";
         }
@@ -753,21 +753,21 @@ LABEL_30:
         }
 
 LABEL_41:
-        v18 = [v8 appendBool:objc_msgSend(v20 withName:{"BOOLValue"), v9}];
+        v18 = [builderCopy appendBool:objc_msgSend(valueCopy withName:{"BOOLValue"), v9}];
         goto LABEL_49;
       }
 
-      if (a3 == 5)
+      if (key == 5)
       {
-        v16 = [v20 integerValue];
-        if (v16 >= 3)
+        integerValue = [valueCopy integerValue];
+        if (integerValue >= 3)
         {
           v14 = @"invalid";
         }
 
         else
         {
-          v14 = off_1E7F33418[v16];
+          v14 = off_1E7F33418[integerValue];
         }
 
         v19 = @"TimeControlStatus";
@@ -777,19 +777,19 @@ LABEL_41:
       v10 = @"PlaybackRate";
     }
 
-    else if (a3 > 2)
+    else if (key > 2)
     {
-      if (a3 == 3)
+      if (key == 3)
       {
-        v17 = [v20 integerValue];
-        if (v17 >= 6)
+        integerValue2 = [valueCopy integerValue];
+        if (integerValue2 >= 6)
         {
           v14 = @"invalid";
         }
 
         else
         {
-          v14 = off_1E7F333E8[v17];
+          v14 = off_1E7F333E8[integerValue2];
         }
 
         v19 = @"ContentType";
@@ -799,14 +799,14 @@ LABEL_41:
       v10 = @"ContentDuration";
     }
 
-    else if (a3 == 1)
+    else if (key == 1)
     {
       v10 = @"AnchorContentTime";
     }
 
     else
     {
-      if (a3 != 2)
+      if (key != 2)
       {
         goto LABEL_49;
       }
@@ -814,16 +814,16 @@ LABEL_41:
       v10 = @"AnchorWallTime";
     }
 
-    [v20 doubleValue];
-    v15 = [v8 appendDouble:v10 withName:2 decimalPrecision:?];
+    [valueCopy doubleValue];
+    v15 = [builderCopy appendDouble:v10 withName:2 decimalPrecision:?];
     goto LABEL_49;
   }
 
-  if (a3 > 1001)
+  if (key > 1001)
   {
-    if (a3 <= 1003)
+    if (key <= 1003)
     {
-      if (a3 == 1002)
+      if (key == 1002)
       {
         v9 = @"FaceTime-CameraActive";
       }
@@ -836,7 +836,7 @@ LABEL_41:
 
     else
     {
-      switch(a3)
+      switch(key)
       {
         case 1004:
           v9 = @"FaceTime-CanSwitchCamera";
@@ -855,13 +855,13 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  if (a3 <= 10)
+  if (key <= 10)
   {
-    if (a3 == 9)
+    if (key == 9)
     {
-      v11 = [(PGPlaybackState *)self prerollAttributes];
-      v12 = [v11 description];
-      [v8 appendString:v12 withName:@"PrerollAttributes" skipIfEmpty:1];
+      prerollAttributes = [(PGPlaybackState *)self prerollAttributes];
+      v12 = [prerollAttributes description];
+      [builderCopy appendString:v12 withName:@"PrerollAttributes" skipIfEmpty:1];
 
       goto LABEL_49;
     }
@@ -870,9 +870,9 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  if (a3 != 11)
+  if (key != 11)
   {
-    if (a3 != 1001)
+    if (key != 1001)
     {
       goto LABEL_49;
     }
@@ -881,27 +881,27 @@ LABEL_41:
     goto LABEL_41;
   }
 
-  v13 = [v20 integerValue];
-  if (v13 >= 4)
+  integerValue3 = [valueCopy integerValue];
+  if (integerValue3 >= 4)
   {
     v14 = @"invalid";
   }
 
   else
   {
-    v14 = off_1E7F33430[v13];
+    v14 = off_1E7F33430[integerValue3];
   }
 
   v19 = @"BackgroundAudioPolicy";
 LABEL_48:
-  [v8 appendString:v14 withName:v19];
+  [builderCopy appendString:v14 withName:v19];
 LABEL_49:
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(PGPlaybackState *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(PGPlaybackState *)self succinctDescriptionBuilder];
   v13.receiver = self;
   v13.super_class = PGPlaybackState;
   v6 = [(PGPlaybackState *)&v13 description];
@@ -909,10 +909,10 @@ LABEL_49:
   v10[1] = 3221225472;
   v10[2] = __57__PGPlaybackState_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_1E7F32508;
-  v7 = v5;
+  v7 = succinctDescriptionBuilder;
   v11 = v7;
-  v12 = self;
-  [v7 appendBodySectionWithName:v6 multilinePrefix:v4 block:v10];
+  selfCopy = self;
+  [v7 appendBodySectionWithName:v6 multilinePrefix:prefixCopy block:v10];
 
   v8 = v7;
   return v7;

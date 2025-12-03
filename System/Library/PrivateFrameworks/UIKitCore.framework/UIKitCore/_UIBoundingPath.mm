@@ -1,19 +1,19 @@
 @interface _UIBoundingPath
-- (CGRect)_inscribedRectInBoundingPathAndRect:(CGRect)a3 byInsettingRect:(CGRect)a4 onEdges:(unint64_t)a5 withOptions:(unint64_t)a6;
-- (CGRect)_inscribedRectInBoundingRect:(CGRect)a3 byInsettingRect:(CGRect)a4 onEdges:(unint64_t)a5;
-- (CGRect)_largestInscribedRectInBoundingPathAndRect:(CGRect)a3 withCenter:(CGPoint)a4 aspectRatio:(double)a5;
-- (CGRect)_largestInscribedRectInBoundingRect:(CGRect)a3 withCenter:(CGPoint)a4 aspectRatio:(double)a5;
-- (CGRect)_rectTuckedAgainstEdge:(unint64_t)a3 ofBoundingPathAndRect:(CGRect)a4 withSize:(double)a5 cornerRadii:(UIRectCornerRadii)a6 minimumPadding:(double)a7;
-- (CGRect)_rectTuckedAgainstEdge:(unint64_t)a3 ofBoundingRect:(CGRect)a4 withSize:(double)a5 minimumPadding:(double)a6;
-- (CGRect)_rectTuckedInCorner:(unint64_t)a3 ofBoundingPathAndRect:(CGRect)a4 withSize:(CGSize)a5 cornerRadii:(UIRectCornerRadii)a6 minimumPadding:(double)a7;
-- (CGRect)_rectTuckedInCorner:(unint64_t)a3 ofBoundingRect:(CGRect)a4 withSize:(CGSize)a5 minimumPadding:(double)a6;
+- (CGRect)_inscribedRectInBoundingPathAndRect:(CGRect)rect byInsettingRect:(CGRect)insettingRect onEdges:(unint64_t)edges withOptions:(unint64_t)options;
+- (CGRect)_inscribedRectInBoundingRect:(CGRect)rect byInsettingRect:(CGRect)insettingRect onEdges:(unint64_t)edges;
+- (CGRect)_largestInscribedRectInBoundingPathAndRect:(CGRect)rect withCenter:(CGPoint)center aspectRatio:(double)ratio;
+- (CGRect)_largestInscribedRectInBoundingRect:(CGRect)rect withCenter:(CGPoint)center aspectRatio:(double)ratio;
+- (CGRect)_rectTuckedAgainstEdge:(unint64_t)edge ofBoundingPathAndRect:(CGRect)rect withSize:(double)size cornerRadii:(UIRectCornerRadii)radii minimumPadding:(double)padding;
+- (CGRect)_rectTuckedAgainstEdge:(unint64_t)edge ofBoundingRect:(CGRect)rect withSize:(double)size minimumPadding:(double)padding;
+- (CGRect)_rectTuckedInCorner:(unint64_t)corner ofBoundingPathAndRect:(CGRect)rect withSize:(CGSize)size cornerRadii:(UIRectCornerRadii)radii minimumPadding:(double)padding;
+- (CGRect)_rectTuckedInCorner:(unint64_t)corner ofBoundingRect:(CGRect)rect withSize:(CGSize)size minimumPadding:(double)padding;
 - (UICoordinateSpace)coordinateSpace;
-- (UIEdgeInsets)_centerEdgeInsetsOfBoundingPathAndRect:(CGRect)a3;
-- (_UIBoundingPath)initWithCoder:(id)a3;
-- (_UIBoundingPath)initWithCoordinateSpace:(id)a3;
+- (UIEdgeInsets)_centerEdgeInsetsOfBoundingPathAndRect:(CGRect)rect;
+- (_UIBoundingPath)initWithCoder:(id)coder;
+- (_UIBoundingPath)initWithCoordinateSpace:(id)space;
 - (id)_imageRepresentation;
-- (id)boundingPathForCoordinateSpace:(id)a3;
-- (id)boundingPathForCoordinateSpace:(id)a3 withCornerRadii:(UIRectCornerRadii)a4 orientation:(int64_t)a5 scale:(double)a6;
+- (id)boundingPathForCoordinateSpace:(id)space;
+- (id)boundingPathForCoordinateSpace:(id)space withCornerRadii:(UIRectCornerRadii)radii orientation:(int64_t)orientation scale:(double)scale;
 @end
 
 @implementation _UIBoundingPath
@@ -25,56 +25,56 @@
   return WeakRetained;
 }
 
-- (_UIBoundingPath)initWithCoder:(id)a3
+- (_UIBoundingPath)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _UIBoundingPath;
   return [(_UIBoundingPath *)&v4 init];
 }
 
-- (_UIBoundingPath)initWithCoordinateSpace:(id)a3
+- (_UIBoundingPath)initWithCoordinateSpace:(id)space
 {
-  v5 = a3;
+  spaceCopy = space;
   v9.receiver = self;
   v9.super_class = _UIBoundingPath;
   v6 = [(_UIBoundingPath *)&v9 init];
   if (v6)
   {
-    if (!v5)
+    if (!spaceCopy)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:v6 file:@"_UIBoundingPath.m" lineNumber:181 description:{@"Invalid parameter not satisfying: %@", @"coordinateSpace != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"_UIBoundingPath.m" lineNumber:181 description:{@"Invalid parameter not satisfying: %@", @"coordinateSpace != nil"}];
     }
 
-    objc_storeWeak(&v6->_coordinateSpace, v5);
+    objc_storeWeak(&v6->_coordinateSpace, spaceCopy);
   }
 
   return v6;
 }
 
-- (id)boundingPathForCoordinateSpace:(id)a3
+- (id)boundingPathForCoordinateSpace:(id)space
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = NSStringFromSelector(a2);
-  [v5 handleFailureInMethod:a2 object:self file:@"_UIBoundingPath.m" lineNumber:196 description:{@"%@ must provide a concrete implementation of %@", v7, v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIBoundingPath.m" lineNumber:196 description:{@"%@ must provide a concrete implementation of %@", v7, v8}];
 
   return 0;
 }
 
-- (id)boundingPathForCoordinateSpace:(id)a3 withCornerRadii:(UIRectCornerRadii)a4 orientation:(int64_t)a5 scale:(double)a6
+- (id)boundingPathForCoordinateSpace:(id)space withCornerRadii:(UIRectCornerRadii)radii orientation:(int64_t)orientation scale:(double)scale
 {
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
   v11 = NSStringFromSelector(a2);
-  [v8 handleFailureInMethod:a2 object:self file:@"_UIBoundingPath.m" lineNumber:203 description:{@"%@ must provide a concrete implementation of %@", v10, v11}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIBoundingPath.m" lineNumber:203 description:{@"%@ must provide a concrete implementation of %@", v10, v11}];
 
   return 0;
 }
 
-- (CGRect)_inscribedRectInBoundingPathAndRect:(CGRect)a3 byInsettingRect:(CGRect)a4 onEdges:(unint64_t)a5 withOptions:(unint64_t)a6
+- (CGRect)_inscribedRectInBoundingPathAndRect:(CGRect)rect byInsettingRect:(CGRect)insettingRect onEdges:(unint64_t)edges withOptions:(unint64_t)options
 {
   v6 = *MEMORY[0x1E695F050];
   v7 = *(MEMORY[0x1E695F050] + 8);
@@ -87,7 +87,7 @@
   return result;
 }
 
-- (CGRect)_largestInscribedRectInBoundingPathAndRect:(CGRect)a3 withCenter:(CGPoint)a4 aspectRatio:(double)a5
+- (CGRect)_largestInscribedRectInBoundingPathAndRect:(CGRect)rect withCenter:(CGPoint)center aspectRatio:(double)ratio
 {
   v5 = *MEMORY[0x1E695F050];
   v6 = *(MEMORY[0x1E695F050] + 8);
@@ -100,7 +100,7 @@
   return result;
 }
 
-- (CGRect)_rectTuckedInCorner:(unint64_t)a3 ofBoundingPathAndRect:(CGRect)a4 withSize:(CGSize)a5 cornerRadii:(UIRectCornerRadii)a6 minimumPadding:(double)a7
+- (CGRect)_rectTuckedInCorner:(unint64_t)corner ofBoundingPathAndRect:(CGRect)rect withSize:(CGSize)size cornerRadii:(UIRectCornerRadii)radii minimumPadding:(double)padding
 {
   v7 = *MEMORY[0x1E695F050];
   v8 = *(MEMORY[0x1E695F050] + 8);
@@ -113,7 +113,7 @@
   return result;
 }
 
-- (CGRect)_rectTuckedAgainstEdge:(unint64_t)a3 ofBoundingPathAndRect:(CGRect)a4 withSize:(double)a5 cornerRadii:(UIRectCornerRadii)a6 minimumPadding:(double)a7
+- (CGRect)_rectTuckedAgainstEdge:(unint64_t)edge ofBoundingPathAndRect:(CGRect)rect withSize:(double)size cornerRadii:(UIRectCornerRadii)radii minimumPadding:(double)padding
 {
   v7 = *MEMORY[0x1E695F050];
   v8 = *(MEMORY[0x1E695F050] + 8);
@@ -126,24 +126,24 @@
   return result;
 }
 
-- (CGRect)_inscribedRectInBoundingRect:(CGRect)a3 byInsettingRect:(CGRect)a4 onEdges:(unint64_t)a5
+- (CGRect)_inscribedRectInBoundingRect:(CGRect)rect byInsettingRect:(CGRect)insettingRect onEdges:(unint64_t)edges
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.y;
-  v13 = a3.origin.x;
-  if (CGRectIsNull(a4))
+  edgesCopy = edges;
+  height = insettingRect.size.height;
+  width = insettingRect.size.width;
+  y = insettingRect.origin.y;
+  x = insettingRect.origin.x;
+  v10 = rect.size.height;
+  v11 = rect.size.width;
+  v12 = rect.origin.y;
+  v13 = rect.origin.x;
+  if (CGRectIsNull(insettingRect))
   {
     goto LABEL_12;
   }
 
   rect = v10;
-  if ((v5 & 2) != 0)
+  if ((edgesCopy & 2) != 0)
   {
     v27.origin.x = v13;
     v27.origin.y = v12;
@@ -157,10 +157,10 @@
     v17 = fmax(MinX - CGRectGetMinX(v28), 0.0);
     x = x + v17;
     width = width - v17;
-    if ((v5 & 8) == 0)
+    if ((edgesCopy & 8) == 0)
     {
 LABEL_4:
-      if ((v5 & 1) == 0)
+      if ((edgesCopy & 1) == 0)
       {
         goto LABEL_5;
       }
@@ -178,7 +178,7 @@ LABEL_9:
       v20 = fmax(MinY - CGRectGetMinY(v32), 0.0);
       y = y + v20;
       height = height - v20;
-      if ((v5 & 4) == 0)
+      if ((edgesCopy & 4) == 0)
       {
         goto LABEL_6;
       }
@@ -187,7 +187,7 @@ LABEL_9:
     }
   }
 
-  else if ((v5 & 8) == 0)
+  else if ((edgesCopy & 8) == 0)
   {
     goto LABEL_4;
   }
@@ -202,17 +202,17 @@ LABEL_9:
   v30.size.width = v11;
   v30.size.height = rect;
   width = width - fmax(MaxX - CGRectGetMaxX(v30), 0.0);
-  if (v5)
+  if (edgesCopy)
   {
     goto LABEL_9;
   }
 
 LABEL_5:
-  if ((v5 & 4) == 0)
+  if ((edgesCopy & 4) == 0)
   {
 LABEL_6:
     v14 = v11;
-    v15 = rect;
+    rectCopy2 = rect;
     goto LABEL_11;
   }
 
@@ -226,14 +226,14 @@ LABEL_10:
   v34.origin.y = v12;
   v34.size.width = v11;
   v14 = v11;
-  v15 = rect;
+  rectCopy2 = rect;
   v34.size.height = rect;
   height = height - fmax(MaxY - CGRectGetMaxY(v34), 0.0);
 LABEL_11:
   v35.origin.x = v13;
   v35.origin.y = v12;
   v35.size.width = v14;
-  v35.size.height = v15;
+  v35.size.height = rectCopy2;
   v37.origin.x = x;
   v37.origin.y = y;
   v37.size.width = width;
@@ -258,9 +258,9 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)_largestInscribedRectInBoundingRect:(CGRect)a3 withCenter:(CGPoint)a4 aspectRatio:(double)a5
+- (CGRect)_largestInscribedRectInBoundingRect:(CGRect)rect withCenter:(CGPoint)center aspectRatio:(double)ratio
 {
-  _UIBoundingPathLargestInscribedRectWithAspectRatioAndCenter(a5, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a4.x, a4.y);
+  _UIBoundingPathLargestInscribedRectWithAspectRatioAndCenter(ratio, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, center.x, center.y);
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -268,15 +268,15 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)_rectTuckedInCorner:(unint64_t)a3 ofBoundingRect:(CGRect)a4 withSize:(CGSize)a5 minimumPadding:(double)a6
+- (CGRect)_rectTuckedInCorner:(unint64_t)corner ofBoundingRect:(CGRect)rect withSize:(CGSize)size minimumPadding:(double)padding
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a4.size.height;
-  v10 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (CGRectIsNull(a4) || (v62.origin.x = x, v62.origin.y = y, v62.size.width = v10, v62.size.height = v9, v63 = CGRectInset(v62, a6, a6), v45 = v63.origin.y, v63.size.width < 0.0) || v63.size.height < 0.0)
+  height = size.height;
+  width = size.width;
+  v9 = rect.size.height;
+  v10 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CGRectIsNull(rect) || (v62.origin.x = x, v62.origin.y = y, v62.size.width = v10, v62.size.height = v9, v63 = CGRectInset(v62, padding, padding), v45 = v63.origin.y, v63.size.width < 0.0) || v63.size.height < 0.0)
   {
     v14 = *MEMORY[0x1E695F050];
     v15 = *(MEMORY[0x1E695F050] + 8);
@@ -288,7 +288,7 @@ LABEL_12:
   v18 = v63.origin.x;
   v19 = v63.size.width;
   rect = v63.size.height;
-  v20 = _UIDirectionVectorForCorner(a3);
+  v20 = _UIDirectionVectorForCorner(corner);
   v56 = 0;
   v57 = &v56;
   v58 = 0x4010000000;
@@ -299,9 +299,9 @@ LABEL_12:
   v42 = v20;
   v43 = v18;
   v41 = v22;
-  if (a3 > 3)
+  if (corner > 3)
   {
-    if (a3 == 4)
+    if (corner == 4)
     {
       v68.origin.x = x;
       v68.origin.y = y;
@@ -312,7 +312,7 @@ LABEL_12:
 
     else
     {
-      if (a3 != 8)
+      if (corner != 8)
       {
         goto LABEL_12;
       }
@@ -332,7 +332,7 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  if (a3 == 1)
+  if (corner == 1)
   {
     v66.origin.x = x;
     v66.origin.y = y;
@@ -342,12 +342,12 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  if (a3 != 2)
+  if (corner != 2)
   {
 LABEL_12:
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"CGRect _rectWithSizeInCornerOfBoundingRect(const CGSize, const UIRectCorner, const CGRect)"}];
-    [v24 handleFailureInFunction:v25 file:@"_UIBoundingPath.m" lineNumber:319 description:{@"Invalid UIRectCorner value (%ld)", a3}];
+    [currentHandler handleFailureInFunction:v25 file:@"_UIBoundingPath.m" lineNumber:319 description:{@"Invalid UIRectCorner value (%ld)", corner}];
 
     MinX = v21->f64[0];
     MinY = v21->f64[1];
@@ -385,7 +385,7 @@ LABEL_18:
   v52 = v43;
   v53 = v45;
   v54 = v19;
-  v55 = rect;
+  rectCopy = rect;
   __78___UIBoundingPath__rectTuckedInCorner_ofBoundingRect_withSize_minimumPadding___block_invoke(v46, v57[2].f64[0], v57[2].f64[1]);
   if (width > 0.0 || height > 0.0)
   {
@@ -427,13 +427,13 @@ LABEL_26:
   return result;
 }
 
-- (CGRect)_rectTuckedAgainstEdge:(unint64_t)a3 ofBoundingRect:(CGRect)a4 withSize:(double)a5 minimumPadding:(double)a6
+- (CGRect)_rectTuckedAgainstEdge:(unint64_t)edge ofBoundingRect:(CGRect)rect withSize:(double)size minimumPadding:(double)padding
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  if (CGRectIsNull(a4))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CGRectIsNull(rect))
   {
     goto LABEL_2;
   }
@@ -442,7 +442,7 @@ LABEL_26:
   v27.origin.y = y;
   v27.size.width = width;
   v27.size.height = height;
-  v28 = CGRectInset(v27, a6, a6);
+  v28 = CGRectInset(v27, padding, padding);
   if (v28.size.width < 0.0)
   {
     goto LABEL_2;
@@ -457,23 +457,23 @@ LABEL_26:
   v23 = v28.origin.x;
   v24 = v28.origin.y;
   v25 = v28.size.width;
-  if (a3 > 3)
+  if (edge > 3)
   {
-    if (a3 != 4)
+    if (edge != 4)
     {
-      if (a3 == 8)
+      if (edge == 8)
       {
-        MinX = CGRectGetMaxX(v28) - a5;
+        MinX = CGRectGetMaxX(v28) - size;
         goto LABEL_13;
       }
 
 LABEL_14:
-      a5 = *(MEMORY[0x1E695F050] + 16);
-      v17 = *(MEMORY[0x1E695F050] + 24);
+      size = *(MEMORY[0x1E695F050] + 16);
+      sizeCopy = *(MEMORY[0x1E695F050] + 24);
       MinX = *MEMORY[0x1E695F050];
       MinY = *(MEMORY[0x1E695F050] + 8);
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v26 handleFailureInMethod:a2 object:self file:@"_UIBoundingPath.m" lineNumber:403 description:{@"Invalid UIRectEdge value (%ld)", a3}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIBoundingPath.m" lineNumber:403 description:{@"Invalid UIRectEdge value (%ld)", edge}];
 
       goto LABEL_18;
     }
@@ -483,18 +483,18 @@ LABEL_14:
     v32.origin.y = v24;
     v32.size.width = v25;
     v32.size.height = v22;
-    MinY = CGRectGetMaxY(v32) - a5;
+    MinY = CGRectGetMaxY(v32) - size;
 LABEL_17:
     v33.origin.x = v23;
     v33.origin.y = v24;
     v33.size.width = v25;
     v33.size.height = v22;
-    v17 = a5;
-    a5 = CGRectGetWidth(v33);
+    sizeCopy = size;
+    size = CGRectGetWidth(v33);
     goto LABEL_18;
   }
 
-  if (a3 == 1)
+  if (edge == 1)
   {
     MinX = CGRectGetMinX(v28);
     v31.origin.x = v23;
@@ -505,7 +505,7 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (a3 != 2)
+  if (edge != 2)
   {
     goto LABEL_14;
   }
@@ -521,33 +521,33 @@ LABEL_13:
   v30.origin.y = v24;
   v30.size.width = v25;
   v30.size.height = v22;
-  v17 = CGRectGetHeight(v30);
+  sizeCopy = CGRectGetHeight(v30);
 LABEL_18:
   v34.origin.x = MinX;
   v34.origin.y = MinY;
-  v34.size.width = a5;
-  v34.size.height = v17;
-  if (CGRectIsNull(v34) || (v35.origin.x = v23, v35.origin.y = v24, v35.size.width = v25, v35.size.height = v22, v36 = CGRectInset(v35, -0.01, -0.01), v38.origin.x = MinX, v38.origin.y = MinY, v38.size.width = a5, v38.size.height = v17, !CGRectContainsRect(v36, v38)))
+  v34.size.width = size;
+  v34.size.height = sizeCopy;
+  if (CGRectIsNull(v34) || (v35.origin.x = v23, v35.origin.y = v24, v35.size.width = v25, v35.size.height = v22, v36 = CGRectInset(v35, -0.01, -0.01), v38.origin.x = MinX, v38.origin.y = MinY, v38.size.width = size, v38.size.height = sizeCopy, !CGRectContainsRect(v36, v38)))
   {
 LABEL_2:
     MinX = *MEMORY[0x1E695F050];
     MinY = *(MEMORY[0x1E695F050] + 8);
-    a5 = *(MEMORY[0x1E695F050] + 16);
-    v17 = *(MEMORY[0x1E695F050] + 24);
+    size = *(MEMORY[0x1E695F050] + 16);
+    sizeCopy = *(MEMORY[0x1E695F050] + 24);
   }
 
   v18 = MinX;
   v19 = MinY;
-  v20 = a5;
-  v21 = v17;
+  sizeCopy2 = size;
+  v21 = sizeCopy;
   result.size.height = v21;
-  result.size.width = v20;
+  result.size.width = sizeCopy2;
   result.origin.y = v19;
   result.origin.x = v18;
   return result;
 }
 
-- (UIEdgeInsets)_centerEdgeInsetsOfBoundingPathAndRect:(CGRect)a3
+- (UIEdgeInsets)_centerEdgeInsetsOfBoundingPathAndRect:(CGRect)rect
 {
   v3 = 0.0;
   v4 = 0.0;

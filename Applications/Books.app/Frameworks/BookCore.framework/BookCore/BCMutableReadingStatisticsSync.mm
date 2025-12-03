@@ -1,17 +1,17 @@
 @interface BCMutableReadingStatisticsSync
-- (BCMutableReadingStatisticsSync)initWithAssetID:(id)a3;
-- (BCMutableReadingStatisticsSync)initWithCloudData:(id)a3;
-- (BCMutableReadingStatisticsSync)initWithRecord:(id)a3;
+- (BCMutableReadingStatisticsSync)initWithAssetID:(id)d;
+- (BCMutableReadingStatisticsSync)initWithCloudData:(id)data;
+- (BCMutableReadingStatisticsSync)initWithRecord:(id)record;
 - (NSString)debugDescription;
 - (id)configuredRecordFromAttributes;
 @end
 
 @implementation BCMutableReadingStatisticsSync
 
-- (BCMutableReadingStatisticsSync)initWithAssetID:(id)a3
+- (BCMutableReadingStatisticsSync)initWithAssetID:(id)d
 {
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     v7 = BCCloudKitLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -28,7 +28,7 @@
   v5 = [(BCMutableReadingStatisticsSync *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     self = *(v5 + 1);
     *(v5 + 1) = v6;
 LABEL_7:
@@ -37,31 +37,31 @@ LABEL_7:
   return v5;
 }
 
-- (BCMutableReadingStatisticsSync)initWithCloudData:(id)a3
+- (BCMutableReadingStatisticsSync)initWithCloudData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v18.receiver = self;
   v18.super_class = BCMutableReadingStatisticsSync;
-  v5 = [(BCMutableReadingStatisticsSync *)&v18 initWithCloudData:v4];
+  v5 = [(BCMutableReadingStatisticsSync *)&v18 initWithCloudData:dataCopy];
   if (v5)
   {
     v6 = BUProtocolCast();
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 assetID];
-      v9 = [v8 copy];
+      assetID = [v6 assetID];
+      v9 = [assetID copy];
       assetID = v5->_assetID;
       v5->_assetID = v9;
 
-      v11 = [v7 assetVersion];
-      v12 = [v11 copy];
+      assetVersion = [v7 assetVersion];
+      v12 = [assetVersion copy];
       assetVersion = v5->_assetVersion;
       v5->_assetVersion = v12;
 
-      v14 = [v7 readingStatisticsBook];
+      readingStatisticsBook = [v7 readingStatisticsBook];
       readingStatisticsBook = v5->_readingStatisticsBook;
-      v5->_readingStatisticsBook = v14;
+      v5->_readingStatisticsBook = readingStatisticsBook;
     }
 
     else
@@ -80,13 +80,13 @@ LABEL_7:
   return v5;
 }
 
-- (BCMutableReadingStatisticsSync)initWithRecord:(id)a3
+- (BCMutableReadingStatisticsSync)initWithRecord:(id)record
 {
-  v4 = a3;
-  if (!v4)
+  recordCopy = record;
+  if (!recordCopy)
   {
-    v11 = BCCloudKitLog();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    fileURL = BCCloudKitLog();
+    if (os_log_type_enabled(fileURL, OS_LOG_TYPE_ERROR))
     {
       sub_1E8D54();
     }
@@ -97,25 +97,25 @@ LABEL_7:
 
   v15.receiver = self;
   v15.super_class = BCMutableReadingStatisticsSync;
-  v5 = [(BCMutableReadingStatisticsSync *)&v15 initWithRecord:v4];
+  v5 = [(BCMutableReadingStatisticsSync *)&v15 initWithRecord:recordCopy];
   if (v5)
   {
-    v6 = [BCCloudData localIdentifierFromRecord:v4];
+    v6 = [BCCloudData localIdentifierFromRecord:recordCopy];
     assetID = v5->_assetID;
     v5->_assetID = v6;
 
-    v8 = [v4 objectForKey:@"assetVersion"];
+    v8 = [recordCopy objectForKey:@"assetVersion"];
     assetVersion = v5->_assetVersion;
     v5->_assetVersion = v8;
 
     objc_opt_class();
-    v10 = [v4 objectForKey:@"assetStatistics"];
+    v10 = [recordCopy objectForKey:@"assetStatistics"];
     self = BUDynamicCast();
 
-    v11 = [(BCMutableReadingStatisticsSync *)self fileURL];
-    if (v11)
+    fileURL = [(BCMutableReadingStatisticsSync *)self fileURL];
+    if (fileURL)
     {
-      v12 = [NSData dataWithContentsOfURL:v11];
+      v12 = [NSData dataWithContentsOfURL:fileURL];
       p_super = &v5->_readingStatisticsBook->super;
       v5->_readingStatisticsBook = v12;
     }
@@ -137,10 +137,10 @@ LABEL_11:
 
 - (NSString)debugDescription
 {
-  v3 = [(BCMutableReadingStatisticsSync *)self assetID];
-  v4 = [(BCMutableReadingStatisticsSync *)self assetVersion];
-  v5 = [(BCMutableReadingStatisticsSync *)self readingStatisticsBook];
-  v6 = [NSString stringWithFormat:@"assetID: %@, assetVersion: %@, statistics: %@", v3, v4, v5];
+  assetID = [(BCMutableReadingStatisticsSync *)self assetID];
+  assetVersion = [(BCMutableReadingStatisticsSync *)self assetVersion];
+  readingStatisticsBook = [(BCMutableReadingStatisticsSync *)self readingStatisticsBook];
+  v6 = [NSString stringWithFormat:@"assetID: %@, assetVersion: %@, statistics: %@", assetID, assetVersion, readingStatisticsBook];
 
   return v6;
 }
@@ -149,21 +149,21 @@ LABEL_11:
 {
   v12.receiver = self;
   v12.super_class = BCMutableReadingStatisticsSync;
-  v3 = [(BCMutableReadingStatisticsSync *)&v12 configuredRecordFromAttributes];
-  v4 = [(BCMutableReadingStatisticsSync *)self assetVersion];
-  [v3 setObject:v4 forKey:@"assetVersion"];
+  configuredRecordFromAttributes = [(BCMutableReadingStatisticsSync *)&v12 configuredRecordFromAttributes];
+  assetVersion = [(BCMutableReadingStatisticsSync *)self assetVersion];
+  [configuredRecordFromAttributes setObject:assetVersion forKey:@"assetVersion"];
 
   v5 = +[BCReadingStatisticsSyncManager sharedInstance];
-  v6 = [(BCMutableReadingStatisticsSync *)self assetID];
-  v7 = [v5 fileURLForCachingCKAssetWithAssetID:v6];
+  assetID = [(BCMutableReadingStatisticsSync *)self assetID];
+  v7 = [v5 fileURLForCachingCKAssetWithAssetID:assetID];
 
-  v8 = [(BCMutableReadingStatisticsSync *)self readingStatisticsBook];
-  LODWORD(v5) = [v8 writeToURL:v7 atomically:1];
+  readingStatisticsBook = [(BCMutableReadingStatisticsSync *)self readingStatisticsBook];
+  LODWORD(v5) = [readingStatisticsBook writeToURL:v7 atomically:1];
 
   if (v5)
   {
     v9 = [[CKAsset alloc] initWithFileURL:v7];
-    [v3 setObject:v9 forKey:@"assetStatistics"];
+    [configuredRecordFromAttributes setObject:v9 forKey:@"assetStatistics"];
   }
 
   else
@@ -174,10 +174,10 @@ LABEL_11:
       sub_1E8D90();
     }
 
-    [v3 setObject:0 forKey:@"assetStatistics"];
+    [configuredRecordFromAttributes setObject:0 forKey:@"assetStatistics"];
   }
 
-  return v3;
+  return configuredRecordFromAttributes;
 }
 
 @end

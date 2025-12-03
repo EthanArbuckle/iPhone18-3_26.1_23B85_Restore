@@ -9,11 +9,11 @@
 
 - (uint64_t)aa_appearsToBeEmail
 {
-  result = [a1 length];
+  result = [self length];
   if (result)
   {
 
-    return [a1 _appearsToBeEmail];
+    return [self _appearsToBeEmail];
   }
 
   return result;
@@ -34,11 +34,11 @@
 - (uint64_t)aa_appearsToBePhoneNumber
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [a1 length];
+  v2 = [self length];
   if (v2)
   {
-    v3 = [a1 _phoneNumberDetector];
-    v4 = [v3 matchesInString:a1 options:0 range:{0, v2}];
+    _phoneNumberDetector = [self _phoneNumberDetector];
+    v4 = [_phoneNumberDetector matchesInString:self options:0 range:{0, v2}];
 
     v12 = 0u;
     v13 = 0u;

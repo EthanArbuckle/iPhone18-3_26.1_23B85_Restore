@@ -1,8 +1,8 @@
 @interface RBSStateCaptureSet
 - (NSSet)itemsCopy;
 - (RBSStateCaptureSet)init;
-- (void)addItem:(id)a3;
-- (void)removeItem:(id)a3;
+- (void)addItem:(id)item;
+- (void)removeItem:(id)item;
 @end
 
 @implementation RBSStateCaptureSet
@@ -22,12 +22,12 @@
   return v2;
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 captureState];
-  v6 = [v5 length];
+  itemCopy = item;
+  captureState = [itemCopy captureState];
+  v6 = [captureState length];
 
   os_unfair_lock_assert_owner(&_stateCaptureLock);
   v19 = 0u;
@@ -80,15 +80,15 @@ LABEL_15:
   }
 
 LABEL_16:
-  [(RBSStateCaptureSetSegment *)v10 addItem:v4 withLength:v6, v17];
+  [(RBSStateCaptureSetSegment *)v10 addItem:itemCopy withLength:v6, v17];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeItem:(id)a3
+- (void)removeItem:(id)item
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   os_unfair_lock_assert_owner(&_stateCaptureLock);
   v22 = 0u;
   v23 = 0u;
@@ -110,7 +110,7 @@ LABEL_3:
       }
 
       v10 = *(*(&v20 + 1) + 8 * v9);
-      if ([v10 containsItem:{v4, v20}])
+      if ([v10 containsItem:{itemCopy, v20}])
       {
         break;
       }
@@ -134,7 +134,7 @@ LABEL_3:
       goto LABEL_13;
     }
 
-    [v11 removeItem:v4];
+    [v11 removeItem:itemCopy];
     if (![v11 count])
     {
       [(NSMutableSet *)self->_stateCaptureSegments removeObject:v11];
@@ -149,7 +149,7 @@ LABEL_13:
     v12 = rbs_general_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(RBSStateCaptureSet *)v4 removeItem:v12, v13, v14, v15, v16, v17, v18];
+      [(RBSStateCaptureSet *)itemCopy removeItem:v12, v13, v14, v15, v16, v17, v18];
     }
 
     v11 = 0;
@@ -182,9 +182,9 @@ LABEL_13:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) items];
-        v10 = [v9 allObjects];
-        [v3 addObjectsFromArray:v10];
+        items = [*(*(&v13 + 1) + 8 * i) items];
+        allObjects = [items allObjects];
+        [v3 addObjectsFromArray:allObjects];
       }
 
       v6 = [(NSMutableSet *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];

@@ -1,14 +1,14 @@
 @interface IDSRegistrationControlDaemonResponseListener
-- (IDSRegistrationControlDaemonResponseListener)initWithRequestTimer:(id)a3;
-- (void)registrationControlResponseForRequestID:(id)a3 withError:(id)a4;
-- (void)registrationControlStatusResponseForRequestID:(int64_t)a3 requestID:(id)a4 withError:(id)a5;
+- (IDSRegistrationControlDaemonResponseListener)initWithRequestTimer:(id)timer;
+- (void)registrationControlResponseForRequestID:(id)d withError:(id)error;
+- (void)registrationControlStatusResponseForRequestID:(int64_t)d requestID:(id)iD withError:(id)error;
 @end
 
 @implementation IDSRegistrationControlDaemonResponseListener
 
-- (IDSRegistrationControlDaemonResponseListener)initWithRequestTimer:(id)a3
+- (IDSRegistrationControlDaemonResponseListener)initWithRequestTimer:(id)timer
 {
-  v5 = a3;
+  timerCopy = timer;
   if (_IDSRunningInDaemon())
   {
     v6 = +[IDSLogging general];
@@ -17,7 +17,7 @@
       sub_195B268D8(self, v6);
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -28,26 +28,26 @@
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_requestTimer, a3);
+      objc_storeStrong(&v8->_requestTimer, timer);
     }
 
     self = v9;
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)registrationControlResponseForRequestID:(id)a3 withError:(id)a4
+- (void)registrationControlResponseForRequestID:(id)d withError:(id)error
 {
-  v6 = a4;
-  v7 = [(IDSDaemonRequestTimer *)self->_requestTimer invalidateTimeoutAndReturnHandlerForRequestID:a3];
-  v8 = [v7 block];
-  v9 = [v7 queue];
-  v10 = v9;
-  if (v8)
+  errorCopy = error;
+  v7 = [(IDSDaemonRequestTimer *)self->_requestTimer invalidateTimeoutAndReturnHandlerForRequestID:d];
+  block = [v7 block];
+  queue = [v7 queue];
+  v10 = queue;
+  if (block)
   {
-    v11 = v9 == 0;
+    v11 = queue == 0;
   }
 
   else
@@ -61,29 +61,29 @@
     v12[1] = 3221225472;
     v12[2] = sub_195A5FE18;
     v12[3] = &unk_1E743EAA8;
-    v13 = v6;
-    v14 = v8;
+    v13 = errorCopy;
+    v14 = block;
     dispatch_async(v10, v12);
   }
 }
 
-- (void)registrationControlStatusResponseForRequestID:(int64_t)a3 requestID:(id)a4 withError:(id)a5
+- (void)registrationControlStatusResponseForRequestID:(int64_t)d requestID:(id)iD withError:(id)error
 {
-  v8 = a5;
-  v9 = [(IDSDaemonRequestTimer *)self->_requestTimer invalidateTimeoutAndReturnHandlerForRequestID:a4];
-  v10 = [v9 block];
-  v11 = [v9 queue];
-  v12 = [v9 isSync];
-  if (v10)
+  errorCopy = error;
+  v9 = [(IDSDaemonRequestTimer *)self->_requestTimer invalidateTimeoutAndReturnHandlerForRequestID:iD];
+  block = [v9 block];
+  queue = [v9 queue];
+  isSync = [v9 isSync];
+  if (block)
   {
-    v13 = v12;
+    v13 = isSync;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = sub_195A5FF6C;
     v16[3] = &unk_1E743FA98;
-    v17 = v8;
-    v18 = v10;
-    v19 = a3;
+    v17 = errorCopy;
+    v18 = block;
+    dCopy = d;
     v14 = MEMORY[0x19A8BBEF0](v16);
     v15 = v14;
     if (v13)
@@ -91,9 +91,9 @@
       v14[2](v14);
     }
 
-    else if (v11)
+    else if (queue)
     {
-      dispatch_async(v11, v14);
+      dispatch_async(queue, v14);
     }
   }
 }

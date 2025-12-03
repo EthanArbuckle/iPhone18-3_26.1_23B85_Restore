@@ -1,15 +1,15 @@
 @interface BRFieldUserIdentity
 + (id)unknownPersonNameComponents;
-- (BOOL)isEqual:(id)a3;
-- (BRFieldUserIdentity)initWithCKUserIdentity:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BRFieldUserIdentity)initWithCKUserIdentity:(id)identity;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)nameComponentsAcceptUnknownUser:(BOOL)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setNameComponents:(id)a3;
-- (void)writeTo:(id)a3;
+- (id)nameComponentsAcceptUnknownUser:(BOOL)user;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setNameComponents:(id)components;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BRFieldUserIdentity
@@ -20,26 +20,26 @@
   v8.receiver = self;
   v8.super_class = BRFieldUserIdentity;
   v4 = [(BRFieldUserIdentity *)&v8 description];
-  v5 = [(BRFieldUserIdentity *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BRFieldUserIdentity *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   serializedNameComponents = self->_serializedNameComponents;
   if (serializedNameComponents)
   {
-    [v3 setObject:serializedNameComponents forKey:@"serializedNameComponents"];
+    [dictionary setObject:serializedNameComponents forKey:@"serializedNameComponents"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (self->_serializedNameComponents)
   {
@@ -47,32 +47,32 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   serializedNameComponents = self->_serializedNameComponents;
   if (serializedNameComponents)
   {
-    [a3 setSerializedNameComponents:serializedNameComponents];
+    [to setSerializedNameComponents:serializedNameComponents];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_serializedNameComponents copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_serializedNameComponents copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     serializedNameComponents = self->_serializedNameComponents;
-    if (serializedNameComponents | v4[1])
+    if (serializedNameComponents | equalCopy[1])
     {
       v6 = [(NSData *)serializedNameComponents isEqual:?];
     }
@@ -91,32 +91,32 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(BRFieldUserIdentity *)self setSerializedNameComponents:?];
   }
 }
 
-- (BRFieldUserIdentity)initWithCKUserIdentity:(id)a3
+- (BRFieldUserIdentity)initWithCKUserIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v8.receiver = self;
   v8.super_class = BRFieldUserIdentity;
   v5 = [(BRFieldUserIdentity *)&v8 init];
   if (v5)
   {
-    v6 = [v4 nameComponents];
-    [(BRFieldUserIdentity *)v5 setNameComponents:v6];
+    nameComponents = [identityCopy nameComponents];
+    [(BRFieldUserIdentity *)v5 setNameComponents:nameComponents];
   }
 
   return v5;
 }
 
-- (void)setNameComponents:(id)a3
+- (void)setNameComponents:(id)components
 {
-  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:1 error:0];
+  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:components requiringSecureCoding:1 error:0];
   [(BRFieldUserIdentity *)self setSerializedNameComponents:v4];
 }
 
@@ -130,16 +130,16 @@
   return v2;
 }
 
-- (id)nameComponentsAcceptUnknownUser:(BOOL)a3
+- (id)nameComponentsAcceptUnknownUser:(BOOL)user
 {
-  v3 = a3;
+  userCopy = user;
   if ([(BRFieldUserIdentity *)self hasSerializedNameComponents])
   {
-    v5 = [(BRFieldUserIdentity *)self serializedNameComponents];
-    v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:0];
+    serializedNameComponents = [(BRFieldUserIdentity *)self serializedNameComponents];
+    v6 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:serializedNameComponents error:0];
   }
 
-  else if (v3)
+  else if (userCopy)
   {
     v6 = +[BRFieldUserIdentity unknownPersonNameComponents];
   }

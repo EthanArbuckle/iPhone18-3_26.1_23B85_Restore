@@ -31,7 +31,7 @@
     goto LABEL_22;
   }
 
-  v7 = a1;
+  selfCopy = self;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2050000000;
@@ -52,12 +52,12 @@
   _Block_object_dispose(&v25, 8);
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v7 innerObject];
+    innerObject = [selfCopy innerObject];
 
-    v7 = v10;
+    selfCopy = innerObject;
   }
 
-  if (![v7 hasLoadedValueForKey:v4])
+  if (![selfCopy hasLoadedValueForKey:v4])
   {
     goto LABEL_20;
   }
@@ -96,7 +96,7 @@
 LABEL_17:
     if (objc_opt_respondsToSelector())
     {
-      v16 = [v7 artworkCatalog];
+      artworkCatalog = [selfCopy artworkCatalog];
       goto LABEL_19;
     }
 
@@ -112,9 +112,9 @@ LABEL_20:
     goto LABEL_17;
   }
 
-  v16 = [v7 tracksTiledArtworkCatalogWithRows:2 columns:2];
+  artworkCatalog = [selfCopy tracksTiledArtworkCatalogWithRows:2 columns:2];
 LABEL_19:
-  v17 = v16;
+  v17 = artworkCatalog;
 LABEL_21:
 
 LABEL_22:

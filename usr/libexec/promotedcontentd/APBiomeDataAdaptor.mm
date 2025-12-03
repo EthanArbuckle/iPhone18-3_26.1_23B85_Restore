@@ -1,24 +1,24 @@
 @interface APBiomeDataAdaptor
-- (BOOL)_validateParameters:(id *)a3;
-- (BOOL)addData:(id)a3;
-- (void)_run:(id)a3;
-- (void)clearDataWithPredicate:(id)a3;
+- (BOOL)_validateParameters:(id *)parameters;
+- (BOOL)addData:(id)data;
+- (void)_run:(id)_run;
+- (void)clearDataWithPredicate:(id)predicate;
 @end
 
 @implementation APBiomeDataAdaptor
 
-- (BOOL)_validateParameters:(id *)a3
+- (BOOL)_validateParameters:(id *)parameters
 {
   v29.receiver = self;
   v29.super_class = APBiomeDataAdaptor;
   if ([(APDataAdaptor *)&v29 _validateParameters:?])
   {
-    v5 = [(APDataAdaptor *)self parameters];
-    v6 = [v5 objectForKeyedSubscript:@"startDate"];
+    parameters = [(APDataAdaptor *)self parameters];
+    v6 = [parameters objectForKeyedSubscript:@"startDate"];
     if (v6)
     {
-      v7 = [(APDataAdaptor *)self parameters];
-      v8 = [v7 objectForKeyedSubscript:@"startDate"];
+      parameters2 = [(APDataAdaptor *)self parameters];
+      v8 = [parameters2 objectForKeyedSubscript:@"startDate"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -27,8 +27,8 @@
 
       else
       {
-        v11 = [(APDataAdaptor *)self parameters];
-        v12 = [v11 objectForKeyedSubscript:@"startDate"];
+        parameters3 = [(APDataAdaptor *)self parameters];
+        v12 = [parameters3 objectForKeyedSubscript:@"startDate"];
         objc_opt_class();
         v9 = objc_opt_isKindOfClass() & 1;
       }
@@ -39,17 +39,17 @@
       v9 = 1;
     }
 
-    v13 = [(APDataAdaptor *)self parameters];
-    v14 = [v13 objectForKeyedSubscript:@"endDate"];
+    parameters4 = [(APDataAdaptor *)self parameters];
+    v14 = [parameters4 objectForKeyedSubscript:@"endDate"];
     if (v14)
     {
-      v15 = [(APDataAdaptor *)self parameters];
-      v16 = [v15 objectForKeyedSubscript:@"endDate"];
+      parameters5 = [(APDataAdaptor *)self parameters];
+      v16 = [parameters5 objectForKeyedSubscript:@"endDate"];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v17 = [(APDataAdaptor *)self parameters];
-        v18 = [v17 objectForKeyedSubscript:@"endDate"];
+        parameters6 = [(APDataAdaptor *)self parameters];
+        v18 = [parameters6 objectForKeyedSubscript:@"endDate"];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -58,9 +58,9 @@
       }
     }
 
-    v19 = [(APDataAdaptor *)self parameters];
-    v20 = [v19 objectForKeyedSubscript:@"maxEvents"];
-    v21 = [(APDataAdaptor *)self _checkClassType:v20 name:@"maxEvents" expectedClass:objc_opt_class() error:a3];
+    parameters7 = [(APDataAdaptor *)self parameters];
+    v20 = [parameters7 objectForKeyedSubscript:@"maxEvents"];
+    v21 = [(APDataAdaptor *)self _checkClassType:v20 name:@"maxEvents" expectedClass:objc_opt_class() error:parameters];
     if (v9)
     {
       v22 = v21;
@@ -71,13 +71,13 @@
       v22 = 0;
     }
 
-    v23 = [(APDataAdaptor *)self parameters];
-    v24 = [v23 objectForKeyedSubscript:@"lastN"];
-    v25 = [(APDataAdaptor *)self _checkClassType:v24 name:@"lastN" expectedClass:objc_opt_class() error:a3];
+    parameters8 = [(APDataAdaptor *)self parameters];
+    v24 = [parameters8 objectForKeyedSubscript:@"lastN"];
+    v25 = [(APDataAdaptor *)self _checkClassType:v24 name:@"lastN" expectedClass:objc_opt_class() error:parameters];
 
-    v26 = [(APDataAdaptor *)self parameters];
-    v27 = [v26 objectForKeyedSubscript:@"reverse"];
-    v10 = v22 & v25 & [(APDataAdaptor *)self _checkClassType:v27 name:@"reverse" expectedClass:objc_opt_class() error:a3];
+    parameters9 = [(APDataAdaptor *)self parameters];
+    v27 = [parameters9 objectForKeyedSubscript:@"reverse"];
+    v10 = v22 & v25 & [(APDataAdaptor *)self _checkClassType:v27 name:@"reverse" expectedClass:objc_opt_class() error:parameters];
   }
 
   else
@@ -88,20 +88,20 @@
   return v10;
 }
 
-- (void)_run:(id)a3
+- (void)_run:(id)_run
 {
-  v57 = a3;
-  v4 = objc_retainBlock(v57);
+  _runCopy = _run;
+  v4 = objc_retainBlock(_runCopy);
   handler = self->_handler;
   self->_handler = v4;
 
-  v6 = [(APDataAdaptor *)self parameters];
-  v7 = [v6 objectForKeyedSubscript:@"startDate"];
+  parameters = [(APDataAdaptor *)self parameters];
+  v7 = [parameters objectForKeyedSubscript:@"startDate"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v9 = [(APDataAdaptor *)self parameters];
-  v10 = [v9 objectForKeyedSubscript:@"startDate"];
+  parameters2 = [(APDataAdaptor *)self parameters];
+  v10 = [parameters2 objectForKeyedSubscript:@"startDate"];
 
   if (isKindOfClass)
   {
@@ -123,13 +123,13 @@
     v12 = v10;
   }
 
-  v13 = [(APDataAdaptor *)self parameters];
-  v14 = [v13 objectForKeyedSubscript:@"endDate"];
+  parameters3 = [(APDataAdaptor *)self parameters];
+  v14 = [parameters3 objectForKeyedSubscript:@"endDate"];
   objc_opt_class();
   v15 = objc_opt_isKindOfClass();
 
-  v16 = [(APDataAdaptor *)self parameters];
-  v17 = [v16 objectForKeyedSubscript:@"endDate"];
+  parameters4 = [(APDataAdaptor *)self parameters];
+  v17 = [parameters4 objectForKeyedSubscript:@"endDate"];
   if (v15)
   {
     v18 = v17;
@@ -150,51 +150,51 @@
     v19 = v17;
   }
 
-  v20 = [(APDataAdaptor *)self parameters];
-  v21 = [v20 objectForKeyedSubscript:@"maxEvents"];
+  parameters5 = [(APDataAdaptor *)self parameters];
+  v21 = [parameters5 objectForKeyedSubscript:@"maxEvents"];
   objc_opt_class();
   v22 = objc_opt_isKindOfClass();
 
-  v23 = 0;
+  unsignedIntValue = 0;
   if (v22)
   {
-    v24 = [(APDataAdaptor *)self parameters];
-    v25 = [v24 objectForKeyedSubscript:@"maxEvents"];
-    v23 = [v25 unsignedIntValue];
+    parameters6 = [(APDataAdaptor *)self parameters];
+    v25 = [parameters6 objectForKeyedSubscript:@"maxEvents"];
+    unsignedIntValue = [v25 unsignedIntValue];
   }
 
-  v26 = [(APDataAdaptor *)self parameters];
-  v27 = [v26 objectForKeyedSubscript:@"lastN"];
+  parameters7 = [(APDataAdaptor *)self parameters];
+  v27 = [parameters7 objectForKeyedSubscript:@"lastN"];
   objc_opt_class();
   v28 = objc_opt_isKindOfClass();
 
   if (v28)
   {
-    v29 = [(APDataAdaptor *)self parameters];
-    v30 = [v29 objectForKeyedSubscript:@"lastN"];
-    v55 = [v30 unsignedIntValue];
+    parameters8 = [(APDataAdaptor *)self parameters];
+    v30 = [parameters8 objectForKeyedSubscript:@"lastN"];
+    unsignedIntValue2 = [v30 unsignedIntValue];
   }
 
   else
   {
-    v55 = 0;
+    unsignedIntValue2 = 0;
   }
 
-  v31 = [(APDataAdaptor *)self parameters];
-  v32 = [v31 objectForKeyedSubscript:@"reverse"];
+  parameters9 = [(APDataAdaptor *)self parameters];
+  v32 = [parameters9 objectForKeyedSubscript:@"reverse"];
   objc_opt_class();
   v33 = objc_opt_isKindOfClass();
 
   if (v33)
   {
-    v34 = [(APDataAdaptor *)self parameters];
-    v35 = [v34 objectForKeyedSubscript:@"reverse"];
-    v36 = [v35 BOOLValue];
+    parameters10 = [(APDataAdaptor *)self parameters];
+    v35 = [parameters10 objectForKeyedSubscript:@"reverse"];
+    bOOLValue = [v35 BOOLValue];
   }
 
   else
   {
-    v36 = 0;
+    bOOLValue = 0;
   }
 
   if (!(v11 | v18))
@@ -242,24 +242,24 @@ LABEL_32:
       }
 
 LABEL_36:
-      v46 = [(APBiomeDataAdaptor *)self _biomeStream];
-      [(APBiomeDataAdaptor *)self setStream:v46];
+      _biomeStream = [(APBiomeDataAdaptor *)self _biomeStream];
+      [(APBiomeDataAdaptor *)self setStream:_biomeStream];
 
-      v47 = [(APBiomeDataAdaptor *)self stream];
+      stream = [(APBiomeDataAdaptor *)self stream];
 
-      if (v47)
+      if (stream)
       {
-        v48 = [[BMPublisherOptions alloc] initWithStartDate:v12 endDate:v19 maxEvents:v23 lastN:v56 reversed:v36];
-        v49 = [(APBiomeDataAdaptor *)self stream];
-        v50 = [v49 publisherWithOptions:v48];
+        v48 = [[BMPublisherOptions alloc] initWithStartDate:v12 endDate:v19 maxEvents:unsignedIntValue lastN:v56 reversed:bOOLValue];
+        stream2 = [(APBiomeDataAdaptor *)self stream];
+        v50 = [stream2 publisherWithOptions:v48];
 
         v60[0] = _NSConcreteStackBlock;
         v60[1] = 3221225472;
         v60[2] = sub_100218E10;
         v60[3] = &unk_1004791C0;
         v60[4] = self;
-        v44 = v57;
-        v61 = v57;
+        v44 = _runCopy;
+        v61 = _runCopy;
         v58[0] = _NSConcreteStackBlock;
         v58[1] = 3221225472;
         v58[2] = sub_100218F8C;
@@ -276,16 +276,16 @@ LABEL_36:
       v52 = [NSDictionary dictionaryWithObjects:&v63 forKeys:&v62 count:1];
       v40 = [NSError errorWithDomain:@"com.apple.ap.dataadaptors" code:5200 userInfo:v52];
 
-      v53 = [(APBiomeDataAdaptor *)self handler];
+      handler = [(APBiomeDataAdaptor *)self handler];
 
-      if (v53)
+      if (handler)
       {
-        v54 = [(APBiomeDataAdaptor *)self handler];
-        (v54)[2](v54, 0, 0, v40);
+        handler2 = [(APBiomeDataAdaptor *)self handler];
+        (handler2)[2](handler2, 0, 0, v40);
       }
 
 LABEL_40:
-      v44 = v57;
+      v44 = _runCopy;
       goto LABEL_41;
     }
   }
@@ -308,72 +308,72 @@ LABEL_40:
   }
 
 LABEL_33:
-  v43 = [(APBiomeDataAdaptor *)self handler];
+  handler3 = [(APBiomeDataAdaptor *)self handler];
 
-  if (!v43)
+  if (!handler3)
   {
     goto LABEL_40;
   }
 
-  v44 = v57;
-  (*(v57 + 2))(v57, 0, 0, v40);
+  v44 = _runCopy;
+  (*(_runCopy + 2))(_runCopy, 0, 0, v40);
 LABEL_41:
 }
 
-- (BOOL)addData:(id)a3
+- (BOOL)addData:(id)data
 {
-  v4 = a3;
-  v5 = [(APBiomeDataAdaptor *)self _biomeStream];
-  [(APBiomeDataAdaptor *)self setStream:v5];
+  dataCopy = data;
+  _biomeStream = [(APBiomeDataAdaptor *)self _biomeStream];
+  [(APBiomeDataAdaptor *)self setStream:_biomeStream];
 
-  v6 = [(APBiomeDataAdaptor *)self stream];
+  stream = [(APBiomeDataAdaptor *)self stream];
 
-  if (!v6)
+  if (!stream)
   {
-    v10 = APLogForCategory();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    source = APLogForCategory();
+    if (os_log_type_enabled(source, OS_LOG_TYPE_ERROR))
     {
       v22 = 138477827;
       v23 = objc_opt_class();
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Error creating stream %{private}@", &v22, 0xCu);
+      _os_log_impl(&_mh_execute_header, source, OS_LOG_TYPE_ERROR, "Error creating stream %{private}@", &v22, 0xCu);
     }
 
     goto LABEL_15;
   }
 
-  v7 = [(APBiomeDataAdaptor *)self stream];
+  stream2 = [(APBiomeDataAdaptor *)self stream];
   v8 = objc_opt_respondsToSelector();
 
   if ((v8 & 1) == 0)
   {
     v12 = objc_opt_class();
-    v10 = NSStringFromClass(v12);
-    v13 = [(APBiomeDataAdaptor *)self stream];
+    source = NSStringFromClass(v12);
+    stream3 = [(APBiomeDataAdaptor *)self stream];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v15 = [(APBiomeDataAdaptor *)self stream];
-      v16 = [v15 identifier];
+      stream4 = [(APBiomeDataAdaptor *)self stream];
+      identifier = [stream4 identifier];
 
-      v10 = v16;
+      source = identifier;
     }
 
     v17 = APLogForCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v22 = 138412290;
-      v23 = v10;
+      v23 = source;
     }
 
     goto LABEL_15;
   }
 
-  v9 = [(APBiomeDataAdaptor *)self stream];
-  v10 = [v9 source];
+  stream5 = [(APBiomeDataAdaptor *)self stream];
+  source = [stream5 source];
 
-  if (!v10)
+  if (!source)
   {
     v18 = APLogForCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -390,16 +390,16 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  [v10 sendEvent:v4];
+  [source sendEvent:dataCopy];
   v11 = 1;
 LABEL_16:
 
   return v11;
 }
 
-- (void)clearDataWithPredicate:(id)a3
+- (void)clearDataWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100219594;
@@ -410,20 +410,20 @@ LABEL_16:
     dispatch_once(&qword_1004DF620, block);
   }
 
-  v5 = [(APBiomeDataAdaptor *)self stream];
-  v6 = [v5 pruner];
+  stream = [(APBiomeDataAdaptor *)self stream];
+  pruner = [stream pruner];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(APBiomeDataAdaptor *)self stream];
-    v9 = [v8 pruner];
+    stream2 = [(APBiomeDataAdaptor *)self stream];
+    pruner2 = [stream2 pruner];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100219614;
     v10[3] = &unk_100479270;
-    v11 = v4;
-    [v9 deleteEventsPassingTest:v10];
+    v11 = predicateCopy;
+    [pruner2 deleteEventsPassingTest:v10];
   }
 
   else

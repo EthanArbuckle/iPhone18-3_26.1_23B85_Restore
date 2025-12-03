@@ -1,29 +1,29 @@
 @interface BorderView
 - (UIColor)backgroundColor;
-- (void)setBackgroundColor:(id)a3;
-- (void)setClipsToBounds:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setClipsToBounds:(BOOL)bounds;
 @end
 
 @implementation BorderView
 
 - (UIColor)backgroundColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_24E0D9934();
 
   return v3;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_24E135AD8(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_24E135AD8(color);
 }
 
-- (void)setClipsToBounds:(BOOL)a3
+- (void)setClipsToBounds:(BOOL)bounds
 {
-  v3 = self;
+  selfCopy = self;
   sub_24E135BF0();
 }
 

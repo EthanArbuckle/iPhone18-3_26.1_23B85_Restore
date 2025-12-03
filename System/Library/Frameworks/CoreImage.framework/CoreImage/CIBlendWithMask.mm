@@ -75,7 +75,7 @@ LABEL_12:
   [(CIImage *)inputBackgroundImage extent];
   if (CGRectIsEmpty(v46))
   {
-    v12 = [(CIBlendWithMask *)self _kernelB0];
+    _kernelB0 = [(CIBlendWithMask *)self _kernelB0];
     [(CIImage *)v9 extent];
     x = v13;
     y = v15;
@@ -109,7 +109,7 @@ LABEL_12:
     y = v48.origin.y;
     width = v48.size.width;
     height = v48.size.height;
-    v12 = [(CIBlendWithMask *)self _kernel];
+    _kernelB0 = [(CIBlendWithMask *)self _kernel];
     v36 = v9;
     v37 = inputBackgroundImage;
     v38 = v11;
@@ -118,7 +118,7 @@ LABEL_12:
     v23 = 3;
   }
 
-  return [v12 applyWithExtent:objc_msgSend(v21 arguments:{"arrayWithObjects:count:", v22, v23, v36, v37, v38, v39, v40), x, y, width, height}];
+  return [_kernelB0 applyWithExtent:objc_msgSend(v21 arguments:{"arrayWithObjects:count:", v22, v23, v36, v37, v38, v39, v40), x, y, width, height}];
 }
 
 @end

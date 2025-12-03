@@ -1,7 +1,7 @@
 @interface ABPhoneFormatting
-+ (id)abCopyPhoneNumberFromString:(id)a3;
++ (id)abCopyPhoneNumberFromString:(id)string;
 + (id)abDefaultCountryCode;
-+ (id)abNormalizedPhoneNumberFromString:(id)a3;
++ (id)abNormalizedPhoneNumberFromString:(id)string;
 @end
 
 @implementation ABPhoneFormatting
@@ -17,27 +17,27 @@
   return result;
 }
 
-+ (id)abCopyPhoneNumberFromString:(id)a3
++ (id)abCopyPhoneNumberFromString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
 
-  [a1 abDefaultCountryCode];
+  [self abDefaultCountryCode];
   result = PNCreateFormattedStringWithCountry();
   if (!result)
   {
 
-    return [a3 copy];
+    return [string copy];
   }
 
   return result;
 }
 
-+ (id)abNormalizedPhoneNumberFromString:(id)a3
++ (id)abNormalizedPhoneNumberFromString:(id)string
 {
-  [a1 abDefaultCountryCode];
+  [self abDefaultCountryCode];
   v4 = CFPhoneNumberCreate();
   if (v4)
   {
@@ -50,9 +50,9 @@
     }
   }
 
-  v8 = a3;
+  stringCopy = string;
 
-  return v8;
+  return stringCopy;
 }
 
 @end

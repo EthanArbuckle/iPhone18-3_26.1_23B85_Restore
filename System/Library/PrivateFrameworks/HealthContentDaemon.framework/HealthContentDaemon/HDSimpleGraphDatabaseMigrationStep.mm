@@ -1,10 +1,10 @@
 @interface HDSimpleGraphDatabaseMigrationStep
-+ (id)migrationToVersion:(int64_t)a3 function:(void *)a4;
++ (id)migrationToVersion:(int64_t)version function:(void *)function;
 @end
 
 @implementation HDSimpleGraphDatabaseMigrationStep
 
-+ (id)migrationToVersion:(int64_t)a3 function:(void *)a4
++ (id)migrationToVersion:(int64_t)version function:(void *)function
 {
   v6 = [HDSimpleGraphDatabaseMigrationStep alloc];
   if (v6)
@@ -14,8 +14,8 @@
     v6 = objc_msgSendSuper2(&v8, sel_init);
     if (v6)
     {
-      v6->_toVersion = a3;
-      v6->_function = a4;
+      v6->_toVersion = version;
+      v6->_function = function;
     }
   }
 

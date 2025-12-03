@@ -1,13 +1,13 @@
 @interface MUIGenericSuggestion
-+ (id)allMailboxesSuggestionWithSpotlightSuggestion:(id)a3;
-+ (id)genericSuggestionWithSpotlightSuggestion:(id)a3;
++ (id)allMailboxesSuggestionWithSpotlightSuggestion:(id)suggestion;
++ (id)genericSuggestionWithSpotlightSuggestion:(id)suggestion;
 - (BOOL)isRecent;
-- (MUIGenericSuggestion)initWithCoder:(id)a3;
-- (MUIGenericSuggestion)initWithSpotlightSuggestion:(id)a3 isAllMailboxes:(BOOL)a4;
+- (MUIGenericSuggestion)initWithCoder:(id)coder;
+- (MUIGenericSuggestion)initWithSpotlightSuggestion:(id)suggestion isAllMailboxes:(BOOL)mailboxes;
 - (NSAttributedString)attributedTitle;
 - (UIColor)imageTintColor;
 - (id)_allMailboxesSuggestionTitle;
-- (id)_joinRecentsTitleComponents:(id)a3;
+- (id)_joinRecentsTitleComponents:(id)components;
 - (id)_recentsTitle;
 - (id)accessibilityDescription;
 - (id)category;
@@ -16,64 +16,64 @@
 - (id)image;
 - (id)title;
 - (int64_t)resultCount;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MUIGenericSuggestion
 
-+ (id)allMailboxesSuggestionWithSpotlightSuggestion:(id)a3
++ (id)allMailboxesSuggestionWithSpotlightSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSpotlightSuggestion:v4 isAllMailboxes:1];
+  suggestionCopy = suggestion;
+  v5 = [[self alloc] initWithSpotlightSuggestion:suggestionCopy isAllMailboxes:1];
 
   return v5;
 }
 
-+ (id)genericSuggestionWithSpotlightSuggestion:(id)a3
++ (id)genericSuggestionWithSpotlightSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSpotlightSuggestion:v4 isAllMailboxes:0];
+  suggestionCopy = suggestion;
+  v5 = [[self alloc] initWithSpotlightSuggestion:suggestionCopy isAllMailboxes:0];
 
   return v5;
 }
 
-- (MUIGenericSuggestion)initWithSpotlightSuggestion:(id)a3 isAllMailboxes:(BOOL)a4
+- (MUIGenericSuggestion)initWithSpotlightSuggestion:(id)suggestion isAllMailboxes:(BOOL)mailboxes
 {
-  v7 = a3;
+  suggestionCopy = suggestion;
   v11.receiver = self;
   v11.super_class = MUIGenericSuggestion;
   v8 = [(MUIGenericSuggestion *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_spotlightSuggestion, a3);
-    v9->_isAllMailboxes = a4;
+    objc_storeStrong(&v8->_spotlightSuggestion, suggestion);
+    v9->_isAllMailboxes = mailboxes;
   }
 
   return v9;
 }
 
-- (MUIGenericSuggestion)initWithCoder:(id)a3
+- (MUIGenericSuggestion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_spotlightSuggestion"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_spotlightSuggestion"];
 
   v6 = [(MUIGenericSuggestion *)self initWithSpotlightSuggestion:v5 isAllMailboxes:0];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MUIGenericSuggestion *)self spotlightSuggestion];
-  [v4 encodeObject:v5 forKey:@"EFPropertyKey_spotlightSuggestion"];
+  coderCopy = coder;
+  spotlightSuggestion = [(MUIGenericSuggestion *)self spotlightSuggestion];
+  [coderCopy encodeObject:spotlightSuggestion forKey:@"EFPropertyKey_spotlightSuggestion"];
 }
 
 - (id)category
 {
-  v3 = [(MUISearchAtomSuggestion *)self lastUsedTime];
+  lastUsedTime = [(MUISearchAtomSuggestion *)self lastUsedTime];
 
-  if (v3)
+  if (lastUsedTime)
   {
     v4 = +[MUISearchSuggestionCategory recentGenericCategory];
   }
@@ -97,50 +97,50 @@
 
 - (id)title
 {
-  v2 = [(MUIGenericSuggestion *)self attributedTitle];
-  v3 = [v2 string];
+  attributedTitle = [(MUIGenericSuggestion *)self attributedTitle];
+  string = [attributedTitle string];
 
-  return v3;
+  return string;
 }
 
 - (NSAttributedString)attributedTitle
 {
   if ([(MUIGenericSuggestion *)self isRecent])
   {
-    v3 = [(MUIGenericSuggestion *)self _recentsTitle];
+    _recentsTitle = [(MUIGenericSuggestion *)self _recentsTitle];
 LABEL_5:
-    v4 = v3;
+    localizedAttributedSuggestion = _recentsTitle;
     goto LABEL_7;
   }
 
   if ([(MUIGenericSuggestion *)self isAllMailboxes])
   {
-    v3 = [(MUIGenericSuggestion *)self _allMailboxesSuggestionTitle];
+    _recentsTitle = [(MUIGenericSuggestion *)self _allMailboxesSuggestionTitle];
     goto LABEL_5;
   }
 
-  v5 = [(MUIGenericSuggestion *)self spotlightSuggestion];
-  v4 = [v5 localizedAttributedSuggestion];
+  spotlightSuggestion = [(MUIGenericSuggestion *)self spotlightSuggestion];
+  localizedAttributedSuggestion = [spotlightSuggestion localizedAttributedSuggestion];
 
 LABEL_7:
 
-  return v4;
+  return localizedAttributedSuggestion;
 }
 
 - (id)image
 {
-  v3 = [(MUIGenericSuggestion *)self isRecent];
+  isRecent = [(MUIGenericSuggestion *)self isRecent];
   v4 = MEMORY[0x277D755B8];
-  if (v3)
+  if (isRecent)
   {
     v5 = [MEMORY[0x277D755B8] mui_imageWithSystemSymbolName:@"clock.arrow.circlepath"];
   }
 
   else
   {
-    v6 = [(MUIGenericSuggestion *)self spotlightSuggestion];
-    v7 = [v6 currentToken];
-    v5 = [v4 mui_imageFromSuggestionToken:v7];
+    spotlightSuggestion = [(MUIGenericSuggestion *)self spotlightSuggestion];
+    currentToken = [spotlightSuggestion currentToken];
+    v5 = [v4 mui_imageFromSuggestionToken:currentToken];
   }
 
   return v5;
@@ -148,43 +148,43 @@ LABEL_7:
 
 - (UIColor)imageTintColor
 {
-  v2 = [(MUIGenericSuggestion *)self spotlightSuggestion];
-  v3 = [v2 currentToken];
-  v4 = [v3 tokenKind];
+  spotlightSuggestion = [(MUIGenericSuggestion *)self spotlightSuggestion];
+  currentToken = [spotlightSuggestion currentToken];
+  tokenKind = [currentToken tokenKind];
 
-  v5 = 0;
-  if (v4 <= 28)
+  systemRedColor = 0;
+  if (tokenKind <= 28)
   {
-    switch(v4)
+    switch(tokenKind)
     {
       case 26:
-        v5 = [MEMORY[0x277D75348] systemRedColor];
+        systemRedColor = [MEMORY[0x277D75348] systemRedColor];
         break;
       case 27:
-        v5 = [MEMORY[0x277D75348] systemOrangeColor];
+        systemRedColor = [MEMORY[0x277D75348] systemOrangeColor];
         break;
       case 28:
-        v5 = [MEMORY[0x277D75348] systemYellowColor];
+        systemRedColor = [MEMORY[0x277D75348] systemYellowColor];
         break;
     }
   }
 
-  else if (v4 > 30)
+  else if (tokenKind > 30)
   {
-    if (v4 == 31)
+    if (tokenKind == 31)
     {
-      v5 = [MEMORY[0x277D75348] systemIndigoColor];
+      systemRedColor = [MEMORY[0x277D75348] systemIndigoColor];
     }
 
-    else if (v4 == 32)
+    else if (tokenKind == 32)
     {
-      v5 = [MEMORY[0x277D75348] systemGrayColor];
+      systemRedColor = [MEMORY[0x277D75348] systemGrayColor];
     }
   }
 
   else
   {
-    if (v4 == 29)
+    if (tokenKind == 29)
     {
       [MEMORY[0x277D75348] systemGreenColor];
     }
@@ -193,39 +193,39 @@ LABEL_7:
     {
       [MEMORY[0x277D75348] systemTealColor];
     }
-    v5 = ;
+    systemRedColor = ;
   }
 
-  return v5;
+  return systemRedColor;
 }
 
 - (int64_t)resultCount
 {
-  v2 = [(MUIGenericSuggestion *)self spotlightSuggestion];
-  v3 = [v2 resultCount];
+  spotlightSuggestion = [(MUIGenericSuggestion *)self spotlightSuggestion];
+  resultCount = [spotlightSuggestion resultCount];
 
-  return v3;
+  return resultCount;
 }
 
 - (id)accessibilityDescription
 {
-  v2 = [(CSSuggestion *)self->_spotlightSuggestion suggestionTokens];
-  v3 = [v2 lastObject];
-  v4 = [v3 tokenKindAccessibilityDescription];
+  suggestionTokens = [(CSSuggestion *)self->_spotlightSuggestion suggestionTokens];
+  lastObject = [suggestionTokens lastObject];
+  tokenKindAccessibilityDescription = [lastObject tokenKindAccessibilityDescription];
 
-  return v4;
+  return tokenKindAccessibilityDescription;
 }
 
 - (id)debugDescription
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(MUIGenericSuggestion *)self attributedTitle];
-  v6 = [(MUIGenericSuggestion *)self resultCount];
-  v7 = [(MUIGenericSuggestion *)self spotlightSuggestion];
-  v8 = [v7 suggestionTokens];
-  v9 = [v8 lastObject];
-  v10 = [v3 stringWithFormat:@"<%@ %p> attributedTitle=%@ resultCount=%ld lastTokenKind=%ld", v4, self, v5, v6, objc_msgSend(v9, "tokenKind")];
+  attributedTitle = [(MUIGenericSuggestion *)self attributedTitle];
+  resultCount = [(MUIGenericSuggestion *)self resultCount];
+  spotlightSuggestion = [(MUIGenericSuggestion *)self spotlightSuggestion];
+  suggestionTokens = [spotlightSuggestion suggestionTokens];
+  lastObject = [suggestionTokens lastObject];
+  v10 = [v3 stringWithFormat:@"<%@ %p> attributedTitle=%@ resultCount=%ld lastTokenKind=%ld", v4, self, attributedTitle, resultCount, objc_msgSend(lastObject, "tokenKind")];
 
   return v10;
 }
@@ -235,23 +235,23 @@ LABEL_7:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = MEMORY[0x277D07198];
-  v6 = [(MUIGenericSuggestion *)self attributedTitle];
-  v7 = [v6 string];
-  v8 = [v5 partiallyRedactedStringForString:v7];
-  v9 = [(MUIGenericSuggestion *)self resultCount];
-  v10 = [(MUIGenericSuggestion *)self spotlightSuggestion];
-  v11 = [v10 suggestionTokens];
-  v12 = [v11 lastObject];
-  v13 = [v3 stringWithFormat:@"<%@ %p> attributedTitle=%@ resultCount=%ld lastTokenKind=%ld", v4, self, v8, v9, objc_msgSend(v12, "tokenKind")];
+  attributedTitle = [(MUIGenericSuggestion *)self attributedTitle];
+  string = [attributedTitle string];
+  v8 = [v5 partiallyRedactedStringForString:string];
+  resultCount = [(MUIGenericSuggestion *)self resultCount];
+  spotlightSuggestion = [(MUIGenericSuggestion *)self spotlightSuggestion];
+  suggestionTokens = [spotlightSuggestion suggestionTokens];
+  lastObject = [suggestionTokens lastObject];
+  v13 = [v3 stringWithFormat:@"<%@ %p> attributedTitle=%@ resultCount=%ld lastTokenKind=%ld", v4, self, v8, resultCount, objc_msgSend(lastObject, "tokenKind")];
 
   return v13;
 }
 
 - (BOOL)isRecent
 {
-  v2 = [(MUIGenericSuggestion *)self category];
+  category = [(MUIGenericSuggestion *)self category];
   v3 = +[MUISearchSuggestionCategory recentGenericCategory];
-  v4 = v2 == v3;
+  v4 = category == v3;
 
   return v4;
 }
@@ -259,8 +259,8 @@ LABEL_7:
 - (id)_allMailboxesSuggestionTitle
 {
   v2 = objc_alloc(MEMORY[0x277CCA898]);
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 localizedStringForKey:@"SuggestionsMenuItemTitle" value:&stru_2826EE5B8 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v4 = [mainBundle localizedStringForKey:@"SuggestionsMenuItemTitle" value:&stru_2826EE5B8 table:0];
   v5 = [v2 initWithString:v4];
 
   return v5;
@@ -269,23 +269,23 @@ LABEL_7:
 - (id)_recentsTitle
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v3 = [(MUIGenericSuggestion *)self spotlightSuggestion];
+  spotlightSuggestion = [(MUIGenericSuggestion *)self spotlightSuggestion];
   v4 = [objc_alloc(MEMORY[0x277CCAB48]) initWithString:&stru_2826EE5B8];
   v5 = v4;
-  if (v3)
+  if (spotlightSuggestion)
   {
     v29 = *MEMORY[0x277D740C0];
     v6 = v29;
-    v7 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v30[0] = v7;
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    v30[0] = secondaryLabelColor;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:&v29 count:1];
 
     v27 = v6;
-    v9 = [MEMORY[0x277D75348] labelColor];
-    v28 = v9;
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    v28 = labelColor;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
 
-    v11 = [v3 currentTokens];
+    currentTokens = [spotlightSuggestion currentTokens];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __37__MUIGenericSuggestion__recentsTitle__block_invoke;
@@ -294,16 +294,16 @@ LABEL_7:
     v25 = v12;
     v13 = v8;
     v26 = v13;
-    v14 = [v11 ef_compactMap:v24];
+    v14 = [currentTokens ef_compactMap:v24];
 
-    v15 = [v3 userQueryString];
-    v16 = [v15 length];
+    userQueryString = [spotlightSuggestion userQueryString];
+    v16 = [userQueryString length];
 
     if (v16)
     {
       v17 = objc_alloc(MEMORY[0x277CCA898]);
-      v18 = [v3 userQueryString];
-      v19 = [v17 initWithString:v18 attributes:v12];
+      userQueryString2 = [spotlightSuggestion userQueryString];
+      v19 = [v17 initWithString:userQueryString2 attributes:v12];
       v20 = [v14 arrayByAddingObject:v19];
 
       v14 = v20;
@@ -358,9 +358,9 @@ id __37__MUIGenericSuggestion__recentsTitle__block_invoke(uint64_t a1, void *a2)
   return v13;
 }
 
-- (id)_joinRecentsTitleComponents:(id)a3
+- (id)_joinRecentsTitleComponents:(id)components
 {
-  v3 = a3;
+  componentsCopy = components;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -378,7 +378,7 @@ id __37__MUIGenericSuggestion__recentsTitle__block_invoke(uint64_t a1, void *a2)
   v15 = &v16;
   v7 = v6;
   v14 = v7;
-  [v3 enumerateObjectsUsingBlock:&v10];
+  [componentsCopy enumerateObjectsUsingBlock:&v10];
   v8 = [v17[5] copy];
 
   _Block_object_dispose(&v16, 8);

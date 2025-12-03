@@ -1,28 +1,28 @@
 @interface AMSAuthenticateMetrics
-+ (id)_eventWithTopic:(id)a3;
-+ (id)_metricsInstanceWithBag:(id)a3;
++ (id)_eventWithTopic:(id)topic;
++ (id)_metricsInstanceWithBag:(id)bag;
 + (id)bagSubProfile;
 + (id)bagSubProfileVersion;
 + (id)createBagForSubProfile;
 - (AMSAuthenticateMetrics)init;
-- (AMSAuthenticateMetrics)initWithBag:(id)a3;
-- (BOOL)_isTopicDefined:(id)a3;
-- (id)_authenticationTypeStringFor:(unint64_t)a3;
-- (id)_clampTimeStampValue:(id)a3;
-- (id)_credentialSourceStringFor:(unint64_t)a3;
-- (id)_durationSinceDate:(id)a3;
-- (id)_enqueueEventWithTopic:(id)a3 properties:(id)a4;
-- (id)_enqueueEvents:(id)a3;
-- (id)_enqueueProperties:(id)a3 account:(id)a4;
+- (AMSAuthenticateMetrics)initWithBag:(id)bag;
+- (BOOL)_isTopicDefined:(id)defined;
+- (id)_authenticationTypeStringFor:(unint64_t)for;
+- (id)_clampTimeStampValue:(id)value;
+- (id)_credentialSourceStringFor:(unint64_t)for;
+- (id)_durationSinceDate:(id)date;
+- (id)_enqueueEventWithTopic:(id)topic properties:(id)properties;
+- (id)_enqueueEvents:(id)events;
+- (id)_enqueueProperties:(id)properties account:(id)account;
 - (id)_eventTime;
 - (id)_topicFromBag;
-- (id)_userIdForBagNamespace:(id)a3;
-- (id)enqueueAuthKitBeginEventWithOptions:(id)a3 account:(id)a4;
-- (id)enqueueAuthKitFinishEventWithOptions:(id)a3 account:(id)a4 error:(id)a5;
-- (id)enqueueAuthenticationBeginEventWithOptions:(id)a3 serverRequested:(BOOL)a4 account:(id)a5;
-- (id)enqueueVerifyCredentialsBeginEventWithOptions:(id)a3 account:(id)a4;
-- (id)enqueueVerifyCredentialsFinishEventWithOptions:(id)a3 account:(id)a4 error:(id)a5;
-- (id)enqueueWithEvent:(unint64_t)a3 context:(id)a4;
+- (id)_userIdForBagNamespace:(id)namespace;
+- (id)enqueueAuthKitBeginEventWithOptions:(id)options account:(id)account;
+- (id)enqueueAuthKitFinishEventWithOptions:(id)options account:(id)account error:(id)error;
+- (id)enqueueAuthenticationBeginEventWithOptions:(id)options serverRequested:(BOOL)requested account:(id)account;
+- (id)enqueueVerifyCredentialsBeginEventWithOptions:(id)options account:(id)account;
+- (id)enqueueVerifyCredentialsFinishEventWithOptions:(id)options account:(id)account error:(id)error;
+- (id)enqueueWithEvent:(unint64_t)event context:(id)context;
 - (void)flushEvents;
 @end
 
@@ -30,22 +30,22 @@
 
 - (AMSAuthenticateMetrics)init
 {
-  v3 = [objc_opt_class() createBagForSubProfile];
-  v4 = [(AMSAuthenticateMetrics *)self initWithBag:v3];
+  createBagForSubProfile = [objc_opt_class() createBagForSubProfile];
+  v4 = [(AMSAuthenticateMetrics *)self initWithBag:createBagForSubProfile];
 
   return v4;
 }
 
-- (AMSAuthenticateMetrics)initWithBag:(id)a3
+- (AMSAuthenticateMetrics)initWithBag:(id)bag
 {
-  v5 = a3;
+  bagCopy = bag;
   v12.receiver = self;
   v12.super_class = AMSAuthenticateMetrics;
   v6 = [(AMSAuthenticateMetrics *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_bag, a3);
+    objc_storeStrong(&v6->_bag, bag);
     beginDate = v7->_beginDate;
     v7->_beginDate = 0;
 
@@ -57,29 +57,29 @@
   return v7;
 }
 
-- (id)enqueueWithEvent:(unint64_t)a3 context:(id)a4
+- (id)enqueueWithEvent:(unint64_t)event context:(id)context
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 > 1)
+  contextCopy = context;
+  v7 = contextCopy;
+  if (event > 1)
   {
-    if (a3 == 2)
+    if (event == 2)
     {
-      v8 = [v6 options];
-      v9 = [v7 account];
-      v10 = [v7 error];
-      v11 = [(AMSAuthenticateMetrics *)self enqueueAuthKitFinishEventWithOptions:v8 account:v9 error:v10];
+      options = [contextCopy options];
+      account = [v7 account];
+      error = [v7 error];
+      v11 = [(AMSAuthenticateMetrics *)self enqueueAuthKitFinishEventWithOptions:options account:account error:error];
       goto LABEL_10;
     }
 
-    if (a3 != 3)
+    if (event != 3)
     {
-      if (a3 == 4)
+      if (event == 4)
       {
-        v8 = [v6 options];
-        v9 = [v7 account];
-        v10 = [v7 error];
-        v11 = [(AMSAuthenticateMetrics *)self enqueueVerifyCredentialsFinishEventWithOptions:v8 account:v9 error:v10];
+        options = [contextCopy options];
+        account = [v7 account];
+        error = [v7 error];
+        v11 = [(AMSAuthenticateMetrics *)self enqueueVerifyCredentialsFinishEventWithOptions:options account:account error:error];
 LABEL_10:
         v13 = v11;
 
@@ -90,35 +90,35 @@ LABEL_13:
       goto LABEL_18;
     }
 
-    v8 = [v6 options];
-    v9 = [v7 account];
-    v12 = [(AMSAuthenticateMetrics *)self enqueueVerifyCredentialsBeginEventWithOptions:v8 account:v9];
+    options = [contextCopy options];
+    account = [v7 account];
+    v12 = [(AMSAuthenticateMetrics *)self enqueueVerifyCredentialsBeginEventWithOptions:options account:account];
 LABEL_12:
     v13 = v12;
     goto LABEL_13;
   }
 
-  if (!a3)
+  if (!event)
   {
-    v8 = [v6 options];
-    v15 = [v7 isServerRequested];
-    v16 = [v7 account];
-    v13 = [(AMSAuthenticateMetrics *)self enqueueAuthenticationBeginEventWithOptions:v8 serverRequested:v15 account:v16];
+    options = [contextCopy options];
+    isServerRequested = [v7 isServerRequested];
+    account2 = [v7 account];
+    v13 = [(AMSAuthenticateMetrics *)self enqueueAuthenticationBeginEventWithOptions:options serverRequested:isServerRequested account:account2];
 
     goto LABEL_14;
   }
 
-  if (a3 == 1)
+  if (event == 1)
   {
-    v8 = [v6 options];
-    v9 = [v7 account];
-    v12 = [(AMSAuthenticateMetrics *)self enqueueAuthKitBeginEventWithOptions:v8 account:v9];
+    options = [contextCopy options];
+    account = [v7 account];
+    v12 = [(AMSAuthenticateMetrics *)self enqueueAuthKitBeginEventWithOptions:options account:account];
     goto LABEL_12;
   }
 
 LABEL_18:
-  v8 = AMSError(2, @"Unrecognized metrics event", @"The provided AMSAuthenticateMetricsEvent was not recognized", 0);
-  v13 = [AMSBinaryPromise promiseWithError:v8];
+  options = AMSError(2, @"Unrecognized metrics event", @"The provided AMSAuthenticateMetricsEvent was not recognized", 0);
+  v13 = [AMSBinaryPromise promiseWithError:options];
 LABEL_14:
 
   return v13;
@@ -126,14 +126,14 @@ LABEL_14:
 
 - (void)flushEvents
 {
-  v3 = [(AMSAuthenticateMetrics *)self metrics];
-  v4 = [v3 flush];
+  metrics = [(AMSAuthenticateMetrics *)self metrics];
+  flush = [metrics flush];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __37__AMSAuthenticateMetrics_flushEvents__block_invoke;
   v5[3] = &unk_1E73B3A88;
   v5[4] = self;
-  [v4 addFinishBlock:v5];
+  [flush addFinishBlock:v5];
 }
 
 void __37__AMSAuthenticateMetrics_flushEvents__block_invoke()
@@ -158,20 +158,20 @@ void __37__AMSAuthenticateMetrics_flushEvents__block_invoke()
   }
 }
 
-- (id)enqueueAuthenticationBeginEventWithOptions:(id)a3 serverRequested:(BOOL)a4 account:(id)a5
+- (id)enqueueAuthenticationBeginEventWithOptions:(id)options serverRequested:(BOOL)requested account:(id)account
 {
-  v5 = a4;
+  requestedCopy = requested;
   v21[4] = *MEMORY[0x1E69E9840];
   v8 = MEMORY[0x1E695DF90];
   v20[0] = @"authenticationType";
-  v9 = a5;
-  v10 = a3;
-  v11 = -[AMSAuthenticateMetrics _authenticationTypeStringFor:](self, "_authenticationTypeStringFor:", [v10 authenticationType]);
+  accountCopy = account;
+  optionsCopy = options;
+  v11 = -[AMSAuthenticateMetrics _authenticationTypeStringFor:](self, "_authenticationTypeStringFor:", [optionsCopy authenticationType]);
   v21[0] = v11;
   v21[1] = @"AuthenticationBegin";
   v20[1] = @"eventType";
   v20[2] = @"isServerRequested";
-  if (v5)
+  if (requestedCopy)
   {
     v12 = @"true";
   }
@@ -183,7 +183,7 @@ void __37__AMSAuthenticateMetrics_flushEvents__block_invoke()
 
   v21[2] = v12;
   v20[3] = @"supportsUI";
-  if ([v10 allowServerDialogs])
+  if ([optionsCopy allowServerDialogs])
   {
     v13 = @"true";
   }
@@ -197,34 +197,34 @@ void __37__AMSAuthenticateMetrics_flushEvents__block_invoke()
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:4];
   v15 = [v8 dictionaryWithDictionary:v14];
 
-  v16 = [v10 metricsIdentifier];
+  metricsIdentifier = [optionsCopy metricsIdentifier];
 
-  [v15 ams_setNullableObject:v16 forKey:@"multiUserIdentifier"];
+  [v15 ams_setNullableObject:metricsIdentifier forKey:@"multiUserIdentifier"];
   v17 = [v15 copy];
-  v18 = [(AMSAuthenticateMetrics *)self _enqueueProperties:v17 account:v9];
+  v18 = [(AMSAuthenticateMetrics *)self _enqueueProperties:v17 account:accountCopy];
 
   return v18;
 }
 
-- (id)enqueueAuthKitBeginEventWithOptions:(id)a3 account:(id)a4
+- (id)enqueueAuthKitBeginEventWithOptions:(id)options account:(id)account
 {
   v20[3] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695DF00];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 date];
-  [(AMSAuthenticateMetrics *)self setBeginDate:v9];
+  accountCopy = account;
+  optionsCopy = options;
+  date = [v6 date];
+  [(AMSAuthenticateMetrics *)self setBeginDate:date];
 
   v10 = MEMORY[0x1E695DF90];
   v19[0] = @"authenticationType";
-  v11 = -[AMSAuthenticateMetrics _authenticationTypeStringFor:](self, "_authenticationTypeStringFor:", [v8 authenticationType]);
+  v11 = -[AMSAuthenticateMetrics _authenticationTypeStringFor:](self, "_authenticationTypeStringFor:", [optionsCopy authenticationType]);
   v20[0] = v11;
   v20[1] = @"AuthKitAuthenticationBegin";
   v19[1] = @"eventType";
   v19[2] = @"supportsUI";
-  v12 = [v8 allowServerDialogs];
+  allowServerDialogs = [optionsCopy allowServerDialogs];
   v13 = @"false";
-  if (v12)
+  if (allowServerDialogs)
   {
     v13 = @"true";
   }
@@ -233,38 +233,38 @@ void __37__AMSAuthenticateMetrics_flushEvents__block_invoke()
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:3];
   v15 = [v10 dictionaryWithDictionary:v14];
 
-  v16 = [v8 metricsIdentifier];
+  metricsIdentifier = [optionsCopy metricsIdentifier];
 
-  [v15 ams_setNullableObject:v16 forKey:@"multiUserIdentifier"];
-  v17 = [(AMSAuthenticateMetrics *)self _enqueueProperties:v15 account:v7];
+  [v15 ams_setNullableObject:metricsIdentifier forKey:@"multiUserIdentifier"];
+  v17 = [(AMSAuthenticateMetrics *)self _enqueueProperties:v15 account:accountCopy];
 
   return v17;
 }
 
-- (id)enqueueAuthKitFinishEventWithOptions:(id)a3 account:(id)a4 error:(id)a5
+- (id)enqueueAuthKitFinishEventWithOptions:(id)options account:(id)account error:(id)error
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  errorCopy = error;
   v9 = MEMORY[0x1E695DF90];
   v22[0] = @"authenticationType";
-  v10 = a4;
-  v11 = a3;
-  v12 = -[AMSAuthenticateMetrics _authenticationTypeStringFor:](self, "_authenticationTypeStringFor:", [v11 authenticationType]);
+  accountCopy = account;
+  optionsCopy = options;
+  v12 = -[AMSAuthenticateMetrics _authenticationTypeStringFor:](self, "_authenticationTypeStringFor:", [optionsCopy authenticationType]);
   v22[1] = @"duration";
   v23[0] = v12;
-  v13 = [(AMSAuthenticateMetrics *)self beginDate];
-  v14 = [(AMSAuthenticateMetrics *)self _durationSinceDate:v13];
+  beginDate = [(AMSAuthenticateMetrics *)self beginDate];
+  v14 = [(AMSAuthenticateMetrics *)self _durationSinceDate:beginDate];
   v23[1] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
   v16 = [v9 dictionaryWithDictionary:v15];
 
-  v17 = [v11 metricsIdentifier];
+  metricsIdentifier = [optionsCopy metricsIdentifier];
 
-  [v16 ams_setNullableObject:v17 forKey:@"multiUserIdentifier"];
-  if (v8)
+  [v16 ams_setNullableObject:metricsIdentifier forKey:@"multiUserIdentifier"];
+  if (errorCopy)
   {
     [v16 setObject:@"AuthKitAuthenticationFailure" forKey:@"eventType"];
-    v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "code")}];
+    v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
     [v16 setObject:v18 forKey:@"errorCode"];
   }
 
@@ -274,30 +274,30 @@ void __37__AMSAuthenticateMetrics_flushEvents__block_invoke()
   }
 
   v19 = [v16 copy];
-  v20 = [(AMSAuthenticateMetrics *)self _enqueueProperties:v19 account:v10];
+  v20 = [(AMSAuthenticateMetrics *)self _enqueueProperties:v19 account:accountCopy];
 
   return v20;
 }
 
-- (id)enqueueVerifyCredentialsBeginEventWithOptions:(id)a3 account:(id)a4
+- (id)enqueueVerifyCredentialsBeginEventWithOptions:(id)options account:(id)account
 {
   v20[3] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695DF00];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 date];
-  [(AMSAuthenticateMetrics *)self setBeginDate:v9];
+  accountCopy = account;
+  optionsCopy = options;
+  date = [v6 date];
+  [(AMSAuthenticateMetrics *)self setBeginDate:date];
 
   v10 = MEMORY[0x1E695DF90];
   v19[0] = @"credentialSource";
-  v11 = -[AMSAuthenticateMetrics _credentialSourceStringFor:](self, "_credentialSourceStringFor:", [v8 credentialSource]);
+  v11 = -[AMSAuthenticateMetrics _credentialSourceStringFor:](self, "_credentialSourceStringFor:", [optionsCopy credentialSource]);
   v20[0] = v11;
   v20[1] = @"CommerceAuthenticationBegin";
   v19[1] = @"eventType";
   v19[2] = @"supportsUI";
-  v12 = [v8 allowServerDialogs];
+  allowServerDialogs = [optionsCopy allowServerDialogs];
   v13 = @"false";
-  if (v12)
+  if (allowServerDialogs)
   {
     v13 = @"true";
   }
@@ -306,38 +306,38 @@ void __37__AMSAuthenticateMetrics_flushEvents__block_invoke()
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:3];
   v15 = [v10 dictionaryWithDictionary:v14];
 
-  v16 = [v8 metricsIdentifier];
+  metricsIdentifier = [optionsCopy metricsIdentifier];
 
-  [v15 ams_setNullableObject:v16 forKey:@"multiUserIdentifier"];
-  v17 = [(AMSAuthenticateMetrics *)self _enqueueProperties:v15 account:v7];
+  [v15 ams_setNullableObject:metricsIdentifier forKey:@"multiUserIdentifier"];
+  v17 = [(AMSAuthenticateMetrics *)self _enqueueProperties:v15 account:accountCopy];
 
   return v17;
 }
 
-- (id)enqueueVerifyCredentialsFinishEventWithOptions:(id)a3 account:(id)a4 error:(id)a5
+- (id)enqueueVerifyCredentialsFinishEventWithOptions:(id)options account:(id)account error:(id)error
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  errorCopy = error;
   v9 = MEMORY[0x1E695DF90];
   v22[0] = @"credentialSource";
-  v10 = a4;
-  v11 = a3;
-  v12 = -[AMSAuthenticateMetrics _credentialSourceStringFor:](self, "_credentialSourceStringFor:", [v11 credentialSource]);
+  accountCopy = account;
+  optionsCopy = options;
+  v12 = -[AMSAuthenticateMetrics _credentialSourceStringFor:](self, "_credentialSourceStringFor:", [optionsCopy credentialSource]);
   v22[1] = @"duration";
   v23[0] = v12;
-  v13 = [(AMSAuthenticateMetrics *)self beginDate];
-  v14 = [(AMSAuthenticateMetrics *)self _durationSinceDate:v13];
+  beginDate = [(AMSAuthenticateMetrics *)self beginDate];
+  v14 = [(AMSAuthenticateMetrics *)self _durationSinceDate:beginDate];
   v23[1] = v14;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
   v16 = [v9 dictionaryWithDictionary:v15];
 
-  v17 = [v11 metricsIdentifier];
+  metricsIdentifier = [optionsCopy metricsIdentifier];
 
-  [v16 ams_setNullableObject:v17 forKey:@"multiUserIdentifier"];
-  if (v8)
+  [v16 ams_setNullableObject:metricsIdentifier forKey:@"multiUserIdentifier"];
+  if (errorCopy)
   {
     [v16 setObject:@"CommerceAuthenticationFailure" forKey:@"eventType"];
-    v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v8, "code")}];
+    v18 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
     [v16 setObject:v18 forKey:@"errorCode"];
   }
 
@@ -347,7 +347,7 @@ void __37__AMSAuthenticateMetrics_flushEvents__block_invoke()
   }
 
   v19 = [v16 copy];
-  v20 = [(AMSAuthenticateMetrics *)self _enqueueProperties:v19 account:v10];
+  v20 = [(AMSAuthenticateMetrics *)self _enqueueProperties:v19 account:accountCopy];
 
   return v20;
 }
@@ -390,25 +390,25 @@ void __46__AMSAuthenticateMetrics_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }
 
-+ (id)_metricsInstanceWithBag:(id)a3
++ (id)_metricsInstanceWithBag:(id)bag
 {
-  v3 = a3;
-  v4 = [[AMSMetrics alloc] initWithContainerID:0x1F07216F8 bag:v3];
+  bagCopy = bag;
+  v4 = [[AMSMetrics alloc] initWithContainerID:0x1F07216F8 bag:bagCopy];
 
   return v4;
 }
 
-+ (id)_eventWithTopic:(id)a3
++ (id)_eventWithTopic:(id)topic
 {
-  v3 = a3;
-  v4 = [[AMSMetricsEvent alloc] initWithTopic:v3];
+  topicCopy = topic;
+  v4 = [[AMSMetricsEvent alloc] initWithTopic:topicCopy];
 
   [(AMSMetricsEvent *)v4 setCheckDiagnosticsAndUsageSetting:1];
 
@@ -430,27 +430,27 @@ void __46__AMSAuthenticateMetrics_bagSubProfileVersion__block_invoke()
 
   v6 = [(AMSAuthenticateMetrics *)self bag];
   v7 = [v6 stringForKey:@"authPerfTopicName"];
-  v8 = [v7 valuePromise];
+  valuePromise = [v7 valuePromise];
 
-  return v8;
+  return valuePromise;
 }
 
-- (id)_authenticationTypeStringFor:(unint64_t)a3
+- (id)_authenticationTypeStringFor:(unint64_t)for
 {
-  if (a3 > 3)
+  if (for > 3)
   {
     return @"unrecognized";
   }
 
   else
   {
-    return off_1E73B3AD0[a3];
+    return off_1E73B3AD0[for];
   }
 }
 
-- (id)_clampTimeStampValue:(id)a3
+- (id)_clampTimeStampValue:(id)value
 {
-  v3 = 4000 * ([a3 longLongValue] / 4000);
+  v3 = 4000 * ([value longLongValue] / 4000);
   v4 = MEMORY[0x1E696AD98];
 
   return [v4 numberWithLongLong:v3];
@@ -458,34 +458,34 @@ void __46__AMSAuthenticateMetrics_bagSubProfileVersion__block_invoke()
 
 - (id)_eventTime
 {
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [AMSMetrics serverTimeFromDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [AMSMetrics serverTimeFromDate:date];
   v5 = [(AMSAuthenticateMetrics *)self _clampTimeStampValue:v4];
 
   return v5;
 }
 
-- (id)_credentialSourceStringFor:(unint64_t)a3
+- (id)_credentialSourceStringFor:(unint64_t)for
 {
-  if (a3 > 6)
+  if (for > 6)
   {
     return @"unrecognized";
   }
 
   else
   {
-    return off_1E73B3AF0[a3];
+    return off_1E73B3AF0[for];
   }
 }
 
-- (id)_durationSinceDate:(id)a3
+- (id)_durationSinceDate:(id)date
 {
-  if (a3)
+  if (date)
   {
     v4 = MEMORY[0x1E695DF00];
-    v5 = a3;
-    v6 = [v4 date];
-    [v6 timeIntervalSinceDate:v5];
+    dateCopy = date;
+    date = [v4 date];
+    [date timeIntervalSinceDate:dateCopy];
     v8 = v7;
 
     v9 = [MEMORY[0x1E696AD98] numberWithDouble:v8];
@@ -499,23 +499,23 @@ void __46__AMSAuthenticateMetrics_bagSubProfileVersion__block_invoke()
   return v9;
 }
 
-- (id)_enqueueEvents:(id)a3
+- (id)_enqueueEvents:(id)events
 {
-  v4 = a3;
-  v5 = [(AMSAuthenticateMetrics *)self metrics];
-  v6 = [v5 promiseForEnqueueingEvents:v4];
+  eventsCopy = events;
+  metrics = [(AMSAuthenticateMetrics *)self metrics];
+  v6 = [metrics promiseForEnqueueingEvents:eventsCopy];
 
   return v6;
 }
 
-- (id)_enqueueProperties:(id)a3 account:(id)a4
+- (id)_enqueueProperties:(id)properties account:(id)account
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if (a3)
+  accountCopy = account;
+  if (properties)
   {
-    v7 = [a3 mutableCopy];
-    if ([(AMSAuthenticateMetrics *)self _accountIsSecondaryHomeUser:v6])
+    v7 = [properties mutableCopy];
+    if ([(AMSAuthenticateMetrics *)self _accountIsSecondaryHomeUser:accountCopy])
     {
       v8 = @"authPerformanceSecondary";
     }
@@ -531,13 +531,13 @@ void __46__AMSAuthenticateMetrics_bagSubProfileVersion__block_invoke()
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v11 = objc_opt_class();
       v12 = AMSLogKey();
       v13 = AMSHashIfNeeded(v7);
-      v14 = AMSHashIfNeeded(v6);
+      v14 = AMSHashIfNeeded(accountCopy);
       *buf = 138544130;
       v32 = v11;
       v33 = 2114;
@@ -546,22 +546,22 @@ void __46__AMSAuthenticateMetrics_bagSubProfileVersion__block_invoke()
       v36 = v13;
       v37 = 2114;
       v38 = v14;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Creating Event with properties = %{public}@ using account = %{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Creating Event with properties = %{public}@ using account = %{public}@", buf, 0x2Au);
     }
 
     v15 = objc_alloc_init(AMSMutableBinaryPromise);
-    v16 = [(AMSAuthenticateMetrics *)self _topicFromBag];
+    _topicFromBag = [(AMSAuthenticateMetrics *)self _topicFromBag];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __53__AMSAuthenticateMetrics__enqueueProperties_account___block_invoke;
     v26[3] = &unk_1E73B3AB0;
     v17 = v15;
     v27 = v17;
-    v28 = self;
+    selfCopy = self;
     v29 = v8;
     v30 = v7;
     v18 = v7;
-    [v16 resultWithCompletion:v26];
+    [_topicFromBag resultWithCompletion:v26];
 
     v19 = v30;
     v20 = v17;
@@ -575,8 +575,8 @@ void __46__AMSAuthenticateMetrics_bagSubProfileVersion__block_invoke()
       v21 = +[AMSLogConfig sharedConfig];
     }
 
-    v22 = [v21 OSLogObject];
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v21 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v23 = objc_opt_class();
       v24 = AMSLogKey();
@@ -584,7 +584,7 @@ void __46__AMSAuthenticateMetrics_bagSubProfileVersion__block_invoke()
       v32 = v23;
       v33 = 2114;
       v34 = v24;
-      _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attempted to enqueue event without properties.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attempted to enqueue event without properties.", buf, 0x16u);
     }
 
     v18 = AMSError(2, @"Missing Properties", 0, 0);
@@ -695,15 +695,15 @@ void __53__AMSAuthenticateMetrics__enqueueProperties_account___block_invoke_121(
   }
 }
 
-- (id)_enqueueEventWithTopic:(id)a3 properties:(id)a4
+- (id)_enqueueEventWithTopic:(id)topic properties:(id)properties
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  topicCopy = topic;
+  propertiesCopy = properties;
+  v8 = propertiesCopy;
+  if (topicCopy && propertiesCopy)
   {
-    v9 = [objc_opt_class() _eventWithTopic:v6];
+    v9 = [objc_opt_class() _eventWithTopic:topicCopy];
     [v9 addPropertiesWithDictionary:v8];
     v10 = +[AMSLogConfig sharedAccountsConfig];
     if (!v10)
@@ -711,8 +711,8 @@ void __53__AMSAuthenticateMetrics__enqueueProperties_account___block_invoke_121(
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v12 = objc_opt_class();
       v13 = AMSLogKey();
@@ -722,7 +722,7 @@ void __53__AMSAuthenticateMetrics__enqueueProperties_account___block_invoke_121(
       v25 = v13;
       v26 = 2114;
       v27 = v9;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Queueing Metrics Event = %{public}@", &v22, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Queueing Metrics Event = %{public}@", &v22, 0x20u);
     }
 
     v30[0] = v9;
@@ -738,8 +738,8 @@ void __53__AMSAuthenticateMetrics__enqueueProperties_account___block_invoke_121(
       v16 = +[AMSLogConfig sharedConfig];
     }
 
-    v17 = [v16 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v16 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v18 = objc_opt_class();
       v19 = AMSLogKey();
@@ -749,10 +749,10 @@ void __53__AMSAuthenticateMetrics__enqueueProperties_account___block_invoke_121(
       v24 = 2114;
       v25 = v19;
       v26 = 2114;
-      v27 = v6;
+      v27 = topicCopy;
       v28 = 2114;
       v29 = v20;
-      _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attempted to enqueue event without topic or properties. topic = %{public}@ properties = %{public}@", &v22, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Attempted to enqueue event without topic or properties. topic = %{public}@ properties = %{public}@", &v22, 0x2Au);
     }
 
     v9 = AMSError(2, @"Missing topic or properties", 0, 0);
@@ -762,10 +762,10 @@ void __53__AMSAuthenticateMetrics__enqueueProperties_account___block_invoke_121(
   return v15;
 }
 
-- (BOOL)_isTopicDefined:(id)a3
+- (BOOL)_isTopicDefined:(id)defined
 {
-  v4 = [a3 isEqualToString:@"_topic_not_defined_"] ^ 1;
-  if (a3)
+  v4 = [defined isEqualToString:@"_topic_not_defined_"] ^ 1;
+  if (defined)
   {
     return v4;
   }
@@ -776,11 +776,11 @@ void __53__AMSAuthenticateMetrics__enqueueProperties_account___block_invoke_121(
   }
 }
 
-- (id)_userIdForBagNamespace:(id)a3
+- (id)_userIdForBagNamespace:(id)namespace
 {
-  v4 = a3;
+  namespaceCopy = namespace;
   v5 = [(AMSAuthenticateMetrics *)self bag];
-  v6 = [AMSMetricsIdentifierStore identifierForAccount:0 bag:v5 bagNamespace:v4 keyName:@"userId"];
+  v6 = [AMSMetricsIdentifierStore identifierForAccount:0 bag:v5 bagNamespace:namespaceCopy keyName:@"userId"];
 
   return v6;
 }

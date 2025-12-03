@@ -76,15 +76,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 unsignedIntValue];
+    unsignedIntValue = [v2 unsignedIntValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (unsigned)_storedBuddyVersion
@@ -93,15 +93,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v2 unsignedIntValue];
+    unsignedIntValue = [v2 unsignedIntValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (BOOL)_performiOSMigration
@@ -157,8 +157,8 @@
   if ([(BuddyDataMigrator *)self didRestoreFromBackup])
   {
     v10 = objc_alloc_init(ACAccountStore);
-    v11 = [v10 aa_primaryAppleAccount];
-    if (v11)
+    aa_primaryAppleAccount = [v10 aa_primaryAppleAccount];
+    if (aa_primaryAppleAccount)
     {
       v12 = _BYLoggingFacility();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -168,13 +168,13 @@
       }
 
       [v10 setNotificationsEnabled:0];
-      [v11 setAuthenticated:0];
+      [aa_primaryAppleAccount setAuthenticated:0];
       v164 = 0;
-      v13 = [v10 saveVerifiedAccount:v11 error:&v164];
+      domain = [v10 saveVerifiedAccount:aa_primaryAppleAccount error:&v164];
       v14 = v164;
       v15 = _BYLoggingFacility();
       v16 = v15;
-      if (v13)
+      if (domain)
       {
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
@@ -193,8 +193,8 @@
 
         else if (v14)
         {
-          v13 = [v14 domain];
-          v160 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v13, [v14 code]);
+          domain = [v14 domain];
+          v160 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v14 code]);
           v159 = 1;
         }
 
@@ -252,10 +252,10 @@
     }
   }
 
-  v19 = [(BuddyDataMigrator *)self capabilities];
-  v20 = [v19 supportsApplePay];
+  capabilities = [(BuddyDataMigrator *)self capabilities];
+  supportsApplePay = [capabilities supportsApplePay];
 
-  if (!v20)
+  if (!supportsApplePay)
   {
     goto LABEL_69;
   }
@@ -303,8 +303,8 @@
     if (storedBuddyMigratorVersion <= 5)
     {
       v28 = +[NSLocale currentLocale];
-      v29 = [v28 countryCode];
-      if ([v29 isEqualToString:@"US"])
+      countryCode = [v28 countryCode];
+      if ([countryCode isEqualToString:@"US"])
       {
 
 LABEL_54:
@@ -442,24 +442,24 @@ LABEL_69:
 
   if (self->_runUpgradeMiniBuddies || self->_runLocalRestoreMiniBuddies)
   {
-    v44 = [(BuddyDataMigrator *)self chronicle];
-    v45 = [v44 entryForFeature:2];
-    v46 = [v45 createdOnCurrentMajorVersion];
+    chronicle = [(BuddyDataMigrator *)self chronicle];
+    v45 = [chronicle entryForFeature:2];
+    createdOnCurrentMajorVersion = [v45 createdOnCurrentMajorVersion];
 
     v47 = +[MCProfileConnection sharedConnection];
     v48 = [v47 effectiveBoolValueForSetting:MCFeatureDiagnosticsSubmissionAllowed];
 
-    v49 = [(BuddyDataMigrator *)self capabilities];
-    v50 = [v49 isDeviceAnalyticsRestricted];
+    capabilities2 = [(BuddyDataMigrator *)self capabilities];
+    isDeviceAnalyticsRestricted = [capabilities2 isDeviceAnalyticsRestricted];
 
     v51 = +[MCProfileConnection sharedConnection];
-    v52 = [v51 skipSetupKeys];
-    v53 = [v52 containsObject:kMCCCSkipSetupDiagnostics];
+    skipSetupKeys = [v51 skipSetupKeys];
+    v53 = [skipSetupKeys containsObject:kMCCCSkipSetupDiagnostics];
 
-    v54 = [(BuddyDataMigrator *)self capabilities];
-    LODWORD(v52) = [v54 eligibleForChlorine];
+    capabilities3 = [(BuddyDataMigrator *)self capabilities];
+    LODWORD(skipSetupKeys) = [capabilities3 eligibleForChlorine];
 
-    if ((v52 ^ 1 | v50))
+    if ((skipSetupKeys ^ 1 | isDeviceAnalyticsRestricted))
     {
       goto LABEL_90;
     }
@@ -472,13 +472,13 @@ LABEL_69:
     v57 = +[MCProfileConnection sharedConnection];
     v58 = [v57 effectiveBoolValueForSetting:MCFeatureAppAnalyticsAllowed];
 
-    v59 = [(BuddyDataMigrator *)self capabilities];
-    v60 = [v59 isAppAnalyticsRestricted];
+    capabilities4 = [(BuddyDataMigrator *)self capabilities];
+    isAppAnalyticsRestricted = [capabilities4 isAppAnalyticsRestricted];
 
-    if (v60 & 1 | (v48 == 1) ^ (v58 != 1))
+    if (isAppAnalyticsRestricted & 1 | (v48 == 1) ^ (v58 != 1))
     {
 LABEL_90:
-      if ((v48 == 1) | (v46 | v50 | v53) & 1)
+      if ((v48 == 1) | (createdOnCurrentMajorVersion | isDeviceAnalyticsRestricted | v53) & 1)
       {
         goto LABEL_100;
       }
@@ -523,8 +523,8 @@ LABEL_100:
   }
 
   v63 = +[MCProfileConnection sharedConnection];
-  v64 = [v63 skipSetupKeys];
-  v65 = [v64 containsObject:kMCCCSkipSetupSiri];
+  skipSetupKeys2 = [v63 skipSetupKeys];
+  v65 = [skipSetupKeys2 containsObject:kMCCCSkipSetupSiri];
 
   if ((self->_runUpgradeMiniBuddies & v65 & 1) != 0 && [(BuddyDataMigrator *)self _needsVoiceTriggerConfirmation])
   {
@@ -548,8 +548,8 @@ LABEL_100:
     {
       if (!v69)
       {
-        v70 = [(BuddyDataMigrator *)self buddyPreferences];
-        v71 = [BuddyRestoreState hasStateFromPreferences:v70];
+        buddyPreferences = [(BuddyDataMigrator *)self buddyPreferences];
+        v71 = [BuddyRestoreState hasStateFromPreferences:buddyPreferences];
 
         if ((v71 & 1) == 0)
         {
@@ -633,15 +633,15 @@ LABEL_100:
     v78 = v77;
     _Block_object_dispose(&v165, 8);
     v79 = [v77 bundleWithIdentifier:BYPrivacyPrivacyPaneIdentifier];
-    v80 = [v79 privacyFlow];
+    privacyFlow = [v79 privacyFlow];
 
     v81 = CFPreferencesCopyAppValue(@"PrivacyContentVersion", applicationID);
     v82 = +[MCProfileConnection sharedConnection];
-    v83 = [v82 skipSetupKeys];
-    v84 = [v83 containsObject:kMCCCSkipSetupPrivacy];
+    skipSetupKeys3 = [v82 skipSetupKeys];
+    v84 = [skipSetupKeys3 containsObject:kMCCCSkipSetupPrivacy];
 
-    v85 = [v80 contentVersion];
-    if (v85 > [v81 unsignedIntegerValue])
+    contentVersion = [privacyFlow contentVersion];
+    if (contentVersion > [v81 unsignedIntegerValue])
     {
       v86 = _BYLoggingFacility();
       v87 = os_log_type_enabled(v86, OS_LOG_TYPE_DEFAULT);
@@ -781,12 +781,12 @@ LABEL_100:
     v97 = CFPreferencesGetAppBooleanValue(@"ScreenTimePresented", applicationID, 0) != 0;
     v98 = CFPreferencesGetAppBooleanValue(@"AutoUpdatePresented", applicationID, 0);
     v99 = +[MCProfileConnection sharedConnection];
-    v100 = [v99 skipSetupKeys];
-    v101 = [v100 containsObject:kMCCCSkipScreenTime];
+    skipSetupKeys4 = [v99 skipSetupKeys];
+    v101 = [skipSetupKeys4 containsObject:kMCCCSkipScreenTime];
 
     v102 = +[MCProfileConnection sharedConnection];
-    v103 = [v102 skipSetupKeys];
-    v104 = [v103 containsObject:kMCCCSkipSoftwareUpdate];
+    skipSetupKeys5 = [v102 skipSetupKeys];
+    v104 = [skipSetupKeys5 containsObject:kMCCCSkipSoftwareUpdate];
 
     if ((v97 | v101))
     {
@@ -824,11 +824,11 @@ LABEL_201:
 
 LABEL_202:
   v107 = +[MCProfileConnection sharedConnection];
-  v108 = [v107 skipSetupKeys];
-  v109 = [v108 containsObject:kMCCCSkipSetupAppearance];
+  skipSetupKeys6 = [v107 skipSetupKeys];
+  v109 = [skipSetupKeys6 containsObject:kMCCCSkipSetupAppearance];
 
-  v110 = [(BuddyDataMigrator *)self buddyPreferences];
-  v111 = [v110 BOOLForKey:@"UserInterfaceStyleModePresented"];
+  buddyPreferences2 = [(BuddyDataMigrator *)self buddyPreferences];
+  v111 = [buddyPreferences2 BOOLForKey:@"UserInterfaceStyleModePresented"];
 
   if (self->_runUpgradeMiniBuddies)
   {
@@ -892,8 +892,8 @@ LABEL_217:
 LABEL_218:
   if ([(BuddyDataMigrator *)self didRestoreFromBackup])
   {
-    v116 = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
-    v117 = [BuddySuspendTask hasSuspendTaskWithBuddyPreferencesExcludedFromBackup:v116];
+    buddyPreferencesExcludedFromBackup = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
+    v117 = [BuddySuspendTask hasSuspendTaskWithBuddyPreferencesExcludedFromBackup:buddyPreferencesExcludedFromBackup];
 
     if (v117)
     {
@@ -923,8 +923,8 @@ LABEL_218:
   if (self->_runLocalRestoreMiniBuddies)
   {
     v120 = +[ACAccountStore defaultStore];
-    v121 = [v120 aa_primaryAppleAccount];
-    v122 = v121 == 0;
+    aa_primaryAppleAccount2 = [v120 aa_primaryAppleAccount];
+    v122 = aa_primaryAppleAccount2 == 0;
 
     if (!v122)
     {
@@ -944,22 +944,22 @@ LABEL_218:
     v124 = [BYSUManagerClient createWithQueue:0 clientType:0];
     if ([v124 isAutomaticDownloadEnabled])
     {
-      v125 = [v124 isAutomaticUpdateV2Enabled];
+      isAutomaticUpdateV2Enabled = [v124 isAutomaticUpdateV2Enabled];
     }
 
     else
     {
-      v125 = 0;
+      isAutomaticUpdateV2Enabled = 0;
     }
 
-    v126 = [(BuddyDataMigrator *)self chronicle];
-    v127 = [v126 entryForFeature:3];
+    chronicle2 = [(BuddyDataMigrator *)self chronicle];
+    v127 = [chronicle2 entryForFeature:3];
 
     if (v127)
     {
       v128 = +[BYDeviceConfiguration currentConfiguration];
-      v129 = [v128 productVersion];
-      v130 = [v127 hasCrossedEBoundarySinceCreationForCurrentProductVersion:v129];
+      productVersion = [v128 productVersion];
+      v130 = [v127 hasCrossedEBoundarySinceCreationForCurrentProductVersion:productVersion];
 
       v131 = v130 ^ 1;
     }
@@ -970,10 +970,10 @@ LABEL_218:
     }
 
     v132 = +[MCProfileConnection sharedConnection];
-    v133 = [v132 skipSetupKeys];
-    v134 = [v133 containsObject:kMCCCSkipSoftwareUpdate];
+    skipSetupKeys7 = [v132 skipSetupKeys];
+    v134 = [skipSetupKeys7 containsObject:kMCCCSkipSoftwareUpdate];
 
-    if (((v134 | v125 | v131) & 1) == 0)
+    if (((v134 | isAutomaticUpdateV2Enabled | v131) & 1) == 0)
     {
       v135 = _BYLoggingFacility();
       if (os_log_type_enabled(v135, OS_LOG_TYPE_DEFAULT))
@@ -1013,12 +1013,12 @@ LABEL_218:
 
   if (self->_runUpgradeMiniBuddies)
   {
-    v138 = [(BuddyDataMigrator *)self featureFlags];
-    if ([v138 isStolenDeviceProtectionEnabled])
+    featureFlags = [(BuddyDataMigrator *)self featureFlags];
+    if ([featureFlags isStolenDeviceProtectionEnabled])
     {
-      v139 = [(BuddyDataMigrator *)self _shouldOfferStolenDeviceProtection];
+      _shouldOfferStolenDeviceProtection = [(BuddyDataMigrator *)self _shouldOfferStolenDeviceProtection];
 
-      if (v139)
+      if (_shouldOfferStolenDeviceProtection)
       {
         v140 = _BYLoggingFacility();
         if (os_log_type_enabled(v140, OS_LOG_TYPE_DEFAULT))
@@ -1038,12 +1038,12 @@ LABEL_218:
 
   if (self->_runUpgradeMiniBuddies)
   {
-    v141 = [(BuddyDataMigrator *)self featureFlags];
-    if ([v141 isMDMEnrollmentFlowControllerAdoptionEnabled])
+    featureFlags2 = [(BuddyDataMigrator *)self featureFlags];
+    if ([featureFlags2 isMDMEnrollmentFlowControllerAdoptionEnabled])
     {
-      v142 = [(BuddyDataMigrator *)self _shouldOfferMDMMigrationUI];
+      _shouldOfferMDMMigrationUI = [(BuddyDataMigrator *)self _shouldOfferMDMMigrationUI];
 
-      if (v142)
+      if (_shouldOfferMDMMigrationUI)
       {
         v143 = _BYLoggingFacility();
         if (os_log_type_enabled(v143, OS_LOG_TYPE_DEFAULT))
@@ -1063,10 +1063,10 @@ LABEL_218:
 
   v144 = BYBuddyNotBackedUpIdentifier;
   v145 = CFPreferencesGetAppBooleanValue(@"ShouldShowSIMSetupInRestoreMiniBuddy", BYBuddyNotBackedUpIdentifier, 0);
-  v146 = [(BuddyDataMigrator *)self didRestoreFromBackup];
+  didRestoreFromBackup = [(BuddyDataMigrator *)self didRestoreFromBackup];
   if (v145)
   {
-    v147 = v146;
+    v147 = didRestoreFromBackup;
   }
 
   else
@@ -1110,8 +1110,8 @@ LABEL_218:
 
 LABEL_281:
   v153 = +[BYSetupUserDisposition current];
-  v154 = [v153 date];
-  [v154 timeIntervalSince1970];
+  date = [v153 date];
+  [date timeIntervalSince1970];
   v156 = v155;
 
   if (v156 != 0.0)
@@ -1130,18 +1130,18 @@ LABEL_281:
   if (self->_runLocalRestoreMiniBuddies || self->_runUpgradeMiniBuddies)
   {
     v3 = +[ACAccountStore defaultStore];
-    v4 = [v3 aa_primaryAppleAccount];
+    aa_primaryAppleAccount = [v3 aa_primaryAppleAccount];
 
-    if (!v4)
+    if (!aa_primaryAppleAccount)
     {
 LABEL_21:
 
       return;
     }
 
-    if (CFPreferencesGetAppBooleanValue(@"HSA2UpgradeMiniBuddy3Ran", BYSetupAssistantBundleIdentifier, 0) || ([v4 aa_personID], v5 = objc_claimAutoreleasedReturnValue(), v6 = +[CDPAccount isICDPEnabledForDSID:](CDPAccount, "isICDPEnabledForDSID:", v5), v5, (v6 & 1) != 0))
+    if (CFPreferencesGetAppBooleanValue(@"HSA2UpgradeMiniBuddy3Ran", BYSetupAssistantBundleIdentifier, 0) || ([aa_primaryAppleAccount aa_personID], v5 = objc_claimAutoreleasedReturnValue(), v6 = +[CDPAccount isICDPEnabledForDSID:](CDPAccount, "isICDPEnabledForDSID:", v5), v5, (v6 & 1) != 0))
     {
-      if (self->_storedBuddyMigratorVersion > 1 || ([v4 aa_personID], v7 = objc_claimAutoreleasedReturnValue(), v8 = +[CDPAccount isICDPEnabledForDSID:](CDPAccount, "isICDPEnabledForDSID:", v7), v7, !v8))
+      if (self->_storedBuddyMigratorVersion > 1 || ([aa_primaryAppleAccount aa_personID], v7 = objc_claimAutoreleasedReturnValue(), v8 = +[CDPAccount isICDPEnabledForDSID:](CDPAccount, "isICDPEnabledForDSID:", v7), v7, !v8))
       {
         if (!self->_runUpgradeMiniBuddies)
         {
@@ -1153,8 +1153,8 @@ LABEL_21:
           goto LABEL_21;
         }
 
-        v12 = [v4 aa_personID];
-        v13 = [CDPAccount isICDPEnabledForDSID:v12];
+        aa_personID = [aa_primaryAppleAccount aa_personID];
+        v13 = [CDPAccount isICDPEnabledForDSID:aa_personID];
 
         if (!v13)
         {
@@ -1239,17 +1239,17 @@ LABEL_20:
 
 - (void)_cleanupKeys
 {
-  v3 = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
-  [v3 removeObjectForKey:BYBuddySoftwareUpdateMigration onlyFromMemory:0];
+  buddyPreferencesExcludedFromBackup = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
+  [buddyPreferencesExcludedFromBackup removeObjectForKey:BYBuddySoftwareUpdateMigration onlyFromMemory:0];
 
-  v4 = [(BuddyDataMigrator *)self buddyPreferences];
-  [v4 removeObjectForKey:@"DebugFlowItemClassNames" onlyFromMemory:0];
+  buddyPreferences = [(BuddyDataMigrator *)self buddyPreferences];
+  [buddyPreferences removeObjectForKey:@"DebugFlowItemClassNames" onlyFromMemory:0];
 
   CFPreferencesSetAppValue(@"AppleIDForceUpgrade", 0, @"com.apple.purplebuddy");
   CFPreferencesSetAppValue(@"AnimateLanugageChoice", 0, @"com.apple.purplebuddy");
   CFPreferencesSetAppValue(@"MagnifyPresented", 0, @"com.apple.purplebuddy");
-  v5 = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
-  v6 = [BuddyMigrationState loadFromPreferences:v5];
+  buddyPreferencesExcludedFromBackup2 = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
+  v6 = [BuddyMigrationState loadFromPreferences:buddyPreferencesExcludedFromBackup2];
 
   if (v6)
   {
@@ -1266,8 +1266,8 @@ LABEL_20:
 
 LABEL_9:
 
-      v10 = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
-      [BuddyMigrationState removeFromPreferences:v10];
+      buddyPreferencesExcludedFromBackup3 = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
+      [BuddyMigrationState removeFromPreferences:buddyPreferencesExcludedFromBackup3];
 
       goto LABEL_10;
     }
@@ -1295,42 +1295,42 @@ LABEL_10:
 
   if (v12)
   {
-    v13 = [(BuddyDataMigrator *)self didUpgrade];
+    didUpgrade = [(BuddyDataMigrator *)self didUpgrade];
     v14 = +[BYPreferencesController buddyPreferences];
     [v14 removeObjectForKey:@"AppStorePresented" onlyFromMemory:0];
 
-    if (v13)
+    if (didUpgrade)
     {
       v15 = +[BYPreferencesController buddyPreferencesExcludedFromBackup];
       [v15 setObject:v12 forKey:@"AppStorePresented" persistImmediately:1];
     }
   }
 
-  v16 = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
-  [BuddySetupAnalytics removeFromDiskWithPreferences:v16];
+  buddyPreferencesExcludedFromBackup4 = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
+  [BuddySetupAnalytics removeFromDiskWithPreferences:buddyPreferencesExcludedFromBackup4];
 
   CFPreferencesSetAppValue(@"DisplayZoomRestart", 0, @"com.apple.purplebuddy.notbackedup");
-  v17 = [(BuddyDataMigrator *)self buddyPreferences];
-  [v17 removeObjectForKey:@"IntelligencePresented" onlyFromMemory:0];
+  buddyPreferences2 = [(BuddyDataMigrator *)self buddyPreferences];
+  [buddyPreferences2 removeObjectForKey:@"IntelligencePresented" onlyFromMemory:0];
 
-  v18 = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
-  [v18 removeObjectForKey:@"IntelligencePresented" onlyFromMemory:0];
+  buddyPreferencesExcludedFromBackup5 = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
+  [buddyPreferencesExcludedFromBackup5 removeObjectForKey:@"IntelligencePresented" onlyFromMemory:0];
 }
 
 - (void)_migrateChronicle
 {
-  v3 = [(BuddyDataMigrator *)self buddyPreferences];
-  v7 = [v3 objectForKey:@"LastPresentedApplePay"];
+  buddyPreferences = [(BuddyDataMigrator *)self buddyPreferences];
+  v7 = [buddyPreferences objectForKey:@"LastPresentedApplePay"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = [[BYChronicleEntry alloc] initWithProductVersion:v7];
-    v5 = [(BuddyDataMigrator *)self chronicle];
-    [v5 addEntry:v4 forFeature:1];
+    chronicle = [(BuddyDataMigrator *)self chronicle];
+    [chronicle addEntry:v4 forFeature:1];
 
-    v6 = [(BuddyDataMigrator *)self buddyPreferences];
-    [v6 removeObjectForKey:@"LastPresentedApplePay" onlyFromMemory:0];
+    buddyPreferences2 = [(BuddyDataMigrator *)self buddyPreferences];
+    [buddyPreferences2 removeObjectForKey:@"LastPresentedApplePay" onlyFromMemory:0];
   }
 
   [(BuddyDataMigrator *)self _migrateIntelligencePresentedKeyToChronicleIfNeeded];
@@ -1340,8 +1340,8 @@ LABEL_10:
 {
   if ([(BuddyDataMigrator *)self didUpgrade])
   {
-    v3 = [(BuddyDataMigrator *)self chronicle];
-    v4 = [v3 entryForFeature:4];
+    chronicle = [(BuddyDataMigrator *)self chronicle];
+    v4 = [chronicle entryForFeature:4];
 
     if (!v4)
     {
@@ -1349,8 +1349,8 @@ LABEL_10:
       v22 = &v21;
       v23 = 0x2020000000;
       v24 = 0;
-      v5 = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
-      v6 = [v5 BOOLForKey:@"IntelligencePresented"];
+      buddyPreferencesExcludedFromBackup = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
+      v6 = [buddyPreferencesExcludedFromBackup BOOLForKey:@"IntelligencePresented"];
 
       if (v6)
       {
@@ -1366,8 +1366,8 @@ LABEL_10:
 
       else
       {
-        v8 = [(BuddyDataMigrator *)self buddyPreferences];
-        v9 = [v8 BOOLForKey:@"IntelligencePresented"];
+        buddyPreferences = [(BuddyDataMigrator *)self buddyPreferences];
+        v9 = [buddyPreferences BOOLForKey:@"IntelligencePresented"];
 
         if (v9)
         {
@@ -1379,7 +1379,7 @@ LABEL_10:
           }
 
           v11 = dispatch_semaphore_create(0);
-          v12 = [(BuddyDataMigrator *)self intelligenceManager];
+          intelligenceManager = [(BuddyDataMigrator *)self intelligenceManager];
           v17[0] = _NSConcreteStackBlock;
           v17[1] = 3221225472;
           v17[2] = sub_5284;
@@ -1387,7 +1387,7 @@ LABEL_10:
           v19 = &v21;
           v13 = v11;
           v18 = v13;
-          [v12 isIntelligenceEnabledWithCompletionHandler:v17];
+          [intelligenceManager isIntelligenceEnabledWithCompletionHandler:v17];
 
           dispatch_semaphore_wait(v13, 0xFFFFFFFFFFFFFFFFLL);
         }
@@ -1403,8 +1403,8 @@ LABEL_10:
         }
 
         v15 = [[BYChronicleEntry alloc] initWithProductVersion:@"18.3"];
-        v16 = [(BuddyDataMigrator *)self chronicle];
-        [v16 addEntry:v15 forFeature:4];
+        chronicle2 = [(BuddyDataMigrator *)self chronicle];
+        [chronicle2 addEntry:v15 forFeature:4];
       }
 
       _Block_object_dispose(&v21, 8);
@@ -1415,15 +1415,15 @@ LABEL_10:
 - (BOOL)performMigration
 {
   v3 = +[NSDate date];
-  v4 = [(BuddyDataMigrator *)self didRestoreFromBackup];
+  didRestoreFromBackup = [(BuddyDataMigrator *)self didRestoreFromBackup];
   v5 = +[BYSetupStateManager sharedManager];
   self->_restoredIniTunes = [v5 restoreType] == &dword_0 + 1;
 
-  v6 = [(BuddyDataMigrator *)self didUpgrade];
+  didUpgrade = [(BuddyDataMigrator *)self didUpgrade];
   v7 = +[BYManagedAppleIDBootstrap isMultiUser];
   self->_isMultiUser = v7 & 1;
-  self->_runUpgradeMiniBuddies = v6 & (v7 ^ 1);
-  if (v4)
+  self->_runUpgradeMiniBuddies = didUpgrade & (v7 ^ 1);
+  if (didRestoreFromBackup)
   {
     restoredIniTunes = self->_restoredIniTunes;
   }
@@ -1437,20 +1437,20 @@ LABEL_10:
   self->_storedBuddyMigratorVersion = [(BuddyDataMigrator *)self _storedBuddyMigratorVersion];
   self->_storedBuddyVersion = [(BuddyDataMigrator *)self _storedBuddyVersion];
   [(BuddyDataMigrator *)self _migrateChronicle];
-  v9 = [(BuddyDataMigrator *)self userDataDisposition];
+  userDataDisposition = [(BuddyDataMigrator *)self userDataDisposition];
   v10 = _BYLoggingFacility();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = self->_restoredIniTunes;
     isMultiUser = self->_isMultiUser;
     v33 = 67110144;
-    *v34 = v4;
+    *v34 = didRestoreFromBackup;
     *&v34[4] = 1024;
-    *&v34[6] = (v9 >> 6) & 1;
+    *&v34[6] = (userDataDisposition >> 6) & 1;
     v35 = 1024;
     v36 = v11;
     v37 = 1024;
-    v38 = v6;
+    v38 = didUpgrade;
     v39 = 1024;
     v40 = isMultiUser;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "BuddyMigrator: didRestore=%d, restoredFromDevice=%d, restoredIniTunes=%d, didUpgrade=%d, isMultiUser=%d", &v33, 0x20u);
@@ -1465,7 +1465,7 @@ LABEL_10:
     _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Running %{public}@", &v33, 0xCu);
   }
 
-  v15 = [(BuddyDataMigrator *)self _performiOSMigration];
+  _performiOSMigration = [(BuddyDataMigrator *)self _performiOSMigration];
   if (([(BuddyDataMigrator *)self didUpgrade]& 1) != 0 || [(BuddyDataMigrator *)self didRestoreFromBackup])
   {
     v16 = objc_alloc_init(BYFlowSkipController);
@@ -1478,20 +1478,20 @@ LABEL_10:
   CFPreferencesSetAppValue(@"setupMigratorVersion", &off_2A0F8, BYSetupAssistantBundleIdentifier);
   CFPreferencesAppSynchronize(v17);
   CFPreferencesAppSynchronize(BYBuddyNotBackedUpIdentifier);
-  v18 = [(BuddyDataMigrator *)self chronicle];
-  v19 = [(BuddyDataMigrator *)self buddyPreferences];
-  v20 = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
-  [v18 persistBackedUpFeaturesInPreferences:v19 andNotBackedFeaturesInPreferences:v20 persistImmediately:1];
+  chronicle = [(BuddyDataMigrator *)self chronicle];
+  buddyPreferences = [(BuddyDataMigrator *)self buddyPreferences];
+  buddyPreferencesExcludedFromBackup = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
+  [chronicle persistBackedUpFeaturesInPreferences:buddyPreferences andNotBackedFeaturesInPreferences:buddyPreferencesExcludedFromBackup persistImmediately:1];
 
-  v21 = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
-  if ([BuddyMigrationState hasStateFromPreferences:v21])
+  buddyPreferencesExcludedFromBackup2 = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
+  if ([BuddyMigrationState hasStateFromPreferences:buddyPreferencesExcludedFromBackup2])
   {
   }
 
   else
   {
-    v22 = [(BuddyDataMigrator *)self buddyPreferences];
-    v23 = [BuddyRestoreState hasStateFromPreferences:v22];
+    buddyPreferences2 = [(BuddyDataMigrator *)self buddyPreferences];
+    v23 = [BuddyRestoreState hasStateFromPreferences:buddyPreferences2];
 
     if (!v23)
     {
@@ -1507,11 +1507,11 @@ LABEL_10:
       sub_18B3C();
     }
 
-    v25 = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
-    [BuddyMigrationState removeFromPreferences:v25];
+    buddyPreferencesExcludedFromBackup3 = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
+    [BuddyMigrationState removeFromPreferences:buddyPreferencesExcludedFromBackup3];
 
-    v26 = [(BuddyDataMigrator *)self buddyPreferences];
-    [BuddyRestoreState removeFromPreferences:v26];
+    buddyPreferences3 = [(BuddyDataMigrator *)self buddyPreferences];
+    [BuddyRestoreState removeFromPreferences:buddyPreferences3];
   }
 
   else
@@ -1540,18 +1540,18 @@ LABEL_19:
     _os_log_impl(&dword_0, v31, OS_LOG_TYPE_DEFAULT, "BuddyMigrator: Finished.", &v33, 2u);
   }
 
-  return v15;
+  return _performiOSMigration;
 }
 
 - (BOOL)primaryAccountNeedsRepair
 {
   v2 = +[AKAccountManager sharedInstance];
-  v3 = [v2 primaryAuthKitAccount];
+  primaryAuthKitAccount = [v2 primaryAuthKitAccount];
 
-  if (v3)
+  if (primaryAuthKitAccount)
   {
     v4 = +[AKAccountManager sharedInstance];
-    v5 = [v4 repairStateForAccount:v3];
+    v5 = [v4 repairStateForAccount:primaryAuthKitAccount];
 
     v6 = v5 != &dword_0 + 1;
   }
@@ -1567,8 +1567,8 @@ LABEL_19:
 - (BOOL)accountNeedsSecurityUpgrade
 {
   v2 = +[AKAccountManager sharedInstance];
-  v3 = [v2 accountEligibleForUpdate];
-  v4 = v3 != 0;
+  accountEligibleForUpdate = [v2 accountEligibleForUpdate];
+  v4 = accountEligibleForUpdate != 0;
 
   return v4;
 }
@@ -1576,14 +1576,14 @@ LABEL_19:
 - (BOOL)primaryAccountRequiresTermsAcceptance
 {
   v2 = +[AKAccountManager sharedInstance];
-  v3 = [v2 store];
-  v4 = [v3 aa_primaryAppleAccount];
+  store = [v2 store];
+  aa_primaryAppleAccount = [store aa_primaryAppleAccount];
 
-  if (v4)
+  if (aa_primaryAppleAccount)
   {
-    v5 = [v4 aa_altDSID];
+    aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
     v11 = 0;
-    v6 = [SecureBackup getAcceptedTermsForAltDSID:v5 withError:&v11];
+    v6 = [SecureBackup getAcceptedTermsForAltDSID:aa_altDSID withError:&v11];
     v7 = v11;
 
     if (v7)
@@ -1591,7 +1591,7 @@ LABEL_19:
       v8 = _BYLoggingFacility();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        sub_18B7C(v4, v7, v8);
+        sub_18B7C(aa_primaryAppleAccount, v7, v8);
       }
 
       v9 = 0;
@@ -1614,9 +1614,9 @@ LABEL_19:
 - (BOOL)primaryAccountNeedsEscrowRepair
 {
   v2 = +[CDPAccount sharedInstance];
-  v3 = [v2 primaryAccountNeedsEscrowRecordRepair];
+  primaryAccountNeedsEscrowRecordRepair = [v2 primaryAccountNeedsEscrowRecordRepair];
 
-  return v3;
+  return primaryAccountNeedsEscrowRecordRepair;
 }
 
 - (BOOL)_shouldUpsellIntelligence
@@ -1629,8 +1629,8 @@ LABEL_19:
   }
 
   v4 = +[MCProfileConnection sharedConnection];
-  v5 = [v4 skipSetupKeys];
-  v6 = [v5 containsObject:kCCSkipKeyIntelligence];
+  skipSetupKeys = [v4 skipSetupKeys];
+  v6 = [skipSetupKeys containsObject:kCCSkipKeyIntelligence];
 
   if (v6)
   {
@@ -1644,7 +1644,7 @@ LABEL_19:
     v17 = 0x2020000000;
     v18 = 0;
     v8 = dispatch_semaphore_create(0);
-    v9 = [(BuddyDataMigrator *)self intelligenceManager];
+    intelligenceManager = [(BuddyDataMigrator *)self intelligenceManager];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_5B2C;
@@ -1652,7 +1652,7 @@ LABEL_19:
     v14 = buf;
     v10 = v8;
     v13 = v10;
-    [v9 shouldShowIntelligenceWithServerCheck:0 completionHandler:v12];
+    [intelligenceManager shouldShowIntelligenceWithServerCheck:0 completionHandler:v12];
 
     dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
     v7 = v16[24];
@@ -1665,13 +1665,13 @@ LABEL_19:
 
 - (void)_setVisualIntelligencePresentedIfIntelligenceIsDisabled
 {
-  v3 = [(BuddyDataMigrator *)self deviceCapabilities];
-  v4 = [v3 hasCameraButton];
+  deviceCapabilities = [(BuddyDataMigrator *)self deviceCapabilities];
+  hasCameraButton = [deviceCapabilities hasCameraButton];
 
-  if ((v4 & 1) == 0)
+  if ((hasCameraButton & 1) == 0)
   {
-    v5 = [(BuddyDataMigrator *)self buddyPreferences];
-    v6 = [v5 BOOLForKey:@"StaccatoVisualIntelligencePresented"];
+    buddyPreferences = [(BuddyDataMigrator *)self buddyPreferences];
+    v6 = [buddyPreferences BOOLForKey:@"StaccatoVisualIntelligencePresented"];
 
     if ((v6 & 1) == 0)
     {
@@ -1681,13 +1681,13 @@ LABEL_19:
       v17[3] = sub_5D20;
       v17[4] = sub_5D30;
       v7 = [_TtC13BuddyMigrator55BuddyControlCenterVisualIntelligencePresentationManager alloc];
-      v8 = [(BuddyDataMigrator *)self buddyPreferences];
-      v9 = [(BuddyDataMigrator *)self deviceCapabilities];
-      v10 = [(BuddyDataMigrator *)self chronicle];
-      v18 = [(BuddyControlCenterVisualIntelligencePresentationManager *)v7 initWithPreferenceController:v8 deviceProvider:v9 chronicle:v10];
+      buddyPreferences2 = [(BuddyDataMigrator *)self buddyPreferences];
+      deviceCapabilities2 = [(BuddyDataMigrator *)self deviceCapabilities];
+      chronicle = [(BuddyDataMigrator *)self chronicle];
+      v18 = [(BuddyControlCenterVisualIntelligencePresentationManager *)v7 initWithPreferenceController:buddyPreferences2 deviceProvider:deviceCapabilities2 chronicle:chronicle];
 
       v11 = dispatch_semaphore_create(0);
-      v12 = [(BuddyDataMigrator *)self intelligenceManager];
+      intelligenceManager = [(BuddyDataMigrator *)self intelligenceManager];
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_5D38;
@@ -1695,7 +1695,7 @@ LABEL_19:
       v16 = v17;
       v13 = v11;
       v15 = v13;
-      [v12 isIntelligenceEnabledWithCompletionHandler:v14];
+      [intelligenceManager isIntelligenceEnabledWithCompletionHandler:v14];
 
       dispatch_semaphore_wait(v13, 0xFFFFFFFFFFFFFFFFLL);
       _Block_object_dispose(v17, 8);
@@ -1705,12 +1705,12 @@ LABEL_19:
 
 - (BOOL)_shouldUpsellVisualIntelligenceOrCameraControl
 {
-  v3 = [(BuddyDataMigrator *)self deviceCapabilities];
-  v4 = [v3 hasCameraButton];
+  deviceCapabilities = [(BuddyDataMigrator *)self deviceCapabilities];
+  hasCameraButton = [deviceCapabilities hasCameraButton];
 
   v5 = _BYLoggingFacility();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if ((v4 & 1) == 0)
+  if ((hasCameraButton & 1) == 0)
   {
     if (v6)
     {
@@ -1728,8 +1728,8 @@ LABEL_19:
   }
 
   v7 = +[MCProfileConnection sharedConnection];
-  v8 = [v7 skipSetupKeys];
-  v9 = [v8 containsObject:kCCSkipKeyCameraButton];
+  skipSetupKeys = [v7 skipSetupKeys];
+  v9 = [skipSetupKeys containsObject:kCCSkipKeyCameraButton];
 
   if (v9)
   {
@@ -1743,7 +1743,7 @@ LABEL_9:
   v20 = 0x2020000000;
   v21 = 0;
   v10 = dispatch_semaphore_create(0);
-  v11 = [(BuddyDataMigrator *)self intelligenceManager];
+  intelligenceManager = [(BuddyDataMigrator *)self intelligenceManager];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_5FAC;
@@ -1751,7 +1751,7 @@ LABEL_9:
   v17 = buf;
   v12 = v10;
   v16 = v12;
-  [v11 isIntelligenceEnabledWithCompletionHandler:v15];
+  [intelligenceManager isIntelligenceEnabledWithCompletionHandler:v15];
 
   dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
   v13 = v19[24];
@@ -1767,13 +1767,13 @@ LABEL_9:
     return 0;
   }
 
-  v4 = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
-  v5 = [v4 BOOLForKey:BYBuddySoftwareUpdateMigration];
+  buddyPreferencesExcludedFromBackup = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
+  v5 = [buddyPreferencesExcludedFromBackup BOOLForKey:BYBuddySoftwareUpdateMigration];
 
   v6 = +[ACAccountStore defaultStore];
-  v7 = [v6 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v6 aa_primaryAppleAccount];
 
-  if (v7)
+  if (aa_primaryAppleAccount)
   {
     v3 = v5;
   }
@@ -1795,16 +1795,16 @@ LABEL_9:
 - (BOOL)_shouldOfferPeriocularEnrollment
 {
   v3 = +[MCProfileConnection sharedConnection];
-  v4 = [v3 skipSetupKeys];
-  v5 = [v4 containsObject:kMCCCSkipSetupBiometric];
+  skipSetupKeys = [v3 skipSetupKeys];
+  v5 = [skipSetupKeys containsObject:kMCCCSkipSetupBiometric];
 
   if (v5)
   {
     return 0;
   }
 
-  v6 = [(BuddyDataMigrator *)self buddyPreferences];
-  v7 = [v6 BOOLForKey:@"FaceIDPeriocularPresented"];
+  buddyPreferences = [(BuddyDataMigrator *)self buddyPreferences];
+  v7 = [buddyPreferences BOOLForKey:@"FaceIDPeriocularPresented"];
 
   if (v7)
   {
@@ -1812,20 +1812,20 @@ LABEL_9:
   }
 
   v8 = +[MCProfileConnection sharedConnection];
-  v9 = [v8 isPasscodeSet];
+  isPasscodeSet = [v8 isPasscodeSet];
 
-  if (!v9)
+  if (!isPasscodeSet)
   {
     return 0;
   }
 
-  v10 = [(BuddyDataMigrator *)self capabilities];
-  v11 = [v10 supportsPeriocularFaceID];
+  capabilities = [(BuddyDataMigrator *)self capabilities];
+  supportsPeriocularFaceID = [capabilities supportsPeriocularFaceID];
 
-  v12 = [(BuddyDataMigrator *)self capabilities];
-  LOBYTE(v10) = [v12 hasEligibleEnrolledIdentityForPeriocularFaceIDEnrollment];
+  capabilities2 = [(BuddyDataMigrator *)self capabilities];
+  LOBYTE(capabilities) = [capabilities2 hasEligibleEnrolledIdentityForPeriocularFaceIDEnrollment];
 
-  return v11 & v10;
+  return supportsPeriocularFaceID & capabilities;
 }
 
 - (BOOL)_isSignificantLocationsEnabled
@@ -1908,21 +1908,21 @@ LABEL_9:
 LABEL_9:
 
     v7 = +[LARatchetManager sharedInstance];
-    v8 = [v7 isFeatureEnabled];
+    isFeatureEnabled = [v7 isFeatureEnabled];
 
     v9 = [BYStolenDeviceProtectionPreferenceMigrator alloc];
-    v10 = [(BuddyDataMigrator *)self buddyPreferences];
-    v11 = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
-    v3 = [(BYStolenDeviceProtectionPreferenceMigrator *)v9 initWithMigrationContext:v4 sourcePreferences:v10 targetPreferences:v11];
+    buddyPreferences = [(BuddyDataMigrator *)self buddyPreferences];
+    buddyPreferencesExcludedFromBackup = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
+    v3 = [(BYStolenDeviceProtectionPreferenceMigrator *)v9 initWithMigrationContext:v4 sourcePreferences:buddyPreferences targetPreferences:buddyPreferencesExcludedFromBackup];
 
-    [v3 migratePreferenceWithSDPEnabledState:v8];
+    [v3 migratePreferenceWithSDPEnabledState:isFeatureEnabled];
     goto LABEL_12;
   }
 
-  v5 = [(BuddyDataMigrator *)self didUpgrade];
+  didUpgrade = [(BuddyDataMigrator *)self didUpgrade];
   v3 = _BYLoggingFacility();
   v6 = os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG);
-  if (v5)
+  if (didUpgrade)
   {
     if (v6)
     {
@@ -1943,18 +1943,18 @@ LABEL_12:
 
 - (BOOL)_shouldOfferStolenDeviceProtection
 {
-  v3 = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
-  v4 = [v3 BOOLForKey:@"StolenDeviceProtectionPresented"];
+  buddyPreferencesExcludedFromBackup = [(BuddyDataMigrator *)self buddyPreferencesExcludedFromBackup];
+  v4 = [buddyPreferencesExcludedFromBackup BOOLForKey:@"StolenDeviceProtectionPresented"];
 
   if (v4)
   {
-    v5 = _BYLoggingFacility();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    primaryAuthKitAccount = _BYLoggingFacility();
+    if (os_log_type_enabled(primaryAuthKitAccount, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v6 = "BuddyMigrator: StolenDeviceProtectionPresented is true";
 LABEL_23:
-      _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, v6, buf, 2u);
+      _os_log_impl(&dword_0, primaryAuthKitAccount, OS_LOG_TYPE_DEFAULT, v6, buf, 2u);
       goto LABEL_24;
     }
 
@@ -1962,17 +1962,17 @@ LABEL_23:
   }
 
   v7 = +[LARatchetManager sharedInstance];
-  v8 = [v7 isFeatureEnabled];
+  isFeatureEnabled = [v7 isFeatureEnabled];
 
-  if (!v8)
+  if (!isFeatureEnabled)
   {
     v9 = +[LARatchetManager sharedInstance];
-    v10 = [v9 isFeatureAvailable];
+    isFeatureAvailable = [v9 isFeatureAvailable];
 
-    if ((v10 & 1) == 0)
+    if ((isFeatureAvailable & 1) == 0)
     {
-      v5 = _BYLoggingFacility();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+      primaryAuthKitAccount = _BYLoggingFacility();
+      if (os_log_type_enabled(primaryAuthKitAccount, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         v6 = "BuddyMigrator: ratchet manager feature not available";
@@ -1984,8 +1984,8 @@ LABEL_23:
 
     if (!+[CLLocationManager locationServicesEnabled])
     {
-      v5 = _BYLoggingFacility();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+      primaryAuthKitAccount = _BYLoggingFacility();
+      if (os_log_type_enabled(primaryAuthKitAccount, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
         v6 = "BuddyMigrator: location services disabled";
@@ -1996,12 +1996,12 @@ LABEL_23:
     }
 
     v11 = +[AKAccountManager sharedInstance];
-    v5 = [v11 primaryAuthKitAccount];
+    primaryAuthKitAccount = [v11 primaryAuthKitAccount];
 
-    if (v5)
+    if (primaryAuthKitAccount)
     {
       v12 = +[AKAccountManager sharedInstance];
-      v13 = [v12 securityLevelForAccount:v5];
+      v13 = [v12 securityLevelForAccount:primaryAuthKitAccount];
 
       if (v13 == &dword_4)
       {
@@ -2024,9 +2024,9 @@ LABEL_23:
           if ([(BuddyDataMigrator *)self _isSignificantLocationsEnabled])
           {
             v18 = objc_alloc_init(BYFindMyManager);
-            v19 = [v18 isFindMyEnabled];
+            isFindMyEnabled = [v18 isFindMyEnabled];
 
-            if (v19)
+            if (isFindMyEnabled)
             {
               v20 = 1;
 LABEL_40:
@@ -2097,8 +2097,8 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  v5 = _BYLoggingFacility();
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  primaryAuthKitAccount = _BYLoggingFacility();
+  if (os_log_type_enabled(primaryAuthKitAccount, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     v6 = "BuddyMigrator: ratchet manager feature already enabled";
@@ -2115,8 +2115,8 @@ LABEL_25:
 - (BOOL)_shouldLaunchForiPadMultitasking
 {
   v3 = +[MCProfileConnection sharedConnection];
-  v4 = [v3 skipSetupKeys];
-  v5 = [v4 containsObject:kCCSkipKeyMultitasking];
+  skipSetupKeys = [v3 skipSetupKeys];
+  v5 = [skipSetupKeys containsObject:kCCSkipKeyMultitasking];
 
   if (v5)
   {
@@ -2124,19 +2124,19 @@ LABEL_25:
   }
 
   v7 = [_TtC13BuddyMigrator33BuddyMultitaskingSelectionManager alloc];
-  v8 = [(BuddyDataMigrator *)self deviceCapabilities];
-  v9 = [(BuddyDataMigrator *)self buddyPreferences];
-  v10 = [(BuddyMultitaskingSelectionManager *)v7 initWithDeviceProvider:v8 preferences:v9];
+  deviceCapabilities = [(BuddyDataMigrator *)self deviceCapabilities];
+  buddyPreferences = [(BuddyDataMigrator *)self buddyPreferences];
+  v10 = [(BuddyMultitaskingSelectionManager *)v7 initWithDeviceProvider:deviceCapabilities preferences:buddyPreferences];
 
-  LOBYTE(v9) = [(BuddyMultitaskingSelectionManager *)v10 shouldShowFlow];
-  return v9;
+  LOBYTE(buddyPreferences) = [(BuddyMultitaskingSelectionManager *)v10 shouldShowFlow];
+  return buddyPreferences;
 }
 
 - (BOOL)_shouldLaunchForNewFeaturesUpsell
 {
   v3 = +[MCProfileConnection sharedConnection];
-  v4 = [v3 skipSetupKeys];
-  v5 = [v4 containsObject:kCCSkipKeyOSShowcase];
+  skipSetupKeys = [v3 skipSetupKeys];
+  v5 = [skipSetupKeys containsObject:kCCSkipKeyOSShowcase];
 
   if (v5)
   {
@@ -2144,30 +2144,30 @@ LABEL_25:
   }
 
   v7 = [_TtC13BuddyMigrator22NewFeaturesFlowManager alloc];
-  v8 = [(BuddyDataMigrator *)self chronicle];
-  v9 = [(BuddyDataMigrator *)self featureFlags];
-  v10 = [(NewFeaturesFlowManager *)v7 initWithChronicle:v8 featureFlags:v9];
+  chronicle = [(BuddyDataMigrator *)self chronicle];
+  featureFlags = [(BuddyDataMigrator *)self featureFlags];
+  v10 = [(NewFeaturesFlowManager *)v7 initWithChronicle:chronicle featureFlags:featureFlags];
 
-  LOBYTE(v9) = [(NewFeaturesFlowManager *)v10 needsToRun];
-  return v9;
+  LOBYTE(featureFlags) = [(NewFeaturesFlowManager *)v10 needsToRun];
+  return featureFlags;
 }
 
 - (BOOL)_shouldLaunchMiniBuddyForOnBoarding
 {
   v3 = [_TtC13BuddyMigrator25SolariumOnBoardingManager alloc];
-  v4 = [(BuddyDataMigrator *)self chronicle];
-  v5 = [(BuddyDataMigrator *)self featureFlags];
-  v6 = [(SolariumOnBoardingManager *)v3 initWithChronicle:v4 featureFlags:v5];
-  v7 = [(SolariumOnBoardingManager *)v6 shouldLaunchToOnBoardUserToSolarium];
+  chronicle = [(BuddyDataMigrator *)self chronicle];
+  featureFlags = [(BuddyDataMigrator *)self featureFlags];
+  v6 = [(SolariumOnBoardingManager *)v3 initWithChronicle:chronicle featureFlags:featureFlags];
+  shouldLaunchToOnBoardUserToSolarium = [(SolariumOnBoardingManager *)v6 shouldLaunchToOnBoardUserToSolarium];
 
-  return v7;
+  return shouldLaunchToOnBoardUserToSolarium;
 }
 
 - (BOOL)_shouldLaunchMiniBuddyForSafetySettings
 {
   v2 = +[MCProfileConnection sharedConnection];
-  v3 = [v2 skipSetupKeys];
-  v4 = [v3 containsObject:kCCSkipKeyAgeBasedSafetySettings];
+  skipSetupKeys = [v2 skipSetupKeys];
+  v4 = [skipSetupKeys containsObject:kCCSkipKeyAgeBasedSafetySettings];
 
   if (v4)
   {
